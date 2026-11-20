@@ -9,7 +9,7 @@ open Formalism.BasicNotions Finset
 variable {D : Formalism.BasicNotions.D7} {L : SizeData₂ D}
 
 /- English proof (translation)
-Establish `h1` using `hT.gat_k u w hg`. Establish `h2` using `D.R.m_add_three_le_k`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem nc_m_ge (hT : GatTies D) (u : D.what₂.Word) (w : D.what₂.places.Pl)
     (hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)) : 2 ≤ (D.gat u w hg).P.m := by
@@ -18,7 +18,7 @@ theorem nc_m_ge (hT : GatTies D) (u : D.what₂.Word) (w : D.what₂.places.Pl)
   omega
 
 /- English proof (translation)
-Unfold `Formalism.MainNotions.G.cG`. Establish `h` using `L.Sc_pos`. Combine the linear equalities and inequalities to obtain the conclusion.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem nc_cG_nonneg : 0 ≤ Formalism.MainNotions.G.cG L := by
   unfold Formalism.MainNotions.G.cG
@@ -26,7 +26,7 @@ theorem nc_cG_nonneg : 0 ≤ Formalism.MainNotions.G.cG L := by
   linarith
 
 /- English proof (translation)
-The claim follows from `dif_pos h`.
+A detailed English derivation is pending.
 -/
 private theorem liftWt_apply_of_lt_succ (t m : ℕ) (lam : Fin (m + 1) → ℤ) (w : ℕ → ℤ) (j i : ℕ)
     (hi : i < m + j * (t + 1) + 1) (h : i < m + 1) :
@@ -34,7 +34,7 @@ private theorem liftWt_apply_of_lt_succ (t m : ℕ) (lam : Fin (m + 1) → ℤ) 
   dif_pos h
 
 /- English proof (translation)
-Unfold `Formalism.MainNotions.G.IsDominant at hd`. Establish `h1` using `hd s (show (⟨i, by omega⟩ : Fin (m + 0 * (t + 1) + 1)) ≤ ⟨i', by omega⟩ from Fin.mk_le_mk.mpr hii)`. Combine the equalities or inequalities in the displayed calculation.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 private theorem lam_antitone_of_isDominant_liftWt {n' m : ℕ} (t : ℕ) (lam : Fin n' → Fin (m + 1) → ℤ) (w : ℕ → Fin n' → ℤ)
     (hd : Formalism.MainNotions.G.IsDominant fun s => Formalism.MainNotions.G.liftWt t m (lam s) (fun i => w i s) 0)
@@ -49,21 +49,21 @@ private theorem lam_antitone_of_isDominant_liftWt {n' m : ℕ} (t : ℕ) (lam : 
     _ = lam s ⟨i, hi⟩ := liftWt_apply_of_lt_succ t m (lam s) (fun j => w j s) 0 i (by omega) hi
 
 /- English proof (translation)
-The claim follows from `dif_pos (show 1 ≤ 1 ∧ 1 ≤ k1 + 1 from ⟨le_refl 1, by omega⟩)`.
+A detailed English derivation is pending.
 -/
 private theorem lamI_one_eq_lam0_zero {n' k1 : ℕ} (lam0 : Fin n' → Fin (k1 + 1) → ℤ) (s : Fin n') :
     Formalism.MainNotions.FormalGroupSystem.lamI lam0 s 1 = lam0 s ⟨0, by omega⟩ :=
   dif_pos (show 1 ≤ 1 ∧ 1 ≤ k1 + 1 from ⟨le_refl 1, by omega⟩)
 
 /- English proof (translation)
-The claim follows from `dif_pos (show 1 ≤ 2 ∧ 2 ≤ k1 + 1 from ⟨by omega, by omega⟩)`.
+A detailed English derivation is pending.
 -/
 private theorem lamI_two_eq_lam0_one {n' k1 : ℕ} (lam0 : Fin n' → Fin (k1 + 1) → ℤ) (s : Fin n')
     (hk : 1 ≤ k1) : Formalism.MainNotions.FormalGroupSystem.lamI lam0 s 2 = lam0 s ⟨1, by omega⟩ :=
   dif_pos (show 1 ≤ 2 ∧ 2 ≤ k1 + 1 from ⟨by omega, by omega⟩)
 
 /- English proof (translation)
-The claim follows from `if_pos (show 1 ≤ 1 ∧ 1 ≤ k1 + 1 from ⟨le_refl 1, by omega⟩)`.
+A detailed English derivation is pending.
 -/
 private theorem nu_one_eq_lamI_one_add_w {n' k1 : ℕ} (t : ℕ) (lam0 : Fin n' → Fin (k1 + 1) → ℤ)
     (w : ℕ → Fin n' → ℤ) (j : ℕ) (s : Fin n') :
@@ -71,7 +71,7 @@ private theorem nu_one_eq_lamI_one_add_w {n' k1 : ℕ} (t : ℕ) (lam0 : Fin n' 
   if_pos (show 1 ≤ 1 ∧ 1 ≤ k1 + 1 from ⟨le_refl 1, by omega⟩)
 
 /- English proof (translation)
-The claim follows from `if_pos (show 1 ≤ 2 ∧ 2 ≤ k1 + 1 from ⟨by omega, by omega⟩)`.
+A detailed English derivation is pending.
 -/
 private theorem nu_two_eq_lamI_two_add_w {n' k1 : ℕ} (t : ℕ) (lam0 : Fin n' → Fin (k1 + 1) → ℤ)
     (w : ℕ → Fin n' → ℤ) (j : ℕ) (s : Fin n') (hk : 1 ≤ k1) :
@@ -79,9 +79,9 @@ private theorem nu_two_eq_lamI_two_add_w {n' k1 : ℕ} (t : ℕ) (lam0 : Fin n' 
   if_pos (show 1 ≤ 2 ∧ 2 ≤ k1 + 1 from ⟨by omega, by omega⟩)
 
 /- English proof (translation)
-Introduce `j hj`. Proceed by induction on `j with`. Consider the case `zero => exact absurd hj (by omega)`. Consider the case `succ n ih`. Break down `Nat.lt_or_ge n 1 with hn | hn` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hn0 : n = 0` using `by omega`. Substitute `hn0` using the available equality. Conclude with `le_refl _`. Conclude with `(ih hn).trans (h n hn)`.
+Establish an intermediate fact. Substitute using the available equality. A detailed English derivation is pending.
 -/
 private theorem le_of_monotone_from_one (f : ℕ → ℤ) (h : ∀ j, 1 ≤ j → f j ≤ f (j + 1)) :
     ∀ j, 1 ≤ j → f 1 ≤ f j := by
@@ -96,7 +96,7 @@ private theorem le_of_monotone_from_one (f : ℕ → ℤ) (h : ∀ j, 1 ≤ j �
     · exact (ih hn).trans (h n hn)
 
 /- English proof (translation)
-Establish `h` using `abs_le.mp hx`. Establish `h1 : (x : ℝ) ≤ (c : ℝ)` using `by exact_mod_cast h.2`. Establish `h2 : -(c : ℝ) ≤ (x : ℝ)` using `by exact_mod_cast h.1`. Apply the tactic sequence `constructor <;> linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem le_and_neg_le_of_abs_le_of_le (x : ℤ) (c : ℕ) (g : ℝ) (hx : |x| ≤ (c : ℤ)) (hc : (c : ℝ) ≤ g) :
     (x : ℝ) ≤ g ∧ -(x : ℝ) ≤ g := by
@@ -106,33 +106,29 @@ private theorem le_and_neg_le_of_abs_le_of_le (x : ℤ) (c : ℕ) (g : ℝ) (hx 
   constructor <;> linarith
 
 /- English proof (translation)
-Simplify using `only`. Unfold `Formalism.MainNotions.G.LatTied at hL`. Establish `hm : 2 ≤ (D.gat u w hg).P.m` using `nc_m_ge hT u w hg`. Establish `hm1 : 1 ≤ (D.gat u w hg).P.m` using `by omega`. Establish `hcG : (0 : ℝ) ≤ Formalism.MainNotions.G.cG L` using `nc_cG_nonneg`.
+Simplify by unfolding definitions. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨-, -, hc, -, -, -, hrep⟩` from `hL u w hg`. Take `⟨-, hs⟩` from `hrep t0 ht0`. Establish `hbase` using `(Y.Fl u w hg).base (Y.vOf u w hg t0)`. Unfold `Formalism.MainNotions.G.IsBaseWeight at hbase`. Establish `hd` using `(Y.Fl u w hg).domJ 0 (Y.vOf u w hg t0)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `hwge` using `(Y.Fl u w hg).w_ge (Y.vOf u w hg t0)`. Establish `hwm` using `(Y.Fl u w hg).w_mono (Y.vOf u w hg t0)`. Establish `h0 : 0 < (D.gat u w hg).P.m + 1` using `by omega`. Establish `h1 : 1 < (D.gat u w hg).P.m + 1` using `by omega`. Establish `hM : (D.gat u w hg).P.m < (D.gat u w hg).P.m + 1` using `by omega`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e0 : (0 : Fin ((D.gat u w hg).P.m + 1)) = ⟨0, h0⟩` using `Fin.ext (by simp)`. Establish `hA01 : ∀ s, (D.gat u w hg).P.lam0 (Y.vOf u w hg t0) s ⟨1, h1⟩ ≤ (D.gat u w hg).P.lam0 (Y.vOf u w hg t0) s ⟨0, h0⟩` using `fun s => lam_antitone_of_isDominant_liftWt (Y.Fl u w hg).t ((D.gat u w hg).P.lam0 (Y.vOf u w hg t0)) ((Y.Fl u w hg).w (Y.vOf u w hg t0)) hd s 0 1 h0 h1 (by omega)`. Establish `hA1M : ∀ s, (D.gat u w hg).P.lam0 (Y.vOf u w hg t0) s ⟨(D.gat u w hg).P.m, hM⟩ ≤ (D.gat u w hg).P.lam0 (Y.vOf u w hg t0) s ⟨1, h1⟩` using `fun s => lam_antitone_of_isDominant_liftWt (Y.Fl u w hg).t ((D.gat u w hg).P.lam0 (Y.vOf u w hg t0)) ((Y.Fl u w hg).w (Y.vOf u w hg t0)) hd s 1 (D.gat u w hg).P.m h1 hM (by omega)`. Establish `hTT1 : ∀ s, s ∈ (Y.Fl u w hg).TT (Y.vOf u w hg t0) → |(D.gat u w hg).P.lam0 (Y.vOf u w hg t0) s ⟨1, h1⟩| ≤ ((Y.Fl u w hg).c : ℤ)` using `fun s hsT => ((hbase s).1 hsT).2.2 ⟨1, h1⟩ Nat.one_pos (show 1 < (D.gat u w hg).P.m by omega)`. Establish `hA : ∀ s, s ∈ (Y.Fl u w hg).TT (Y.vOf u w hg t0) → (D.gat u w hg).P.lam0 (Y.vOf u w hg t0) s ⟨0, h0⟩ = (Y.Fl u w hg).a (Y.vOf u w hg t0) s`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `s hsT`. Rewrite using `[← e0]`. Conclude with `((hbase s).1 hsT).1`. Establish `hN0 : ∀ s, s ∉ (Y.Fl u w hg).TT (Y.vOf u w hg t0) → |(D.gat u w hg).P.lam0 (Y.vOf u w hg t0) s ⟨0, h0⟩| ≤ ((Y.Fl u w hg).c : ℤ)`. Introduce `s hsT`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← e0]`. Conclude with `(hbase s).2 hsT 0`. Establish `hwZ : ∀ s, -(D.gat u w hg).P.lam0 (Y.vOf u w hg t0) s ⟨(D.gat u w hg).P.m, hM⟩ ≤ (Y.Fl u w hg).w (Y.vOf u w hg t0) 1 s` using `fun s => (le_max_right _ _).trans (hwge s)`. Establish `hwj : ∀ s j, 1 ≤ j → (Y.Fl u w hg).w (Y.vOf u w hg t0) 1 s ≤ (Y.Fl u w hg).w (Y.vOf u w hg t0) j s` using `fun s => le_of_monotone_from_one (fun j => (Y.Fl u w hg).w (Y.vOf u w hg t0) j s) (fun j hj => hwm s j hj)`. Establish `hj1 : 1 ≤ j`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `Formalism.BasicNotions.SizeData₂.lifts at hj`. Conclude with `(Finset.mem_Icc.mp hj).1`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `s hsT`. Establish `hA'` using `(hA s hsT).trans ((hs s).2.2.1 hsT).1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Establish `hB` using `(le_and_neg_le_of_abs_le_of_le _ _ _ (hTT1 s hsT) hc).1`. Unfold `Formalism.MainNotions.FormalGroupSystem.Pf.nc_ya Formalism.MainNotions.G.al Formalism.MainNotions.FormalGroupSystem.al`. Simplify using `only [hsT, ↓reduceIte]`. Rewrite using `[lamI_one_eq_lam0_zero, lamI_two_eq_lam0_one _ _ hm1, hA']`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Introduce `s`. Unfold `Formalism.MainNotions.FormalGroupSystem.al`. Use `split_ifs with hsT`. Rewrite using `[lamI_one_eq_lam0_zero, lamI_two_eq_lam0_one _ _ hm1]`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Combine the linear relations using `[hA01 s]`. Conclude with `le_refl 0`. Introduce `s`. Unfold `Formalism.MainNotions.FormalGroupSystem.Pf.nc_zc Formalism.MainNotions.FormalGroupSystem.cap`. Rewrite using `[← (hs s).2.2.2 j hj]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs with hsT`. Rewrite using `[nu_two_eq_lamI_two_add_w _ _ _ _ _ hm1, lamI_two_eq_lam0_one _ _ hm1]`. Establish `hB` using `(le_and_neg_le_of_abs_le_of_le _ _ _ (hTT1 s hsT) hc).1`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Rewrite using `[nu_one_eq_lamI_one_add_w, lamI_one_eq_lam0_zero]`. Establish `hB` using `(le_and_neg_le_of_abs_le_of_le _ _ _ (hN0 s hsT) hc).1`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `s`.
-
-Unfold `Formalism.MainNotions.FormalGroupSystem.cap`. Use `split_ifs with hsT`. Rewrite using `[nu_two_eq_lamI_two_add_w _ _ _ _ _ hm1, lamI_two_eq_lam0_one _ _ hm1]`. Combine the linear relations using `[hA1M s, hwZ s, hwj s j hj1]`. Rewrite using `[nu_one_eq_lamI_one_add_w, lamI_one_eq_lam0_zero]`.
-
-Combine the linear relations using `[hA01 s, hA1M s, hwZ s, hwj s j hj1]`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem nc_ties (X : Formalism.MainNotions.G.Inst D L) (Y : Formalism.MainNotions.G.LatInst D) (hT : GatTies D) (hL : Formalism.MainNotions.G.LatTied hT X Y)
     (u : D.what₂.Word) (w : D.what₂.places.Pl) (hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w))

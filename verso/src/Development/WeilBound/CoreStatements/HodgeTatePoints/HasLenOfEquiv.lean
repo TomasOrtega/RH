@@ -20,7 +20,7 @@ section Gen
 variable {C : Type} [Field C] {R : Type} [CommRing R] [Algebra R C] {v : Valuation C NNReal}
 
 /- English proof (translation)
-Take `⟨m, c, ⟨f⟩, hx⟩` from `h`. Conclude with `⟨m, c, ⟨e.trans f⟩, hx⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 lemma hasLen_of_equiv {M N : Type} [AddCommGroup M] [Module R M] [AddCommGroup N] [Module R N]
     (e : M ≃ₗ[R] N) {x : NNReal} (h : HasLen v R N x) : HasLen v R M x := by
@@ -28,20 +28,18 @@ lemma hasLen_of_equiv {M N : Type} [AddCommGroup M] [Module R M] [AddCommGroup N
   exact ⟨m, c, ⟨e.trans f⟩, hx⟩
 
 /- English proof (translation)
-Rewrite using `[show B = A from SetLike.ext e]` and apply the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 lemma fg_of_iff {V : Type} [AddCommGroup V] [Module R V] {A B : Submodule R V} (h : A.FG)
     (e : ∀ x, x ∈ B ↔ x ∈ A) : B.FG := by
   rwa [show B = A from SetLike.ext e]
 
 /- English proof (translation)
-Use `haveI := hv.hom_inj.isDomain`. Use `haveI := ValuationRing.of_integers v hv`. Use `haveI : Module.Finite R A := Module.Finite.iff_fg.mpr hA`. Use `haveI : Module.Flat R A := by`. Rewrite using `[Module.Flat.flat_iff_torsion_eq_bot_of_isBezout, eq_bot_iff]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `m hm`. Take `⟨⟨r, hr⟩, h⟩` from `(Submodule.mem_torsion_iff m).1 hm`. Establish `hr0 : algebraMap R C r ≠ 0`. Introduce `h0`. Conclude with `nonZeroDivisors.ne_zero hr (hv.hom_inj (by simpa using h0))`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Submodule.mem_bot]`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `y`. Establish `h1 : algebraMap R C r * (m : Y → C) y = 0`. Establish `h2` using `congrArg (fun z : A => (z : Y → C) y) h`.
-
-Simplify `h2` using `[Algebra.smul_def]`. Simplify using `using (mul_eq_zero.1 h1).resolve_left hr0`. Conclude with `Module.free_of_flat_of_isLocalRing`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 lemma free_of_fg (hv : v.Integers R) {Y : Type} (A : Submodule R (Y → C)) (hA : A.FG) :
     Module.Free R A := by
@@ -66,13 +64,13 @@ lemma free_of_fg (hv : v.Integers R) {Y : Type} (A : Submodule R (Y → C)) (hA 
   exact Module.free_of_flat_of_isLocalRing
 
 /- English proof (translation)
-Establish `hfg : (LinearMap.range φ).FG`. Rewrite using `[LinearMap.range_eq_map]`. Conclude with `Module.Finite.fg_top.map φ`. Use `haveI : Module.Free R (LinearMap.range φ) := free_of_fg hv _ hfg`. Take `⟨s, hs⟩` from `Module.projective_lifting_property φ.rangeRestrict LinearMap.id (LinearMap.surjective_rangeRestrict φ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hker : LinearMap.ker φ = LinearMap.range (LinearMap.id - s.comp φ.rangeRestrict)`. Rewrite using `[← LinearMap.ker_rangeRestrict]`. Apply `le_antisymm` to reduce the goal to its premises. Introduce `x hx`. Use `⟨x, ?_⟩` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `hx` using `[LinearMap.mem_ker]`. Simplify using `[hx]`. Introduce and unpack `_ ⟨y, rfl⟩`. Rewrite using `[LinearMap.mem_ker]`. Establish `h1` using `LinearMap.congr_fun hs (φ.rangeRestrict y)`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [LinearMap.comp_apply, LinearMap.id_apply] at h1`. Simplify using `only [LinearMap.sub_apply, LinearMap.id_apply, LinearMap.comp_apply, map_sub]`. Rewrite using `[h1, sub_self]`. Rewrite using `[hker, LinearMap.range_eq_map]`. Conclude with `Module.Finite.fg_top.map _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma fg_ker (hv : v.Integers R) {P Y : Type} [AddCommGroup P] [Module R P] [Module.Finite R P]
     (φ : P →ₗ[R] (Y → C)) : (LinearMap.ker φ).FG := by
@@ -100,13 +98,11 @@ lemma fg_ker (hv : v.Integers R) {P Y : Type} [AddCommGroup P] [Module R P] [Mod
   exact Module.Finite.fg_top.map _
 
 /- English proof (translation)
-Use `haveI : Module.Finite R A := Module.Finite.iff_fg.mpr hA`. Use `haveI : Module.Finite R B := Module.Finite.iff_fg.mpr hB`. Set `ψ : (A × B) →ₗ[R] (Y → C)` to `φ.comp (A.subtype.comp (LinearMap.fst R A B)) - B.subtype.comp (LinearMap.snd R A B)`. Establish `hk` using `fg_ker hv ψ`. Establish `heq : A ⊓ B.comap φ = (LinearMap.ker ψ).map (A.subtype.comp (LinearMap.fst R A B))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hxA, hxB⟩`. Use `⟨(⟨x, hxA⟩, ⟨φ x, hxB⟩), ?_, rfl⟩` and prove the remaining obligations. Simplify using `[ψ]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `⟨⟨a, b⟩, hab, rfl⟩`. Establish `h' : φ a = b` using `by simpa [ψ, sub_eq_zero] using hab`. Use `⟨a.2, ?_⟩` and prove the remaining obligations. Use `show φ a ∈ B`. Rewrite using `[h']`.
-
-Conclude with `b.2`. Rewrite using `[heq]`. Conclude with `hk.map _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma fg_inf_comap (hv : v.Integers R) {V Y : Type} [AddCommGroup V] [Module R V]
     (A : Submodule R V) (hA : A.FG) (φ : V →ₗ[R] (Y → C)) (B : Submodule R (Y → C)) (hB : B.FG) :
@@ -133,15 +129,13 @@ lemma fg_inf_comap (hv : v.Integers R) {V Y : Type} [AddCommGroup V] [Module R V
   exact hk.map _
 
 /- English proof (translation)
-Use `haveI := hv.hom_inj.isDomain`. Use `haveI : Module.Finite R A := Module.Finite.iff_fg.mpr hA`. Use `haveI : Module.Free R A := free_of_fg hv A hA`. Use `set K : Submodule R A := B.comap A.subtype with hK`. Establish `hKfg : K.FG`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Apply `Submodule.fg_of_fg_map_injective A.subtype A.injective_subtype` to reduce the goal to its premises. Rewrite using `[hK, Submodule.map_comap_subtype]`. Establish `h5` using `fg_inf_comap hv A hA LinearMap.id B hB`. Simplify using `using h5`. Set `b` to `Module.finBasis R A`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Set `e` to `b.equivFun`. Take `⟨s, hs⟩` from `hKfg.map (e : A →ₗ[R] (Fin (Module.finrank R A) → R))`. Take `⟨c, ⟨f⟩⟩` from `Smith.smith_gen hv (Module.finrank R A) (fun i : s => (i : Fin (Module.finrank R A) → R))`. Use `⟨_, Module.finrank R A, c, ⟨?_⟩, rfl⟩` and prove the remaining obligations. Establish `hr : Set.range (fun i : s => (i : Fin (Module.finrank R A) → R)) = ↑s` using `by first`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `(ext; simp)`. Consider the case `ext`. Consider the case `simp`. Establish `hs' : Submodule.span R (Set.range (fun i : s => (i : Fin (Module.finrank R A) → R))) = K.map (e : A →ₗ[R] (Fin (Module.finrank R A) → R))`. Rewrite using `[hr, hs]`.
-
-Apply the tactic sequence `exact (Submodule.Quotient.equiv K _ e (by rw [hs'] <;> rfl)).trans f`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 lemma exists_hasLen (hv : v.Integers R) {Y : Type} (A B : Submodule R (Y → C)) (hA : A.FG)
     (hB : B.FG) : ∃ x, HasLen v R (A ⧸ B.comap A.subtype) x := by
@@ -172,15 +166,15 @@ lemma exists_hasLen (hv : v.Integers R) {Y : Type} (A B : Submodule R (Y → C))
   exact (Submodule.Quotient.equiv K _ e (by rw [hs'] <;> rfl)).trans f
 
 /- English proof (translation)
-Use `haveI := hv.hom_inj.isDomain`. Take `⟨m, c, ⟨f⟩, rfl⟩` from `h`. Establish `hvc : ∀ i, v (algebraMap R C (c i)) = 0 ↔ c i = 0` using `fun i => by`. Rewrite using `[Valuation.zero_iff, map_eq_zero_iff _ hv.hom_inj]`. Prove the components needed by the constructor for the conclusion.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hx`. Establish `hc : ∀ i, c i ≠ 0` using `fun i hci => hx (Finset.prod_eq_zero (Finset.mem_univ i) ((hvc i).2 hci))`. Use `⟨∏ i, c i, Finset.prod_ne_zero_iff.2 (fun i _ => hc i), fun x => ?_⟩` and prove the remaining obligations. Apply `f.injective` to reduce the goal to its premises. Rewrite using `[map_smul, map_zero]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `i`. Take `⟨y, hy⟩` from `Submodule.Quotient.mk_surjective _ (f x i)`. Simplify using `only [Pi.smul_apply, Pi.zero_apply]`. Rewrite using `[← hy, ← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero, Ideal.mem_span_singleton]`. Conclude with `Dvd.dvd.mul_right (Finset.dvd_prod_of_mem c (Finset.mem_univ i)) y`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `⟨r, hr, hkill⟩ hx`. Take `⟨i, -, hi⟩` from `Finset.prod_eq_zero_iff.1 hx`. Establish `hci` using `(hvc i).1 hi`. Establish `h1` using `congrArg f (hkill (f.symm (Pi.single i (Submodule.Quotient.mk 1))))`. Rewrite `h1` using `[map_smul, LinearEquiv.apply_symm_apply, map_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `congrFun h1 i`. Rewrite `h2` using `[Pi.smul_apply, Pi.single_eq_same, Pi.zero_apply, ← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero, Ideal.mem_span_singleton, hci, zero_dvd_iff, smul_eq_mul, mul_one]`. Conclude with `hr h2`.
+A detailed English derivation is pending.
 -/
 lemma len_ne_zero_iff (hv : v.Integers R) {M : Type} [AddCommGroup M] [Module R M] {x : NNReal}
     (h : HasLen v R M x) : x ≠ 0 ↔ ∃ r : R, r ≠ 0 ∧ ∀ m : M, r • m = 0 := by
@@ -213,7 +207,7 @@ lemma len_ne_zero_iff (hv : v.Integers R) {M : Type} [AddCommGroup M] [Module R 
     exact hr h2
 
 /- English proof (translation)
-Take `⟨B, hB, hM⟩` from `h`. Use `⟨v B.det, ?_, B, hM, rfl⟩` and prove the remaining obligations. Rewrite using `[Ne, Valuation.zero_iff]`. Conclude with `hB.ne_zero`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma colen_ne_zero (_hv : v.Integers R) {X : Type} [Fintype X] [DecidableEq X]
     {M : Submodule R (X → C)} (h : IsLat R M) : ∃ c, c ≠ 0 ∧ HasColen R v M c := by
@@ -223,11 +217,11 @@ lemma colen_ne_zero (_hv : v.Integers R) {X : Type} [Fintype X] [DecidableEq X]
   exact hB.ne_zero
 
 /- English proof (translation)
-Set `L : (Y → R) →ₗ[R] (Y → C)` to `LinearMap.pi (fun y => (LinearMap.toSpanSingleton R C c).comp (LinearMap.proj y))`. Establish `heq : Submodule.pi Set.univ (fun _ : Y => (Submodule.span R {c} : Submodule R C)) = LinearMap.range L`. Use extensionality with `f`. Simplify using `only [Submodule.mem_pi, Set.mem_univ, true_implies, Submodule.mem_span_singleton, LinearMap.mem_range]`. Prove the components needed by the constructor for the conclusion.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce `hf choose a ha using hf`. Conclude with `⟨a, funext fun y => by simp [L, ha y]⟩`. Introduce and unpack `⟨a, rfl⟩ y`. Conclude with `⟨a y, by simp [L]⟩`. Rewrite using `[heq, LinearMap.range_eq_map]`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Module.Finite.fg_top.map L`.
+A detailed English derivation is pending.
 -/
 lemma pi_span_fg (c : C) (Y : Type) [Finite Y] :
     (Submodule.pi Set.univ fun _ : Y => (Submodule.span R {c} : Submodule R C)).FG := by
@@ -249,9 +243,9 @@ lemma pi_span_fg (c : C) (Y : Type) [Finite Y] :
   exact Module.Finite.fg_top.map L
 
 /- English proof (translation)
-Establish `heq : intFun (C` using `C) R Y = Submodule.pi Set.univ (fun _ : Y => (Submodule.span R {(1 : C)} : Submodule R C)) := by`. Use extensionality with `f`. Simplify using `only [Submodule.mem_pi, Set.mem_univ, true_implies, Submodule.mem_span_singleton, Algebra.smul_def, mul_one]`. Conclude with `Iff.rfl`. Rewrite using `[heq]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Unfold both sides to obtain the same proposition, which implies itself. Rewrite the conclusion using the stated equalities.
 
-Conclude with `pi_span_fg 1 Y`.
+A detailed English derivation is pending.
 -/
 lemma intFun_fg (Y : Type) [Finite Y] : (intFun (C := C) R Y).FG := by
   have heq : intFun (C := C) R Y =
@@ -264,9 +258,9 @@ lemma intFun_fg (Y : Type) [Finite Y] : (intFun (C := C) R Y).FG := by
   exact pi_span_fg 1 Y
 
 /- English proof (translation)
-Set `φ : (N → C) →ₗ[R] (N × N → C)` to `LinearMap.funLeft R C (fun q : N × N => q.1 + q.2) - LinearMap.funLeft R C Prod.fst - LinearMap.funLeft R C Prod.snd`. Use `fg_of_iff (fg_inf_comap hv A hA φ _ (pi_span_fg (R := R) ((p : ℕ) : C) (N × N))) (fun f => ?_)` and prove the remaining obligations. Rewrite using `[Submodule.mem_inf, Submodule.mem_inf, Submodule.mem_comap, Submodule.mem_pi]`. Use `and_congr_right fun _ => ⟨fun h q _ => h q.1 q.2, fun h => ?_⟩` and prove the remaining obligations. Use `show ∀ x y : N, f (x + y) - f x - f y ∈ pInt R p`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Conclude with `fun x y => h (x, y) (Set.mem_univ _)`.
+A detailed English derivation is pending.
 -/
 lemma inf_addFun_fg (hv : v.Integers R) (p : ℕ) {N : Type} [AddCommGroup N] [Finite N]
     (A : Submodule R (N → C)) (hA : A.FG) : (A ⊓ addFun R p N).FG := by
@@ -282,7 +276,7 @@ lemma inf_addFun_fg (hv : v.Integers R) (p : ℕ) {N : Type} [AddCommGroup N] [F
   exact fun x y => h (x, y) (Set.mem_univ _)
 
 /- English proof (translation)
-Set `φ : (N → C) →ₗ[R] (Unit → C)` to `LinearMap.pi (fun _ : Unit => LinearMap.proj (0 : N))`. Use `fg_of_iff (fg_inf_comap hv A hA φ ⊥ Submodule.fg_bot) (fun f => ?_)` and prove the remaining obligations. Unfold `augIdeal`. Rewrite using `[Submodule.mem_inf, Submodule.mem_inf, Submodule.mem_comap, Submodule.mem_bot, LinearMap.mem_ker]`. Conclude with `and_congr_right fun _ => ⟨fun h => funext fun _ => h, fun h => congrFun h ()⟩`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma aug_fg (hv : v.Integers R) {N : Type} [AddCommGroup N]
     (A : Submodule R (N → C)) (hA : A.FG) : (augIdeal A).FG := by
@@ -295,9 +289,9 @@ lemma aug_fg (hv : v.Integers R) {N : Type} [AddCommGroup N]
   exact and_congr_right fun _ => ⟨fun h => funext fun _ => h, fun h => congrFun h ()⟩
 
 /- English proof (translation)
-Establish `hI` using `aug_fg hv A hA`. Establish `heq : sqIdeal (augIdeal A) = augIdeal A * augIdeal A`. Rewrite using `[Submodule.mul_eq_span_mul_set]`. Unfold `sqIdeal`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `h`. Simplify using `[Set.mem_mul, eq_comm]`. Rewrite using `[heq]`. Conclude with `hI.mul hI`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma sq_aug_fg (hv : v.Integers R) {N : Type} [AddCommGroup N]
     (A : Submodule R (N → C)) (hA : A.FG) : (sqIdeal (augIdeal A)).FG := by
@@ -314,15 +308,13 @@ lemma sq_aug_fg (hv : v.Integers R) {N : Type} [AddCommGroup N]
 end Gen
 
 /- English proof (translation)
-Use `haveI := hv.hom_inj.isDomain`. Use `haveI := hv.isFractionRing`. Take `⟨B, hB, rfl⟩` from `hM`. Take `⟨⟨d, hd⟩, hint⟩` from `IsLocalization.exist_integer_multiples_of_finset (nonZeroDivisors R) (Finset.univ.image (fun q : N × N => B⁻¹ q.1 q.2))`. Use `⟨d, nonZeroDivisors.ne_zero hd, fun x => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx : ∀ j, ∃ a : R, algebraMap R C a = d • B⁻¹ j x` using `fun j => (RingHom.mem_rangeS).1 (hint _ (Finset.mem_image.2 ⟨(j, x), Finset.mem_univ _, rfl⟩))`. Use `choose a ha using hx`. Establish `heq : (fun y => if y = x then algebraMap R C d else 0) = ∑ j, a j • (fun y => B y j)`. Use function extensionality and compare the values at `y`. Rewrite using `[Finset.sum_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [Pi.smul_apply]`. Simplify using `only [Algebra.smul_def]`. Establish `hmul : B * B⁻¹ = 1` using `Matrix.mul_nonsing_inv B hB`. Establish `h1` using `congrFun (congrFun hmul y) x`. Rewrite `h1` using `[Matrix.mul_apply, Matrix.one_apply]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `key : ∑ j, algebraMap R C (a j) * B y j = algebraMap R C d * ∑ j, B y j * B⁻¹ j x`. Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl (fun j _ => by rw [ha, Algebra.smul_def]; ring)`. Rewrite using `[key, h1]`. Apply the tactic sequence `split_ifs <;> simp`.
-
-Rewrite using `[heq]`. Conclude with `Submodule.sum_mem _ (fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩))`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_smul_delta_mem_of_isLat {C : Type} [Field C] {R : Type} [CommRing R] [Algebra R C]
     {v : Valuation C NNReal} (hv : v.Integers R) {N : Type} [Fintype N] [DecidableEq N]
@@ -355,17 +347,17 @@ private theorem exists_smul_delta_mem_of_isLat {C : Type} [Field C] {R : Type} [
   exact Submodule.sum_mem _ (fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩))
 
 /- English proof (translation)
-Use `haveI := hv.hom_inj.isDomain`. Take `⟨d, hd, hδ⟩` from `exists_smul_delta_mem_of_isLat hv M hM`. Use `⟨d * d, mul_ne_zero hd hd, fun f hf => ?_⟩` and prove the remaining obligations. Use `set δ : N → (N → C) := fun x y => if y = x then algebraMap R C d else 0 with hδdef`. Establish `hf' : f ∈ M ⊓ LinearMap.ker (LinearMap.proj (R` using `R) (φ := fun _ : N => C) 0) := hf`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨hfM, hf0'⟩` from `Submodule.mem_inf.1 hf'`. Establish `hf0 : f 0 = 0` using `LinearMap.mem_ker.1 hf0'`. Establish `hfi : ∀ x, ∃ r : R, algebraMap R C r = f x` using `hint hfM`. Use `choose c hc using hfi`. Establish `hδaug : ∀ x, x ≠ 0 → δ x ∈ augIdeal M` using `fun x hx => (show δ x ∈ M ⊓ LinearMap.ker (LinearMap.proj (R := R) (φ := fun _ : N => C) 0) from Submodule.mem_inf.2 ⟨hδ x, LinearMap.mem_ker.2 (by simp [hδdef, Ne.symm hx])⟩)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Establish `heq : (d * d) • f = ∑ x ∈ Finset.univ.erase 0, c x • (δ x * δ x)`. Use function extensionality and compare the values at `y`. Rewrite using `[Finset.sum_apply]`. Simplify using `only [Pi.smul_apply, Pi.mul_apply, hδdef]`. Distinguish the cases in `hy : y = 0`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation.
 
-Substitute `hy` using the available equality. Rewrite using `[hf0, smul_zero]`. Use `symm`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `x hx`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Ne.symm (Finset.ne_of_mem_erase hx)]`. Rewrite using `[Finset.sum_eq_single y]`. Rewrite using `[if_pos (rfl : y = y), Algebra.smul_def, Algebra.smul_def, ← hc y, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Introduce `b _ hb`.
+Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Ne.symm hb]`. Introduce `h`. Conclude with `absurd (Finset.mem_erase.2 ⟨hy, Finset.mem_univ y⟩) h`. Rewrite using `[heq]`. Conclude with `Submodule.sum_mem _ (fun x hx => Submodule.smul_mem _ _ (Submodule.subset_span ⟨δ x, hδaug x (Finset.ne_of_mem_erase hx), δ x, hδaug x (Finset.ne_of_mem_erase hx), rfl⟩))`.
+A detailed English derivation is pending.
 -/
 private theorem exists_smul_augIdeal_mem_sqIdeal_of_isLat {C : Type} [Field C] {R : Type} [CommRing R] [Algebra R C]
     {v : Valuation C NNReal} (hv : v.Integers R) {N : Type} [AddCommGroup N] [Fintype N]
@@ -407,23 +399,21 @@ private theorem exists_smul_augIdeal_mem_sqIdeal_of_isLat {C : Type} [Field C] {
     ⟨δ x, hδaug x (Finset.ne_of_mem_erase hx), δ x, hδaug x (Finset.ne_of_mem_erase hx), rfl⟩))
 
 /- English proof (translation)
-Introduce `p _ C _ _ _ v R _ _ hv hp N _ _ _ hN AA`. Use `haveI := hv.hom_inj.isDomain`. Establish `hMfg : AA.carrier.FG`. Take `⟨B, -, hB⟩` from `AA.lat`. Rewrite using `[hB]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Submodule.fg_span (Set.finite_range _)`. Establish `hp0 : (p : R) ≠ 0`. Introduce `h`. Establish `h2 : ((p : ℕ) : C) = 0` using `by rw [← map_natCast (algebraMap R C), h, map_zero]`. Conclude with `(Nat.cast_ne_zero.2 (Fact.out : p.Prime).ne_zero) h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hlinfg : (linFun R p N).FG` using `inf_addFun_fg hv p (intFun R N) (intFun_fg (C := C) (R := R) N)`. Establish `hBfg : (afFun p AA.carrier ⊔ pFun R p N).FG` using `(inf_addFun_fg hv p AA.carrier hMfg).sup (pi_span_fg (R := R) ((p : ℕ) : C) N)`. Take `⟨cA, hA⟩` from `exists_hasLen hv (linFun R p N) (afFun p AA.carrier ⊔ pFun R p N) hlinfg hBfg`. Establish `hA0 : cA ≠ 0`. Rewrite using `[len_ne_zero_iff hv hA]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `⟨p, hp0, fun m => ?_⟩` and prove the remaining obligations. Take `⟨f, rfl⟩` from `Submodule.Quotient.mk_surjective _ m`. Rewrite using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero, Submodule.mem_comap]`. Apply `Submodule.mem_sup_right` to reduce the goal to its premises. Establish `hfx : ∀ x, ∃ r : R, algebraMap R C r = (f : N → C) x` using `(Submodule.mem_inf.1 f.2).1`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `pFun`. Rewrite using `[Submodule.mem_pi]`. Introduce `x _`. Take `⟨r, hr⟩` from `hfx x`. Unfold `pInt`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[Submodule.mem_span_singleton]`. Use `⟨r, ?_⟩` and prove the remaining obligations. Simplify using `only [Submodule.subtype_apply, Submodule.coe_smul, Pi.smul_apply, Algebra.smul_def, ← hr, map_natCast]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨cN, hcN0, hcN⟩` from `colen_ne_zero hv AA.lat`.
+Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `haug` using `aug_fg hv AA.carrier hMfg`. Establish `hsq` using `sq_aug_fg hv AA.carrier hMfg`. Take `⟨cO, hO⟩` from `exists_hasLen hv (augIdeal AA.carrier) (sqIdeal (augIdeal AA.carrier)) haug hsq`. Establish `hO0 : cO ≠ 0`. Rewrite using `[len_ne_zero_iff hv hO]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨r, hr0, hr⟩` from `exists_smul_augIdeal_mem_sqIdeal_of_isLat hv AA.carrier AA.lat AA.le_int`. Use `⟨r, hr0, fun m => ?_⟩` and prove the remaining obligations. Take `⟨f, rfl⟩` from `Submodule.Quotient.mk_surjective _ m`. Rewrite using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero, Submodule.mem_comap]`. Conclude with `hr f f.2`.
-
-Conclude with `⟨cA, cN, cO, hA0, hcN0, hO0, hA, hcN, hO⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem lens : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (R : Type) [CommRing R] [Algebra R C], v.Integers R → v (p : C) < 1 → ∀ (N : Type) [AddCommGroup N] [Fintype N] [DecidableEq N], (∀ x : N, p • x = 0) → ∀ AA : HopfOrder (C := C) R N, ∃ cA cN cO : NNReal, cA ≠ 0 ∧ cN ≠ 0 ∧ cO ≠ 0 ∧ HasLen v R (AFQuot p AA.carrier) cA ∧ HasColen R v AA.carrier cN ∧ HasLen v R (OmAA AA.carrier) cO := by
   intro p _ C _ _ _ v R _ _ hv hp N _ _ _ hN AA

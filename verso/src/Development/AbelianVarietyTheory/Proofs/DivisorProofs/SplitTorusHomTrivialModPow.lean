@@ -22,7 +22,7 @@ namespace GlobalTheory
 namespace TorusThicken
 
 /- English proof (translation)
-Establish `ha` using `(Over.pullbackComp s p).hom.naturality a`. Establish `hb` using `(Over.pullbackComp s p).hom.naturality b`. Simplify using `only [Functor.comp_map] at ha hb`. Rewrite using `[← cancel_mono ((Over.pullbackComp s p).hom.app W), ha, hb, h]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem pullback_map_eq_of_comp {S S' S'' : Scheme.{0}} (s : S'' ⟶ S') (p : S' ⟶ S) {V W : Over S}
     {a b : V ⟶ W} (h : (Over.pullback p).map a = (Over.pullback p).map b) :
@@ -33,7 +33,7 @@ theorem pullback_map_eq_of_comp {S S' S'' : Scheme.{0}} (s : S'' ⟶ S') (p : S'
   rw [← cancel_mono ((Over.pullbackComp s p).hom.app W), ha, hb, h]
 
 /- English proof (translation)
-Establish `ha` using `(Over.pullbackComp s p).hom.naturality a`. Establish `hb` using `(Over.pullbackComp s p).hom.naturality b`. Simplify using `only [Functor.comp_map] at ha hb`. Rewrite using `[← cancel_epi ((Over.pullbackComp s p).hom.app V), ← ha, ← hb, h]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem pullback_pullback_map_eq_of_comp {S S' S'' : Scheme.{0}} (s : S'' ⟶ S') (p : S' ⟶ S)
     {V W : Over S} {a b : V ⟶ W} (h : (Over.pullback (s ≫ p)).map a = (Over.pullback (s ≫ p)).map b) :
@@ -48,15 +48,13 @@ end TorusThicken
 open TorusThicken in
 
 /- English proof (translation)
-Use `set I := IsLocalRing.maximalIdeal R ^ (n + 1) with hI`. Use `set p := Spec.map (CommRingCat.ofHom (Ideal.Quotient.mk I)) with hp`. Establish `hIt : I ≠ ⊤` using `fun e => (IsLocalRing.maximalIdeal.isMaximal R).ne_top (top_le_iff.1 (e ▸ Ideal.pow_le_self (Nat.succ_ne_zero n)))`. Establish `: Nontrivial (R ⧸ I)` using `Ideal.Quotient.nontrivial_iff.2 hIt`. Establish `: IsLocalRing (R ⧸ I)` using `IsLocalRing.of_surjective' (Ideal.Quotient.mk I) Ideal.Quotient.mk_surjective`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set J : Ideal (R ⧸ I) := (IsLocalRing.maximalIdeal R).map (Ideal.Quotient.mk I) with hJ`. Establish `hJn : IsNilpotent J` using `⟨n + 1, by`. Rewrite using `[hJ, ← Ideal.map_pow, ← hI, Ideal.map_quotient_self]`. Use the proof step `rfl⟩`. Use `set q := Spec.map (CommRingCat.ofHom (Ideal.Quotient.mk J)) with hq`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Set `ℓ : IsLocalRing.ResidueField R →+* (R ⧸ I) ⧸ J` to `Ideal.Quotient.lift (IsLocalRing.maximalIdeal R) ((Ideal.Quotient.mk J).comp (Ideal.Quotient.mk I)) (fun a ha => by`. Rewrite using `[RingHom.comp_apply, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `Ideal.mem_map_of_mem _ ha)`. Establish `hsq : q ≫ p = Spec.map (CommRingCat.ofHom ℓ) ≫ Spec.map (CommRingCat.ofHom (algebraMap R (IsLocalRing.ResidueField R)))`. Rewrite using `[hq, hp, ← Spec.map_comp, ← Spec.map_comp]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `h1 : (Over.pullback q).map ((Over.pullback p).map f) = (Over.pullback q).map ((Over.pullback p).map 1)`. Apply `pullback_pullback_map_eq_of_comp` to reduce the goal to its premises. Rewrite using `[hsq]`. Conclude with `pullback_map_eq_of_comp _ _ h`.
-
-Take `⟨e, he, -⟩` from `splitTorus_baseChange _ _ p A`. Establish `hg : IsMonHom (e.hom ≫ (Over.pullback p).map f)` using `inferInstance`. Establish `hp1 : (Over.pullback p).map (1 : splitTorus (Spec (CommRingCat.of R)) A ⟶ G) = 1` using `Functor.map_one _`. Establish `key` using `splitTorus_hom_eq_one_of_nilpotent (R ⧸ I) J hJn A _ (e.hom ≫ (Over.pullback p).map f) hg (by rw [Functor.map_comp, h1, hp1, ← Functor.map_comp, ← Hom.one_def, MonObj.comp_one])`. Rewrite using `[← cancel_epi e.hom, key, ← Hom.one_def, hp1, MonObj.comp_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem splitTorus_hom_trivial_mod_pow (R : Type) [CommRing R] [IsLocalRing R] [IsNoetherianRing R]
     (A : Type) [AddCommGroup A] (G : Over (Spec (CommRingCat.of R))) [GrpObj G]

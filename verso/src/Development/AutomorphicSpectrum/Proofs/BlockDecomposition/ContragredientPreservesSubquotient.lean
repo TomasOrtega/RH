@@ -26,7 +26,7 @@ def incl {π : Representation ℂ G V} (S : Subrepresentation π) :
   isIntertwining' _ := by ext _; rfl
 
 /- English proof (translation)
-Introduce `x` and use `by have : {g : G | S.toRepresentation g x = x} = {g : G | π g x.1 = x.1} := by ext g; exact Subtype.ext_iff rw [this]; exact hπ x.1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isSmooth_sub {π : Representation ℂ G V} (hπ : IsSmooth π) (S : Subrepresentation π) :
     IsSmooth S.toRepresentation := fun x => by
@@ -35,11 +35,11 @@ theorem isSmooth_sub {π : Representation ℂ G V} (hπ : IsSmooth π) (S : Subr
   rw [this]; exact hπ x.1
 
 /- English proof (translation)
-Introduce `l`. Take `⟨K, ho, hc, hKs⟩` from `hG _ ((isSmooth_contra S.toRepresentation l).mem_nhds (by simp))`. Establish `hlK : l ∈ fixed (contra S.toRepresentation) K` using `mem_fix.2 fun h hh => hKs hh`. Take `⟨l₀, hl₀⟩` from `LinearMap.exists_extend (l : Module.Dual ℂ S.toSubmodule)`. Take `⟨l', h1, h2⟩` from `exists_fixed_contra hπ ho hc (l₀ ∘ₗ (fixed π K).subtype)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hl'K : l' ∈ fixed (contra π) K` using `mem_fix.2 h1`. Use `⟨l', Subtype.ext (form_ext (isSmooth_sub hπ S) hc (fun h hh w => ?_) (fun h hh w => ?_) fun w hw => ?_)⟩` and prove the remaining obligations. Conclude with `invariant_of_fixed ⟨l', hl'K⟩ h hh (w : V)`. Conclude with `invariant_of_fixed ⟨l, hlK⟩ h hh w`. Establish `hwK : (w : V) ∈ fixed π K` using `mem_fix.2 fun h hh => congrArg Subtype.val (mem_fix.1 hw h hh)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1` using `h2 ⟨w, hwK⟩`. Establish `e2` using `LinearMap.congr_fun hl₀ w`. Conclude with `e1.trans e2`.
+A detailed English derivation is pending.
 -/
 theorem contraMap_incl_surjective
     (hG : ∀ U ∈ nhds (1 : G), ∃ K : Subgroup G, IsOpen (K : Set G) ∧ IsCompact (K : Set G) ∧ (K : Set G) ⊆ U)
@@ -62,7 +62,7 @@ theorem contraMap_incl_surjective
     exact e1.trans e2
 
 /- English proof (translation)
-Introduce `l l' h`. Use `Subtype.ext (LinearMap.ext fun y => ?_)` and prove the remaining obligations. Take `⟨x, rfl⟩` from `hf y`. Conclude with `LinearMap.congr_fun (congrArg Subtype.val h) x`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem contraMap_injective {Y : Type} [AddCommGroup Y] [Module ℂ Y] {σ : Representation ℂ G X}
     {τ : Representation ℂ G Y} (f : σ.IntertwiningMap τ) (hf : Function.Surjective f) :
@@ -73,7 +73,7 @@ theorem contraMap_injective {Y : Type} [AddCommGroup Y] [Module ℂ Y] {σ : Rep
   exact LinearMap.congr_fun (congrArg Subtype.val h) x
 
 /- English proof (translation)
-Take `⟨S, f, hf⟩` from `h`. Conclude with `(IsSubquotient.of_injective (contraMap f) (contraMap_injective f hf)).trans (IsSubquotient.of_surjective (contraMap (incl S)) (contraMap_incl_surjective hG hρ S))`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isSubquotient_contra
     (hG : ∀ U ∈ nhds (1 : G), ∃ K : Subgroup G, IsOpen (K : Set G) ∧ IsCompact (K : Set G) ∧ (K : Set G) ⊆ U)
@@ -86,7 +86,7 @@ theorem isSubquotient_contra
 end General
 
 /- English proof (translation)
-Introduce `k _ _ _ _ N V W _ _ _ _ σ ρ _ hρ h`. Use `isSubquotient_contra (fun U hU => ?_) hρ h` and prove the remaining obligations. Take `⟨J, h1, h2, h3, -⟩` from `exists_open_normalised_subgroup_subset k (Fin N) U hU`. Conclude with `⟨J, h1, GlobalTheory.SplitFlip.isCompact_KO.of_isClosed_subset (J.isClosed_of_isOpen h1) h3, h2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem main : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (N : ℕ) (V W : Type) [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]

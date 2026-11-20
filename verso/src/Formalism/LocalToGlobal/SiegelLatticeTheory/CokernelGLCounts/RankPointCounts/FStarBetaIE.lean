@@ -23,14 +23,14 @@ variable {D : Formalism.BasicNotions.D7} (Zd : LocDat D) {u u' : D.what₂.Word}
 namespace BetaI
 
 /- English proof (translation)
-Substitute `e` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem sub_add_eq {R W : Type*} [Ring R] [AddCommGroup W] [Module R W] {P : Submodule R W} {a b c : W}
     (ha : a ∈ P) (hb : b ∈ P) (hc : c ∈ P) (e : c = a + b) : (⟨c, hc⟩ : P) = ⟨a, ha⟩ + ⟨b, hb⟩ := by
   subst e; rfl
 
 /- English proof (translation)
-Substitute `e` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem sub_smul_eq {R W : Type*} [Ring R] [AddCommGroup W] [Module R W] {P : Submodule R W} {a c : W} (k : R)
     (ha : a ∈ P) (hc : c ∈ P) (e : c = k • a) : (⟨c, hc⟩ : P) = k • ⟨a, ha⟩ := by
@@ -43,9 +43,9 @@ variable (p : PlF D) (γ : TermDef.Term D u u' F0 what₂) (F'₂ : LFlag (VS D)
   (β₀ : (VS D).V ≃ₗ[D.host.E] (VS D).V)
 
 /- English proof (translation)
-Introduce `hm hm₂`. Establish `e1 : (⟨baseChange₂ D p (m₁ + m₂), hm⟩ : ↥((locH Zd p).perp ((locH Zd p).X (tLoc Zd p γ).f'))) = ⟨baseChange₂ D p m₁, h₁⟩ + ⟨baseChange₂ D p m₂, h₂⟩` using `sub_add_eq h₁ h₂ hm ((baseChange₂ D p).map_add m₁ m₂)`. Establish `e2 : (⟨baseChange₂ D p (β₀ (m₁ + m₂)), hm₂⟩ : ↥((locH Zd p).perp ((locH Zd p).X (locF' Zd p F'₂)))) = ⟨baseChange₂ D p (β₀ m₁), k₁⟩ + ⟨baseChange₂ D p (β₀ m₂), k₂⟩` using `sub_add_eq k₁ k₂ hm₂ (by rw [LinearEquiv.map_add, (baseChange₂ D p).map_add])`. Establish `f1 : (locH Zd p).mkW (tLoc Zd p γ).f' ⟨baseChange₂ D p (m₁ + m₂), hm⟩ = (locH Zd p).mkW (tLoc Zd p γ).f' ⟨baseChange₂ D p m₁, h₁⟩ + (locH Zd p).mkW (tLoc Zd p γ).f' ⟨baseChange₂ D p m₂, h₂⟩` using `(congrArg _ e1).trans (LinearMap.map_add _ _ _)`. Establish `f2 : (locH Zd p).mkW (locF' Zd p F'₂) ⟨baseChange₂ D p (β₀ (m₁ + m₂)), hm₂⟩ = (locH Zd p).mkW (locF' Zd p F'₂) ⟨baseChange₂ D p (β₀ m₁), k₁⟩ + (locH Zd p).mkW (locF' Zd p F'₂) ⟨baseChange₂ D p (β₀ m₂), k₂⟩` using `(congrArg _ e2).trans (LinearMap.map_add _ _ _)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `((congrArg ψ f1).trans (LinearEquiv.map_add ψ _ _)).trans ((congrArg₂ (· + ·) (s₁ h₁ k₁) (s₂ h₂ k₂)).trans f2.symm)`.
+A detailed English derivation is pending.
 -/
 theorem sendsB_add {m₁ m₂ : (VS D).V}
     (h₁ : baseChange₂ D p m₁ ∈ (locH Zd p).perp ((locH Zd p).X (tLoc Zd p γ).f'))
@@ -71,9 +71,9 @@ theorem sendsB_add {m₁ m₂ : (VS D).V}
     ((congrArg₂ (· + ·) (s₁ h₁ k₁) (s₂ h₂ k₂)).trans f2.symm)
 
 /- English proof (translation)
-Introduce `hm hm₂`. Establish `e1 : (⟨baseChange₂ D p (c • m), hm⟩ : ↥((locH Zd p).perp ((locH Zd p).X (tLoc Zd p γ).f'))) = (D.s.atP p).ιE c • ⟨baseChange₂ D p m, h₁⟩` using `sub_smul_eq _ h₁ hm (Formalism.L2.SG.Pf.LocalDenominators.baseChange_smul₂ p c m)`. Establish `e2 : (⟨baseChange₂ D p (β₀ (c • m)), hm₂⟩ : ↥((locH Zd p).perp ((locH Zd p).X (locF' Zd p F'₂)))) = (D.s.atP p).ιE c • ⟨baseChange₂ D p (β₀ m), k₁⟩` using `sub_smul_eq _ k₁ hm₂ (by rw [LinearEquiv.map_smul]; exact Formalism.L2.SG.Pf.LocalDenominators.baseChange_smul₂ p c (β₀ m))`. Establish `f1 : (locH Zd p).mkW (tLoc Zd p γ).f' ⟨baseChange₂ D p (c • m), hm⟩ = (D.s.atP p).ιE c • (locH Zd p).mkW (tLoc Zd p γ).f' ⟨baseChange₂ D p m, h₁⟩` using `(congrArg _ e1).trans (LinearMap.map_smul _ _ _)`. Establish `f2 : (locH Zd p).mkW (locF' Zd p F'₂) ⟨baseChange₂ D p (β₀ (c • m)), hm₂⟩ = (D.s.atP p).ιE c • (locH Zd p).mkW (locF' Zd p F'₂) ⟨baseChange₂ D p (β₀ m), k₁⟩` using `(congrArg _ e2).trans (LinearMap.map_smul _ _ _)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `((congrArg ψ f1).trans (LinearEquiv.map_smul ψ _ _)).trans ((congrArg ((D.s.atP p).ιE c • ·) (s h₁ k₁)).trans f2.symm)`.
+A detailed English derivation is pending.
 -/
 theorem sendsB_smul (c : D.host.E) {m : (VS D).V}
     (h₁ : baseChange₂ D p m ∈ (locH Zd p).perp ((locH Zd p).X (tLoc Zd p γ).f'))
@@ -96,7 +96,7 @@ theorem sendsB_smul (c : D.host.E) {m : (VS D).V}
     ((congrArg ((D.s.atP p).ιE c • ·) (s h₁ k₁)).trans f2.symm)
 
 /- English proof (translation)
-Introduce `hm hm₂`. Establish `e1 : (locH Zd p).mkW (tLoc Zd p γ).f' ⟨baseChange₂ D p m, hm⟩ = 0` using `(Submodule.Quotient.mk_eq_zero _).2 hX1`. Establish `e2 : (locH Zd p).mkW (locF' Zd p F'₂) ⟨baseChange₂ D p (β₀ m), hm₂⟩ = 0` using `(Submodule.Quotient.mk_eq_zero _).2 hX2`. Rewrite using `[e1, e2]`. Conclude with `LinearEquiv.map_zero ψ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sendsB_X {m : (VS D).V} (hX1 : baseChange₂ D p m ∈ (locH Zd p).X (tLoc Zd p γ).f')
     (hX2 : baseChange₂ D p (β₀ m) ∈ (locH Zd p).X (locF' Zd p F'₂)) : SendsB Zd p γ F'₂ ψ β₀ m := by
@@ -107,19 +107,17 @@ theorem sendsB_X {m : (VS D).V} (hX1 : baseChange₂ D p m ∈ (locH Zd p).X (tL
   exact LinearEquiv.map_zero ψ
 
 /- English proof (translation)
-Take `⟨h1, -⟩` from `admissibility_witness_unitriangular γ.lam (lf D F0) (repF γ)`. Use `set ξ := admXi D γ.lam (lf D F0) (repF γ) with hξdef`. Establish `hξ : ξ⁻¹ * ξ = 1` using `OmL.admissibility_witness_inv_mul γ.lam (lf D F0) (repF γ)`. Establish `key : ∀ b, ∑ a, ((ξ a b : 𝓞 D.host.E) : D.host.E) • frameAct (frame (repF γ)) ξ⁻¹ a = frame (repF γ) b`. Introduce `b`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [frameAct, Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Establish `h1' : ∀ c, ∑ a, ((ξ a b : 𝓞 D.host.E) : D.host.E) * ((ξ⁻¹ c a : 𝓞 D.host.E) : D.host.E) = (((ξ⁻¹ * ξ) c b : 𝓞 D.host.E) : D.host.E)`. Introduce `c`. Rewrite using `[Matrix.mul_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Conclude with `Finset.sum_congr rfl fun a _ => mul_comm _ _`. Simplify using `only [← Finset.sum_smul, h1', hξ, Matrix.one_apply]`. Simplify using the standard rewrite rules. Express the relevant statement in the definitionally equal form `x ∈ Submodule.span D.host.E (Set.range (repF γ).fl.e) at hx`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨j, rfl⟩` from `hx`. Rewrite using `[← frame_csG, ← key, map_sum, Fin.sum_univ_castSucc]`. Establish `hl : ξ (Fin.last D.R.rS) j.castSucc = 0` using `h1 _ _ (Fin.castSucc_lt_last j)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hl]`. Simplify using `only [Formalism.L2.SG.Pf.LocalDenominators.baseChange_smul₂]`. Use `add_mem (Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ ?_) (by simp)` and prove the remaining obligations. Establish `e : baseChange₂ D p (frameAct (frame (repF γ)) ξ⁻¹ i.castSucc) = (((isUnit_sF' Zd p i.castSucc).unit⁻¹ : ((D.s.atP p).Ep)ˣ) : (D.s.atP p).Ep) • (tLoc Zd p γ).f' i.castSucc`. Rewrite using `[tf', smul_smul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: ((((isUnit_sF' Zd p i.castSucc).unit⁻¹ : ((D.s.atP p).Ep)ˣ)) : (D.s.atP p).Ep) * (TermLoc.sgnP' D p i.castSucc * frFac Zd.δ p i.castSucc) = 1` using `(isUnit_sF' Zd p i.castSucc).val_inv_mul`. Rewrite using `[this, one_smul]`. Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Consider the case `zero => rw [map_zero]`.
-
-Conclude with `zero_mem _`. Consider the case `add a b _ _ ha hb => rw [map_add]`. Conclude with `add_mem ha hb`. Consider the case `smul c x _ hx => rw [Formalism.L2.SG.Pf.LocalDenominators.baseChange_smul₂]`. Conclude with `Submodule.smul_mem _ _ hx`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem bcP_X_f' {x : (VS D).V} (hx : x ∈ Xsp (repF γ)) : baseChange₂ D p x ∈ (locH Zd p).X (tLoc Zd p γ).f' := by
   obtain ⟨h1, -⟩ := admissibility_witness_unitriangular γ.lam (lf D F0) (repF γ)
@@ -167,7 +165,7 @@ variable (p : PlF D) (γ : TermDef.Term D u u' F0 what₂) (F'₂ : LFlag (VS D)
   (β₀ : (VS D).V ≃ₗ[D.host.E] (VS D).V)
 
 /- English proof (translation)
-The claim follows from `(PI.UnitaryGroupMassFormula.BetaLUniq.mem_orth (VS D)).2 fun x hx => by rw [BwdNA.hsw (VS D) G.fl.z x] have h := NMoveP.hT_f_X G.fl (Fin.last D.R.rS) hx rw [NMoveP.fvecL] at h rw [h, star_zero]`.
+A detailed English derivation is pending.
 -/
 theorem z_orthG {T' : D.host.E} (G : LFlag (VS D) D.R.rS T') : G.fl.z ∈ orth (VS D) (Xsp G) :=
   (PI.UnitaryGroupMassFormula.BetaLUniq.mem_orth (VS D)).2 fun x hx => by
@@ -177,15 +175,13 @@ theorem z_orthG {T' : D.host.E} (G : LFlag (VS D) D.R.rS T') : G.fl.z ∈ orth (
     rw [h, star_zero]
 
 /- English proof (translation)
-The claim follows from `BwdNA.X_le_orth (VS D) (Xsp G) fun _ hx _ hy => NMoveP.hT_X_X G.fl hx hy`.
+A detailed English derivation is pending.
 -/
 theorem X_le_orthG {T' : D.host.E} (G : LFlag (VS D) D.R.rS T') : Xsp G ≤ orth (VS D) (Xsp G) :=
   BwdNA.X_le_orth (VS D) (Xsp G) fun _ hx _ hy => NMoveP.hT_X_X G.fl hx hy
 
 /- English proof (translation)
-Take `⟨-, hξ2⟩` from `inv_unitri _ (admissibility_witness_unitriangular γ.lam (lf D F0) (repF γ)).1 (admissibility_witness_unitriangular γ.lam (lf D F0) (repF γ)).2`. Use `show ∑ a, (((admXi D γ.lam (lf D F0) (repF γ))⁻¹ a (Fin.last D.R.rS) : 𝓞 D.host.E) : D.host.E) • frame (repF γ) a - (repF γ).fl.z ∈ Xsp (repF γ)`. Rewrite using `[Fin.sum_univ_castSucc, hξ2, frame_lastG, (by simp : ((1 : 𝓞 D.host.E) : D.host.E) = 1), one_smul, add_sub_cancel_right]`. Use `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Rewrite using `[frame_csG]`.
-
-Conclude with `Submodule.subset_span ⟨j, rfl⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem starLast_sub_mem :
     frameAct (frame (repF γ)) (admXi D γ.lam (lf D F0) (repF γ))⁻¹ (Fin.last D.R.rS) - (repF γ).fl.z ∈
@@ -200,15 +196,15 @@ theorem starLast_sub_mem :
   exact Submodule.subset_span ⟨j, rfl⟩
 
 /- English proof (translation)
-Introduce `hm hm₂`. Take `⟨g, hg⟩ : ∃ g, g = frameAct (frame (repF γ)) (admXi D γ.lam (lf D F0) (repF γ))⁻¹ (Fin.last D.R.rS)` from `⟨_, rfl⟩`. Establish `hd : g - (repF γ).fl.z ∈ Xsp (repF γ)` using `hg ▸ starLast_sub_mem γ`. Establish `hlast : (tLoc Zd p γ).f' (Fin.last D.R.rS) = baseChange₂ D p g`. Rewrite using `[tf', hg]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : TermLoc.sgnP' D p (Fin.last D.R.rS) * frFac Zd.δ p (Fin.last D.R.rS) = 1` using `sF'_last Zd p`. Rewrite using `[h1, one_smul]`. Establish `hgo : g ∈ orth (VS D) (Xsp (repF γ))`. Establish `e : g = (repF γ).fl.z + (g - (repF γ).fl.z)` using `by abel`. Rewrite using `[e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `add_mem (z_orthG (repF γ)) (X_le_orthG (repF γ) hd)`. Establish `hmem : (tLoc Zd p γ).f' (Fin.last D.R.rS) ∈ (locH Zd p).perp ((locH Zd p).X (tLoc Zd p γ).f')` using `hlast ▸ bcP_perp_f' Zd p γ hgo`. Establish `h2 : baseChange₂ D p (β₀ (repF γ).fl.z) = locF' Zd p F'₂ (Fin.last D.R.rS)`. Rewrite using `[hzβ, locF'_last]`. Establish `h3 : (1 : (D.s.atP p).Ep) • ψ.toLinearMap ((locH Zd p).mkW (tLoc Zd p γ).f' ⟨_, hmem⟩) = (1 : (D.s.atP p).Ep) • (locH Zd p).mkW (locF' Zd p F'₂) ⟨_, hm₂⟩` using `hS ⟨(tLoc Zd p γ).f' (Fin.last D.R.rS), hmem⟩ ⟨baseChange₂ D p (β₀ (repF γ).fl.z), hm₂⟩ rfl h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3'` using `((one_smul _ _).symm.trans h3).trans (one_smul _ _)`. Establish `hX : baseChange₂ D p (repF γ).fl.z - (tLoc Zd p γ).f' (Fin.last D.R.rS) ∈ (locH Zd p).X (tLoc Zd p γ).f'`. Rewrite using `[hlast, ← (baseChange₂ D p).map_sub]`. Establish `: (repF γ).fl.z - g = -(g - (repF γ).fl.z)` using `by abel`. Rewrite using `[this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `bcP_X_f' Zd p γ ((Xsp (repF γ)).neg_mem hd)`. Establish `h4 : (locH Zd p).mkW (tLoc Zd p γ).f' ⟨baseChange₂ D p (repF γ).fl.z, hm⟩ = (locH Zd p).mkW (tLoc Zd p γ).f' ⟨_, hmem⟩` using `(Submodule.Quotient.eq _).2 hX`. Conclude with `(congrArg ψ h4).trans h3'`.
+A detailed English derivation is pending.
 -/
 theorem sends_beta_z
     (hS : (locH Zd p).SendsTo ψ.toLinearMap 1 1 ((tLoc Zd p γ).f' (Fin.last D.R.rS)) (locF' Zd p F'₂ (Fin.last D.R.rS)))
@@ -247,23 +243,23 @@ end Place2
 end BetaI
 
 /- English proof (translation)
-Introduce `γ Z F'₂ φ φ' Λ₂ hB β₀ hiso hfr hW hO p m hm hm₂ hmo`. Establish `hB0` using `hB`. Take `⟨-, hZ, hSt, -, -, -, -, hG⟩` from `hB`. Take `⟨-, hZ₁d, -⟩` from `starMinors_holds u u' F0 what₂ γ Z hZ`. Establish `hl1` using `star_frame_lead_minor γ (D.R.rS + 1)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `hl1` using `[FsLA.leadMinorE_full, FsLA.leadMinorE_full]`. Establish `hdet1 : (Zhat F0 (repF γ).fl).det ≠ 0` using `fun h0 => hZ₁d (hl1.trans h0)`. Establish `hzβ : β₀ (repF γ).fl.z = F'₂.fl.z`. Use `hfr (Fin.last _)` as an intermediate fact. Rewrite `this` using `[BwdBetaCut.fvec_last', BwdBetaCut.fvec_last']`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hXmap` using `BwdBetaCut.Xsp_of_frame β₀ _ _ hfr`. Establish `horth : ∀ y ∈ orth (VS D) (Xsp (repF γ)), β₀ y ∈ orth (VS D) (Xsp (liftF F'₂))`. Introduce `y hy`. Rewrite using `[← hXmap, Formalism.L2.SG.Pf.orth_map_sat β₀ hiso]`. Conclude with `Submodule.mem_map_of_mem hy`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hmapX : ∀ x ∈ Xsp (repF γ), β₀ x ∈ Xsp (liftF F'₂)` using `fun x hx => by`. Rewrite using `[← hXmap]`. Conclude with `Submodule.mem_map_of_mem hx`. Establish `k1 : ∀ y, y ∈ orth (VS D) (Xsp (repF γ)) → baseChange₂ D p y ∈ (locH Zd p).perp ((locH Zd p).X (tLoc Zd p γ).f')` using `fun y hy => bcP_perp_f' Zd p γ hy`. Establish `k2 : ∀ y, y ∈ orth (VS D) (Xsp (repF γ)) → baseChange₂ D p (β₀ y) ∈ (locH Zd p).perp ((locH Zd p).X (locF' Zd p F'₂))` using `fun y hy => baseChangeAt_perp' Zd p F'₂ (horth y hy)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hsp` using `hSp F0 (repF γ).fl hdet1 hG m hmo`. Use `Exists.elim hsp fun x' h1 => ?_` and prove the remaining obligations. Use `Exists.elim h1.2 fun w h2 => ?_` and prove the remaining obligations. Use `Exists.elim h2.2 fun a h3 => ?_` and prove the remaining obligations. Use `Exists.elim h3 fun b hmeq => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx' : x' ∈ (repF γ).fl.X` using `h1.1`. Establish `hw : w ∈ orth (VS D) (F0.Xplus ⊔ (repF γ).fl.Xplus)` using `h2.1`. Substitute `hmeq` using the available equality. Establish `ox : x' ∈ orth (VS D) (Xsp (repF γ))` using `X_le_orthG (repF γ) hx'`. Establish `hXle : (repF γ).fl.X ≤ F0.Xplus ⊔ (repF γ).fl.Xplus` using `(show (repF γ).fl.X ≤ (repF γ).fl.Xplus from le_sup_left).trans le_sup_right`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ow : w ∈ orth (VS D) (Xsp (repF γ))` using `(PI.UnitaryGroupMassFormula.BetaLUniq.mem_orth (VS D)).2 fun x hx => (PI.UnitaryGroupMassFormula.BetaLUniq.mem_orth (VS D)).1 hw x (hXle hx)`. Establish `oz : (repF γ).fl.z ∈ orth (VS D) (Xsp (repF γ))` using `z_orthG (repF γ)`. Establish `oo : Gom F0.fvec (repF γ).fl.fvec ∈ orth (VS D) (Xsp (repF γ))` using `BwdBetaCut.Gom_orth (lf D F0) (repF γ)`. Establish `sx : SendsB Zd p γ F'₂ (φ' p) β₀ x'` using `sendsB_X Zd p γ F'₂ (φ' p) β₀ (bcP_X_f' Zd p γ hx') (bcP_X' Zd p F'₂ (hmapX x' hx'))`. Establish `sw : SendsB Zd p γ F'₂ (φ' p) β₀ w` using `hW0 γ Z F'₂ φ φ' Λ₂ hB0 β₀ hiso hfr hW hO p w hw`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `sz : SendsB Zd p γ F'₂ (φ' p) β₀ (repF γ).fl.z` using `sends_beta_z Zd p γ F'₂ (φ' p) β₀ (hSt.2.1 p).2.2.2.2.2 hzβ`. Establish `so : SendsB Zd p γ F'₂ (φ' p) β₀ (Gom F0.fvec (repF γ).fl.fvec)` using `hOm γ Z F'₂ φ φ' Λ₂ hB0 β₀ hiso hfr hW hO p`. Establish `oxw` using `add_mem ox ow`. Establish `oaz` using `Submodule.smul_mem _ a oz`. Establish `obo` using `Submodule.smul_mem _ b oo`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `s1` using `sendsB_add Zd p γ F'₂ (φ' p) β₀ (k1 _ ox) (k1 _ ow) (k2 _ ox) (k2 _ ow) sx sw`. Establish `s2` using `sendsB_add Zd p γ F'₂ (φ' p) β₀ (k1 _ oxw) (k1 _ oaz) (k2 _ oxw) (k2 _ oaz) s1 (sendsB_smul Zd p γ F'₂ (φ' p) β₀ a (k1 _ oz) (k2 _ oz) sz)`. Establish `s3` using `sendsB_add Zd p γ F'₂ (φ' p) β₀ (k1 _ (add_mem oxw oaz)) (k1 _ obo) (k2 _ (add_mem oxw oaz)) (k2 _ obo) s2 (sendsB_smul Zd p γ F'₂ (φ' p) β₀ b (k1 _ oo) (k2 _ oo) so)`. Conclude with `s3 hm hm₂`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem pinB_of (hSp : SpanOm D) (hOm : PinOm Zd u u' F0 what₂) (hW0 : PartialIsometryExtension Zd u u' F0 what₂) :
     PinB Zd u u' F0 what₂ := by

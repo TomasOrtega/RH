@@ -16,7 +16,7 @@ namespace GlobalTheory.ChainOnto.LevelFacts
 variable {D : D7}
 
 /- English proof (translation)
-Take `⟨hr, ξ, hL⟩` from `hs.lev`. Rewrite using `[hL]`. Conclude with `⟨rfl, rfl⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem places_of_stage {c : Com D} {j : ℕ} {s : PiLocalization₂ D} (hs : s.Is c j) : s.L.Pg = c.Pg ∧ s.L.Q = ∅ := by
   obtain ⟨hr, ξ, hL⟩ := hs.lev
@@ -24,9 +24,9 @@ theorem places_of_stage {c : Com D} {j : ℕ} {s : PiLocalization₂ D} (hs : s.
   exact ⟨rfl, rfl⟩
 
 /- English proof (translation)
-Take `⟨hPg, hQ⟩` from `places_of_stage hs`. Establish `h' : ∀ PP, PP ∈ s.L.Pg ∨ PP ∈ s.L.Q → redFn s.β PP (Lev.finE s.V k) = 1`. Introduce and unpack `PP (h | h)`. Conclude with `hr PP (hPg ▸ h)`. Rewrite `h` using `[hQ]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `at h`. Use `⟨⟨hk, GlobalTheory.LevSplit.mem_lev_of_red D.sp.cm s.V.gram s.β s.L _ (GlobalTheory.LevSplit.finE_mem_UA s.V k) hS h'⟩, ?_⟩` and prove the remaining obligations. Unfold `Lev.levChi`. Rewrite using `[GlobalTheory.LevSplit.levFn_eq_one s.β s.L _ h', Units.val_one]`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_levG_of_red {c : Com D} {j : ℕ} {s : PiLocalization₂ D} (hs : s.Is c j) {k : GA D s.V} (hk : k ∈ GfC s.V)
     (hS : Lev.finE s.V k ∈ St s.β) (hr : ∀ PP ∈ c.Pg, redFn s.β PP (Lev.finE s.V k) = 1) :
@@ -41,14 +41,14 @@ theorem mem_levG_of_red {c : Com D} {j : ℕ} {s : PiLocalization₂ D} (hs : s.
   rw [GlobalTheory.LevSplit.levFn_eq_one s.β s.L _ h', Units.val_one]
 
 /- English proof (translation)
-The claim follows from `parLev_St (lev_le_parLev hk.2)`.
+A detailed English derivation is pending.
 -/
 theorem finE_mem_St {V : HSp D} {β : GL (Fin V.rank) (Lev.EAf D)} {L : LevDat D.host.E ℂ V.rank} {k : GA D V}
     (hk : k ∈ Lev.levG V β L) : Lev.finE V k ∈ St β :=
   parLev_St (lev_le_parLev hk.2)
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.AdelicU.GfC_eq]`. Conclude with `GlobalTheory.AdelicU.mem_finPts.2 (by simp)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem emb_mem_GfC (V : HSp D) (v : HeightOneSpectrum (𝓞 D.host.F)) (k : GlobalTheory.AdelicU.GLoc D.sp.cm.sig V.gram v) :
     GlobalTheory.AdelicU.emb D.sp.cm.sig V.gram v k ∈ GfC V := by
@@ -56,7 +56,7 @@ theorem emb_mem_GfC (V : HSp D) (v : HeightOneSpectrum (𝓞 D.host.F)) (k : Glo
   exact GlobalTheory.AdelicU.mem_finPts.2 (by simp)
 
 /- English proof (translation)
-Take `⟨n, hn, h⟩` from `(GlobalTheory.LevSplit.levFn_finOrd β L (Lev.finE V k)).exists_pow_eq_one`. Establish `h2 : (Lev.levChi V β L k) ^ n = 1`. Unfold `Lev.levChi`. Rewrite using `[← Units.val_pow_eq_pow_val, h, Units.val_one]`. Conclude with `Complex.norm_eq_one_of_pow_eq_one h2 hn.ne'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem levChi_norm {V : HSp D} (β : GL (Fin V.rank) (Lev.EAf D)) (L : LevDat D.host.E ℂ V.rank) (k : GA D V) :
     ‖Lev.levChi V β L k‖ = 1 := by
@@ -67,7 +67,7 @@ theorem levChi_norm {V : HSp D} (β : GL (Fin V.rank) (Lev.EAf D)) (L : LevDat D
   exact Complex.norm_eq_one_of_pow_eq_one h2 hn.ne'
 
 /- English proof (translation)
-Establish `e` using `(levChar D.sp.cm V.gram β L).map_mul ⟨_, hk.2⟩ ⟨_, hk'.2⟩`. Establish `e' : levFn β L (Lev.finE V k * Lev.finE V k') = levFn β L (Lev.finE V k) * levFn β L (Lev.finE V k')` using `e`. Unfold `Lev.levChi`. Rewrite using `[map_mul, e', Units.val_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem levChi_mul {V : HSp D} {β : GL (Fin V.rank) (Lev.EAf D)} {L : LevDat D.host.E ℂ V.rank} {k k' : GA D V}
     (hk : k ∈ Lev.levG V β L) (hk' : k' ∈ Lev.levG V β L) :
@@ -82,19 +82,17 @@ end GlobalTheory.ChainOnto.LevelFacts
 namespace GlobalTheory.ChainOnto.LevelFacts
 
 /- English proof (translation)
-Introduce `D c _ j _ s hs`. Establish `hfr` using `hs.frame`. Establish `hPS : ∀ PP ∈ c.Pg, PP.under (𝓞 D.host.F) ∈ c.S` using `fun PP hPP => by classical`. Unfold `Com.S`. Conclude with `Finset.mem_image_of_mem _ hPP`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Take `⟨U, hU, hUk⟩` from `GlobalTheory.T.exists_open_principal_congruence_finitely_many_primes D s.V s.β c.Pg`. Conclude with `⟨U, hU, fun k hk hkf => mem_levG_of_red hs hkf (hUk k hk).1 (hUk k hk).2⟩`. Introduce `v hv k hk`. Establish `hSt : Lev.finE s.V (GlobalTheory.AdelicU.emb D.sp.cm.sig s.V.gram v k) ∈ St s.β`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(GlobalTheory.T.finitePart_mem_frameStabilizer_iff_local_stabilizer D s.V s.β s.Λ hfr _).2 fun w => ?_` and prove the remaining obligations. Distinguish the cases in `e : w = v`. Substitute `e` using the available equality. Rewrite using `[GlobalTheory.AdelicU.proj_emb_self]`. Conclude with `hk`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[GlobalTheory.AdelicU.proj_emb_ne _ _ e]`. Conclude with `one_mem _`. Use `mem_levG_of_red hs (emb_mem_GfC s.V v k) hSt fun PP hPP => ?_` and prove the remaining obligations. Use `GlobalTheory.T.latticeReduction_eq_one_of_local_component_one D s.V s.β _ PP hSt ?_` and prove the remaining obligations. Establish `hne : PP.under (𝓞 D.host.F) ≠ v` using `fun e => hv (e ▸ hPS PP hPP)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `GlobalTheory.AdelicU.proj_emb_ne _ _ hne k`. Introduce `k hk v`. Conclude with `(GlobalTheory.T.finitePart_mem_frameStabilizer_iff_local_stabilizer D s.V s.β s.Λ hfr k).1 (finE_mem_St hk) v`. Introduce `k hkf hint h1`. Establish `hSt : Lev.finE s.V k ∈ St s.β`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `(GlobalTheory.T.finitePart_mem_frameStabilizer_iff_local_stabilizer D s.V s.β s.Λ hfr k).2 fun v => ?_` and prove the remaining obligations. Distinguish the cases in `hv : v ∈ c.S`. Rewrite using `[h1 v hv]`. Conclude with `one_mem _`. Conclude with `hint v hv`.
-
-Conclude with `mem_levG_of_red hs hkf hSt fun PP hPP => GlobalTheory.T.latticeReduction_eq_one_of_local_component_one D s.V s.β k PP hSt (h1 _ (hPS PP hPP))`. Introduce `k hk k' hk'`. Conclude with `levChi_mul hk hk'`. Introduce `k _`. Conclude with `levChi_norm s.β s.L k`.
+A detailed English derivation is pending.
 -/
 theorem levFacts : ∀ D : D7, LevFacts D := by
   intro D c _ j _ s hs

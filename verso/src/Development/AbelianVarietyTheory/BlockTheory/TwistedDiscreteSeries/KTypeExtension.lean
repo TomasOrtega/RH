@@ -55,11 +55,11 @@ def RestrInj (D : D7) : Prop :=
 def GKExtension (D : D7) : Prop := ExtExists D ∧ RestrInj D
 
 /- English proof (translation)
-Introduce `g hg`. Establish `h1 : (M.fr τ * g * (M.fr τ)⁻¹)ᴴ * Formalism.REAL.Jm (M.ε τ) * (M.fr τ * g * (M.fr τ)⁻¹) = Formalism.REAL.Jm (M.ε τ)`. Rewrite using `[Matrix.mul_assoc _ (Formalism.REAL.Jm (M.ε τ)), ← hg.2, ← Matrix.mul_assoc]`. Use `(Matrix.mem_unitaryGroup_iff').1 hg.1` as an intermediate fact. Rewrite `this` using `[Matrix.star_eq_conjTranspose]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[this, Matrix.one_mul]`. Establish `hd` using `(Matrix.isUnit_iff_isUnit_det _).1 (M.fr_unit τ)`. Establish `e : M.fr τ * g * (M.fr τ)⁻¹ * M.fr τ = M.fr τ * g` using `Matrix.nonsing_inv_mul_cancel_right _ _ hd`. Use `show gᴴ * gramAt D V τ * g = gramAt D V τ`. Rewrite using `[← M.fr_gram τ]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = (M.fr τ)ᴴ * ((M.fr τ * g * (M.fr τ)⁻¹)ᴴ * Formalism.REAL.Jm (M.ε τ) * (M.fr τ * g * (M.fr τ)⁻¹)) * M.fr τ := by conv_lhs => rw [← e]`. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = _ := by rw [h1]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem maxCpt_subset (M : DSModel V S) (τ : D.what₂.Tau) : maxCpt M τ ⊆ Formalism.QuantumDeterminants.UH (gramAt D V τ) := by
   intro g hg
@@ -81,7 +81,7 @@ theorem maxCpt_subset (M : DSModel V S) (τ : D.what₂.Tau) : maxCpt M τ ⊆ F
     _ = _ := by rw [h1]
 
 /- English proof (translation)
-Take `⟨A, hA, ha, hs⟩` from `hv`. Conclude with `⟨A, hA, hs _ hk v ha, hs⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem rep_mem_kFin (M : DSModel V S) (τ : D.what₂.Tau) {k : Matrix (Fin V.rank) (Fin V.rank) ℂ} (hk : k ∈ maxCpt M τ)
     {v : M.H τ} (hv : v ∈ kFin M τ) : M.rep τ k v ∈ kFin M τ := by
@@ -89,18 +89,18 @@ theorem rep_mem_kFin (M : DSModel V S) (τ : D.what₂.Tau) {k : Matrix (Fin V.r
   exact ⟨A, hA, hs _ hk v ha, hs⟩
 
 /- English proof (translation)
-Take `⟨A, hA, hs, -, ⟨v, hv, h0, -⟩, -⟩` from `(M.ds τ).2.2.2.2.2.1`. Conclude with `fun h => h0 ((Submodule.mem_bot ℂ).1 (h ▸ (show v ∈ kFin M τ from ⟨A, hA, hv, hs⟩)))`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem kFin_ne_bot (M : DSModel V S) (τ : D.what₂.Tau) : kFin M τ ≠ ⊥ := by
   obtain ⟨A, hA, hs, -, ⟨v, hv, h0, -⟩, -⟩ := (M.ds τ).2.2.2.2.2.1
   exact fun h => h0 ((Submodule.mem_bot ℂ).1 (h ▸ (show v ∈ kFin M τ from ⟨A, hA, hv, hs⟩)))
 
 /- English proof (translation)
-Use `⟨fun _ => ⟨fun _ _ _ => rfl, ⟨⊤, isOpen_univ, fun _ _ _ _ => rfl⟩, continuous_const⟩, fun _ => zero_mem _, fun _ _ _ _ _ _ _ _ _ => by simp, fun _ => MemLp.zero, fun _ => ⟨0, fun l _ => ⟨0, fun g => ?_⟩⟩, fun _ _ _ _ => by simp, fun _ _ _ _ _ _ => rfl, fun _ _ _ _ _ _ => ?_⟩` and prove the remaining obligations. Establish `: ∀ l : List (D.what₂.Tau × Matrix (Fin V.rank) (Fin V.rank) ℂ), l.foldr (fun p f => Rder θ V p.1 p.2 f) (0 : GA D V → ℂ) = 0` using `fun l => by`. Proceed by induction on `l with`. Consider the case `nil => rfl`. Consider the case `cons p l ih => rw [List.foldr_cons, ih]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Use function extensionality and compare the values at `g`. Simplify using `[Rder]`. Rewrite using `[MultilinearMap.zero_apply, this]`. Simplify using the standard rewrite rules. Use function extensionality and compare the values at `g`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[Rder]`.
+Simplify using the standard rewrite rules.
 -/
 example (θ : InfFam D) (M : DSModel V S) (J : Set (GA D V)) (χ : GA D V → ℂ) (μ : Measure (GA D V))
     (𝓕 : Set (GA D V)) : IsGKMap θ M J χ μ 𝓕 0 := by

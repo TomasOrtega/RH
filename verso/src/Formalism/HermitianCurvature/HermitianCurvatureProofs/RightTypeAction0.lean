@@ -33,19 +33,15 @@ def CaySmooth : Prop :=
     ContDiffOn ℝ ∞ (fun m : B.Mat k r => cayInv (g₀⁻¹ * m)) {m | IsUnit (g₀⁻¹ * m + 1)}
 
 /- English proof (translation)
-Introduce `k r`. Take `⟨d, L, M, hL, hML, hLM⟩` from `hB k r`. Use `⟨d, fun g₀ hg₀ => ?_⟩` and prove the remaining obligations. Take `⟨hA1, hA2⟩` from `hA k r`. Take `⟨hOne, hGg⟩` from `hG k r`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hinv, hmul⟩` from `hGg g₀ hg₀`. Take `⟨hO1, hU1, hκs, hΦs⟩` from `hS k r g₀`. Use `⟨{x | IsUnit (1 - L x)}, {m | IsUnit (g₀⁻¹ * m + 1)}, fun x => g₀ * cay (L x), fun m => M (cayInv (g₀⁻¹ * m)), hO1.preimage L.continuous, hU1, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `show IsUnit (g₀⁻¹ * g₀ + 1)`. Rewrite using `[hinv]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hOne`. Conclude with `hκs.comp L.contDiff.contDiffOn (fun x hx => hx)`. Conclude with `M.contDiff.comp_contDiffOn hΦs`. Introduce `x hx`. Take `⟨hc, hc1, hci⟩` from `hA1 (L x) (hL x) hx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `e : g₀⁻¹ * (g₀ * cay (L x)) = cay (L x)`. Rewrite using `[← Matrix.mul_assoc, hinv, Matrix.one_mul]`. Use `⟨(hmul _ hc).1, ?_, ?_⟩` and prove the remaining obligations. Use `show IsUnit (g₀⁻¹ * (g₀ * cay (L x)) + 1)`. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hc1`. Use `show M (cayInv (g₀⁻¹ * (g₀ * cay (L x)))) = x`. Rewrite using `[e, hci, hML]`. Introduce `g hg hgG`. Take `⟨-, hh, hgh⟩` from `hmul g hgG`.
-
-Take `⟨hl, hu, hc⟩` from `hA2 _ hh hg`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `show IsUnit (1 - L (M (cayInv (g₀⁻¹ * g))))`. Rewrite using `[hLM _ hl]`. Conclude with `hu`.
-
-Use `show g₀ * cay (L (M (cayInv (g₀⁻¹ * g)))) = g`. Rewrite using `[hLM _ hl, hc, hgh]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gChart_of (hB : LieBasis) (hA : CayAlg) (hG : GVGrp) (hS : CaySmooth) : GChart := by
   intro k r
@@ -104,9 +100,9 @@ def LeftTypeAction0 : Prop :=
       Q.capLft k r Bs w J g v = Q.capRep k r π Bs w (J g v)
 
 /- English proof (translation)
-Introduce `k r Wp Wq _ _ _ _ _ _ D u u' J hT hT' hF`. Establish `hD` using `h0 k r D.z D.z' D.z_mem D.z'_mem`. Establish `hg0 : ∀ g ∈ JF.Om k r D.z D.z', g ∈ Q.Glev k r 0 ∩ Q.OmPlus k r D.z D.z'` using `fun g hg => ⟨⟨hg.1, fun a ha => absurd ha (Nat.not_lt_zero _)⟩, hg.2⟩`. Use `⟨fun Bs hBs w => ⟨∏ i ∈ Finset.Icc 1 k, (w - (k : ℂ) / 2 + 1 / 2 + (u i : ℂ)), fun g hg => ?_⟩, fun Bs hBs w => ⟨∏ i ∈ Finset.Icc 1 k, (w - (k : ℂ) / 2 + 1 / 2 + (u' i : ℂ)), fun g hg => ?_⟩⟩` and prove the remaining obligations. Use `ContinuousLinearMap.ext fun v => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hL Wp Wq k r k D.z D.z' D.π D.π' _ _ D.z_mem D.z'_mem hD hT.2.1 hT.2.2.1 J hF g (hg0 g hg) Bs hBs w v, hT.2.2.2.2.2 Bs hBs w (J g v)]`. Both sides reduce to the same expression. Use `ContinuousLinearMap.ext fun v => ?_` and prove the remaining obligations. Rewrite using `[hR Wp Wq k r k D.z D.z' D.π D.π' _ _ D.z_mem D.z'_mem hD hT'.2.1 hT'.2.2.1 J hF g (hg0 g hg) Bs hBs w v, hT'.2.2.2.2.2 Bs hBs w v, map_smul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem uCap_of (h0 : IsDomOmPlus) (hR : RightTypeAction0) (hL : LeftTypeAction0) : UCap := by
   intro k r Wp Wq _ _ _ _ _ _ D u u' J hT hT' hF

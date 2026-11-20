@@ -11,27 +11,23 @@ open ValuativeRel Matrix
 open GlobalTheory.SplitFlip GlobalTheory.SplitWeil GlobalTheory.SplitWeil.Model GlobalTheory.RankCoinv
 
 /- English proof (translation)
-Introduce `k _ _ _ _ A D _ _ _ _ ϖ hϖ ν β hν hν1 i₀ r c m C H Q hH0 hHv hcm hHC hQ hHCQ hC0`. Use `set g : Matrix A D k → ℂ := boxFn ϖ C (fun _ => m) with hg`. Use `set g' : Matrix A D k → ℂ := boxFn ϖ C (Function.update (fun _ => m) i₀ (m - 1)) with hg'`. Use `set lam : ℂ := (((ν ϖ)⁻¹ : ℂˣ) : ℂ) * apow ϖ (-(Fintype.card D : ℂ) / 2) with hlam`. Use `set N : ℕ := Fintype.card (Fin r → Res k 1) with hN`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Set `F : (Fin r → Res k 1) → Matrix A D k → ℂ` to `fun b => boxFn ϖ (Matrix.updateRow C i₀ ((fun l => (ϖ : k) ^ (m - 1) * ((Quotient.out (b l) : 𝒪[k]) : k)) ᵥ* (H * C))) (fun _ => m)`. Establish `hz` using `GlobalTheory.T.box_function_diagonal_action k A D ϖ ν β i₀ C hC0 m (m - 1)`. Establish `hupd : Function.update (fun _ : A => m) i₀ m = fun _ => m` using `Function.update_eq_self _ _`. Rewrite `hz` using `[Nat.sub_add_cancel (by omega : 1 ≤ m), hupd]`. Establish `h3 : lam • g - g' ∈ twistSpan ν β`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hlam, hg, ← hz]`. Conclude with `sub_mem_twistSpan ν β _ (boxFn_mem_SB _ _ _)`. Establish `h1 : g' - ∑ b, F b ∈ lowRank (r + 1)` using `GlobalTheory.T.integral_box_bounded_valuation k A D ϖ hϖ i₀ r c m C H Q hH0 hHv hcm hHC hQ hHCQ hC0`. Establish `hv1 : valuation k (ϖ : k) ≤ 1` using `by rw [hϖ]; exact (uniformizer_lt_one (R := k)).le`. Establish `h2 : ∀ b, F b - g ∈ twistSpan ν β`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `b`. Establish `ht : ∀ l, valuation k ((ϖ : k) ^ (m - 1) * ((Quotient.out (b l) : 𝒪[k]) : k)) ≤ valuation k ((ϖ ^ c : kˣ) : k)`. Introduce `l`. Establish `hout : valuation k ((Quotient.out (b l) : 𝒪[k]) : k) ≤ 1` using `(Quotient.out (b l)).2`. Rewrite using `[map_mul, map_pow, Units.val_pow_eq_pow_val, map_pow]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(mul_le_of_le_one_right' hout).trans (pow_le_pow_right_of_le_one' hv1 (by omega))`. Establish `hu` using `GlobalTheory.T.box_function_action_bounded_matrix k A D ϖ ν β i₀ r c m C H _ hH0 hHv ht`. Establish `hrow : C i₀ = 0` using `funext hC0`. Rewrite `hu` using `[hrow, zero_add]`. Conclude with `hu`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key : (lam - (N : ℂ)) • g ∈ lowRank (r + 1) ⊔ twistSpan ν β`. Establish `e : (lam - (N : ℂ)) • g = (g' - ∑ b, F b) + ∑ b, (F b - g) + (lam • g - g')`. Rewrite using `[Finset.sum_sub_distrib, Finset.sum_const, Finset.card_univ, sub_smul, Nat.cast_smul_eq_nsmul ℂ]`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Conclude with `add_mem (add_mem (Submodule.mem_sup_left h1) (Submodule.mem_sup_right (Submodule.sum_mem _ fun b _ => h2 b))) (Submodule.mem_sup_right h3)`. Establish `hne : lam - (N : ℂ) ≠ 0`. Introduce `h`. Establish `hl : lam = N` using `sub_eq_zero.1 h`. Use `set a : ℝ := nabs k ϖ ^ (-(Fintype.card D : ℝ) / 2) with ha_def`.
+Put the polynomial expressions in normal form. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hapos : 0 < a` using `Real.rpow_pos_of_pos (nabs_pos ϖ) _`. Establish `ha : apow ϖ (-(Fintype.card D : ℂ) / 2) = (a : ℂ)`. Rewrite using `[apow, ha_def, Complex.ofReal_cpow (nabs_pos ϖ).le]`. Use `push_cast`. Put the polynomial expressions in normal form.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Use `set u : ℂ := (((ν ϖ)⁻¹ : ℂˣ) : ℂ) with hu_def`. Establish `hua : u * a = N` using `by rw [← ha]; exact hl`. Establish `hu : u = ((N / a : ℝ) : ℂ)`. Establish `ha0 : (a : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 hapos.ne'`. Rewrite using `[Complex.ofReal_div, Complex.ofReal_natCast, ← hua, mul_div_cancel_right₀ _ ha0]`.
-
-Establish `hnorm : ‖u‖ = 1`. Rewrite using `[hu_def, Units.val_inv_eq_inv_val, norm_inv, hν, inv_one]`. Rewrite `hnorm` using `[hu, Complex.norm_real, Real.norm_of_nonneg (div_nonneg (Nat.cast_nonneg _) hapos.le)]`. Establish `hu1 : u = 1` using `by rw [hu, hnorm]; simp`. Apply `hν1` to reduce the goal to its premises.
-
-Establish `: (ν ϖ)⁻¹ = 1` using `Units.ext (by simpa [hu_def] using hu1)`. Conclude with `inv_eq_one.1 this`. Conclude with `(Submodule.smul_mem_iff _ hne).1 key`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.RankCoinv.boxFn_mem_lowRank_succ_sup_twistSpan_of_zero_row : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (A D : Type) [Fintype A] [DecidableEq A] [Fintype D] [DecidableEq D] (ϖ : kˣ), GlobalTheory.SplitFlip.IsUnif ϖ → ∀ (ν β : kˣ →* ℂˣ), (∀ x, ‖(ν x : ℂ)‖ = 1) → ν ϖ ≠ 1 → ∀ (i₀ : A) (r c m : ℕ) (C : Matrix A D k) (H : Matrix (Fin r) A k) (Q : Matrix D (Fin r) k), (∀ l, H l i₀ = 0) → (∀ l i, valuation k (H l i) ≤ valuation k (((ϖ ^ c)⁻¹ : kˣ) : k)) → c + 1 ≤ m → (∀ l j, (H * C) l j ∈ 𝒪[k]) → (∀ j l, Q j l ∈ 𝒪[k]) → H * C * Q = 1 → (∀ j, C i₀ j = 0) → GlobalTheory.RankCoinv.boxFn ϖ C (fun _ => m) ∈ GlobalTheory.RankCoinv.lowRank (r + 1) ⊔ GlobalTheory.RankCoinv.twistSpan ν β := by
   intro k _ _ _ _ A D _ _ _ _ ϖ hϖ ν β hν hν1 i₀ r c m C H Q hH0 hHv hcm hHC hQ hHCQ hC0

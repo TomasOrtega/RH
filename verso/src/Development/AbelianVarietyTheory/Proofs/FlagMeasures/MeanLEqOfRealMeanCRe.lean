@@ -6,15 +6,15 @@ open scoped TensorProduct ENNReal
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `set S : G → ℝ≥0∞ := fun h => ∑' i, ENNReal.ofReal (f i h) with hSdef`. Establish `hnorm : ∀ i h, ‖((f i h : ℝ) : ℂ)‖ₑ = ENNReal.ofReal (f i h)`. Introduce `i h`. Rewrite using `[← ofReal_norm_eq_enorm, Complex.norm_real, Real.norm_of_nonneg (h0 i h)]`. Establish `hS : ∫⁻ h in 𝓕, S h ∂μ < ⊤`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `hI` using `only [hnorm]`. Establish `hSm : Measurable S` using `Measurable.ennreal_tsum (fun i => (hm i).ennreal_ofReal)`. Establish `hae : ∀ᵐ h ∂(μ.restrict 𝓕), S h < ⊤` using `ae_lt_top hSm hS.ne`. Establish `hint : ∫ h in 𝓕, (∑' i, ((f i h : ℝ) : ℂ)) ∂μ = (((∫⁻ h in 𝓕, S h ∂μ).toReal : ℝ) : ℂ)`. Establish `hcongr : (fun h => ∑' i, ((f i h : ℝ) : ℂ)) =ᵐ[μ.restrict 𝓕] fun h => (((S h).toReal : ℝ) : ℂ)` using `by filter_upwards [hae] with h hh`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsum : Summable (fun i => f i h)`. Use `ENNReal.summable_toReal hh.ne using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Conclude with `(ENNReal.toReal_ofReal (h0 i h)).symm`. Use `show _ = (((∑' i, ENNReal.ofReal (f i h)).toReal : ℝ) : ℂ)`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[← Complex.ofReal_tsum, ← ENNReal.ofReal_tsum_of_nonneg (fun i => h0 i h) hsum, ENNReal.toReal_ofReal (tsum_nonneg (fun i => h0 i h))]`. Rewrite using `[integral_congr_ae hcongr, integral_complex_ofReal, integral_toReal hSm.aemeasurable hae]`. Unfold `meanL meanC`. Rewrite using `[hint, Complex.smul_re, Complex.ofReal_re, smul_eq_mul]`. Distinguish the cases in `hz : μ 𝓕 = 0`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hr : μ.restrict 𝓕 = 0` using `Measure.restrict_eq_zero.mpr hz`. Simplify using `[hr, hz]`. Rewrite using `[ENNReal.ofReal_mul (inv_nonneg.2 ENNReal.toReal_nonneg), ENNReal.ofReal_toReal hS.ne, ← ENNReal.toReal_inv, ENNReal.ofReal_toReal (ENNReal.inv_ne_top.2 hz)]`.
+A detailed English derivation is pending.
 -/
 theorem meanL_eq_ofReal_meanC_re (G : Type) [MeasurableSpace G] (μ : Measure G) (𝓕 : Set G)
     (ι : Type) [Countable ι] (f : ι → G → ℝ) (hm : ∀ i, Measurable (f i))

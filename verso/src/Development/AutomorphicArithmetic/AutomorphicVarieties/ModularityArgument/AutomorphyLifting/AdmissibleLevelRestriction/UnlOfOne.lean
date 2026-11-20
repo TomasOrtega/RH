@@ -25,7 +25,7 @@ private theorem conjDec_coe (A B : ValuationSubring Ω) (γ : G F Ω) (h : γ �
     ((conjDec A B γ h u : ↥(Dec (F := F) A)) : G F Ω) = γ⁻¹ * u * γ := rfl
 
 /- English proof (translation)
-Use `⟨⟨γ * s * γ⁻¹, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_Dec, ← h, mul_smul, mul_smul, inv_smul_smul, mem_Dec.1 s.2]`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[conjDec_coe]`. Simplify using `[mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem conjDec_surj (A B : ValuationSubring Ω) (γ : G F Ω) (h : γ • A = B) (s : ↥(Dec (F := F) A)) :
     ∃ u, conjDec A B γ h u = s := by
@@ -36,16 +36,16 @@ private theorem conjDec_surj (A B : ValuationSubring Ω) (γ : G F Ω) (h : γ �
     simp [mul_assoc]
 
 /- English proof (translation)
-Rewrite using `[map_mul, map_mul, map_inv, mul_comm (f γ)⁻¹ (f s), inv_mul_cancel_right]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem char_conj {Γ C : Type} [Group Γ] [CommGroup C] (f : Γ →* C) (γ s : Γ) :
     f (γ⁻¹ * s * γ) = f s := by
   rw [map_mul, map_mul, map_inv, mul_comm (f γ)⁻¹ (f s), inv_mul_cancel_right]
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `hκ`. Use `⟨g * r γ⁻¹, fun u => ?_⟩` and prove the remaining obligations. Establish `key : g * r γ⁻¹ * r ↑u * (g * r γ⁻¹)⁻¹ = g * r ↑(conjDec A B γ h u) * g⁻¹`. Rewrite using `[conjDec_coe, map_mul, map_mul, map_inv]`. Use `group`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key]`. Conclude with `hg (conjDec A B γ h u)`.
+A detailed English derivation is pending.
 -/
 private theorem flag_conj {r : G F Ω →* GL (Fin n) (Qbar l)} {A B : ValuationSubring Ω} {γ : G F Ω} (h : γ • A = B)
     {κ : Fin n → ↥(Dec (F := F) A) →* (Qbar l)ˣ} (hκ : IsFlagOn r (Dec (F := F) A) κ) :
@@ -62,9 +62,9 @@ end UpperTheory.V.Z.Win.A4
 
 open UpperTheory.V.Z.Win.A4 in
 /- English proof (translation)
-Introduce `F Ω _ _ _ _ _ l _ n r v A hA κ hκ hne B hB`. Take `⟨γ, hγ⟩` from `exists_smul_eq_of_isPlaceOver hA hB`. Use `⟨fun i => (κ i).comp (conjDec A B γ hγ), flag_conj hγ hκ, fun i j e => hne i j ?_⟩` and prove the remaining obligations. Use `MonoidHom.ext fun s => ?_` and prove the remaining obligations. Take `⟨u, rfl⟩` from `conjDec_surj A B γ hγ s`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `e1` using `DFunLike.congr_fun e u`. Simplify using `only [MonoidHom.mul_apply, MonoidHom.comp_apply, Subgroup.coe_subtype] at e1 ⊢`. Rewrite using `[e1, conjDec_coe, char_conj]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.V.Z.Win.A4.unlOfOne :
     UnlOfOne := by

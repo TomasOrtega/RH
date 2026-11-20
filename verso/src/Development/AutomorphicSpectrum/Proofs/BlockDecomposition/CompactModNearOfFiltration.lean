@@ -17,67 +17,59 @@ variable {S T : Type} [Ring S] [TopologicalSpace S] [IsTopologicalRing S] [Ring 
   [IsTopologicalRing T] {st : S →+ S}
 
 /- English proof (translation)
-Simplify using `[cay, map_sum, map_pow]`.
+Simplify using the standard rewrite rules.
 -/
 theorem map_cay (π : S →+* T) (M : ℕ) (y : S) : π (cay M y) = cay M (π y) := by
   simp [cay, map_sum, map_pow]
 
 /- English proof (translation)
-Establish `h1 : st 1 = 1` using `GlobalTheory.TwoStepUnipotent.st_one hm hi`. Establish `hsh : st h = h` using `GlobalTheory.TwoStepUnipotent.st_half hm hi hh hc`. Establish `hhx : ∀ x, h * x + h * x = x` using `fun x => by rw [← add_mul, hh, one_mul]`. Establish `hhN : ∀ i, ∀ x ∈ N i, h * x ∈ N i` using `fun i x hx => by`. Establish `: h * x = p i (h * x)` using `by conv_lhs => rw [← hpf i x hx, ← hhx x, map_add, mul_add, hhx]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `hpN _ _`. Establish `hle0 : ∀ i, N i ≤ N 0` using `fun i => by`. Proceed by induction on `i with`. Consider the case `zero => exact le_rfl`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `succ i ih => exact (hle i).trans ih`. Establish `hnil : ∀ y ∈ N 0, y ^ 2 ^ m = 0` using `fun y hy => by`. Establish `: ∀ k, y ^ 2 ^ k ∈ N k` using `fun k => by`. Proceed by induction on `k with`. Consider the case `zero => simpa using hy`.
+Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `succ k ih => rw [pow_succ, pow_mul, sq]`. Conclude with `hmul _ _ ih _ ih`. Conclude with `hz _ (this m)`. Establish `umul : ∀ g g' : S, (st g * g = 1 ∧ g * st g = 1) → (st g' * g' = 1 ∧ g' * st g' = 1) → (st (g * g') * (g * g') = 1 ∧ g * g' * st (g * g') = 1)` using `fun g g' u u' => by`. Rewrite using `[hm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨by rw [mul_assoc, ← mul_assoc (st g), u.1, one_mul, u'.1], by rw [mul_assoc, ← mul_assoc g', u'.2, one_mul, u.2]⟩`. Establish `ust : ∀ g : S, (st g * g = 1 ∧ g * st g = 1) → (st (st g) * st g = 1 ∧ st g * st (st g) = 1)` using `fun g u => by rw [hi]; exact u.symm`. Establish `nmul : ∀ i (g g' : S), g - 1 ∈ N i → g' - 1 ∈ N i → g * g' - 1 ∈ N i` using `fun i g g' u u' => by`. Establish `: g * g' - 1 = (g - 1) * (g' - 1) + (g - 1) + (g' - 1)` using `by noncomm_ring`. Rewrite using `[this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `add_mem (add_mem (hle i (hmul i _ u _ u')) u) u'`. Establish `nlead : ∀ i (g g' x x' : S), g - 1 ∈ N i → g' - 1 ∈ N i → g - 1 - x ∈ N (i + 1) → g' - 1 - x' ∈ N (i + 1) → g * g' - 1 - (x + x') ∈ N (i + 1)` using `fun i g g' x x' u u' v v' => by`. Establish `: g * g' - 1 - (x + x') = (g - 1) * (g' - 1) + (g - 1 - x) + (g' - 1 - x')` using `by noncomm_ring`. Rewrite using `[this]`. Conclude with `add_mem (add_mem (hmul i _ u _ u') v) v'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key : ∀ i ≤ m, ∀ D ∈ 𝓝 (1 : T), ∃ V ∈ 𝓝 (0 : T), ∀ K : Set S, IsCompact K → (∀ x ∈ K, π x ∈ V) → (∀ x, ∃ y ∈ S₀, x - y ∈ K) → ∃ K' : Set S, IsCompact K' ∧ (∀ g ∈ K', π g ∈ D) ∧ (∀ g ∈ K', (st g * g = 1 ∧ g * st g = 1) ∧ g - 1 ∈ N 0) ∧ ∀ g, (st g * g = 1 ∧ g * st g = 1) ∧ g - 1 ∈ …`. Introduce `i him`. Proceed by induction on `him using Nat.decreasingInduction with`. Consider the case `self`. Introduce `D hD`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Establish `one : (st 1 * 1 = 1 ∧ 1 * st 1 = 1) ∧ (1 : S) - 1 ∈ N 0` using `by simp [h1]`. Use `⟨Set.univ, Filter.univ_mem, fun K _ _ _ => ⟨{1}, isCompact_singleton, fun g hg => ?_, fun g hg => by rw [Set.mem_singleton_iff.1 hg]; exact one, fun g hg => ⟨1, one_mem _, one, 1, rfl, ?_⟩⟩⟩` and prove the remaining obligations. Rewrite using `[Set.mem_singleton_iff.1 hg, map_one]`. Conclude with `mem_of_mem_nhds hD`. Rewrite using `[one_mul, ← sub_eq_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `hz _ hg.2`. Consider the case `of_succ i _ ih`. Introduce `D hD`. Choose the witnesses or unpack the hypotheses as in `⟨D₁, hD₁, hDD⟩ : ∃ D₁ ∈ 𝓝 (1 : T), ∀ a ∈ D₁, ∀ b ∈ D₁, a * b ∈ D := by`. Establish `e : ∀ᶠ x : T × T in 𝓝 ((1 : T), (1 : T)), x.1 * x.2 ∈ D` using `(continuous_mul.tendsto ((1 : T), (1 : T))).eventually (by simpa using hD)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨u, hu, v, hv, huv⟩` from `mem_nhds_prod_iff.1 e`. Conclude with `⟨u ∩ v, Filter.inter_mem hu hv, fun a ha b hb => huv (Set.mk_mem_prod ha.1 hb.2)⟩`. Take `⟨V₂, hV₂, ih'⟩` from `ih D₁ hD₁`. Take `⟨q, hq⟩ : ∃ q : S → S, ∀ z, q z = h * (h * (p i z - st (p i z)))` from `⟨_, fun _ => rfl⟩`. Establish `qc : Continuous q`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[show q = fun z => h * (h * (p i z - st (p i z))) from funext hq]`. Use `hp i` as an intermediate fact. Use `fun_prop`. Establish `qN : ∀ z, q z ∈ N i` using `fun z => by`. Rewrite using `[hq]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `hhN _ _ (hhN _ _ (sub_mem (hpN i z) (hst _ _ (hpN i z))))`. Establish `qs : ∀ z, st (q z) = - q z` using `fun z => by`. Rewrite using `[hq, hm, hm, hsh, map_sub, hi, ← hc, ← hc, ← mul_neg, ← mul_neg, neg_sub]`. Establish `q0 : ∀ z ∈ S₀, q z ∈ S₀` using `fun z hz => by`. Rewrite using `[hq]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `mul_mem hh0 (mul_mem hh0 (sub_mem (hp0 i z hz) (h0 _ (hp0 i z hz))))`. Establish `qsub : ∀ z z', q (z - z') = q z - q z'` using `fun z z' => by`. Simplify using `only [hq, map_sub]`. Use `noncomm_ring`. Take `⟨c, hcd⟩ : ∃ c : S → S, ∀ z, c z = cay (2 ^ m) (q z)` from `⟨_, fun _ => rfl⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Establish `cc : Continuous c`. Rewrite using `[show c = fun z => cay (2 ^ m) (q z) from funext hcd]`. Unfold `cay`. Use `fun_prop`. Establish `cu : ∀ z, st (c z) * c z = 1 ∧ c z * st (c z) = 1` using `fun z => by`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hcd]`. Conclude with `cay_unitary hm hi (hnil _ (hle0 i (qN z))) (qs z)`. Establish `cl : ∀ z, c z - 1 - (q z + q z) ∈ N (i + 1)` using `fun z => by`. Rewrite using `[hcd, cay_sub (hnil _ (hle0 i (qN z)))]`. Use `hmul _ _ (add_mem (qN z) (qN z)) _ (sum_mem fun j hj => ?_)` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Use `clear hj`. Proceed by induction on `j with`. Consider the case `zero => simpa using qN z`. Consider the case `succ j ih => rw [pow_succ]`. Conclude with `hle i (hmul _ _ ih _ (qN z))`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `cN : ∀ z, c z - 1 ∈ N i` using `fun z => by`. Simplify using `using add_mem (hle i (cl z)) (add_mem (qN z) (qN z))`. Establish `c0 : ∀ z ∈ S₀, c z ∈ S₀` using `fun z hz => by`. Rewrite using `[hcd]`. Conclude with `mul_mem (add_mem (one_mem _) (q0 z hz)) (sum_mem fun j _ => pow_mem (q0 z hz) j)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `sN : ∀ z, st (c z) - 1 ∈ N i` using `fun z => by`. Simplify `hst _ _ (cN z)` using `[h1]`. Establish `sl : ∀ z, st (c z) - 1 - -(q z + q z) ∈ N (i + 1)` using `fun z => by`. Use `hst _ _ (cl z)` as an intermediate fact. Rewrite `this` using `[map_sub, map_sub, map_add, h1, qs, ← neg_add]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨cT, hcT⟩ : ∃ cT : T → T, ∀ t, cT t = cay (2 ^ m) (π h * (π h * (pT i t - stT (pT i t))))` from `⟨_, fun _ => rfl⟩`. Establish `cTc : Continuous cT`. Rewrite using `[show cT = fun t => cay (2 ^ m) (π h * (π h * (pT i t - stT (pT i t)))) from funext hcT]`. Use `hpT i` as an intermediate fact. Unfold `cay`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Use `fun_prop`. Establish `cT0 : cT 0 = 1`. Rewrite using `[hcT]`. Simplify using `only [map_zero, sub_zero, mul_zero]`. Unfold `cay`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[add_zero, one_mul, Finset.sum_eq_single_of_mem 0 (Finset.mem_range.2 (by positivity)) (fun b _ hb => zero_pow hb), pow_zero]`. Establish `cπ : ∀ z, π (c z) = cT (π z)` using `fun z => by`. Rewrite using `[hcd, hq, hcT, map_cay]`. Simplify using `only [map_mul, map_sub, hπp, hπs]`. Use `⟨V₂ ∩ cT ⁻¹' D₁, Filter.inter_mem hV₂ (cTc.continuousAt.preimage_mem_nhds (by rw [cT0]; exact hD₁)), fun K hK hKV hcov => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Chain the equalities or inequalities of the calculation.
 
-Take `⟨K', hK', hKD, hU, hcov'⟩` from `ih' K hK (fun x hx => (hKV x hx).1) hcov`. Use `⟨(fun x : S × S => x.1 * c x.2) '' (K' ×ˢ K), (hK'.prod hK).image (by fun_prop), ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨⟨k, z⟩, ⟨hk, hz'⟩, rfl⟩`. Rewrite using `[map_mul, cπ]`. Conclude with `hDD _ (hKD k hk) _ (hKV z hz').2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Introduce and unpack `_ ⟨⟨k, z⟩, ⟨hk, -⟩, rfl⟩`. Conclude with `⟨umul _ _ (hU k hk).1 (cu z), nmul _ _ _ (hU k hk).2 (hle0 i (cN z))⟩`. Introduce and unpack `g ⟨u, hg⟩`. Take `⟨y, hy, hyK⟩` from `hcov (g - 1)`. Establish `gl : g - 1 - (q (g - 1) + q (g - 1)) ∈ N (i + 1)`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result.
 
-Establish `e : g - 1 - (q (g - 1) + q (g - 1)) = -(h * (st (g - 1) * (g - 1)))`. Rewrite using `[hq, hhx, hpf i _ hg, map_sub, h1]`. Establish `: (st g - 1) * (g - 1) = -((g - 1) + (st g - 1))`. Rewrite using `[sub_mul, mul_sub, u.1]`. Use `noncomm_ring`.
-
-Rewrite using `[this]`. Generalize the expression as in `g - 1 = n`. Generalize the expression as in `st g - 1 = n'`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[e]`.
-
-Conclude with `neg_mem (hhN _ _ (hmul _ _ (hst _ _ hg) _ hg))`. Establish `t` using `nlead i _ _ _ _ (nmul i _ _ (sN y) hg) (sN (g - 1 - y)) (nlead i _ _ _ _ (sN y) hg (sl y) gl) (sl (g - 1 - y))`. Establish `e : -(q y + q y) + (q (g - 1) + q (g - 1)) + -(q (g - 1 - y) + q (g - 1 - y)) = 0`. Rewrite using `[qsub (g - 1) y]`. Normalize the expressions using the abelian group laws.
-
-Rewrite `t` using `[e, sub_zero]`. Take `⟨γ, hγ, uγ, k, hk, hgk⟩` from `hcov' _ ⟨umul _ _ (umul _ _ (ust _ (cu y)) u) (ust _ (cu (g - 1 - y))), t⟩`. Use `⟨c y * γ, mul_mem (c0 y hy) hγ, ⟨umul _ _ (cu y) uγ.1, nmul _ _ _ (hle0 i (cN y)) uγ.2⟩, _, ⟨(k, g - 1 - y), ⟨hk, hyK⟩, rfl⟩, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Take `⟨V, hV, H⟩` from `key 0 (Nat.zero_le m) D hD`.
-
-Conclude with `⟨V, hV, H⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem compact_mod_near_of_filtration (S₀ : Subring S) (h : S)
     (N : ℕ → AddSubgroup S) (p : ℕ → S →+ S) (m : ℕ) (hcont : Continuous st)
@@ -243,17 +235,15 @@ theorem compact_mod_near_of_filtration (S₀ : Subring S) (h : S)
 variable {ι : Type} [Fintype ι] {ε : ι → S} {w : ι → ℤ}
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨m, hmb⟩ : ∃ m : ℕ, ∀ a b, w a ≤ w b + m := by`. Take `⟨M, hM⟩` from `(Set.finite_range fun ab : ι × ι => (w ab.1 - w ab.2).toNat).bddAbove`. Use `⟨M, fun a b => ?_⟩` and prove the remaining obligations. Establish `: (w a - w b).toNat ≤ M` using `hM ⟨(a, b), rfl⟩`. Use linear arithmetic over natural numbers and integers.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Establish `hall : ∀ x, ∑ ab : ι × ι, ε ab.1 * x * ε ab.2 = x` using `fun x => by`. Rewrite using `[Fintype.sum_prod_type]`. Simplify using `only [← Finset.mul_sum, ← Finset.sum_mul, he.complete, mul_one, one_mul]`. Set `p : ℕ → S →+ S` to `fun i => { toFun := fun x => ∑ ab ∈ Finset.univ.filter (fun ab : ι × ι => ¬ w ab.1 ≤ w ab.2 + i), ε ab.1 * x * ε ab.2 map_zero' := by simp map_add' := fun x y => by simp only [mul_add, add_mul, Finset.sum_add_distrib] }`. Set `pT : ℕ → T →+ T` to `fun i => { toFun := fun x => ∑ ab ∈ Finset.univ.filter (fun ab : ι × ι => ¬ w ab.1 ≤ w ab.2 + i), π (ε ab.1) * x * π (ε ab.2) map_zero' := by simp map_add' := fun x y => by simp only [mul_add, add_mul, Finset.sum_add_distrib] }`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `compact_mod_near_of_filtration S₀ h (raise ε w) p m hcont hm hi h0 hh0 hh hc (fun i => ?_) (fun i x => ?_) (fun i x hx => ?_) (fun i x hx => ?_) raise_le (fun i x hx y hy => raise_mul he i hx hy) (fun i x hx => raise_st hm hi hs i hx) (fun x hx => ?_) π stT pT hstT (fun i => ?_) …` and prove the remaining obligations. Conclude with `continuous_finsetSum _ fun ab _ => by fun_prop`. Use `sum_mem fun ab hab a b h' => ?_` and prove the remaining obligations. Establish `hab'` using `(Finset.mem_filter.1 hab).2`. Distinguish the cases in `ea : a = ab.1`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `eb : ab.2 ≠ b` using `fun eb => hab' (by rw [eb, ← ea]; exact h')`. Rewrite using `[mul_assoc, mul_assoc _ (ε ab.2), he.ortho eb, mul_zero, mul_zero]`. Rewrite using `[← mul_assoc, ← mul_assoc, he.ortho ea, zero_mul, zero_mul, zero_mul]`. Use `Eq.trans ?_ (hall x)` and prove the remaining obligations. Conclude with `Finset.sum_filter_of_ne fun ab _ hne h' => hne (hx _ _ h')`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `sum_mem fun ab _ => mul_mem (mul_mem (he0 _) hx) (he0 _)`. Rewrite using `[← hall x]`. Conclude with `Finset.sum_eq_zero fun ab _ => hx _ _ (hmb _ _)`. Conclude with `continuous_finsetSum _ fun ab _ => by fun_prop`. Use `show π (∑ ab ∈ _, _) = ∑ ab ∈ _, _`.
-
-Simplify using `only [map_sum, map_mul]`.
+A detailed English derivation is pending.
 -/
 theorem compact_mod_near_of_weights (S₀ : Subring S) (h : S)
     (hcont : Continuous st) (hm : ∀ x y, st (x * y) = st y * st x) (hi : ∀ x, st (st x) = x)
@@ -312,11 +302,9 @@ open NumberField IsDedekindDomain Matrix Formalism.MainNotions.GlobalTheoryTheor
 open Formalism.UG (cT cT_mul)
 
 /- English proof (translation)
-Establish `h1 : V ∈ 𝓝 (fun (_ : Fin n) (_ : Fin n) => (0 : B))` using `hV`. Rewrite `h1` using `[nhds_pi]`. Take `⟨I, -, t, ht, hs⟩` from `Filter.mem_pi.1 h1`. Establish `h2 : ∀ i, ∃ t' : Fin n → Set B, (∀ j, t' j ∈ 𝓝 (0 : B)) ∧ ∀ x : Fin n → B, (∀ j, x j ∈ t' j) → x ∈ t i` using `fun i => by`. Establish `h3` using `ht i`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h3` using `[nhds_pi]`. Take `⟨I', -, t', ht', hs'⟩` from `Filter.mem_pi.1 h3`. Conclude with `⟨t', ht', fun x hx => hs' fun j _ => hx j⟩`. Use `choose t' ht' hs' using h2`. Use `⟨⋂ i, ⋂ j, t' i j, Filter.iInter_mem.2 fun i => Filter.iInter_mem.2 fun j => ht' i j, fun X hX => ?_⟩` and prove the remaining obligations.
-
-Conclude with `hs fun i _ => hs' i _ fun j => Set.mem_iInter.1 (Set.mem_iInter.1 (hX i j) i) j`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_entry_nhds {B : Type} [TopologicalSpace B] [Zero B] {n : ℕ} (V : Set (Matrix (Fin n) (Fin n) B))
     (hV : V ∈ 𝓝 (0 : Matrix (Fin n) (Fin n) B)) : ∃ W ∈ 𝓝 (0 : B), ∀ X : Matrix (Fin n) (Fin n) B, (∀ i j, X i j ∈ W) → X ∈ V := by
@@ -337,25 +325,23 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 abbrev finT : AF F ⊗[F] E →ₐ[F] Af F ⊗[F] E := Algebra.TensorProduct.map (sndA F) (AlgHom.id F E)
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.AutFunCompare.continuous_tensNU (E := E) (sndA F).toLinearMap (map_mul (sndA F)) continuous_snd`.
+A detailed English derivation is pending.
 -/
 theorem continuous_finT : Continuous (finT (F := F) (E := E)) :=
   GlobalTheory.AutFunCompare.continuous_tensNU (E := E) (sndA F).toLinearMap (map_mul (sndA F)) continuous_snd
 
 /- English proof (translation)
-Take `⟨K₀, hK₀, hs⟩` from `GlobalTheory.AutFunCompare.tens_cocompact (F := F) (E := E)`. Establish `: IsModuleTopology (AF F) (AF F ⊗[F] E)` using `⟨rfl⟩`. Establish `: IsTopologicalRing (AF F ⊗[F] E)` using `IsModuleTopology.isTopologicalRing (AF F) _`. Establish `: IsModuleTopology (Af F) (Af F ⊗[F] E)` using `⟨rfl⟩`. Establish `hKf : IsCompact (finT '' K₀)` using `hK₀.image continuous_finT`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨μ, hμd⟩ : ∃ μ : Af F × (Af F ⊗[F] E) → Af F ⊗[F] E, ∀ x, μ x = x.1 • x.2` from `⟨_, fun _ => rfl⟩`. Establish `hμ : Continuous μ` using `by rw [funext hμd]; exact continuous_smul`. Take `⟨u, v, hu, hv, h0u, hKv, huv⟩` from `generalized_tube_lemma (isCompact_singleton (x := (0 : Af F))) hKf (n := μ ⁻¹' interior W) (isOpen_interior.preimage hμ) (by`. Introduce and unpack `⟨a, b⟩ ⟨ha, -⟩`. Establish `ha' : a = 0` using `ha`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite using `[Set.mem_preimage, hμd, ha', zero_smul]`. Conclude with `mem_interior_iff_mem_nhds.2 hW)`. Take `⟨N, hN, hNu⟩` from `Formalism.L2.SG.Pf.top_nhds_basis F u (hu.mem_nhds (h0u rfl))`. Establish `hNu' : (N : Af F) ∈ u` using `by simpa using hNu 1 (one_mem _)`. Establish `hNF : (N : F) ≠ 0` using `by exact_mod_cast (Nat.one_le_iff_ne_zero.1 hN)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(fun k => (N : F) • k) '' K₀, hK₀.image (by` and prove the remaining obligations. Establish `: (fun k : AF F ⊗[F] E => (N : F) • k) = fun k => (algebraMap F (AF F) (N : F)) • k`. Use function extensionality and compare the values at `fun k => (algebraMap_smul (AF F) (N : F) k).symm`. Rewrite using `[this]`. Use the proof step `fun_prop), ?_, fun z => ?_⟩`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨k, hk, rfl⟩`. Establish `h1 : finT ((N : F) • k) = μ ((N : Af F), finT k)`. Rewrite using `[hμd, map_smul, ← algebraMap_smul (Af F) (N : F), map_natCast]`. Rewrite using `[h1]`. Establish `h3 : ((N : Af F), finT k) ∈ u ×ˢ v` using `Set.mk_mem_prod hNu' (hKv (Set.mem_image_of_mem _ hk))`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `interior_subset (huv h3)`. Take `⟨x, hx⟩` from `hs ((N : F)⁻¹ • z)`. Use `⟨(N : F) • x, _, hx, ?_⟩` and prove the remaining obligations. Use `show (N : F) • _ = _`. Establish `h2 : inclR (F` using `F) (AF F) ((N : F) • x) = (N : F) • inclR (F := F) (AF F) x := by`.
-
-Conclude with `map_smul (Algebra.TensorProduct.includeRight : E →ₐ[F] AF F ⊗[F] E) (N : F) x`. Rewrite using `[smul_sub, smul_smul, mul_inv_cancel₀ hNF, one_smul, h2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fine_cover (W : Set (Af F ⊗[F] E)) (hW : W ∈ 𝓝 (0 : Af F ⊗[F] E)) :
     ∃ K : Set (AF F ⊗[F] E), IsCompact K ∧ (∀ x ∈ K, finT x ∈ W) ∧

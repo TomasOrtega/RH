@@ -32,14 +32,14 @@ theorem toAdele_tmul (a : AF F) (x : E) :
     toAdele F E (a ⊗ₜ[F] x) = adeleMap F E a * algebraMap E _ x := rfl
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `toAdele F E ((1 : AF F) ⊗ₜ[F] x) = _`. Rewrite using `[toAdele_tmul, map_one, one_mul]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem toAdele_incA (x : E) : toAdele F E (incA F E x) = algebraMap E _ x := by
   change toAdele F E ((1 : AF F) ⊗ₜ[F] x) = _
   rw [toAdele_tmul, map_one, one_mul]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `toAdele F E (a ⊗ₜ[F] (1 : E)) = _`. Rewrite using `[toAdele_tmul, map_one, mul_one]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem toAdele_algebraMap (a : AF F) : toAdele F E (algebraMap (AF F) (AE F E) a) = adeleMap F E a := by
   change toAdele F E (a ⊗ₜ[F] (1 : E)) = _
@@ -48,7 +48,7 @@ theorem toAdele_algebraMap (a : AF F) : toAdele F E (algebraMap (AF F) (AE F E) 
 variable (F E)
 
 /- English proof (translation)
-Use `haveI : IsModuleTopology (AF F) (AE F E) := ⟨rfl⟩`. Use `IsModuleTopology.continuous_of_ringHom (R := AF F) (toAdele F E) ?_` and prove the remaining obligations. Conclude with `(continuous_adeleMap F E).congr fun a => (toAdele_algebraMap a).symm`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_toAdele : Continuous (toAdele F E) := by
   haveI : IsModuleTopology (AF F) (AE F E) := ⟨rfl⟩
@@ -56,29 +56,29 @@ theorem continuous_toAdele : Continuous (toAdele F E) := by
   exact (continuous_adeleMap F E).congr fun a => (toAdele_algebraMap a).symm
 
 /- English proof (translation)
-The claim follows from `continuous_snd.comp ((continuous_adeleMap F E).comp (Continuous.prodMk_right (0 : InfiniteAdeleRing F)))`.
+A detailed English derivation is pending.
 -/
 theorem continuous_finiteAdeleMap : Continuous (finiteAdeleMap F E) :=
   continuous_snd.comp ((continuous_adeleMap F E).comp (Continuous.prodMk_right (0 : InfiniteAdeleRing F)))
 
 /- English proof (translation)
-The claim follows from `continuous_fst.comp ((continuous_adeleMap F E).comp (Continuous.prodMk_left (0 : FiniteAdeleRing (𝓞 F) F)))`.
+A detailed English derivation is pending.
 -/
 theorem continuous_infiniteAdeleMap : Continuous (infiniteAdeleMap F E) :=
   continuous_fst.comp ((continuous_adeleMap F E).comp (Continuous.prodMk_left (0 : FiniteAdeleRing (𝓞 F) F)))
 
 /- English proof (translation)
-Take `⟨ι, hι⟩` from `GlobalTheory.AdeleBaseChange.exists_toAd F E`. Set `c` to `Algebra.TensorProduct.comm F (Af F) E`. Use `⟨ι.comp c.toRingEquiv.toRingHom, Function.Bijective.comp (g := ι) ⟨GlobalTheory.AdeleBaseChange.map_injective hι, GlobalTheory.AdeleBaseChange.map_surjective hι⟩ c.bijective, fun z => ?_, fun y => ⟨fun hy => ?_, fun hy => ?_⟩⟩` and prove the remaining obligations. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => rw [RingHom.map_zero, RingHom.map_zero, RingHom.map_zero]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately.
 
-Both sides reduce to the same expression. Consider the case `add x y hx hy => rw [RingHom.map_add, RingHom.map_add, RingHom.map_add, ← hx, ← hy]`. Both sides reduce to the same expression. Consider the case `tmul a x`. Express the relevant statement in the definitionally equal form `_ = ι (x ⊗ₜ[F] a.2)`.
+Both sides reduce to the same expression. Treat this case separately. Both sides reduce to the same expression. Treat this case separately. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[toAdele_tmul, hι, mul_comm]`. Use `FiniteAdeleRing.ext _ fun Q => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = _ * GlobalTheory.AdeleBaseChange.locMap F Q _`. Rewrite using `[GlobalTheory.CharTransport.locMap_eq]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `: intAE F E ≤ (Formalism.L2.DIV.RInt F E).toAddSubgroup.comap c.toRingEquiv.toRingHom.toAddMonoidHom`. Use `(AddSubgroup.closure_le _).2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨a, ha, x, rfl⟩`. Conclude with `Formalism.UG.P.levelaf_tmul_mem x ha`. Conclude with `GlobalTheory.AdeleBaseChange.map_mem_int hι (this hy)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hz` using `GlobalTheory.AdeleBaseChange.mem_int_of_map hι (y := c y) hy`. Take `⟨m, g, hg⟩` from `Module.Finite.exists_fin (R := ℤ) (M := 𝓞 E)`. Take `⟨r, hr, e⟩` from `Formalism.UG.P.levelaf_decomp g hg hz`. Establish `: y = ∑ j, r j ⊗ₜ[F] (g j : E)`. Apply `c.injective` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sum]`. Conclude with `e`. Rewrite using `[this]`. Conclude with `sum_mem fun j _ => AddSubgroup.subset_closure ⟨r j, hr j, g j, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_finite : ∃ ι : Af F ⊗[F] E →+* FiniteAdeleRing (𝓞 E) E, Function.Bijective ι ∧
     (∀ z, (toAdele F E z).2 = ι (finPart F E z)) ∧
@@ -116,7 +116,7 @@ theorem exists_finite : ∃ ι : Af F ⊗[F] E →+* FiniteAdeleRing (𝓞 E) E,
 variable {F E}
 
 /- English proof (translation)
-Take `⟨ι, -, h1, h2⟩` from `exists_finite F E`. Rewrite using `[h1, h2]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem finPart_mem_intAE_iff (z : AE F E) :
     finPart F E z ∈ intAE F E ↔ ∀ Q, (toAdele F E z).2 Q ∈ Q.adicCompletionIntegers E := by
@@ -124,19 +124,17 @@ theorem finPart_mem_intAE_iff (z : AE F E) :
   rw [h1, h2]
 
 /- English proof (translation)
-Take `⟨ι, hb, h1, -⟩` from `exists_finite F E`. Take `⟨j, hjc, -, hj⟩` from `GlobalTheory.HeckeTensorRead.exists_infinite_equiv F E σ h`. Take `⟨s, hs, -⟩` from `GlobalTheory.AdSplit.exists_adele_equiv F E`. Use `haveI : IsModuleTopology (Ainf F) (Ainf F ⊗[F] E) := ⟨rfl⟩`. Use `haveI := GlobalTheory.AdelicUnitaryTop.t2Space_infiniteAdeleRing_of_numberField_field E`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hj1 : ∀ a : Ainf F, j (a ⊗ₜ[F] (1 : E)) = infiniteAdeleMap F E a`. Establish `hc : Continuous fun a : Ainf F => j (a • (1 : Ainf F ⊗[F] E))` using `hjc.comp (f := fun a : Ainf F => a • (1 : Ainf F ⊗[F] E)) (by fun_prop)`. Use `(InfiniteAdeleRing.denseRange_algebraMap F).equalizer hc (continuous_infiniteAdeleMap F E) (funext fun k => by` as an intermediate fact. Express the relevant statement in the definitionally equal form `j (algebraMap F (Ainf F) k • (1 : Ainf F ⊗[F] E)) = infiniteAdeleMap F E (algebraMap F _ k)`. Rewrite using `[algebraMap_smul, Algebra.TensorProduct.one_def, ← TensorProduct.tmul_smul, hj, ← Algebra.algebraMap_eq_smul_one]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(congrArg Prod.fst (adeleMap_algebraMap F E k)).symm)`. Introduce `a`. Rewrite using `[← congrFun this a, Algebra.TensorProduct.one_def, TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Establish `h2 : ∀ z, (toAdele F E z).1 = j (s z).1`. Introduce `z`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => rw [RingHom.map_zero, s.map_zero]`. Conclude with `j.map_zero.symm`. Consider the case `add x y hx hy`. Rewrite using `[RingHom.map_add, s.map_add]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Conclude with `(congrArg₂ (· + ·) hx hy).trans (j.map_add _ _).symm`. Consider the case `tmul a x`. Rewrite using `[(hs _).1]`. Express the relevant statement in the definitionally equal form `_ = j (a.1 ⊗ₜ[F] x)`. Establish `: (a.1 ⊗ₜ[F] x : Ainf F ⊗[F] E) = (a.1 ⊗ₜ[F] 1) * (1 ⊗ₜ[F] x)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul]`. Rewrite using `[this, map_mul, hj, hj1]`. Both sides reduce to the same expression. Establish `e : ⇑(toAdele F E) = Prod.map j ι ∘ s` using `funext fun z => Prod.ext (h2 z) ((h1 z).trans (congrArg ι (hs z).2.symm))`. Rewrite using `[e]`.
-
-Conclude with `(j.bijective.prodMap hb).comp s.bijective`.
+A detailed English derivation is pending.
 -/
 theorem bijective_toAdele {σ : E →ₐ[F] E} (h : IsCMExt F E σ) : Function.Bijective (toAdele F E) := by
   obtain ⟨ι, hb, h1, -⟩ := exists_finite F E
@@ -178,11 +176,7 @@ def adeleEquiv {σ : E →ₐ[F] E} (h : IsCMExt F E σ) : AE F E ≃+* AdeleRin
   RingEquiv.ofBijective (toAdele F E) (bijective_toAdele h)
 
 /- English proof (translation)
-Use `haveI : IsModuleTopology (AF F) (AE F E) := ⟨rfl⟩`. Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ _ _`. Use `haveI : IsTopologicalRing (AE F E) := IsModuleTopology.isTopologicalRing (AF F) _`. Use `haveI := GlobalTheory.AdelicUnitaryTop.secondCountable_adele F`. Use `haveI := GlobalTheory.AdelicUnitaryTop.locallyCompact_adele F`.
-
-Use `haveI := GlobalTheory.AdelicUnitaryTop.locallyCompact_adele E`. Use `haveI := GlobalTheory.AdelicUnitaryTop.t2Space_adeleRing_numberField F`. Use `haveI := GlobalTheory.AdelicUnitaryTop.t2Space_adeleRing_numberField E`. Take `⟨e0⟩` from `GlobalTheory.AdelicUnitaryTop.nonempty_homeomorph (F := F) (E := E) (AF F)`. Use `haveI : LocallyCompactSpace (AE F E) := e0.isClosedEmbedding.locallyCompactSpace`.
-
-Use `haveI : SecondCountableTopology (AE F E) := e0.secondCountableTopology`. Establish `hc : Continuous (adeleEquiv h)` using `continuous_toAdele F E`. Establish `ho : IsOpenMap (adeleEquiv h)` using `AddMonoidHom.isOpenMap_of_sigmaCompact (adeleEquiv h).toAddEquiv.toAddMonoidHom (adeleEquiv h).surjective hc`. Conclude with `((adeleEquiv h).toEquiv.toHomeomorphOfContinuousOpen hc ho).symm.continuous`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_adeleEquiv_symm {σ : E →ₐ[F] E} (h : IsCMExt F E σ) : Continuous (adeleEquiv h).symm := by
   haveI : IsModuleTopology (AF F) (AE F E) := ⟨rfl⟩
@@ -208,15 +202,15 @@ section CM
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.1, h.2.1, { finrank_eq_two' := h.2.2.1 }⟩`.
+Supply the required witnesses or components.
 -/
 theorem isCMExtension_of (h : IsCMExt F E σ) : IsCMExtension F E :=
   ⟨h.1, h.2.1, { finrank_eq_two' := h.2.2.1 }⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h haveI := isCMExtension_of h`. Use `⟨this, AlgHom.ext fun x => ?_⟩` and prove the remaining obligations. Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Conclude with `τ.injective ((h.2.2.2 τ x).trans (embedding_conj F E τ x).symm)`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨h, rfl⟩`. Conclude with `⟨h.totallyReal, h.totallyComplex, h.quadratic.finrank_eq_two, embedding_conj F E⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isCMExt_iff (σ : E →ₐ[F] E) :
     IsCMExt F E σ ↔ ∃ _ : IsCMExtension F E, σ = (conj F E : E →ₐ[F] E) := by
@@ -230,16 +224,14 @@ theorem isCMExt_iff (σ : E →ₐ[F] E) :
     exact ⟨h.totallyReal, h.totallyComplex, h.quadratic.finrank_eq_two, embedding_conj F E⟩
 
 /- English proof (translation)
-Take `⟨_, rfl⟩` from `(isCMExt_iff σ).1 h`. Conclude with `conj_conj F E x`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem sig_sig (h : IsCMExt F E σ) (x : E) : σ (σ x) = x := by
   obtain ⟨_, rfl⟩ := (isCMExt_iff σ).1 h
   exact conj_conj F E x
 
 /- English proof (translation)
-Take `⟨h', rfl⟩` from `(isCMExt_iff σ).1 h`. Use `haveI := h'.totallyReal`. Use `haveI := h'.totallyComplex`. Use `haveI := h'.quadratic`. Use `haveI := IsCMExtension.isCMField F E`.
-
-Take `⟨t, ht⟩` from `(CMExtension.equivMaximalRealSubfield F E).surjective ⟨x, (IsCMField.complexConj_eq_self_iff E x).1 hx⟩`. Conclude with `⟨t, (CMExtension.equivMaximalRealSubfield_apply F E t).symm.trans (congrArg Subtype.val ht)⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_of_fixed (h : IsCMExt F E σ) {x : E} (hx : σ x = x) : ∃ t, algebraMap F E t = x := by
   obtain ⟨h', rfl⟩ := (isCMExt_iff σ).1 h
@@ -256,16 +248,14 @@ abbrev adeleConj (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E
   @adeleMap E E _ _ _ _ (conj F E).toRingEquiv.toRingHom.toAlgebra
 
 /- English proof (translation)
-The claim follows from `@adeleMap_algebraMap E E _ _ _ _ (conj F E).toRingEquiv.toRingHom.toAlgebra x`.
+A detailed English derivation is pending.
 -/
 theorem adeleConj_algebraMap [IsCMExtension F E] (x : E) :
     adeleConj F E (algebraMap E _ x) = algebraMap E _ (conj F E x) :=
   @adeleMap_algebraMap E E _ _ _ _ (conj F E).toRingEquiv.toRingHom.toAlgebra x
 
 /- English proof (translation)
-Use `haveI := GlobalTheory.AdelicUnitaryTop.t2Space_infiniteAdeleRing_of_numberField_field E`. Use `haveI := GlobalTheory.AdelicUnitaryTop.t2Space_finiteAdeleRing_of_numberField E`. Establish `key : ∀ k : F, adeleConj F E (adeleMap F E (algebraMap F _ k)) = adeleMap F E (algebraMap F _ k)`. Introduce `k`. Rewrite using `[adeleMap_algebraMap, adeleConj_algebraMap, AlgEquiv.commutes]`.
-
-Use `Prod.ext ?_ ?_` and prove the remaining obligations. Conclude with `congrFun ((InfiniteAdeleRing.denseRange_algebraMap F).equalizer ((@continuous_infiniteAdeleMap E E _ _ _ _ (conj F E).toRingEquiv.toRingHom.toAlgebra).comp (continuous_infiniteAdeleMap F E)) (continuous_infiniteAdeleMap F E) (funext fun k => congrArg Prod.fst (key k))) a.1`. Conclude with `congrFun ((GlobalTheory.AdeleCharTwist.denseRange_fin (F := F)).equalizer ((@continuous_finiteAdeleMap E E _ _ _ _ (conj F E).toRingEquiv.toRingHom.toAlgebra).comp (continuous_finiteAdeleMap F E)) (continuous_finiteAdeleMap F E) (funext fun k => congrArg Prod.snd (key k))) a.2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem adeleConj_adeleMap [IsCMExtension F E] (a : AF F) :
     adeleConj F E (adeleMap F E a) = adeleMap F E a := by
@@ -285,9 +275,9 @@ theorem adeleConj_adeleMap [IsCMExtension F E] (a : AF F) :
       (funext fun k => congrArg Prod.snd (key k))) a.2
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp only [RingHom.map_zero]`. Consider the case `add x y hx hy => simp only [RingHom.map_add, hx, hy]`. Consider the case `tmul a x`. Express the relevant statement in the definitionally equal form `toAdele F E (a ⊗ₜ[F] conj F E x) = _`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[toAdele_tmul, toAdele_tmul, RingHom.map_mul, adeleConj_adeleMap, adeleConj_algebraMap]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem toAdele_cA [IsCMExtension F E] (z : AE F E) :
     toAdele F E (cA (conj F E : E →ₐ[F] E) z) = adeleConj F E (toAdele F E z) := by
@@ -301,7 +291,7 @@ theorem toAdele_cA [IsCMExtension F E] (z : AE F E) :
 def cO (σ : E →ₐ[F] E) : 𝓞 E →+* 𝓞 E := RingOfIntegers.mapRingHom σ.toRingHom
 
 /- English proof (translation)
-The claim follows from `RingOfIntegers.ext (sig_sig h x)`.
+A detailed English derivation is pending.
 -/
 theorem cO_cO (h : IsCMExt F E σ) (x : 𝓞 E) : cO σ (cO σ x) = x :=
   RingOfIntegers.ext (sig_sig h x)
@@ -310,13 +300,13 @@ def cP (h : IsCMExt F E σ) (P : HeightOneSpectrum (𝓞 E)) : HeightOneSpectrum
   HeightOneSpectrum.comap (cO σ) (fun x => ⟨_, cO_cO h x⟩) P
 
 /- English proof (translation)
-The claim follows from `HeightOneSpectrum.ext (P.isMaximal.eq_of_le Q.isPrime.ne_top h)`.
+A detailed English derivation is pending.
 -/
 theorem eq_of_le {P Q : HeightOneSpectrum (𝓞 E)} (h : P.asIdeal ≤ Q.asIdeal) : P = Q :=
   HeightOneSpectrum.ext (P.isMaximal.eq_of_le Q.isPrime.ne_top h)
 
 /- English proof (translation)
-Use `HeightOneSpectrum.ext (Ideal.ext fun x => ?_)` and prove the remaining obligations. Establish `: cO σ (algebraMap (𝓞 F) (𝓞 E) x) = algebraMap (𝓞 F) (𝓞 E) x` using `RingOfIntegers.ext (σ.commutes (x : F))`. Express the relevant statement in the definitionally equal form `cO σ (algebraMap (𝓞 F) (𝓞 E) x) ∈ P.asIdeal ↔ algebraMap (𝓞 F) (𝓞 E) x ∈ P.asIdeal`. Rewrite using `[this]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem under_cP (h : IsCMExt F E σ) (P : HeightOneSpectrum (𝓞 E)) :
     (cP h P).under (𝓞 F) = P.under (𝓞 F) := by
@@ -327,13 +317,11 @@ theorem under_cP (h : IsCMExt F E σ) (P : HeightOneSpectrum (𝓞 E)) :
   rw [this]
 
 /- English proof (translation)
-Establish `hle : (Q.asIdeal : Set (𝓞 E)) ⊆ P.asIdeal ∪ (cP h P).asIdeal`. Introduce `x hx`. Take `⟨t, ht⟩` from `exists_of_fixed h (x := (x : E) * σ x) (by rw [map_mul, sig_sig h, mul_comm])`. Establish `hint : IsIntegral ℤ t`. Rewrite using `[← isIntegral_algHom_iff (IsScalarTower.toAlgHom ℤ F E) (algebraMap F E).injective]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `IsIntegral ℤ (algebraMap F E t)`. Rewrite using `[ht]`. Conclude with `(x * cO σ x).isIntegral_coe`. Establish `e : algebraMap (𝓞 F) (𝓞 E) ⟨t, hint⟩ = x * cO σ x` using `RingOfIntegers.ext ht`. Establish `h1 : (⟨t, hint⟩ : 𝓞 F) ∈ (Q.under (𝓞 F)).asIdeal`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `algebraMap (𝓞 F) (𝓞 E) _ ∈ Q.asIdeal`. Rewrite using `[e]`. Conclude with `Ideal.mul_mem_right _ _ hx`. Rewrite `h1` using `[hQ]`. Express the relevant statement in the definitionally equal form `algebraMap (𝓞 F) (𝓞 E) _ ∈ P.asIdeal at h1`.
-
-Rewrite `h1` using `[e]`. Conclude with `P.isPrime.mem_or_mem h1`. Conclude with `(Ideal.subset_union.1 hle).imp eq_of_le eq_of_le`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_or_eq_cP (h : IsCMExt F E σ) {P Q : HeightOneSpectrum (𝓞 E)}
     (hQ : Q.under (𝓞 F) = P.under (𝓞 F)) : Q = P ∨ Q = cP h P := by
@@ -357,7 +345,7 @@ theorem eq_or_eq_cP (h : IsCMExt F E σ) {P Q : HeightOneSpectrum (𝓞 E)}
   exact (Ideal.subset_union.1 hle).imp eq_of_le eq_of_le
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp only [RingHom.map_zero]`. Consider the case `add x y hx hy => simp only [RingHom.map_add, hx, hy]`. Consider the case `tmul a x => exact congrArg (a ⊗ₜ[F] ·) (sig_sig h x)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem cA_cA (h : IsCMExt F E σ) (z : AE F E) : cA σ (cA σ z) = z := by
   induction z using TensorProduct.induction_on with
@@ -366,11 +354,9 @@ theorem cA_cA (h : IsCMExt F E σ) (z : AE F E) : cA σ (cA σ z) = z := by
   | tmul a x => exact congrArg (a ⊗ₜ[F] ·) (sig_sig h x)
 
 /- English proof (translation)
-Establish `e : ∀ z : AE F E, finPart F E (cA σ z) = sigR (Af F) σ (finPart F E z)` using `fun z => by`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp only [RingHom.map_zero]`. Consider the case `add x y hx hy => simp only [RingHom.map_add, hx, hy]`. Consider the case `tmul a x => rfl`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Rewrite using `[e]`. Establish `: intAE F E ≤ (intAE F E).comap (sigR (Af F) σ).toAddMonoidHom`. Use `(AddSubgroup.closure_le _).2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨a, ha, x, rfl⟩`. Conclude with `AddSubgroup.subset_closure ⟨a, ha, cO σ x, rfl⟩`.
-
-Conclude with `this hz`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem finPart_cA_mem {z : AE F E} (hz : finPart F E z ∈ intAE F E) : finPart F E (cA σ z) ∈ intAE F E := by
   have e : ∀ z : AE F E, finPart F E (cA σ z) = sigR (Af F) σ (finPart F E z) := fun z => by
@@ -386,7 +372,7 @@ theorem finPart_cA_mem {z : AE F E} (hz : finPart F E z ∈ intAE F E) : finPart
   exact this hz
 
 /- English proof (translation)
-Take `⟨_, rfl⟩` from `(isCMExt_iff σ).1 h`. Rewrite using `[toAdele_cA]`. Conclude with `(congrArg (@infiniteAdeleMap E E _ _ (conj F E).toRingEquiv.toRingHom.toAlgebra) hz).trans (map_zero _)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fst_cA (h : IsCMExt F E σ) {z : AE F E} (hz : (toAdele F E z).1 = 0) : (toAdele F E (cA σ z)).1 = 0 := by
   obtain ⟨_, rfl⟩ := (isCMExt_iff σ).1 h
@@ -403,7 +389,7 @@ def IsIndicator (S : Set (HeightOneSpectrum (𝓞 E))) (a : AdeleRing (𝓞 E) E
   a.1 = 0 ∧ (∀ Q ∈ S, a.2 Q = 1) ∧ ∀ Q ∉ S, a.2 Q = 0
 
 /- English proof (translation)
-Use `Prod.ext (ha.1.trans hb.1.symm) (FiniteAdeleRing.ext _ fun Q => ?_)` and prove the remaining obligations. Distinguish the cases in `hQ : Q ∈ S`. Rewrite using `[ha.2.1 Q hQ, hb.2.1 Q hQ]`. Rewrite using `[ha.2.2 Q hQ, hb.2.2 Q hQ]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem IsIndicator.unique {S : Set (HeightOneSpectrum (𝓞 E))} {a b : AdeleRing (𝓞 E) E}
     (ha : IsIndicator S a) (hb : IsIndicator S b) : a = b := by
@@ -438,7 +424,7 @@ Both sides reduce to the same expression.
 theorem ev_one_sub (a : AdeleRing (𝓞 E) E) (Q) : (1 - a).2 Q = 1 - a.2 Q := rfl
 
 /- English proof (translation)
-The claim follows from `IsIndicator.unique ⟨by rw [fst_mul, ha.1, zero_mul], fun Q hQ => by rw [ev_mul, ha.2.1 Q hQ, one_mul], fun Q hQ => by rw [ev_mul, ha.2.2 Q hQ, zero_mul]⟩ ha`.
+A detailed English derivation is pending.
 -/
 theorem IsIndicator.idem {S : Set (HeightOneSpectrum (𝓞 E))} {a : AdeleRing (𝓞 E) E}
     (ha : IsIndicator S a) : a * a = a :=
@@ -446,20 +432,20 @@ theorem IsIndicator.idem {S : Set (HeightOneSpectrum (𝓞 E))} {a : AdeleRing (
     fun Q hQ => by rw [ev_mul, ha.2.2 Q hQ, zero_mul]⟩ ha
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(0, _), rfl, fun _ hQ => hQ ▸ GlobalTheory.PlaceIdem.single_same P, fun _ hQ => GlobalTheory.PlaceIdem.single_ne hQ⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_isIndicator (P : HeightOneSpectrum (𝓞 E)) : ∃ a, IsIndicator {P} a :=
   ⟨(0, _), rfl, fun _ hQ => hQ ▸ GlobalTheory.PlaceIdem.single_same P, fun _ hQ => GlobalTheory.PlaceIdem.single_ne hQ⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun ⟨_, h0, h1, h2⟩ => h0 ▸ ⟨rfl, fun _ hQ => hQ ▸ h1, h2⟩, fun h => ⟨ε.2, Prod.ext h.1 rfl, h.2.1 v rfl, h.2.2⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem isPlaceIdem_iff (v : HeightOneSpectrum (𝓞 F)) (ε : AF F) : IsPlaceIdem F v ε ↔ IsIndicator {v} ε :=
   ⟨fun ⟨_, h0, h1, h2⟩ => h0 ▸ ⟨rfl, fun _ hQ => hQ ▸ h1, h2⟩,
     fun h => ⟨ε.2, Prod.ext h.1 rfl, h.2.1 v rfl, h.2.2⟩⟩
 
 /- English proof (translation)
-Rewrite using `[toAdele_algebraMap]`. Take `⟨h0, h1, h2⟩` from `(isPlaceIdem_iff v ε).1 h`. Conclude with `⟨(congrArg (infiniteAdeleMap F E) h0).trans (map_zero _), fun Q hQ => (congrArg (finiteCompletionMap F E Q) (h1 _ hQ)).trans (map_one _), fun Q hQ => (congrArg (finiteCompletionMap F E Q) (h2 _ hQ)).trans (map_zero _)⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem place_comp {v : HeightOneSpectrum (𝓞 F)} {ε : AF F} (h : IsPlaceIdem F v ε) :
     IsIndicator {Q | Q.under (𝓞 F) = v} (toAdele F E (algebraMap _ _ ε)) := by
@@ -473,11 +459,11 @@ def Comparison₂ (F : Type) [Field F] [NumberField F] [Algebra F E] (P : Height
   ∀ x : 𝓞 E, x ≠ 0 → (x ∈ P.asIdeal ↔ finPart F E (e * incA F E ((x : E)⁻¹)) ∉ intAE F E)
 
 /- English proof (translation)
-Introduce `x hx`. Establish `e1 : cA σ (e * incA F E ((cO σ x : E)⁻¹)) = cA σ e * incA F E ((x : E)⁻¹)`. Rewrite using `[RingHom.map_mul]`. Use `congr 1`. Express the relevant statement in the definitionally equal form `incA F E (σ ((σ x)⁻¹)) = _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[map_inv₀ σ, sig_sig h]`. Establish `hx' : cO σ x ≠ 0` using `fun h0 => hx (by rw [← cO_cO h x, h0, map_zero])`. Use `(ht _ hx').trans ?_` and prove the remaining obligations. Rewrite using `[← e1]`. Use `not_congr ⟨finPart_cA_mem, fun h' => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `finPart_cA_mem (σ := σ) h'` as an intermediate fact. Rewrite `this` using `[cA_cA h]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem Comparison₂.conj (h : IsCMExt F E σ) {P : HeightOneSpectrum (𝓞 E)} {e : AE F E} (ht : Comparison₂ F P e) :
     Comparison₂ F (cP h P) (cA σ e) := by
@@ -495,9 +481,9 @@ theorem Comparison₂.conj (h : IsCMExt F E σ) {P : HeightOneSpectrum (𝓞 E)}
   rwa [cA_cA h] at this
 
 /- English proof (translation)
-Rewrite using `[finPart_mem_intAE_iff, not_forall]`. Use `exists_congr fun Q => ?_` and prove the remaining obligations. Rewrite using `[RingHom.map_mul, ev_mul, toAdele_incA]`. Distinguish the cases in `h0 : (toAdele F E e).2 Q = 0`. Rewrite using `[h0, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Conclude with `iff_of_false (fun h => h (zero_mem _)) (fun h => h.1 rfl)`. Establish `h1 : (toAdele F E e).2 Q = 1` using `mul_left_cancel₀ h0 (by rw [← ev_mul, ← RingHom.map_mul, he, mul_one])`. Rewrite using `[h1, one_mul]`. Conclude with `((GlobalTheory.PlaceIdem.val_inv_le_one Q hx).not.trans not_not).trans (and_iff_right one_ne_zero).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem not_int_iff {e : AE F E} (he : e * e = e) {x : 𝓞 E} (hx : x ≠ 0) :
     finPart F E (e * incA F E ((x : E)⁻¹)) ∉ intAE F E ↔ ∃ Q, (toAdele F E e).2 Q ≠ 0 ∧ x ∈ Q.asIdeal := by
@@ -513,13 +499,13 @@ theorem not_int_iff {e : AE F E} (he : e * e = e) {x : 𝓞 E} (hx : x ≠ 0) :
     exact ((GlobalTheory.PlaceIdem.val_inv_le_one Q hx).not.trans not_not).trans (and_iff_right one_ne_zero).symm
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h1 : ∀ Q, (toAdele F E e).2 Q ≠ 0 → Q = P` using `fun Q hQ => eq_of_le fun x hx => by`. Distinguish the cases in `hx0 : x = 0`. Rewrite using `[hx0]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Conclude with `zero_mem _`. Conclude with `(h x hx0).2 ((not_int_iff he hx0).2 ⟨Q, hQ, hx⟩)`. Use `⟨h0, ?_, fun Q hQ => by_contra fun h2 => hQ (h1 Q h2)⟩` and prove the remaining obligations. Introduce and unpack `P rfl`. Take `⟨x, hx, hx0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot P.ne_bot`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨Q, hQ, -⟩` from `(not_int_iff he hx0).1 ((h x hx0).1 hx)`. Rewrite `hQ` using `[h1 Q hQ]`. Conclude with `mul_left_cancel₀ hQ (by rw [← ev_mul, ← RingHom.map_mul, he, mul_one])`. Introduce `h x hx`. Rewrite using `[not_int_iff he hx]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use `⟨fun hP => ⟨P, by rw [h.2.1 P rfl]; exact one_ne_zero, hP⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨Q, h1, h2⟩`. Establish `: Q = P` using `by_contra fun h3 => h1 (h.2.2 Q h3)`. Conclude with `this ▸ h2`.
+A detailed English derivation is pending.
 -/
 theorem tie_iff {e : AE F E} (he : e * e = e) (h0 : (toAdele F E e).1 = 0)
     (P : HeightOneSpectrum (𝓞 E)) : Comparison₂ F P e ↔ IsIndicator {P} (toAdele F E e) := by
@@ -546,14 +532,14 @@ variable (h : IsCMExt F E σ)
 include h
 
 /- English proof (translation)
-The claim follows from `(bijective_toAdele h).1 (by rw [RingHom.map_mul, he.idem])`.
+A detailed English derivation is pending.
 -/
 theorem idem_of {S : Set (HeightOneSpectrum (𝓞 E))} {e : AE F E} (he : IsIndicator S (toAdele F E e)) :
     e * e = e :=
   (bijective_toAdele h).1 (by rw [RingHom.map_mul, he.idem])
 
 /- English proof (translation)
-Establish `he` using `idem_of h hd`. Conclude with `(tie_iff (by rw [← RingHom.map_mul, he]) (fst_cA h hd.1) _).1 (((tie_iff he hd.1 P).2 hd).conj h)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem delta_conj {P : HeightOneSpectrum (𝓞 E)} {e : AE F E} (hd : IsIndicator {P} (toAdele F E e)) :
     IsIndicator {cP h P} (toAdele F E (cA σ e)) := by
@@ -561,15 +547,15 @@ theorem delta_conj {P : HeightOneSpectrum (𝓞 E)} {e : AE F E} (hd : IsIndicat
   exact (tie_iff (by rw [← RingHom.map_mul, he]) (fst_cA h hd.1) _).1 (((tie_iff he hd.1 P).2 hd).conj h)
 
 /- English proof (translation)
-Break down `hp with ⟨⟨⟨h1, h2, v, ε, hε, h3⟩, ht⟩, rfl⟩ | ⟨rfl, ⟨v, ε, hε, rfl⟩, ht⟩` into its components or cases. Establish `hc` using `place_comp (E := E) hε`. Establish `hd : IsIndicator {P} (toAdele F E e)`. Use `(tie_iff h1 ?_ P).1 ht` and prove the remaining obligations. Establish `: e = (e + cA σ e) * e` using `by linear_combination -h1 - h2`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[this, h3, RingHom.map_mul, fst_mul, hc.1, zero_mul]`. Establish `h4 : (toAdele F E (cA σ e)).2 P = 0`. Use `ev_mul (toAdele F E e) (toAdele F E (cA σ e)) P` as an intermediate fact. Rewrite `this` using `[← RingHom.map_mul, h2, RingHom.map_zero, hd.2.1 P rfl, one_mul]`. Conclude with `this.symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h5 : P.under (𝓞 F) = v`. Assume the negation of the conclusion as `hv`. Use `hc.2.2 P hv` as an intermediate fact. Rewrite `this` using `[← h3, RingHom.map_add, ev_add, h4, hd.2.1 P rfl, add_zero]`. Conclude with `one_ne_zero this`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite using `[h3, h5]`. Conclude with `⟨hd, hc⟩`. Establish `hc` using `place_comp (E := E) hε`. Establish `hd` using `(tie_iff (idem_of h hc) hc.1 P).1 ht`. Establish `h5 : P.under (𝓞 F) = v`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities.
 
-Assume the negation of the conclusion as `hv`. Conclude with `one_ne_zero ((hd.2.1 P rfl).symm.trans (hc.2.2 P hv))`. Rewrite using `[h5]`. Conclude with `⟨hd, hc⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem of_isPrimeIdem {P : HeightOneSpectrum (𝓞 E)} {e f : AE F E} (hp : IsPrimeIdem σ P e f) :
     IsIndicator {P} (toAdele F E e) ∧ IsIndicator {Q | Q.under (𝓞 F) = P.under (𝓞 F)} (toAdele F E f) := by
@@ -599,17 +585,17 @@ theorem of_isPrimeIdem {P : HeightOneSpectrum (𝓞 E)} {e f : AE F E} (hp : IsP
     exact ⟨hd, hc⟩
 
 /- English proof (translation)
-Take `⟨a, he⟩` from `exists_isIndicator P`. Take `⟨e, rfl⟩` from `(bijective_toAdele h).2 a`. Take `⟨ε, hε⟩` from `exists_isIndicator (P.under (𝓞 F))`. Rewrite `hε` using `[← isPlaceIdem_iff]`. Establish `hc` using `place_comp (E := E) hε`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hi` using `idem_of h he`. Establish `ht` using `(tie_iff hi he.1 P).2 he`. Distinguish the cases in `hP : cP h P = P`. Use `⟨e, e, Or.inr ⟨rfl, ⟨_, ε, hε, (bijective_toAdele h).1 (he.unique ⟨hc.1, fun Q hQ => hc.2.1 Q (congrArg _ hQ), fun Q hQ => hc.2.2 Q fun h' => ?_⟩)⟩, ht⟩⟩` and prove the remaining obligations. Conclude with `(eq_or_eq_cP h h').elim hQ fun h'' => hQ (h''.trans hP)`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `he'` using `delta_conj h he`. Use `⟨e, _, Or.inl ⟨⟨⟨hi, (bijective_toAdele h).1 ?_, _, ε, hε, (bijective_toAdele h).1 ?_⟩, ht⟩, rfl⟩⟩` and prove the remaining obligations. Rewrite using `[RingHom.map_mul, RingHom.map_zero]`. Use `IsIndicator.unique (S := ∅) ⟨by rw [fst_mul, he.1, zero_mul], fun _ hQ => hQ.elim, fun Q _ => ?_⟩ ⟨rfl, fun _ hQ => hQ.elim, fun _ _ => rfl⟩` and prove the remaining obligations. Rewrite using `[ev_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hQ : Q = P`. Substitute `hQ` using the available equality. Rewrite using `[he'.2.2 Q (Ne.symm hP), mul_zero]`. Rewrite using `[he.2.2 Q hQ, zero_mul]`. Rewrite using `[RingHom.map_add]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `IsIndicator.unique ⟨by rw [fst_add, he.1, he'.1, add_zero], fun Q hQ => ?_, fun Q hQ => ?_⟩ hc` and prove the remaining obligations. Rewrite using `[ev_add]`. Break down `eq_or_eq_cP h hQ with rfl | rfl` into its components or cases. Rewrite using `[he.2.1 Q rfl, he'.2.2 Q (Ne.symm hP), add_zero]`. Rewrite using `[he.2.2 _ hP, he'.2.1 _ rfl, zero_add]`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ev_add, he.2.2 Q fun h' => hQ (congrArg _ h'), he'.2.2 Q fun h' => hQ ((congrArg _ h').trans (under_cP h P)), add_zero]`.
+A detailed English derivation is pending.
 -/
 theorem exists_isPrimeIdem (P : HeightOneSpectrum (𝓞 E)) : ∃ e f, IsPrimeIdem σ P e f := by
   obtain ⟨a, he⟩ := exists_isIndicator P
@@ -658,7 +644,7 @@ Both sides reduce to the same expression.
 theorem coe_toIdele (x : (AE F E)ˣ) : (toIdele F E x : AdeleRing (𝓞 E) E) = toAdele F E x := rfl
 
 /- English proof (translation)
-The claim follows from `Units.ext (toAdele_incA (x : E))`.
+A detailed English derivation is pending.
 -/
 theorem toIdele_principal (x : Eˣ) :
     toIdele F E (Units.map (incA F E).toMonoidHom x) = principalIdele E x := Units.ext (toAdele_incA (x : E))
@@ -679,7 +665,7 @@ variable (F) in
 def pull (χ : UnitaryHeckeChar E) : (AE F E)ˣ →* Circle := χ.toHom.comp (toIdele F E)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨χ.continuous_toHom.comp (Continuous.units_map (toAdele F E).toMonoidHom (continuous_toAdele F E)), fun x => (congrArg χ.toHom (toIdele_principal x)).trans (χ.map_principal x)⟩`.
+Supply the required witnesses or components.
 -/
 theorem isHeckeChar_pull (χ : UnitaryHeckeChar E) : IsHeckeChar F E (pull F χ) :=
   ⟨χ.continuous_toHom.comp (Continuous.units_map (toAdele F E).toMonoidHom (continuous_toAdele F E)),
@@ -696,7 +682,7 @@ def heckeEquiv (h : IsCMExt F E σ) :
   right_inv χ := Subtype.ext (MonoidHom.ext fun x => congrArg χ.1 ((ideleEquiv h).symm_apply_apply x))
 
 /- English proof (translation)
-Use `⟨fun hχ => ?_, fun ⟨χ', e, _⟩ => e ▸ isHeckeChar_pull χ'⟩` and prove the remaining obligations. Use `(heckeEquiv h).bijective.existsUnique ⟨χ, hχ⟩` as an intermediate fact. Simplify using `only [Subtype.ext_iff] at this`. Conclude with `this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isHeckeChar_iff (h : IsCMExt F E σ) (χ : (AE F E)ˣ →* Circle) :
     IsHeckeChar F E χ ↔ ∃! χ' : UnitaryHeckeChar E, pull F χ' = χ := by
@@ -706,14 +692,14 @@ theorem isHeckeChar_iff (h : IsCMExt F E σ) (χ : (AE F E)ˣ →* Circle) :
   exact this
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun e => (heckeEquiv h).injective (Subtype.ext e), fun e => e ▸ rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem pull_eq_one_iff (h : IsCMExt F E σ) (χ : UnitaryHeckeChar E) :
     pull F χ = 1 ↔ χ = UnitaryHeckeChar.trivial E :=
   ⟨fun e => (heckeEquiv h).injective (Subtype.ext e), fun e => e ▸ rfl⟩
 
 /- English proof (translation)
-Conclude with `Pi.mulSingle_eq_same P _`.
+A detailed English derivation is pending.
 -/
 theorem localIdele_same (P : HeightOneSpectrum (𝓞 E)) (u : (P.adicCompletion E)ˣ) :
     (localIdele P u).val.2 P = u := by
@@ -721,7 +707,7 @@ theorem localIdele_same (P : HeightOneSpectrum (𝓞 E)) (u : (P.adicCompletion 
   exact Pi.mulSingle_eq_same P _
 
 /- English proof (translation)
-Conclude with `Pi.mulSingle_eq_of_ne hQ _`.
+A detailed English derivation is pending.
 -/
 theorem localIdele_ne {P Q : HeightOneSpectrum (𝓞 E)} (hQ : Q ≠ P) (u : (P.adicCompletion E)ˣ) :
     (localIdele P u).val.2 Q = 1 := by
@@ -729,9 +715,9 @@ theorem localIdele_ne {P Q : HeightOneSpectrum (𝓞 E)} (hQ : Q ≠ P) (u : (P.
   exact Pi.mulSingle_eq_of_ne hQ _
 
 /- English proof (translation)
-Use `Prod.ext ?_ (FiniteAdeleRing.ext _ fun Q => ?_)` and prove the remaining obligations. Rewrite using `[fst_add, fst_mul, fst_one_sub, ha.1, zero_mul, zero_add, sub_zero]`. Both sides reduce to the same expression. Rewrite using `[ev_add, ev_mul, ev_one_sub]`. Distinguish the cases in `hQ : Q = P`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `hQ` using the available equality. Rewrite using `[ha.2.1 Q rfl, localIdele_same, hu, one_mul, sub_self, add_zero]`. Rewrite using `[ha.2.2 Q hQ, localIdele_ne hQ, zero_mul, zero_add, sub_zero]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem mix_eq_localIdele {P : HeightOneSpectrum (𝓞 E)} {a : AdeleRing (𝓞 E) E} (ha : IsIndicator {P} a)
     (y : AdeleRing (𝓞 E) E) (u : (P.adicCompletion E)ˣ) (hu : y.2 P = u) :
@@ -746,16 +732,16 @@ theorem mix_eq_localIdele {P : HeightOneSpectrum (𝓞 E)} {a : AdeleRing (𝓞 
     · rw [ha.2.2 Q hQ, localIdele_ne hQ, zero_mul, zero_add, sub_zero]
 
 /- English proof (translation)
-Rewrite using `[RingHom.map_add, RingHom.map_mul, RingHom.map_sub, RingHom.map_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem toAdele_mix (e y : AE F E) :
     toAdele F E (e * y + (1 - e)) = toAdele F E e * toAdele F E y + (1 - toAdele F E e) := by
   rw [RingHom.map_add, RingHom.map_mul, RingHom.map_sub, RingHom.map_one]
 
 /- English proof (translation)
-Rewrite using `[Formalism.UG.P.levelaf_valued_algebraMap, show P.valuation E (r : E) = P.intValuation r from P.valuation_of_algebraMap r, ← P.intValuation_le_pow_iff_mem r 2]`. Establish `h1` using `P.intValuation_le_pow_iff_mem r 1`. Rewrite `h1` using `[pow_one]`. Rewrite using `[← h1]`. Distinguish the cases in `h0 : P.intValuation r = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[h0]`. Conclude with `iff_of_false WithZero.exp_ne_zero.symm fun h => h.2 zero_le'`. Rewrite using `[← WithZero.exp_log h0, WithZero.exp_le_exp, WithZero.exp_le_exp, WithZero.exp_inj]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem valued_eq_iff (P : HeightOneSpectrum (𝓞 E)) (r : 𝓞 E) :
     Valued.v (algebraMap E (P.adicCompletion E) r) = WithZero.exp (-1 : ℤ) ↔
@@ -775,11 +761,11 @@ variable (h : IsCMExt F E σ)
 include h
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨e, f, r, hp, h1, h2, hx⟩`. Establish `hv` using `(valued_eq_iff P r).2 ⟨h1, h2⟩`. Establish `h0 : algebraMap E (P.adicCompletion E) r ≠ 0` using `fun h0 => by`. Rewrite `hv` using `[h0, map_zero]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `WithZero.exp_ne_zero hv.symm`. Use `⟨Units.mk0 _ h0, hv, ⟨r, rfl⟩, Units.ext ?_⟩` and prove the remaining obligations. Rewrite using `[coe_toIdele, hx, toAdele_mix, toAdele_incA]`. Conclude with `mix_eq_localIdele (of_isPrimeIdem h hp).1 _ _ rfl`. Introduce and unpack `⟨ϖ, hϖ, ⟨r, hr⟩, hx⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨e, f, hp⟩` from `exists_isPrimeIdem h P`. Establish `hv` using `(valued_eq_iff P r).1 (hr ▸ hϖ)`. Use `⟨e, f, r, hp, hv.1, hv.2, (bijective_toAdele h).1 ?_⟩` and prove the remaining obligations. Rewrite using `[← coe_toIdele, hx, toAdele_mix, toAdele_incA]`. Conclude with `(mix_eq_localIdele (of_isPrimeIdem h hp).1 _ _ hr).symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnifIdele_iff (P : HeightOneSpectrum (𝓞 E)) (x : (AE F E)ˣ) : IsUnifIdele σ P x ↔
     ∃ ϖ : (P.adicCompletion E)ˣ, IsUniformiser P ϖ ∧
@@ -801,9 +787,9 @@ theorem isUnifIdele_iff (P : HeightOneSpectrum (𝓞 E)) (x : (AE F E)ˣ) : IsUn
     exact (mix_eq_localIdele (of_isPrimeIdem h hp).1 _ _ hr).symm
 
 /- English proof (translation)
-Take `⟨r, hr⟩` from `P.intValuation_exists_uniformizer`. Establish `hv : Valued.v (algebraMap E (P.adicCompletion E) r) = WithZero.exp (-1 : ℤ)`. Rewrite using `[Formalism.UG.P.levelaf_valued_algebraMap, ← hr]`. Conclude with `P.valuation_of_algebraMap r`. Establish `h0 : algebraMap E (P.adicCompletion E) r ≠ 0` using `fun h0 => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hv` using `[h0, map_zero]`. Conclude with `WithZero.exp_ne_zero hv.symm`. Take `⟨x, hx⟩` from `(ideleEquiv h).surjective (localIdele P (Units.mk0 _ h0))`. Rewrite `hx` using `[ideleEquiv_apply]`. Conclude with `⟨x, (isUnifIdele_iff h P x).2 ⟨Units.mk0 _ h0, hv, ⟨r, rfl⟩, hx⟩⟩`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_isUnifIdele (P : HeightOneSpectrum (𝓞 E)) : ∃ x, IsUnifIdele σ P x := by
   obtain ⟨r, hr⟩ := P.intValuation_exists_uniformizer
@@ -818,21 +804,17 @@ theorem exists_isUnifIdele (P : HeightOneSpectrum (𝓞 E)) : ∃ x, IsUnifIdele
   exact ⟨x, (isUnifIdele_iff h P x).2 ⟨Units.mk0 _ h0, hv, ⟨r, rfl⟩, hx⟩⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨e, f, hp, hχ⟩ u hu`. Take `⟨x, hx⟩` from `(ideleEquiv h).surjective (localIdele P u)`. Rewrite `hx` using `[ideleEquiv_apply]`. Establish `key : ∀ (x : (AE F E)ˣ) (u : (P.adicCompletion E)ˣ), toIdele F E x = localIdele P u → Valued.v (u : P.adicCompletion E) = 1 → finPart F E (x : AE F E) ∈ intAE F E`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `x u hx hu`. Rewrite using `[finPart_mem_intAE_iff, ← coe_toIdele, hx]`. Introduce `Q`. Distinguish the cases in `hQ : Q = P`. Substitute `hQ` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[localIdele_same]`. Conclude with `hu.le`. Rewrite using `[localIdele_ne hQ]`. Conclude with `one_mem _`. Use `hχ x ((bijective_toAdele h).1 (by` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[toAdele_mix, ← coe_toIdele, hx]`. Conclude with `(mix_eq_localIdele (of_isPrimeIdem h hp).1 _ _ (localIdele_same P u)).symm))`. Use the proof step `(key x u hx hu) (key x⁻¹ u⁻¹ (by rw [map_inv, map_inv, hx]) (by rw [Units.val_inv_eq_inv_val, map_inv₀, hu, inv_one]))`. Express the relevant statement in the definitionally equal form `χ.toHom (localIdele P u) = 1`. Rewrite using `[← hx]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`. Introduce `hχ`. Take `⟨e, f, hp⟩` from `exists_isPrimeIdem h P`. Use `⟨e, f, hp, fun x hx h1 h2 => ?_⟩` and prove the remaining obligations. Rewrite `h1`, `h2` using `[finPart_mem_intAE_iff]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e1 : (toAdele F E x).2 P * (toAdele F E (x⁻¹ : (AE F E)ˣ)).2 P = 1`. Rewrite using `[← ev_mul, ← RingHom.map_mul, Units.mul_inv, RingHom.map_one]`. Both sides reduce to the same expression. Establish `e2` using `congrArg Valued.v e1`. Rewrite `e2` using `[map_mul, map_one]`.
-
-Establish `e3 : toIdele F E x = localIdele P (Units.mkOfMulEqOne _ _ e1)` using `Units.ext (by`. Rewrite using `[coe_toIdele]`. Use `conv_lhs => rw [hx, toAdele_mix]`. Conclude with `mix_eq_localIdele (of_isPrimeIdem h hp).1 _ _ rfl)`. Express the relevant statement in the definitionally equal form `χ.toHom (toIdele F E x) = 1`.
-
-Rewrite using `[e3]`. Conclude with `hχ _ (eq_one_of_one_le_mul_left (h1 P) (h2 P) e2.ge)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnramAt_iff (χ : UnitaryHeckeChar E) (P : HeightOneSpectrum (𝓞 E)) :
     IsUnramAt σ (pull F χ) P ↔ χ.IsUnramifiedAt P := by
@@ -877,9 +859,9 @@ theorem isUnramAt_iff (χ : UnitaryHeckeChar E) (P : HeightOneSpectrum (𝓞 E))
     exact hχ _ (eq_one_of_one_le_mul_left (h1 P) (h2 P) e2.ge)
 
 /- English proof (translation)
-Distinguish the cases in `hχ : χ.IsUnramifiedAt P`. Establish `hc : IsUnramAt σ (pull F χ) P ∧ ∃ x, IsUnifIdele σ P x` using `⟨(isUnramAt_iff h χ P).2 hχ, exists_isUnifIdele h P⟩`. Take `⟨ϖ, hϖ, -, e⟩` from `(isUnifIdele_iff h P _).1 hc.2.choose_spec`. Rewrite using `[chiAt, dif_pos hc, χ.valueAt_eq hχ hϖ]`. Conclude with `congrArg (fun y => ((χ.toHom y : Circle) : ℂ)) e`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[chiAt, dif_neg fun hc => hχ ((isUnramAt_iff h χ P).1 hc.1), χ.valueAt_of_ramified hχ]`.
+A detailed English derivation is pending.
 -/
 theorem chiAt_eq (χ : UnitaryHeckeChar E) (P : HeightOneSpectrum (𝓞 E)) :
     chiAt σ (pull F χ) P = χ.valueAt P := by
@@ -892,7 +874,7 @@ theorem chiAt_eq (χ : UnitaryHeckeChar E) (P : HeightOneSpectrum (𝓞 E)) :
   · rw [chiAt, dif_neg fun hc => hχ ((isUnramAt_iff h χ P).1 hc.1), χ.valueAt_of_ramified hχ]
 
 /- English proof (translation)
-Rewrite using `[lfac, chiAt_eq h]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem lfac_eq (χ : UnitaryHeckeChar E) (P : HeightOneSpectrum (𝓞 E)) (s : ℂ) :
     lfac σ (pull F χ) P s = χ.eulerFactor P s := by

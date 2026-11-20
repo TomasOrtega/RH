@@ -27,7 +27,7 @@ def realMap (T : H ≃ₗᵢ⋆[ℂ] H') : H →L[ℝ] H' where
   cont := T.continuous
 
 /- English proof (translation)
-Introduce `k Xs hX`. Simplify using `only [← h]`. Conclude with `(realMap T).contDiff.comp (hw k Xs hX)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem smoothVec_map (T : H ≃ₗᵢ⋆[ℂ] H') (h : ∀ g v, T (σ g v) = σ' g (T v)) {L : Set (Matrix (Fin n) (Fin n) ℂ)}
     {w : H} (hw : SmoothVec L σ w) : SmoothVec L σ' (T w) := by
@@ -36,7 +36,7 @@ theorem smoothVec_map (T : H ≃ₗᵢ⋆[ℂ] H') (h : ∀ g v, T (σ g v) = σ
   exact (realMap T).contDiff.comp (hw k Xs hX)
 
 /- English proof (translation)
-Establish `: lowKSub ε lam σ ≤ (lowKSub ε lam σ).comap (σ g : H →ₗ[ℂ] H)` using `sSup_le fun S hS x hx => (le_sSup (s := {S | IsKTypeOf ε σ (Formalism.QuantumDeterminants.lowK ε lam) S}) hS) (hS.2.1 g hg x hx)`. Conclude with `this hw`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem lowKSub_stab {lam : Fin n → ℝ} {g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ Formalism.REAL.Kset ε) {w : H}
     (hw : w ∈ lowKSub ε lam σ) : σ g w ∈ lowKSub ε lam σ := by
@@ -45,9 +45,9 @@ theorem lowKSub_stab {lam : Fin n → ℝ} {g : Matrix (Fin n) (Fin n) ℂ} (hg 
   exact this hw
 
 /- English proof (translation)
-Establish `: lowKSub ε lam σ ≤ (lowKSub ε' (nr lam) σ').comap (T.symm.toLinearEquiv : H →ₗ⋆[ℂ] H')`. Use `sSup_le fun S hS x hx => ?_` and prove the remaining obligations. Establish `h1` using `ktype_transfer (sg_symm he) T.symm (symm_inter T h) hS`. Rewrite `h1` using `[← lowK_rev he]`. Use `(le_sSup (s := {S | IsKTypeOf ε' σ' (Formalism.QuantumDeterminants.lowK ε' (nr lam)) S}) h1) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `show T (T.symm x) ∈ S`. Simplify using `using hx`. Conclude with `this hw`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem lowKSub_transfer (he : ∀ a, ε' a = ε a.rev) (T : H' ≃ₗᵢ⋆[ℂ] H) (h : ∀ g v, T (σ' g v) = σ (rv g) (T v))
     {lam : Fin n → ℝ} {w : H} (hw : w ∈ lowKSub ε lam σ) : T.symm w ∈ lowKSub ε' (nr lam) σ' := by
@@ -64,19 +64,19 @@ def prm (ε ε' : Fin n → Bool) : Equiv.Perm (Fin n) :=
   ((Fin.revPerm.trans (revNeg ε')).trans Fin.revPerm).trans (revNeg ε).symm
 
 /- English proof (translation)
-Simplify using `[prm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem revNeg_prm (a : Fin n) : revNeg ε (prm ε ε' a) = (revNeg ε' a.rev).rev := by
   simp [prm]
 
 /- English proof (translation)
-Rewrite using `[← eps_revNeg ε (prm ε ε' a), revNeg_prm, ← he (revNeg ε' a.rev), eps_revNeg ε' a.rev, he, Fin.rev_rev]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem eps_prm (he : ∀ a, ε' a = ε a.rev) (a : Fin n) : ε (prm ε ε' a) = ε a := by
   rw [← eps_revNeg ε (prm ε ε' a), revNeg_prm, ← he (revNeg ε' a.rev), eps_revNeg ε' a.rev, he, Fin.rev_rev]
 
 /- English proof (translation)
-Establish `h1` using `wt_transfer (sg_symm he) T.symm (symm_inter T h) (isWtOn_perm hU (prm ε ε') (eps_prm he) hw)`. Use `h1 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `a`. Simplify using `only [lowK_rev he, nr, revNeg_prm, Fin.rev_rev]`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem ext_transfer (he : ∀ a, ε' a = ε a.rev) (T : H' ≃ₗᵢ⋆[ℂ] H) (h : ∀ g v, T (σ' g v) = σ (rv g) (T v))
     (hU : IsURepOn (UJset ε) σ) {lam : Fin n → ℝ} {w : H}
@@ -93,9 +93,9 @@ end Gen
 variable {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar}
 
 /- English proof (translation)
-Establish `e : rv ((M.fr τ).submatrix Fin.revPerm (Equiv.refl _) * g * ((M.fr τ).submatrix Fin.revPerm (Equiv.refl _))⁻¹) = M.fr τ * g * (M.fr τ)⁻¹`. Rewrite using `[inv_submatrix_equiv]`. Establish `: (M.fr τ).submatrix Fin.revPerm (Equiv.refl _) * g * (M.fr τ)⁻¹.submatrix (Equiv.refl _) Fin.revPerm = rv (M.fr τ * g * (M.fr τ)⁻¹)`. Use extensionality with `i j`. Simplify using `[rv, Matrix.mul_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[this, rv_rv]`. Use `show M.σ τ (rv ((M.fr τ).submatrix Fin.revPerm (Equiv.refl _) * g * ((M.fr τ).submatrix Fin.revPerm (Equiv.refl _))⁻¹)) (cj _ w) = M.σ τ (M.fr τ * g * (M.fr τ)⁻¹) (cj _ w)`. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_rep (M : DSModel V S) (τ : D.what₂.Tau) (g : Matrix (Fin V.rank) (Fin V.rank) ℂ) (w : (conjModel M).H τ) :
     cj (M.H τ) ((conjModel M).rep τ g w) = M.rep τ g (cj (M.H τ) w) := by
@@ -112,9 +112,9 @@ theorem conj_rep (M : DSModel V S) (τ : D.what₂.Tau) (g : Matrix (Fin V.rank)
   rw [e]
 
 /- English proof (translation)
-Take `⟨_, -, hσ, -⟩` from `M.ds τ`. Establish `hs : M.sm τ = smooth (gramAt D V τ) (M.rep τ)` using `Submodule.span_eq (smooth (gramAt D V τ) (M.rep τ))`. Establish `hP` using `M.fr_unit τ`. Establish `h` using `M.fr_gram τ`. Establish `hu' : (u : M.H τ) ∈ smooth (gramAt D V τ) (M.rep τ)` using `hs ▸ u.2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : M.rep τ ((M.fr τ)⁻¹ * g * M.fr τ) = M.σ τ g` using `congrArg (M.σ τ) (conj_conj hP g)`. Rewrite using `[← e]`. Conclude with `translate_mem (isUnit_gram hP h) (isURepOn_conj hσ hP h) (conj_inv_mem hP h hg) hu'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smooth_translate (M : DSModel V S) (τ : D.what₂.Tau) (u : M.sm τ) {g : Matrix (Fin V.rank) (Fin V.rank) ℂ}
     (hg : g ∈ UJset (M.ε τ)) : SmoothVec (lieAt V τ) (M.rep τ) (M.σ τ g u) := by
@@ -128,11 +128,11 @@ theorem smooth_translate (M : DSModel V S) (τ : D.what₂.Tau) (u : M.sm τ) {g
   exact translate_mem (isUnit_gram hP h) (isURepOn_conj hσ hP h) (conj_inv_mem hP h hg) hu'
 
 /- English proof (translation)
-Introduce `D V S M v hv`. Establish `he : ∀ τ a, (conjModel M).ε τ a = M.ε τ a.rev` using `fun _ _ => rfl`. Establish `hK` using `fun τ => pM_mem (prm (M.ε τ) ((conjModel M).ε τ)) (eps_prm (he τ))`. Establish `hU : ∀ τ, IsURepOn (UJset (M.ε τ)) (M.σ τ)` using `fun τ => (M.ds τ).2.2.1`. Set `c : ∀ τ, (conjModel M).H τ ≃ₗᵢ⋆[ℂ] M.H τ` to `fun τ => cj (M.H τ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hc : ∀ τ g y, c τ ((conjModel M).σ τ g y) = M.σ τ (rv g) (c τ y)` using `fun _ _ _ => rfl`. Establish `hr : ∀ τ g y, (c τ).symm (M.rep τ g y) = (conjModel M).rep τ g ((c τ).symm y)` using `fun τ g y => by`. Apply `(c τ).injective` to reduce the goal to its premises. Rewrite using `[LinearIsometryEquiv.apply_symm_apply]`. Conclude with `(conj_rep M τ g _).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨conjModel M, c, fun τ => ⟨(c τ).symm (M.σ τ (pM (prm (M.ε τ) ((conjModel M).ε τ))) (v τ)), Submodule.subset_span (smoothVec_map (c τ).symm (hr τ) (smooth_translate M τ (v τ) (kset_uj (hK τ))))⟩, fun τ g _ y => conj_rep M τ g y, fun τ => ⟨?_, ?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[LinearIsometryEquiv.norm_map, (hU τ).2.1 _ (kset_uj (hK τ)), (hv τ).1]`. Conclude with `lowKSub_transfer (he τ) (c τ) (hc τ) (lowKSub_stab (hK τ) (hv τ).2.1)`. Conclude with `ext_transfer (he τ) (c τ) (hc τ) (hU τ) (hv τ).2.2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_conjModel_ext : ∀ (D : D7) (V : HSp D) (S : D.what₂.Tau → SPar) (M : DSModel V S) (v : M.Vec), IsExtVec M v → ∃ (M' : DSModel V (fun τ => dualPar (S τ))) (c : ∀ τ, M'.H τ ≃ₗᵢ⋆[ℂ] M.H τ) (v' : M'.Vec), (∀ τ, ∀ g ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ), ∀ y, c τ (M'.rep τ g y) = M.rep τ g (c τ y)) ∧ IsExtVec M' v' := by
   intro D V S M v hv

@@ -13,28 +13,28 @@ def op {d : ℕ} (P : Matrix (Fin d) (Fin d) ℂ) :
   LinearMap.toContinuousLinearMap (Matrix.toLpLin 2 2 P)
 
 /- English proof (translation)
-Simplify using `[op, Matrix.toLpLin_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem op_apply {d : ℕ} (P : Matrix (Fin d) (Fin d) ℂ) (x : EuclideanSpace ℂ (Fin d)) :
     op P x = WithLp.toLp 2 (P *ᵥ x.ofLp) := by
   simp [op, Matrix.toLpLin_apply]
 
 /- English proof (translation)
-Use `ext1 x`. Simplify using `[op_apply, Matrix.mulVec_mulVec]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem op_mul {d : ℕ} (P Q : Matrix (Fin d) (Fin d) ℂ) : op (P * Q) = op P * op Q := by
   ext1 x
   simp [op_apply, Matrix.mulVec_mulVec]
 
 /- English proof (translation)
-Use `ext1 x`. Simplify using `[op_apply]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem op_one {d : ℕ} : op (1 : Matrix (Fin d) (Fin d) ℂ) = 1 := by
   ext1 x
   simp [op_apply]
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simp [op_one]`. Consider the case `succ k ih => rw [pow_succ, pow_succ, op_mul, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem op_pow {d : ℕ} (P : Matrix (Fin d) (Fin d) ℂ) (k : ℕ) : op (P ^ k) = op P ^ k := by
   induction k with
@@ -42,7 +42,7 @@ theorem op_pow {d : ℕ} (P : Matrix (Fin d) (Fin d) ℂ) (k : ℕ) : op (P ^ k)
   | succ k ih => rw [pow_succ, pow_succ, op_mul, ih]
 
 /- English proof (translation)
-Establish `: ((op P : EuclideanSpace ℂ (Fin d) →L[ℂ] EuclideanSpace ℂ (Fin d)) : EuclideanSpace ℂ (Fin d) →ₗ[ℂ] EuclideanSpace ℂ (Fin d)) = Matrix.toEuclideanLin P` using `rfl`. Rewrite using `[this, Matrix.toEuclideanLin_eq_toLin_orthonormal, Matrix.trace_toLin_eq]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem trace_op {d : ℕ} (P : Matrix (Fin d) (Fin d) ℂ) :
     LinearMap.trace ℂ _ ((op P : EuclideanSpace ℂ (Fin d) →L[ℂ] EuclideanSpace ℂ (Fin d)) :
@@ -67,7 +67,7 @@ variable {B : Type} [Fintype B] [DecidableEq B] {n : B → Type} [∀ w, Fintype
   [∀ w, DecidableEq (n w)]
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [kron, Matrix.mul_apply, Matrix.of_apply]`. Rewrite using `[Finset.prod_univ_sum]`. Simplify using `[Fintype.piFinset_univ, Finset.prod_mul_distrib]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem kron_mul (M N : ∀ w, Matrix (n w) (n w) ℂ) :
     kron M * kron N = kron fun w => M w * N w := by
@@ -77,9 +77,9 @@ theorem kron_mul (M N : ∀ w, Matrix (n w) (n w) ℂ) :
   simp [Fintype.piFinset_univ, Finset.prod_mul_distrib]
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [kron, Matrix.of_apply]`. Distinguish the cases in `h : a = b`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Take `⟨w, hw⟩` from `Function.ne_iff.mp h`. Rewrite using `[Matrix.one_apply_ne h]`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ w) (Matrix.one_apply_ne hw)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kron_one : kron (fun w => (1 : Matrix (n w) (n w) ℂ)) = 1 := by
   ext a b
@@ -92,7 +92,7 @@ theorem kron_one : kron (fun w => (1 : Matrix (n w) (n w) ℂ)) = 1 := by
     exact Finset.prod_eq_zero (Finset.mem_univ w) (Matrix.one_apply_ne hw)
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simp [kron_one]`. Consider the case `succ k ih => simp only [pow_succ, ih, kron_mul]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem kron_pow (M : ∀ w, Matrix (n w) (n w) ℂ) (k : ℕ) :
     kron M ^ k = kron fun w => M w ^ k := by
@@ -101,7 +101,7 @@ theorem kron_pow (M : ∀ w, Matrix (n w) (n w) ℂ) (k : ℕ) :
   | succ k ih => simp only [pow_succ, ih, kron_mul]
 
 /- English proof (translation)
-Simplify using `only [Matrix.trace, Matrix.diag, kron, Matrix.of_apply]`. Rewrite using `[Finset.prod_univ_sum]`. Simplify using `[Fintype.piFinset_univ]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem trace_kron (M : ∀ w, Matrix (n w) (n w) ℂ) :
     (kron M).trace = ∏ w, (M w).trace := by
@@ -110,7 +110,7 @@ theorem trace_kron (M : ∀ w, Matrix (n w) (n w) ℂ) :
   simp [Fintype.piFinset_univ]
 
 /- English proof (translation)
-Simplify using `only [Matrix.mulVec, dotProduct, kron, Matrix.of_apply]`. Rewrite using `[Finset.prod_univ_sum]`. Simplify using `[Fintype.piFinset_univ, Finset.prod_mul_distrib]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem kron_mulVec (M : ∀ w, Matrix (n w) (n w) ℂ) (a : ∀ w, n w → ℂ) (x : ∀ w, n w) :
     (kron M *ᵥ fun y => ∏ w, a w (y w)) x = ∏ w, (M w *ᵥ a w) (x w) := by
@@ -121,23 +121,23 @@ theorem kron_mulVec (M : ∀ w, Matrix (n w) (n w) ℂ) (a : ∀ w, n w → ℂ)
 end Kron
 
 /- English proof (translation)
-Set `e` to `Fintype.equivFin J`. Set `R` to `Matrix.reindexAlgEquiv ℂ ℂ e`. Establish `hD : ∀ c : ι → ℂ, R (Matrix.diagonal fun j => c (b j)) = Matrix.diagonal fun j => c (b (e.symm j))`. Introduce `c`. Use extensionality with `i j`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Simplify using `[R, Matrix.reindexAlgEquiv_apply, Matrix.diagonal_apply]`. Use `⟨Fintype.card J, b ∘ e.symm, op (R A), ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `c`. Establish `h` using `(hc c).eq`. Establish `h2` using `congrArg (fun Z => op (R Z)) h`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [map_mul, op_mul, hD] at h2`. Conclude with `h2`. Introduce `c k`. Establish `: (op (R A) ^ k * diagOp (b ∘ e.symm) c) = op (R (A ^ k * Matrix.diagonal fun j => c (b j)))`. Rewrite using `[map_mul, map_pow, hD, op_mul, op_pow]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[this, trace_op]`. Simplify using `only [R, Matrix.reindexAlgEquiv_apply, Matrix.reindex_apply, Matrix.trace, Matrix.diag, Matrix.submatrix_apply]`. Conclude with `Equiv.sum_comp e.symm fun j => (A ^ k * Matrix.diagonal fun j => c (b j)) j j`. Introduce `i₀ v hv hA hs`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨WithLp.toLp 2 (v ∘ e.symm), ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `h`. Apply `hv` to reduce the goal to its premises. Use function extensionality and compare the values at `j`. Establish `h1` using `congrArg (fun x : EuclideanSpace ℂ (Fin (Fintype.card J)) => x.ofLp (e j)) h`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using h1`. Rewrite using `[op_apply]`. Use `congr 1`. Establish `h1 : R A = A.submatrix e.symm e.symm`. Simplify using `[R, Matrix.reindexAlgEquiv_apply, Matrix.reindex_apply]`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [h1]`. Rewrite using `[Matrix.submatrix_mulVec_equiv]`. Establish `h2 : (v ∘ e.symm) ∘ e.symm.symm = v`. Use function extensionality and compare the values at `j`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[h2, hA]`. Introduce `c`. Rewrite using `[diagOp_eq, op_apply]`. Use `congr 1`. Use function extensionality and compare the values at `j`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Simplify using `only [Matrix.mulVec_diagonal, Function.comp_apply, Pi.smul_apply, smul_eq_mul]`. Distinguish the cases in `h0 : v (e.symm j) = 0`. Simplify using `[h0]`. Rewrite using `[hs _ h0]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem transfer {ι J : Type} [Fintype J] [DecidableEq J] (b : J → ι) (A : Matrix J J ℂ)
     (hc : ∀ c : ι → ℂ, Commute A (Matrix.diagonal fun j => c (b j))) :
@@ -198,9 +198,9 @@ theorem transfer {ι J : Type} [Fintype J] [DecidableEq J] (b : J → ι) (A : M
         rfl
 
 /- English proof (translation)
-Use extensionality with `⟨i, a⟩ ⟨j, b⟩`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Distinguish the cases in `h2 : a = b`. Substitute `h2` using the available equality.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `[Matrix.blockDiagonal'_apply]`. Simplify using `[Matrix.blockDiagonal'_apply, Matrix.diagonal_apply, h2, Matrix.one_apply]`. Simplify using `[Matrix.blockDiagonal'_apply, Matrix.diagonal_apply, h]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem diagonal_sigma {ι : Type} [DecidableEq ι] {κ : ι → Type} [∀ i, DecidableEq (κ i)]
     (c : ι → ℂ) : (Matrix.diagonal fun j : (Σ i, κ i) => c j.1) =
@@ -215,7 +215,7 @@ theorem diagonal_sigma {ι : Type} [DecidableEq ι] {κ : ι → Type} [∀ i, D
   · simp [Matrix.blockDiagonal'_apply, Matrix.diagonal_apply, h]
 
 /- English proof (translation)
-Simplify using `only [Matrix.mulVec, dotProduct, Fintype.sum_sigma]`. Rewrite using `[Finset.sum_eq_single i]`. Simplify using `[Matrix.blockDiagonal'_apply]`. Introduce `j _ hj`. Simplify using `[Matrix.blockDiagonal'_apply, hj.symm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
 Simplify using the standard rewrite rules.
 -/
@@ -230,35 +230,33 @@ theorem blockDiagonal_mulVec {ι : Type} [Fintype ι] [DecidableEq ι] {κ : ι 
   · simp
 
 /- English proof (translation)
-Introduce `ι B _ _ X _ _ _ L`. Set `bs : ∀ i w, Module.Basis (Fin (Module.finrank ℂ (X i w))) ℂ (X i w)` to `fun i w => Module.finBasis ℂ (X i w)`. Set `M : ∀ i w, Matrix (Fin (Module.finrank ℂ (X i w))) (Fin (Module.finrank ℂ (X i w))) ℂ` to `fun i w => LinearMap.toMatrix (bs i w) (bs i w) (L i w)`. Set `T : ∀ i, Matrix (∀ w, Fin (Module.finrank ℂ (X i w))) (∀ w, Fin (Module.finrank ℂ (X i w))) ℂ` to `fun i => kron (M i)`. Set `A` to `Matrix.blockDiagonal' T`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hc : ∀ c : ι → ℂ, Commute A (Matrix.diagonal fun j : (Σ i, ∀ w, Fin (Module.finrank ℂ (X i w))) => c j.1)`. Introduce `c`. Rewrite using `[diagonal_sigma]`. Use `show A * _ = _ * A`. Simplify using `only [A]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Matrix.blockDiagonal'_mul, ← Matrix.blockDiagonal'_mul]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Take `⟨d, blk, u, h1, h2, h3⟩` from `transfer (fun j : (Σ i, ∀ w, Fin (Module.finrank ℂ (X i w))) => j.1) A hc`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨d, blk, u, h1, fun c k => ?_, fun i₀ h => ?_⟩` and prove the remaining obligations. Rewrite using `[h2, diagonal_sigma]`. Simplify using `only [A]`. Rewrite using `[← Matrix.blockDiagonal'_pow, ← Matrix.blockDiagonal'_mul, Matrix.trace_blockDiagonal']`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hT : ∀ w, LinearMap.trace ℂ _ (L i w ^ k) = (M i w ^ k).trace`. Introduce `w`. Rewrite using `[LinearMap.trace_eq_matrix_trace ℂ (bs i w), ← LinearMap.toMatrix_pow]`. Simplify using `only [Pi.pow_apply, Matrix.mul_smul, mul_one, Matrix.trace_smul, smul_eq_mul, hT, T, kron_pow, trace_kron]`. Establish `hy : ∀ i w, ∃ y : X i w, i = i₀ → (y ≠ 0 ∧ L i w y = y)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i w`. Distinguish the cases in `hi : i = i₀`. Substitute `hi` using the available equality. Take `⟨y, hy⟩` from `h w`. Conclude with `⟨y, fun _ => hy⟩`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `⟨0, fun h => absurd h hi⟩`. Use `choose y hy using hy`. Set `a : ∀ i w, Fin (Module.finrank ℂ (X i w)) → ℂ` to `fun i w => (bs i w).repr (y i w)`. Establish `hMa : ∀ w, M i₀ w *ᵥ a i₀ w = a i₀ w`. Introduce `w`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [M, a]`. Rewrite using `[LinearMap.toMatrix_mulVec_repr, (hy i₀ w rfl).2]`. Establish `hne : ∀ w, ∃ x, a i₀ w x ≠ 0`. Introduce `w`. Assume the negation of the conclusion as `hcon`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Use `push_neg at hcon`. Apply `(hy i₀ w rfl).1` to reduce the goal to its premises. Apply `(bs i₀ w).repr.map_eq_zero_iff.mp` to reduce the goal to its premises. Use extensionality with `x`. Conclude with `hcon x`.
+By extensionality, compare the relevant components. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `choose x hx using hne`. Set `v : (Σ i, ∀ w, Fin (Module.finrank ℂ (X i w))) → ℂ` to `fun j => if j.1 = i₀ then ∏ w, a j.1 w (j.2 w) else 0`. Use `h3 i₀ v ?_ ?_ ?_` and prove the remaining obligations. Introduce `h0`. Establish `h1` using `congrFun h0 ⟨i₀, x⟩`.
+Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Simplify using `only [v, if_true, Pi.zero_apply] at h1`. Conclude with `(Finset.prod_ne_zero_iff.mpr fun w _ => hx w) h1`. Use function extensionality and compare the values at `⟨i, α⟩`. Simplify using `only [A]`. Rewrite using `[blockDiagonal_mulVec]`.
+Substitute using the available equality. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hi : i = i₀`. Substitute `hi` using the available equality. Establish `hv : (fun β => v ⟨i, β⟩) = fun β => ∏ w, a i w (β w)`. Use function extensionality and compare the values at `β`. Simplify using `[v]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[hv]`. Simplify using `only [T]`. Rewrite using `[kron_mulVec]`. Simplify using `[v, hMa]`. Establish `hv : (fun β => v ⟨i, β⟩) = 0`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Use function extensionality and compare the values at `β`. Simplify using `[v, hi]`. Rewrite using `[hv]`. Simplify using `[v, hi]`. Introduce `j hj`.
-
-Assume the negation of the conclusion as `hb`. Conclude with `hj (by simp [v, hb])`.
+A detailed English derivation is pending.
 -/
 theorem uModel : UModel := by
   classical

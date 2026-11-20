@@ -4,19 +4,19 @@ open Set UpperTheory.V.Af UpperTheory.V.Sd
 open scoped ComplexConjugate
 
 /- English proof (translation)
-Introduce `hRS hR hAF hAS k L _ hk χ ψ g h hap hχ s hs`. Establish `hrec1 : Rs.Rec (fun p => χ (p : ZMod L) * (p:ℂ)^(k-1)) (coef g.f)` using `⟨g.one, fun p hp n hn => g.eig p hp n hn⟩`. Establish `hrec2 : Rs.Rec (fun p => ψ (p : ZMod L) * (p:ℂ)^(k-1)) (coef h.f)` using `⟨h.one, fun p hp n hn => h.eig p hp n hn⟩`. Establish `hba : ∀ p, Nat.Prime p → coef h.f p = coef g.f p` using `fun p hp => hap p hp`. Establish `hz : ∀ p, Nat.Prime p → χ (p : ZMod L) * (p:ℂ)^(k-1) ≠ ψ (p : ZMod L) * (p:ℂ)^(k-1) → coef g.f p = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `p hp hne`. Apply `hχ p hp` to reduce the goal to its premises. Introduce `heq`. Apply `hne` to reduce the goal to its premises. Rewrite using `[heq]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hbd : ∀ p, Nat.Prime p → ‖χ (p : ZMod L) * (p:ℂ)^(k-1)‖ ≤ (p:ℝ)^(k-1) ∧ ‖ψ (p : ZMod L) * (p:ℂ)^(k-1)‖ ≤ (p:ℝ)^(k-1)`. Introduce `p hp`. Apply the tactic sequence `constructor <;>`. Rewrite using `[norm_mul, norm_pow, Complex.norm_natCast]`. Conclude with `mul_le_of_le_one_left (by positivity) (DirichletCharacter.norm_le_one _ _)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨P, hPb, hP⟩` from `hAF (k-1) _ _ (coef g.f) (coef h.f) hrec1 hrec2 hba hz hbd`. Establish `hkt : ((k-1 : ℕ) : ℝ) + 1 ≤ (k:ℝ) + s - 1`. Rewrite using `[Nat.cast_sub hk]`. Use `push_cast`. Combine the linear relations using `[hs.1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `key` using `hAS (k-1) ((k:ℝ) + s - 1) (coef g.f) (coef h.f) P hkt hPb hP (hRS k L g.f s hs)`. Rewrite using `[hR k L g.f g.f s hs, hR k L g.f h.f s hs, norm_mul, norm_mul]`. Establish `hconv : (∑' n : ℕ, (starRingEnd ℂ) (coef g.f n) * coef g.f n / (((n:ℝ) ^ ((k:ℝ) + s - 1) : ℝ) : ℂ)) = ((∑' n : ℕ, ‖coef g.f n‖ ^ 2 / (n:ℝ) ^ ((k:ℝ) + s - 1) : ℝ) : ℂ)`. Rewrite using `[Complex.ofReal_tsum]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `n`. Rewrite using `[Complex.conj_mul']`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hnn : 0 ≤ ∑' n : ℕ, ‖coef g.f n‖ ^ 2 / (n:ℝ) ^ ((k:ℝ) + s - 1)` using `tsum_nonneg fun n => div_nonneg (by positivity) (Real.rpow_nonneg (Nat.cast_nonneg n) _)`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hconv, Complex.norm_of_nonneg hnn]`. Establish `hre` using `Complex.re_le_norm (∑' n : ℕ, (starRingEnd ℂ) (coef h.f n) * coef g.f n / (((n:ℝ) ^ ((k:ℝ) + s - 1) : ℝ) : ℂ))`. Establish `hg` using `norm_nonneg ((Rs.gam ((k:ℝ) + s - 1) : ℝ) : ℂ)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Af.Rs.cmp :
     UpperTheory.V.Af.Rs.RankSum → UpperTheory.V.Af.Rs.Rankin → UpperTheory.V.Af.Rs.ArFact → UpperTheory.V.Af.Rs.ArSum → UpperTheory.V.Af.Rs.Cmp := by

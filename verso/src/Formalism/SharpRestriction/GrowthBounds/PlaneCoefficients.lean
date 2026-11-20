@@ -26,19 +26,19 @@ namespace Formalism.MainNotions.PairMembershipBlocks
 open Formalism.MainNotions.TestSideCounting Formalism.MainNotions.TestSideWords
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨trDerPl, trDerNo, trMulPl, trMulNo, plDer, plEul, plMul, h, geoTop, geoTouch⟩`.
+Supply the required witnesses or components.
 -/
 theorem opSteps_of (h : NoOpStep) : OpSteps :=
   ⟨trDerPl, trDerNo, trMulPl, trMulNo, plDer, plEul, plMul, h, geoTop, geoTouch⟩
 
 /- English proof (translation)
-The claim follows from `restWord_of D CLa Ck Crk Cdeg restLeOfG (restOneOp_of h D CLa Ck Crk Cdeg) (restWordBound D CLa Ck Crk Cdeg)`.
+A detailed English derivation is pending.
 -/
 theorem restWord_of_steps (h : OpSteps) (D : Formalism.BasicNotions.D7) (CLa Ck Crk Cdeg : ℝ) : RestWord D CLa Ck Crk Cdeg :=
   restWord_of D CLa Ck Crk Cdeg restLeOfG (restOneOp_of h D CLa Ck Crk Cdeg) (restWordBound D CLa Ck Crk Cdeg)
 
 /- English proof (translation)
-The claim follows from `memCondition_of_theoremII D CLa Ck Crk Cdeg (lemma5a_of_monomial D CLa Ck Crk Cdeg (rest5aMono_of_cut restT (restN D) restTh hPl restSP hAr D CLa Ck Crk Cdeg)) (restWord_of_steps (opSteps_of hNO) D CLa Ck Crk Cdeg)`.
+A detailed English derivation is pending.
 -/
 theorem restMEM_of_last (hNO : NoOpStep) (hPl : RestPl)
     (hAr : ∃ C₁ : ℝ, 0 < C₁ ∧ ∀ C : ℝ, C₁ ≤ C → ∀ CLa : ℝ, RestArithStep C CLa)
@@ -49,26 +49,26 @@ theorem restMEM_of_last (hNO : NoOpStep) (hPl : RestPl)
     (restWord_of_steps (opSteps_of hNO) D CLa Ck Crk Cdeg)
 
 /- English proof (translation)
-The claim follows from `Formalism.MainNotions.Proposition5Numerics.stmtE_of_mem D (fun CLa Ck Crk Cdeg => restMEM_of_last hNO hPl hAr D CLa Ck Crk Cdeg)`.
+A detailed English derivation is pending.
 -/
 theorem stmtE_of_last (D : Formalism.BasicNotions.D7) (hNO : NoOpStep) (hPl : RestPl)
     (hAr : ∃ C₁ : ℝ, 0 < C₁ ∧ ∀ C : ℝ, C₁ ≤ C → ∀ CLa : ℝ, RestArithStep C CLa) : tableLineDegreeFive.ClosedFormOfAdmitted D :=
   Formalism.MainNotions.Proposition5Numerics.stmtE_of_mem D (fun CLa Ck Crk Cdeg => restMEM_of_last hNO hPl hAr D CLa Ck Crk Cdeg)
 
 /- English proof (translation)
-The claim follows from `stmtE_of_last D Formalism.MainNotions.LetterSubstitution.noOpStep hPl ⟨1, one_pos, fun C hC CLa => arithCondition_of_one_le C CLa hC⟩`.
+A detailed English derivation is pending.
 -/
 theorem stmtE_of_pl (D : Formalism.BasicNotions.D7) (hPl : RestPl) : tableLineDegreeFive.ClosedFormOfAdmitted D :=
   stmtE_of_last D Formalism.MainNotions.LetterSubstitution.noOpStep hPl ⟨1, one_pos, fun C hC CLa => arithCondition_of_one_le C CLa hC⟩
 
 /- English proof (translation)
-The claim follows from `restLink_of Formalism.MainNotions.LetterSubstitution.valNN Formalism.MainNotions.LetterSubstitution.homDec hLL hDg hVr restTr (fun Fr jz μ => lkW Fr jz μ)`.
+A detailed English derivation is pending.
 -/
 theorem level_link_of_degree_letters (hLL : LinkL) (hDg : LkDeg) (hVr : LkVars) : RestLink :=
   restLink_of Formalism.MainNotions.LetterSubstitution.valNN Formalism.MainNotions.LetterSubstitution.homDec hLL hDg hVr restTr (fun Fr jz μ => lkW Fr jz μ)
 
 /- English proof (translation)
-Introduce `p _ n' r K m _ _ _ O _ _ _ _ hk Fr L₁ N₁ hV hE J _ Dt hT hJ A hA l hl ga hg t ht dPl`. Conclude with `⟨hC p n' r K m O hk Fr L₁ N₁ hV hE J Dt hT hJ A hA l hl ga hg t ht dPl, hL p n' r K m O hk Fr L₁ N₁ hV hE J Dt hT hJ A hA l hl ga hg t ht dPl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 private theorem restPl_of_restChain_of_restLink (hC : RestChain) (hL : RestLink) : RestPl := by
   intro p _ n' r K m _ _ _ O _ _ _ _ hk Fr L₁ N₁ hV hE J _ Dt hT hJ A hA l hl ga hg t ht dPl
@@ -76,12 +76,12 @@ private theorem restPl_of_restChain_of_restLink (hC : RestChain) (hL : RestLink)
     hL p n' r K m O hk Fr L₁ N₁ hV hE J Dt hT hJ A hA l hl ga hg t ht dPl⟩
 
 /- English proof (translation)
-The claim follows from `level_link_of_degree_letters linkL lkDeg lkVars`.
+A detailed English derivation is pending.
 -/
 theorem restLink : RestLink := level_link_of_degree_letters linkL lkDeg lkVars
 
 /- English proof (translation)
-The claim follows from `stmtE_of_pl D (restPl_of_restChain_of_restLink hC restLink)`.
+A detailed English derivation is pending.
 -/
 theorem stmtE_of_chain (D : Formalism.BasicNotions.D7) (hC : RestChain) : tableLineDegreeFive.ClosedFormOfAdmitted D :=
   stmtE_of_pl D (restPl_of_restChain_of_restLink hC restLink)

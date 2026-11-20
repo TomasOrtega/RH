@@ -29,17 +29,17 @@ Both sides reduce to the same expression.
 theorem mat_one : mat (1 : UA σ W.J) = 1 := rfl
 
 /- English proof (translation)
-Rewrite using `[← mat_mul, inv_mul_cancel, mat_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mat_inv_mul (g : UA σ W.J) : mat g⁻¹ * mat g = 1 := by rw [← mat_mul, inv_mul_cancel, mat_one]
 
 /- English proof (translation)
-Rewrite using `[← mat_mul, mul_inv_cancel, mat_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mat_mul_inv (g : UA σ W.J) : mat g * mat g⁻¹ = 1 := by rw [← mat_mul, mul_inv_cancel, mat_one]
 
 /- English proof (translation)
-Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mat_mul, ← Matrix.mulVec_mulVec, b.1, Matrix.mulVec_smul, a.1, smul_smul, Units.val_mul, mul_comm]`. Rewrite using `[mat_mul, ← Matrix.mulVec_mulVec, b.2.1, Matrix.mulVec_smul, a.2.1, smul_smul, ← map_mul, ← Units.val_mul, mul_inv_rev]`. Rewrite using `[mat_mul, Matrix.mul_assoc, b.2.2, ← Matrix.mul_assoc, a.2.2, Matrix.mul_assoc, mat_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem levi_mul {t t' : (AE F E)ˣ} {h h' : UA σ W₁.J} {m m' : UA σ W.J} (a : IsLevi H' t h m) (b : IsLevi H' t' h' m') :
     IsLevi H' (t * t') (h * h') (m * m') := by
@@ -49,11 +49,9 @@ theorem levi_mul {t t' : (AE F E)ˣ} {h h' : UA σ W₁.J} {m m' : UA σ W.J} (a
   · rw [mat_mul, Matrix.mul_assoc, b.2.2, ← Matrix.mul_assoc, a.2.2, Matrix.mul_assoc, mat_mul]
 
 /- English proof (translation)
-Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Establish `: mat m⁻¹ *ᵥ (mat m *ᵥ incV F H'.x) = incV F H'.x` using `by rw [Matrix.mulVec_mulVec, mat_inv_mul, Matrix.one_mulVec]`. Rewrite `this` using `[a.1, Matrix.mulVec_smul]`. Use `conv_rhs => rw [← this]`. Rewrite using `[smul_smul, Units.inv_mul, one_smul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: mat m⁻¹ *ᵥ (mat m *ᵥ incV F H'.y) = incV F H'.y` using `by rw [Matrix.mulVec_mulVec, mat_inv_mul, Matrix.one_mulVec]`. Rewrite `this` using `[a.2.1, Matrix.mulVec_smul]`. Use `conv_rhs => rw [← this]`. Rewrite using `[smul_smul, ← map_mul, inv_inv, Units.mul_inv, map_one, one_smul]`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, mat_mul_inv, Matrix.mul_one]`. Use `_ = _ := by rw [← a.2.2, ← Matrix.mul_assoc, mat_inv_mul, Matrix.one_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem levi_inv {t : (AE F E)ˣ} {h : UA σ W₁.J} {m : UA σ W.J} (a : IsLevi H' t h m) : IsLevi H' t⁻¹ h⁻¹ m⁻¹ := by
   refine ⟨?_, ?_, ?_⟩
@@ -70,11 +68,11 @@ theorem levi_inv {t : (AE F E)ˣ} {h : UA σ W₁.J} {m : UA σ W.J} (a : IsLevi
       _ = _ := by rw [← a.2.2, ← Matrix.mul_assoc, mat_inv_mul, Matrix.one_mul]
 
 /- English proof (translation)
-Proceed by induction on `hu using Subgroup.closure_induction with`. Consider the case `mem u hu`. Establish `b` using `levi_inv a`. Use `Subgroup.subset_closure ⟨?_, fun z => ?_⟩` and prove the remaining obligations. Rewrite using `[mat_mul, mat_mul, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, b.1, inv_one, Units.val_one, one_smul, hu.1, a.1, Units.val_one, one_smul]`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨c, hc⟩` from `hu.2 (mat h⁻¹ *ᵥ z)`. Use `⟨c, ?_⟩` and prove the remaining obligations. Rewrite using `[mat_mul, mat_mul, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, Matrix.mulVec_mulVec z, b.2.2, ← Matrix.mulVec_mulVec, hc, Matrix.mulVec_add, Matrix.mulVec_smul, a.1, Units.val_one, one_smul, Matrix.mulVec_mulVec, a.2.2, ← Matrix.mulVec_mulVec, Matrix.mulVec_mulVec z, mat_mul_ …`. Consider the case `one => simpa using one_mem _`. Consider the case `mul x y _ _ hx hy => have := mul_mem hx hy`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Simplify `this` using `[mul_assoc]`. Consider the case `inv x _ hx => have := inv_mem hx`. Simplify `this` using `[mul_assoc]`.
+Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem unip_conj {h : UA σ W₁.J} {m : UA σ W.J} (a : IsLevi H' 1 h m) {u} (hu : u ∈ unip σ W H') :
     m * u * m⁻¹ ∈ unip σ W H' := by
@@ -94,7 +92,7 @@ theorem unip_conj {h : UA σ W₁.J} {m : UA σ W.J} (a : IsLevi H' 1 h m) {u} (
   | inv x _ hx => have := inv_mem hx; simpa [mul_assoc] using this
 
 /- English proof (translation)
-Establish `e : m' * (u * m) = (m' * u * m'⁻¹) * ((m' * m * l⁻¹) * l)` using `by group`. Establish `k` using `levi_mul (levi_mul b a) (levi_inv c)`. Rewrite `k` using `[one_mul, inv_one, mul_one, mul_inv_cancel]`. Rewrite using `[e, hi _ (unip_conj b hu), hl t _ k]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem law_par {χ : Chr F E} {z : ℝ} {T : UA σ W.J → ℂ} (hl : HasLaw W₁ H' χ z T)
     (hi : ∀ u ∈ unip σ W H', ∀ h, T (u * h) = T h)
@@ -106,21 +104,21 @@ theorem law_par {χ : Chr F E} {z : ℝ} {T : UA σ W.J → ℂ} (hl : HasLaw W�
   rw [e, hi _ (unip_conj b hu), hl t _ k]
 
 /- English proof (translation)
-Introduce `u hu` and use `by rw [← Matrix.mul_smul, h u hu, Matrix.mul_zero]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem at_mul_left {R : Type} [Zero R] {ev : AF F → R} {a b c : Type} [Fintype b] (A : Matrix a b (AE F E))
     {Z : Matrix b c (AE F E)} (h : At ev Z) : At ev (A * Z) := fun u hu => by
   rw [← Matrix.mul_smul, h u hu, Matrix.mul_zero]
 
 /- English proof (translation)
-Introduce `u hu` and use `by rw [← Matrix.smul_mul, h u hu, Matrix.zero_mul]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem at_mul_right {R : Type} [Zero R] {ev : AF F → R} {a b c : Type} [Fintype b] {Z : Matrix a b (AE F E)}
     (h : At ev Z) (A : Matrix b c (AE F E)) : At ev (Z * A) := fun u hu => by
   rw [← Matrix.smul_mul, h u hu, Matrix.zero_mul]
 
 /- English proof (translation)
-Introduce `u hu` and use `by have e : mat (g * h) - 1 = (mat g - 1) * mat h + (mat h - 1) := by rw [mat_mul, Matrix.sub_mul, Matrix.one_mul]; abel rw [e, smul_add, at_mul_right a _ u hu, b u hu, add_zero]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem uat_mul {R : Type} [Zero R] {ev : AF F → R} {g h : UA σ W.J} (a : g ∈ UAt σ W ev) (b : h ∈ UAt σ W ev) :
     g * h ∈ UAt σ W ev := fun u hu => by
@@ -128,20 +126,20 @@ theorem uat_mul {R : Type} [Zero R] {ev : AF F → R} {g h : UA σ W.J} (a : g �
   rw [e, smul_add, at_mul_right a _ u hu, b u hu, add_zero]
 
 /- English proof (translation)
-Introduce `u hu` and use `by have e : mat g⁻¹ - 1 = -(mat g⁻¹ * (mat g - 1)) := by rw [Matrix.mul_sub, mat_inv_mul, Matrix.mul_one, neg_sub] rw [e, smul_neg, at_mul_left _ a u hu, neg_zero]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem uat_inv {R : Type} [Zero R] {ev : AF F → R} {g : UA σ W.J} (a : g ∈ UAt σ W ev) : g⁻¹ ∈ UAt σ W ev := fun u hu => by
   have e : mat g⁻¹ - 1 = -(mat g⁻¹ * (mat g - 1)) := by rw [Matrix.mul_sub, mat_inv_mul, Matrix.mul_one, neg_sub]
   rw [e, smul_neg, at_mul_left _ a u hu, neg_zero]
 
 /- English proof (translation)
-Introduce `u _` and use `by rw [mat_one, sub_self, smul_zero]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem uat_one {R : Type} [Zero R] {ev : AF F → R} : (1 : UA σ W.J) ∈ UAt σ W ev := fun u _ => by
   rw [mat_one, sub_self, smul_zero]
 
 /- English proof (translation)
-Proceed by induction on `h using Subgroup.closure_induction with`. Consider the case `mem u hu => exact hu`. Consider the case `one => exact uat_one`. Consider the case `mul x y _ _ hx hy => exact uat_mul hx hy`. Consider the case `inv x _ hx => exact uat_inv hx`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem uat_closure {R : Type} [Zero R] {ev : AF F → R} {g : UA σ W.J} (h : g ∈ Subgroup.closure (UAt σ W ev)) :
     g ∈ UAt σ W ev := by
@@ -152,9 +150,9 @@ theorem uat_closure {R : Type} [Zero R] {ev : AF F → R} {g : UA σ W.J} (h : g
   | inv x _ hx => exact uat_inv hx
 
 /- English proof (translation)
-Take `⟨rfl, A, hA⟩` from `h`. Introduce `h0`. Set `e : Fin (r + s) ≃ Fin r ⊕ Fin s` to `finSumFinEquiv.symm`. Establish `e1 : (A.submatrix e.symm id)ᵀ * M.submatrix e.symm e.symm * (A.submatrix e.symm id).map star = Matrix.fromBlocks 1 0 0 (-1)`. Rewrite using `[← hA, Matrix.transpose_submatrix, Matrix.submatrix_mul_equiv, ← Matrix.submatrix_map, Matrix.submatrix_mul_equiv]`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `e2` using `congrArg Matrix.det e1`. Rewrite `e2` using `[Matrix.det_mul, Matrix.det_mul, Matrix.det_submatrix_equiv_self, h0, Matrix.det_fromBlocks_zero₂₁]`. Simplify using `[Matrix.det_neg] at e2`. Conclude with `pow_ne_zero _ (by norm_num) e2.symm`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem det_of_sig {n r s : ℕ} {M : Matrix (Fin n) (Fin n) ℂ} (h : HasSig M r s) : M.det ≠ 0 := by
   obtain ⟨rfl, A, hA⟩ := h
@@ -170,9 +168,9 @@ theorem det_of_sig {n r s : ℕ} {M : Matrix (Fin n) (Fin n) ℂ} (h : HasSig M 
   exact pow_ne_zero _ (by norm_num) e2.symm
 
 /- English proof (translation)
-Take `⟨w⟩ : Nonempty (InfinitePlace F)` from `inferInstance`. Introduce `h0`. Apply `det_of_sig (h.sig w)` to reduce the goal to its premises. Rewrite using `[Matrix.det_smul]`. Establish `: (W.J.map (B.emb w).1).det = (B.emb w).1 W.J.det` using `((B.emb w).1.map_det W.J).symm`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this, h0, map_zero, mul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem det_skew {B : Base F E} {r s : ℕ} (h : W.IsSkew σ B r s) : W.J.det ≠ 0 := by
   obtain ⟨w⟩ : Nonempty (InfinitePlace F) := inferInstance
@@ -183,11 +181,11 @@ theorem det_skew {B : Base F E} {r s : ℕ} (h : W.IsSkew σ B r s) : W.J.det �
   rw [this, h0, map_zero, mul_zero]
 
 /- English proof (translation)
-Establish `hd : IsUnit W₁.Jᵀ.det` using `by rw [Matrix.det_transpose]; exact (det_skew hW).isUnit`. Set `P : Matrix (Fin d₁) (Fin d) E` to `W₁.Jᵀ⁻¹ * ((H'.ι.map σ)ᵀ * W.Jᵀ)`. Establish `hP : P * H'.ι = 1`. Use `congrArg Matrix.transpose hH.gram` as an intermediate fact. Rewrite `this` using `[Matrix.transpose_mul, Matrix.transpose_mul, Matrix.transpose_transpose]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, this, Matrix.nonsing_inv_mul _ hd]`. Establish `hP' : incM F P * incM F H'.ι = 1`. Rewrite using `[← GlobalTheory.ThK.Dbl.incM_mul, hP]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`. Establish `e : mat h₁ - 1 = incM F P * ((mat m - 1) * incM F H'.ι)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.sub_mul, a.2.2, Matrix.one_mul, Matrix.mul_sub, ← Matrix.mul_assoc, hP', Matrix.one_mul]`. Use `show At ev _`. Rewrite using `[e]`. Conclude with `at_mul_left _ (at_mul_right hm _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem levi_at {B : Base F E} {i₀ i₁ r s : ℕ} (hH : H'.IsAdapted σ B W W₁ i₀ i₁) (hW : W₁.IsSkew σ B r s) {R : Type} [Zero R]
     {ev : AF F → R} {t} {h₁ : UA σ W₁.J} {m : UA σ W.J} (a : IsLevi H' t h₁ m) (hm : m ∈ UAt σ W ev) : h₁ ∈ UAt σ W₁ ev := by
@@ -206,9 +204,9 @@ theorem levi_at {B : Base F E} {i₀ i₁ r s : ℕ} (hH : H'.IsAdapted σ B W W
   exact at_mul_left _ (at_mul_right hm _)
 
 /- English proof (translation)
-Establish `h1` using `a.1`. Rewrite `h1` using `[mat_one, Matrix.one_mulVec]`. Set `y : Fin d → E` to `W.J *ᵥ fun i => σ (H'.y i)`. Establish `h2 : incV F H'.x ⬝ᵥ incV F y = 1`. Use `congrArg (inclR (F := F) (E := E) (AF F)) hH.xy` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `this` using `[form, dotProduct, incV, map_sum, y]`. Establish `h3` using `congrArg (· ⬝ᵥ incV F y) h1`. Simplify using `only [smul_dotProduct, h2, smul_eq_mul, mul_one] at h3`. Conclude with `Units.ext h3.symm`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem levi_t_one {B : Base F E} {i₀ i₁ : ℕ} (hH : H'.IsAdapted σ B W W₁ i₀ i₁) {t} {h₁ : UA σ W₁.J}
     (a : IsLevi H' t h₁ (1 : UA σ W.J)) : t = 1 := by

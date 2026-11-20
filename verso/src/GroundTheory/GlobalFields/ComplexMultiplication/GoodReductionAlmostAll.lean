@@ -10,7 +10,7 @@ noncomputable section
 variable {L : Type*} [Field L] [NumberField L]
 
 /- English proof (translation)
-Use `filter_upwards [eventually_mem_localizationAt E.a₁, eventually_mem_localizationAt E.a₂, eventually_mem_localizationAt E.a₃, eventually_mem_localizationAt E.a₄, eventually_mem_localizationAt E.a₆] with v h₁ h₂ h₃ h₄ h₆`. Conclude with `⟨⟨⟨_, h₁⟩, ⟨_, h₂⟩, ⟨_, h₃⟩, ⟨_, h₄⟩, ⟨_, h₆⟩⟩, rfl⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem eventually_exists_map_eq (E : WeierstrassCurve L) :
     ∀ᶠ v : HeightOneSpectrum (𝓞 L) in Filter.cofinite,
@@ -22,9 +22,9 @@ theorem eventually_exists_map_eq (E : WeierstrassCurve L) :
   exact ⟨⟨⟨_, h₁⟩, ⟨_, h₂⟩, ⟨_, h₃⟩, ⟨_, h₄⟩, ⟨_, h₆⟩⟩, rfl⟩
 
 /- English proof (translation)
-Establish `hW : algebraMap (localizationAt L v) L W.Δ = E.Δ`. Rewrite using `[← WeierstrassCurve.map_Δ, h]`. Rewrite using `[WeierstrassCurve.isElliptic_iff]`. Use `isUnit_iff_exists_inv.mpr ⟨⟨E.Δ⁻¹, hΔ⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `algebraMap (localizationAt L v) L W.Δ * E.Δ⁻¹ = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hW]`. Conclude with `mul_inv_cancel₀ E.isUnit_Δ.ne_zero`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isElliptic_of_map_eq {v : HeightOneSpectrum (𝓞 L)} {E : WeierstrassCurve L} [E.IsElliptic]
     {W : WeierstrassCurve (localizationAt L v)} (h : W.map (algebraMap (localizationAt L v) L) = E)
@@ -38,7 +38,7 @@ theorem isElliptic_of_map_eq {v : HeightOneSpectrum (𝓞 L)} {E : WeierstrassCu
   exact mul_inv_cancel₀ E.isUnit_Δ.ne_zero
 
 /- English proof (translation)
-Use `filter_upwards [eventually_exists_map_eq E, eventually_mem_localizationAt E.Δ⁻¹] with v ⟨W, h⟩ hΔ`. Conclude with `⟨W, isElliptic_of_map_eq h hΔ, h⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem eventually_exists_model (E : WeierstrassCurve L) [E.IsElliptic] :
     ∀ᶠ v : HeightOneSpectrum (𝓞 L) in Filter.cofinite,
@@ -48,7 +48,7 @@ theorem eventually_exists_model (E : WeierstrassCurve L) [E.IsElliptic] :
   exact ⟨W, isElliptic_of_map_eq h hΔ, h⟩
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `(W.map_j _).symm`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem algebraMap_j_of_map_eq {v : HeightOneSpectrum (𝓞 L)} {E : WeierstrassCurve L}
     [E.IsElliptic] {W : WeierstrassCurve (localizationAt L v)} [W.IsElliptic]
@@ -58,7 +58,7 @@ theorem algebraMap_j_of_map_eq {v : HeightOneSpectrum (𝓞 L)} {E : Weierstrass
   exact (W.map_j _).symm
 
 /- English proof (translation)
-Use `filter_upwards [eventually_isUnit_localizationAt (sub_ne_zero.mpr hj)] with v ⟨hmem, hu⟩ W W' _ _ h h'`. Establish `hsub : W.j - W'.j = ⟨E.j - E'.j, hmem⟩` using `Subtype.ext (congrArg₂ (· - ·) (algebraMap_j_of_map_eq h) (algebraMap_j_of_map_eq h'))`. Introduce `heq`. Use `(residue_ne_zero_iff_isUnit (W.j - W'.j)).mpr (hsub ▸ hu) ?_` and prove the remaining obligations. Rewrite using `[map_sub, heq, sub_self]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eventually_residue_j_ne {E E' : WeierstrassCurve L} [E.IsElliptic] [E'.IsElliptic]
     (hj : E.j ≠ E'.j) :
@@ -76,16 +76,14 @@ theorem eventually_residue_j_ne {E E' : WeierstrassCurve L} [E.IsElliptic] [E'.I
   rw [map_sub, heq, sub_self]
 
 /- English proof (translation)
-The claim follows from `W.map_j _`.
+A detailed English derivation is pending.
 -/
 theorem j_map_residue {R : Type*} [CommRing R] [IsLocalRing R] (W : WeierstrassCurve R)
     [W.IsElliptic] : (W.map (residue R)).j = residue R W.j :=
   W.map_j _
 
 /- English proof (translation)
-Establish `hd : ∀ i k, ∀ᶠ v : HeightOneSpectrum (𝓞 L) in Filter.cofinite, i ≠ k → ∀ (W W' : WeierstrassCurve (localizationAt L v)) [W.IsElliptic] [W'.IsElliptic], W.map (algebraMap (localizationAt L v) L) = E i → W'.map (algebraMap (localizationAt L v) L) = E k → residue (localizationAt L v …`. Introduce `i k`. Distinguish the cases in `hik : i = k`. Conclude with `Filter.Eventually.of_forall fun _ h => (h hik).elim`. Conclude with `(eventually_residue_j_ne (hE hik)).mono fun _ h _ => h`.
-
-Use `filter_upwards [Filter.eventually_all.mpr fun i => eventually_exists_model (E i), Filter.eventually_all.mpr fun i => Filter.eventually_all.mpr (hd i)] with v hm hdv`. Use `choose W hWe hWm using hm`. Conclude with `⟨W, hWe, hWm, fun i => algebraMap_j_of_map_eq (hWm i), fun i k hik => hdv i k hik (W i) (W k) (hWm i) (hWm k)⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem eventually_goodReduction {ι : Type*} [Finite ι] (E : ι → WeierstrassCurve L)
     [∀ i, (E i).IsElliptic] (hE : Pairwise fun i k => (E i).j ≠ (E k).j) :

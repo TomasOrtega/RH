@@ -4,13 +4,13 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Trans
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex GlobalTheory.EtC UpperTheory.Gal.TranscendenceTraces
 
 /- English proof (translation)
-Introduce `hF W V U r p _ _ Ω _ x M _ c`. Establish `hset : fib (r ≫ p) x = ⋃ y ∈ fib p x, fib r y`. Use extensionality with `z`. Simplify using `only [fib, Set.mem_setOf_eq, Set.mem_iUnion, exists_prop]`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce `hz`. Conclude with `⟨z ≫ r, by rw [Category.assoc]; exact hz, rfl⟩`. Introduce and unpack `⟨y, hy, hz⟩`. Rewrite using `[← Category.assoc, hz, hy]`. Establish `hdisj : (fib p x).PairwiseDisjoint (fun y => fib r y)`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `y₁ _ y₂ _ hne`. Use `Set.disjoint_left.mpr ?_` and prove the remaining obligations. Introduce `z h₁ h₂`. Apply `hne` to reduce the goal to its premises. Simplify using `only [fib, Set.mem_setOf_eq] at h₁ h₂`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Rewrite using `[← h₁, ← h₂]`. Express the relevant statement in the definitionally equal form `∑ᶠ z ∈ fib (r ≫ p) x, c z = ∑ᶠ y ∈ fib p x, ∑ᶠ z ∈ fib r y, c z`. Rewrite using `[hset]`. Conclude with `finsum_mem_biUnion hdisj (hF p Ω x) (fun y _ => hF r Ω y)`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.TranscendenceTraces.sumComp_of :
     FibFin → SumComp := by

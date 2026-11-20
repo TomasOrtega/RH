@@ -21,7 +21,7 @@ open GlobalTheory.ChainFr GlobalTheory.SquareComm
 variable {D : D7}
 
 /- English proof (translation)
-Unfold `gramAt`. Rewrite using `[h]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gramAt_eq_one {V : HSp D} (h : V.gram = 1) (τ : D.what₂.Tau) : gramAt D V τ = 1 := by
   unfold gramAt
@@ -37,21 +37,21 @@ def stdFr (V : HSp D) (h : V.gram = 1) : Fr V where
     simp [Formalism.REAL.Jm]
 
 /- English proof (translation)
-Simplify using `[Fr.cart, stdFr, Formalism.REAL.Jm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cart_stdFr (V : HSp D) (h : V.gram = 1) (τ : D.what₂.Tau) : (stdFr V h).cart τ = 1 := by
   simp [Fr.cart, stdFr, Formalism.REAL.Jm]
 
 /- English proof (translation)
-Simplify using `[Fr.onb, stdFr]`.
+Simplify using the standard rewrite rules.
 -/
 theorem onb_stdFr (V : HSp D) (h : V.gram = 1) (τ : D.what₂.Tau) : (stdFr V h).onb τ = 1 := by
   simp [Fr.onb, stdFr]
 
 /- English proof (translation)
-Simplify using `only [Fr.cart, frSgn, stdFr, Formalism.REAL.Jm]`. Use extensionality with `a b`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[Matrix.one_apply, hab]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cart_frSgn_true_stdFr (V : HSp D) (h : V.gram = 1) (τ : D.what₂.Tau) : (frSgn true (stdFr V h)).cart τ = -1 := by
   simp only [Fr.cart, frSgn, stdFr, Formalism.REAL.Jm]
@@ -61,15 +61,13 @@ theorem cart_frSgn_true_stdFr (V : HSp D) (h : V.gram = 1) (τ : D.what₂.Tau) 
   · simp [Matrix.one_apply, hab]
 
 /- English proof (translation)
-Simplify using `[Fr.cart, frSgn, stdFr, Formalism.REAL.Jm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cart_frSgn_false_stdFr (V : HSp D) (h : V.gram = 1) (τ : D.what₂.Tau) : (frSgn false (stdFr V h)).cart τ = 1 := by
   simp [Fr.cart, frSgn, stdFr, Formalism.REAL.Jm]
 
 /- English proof (translation)
-Use `⟨(Equiv.sumEmpty (Fin V.rank) (Fin 0)).symm, 1, ?_⟩` and prove the remaining obligations. Rewrite using `[gramAt_eq_one h τ]`. Use extensionality with `(a | a) (b | b)`. Simplify using `[Formalism.UG.Jpq, Formalism.UG.cT, Matrix.one_apply]`. Conclude with `b.elim0`.
-
-Conclude with `a.elim0`. Conclude with `a.elim0`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hasSignature_of_gram_eq_one {V : HSp D} (h : V.gram = 1) (τ : D.what₂.Tau) :
     Formalism.UG.HasSignature (gramAt D V τ) V.rank 0 := by

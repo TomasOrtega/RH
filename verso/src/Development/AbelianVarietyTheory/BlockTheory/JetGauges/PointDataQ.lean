@@ -127,7 +127,7 @@ section Basic₂
 variable {R : Type} [CommRing R] {d : ℕ} {O : Type} [CommRing O] [StarRing O]
 
 /- English proof (translation)
-Use `haveI : CharZero (FractionRing V) := charZero_of_injective_algebraMap (IsFractionRing.injective V (FractionRing V))`. Use `infer_instance`.
+A detailed English derivation is pending.
 -/
 theorem charZero_closure (V : Type) [CommRing V] [IsDomain V] [CharZero V] :
     CharZero (AlgebraicClosure (FractionRing V)) := by
@@ -135,7 +135,7 @@ theorem charZero_closure (V : Type) [CommRing V] [IsDomain V] [CharZero V] :
   infer_instance
 
 /- English proof (translation)
-Unfold `colValOf`. Distinguish the cases in `hc : c = 0`. Simplify using `[hc]`. Simplify using `[MvPolynomial.support_monomial, hc]`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem colValOf_monomial (B : FB R d O) (k : Type) [CommRing k] [Algebra ℚ k] [Algebra R k] (h : PS k 2 d) (w0 : O)
     (m : ℕ) {κ : Type} [Fintype κ] (u : κ → Fin d → k) {n : ℕ} (a : κ × Fin n →₀ ℕ) (c : k) (f : Fin n → PS k 1 d) :

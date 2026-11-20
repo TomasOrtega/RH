@@ -16,13 +16,13 @@ section Helpers
 variable {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {g : ℕ} {m : ℕ}
 
 /- English proof (translation)
-Simplify using `[d01]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem d01_zero_direction_eq_zero (f : Pt E g → Ext m) (Q : Pt E g) : d01 f Q 0 = 0 := by
   simp [d01]
 
 /- English proof (translation)
-Proceed by induction on `t using Finset.cons_induction with`. Consider the case `empty => simp [d01_zero_direction_eq_zero]`. Consider the case `cons a t ha ih => rw [Finset.sum_cons, Finset.sum_cons, Pullback.dbar_add_vector, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 private theorem d01_sum_direction_eq_sum (f : Pt E g → Ext m) (Q : Pt E g) {ι : Type} (t : Finset ι) (v : ι → Pt E g) :
     d01 f Q (∑ i ∈ t, v i) = ∑ i ∈ t, d01 f Q (v i) := by
@@ -31,9 +31,9 @@ private theorem d01_sum_direction_eq_sum (f : Pt E g → Ext m) (Q : Pt E g) {ι
   | cons a t ha ih => rw [Finset.sum_cons, Finset.sum_cons, Pullback.dbar_add_vector, ih]
 
 /- English proof (translation)
-Establish `hz : z • v = z.re • v + z.im • (Complex.I • v)` using `by conv_lhs => rw [← Complex.re_add_im z]`. Rewrite using `[add_smul, mul_smul, Complex.coe_smul, Complex.coe_smul]`. Rewrite using `[hz, Pullback.dbar_add_vector, Pullback.dbar_real_smul, Pullback.dbar_real_smul, Pullback.dbar_smul_I]`. Use `conv_rhs => rw [← Complex.re_add_im (star z)]`. Simplify using `only [Complex.star_def, Complex.conj_re, Complex.conj_im, add_smul, mul_smul, Complex.coe_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [Complex.ofReal_neg, neg_smul, smul_neg, smul_comm (z.im) Complex.I, neg_smul]`.
+A detailed English derivation is pending.
 -/
 private theorem d01_csmul (f : Pt E g → Ext m) (Q v : Pt E g) (z : ℂ) :
     d01 f Q (z • v) = star z • d01 f Q v := by
@@ -46,7 +46,7 @@ private theorem d01_csmul (f : Pt E g → Ext m) (Q v : Pt E g) (z : ℂ) :
   simp only [Complex.ofReal_neg, neg_smul, smul_neg, smul_comm (z.im) Complex.I, neg_smul]
 
 /- English proof (translation)
-Proceed by induction on `t using Finset.cons_induction with`. Consider the case `empty => simp [Pullback.wedge_zero]`. Consider the case `cons a t ha ih => rw [Finset.sum_cons, Finset.sum_cons, Pullback.wedge_add, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 private theorem wedge_sum' (i : Fin m) {ι : Type} (t : Finset ι) (w : ι → Ext m) :
     wedge i (∑ j ∈ t, w j) = ∑ j ∈ t, wedge i (w j) := by
@@ -57,21 +57,21 @@ private theorem wedge_sum' (i : Fin m) {ι : Type} (t : Finset ι) (w : ι → E
 end Helpers
 
 /- English proof (translation)
-Introduce `E _ _ _ g n B τ γ s hτ hτ' hs P hP`. Take `⟨hR, hRv⟩` from `GlobalTheory.T.reframe_vertical_derivative B τ γ hτ hτ' P hP`. Establish `hB : IsOpen B` using `hτ.1`. Establish `hcov : IsOpen (cov B g)` using `hB.prod isOpen_univ`. Establish `hRP : reframe τ γ P ∈ cov B g` using `⟨hP.1, trivial⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsR : DifferentiableAt ℝ s (reframe τ γ P)` using `(hs _ hRP).differentiableAt (hcov.mem_nhds hRP)`. Establish `hR' : DifferentiableAt ℝ (reframe τ γ) P` using `hR.restrictScalars ℝ`. Establish `hΦ : DifferentiableAt ℝ (fun b => frameAt n τ γ b) P.1` using `((GlobalTheory.T.contDiffOn_frameAt_of_isPeriodMap n B τ γ hτ hτ').differentiableOn (by simp) _ hP.1).differentiableAt (hB.mem_nhds hP.1)`. Use `set L := ContinuousLinearMap.restrictScalarsL ℂ (Ext (n + n + g)) (Ext (n + n + g)) ℝ ℝ with hL`. Use `set c : Pt E g → (Ext (n + n + g) →L[ℝ] Ext (n + n + g)) := fun Q => L (frameAt n τ γ Q.1) with hc`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc' : DifferentiableAt ℝ c P` using `L.differentiableAt.comp P (hΦ.comp P differentiableAt_fst)`. Establish `hu : DifferentiableAt ℝ (fun Q => s (reframe τ γ Q)) P` using `hsR.comp P hR'`. Establish `hcv : ∀ v : Pt E g, v.1 = 0 → fderiv ℝ c P v = 0`. Introduce `v hv`. Establish `: c = (fun b => L (frameAt n τ γ b)) ∘ Prod.fst` using `rfl`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hd : DifferentiableAt ℝ (fun b => L (frameAt n τ γ b)) P.1` using `L.differentiableAt.comp P.1 hΦ`. Rewrite using `[this, fderiv_comp P hd differentiableAt_fst, fderiv_fst]`. Simplify using `[hv]`. Establish `key : ∀ v : Pt E g, v.1 = 0 → fderiv ℝ (gauge n τ γ s) P v = frameAt n τ γ P.1 (fderiv ℝ s (reframe τ γ P) (fderiv ℝ (reframe τ γ) P v))`. Introduce `v hv`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: gauge n τ γ s = fun Q => c Q (s (reframe τ γ Q))` using `rfl`. Rewrite using `[this, fderiv_clm_apply hc' hu]`. Simplify using `only [ContinuousLinearMap.add_apply, ContinuousLinearMap.comp_apply, ContinuousLinearMap.flip_apply, hcv v hv, ContinuousLinearMap.zero_apply, add_zero]`. Rewrite using `[show (fun Q => s (reframe τ γ Q)) = s ∘ reframe τ γ from rfl, fderiv_comp P hsR hR']`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hRI : ∀ v : Pt E g, fderiv ℝ (reframe τ γ) P (Complex.I • v) = Complex.I • fderiv ℝ (reframe τ γ) P v`. Introduce `v`. Rewrite using `[hR.fderiv_restrictScalars ℝ]`. Simplify using the standard rewrite rules. Establish `hvert : ∀ a : Fin g, d01 (gauge n τ γ s) P (vert E a) = frameAt n τ γ P.1 (d01 s (reframe τ γ P) (fderiv ℝ (reframe τ γ) P (vert E a)))`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `a`. Establish `h0 : (vert E a).1 = 0` using `rfl`. Establish `h1 : (Complex.I • vert E a).1 = 0` using `by simp [vert]`. Simplify using `only [d01, key _ h0, key _ h1, hRI, map_add, map_smul]`. Simplify using `only [dbarV, map_sum, hvert, hRv, d01_sum_direction_eq_sum, d01_csmul, wedge_sum', map_smul, Pullback.wedge_smul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hfw` using `fun c w => ((GlobalTheory.T.frameMap_wedge_compat n (den γ (τ P.1)) w).1 c)`. Simplify using `only [frameAt_apply] at *`. Simplify using `only [hfw]`. Conclude with `Finset.sum_comm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dbarV_gauge : ∀ {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] [FiniteDimensional ℂ E] {g n : ℕ} (B : Set E) (τ : E → Matrix (Fin g) (Fin g) ℂ) (γ : Sp g) (s : Pt E g → Ext (n + n + g)), IsPeriodMap B τ → IsPeriodMap B (fun b => moeb γ (τ b)) → DifferentiableOn ℝ s (cov B g) → ∀ P ∈ cov B g, dbarV (gauge n τ γ s) P = frameAt n τ γ P.1 (dbarV s (reframe τ γ P)) := by
   intro E _ _ _ g n B τ γ s hτ hτ' hs P hP

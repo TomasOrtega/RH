@@ -12,7 +12,7 @@ noncomputable section
 namespace BlockResolutionImageSup
 
 /- English proof (translation)
-Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C a => simpa using (analyticOnNhd_const : AnalyticOnNhd ℂ (fun _ : E => a) V)`. Consider the case `add p q hp hq => exact fun w hw => by simpa using (hp w hw).fun_add (hq w hw)`. Consider the case `mul_X p i hp => exact fun w hw => by simpa using (hp w hw).fun_mul (hg i w hw)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem analyticOnNhd_eval {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] {σ : Type*} {V : Set E}
     {g : E → σ → ℂ} (hg : ∀ i, AnalyticOnNhd ℂ (fun w => g w i) V) (f : MvPolynomial σ ℂ) :
@@ -23,7 +23,7 @@ theorem analyticOnNhd_eval {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E
   | mul_X p i hp => exact fun w hw => by simpa using (hp w hw).fun_mul (hg i w hw)
 
 /- English proof (translation)
-Establish `h : Real.exp (-(n : ℝ) * (2 * Real.log r)) = ((r ^ n) ^ 2)⁻¹`. Rewrite using `[show -(n : ℝ) * (2 * Real.log r) = -Real.log ((r ^ n) ^ 2) by`. Rewrite using `[Real.log_pow, Real.log_pow]; push_cast; ring, Real.exp_neg, Real.exp_log (by positivity)]`. Rewrite using `[h, div_pow, div_eq_mul_inv]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem sq_div_pow_eq {a r : ℝ} (hr : 0 < r) (n : ℕ) :
     (a / r ^ n) ^ 2 = a ^ 2 * Real.exp (-(n : ℝ) * (2 * Real.log r)) := by
@@ -33,11 +33,11 @@ theorem sq_div_pow_eq {a r : ℝ} (hr : 0 < r) (n : ℕ) :
   rw [h, div_pow, div_eq_mul_inv]
 
 /- English proof (translation)
-Establish `hT : MeasurableSet φ.target` using `φ.open_target.measurableSet`. Establish `hs : AEMeasurable φ.symm (volume.restrict φ.target)` using `φ.continuousOn_symm.aemeasurable hT`. Establish `hνm : AEMeasurable (fun z => ENNReal.ofReal (ν z)) (volume.restrict φ.target)` using `ENNReal.measurable_ofReal.comp_aemeasurable (hν.aemeasurable hT)`. Establish `hs' : AEMeasurable φ.symm ((volume.restrict φ.target).withDensity fun z => ENNReal.ofReal (ν z))` using `hs.mono_ac (withDensity_absolutelyContinuous _ _)`. Establish `hmap : Measure.map φ.symm ((volume.restrict φ.target).withDensity fun z => ENNReal.ofReal (ν z)) = μ.restrict φ.source`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `S hS`. Establish `hset : φ.symm ⁻¹' S ∩ φ.target = φ.target ∩ φ.symm ⁻¹' (S ∩ φ.source)`. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`.
+By extensionality, compare the relevant components. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨h2, h1, φ.map_target h2⟩`. Introduce and unpack `⟨h2, h1, -⟩`. Conclude with `⟨h1, h2⟩`. Rewrite using `[Measure.map_apply_of_aemeasurable hs' hS, withDensity_apply' _ _, Measure.restrict_restrict' hT, Measure.restrict_apply hS, hμ _ (hS.inter φ.open_source.measurableSet) inter_subset_right, hset]`. Combine the equalities or inequalities in the displayed calculation.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem lintegral_chart_le {X : Type*} [TopologicalSpace X] [MeasurableSpace X] [BorelSpace X] {e : ℕ}
     (φ : OpenPartialHomeomorph X (Fin e → ℂ)) (μ : Measure X) {ν : (Fin e → ℂ) → ℝ}
@@ -80,7 +80,7 @@ variable {D : ℕ} {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type} [∀
 omit [DecidableEq K] [∀ k, Fintype (ι k)] in
 
 /- English proof (translation)
-Simplify using `only [Set.ofPred_forall, Set.ofPred_exists]`. Conclude with `isOpen_iInter_of_finite fun k => isOpen_iUnion fun i => isOpen_ne_fun (continuous_apply _) continuous_const`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isOpen_blockNonzero : IsOpen {z : (Σ k, ι k) → ℂ | ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0} := by
   simp only [Set.ofPred_forall, Set.ofPred_exists]
@@ -88,9 +88,9 @@ theorem isOpen_blockNonzero : IsOpen {z : (Σ k, ι k) → ℂ | ∀ k, ∃ i, z
     isOpen_ne_fun (continuous_apply _) continuous_const
 
 /- English proof (translation)
-Rewrite using `[eval_eq', eval_eq', Finset.mul_sum]`. Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations. Establish `hdeg` using `hf m hm`. Establish `hc : ∏ p : (Σ k, ι k), c p.1 ^ m p = c k₀ ^ n`. Rewrite using `[Fintype.prod_sigma]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Repeatedly rewrite using `[Finset.prod_pow_eq_pow_sum, hdeg]`. Rewrite using `[Fintype.prod_eq_single k₀ fun k hk => by simp [blockDeg, hk]]`. Simplify using `[blockDeg]`. Repeatedly rewrite using `[mul_pow, Finset.prod_mul_distrib, hc]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem eval_torus {f : MRingOver ℂ ι} {k₀ : K} {n : ℕ} (hf : IsMultiHomog f (blockDeg k₀ n))
     (c : K → ℂ) (z : (Σ k, ι k) → ℂ) :
@@ -107,9 +107,9 @@ theorem eval_torus {f : MRingOver ℂ ι} {k₀ : K} {n : ℕ} (hf : IsMultiHomo
   ring
 
 /- English proof (translation)
-Take `⟨c, hc, rfl⟩` from `h`. Rewrite using `[eval_torus hf, A.smul c z' hc, hA]`. Establish `hprod : ∏ k, ‖c k‖ ^ unitDeg k₀ k = ‖c k₀‖`. Rewrite using `[Fintype.prod_eq_single k₀ fun k hk => by simp [unitDeg, hk]]`. Simplify using `[unitDeg]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hprod, norm_mul, norm_pow, mul_pow]`. Establish `: ‖c k₀‖ ^ n ≠ 0` using `pow_ne_zero _ (norm_ne_zero_iff.2 (hc k₀))`. Rewrite using `[mul_div_mul_left _ _ this]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem normRatio_torus {f : MRingOver ℂ ι} {k₀ : K} {n : ℕ} (hf : IsMultiHomog f (blockDeg k₀ n))
     (A : HermLine ι) (hA : A.a = unitDeg k₀) {z z' : (Σ k, ι k) → ℂ} (h : SameOrbit z z') :
@@ -124,14 +124,14 @@ theorem normRatio_torus {f : MRingOver ℂ ι} {k₀ : K} {n : ℕ} (hf : IsMult
   rw [mul_div_mul_left _ _ this]
 
 /- English proof (translation)
-The claim follows from `(d.R.mem x y hy).1`.
+A detailed English derivation is pending.
 -/
 theorem lift_blockNonzero (d : HSMBlockDatum D K ι Ω) {x y : d.R.X} (hy : y ∈ d.R.U x) :
     ∀ k, ∃ i, d.R.lift x y ⟨k, i⟩ ≠ 0 :=
   (d.R.mem x y hy).1
 
 /- English proof (translation)
-The claim follows from `normRatio_torus hf d.A d.deg (d.R.compat y x y ⟨d.R.mem_U y, hy⟩)`.
+A detailed English derivation is pending.
 -/
 theorem ratio_blockPt_eq (d : HSMBlockDatum D K ι Ω) {n : ℕ} {f : MRingOver ℂ ι}
     (hf : IsMultiHomog f (blockDeg d.k₀ n)) {x y : d.R.X} (hy : y ∈ d.R.U x) :
@@ -140,13 +140,11 @@ theorem ratio_blockPt_eq (d : HSMBlockDatum D K ι Ω) {n : ℕ} {f : MRingOver 
   normRatio_torus hf d.A d.deg (d.R.compat y x y ⟨d.R.mem_U y, hy⟩)
 
 /- English proof (translation)
-Rewrite using `[continuous_iff_continuousAt]`. Introduce `y₀`. Take `⟨j, hj⟩` from `d.R.A.cover y₀`. Use `set e := d.R.A.chart j with he`. Establish `hL : ContinuousAt (d.R.lift y₀) y₀`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[continuousAt_pi]`. Introduce `p`. Establish `ha : AnalyticAt ℂ ((fun y => d.R.lift y₀ y p) ∘ e.symm) (e y₀)` using `d.R.holo y₀ p j (e y₀) ⟨e.map_source hj, by rw [mem_preimage, e.left_inv hj]; exact d.R.mem_U y₀⟩`. Use `(ha.continuousAt.comp (e.continuousAt hj)).congr ?_` and prove the remaining obligations. Use `filter_upwards [e.open_source.mem_nhds hj] with y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [Function.comp_apply, e.left_inv hy]`. Establish `hne` using `lift_blockNonzero d (d.R.mem_U y₀)`. Establish `hh : ContinuousAt d.A.h (d.R.lift y₀ y₀)` using `d.semipos.1.continuousOn.continuousAt (isOpen_blockNonzero.mem_nhds hne)`. Establish `hcont : ContinuousAt (fun y => ‖eval (d.R.lift y₀ y) f‖ / d.A.h (d.R.lift y₀ y) ^ n) y₀` using `(((MvPolynomial.continuous_eval f).continuousAt.comp hL).norm).div ((hh.comp hL).pow n) (pow_pos (d.A.pos _ hne) n).ne'`. Use `hcont.congr ?_` and prove the remaining obligations.
-
-Use `filter_upwards [(d.R.isOpen_U y₀).mem_nhds (d.R.mem_U y₀)] with y hy`. Conclude with `(ratio_blockPt_eq d hf hy).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_ratio (d : HSMBlockDatum D K ι Ω) {n : ℕ} {f : MRingOver ℂ ι}
     (hf : IsMultiHomog f (blockDeg d.k₀ n)) :
@@ -174,23 +172,19 @@ theorem continuous_ratio (d : HSMBlockDatum D K ι Ω) {n : ℕ} {f : MRingOver 
   exact (ratio_blockPt_eq d hf hy).symm
 
 /- English proof (translation)
-Establish `: IsProbabilityMeasure d.dV` using `d.vol.1`. Take `⟨j, hj⟩` from `d.R.A.cover x₀`. Use `set e := d.R.A.chart j with he`. Take `⟨ν, hνs, hνpos, hνV⟩` from `d.vol.2 j`. Establish `hVo : IsOpen (e.target ∩ e.symm ⁻¹' d.R.U x₀)` using `e.isOpen_inter_preimage_symm (d.R.isOpen_U x₀)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx₀V : e x₀ ∈ e.target ∩ e.symm ⁻¹' d.R.U x₀` using `⟨e.map_source hj, by rw [mem_preimage, e.left_inv hj]; exact d.R.mem_U x₀⟩`. Take `⟨δ, hδ, hδV⟩` from `Metric.isOpen_iff.1 hVo _ hx₀V`. Establish `hKV : Metric.closedBall (e x₀) (δ / 2) ⊆ e.target ∩ e.symm ⁻¹' d.R.U x₀` using `(Metric.closedBall_subset_ball (half_lt_self hδ)).trans hδV`. Establish `hLa : ∀ p, AnalyticOnNhd ℂ (fun w => d.R.lift x₀ (e.symm w) p) (e.target ∩ e.symm ⁻¹' d.R.U x₀)` using `fun p => d.R.holo x₀ p j`. Establish `hLne : ∀ w ∈ e.target ∩ e.symm ⁻¹' d.R.U x₀, ∀ k, ∃ i, d.R.lift x₀ (e.symm w) ⟨k, i⟩ ≠ 0` using `fun w hw => lift_blockNonzero d hw.2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hψ : ContDiffOn ℝ 2 (fun w => 2 * Real.log (d.A.h (d.R.lift x₀ (e.symm w)))) (e.target ∩ e.symm ⁻¹' d.R.U x₀)`. Establish `hL2 : ContDiffOn ℝ 2 (fun w => d.R.lift x₀ (e.symm w)) (e.target ∩ e.symm ⁻¹' d.R.U x₀)` using `contDiffOn_pi.2 fun p => ((hLa p).contDiffOn_of_completeSpace).restrict_scalars ℝ`. Establish `hh : ContDiffOn ℝ 2 (fun w => d.A.h (d.R.lift x₀ (e.symm w))) (e.target ∩ e.symm ⁻¹' d.R.U x₀)` using `(d.semipos.1.of_le (WithTop.coe_le_coe.2 (le_top : (2 : ℕ∞) ≤ ⊤))).comp hL2 fun w hw => hLne w hw`. Conclude with `contDiffOn_const.mul (hh.log fun w hw => (d.A.pos _ (hLne w hw)).ne')`. Take `⟨C₀, hC₀⟩` from `hC D (e.target ∩ e.symm ⁻¹' d.R.U x₀) (Metric.closedBall (e x₀) (δ / 2)) _ ν hVo (isCompact_closedBall _ _) hKV hψ (hνs.continuousOn.mono inter_subset_left) fun z hz => hνpos z hz.1`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨e.source ∩ e ⁻¹' Metric.ball (e x₀) (δ / 2), e.isOpen_inter_preimage Metric.isOpen_ball, ⟨hj, Metric.mem_ball_self (half_pos hδ)⟩, max C₀ 0, le_max_right _ _, fun n hn f hf y hy => ?_⟩` and prove the remaining obligations. Establish `hgc` using `(continuous_ratio d hf).pow 2`. Establish `hgm : Measurable fun y => ENNReal.ofReal ((‖eval (blockPt d y) f‖ / d.A.h (blockPt d y) ^ n) ^ 2)` using `ENNReal.measurable_ofReal.comp hgc.measurable`. Establish `hgi : Integrable (fun y => (‖eval (blockPt d y) f‖ / d.A.h (blockPt d y) ^ n) ^ 2) d.dV` using `hgc.integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace _)`. Establish `hI0 : 0 ≤ ∫ y, (‖eval (blockPt d y) f‖ / d.A.h (blockPt d y) ^ n) ^ 2 ∂d.dV` using `integral_nonneg fun y => sq_nonneg _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hres : blockL2NormComplex d n f ^ 2 = ∫ y, (‖eval (blockPt d y) f‖ / d.A.h (blockPt d y) ^ n) ^ 2 ∂d.dV`. Rewrite using `[blockL2NormComplex, Real.sq_sqrt hI0]`. Establish `hid : ∀ w ∈ e.target ∩ e.symm ⁻¹' d.R.U x₀, ‖eval (d.R.lift x₀ (e.symm w)) f‖ ^ 2 * Real.exp (-(n : ℝ) * (2 * Real.log (d.A.h (d.R.lift x₀ (e.symm w))))) = (‖eval (blockPt d (e.symm w)) f‖ / d.A.h (blockPt d (e.symm w)) ^ n) ^ 2`. Introduce `w hw`. Rewrite using `[ratio_blockPt_eq d hf hw.2]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(sq_div_pow_eq (d.A.pos _ (hLne w hw)) n).symm`. Establish `key` using `hC₀ n hn _ (analyticOnNhd_eval hLa f) (e y) (Metric.ball_subset_closedBall hy.2)`. Establish `hyV : e y ∈ e.target ∩ e.symm ⁻¹' d.R.U x₀` using `hKV (Metric.ball_subset_closedBall hy.2)`. Rewrite `key` using `[hid _ hyV, e.left_inv hy.1]`. Establish `hint : ∫⁻ z in e.target ∩ e.symm ⁻¹' d.R.U x₀, ENNReal.ofReal (‖eval (d.R.lift x₀ (e.symm z)) f‖ ^ 2 * Real.exp (-(n : ℝ) * (2 * Real.log (d.A.h (d.R.lift x₀ (e.symm z))))) * ν z) ≤ ENNReal.ofReal (blockL2NormComplex d n f ^ 2)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hres, ofReal_integral_eq_lintegral_ofReal hgi (Eventually.of_forall fun y => sq_nonneg _)]`. Combine the equalities or inequalities in the displayed calculation. Use `setLIntegral_congr_fun hVo.measurableSet fun z hz => ?_` and prove the remaining obligations. Rewrite using `[hid z hz, mul_comm, ENNReal.ofReal_mul (hνpos z hz.1).le]`. Use `_ ≤ ∫⁻ z in e.target, ENNReal.ofReal (ν z) * ENNReal.ofReal ((‖eval (blockPt d (e.symm z)) f‖ / d.A.h (blockPt d (e.symm z)) ^ n) ^ 2) := lintegral_mono_set inter_subset_left`.
-
-Use `_ ≤ _ := lintegral_chart_le e d.dV hνs.continuousOn hνV hgm`. Establish `hn0 : (0 : ℝ) ≤ (n : ℝ) ^ D` using `by positivity`. Establish `h2 : ENNReal.ofReal ((‖eval (blockPt d y) f‖ / d.A.h (blockPt d y) ^ n) ^ 2) ≤ ENNReal.ofReal (max C₀ 0 * (n : ℝ) ^ D * blockL2NormComplex d n f ^ 2)`. Rewrite using `[ENNReal.ofReal_mul (by positivity)]`. Conclude with `key.trans (mul_le_mul' (ENNReal.ofReal_le_ofReal (mul_le_mul_of_nonneg_right (le_max_left _ _) hn0)) hint)`.
-
-Conclude with `(ENNReal.ofReal_le_ofReal_iff (by positivity)).1 h2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem local_bound (hC : ChartSupBound.Statement) (d : HSMBlockDatum D K ι Ω) (x₀ : d.R.X) :
     ∃ N : Set d.R.X, IsOpen N ∧ x₀ ∈ N ∧ ∃ C : ℝ, 0 ≤ C ∧ ∀ n : ℕ, 1 ≤ n →
@@ -267,13 +261,13 @@ end BlockResolutionImageSup
 open BlockResolutionImageSup in
 
 /- English proof (translation)
-Introduce `D K _ _ ι _ Ω _ _ d`. Use `choose N hNo hxN C hC0 hCb using fun x => local_bound hC d x`. Take `⟨t, ht⟩` from `isCompact_univ.elim_finite_subcover N hNo fun x _ => mem_iUnion.2 ⟨x, hxN x⟩`. Use `⟨Real.sqrt (∑ x ∈ t, C x), fun n hn f hf y => ?_⟩` and prove the remaining obligations. Take `⟨x, hxt, hyx⟩` from `mem_iUnion₂.1 (ht (mem_univ y))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hS : C x ≤ ∑ x ∈ t, C x` using `Finset.single_le_sum (fun i _ => hC0 i) hxt`. Establish `hS0 : 0 ≤ ∑ x ∈ t, C x` using `Finset.sum_nonneg fun i _ => hC0 i`. Establish `hr0 : 0 ≤ blockL2NormComplex d n f` using `Real.sqrt_nonneg _`. Establish `hn0 : (0 : ℝ) ≤ (n : ℝ) ^ D` using `by positivity`. Establish `h2 : (‖eval (blockPt d y) f‖ / d.A.h (blockPt d y) ^ n) ^ 2 ≤ (∑ x ∈ t, C x) * (n : ℝ) ^ D * blockL2NormComplex d n f ^ 2` using `(hCb x n hn f hf y hyx).trans (by gcongr)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp : 0 ≤ ‖eval (blockPt d y) f‖ / d.A.h (blockPt d y) ^ n` using `div_nonneg (norm_nonneg _) (pow_nonneg (d.A.pos _ (lift_blockNonzero d (d.R.mem_U y))).le n)`. Establish `hpow : Real.sqrt ((n : ℝ) ^ D) = (n : ℝ) ^ ((D : ℝ) / 2)`. Rewrite using `[Real.sqrt_eq_rpow, ← Real.rpow_natCast, ← Real.rpow_mul (Nat.cast_nonneg n)]`. Put the polynomial expressions in normal form. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Real.sqrt_mul (mul_nonneg hS0 hn0), Real.sqrt_mul hS0, Real.sqrt_sq hr0, hpow]`.
+A detailed English derivation is pending.
 -/
 theorem BlockResolutionImageSup.proof (hC : ChartSupBound.Statement) : BlockResolutionImageSup.Statement := by
   intro D K _ _ ι _ Ω _ _ d

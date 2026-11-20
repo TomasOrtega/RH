@@ -10,7 +10,7 @@ namespace GlobalTheory.CrysPrism
 def dpDen (e i n : ℕ) : ℕ := i.factorial * (n / e).factorial
 
 /- English proof (translation)
-The claim follows from `Nat.mul_pos (Nat.factorial_pos _) (Nat.factorial_pos _)`.
+A detailed English derivation is pending.
 -/
 theorem dpDen_pos (e i n : ℕ) : 0 < dpDen e i n := Nat.mul_pos (Nat.factorial_pos _) (Nat.factorial_pos _)
 
@@ -26,7 +26,7 @@ def ofW (w : ℕ × ℕ → Wq l a) : ZMod a → K⟦X⟧⟦X⟧ := fun τ =>
 def QSet : Set (ZMod a → K⟦X⟧⟦X⟧) := Set.range (ofW t K e)
 
 /- English proof (translation)
-Simplify using `[ofW, coeff_mk]`.
+Simplify using the standard rewrite rules.
 -/
 theorem coeff_ofW (w : ℕ × ℕ → Wq l a) (τ : ZMod a) (i n : ℕ) :
     coeff n (coeff i (ofW t K e w τ)) = algebraMap O K (emb t τ (w (i, n))) / (dpDen e i n : K) := by

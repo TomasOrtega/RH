@@ -18,11 +18,11 @@ noncomputable section
 namespace GlobalTheory.AdelicL2Norm
 
 /- English proof (translation)
-Use `set m := ν (J.comap π) with hmdef`. Establish `hm0 : m ≠ 0` using `ho.measure_ne_zero ν ⟨1, by simp⟩`. Establish `hmt : m ≠ ⊤` using `ne_top_of_le_ne_top (h1 ▸ ENNReal.one_ne_top) (measure_mono (Subgroup.comap_mono hle))`. Establish `h𝓖' : IsFundamentalDomain Γ 𝓖 (m⁻¹ • ν)` using `h𝓖.mono Measure.smul_absolutelyContinuous`. Establish `h1' : (m⁻¹ • ν) (J.comap π) = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Measure.smul_apply, smul_eq_mul, ← hmdef, ENNReal.inv_mul_cancel hm0 hmt]`. Take `⟨-, key⟩` from `GlobalTheory.InnerClassSum.integral_inner_eq_adInner (m⁻¹ • ν) π hπ Γ h𝓖' J ho h1' ρ hρ χ hχ y hy`. Use `⟨m.toReal⁻¹, inv_pos.2 (ENNReal.toReal_pos hm0 hmt), fun f hf f' hf' => ?_⟩` and prove the remaining obligations. Take `⟨hi, he⟩` from `key f hf f' hf'`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Unfold `IntegrableOn at hi ⊢`. Rewrite `hi` using `[Measure.restrict_smul]`. Conclude with `(integrable_smul_measure (ENNReal.inv_ne_zero.2 hmt) (ENNReal.inv_ne_top.2 hm0)).1 hi`. Rewrite using `[← he, Measure.restrict_smul, integral_smul_measure, ENNReal.toReal_inv, Complex.real_smul]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adInner_eq_mul_integral {G H W : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [MeasurableSpace G]
     [BorelSpace G] [Group H] [NormedAddCommGroup W] [InnerProductSpace ℂ W] (ν : Measure G) [ν.IsMulLeftInvariant]
@@ -52,19 +52,19 @@ theorem adInner_eq_mul_integral {G H W : Type} [Group G] [TopologicalSpace G] [I
   · rw [← he, Measure.restrict_smul, integral_smul_measure, ENNReal.toReal_inv, Complex.real_smul]
 
 /- English proof (translation)
-Establish `hr : ∀ g ∈ Formalism.IndefR.Bridge.AdForms (π.comp Γ.subtype) (ρ.comp Γ.subtype) J χ, ∀ (x : H) (k : J), g (x * k) = (χ k : ℂ) • g x` using `fun g hg x k => by`. Use `hg 1 x k` as an intermediate fact. Simplify using `using this`. Establish `hf` using `hr f hF`. Establish `hf'` using `hr f' hF'`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcont : Continuous fun h => star (inner ℂ a (ρ h⁻¹ (f (π h)))) * inner ℂ a' (ρ h⁻¹ (f' (π h)))`. Use `continuous_iff_continuousAt.2 fun h₀ => ?_` and prove the remaining obligations. Establish `hψ : Continuous fun h : G => star (inner ℂ a (ρ h⁻¹ (f (π h₀)))) * inner ℂ a' (ρ h⁻¹ (f' (π h₀)))` using `(continuous_star.comp (continuous_const.inner ((hρc _).comp continuous_inv))).mul (continuous_const.inner ((hρc _).comp continuous_inv))`. Use `hψ.continuousAt.congr ?_` and prove the remaining obligations. Establish `hU : {h : G | h₀⁻¹ * h ∈ J.comap π} ∈ nhds h₀` using `(ho.preimage (continuous_const.mul continuous_id)).mem_nhds (by simp)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `filter_upwards [hU] with h hh`. Establish `e : π h = π h₀ * ((⟨π (h₀⁻¹ * h), hh⟩ : J) : H)`. Simplify using `[← map_mul]`. Rewrite using `[e, hf, hf', map_smul, map_smul, inner_smul_right, inner_smul_right, star_mul']`. Establish `hn : star ((χ ⟨π (h₀⁻¹ * h), hh⟩ : ℂˣ) : ℂ) * ((χ ⟨π (h₀⁻¹ * h), hh⟩ : ℂˣ) : ℂ) = 1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show star _ = (starRingEnd ℂ) _ from rfl, Complex.conj_mul', hχ]`. Simplify using the standard rewrite rules. Take the linear combination `-(star (inner ℂ a (ρ h⁻¹ (f (π h₀)))) * inner ℂ a' (ρ h⁻¹ (f' (π h₀)))) * hn`. Establish `hsq : ∀ x : W, ‖inner ℂ x x‖ = ‖x‖ ^ 2` using `fun x => by`. Rewrite using `[inner_self_eq_norm_sq_to_K]`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Use `Integrable.mono' ((hi.norm.add hi'.norm).const_mul (‖a‖ * ‖a'‖)) hcont.aestronglyMeasurable.restrict ?_` and prove the remaining obligations. Use `Filter.Eventually.of_forall fun h => ?_` and prove the remaining obligations. Simplify using `only [Pi.add_apply, hsq, norm_mul, norm_star]`. Establish `h1` using `norm_inner_le_norm (𝕜 := ℂ) a (ρ h⁻¹ (f (π h)))`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `norm_inner_le_norm (𝕜 := ℂ) a' (ρ h⁻¹ (f' (π h)))`. Establish `hx` using `norm_nonneg (ρ h⁻¹ (f (π h)))`. Establish `hy` using `norm_nonneg (ρ h⁻¹ (f' (π h)))`. Establish `ha` using `norm_nonneg a`. Establish `ha'` using `norm_nonneg a'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hxy : ‖ρ h⁻¹ (f (π h))‖ * ‖ρ h⁻¹ (f' (π h))‖ ≤ ‖ρ h⁻¹ (f (π h))‖ ^ 2 + ‖ρ h⁻¹ (f' (π h))‖ ^ 2`. Use polynomial arithmetic with `[sq_nonneg (‖ρ h⁻¹ (f (π h))‖ - ‖ρ h⁻¹ (f' (π h))‖)]`. Combine the equalities or inequalities in the displayed calculation.
+Use the polynomial consequences of the given equalities and inequalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem integrableOn_coord {G H W : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [MeasurableSpace G]
     [BorelSpace G] [Group H] [NormedAddCommGroup W] [InnerProductSpace ℂ W] (ν : Measure G) (π : G →* H)
@@ -123,17 +123,13 @@ namespace GlobalTheory.AdelicL2Norm
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T A Ks _ _ _ R F hL i t`. Establish `hν` using `hL.models.νV i t`. Establish `hH` using `hL.models.HV i t`. Establish `hc` using `hL.models.cV i`. Use `haveI : IsTopologicalGroup (GA D (Vc D i)) := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : BorelSpace (GA D (Vc D i)) := ⟨rfl⟩`. Use `haveI : Countable (GQ (Vc D i)) := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.countableGamma D.sp.cm.sig (Vc D i).gram`. Use `haveI := hν.1.1`. Establish `ho : IsOpen (((levEnv (Vc D i) (R.βV i) (R.datVt i t)).J.comap (finHom (Vc D i)).rangeRestrict : Subgroup (GA D (Vc D i))) : Set (GA D (Vc D i)))`. Use `Subgroup.isOpen_of_mem_nhds _ (g := 1) ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `filter_upwards [GlobalTheory.ThetaIntegrand.eventually_level (Vc D i) (R.βV i) (R.datVt i t)] with κ hκ`. Conclude with `hκ.1`. Establish `h1 : R.νV i t ((GlobalTheory.IndefiniteRowSideFullHecke.TwistedLevelValues.grpOf (Vc D i) (R.βV i) (R.datVt i t)).comap (finHom (Vc D i)).rangeRestrict) = 1` using `GlobalTheory.Mass.Levels.measure_comap_finE hν.1`. Establish `hle : (levEnv (Vc D i) (R.βV i) (R.datVt i t)).J ≤ GlobalTheory.IndefiniteRowSideFullHecke.TwistedLevelValues.grpOf (Vc D i) (R.βV i) (R.datVt i t)`. Introduce `x hx`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨hx.1, ?_⟩` and prove the remaining obligations. Establish `e : rTup (R.βV i) (R.datVt i t) (Formalism.UG.bc (Formalism.IndefR.Lev.swapAE D) x.1) = 1` using `Subgroup.mem_bot.1 hx.2`. Conclude with `e ▸ one_mem _`. Establish `hχ : ∀ k, ‖((levEnv (Vc D i) (R.βV i) (R.datVt i t)).χ k : ℂ)‖ = 1` using `fun k => GlobalTheory.InnerClassSum.norm_levFn (R.βV i) (flag1L (R.datVt i t)) (Formalism.UG.bc (Formalism.IndefR.Lev.swapAE D) k.1.1)`. Take `⟨c, hc0, hcl⟩` from `adInner_eq_mul_integral (R.νV i t) (finHom (Vc D i)).rangeRestrict (finHom (Vc D i)).rangeRestrict_surjective (GQ (Vc D i)) hν.2 _ _ hle ho h1 (R.cV i).ρ hc.2.1 (levEnv (Vc D i) (R.βV i) (R.datVt i t)).χ hχ (R.B.L i t).pres.y (R.B.L i t).pres.reps`.
-
-Establish `hmem` using `fun u => hH.2.1.le (LinearMap.mem_range_self (R.HV i t).e u)`. Establish `hx : ∀ u h, R.extV i t u h = (R.cV i).ρ h⁻¹ ((R.HV i t).e u ((finHom (Vc D i)).rangeRestrict h))` using `fun _ _ => rfl`. Use `⟨c, hc0, fun u u' => ⟨?_, fun a a' => ?_⟩⟩` and prove the remaining obligations. Simplify using `only [hx]`. Conclude with `(hH.2.2 u u').trans (hcl _ (hmem u) _ (hmem u')).2`.
-
-Simplify using `only [hx]`. Conclude with `integrableOn_coord (R.νV i t) (finHom (Vc D i)).rangeRestrict _ ho (R.cV i).ρ hc.2.2.1 _ hχ (GQ (Vc D i)) _ _ (hmem u) (hmem u') (hcl _ (hmem u) _ (hmem u)).1 (hcl _ (hmem u') _ (hmem u')).1 a a'`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem norm_eq_integral : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (A : FamIn D.what₂.LL G Pl0 T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), Laws R F → ∀ (i : Fin D.R.m) (t : T), ∃ c : ℝ, 0 < c ∧ ∀ u u' : (R.HV i t).H, ⟪u, u'⟫_ℂ = (c : ℂ) * ∫ h in R.fdV i t, ⟪R.extV i t u h, R.extV i t u' h⟫_ℂ ∂(R.νV i t) ∧ ∀ a a' : (R.cV i).W, IntegrableOn (fun h => star ⟪a, R.extV i t u h⟫_ℂ * ⟪a', R.extV i t u' h⟫_ℂ) (R.fdV i t) (R.νV i t) := by
   intro D G _ _ Pl0 T A Ks _ _ _ R F hL i t

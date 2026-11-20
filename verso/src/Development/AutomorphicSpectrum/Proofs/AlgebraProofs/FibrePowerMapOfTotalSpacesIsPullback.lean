@@ -6,11 +6,11 @@ open scoped BigOperators ComplexOrder
 namespace GlobalTheory.CompanionTheory.AbelFlag
 
 /- English proof (translation)
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `a d h`. Simplify using `[h]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Consider the case `succ n ih`. Introduce `a d h`. Establish `key` using `ih (fun i => a i.castSucc) (fun i => d i.castSucc) (by simpa using h)`. Rewrite using `[Fin.sum_univ_castSucc (n := n + 1), Fin.sum_univ_castSucc (n := n) (f := fun i : Fin (n + 1) => (a i.castSucc - a i.succ) * (-d i.succ.castSucc))]`. Simplify using `only [Fin.succ_castSucc, Fin.succ_last] at key ⊢`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take the linear combination `key`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem abel_summation_flag : ∀ (n : ℕ) (a : Fin (n + 1) → ℝ) (d : Fin (n + 2) → ℝ), d 0 = 0 →
     -(∑ i : Fin (n + 1), a i * (d i.succ - d i.castSucc)) =

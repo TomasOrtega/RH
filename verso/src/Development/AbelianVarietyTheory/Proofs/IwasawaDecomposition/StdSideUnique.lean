@@ -11,9 +11,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.Mem.StdUnique
 
 /- English proof (translation)
-Take `⟨e, he⟩` from `GlobalTheory.Mem.VolSplit.exists_adelic_split D.host.F D.host.E D.sp.cm.sig V.rank V.gram`. Establish `hfin : ∀ h : GA D V, (e h).2 = 1 → h ∈ GinfC V` using `fun h H => MonoidHom.mem_ker.2 (Units.ext ((he h).1.symm.trans (by rw [H]; rfl)))`. Establish `hinf : ∀ h : GA D V, (e h).1 = 1 → h ∈ GfC V` using `fun h H => MonoidHom.mem_ker.2 (Units.ext ((he h).2.symm.trans (by rw [H]; rfl)))`. Establish `hu : e.symm ((e h).1, 1) ∈ C`. Assume the negation of the conclusion as `hn`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Take `⟨γ, hγ, k, hk, hU, -⟩` from `GlobalTheory.RealApprox.weak_approx_real V _ (hfin _ (by rw [e.apply_symm_apply])) Cᶜ hC.isOpen_compl hn`. Conclude with `hU (hf γ k hk (hQ γ hγ))`. Establish `hk : e.symm (1, (e h).2) ∈ GfC V` using `hinf _ (by rw [e.apply_symm_apply])`. Use `hf _ _ hk hu` as an intermediate fact. Rewrite `this` using `[← map_mul, Prod.mk_mul_mk, mul_one, one_mul, Prod.mk.eta, e.symm_apply_apply]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem closed_eq_univ {D : D7} (V : HSp D) (C : Set (GA D V)) (hC : IsClosed C) (hQ : ∀ γ ∈ GQ V, γ ∈ C)
     (hf : ∀ h, ∀ k ∈ GfC V, h ∈ C → h * k ∈ C) (h : GA D V) : h ∈ C := by
@@ -35,9 +35,7 @@ variable {D : D7} {V : HSp D} (c : CoefA V) (hc : c.Is)
 include hc
 
 /- English proof (translation)
-Use `hc.2.2.2.2 U fun h => ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨w, hw, rfl⟩`. Use `closed_eq_univ V {h | c.ρ h w ∈ U} (U.closed_of_finiteDimensional.preimage (hc.2.2.1 w)) (fun γ hγ => hU γ hγ w hw) (fun h k hk H => ?_) h` and prove the remaining obligations. Use `show c.ρ (h * k) w ∈ U`. Rewrite using `[map_mul, hc.1 k hk, mul_one]`.
-
-Conclude with `H`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bot_or_top (U : Submodule ℂ c.W) (hU : ∀ γ ∈ GQ V, ∀ w ∈ U, c.ρ γ w ∈ U) : U = ⊥ ∨ U = ⊤ := by
   refine hc.2.2.2.2 U fun h => ?_
@@ -51,7 +49,7 @@ theorem bot_or_top (U : Submodule ℂ c.W) (hU : ∀ γ ∈ GQ V, ∀ w ∈ U, c
 omit hc in
 
 /- English proof (translation)
-Take `⟨γ, ⟨g, -, hg⟩⟩` from `γ`. Conclude with `⟨g, hg.symm⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_ratMat (γ : GQ V) : ∃ γE, Bridge.IsRatMat V γ γE := by
   obtain ⟨γ, ⟨g, -, hg⟩⟩ := γ

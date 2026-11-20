@@ -21,7 +21,7 @@ attribute [local instance] tensorTopology finite_of_isQuadraticExtension isModul
   isTopologicalRing_tensor
 
 /- English proof (translation)
-Establish `: SecondCountableTopology (R ⊗[K] E)` using `(tensorCoordsHomeomorph R (Module.finBasis K E)).isEmbedding.secondCountableTopology`. Establish `: SecondCountableTopology (Matrix ι ι (R ⊗[K] E))` using `inferInstanceAs (SecondCountableTopology (ι → ι → R ⊗[K] E))`. Establish `: SecondCountableTopology (GL ι (R ⊗[K] E))` using `GroundTheory.Global.secondCountableTopology_units`. Establish `he : IsEmbedding (Subtype.val : unitaryPoints K E H R → GL ι (R ⊗[K] E))` using `IsEmbedding.subtypeVal`. Conclude with `he.secondCountableTopology`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem secondCountableTopology_unitaryPoints (R : Type*) [CommRing R] [Algebra K R]
     [TopologicalSpace R] [IsTopologicalRing R] [SecondCountableTopology R] :

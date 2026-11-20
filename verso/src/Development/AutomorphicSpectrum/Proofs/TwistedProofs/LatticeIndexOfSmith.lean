@@ -15,17 +15,17 @@ def boxLat (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))] {n : 
   AddSubgroup.pi Set.univ fun i => ordBall L (c i)
 
 /- English proof (translation)
-Simplify using `[boxLat, AddSubgroup.mem_pi]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_boxLat {c : Fin n → ℤ} {x : Fin n → L} : x ∈ boxLat L c ↔ ∀ i, x i ∈ ordBall L (c i) := by
   simp [boxLat, AddSubgroup.mem_pi]
 
 /- English proof (translation)
-Set `f : boxLat L c →+ (∀ i, ordBall L (c i) ⧸ (ordBall L (C i)).addSubgroupOf (ordBall L (c i)))` to `{ toFun := fun x i => QuotientAddGroup.mk ⟨x.1 i, mem_boxLat.1 x.2 i⟩ map_zero' := rfl map_add' := fun _ _ => rfl }`. Establish `hf : Function.Surjective f` using `fun y => by`. Use `⟨⟨fun i => ((y i).out : L), mem_boxLat.2 fun i => (y i).out.2⟩, funext fun i => ?_⟩` and prove the remaining obligations. Conclude with `(y i).out_eq`. Establish `hc : (boxLat L C).addSubgroupOf (boxLat L c) = f.ker`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `x`. Rewrite using `[AddMonoidHom.mem_ker, funext_iff, AddSubgroup.mem_addSubgroupOf, mem_boxLat]`. Prove the components needed by the constructor for the conclusion. Introduce `h i`. Conclude with `(QuotientAddGroup.eq_zero_iff _).2 (h i)`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `h i`. Conclude with `AddSubgroup.mem_addSubgroupOf.1 ((QuotientAddGroup.eq_zero_iff (⟨x.1 i, mem_boxLat.1 x.2 i⟩ : ordBall L (c i))).1 (h i))`. Rewrite using `[AddSubgroup.relIndex, hc, AddSubgroup.index_ker, AddMonoidHom.range_eq_top.2 hf, AddSubgroup.card_top, Nat.card_pi]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem relIndex_boxLat (c C : Fin n → ℤ) :
     (boxLat L C).relIndex (boxLat L c) = ∏ i, (ordBall L (C i)).relIndex (ordBall L (c i)) := by
@@ -50,12 +50,12 @@ theorem relIndex_boxLat (c C : Fin n → ℤ) :
   rfl
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_intL_iff {x : L} : x ∈ intL L ↔ Valued.v x ≤ 1 := Iff.rfl
 
 /- English proof (translation)
-Rewrite `hr`, the goal using `[mem_intV]`. Introduce `j`. Express the relevant statement in the definitionally equal form `∑ i, r i * M i j ∈ intL L`. Conclude with `Subring.sum_mem _ fun i _ => mul_mem (hr i) (hM i j)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem vecMul_mem_intV {M : Matrix (Fin n) (Fin n) L} (hM : IsInt M) {r : Fin n → L} (hr : r ∈ intV L n) :
     r ᵥ* M ∈ intV L n := by
@@ -65,18 +65,18 @@ theorem vecMul_mem_intV {M : Matrix (Fin n) (Fin n) L} (hM : IsInt M) {r : Fin n
   exact Subring.sum_mem _ fun i _ => mul_mem (hr i) (hM i j)
 
 /- English proof (translation)
-Rewrite using `[map_zpow₀, hϖ, ← WithZero.exp_zsmul]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem v_zpow {ϖ : L} (hϖ : Valued.v ϖ = WithZero.exp (-1 : ℤ)) (m : ℤ) :
     Valued.v (ϖ ^ m) = WithZero.exp (-m) := by
   rw [map_zpow₀, hϖ, ← WithZero.exp_zsmul]; simp
 
 /- English proof (translation)
-Establish `h0 : ϖ ≠ 0` using `fun e => by`. Rewrite `hϖ` using `[e, map_zero]`. Conclude with `WithZero.exp_ne_zero hϖ.symm`. Establish `key : ∀ s : Fin n → L, s ᵥ* Matrix.diagonal (fun i => ϖ ^ d i) ∈ intV L n ↔ s ∈ boxLat L (fun i => -d i)` using `fun s => by`. Rewrite using `[mem_intV, mem_boxLat]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `forall_congr' fun i => ?_` and prove the remaining obligations. Rewrite using `[Matrix.vecMul_diagonal, mem_intL_iff, mem_ordBall, map_mul, v_zpow hϖ, neg_neg]`. Establish `e : WithZero.exp (d i) = 1 * (WithZero.exp (-d i))⁻¹` using `by rw [WithZero.exp_neg, inv_inv, one_mul]`. Rewrite using `[e, le_mul_inv_iff₀ (zero_lt_iff.2 WithZero.exp_ne_zero)]`. Establish `hr : r ∈ preLat (a * Matrix.diagonal (fun i => ϖ ^ d i) * b) ↔ r ᵥ* (a * Matrix.diagonal (fun i => ϖ ^ d i) * b) ∈ intV L n`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mem_preLat, mem_intV]`. Rewrite using `[hr, ← key, ← Matrix.vecMul_vecMul, ← Matrix.vecMul_vecMul]`. Use `⟨fun h => ?_, fun h => vecMul_mem_intV hb h⟩` and prove the remaining obligations. Use `vecMul_mem_intV hb' h` as an intermediate fact. Rewrite `this` using `[Matrix.vecMul_vecMul, eb, Matrix.vecMul_one]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem mem_preLat_iff {ϖ : L} (hϖ : Valued.v ϖ = WithZero.exp (-1 : ℤ)) {d : Fin n → ℤ}
     {a b b' : Matrix (Fin n) (Fin n) L} (hb : IsInt b) (hb' : IsInt b') (eb : b * b' = 1) (r : Fin n → L) :
@@ -99,27 +99,25 @@ theorem mem_preLat_iff {ϖ : L} (hϖ : Valued.v ϖ = WithZero.exp (-1 : ℤ)) {d
   rwa [Matrix.vecMul_vecMul, eb, Matrix.vecMul_one] at this
 
 /- English proof (translation)
-Introduce `L _ _ ϖ σ q n hU A k hA hk`. Establish `hϖ : Valued.v ϖ = WithZero.exp (-1 : ℤ)` using `hU.2.2.2.1`. Establish `hdet : A.det ≠ 0` using `fun h => by`. Rewrite `hk` using `[h, map_zero]`. Conclude with `WithZero.exp_ne_zero hk.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨d, a, a', b, b', ha, ha', hb, hb', ea, eb, hAe⟩` from `hS L ϖ n hϖ A hdet`. Establish `ea' : a * a' = 1` using `mul_eq_one_comm.1 ea`. Establish `eb' : b' * b = 1` using `mul_eq_one_comm.1 eb`. Establish `hDe : Matrix.diagonal (fun i => ϖ ^ d i) = a' * A * b'`. Rewrite using `[hAe]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hD : IsInt (Matrix.diagonal (fun i => ϖ ^ d i))` using `hDe ▸ (ha'.mul hA).mul hb'`. Establish `hd : ∀ i, 0 ≤ d i` using `fun i => by`. Establish `h` using `hD i i`. Rewrite `h` using `[Matrix.diagonal_apply_eq, mem_intL_iff, v_zpow hϖ, ← WithZero.exp_zero, WithZero.exp_le_exp]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Establish `hprod : ∀ s : Finset (Fin n), ∏ i ∈ s, WithZero.exp (-(d i)) = (WithZero.exp (-∑ i ∈ s, d i) : WithZero (Multiplicative ℤ))` using `fun s => by`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert i s hi ih`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.prod_insert hi, Finset.sum_insert hi, ih, ← WithZero.exp_add, neg_add]`. Establish `hsum : ∑ i, d i = k`. Establish `h` using `hk`. Rewrite `h` using `[hAe, Matrix.det_mul, Matrix.det_mul, map_mul, map_mul, v_det_eq_one ha ha' ea', v_det_eq_one hb hb' eb, Matrix.det_diagonal, map_prod, one_mul, mul_one, Finset.prod_congr rfl fun i _ => v_zpow hϖ (d i), hprod, WithZero.exp_inj]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Introduce a local definition for the expression.
 
-Set `f : (Fin n → L) →+ (Fin n → L)` to `a.vecMulLinear.toAddMonoidHom`. Establish `hfa : ∀ r, f r = r ᵥ* a` using `fun _ => rfl`. Establish `hf : Function.Surjective f` using `fun s => ⟨s ᵥ* a', by`. Rewrite using `[hfa, Matrix.vecMul_vecMul, ea, Matrix.vecMul_one]⟩`. Establish `h1 : intV L n = (boxLat L fun _ => 0).comap f`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `r`. Establish `e : ∀ x : Fin n → L, x ∈ boxLat L (fun _ => 0) ↔ x ∈ intV L n` using `fun x => by`. Rewrite using `[mem_boxLat, mem_intV]`. Use `forall_congr' fun i => ?_` and prove the remaining obligations. Rewrite using `[mem_ordBall, mem_intL_iff, neg_zero, WithZero.exp_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[AddSubgroup.mem_comap, e, hfa]`. Use `⟨fun h => vecMul_mem_intV ha h, fun h => ?_⟩` and prove the remaining obligations. Use `vecMul_mem_intV ha' h` as an intermediate fact. Rewrite `this` using `[Matrix.vecMul_vecMul, ea', Matrix.vecMul_one]`. Then use the resulting hypothesis. Establish `h2 : preLat A = (boxLat L fun i => -d i).comap f`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `r`. Rewrite using `[AddSubgroup.mem_comap, hfa, hAe]`. Conclude with `mem_preLat_iff hϖ hb hb' eb r`. Rewrite using `[h1, h2, AddSubgroup.relIndex_comap, AddSubgroup.map_comap_eq_self_of_surjective hf, relIndex_boxLat, Finset.prod_congr rfl fun i _ => relIndex_ordBall hU (k := -d i) (K := 0) (by linarith [hd i]), Finset.prod_pow_eq_pow_sum, ← pow_mul]`. Use `congr 2`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: ((∑ i, (0 - -d i).toNat : ℕ) : ℤ) = k`. Rewrite using `[Nat.cast_sum, ← hsum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Int.toNat_of_nonneg (by linarith [hd i])]`. Expand and normalize the polynomial expressions, which then agree.
-
-Conclude with `this` after adjusting the coercions.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem latIndex (hS : Smith) : LatIndex := by
   intro L _ _ ϖ σ q n hU A k hA hk

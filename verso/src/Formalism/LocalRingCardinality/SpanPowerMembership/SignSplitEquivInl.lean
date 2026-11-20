@@ -16,16 +16,16 @@ variable {n P Q : ℕ} (ε : Fin n → Bool) (e : Fin P ⊕ Fin Q ≃ Fin n)
 abbrev re : MM P Q ≃ₐ[ℂ] Matrix (Fin n) (Fin n) ℂ := Matrix.reindexAlgEquiv ℂ ℂ e
 
 /- English proof (translation)
-Simplify using `[re, Matrix.reindexAlgEquiv_apply, Matrix.conjTranspose_reindex]`.
+Simplify using the standard rewrite rules.
 -/
 theorem re_star (X : MM P Q) : re e Xᴴ = (re e X)ᴴ := by
   simp [re, Matrix.reindexAlgEquiv_apply, Matrix.conjTranspose_reindex]
 
 include h1 h2 in
 /- English proof (translation)
-Use extensionality with `i j`. Take `⟨a, rfl⟩` from `e.surjective i`. Take `⟨b, rfl⟩` from `e.surjective j`. Simplify using `only [re, Matrix.reindexAlgEquiv_apply, Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.symm_apply_apply, Jm, Matrix.diagonal_apply, e.injective.eq_iff, Formalism.UG.Jpq]`. Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b <;>`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `simp [Matrix.fromBlocks, Matrix.one_apply, h1, h2] <;> split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem re_J : re e (Formalism.UG.Jpq P Q) = Jm ε := by
   ext i j
@@ -38,7 +38,7 @@ theorem re_J : re e (Formalism.UG.Jpq P Q) = Jm ε := by
 
 include h1 h2 in
 /- English proof (translation)
-Unfold `inUJ`. Rewrite using `[← re_J ε e h1 h2, ← re_star, ← map_mul, ← map_mul]`. Conclude with `(re e).injective.eq_iff`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem re_mem (M : MM P Q) : inUJ ε (re e M) ↔ Mᴴ * Formalism.UG.Jpq P Q * M = Formalism.UG.Jpq P Q := by
   unfold inUJ
@@ -52,14 +52,14 @@ def ofMatU (h : MM P Q) (hh : hᴴ * Formalism.UG.Jpq P Q * h = Formalism.UG.Jpq
   (exists_of_mem P Q h hh).choose
 
 /- English proof (translation)
-The claim follows from `(exists_of_mem P Q h hh).choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem mat_ofMatU (h : MM P Q) (hh : hᴴ * Formalism.UG.Jpq P Q * h = Formalism.UG.Jpq P Q) :
     UpqT.mat (ofMatU h hh) = h := (exists_of_mem P Q h hh).choose_spec
 
 include h1 h2 in
 /- English proof (translation)
-The claim follows from `(re_mem ε e h1 h2 _).mp (by rw [AlgEquiv.apply_symm_apply]; exact a.2)`.
+A detailed English derivation is pending.
 -/
 theorem symm_mem (a : UJ ε) : ((re e).symm (coeMatrixAlt ε a))ᴴ * Formalism.UG.Jpq P Q * (re e).symm (coeMatrixAlt ε a) =
     Formalism.UG.Jpq P Q :=
@@ -82,9 +82,9 @@ Both sides reduce to the same expression.
 theorem coe_phi (g : UpqT P Q) : coeMatrixAlt ε (phi ε e h1 h2 g) = Matrix.reindex e e (UpqT.mat g) := rfl
 
 /- English proof (translation)
-Rewrite using `[(isInducing_coeMatrix ε).continuous_iff]`. Establish `h : coeMatrixAlt ε ∘ (phi ε e h1 h2) = fun g => (UpqT.mat g).submatrix e.symm e.symm`. Use function extensionality and compare the values at `g`. Rewrite using `[Function.comp_apply, coe_phi, Matrix.reindex_apply]`. Rewrite using `[h]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(mat_cont P Q).matrix_submatrix _ _`.
+A detailed English derivation is pending.
 -/
 theorem phi_cont : Continuous (phi ε e h1 h2) := by
   rw [(isInducing_coeMatrix ε).continuous_iff]
@@ -95,9 +95,9 @@ theorem phi_cont : Continuous (phi ε e h1 h2) := by
   exact (mat_cont P Q).matrix_submatrix _ _
 
 /- English proof (translation)
-Rewrite using `[(mat_inducing P Q).continuous_iff]`. Establish `h : UpqT.mat ∘ (phi ε e h1 h2).symm = fun a => (coeMatrixAlt ε a).submatrix e e`. Use function extensionality and compare the values at `a`. Rewrite using `[Function.comp_apply]`. Conclude with `mat_ofMatU _ (symm_mem ε e h1 h2 a)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h]`. Conclude with `(continuous_coeMatrix ε).matrix_submatrix _ _`.
+A detailed English derivation is pending.
 -/
 theorem phi_symm_cont : Continuous (phi ε e h1 h2).symm := by
   rw [(mat_inducing P Q).continuous_iff]
@@ -109,9 +109,9 @@ theorem phi_symm_cont : Continuous (phi ε e h1 h2).symm := by
   exact (continuous_coeMatrix ε).matrix_submatrix _ _
 
 /- English proof (translation)
-Use extensionality with `g`. Simplify using `only [Set.mem_preimage, Set.mem_setOf_eq]`. Prove the components needed by the constructor for the conclusion. Introduce `hg`. Conclude with `⟨_, hg, coe_phi ε e h1 h2 g⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Introduce and unpack `⟨a, ha, hag⟩`. Establish `: a = phi ε e h1 h2 g` using `injective_coeMatrix ε (by rw [coe_phi]; exact hag)`. Rewrite using `[← this]`. Conclude with `ha`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem preimage_phi (A : Set (UJ ε)) : (phi ε e h1 h2) ⁻¹' A =
     {g | ∃ a ∈ A, ((a : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ) =
@@ -129,9 +129,9 @@ theorem preimage_phi (A : Set (UJ ε)) : (phi ε e h1 h2) ⁻¹' A =
 def TR (P Q : ℕ) (R : ℝ) : Set (UpqT P Q) := {g | ∑ i, ∑ j, ‖UpqT.mat g i j‖ ^ 2 ≤ R}
 
 /- English proof (translation)
-Use extensionality with `g`. Simplify using `only [Set.mem_preimage, Set.mem_setOf_eq, TR]`. Establish `h : hsG (phi ε e h1 h2 g) = ∑ i, ∑ j, ‖UpqT.mat g i j‖ ^ 2` using `by show hs (coeMatrixAlt ε (phi ε e h1 h2 g)) = _`. Rewrite using `[coe_phi, hs]`. Use `(Fintype.sum_equiv e.symm _ _ fun i => ?_)` and prove the remaining obligations.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Fintype.sum_equiv e.symm _ _ fun j => by simp [Matrix.reindex_apply]`. Rewrite using `[h]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem preimage_ball (R : ℝ) : (phi ε e h1 h2) ⁻¹' {a | hsG a ≤ R} = TR P Q R := by
   ext g
@@ -148,7 +148,7 @@ end One
 def rad (n : ℕ) : ℝ := hs (1 : Matrix (Fin n) (Fin n) ℂ) + 1
 
 /- English proof (translation)
-Establish `h : (hsG : UJ ε → ℝ) = fun g => ∑ i, ∑ j, ‖coeMatrixAlt ε g i j‖ ^ 2` using `rfl`. Rewrite using `[h]`. Use `continuous_finset_sum _ fun i _ => continuous_finset_sum _ fun j _ => ?_` and prove the remaining obligations. Conclude with `(((continuous_apply j).comp ((continuous_apply i).comp (continuous_coeMatrix ε))).norm).pow 2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem hsG_cont {n : ℕ} (ε : Fin n → Bool) : Continuous (hsG : UJ ε → ℝ) := by
   have h : (hsG : UJ ε → ℝ) = fun g => ∑ i, ∑ j, ‖coeMatrixAlt ε g i j‖ ^ 2 := rfl
@@ -157,15 +157,15 @@ theorem hsG_cont {n : ℕ} (ε : Fin n → Bool) : Continuous (hsG : UJ ε → �
   exact (((continuous_apply j).comp ((continuous_apply i).comp (continuous_coeMatrix ε))).norm).pow 2
 
 /- English proof (translation)
-The claim follows from `(isClosed_le (hsG_cont ε) continuous_const).measurableSet`.
+A detailed English derivation is pending.
 -/
 theorem ball_meas {n : ℕ} (ε : Fin n → Bool) (R : ℝ) : MeasurableSet {a : UJ ε | hsG a ≤ R} :=
   (isClosed_le (hsG_cont ε) continuous_const).measurableSet
 
 /- English proof (translation)
-Establish `hopen : IsOpen {a : UJ ε | hsG a < rad n}` using `isOpen_lt (hsG_cont ε) continuous_const`. Establish `hne : ({a : UJ ε | hsG a < rad n}).Nonempty` using `⟨1, by show hs (((1 : UJ ε) : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ) < rad n`. Simplify using `[rad]⟩`. Establish `hpos : 0 < muG ε {a | hsG a < rad n}`. Unfold `muG`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Conclude with `hopen.measure_pos _ hne`. Conclude with `(hpos.trans_le (measure_mono fun a (ha : hsG a < rad n) => ha.le)).ne'`.
+A detailed English derivation is pending.
 -/
 theorem ball_ne_zero {n : ℕ} (ε : Fin n → Bool) : muG ε {a | hsG a ≤ rad n} ≠ 0 := by
   have hopen : IsOpen {a : UJ ε | hsG a < rad n} := isOpen_lt (hsG_cont ε) continuous_const
@@ -178,13 +178,11 @@ theorem ball_ne_zero {n : ℕ} (ε : Fin n → Bool) : muG ε {a | hsG a ≤ rad
   exact (hpos.trans_le (measure_mono fun a (ha : hsG a < rad n) => ha.le)).ne'
 
 /- English proof (translation)
-Establish `hemb : Topology.IsClosedEmbedding (coeMatrixAlt ε)` using `⟨⟨isInducing_coeMatrix ε, injective_coeMatrix ε⟩, by rw [range_coeMatrix]; exact isClosed_pseudoUnitary ε⟩`. Use `set K : Set (Matrix (Fin n) (Fin n) ℂ) := {M | hs M ≤ rad n} with hK`. Establish `hKc : IsClosed K`. Use `isClosed_le ?_ continuous_const` and prove the remaining obligations. Use `continuous_finset_sum _ fun i _ => continuous_finset_sum _ fun j _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `(((continuous_apply j).comp (continuous_apply i)).norm).pow 2`. Establish `hKsub : K ⊆ Set.pi Set.univ fun _ => Set.pi Set.univ fun _ => Metric.closedBall (0 : ℂ) (Real.sqrt (rad n))`. Introduce `M hM i _ j _`. Rewrite using `[Metric.mem_closedBall, dist_zero_right]`. Use `Real.le_sqrt_of_sq_le (le_trans ?_ hM)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hKcomp : IsCompact K` using `(isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => isCompact_closedBall _ _).of_isClosed_subset hKc hKsub`. Establish `hball : {a : UJ ε | hsG a ≤ rad n} = coeMatrixAlt ε ⁻¹' K` using `rfl`. Rewrite using `[hball]`. Unfold `muG`.
-
-Conclude with `(hemb.isCompact_preimage hKcomp).measure_lt_top.ne`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem ball_ne_top {n : ℕ} (ε : Fin n → Bool) : muG ε {a | hsG a ≤ rad n} ≠ ⊤ := by
 
@@ -217,11 +215,11 @@ def nT {n : ℕ} (ε : Fin n → Bool) : ℕ := Fintype.card {i // ε i = true}
 def nF {n : ℕ} (ε : Fin n → Bool) : ℕ := Fintype.card {i // ¬ ε i = true}
 
 /- English proof (translation)
-Establish `hc : Fintype.card (Fin P) = Fintype.card {i // ε i = true}`. Use `Fintype.card_congr (Equiv.ofBijective (fun i => ⟨e (Sum.inl i), h1 i⟩) ⟨?_, ?_⟩)` and prove the remaining obligations. Introduce `a b hab`. Use `congrArg Subtype.val hab` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce and unpack `⟨i, hi⟩`. Consider the cases of `hx : e.symm i with`. Consider the case `inl a => exact ⟨a, Subtype.ext (by simp [← hx])⟩`. Consider the case `inr b`. It suffices to derive a contradiction.
+Assume the hypotheses and unpack their components. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. It suffices to derive a contradiction.
 
-Establish `h` using `h2 b`. Rewrite `h` using `[← hx, e.apply_symm_apply]`. Simplify using `[hi] at h`. Simplify `hc` using `[nT]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem eq_nT {n P Q : ℕ} (ε : Fin n → Bool) (e : Fin P ⊕ Fin Q ≃ Fin n)
     (h1 : ∀ i, ε (e (Sum.inl i)) = true) (h2 : ∀ j, ε (e (Sum.inr j)) = false) : P = nT ε := by
@@ -241,11 +239,11 @@ theorem eq_nT {n P Q : ℕ} (ε : Fin n → Bool) (e : Fin P ⊕ Fin Q ≃ Fin n
   simpa [nT] using hc
 
 /- English proof (translation)
-Establish `hc : Fintype.card (Fin Q) = Fintype.card {i // ¬ ε i = true}`. Use `Fintype.card_congr (Equiv.ofBijective (fun j => ⟨e (Sum.inr j), by simp [h2 j]⟩) ⟨?_, ?_⟩)` and prove the remaining obligations. Introduce `a b hab`. Use `congrArg Subtype.val hab` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce and unpack `⟨i, hi⟩`. Consider the cases of `hx : e.symm i with`. Consider the case `inl a`. It suffices to derive a contradiction. Establish `h` using `h1 a`.
+Assume the hypotheses and unpack their components. Split into cases according to the possible forms of the given data. Treat this case separately. It suffices to derive a contradiction. Establish an intermediate fact.
 
-Rewrite `h` using `[← hx, e.apply_symm_apply]`. Conclude with `hi h`. Consider the case `inr b => exact ⟨b, Subtype.ext (by simp [← hx])⟩`. Simplify `hc` using `[nF]`.
+Rewrite the indicated hypotheses using the stated equalities. Treat this case separately. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem eq_nF {n P Q : ℕ} (ε : Fin n → Bool) (e : Fin P ⊕ Fin Q ≃ Fin n)
     (h1 : ∀ i, ε (e (Sum.inl i)) = true) (h2 : ∀ j, ε (e (Sum.inr j)) = false) : Q = nF ε := by
@@ -269,14 +267,14 @@ def e0 {n : ℕ} (ε : Fin n → Bool) : Fin (nT ε) ⊕ Fin (nF ε) ≃ Fin n :
     (Fintype.equivFin {i // ¬ ε i = true}).symm).trans (Equiv.sumCompl fun i => ε i = true)
 
 /- English proof (translation)
-Simplify using `only [e0, Equiv.trans_apply, Equiv.sumCongr_apply, Sum.map_inl, Equiv.sumCompl_apply_inl]`. Conclude with `((Fintype.equivFin {i // ε i = true}).symm i).2`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sign_split_equiv_inl {n : ℕ} (ε : Fin n → Bool) (i) : ε (e0 ε (Sum.inl i)) = true := by
   simp only [e0, Equiv.trans_apply, Equiv.sumCongr_apply, Sum.map_inl, Equiv.sumCompl_apply_inl]
   exact ((Fintype.equivFin {i // ε i = true}).symm i).2
 
 /- English proof (translation)
-Use `show ε (((Fintype.equivFin {i // ¬ ε i = true}).symm j : {i // ¬ ε i = true}) : Fin n) = false`. Simplify using `using ((Fintype.equivFin {i // ¬ ε i = true}).symm j).2`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem sign_split_equiv_inr {n : ℕ} (ε : Fin n → Bool) (j) : ε (e0 ε (Sum.inr j)) = false := by
   show ε (((Fintype.equivFin {i // ¬ ε i = true}).symm j : {i // ¬ ε i = true}) : Fin n) = false
@@ -288,13 +286,11 @@ def cdScaleOf (n : ℕ) (ε : Fin n → Bool) : ℝ≥0 :=
   (C.cd (nT ε) (nF ε) (TR (nT ε) (nF ε) (rad n)) / muG ε {a | hsG a ≤ rad n}).toNNReal
 
 /- English proof (translation)
-Take `rfl` from `eq_nT ε e h1 h2`. Take `rfl` from `eq_nF ε e h1 h2`. Use `haveI := C.haar (nT ε) (nF ε)`. Use `haveI : (muG ε).IsHaarMeasure := by unfold muG; infer_instance`. Use `haveI : ((C.cd (nT ε) (nF ε)).map (phi ε e h1 h2)).IsHaarMeasure := (phi ε e h1 h2).isHaarMeasure_map (C.cd (nT ε) (nF ε)) (phi_cont ε e h1 h2) (phi_symm_cont ε e h1 h2)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set ν := (C.cd (nT ε) (nF ε)).map (phi ε e h1 h2) with hν_def`. Establish `hν : ν = Measure.haarScalarFactor ν (muG ε) • muG ε` using `Measure.isMulLeftInvariant_eq_smul ν (muG ε)`. Establish `hB : ν {a | hsG a ≤ rad n} = C.cd (nT ε) (nF ε) (TR (nT ε) (nF ε) (rad n))`. Rewrite using `[hν_def, Measure.map_apply (phi_cont ε e h1 h2).measurable (ball_meas ε _), preimage_ball]`. Establish `hscale : cdScaleOf C n ε = Measure.haarScalarFactor ν (muG ε)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `cdScaleOf`. Rewrite using `[← hB]`. Use `conv_lhs => rw [hν]`. Rewrite using `[Measure.coe_nnreal_smul_apply, ENNReal.mul_div_cancel_right (ball_ne_zero ε) (ball_ne_top ε), ENNReal.toNNReal_coe]`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[hscale]`. Conclude with `Measure.haarScalarFactor_pos_of_isHaarMeasure _ _`. Rewrite using `[hscale]`. Conclude with `hν`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cdScaleOf_spec {n P Q : ℕ} (ε : Fin n → Bool) (e : Fin P ⊕ Fin Q ≃ Fin n)
     (h1 : ∀ i, ε (e (Sum.inl i)) = true) (h2 : ∀ j, ε (e (Sum.inr j)) = false) :
@@ -324,13 +320,13 @@ theorem cdScaleOf_spec {n P Q : ℕ} (ε : Fin n → Bool) (e : Fin P ⊕ Fin Q 
     exact hν
 
 /- English proof (translation)
-The claim follows from `(cdScaleOf_spec C ε (e0 ε) (sign_split_equiv_inl ε) (sign_split_equiv_inr ε)).1`.
+A detailed English derivation is pending.
 -/
 theorem cdScaleOf_pos (n : ℕ) (ε : Fin n → Bool) : 0 < cdScaleOf C n ε :=
   (cdScaleOf_spec C ε (e0 ε) (sign_split_equiv_inl ε) (sign_split_equiv_inr ε)).1
 
 /- English proof (translation)
-Rewrite using `[← preimage_phi ε e h1 h2 A, ← Measure.map_apply (phi_cont ε e h1 h2).measurable hA, (cdScaleOf_spec C ε e h1 h2).2]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem cdScaleOf_tie (n : ℕ) (ε : Fin n → Bool) (P Q : ℕ) (e : Fin P ⊕ Fin Q ≃ Fin n)
     (h1 : ∀ i, ε (e (Sum.inl i)) = true) (h2 : ∀ j, ε (e (Sum.inr j)) = false)

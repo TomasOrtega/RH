@@ -11,11 +11,11 @@ set_option linter.unusedSectionVars false
 section Det
 
 /- English proof (translation)
-Take `⟨c, -, hc⟩` from `Polynomial.isUnit_iff.1 (isUnit_charpolyRev_of_isNilpotent hM)`. Establish `h0` using `eval_charpolyRev (M := M)`. Rewrite `h0` using `[← hc, Polynomial.eval_C]`. Establish `h1 : M.charpolyRev = 1` using `by rw [← hc, h0, Polynomial.C_1]`. Establish `h2` using `congrArg (Polynomial.eval (-1)) h1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[charpolyRev, ← Polynomial.coe_evalRingHom, RingHom.map_det, map_one]`. Rewrite using `[← h2]`. Use `congr 1`. Use extensionality with `i j`. Distinguish the cases in `hij : i = j`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails.
 
-Substitute `hij` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hij]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem det_one_add_of_isNilpotent {m K : Type*} [Fintype m] [DecidableEq m] [Field K]
     {M : Matrix m m K} (hM : IsNilpotent M) : (1 + M).det = 1 := by
@@ -33,7 +33,7 @@ theorem det_one_add_of_isNilpotent {m K : Type*} [Fintype m] [DecidableEq m] [Fi
   · simp [hij]
 
 /- English proof (translation)
-Set `b` to `Module.finBasis K E`. Rewrite using `[← LinearMap.det_toMatrix b, map_add, LinearMap.toMatrix_one]`. Apply `det_one_add_of_isNilpotent` to reduce the goal to its premises. Take `⟨k, hk⟩` from `hf`. Conclude with `⟨k, by rw [LinearMap.toMatrix_pow, hk, map_zero]⟩`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem det_one_add_linearMap_of_isNilpotent {K E : Type*} [Field K] [AddCommGroup E] [Module K E]
     [FiniteDimensional K E] {f : E →ₗ[K] E} (hf : IsNilpotent f) : LinearMap.det (1 + f) = 1 := by
@@ -66,16 +66,16 @@ def unipotentRightLinear (w : StrictUpperIndex n → 𝕜) :
     rw [strictUpperMatrix_smul, Matrix.smul_mul, strictUpperCoords_smul, RingHom.id_apply]
 
 /- English proof (translation)
-The claim follows from `(isStrictUpper_strictUpperMatrix v).mul_right (isStrictUpper_strictUpperMatrix w).isUpperTriangular`.
+A detailed English derivation is pending.
 -/
 theorem isStrictUpper_mul (v w : StrictUpperIndex n → 𝕜) :
     IsStrictUpper (strictUpperMatrix v * strictUpperMatrix w) :=
   (isStrictUpper_strictUpperMatrix v).mul_right (isStrictUpper_strictUpperMatrix w).isUpperTriangular
 
 /- English proof (translation)
-Proceed by induction on `k generalizing v with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Rewrite using `[pow_succ, Module.End.mul_apply, ih]`. Use `show strictUpperCoords (strictUpperMatrix w ^ k * strictUpperMatrix (strictUpperCoords (strictUpperMatrix w * strictUpperMatrix v))) = _`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[strictUpperMatrix_strictUpperCoords (isStrictUpper_mul w v), ← Matrix.mul_assoc, ← pow_succ]`.
+A detailed English derivation is pending.
 -/
 theorem unipotentLeftLinear_pow_apply (w : StrictUpperIndex n → 𝕜) (k : ℕ)
     (v : StrictUpperIndex n → 𝕜) :
@@ -89,9 +89,9 @@ theorem unipotentLeftLinear_pow_apply (w : StrictUpperIndex n → 𝕜) (k : ℕ
     rw [strictUpperMatrix_strictUpperCoords (isStrictUpper_mul w v), ← Matrix.mul_assoc, ← pow_succ]
 
 /- English proof (translation)
-Proceed by induction on `k generalizing v with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Rewrite using `[pow_succ, Module.End.mul_apply, ih]`. Use `show strictUpperCoords ( strictUpperMatrix (strictUpperCoords (strictUpperMatrix v * strictUpperMatrix w)) * strictUpperMatrix w ^ k) = _`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[strictUpperMatrix_strictUpperCoords (isStrictUpper_mul v w), Matrix.mul_assoc, ← pow_succ']`.
+A detailed English derivation is pending.
 -/
 theorem unipotentRightLinear_pow_apply (w : StrictUpperIndex n → 𝕜) (k : ℕ)
     (v : StrictUpperIndex n → 𝕜) :
@@ -106,7 +106,7 @@ theorem unipotentRightLinear_pow_apply (w : StrictUpperIndex n → 𝕜) (k : �
     rw [strictUpperMatrix_strictUpperCoords (isStrictUpper_mul v w), Matrix.mul_assoc, ← pow_succ']
 
 /- English proof (translation)
-Proceed by induction on `k generalizing v with`. Consider the case `zero => rfl`. Consider the case `succ k ih => rw [pow_succ, Module.End.mul_apply, ih, pow_succ, Module.End.mul_apply]`. Both sides reduce to the same expression.
+Proceed by induction. Treat this case separately. Treat this case separately. Both sides reduce to the same expression.
 -/
 theorem restrictScalars_pow_apply (L : (StrictUpperIndex n → 𝕜) →ₗ[𝕜] (StrictUpperIndex n → 𝕜))
     (k : ℕ) (v : StrictUpperIndex n → 𝕜) : ((L.restrictScalars ℝ) ^ k) v = (L ^ k) v := by
@@ -115,7 +115,7 @@ theorem restrictScalars_pow_apply (L : (StrictUpperIndex n → 𝕜) →ₗ[𝕜
   | succ k ih => rw [pow_succ, Module.End.mul_apply, ih, pow_succ, Module.End.mul_apply]; rfl
 
 /- English proof (translation)
-Use `⟨Fintype.card n, LinearMap.ext fun v => ?_⟩` and prove the remaining obligations. Rewrite using `[restrictScalars_pow_apply, unipotentLeftLinear_pow_apply, (isStrictUpper_strictUpperMatrix w).pow_card_eq_zero, Matrix.zero_mul]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem isNilpotent_unipotentLeftLinear (w : StrictUpperIndex n → 𝕜) :
     IsNilpotent ((unipotentLeftLinear w).restrictScalars ℝ) := by
@@ -125,7 +125,7 @@ theorem isNilpotent_unipotentLeftLinear (w : StrictUpperIndex n → 𝕜) :
   rfl
 
 /- English proof (translation)
-Use `⟨Fintype.card n, LinearMap.ext fun v => ?_⟩` and prove the remaining obligations. Rewrite using `[restrictScalars_pow_apply, unipotentRightLinear_pow_apply, (isStrictUpper_strictUpperMatrix w).pow_card_eq_zero, Matrix.mul_zero]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem isNilpotent_unipotentRightLinear (w : StrictUpperIndex n → 𝕜) :
     IsNilpotent ((unipotentRightLinear w).restrictScalars ℝ) := by
@@ -135,7 +135,7 @@ theorem isNilpotent_unipotentRightLinear (w : StrictUpperIndex n → 𝕜) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[unipotentOfCoords_mul]`. Use `congr 1`. Use `show w + v + strictUpperCoords (strictUpperMatrix w * strictUpperMatrix v) = w + (v + strictUpperCoords (strictUpperMatrix w * strictUpperMatrix v))`. Rewrite using `[add_assoc]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unipotentOfCoords_mul_eq_left (w v : StrictUpperIndex n → 𝕜) :
     unipotentOfCoords w * unipotentOfCoords v =
@@ -147,7 +147,7 @@ theorem unipotentOfCoords_mul_eq_left (w v : StrictUpperIndex n → 𝕜) :
   rw [add_assoc]
 
 /- English proof (translation)
-Rewrite using `[unipotentOfCoords_mul]`. Use `congr 1`. Use `show v + w + strictUpperCoords (strictUpperMatrix v * strictUpperMatrix w) = w + (v + strictUpperCoords (strictUpperMatrix v * strictUpperMatrix w))`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem unipotentOfCoords_mul_eq_right (v w : StrictUpperIndex n → 𝕜) :
     unipotentOfCoords v * unipotentOfCoords w =
@@ -163,7 +163,7 @@ noncomputable def diagScaleLinear (a : PosDiag n) :
   LinearMap.pi fun p => ((a.1 p.1.1 / a.1 p.1.2) • LinearMap.id).comp (LinearMap.proj p)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `p`. Simplify using `[diagScaleLinear, RCLike.real_smul_eq_coe_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem diagScaleLinear_apply (a : PosDiag n) (v : StrictUpperIndex n → 𝕜) :
     diagScaleLinear a v = fun p => ((a.1 p.1.1 / a.1 p.1.2 : ℝ) : 𝕜) * v p := by
@@ -171,7 +171,7 @@ theorem diagScaleLinear_apply (a : PosDiag n) (v : StrictUpperIndex n → 𝕜) 
   simp [diagScaleLinear, RCLike.real_smul_eq_coe_mul]
 
 /- English proof (translation)
-Rewrite using `[diagScaleLinear, LinearMap.det_pi, iwasawaDelta_diagPosOf]`. Use `Finset.prod_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.det_smul, LinearMap.det_id, mul_one]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem det_diagScaleLinear (a : PosDiag n) :
     LinearMap.det (diagScaleLinear (𝕜 := 𝕜) a) = (iwasawaDelta (diagPosOf a : GL n 𝕜) : ℝ) := by
@@ -190,7 +190,7 @@ instance : SecondCountableTopology (upperUnipotentSubgroup n 𝕜) :=
   (unipotentCoordsHomeomorph (𝕜 := 𝕜) (n := n)).symm.isEmbedding.secondCountableTopology
 
 /- English proof (translation)
-Rewrite using `[setOf_forall]`. Conclude with `isOpen_iInter_of_finite fun i => isOpen_lt continuous_const (continuous_apply i)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_posDiag : IsOpen {a : n → ℝ | ∀ i, 0 < a i} := by
   rw [setOf_forall]
@@ -223,7 +223,7 @@ noncomputable def unipotentLebesgue : Measure (upperUnipotentSubgroup n 𝕜) :=
   Measure.map unipotentCoordsHomeomorph (Measure.addHaar : Measure (StrictUpperIndex n → 𝕜))
 
 /- English proof (translation)
-Establish `hLc : Continuous L` using `LinearMap.continuous_of_finiteDimensional L`. Establish `e : (fun v => w + L v) = (fun v => w + v) ∘ L` using `rfl`. Rewrite using `[e, ← Measure.map_map (measurable_const_add w) hLc.measurable, map_linearMap_addHaar_eq_smul_addHaar μ (by rw [hL]; exact one_ne_zero), hL, inv_one, abs_one, ENNReal.ofReal_one, one_smul, map_add_left_eq_self]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_affine_addHaar_eq {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [MeasurableSpace E] [BorelSpace E] [FiniteDimensional ℝ E] (μ : Measure E) [μ.IsAddHaarMeasure]
@@ -236,9 +236,9 @@ theorem map_affine_addHaar_eq {E : Type*} [NormedAddCommGroup E] [NormedSpace �
     ENNReal.ofReal_one, one_smul, map_add_left_eq_self]
 
 /- English proof (translation)
-Use `set w := unipotentCoordsHomeomorph.symm u`. Establish `hu : u = unipotentCoordsHomeomorph w` using `(unipotentCoordsHomeomorph.apply_symm_apply u).symm`. Establish `e : (u * ·) ∘ unipotentCoordsHomeomorph = unipotentCoordsHomeomorph ∘ (fun v => w + (1 + (unipotentLeftLinear w).restrictScalars ℝ) v)`. Use function extensionality and compare the values at `v`. Apply `Subtype.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Simplify using `only [Function.comp_apply, Subgroup.coe_mul, hu, coe_unipotentCoordsHomeomorph]`. Conclude with `unipotentOfCoords_mul_eq_left w v`. Establish `hT : Measurable (fun v : StrictUpperIndex n → 𝕜 => w + (1 + (unipotentLeftLinear w).restrictScalars ℝ) v)` using `(continuous_const.add (LinearMap.continuous_of_finiteDimensional _)).measurable`. Rewrite using `[unipotentLebesgue, Measure.map_map (measurable_const_mul u) unipotentCoordsHomeomorph.measurable, e, ← Measure.map_map unipotentCoordsHomeomorph.measurable hT, map_affine_addHaar_eq _ w _ (det_one_add_linearMap_of_isNilpotent (isNilpotent_unipotentLeftLinear w))]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unipotentLebesgue_map_mul_left (u : upperUnipotentSubgroup n 𝕜) :
     Measure.map (u * ·) (unipotentLebesgue (𝕜 := 𝕜) (n := n)) = unipotentLebesgue := by
@@ -259,9 +259,9 @@ theorem unipotentLebesgue_map_mul_left (u : upperUnipotentSubgroup n 𝕜) :
       (isNilpotent_unipotentLeftLinear w))]
 
 /- English proof (translation)
-Use `set w := unipotentCoordsHomeomorph.symm u`. Establish `hu : u = unipotentCoordsHomeomorph w` using `(unipotentCoordsHomeomorph.apply_symm_apply u).symm`. Establish `e : (· * u) ∘ unipotentCoordsHomeomorph = unipotentCoordsHomeomorph ∘ (fun v => w + (1 + (unipotentRightLinear w).restrictScalars ℝ) v)`. Use function extensionality and compare the values at `v`. Apply `Subtype.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Simplify using `only [Function.comp_apply, Subgroup.coe_mul, hu, coe_unipotentCoordsHomeomorph]`. Conclude with `unipotentOfCoords_mul_eq_right v w`. Establish `hT : Measurable (fun v : StrictUpperIndex n → 𝕜 => w + (1 + (unipotentRightLinear w).restrictScalars ℝ) v)` using `(continuous_const.add (LinearMap.continuous_of_finiteDimensional _)).measurable`. Rewrite using `[unipotentLebesgue, Measure.map_map (measurable_mul_const u) unipotentCoordsHomeomorph.measurable, e, ← Measure.map_map unipotentCoordsHomeomorph.measurable hT, map_affine_addHaar_eq _ w _ (det_one_add_linearMap_of_isNilpotent (isNilpotent_unipotentRightLinear w))]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unipotentLebesgue_map_mul_right (u : upperUnipotentSubgroup n 𝕜) :
     Measure.map (· * u) (unipotentLebesgue (𝕜 := 𝕜) (n := n)) = unipotentLebesgue := by
@@ -297,7 +297,7 @@ instance isMulRightInvariant_unipotentLebesgue :
   ⟨unipotentLebesgue_map_mul_right⟩
 
 /- English proof (translation)
-Use `⟨haarScalarFactor μ unipotentLebesgue, ?_, isMulLeftInvariant_eq_smul μ _⟩` and prove the remaining obligations. Introduce `h0`. Establish `h` using `isMulLeftInvariant_eq_smul μ (unipotentLebesgue (𝕜 := 𝕜) (n := n))`. Rewrite `h` using `[h0, zero_smul]`. Conclude with `(IsHaarMeasure.toIsOpenPosMeasure (μ := μ)).open_pos univ isOpen_univ univ_nonempty (by rw [h]; rfl)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_eq_smul_unipotentLebesgue (μ : Measure (upperUnipotentSubgroup n 𝕜))
     [μ.IsHaarMeasure] : ∃ c : ℝ≥0, c ≠ 0 ∧ μ = c • unipotentLebesgue := by
@@ -329,16 +329,16 @@ Both sides reduce to the same expression.
   rfl
 
 /- English proof (translation)
-The claim follows from `Continuous.subtype_mk ((continuous_const.mul continuous_subtype_val).mul continuous_const) _`.
+A detailed English derivation is pending.
 -/
 theorem continuous_diagConj (a : diagPosSubgroup n 𝕜) :
     Continuous (diagConj a) :=
   Continuous.subtype_mk ((continuous_const.mul continuous_subtype_val).mul continuous_const) _
 
 /- English proof (translation)
-Take `⟨x, rfl⟩` from `diagPosHomeomorph.surjective a`. Establish `e : diagConj (diagPosHomeomorph x) ∘ unipotentCoordsHomeomorph = unipotentCoordsHomeomorph ∘ diagScaleLinear (𝕜` using `𝕜) x := by`. Use function extensionality and compare the values at `v`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [Function.comp_apply, coe_diagConj, coe_diagPosHomeomorph, coe_unipotentCoordsHomeomorph, diagScaleLinear_apply]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Conclude with `conj_unipotentOfCoords x v`. Establish `hδ : (iwasawaDelta (diagPosOf x : GL n 𝕜) : ℝ) ≠ 0` using `NNReal.coe_ne_zero.2 (iwasawaDelta_ne_zero (diagPosSubgroup_le_upperPosSubgroup (diagPosOf_mem x)))`. Rewrite using `[unipotentLebesgue, Measure.map_map (continuous_diagConj _).measurable unipotentCoordsHomeomorph.measurable, e, ← Measure.map_map unipotentCoordsHomeomorph.measurable (LinearMap.continuous_of_finiteDimensional _).measurable, map_linearMap_addHaar_eq_smul_addHaar _ (by rw [det_dia …`. Use `congr 1`. Rewrite using `[abs_of_pos (inv_pos.2 (lt_of_le_of_ne (NNReal.coe_nonneg _) hδ.symm)), ← NNReal.coe_inv, ENNReal.ofReal_coe_nnreal, ENNReal.coe_inv (NNReal.coe_ne_zero.1 hδ)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unipotentLebesgue_map_diagConj (a : diagPosSubgroup n 𝕜) :
     Measure.map (diagConj a) (unipotentLebesgue (𝕜 := 𝕜) (n := n)) =
@@ -363,7 +363,7 @@ theorem unipotentLebesgue_map_diagConj (a : diagPosSubgroup n 𝕜) :
     ENNReal.ofReal_coe_nnreal, ENNReal.coe_inv (NNReal.coe_ne_zero.1 hδ)]
 
 /- English proof (translation)
-Take `⟨c, -, rfl⟩` from `exists_eq_smul_unipotentLebesgue μ`. Rewrite using `[Measure.map_smul, unipotentLebesgue_map_diagConj, smul_comm]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_diagConj_haar (μ : Measure (upperUnipotentSubgroup n 𝕜)) [μ.IsHaarMeasure]
     (a : diagPosSubgroup n 𝕜) :

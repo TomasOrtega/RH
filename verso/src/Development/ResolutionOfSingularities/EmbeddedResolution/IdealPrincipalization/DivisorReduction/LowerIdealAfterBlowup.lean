@@ -83,7 +83,7 @@ namespace FunctorialResolution.EmbeddedResolution
 namespace DivisorReduction
 
 /- English proof (translation)
-Substitute `hD` using the available equality. Unfold `filterNeTop`. Simplify using `[List.filter_append]`.
+Substitute using the available equality. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 private theorem filterNeTop_append_top {X : Scheme.{u}} (L : List X.IdealSheafData)
     (D : X.IdealSheafData) (hD : D = ⊤) : filterNeTop (L ++ [D]) = filterNeTop L := by
@@ -92,7 +92,7 @@ private theorem filterNeTop_append_top {X : Scheme.{u}} (L : List X.IdealSheafDa
   simp [List.filter_append]
 
 /- English proof (translation)
-Substitute `hg` using the available equality. Conclude with `Scheme.IdealSheafData.comap_id I`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 private theorem comap_eq_self_of_eq_id {X : Scheme.{u}} (I : X.IdealSheafData) (g : X ⟶ X)
     (hg : g = CategoryTheory.CategoryStruct.id X) : I.comap g = I := by
@@ -100,7 +100,7 @@ private theorem comap_eq_self_of_eq_id {X : Scheme.{u}} (I : X.IdealSheafData) (
   exact Scheme.IdealSheafData.comap_id I
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil => rfl`. Consider the case `cons a l ih`. Rewrite using `[List.map_cons, ih]`. Conclude with `congrArg (fun D => D :: l) (Scheme.IdealSheafData.comap_id a)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem list_map_comap_id {X : Scheme.{u}} (L : List X.IdealSheafData) :
     List.map (fun D => D.comap (CategoryTheory.CategoryStruct.id X)) L = L := by
@@ -111,7 +111,7 @@ private theorem list_map_comap_id {X : Scheme.{u}} (L : List X.IdealSheafData) :
       exact congrArg (fun D => D :: l) (Scheme.IdealSheafData.comap_id a)
 
 /- English proof (translation)
-Rewrite using `[Scheme.IdealSheafData.comap_comp, Scheme.IdealSheafData.comap_comp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem comap_comp_comp {A B C E : Scheme.{u}} (f : A ⟶ B) (g : B ⟶ C) (h : C ⟶ E)
     (D : E.IdealSheafData) :
@@ -120,7 +120,7 @@ private theorem comap_comp_comp {A B C E : Scheme.{u}} (f : A ⟶ B) (g : B ⟶ 
   rw [Scheme.IdealSheafData.comap_comp, Scheme.IdealSheafData.comap_comp]
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil => rfl`. Consider the case `cons _ _ ih => simp only [List.map_cons, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 private theorem map_comap_comp_comp {A B C E : Scheme.{u}} (f : A ⟶ B) (g : B ⟶ C) (h : C ⟶ E)
     (L : List E.IdealSheafData) :
@@ -132,7 +132,7 @@ private theorem map_comap_comp_comp {A B C E : Scheme.{u}} (f : A ⟶ B) (g : B 
   | cons _ _ ih => simp only [List.map_cons, ih]
 
 /- English proof (translation)
-Establish `: IsIso (e.hom ∣_ V)` using `inferInstance`. Establish `h1 : CategoryTheory.CategoryStruct.comp (Scheme.Opens.ι (e.hom ⁻¹ᵁ V)) (CategoryTheory.CategoryStruct.comp e.hom g) = CategoryTheory.CategoryStruct.comp (e.hom ∣_ V) (CategoryTheory.CategoryStruct.comp (Scheme.Opens.ι V) g)`. Rewrite using `[← CategoryTheory.Category.assoc (e.hom ∣_ V) (Scheme.Opens.ι V) g, morphismRestrict_ι, CategoryTheory.Category.assoc]`. Rewrite using `[h1]`. Conclude with `Scheme.Hom.ker_comp_of_isIso ..`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem ker_opensι_preimage_iso_comp {A B C : Scheme.{u}} (e : A ≅ B) (V : B.Opens)
     (g : B ⟶ C) :
@@ -150,7 +150,7 @@ private theorem ker_opensι_preimage_iso_comp {A B C : Scheme.{u}} (e : A ≅ B)
   exact Scheme.Hom.ker_comp_of_isIso ..
 
 /- English proof (translation)
-Substitute `hZ` using the available equality. Substitute `hJ` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Substitute using the available equality. Both sides reduce to the same expression.
 -/
 private theorem ker_opensι_comp_subschemeι_congr {X : Scheme.{u}} (Z J Z' J' : X.IdealSheafData)
     (hZ : Z' = Z) (hJ : J' = J) :
@@ -200,9 +200,9 @@ private theorem restrictTwistedToDivisor_boundary (T : MarkedIdealWithBoundary.{
   rfl
 
 /- English proof (translation)
-Establish `h1 : Blowup.exceptionalIdeal f Z = Z`. Rewrite using `[Blowup.exceptionalIdeal_eq_comap]`. Conclude with `comap_eq_self_of_eq_id Z f hf`. Establish `h2 : (I.comap g).comap f = I`. Rewrite using `[comap_eq_self_of_eq_id I g hg]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `comap_eq_self_of_eq_id I f hf`. Rewrite using `[h1, h2]`. Conclude with `hJ`.
+A detailed English derivation is pending.
 -/
 private theorem exceptionalIdeal_pow_mul_eq_comap_of_eq_id {X : Scheme.{u}} (I Z J : X.IdealSheafData)
     (m : ℕ) (hJ : Z ^ m * J = I) (f g : X ⟶ X)
@@ -219,7 +219,7 @@ private theorem exceptionalIdeal_pow_mul_eq_comap_of_eq_id {X : Scheme.{u}} (I Z
   exact hJ
 
 /- English proof (translation)
-Rewrite using `[comap_eq_self_of_eq_id I g hg]`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem support_subset_orderAtLeastLocus_comap_of_eq_id {X : Scheme.{u}} (I Z : X.IdealSheafData)
     (m : ℕ) (h : ((Z.support : Set ↥X)) ⊆ orderAtLeastLocus I m) (g : X ⟶ X)
@@ -229,9 +229,9 @@ private theorem support_subset_orderAtLeastLocus_comap_of_eq_id {X : Scheme.{u}}
   exact h
 
 /- English proof (translation)
-Establish `h1 : (T.ideal.comap (CategoryTheory.CategoryStruct.id T.scheme)).comap (CategoryTheory.CategoryStruct.id T.scheme) = T.ideal`. Rewrite using `[comap_eq_self_of_eq_id T.ideal (CategoryTheory.CategoryStruct.id T.scheme) rfl]`. Conclude with `comap_eq_self_of_eq_id T.ideal (CategoryTheory.CategoryStruct.id T.scheme) rfl`. Establish `h2 : Blowup.exceptionalIdeal (CategoryTheory.CategoryStruct.id T.scheme) (containedComponentsIdeal T j hj) = containedComponentsIdeal T j hj`. Rewrite using `[Blowup.exceptionalIdeal_eq_comap]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `comap_eq_self_of_eq_id (containedComponentsIdeal T j hj) (CategoryTheory.CategoryStruct.id T.scheme) rfl`. Rewrite using `[lowerIdealAfterBlowup_eq_residualByPow_exceptionalIdeal, h1, h2]`.
+A detailed English derivation is pending.
 -/
 private theorem lowerIdealAfterBlowup_eq_residualByPow (T : MarkedIdealWithBoundary.{u}) (j : ℕ)
     (hj : j < T.boundary.length) :
@@ -247,7 +247,7 @@ private theorem lowerIdealAfterBlowup_eq_residualByPow (T : MarkedIdealWithBound
   rw [lowerIdealAfterBlowup_eq_residualByPow_exceptionalIdeal, h1, h2]
 
 /- English proof (translation)
-Rewrite using `[lowerIdealAfterBlowup_eq_residualByPow]`. Conclude with `pow_mul_residualByPow T.ideal (containedComponentsIdeal T j hj) T.mult hfac`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem pow_mul_lowerIdealAfterBlowup_eq_ideal (T : MarkedIdealWithBoundary.{u}) (j : ℕ) (hj : j < T.boundary.length)
     (hfac : ∃ J, containedComponentsIdeal T j hj ^ T.mult * J = T.ideal) :
@@ -256,7 +256,7 @@ private theorem pow_mul_lowerIdealAfterBlowup_eq_ideal (T : MarkedIdealWithBound
   exact pow_mul_residualByPow T.ideal (containedComponentsIdeal T j hj) T.mult hfac
 
 /- English proof (translation)
-The claim follows from `isDerivBalanced_of_pow_mul T.base T.structMap (containedComponentsIdeal T j hj) T.ideal (lowerIdealAfterBlowup T j hj) T.mult (pow_mul_lowerIdealAfterBlowup_eq_ideal T j hj hfac).symm hord hbal`.
+A detailed English derivation is pending.
 -/
 private theorem isDerivBalanced_lowerIdealAfterBlowup (T : MarkedIdealWithBoundary.{u})
     [AlgebraicGeometry.Smooth T.structMap] [AlgebraicGeometry.LocallyOfFiniteType T.structMap]
@@ -291,7 +291,7 @@ private def complContainedComponentsAtSchemeZero (T : MarkedIdealWithBoundary.{u
   s.isoZero.hom ⁻¹ᵁ complContainedComponentsOnDivisor T j hj
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 private theorem mem_complOpens_iff (T : MarkedIdealWithBoundary.{u}) (j : ℕ) (hj : j < T.boundary.length)
     (s : (restrictTwistedToDivisor T j hj).SequenceOfBlowups) (x : ↥(s.toSequenceOfBlowups.schemeAt 0)) :
@@ -300,7 +300,7 @@ private theorem mem_complOpens_iff (T : MarkedIdealWithBoundary.{u}) (j : ℕ) (
   Iff.rfl
 
 /- English proof (translation)
-Establish `h1 : ((complContainedComponentsAtSchemeZero T j hj s : Set ↥(s.toSequenceOfBlowups.schemeAt 0))) = (⇑s.isoZero.hom ⁻¹' (⇑(boundaryDivisorEmbedding T j hj) ⁻¹' ((containedComponentsIdeal T j hj).support : Set ↥T.scheme)))ᶜ` using `rfl`. Rewrite using `[h1]`. Conclude with `(hopen.preimage (Scheme.Hom.continuous s.isoZero.hom)).isClosed_compl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isClosed_complOpens_of_isOpen (T : MarkedIdealWithBoundary.{u}) (j : ℕ)
     (hj : j < T.boundary.length) (s : (restrictTwistedToDivisor T j hj).SequenceOfBlowups)
@@ -314,9 +314,9 @@ private theorem isClosed_complOpens_of_isOpen (T : MarkedIdealWithBoundary.{u}) 
   exact (hopen.preimage (Scheme.Hom.continuous s.isoZero.hom)).isClosed_compl
 
 /- English proof (translation)
-Introduce `x hx`. Establish `hfacEq : T.ideal = containedComponentsIdeal T j hj ^ T.mult * lowerIdealAfterBlowup T j hj` using `(pow_mul_lowerIdealAfterBlowup_eq_ideal T j hj hfac).symm`. Establish `h1 : s.ideal 0 = ((restrictTwistedToDivisor T j hj).ideal).comap s.isoZero.hom` using `s.ideal_zero`. Rewrite `hx` using `[h1]`. Establish `h2 : s.isoZero.hom x ∈ (((restrictTwistedToDivisor T j hj).ideal).support : Set _)` using `(Scheme.IdealSheafData.mem_support_comap ..).1 hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : boundaryDivisorEmbedding T j hj (s.isoZero.hom x) ∈ ((lowerIdealAfterBlowup T j hj).support : Set _)` using `(Scheme.IdealSheafData.mem_support_comap ..).1 h2`. Establish `hfin : (boundaryDivisorEmbedding T j hj (s.isoZero.hom x)) ∉ ((containedComponentsIdeal T j hj).support : Set ↥T.scheme)`. Introduce `hmem`. Conclude with `not_mem_support_of_mem_support_of_pow_mul (containedComponentsIdeal T j hj) T.ideal (lowerIdealAfterBlowup T j hj) T.mult hfacEq hord hmem h3`. Conclude with `(mem_complOpens_iff T j hj s x).mpr hfin`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem support_ideal_zero_subset_complOpens (T : MarkedIdealWithBoundary.{u}) (j : ℕ)
     (hj : j < T.boundary.length) (s : (restrictTwistedToDivisor T j hj).SequenceOfBlowups)
@@ -341,9 +341,9 @@ private theorem support_ideal_zero_subset_complOpens (T : MarkedIdealWithBoundar
   exact (mem_complOpens_iff T j hj s x).mpr hfin
 
 /- English proof (translation)
-Establish `hE : InStrictNormalCrossingPosition T.structMap (List.map (fun D => D.comap (CategoryTheory.CategoryStruct.id T.scheme)) T.boundary)`. Rewrite using `[list_map_comap_id]`. Conclude with `hsncT`. Establish `hZE : HasStrictNormalCrossingsWith T.structMap (containedComponentsIdeal T j hj) (List.map (fun D => D.comap (CategoryTheory.CategoryStruct.id T.scheme)) T.boundary)`. Rewrite using `[list_map_comap_id]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hsnc`. Establish `h` using `inStrictNormalCrossingPosition_strictTransform_append T.structMap (CategoryTheory.CategoryStruct.id T.scheme) (containedComponentsIdeal T j hj) (List.map (fun D => D.comap (CategoryTheory.CategoryStruct.id T.scheme)) T.boundary) hb hE hZE`. Rewrite `h` using `[CategoryTheory.Category.id_comp]`. Rewrite using `[lowerBoundaryAfterBlowup_eq_map_comap_id_append]`. Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem inStrictNormalCrossingPosition_lowerBoundaryAfterBlowup (T : MarkedIdealWithBoundary.{u}) [AlgebraicGeometry.IsNoetherian T.scheme]
     (j : ℕ) (hj : j < T.boundary.length)
@@ -367,7 +367,7 @@ private theorem inStrictNormalCrossingPosition_lowerBoundaryAfterBlowup (T : Mar
   exact h
 
 /- English proof (translation)
-Rewrite using `[lowerBoundaryAfterBlowup_eq_map_comap_id_append, List.length_append, List.length_map, List.length_map, List.length_singleton]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 private theorem lt_length_lowerBoundaryAfterBlowup (T : MarkedIdealWithBoundary.{u}) (j : ℕ) (hj : j < T.boundary.length) :
     j < (lowerBoundaryAfterBlowup T j hj).length := by
@@ -376,7 +376,7 @@ private theorem lt_length_lowerBoundaryAfterBlowup (T : MarkedIdealWithBoundary.
   omega
 
 /- English proof (translation)
-Rewrite using `[lowerBoundaryAfterBlowup_eq_map_comap_id_append, list_map_comap_id]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem lowerBoundaryAfterBlowup_eq_map_strictTransform_append (T : MarkedIdealWithBoundary.{u}) (j : ℕ)
     (hj : j < T.boundary.length) :
@@ -387,7 +387,7 @@ private theorem lowerBoundaryAfterBlowup_eq_map_strictTransform_append (T : Mark
   rw [lowerBoundaryAfterBlowup_eq_map_comap_id_append, list_map_comap_id]
 
 /- English proof (translation)
-Rewrite using `[List.length_map]`. Conclude with `hj`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem lt_length_map_strictTransform_boundary (T : MarkedIdealWithBoundary.{u}) (j : ℕ) (hj : j < T.boundary.length) :
     j < (List.map (Blowup.strictTransform (CategoryTheory.CategoryStruct.id T.scheme)
@@ -396,7 +396,7 @@ private theorem lt_length_map_strictTransform_boundary (T : MarkedIdealWithBound
   exact hj
 
 /- English proof (translation)
-Establish `e0` using `embeddingIntoAmbient_zero hres hno T j hj (lowerIdealAfterBlowup T j hj) (lowerBoundaryAfterBlowup T j hj) s hpr`. Rewrite using `[restrictedEmbedding_eq_ι_comp_embeddingIntoAmbient]`. Conclude with `congrArg (fun g => CategoryTheory.CategoryStruct.comp (Scheme.Opens.ι (complContainedComponentsAtSchemeZero T j hj s)) g) e0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem restrictedEmbedding_zero_eq (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hno : BlowupPreservesNoetherian.{u}) (T : MarkedIdealWithBoundary.{u})
@@ -413,7 +413,7 @@ private theorem restrictedEmbedding_zero_eq (hres : FunctorialResolution.Blowup.
     (Scheme.Opens.ι (complContainedComponentsAtSchemeZero T j hj s)) g) e0
 
 /- English proof (translation)
-Use `Eq.trans (congrArg (fun f => D.comap f) (restrictedEmbedding_zero_eq hres hno T j hj s hpr)) ?_` and prove the remaining obligations. Conclude with `comap_comp_comp (Scheme.Opens.ι (complContainedComponentsAtSchemeZero T j hj s)) s.isoZero.hom (boundaryDivisorEmbedding T j hj) D`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem comap_restrictedEmbedding_zero (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hno : BlowupPreservesNoetherian.{u}) (T : MarkedIdealWithBoundary.{u})
@@ -430,11 +430,9 @@ private theorem comap_restrictedEmbedding_zero (hres : FunctorialResolution.Blow
   exact comap_comp_comp (Scheme.Opens.ι (complContainedComponentsAtSchemeZero T j hj s)) s.isoZero.hom (boundaryDivisorEmbedding T j hj) D
 
 /- English proof (translation)
-Establish `hL : (lowerBoundaryAfterBlowup T j hj)[j]'(lt_length_lowerBoundaryAfterBlowup T j hj) = Blowup.strictTransform (CategoryTheory.CategoryStruct.id T.scheme) (containedComponentsIdeal T j hj) (T.boundary.get ⟨j, hj⟩)`. Simplify using `only [lowerBoundaryAfterBlowup_eq_map_strictTransform_append T j hj, List.get_eq_getElem]`. Rewrite using `[List.getElem_append_left (lt_length_map_strictTransform_boundary T j hj), List.getElem_map]`. Establish `hA : Blowup.strictTransform (CategoryTheory.CategoryStruct.id T.scheme) (containedComponentsIdeal T j hj) (T.boundary.get ⟨j, hj⟩) = Scheme.Hom.ker (CategoryTheory.CategoryStruct.comp (Scheme.Opens.ι (complContainedComponentsOnDivisor T j hj)) (boundaryDivisorEmbedding T j hj))`. Rewrite using `[Blowup.strictTransform_eq_ker, Blowup.strictTransformImmersion_eq, Blowup.strictTransformOpens_eq]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ker_opensι_comp_subschemeι_congr (containedComponentsIdeal T j hj) (T.boundary.get ⟨j, hj⟩) ((containedComponentsIdeal T j hj).comap (CategoryTheory.CategoryStruct.id T.scheme)) ((T.boundary.get ⟨j, hj⟩).comap (CategoryTheory.CategoryStruct.id T.scheme)) (Scheme.IdealSheafData.co …`. Establish `hker : Scheme.Hom.ker (restrictedEmbedding T j hj (lowerIdealAfterBlowup T j hj) (lowerBoundaryAfterBlowup T j hj) s hres hno hpr (complContainedComponentsAtSchemeZero T j hj s) 0) = Scheme.Hom.ker (CategoryTheory.CategoryStruct.comp (Scheme.Opens.ι (complContainedComponentsOnDiv …`. Use `Eq.trans (congrArg (fun f => Scheme.Hom.ker f) (restrictedEmbedding_zero_eq hres hno T j hj s hpr)) ?_` and prove the remaining obligations. Conclude with `ker_opensι_preimage_iso_comp s.isoZero (complContainedComponentsOnDivisor T j hj) (boundaryDivisorEmbedding T j hj)`. Rewrite using `[hL, hA]`.
-
-Conclude with `hker.symm`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem lowerBoundaryAfterBlowup_getElem_eq_ker_restrictedEmbedding (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hno : BlowupPreservesNoetherian.{u}) (T : MarkedIdealWithBoundary.{u})
@@ -469,17 +467,15 @@ private theorem lowerBoundaryAfterBlowup_getElem_eq_ker_restrictedEmbedding (hre
   exact hker.symm
 
 /- English proof (translation)
-Establish `hsplit : (lowerBoundaryAfterBlowup T j hj).eraseIdx j = (List.map (Blowup.strictTransform (CategoryTheory.CategoryStruct.id T.scheme) (containedComponentsIdeal T j hj)) T.boundary).eraseIdx j ++ [Blowup.exceptionalIdeal (CategoryTheory.CategoryStruct.id T.scheme) (containedCompon …`. Rewrite using `[lowerBoundaryAfterBlowup_eq_map_strictTransform_append T j hj, List.eraseIdx_append_of_lt_length (lt_length_map_strictTransform_boundary T j hj)]`. Establish `hlen : ((List.map (Blowup.strictTransform (CategoryTheory.CategoryStruct.id T.scheme) (containedComponentsIdeal T j hj)) T.boundary).eraseIdx j).length = T.boundary.length - 1`. Rewrite using `[List.length_eraseIdx_of_lt (lt_length_map_strictTransform_boundary T j hj), List.length_map]`. Establish `htake : List.take (T.boundary.length - 1) ((lowerBoundaryAfterBlowup T j hj).eraseIdx j) = (List.map (Blowup.strictTransform (CategoryTheory.CategoryStruct.id T.scheme) (containedComponentsIdeal T j hj)) T.boundary).eraseIdx j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hsplit]`. Conclude with `List.take_left' hlen`. Establish `hb : (restrictTwistedToDivisor T j hj).boundary = List.map (fun D => D.comap (boundaryDivisorEmbedding T j hj)) ((List.map (Blowup.strictTransform (CategoryTheory.CategoryStruct.id T.scheme) (containedComponentsIdeal T j hj)) T.boundary).eraseIdx j)`. Rewrite using `[restrictTwistedToDivisor_boundary, htake]`. Establish `hB0 : s.boundary 0 = List.map (fun D => D.comap s.isoZero.hom) (List.map (fun D => D.comap (boundaryDivisorEmbedding T j hj)) ((List.map (Blowup.strictTransform (CategoryTheory.CategoryStruct.id T.scheme) (containedComponentsIdeal T j hj)) T.boundary).eraseIdx j))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : s.boundary 0 = List.map (fun D => D.comap s.isoZero.hom) (restrictTwistedToDivisor T j hj).boundary` using `s.boundary_zero`. Rewrite using `[h0]`. Conclude with `congrArg (fun L => List.map (fun D => D.comap s.isoZero.hom) L) hb`. Establish `hB0' : List.map (fun D => D.comap (Scheme.Opens.ι (complContainedComponentsAtSchemeZero T j hj s))) (s.boundary 0) = List.map (fun D : T.scheme.IdealSheafData => ((D.comap (boundaryDivisorEmbedding T j hj)).comap s.isoZero.hom).comap (Scheme.Opens.ι (complContainedComponentsAtSch …`. Rewrite using `[hB0]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `map_comap_comp_comp (Scheme.Opens.ι (complContainedComponentsAtSchemeZero T j hj s)) s.isoZero.hom (boundaryDivisorEmbedding T j hj) _`. Establish `htop' : (((Blowup.exceptionalIdeal (CategoryTheory.CategoryStruct.id T.scheme) (containedComponentsIdeal T j hj)).comap (boundaryDivisorEmbedding T j hj)).comap s.isoZero.hom).comap (Scheme.Opens.ι (complContainedComponentsAtSchemeZero T j hj s)) = ⊤`. Rewrite using `[Blowup.exceptionalIdeal_eq_comap, Scheme.IdealSheafData.comap_id]`. Conclude with `(FunctorialResolution.EmbeddedResolution.restrictIdeal_eq_top_iff_forall_notMem_support (((containedComponentsIdeal T j hj).comap (boundaryDivisorEmbedding T j hj)).comap s.isoZero.hom) (complContainedComponentsAtSchemeZero T j hj s)).mpr (fun x hx hmem => ((mem_complOpens_iff T …`. Establish `hfun : (fun D : T.scheme.IdealSheafData => D.comap (restrictedEmbedding T j hj (lowerIdealAfterBlowup T j hj) (lowerBoundaryAfterBlowup T j hj) s hres hno hpr (complContainedComponentsAtSchemeZero T j hj s) 0)) = (fun D : T.scheme.IdealSheafData => ((D.comap (boundaryDivisorEmbed …`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `(fun D => comap_restrictedEmbedding_zero hres hno T j hj s hpr D)`. Establish `key : filterNeTop (List.map (fun D : T.scheme.IdealSheafData => ((D.comap (boundaryDivisorEmbedding T j hj)).comap s.isoZero.hom).comap (Scheme.Opens.ι (complContainedComponentsAtSchemeZero T j hj s))) ((lowerBoundaryAfterBlowup T j hj).eraseIdx j)) = filterNeTop (List.map (fun D …`. Establish `h1 : List.map (fun D : T.scheme.IdealSheafData => ((D.comap (boundaryDivisorEmbedding T j hj)).comap s.isoZero.hom).comap (Scheme.Opens.ι (complContainedComponentsAtSchemeZero T j hj s))) ((lowerBoundaryAfterBlowup T j hj).eraseIdx j) = List.map (fun D : T.scheme.IdealSheafData = …`. Simplify using `only [hsplit, List.map_append, List.map_cons, List.map_nil]`. Rewrite using `[h1, filterNeTop_append_top _ _ htop']`.
-
-Conclude with `congrArg filterNeTop hB0'.symm`. Use `Eq.trans (congrArg (fun f => filterNeTop (List.map f ((lowerBoundaryAfterBlowup T j hj).eraseIdx j))) hfun) ?_` and prove the remaining obligations. Conclude with `key`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem filterNeTop_comap_restrictedEmbedding_eraseIdx (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hno : BlowupPreservesNoetherian.{u}) (T : MarkedIdealWithBoundary.{u})
@@ -571,7 +567,7 @@ private theorem filterNeTop_comap_restrictedEmbedding_eraseIdx (hres : Functoria
   exact key
 
 /- English proof (translation)
-Proceed by induction on `t with`. Consider the case `zero => exact goingUpInvariantOnOpen_zero hres hno T j hj I₀ E₀ s hpr U₀ hE₀ hjE hget hcmp`. Consider the case `succ n ih`. Conclude with `GoingUpInvariantOnOpen.succ (ih (Nat.le_of_succ_le ht)) hbal hm hV hlift hU hsupp (Nat.lt_of_succ_le ht)`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem goingUpInvariantOnOpen_of_le (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hno : BlowupPreservesNoetherian.{u}) (T : MarkedIdealWithBoundary.{u})
@@ -602,9 +598,9 @@ theorem goingUpInvariantOnOpen_of_le (hres : FunctorialResolution.Blowup.StrictT
         (Nat.lt_of_succ_le ht)
 
 /- English proof (translation)
-Take `⟨_, _, _, hm, _, hsmT, hsncT⟩` from `id hV`. Use `⟨complContainedComponentsAtSchemeZero T j hj s, isClosed_complOpens_of_isOpen T j hj s hopen, support_ideal_zero_subset_complOpens T j hj s hord hfac, ?_, ?_⟩` and prove the remaining obligations. Introduce `instFt`. Establish `: AlgebraicGeometry.Smooth T.structMap` using `hsmT`. Conclude with `isDerivBalanced_lowerIdealAfterBlowup T hord hbal j hj hfac`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hsmooth instFt instCh t ht`. Establish `: AlgebraicGeometry.Smooth T.structMap` using `hsmooth`. Establish `: AlgebraicGeometry.LocallyOfFiniteType T.structMap` using `instFt`. Establish `: CharZero T.base` using `instCh`. Conclude with `goingUpInvariantOnOpen_of_le hres hno T j hj (lowerIdealAfterBlowup T j hj) (lowerBoundaryAfterBlowup T j hj) s hpr (complContainedComponentsAtSchemeZero T j hj s) (isDerivBalanced_lowerIdealAfterBlowup T hord hbal j hj hfac) hm hVlow hlift (isClosed_complOpens_of_isOpen T j hj s …`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_isClosed_opens_goingUpInvariantOnOpen (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hno : BlowupPreservesNoetherian.{u}) (hlift : StrictNormalCrossingsLiftFromDivisor.{u})
@@ -654,7 +650,7 @@ theorem exists_isClosed_opens_goingUpInvariantOnOpen (hres : FunctorialResolutio
       (filterNeTop_comap_restrictedEmbedding_eraseIdx hres hno T j hj s hpr) t ht
 
 /- English proof (translation)
-Rewrite using `[BlowupSequenceData.controlledTransform_succ, BlowupSequenceData.controlledTransform_zero, BlowupSequenceData.prepend_isoObjZero, BlowupSequenceData.prepend_blowupMorphism_zero, BlowupSequenceData.prepend_center_zero]`. Conclude with `(Scheme.IdealSheafData.comap_id (lowerIdealAfterBlowup T j hj)).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem controlledTransform_prepend_ambientBlowupSeq_one (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hno : BlowupPreservesNoetherian.{u}) (T : MarkedIdealWithBoundary.{u})
@@ -673,7 +669,7 @@ theorem controlledTransform_prepend_ambientBlowupSeq_one (hres : FunctorialResol
   exact (Scheme.IdealSheafData.comap_id (lowerIdealAfterBlowup T j hj)).symm
 
 /- English proof (translation)
-Rewrite using `[BlowupSequenceData.boundary_succ, BlowupSequenceData.boundary_zero, BlowupSequenceData.prepend_isoObjZero, BlowupSequenceData.prepend_blowupMorphism_zero, BlowupSequenceData.prepend_center_zero]`. Conclude with `(list_map_comap_id (lowerBoundaryAfterBlowup T j hj)).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem boundary_prepend_ambientBlowupSeq_one (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hno : BlowupPreservesNoetherian.{u}) (T : MarkedIdealWithBoundary.{u})
@@ -693,31 +689,27 @@ theorem boundary_prepend_ambientBlowupSeq_one (hres : FunctorialResolution.Blowu
   exact (list_map_comap_id (lowerBoundaryAfterBlowup T j hj)).symm
 
 /- English proof (translation)
-Take `⟨U₀, hUcl, hUsupp, hbalLow, hinv⟩` from `exists_isClosed_opens_goingUpInvariantOnOpen hres hno hlift T hV hord hbal j hj hZ hb hVlow s hpr hsm hsnc hsup hfac hopen`. Take `⟨hch, hft, _, hm, _, hsmT, _⟩` from `id hV`. Establish `: CharZero T.base` using `hch`. Establish `: AlgebraicGeometry.LocallyOfFiniteType T.structMap` using `hft`. Establish `: AlgebraicGeometry.Smooth T.structMap` using `hsmT`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨Jfac, hJfac⟩` from `hfac`. Establish `hctrl1` using `controlledTransform_prepend_ambientBlowupSeq_one hres hno T j hj hb s hpr`. Establish `hbdry1` using `boundary_prepend_ambientBlowupSeq_one hres hno T j hj hb s hpr`. Establish `h0 : CategoryTheory.CategoryStruct.comp ((BlowupSequenceData.prepend (containedComponentsIdeal T j hj) hb (ambientBlowupSeq hres hno T j hj (lowerIdealAfterBlowup T j hj) (lowerBoundaryAfterBlowup T j hj) s hpr)).projectionToBase 0) T.structMap = T.structMap`. Rewrite using `[BlowupSequenceData.projectionToBase_prepend_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `CategoryTheory.Category.id_comp T.structMap`. Establish `hlen : (BlowupSequenceData.prepend (containedComponentsIdeal T j hj) hb (ambientBlowupSeq hres hno T j hj (lowerIdealAfterBlowup T j hj) (lowerBoundaryAfterBlowup T j hj) s hpr)).length = s.length + 1`. Rewrite using `[BlowupSequenceData.prepend_length, ambientBlowupSeq_length]`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i hi`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hi` using `[hlen]`. Consider the cases of `i with`. Consider the case `zero`. Use `⟨Jfac, ?_⟩` and prove the remaining obligations. Rewrite using `[BlowupSequenceData.prepend_blowupMorphism_zero, BlowupSequenceData.prepend_center_zero, BlowupSequenceData.controlledTransform_zero, BlowupSequenceData.prepend_isoObjZero]`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Conclude with `exceptionalIdeal_pow_mul_eq_comap_of_eq_id T.ideal (containedComponentsIdeal T j hj) Jfac T.mult hJfac _ _`. Use `rfl rfl`. Consider the case `succ n`. Establish `hn : n < s.length` using `Nat.lt_of_succ_lt_succ hi`. Rewrite using `[BlowupSequenceData.prepend_blowupMorphism_succ, BlowupSequenceData.prepend_center_succ, BlowupSequenceData.controlledTransform_prepend_succ (containedComponentsIdeal T j hj) hb (ambientBlowupSeq hres hno T j hj (lowerIdealAfterBlowup T j hj) (lowerBoundaryAfterBlowup T j hj) s h …`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(hinv (n + 1) hn).exists_pow_mul_eq_comap_controlledTransform n (Nat.lt_succ_self n)`. Introduce `i hi`. Rewrite `hi` using `[hlen]`. Consider the cases of `i with`. Consider the case `zero`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact.
 
-Rewrite using `[BlowupSequenceData.prepend_center_zero, BlowupSequenceData.controlledTransform_zero, BlowupSequenceData.prepend_isoObjZero]`. Conclude with `support_subset_orderAtLeastLocus_comap_of_eq_id T.ideal (containedComponentsIdeal T j hj) T.mult hsup _ rfl`. Consider the case `succ n`. Establish `hn : n < s.length` using `Nat.lt_of_succ_lt_succ hi`. Rewrite using `[BlowupSequenceData.prepend_center_succ, BlowupSequenceData.controlledTransform_prepend_succ (containedComponentsIdeal T j hj) hb (ambientBlowupSeq hres hno T j hj (lowerIdealAfterBlowup T j hj) (lowerBoundaryAfterBlowup T j hj) s hpr) T.ideal (lowerIdealAfterBlowup T j hj) T.mul …`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Conclude with `(hinv n (Nat.le_of_lt hn)).support_center_subset_orderAtLeastLocus hbalLow hm hVlow hUcl hUsupp hn`. Introduce `i hi`. Rewrite `hi` using `[hlen]`. Consider the cases of `i with`. Consider the case `zero`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[h0]`. Conclude with `hsm`. Consider the case `succ n`. Establish `hn : n < s.length` using `Nat.lt_of_succ_lt_succ hi`. Rewrite using `[BlowupSequenceData.prepend_center_succ, BlowupSequenceData.projectionToBase_prepend_succ]`.
+Rewrite the indicated hypotheses using the stated equalities. Split into cases according to the possible forms of the given data. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `smooth_ambientBlowupSeq_center_comp hres hno T j hj (lowerIdealAfterBlowup T j hj) (lowerBoundaryAfterBlowup T j hj) s hpr n hn`. Introduce `i hi`. Rewrite `hi` using `[hlen]`. Consider the cases of `i with`. Consider the case `zero`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hb0 : (BlowupSequenceData.prepend (containedComponentsIdeal T j hj) hb (ambientBlowupSeq hres hno T j hj (lowerIdealAfterBlowup T j hj) (lowerBoundaryAfterBlowup T j hj) s hpr)).boundaryFrom T.boundary 0 = T.boundary`. Rewrite using `[BlowupSequenceData.boundary_zero, BlowupSequenceData.prepend_isoObjZero]`. Conclude with `list_map_comap_id T.boundary`. Rewrite using `[h0, hb0]`. Conclude with `hsnc`.
-
-Consider the case `succ n`. Establish `hn : n < s.length` using `Nat.lt_of_succ_lt_succ hi`. Establish `h4` using `(hinv n (Nat.le_of_lt hn)).hasStrictNormalCrossingsWith_center hlift hm hVlow hUcl hUsupp hn`. Rewrite `h4` using `[structureMorphism_ambientBlowupSeq_eq_projectionToBase_comp]`. Rewrite using `[BlowupSequenceData.prepend_center_succ, BlowupSequenceData.projectionToBase_prepend_succ, BlowupSequenceData.boundary_prepend_succ (containedComponentsIdeal T j hj) hb (ambientBlowupSeq hres hno T j hj (lowerIdealAfterBlowup T j hj) (lowerBoundaryAfterBlowup T j hj) s hpr) T.bou …`.
-
-Conclude with `h4`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isMarked_prepend_ambientBlowupSeq (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hno : BlowupPreservesNoetherian.{u}) (hlift : StrictNormalCrossingsLiftFromDivisor.{u})
@@ -826,9 +818,9 @@ theorem isMarked_prepend_ambientBlowupSeq (hres : FunctorialResolution.Blowup.St
         exact h4
 
 /- English proof (translation)
-Take `⟨_, _, _, _, hinv⟩` from `exists_isClosed_opens_goingUpInvariantOnOpen hres hno hlift T hV hord hbal j hj hZ hb hVlow s hpr hsm hsnc hsup hfac hopen`. Take `⟨hch, hft, _, _, _, hsmT, _⟩` from `id hV`. Establish `: CharZero T.base` using `hch`. Establish `: AlgebraicGeometry.LocallyOfFiniteType T.structMap` using `hft`. Establish `: AlgebraicGeometry.Smooth T.structMap` using `hsmT`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[BlowupSequenceData.controlledTransform_prepend_succ (containedComponentsIdeal T j hj) hb (ambientBlowupSeq hres hno T j hj (lowerIdealAfterBlowup T j hj) (lowerBoundaryAfterBlowup T j hj) s hpr) T.ideal (lowerIdealAfterBlowup T j hj) T.mult (controlledTransform_prepend_ambientBl …`. Conclude with `(hinv t ht).comap_controlledTransform ht`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comap_controlledTransform_prepend_ambientBlowupSeq (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hno : BlowupPreservesNoetherian.{u}) (hlift : StrictNormalCrossingsLiftFromDivisor.{u})

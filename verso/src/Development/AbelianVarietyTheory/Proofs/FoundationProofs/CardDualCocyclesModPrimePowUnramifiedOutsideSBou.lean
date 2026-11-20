@@ -32,7 +32,7 @@ theorem mulR_red (c : Coef l) (n : ℕ) (a x : c.O) : mulR c n a (red c n x) = r
 def redV (c : Coef l) (n : ℕ) (x : Fin 2 → c.O) : Fin 2 → Red c n := fun i => red c n (x i)
 
 /- English proof (translation)
-Introduce `m`. Use `choose x hx using fun i => red_surjective c n (m i)`. Conclude with `⟨x, funext hx⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem redV_surjective (c : Coef l) (n : ℕ) : Function.Surjective (redV c n) := by
   intro m
@@ -40,7 +40,7 @@ theorem redV_surjective (c : Coef l) (n : ℕ) : Function.Surjective (redV c n) 
   exact ⟨x, funext hx⟩
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[redV]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem redV_add (c : Coef l) (n : ℕ) (x y : Fin 2 → c.O) :
     redV c n (x + y) = redV c n x + redV c n y := by
@@ -53,7 +53,7 @@ def act (c : Coef l) (n : ℕ) (B : Matrix (Fin 2) (Fin 2) c.O) :
   map_add' m m' := by funext i; simp [Finset.sum_add_distrib]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [act, AddMonoidHom.coe_mk, ZeroHom.coe_mk, redV, mulR_red, Matrix.mulVec, dotProduct, map_sum]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem act_redV (c : Coef l) (n : ℕ) (B : Matrix (Fin 2) (Fin 2) c.O) (x : Fin 2 → c.O) :
     act c n B (redV c n x) = redV c n (B *ᵥ x) := by
@@ -68,7 +68,7 @@ def Vo (c : Coef l) (V : R2 Ω l) (hD : ∀ s i j, mat V s i j ∈ c.O) (s : G �
   fun i j => ⟨mat V s i j, hD s i j⟩
 
 /- English proof (translation)
-Simplify using `[Matrix.mulVec, dotProduct, Vo]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Vo_mulVec_coe (c : Coef l) (V : R2 Ω l) (hD : ∀ s i j, mat V s i j ∈ c.O) (s : G ℚ Ω)
     (x : Fin 2 → c.O) (i : Fin 2) :
@@ -76,7 +76,7 @@ theorem Vo_mulVec_coe (c : Coef l) (V : R2 Ω l) (hD : ∀ s i j, mat V s i j �
   simp [Matrix.mulVec, dotProduct, Vo]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Vo, mat, Matrix.mul_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem Vo_mul (c : Coef l) (V : R2 Ω l) (hD : ∀ s i j, mat V s i j ∈ c.O) (s t : G ℚ Ω) :
     Vo c V hD (s * t) = Vo c V hD s * Vo c V hD t := by
@@ -84,7 +84,7 @@ theorem Vo_mul (c : Coef l) (V : R2 Ω l) (hD : ∀ s i j, mat V s i j ∈ c.O) 
   simp [Vo, mat, Matrix.mul_apply]
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Vo, mat, h]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem Vo_eq_one (c : Coef l) (V : R2 Ω l) (hD : ∀ s i j, mat V s i j ∈ c.O) {s : G ℚ Ω}
     (h : V s = 1) : Vo c V hD s = 1 := by
@@ -142,11 +142,11 @@ open GlobalTheory.Ord2.TwistTriv
 variable {l : ℕ} [Fact l.Prime] {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (S : Finset Pl)
 
 /- English proof (translation)
-Unfold `ReciprocityTheory.Gal.ContAction`. Use `continuous_prod_of_discrete_right.2 fun m => ?_` and prove the remaining obligations. Rewrite using `[(QuotientGroup.isQuotientMap_mk (NS Ω (S : Set Pl))).continuous_iff]`. Take `⟨x, rfl⟩` from `redV_surjective c n m`. Establish `e : ((fun q => repS S c n V hD hK q (redV c n x)) ∘ (QuotientGroup.mk : G ℚ Ω → GS Ω (S : Set Pl))) = fun g => redV c n (Vo c V hD g *ᵥ x)`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `g`. Conclude with `act_redV c n _ x`. Rewrite using `[e]`. Use `continuous_pi fun i => continuous_red_comp c n (fun g => (Vo c V hD g *ᵥ x) i) ?_` and prove the remaining obligations. Simplify using `only [Vo_mulVec_coe]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hm : Continuous fun g => mat V g` using `Units.continuous_val.comp hc`. Conclude with `(continuous_apply i).comp (hm.matrix_mulVec continuous_const)`.
+A detailed English derivation is pending.
 -/
 theorem contAction_repS (c : Coef l) (n : ℕ) (V : R2 Ω l) (hD : ∀ s i j, mat V s i j ∈ c.O)
     (hK : ∀ a ∈ (toGS Ω (S : Set Pl)).ker, V a = 1) (hc : Continuous V) :
@@ -169,7 +169,7 @@ def zr (c : Coef l) (n : ℕ) (z : G ℚ Ω → Fin 2 → Qbar l) (hz : ∀ s k,
   redV c n fun k => ⟨z s k, hz s k⟩
 
 /- English proof (translation)
-Simplify using `only [zr, redV, funext_iff, red_eq_iff, Cv]`.
+Simplify using the standard rewrite rules.
 -/
 theorem zr_eq_iff (c : Coef l) (n : ℕ) (z z' : G ℚ Ω → Fin 2 → Qbar l) (hz : ∀ s k, z s k ∈ c.O)
     (hz' : ∀ s k, z' s k ∈ c.O) (s : G ℚ Ω) :
@@ -177,7 +177,7 @@ theorem zr_eq_iff (c : Coef l) (n : ℕ) (z z' : G ℚ Ω → Fin 2 → Qbar l) 
   simp only [zr, redV, funext_iff, red_eq_iff, Cv]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Use `show red c n ⟨z a k, hz a k⟩ = 0`. Rewrite using `[red_eq_zero_iff, mem_nbhd]`. Use `h k` as an intermediate fact. Simplify `this` using `[Cg]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem zr_eq_zero (c : Coef l) (n : ℕ) (z : G ℚ Ω → Fin 2 → Qbar l) (hz : ∀ s k, z s k ∈ c.O)
     (a : G ℚ Ω) (h : Cv n (z a) 0) : zr c n z hz a = 0 := by
@@ -188,9 +188,9 @@ theorem zr_eq_zero (c : Coef l) (n : ℕ) (z : G ℚ Ω → Fin 2 → Qbar l) (h
   simpa [Cg] using this
 
 /- English proof (translation)
-Rewrite using `[repG_apply, zr, zr, zr, act_redV, ← redV_add]`. Use function extensionality and compare the values at `k`. Simplify using `only [redV]`. Rewrite using `[red_eq_iff, Pi.add_apply, AddMemClass.coe_add, Vo_mulVec_coe]`. Establish `h` using `hcoc s t k`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify `h` using `only [Pi.add_apply]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem zr_mul (c : Coef l) (n : ℕ) (V : R2 Ω l) (hD : ∀ s i j, mat V s i j ∈ c.O)
     (z : G ℚ Ω → Fin 2 → Qbar l) (hz : ∀ s k, z s k ∈ c.O)
@@ -208,7 +208,7 @@ def zbar (c : Coef l) (n : ℕ) (z : G ℚ Ω → Fin 2 → Qbar l) (hz : ∀ s 
   zr c n z hz q.out
 
 /- English proof (translation)
-Take `⟨h, hh⟩` from `QuotientGroup.mk_out_eq_mul (NS Ω (S : Set Pl)) g`. Unfold `zbar`. Rewrite using `[hh, zr_mul c n V hD z hz hcoc, zr_eq_zero c n z hz (h : G ℚ Ω) (hker _ (by rw [toGS, QuotientGroup.ker_mk']; exact h.2)), map_zero, add_zero]`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem zbar_mk (c : Coef l) (n : ℕ) (V : R2 Ω l) (hD : ∀ s i j, mat V s i j ∈ c.O)
     (z : G ℚ Ω → Fin 2 → Qbar l) (hz : ∀ s k, z s k ∈ c.O)
@@ -222,9 +222,9 @@ theorem zbar_mk (c : Coef l) (n : ℕ) (V : R2 Ω l) (hD : ∀ s i j, mat V s i 
     add_zero]
 
 /- English proof (translation)
-Use `⟨?_, fun q₁ q₂ => ?_⟩` and prove the remaining obligations. Rewrite using `[(QuotientGroup.isQuotientMap_mk (NS Ω (S : Set Pl))).continuous_iff]`. Establish `e : zbar S c n z hz ∘ (QuotientGroup.mk : G ℚ Ω → GS Ω (S : Set Pl)) = zr c n z hz`. Use function extensionality and compare the values at `g`. Conclude with `zbar_mk S c n V hD z hz hcoc hker g`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `continuous_pi fun k => continuous_red_comp c n (fun g => (⟨z g k, hz g k⟩ : c.O)) ((continuous_apply k).comp hzc)`. Proceed by induction on `q₁ using QuotientGroup.induction_on with | H g => ?_`. Proceed by induction on `q₂ using QuotientGroup.induction_on with | H h => ?_`. Rewrite using `[← QuotientGroup.mk_mul, zbar_mk S c n V hD z hz hcoc hker, zbar_mk S c n V hD z hz hcoc hker, zbar_mk S c n V hD z hz hcoc hker, repS_mk, zr_mul c n V hD z hz hcoc]`.
+Proceed by induction. Proceed by induction. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zbar_mem (c : Coef l) (n : ℕ) (V : R2 Ω l) (hD : ∀ s i j, mat V s i j ∈ c.O)
     (hK : ∀ a ∈ (toGS Ω (S : Set Pl)).ker, V a = 1)
@@ -251,13 +251,11 @@ namespace GlobalTheory.Ord2.GwFin
 open GlobalTheory.Ord2.TwistTriv
 
 /- English proof (translation)
-Use `haveI : Finite ((B1 σ).comap (Z1 σ).subtype) := by haveI : Finite (B1 σ) := by haveI : Finite (Set.range (d0 σ)) := Set.finite_range _`. Conclude with `Finite.of_injective (fun x : B1 σ => (⟨x.1, x.2⟩ : Set.range (d0 σ))) (fun x y h => Subtype.ext (congrArg Subtype.val h))`. Conclude with `Finite.of_injective (fun x : (B1 σ).comap (Z1 σ).subtype => (⟨x.1.1, x.2⟩ : B1 σ)) (fun x y h => by`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression.
 
-Use `congrArg Subtype.val h` as an intermediate fact. Simplify using `using this)`. Set `P` to `(B1 σ).comap (Z1 σ).subtype`. Set `s` to `Function.surjInv (Submodule.Quotient.mk_surjective P)`. Establish `hs : ∀ x : Z1 σ, x - s (Submodule.Quotient.mk x) ∈ P` using `fun x => (Submodule.Quotient.eq P).1 (Function.surjInv_eq (Submodule.Quotient.mk_surjective P) _).symm`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `Finite.of_injective (fun x : Z1 σ => ((Submodule.Quotient.mk x : Z1 σ ⧸ P), (⟨_, hs x⟩ : P))) ?_` and prove the remaining obligations. Introduce `x y h`. Simplify using `only [Prod.mk.injEq, Subtype.mk.injEq] at h`. Take `⟨h1, h2⟩` from `h`. Rewrite `h2` using `[h1]`.
-
-Simplify using `using h2`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem finite_cocycles_of_finite_h1 {R : Type*} [CommRing R] {H : Type*} [Group H] [TopologicalSpace H]
     {Q : Type*} [AddCommGroup Q] [Module R Q] [TopologicalSpace Q] [IsTopologicalAddGroup Q]
@@ -287,13 +285,11 @@ theorem finite_cocycles_of_finite_h1 {R : Type*} [CommRing R] {H : Type*} [Group
 variable {l : ℕ} [Fact l.Prime] {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (S : Finset Pl)
 
 /- English proof (translation)
-Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Use `haveI : Subsingleton (Red c 0) := by`. Use `⟨fun a b => ?_⟩` and prove the remaining obligations. Take `⟨x, rfl⟩` from `red_surjective c 0 a`. Take `⟨y, rfl⟩` from `red_surjective c 0 b`.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[red_eq_iff]`. Unfold `Cg`. Rewrite using `[pow_zero, norm_one]`. Establish `hxy : ‖(x : Qbar l) - y‖ ≤ max ‖(x : Qbar l)‖ ‖-(y : Qbar l)‖`. Rewrite using `[sub_eq_add_neg]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `IsUltrametricDist.norm_add_le_max _ _`. Rewrite `hxy` using `[norm_neg]`. Conclude with `hxy.trans (max_le (norm_le_one c x) (norm_le_one c y))`. Use `infer_instance`. Use `haveI := (hL.gf ℚ Ω l n (Fin 2 → Red c n) S (repS S c n V hD hK) hn hS (contAction_repS S c n V hD hK hc)).2.1`.
-
-Conclude with `finite_cocycles_of_finite_h1 _`.
+A detailed English derivation is pending.
 -/
 theorem finite_cocycles_restricted_rep (hL : GlobalTheory.Mem.LiteralAutomorphy.LitCoh) (c : Coef l) (n : ℕ) (V : R2 Ω l)
     (hD : ∀ s i j, mat V s i j ∈ c.O) (hK : ∀ a ∈ (toGS Ω (S : Set Pl)).ker, V a = 1)
@@ -316,15 +312,15 @@ theorem finite_cocycles_restricted_rep (hL : GlobalTheory.Mem.LiteralAutomorphy.
     exact finite_cocycles_of_finite_h1 _
 
 /- English proof (translation)
-Introduce `hL l _ Ω _ _ _ e S A W hN c hW n`. Establish `hD` using `galoisRepRankTwoTateDual_matrix_mem_coefRing_of_normalForm l Ω e S A W hN c hW`. Establish `hK` using `galoisRepRankTwoTateDual_eq_one_of_mem_ker_unramified l Ω e S A W hN`. Establish `hc` using `DualCont.continuous_galoisRepRankTwoTateDual l Ω e S A W hN`. Use `haveI := finite_cocycles_restricted_rep S hL c n (dual1 W) hD hK hc hN.above`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Nat.card (Z1 (repS S c n (dual1 W) hD hK)), fun N z hz hne => ?_⟩` and prove the remaining obligations. Establish `hint : ∀ i s k, z i s k ∈ c.O` using `fun i => (hz i).1.2.1`. Establish `hcont : ∀ i, Continuous (z i)` using `fun i => by`. Establish `h` using `(hz i).1.1`. Rewrite `h` using `[Subgroup.coe_top, continuousOn_univ]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hcoc : ∀ i s t, Cv n (z i (s * t)) (z i s + mat (dual1 W) s *ᵥ z i t)` using `fun i s t => (hz i).1.2.2 s (Subgroup.mem_top s) t (Subgroup.mem_top t)`. Set `f : Fin N → Z1 (repS S c n (dual1 W) hD hK)` to `fun i => ⟨zbar S c n (z i) (hint i), zbar_mem S c n (dual1 W) hD hK (z i) (hint i) (hcont i) (hcoc i) (hz i).2⟩`. Establish `hf : Function.Injective f`. Introduce `i j hij`. Assume the negation of the conclusion as `hij'`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hne i j hij'` to reduce the goal to its premises. Use `⟨0, fun _ => zero_mem _, fun s _ => ?_⟩` and prove the remaining obligations. Establish `h1` using `congrArg (fun y : Z1 (repS S c n (dual1 W) hD hK) => y.1 (QuotientGroup.mk s)) hij`. Simplify using `only [f, zbar_mk S c n (dual1 W) hD (z i) (hint i) (hcoc i) (hz i).2, zbar_mk S c n (dual1 W) hD (z j) (hint j) (hcoc j) (hz j).2] at h1`. Establish `h2` using `(zr_eq_iff c n (z i) (z j) (hint i) (hint j) s).1 h1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k`. Establish `h3` using `h2 k`. Simplify `h3` using `[Cg]`. Simplify using `using Nat.card_le_card_of_injective f hf`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem card_dualCocyclesModPrimePow_unramifiedOutsideS_bounded : GlobalTheory.Mem.LiteralAutomorphy.LitCoh → ∀ (l : ℕ) [Fact l.Prime] (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (e : ℕ) (S : Finset Pl) (A : ValuationSubring Ω) (W : R2 Ω l), Nf e S A W → ∀ c : Coef l, (∀ s i j, mat W s i j ∈ c.O) → ∀ n : ℕ, ∃ B : ℕ, ∀ (N : ℕ) (z : Fin N → G ℚ Ω → Fin 2 → Qbar l), (∀ i, Coc1 c n (dual1 W) ⊤ (z i) ∧ ∀ a ∈ (toGS Ω (S : Set Pl)).ker, Cv n (z i a) 0) → (∀ i j, i ≠ j → ¬ Cob1 c n (dual1 W) ⊤ (z i - z j)) → N ≤ B := by
   intro hL l _ Ω _ _ _ e S A W hN c hW n

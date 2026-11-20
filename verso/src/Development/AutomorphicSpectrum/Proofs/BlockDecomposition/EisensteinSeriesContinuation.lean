@@ -14,9 +14,9 @@ open GlobalTheory.Doubling (absE)
 namespace GlobalTheory.CompanionTheory.SiegelEis
 
 /- English proof (translation)
-Break down `le_total 1 A with h | h` into its components or cases. Use `Real.rpow_le_rpow_of_exponent_le h hd` as an intermediate fact. Use `Real.rpow_nonneg hA.le c` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Use `Real.rpow_le_rpow_of_exponent_ge hA h hc` as an intermediate fact.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Use `Real.rpow_nonneg hA.le d` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem rpow_le_add_rpow {A u c d : ℝ} (hA : 0 < A) (hc : c ≤ u) (hd : u ≤ d) :
     A ^ u ≤ A ^ c + A ^ d := by
@@ -29,7 +29,7 @@ theorem rpow_le_add_rpow {A u c d : ℝ} (hA : 0 < A) (hc : c ≤ u) (hd : u ≤
     linarith
 
 /- English proof (translation)
-Establish `hA' : (A : ℂ) ≠ 0` using `by exact_mod_cast hA.ne'`. Conclude with `((differentiable_id.sub_const s₁).const_cpow (Or.inl hA')).mul_const w`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem differentiable_cpow_term {A : ℝ} (hA : 0 < A) (s₁ w : ℂ) :
     Differentiable ℂ (fun s : ℂ => (A : ℂ) ^ (s - s₁) * w) := by
@@ -37,19 +37,17 @@ theorem differentiable_cpow_term {A : ℝ} (hA : 0 < A) (s₁ w : ℂ) :
   exact ((differentiable_id.sub_const s₁).const_cpow (Or.inl hA')).mul_const w
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n Y r s' hB hn hY b K a hb hK hH χ s₁ f hf`. Establish `hKc` using `GlobalTheory.T.isCompact_standard_maximal F E σ B n Y r s' hB hn hY b K a hb hK hH`. Take `⟨-, hpos⟩` from `GlobalTheory.T.height_function_continuous_pos' F E σ B n Y r s' hB hn hY b K a hb hK hH`. Take `⟨C₀, hC₀⟩` from `GlobalTheory.T.flat_section_growth_bound K a hKc hH hpos χ s₁ f hf`. Take `⟨σ₀, hσ₀⟩` from `GlobalTheory.T.eisenstein_series_convergent F E σ B n Y r s' hB hn hY b K a hb hK hH`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hC : ∀ s x, ‖flat a f s₁ s x‖ ≤ max C₀ 0 * a x ^ (s.re + (n : ℝ) / 2)` using `fun s x => (hC₀ s x).trans (mul_le_mul_of_nonneg_right (le_max_left _ _) (Real.rpow_nonneg (hpos x).le _))`. Establish `hsum : ∀ σ' : ℝ, σ₀ < σ' → ∀ x, Summable fun q : Cos σ Y => a ((Quotient.out q).1 * x) ^ σ'`. Introduce `σ' h x`. Take `⟨C', N, h'⟩` from `hσ₀ σ' h`. Conclude with `(h' x).1`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun s x => ∑' q, eisTerm (flat a f s₁ s) x q, σ₀ - (n : ℝ) / 2, ?_, ?_⟩` and prove the remaining obligations. Introduce `s hs x`. Apply `Summable.hasSum` to reduce the goal to its premises. Establish `hg` using `(hsum (s.re + (n : ℝ) / 2) (by linarith) x).mul_left (max C₀ 0)`. Use `first`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
-Consider the case `exact Summable.of_norm_bounded _ hg (fun q => hC s _)`. Consider the case `exact Summable.of_norm_bounded hg (fun q => hC s _)`. Introduce `x s₀ hs₀`. Establish `hs₀' : σ₀ - (n : ℝ) / 2 < s₀.re` using `hs₀`. Use `set c := (σ₀ - (n : ℝ) / 2 + s₀.re) / 2 with hc`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set d := s₀.re + 1 with hd`. Establish `hU : IsOpen {s : ℂ | c < s.re ∧ s.re < d}` using `(isOpen_lt continuous_const Complex.continuous_re).inter (isOpen_lt Complex.continuous_re continuous_const)`. Establish `hmem : {s : ℂ | c < s.re ∧ s.re < d} ∈ 𝓝 s₀` using `hU.mem_nhds ⟨by linarith, by linarith⟩`. Establish `hg : Summable fun q : Cos σ Y => max C₀ 0 * (a ((Quotient.out q).1 * x) ^ (c + (n : ℝ) / 2) + a ((Quotient.out q).1 * x) ^ (d + (n : ℝ) / 2))` using `((hsum _ (by linarith) x).add (hsum _ (by linarith) x)).mul_left (max C₀ 0)`. Establish `hD : DifferentiableOn ℂ (fun s => ∑' q, eisTerm (flat a f s₁ s) x q) {s : ℂ | c < s.re ∧ s.re < d}`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `Complex.differentiableOn_tsum_of_summable_norm (F := fun q s => eisTerm (flat a f s₁ s) x q) hg (fun q => ?_) hU (fun q s hs => ?_)` and prove the remaining obligations. Conclude with `(differentiable_cpow_term (hpos _) s₁ (f ((Quotient.out q).1 * x))).differentiableOn`. Use `(hC s _).trans (mul_le_mul_of_nonneg_left (rpow_le_add_rpow (hpos _) ?_ ?_) (le_max_right _ _))` and prove the remaining obligations. Combine the linear relations using `[hs.1]`. Combine the linear relations using `[hs.2]`.
-
-Conclude with `(hD.differentiableAt hmem).differentiableWithinAt`.
+A detailed English derivation is pending.
 -/
 theorem eis_half_plane : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n : ℕ) (Y : Spc F E n) (r s : ℕ), B.IsGood σ → 1 ≤ n → (Y.IsHerm σ B r s ∨ Y.IsSkew σ B r s) → ∀ (b : GL (Fin n ⊕ Fin n) E) (K : Subgroup (G2 σ Y)) (a : G2 σ Y → ℝ), IsFrame2 σ Y b → IsStdK (σ := σ) (Y := Y) B b K → IsHgt K a → ∀ (χ : Chr F E) (s₁ : ℂ) (f : G2 σ Y → ℂ), IsSec K χ s₁ f → ∃ Ê : ℂ → G2 σ Y → ℂ, ∃ t : ℝ, (∀ s : ℂ, t < s.re → ∀ x, HasSum (eisTerm (flat a f s₁ s) x) (Ê s x)) ∧ ∀ x, DifferentiableOn ℂ (Ê · x) {s | t < s.re} := by
   intro F E _ _ _ _ _ σ B n Y r s' hB hn hY b K a hb hK hH χ s₁ f hf

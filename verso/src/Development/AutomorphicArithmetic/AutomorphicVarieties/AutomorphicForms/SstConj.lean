@@ -11,11 +11,11 @@ open GlobalTheory.CuspRep GlobalTheory.WeilDeligne GlobalTheory.Pst GlobalTheory
 namespace UpperTheory.V.Af
 
 /- English proof (translation)
-Unfold `IsSst at h ⊢`. Establish `e : ↥(Dst P ρ') ≃ₗ[LL] (ι → ↥(Dst P ρ))` using `subEquiv (tensCoord E (Bst P)) ((Dst P ρ').restrictScalars LL) _ fun x => by`. Simplify using `only [Submodule.restrictScalars_mem, mem_Dst]`. Rewrite using `[forall_comm]`. Use `forall_congr' fun g => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← (tensCoord E (Bst P)).injective.eq_iff, funext_iff]`. Simplify using `only [GlobalTheory.PstExt.tensCoord_stRep P hE]`. Establish `h1` using `e.finrank_eq`. Establish `h2` using `E.finrank_eq`. Rewrite `h1`, `h2` using `[finrank_fun', ← Module.finrank_mul_finrank LL LL', hι]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hp : 0 < Fintype.card ι` using `Fintype.card_pos`. Rewrite using `[Nat.eq_of_mul_eq_mul_left hp h1, Nat.eq_of_mul_eq_mul_left hp h2, h]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem isSst_of_coord {l : ℕ} [Fact l.Prime] (P : LocPrime l) {K : FinExt l}
     {LL LL' : Type} [Field LL] [Field LL'] [Algebra ℚ_[l] LL] [Algebra ℚ_[l] LL'] [Algebra LL LL']
@@ -40,11 +40,11 @@ theorem isSst_of_coord {l : ℕ} [Fact l.Prime] (P : LocPrime l) {K : FinExt l}
   rw [Nat.eq_of_mul_eq_mul_left hp h1, Nat.eq_of_mul_eq_mul_left hp h2, h]
 
 /- English proof (translation)
-Take `⟨L₁, r₁, h₁, hs⟩` from `h`. Take `⟨L₂, hL, r₂, hm, e, he⟩` from `GlobalTheory.ConjLocal.exists_conj_model A hc h₁`. Use `⟨L₂, r₂, hm, ?_⟩` and prove the remaining obligations. Set `_ : Algebra ↥L₁.1 ↥L₂.1` to `(IntermediateField.inclusion hL).toRingHom.toAlgebra`. Establish `: IsScalarTower ℚ_[l] ↥L₁.1 ↥L₂.1` using `IsScalarTower.of_algebraMap_eq fun _ => rfl`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `L₂.2` as an intermediate fact. Establish `: FiniteDimensional ↥L₁.1 ↥L₂.1` using `Module.Finite.of_restrictScalars_finite ℚ_[l] _ _`. Establish `hρ : ∀ g, ∃ M : Matrix (Fin a) (Fin a) ↥L₁.1, (∀ x, Bw.repE L₁ r₁ g x = M.mulVec x) ∧ ∀ x, Bw.repE L₂ (Formalism.MainNotions.N.mapRep (IntermediateField.inclusion hL).toRingHom r₁) g x = (M.map (algebraMap ↥L₁.1 ↥L₂.1)).mulVec x` using `fun g => ⟨r₁ (Bw.e.symm g), fun _ => rfl, fun _ => rfl⟩`. Establish `: Nonempty (Fin (finrank ↥L₁.1 ↥L₂.1))` using `⟨⟨0, finrank_pos⟩⟩`. Use `isSst_of_coord P (E := (e.symm.restrictScalars ↥L₁.1).trans (vecCoord ↥L₁.1 ↥L₂.1 a)) (fun g x i => ?_) (Fintype.card_fin _).symm hs` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨y, rfl⟩` from `e.surjective x`. Rewrite using `[← he]`. Simplify using `only [LinearEquiv.trans_apply, LinearEquiv.restrictScalars_apply, LinearEquiv.symm_apply_apply]`. Conclude with `vecCoord_rep hρ g y i`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isSstAt_conj {l : ℕ} [Fact l.Prime] (P : LocPrime l) {E Ω : Type} [Field E] [Field Ω] [Algebra E Ω]
     {O : Type} [CommRing O] [Algebra ℤ_[l] O] [TopologicalSpace O] {Gw : Subgroup (Ω ≃ₐ[E] Ω)} (Bw : LocBridge l E Ω Gw O)
@@ -70,9 +70,9 @@ theorem isSstAt_conj {l : ℕ} [Fact l.Prime] (P : LocPrime l) {E Ω : Type} [Fi
   exact vecCoord_rep hρ g y i
 
 /- English proof (translation)
-Take `⟨v, hv⟩` from `exists_ne (0 : V)`. Take `⟨S, hS'⟩` from `GlobalFixedVectors.exists_KAway_subset (M := 1) ((hρ v).mem_nhds (by simp))`. Use `filter_upwards [S.finite_toSet.eventually_cofinite_notMem] with w hw`. Take `⟨σ, hσ⟩` from `hi w`. Take `⟨h1, h2⟩` from `hS F n w σ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hK : IsCompact (GlobalTheory.LFun.KGL w n : Set (GL (Fin n) (w.adicCompletion F)))` using `GlobalTheory.LFun.IntPtsUnitary.isCompact_GLint _ (PI.AdicCompletionValuation.isCompact_adicCompletionIntegers F w)`. Take `⟨B, hB⟩` from `h1 (hasFixed_of_sum σ.ρ σ.smooth (ρ.comp (locGL F n w)) _ hK hσ.2 ⟨v, hv, fun u hu => hS' (GlobalFixedVectors.mem_KAway.2 ⟨locGL_mem_KLev n w (by rw [Nat.cast_one]; exact (Ideal.ne_top_iff_one _).1 w.isPrime.ne_top) hu, fun x hx => pLoc_locGL_of_ne (fun e : x = w => hw (e ▸ hx)) …`. Conclude with `⟨B, (h2 _ _ hσ B).2 hB⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem sat_ae_of_smooth (hS : SatLoc) {F : Type} [Field F] [NumberField F] {n : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
     [Nontrivial V] (ρ : Representation ℂ (GL (Fin n) (Af F)) V) (hρ : GlobalTheory.PRep.IsSmooth ρ)

@@ -5,13 +5,13 @@ open GlobalTheory.BI
 namespace GlobalTheory.BI
 
 /- English proof (translation)
-Take `⟨h0, hadd⟩` from `GlobalTheory.T.isCharacterOverSubfield_zero_and_add K L G`. Unfold `Virt`. Prove the components needed by the constructor for the conclusion. Introduce `hf`. Proceed by induction on `hf using AddSubgroup.closure_induction with`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `mem x hx => exact ⟨x, 0, hx, h0, (sub_zero x).symm⟩`. Consider the case `zero => exact ⟨0, 0, h0, h0, (sub_zero 0).symm⟩`. Consider the case `add x y _ _ ihx ihy`. Take `⟨a, b, ha, hb, rfl⟩` from `ihx`. Take `⟨c, d, hc, hd, rfl⟩` from `ihy`.
+Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨a + c, b + d, hadd a c ha hc, hadd b d hb hd, by abel⟩`. Consider the case `neg x _ ih`. Take `⟨a, b, ha, hb, rfl⟩` from `ih`. Conclude with `⟨b, a, hb, ha, by abel⟩`. Introduce and unpack `⟨a, b, ha, hb, rfl⟩`.
+Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `AddSubgroup.sub_mem _ (AddSubgroup.subset_closure ha) (AddSubgroup.subset_closure hb)`.
+A detailed English derivation is pending.
 -/
 theorem mem_virt_iff_sub (K L : Type) [Field K] [Field L] [Algebra K L] (G : Type) [Group G] (f : G → L) :
     f ∈ Virt K L G ↔ ∃ a b : G → L, IsChar K L a ∧ IsChar K L b ∧ f = a - b := by

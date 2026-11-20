@@ -13,7 +13,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.NormPos
 
 /- English proof (translation)
-Introduce `D hI δ t0 Q P h`. Conclude with `((GlobalTheory.NormSum.RepInv.rep_indep D hI ⊤ δ t0 Q P.crv P.pt0 P P.level_pos).2.2.2.2 h).ne'`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem norm_ne_zero_of_coord : ∀ (D : D7), GlobalTheory.NormSum.Inp D → ∀ (δ t0 : ℂ) (Q : ℕ) (P : GlobalTheory.NormSum.Pair D ⊤ δ t0 Q), (∃ h T, P.coord h T ≠ 0) → P.norm ≠ 0 := by
   intro D hI δ t0 Q P h

@@ -10,13 +10,13 @@ namespace GlobalTheory.WeylReproducing
 open Formalism.GradedWeylDivisibility GlobalTheory.WeylMinorDual
 
 /- English proof (translation)
-Use `set A : Matrix (Fin h) (Fin N) (MvPolynomial (Fin N × Fin N) ℚ) := Matrix.of fun p b => C (x (b, Fin.castLE hh p)) with hA`. Use `set B : Matrix (Fin N) (Fin h) (MvPolynomial (Fin N × Fin N) ℚ) := Matrix.of fun b q => X (b, Fin.castLE hh q) with hB`. Establish `hM : rowAct ℚ (Matrix.of fun a s : Fin N => x (a, s)).transpose (initMinor ℚ (r` using `N) (n := N) (Fin.castLE hh) hh) = (A * B).det := by`. Unfold `initMinor`. Rewrite using `[AlgHom.map_det]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Use `congr 1`. Use extensionality with `p q`. Simplify using `[rowAct, Matrix.mul_apply, hA, hB]`. Rewrite using `[hM, PI.IsoDerivBFintype.cauchyBinet]`. Use `Finset.sum_congr rfl fun K _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Rewrite using `[← Matrix.det_transpose (A.submatrix id K)]`. Unfold `initMinor`. Rewrite using `[RingHom.map_det, RingHom.map_det]`. Use `congr 1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `p k`. Simplify using `[hA]`.
+A detailed English derivation is pending.
 -/
 theorem rowAct_leadMinor (N h : ℕ) (hh : h ≤ N) (x : Fin N × Fin N → ℚ) :
     rowAct ℚ (Matrix.of fun a s : Fin N => x (a, s)).transpose (initMinor ℚ (r := N) (n := N) (Fin.castLE hh) hh) =
@@ -44,9 +44,9 @@ theorem rowAct_leadMinor (N h : ℕ) (hh : h ≤ N) (x : Fin N × Fin N → ℚ)
     simp [hA]
 
 /- English proof (translation)
-Establish `hwEq : hw ℚ le_rfl (fun r : Fin N => Y.rowLen r) = bideterminant ℚ (r` using `N) (n := N) (fun c : Fin (Y.rowLen 0) => Y.colLen c) (colLen_le hY) (fun c => Fin.castLE (colLen_le hY c)) := by`. Rewrite using `[bidet_lead ℚ N (fun c : Fin (Y.rowLen 0) => Y.colLen c) (colLen_le hY) _ (fun c i => rfl), shapeDeg_colLen]`. Rewrite using `[hwEq]`. Unfold `bideterminant`. Rewrite using `[map_prod]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Repeatedly rewrite using `[rowAct_leadMinor]`. Rewrite using `[Fintype.prod_sum]`. Use `Finset.sum_congr rfl fun J _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_mul_distrib, ← map_prod, ← map_prod]`. Both sides reduce to the same expression.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem rowAct_hw_expand (N : ℕ) (Y : YoungDiagram) (hY : Y.colLen 0 ≤ N) (x : Fin N × Fin N → ℚ) :
     rowAct ℚ (Matrix.of fun a s : Fin N => x (a, s)).transpose (hw ℚ le_rfl (fun r : Fin N => Y.rowLen r)) =
@@ -65,17 +65,17 @@ theorem rowAct_hw_expand (N : ℕ) (Y : YoungDiagram) (hY : Y.colLen 0 ≤ N) (x
   rfl
 
 /- English proof (translation)
-Use `set μ : Fin N → ℕ := fun r => Y.rowLen r with hμ`. Establish `hanti : Antitone μ` using `fun a b hab => Y.rowLen_anti a b hab`. Set `L : MvPolynomial (Fin N × Fin N) ℚ →ₗ[ℚ] ℚ` to `{ toFun := fun g => fockQ g h map_add' := fun f f' => (fockQBilin _ f f' h 1).1 map_smul' := fun c f => (fockQBilin _ f 0 h c).2 }`. Apply `MvPolynomial.funext` to reduce the goal to its premises. Introduce `x`.
+Establish an intermediate fact. Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `set z : Matrix (Fin N) (Fin N) ℚ := Matrix.of fun a s : Fin N => x (a, s) with hz`. Establish `hev : eval (idFrame ℚ N N) (rowAct ℚ z h) = eval x h`. Establish `: (eval (idFrame ℚ N N)).comp (rowAct ℚ z).toRingHom = eval x`. Use `MvPolynomial.ringHom_ext (fun a => by simp [rowAct]) fun v => ?_` and prove the remaining obligations. Simplify using `only [RingHom.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, rowAct, aeval_X, eval_X, map_sum, map_mul, eval_C, idFrame]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_eq_single v.2]`. Simplify using `[hz]`. Introduce `b _ hb`. Simplify using `[Fin.val_inj, hb]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg (fun f => f h) this`. Establish `key1 : fockQ h (rowAct ℚ z.transpose (hw ℚ le_rfl μ)) = ∑ J : GlobalTheory.WeylLatDualProof.IncreasingRowChoicePerColumn N Y, fockQ h (colProd ℚ N Y hY J) * eval x (colProd ℚ N Y hY J)`. Rewrite using `[hz, rowAct_hw_expand, (fockQPos _ _ _).1]`. Express the relevant statement in the definitionally equal form `L _ = _`. Rewrite using `[map_sum]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Use `Finset.sum_congr rfl fun J _ => ?_` and prove the remaining obligations. Rewrite using `[C_mul', L.map_smul, smul_eq_mul, mul_comm]`. Express the relevant statement in the definitionally equal form `fockQ _ h * _ = _`. Rewrite using `[(fockQPos _ _ _).1]`. Establish `key2 : fockQ h (rowAct ℚ z.transpose (hw ℚ le_rfl μ)) = eval x h * fockQ (hw ℚ le_rfl μ) (hw ℚ le_rfl μ)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← fock_space_row_action, (fockQPos _ _ _).1, fock_space_highest_weight N N le_rfl μ hanti _ (dualWeylRowStable ℚ N N μ z h hh), hev]`. Rewrite using `[map_sum, smul_eval]`. Simplify using `only [smul_eval]`. Rewrite using `[← key1, key2, mul_comm]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem reproducing (N : ℕ) (Y : YoungDiagram) (hY : Y.colLen 0 ≤ N) (h : MvPolynomial (Fin N × Fin N) ℚ)
     (hh : h ∈ Formalism.GradedWeylDivisibility.dualWeyl ℚ N N (fun r => Y.rowLen r)) :

@@ -19,9 +19,9 @@ def HRat : Prop := ∀ L : G.P.Tup, G.P.IsLatTup L →
   G.P.HtupW L ≤ Submodule.span G.O {ξ | ξ ∈ G.P.HtupW L ∧ RatX G e ξ}
 
 /- English proof (translation)
-Introduce `i' L`. Simplify using `only [delta]`. Use `split_ifs with h h'`. Substitute `h'` using the available equality. Conclude with `hA i' _ ξ hξ`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Substitute using the available equality. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `⟨0, map_zero _⟩`. Conclude with `⟨0, map_zero _⟩`.
+A detailed English derivation is pending.
 -/
 theorem delta_rat (hA : RatActG G e) (i : G.comp) (L0 : G.P.Tup) (ξ : G.P.Xsp) (hξ : RatX G e ξ) :
     RatFn G e (delta G i L0 ξ) := by
@@ -34,17 +34,17 @@ theorem delta_rat (hA : RatActG G e) (i : G.comp) (L0 : G.P.Tup) (ξ : G.P.Xsp) 
   · exact ⟨0, map_zero _⟩
 
 /- English proof (translation)
-Unfold `MRatSpan`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `hx`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `F hF`. Take `⟨reps, hR⟩` from `jd_reps G h2`. Rewrite using `[jd_decomp G h1 reps hR G.P.HtupW F hF]`. Use `Submodule.sum_mem _ (fun r hr => ?_)` and prove the remaining obligations. Establish `hL` using `hR.1 r hr`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmem : F r.1 r.2 ∈ G.P.HtupW r.2` using `((jd_fmem G _ F).1 hF r.1).1 r.2 hL`. It suffices to establish `key : ∀ ξ ∈ Submodule.span G.O {ξ | ξ ∈ G.P.HtupW r.2 ∧ RatX G e ξ}, delta G r.1 r.2 ξ ∈ Submodule.span G.O (cmpF G.P G.comp e G.M '' intLL G.P G.comp e G.M) from key _ (hH r.2 hL hmem)`. Introduce `ξ hξ`. Proceed by induction on `hξ using Submodule.span_induction with`. Consider the case `mem ξ hξ`.
+Reduce the argument to an intermediate assertion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨hξW, hξR⟩` from `hξ`. Establish `hD` using `jd_mem G h1 _ hE r.1 r.2 hL ξ hξW`. Conclude with `Submodule.subset_span ⟨⟨delta G r.1 r.2 ξ, ⟨Submodule.subset_span hD, delta_rat G e hA r.1 r.2 ξ hξR⟩⟩, hD, rfl⟩`. Consider the case `zero`. Establish `h0 : delta G r.1 r.2 0 = 0`.
+Establish an intermediate fact. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h3` using `jd_smul G r.1 r.2 0 0`. Rewrite `h3` using `[zero_smul, zero_smul]`. Then use the resulting hypothesis. Rewrite using `[h0]`. Conclude with `Submodule.zero_mem _`. Consider the case `add ξ η _ _ hξ hη`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[jd_add]`. Conclude with `Submodule.add_mem _ hξ hη`. Consider the case `smul a ξ _ hξ`. Rewrite using `[jd_smul]`. Conclude with `Submodule.smul_mem _ a hξ`.
+A detailed English derivation is pending.
 -/
 theorem mRatSpan_of (h1 : G.TrivStab) (h2 : G.FinClasses) (hE : EquivSys G G.P.HtupW) (hA : RatActG G e)
     (hH : HRat G e) : MRatSpan G.P G.comp e G.M := by

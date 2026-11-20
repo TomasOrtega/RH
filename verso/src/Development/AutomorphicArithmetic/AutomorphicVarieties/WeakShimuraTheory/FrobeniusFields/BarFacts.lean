@@ -5,7 +5,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.HeightAndVanishing
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws
 
 /- English proof (translation)
-Break down `n with k | k` into its components or cases. Simplify using `only [Int.ofNat_eq_coe, zpow_natCast, Units.val_pow_eq_pow_val, map_pow]`. Rewrite using `[zpow_negSucc, zpow_negSucc]`. Apply `eq_inv_of_mul_eq_one_left` to reduce the goal to its premises. Rewrite using `[← map_pow, ← Units.val_pow_eq_pow_val, ← map_mul, Units.inv_mul, map_one]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 private theorem res_zpow {O : Type} [CommRing O] [IsLocalRing O] (u : Oˣ) (n : ℤ) :
     residue O ((u ^ n : Oˣ) : O) = residue O (u : O) ^ n := by
@@ -16,13 +16,13 @@ private theorem res_zpow {O : Type} [CommRing O] [IsLocalRing O] (u : Oˣ) (n : 
     rw [← map_pow, ← Units.val_pow_eq_pow_val, ← map_mul, Units.inv_mul, map_one]
 
 /- English proof (translation)
-The claim follows from `(u.isUnit.map (residue O)).ne_zero`.
+A detailed English derivation is pending.
 -/
 private theorem res_ne {O : Type} [CommRing O] [IsLocalRing O] (u : Oˣ) : residue O (u : O) ≠ 0 :=
   (u.isUnit.map (residue O)).ne_zero
 
 /- English proof (translation)
-Unfold `Raw.bar`. Rewrite using `[MonoidHom.mul_apply, Units.val_mul, map_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 private theorem bar_mul_frobenius_fields {Ω : Type} [Field Ω] [CharZero Ω] {l : ℕ} [Fact l.Prime] {c : Coef l}
     (f h : G ℚ Ω →* (c.O)ˣ) (g : G ℚ Ω) : Raw.bar (f * h) g = Raw.bar f g * Raw.bar h g := by
@@ -30,7 +30,7 @@ private theorem bar_mul_frobenius_fields {Ω : Type} [Field Ω] [CharZero Ω] {l
   rw [MonoidHom.mul_apply, Units.val_mul, map_mul]
 
 /- English proof (translation)
-Unfold `Raw.bar`. Rewrite using `[MonoidHom.inv_apply, ← zpow_neg_one, res_zpow, zpow_neg_one]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 private theorem bar_inv' {Ω : Type} [Field Ω] [CharZero Ω] {l : ℕ} [Fact l.Prime] {c : Coef l}
     (f : G ℚ Ω →* (c.O)ˣ) (g : G ℚ Ω) : Raw.bar f⁻¹ g = (Raw.bar f g)⁻¹ := by
@@ -38,7 +38,7 @@ private theorem bar_inv' {Ω : Type} [Field Ω] [CharZero Ω] {l : ℕ} [Fact l.
   rw [MonoidHom.inv_apply, ← zpow_neg_one, res_zpow, zpow_neg_one]
 
 /- English proof (translation)
-Unfold `Raw.bar`. Rewrite using `[MonoidHom.pow_apply, Units.val_pow_eq_pow_val, map_pow]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 private theorem bar_pow' {Ω : Type} [Field Ω] [CharZero Ω] {l : ℕ} [Fact l.Prime] {c : Coef l}
     (f : G ℚ Ω →* (c.O)ˣ) (g : G ℚ Ω) (n : ℕ) : Raw.bar (f ^ n) g = Raw.bar f g ^ n := by
@@ -46,45 +46,43 @@ private theorem bar_pow' {Ω : Type} [Field Ω] [CharZero Ω] {l : ℕ} [Fact l.
   rw [MonoidHom.pow_apply, Units.val_pow_eq_pow_val, map_pow]
 
 /- English proof (translation)
-Introduce `Ω _ _ _ l _ c D hD`. Establish `hmax : ∀ x ∈ maximalIdeal c.O, residue c.O x = 0` using `fun x hx => (residue_eq_zero_iff x).mpr hx`. Take `⟨hchar, hfin⟩` from `Gys.coefFacts c (ResidueField c.O) (residue c.O) hmax`. Establish `hl2 : l ≠ 2` using `hD.l_odd`. Establish `hlp : l.Prime` using `Fact.out`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hal : ∀ g, Raw.bar D.al g = Raw.bar D.ξ g`. Introduce `g`. Establish `e1 : D.al = chiO ℚ Ω l c.O * D.om⁻¹ * D.ξ`. Unfold `Raw.al`. Both sides reduce to the same expression.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Both sides reduce to the same expression.
 
-Rewrite using `[e1, bar_mul_frobenius_fields, bar_mul_frobenius_fields, bar_inv', ← hD.om_bar g, mul_inv_cancel₀ (res_ne _), one_mul]`. Establish `hth : ∀ g, Raw.bar D.th g = Raw.bar D.ξ g * Raw.bar D.Psi g`. Introduce `g`. Establish `e1 : D.th = D.al * D.Psi`. Unfold `Raw.th`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Both sides reduce to the same expression. Rewrite using `[e1, bar_mul_frobenius_fields, hal]`. Establish `hPsi : ∀ g, Raw.bar D.Psi g = Raw.bar D.om g ^ D.e * Raw.bar D.ψ g`. Introduce `g`. Establish `e1 : D.Psi = chiO ℚ Ω l c.O ^ D.e * D.ψ`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Unfold `Raw.Psi UpperTheory.V.Chr.Psi`. Both sides reduce to the same expression. Rewrite using `[e1, bar_mul_frobenius_fields, bar_pow', hD.om_bar g]`. Use `haveI : Finite (ResidueField c.O) := by`. Rewrite `hfin` using `[Set.range_eq_univ.mpr residue_surjective]`.
+Replace the relevant objects with their definitions. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Set.finite_univ_iff.mp hfin`. Use `haveI := Fintype.ofFinite (ResidueField c.O)`. Establish `hneg : (-1 : ResidueField c.O) ≠ 1`. Apply `Ring.neg_one_ne_one_of_char_ne_two` to reduce the goal to its premises. Rewrite using `[ringChar.eq (ResidueField c.O) l]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `hl2`. Establish `hfrob : ∀ (x : ResidueField c.O) (j : ℕ), x ^ l ^ j = 1 → x = 1`. Introduce `x j hx`. Establish `h0 : (x - 1) ^ l ^ j = 0`. Rewrite using `[sub_pow_char_pow, hx, one_pow, sub_self]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Conclude with `sub_eq_zero.mp ((pow_eq_zero_iff (pow_ne_zero j hlp.ne_zero)).mp h0)`. Establish `hr : ∀ g, D.rbar g = 1 ↔ Raw.bar D.ξ g = 1 ∧ Raw.bar D.Psi g = 1`. Introduce `g`. Unfold `Raw.rbar mapRep Raw.r0 diagRep`. Simplify using `only [MonoidHom.coe_comp, Function.comp_apply, MonoidHom.coe_mk, OneHom.coe_mk]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Use `show (Matrix.diagonal fun i => ((D.ps i g : (c.O)ˣ) : c.O)).map (residue c.O) = 1 ↔ _`. Rewrite using `[Matrix.diagonal_map (map_zero _), ← Matrix.diagonal_one, Matrix.diagonal_eq_diagonal_iff]`. Establish `h1` using `hal g`. Establish `h2` using `hth g`. Unfold `Raw.bar at h1 h2 ⊢`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Simplify using `[Fin.forall_fin_succ, Raw.ps, h1, h2]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, hp, hx⟩`. Conclude with `⟨hx, hp⟩`. Introduce and unpack `⟨hx, hp⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Conclude with `⟨by rw [hx, hp, one_mul], hp, hx⟩`. Establish `hrb : ∀ (T : Tower D) (w : ℤ × ℤ) (g : G T.F Ω), T.rb w g = Raw.bar D.ξ (resQ T.F g) ^ w.1 * Raw.bar D.Psi (resQ T.F g) ^ (if T.pr then -w.2 else w.2)`. Introduce `T w g`. Unfold `Tower.rb`. Simplify using `only [Fr.rt, Tower.fr, MonoidHom.coe_mk, OneHom.coe_mk, MonoidHom.coe_comp, Function.comp_apply]`.
+Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Replace the relevant objects with their definitions. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Unfold `chi`. Generalize the expression as in `resQ T.F g = τ`. Establish `e1 : D.th τ = D.al τ * D.Psi τ`. Unfold `Raw.th`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hinv : ∀ u : (c.O)ˣ, residue c.O ((u⁻¹ : (c.O)ˣ) : c.O) = (residue c.O (u : c.O))⁻¹` using `fun u => by`. Rewrite using `[← zpow_neg_one, res_zpow, zpow_neg_one]`. Establish `hal' : residue c.O (D.al τ : c.O) = residue c.O (D.ξ τ : c.O)` using `hal τ`. Establish `ha` using `res_ne (D.al τ)`. Establish `hp` using `res_ne (D.Psi τ)`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Unfold `Raw.bar`. Rewrite using `[← hal']`. Apply the tactic sequence `cases T.pr <;> simp [lab, Raw.ps, e1, hinv, res_zpow, ha, hp, inv_zpow]`. Establish `hm : ∃ m : ℕ, l.Coprime m ∧ ∀ g, Raw.bar D.Psi g ^ m = 1`. Use `⟨Fintype.card (ResidueField c.O) - 1, ?_, fun g => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨n, -, hn⟩` from `FiniteField.card (ResidueField c.O) l`. Rewrite using `[hn]`. Establish `h1 : Nat.Coprime (l ^ (n : ℕ)) (l ^ (n : ℕ) - 1)` using `(Nat.coprime_self_sub_right (Nat.one_le_pow _ _ hlp.pos)).mpr (Nat.coprime_one_right _)`. Conclude with `Nat.Coprime.coprime_dvd_left (dvd_pow_self l n.ne_zero) h1`. Unfold `Raw.bar`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Conclude with `FiniteField.pow_card_sub_one_eq_one _ (res_ne _)`. Establish `hopen : IsOpen {g | Raw.bar D.Psi g = 1}`. Establish `homT : IsOmT c D.om`. Unfold `IsOmT`. Use `⟨hD.om_pow, fun σ => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← residue_eq_zero_iff, map_sub, sub_eq_zero]`. Conclude with `hD.om_bar σ`. Establish `hom` using `((omT Ω l c).2 D.om homT).2.2.2.1`. Set `H : Subgroup (G ℚ Ω)` to `((Units.map (residue c.O : c.O →* ResidueField c.O)).comp D.Psi).ker`. Establish `hset : {g | Raw.bar D.Psi g = 1} = (H : Set (G ℚ Ω))`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use extensionality with `g`. Simplify using `only [Set.mem_setOf_eq, SetLike.mem_coe, H, MonoidHom.mem_ker, MonoidHom.coe_comp, Function.comp_apply, Units.ext_iff, Units.coe_map, Units.val_one]`. Both sides reduce to the same expression. Rewrite using `[hset]`. Use `Subgroup.isOpen_mono (H₁ := D.om.ker ⊓ D.ψ.ker) ?_ (hom.inter hD.psi_open)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Introduce `g hg`. Take `⟨h1, h2⟩` from `Subgroup.mem_inf.mp hg`. Rewrite `h1`, `h2` using `[MonoidHom.mem_ker]`. Establish `: Raw.bar D.Psi g = 1`. Rewrite using `[hPsi]`.
-
-Unfold `Raw.bar`. Rewrite using `[h1, h2, Units.val_one, map_one, one_pow, one_mul]`. Rewrite using `[← SetLike.mem_coe, ← hset]`. Conclude with `this`. Conclude with `⟨hneg, hfrob, hal, hth, hPsi, hr, hrb, hm, hopen⟩`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.barFacts :
     ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} (D : Raw Ω c), D.Good → (-1 : ResidueField c.O) ≠ 1 ∧ (∀ (x : ResidueField c.O) (j : ℕ), x ^ l ^ j = 1 → x = 1) ∧ (∀ g, Raw.bar D.al g = Raw.bar D.ξ g) ∧ (∀ g, Raw.bar D.th g = Raw.bar D.ξ g * Raw.bar D.Psi g) ∧ (∀ g, Raw.bar D.Psi g = Raw.bar D.om g ^ D.e * Raw.bar D.ψ g) ∧ (∀ g, D.rbar g = 1 ↔ Raw.bar D.ξ g = 1 ∧ Raw.bar D.Psi g = 1) ∧ (∀ (T : Tower D) (w : ℤ × ℤ) (g : G T.F Ω), T.rb w g = Raw.bar D.ξ (resQ T.F g) ^ w.1 * Raw.bar D.Psi (resQ T.F g) ^ (if T.pr then -w.2 else w.2)) ∧ (∃ m : ℕ, l.Coprime m ∧ ∀ g, Raw.bar D.Psi g ^ m = 1) ∧ IsOpen {g | Raw.bar D.Psi g = 1} := by

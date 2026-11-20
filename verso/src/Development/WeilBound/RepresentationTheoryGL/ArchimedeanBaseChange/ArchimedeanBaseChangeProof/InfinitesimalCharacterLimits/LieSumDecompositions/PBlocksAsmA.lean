@@ -9,11 +9,11 @@ open PositivityTheory.Rg.BcB.SpectralAccumulation.Cz.BlockDerivatives
 namespace PositivityTheory.Rg.BcB.SpectralAccumulation.Cz.BlockAssembly
 
 /- English proof (translation)
-Set `f` to `T ∘ₗ U.subtype`. Set `g` to `T' ∘ₗ U.subtype`. Establish `hle : LinearMap.ker f ≤ LinearMap.ker g` using `fun x hx => h x.1 x.2 hx`. Set `g₀` to `(LinearMap.ker f).liftQ g hle`. Set `h₀ : LinearMap.range f →ₗ[ℂ] N` to `g₀ ∘ₗ f.quotKerEquivRange.symm.toLinearMap`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Take `⟨P, hP⟩` from `LinearMap.exists_extend h₀`. Use `⟨P, fun ψ hψ => ?_⟩` and prove the remaining obligations. Establish `e1 : P (T ψ) = h₀ ⟨f ⟨ψ, hψ⟩, LinearMap.mem_range_self f _⟩` using `LinearMap.congr_fun hP (⟨f ⟨ψ, hψ⟩, LinearMap.mem_range_self f _⟩ : LinearMap.range f)`. Rewrite using `[e1]`. Express the relevant statement in the definitionally equal form `g₀ (f.quotKerEquivRange.symm ⟨f ⟨ψ, hψ⟩, _⟩) = _`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[LinearMap.quotKerEquivRange_symm_apply_image]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem factor {M N : Type} [AddCommGroup M] [Module ℂ M] [AddCommGroup N] [Module ℂ N] (U : Submodule ℂ M)
     (T : M →ₗ[ℂ] N) (T' : M →ₗ[ℂ] N) (h : ∀ ψ ∈ U, T ψ = 0 → T' ψ = 0) :
@@ -35,7 +35,7 @@ theorem factor {M N : Type} [AddCommGroup M] [Module ℂ M] [AddCommGroup N] [Mo
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r s : ℕ}
 
 /- English proof (translation)
-Use `Subtype.ext (funext fun x => ?_)` and prove the remaining obligations. Take `⟨u, m, k, g, rfl⟩` from `ParabolicProjection.exists_decomp x`. Rewrite using `[mul_assoc, h₁, h₂]`. Conclude with `h k g m`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_of_levi {F₁ F₂ : Sm E (r + s)}
     (h₁ : ∀ (x : BlockIx (r + s) r → Ad E) g, F₁.1 (unip x * g) = F₁.1 g)
@@ -49,7 +49,7 @@ theorem eq_of_levi {F₁ F₂ : Sm E (r + s)}
   exact h k g m
 
 /- English proof (translation)
-The claim follows from `eq_of_levi hF (fun _ _ => rfl) h`.
+A detailed English derivation is pending.
 -/
 theorem eq_zero_of_levi {F : Sm E (r + s)} (hF : ∀ (x : BlockIx (r + s) r → Ad E) g, F.1 (unip x * g) = F.1 g)
     (h : ∀ (k : Kinf E (r + s)) (g : GL (Fin (r + s)) (Af E)) (m : GA E r × GA E s),
@@ -57,7 +57,7 @@ theorem eq_zero_of_levi {F : Sm E (r + s)} (hF : ∀ (x : BlockIx (r + s) r → 
   eq_of_levi hF (fun _ _ => rfl) h
 
 /- English proof (translation)
-Introduce and unpack `o _ ⟨φ, hφ, rfl⟩`. Conclude with `⟨act o φ, hL o φ hφ, by`. Express the relevant statement in the definitionally equal form `z (act o φ) = act o (z φ)`. Rewrite using `[← Module.End.mul_apply, (hz o).eq, Module.End.mul_apply]⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem isStable_map {a : ℕ} {L : Submodule ℂ (Sm E a)} (hL : IsStable L) {z : Module.End ℂ (Sm E a)}
     (hz : ∀ o : Op E a, Commute z (act o)) : IsStable (L.map z) := by
@@ -67,9 +67,9 @@ theorem isStable_map {a : ℕ} {L : Submodule ℂ (Sm E a)} (hL : IsStable L) {z
     rw [← Module.End.mul_apply, (hz o).eq, Module.End.mul_apply]⟩
 
 /- English proof (translation)
-Use `⟨S₁.image z, fun x hx => ?_, fun W hW hSW => ?_⟩` and prove the remaining obligations. Take `⟨y, hy, rfl⟩` from `Finset.mem_image.1 (Finset.mem_coe.1 hx)`. Conclude with `Submodule.mem_map_of_mem (hS₁ hy)`. Establish `hst : IsStable (W.comap z)` using `fun o φ hφ => by`. Express the relevant statement in the definitionally equal form `z (act o φ) ∈ W`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Module.End.mul_apply, (hz o).eq, Module.End.mul_apply]`. Conclude with `hW o _ hφ`. Establish `hle` using `hgen (W.comap z) hst fun y hy => hSW (Finset.mem_coe.2 (Finset.mem_image_of_mem z hy))`. Introduce and unpack `_ ⟨φ, hφ, rfl⟩`. Conclude with `hle hφ`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem finGen_map {a : ℕ} {L : Submodule ℂ (Sm E a)} {z : Module.End ℂ (Sm E a)}
     (hz : ∀ o : Op E a, Commute z (act o)) (S₁ : Finset (Sm E a)) (hS₁ : (↑S₁ : Set (Sm E a)) ⊆ L)

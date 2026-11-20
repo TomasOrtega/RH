@@ -17,7 +17,7 @@ section Mat
 variable {E V : Type} [Field E] [AddCommGroup V] [Module E V]
 
 /- English proof (translation)
-The claim follows from `LinearMap.toMatrix_mulVec_repr b b (γ : V →ₗ[E] V) x`.
+A detailed English derivation is pending.
 -/
 theorem hq_toGLb_mulVec {n : ℕ} (b : Basis (Fin n) E V) (γ : V ≃ₗ[E] V) (x : V) :
     ((Formalism.L2.Herm.toGLb b γ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) *ᵥ b.equivFun x = b.equivFun (γ x) :=
@@ -27,7 +27,7 @@ def hqCrd {n N : ℕ} (b : Basis (Fin n) E V) (h : n = N) : V ≃ₗ[E] (Fin N �
   b.equivFun.trans (LinearEquiv.funCongrLeft E E (finCongr h).symm)
 
 /- English proof (translation)
-Substitute `h` using the available equality. Rewrite using `[Formalism.L2.Forms.reGL_rfl]`. Conclude with `hq_toGLb_mulVec b γ x`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hq_reGL_mulVec {n N : ℕ} (b : Basis (Fin n) E V) (h : n = N) (γ : V ≃ₗ[E] V) (x : V) :
     ((Formalism.L2.Forms.reGL h E (Formalism.L2.Herm.toGLb b γ) : GL (Fin N) E) : Matrix (Fin N) (Fin N) E) *ᵥ hqCrd b h x = hqCrd b h (γ x) := by
@@ -39,7 +39,7 @@ def hqLin {n N : ℕ} (b : Basis (Fin n) E V) (h : n = N) (g : GL (Fin N) E) : V
   (Formalism.L2.Herm.toGLb b).symm ((Formalism.L2.Forms.reGL h E).symm g)
 
 /- English proof (translation)
-Unfold `hqLin`. Rewrite using `[MulEquiv.apply_symm_apply, MulEquiv.apply_symm_apply]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem hqLin_re {n N : ℕ} (b : Basis (Fin n) E V) (h : n = N) (g : GL (Fin N) E) :
     Formalism.L2.Forms.reGL h E (Formalism.L2.Herm.toGLb b (hqLin b h g)) = g := by
@@ -47,7 +47,7 @@ theorem hqLin_re {n N : ℕ} (b : Basis (Fin n) E V) (h : n = N) (g : GL (Fin N)
   rw [MulEquiv.apply_symm_apply, MulEquiv.apply_symm_apply]
 
 /- English proof (translation)
-Use `hq_reGL_mulVec b h (hqLin b h g) x` as an intermediate fact. Rewrite `this` using `[hqLin_re]`. Conclude with `this.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hqLin_crd {n N : ℕ} (b : Basis (Fin n) E V) (h : n = N) (g : GL (Fin N) E) (x : V) :
     hqCrd b h (hqLin b h g x) = (g : Matrix (Fin N) (Fin N) E) *ᵥ hqCrd b h x := by
@@ -62,15 +62,15 @@ section Form
 variable {A n : Type} [CommRing A] [Fintype n] [DecidableEq n]
 
 /- English proof (translation)
-Simplify using `only [hform, dotProduct, mulVec, Function.comp, Finset.mul_sum, mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hq_hform_dot (σ : A →+* A) (J : Matrix n n A) (x y : n → A) : hform σ J x y = (σ ∘ x) ⬝ᵥ (J *ᵥ y) := by
   simp only [hform, dotProduct, mulVec, Function.comp, Finset.mul_sum, mul_assoc]
 
 /- English proof (translation)
-Establish `hτ : σ ∘ ((g : Matrix n n A) *ᵥ x) = (g : Matrix n n A).map σ *ᵥ (σ ∘ x)`. Use function extensionality and compare the values at `i`. Conclude with `RingHom.map_mulVec σ (g : Matrix n n A) x i`. Establish `hg' : cT σ (g : Matrix n n A) * J * (g : Matrix n n A) = J` using `hg`. Rewrite using `[hq_hform_dot, hq_hform_dot, hτ, ← vecMul_transpose, ← dotProduct_mulVec, mulVec_mulVec, mulVec_mulVec]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show _ ⬝ᵥ ((cT σ (g : Matrix n n A) * J * (g : Matrix n n A)) *ᵥ y) = _`. Rewrite using `[hg']`.
+A detailed English derivation is pending.
 -/
 theorem hq_hform_UJ (σ : A →+* A) (J : Matrix n n A) (g : GL n A) (hg : g ∈ UJ σ J) (x y : n → A) :
     hform σ J ((g : Matrix n n A) *ᵥ x) ((g : Matrix n n A) *ᵥ y) = hform σ J x y := by
@@ -97,23 +97,23 @@ def hqG (i : ℕ) (hi : i ≤ D.R.m) (g : UJ (CF.sigD D : D.host.E →+* D.host.
     exact hq_hform_UJ _ _ g.1 g.2 _ _⟩
 
 /- English proof (translation)
-The claim follows from `hqLin_crd _ _ g.1 x`.
+A detailed English derivation is pending.
 -/
 theorem hqG_crd (i : ℕ) (hi : i ≤ D.R.m) (g : UJ (CF.sigD D : D.host.E →+* D.host.E) (CF.gramN D i hi)) (x : (D.sp.X i).V) :
     CF.crdN D i hi ((hqG i hi g).1 x) = (g.1 : Matrix (Fin (D.R.N i)) (Fin (D.R.N i)) D.host.E) *ᵥ CF.crdN D i hi x :=
   hqLin_crd _ _ g.1 x
 
 /- English proof (translation)
-The claim follows from `hqLin_re _ _ g.1`.
+A detailed English derivation is pending.
 -/
 theorem hqG_re (i : ℕ) (hi : i ≤ D.R.m) (g : UJ (CF.sigD D : D.host.E →+* D.host.E) (CF.gramN D i hi)) :
     Formalism.L2.Forms.reGL (CF.rankN D i hi) D.host.E (Formalism.L2.Herm.toGLb (D.sp.X i).frame (hqG i hi g).1) = g.1 :=
   hqLin_re _ _ g.1
 
 /- English proof (translation)
-Unfold `gmap Formalism.L2.Forms.mulLat`. Rewrite using `[← Submodule.map_comp, ← Submodule.map_comp]`. Use `congr 1`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `x`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hqG_crd i hi g x`.
+A detailed English derivation is pending.
 -/
 theorem hqG_gmap (i : ℕ) (hi : i ≤ D.R.m) (g : UJ (CF.sigD D : D.host.E →+* D.host.E) (CF.gramN D i hi))
     (L : Submodule (𝓞 D.host.E) (D.sp.X i).V) :
@@ -129,7 +129,7 @@ theorem hqG_gmap (i : ℕ) (hi : i ≤ D.R.m) (g : UJ (CF.sigD D : D.host.E →+
   exact hqG_crd i hi g x
 
 /- English proof (translation)
-The claim follows from `Submodule.map_injective_of_injective (CF.crdN D i hi).injective`.
+A detailed English derivation is pending.
 -/
 theorem hq_map_inj (i : ℕ) (hi : i ≤ D.R.m) : Function.Injective (Submodule.map
     ((CF.crdN D i hi : (D.sp.X i).V →ₗ[D.host.E] (Fin (D.R.N i) → D.host.E)).restrictScalars (𝓞 D.host.E))) :=
@@ -141,7 +141,7 @@ def hqLatP (K : CF.ClsPTied u) (c : (D.fm u).clsP) : Submodule (𝓞 D.host.E) D
   (K.lat c).map (((CF.crdP D).symm : (Fin (D.R.N D.R.m - 1) → D.host.E) →ₗ[D.host.E] D.sp.X'.V).restrictScalars (𝓞 D.host.E))
 
 /- English proof (translation)
-Unfold `hqLatP`. Rewrite using `[← Submodule.map_comp]`. Use `symm`. Use `Submodule.map_id _` and compare the differences between its conclusion and the goal. Use extensionality with `x j`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components.
 
 Simplify using the standard rewrite rules.
 -/
@@ -160,12 +160,12 @@ variable (T : CF.TilTied u A K (P D.R.m le_rfl))
 def lastSpaceVector : (D.sp.X D.R.m).V := (CF.crdN D D.R.m le_rfl).symm T.z0
 
 /- English proof (translation)
-The claim follows from `((CF.crdN D D.R.m le_rfl).apply_symm_apply T.z0).symm`.
+A detailed English derivation is pending.
 -/
 theorem lastVector_coords : T.z0 = CF.crdN D D.R.m le_rfl (lastSpaceVector T) := ((CF.crdN D D.R.m le_rfl).apply_symm_apply T.z0).symm
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `T.lastCoordinateUniformizerVector_spans_orthogonal_line`. Use `Submodule.mem_span_singleton.2 ⟨a, ?_⟩` and prove the remaining obligations. Unfold `lastSpaceVector`. Rewrite using `[LinearEquiv.eq_symm_apply, map_smul, ha]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem lastVector_mem_span : lastSpaceVector T ∈ Submodule.span D.host.E {D.sp.z} := by
   obtain ⟨a, ha⟩ := T.lastCoordinateUniformizerVector_spans_orthogonal_line
@@ -175,7 +175,7 @@ theorem lastVector_mem_span : lastSpaceVector T ∈ Submodule.span D.host.E {D.s
   rfl
 
 /- English proof (translation)
-Rewrite using `[hx_hform D.R.m le_rfl, ← lastVector_coords]`. Conclude with `T.hermitianForm_lastCoordinateUniformizerVector_self`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lastVector_norm : (D.sp.X D.R.m).hT (lastSpaceVector T) (lastSpaceVector T) = ((D.mem u).A.T : D.host.E) := by
   rw [hx_hform D.R.m le_rfl, ← lastVector_coords]
@@ -185,9 +185,9 @@ def hqTilG (c : (D.fm u).clsP) : CH.GX D D.R.m := hqG D.R.m le_rfl (T.ga c)
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply `hq_map_inj D.R.m le_rfl` to reduce the goal to its premises. Rewrite using `[hqTilG, hqG_gmap, ← hx_clsCrd, T.til_lat c, Submodule.map_sup, Submodule.map_span, Set.image_singleton]`. Use `congr 1`. Unfold `hqLatP`. Rewrite using `[← Submodule.map_comp, ← Submodule.map_comp]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Use `congr 2`. Conclude with `lastVector_coords T`.
+Both sides reduce to the same expression. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem hq_til_lat (c : (D.fm u).clsP) :
     gmap (hqTilG T c).1 (D.clsLat u D.R.m ((D.fm u).til c)) =
@@ -203,7 +203,7 @@ theorem hq_til_lat (c : (D.fm u).clsP) :
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Rewrite using `[hxPr_eq A P D.R.m le_rfl]`. Use `T.til_fv v c (hxLd D.R.m le_rfl _ z) a ?_` and prove the remaining obligations. Rewrite using `[ha, hx_hform D.R.m le_rfl, ← lastVector_coords, hqTilG, hqG_crd]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem hq_til_fv (c : (D.fm u).clsP) (v : (D.mem u).A.vT) (z : CH.Ld D u D.R.m ((D.fm u).til c)) (a : 𝓞 D.host.E)
     (ha : (a : D.host.E) = (D.sp.X D.R.m).hT (lastSpaceVector T) ((hqTilG T c).1 (z : (D.sp.X D.R.m).V))) :

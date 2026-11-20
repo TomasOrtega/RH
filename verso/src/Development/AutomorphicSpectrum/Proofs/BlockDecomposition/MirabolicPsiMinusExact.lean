@@ -8,9 +8,9 @@ open GlobalTheory.PRep GlobalTheory.BZMir GlobalTheory.BZMir.Fun
 namespace GlobalTheory.CompanionTheory.BZMir
 
 /- English proof (translation)
-Introduce `k _ _ _ _ n V₁ V₂ V₃ _ _ _ _ _ _ τ₁ τ₂ τ₃ h₁ h₂ h₃ f g hf hg hfg`. Use `GlobalTheory.T.twisted_jacquet_exact_smooth τ₁ τ₂ τ₃ h₁ h₂ h₃ (MirUin k n) 1 ?_ (GlobalTheory.T.mirabolic_filtration_exhaustive k n) f g hf hg hfg` and prove the remaining obligations. Establish `hker : ((1 : MirUin k n →* ℂˣ).ker : Set (MirUin k n)) = Set.univ`. Use extensionality with `x`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[hker]`. Conclude with `isOpen_univ`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exPsiMinus : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k],
     GlobalTheory.BZMir.Fun.ExPsiMinus k := by

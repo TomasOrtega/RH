@@ -15,17 +15,17 @@ import Mathlib.Analysis.InnerProductSpace.Positive
 namespace Formalism.E
 
 /- English proof (translation)
-The claim follows from `fischerInnerConjSymm_holds`.
+A detailed English derivation is pending.
 -/
 theorem fockHerm : FockHerm := fischerInnerConjSymm_holds
 
 /- English proof (translation)
-The claim follows from `indexEqNormDet`.
+A detailed English derivation is pending.
 -/
 theorem subIndexNorm : SubIndexNorm := indexEqNormDet
 
 /- English proof (translation)
-The claim follows from `hermDual_of subIndexNorm`.
+A detailed English derivation is pending.
 -/
 theorem hermDual : HermDual := hermDual_of subIndexNorm
 

@@ -8,13 +8,13 @@ open scoped ENNReal ComplexOrder
 namespace GlobalTheory.HCXi.GramPos
 
 /- English proof (translation)
-Rewrite using `[← Complex.ofReal_mul, ← mul_inv, Real.mul_self_sqrt (by norm_num)]; norm_num`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sq_half : (((Real.sqrt 2)⁻¹ : ℝ) : ℂ) * (((Real.sqrt 2)⁻¹ : ℝ) : ℂ) = 1 / 2 := by
   rw [← Complex.ofReal_mul, ← mul_inv, Real.mul_self_sqrt (by norm_num)]; norm_num
 
 /- English proof (translation)
-Establish `: star (bvec i : Fin n → ℂ) = bvec i`. Apply the tactic sequence `ext l; by_cases h : l = i <;> simp [bvec, h]`. Rewrite using `[this]`. Simplify using `[bvec]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem bvec_pair {n : ℕ} (M : Matrix (Fin n) (Fin n) ℂ) (i j : Fin n) :
     star (bvec i) ⬝ᵥ M *ᵥ bvec j = M i j := by
@@ -23,7 +23,7 @@ theorem bvec_pair {n : ℕ} (M : Matrix (Fin n) (Fin n) ℂ) (i j : Fin n) :
   rw [this]; simp [bvec]
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_assoc]`. Simplify using `[Matrix.mul_apply, frame, dotProduct, mulVec]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem frame_pair (k r : ℕ) (M : Mat k r) (a b : Fin (r + 1)) :
     ((frame k r)ᴴ * M * frame k r) a b =
@@ -32,7 +32,7 @@ theorem frame_pair (k r : ℕ) (M : Mat k r) (a b : Fin (r + 1)) :
   simp [Matrix.mul_apply, frame, dotProduct, mulVec]
 
 /- English proof (translation)
-Rewrite using `[isoVec, star_smul, star_add, smul_dotProduct, add_dotProduct, bvec_pair, bvec_pair]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem pair_iso_left (k r : ℕ) (M : Mat k r) (j) :
     star (isoVec k r) ⬝ᵥ M *ᵥ bvec j =
@@ -41,7 +41,7 @@ theorem pair_iso_left (k r : ℕ) (M : Mat k r) (j) :
   simp
 
 /- English proof (translation)
-Rewrite using `[isoVec, mulVec_smul, mulVec_add, dotProduct_smul, dotProduct_add]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem pair_iso_right (k r : ℕ) (M : Mat k r) (v) :
     star v ⬝ᵥ M *ᵥ isoVec k r =
@@ -50,15 +50,15 @@ theorem pair_iso_right (k r : ℕ) (M : Mat k r) (v) :
   simp
 
 /- English proof (translation)
-Use extensionality with `a b`. Use `frame_pair k r 1 a b` as an intermediate fact. Rewrite `this` using `[Matrix.mul_one]`. Rewrite using `[this]`. Establish `ha` using `a.isLt`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hb` using `b.isLt`. Unfold `fvec`. Use `split_ifs with h1 h2 h2`. Rewrite using `[bvec_pair]`. Simplify using `[one_apply, eI, Fin.ext_iff]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pair_iso_right, bvec_pair, bvec_pair]`. Simplify using `only [one_apply, eI, wI, Fin.ext_iff, Fin.val_last, Fin.val_zero]`. Rewrite using `[if_neg (by omega), if_neg (by omega), if_neg (by omega)]; simp`. Rewrite using `[pair_iso_left]`. Simplify using `only [one_apply, eI, wI, Fin.ext_iff, Fin.val_last, Fin.val_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg (by omega), if_neg (by omega), if_neg (by omega)]; simp`. Rewrite using `[pair_iso_right, pair_iso_left, pair_iso_left]`. Simplify using `only [one_apply, wI, Fin.ext_iff, Fin.val_last, Fin.val_zero]`. Establish `e : a.val = b.val` using `by omega`. Establish `h3 : ¬ (r + k = r + 0)` using `by omega`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : ¬ (r + 0 = r + k)` using `by omega`. Simplify using `only [if_pos e, h3, h4, if_true, if_false]`. Take the linear combination `2 * sq_half`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem frame_orthonormal (k r : ℕ) (hk : 1 ≤ k) : (frame k r)ᴴ * frame k r = 1 := by
   ext a b
@@ -85,9 +85,9 @@ theorem frame_orthonormal (k r : ℕ) (hk : 1 ≤ k) : (frame k r)ᴴ * frame k 
     linear_combination 2 * sq_half
 
 /- English proof (translation)
-Establish `hH : Hpk k r * Hpk k r = 1` using `(Formalism.QuantumDeterminants.hermitian_pos_facts_hold k r).2.1`. Establish `hF : (frame k r)ᴴ * frame k r = 1` using `frame_orthonormal k r hk`. Establish `hg' : gᴴ * Hpk k r * g = Hpk k r` using `hg`. Establish `h1 : ((frame k r)ᴴ * (Hpk k r * (gᴴ * Hpk k r))) * (g * frame k r) = 1`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Simplify using `only [Matrix.mul_assoc]`. Use `_ = 1 := by rw [hg', hH, Matrix.one_mul, hF]`. Introduce `x y hxy`. Use `congrArg (fun v => ((frame k r)ᴴ * (Hpk k r * (gᴴ * Hpk k r))) *ᵥ v) hxy` as an intermediate fact. Simplify `this` using `only [Matrix.mulVec_mulVec, h1, Matrix.one_mulVec]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 lemma mulVec_inj (k r : ℕ) (hk : 1 ≤ k) (g : Mat k r) (hg : g ∈ GV k r) :
     Function.Injective (g * frame k r).mulVec := by
@@ -104,7 +104,7 @@ lemma mulVec_inj (k r : ℕ) (hk : 1 ≤ k) (g : Mat k r) (hg : g ∈ GV k r) :
   simpa only [Matrix.mulVec_mulVec, h1, Matrix.one_mulVec] using this
 
 /- English proof (translation)
-Establish `hP : ((g * frame k r)ᴴ * (g * frame k r)).PosDef` using `Matrix.PosDef.conjTranspose_mul_self _ (mulVec_inj k r hk g hg)`. Establish `hS` using `hP.submatrix (Fin.castLE_injective (Nat.succ_le_of_lt a.isLt))`. Establish `hd` using `hS.det_pos`. Conclude with `(Complex.pos_iff.mp hd).1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma gram_pos (k r : ℕ) (hk : 1 ≤ k) (g : Mat k r) (hg : g ∈ GV k r) (a : Fin (r + 1)) :
     0 < gram k r g a := by
@@ -115,7 +115,7 @@ lemma gram_pos (k r : ℕ) (hk : 1 ≤ k) (g : Mat k r) (hg : g ∈ GV k r) (a :
   exact (Complex.pos_iff.mp hd).1
 
 /- English proof (translation)
-Unfold `gram`. Establish `h : Continuous fun g : Mat k r => g * frame k r` using `continuous_id.matrix_mul continuous_const`. Conclude with `Complex.continuous_re.comp ((h.matrix_conjTranspose.matrix_mul h).matrix_submatrix _ _).matrix_det`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma gram_continuous (k r : ℕ) (a : Fin (r + 1)) : Continuous fun g : Mat k r => gram k r g a := by
   unfold gram
@@ -124,7 +124,7 @@ lemma gram_continuous (k r : ℕ) (a : Fin (r + 1)) : Continuous fun g : Mat k r
     ((h.matrix_conjTranspose.matrix_mul h).matrix_submatrix _ _).matrix_det
 
 /- English proof (translation)
-Establish `h : Continuous fun x : Mt k r => gram k r (Matrix.of x) a` using `gram_continuous k r a`. Conclude with `h.measurable`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma gram_measurable (k r : ℕ) (a : Fin (r + 1)) :
     Measurable fun x : Mt k r => gram k r (Matrix.of x) a := by
@@ -132,9 +132,9 @@ lemma gram_measurable (k r : ℕ) (a : Fin (r + 1)) :
   exact h.measurable
 
 /- English proof (translation)
-Introduce `k r hk`. Use `⟨gram_pos k r hk, fun g hg => ?_, ?_, ?_⟩` and prove the remaining obligations. Unfold `vHalf`. Conclude with `mul_pos (Finset.prod_pos fun a _ => inv_pos.mpr (gram_pos k r hk g hg _)) (Real.rpow_pos_of_pos (gram_pos k r hk g hg _) _)`. Unfold `vHalf`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions.
 
-Conclude with `(Finset.measurable_prod _ fun a _ => (gram_measurable k r _).inv).mul ((gram_measurable k r _).pow_const _)`. Unfold `vHalf`. Use `ContinuousOn.mul (continuousOn_finsetProd _ fun a _ => ?_) ?_` and prove the remaining obligations. Conclude with `(gram_continuous k r _).continuousOn.inv₀ fun g hg => (gram_pos k r hk g hg _).ne'`. Conclude with `(gram_continuous k r _).continuousOn.rpow_const fun g hg => Or.inl (gram_pos k r hk g hg _).ne'`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem gram_vHalf_pos_measurable_continuousOn : ∀ k r : ℕ, 1 ≤ k → (∀ g ∈ GV k r, ∀ a : Fin (r + 1), 0 < gram k r g a) ∧ (∀ g ∈ GV k r, 0 < vHalf k r g) ∧ (Measurable fun x : Mt k r => vHalf k r (Matrix.of x)) ∧ ContinuousOn (vHalf k r) (GV k r) := by
   intro k r hk

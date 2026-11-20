@@ -10,7 +10,7 @@ noncomputable section
 namespace GlobalTheory.GeoFix
 
 /- English proof (translation)
-Use `show _ = algebraMap (O0 p) Ω (algebraMap ℤ_[p] (O0 p) m)`. Rewrite using `[zp, algebraMap_zp_eq, HahnSeries.C_apply]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zp_eq_algebraMap_zpAlg {p : ℕ} [Fact p.Prime] {Ω : Type} [Field Ω] [Algebra (O0 p) Ω] (m : ℤ_[p]) :
     zp Ω m = @algebraMap ℤ_[p] Ω _ _ (zpAlg p Ω) m := by
@@ -18,31 +18,27 @@ theorem zp_eq_algebraMap_zpAlg {p : ℕ} [Fact p.Prime] {Ω : Type} [Field Ω] [
   rw [zp, algebraMap_zp_eq, HahnSeries.C_apply]
 
 /- English proof (translation)
-Introduce `p _ Ω _ _ hc d E hE v`. Use `letI := zpAlg p Ω`. Use `haveI : IsScalarTower ℤ_[p] (O0 p) Ω := IsScalarTower.of_algebraMap_eq fun _ => rfl`. Use `haveI : CharZero Ω := Basic.charZero_of_isClo hc`. Establish `hsm : ∀ (m : ℤ_[p]) (x : Ω), m • x = zp Ω m * x` using `fun m x => by`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Algebra.smul_def, zp_eq_algebraMap_zpAlg]`. Establish `hpv : ((p : Ω) ^ v) ≠ 0` using `pow_ne_zero _ (Nat.cast_ne_zero.2 (Fact.out : p.Prime).ne_zero)`. Use `set S : Submodule ℤ_[p] Ω := Submodule.span ℤ_[p] (Set.range E) with hS`. Set `S' : Submodule ℤ_[p] Ω` to `{ carrier := {y | IsInt p y ∧ (p : Ω) ^ v * y ∈ S} add_mem' := by`. Introduce and unpack `x y ⟨hx1, hx2⟩ ⟨hy1, hy2⟩`.
+Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨IsIntegral.add hx1 hy1, by rw [mul_add]; exact S.add_mem hx2 hy2⟩`. Use the proof step `zero_mem' := ⟨isIntegral_zero, by simp⟩`. Use the proof step `smul_mem' := by`. Introduce and unpack `c x ⟨hx1, hx2⟩`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Algebra.smul_def, IsScalarTower.algebraMap_apply ℤ_[p] (O0 p) Ω]`. Conclude with `IsIntegral.mul isIntegral_algebraMap hx1`. Rewrite using `[mul_smul_comm]`. Conclude with `S.smul_mem c hx2 }`. Establish `hle : S' ≤ Submodule.span ℤ_[p] (Set.range (fun t => E t / (p : Ω) ^ v))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `y ⟨_, hy⟩`. Take `⟨c, hc'⟩` from `(Submodule.mem_span_range_iff_exists_fun ℤ_[p]).1 hy`. Rewrite using `[Submodule.mem_span_range_iff_exists_fun]`. Use `⟨c, ?_⟩` and prove the remaining obligations. Establish `: y = ((p : Ω) ^ v * y) / (p : Ω) ^ v` using `by field_simp`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[this, ← hc', Finset.sum_div]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Rewrite using `[smul_div_assoc]`. Establish `hnoeth : IsNoetherian ℤ_[p] (Submodule.span ℤ_[p] (Set.range (fun t => E t / (p : Ω) ^ v)))` using `isNoetherian_of_fg_of_noetherian _ (Submodule.fg_span (Set.finite_range _))`. Establish `hfg : S'.FG` using `isNoetherian_submodule.1 hnoeth S' hle`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨m, f, hf⟩` from `Submodule.fg_iff_exists_fin_generating_family.1 hfg`. Establish `hfmem : ∀ j, f j ∈ S'` using `fun j => hf ▸ Submodule.subset_span ⟨j, rfl⟩`. Establish `halgS : ∀ x ∈ S, IsAlgebraic ℤ_[p] x`. Introduce `x hx`. Proceed by induction on `hx using Submodule.span_induction with`.
+Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Consider the case `mem x hx`. Take `⟨t, rfl⟩` from `hx`. Conclude with `(isAlgZp_iff _).1 (hE t).2`. Consider the case `zero => exact isAlgebraic_zero`. Consider the case `add x y _ _ hx hy => exact hx.add hy`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Consider the case `smul c x _ hx`. Rewrite using `[Algebra.smul_def]`. Conclude with `(isAlgebraic_algebraMap c).mul hx`. Use `⟨m, f, fun j => ⟨(hfmem j).1, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[isAlgZp_iff]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1 : IsAlgebraic ℤ_[p] ((p : Ω) ^ v * f j)` using `halgS _ (hfmem j).2`. Establish `h2 : IsAlgebraic ℤ_[p] (((p : Ω) ^ v)⁻¹)`. Use `IsAlgebraic.inv ?_` and prove the remaining obligations. Establish `: ((p : Ω) ^ v) = algebraMap ℤ_[p] Ω ((p : ℤ_[p]) ^ v)` using `by simp`. Rewrite using `[this]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `isAlgebraic_algebraMap _`. Use `h2.mul h1` as an intermediate fact. Rewrite `this` using `[← mul_assoc, inv_mul_cancel₀ hpv, one_mul]`. Then use the resulting hypothesis. Introduce `l y hy hyl`. Establish `hyS : y ∈ S'`.
-
-Use `⟨hy, ?_⟩` and prove the remaining obligations. Rewrite using `[hyl]`. Use `S.sum_mem fun t _ => ?_` and prove the remaining obligations. Rewrite using `[← hsm]`. Conclude with `S.smul_mem _ (Submodule.subset_span ⟨t, rfl⟩)`.
-
-Rewrite `hyS` using `[← hf]`. Take `⟨μ, hμ⟩` from `(Submodule.mem_span_range_iff_exists_fun ℤ_[p]).1 hyS`. Conclude with `⟨μ, by rw [← hμ]; exact Finset.sum_congr rfl fun j _ => hsm _ _⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_fin_span_of_pow_mul :
     ∀ (p : ℕ) [Fact p.Prime] (Ω : Type) [Field Ω] [Algebra (O0 p) Ω], IsClo p Ω → ∀ (d : ℕ) (E : Fin d → Ω),

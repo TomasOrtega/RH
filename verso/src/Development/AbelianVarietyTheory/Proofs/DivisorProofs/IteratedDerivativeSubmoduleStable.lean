@@ -25,11 +25,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.BigOn.Exp.SerBase
 
 /- English proof (translation)
-Take `⟨n, b, hb, -, -, -, hsp⟩` from `fw.ks j`. Establish `hWK : ∀ z ∈ (R.FW j).WK, z = 0` using `fun z hz => by`. Take `⟨f, hf⟩` from `(fw.e j).surjective ⟨z, hz⟩`. Establish `hf0 : f = 0`. Establish `h1 : (f : T.R ((j : ℕ) + 1)) ∈ (⊥ : Submodule T.Q.c.F (T.R ((j : ℕ) + 1)))` using `hc ▸ f.2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Subtype.ext ((Submodule.mem_bot _).1 h1)`. Use `congrArg Subtype.val hf` as an intermediate fact. Rewrite `this` using `[hf0, map_zero]`. Conclude with `this.symm`. Establish `h0 : Set.range b ⊆ {0}`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `hWK _ (hb k)`. Establish `: x ∈ Submodule.span D.what₂.LL (Set.range b)` using `by rw [hsp]; trivial`. Establish `h2` using `Submodule.span_mono h0 this`. Simplify using `using h2`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_cuspA_bot {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m}
     {T : CoreJ D} [Algebra T.Q.c.F D.what₂.LL] {R : RealDat D A T.Q.c.F} {κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)}
@@ -51,7 +51,7 @@ theorem eq_zero_of_cuspA_bot {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 :
   simpa using h2
 
 /- English proof (translation)
-Unfold `adForm`. Rewrite using `[LinearMap.map_smulₛₗ, map_smul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem adForm_smul {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m}
     {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (i : Fin D.R.m)
@@ -60,7 +60,7 @@ theorem adForm_smul {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A
   rw [LinearMap.map_smulₛₗ, map_smul]
 
 /- English proof (translation)
-Unfold `adForm`. Rewrite using `[map_zero, map_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem adForm_zero {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m}
     {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (i : Fin D.R.m) :
@@ -69,15 +69,13 @@ theorem adForm_zero {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A
   rw [map_zero, map_zero]
 
 /- English proof (translation)
-Take `⟨gramR, c0R, c0L, hFT, P, hPm, rfl⟩` from `hy`. Take `⟨ph, hph1, hphC⟩` from `hS D Γ Pl0 T0 A3.A T Rl.toRealDat F κ v₀ hH.laws hH.core.lev hH.core.grp hH.core.fam hH.core.models hH.core.thP hH.tieIn j hV hH.frame hH.std gramR c0R c0L hFT u hu`. Establish `hRP : IsRatPhase T Rl.toRealDat j hV (κ j) u (c0L j) ph` using `fun C hC _ => hphC C hC`. Take `⟨x, hx⟩` from `GlobalTheory.T.exists_adelicForm_eq_rationalPhase_kernelSeries hP hA hR D Γ Pl0 I0 T0 A3 T Rl cG S YS F κ v₀ O t j hV hH gramR c0R c0L hFT u hu ph hRP v χ ξR ω φ hK h hh P hPm`. Establish `hph0 : ph ≠ 0` using `fun e => by rw [e, norm_zero] at hph1; exact zero_ne_one hph1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Distinguish the cases in `hc : T.cuspA ((j : ℕ) + 1) (wtA (κ j)) (κ j).n = ⊥`. Use `⟨0, ?_⟩` and prove the remaining obligations. Rewrite `hx` using `[eq_zero_of_cuspA_bot hH.fw.some j hc x, adForm_zero]`. Rewrite using `[adForm_zero]`. Use function extensionality and compare the values at `g`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `e` using `congrFun hx.symm g`. Establish `e2 : ph * singleSeries Rl.toRealDat j ω φ h (c0L j P) u g = 0` using `e`. Conclude with `((mul_eq_zero.1 e2).resolve_left hph0).symm`. Take `⟨c, hcph⟩` from `GlobalTheory.T.unit_modulus_rational_phase_mem_coefficient_field hP hA hR D Γ Pl0 I0 T0 A3 T Rl cG S YS F κ v₀ O t j hV hH gramR c0R c0L hFT u hu hph hc ph hph1 hRP`. Use `⟨c⁻¹ • x, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[adForm_smul]`. Use function extensionality and compare the values at `g`. Establish `e` using `congrFun hx g`. Establish `e2 : adForm Rl.toRealDat j x (fun τ => u τ) g = ph * singleSeries Rl.toRealDat j ω φ h (c0L j P) u g` using `e`. Use `show sg0 D A3.A c⁻¹ * adForm Rl.toRealDat j x (fun τ => u τ) g = _`.
-
-Rewrite using `[e2, map_inv₀, hcph, ← mul_assoc, inv_mul_cancel₀ hph0, one_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kerRat_framed (hP : GlobalTheory.Published.CuspRapidDecay) (hA : GlobalTheory.Published.GlobalArtinReciprocity) (hR : GlobalTheory.Published.RayClassFieldSt)
     (hS : GlobalTheory.SerStd.SeriesRatS) {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 I0 T0 : Type}
@@ -119,17 +117,17 @@ theorem kerRat_framed (hP : GlobalTheory.Published.CuspRapidDecay) (hA : GlobalT
 open GlobalTheory.RealGeo GlobalTheory.Unframe GlobalTheory.UnframePt in
 
 /- English proof (translation)
-Introduce `hP hA hR hS`. Use `(lowAt_holds.and twAdm).imp fun Fm x hx i p hp hM w hw j hLT => ?_` and prove the remaining obligations. Take `⟨l1, l2⟩` from `hLT`. Establish `h0` using `GlobalTheory.T.bad_prime_mem_exceptional_set Fm x hx i p hp hM _ l2.2.2 l1 j`. Apply the tactic sequence `obtain ⟨c', w', hw', hfr, B', hv⟩ := exists_framed_half hP h0.size (GlobalTheory.Core5.of_core h0.core) (geoHalf p) h0.unif (GlobalTheory.T.rational_hypothesis_in_half_geometry hP Fm x hx i p hp hM _ j h0)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨S', YS', -⟩` from `GlobalTheory.T.seriesRationality_back_from_movedReadings p.R p.cG p.Sx p.nexp w' hw'`. Use `letI iA : Algebra (setCE p.T c').Q.c.F (Fm.D x i).what₂.LL := p.alg`. Establish `hV' : (setCE p.T c').V ((j : ℕ) + 1) (setCE p.T c').σ₀ = Wc (Fm.D x i) j` using `B'.fw.laws.spaceW _ ⟨Nat.le_add_left _ _, j.2⟩ _ (setCE p.T c').toCore.good_σ₀`. Establish `hU' : (fullHeckeRealDatMovedReadings p.R w').toRealDat.LUnif` using `GlobalTheory.T.uniformisationLaws_centralMovedReadings p.R.toRealDat w' hw' h0.unif`. Establish `hG : (fullHeckeRealDatMovedReadings p.R w').toRealDat.IsGrp (F2 p)` using `⟨h0.core.grp.red_R, h0.core.grp.red_L, h0.core.grp.levels, h0.core.grp.record, h0.core.grp.chiW⟩`.
+Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c` using `h0.core`. Establish `hF : (fullHeckeRealDatMovedReadings p.R w').toRealDat.IsFam` using `{ c.fam with }`. Establish `hMo : (fullHeckeRealDatMovedReadings p.R w').toRealDat.IsModels` using `{ c.models with }`. Establish `hCh : (fullHeckeRealDatMovedReadings p.R w').toRealDat.IsChain` using `{ c.chain with }`. Establish `hTh : (fullHeckeRealDatMovedReadings p.R w').toRealDat.IsThP` using `{ c.thP with }`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hC : GlobalTheory.Hk3.Core (fullHeckeRealDatMovedReadings p.R w').toRealDat (F2 p)` using `⟨c.lev, hG, hF, hMo, hCh, hTh⟩`. Establish `hph : (fun k => cj (twAt (Fm.D x i).what₂.embLL p.P.A3.A.v0) ((fullHeckeRealDatMovedReadings p.R w').phs k)) = fun _ => (1 : ℂ)`. Use function extensionality and compare the values at `fun k => by show cj (twAt (Fm.D x i).what₂.embLL p.P.A3.A.v0) (p.R.phs k) = 1`. Rewrite using `[p.phsOne k, map_one]`. Establish `hRat : RatHyp (setCE p.T c') (fullHeckeRealDatMovedReadings p.R w') (F2 p) B'.κ B'.v₀ B'.O ((Fm.ex x hx i).nch.twI w) j hV'`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨h0.size, h0.host, h0.std, B'.fw.laws, hC, hU', ⟨B'.fw⟩, ⟨B'.fw.laws, B'.fw.alg_eq, B'.fw.kap, B'.fw.hv₀, B'.fw.chiR, B'.fw.x0⟩, h0.io, h0.guard, h0.fin, B'.pins j, ?_, hfr j hV', h0.galois, h0.small, h0.inUse, h0.low⟩` and prove the remaining obligations. Rewrite using `[hph]`. Conclude with `B'.phase j hU'`. Introduce `χ ξR ω φ hK h hh y hy u hu`. Establish `hK' : KerDat (fullHeckeRealDatMovedReadings p.R w').toRealDat j ((fullHeckeRealDatMovedReadings p.R w').C.delAt (Formalism.EigenvalueLevelCeiling.plc ((Fm.D x i).plEq w))) χ ξR (placesOver (fullHeckeRealDatMovedReadings p.R w').toRealDat ((fullHeckeRealDatMovedReadings p.R w').mu …` using `⟨hK.chr, hK.fin, hK.triv, hK.tame, hK.pl, hK.off, hK.ram, hK.res, hK.weil, hK.vec⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy' : InCoefLat (fullHeckeRealDatMovedReadings p.R w').toRealDat j h y` using `hy`. Take `⟨x', hx'⟩` from `kerRat_framed (T := setCE p.T c') hP hA hR hS YS' hRat (fun k => p.phsOne k) ((Fm.D x i).plEq w) hK' hh hy' u (by rw [hv]; exact hu)`. Conclude with `⟨(p.R.FW j).ρ (w' j (sg0 _ p.P.A3.A)) x', hx'⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem kerRatAt : GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.GlobalArtinReciprocity → GlobalTheory.Published.RayClassFieldSt →
     GlobalTheory.SerStd.SeriesRatS → KerRatAt := by

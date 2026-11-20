@@ -28,9 +28,9 @@ namespace GlobalTheory.RaiseGen
 open MvPolynomial GlobalTheory.FockIsotypic
 
 /- English proof (translation)
-Establish `hd : Disjoint (LinearMap.ker A) (LinearMap.range A)`. Rewrite using `[Submodule.disjoint_def]`. Introduce and unpack `_ hz ⟨y, rfl⟩`. Conclude with `h y hz`. Establish `ht : LinearMap.ker A ⊔ LinearMap.range A = ⊤` using `Submodule.eq_top_of_disjoint _ _ (by have := LinearMap.finrank_range_add_finrank_ker A; omega) hd`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨x₀, h0, _, ⟨y, rfl⟩, e⟩` from `Submodule.mem_sup.1 (ht ▸ Submodule.mem_top (x := x))`. Conclude with `⟨x₀, y, h0, e.symm⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_ker_add_range {E : Type} [AddCommGroup E] [Module ℂ E] [FiniteDimensional ℂ E] (A : E →ₗ[ℂ] E)
     (h : ∀ x, A (A x) = 0 → A x = 0) (x : E) : ∃ x₀ y, A x₀ = 0 ∧ x = x₀ + A y := by
@@ -44,21 +44,19 @@ theorem exists_ker_add_range {E : Type} [AddCommGroup E] [Module ℂ E] [FiniteD
   exact ⟨x₀, y, h0, e.symm⟩
 
 /- English proof (translation)
-Proceed by induction on `d with`. Consider the case `zero => exact fun φ hφ hS => hN0 φ hφ fun w i => hL0 i _ (hS w)`. Consider the case `succ d ih`. Introduce `φ hφ hS`. Set `E : Submodule ℂ (W →ₗ[ℂ] V)` to `{ carrier := {ψ | (∀ k w, ψ (ρ k w) = act k (ψ w)) ∧ ∀ w, ψ w ∈ S (d + 1)} add_mem' := fun {a b} ha hb => ⟨fun k w => by simp [ha.1, hb.1], fun w => add_mem (ha.2 w) (hb.2 w)⟩ zero_mem' := ⟨fun k w => by simp, fun w => zero_mem _⟩ smul_mem' := fun c a ha => ⟨fun k w => by simp [h …`.
+Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Use `haveI : FiniteDimensional ℂ E := by`. Use `Submodule.finiteDimensional_of_le (S₂ := LinearMap.range (LinearMap.compRight (M := W) ℂ (S (d + 1)).subtype)) ?_` and prove the remaining obligations. Introduce `ψ hψ`. Conclude with `⟨ψ.codRestrict _ hψ.2, rfl⟩`. Set `A : V →ₗ[ℂ] V` to `∑ i, R i ∘ₗ L i`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hA : ∀ x, A x = ∑ i, R i (L i x)` using `fun x => by simp [A, LinearMap.sum_apply]`. Establish `hE : ∀ ψ ∈ E, LinearMap.compRight (M` using `W) ℂ A ψ ∈ E := fun ψ hψ => ⟨fun k w => by`. Express the relevant statement in the definitionally equal form `A (ψ (ρ k w)) = act k (A (ψ w))`. Simplify using `only [hA, hψ.1, map_sum, hR, hL], fun w => by`. Express the relevant statement in the definitionally equal form `A (ψ w) ∈ _`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hA]`. Conclude with `Submodule.sum_mem _ fun i _ => hRL i _ _ (hψ.2 w)⟩`. Take `⟨φ₀, ψ, h0, e⟩` from `exists_ker_add_range ((LinearMap.compRight (M := W) ℂ A).restrict hE) (fun ψ h => by`. Use `Subtype.ext (LinearMap.ext fun w => ?_)` and prove the remaining obligations. Establish `h1 : A (A (ψ.1 w)) = 0` using `LinearMap.congr_fun (congrArg Subtype.val h) w`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `A (ψ.1 w) = 0`. Rewrite `h1` using `[hA]`. Establish `h2` using `hker _ h1`. Rewrite `h2`, the goal using `[hA]`. Conclude with `hAA _ h2) ⟨φ, hφ, hS⟩`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e' : φ = φ₀.1 + ∑ i, R i ∘ₗ (L i ∘ₗ ψ.1)`. Use `LinearMap.ext fun w => ?_` and prove the remaining obligations. Establish `h1 : φ w = φ₀.1 w + A (ψ.1 w)` using `LinearMap.congr_fun (congrArg Subtype.val e) w`. Rewrite using `[h1, hA]`. Simplify using `[LinearMap.sum_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e']`. Use `add_mem (hN0 _ φ₀.2.1 fun w => hker _ ?_) (Submodule.sum_mem _ fun i _ => hNR _ (ih _ ?_ ?_) i)` and prove the remaining obligations. Rewrite using `[← hA]`. Conclude with `LinearMap.congr_fun (congrArg Subtype.val h0) w`. Introduce `k w`.
-
-Simplify using `only [LinearMap.comp_apply, ψ.2.1, hL]`. Conclude with `fun w => hLs i d _ (ψ.2.2 w)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem mem_of_filtration {V W K ι : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
     [FiniteDimensional ℂ W] [Fintype ι] (act : K → V →ₗ[ℂ] V) (ρ : K → W →ₗ[ℂ] W) (R L : ι → V →ₗ[ℂ] V)
@@ -121,7 +119,7 @@ section Fischer
 variable {σ : Type} [Fintype σ]
 
 /- English proof (translation)
-Unfold `fis`. Rewrite using `[mul_comm, map_mul, rename_X, ReciprocityTheory.PGsh.fischer_mul_X, pderiv_rename (flat σ).injective]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem fis_X_mul (v : σ) (P Q : MvPolynomial σ ℂ) : fis (X v * P) Q = fis P (pderiv v Q) := by
   classical
@@ -129,7 +127,7 @@ theorem fis_X_mul (v : σ) (P Q : MvPolynomial σ ℂ) : fis (X v * P) Q = fis P
   rw [mul_comm, map_mul, rename_X, ReciprocityTheory.PGsh.fischer_mul_X, pderiv_rename (flat σ).injective]
 
 /- English proof (translation)
-Unfold `fis`. Rewrite using `[map_sum, ReciprocityTheory.PGsh.fischer_sum_left]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem fis_sum_left {α : Type} (s : Finset α) (f : α → MvPolynomial σ ℂ) (Q : MvPolynomial σ ℂ) :
     fis (∑ i ∈ s, f i) Q = ∑ i ∈ s, fis (f i) Q := by
@@ -137,7 +135,7 @@ theorem fis_sum_left {α : Type} (s : Finset α) (f : α → MvPolynomial σ ℂ
   rw [map_sum, ReciprocityTheory.PGsh.fischer_sum_left]
 
 /- English proof (translation)
-Unfold `fis`. Rewrite using `[map_sum, ReciprocityTheory.PGsh.fischer_sum_right]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem fis_sum_right {α : Type} (s : Finset α) (P : MvPolynomial σ ℂ) (f : α → MvPolynomial σ ℂ) :
     fis P (∑ i ∈ s, f i) = ∑ i ∈ s, fis P (f i) := by
@@ -145,25 +143,25 @@ theorem fis_sum_right {α : Type} (s : Finset α) (P : MvPolynomial σ ℂ) (f :
   rw [map_sum, ReciprocityTheory.PGsh.fischer_sum_right]
 
 /- English proof (translation)
-Simplify using `using fis_smul_left 0 0 Q`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem fis_zero_left (Q : MvPolynomial σ ℂ) : fis 0 Q = 0 := by
   simpa using fis_smul_left 0 0 Q
 
 /- English proof (translation)
-Simplify using `using fis_smul_right 0 P 0`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem fis_zero_right (P : MvPolynomial σ ℂ) : fis P 0 = 0 := by
   simpa using fis_smul_right 0 P 0
 
 /- English proof (translation)
-Simplify using `using fis_smul_right (-1) P Q`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem fis_neg_right (P Q : MvPolynomial σ ℂ) : fis P (-Q) = -fis P Q := by
   simpa using fis_smul_right (-1) P Q
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hP`. Conclude with `fis_self_ne_zero hP (Complex.ext h (Complex.conj_eq_iff_im.1 (fis_conj P P)))`.
+Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_fis_re (P : MvPolynomial σ ℂ) (h : (fis P P).re = 0) : P = 0 := by
   by_contra hP
@@ -175,9 +173,9 @@ variable {ι : Type} [Fintype ι] (R L : ι → MvPolynomial σ ℂ →ₗ[ℂ] 
 include hadj
 
 /- English proof (translation)
-Establish `h1 : fis (∑ i, R i (L i P)) P = 0` using `by rw [h, fis_zero_left]`. Rewrite `h1` using `[fis_sum_left]`. Simplify using `only [hadj, Finset.sum_neg_distrib, neg_eq_zero] at h1`. Establish `h2` using `congrArg Complex.re h1`. Rewrite `h2` using `[Complex.re_sum, Complex.zero_re, Finset.sum_eq_zero_iff_of_nonneg fun i _ => fis_self_re_nonneg _]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `eq_zero_of_fis_re _ (h2 i (Finset.mem_univ i))`.
+A detailed English derivation is pending.
 -/
 theorem lower_eq_zero (P : MvPolynomial σ ℂ) (h : ∑ i, R i (L i P) = 0) (i : ι) : L i P = 0 := by
   have h1 : fis (∑ i, R i (L i P)) P = 0 := by rw [h, fis_zero_left]
@@ -189,7 +187,7 @@ theorem lower_eq_zero (P : MvPolynomial σ ℂ) (h : ∑ i, R i (L i P) = 0) (i 
   exact eq_zero_of_fis_re _ (h2 i (Finset.mem_univ i))
 
 /- English proof (translation)
-Use `eq_zero_of_fis_re _ ?_` and prove the remaining obligations. Rewrite using `[fis_sum_left]`. Simplify using `only [hadj, h, fis_zero_right, neg_zero, Finset.sum_const_zero, Complex.zero_re]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sum_eq_zero_of_lower (P : MvPolynomial σ ℂ) (h : ∀ j, L j (∑ i, R i (L i P)) = 0) :
     ∑ i, R i (L i P) = 0 := by
@@ -200,11 +198,11 @@ theorem sum_eq_zero_of_lower (P : MvPolynomial σ ℂ) (h : ∀ j, L j (∑ i, R
 end Fischer
 
 /- English proof (translation)
-Establish `hil : i ≠ l` using `by intro h; subst h; omega`. Establish `h1 : decide ((l : ℕ) < p τ) = false` using `decide_eq_false (by omega)`. Establish `h2 : decide ((i : ℕ) < p τ) = true` using `decide_eq_true hi`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.RaisingLoweringOperators.fockT`. Rewrite using `[Finset.sum_eq_single i, Finset.sum_eq_single l]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.RaisingLoweringOperators.raiO, GlobalTheory.IndefiniteRowSideFullHecke.RaisingLoweringOperators.lowO, GlobalTheory.IndefiniteRowSideFullHecke.RaisingLoweringOperators.sgn, h1, h2, hil, LinearMap.sum_apply]`. Introduce `k _ hk`. Simplify using `[Matrix.single_apply, Ne.symm hk]`. Simplify using the standard rewrite rules. Introduce `k _ hk`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[Matrix.single_apply, Ne.symm hk]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem fockT_raise {D : D7} {n m : ℕ} (τ : D.what₂.Tau) (p : D.what₂.Tau → ℕ) (i l : Fin m)
     (hi : (i : ℕ) < p τ) (hl : p τ ≤ (l : ℕ)) (P : PolF D m n) :
@@ -223,7 +221,7 @@ theorem fockT_raise {D : D7} {n m : ℕ} (τ : D.what₂.Tau) (p : D.what₂.Tau
   · simp
 
 /- English proof (translation)
-Rewrite using `[fockT_raise τ p i l hi hl]`. Use `totalDegree_finsetSum_le fun j _ => (totalDegree_mul _ _).trans ?_` and prove the remaining obligations. Use `totalDegree_mul (X (τ, l, j) : PolF D m n) P` as an intermediate fact. Rewrite `this`, the goal using `[totalDegree_X]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem raise_deg {D : D7} {n m : ℕ} (τ : D.what₂.Tau) (p : D.what₂.Tau → ℕ) (i l : Fin m)
     (hi : (i : ℕ) < p τ) (hl : p τ ≤ (l : ℕ)) (P : PolF D m n) (k : ℕ) (h : P.totalDegree ≤ k) :
@@ -236,21 +234,19 @@ theorem raise_deg {D : D7} {n m : ℕ} (τ : D.what₂.Tau) (p : D.what₂.Tau �
   omega
 
 /- English proof (translation)
-Introduce `D n m w BS K _ r _ W _ _ _ ρ N hN0 hNR φ hφ`. Set `ι : Type` to `{t : D.what₂.Tau × Fin m × Fin m // (t.2.1 : ℕ) < w.p t.1 ∧ w.p t.1 ≤ (t.2.2 : ℕ)}`. Set `T : D.what₂.Tau → Matrix (Fin m) (Fin m) ℂ → PolF D m n →ₗ[ℂ] PolF D m n` to `fun τ Y => GlobalTheory.IndefiniteRowSideFullHecke.RaisingLoweringOperators.fockT τ (fun _ : Fin n => true) (fun j : Fin m => decide ((j : ℕ) < w.p τ)) Y`. Set `R : ι → PolF D m n →ₗ[ℂ] PolF D m n` to `fun t => T t.1.1 (Matrix.single t.1.2.1 t.1.2.2 1)`. Set `L : ι → PolF D m n →ₗ[ℂ] PolF D m n` to `fun t => T t.1.1 (Matrix.single t.1.2.2 t.1.2.1 1)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hT : ∀ τ Y k x, GlobalTheory.ExportSeries.fockGL m w BS (r k) (T τ Y x) = T τ Y (GlobalTheory.ExportSeries.fockGL m w BS (r k) x)` using `fun τ Y k x => by`. Rewrite using `[GlobalTheory.ExportSeries.fockGL_apply, GlobalTheory.ExportSeries.fockGL_apply, map_smul]`. Conclude with `congrArg _ (GlobalTheory.FockSubstComm.fockSubst_fockT D m n w.p _ τ Y x)`. Establish `hadj : ∀ i P Q, fis (R i P) Q = -fis P (L i Q)` using `fun t P Q => by`. Simplify using `only [R, L, T]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[fockT_raise _ _ _ _ t.2.1 t.2.2, GlobalTheory.LowerHarm.fockT_lower _ _ _ _ t.2.2 t.2.1, fis_neg_right, neg_neg, fis_sum_left, fis_sum_right]`. Conclude with `Finset.sum_congr rfl fun j _ => by rw [fis_X_mul, fis_X_mul]`. Establish `hdeg : ∃ d, ∀ w', (φ w').totalDegree ≤ d`. Set `b` to `Module.finBasis ℂ W`. Use `⟨Finset.univ.sup fun j => (φ (b j)).totalDegree, fun w' => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← b.sum_repr w', map_sum]`. Use `totalDegree_finsetSum_le fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul]`. Conclude with `(totalDegree_smul_le _ _).trans (Finset.le_sup (f := fun j => (φ (b j)).totalDegree) (Finset.mem_univ j))`. Take `⟨d, hd⟩` from `hdeg`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `mem_of_filtration (fun k => GlobalTheory.ExportSeries.fockGL m w BS (r k)) (fun k => ρ k) R L (fun d => restrictTotalDegree (FVar D m n) ℂ d) (fun t => hT _ _) (fun t => hT _ _) ?_ ?_ ?_ (lower_eq_zero R L hadj) (sum_eq_zero_of_lower R L hadj) N ?_ ?_ d φ hφ fun w' => (mem_restri …` and prove the remaining obligations. Introduce `t x hx`. Rewrite `hx` using `[mem_restrictTotalDegree]`. Conclude with `GlobalTheory.LowerHarm.lower_zero _ _ _ _ t.2.2 t.2.1 x (by omega)`. Introduce `t k x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite `hx`, the goal using `[mem_restrictTotalDegree]`. Conclude with `GlobalTheory.LowerHarm.lower_deg _ _ _ _ t.2.2 t.2.1 x k (by omega)`. Introduce `t k x hx`. Rewrite `hx`, the goal using `[mem_restrictTotalDegree]`. Break down `Nat.lt_or_ge k 2 with h2 | h2` into its components or cases.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Establish `: L t x = 0` using `GlobalTheory.LowerHarm.lower_zero _ _ _ _ t.2.2 t.2.1 x (by omega)`. Simplify using `[this]`. Take `⟨k, rfl⟩ : ∃ j, k = j + 2` from `⟨k - 2, by omega⟩`. Conclude with `raise_deg _ _ _ _ t.2.1 t.2.2 _ k (GlobalTheory.LowerHarm.lower_deg _ _ _ _ t.2.2 t.2.1 x k hx)`. Conclude with `fun ψ hψ h => hN0 ψ hψ fun w' τ i l hi hl => h w' ⟨(τ, l, i), hl, hi⟩`.
-
-Conclude with `fun ψ hψ t => hNR ψ hψ _ _ _ t.2.1 t.2.2`.
+A detailed English derivation is pending.
 -/
 theorem mem_of_raise : ∀ (D : D7) (n m : ℕ) (w : GlobalTheory.ExportSeries.Weight D n) (BS : GlobalTheory.ExportSeries.GLR D n) (K : Type) [Group K] (r : K →* GlobalTheory.ExportSeries.GLR D n), (∀ (k : K) (τ : D.what₂.Tau), ((GlobalTheory.ExportSeries.inBasis BS (r k) τ : GL (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ) ∈ Matrix.unitaryGroup (Fin n) ℂ) → ∀ (W : Type) [AddCommGroup W] [Module ℂ W] [FiniteDimensional ℂ W] (ρ : K →* Module.End ℂ W), ∀ N : Submodule ℂ (W →ₗ[ℂ] PolF D m n), (∀ φ : W →ₗ[ℂ] PolF D m n, (∀ (k : K) (w' : W), φ (ρ k w') = GlobalTheory.ExportSeries.fockGL m w BS (r k) (φ w')) → (∀ w' : W, ∀ (τ' : D.what₂.Tau) (i l : Fin m), w.p τ' ≤ (i : ℕ) → (l : ℕ) < w.p τ' → GlobalTheory.IndefiniteRowSideFullHecke.RaisingLoweringOperators.fockT τ' (fun _ : Fin n => true) (fun j : Fin m => decide ((j : ℕ) < w.p τ')) (Matrix.single i l (1 : ℂ)) (φ w') = 0) → φ ∈ N) → (∀ ψ ∈ N, ∀ (τ : D.what₂.Tau) (i l : Fin m), (i : ℕ) < w.p τ → w.p τ ≤ (l : ℕ) → GlobalTheory.IndefiniteRowSideFullHecke.RaisingLoweringOperators.fockT τ (fun _ : Fin n => true) (fun j : Fin m => decide ((j : ℕ) < w.p τ)) (Matrix.single i l (1 : ℂ)) ∘ₗ ψ ∈ N) → ∀ φ : W →ₗ[ℂ] PolF D m n, (∀ (k : K) (w' : W), φ (ρ k w') = GlobalTheory.ExportSeries.fockGL m w BS (r k) (φ w')) → φ ∈ N := by
   intro D n m w BS K _ r _ W _ _ _ ρ N hN0 hNR φ hφ

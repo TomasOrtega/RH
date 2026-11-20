@@ -30,9 +30,9 @@ def latPos {n d : ℕ} (X : Spc F E n) (W : Spc F E d)
   ((latAtV X W v).map (GlobalTheory.LatVac.locCo co v)).map (posHom eq)
 
 /- English proof (translation)
-Simplify using `only [latPos, AddSubgroup.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨γ, hγ, rfl⟩, rfl⟩`. Conclude with `⟨γ, hγ, fun i => rfl⟩`. Introduce and unpack `⟨γ, hγ, h⟩`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨_, ⟨γ, hγ, rfl⟩, funext h⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_latPos {n d : ℕ} {X : Spc F E n} {W : Spc F E d}
     {Bf : Matrix (Fin n) (Fin d) (AE F E) → Matrix (Fin n) (Fin d) (AE F E) → AF F} {ι κ₁ : Type}

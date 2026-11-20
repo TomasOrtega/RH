@@ -12,13 +12,13 @@ variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 abbrev cj (z : (Σ k, ι k) → ℂ) : (Σ k, ι k) → ℂ := fun q => starRingEnd ℂ (z q)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `q`. Simplify using `[cj]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem cj_cj (z : (Σ k, ι k) → ℂ) : cj (cj z) = z := by
   funext q; simp [cj]
 
 /- English proof (translation)
-Introduce `k` and use `by obtain ⟨i, hi⟩ := hz k exact ⟨i, by simpa [cj] using hi⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem cj_nonzero {z : (Σ k, ι k) → ℂ} (hz : ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0) :
     ∀ k, ∃ i, cj z ⟨k, i⟩ ≠ 0 := fun k => by
@@ -26,7 +26,7 @@ theorem cj_nonzero {z : (Σ k, ι k) → ℂ} (hz : ∀ k, ∃ i, z ⟨k, i⟩ �
   exact ⟨i, by simpa [cj] using hi⟩
 
 /- English proof (translation)
-Take `⟨c, hc, rfl⟩` from `h`. Use `⟨fun k => (c k)⁻¹, fun k => inv_ne_zero (hc k), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `p`. Simplify using `[← mul_assoc, inv_mul_cancel₀ (hc p.1)]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem sameOrbit_symm {z z' : (Σ k, ι k) → ℂ} (h : SameOrbit z z') : SameOrbit z' z := by
   obtain ⟨c, hc, rfl⟩ := h
@@ -35,7 +35,7 @@ theorem sameOrbit_symm {z z' : (Σ k, ι k) → ℂ} (h : SameOrbit z z') : Same
   simp [← mul_assoc, inv_mul_cancel₀ (hc p.1)]
 
 /- English proof (translation)
-Take `⟨c, hc, rfl⟩` from `h`. Take `⟨c', hc', rfl⟩` from `h'`. Use `⟨fun k => c k * c' k, fun k => mul_ne_zero (hc k) (hc' k), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `p`. Simplify using `[mul_assoc]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem sameOrbit_trans {z z' z'' : (Σ k, ι k) → ℂ} (h : SameOrbit z z') (h' : SameOrbit z' z'') :
     SameOrbit z z'' := by
@@ -46,13 +46,13 @@ theorem sameOrbit_trans {z z' z'' : (Σ k, ι k) → ℂ} (h : SameOrbit z z') (
   simp [mul_assoc]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ => 1, fun _ => one_ne_zero, by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem sameOrbit_refl (z : (Σ k, ι k) → ℂ) : SameOrbit z z :=
   ⟨fun _ => 1, fun _ => one_ne_zero, by simp⟩
 
 /- English proof (translation)
-Take `⟨c, hc, rfl⟩` from `h`. Use `⟨fun k => starRingEnd ℂ (c k), fun k => by simpa using hc k, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `p`. Simplify using `[cj]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem sameOrbit_cj {z z' : (Σ k, ι k) → ℂ} (h : SameOrbit z z') : SameOrbit (cj z) (cj z') := by
   obtain ⟨c, hc, rfl⟩ := h
@@ -61,9 +61,9 @@ theorem sameOrbit_cj {z z' : (Σ k, ι k) → ℂ} (h : SameOrbit z z') : SameOr
   simp [cj]
 
 /- English proof (translation)
-Use `⟨cj_nonzero hz.1, fun f hf => ?_⟩` and prove the remaining obligations. Establish `h` using `hz.2 f hf`. Establish `key : eval (cj z) (map (Int.castRingHom ℂ) f) = starRingEnd ℂ (eval z (map (Int.castRingHom ℂ) f))`. Rewrite using `[MvPolynomial.eval_map, MvPolynomial.eval_map, MvPolynomial.eval₂_eq, MvPolynomial.eval₂_eq, map_sum]`. Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[map_mul, map_prod, map_pow]`. Rewrite using `[key, h, map_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem cj_mem_mcPts {P : Ideal (MRing ι)} {z : (Σ k, ι k) → ℂ} (hz : z ∈ mcPts P) : cj z ∈ mcPts P := by
   refine ⟨cj_nonzero hz.1, fun f hf => ?_⟩
@@ -77,7 +77,7 @@ theorem cj_mem_mcPts {P : Ideal (MRing ι)} {z : (Σ k, ι k) → ℂ} (hz : z �
   rw [key, h, map_zero]
 
 /- English proof (translation)
-Take `⟨c, hc, rfl⟩` from `h`. Establish `hP : 0 < ∏ k, ‖c k‖ ^ A.a k` using `Finset.prod_pos fun k _ => zpow_pos (norm_pos_iff.mpr (hc k)) _`. Rewrite using `[A.smul c z' hc, B.smul c z' hc, ← hab, Real.log_mul hP.ne' (A.pos z' hz).ne', Real.log_mul hP.ne' (B.pos z' hz).ne']`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem log_sub_orbit (A B : HermLine ι) (hab : A.a = B.a) {z z' : (Σ k, ι k) → ℂ}
     (hz : ∀ k, ∃ i, z' ⟨k, i⟩ ≠ 0) (h : SameOrbit z z') :
@@ -107,14 +107,14 @@ def conjAvg (A : HermLine ι) : HermLine ι where
       Real.sqrt_mul (sq_nonneg _), Real.sqrt_sq hP]
 
 /- English proof (translation)
-Introduce `z` and use `by change Real.sqrt |A.h (cj z) * A.h (cj (cj z))| = Real.sqrt |A.h z * A.h (cj z)| rw [cj_cj, mul_comm]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem conjAvg_conj (A : HermLine ι) : IsConjInvariantH (conjAvg A) := fun z => by
   change Real.sqrt |A.h (cj z) * A.h (cj (cj z))| = Real.sqrt |A.h z * A.h (cj z)|
   rw [cj_cj, mul_comm]
 
 /- English proof (translation)
-Establish `h1` using `A.pos z hz`. Establish `h2` using `A.pos _ (cj_nonzero hz)`. Express the relevant statement in the definitionally equal form `Real.log (Real.sqrt |A.h z * A.h (cj z)|) = _`. Rewrite using `[abs_of_pos (mul_pos h1 h2), Real.log_sqrt (mul_pos h1 h2).le, Real.log_mul h1.ne' h2.ne']`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem conjAvg_log (A : HermLine ι) {z : (Σ k, ι k) → ℂ} (hz : ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0) :
     Real.log ((conjAvg A).h z) = (Real.log (A.h z) + Real.log (A.h (cj z))) / 2 := by
@@ -124,11 +124,9 @@ theorem conjAvg_log (A : HermLine ι) {z : (Σ k, ι k) → ℂ} (hz : ∀ k, �
   rw [abs_of_pos (mul_pos h1 h2), Real.log_sqrt (mul_pos h1 h2).le, Real.log_mul h1.ne' h2.ne']
 
 /- English proof (translation)
-Use `set S : Set ((Σ k, ι k) → ℂ) := {z | ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0} with hS`. Establish `hconj : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (cj : ((Σ k, ι k) → ℂ) → (Σ k, ι k) → ℂ)`. Use `contDiff_pi.2 fun q => ?_` and prove the remaining obligations. Conclude with `Complex.conjCLE.contDiff.comp (contDiff_apply ℝ ℂ q)`. Establish `hmap : Set.MapsTo (cj : ((Σ k, ι k) → ℂ) → (Σ k, ι k) → ℂ) S S` using `fun z hz => cj_nonzero hz`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun z => A.h (cj z)) S` using `hA.comp hconj.contDiffOn hmap`. Establish `hprod` using `hA.mul h2`. Establish `hs : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun z => Real.sqrt (A.h z * A.h (cj z))) S` using `hprod.sqrt fun z hz => (mul_pos (A.pos z hz) (A.pos _ (cj_nonzero hz))).ne'`. Use `hs.congr fun z hz => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Real.sqrt |A.h z * A.h (cj z)| = _`.
-
-Rewrite using `[abs_of_pos (mul_pos (A.pos z hz) (A.pos _ (cj_nonzero hz)))]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conjAvg_smooth {A : HermLine ι} (hA : IsSmoothHerm A) : IsSmoothHerm (conjAvg A) := by
   set S : Set ((Σ k, ι k) → ℂ) := {z | ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0} with hS
@@ -146,11 +144,11 @@ theorem conjAvg_smooth {A : HermLine ι} (hA : IsSmoothHerm A) : IsSmoothHerm (c
   rw [abs_of_pos (mul_pos (A.pos z hz) (A.pos _ (cj_nonzero hz)))]
 
 /- English proof (translation)
-Introduce `j w hw`. Take `⟨k, hk⟩` from `B.cover (g ((A.chart j).symm w))`. Establish `hw' : w ∈ (A.chart j).target ∩ (A.chart j).symm ⁻¹' (g ⁻¹' (B.chart k).source)` using `⟨hw.1, hk⟩`. Establish `h1` using `hg.2 j k w hw'`. Establish `h2 : AnalyticAt ℂ (G ∘ (B.chart k).symm) ((B.chart k ∘ g ∘ (A.chart j).symm) w)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hG k _ ⟨(B.chart k).map_source hk, ?_⟩` and prove the remaining obligations. Simplify using `only [Function.comp, Set.mem_preimage, (B.chart k).left_inv hk]`. Conclude with `hw.2`. Establish `h3` using `h2.comp h1`. Use `h3.congr ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hc : ContinuousAt (g ∘ (A.chart j).symm) w` using `hg.1.continuousAt.comp ((A.chart j).continuousAt_symm hw.1)`. Use `filter_upwards [hc ((B.chart k).open_source.mem_nhds hk)] with w' hw''`. Establish `hw3 : g ((A.chart j).symm w') ∈ (B.chart k).source` using `hw''`. Simplify using `only [Function.comp, (B.chart k).left_inv hw3]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem holoOn_comp {e : ℕ} {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y]
     {A : FinHolAtlas e X} {B : FinHolAtlas e Y} {g : X → Y} (hg : HoloMap A B g) {V : Set Y}

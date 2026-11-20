@@ -6,7 +6,7 @@ open scoped TensorProduct nonZeroDivisors
 open Polynomial
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.semisimple_charpoly_pow_generators | exact GlobalTheory.semisimple_charpoly_pow_generators | (intros; apply GlobalTheory.semisimple_charpoly_pow_generators <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.exists_cyclic_generators_separable_min : ∀ (κ : Type) [Field κ] [IsAlgClosed κ] (G : Type) [AddCommGroup G] [Module κ G]
     [FiniteDimensional κ G] (T : Module.End κ G) (h : κ[X]) (_ : h.Monic) (_ : h.Separable)

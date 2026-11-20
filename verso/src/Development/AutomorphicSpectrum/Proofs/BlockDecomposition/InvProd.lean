@@ -23,7 +23,7 @@ namespace GlobalTheory.CompanionTheory.ConeLocal
 def I0 (m : ℕ) : Idx m m := ⟨id, strictMono_id⟩
 
 /- English proof (translation)
-Use `Subtype.ext ((StrictMono.range_inj I.2 strictMono_id).1 ?_)` and prove the remaining obligations. Establish `h : Function.Surjective I.1` using `(Finite.injective_iff_surjective).1 I.2.injective`. Rewrite using `[h.range_eq, Function.surjective_id.range_eq]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem idx_eq {m : ℕ} (I : Idx m m) : I = I0 m := by
   refine Subtype.ext ((StrictMono.range_inj I.2 strictMono_id).1 ?_)
@@ -33,9 +33,9 @@ theorem idx_eq {m : ℕ} (I : Idx m m) : I = I0 m := by
 instance {m : ℕ} : Unique (Idx m m) := ⟨⟨I0 m⟩, idx_eq⟩
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_apply]`. Simplify using `only [sgn, Finset.sum_smul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun π _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single (⇑π)]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [I0, Function.id_comp, if_true]`. Rewrite using `[Units.smul_def]`. Simplify using the standard rewrite rules. Introduce `J _ hJ`. Simplify using `[I0, hJ]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
 Simplify using the standard rewrite rules.
 -/
@@ -54,7 +54,7 @@ theorem sgn_det {B : Type} [CommRing B] {m : ℕ} (c : Fin m → Fin m → B) :
   · simp
 
 /- English proof (translation)
-Use `Finset.sum_eq_zero fun π _ => ?_` and prove the remaining obligations. Rewrite using `[if_neg]`. Introduce `e`. Conclude with `h (GlobalTheory.T.strictMono_snoc_perm_eq_succAbove I.1 k π I.2 e)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem sgn_snoc {n : ℕ} (I : Idx n (n + 1)) (k : Fin (n + 1)) (h : I.1 ≠ k.succAbove) :
     sgn (I0 (n + 1)) (Fin.snoc (α := fun _ => Fin (n + 1)) I.1 k) = 0 := by
@@ -64,9 +64,9 @@ theorem sgn_snoc {n : ℕ} (I : Idx n (n + 1)) (k : Fin (n + 1)) (h : I.1 ≠ k.
   exact h (GlobalTheory.T.strictMono_snoc_perm_eq_succAbove I.1 k π I.2 e)
 
 /- English proof (translation)
-Distinguish the cases in `h : IsUnit a`. Take `⟨v, rfl⟩` from `h`. Establish `e1 : e (v : A) = ((Units.map e.toMonoidHom v : Bˣ) : B)` using `rfl`. Rewrite using `[e1, Ring.inverse_unit, Ring.inverse_unit]`. Both sides reduce to the same expression.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `h' : ¬ IsUnit (e a)` using `fun hu => h ((MulEquiv.isUnit_map e).1 hu)`. Rewrite using `[Ring.inverse_non_unit _ h, Ring.inverse_non_unit _ h', map_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem inv_map {A B : Type*} [CommRing A] [CommRing B] (e : A ≃+* B) (a : A) : Ring.inverse (e a) = e (Ring.inverse a) := by
   by_cases h : IsUnit a
@@ -78,7 +78,7 @@ theorem inv_map {A B : Type*} [CommRing A] [CommRing B] (e : A ≃+* B) (a : A) 
     rw [Ring.inverse_non_unit _ h, Ring.inverse_non_unit _ h', map_zero]
 
 /- English proof (translation)
-Use `choose v hv using h`. Simplify using `only [← hv]`. Rewrite using `[← Units.coe_prod, Ring.inverse_unit, ← Finset.prod_inv_distrib, Units.coe_prod]`. Simplify using `only [Ring.inverse_unit]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem inv_prod {A : Type*} [CommRing A] {ι : Type*} [Fintype ι] (u : ι → A) (h : ∀ k, IsUnit (u k)) :
     Ring.inverse (∏ k, u k) = ∏ k, Ring.inverse (u k) := by
@@ -88,7 +88,7 @@ theorem inv_prod {A : Type*} [CommRing A] {ι : Type*} [Fintype ι] (u : ι → 
   simp only [Ring.inverse_unit]
 
 /- English proof (translation)
-Use `rep_congr h fun u => ?_` and prove the remaining obligations. Rewrite using `[Fintype.sum_unique]`. Express the relevant statement in the definitionally equal form `E.form σ (I0 m).1 (w (I0 m)) u - _ ∈ _`. Rewrite using `[show (I0 m).1 = id from rfl, sub_self]`. Conclude with `Ideal.zero_mem _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rep_one {R : Type} [CommRing R] {C : Type 1} [Category.{0} C] {Φ : PDF R C} {Fil : ℤ → IdF Φ.A} {m : ℕ} (E : Frame Φ m)
     (σ : ∀ T : C, E.D ⟶ T) (r : ℤ) (w : Idx m m → Φ.A.obj E.D) (cl : CH.H (gr Fil r) m)
@@ -101,35 +101,31 @@ theorem rep_one {R : Type} [CommRing R] {C : Type 1} [Category.{0} C] {Φ : PDF 
   exact Ideal.zero_mem _
 
 /- English proof (translation)
-Introduce `K _ _ X q _ n s hs V V' hVV hV' c D hD`. Take `⟨E, ε, hL⟩` from `GlobalTheory.T.exists_local_frame_of_coords q c s (by omega)`. Set `σ : ∀ T, E.D ⟶ T` to `fun T => (E.ne T).some`. Establish `hF` using `GlobalTheory.CompanionTheory.DPFil.isFil_sFil (KS q s {V})`. Establish `hc : E.GrConst (sFil (KS q s {V}))` using `hL.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hT` using `GlobalTheory.T.taylor_of_local_frame q c s E ε hL D hD`. Establish `hr : (n : ℤ) + 1 = ((n + 1 : ℕ) : ℤ)` using `by push_cast; ring`. Take `⟨φ, hinj, hφ⟩` from `GlobalTheory.T.top_graded_quotient_injective_map q c.t s E ε hL σ ((n : ℤ) + 1) hr (by omega)`. Use `⟨φ, hinj, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `g hg ĝ hĝ x hx left`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `rep_res (ks_le q s hVV) _ _ hx`. Use `choose h hh happ using fun k => GlobalTheory.T.local_frame_taylor_class_eq q s (by omega) hVV c.t E ε hL _ hT σ (g k) (hg k) (ĝ k) (hĝ k)`. Set `ℓ : Fin (n + 1) → CH.Cn (CH.modF (sP (KS q s {V})).A) 1` to `fun k => resQ (ks_le q s hVV) (dlogC (KS q s {V'}) s (ĝ k))`. Set `cc : Fin (n + 1) → Fin (n + 1) → (sP (KS q s {V})).A.obj E.D` to `fun k i => Ring.inverse (ε (rs hVV (g k))) * ε (D i (ε.symm (ε (rs hVV (g k)))))`. Establish `h2 : CrystallineSemistableComparison.Pb.Rep (sFil (KS q s {V}) ((n : ℤ) + 1)) (sFil (KS q s {V}) ((n : ℤ) + 1 + 1)) (fun u => (show (sP (KS q s {V})).A.obj (u.obj (Fin.last (n + 1))) from cupListC (sP (KS q s {V})).A ℓ u) * ((sP (KS q s {V})).A.map (σ _)).hom 1) (resKS q s hVV _ …`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `rep_congr h1 fun u => ?_` and prove the remaining obligations. Establish `e` using `congrFun (cup_resQ (ks_le q s hVV) (fun k => dlogC (KS q s {V'}) s (ĝ k))) u`. Rewrite using `[map_one, mul_one]`. Conclude with `(sub_eq_zero.2 e) ▸ Ideal.zero_mem _`. Establish `h3` using `GlobalTheory.T.cup_list_representative_of_forms hF E σ hc (n + 1) ℓ cc h hh happ 1 _ hr _ h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4` using `GlobalTheory.T.form_sum_representative_lift hF E σ hc (n + 1) _ hr (fun I => I) (fun I => 1 * ∏ k, cc k (I k)) _ h3`. Establish `h5` using `rep_one E σ _ (fun I => ∑ J, sgn I J • (1 * ∏ k, cc k (J k))) _ h4`. Establish `hu : ∀ k, IsUnit (rs hVV (g k))` using `fun k => (hg k).map (rs hVV)`. Establish `e : ∑ J : Fin (n + 1) → Fin (n + 1), sgn (I0 (n + 1)) J • (1 * ∏ k, cc k (J k)) = ε (Ring.inverse (∏ k, rs hVV (g k)) * (Matrix.of fun k l => D k (rs hVV (g l))).det)`. Simplify using `only [one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[sgn_det, inv_prod _ hu, ← Matrix.det_mul_row]`. Establish `e1` using `(ε : Γ(X, V) →+* (sP (KS q s {V})).A.obj E.D).map_det (Matrix.of fun k l => Ring.inverse (rs hVV (g l)) * D k (rs hVV (g l)))`. Use `Eq.trans ?_ e1.symm` and prove the remaining obligations. Use `congr 1`. Use extensionality with `i k`.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `[cc, inv_map]`. Rewrite `h5` using `[e]`. Conclude with `hφ _ _ h5`. Introduce `ω`. Take `⟨y, hy⟩` from `(GlobalTheory.T.local_graded_class_representative q c.t s E ε hL σ (n + 1) ((n : ℤ) + 1) hr (by omega)).1 (resKS q s hVV _ _ _ ω)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `GlobalTheory.T.local_frame_derivation_compat q s hVV hV' c D hD E ε hL σ (n + 1) ((n : ℤ) + 1) hr (by omega) ω y hy (I0 _)`. Establish `h2` using `hφ (y (I0 _)) _ (rep_one E σ _ (fun I => ε (y I)) _ hy)`. Rewrite using `[h2]`. Conclude with `h1`. Introduce `f hf hdf x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨ξ, hξ⟩` from `rep_exists (a := sFil (KS q s {V'}) (n : ℤ)) (b := sFil (KS q s {V'}) ((n : ℤ) + 1)) f hf hdf`. Establish `h1` using `rep_res (ks_le q s hVV) _ _ hξ`. Establish `h2` using `rep_res (ks_le q s hVV) _ _ hx`. Take `⟨y, hy⟩` from `(GlobalTheory.T.local_graded_class_representative q c.t s E ε hL σ n (n : ℤ) rfl (by omega)).1 (resKS q s hVV _ _ _ ξ)`. Establish `hmem` using `GlobalTheory.T.local_frame_derivation_compat q s hVV hV' c D hD E ε hL σ n (n : ℤ) rfl (by omega) ξ y hy`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2' : CrystallineSemistableComparison.Pb.Rep (sFil (KS q s {V}) ((n : ℤ) + 1)) (sFil (KS q s {V}) ((n : ℤ) + 1 + 1)) (fun u => CH.d _ n (resQ (ks_le q s hVV) f) u) (resKS q s hVV _ _ _ x)`. Use `rep_congr h2 fun u => ?_` and prove the remaining obligations. Establish `e` using `congrFun (d_resQ (ks_le q s hVV) f) u`. Conclude with `(sub_eq_zero.2 e.symm) ▸ Ideal.zero_mem _`. Establish `h3` using `GlobalTheory.T.taylor_differential_representative hF E σ hc _ hT n (resQ (ks_le q s hVV) f) (fun I => ε (y I)) (resKS q s hVV _ _ _ ξ) (resKS q s hVV _ _ _ x) h1 hy h2'`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h4` using `GlobalTheory.T.form_sum_representative_lift hF E σ hc (n + 1) _ hr (fun a : Idx n (n + 1) × Fin (n + 1) => Fin.snoc (α := fun _ => Fin (n + 1)) a.1.1 a.2) (fun a => (-1) ^ n * ε (D a.2 (ε.symm (ε (y a.1))))) _ h3`. Establish `h5` using `rep_one E σ _ (fun I => ∑ a : Idx n (n + 1) × Fin (n + 1), sgn I (Fin.snoc (α := fun _ => Fin (n + 1)) a.1.1 a.2) • ((-1) ^ n * ε (D a.2 (ε.symm (ε (y a.1)))))) _ h4`. Set `Ik : Fin (n + 1) → Idx n (n + 1)` to `fun k => ⟨k.succAbove, Fin.strictMono_succAbove k⟩`. Set `sg : Fin (n + 1) → ℤ` to `fun k => sgn (I0 (n + 1)) (Fin.snoc (α := fun _ => Fin (n + 1)) (Ik k).1 k)`. Use `⟨fun k => ((-1 : ℤ) ^ (k : ℕ) * (-1) ^ n * sg k) • y (Ik k), fun k => ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `AddSubgroup.zsmul_mem _ (hmem (Ik k)) _`. Establish `e : ∑ a : Idx n (n + 1) × Fin (n + 1), sgn (I0 (n + 1)) (Fin.snoc (α` using `fun _ => Fin (n + 1)) a.1.1 a.2) • ((-1) ^ n * ε (D a.2 (ε.symm (ε (y a.1))))) = ε (∑ k : Fin (n + 1), (-1 : Γ(X, V)) ^ (k : ℕ) * D k (((-1 : ℤ) ^ (k : ℕ) * (-1) ^ n * sg k) • y (Ik k))) := by`. Rewrite using `[Fintype.sum_prod_type_right, map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single (Ik k)]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Establish `a1 : ((-1 : Γ(X, V)) ^ (k : ℕ)) * (-1) ^ (k : ℕ) = 1` using `by rw [← mul_pow]; simp`. Rewrite using `[map_zsmul, zsmul_eq_mul, zsmul_eq_mul, RingEquiv.symm_apply_apply]`. Use `push_cast`. Establish `a2 : (-1 : Γ(X, V)) ^ (k : ℕ) * (((-1) ^ (k : ℕ) * (-1) ^ n * (sg k : Γ(X, V))) * D k (y (Ik k))) = (sg k : Γ(X, V)) * ((-1) ^ n * D k (y (Ik k)))`. Take the linear combination `((-1) ^ n * (sg k : Γ(X, V)) * D k (y (Ik k))) * a1`.
-
-Rewrite using `[a2, map_mul, map_mul, map_pow, map_neg, map_one, map_intCast]`. Introduce `I _ hI`. Rewrite using `[sgn_snoc I k (fun h => hI (Subtype.ext h)), zero_smul]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
-
-Rewrite `h5` using `[e]`. Conclude with `hφ _ _ h5`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ {K : Type} [Field K] [CharZero K] {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of K)) [Smooth q]
     (n s : ℕ), n + 1 < s → ∀ (V V' : X.Opens) (hVV : V ≤ V'), IsAffineOpen V' → ∀ (c : Coord q V (n + 1)),

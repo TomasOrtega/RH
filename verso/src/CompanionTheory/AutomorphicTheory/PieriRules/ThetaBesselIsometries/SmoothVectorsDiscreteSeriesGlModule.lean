@@ -18,13 +18,13 @@ open scoped InnerProductSpace ENNReal
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hQQ : Q * Q⁻¹ = 1` using `Matrix.mul_nonsing_inv Q ((Matrix.isUnit_iff_isUnit_det Q).mp hQ)`. Establish `key : ∀ X Y : Matrix (Fin n) (Fin n) ℂ, (Q⁻¹ * X * Q) * (Q⁻¹ * Y * Q) = Q⁻¹ * (X * Y) * Q`. Introduce `X Y`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Use `_ = Q⁻¹ * (X * Y) * Q := by`. Rewrite using `[hQQ, Matrix.mul_one]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[key, key, ← Matrix.sub_mul, ← Matrix.mul_sub]`. Apply the tactic sequence `by_cases hbc : b = c <;> by_cases hda : d = a`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Substitute using the available equality.
 
-Substitute `hbc hda` using the available equality. Simplify using `[Matrix.single_mul_single_same, Matrix.mul_sub, Matrix.sub_mul]`. Substitute `hbc` using the available equality. Simplify using `[Matrix.single_mul_single_same, Matrix.single_mul_single_of_ne, hda, Matrix.mul_sub, Matrix.sub_mul]`. Substitute `hda` using the available equality.
+Simplify using the standard rewrite rules. Substitute using the available equality. Simplify using the standard rewrite rules. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[Matrix.single_mul_single_same, Matrix.single_mul_single_of_ne, hbc, Matrix.mul_sub, Matrix.sub_mul]`. Simplify using `[Matrix.single_mul_single_of_ne, hbc, hda]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem conj_single_comm {n : ℕ} (Q : Matrix (Fin n) (Fin n) ℂ) (hQ : IsUnit Q) (a b c d : Fin n) :
     (Q⁻¹ * Matrix.single a b 1 * Q) * (Q⁻¹ * Matrix.single c d 1 * Q) -
@@ -51,19 +51,19 @@ theorem conj_single_comm {n : ℕ} (Q : Matrix (Fin n) (Fin n) ℂ) (hQ : IsUnit
   · simp [Matrix.single_mul_single_of_ne, hbc, hda]
 
 /- English proof (translation)
-Introduce `hK k r ε mu R hR Q hQ`. Take `⟨hsm, hlinv, hlinY, -, hcomm, -⟩` from `Gp91.GlobalTheory.T.complexifiedDerivedAction_lieHom_gramAdjoint hK k r ε mu R hR`. Establish `hzero : ∀ Y : Mx k r, R.dC Y 0 = 0`. Introduce `Y`. Establish `h` using `hlinv Y 1 0 R.smSub.zero_mem 0 R.smSub.zero_mem`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `using h`. Establish `hY0 : ∀ v ∈ R.sm, R.dC 0 v = 0`. Introduce `v hv`. Establish `h` using `hlinY 0 0 1 v hv`. Simplify using `using h`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hsub : ∀ Y Z : Mx k r, ∀ v ∈ R.sm, R.dC (Y - Z) v = R.dC Y v - R.dC Z v`. Introduce `Y Z v hv`. Establish `h` using `hlinY Z Y (-1) v hv`. Rewrite `h` using `[neg_one_smul, neg_add_eq_sub, neg_one_smul, neg_add_eq_sub]`. Conclude with `h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Set `Em : Fin (2 * r + k + 1) → Fin (2 * r + k + 1) → Module.End ℂ R.smSub` to `fun a b => { toFun := fun v => ⟨R.dC (Q⁻¹ * Matrix.single a b 1 * Q) v, hsm _ v v.2⟩ map_add' := fun v w => by`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `h` using `hlinv (Q⁻¹ * Matrix.single a b 1 * Q) 1 v v.2 w w.2`. Simplify using `using h`. Use the proof step `map_smul' := fun c v => by`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Establish `h` using `hlinv (Q⁻¹ * Matrix.single a b 1 * Q) c v v.2 0 R.smSub.zero_mem`. Simplify `h }` using `[hzero]`. Establish `hE : ∀ a b (v : R.smSub), ((Em a b v : R.smSub) : R.H) = R.dC (Q⁻¹ * Matrix.single a b 1 * Q) v` using `fun _ _ _ => rfl`. Use `⟨Em, fun a b v => rfl, ?_⟩` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `a b c d`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `v`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `hv : (v : R.H) ∈ R.sm` using `v.2`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `key` using `hcomm (Q⁻¹ * Matrix.single a b 1 * Q) (Q⁻¹ * Matrix.single c d 1 * Q) v hv`. Rewrite `key` using `[conj_single_comm Q hQ a b c d, hsub _ _ _ hv]`. Apply the tactic sequence `split_ifs at key ⊢ <;>`. Apply the tactic sequence `simp only [LinearMap.sub_apply, Module.End.mul_apply, Submodule.coe_sub, hE, LinearMap.zero_apply, Submodule.coe_zero, sub_zero, zero_sub, hY0 _ hv] at key ⊢ <;>`. Conclude with `key`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem smooth_gl_module : PI.KFinSmooth → ∀ (k r : ℕ) (ε : Fin (2 * r + k + 1) → Bool) (mu : Fin (2 * r + k + 1) → ℝ) (R : Rep k r), R.IsDG ε mu → ∀ Q : Mx k r, IsUnit Q → ∃ E : (Fin (2 * r + k + 1) → Fin (2 * r + k + 1) → Module.End ℂ R.smSub), R.IsE Q E ∧ Formalism.REAL.GlRel E := by
   intro hK k r ε mu R hR Q hQ

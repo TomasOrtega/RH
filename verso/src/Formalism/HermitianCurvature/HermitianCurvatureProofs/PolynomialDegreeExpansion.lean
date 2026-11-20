@@ -7,13 +7,13 @@ open Finset Polynomial Formalism.FourierDecayAlt.FormPairingAction Formalism.Fou
 open scoped Matrix
 
 /- English proof (translation)
-Introduce `A S V _ _ _ _ _ _ _ _ _ _ ρ QQ q f fi s w n vA vB vAv vBv K sl x Ξ y hData hΞ`. Take `⟨-, -, -, -, hinj, hnew, -, -, -, -, hx⟩` from `hData`. Establish `h` using `Formalism.FourierDecayAlt.P.FreeActionExpansion.expand ρ QQ f s w vA vB vAv vBv x Ξ hΞ hx (Lp sl y) ?_ ?_ ?_ 1 1`. Simplify using `only [one_smul] at h`. Unfold `WK`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Rewrite using `[h]`. Use `congr 1`. Simplify using `[Lp, List.map_ofFn, Function.comp_def]`. Introduce `l hl`. Simplify using `only [Lp, List.mem_ofFn] at hl`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Take `⟨a, rfl⟩` from `hl`. Simplify using the standard rewrite rules. Simplify using `only [Lp, List.map_ofFn]`. Conclude with `List.nodup_ofFn.mpr hinj`. Introduce `l hl`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [Lp, List.mem_ofFn] at hl`. Take `⟨a, rfl⟩` from `hl`. Conclude with `hnew a`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem first_polynomial_expansion_formula : PositionExpansionTopCoefficients := by
   intro A S V _ _ _ _ _ _ _ _ _ _ ρ QQ q f fi s w n vA vB vAv vBv K sl x Ξ y hData hΞ
@@ -36,9 +36,9 @@ theorem first_polynomial_expansion_formula : PositionExpansionTopCoefficients :=
     exact hnew a
 
 /- English proof (translation)
-Introduce `A S V _ _ _ _ _ _ _ _ _ _ ρ QQ q f fi s w n vA vB vAv vBv K sl x grid hData hinj`. Take `⟨-, -, -, -, -, -, -, hsh1, hsh2, -, -⟩` from `id hData`. Establish `h` using `Formalism.FourierDecayAlt.P.plane_wave_word_formula A (Ix S → V) (frmS ρ (RRw QQ w * Vw f s w)) n K (fun _ => ⟨vA, vB, vAv, vBv, s⟩) grid x x (fun _ => ⟨hsh1, hsh2⟩) hinj`. Simplify using `only [Finset.prod_const, Finset.card_univ, Fintype.card_fin, frmS_apply] at h`. Establish `he : frm ρ (RRw QQ w * Vw f s w) x x = frm ρ (RRw QQ w) (act (Vw f s w) x) x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [frm, act_mul]`. Rewrite using `[← he, h]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `congr 1`. Conclude with `(first_polynomial_expansion_formula A S V ρ QQ q f fi s w n vA vB vAv vBv K sl x (frmS ρ (RRw QQ w * Vw f s w)) (fun a => grid a (j a)) hData (fun _ _ => rfl)).symm`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem first_polynomial_degree : GridDegreeIdentity := by
   intro A S V _ _ _ _ _ _ _ _ _ _ ρ QQ q f fi s w n vA vB vAv vBv K sl x grid hData hinj
@@ -55,9 +55,9 @@ theorem first_polynomial_degree : GridDegreeIdentity := by
     (fun a => grid a (j a)) hData (fun _ _ => rfl)).symm
 
 /- English proof (translation)
-Introduce `A S V _ _ _ _ _ _ _ _ _ _ ρ QQ q f fi s w n vA vB vAv vBv K sl x α β grid hData hG0 hImp hinj hadm`. Establish `hdeg` using `first_polynomial_degree A S V ρ QQ q f fi s w n vA vB vAv vBv K sl x grid hData hinj`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum fun j _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul, Complex.norm_real, Real.norm_eq_abs, Finset.abs_prod]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `mul_le_mul_of_nonneg_left ?_ (Finset.prod_nonneg fun a _ => abs_nonneg _)` and prove the remaining obligations. Establish `h` using `Real.abs_le_sqrt (first_polynomial_size A S V ρ QQ q f fi s w n vA vB vAv vBv K sl x α β (fun a => grid a (j a)) hData hG0 hImp (hadm j).1 (hadm j).2)`. Rewrite `h` using `[abs_norm]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem u72 : CombinedDegreeSizeBound := by
   intro A S V _ _ _ _ _ _ _ _ _ _ ρ QQ q f fi s w n vA vB vAv vBv K sl x α β grid hData hG0 hImp
@@ -78,34 +78,34 @@ theorem u72 : CombinedDegreeSizeBound := by
       rwa [abs_norm] at h
 
 /- English proof (translation)
-Introduce `_ _ _` and use `first_polynomial_degree`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem first_polynomial_degree_of_parts : DegreeIdentityOfParts := fun _ _ _ => first_polynomial_degree
 
 /- English proof (translation)
-Introduce `_ _` and use `u72`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem unipotent_degree_of_parts : CombinedBoundOfDegreeSize := fun _ _ => u72
 
 end Formalism.FourierDecayAlt.P.PolynomialDegreeExpansion
 
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.PolynomialDegreeExpansion.first_polynomial_expansion_formula`.
+A detailed English derivation is pending.
 -/
 theorem Formalism.FourierDecayAlt.P.first_polynomial_expansion_identity : Formalism.FourierDecayAlt.FormPairingAction.PositionExpansionTopCoefficients := Formalism.FourierDecayAlt.P.PolynomialDegreeExpansion.first_polynomial_expansion_formula
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.PolynomialDegreeExpansion.first_polynomial_degree`.
+A detailed English derivation is pending.
 -/
 theorem Formalism.FourierDecayAlt.P.first_polynomial_degree_identity : Formalism.FourierDecayAlt.FormPairingAction.GridDegreeIdentity := Formalism.FourierDecayAlt.P.PolynomialDegreeExpansion.first_polynomial_degree
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.PolynomialDegreeExpansion.u72`.
+A detailed English derivation is pending.
 -/
 theorem Formalism.FourierDecayAlt.P.unipotent_degree_bound : Formalism.FourierDecayAlt.FormPairingAction.CombinedDegreeSizeBound := Formalism.FourierDecayAlt.P.PolynomialDegreeExpansion.u72
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.PolynomialDegreeExpansion.first_polynomial_degree_of_parts`.
+A detailed English derivation is pending.
 -/
 theorem Formalism.FourierDecayAlt.P.first_polynomial_degree_of_clauses : Formalism.FourierDecayAlt.FormPairingAction.DegreeIdentityOfParts := Formalism.FourierDecayAlt.P.PolynomialDegreeExpansion.first_polynomial_degree_of_parts
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.PolynomialDegreeExpansion.unipotent_degree_of_parts`.
+A detailed English derivation is pending.
 -/
 theorem Formalism.FourierDecayAlt.P.unipotent_degree_of_clauses : Formalism.FourierDecayAlt.FormPairingAction.CombinedBoundOfDegreeSize := Formalism.FourierDecayAlt.P.PolynomialDegreeExpansion.unipotent_degree_of_parts

@@ -23,59 +23,55 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
 variable [FiniteDimensional Qp LL]
 
 /- English proof (translation)
-Introduce `r hr`. Establish `: Fact PD.p.Prime` using `⟨PD.hp⟩`. Take `⟨hcr, -⟩` from `hW₁`. Take `⟨Br⟩` from `exists_phiBridge W hcase hP9 T₁ hcr hO hinj`. Take `⟨hl11, hSet, -, hη20, hS20, -⟩` from `hB`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨-, -, hsz, -⟩` from `hSet`. Establish `hthick : ∀ d : ℕ, 1 ≤ d → d < 3 → Formalism.MainNotions.TruncatedSeriesCountingBounds.Thick b η size (c - (d : ZMod n) + 1)`. Introduce `d hd1 hd3`. Assume the negation of the conclusion as `hnt`. Establish `hmem : d ∈ {d : ℕ | 1 ≤ d ∧ ¬ Formalism.MainNotions.TruncatedSeriesCountingBounds.Thick b η size (c - (d : ZMod n) + 1)}` using `⟨hd1, hnt⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hle` using `Nat.sInf_le hmem`. Establish `hlen' : (arcOf b w S η up size).len c = sInf {d : ℕ | 1 ≤ d ∧ ¬ Formalism.MainNotions.TruncatedSeriesCountingBounds.Thick b η size (c - (d : ZMod n) + 1)}` using `rfl`. Rewrite `hlen` using `[hlen']`. Use linear arithmetic over natural numbers and integers. Establish `ht1 : Formalism.MainNotions.TruncatedSeriesCountingBounds.Thick b η size (c - 1)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `h` using `hthick 2 (by norm_num) (by norm_num)`. Establish `e2 : c - ((2 : ℕ) : ZMod n) + 1 = c - 1` using `by push_cast; ring`. Rewrite `h` using `[e2]`. Then use the resulting hypothesis. Establish `ht0 : Formalism.MainNotions.TruncatedSeriesCountingBounds.Thick b η size c`. Establish `h` using `hthick 1 le_rfl (by norm_num)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : c - ((1 : ℕ) : ZMod n) + 1 = c` using `by push_cast; ring`. Rewrite `h` using `[e1]`. Then use the resulting hypothesis. Establish `hh : (arcOf b w S η up size).h = b + η + S` using `by show Formalism.MainNotions.TruncatedSeriesCountingBounds.hB b w S η size = _`. Unfold `Formalism.MainNotions.TruncatedSeriesCountingBounds.hB`. Rewrite using `[if_pos ⟨c - 1, ht1⟩]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hη1` using `hsz (c - 1)`. Establish `hη0` using `hsz c`. Establish `hB1 : 1 ≤ size c + S` using `by omega`. Establish `hb1 : 1 ≤ size (c - 1)` using `by omega`. Establish `hB11 : size c + S ≤ 11 * size (c - 1)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨h1, -⟩` from `ht1`. Take `⟨-, h2⟩` from `ht0`. Use linear arithmetic over natural numbers and integers. Simplify using `only [Br.ps_eq, ← Br.cst_pow] at hf₂ hX₀`. Take `⟨U₁, U₂, hU⟩` from `Br.inFr_const c hf₂ hX₀`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Establish `hp0 : Br.P.p 0 = PowerSeries.X` using `rfl`. Rewrite `hU` using `[hp0]`. Distinguish the cases in `hx0 : X₀ = 0`. Rewrite `hr` using `[hx0, map_zero, AddValuation.map_zero]`. Conclude with `(WithTop.top_ne_coe hr).elim`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Take `⟨nn, u, hxu⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hx0 hϖ`. Take `⟨vl, hvl⟩` from `l_eq_unit_mul_pow hϖ Br.P.hl0`. Take `⟨e, he⟩ : ∃ e, e = eO (O` from `O) PD.p := ⟨_, rfl⟩`. Rewrite `hvl` using `[← he]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hunit : ∀ y : Oˣ, v (algebraMap O LL (y : O)) = 0`. Introduce `y`. Establish `h1` using `hO y`. Establish `h2` using `hO (↑y⁻¹ : O)`. Establish `h3 : v (algebraMap O LL (y : O)) + v (algebraMap O LL (↑y⁻¹ : O)) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← AddValuation.map_mul, ← _root_.map_mul, Units.mul_inv, _root_.map_one, AddValuation.map_one]`. Conclude with `le_antisymm (le_of_le_of_eq (le_add_of_nonneg_right h2) h3) h1`. Establish `hϖ0 : v (algebraMap O LL ϖ) ≠ ⊤`. Rewrite using `[Ne, AddValuation.top_iff]`. Introduce `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `hϖ.ne_zero (hinj (by rw [h, _root_.map_zero]))`. Take `⟨d, hd⟩` from `WithTop.ne_top_iff_exists.mp hϖ0`. Establish `hvl1 : (((e : ℚ) * d : ℚ) : WithTop ℚ) = 1`. Establish `h` using `W.v_l`. Rewrite `h` using `[← map_natCast (algebraMap O LL), hvl, _root_.map_mul, _root_.map_pow, AddValuation.map_mul, AddValuation.map_pow, hunit, ← hd, zero_add]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← h, ← WithTop.coe_nsmul, nsmul_eq_mul]`. Establish `hEd : (e : ℚ) * d = 1` using `by exact_mod_cast hvl1`. Establish `hrv : (r : ℚ) = nn * d`. Establish `h` using `hr`. Rewrite `h` using `[hxu, _root_.map_mul, _root_.map_pow, AddValuation.map_mul, AddValuation.map_pow, hunit, ← hd, zero_add, ← WithTop.coe_nsmul, nsmul_eq_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `h.symm` after adjusting the coercions. Take `⟨k₃, hk₃⟩ : ∃ k : ℕ, k = ⌈(e : ℝ) * (((size (c - 2) + S : ℕ) : ℝ) - ((size c + S : ℕ) : ℝ) / ((PD.p : ℕ) : ℝ) ^ 2)⌉₊` from `⟨_, rfl⟩`. Establish `hc3` using `Br.P.c3a hϖ (size (c - 2) + S) (size c + S) hB1 k₃ (by rw [← he]; exact hk₃.le)`. Take `⟨α₁, β₁, hαβ⟩` from `Ideal.mem_span_pair.mp hc3`. Establish `hF1 : (e : ℝ) * (((size (c - 2) + S : ℕ) : ℝ) - ((size c + S : ℕ) : ℝ) / ((PD.p : ℕ) : ℝ) ^ 2) ≤ k₃`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hk₃]`. Conclude with `Nat.le_ceil _`. Establish `hc2` using `Br.P.constant_le_rpow_of_three_le hϖ (size c + S) (size (c - 1)) hB1 hb1`. Rewrite `hc2` using `[← he]`. Establish `hL : (11 : ℝ) ≤ ((PD.p : ℕ) : ℝ)` using `by exact_mod_cast hl11`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hL1 : (1 : ℝ) < ((PD.p : ℕ) : ℝ)` using `by linarith`. Establish `hy1 : (1 : ℝ) ≤ ((size (c - 1) : ℕ) : ℝ)` using `by exact_mod_cast hb1`. Establish `hBl : ((size c + S : ℕ) : ℝ) / ((PD.p : ℕ) : ℝ) ≤ ((size (c - 1) : ℕ) : ℝ)`. Rewrite using `[div_le_iff₀ (by linarith)]`. Establish `: ((size c + S : ℕ) : ℝ) ≤ 11 * ((size (c - 1) : ℕ) : ℝ)` using `by exact_mod_cast hB11`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use the polynomial consequences of the given equalities and inequalities. Establish `hlog0 : 0 ≤ Real.logb ((PD.p : ℕ) : ℝ) ((size (c - 1) : ℕ) : ℝ)` using `Real.logb_nonneg hL1 hy1`. Establish `hbr : 0 ≤ ((size (c - 1) : ℕ) : ℝ) - ((size c + S : ℕ) : ℝ) / ((PD.p : ℕ) : ℝ) + 2 + Real.logb ((PD.p : ℕ) : ℝ) ((size (c - 1) : ℕ) : ℝ)` using `by linarith`. Rewrite `hc2` using `[max_eq_right hbr]`. Establish `hE0 : (0 : ℝ) ≤ e` using `Nat.cast_nonneg _`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hF2 : ((e * κ₀ + k₃ : ℕ) : ℝ) - nn ≤ (e : ℝ) * (((size (c - 1) : ℕ) : ℝ) - ((size c + S : ℕ) : ℝ) / ((PD.p : ℕ) : ℝ) + 2 + Real.logb ((PD.p : ℕ) : ℝ) ((size (c - 1) : ℕ) : ℝ))`. Distinguish the cases in `hlt : nn < e * κ₀ + k₃`. Take `⟨m, hm⟩ : ∃ m, e * κ₀ + k₃ = nn + m` from `⟨e * κ₀ + k₃ - nn, by omega⟩`. Establish `hpw : (PowerSeries.C ϖ) ^ (e * κ₀) * (PowerSeries.C ϖ) ^ k₃ = (PowerSeries.C ϖ) ^ nn * (PowerSeries.C ϖ) ^ m`. Rewrite using `[← pow_add, ← pow_add, hm]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `hU` using `[hvl, hxu, _root_.map_mul, _root_.map_mul, _root_.map_pow, _root_.map_pow, mul_pow, ← pow_mul, ← hαβ]`. Establish `hdist` using `(ContPA.dist_X_pow (O := O) (size c + S)).1`. Establish `hdvd` using `ContM_cancel_unif hϖ hdist nn (x := PowerSeries.C (u : O) * Br.P.p 1 ^ size (c - 1) - (PowerSeries.C ϖ) ^ m * (PowerSeries.C (vl : O) ^ κ₀ * α₁ * U₁)) (a := PowerSeries.C (vl : O) ^ κ₀ * (PowerSeries.C ϖ) ^ (e * κ₀) * β₁ * U₁ - U₂) (by linear_combination hU + PowerSeries.C (vl : …`. Take `⟨γ, hγ⟩` from `hdvd`. Establish `hu1 : PowerSeries.C (↑u⁻¹ : O) * PowerSeries.C (u : O) = 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Rewrite using `[← _root_.map_mul, Units.inv_mul, _root_.map_one]`. Establish `hmem : Br.P.p 1 ^ size (c - 1) ∈ Ideal.span {PowerSeries.C ϖ ^ m, (PowerSeries.X : PowerSeries O) ^ (size c + S)}`. Use `Ideal.mem_span_pair.mpr ⟨PowerSeries.C (↑u⁻¹ : O) * (PowerSeries.C (vl : O) ^ κ₀ * α₁ * U₁), PowerSeries.C (↑u⁻¹ : O) * γ, ?_⟩` and prove the remaining obligations. Take the linear combination `(-PowerSeries.C (↑u⁻¹ : O)) * hγ + Br.P.p 1 ^ size (c - 1) * hu1`. Establish `hcont` using `(Cont.mem_iff_le ϖ _ _ m).mp hmem`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hcont` using `[← ENat.natCast_toNat hc2.1]`. Establish `hmle : (m : ℝ) ≤ ((cont ϖ (PowerSeries.X ^ (size c + S)) (Br.P.p 1 ^ size (c - 1))).toNat : ℝ)`. Conclude with `hcont` after adjusting the coercions. Establish `: ((e * κ₀ + k₃ : ℕ) : ℝ) - nn = m` using `by rw [hm]; push_cast; ring`. Rewrite using `[this]`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hmle.trans hc2.2`. Establish `: ((e * κ₀ + k₃ : ℕ) : ℝ) - nn ≤ 0`. Establish `: e * κ₀ + k₃ ≤ nn` using `by omega`. Establish `: ((e * κ₀ + k₃ : ℕ) : ℝ) ≤ nn` using `by exact_mod_cast this`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this.trans (mul_nonneg hE0 hbr)`. Rewrite using `[hh]`. Establish `hlog : Real.logb ((PD.p : ℕ) : ℝ) ((size (c - 1) : ℕ) : ℝ) ≤ Real.logb ((PD.p : ℕ) : ℝ) (2 * ((b + η + S : ℕ) : ℝ))`. Establish `h2h : (1 : ℝ) ≤ ((b + η + S : ℕ) : ℝ)`. Conclude with `(show 1 ≤ b + η + S by obtain ⟨-, h2⟩ := ht1; omega)` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Use the polynomial consequences of the given equalities and inequalities.
 
-Apply `(Real.logb_le_logb hL1 (by linarith) (by linarith)).mpr` to reduce the goal to its premises. Take `⟨-, h2⟩` from `ht1`. Establish `: size (c - 1) ≤ 2 * (b + η + S)` using `by omega`. Conclude with `this` after adjusting the coercions. Establish `h3` using `mul_le_mul_of_nonneg_left hlog hE0`.
+Move the embeddings inside the algebraic operations. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Establish `hEd' : (e : ℝ) * (d : ℝ) = 1` using `by exact_mod_cast hEd`. Establish `hrv' : ((r : ℚ) : ℝ) = (nn : ℝ) * (d : ℝ)` using `by exact_mod_cast hrv`. Establish `hd0 : (0 : ℝ) < d`. Break down `lt_or_ge 0 (d : ℝ) with h | h` into its components or cases. Conclude with `h`.
-
-Use the polynomial consequences of the given equalities and inequalities. Move the coercions through the operations in `at hF1 hF2 h3 ⊢`. Establish `hmain : (e : ℝ) * ((size (c - 2) : ℝ) + S - size (c - 1) + ((size c : ℝ) + S) / PD.p - ((size c : ℝ) + S) / (PD.p : ℝ) ^ 2 - 2 - Real.logb PD.p (2 * ((b : ℝ) + η + S)) + κ₀) ≤ nn`. Take the linear combination `hF1 + hF2 + h3`. Rewrite using `[hrv']`.
-
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_comm (e : ℝ), mul_assoc, hEd', mul_one]`. Use `_ ≤ (nn : ℝ) * d := mul_le_mul_of_nonneg_right hmain hd0.le`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem arc_length_three_le_valuation_constant_term [NeZero n] [Fintype (K →ₐ[Qp] LL)] [IsDomain O] [IsDiscreteValuationRing O] [IsAdicComplete (IsLocalRing.maximalIdeal O) O] (W : LocWach PD LL O v n) (hcase : Formalism.MainNotions.LiftingTheory.CaseA W)
     {T₁ T₂ : LocLat G Qp LL O} (F : LatHom T₁.L T₂.L) {b w S η m : ℕ} {up : ZMod n → Bool}

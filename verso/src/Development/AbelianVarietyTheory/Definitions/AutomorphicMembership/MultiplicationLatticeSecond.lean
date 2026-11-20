@@ -161,12 +161,12 @@ def mk (φ : F₁.toMod.restrict Z.genO.ι ≅ F₂.toMod.restrict Z.genO.ι) (h
 def iso (φ : a.GIso F₁ F₂) : F₁.toMod.restrict Z.genO.ι ≅ F₂.toMod.restrict Z.genO.ι := φ.1
 
 /- English proof (translation)
-The claim follows from `φ.2.1`.
+A detailed English derivation is pending.
 -/
 theorem isInv_left (φ : a.GIso F₁ F₂) : a.IsInv F₁ := φ.2.1
 
 /- English proof (translation)
-The claim follows from `φ.2.2`.
+A detailed English derivation is pending.
 -/
 theorem isInv_right (φ : a.GIso F₁ F₂) : a.IsInv F₂ := φ.2.2
 
@@ -177,7 +177,7 @@ Both sides reduce to the same expression.
     (h₂ : a.IsInv F₂) : (mk φ h₁ h₂).iso = φ := rfl
 
 /- English proof (translation)
-The claim follows from `Subtype.ext h`.
+A detailed English derivation is pending.
 -/
 theorem ext {φ ψ : a.GIso F₁ F₂} (h : φ.iso = ψ.iso) : φ = ψ := Subtype.ext h
 
@@ -217,7 +217,7 @@ def equivIso (h₁ : a.IsInv F₁) (h₂ : a.IsInv F₂) :
 end GIso
 
 /- English proof (translation)
-Use `Real.sSup_nonneg ?_` and prove the remaining obligations. Introduce and unpack `r ⟨U, -, h, k, g, lam, -, rfl⟩`. Check the signs of the components of the expression.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Check the signs of the components of the expression.
 -/
 example {Z : a.Mdl} (F : a.Sh Z) (f : a.Sec F) (y : a.Pt Z) : 0 ≤ a.nrm F f y := by
   refine Real.sSup_nonneg ?_
@@ -230,7 +230,7 @@ Both sides reduce to the same expression.
 example {Z : a.Mdl} (y : a.Pt Z) (c : 𝓞 D.host.E) (u : a.Ylat y) : c • a.phi y u = a.phi y (A.H.bar c • u) := rfl
 
 /- English proof (translation)
-Simplify using `[expo]`.
+Simplify using the standard rewrite rules.
 -/
 example (σ : D.host.E →+* ℂ) (i : Fin (S.Dw.mult σ)) : a.expo 0 σ i = 0 := by simp [expo]
 
@@ -755,7 +755,7 @@ def loc : ModuliIntegralCharts.Loc D N j p where
   degLdR := @CrDSt.degLdR _ _ _ _ _ _ _ _ st.cd
 
 /- English proof (translation)
-Apply the tactic sequence `cases b <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem bs_loc (b : Option ℕ) : bs st.loc b = ct.B.X b := by cases b <;> rfl
 

@@ -30,13 +30,13 @@ Both sides reduce to the same expression.
 theorem word_nil (ρ : Γ →* GL (Fin a) k) : word ρ [] = 1 := rfl
 
 /- English proof (translation)
-Simplify using `[word]`.
+Simplify using the standard rewrite rules.
 -/
 theorem word_cons (ρ : Γ →* GL (Fin a) k) (p : Γ × k) (L : List (Γ × k)) :
     word ρ (p :: L) = (mat ρ p.1 - p.2 • 1) * word ρ L := by simp [word]
 
 /- English proof (translation)
-Simplify using `[word]`.
+Simplify using the standard rewrite rules.
 -/
 theorem word_append (ρ : Γ →* GL (Fin a) k) (L M : List (Γ × k)) : word ρ (L ++ M) = word ρ L * word ρ M := by
   simp [word]

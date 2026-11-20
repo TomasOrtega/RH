@@ -15,23 +15,21 @@ namespace GlobalTheory
 open Polynomial
 
 /- English proof (translation)
-Introduce `X k k' _ _ _ _ x x' u u' hsp`. Take `⟨B, _, g, g', ρ, hker, hx, hx'⟩` from `GlobalTheory.T.exists_affine_ring_hom_pair_of_specializes x x' u u' hsp`. Use `set q := RingHom.ker g' with hq`. Use `haveI : q.IsPrime := RingHom.ker_isPrime g'`. Set `D` to `B ⧸ q`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `h' : D →+* k'` to `RingHom.kerLift g'`. Establish `h'inj : Function.Injective h'` using `RingHom.kerLift_injective g'`. Set `h : D →+* k` to `Ideal.Quotient.lift q g (fun b hb => hker hb)`. Take `⟨C, _, _, hCdom, hCint, hCinj, hCroot, hCext⟩` from `GlobalTheory.T.exists_integral_domain_extension_with_monic_roots D`. Take `⟨e', he'inj, he'⟩` from `hCext k' h' h'inj`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨ψ, hψ⟩` from `GlobalTheory.T.exists_ringHom_extend_of_isIntegral_of_isAlgClosed D C k h (by`. Introduce `a ha`. Rewrite `ha`, the goal using `[RingHom.mem_ker]`. Rewrite using `[show a = 0 from hCinj (by rw [ha, map_zero])]; exact map_zero h)`. Set `P` to `RingHom.ker ψ`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `haveI : P.IsPrime := RingHom.ker_isPrime ψ`. Set `R` to `Localization.AtPrime P`. Establish `h0 : (0 : C) ∉ P.primeCompl` using `fun h0 => h0 P.zero_mem`. Establish `hRloc` using `(absIntClosed_localization_and_quotient C ⟨hCdom, hCroot⟩).1 P.primeCompl h0`. Take `⟨hH, hAC, -⟩` from `AbsIntClosedLocal.henselian_isAlgClosed_pow_surj R hRloc`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Set `φ : B →+* R` to `(algebraMap C R).comp ((algebraMap D C).comp (Ideal.Quotient.mk q))`. Set `f : R →+* k` to `IsLocalization.lift (M := P.primeCompl) (g := ψ) (fun s => by`. Use `IsUnit.mk0 _ ?_` and prove the remaining obligations. Conclude with `s.2)`. Set `f' : R →+* k'` to `IsLocalization.lift (M := P.primeCompl) (g := e') (fun s => by`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use `IsUnit.mk0 _ ?_` and prove the remaining obligations. Introduce `hs`. Conclude with `s.2 (by rw [show (s : C) = 0 from he'inj (by rw [hs, map_zero])]; exact P.zero_mem))`. Establish `hf : f.comp φ = g`. Use extensionality with `b`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [f, φ, RingHom.comp_apply, IsLocalization.lift_eq]`. Rewrite using `[← RingHom.comp_apply ψ, hψ]`. Both sides reduce to the same expression. Establish `hf' : f'.comp φ = g'`. Use extensionality with `b`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [f', φ, RingHom.comp_apply, IsLocalization.lift_eq]`. Rewrite using `[← RingHom.comp_apply e', he']`. Both sides reduce to the same expression. Use `⟨R, inferInstance, hH, hAC, spMap φ ≫ ρ, spMap f, spMap f', ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← Category.assoc, ← Spec.map_comp, ← CommRingCat.ofHom_comp, hf, hx]`.
-
-Rewrite using `[← Category.assoc, ← Spec.map_comp, ← CommRingCat.ofHom_comp, hf', hx']`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem geomPoints_factor_henselian_of_specializes :
   ∀ {X : Scheme.{0}} {k k' : Type} [Field k] [IsAlgClosed k] [Field k'] [IsAlgClosed k'] (x : Sp k ⟶ X) (x' : Sp k' ⟶ X) (u : Sp k) (u' : Sp k'), x'.base u' ⤳ x.base u → ∃ (R : Type) (_ : CommRing R) (_ : HenselianLocalRing R) (_ : IsAlgClosed (IsLocalRing.ResidueField R)) (r : Sp R ⟶ X) (i : Sp k ⟶ Sp R) (i' : Sp k' ⟶ Sp R), i ≫ r = x ∧ i' ≫ r = x' := by

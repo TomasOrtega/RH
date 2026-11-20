@@ -11,19 +11,19 @@ noncomputable section
 namespace GlobalTheory.HCFCusp
 
 /- English proof (translation)
-Introduce `E _ _ _ a L hL W _ χ N ν _ α _ _`. Establish `hopen : ∀ φ : Sm E a, (∀ k ∈ L, finRep E a k φ = φ) → IsOpen {k | finRep E a k φ = φ}`. Introduce `φ hφ`. Rewrite using `[isOpen_iff_forall_mem_open]`. Introduce `k hk`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨(k * ·) '' (L : Set (GL (Fin a) (Af E))), ?_, isOpenMap_mul_left k _ hL, ⟨1, L.one_mem, mul_one k⟩⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨l, hl, rfl⟩`. Express the relevant statement in the definitionally equal form `finRep E a (k * l) φ = φ`. Rewrite using `[map_mul, Module.End.mul_apply, hφ l hl]`. Conclude with `hk`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `GlobalTheory.T.finiteDimensional_cuspidalForms_GL_totallyComplex E a L hL W ‹_› {χ} (Set.finite_singleton χ) N _ (Submodule.span_mono fun φ hφ => hφ.1) ?_` and prove the remaining obligations. Introduce `φ hφ`. Establish `P : (∀ k ∈ L, finRep E a k φ = φ) ∧ (∀ γ g, φ.1 (ratGL E a γ * g) = φ.1 g) ∧ IsCuspidal φ.1`. Proceed by induction on `hφ using Submodule.span_induction with`. Consider the case `mem x hx => exact ⟨hx.1.2.1, hx.1.1.left, hx.2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `zero`. Use `⟨fun k _ => map_zero _, fun _ _ => rfl, fun r _ _ _ _ μ 𝓕 _ _ g => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `∫ z in 𝓕, (0 : ℂ) ∂μ = 0`. Conclude with `integral_zero _ _`. Consider the case `add x y _ _ hx hy`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Use `⟨fun k hk => by rw [map_add, hx.1 k hk, hy.1 k hk], fun γ g => ?_, fun r h0 h1 _ _ μ 𝓕 hμ h𝓕 g => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `x.1 _ + y.1 _ = x.1 g + y.1 g`. Rewrite using `[hx.2.1, hy.2.1]`. Use `haveI := hμ`. Establish `ix` using `GlobalTheory.CuspRep.CuspidalL2GL.integrableOn_unip (ContAut.continuous_of_isOpen_stab E a x (hopen x hx.1)) hx.2.1 μ h𝓕 g`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `iy` using `GlobalTheory.CuspRep.CuspidalL2GL.integrableOn_unip (ContAut.continuous_of_isOpen_stab E a y (hopen y hy.1)) hy.2.1 μ h𝓕 g`. Express the relevant statement in the definitionally equal form `∫ z in 𝓕, (x.1 (unip z * g) + y.1 (unip z * g)) ∂μ = 0`. Rewrite using `[integral_add ix iy, hx.2.2 r h0 h1 μ 𝓕 hμ h𝓕 g, hy.2.2 r h0 h1 μ 𝓕 hμ h𝓕 g, add_zero]`. Consider the case `smul c x _ hx`. Use `⟨fun k hk => by rw [map_smul, hx.1 k hk], fun γ g => ?_, fun r h0 h1 _ _ μ 𝓕 hμ h𝓕 g => ?_⟩` and prove the remaining obligations.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `c * x.1 _ = c * x.1 g`. Rewrite using `[hx.2.1]`. Express the relevant statement in the definitionally equal form `∫ z in 𝓕, c * x.1 (unip z * g) ∂μ = 0`. Rewrite using `[integral_const_mul, hx.2.2 r h0 h1 μ 𝓕 hμ h𝓕 g, mul_zero]`. Conclude with `P.2.2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finiteDimensional_cuspSpan : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (L : Subgroup (GL (Fin a) (Af E))), IsOpen (L : Set (GL (Fin a) (Af E))) → ∀ W : Submodule ℂ (Kinf E a → ℂ), FiniteDimensional ℂ W → ∀ (χ : Module.End ℂ (Sm E a) → ℂ) (N : ℕ) (ν : Measure (Lie E a)), ν.IsAddHaarMeasure → ∀ α : Lie E a → ℂ, IsTest (invSet E a) α → (∀ φ ∈ formsGL E a L W {χ} N, smoothing ν α φ.1 = φ.1) → FiniteDimensional ℂ (Submodule.span ℂ {φ | φ ∈ formsGL E a L W {χ} N ∧ IsCuspidal φ.1}) := by
   intro E _ _ _ a L hL W _ χ N ν _ α _ _

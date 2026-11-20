@@ -11,7 +11,7 @@ section Conv
 variable {R M : Type} [CommRing R] [AddCommGroup M] [Module R M]
 
 /- English proof (translation)
-Rewrite using `[HahnSeries.ofPowerSeries_apply, HahnSeries.embDomain_of_notMem_range]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem Pf_LvExp_coeff_neg (x : PowerSeries R) (k : ℕ) :
     (HahnSeries.ofPowerSeries ℤ R x).coeff (Int.negSucc k) = 0 := by
@@ -19,21 +19,19 @@ theorem Pf_LvExp_coeff_neg (x : PowerSeries R) (k : ℕ) :
   simp
 
 /- English proof (translation)
-Rewrite using `[HahnModule.coeff_smul]`. Use `symm`. Use `Finset.sum_bij_ne_zero (fun j _ _ => ((j : ℤ), k - j)) ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `j _ hj`. Establish `h1 : PowerSeries.coeff j x ≠ 0` using `fun h => hj (by rw [h, zero_smul])`.
+Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2 : ((HahnModule.of R).symm y).coeff (k - j) ≠ 0` using `fun h => hj (by rw [h, smul_zero])`. Rewrite using `[Finset.mem_vaddAntidiagonal]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[HahnSeries.mem_support, HahnSeries.ofPowerSeries_apply_coeff]`. Conclude with `h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[HahnSeries.mem_support]`. Conclude with `h2`. Use `show (j : ℤ) + (k - j) = k`. Expand and normalize the polynomial expressions, which then agree. Introduce `j _ _ j' _ _ h`.
+Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `(Prod.mk.inj h).1` after adjusting the coercions. Introduce `ij hij hne`. Rewrite `hij` using `[Finset.mem_vaddAntidiagonal]`. Take `⟨h1, h2, h3⟩` from `hij`. Take `⟨i, i'⟩` from `ij`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 
-Simplify using `only at h1 h2 h3 hne`. Consider the cases of `i with`. Consider the case `negSucc t => exact absurd (Pf_LvExp_coeff_neg x t) ((HahnSeries.mem_support _ _).1 h1)`. Consider the case `ofNat j`. Simplify using `only [Int.ofNat_eq_natCast, vadd_eq_add] at h3 hne`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hi' : i' = k - j` using `by omega`. Establish `hm' : m ≤ i'`. Assume the negation of the conclusion as `hlt`. Use `push Not at hlt`. Conclude with `(HahnSeries.mem_support _ _).1 h2 (hy _ hlt)`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify by unfolding definitions.
 
-Use `⟨j, Finset.mem_range.2 (by omega), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hi']`. Rewrite `hne` using `[HahnSeries.ofPowerSeries_apply_coeff]`. Then use the resulting hypothesis. Simplify using `[hi']`. Introduce `j _ _ dsimp only`.
-
-Rewrite using `[HahnSeries.ofPowerSeries_apply_coeff]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Pf_LvExp_coeff_smul (x : PowerSeries R) (y : HahnModule ℤ R M) (m : ℤ)
     (hy : ∀ k < m, ((HahnModule.of R).symm y).coeff k = 0) (k : ℤ) (N : ℕ) (hN : k - m < N) :
@@ -78,9 +76,9 @@ theorem Pf_LvExp_coeff_smul (x : PowerSeries R) (y : HahnModule ℤ R M) (m : �
     rw [HahnSeries.ofPowerSeries_apply_coeff]
 
 /- English proof (translation)
-Apply `finsum_eq_sum_of_support_subset` to reduce the goal to its premises. Introduce `j hj`. Simplify using `only [Finset.coe_range, Set.mem_Iio]`. Assume the negation of the conclusion as `h`. Apply `hj` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Use `show PowerSeries.coeff j f • g (k - j) = 0`. Rewrite using `[hg (k - j) (by omega), smul_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Pf_LvExp_finsum (f : PowerSeries R) (g : ℤ → M) (m : ℤ) (hg : ∀ k < m, g k = 0) (k : ℤ) (N : ℕ)
     (hN : k - m < N) :
@@ -105,9 +103,9 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     {v : AddValuation LL (WithTop ℚ)} {n : ℕ} [NeZero n] {W : LocWach PD LL O v n}
 
 /- English proof (translation)
-Establish `h : ∀ y, ιV PD (LL` using `LL) (V := T.V) y = ((PD.ι.toLinearMap.restrictScalars Qp).lTensor T.V) y := fun y => by`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x b => simp [ιV]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Establish `hi : Function.Injective (PD.ι.toLinearMap.restrictScalars Qp)` using `PD.ι_inj`. Introduce `a b hab`. Rewrite `hab` using `[h, h]`. Conclude with `Module.Flat.lTensor_preserves_injective_linearMap _ hi hab`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Pf_LvExp_ιV_inj (T : LocLat G Qp LL O) : Function.Injective (ιV PD (LL := LL) (V := T.V)) := by
   have h : ∀ y, ιV PD (LL := LL) (V := T.V) y =
@@ -128,7 +126,7 @@ def Pf_LvExp_Φ (W : LocWach PD LL O v n) (s : ℕ) (D : Type) [AddCommGroup D] 
   (TensorProduct.comm LL (KsW W s) D).trans (TensorProduct.piScalarRight LL LL D (Rs LL PD.p s))
 
 /- English proof (translation)
-Simplify using `only [Pf_LvExp_Φ, toKsD, LinearEquiv.trans_apply, LinearMap.coe_comp, LinearEquiv.coe_coe, Function.comp_apply]`. Rewrite using `[← TensorProduct.comm_symm, LinearEquiv.symm_apply_apply, LinearEquiv.apply_symm_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem Pf_LvExp_Φ_toKsD (s : ℕ) (D : Type) [AddCommGroup D] [Module LL D]
     (f : Rs LL PD.p s → D) : Pf_LvExp_Φ W s D (toKsD W s D f) = f := by
@@ -137,7 +135,7 @@ theorem Pf_LvExp_Φ_toKsD (s : ℕ) (D : Type) [AddCommGroup D] [Module LL D]
   rw [← TensorProduct.comm_symm, LinearEquiv.symm_apply_apply, LinearEquiv.apply_symm_apply]
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul g d => simp [Pf_LvExp_Φ, TensorProduct.smul_tmul', TensorProduct.piScalarRightHom_tmul, mul_smul]`. Consider the case `add z z' hz hz' => rw [smul_add, map_add, map_add, Pi.add_apply, Pi.add_apply, hz, hz', smul_add]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem Pf_LvExp_Φ_smul (s : ℕ) (D : Type) [AddCommGroup D] [Module LL D] (f : KsW W s)
     (z : KsW W s ⊗[LL] D) (ζ : Rs LL PD.p s) :
@@ -155,7 +153,7 @@ theorem Pf_LvExp_coeff_expN (Lb : LevB W) (s : ℕ) (T : LocLat G Qp LL O) (c : 
   rfl
 
 /- English proof (translation)
-Simplify using `only [coefN, Pf_LvExp_Φ_toKsD]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Pf_LvExp_Φ_coefN (Lb : LevB W) (s : ℕ) (T : LocLat G Qp LL O) (c : ZMod n) (y : ↥(W.N T))
     (k : ℤ) (ζ : Rs LL PD.p s) :
@@ -164,17 +162,17 @@ theorem Pf_LvExp_Φ_coefN (Lb : LevB W) (s : ℕ) (T : LocLat G Qp LL O) (c : ZM
   simp only [coefN, Pf_LvExp_Φ_toKsD]
 
 /- English proof (translation)
-Introduce `s a y hy`. Take `⟨m, hm⟩` from `bdd_coefN Lb s T c y`. Establish `hm' : ∀ k < m, coefN Lb s T c y k = 0` using `fun k hk => by`. Assume the negation of the conclusion as `h`. Conclude with `absurd (hm h) (not_le.2 hk)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `(HahnModule.of (KsW W s)).symm.injective` to reduce the goal to its premises. Use extensionality with `k`. Take `⟨N, hN⟩ : ∃ N : ℕ, k - m < N` from `⟨(k - m).toNat + 1, by omega⟩`. Rewrite using `[Pf_LvExp_coeff_smul _ _ m (fun k' hk' => by rw [Pf_LvExp_coeff_expN]; exact hm' k' hk') k N hN]`. Simplify using `only [Pf_LvExp_coeff_expN]`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `(Pf_LvExp_Φ W s (Dc W T c)).injective` to reduce the goal to its premises. Use function extensionality and compare the values at `ζ`. Rewrite using `[map_sum, Finset.sum_apply]`. Simplify using `only [Pf_LvExp_Φ_smul]`. Apply `Subtype.ext` to reduce the goal to its premises.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Pf_LvExp_ιV_inj (PD := PD) T` to reduce the goal to its premises. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul, map_sum, map_smul, Pf_LvExp_Φ_coefN]`. Simplify using `only [← levN_eq]`. Establish `hg : ∀ k' < m, W.levN T c ζ y k' = 0` using `fun k' hk' => by`. Rewrite using `[levN_eq, ← Pf_LvExp_Φ_coefN Lb s T c y k' ζ, hm' k' hk', map_zero]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[show (⟨_, hy⟩ : ↥(W.N T)) = (baseIdOf hR).d a • y from rfl, W.levN_smul, Pf_LvExp_finsum _ _ m hg k N hN]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `congr 1`. Establish `h` using `congrArg (PowerSeries.coeff j) (map_eval_rhoL hR c s a ζ)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[PowerSeries.coeff_map]`. Conclude with `h.symm`.
+A detailed English derivation is pending.
 -/
 theorem expSemi_holds (Lb : LevB W) (hR : Ring9 W) (T : LocLat G Qp LL O) (c : ZMod n)
     (levN_eq : ∀ (T : LocLat G Qp LL O) (i : ZMod n) (ζ : LL) (x : ↥(W.N T)) (k : ℤ),

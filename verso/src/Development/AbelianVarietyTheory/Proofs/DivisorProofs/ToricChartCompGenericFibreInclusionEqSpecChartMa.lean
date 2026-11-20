@@ -17,9 +17,9 @@ noncomputable section
 namespace GlobalTheory.LocReg
 
 /- English proof (translation)
-Establish `hx' : (ξ ≫ genι Y) (closedPoint (ChartRing k m d)) ∈ U.1` using `hx`. Establish `e1` using `Scheme.Spec_stalkClosedPointTo_fromSpecStalk (ξ ≫ genι Y)`. Establish `e2 : Y.X.fromSpecStalk ((ξ ≫ genι Y) (closedPoint (ChartRing k m d))) = Spec.map (Y.X.presheaf.germ U.1 _ hx') ≫ U.2.fromSpec` using `(U.2.fromSpecStalk_eq_fromSpecStalk hx').symm`. Rewrite `e1` using `[e2, ← Spec.map_comp_assoc, Scheme.stalkClosedPointTo_comp]`. Rewrite using `[← e1, chart]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Conclude with `(Scheme.Hom.germ_stalkMap_assoc (genι Y) U.1 (ξ (closedPoint _)) hx (Scheme.stalkClosedPointTo ξ)).trans rfl`.
+Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem comp_genι_eq_spMap_chartHom (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (Y : Model Xo c (RingHom.id c.F)) (U : Y.X.affineOpens) (k : Type) [Field k] (m d : ℕ) (ξ : Sp (ChartRing k m d) ⟶ gen Y) (hx : ξ (closedPoint _) ∈ genι Y ⁻¹ᵁ U.1) :
     ξ ≫ genι Y = spMap (GlobalTheory.LocReg.chartHom Y U ξ hx) ≫ chart U := by

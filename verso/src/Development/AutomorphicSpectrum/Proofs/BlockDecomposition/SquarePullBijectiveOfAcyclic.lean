@@ -18,7 +18,7 @@ noncomputable def incl (b : IdF A) : CH.Mor (sq b (IdF.bot A)) (CH.modF A) (Ring
     rfl
 
 /- English proof (translation)
-Take `⟨x, hx⟩` from `x`. Take `⟨y, hy, rfl⟩` from `(Ideal.mem_map_iff_of_surjective _ Ideal.Quotient.mk_surjective).1 hx`. Conclude with `hy`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem incl_mem (b : IdF A) {T : C} (x : (sq b (IdF.bot A)).obj T) : (incl b).τ T x ∈ b.S T := by
   obtain ⟨x, hx⟩ := x
@@ -26,11 +26,11 @@ theorem incl_mem (b : IdF A) {T : C} (x : (sq b (IdF.bot A)).obj T) : (incl b).�
   exact hy
 
 /- English proof (translation)
-Use `⟨fun n x y hxy => ?_, fun n y => ⟨fun hy => ?_, ?_⟩, fun n y => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `s`. Establish `h : (incl b).τ _ (x (s ⋙ 𝟭 C)) = (incl b).τ _ (y (s ⋙ 𝟭 C))` using `congrFun hxy s`. Conclude with `Subtype.ext ((AlgEquiv.quotientBot R _).injective h)`. Establish `hm : ∀ s : ComposableArrows C n, (show A.obj (s.obj (Fin.last n)) from y s) ∈ b.S (s.obj (Fin.last n))` using `fun s => by`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `congrArg Subtype.val (congrFun hy s)`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.1 h`. Conclude with `⟨fun s => sqMk b (IdF.bot A) _ (hm s), rfl⟩`. Introduce and unpack `⟨x, rfl⟩`. Use function extensionality and compare the values at `s`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Supply the required witnesses or components.
 
-Conclude with `Subtype.ext (Ideal.Quotient.eq_zero_iff_mem.2 (incl_mem b (x (s ⋙ 𝟭 C))))`. Establish `hm : ∀ s : ComposableArrows C n, ∃ t : A.obj (s.obj (Fin.last n)), Ideal.Quotient.mk _ t = (show sqM a b _ from y s).1` using `fun s => Ideal.Quotient.mk_surjective _ choose t ht using hm`. Conclude with `⟨t, funext fun s => Subtype.ext (ht s)⟩`.
+A detailed English derivation is pending.
 -/
 theorem cochain_exact (a b : IdF A) (ha : ∀ T, a.S T = ⊤) :
     (∀ n, Function.Injective ((incl b).hom.f n)) ∧
@@ -55,11 +55,11 @@ theorem cochain_exact (a b : IdF A) (ha : ∀ T, a.S T = ⊤) :
     exact ⟨t, funext fun s => Subtype.ext (ht s)⟩
 
 /- English proof (translation)
-Introduce `hv j`. Take `⟨hf, hfg, hg⟩` from `cochain_exact a b ha`. Take `⟨δ, -, -, hex, hex2, -⟩` from `CrystallineSemistableComparison.P.les _ _ hf hfg hg`. Prove the components needed by the constructor for the conclusion. Rewrite using `[injective_iff_map_eq_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities.
 
-Introduce `x hx`. Take `⟨y, rfl⟩` from `(hex j x).1 hx`. Rewrite using `[(hv j).elim y 0, map_zero]`. Introduce `y`. Take `⟨x, hx⟩` from `(hex2 j y).1 ((hv (j + 1)).elim _ _)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨x, hx⟩`.
+Supply the required witnesses or components.
 -/
 theorem pull_toSq_bijective (a b : IdF A) (ha : ∀ T, a.S T = ⊤) :
     (∀ j, Subsingleton (CH.H (sq b (IdF.bot A)) j)) →

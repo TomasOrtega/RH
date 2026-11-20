@@ -38,21 +38,21 @@ section
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Geo.Tor.Level H}
 
 /- English proof (translation)
-The claim follows from `RingHom.ext fun x => Subtype.ext (hj x).symm`.
+A detailed English derivation is pending.
 -/
 theorem inclusion_eq {A B : IntermediateField ℚ ℂ} (h : A ≤ B) (j : A →+* B) (hj : ∀ x, ((j x : B) : ℂ) = (x : ℂ)) :
     (IntermediateField.inclusion h).toRingHom = j := RingHom.ext fun x => Subtype.ext (hj x).symm
 
 /- English proof (translation)
-Establish `hL : Out.Laws` using `GlobalTheory.firstFiveLaws.1`. Take `⟨pd, J, l₂, c, c₂, -, h3, hF, hd, hM, hco, hMb, hJ, hA₂⟩` from `GlobalTheory.SpanInhab.exists_split_cover H l`. Take `⟨Xo₂⟩ : Nonempty (Moduli Dw l₂)` from `GlobalTheory.T.exists_moduli_scheme_polarized_abelian_level E H Dw l₂ h1`. Take `⟨r, jK, m, hj, hs, he, heA, -, hrF⟩` from `GlobalTheory.levelMaps_closed hL E H Dw h1 l l₂ Xo Xo₂ hd`. Take `⟨rF, h₁, h₂, hfin, -, hsur, -⟩` from `hrF c c₂ hF.symm`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨st, nab, hnab⟩` from `GlobalTheory.CanonConn.exists_isNab hL E H Dw l₂ Xo₂ c₂`. Use `⟨c, fun n => ?_⟩` and prove the remaining obligations. Set `d : DeltaDat Xo c n` to `{ pd := pd, I := J, l₂ := l₂, Xo₂ := Xo₂, c₂ := c₂, hF := hF, r := r, m := m, nab₂ := nab, cδ := 1, φδ := fun _ => 1 }`. Establish `hdiv : l₂.M / l.M = pd`. Rewrite using `[hM]; exact Nat.mul_div_cancel_left _ (by have := l.three_le; omega)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨d, h3, ⟨hd, hM, hco, hMb, hJ, ⟨?_, heA⟩, ?_, GlobalTheory.LevelCover.one_mem_sec_zero Xo₂ c₂, ?_⟩, hA₂, fun h => ?_, ⟨st, hnab⟩, rfl⟩` and prove the remaining obligations. Rewrite `he` using `[hdiv]`. Conclude with `he`. Introduce `k _ _ _ i₂ hk y`. Take `⟨x₂, hx, hs⟩` from `@GlobalTheory.LevelCover.exists_point_over E _ _ _ H Dw l l₂ Xo c Xo₂ c₂ hF.symm r rF hfin hsur h₁ h₂ k _ _ _ i₂ hk y.x y.x_over`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨y₂, -, hy⟩` from `(GlobalTheory.frames_lift_to_cover hL E H Dw l Xo c n d).1 k hk y x₂ hx hs`. Conclude with `⟨y₂, hy⟩`. Introduce `k _ _ _ y₂`. Establish `h` using `GlobalTheory.Frames.allTest_of_secBaseChange hL.secBaseChange E H Dw l₂ Xo₂ c₂ k y₂`. Establish `e : evR d.Xo₂ d.c₂ d.cδ y₂ = 1` using `evalAt_one _ _ y₂ h`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `one_ne_zero`. Conclude with `hs.trans (congrArg (fun j => Xo₂.s ≫ Geo.Tor.spMap j) (inclusion_eq h jK hj).symm)`.
+A detailed English derivation is pending.
 -/
 theorem exists_cover (Xo : Moduli Dw l) (h1 : 1 ≤ Dw.p + Dw.q) :
     ∃ c : Coeff l, ∀ n : ℕ, ∃ d : DeltaDat Xo c n, 3 < d.pd ∧ d.IsLev ∧ d.l₂.A = l.A ∧
@@ -85,7 +85,7 @@ theorem exists_cover (Xo : Moduli Dw l) (h1 : 1 ≤ Dw.p + Dw.q) :
   · exact hs.trans (congrArg (fun j => Xo₂.s ≫ Geo.Tor.spMap j) (inclusion_eq h jK hj).symm)
 
 /- English proof (translation)
-Introduce `h`. Establish `h0 : v = 0` using `funext fun y => by rw [Subsingleton.elim y 0, h]; rfl`. Establish `h1` using `hv.2.1`. Rewrite `h1` using `[h0]`. Simplify using `[ip, haar, haarAt] at h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem vac_ne_zero {r g : ℕ} {X : Data E r} {bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ} {w : E}
     {A : AddSubgroup (Matrix (Fin 0) (Fin r) E)} {v : TF 0 g} (hv : IsVac X bas w A v) : v 0 ≠ 0 := by
@@ -98,7 +98,7 @@ theorem vac_ne_zero {r g : ℕ} {X : Data E r} {bas : (Fin g ⊕ Fin g → ℤ) 
 end
 
 /- English proof (translation)
-Take `⟨E, i1, i2, i3, H, -, hD⟩` from `exists_datum_sum_and_all_signatures.2`. Take `⟨D, hp, hq⟩` from `hD p q`. Take `⟨l, hA, -⟩` from `exists_level_goodAt_all_primes_and_idx E H 1 one_pos`. Take `⟨Xo⟩ : Nonempty (Moduli D l)` from `GlobalTheory.T.exists_moduli_scheme_polarized_abelian_level E H D l (by omega)`. Conclude with `⟨E, i1, i2, i3, H, D, l, Xo, hp, hq, hA⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_moduli (p q : ℕ) (h : 1 ≤ p + q) :
     ∃ (E : Type) (_ : Field E) (_ : NumberField E) (_ : IsCMField E) (H : Host E) (Dw : Datum H)

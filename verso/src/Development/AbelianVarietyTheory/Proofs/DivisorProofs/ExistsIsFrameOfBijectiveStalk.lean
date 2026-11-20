@@ -19,19 +19,17 @@ variable {R M₁ M₂ M₃ : Type} [CommRing R] [AddCommGroup M₁] [AddCommGrou
   [Module R M₁] [Module R M₂] [Module R M₃] {f : M₁ →ₗ[R] M₂} {g : M₂ →ₗ[R] M₃}
 
 /- English proof (translation)
-Establish `h1 (a : ι ⊕ κ → R) : Fintype.linearCombination R (Sum.elim (fun i => f (e i)) t) a = f (Fintype.linearCombination R e fun i => a (.inl i)) + Fintype.linearCombination R t fun j => a (.inr j)`. Simplify using `[Fintype.linearCombination_apply, Fintype.sum_sum_type, map_sum]`. Establish `h2 (b : κ → R) : g (Fintype.linearCombination R t b) = Fintype.linearCombination R (fun j => g (t j)) b`. Simplify using `[Fintype.linearCombination_apply, map_sum]`. Establish `h3 (b : κ → R) (m m' : M₁) (h : f m + Fintype.linearCombination R t b = f m') : b = 0`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `congrArg g h` as an intermediate fact. Rewrite `this` using `[map_add, hfg.apply_apply_eq_zero, hfg.apply_apply_eq_zero, zero_add, h2]`. Conclude with `ht.1 (this.trans (map_zero _).symm)`. Prove the components needed by the constructor for the conclusion. Use `fun H => ⟨(injective_iff_map_eq_zero _).2 fun a ha => ?_, fun m => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: Sum.elim a (0 : κ → R) = 0` using `H.1 (by`. Rewrite using `[h1, map_zero]`. Express the relevant statement in the definitionally equal form `f (Fintype.linearCombination R e a) + Fintype.linearCombination R t 0 = 0`. Rewrite using `[ha, map_zero, map_zero, add_zero])`. Conclude with `funext fun i => congrFun this (.inl i)`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨a, ha⟩` from `H.2 (f m)`. Rewrite `ha` using `[h1]`. Rewrite `ha` using `[h3 _ _ _ ha, map_zero, add_zero]`. Conclude with `⟨_, hf ha⟩`. Use `fun H => ⟨(injective_iff_map_eq_zero _).2 fun a ha => ?_, fun m => ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `ha` using `[h1, ← map_zero f]`. Establish `hb` using `h3 _ _ _ ha`. Rewrite `ha` using `[hb, map_zero, add_zero]`. Establish `ha'` using `H.1 ((hf ha).trans (map_zero _).symm)`. Use function extensionality and compare the values at `k`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Break down `k with i | j` into its components or cases. Use `exacts [congrFun ha' i, congrFun hb j]`. Take `⟨b, hb⟩` from `ht.2 (g m)`. Take `⟨n, hn⟩` from `(hfg (m - Fintype.linearCombination R t b)).1 (by`. Rewrite using `[map_sub, h2, hb, sub_self])`.
-
-Take `⟨a, rfl⟩` from `H.2 n`. Conclude with `⟨Sum.elim a b, by rw [h1]; exact eq_sub_iff_add_eq.1 hn⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem bijective_sumElim_iff {ι κ : Type} [Fintype ι] [Fintype κ] (hf : Function.Injective f)
     (hfg : Function.Exact f g) (e : ι → M₁) (t : κ → M₂)
@@ -75,13 +73,13 @@ theorem bijective_sumElim_iff {ι κ : Type} [Fintype ι] [Fintype κ] (hf : Fun
       exact ⟨Sum.elim a b, by rw [h1]; exact eq_sub_iff_add_eq.1 hn⟩
 
 /- English proof (translation)
-Use `Module.Free.of_basis b` as an intermediate fact. Use `Module.Free.of_basis c` as an intermediate fact. Use `Module.Finite.of_basis b` as an intermediate fact. Use `Module.Finite.of_basis c` as an intermediate fact. Take `⟨σ, hσ⟩` from `Module.projective_lifting_property g LinearMap.id hg`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨φ, hφ, -⟩` from `hfg.splitSurjectiveEquiv hf ⟨σ, hσ⟩`. Set `π : M₂ →ₗ[R] M₁` to `LinearMap.fst R M₁ M₃ ∘ₗ φ.toLinearMap`. Establish `hπ : π ∘ₗ f = LinearMap.id`. Use extensionality with `m`. Simplify using `[π, hφ]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `: Module.Projective R M₁` using `.of_split f π hπ`. Establish `: Module.Finite R M₁` using `.of_surjective π fun m => ⟨f m, LinearMap.congr_fun hπ m⟩`. Establish `: Module.Free R M₁` using `Module.free_of_flat_of_isLocalRing`. Establish `h` using `φ.finrank_eq`. Rewrite `h` using `[Module.finrank_prod, Module.finrank_eq_card_basis b, Module.finrank_eq_card_basis c, Fintype.card_fin, Fintype.card_fin]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `⟨Module.finBasisOfFinrankEq R M₁ (by omega)⟩`.
+Supply the required witnesses or components.
 -/
 theorem nonempty_basis_of_exact [IsLocalRing R] {r s : ℕ} (hf : Function.Injective f)
     (hfg : Function.Exact f g) (hg : Function.Surjective g) (b : Module.Basis (Fin (r + s)) R M₂)
@@ -105,7 +103,7 @@ theorem nonempty_basis_of_exact [IsLocalRing R] {r s : ℕ} (hf : Function.Injec
   exact ⟨Module.finBasisOfFinrankEq R M₁ (by omega)⟩
 
 /- English proof (translation)
-Rewrite using `[← Module.Basis.is_basis_iff_det, Function.Bijective, ← linearIndependent_iff_injective_fintypeLinearCombination, ← LinearMap.range_eq_top, Fintype.range_linearCombination]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem bijective_iff_isUnit_det {ι : Type} [Fintype ι] [DecidableEq ι] (b : Module.Basis ι R M₁)
     (v : ι → M₁) : Function.Bijective (Fintype.linearCombination R v) ↔ IsUnit (b.det v) := by
@@ -117,9 +115,9 @@ end Algebra
 variable {X : Scheme.{0}} {F : X.Modules} {U : X.Opens} {ι : Type} [Fintype ι]
 
 /- English proof (translation)
-Use `choose W hW b hb using fun i => F.presheaf.exists_germ_eq (a i)`. Establish `hxV : x ∈ U ⊓ Finset.univ.inf W` using `⟨hx, by`. Rewrite using `[Opens.coe_finset_inf]`. Simplify using `using hW⟩`. Establish `hV (i : ι) : U ⊓ Finset.univ.inf W ≤ W i` using `inf_le_right.trans (Finset.inf_le (Finset.mem_univ i))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Supply the required witnesses or components.
 
-Conclude with `⟨_, inf_le_left, hxV, fun i => resM F (hV i) (b i), fun i => by rw [germ_resM, hb]⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_germ_eq_family {x : X} (hx : x ∈ U) (a : ι → (F.presheaf.stalk x :)) :
     ∃ (V : X.Opens) (_ : V ≤ U) (hV : x ∈ V) (e : ι → Γ(F, V)),
@@ -132,9 +130,9 @@ theorem exists_germ_eq_family {x : X} (hx : x ∈ U) (a : ι → (F.presheaf.sta
   exact ⟨_, inf_le_left, hxV, fun i => resM F (hV i) (b i), fun i => by rw [germ_resM, hb]⟩
 
 /- English proof (translation)
-Rewrite using `[Module.Basis.det_apply, Module.Basis.det_apply]`. Use `(RingHom.map_det (X.presheaf.germ U x hx).hom _).trans ?_` and prove the remaining obligations. Use `congr 1`. Use extensionality with `i j`. Rewrite using `[Module.Basis.toMatrix_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use `conv_rhs => rw [← (he.basis le_rfl).sum_repr (v j)]`. Simplify using `only [map_sum, QCoh.germ_smul, IsFrame.basis_apply, resM_self]`. Simplify using `only [← he.stalkBasis_apply x hx]`. Rewrite using `[← map_sum, Module.Basis.repr_sum_self]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem germ_det [DecidableEq ι] {e : ι → Γ(F, U)} (he : IsFrame e) (v : ι → Γ(F, U)) {x : X}
     (hx : x ∈ U) : X.presheaf.germ U x hx ((he.basis le_rfl).det v) =
@@ -151,7 +149,7 @@ theorem germ_det [DecidableEq ι] {e : ι → Γ(F, U)} (he : IsFrame e) (v : ι
   rfl
 
 /- English proof (translation)
-Rewrite `hv` using `[bijective_iff_isUnit_det (he.stalkBasis x hx), ← germ_det he]`. Use `⟨X.basicOpen ((he.basis le_rfl).det v), X.basicOpen_le _, (X.mem_basicOpen _ x hx).2 hv, fun V h => ?_⟩` and prove the remaining obligations. Simplify using `only [resM_resM]`. Rewrite using `[bijective_iff_isUnit_det (he.basis ((h.trans (X.basicOpen_le _)).trans le_rfl)), ← he.resG_det, ← resG_resG (X.basicOpen_le _) h]`. Conclude with `(X.toRingedSpace.isUnit_res_basicOpen _).map _`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isFrame_of_bijective_stalk {e : ι → Γ(F, U)} (he : IsFrame e) (v : ι → Γ(F, U))
     {x : X} (hx : x ∈ U) (hv : Function.Bijective (Fintype.linearCombination (X.presheaf.stalk x)
@@ -173,19 +171,19 @@ namespace GlobalTheory.VB
 open Ker
 
 /- English proof (translation)
-Introduce `X S r s hS h₂ h₃ x`. Use `hS.mono_f` as an intermediate fact. Use `hS.epi_g` as an intermediate fact. Use `h₂.isQuasicoherent` as an intermediate fact. Use `h₃.isQuasicoherent` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨U₀, b₀, hx₀, hb₀⟩` from `h₂ x`. Take `⟨U, c, hU, hx, hle, hc⟩` from `h₃.exists_affine hx₀`. Use `choose t ht using fun j => QCoh.surjective_app_of_epi S.g hU (c j)`. Establish `hex` using `(QCoh.exact_iff_stalkLinear S).1 hS.exact x`. Take `⟨β⟩` from `nonempty_basis_of_exact (QCoh.stalkLinear_injective S.f x) hex (QCoh.stalkLinear_surjective S.g x) (hb₀.stalkBasis x hx₀) (hc.stalkBasis x hx)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨V, hV, hxV, e, he⟩` from `exists_germ_eq_family hx β`. Establish `hb` using `(hb₀.res (hV.trans hle)).comp_equiv finSumFinEquiv`. Take `⟨W, hW, hxW, hv⟩` from `exists_isFrame_of_bijective_stalk hb (Sum.elim (fun i => S.f.app V (e i)) fun j => resM S.X₂ hV (t j)) hxV (by`. Use `(bijective_sumElim_iff (QCoh.stalkLinear_injective S.f x) hex β (fun j => S.X₂.presheaf.germ U x hx (t j)) (by` as an intermediate fact. Simplify using `only [QCoh.stalkLinear_germ, ht]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hc.bijective_stalk x hx)).2 (by`. Rewrite using `[Function.Bijective, ← linearIndependent_iff_injective_fintypeLinearCombination, ← LinearMap.range_eq_top, Fintype.range_linearCombination]`. Conclude with `⟨β.linearIndependent, β.span_eq⟩)`. Use `this using 3` and compare the differences between its conclusion and the goal. Both sides reduce to the same expression.
+Supply the required witnesses or components. Apply an available result and prove the equalities needed to match it to the conclusion. Both sides reduce to the same expression. Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis.
 
-Use function extensionality and compare the values at `k`. Break down `k with i | j` into its components or cases. Rewrite using `[Sum.elim_inl, Sum.elim_inl, ← he, QCoh.stalkLinear_germ]`. Rewrite using `[Sum.elim_inr, Sum.elim_inr, germ_resM])`. Use `⟨W, fun i => resM S.X₁ hW (e i), hxW, fun T hT => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `(bijective_sumElim_iff (f := appLinear S.f T) (g := appLinear S.g T) (QCoh.injective_app_of_mono S.f T) (QCoh.exact_app_of_exact_of_mono hS.exact T) _ (fun j => resM S.X₂ ((hT.trans hW).trans hV) (t j)) ?_).1 ?_` and prove the remaining obligations. Simplify using `only [appLinear_apply, app_resM, ht]`. Conclude with `hc T _`. Use `hv T hT using 3` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `k`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Break down `k with i | j` into its components or cases. Simplify using `only [Sum.elim_inl, appLinear_apply, app_resM]`. Simplify using `only [Sum.elim_inr, resM_resM]`.
+A detailed English derivation is pending.
 -/
 theorem isVB_X₁_of_shortExact : ∀ (X : Scheme.{0}) (S : ShortComplex X.Modules) (r s : ℕ),
     S.ShortExact → IsVB S.X₂ (r + s) → IsVB S.X₃ s → IsVB S.X₁ r := by

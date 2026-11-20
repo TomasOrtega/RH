@@ -17,11 +17,11 @@ noncomputable section
 namespace GlobalTheory.FunObj
 
 /- English proof (translation)
-Introduce `D T L sc G hWC μ₀ hL W B ρ t i j hT M hM Θ Θ' hΘ g₁ g`. Establish `hHF : GlobalTheory.SquareComm.IsHaarFD _ (M.ν (.grid (i + 1) (j + 1))) (M.fd (.grid (i + 1) (j + 1)))` using `(hM.vtx (.grid (i + 1) (j + 1)) ⟨i.2, j.2⟩).haar_fund`. Take `⟨p, hsig, hrk⟩` from `GlobalTheory.T.squareThetaTriple_exists_signature_rank_add_lt W t i j hT M hM`. Establish `key : ∀ d ∈ Θ.support, Integrable (fun u => Θ d * (W.kerA (.right i (j + 1)) d.1.2 g u * W.kerA (.down t (i + 1) j) d.2 u g₁)) ((M.ν (.grid (i + 1) (j + 1))).restrict (M.fd (.grid (i + 1) (j + 1))))`. Introduce `d hd`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨ε, X, χ, χ', ω, hω, hX, Φ, hΦ, h, c, he⟩` from `GlobalTheory.T.routeBigVertex_kernelProduct_eq_const_mul_thetaKernel hL W B ρ t i j hT M hM Θ Θ' hΘ d hd g g₁`. Take `⟨N, C, hmi⟩` from `hWC D W.ψ W.θ W.θ_is ε _ X χ χ' ω hω p hsig (hX ▸ hrk) _ _ hHF Φ hΦ`. Use `Integrable.const_mul ?_ _` and prove the remaining obligations. Repeatedly rewrite using `[he]`. Conclude with `((hmi h).1).const_mul c`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact.
 
-Establish `e : kerBig W Θ g g₁ = fun u => ∑ d ∈ Θ.support, Θ d * (W.kerA (.right i (j + 1)) d.1.2 g u * W.kerA (.down t (i + 1) j) d.2 u g₁)`. Use function extensionality and compare the values at `u`. Both sides reduce to the same expression. Rewrite using `[IntegrableOn, e]`. Conclude with `integrable_finsetSum _ key`.
+Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem routeBig_kerBig_integrableOn : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} (hWC : GlobalTheory.SquareSt.WeilConvergence) {μ₀ : T} (hL : L.Is μ₀)
     (W : G.Weil) (B : Frames G) (ρ : RealMatch W) (t : T) (i j : Fin D.R.m) (hT : SquareTriple W t i j)

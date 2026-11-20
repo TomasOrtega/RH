@@ -8,11 +8,11 @@ noncomputable section
 namespace GlobalTheory.KZ.Cmp
 
 /- English proof (translation)
-Rewrite using `[← Finset.sum_filter_of_ne (p := IsUnit) (fun a _ h => by`. Assume the negation of the conclusion as `hu; exact h (by rw [MulChar.map_nonunit ψ hu, zero_mul]))]`. Use `(Finset.sum_nbij' (fun b : (ZMod n)ˣ => (b : ZMod n)) (fun a => if h : IsUnit a then h.unit else 1) ?_ ?_ ?_ ?_ ?_).symm` and prove the remaining obligations. Introduce `b _`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `a _`. Simplify using the standard rewrite rules. Introduce `b _`. Simplify using the standard rewrite rules. Introduce `a ha`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hu : IsUnit a` using `(Finset.mem_filter.1 ha).2`. Simplify using `[hu]`. Introduce `b _`. Both sides reduce to the same expression.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression.
 -/
 theorem sum_mulChar_eq_sum_units {K : Type} [CommRing K] {n : ℕ} (ψ : MulChar (ZMod n) K)
     (f : ZMod n → K) [Fintype (ZMod n)] :
@@ -31,13 +31,13 @@ theorem sum_mulChar_eq_sum_units {K : Type} [CommRing K] {n : ℕ} (ψ : MulChar
   · intro b _; rfl
 
 /- English proof (translation)
-Introduce `l _ m z ψ hz hψ`. Use `haveI : NeZero (l ^ m) := ⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩`. Set `e : AddChar (ZMod (l ^ m)) (Qbar l)` to `AddChar.zmodChar (l ^ m) hz.pow_eq_one`. Establish `he : e.IsPrimitive` using `AddChar.zmodChar_primitive_of_primitive_root (l ^ m) hz`. Establish `h1 : gSum m z ψ = gaussSum ψ e`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `gSum gaussSum`. Rewrite using `[sum_mulChar_eq_sum_units]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[AddChar.zmodChar_apply]`. Establish `h2 : gSum m z⁻¹ ψ⁻¹ = gaussSum ψ⁻¹ e⁻¹`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `gSum gaussSum`. Rewrite using `[sum_mulChar_eq_sum_units]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[AddChar.inv_apply', AddChar.zmodChar_apply, inv_pow]`. Rewrite using `[h1, h2, GlobalTheory.KummerEisensteinGalois.gaussSum_mul_gaussSum_inv_prim hψ he]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem gSum_mul_gSum_inv_prim : ∀ (l : ℕ) [Fact l.Prime] (m : ℕ) (z : Qbar l)
     (ψ : DirichletCharacter (Qbar l) (l ^ m)), IsPrimitiveRoot z (l ^ m) → ψ.IsPrimitive →

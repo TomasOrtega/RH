@@ -6,9 +6,9 @@ open NumberField
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `K _ _ p m n ell M v hv 𝔟 h𝔟 hell hinj hind`. Take `⟨β, hβ, hβ0⟩` from `(Submodule.ne_bot_iff 𝔟).1 h𝔟`. Use `hind.linearIndependent _ (fun a => ?_) (fun a => ?_)` and prove the remaining obligations. Establish `hmem : M a (β • v) ∈ Submodule.span K ((ell.map ((M a).restrictScalars (𝓞 K)) : Submodule (𝓞 K) (Fin n → K)) : Set (Fin n → K))` using `Submodule.subset_span ⟨β • v, (hell _).2 ⟨β, hβ, rfl⟩, rfl⟩`. Establish `: M a v = β⁻¹ • M a (β • v)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[map_smul, smul_smul, inv_mul_cancel₀ hβ0, one_smul]`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ hmem`. Introduce `h`. Conclude with `hv ((hinj a) (by rw [h, map_zero]))`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem linearIndependent_images_of_rankOne_lattice :
     ∀ {K : Type} [Field K] [NumberField K] {p m n : ℕ} (ell : Submodule (𝓞 K) (Fin m → K))

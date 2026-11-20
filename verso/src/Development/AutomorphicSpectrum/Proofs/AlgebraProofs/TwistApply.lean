@@ -15,7 +15,7 @@ def act (k : Type) {K V O : Type} [Field K] [AddCommGroup V] [Module K V] [CommR
   (actMap (k := k) ρ).toRingHom
 
 /- English proof (translation)
-The claim follows from `actMap_tmul ρ c a`.
+A detailed English derivation is pending.
 -/
 theorem act_tmul (k : Type) {K V O : Type} [Field K] [AddCommGroup V] [Module K V] [CommRing O]
     [Field k] [Algebra k K] (ρ : O →+* Module.End K V) (c : k) (a : O) :
@@ -63,7 +63,7 @@ def frobT (k O : Type) [Field k] [CommRing O] (p : ℕ) [Fact p.Prime] [CharP k 
   (Algebra.TensorProduct.map (frobenius k p).toIntAlgHom (AlgHom.id ℤ O)).toRingHom
 
 /- English proof (translation)
-Simplify using `[frobT, frobenius_def]`.
+Simplify using the standard rewrite rules.
 -/
 theorem frobT_tmul (k O : Type) [Field k] [CommRing O] (p : ℕ) [Fact p.Prime] [CharP k p] (c : k)
     (a : O) : frobT k O p (c ⊗ₜ[ℤ] a) = (c ^ p) ⊗ₜ[ℤ] a := by
@@ -73,7 +73,7 @@ def chiT {k O : Type} [Field k] [CommRing O] (χ : O →+* k) : TensorProduct �
   Algebra.TensorProduct.lift (AlgHom.id k k) χ.toIntAlgHom (fun _ _ => Commute.all _ _)
 
 /- English proof (translation)
-Simplify using `[chiT]`.
+Simplify using the standard rewrite rules.
 -/
 theorem chiT_tmul {k O : Type} [Field k] [CommRing O] (χ : O →+* k) (c : k) (a : O) :
     chiT χ (c ⊗ₜ[ℤ] a) = c * χ a := by

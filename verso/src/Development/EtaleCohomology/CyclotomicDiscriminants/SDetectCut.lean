@@ -6,11 +6,11 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual UpperTheory.V.ZK
 namespace LateralTheory.Q.SDetectCut
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Apply `hq` to reduce the goal to its premises. Establish `h0 : ∑ i ∈ Finset.range q, η ^ i = 0`. Use `mul_geom_sum η q` as an intermediate fact. Rewrite `this` using `[hη, sub_self]`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(mul_eq_zero.1 this).resolve_left (sub_ne_zero.2 hne)`. Establish `h2 : Ideal.Quotient.mk P η = 1`. Rewrite using `[← map_one (Ideal.Quotient.mk P), Ideal.Quotient.eq]`. Conclude with `h1`. Establish `h3` using `congrArg (Ideal.Quotient.mk P) h0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_sum, map_pow, h2, one_pow, Finset.sum_const, Finset.card_range, nsmul_eq_mul, mul_one, map_zero] at h3`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_natCast]`. Conclude with `h3`.
+A detailed English derivation is pending.
 -/
 theorem root_eq_one {R : Type} [CommRing R] [IsDomain R] (P : Ideal R) (q : ℕ) (η : R) (hη : η ^ q = 1)
     (h1 : η - 1 ∈ P) (hq : (q : R) ∉ P) : η = 1 := by
@@ -30,9 +30,9 @@ theorem root_eq_one {R : Type} [CommRing R] [IsDomain R] (P : Ideal R) (q : ℕ)
   exact h3
 
 /- English proof (translation)
-Introduce `y`. Establish `: Fact (Nat.card k).Prime` using `⟨hp⟩`. Establish `: Finite k` using `Nat.finite_of_card_ne_zero hp.ne_zero`. Establish `: Nontrivial k` using `Finite.one_lt_card_iff_nontrivial.1 hp.one_lt`. Take `⟨n, hn⟩` from `mem_zmultiples_of_prime_card (G := k) (p := Nat.card k) rfl (g := 1) (g' := y) one_ne_zero`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨n, by simpa using hn⟩`.
+Supply the required witnesses or components.
 -/
 theorem surj_of_prime {A k : Type} [CommRing A] [CommRing k] (f : A →+* k) (hp : (Nat.card k).Prime) :
     Function.Surjective f := by
@@ -47,7 +47,7 @@ variable {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω]
 
 omit [NumberField F] in
 /- English proof (translation)
-Establish `hz : IsIntegral ℤ (algebraMap F Ω (x : F))` using `x.isIntegral_coe.map (algebraMap F Ω).toIntAlgHom`. Conclude with `(Valuation.integer.integers B.valuation).mem_of_integral hz.tower_top`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem val_le (B : ValuationSubring Ω) (x : 𝓞 F) : B.valuation (algebraMap F Ω (x : F)) ≤ 1 := by
   have hz : IsIntegral ℤ (algebraMap F Ω (x : F)) := x.isIntegral_coe.map (algebraMap F Ω).toIntAlgHom
@@ -56,25 +56,23 @@ theorem val_le (B : ValuationSubring Ω) (x : 𝓞 F) : B.valuation (algebraMap 
 omit [NumberField F] in
 
 /- English proof (translation)
-Establish `: NeZero q` using `⟨hq0⟩`. Set `ι : 𝓞 F →+* Ω` to `(algebraMap F Ω).comp (algebraMap (𝓞 F) F)`. Establish `hι : ∀ y : 𝓞 F, ι y = algebraMap F Ω (y : F)` using `fun _ => rfl`. Establish `hinj : Function.Injective ι` using `(algebraMap F Ω).injective.comp (RingOfIntegers.coe_injective)`. Establish `hone : ∀ y : 𝓞 F, y ∉ v.asIdeal → B.valuation (ι y) = 1` using `fun y hy => le_antisymm (val_le B y) (not_lt.1 fun h => hy ((hB y).1 h))`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hζ' : IsPrimitiveRoot (ι ζ) q` using `hζ.map_of_injective hinj`. Establish `h1 : B.valuation (x ^ q - ι t ^ q) < 1`. Establish `e : (x ^ q - ι t ^ q) * ι b = ι (a - t ^ q * b)`. Rewrite using `[hx, map_sub, map_mul, map_pow, sub_mul, hι a, hι b, ← hab, map_mul]`. Use `(hB _).2 hc` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[← hι, ← e, map_mul, hone b hb, mul_one]`. Conclude with `this`. Take `⟨i, hi⟩ : ∃ i : ℕ, B.valuation (x - ι (ζ ^ i * t)) < 1` from `by by_contra! h`. Establish `e` using `congrArg (Polynomial.eval x) (X_pow_sub_C_eq_prod hζ' (Nat.pos_of_ne_zero hq0) (rfl : ι t ^ q = ι t ^ q))`. Simplify using `only [Polynomial.eval_sub, Polynomial.eval_pow, Polynomial.eval_X, Polynomial.eval_C, Polynomial.eval_prod] at e`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[e, map_prod]`. Use `absurd h1 (not_lt.2 (Finset.one_le_prod' fun i _ => ?_))` and prove the remaining obligations. Use `h i` as an intermediate fact. Rewrite `this` using `[map_mul, map_pow]`. Then use the resulting hypothesis. Use `set c := ζ ^ i * t with hcdef`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcv : c ∉ v.asIdeal` using `fun h => ht ((v.isPrime.mem_or_mem h).resolve_left fun h' => v.isPrime.ne_top (Ideal.eq_top_of_isUnit_mem _ h' ((hζ.isUnit hq0).pow i)))`. Establish `hxv : B.valuation x = 1`. Rewrite using `[← hone c hcv]`. Conclude with `Valuation.map_eq_of_sub_lt _ (by rw [hone c hcv]; exact hi)`. Establish `h2 : B.valuation (σ (x - ι c)) < 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : σ (x - ι c) = (σ (x - ι c) - (x - ι c) ^ N) + (x - ι c) ^ N` using `by ring`. Rewrite using `[e]`. Use `Valuation.map_add_lt _ (hσ.2 _ hi.le) ?_` and prove the remaining obligations. Rewrite using `[map_pow]`. Conclude with `pow_lt_one' hi hN`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `h3 : B.valuation (σ x - x) < 1`. Establish `e : σ x - x = σ (x - ι c) - (x - ι c)`. Rewrite using `[map_sub, hι, AlgEquiv.commutes]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `Valuation.map_sub_lt _ h2 hi`. Establish `hx0 : x ≠ 0`. Introduce and unpack `rfl`. Simplify using `at hxv`. Establish `h4 : (σ x / x) ^ q = 1`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[div_pow, ← map_pow, hx, AlgEquiv.commutes, ← hx, div_self (pow_ne_zero _ hx0)]`. Take `⟨j, -, hj⟩` from `hζ'.eq_pow_of_pow_eq_one h4`. Establish `h5 : σ x = ι (ζ ^ j) * x` using `by rw [map_pow, hj, div_mul_cancel₀ _ hx0]`. Establish `h6 : ζ ^ j - 1 ∈ v.asIdeal`. Rewrite using `[← hB, ← hι]`.
-
-Establish `e : σ x - x = ι (ζ ^ j - 1) * x` using `by rw [h5, map_sub, map_one]; ring`. Rewrite `h3` using `[e, map_mul, hxv, mul_one]`. Then use the resulting hypothesis. Establish `h7 : ζ ^ j = 1` using `root_eq_one v.asIdeal q _ (by rw [← pow_mul, mul_comm, pow_mul, hζ.pow_eq_one, one_pow]) h6 hq`. Rewrite using `[h5, h7, map_one, one_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frob_fix {v : HeightOneSpectrum (𝓞 F)} {B : ValuationSubring Ω} (hB : IsPlaceOver B v) {N : ℕ} (hN : N ≠ 0)
     {σ : G F Ω} (hσ : IsFrob B N σ) {q : ℕ} (hq0 : q ≠ 0) (hq : (q : 𝓞 F) ∉ v.asIdeal) {ζ : 𝓞 F}
@@ -135,19 +133,19 @@ theorem frob_fix {v : HeightOneSpectrum (𝓞 F)} {B : ValuationSubring Ω} (hB 
   rw [h5, h7, map_one, one_mul]
 
 /- English proof (translation)
-Introduce `L F _ _ _ _ _ l ν hl ζ hζ β b hb H`. Establish `hq0 : l ^ ν ≠ 0` using `pow_ne_zero _ hl.ne_zero`. Generalize the expression as in `l ^ ν = q at *`. Set `Ω` to `AlgebraicClosure F`. Take `⟨x, hx⟩` from `IsAlgClosed.exists_pow_nat_eq (algebraMap F Ω (β : F)) (Nat.pos_of_ne_zero hq0)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Establish `hS : {v : HeightOneSpectrum (𝓞 F) | b * (q : 𝓞 F) ∈ v.asIdeal}.Finite`. Repeatedly rewrite using `[← Ideal.dvd_span_singleton]`. Conclude with `Ideal.finite_factors (by simp [hb, hq0])`. Establish `: IsGalois F Ω` using `{}`. Establish `hfix : ∀ g : Ω ≃ₐ[F] Ω, g x = x`.
+Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g`. Establish `hV : IsOpen {σ : G F Ω | σ x = g x}`. Establish `h1 : IsOpen (MulAction.stabilizer (Ω ≃ₐ[F] Ω) x : Set (Ω ≃ₐ[F] Ω))` using `stabilizer_isOpen_of_isIntegral x`. Establish `h2` using `h1.preimage (continuous_const_mul g⁻¹)`. Use `h2 using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components.
 
-Use extensionality with `σ`. Simplify using `only [Set.mem_ofPred_eq, Set.mem_preimage, SetLike.mem_coe, MulAction.mem_stabilizer_iff, mul_smul, inv_smul_eq_iff]`. Both sides reduce to the same expression. Take `⟨σ, hσV, v, hv, hd, B, hB, hσ⟩` from `(GlobalTheory.Published.ChebotarevDegreeOne.dense (F := F) (Ω := Ω) GlobalTheory.Published.chebotarevDegreeOne' hS).inter_open_nonempty _ hV ⟨g, rfl⟩`. Establish `hp : (Nat.card (𝓞 F ⧸ v.asIdeal)).Prime`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `((GlobalTheory.absNorm_prime_iff_inertiaDeg_eq_one_and_finite_ramified F).1 v).2 hd` as an intermediate fact. Rewrite `this` using `[Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Then use the resulting hypothesis. Use `v.isMaximal` as an intermediate fact. Take `⟨s, a, b', hb', hab, hr⟩` from `H v (fun h => hv (Ideal.mul_mem_right _ _ h)) (surj_of_prime _ hp)`. Set `` to `Ideal.Quotient.field v.asIdeal`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Take `⟨t, ht⟩` from `Ideal.Quotient.mk_surjective (s : 𝓞 F ⧸ v.asIdeal)`. Rewrite using `[← hσV]`. Use `frob_fix hB hp.ne_zero hσ hq0 (fun h => hv (Ideal.mul_mem_left _ _ h)) (IsPrimitiveRoot.coe_units_iff.2 hζ) hx (a := a) (b := b') (t := t) (fun h => hb' (Ideal.Quotient.eq_zero_iff_mem.2 h)) (fun h => s.ne_zero (ht ▸ Ideal.Quotient.eq_zero_iff_mem.2 h)) hab ?_` and prove the remaining obligations. Rewrite using `[← Ideal.Quotient.eq, map_mul, map_pow, ht, hr, Units.val_pow_eq_pow_val]`. Take `⟨δ, hδ⟩` from `(InfiniteGalois.mem_range_algebraMap_iff_fixed x).2 hfix`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hd : (β : F) = δ ^ q` using `(algebraMap F Ω).injective (by rw [map_pow, hδ, hx])`. Establish `h0 : δ ≠ 0`. Introduce and unpack `rfl`. Conclude with `β.ne_zero (by rw [hd, zero_pow hq0])`. Conclude with `⟨Units.mk0 δ h0, Units.ext (by simpa using hd)⟩`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem goal : SDetect := by
   intro L F _ _ _ _ _ l ν hl ζ hζ β b hb H

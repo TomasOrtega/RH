@@ -98,7 +98,7 @@ def genMap {M N : Model l K} (u : M.X ⟶ N.X) (hu : u ≫ N.p = M.p) : M.gen �
   pullback.lift (pullback.fst _ _ ≫ u) (pullback.snd _ _) (by rw [Category.assoc, hu, pullback.condition])
 
 /- English proof (translation)
-The claim follows from `pullback.lift_snd _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem genMap_q {M N : Model l K} (u : M.X ⟶ N.X) (hu : u ≫ N.p = M.p) : genMap u hu ≫ N.q = M.q := pullback.lift_snd _ _ _
 

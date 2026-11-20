@@ -18,13 +18,13 @@ noncomputable section
 namespace VarWirtinger
 
 /- English proof (translation)
-Establish `hφ : ContDiffAt ℝ 2 (euclPot : (Fin n → ℂ) → ℝ) (s y)` using `(contDiff_euclPot n).contDiffAt.of_le (WithTop.coe_le_coe.2 le_top)`. Use `set M := ReciprocityTheory.AnForm.A.jacC s y with hM`. Establish `hH : hessC ((euclPot : (Fin n → ℂ) → ℝ) ∘ s) y = Mᵀ * M.map (starRingEnd ℂ)`. Rewrite using `[ReciprocityTheory.AnForm.A.hessC_comp _ s y hs hφ, TubeFormComparison.hessC_euclPot, Matrix.mul_one]`. Establish `hdet : (Mᵀ * M.map (starRingEnd ℂ)).det = starRingEnd ℂ (Mᴴ * M).det`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[RingHom.map_det]`. Use `congr 1`. Use extensionality with `i j`. Simplify using `[Matrix.mul_apply, mul_comm]`. Establish `hnn : 0 ≤ (Mᴴ * M).det` using `(Matrix.posSemidef_conjTranspose_mul_self M).det_nonneg`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hre : (starRingEnd ℂ (Mᴴ * M).det).re = ‖(Mᴴ * M).det‖`. Take `⟨h1, h2⟩` from `Complex.nonneg_iff.1 hnn`. Establish `e : (Mᴴ * M).det = (((Mᴴ * M).det.re : ℝ) : ℂ)` using `Complex.ext rfl (by simp [← h2])`. Rewrite using `[e, Complex.conj_ofReal, Complex.ofReal_re, Complex.norm_real, Real.norm_of_nonneg h1]`. Rewrite using `[SheetComassAlt.sheetJac_eq_norm_det s y hs.differentiableAt, ← hre, ← hdet, ← hH]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `maDens`. Rewrite using `[ReciprocityTheory.AnForm.A.mdisc_const]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem maDens_euclPot_comp {n D : ℕ} (s : (Fin D → ℂ) → Fin n → ℂ) (y : Fin D → ℂ)
     (hs : AnalyticAt ℂ s y) :
@@ -54,73 +54,61 @@ end VarWirtinger
 open VarWirtinger in
 
 /- English proof (translation)
-Introduce `d`. Take `⟨cH, hcH⟩` from `SheetAreaCompare.exists_lintegral_volume_eq (d + 1)`. Use `set κ : ℝ := ((d + 1).factorial : ℝ) * (2 / Real.pi) ^ (d + 1) with hκ`. Establish `hκ0 : 0 < κ` using `by positivity`. Establish `hcH0 : cH ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h0`. Establish `h1` using `hcH (fun _ => 1)`. Rewrite `h1` using `[h0, ENNReal.coe_zero, zero_mul, lintegral_const, one_mul, Measure.measure_univ_eq_zero]`. Conclude with `(NeZero.ne (volume : Measure (Fin (d + 1) → ℂ))) h1`. Establish `hcHpos : (0 : ℝ) < cH` using `by exact_mod_cast pos_iff_ne_zero.2 hcH0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨1 / (κ * cH), by positivity, ?_⟩` and prove the remaining obligations. Introduce `n J A hJ hdim hA B hBm hBb`. Take `⟨P, U, Dk, N, s, hP, hUD, hdisj, hcomp, hvol, hfib⟩` from `hDSC n (d + 1) J A hJ hdim hA`. Use `set g : (Fin n → ℂ) → ℝ := ((fun x => WithLp.toLp 2 x) ⁻¹' B).indicator fun _ => 1 with hg`. Use `set f := chartDens J A g (fun _ => euclPot) with hf`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hgm : Measurable g` using `measurable_const.indicator (hBm.preimage (PiLp.continuous_toLp 2 _).measurable)`. Establish `hfm : Measurable f` using `(SheetSumMeasurable.proof n (d + 1) J A g _ hJ hdim hA hgm (fun _ => smoothNear_of_contDiff (contDiff_euclPot n))).1`. Establish `hterm : ∀ x y, x ∈ fibre J A y → ∀ h : ∃ s, IsSheetAt J A x s, maDens (fun _ : Fin (d + 1) => (euclPot : (Fin n → ℂ) → ℝ) ∘ h.choose) y = κ * sheetJac h.choose y`. Introduce `x y hx h`. Take `⟨V, hV, hyV, hsd, -, -, -⟩` from `h.choose_spec`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite `hyV` using `[hx.2]`. Conclude with `maDens_euclPot_comp _ _ (IndefiniteRowSideFullHecke.ComplexSets.analyticOnNhd_of_differentiableOn hV hsd _ hyV)`. Establish `hf0 : ∀ y, 0 ≤ f y`. Introduce `y`. Simplify using `only [hf, chartDens, sheetSum]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `finsum_nonneg fun x => finsum_nonneg fun hx => ?_` and prove the remaining obligations. Use `split_ifs with h`. Rewrite using `[hterm x y hx h]`. Conclude with `mul_nonneg (Set.indicator_nonneg (fun _ _ => zero_le_one) _) (mul_nonneg hκ0.le (sheetJac_nonneg _ _))`. Conclude with `le_rfl`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Establish `hsec : ∀ k j, ∀ y ∈ U k, A *ᵥ s k j y = y ∧ s k j y ∈ zeroSet J`. Introduce `k j y hy`. Establish `hx : s k j y ∈ fibre J A y` using `(hfib k y hy).1 ▸ ⟨j, rfl⟩`. Conclude with `⟨hx.2, hx.1⟩`. Establish `hDk : ∀ k, ∀ y ∈ Dk k, f y = ∑ j : Fin (N k), g (s k j y) * (κ * sheetJac (s k j) y)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `k y hy`. Take `⟨hfibeq, hinj, hsh⟩` from `hfib k y ((hUD k).2.2.1 hy)`. Simplify using `only [hf, chartDens, sheetSum]`. Rewrite using `[hfibeq, finsum_mem_range hinj, finsum_eq_sum_of_fintype]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h : ∃ s', IsSheetAt J A (s k j y) s'` using `⟨_, hsh j⟩`. Rewrite using `[dif_pos h]`. Establish `hxf : s k j y ∈ fibre J A y` using `hfibeq ▸ ⟨j, rfl⟩`. Rewrite using `[hterm _ _ hxf h]`. Establish `heq` using `SheetSumMeasurable.sheet_eventuallyEq (hsh j) h.choose_spec`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite `heq` using `[hxf.2]`. Rewrite using `[sheetJac, sheetJac, heq.fderiv_eq]`. Use `set E : ∀ k, Fin (N k) → Set (Fin (d + 1) → ℂ) := fun k j => Dk k ∩ {y | WithLp.toLp 2 (s k j y) ∈ B} with hE`. Use `set E' : ∀ k, Fin (N k) → Set (EuclideanSpace ℂ (Fin (d + 1))) := fun k j => WithLp.ofLp ⁻¹' E k j with hE'`. Use `set T : ∀ k, Fin (N k) → EuclideanSpace ℂ (Fin (d + 1)) → EuclideanSpace ℂ (Fin n) := fun k j y => WithLp.toLp 2 (s k j (WithLp.ofLp y)) with hT`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Use `set S : ∀ k, Fin (N k) → Set (EuclideanSpace ℂ (Fin n)) := fun k j => T k j '' E' k j with hS`. Establish `hEm : ∀ k j, MeasurableSet (E k j)`. Introduce `k j`. Establish `hpm : Measurable ((U k).piecewise (s k j) fun _ => 0)` using `((hUD k).2.2.2 j).continuousOn.measurable_piecewise continuousOn_const (hUD k).1.measurableSet`. Establish `e : E k j = Dk k ∩ ((U k).piecewise (s k j) fun _ => 0) ⁻¹' ((fun x => WithLp.toLp 2 x) ⁻¹' B)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use extensionality with `y`. Simplify using `only [hE, Set.mem_inter_iff, Set.mem_setOf_eq, Set.mem_preimage]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hy, hB⟩`. Conclude with `⟨hy, by rw [Set.piecewise_eq_of_mem _ _ _ ((hUD k).2.2.1 hy)]; exact hB⟩`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `⟨hy, hB⟩`. Conclude with `⟨hy, by rw [Set.piecewise_eq_of_mem _ _ _ ((hUD k).2.2.1 hy)] at hB; exact hB⟩`. Rewrite using `[e]`. Conclude with `(hUD k).2.1.inter (hpm (hBm.preimage (PiLp.continuous_toLp 2 _).measurable))`. Establish `hE'm : ∀ k j, MeasurableSet (E' k j)` using `fun k j => (hEm k j).preimage (PiLp.continuous_ofLp 2 _).measurable`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hE'U : ∀ k j, ∀ y ∈ E' k j, WithLp.ofLp y ∈ U k` using `fun k j y hy => (hUD k).2.2.1 hy.1`. Establish `hSm : ∀ k j, MeasurableSet (S k j)`. Introduce `k j`. Use `(hE'm k j).image_of_continuousOn_injOn ?_ ?_` and prove the remaining obligations. Conclude with `(PiLp.continuous_toLp 2 _).comp_continuousOn (((hUD k).2.2.2 j).continuousOn.comp (PiLp.continuous_ofLp 2 _).continuousOn (hE'U k j))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `y₁ h₁ y₂ h₂ h12`. Establish `h' : s k j (WithLp.ofLp y₁) = s k j (WithLp.ofLp y₂)` using `WithLp.toLp_injective 2 h12`. Establish `e₁` using `(hsec k j _ (hE'U k j y₁ h₁)).1`. Establish `e₂` using `(hsec k j _ (hE'U k j y₂ h₂)).1`. Conclude with `WithLp.ofLp_injective 2 (by rw [← e₁, ← e₂, h'])`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hArea : ∀ k j, μH[((2 * (d + 1) : ℕ) : ℝ)] (S k j) = ∫⁻ y in E' k j, ENNReal.ofReal (sheetJac (s k j) (WithLp.ofLp y)) ∂(μH[((2 * (d + 1) : ℕ) : ℝ)])` using `fun k j => SheetImageAreaSet.proof n (d + 1) A (U k) (s k j) (hUD k).1 ((hUD k).2.2.2 j) (fun y hy => (hsec k j y hy).1) (E' k j) (hE'm k j) (hE'U k j)`. Establish `hint : ∫⁻ y, ENNReal.ofReal (f y) = ENNReal.ofReal κ * cH * ∑' k, ∑ j : Fin (N k), μH[((2 * (d + 1) : ℕ) : ℝ)] (S k j)`. Establish `hae : ∀ᵐ y ∂(volume : Measure (Fin (d + 1) → ℂ)), y ∈ ⋃ k, Dk k`. Rewrite using `[ae_iff]`. Simplify `hvol` using `[Set.compl_def]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[← Measure.restrict_eq_self_of_ae_mem hae, lintegral_iUnion (fun k => (hUD k).2.1) hdisj, ← ENNReal.tsum_mul_left]`. Use `tsum_congr fun k => ?_` and prove the remaining obligations. Establish `h1 : ∀ y ∈ Dk k, ENNReal.ofReal (f y) = ∑ j : Fin (N k), (E k j).indicator (fun y => ENNReal.ofReal κ * ENNReal.ofReal (sheetJac (s k j) y)) y`. Introduce `y hy`. Rewrite using `[hDk k y hy, ENNReal.ofReal_sum_of_nonneg fun j _ => mul_nonneg (Set.indicator_nonneg (fun _ _ => zero_le_one) _) (mul_nonneg hκ0.le (sheetJac_nonneg _ _))]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Distinguish the cases in `hB : WithLp.toLp 2 (s k j y) ∈ B`. Rewrite using `[Set.indicator_of_mem (show y ∈ E k j from ⟨hy, hB⟩), Set.indicator_of_mem (show s k j y ∈ (fun x => WithLp.toLp 2 x) ⁻¹' B from hB), one_mul, ENNReal.ofReal_mul hκ0.le]`. Rewrite using `[Set.indicator_of_notMem (show y ∉ E k j from fun h => hB h.2), Set.indicator_of_notMem (show s k j y ∉ (fun x => WithLp.toLp 2 x) ⁻¹' B from hB), zero_mul, ENNReal.ofReal_zero]`. Rewrite using `[setLIntegral_congr_fun (hUD k).2.1 h1, lintegral_finset_sum _ (fun j _ => (((SheetAreaCompare.measurable_sheetJac (s k j)).ennreal_ofReal.const_mul (ENNReal.ofReal κ)).indicator (hEm k j))), Finset.mul_sum]`.
+Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `hsub : E k j ⊆ Dk k` using `Set.inter_subset_left`. Rewrite using `[lintegral_indicator (hEm k j), Measure.restrict_restrict (hEm k j), Set.inter_eq_left.2 hsub, lintegral_const_mul _ (SheetAreaCompare.measurable_sheetJac _).ennreal_ofReal, mul_assoc, hArea, ← lintegral_indicator (hEm k j), hcH, ← lintegral_indicator (hE'm k j)]`. Both sides reduce to the same expression. Establish `hnull : μH[((2 * (d + 1) : ℕ) : ℝ)] (zeroSetEuc J ∩ {z : EuclideanSpace ℂ (Fin n) | A *ᵥ WithLp.ofLp z ∉ ⋃ k, Dk k}) = 0`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨hZ, hdimQ⟩` from `BadSetSmaller.proof n (d + 1) J A hJ hdim hA P hP`. Use `set I := J ⊔ Ideal.span {pullback A P}`. Establish `hsub : zeroSetEuc J ∩ {z : EuclideanSpace ℂ (Fin n) | A *ᵥ WithLp.ofLp z ∉ ⋃ k, Dk k} ⊆ ⋃ Q ∈ I.minimalPrimes, zeroSetEuc Q`. Introduce and unpack `z ⟨hzJ, hzD⟩`. Establish `hzI : WithLp.ofLp z ∈ zeroSet I`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hZ]`. Conclude with `⟨hzJ, hcomp hzD⟩`. Establish `hle : I ≤ RingHom.ker (MvPolynomial.eval (WithLp.ofLp z))` using `fun q hq => hzI q hq`. Use `haveI : (RingHom.ker (MvPolynomial.eval (WithLp.ofLp z))).IsPrime := RingHom.ker_isPrime _`. Take `⟨Q, hQ, hQle⟩` from `Ideal.exists_minimalPrimes_le hle`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Set.mem_biUnion hQ fun q hq => hQle hq`. Use `measure_mono_null hsub ((measure_biUnion_null_iff (Ideal.finite_minimalPrimes_of_isNoetherianRing _ I).countable).2 fun Q hQ => ?_)` and prove the remaining obligations. Conclude with `NullSmaller.proof n (d + 1) Q (hdimQ Q hQ)`. Establish `hunion : zeroSetEuc J ∩ B ∩ {z : EuclideanSpace ℂ (Fin n) | A *ᵥ WithLp.ofLp z ∈ ⋃ k, Dk k} = ⋃ k, ⋃ j, S k j`. Use extensionality with `z`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Simplify using `only [Set.mem_inter_iff, Set.mem_setOf_eq, Set.mem_iUnion]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨hzJ, hzB⟩, k, hk⟩`. Take `⟨hfibeq, -, -⟩` from `hfib k _ ((hUD k).2.2.1 hk)`. Establish `hzf : WithLp.ofLp z ∈ fibre J A (A *ᵥ WithLp.ofLp z)` using `⟨hzJ, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hzf` using `[hfibeq]`. Take `⟨j, hj⟩` from `hzf`. Use `replace hj : s k j (A *ᵥ WithLp.ofLp z) = WithLp.ofLp z := hj`. Use `⟨k, j, WithLp.toLp 2 (A *ᵥ WithLp.ofLp z), ⟨hk, ?_⟩, ?_⟩` and prove the remaining obligations. Use `show WithLp.toLp 2 (s k j (A *ᵥ WithLp.ofLp z)) ∈ B`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hj]`. Conclude with `hzB`. Use `show WithLp.toLp 2 (s k j (A *ᵥ WithLp.ofLp z)) = z`. Rewrite using `[hj]`. Introduce and unpack `⟨k, j, y, ⟨hyD, hyB⟩, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Take `⟨e₁, e₂⟩` from `hsec k j _ ((hUD k).2.2.1 hyD)`. Use `⟨⟨fun q hq => e₂ q hq, hyB⟩, k, ?_⟩` and prove the remaining obligations. Use `show A *ᵥ s k j (WithLp.ofLp y) ∈ Dk k`. Rewrite using `[e₁]`. Conclude with `hyD`.
+The claim follows by propositional logic. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hdisjS : ∀ k, Pairwise (Function.onFun Disjoint (S k))`. Introduce `k j j' hjj'`. Rewrite using `[Function.onFun, Set.disjoint_left]`. Introduce and unpack `_ ⟨y, hy, rfl⟩ ⟨y', hy', hyy'⟩`. Establish `h' : s k j' (WithLp.ofLp y') = s k j (WithLp.ofLp y)` using `WithLp.toLp_injective 2 hyy'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : WithLp.ofLp y' = WithLp.ofLp y`. Rewrite using `[← (hsec k j' _ (hE'U k j' y' hy')).1, ← (hsec k j _ (hE'U k j y hy)).1, h']`. Rewrite `h'` using `[e]`. Conclude with `hjj' ((hfib k _ (hE'U k j y hy)).2.1 h').symm`. Establish `hdisjK : Pairwise (Function.onFun Disjoint fun k => ⋃ j, S k j)`.
-
-Introduce `k k' hkk'`. Rewrite using `[Function.onFun, Set.disjoint_left]`. Introduce `z hz hz'`. Establish `hA : ∀ k, z ∈ ⋃ j, S k j → A *ᵥ WithLp.ofLp z ∈ Dk k`. Introduce `k hz`.
-
-Take `⟨j, y, hy, rfl⟩` from `Set.mem_iUnion.1 hz`. Use `show A *ᵥ s k j (WithLp.ofLp y) ∈ Dk k`. Rewrite using `[(hsec k j _ (hE'U k j y hy)).1]`. Conclude with `hy.1`. Conclude with `Set.disjoint_left.1 (hdisj hkk') (hA k hz) (hA k' hz')`.
-
-Establish `hmeas : μH[((2 * (d + 1) : ℕ) : ℝ)] (zeroSetEuc J ∩ B) = ∑' k, ∑ j : Fin (N k), μH[((2 * (d + 1) : ℕ) : ℝ)] (S k j)`. Establish `e : (zeroSetEuc J ∩ B) \ (zeroSetEuc J ∩ {z : EuclideanSpace ℂ (Fin n) | A *ᵥ WithLp.ofLp z ∉ ⋃ k, Dk k}) = zeroSetEuc J ∩ B ∩ {z : EuclideanSpace ℂ (Fin n) | A *ᵥ WithLp.ofLp z ∈ ⋃ k, Dk k}`. Use extensionality with `z`. Simplify using `only [Set.mem_diff, Set.mem_inter_iff, Set.mem_setOf_eq]`. The claim follows by propositional logic.
-
-Rewrite using `[← measure_diff_null hnull, e, hunion, measure_iUnion hdisjK (fun k => MeasurableSet.iUnion fun j => hSm k j)]`. Use `tsum_congr fun k => ?_` and prove the remaining obligations. Rewrite using `[measure_iUnion (hdisjS k) (hSm k), tsum_fintype]`. Take `⟨R, hR⟩` from `hBb.subset_ball (0 : EuclideanSpace ℂ (Fin n))`. Establish `hfin : μH[((2 * (d + 1) : ℕ) : ℝ)] (zeroSetEuc J ∩ B) < ⊤` using `(measure_mono (Set.inter_subset_inter_right _ hR)).trans_lt (hMF n (d + 1) J hJ hdim R)`.
-
-Establish `hlt : ∫⁻ y, ENNReal.ofReal (f y) < ⊤`. Rewrite using `[hint, ← hmeas]`. Conclude with `ENNReal.mul_lt_top (ENNReal.mul_lt_top ENNReal.ofReal_lt_top ENNReal.coe_lt_top) hfin`. Establish `hfi : Integrable f` using `⟨hfm.aestronglyMeasurable, (hasFiniteIntegral_iff_ofReal (ae_of_all _ hf0)).2 hlt⟩`. Use `⟨hfi, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[integral_eq_lintegral_of_nonneg_ae (ae_of_all _ hf0) hfm.aestronglyMeasurable, hint, ← hmeas, ENNReal.toReal_mul, ENNReal.toReal_mul, ENNReal.toReal_ofReal hκ0.le, ENNReal.coe_toReal]`. Establish `e : 1 / (κ * cH) * (κ * cH * (μH[((2 * (d + 1) : ℕ) : ℝ)] (zeroSetEuc J ∩ B)).toReal) = (μH[((2 * (d + 1) : ℕ) : ℝ)] (zeroSetEuc J ∩ B)).toReal`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e, ENNReal.ofReal_toReal hfin.ne]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem VarWirtinger.proof (hDSC : DiscriminantSheetCover.Statement) (hMF : MassFinite.Statement) :
     VarWirtinger.Statement := by

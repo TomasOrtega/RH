@@ -17,13 +17,13 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 variable {k r : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hg, fun a ha => by simp at ha⟩`.
+Supply the required witnesses or components.
 -/
 theorem glev0 {g : Mat k r} (hg : g ∈ GV k r) : g ∈ Q.Glev k r 0 :=
   ⟨hg, fun a ha => by simp at ha⟩
 
 /- English proof (translation)
-The claim follows from `| [], _, _, _, he => by simpa using he | T :: L, hT, h₁, h₂, he => by intro x hx hxG simp only [List.foldr_cons] exact hT T (by simp) _ _ (fold_congrV V L (fun T' hT' => hT T' (by simp [hT'])) h₁ h₂ he) x hx hxG`.
+A detailed English derivation is pending.
 -/
 theorem fold_congrV (V : Set (Mat k r)) :
     ∀ (L : List ((Mat k r → E) → (Mat k r → E))),
@@ -38,9 +38,9 @@ theorem fold_congrV (V : Set (Mat k r)) :
     exact hT T (by simp) _ _ (fold_congrV V L (fun T' hT' => hT T' (by simp [hT'])) h₁ h₂ he) x hx hxG
 
 /- English proof (translation)
-Unfold `qminorOp`. Rewrite using `[Finset.sum_apply, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Simplify using `only [Pi.smul_apply]`. Use `congr 1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Use `fold_congrV V _ ?_ f₁ f₂ he x hx hxG` and prove the remaining obligations. Introduce `T hT h₁ h₂ he' y hy hyG`. Take `⟨i, rfl⟩` from `(List.mem_ofFn' _ _).1 hT`. Conclude with `top_congr' V hV _ _ _ he' y hy hyG`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem qminorOp_congr {t : ℕ} (a b : Fin t → Fin (2 * r + k + 1)) (u : ℂ) {V : Set (Mat k r)} (hV : IsOpen V)
     {f₁ f₂ : Mat k r → E} (he : ∀ x ∈ V, x ∈ GV k r → f₁ x = f₂ x) (x : Mat k r) (hx : x ∈ V)
@@ -56,11 +56,11 @@ theorem qminorOp_congr {t : ℕ} (a b : Fin t → Fin (2 * r + k + 1)) (u : ℂ)
   exact top_congr' V hV _ _ _ he' y hy hyG
 
 /- English proof (translation)
-Unfold `D.vLet C3.AAop C3.AAvop`. Use `split_ifs`. Both sides reduce to the same expression. Use `congr 1`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Both sides reduce to the same expression. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs`. Rewrite using `[qminorOp_congr _ _ _ hV he x hx hxG]`. Both sides reduce to the same expression. Use `congr 1`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations.
+Both sides reduce to the same expression. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `split_ifs`. Rewrite using `[qminorOp_congr _ _ _ hV he x hx hxG]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem vLet_congr (z z' : Fin (2 * r + k + 1) → ℂ) (i : ℕ) (hi : i ≤ r) (l : C.Letter) (e : Fin 2)
     {V : Set (Mat k r)} (hV : IsOpen V) {f₁ f₂ : Mat k r → E} (he : ∀ x ∈ V, x ∈ GV k r → f₁ x = f₂ x)
@@ -81,7 +81,7 @@ theorem vLet_congr (z z' : Fin (2 * r + k + 1) → ℂ) (i : ℕ) (hi : i ≤ r)
     · rfl
 
 /- English proof (translation)
-Take `⟨U, F, a, b, c, d⟩` from `hf g hg`. Conclude with `⟨U, F, a, b, c, d⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem loc_of_smoothOnH {f : Mat k r → E} (hf : SmoothOnH (Hpk k r) f) (g : Mat k r) (hg : g ∈ GV k r) :
     Loc (⊤ : ℕ∞) f g := by
@@ -89,15 +89,13 @@ theorem loc_of_smoothOnH {f : Mat k r → E} (hf : SmoothOnH (Hpk k r) f) (g : M
   exact ⟨U, F, a, b, c, d⟩
 
 /- English proof (translation)
-Take `⟨U, F, hU, hpU, hF, hΦF⟩` from `hΦ p ⟨glev0 hpG, hp⟩`. Take `⟨ε, hε, hball⟩` from `Metric.isOpen_iff.1 (hU.inter hDm) p ⟨hpU, hp⟩`. Set `χ : ContDiffBump p` to `⟨ε / 3, ε / 2, by positivity, by linarith⟩`. Use `⟨Metric.ball p (ε / 3), Metric.isOpen_ball, Metric.mem_ball_self (by positivity), fun x hx => (hball (Metric.ball_subset_ball (by linarith) hx)).2, fun x => ((χ x : ℝ) : ℂ) • F x, ?_, ?_⟩` and prove the remaining obligations. Introduce `g₀ hg₀`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hg : g₀ ∈ U`. Conclude with `⟨U, fun x => ((χ x : ℝ) : ℂ) • F x, hU, hg, ((Complex.ofRealCLM.contDiff.comp χ.contDiff).contDiffOn).smul hF, fun _ _ _ => rfl⟩`. Use `⟨(tsupport χ)ᶜ, fun _ => 0, (isClosed_tsupport _).isOpen_compl, ?_, contDiffOn_const, fun x hx _ => ?_⟩` and prove the remaining obligations. Introduce `hs`. Apply `hg` to reduce the goal to its premises.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h2 : g₀ ∈ Metric.closedBall p (ε / 2)` using `χ.tsupport_eq.subset hs`. Conclude with `(hball (Metric.closedBall_subset_ball (by linarith) h2)).1`. Establish `h0 : χ x = 0`. Assume the negation of the conclusion as `h`. Conclude with `hx (subset_tsupport χ (Function.mem_support.2 h))`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[h0]`. Introduce `x hx hxG`. Establish `h1 : χ x = 1` using `χ.one_of_mem_closedBall (Metric.ball_subset_closedBall hx)`. Use `show ((χ x : ℝ) : ℂ) • F x = Φ x`. Rewrite using `[h1, Complex.ofReal_one, one_smul]`.
-
-Conclude with `(hΦF x (hball (Metric.ball_subset_ball (by linarith) hx)).1 (glev0 hxG)).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bump_ext {Φ : Mat k r → E} {Dm : Set (Mat k r)} (hDm : IsOpen Dm) (hΦ : Q.SmoothLev k r 0 Dm Φ)
     {p : Mat k r} (hp : p ∈ Dm) (hpG : p ∈ GV k r) :
@@ -130,15 +128,15 @@ theorem bump_ext {Φ : Mat k r → E} {Dm : Set (Mat k r)} (hDm : IsOpen Dm) (h�
     exact (hΦF x (hball (Metric.ball_subset_ball (by linarith) hx)).1 (glev0 hxG)).symm
 
 /- English proof (translation)
-Set `fW : Wsm (E` to `E) (Set.univ : Set (Mat k r)) := ⟨f, fun g _ hgG => loc_of_smoothOnH hf g hgG⟩`. Establish `ec : ((c • fW : Wsm (E` using `E) (Set.univ : Set (Mat k r))) : Mat k r → E) = fun y => c • f y := rfl`. Establish `hA : ∀ m (hm : m ≤ r) u, C3.AAop k r m hm u (fun y => c • f y) x = c • C3.AAop k r m hm u f x`. Introduce `m hm u`. Establish `e1` using `AAop_eq Set.univ isOpen_univ m hm u (c • fW) x trivial hx`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e2` using `AAop_eq Set.univ isOpen_univ m hm u fW x trivial hx`. Rewrite `e1` using `[ec]`. Rewrite using `[e1, e2, map_smul]`. Both sides reduce to the same expression. Establish `hAv : ∀ m (hm : m ≤ r) u, C3.AAvop k r m hm u (fun y => c • f y) x = c • C3.AAvop k r m hm u f x`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Introduce `m hm u`. Establish `e1` using `AAvop_eq Set.univ isOpen_univ m hm u (c • fW) x trivial hx`. Establish `e2` using `AAvop_eq Set.univ isOpen_univ m hm u fW x trivial hx`. Rewrite `e1` using `[ec]`. Rewrite using `[e1, e2, map_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Unfold `D.vLet`. Use `split_ifs`. Simplify using the standard rewrite rules. Rewrite using `[hA, smul_comm]`.
+Both sides reduce to the same expression. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hAv, smul_comm]`.
+A detailed English derivation is pending.
 -/
 theorem vLet_smul (z z' : Fin (2 * r + k + 1) → ℂ) (i : ℕ) (hi : i ≤ r) (l : C.Letter) (e : Fin 2)
     {f : Mat k r → E} (hf : SmoothOnH (Hpk k r) f) {x : Mat k r} (hx : x ∈ GV k r) (c : ℂ) :
@@ -166,9 +164,9 @@ theorem vLet_smul (z z' : Fin (2 * r + k + 1) → ℂ) (i : ℕ) (hi : i ≤ r) 
   · rw [hAv, smul_comm]
 
 /- English proof (translation)
-Establish `hD : ∀ l', Dmin k r z z' (s * g * s') l' = Dmin k r z z' g l'` using `fun l' => dInv k r z z' hz hz' s hs s' hs' g l'`. Establish `hX` using `fun m (hm : m ≤ r) u ell => operators_commute_translations E k r z z' m hm u ell f hz hz' hf s hs s' hs' g hg`. Unfold `D.vLet`. Use `split_ifs`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hD, (hX _ _ _ 0).1]`. Rewrite using `[hD, (hX _ _ 0 _).2]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vLet_transl (z z' : Fin (2 * r + k + 1) → ℂ) (hz : inWb k r z) (hz' : inWb k r z') (i : ℕ) (hi : i ≤ r)
     (l : C.Letter) (e : Fin 2) {f : Mat k r → E} (hf : SmoothOnH (Hpk k r) f) {s s' : Mat k r}
@@ -184,9 +182,9 @@ theorem vLet_transl (z z' : Fin (2 * r + k + 1) → ℂ) (hz : inWb k r z) (hz' 
   · rw [hD, (hX _ _ 0 _).2]
 
 /- English proof (translation)
-Introduce and unpack `g₀ ⟨hg₀G', hg₀D⟩`. Establish `hg₀G : g₀ ∈ GV k r` using `hg₀G'.1`. Take `⟨V, hV, hpV, hVD, f, hf, hfe⟩` from `bump_ext hDm hΦ hg₀D hg₀G`. Set `fW : Wsm (E` to `E) (Sd z z' i hi) := ⟨f, fun g _ hgG => loc_of_smoothOnH hf g hgG⟩`. Establish `hL : Loc (⊤ : ℕ∞) (D.vLet k r z z' i hi l e f) g₀` using `vLet_mem z z' i hi l e fW g₀ (hne g₀ hg₀D) hg₀G`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hL2 : Loc (⊤ : ℕ∞) (D.vLet k r z z' i hi l e Φ) g₀` using `loc_of_eq hL hV hpV (fun x hx hxG => vLet_congr z z' i hi l e hV (fun y hy hyG => (hfe y hy hyG).symm) x hx hxG)`. Take `⟨U, F, hU, hgU, hF, hFe⟩` from `hL2`. Conclude with `⟨U, F, hU, hgU, hF, fun g hg hgl => hFe g hg hgl.1⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem smooth_vLet (z z' : Fin (2 * r + k + 1) → ℂ) (i : ℕ) (hi : i ≤ r) (l : C.Letter) (e : Fin 2)
     {Dm : Set (Mat k r)} (hDm : IsOpen Dm) {Φ : Mat k r → E} (hΦ : Q.SmoothLev k r 0 Dm Φ)
@@ -205,31 +203,25 @@ theorem smooth_vLet (z z' : Fin (2 * r + k + 1) → ℂ) (i : ℕ) (hi : i ≤ r
   exact ⟨U, F, hU, hgU, hF, fun g hg hgl => hFe g hg hgl.1⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, BigCellZetaMinors.one_uw z, n, hn, (Matrix.one_mul n).symm⟩`.
+Supply the required witnesses or components.
 -/
 theorem one_mem_S (z : Fin (2 * r + k + 1) → ℂ) {n : Mat k r} (hn : n ∈ Nset k r) : n ∈ Sset k r z :=
   ⟨1, BigCellZetaMinors.one_uw z, n, hn, (Matrix.one_mul n).symm⟩
 
 /- English proof (translation)
-Take `⟨hS, hRt, hLt⟩` from `hR`. Establish `hne : ∀ g ∈ Dm, Dmin k r z z' g ⟨i, by omega⟩ ≠ 0`. Introduce `g hg`. Take `⟨h1, h2, _⟩` from `hDJ hg`. Break down `hij with rfl | rfl` into its components or cases.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `h1`. Conclude with `h2`. Use `⟨smooth_vLet z z' i (by omega) l e hDm hS hne, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `g ⟨hgG', hgD⟩ n hn`. Establish `hgnD` using `(hRt g ⟨hgG', hgD⟩ n hn).1`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨hgnD, ?_⟩` and prove the remaining obligations. Establish `hgG : g ∈ GV k r` using `hgG'.1`. Establish `hgnG : g * n ∈ GV k r` using `AAInvW.inUH_mul hgG hn.1`. Take `⟨Va, hVa, hpa, _, fa, hfa, hfae⟩` from `bump_ext hDm hS hgnD hgnG`. Take `⟨Vb, hVb, hpb, hVbD, fb, hfb, hfbe⟩` from `bump_ext hDm hS hgD hgG`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hW : IsOpen (Vb ∩ (fun x : Mat k r => x * n) ⁻¹' Va)` using `hVb.inter (hVa.preimage (continuous_id.matrix_mul continuous_const))`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.one_mul]`. Conclude with `vLet_congr z z' i _ l e hVa (fun y hy hyG => (hfae y hy hyG).symm) _ hpa hgnG`. Use `_ = D.vLet k r z z' i _ l e (fun x => fa (1 * x * n)) g := vLet_transl z z' hz hz' i _ l e hfa (one_mem_S z WeylGroupFacts.mem_n_one) (one_mem_S z' hn) hgG`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Use `_ = D.vLet k r z z' i _ l e (fun x => psi k r z' cStd n • fb x) g := by`. Use `vLet_congr z z' i _ l e hW (fun y hy hyG => ?_) g ⟨hpb, hpa⟩ hgG` and prove the remaining obligations. Rewrite using `[Matrix.one_mul, hfae (y * n) hy.2 (AAInvW.inUH_mul hyG hn.1), (hRt y ⟨glev0 hyG, hVbD hy.1⟩ n hn).2, hfbe y hy.1 hyG]`. Use `_ = psi k r z' cStd n • D.vLet k r z z' i _ l e fb g := vLet_smul z z' i _ l e hfb hgG _`. Use `_ = psi k r z' cStd n • D.vLet k r z z' i _ l e Φ g := by`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[vLet_congr z z' i _ l e hVb (fun y hy hyG => hfbe y hy hyG) g hpb hgG]`. Introduce and unpack `g ⟨hgG', hgD⟩ a`. Establish `hgnD` using `(hLt g ⟨hgG', hgD⟩ a).1`. Use `⟨hgnD, ?_⟩` and prove the remaining obligations. Use `set s := LevelPointCoordinates.nL k r j hj a with hs_def`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Establish `hsN : s ∈ Nset k r` using `nL_mem j hj a`. Establish `hgG : g ∈ GV k r` using `hgG'.1`. Establish `hsgG : s * g ∈ GV k r` using `AAInvW.inUH_mul hsN.1 hgG`. Take `⟨Va, hVa, hpa, _, fa, hfa, hfae⟩` from `bump_ext hDm hS hgnD hsgG`. Take `⟨Vb, hVb, hpb, hVbD, fb, hfb, hfbe⟩` from `bump_ext hDm hS hgD hgG`.
-
-Establish `hW : IsOpen (Vb ∩ (fun x : Mat k r => s * x) ⁻¹' Va)` using `hVb.inter (hVa.preimage (continuous_const.matrix_mul continuous_id))`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_one]`. Conclude with `vLet_congr z z' i _ l e hVa (fun y hy hyG => (hfae y hy hyG).symm) _ hpa hsgG`. Use `_ = D.vLet k r z z' i _ l e (fun x => fa (s * x * 1)) g := vLet_transl z z' hz hz' i _ l e hfa (one_mem_S z hsN) (one_mem_S z' WeylGroupFacts.mem_n_one) hgG`.
-
-Use `_ = D.vLet k r z z' i _ l e (fun x => psi k r z cStd s • fb x) g := by`. Use `vLet_congr z z' i _ l e hW (fun y hy hyG => ?_) g ⟨hpb, hpa⟩ hgG` and prove the remaining obligations. Rewrite using `[Matrix.mul_one, hfae (s * y) hy.2 (AAInvW.inUH_mul hsN.1 hyG), (hLt y ⟨glev0 hyG, hVbD hy.1⟩ a).2, hfbe y hy.1 hyG]`. Use `_ = psi k r z cStd s • D.vLet k r z z' i _ l e fb g := vLet_smul z z' i _ l e hfb hgG _`. Use `_ = psi k r z cStd s • D.vLet k r z z' i _ l e Φ g := by`.
-
-Rewrite using `[vLet_congr z z' i _ l e hVb (fun y hy hyG => hfbe y hy hyG) g hpb hgG]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rulesOn_vLet (k r j : ℕ) (hj : j + 1 ≤ r) (z z' : Fin (2 * r + k + 1) → ℂ) (E : Type)
     [NormedAddCommGroup E] [NormedSpace ℂ E] (Dm : Set (Q.Mx k r)) (Φ : Q.Mx k r → E) (hz : inWb k r z)
@@ -295,7 +287,7 @@ end Formalism.FourierDecayAlt.P.SingleEntryHermitianProducts
 namespace Formalism.FourierDecayAlt.P
 
 /- English proof (translation)
-Introduce `k r j hj z z' E _ _ Dm Φ hz hz' hDm hDJ hR i hi hij l e` and use `SingleEntryHermitianProducts.rulesOn_vLet k r j hj z z' E Dm Φ hz hz' hDm hDJ hR i hi hij l e`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem rules_closed : Formalism.FourierDecayAlt.P.LevelPointCoordinates.RulesClosed :=
   fun k r j hj z z' E _ _ Dm Φ hz hz' hDm hDJ hR i hi hij l e =>

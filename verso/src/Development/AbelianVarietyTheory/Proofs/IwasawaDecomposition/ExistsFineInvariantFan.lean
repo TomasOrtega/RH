@@ -15,13 +15,13 @@ open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.Toroi
 namespace GlobalTheory.PolFan
 
 /- English proof (translation)
-Establish `hpoly : IsPolyFan H.bar q (baseFun (𝓞 E) (fineDen g (𝒩.image (· - 1))) φs (𝒩.image (· - 1)))`. Introduce `X _ _ _ _ hX`. Take `⟨h1, h2, h3, h4⟩` from `GlobalTheory.T.polarisationBaseFunction_properties E H g q φs (𝒩.image (· - 1)) X hφ hq hX`. Conclude with `⟨h1, h2, h3, h4, GlobalTheory.T.exists_finite_rational_polyhedral_cells_upto_aut E H g q φs (𝒩.image (· - 1)) X hφ hq hX (GlobalTheory.T.hasPolyhedralCover_balancedForms_CMField E H X)⟩`. Establish `htw : IsTwInv H (baseFun (𝓞 E) (fineDen g (𝒩.image (· - 1))) φs (𝒩.image (· - 1)))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Introduce `σ _ n B`. Conclude with `baseFun_twist _ _ _ σ n B`. Establish `hdom : ∀ (X : Type) [AddCommGroup X] [Module (𝓞 E) X] [Module.Finite (𝓞 E) X] [Module.Projective (𝓞 E) X], Dominates H.bar X`. Introduce `X _ _ _ _`. Conclude with `GlobalTheory.T.dominatesLinearFormsOnBalancedForms_cm E H X`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨φ', h1, h2, h3, hlin⟩` from `GlobalTheory.T.exists_invariant_smoothProjective_refinement_polyFan E H q _ hdom hpoly htw`. Take `⟨φ'', k1, k2, k3, k4, k5, kcone⟩` from `GlobalTheory.T.exists_homogeneous_positive_polFan_extension E H q φ' h1 h2 h3`. Use `⟨φ'', k1, k2, k3, k4, k5, ?_⟩` and prove the remaining obligations. Introduce `X _ _ _ _ hX m γ hγ`. Establish `hc : IsCone H.bar φ' γ` using `kcone X hX m γ hγ`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨hr, hf⟩` from `GlobalTheory.T.linearOn_isFine_of_linearOn_polarisationBaseFunction E H g q (fineDen g (𝒩.image (· - 1))) φs (𝒩.image (· - 1)) X (fineDen_pos g _) hφ hq hX m γ hc.mem hc.nonneg (hlin X hX m γ hc)`. Use `⟨hr, fun N hN => ?_⟩` and prove the remaining obligations. Establish `hfN` using `hf (N - 1) (Finset.mem_image_of_mem _ hN)`. Rewrite `hfN` using `[Nat.sub_add_cancel (h𝒩 N hN)]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_fine_invariant_fan {E : Type} [Field E] [NumberField E] [IsCMField E] (H : Host E) {g q : ℕ} {φs : InvFun ℤ}
     (hφ : IsPolFan (id : ℤ → ℤ) g φs) (hq : Module.finrank ℚ E * q ≤ g) (𝒩 : Finset ℕ) (h𝒩 : ∀ N ∈ 𝒩, 1 ≤ N) :

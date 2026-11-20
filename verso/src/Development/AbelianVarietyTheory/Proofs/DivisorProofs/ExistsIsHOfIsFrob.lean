@@ -6,27 +6,25 @@ open GlobalTheory GlobalTheory.DI
 namespace GlobalTheory.DI
 
 /- English proof (translation)
-Introduce `K Kt _ _ p _ _ π F F' hL hF hF'`. Establish `hex : ∀ z, ∃ w, F' z = F z + p * w`. Introduce `z`. Take `⟨w, hw⟩` from `(hL.ker (F' z - F z)).1 (by rw [map_sub, hF, hF', sub_self])`. Conclude with `⟨w, by rw [← hw]; ring⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `huniq : ∀ z w w', F' z = F z + p * w → F' z = F z + p * w' → π w = π w'`. Introduce `z w w' h1 h2`. Establish `h3 : (p : Kt) * (w - w') = 0` using `by rw [mul_sub]; linear_combination h2 - h1`. Establish `h4` using `(hL.ann (w - w')).1 h3`. Rewrite `h4` using `[map_sub]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `sub_eq_zero.1 h4`. Set `g : Kt → K` to `fun z => π (Classical.choose (hex z))`. Establish `hg : ∀ z w, F' z = F z + p * w → g z = π w` using `fun z w hw => huniq z _ w (Classical.choose_spec (hex z)) hw`. Establish `hgadd : ∀ z z', g (z + z') = g z + g z'`. Introduce `z z'`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨w, h1⟩` from `hex z`. Take `⟨w', h2⟩` from `hex z'`. Rewrite using `[hg z w h1, hg z' w' h2, hg (z + z') (w + w') (by rw [map_add, map_add, h1, h2]; ring), map_add]`. Establish `hgp : ∀ y, g (p * y) = 0`. Introduce `y`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨w, h1⟩` from `hex y`. Rewrite using `[hg (p * y) (p * w) (by rw [map_mul, map_mul, map_natCast, map_natCast, h1]; ring), map_mul, map_natCast, CharP.cast_eq_zero, zero_mul]`. Establish `hgmul : ∀ z z', g (z * z') = π z' ^ p * g z + π z ^ p * g z'`. Introduce `z z'`. Take `⟨w, h1⟩` from `hex z`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨w', h2⟩` from `hex z'`. Rewrite using `[hg z w h1, hg z' w' h2, hg (z * z') (w * F z' + F z * w' + p * w * w') (by rw [map_mul, map_mul, h1, h2]; ring)]`. Simplify using `only [map_add, map_mul, map_natCast, CharP.cast_eq_zero, zero_mul, add_zero]`. Rewrite using `[hF z, hF z']`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hwd : ∀ z z', π z = π z' → g z = g z'`. Introduce `z z' hzz`. Take `⟨y, hy⟩` from `(hL.ker (z - z')).1 (by rw [map_sub, hzz, sub_self])`. Establish `: z = z' + p * y` using `by rw [← hy]; ring`. Rewrite using `[this, hgadd, hgp, add_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `φ : K →+ K` to `AddMonoidHom.mk' (fun x => g (Function.surjInv hL.surj x)) (by`. Introduce `a b`. Use `show g _ = g _ + g _`. Rewrite using `[← hgadd]`. Apply `hwd` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_add, Function.surjInv_eq hL.surj, Function.surjInv_eq hL.surj, Function.surjInv_eq hL.surj])`. Establish `hφ : ∀ z, φ (π z) = g z`. Introduce `z`. Use `show g _ = g _`. Conclude with `hwd _ _ (Function.surjInv_eq hL.surj _)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨f, hfs, hfD⟩` from `GlobalTheory.T.frobeniusDerivation_factors_through_kaehler (M := K) p φ (by`. Introduce `a b`. Take `⟨z, rfl⟩` from `hL.surj a`. Take `⟨z', rfl⟩` from `hL.surj b`. Rewrite using `[← map_mul, hφ, hφ, hφ, hgmul, smul_eq_mul, smul_eq_mul]`.
-
-Use the proof step `ring)`. Use `⟨f, fun c v => by rw [hfs, smul_eq_mul], fun z w hzw => ?_⟩` and prove the remaining obligations. Rewrite using `[hfD, hφ, hg z w hzw]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isH_of_isFrob : ∀ {K Kt : Type} [CommRing K] [CommRing Kt] (p : ℕ) [Fact p.Prime] [CharP K p]
     (π : Kt →+* K) (F F' : Kt →+* Kt), IsFlatLift p π → IsFrob p π F → IsFrob p π F' →

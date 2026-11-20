@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.DetOneReductionO
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.DetMod.det_baseChange_quot_eq_one` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FUnitaryExistence%2FDetOneReductionOfDetOne.lean&line=24#L24)
 -/

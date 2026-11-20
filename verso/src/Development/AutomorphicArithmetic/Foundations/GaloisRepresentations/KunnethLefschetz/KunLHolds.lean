@@ -5,7 +5,7 @@ open CategoryTheory Limits AlgebraicGeometry GlobalTheory.EtC LateralTheory.Etal
 open scoped TensorProduct DirectSum
 
 /- English proof (translation)
-Simplify using `[kun, DirectSum.toModule_lof, TensorProduct.lift.tmul, LinearMap.compl₁₂_apply]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma kun_lof {k : Type} [Field k] (l : ℕ) [Fact l.Prime] {X : Scheme.{0}} (p : X ⟶ S k)
     (n a : ℤ) (h : a + (n - a) = n) (u : V l X a) (v : V l X (n - a)) :
@@ -14,19 +14,17 @@ private lemma kun_lof {k : Type} [Field k] (l : ℕ) [Fact l.Prime] {X : Scheme.
   simp [kun, DirectSum.toModule_lof, TensorProduct.lift.tmul, LinearMap.compl₁₂_apply]
 
 /- English proof (translation)
-Introduce `l _ k _ d X p hb`. Use `⟨fun n => ?_, fun lam m n h => ?_⟩` and prove the remaining obligations. Rewrite using `[eq_top_iff]`. Introduce and unpack `w -`. Take `⟨x, rfl⟩` from `(hb n).2 w`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Proceed by induction on `x using DirectSum.induction_on with`. Consider the case `zero => simp`. Consider the case `of i t`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Proceed by induction. Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Consider the case `tmul u v`. Rewrite using `[← DirectSum.lof_eq_of ℚ_[l], kun_lof l p n i (by omega) u v]`. Conclude with `Submodule.subset_span ⟨i, n - i, by omega, u, v, rfl⟩`. Consider the case `add s t hs ht`. Rewrite using `[map_add, map_add]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `Submodule.add_mem _ hs ht`. Consider the case `add x y hx hy`. Rewrite using `[map_add]`. Conclude with `Submodule.add_mem _ hx hy`. Set `e` to `LinearEquiv.ofBijective (kun l p p n) (hb n)`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `he : ∀ a (ha : a + (n - a) = n) (u : V l X a) (v : V l X (n - a)), e.symm (ext2 l p ha u v) = DirectSum.lof ℚ_[l] ℤ (fun i => V l X i ⊗[ℚ_[l]] V l X (n - i)) a (u ⊗ₜ v)`. Introduce `a ha u v`. Rewrite using `[LinearEquiv.symm_apply_eq, LinearEquiv.ofBijective_apply, kun_lof]`. Use `⟨(DirectSum.toModule ℚ_[l] ℤ (V l X m) (fun i => if hi : i = 2 * (d : ℤ) then TensorProduct.lift ((LinearMap.lsmul ℚ_[l] (V l X m)).compl₁₂ (Eq.rec (motive := fun j _ => V l X j →ₗ[ℚ_[l]] ℚ_[l]) lam hi.symm) (Eq.rec (motive := fun j _ => V l X j →ₗ[ℚ_[l]] V l X m) LinearMap.id (s …` and prove the remaining obligations. Introduce `u v`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Take `rfl : m = n - 2 * (d : ℤ)` from `by omega`. Simplify using `only [LinearMap.coe_comp, LinearEquiv.coe_coe, Function.comp_apply, he, DirectSum.toModule_lof, dif_pos rfl]`. Simplify using `[TensorProduct.lift.tmul, LinearMap.compl₁₂_apply, LinearMap.lsmul_apply]`. Introduce `a b h' hbm u v`. Take `rfl : b = n - a` from `by omega`.
-
-Establish `ha : a ≠ 2 * (d : ℤ)` using `by omega`. Simplify using `only [LinearMap.coe_comp, LinearEquiv.coe_coe, Function.comp_apply, he, DirectSum.toModule_lof, dif_neg ha, LinearMap.zero_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.KunnethLefschetz.kunL_holds :
     UpperTheory.Gal.KunnethLefschetz.KunL := by

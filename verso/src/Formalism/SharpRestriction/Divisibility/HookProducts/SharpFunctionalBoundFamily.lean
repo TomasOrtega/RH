@@ -25,9 +25,9 @@ def FunSharpRec : Prop :=
     D.div.RR.muMax + meanE D (fun e => Real.log (Y.kapR e)) ≤ N.hh + 14 * lam0 D
 
 /- English proof (translation)
-Introduce `D X0 Y Bs Df0 Df1 Dc Sp N P eRR0 hRR hkap C hδ hT`. Establish `hmu : X0.principalHermitianLattice.muMax = P.base.muMaxRR`. Unfold `Formalism.BasicNotions.BaseLevelRowSide.principalHermitianLattice Formalism.L2.Indef.IndefData.muMaxRR`. Conclude with `(Formalism.MainNotions.DIV.HookProducts.FunSharp.muMax_tie X0.s.RR P.base.RR P.base.XE eRR0 hRR.lat hRR.metric).symm`. Establish `hf0 : P.base.muMaxRR ≤ N.hh - meanLog P.base.κ` using `P.extra.fun0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `(hT hδ (N.hh - meanLog P.base.κ) (hmu ▸ hf0)).1`. Establish `hκ : meanE D (fun e => Real.log (Y.kapR e)) = meanLog P.base.κ`. Rewrite using `[P.extra.level.2.1]`. Conclude with `meanEmb_eq_meanLog P.cols.κ _ (fun σ => by rw [hkap σ])`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem funSharpRec : FunSharpRec := by
   intro D X0 Y Bs Df0 Df1 Dc Sp N P eRR0 hRR hkap C hδ hT
@@ -71,21 +71,21 @@ def FunSharpFam : Prop :=
         (Fm.L x i).sc.x ^ sharpFunctionalExponent CHf Fm.cOut * (Fm.L x i).sc.b
 
 /- English proof (translation)
-Introduce and unpack `eps Fm CHf Pt ⟨x0, hpt⟩ ⟨C, -, x5, h5⟩`. Use `⟨max (max x0 x5) (max Pt.1 56), fun x hx hx1 i => ?_⟩` and prove the remaining obligations. Establish `g0 : x0 ≤ x` using `le_trans (le_trans (le_max_left _ _) (le_max_left _ _)) hx`. Establish `g5 : x5 ≤ x` using `le_trans (le_trans (le_max_right _ _) (le_max_left _ _)) hx`. Establish `gP : Pt.1 ≤ x` using `le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) hx`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `g56 : (56 : ℝ) ≤ x` using `le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) hx`. Take `⟨hZx, hZb, hCH, hRR, hkap⟩` from `hpt x g0 hx1 gP i`. Take `⟨hδ, hT⟩` from `h5 x g5 hx1 i`. Establish `hrec` using `funSharpRec (Fm.D x i) (Fm.ex x hx1 i).p0 (Fm.X x i) (Pt.2 x hx1 gP i).P (Pt.2 x hx1 gP i).eRR0 hRR hkap C hδ hT`. Establish `hhh : ((Pt.2 x hx1 gP i).Z.num (Pt.2 x hx1 gP i).Cp (Pt.2 x hx1 gP i).CHp).hh = (Pt.2 x hx1 gP i).Z.x ^ (Pt.2 x hx1 gP i).CHp * (Pt.2 x hx1 gP i).Z.b` using `rfl`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hrec` using `[hhh, hZx, hZb]`. Establish `hlam` using `Formalism.MainNotions.DIV.HookProducts.FunSharp.lambda_zero_le_four_b (Fm.L x i) (Fm.sizes x hx1 i)`. Establish `hsc : (Fm.L x i).sc.x = x` using `Fm.L_x x i hx1`. Rewrite `hrec`, the goal using `[hsc]`. Use `set B := (Fm.L x i).sc.b with hB`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hB1 : 1 ≤ B`. Rewrite using `[hB]`. Unfold `Scale.b`. Conclude with `Real.one_le_exp (by unfold Scale.L; exact Real.rpow_nonneg (by linarith [(Fm.L x i).sc.one_lt_alt]) _)`. Use `set E := max (CHf Fm.cOut) 1 with hE`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx1' : (1 : ℝ) ≤ x` using `by linarith`. Establish `hx0 : (0 : ℝ) < x` using `by linarith`. Establish `e1 : x ^ (Pt.2 x hx1 gP i).CHp ≤ x ^ E` using `Real.rpow_le_rpow_of_exponent_le hx1' (hCH.trans (le_max_left _ _))`. Establish `e2 : x ≤ x ^ E`. Use `Real.rpow_le_rpow_of_exponent_le hx1' (le_max_right (CHf Fm.cOut) 1)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite `this` using `[Real.rpow_one]`. Then use the resulting hypothesis. Establish `e3 : x ^ (sharpFunctionalExponent CHf Fm.cOut) = x * x ^ E`. Unfold `sharpFunctionalExponent`. Rewrite using `[← hE, Real.rpow_add hx0, Real.rpow_one, mul_comm]`. Rewrite using `[e3]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hEpos : 0 ≤ x ^ E * B` using `by positivity`. Establish `t1 : x ^ (Pt.2 x hx1 gP i).CHp * B ≤ x ^ E * B` using `mul_le_mul_of_nonneg_right e1 (by linarith)`. Establish `t2 : 56 * B ≤ x ^ E * B`. Establish `: 56 * B ≤ x * B` using `mul_le_mul_of_nonneg_right g56 (by linarith)`. Establish `: x * B ≤ x ^ E * B` using `mul_le_mul_of_nonneg_right e2 (by linarith)`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `t3 : 2 * (x ^ E * B) ≤ x * (x ^ E * B)` using `mul_le_mul_of_nonneg_right (by linarith) hEpos`. Use the polynomial consequences of the given equalities and inequalities.
+A detailed English derivation is pending.
 -/
 theorem funSharpFam : FunSharpFam := by
   rintro eps Fm CHf Pt ⟨x0, hpt⟩ ⟨C, -, x5, h5⟩
@@ -127,7 +127,7 @@ theorem funSharpFam : FunSharpFam := by
   nlinarith
 
 /- English proof (translation)
-The claim follows from `funSharpFam Fm CHf Pt hT (Formalism.MainNotions.PrimeDegreeVariant.familyLemmaFive_of_large Fm (Formalism.MainNotions.DIV.Proofs.family_statement_of_scaled_lemmas Fm YF hA).2.2)`.
+A detailed English derivation is pending.
 -/
 theorem sharp_functional_bound_family {eps : ℝ} (Fm : FamP eps) (CHf : List ℝ → ℝ)
     (Pt : Σ' x0 : ℝ, ∀ x (hx : Fm.x1 < x), x0 ≤ x → ∀ i : Fm.Ix x, FunDat (Fm.D x i) (Fm.ex x hx i).p0)

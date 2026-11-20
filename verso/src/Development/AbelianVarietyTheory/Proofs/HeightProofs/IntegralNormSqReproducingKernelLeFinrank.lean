@@ -24,7 +24,7 @@ namespace GlobalTheory.KFourier
 variable {n : ℕ}
 
 /- English proof (translation)
-Rewrite using `[← integral_complex_ofReal]`. Use `congr 1`. Use function extensionality and compare the values at `k`. Rewrite using `[mul_comm, ← Complex.normSq_eq_norm_sq]`. Conclude with `Complex.mul_conj _`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_star_mul_self {ε : Fin n → Bool} (f : KG ε → ℂ) :
     ∫ k, star (f k) * f k ∂(muK ε) = ((∫ k, ‖f k‖ ^ 2 ∂(muK ε) : ℝ) : ℂ) := by
@@ -72,11 +72,11 @@ def l2InnerCore {ε : Fin n → Bool} (V : Submodule ℂ (KG ε → ℂ)) (hV : 
     simpa using congrFun h3 k
 
 /- English proof (translation)
-Use `letI c := l2InnerCore V hV`. Use `letI : NormedAddCommGroup V := InnerProductSpace.Core.toNormedAddCommGroup (𝕜 := ℂ)`. Use `letI : InnerProductSpace ℂ V := InnerProductSpace.ofCore c.toCore`. Establish `hin : ∀ p q : V, inner ℂ p q = ∫ k, star (p.1 k) * q.1 k ∂(muK ε)` using `fun _ _ => rfl`. Establish `hn : ∀ p : V, ∫ k, ‖p.1 k‖ ^ 2 ∂(muK ε) = ‖p‖ ^ 2`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `p`. Establish `h` using `inner_self_eq_norm_sq_to_K (𝕜 := ℂ) p`. Rewrite `h` using `[hin, integral_star_mul_self]`. Apply `Complex.ofReal_injective` to reduce the goal to its premises. Rewrite using `[h, Complex.ofReal_pow]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Set `b` to `stdOrthonormalBasis ℂ V`. Use `⟨fun j => (b j).1, fun j => (b j).2, fun j => ?_, fun r hr => ?_⟩` and prove the remaining obligations. Rewrite using `[hn, b.orthonormal.1 j, one_pow]`. Rewrite using `[hn ⟨r, hr⟩, ← b.sum_sq_norm_inner_left]`.
+Both sides reduce to the same expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -102,9 +102,9 @@ theorem exists_parseval {ε : Fin n → Bool} (V : Submodule ℂ (KG ε → ℂ)
     rfl
 
 /- English proof (translation)
-Consider the cases of `i with`. Consider the case `zero`. Rewrite `h`, the goal using `[lowV, Submodule.mem_bot]`. Substitute `h` using the available equality. Both sides reduce to the same expression.
+Split into cases according to the possible forms of the given data. Treat this case separately. Rewrite the hypotheses and the conclusion using the stated equalities. Substitute using the available equality. Both sides reduce to the same expression.
 
-Consider the case `succ j => exact mul_left_mem a h`.
+Treat this case separately.
 -/
 theorem mul_left_mem_low {ε : Fin n → Bool} (a : KG ε) {i : ℕ} {φ : KG ε → ℂ} (h : φ ∈ lowV ε i) :
     (fun k => φ (a * k)) ∈ lowV ε i := by
@@ -135,12 +135,12 @@ def topV (ε : Fin n → Bool) (i : ℕ) : Submodule ℂ (KG ε → ℂ) where
     rw [this, integral_const_mul, ha' q hq, mul_zero]
 
 /- English proof (translation)
-Introduce `_ h` and use `h.1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem topV_le (ε : Fin n → Bool) (i : ℕ) : topV ε i ≤ polyV ε i := fun _ h => h.1
 
 /- English proof (translation)
-Use `⟨mul_left_mem a h.1, fun q hq => ?_⟩` and prove the remaining obligations. Establish `h1` using `h.2 _ (mul_left_mem_low a⁻¹ hq)`. Rewrite `h1` using `[← integral_mul_left_eq_self (μ := muK ε) _ a]`. Simplify `h1` using `only [inv_mul_cancel_left]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mul_left_mem_top {ε : Fin n → Bool} (a : KG ε) {i : ℕ} {φ : KG ε → ℂ} (h : φ ∈ topV ε i) :
     (fun k => φ (a * k)) ∈ topV ε i := by
@@ -150,9 +150,9 @@ theorem mul_left_mem_top {ε : Fin n → Bool} (a : KG ε) {i : ℕ} {φ : KG ε
   simpa only [inv_mul_cancel_left] using h1
 
 /- English proof (translation)
-Use `⟨star_mem he.1, fun q hq => ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Use `congr 1`. Use function extensionality and compare the values at `k`. Rewrite using `[map_mul, mul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Use `_ = (starRingEnd ℂ) (∫ k, e k * q k ∂(muK ε)) := integral_conj`. Use `_ = 0 := by rw [he.2.1 q hq, map_zero]`.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem star_mem_top {ε : Fin n → Bool} {i : ℕ} {e : KG ε → ℂ} (he : IsKer ε i e) :
     (fun k => star (e k)) ∈ topV ε i := by
@@ -164,15 +164,13 @@ theorem star_mem_top {ε : Fin n → Bool} {i : ℕ} {e : KG ε → ℂ} (he : I
     _ = 0 := by rw [he.2.1 q hq, map_zero]
 
 /- English proof (translation)
-Introduce `n ε i e he`. Use `haveI : IsProbabilityMeasure (muK ε) := (compact_haar_holds n ε).1`. Use `haveI : FiniteDimensional ℂ (topV ε i) := Submodule.finiteDimensional_of_le (topV_le ε i)`. Take `⟨φ, hφ, h1, hP⟩` from `exists_parseval (topV ε i) (fun p hp => continuous_of_mem hp.1)`. Establish `key : ∀ a : KG ε, ∫ k, ‖e k‖ ^ 2 ∂(muK ε) = ∑ j, ‖φ j a‖ ^ 2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `a`. Establish `h` using `hP _ (mul_left_mem_top a⁻¹ (star_mem_top he))`. Simplify using `only [star_star, norm_star] at h`. Rewrite `h` using `[integral_mul_left_eq_self (μ := muK ε) (fun k => ‖e k‖ ^ 2) a⁻¹]`. Rewrite using `[h]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `h2` using `mul_left_mem_top a (hφ j)`. Establish `h3` using `he.2.2 _ h2.1 h2.2`. Rewrite using `[← integral_mul_left_eq_self (μ := muK ε) _ a]`. Simplify using `only [inv_mul_cancel_left, mul_one] at h3 ⊢`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h3]`. Establish `hint : ∀ j, Integrable (fun a => ‖φ j a‖ ^ 2) (muK ε)`. Introduce `j`. Establish `hp` using `continuous_of_mem (hφ j).1`. Establish `hns : Continuous (fun k => ‖φ j k‖ ^ 2)` using `by fun_prop`.
-
-Conclude with `(integrable_of_continuousK (Complex.continuous_ofReal.comp hns)).re`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem integral_norm_sq_ker_le : ∀ {n : ℕ} (ε : Fin n → Bool) (i : ℕ) (e : KG ε → ℂ), IsKer ε i e →
     ∫ k, ‖e k‖ ^ 2 ∂(muK ε) ≤ (Module.finrank ℂ (polyV ε i) : ℝ) := by

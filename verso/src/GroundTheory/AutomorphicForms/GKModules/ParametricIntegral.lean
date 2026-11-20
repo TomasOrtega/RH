@@ -20,7 +20,7 @@ noncomputable def iter (k : ℕ) (Y : P) (a : α) : ContinuousMultilinearMap ℝ
 variable {F}
 
 /- English proof (translation)
-Establish `: (fun Y' => F Y' a) =ᶠ[𝓝 Y] fun _ => (0 : F')` using `h`. Rewrite using `[iter, (this.iteratedFDeriv (𝕜 := ℝ) k).self_of_nhds]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem iter_eq_zero_of_eventually {k : ℕ} {Y : P} {a : α} (h : ∀ᶠ Y' in 𝓝 Y, F Y' a = 0) :
     iter F k Y a = 0 := by
@@ -29,7 +29,7 @@ theorem iter_eq_zero_of_eventually {k : ℕ} {Y : P} {a : α} (h : ∀ᶠ Y' in 
   simp
 
 /- English proof (translation)
-Simplify using `[iter, iteratedFDeriv_succ_eq_comp_left]`.
+Simplify using the standard rewrite rules.
 -/
 theorem fderiv_iter (k : ℕ) (Y : P) (a : α) :
     fderiv ℝ (fun Y => iter F k Y a) Y =
@@ -43,15 +43,13 @@ open ParamIntegral
 set_option synthInstance.maxHeartbeats 200000 in
 
 /- English proof (translation)
-Take `⟨U, hU, C, hC, hFC⟩` from `hsupp Y₀`. Take `⟨r, hr, hrU⟩` from `Metric.mem_nhds_iff.1 hU`. Establish `hzero : ∀ j : ℕ, ∀ Y ∈ ball Y₀ r, ∀ a ∉ C, iter F j Y a = 0`. Introduce `j Y hY a ha`. Use `iter_eq_zero_of_eventually ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `filter_upwards [isOpen_ball.mem_nhds hY] with Y' hY'`. Conclude with `hFC Y' (hrU hY') a ha`. Establish `hcpt : ∀ j : ℕ, ∀ Y : P, Y ∈ ball Y₀ r → HasCompactSupport (iter F j Y)` using `fun j Y hY => HasCompactSupport.intro hC fun a ha => hzero j Y hY a ha`. Establish `hcY : ∀ j : ℕ, ∀ Y : P, Continuous (iter F j Y)` using `fun j Y => (hcont j).comp (Continuous.prodMk_right Y)`. Establish `hK : IsCompact (closedBall Y₀ (r / 2) ×ˢ C)` using `(isCompact_closedBall Y₀ _).prod hC`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨M, hM⟩` from `hK.exists_bound_of_continuousOn (hcont (k + 1)).continuousOn`. Establish `hsub : ball Y₀ (r / 2) ⊆ ball Y₀ r` using `ball_subset_ball (by linarith)`. Use `hasFDerivAt_integral_of_dominated_of_fderiv_le (bound := C.indicator fun _ => M) (F' := fun Y a => continuousMultilinearCurryLeftEquiv ℝ (fun _ : Fin (k + 1) => P) F' (iter F (k + 1) Y a)) (ball_mem_nhds Y₀ (half_pos hr)) (Eventually.of_forall fun Y => (hcY k Y).aestronglyMeasura …` and prove the remaining obligations. Use `Eventually.of_forall fun a Y hY => ?_` and prove the remaining obligations. Rewrite using `[LinearIsometryEquiv.norm_map]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `ha : a ∈ C`. Rewrite using `[indicator_of_mem ha]`. Conclude with `hM (Y, a) ⟨ball_subset_closedBall hY, ha⟩`. Rewrite using `[indicator_of_notMem ha, hzero (k + 1) Y (hsub hY) a ha, norm_zero]`. Conclude with `(integrable_indicator_iff hC.measurableSet).2 (integrableOn_const hC.measure_lt_top.ne)`.
-
-Use `Eventually.of_forall fun a Y _ => ?_` and prove the remaining obligations. Rewrite using `[← fderiv_iter]`. Establish `hd : Differentiable ℝ (fun Y => iter F k Y a)` using `(hF a).differentiable_iteratedFDeriv (by exact_mod_cast WithTop.coe_lt_top _)`. Conclude with `(hd Y).hasFDerivAt`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem hasFDerivAt_integral_iter (F : P → α → F')
     (hF : ∀ a, ContDiff ℝ ∞ (fun Y => F Y a))
@@ -97,11 +95,11 @@ theorem hasFDerivAt_integral_iter (F : P → α → F')
     exact (hd Y).hasFDerivAt
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero`. Use function extensionality and compare the values at `Y`. Rewrite using `[iteratedFDeriv_zero_eq_comp, Function.comp_apply]`. Simplify using `only [iter, iteratedFDeriv_zero_eq_comp, Function.comp_apply]`.
+Proceed by induction. Treat this case separately. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `((continuousMultilinearCurryFin0 ℝ P F').symm.toContinuousLinearEquiv.integral_comp_comm (fun a => F Y a)).symm`. Consider the case `succ k ih`. Use function extensionality and compare the values at `Y`. Rewrite using `[iteratedFDeriv_succ_eq_comp_left, Function.comp_apply, ih, (hasFDerivAt_integral_iter F hF hcont hsupp k Y).fderiv]`. Apply the tactic sequence `have e := LinearIsometry.integral_comp_comm (μ := μ) (𝕜 := ℝ) (E := ContinuousMultilinearMap ℝ (fun _ : Fin (k + 1) => P) F') (F := P →L[ℝ] ContinuousMultilinearMap ℝ (fun _ : Fin k => P) F') (continuousMultilinearCurryLeftEquiv ℝ (fun _ : Fin (k + 1) => P) F').toLinearIsometry ( …`.
+Treat this case separately. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [LinearIsometryEquiv.coe_toLinearIsometry] at e`. Rewrite using `[e]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem iteratedFDeriv_integral_eq (F : P → α → F')
     (hF : ∀ a, ContDiff ℝ ∞ (fun Y => F Y a))
@@ -130,7 +128,7 @@ theorem iteratedFDeriv_integral_eq (F : P → α → F')
     simp
 
 /- English proof (translation)
-Use `contDiff_of_differentiable_iteratedFDeriv fun k _ => ?_` and prove the remaining obligations. Rewrite using `[iteratedFDeriv_integral_eq F hF hcont hsupp k]`. Conclude with `fun Y => (hasFDerivAt_integral_iter F hF hcont hsupp k Y).differentiableAt`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem contDiff_integral_of_iteratedFDeriv (F : P → α → F')
     (hF : ∀ a, ContDiff ℝ ∞ (fun Y => F Y a))

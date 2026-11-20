@@ -26,9 +26,9 @@ namespace GlobalTheory.SuppLevO
 variable {D : D7}
 
 /- English proof (translation)
-Rewrite using `[← GlobalTheory.AdelicU.projFinLoc_projFin]`. Establish `: GlobalTheory.AdelicU.projFin D.sp.cm.sig V.gram h = 1`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Conclude with `congrArg Units.val hh`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, map_one]`.
+A detailed English derivation is pending.
 -/
 theorem proj_eq_one_of_finHom (V : HSp D) (h : GA D V) (hh : h ∈ GinfC V) (v : HeightOneSpectrum (𝓞 D.host.F)) :
     GlobalTheory.AdelicU.proj D.sp.cm.sig V.gram v h = 1 := by
@@ -40,7 +40,7 @@ theorem proj_eq_one_of_finHom (V : HSp D) (h : GA D V) (hh : h ∈ GinfC V) (v :
   rw [this, map_one]
 
 /- English proof (translation)
-Establish `h` using `proj_eq_one_of_finHom V _ (GlobalTheory.LevelNbhd.inv_finPartG_mul_mem_GinfC V g) v`. Rewrite `h` using `[map_mul, map_inv, inv_mul_eq_one]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem proj_finPartG (V : HSp D) (g : GA D V) (v : HeightOneSpectrum (𝓞 D.host.F)) :
     GlobalTheory.AdelicU.proj D.sp.cm.sig V.gram v (GlobalTheory.LevelNbhd.finPartG V g) = GlobalTheory.AdelicU.proj D.sp.cm.sig V.gram v g := by
@@ -49,7 +49,7 @@ theorem proj_finPartG (V : HSp D) (g : GA D V) (v : HeightOneSpectrum (𝓞 D.ho
   exact h
 
 /- English proof (translation)
-Use `show (Formalism.UG.bc _) (finHom V _) = (Formalism.UG.bc _) (finHom V g)`. Rewrite using `[GlobalTheory.LevelNbhd.finHom_finPartG]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finE_finPartG (V : HSp D) (g : GA D V) : Lev.finE V (GlobalTheory.LevelNbhd.finPartG V g) = Lev.finE V g := by
   show (Formalism.UG.bc _) (finHom V _) = (Formalism.UG.bc _) (finHom V g)
@@ -58,9 +58,9 @@ theorem finE_finPartG (V : HSp D) (g : GA D V) : Lev.finE V (GlobalTheory.LevelN
 set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Introduce `i j`. Establish `hX : toEAf D e • ((x : Matrix (Fin T.rank) (Fin S.rank) (AE D)).map (toEAf D)) = (x : Matrix (Fin T.rank) (Fin S.rank) (AE D)).map (toEAf D)`. Use extensionality with `a b`. Simplify using `only [Matrix.smul_apply, Matrix.map_apply, smul_eq_mul, ← map_mul]`. Rewrite using `[h a b]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `: toEAf D e • frMapO S T βS βT x = frMapO S T βS βT x`. Unfold `frMapO`. Rewrite using `[← Matrix.smul_mul, ← Matrix.mul_smul, hX]`. Conclude with `congrFun (congrFun this i) j`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem half_supp (S T : HSp D) (βS : GL (Fin S.rank) (Lev.EAf D)) (βT : GL (Fin T.rank) (Lev.EAf D)) (e : AE D) (x : WO S T)
     (h : IsHalf e x) : ∀ i j, toEAf D e * frMapO S T βS βT x i j = frMapO S T βS βT x i j := by
@@ -76,9 +76,9 @@ theorem half_supp (S T : HSp D) (βS : GL (Fin S.rank) (Lev.EAf D)) (βT : GL (F
   exact congrFun (congrFun this i) j
 
 /- English proof (translation)
-Use `split_ifs at hx with hc`. Establish `hg` using `left_ne_zero_of_mul hx`. Unfold `omegaG at hg`. Use `split_ifs at hg with hG`. Take `⟨-, a, ha1, ha2, ha3⟩` from `hG`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨hc.1, hc.2, fun PP hP => ?_, a, ha1, ha2, ha3⟩` and prove the remaining obligations. Rewrite using `[← ha1 ⟨PP, hP⟩]`. Conclude with `(Matrix.isUnit_iff_isUnit_det _).1 (a ⟨PP, hP⟩).isUnit`. Conclude with `absurd rfl hg`. Conclude with `absurd rfl hx`.
+A detailed English derivation is pending.
 -/
 theorem datum_spec (S T : HSp D) (βS : GL (Fin S.rank) (Lev.EAf D)) (βT : GL (Fin T.rank) (Lev.EAf D))
     (L : LevDat D.host.E ℂ S.rank) (χ ξ : ∀ PP : Pl D.host.E, (kP PP)ˣ →* ℂˣ) (e : AE D) (x : WO S T)
@@ -104,23 +104,21 @@ theorem datum_spec (S T : HSp D) (βS : GL (Fin S.rank) (Lev.EAf D)) (βT : GL (
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D S T ΛS βS βT L χ ξ e hsd hfr hrk hQ hZe g hg x hx hx'`. Use `beta_reduce at hx hx'`. Rewrite `hZe` using `[Finset.union_empty]`. Take `⟨hh, hI, hU, a, ha1, ha2, ha3⟩` from `datum_spec S T βS βT L χ ξ e x hx`. Take `⟨-, hI', hU', b, hb1, hb2, hb3⟩` from `datum_spec S T βS βT L χ ξ e _ hx'`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hu'` using `GlobalTheory.T.frameMatrix_weilPairAction_left_inv D S T βS βT g x`. Rewrite `hI'`, `hU'`, `hb1` using `[hu']`. Establish `hsupp` using `half_supp S T βS βT e x hh`. Take `⟨h1, h2, hred⟩` from `GlobalTheory.T.integral_idempotent_mul_of_unit_topBlock_reductions T.rank S.rank hrk L.Pg e hZe _ (βS⁻¹ * Lev.finE S g * βS) hI hI' hsupp hU hU'`. Establish `hUA` using `GlobalTheory.LevSplit.finE_mem_UA S g`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨h3, h4⟩` from `GlobalTheory.T.selfDualFrame_conj_integral_smul_of_integral S ΛS βS hsd hfr _ hUA _ rfl e h1 h2`. Take `⟨hεε, hεc⟩` from `GlobalTheory.T.idempotentSum_add_conj_idempotent_conj_fixed L.Pg e hZe`. Take `⟨k, hk, hmt⟩` from `GlobalTheory.T.exists_idempotent_component_of_group_element S (GlobalTheory.LevelNbhd.finPartG S g) (e + cA D e) (GlobalTheory.LevelNbhd.finPartG_mem_GfC S g) hεε hεc`. Establish `hfk` using `GlobalTheory.T.finiteEmbedding_idempotent_patch_in_frame S βS _ k (e + cA D e) hmt`. Rewrite `hfk` using `[finE_finPartG]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨hSt, hR⟩` from `GlobalTheory.T.frameIdempotentCutMatrix_mem_stabiliser_reduction S.rank βS _ _ L.Pg e hZe h1 h2 h3 h4 hfk`. Establish `hcomp : ∀ PP ∈ L.Pg, GlobalTheory.AdelicU.proj D.sp.cm.sig S.gram (PP.under (𝓞 D.host.F)) k = GlobalTheory.AdelicU.proj D.sp.cm.sig S.gram (PP.under (𝓞 D.host.F)) g` using `fun PP hP => by`. Rewrite using `[← proj_finPartG S g]`. Conclude with `GlobalTheory.T.localProjection_eq_of_idempotent_patch S _ _ k _ (GlobalTheory.T.adeleTensorComponent_idempotentSum_add_conj_eq_one L.Pg e hZe PP hP) hmt`. Establish `hkloc` using `(GlobalTheory.T.finitePart_mem_frameStabilizer_iff_local_stabilizer D S βS ΛS hfr k).1 hSt`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hgSt : Lev.finE S g ∈ St βS`. Use `(GlobalTheory.T.finitePart_mem_frameStabilizer_iff_local_stabilizer D S βS ΛS hfr g).2 fun v => ?_` and prove the remaining obligations. Distinguish the cases in `hv : ∃ PP ∈ L.Pg, PP.under (𝓞 D.host.F) = v`. Take `⟨PP, hP, rfl⟩` from `hv`. Rewrite using `[← hcomp PP hP]`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hkloc _`. Use `push_neg at hv`. Conclude with `hg v hv`. Establish `hredeq : ∀ PP ∈ L.Pg, redFn βS PP (Lev.finE S g) = redFn βS PP (Lev.finE S k)` using `fun PP hP => by`. Establish `hm : Lev.finE S (g * k⁻¹) ∈ St βS`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[map_mul, map_inv]`. Conclude with `Subgroup.mul_mem _ hgSt (Subgroup.inv_mem _ hSt)`. Establish `h1' : GlobalTheory.AdelicU.proj D.sp.cm.sig S.gram (PP.under (𝓞 D.host.F)) (g * k⁻¹) = 1`. Rewrite using `[map_mul, map_inv, hcomp PP hP, mul_inv_cancel]`. Establish `hr` using `GlobalTheory.T.latticeReduction_eq_one_of_local_component_one D S βS (g * k⁻¹) PP hm h1'`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hgk : Lev.finE S g = Lev.finE S (g * k⁻¹) * Lev.finE S k`. Rewrite using `[map_mul, map_inv, inv_mul_cancel_right]`. Rewrite using `[hgk, redFn_mul hm hSt, hr, one_mul]`. Use `GlobalTheory.T.mem_level_of_type_place_reductions S βS L _ hQ hUA hgSt a b ha2 hb2 ha3 hb3 fun PP => ?_` and prove the remaining obligations. Apply `Units.ext` to reduce the goal to its premises.
-
-Rewrite using `[Units.val_mul, hredeq PP.1 PP.2, hR PP.1 PP.2, ha1, hb1]`. Conclude with `hred PP.1 PP.2`.
+A detailed English derivation is pending.
 -/
 theorem finE_mem_lev : ∀ (D : D7) (S T : HSp D) (ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)) (βS : GL (Fin S.rank) (Lev.EAf D)) (βT : GL (Fin T.rank) (Lev.EAf D)) (L : LevDat D.host.E ℂ S.rank) (χ ξ : ∀ PP : Pl D.host.E, (kP PP)ˣ →* ℂˣ) (e : AE D), IsSelfDualC S ΛS → Formalism.L2.DIV.IsFrame βS ΛS → S.rank ≤ T.rank → L.Q = ∅ → IsIdemSum e (L.Pg ∪ ∅) → ∀ g : GA D S, (∀ v, (∀ PP ∈ L.Pg, PP.under (𝓞 D.host.F) ≠ v) → GlobalTheory.AdelicU.proj D.sp.cm.sig S.gram v g ∈ GlobalTheory.AdelicU.stabLoc D.sp.cm.sig S.gram ΛS v) → ∀ x, (fun x : WO S T => if IsHalf e x ∧ IsIntM (frMapO S T βS βT x) then omegaG L χ (fun PP => redM PP (frMapO S T βS βT x)) * omegaQ ∅ L.r ξ 1 (fun PP => redM PP (frMapO S T βS βT x)) else 0) x ≠ 0 → (fun x : WO S T => if IsHalf e x ∧ IsIntM (frMapO S T βS βT x) then omegaG L χ (fun PP => redM PP (frMapO S T βS βT x)) * omegaQ ∅ L.r ξ 1 (fun PP => redM PP (frMapO S T βS βT x)) else 0) (actO S T g 1 x) ≠ 0 → Lev.finE S g ∈ Formalism.L2.DIV.lev D.sp.cm S.gram βS L := by
   intro D S T ΛS βS βT L χ ξ e hsd hfr hrk hQ hZe g hg x hx hx'

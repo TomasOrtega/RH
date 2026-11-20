@@ -12,16 +12,16 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Da
   {W : ValuationSubring ℂ}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨(r₁ : c.F), h⟩, Subtype.ext ((hbV _).trans rfl), rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_int_of_isIntegral (bV : 𝓞 c.F →+* c.V W) (hbV : ∀ x, ((bV x : c.V W) : c.F) = (x : c.F))
     (r₁ : c.V W) (h : IsIntegral ℤ ((r₁ : c.V W) : c.F)) : ∃ r : 𝓞 c.F, bV r = r₁ ∧ (r : c.F) = (r₁ : c.F) :=
   ⟨⟨(r₁ : c.F), h⟩, Subtype.ext ((hbV _).trans rfl), rfl⟩
 
 /- English proof (translation)
-Use `IsIntegral.of_pow two_pos ?_` and prove the remaining obligations. Establish `e : x ^ 2 = algebraMap ℤ c.F (-(H.d : ℤ))`. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `((x ^ 2 : c.F) : ℂ) = ((algebraMap ℤ c.F (-(H.d : ℤ)) : c.F) : ℂ)`. Rewrite using `[IntermediateField.coe_pow, hx, H.sqrt_neg_disc_sq]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[e]`. Conclude with `isIntegral_algebraMap`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isIntegral_of_eq_rt0 {x : c.F} (hx : (x : ℂ) = H.rt0) : IsIntegral ℤ x := by
   refine IsIntegral.of_pow two_pos ?_
@@ -34,9 +34,9 @@ theorem isIntegral_of_eq_rt0 {x : c.F} (hx : (x : ℂ) = H.rt0) : IsIntegral ℤ
   exact isIntegral_algebraMap
 
 /- English proof (translation)
-Use `IsIntegral.of_pow l.A_pos ?_` and prove the remaining obligations. Establish `e : x ^ l.A = 1`. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `((x ^ l.A : c.F) : ℂ) = ((1 : c.F) : ℂ)`. Rewrite using `[IntermediateField.coe_pow, hx]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Complex.isPrimitiveRoot_exp l.A l.A_pos.ne').pow_eq_one`. Rewrite using `[e]`. Conclude with `isIntegral_one`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isIntegral_of_eq_zeta {x : c.F} (hx : (x : ℂ) = zeta l.A) : IsIntegral ℤ x := by
   refine IsIntegral.of_pow l.A_pos ?_

@@ -20,11 +20,9 @@ def hd_fam (ST : Finset (Pl E)) : ST ⊕ ST → Ideal (𝓞 E) :=
   Sum.elim (fun P => P.1.asIdeal) (fun P => (conjPrime₂ P.1).asIdeal)
 
 /- English proof (translation)
-Establish `hmax : ∀ i, (hd_fam ST i).IsMaximal`. Introduce and unpack `(P | P)`. Conclude with `P.1.isMaximal`. Conclude with `(conjPrime₂ P.1).isMaximal`. Establish `hinj : ∀ i j, hd_fam ST i = hd_fam ST j → i = j`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `(P | P) (Q | Q) h`. Conclude with `congrArg Sum.inl (Subtype.ext (HeightOneSpectrum.ext h))`. Conclude with `absurd (HeightOneSpectrum.ext h : P.1 = conjPrime₂ Q.1) (hc Q P)`. Conclude with `absurd (HeightOneSpectrum.ext h : conjPrime₂ P.1 = Q.1).symm (hc P Q)`. Establish `h1 : conjPrime₂ P.1 = conjPrime₂ Q.1` using `HeightOneSpectrum.ext h`.
-
-Establish `h2 : P.1 = Q.1` using `by rw [← rlh_conjP_conjP P.1, h1, rlh_conjP_conjP]`. Conclude with `congrArg Sum.inr (Subtype.ext h2)`. Introduce `i j hij`. Rewrite using `[Ideal.isCoprime_iff_sup_eq]`. Conclude with `Ideal.IsMaximal.coprime_of_ne (hmax i) (hmax j) fun h => hij (hinj i j h)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hd_fam_coprime (hc : ∀ P Q : ST, Q.1 ≠ conjPrime₂ P.1) :
     Pairwise fun i j : ST ⊕ ST => IsCoprime (hd_fam ST i) (hd_fam ST j) := by
@@ -50,11 +48,9 @@ def hd_red (ST : Finset (Pl E)) :
     (LinearMap.pi fun P : ST => Submodule.mkQ (conjPrime₂ P.1).asIdeal)
 
 /- English proof (translation)
-Introduce and unpack `⟨c, c'⟩`. Use `choose x hx using fun P : ST => Submodule.mkQ_surjective P.1.asIdeal (c P)`. Use `choose x' hx' using fun P : ST => Submodule.mkQ_surjective (conjPrime₂ P.1).asIdeal (c' P)`. Take `⟨r, hr⟩` from `Ideal.exists_forall_sub_mem_ideal (hd_fam_coprime hc) (Sum.elim x x')`. Use `⟨r, Prod.ext (funext fun P => ?_) (funext fun P => ?_)⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show Submodule.mkQ P.1.asIdeal r = c P`. Rewrite using `[← hx P]`. Conclude with `(Submodule.Quotient.eq _).2 (hr (Sum.inl P))`. Use `show Submodule.mkQ (conjPrime₂ P.1).asIdeal r = c' P`. Rewrite using `[← hx' P]`.
-
-Conclude with `(Submodule.Quotient.eq _).2 (hr (Sum.inr P))`.
+A detailed English derivation is pending.
 -/
 theorem hd_red_surjective (hc : ∀ P Q : ST, Q.1 ≠ conjPrime₂ P.1) : Function.Surjective (hd_red ST) := by
   rintro ⟨c, c'⟩
@@ -70,13 +66,13 @@ theorem hd_red_surjective (hc : ∀ P Q : ST, Q.1 ≠ conjPrime₂ P.1) : Functi
     exact (Submodule.Quotient.eq _).2 (hr (Sum.inr P))
 
 /- English proof (translation)
-Use extensionality with `r`. Rewrite using `[LinearMap.mem_ker, Ideal.mem_span_singleton, ← hT]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h1 : ∀ P ∈ ST, r ∈ P.asIdeal` using `fun P hP => (Submodule.Quotient.mk_eq_zero _).1 (congrFun (congrArg Prod.fst h) ⟨P, hP⟩)`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2 : ∀ P ∈ ST, cO E r ∈ P.asIdeal` using `fun P hP => (mem_conjP P r).1 ((Submodule.Quotient.mk_eq_zero _).1 (congrFun (congrArg Prod.snd h) ⟨P, hP⟩))`. Establish `d1 : π ∣ r` using `(hB.dvd r).1 h1`. Establish `d2 : cO E π ∣ r`. Take `⟨s, hs⟩` from `(hB.dvd (cO E r)).1 h2`. Use `⟨cO E s, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← map_mul, ← hs, cO_cO]`. Conclude with `hB.cop.mul_dvd d1 d2`. Introduce and unpack `⟨s, rfl⟩`. Use `Prod.ext (funext fun P => ?_) (funext fun P => ?_)` and prove the remaining obligations. Use `(Submodule.Quotient.mk_eq_zero _).2 ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_assoc]`. Conclude with `Ideal.mul_mem_right _ _ (hB.mem P.2)`. Use `(Submodule.Quotient.mk_eq_zero _).2 ((mem_conjP P.1 _).2 ?_)` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, cO_cO, mul_comm (cO E π), mul_assoc]`. Conclude with `Ideal.mul_mem_right _ _ (hB.mem P.2)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hd_red_ker (hB : BasePi ST π) (hT : π * cO E π = (T : 𝓞 E)) :
     LinearMap.ker (hd_red ST) = Ideal.span {(T : 𝓞 E)} := by
@@ -104,7 +100,7 @@ theorem hd_red_ker (hB : BasePi ST π) (hT : π * cO E π = (T : 𝓞 E)) :
       exact Ideal.mul_mem_right _ _ (hB.mem P.2)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(Submodule.quotEquivOfEq _ _ (hd_red_ker hB hT).symm).trans ((hd_red ST).quotKerEquivOfSurjective (hd_red_surjective hc))⟩`.
+Supply the required witnesses or components.
 -/
 theorem hd_crt (hB : BasePi ST π) (hT : π * cO E π = (T : 𝓞 E)) (hc : ∀ P Q : ST, Q.1 ≠ conjPrime₂ P.1) :
     Nonempty ((𝓞 E ⧸ Ideal.span {(T : 𝓞 E)}) ≃ₗ[𝓞 E]
@@ -112,7 +108,7 @@ theorem hd_crt (hB : BasePi ST π) (hT : π * cO E π = (T : 𝓞 E)) (hc : ∀ 
   ⟨(Submodule.quotEquivOfEq _ _ (hd_red_ker hB hT).symm).trans ((hd_red ST).quotKerEquivOfSurjective (hd_red_surjective hc))⟩
 
 /- English proof (translation)
-Take `⟨e1⟩` from `dd.2.Lsh_quot_L hc`. Take `⟨e2⟩` from `hd_crt hB hT hc`. Conclude with `⟨e1.trans e2.symm⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem hd_Lsh_quot {n : ℕ} {SG : Finset (Pl E)} (dd : DecoSet E n ST SG) (hB : BasePi ST π) (hT : π * cO E π = (T : 𝓞 E))
     (hc : ∀ P Q : ST, Q.1 ≠ conjPrime₂ P.1) :
@@ -128,11 +124,9 @@ section Tr
 variable {R M M' : Type} [CommRing R] [AddCommGroup M] [Module R M] [AddCommGroup M'] [Module R M']
 
 /- English proof (translation)
-Set `f : A ≃ₗ[R] A'` to `{ toFun := fun x => ⟨e x.1, (hA x.1).2 x.2⟩ invFun := fun y => ⟨e.symm y.1, (hA _).1 (by rw [e.apply_symm_apply]; exact y.2)⟩ map_add' := fun x y => Subtype.ext (map_add e x.1 y.1) map_smul' := fun r x => Subtype.ext (map_smul e r x.1) left_inv := fun x => Subtype.ext (e.symm_app …`. Use `⟨Submodule.Quotient.equiv _ _ f ?_⟩` and prove the remaining obligations. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `(hB x.1).2 hx`. Introduce `hy`. Use `⟨f.symm y, ?_, f.apply_symm_apply y⟩` and prove the remaining obligations. Use `show e.symm y.1 ∈ B`. Use `(hB _).1 ?_` and prove the remaining obligations.
-
-Rewrite using `[e.apply_symm_apply]`. Conclude with `hy`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hd_transport (e : M ≃ₗ[R] M') (A B : Submodule R M) (A' B' : Submodule R M') (hA : ∀ x, e x ∈ A' ↔ x ∈ A)
     (hB : ∀ x, e x ∈ B' ↔ x ∈ B) :
@@ -163,7 +157,7 @@ section Rec
 variable {d : ColDat} (a : ColArgs d)
 
 /- English proof (translation)
-Use `show Formalism.L2.Forms.dualL (d.sp.cm.sig : d.X.E →+* d.X.E) (CF.gramN (d.colRec a) i hi) (CF.clsCrd (d.colRec a) u i hi c) = _`. Rewrite using `[gramN_eq a hS i hi, clsCrd_eq a u i hi c]`. Conclude with `rlc_span_dualSet d.sp.cm (d.R.N i) _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hd_Ld_eq (hS : SpStd d.toColBase) (u : d.what₂.Word) (i : ℕ) (hi : i ≤ d.R.m) (c : StCl (Pr := d.Pr) d.W d.lev u i) :
     CF.Ld (d.colRec a) u i hi c = (d.repr u i c).1.Lsh := by
@@ -172,11 +166,9 @@ theorem hd_Ld_eq (hS : SpStd d.toColBase) (u : d.what₂.Word) (i : ℕ) (hi : i
   exact rlc_span_dualSet d.sp.cm (d.R.N i) _
 
 /- English proof (translation)
-Introduce `i hi c`. Take `⟨e1⟩` from `hd_Lsh_quot (d.repr u i c) (basePi_of_ok d.hX d.hPr u) (d.hPr.piT_norm u) (fun P Q => (moveHyp_of_ok d.hPr u P).st Q)`. Take `⟨e0⟩` from `hd_transport ((CF.crdN (d.colRec a) i hi).restrictScalars (𝓞 d.host.E)) (CH.Ld (d.colRec a) u i c) ((d.colRec a).clsLat u i c) (d.repr u i c).1.Lsh (d.repr u i c).1.L (fun x => by`. Establish `h` using `hx_mem_Ld (D := d.colRec a) u i hi c x`. Rewrite `h` using `[hd_Ld_eq a hS u i hi c]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h)`. Use the proof step `(fun x => by`. Establish `h` using `hx_mem_map (D := d.colRec a) hi ((d.colRec a).clsLat u i c) x`. Rewrite `h` using `[← hx_clsCrd, clsCrd_eq a u i hi c]`. Conclude with `h)`.
-
-Conclude with `⟨e0.trans e1⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem attDisc (hS : SpStd d.toColBase) (u : d.what₂.Word) : AtTDisc (d.colRec a) u := by
   intro i hi c

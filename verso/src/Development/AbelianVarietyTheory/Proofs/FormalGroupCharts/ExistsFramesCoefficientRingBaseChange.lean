@@ -20,7 +20,7 @@ noncomputable section
 namespace GlobalTheory.FrameBCGen
 
 /- English proof (translation)
-Use function extensionality and compare the values at `I`. Use `Eq.symm (congrArg (fun q => q.left) ((psum_hom (preHom ρ) ![a, b] I.down).trans (congrArg (fun q => psum t.G q I.down) (funext fun i => ?_))))` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> rfl`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cφG_comp {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {X0 : Scheme.{0}} (t : SAB H X0)
     {T T' : Over X0} (ρ : T' ⟶ T) (a b : T ⟶ t.G) :
@@ -31,11 +31,11 @@ theorem cφG_comp {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E
   fin_cases i <;> rfl
 
 /- English proof (translation)
-Introduce `E _ _ _ H X0 t S S' _ _ ψ x0 x1 h01 d x x' hx e he`. Substitute `h01` using the available equality. Set `ρ : ∀ m, jOG (spMap ψ ≫ x0) d m 2 ⟶ jOG x0 d m 2` to `fun m => Over.homMk (spMap (jetCoef ψ (Fin 2 × Fin d) m)) (by show spMap (jetCoef ψ (Fin 2 × Fin d) m) ≫ spMap (algebraMap S (Jet S (Fin 2 × Fin d) m)) ≫ x0 = spMap (algebraMap S' (Jet S' (Fin 2 × Fin d) m)) ≫ spMap ψ ≫ x0`. Rewrite using `[← Category.assoc, ← Category.assoc, RawFrameBC.spMap_comp_eq, RawFrameBC.spMap_comp_eq, JetTr.jetCoef_alg])`. Establish `hp : ∀ m (i : Fin 2), jptG t (spMap ψ ≫ x0) d x' m i = ρ m ≫ jptG t x0 d x m i`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `m i`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Use `show spMap (jetCopy (S := S') d m i).toRingHom ≫ (x' m).left = spMap (jetCoef ψ (Fin 2 × Fin d) m) ≫ spMap (jetCopy (S := S) d m i).toRingHom ≫ (x m).left`. Rewrite using `[hx, ← Category.assoc, ← Category.assoc, RawFrameBC.spMap_comp_eq, RawFrameBC.spMap_comp_eq]`. Conclude with `congrArg (fun f => spMap f ≫ (x m).left) (JetTr.jetCoef_copy ψ d m 2 i).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components.
 
-Establish `key` using `fun m => RawFrameBC.exists_reindexed_pull t.PP.isLB (cφG t ![jptG t x0 d x m (0 : Fin 2), jptG t x0 d x m (1 : Fin 2)]) (cε 2) (e m) (he m) (ρ m).left (cφG t ![jptG t (spMap ψ ≫ x0) d x' m (0 : Fin 2), jptG t (spMap ψ ≫ x0) d x' m (1 : Fin 2)]) (by rw [hp, hp, cφG_comp])`. Use `choose e' h₁ h₂ _ using key`. Conclude with `⟨e', h₁, h₂⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_frames : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (X0 : Scheme.{0}) (t : SAB H X0) (S S' : Type) [CommRing S] [CommRing S'] (ψ : S →+* S') (x0 : Sp S ⟶ X0) (x1 : Sp S' ⟶ X0), x1 = spMap ψ ≫ x0 → ∀ (d : ℕ) (x : ∀ m, jOG x0 d m 1 ⟶ t.G) (x' : ∀ m, jOG x1 d m 1 ⟶ t.G), (∀ m, (x' m).left = spMap (jetCoef ψ (Fin 1 × Fin d) m) ≫ (x m).left) → ∀ e : ∀ m, FrTyG t x0 d x m, (∀ m, (e m).IsGen) → ∃ e' : ∀ m, FrTyG t x1 d x' m, (∀ m, (e' m).IsGen) ∧ (∀ m, LB.Gen.Corr t.PP.L _ _ _ _ (e' m) (LB.pullGen t.PP.L _ _ (e m) (spMap (jetCoef ψ (Fin 2 × Fin d) m)))) := by
   intro E _ _ _ H X0 t S S' _ _ ψ x0 x1 h01 d x x' hx e he

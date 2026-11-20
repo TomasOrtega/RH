@@ -19,7 +19,7 @@ variable {n : ℕ}
 variable {ε : Fin n → Bool} {Λ : Fin n → ℝ}
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Matrix.mul_apply, Matrix.single_apply, Matrix.sum_apply, ite_and, ite_mul, mul_ite, Finset.sum_ite_eq, Finset.sum_ite_eq']`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private lemma conj_single_lemma (A B : Matrix (Fin n) (Fin n) ℂ) (a b : Fin n) :
     A * Matrix.single a b (1 : ℂ) * B =
@@ -29,7 +29,7 @@ private lemma conj_single_lemma (A B : Matrix (Fin n) (Fin n) ℂ) (a b : Fin n)
     Finset.sum_ite_eq, Finset.sum_ite_eq']
 
 /- English proof (translation)
-Rewrite using `[conj_single_lemma, Finset.sum_comm]`. Use `Fintype.sum_equiv Fin.revPerm _ _ fun d => ?_` and prove the remaining obligations. Use `Fintype.sum_equiv Fin.revPerm _ _ fun c => ?_` and prove the remaining obligations. Simplify using `[mul_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 private lemma mul_single_rev_mul_eq_sum (A B : Matrix (Fin n) (Fin n) ℂ) (a b : Fin n) :
     A * Matrix.single (Fin.rev b) (Fin.rev a) (1 : ℂ) * B =
@@ -41,9 +41,9 @@ private lemma mul_single_rev_mul_eq_sum (A B : Matrix (Fin n) (Fin n) ℂ) (a b 
   simp [mul_comm]
 
 /- English proof (translation)
-Establish `hg : toMK g ∈ Kset ε` using `g.2`. Simplify using `only [Kset, Set.mem_setOf_eq] at hg`. Rewrite using `[Ps1.toMK_inv_eq]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `first`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Treat this case separately.
 
-Consider the case `simpa [Matrix.star_eq_conjTranspose] using Matrix.mem_unitaryGroup_iff'.mp hg.1`. Consider the case `simpa [Matrix.star_eq_conjTranspose] using Unitary.star_mul_self_of_mem hg.1`. Use `first`. Consider the case `simpa [Matrix.star_eq_conjTranspose] using Matrix.mem_unitaryGroup_iff.mp hg.1`. Consider the case `simpa [Matrix.star_eq_conjTranspose] using Unitary.mul_star_self_of_mem hg.1`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private lemma toMK_inv_mul_and_mul_inv (g : KG ε) : toMK g⁻¹ * toMK g = 1 ∧ toMK g * toMK g⁻¹ = 1 := by
   have hg : toMK g ∈ Kset ε := g.2
@@ -58,7 +58,7 @@ private lemma toMK_inv_mul_and_mul_inv (g : KG ε) : toMK g⁻¹ * toMK g = 1 �
       | simpa [Matrix.star_eq_conjTranspose] using Unitary.mul_star_self_of_mem hg.1
 
 /- English proof (translation)
-Establish `e` using `Matrix.submatrix_mul_equiv M N (Fin.revPerm : Fin n → Fin n) Fin.revPerm (Fin.revPerm : Fin n → Fin n)`. Rewrite `e` using `[h, Matrix.submatrix_one_equiv]`. Use `first`. Consider the case `exact e`. Consider the case `simpa [Fin.revPerm] using e`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private lemma submatrix_rev_mul_eq_one_of_mul_eq_one (M N : Matrix (Fin n) (Fin n) ℂ) (h : M * N = 1) :
     M.submatrix Fin.rev Fin.rev * N.submatrix Fin.rev Fin.rev = 1 := by
@@ -70,13 +70,11 @@ private lemma submatrix_rev_mul_eq_one_of_mul_eq_one (M N : Matrix (Fin n) (Fin 
     | simpa [Fin.revPerm] using e
 
 /- English proof (translation)
-Use `haveI := compactSpace_KG ε`. Take `⟨U₀, hU₀o, hpos, -, hdiff, -⟩` from `psM_holo T μ`. Use `⟨U₀ ∩ Ps1.Uset ε, hU₀o.inter Ps1.isOpen_Uset, fun z hz => ⟨hpos hz, Ps1.posSet_subset_Uset hz⟩, hdiff.mono Set.inter_subset_left, fun z hz k => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Use `GPs.gelfand_Fint T μ _ k _ (fun g y hy => ?_) hz.2` and prove the remaining obligations. Establish `hAB : toMK g⁻¹ * toMK g = 1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(toMK_inv_mul_and_mul_inv g).1`. Establish `hBA : toMK g * toMK g⁻¹ = 1`. Conclude with `(toMK_inv_mul_and_mul_inv g).2`. Rewrite using `[GPs.gelfand_conj isOpen_omega _ (toMK g⁻¹) (toMK g) hAB hBA (toMK g⁻¹)ᵀ (toMK g)ᵀ (fun a b => conj_single_lemma _ _ a b) (by rw [← Matrix.transpose_mul, hBA, Matrix.transpose_one]) (by rw [← Matrix.transpose_mul, hAB, Matrix.transpose_one]) (phiM_contDiffOn μ) k hy]`. Conclude with `(gelfand_phiM μ lam hμ k hy).1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `GPs.gelfand_Fint T μ _ k _ (fun g y hy => ?_) hz.2` and prove the remaining obligations. Establish `hAB : toMK g⁻¹ * toMK g = 1`. Conclude with `(toMK_inv_mul_and_mul_inv g).1`. Establish `hBA : toMK g * toMK g⁻¹ = 1`. Conclude with `(toMK_inv_mul_and_mul_inv g).2`.
-
-Rewrite using `[GPs.gelfand_conj isOpen_omega _ (toMK g⁻¹) (toMK g) hAB hBA ((toMK g).submatrix Fin.rev Fin.rev) ((toMK g⁻¹).submatrix Fin.rev Fin.rev) (fun a b => mul_single_rev_mul_eq_sum _ _ a b) (submatrix_rev_mul_eq_one_of_mul_eq_one _ _ hBA) (submatrix_rev_mul_eq_one_of_mul_eq_one _ _ hAB …`. Conclude with `(gelfand_phiM μ lam hμ k hy).2`.
+A detailed English derivation is pending.
 -/
 theorem gelfand_psM (T : KType ε Λ) (μ : Fin n → ℤ) (lam : Fin n → ℝ) (hμ : IsMu lam μ) :
     ∃ U : Set (Matrix (Fin n) (Fin n) ℂ), IsOpen U ∧ posSet n ⊆ U ∧ DifferentiableOn ℂ (psM T μ) U ∧

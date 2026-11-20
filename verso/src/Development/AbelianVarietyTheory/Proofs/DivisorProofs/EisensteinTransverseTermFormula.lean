@@ -14,9 +14,9 @@ noncomputable section
 open GlobalTheory.EisCTMid in
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ n J r X Y L a h hS T hT ν hνr hνu s g`. Establish `hx` using `witt_frame_first_column_ne_zero hS.2.2.2.2.1`. Establish `hI` using `hS.2.2.2.2.2.2`. Set `μ : ratPts σ J` to `⟨ν, hνr⟩`. Use `(tsum_congr fun t => ?_).trans ((midEquiv hT μ hνu).tsum_eq (fun t => ENNReal.ofReal (h (t.1.1 * g) ^ s)))` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[show ν = (μ : GAd σ J) from rfl, rep_ht hI hx hT μ t.1 g]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem GlobalTheory.EisCTMid.midSumReal_left_invariant : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ)
     (J : Matrix (Fin n) (Fin n) E) (r : ℕ) (X Y : Matrix (Fin n) (Fin (r + 1)) E) (L : Submodule (𝓞 E) (Fin n → E))

@@ -19,13 +19,13 @@ section Gen
 variable {K : Type*} [Field K] [NumberField K] (v : HeightOneSpectrum (𝓞 K))
 
 /- English proof (translation)
-Simplify using `[HeightOneSpectrum.algebraMap_adicCompletion]`.
+Simplify using the standard rewrite rules.
 -/
 theorem coe_eq_algebraMap (z : K) : (z : v.adicCompletion K) = algebraMap K (v.adicCompletion K) z := by
   simp [HeightOneSpectrum.algebraMap_adicCompletion]
 
 /- English proof (translation)
-Rewrite using `[← coe_eq_algebraMap]`. Conclude with `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v z`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valued_algebraMap (z : K) :
     Valued.v (algebraMap K (v.adicCompletion K) z) = v.valuation K z := by
@@ -35,14 +35,14 @@ theorem valued_algebraMap (z : K) :
 end Gen
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.CompanionTheory.HalfIntegral.pOf_eq_prime]`. Conclude with `Fact.out`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pOf_prime (v : Pl) : (pOf v).Prime := by
   rw [GlobalTheory.CompanionTheory.HalfIntegral.pOf_eq_prime]
   exact Fact.out
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.CompanionTheory.HalfIntegral.pOf_eq_prime, DirichletHecke.uniformizer, IdeleGroup.coe_finiteProj_diagonal, RationalSymbol.coe_primeRat]`. Rewrite using `[coe_eq_algebraMap, map_natCast]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem coe_uniformizer (v : Pl) :
     ((DirichletHecke.uniformizer v : (Qv v)ˣ) : Qv v) = ((pOf v : ℕ) : Qv v) := by
@@ -51,20 +51,20 @@ theorem coe_uniformizer (v : Pl) :
   rw [coe_eq_algebraMap, map_natCast]
 
 /- English proof (translation)
-Rewrite using `[← coe_uniformizer]`. Conclude with `GlobalTheory.CompanionTheory.HalfIntegral.ord_uniformizer_eq_one v`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ord_pOf (v : Pl) : ord ((pOf v : ℕ) : Qv v) = 1 := by
   rw [← coe_uniformizer]
   exact GlobalTheory.CompanionTheory.HalfIntegral.ord_uniformizer_eq_one v
 
 /- English proof (translation)
-The claim follows from `residueCard_adicCompletion`.
+A detailed English derivation is pending.
 -/
 theorem residueCard_Qv (v : Pl) : residueCard (Qv v) = pOf v :=
   residueCard_adicCompletion
 
 /- English proof (translation)
-Rewrite using `[← Ideal.absNorm_eq_one_iff, NumberField.absNorm_differentIdeal (K := ℚ) (𝒪 := 𝓞 ℚ), Rat.numberField_discr]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem differentIdeal_rat : differentIdeal ℤ (𝓞 ℚ) = ⊤ := by
   rw [← Ideal.absNorm_eq_one_iff, NumberField.absNorm_differentIdeal (K := ℚ) (𝒪 := 𝓞 ℚ),
@@ -72,7 +72,7 @@ theorem differentIdeal_rat : differentIdeal ℤ (𝓞 ℚ) = ⊤ := by
   rfl
 
 /- English proof (translation)
-Use `⟨continuous_localAdelicChar v, localAdelicChar_ne_one v, ?_⟩` and prove the remaining obligations. Rewrite using `[addCharConductor_localAdelicChar, differentExp, differentIdeal_rat, FractionalIdeal.coeIdeal_top, FractionalIdeal.count_one, neg_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem isStd_local (v : Pl) : IsStd (localAdelicChar ℚ v) := by
   refine ⟨continuous_localAdelicChar v, localAdelicChar_ne_one v, ?_⟩
@@ -80,14 +80,14 @@ theorem isStd_local (v : Pl) : IsStd (localAdelicChar ℚ v) := by
     FractionalIdeal.count_one, neg_zero]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨GroundTheory.Automorphic.GodementSection.continuous_localChar c v, fun x => by rw [GroundTheory.Automorphic.GodementSection.coe_localChar]; exact Circle.norm_coe _⟩`.
+Supply the required witnesses or components.
 -/
 theorem isUnit1_localChar (c : HeckeCharacter ℚ) (v : Pl) : IsUnit1 (localChar c v) :=
   ⟨GroundTheory.Automorphic.GodementSection.continuous_localChar c v, fun x => by
     rw [GroundTheory.Automorphic.GodementSection.coe_localChar]; exact Circle.norm_coe _⟩
 
 /- English proof (translation)
-Introduce `v w h`. Rewrite `h` using `[GlobalTheory.CompanionTheory.HalfIntegral.pOf_eq_prime, GlobalTheory.CompanionTheory.HalfIntegral.pOf_eq_prime]`. Conclude with `HeightOneSpectrum.ext (by rw [DirichletHecke.asIdeal_eq_span v, DirichletHecke.asIdeal_eq_span w, h])`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pOf_injective : Function.Injective pOf := by
   intro v w h
@@ -95,23 +95,23 @@ theorem pOf_injective : Function.Injective pOf := by
   exact HeightOneSpectrum.ext (by rw [DirichletHecke.asIdeal_eq_span v, DirichletHecke.asIdeal_eq_span w, h])
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨RationalSymbol.placeOf ⟨p, hp⟩, by rw [GlobalTheory.CompanionTheory.HalfIntegral.pOf_eq_prime]; exact RationalSymbol.prime_placeOf ⟨p, hp⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem pOf_surjective (p : ℕ) (hp : p.Prime) : ∃ v, pOf v = p :=
   ⟨RationalSymbol.placeOf ⟨p, hp⟩, by
     rw [GlobalTheory.CompanionTheory.HalfIntegral.pOf_eq_prime]; exact RationalSymbol.prime_placeOf ⟨p, hp⟩⟩
 
 /- English proof (translation)
-Rewrite using `[DirichletHecke.asIdeal_eq_span, Ideal.mem_span_singleton, GlobalTheory.CompanionTheory.HalfIntegral.pOf_eq_prime, ← map_dvd_iff (Rat.IsIntegralClosure.intEquiv (𝓞 ℚ)), map_natCast, map_natCast, Int.natCast_dvd_natCast]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem natCast_mem_asIdeal (v : Pl) (n : ℕ) : (n : 𝓞 ℚ) ∈ v.asIdeal ↔ pOf v ∣ n := by
   rw [DirichletHecke.asIdeal_eq_span, Ideal.mem_span_singleton, GlobalTheory.CompanionTheory.HalfIntegral.pOf_eq_prime,
     ← map_dvd_iff (Rat.IsIntegralClosure.intEquiv (𝓞 ℚ)), map_natCast, map_natCast, Int.natCast_dvd_natCast]
 
 /- English proof (translation)
-Establish `hm : m ≠ 0`. Introduce and unpack `rfl`. Simplify using `at h`. Establish `e : Valued.v ((m : ℕ) : Qv v) = v.valuation ℚ (algebraMap (𝓞 ℚ) ℚ (m : 𝓞 ℚ))`. Rewrite using `[← valued_algebraMap, map_natCast (algebraMap (𝓞 ℚ) ℚ)]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg _ (map_natCast _ m).symm`. Establish `h0 : ((m : ℕ) : Qv v) ≠ 0` using `Nat.cast_ne_zero.2 hm`. Rewrite using `[← valued_eq_one_iff_ord h0, e, HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.intValuation_eq_one_iff, natCast_mem_asIdeal]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ord_natCast_of_not_dvd (v : Pl) {m : ℕ} (h : ¬ pOf v ∣ m) : ord ((m : ℕ) : Qv v) = 0 := by
   have hm : m ≠ 0 := by
@@ -127,9 +127,9 @@ theorem ord_natCast_of_not_dvd (v : Pl) {m : ℕ} (h : ¬ pOf v ∣ m) : ord ((m
   exact h
 
 /- English proof (translation)
-Establish `h0 : ((p : ℕ) : Qv v) ≠ 0` using `Nat.cast_ne_zero.2 hp`. Proceed by induction on `a with`. Consider the case `zero => simp [ord]`. Consider the case `succ n ih`. Rewrite using `[pow_succ, ord_mul (pow_ne_zero _ h0) h0, ih]`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem ord_pow_natCast (v : Pl) (p a : ℕ) (hp : p ≠ 0) :
     ord (((p : ℕ) : Qv v) ^ a) = a * ord ((p : ℕ) : Qv v) := by
@@ -142,9 +142,9 @@ theorem ord_pow_natCast (v : Pl) (p a : ℕ) (hp : p ≠ 0) :
     ring
 
 /- English proof (translation)
-Establish `hp` using `pOf_prime v`. Establish `hc : ordCompl[pOf v] n ≠ 0` using `(Nat.ordCompl_pos _ hn).ne'`. Establish `h0 : ((ordCompl[pOf v] n : ℕ) : Qv v) ≠ 0` using `Nat.cast_ne_zero.2 hc`. Establish `h1 : ((pOf v : ℕ) : Qv v) ≠ 0` using `Nat.cast_ne_zero.2 hp.ne_zero`. Use `conv_lhs => rw [← Nat.ordProj_mul_ordCompl_eq_self n (pOf v)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Nat.cast_mul, Nat.cast_pow, ord_mul (pow_ne_zero _ h1) h0, ord_pow_natCast v _ _ hp.ne_zero, ord_pOf, ord_natCast_of_not_dvd v (Nat.not_dvd_ordCompl hp hn)]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ord_natCast (v : Pl) (n : ℕ) (hn : n ≠ 0) :
     ord ((n : ℕ) : Qv v) = n.factorization (pOf v) := by
@@ -158,13 +158,13 @@ theorem ord_natCast (v : Pl) (n : ℕ) (hn : n ≠ 0) :
   simp
 
 /- English proof (translation)
-The claim follows from `Filter.eventually_cofinite.1 (AdelicGLn.eventually_mem_integralGL ℚ 2 g)`.
+A detailed English derivation is pending.
 -/
 theorem finite_not_integral (g : G2) : {v : Pl | finAt v g ∉ integralGL (Qv v) 2}.Finite :=
   Filter.eventually_cofinite.1 (AdelicGLn.eventually_mem_integralGL ℚ 2 g)
 
 /- English proof (translation)
-The claim follows from `GroundTheory.Automorphic.Reduction.adelicGL_ext h' h`.
+A detailed English derivation is pending.
 -/
 theorem adelic_GL2_ext_of_local_components (g g' : G2) (h : ∀ v, finAt v g = finAt v g') (h' : ∀ w, infAt w g = infAt w g') : g = g' :=
   GroundTheory.Automorphic.Reduction.adelicGL_ext h' h
@@ -176,23 +176,23 @@ def ofFinSupp (S : Finset Pl) (f : ∀ v : Pl, GL (Fin 2) (Qv v)) (hf : ∀ v �
     exact hv (by rw [hf v hvS]; exact one_mem _)⟩)
 
 /- English proof (translation)
-Simplify using `[finAt, ofFinSupp]`.
+Simplify using the standard rewrite rules.
 -/
 theorem finAt_ofFinSupp (S : Finset Pl) (f : ∀ v : Pl, GL (Fin 2) (Qv v)) (hf : ∀ v ∉ S, f v = 1) (v : Pl) :
     finAt v (ofFinSupp S f hf) = f v := by
   simp [finAt, ofFinSupp]
 
 /- English proof (translation)
-Simplify using `[infAt, ofFinSupp]`.
+Simplify using the standard rewrite rules.
 -/
 theorem infAt_ofFinSupp (S : Finset Pl) (f : ∀ v : Pl, GL (Fin 2) (Qv v)) (hf : ∀ v ∉ S, f v = 1)
     (w : InfinitePlace ℚ) : infAt w (ofFinSupp S f hf) = 1 := by
   simp [infAt, ofFinSupp]
 
 /- English proof (translation)
-Set `f : ∀ u : Pl, GL (Fin 2) (Qv u)` to `fun u => if e : u = v then e ▸ x else 1`. Establish `hf : ∀ u ∉ ({v} : Finset Pl), f u = 1` using `fun u hu => dif_neg (by simpa using hu)`. Use `⟨ofFinSupp {v} f hf, ?_, fun u hu => ?_, fun w => infAt_ofFinSupp _ _ _ w⟩` and prove the remaining obligations. Rewrite using `[finAt_ofFinSupp]`. Conclude with `dif_pos rfl`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[finAt_ofFinSupp]`. Conclude with `dif_neg hu`.
+A detailed English derivation is pending.
 -/
 theorem exists_isLoc2 (v : Pl) (x : GL (Fin 2) (Qv v)) : ∃ h, IsLoc2 v x h := by
   let f : ∀ u : Pl, GL (Fin 2) (Qv u) := fun u => if e : u = v then e ▸ x else 1
@@ -204,9 +204,9 @@ theorem exists_isLoc2 (v : Pl) (x : GL (Fin 2) (Qv v)) : ∃ h, IsLoc2 v x h := 
     exact dif_neg hu
 
 /- English proof (translation)
-Set `f : ∀ u : Pl, GL (Fin 2) (Qv u)` to `fun u => if e : u ∈ S then uni2 (x ⟨u, e⟩) else 1`. Establish `hf : ∀ u ∉ S, f u = 1` using `fun u hu => dif_neg hu`. Use `⟨ofFinSupp S f hf, fun v => ?_, fun u hu => ?_, fun w => infAt_ofFinSupp _ _ _ w⟩` and prove the remaining obligations. Rewrite using `[finAt_ofFinSupp]`. Conclude with `dif_pos v.2`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[finAt_ofFinSupp]`. Conclude with `hf u hu`.
+A detailed English derivation is pending.
 -/
 theorem exists_isUn (S : Finset Pl) (x : ∀ v : S, Qv v.1) : ∃ h, IsUn S x h := by
   let f : ∀ u : Pl, GL (Fin 2) (Qv u) := fun u => if e : u ∈ S then uni2 (x ⟨u, e⟩) else 1
@@ -221,16 +221,16 @@ instance compactSpace_integralGL (v : Pl) : CompactSpace (integralGL (Qv v) 2) :
   isCompact_iff_compactSpace.1 (GLnLocal.isCompact_integralGL (Qv v) 2)
 
 /- English proof (translation)
-Use `⟨fun v => Measure.haarMeasure ⊤, fun v => ⟨inferInstance, ⟨?_⟩⟩⟩` and prove the remaining obligations. Conclude with `Measure.haarMeasure_self`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_isK : ∃ m, IsK m := by
   refine ⟨fun v => Measure.haarMeasure ⊤, fun v => ⟨inferInstance, ⟨?_⟩⟩⟩
   exact Measure.haarMeasure_self
 
 /- English proof (translation)
-Use `⟨?_, fun u hu => ?_, fun w => ?_⟩` and prove the remaining obligations. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [uni2, finitePlaceIncl_apply] <;> rfl`. Apply `Units.ext` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Reduce the claim to the hypotheses of an applicable result.
 
-Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [uni2, finitePlaceIncl_apply, finiteAdeleSingleAdd_apply_of_ne hu] <;> rfl`. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [uni2, finitePlaceIncl_apply] <;> rfl`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem isLoc2_uni (v : Pl) (x : Qv v) : IsLoc2 v (uni2 x) (uni2 (finitePlaceIncl v x)) := by
   refine ⟨?_, fun u hu => ?_, fun w => ?_⟩
@@ -245,9 +245,9 @@ theorem isLoc2_uni (v : Pl) (x : Qv v) : IsLoc2 v (uni2 x) (uni2 (finitePlaceInc
     fin_cases i <;> fin_cases j <;> simp [uni2, finitePlaceIncl_apply] <;> rfl
 
 /- English proof (translation)
-Use `⟨?_, fun u hu => ?_, fun w => ?_⟩` and prove the remaining obligations. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [dg2] <;> rfl`. Apply `Units.ext` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Reduce the claim to the hypotheses of an applicable result.
 
-Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [dg2, IdeleGroup.finiteAdeleSingle_apply_of_ne hu] <;> rfl`. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [dg2] <;> rfl`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem isLoc2_dg (v : Pl) (a d : (Qv v)ˣ) :
     IsLoc2 v (dg2 a d) (dg2 (IdeleGroup.finiteEmbedding v a) (IdeleGroup.finiteEmbedding v d)) := by
@@ -263,7 +263,7 @@ theorem isLoc2_dg (v : Pl) (a d : (Qv v)ˣ) :
     fin_cases i <;> fin_cases j <;> simp [dg2] <;> rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨finitePlaceIncl v x, IdeleGroup.finiteEmbedding v a, IdeleGroup.finiteEmbedding v d, isLoc2_uni v x, isLoc2_dg v a d, rfl, fun h => by rw [h], fun _ => ⟨rfl, rfl⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_local_data (v : Pl) (x : Qv v) (a d : (Qv v)ˣ) :
     ∃ (x' : 𝔸[ℚ]) (a' d' : Jd), IsLoc2 v (uni2 x) (uni2 x') ∧ IsLoc2 v (dg2 a d) (dg2 a' d') ∧
@@ -273,7 +273,7 @@ theorem exists_local_data (v : Pl) (x : Qv v) (a d : (Qv v)ˣ) :
     isLoc2_dg v a d, rfl, fun h => by rw [h], fun _ => ⟨rfl, rfl⟩⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun v => ⟨isStd_local v, residueCard_Qv v, pOf_prime v, ord_pOf v, ord_natCast v, exists_isLoc2 v, fun c => isUnit1_localChar c v⟩, pOf_injective, pOf_surjective, adelic_GL2_ext_of_local_components, exists_isUn, exists_isK, finite_not_integral, exists_local_data⟩`.
+Supply the required witnesses or components.
 -/
 theorem b0 : B0 :=
   ⟨fun v => ⟨isStd_local v, residueCard_Qv v, pOf_prime v, ord_pOf v, ord_natCast v, exists_isLoc2 v,

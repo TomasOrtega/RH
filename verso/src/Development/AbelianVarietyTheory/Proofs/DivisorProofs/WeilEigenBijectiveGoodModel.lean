@@ -20,23 +20,21 @@ open Filter
 open scoped Classical
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP M₁ hM₁ e hE hbij l`. Prove the components needed by the constructor for the conclusion. Introduce `hl`. Conclude with `GlobalTheory.T.eigen_intertwiner_good_models F E σ B n d n d X W X W M M₁ 1 1 ∅ e hP.good hM₁ hE l hl`. Introduce `hl g hg`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨m, c, φ, hφ, hstd, rfl⟩` from `GlobalTheory.MixEvAdm.sb_decomp F (Fin n × Fin d) g hg`. Take `⟨ei, ev, -, hev, hloc⟩` from `hE.loc`. Establish `hbi : Function.Bijective ei` using `⟨GlobalTheory.T.weil_eigen_injective_extends F E σ B n d X W M M₁ hP.good e hbij.injOn ei ev (fun v => (hev v).1) hloc, GlobalTheory.T.weil_eigen_surjective_extends F E σ B n d X W M M₁ hP.good hM₁ e hbij.surjOn ei ev hev hloc⟩`. Take `⟨S, hS⟩` from `GlobalTheory.T.schwartz_bijection_right_inverse _ _ ei hbi`. Establish `hpre : ∀ j v, ∃ ψ ∈ SB (Fin n × Fin d → Fv F v), ev v ψ = φ j v ∧ (φ j v = M₁.vac v → ψ = M.vac v)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j v`. Distinguish the cases in `h : φ j v = M₁.vac v`. Conclude with `⟨M.vac v, (hP.good.vac v).1, (hev v).1.trans h.symm, fun _ => rfl⟩`. Establish `h2 : φ j v ∈ (SB (Fin n × Fin d → Fv F v)).map (ev v)` using `(hev v).2.symm ▸ hφ j v`. Take `⟨ψ, hψ, hψe⟩` from `Submodule.mem_map.1 h2`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨ψ, hψ, hψe, fun h' => (h h').elim⟩`. Use `choose ψ hψSB hψev hψvac using hpre`. Establish `hψfam : ∀ j, ∀ᶠ v in cofinite, ψ j v = M.vac v` using `fun j => ((hstd j).and hM₁.std).mono fun v hv => hψvac j v (hv.1.trans hv.2.symm)`. Establish `hψstd : ∀ j, ∀ᶠ v in cofinite, ψ j v = Set.indicator {x | ∀ i, x i ∈ v.adicCompletionIntegers F} 1` using `fun j => ((hψfam j).and hP.good.std).mono fun v hv => hv.1.trans hv.2`. Establish `hG : ∀ j, (fun y : Fin n × Fin d → Af F => ∏ᶠ v, ψ j v fun i => evalV F v (y i)) ∈ SB (Fin n × Fin d → Af F)` using `fun j => ⟨GlobalTheory.WeilM.isLocallyConstant_finprod_evalV _ (hψSB j) (hψstd j), GlobalTheory.AdelicCoordSupport.hasCompactSupport_finprod _ (hψSB j) (hψstd j)⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `choose Tj hTj using fun j => hl _ (hG j)`. Use `⟨∑ j, c j • (Tj j).comp S, fun f => ?_⟩` and prove the remaining obligations. Establish `hsplit : pureA F (f : (Fin n × Fin d → mixedEmbedding.mixedSpace F) → ℂ) (∑ j, c j • fun y => ∏ᶠ v, φ j v fun i => evalV F v (y i)) = ∑ j, c j • GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f (φ j)`. Use function extensionality and compare the values at `x`. Simplify using `only [pureA, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.mul_sum, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[mul_left_comm]`. Both sides reduce to the same expression. Establish `hφe : ∀ j, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f (φ j) = e (pureA F ((S f : SInf F _) : (Fin n × Fin d → mixedEmbedding.mixedSpace F) → ℂ) (fun y => ∏ᶠ v, ψ j v fun i => evalV F v (y i)))`. Introduce `j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `hloc (S f) (ψ j) (hψSB j) (hψfam j)`. Rewrite `h1` using `[hS]`. Establish `h2 : (fun v => ev v (ψ j v)) = φ j` using `funext fun v => hψev j v`. Rewrite `h1` using `[h2]`. Conclude with `h1.symm`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hsplit, map_sum, ContinuousLinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, hφe j]`. Simplify using `only [ContinuousLinearMap.coe_smul', Pi.smul_apply, ContinuousLinearMap.coe_comp', Function.comp_apply]`. Rewrite using `[← hTj j (S f)]`.
-
-Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem model_admissible_iff_evaluation : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ), IsPair B M χX χW om r s r' s' → ∀ M₁ : Model σ X W, M₁.IsGood B.ψ → ∀ e : Fn F n d →ₗ[ℂ] Fn F n d, IsEv B M M₁ 1 1 ∅ e → Set.BijOn e (schA F (Fin n × Fin d) : Set _) (schA F (Fin n × Fin d) : Set _) →
     ∀ l : Fn F n d →ₗ[ℂ] ℂ, l ∈ (adeleClass F).adm (Fin n × Fin d) ↔ l ∘ₗ e ∈ (adeleClass F).adm (Fin n × Fin d) := by

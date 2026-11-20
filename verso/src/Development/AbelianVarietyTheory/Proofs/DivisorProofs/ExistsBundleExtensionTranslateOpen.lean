@@ -15,31 +15,29 @@ namespace GlobalTheory.Mum
 open GlobalTheory.CechPic
 
 /- English proof (translation)
-Introduce `R _ _ G _ _ L PP hL hExt O N hN hNL a`. Establish `hPP : PP.IsLB` using `hExt.1`. Set `GK` to `(Over.pullback (jK R)).obj G`. Set `J` to `pullback.fst G.hom (jK R)`. Set `T` to `(𝟙 G * (toUnit G ≫ a)).left`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `V` to `T ⁻¹ᵁ O`. Set `σ` to `(lift (𝟙 G) (toUnit G ≫ a)).left`. Take `⟨N', hN', hc⟩` from `cls_surj (pull (T ∣_ O) (cls N hN) - pull (V.ι ≫ σ) (cls PP hPP))`. Use `⟨N', hN', ?_⟩` and prove the remaining obligations. Set `p₁` to `pullback.fst V.ι J`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Set `p₂` to `pullback.snd V.ι J`. Rewrite using `[← cls_eq_iff (pull_isLB hN' _) (pull_isLB hL _), cls_pull hN', cls_pull hL, hc]`. Establish `hNL' : pull (pullback.fst O.ι J) (cls N hN) = pull (pullback.snd O.ι J) (cls L hL)`. Rewrite using `[← cls_pull hN, ← cls_pull hL]`. Conclude with `(cls_eq_iff (pull_isLB hN _) (pull_isLB hL _)).2 hNL`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨κ₂, hκ, -⟩` from `lbIso_lam_pull_of_isGrpPullback _ _ (jK R) G GK J (isGrpPullback_pullback G (jK R))`. Establish `hLamc : lam (cls L hL) (fst GK GK) (snd GK GK) = pull κ₂ (cls PP hPP)`. Rewrite using `[← cls_cube_two hL (fst GK GK) (snd GK GK) (LB.isLB_linComb hL _ _), ← cls_pull hPP κ₂ (pull_isLB hPP _)]`. Conclude with `(cls_eq_iff (LB.isLB_linComb hL _ _) (pull_isLB hPP _)).2 (hExt.2 κ₂ hκ)`. Establish `hw : p₁ ≫ V.ι ≫ G.hom = p₂ ≫ GK.hom ≫ jK R`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[← Category.assoc, pullback.condition, Category.assoc]`. Conclude with `congrArg (p₂ ≫ ·) pullback.condition`. Set `Ty : Over (Sp (FractionRing R))` to `Over.mk (p₂ ≫ GK.hom)`. Set `y : Ty ⟶ GK` to `Over.homMk p₂ rfl`. Establish `haw : a.left ≫ G.hom = 𝟙 _` using `by simpa using Over.w a`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `aK : 𝟙_ (Over (Sp (FractionRing R))) ⟶ GK` to `Over.homMk (pullback.lift (jK R ≫ a.left) (𝟙 _) (by rw [Category.assoc, haw]; simp)) (pullback.lift_snd _ _ _)`. Set `aY : Ty ⟶ GK` to `toUnit Ty ≫ aK`. Establish `hzero : ∀ (z : 𝟙_ (Over (Sp (FractionRing R))) ⟶ GK) (c : Pic GK.left), pull (toUnit Ty ≫ z).left c = 0`. Introduce `z c`. Rewrite using `[Over.comp_left, pull_comp, GlobalTheory.DualOpen.pic_sp_local_eq_zero (FractionRing R) (pull z.left c), map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `haY : aY.left ≫ J = p₁ ≫ V.ι ≫ G.hom ≫ a.left`. Establish `: aY.left = (p₂ ≫ GK.hom) ≫ aK.left` using `rfl`. Rewrite using `[this, Category.assoc, show aK.left ≫ J = jK R ≫ a.left from pullback.lift_fst _ _ _, ← Category.assoc, ← Category.assoc, ← Category.assoc]`. Simplify using `only [Category.assoc]`. Rewrite using `[← Category.assoc p₁, ← Category.assoc (p₁ ≫ V.ι), Category.assoc p₁, hw]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [Category.assoc]`. Establish `hsq : (lift y aY).left ≫ κ₂ = p₁ ≫ V.ι ≫ σ`. Apply `pullback.hom_ext` to reduce the goal to its premises. Use `show ((lift y aY).left ≫ κ₂) ≫ (fst G G).left = (p₁ ≫ V.ι ≫ σ) ≫ (fst G G).left`. Rewrite using `[Category.assoc, hκ.1, ← Category.assoc, ← Over.comp_left, lift_fst]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [Category.assoc, σ, ← Over.comp_left, lift_fst, Over.id_left, Category.comp_id]`. Conclude with `pullback.condition.symm`. Use `show ((lift y aY).left ≫ κ₂) ≫ (snd G G).left = (p₁ ≫ V.ι ≫ σ) ≫ (snd G G).left`. Rewrite using `[Category.assoc, hκ.2, ← Category.assoc, ← Over.comp_left, lift_snd, haY]`. Use `show p₁ ≫ V.ι ≫ G.hom ≫ a.left = (p₁ ≫ V.ι ≫ (lift (𝟙 G) (toUnit G ≫ a)).left) ≫ (snd G G).left`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Rewrite using `[Category.assoc, Category.assoc, ← Over.comp_left, lift_snd, Over.comp_left, Over.toUnit_left]`. Establish `hlam : pull (p₁ ≫ V.ι ≫ σ) (cls PP hPP) = @id (Pic (pullback V.ι J)) (pull (y * aY).left (cls L hL)) - pull p₂ (cls L hL)`. Establish `h` using `congrArg (pull (lift y aY).left) hLamc`. Rewrite `h` using `[pull_lam, lift_fst, lift_snd, ← pull_comp, hsq]`. Rewrite using `[← h, lam, hzero, show (1 : Ty ⟶ GK) = toUnit Ty ≫ 1 from (MonObj.comp_one _).symm, hzero]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [sub_zero, add_zero]`. Both sides reduce to the same expression. Set `u : Over.mk (Ty.hom ≫ jK R) ⟶ G` to `Over.homMk (p₁ ≫ V.ι) (by simpa [Ty] using hw)`. Establish `hmul : (y * aY).left ≫ J = p₁ ≫ V.ι ≫ T`. Establish `e` using `(isGrpPullback_pullback G (jK R)).2 Ty y aY u (u ≫ toUnit G ≫ a) (pullback.condition (f := V.ι) (g := J)) (by rw [haY, Over.comp_left, Over.comp_left, Over.toUnit_left]; show (p₁ ≫ V.ι) ≫ _ = _; simp only [Category.assoc])`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e' : u * (u ≫ toUnit G ≫ a) = u ≫ (𝟙 G * (toUnit G ≫ a))` using `by rw [MonObj.comp_mul, Category.comp_id]`. Rewrite using `[← e, e', Over.comp_left]`. Conclude with `Category.assoc _ _ _`. Establish `hq : (p₁ ≫ (T ∣_ O)) ≫ O.ι = (y * aY).left ≫ J`. Rewrite using `[Category.assoc, morphismRestrict_ι, hmul]`.
-
-Establish `hN2` using `congrArg (pull (pullback.lift _ _ hq)) hNL'`. Rewrite `hN2` using `[← pull_comp, ← pull_comp, pullback.lift_fst, pullback.lift_snd]`. Rewrite using `[map_sub, ← pull_comp, ← pull_comp, hN2, hlam]`. Conclude with `sub_sub_cancel _ _`.
+A detailed English derivation is pending.
 -/
 theorem exists_ext_translate : ∀ (R : Type) [CommRing R] [IsDomain R] (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G]
     (L : LB ((Over.pullback (jK R)).obj G).left) (PP : LB (G2 G).left), L.IsLB → ExtLam G L PP →

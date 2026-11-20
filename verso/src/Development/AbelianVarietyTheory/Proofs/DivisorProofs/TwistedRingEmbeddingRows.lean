@@ -13,9 +13,9 @@ namespace GlobalTheory.ThK.PlaneCo
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Unfold `planeCoef`. Use `split_ifs with h`. Use `set e := finSumFinEquiv.trans (finCongr h) set A := (planeMat H).submatrix id e.symm`. Establish `hk : (A⁻¹.submatrix e id * planeMat H) k j = (A⁻¹ * A) (e k) (e j)`. Simplify using `[Matrix.mul_apply, A]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[hk]`. Distinguish the cases in `hA : IsUnit A.det`. Rewrite using `[Matrix.nonsing_inv_mul _ hA, Matrix.one_apply_ne (e.injective.ne hkj)]`. Rewrite using `[Matrix.nonsing_inv_apply_not_isUnit _ hA, zero_mul, Matrix.zero_apply]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem planeCoef_mul_planeMat_ne {n n₁ : ℕ} (H : Plane E n n₁) {k j : Fin n₁ ⊕ Fin 2} (hkj : k ≠ j) :
     (planeCoef H * planeMat H) k j = 0 := by
@@ -32,7 +32,7 @@ theorem planeCoef_mul_planeMat_ne {n n₁ : ℕ} (H : Plane E n n₁) {k j : Fin
   · simp
 
 /- English proof (translation)
-Use `planeCoef_mul_planeMat_ne H hk` as an intermediate fact. Rewrite `this` using `[Matrix.mul_apply]`. Simplify `this` using `[Matrix.mulVec, dotProduct, planeMat]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem planeCoef_mulVec_x_ne {n n₁ : ℕ} (H : Plane E n n₁) {k : Fin n₁ ⊕ Fin 2} (hk : k ≠ .inr 0) :
     (planeCoef H *ᵥ H.x) k = 0 := by
@@ -41,7 +41,7 @@ theorem planeCoef_mulVec_x_ne {n n₁ : ℕ} (H : Plane E n n₁) {k : Fin n₁ 
   simpa [Matrix.mulVec, dotProduct, planeMat] using this
 
 /- English proof (translation)
-Use `planeCoef_mul_planeMat_ne H (k := .inr t) (j := .inl j) (by simp)` as an intermediate fact. Rewrite `this` using `[Matrix.mul_apply]`. Simplify `this` using `[Matrix.mul_apply, planeMat]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem planeCoef_mul_ι_inr {n n₁ : ℕ} (H : Plane E n n₁) (t : Fin 2) (j : Fin n₁) :
     (planeCoef H * H.ι) (.inr t) j = 0 := by
@@ -50,7 +50,7 @@ theorem planeCoef_mul_ι_inr {n n₁ : ℕ} (H : Plane E n n₁) (t : Fin 2) (j 
   simpa [Matrix.mul_apply, planeMat] using this
 
 /- English proof (translation)
-Simplify using `only [coefLin, LinearMap.coe_mk, AddHom.coe_mk, Matrix.mul_apply, Matrix.vecMulVec_apply, Matrix.transpose_apply, Matrix.mulVec, dotProduct, Finset.sum_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl (fun _ _ => Finset.sum_congr rfl (fun _ _ => by ring))`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem coefLin_vecMulVec {n d n₁ d₁ : ℕ} (H : Plane E n n₁) (H' : Plane E d d₁) (a : Fin n → AE F E)
     (b : Fin d → AE F E) (k : Fin n₁ ⊕ Fin 2) (l : Fin d₁ ⊕ Fin 2) :
@@ -61,7 +61,7 @@ theorem coefLin_vecMulVec {n d n₁ d₁ : ℕ} (H : Plane E n n₁) (H' : Plane
   exact Finset.sum_congr rfl (fun _ _ => Finset.sum_congr rfl (fun _ _ => by ring))
 
 /- English proof (translation)
-Establish `h` using `planeCoef_mulVec_x_ne H hk`. Use `RingHom.map_mulVec (inclR (F := F) (AF F)) (planeCoef H) H.x k` as an intermediate fact. Rewrite `this` using `[h, map_zero]`. Rewrite using `[this]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem incM_mulVec_incV_x_ne {n n₁ : ℕ} (H : Plane E n n₁) {k : Fin n₁ ⊕ Fin 2} (hk : k ≠ .inr 0) :
     (incM F (planeCoef H) *ᵥ incV F H.x) k = 0 := by
@@ -71,7 +71,7 @@ theorem incM_mulVec_incV_x_ne {n n₁ : ℕ} (H : Plane E n n₁) {k : Fin n₁ 
   rw [this]; rfl
 
 /- English proof (translation)
-Rewrite using `[Matrix.mulVec_mulVec]`. Establish `hm : incM F (planeCoef H) * incM F H.ι = incM F (planeCoef H * H.ι)`. Simplify using `[incM, Matrix.map_mul]`. Rewrite using `[hm]`. Simplify using `[Matrix.mulVec, dotProduct, incM, planeCoef_mul_ι_inr]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem incM_mulVec_ι_inr {n n₁ : ℕ} (H : Plane E n n₁) (y : Fin n₁ → AE F E) (t : Fin 2) :
     (incM F (planeCoef H) *ᵥ (incM F H.ι *ᵥ y)) (.inr t) = 0 := by
@@ -82,15 +82,15 @@ theorem incM_mulVec_ι_inr {n n₁ : ℕ} (H : Plane E n n₁) (y : Fin n₁ →
   simp [Matrix.mulVec, dotProduct, incM, planeCoef_mul_ι_inr]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n d n₁ d₁ r s r' s' i₀ i₁ j₀ j₁ X W X₁ W₁ H H' _ _ _ _ _ u hu`. Establish `hS : ∀ k, sI H H' u k = 0`. Introduce `k`. Break down `hu with ⟨z, rfl⟩ | ⟨y, rfl⟩` into its components or cases. Break down `k with j | a` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using `only [sI, posS, coefLin_vecMulVec]`. Rewrite using `[incM_mulVec_incV_x_ne H (by simp), zero_mul]`. Simplify using `only [sI, posS, coefLin_vecMulVec]`. Rewrite using `[incM_mulVec_incV_x_ne H (by simp), zero_mul]`. Break down `k with j | a` into its components or cases.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using `only [sI, posS, coefLin_vecMulVec]`. Rewrite using `[incM_mulVec_ι_inr, zero_mul]`. Simplify using `only [sI, posS, coefLin_vecMulVec]`. Rewrite using `[incM_mulVec_incV_x_ne H' (by simp), mul_zero]`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `k`. Simplify using `[planeT, hS]`. Use extensionality with `i j`. Break down `hu with ⟨z, rfl⟩ | ⟨y, rfl⟩` into its components or cases. Simplify using `only [planeT, LinearMap.coe_mk, AddHom.coe_mk, Matrix.submatrix_apply, coefLin_vecMulVec, Matrix.zero_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Rewrite using `[incM_mulVec_incV_x_ne H (by simp), zero_mul]`. Simplify using `only [planeT, LinearMap.coe_mk, AddHom.coe_mk, Matrix.submatrix_apply, coefLin_vecMulVec, Matrix.zero_apply]`. Rewrite using `[incM_mulVec_incV_x_ne H' (by simp), mul_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem isoB_planeT : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     {n d n₁ d₁ r s r' s' i₀ i₁ j₀ j₁ : ℕ} (X : Spc F E n) (W : Spc F E d) (X₁ : Spc F E n₁) (W₁ : Spc F E d₁)

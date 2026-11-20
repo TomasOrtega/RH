@@ -26,7 +26,7 @@ namespace GlobalTheory.FiniteHeisComb
 variable {D : D7}
 
 /- English proof (translation)
-Simplify using `only [aPlus, crea]`. Express the relevant statement in the definitionally equal form `GlobalTheory.Hk3.FiniteHeis.heisLin ψ S T u _ = _`. Rewrite using `[map_smul, map_sub, map_smul]`. Use `show _ • (heisO ψ S T u (Formalism.IndefR.Datum.dRho _ _ _ _ _) - _ • heisO ψ S T u (Formalism.IndefR.Datum.dRho _ _ _ _ _)) = _`. Rewrite using `[GlobalTheory.Hk3.FiniteHeis.heisO_dRho ψ hθ hu, GlobalTheory.Hk3.FiniteHeis.heisO_dRho ψ hθ hu]`.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem heisO_aPlus (ψ : AddChar (AF D.host.F) ℂ) {θ : InfFam D} (hθ : IsInfFam θ) {S T : HSp D} {u : WO S T}
     (hu : u.map (infPart D) = 0) (τ : D.what₂.Tau)
@@ -40,9 +40,9 @@ theorem heisO_aPlus (ψ : AddChar (AF D.host.F) ℂ) {θ : InfFam D} (hθ : IsIn
   rw [GlobalTheory.Hk3.FiniteHeis.heisO_dRho ψ hθ hu, GlobalTheory.Hk3.FiniteHeis.heisO_dRho ψ hθ hu]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Use `⟨by simpa using (GlobalTheory.OrientedHeis.theta_zero : IsThetaFunO ψ S T 0), ?_⟩` and prove the remaining obligations. Establish `e` using `GlobalTheory.AdTh.SourceBasis.aPlus_smul hψ hθ τ J z 0 (GlobalTheory.OrientedHeis.theta_zero (ψ := ψ) (S := S) (T := T))`. Simplify using `using e`.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Consider the case `insert a s ha ih`. Establish `ht : IsThetaFunO ψ S T (c a • heisO ψ S T a g)` using `GlobalTheory.OrientedHeis.theta_smul _ (GlobalTheory.Unf.MatCoef.theta_heisO_any hψ hθ hg a)`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha]`. Use `⟨GlobalTheory.OrientedHeis.theta_add ht ih.1, ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.AdTh.SourceBasis.aPlus_add hψ hθ τ J z ht ih.1, ih.2, GlobalTheory.AdTh.SourceBasis.aPlus_smul hψ hθ τ J z _ (GlobalTheory.Unf.MatCoef.theta_heisO_any hψ hθ hg a)]`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem aPlus_sum {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) {θ : InfFam D} (hθ : IsInfFam θ)
     {S T : HSp D} (τ : D.what₂.Tau)
@@ -67,13 +67,11 @@ theorem aPlus_sum {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) {
       GlobalTheory.AdTh.SourceBasis.aPlus_smul hψ hθ τ J z _ (GlobalTheory.Unf.MatCoef.theta_heisO_any hψ hθ hg a)]
 
 /- English proof (translation)
-Introduce `D ψ θ S T hψ hθ sS BS sT BT c hc x hx P`. Set `Φ : Module.End ℂ (WO S T → ℂ)` to `c.sum fun u z => z • GlobalTheory.Hk3.FiniteHeis.heisLin ψ S T u`. Establish `hΦ : ∀ g, Φ g = c.sum fun u z => z • heisO ψ S T u g`. Introduce `g`. Simplify using `only [Φ, Finsupp.sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[LinearMap.sum_apply]`. Both sides reduce to the same expression. Establish `h` using `(GlobalTheory.OrientedHeis.pureTensorL_intertwine (IsThetaFunO ψ S T) GlobalTheory.OrientedHeis.theta_zero (fun _ _ ha hb => GlobalTheory.OrientedHeis.theta_add ha hb) (fun a _ h => GlobalTheory.OrientedHeis.theta_smul a h) (aPlusAll (heisO ψ S T) θ (fun τ => cplxO (sS τ) (sT τ)) …`. Rewrite `h` using `[hΦ, hΦ]`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `GlobalTheory.AdTh.SourceBasis.aPlus_th hψ hθ _ _ _ hg`. Take `⟨τ, i, j⟩` from `k`. Simplify using `only [aPlusAll]`. Rewrite using `[hΦ, hΦ, Finsupp.sum, Finsupp.sum, (aPlus_sum hψ hθ τ _ _ c hg c.support).2]`. Use `Finset.sum_congr rfl fun u hu => ?_` and prove the remaining obligations.
-
-Rewrite using `[heisO_aPlus ψ hθ (hc u hu)]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_heisO_pureTensorO : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D), IsStdChar D ψ (-1) → IsInfFam θ → ∀ (sS BS : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ) (sT BT : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ) (c : WO S T →₀ ℂ), (∀ u ∈ c.support, u.map (infPart D) = 0) → ∀ x : WO S T → ℂ, IsThetaFunO ψ S T x → ∀ P : MvPolynomial (FVar D T.rank S.rank) ℂ, (c.sum fun u z => z • heisO ψ S T u (pureTensorO ψ θ S T sS sT BS BT x P)) = pureTensorO ψ θ S T sS sT BS BT (c.sum fun u z => z • heisO ψ S T u x) P := by
   intro D ψ θ S T hψ hθ sS BS sT BT c hc x hx P

@@ -20,11 +20,11 @@ attribute [local instance] SplitExt.free SplitExt.finite MvPolynomial.gradedAlge
 namespace GlobalTheory.ZH
 
 /- English proof (translation)
-Introduce `hL hT o Ω _ _ _ _ S ρ M U₀ EE hB hU hO hE`. Establish `hTests : S.HasTests`. Introduce `p _ y hy`. Take `⟨_, _, τ, _⟩` from `hU p y hy ∅`. Conclude with `⟨τ⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hF : BaseFacts S M U₀ EE` using `baseFacts_of_isEE o Ω S M U₀ EE hTests hO hE`. Establish `hG : ρ.HasGeo` using `GlobalTheory.T.hasGeometricTest_of_hasUniformisedTest hL hT o Ω S ρ hB hU`. Take `⟨Q⟩` from `GlobalTheory.T.nonempty_abelianSchemeProjectiveClosure hL o Ω S ρ M U₀ EE hF`. Take `⟨ex⟩` from `GlobalTheory.T.nonempty_closureExtension_abelianScheme hL o Ω S ρ M U₀ EE hF Q`. Take `⟨h₁, h₂⟩` from `GlobalTheory.T.closure_tests_exist_and_reduction_independent hL o Ω S ρ M U₀ EE hF Q ex hB hG`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `h₃ : ex.core.Fib` using `GlobalTheory.T.fibre_eq_specialFibre_of_reduction_indep ex.core h₂`. Conclude with `⟨hF, hG, Q, ex, h₁, h₂, h₃, GlobalTheory.T.hasGradedCharts_near_generic_point_closure hL o Ω S ρ M U₀ EE hF Q ex hB hG h₃⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem baseFacts_hasGeo_exists_clos : GlobalTheory.UT.LL → UTorsSt → ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [ArithBase o Ω] (S : ThetaSys o Ω) (ρ : S.Real) (M : RatModel o Ω) (U₀ : M.Z.Opens) (EE : M.Lat S.J), S.Big → ρ.HasU → S.Over₀ M U₀ → S.IsEE M U₀ EE → BaseFacts S M U₀ EE ∧ ρ.HasGeo ∧ ∃ (Q : Clos ρ M U₀ EE) (ex : Q.Ext), ex.core.HasTests ∧ ex.core.Indep ∧ ex.core.Fib ∧ ex.core.HasCharts := by
   intro hL hT o Ω _ _ _ _ S ρ M U₀ EE hB hU hO hE

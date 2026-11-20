@@ -11,11 +11,11 @@ noncomputable section
 variable {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type} (F : Type) [Field F]
 
 /- English proof (translation)
-Unfold `IsMultiHomog`. Rewrite using `[segreMap, aeval_monomial, algebraMap_eq, Finsupp.prod]`. Use `IsWeightedHomogeneous.C_mul ?_ a` and prove the remaining obligations. Establish `hX : ∀ v : (_ : Unit) × ((k : K) → ι k), IsWeightedHomogeneous (blockWeight ι) (∏ k, (X ⟨k, v.2 k⟩ : MRing ι F)) (fun _ => 1)`. Introduce `v`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `IsWeightedHomogeneous.prod (w := blockWeight ι) Finset.univ (fun k => (X ⟨k, v.2 k⟩ : MRing ι F)) (fun k => Pi.single k 1) (fun k _ => isWeightedHomogeneous_X F _ _)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use extensionality with `j`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Use `IsWeightedHomogeneous.prod d.support (fun v => (∏ k, (X ⟨k, v.2 k⟩ : MRing ι F)) ^ d v) (fun v => d v • (fun _ : K => (1 : ℕ))) (fun v _ => (hX v).pow _)` as an intermediate fact.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e : (fun _ : K => Finsupp.weight (blockWeight (fun _ : Unit => ∀ k, ι k)) d ()) = ∑ v ∈ d.support, d v • (fun _ : K => (1 : ℕ))`. Use extensionality with `j`. Simplify using `[Finsupp.weight_apply, Finsupp.sum, blockWeight, Finset.sum_apply]`. Rewrite using `[e]`. Conclude with `this`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem segreMap_monomial_isMultiHomog (d : ((_ : Unit) × ((k : K) → ι k)) →₀ ℕ) (a : F) :
     IsMultiHomog (segreMap F (monomial d a))
@@ -43,13 +43,13 @@ theorem segreMap_monomial_isMultiHomog (d : ((_ : Unit) × ((k : K) → ι k)) �
   exact this
 
 /- English proof (translation)
-Proceed by induction on `g using MvPolynomial.induction_on' with`. Consider the case `monomial d a`. Establish `h1` using `isWeightedHomogeneous_monomial (blockWeight (fun _ : Unit => ∀ k, ι k)) d a rfl`. Rewrite using `[weightedHomogeneousComponent_of_mem h1, weightedHomogeneousComponent_of_mem (segreMap_monomial_isMultiHomog F d a)]`. Establish `key : b = Finsupp.weight (blockWeight (fun _ : Unit => ∀ k, ι k)) d ↔ (fun _ : K => b ()) = fun _ => Finsupp.weight (blockWeight (fun _ : Unit => ∀ k, ι k)) d ()`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl`. Both sides reduce to the same expression. Introduce `h`. Use function extensionality and compare the values at `u`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Consider the cases of `u`. Conclude with `congr_fun h (Classical.arbitrary K)`. Distinguish the cases in `h : b = Finsupp.weight (blockWeight (fun _ : Unit => ∀ k, ι k)) d`. Rewrite using `[if_pos h, if_pos (key.mp h)]`. Rewrite using `[if_neg h, if_neg (mt key.mpr h), map_zero]`.
+Split into cases according to the possible forms of the given data. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `add p p' hp hp' => simp only [map_add, hp, hp']`.
+A detailed English derivation is pending.
 -/
 theorem segreMap_weightedHomogeneousComponent [Nonempty K] (b : Unit → ℕ)
     (g : MRing (fun _ : Unit => ∀ k, ι k) F) :
@@ -72,11 +72,11 @@ theorem segreMap_weightedHomogeneousComponent [Nonempty K] (b : Unit → ℕ)
   | add p p' hp hp' => simp only [map_add, hp, hp']
 
 /- English proof (translation)
-Introduce `F _ K _ _ _ ι _ q hq`. Use `hq.isPrime` as an intermediate fact. Use `⟨segrePrime.isPrime F q, ?_, ?_⟩` and prove the remaining obligations. Introduce `g hg b`. Rewrite `hg`, the goal using `[segrePrime, Ideal.mem_comap]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[segreMap_weightedHomogeneousComponent]`. Conclude with `hq.multiHomog _ hg _`. Introduce `u`. Consider the cases of `u`. Use `choose i hi using hq.relevant`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨i, ?_⟩` and prove the remaining obligations. Rewrite using `[segrePrime, Ideal.mem_comap, segreMap_X, Ideal.IsPrime.prod_mem_iff]`. Introduce and unpack `⟨k, _, hk⟩`. Conclude with `hi k hk`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem SegrePrime.proof : SegrePrime.Statement := by
   intro F _ K _ _ _ ι _ q hq

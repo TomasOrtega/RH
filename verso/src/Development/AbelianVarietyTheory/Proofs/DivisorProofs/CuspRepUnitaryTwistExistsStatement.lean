@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.St
 open NumberField IsDedekindDomain
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.CuspRep.exists_unramified_twist_isUnitary` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FCuspRepUnitaryTwistExists.lean&line=100#L100)
 -/

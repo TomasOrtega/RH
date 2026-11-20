@@ -13,7 +13,7 @@ open Formalism.BasicNotions.TH GlobalTheory.FockAlg GlobalTheory.RealLift Global
 namespace GlobalTheory.HoweR
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.blockUnitary_diagonal_le_of_eigenvalue_bound ι M s G U R hU (fun x y hy hyU hf hs => hR M G hG hq hL ω hω x y hy hf hs (fun a => hUe _ (hyU a)))`.
+A detailed English derivation is pending.
 -/
 theorem diag_re_le_of_near_min {ι M : Type} [Fintype ι] [DecidableEq ι] [AddCommGroup M] [Module ℂ M]
     (s : ι → Bool) (G : ι → ι → Module.End ℂ M) (α β : ℂ) (R : ℝ)
@@ -29,33 +29,33 @@ theorem diag_re_le_of_near_min {ι M : Type} [Fintype ι] [DecidableEq ι] [AddC
   GlobalTheory.T.blockUnitary_diagonal_le_of_eigenvalue_bound ι M s G U R hU (fun x y hy hyU hf hs => hR M G hG hq hL ω hω x y hy hf hs (fun a => hUe _ (hyU a)))
 
 /- English proof (translation)
-Introduce `ι _ _ s α β α' β'`. Take `⟨R1, h1⟩` from `GlobalTheory.T.blockDiagonal_eigenvalue_le_of_casimir_nearMin ι s α β`. Take `⟨R2, h2⟩` from `GlobalTheory.T.blockDiagonal_eigenvalue_le_of_casimir_nearMin ι (fun a => !s a) α β`. Take `⟨R3, h3⟩` from `GlobalTheory.T.blockDiagonal_eigenvalue_le_of_casimir_nearMin ι s α' β'`. Take `⟨R4, h4⟩` from `GlobalTheory.T.blockDiagonal_eigenvalue_le_of_casimir_nearMin ι (fun a => !s a) α' β'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨max (max R1 R2) (max R3 R4), ?_⟩` and prove the remaining obligations. Introduce `M _ _ F hnt hG hq hq' hL`. Take `⟨hGn, hcn, hcs, hUs, hLs⟩` from `sym_negT_swap ι M s F`. Take `⟨-, hcn', hcs', hUs', hLs'⟩` from `sym_negT_swap ι M s (negT F)`. Set `S : Set ℝ` to `{ω' | ∃ v : M, v ≠ 0 ∧ cas s F v = (ω' : ℂ) • v}`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hSne : S.Nonempty`. Take `⟨x, hx⟩` from `exists_ne (0 : M)`. Take `⟨U, hxU, hU⟩` from `hL {x}`. Establish `hne : U ≠ ⊥`. Introduce `h`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hxU x (Finset.mem_singleton_self x)` as an intermediate fact. Rewrite `this` using `[h, Submodule.mem_bot]`. Conclude with `hx this`. Take `⟨ω, v, -, hv, hcv⟩` from `(GlobalTheory.T.blockDiagonalFibreCasimir_eigen_nonneg_real_unitary ι M s F U hU).2 hne`. Conclude with `⟨ω, v, hv, hcv⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hSbdd : BddBelow S`. Use `⟨0, fun ω' hω' => ?_⟩` and prove the remaining obligations. Take `⟨v, hv, hcv⟩` from `hω'`. Take `⟨U, hvU, hU⟩` from `hL {v}`. Use `(GlobalTheory.T.blockDiagonalFibreCasimir_eigen_nonneg_real_unitary ι M s F U hU).1 (ω' : ℂ) v (hvU v (Finset.mem_singleton_self v)) hv hcv` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using this.2`. Take `⟨ω, ⟨v, hv, hcv⟩, hωlt⟩` from `exists_lt_of_csInf_lt hSne (lt_add_one (sInf S))`. Establish `hω : ∀ (ω' : ℝ) (w : M), w ≠ 0 → cas s F w = (ω' : ℂ) • w → ω < ω' + 1` using `fun ω' w hw hcw => by`. Use `csInf_le hSbdd ⟨w, hw, hcw⟩` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result.
 
-Take `⟨U0, hvU0, hU0⟩` from `hL {v}`. Set `U : Submodule ℂ M` to `U0 ⊓ LinearMap.ker (cas s F - (ω : ℂ) • (1 : Module.End ℂ M))`. Establish `hUe : ∀ u ∈ U, cas s F u = (ω : ℂ) • u` using `fun u hu => by`. Establish `h2` using `hu.2`. Rewrite `h2` using `[SetLike.mem_coe, LinearMap.mem_ker, LinearMap.sub_apply, sub_eq_zero]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using h2`. Establish `hvU : v ∈ U` using `⟨hvU0 v (Finset.mem_singleton_self v), by`. Rewrite using `[SetLike.mem_coe, LinearMap.mem_ker, LinearMap.sub_apply, sub_eq_zero]`. Simplify using `using hcv⟩`. Establish `hUst : ∀ a b, s a = s b → ∀ u ∈ U, F a b u ∈ U`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a b hab u hu`. Use `⟨hU0.2.1 a b hab u hu.1, ?_⟩` and prove the remaining obligations. Rewrite using `[SetLike.mem_coe, LinearMap.mem_ker, LinearMap.sub_apply, sub_eq_zero]`. Establish `hc` using `congrArg (fun T : Module.End ℂ M => T u) (GlobalTheory.T.blockDiagonalFibreCasimir_commute_sameBlock_unit ι M s F hG a b hab)`. Simplify using `only [Module.End.mul_apply] at hc`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc, hUe u hu]`. Simplify using the standard rewrite rules. Establish `hU : UnitOn s F U` using `GlobalTheory.T.isBlockUnitaryFiniteSubspace_of_le_stable ι M s F U0 U hU0 inf_le_left hUst`. Use `⟨U, fun h => hv (by rw [h, Submodule.mem_bot] at hvU; exact hvU), hU, ?_⟩` and prove the remaining obligations. Introduce `a u hu hu0 m hm`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `b1` using `diag_re_le_of_near_min s F α β R1 h1 hG hq hL U hU ω hω hUe`. Establish `b2` using `diag_re_le_of_near_min (fun a => !s a) F α β R2 h2 hG hq (hLs hL).2 U (hUs U hU).2 ω (by rw [hcs]; exact hω) (by rw [hcs]; exact hUe)`. Establish `b3` using `diag_re_le_of_near_min s (negT F) α' β' R3 h3 (hGn hG) hq' (hLs hL).1 U (hUs U hU).1 ω (by rw [hcn]; exact hω) (by rw [hcn]; exact hUe)`. Establish `b4` using `diag_re_le_of_near_min (fun a => !s a) (negT F) α' β' R4 h4 (hGn hG) hq' (hLs' (hLs hL).1).2 U (hUs' U (hUs U hU).1).2 ω (by rw [hcs', hcn]; exact hω) (by rw [hcs', hcn]; exact hUe)`. Establish `hmn : negT F a a u = (-m) • u` using `by simp [negT, hm]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `l1 : R1 ≤ max (max R1 R2) (max R3 R4)` using `(le_max_left _ _).trans (le_max_left _ _)`. Establish `l2 : R2 ≤ max (max R1 R2) (max R3 R4)` using `(le_max_right _ _).trans (le_max_left _ _)`. Establish `l3 : R3 ≤ max (max R1 R2) (max R3 R4)` using `(le_max_left _ _).trans (le_max_right _ _)`. Establish `l4 : R4 ≤ max (max R1 R2) (max R3 R4)` using `(le_max_right _ _).trans (le_max_right _ _)`. Rewrite using `[abs_le]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data.
 
-Consider the cases of `hsa : s a`. Establish `e1` using `b2 a (by simp [hsa]) u hu hu0 m hm`. Establish `e2` using `b4 a (by simp [hsa]) u hu hu0 (-m) hmn`. Rewrite `e2` using `[Complex.neg_re]`. Apply the tactic sequence `constructor <;> linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `e1` using `b1 a hsa u hu hu0 m hm`. Establish `e2` using `b3 a hsa u hu hu0 (-m) hmn`. Rewrite `e2` using `[Complex.neg_re]`. Apply the tactic sequence `constructor <;> linarith`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem exists_unitOn_diag_bounded : ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (s : ι → Bool) (α β α' β' : ℂ), ∃ R : ℝ,
     ∀ (M : Type) [AddCommGroup M] [Module ℂ M] (F : ι → ι → Module.End ℂ M), Nontrivial M → IsGl F →

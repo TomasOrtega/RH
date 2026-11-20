@@ -28,7 +28,7 @@ def DUFormulaLevelZero : Prop :=
 variable {D u}
 
 /- English proof (translation)
-Simplify using `only [norm_eq_sum_diamond, map_sum]`. Conclude with `⟨Finset.sum_congr rfl fun a _ => (hc v v' a φ hφ).1, Finset.sum_congr rfl fun a _ => (hc v v' a φ hφ).2⟩`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem norm_commutes_hecke_level_zero (hc : DiamondCommutesLevelZero D u) (v v' : (D.mem u).A.vT) (φ : Fn D u 0) (hφ : φ ∈ (D.fm u).Fi 0) :
     Nm D u 0 v' (Uop D u 0 v φ) = Uop D u 0 v (Nm D u 0 v' φ) ∧
@@ -37,9 +37,9 @@ theorem norm_commutes_hecke_level_zero (hc : DiamondCommutesLevelZero D u) (v v'
   exact ⟨Finset.sum_congr rfl fun a _ => (hc v v' a φ hφ).1, Finset.sum_congr rfl fun a _ => (hc v v' a φ hφ).2⟩
 
 /- English proof (translation)
-Establish `h1 : ∑ a : ((D.mem u).A.Fv v)ˣ, trp D u 0 v (dia D u 0 v a φ) = trp D u 0 v (Nm D u 0 v φ)`. Rewrite using `[norm_eq_sum_diamond, map_sum]`. Rewrite `h1` using `[hN, map_zero, Finset.sum_congr rfl (fun a _ => ht v a φ hφ), Finset.sum_const, Finset.card_univ]`. Establish `hc : (Fintype.card ((D.mem u).A.Fv v)ˣ : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 Fintype.card_ne_zero`. Rewrite `h1` using `[← Nat.cast_smul_eq_nsmul ℂ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(smul_eq_zero.1 h1).resolve_left hc`.
+A detailed English derivation is pending.
 -/
 theorem trace_zero_of_norm_zero_level_zero (ht : TraceDiamondInvariantLevelZero D u) (v : (D.mem u).A.vT) (φ : Fn D u 0)
     (hφ : φ ∈ (D.fm u).Fi 0) (hN : Nm D u 0 v φ = 0) : trp D u 0 v φ = 0 := by
@@ -52,13 +52,13 @@ theorem trace_zero_of_norm_zero_level_zero (ht : TraceDiamondInvariantLevelZero 
   exact (smul_eq_zero.1 h1).resolve_left hc
 
 /- English proof (translation)
-Introduce `v φ hφ`. Establish `hU : ∀ ψ ∈ MramI D u 0, Uop D u 0 v ψ ∈ MramI D u 0`. Introduce `ψ hψ`. Rewrite `hψ`, the goal using `[mem_ramified_forms_iff]`. Use `⟨U_op_preserves_forms_level_zero Tf v ψ hψ.1, fun v' => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[(norm_commutes_hecke_level_zero hc v v' ψ hψ.1).1, hψ.2 v', map_zero]`. Establish `hD : ∀ ψ ∈ MramI D u 0, Dop D u 0 v ψ ∈ MramI D u 0`. Introduce `ψ hψ`. Rewrite `hψ`, the goal using `[mem_ramified_forms_iff]`. Use `⟨D_op_preserves_forms_level_zero Tf v ψ hψ.1, fun v' => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[(norm_commutes_hecke_level_zero hc v v' ψ hψ.1).2, hψ.2 v', map_zero]`. Establish `hDU : ∀ ψ ∈ MramI D u 0, Dop D u 0 v (Uop D u 0 v ψ) = ((D.mem u).A.T : ℂ) ^ (D.R.N 0 - 1) • ψ`. Introduce `ψ hψ`. Establish `hψ'` using `(mem_ramified_forms_iff D u ψ).1 hψ`. Rewrite using `[h6 v ψ hψ'.1, hψ'.2 v, trace_zero_of_norm_zero_level_zero ht v ψ hψ'.1 (hψ'.2 v), smul_zero, sub_zero, add_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `ramified_forms_finite_dimensional D u 0` as an intermediate fact. Establish `hc0 : ((D.mem u).A.T : ℂ) ^ (D.R.N 0 - 1) ≠ 0` using `pow_ne_zero _ (Nat.cast_ne_zero.2 hT)`. Conclude with `⟨hU φ hφ, hD φ hφ, U_D_of_D_U_on_finite_dim (MramI D u 0) (Uop D u 0 v) (Dop D u 0 v) _ hc0 hU hDU φ hφ⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem hecke_ramified_zero_of_identities (Tf : FormsTied D u) (hT : (D.mem u).A.T ≠ 0) (hc : DiamondCommutesLevelZero D u)
     (ht : TraceDiamondInvariantLevelZero D u) (h6 : DUFormulaLevelZero D u) : HeckeRamifiedLevelZero D u := by
@@ -80,7 +80,7 @@ theorem hecke_ramified_zero_of_identities (Tf : FormsTied D u) (hT : (D.mem u).A
   exact ⟨hU φ hφ, hD φ hφ, U_D_of_D_U_on_finite_dim (MramI D u 0) (Uop D u 0 v) (Dop D u 0 v) _ hc0 hU hDU φ hφ⟩
 
 /- English proof (translation)
-The claim follows from `congruence_no_kernel_family_minimal fun D u hT hS hA => by obtain ⟨h4, hc, ht, h6, hB⟩ := h D u hT hS hA obtain ⟨Tf, -⟩ := hT exact ⟨h4, hecke_ramified_zero_of_identities Tf (by have := hS.1; omega) hc ht h6, hB⟩`.
+A detailed English derivation is pending.
 -/
 theorem congruence_no_kernel_of_level_zero_identities
     (h : ∀ (D : D7) (u : D.what₂.Word), FormsCompatible D u → HidaSetting D u → admS D u →

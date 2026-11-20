@@ -22,7 +22,7 @@ def icShift (μ : Fin n → ℝ) : Fin n → ℂ := fun r => ((μ r + ((n : ℝ)
 def gxSeries (l : Fin n → ℂ) (r : Fin n) : PowerSeries ℂ := PowerSeries.mk fun k => gx l k r
 
 /- English proof (translation)
-Use extensionality with `k`. Break down `k with _ | k` into its components or cases. Simplify using `[gxSeries, gx]`. Rewrite using `[show gxSeries l r * (1 - PowerSeries.C (l r) * PowerSeries.X) = gxSeries l r - PowerSeries.C (l r) * (gxSeries l r * PowerSeries.X) by ring, map_sub, PowerSeries.coeff_C_mul, PowerSeries.coeff_succ_mul_X, map_sub, PowerSeries.coeff_succ_X_mul, map_sum]`. Simplify using `[gxSeries, gx, PowerSeries.coeff_one]`.
+By extensionality, compare the relevant components. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem gxSeries_mul (l : Fin n → ℂ) (r : Fin n) :
     gxSeries l r * (1 - PowerSeries.C (l r) * PowerSeries.X) =
@@ -43,7 +43,7 @@ theorem oneSubCX_const_ne (a : ℂ) : PowerSeries.constantCoeff (1 - PowerSeries
   simp
 
 /- English proof (translation)
-Rewrite using `[← gxSeries_mul, mul_assoc, PowerSeries.mul_inv_cancel _ (oneSubCX_const_ne _), mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem gxSeries_eq (l : Fin n → ℂ) (r : Fin n) :
     gxSeries l r = (1 - PowerSeries.X * ∑ s ∈ univ.filter (fun s => r < s), gxSeries l s) *
@@ -51,15 +51,15 @@ theorem gxSeries_eq (l : Fin n → ℂ) (r : Fin n) :
   rw [← gxSeries_mul, mul_assoc, PowerSeries.mul_inv_cancel _ (oneSubCX_const_ne _), mul_one]
 
 /- English proof (translation)
-Proceed by induction on `d with`. Consider the case `zero`. Introduce `r hr`. Establish `: univ.filter (fun s : Fin n => r ≤ s.val) = ∅`. Use extensionality with `s`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using `[this]`. Consider the case `succ d ih`. Introduce `r hr`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hrn : r < n` using `by omega`. Establish `hins : univ.filter (fun s : Fin n => r ≤ s.val) = insert ⟨r, hrn⟩ (univ.filter (fun s : Fin n => r + 1 ≤ s.val))`. Use extensionality with `s`. Simplify using `[Fin.ext_iff]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Establish `hgt : univ.filter (fun s : Fin n => (⟨r, hrn⟩ : Fin n) < s) = univ.filter (fun s : Fin n => r + 1 ≤ s.val)`. Use extensionality with `s`. Simplify using `only [mem_filter, mem_univ, true_and, Fin.lt_def]`. Use linear arithmetic over natural numbers and integers. Establish `hnot : (⟨r, hrn⟩ : Fin n) ∉ univ.filter (fun s : Fin n => r + 1 ≤ s.val)` using `by simp`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Rewrite using `[hins, sum_insert hnot, prod_insert hnot, ← ih (r + 1) (by omega), gxSeries_eq l ⟨r, hrn⟩, hgt]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem gxSeries_tele (l : Fin n → ℂ) (d : ℕ) : ∀ r : ℕ, n - r = d →
     1 - PowerSeries.X * ∑ s ∈ univ.filter (fun s : Fin n => r ≤ s.val), gxSeries l s =
@@ -86,7 +86,7 @@ theorem gxSeries_tele (l : Fin n → ℂ) (d : ℕ) : ∀ r : ℕ, n - r = d →
     ring
 
 /- English proof (translation)
-Establish `h` using `gxSeries_tele l n 0 (by simp)`. Establish `e : univ.filter (fun s : Fin n => 0 ≤ s.val) = univ` using `by ext; simp`. Rewrite `h` using `[e]`. Rewrite using `[gelfandSeries, ← h]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem gelfandSeries_eq (l : Fin n → ℂ) :
     gelfandSeries l = PowerSeries.X * ∑ r, gxSeries l r := by
@@ -97,14 +97,14 @@ theorem gelfandSeries_eq (l : Fin n → ℂ) :
   ring
 
 /- English proof (translation)
-Rewrite using `[gval, gelfandSeries_eq, PowerSeries.coeff_succ_X_mul, map_sum]`. Simplify using `[gxSeries]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sum_gx_eq_gval (l : Fin n → ℂ) (k : ℕ) : ∑ r, gx l k r = gval l k := by
   rw [gval, gelfandSeries_eq, PowerSeries.coeff_succ_X_mul, map_sum]
   simp [gxSeries]
 
 /- English proof (translation)
-Establish `h : gelfandSeries (l ∘ σ) = gelfandSeries l`. Simplify using `only [gelfandSeries, Function.comp_apply]`. Rewrite using `[Equiv.prod_comp σ (fun r => (1 - PowerSeries.X * (1 - PowerSeries.C (l r) * PowerSeries.X)⁻¹))]`. Rewrite using `[gval, gval, h]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem gval_perm (l : Fin n → ℂ) (σ : Equiv.Perm (Fin n)) (k : ℕ) : gval (l ∘ σ) k = gval l k := by
   have h : gelfandSeries (l ∘ σ) = gelfandSeries l := by

@@ -3,7 +3,7 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LocalGluing.LocGlueOf
 import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.LocOProj
 
 /- English proof (translation)
-The claim follows from `PI.LocHerm.Glue.locGlue_of projectiveOverOrder`.
+A detailed English derivation is pending.
 -/
 theorem local_hermitian_glue : PI.LocHerm.LocGlue :=
   PI.LocHerm.Glue.locGlue_of projectiveOverOrder

@@ -41,7 +41,7 @@ def d7Tw (hu : ∀ τ, FdegUniq R (hc τ))
     (fun g => newtypes_idempotent_zero H _ _ ht G.tame g) C)
 
 /- English proof (translation)
-The claim follows from `ties_withTw _ _ rfl (fun τ V _ _ σ d h1 h2 => (hu τ).choose_spec.2 V σ d h1 h2) (fun _ _ _ _ => rfl) (fun _ _ _ => rfl) ⟨fun σ => Empty.elim σ⟩`.
+A detailed English derivation is pending.
 -/
 theorem ties_d7Tw (hu C) : Ties (d7Tw H hc Del hDel hgap hlet etaF T Ts hTs Gam hG hw1 hw2 hg ht hlev hpde pz hK hpz hcong G hu C) :=
   ties_withTw _ _ rfl (fun τ V _ _ σ d h1 h2 => (hu τ).choose_spec.2 V σ d h1 h2)

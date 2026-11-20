@@ -8,13 +8,11 @@ import Development.AutomorphicArithmetic.Foundations.Convolution.IntegrableConvo
 open MeasureTheory NumberField
 
 /- English proof (translation)
-Take `⟨h1, h2, -, h4, h5, -⟩` from `UpperTheory.ConvolutionTheory.L1.glueBasic R S ι s m D n`. Use `haveI : LocallyCompactSpace (Matrix (Fin n) (Fin n) R) := inferInstanceAs (LocallyCompactSpace (Fin n → Fin n → R))`. Use `haveI : SecondCountableTopology (Matrix (Fin n) (Fin n) R) := inferInstanceAs (SecondCountableTopology (Fin n → Fin n → R))`. Use `haveI : LocallyCompactSpace (Matrix (Fin n) (Fin n) R)ᵐᵒᵖ := MulOpposite.opHomeomorph.symm.isClosedEmbedding.locallyCompactSpace`. Use `haveI : SecondCountableTopology (Matrix (Fin n) (Fin n) R)ᵐᵒᵖ := MulOpposite.opHomeomorph.symm.isEmbedding.secondCountableTopology`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Use `haveI : LocallyCompactSpace (GL (Fin n) R) := (Units.isClosedEmbedding_embedProduct (α := Matrix (Fin n) (Fin n) R)).locallyCompactSpace`. Use `haveI : SecondCountableTopology (GL (Fin n) R) := (Units.isEmbedding_embedProduct (M := Matrix (Fin n) (Fin n) R)).secondCountableTopology`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `continuous_finset_prod _ fun i _ => (hφ i).1.comp (h5 i)`. Establish `hK : IsCompact (D.glue n '' Set.pi Set.univ fun i => tsupport (φ i))` using `(isCompact_univ_pi fun i => (hφ i).2.isCompact).image h4`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Use `HasCompactSupport.intro hK fun x hx => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Apply `hx` to reduce the goal to its premises. Use `⟨fun i => D.comp n i x, fun i _ => subset_tsupport _ ?_, h2 x⟩` and prove the remaining obligations. Introduce `h0`.
-
-Conclude with `hne (Finset.prod_eq_zero (Finset.mem_univ i) h0)`. Rewrite using `[← UpperTheory.ConvolutionTheory.L1.pushTens (GL (Fin n) R) μ m φ (fun i => (hφ i).1) (fun i => (hφ i).2)]`. Unfold `UpperTheory.ConvolutionTheory.L1.Split.transfer UpperTheory.ConvolutionTheory.L1.Split.tens`. Simplify using `only [h1]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.ConvolutionTheory.L1.matchInf_tens (R S : Type) [CommRing R] [CommRing S] [TopologicalSpace R]
     [TopologicalSpace S] [IsTopologicalRing R] [IsTopologicalRing S] [LocallyCompactSpace R] [T2Space R]
@@ -51,13 +49,13 @@ private theorem UpperTheory.ConvolutionTheory.L1.matchInf_tens (R S : Type) [Com
     simp only [h1]
 
 /- English proof (translation)
-The claim follows from `inferInstanceAs (T2Space ((v : InfinitePlace F) → v.Completion))`.
+A detailed English derivation is pending.
 -/
 private theorem UpperTheory.ConvolutionTheory.L1.t2Space_infiniteAdeleRing' (F : Type) [Field F] [NumberField F] : T2Space (InfiniteAdeleRing F) :=
   inferInstanceAs (T2Space ((v : InfinitePlace F) → v.Completion))
 
 /- English proof (translation)
-Use `haveI : ∀ v : InfinitePlace F, SecondCountableTopology v.Completion := fun v => (InfinitePlace.Completion.isometry_extensionEmbedding v).isEmbedding.secondCountableTopology`. Conclude with `inferInstanceAs (SecondCountableTopology ((v : InfinitePlace F) → v.Completion))`.
+A detailed English derivation is pending.
 -/
 private theorem UpperTheory.ConvolutionTheory.L1.matchInf_sc (F : Type) [Field F] [NumberField F] :
     SecondCountableTopology (InfiniteAdeleRing F) := by
@@ -66,9 +64,7 @@ private theorem UpperTheory.ConvolutionTheory.L1.matchInf_sc (F : Type) [Field F
   exact inferInstanceAs (SecondCountableTopology ((v : InfinitePlace F) → v.Completion))
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ m D n _ _ _ _ μE μF hE hF`. Use `haveI := UpperTheory.ConvolutionTheory.L1.t2Space_infiniteAdeleRing' F`. Use `haveI := UpperTheory.ConvolutionTheory.L1.t2Space_infiniteAdeleRing' E`. Use `haveI := UpperTheory.ConvolutionTheory.L1.matchInf_sc F`. Take `⟨c, hc, hμ, hM⟩` from `UpperTheory.ConvolutionTheory.L1.matchSplit _ _ _ _ m D n μE μF hE hF (UpperTheory.ConvolutionTheory.L1.regOkPi.2.2 F n)`.
-
-Conclude with `⟨c, hc, hμ, fun φ h1 h2 => (hM φ h1 h2).2.2, fun φ hφ => UpperTheory.ConvolutionTheory.L1.matchInf_tens _ _ _ _ m D n μF φ hφ⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.L1.matchInf :
     UpperTheory.ConvolutionTheory.L1.MatchInf := by

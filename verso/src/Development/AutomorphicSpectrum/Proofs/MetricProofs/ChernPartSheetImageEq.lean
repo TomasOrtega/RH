@@ -16,35 +16,29 @@ open ReciprocityTheory.ChartRestriction.G.Out (nonzeroLocus)
 open GlobalTheory GlobalTheory.Points GlobalTheory.ArInt GlobalTheory.Cartier GlobalTheory.CxPts GlobalTheory.ProjSpace GlobalTheory.CompanionTheory.Ar.BaseZ GlobalTheory.CompanionTheory.Ar.BGS
 
 /- English proof (translation)
-Introduce `k _ _ _ _ X p t τ hp σ D B φ ψ hW hφ hψ ε S hS`. Establish `hSC : ∀ σ' : k →+* ℂ, SecondCountableTopology (CxPts p σ')`. Take `⟨N, i, hi, hpe⟩` from `hp`. Introduce `σ'`. Use `haveI := hi`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality.
 
-Substitute `hpe` using the available equality. Conclude with `GlobalTheory.CxPts.secondCountableTopology _ σ'`. Use `haveI hscp : SecondCountableTopology (CxPts p σ) := hSC σ`. Use `haveI hsct : SecondCountableTopology (CxPts t τ) := by haveI : Finite (k →+* ℂ) := Sheet.finite_ringHom k`. Establish `hopen : ∀ σ' : k →+* ℂ, IsOpen (Set.range (sheet t τ : CxPts p σ' → CxPts t τ))` using `fun σ' => (GlobalTheory.T.sheet_isOpenEmbedding_range k X p t τ σ').1.isOpen_range`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : ∀ σ' : k →+* ℂ, SecondCountableTopology (Set.range (sheet t τ : CxPts p σ' → CxPts t τ)) := by`. Introduce `σ'`. Use `haveI := hSC σ'`. Conclude with `(GlobalTheory.T.sheet_isOpenEmbedding_range k X p t τ σ').1.isEmbedding.toHomeomorph.symm.isEmbedding.secondCountableTopology`. Use `TopologicalSpace.secondCountableTopology_of_countable_cover hopen ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Set.eq_univ_of_forall fun y => Set.mem_iUnion.2 ⟨emb p y, unsheet p y, sheet_unsheet p y⟩`. Establish `hemb : Topology.IsOpenEmbedding (sheet t τ : CxPts p σ → CxPts t τ)` using `(GlobalTheory.T.sheet_isOpenEmbedding_range k X p t τ σ).1`. Establish `hme : MeasurableEmbedding (sheet t τ : CxPts p σ → CxPts t τ)` using `hemb.measurableEmbedding`. Establish `key : ∀ (c : AlgChart p σ D) (A : Set (CxPts p σ)), MeasurableSet A → A ⊆ c.e.source → ψ.chernPart D ε (sheet t τ '' A) = (φ σ).chernPart D ε A`. Introduce `c A hA hAc`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨c', hc's, hc'e⟩` from `GlobalTheory.T.exists_algChart_over_integers k X p t τ σ D c`. Establish `hcomp : ∀ y ∈ c.e.source, sheet t τ y ∈ c'.e.source ∧ c'.e (sheet t τ y) = c.e y` using `fun y hy => ⟨hc's ▸ Set.mem_image_of_mem _ hy, hc'e y hy⟩`. Establish `hdens` using `GlobalTheory.T.chernDensity_sheet_eq k X p t τ σ D B φ ψ hW hφ hψ c c' hcomp`. Establish `hA' : sheet t τ '' A ⊆ c'.e.source`. Introduce and unpack `_ ⟨y, hy, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify by unfolding definitions. Establish an intermediate fact.
 
-Conclude with `(hcomp y (hAc hy)).1`. Rewrite using `[GlobalTheory.Weight.chernPart_apply hψ ε c' (hme.measurableSet_image' hA) hA', GlobalTheory.Weight.chernPart_apply (hφ σ) ε c hA hAc]`. Establish `himg : c'.e '' (sheet t τ '' A) = c.e '' A`. Rewrite using `[Set.image_image]`. Conclude with `Set.image_congr fun y hy => (hcomp y (hAc hy)).2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[himg]`. Use `MeasureTheory.setLIntegral_congr_fun (GlobalTheory.ChartGlue.measurableSet_image c.e hA hAc) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Simplify using `only`. Establish `h1 : c.e.symm (c.e y) = y` using `c.e.left_inv (hAc hy)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h2 : c'.e.symm (c.e y) = sheet t τ y`. Rewrite using `[← (hcomp y (hAc hy)).2]`. Conclude with `c'.e.left_inv (hcomp y (hAc hy)).1`. Rewrite using `[h1, h2, hdens y (hAc hy)]`. Establish `hμA : ∀ A : Set (CxPts p σ), Measure.comap (sheet t τ) (ψ.chernPart D ε) A = ψ.chernPart D ε (sheet t τ '' A)` using `fun A => hme.comap_apply _ A`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hUo : IsOpen (⋃ c : AlgChart p σ D, c.e.source)` using `isOpen_iUnion fun c => c.e.open_source`. Establish `hUm : MeasurableSet (⋃ c : AlgChart p σ D, c.e.source)` using `hUo.measurableSet`. Establish `hzν : ((φ σ).chernPart D ε).restrict (⋃ c : AlgChart p σ D, c.e.source)ᶜ = 0`. Use `Measure.restrict_eq_zero.2 (GlobalTheory.Weight.chernPart_eq_zero ε hUm.compl fun c => ?_)` and prove the remaining obligations. Rewrite using `[Set.disjoint_left]`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `y hy hy'`. Conclude with `hy' (Set.mem_iUnion.2 ⟨c, hy⟩)`. Establish `hzμ : (Measure.comap (sheet t τ) (ψ.chernPart D ε)).restrict (⋃ c : AlgChart p σ D, c.e.source)ᶜ = 0`. Use `Measure.restrict_eq_zero.2 ?_` and prove the remaining obligations. Rewrite using `[hμA]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Use `GlobalTheory.Weight.chernPart_eq_zero ε (hme.measurableSet_image' hUm.compl) fun c' => ?_` and prove the remaining obligations. Rewrite using `[Set.disjoint_left]`. Introduce and unpack `_ hz ⟨y, hy, rfl⟩`. Take `⟨c, hcs, -⟩` from `GlobalTheory.T.exists_algChart_from_integers k X p t τ σ D c' ⟨y⟩`. Conclude with `hy (Set.mem_iUnion.2 ⟨c, by rw [hcs]; exact hz⟩)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hU : (Measure.comap (sheet t τ) (ψ.chernPart D ε)).restrict (⋃ c : AlgChart p σ D, c.e.source) = ((φ σ).chernPart D ε).restrict (⋃ c : AlgChart p σ D, c.e.source)`. Take `⟨T, hTc, hTU⟩` from `TopologicalSpace.isOpen_iUnion_countable (fun c : AlgChart p σ D => c.e.source) fun c => c.e.open_source`. Establish `hU' : (⋃ c : AlgChart p σ D, c.e.source) = ⋃ c : T, (c : AlgChart p σ D).e.source`. Rewrite using `[Set.iUnion_subtype]`. Conclude with `hTU.symm`.
-
-Use `haveI : Countable T := hTc.to_subtype`. Rewrite using `[hU', Measure.restrict_iUnion_congr]`. Introduce `c`. Use extensionality with `A hA`. Establish `hAm : MeasurableSet (A ∩ (c : AlgChart p σ D).e.source)` using `hA.inter (c : AlgChart p σ D).e.open_source.measurableSet`.
-
-Rewrite using `[Measure.restrict_apply hA, Measure.restrict_apply hA, hμA]`. Conclude with `key c _ hAm Set.inter_subset_right`. Establish `hμν : Measure.comap (sheet t τ) (ψ.chernPart D ε) = (φ σ).chernPart D ε`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hU, hzμ, hzν]`.
-
-Use `_ = (φ σ).chernPart D ε := Measure.restrict_add_restrict_compl hUm`. Rewrite using `[← hμA, hμν]`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CompanionTheory.Ar.BaseZ.chernPart_sheet : ∀ (k : Type) [CommRing k] [IsDomain k] [CharZero k] [Module.Finite ℤ k] (X : Scheme.{0}) (p : X ⟶ Sp k) (t : X ⟶ Sp ℤ) (τ : ℤ →+* ℂ), IsProjOver p → ∀ (σ : k →+* ℂ) (D : ℕ) (B : LB X) (φ : ∀ σ : k →+* ℂ, Weight p σ B) (ψ : Weight t τ B), WOver φ ψ → (∀ σ, (φ σ).IsCInf) → ψ.IsCInf → ∀ (ε : ℤˣ) (S : Set (CxPts p σ)), MeasurableSet S → ψ.chernPart D ε (sheet t τ '' S) = (φ σ).chernPart D ε S := by
   intro k _ _ _ _ X p t τ hp σ D B φ ψ hW hφ hψ ε S hS

@@ -12,61 +12,53 @@ open scoped ContDiff
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `e X _ A K m L s D ψ σ hK hKp hB hP`. Take `⟨ρ, hρ0, hρ, C0, hC0, hT⟩` from `GlobalTheory.T.polydisc_boundary_distance_estimate A L s D ψ σ hB hP`. Establish `hψ` using `hP.1`. Establish `hball` using `hP.2.1`. Establish `hsub : Metric.closedBall (0 : Fin e → ℂ) (1 / 2) ⊆ ψ.target` using `fun z hz => hball (Metric.closedBall_subset_ball (by norm_num) hz)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨δ, CK, hδ, hCK, hKB⟩` from `GlobalTheory.T.quadratic_form_two_sided_bound (formAt ψ K) (Metric.closedBall 0 (1 / 2)) (isCompact_closedBall _ _) ((GlobalTheory.T.form_at_continuous A K ψ hK hψ).mono (Set.prod_mono hsub le_rfl)) (fun z hz w hw => GlobalTheory.T.positive_potential_form_pos A K ψ hK hKp hψ z (h …`. Use `⟨ρ, hρ0, hρ, fun c hc hTS => ?_⟩` and prove the remaining obligations. Establish `hpi` using `Real.pi_pos`. Use `set δ' : ℝ := min (1 / 2) (δ / (4 * c * (m * C0 + 1))) with hδ'`. Establish `hmC : 0 < (m : ℝ) * C0 + 1` using `by positivity`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hδ'0 : 0 < δ'` using `lt_min (by norm_num) (by positivity)`. Establish `hδ'1 : δ' ≤ 1 / 2` using `min_le_left _ _`. Establish `hδ'2 : δ' ≤ δ / (4 * c * (m * C0 + 1))` using `min_le_right _ _`. Establish `hcδ : c * (m * (δ' * C0)) ≤ δ / 4`. Establish `h1 : c * δ' * (m * C0 + 1) ≤ δ / 4`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `mul_le_mul_of_nonneg_left hδ'2 (le_of_lt (mul_pos hc hmC))` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation. Use polynomial arithmetic with `[hδ'0.le, hc.le]`. Use `set κ : ℝ := c * δ' / (36 * Real.pi ^ 3) with hκ`. Establish `hκ0 : 0 < κ` using `by positivity`.
+Chain the equalities or inequalities of the calculation. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set μ : ℝ := min (δ / 4) κ with hμ`. Establish `hμ0 : 0 < μ` using `lt_min (by positivity) hκ0`. Use `set Cup : ℝ := 2 * CK + c * m + c * m * C0 + 1 with hCup`. Establish `hCup0 : 0 < Cup` using `by positivity`. Use `⟨max Cup μ⁻¹, lt_max_of_lt_left hCup0, fun z hz hzD w => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hext, hTi⟩` from `hT z hz hzD w`. Establish `hzc : z ∈ Metric.closedBall (0 : Fin e → ℂ) (1 / 2)` using `Metric.closedBall_subset_closedBall hρ (Metric.ball_subset_closedBall hz)`. Take `⟨hKlo, hKhi⟩` from `hKB z hzc w`. Take `⟨hlo, hhi⟩` from `hTS ψ hψ z (hsub hzc) hzD w`. Use `set g : Fin e → ℝ := fun k => ‖w k‖ ^ 2 / (‖z k‖ ^ 2 * tOf (z k) ^ 2) with hg`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `hg0 : ∀ k, 0 ≤ g k` using `fun k => by simp only [hg]; positivity`. Use `set N : ℝ := ∑ k, ‖w k‖ ^ 2 with hN`. Establish `hN0 : 0 ≤ N` using `by positivity`. Use `set T : Fin m → ℝ := fun i => gradSqAt ψ (rComp L s i) z w / rComp L s i (ψ.symm z) ^ 2 with hTdef`. Use `set E : Fin m → ℝ := fun i => Option.elim (σ i) 0 g with hE`.
+Check the signs of the components of the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hE0 : ∀ i, 0 ≤ E i` using `fun i => by`. Apply the tactic sequence `simp only [hE]; cases σ i <;> simp [hg0]`. Use `set Mo := modelAt σ z w with hMo`. Establish `hterm : ∀ k, 0 ≤ (if ∃ i, σ i = some k then g k else ‖w k‖ ^ 2)` using `fun k => by split_ifs`. Conclude with `hg0 k`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Check the signs of the components of the expression. Establish `hNM : N ≤ Mo`. Simplify using `only [hN, hMo, modelAt]`. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `k _`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `split_ifs with h`. Take `⟨i, hi⟩` from `h`. Conclude with `hext i k hi`. Conclude with `le_rfl`. Establish `hM0 : 0 ≤ Mo` using `hN0.trans hNM`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hEM : ∀ i, E i ≤ Mo`. Introduce `i`. Simplify using `only [hE]`. Consider the cases of `hσ : σ i with`. Consider the case `none => simpa using hM0`.
+Fix the arbitrary inputs or assume the hypotheses. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Consider the case `some k`. Simplify using `only [Option.elim]`. Establish `h1 : g k = (if ∃ i, σ i = some k then g k else ‖w k‖ ^ 2)`. Rewrite using `[if_pos ⟨i, hσ⟩]`. Rewrite using `[h1, hMo, modelAt]`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation.
 
-Conclude with `Finset.single_le_sum (f := fun k => if ∃ i, σ i = some k then g k else ‖w k‖ ^ 2) (fun k _ => hterm k) (Finset.mem_univ k)`. Use `set Bsum : ℝ := ∑ k, (if ∃ i, σ i = some k then g k else 0) with hBs`. Establish `hMB : Mo ≤ Bsum + N`. Simplify using `only [hMo, modelAt, hBs, hN, ← Finset.sum_add_distrib]`. Apply `Finset.sum_le_sum` to reduce the goal to its premises.
+Simplify to obtain the desired conclusion from the available facts. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Introduce `k _`. Use `split_ifs`. Combine the linear relations using `[sq_nonneg ‖w k‖]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hBE : Bsum ≤ ∑ i, E i`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : Bsum ≤ ∑ k, ∑ i, (if σ i = some k then g k else 0)`. Simplify using `only [hBs]`. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `k _`. Use `split_ifs with h`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨i, hi⟩` from `h`. Apply the tactic sequence `have := Finset.single_le_sum (f := fun i => if σ i = some k then g k else 0) (fun i _ => by split_ifs <;> simp [hg0]) (Finset.mem_univ i)`. Simplify `this` using `[hi]`. Apply the tactic sequence `exact Finset.sum_nonneg (fun i _ => by split_ifs <;> simp [hg0])`. Rewrite `h1` using `[Finset.sum_comm]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `h1.trans (le_of_eq (Finset.sum_congr rfl fun i _ => ?_))` and prove the remaining obligations. Simplify using `only [hE]`. Consider the cases of `σ i with`. Consider the case `none => simp`. Consider the case `some k0 => simp [Finset.sum_ite_eq]`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hKhi' : formAt ψ K z w ≤ CK * N` using `hKhi`. Establish `hKlo' : δ * N ≤ formAt ψ K z w` using `hKlo`. Establish `hsumT_hi : ∑ i, T i ≤ ∑ i, E i + m * (C0 * N)`. Use `Finset.sum_le_sum (fun i (_ : i ∈ Finset.univ) => (hTi i).1)` as an intermediate fact. Simplify `this` using `[Finset.sum_add_distrib, Finset.sum_const, hTdef, hE]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Establish `hsumT_lo : ∑ i, (δ' * E i / (36 * Real.pi ^ 3) - δ' * C0 * N) ≤ ∑ i, T i` using `Finset.sum_le_sum (fun i _ => (hTi i).2 δ' hδ'0 hδ'1)`. Establish `hsumE : ∑ i, E i ≤ m * Mo`. Use `Finset.sum_le_sum (fun i (_ : i ∈ Finset.univ) => hEM i)` as an intermediate fact. Simplify using `using this`. Rewrite `hsumT_lo` using `[Finset.sum_sub_distrib, ← Finset.sum_div, ← Finset.mul_sum]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul] at hsumT_lo`. Establish `hlo' : formAt ψ K z w / 2 + c * ∑ i, T i ≤ formAt ψ (poincarePot K L s c) z w` using `hlo`. Establish `hhi' : formAt ψ (poincarePot K L s c) z w ≤ 2 * formAt ψ K z w + c * ∑ i, T i` using `hhi`. Prove the components needed by the constructor for the conclusion. Establish `hμle : μ * Mo ≤ formAt ψ (poincarePot K L s c) z w`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hA : μ * Mo ≤ δ / 4 * N + κ * Bsum`. Establish `h1 : μ * Mo ≤ μ * (Bsum + N)` using `mul_le_mul_of_nonneg_left hMB hμ0.le`. Establish `h2 : μ ≤ δ / 4` using `min_le_left _ _`. Establish `h3 : μ ≤ κ` using `min_le_right _ _`. Apply the tactic sequence `have hB0 : 0 ≤ Bsum := Finset.sum_nonneg (fun k _ => by split_ifs <;> simp [hg0])`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Use the polynomial consequences of the given equalities and inequalities. Establish `hB2 : κ * Bsum ≤ κ * ∑ i, E i` using `mul_le_mul_of_nonneg_left hBE hκ0.le`. Establish `hc2 : c * ((δ' * ∑ i, E i) / (36 * Real.pi ^ 3) - m * (δ' * C0 * N)) ≤ c * ∑ i, T i` using `mul_le_mul_of_nonneg_left hsumT_lo hc.le`. Establish `hκE : κ * ∑ i, E i = c * ((δ' * ∑ i, E i) / (36 * Real.pi ^ 3))`. Simplify using `only [hκ]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite `hc2` using `[mul_sub, ← hκE]`. Establish `hcδN : c * (m * (δ' * C0 * N)) ≤ δ / 4 * N`. Use `mul_le_mul_of_nonneg_right hcδ hN0` as an intermediate fact. Establish `e1 : c * (m * (δ' * C0 * N)) = c * (m * (δ' * C0)) * N` using `by ring`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[e1]`. Conclude with `this`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hC : μ⁻¹ ≤ max Cup μ⁻¹` using `le_max_right _ _`. Establish `: (max Cup μ⁻¹)⁻¹ ≤ μ`.
-
-Rewrite using `[inv_le_comm₀ (lt_max_of_lt_left hCup0) hμ0]`. Conclude with `hC`. Combine the equalities or inequalities in the displayed calculation. Establish `h1 : formAt ψ (poincarePot K L s c) z w ≤ Cup * Mo`. Establish `hc2 : c * ∑ i, T i ≤ c * (∑ i, E i + m * (C0 * N))` using `mul_le_mul_of_nonneg_left hsumT_hi hc.le`.
-
-Establish `hE2 : c * ∑ i, E i ≤ c * (m * Mo)` using `mul_le_mul_of_nonneg_left hsumE hc.le`. Establish `hN2 : c * (m * (C0 * N)) ≤ c * (m * (C0 * Mo))`. Apply `mul_le_mul_of_nonneg_left _ hc.le` to reduce the goal to its premises. Apply `mul_le_mul_of_nonneg_left _ (by positivity)` to reduce the goal to its premises. Conclude with `mul_le_mul_of_nonneg_left hNM hC0.le`.
-
-Establish `hK2 : CK * N ≤ CK * Mo` using `mul_le_mul_of_nonneg_left hNM hCK.le`. Rewrite `hc2` using `[mul_add]`. Establish `e2 : Cup * Mo = 2 * (CK * Mo) + c * (m * Mo) + c * (m * (C0 * Mo)) + Mo`. Rewrite using `[hCup]`. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite using `[e2]`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `h1.trans (mul_le_mul_of_nonneg_right (le_max_left _ _) hM0)`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem poincarePot_comparable_modelAt : ∀ {e : ℕ} {X : Type} [TopologicalSpace X] (A : FinHolAtlas e X) (K : LocPot X) {m : ℕ} (L : Fin m → LocPot X) (s : Fin m → X → X → ℂ) (D : Fin m → Set X) (ψ : OpenPartialHomeomorph X (Fin e → ℂ)) (σ : Fin m → Option (Fin e)), IsPotential A K → IsPosPot A K → IsBoundary A L s D → IsAdaptedPolydisc A D ψ σ → ∃ ρ : ℝ, 0 < ρ ∧ ρ ≤ 1 / 2 ∧ ∀ c : ℝ, 0 < c → TwoSided A K L s D c → ∃ C : ℝ, 0 < C ∧ ∀ z ∈ Metric.ball (0 : Fin e → ℂ) ρ, ψ.symm z ∉ ⋃ i, D i → ∀ w, C⁻¹ * modelAt σ z w ≤ formAt ψ (poincarePot K L s c) z w ∧ formAt ψ (poincarePot K L s c) z w ≤ C * modelAt σ z w := by
   intro e X _ A K m L s D ψ σ hK hKp hB hP

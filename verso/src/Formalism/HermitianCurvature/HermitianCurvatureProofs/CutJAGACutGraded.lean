@@ -9,7 +9,7 @@ noncomputable section
 namespace Formalism.FourierDecayAlt.P.CutMP.JA.GA
 
 /- English proof (translation)
-Use `⟨2, by norm_num, ?_⟩` and prove the remaining obligations. Introduce `k r Wp Wq _ _ _ _ _ _ Bs χ₀ hχ ε A Bg F hε hBg hF hFg`. Take `⟨δ, -, hcut, -⟩` from `Formalism.FourierDecayAlt.P.JCTx6.Lev0.isCutG_div hχ hε`. Conclude with `Formalism.FourierDecayAlt.P.CutMP.JA.gcut_graded Bs.z Bs.z' (fun x => χ₀ (x / ε)) (δ * ε) hcut (by linarith) hF hFg`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem graded_truncation_action_holds : GACutGraded := by
   refine ⟨2, by norm_num, ?_⟩

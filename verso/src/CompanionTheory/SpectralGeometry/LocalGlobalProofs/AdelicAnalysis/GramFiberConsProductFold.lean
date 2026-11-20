@@ -19,14 +19,14 @@ section Alg
 variable {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [CommRing R] [Algebra F R]
 
 /- English proof (translation)
-Simplify using `[sigR]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sigR_scalar_tmul (σ : E →ₐ[F] E) (α : R) :
     sigR R σ (α ⊗ₜ[F] (1 : E)) = α ⊗ₜ[F] (1 : E) := by
   simp [sigR]
 
 /- English proof (translation)
-Simplify using `only [gramR, hR, hform, scl, map_mul, sigR_scalar_tmul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem gramR_scl_tmul (σ : E →ₐ[F] E) {N : ℕ} (J : Matrix (Fin N) (Fin N) E) (α : R)
     (y : Fin 1 → Fin N → R ⊗[F] E) (i j : Fin 1) :
@@ -37,9 +37,9 @@ theorem gramR_scl_tmul (σ : E →ₐ[F] E) {N : ℕ} (J : Matrix (Fin N) (Fin N
   ring
 
 /- English proof (translation)
-Establish `hd2 : d = 2`. Rewrite using `[← hd, Module.finrank_eq_card_basis b, Fintype.card_fin]`. Substitute `hd2` using the available equality. Establish `e : x ⊗ₜ[F] (1 : E) = algebraMap R (R ⊗[F] E) x`. Simplify using `[Algebra.TensorProduct.algebraMap_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[s0, h, e, Algebra.trace_algebraMap_of_basis (Algebra.TensorProduct.basis R b), Fintype.card_fin, two_nsmul, ← two_mul, ← mul_assoc]`. Establish `: algebraMap F R (1 / 2) * 2 = 1`. Rewrite using `[← map_ofNat (algebraMap F R) 2, ← map_mul]`. Simplify using the standard rewrite rules. Rewrite using `[this, one_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem corner_half_trace_of_pure_tensor [CharZero F] {d : ℕ} (b : Module.Basis (Fin d) F E) (hd : Module.finrank F E = 2)
     (x : R) (S : Matrix (Fin (0 + 1)) (Fin (0 + 1)) (R ⊗[F] E)) (h : S 0 0 = x ⊗ₜ[F] (1 : E)) :
@@ -59,45 +59,39 @@ theorem corner_half_trace_of_pure_tensor [CharZero F] {d : ℕ} (b : Module.Basi
 end Alg
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ M J t n R _ _ _ _ _ d b lam m₁ m' s B₀ a κ₁ cm D φ hφ x hx y₀ hy₀`. Take `⟨hTR, hLC, hSC, hT2, -⟩` from `id D.hR`. Establish `hJt` using `GlobalTheory.T.block_one_scalar_preserves_nondegenerate F E σ M J D.hJ t D.ht`. Take `⟨-, -, -, -, -, -, -, hBor, -, -⟩` from `GlobalTheory.T.tensor_locally_compact_ring F E σ D.hCM R`. Take `⟨-, -, -, -, -, hact⟩` from `GlobalTheory.T.adelic_unitary_group_locally_compact F E σ D.hCM (M + 1) _ hJt R`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨-, -, -, hBH, hliftn⟩` from `GlobalTheory.T.hermitian_matrices_locally_compact_borel F E σ D.hCM R n`. Take `⟨-, -, -, -, hlift⟩` from `GlobalTheory.T.hermitian_matrices_locally_compact_borel F E σ D.hCM R (n + 1)`. Take `⟨hUo, -, hoff, -⟩` from `GlobalTheory.T.gram_fiber_measure_locally_finite_measurable_supported F E σ D.hCM M n J D.hJ R D.hR d b lam D.hlam m' D.hm'`. Take `⟨g, -, hg⟩` from `hlift (M + 1) _ hJt`. Establish `hcoord` using `(GlobalTheory.T.gram_block_one_schur_coordinates F E σ M J t n R d b lam m₁ m' s B₀ a κ₁ cm D).1 x hx`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hd : Module.finrank F E = 2` using `D.hCM.2.2.1`. Use `set u : R := ((a x : Rˣ) : R) with hu`. Establish `hy00 : gramR R σ (blockOne (algebraMap F E t) J) y₀ 0 0 = algebraMap F R t ⊗ₜ[F] (1 : E)`. Rewrite using `[hy₀]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hG : gramR R σ (blockOne (algebraMap F E t) J) (scl (u ⊗ₜ[F] (1 : E)) y₀) 0 0 = x ⊗ₜ[F] (1 : E)`. Rewrite using `[gramR_scl_tmul, hy00, Algebra.TensorProduct.tmul_mul_tmul, Algebra.TensorProduct.tmul_mul_tmul]`. Establish `hq : u ^ 2 * algebraMap F R t = x` using `(D.hsq x hx).symm`. Rewrite using `[mul_one, mul_one, ← pow_two, hq]`. Establish `hs0 : s0 R (gramR R σ (blockOne (algebraMap F E t) J) (scl (u ⊗ₜ[F] (1 : E)) y₀)) = x` using `corner_half_trace_of_pure_tensor R b hd x _ hG`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsT : sTil σ J t s a (scl (u ⊗ₜ[F] (1 : E)) y₀) = s y₀`. Unfold `sTil`. Rewrite using `[hs0]`. Use `congr 1`. Use function extensionality and compare the values at `i j`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `only [scl, mul_assoc, Algebra.TensorProduct.tmul_mul_tmul, mul_one]`. Rewrite using `[hu, Units.mul_inv]`. Conclude with `mul_one _`. Establish `hsec` using `congrFun (D.hsec y₀ hy₀) 0`. Establish `hcons : ∀ (c : Fin n → R ⊗[F] E) (X : Fin n → Fin M → R ⊗[F] E), (Fin.cons (scl (u ⊗ₜ[F] (1 : E)) y₀ 0) (actW R σ (blockOne (algebraMap F E t) J) (s y₀) (fun j => Fin.cons (c j) (X j))) : Fin (n + 1) → Fin (M + 1) → R ⊗[F] E) = actW R σ (blockOne (algebraMap F E t) J) (s y₀) (vec …`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Introduce `c X`. Use function extensionality and compare the values at `i`. Use `Fin.cases ?_ (fun j => ?_) i` and prove the remaining obligations. Establish `e : (Fin.cons (u ⊗ₜ[F] (1 : E)) (fun _ => 0) : Fin (M + 1) → R ⊗[F] E) = (u ⊗ₜ[F] (1 : E)) • (Fin.cons 1 (fun _ => 0) : Fin (M + 1) → R ⊗[F] E)`. Use function extensionality and compare the values at `k`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `refine Fin.cases ?_ (fun l => ?_) k <;> simp`. Simplify using `only [Fin.cons_zero, vec, actW, actTup]`. Rewrite using `[e, Matrix.mulVec_smul]`. Simplify using `only [actW, actTup] at hsec`. Rewrite using `[hsec]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `k`. Simplify using `[scl, mul_comm]`. Simplify using `[vec, actW, actTup]`. Establish `hmem : ∀ (c : Fin n → R ⊗[F] E) (X : Fin n → Fin M → R ⊗[F] E), actW R σ (blockOne (algebraMap F E t) J) (s y₀) (vec (u ⊗ₜ[F] (1 : E)) c X) ∈ (Uset σ J t B₀ a : Set (Fin (n + 1) → Fin (M + 1) → R ⊗[F] E)) ↔ X ∈ {X : Fin n → Fin M → R ⊗[F] E | IsUnit (gramR R σ J X).det}`. Introduce `c X`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hinv` using `(hact (n + 1)).2.2.2 (s y₀) (vec (u ⊗ₜ[F] (1 : E)) c X)`. Simplify using `only [Uset, Set.mem_preimage, hinv, Set.mem_setOf_eq]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨S, ⟨-, hSu⟩, hS⟩`. Use `(hcoord c X S hS).2.2` as an intermediate fact.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hSu` using `[this]`. Then use the resulting hypothesis. Introduce `hX`. Establish `h3` using `hcoord c X (g (vec (u ⊗ₜ[F] (1 : E)) c X)) (hg _).symm`. Use `⟨g (vec (u ⊗ₜ[F] (1 : E)) c X), ⟨?_, ?_⟩, (hg _).symm⟩` and prove the remaining obligations. Rewrite using `[h3.1]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hx`. Rewrite using `[h3.2.2]`. Conclude with `hX`. Use `haveI := hBor n M`. Use `haveI := hBor (n + 1) (M + 1)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hUt : MeasurableSet (Unt σ R n)` using `hUo.measurableSet`. Establish `hUd : MeasurableSet {X : Fin n → Fin M → R ⊗[F] E | IsUnit (gramR R σ J X).det}`. Take `⟨g', hg'c, hg'⟩` from `hliftn M J D.hJ`. Establish `e : {X : Fin n → Fin M → R ⊗[F] E | IsUnit (gramR R σ J X).det} = g' ⁻¹' Unt σ R n`. Use extensionality with `X`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Set.mem_setOf_eq, Set.mem_preimage, Unt, hg' X]`. Rewrite using `[e]`. Conclude with `(hUo.preimage hg'c).measurableSet`. Establish `hψ : ∀ c : Fin n → R ⊗[F] E, Measurable fun X : Fin n → Fin M → R ⊗[F] E => φ (actW R σ (blockOne (algebraMap F E t) J) (s y₀) (vec (u ⊗ₜ[F] (1 : E)) c X))`. Introduce `c`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hv : Continuous fun X : Fin n → Fin M → R ⊗[F] E => vec (u ⊗ₜ[F] (1 : E)) c X`. Use `continuous_pi fun i => ?_` and prove the remaining obligations. Use `Fin.cases ?_ (fun j => ?_) i` and prove the remaining obligations. Conclude with `continuous_const`. Use `continuous_pi fun k => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Fin.cases ?_ (fun l => ?_) k` and prove the remaining obligations. Conclude with `continuous_const`. Conclude with `(continuous_apply l).comp (continuous_apply j)`. Establish `hc : Continuous fun X : Fin n → Fin M → R ⊗[F] E => actW R σ (blockOne (algebraMap F E t) J) (s y₀) (vec (u ⊗ₜ[F] (1 : E)) c X)` using `(hact (n + 1)).1.comp (continuous_const.prodMk hv)`. Conclude with `hφ.comp hc.measurable`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `chi`. Rewrite using `[hsT]`. Use `lintegral_congr fun c => ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Use `lintegral_congr fun X => ?_` and prove the remaining obligations.
-
-Rewrite using `[hcons c X]`. Distinguish the cases in `h : X ∈ {X : Fin n → Fin M → R ⊗[F] E | IsUnit (gramR R σ J X).det}`. Rewrite using `[Set.indicator_of_mem h, Set.indicator_of_mem ((hmem c X).2 h)]`. Rewrite using `[Set.indicator_of_notMem h, Set.indicator_of_notMem (fun h' => h ((hmem c X).1 h'))]`. Use `_ = ∫⁻ X in {X : Fin n → Fin M → R ⊗[F] E | IsUnit (gramR R σ J X).det}, φ (actW R σ (blockOne (algebraMap F E t) J) (s y₀) (vec (u ⊗ₜ[F] (1 : E)) c X)) ∂(coordW R b lam n M) := lintegral_indicator hUd _`.
-
-Use `_ = ∫⁻ S', ∫⁻ X, φ (actW R σ (blockOne (algebraMap F E t) J) (s y₀) (vec (u ⊗ₜ[F] (1 : E)) c X)) ∂(m' S') ∂(coordHerm R σ b lam n) := D.hm'.2.1 _ (hψ c)`. Use `_ = _ := by`. Rewrite using `[← lintegral_indicator hUt]`. Use `lintegral_congr fun S' => ?_` and prove the remaining obligations. Distinguish the cases in `h : S' ∈ Unt σ R n`.
-
-Rewrite using `[Set.indicator_of_mem h]`. Rewrite using `[Set.indicator_of_notMem h, hoff S' h, lintegral_zero_measure]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chi_at_fibre : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (M : ℕ) (J : Matrix (Fin M) (Fin M) E) (t : F) (n : ℕ) (R : Type) [CommRing R] [Algebra F R] [TopologicalSpace R] [MeasurableSpace R] [BorelSpace R] (d : ℕ) (b : Module.Basis (Fin d) F E) (lam : Measure R) (m₁ : HermR R σ 1 → Measure (Fin 1 → Fin (M + 1) → R ⊗[F] E)) (m' : HermR R σ n → Measure (Fin n → Fin M → R ⊗[F] E)) (s : (Fin 1 → Fin (M + 1) → R ⊗[F] E) → HA R σ (blockOne (algebraMap F E t) J)) (B₀ : Set R) (a : R → Rˣ) (κ₁ cm : Rˣ → ℝ≥0), StageData σ J t n b lam m₁ m' s B₀ a κ₁ cm → ∀ φ : (Fin (n + 1) → Fin (M + 1) → R ⊗[F] E) → ℝ≥0∞, Measurable φ → ∀ x ∈ B₀, ∀ y₀ : Fin 1 → Fin (M + 1) → R ⊗[F] E, gramR R σ (blockOne (algebraMap F E t) J) y₀ = (hermScal R σ (algebraMap F R t) : HermR R σ 1) → chi σ J t s a b lam ((Uset σ J t B₀ a : Set (Fin (n + 1) → Fin (M + 1) → R ⊗[F] E)).indicator φ) (scl (((a x : Rˣ) : R) ⊗ₜ[F] (1 : E)) y₀) = ∫⁻ c : Fin n → R ⊗[F] E, ∫⁻ S' in Unt σ R n, ∫⁻ X, φ (actW R σ (blockOne (algebraMap F E t) J) (s y₀) (vec (((a x : Rˣ) : R) ⊗ₜ[F] (1 : E)) c X)) ∂(m' S') ∂(coordHerm R σ b lam n) ∂(Measure.pi fun _ => coordK R b lam) := by
   intro F E _ _ _ _ _ σ M J t n R _ _ _ _ _ d b lam m₁ m' s B₀ a κ₁ cm D φ hφ x hx y₀ hy₀

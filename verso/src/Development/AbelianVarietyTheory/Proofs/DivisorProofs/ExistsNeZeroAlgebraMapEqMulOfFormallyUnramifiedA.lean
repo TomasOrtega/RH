@@ -5,19 +5,15 @@ open Algebra
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `P D _ _ _ _ _ _ _ f hf`. Distinguish the cases in `hinj : Function.Injective (algebraMap P D)`. Use `swap`. Rewrite `hinj` using `[injective_iff_map_eq_zero] at hinj push_neg`. Take `⟨Q, hQ, hQ0⟩` from `hinj`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨Q, hQ0, 0, by rw [hQ, mul_zero]⟩`. Set `M` to `nonZeroDivisors P`. Set `K` to `FractionRing P`. Set `S` to `Algebra.algebraMapSubmonoid D M`. Set `L` to `Localization S`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Equip the data with the indicated structure.
 
-Use `letI : Algebra K L := localizationAlgebra M D`. Use `haveI : IsScalarTower P K L := inferInstance`. Establish `hS : S ≤ nonZeroDivisors D`. Introduce `x hx`. Take `⟨q, hq, rfl⟩` from `hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `mem_nonZeroDivisors_of_ne_zero ((map_ne_zero_iff _ hinj).2 (nonZeroDivisors.ne_zero hq))`. Use `haveI : IsDomain L := IsLocalization.isDomain_localization hS`. Establish `hDL : Function.Injective (algebraMap D L)` using `IsLocalization.injective L hS`. Use `haveI : IsLocalization (M.map (algebraMap P D)) L := inferInstanceAs (IsLocalization S L)`. Use `haveI : Algebra.FormallyUnramified K L := Algebra.FormallyUnramified.localization_map M (S := D)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI : Algebra.EssFiniteType D L := Algebra.EssFiniteType.of_isLocalization L S`. Use `haveI : Algebra.EssFiniteType P L := Algebra.EssFiniteType.comp P D L`. Use `haveI : Algebra.EssFiniteType K L := Algebra.EssFiniteType.of_comp P K L`. Use `haveI : Module.Finite K L := Algebra.FormallyUnramified.finite_of_free K L`. Establish `hint : IsIntegral K (algebraMap D L f)` using `Algebra.IsIntegral.isIntegral _`.
-
-Establish `hne : algebraMap D L f ≠ 0` using `(map_ne_zero_iff _ hDL).2 hf`. Take `⟨u, hu⟩` from `hint.isUnit hne`. Establish `hy : algebraMap D L f * ↑u⁻¹ = 1` using `by rw [← hu]; exact u.mul_inv`. Take `⟨⟨d, s⟩, hds⟩` from `IsLocalization.surj S (↑u⁻¹ : L)`. Take `⟨q, hq, hqs⟩` from `s.2`.
-
-Use `⟨q, nonZeroDivisors.ne_zero hq, d, ?_⟩` and prove the remaining obligations. Apply `hDL` to reduce the goal to its premises. Simplify using `only at hds`. Rewrite using `[map_mul, ← hds, ← mul_assoc, hy, one_mul, hqs]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_ne_zero_algebraMap_eq_mul_of_formallyUnramified :
     ∀ (P D : Type) [CommRing P] [IsDomain P] [CommRing D] [IsDomain D] [Algebra P D]

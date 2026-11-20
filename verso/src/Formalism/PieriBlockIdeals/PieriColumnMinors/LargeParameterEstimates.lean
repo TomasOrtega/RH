@@ -30,13 +30,13 @@ structure ParameterBounds (P : Par) (X' A : ℝ) : Prop where
   tη : (P.t : ℝ) ≤ P.η
 
 /- English proof (translation)
-Establish `hX1` using `hB.X1`. Establish `hL` using `hB.L_ge`. Establish `htA` using `hR.t_le`. Establish `h1` using `hH.t_ge`. Establish `h2` using `hR.f_le`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `hR.f_eq`. Establish `h4` using `hH.Nr_eq`. Establish `h5` using `hH.m_pos`. Establish `hnt : P.n ≤ P.t` using `by omega`. Establish `hkt : P.k ≤ P.t` using `by omega`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hft : P.f ≤ P.t` using `by omega`. Establish `ht1 : 1 ≤ P.t` using `by omega`. Establish `hNr : P.Nr ≤ 2 * P.t` using `by omega`. Establish `hnt' : (P.n : ℝ) ≤ P.t` using `by exact_mod_cast hnt`. Establish `hkt' : (P.k : ℝ) ≤ P.t` using `by exact_mod_cast hkt`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hft' : (P.f : ℝ) ≤ P.t` using `by exact_mod_cast hft`. Establish `ht1' : (1 : ℝ) ≤ P.t` using `by exact_mod_cast ht1`. Establish `hNr' : (P.Nr : ℝ) ≤ 2 * P.t` using `by exact_mod_cast hNr`. Conclude with `⟨Real.exp_pos _, by linarith, by linarith, hB.x_ge, hB.L_ge, by exact_mod_cast hH.n_pos, by exact_mod_cast hR.m_ge, by linarith, by linarith, by linarith, htA, ht1', hNr', by exact_mod_cast h3, hR.S_ge, hH.t_le⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem large_parameter_facts_of_hyp {P : Par} {X' A : ℝ} (hH : P.Hyp) (hR : Rows P X' A) (hB : Big P.L P.x X' A) :
     ParameterBounds P X' A := by
@@ -63,11 +63,11 @@ theorem large_parameter_facts_of_hyp {P : Par} {X' A : ℝ} (hH : P.Hyp) (hR : R
     by linarith, htA, ht1', hNr', by exact_mod_cast h3, hR.S_ge, hH.t_le⟩
 
 /- English proof (translation)
-Establish `h1 : Filter.Tendsto (fun x : ℝ => x ^ δ) Filter.atTop Filter.atTop` using `tendsto_rpow_atTop hδ`. Establish `h3` using `((tendsto_exp_div_rpow_atTop (a / δ)).comp h1).eventually_ge_atTop (|c| + 1)`. Use `filter_upwards [h3, Filter.eventually_gt_atTop (0 : ℝ)] with x hx hx0`. Establish `hx' : |c| + 1 ≤ Real.exp (x ^ δ) / (x ^ δ) ^ (a / δ)` using `hx`. Establish `hδ0 : δ ≠ 0` using `hδ.ne'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpow : (x ^ δ) ^ (a / δ) = x ^ a`. Rewrite using `[← Real.rpow_mul hx0.le]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts. Rewrite `hx'` using `[hpow]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hxa : 0 < x ^ a` using `by positivity`. Rewrite `hx'` using `[le_div_iff₀ hxa]`. Establish `hc : c * x ^ a ≤ (|c| + 1) * x ^ a` using `mul_le_mul_of_nonneg_right (by linarith [le_abs_self c]) hxa.le`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem eventually_power_le_exp_power (c a δ : ℝ) (hδ : 0 < δ) :
     ∀ᶠ x : ℝ in Filter.atTop, c * x ^ a ≤ Real.exp (x ^ δ) := by
@@ -89,7 +89,7 @@ theorem eventually_power_le_exp_power (c a δ : ℝ) (hδ : 0 < δ) :
   linarith
 
 /- English proof (translation)
-Rewrite using `[Real.rpow_add hx, Real.rpow_add hx, Real.rpow_mul hx.le, Real.rpow_mul hx.le, Real.rpow_natCast, Real.rpow_natCast, Real.rpow_natCast]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem rpow_add_mul_eq_pow_mul_pow (x C e : ℝ) (hx : 0 < x) (p q r : ℕ) :
     x ^ (C * (p : ℝ) + (q : ℝ) + e * (r : ℝ)) = (x ^ C) ^ p * x ^ q * (x ^ e) ^ r := by
@@ -97,7 +97,7 @@ private theorem rpow_add_mul_eq_pow_mul_pow (x C e : ℝ) (hx : 0 < x) (p q r : 
     Real.rpow_natCast, Real.rpow_natCast, Real.rpow_natCast]
 
 /- English proof (translation)
-Use `filter_upwards [eventually_power_le_exp_power c (C * (p : ℝ) + (q : ℝ) + e * (r : ℝ)) δ hδ, Filter.eventually_gt_atTop (0 : ℝ)] with x h hx`. Rewrite `h` using `[rpow_add_mul_eq_pow_mul_pow x C e hx p q r]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 private theorem eventually_mul_pow_le_exp_rpow (c C e δ : ℝ) (hδ : 0 < δ) (p q r : ℕ) :
     ∀ᶠ x : ℝ in Filter.atTop, c * ((x ^ C) ^ p * x ^ q * (x ^ e) ^ r) ≤ Real.exp (x ^ δ) := by
@@ -106,15 +106,15 @@ private theorem eventually_mul_pow_le_exp_rpow (c C e δ : ℝ) (hδ : 0 < δ) (
   rwa [rpow_add_mul_eq_pow_mul_pow x C e hx p q r] at h
 
 /- English proof (translation)
-Introduce `ε C hε`. Establish `hε3 : 0 < ε / 3` using `by positivity`. Establish `e1` using `Filter.eventually_ge_atTop (5 : ℝ)`. Establish `e2` using `(tendsto_rpow_atTop hε).eventually_ge_atTop (4 : ℝ)`. Establish `e3` using `eventually_power_le_exp_power 12 ε (ε / 3) hε3`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e4` using `eventually_mul_pow_le_exp_rpow 5.2 C 0 (ε / 3) hε3 3 1 0`. Establish `e5` using `eventually_mul_pow_le_exp_rpow 40 C ε (ε / 3) hε3 7 2 1`. Establish `e6` using `eventually_mul_pow_le_exp_rpow 40 C ε ε hε 7 2 3`. Take `⟨x0, hx0⟩` from `Filter.eventually_atTop.1 (e1.and (e2.and (e3.and (e4.and (e5.and e6)))))`. Use `⟨x0, fun x hx => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨h1, h2, h3, h4, h5, h6⟩` from `hx0 x hx`. Establish `h2' : (4 : ℝ) ≤ x ^ ε` using `h2`. Use `⟨h1, h2', ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Combine the linear equalities and inequalities to obtain the conclusion. Establish `e : (5.2 : ℝ) * (x ^ C) ^ 3 * x = 5.2 * ((x ^ C) ^ 3 * x ^ 1 * (x ^ (0 : ℝ)) ^ 0)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Combine the linear equalities and inequalities to obtain the conclusion. Establish `e : (40 : ℝ) * (x ^ C) ^ 7 * x ^ 2 * x ^ ε = 40 * ((x ^ C) ^ 7 * x ^ 2 * (x ^ ε) ^ 1)`. Expand and normalize the polynomial expressions, which then agree. Combine the linear equalities and inequalities to obtain the conclusion.
+Expand and normalize the polynomial expressions, which then agree. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Expand and normalize the polynomial expressions, which then agree. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `e : (40 : ℝ) * (x ^ C) ^ 7 * x ^ 2 * (x ^ ε) ^ 3 = 40 * ((x ^ C) ^ 7 * x ^ 2 * (x ^ ε) ^ 3)` using `by ring`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem eventually_large_parameter_bound : BigEv := by
   intro ε C hε
@@ -142,7 +142,7 @@ theorem eventually_large_parameter_bound : BigEv := by
     linarith
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Rewrite using `[← add_assoc, pow_succ]`. Use polynomial arithmetic with `[mul_nonneg (pow_nonneg (by linarith : (0 : ℝ) ≤ A) (i + k)) (sub_nonneg.2 hA)]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 -/
 private theorem pow_le_pow_add_of_one_le {A : ℝ} (hA : 1 ≤ A) (i k : ℕ) : A ^ i ≤ A ^ (i + k) := by
   induction k with
@@ -152,13 +152,13 @@ private theorem pow_le_pow_add_of_one_le {A : ℝ} (hA : 1 ≤ A) (i k : ℕ) : 
     nlinarith [mul_nonneg (pow_nonneg (by linarith : (0 : ℝ) ≤ A) (i + k)) (sub_nonneg.2 hA)]
 
 /- English proof (translation)
-Establish `hA0 : 0 ≤ A` using `by linarith`. Establish `hA3 : 1 ≤ A ^ 3` using `by simpa using pow_le_pow_add_of_one_le hA 0 3`. Establish `h34 : A ^ 3 ≤ A ^ 4` using `pow_le_pow_add_of_one_le hA 3 1`. Establish `hA4 : A ≤ A ^ 4` using `by simpa using pow_le_pow_add_of_one_le hA 1 3`. Establish `hat : A ^ 3 * t ≤ A ^ 4`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left ht (by linarith : (0 : ℝ) ≤ A ^ 3)]`. Establish `hL0 : 0 ≤ L` using `by linarith`. Establish `hx0 : 0 ≤ x` using `by linarith`. Establish `hA40 : 0 ≤ A ^ 4` using `by positivity`. Establish `p1 : 0 ≤ A ^ 4 * L ^ 2 * (x * (x - 5))` using `mul_nonneg (by positivity) (mul_nonneg hx0 (by linarith))`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx25 : 0 ≤ x ^ 2 - 25` using `by nlinarith`. Establish `p2 : 0 ≤ S * (A ^ 4 * x ^ 2 - 2 * A ^ 3)`. Apply `mul_nonneg hS` to reduce the goal to its premises. Use polynomial arithmetic with `[mul_nonneg (sub_nonneg.2 h34) (sq_nonneg x), mul_nonneg (by linarith : (0 : ℝ) ≤ A ^ 3) hx25]`. Establish `hxL : 0 ≤ x * L - 20`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Use polynomial arithmetic with `[mul_nonneg (sub_nonneg.2 hx) (sub_nonneg.2 hL)]`. Establish `p3 : 0 ≤ A ^ 4 * (L * (x * L - 20))` using `mul_nonneg hA40 (mul_nonneg hL0 hxL)`. Establish `p4 : 0 ≤ (A ^ 4 - A ^ 3) * L` using `mul_nonneg (by linarith) hL0`. Establish `p5 : 0 ≤ A ^ 4 * (L - 4)` using `mul_nonneg hA40 (by linarith)`. Use polynomial arithmetic with `[p1, p2, p3, p4, p5, hat, hA4, ht]`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem polynomial_inequality_large_x (A x L S t : ℝ) (hA : 1 ≤ A) (hx : 5 ≤ x) (hL : 4 ≤ L) (hS : 0 ≤ S)
     (ht : t ≤ A) :
@@ -187,25 +187,25 @@ theorem polynomial_inequality_large_x (A x L S t : ℝ) (hA : 1 ≤ A) (hx : 5 �
   nlinarith [p1, p2, p3, p4, p5, hat, hA4, ht]
 
 /- English proof (translation)
-Introduce `P X' A hH hR hB`. Establish `F` using `large_parameter_facts_of_hyp hH hR hB`. Establish `hb` using `F.b_pos`. Establish `hm : (0 : ℝ) < P.m` using `by linarith [F.m2]`. Establish `hn : (0 : ℝ) < P.n` using `by linarith [F.n1]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht : (0 : ℝ) < P.t` using `by linarith [F.t1]`. Establish `hk0 : (0 : ℝ) ≤ P.k` using `Nat.cast_nonneg _`. Establish `hLp : 0 < P.L` using `by linarith [F.L_ge]`. Establish `hS0 : 0 ≤ P.S` using `by linarith [F.S1]`. Establish `hA0 : 0 ≤ A` using `by linarith [F.A_ge]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx0 : 0 ≤ P.x` using `by linarith [F.x_ge]`. Establish `hN0 : 0 ≤ P.N` using `by unfold Par.N; positivity`. Establish `hNt0 : 0 < P.N + (P.t : ℝ)` using `by linarith`. Establish `hD1pos : 0 < (P.n : ℝ) * (P.t : ℝ) ^ 2 * (P.N + (P.t : ℝ)) * P.L ^ 2` using `mul_pos (mul_pos (mul_pos hn (pow_pos ht 2)) hNt0) (pow_pos hLp 2)`. Establish `hD2 : 0 ≤ (P.k : ℝ) * (P.n : ℝ) ^ 2 * (P.S + (P.t : ℝ) + P.L)` using `mul_nonneg (mul_nonneg hk0 (sq_nonneg _)) (by linarith)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hDpos : 0 < (P.n : ℝ) * (P.t : ℝ) ^ 2 * (P.N + (P.t : ℝ)) * P.L ^ 2 + (P.k : ℝ) * (P.n : ℝ) ^ 2 * (P.S + (P.t : ℝ) + P.L)` using `by linarith`. Establish `hbD : 2 * P.b / P.lstar = 2 * ((P.n : ℝ) * (P.t : ℝ) ^ 2 * (P.N + (P.t : ℝ)) * P.L ^ 2 + (P.k : ℝ) * (P.n : ℝ) ^ 2 * (P.S + (P.t : ℝ) + P.L)) / (P.m : ℝ)`. Unfold `Par.lstar`. Clear the denominators using the available nonvanishing facts. Apply the tactic sequence `try ring`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Establish `hnA` using `F.nA`. Establish `hkA` using `F.kA`. Establish `htA` using `F.tA`. Establish `htt : (P.t : ℝ) ^ 2 ≤ A ^ 2` using `by nlinarith [mul_le_mul htA htA ht.le hA0]`. Establish `hnn : (P.n : ℝ) ^ 2 ≤ A ^ 2` using `by nlinarith [mul_le_mul hnA hnA hn.le hA0]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnt2 : (P.n : ℝ) * (P.t : ℝ) ^ 2 ≤ A ^ 3`. Use polynomial arithmetic with `[mul_le_mul hnA htt (sq_nonneg _) hA0]`. Establish `hkn2 : (P.k : ℝ) * (P.n : ℝ) ^ 2 ≤ A ^ 3`. Use polynomial arithmetic with `[mul_le_mul hkA hnn (sq_nonneg _) hA0]`. Establish `hNt : P.N + (P.t : ℝ) ≤ 2 * A * P.x`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Use polynomial arithmetic with `[hR.N_le, mul_le_mul_of_nonneg_left (show (1 : ℝ) ≤ P.x by linarith [F.x_ge]) hA0]`. Establish `hD1 : (P.n : ℝ) * (P.t : ℝ) ^ 2 * (P.N + (P.t : ℝ)) * P.L ^ 2 ≤ A ^ 3 * (2 * A * P.x) * P.L ^ 2` using `mul_le_mul_of_nonneg_right (mul_le_mul hnt2 hNt hNt0.le (pow_nonneg hA0 3)) (sq_nonneg _)`. Establish `hD2' : (P.k : ℝ) * (P.n : ℝ) ^ 2 * (P.S + (P.t : ℝ) + P.L) ≤ A ^ 3 * (P.S + (P.t : ℝ) + P.L)` using `mul_le_mul_of_nonneg_right hkn2 (by linarith)`. Establish `hDm : 2 * ((P.n : ℝ) * (P.t : ℝ) ^ 2 * (P.N + (P.t : ℝ)) * P.L ^ 2 + (P.k : ℝ) * (P.n : ℝ) ^ 2 * (P.S + (P.t : ℝ) + P.L)) / (P.m : ℝ) ≤ (P.n : ℝ) * (P.t : ℝ) ^ 2 * (P.N + (P.t : ℝ)) * P.L ^ 2 + (P.k : ℝ) * (P.n : ℝ) ^ 2 * (P.S + (P.t : ℝ) + P.L)`. Rewrite using `[div_le_iff₀ hm]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left F.m2 hDpos.le]`. Establish `q1 : 0 ≤ A ^ 4 * P.x * P.L ^ 2` using `mul_nonneg (mul_nonneg (pow_nonneg hA0 4) hx0) (sq_nonneg _)`. Establish `q2 : 0 ≤ A ^ 3 * (P.S + (P.t : ℝ) + P.L)` using `mul_nonneg (pow_nonneg hA0 3) (by linarith)`. Establish `hc : 2 * P.b / P.lstar ≤ 4 * A ^ 4 * P.x * P.L ^ 2 + 2 * A ^ 3 * (P.S + (P.t : ℝ) + P.L)`. Rewrite using `[hbD]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Use polynomial arithmetic with `[hD1, hD2', hDm, q1, q2]`. Establish `hfin` using `polynomial_inequality_large_x A P.x P.L P.S P.t F.A_ge F.x_ge F.L_ge hS0 htA`. Establish `h0 : 0 ≤ 2 * P.b / P.lstar`. Rewrite using `[hbD]; exact div_nonneg (by linarith) hm.le`. Establish `ha : (P.kmax : ℝ) ≤ 2 * P.b / P.lstar`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `Par.kmax`. Conclude with `Nat.floor_le h0`. Conclude with `⟨ha, hbD, hc, by linarith, by linarith⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem maximal_index_size_bound : KmaxSize := by
   intro P X' A hH hR hB
@@ -268,9 +268,9 @@ theorem maximal_index_size_bound : KmaxSize := by
   exact ⟨ha, hbD, hc, by linarith, by linarith⟩
 
 /- English proof (translation)
-Establish `F` using `large_parameter_facts_of_hyp hH hR hB`. Establish `hx : (0 : ℝ) < P.x` using `by linarith [F.x_ge]`. Establish `hn : (0 : ℝ) < P.n` using `by linarith [F.n1]`. Establish `hX` using `F.X_pos`. Unfold `Par.w''`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[hR.b'_eq]`. Clear the denominators using the available nonvanishing facts. Apply the tactic sequence `try ring`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem n_mul_width_eq_b_div {P : Par} {X' A : ℝ} (hH : P.Hyp) (hR : Rows P X' A) (hB : Big P.L P.x X' A) :
     (P.n : ℝ) * P.w'' = P.b / X' := by
@@ -284,19 +284,19 @@ theorem n_mul_width_eq_b_div {P : Par} {X' A : ℝ} (hH : P.Hyp) (hR : Rows P X'
   try ring
 
 /- English proof (translation)
-Introduce `P X' A T hH hR hB hT`. Establish `F` using `large_parameter_facts_of_hyp hH hR hB`. Establish `hb` using `F.b_pos`. Establish `hX` using `F.X_pos`. Establish `hn : (0 : ℝ) < P.n` using `by linarith [F.n1]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx : (0 : ℝ) < P.x` using `by linarith [F.x_ge]`. Establish `hk0 : (0 : ℝ) ≤ P.k` using `Nat.cast_nonneg _`. Establish `hw` using `n_mul_width_eq_b_div hH hR hB`. Establish `hkS` using `hR.kS_le`. Establish `h1 : (P.k : ℝ) * (P.S + 1) ≤ 2 * (P.k : ℝ) * P.S`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use polynomial arithmetic with `[mul_nonneg hk0 (sub_nonneg.2 F.S1)]`. Establish `h2 : 2 * (P.k : ℝ) * P.S ≤ 2 * P.w''` using `by linarith`. Establish `h3 : 2 * P.w'' = 2 * P.b / ((P.n : ℝ) * X')`. Unfold `Par.w''`. Rewrite using `[hR.b'_eq]`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Apply the tactic sequence `try ring`. Establish `hT' : (T : ℝ) ≤ 2 * (P.n : ℝ)`. Establish `: (T : ℝ) ≤ P.f` using `by exact_mod_cast hT`. Combine the linear relations using `[F.f2n]`.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hL2 : 0 ≤ P.L + 2` using `by linarith [F.L_ge]`. Establish `hw0 : 0 ≤ P.w''`. Use polynomial arithmetic with `[mul_nonneg hk0 (by linarith [F.S1] : (0 : ℝ) ≤ P.S)]`. Establish `s1 : 2 * (P.k : ℝ) * (P.S + 1) * (P.L + 2) ≤ 4 * P.w'' * (P.L + 2)`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right (h1.trans h2) hL2]`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Establish `s2 : (T : ℝ) * (2 * (P.k : ℝ) * (P.S + 1) * (P.L + 2)) ≤ (T : ℝ) * (4 * P.w'' * (P.L + 2))` using `mul_le_mul_of_nonneg_left s1 (Nat.cast_nonneg _)`. Establish `s3 : (T : ℝ) * (4 * P.w'' * (P.L + 2)) ≤ (2 * (P.n : ℝ)) * (4 * P.w'' * (P.L + 2))` using `mul_le_mul_of_nonneg_right hT' (mul_nonneg (mul_nonneg (by norm_num) hw0) hL2)`. Establish `s4 : (2 * (P.n : ℝ)) * (4 * P.w'' * (P.L + 2)) = 8 * (P.L + 2) * P.b / X'`. Rewrite using `[mul_div_assoc, ← hw]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `h5 : 8 * (P.L + 2) * P.b / X' ≤ 2 * P.b`. Rewrite using `[div_le_iff₀ hX]`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left hB.X1 hb.le]`. Conclude with `⟨h1, h2, h3, by linarith, h5⟩`.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem small_term_bound_first : Small1 := by
   intro P X' A T hH hR hB hT
@@ -337,17 +337,17 @@ theorem small_term_bound_first : Small1 := by
   exact ⟨h1, h2, h3, by linarith, h5⟩
 
 /- English proof (translation)
-Introduce `P X' A hH hR hB`. Establish `F` using `large_parameter_facts_of_hyp hH hR hB`. Establish `hb` using `F.b_pos`. Establish `hX` using `F.X_pos`. Establish `hb' : 0 < P.b'` using `hH.b'_pos`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hf0 : (0 : ℝ) ≤ P.f` using `Nat.cast_nonneg _`. Establish `hNr0 : (0 : ℝ) ≤ P.Nr` using `Nat.cast_nonneg _`. Establish `ht0 : (0 : ℝ) ≤ P.t` using `Nat.cast_nonneg _`. Establish `hA0 : 0 ≤ A` using `by linarith [F.A_ge]`. Establish `hNr2 : (P.Nr : ℝ) ^ 2 ≤ 4 * (P.t : ℝ) ^ 2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use polynomial arithmetic with `[mul_le_mul F.Nr2 F.Nr2 hNr0 (by linarith)]`. Establish `e1 : 1.3 * (P.f : ℝ) * (P.Nr : ℝ) ^ 2 * P.b' ≤ 5.2 * (P.f : ℝ) * (P.t : ℝ) ^ 2 * P.b'`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left hNr2 (mul_nonneg hf0 hb'.le)]`. Establish `htt : (P.t : ℝ) ^ 2 ≤ A ^ 2` using `by nlinarith [mul_le_mul F.tA F.tA ht0 hA0]`. Establish `hft : (P.f : ℝ) * (P.t : ℝ) ^ 2 ≤ A ^ 3`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use polynomial arithmetic with `[mul_le_mul F.fA htt (sq_nonneg _) hA0]`. Establish `eb : 5.2 * A ^ 3 * P.x * P.b / X' = 5.2 * A ^ 3 * P.b'`. Rewrite using `[hR.b'_eq]`. Expand and normalize the polynomial expressions, which then agree. Establish `e2 : 5.2 * (P.f : ℝ) * (P.t : ℝ) ^ 2 * P.b' ≤ 5.2 * A ^ 3 * P.x * P.b / X'`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[eb]`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right hft hb'.le]`. Establish `e3 : 5.2 * A ^ 3 * P.x * P.b / X' ≤ P.b`. Rewrite using `[div_le_iff₀ hX]`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left hB.X2 hb.le]`.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Conclude with `⟨e1, e2, e3⟩`.
+Supply the required witnesses or components.
 -/
 theorem small_term_bound_second : Small2 := by
   intro P X' A hH hR hB
@@ -376,23 +376,23 @@ theorem small_term_bound_second : Small2 := by
   exact ⟨e1, e2, e3⟩
 
 /- English proof (translation)
-Introduce `P X' A hH hR hB`. Establish `F` using `large_parameter_facts_of_hyp hH hR hB`. Establish `hb` using `F.b_pos`. Establish `hX` using `F.X_pos`. Establish `hA0 : 0 ≤ A` using `by linarith [F.A_ge]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx0 : 0 ≤ P.x` using `by linarith [F.x_ge]`. Establish `hL0 : 0 ≤ P.L` using `by linarith [F.L_ge]`. Establish `hS0 : 0 ≤ P.S` using `by linarith [F.S1]`. Establish `ht0 : (0 : ℝ) ≤ P.t` using `Nat.cast_nonneg _`. Establish `hf0 : (0 : ℝ) ≤ P.f` using `Nat.cast_nonneg _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hNr0 : (0 : ℝ) ≤ P.Nr` using `Nat.cast_nonneg _`. Establish `hkm0 : (0 : ℝ) ≤ P.kmax` using `Nat.cast_nonneg _`. Establish `hη : (P.t : ℝ) ≤ P.η` using `F.tη`. Establish `c1 : P.S + P.η ≤ P.b / X'`. Rewrite using `[le_div_iff₀ hX]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the linear relations using `[hR.sum_le]`. Establish `hB0 : 0 ≤ P.b / X'` using `div_nonneg hb.le hX.le`. Establish `hK` using `(maximal_index_size_bound P X' A hH hR hB).2.2.2.2`. Establish `hA4 : 1 ≤ A ^ 4` using `by simpa using pow_le_pow_add_of_one_le F.A_ge 0 4`. Establish `hx2 : 25 ≤ P.x ^ 2` using `by nlinarith [F.x_ge]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq : 25 ≤ A ^ 4 * P.x ^ 2`. Use polynomial arithmetic with `[mul_le_mul hA4 hx2 (by norm_num) (by positivity)]`. Establish `hq0 : 0 ≤ A ^ 4 * P.x ^ 2` using `by positivity`. Establish `hSB : P.S ≤ P.b / X'` using `by linarith`. Establish `hL16 : 16 ≤ P.L ^ 2` using `by nlinarith [mul_le_mul F.L_ge F.L_ge (by norm_num) hL0]`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c2 : P.S + P.η + (P.t : ℝ) + 2 * (P.kmax : ℝ) + 6 ≤ 5 * A ^ 4 * P.x ^ 2 * (P.L ^ 2 + P.b / X')`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left hSB hq0, mul_nonneg (by linarith : (0 : ℝ) ≤ A ^ 4 * P.x ^ 2 - 1) hB0, mul_le_mul_of_nonneg_right hq (sq_nonneg P.L)]`. Establish `hNrA : (P.Nr : ℝ) ≤ 2 * A` using `by linarith [F.Nr2, F.tA]`. Establish `hNr2 : (P.Nr : ℝ) ^ 2 ≤ 4 * A ^ 2`. Use polynomial arithmetic with `[mul_le_mul hNrA hNrA hNr0 (by linarith)]`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `hfN : (P.f : ℝ) * (P.Nr : ℝ) ^ 2 ≤ 4 * A ^ 3`. Use polynomial arithmetic with `[mul_le_mul F.fA hNr2 (sq_nonneg _) hA0]`. Establish `c3 : (P.f : ℝ) * (P.Nr : ℝ) ^ 2 * P.L ≤ 4 * A ^ 3 * P.L` using `mul_le_mul_of_nonneg_right hfN hL0`. Establish `c4 : (P.S + P.η + (P.t : ℝ) + 2 * (P.kmax : ℝ) + 6) * (P.f : ℝ) * (P.Nr : ℝ) ^ 2 * P.L ≤ 20 * A ^ 7 * P.x ^ 2 * P.L * (P.L ^ 2 + P.b / X')`. Establish `hpos : 0 ≤ (P.f : ℝ) * (P.Nr : ℝ) ^ 2 * P.L` using `mul_nonneg (mul_nonneg hf0 (sq_nonneg _)) hL0`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpos2 : 0 ≤ 5 * A ^ 4 * P.x ^ 2 * (P.L ^ 2 + P.b / X')` using `mul_nonneg (by positivity) (by positivity)`. Use polynomial arithmetic with `[mul_le_mul c2 c3 hpos hpos2]`. Establish `hbb : P.b = Real.exp P.L` using `rfl`. Establish `hXB : X' * (P.b / X') = P.b` using `by field_simp`. Establish `c5 : 20 * A ^ 7 * P.x ^ 2 * P.L * (P.L ^ 2 + P.b / X') ≤ P.b`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use polynomial arithmetic with `[hB.b3, mul_le_mul_of_nonneg_right hB.X3 hB0]`. Conclude with `⟨c1, c2, c3, c4, c5⟩`.
+Use the polynomial consequences of the given equalities and inequalities. Supply the required witnesses or components.
 -/
 theorem small_term_bound_third : Small3 := by
   intro P X' A hH hR hB
@@ -445,9 +445,9 @@ theorem small_term_bound_third : Small3 := by
   exact ⟨c1, c2, c3, c4, c5⟩
 
 /- English proof (translation)
-Introduce `P X' A T hH hR hB hT`. Establish `F` using `large_parameter_facts_of_hyp hH hR hB`. Establish `hb` using `F.b_pos`. Take `⟨-, -, -, a4, a5⟩` from `small_term_bound_first P X' A T hH hR hB hT`. Take `⟨b1, b2, b3⟩` from `small_term_bound_second P X' A hH hR hB`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨-, -, -, c4, c5⟩` from `small_term_bound_third P X' A hH hR hB`. Use `⟨by linarith, ?_⟩` and prove the remaining obligations. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left F.m2 hb.le]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem sum_of_small_terms_bound : SmallSum := by
   intro P X' A T hH hR hB hT
@@ -460,7 +460,7 @@ theorem sum_of_small_terms_bound : SmallSum := by
   nlinarith [mul_le_mul_of_nonneg_left F.m2 hb.le]
 
 /- English proof (translation)
-Introduce `P X' A T hH hR hB hT`. Establish `h` using `sum_of_small_terms_bound P X' A T hH hR hB hT`. Unfold `totalBound`. Use polynomial arithmetic with `[h.1, h.2]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem tail_bound_holds : TailInequalitySum := by
   intro P X' A T hH hR hB hT
@@ -469,13 +469,13 @@ theorem tail_bound_holds : TailInequalitySum := by
   nlinarith [h.1, h.2]
 
 /- English proof (translation)
-Establish `hδ2 : 0 < δ / 2` using `by positivity`. Establish `e1` using `eventually_power_le_exp_power c a (δ / 2) hδ2`. Establish `e2` using `(tendsto_rpow_atTop hδ2).eventually_ge_atTop (1 / β)`. Use `filter_upwards [e1, e2, Filter.eventually_gt_atTop (0 : ℝ)] with x h1 h2 hx0`. Establish `h2' : 1 / β ≤ x ^ (δ / 2)` using `h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy : 0 < x ^ (δ / 2)` using `by positivity`. Establish `hsplit : x ^ δ = x ^ (δ / 2) * x ^ (δ / 2)`. Rewrite using `[← Real.rpow_add hx0]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `h3 : 1 ≤ β * x ^ (δ / 2)`. Use `mul_le_mul_of_nonneg_left h2' hβ.le` as an intermediate fact. Rewrite `this` using `[mul_one_div_cancel hβ.ne']`. Then use the resulting hypothesis. Establish `h4 : x ^ (δ / 2) ≤ β * x ^ δ`. Rewrite using `[hsplit]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left h3 hy.le]`. Conclude with `h1.trans (Real.exp_le_exp.2 h4)`.
+A detailed English derivation is pending.
 -/
 theorem eventually_power_le_exp_mul_power (c a β δ : ℝ) (hβ : 0 < β) (hδ : 0 < δ) :
     ∀ᶠ x : ℝ in Filter.atTop, c * x ^ a ≤ Real.exp (β * x ^ δ) := by
@@ -495,13 +495,13 @@ theorem eventually_power_le_exp_mul_power (c a β δ : ℝ) (hβ : 0 < β) (hδ 
   exact h1.trans (Real.exp_le_exp.2 h4)
 
 /- English proof (translation)
-Establish `F` using `large_parameter_facts_of_hyp hH hR hB`. Establish `hA0 : 0 ≤ A` using `by linarith [F.A_ge]`. Establish `hk0 : (0 : ℝ) ≤ P.k` using `Nat.cast_nonneg _`. Establish `ht0 : (0 : ℝ) ≤ P.t` using `Nat.cast_nonneg _`. Establish `hx0 : 0 ≤ P.x` using `by linarith [F.x_ge]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL0 : 0 ≤ P.L` using `by linarith [F.L_ge]`. Establish `hkt : (P.k : ℝ) * P.t ≤ A ^ 2` using `by nlinarith [mul_le_mul F.kA F.tA ht0 hA0]`. Establish `hkt2 : ((P.k : ℝ) * P.t) * ((P.k : ℝ) * P.t) ≤ A ^ 2 * A ^ 2` using `mul_le_mul hkt hkt (mul_nonneg hk0 ht0) (by positivity)`. Establish `h47 : A ^ 4 ≤ A ^ 7` using `pow_le_pow_add_of_one_le F.A_ge 4 3`. Establish `hA4 : 1 ≤ A ^ 4` using `by simpa using pow_le_pow_add_of_one_le F.A_ge 0 4`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx2 : 25 ≤ P.x ^ 2` using `by nlinarith [F.x_ge]`. Establish `hL2 : 16 ≤ P.L ^ 2` using `by nlinarith [mul_le_mul F.L_ge F.L_ge (by norm_num) hL0]`. Establish `hL3 : 64 ≤ P.L ^ 3` using `by nlinarith [mul_le_mul F.L_ge hL2 (by norm_num) hL0]`. Establish `p1 : A ^ 4 * 25 ≤ A ^ 7 * P.x ^ 2` using `mul_le_mul h47 hx2 (by norm_num) (by positivity)`. Establish `p2 : A ^ 4 * 25 * 64 ≤ A ^ 7 * P.x ^ 2 * P.L ^ 3` using `mul_le_mul p1 hL3 (by norm_num) (by positivity)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbb : P.b = Real.exp P.L` using `rfl`. Use polynomial arithmetic with `[hB.b3]`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem forty_eight_k_sq_t_sq_lt_b {P : Par} {X' A : ℝ} (hH : P.Hyp) (hR : Rows P X' A)
     (hB : Big P.L P.x X' A) : 48 * (P.k : ℝ) ^ 2 * (P.t : ℝ) ^ 2 < P.b := by
@@ -526,15 +526,15 @@ theorem forty_eight_k_sq_t_sq_lt_b {P : Par} {X' A : ℝ} (hH : P.Hyp) (hR : Row
   nlinarith [hB.b3]
 
 /- English proof (translation)
-Establish `F` using `large_parameter_facts_of_hyp hH hR hB`. Establish `hb` using `F.b_pos`. Establish `hX` using `F.X_pos`. Establish `hA0 : 0 ≤ A` using `by linarith [F.A_ge]`. Establish `hx0 : 0 < P.x` using `by linarith [F.x_ge]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL0 : 0 ≤ P.L` using `by linarith [F.L_ge]`. Establish `ht0 : (0 : ℝ) ≤ P.t` using `Nat.cast_nonneg _`. Establish `hkt : (P.k : ℝ) * P.t ≤ A ^ 2` using `by nlinarith [mul_le_mul F.kA F.tA ht0 hA0]`. Establish `h27 : A ^ 2 ≤ A ^ 7` using `pow_le_pow_add_of_one_le F.A_ge 2 5`. Establish `hA2 : 1 ≤ A ^ 2` using `by simpa using pow_le_pow_add_of_one_le F.A_ge 0 2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hxL : 20 ≤ P.x * P.L`. Use polynomial arithmetic with `[mul_le_mul F.x_ge F.L_ge (by norm_num) hx0.le]`. Establish `key : 12 * (P.k : ℝ) * P.t * P.x < X'`. Establish `p1 : (P.k : ℝ) * P.t * P.x ≤ A ^ 2 * P.x` using `mul_le_mul_of_nonneg_right hkt hx0.le`. Establish `p2 : A ^ 2 * (P.x * (P.x * P.L)) ≤ A ^ 7 * (P.x * (P.x * P.L))` using `mul_le_mul_of_nonneg_right h27 (by positivity)`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `p3 : A ^ 2 * P.x * 20 ≤ A ^ 2 * P.x * (P.x * P.L)` using `mul_le_mul_of_nonneg_left hxL (by positivity)`. Establish `p4 : 0 < A ^ 2 * P.x` using `by positivity`. Use polynomial arithmetic with `[hB.X3]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hR.b'_eq]`.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Use `_ < P.b := by`. Rewrite using `[div_lt_iff₀ hX]`. Use polynomial arithmetic with `[mul_lt_mul_of_pos_right key hb]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem twelve_k_t_mul_lt_b {P : Par} {X' A : ℝ} (hH : P.Hyp) (hR : Rows P X' A)
     (hB : Big P.L P.x X' A) : 12 * (P.k : ℝ) * (P.t : ℝ) * P.b' < P.b := by
@@ -565,9 +565,9 @@ theorem twelve_k_t_mul_lt_b {P : Par} {X' A : ℝ} (hH : P.Hyp) (hR : Rows P X' 
         nlinarith [mul_lt_mul_of_pos_right key hb]
 
 /- English proof (translation)
-Establish `F` using `large_parameter_facts_of_hyp hH hR hB`. Establish `hS : 0 < P.S` using `by linarith [F.S1]`. Establish `h1 : P.b ^ ((4 : ℝ) / 5) * P.S ≤ P.w''` using `(le_div_iff₀ hS).1 hw45`. Establish `h2` using `mul_lt_mul_of_pos_right hbig hS`. Establish `hK` using `(maximal_index_size_bound P X' A hH hR hB).2.2.2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `q0 : 0 ≤ A ^ 4 * P.x ^ 2` using `by positivity`. Establish `hL2 : 1 ≤ P.L ^ 2` using `by nlinarith [F.L_ge]`. Establish `h3` using `mul_nonneg q0 (mul_nonneg (sq_nonneg P.L) (sub_nonneg.2 F.S1))`. Establish `h4` using `mul_nonneg q0 (mul_nonneg hS.le (sub_nonneg.2 hL2))`. Use polynomial arithmetic with `[h1, h2, hK, h3, h4]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem double_length_bound_lt_width {P : Par} {X' A : ℝ} (hH : P.Hyp) (hR : Rows P X' A)
     (hB : Big P.L P.x X' A) (hw45 : P.b ^ ((4 : ℝ) / 5) ≤ P.w'' / P.S)
@@ -585,13 +585,13 @@ theorem double_length_bound_lt_width {P : Par} {X' A : ℝ} (hH : P.Hyp) (hR : R
   nlinarith [h1, h2, hK, h3, h4]
 
 /- English proof (translation)
-Establish `F` using `large_parameter_facts_of_hyp hH hR hB`. Establish `hb` using `F.b_pos`. Establish `hX` using `F.X_pos`. Establish `hx0 : 0 < P.x` using `by linarith [F.x_ge]`. Establish `hb'0 : 0 < P.b'` using `hH.b'_pos`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hS0 : 0 ≤ P.S` using `by linarith [F.S1]`. Establish `hSη : P.S + P.η ≤ P.b / X'`. Rewrite using `[le_div_iff₀ hX]`. Combine the linear relations using `[hR.sum_le]`. Establish `hB0 : 0 ≤ P.b / X'` using `div_nonneg hb.le hX.le`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hb'e : P.b' = P.x * (P.b / X')` using `by rw [hR.b'_eq]; ring`. Establish `h5B : 5 * (P.b / X') ≤ P.b'`. Rewrite using `[hb'e]`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right F.x_ge hB0]`. Establish `h1x : 1 / P.x ≤ 1 / 5` using `one_div_le_one_div_of_le (by norm_num) F.x_ge`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Establish `h1x2 : 1 / P.x ^ 2 ≤ 1 / 25` using `one_div_le_one_div_of_le (by norm_num) (by nlinarith [F.x_ge])`. Establish `e1` using `mul_le_mul_of_nonneg_left h1x hb'0.le`. Establish `e2` using `mul_le_mul_of_nonneg_left h1x2 hb'0.le`. Establish `hη` using `F.tη`. Use polynomial arithmetic with `[e1, e2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem top_level_sum_le_two_b {P : Par} {X' A : ℝ} (hH : P.Hyp) (hR : Rows P X' A)
     (hB : Big P.L P.x X' A) :
@@ -617,7 +617,7 @@ theorem top_level_sum_le_two_b {P : Par} {X' A : ℝ} (hH : P.Hyp) (hR : Rows P 
   nlinarith [e1, e2]
 
 /- English proof (translation)
-Introduce `P X' A hH hR hB hw hbig`. Conclude with `⟨hB.L_ge, forty_eight_k_sq_t_sq_lt_b hH hR hB, twelve_k_t_mul_lt_b hH hR hB, double_length_bound_lt_width hH hR hB hw hbig, top_level_sum_le_two_b hH hR hB⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem large_bound_of_constraints : LargeOfRows := by
   intro P X' A hH hR hB hw hbig

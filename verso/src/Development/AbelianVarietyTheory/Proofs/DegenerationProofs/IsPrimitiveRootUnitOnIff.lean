@@ -23,19 +23,17 @@ namespace GlobalTheory.SymLevelDescent
 open GlobalTheory.ThetaDescent
 
 /- English proof (translation)
-Establish `F` using `GlobalTheory.FieldBaseChange.epi_and_isMonHom_iff K₀ K i`. Establish `pa` using `fun {T : Over (Sp K)} (x : T ⟶ A) => GlobalTheory.SymSpread.pushPt_comp h e x`. Establish `pd` using `fun {T : Over (Sp K)} (x : T ⟶ A) => GlobalTheory.SymSpread.pushPt_comp h ed x`. Establish `hc : ∀ {T : Over (Sp K)} {n : ℕ} (x : Fin n → (T ⟶ A)), (cubeLB A x L).IsLB` using `fun x => DVR.linComb_isLB _ hL _ _`. Establish `hc₀ : ∀ {T : Over (Sp K₀)} {n : ℕ} (x : Fin n → (T ⟶ A₀)), (cubeLB A₀ x L₀).IsLB` using `fun x => DVR.linComb_isLB _ hL₀ _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨w₀, wd₀, (F.2 A₀ A₀ A A φ φ w₀ w h h e).1 hw, (F.2 A₀ A₀ A A φ φ wd₀ wd h h ed).1 hwd, ?_, ?_, ?_⟩` and prove the remaining obligations. Set `U` to `pushPt h.1.w (𝟙 A)`. Establish `hU : U.left = φ` using `Category.id_comp _`. Use `haveI : Epi U.left := hU ▸ (F.1 _ _ _ _ φ h.1).1`. Apply `preHom_injective U` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `b : pushPt h.1.w (w * wd) = pushPt h.1.w w * pushPt h.1.w wd` using `map_mul (pushHom h A) _ _`. Establish `c` using `pa (𝟙 A)`. Establish `d` using `pd (𝟙 A)`. Rewrite `c`, `d` using `[Category.id_comp]`. Rewrite `b` using `[hs, c, d, ← MonObj.comp_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `b.symm.trans (Category.comp_id _).symm`. Set `U` to `pushPt h.1.w (𝟙 A)`. Establish `hU : U.left = φ` using `Category.id_comp _`. Establish `h₁` using `GlobalTheory.SymSpread.lbIso_cube h hL₀ hL hb ![𝟙 A₀, w₀] ![𝟙 A, w] U (fun i => by fin_cases i`. Simplify using `[U]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(congrArg (pushPt h.1.w) (Category.id_comp _).symm).trans (pa _))`. Rewrite `h₁` using `[hU]`. Use `(lb_gen_iso_descend_field K₀ K i _ _ A₀.hom A.hom φ hA.smooth hA.proper hA.geomConnected h.1).2 _ _ hL₀ (hc₀ _) ?_` and prove the remaining obligations. Conclude with `LBIso.trans (pull_isLB hL₀ _) hL (pull_isLB (hc₀ _) _) hb.symm (LBIso.trans hL (hc _) (pull_isLB (hc₀ _) _) hp h₁)`. Establish `A₂` using `AbelianSchemeGerms.isAbelianScheme_tensor A₀ A₀ hA hA`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Set `U` to `lift (pushPt h.1.w (fst A A)) (pushPt h.1.w (snd A A))`. Establish `h₁` using `GlobalTheory.SymSpread.lbIso_cube h hL₀ hL hb ![fst A₀ A₀ ≫ w₀, snd A₀ A₀] ![fst A A ≫ w, snd A A] U (fun i => by fin_cases i`. Conclude with `(pa _).trans (by simp [U])`. Simplify using `[U])`. Establish `h₂` using `GlobalTheory.SymSpread.lbIso_cube h hL₀ hL hb ![fst A₀ A₀, snd A₀ A₀ ≫ wd₀] ![fst A A, snd A A ≫ wd] U (fun i => by fin_cases i`.
-
-Simplify using `[U]`. Conclude with `(pd _).trans (by simp [U]))`. Use `(lb_gen_iso_descend_field K₀ K i _ _ (A₀ ⊗ A₀).hom (A ⊗ A).hom U.left A₂.smooth A₂.proper A₂.geomConnected (GlobalTheory.SymSpread.isPullback_square h)).2 _ _ (hc₀ _) (hc₀ _) ?_` and prove the remaining obligations. Conclude with `LBIso.trans (pull_isLB (hc₀ _) _) (hc _) (pull_isLB (hc₀ _) _) h₁.symm (LBIso.trans (hc _) (hc _) (pull_isLB (hc₀ _) _) ha h₂)`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem hypS_descend {K₀ K : Type} [Field K₀] [Field K] (i : K₀ →+* K) {A₀ : Over (Sp K₀)} {A : Over (Sp K)}
     [GrpObj A₀] [IsCommMonObj A₀] [GrpObj A] [IsCommMonObj A] (hA : IsAbelianScheme A₀) {φ : A.left ⟶ A₀.left}
@@ -90,13 +88,13 @@ theorem hypS_descend {K₀ K : Type} [Field K₀] [Field K] (i : K₀ →+* K) {
       (LBIso.trans (hc _) (hc _) (pull_isLB (hc₀ _) _) ha h₂)
 
 /- English proof (translation)
-The claim follows from `(map_zpow (Units.map (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom.toMonoidHom) _ n).symm`.
+A detailed English derivation is pending.
 -/
 theorem unitOn_zpow {R : Type} [CommRing R] (u : Rˣ) (n : ℤ) : unitOn u ^ n = unitOn (u ^ n) :=
   (map_zpow (Units.map (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom.toMonoidHom) _ n).symm
 
 /- English proof (translation)
-The claim follows from `IsPrimitiveRoot.map_iff_of_injective (f := Units.map (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom.toMonoidHom) (Units.map_injective (ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of R)).inv).1)`.
+A detailed English derivation is pending.
 -/
 theorem isPrimitiveRoot_unitOn_iff {R : Type} [CommRing R] (u : Rˣ) (k : ℕ) :
     IsPrimitiveRoot (unitOn u) k ↔ IsPrimitiveRoot u k :=
@@ -104,23 +102,21 @@ theorem isPrimitiveRoot_unitOn_iff {R : Type} [CommRing R] (u : Rˣ) (k : ℕ) :
     (Units.map_injective (ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of R)).inv).1)
 
 /- English proof (translation)
-Set `U : Over.mk ((Out.baseOver (Sp K)).hom ≫ spMap i) ⟶ Out.baseOver (Sp K₀)` to `Over.homMk (spMap i) (by simp)`. Use `haveI : Epi U.left := epi_spMap i`. Establish `hU : ∀ a, pushHom hp _ (t.pt a) = preHom U (pt₀ a)` using `fun a => Over.OverMorphism.ext (hpt a)`. Establish `key : ∀ (K' : Type) [Field K'] (x : Sp K' ⟶ Sp K₀), ∃ (Ω : Type) (_ : Field Ω) (_ : IsAlgClosed Ω) (s : Sp Ω ⟶ Sp K) (N : Type) (_ : Monoid N) (P : (Over.mk s ⟶ Q.A) →* N) (R : (Over.mk x ⟶ A₀) →* N), Function.Bijective P ∧ Function.Injective R ∧ ∀ a, P ((Over.homMk s (by simp) : …`. Introduce `K' _ x`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨x', rfl⟩` from `Spec.map_surjective x`. Take `⟨Ω, _, _, j, j', hj⟩` from `GlobalTheory.exists_algClosed_join_of_two_field_extensions K₀ K K' i x'.hom`. Establish `hc : spMap j' ≫ Spec.map x' = spMap j ≫ spMap i`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp]`. Use `congr 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Introduce a local definition for the expression.
 
-Conclude with `CommRingCat.hom_ext hj.symm`. Set `V : Over.mk ((Over.mk (spMap j)).hom ≫ spMap i) ⟶ Over.mk (Spec.map x')` to `Over.homMk (spMap j') hc`. Use `haveI : Epi V.left := epi_spMap j'`. Use `⟨Ω, inferInstance, inferInstance, spMap j, _, inferInstance, pushHom hp (Over.mk (spMap j)), preHom V, pushHom_bijective hp _, preHom_injective V, fun a => ?_⟩` and prove the remaining obligations. Apply `Over.OverMorphism.ext` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Use `show (spMap j ≫ (t.pt a).left) ≫ φ = spMap j' ≫ Spec.map x' ≫ (pt₀ a).left`. Rewrite using `[Category.assoc, hpt, ← Category.assoc, ← hc, Category.assoc]`. Use `⟨{ pt := pt₀, prim := ?_, torsion := fun a => ?_, indep := ?_, span := ?_, pairing := fun a a' => ?_ }⟩` and prove the remaining obligations. Conclude with `(isPrimitiveRoot_unitOn_iff _ _).2 (((isPrimitiveRoot_unitOn_iff _ _).1 t.prim).of_map_of_injective (Units.map_injective i.injective))`. Apply `preHom_injective U` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[map_pow, ← hU, ← map_pow, t.torsion, map_one, map_one]`. Introduce `K' _ _ x c c' hc`. Take `⟨Ω, _, _, s, N, _, P, R, hP, hR, H⟩` from `key K' x`. Use `t.indep Ω s c c' (hP.1 ?_)` and prove the remaining obligations. Use `congrArg R hc` as an intermediate fact.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Unfold `Out.linComb at this ⊢`. Rewrite `this`, the goal using `[map_prod_pow, map_prod_pow]`. Simplify `this` using `only [H]`. Introduce `K' _ _ x y₀ hy`. Take `⟨Ω, _, _, s, N, _, P, R, hP, hR, H⟩` from `key K' x`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Take `⟨y, hy'⟩` from `hP.2 (R y₀)`. Take `⟨c, hc⟩` from `t.span Ω s y (hP.1 (by rw [map_pow, hy', ← map_pow, hy, map_one, map_one]))`. Use `⟨c, hR ?_⟩` and prove the remaining obligations. Use `(congrArg P hc).trans hy'` as an intermediate fact. Unfold `Out.linComb at this ⊢`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `this`, the goal using `[map_prod_pow]`. Simplify `this` using `only [H]`. Use `haveI := hab.comm`. Establish `h₁` using `(GlobalTheory.weilIs_grpPullback_of_comm _ _ A₀ Q.A (spMap i) φ L₀ Q.L hL Q.isLB hp hw _ k (t.pt a) (t.pt a') (U ≫ pt₀ a) (U ≫ pt₀ a') _ (hpt a).symm (hpt a').symm).1 (t.pairing a a')`. Rewrite `h₁`, the goal using `[unitOn_zpow]`.
-
-Use `(GlobalTheory.T.weilPairing_fieldExtension_iff _ A₀ K₀ K i (𝟙 _) L₀ k (pt₀ a) (pt₀ a') _ hab hL).1 ?_` and prove the remaining obligations. Rewrite using `[map_zpow]`. Conclude with `(weilIs_congr (by simp) L₀ k _ _ _ _ rfl rfl _).1 h₁`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem level_descend {K₀ K : Type} [Field K₀] [Field K] (i : K₀ →+* K) (Q : Out.PolAV (Sp K))
     (A₀ : Over (Sp K₀)) [GrpObj A₀] (hab : IsAbelianScheme A₀) (hdim : SmoothOfRelativeDimension Q.g A₀.hom)
@@ -181,11 +177,11 @@ theorem level_descend {K₀ K : Type} [Field K₀] [Field K] (i : K₀ →+* K) 
     exact (weilIs_congr (by simp) L₀ k _ _ _ _ rfl rfl _).1 h₁
 
 /- English proof (translation)
-Use `letI : Algebra o (gen β s) := (β.codRestrict _ (mem_gen β s)).toAlgebra`. Set `s₀ : Set (gen β s)` to `(gen β s).subtype ⁻¹' (s : Set K)`. Establish `hfin : s₀.Finite` using `s.finite_toSet.preimage (gen β s).subtype.injective.injOn`. Use `⟨Algebra.adjoin o s₀, Subalgebra.fg_def.2 ⟨s₀, hfin, rfl⟩, fun x => ?_⟩` and prove the remaining obligations. Establish `hle : Subring.closure (Set.range β ∪ (s : Set K)) ≤ (Algebra.adjoin o s₀).toSubring.map (gen β s).subtype`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Subring.closure_le.2 ?_` and prove the remaining obligations. Introduce and unpack `y (⟨a, rfl⟩ | hy)`. Conclude with `⟨algebraMap o _ a, Subalgebra.algebraMap_mem _ a, rfl⟩`. Conclude with `⟨⟨y, subset_gen β le_rfl hy⟩, Algebra.subset_adjoin hy, rfl⟩`. Take `⟨a, ha, b, hb, e⟩` from `Subfield.mem_closure_iff.1 x.2`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha', rfl⟩` from `hle ha`. Take `⟨b, hb', rfl⟩` from `hle hb`. Conclude with `⟨a, ha', b, hb', Subtype.ext e.symm⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_fg_subalgebra {o K : Type} [CommRing o] [Field K] (β : o →+* K) (s : Finset K) :
     letI : Algebra o (gen β s) := (β.codRestrict _ (mem_gen β s)).toAlgebra
@@ -206,29 +202,27 @@ theorem exists_fg_subalgebra {o K : Type} [CommRing o] [Field K] (β : o →+* K
   exact ⟨a, ha', b, hb', Subtype.ext e.symm⟩
 
 /- English proof (translation)
-Introduce `o K _ _ _ t M ze ⟨w, wd, hw, hwd, hsum, hpol, hadj⟩ ⟨lev⟩`. Set `β : o →+* K` to `algebraMap o K`. Set `act : Bool → (t.A ⟶ t.A)` to `fun j => cond j w wd`. Take `⟨s₀, H₀⟩` from `GlobalTheory.T.exists_finset_isProjOver_descends_to_subfield K (gen β ∅) t.A.left t.A.hom (GlobalTheory.ProjSpace.isProjOver_of_relAmple t.ample)`. Take `⟨X₀, p₀, φ, hp₀, sq⟩` from `H₀ (gen β s₀) (gen_mono β (Finset.empty_subset _)) (subset_gen β le_rfl)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `: IsProper p₀` using `isProper_of_isProjOver hp₀`. Establish `: LocallyOfFinitePresentation p₀` using `inferInstance`. Establish `: QuasiCompact (Over.mk p₀).hom` using `inferInstanceAs (QuasiCompact p₀)`. Establish `: QuasiSeparated (Over.mk p₀).hom` using `inferInstanceAs (QuasiSeparated p₀)`. Establish `: LocallyOfFinitePresentation (Over.mk p₀).hom` using `inferInstanceAs (LocallyOfFinitePresentation p₀)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨s₁, H₁⟩` from `GlobalTheory.grpObj_descends_to_large_subfield K (gen β s₀) (Over.mk p₀) t.A φ sq`. Take `⟨s₂, H₂⟩` from `GlobalTheory.T.exists_lineBundle_descent_to_subfield K (gen β s₀) X₀ t.A.left p₀ t.A.hom φ t.L t.isLB sq`. Take `⟨s₃, H₃⟩` from `GlobalTheory.T.exists_descent_of_morphisms_to_subfield K (gen β s₀) X₀ t.A.left p₀ t.A.hom φ X₀ p₀ Bool (fun j => (act j).left ≫ φ) sq (fun j => by rw [Category.assoc, sq.w, ← Category.assoc, Over.w])`. Take `⟨s₄, H₄⟩` from `GlobalTheory.T.exists_descent_of_morphisms_to_subfield K (gen β s₀) (Sp (gen β s₀)) (Sp K) (𝟙 _) (𝟙 _) (spMap (gen β s₀).subtype) X₀ p₀ (Fin (2 * t.g)) (fun a => (lev.pt a).left ≫ φ) (IsPullback.of_vert_isIso ⟨by simp⟩) (fun a => by`. Establish `e : (lev.pt a).left ≫ t.A.hom = 𝟙 _` using `Over.w (lev.pt a)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[Category.assoc, sq.w, ← Category.assoc, e]`. Use the proof step `simp)`. Set `s : Finset K` to `s₀ ∪ s₁ ∪ s₂ ∪ s₃ ∪ s₄`. Establish `h : gen β s₀ ≤ gen β s` using `gen_mono β (fun x hx => by simp [s, hx])`. Set `inc` to `spMap (Subfield.inclusion h)`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `A₁ : Over (Sp (gen β s))` to `Over.mk (pullback.snd p₀ inc)`. Set `φ₁ : A₁.left ⟶ X₀` to `pullback.fst p₀ inc`. Establish `sq₁ : IsPullback φ₁ A₁.hom p₀ inc` using `IsPullback.of_hasPullback p₀ inc`. Set `ψ : t.A.left ⟶ A₁.left` to `sq₁.lift φ (t.A.hom ≫ spMap (gen β s).subtype) (by rw [Category.assoc, spMap_subtype h, sq.w])`. Establish `hψ₁ : ψ ≫ φ₁ = φ` using `sq₁.lift_fst _ _ _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hψ₂ : ψ ≫ A₁.hom = t.A.hom ≫ spMap (gen β s).subtype` using `sq₁.lift_snd _ _ _`. Take `⟨gr₁, hG⟩` from `H₁ (gen β s) h (subset_gen β (fun x hx => by simp [s, hx])) A₁ φ₁ ψ sq₁ hψ₁ hψ₂`. Take `⟨L₁, hL₁, hL⟩` from `H₂ (gen β s) h (subset_gen β (fun x hx => by simp [s, hx])) A₁.left A₁.hom φ₁ ψ sq₁ hψ₁ hψ₂`. Take `⟨f₁, hf₁⟩` from `H₃ (gen β s) h (subset_gen β (fun x hx => by simp [s, hx])) A₁.left A₁.hom φ₁ ψ sq₁ hψ₁ hψ₂`. Take `⟨x₁, hx₁⟩` from `H₄ (gen β s) h (subset_gen β (fun x hx => by simp [s, hx])) (Sp (gen β s)) (𝟙 _) inc (spMap (gen β s).subtype) (IsPullback.of_vert_isIso ⟨by simp [inc]⟩) (spMap_subtype h) (by simp)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `act₁ : Bool → (A₁ ⟶ A₁)` to `fun j => Over.homMk (sq₁.lift (f₁ j) A₁.hom (by rw [(hf₁ j).2, sq₁.w])) (sq₁.lift_snd _ _ _)`. Set `pt₁ : Fin (2 * t.g) → (Out.baseOver (Sp (gen β s)) ⟶ A₁)` to `fun a => Over.homMk (sq₁.lift (x₁ a) (𝟙 _) (by rw [(hx₁ a).2]; simp)) (sq₁.lift_snd _ _ _)`. Establish `hpt : ∀ a, (lev.pt a).left ≫ ψ = spMap (gen β s).subtype ≫ (pt₁ a).left` using `fun a => by`. Establish `e : (lev.pt a).left ≫ t.A.hom = 𝟙 _` using `Over.w (lev.pt a)`. Establish `e₁ : (pt₁ a).left ≫ φ₁ = x₁ a` using `sq₁.lift_fst _ _ _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e₂ : (pt₁ a).left ≫ A₁.hom = 𝟙 _` using `sq₁.lift_snd _ _ _`. Apply `sq₁.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, hψ₁]`. Conclude with `((hx₁ a).1.symm.trans (congrArg _ e₁.symm)).trans (Category.assoc _ _ _).symm`. Rewrite using `[Category.assoc, hψ₂, ← Category.assoc, e]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `(Category.id_comp _).trans (Eq.trans ?_ (Category.assoc _ _ _).symm)` and prove the remaining obligations. Conclude with `((congrArg _ e₂).trans (Category.comp_id _)).symm`. Establish `hact : ∀ j, (act j).left ≫ ψ = ψ ≫ (act₁ j).left` using `fun j => by`. Establish `e₁ : (act₁ j).left ≫ φ₁ = f₁ j` using `sq₁.lift_fst _ _ _`. Apply `sq₁.hom_ext` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Category.assoc, hψ₁, Category.assoc, e₁, (hf₁ j).1]`. Rewrite using `[Category.assoc, hψ₂, ← Category.assoc, Over.w, Category.assoc, Over.w, hψ₂]`. Take `⟨hab, hdim⟩` from `GlobalTheory.T.abelian_scheme_descent_smooth_dimension _ K (gen β s).subtype A₁ t.A ψ hG t.isAb`. Take `⟨hr, hs, hk⟩` from `GlobalTheory.T.rigidified_symmetric_kernelTrivial_descend_fieldExt _ K (gen β s).subtype A₁ t.A ψ L₁ t.L hab hG hL₁ t.isLB hL`. Establish `hamp` using `GlobalTheory.AmpleDescent.relAmple_of_fieldExtension _ K (gen β s).subtype A₁ t.A ψ L₁ t.L hab hG hL₁ t.isLB hL t.ample`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `letI : Algebra o (gen β s) := (β.codRestrict _ (mem_gen β s)).toAlgebra`. Take `⟨R₀, hfg, hfrac⟩` from `exists_fg_subalgebra β s`. Use `⟨gen β s, inferInstance, inferInstance, ⟨(gen β s).subtype, fun _ => rfl⟩, R₀, ⟨A₁, hab, t.g, hdim _ t.smoothDim, L₁, hL₁, hr t.rigid, hs t.sym, hamp, hk t.ktriv⟩, ψ, hfg, hfrac, rfl, hG, ?_, ?_⟩` and prove the remaining obligations. Use `t.isAb.comm` as an intermediate fact. Use `hab.comm` as an intermediate fact.
-
-Conclude with `hypS_descend (gen β s).subtype hab hG hL₁ t.isLB hL (hact true).symm (hact false).symm hw hwd hsum hpol hadj`. Conclude with `level_descend (gen β s).subtype t A₁ hab _ L₁ hL₁ _ _ _ _ hG hL M _ lev pt₁ hpt`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem descends_to_fg_field : ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] (Q : Out.PolAV (Sp Ω)) (M : ℕ) (ze : oˣ), (letI := Q.isAb.comm; GlobalTheory.ZH.HypS Q.A Q.L) → Nonempty (Out.Level Q M (unitOn (Units.map (algebraMap o Ω).toMonoidHom ze))) → ∃ (Ω₀ : Type) (_ : Field Ω₀) (_ : Algebra o Ω₀) (j : Ω₀ →ₐ[o] Ω) (R₀ : Subalgebra o Ω₀) (Q₀ : Out.PolAV (Sp Ω₀)) (φ : Q.A.left ⟶ Q₀.A.left), R₀.FG ∧ (∀ x : Ω₀, ∃ a ∈ R₀, ∃ b ∈ R₀, x = a / b) ∧ Q₀.g = Q.g ∧ IsGrpPullback Q.A Q₀.A (spMap j.toRingHom) φ ∧ (letI := Q₀.isAb.comm; GlobalTheory.ZH.HypS Q₀.A Q₀.L) ∧ Nonempty (Out.Level Q₀ M (unitOn (Units.map (algebraMap o Ω₀).toMonoidHom ze))) := by
   intro o K _ _ _ t M ze ⟨w, wd, hw, hwd, hsum, hpol, hadj⟩ ⟨lev⟩

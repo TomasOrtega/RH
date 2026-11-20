@@ -79,49 +79,49 @@ import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.InhabitedChartFracS
 open GroundTheory.Heights₂.Heights
 
 /- English proof (translation)
-The claim follows from `@GroundTheory.Heights₂.Heights.ObjectsChow.ChowDegreeClosedPoint.proof GroundTheory.Heights₂.Heights.ObjectsChow.ClosedPointChartField.proof GroundTheory.Heights₂.Heights.ObjectsChow.ClosedPointConeCoord.proof`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CompanionTheory.Ar.Short.ChowClosing.Auto.ObjectsChow_ChowDegreeClosedPoint : GroundTheory.Heights₂.Heights.ObjectsChow.ChowDegreeClosedPoint.Statement :=
   @GroundTheory.Heights₂.Heights.ObjectsChow.ChowDegreeClosedPoint.proof GroundTheory.Heights₂.Heights.ObjectsChow.ClosedPointChartField.proof GroundTheory.Heights₂.Heights.ObjectsChow.ClosedPointConeCoord.proof
 
 /- English proof (translation)
-The claim follows from `@GroundTheory.Heights₂.Heights.NormOfDividedFormSep.proof GroundTheory.Heights₂.Heights.NormFormEval.full GroundTheory.Heights₂.Heights.NormFormDvd.full GroundTheory.Heights₂.Heights.PrimeMapFractionRing.full`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CompanionTheory.Ar.Short.ChowClosing.Auto.NormOfDividedFormSep : GroundTheory.Heights₂.Heights.NormOfDividedFormSep.Statement :=
   @GroundTheory.Heights₂.Heights.NormOfDividedFormSep.proof GroundTheory.Heights₂.Heights.NormFormEval.full GroundTheory.Heights₂.Heights.NormFormDvd.full GroundTheory.Heights₂.Heights.PrimeMapFractionRing.full
 
 /- English proof (translation)
-The claim follows from `@GroundTheory.Heights₂.Heights.ChartFreeParAlgIndep.proof GroundTheory.Heights₂.Heights.ChartParAlgebraic.proof`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CompanionTheory.Ar.Short.ChowClosing.Auto.ChartFreeParAlgIndep : GroundTheory.Heights₂.Heights.ChartFreeParAlgIndep.Statement :=
   @GroundTheory.Heights₂.Heights.ChartFreeParAlgIndep.proof GroundTheory.Heights₂.Heights.ChartParAlgebraic.proof
 
 /- English proof (translation)
-The claim follows from `@GroundTheory.Heights₂.Heights.ChartPointSeparable.proof GlobalTheory.CompanionTheory.Ar.Short.ChowClosing.Auto.ChartFreeParAlgIndep`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CompanionTheory.Ar.Short.ChowClosing.Auto.ChartPointSeparable : GroundTheory.Heights₂.Heights.ChartPointSeparable.Statement :=
   @GroundTheory.Heights₂.Heights.ChartPointSeparable.proof GlobalTheory.CompanionTheory.Ar.Short.ChowClosing.Auto.ChartFreeParAlgIndep
 
 /- English proof (translation)
-The claim follows from `@GroundTheory.Heights₂.Heights.ChartFracSeparable.proof GlobalTheory.CompanionTheory.Ar.Short.ChowClosing.Auto.ChartPointSeparable`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CompanionTheory.Ar.Short.ChowClosing.Auto.ChartFracSeparable : GroundTheory.Heights₂.Heights.ChartFracSeparable.Statement :=
   @GroundTheory.Heights₂.Heights.ChartFracSeparable.proof GlobalTheory.CompanionTheory.Ar.Short.ChowClosing.Auto.ChartPointSeparable
 
 /- English proof (translation)
-The claim follows from `@GroundTheory.Heights₂.Heights.ChartNormAlgClosed.proof GroundTheory.Heights₂.Heights.IncIdealBelow.full GroundTheory.Heights₂.Heights.SpecFirstMemIncIdeal.full GroundTheory.Heights₂.Heights.LocalizationPrimeDVR.full GroundTheory.Heights₂.Heights.ChartFinite.full GroundTheory.Hei …`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CompanionTheory.Ar.Short.ChowClosing.Auto.ChartNormAlgClosed : GroundTheory.Heights₂.Heights.ChartNormAlgClosed.Statement :=
   @GroundTheory.Heights₂.Heights.ChartNormAlgClosed.proof GroundTheory.Heights₂.Heights.IncIdealBelow.full GroundTheory.Heights₂.Heights.SpecFirstMemIncIdeal.full GroundTheory.Heights₂.Heights.LocalizationPrimeDVR.full GroundTheory.Heights₂.Heights.ChartFinite.full GroundTheory.Heights₂.Heights.ChartFracSeparableInhabited.chartLocDomain GroundTheory.Heights₂.Heights.ChartFirstGroupPrime.full GroundTheory.Heights₂.Heights.ChartFirstGroupDvd.full GlobalTheory.CompanionTheory.Ar.Short.ChowClosing.Auto.NormOfDividedFormSep GlobalTheory.CompanionTheory.Ar.Short.ChowClosing.Auto.ChartFracSeparable
 
 /- English proof (translation)
-The claim follows from `@GroundTheory.Heights₂.Heights.LocalSectionLengthSum.proof GroundTheory.Heights₂.Heights.PiQuotCokerFiniteLength.proof`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CompanionTheory.Ar.Short.ChowClosing.Auto.LocalSectionLengthSum : GroundTheory.Heights₂.Heights.LocalSectionLengthSum.Statement :=
   @GroundTheory.Heights₂.Heights.LocalSectionLengthSum.proof GroundTheory.Heights₂.Heights.PiQuotCokerFiniteLength.proof
 
 /- English proof (translation)
-The claim follows from `@GroundTheory.Heights₂.Heights.SectionLengthSum.proof GlobalTheory.CompanionTheory.Ar.Short.ChowClosing.Auto.LocalSectionLengthSum`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CompanionTheory.Ar.Short.ChowClosing.Auto.SectionLengthSum : GroundTheory.Heights₂.Heights.SectionLengthSum.Statement :=
   @GroundTheory.Heights₂.Heights.SectionLengthSum.proof GlobalTheory.CompanionTheory.Ar.Short.ChowClosing.Auto.LocalSectionLengthSum
@@ -129,7 +129,7 @@ theorem GlobalTheory.CompanionTheory.Ar.Short.ChowClosing.Auto.SectionLengthSum 
 namespace GlobalTheory.CompanionTheory.Ar.Short.ChowClosing
 
 /- English proof (translation)
-The claim follows from `ChartResidueDegreeAlgClosed.proof ChowFormBirationalAlgClosed.proof ChartFinite.full ChartKernel.full SectionPerfect.coneDimOfChowForm_full ConeDimComponent.proof_closed SectionPerfect.chowFormExists_full IncidenceGeneric.full ChartLocalOrder.full`.
+A detailed English derivation is pending.
 -/
 theorem chartResidueDegreeAlgClosed_closed : ChartResidueDegreeAlgClosed.Statement :=
   ChartResidueDegreeAlgClosed.proof ChowFormBirationalAlgClosed.proof ChartFinite.full ChartKernel.full
@@ -137,20 +137,20 @@ theorem chartResidueDegreeAlgClosed_closed : ChartResidueDegreeAlgClosed.Stateme
     SectionPerfect.chowFormExists_full IncidenceGeneric.full ChartLocalOrder.full
 
 /- English proof (translation)
-The claim follows from `ChartLengthAlgClosed.proof SpecFirstMemIncIdeal.full ChartFinite.full LengthFiniteAlgebra.full ChartMaxIdeals.full ChartLocalOrder.full chartResidueDegreeAlgClosed_closed`.
+A detailed English derivation is pending.
 -/
 theorem chartLengthAlgClosed_closed : ChartLengthAlgClosed.Statement :=
   ChartLengthAlgClosed.proof SpecFirstMemIncIdeal.full ChartFinite.full LengthFiniteAlgebra.full
     ChartMaxIdeals.full ChartLocalOrder.full chartResidueDegreeAlgClosed_closed
 
 /- English proof (translation)
-The claim follows from `ChartChoiceAlgClosed.proof SectionPerfect.incIdealPrime_full chowFormMultiHomog`.
+A detailed English derivation is pending.
 -/
 theorem chartChoiceAlgClosed_closed : ChartChoiceAlgClosed.Statement :=
   ChartChoiceAlgClosed.proof SectionPerfect.incIdealPrime_full chowFormMultiHomog
 
 /- English proof (translation)
-The claim follows from `sectionCycleReduced_of SectionComponents.proof_closed GlobalTheory.CompanionTheory.Ar.Short.ChowClosing.Auto.SectionLengthSum`.
+A detailed English derivation is pending.
 -/
 theorem sectionCycleReduced_closed : SectionCycleReduced.Statement :=
   sectionCycleReduced_of SectionComponents.proof_closed GlobalTheory.CompanionTheory.Ar.Short.ChowClosing.Auto.SectionLengthSum

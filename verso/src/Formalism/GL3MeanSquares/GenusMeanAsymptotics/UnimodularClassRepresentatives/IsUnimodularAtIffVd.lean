@@ -12,13 +12,13 @@ variable {V : Type} [AddCommGroup V] [Module K V] [FiniteDimensional K V] [Modul
   [IsScalarTower (𝓞 K) K V]
 
 /- English proof (translation)
-Establish `hPp` using `hP.isPrime`. Establish `hp : (P.comap (algebraMap (𝓞 F) (𝓞 K))).IsPrime` using `Ideal.comap_isPrime _ _`. Use extensionality with `x`. Rewrite using `[LocF.mem_locF_iff hp]`. Unfold `Formalism.HermitianLatticesTheory.loc`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[Formalism.HermitianLatticesTheory.locBasic_mem_locS]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨t, ht, hx⟩`. Use `⟨_, ?_, hx⟩` and prove the remaining obligations. Rewrite using `[WA.mem_hcompl_iff hPp, WA.mem_conjIdeal_iff, (conjO_eq_iff_mem_range hF _).mpr ⟨t, rfl⟩]`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨ht, ht⟩`. Introduce and unpack `⟨s, hs, hx⟩`. Take `⟨h1, h2⟩` from `(WA.mem_hcompl_iff hPp s).mp hs`. Rewrite `h2` using `[WA.mem_conjIdeal_iff]`. Take `⟨t, ht⟩` from `(conjO_eq_iff_mem_range hF (conjO K s * s)).mp (by rw [map_mul, conjO_conjO, mul_comm])`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨t, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.mem_comap, ht]`. Conclude with `fun h => (hPp.mem_or_mem h).elim h2 h1`. Rewrite using `[ht, mul_smul]`. Conclude with `L.smul_mem _ hx`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locF_eq_loc (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F) {P : Ideal (𝓞 K)}
     (hP : P.IsMaximal) (L : Submodule (𝓞 K) V) :
@@ -47,33 +47,31 @@ theorem locF_eq_loc (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : I
       exact L.smul_mem _ hx
 
 /- English proof (translation)
-Establish `hPp` using `hP.isPrime`. Establish `hda` using `LocF.aniso_of_totPosDef hd`. Establish `hEP : extP K (P.comap (algebraMap (𝓞 F) (𝓞 K))) ≤ P` using `Ideal.map_comap_le`. Prove the components needed by the constructor for the conclusion. Introduce `hu`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `LocF.vd_eq_zero_of_not_le` to reduce the goal to its premises. Take `⟨x, hxM, hxo, hxu⟩` from `LocF.exists_orth_unit_frame (WA.isHermSemilocal_locRing hK hP) (LocF.locRing_local hPp) hs hda (WA.isSelfDualMod_loc hL hPp hu)`. Use `choose s hs' hsx using fun i => Formalism.HermitianLatticesTheory.locBasic_mem_locS.mp (show x i ∈ Formalism.HermitianLatticesTheory.locS (Formalism.HermitianLatticesTheory.hcompl (K := K) P) L from hxM i)`. Take `⟨g, -, hdet⟩` from `LocF.exists_gram hLi (fun i => s i • x i) hsx`. Establish `hmem : g.det ∈ discrIdeal h L` using `Ideal.subset_span ⟨_, hsx, hdet⟩`.
+Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hunit : WA.IsUnitIn (WA.locRing P) (algebraMap (𝓞 K) K g.det)`. Rewrite using `[hdet]`. Establish `hdiag : (Matrix.of fun i j => h (s i • x i) (s j • x j)) = Matrix.diagonal fun i => star (algebraMap (𝓞 K) K (s i)) * algebraMap (𝓞 K) K (s i) * h (x i) (x i)`. Use extensionality with `i j`. Rewrite using `[Matrix.of_apply, Formalism.HermitianLatticesTheory.locDual_h_smul_left, Formalism.HermitianLatticesTheory.locDual_h_smul_right]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Rewrite using `[Matrix.diagonal_apply_eq]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Matrix.diagonal_apply_ne _ hij, hxo i j hij]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hdiag, Matrix.det_diagonal]`. Apply `LocF.isUnitIn_prod` to reduce the goal to its premises. Introduce `i _`. Use `LocF.isUnitIn_mul (LocF.isUnitIn_mul ?_ ?_) (hxu i)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← WA.algebraMap_conjO, LocF.isUnitIn_algebraMap_iff hPp]`. Conclude with `WA.conjO_mem_hcompl (hs' i)`. Rewrite using `[LocF.isUnitIn_algebraMap_iff hPp]`. Conclude with `hs' i`. Establish `hnP : g.det ∉ P` using `((WA.mem_hcompl_iff hPp _).mp ((LocF.isUnitIn_algebraMap_iff hPp _).mp hunit)).1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `fun hle => hnP (hEP (hle hmem))`. Introduce `h0`. Establish `hn` using `LocF.not_le_of_vd_eq_zero (LocF.discrIdeal_ne_bot hda hL hLi) (ne_top_of_le_ne_top hP.ne_top hEP) h0`. Unfold `discrIdeal at hn`. Rewrite `hn` using `[Ideal.span_le, Set.not_subset]`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Take `⟨z, ⟨x, hx, hz⟩, hzn⟩` from `hn`. Establish `hzfix : conjO K z = z`. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Rewrite using `[conjO_coe]`. Express the relevant statement in the definitionally equal form `star (algebraMap (𝓞 K) K z) = algebraMap (𝓞 K) K z`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hz, LocF.star_gram_det h hs]`. Take `⟨t, ht⟩` from `(conjO_eq_iff_mem_range hF z).mp hzfix`. Establish `hzP : z ∉ P`. Introduce `hmem`. Apply `hzn` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hmem`, the goal using `[← ht]`. Conclude with `Ideal.mem_map_of_mem _ (Ideal.mem_comap.mpr hmem)`. Establish `hzc : z ∈ Formalism.HermitianLatticesTheory.hcompl (K` using `K) P := by`. Rewrite using `[WA.mem_hcompl_iff hPp, WA.mem_conjIdeal_iff, hzfix]`. Conclude with `⟨hzP, hzP⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hz0 : (Matrix.of fun i j => h (x i) (x j)).det ≠ 0`. Rewrite using `[← hz]`. Conclude with `WA.algebraMap_ne_zero_of_mem_hcompl hPp hzc`. Establish `hspan : Submodule.span K (Set.range x) = ⊤` using `(LocF.linearIndependent_of_gram_det_ne_zero h x hz0).span_eq_top_of_card_eq_finrank' (by simp)`. Take `⟨g, hg, hdet⟩` from `LocF.exists_gram hLi x hx`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hgz : g.det = z` using `RingOfIntegers.ext (hdet.trans hz.symm)`. Take `⟨hA, hB⟩` from `(Formalism.HermitianLatticesTheory.locDual (𝓞 K) K V h hs (fun r => ⟨conjO K r, rfl⟩) L hL.fg).1 P hPp`. Unfold `Formalism.HermitianLatticesTheory.IsUnimodularAt`. Rewrite using `[hB, ← hA]`. Apply `le_antisymm` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hle : Formalism.HermitianLatticesTheory.dual h L ≤ Formalism.HermitianLatticesTheory.loc (K` using `K) P L := by`. Introduce `y hy`. Rewrite `hy` using `[Formalism.HermitianLatticesTheory.dualBasic_mem_dual]`. Conclude with `Formalism.HermitianLatticesTheory.locBasic_mem_locS.mpr ⟨g.det, hgz ▸ hzc, LocF.det_smul_mem h x hx hspan g hg y (fun i => hy _ (hx i))⟩`. Combine the equalities or inequalities in the displayed calculation.
-
-Apply `Formalism.HermitianLatticesTheory.locBasic_locS_mono` to reduce the goal to its premises. Introduce `y hy`. Rewrite using `[Formalism.HermitianLatticesTheory.dualBasic_mem_dual]`. Conclude with `fun w hw => hLi w hw y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem isUnimodularAt_iff_vd (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F)
     {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm) (hd : IsTotPosDef h) {L : Submodule (𝓞 K) V}
@@ -163,13 +161,11 @@ theorem isUnimodularAt_iff_vd (hK : Formalism.HermitianLatticesTheory.IsCMUnram 
       exact fun w hw => hLi w hw y hy
 
 /- English proof (translation)
-Establish `hD` using `LocF.discrIdeal_ne_bot (LocF.aniso_of_totPosDef hd) hL hLi`. Establish `hD' : (discrIdeal h L).comap (algebraMap (𝓞 F) (𝓞 K)) ≠ ⊥`. Take `⟨z, hz, hz0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hD`. Conclude with `Ideal.comap_ne_bot_of_integral_mem hz0 hz (Algebra.IsIntegral.isIntegral z)`. Use `((Ideal.finite_factors hD').image (fun v => (⟨v.asIdeal, v.isMaximal⟩ : {𝔭 : Ideal (𝓞 F) // 𝔭.IsMaximal}))).subset ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `𝔭 h𝔭`. Establish `hle : discrIdeal h L ≤ extP K 𝔭.1`. Assume the negation of the conclusion as `hn`. Conclude with `h𝔭 (LocF.vd_eq_zero_of_not_le hn)`. Take `⟨P, hP, hP𝔭⟩` from `exists_maximal_over hK hF 𝔭.2`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : extP K 𝔭.1 ≤ P`. Rewrite using `[← hP𝔭]`. Conclude with `Ideal.map_comap_le`. Establish `h1 : (discrIdeal h L).comap (algebraMap (𝓞 F) (𝓞 K)) ≤ 𝔭.1`. Rewrite using `[← hP𝔭]`.
-
-Conclude with `Ideal.comap_mono (hle.trans h2)`. Establish `hne : 𝔭.1 ≠ ⊥` using `fun e => hD' (eq_bot_iff.mpr (e ▸ h1))`. Conclude with `⟨⟨𝔭.1, 𝔭.2.isPrime, hne⟩, Ideal.dvd_iff_le.mpr h1, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem finite_vd_ne_zero (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F)
     {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm) (hd : IsTotPosDef h) {L : Submodule (𝓞 K) V}
@@ -196,15 +192,15 @@ theorem finite_vd_ne_zero (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (
   exact ⟨⟨𝔭.1, 𝔭.2.isPrime, hne⟩, Ideal.dvd_iff_le.mpr h1, rfl⟩
 
 /- English proof (translation)
-Set `B : {𝔭 : Ideal (𝓞 F) // 𝔭.IsMaximal} → Submodule (𝓞 K) V` to `fun 𝔭 => if h : 𝔭 ∈ s then (hT 𝔭 h).2.choose else L₀`. Establish `hB1 : ∀ 𝔭 (h : 𝔭 ∈ s), Submodule.IsLattice K (B 𝔭) ∧ locF 𝔭.1 (B 𝔭) = T 𝔭`. Introduce `𝔭 h`. Simplify using `only [B, dif_pos h]`. Conclude with `(hT 𝔭 h).2.choose_spec`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hB2 : ∀ 𝔭 ∉ s, B 𝔭 = L₀`. Introduce `𝔭 h`. Simplify using `only [B, dif_neg h]`. Establish `hB : ∀ 𝔭, Submodule.IsLattice K (B 𝔭)`. Introduce `𝔭`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h : 𝔭 ∈ s`. Conclude with `(hB1 𝔭 h).1`. Rewrite using `[hB2 𝔭 h]`. Conclude with `hL₀`. Take `⟨hlat, hloc⟩` from `LocF.patch hL₀ s B hB hB2`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Use `⟨_, ⟨hlat, fun 𝔭 h => (hloc 𝔭).trans (hB1 𝔭 h).2, fun 𝔭 h => (hloc 𝔭).trans (by rw [hB2 𝔭 h])⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `Λ ⟨-, h1, h2⟩`. Rewrite using `[← LocF.iInf_locF (F := F) Λ]`. Use `congr 1`. Use function extensionality and compare the values at `𝔭`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h : 𝔭 ∈ s`. Rewrite using `[h1 𝔭 h, (hB1 𝔭 h).2]`. Rewrite using `[h2 𝔭 h, hB2 𝔭 h]`.
+A detailed English derivation is pending.
 -/
 theorem exists_unique_patch (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F) {L₀ : Submodule (𝓞 K) V} (hL₀ : Submodule.IsLattice K L₀)
     (s : Finset {𝔭 : Ideal (𝓞 F) // 𝔭.IsMaximal}) (T : {𝔭 : Ideal (𝓞 F) // 𝔭.IsMaximal} → Submodule (𝓞 K) V)

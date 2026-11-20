@@ -32,9 +32,9 @@ def tateTransport {k : Type} [Field k] {Q Q' : Type} [Group Q] [Group Q'] {act :
   isom n hn hp x y := hE _ _ _ _ (I.isom n hn hp x y)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨I, hI⟩`. Conclude with `⟨tateTransport I e ha fun n g g' u => (hE n g g' u).1, fun y => by rw [← hl, hI]; rfl⟩`. Introduce and unpack `⟨I, hI⟩`. Use `⟨tateTransport I e.symm (fun c g => e.injective (by rw [e.apply_symm_apply, ha, e.apply_symm_apply])) (fun n g g' u h => (hE n _ _ u).2 (by rw [e.apply_symm_apply, e.apply_symm_apply]; exact h)), fun y => ?_⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `show l y = e.symm (I.ev N y)`. Rewrite using `[← hI y, ← hl y, e.symm_apply_apply]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_tate_iff {k : Type} [Field k] {Q Q' : Type} [Group Q] [Group Q'] {act : D.O → Q → Q}
     {act' : D.O → Q' → Q'} {E : ℕ → Q → Q → kˣ → Prop} {E' : ℕ → Q' → Q' → kˣ → Prop}
@@ -55,11 +55,11 @@ variable {R : Type} [CommRing R] (b : Base D R) {S S' : Scheme.{0}} {A : Over S}
   [GrpObj A'] {f : S' ⟶ S} {φ : A'.left ⟶ A.left}
 
 /- English proof (translation)
-Take `⟨e, he⟩` from `GlobalTheory.LiePull.exists_pushEquiv pb (epsPtR x) (spMap (algebraMap R' (DualNumber R')) ≫ x ≫ f) (Category.assoc _ _ _).symm`. Establish `key` using `fun c r v => GlobalTheory.HTPull.isTanScal_iff pb act act' hact x e he c r v`. Prove the components needed by the constructor for the conclusion. Introduce `H v hv`. Take `⟨w, hw, hvw⟩` from `H (e.symm v) ((key _ _ _).2 (by rw [e.apply_symm_apply]; exact hv))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨fun i => e (w i), fun i c => (key _ _ _).1 (hw i c), ?_⟩` and prove the remaining obligations. Rewrite using `[← e.apply_symm_apply v, hvw, map_list_prod, List.map_ofFn]`. Both sides reduce to the same expression. Introduce `H v hv`. Take `⟨w, hw, hvw⟩` from `H (e v) ((key _ _ _).1 hv)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨fun i => e.symm (w i), fun i c => (key _ _ _).2 (by rw [e.apply_symm_apply]; exact hw i c), e.injective ?_⟩` and prove the remaining obligations. Rewrite using `[hvw, map_list_prod, List.map_ofFn]`. Simplify using `[Function.comp_def]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem lieAt_iff (pb : IsGrpPullback A' A f φ) (act : OActN D.O A) (act' : OActN D.O A')
     (hact : ∀ c, (act'.act c).left ≫ φ = φ ≫ (act.act c).left) {R' : Type} [CommRing R'] (β : R →+* R')
@@ -81,7 +81,7 @@ theorem lieAt_iff (pb : IsGrpPullback A' A f φ) (act : OActN D.O A) (act' : OAc
     simp [Function.comp_def]
 
 /- English proof (translation)
-Use `forall_congr' fun k => forall_congr' fun _ => forall_congr' fun _ => forall_congr' fun g => forall_congr' fun i => ?_` and prove the remaining obligations. Establish `h` using `GlobalTheory.LiePull.lieMult_pull (𝓞 D.F) S S' A A' f φ (act.toF D) (act'.toF D) pb (fun c => hact _) k (spMap g ≫ x) ((g.comp β).comp (b.t i)) D.m`. Rewrite `h` using `[Category.assoc]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem lieRankAt_iff (pb : IsGrpPullback A' A f φ) (act : OActN D.O A) (act' : OActN D.O A')
     (hact : ∀ c, (act'.act c).left ≫ φ = φ ≫ (act.act c).left) {R' : Type} [CommRing R'] (β : R →+* R')
@@ -93,7 +93,7 @@ theorem lieRankAt_iff (pb : IsGrpPullback A' A f φ) (act : OActN D.O A) (act' :
   rwa [Category.assoc] at h
 
 /- English proof (translation)
-Use `forall_congr' fun R'' => forall_congr' fun _ => forall_congr' fun g => ?_` and prove the remaining obligations. Establish `h1` using `lieAt_iff b pb act act' hact (g.comp β) (spMap g ≫ x)`. Establish `h2` using `lieRankAt_iff b pb act act' hact (g.comp β) (spMap g ≫ x)`. Rewrite `h1`, `h2` using `[Category.assoc]`. Conclude with `and_congr h1 h2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lieHer_iff (pb : IsGrpPullback A' A f φ) (act : OActN D.O A) (act' : OActN D.O A')
     (hact : ∀ c, (act'.act c).left ≫ φ = φ ≫ (act.act c).left) {R' : Type} [CommRing R'] (β : R →+* R')
@@ -105,9 +105,9 @@ theorem lieHer_iff (pb : IsGrpPullback A' A f φ) (act : OActN D.O A) (act' : OA
   exact and_congr h1 h2
 
 /- English proof (translation)
-Establish `dg` using `SiegelPull.diag_iso sq H`. Set `e : (Over.mk x ⟶ A') ≃* (Over.mk (x ≫ f) ⟶ A)` to `MulEquiv.ofBijective (pushHom pb (Over.mk x)) ⟨SiegelPull.push_injective pb _, SiegelPull.push_surjective pb _⟩`. Establish `hel : ∀ g, (e g).left = g.left ≫ φ` using `fun g => rfl`. Use `exists_tate_iff e (fun c g => GlobalTheory.HTPull.push_comp pb (hact c) _ g) (fun n g g' u => ?_) N _ _ (fun y => ?_)` and prove the remaining obligations. Conclude with `weilIs_grpPullback_of_comm S S' A A' f φ _ _ (pull_isLB hP _) (pull_isLB hP' _) pb dg (Over.mk x) n g g' (e g) (e g') _ (hel g) (hel g')`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Over.OverMorphism.ext show ((toUnit (Over.mk x)).left ≫ (eta' y).left) ≫ φ = (toUnit (Over.mk (x ≫ f))).left ≫ (eta y).left` to reduce the goal to its premises. Rewrite using `[Category.assoc, heta, Over.toUnit_left, Over.toUnit_left, ← Category.assoc]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem geomAt_iff [IsCommMonObj A] (pb : IsGrpPullback A' A f φ) (act : OActN D.O A) (act' : OActN D.O A')
     (hact : ∀ c, (act'.act c).left ≫ φ = φ ≫ (act.act c).left) (P : LB (G2 A).left) (P' : LB (G2 A').left)
@@ -135,11 +135,11 @@ namespace GlobalTheory.HTTransport
 open ReciprocityTheory.ChartRestriction.G.Pdiv
 
 /- English proof (translation)
-Introduce `p _ D R _ b N S₀ A₀ _ _ P₀ hP₀ X T πX z AX _ _ AT _ _ φX φ₂X φT φ₂T ψ actX actT ηX ηT PT hPT _ sqX _ sqT pbψ hψ H hact hη`. Establish `w : ((fst AT AT).left ≫ ψ) ≫ AX.hom = ((snd AT AT).left ≫ ψ) ≫ AX.hom`. Rewrite using `[Category.assoc, Category.assoc, pbψ.1.w, ← Category.assoc, ← Category.assoc, Over.w, Over.w]`. Set `ψ₂ : (G2 AT).left ⟶ (G2 AX).left` to `pullback.lift _ _ w`. Establish `sqψ : IsSquare ψ ψ₂` using `⟨pullback.lift_fst _ _ _, pullback.lift_snd _ _ _⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hcomp : ψ₂ ≫ φ₂X = φ₂T`. Establish `h1 : (ψ₂ ≫ φ₂X) ≫ (fst A₀ A₀).left = φ₂T ≫ (fst A₀ A₀).left`. Rewrite using `[Category.assoc, sqX.1, ← Category.assoc, sqψ.1, Category.assoc, hψ, sqT.1]`. Establish `h2 : (ψ₂ ≫ φ₂X) ≫ (snd A₀ A₀).left = φ₂T ≫ (snd A₀ A₀).left`. Rewrite using `[Category.assoc, sqX.2, ← Category.assoc, sqψ.2, Category.assoc, hψ, sqT.2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Over.tensorObj_ext _ _ h1 h2`. Establish `hB : ((P₀.pull φ₂X).pull ψ₂).IsLB` using `pull_isLB (pull_isLB hP₀ _) _`. Establish `iso : LBIso PT ((P₀.pull φ₂X).pull ψ₂)` using `LBIso.trans hPT (pull_isLB hP₀ _) hB H (LBIso.chartPull (GlobalTheory.RigidBundleGlue.chartPullComp P₀ φ₂X ψ₂ φ₂T hcomp.symm) (chartPullId _) (PullbackComparison.gen_refl _ hB))`. Conclude with `⟨fun R' _ β x => lieHer_iff b pbψ actX actT hact β x, fun k _ _ x => geomAt_iff pbψ actX actT hact (P₀.pull φ₂X) PT (pull_isLB hP₀ _) hPT ψ₂ sqψ iso ηX ηT hη N k x⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem lieHer_geomAt_iff : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [CommRing R] (b : Base D R) (N : ℕ) (S₀ : Scheme.{0}) (A₀ : Over S₀) [GrpObj A₀] [IsCommMonObj A₀] (P₀ : LB (G2 A₀).left), P₀.IsLB → ∀ (X T : Scheme.{0}) (πX : X ⟶ S₀) (z : T ⟶ X) (AX : Over X) [GrpObj AX] [IsCommMonObj AX] (AT : Over T) [GrpObj AT] [IsCommMonObj AT] (φX : AX.left ⟶ A₀.left) (φ₂X : (G2 AX).left ⟶ (G2 A₀).left) (φT : AT.left ⟶ A₀.left) (φ₂T : (G2 AT).left ⟶ (G2 A₀).left) (ψ : AT.left ⟶ AX.left) (actX : OActN D.O AX) (actT : OActN D.O AT) (ηX : D.La → (𝟙_ (Over X) ⟶ AX)) (ηT : D.La → (𝟙_ (Over T) ⟶ AT)) (PT : LB (G2 AT).left), PT.IsLB → IsGrpPullback AX A₀ πX φX → IsSquare φX φ₂X → IsGrpPullback AT A₀ (z ≫ πX) φT → IsSquare φT φ₂T → IsGrpPullback AT AX z ψ → ψ ≫ φX = φT → LBIso PT (P₀.pull φ₂T) → (∀ a : D.O, (actT.act a).left ≫ ψ = ψ ≫ (actX.act a).left) → (∀ y, (ηT y).left ≫ ψ = z ≫ (ηX y).left) → (∀ (R' : Type) [CommRing R'] (β : R →+* R') (x : Sp R' ⟶ T), LieHer b actT β x ↔ LieHer b actX β (x ≫ z)) ∧ ∀ (k : Type) [Field k] [IsAlgClosed k] (x : Sp k ⟶ T), GeomAt D N actT PT ηT k x ↔ GeomAt D N actX (P₀.pull φ₂X) ηX k (x ≫ z) := by
   intro p _ D R _ b N S₀ A₀ _ _ P₀ hP₀ X T πX z AX _ _ AT _ _ φX φ₂X φT φ₂T ψ actX actT ηX ηT PT hPT _ sqX _ sqT

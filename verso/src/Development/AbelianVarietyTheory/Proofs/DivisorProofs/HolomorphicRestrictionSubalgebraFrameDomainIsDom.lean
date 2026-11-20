@@ -9,17 +9,15 @@ namespace GlobalTheory.FlatPair
 open NumberField ReciprocityTheory.ChartRestriction.G.FD
 
 /- English proof (translation)
-Introduce `E _ _ _ r X hne`. Take `⟨y0, hy0⟩` from `hne`. Use `haveI : Nontrivial (holAlg X) := ⟨⟨0, 1, fun h => by`. Use `congrFun (congrArg Subtype.val h) ⟨y0, hy0⟩` as an intermediate fact. Simplify using `at this⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction.
 
-Use `haveI : NoZeroDivisors (holAlg X) := ⟨fun {a b} hab => by`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Take `⟨ha, hb⟩` from `hcon`. Take `⟨F, hF, hFa⟩` from `a.2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Take `⟨G, hG, hGb⟩` from `b.2`. Establish `ha' : ∃ y : X.dom, (a : X.dom → ℂ) y ≠ 0`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `ha (Subtype.ext (funext h))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨y, hy⟩` from `ha'`. Establish `hfg : ∀ w ∈ X.dom, F w * G w = 0`. Introduce `w hw`. Use `congrFun (congrArg Subtype.val hab) ⟨w, hw⟩` as an intermediate fact. Rewrite using `[← hFa ⟨w, hw⟩, ← hGb ⟨w, hw⟩]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `using this`. Establish `hFy : F y.1 ≠ 0` using `by rw [← hFa y]; exact hy`. Establish `key` using `ReciprocityTheory.ChartRestriction.G.PullbackSections.Pf.eq_zero_of_mul_eq_zero (FourierCoefficientDomain.isOpen_dom X) (ReciprocityTheory.ChartRestriction.G.TB.WickVanishing.flag_domain_frames_connected r X).isPreconnected hF hG hfg y.2 hFy`. Apply `hb` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises.
-
-Use function extensionality and compare the values at `z`. Rewrite using `[hGb z]`. Simplify using `using key z.1 z.2⟩`. Conclude with `NoZeroDivisors.to_isDomain _`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem holAlg_isDomain : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r),
     X.dom.Nonempty → IsDomain (GlobalTheory.FlatPair.holAlg X) := by

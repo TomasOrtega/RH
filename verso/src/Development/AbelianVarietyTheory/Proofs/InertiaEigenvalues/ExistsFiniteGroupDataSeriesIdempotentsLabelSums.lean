@@ -19,11 +19,9 @@ def IsPrim (S : Finset A) : Prop :=
   ∀ t ∈ S, ∀ x : A, x * x = x → (∀ z, x * z = z * x) → x * t = x → x = 0 ∨ x = t
 
 /- English proof (translation)
-Rewrite using `[linearIndependent_iff']`. Introduce `s c hs i hi`. Establish `h1 : (∑ j ∈ s, c j • (j : A)) * (i : A) = c i • (i : A)`. Rewrite using `[Finset.sum_mul, Finset.sum_eq_single i]`. Rewrite using `[smul_mul_assoc, h.1 _ i.2]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `j _ hji`. Rewrite using `[smul_mul_assoc, h.2.2.2.1 _ j.2 _ i.2 (fun e => hji (Subtype.ext e)), smul_zero]`. Introduce `h'`. Conclude with `absurd hi h'`. Rewrite `h1` using `[hs, zero_mul]`.
-
-Conclude with `(smul_eq_zero.1 h1.symm).resolve_right (h.2.2.1 _ i.2)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem linInd {S : Finset A} (h : IsDecomp S) : LinearIndependent ℂ (fun x : S => (x : A)) := by
   rw [linearIndependent_iff']
@@ -38,38 +36,32 @@ theorem linInd {S : Finset A} (h : IsDecomp S) : LinearIndependent ℂ (fun x : 
   exact (smul_eq_zero.1 h1.symm).resolve_right (h.2.2.1 _ i.2)
 
 /- English proof (translation)
-Use `(linInd h).fintype_card_le_finrank` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem card_le [Module.Finite ℂ A] {S : Finset A} (h : IsDecomp S) : S.card ≤ Module.finrank ℂ A := by
   have := (linInd h).fintype_card_le_finrank
   simpa using this
 
 /- English proof (translation)
-Take `⟨hI, hC, hN, hO, hS⟩` from `h`. Establish `htx : t * x = x` using `by rw [← hc t, hxt]`. Establish `hxs : ∀ s ∈ S.erase t, x * s = 0`. Introduce `s hs`. Take `⟨hst, hs⟩` from `Finset.mem_erase.1 hs`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← hxt, mul_assoc, hO t ht s hs (Ne.symm hst), mul_zero]`. Establish `hsx : ∀ s ∈ S.erase t, s * x = 0` using `fun s hs => by rw [← hc s]; exact hxs s hs`. Establish `hts : ∀ s ∈ S.erase t, (t - x) * s = 0`. Introduce `s hs`. Take `⟨hst, hs'⟩` from `Finset.mem_erase.1 hs`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[sub_mul, hO t ht s hs' (Ne.symm hst), hxs s hs, sub_zero]`. Establish `hst' : ∀ s ∈ S.erase t, s * (t - x) = 0`. Introduce `s hs`. Take `⟨hst, hs'⟩` from `Finset.mem_erase.1 hs`. Rewrite using `[mul_sub, hO s hs' t ht hst, hsx s hs, sub_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hxtx : x * (t - x) = 0` using `by rw [mul_sub, hxt, hx, sub_self]`. Establish `htxx : (t - x) * x = 0` using `by rw [sub_mul, htx, hx, sub_self]`. Establish `htt : (t - x) * (t - x) = t - x`. Rewrite using `[mul_sub, htxx, sub_zero, sub_mul, hI t ht, hxt]`. Establish `htx0 : t - x ≠ 0` using `fun h => ht' (sub_eq_zero.1 h).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hnot : ∀ y, y * y = y → y ≠ 0 → (∀ s ∈ S.erase t, y * s = 0) → y ∉ S.erase t`. Introduce `y hy hy0 hys hmem`. Conclude with `hy0 (by rw [← hy]; exact hys y hmem)`. Establish `hm1 : t - x ∉ S.erase t` using `hnot _ htt htx0 hts`. Establish `hm2 : x ∉ insert (t - x) (S.erase t)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.mem_insert, not_or]`. Use `⟨fun e => h0 ?_, hnot _ hx h0 hxs⟩` and prove the remaining obligations. Rewrite using `[← hx]`. Use `nth_rewrite 2 [e]`. Conclude with `hxtx`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨⟨?_, ?_, ?_, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `e he`. Rewrite `he` using `[Finset.mem_insert, Finset.mem_insert]`. Break down `he with rfl | rfl | he` into its components or cases. Conclude with `hx`.
+Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Conclude with `htt`. Conclude with `hI e (Finset.mem_of_mem_erase he)`. Introduce `e he z`. Rewrite `he` using `[Finset.mem_insert, Finset.mem_insert]`. Break down `he with rfl | rfl | he` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hc z`. Rewrite using `[sub_mul, mul_sub, hC t ht z, hc z]`. Conclude with `hC e (Finset.mem_of_mem_erase he) z`. Introduce `e he`. Rewrite `he` using `[Finset.mem_insert, Finset.mem_insert]`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Break down `he with rfl | rfl | he` into its components or cases. Conclude with `h0`. Conclude with `htx0`. Conclude with `hN e (Finset.mem_of_mem_erase he)`. Introduce `e he f hf hef`.
-
-Rewrite `he`, `hf` using `[Finset.mem_insert, Finset.mem_insert]`. Apply the tactic sequence `rcases he with rfl | rfl | he <;> rcases hf with rfl | rfl | hf`. Conclude with `absurd rfl hef`. Conclude with `hxtx`. Conclude with `hxs f hf`.
-
-Conclude with `htxx`. Conclude with `absurd rfl hef`. Conclude with `hts f hf`. Conclude with `hsx e he`. Conclude with `hst' e he`.
-
-Conclude with `hO e (Finset.mem_of_mem_erase he) f (Finset.mem_of_mem_erase hf) hef`. Rewrite using `[Finset.sum_insert hm2, Finset.sum_insert hm1, ← add_assoc, add_sub_cancel, Finset.add_sum_erase S (fun e => e) ht, hS]`. Rewrite using `[Finset.card_insert_of_notMem hm2, Finset.card_insert_of_notMem hm1, Finset.card_erase_of_mem ht]`. Use `Finset.card_pos.2 ⟨t, ht⟩` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem refine_decomp [DecidableEq A] {S : Finset A} (h : IsDecomp S) {t : A} (ht : t ∈ S) {x : A}
     (hx : x * x = x) (hc : ∀ z, x * z = z * x) (hxt : x * t = x) (h0 : x ≠ 0) (ht' : x ≠ t) :
@@ -142,11 +134,11 @@ theorem refine_decomp [DecidableEq A] {S : Finset A} (h : IsDecomp S) {t : A} (h
     omega
 
 /- English proof (translation)
-Set `P : ℕ → Prop` to `fun n => ∃ S : Finset A, IsDecomp S ∧ S.card = n`. Establish `h1 : P 1` using `⟨{1}, ⟨by simp, by simp, by simp, by simp, by simp⟩, by simp⟩`. Establish `hb : ∀ n, P n → n ≤ Module.finrank ℂ A`. Introduce and unpack `n ⟨S, hS, rfl⟩`. Conclude with `card_le hS`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨S, hS, hc⟩` from `Nat.findGreatest_spec (P := P) (m := 1) (n := Module.finrank ℂ A) (hb 1 h1) h1`. Use `⟨S, hS, ?_⟩` and prove the remaining obligations. Introduce `t ht x hx hc' hxt`. Assume the negation of the conclusion as `hne`. Rewrite `hne` using `[not_or]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨h2, h3⟩` from `refine_decomp hS ht hx hc' hxt hne.1 hne.2`. Use `Nat.le_findGreatest (P := P) (hb _ ⟨_, h2, rfl⟩) ⟨_, h2, rfl⟩` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem exists_prim [Module.Finite ℂ A] [Nontrivial A] : ∃ S : Finset A, IsDecomp S ∧ IsPrim S := by
   classical
@@ -164,11 +156,11 @@ theorem exists_prim [Module.Finite ℂ A] [Nontrivial A] : ∃ S : Finset A, IsD
   omega
 
 /- English proof (translation)
-Establish `key : ∀ j, e j * t = 0 ∨ e j * t = t`. Introduce `j`. Use `hP t ht _ ?_ ?_ ?_` and prove the remaining obligations. Rewrite using `[mul_assoc, ← mul_assoc t, hS.2.1 t ht (e j), mul_assoc, hS.1 t ht, ← mul_assoc, he_idem]`. Introduce `z`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[mul_assoc, hS.2.1 t ht z, ← mul_assoc, he_c j z, mul_assoc]`. Rewrite using `[mul_assoc, hS.1 t ht]`. Establish `hsum : ∑ j ∈ T, e j * t = t` using `by rw [← Finset.sum_mul, hT, one_mul]`. Take `⟨i, hi, hne⟩` from `Finset.exists_ne_zero_of_sum_ne_zero (hsum.symm ▸ hS.2.2.1 t ht)`. Establish `hit : e i * t = t` using `(key i).resolve_left hne`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨i, hi, hit, fun j hji => (key j).resolve_right fun hjt => hS.2.2.1 t ht ?_⟩` and prove the remaining obligations. Establish `h0 : (e j * t) * (e i * t) = 0`. Rewrite using `[mul_assoc, ← mul_assoc t, hS.2.1 t ht (e i), mul_assoc, ← mul_assoc (e j), he_o j i hji, zero_mul]`. Rewrite `h0` using `[hjt, hit, hS.1 t ht]`. Conclude with `h0`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lab_unique {ι : Type} {S : Finset A} (hS : IsDecomp S) (hP : IsPrim S) (e : ι → A)
     (he_idem : ∀ i, e i * e i = e i) (he_c : ∀ i z, e i * z = z * e i)
@@ -202,7 +194,7 @@ abbrev GA (a : ℕ) : Type := MonoidAlgebra ℂ (GL (Fin a) (ZMod g))
 def decS (a : ℕ) : Finset (GA g a) := (exists_prim (A := GA g a)).choose
 
 /- English proof (translation)
-The claim follows from `(exists_prim (A := GA g a)).choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem decS_spec (a : ℕ) : IsDecomp (decS g a) ∧ IsPrim (decS g a) :=
   (exists_prim (A := GA g a)).choose_spec
@@ -217,9 +209,9 @@ def labF (a : ℕ) (x : GA g a) : (ZMod g)[X] :=
   if h : ∃ f, LabQ g r e a x f then h.choose else (X - C 1) ^ a
 
 /- English proof (translation)
-Unfold `labF`. Use `split_ifs with h`. Conclude with `h.choose_spec.1`. Use `⟨(monic_X_sub_C 1).pow a, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[natDegree_pow, natDegree_X_sub_C, mul_one]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[coeff_zero_eq_eval_zero]`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem labF_spec (a : ℕ) (x : GA g a) :
     (labF g r e a x).Monic ∧ (labF g r e a x).natDegree = a ∧ (labF g r e a x).coeff 0 ≠ 0 := by
@@ -251,15 +243,13 @@ def lzE : PairedCharacterCondition.LzData g where
 
 open Classical in
 /- English proof (translation)
-Take `⟨T, hTm, hT⟩` from `hsum`. Establish `hmain : ∀ t ∈ decS g r, ∀ f, e f * t = if labF g r e r t = f then t else 0`. Introduce `t ht f`. Take `⟨i, hi, hit, hj⟩` from `lab_unique (decS_spec g r).1 (decS_spec g r).2 e hidem hcen horth T hT ht`. Establish `hlab : labF g r e r t = i`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hex : ∃ f, LabQ g r e r t f` using `⟨i, (hTm i).1 hi, fun h => by simp only [cast_eq]; exact hit⟩`. Establish `hs` using `hex.choose_spec.2 rfl`. Simplify using `only [cast_eq] at hs`. Unfold `labF`. Rewrite using `[dif_pos hex]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Assume the negation of the conclusion as `hne`. Conclude with `(decS_spec g r).1.2.2.1 t ht (hs.symm.trans (hj _ hne))`. Rewrite using `[hlab]`. Use `split_ifs with hif`. Substitute `hif` using the available equality.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hit`. Conclude with `hj f (Ne.symm hif)`. Use `show e f = ∑ τ : ↥(decS g r), if labF g r e r τ.1 = f then τ.1 else 0`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_coe_sort (decS g r) (fun x => x), (decS_spec g r).1.2.2.2.2, mul_one]`.
-
-Use `_ = ∑ τ : ↥(decS g r), e f * τ.1 := Finset.mul_sum _ _ _`. Use `_ = _ := Finset.sum_congr rfl fun τ _ => hmain τ.1 τ.2 f`.
+A detailed English derivation is pending.
 -/
 theorem lzE_ser (hidem : ∀ f, e f * e f = e f) (hcen : ∀ f a, e f * a = a * e f)
     (horth : ∀ f f', f ≠ f' → e f * e f' = 0)
@@ -292,7 +282,7 @@ theorem lzE_ser (hidem : ∀ f, e f * e f = e f) (hcen : ∀ f a, e f * a = a * 
 end Lz
 
 /- English proof (translation)
-Introduce `D`. Use `⟨fun k => haveI : Fact (D.host.g k).Prime := ⟨D.host.g_prime k⟩; lzE (D.host.g k) D.R.r (D.ntypes.eSer k), ?_⟩` and prove the remaining obligations. Introduce `k f`. Use `haveI : Fact (D.host.g k).Prime := ⟨D.host.g_prime k⟩`. Conclude with `lzE_ser _ _ _ (D.ntypes.eSer_idem k) (D.ntypes.eSer_central k) (D.ntypes.eSer_orth k) (D.ntypes.eSer_sum k) f`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_lz_serEq : ∀ D : D7, ∃ lz : ∀ k : Fin 2, PairedCharacterCondition.LzData (D.host.g k), SerEq D lz := by
   intro D

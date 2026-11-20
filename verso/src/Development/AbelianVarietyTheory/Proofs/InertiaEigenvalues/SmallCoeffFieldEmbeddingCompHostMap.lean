@@ -20,7 +20,7 @@ open Formalism.L2.Host (embLL0)
 namespace GlobalTheory.RayInFrac
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.isUnramifiedAt_of_isUnramifiedInGaloisExtension h P`.
+A detailed English derivation is pending.
 -/
 theorem isUnramifiedAt_of_unramIn {K L : Type} [Field K] [NumberField K] [Field L] [NumberField L] [Algebra K L]
     [IsGalois K L] {𝔭 : HeightOneSpectrum (𝓞 K)} (h : GlobalTheory.NT.UnramIn L 𝔭) (P : Ideal (𝓞 L)) [P.IsPrime]
@@ -28,14 +28,14 @@ theorem isUnramifiedAt_of_unramIn {K L : Type} [Field K] [NumberField K] [Field 
   GlobalTheory.T.isUnramifiedAt_of_isUnramifiedInGaloisExtension h P
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.exists_primitiveRoot_in_rayClassField_natModulus hn h`.
+A detailed English derivation is pending.
 -/
 theorem exists_isPrimitiveRoot_of_isRay {K H : Type} [Field K] [NumberField K] [Field H] [NumberField H] [Algebra K H]
     [IsAbelianGalois K H] {n : ℕ} (hn : n ≠ 0) (h : IsRay H (Ideal.span {(n : 𝓞 K)})) : ∃ ζ : H, IsPrimitiveRoot ζ n :=
   GlobalTheory.T.exists_primitiveRoot_in_rayClassField_natModulus hn h
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.isGalois_rat_complexImage_rayClassField hn h j`.
+A detailed English derivation is pending.
 -/
 theorem isGalois_fieldRange_of_isRay {K H : Type} [Field K] [NumberField K] [IsGalois ℚ K] [Field H] [NumberField H]
     [Algebra K H] [IsAbelianGalois K H] {n : ℕ} (hn : n ≠ 0) (h : IsRay H (Ideal.span {(n : 𝓞 K)})) (j : H →+* ℂ) :
@@ -43,7 +43,7 @@ theorem isGalois_fieldRange_of_isRay {K H : Type} [Field K] [NumberField K] [IsG
   GlobalTheory.T.isGalois_rat_complexImage_rayClassField hn h j
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.rayClassField_inf_modulus_eq_sup hU ha hb hq hq2 hqa hqb h h₁ h₂ f₁ f₂`.
+A detailed English derivation is pending.
 -/
 theorem sup_fieldRange_eq_top {K H H₁ H₂ : Type} [Field K] [NumberField K] [Field H] [NumberField H] [Algebra K H]
     [IsAbelianGalois K H] [Field H₁] [NumberField H₁] [Algebra K H₁] [IsAbelianGalois K H₁] [Field H₂] [NumberField H₂]
@@ -54,7 +54,7 @@ theorem sup_fieldRange_eq_top {K H H₁ H₂ : Type} [Field K] [NumberField K] [
   GlobalTheory.T.rayClassField_inf_modulus_eq_sup hU ha hb hq hq2 hqa hqb h h₁ h₂ f₁ f₂
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.host_imagQuadratic_isGalois_units_pm_one D`.
+A detailed English derivation is pending.
 -/
 theorem hostK_facts (D : D7) : IsGalois ℚ D.host.K ∧ ∀ u : (𝓞 D.host.K)ˣ, u = 1 ∨ u = -1 :=
   GlobalTheory.T.host_imagQuadratic_isGalois_units_pm_one D
@@ -64,17 +64,17 @@ abbrev phiK (D : D7) : ↥D.host.K →+* ℂ := D.host.φ₀.comp (algebraMap D.
 def eLL0 (D : D7) : D.host.E →+* ↥D.LL0 := D.embE.codRestrict D.LL0 fun x => D.hostField_le_fixedField x
 
 /- English proof (translation)
-Rewrite using `[← D.embE_φ₀]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem smallCoeffField_embedding_comp_host_map (D : D7) (x : D.host.E) : embLL0 D (eLL0 D x) = D.host.φ₀ x := by
   rw [← D.embE_φ₀]; rfl
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Introduce `x hx`. Take `⟨s, hs⟩` from `Ideal.mem_span_singleton'.1 hx.1`. Take `⟨t, ht⟩` from `Ideal.mem_span_singleton'.1 hx.2`. Take `⟨A, B, hAB⟩` from `Nat.isCoprime_iff_coprime.2 h`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hAB' : (A : R) * u + (B : R) * v = 1` using `by exact_mod_cast congrArg (Int.cast : ℤ → R) hAB`. Use `Ideal.mem_span_singleton'.2 ⟨(A : R) * t + (B : R) * s, ?_⟩` and prove the remaining obligations. Move the coercions through the operations in `at hs ht ⊢`. Take the linear combination `((A : R) * u) * ht + ((B : R) * v) * hs + x * hAB'`. Apply the tactic sequence `refine le_inf ?_ ?_ <;> rw [Ideal.span_singleton_le_span_singleton]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Apply the first step, then apply the next step to every resulting obligation.
 
-Conclude with `⟨(v : R), by push_cast; ring⟩`. Conclude with `⟨(u : R), by push_cast; ring⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem span_inf_span {R : Type} [CommRing R] (c u v : ℕ) (h : u.Coprime v) :
     Ideal.span {((c * u : ℕ) : R)} ⊓ Ideal.span {((c * v : ℕ) : R)} = Ideal.span {((c * u * v : ℕ) : R)} := by
@@ -92,7 +92,7 @@ theorem span_inf_span {R : Type} [CommRing R] (c u v : ℕ) (h : u.Coprime v) :
     · exact ⟨(u : R), by push_cast; ring⟩
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `⟨sideEmb D.ntw i b x, hρ.e_LL0 i b x⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem embLL0_le (D : D7) (ρ : Setup D.ntw) (hρ : ρ.Good) (i : D.ntw.Tw) (b : Bool) :
     (embLL0 D).fieldRange ≤ (ρ.e i b).fieldRange := by
@@ -100,51 +100,43 @@ theorem embLL0_le (D : D7) (ρ : Setup D.ntw) (hρ : ρ.Good) (i : D.ntw.Tw) (b 
   exact ⟨sideEmb D.ntw i b x, hρ.e_LL0 i b x⟩
 
 /- English proof (translation)
-Take `⟨hKgal, hU⟩` from `hostK_facts D`. Use `letI : Algebra D.host.K ℂ := (phiK D).toAlgebra`. Establish `hlp : (D.ntw.l i).Prime` using `(D.ntw.lPrime i).out`. Establish `hm₀0 : D.host.g 0 * D.host.g 1 * D.host.pde * D.host.pde' ≠ 0`. Use `(D.host.g_prime 0).ne_zero` as an intermediate fact.
+Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(D.host.g_prime 1).ne_zero` as an intermediate fact. Use `D.host.pde_prime.ne_zero` as an intermediate fact. Use `D.host.pde'_prime.ne_zero` as an intermediate fact. Check the signs of the components of the expression. Establish `hm0 : m ≠ 0` using `fun h => hm₀0 (Nat.eq_zero_of_zero_dvd (h ▸ hm'))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression. Establish an intermediate fact.
 
-Take `⟨m'', a, hmm, hm''⟩ : ∃ m'' a : ℕ, m = m'' * D.ntw.l i ^ a ∧ (D.ntw.l i).Coprime m''` from `⟨m / D.ntw.l i ^ m.factorization (D.ntw.l i), m.factorization (D.ntw.l i), (Nat.div_mul_cancel (Nat.ordProj_dvd m _)).symm, Nat.coprime_ordCompl hlp hm0⟩`. Establish `hcop : (D.ntw.l i ^ a).Coprime N` using `Nat.Coprime.pow_left _ hNl.symm`. Choose the witnesses or unpack the hypotheses as in `⟨q, hq, hq2, hqm⟩ : ∃ q, q.Prime ∧ q ≠ 2 ∧ q ∣ m'' := by`. Choose the witnesses or unpack the hypotheses as in `⟨k, hk⟩ : ∃ k : Fin 2, D.host.g k ≠ D.ntw.l i := by`. Assume the negation of the conclusion as `h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Use `push_neg at h`. Conclude with `D.host.g_ne (by rw [h 0, h 1])`. Use `⟨D.host.g k, D.host.g_prime k, Formalism.L2.Pj.g_ne_two D k, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `have h1 : D.host.g k ∣ m := (show D.host.g k ∣ D.host.g 0 * D.host.g 1 by fin_cases k <;> simp).trans hm`. Rewrite `h1` using `[hmm]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Nat.Coprime.dvd_of_dvd_mul_right (Nat.Coprime.pow_right _ ((Nat.coprime_primes (D.host.g_prime k) hlp).2 hk)) h1`. Establish `hspan : ∀ n : ℕ, n ≠ 0 → Ideal.span {((n : ℕ) : 𝓞 D.host.K)} ≠ ⊥` using `fun n hn => by`. Rewrite using `[Ne, Ideal.span_singleton_eq_bot]`. Conclude with `hn` after adjusting the coercions. Establish `hdiv : ∀ u v : ℕ, u ∣ v → Ideal.span {((u : ℕ) : 𝓞 D.host.K)} ∣ Ideal.span {((v : ℕ) : 𝓞 D.host.K)}` using `fun u v h => Ideal.dvd_iff_le.2 (Ideal.span_singleton_le_span_singleton.2 (Nat.cast_dvd_cast h))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hmN : m * N ≠ 0` using `mul_ne_zero hm0 hN`. Establish `hm''0 : m'' * N ≠ 0` using `mul_ne_zero (fun h => hm0 (by rw [hmm, h, zero_mul])) hN`. Establish `hm''m : m'' ∣ m` using `⟨_, hmm⟩`. Take `⟨H, _, _, _, _, hH⟩` from `hRF D.host.K _ (hspan (m * N) hmN)`. Take `⟨H₁, _, _, _, _, hH₁⟩` from `hRF D.host.K _ (hspan m hm0)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨H₂, _, _, _, _, hH₂⟩` from `hRF D.host.K _ (hspan (m'' * N) hm''0)`. Take `⟨H₀, _, _, _, _, hH₀, j₀, hj₀, hj₀v⟩` from `hray`. Establish `hH' : IsRay H (Ideal.span {((m * N : ℕ) : 𝓞 D.host.K)})` using `hH`. Establish `hH₁' : IsRay H₁ (Ideal.span {((m : ℕ) : 𝓞 D.host.K)})` using `hH₁`. Establish `hH₂' : IsRay H₂ (Ideal.span {((m'' * N : ℕ) : 𝓞 D.host.K)})` using `hH₂`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `f₁ : H₁ →ₐ[D.host.K] H` using `(GlobalTheory.Published.nonempty_algHom_of_isRay_of_dvd (hspan _ hmN) (hdiv _ _ (dvd_mul_right m N)) hH' hH₁').some`. Establish `f₂ : H₂ →ₐ[D.host.K] H` using `(GlobalTheory.Published.nonempty_algHom_of_isRay_of_dvd (hspan _ hmN) (hdiv _ _ (mul_dvd_mul_right hm''m N)) hH' hH₂').some`. Establish `g₁ : H₁ →ₐ[D.host.K] H₀` using `(GlobalTheory.Published.nonempty_algHom_of_isRay_of_dvd (hspan _ hm₀0) (hdiv _ _ hm') hH₀ hH₁').some`. Set `j : H →ₐ[D.host.K] ℂ` to `IsAlgClosed.lift`. Establish `hinf : Ideal.span {((m : ℕ) : 𝓞 D.host.K)} ⊓ Ideal.span {((m'' * N : ℕ) : 𝓞 D.host.K)} = Ideal.span {((m * N : ℕ) : 𝓞 D.host.K)}`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `span_inf_span (R := 𝓞 D.host.K) m'' (D.ntw.l i ^ a) N hcop` as an intermediate fact. Rewrite `this` using `[← hmm]`. Then use the resulting hypothesis. Establish `hsup` using `sup_fieldRange_eq_top hU (hspan _ hm0) (hspan _ hm''0) hq hq2 (Ideal.span_singleton_le_span_singleton.2 (Nat.cast_dvd_cast (hqm.trans hm''m))) (Ideal.span_singleton_le_span_singleton.2 (Nat.cast_dvd_cast (hqm.trans (dvd_mul_right _ _)))) (hinf ▸ hH') hH₁' hH₂' f₁ f₂`. Establish `hphi : ∀ x : D.host.K, algebraMap D.host.K ℂ x = embLL0 D (eLL0 D (algebraMap D.host.K D.host.E x))` using `fun x => (smallCoeffField_embedding_comp_host_map D _).symm`. Establish `hLe` using `embLL0_le D ρ hρ i b`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Establish `h1 : ∀ x : H₁, j (f₁ x) ∈ (ρ.e i b).fieldRange`. Introduce `x`. Set `j₀' : H₀ →ₐ[D.host.K] ℂ` to `{ j₀ with commutes' := fun y => RingHom.congr_fun hj₀ y }`. Take `⟨y, hy⟩` from `GlobalTheory.Mem.RayMono.exists_apply_eq_of_normal (j.comp f₁) (j₀'.comp g₁) x`. Establish `: j (f₁ x) = j₀ (g₁ y)` using `hy.symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `hLe (hj₀v (g₁ y))`. Establish `h2 : ∀ x : H₂, j (f₂ x) ∈ (ρ.e i b).fieldRange` using `by haveI := D.ntw.O_complete i haveI := D.ntw.resO_ac i`. Set `ι : D.host.K →+* FractionRing (D.ntw.O i)` to `(sideEmb D.ntw i b).comp ((eLL0 D).comp (algebraMap D.host.K D.host.E))`. Establish `hσ : ((j.comp f₂ : H₂ →ₐ[D.host.K] ℂ) : H₂ →+* ℂ).comp (algebraMap D.host.K H₂) = (ρ.e i b).comp ι`.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use extensionality with `x`. Express the relevant statement in the definitionally equal form `j (f₂ (algebraMap D.host.K H₂ x)) = ρ.e i b (sideEmb D.ntw i b (eLL0 D (algebraMap D.host.K D.host.E x)))`. Rewrite using `[f₂.commutes, j.commutes, hρ.e_LL0, hphi]`. Establish `hur : ∀ (P : Ideal (𝓞 H₂)) [P.IsPrime], ((D.ntw.l i : ℕ) : 𝓞 H₂) ∈ P → Algebra.IsUnramifiedAt (𝓞 D.host.K) P`. Introduce `P _ hlP`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Establish `hlK : ((D.ntw.l i : ℕ) : 𝓞 D.host.K) ∈ P.under (𝓞 D.host.K)`. Rewrite using `[Ideal.under, Ideal.mem_comap, map_natCast]`. Conclude with `hlP`. Establish `hne : P.under (𝓞 D.host.K) ≠ ⊥` using `fun h0 => by`. Rewrite `hlK` using `[h0, Ideal.mem_bot]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `hlp.ne_zero (by exact_mod_cast hlK)`. Set `𝔭 : HeightOneSpectrum (𝓞 D.host.K)` to `⟨P.under (𝓞 D.host.K), inferInstance, hne⟩`. Use `haveI : P.LiesOver 𝔭.asIdeal := ⟨rfl⟩`. Use `isUnramifiedAt_of_unramIn (hH₂'.1 𝔭 fun hd => ?_) P` and prove the remaining obligations. Establish `h3 : ((m'' * N : ℕ) : 𝓞 D.host.K) ∈ 𝔭.asIdeal` using `Ideal.dvd_iff_le.1 hd (Ideal.mem_span_singleton_self _)`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hc : (D.ntw.l i).Coprime (m'' * N)` using `Nat.Coprime.mul_right hm'' hNl.symm`. Take `⟨A, B, hAB⟩` from `Nat.isCoprime_iff_coprime.2 hc`. Establish `h5` using `𝔭.asIdeal.add_mem (𝔭.asIdeal.mul_mem_left (A : 𝓞 D.host.K) hlK) (𝔭.asIdeal.mul_mem_left (B : 𝓞 D.host.K) h3)`. Rewrite using `[show (A : 𝓞 D.host.K) * ((D.ntw.l i : ℕ) : 𝓞 D.host.K) + (B : 𝓞 D.host.K) * ((m'' * N : ℕ) : 𝓞 D.host.K) = 1 by`. Conclude with `congrArg (Int.cast : ℤ → 𝓞 D.host.K) hAB] at h5` after adjusting the coercions.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Conclude with `𝔭.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h5)`. Introduce `x`. Take `⟨y, hy⟩` from `GlobalTheory.UnramifiedEmbedding.range_le_range_of_isUnramifiedAt (D.ntw.O i) (D.ntw.l i) (D.ntw.O_l i) (ρ.e i b) D.host.K H₂ ι _ hσ hur ⟨x, rfl⟩`. Conclude with `⟨y, hy⟩`. Establish `hall : ∀ x : H, j x ∈ (ρ.e i b).fieldRange`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Set `T : IntermediateField D.host.K ℂ` to `Subfield.toIntermediateField (ρ.e i b).fieldRange fun x => by rw [hphi]; exact hLe ⟨_, rfl⟩`. Establish `hT : f₁.fieldRange ⊔ f₂.fieldRange ≤ T.comap j` using `sup_le (by rintro _ ⟨y, rfl⟩; exact h1 y) (by rintro _ ⟨y, rfl⟩; exact h2 y)`. Rewrite `hT` using `[hsup]`. Introduce `x`. Conclude with `hT (IntermediateField.mem_top (x := x))`.
+Establish an intermediate fact. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Set `A : IntermediateField ℚ ℂ` to `(embLL0 D).toRatAlgHom.fieldRange`. Set `B : IntermediateField ℚ ℂ` to `(j : H →+* ℂ).toRatAlgHom.fieldRange`. Use `haveI : FiniteDimensional ℚ A := (AlgEquiv.ofInjectiveField (embLL0 D).toRatAlgHom).toLinearEquiv.finiteDimensional`. Use `haveI : FiniteDimensional ℚ B := (AlgEquiv.ofInjectiveField (j : H →+* ℂ).toRatAlgHom).toLinearEquiv.finiteDimensional`. Establish `hA : ∀ x, embLL0 D x ∈ A ⊔ B` using `fun x => (le_sup_left : A ≤ A ⊔ B) ⟨x, rfl⟩`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result.
 
-Establish `hB : ∀ x, j x ∈ A ⊔ B` using `fun x => (le_sup_right : B ≤ A ⊔ B) ⟨x, rfl⟩`. Use `⟨A ⊔ B, inferInstance, fun hG => ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `gA : IsGalois ℚ A` using `IsGalois.of_algEquiv (AlgEquiv.ofInjectiveField (embLL0 D).toRatAlgHom)`. Establish `gB : IsGalois ℚ B` using `isGalois_fieldRange_of_isRay hmN hH' (j : H →+* ℂ)`. Use `haveI : Normal ℚ ↥(A ⊔ B) := @IntermediateField.normal_sup ℚ ℂ _ _ _ A B gA.to_normal gB.to_normal`.
-
-Conclude with `⟨⟩`. Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `hA x`. Introduce `z hz`. Set `S : IntermediateField ℚ ℂ` to `Subfield.toIntermediateField (ρ.e i b).fieldRange fun r => by`.
-
-Simplify using `using SubfieldClass.ratCast_mem (ρ.e i b).fieldRange r`. Establish `hS : A ⊔ B ≤ S` using `sup_le (by rintro _ ⟨x, rfl⟩; exact hLe ⟨x, rfl⟩) (by rintro _ ⟨x, rfl⟩; exact hall x)`. Conclude with `hS hz`. Use `⟨H, inferInstance, inferInstance, inferInstance, inferInstance, hH', (j : H →+* ℂ), ?_, fun x => hB x⟩` and prove the remaining obligations. Use extensionality with `x`.
-
-Conclude with `j.commutes x`. Take `⟨ζ, hζ⟩` from `exists_isPrimitiveRoot_of_isRay hmN hH'`. Introduce `z hz`. Use `haveI : NeZero (m * N) := ⟨hmN⟩`. Establish `hζ'` using `hζ.map_of_injective (j : H →+* ℂ).injective`.
-
-Take `⟨k, -, rfl⟩` from `hζ'.eq_pow_of_pow_eq_one hz`. Conclude with `pow_mem (hB ζ) k`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_field (D : D7) (ρ : Setup D.ntw) (hρ : ρ.Good) (i : D.ntw.Tw) (b : Bool)
     (hRF : GlobalTheory.NT.RayField)
@@ -289,9 +281,9 @@ theorem exists_field (D : D7) (ρ : Setup D.ntw) (hρ : ρ.Good) (i : D.ntw.Tw) 
     exact pow_mem (hB ζ) k
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨y, rfl⟩`. Take `⟨a, c, -, rfl⟩` from `IsFractionRing.div_surjective (A := D.ntw.O i) y`. Rewrite using `[map_div₀]`. Establish `ha : ρ.e i b (algebraMap (D.ntw.O i) _ a) = ρ.eOk i b k (algebraMap (D.ntw.O i) (D.ntw.Ok i k) a)` using `(hρ.ek_e i b k a).symm`. Establish `hc : ρ.e i b (algebraMap (D.ntw.O i) _ c) = ρ.eOk i b k (algebraMap (D.ntw.O i) (D.ntw.Ok i k) c)` using `(hρ.ek_e i b k c).symm`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[ha, hc]`. Conclude with `div_mem ⟨_, rfl⟩ ⟨_, rfl⟩`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem range_e_le_ek (D : D7) (ρ : Setup D.ntw) (hρ : ρ.Good) (i : D.ntw.Tw) (b : Bool) (k : ℕ) :
     (ρ.e i b).fieldRange ≤ (ρ.ek i b k).fieldRange := by
@@ -306,19 +298,17 @@ theorem range_e_le_ek (D : D7) (ρ : Setup D.ntw) (hρ : ρ.Good) (i : D.ntw.Tw)
   exact div_mem ⟨_, rfl⟩ ⟨_, rfl⟩
 
 /- English proof (translation)
-Take `⟨L, hfin, hgal, h1, h2, ⟨H, i1, i2, i3, i4, hH, jj, hjj, hv⟩, hroot⟩` from `exists_field D ρ hρ i b hRF hray m N hm hm' hN hNl`. Establish `hlp : (D.ntw.l i).Prime` using `(D.ntw.lPrime i).out`. Use `haveI : NeZero (D.ntw.l i ^ k) := ⟨pow_ne_zero _ hlp.ne_zero⟩`. Use `set ζ : ℂ := ρ.eOk i b k (D.ntw.zk i k : D.ntw.Ok i k) with hζdef`. Establish `hζ : IsPrimitiveRoot ζ (D.ntw.l i ^ k)` using `(D.ntw.zk_prim i k).map_of_injective (ρ.eOk_injective i b k)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `p : Polynomial ℚ` to `Polynomial.X ^ (D.ntw.l i ^ k) - 1`. Establish `hp0 : p ≠ 0`. Simplify `Polynomial.X_pow_sub_C_ne_zero (Nat.pos_of_ne_zero (NeZero.ne (D.ntw.l i ^ k))) (1 : ℚ)` using `[p]`. Establish `hroots : ∀ z : ℂ, z ∈ p.rootSet ℂ ↔ z ^ (D.ntw.l i ^ k) = 1` using `fun z => by`. Rewrite using `[Polynomial.mem_rootSet, and_iff_right hp0]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Simplify using `[p, sub_eq_zero]`. Set `C : IntermediateField ℚ ℂ` to `IntermediateField.adjoin ℚ (p.rootSet ℂ)`. Use `haveI hCs : Polynomial.IsSplittingField ℚ C p := IntermediateField.adjoin_rootSet_isSplittingField (IsAlgClosed.splits _)`. Use `haveI : FiniteDimensional ℚ C := Polynomial.IsSplittingField.finiteDimensional C p`. Use `⟨L ⊔ C, inferInstance, fun hG => ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Establish `gL : IsGalois ℚ L` using `hgal hG haveI : Normal ℚ C := Normal.of_isSplittingField p`. Establish `gC : IsGalois ℚ C` using `⟨⟩`. Use `haveI : Normal ℚ ↥(L ⊔ C) := @IntermediateField.normal_sup ℚ ℂ _ _ _ L C gL.to_normal gC.to_normal`. Conclude with `⟨⟩`. Conclude with `fun z hz => (le_sup_left : L ≤ L ⊔ C) (h1 hz)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `z hz`. Set `S : IntermediateField ℚ ℂ` to `Subfield.toIntermediateField (ρ.ek i b k).fieldRange fun r => by`. Simplify using `using SubfieldClass.ratCast_mem (ρ.ek i b k).fieldRange r`. Establish `hS : L ⊔ C ≤ S`. Use `sup_le (fun x hx => range_e_le_ek D ρ hρ i b k (h2 hx)) ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Rewrite using `[IntermediateField.adjoin_le_iff]`. Introduce `z hz`. Take `⟨t, -, rfl⟩` from `hζ.eq_pow_of_pow_eq_one ((hroots z).1 hz)`. Conclude with `pow_mem (⟨_, rfl⟩ : ζ ∈ (ρ.ek i b k).fieldRange) t`. Conclude with `hS hz`.
-
-Conclude with `⟨H, i1, i2, i3, i4, hH, jj, hjj, fun x => (le_sup_left : L ≤ L ⊔ C) (hv x)⟩`. Conclude with `fun z hz => (le_sup_left : L ≤ L ⊔ C) (hroot z hz)`. Introduce `z hz`. Conclude with `(le_sup_right : C ≤ L ⊔ C) (IntermediateField.subset_adjoin ℚ _ ((hroots z).2 hz))`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_field_k (D : D7) (ρ : Setup D.ntw) (hρ : ρ.Good) (i : D.ntw.Tw) (b : Bool)
     (hRF : GlobalTheory.NT.RayField)
@@ -368,7 +358,7 @@ theorem exists_field_k (D : D7) (ρ : Setup D.ntw) (hρ : ρ.Good) (i : D.ntw.Tw
     exact (le_sup_right : C ≤ L ⊔ C) (IntermediateField.subset_adjoin ℚ _ ((hroots z).2 hz))
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨exists_field D ρ hρ i b hRF hray m N hm hm' hN hNl, exists_field_k D ρ hρ i b hRF hray m N hm hm' hN hNl⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_rayField_le (D : D7) (ρ : Setup D.ntw) (hρ : ρ.Good) (i : D.ntw.Tw) (b : Bool)
     (hRF : GlobalTheory.NT.RayField)

@@ -13,7 +13,7 @@ section
 variable {E : Type} [Field E]
 
 /- English proof (translation)
-Establish `h0` using `congrArg (coord τ') (atEmb_mul_of_ne h 1 z)`. Rewrite `h0` using `[map_mul, coord_atEmb, map_zero, one_mul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 lemma coord_atEmb_ne {τ τ' : E →+* ℂ} (h : InfinitePlace.mk τ' ≠ InfinitePlace.mk τ) (z : ℂ) :
     coord τ' (atEmb τ z) = 0 := by
@@ -21,7 +21,7 @@ lemma coord_atEmb_ne {τ τ' : E →+* ℂ} (h : InfinitePlace.mk τ' ≠ Infini
   rwa [map_mul, coord_atEmb, map_zero, one_mul] at h0
 
 /- English proof (translation)
-Establish `: atEmb τ z = atEmb (ComplexEmbedding.conjugate τ) (starRingEnd ℂ z)`. Rewrite using `[atEmb_conj, Complex.conj_conj]`. Rewrite using `[this, coord_atEmb]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 lemma coord_conj_atEmb [IsTotallyComplex E] (τ : E →+* ℂ) (z : ℂ) :
     coord (ComplexEmbedding.conjugate τ) (atEmb τ z) = starRingEnd ℂ z := by
@@ -30,13 +30,13 @@ lemma coord_conj_atEmb [IsTotallyComplex E] (τ : E →+* ℂ) (z : ℂ) :
   rw [this, coord_atEmb]
 
 /- English proof (translation)
-Distinguish the cases in `hm : InfinitePlace.mk τ' = InfinitePlace.mk τ`. Break down `InfinitePlace.mk_eq_iff.mp hm with h | h` into its components or cases. Substitute `h` using the available equality. Rewrite using `[if_pos rfl, coord_atEmb, coord_atEmb, Complex.I_mul_I]`. Evaluate the numerical expressions.
+Consider separately whether the proposition holds or fails. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Establish `h' : τ' = ComplexEmbedding.conjugate τ`. Break down `InfinitePlace.mk_eq_iff.mp hm.symm with h2 | h2` into its components or cases. It suffices to derive a contradiction. Apply `IsTotallyComplex.complexEmbedding_not_isReal τ'` to reduce the goal to its premises. Rewrite using `[ComplexEmbedding.isReal_iff, h, h2]`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h2.symm`. Establish `hne : τ' ≠ τ`. Introduce `e`. Apply `IsTotallyComplex.complexEmbedding_not_isReal τ'` to reduce the goal to its premises. Rewrite using `[ComplexEmbedding.isReal_iff, h, e]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg hne, h', coord_conj_atEmb, coord_conj_atEmb, map_one, Complex.conj_I, mul_neg, Complex.I_mul_I]`. Evaluate the numerical expressions. Establish `hne : τ' ≠ τ` using `fun e => hm (by rw [e])`. Rewrite using `[if_neg hne, coord_atEmb_ne hm, coord_atEmb_ne hm]`. Simplify using the standard rewrite rules.
+Evaluate the numerical expressions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma cxkey [IsTotallyComplex E] (τ τ' : E →+* ℂ) :
     (1 / 2 : ℂ) * (coord τ' (atEmb τ 1) - Complex.I * coord τ' (atEmb τ Complex.I)) =
@@ -66,7 +66,7 @@ lemma cxkey [IsTotallyComplex E] (τ τ' : E →+* ℂ) :
 end
 
 /- English proof (translation)
-Simplify using `only [mul_sub, Finset.mul_sum, Finset.sum_sub_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma half_comb (ι : Type) [Fintype ι] (x x' : ι → ℂ) (y y' : ℂ) :
     (1 / 2 : ℂ) * ((∑ p, x p - y) - Complex.I * (∑ p, x' p - y')) =
@@ -75,7 +75,7 @@ lemma half_comb (ι : Type) [Fintype ι] (x x' : ι → ℂ) (y y' : ℂ) :
   ring
 
 /- English proof (translation)
-Apply the tactic sequence `split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma half_ite (P : Prop) [Decidable P] (u v : ℂ) :
     (1 / 2 : ℂ) * ((if P then u else 0) - Complex.I * (if P then v else 0)) =
@@ -83,39 +83,37 @@ lemma half_ite (P : Prop) [Decidable P] (u v : ℂ) :
   split_ifs <;> simp
 
 /- English proof (translation)
-Introduce `E _ _ _ a Q _ _ lab s`. Use `⟨fun τ i j f => ?_, fun y p p' hp f => ?_⟩` and prove the remaining obligations. Establish `hD : ∀ (z : ℂ) (I J : Q → Fin a), bigD lab s (toL (Matrix.single i j (atEmb τ z))) I J = (∑ p, if (∀ r, r ≠ p → I r = J r) ∧ I p = i ∧ J p = j then coord (lab p) (atEmb τ z) else 0) - if I = J ∧ i = j then (s : ℂ) * ∑ τ' : E →+* ℂ, coord τ' (atEmb τ z) else 0`. Introduce `z I J`. Simplify using `only [bigD, Matrix.of_apply, toL, Matrix.of_symm_apply, Matrix.single_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[apply_ite (coord (lab p)), map_zero]`. Distinguish the cases in `h1 : ∀ r, r ≠ p → I r = J r`. Rewrite using `[if_pos h1]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h4 : i = I p ∧ j = J p`. Rewrite using `[if_pos h4, if_pos ⟨h1, h4.1.symm, h4.2.symm⟩]`. Rewrite using `[if_neg h4, if_neg (fun h => h4 ⟨h.2.1.symm, h.2.2.symm⟩)]`. Rewrite using `[if_neg h1, if_neg (fun h => h1 h.1)]`. Distinguish the cases in `h1 : I = J`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h2 : i = j`. Substitute `h2` using the available equality. Rewrite using `[if_pos h1, if_pos ⟨h1, rfl⟩]`. Use `congr 1`. Use `Finset.sum_congr rfl fun τ' _ => ?_` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [and_self, apply_ite (coord τ'), map_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Rewrite using `[if_pos h1, if_neg (fun h => h2 h.2)]`. Rewrite using `[Finset.sum_eq_zero fun τ' _ => Finset.sum_eq_zero fun k _ => by`. Rewrite using `[if_neg (fun h => h2 (h.1.trans h.2.symm)), map_zero]]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[if_neg h1, if_neg (fun h => h1 h.1)]`. Establish `hS : (1 / 2 : ℂ) * (∑ τ' : E →+* ℂ, coord τ' (atEmb τ 1) - Complex.I * ∑ τ' : E →+* ℂ, coord τ' (atEmb τ Complex.I)) = 1`. Simplify using `only [Finset.mul_sum, ← Finset.sum_sub_distrib]`. Simplify using `only [cxkey, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Establish `hE : ∀ I J : Q → Fin a, cx τ (bigD lab s) i j I J = (∑ p, if (∀ r, r ≠ p → I r = J r) ∧ I p = i ∧ J p = j then (if lab p = τ then (1 : ℂ) else 0) else 0) - if I = J ∧ i = j then (s : ℂ) else 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `I J`. Simplify using `only [cx, Matrix.smul_apply, Matrix.sub_apply, smul_eq_mul, hD, half_comb, half_ite, cxkey]`. Use `congr 1`. Use `split_ifs`. Take the linear combination `(s : ℂ) * hS`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Take a linear combination of the given relations to obtain the conclusion. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `hT : ∀ I : Q → Fin a, tE (fib lab τ) (0 : Fin a → Fin a → Module.End ℂ ℂ) i j f I = ∑ p, if lab p = τ then (if I p = i then f (Function.update I p j) else 0) else 0`. Introduce `I`. Simplify using `[tE, lift, eAt, fib, Finset.sum_filter]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `by_cases hl : lab p = τ <;> by_cases hi : I p = i <;> simp [hl, hi]`. Use function extensionality and compare the values at `I`. Simplify using `only [mulVec, dotProduct, hE, sub_mul, Finset.sum_sub_distrib, Finset.sum_mul, Pi.sub_apply, hT]`. Use `congr 1`. Rewrite using `[Finset.sum_comm]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Distinguish the cases in `hl : lab p = τ`. Distinguish the cases in `hi : I p = i`. Rewrite using `[Finset.sum_eq_single (Function.update I p j)]`. Establish `hc : (∀ r, r ≠ p → I r = Function.update I p j r) ∧ I p = i ∧ Function.update I p j p = j` using `⟨fun r hr => by rw [Function.update_of_ne hr], hi, by simp⟩`.
+Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_pos hc, if_pos hl, if_pos hl, if_pos hi, one_mul]`. Introduce `J _ hJ`. Rewrite using `[if_neg, zero_mul]`. Introduce `h`. Conclude with `hJ (Function.eq_update_iff.mpr ⟨h.2.2, fun r hr => (h.1 r hr).symm⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Simplify using `only [if_pos hl, if_neg hi]`. Use `Finset.sum_eq_zero fun J _ => ?_` and prove the remaining obligations. Rewrite using `[if_neg (fun h => hi h.2.1), zero_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Simplify using `only [if_neg hl]`. Simplify using the standard rewrite rules. Distinguish the cases in `h : i = j`. Simplify using `[h]`. Simplify using `[h]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hlab : ∀ r, lab (Equiv.swap p p' r) = lab r`. Introduce `r`. Rewrite using `[Equiv.swap_apply_def]`. Use `split_ifs with h1 h2`. Rewrite using `[h1, hp]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[h2, hp]`. Both sides reduce to the same expression. Establish `hM : ∀ I J : Q → Fin a, bigM lab s y (I ∘ Equiv.swap p p') (J ∘ Equiv.swap p p') = bigM lab s y I J`. Introduce `I J`. Simplify using `only [bigM, Matrix.of_apply, Function.comp_apply]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Introduce a local definition for the expression. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Conclude with `Fintype.prod_equiv (Equiv.swap p p') _ _ (fun r => by rw [hlab])`. Set `e : (Q → Fin a) ≃ (Q → Fin a)` to `⟨fun J => J ∘ Equiv.swap p p', fun J => J ∘ Equiv.swap p p', fun J => by funext r; simp, fun J => by funext r; simp⟩`. Use function extensionality and compare the values at `I`. Simplify using `only [mulVec, dotProduct, pm, LinearMap.pi_apply, LinearMap.proj_apply]`.
-
-Conclude with `Fintype.sum_equiv e _ _ (fun J => by simp only [e, Equiv.coe_fn_mk, hM])`.
+A detailed English derivation is pending.
 -/
 theorem bigCx_holds : BigCx := by
   intro E _ _ _ a Q _ _ lab s

@@ -13,9 +13,9 @@ noncomputable section
 namespace FlagVandermondeDvd
 
 /- English proof (translation)
-Rewrite using `[Finset.prod_filter, Fintype.prod_prod_type]`. Simplify using `only [blockVandermonde, vandermondeOf]`. Use `Finset.prod_congr rfl (fun τ _ => ?_)` and prove the remaining obligations. Rewrite using `[Fintype.prod_prod_type]`. Use `Finset.prod_congr rfl (fun i _ => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: Finset.Ioi i = (univ : Finset (Fin N)).filter (fun j => i < j)` using `by ext; simp`. Rewrite using `[this, Finset.prod_filter]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem blockVandermonde_eq_prod (f N : ℕ) :
     blockVandermonde f N =
@@ -30,9 +30,9 @@ theorem blockVandermonde_eq_prod (f N : ℕ) :
   rw [this, Finset.prod_filter]
 
 /- English proof (translation)
-Unfold `blockPermute`. Use `congr 1`. Use function extensionality and compare the values at `p`. Take `⟨σ, k⟩` from `p`. Distinguish the cases in `hσ : σ = τ`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Substitute `hσ` using the available equality. Simplify using `only [Function.update_self, Equiv.swap_apply_def, Prod.mk.injEq, true_and]`. Apply the tactic sequence `split_ifs <;> rfl`. Simplify using `only [Function.update_of_ne hσ, Pi.one_apply, Equiv.Perm.coe_one, id]`. Apply the tactic sequence `rw [Equiv.swap_apply_of_ne_of_ne] <;> simp [hσ]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem rename_swap_eq (f N : ℕ) (τ : Fin f) (i j : Fin N) :
     (rename (Equiv.swap (τ, i) (τ, j)) : RootRing f N →ₐ[ℚ] RootRing f N) =
@@ -49,7 +49,7 @@ theorem rename_swap_eq (f N : ℕ) (τ : Fin f) (i j : Fin N) :
     rw [Equiv.swap_apply_of_ne_of_ne] <;> simp [hσ]
 
 /- English proof (translation)
-Unfold `blockSign`. Rewrite using `[Fintype.prod_eq_single τ]`. Simplify using `[Equiv.Perm.sign_swap hij]`. Introduce `σ hσ`. Simplify using `[Function.update_of_ne hσ]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem blockSign_update_swap (f N : ℕ) (τ : Fin f) (i j : Fin N) (hij : i ≠ j) :
     blockSign f N (Function.update 1 τ (Equiv.swap i j)) = -1 := by
@@ -64,13 +64,13 @@ end FlagVandermondeDvd
 open FlagVandermondeDvd in
 
 /- English proof (translation)
-Introduce `f N P hP`. Rewrite using `[blockVandermonde_eq_prod]`. Use `h4 (RootRing f N) (Fin f × Fin N × Fin N) _ _ P ?_ ?_ ?_` and prove the remaining obligations. Introduce and unpack `⟨τ, i, j⟩ ht`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at ht`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Conclude with `h2 _ _ _ (by simp [ht.ne])`. Introduce and unpack `⟨τ, i, j⟩ ht ⟨τ', i', j'⟩ ht' hne`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at ht ht'`. Use `h3 _ _ _ _ _ (by simp [ht.ne]) (by simp [ht'.ne]) ?_ ?_` and prove the remaining obligations. Introduce and unpack `⟨ha, hb⟩`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Simplify using `only [Prod.mk.injEq] at ha hb`. Conclude with `hne (by rw [ha.1, ha.2, hb.2])`. Introduce and unpack `⟨ha, hb⟩`. Simplify using `only [Prod.mk.injEq] at ha hb`. Rewrite `ht` using `[ha.2, hb.2]`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Conclude with `absurd (ht.trans ht') (lt_irrefl _)`. Introduce and unpack `⟨τ, i, j⟩ ht`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at ht`. Use `h1 _ P _ _ (by simp [ht.ne]) ?_` and prove the remaining obligations. Rewrite using `[rename_swap_eq, hP, blockSign_update_swap f N τ i j ht.ne, neg_one_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem FlagVandermondeDvd.proof (h1 : FlagSwapDivisible.Statement) (h2 : FlagDiffPrime.Statement)
     (h3 : FlagDiffNotDvd.Statement) (h4 : FlagProdPrimesDvd.Statement) :

@@ -22,9 +22,9 @@ variable {A : Type*} [Ring A] [Algebra K A] (b : Basis κ K A)
 variable (R : Type*) [CommRing R] [Algebra K R] {R' : Type*} [CommRing R'] [Algebra K R']
 
 /- English proof (translation)
-Use extensionality with `k l`. Establish `h1 : (lmat b R a * rmat b R x) k = lmat b R a k ᵥ* rmat b R x`. Use function extensionality and compare the values at `l`. Simplify using `[Matrix.mul_apply, vecMul, dotProduct]`. Establish `h2 : (rmat b R x * lmat b R a) k = rmat b R x k ᵥ* lmat b R a`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `l`. Simplify using `[Matrix.mul_apply, vecMul, dotProduct]`. Rewrite using `[h1, h2]`. Simplify using `only [lmat, rmat]`. Rewrite using `[← coords_mul, ← coords_mul_left, mul_assoc]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem lmat_mul_rmat (a x : R ⊗[K] A) : lmat b R a * rmat b R x = rmat b R x * lmat b R a := by
   ext k l
@@ -41,7 +41,7 @@ theorem lmat_mul_rmat (a x : R ⊗[K] A) : lmat b R a * rmat b R x = rmat b R x 
 variable {R}
 
 /- English proof (translation)
-Apply `(coords b R').injective` to reduce the goal to its premises. Rewrite using `[LinearEquiv.apply_symm_apply, coords_baseMap, LinearEquiv.apply_symm_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem coords_symm_baseMap (f : R →ₐ[K] R') (y : κ → R) :
     (coords b R').symm (f ∘ y) = baseMap f ((coords b R).symm y) := by
@@ -49,7 +49,7 @@ theorem coords_symm_baseMap (f : R →ₐ[K] R') (y : κ → R) :
   rw [LinearEquiv.apply_symm_apply, coords_baseMap, LinearEquiv.apply_symm_apply]
 
 /- English proof (translation)
-Use extensionality with `k l`. Simplify using `only [lmat, Matrix.map_apply, ← baseMap_baseBasis b f k, ← map_mul, coords_baseMap, Function.comp_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem lmat_baseMap (f : R →ₐ[K] R') (a : R ⊗[K] A) :
     lmat b R' (baseMap f a) = (lmat b R a).map f := by
@@ -62,7 +62,7 @@ variable (R)
 def normCoords (y : κ → R) : Fin 1 → R := fun _ => (rmat b R ((coords b R).symm y)).det
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [normCoords, map_smul, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[← rmatHom_apply, map_smul, rmatHom_apply, det_smul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem normCoords_smul (t : R) (y : κ → R) :
     normCoords b R (t • y) = t ^ Fintype.card κ • normCoords b R y := by
@@ -73,7 +73,7 @@ theorem normCoords_smul (t : R) (y : κ → R) :
 variable {R}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [normCoords, Function.comp_apply, coords_symm_baseMap, rmat_baseMap]`. Rewrite using `[AlgHom.map_det]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem normCoords_comp (f : R →ₐ[K] R') (y : κ → R) :
     normCoords b R' (f ∘ y) = f ∘ normCoords b R y := by
@@ -86,9 +86,9 @@ def normPoly (i : Fin 1) : MvPolynomial κ K :=
   normCoords b (MvPolynomial κ K) MvPolynomial.X i
 
 /- English proof (translation)
-Establish `h` using `congrFun (normCoords_comp b (MvPolynomial.aeval y) MvPolynomial.X) i`. Establish `hy : (MvPolynomial.aeval y : MvPolynomial κ K →ₐ[K] R) ∘ MvPolynomial.X = y`. Use function extensionality and compare the values at `p`. Simplify using the standard rewrite rules. Rewrite `h` using `[hy]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h.symm`.
+A detailed English derivation is pending.
 -/
 theorem aeval_normPoly (y : κ → R) (i : Fin 1) :
     MvPolynomial.aeval y (normPoly b i) = normCoords b R y i := by
@@ -118,13 +118,13 @@ def normOneUnits : Subgroup (𝔸[K] ⊗[K] D)ˣ :=
   (Reduction.normOneGL K d).comap (rmatUnits b 𝔸[K])
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_normOneUnits {x : (𝔸[K] ⊗[K] D)ˣ} :
     x ∈ normOneUnits b ↔ rmatUnits b 𝔸[K] x ∈ Reduction.normOneGL K d := Iff.rfl
 
 /- English proof (translation)
-Establish `h1 : Algebra.TensorProduct.lid K D ξ ≠ 0` using `(map_ne_zero_iff _ (Algebra.TensorProduct.lid K D).injective).2 h`. Establish `h2` using `(isUnit_iff_ne_zero.2 h1).map (Algebra.TensorProduct.lid K D).symm`. Simplify using `using h2`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isUnit_of_ne_zero' {ξ : K ⊗[K] D} (h : ξ ≠ 0) : IsUnit ξ := by
   have h1 : Algebra.TensorProduct.lid K D ξ ≠ 0 :=
@@ -133,7 +133,7 @@ theorem isUnit_of_ne_zero' {ξ : K ⊗[K] D} (h : ξ ≠ 0) : IsUnit ξ := by
   simpa using h2
 
 /- English proof (translation)
-Take `⟨u, rfl⟩` from `isUnit_of_ne_zero' h`. Establish `: (rmat b K u).det * (rmat b K ↑u⁻¹).det = 1`. Rewrite using `[← det_mul, ← rmat_mul, u.mul_inv, rmat_one, det_one]`. Conclude with `left_ne_zero_of_mul_eq_one this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_rmat_ne_zero {ξ : K ⊗[K] D} (h : ξ ≠ 0) : (rmat b K ξ).det ≠ 0 := by
   obtain ⟨u, rfl⟩ := isUnit_of_ne_zero' h
@@ -142,7 +142,7 @@ theorem det_rmat_ne_zero {ξ : K ⊗[K] D} (h : ξ ≠ 0) : (rmat b K ξ).det �
   exact left_ne_zero_of_mul_eq_one this
 
 /- English proof (translation)
-Use `Nat.pos_of_ne_zero fun h => ?_` and prove the remaining obligations. Substitute `h` using the available equality. Conclude with `one_ne_zero (b'.ext_elem fun i => i.elim0 : (1 : D) = 0)`.
+Reduce the conclusion to the remaining proof obligations. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem pos_of_basis (b' : Basis (Fin d) K D) : 0 < d := by
   refine Nat.pos_of_ne_zero fun h => ?_
@@ -150,9 +150,9 @@ theorem pos_of_basis (b' : Basis (Fin d) K D) : 0 < d := by
   exact one_ne_zero (b'.ext_elem fun i => i.elim0 : (1 : D) = 0)
 
 /- English proof (translation)
-Establish `hv : Reduction.ratVec ξv = coords b 𝔸[K] (baseMap (Algebra.ofId K 𝔸[K]) ((coords b K).symm ξv))`. Rewrite using `[coords_baseMap, LinearEquiv.apply_symm_apply]`. Both sides reduce to the same expression. Use function extensionality and compare the values at `i`. Rewrite using `[hv, ← coords_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [normCoords, LinearEquiv.symm_apply_apply, rmat_mul, det_mul, rmat_baseMap, Pi.smul_apply, smul_eq_mul, AdelicGLn.coe_det, rmatUnits_val]`. Establish `e : ((rmat b K ((coords b K).symm ξv)).map (Algebra.ofId K 𝔸[K])).det = Algebra.ofId K 𝔸[K] (rmat b K ((coords b K).symm ξv)).det` using `(AlgHom.map_det _ _).symm`. Rewrite using `[e, mul_comm]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem normCoords_vecMul (x : (𝔸[K] ⊗[K] D)ˣ) (ξv : Fin d → K) :
     normCoords b 𝔸[K] (Reduction.ratVec ξv ᵥ* rmat b 𝔸[K] x) =
@@ -171,15 +171,13 @@ theorem normCoords_vecMul (x : (𝔸[K] ⊗[K] D)ˣ) (ξv : Fin d → K) :
   rfl
 
 /- English proof (translation)
-Take `⟨C, hC, hCb⟩` from `exists_adelicNorm_aeval_le (K := K) (d := d) (pos_of_basis b) (normPoly b) (fun v t y i => by`. Rewrite using `[aeval_normPoly, aeval_normPoly, normCoords_smul, Fintype.card_fin]`. Use the proof step `rfl)`. Use the proof step `(fun w t y i => by`. Rewrite using `[aeval_normPoly, aeval_normPoly, normCoords_smul, Fintype.card_fin]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Use the proof step `rfl)`. Establish `hG : ∀ g ∈ rmatUnits b 𝔸[K] '' (normOneUnits b : Set (𝔸[K] ⊗[K] D)ˣ), ∀ ξv : Fin d → K, ξv ≠ 0 → ∃ s : GroundTheory.Global.IdeleGroup K, 1 ≤ (GroundTheory.Global.IdeleGroup.ideleModule K s : ℝ) ∧ ∃ z : Fin 1 → K, z ≠ 0 ∧ (fun y i => MvPolynomial.aeval y (normPoly b i)) (Reduction …`. Introduce and unpack `_ ⟨x, hx, rfl⟩ ξv hξ`. Use `⟨AdelicGLn.det K d (rmatUnits b 𝔸[K] x), ?_, normCoords b K ξv, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[(Reduction.mem_normOneGL).1 hx]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce `h0`. Establish `h1` using `congrFun h0 0`. Simplify using `only [normCoords, Pi.zero_apply] at h1`. Use `det_rmat_ne_zero b ?_ h1` and prove the remaining obligations. Introduce `h2`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Apply `hξ` to reduce the goal to its premises. Rewrite using `[← LinearEquiv.apply_symm_apply (coords b K) ξv, h2, map_zero]`. Use function extensionality and compare the values at `i`. Simplify using `only [aeval_normPoly]`. Rewrite using `[rmatUnits_val, normCoords_vecMul]`.
-
-Take `⟨ε, hε, h⟩` from `exists_pos_le_height_of_bound (rmatUnits b 𝔸[K] '' (normOneUnits b : Set (𝔸[K] ⊗[K] D)ˣ)) (fun y i => MvPolynomial.aeval y (normPoly b i)) hC (pos_of_basis b) hCb hG`. Conclude with `⟨ε, hε, fun x hx ξv hξ => h _ ⟨x, hx, rfl⟩ ξv hξ⟩`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_pos_le_height_rmatUnits :
     ∃ ε : ℝ, 0 < ε ∧ ∀ x ∈ normOneUnits b, ∀ ξv : Fin d → K, ξv ≠ 0 →
@@ -218,19 +216,17 @@ def rationalUnits' : (K ⊗[K] D)ˣ →* (𝔸[K] ⊗[K] D)ˣ :=
   Units.map (baseMap (Algebra.ofId K 𝔸[K]) : K ⊗[K] D →ₐ[K] 𝔸[K] ⊗[K] D).toRingHom.toMonoidHom
 
 /- English proof (translation)
-Take `⟨ε, hε, hh⟩` from `exists_pos_le_height_rmatUnits b`. Set `L : Fin d → Matrix (Fin d) (Fin d) K` to `fun j => lmat b K (baseBasis b K j)`. Set `G : Subgroup (AdelicGLn.AdelicGL K d)` to `((rmatUnits b 𝔸[K]).comp (normOneUnits b).subtype).range`. Establish `hG1 : G ≤ Reduction.normOneGL K d`. Introduce and unpack `_ ⟨x, rfl⟩`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `x.2`. Establish `hGL : G ≤ adelicCentralizer L`. Introduce and unpack `_ ⟨x, rfl⟩ j`. Express the relevant statement in the definitionally equal form `_ * (L j).map (Algebra.ofId K 𝔸[K]) = (L j).map (Algebra.ofId K 𝔸[K]) * _`. Simplify using `only [L, ← lmat_baseMap, baseMap_baseBasis, MonoidHom.comp_apply, Subgroup.coe_subtype, rmatUnits_val]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Conclude with `(lmat_mul_rmat b 𝔸[K] _ _).symm`. Take `⟨C, hC, hred⟩` from `exists_isCompact_centralizer_reduction L G hG1 hGL hε (by rintro _ ⟨x, rfl⟩ ξv hξ; exact hh x x.2 ξv hξ)`. Use `⟨C, hC, fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨γ, hγ, hγC⟩` from `hred _ ⟨⟨x, hx⟩, rfl⟩`. Take `⟨ξ₀, h₀⟩` from `exists_rmat_eq b K (γ : Matrix (Fin d) (Fin d) K) fun j => (hγ j).symm`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Use symmetry to reverse the relation.
 
-Take `⟨ξ₁, h₁⟩` from `exists_rmat_eq b K (↑γ⁻¹ : Matrix (Fin d) (Fin d) K) fun j => by`. Use `symm`. Combine the equalities or inequalities in the displayed calculation. Simplify using `[mul_assoc]`. Use `_ = ↑γ⁻¹ * (↑γ * L j) * ↑γ⁻¹ := by rw [hγ]`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `_ = L j * ↑γ⁻¹ := by simp`. Establish `e1 : ξ₀ * ξ₁ = 1` using `rmat_injective b K (by rw [rmat_mul, rmat_one, h₀, h₁, γ.mul_inv])`. Establish `e2 : ξ₁ * ξ₀ = 1` using `rmat_injective b K (by rw [rmat_mul, rmat_one, h₀, h₁, γ.inv_mul])`. Use `⟨⟨ξ₀, ξ₁, e1, e2⟩, ?_⟩` and prove the remaining obligations. Establish `e : rmatUnits b 𝔸[K] (rationalUnits' ⟨ξ₀, ξ₁, e1, e2⟩) = AdelicGLn.diagonal K d γ`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use extensionality with `: 1`. Rewrite using `[rmatUnits_val]`. Use `show rmat b 𝔸[K] (baseMap (Algebra.ofId K 𝔸[K]) ξ₀) = _`. Rewrite using `[rmat_baseMap, h₀]`. Both sides reduce to the same expression.
-
-Rewrite using `[map_mul, map_inv, e]`. Conclude with `hγC`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isCompact_rmatUnits :
     ∃ C : Set (GL (Fin d) 𝔸[K]), IsCompact C ∧ ∀ x ∈ normOneUnits b,

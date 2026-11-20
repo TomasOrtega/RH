@@ -22,9 +22,9 @@ open ReciprocityTheory.ChartRestriction.G.TB (colM dAct)
 namespace GlobalTheory.PowGerm
 
 /- English proof (translation)
-Introduce `hL hL2 hL4 hT E _ _ _ H Dw l Xo c inst hstar`. Take `rfl` from `starSt E H inst hstar`. Set `` to `H.starRing`. Introduce `T io y C htr P ϖ hϖ Q hQ n _ D' A' G' _ _ pD pA pG U' PU F _ _ _ _ v hv q hq`. Establish `hu` using `GlobalTheory.T.universalJets_power_product T.V C.I.G.G G' n _ pG C.xT (GlobalTheory.T.universal_statement E H Dw l Xo c T io y C)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨τ, hτ, ht, hiff⟩` from `frameNSt_holds E H T.V C.I.G P _ C.FT C.actT C.ph1T C.ph2T C.syT C.adT C.tgT C.xT C.eT C.wPT C.chartT C.frameT C.primT n D' A' G' pD pA pG U' PU`. Use `⟨fun σ' => ?_, fun s σ' hE hs g hg => ?_⟩` and prove the remaining obligations. Take `⟨f, hf⟩` from `(GlobalTheory.GermBasic.main T.V D' A' G' U' _ _ hu τ hτ F q).2.2 (ht htr) σ'`. Conclude with `⟨f, (hiff F q σ' f).2 hf⟩`. Conclude with `GlobalTheory.IntegralGerm.main hL hL2 hL4 hT T.V ϖ hϖ D' A' G' U' _ _ hu τ hτ F v hv q hq σ' s g hE ((hiff F q σ' g).1 hg) (n1e T.V ϖ hϖ D' _ (GlobalTheory.QBox.main T.V ϖ hϖ n P.D D' pD Q hQ) F v q s hs)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem germOfFam_holds : Laws → Laws2 → Laws4 → TwistBaseChangeStatement → GermOfFamT := by
   intro hL hL2 hL4 hT E _ _ _ H Dw l Xo c inst hstar

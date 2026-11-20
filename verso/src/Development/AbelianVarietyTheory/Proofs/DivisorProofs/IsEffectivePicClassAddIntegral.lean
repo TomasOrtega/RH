@@ -11,7 +11,7 @@ namespace GlobalTheory.EffBound
 open GlobalTheory.CechPic TopologicalSpace
 
 /- English proof (translation)
-Rewrite using `[← CommRingCat.comp_apply, ← Functor.map_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem res_res_apply {X : Scheme.{0}} {U V W : X.Opens} (h₁ : V ≤ U) (h₂ : W ≤ V) (x : Γ(X, U)) :
     (X.presheaf.map (homOfLE h₂).op).hom ((X.presheaf.map (homOfLE h₁).op).hom x) =
@@ -19,7 +19,7 @@ theorem res_res_apply {X : Scheme.{0}} {U V W : X.Opens} (h₁ : V ≤ U) (h₂ 
   rw [← CommRingCat.comp_apply, ← Functor.map_comp]; rfl
 
 /- English proof (translation)
-Establish `hσ` using `congrArg (X.presheaf.map (homOfLE (le_inf (inf_le_left.trans inf_le_left) (inf_le_right.trans inf_le_left) : A₁ ⊓ B₁ ⊓ (A₂ ⊓ B₂) ≤ A₁ ⊓ A₂)).op).hom hs`. Establish `hτ` using `congrArg (X.presheaf.map (homOfLE (le_inf (inf_le_left.trans inf_le_right) (inf_le_right.trans inf_le_right) : A₁ ⊓ B₁ ⊓ (A₂ ⊓ B₂) ≤ B₁ ⊓ B₂)).op).hom ht`. Rewrite `hσ`, `hτ` using `[res_res_apply, map_mul, res_res_apply]`. Simplify using `only [res, Units.val_mul, Units.coe_map, MonoidHom.coe_coe, map_mul, res_res_apply]`. Rewrite using `[hσ, hτ]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -54,13 +54,13 @@ def tensSec {X : Scheme.{0}} {A B : LB X} (σ : LB.Sec A) (τ : LB.Sec B) : LB.S
   compat p q := mul_compat _ _ _ _ _ _ (σ.compat p.1 q.1) (τ.compat p.2 q.2)
 
 /- English proof (translation)
-Introduce `h0`. Establish `hi0 : σ.f i = 0` using `germ_injective_of_isIntegral X y hy (by rw [h0, map_zero])`. Apply `hj` to reduce the goal to its premises. Distinguish the cases in `hne : (N.U j : Set X).Nonempty`. Take `⟨z, hz⟩` from `hne`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hwi, hwj⟩` from `nonempty_preirreducible_inter (N.U i).isOpen (N.U j).isOpen ⟨y, hy⟩ ⟨z, hz⟩`. Apply `germ_injective_of_isIntegral X w hwj` to reduce the goal to its premises. Rewrite using `[map_zero]`. Establish `hw : w ∈ N.U i ⊓ N.U j` using `⟨hwi, hwj⟩`. Establish `e` using `congrArg (X.presheaf.germ (N.U i ⊓ N.U j) w hw) (σ.compat i j)`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e` using `[X.presheaf.germ_res_apply, hi0, map_zero, map_mul, X.presheaf.germ_res_apply]`. Break down `mul_eq_zero.mp e.symm with h | h` into its components or cases. Conclude with `absurd h (((N.g i j).isUnit.map (X.presheaf.germ (N.U i ⊓ N.U j) w hw).hom).ne_zero)`. Conclude with `h`. Establish `hT : N.U j = ⊥`.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `x`. Simplify using `only [Opens.coe_bot, Set.mem_empty_iff_false, iff_false]`. Conclude with `fun hx => hne ⟨x, hx⟩`. Use `haveI : Subsingleton Γ(X, N.U j) := CommRingCat.subsingleton_of_isTerminal (X.sheaf.isTerminalOfEqEmpty hT)`. Conclude with `Subsingleton.elim _ _`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem germ_sec_ne_zero {X : Scheme.{0}} [IsIntegral X] {N : LB X} (σ : LB.Sec N) {j : N.ι}
     (hj : σ.f j ≠ 0) (i : N.ι) (y : X) (hy : y ∈ N.U i) : X.presheaf.germ (N.U i) y hy (σ.f i) ≠ 0 := by
@@ -87,13 +87,11 @@ theorem germ_sec_ne_zero {X : Scheme.{0}} [IsIntegral X] {N : LB X} (σ : LB.Sec
     exact Subsingleton.elim _ _
 
 /- English proof (translation)
-Take `⟨A, hA, rfl, σ, j, hσ⟩` from `ha`. Take `⟨B, hB, rfl, τ, k, hτ⟩` from `hb`. Take `⟨y⟩` from `(inferInstance : Nonempty X)`. Establish `hyA : y ∈ ⨆ i, A.U i` using `hA.cover ▸ trivial`. Establish `hyB : y ∈ ⨆ i, B.U i` using `hB.cover ▸ trivial`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨p, hp⟩` from `Opens.mem_iSup.1 hyA`. Take `⟨q, hq⟩` from `Opens.mem_iSup.1 hyB`. Use `⟨tens A B, isLB_tens hA hB, cls_tens hA hB _, tensSec σ τ, (p, q), ?_⟩` and prove the remaining obligations. Establish `hy : y ∈ A.U p ⊓ B.U q` using `⟨hp, hq⟩`. Introduce `h0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h0' : (X.presheaf.map (homOfLE (inf_le_left : A.U p ⊓ B.U q ≤ A.U p)).op).hom (σ.f p) * (X.presheaf.map (homOfLE (inf_le_right : A.U p ⊓ B.U q ≤ B.U q)).op).hom (τ.f q) = 0` using `h0`. Establish `e'` using `congrArg (X.presheaf.germ (A.U p ⊓ B.U q) y hy) h0'`. Rewrite `e'` using `[map_mul, X.presheaf.germ_res_apply, X.presheaf.germ_res_apply, map_zero]`. Break down `mul_eq_zero.mp e' with h | h` into its components or cases. Conclude with `germ_sec_ne_zero σ hσ p y hp h`.
-
-Conclude with `germ_sec_ne_zero τ hτ q y hq h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem eff_add {X : Scheme.{0}} [IsIntegral X] (a b : Pic X) (ha : Eff a) (hb : Eff b) : Eff (a + b) := by
   obtain ⟨A, hA, rfl, σ, j, hσ⟩ := ha

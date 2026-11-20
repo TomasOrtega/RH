@@ -11,9 +11,9 @@ open CategoryTheory AlgebraicGeometry
 variable {R : Type u} [CommRing R] {σ τ : Type u} [Fintype τ] [DecidableEq τ]
 
 /- English proof (translation)
-Rewrite using `[HasRingHomProperty.Spec_iff (P := @Smooth)]`. Establish `: Algebra.IsStandardSmooth (MvPolynomial τ R) (GraphAlgebraAway f v)` using `isStandardSmooth_graphAlgebraAway f v hv`. Use `show @Algebra.Smooth _ _ _ _ (algebraMap (MvPolynomial τ R) (GraphAlgebraAway f v)).toAlgebra`. Establish `h : (algebraMap (MvPolynomial τ R) (GraphAlgebraAway f v)).toAlgebra = (inferInstance : Algebra (MvPolynomial τ R) (GraphAlgebraAway f v))` using `Algebra.algebra_ext _ _ fun _ => rfl`. Rewrite using `[h]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `refine ⟨?_, ?_⟩ <;> infer_instance`.
+A detailed English derivation is pending.
 -/
 theorem smooth_specMap_algebraMap_graphAlgebraAway [Fintype σ]
     (f : τ → MvPolynomial σ R) (v : τ → σ) (hv : Function.Injective v) :
@@ -29,7 +29,7 @@ theorem smooth_specMap_algebraMap_graphAlgebraAway [Fintype σ]
   refine ⟨?_, ?_⟩ <;> infer_instance
 
 /- English proof (translation)
-Establish `: IsLocalization.Away (graphJacobianMinorDet f v) (GraphAlgebraAway f v)` using `inferInstance`. Conclude with `IsOpenImmersion.of_isLocalization (graphJacobianMinorDet f v) ..`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isOpenImmersion_specMap_algebraMap_graphAlgebraAway
     (f : τ → MvPolynomial σ R) (v : τ → σ) :
@@ -45,7 +45,7 @@ instance instIsOpenImmersionSpecMapGraphAway
   isOpenImmersion_specMap_algebraMap_graphAlgebraAway f v
 
 /- English proof (translation)
-Establish `h` using `PrimeSpectrum.localization_away_comap_range (R := GraphAlgebra f) (GraphAlgebraAway f v) (graphJacobianMinorDet f v)`. Conclude with `h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem range_specMap_algebraMap_graphAlgebraAway
     (f : τ → MvPolynomial σ R) (v : τ → σ) :
@@ -57,7 +57,7 @@ theorem range_specMap_algebraMap_graphAlgebraAway
   exact h
 
 /- English proof (translation)
-The claim follows from `IsScalarTower.algebraMap_eq (MvPolynomial τ R) (GraphAlgebra f) (GraphAlgebraAway f v)`.
+A detailed English derivation is pending.
 -/
 theorem algebraMap_graphAlgebraAway_eq_comp
     (f : τ → MvPolynomial σ R) (v : τ → σ) :
@@ -67,7 +67,7 @@ theorem algebraMap_graphAlgebraAway_eq_comp
   IsScalarTower.algebraMap_eq (MvPolynomial τ R) (GraphAlgebra f) (GraphAlgebraAway f v)
 
 /- English proof (translation)
-Rewrite using `[algebraMap_graphAlgebraAway_eq_comp f v, CommRingCat.ofHom_comp, Spec.map_comp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem specMap_algebraMap_graphAlgebraAway_eq_comp
     (f : τ → MvPolynomial σ R) (v : τ → σ) :

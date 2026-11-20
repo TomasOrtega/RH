@@ -9,39 +9,35 @@ namespace GroundTheory.Heights₂.Heights
 open MvPolynomial
 
 /- English proof (translation)
-Introduce `F _ n k d P hP hdim`. Use `hP.isPrime` as an intermediate fact. Take `⟨j, hj⟩` from `hP.isRelevant`. Take `⟨n', rfl⟩ : ∃ n', n = n' + 1` from `⟨n - 1, by have := j.pos; omega⟩`. Use `set K := FractionRing (MvPolynomial (Fin (n' + 1)) F ⧸ P)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set ξ := genPt P`. Establish `hξj : ξ j ≠ 0`. Simplify using `only [ξ, genPt]`. Rewrite using `[Ne, IsFractionRing.to_map_eq_zero_iff, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `hj`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Use `set c : Fin (n' + 1) → K := fun m => if m = j then (ξ j)⁻¹ else 0 with hc_def`. Establish `hc : ∑ m, c m * ξ m = 1`. Simplify using `[c, inv_mul_cancel₀ hξj]`. Set `τ : Fin k × Fin n' → Fin k × Fin (n' + 1)` to `fun im => (im.1, j.succAbove im.2)`. Establish `hτ : Function.Injective τ`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce and unpack `⟨a, b⟩ ⟨a', b'⟩ h`. Simplify using `only [τ, Prod.mk.injEq] at h`. Conclude with `Prod.ext h.1 (j.succAbove_right_injective h.2)`. Set `ψ : MvPolynomial (Fin k × Fin n') K →ₐ[F] MvPolynomial (Fin k × Fin (n' + 1)) K` to `(rename τ).restrictScalars F`. Establish `hψ : Function.Injective ψ` using `rename_injective τ hτ`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Set `η : Fin n' → K` to `fun m => -(ξ (j.succAbove m) * (ξ j)⁻¹)`. Set `G : Set (MvPolynomial (Fin k × Fin n') K)` to `Set.range (fun ij => X ij) ∪ Set.range (fun i : Fin k => ∑ m, X (i, m) * C (η m))`. Establish `hA : ∀ i m, genSubst ξ c (i, j.succAbove m) = ψ (X (i, m))`. Introduce `i m`. Simplify using `[ψ, τ, genSubst, c, Fin.succAbove_ne]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hB : ∀ i, genSubst ξ c (i, j) = ψ (∑ m, X (i, m) * C (η m))`. Introduce `i`. Establish `h1 : (C (ξ j) * C (ξ j)⁻¹ : MvPolynomial (Fin k × Fin (n' + 1)) K) = 1`. Rewrite using `[← map_mul, mul_inv_cancel₀ hξj, map_one]`. Establish `h2 : ψ (∑ m, X (i, m) * C (η m)) = -((∑ m, X (i, j.succAbove m) * C (ξ (j.succAbove m))) * C (ξ j)⁻¹)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [ψ, AlgHom.restrictScalars_apply, map_sum, map_mul, rename_X, rename_C, τ]`. Rewrite using `[Finset.sum_mul, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[C_neg, C_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Rewrite using `[h2]`. Simplify using `only [genSubst, c, if_pos rfl]`. Rewrite using `[Fin.sum_univ_succAbove _ j]`. Take the linear combination `(-(X (i, j) : MvPolynomial (Fin k × Fin (n' + 1)) K)) * h1`. Establish `hrange : Set.range (genSubst ξ c) = ψ '' G`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `p`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨i, m⟩, rfl⟩`. Distinguish the cases in `hm : m = j`. Rewrite using `[hm]`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨_, Or.inr ⟨i, rfl⟩, (hB i).symm⟩`. Take `⟨m', rfl⟩` from `Fin.exists_succAbove_eq hm`. Conclude with `⟨_, Or.inl ⟨(i, m'), rfl⟩, (hA i m').symm⟩`. Introduce and unpack `⟨q, (⟨⟨i, m⟩, rfl⟩ | ⟨i, rfl⟩), rfl⟩`. Conclude with `⟨(i, j.succAbove m), hA i m⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨(i, j), hB i⟩`. Establish `hη : Algebra.trdeg F (Algebra.adjoin F (Set.range η)) = ((d : ℕ) : Cardinal)`. Establish `heq : Algebra.adjoin F (Set.range η) = Algebra.adjoin F (Set.range fun m => ξ m * (ξ j)⁻¹)`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Algebra.adjoin_le_iff]`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `_ ⟨m, rfl⟩`. Conclude with `neg_mem (Algebra.subset_adjoin ⟨j.succAbove m, rfl⟩)`. Rewrite using `[Algebra.adjoin_le_iff]`. Introduce and unpack `_ ⟨m, rfl⟩`. Distinguish the cases in `hm : m = j`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Use `beta_reduce`. Rewrite using `[hm, mul_inv_cancel₀ hξj]`. Conclude with `one_mem _`. Take `⟨m', rfl⟩` from `Fin.exists_succAbove_eq hm`. Establish `: ξ (j.succAbove m') * (ξ j)⁻¹ = -η m'` using `(neg_neg _).symm`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `beta_reduce`. Rewrite using `[this]`. Conclude with `neg_mem (Algebra.subset_adjoin ⟨m', rfl⟩)`. Rewrite using `[heq]`. Conclude with `h₃ F (n' + 1) d P j hP hdim hj`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `φ : MvPolynomial (Fin k × Fin (n' + 1)) F →ₐ[F] MvPolynomial (Fin k × Fin (n' + 1)) K` to `aeval (genSubst ξ c)`. Establish `hker : incIdeal P k = RingHom.ker φ`. Use extensionality with `g`. Rewrite using `[h₁ F (n' + 1) k P c hc g, RingHom.mem_ker]`. Establish `hφrange : φ.range = (Algebra.adjoin F G).map ψ` using `by show (aeval (genSubst ξ c)).range = _`.
-
-Rewrite using `[aeval_range, hrange, Algebra.adjoin_image]`. Use `haveI : Algebra.FiniteType F φ.range := Algebra.FiniteType.of_surjective φ.rangeRestrict φ.rangeRestrict_surjective`. Establish `htr : Algebra.trdeg F φ.range = ((k * n' + min k d : ℕ) : Cardinal)`. Rewrite using `[hφrange, ← AlgEquiv.trdeg_eq (A := ↥(Algebra.adjoin F G)) (Subalgebra.equivMapOfInjective (Algebra.adjoin F G) ψ hψ)]`. Conclude with `h₂ F K n' k d η hη`.
-
-Rewrite using `[hker, ringKrullDim_eq_of_ringEquiv (AlgEquiv.toRingEquiv (Ideal.quotientKerEquivRange φ)), GroundTheory.Arith.Abelian.Jacobian.ringKrullDim_eq_trdeg F (A := ↥φ.range), htr]`. Establish `hnum : k * (n' + 1) - k + min k d = k * n' + min k d`. Rewrite using `[Nat.mul_succ, Nat.add_sub_cancel]`. Rewrite using `[hnum]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem IncIdealDim.proof (h₁ : IncidenceGeneric.Statement) (h₂ : GenericLinearTrdeg.Statement)
     (h₃ : AffineChartTrdeg.Statement) : IncIdealDim.Statement := by

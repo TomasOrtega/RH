@@ -4,7 +4,7 @@ import Development.WeilBound.CoreStatements.OrbitDecayEstimates.CurveDerivativeD
 namespace PositivityTheory.UnitaryDecomposition.Com
 
 /- English proof (translation)
-The claim follows from `comat_of CompanionTheory.Lime.T3.kFiniteWordBound_indefUnitary`.
+A detailed English derivation is pending.
 -/
 theorem comatrix_word_bound : Comat := comat_of CompanionTheory.Lime.T3.kFiniteWordBound_indefUnitary
 

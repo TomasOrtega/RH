@@ -16,9 +16,9 @@ open scoped Formalism.Per
 namespace GlobalTheory.MemLoc.PhiImage
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.LimitSeriesPowSmul.target`. Consider the case `exact _root_.GlobalTheory.LimitSeriesPowSmul.target`. Consider the case `(apply _root_.GlobalTheory.LimitSeriesPowSmul.target <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.LimitSeriesPowSmul.target <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.LimitSeriesPowSmul.target <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.LimitSeriesPowSmul.target ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_lim_series {R : Type} [CommRing R] (p : R) [IsPrecomplete (Ideal.span {p}) R] (f : ℕ → R) :
     ∃ L : R, ∀ k, p ^ k ∣ (∑ i ∈ Finset.range k, p ^ i * f i) - L := by
@@ -31,13 +31,13 @@ theorem exists_lim_series {R : Type} [CommRing R] (p : R) [IsPrecomplete (Ideal.
   | (intros; exact _root_.GlobalTheory.LimitSeriesPowSmul.target ..)
 
 /- English proof (translation)
-Use `choose a z nx h using h`. Take `⟨α, hα⟩` from `exists_lim_series (p : R) (fun i => a (nx^[i] y))`. Take `⟨ζ, hζ⟩` from `exists_lim_series (p : A) (fun i => z (nx^[i] y))`. Establish `key : ∀ k, φ y = ι (∑ i ∈ Finset.range k, (p : R) ^ i * a (nx^[i] y)) + w * (∑ i ∈ Finset.range k, (p : A) ^ i * z (nx^[i] y)) + (p : A) ^ k * φ (nx^[k] y)`. Introduce `k`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Rewrite using `[Finset.sum_range_succ, Finset.sum_range_succ, Function.iterate_succ_apply', map_add, map_mul, map_pow, map_natCast]`. Take the linear combination `ih + (p : A) ^ k * h (nx^[k] y)`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨α, ζ, sub_eq_zero.1 (IsHausdorff.haus (I := Ideal.span {(p : A)}) inferInstance _ fun k => ?_)⟩` and prove the remaining obligations. Rewrite using `[SModEq.zero, smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow, Ideal.mem_span_singleton]`. Take `⟨u, hu⟩` from `hα k`. Take `⟨v, hv⟩` from `hζ k`. Establish `hu'` using `congrArg ι hu`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hu'` using `[map_sub, map_mul, map_pow, map_natCast]`. Conclude with `⟨ι u + w * v + φ (nx^[k] y), by linear_combination key k + hu' + w * hv⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem approx {R A : Type} [CommRing R] [CommRing A] (ι : R →+* A) (p : ℕ)
     [IsPrecomplete (Ideal.span {(p : R)}) R] [IsAdicComplete (Ideal.span {(p : A)}) A]
@@ -64,9 +64,9 @@ theorem approx {R A : Type} [CommRing R] [CommRing A] (ι : R →+* A) (p : ℕ)
   exact ⟨ι u + w * v + φ (nx^[k] y), by linear_combination key k + hu' + w * hv⟩
 
 /- English proof (translation)
-Take `⟨r, hr⟩` from `exists_add_pow_prime_eq hp (Polynomial.X : Polynomial ℤ) 1`. Establish `h1` using `geom_sum_mul (Polynomial.X + 1 : Polynomial ℤ) p`. Establish `h2 : (Polynomial.X : Polynomial ℤ) ^ p = Polynomial.X ^ (p - 1) * Polynomial.X`. Rewrite using `[← pow_succ, Nat.sub_add_cancel hp.one_le]`. Establish `h3 : ∑ i ∈ Finset.range p, (Polynomial.X + 1 : Polynomial ℤ) ^ i = (p : Polynomial ℤ) * r + Polynomial.X ^ (p - 1)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `mul_right_cancel₀ Polynomial.X_ne_zero ?_` and prove the remaining obligations. Rewrite `hr` using `[one_pow]`. Take the linear combination `h1 + hr + h2`. Use `⟨Polynomial.aeval x r, ?_⟩` and prove the remaining obligations. Simplify using `using congrArg (Polynomial.aeval x) h3`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem geom_sum_one_add {R : Type} [CommRing R] {p : ℕ} (hp : p.Prime) (x : R) :
     ∃ c : R, ∑ i ∈ Finset.range p, (x + 1) ^ i = p * c + x ^ (p - 1) := by
@@ -84,9 +84,9 @@ theorem geom_sum_one_add {R : Type} [CommRing R] {p : ℕ} (hp : p.Prime) (x : R
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `geom_sum_one_add (Fact.out : l.Prime) (mu e)`. Use `⟨c, ?_⟩` and prove the remaining obligations. Rewrite using `[← hc, xi, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_pow, mu, sub_add_cancel]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `(GlobalTheory.RingIface.phiA_teich l _).trans ?_` and prove the remaining obligations. Rewrite using `[← frobenius_def, ← frobeniusEquiv_apply, RingEquiv.apply_symm_apply]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem phi_xi (e : Per.Fl l) : ∃ c : Per.Ainf l, Per.φA l (xi e) = l * c + mu e ^ (l - 1) := by
   obtain ⟨c, hc⟩ := geom_sum_one_add (Fact.out : l.Prime) (mu e)
@@ -99,11 +99,11 @@ theorem phi_xi (e : Per.Fl l) : ∃ c : Per.Ainf l, Per.φA l (xi e) = l * c + m
   rw [← frobenius_def, ← frobeniusEquiv_apply, RingEquiv.apply_symm_apply]
 
 /- English proof (translation)
-Establish `h0 : ((m : ℕ) : ℤ_[l]) ≠ 0` using `by exact_mod_cast hm`. Establish `h1` using `congrArg f (PadicInt.unitCoeff_spec h0)`. Rewrite `h1` using `[map_natCast, map_mul, map_pow, map_natCast]`. Establish `hp : ∀ (k : ℕ) (x : A), (l : A) ^ k * x = 0 → x = 0`. Introduce `k`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih => exact fun x hx => ht x (ih _ (by linear_combination hx))`. Use `sub_eq_zero.1 (hp ((m : ℕ) : ℤ_[l]).valuation _ ?_)` and prove the remaining obligations. Use `((PadicInt.unitCoeff h0).isUnit.map f).mul_left_cancel ?_` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mul_zero, ← mul_assoc, ← h1]`. Take the linear combination `h`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem nat_cancel {A : Type} [CommRing A] (f : ℤ_[l] →+* A) (ht : ∀ x : A, (l : A) * x = 0 → x = 0)
     (m : ℕ) (hm : m ≠ 0) (x y : A) (h : (m : A) * x = m * y) : x = y := by
@@ -121,33 +121,33 @@ theorem nat_cancel {A : Type} [CommRing A] (f : ℤ_[l] →+* A) (ht : ∀ x : A
   linear_combination h
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.RingIface.tower l a).symm`.
+A detailed English derivation is pending.
 -/
 theorem alg_tower (a : Per.Ainf l) :
     algebraMap (Per.Acris0 l) (Per.Acris l) (algebraMap (Per.Ainf l) (Per.Acris0 l) a) =
       algebraMap (Per.Ainf l) (Per.Acris l) a := (GlobalTheory.RingIface.tower l a).symm
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.CrisMaps.phiA_extends l).alg a`.
+A detailed English derivation is pending.
 -/
 theorem phiA_alg (a : Per.Ainf l) :
     phiA l (algebraMap (Per.Ainf l) (Per.Acris l) a) = algebraMap (Per.Ainf l) (Per.Acris l) (Per.φA l a) :=
   (GlobalTheory.CrisMaps.phiA_extends l).alg a
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `s`. Establish `hs'` using `(hB s).1 hs`. Proceed by induction on `hs' using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨n, hn⟩` from `hy`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Establish `h1 : ((n.factorial : ℕ) : B) * ⟨y, hs⟩ = algebraMap R B ξ ^ n` using `Subtype.ext (by simpa using hn)`. Establish `h2` using `congrArg (fun t => φ (j t)) h1`. Simplify using `only [map_mul, map_natCast, map_pow, hφ, hξ] at h2`. Take `⟨d, hd⟩` from `GlobalTheory.RingBasics.exists_pow_div_factorial l n`. Establish `h3` using `congrArg ((j.comp (algebraMap R B)).comp zR) hd`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `h3` using `[map_mul, map_natCast, map_pow, map_natCast]`. Establish `h4 : φ (j ⟨y, hs⟩) = j (algebraMap R B (zR d)) * (j (algebraMap R B c) + w) ^ n`. Use `nat_cancel ((j.comp (algebraMap R B)).comp zR) ht _ n.factorial_ne_zero _ _ ?_` and prove the remaining obligations. Rewrite using `[h2, mul_pow, ← h3, mul_assoc]`. Both sides reduce to the same expression.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Take `⟨u, hu⟩` from `sub_dvd_pow_sub_pow (j (algebraMap R B c) + w) (j (algebraMap R B c)) n`. Use `⟨zR d * c ^ n, j (algebraMap R B (zR d)) * u, ?_⟩` and prove the remaining obligations. Rewrite using `[h4, map_mul, map_mul, map_pow, map_pow]`. Take the linear combination `j (algebraMap R B (zR d)) * hu`. Consider the case `zero => exact ⟨0, 0, by`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Treat this case separately.
 
-Establish `: (⟨0, hs⟩ : B) = 0` using `rfl`. Simplify using `[this]⟩`. Consider the case `add x y hx hy ihx ihy`. Take `⟨a, z, h⟩` from `ihx ((hB x).2 hx)`. Take `⟨a', z', h'⟩` from `ihy ((hB y).2 hy)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `: (⟨x + y, hs⟩ : B) = ⟨x, (hB x).2 hx⟩ + ⟨y, (hB y).2 hy⟩` using `rfl`. Use `⟨a + a', z + z', ?_⟩` and prove the remaining obligations. Rewrite using `[this, map_add, map_add, h, h', map_add, map_add]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `smul r x hx ihx`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Treat this case separately.
 
-Take `⟨a, z, h⟩` from `ihx ((hB x).2 hx)`. Establish `: (⟨r • x, hs⟩ : B) = algebraMap R B r * ⟨x, (hB x).2 hx⟩` using `Subtype.ext (Algebra.smul_def r x)`. Use `⟨φR r * a, j (algebraMap R B (φR r)) * z, ?_⟩` and prove the remaining obligations. Rewrite using `[this, map_mul, map_mul, h, hφ, map_mul, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem on_span {R P A : Type} [CommRing R] [CommRing P] [Algebra R P] [CommRing A] (B : Subalgebra R P)
     (j : B →+* A) (zR : ℤ_[l] →+* R) (ht : ∀ x : A, (l : A) * x = 0 → x = 0)
@@ -198,9 +198,9 @@ namespace GlobalTheory.MemLoc
 open PhiImage
 
 /- English proof (translation)
-Introduce `l _ e he w hw`. Take `⟨hc, ht, hd, -⟩` from `acris_basic l`. Take `⟨c, hc'⟩` from `phi_xi e`. Use `haveI : IsAdicComplete (Ideal.span {(l : Per.Ainf l)}) (Per.Ainf l) := WittVector.isAdicCompleteIdealSpanP`. Use `approx (algebraMap (Per.Ainf l) (Per.Acris l)) l (phiA l) w fun y => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨s, y', hy⟩` from `hd y 1`. Take `⟨a, z, h⟩` from `on_span (l := l) (Per.Acris0 l) (algebraMap (Per.Acris0 l) (Per.Acris l)) (Per.zA l) ht (phiA l) (Per.φA l) (fun a => by rw [alg_tower, alg_tower, phiA_alg]) (xi e) c w (by rw [alg_tower, alg_tower, hc', map_add, map_mul, map_natCast, map_pow, mul_add, hw]) (mem_Acris0_iff_span l …`. Use `⟨a, z, y', ?_⟩` and prove the remaining obligations. Rewrite using `[hy, map_add, h, alg_tower, pow_one, map_mul, map_natCast]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem phiA_mem_ainf_add : ∀ (l : ℕ) [Fact l.Prime], ∀ e : Per.Fl l, IsEps e → ∀ w : Per.Acris l, (l : Per.Acris l) * w = algebraMap (Per.Ainf l) (Per.Acris l) (mu e) ^ (l - 1) → ∀ y : Per.Acris l, ∃ (a : Per.Ainf l) (z : Per.Acris l), phiA l y = algebraMap (Per.Ainf l) (Per.Acris l) a + w * z := by
   intro l _ e he w hw

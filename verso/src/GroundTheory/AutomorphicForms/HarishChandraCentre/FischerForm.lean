@@ -9,17 +9,17 @@ variable {σ : Type*}
 def mfact (m : σ →₀ ℕ) : ℕ := m.prod fun _ k => k.factorial
 
 /- English proof (translation)
-The claim follows from `Finset.prod_pos fun _ _ => Nat.factorial_pos _`.
+A detailed English derivation is pending.
 -/
 theorem mfact_pos (m : σ →₀ ℕ) : 0 < mfact m :=
   Finset.prod_pos fun _ _ => Nat.factorial_pos _
 
 /- English proof (translation)
-Unfold `mfact`. Establish `h1` using `Finsupp.mul_prod_erase' (s + Finsupp.single a 1) a (fun _ k => k.factorial) (fun _ => Nat.factorial_zero)`. Establish `h2` using `Finsupp.mul_prod_erase' s a (fun _ k => k.factorial) (fun _ => Nat.factorial_zero)`. Establish `he : Finsupp.erase a (s + Finsupp.single a 1) = Finsupp.erase a s`. Use extensionality with `v`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Distinguish the cases in `hv : v = a`. Substitute `hv` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Finsupp.erase_ne hv]`. Rewrite using `[← h1, ← h2, he]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Finsupp.coe_add, Pi.add_apply, Finsupp.single_eq_same, Nat.factorial_succ]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem mfact_add_single [DecidableEq σ] (s : σ →₀ ℕ) (a : σ) :
     mfact (s + Finsupp.single a 1) = mfact s * (s a + 1) := by
@@ -40,21 +40,21 @@ noncomputable def fischer (f g : MvPolynomial σ ℂ) : ℂ :=
   ∑ m ∈ g.support, (mfact m : ℂ) * star (coeff m f) * coeff m g
 
 /- English proof (translation)
-The claim follows from `Finset.sum_subset hg fun m _ hm => by simp [MvPolynomial.notMem_support_iff.1 hm]`.
+A detailed English derivation is pending.
 -/
 theorem fischer_eq_sum (f g : MvPolynomial σ ℂ) (s : Finset (σ →₀ ℕ)) (hg : g.support ⊆ s) :
     fischer f g = ∑ m ∈ s, (mfact m : ℂ) * star (coeff m f) * coeff m g :=
   Finset.sum_subset hg fun m _ hm => by simp [MvPolynomial.notMem_support_iff.1 hm]
 
 /- English proof (translation)
-Simplify using `only [fischer, coeff_add, star_add, mul_add, add_mul, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem fischer_add_left (f f' g : MvPolynomial σ ℂ) :
     fischer (f + f') g = fischer f g + fischer f' g := by
   simp only [fischer, coeff_add, star_add, mul_add, add_mul, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `only [fischer, coeff_smul, smul_eq_mul, star_mul', Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun _ _ => by ring`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fischer_smul_left (c : ℂ) (f g : MvPolynomial σ ℂ) :
     fischer (c • f) g = star c * fischer f g := by
@@ -62,7 +62,7 @@ theorem fischer_smul_left (c : ℂ) (f g : MvPolynomial σ ℂ) :
   exact Finset.sum_congr rfl fun _ _ => by ring
 
 /- English proof (translation)
-Use `set s := g.support ∪ g'.support`. Rewrite using `[fischer_eq_sum f (g + g') s (MvPolynomial.support_add), fischer_eq_sum f g s Finset.subset_union_left, fischer_eq_sum f g' s Finset.subset_union_right]`. Simplify using `only [coeff_add, mul_add, Finset.sum_add_distrib]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fischer_add_right (f g g' : MvPolynomial σ ℂ) :
     fischer f (g + g') = fischer f g + fischer f g' := by
@@ -73,7 +73,7 @@ theorem fischer_add_right (f g g' : MvPolynomial σ ℂ) :
   simp only [coeff_add, mul_add, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Rewrite using `[fischer_eq_sum f (c • g) g.support (MvPolynomial.support_smul), fischer, Finset.mul_sum]`. Simplify using `only [coeff_smul, smul_eq_mul]`. Conclude with `Finset.sum_congr rfl fun _ _ => by ring`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fischer_smul_right (c : ℂ) (f g : MvPolynomial σ ℂ) :
     fischer f (c • g) = c * fischer f g := by
@@ -82,17 +82,17 @@ theorem fischer_smul_right (c : ℂ) (f g : MvPolynomial σ ℂ) :
   exact Finset.sum_congr rfl fun _ _ => by ring
 
 /- English proof (translation)
-Simplify using `[fischer]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem fischer_zero_left (g : MvPolynomial σ ℂ) : fischer 0 g = 0 := by simp [fischer]
 
 /- English proof (translation)
-Simplify using `[fischer]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem fischer_zero_right (f : MvPolynomial σ ℂ) : fischer f 0 = 0 := by simp [fischer]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, fischer_add_left, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem fischer_sum_left {ι : Type*} (s : Finset ι) (f : ι → MvPolynomial σ ℂ)
     (g : MvPolynomial σ ℂ) : fischer (∑ i ∈ s, f i) g = ∑ i ∈ s, fischer (f i) g := by
@@ -102,7 +102,7 @@ theorem fischer_sum_left {ι : Type*} (s : Finset ι) (f : ι → MvPolynomial �
   | insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, fischer_add_left, ih]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, fischer_add_right, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem fischer_sum_right {ι : Type*} (s : Finset ι) (f : MvPolynomial σ ℂ)
     (g : ι → MvPolynomial σ ℂ) : fischer f (∑ i ∈ s, g i) = ∑ i ∈ s, fischer f (g i) := by
@@ -112,7 +112,7 @@ theorem fischer_sum_right {ι : Type*} (s : Finset ι) (f : MvPolynomial σ ℂ)
   | insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, fischer_add_right, ih]
 
 /- English proof (translation)
-Rewrite using `[fischer_eq_sum g f (f.support ∪ g.support) Finset.subset_union_left, fischer_eq_sum f g (f.support ∪ g.support) Finset.subset_union_right, star_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Simplify using `only [star_mul', Complex.star_def, Complex.conj_natCast, Complex.conj_conj]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem fischer_conj_symm (f g : MvPolynomial σ ℂ) : star (fischer f g) = fischer g f := by
   classical
@@ -123,9 +123,9 @@ theorem fischer_conj_symm (f g : MvPolynomial σ ℂ) : star (fischer f g) = fis
   ring
 
 /- English proof (translation)
-Rewrite using `[fischer_eq_sum _ _ {t} (MvPolynomial.support_monomial_subset), Finset.sum_singleton]`. Simplify using `only [coeff_monomial]`. Distinguish the cases in `h : s = t`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem fischer_monomial [DecidableEq σ] (s t : σ →₀ ℕ) (c d : ℂ) :
     fischer (monomial s c) (monomial t d) = if s = t then (mfact s : ℂ) * star c * d else 0 := by
@@ -136,21 +136,21 @@ theorem fischer_monomial [DecidableEq σ] (s t : σ →₀ ℕ) (c d : ℂ) :
   · simp [h]
 
 /- English proof (translation)
-Proceed by induction on `f using MvPolynomial.induction_on' with`. Consider the case `add p q hp hq => rw [mul_add, fischer_add_left, fischer_add_left, hp, hq]`. Consider the case `monomial s c`. Proceed by induction on `g using MvPolynomial.induction_on' with`. Consider the case `add p q hp hq => rw [fischer_add_right, map_add, fischer_add_right, hp, hq]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Consider the case `monomial t d`. Rewrite using `[X, monomial_mul, one_mul, pderiv_monomial, fischer_monomial, fischer_monomial]`. Distinguish the cases in `ht : t a = 0`. Establish `hne : Finsupp.single a 1 + s ≠ t`. Introduce `h`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `congrArg (fun m => m a) h` as an intermediate fact. Simplify using `only [Finsupp.coe_add, Pi.add_apply, Finsupp.single_eq_same] at this`. Use linear arithmetic over natural numbers and integers. Rewrite using `[if_neg hne]`. Apply the tactic sequence `split_ifs <;> simp [ht]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hle : Finsupp.single a 1 ≤ t`. Introduce `v`. Distinguish the cases in `hv : v = a`. Substitute `hv` using the available equality. Simplify using `only [Finsupp.single_eq_same]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[Finsupp.single_apply, if_neg (Ne.symm hv)]`. Conclude with `Nat.zero_le _`. Establish `hiff : Finsupp.single a 1 + s = t ↔ s = t - Finsupp.single a 1`. Prove the components needed by the constructor for the conclusion.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `rfl`. Simplify using the standard rewrite rules. Introduce and unpack `rfl`. Rewrite using `[add_comm]`. Conclude with `tsub_add_cancel_of_le hle`.
+Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Distinguish the cases in `h : s = t - Finsupp.single a 1`. Establish `h'` using `hiff.2 h`. Rewrite using `[if_pos h', if_pos h]`. Establish `hsa : (s a + 1 : ℕ) = t a`. Rewrite using `[← h']`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[add_comm]`. Rewrite using `[add_comm (Finsupp.single a 1) s, mfact_add_single, ← hsa]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_neg (fun h' => h (hiff.1 h')), if_neg h]`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fischer_X_mul (a : σ) (f g : MvPolynomial σ ℂ) :
     fischer (X a * f) g = fischer f (pderiv a g) := by
@@ -190,14 +190,14 @@ theorem fischer_X_mul (a : σ) (f g : MvPolynomial σ ℂ) :
         · rw [if_neg (fun h' => h (hiff.1 h')), if_neg h]
 
 /- English proof (translation)
-Rewrite using `[← fischer_conj_symm, ← fischer_X_mul, fischer_conj_symm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem fischer_pderiv (a : σ) (f g : MvPolynomial σ ℂ) :
     fischer (pderiv a f) g = fischer f (X a * g) := by
   rw [← fischer_conj_symm, ← fischer_X_mul, fischer_conj_symm]
 
 /- English proof (translation)
-Rewrite using `[fischer]`. Use `push_cast`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[mul_assoc, Complex.star_def, ← Complex.normSq_eq_conj_mul_self]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem fischer_self (f : MvPolynomial σ ℂ) :
     fischer f f = ((∑ m ∈ f.support, (mfact m : ℝ) * Complex.normSq (coeff m f) : ℝ) : ℂ) := by
@@ -207,11 +207,9 @@ theorem fischer_self (f : MvPolynomial σ ℂ) :
   rw [mul_assoc, Complex.star_def, ← Complex.normSq_eq_conj_mul_self]
 
 /- English proof (translation)
-Use `⟨fun h => ?_, fun h => by simp [h]⟩` and prove the remaining obligations. Rewrite `h` using `[fischer_self, Complex.ofReal_eq_zero]`. Establish `hnn : ∀ m ∈ f.support, 0 ≤ (mfact m : ℝ) * Complex.normSq (coeff m f)` using `fun m _ => mul_nonneg (Nat.cast_nonneg _) (Complex.normSq_nonneg _)`. Establish `hz` using `(Finset.sum_eq_zero_iff_of_nonneg hnn).1 h`. Use extensionality with `m`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Assume the negation of the conclusion as `hm`. Establish `hm' : m ∈ f.support` using `MvPolynomial.mem_support_iff.2 hm`. Use `hz m hm'` as an intermediate fact. Break down `mul_eq_zero.1 this with h1 | h1` into its components or cases. Conclude with `(Nat.cast_ne_zero.2 (mfact_pos m).ne') h1`.
-
-Conclude with `hm (Complex.normSq_eq_zero.1 h1)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem fischer_self_eq_zero_iff (f : MvPolynomial σ ℂ) : fischer f f = 0 ↔ f = 0 := by
   refine ⟨fun h => ?_, fun h => by simp [h]⟩

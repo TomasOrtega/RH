@@ -10,28 +10,28 @@ namespace GlobalTheory.EtC
 abbrev isoSpecSp (X : Scheme.{0}) [IsAffine X] : sch.obj X ⟶ sp Γ(X, ⊤) := sch.map X.isoSpec.hom
 
 /- English proof (translation)
-Rewrite using `[← pull_comp, ← sch.map_comp, Iso.hom_inv_id, sch.map_id, pull_id]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pull_isoSpecSp_inv (R : Type) [CommRing R] (F : Shv R) (n : ℤ) (X : Scheme.{0}) [IsAffine X]
     (x : H R (sch.obj X) F n) : pull R (isoSpecSp X) F n (pull R (sch.map X.isoSpec.inv) F n x) = x := by
   rw [← pull_comp, ← sch.map_comp, Iso.hom_inv_id, sch.map_id, pull_id]
 
 /- English proof (translation)
-Rewrite using `[← pull_comp, ← sch.map_comp, Iso.inv_hom_id, sch.map_id, pull_id]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pull_isoSpecSp_inv' (R : Type) [CommRing R] (F : Shv R) (n : ℤ) (X : Scheme.{0}) [IsAffine X]
     (x : H R (sp Γ(X, ⊤)) F n) : pull R (sch.map X.isoSpec.inv) F n (pull R (isoSpecSp X) F n x) = x := by
   rw [← pull_comp, ← sch.map_comp, Iso.inv_hom_id, sch.map_id, pull_id]
 
 /- English proof (translation)
-Simplify using `only [isoSpecSp, spMap, CommRingCat.ofHom_hom, ← sch.map_comp, Scheme.isoSpec_hom_naturality]`.
+Simplify using the standard rewrite rules.
 -/
 theorem isoSpecSp_naturality {X Y : Scheme.{0}} [IsAffine X] [IsAffine Y] (f : X ⟶ Y) :
     isoSpecSp X ≫ spMap f.appTop.hom = sch.map f ≫ isoSpecSp Y := by
   simp only [isoSpecSp, spMap, CommRingCat.ofHom_hom, ← sch.map_comp, Scheme.isoSpec_hom_naturality]
 
 /- English proof (translation)
-Rewrite using `[← pull_comp, ← pull_comp, isoSpecSp_naturality]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pull_isoSpecSp_naturality (R : Type) [CommRing R] (F : Shv R) (n : ℤ) {X Y : Scheme.{0}} [IsAffine X] [IsAffine Y]
     (f : X ⟶ Y) (z : H R (sp Γ(Y, ⊤)) F n) :
@@ -39,19 +39,17 @@ theorem pull_isoSpecSp_naturality (R : Type) [CommRing R] (F : Shv R) (n : ℤ) 
   rw [← pull_comp, ← pull_comp, isoSpecSp_naturality]
 
 /- English proof (translation)
-Introduce `R _ F hF I _ _ G c hc hG`. Use `haveI : IsAffine c.pt := Scheme.isAffine_of_isLimit c hc`. Set `c' : Cocone (G ⋙ Scheme.Γ.rightOp).leftOp` to `coconeLeftOpOfCone (Scheme.Γ.rightOp.mapCone c)`. Establish `hc' : IsColimit c'` using `isColimitCoconeLeftOpOfCone _ (isLimitOfPreserves Scheme.Γ.rightOp hc)`. Establish `hb` using `GlobalTheory.T.etaleCohomology_filteredColimit_rings_finitary R F hF Iᵒᵖ _ c' hc'`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `n`. Take `⟨h1, h2⟩` from `hb n`. Use `⟨fun x => ?_, fun i y hy => ?_⟩` and prove the remaining obligations. Take `⟨j, y', hy'⟩` from `h1 (pull R (sch.map c.pt.isoSpec.inv) F n x)`. Use `⟨j.unop, pull R (isoSpecSp (G.obj j.unop)) F n y', ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `pull R (sch.map (c.π.app j.unop)) F n _ = x`. Use `(pull_isoSpecSp_naturality R F n (X := c.pt) (Y := G.obj j.unop) (c.π.app j.unop) y').trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `pull R (isoSpecSp c.pt) F n (pull R (spMap (c'.ι.app j).hom) F n y') = x`. Rewrite using `[hy', pull_isoSpecSp_inv]`. Express the relevant statement in the definitionally equal form `pull R (sch.map (c.π.app i)) F n y = 0 at hy`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Introduce a local definition for the expression.
 
-Set `y' : H R (sp Γ(G.obj i, ⊤)) F n` to `pull R (sch.map (G.obj i).isoSpec.inv) F n y`. Establish `hyy : y = pull R (isoSpecSp (G.obj i)) F n y'` using `(pull_isoSpecSp_inv R F n _ y).symm`. Establish `hz : pull R (spMap (c'.ι.app (op i)).hom) F n y' = 0`. Establish `e : pull R (isoSpecSp c.pt) F n (pull R (spMap (c.π.app i).appTop.hom) F n y') = 0`. Rewrite using `[← pull_isoSpecSp_naturality R F n (X := c.pt) (Y := G.obj i) (c.π.app i) y', ← hyy]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hy`. Establish `e2` using `congrArg (pull R (sch.map c.pt.isoSpec.inv) F n) e`. Rewrite `e2` using `[pull_isoSpecSp_inv', map_zero]`. Conclude with `e2`. Take `⟨k, f, hk⟩` from `h2 (op i) y' hz`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `⟨k.unop, f.unop, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `pull R (sch.map (G.map f.unop)) F n y = 0`. Rewrite using `[hyy]`. Use `(pull_isoSpecSp_naturality R F n (X := G.obj k.unop) (Y := G.obj i) (G.map f.unop) y').trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `pull R (isoSpecSp (G.obj k.unop)) F n (pull R (spMap ((G ⋙ Scheme.Γ.rightOp).leftOp.map f).hom) F n y') = 0`.
-
-Rewrite using `[hk]`. Conclude with `AddMonoidHom.map_zero _`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem contCone_of_affine_limit : ∀ (R : Type) [CommRing R] (F : Shv R), Finitary F → ∀ (I : Type) [SmallCategory I] [IsCofiltered I] (G : I ⥤ Scheme.{0}) (c : Cone G), IsLimit c → (∀ i, IsAffine (G.obj i)) → ContCone R F (sch.mapCone c) := by
   intro R _ F hF I _ _ G c hc hG

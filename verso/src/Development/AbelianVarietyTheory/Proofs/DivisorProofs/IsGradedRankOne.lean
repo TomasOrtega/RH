@@ -36,24 +36,24 @@ def IsGraded (hL : VMetric p L g) {m : ℕ} (o : ι ≃ Fin m) (h : ∀ a, VMetr
     OrthEmb hL h fun a => t a ≫ j (o a).succ
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ _ _ _ _ _ _ => rfl, fun _ _ h => (h rfl).elim⟩`.
+Supply the required witnesses or components.
 -/
 theorem orthEmb_id (hL : VMetric p L g) : OrthEmb (ι := Unit) (E := fun _ => L) hL (fun _ => hL) fun _ => 𝟙 L :=
   ⟨fun _ _ _ _ _ _ _ => rfl, fun _ _ h => (h rfl).elim⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ => strictMono_id, fun _ => ⟨𝟙 _, (Category.id_comp _).trans (Category.comp_id _).symm⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem adapted_id (w : Vert.Flag L g) :
     Adapted (ι := Unit) (E := fun _ => L) (r := fun _ => g) (fun _ => 𝟙 L) (fun _ => w) w (Equiv.uniqueSigma _) :=
   ⟨fun _ => strictMono_id, fun _ => ⟨𝟙 _, (Category.id_comp _).trans (Category.comp_id _).symm⟩⟩
 
 /- English proof (translation)
-Take `⟨w⟩ : Nonempty (Vert.Flag L 1)` from `⟨.ofRankOne hL.isVB⟩`. Use `w.isIso_last` as an intermediate fact. Establish `hz : Limits.IsZero (w.F 0)` using `isVB_zero_iff.1 (w.isVB 0)`. Establish `hπ : IsIso (w.π 0)`. Rewrite using `[Vert.Flag.π]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : w.step 0 = 0` using `hz.eq_of_src _ _`. Conclude with `Limits.coequalizer.π_of_eq e`. Use `⟨w, inv (w.ι (Fin.last 1)) ≫ w.π 0, @IsIso.comp_isIso _ _ _ _ _ _ _ inferInstance hπ, w.F, w.ι, w.step, fun _ => w.π 0, fun _ => @inv _ _ _ _ (w.ι (Fin.last 1)) this, fun _ => Limits.cokernel.condition _, fun i => ⟨w.isSubbundle i, _, w.isVB i⟩, hz, this, w.step_ι, fun _ => VMetr …` and prove the remaining obligations. Establish `e : inv (w.ι (Fin.last 1)) ≫ w.ι (Fin.last 1) = 𝟙 L` using `IsIso.inv_hom_id _`. Express the relevant statement in the definitionally equal form `OrthEmb hL (fun _ => hL) fun _ : Unit => inv (w.ι (Fin.last 1)) ≫ w.ι (Fin.last 1)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `orthEmb_id hL`.
+A detailed English derivation is pending.
 -/
 theorem isGraded_rank_one (hL : VMetric p L 1) :
     ∃ (w : Vert.Flag L 1) (u : L ⟶ w.gr 0), IsIso u ∧
@@ -110,7 +110,7 @@ def PairAt (R : ℝ) (c : O.s.Comp) {Bs : Scheme.{0}} (q : Bs ⟶ Sp (𝓞 D.wha
     ∀ σ, IsLieMet O.s.T.Z O.κ.e q jB πB (E' σ) _ σ false rfl G (h' σ) (t' σ)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun ⟨Bg, jB, πB, pb, t, t', G, h⟩ => ⟨Bg, jB, πB, t, t', G, pb, h⟩, fun ⟨Bg, jB, πB, t, t', G, pb, h⟩ => ⟨Bg, jB, πB, pb, t, t', G, h⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem pairBase_iff (R : ℝ) (c : O.s.Comp) {Bs : Scheme.{0}} (q : Bs ⟶ Sp (𝓞 D.what₂.LL))
     (E E' : (D.host.E →+* ℂ) → Bs.Modules) (h : ∀ σ, VMetric q (E σ) (O.S.Dw.mult σ))

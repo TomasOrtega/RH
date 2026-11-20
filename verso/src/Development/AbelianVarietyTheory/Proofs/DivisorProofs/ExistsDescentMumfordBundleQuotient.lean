@@ -19,7 +19,7 @@ namespace GlobalTheory.QuotDesc
 def idq {S : Scheme.{0}} {A B : Over S} (q : A ⟶ B) : A ⊗ A ⟶ A ⊗ B := lift (fst A A) (snd A A ≫ q)
 
 /- English proof (translation)
-Rewrite using `[evc, show cls _ hΛ = lam (cls L hL) (fst A A) (snd A A) from cls_cube_two hL _ _ hΛ, pull_lam, lift_fst, lift_snd]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem evc_lam {S : Scheme.{0}} {A Y : Over S} [GrpObj A] {L : LB A.left} (hL : L.IsLB) (hΛ : (abelian₂ A L).IsLB)
     (a b : Y ⟶ A) : evc hΛ a b = lam (cls L hL) a b := by
@@ -27,7 +27,7 @@ theorem evc_lam {S : Scheme.{0}} {A Y : Over S} [GrpObj A] {L : LB A.left} (hL :
     lift_snd]
 
 /- English proof (translation)
-Simplify using `only [lam]`. Rewrite using `[show a * y * k = a * (k * y) by rw [_root_.mul_assoc, _root_.mul_comm y k], show y * k = k * y from _root_.mul_comm y k]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem lam_mul_right_sub {S : Scheme.{0}} {A Y : Over S} [GrpObj A] [IsCommMonObj A] (c : Pic A.left)
     (a k y : Y ⟶ A) : lam c a (k * y) - lam c a y = lam c (a * y) k - lam c y k := by
@@ -37,19 +37,19 @@ theorem lam_mul_right_sub {S : Scheme.{0}} {A Y : Over S} [GrpObj A] [IsCommMonO
   abel
 
 /- English proof (translation)
-Introduce `R _ _ A _ hA L hL H _ i _ _ _ _ hK B _ q hB _ hqf hqfl hqs hpb`. Use `hA.comm` as an intermediate fact. Establish `hΛ : (abelian₂ A L).IsLB` using `LB.isLB_linComb hL _ _`. Establish `hku : lam (cls L hL) (fst A H) (snd A H ≫ i) = 0`. Rewrite using `[← evc_lam hL hΛ, ← triv_ev_iff hΛ]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `lam_triv_of_memKL _ A hA L hL H i ((hK H i).2 ⟨𝟙 H, Category.id_comp i⟩)`. Use `hB.smooth` as an intermediate fact. Use `hqf` as an intermediate fact. Establish `: IsLocallyNoetherian B.left` using `LocallyOfFiniteType.isLocallyNoetherian B.hom`. Establish `hlfp : LocallyOfFinitePresentation q.left` using `inferInstance`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨-, h2⟩` from `CompanionTheory.PfDual.rigDescent_holds (Sp R) A A B hA q hqfl hlfp hqs`. Establish `hrig : Triv (ev (abelian₂ A L) (1 : A ⟶ A) (𝟙 A))`. Rewrite using `[triv_ev_iff hΛ, evc_lam hL hΛ, lam_one_left]`. Establish `hinv : ∀ (T : Over (Sp R)) (x x' : T ⟶ A), x ≫ q = x' ≫ q → LBIso (ev (abelian₂ A L) (fst A T) (snd A T ≫ x)) (ev (abelian₂ A L) (fst A T) (snd A T ≫ x'))`. Introduce `T x x' hxx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `(cls_eq_iff (pull_isLB hΛ _) (pull_isLB hΛ _)).1 ?_` and prove the remaining obligations. Rewrite using `[cls_ev hΛ, cls_ev hΛ, evc_lam hL hΛ, evc_lam hL hΛ]`. Take `⟨z, hz1, hz2⟩ : ∃ z : T ⟶ H ⊗ A, z ≫ ((fst H A ≫ i) * snd H A) = x ∧ z ≫ snd H A = x'` from `⟨_, hpb.lift_fst x x' hxx, hpb.lift_snd x x' hxx⟩`. Substitute `hz1 hz2` using the available equality. Establish `ex : snd A T ≫ z ≫ ((fst H A ≫ i) * snd H A) = (snd A T ≫ z ≫ fst H A ≫ i) * (snd A T ≫ z ≫ snd H A)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MonObj.comp_mul, MonObj.comp_mul]`. Rewrite using `[ex, ← sub_eq_zero, lam_mul_right_sub]`. Establish `k : ∀ u : A ⊗ T ⟶ A, lam (cls L hL) u (snd A T ≫ z ≫ fst H A ≫ i) = 0` using `fun u => by`. Establish `e` using `congrArg (GlobalTheory.CechPic.pull (lift u (snd A T ≫ z ≫ fst H A)).left) hku`. Rewrite `e` using `[map_zero, pull_lam, lift_fst, lift_snd_assoc, Category.assoc, Category.assoc]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[k, k, sub_zero]`. Take `⟨N, hN, -, hiso⟩` from `h2 (abelian₂ A L) hΛ hrig hinv`. Use `⟨N, hN, fun Y a x => ?_⟩` and prove the remaining obligations. Establish `hPc : GlobalTheory.CechPic.pull (idq q).left (cls N hN) = cls (abelian₂ A L) hΛ` using `((cls_eq_iff hΛ (pull_isLB hN _)).2 hiso).symm`. Establish `e : lift a (x ≫ q) = lift a x ≫ idq q`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[idq]`. Rewrite using `[evc, e, Over.comp_left, pull_comp, hPc, show cls _ hΛ = lam (cls L hL) (fst A A) (snd A A) from cls_cube_two hL _ _ hΛ, pull_lam, lift_fst, lift_snd]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_descent_lam : ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (A : Over (Sp R)) [GrpObj A],
     IsAbelianScheme A → ∀ (L : LB A.left) (hL : L.IsLB) (H : Over (Sp R)) [GrpObj H] (i : H ⟶ A), IsMonHom i →

@@ -19,25 +19,25 @@ noncomputable section
 namespace GlobalTheory.SerOSys
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.simpleRepCentralIdempotent_isCentralIdempotent τ h`.
+A detailed English derivation is pending.
 -/
 theorem zIdem_idem_central {Γ : Type} [Group Γ] [Fintype Γ] (τ : FDRep ℂ Γ) (h : Simple τ) :
     zIdem τ * zIdem τ = zIdem τ ∧ ∀ a, zIdem τ * a = a * zIdem τ := GlobalTheory.T.simpleRepCentralIdempotent_isCentralIdempotent τ h
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.simpleRepCentralIdempotent_mul_eq_zero_of_ne τ τ' h h' hne`.
+A detailed English derivation is pending.
 -/
 theorem zIdem_mul_eq_zero {Γ : Type} [Group Γ] [Fintype Γ] (τ τ' : FDRep ℂ Γ) (h : Simple τ) (h' : Simple τ')
     (hne : zIdem τ ≠ zIdem τ') : zIdem τ * zIdem τ' = 0 := GlobalTheory.T.simpleRepCentralIdempotent_mul_eq_zero_of_ne τ τ' h h' hne
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.repIso_of_simple_of_centralIdempotent_eq τ τ' h h' he`.
+A detailed English derivation is pending.
 -/
 theorem repIso_of_zIdem_eq {Γ : Type} [Group Γ] [Fintype Γ] (τ τ' : FDRep ℂ Γ) (h : Simple τ) (h' : Simple τ')
     (he : zIdem τ = zIdem τ') : RepIso τ.ρ τ'.ρ := GlobalTheory.T.repIso_of_simple_of_centralIdempotent_eq τ τ' h h' he
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.centralIdempotents_simpleFDRep_finite_finsum_eq_one Γ`.
+A detailed English derivation is pending.
 -/
 theorem zIdem_finite_sum (Γ : Type) [Group Γ] [Fintype Γ] :
     {z : MonoidAlgebra ℂ Γ | ∃ τ : FDRep ℂ Γ, Simple τ ∧ zIdem τ = z}.Finite ∧
@@ -54,31 +54,29 @@ def Zl (n : ℕ) (f : (ZMod g)[X]) : Set (MonoidAlgebra ℂ (GL (Fin n) (ZMod g)
   {z | ∃ τ : FDRep ℂ (GL (Fin n) (ZMod g)), Simple τ ∧ zIdem τ = z ∧ HasLabelO O τ f}
 
 /- English proof (translation)
-Introduce `_ ⟨τ, h1, h2, _⟩` and use `⟨τ, h1, h2⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem Zl_sub (n : ℕ) (f : (ZMod g)[X]) : Zl O n f ⊆ Zall g n := fun _ ⟨τ, h1, h2, _⟩ => ⟨τ, h1, h2⟩
 
 /- English proof (translation)
-The claim follows from `(zIdem_finite_sum (GL (Fin n) (ZMod g))).1`.
+A detailed English derivation is pending.
 -/
 theorem Zall_finite (n : ℕ) : (Zall g n).Finite := (zIdem_finite_sum (GL (Fin n) (ZMod g))).1
 
 /- English proof (translation)
-The claim follows from `(Zall_finite n).subset (Zl_sub O n f)`.
+A detailed English derivation is pending.
 -/
 theorem Zl_finite (n : ℕ) (f : (ZMod g)[X]) : (Zl O n f).Finite := (Zall_finite n).subset (Zl_sub O n f)
 
 /- English proof (translation)
-Rewrite using `[← finsum_mem_eq_finite_toFinset_sum (fun z => z) (Zl_finite O n f)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem eSerO_eq_sum (n : ℕ) (f : (ZMod g)[X]) : eSerO O n f = ∑ z ∈ (Zl_finite O n f).toFinset, z := by
   rw [← finsum_mem_eq_finite_toFinset_sum (fun z => z) (Zl_finite O n f)]
   rfl
 
 /- English proof (translation)
-Take `⟨τ, hτ, rfl⟩` from `hz`. Take `⟨τ', hτ', rfl⟩` from `hz'`. Use `split_ifs with h`. Rewrite using `[← h]`. Conclude with `(zIdem_idem_central τ hτ).1`.
-
-Conclude with `zIdem_mul_eq_zero τ τ' hτ hτ' h`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_of_mem {n : ℕ} {z z' : MonoidAlgebra ℂ (GL (Fin n) (ZMod g))} (hz : z ∈ Zall g n)
     (hz' : z' ∈ Zall g n) : z * z' = if z = z' then z' else 0 := by
@@ -89,9 +87,9 @@ theorem mul_of_mem {n : ℕ} {z z' : MonoidAlgebra ℂ (GL (Fin n) (ZMod g))} (h
   · exact zIdem_mul_eq_zero τ τ' hτ hτ' h
 
 /- English proof (translation)
-Take `⟨φ, hφ, hne⟩` from `h`. Take `⟨e, he⟩` from `e`. Establish `hφ' : ∀ γ, φ ∘ₗ τ.ρ γ = ρ γ ∘ₗ φ` using `hφ`. Use `⟨φ ∘ₗ (e : (τ' : Type) →ₗ[ℂ] (τ : Type)), fun γ => LinearMap.ext fun x => ?_, fun h0 => hne ?_⟩` and prove the remaining obligations. Use `show φ (e (τ'.ρ γ x)) = ρ γ (φ (e x))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[he]`. Conclude with `LinearMap.congr_fun (hφ' γ) (e x)`. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Use `LinearMap.congr_fun h0 (e.symm x)` as an intermediate fact. Simplify using `using this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem isConstituent_of_repIso_left {Γ V : Type} [Group Γ] [AddCommGroup V] [Module ℂ V] {τ τ' : FDRep ℂ Γ}
     {ρ : Representation ℂ Γ V} (h : IsConstituent τ ρ) (e : RepIso τ'.ρ τ.ρ) : IsConstituent τ' ρ := by
@@ -107,7 +105,7 @@ theorem isConstituent_of_repIso_left {Γ V : Type} [Group Γ] [AddCommGroup V] [
     simpa using this
 
 /- English proof (translation)
-Take `⟨s, b, lam, hb, hl, hc, hf⟩` from `h`. Conclude with `⟨s, b, lam, hb, hl, isConstituent_of_repIso_left hc e, hf⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem hasLabelO_of_repIso {n : ℕ} {τ τ' : FDRep ℂ (GL (Fin n) (ZMod g))} {f : (ZMod g)[X]}
     (h : HasLabelO O τ f) (e : RepIso τ'.ρ τ.ρ) : HasLabelO O τ' f := by

@@ -27,7 +27,7 @@ noncomputable section
 namespace GlobalTheory.BlockForms
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ σ hcm n J hJ r Xf Yf hW v t B g`. Use `⟨splitLift hcm hJ t (B * g * B⁻¹), ?_⟩` and prove the remaining obligations. Use `congrArg Units.val (splitHom_splitLift hcm hJ t (B * g * B⁻¹))` as an intermediate fact. Simplify `this` using `[IsCompAt, splitHom_val]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem exists_isCompAt : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [IsTotallyComplex E] [Algebra F E]
     (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J →
@@ -39,55 +39,49 @@ theorem exists_isCompAt : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [
   simpa [IsCompAt, splitHom_val] using this
 
 /- English proof (translation)
-Introduce `hKP F E _ _ _ _ _ _ σ hcm n J hJ r Xf Yf hW HL v t`. Take `⟨C, hC⟩` from `GlobalTheory.AdaptedBasis.exists_isAdapted F E σ hcm n J hJ r Xf Yf hW`. Use `⟨Matrix.GeneralLinearGroup.map (t : E →+* Fv F v) C, ?_⟩` and prove the remaining obligations. Introduce `K hK φ hφ V _ _ π hπ m T x hT hφx S φc hφc hφc0 l d hd hin hk hl`. Establish `hk'` using `hk`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨k, hkS, hkv⟩` from `hk'`. Establish `hlr : l + d ≤ r` using `by have := k.2; omega`. Establish `hld : l + d ≤ n` using `by have := hC.le; omega`. Take `⟨ι, hι⟩` from `GlobalTheory.BlockFormsEmb.exists_blockEmb F E σ hcm n J hJ r Xf Yf hW l d hlr`. Use `⟨hld, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `set B := Matrix.GeneralLinearGroup.map (t : E →+* Fv F v) C with hB`. Establish `hN` using `GlobalTheory.BlockForms.Norm.blockEmb_normalises F E σ hcm n J hJ r Xf Yf hW S l d hlr ι hι hin hk hl`. Set `Ttot : (Fin m → V) →ₗ[ℂ] (GAd σ J → ℂ)` to `∑ j, (T j).comp (LinearMap.proj j)`. Establish `hTtot : ∀ u, Ttot u = ∑ j, T j (u j)` using `fun u => by simp [Ttot]`. Establish `hTx : Ttot x = φ` using `by rw [hTtot, hφx]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hTπ : ∀ g y, IsCompAt σ J t B g y → ∀ u, Ttot (fun j => π g (u j)) = fun z => Ttot u (z * emb σ J v y)`. Introduce `g y hy u`. Use function extensionality and compare the values at `z`. Simplify using `only [hTtot, Finset.sum_apply]`. Conclude with `Finset.sum_congr rfl fun j _ => hT j g y hy (u j) z`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `L : GL (Fin n) (Fv F v) → (Fin m → V) →ₗ[ℂ] (Fin m → V)` to `fun g => LinearMap.pi fun j => (π g).comp (LinearMap.proj j)`. Establish `hL : ∀ g u, L g u = fun j => π g (u j)` using `fun _ _ => rfl`. Set `U : Submodule ℂ (Fin m → V)` to `Submodule.span ℂ (Set.range fun g : GL (Fin n) (Fv F v) => L g x)`. Establish `hUst : ∀ g, ∀ u ∈ U, L g u ∈ U`. Introduce `g u hu`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `: U ≤ U.comap (L g)` using `Submodule.span_le.2 (by`. Introduce and unpack `_ ⟨g', rfl⟩`. Use `Submodule.subset_span ⟨g * g', ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `j`. Simplify using `only [hL, map_mul, Module.End.mul_apply])`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this hu`. Establish `hAut` using `GlobalTheory.UAut.AutClosed.isAut_lin_transl F E σ hcm n J hJ K hK`. Establish `hAutU : ∀ u ∈ U, IsAut σ J K (Ttot u)`. Introduce `u hu`. Proceed by induction on `hu using Submodule.span_induction with`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Consider the case `mem w hw`. Take `⟨g, rfl⟩` from `hw`. Use `show IsAut σ J K (Ttot (L g x))`. Take `⟨y, hy⟩` from `exists_isCompAt F E σ hcm n J hJ r Xf Yf hW v t B g`. Rewrite using `[hL, hTπ g y hy, hTx]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hAut φ φ hφ hφ).2 v y`. Consider the case `zero`. Rewrite using `[map_zero]`. Conclude with `isAut_const σ J K 0`. Consider the case `add a b _ _ ha hb`.
+Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite using `[map_add]`. Simplify using `using (hAut _ _ ha hb).1 1 1`. Consider the case `smul c a _ ha`. Rewrite using `[map_smul]`. Simplify using `using (hAut _ _ ha ha).1 c 0`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `HLe : ∀ f, IsAut σ J K f → ∃! c, GlobalTheory.StdPar.IsCuspComp σ J Xf Yf S K f c` using `fun f hf => (HL F E σ hcm n J hJ r Xf Yf hW K hK ∅ f (GlobalTheory.StdPar.isAutOn_empty.2 hf)).1 S (Finset.empty_subset S)`. Set `cc : (GAd σ J → ℂ) → (GAd σ J → ℂ)` to `fun f => if hf : IsAut σ J K f then (HLe f hf).exists.choose else 0`. Establish `hcc : ∀ f, IsAut σ J K f → GlobalTheory.StdPar.IsCuspComp σ J Xf Yf S K f (cc f)` using `fun f hf => by`. Simplify using `only [cc, dif_pos hf]`. Conclude with `(HLe f hf).exists.choose_spec`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hccu : ∀ f c, IsAut σ J K f → GlobalTheory.StdPar.IsCuspComp σ J Xf Yf S K f c → cc f = c` using `fun f c hf hc => (HLe f hf).unique (hcc f hf) hc`. Establish `hccl : ∀ f g, IsAut σ J K f → IsAut σ J K g → ∀ a b : ℂ, cc (a • f + b • g) = a • cc f + b • cc g` using `fun f g hf hg a b => hccu _ _ ((hAut f g hf hg).1 a b) ((GlobalTheory.T.cuspidal_component_constant_term F E σ hcm n J hJ r Xf Yf hW K hK S f g (cc f) (cc g) hf hg (hcc f hf) (hcc g hg)).1 a b)`. Establish `hcct : ∀ f, IsAut σ J K f → ∀ y : GLoc σ J v, cc (fun z => f (z * emb σ J v y)) = fun z => cc f (z * emb σ J v y)` using `fun f hf y => hccu _ _ ((hAut f f hf hf).2 v y) ((GlobalTheory.T.cuspidal_component_constant_term F E σ hcm n J hJ r Xf Yf hW K hK S f f (cc f) (cc f) hf hf (hcc f hf) (hcc f hf)).2 v y)`. Establish `hφcc : cc φ = φc` using `hccu φ φc hφ hφc`. Take `⟨g, hg⟩` from `Function.ne_iff.1 hφc0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `set x₀ := proj σ J v g`. Use `set g' := g * (emb σ J v x₀)⁻¹ with hg'`. Establish `hg'v : proj σ J v g' = 1` using `by simp [hg', x₀]`. Establish `hgg : g = g' * emb σ J v x₀` using `by simp [hg']`. Take `⟨u₁, hu₁, hu₁i, y₀, g₀, hg'e, hg₀⟩` from `GlobalTheory.T.max_compact_block_parabolic_levi F E σ hcm n J hJ r Xf Yf hW K hK S l d hlr ι hι hd hin hk hl g'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hg₀v : proj σ J v g₀ = 1`. Establish `e : g₀ = (ι (GlobalTheory.CuspRep.infGL E d y₀))⁻¹ * u₁⁻¹ * g'` using `by rw [hg'e]; group`. Rewrite using `[e, map_mul, map_mul, map_inv, map_inv, mem_infPts_iff_forall.1 hu₁i v, mem_infPts_iff_forall.1 (hN.2 y₀) v, hg'v]`. Simplify using the standard rewrite rules. Establish `hcomm : ∀ y : GLoc σ J v, g₀ * emb σ J v y = emb σ J v y * g₀` using `fun y => ((commute_emb σ J y hg₀v).eq).symm`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `hS8 : ∀ u : U, ∃ f : GlobalTheory.CuspRep.Sm E d, (∀ h, f.1 h = cc (Ttot u) (ι h * g₀)) ∧ GlobalTheory.CuspRep.IsCuspForm f` using `fun u => GlobalTheory.T.max_compact_cusp_rep_block_embedding hKP F E σ hcm n J hJ r Xf Yf hW K hK S l d hlr ι hι hd hin hk hl _ (hcc _ (hAutU u u.2)).1 g₀ hg₀`. Use `choose fU hfU using hS8`. Establish `hccU : ∀ u w : U, ∀ a b : ℂ, cc (Ttot ((a • u + b • w : U) : Fin m → V)) = a • cc (Ttot u) + b • cc (Ttot w)`. Introduce `u w a b`. Rewrite using `[Submodule.coe_add, Submodule.coe_smul, Submodule.coe_smul, map_add, map_smul, map_smul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `hccl _ _ (hAutU u u.2) (hAutU w w.2) a b`. Set `Λ₀ : U →ₗ[ℂ] GlobalTheory.CuspRep.Sm E d` to `{ toFun := fU map_add' := fun u w => Subtype.ext (funext fun h => by`. Establish `e` using `hccU u w 1 1`. Simplify using `only [one_smul] at e`. Express the relevant statement in the definitionally equal form `(fU (u + w)).1 h = (fU u).1 h + (fU w).1 h`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(hfU _).1, (hfU _).1, (hfU _).1, e]`. Use the proof step `rfl)`. Use the proof step `map_smul' := fun a u => Subtype.ext (funext fun h => by`. Establish `e` using `hccU u u a 0`. Simplify using `only [zero_smul, add_zero] at e`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Express the relevant statement in the definitionally equal form `(fU (a • u)).1 h = a * (fU u).1 h`. Rewrite using `[(hfU _).1, (hfU _).1, e]`. Use the proof step `rfl) }`. Take `⟨U', hU'⟩` from `Submodule.exists_isCompl U`. Set `Λ : (Fin m → V) →ₗ[ℂ] GlobalTheory.CuspRep.Sm E d` to `Λ₀ ∘ₗ Submodule.projectionOnto U U' hU'`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hΛ : ∀ u (hu : u ∈ U), Λ u = fU ⟨u, hu⟩` using `fun u hu => by`. Simplify using `only [Λ, LinearMap.comp_apply]`. Establish `e : Submodule.projectionOnto U U' hU' u = ⟨u, hu⟩` using `Submodule.projectionOnto_apply_left hU' ⟨u, hu⟩`. Rewrite using `[e]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hΛv : ∀ u (hu : u ∈ U) h, (Λ u).1 h = cc (Ttot u) (ι h * g₀)` using `fun u hu h => by`. Rewrite using `[hΛ u hu, (hfU _).1]`. Use `⟨U, Λ, fun g u hu => hUst _ u hu, ?_, fun u hu => by rw [hΛ u hu]; exact (hfU _).2, ?_, ?_⟩` and prove the remaining obligations. Choose the witnesses or unpack the hypotheses as in `⟨g₁, hg₁⟩ : ∃ g₁, IsCompAt σ J t B g₁ x₀ := by`. Use `⟨B⁻¹ * Matrix.GeneralLinearGroup.map (splitProj t) (matHom _ σ J x₀) * B, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Simplify using `only [IsCompAt]`. Rewrite using `[show B * (B⁻¹ * Matrix.GeneralLinearGroup.map (splitProj t) (matHom _ σ J x₀) * B) * B⁻¹ = Matrix.GeneralLinearGroup.map (splitProj t) (matHom _ σ J x₀) by group]`. Both sides reduce to the same expression. Use `⟨L g₁ x, Submodule.subset_span ⟨g₁, rfl⟩, fun h0 => hg ?_⟩` and prove the remaining obligations. Establish `e` using `congrArg (fun f : GlobalTheory.CuspRep.Sm E d => f.1 (GlobalTheory.CuspRep.infGL E d y₀)) h0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hΛv _ (Submodule.subset_span ⟨g₁, rfl⟩)] at e`. Rewrite `e` using `[hL, hTπ g₁ x₀ hg₁, hTx, hcct φ hφ x₀, hφcc]`. Rewrite using `[hgg, hg'e, mul_assoc, mul_assoc, hφc.1.1.leftN u₁ hu₁, ← mul_assoc]`. Conclude with `e`. Introduce `g hg u hu`.
-
-Take `⟨y, hy⟩` from `exists_isCompAt F E σ hcm n J hJ r Xf Yf hW v t B g`. Establish `hyu` using `GlobalTheory.T.adapted_basis_local_block_form F E σ hcm n J hJ r Xf Yf hW v t C hC S l d hin hk hl hld g hg y hy`. Use `Subtype.ext (funext fun h => ?_)` and prove the remaining obligations. Rewrite using `[hΛv (fun j => π g (u j)) (hUst g u hu), hΛv u hu, hTπ g y hy, hcct _ (hAutU u hu)]`. Use `beta_reduce`.
-
-Rewrite using `[mul_assoc, hcomm, ← mul_assoc, show ι h * emb σ J v y * g₀ = (ι h * emb σ J v y * (ι h)⁻¹) * (ι h * g₀) by group]`. Conclude with `(hcc _ (hAutU u hu)).1.1.leftN _ (hN.1 h _ hyu) _`. Introduce `g u hu`. Take `⟨y, hy, hye⟩` from `GlobalTheory.BlockForms.LeviLoc.blockEmb_locGL F E σ hcm n J hJ r Xf Yf hW v t C hC l d hlr hld ι hι g`. Use `Subtype.ext (funext fun h => ?_)` and prove the remaining obligations.
-
-Rewrite using `[hΛv (fun j => π _ (u j)) (hUst _ u hu), hTπ _ y hy, hcct _ (hAutU u hu)]`. Use `beta_reduce`. Rewrite using `[mul_assoc, hcomm, ← mul_assoc, hye, ← map_mul]`. Express the relevant statement in the definitionally equal form `_ = (Λ u).1 (h * _)`. Rewrite using `[hΛv u hu]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem block_forms : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [IsTotallyComplex E] [Algebra F E]
     (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J →

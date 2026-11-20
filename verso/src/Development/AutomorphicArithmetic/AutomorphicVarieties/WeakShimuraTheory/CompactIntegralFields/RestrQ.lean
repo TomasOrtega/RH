@@ -16,7 +16,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws
 
 /- English proof (translation)
-Use `haveI : IsAlgClosure F Ω := ⟨IsAlgClosure.isAlgClosed ℚ, inferInstance⟩`. Take `⟨h1, a, h2⟩` from `hs`. Conclude with `Rq.powIne F Ω l A hA s h1 _ (pow_pos hl.out.pos a) (Subgroup.topologicalClosure_minimal _ (UpperTheory.V.B1.decComm F Ω l A hA) (isClosed_Ine A) h2)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem muIne {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (F : IntermediateField ℚ Ω) [NumberField F]
     (l : ℕ) [hl : Fact l.Prime] (A : ValuationSubring Ω) (hA : A.valuation (l : Ω) < 1) {s : G F Ω}
@@ -27,7 +27,7 @@ private theorem muIne {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω]
     (Subgroup.topologicalClosure_minimal _ (UpperTheory.V.B1.decComm F Ω l A hA) (isClosed_Ine A) h2)
 
 /- English proof (translation)
-Use `haveI : IsAlgClosure F Ω := ⟨IsAlgClosure.isAlgClosed ℚ, inferInstance⟩`. Conclude with `(galEmbTop ℚ F Ω).1.continuous`.
+A detailed English derivation is pending.
 -/
 private theorem cont_resQ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (F : IntermediateField ℚ Ω) [NumberField F] :
     Continuous (resQ F) := by
@@ -35,15 +35,15 @@ private theorem cont_resQ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ
   exact (galEmbTop ℚ F Ω).1.continuous
 
 /- English proof (translation)
-Establish `hG : ∀ (μ : A) (Y : M4 A), IsGSp (f μ) (Y.map f) → IsGSp μ Y` using `fun μ Y h => by`. Unfold `IsGSp at h ⊢`. Rewrite `h` using `[adj_map, ← Matrix.map_mul]`. Use extensionality with `i j`. Apply `hf` to reduce the goal to its premises.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result.
 
-Use `congrFun (congrFun h i) j` as an intermediate fact. Rewrite `this` using `[Matrix.map_apply]`. Rewrite using `[this]`. Apply the tactic sequence `by_cases hij : i = j <;> simp [Matrix.one_apply, hij]`. Establish `hμ : f ((adj X * X) 0 0) = ν`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `h` using `hX`. Unfold `IsGSp at h`. Rewrite `h` using `[adj_map, ← Matrix.map_mul]`. Simplify using `using congrFun (congrFun h 0) 0`. Take `⟨⟨u1, u2⟩, -⟩` from `Rq.shapeQ _ _ _ hs hd h0' hq`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Rewrite `u1`, `u2` using `[← Matrix.map_mul, ← Matrix.map_mul]`. Simplify using `only [Matrix.map_apply, ← map_mul, ← map_sub] at u1 u2`. Use `Rq.luG A ((adj X * X) 0 0) X n₀ (IsUnit.of_map f _ (hμ ▸ hν)) (hG _ _ (hμ ▸ hX)) ⟨hG 1 _ (by rw [map_one]; exact h0.1), fun i => hf ?_, fun i j hij => hf ?_⟩ (IsUnit.of_map f _ (IsUnit.of_map (residue V) _ u1)) (IsUnit.of_map f _ (IsUnit.of_map (residue V) _ u2))` and prove the remaining obligations. Rewrite using `[map_one]`. Conclude with `h0.2.1 i`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_zero]`. Conclude with `h0.2.2 i j hij`.
+A detailed English derivation is pending.
 -/
 private theorem low_desc {A V : Type} [CommRing A] [CommRing V] [IsLocalRing V] (f : A →+* V) (hf : Function.Injective f)
     [IsLocalHom f] (ν : V) (hν : IsUnit ν) (X n₀ : M4 A) (hX : IsGSp ν (X.map f)) (h0 : IsLow (n₀.map f))
@@ -74,35 +74,31 @@ private theorem low_desc {A V : Type} [CommRing A] [CommRing V] [IsLocalRing V] 
   · rw [map_zero]; exact h0.2.2 i j hij
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨by simpa using isGSp_map f h.1, fun i => by rw [Matrix.map_apply, h.2.1, map_one], fun i j hij => by rw [Matrix.map_apply, h.2.2 i j hij, map_zero]⟩`.
+Supply the required witnesses or components.
 -/
 private theorem low_map {A V : Type} [CommRing A] [CommRing V] (f : A →+* V) {n : M4 A} (h : IsLow n) : IsLow (n.map f) :=
   ⟨by simpa using isGSp_map f h.1, fun i => by rw [Matrix.map_apply, h.2.1, map_one],
     fun i j hij => by rw [Matrix.map_apply, h.2.2 i j hij, map_zero]⟩
 
 /- English proof (translation)
-Introduce `i j hij` and use `by rw [adj_map, ← Matrix.map_mul, ← Matrix.map_mul, Matrix.map_apply, h i j hij, map_zero]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem up_map {A V : Type} [CommRing A] [CommRing V] (f : A →+* V) {n X m : M4 A} (h : IsUp (adj n * X * m)) :
     IsUp (adj (n.map f) * X.map f * m.map f) := fun i j hij => by
   rw [adj_map, ← Matrix.map_mul, ← Matrix.map_mul, Matrix.map_apply, h i j hij, map_zero]
 
 /- English proof (translation)
-Introduce `Ω _ _ _ l hl c D hD T₀ T hF hLe 𝔞 P hP hS`. Establish `hOk : T.Ok` using `(leFit D hD T₀ T hLe).1 hF.1`. Take `⟨A, _, _, _, f, P₁, hf, hc, rfl⟩` from `hP.small`. Use `haveI := hf.loc`. Use `choose g hg hgD hgI using fun v : T.ι => Rq.placeMove T.F l hl.out (T.pl v) (D.pl l) (T.ovl v) (hD.pl_over l hl.out)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hν : ∀ x, IsUnit (𝔞.a c (D.th x))` using `fun x => (D.th x).isUnit.map _`. Establish `hd : ∀ x i, IsUnit ((((P₁.map f).map (residue 𝔞.V)).r x) i i)` using `fun x i => by`. Rewrite using `[hS.res.res.diag]`. Conclude with `(Units.isUnit _).map _`. Use `choose n hn hb using fun v : T.ι => low_desc f hf.inj _ (hν (g v)) (P₁.r (g v)) (P₁.n ()) (hP.pair.mult (g v)) (hP.pair.low ()) (hS.supp (g v)) (hd (g v)) (hS.res.pair.low ()) hS.flag`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `Q : PD T.ι (G T.F Ω) A` to `⟨P₁.r.comp (resQ T.F), n⟩`. Establish `key : ∀ v, ∀ s ∈ Dec (F` using `T.F) (T.pl v), IsUp (adj ((Q.map f).n v) * (Q.map f).r s * (Q.map f).n v) ∧ ∀ i, (Q.map f).ψ v i s = (P₁.map f).ψ () i ((g v)⁻¹ * resQ T.F s * g v) := fun v s hs => Rq.conjFlag _ _ ((P₁.map f).r (g v)) ((P₁.map f).r ((g v)⁻¹ * resQ T.F s * g v)) ((P₁.map f).r (resQ T.F s)) _ _ (h …`. Establish `hconj : ∀ (χ : G ℚ Ω →* c.Oˣ) (x y : G ℚ Ω), χ (x⁻¹ * y * x) = χ y` using `fun χ x y => by`. Rewrite using `[map_mul, map_mul, map_inv, mul_comm, mul_inv_cancel_left]`. Establish `hI : ∀ v i, ∀ s ∈ Ine (F` using `T.F) (T.pl v), (Q.map f).ψ v i s = 𝔞.a c (D.ps i (resQ T.F s)) := fun v i s hs => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[(key v s (Ine_le_Dec _ hs)).2, hP.inert _ (hgI v s hs), hconj]`. Establish `hpair : (T.fr ∅).IsPair (𝔞.a c) (Q.map f)`. Use `⟨fun x => hP.pair.mult (resQ T.F x), Rq.killQ D hD T hOk _ _ _ (P₁.map f).r hP.pair.kill, ?_, fun v => low_map f (hn v), fun v s hs => (key v s hs).1, fun v s hs i => ?_⟩` and prove the remaining obligations. Take `⟨j, hj⟩` from `hLe.g0 show ((P₁.map f).r (resQ T.F T.g0)).IsDiag`. Establish `h` using `hP.pair.nrm`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `((P₁.map f).r (resQ T₀.F T₀.g0)).IsDiag at h`. Rewrite using `[hj, map_pow, ← h.diagonal_diag, Matrix.diagonal_pow]`. Conclude with `Matrix.isDiag_diagonal _`. Use `(hI v i s (muIne T.F l _ (T.ovl v) hs)).trans ?_` and prove the remaining obligations. Rewrite using `[Rq.muPs D hD T hOk _ s hs i, Units.val_one, map_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hb' : ∀ v, IsUp (adj (((Q.map f).map (residue 𝔞.V)).n v) * ((P₁.map f).map (residue 𝔞.V)).r (g v) * ((P₁.map f).map (residue 𝔞.V)).n ())` using `fun v => up_map (residue 𝔞.V) (up_map f (hb v))`. Establish `hp'` using `hpair.map (residue 𝔞.V)`. Use `⟨Q.map f, ⟨A, _, _, inferInstance, f, Q, hf, fun i j N => (hc i j N).comp_continuous (cont_resQ T.F), rfl⟩, hpair, rfl, ⟨rfl, fun v => ⟨(), g v, hg v, hb' v⟩⟩, ⟨hp', ⟨fun x i => ?_, fun v s hs i => ?_, Or.inl ⟨fun x => hS.supp _, fun v => ?_⟩⟩, fun i j N => (hS.res.cont i j N).co …` and prove the remaining obligations. Use `show _ = 𝔞.red c (chi D T.pr i (resQ T.F x))`. Rewrite using `[hLe.pr]`.
-
-Conclude with `hS.res.res.diag (resQ T.F x) i`. Use `show _ = 𝔞.red c (chi D T.pr i (resQ T.F s))`. Use `(PD.map_ψ (Q.map f) (residue 𝔞.V) v i s).trans ?_` and prove the remaining obligations. Rewrite using `[(key v s hs).2, ← PD.map_ψ, hLe.pr, ← hconj (chi D T₀.pr i) (g v)]`. Conclude with `hS.res.res.char () _ (hgD v s hs) i`.
-
-Conclude with `(Rq.shapeQ _ _ _ (hS.supp (g v)) (hd (g v)) (hS.res.pair.low ()) hS.flag).2 _ (hp'.low v) (hb' v)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.restrQ :
     ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} (D : Raw Ω c), D.Good → ∀ T₀ T : Tower D, T₀.Fit → T₀.Le T → ∀ (𝔞 : Amb l) (P : PD Unit (G ℚ Ω) 𝔞.V), QPair D T₀.pr (resQ T₀.F T₀.g0) 𝔞 P →

@@ -13,14 +13,14 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   (v : HeightOneSpectrum (𝓞 F)) (Λ : Set (Fin n → E))
 
 /- English proof (translation)
-The claim follows from `redU_of σ J ψ v Λ (Orb.unitV_of σ J ψ v Λ hN hUN) hR a Y`.
+A detailed English derivation is pending.
 -/
 theorem redU_of_norm (hN : Orb.NormOne σ J ψ v) (hUN : Orb.UnitNorm σ J ψ v Λ) (hR : ResAlg σ J ψ v) (a : ℕ)
     (Y : TupV (E := E) v n a) : RedU σ J ψ v Λ a Y :=
   redU_of σ J ψ v Λ (Orb.unitV_of σ J ψ v Λ hN hUN) hR a Y
 
 /- English proof (translation)
-The claim follows from `countU_of_redU σ J ψ v Λ a Y (redU_of_norm σ J ψ v Λ hN hUN hR a Y)`.
+A detailed English derivation is pending.
 -/
 theorem countU_of_res (hN : Orb.NormOne σ J ψ v) (hUN : Orb.UnitNorm σ J ψ v Λ) (hR : ResAlg σ J ψ v) (a : ℕ)
     (Y : TupV (E := E) v n a) : CountU σ J ψ v Λ a Y :=

@@ -12,9 +12,9 @@ open Formalism.UG GlobalTheory.Hk3.IntWitt
 variable {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))]
 
 /- English proof (translation)
-Take `⟨b, hb, hxb⟩` from `hx`. Rewrite using `[hxb, map_mul, map_pow, hϖ]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_one, ← WithZero.exp_nsmul]`. Use `congr 1`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `_ < WithZero.exp (-(N : ℤ)) := WithZero.exp_lt_exp.2 (by push_cast; omega)`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem val_lt_exp_of_dvdPow_succ {ϖ x : L}
     (hϖ : Valued.v ϖ = ((Multiplicative.ofAdd (-1 : ℤ) : Multiplicative ℤ) : WithZero (Multiplicative ℤ)))
@@ -28,11 +28,9 @@ theorem val_lt_exp_of_dvdPow_succ {ϖ x : L}
     _ < WithZero.exp (-(N : ℤ)) := WithZero.exp_lt_exp.2 (by push_cast; omega)
 
 /- English proof (translation)
-Establish `hp : ϖ ^ m ≠ 0` using `pow_ne_zero _ h0`. Establish `he : {x : L | DvdPow ϖ m (x - c)} = (fun x => (ϖ ^ m)⁻¹ * (x - c)) ⁻¹' ((Valued.v (R` using `L)).integer : Set L) := by`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨b, hb, hxb⟩ show Valued.v ((ϖ ^ m)⁻¹ * (x - c)) ≤ 1`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Rewrite using `[hxb, inv_mul_cancel_left₀ hp]`. Conclude with `hb`. Introduce `hx`. Conclude with `⟨(ϖ ^ m)⁻¹ * (x - c), hx, by rw [mul_inv_cancel_left₀ hp]⟩`. Rewrite using `[he]`.
-
-Conclude with `(Valued.isClosed_integer L).preimage (by fun_prop)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isClosed_dvdPow_sub {ϖ : L} (h0 : ϖ ≠ 0) (m : ℕ) (c : L) : IsClosed {x : L | DvdPow ϖ m (x - c)} := by
   have hp : ϖ ^ m ≠ 0 := pow_ne_zero _ h0
@@ -49,19 +47,17 @@ theorem isClosed_dvdPow_sub {ϖ : L} (h0 : ϖ ≠ 0) (m : ℕ) (c : L) : IsClose
   exact (Valued.isClosed_integer L).preimage (by fun_prop)
 
 /- English proof (translation)
-Establish `h0 : ϖ ≠ 0`. Introduce and unpack `rfl`. Rewrite `hϖ` using `[map_zero]`. Conclude with `WithZero.zero_ne_coe hϖ`. Establish `hint : ϖ ∈ intL L` using `by show Valued.v ϖ ≤ 1`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hϖ]`. Use `show WithZero.exp (-1 : ℤ) ≤ WithZero.exp 0`. Conclude with `WithZero.exp_le_exp.2 (by omega)`. Establish `hstep : ∀ k m, k ≤ m → DvdPow ϖ (k + 1) (a m - a k)`. Introduce `k m hkm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Proceed by induction on `m, hkm using Nat.le_induction with`. Consider the case `base => rw [sub_self]`. Conclude with `dvdPow_zero ϖ _`. Consider the case `succ m hkm ih`. Use `dvdPow_add (dvdPow_mono hint (Nat.succ_le_succ hkm) (ha m)) ih` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `this` using `[sub_add_sub_cancel]`. Then use the resulting hypothesis. Establish `hc : CauchySeq a`. Rewrite using `[(Valued.hasBasis_uniformity L (WithZero (Multiplicative ℤ))).cauchySeq_iff]`. Introduce `γ _`. Establish `hγ : MonoidWithZeroHom.ValueGroup₀.embedding γ.1 ≠ (0 : WithZero (Multiplicative ℤ))`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Take `⟨e, he⟩ : ∃ e, MonoidWithZeroHom.ValueGroup₀.embedding γ.1 = WithZero.exp e` from `⟨_, (WithZero.exp_log hγ).symm⟩`. Use `⟨(-e).toNat, fun m hm n hn => ?_⟩` and prove the remaining obligations. Use `show Valued.v.restrict (a n - a m) < γ.1`. Rewrite using `[Valuation.restrict_lt_iff_lt_embedding, he]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Establish `h1` using `dvdPow_sub (hstep _ n hn) (hstep _ m hm)`. Rewrite `h1` using `[sub_sub_sub_cancel_right]`. Use `(val_lt_exp_of_dvdPow_succ hϖ h1).trans_le (WithZero.exp_le_exp.2 ?_)` and prove the remaining obligations. Use `Int.self_le_toNat (-e)` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
-
-Take `⟨b, hb⟩` from `cauchySeq_tendsto_of_complete hc`. Use `⟨b, fun k => ?_⟩` and prove the remaining obligations. Conclude with `(isClosed_dvdPow_sub h0 (k + 1) (a k)).mem_of_tendsto hb (eventually_atTop.2 ⟨k, fun m hm => hstep k m hm⟩)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_limit_dvdPow (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))] [CompleteSpace L] (ϖ : L)
     (hϖ : Valued.v ϖ = ((Multiplicative.ofAdd (-1 : ℤ) : Multiplicative ℤ) : WithZero (Multiplicative ℤ)))

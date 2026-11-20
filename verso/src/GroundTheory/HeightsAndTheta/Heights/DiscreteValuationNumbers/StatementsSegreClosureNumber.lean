@@ -72,7 +72,7 @@ def scaledDualGeneratorForm : MRing (bundleIdx (bundleIdx PointIdx 1) 1) ℤ_[2]
   C ((2 : ℕ) : ℤ_[2]) * X ⟨none, (0 : Fin 1)⟩
 
 /- English proof (translation)
-Unfold `divCycle at h`. Use `split_ifs at h with hW`. Conclude with `⟨hW.1.1.2 (Ideal.mem_sup_right (Ideal.subset_span rfl)), hW.1.1.1, hW.2⟩`. Conclude with `absurd rfl h`.
+Replace the relevant objects with their definitions. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_of_divCycle_ne_zero {K : Type*} {ι : K → Type*} {R : Type*} [CommRing R]
     {P : Ideal (MRing ι R)} {f : MRing ι R} {W : Ideal (MRing ι R)} (h : divCycle P f W ≠ 0) :

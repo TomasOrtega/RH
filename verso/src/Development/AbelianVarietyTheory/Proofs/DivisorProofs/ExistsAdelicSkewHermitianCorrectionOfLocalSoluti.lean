@@ -11,7 +11,7 @@ namespace GlobalTheory.TransportBack
 open Matrix
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Matrix.mul_apply, map_sum, map_mul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem map_mul_gen {R S Fh : Type*} [CommRing R] [CommRing S] [FunLike Fh R S]
     [NonUnitalRingHomClass Fh R S] (f : Fh) {m k p : Type*} [Fintype k]
@@ -19,7 +19,7 @@ theorem map_mul_gen {R S Fh : Type*} [CommRing R] [CommRing S] [FunLike Fh R S]
   ext i j; simp [Matrix.mul_apply, map_sum, map_mul]
 
 /- English proof (translation)
-Use extensionality with `i`. Simplify using `[Matrix.mulVec, dotProduct, map_sum, map_mul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem map_mulVec_gen {R S Fh : Type*} [CommRing R] [CommRing S] [FunLike Fh R S]
     [NonUnitalRingHomClass Fh R S] (f : Fh) {m k : Type*} [Fintype k]
@@ -27,7 +27,7 @@ theorem map_mulVec_gen {R S Fh : Type*} [CommRing R] [CommRing S] [FunLike Fh R 
   ext i; simp [Matrix.mulVec, dotProduct, map_sum, map_mul]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem map_add_gen {R S Fh : Type*} [CommRing R] [CommRing S] [FunLike Fh R S]
     [NonUnitalRingHomClass Fh R S] (f : Fh) {m k : Type*}
@@ -35,28 +35,28 @@ theorem map_add_gen {R S Fh : Type*} [CommRing R] [CommRing S] [FunLike Fh R S]
   ext i j; simp
 
 /- English proof (translation)
-Apply the tactic sequence `ext i j; by_cases h : i = j <;> simp [Matrix.one_apply, h]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem map_one_eq {R S : Type*} [CommRing R] [CommRing S] (ι : R →ₙ+* S) {n : Type*} [DecidableEq n] :
     (1 : Matrix n n R).map ι = ι 1 • (1 : Matrix n n S) := by
   ext i j; by_cases h : i = j <;> simp [Matrix.one_apply, h]
 
 /- English proof (translation)
-Apply the tactic sequence `ext i j; by_cases h : i = j <;> simp [Matrix.one_apply, h]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem map_neg_one_eq {R S : Type*} [CommRing R] [CommRing S] (ι : R →ₙ+* S) {n : Type*} [DecidableEq n] :
     (-1 : Matrix n n R).map ι = -(ι 1 • (1 : Matrix n n S)) := by
   ext i j; by_cases h : i = j <;> simp [Matrix.one_apply, h]
 
 /- English proof (translation)
-Simplify using `only [Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem assoc_a {R : Type*} [CommRing R] {a b c d e : Type*} [Fintype b] [Fintype c] [Fintype d]
     (A : Matrix a b R) (B : Matrix b c R) (C : Matrix c d R) (D : Matrix d e R) :
     A * B * C * D = A * (B * (C * D)) := by simp only [Matrix.mul_assoc]
 
 /- English proof (translation)
-Simplify using `only [Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem assoc_b {R : Type*} [CommRing R] {a b c d : Type*} [Fintype b] [Fintype c] [Fintype d]
     (A : Matrix a b R) (B : Matrix b c R) (C : Matrix c d R) (P₁ Y Q₁ P₂ : Matrix d d R) :
@@ -64,7 +64,7 @@ theorem assoc_b {R : Type*} [CommRing R] {a b c d : Type*} [Fintype b] [Fintype 
   simp only [Matrix.mul_assoc]
 
 /- English proof (translation)
-Rewrite using `[← Matrix.smul_mul, ← Matrix.mul_smul, h, Matrix.mul_smul, Matrix.mul_one, Matrix.smul_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem smul_mid_of {R : Type*} [CommRing R] {a b d : Type*} [Fintype b] [DecidableEq b]
     (s : R) (A : Matrix a b R) (B : Matrix b b R) (C : Matrix b d R) (h : s • B = s • 1) :
@@ -72,7 +72,7 @@ theorem smul_mid_of {R : Type*} [CommRing R] {a b d : Type*} [Fintype b] [Decida
   rw [← Matrix.smul_mul, ← Matrix.mul_smul, h, Matrix.mul_smul, Matrix.mul_one, Matrix.smul_mul]
 
 /- English proof (translation)
-Rewrite using `[← Matrix.mul_smul, h, Matrix.mul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem smul_last_of {R : Type*} [CommRing R] {a b c d e : Type*} [Fintype b] [Fintype c] [Fintype d]
     (s : R) (A : Matrix a b R) (B : Matrix b c R) (C : Matrix c d R) (Z : Matrix d e R) (h : s • Z = 0) :
@@ -85,55 +85,51 @@ namespace GlobalTheory.TransportBack
 open Matrix
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ n X v O _ c ι P Q JL hAe he hc hPQ hQP heP heQ hJ hlat M G ZL hM hMG hZL hN`. Establish `heι : ∀ x, ι 1 * ι x = ι x` using `fun x => by rw [← map_mul, one_mul]`. Establish `hιe : ∀ x, ι x * ι 1 = ι x` using `fun x => by rw [← map_mul, mul_one]`. Establish `hee : ι 1 * ι 1 = ι 1` using `heι 1`. Establish `hce : cA σ (ι 1) = ι 1` using `by rw [hc, map_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmapE : ∀ {m k : Type} (Y : Matrix m k O), ι 1 • Y.map ι = Y.map ι`. Introduce `m k Y`. Use extensionality with `i j`. Simplify using `[heι]`. Establish `hePY : ∀ {k : Type} [Fintype k] (Y : Matrix (Fin n) k (AE F E)), ι 1 • (P * Y) = P * Y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `k _ Y`. Rewrite using `[← Matrix.smul_mul, heP]`. Establish `hZP : P * ZL.map ι * Q * P = P * ZL.map ι`. Rewrite using `[Matrix.mul_assoc, hQP, Matrix.mul_smul, Matrix.mul_one, hePY]`. Establish `hvec : ∀ a : Fin n → O, Q *ᵥ (P *ᵥ fun i => ι (a i)) = fun i => ι (a i)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `a`. Rewrite using `[Matrix.mulVec_mulVec, hQP, Matrix.smul_mulVec, Matrix.one_mulVec]`. Use extensionality with `i`. Simplify using `[heι]`. Establish `hAtZ : At (evFin F v) (P * ZL.map ι * Q)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `u hu`. Establish `hu' : u • Q = 0` using `by rw [← heQ, ← smul_assoc, hAe u hu, zero_smul]`. Rewrite using `[← Matrix.mul_smul, hu', Matrix.mul_zero]`. Establish `hlatZ : ∀ z ∈ GlobalTheory.InertSph.latAt X v, (P * ZL.map ι * Q) *ᵥ z ∈ GlobalTheory.InertSph.latAt X v`. Introduce `z hz`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨a, rfl⟩` from `(hlat z).1 hz`. Use `(hlat _).2 ⟨ZL *ᵥ a, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mulVec_mulVec, hZP, ← Matrix.mulVec_mulVec, map_mulVec_gen]`. Establish `hPcQc : P.map (cA σ) * Q.map (cA σ) = ι 1 • (1 : Matrix (Fin n) (Fin n) (AE F E))`. Apply the tactic sequence `rw [← map_mul_gen, hPQ]; ext i j; by_cases h : i = j <;> simp [Matrix.one_apply, h, hce]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `h1 : Pᵀ * incM F X.J = JL.map ι * Q.map (cA σ)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Matrix.smul_mul, ← Matrix.transpose_smul, heP]`. Use `_ = Pᵀ * incM F X.J * (P.map (cA σ) * Q.map (cA σ)) := by`. Rewrite using `[hPcQc, Matrix.mul_smul, Matrix.mul_one]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `_ = JL.map ι * Q.map (cA σ) := by rw [← Matrix.mul_assoc, hJ]`. Establish `hPc : ι 1 • P.map (cA σ) = P.map (cA σ)` using `by conv_rhs => rw [← heP]`. Use extensionality with `i j`. Simplify using `[hce]`. Establish `h2 : incM F X.J * P.map (cA σ) = Qᵀ * JL.map ι`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Matrix.mul_smul, hPc]`. Use `_ = (P * Q)ᵀ * incM F X.J * P.map (cA σ) := by`. Rewrite using `[hPQ, Matrix.transpose_smul, Matrix.transpose_one, Matrix.smul_mul, Matrix.smul_mul, Matrix.one_mul]`. Use `_ = Qᵀ * JL.map ι := by`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[Matrix.transpose_mul, Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc Pᵀ, hJ]`. Establish `hmapc : (ZL.map ι).map (cA σ) = (ZL.map c).map ι`. Rewrite using `[Matrix.map_map, Matrix.map_map]`. Use `congr 1`. Use function extensionality and compare the values at `x`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hc x`. Establish `hJZ : (P * ZL.map ι * Q)ᵀ * incM F X.J + incM F X.J * (P * ZL.map ι * Q).map (cA σ) = 0`. Establish `hz0 : (ZLᵀ * JL + JL * ZL.map c).map ι = 0` using `by rw [hZL]; ext i j; simp`. Rewrite `hz0` using `[map_add_gen, map_mul_gen, map_mul_gen, Matrix.transpose_map]`. Rewrite using `[map_mul_gen, map_mul_gen, hmapc, Matrix.transpose_mul, Matrix.transpose_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[h1, ← Matrix.mul_assoc (incM F X.J), h2]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_add, Matrix.add_mul, Matrix.mul_assoc]`. Use `_ = 0 := by rw [hz0]; simp`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set N := ((Matrix.fromRows (1 : Matrix (Fin n) (Fin n) O) (-1 : Matrix (Fin n) (Fin n) O))ᵀ : Matrix (Fin n) (Fin n ⊕ Fin n) O) * G * (Matrix.fromRows (1 : Matrix (Fin n) (Fin n) O) (-1 : Matrix (Fin n) (Fin n) O) : Matrix (Fin n ⊕ Fin n) (Fin n) O) + ((Matrix.fromRows (1 : Matri …`. Use `set K := (GlobalTheory.DblVac.antiCols (F := F) (E := E) n)ᵀ * M * GlobalTheory.DblVac.antiCols n + (GlobalTheory.DblVac.antiCols (F := F) (E := E) n)ᵀ * M * (diagCols (Fin n) : Matrix (Fin n ⊕ Fin n) (Fin n) (AE F E)) * (P * ZL.map ι * Q) with hK`. Establish `hNab : (Matrix.fromRows (1 : Matrix (Fin n) (Fin n) O) (-1 : Matrix (Fin n) (Fin n) O)).map ι = Matrix.fromRows (ι 1 • (1 : Matrix (Fin n) (Fin n) (AE F E))) (-(ι 1 • 1))`. Rewrite using `[Matrix.fromRows_map, map_one_eq, map_neg_one_eq]`. Establish `hDel : (Matrix.fromRows (1 : Matrix (Fin n) (Fin n) O) (1 : Matrix (Fin n) (Fin n) O)).map ι = Matrix.fromRows (ι 1 • (1 : Matrix (Fin n) (Fin n) (AE F E))) (ι 1 • 1)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Matrix.fromRows_map, map_one_eq]`. Establish `hanti : GlobalTheory.DblVac.antiCols (F` using `F) (E := E) n * P = Matrix.fromBlocks P 0 0 P * (Matrix.fromRows (1 : Matrix (Fin n) (Fin n) O) (-1 : Matrix (Fin n) (Fin n) O)).map ι := by`. Rewrite using `[hNab, GlobalTheory.DblVac.antiCols, Matrix.fromRows_mul, Matrix.fromBlocks_mul_fromRows]`. Simplify using `[Matrix.mul_smul, heP]`. Establish `hdiag : ∀ Y : Matrix (Fin n) (Fin n) (AE F E), (diagCols (Fin n) : Matrix (Fin n ⊕ Fin n) (Fin n) (AE F E)) * (P * Y) = Matrix.fromBlocks P 0 0 P * ((Matrix.fromRows (1 : Matrix (Fin n) (Fin n) O) (1 : Matrix (Fin n) (Fin n) O)).map ι * Y)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `Y`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, hDel, diagCols, Matrix.fromRows_mul, Matrix.fromBlocks_mul_fromRows]`. Simplify using `[Matrix.mul_smul, heP]`. Establish `hantiT : ∀ {k : Type} [Fintype k] (Y : Matrix (Fin n ⊕ Fin n) k (AE F E)), (GlobalTheory.DblVac.antiCols (F` using `F) (E := E) n)ᵀ * (Matrix.fromBlocks P 0 0 P * Y) = P * (((Matrix.fromRows (1 : Matrix (Fin n) (Fin n) O) (-1 : Matrix (Fin n) (Fin n) O)).map ι)ᵀ * Y) := by`. Introduce `k _ Y`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, hNab, GlobalTheory.DblVac.antiCols, Matrix.transpose_fromRows, Matrix.transpose_fromRows, Matrix.fromCols_mul_fromBlocks, Matrix.mul_fromCols]`. Simplify using `[Matrix.mul_smul, heP]`. Establish `hMG' : ∀ {k : Type} [Fintype k] (Y : Matrix (Fin n ⊕ Fin n) k (AE F E)), M * (Matrix.fromBlocks P 0 0 P * Y) = Matrix.fromBlocks P 0 0 P * (G.map ι * Y)`. Introduce `k _ Y`. Rewrite using `[← Matrix.mul_assoc, hMG, Matrix.mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hQPι : ZL.map ι * (Q * P) = ZL.map ι` using `by rw [hQP, Matrix.mul_smul, Matrix.mul_one, hmapE]`. Establish `hKP : K * P = P * N.map ι`. Rewrite using `[hK, Matrix.add_mul]`. Use `(congrArg₂ (· + ·) (assoc_a _ _ _ _) (assoc_b _ _ _ _ _ _ _)).trans ?_` and prove the remaining obligations. Rewrite using `[hanti, hQPι, hdiag, hMG', hMG', hantiT, hantiT, hNdef]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [map_add_gen, map_mul_gen, Matrix.transpose_map, Matrix.mul_add, Matrix.mul_assoc]`. Establish `hN1 : N * N⁻¹ = 1` using `Matrix.mul_nonsing_inv N hN`. Establish `h2inv : algebraMap F (AE F E) 2⁻¹ * 2 = 1`. Rewrite using `[← map_ofNat (algebraMap F (AE F E)) 2, ← map_mul, inv_mul_cancel₀ two_ne_zero, map_one]`. Establish `hMe : ι 1 • (M - 1) = M - 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `i j`. Rewrite using `[Matrix.smul_apply, smul_eq_mul]`. Apply `he` to reduce the goal to its premises. Introduce `u hu`. Use `congrFun (congrFun (hM u hu) i) j` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `using this`. Establish `hM1 : (1 - ι 1) • M = (1 - ι 1) • (1 : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) (AE F E))`. Rewrite using `[sub_smul, one_smul, sub_smul, one_smul, ← sub_eq_zero, show M - ι 1 • M - (1 - ι 1 • 1) = (M - 1) - (ι 1 • M - ι 1 • 1) by abel, ← smul_sub, hMe, sub_self]`. Establish `hZe : (1 - ι 1) • (P * ZL.map ι * Q) = 0`. Rewrite using `[sub_smul, one_smul, ← Matrix.smul_mul, ← Matrix.smul_mul, heP, sub_self]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hAA : (GlobalTheory.DblVac.antiCols (F` using `F) (E := E) n)ᵀ * GlobalTheory.DblVac.antiCols n = (2 : AE F E) • (1 : Matrix (Fin n) (Fin n) (AE F E)) := by`. Rewrite using `[GlobalTheory.DblVac.antiCols, Matrix.transpose_fromRows]`. Use `(Matrix.fromCols_mul_fromRows _ _ _ _).trans ?_` and prove the remaining obligations. Simplify using `[two_smul]`. Establish `hKe : (1 - ι 1) • K = (1 - ι 1) • ((2 : AE F E) • (1 : Matrix (Fin n) (Fin n) (AE F E)))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hK, smul_add]`. Use `(congrArg₂ (· + ·) (smul_mid_of _ _ _ _ hM1) (smul_last_of _ _ _ _ _ hZe)).trans ?_` and prove the remaining obligations. Rewrite using `[add_zero]`. Conclude with `congrArg _ hAA`. Use `set R := (algebraMap F (AE F E) 2⁻¹ * (1 - ι 1)) • (1 : Matrix (Fin n) (Fin n) (AE F E)) + P * N⁻¹.map ι * Q with hR`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hKR : K * R = 1`. Establish `hsec : K * (P * N⁻¹.map ι * Q) = ι 1 • (1 : Matrix (Fin n) (Fin n) (AE F E))`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, hKP, Matrix.mul_assoc P, ← map_mul_gen, hN1, map_one_eq, Matrix.mul_smul, Matrix.mul_one, Matrix.smul_mul, hPQ, smul_smul, hee]`. Rewrite using `[hR, Matrix.mul_add, hsec, Matrix.mul_smul, Matrix.mul_one, mul_smul, hKe, smul_smul, smul_smul, ← add_smul, show algebraMap F (AE F E) 2⁻¹ * (1 - ι 1) * 2 + ι 1 = (1 - ι 1) * (algebraMap F (AE F E) 2⁻¹ * 2) + ι 1 by ring, h2inv, mul_one, sub_add_cancel, one_smul]`. Establish `hPz : ∀ w : Fin n → AE F E, (1 - ι 1) • (P *ᵥ w) = 0`.
-
-Introduce `w`. Rewrite using `[← Matrix.smul_mulVec, sub_smul, one_smul, heP, sub_self, Matrix.zero_mulVec]`. Use `⟨P * ZL.map ι * Q, hAtZ, hlatZ, hJZ, Matrix.isUnit_det_of_right_inverse hKR, ?_⟩` and prove the remaining obligations. Introduce `z hz`. Take `⟨a, rfl⟩` from `(hlat z).1 hz`.
-
-Rewrite using `[Matrix.inv_eq_right_inv hKR]`. Use `(hlat _).2 ⟨N⁻¹ *ᵥ a, ?_⟩` and prove the remaining obligations. Rewrite using `[hR, Matrix.add_mulVec, Matrix.smul_mulVec, Matrix.one_mulVec, mul_smul, hPz, smul_zero, zero_add, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hvec, map_mulVec_gen]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem transport_back : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (n : ℕ) (X : Spc F E n) (v : Pl F) (O : Type) [CommRing O] (c : O →+* O) (ι : O →ₙ+* AE F E)

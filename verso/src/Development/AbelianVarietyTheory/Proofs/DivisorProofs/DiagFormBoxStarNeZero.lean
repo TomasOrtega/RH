@@ -28,7 +28,7 @@ local instance borelAf' : BorelSpace (FiniteAdeleRing (𝓞 F) F) := ⟨rfl⟩
 instance mu_openPos : (mu F κ).IsOpenPosMeasure := by unfold mu; infer_instance
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `f (fun i => InfiniteAdeleRing.ringEquiv_mixedSpace F (glue p i).1) * g (fun i => (glue p i).2) = _`. Apply the tactic sequence `congr 2 <;> funext i <;> simp [glue]`.
+Express the relevant assertion in an equivalent form by its definition. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem pureA_glue (f : SchwartzMap (κ → mixedEmbedding.mixedSpace F) ℂ) (g : (κ → FiniteAdeleRing (𝓞 F) F) → ℂ)
     (p : Vi F κ × Vf F κ) : pureA F f g (glue p) = f (eI F κ p.1) * g p.2 := by
@@ -36,9 +36,9 @@ theorem pureA_glue (f : SchwartzMap (κ → mixedEmbedding.mixedSpace F) ℂ) (g
   congr 2 <;> funext i <;> simp [glue]
 
 /- English proof (translation)
-Proceed by induction on `hφ using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨f, g, hg, rfl⟩` from `hx`. Simplify using `only [pureA_glue]`. Conclude with `(f.continuous.comp ((eI F κ).continuous.comp continuous_fst)).mul (hg.1.continuous.comp continuous_snd)`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `zero => exact continuous_const`. Consider the case `add x y _ _ hx hy => exact hx.add hy`. Consider the case `smul c x _ hx => exact continuous_const.mul hx`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem continuous_glue {φ : (κ → AdeleRing (𝓞 F) F) → ℂ} (hφ : φ ∈ schA F κ) :
     Continuous fun p : Vi F κ × Vf F κ => φ (glue p) := by
@@ -52,9 +52,9 @@ theorem continuous_glue {φ : (κ → AdeleRing (𝓞 F) F) → ℂ} (hφ : φ �
   | smul c x _ hx => exact continuous_const.mul hx
 
 /- English proof (translation)
-Establish `h` using `glue_add_shiftOf (0 : Vi F κ × Vf F κ) x`. Rewrite `h` using `[zero_add]`. Rewrite using `[h]`. Establish `h0 : glue (0 : Vi F κ × Vf F κ) = 0`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use `show (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (eI F κ 0 i) = 0`. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite using `[h0, zero_add]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem glue_shiftOf (x : κ → AF F) : glue (shiftOf x) = x := by
   have h := glue_add_shiftOf (0 : Vi F κ × Vf F κ) x
@@ -69,15 +69,13 @@ theorem glue_shiftOf (x : κ → AF F) : glue (shiftOf x) = x := by
   rw [h0, zero_add]
 
 /- English proof (translation)
-Introduce `F _ _ κ _ φ hφ hne`. Establish `hs : star φ ∈ schA F κ` using `GlobalTheory.SchAConj.star_mem_schA F κ φ hφ`. Establish `hb` using `GlobalTheory.SchwartzBox.boxFun_mem_schA F κ κ φ hφ (star φ) hs`. Establish `hi` using `integrable_resD hb`. Establish `e : resD F κ (boxFun φ (star φ)) = fun p => ((Complex.normSq (φ (glue p)) : ℝ) : ℂ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `p`. Use `show φ (Sum.elim (glue p) (glue p) ∘ Sum.inl) * star φ (Sum.elim (glue p) (glue p) ∘ Sum.inr) = _`. Rewrite using `[Sum.elim_comp_inl, Sum.elim_comp_inr, Pi.star_apply, Complex.star_def, Complex.mul_conj]`. Rewrite using `[lDiag, LinearMap.comp_apply, Lext_apply _ hi, e, integral_complex_ofReal, Complex.ofReal_ne_zero]`. Rewrite `hi` using `[e]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hr : Integrable (fun p => Complex.normSq (φ (glue p))) (mu F κ)`. Simplify using `using hi.re`. Establish `hc : Continuous fun p => Complex.normSq (φ (glue p))` using `Complex.continuous_normSq.comp (continuous_glue hφ)`. Choose the witnesses or unpack the hypotheses as in `⟨x, hx⟩ : ∃ x, φ x ≠ 0 := by`. Assume the negation of the conclusion as `h`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations.
 
-Use `push_neg at h`. Conclude with `hne (funext h)`. Use `((integral_pos_iff_support_of_nonneg (fun p => Complex.normSq_nonneg _) hr).2 ?_).ne'` and prove the remaining obligations. Use `hc.isOpen_support.measure_pos _ ⟨shiftOf x, ?_⟩` and prove the remaining obligations. Rewrite using `[Function.mem_support, glue_shiftOf]`.
-
-Conclude with `(Complex.normSq_pos.2 hx).ne'`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lDiag_boxFun_star_ne : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] (φ : (κ → AF F) → ℂ),
     φ ∈ schA F κ → φ ≠ 0 → GlobalTheory.DiagForm.lDiag F κ (boxFun φ (star φ)) ≠ 0 := by

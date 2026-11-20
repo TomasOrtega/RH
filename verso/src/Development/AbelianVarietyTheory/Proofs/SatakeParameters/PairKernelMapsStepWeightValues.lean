@@ -11,7 +11,7 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Ker Formalism.L2.
 namespace GlobalTheory.KerJ
 
 /- English proof (translation)
-Use function extensionality and compare the values at `y`. Simplify using `only [evG, Pi.smul_apply, smul_eq_mul, MvPolynomial.smul_eq_C_mul, MvPolynomial.eval₂_mul, MvPolynomial.eval₂_C, RingHom.id_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem evG_id_smul {ι Yv : Type} [Fintype ι] {n : ℕ} (fr : Yv → ι → Matrix (Fin n) (Fin n) ℂ) (sh : ι → ℤ) (a : ℂ) (P : Pol ℂ ι n) :
     evG fr sh (RingHom.id ℂ) (a • P) = a • evG fr sh (RingHom.id ℂ) P := by
@@ -20,11 +20,11 @@ theorem evG_id_smul {ι Yv : Type} [Fintype ι] {n : ℕ} (fr : Yv → ι → Ma
   ring
 
 /- English proof (translation)
-Introduce `D u C A Pm M O i hi hU c c' f hf`. Take `⟨P, hP, rfl⟩` from `hf`. Take `⟨n, h1, h2, h3, h4⟩` from `GlobalTheory.T.trueWeight_consecutive_steps_partition D u C A Pm M i hi`. Establish `hle : D.R.N i ≤ D.R.N (i + 1)`. Unfold `Ranks.N`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Conclude with `Nat.add_le_add_left (Nat.mul_le_mul_right _ (Nat.le_succ _)) _`. Establish `key` using `GlobalTheory.KerWt.tied_on_models D u C O i hi (nuT D u i) hU ℂ (RingHom.id ℂ) (lamTG M i) n h1 c c' (jetC O.dgen (O.Th i c c')) 1 (fun m => by simp) (fun τ => (lamTG M i τ).detShift) h2 P hP`. Rewrite `key` using `[one_smul]`. Establish `hsh : (fun τ => -C.sDiv i τ) = fun τ => (lamTG M (i + 1) τ).detShift` using `funext fun τ => (h4 τ).symm`. Rewrite `key` using `[hsh]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(C.rhoDet i c * C.rhoDet' i c') • jetMap (jetC O.dgen (O.Th i c c')) n P, ?_, ?_⟩` and prove the remaining obligations. Conclude with `Submodule.smul_mem _ _ (GlobalTheory.KerWt.jet_in_vv_of_weight ℂ D.what₂.Tau _ _ hle (lamTG M i) (lamTG M (i + 1)) n h3 _ P hP)`. Rewrite using `[key, evG_id_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Kmap_isVal : ∀ (D : D7) (u : D.what₂.Word) (C : ColumnChain D.R D.what₂.Tau (D.hcW u)) (A : ColumnsAtT D.R C) (Pm : PeriodMap D.R C) (M : MemberForms D.what₂.LL D.what₂.embLL D.what₂.places D.what₂.Tau (D.hcW u) C A Pm) (O : GL3Theta.LiftObj D C) (i : ℕ), i < D.R.m → UnfIs O i (nuT D u i) → ∀ (c : C.cls i) (c' : C.cls (i + 1)) f, IsVal (O.frm i) (lamTG M i) (RingHom.id ℂ) f → IsVal (O.frm (i + 1)) (lamTG M (i + 1)) (RingHom.id ℂ) (C.Kmap i c c' f) := by
   intro D u C A Pm M O i hi hU c c' f hf

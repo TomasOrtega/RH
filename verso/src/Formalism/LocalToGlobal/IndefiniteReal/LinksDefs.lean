@@ -23,31 +23,31 @@ section Twist
 def cj (s : Bool) : ℂ →+* ℂ := cond s (starRingEnd ℂ) (RingHom.id ℂ)
 
 /- English proof (translation)
-Apply the tactic sequence `cases s <;> simp [cj]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cj_cj (s : Bool) (z : ℂ) : cj s (cj s z) = z := by
   cases s <;> simp [cj]
 
 /- English proof (translation)
-Apply the tactic sequence `cases s <;> simp [cj]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem norm_cj (s : Bool) (z : ℂ) : ‖cj s z‖ = ‖z‖ := by
   cases s <;> simp [cj]
 
 /- English proof (translation)
-Apply the tactic sequence `cases s <;> simp [cj]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cj_conj (s : Bool) (z : ℂ) : cj s (starRingEnd ℂ z) = starRingEnd ℂ (cj s z) := by
   cases s <;> simp [cj]
 
 /- English proof (translation)
-Apply the tactic sequence `cases s <;> simp [cj]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem re_cj (s : Bool) (z : ℂ) : (cj s z).re = z.re := by
   cases s <;> simp [cj]
 
 /- English proof (translation)
-Apply the tactic sequence `cases s <;> simp [cj]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cj_ofReal (s : Bool) (x : ℝ) : cj s (x : ℂ) = x := by
   cases s <;> simp [cj]
@@ -138,7 +138,7 @@ def rep (s : Bool) {G : Type} [Group G] (ρ : Representation ℂ G E) : Represen
   map_mul' g h := by ext x; show ρ (g * h) (out x) = ρ g (ρ h (out x)); rw [map_mul]; rfl
 
 /- English proof (translation)
-Rewrite `h`, the goal using `[Fintype.linearIndependent_iff]`. Introduce `g hg i`. Establish `h2` using `h (fun i => cj s (g i)) hg i`. Establish `h3` using `congrArg (cj s) h2`. Rewrite `h3` using `[cj_cj, map_zero]`. Then use the resulting hypothesis.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem linInd (s : Bool) {ι : Type} [Fintype ι] {v : ι → E} (h : LinearIndependent ℂ v) :
     LinearIndependent ℂ fun i => mk s (v i) := by
@@ -149,9 +149,9 @@ theorem linInd (s : Bool) {ι : Type} [Fintype ι] {v : ι → E} (h : LinearInd
   rwa [cj_cj, map_zero] at h3
 
 /- English proof (translation)
-Establish `h1 : Set.range (fun i => mk s (v i)) = (mkL s E) '' Set.range v`. Rewrite using `[← Set.range_comp]`. Both sides reduce to the same expression. Rewrite using `[h1, ← Submodule.map_span, h, Submodule.map_top, LinearMap.range_eq_top]`. Introduce `x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨out x, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem span_top (s : Bool) {ι : Type} [Fintype ι] {v : ι → E} (h : Submodule.span ℂ (Set.range v) = ⊤) :
     Submodule.span ℂ (Set.range fun i => mk s (v i)) = ⊤ := by
@@ -174,11 +174,9 @@ open Classical in
 def twAt (σ₀ : K →+* ℂ) (v : InfinitePlace K) : Bool := if v.embedding = sgAt σ₀ v then false else true
 
 /- English proof (translation)
-Unfold `twAt`. Use `split_ifs with h`. Rewrite using `[h]`. Both sides reduce to the same expression. Unfold `sgAt at h ⊢ split_ifs at h ⊢ with hv`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Replace the relevant objects with their definitions. Substitute using the available equality.
 
-Substitute `hv` using the available equality. Break down `InfinitePlace.embedding_mk_eq σ₀ with h' | h'` into its components or cases. Conclude with `absurd h' h`. Rewrite using `[h', NumberField.ComplexEmbedding.conjugate_coe_eq]`. Both sides reduce to the same expression.
-
-Conclude with `absurd rfl h`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem emb_eq (σ₀ : K →+* ℂ) (v : InfinitePlace K) (a : K) : v.embedding a = cj (twAt σ₀ v) (sgAt σ₀ v a) := by
   unfold twAt
@@ -193,7 +191,7 @@ theorem emb_eq (σ₀ : K →+* ℂ) (v : InfinitePlace K) (a : K) : v.embedding
     · exact absurd rfl h
 
 /- English proof (translation)
-Simplify using `[sgAt, hv]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sgAt_mk (σ₀ : K →+* ℂ) {v : InfinitePlace K} (hv : v = InfinitePlace.mk σ₀) : sgAt σ₀ v = σ₀ := by
   simp [sgAt, hv]
@@ -408,7 +406,7 @@ variable (D) in
 abbrev Vc (i : Fin D.R.m) : HSp D := D.sp.V ((i : ℕ) + 1)
 
 /- English proof (translation)
-Use `show D.R.r ≤ (D.sp.Y (min j D.R.m)).rank`. Rewrite using `[D.sp.Y_rank _ (min_le_right _ _)]`. Conclude with `Nat.le_add_right _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem r_le_Y (j : ℕ) : D.R.r ≤ (Yc D j).rank := by
   show D.R.r ≤ (D.sp.Y (min j D.R.m)).rank
@@ -416,21 +414,21 @@ theorem r_le_Y (j : ℕ) : D.R.r ≤ (Yc D j).rank := by
   exact Nat.le_add_right _ _
 
 /- English proof (translation)
-Rewrite using `[D.sp.X'_rank]`. Conclude with `Nat.le_add_right _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem r_le_X : D.R.r ≤ D.sp.X'.rank := by
   rw [D.sp.X'_rank]
   exact Nat.le_add_right _ _
 
 /- English proof (translation)
-Use `show D.R.r ≤ (D.sp.W ((i : ℕ) + 1)).rank`. Rewrite using `[D.sp.W_rank _ (Nat.succ_pos _) i.2]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem r_le_rank_Wc (i : Fin D.R.m) : D.R.r ≤ (Wc D i).rank := by
   show D.R.r ≤ (D.sp.W ((i : ℕ) + 1)).rank
   rw [D.sp.W_rank _ (Nat.succ_pos _) i.2]
 
 /- English proof (translation)
-Use `show D.R.r ≤ (D.sp.V ((i : ℕ) + 1)).rank`. Rewrite using `[D.sp.V_rank _ (Nat.succ_pos _) i.2]`. Conclude with `Nat.le_add_right _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem r_le_V (i : Fin D.R.m) : D.R.r ≤ (Vc D i).rank := by
   show D.R.r ≤ (D.sp.V ((i : ℕ) + 1)).rank
@@ -736,7 +734,7 @@ def WS (b : Bool) (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ) : Submodule ℂ 
 
 include R in
 /- English proof (translation)
-Rewrite using `[emb_eq D.what₂.embLL A.v0 a, sgAt_mk _ R.hv0]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem emb0 (a : D.what₂.LL) : A.v0.embedding a = cj (twAt D.what₂.embLL A.v0) (D.what₂.embLL a) := by
   rw [emb_eq D.what₂.embLL A.v0 a, sgAt_mk _ R.hv0]

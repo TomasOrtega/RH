@@ -15,7 +15,7 @@ variable {W : Type*} [AddCommGroup W] [Module E W] {ι : Type*} [Fintype ι] [De
 namespace MajorantTransport
 
 /- English proof (translation)
-Use `⟨CFC.sqrt P, ?_⟩` and prove the remaining obligations. Rewrite using `[(CFC.sqrt_nonneg P).posSemidef.isHermitian.eq]`. Conclude with `CFC.sqrt_mul_sqrt_self P hP.posSemidef.nonneg`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_conjTranspose_mul_self {P : Matrix ι ι ℂ} (hP : P.PosDef) :
     ∃ X : Matrix ι ι ℂ, Xᴴ * X = P := by
@@ -24,11 +24,11 @@ theorem exists_conjTranspose_mul_self {P : Matrix ι ι ℂ} (hP : P.PosDef) :
   exact CFC.sqrt_mul_sqrt_self P hP.posSemidef.nonneg
 
 /- English proof (translation)
-Set `f : (ι → ℂ) →ₗ[ℝ] (ι → ℂ)` to `(Matrix.toLin' A).restrictScalars ℝ`. Establish `hdet : LinearMap.det f = 1`. Rewrite using `[LinearMap.det_restrictScalars, LinearMap.det_toLin', Algebra.norm_complex_apply, hA]`. Establish `hcoe : (⇑f) = fun z : ι → ℂ => A *ᵥ z`. Use function extensionality and compare the values at `z`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[f]`. Establish `hmap` using `Measure.map_linearMap_addHaar_eq_smul_addHaar (μ := (volume : Measure (ι → ℂ))) (f := f) (by rw [hdet]; exact one_ne_zero)`. Rewrite `hmap` using `[hdet, hcoe]`. Establish `hm` using `(LinearMap.continuous_of_finiteDimensional f).measurable`. Rewrite `hm` using `[hcoe]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨hm, ?_⟩` and prove the remaining obligations. Simplify using `using hmap`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem measurePreserving_mulVec {A : Matrix ι ι ℂ} (hA : Complex.normSq A.det = 1) :
     MeasurePreserving (fun z : ι → ℂ => A *ᵥ z) volume volume := by
@@ -48,11 +48,11 @@ theorem measurePreserving_mulVec {A : Matrix ι ι ℂ} (hA : Complex.normSq A.d
 omit [NumberField F] [NumberField E] [IsTotallyReal F] [IsTotallyComplex E] in
 
 /- English proof (translation)
-Establish `hg` using `mem_archUnitary.mp g.2 w`. Establish `hH : (gramAt h v w).det ≠ 0`. Simplify using `only [gramAt]`. Rewrite using `[show ((gram h.toSesq v).map w.embedding).det = w.embedding (gram h.toSesq v).det from (RingHom.map_det w.embedding _).symm]`. Conclude with `((isUnit_det_gram h v).map w.embedding).ne_zero`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `set G : Matrix ι ι ℂ := ((g : InfinitePlace E → GL ι ℂ) w : Matrix ι ι ℂ)`. Rewrite `hg` using `[show (G.map ⇑(starRingEnd ℂ))ᵀ = Gᴴ from rfl]`. Establish `h1` using `congrArg Matrix.det hg`. Rewrite `h1` using `[det_mul, det_mul, det_conjTranspose, show star G.det = starRingEnd ℂ G.det from rfl]`. Establish `h2 : starRingEnd ℂ G.det * G.det = 1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion.
 
-Apply `mul_right_cancel₀ hH` to reduce the goal to its premises. Take the linear combination `h1`. Establish `h3 : (Complex.normSq G.det : ℂ) = 1`. Rewrite using `[Complex.normSq_eq_conj_mul_self, h2]`. Conclude with `h3` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem normSq_det (h : HermitianForm F E W) (v : Basis ι E W) (g : archUnitary h v)
     (w : InfinitePlace E) : Complex.normSq ((g : InfinitePlace E → GL ι ℂ) w : Matrix ι ι ℂ).det = 1 := by
@@ -82,9 +82,9 @@ def sqrtMap (Q : InfinitePlace E → Matrix ι ι ℂ) :
 omit [IsTotallyComplex E] [DecidableEq ι] in
 
 /- English proof (translation)
-Rewrite using `[EuclideanSpace.norm_sq_eq, Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[← mulVec_mulVec, dotProduct_mulVec, ← star_mulVec]`. Simplify using `only [sqrtMap, LinearMap.coe_mk, AddHom.coe_mk, PiLp.toLp_apply, dotProduct, Pi.star_apply, Complex.re_sum, Complex.star_def, Complex.conj_mul']`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `norm_cast`.
+Put the expressions in a common number system so they can be compared.
 -/
 theorem norm_sq_sqrtMap (Q : InfinitePlace E → Matrix ι ι ℂ) (y : InfinitePlace E → ι → ℂ) :
     ‖sqrtMap Q y‖ ^ 2 = ∑ w, (star (y w) ⬝ᵥ (((Q w)ᴴ * Q w) *ᵥ y w)).re := by
@@ -99,17 +99,15 @@ theorem norm_sq_sqrtMap (Q : InfinitePlace E → Matrix ι ι ℂ) (y : Infinite
 omit [NumberField F] [IsTotallyReal F] [IsTotallyComplex E] in
 
 /- English proof (translation)
-Use `choose Q hQ using fun w => exists_conjTranspose_mul_self (M.posDef w)`. Establish `hnorm : ∀ y, ‖sqrtMap Q y‖ = M.len y`. Introduce `y`. Rewrite using `[Majorant.len, ← Real.sqrt_sq (norm_nonneg (sqrtMap Q y)), norm_sq_sqrtMap]`. Simplify using `only [hQ]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hinj : Function.Injective (sqrtMap Q)`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `y hy`. Establish `h0 : ∑ w, (star (y w) ⬝ᵥ (M.P w *ᵥ y w)).re = 0`. Use `norm_sq_sqrtMap Q y` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [hQ, hy, norm_zero] at this`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hnn : ∀ w, 0 ≤ (star (y w) ⬝ᵥ (M.P w *ᵥ y w)).re` using `fun w => (Complex.nonneg_iff.mp ((M.posDef w).posSemidef.dotProduct_mulVec_nonneg (y w))).1`. Use function extensionality and compare the values at `w`. Assume the negation of the conclusion as `hw`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hpos` using `(Complex.lt_def.mp ((M.posDef w).dotProduct_mulVec_pos hw)).1`. Use `(Finset.sum_eq_zero_iff_of_nonneg fun w _ => hnn w).mp h0 w (Finset.mem_univ _)` as an intermediate fact. Simplify using `only [Complex.zero_re] at hpos`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hdim : finrank ℂ (InfinitePlace E → ι → ℂ) = finrank ℂ (EuclideanSpace ℂ (InfinitePlace E × ι))`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[Module.finrank_pi_fintype, finrank_euclideanSpace, Fintype.card_prod]`. Set `e : (InfinitePlace E → ι → ℂ) ≃ₗ[ℂ] EuclideanSpace ℂ (InfinitePlace E × ι)` to `LinearEquiv.ofBijective (sqrtMap Q) ⟨hinj, (LinearMap.injective_iff_surjective_of_finrank_eq_finrank hdim).mp hinj⟩`. Set `b` to `stdOrthonormalBasis ℝ (EuclideanSpace ℂ (InfinitePlace E × ι))`. Use `⟨_, (e.restrictScalars ℝ).toContinuousLinearEquiv.trans b.repr.toContinuousLinearEquiv, fun y => ?_⟩` and prove the remaining obligations. Simplify using `only [ContinuousLinearEquiv.trans_apply, LinearIsometryEquiv.coe_toContinuousLinearEquiv, LinearIsometryEquiv.norm_map]`.
-
-Conclude with `hnorm y`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_isometry {h : HermitianForm F E W} {v : Basis ι E W} (M : Majorant h v) :
     ∃ (d : ℕ) (S : (InfinitePlace E → ι → ℂ) ≃L[ℝ] EuclideanSpace ℝ (Fin d)),
@@ -160,7 +158,7 @@ def invApplyEquiv {h : HermitianForm F E W} {v : Basis ι E W} (g : archUnitary 
 omit [NumberField F] [IsTotallyReal F] [IsTotallyComplex E] in
 
 /- English proof (translation)
-The claim follows from `measurePreserving_pi (fun _ => volume) (fun _ => volume) (fun w => measurePreserving_mulVec (normSq_det h v g⁻¹ w))`.
+A detailed English derivation is pending.
 -/
 theorem measurePreserving_invApply {h : HermitianForm F E W} {v : Basis ι E W}
     (g : archUnitary h v) : MeasurePreserving (invApply g) volume volume :=
@@ -172,11 +170,11 @@ end MajorantTransport
 omit [NumberField F] [IsTotallyReal F] [IsTotallyComplex E] in
 
 /- English proof (translation)
-Introduce `M`. Establish `: (volume : Measure (InfinitePlace E → ι → ℂ)).IsAddHaarMeasure` using `Measure.pi.isAddHaarMeasure _`. Apply the tactic sequence `obtain ⟨d, S, hS⟩ := MajorantTransport.exists_isometry M`. Use `set c := Measure.addHaarScalarFactor (Measure.map S.symm volume) (volume : Measure (InfinitePlace E → ι → ℂ))`. Establish `hc : Measure.map S.symm volume = c • (volume : Measure (InfinitePlace E → ι → ℂ))` using `Measure.isAddLeftInvariant_eq_smul (Measure.map S.symm volume) volume`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨d, c, fun g => ⟨(MajorantTransport.invApplyEquiv g).trans S, fun y => hS _, fun L _ _ => ?_⟩⟩` and prove the remaining obligations. Use `set T := (MajorantTransport.invApplyEquiv g).trans S`. Establish `hT : MeasurePreserving T.symm volume (Measure.map T.symm volume)` using `T.symm.continuous.measurable.measurePreserving _`. Rewrite using `[ZLattice.covolume_comap L (Measure.map T.symm volume) volume hT]`. Establish `hsymm : ⇑(MajorantTransport.invApplyEquiv g).symm = invApply g⁻¹` using `rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmap : Measure.map T.symm volume = c • (volume : Measure (InfinitePlace E → ι → ℂ))`. Establish `hcomp : ⇑T.symm = (MajorantTransport.invApplyEquiv g).symm ∘ S.symm` using `rfl`. Rewrite using `[hcomp, ← Measure.map_map (MajorantTransport.invApplyEquiv g).symm.continuous.measurable S.symm.continuous.measurable, hc, Measure.map_smul, hsymm, (MajorantTransport.measurePreserving_invApply g⁻¹).map_eq]`. Set `b` to `Module.Free.chooseBasis ℤ L`. Rewrite using `[ZLattice.covolume_eq_measure_fundamentalDomain L _ (ZLattice.isAddFundamentalDomain b _), ZLattice.covolume_eq_measure_fundamentalDomain L volume (ZLattice.isAddFundamentalDomain b volume), hmap, measureReal_nnreal_smul_apply]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem MajorantTransport.proof (h : HermitianForm F E W) (v : Basis ι E W) :
     MajorantTransport.Statement h v := by

@@ -29,7 +29,7 @@ def adConj : (AdF E ⊗[maximalRealSubfield E] E) →ₐ[maximalRealSubfield E] 
   Algebra.TensorProduct.map (AlgHom.id _ _) (IsCMField.complexConj E).toAlgHom
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b => simp [adConj]`. Consider the case `add x y hx hy => simp [hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem adConj_adConj (x : AdF E ⊗[maximalRealSubfield E] E) : adConj E (adConj E x) = x := by
   induction x using TensorProduct.induction_on with
@@ -168,12 +168,12 @@ def RepsExist (H : Host E) (n : ℕ) : Prop :=
       ∃ (k : ℕ) (h : Fin k → UA E n) (N : Fin k → ℕ), Admissible H q₁ M S J h N
 
 /- English proof (translation)
-Introduce `_ _ _ _` and use `rfl`.
+Fix the arbitrary inputs and assume any hypotheses. Both sides reduce to the same expression.
 -/
 example (S : Finset (Plc E)) : TrivOn S (1 : UA E n) := fun _ _ _ _ => rfl
 
 /- English proof (translation)
-Simplify using `[stab]`.
+Simplify using the standard rewrite rules.
 -/
 example (J : Subgroup (UA E n)) (h γ : UA E n) : γ ∈ stab J h ↔ γ ∈ ratPts E n ∧ h⁻¹ * γ * h ∈ J := by
   simp [stab]
@@ -309,7 +309,7 @@ def ClassSumDownInCusp (cusp : ((E →+* ℂ) × ℕ → ℕ) → ℕ → Submod
       f ∈ sec Xo c a n → IsClassSumRuleDown Xo c d vol J h N ep cξ ph phδ io x f → f ∈ cusp a n
 
 /- English proof (translation)
-Use function extensionality and compare the values at `q`. Simplify using `[fourierSum]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 example {n : ℕ} : fourierSum (Dw := Dw) c (0 : (Fin n → ConjQ Dw l) → c.F) = 0 := by
   funext q

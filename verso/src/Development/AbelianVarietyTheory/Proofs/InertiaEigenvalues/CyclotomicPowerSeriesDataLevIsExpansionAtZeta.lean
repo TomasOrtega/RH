@@ -10,7 +10,7 @@ open Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibl
 namespace GlobalTheory.HWL.LevExp
 
 /- English proof (translation)
-Conclude with `PowerSeries.exp_unique_of_derivative_eq_self h1 h0`.
+A detailed English derivation is pending.
 -/
 theorem eq_exp {F : Type} [Field F] [CharZero F] [Algebra ℚ F] (E : PowerSeries F)
     (h0 : PowerSeries.constantCoeff E = 1) (h1 : PowerSeries.derivative F E = E) :
@@ -18,11 +18,11 @@ theorem eq_exp {F : Type} [Field F] [CharZero F] [Algebra ℚ F] (E : PowerSerie
   exact PowerSeries.exp_unique_of_derivative_eq_self h1 h0
 
 /- English proof (translation)
-Establish `hfam : f (fun j => ((p j : Polynomial O) : PowerSeries O)) = f (fun _ => ((p i : Polynomial O) : PowerSeries O))`. Establish `h` using `hf ((fun j => ((p j : Polynomial O) : PowerSeries O)) - (fun _ => ((p i : Polynomial O) : PowerSeries O))) (by simp)`. Rewrite `h` using `[map_sub, sub_eq_zero]`. Then use the resulting hypothesis. Rewrite using `[hfam]`. Establish `hg : f.comp ((Pi.constAlgHom O (ZMod n) (PowerSeries O)).comp (Polynomial.coeToPowerSeries.algHom O)) = Polynomial.aeval (f letπ)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `Polynomial.algHom_ext` to reduce the goal to its premises. Simplify using `only [AlgHom.comp_apply, Polynomial.aeval_X, Polynomial.coeToPowerSeries.algHom_apply, Polynomial.coe_X, Algebra.algebraMap_self, PowerSeries.map_id]`. Both sides reduce to the same expression. Establish `h2` using `congrArg (fun φ => φ (p i)) hg`. Simplify using `only [AlgHom.comp_apply, Polynomial.coeToPowerSeries.algHom_apply, Algebra.algebraMap_self, PowerSeries.map_id] at h2`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `h2`.
+A detailed English derivation is pending.
 -/
 theorem map_poly {O A : Type} [CommRing O] [CommRing A] [Algebra O A] {n : ℕ} (f : LetA O n →ₐ[O] A)
     (i : ZMod n) (hf : ∀ a, a i = 0 → f a = 0) (p : ZMod n → Polynomial O) :
@@ -45,7 +45,7 @@ theorem map_poly {O A : Type} [CommRing O] [CommRing A] [Algebra O A] {n : ℕ} 
   exact h2
 
 /- English proof (translation)
-Rewrite using `[map_poly f i hf p, Polynomial.aeval_map_algebraMap]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem map_poly_series {O L : Type} [CommRing O] [CommRing L] [Algebra O L] {n : ℕ}
     (f : LetA O n →ₐ[O] PowerSeries L) (i : ZMod n) (hf : ∀ a, a i = 0 → f a = 0) (p : ZMod n → Polynomial O) :
@@ -54,17 +54,17 @@ theorem map_poly_series {O L : Type} [CommRing O] [CommRing L] [Algebra O L] {n 
   rw [map_poly f i hf p, Polynomial.aeval_map_algebraMap]
 
 /- English proof (translation)
-Introduce `l _ P K s LL Γ R i ζ hζ a`. Establish `hπ : R.lev i ζ letπ = PowerSeries.C ζ * PowerSeries.exp ↥LL.1 - 1`. Take `⟨E, hE0, hE1, hE⟩` from `R.lev_π i ζ (by rw [P.PD_p K]; exact hζ)`. Rewrite `hE` using `[eq_exp E hE0 hE1]`. Rewrite using `[← hE]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `htr : ∀ m : ℕ, Polynomial.aeval (PowerSeries.C ζ * PowerSeries.exp ↥LL.1 - 1) (PowerSeries.trunc m (toLL a i)) = R.lev i ζ (fun j => ((PowerSeries.trunc m (a j) : Polynomial ↥(OL LL)) : PowerSeries ↥(OL LL)))`. Introduce `m`. Rewrite using `[map_poly_series (R.lev i ζ) i (R.lev_letter i ζ) (fun j => PowerSeries.trunc m (a j)), hπ]`. Simplify using `only [toLL, PowerSeries.trunc_map]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `k`. Simplify using `only [htr]`. Rewrite using `[Metric.tendsto_atTop]`. Introduce `ε hε`. Establish `hl : (1 : ℝ) < l` using `by exact_mod_cast (Fact.out : l.Prime).one_lt`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Choose the witnesses or unpack the hypotheses as in `⟨r, hr⟩ : ∃ r : ℕ, (l : ℝ) ^ (-(r : ℝ)) < ε := by`. Take `⟨r, hr⟩` from `exists_pow_lt_of_lt_one hε (inv_lt_one_of_one_lt₀ hl)`. Use `⟨r, ?_⟩` and prove the remaining obligations. Rewrite using `[Real.rpow_neg (by positivity), Real.rpow_natCast, ← inv_pow]`. Conclude with `hr`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨m₀, hm₀⟩` from `R.lev_cont i ζ a k r`. Use `⟨m₀, fun m hm => ?_⟩` and prove the remaining obligations. Establish `hv` using `hm₀ m hm`. Rewrite `hv` using `[← WithTop.coe_natCast]`. Establish `hn` using `((NormVal.locPrime_v_normalised l P LL).2.1 _ (r : ℚ)).1 hv`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dist_eq_norm, ← norm_neg, neg_sub]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem lev_isExp : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (K : FinExt l) (s : ℕ) (LL : FinExt l) (Γ : GamS P K s LL) (R : WSer Γ), ∀ (i : ZMod (Module.finrank ℚ_[l] ↥(K0 K))) (ζ : ↥LL.1), (∃ j : ℕ, IsPrimitiveRoot ζ (l ^ j)) → ∀ a : LetA ↥(OL LL) (Module.finrank ℚ_[l] ↥(K0 K)), IsExp ζ (toLL a i) (R.lev i ζ a) := by
   intro l _ P K s LL Γ R i ζ hζ a

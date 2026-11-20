@@ -32,11 +32,9 @@ theorem topOf_eq (W : RealPack ex) (t : W.P.T) (F : Fin ((W.Q.F.fc (cxW W).zs).D
     topOf W t F = (pk W).cX.toMap (pk W).prX (((pk W).HX t).e (xOf W t F)) := rfl
 
 /- English proof (translation)
-Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => intro _ F F' e`. Conclude with `e`. Consider the case `succ k ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hk F F' e`. Take `⟨h1, h2⟩` from `hr.io k (by omega) F`. Establish `e2 : (⟨F.1, h1⟩ : (pk W).CC t (k + 1)) = F'` using `Subtype.ext e`. Use `show ((f.t t).dn k ((f.row t).io k F)).1 = (Lift.dnFrom ((pk W).CC t) ((pk W).ioY t) k ((pk W).ioY t k F')).1`. Rewrite using `[← e2]`.
-
-Conclude with `ih (by omega) _ _ h2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dn_eq {W : RealPack ex} {u : D.what₂.Word} (f : FamCh W u) (t : W.P.T) (hr : (f.row t).Is) :
     ∀ k, k + 1 ≤ D.R.m → ∀ (F : (f.t t).CC k) (F' : (pk W).CC t k), F.1 = F'.1 →
@@ -53,7 +51,7 @@ theorem dn_eq {W : RealPack ex} {u : D.what₂.Word} (f : FamCh W u) (t : W.P.T)
     exact ih (by omega) _ _ h2
 
 /- English proof (translation)
-Substitute `hk` using the available equality. Rewrite using `[eq_of_heq e]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 -/
 theorem dnFrom_heq (W : RealPack ex) (t : W.P.T) {k : ℕ} (hk : D.R.m - 1 = k) (X : (pk W).CC t k) (X' : (pk W).CC t (D.R.m - 1))
     (e : HEq X X') : (Lift.dnFrom ((pk W).CC t) ((pk W).ioY t) k X).1 = (Lift.dnFrom ((pk W).CC t) ((pk W).ioY t) (D.R.m - 1) X').1 := by
@@ -61,7 +59,7 @@ theorem dnFrom_heq (W : RealPack ex) (t : W.P.T) {k : ℕ} (hk : D.R.m - 1 = k) 
   rw [eq_of_heq e]
 
 /- English proof (translation)
-Substitute `p` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem app_heq (W : RealPack ex) (t : W.P.T) {M : Type} [AddCommGroup M] [Module ℂ M] {k k' : ℕ} (p : k = k')
     (g : M →ₗ[ℂ] (pk W).CC t k) (z : M) :
@@ -72,9 +70,9 @@ theorem app_heq (W : RealPack ex) (t : W.P.T) {M : Type} [AddCommGroup M] [Modul
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Establish `H` using `hr.ioT (2 * n) h G`. Establish `h'` using `H.choose`. Establish `e : (((f.row t).ioT (2 * n) h G).1 : SmT ((pk W).MY (2 * n + 1)) →ₗ[ℂ] (GA D (Yc D (2 * n + 1)) → ℂ)) = (ioXT (pk W) t (2 * n) h ⟨G.1, h'⟩).1` using `H.choose_spec`. Establish `e1` using `dn_eq f t hr (2 * n + 1) (by omega) ((f.t t).ioT (2 * n) h G) (ioXT (pk W) t (2 * n) h ⟨G.1, h'⟩) e`. Establish `hy : (⟨G.1, h'⟩ : LinearMap.range ((pk W).cX.toMap (pk W).prX ∘ₗ ((pk W).HX t).e)) = ((pk W).cX.toMap (pk W).prX ∘ₗ ((pk W).HX t).e).rangeRestrict y` using `Subtype.ext hG`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2` using `dnFrom_heq W t (idx_top h) (ioXT (pk W) t (2 * n) h ⟨G.1, h'⟩) ((pk W).ioX t ⟨G.1, h'⟩) (app_heq W t (idx_top h) ((pk W).ioX t) _)`. Establish `e3 : (Lift.dnFrom ((pk W).CC t) ((pk W).ioY t) (D.R.m - 1) ((pk W).ioX t ⟨G.1, h'⟩)).1 = (pk W).thDn t y` using `(congrArg (fun z => (Lift.dnFrom ((pk W).CC t) ((pk W).ioY t) (D.R.m - 1) ((pk W).ioX t z)).1) hy).trans (GlobalTheory.ChainEquiv.thDn_eq t y).symm`. Establish `key : ((f.t t).dn (2 * n + 1) ((f.t t).ioT (2 * n) h G)).1 = (pk W).thDn t y` using `e1.trans (e2.trans e3)`. Unfold `GlobalTheory.MiTop.down`. Conclude with `key`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem down_eq {W : RealPack ex} {u : D.what₂.Word} (f : FamCh W u) (t : W.P.T) (hr : (f.row t).Is) (n : ℕ)
     (h : 2 * n + 2 * 0 + 2 = D.R.m) (G : (f.t t).CT) (y : ((pk W).HX t).H)
@@ -96,7 +94,7 @@ theorem down_eq {W : RealPack ex} {u : D.what₂.Word} (f : FamCh W u) (t : W.P.
   exact key
 
 /- English proof (translation)
-Use `PiTensorProduct.ext (MultilinearMap.ext fun v => ?_)` and prove the remaining obligations. Simplify using `only [LinearMap.compMultilinearMap_apply, PiTensorProduct.lift.tprod, postOn_apply]`. Rewrite using `[show (PiTensorProduct.lift.symm T) v = T (PiTensorProduct.tprod ℂ v) from rfl, hT v]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem lift_postOn_fixed (W : RealPack ex) (T : SmT ((pk W).MY 0) →ₗ[ℂ] (GA D (Yc D 0) → ℂ))
     (hT : ∀ v : ((pk W).MY 0).Vec, (pk W).e0 (T (PiTensorProduct.tprod ℂ v)) = T (PiTensorProduct.tprod ℂ v)) :
@@ -112,9 +110,9 @@ end
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D L hT Gi Gl Kc Yd cX ex W u hP f hR n h t F`. Use `⟨⟨topOf W t F, GlobalTheory.T.top_vector_mem_extra_projection W hP t F⟩, rfl, ?_⟩` and prove the remaining obligations. Establish `e1` using `GlobalTheory.RowDescent.down_eq f t (hR.row t) n h ⟨topOf W t F, GlobalTheory.T.top_vector_mem_extra_projection W hP t F⟩ (GlobalTheory.RowDescent.xOf W t F) (GlobalTheory.RowDescent.topOf_eq W t F)`. Establish `hC : (pk W).IsChain` using `RealDat.chain_of_weak W.Q.charW.base.chain hP.ex`. Establish `e2 : rowAt W t F = PiTensorProduct.lift ((pk W).HE.e ((pk W).Th t (GlobalTheory.RowDescent.xOf W t F)))` using `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e3` using `congrArg PiTensorProduct.lift (hC.Th t (GlobalTheory.RowDescent.xOf W t F))`. Establish `e4` using `GlobalTheory.RowDescent.lift_postOn_fixed W _ (GlobalTheory.T.e0_thDn_tprod_eq W hP t F)`. Conclude with `e1.trans (e4.symm.trans (e3.symm.trans e2.symm))`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.MiTop.linkDown_of_rowOK : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX} (W : RealPack ex) (u : D.what₂.Word), PkHyp W → ∀ f : FamCh W u, f.RowOK → LinkDown f := by
   intro D L hT Gi Gl Kc Yd cX ex W u hP f hR n h t F

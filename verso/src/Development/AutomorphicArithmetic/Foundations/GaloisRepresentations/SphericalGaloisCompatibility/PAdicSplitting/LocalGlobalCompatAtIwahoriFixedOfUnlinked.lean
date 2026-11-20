@@ -12,14 +12,14 @@ import Development.AutomorphicArithmetic.Foundations.LocalLanglands.LocalCentral
 namespace UpperTheory.Gal.ToralGalois.R2
 
 /- English proof (translation)
-The claim follows from `toTor UpperTheory.Gal.InertialTypesAlt.suppBC_outright UpperTheory.Gal.UnramifiedFromSplittingCriterion.unrField_holds UpperTheory.Gal.NearKilling.allLift_holds UpperTheory.Gal.NearKilling.ineNorm (infLifts (infStep UpperTheory.Gal.InertialTypesAlt.stableOf)) (recChars UpperTheor …`.
+A detailed English derivation is pending.
 -/
 theorem toTor_holds : ToTor :=
   toTor UpperTheory.Gal.InertialTypesAlt.suppBC_outright UpperTheory.Gal.UnramifiedFromSplittingCriterion.unrField_holds UpperTheory.Gal.NearKilling.allLift_holds UpperTheory.Gal.NearKilling.ineNorm
     (infLifts (infStep UpperTheory.Gal.InertialTypesAlt.stableOf)) (recChars UpperTheory.Gal.InertialTypesAlt.suppIne) UpperTheory.Zero.LLC.recTExists
 
 /- English proof (translation)
-The claim follows from `r2g mixedOf toTor_holds drDesc UpperTheory.Zero.LLC.recTExists`.
+A detailed English derivation is pending.
 -/
 theorem localGlobalCompatAtIwahoriFixed_of_unlinked : GlobalTheory.DeRhamOfPlainTorus.R1 → LocalGlobalCompatAtIwahoriFixedPlaces := r2g mixedOf toTor_holds drDesc UpperTheory.Zero.LLC.recTExists
 

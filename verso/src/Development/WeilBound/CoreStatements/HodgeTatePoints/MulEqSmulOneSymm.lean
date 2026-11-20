@@ -6,11 +6,11 @@ open Matrix
 namespace PositivityTheory.HtPt.Rh
 
 /- English proof (translation)
-Establish `hd : B.det ≠ 0`. Introduce `h0`. Use `congrArg Matrix.det h` as an intermediate fact. Rewrite `this` using `[det_mul, h0, mul_zero, det_smul, det_one, mul_one]`. Conclude with `pow_ne_zero _ hc this.symm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : (B * A - c • (1 : Matrix n n R)) * B = 0`. Rewrite using `[sub_mul, Matrix.mul_assoc, h]`. Simplify using the standard rewrite rules. Establish `h2 : B.det • (B * A - c • (1 : Matrix n n R)) = 0`. Use `congrArg (· * B.adjugate) h1` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this` using `only [Matrix.mul_assoc, mul_adjugate, Matrix.mul_smul, Matrix.mul_one, Matrix.zero_mul]`. Conclude with `sub_eq_zero.1 ((smul_eq_zero.1 h2).resolve_left hd)`.
+A detailed English derivation is pending.
 -/
 theorem mul_eq_smul_one_symm {R n : Type} [CommRing R] [IsDomain R] [Fintype n] [DecidableEq n]
     {A B : Matrix n n R} {c : R} (hc : c ≠ 0) (h : A * B = c • (1 : Matrix n n R)) :
@@ -29,25 +29,25 @@ theorem mul_eq_smul_one_symm {R n : Type} [CommRing R] [IsDomain R] [Fintype n] 
   exact sub_eq_zero.1 ((smul_eq_zero.1 h2).resolve_left hd)
 
 /- English proof (translation)
-Introduce `C _ v R _ _ hv g Ht Bt E cp hcp hE hEu hform φ intg hb`. Establish `: IsDomain R` using `hv.hom_inj.isDomain _`. Establish `hcp' : φ cp ≠ 0` using `fun h => hcp (hv.hom_inj (by rw [map_zero]; exact h))`. Establish `hEt : IsUnit (Eᵀ).det` using `by rwa [det_transpose]`. Use `set U : Matrix (Fin g ⊕ Fin g) (Fin g) R := -((Eᵀ)⁻¹ * Btᵀ) with hU`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set W : Matrix (Fin g ⊕ Fin g) (Fin g) R := (Eᵀ)⁻¹ * Htᵀ with hW`. Establish `h1 : U * Ht + W * Bt = cp • (1 : Matrix _ _ R)`. Establish `: U * Ht + W * Bt = (Eᵀ)⁻¹ * (-(Btᵀ * Ht - Htᵀ * Bt))`. Rewrite using `[hU, hW, neg_sub, Matrix.mul_sub, Matrix.neg_mul, Matrix.mul_assoc, Matrix.mul_assoc]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this, hform, ← smul_neg, ← hE, Matrix.mul_smul, nonsing_inv_mul _ hEt]`. Establish `h2 : fromCols U W * fromRows Ht Bt = cp • (1 : Matrix _ _ R)`. Rewrite using `[fromCols_mul_fromRows, h1]`. Establish `h3` using `mul_eq_smul_one_symm hcp h2`. Rewrite `h3` using `[fromRows_mul_fromCols, ← fromBlocks_one, fromBlocks_smul, fromBlocks_inj]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨a11, a12, a21, a22⟩` from `h3`. Rewrite `a12`, `a21` using `[smul_zero]`. Establish `hone : ∀ {n : Type} [DecidableEq n], (cp • (1 : Matrix n n R)).map φ = φ cp • (1 : Matrix n n C)`. Introduce `n _`. Use extensionality with `i j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Apply the tactic sequence `by_cases h : i = j <;> simp [Matrix.one_apply, h]`. Establish `b1` using `congrArg (·.map φ) h1`. Establish `b11` using `congrArg (·.map φ) a11`. Establish `b12` using `congrArg (·.map φ) a12`. Establish `b21` using `congrArg (·.map φ) a21`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `b22` using `congrArg (·.map φ) a22`. Simplify using `only [Matrix.map_add _ (map_add φ), Matrix.map_mul, hone, Matrix.map_zero _ (map_zero φ)] at b1 b11 b12 b21 b22`. Use `⟨?_, fun x => ⟨fun hx => ⟨_, hx.2, ?_⟩, ?_⟩, fun w _ => ⟨(φ cp)⁻¹ • (U.map φ *ᵥ w), ?_, ?_⟩, fun l => ?_⟩` and prove the remaining obligations. Establish `hJ : (fromRows Ht Bt)ᵀ * Matrix.J (Fin g) R * fromRows Ht Bt = cp • E`. Rewrite using `[← hform, Matrix.J, transpose_fromRows, fromCols_mul_fromBlocks, fromCols_mul_fromRows]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[sub_eq_add_neg]`. Establish `hd` using `congrArg (fun M => v (φ M.det)) hJ`. Simplify using `only [det_mul, det_transpose, det_smul, map_mul, map_pow, Fintype.card_sum, Fintype.card_fin] at hd`. Rewrite `hd` using `[hv.one_of_isUnit (Matrix.isUnit_det_J (Fin g) R), hv.one_of_isUnit hEu, mul_one, mul_one, pow_add]`. Conclude with `(mul_self_inj zero_le zero_le).1 hd`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Use `congrArg (· *ᵥ x) b1` as an intermediate fact. Simplify using `only [add_mulVec, ← mulVec_mulVec, hx.1, mulVec_zero, zero_add, smul_mulVec, one_mulVec] at this`. Express the relevant statement in the definitionally equal form `x = (φ cp)⁻¹ • (W.map φ *ᵥ _)`. Rewrite using `[this, inv_smul_smul₀ hcp']`. Introduce and unpack `⟨w, hw, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Express the relevant statement in the definitionally equal form `Ht.map φ *ᵥ ((φ cp)⁻¹ • (W.map φ *ᵥ w)) = 0 ∧ intg (Bt.map φ *ᵥ ((φ cp)⁻¹ • (W.map φ *ᵥ w)))`. Rewrite using `[mulVec_smul, mulVec_smul, mulVec_mulVec, mulVec_mulVec, b12, b22, zero_mulVec, smul_zero, smul_mulVec, one_mulVec, inv_smul_smul₀ hcp']`. Conclude with `⟨rfl, hw⟩`. Rewrite using `[mulVec_smul, mulVec_mulVec, b11, smul_mulVec, one_mulVec, inv_smul_smul₀ hcp']`. Rewrite using `[mulVec_smul, mulVec_mulVec, b21, zero_mulVec, smul_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `: cp • l = (l ᵥ* fromCols U W) ᵥ* fromRows Ht Bt`. Rewrite using `[vecMul_vecMul, h2, vecMul_smul, vecMul_one]`. Rewrite using `[this, vecMul_eq_sum]`. Conclude with `Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨k, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem gp_mat : ∀ (C : Type) [Field C] (v : Valuation C NNReal) (R : Type) [CommRing R] [Algebra R C], v.Integers R → ∀ (g : ℕ) (Ht Bt : Matrix (Fin g) (Fin g ⊕ Fin g) R) (E : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) R) (cp : R), cp ≠ 0 → Eᵀ = -E → IsUnit E.det → Btᵀ * Ht - Htᵀ * Bt = cp • E → let φ := algebraMap R C; let intg : (Fin g → C) → Prop := fun w => ∀ k, v (w k) ≤ 1; let hb : Matrix (Fin g ⊕ Fin g) (Fin g) C := ((Eᵀ)⁻¹ * Htᵀ).map φ; v (φ (Matrix.fromRows Ht Bt).det) = v (φ cp) ^ g ∧ (∀ x : Fin g ⊕ Fin g → C, ((Ht.map φ) *ᵥ x = 0 ∧ intg ((Bt.map φ) *ᵥ x)) ↔ ∃ w, intg w ∧ x = (φ cp)⁻¹ • (hb *ᵥ w)) ∧ (∀ w, intg w → ∃ x : Fin g ⊕ Fin g → C, (Ht.map φ) *ᵥ x = w ∧ (Bt.map φ) *ᵥ x = 0) ∧ (∀ l : Fin g ⊕ Fin g → R, cp • l ∈ Submodule.span R (Set.range fun k => Matrix.fromRows Ht Bt k)) := by
   intro C _ v R _ _ hv g Ht Bt E cp hcp hE hEu hform φ intg hb

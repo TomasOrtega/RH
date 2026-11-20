@@ -39,21 +39,19 @@ variable {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} {I : TC B X} {l : I.Laws
   {Yd : DivX (I.rec7 l Z)} {cX : ExtraC} {ex : Extra (I.rec7 l Z) L hT Gi Gl Kc Yd cX} {W : _root_.GlobalTheory.MiS.RealPackAlt ex} {u : B.Word}
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Establish `hs : (a.G n).s + 1 + 1 = B.R.m` using `(a.G n).hs`. Take `⟨hid, hv⟩` from `hR.idem n`. Take `⟨hi, hd⟩` from `SymChainAt.place_facts (a.G n).q hid`. Establish `hPm : (a.pl n).1 ∈ (B.primes X).vGs` using `(hW.lev.2.1 _).1 (a.pl n).2`. Take `⟨i, g1, g2, -, g4, -⟩` from `LevelData.type_prime hPm`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨ϖ, hϖq, -⟩` from `LevelData.exists_unif (ι := (a.G n).q.pr.comp (incA (I.rec7 l Z))) hi hd (g1 ▸ g4)`. Take `⟨S', e1, e2, e3, e4, e5⟩` from `exists_normal (a.G n).S ϖ (by rw [hϖq, map_natCast, Valuation.map_sub_swap]; exact hϖ) B.R.t (a.G n).ν`. Use `⟨S', e5, fun b P hP => ?_⟩` and prove the remaining obligations. Take `⟨PP, hPP⟩` from `P`. Take `rfl : PP = (a.pl n).1` from `hP`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `ok` using `hW.tr.ok`. Establish `hok` using `ok.idx_ok b`. Establish `f1 : Formalism.L2.Col.psi0P I.Ch (a.pl n).1 = I.Ch.psi0 ⟨_, hPm⟩` using `dif_pos hPm`. Establish `f2 : Formalism.L2.Col.chiP I.Ch (a.pl n).1 = Formalism.L2.Col.chiAt I.Ch ⟨_, hPm⟩` using `dif_pos hPm`. Use `⟨hPm, hs.symm, hok.cst_ok, ok.sharp _, by rw [hW.tr.tw.cst_eq]; exact Nat.le_succ _, fun x hx => hok.psi0 ⟨_, hPP⟩ x hPm hx, ⟨hi, hd, rfl, e1 ▸ hϖq⟩, fun x hx => ?_, fun j x v h1 h2 h3 => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e2]`. Conclude with `psi_tie (a.G n).q hv hi hd (g1 ▸ g2) (g1 ▸ g4) (hok.xiUnitAtPrime ⟨_, hPP⟩).1 (_root_.GlobalTheory.Fam.pk_z W).ψ W.Q.stdChar B.embLL _ (fun z c h => f1 ▸ ok.weil ⟨_, hPm⟩ z c h) _ (a.G n).char x hx`. Rewrite using `[Formalism.L2.Col.LocE.unitV, dif_pos h2]`. Distinguish the cases in `hj : j < B.R.m`. Rewrite using `[e3 _ (by omega)]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `key` using `chi_tie (a.G n).q hid hi hd (_root_.GlobalTheory.Fam.pk_z W).mu0 (_root_.GlobalTheory.Fam.pk_z W).eta (j + 1) (c := (Units.map (B.embLL : B.fields.K →* ℂ)).comp (Formalism.L2.Col.chiP I.Ch (a.pl n).1 j)) (hW.tr.chr ⟨j, hj⟩) (fun y x c hx hy => Units.ext (by`. Establish `h` using `hok.mu0G ⟨j, hj⟩ ⟨_, hPm⟩ x y c hx hy`. Establish `e3 : Formalism.L2.Col.chiP I.Ch (a.pl n).1 j = I.Ch.chi ⟨j, hj⟩ ⟨_, hPm⟩` using `(congrFun f2 j).trans (dif_pos hj)`. Rewrite using `[e3]`. Conclude with `h.symm))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Use the proof step `W.Q.charW.base.lev.eta`. Use the proof step `(fun y x c hx hy => ((_root_.GlobalTheory.Fam.pk_z W).C.isEta.unr (a.pl n).1 _ (by`. Establish `hy' : y ∉ (a.pl n).1.asIdeal` using `fun h => by haveI := (a.pl n).1.isPrime`. Conclude with `c.ne_zero (hy.trans (Ideal.Quotient.eq_zero_iff_mem.2 h))`. Express the relevant statement in the definitionally equal form `Valued.v (((x : (I.rec7 l Z).host.E)) : (a.pl n).1.adicCompletion (I.rec7 l Z).host.E) = 1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[HeightOneSpectrum.valuedAdicCompletion_eq_valuation', hx]`. Conclude with `((a.pl n).1.valuation_eq_one_iff_notMem (K := (I.rec7 l Z).host.E)).2 hy')).symm)`. Use `_ (hR.mu n (j + 1) (by omega) hj) x v h2.unit h1 rfl h3`. Rewrite using `[key]`. Both sides reduce to the same expression.
-
-Rewrite using `[e4 _ (by omega), ((congrFun f2 j).trans (dif_neg hj) : Formalism.L2.Col.chiP I.Ch (a.pl n).1 j = 1)]`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem exists_sameData_atType (hW : _root_.GlobalTheory.Fam.AllFamilyConditions W) (a : _root_.GlobalTheory.Fam.GeometricFamily W u) {row col} (hR : _root_.GlobalTheory.Fam.LocalGroupReading (a.fam row col) a.G a.pl) (n : Fin a.n)
     (hϖ : valuation (a.G n).k ((((a.G n).S.ϖ : (a.G n).kˣ) : (a.G n).k) - ((qOf (a.pl n).1 : ℕ) : (a.G n).k)) <
@@ -114,7 +112,7 @@ def intermediateXiValue (a : _root_.GlobalTheory.Fam.GeometricFamily W u) (n : F
   ((a.G n).S.T (Fin B.R.t)).entry (a.G n).S.ψ (a.G n).ν j c H 1 1
     (((a.G n).FX (j + 1) (by omega)).γ * z.map (ofSplit (a.G n).q).pr * ((a.G n).FX j (by omega)).β)
 /- English proof (translation)
-Establish `hs : (a.G n).s + 1 + 1 = B.R.m` using `(a.G n).hs`. Establish `hid` using `(hR.idem n).1`. Establish `hpf` using `SymChainAt.place_facts (a.G n).q hid`. Establish `hL : ∀ j, j ≤ B.R.m → IsSelfDualC _ (a.g.x j).L ∧ ((a.g.x j).L : Set (Fin ((I.rec7 l Z).sp.X j).rank → (I.rec7 l Z).host.E)) = intVec _ _` using `fun j hj => ⟨(ha.x j hj).sd, Set.ext (hat.pinX.xs j hj).2.2⟩`. Conclude with `⟨(a.G n).k, _, _, _, _, ofSplit (a.G n).q, _, _, _, _, _, _, _, _, _, hpf.2, hid, StdMatch.int_iff_up_mem (a.G n).q (a.G n).unit _ _ (hL _ (by omega)).1 (hL _ (by omega)).1 (hL _ (by omega)).2 (hL _ (by omega)).2 ((a.G n).latX _ _) ((a.G n).latX _ _), (SB _).smul_mem _ (opE_mem_S …`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem midXi_isLocFac' {a : _root_.GlobalTheory.Fam.GeometricFamily W u} (ha : a.Is) (hat : a.True) {row col} (hR : _root_.GlobalTheory.Fam.LocalGroupReading (a.fam row col) a.G a.pl) (n : Fin a.n)
     (j c : ℕ) (H : j + 1 + c = (a.G n).s) :
@@ -132,15 +130,15 @@ theorem midXi_isLocFac' {a : _root_.GlobalTheory.Fam.GeometricFamily W u} (ha : 
     fun _ => rfl⟩
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Establish `hs : (a.G n).s + 1 + 1 = B.R.m` using `(a.G n).hs`. Distinguish the cases in `h0 : ∃ (b : I.ι) (P : BadPr I b), P.1 = (a.pl n).1`. Use `swap`. Conclude with `⟨1, one_ne_zero, fun t _ _ _ _ P hP => absurd ⟨_, P, hP⟩ h0⟩`. Take `⟨b₀, P₀, hP₀⟩` from `h0`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨S', hS, hA⟩` from `_root_.GlobalTheory.Fam.MidLoc.exists_sameData_atType hW a hR n hϖ`. Take `⟨e', he', hF'⟩` from `(ha.stdG n).1 j (by omega)`. Take `⟨e, he, hF⟩` from `(ha.stdG n).1 (j + 1) (by omega)`. Establish `hr'` using `rankN (I.rec7 l Z) j (Nat.le_of_succ_le hj)`. Establish `hr` using `rankN (I.rec7 l Z) (j + 1) hj`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨C, hC0, hC⟩` from `GlobalTheory.EntryBridge.entry_agree _ _ _ _ _ _ _ _ _ _ _ _ _ _ (a.G n).ν (a.G n).unitVol (hA b₀ P₀ hP₀) j c H (e'.trans (finCongr hr')) (e.trans (finCongr hr)) he' he`. Use `⟨C⁻¹, inv_ne_zero hC0, fun t J hJ α γ P hP z => ?_⟩` and prove the remaining obligations. Establish `hPv : P.1 ∈ (B.primes X).vGs` using `(hA _ P hP).mem`. Establish `hh : ∀ i b, (I.idx (W.P.I.tup t)).h i b P = 1`. Rewrite using `[(hW.tr.tw (W.P.I.tup t)).2]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Conclude with `fun i b => StdMatch.twSt_h _ _ _ _ _ _ b P hPv`. Establish `hlt` using `LevelData.val_lt_one_iff (hA _ P hP).tie.compl.int`. Establish `hfr : ∀ i, i + 1 < B.R.m → ∀ β r s, _` using `fun i hi β r s => (hlt _).2 (frame_cong hW.tr.ok (J.A.p0 i β).1.1 (hJ.std i hi β ▸ (hJ.is.base i (by omega) β).1) P hPv r s)`. Take `⟨g, hg, g', hg', hz⟩` from `toLoc_inFr ((a.G n).q.pr.comp (incA (I.rec7 l Z))) hr' hr _ _ e' e hF' hF _ _ (hfr j (by omega) (J.ι j α)) (hfr (j + 1) (by omega) (J.ι (j + 1) γ))`. Establish `key` using `(congrArg _ (hz z)).symm.trans (hC _)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `key` using `[hS.1, hW.tr.tw.cst_eq, xiAt_tw_eq _ _ _ _ _ P₀ P (hP₀.trans hP.symm) (hA _ P₀ hP₀).mem]`. Use `replace key := (entry_mul_KOne (a.G n).S (Fin B.R.t) (a.G n).ν j c H hg hg' _).symm.trans key`. Unfold `locXi`. Rewrite using `[dif_pos (by omega), hh, hh, eq_inv_mul_iff_mul_eq₀ hC0]`. Conclude with `(congrArg (fun y => C * B.embLL (Formalism.L2.Col.XiAt I.Ch I.sel (I.tup (W.P.I.tup t)) y j P 1 1 _)) (hW.tr.tw.cst_eq (W.P.I.tup t))).trans key.symm`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locXi_eq_mul_midXi_alt (hW : _root_.GlobalTheory.Fam.AllFamilyConditions W) {a : _root_.GlobalTheory.Fam.GeometricFamily W u} (ha : a.Is) {row col} (hR : _root_.GlobalTheory.Fam.LocalGroupReading (a.fam row col) a.G a.pl) (n : Fin a.n)
     (hϖ : valuation (a.G n).k ((((a.G n).S.ϖ : (a.G n).kˣ) : (a.G n).k) - ((qOf (a.pl n).1 : ℕ) : (a.G n).k)) <

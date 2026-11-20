@@ -6,27 +6,23 @@ open Formalism.L2.DIV MvPolynomial
 namespace GlobalTheory.RowRho
 
 /- English proof (translation)
-Introduce `ι _ n E _ emb L _ κ hA0 lam γE v hv0 m`. Use `set A : Subfield ℂ := κ.fieldRange with hAdef`. Establish `hA : ∀ τ x, emb τ x ∈ A` using `fun τ x => RingHom.mem_fieldRange.2 (hA0 τ x)`. Establish `hv : ∀ m, coeff m (v : Formalism.L2.DIV.Pol ℂ ι n) ∈ A` using `fun m => RingHom.mem_fieldRange.2 (hv0 m)`. Rewrite using `[← RingHom.coe_fieldRange]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Use `show coeff m ((rhoVr emb lam γE v : VV ℂ lam) : Formalism.L2.DIV.Pol ℂ ι n) ∈ A`. Set `R₀ : Subring (Formalism.L2.DIV.Pol ℂ ι n)` to `(MvPolynomial.map A.subtype).range`. Establish `memR : ∀ F : Formalism.L2.DIV.Pol ℂ ι n, F ∈ R₀ ↔ ∀ m, coeff m F ∈ A`. Introduce `F`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨F', rfl⟩ m`. Rewrite using `[coeff_map]`. Conclude with `(coeff m F').2`. Introduce `h`. Take `⟨F', hF'⟩` from `(mem_range_map_iff_coeffs_subset (f := A.subtype)).2 (fun c hc => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Take `⟨m, -, rfl⟩` from `mem_coeffs_iff.1 hc`. Conclude with `⟨⟨_, h m⟩, rfl⟩)`. Conclude with `⟨F', hF'⟩`. Establish `hblock : ∀ M : ι → Matrix (Fin n) (Fin n) ℂ, (∀ τ a b, M τ a b ∈ A) → ∀ F ∈ R₀, Formalism.GradedWeylDivisibility.blockAct ℂ M F ∈ R₀`. Introduce `M hM F hF`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately.
 
-Take `⟨F', rfl⟩` from `hF`. Proceed by induction on `F' using MvPolynomial.induction_on with`. Consider the case `C a`. Rewrite using `[map_C, Formalism.GradedWeylDivisibility.blockAct, aeval_C]`. Conclude with `⟨C a, by rw [map_C]; rfl⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `add p q hp hq`. Rewrite using `[map_add, map_add]`. Conclude with `add_mem hp hq`. Consider the case `mul_X p w hp`. Rewrite using `[map_mul, map_mul, map_X]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `mul_mem hp ?_` and prove the remaining obligations. Rewrite using `[Formalism.GradedWeylDivisibility.blockAct, aeval_X]`. Conclude with `sum_mem fun b _ => mul_mem ⟨C ⟨_, hM _ _ _⟩, by rw [map_C]; rfl⟩ ⟨X _, map_X _ _⟩`. Establish `hent : ∀ τ a b, ((invTrK (embGL emb γE) τ : GL (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ) a b ∈ A`. Introduce `τ a b`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `show ((((Formalism.UG.bc (emb τ) γE)⁻¹ : GL (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ)) b a ∈ A`. Rewrite using `[← map_inv]`. Conclude with `hA τ _`. Establish `hdet : ∀ τ, ((invTrK (embGL emb γE) τ : GL (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ).det ∈ A`. Introduce `τ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Establish `e` using `RingHom.map_det A.subtype (Matrix.of fun a b => (⟨_, hent τ a b⟩ : A))`. Rewrite `e` using `[show A.subtype.mapMatrix (Matrix.of fun a b => (⟨_, hent τ a b⟩ : A)) = ((invTrK (embGL emb γE) τ : GL (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ) from Matrix.ext fun a b => rfl]`. Rewrite using `[← e]`. Conclude with `SetLike.coe_mem _`. Establish `hdt : detTwK lam (invTrK (embGL emb γE)) ∈ A`.
-
-Unfold `detTwK`. Use `prod_mem fun τ _ => ?_` and prove the remaining obligations. Unfold `Formalism.BasicNotions.detPow`. Rewrite using `[Units.val_zpow_eq_zpow_val, Matrix.GeneralLinearGroup.val_det_apply]`. Conclude with `zpow_mem (hdet τ) _`.
-
-Establish `htr : Formalism.L2.DIV.trAct (invTrK (embGL emb γE)) (v : Formalism.L2.DIV.Pol ℂ ι n) ∈ R₀` using `hblock _ (fun τ a b => hent τ b a) _ ((memR _).2 hv)`. Use `show coeff m (Formalism.L2.DIV.actP lam (invTrK (embGL emb γE)) (v : Formalism.L2.DIV.Pol ℂ ι n)) ∈ A`. Rewrite using `[Formalism.L2.DIV.actP, LinearMap.smul_apply, coeff_smul, smul_eq_mul]`. Conclude with `mul_mem hdt ((memR _).1 htr m)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coeff_rhoVr_mem_range : ∀ {ι : Type} [Fintype ι] {n : ℕ} {E : Type} [Field E] (emb : ι → E →+* ℂ) {L : Type} [Field L] (κ : L →+* ℂ), (∀ (τ : ι) (x : E), emb τ x ∈ Set.range κ) → ∀ (lam : ι → Formalism.BasicNotions.DomWeight n) (g : GL (Fin n) E) (v : VV ℂ lam), (∀ m, MvPolynomial.coeff m v.1 ∈ Set.range κ) → ∀ m, MvPolynomial.coeff m ((rhoVr emb lam g) v).1 ∈ Set.range κ := by
   classical

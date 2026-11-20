@@ -9,7 +9,7 @@ namespace PositivityTheory.Rg.Cz
 namespace PStepFormula
 
 /- English proof (translation)
-Simplify using `only [qdet, qminor, map_sum, map_mul, map_intCast, map_list_prod, List.map_ofFn, Function.comp_def, Tm, map_add, apply_ite f, AlgHom.commutes, map_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem qdet_map {A B : Type*} [Ring A] [Algebra ℂ A] [Ring B] [Algebra ℂ B] (f : A →ₐ[ℂ] B) {n : ℕ}
     (E : Fin n → Fin n → A) (u : ℂ) : f (qdet E u) = qdet (fun a b => f (E a b)) u := by
@@ -17,7 +17,7 @@ theorem qdet_map {A B : Type*} [Ring A] [Algebra ℂ A] [Ring B] [Algebra ℂ B]
     map_add, apply_ite f, AlgHom.commutes, map_zero]
 
 /- English proof (translation)
-Introduce `a b c d`. Use `congrArg f (h a b c d)` as an intermediate fact. Simplify `this` using `only [map_sub, map_mul, apply_ite f, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem glRel_map {A B : Type*} [Ring A] [Ring B] [Algebra ℂ A] [Algebra ℂ B] (f : A →ₐ[ℂ] B) {n : ℕ}
     {E : Fin n → Fin n → A} (h : GlRel E) : GlRel (fun a b => f (E a b)) := by
@@ -29,7 +29,7 @@ section
 variable {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `[LinearEquiv.conjAlgEquiv_apply, h]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem conj_eq (e : V ≃ₗ[ℂ] W) {T : Module.End ℂ V} {T' : Module.End ℂ W}
     (h : ∀ x, e (T x) = T' (e x)) : e.conjAlgEquiv ℂ T = T' := by
@@ -45,7 +45,7 @@ Both sides reduce to the same expression.
 theorem liftA_apply {P : Type} (B : Module.End ℂ M) : liftA n M P B = lift B := rfl
 
 /- English proof (translation)
-Rewrite using `[← liftA_apply]`. Simplify using `only [PiJ, map_list_prod, List.map_ofFn, Function.comp_def, map_add, AlgHom.commutes, liftA_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem lift_PiJ {m : ℕ} {P : Type} (E : Fin n → Fin n → Module.End ℂ M) (u : ℂ) :
     (lift (PiJ m E u) : Module.End ℂ (TV n (TV n M (Fin m)) P)) =
@@ -54,7 +54,7 @@ theorem lift_PiJ {m : ℕ} {P : Type} (E : Fin n → Fin n → Module.End ℂ M)
   simp only [PiJ, map_list_prod, List.map_ofFn, Function.comp_def, map_add, AlgHom.commutes, liftA_apply]
 
 /- English proof (translation)
-Establish `: (Finset.univ.filter fun i : Fin 1 => i < 0) = ∅`. Use extensionality with `i`. Simplify using the standard rewrite rules. Simplify using `[PiJ, xJ]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem PiJ_one (E : Fin n → Fin n → Module.End ℂ M) (u : ℂ) :
     (PiJ 1 E u : Module.End ℂ (TV n M (Fin 1))) = algebraMap ℂ _ u + Om E 0 := by
@@ -63,11 +63,11 @@ theorem PiJ_one (E : Fin n → Fin n → Module.End ℂ M) (u : ℂ) :
   simp [PiJ, xJ]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Use `Fin.addCases (fun i => ?_) (fun i => ?_) x` and prove the remaining obligations. Rewrite using `[Fin.append_left, Function.update_of_ne, Fin.append_left]`. Introduce `h`. Use `congrArg Fin.val h` as an intermediate fact.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `at this`. Use linear arithmetic over natural numbers and integers. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Rewrite using `[Function.update_of_ne, Fin.append_right, Fin.append_right, Function.update_of_ne h]`. Introduce `h'; exact h (Fin.ext (by have := congrArg Fin.val h'; simp at this; omega))`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 -/
 theorem app_upd_r {α : Type} {m k : ℕ} (I : Fin m → α) (J : Fin k → α) (j : Fin k) (a : α) :
     Function.update (Fin.append I J) (Fin.natAdd m j) a = Fin.append I (Function.update J j a) := by
@@ -81,11 +81,11 @@ theorem app_upd_r {α : Type} {m k : ℕ} (I : Fin m → α) (J : Fin k → α) 
       intro h'; exact h (Fin.ext (by have := congrArg Fin.val h'; simp at this; omega))
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Use `Fin.addCases (fun i' => ?_) (fun j => ?_) x` and prove the remaining obligations. Distinguish the cases in `h : i' = i`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Rewrite using `[Function.update_of_ne, Fin.append_left, Fin.append_left, Function.update_of_ne h]`. Introduce `h'; exact h (Fin.ext (by have := congrArg Fin.val h'; simp at this; omega))`. Rewrite using `[Fin.append_right, Function.update_of_ne, Fin.append_right]`. Introduce `h`. Use `congrArg Fin.val h` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `at this`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem app_upd_l {α : Type} {m k : ℕ} (I : Fin m → α) (J : Fin k → α) (i : Fin m) (a : α) :
     Function.update (Fin.append I J) (Fin.castAdd k i) a = Fin.append (Function.update I i a) J := by
@@ -99,7 +99,7 @@ theorem app_upd_l {α : Type} {m k : ℕ} (I : Fin m → α) (J : Fin k → α) 
     intro h; have := congrArg Fin.val h; simp at this; omega
 
 /- English proof (translation)
-Use function extensionality and compare the values at `J I`. Simplify using `only [curF_apply, Om_apply, Fin.append_right, app_upd_r]`. Rewrite using `[Finset.sum_apply]`. Simplify using `[curF_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem curF_Om_r {m k : ℕ} (E : Fin n → Fin n → Module.End ℂ M) (j : Fin k) (f : TV n M (Fin (m + k))) :
     curF n M m k (Om E (Fin.natAdd m j) f) = Om (fun a b => lift (E a b)) j (curF n M m k f) := by
@@ -109,7 +109,7 @@ theorem curF_Om_r {m k : ℕ} (E : Fin n → Fin n → Module.End ℂ M) (j : Fi
   simp [curF_apply]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `J I`. Simplify using `only [curF_apply, Om_apply, Fin.append_left, app_upd_l, lift_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem curF_Om_l {m k : ℕ} (E : Fin n → Fin n → Module.End ℂ M) (i : Fin m) (f : TV n M (Fin (m + k))) :
     curF n M m k (Om E (Fin.castAdd k i) f) = lift (Om E i) (curF n M m k f) := by
@@ -117,7 +117,7 @@ theorem curF_Om_l {m k : ℕ} (E : Fin n → Fin n → Module.End ℂ M) (i : Fi
   simp only [curF_apply, Om_apply, Fin.append_left, app_upd_l, lift_apply]
 
 /- English proof (translation)
-Establish `h2 : (2 : ℂ) • x = 0`. Rewrite using `[two_smul]`. Use `nth_rewrite 2 [h]`. Conclude with `add_neg_cancel x`. Conclude with `(smul_eq_zero.mp h2).resolve_left two_ne_zero`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_eq_neg' {X : Type} [AddCommGroup X] [Module ℂ X] {x : X} (h : x = -x) : x = 0 := by
   have h2 : (2 : ℂ) • x = 0 := by
@@ -127,9 +127,9 @@ theorem eq_zero_of_eq_neg' {X : Type} [AddCommGroup X] [Module ℂ X] {x : X} (h
   exact (smul_eq_zero.mp h2).resolve_left two_ne_zero
 
 /- English proof (translation)
-Rewrite using `[alt_apply, alt_apply, ← Finset.sum_neg_distrib]`. Use `Fintype.sum_equiv (Equiv.mulLeft (Equiv.swap a b)) _ _ fun σ => ?_` and prove the remaining obligations. Establish `h1 : J ∘ ⇑(Equiv.swap a b * σ) = (J ∘ Equiv.swap a b) ∘ σ`. Use function extensionality and compare the values at `x`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `only [Equiv.coe_mulLeft, h1, Equiv.Perm.sign_mul, Equiv.Perm.sign_swap h]`. Use `push_cast`. Rewrite using `[neg_one_mul, neg_smul, neg_neg]`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 -/
 theorem alt_swap {X : Type} [AddCommGroup X] [Module ℂ X] (g : TV n X (Fin n)) (J : Fin n → Fin n) (a b : Fin n)
     (h : a ≠ b) : alt Finset.univ g (J ∘ Equiv.swap a b) = -alt Finset.univ g J := by
@@ -142,21 +142,21 @@ theorem alt_swap {X : Type} [AddCommGroup X] [Module ℂ X] (g : TV n X (Fin n))
   rw [neg_one_mul, neg_smul, neg_neg]
 
 /- English proof (translation)
-Establish `hz : ∀ K : Fin n → Fin n, ∀ a b, a ≠ b → K a = K b → h K = 0`. Introduce `K a b hab hK`. Establish `hc : K ∘ Equiv.swap a b = K`. Use function extensionality and compare the values at `x`. Simplify using `only [Function.comp_apply, Equiv.swap_apply_def]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use `split_ifs with h1 h2`. Rewrite using `[h1, hK]`. Rewrite using `[h2, hK]`. Both sides reduce to the same expression. Use `hanti K a b hab` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[hc]`. Use function extensionality and compare the values at `I`. Conclude with `eq_zero_of_eq_neg' (congrFun this I)`. Distinguish the cases in `hJ : Function.Injective J`. Take `⟨p, hp⟩` from `(Finite.injective_iff_surjective.mp hJ) (I 0)`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_eq_single p]`. Rewrite using `[← hp, Function.update_eq_self, hp, Function.update_eq_self]`. Introduce `j _ hj`. Rewrite using `[hz (Function.update J j (I 0)) j p hj (by simp [Function.update_of_ne (Ne.symm hj), hp]), Pi.zero_apply]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Choose the witnesses or unpack the hypotheses as in `⟨a, b, hab, hne⟩ : ∃ a b, J a = J b ∧ a ≠ b := by`. Simplify using `only [Function.Injective, not_forall] at hJ`. Take `⟨a, b, h1, h2⟩` from `hJ`. Conclude with `⟨a, b, h1, h2⟩`. Rewrite using `[hz J a b hne hab, Pi.zero_apply, Fintype.sum_eq_add a b hne]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hc : Function.update J b (I 0) = Function.update J a (I 0) ∘ Equiv.swap a b`. Use function extensionality and compare the values at `x`. Simplify using `only [Function.comp_apply, Equiv.swap_apply_def]`. Distinguish the cases in `h1 : x = a`. Substitute `h1` using the available equality.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_pos rfl, Function.update_of_ne hne, Function.update_of_ne (Ne.symm hne), hab]`. Rewrite using `[if_neg h1]`. Distinguish the cases in `h2 : x = b`. Substitute `h2` using the available equality. Rewrite using `[if_pos rfl, Function.update_self, Function.update_self]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg h2, Function.update_of_ne h2, Function.update_of_ne h1]`. Rewrite using `[hc, hanti _ a b hne, hab]`. Simplify using the standard rewrite rules. Introduce and unpack `c ⟨hca, hcb⟩`. Rewrite using `[hz _ a b hne (by simp [Function.update_of_ne (Ne.symm hca), Function.update_of_ne (Ne.symm hcb), hab]), Pi.zero_apply]`.
+Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_swap {X : Type} [AddCommGroup X] [Module ℂ X] (h : (Fin n → Fin n) → (Fin 1 → Fin n) → X)
     (hanti : ∀ J a b, a ≠ b → h (J ∘ Equiv.swap a b) = -h J) (J : Fin n → Fin n) (I : Fin 1 → Fin n) :
@@ -217,23 +217,23 @@ def rot (n : ℕ) : Equiv.Perm (Fin (1 + n)) where
       simp [h, h']; omega
 
 /- English proof (translation)
-Apply `Fin.ext` to reduce the goal to its premises. Simplify using `[rot, i.2]`. Use linear arithmetic over natural numbers and integers.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem rot_nat (i : Fin n) (h : (i : ℕ) < 1 + n) : rot n ⟨i, h⟩ = Fin.natAdd 1 i := by
   apply Fin.ext; simp [rot, i.2]; omega
 
 /- English proof (translation)
-Apply `Fin.ext` to reduce the goal to its premises. Simplify using `[rot, h]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 -/
 theorem rot_last (k : Fin (1 + n)) (h : (k : ℕ) = n) : rot n k = Fin.castAdd n 0 := by
   apply Fin.ext; simp [rot, h]
 
 /- English proof (translation)
-Use `Finset.sum_bij' (fun a ha => ⟨a, ?_⟩) (fun b _ => ⟨b, by omega⟩) ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Fin.lt_def] at ha`. Use linear arithmetic over natural numbers and integers. Introduce `a ha`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at ha ⊢`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `ha`. Introduce `b hb`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hb ⊢`. Conclude with `hb`. Introduce `a ha`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Both sides reduce to the same expression. Introduce `b hb`. Both sides reduce to the same expression. Introduce `a ha`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem sum_lt_cast {X : Type} [AddCommMonoid X] (k : Fin (1 + n)) (hk : (k : ℕ) ≤ n) (f : Fin (1 + n) → X) :
     ∑ i ∈ Finset.univ.filter (· < k), f i =
@@ -251,13 +251,13 @@ theorem sum_lt_cast {X : Type} [AddCommMonoid X] (k : Fin (1 + n)) (hk : (k : �
   · intro a ha; rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Use `Fin.addCases (fun i => ?_) (fun i => ?_) x` and prove the remaining obligations. Establish `hi : i = 0` using `Subsingleton.elim _ _`. Substitute `hi` using the available equality. Simplify using `[Equiv.swap_apply_right, Fin.append_left, Fin.append_right]`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using `[Fin.append_left, Fin.append_right]`. Establish `h1 : Fin.natAdd 1 i ≠ Fin.natAdd 1 j` using `fun h' => h (Fin.ext (by`. Use `congrArg Fin.val h'` as an intermediate fact.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `at this`. Use the proof step `omega))`. Establish `h2 : Fin.natAdd 1 i ≠ Fin.castAdd n 0` using `fun h' => by`. Use `congrArg Fin.val h'` as an intermediate fact. Simplify using `at this`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Function.comp_apply, Equiv.swap_apply_of_ne_of_ne h1 h2, Fin.append_right, Fin.append_right, Function.update_of_ne h]`.
+A detailed English derivation is pending.
 -/
 theorem app_swap (I : Fin 1 → Fin n) (J : Fin n → Fin n) (j : Fin n) :
     Fin.append I J ∘ Equiv.swap (Fin.natAdd 1 j) (Fin.castAdd n 0) =
@@ -277,9 +277,9 @@ theorem app_swap (I : Fin 1 → Fin n) (J : Fin n → Fin n) (j : Fin n) :
         Function.update_of_ne h]
 
 /- English proof (translation)
-Establish `h4` using `(hT n M (Fin N) E hE Finset.univ).2.2.2`. Establish `hinv : (pm σ * pm σ⁻¹ : Module.End ℂ (TV n M (Fin N))) = 1` using `by rw [← pm_mul, mul_inv_cancel, pm_one]`. Rewrite using `[xJ, mul_add, add_mul, h4, mul_assoc, hinv, mul_one, Finset.mul_sum, Finset.sum_mul]`. Use `congr 1`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← pm_mul, ← pm_mul, Equiv.swap_apply_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_xJ {N : ℕ} (hT : TensorGl) (E : Fin n → Fin n → Module.End ℂ M) (hE : GlRel E)
     (σ : Equiv.Perm (Fin N)) (k : Fin N) :
@@ -293,11 +293,11 @@ theorem conj_xJ {N : ℕ} (hT : TensorGl) (E : Fin n → Fin n → Module.End �
   rw [← pm_mul, ← pm_mul, Equiv.swap_apply_apply]
 
 /- English proof (translation)
-Use extensionality with `w`. Set `g : TV n W (Fin n)` to `fun J => if J = id then w else 0`. Establish `hg : alt Finset.univ g id = w`. Rewrite using `[alt_apply, Finset.sum_eq_single 1]`. Simplify using `[g]`.
+By extensionality, compare the relevant components. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `σ _ hσ`. Establish `hs : (id ∘ ⇑σ) ≠ id` using `fun h' => hσ (Equiv.ext fun x => congrFun h' x)`. Simplify using `only [g, if_neg hs, smul_zero]`. Simplify using the standard rewrite rules. Use `congrArg (fun T : Module.End ℂ (TV n W (Fin n)) => T g id) h` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify `this` using `only [Module.End.mul_apply, lift_apply, hg]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem ext_of_alt {W : Type} [AddCommGroup W] [Module ℂ W] {X Y : Module.End ℂ W}
     (h : (lift X : Module.End ℂ (TV n W (Fin n))) * alt Finset.univ = lift Y * alt Finset.univ) : X = Y := by

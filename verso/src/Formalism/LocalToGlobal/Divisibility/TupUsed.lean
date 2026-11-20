@@ -19,9 +19,9 @@ variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : MainNotions.G.Inst 
 def TupAllUsed (P : RowSideFamily ex) : Prop := ∀ t : P.T, Formalism.IndefR.RecTie.Used0 D (P.I.tup t)
 
 /- English proof (translation)
-Establish `hT : TupTie D P.A3.A (P.A3.indefDown P.S0) P.I.tup`. Conclude with `P.tied.div.tup`. Use `⟨fun h t => ?_, fun h t => ?_⟩` and prove the remaining obligations. Use `swap`. Break down `h t with rfl | ⟨w, rfl⟩` into its components or cases.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative.
 
-Conclude with `Or.inl hT.mu0`. Conclude with `Or.inr ⟨w, (hT.muAt w).symm⟩`. Break down `h t with h0 | ⟨w, hw⟩` into its components or cases. Conclude with `Or.inl (hT.inj (h0.trans hT.mu0.symm))`. Conclude with `Or.inr ⟨w, hT.inj (hw.trans (hT.muAt w))⟩`.
+Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative. A detailed English derivation is pending.
 -/
 theorem tupAllUsed_iff_cover (P : RowSideFamily ex) :
     TupAllUsed P ↔ ∀ t : P.T, t = P.A3.A.μ0 ∨ ∃ w, t = (P.A3.indefDown P.S0).μ (D.plEq w) := by
@@ -37,9 +37,9 @@ theorem tupAllUsed_iff_cover (P : RowSideFamily ex) :
   · exact Or.inr ⟨w, hT.inj (hw.trans (hT.muAt w))⟩
 
 /- English proof (translation)
-Establish `hT : TupTie D P.A3.A (P.A3.indefDown P.S0) P.I.tup`. Conclude with `P.tied.div.tup`. Introduce `t`. Break down `h t with rfl | ⟨w, rfl⟩` into its components or cases. Conclude with `Or.inl hT.mu0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative.
 
-Conclude with `Or.inr ⟨w, (hT.muAt w).symm⟩`.
+A detailed English derivation is pending.
 -/
 theorem tupAllUsed_of_cover (P : RowSideFamily ex)
     (h : ∀ t : P.T, t = P.A3.A.μ0 ∨ ∃ w, t = (P.A3.indefDown P.S0).μ (D.plEq w)) : TupAllUsed P := by
@@ -82,42 +82,42 @@ def DcPtG (P : RowSideFamily ex) : Prop :=
 variable {P : RowSideFamily ex}
 
 /- English proof (translation)
-Introduce `i t _` and use `h i t`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem lift_invariant_span_used_of (h : LiftInvariantSpan P) : RationalLiftSpanAtUsedTuples P := fun i t _ => h i t
 
 /- English proof (translation)
-Introduce `i t` and use `h i t (hU t)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem lift_invariant_span_of_used (hU : TupAllUsed P) (h : RationalLiftSpanAtUsedTuples P) : LiftInvariantSpan P := fun i t => h i t (hU t)
 
 /- English proof (translation)
-Introduce `i t _ x` and use `h i t x`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem thThetaG_of (h : ThTheta P) : ThThetaG P := fun i t _ x => h i t x
 
 /- English proof (translation)
-Introduce `i t x` and use `h i t (hU t) x`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem thTheta_of_G (hU : TupAllUsed P) (h : ThThetaG P) : ThTheta P := fun i t x => h i t (hU t) x
 
 /- English proof (translation)
-Introduce `u t _ x F` and use `h u t x F`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem dcPtG_of (h : RowsHoldDcPt3 P) : DcPtG P := fun u t _ x F => h u t x F
 
 /- English proof (translation)
-Introduce `u t x F` and use `h u t (hU t) x F`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem dcPt_of_G (hU : TupAllUsed P) (h : DcPtG P) : RowsHoldDcPt3 P := fun u t x F => h u t (hU t) x F
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => ⟨lift_invariant_span_used_of h.1, thThetaG_of h.2⟩, fun h => ⟨lift_invariant_span_of_used hU h.1, thTheta_of_G hU h.2⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem rowGuarded_iff (hU : TupAllUsed P) : LiftInvariantSpan P ∧ ThTheta P ↔ RationalLiftSpanAtUsedTuples P ∧ ThThetaG P := ⟨fun h => ⟨lift_invariant_span_used_of h.1, thThetaG_of h.2⟩, fun h => ⟨lift_invariant_span_of_used hU h.1, thTheta_of_G hU h.2⟩⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨dcPtG_of, dcPt_of_G hU⟩`.
+Supply the required witnesses or components.
 -/
 theorem dcPt_iff (hU : TupAllUsed P) : RowsHoldDcPt3 P ↔ DcPtG P := ⟨dcPtG_of, dcPt_of_G hU⟩
 
@@ -138,17 +138,17 @@ structure NumTieG (P : RowSideFamily ex) : Prop where
       P.A3.A.fam.etaJ P.P0 P.ψ0 (P.A3.fam3.toSub2 P.Zs) i ((P.A3.indefDown P.S0).μ (D.plEq w)) (D.plEq w) else 0
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun i t _ w => h.Ij i t w, fun i t _ w => h.jw i t w, h.etaJ⟩`.
+Supply the required witnesses or components.
 -/
 theorem numTieG_of (h : NumTie D P.A3.A (P.A3.indefDown P.S0) P.I.tup) : NumTieG P := ⟨fun i t _ w => h.Ij i t w, fun i t _ w => h.jw i t w, h.etaJ⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun i t w => h.Ij i t (hU t) w, fun i t w => h.jw i t (hU t) w, h.etaJ⟩`.
+Supply the required witnesses or components.
 -/
 theorem numTie_of_G (hU : TupAllUsed P) (h : NumTieG P) : NumTie D P.A3.A (P.A3.indefDown P.S0) P.I.tup := ⟨fun i t w => h.Ij i t (hU t) w, fun i t w => h.jw i t (hU t) w, h.etaJ⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨numTieG_of, numTie_of_G hU⟩`.
+Supply the required witnesses or components.
 -/
 theorem numTie_iff_G (hU : TupAllUsed P) : NumTie D P.A3.A (P.A3.indefDown P.S0) P.I.tup ↔ NumTieG P := ⟨numTieG_of, numTie_of_G hU⟩
 
@@ -168,7 +168,7 @@ structure DivRows3G (P : RowSideFamily ex) : Prop where
     (P.A3.colData2 P.C (fun _ => ⊥) (fun _ _ => ⊥) (fun _ _ _ _ => 0)).B (P.I.wU u) x y
 
 /- English proof (translation)
-The claim follows from `h.sharpRR baseRR := h.baseRR divisionRows_rationalLift := lift_invariant_span_used_of h.divisionRows_rationalLift thTheta := thThetaG_of h.thTheta num := numTieG_of h.num colsBk := h.colsBk`.
+A detailed English derivation is pending.
 -/
 theorem DivRows3.toG (h : DivRows3 D P.A3 P.P0 P.ψ0 P.Ps P.ψs P.Zs P.S0 P.S1 ex.p0 P.C P.NuC P.I) : DivRows3G P where
   sharpRR := h.sharpRR
@@ -179,7 +179,7 @@ theorem DivRows3.toG (h : DivRows3 D P.A3 P.P0 P.ψ0 P.Ps P.ψs P.Zs P.S0 P.S1 e
   colsBk := h.colsBk
 
 /- English proof (translation)
-The claim follows from `h.sharpRR baseRR := h.baseRR divisionRows_rationalLift := lift_invariant_span_of_used hU h.divisionRows_rationalLift thTheta := thTheta_of_G hU h.thTheta num := numTie_of_G hU h.num colsBk := h.colsBk`.
+A detailed English derivation is pending.
 -/
 theorem DivRows3G.toRows (hU : TupAllUsed P) (h : DivRows3G P) :
     DivRows3 D P.A3 P.P0 P.ψ0 P.Ps P.ψs P.Zs P.S0 P.S1 ex.p0 P.C P.NuC P.I where
@@ -191,7 +191,7 @@ theorem DivRows3G.toRows (hU : TupAllUsed P) (h : DivRows3G P) :
   colsBk := h.colsBk
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨DivRows3.toG, DivRows3G.toRows hU⟩`.
+Supply the required witnesses or components.
 -/
 theorem divRows3_iff_G (hU : TupAllUsed P) :
     DivRows3 D P.A3 P.P0 P.ψ0 P.Ps P.ψs P.Zs P.S0 P.S1 ex.p0 P.C P.NuC P.I ↔ DivRows3G P := ⟨DivRows3.toG, DivRows3G.toRows hU⟩
@@ -221,9 +221,9 @@ variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : MainNotions.G.Inst 
   {Sp : ∀ Zs, SPer ((colM F hX v0 TU Xg xiVal trIv hE ev).face Zs)}
 
 /- English proof (translation)
-Use `tupAllUsed_of_cover R.extendedDatum (fun t => ?_)` and prove the remaining obligations. Take `⟨τ, hτ⟩` from `t`. Break down `hτ with h0 | hU` into its components or cases. Use `left`. Conclude with `Subtype.ext h0`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components.
 
-Break down `hTU hU with h1 | ⟨w, hw⟩` into its components or cases. Use `left`. Conclude with `Subtype.ext h1`. Use `right`. Conclude with `⟨w, Subtype.ext hw.symm⟩`.
+A detailed English derivation is pending.
 -/
 theorem tupAllUsed_of_TU (R : RestM F hX v0 TU Xg xiVal trIv hE ev Sp ex)
     (hTU : (↑TU : Set (Tup X.F X.E D.what₂.LL Sg)) ⊆
@@ -242,7 +242,7 @@ theorem tupAllUsed_of_TU (R : RestM F hX v0 TU Xg xiVal trIv hE ev Sp ex)
       exact ⟨w, Subtype.ext hw.symm⟩
 
 /- English proof (translation)
-Use `⟨fun h => ?_, tupAllUsed_of_TU R⟩` and prove the remaining obligations. Introduce `τ hτ`. Break down `(tupAllUsed_iff_cover R.extendedDatum).1 h (⟨τ, Or.inr hτ⟩ : TupF (X := fieldsLL D X e) TU) with h0 | ⟨w, hw⟩` into its components or cases. Conclude with `Or.inl (congrArg Subtype.val h0)`. Conclude with `Or.inr ⟨w, (congrArg Subtype.val hw).symm⟩`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative.
 -/
 theorem tupAllUsed_iff_TU (R : RestM F hX v0 TU Xg xiVal trIv hE ev Sp ex) :
     TupAllUsed R.extendedDatum ↔ (↑TU : Set (Tup X.F X.E D.what₂.LL Sg)) ⊆

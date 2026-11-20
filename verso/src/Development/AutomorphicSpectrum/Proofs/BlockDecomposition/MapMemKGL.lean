@@ -13,7 +13,7 @@ section Dg
 variable {R : Type} [CommRing R] {ι : Type} [Fintype ι] [DecidableEq ι]
 
 /- English proof (translation)
-Introduce `r hr c hc`. Establish `hne : r ≠ c` using `fun h => hr (h ▸ hc)`. Conclude with `⟨Matrix.diagonal_apply_ne _ hne, Matrix.diagonal_apply_ne _ hne⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem dg_mem_stab (s : Set (ι ⊕ ι)) (x : Rˣ) : dg ι x ∈ stab R s := by
   intro r hr c hc
@@ -21,9 +21,7 @@ theorem dg_mem_stab (s : Set (ι ⊕ ι)) (x : Rˣ) : dg ι x ∈ stab R s := by
   exact ⟨Matrix.diagonal_apply_ne _ hne, Matrix.diagonal_apply_ne _ hne⟩
 
 /- English proof (translation)
-Use `haveI : Unique ι := ⟨⟨i⟩, hi⟩`. Use `ext`. Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply]`. Use `show (Matrix.diagonal _).det = _`. Rewrite using `[Matrix.det_diagonal, Fintype.prod_sum_type]`.
-
-Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem det_dg {i : ι} (hi : ∀ y, y = i) (x : Rˣ) : Matrix.GeneralLinearGroup.det (dg ι x) = x := by
   haveI : Unique ι := ⟨⟨i⟩, hi⟩
@@ -34,9 +32,9 @@ theorem det_dg {i : ι} (hi : ∀ y, y = i) (x : Rˣ) : Matrix.GeneralLinearGrou
   simp
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Use `show (Matrix.diagonal _).map f = Matrix.diagonal _`. Rewrite using `[Matrix.diagonal_map (map_zero f)]`. Use `congr 1`. Use function extensionality and compare the values at `a`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `cases a <;> simp`.
+A detailed English derivation is pending.
 -/
 theorem map_dg {S : Type} [CommRing S] (f : R →+* S) (x : Rˣ) :
     Matrix.GeneralLinearGroup.map f (dg ι x) = dg ι (Units.map f.toMonoidHom x) := by
@@ -48,9 +46,9 @@ theorem map_dg {S : Type} [CommRing S] (f : R →+* S) (x : Rˣ) :
   cases a <;> simp
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Use `show Matrix.diagonal _ = Matrix.diagonal _ * Matrix.diagonal _`. Rewrite using `[Matrix.diagonal_mul_diagonal]`. Use `congr 1`. Use function extensionality and compare the values at `a`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `cases a <;> simp`.
+A detailed English derivation is pending.
 -/
 theorem dg_mul (x y : Rˣ) : dg ι (x * y) = dg ι x * dg ι y := by
   apply Units.ext
@@ -67,15 +65,13 @@ section Ad
 variable {E R : Type} [Field E] [CommRing R] (A : Ad E R)
 
 /- English proof (translation)
-Use `⟨fun r c => ⟨?_, ?_⟩, fun w => ?_⟩` and prove the remaining obligations. Use `show Matrix.diagonal _ r c ∈ A.O`. Distinguish the cases in `h : r = c`. Substitute `h` using the available equality. Rewrite using `[Matrix.diagonal_apply_eq]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `cases r <;> simp [h1, A.O.one_mem]`. Rewrite using `[Matrix.diagonal_apply_ne _ h]`. Conclude with `A.O.zero_mem`. Use `show Matrix.diagonal _ r c ∈ A.O`. Distinguish the cases in `h : r = c`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Substitute `h` using the available equality. Rewrite using `[Matrix.diagonal_apply_eq]`. Apply the tactic sequence `cases r <;> simp [h2, A.O.one_mem]`. Rewrite using `[Matrix.diagonal_apply_ne _ h]`. Conclude with `A.O.zero_mem`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Split into cases according to the possible forms of the given data.
 
-Use `show (Matrix.diagonal _).map (A.φ w) ∈ Matrix.unitaryGroup _ ℂ`. Rewrite using `[Matrix.diagonal_map (map_zero _), Matrix.mem_unitaryGroup_iff, Matrix.star_eq_conjTranspose, Matrix.diagonal_conjTranspose, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Consider the cases of `a with`.
-
-Consider the case `inl a => simp`. Consider the case `inr a`. Simplify using `only [Function.comp, Sum.elim_inr, Pi.star_apply, RCLike.star_def, Complex.mul_conj, Complex.normSq_eq_norm_sq, h3 w]`. Simplify using the standard rewrite rules.
+Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dg_mem_kGL {ι : Type} [Fintype ι] [DecidableEq ι] (x : Rˣ) (h1 : (x : R) ∈ A.O)
     (h2 : ((x⁻¹ : Rˣ) : R) ∈ A.O) (h3 : ∀ w, ‖A.φ w x‖ = 1) : dg ι x ∈ A.kGL (ι ⊕ ι) := by
@@ -109,18 +105,18 @@ theorem dg_mem_kGL {ι : Type} [Fintype ι] [DecidableEq ι] (x : Rˣ) (h1 : (x 
 variable {n : Type} [Fintype n] [DecidableEq n]
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_apply']`. Conclude with `A.O.sum_mem fun s _ => A.O.mul_mem (intCast_mem _ _) (A.O.prod_mem fun m _ => h _ _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_mem_O {M : Matrix n n R} (h : ∀ r c, M r c ∈ A.O) : M.det ∈ A.O := by
   rw [Matrix.det_apply']
   exact A.O.sum_mem fun s _ => A.O.mul_mem (intCast_mem _ _) (A.O.prod_mem fun m _ => h _ _)
 
 /- English proof (translation)
-Use `⟨?_, ?_, fun w => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply]`. Conclude with `det_mem_O A fun r c => (hk.1 r c).1`. Rewrite using `[← map_inv, Matrix.GeneralLinearGroup.val_det_apply]`. Conclude with `det_mem_O A fun r c => (hk.1 r c).2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h` using `Matrix.det_of_mem_unitary (hk.2 w)`. Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply, RingHom.map_det]`. Establish `h' : star (RingHom.mapMatrix (A.φ w) (k : Matrix n n R)).det * (RingHom.mapMatrix (A.φ w) (k : Matrix n n R)).det = 1` using `Unitary.star_mul_self_of_mem h`. Establish `h2 : ‖(RingHom.mapMatrix (A.φ w) (k : Matrix n n R)).det‖ ^ 2 = 1`. Use `congrArg norm h'` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Use the polynomial consequences of the given equalities and inequalities.
 
-Simplify `this` using `[sq]`. Use polynomial arithmetic with `[norm_nonneg (RingHom.mapMatrix (A.φ w) (k : Matrix n n R)).det, sq_nonneg (‖(RingHom.mapMatrix (A.φ w) (k : Matrix n n R)).det‖ - 1)]`.
+A detailed English derivation is pending.
 -/
 theorem det_kGL {k : GL n R} (hk : k ∈ A.kGL n) :
     ((Matrix.GeneralLinearGroup.det k : Rˣ) : R) ∈ A.O ∧
@@ -149,9 +145,9 @@ open GroundTheory.Global
 variable {F E R : Type} [Field F] [NumberField F] [Field E] [Algebra F E] [CommRing R] [TopologicalSpace R]
 
 /- English proof (translation)
-Use `⟨fun a b => ⟨(hB.int _).2 (hk.1 a b).1, ?_⟩, fun w => ?_⟩` and prove the remaining obligations. Rewrite using `[← map_inv]`. Conclude with `(hB.int _).2 (hk.1 a b).2`. Take `⟨v, hv⟩` from `hB.inf w`. Establish `e : ((Matrix.GeneralLinearGroup.map ν k : GL n R) : Matrix n n R).map (A.φ w) = (k : Matrix n n 𝔸[F]).map ((adStd F).φ v)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `a b`. Simplify using `[hv]`. Rewrite using `[e]`. Conclude with `hk.2 v`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_mem_kGL {A : Ad E R} {ε : ℤˣ} {ν : 𝔸[F] →+* R} {r : R → 𝔸[F]} {δ : Eˣ} {α : IdeleGroup F}
     {ω : HeckeCharacter F} (hB : Base A ε ν r δ α ω) {n : Type} [Fintype n] [DecidableEq n]
@@ -168,27 +164,23 @@ theorem map_mem_kGL {A : Ad E R} {ε : ℤˣ} {ν : 𝔸[F] →+* R} {r : R → 
     exact hk.2 v
 
 /- English proof (translation)
-Introduce `hS F E R _ _ _ _ _ _ _ _ _ _ A ε ν r δ α ω ι _ _ i j hG hB hi hJ x`. Take `⟨b, hb, κ, hκ, hbk⟩` from `(hS F).iwa (ι ⊕ ι) {Sum.inl i} ((dg ι α)⁻¹ * x.1.2 * dg ι α)`. Take `⟨c1, c2, c3⟩` from `det_kGL (adStd F) hκ`. Use `set c := Matrix.GeneralLinearGroup.det κ with hc`. Establish `ht : dg ι c ∈ (adStd F).kGL (ι ⊕ ι)` using `dg_mem_kGL _ c c1 c2 c3`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set κ' : GL (ι ⊕ ι) 𝔸[F] := (dg ι c)⁻¹ * κ with hκ'`. Establish `hκ'K : κ' ∈ (adStd F).kGL (ι ⊕ ι)` using `mul_mem (inv_mem ht) hκ`. Establish `hdet : Matrix.GeneralLinearGroup.det κ' = 1`. Rewrite using `[hκ', map_mul, map_inv, det_dg hi, ← hc, inv_mul_cancel]`. Use `set d : GL (ι ⊕ ι) 𝔸[F] := dg ι α with hd`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hdet2 : Matrix.GeneralLinearGroup.det (d * κ' * d⁻¹) = 1`. Simplify using `[map_mul, hdet, mul_comm]`. Establish `hkc : ((1 : Rˣ), d * κ' * d⁻¹) ∈ cover A ν ι`. Simplify using `[cover, MonoidHom.mem_ker, hdet2]`. Set `k : cover A ν ι` to `⟨_, hkc⟩`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hjk : (j k).1 ∈ A.kGL (ι ⊕ ι)`. Take `⟨u, hu, u1, u2, u3⟩` from `hB.δα`. Establish `hδ : Units.map A.i.toMonoidHom δ = Units.map ν.toMonoidHom α * u` using `Units.ext hu`. Establish `e : (j k).1 = (dg ι (Units.map A.i.toMonoidHom δ))⁻¹ * Matrix.GeneralLinearGroup.map ν k.1.2 * dg ι (Units.map A.i.toMonoidHom δ)`. Apply `Units.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hJ k]`. Use `show ((1 : Rˣ) : R) • _ = _`. Rewrite using `[Units.val_one, one_smul]`. Establish `e2 : (j k).1 = (dg ι u)⁻¹ * Matrix.GeneralLinearGroup.map ν κ' * dg ι u`. Establish `hD : dg ι (Units.map ν.toMonoidHom α) = Matrix.GeneralLinearGroup.map ν d` using `(map_dg ν α).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable.
 
-Establish `hk2 : Matrix.GeneralLinearGroup.map ν k.1.2 = Matrix.GeneralLinearGroup.map ν d * Matrix.GeneralLinearGroup.map ν κ' * (Matrix.GeneralLinearGroup.map ν d)⁻¹` using `by show Matrix.GeneralLinearGroup.map ν (d * κ' * d⁻¹) = _`. Rewrite using `[map_mul, map_mul, map_inv]`. Rewrite using `[e, hδ, dg_mul, hD, hk2]`. Generalize the expression as in `Matrix.GeneralLinearGroup.map ν d = P`. Generalize the expression as in `Matrix.GeneralLinearGroup.map ν κ' = Q`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Generalize the expression as in `dg ι u = T`. Use `group`. Rewrite using `[e2]`. Establish `hU : dg ι u ∈ A.kGL (ι ⊕ ι)` using `dg_mem_kGL A u u1 u2 u3`. Conclude with `mul_mem (mul_mem (inv_mem hU) (map_mem_kGL hB hκ'K)) hU`.
+Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hkK : k ∈ cK α j`. Use `⟨hjk, ?_⟩` and prove the remaining obligations. Conclude with `⟨κ', hκ'K, rfl⟩`. Use `⟨x * k⁻¹, ?_, k, hkK, by simp⟩` and prove the remaining obligations. Establish `hx : x.1.2 = d * (b * κ) * d⁻¹`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hbk]`. Use `group`. Establish `hp : prj A ν ι (x * k⁻¹) = d * (b * dg ι c) * d⁻¹`. Rewrite using `[map_mul, map_inv]`. Use `show x.1.2 * (d * κ' * d⁻¹)⁻¹ = _`.
-
-Rewrite using `[hx, hκ']`. Use `group`. Use `show prj A ν ι (x * k⁻¹) ∈ stab 𝔸[F] {Sum.inl i}`. Rewrite using `[hp]`. Establish `hdS : d ∈ stab 𝔸[F] ({Sum.inl i} : Set (ι ⊕ ι))` using `dg_mem_stab _ _`.
-
-Conclude with `mul_mem (mul_mem hdS (mul_mem hb (dg_mem_stab _ _))) (inv_mem hdS)`.
+A detailed English derivation is pending.
 -/
 theorem jiwa : StdGood → JIwa := by
   intro hS F E R _ _ _ _ _ _ _ _ _ _ A ε ν r δ α ω ι _ _ i j hG hB hi hJ x

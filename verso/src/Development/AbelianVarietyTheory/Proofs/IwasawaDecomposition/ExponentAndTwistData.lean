@@ -28,12 +28,12 @@ instance algKT (i : T.Tw) (b : Bool) : Algebra S.Ks (KT D T i b) := ((readT D T 
 def WKr (j : ℕ) : Submodule S.Ks (S.WL j) := if 1 ≤ j ∧ j ≤ D.R.m then (S.A j).WK else ⊥
 
 /- English proof (translation)
-The claim follows from `if_pos ⟨h1, h2⟩`.
+A detailed English derivation is pending.
 -/
 theorem WKr_of {j : ℕ} (h1 : 1 ≤ j) (h2 : j ≤ D.R.m) : WKr D S j = (S.A j).WK := if_pos ⟨h1, h2⟩
 
 /- English proof (translation)
-The claim follows from `if_neg h`.
+A detailed English derivation is pending.
 -/
 theorem WKr_off {j : ℕ} (h : ¬ (1 ≤ j ∧ j ≤ D.R.m)) : WKr D S j = ⊥ := if_neg h
 
@@ -64,9 +64,9 @@ variable (D : D7) (T : TwR D.LL0 D.nd) (S : RatDat D.ntw)
 def readK (i : T.Tw) (b : Bool) : ↥D.LL0 →+* KT D T i b := readT D T i b
 
 /- English proof (translation)
-Distinguish the cases in `h : 1 ≤ j ∧ j ≤ D.R.m`. Rewrite `hx`, the goal using `[WKr_of D S h.1 h.2]`. Conclude with `hR j h.1 h.2 g x hx`. Rewrite `hx`, the goal using `[WKr_off D S h]`. Rewrite `hx`, the goal using `[Submodule.mem_bot]`.
+Consider separately whether the proposition holds or fails. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hx, map_zero]`.
+A detailed English derivation is pending.
 -/
 theorem stabR (hR : ∀ j, 1 ≤ j → j ≤ D.R.m → RhoStab S j) (j : ℕ) (g : S.G) (x : S.WL j) (hx : x ∈ WKr D S j) :
     (S.A j).ρ g x ∈ WKr D S j := by
@@ -95,7 +95,7 @@ def cR (hC : ∀ j, 1 ≤ j → j ≤ D.R.m → ChiInLL0 S j) (j : ℕ) (g : S.G
   if h : 1 ≤ j ∧ j ≤ D.R.m then chiL S j (hC j h.1 h.2) g else 1
 
 /- English proof (translation)
-Unfold `cR`. Use `split_ifs with h`. Conclude with `chiL_one S j _`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem cR_one (hC : ∀ j, 1 ≤ j → j ≤ D.R.m → ChiInLL0 S j) (j : ℕ) : cR D S hC j 1 = 1 := by
   unfold cR
@@ -104,7 +104,7 @@ theorem cR_one (hC : ∀ j, 1 ≤ j → j ≤ D.R.m → ChiInLL0 S j) (j : ℕ) 
   · rfl
 
 /- English proof (translation)
-Unfold `cR`. Use `split_ifs with h'`. Conclude with `chiL_mul S j _ g h`. Conclude with `(mul_one 1).symm`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem cR_mul (hC : ∀ j, 1 ≤ j → j ≤ D.R.m → ChiInLL0 S j) (j : ℕ) (g h : S.G) :
     cR D S hC j (g * h) = cR D S hC j g * cR D S hC j h := by
@@ -206,7 +206,7 @@ def hkB (hst : HkStab D T S In) (i : T.Tw) (j : ℕ) (b : Bool) (k : ℕ) (P : P
   else 1
 
 /- English proof (translation)
-Unfold `hkB`. Rewrite using `[dif_neg]`. Introduce `h`. Conclude with `absurd h.2.2.1 (by omega)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem hkB_zero (hst : HkStab D T S In) (i : T.Tw) (j : ℕ) (b : Bool) (P : PlE D.host) :
     hkB D T S In hst i j b 0 P = 1 := by
@@ -216,9 +216,7 @@ theorem hkB_zero (hst : HkStab D T S In) (i : T.Tw) (j : ℕ) (b : Bool) (P : Pl
   exact absurd h.2.2.1 (by omega)
 
 /- English proof (translation)
-Use `haveI : IsNoetherian (T.O i) ↥(BsupT D T S i j b) := isNoetherian_of_fg_of_noetherian _ (hfg i j b)`. Establish `h1 : ((BI D T S In i j b).comap (BsupT D T S i j b).subtype).map (BsupT D T S i j b).subtype = BI D T S In i j b`. Rewrite using `[Submodule.map_comap_subtype]`. Conclude with `inf_eq_right.mpr inf_le_left`. Rewrite using `[← h1]`.
-
-Conclude with `(IsNoetherian.noetherian _).map _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fg_BI (hfg : ∀ i j b, (BsupT D T S i j b).FG) (i : T.Tw) (j : ℕ) (b : Bool) : (BI D T S In i j b).FG := by
   haveI : IsNoetherian (T.O i) ↥(BsupT D T S i j b) := isNoetherian_of_fg_of_noetherian _ (hfg i j b)
@@ -247,9 +245,9 @@ section Make
 variable (D : D7) (T : TwR D.LL0 D.nd) (S : RatDat D.ntw) (In : RatIn D S)
 
 /- English proof (translation)
-Use `⟨fun r hr x y hxy => ?_⟩` and prove the remaining obligations. Establish `hr0 : r ≠ 0` using `hr.ne_zero`. Establish `hk : algebraMap (T.O i) (FractionRing (T.O i)) r ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective (T.O i) (FractionRing (T.O i)))).mpr hr0`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `h : r • (x : FmT D T S i j b) = r • (y : FmT D T S i j b)` using `congrArg Subtype.val hxy`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Rewrite `h` using `[← algebraMap_smul (FractionRing (T.O i)) r, ← algebraMap_smul (FractionRing (T.O i)) r]`. Conclude with `smul_right_injective _ hk h`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tf_BI (i : T.Tw) (j : ℕ) (b : Bool) : Module.IsTorsionFree (T.O i) ↥(BI D T S In i j b) := by
   refine ⟨fun r hr x y hxy => ?_⟩
@@ -295,7 +293,7 @@ def EIdem : Prop :=
   eL D * eL D = eL D ∧ ∀ g : G0g D.nd, eL D * MonoidAlgebra.of _ _ g = MonoidAlgebra.of _ _ g * eL D
 
 /- English proof (translation)
-Use `MonoidAlgebra.ext (Finsupp.ext fun g => ?_)` and prove the remaining obligations. Simplify using `[eAlgT, eL, MonoidAlgebra.mapRangeRingHom]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem eAlgT_eq (i : T.Tw) (b : Bool) :
     eAlgT D T i b = MonoidAlgebra.mapRangeRingHom (G0g D.nd) (readT D T i b) (eL D) := by
@@ -303,15 +301,15 @@ theorem eAlgT_eq (i : T.Tw) (b : Bool) :
   simp [eAlgT, eL, MonoidAlgebra.mapRangeRingHom]
 
 /- English proof (translation)
-Rewrite using `[eAlgT_eq, ← map_mul, he.1]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem eAlgT_idem (he : EIdem D) (i : T.Tw) (b : Bool) : eAlgT D T i b * eAlgT D T i b = eAlgT D T i b := by
   rw [eAlgT_eq, ← map_mul, he.1]
 
 /- English proof (translation)
-Rewrite using `[eAlgT_eq]`. Use `MonoidAlgebra.induction_on (motive := fun x => MonoidAlgebra.mapRangeRingHom (G0g D.nd) (readT D T i b) (eL D) * x = x * MonoidAlgebra.mapRangeRingHom (G0g D.nd) (readT D T i b) (eL D)) x (fun g => ?_) (fun x y hx hy => ?_) (fun r x hx => ?_)` and prove the remaining obligations. Establish `h` using `congrArg (MonoidAlgebra.mapRangeRingHom (G0g D.nd) (readT D T i b)) (he.2 g)`. Establish `hs : MonoidAlgebra.mapRangeRingHom (G0g D.nd) (readT D T i b) (MonoidAlgebra.of _ _ g) = MonoidAlgebra.of _ _ g`. Simplify using `[MonoidAlgebra.of_apply, MonoidAlgebra.mapRangeRingHom]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `h` using `[map_mul, map_mul, hs]`. Conclude with `h`. Rewrite using `[mul_add, add_mul, hx, hy]`. Rewrite using `[mul_smul_comm, smul_mul_assoc, hx]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eAlgT_central (he : EIdem D) (i : T.Tw) (b : Bool) (x : MonoidAlgebra (FractionRing (T.O i)) (G0g D.nd)) :
     eAlgT D T i b * x = x * eAlgT D T i b := by
@@ -375,7 +373,7 @@ def MtSubT (wt : WtData D T) (i : T.Tw) (j : ℕ) (b : Bool) (k : ℕ) (Good : L
   else ⊥
 
 /- English proof (translation)
-Distinguish the cases in `h : ∃ L : LevT D T i k, Good L ∧ FiniteDimensional (FractionRing (T.Ok i k)) ↥(NX.TypeSpF D.host.E D.R.nV (FractionRing (T.Ok i k)) (rhoKT D T wt i j b k) L.J L.χ)`. Rewrite using `[MtSubT, dif_pos h]`. Conclude with `h.choose_spec.2`. Rewrite using `[MtSubT, dif_neg h] infer_instance`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fd_MtSubT (wt : WtData D T) (i : T.Tw) (j : ℕ) (b : Bool) (k : ℕ) (Good : LevT D T i k → Prop) :
     FiniteDimensional (FractionRing (T.Ok i k)) ↥(MtSubT D T wt i j b k Good) := by
@@ -462,7 +460,7 @@ section Exp
 variable (D : D7) (T : TwR D.LL0 D.nd) (S : RatDat D.ntw)
 
 /- English proof (translation)
-Distinguish the cases in `h : 1 ≤ j ∧ j ≤ D.R.m`. Rewrite using `[WKr_of D S h.1 h.2]`. Conclude with `In.fd j h.1 h.2`. Rewrite using `[WKr_off D S h] infer_instance`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fd_WKr (In : RatIn D S) (j : ℕ) : FiniteDimensional S.Ks ↥(WKr D S j) := by
   by_cases h : 1 ≤ j ∧ j ≤ D.R.m
@@ -472,7 +470,7 @@ theorem fd_WKr (In : RatIn D S) (j : ℕ) : FiniteDimensional S.Ks ↥(WKr D S j
     infer_instance
 
 /- English proof (translation)
-Use `haveI := fd_WKr D S In j`. Conclude with `(inferInstance : Module.Finite (KT D T i b) (KT D T i b ⊗[S.Ks] ↥(WKr D S j)))`.
+A detailed English derivation is pending.
 -/
 theorem fdFmT (In : RatIn D S) (i : T.Tw) (j : ℕ) (b : Bool) : FiniteDimensional (FractionRing (T.O i)) (FmT D T S i j b) := by
   haveI := fd_WKr D S In j
@@ -495,7 +493,7 @@ def MtLatT (In : RatIn D S) (Pq : HeightOneSpectrum (𝓞 (maximalRealSubfield D
   Submodule.span (T.Ok i k) (Set.range (Module.finBasis (FractionRing (T.Ok i k)) (MtVT D T S In Pq wt i j b k Q ψ)))
 
 /- English proof (translation)
-The claim follows from `Submodule.fg_span (Set.finite_range _)`.
+A detailed English derivation is pending.
 -/
 theorem MtLatT_fg (In : RatIn D S) (Pq : HeightOneSpectrum (𝓞 (maximalRealSubfield D.host.E)) → PlE D.host) (wt : WtData D T)
     (i : T.Tw) (j : ℕ) (b : Bool) (k : ℕ) (Q : Finset (PlE D.host)) (ψ : Formalism.ConjugateSelfDual.G D.host.E D.nd.Om →* (T.Ok i k)ˣ) :
@@ -503,7 +501,7 @@ theorem MtLatT_fg (In : RatIn D S) (Pq : HeightOneSpectrum (𝓞 (maximalRealSub
   Submodule.fg_span (Set.finite_range _)
 
 /- English proof (translation)
-Rewrite using `[MtLatT, Submodule.span_span_of_tower, (Module.finBasis _ _).span_eq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem MtLatT_span (In : RatIn D S) (Pq : HeightOneSpectrum (𝓞 (maximalRealSubfield D.host.E)) → PlE D.host) (wt : WtData D T)
     (i : T.Tw) (j : ℕ) (b : Bool) (k : ℕ) (Q : Finset (PlE D.host)) (ψ : Formalism.ConjugateSelfDual.G D.host.E D.nd.Om →* (T.Ok i k)ˣ) :
@@ -516,7 +514,7 @@ def twDelT (i : T.Tw) (j : ℕ) (b : Bool) (Q : Finset (PlE D.host)) (M : ℕ) :
 def eHT (i : T.Tw) (j : ℕ) (b : Bool) : Module.End (FractionRing (T.O i)) (FmT D T S i j b) := 1
 
 /- English proof (translation)
-The claim follows from `one_mul _`.
+A detailed English derivation is pending.
 -/
 theorem eHT_idem (i : T.Tw) (j : ℕ) (b : Bool) : eHT D T S i j b * eHT D T S i j b = eHT D T S i j b := one_mul _
 
@@ -583,9 +581,9 @@ section Extra
 variable (D : D7) (T : TwR D.LL0 D.nd) (S : RatDat D.ntw)
 
 /- English proof (translation)
-Unfold `hLr`. Use `split_ifs with h`. Use `LinearMap.ext fun x => Subtype.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `In.hL j 0 P (x : S.WL j) = (x : S.WL j)`. Rewrite using `[In.hL_zero]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem hLr_zero (In : RatIn D S) (j : ℕ) (P : PlE D.host) : hLr D S In j 0 P = 1 := by
   unfold hLr
@@ -597,7 +595,7 @@ theorem hLr_zero (In : RatIn D S) (j : ℕ) (P : PlE D.host) : hLr D S In j 0 P 
   · rfl
 
 /- English proof (translation)
-Unfold `hkT`. Rewrite using `[hLr_zero, map_one, pow_zero, one_smul]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem hkT_zero (In : RatIn D S) (i : T.Tw) (j : ℕ) (b : Bool) (P : PlE D.host) : hkT D T S In i j b 0 P = 1 := by
   unfold hkT

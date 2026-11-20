@@ -9,11 +9,11 @@ namespace GlobalTheory.KerRescale
 open NumberField Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.TaylorLogMetric Formalism.MainNotions.G Formalism.L2.Ker Classical
 
 /- English proof (translation)
-Establish `hmap : ∀ c ∈ μ.cells, c.2 ∈ Finset.range (μ.rowLen 0)`. Introduce `c hc`. Rewrite using `[Finset.mem_range]`. Establish `h1 : (c.1, c.2) ∈ μ` using `hc`. Establish `h2 : (0, c.2) ∈ μ` using `μ.up_left_mem (Nat.zero_le _) le_rfl h1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `YoungDiagram.mem_iff_lt_rowLen.1 h2`. Unfold `YoungDiagram.card`. Rewrite using `[Finset.card_eq_sum_card_fiberwise (f := Prod.snd) (fun c hc => hmap c hc), Fin.sum_univ_eq_sum_range (fun c => μ.colLen c)]`. Use `Finset.sum_congr rfl fun r _ => ?_` and prove the remaining obligations. Rewrite using `[YoungDiagram.colLen_eq_card]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem card_eq_sum_colLen (μ : YoungDiagram) : μ.card = ∑ c : Fin (μ.rowLen 0), μ.colLen c := by
   have hmap : ∀ c ∈ μ.cells, c.2 ∈ Finset.range (μ.rowLen 0) := by
@@ -36,11 +36,11 @@ variable {Lt : Type} [Fintype Lt] [DecidableEq Lt] (N0 N1 : ℕ) {K : Type} [Com
 def wt : KM.XZ Lt N0 N1 → Additive K := Sum.elim (fun _ => 0) (fun z => Additive.ofMul (a z.1))
 
 /- English proof (translation)
-Establish `hent : ∀ i k : Fin p, MvPolynomial.IsWeightedHomogeneous (wt N0 N1 a) (∑ b : Fin N0, MvPolynomial.X (Sum.inl (s, (i : ℕ), b)) * MvPolynomial.X (Sum.inr (s, b, I k)) : MvPolynomial (KM.XZ Lt N0 N1) ℤ) (Additive.ofMul (a s))`. Introduce `i k`. Use `MvPolynomial.IsWeightedHomogeneous.sum _ _ _ fun b _ => ?_` and prove the remaining obligations. Use `(MvPolynomial.isWeightedHomogeneous_X ℤ (wt N0 N1 a) (Sum.inl (s, (i : ℕ), b))).mul (MvPolynomial.isWeightedHomogeneous_X ℤ (wt N0 N1 a) (Sum.inr (s, b, I k)))` as an intermediate fact. Simplify `this` using `only [wt, Sum.elim_inl, Sum.elim_inr, zero_add]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Unfold `KM.minorXZ`. Rewrite using `[Matrix.det_apply]`. Use `MvPolynomial.IsWeightedHomogeneous.sum _ _ _ fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[Units.smul_def]`. Apply `Submodule.smul_mem (MvPolynomial.weightedHomogeneousSubmodule ℤ (wt N0 N1 a) _)` to reduce the goal to its premises.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Use `MvPolynomial.IsWeightedHomogeneous.prod Finset.univ _ (fun _ => Additive.ofMul (a s)) (fun i _ => hent (σ i) i)` as an intermediate fact. Rewrite `this` using `[Finset.sum_const, Finset.card_univ, Fintype.card_fin]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem minorXZ_hom (s : Lt) (p : ℕ) (I : Fin p ↪o Fin N1) :
     MvPolynomial.IsWeightedHomogeneous (wt N0 N1 a) (KM.minorXZ N0 N1 s p I) (p • Additive.ofMul (a s)) := by
@@ -63,7 +63,7 @@ theorem minorXZ_hom (s : Lt) (p : ℕ) (I : Fin p ↪o Fin N1) :
   exact this
 
 /- English proof (translation)
-Unfold `KM.Gxz`. Use `MvPolynomial.IsWeightedHomogeneous.prod Finset.univ _ _ fun s _ => ?_` and prove the remaining obligations. Rewrite using `[card_eq_sum_colLen, Finset.sum_smul]`. Conclude with `MvPolynomial.IsWeightedHomogeneous.prod Finset.univ _ _ fun c _ => minorXZ_hom N0 N1 a s _ (I s c)`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Gxz_hom (nu : Lt → YoungDiagram) (I : KM.ColChoice N1 nu) :
     MvPolynomial.IsWeightedHomogeneous (wt N0 N1 a) (KM.Gxz N0 N1 nu I) (∑ s, (nu s).card • Additive.ofMul (a s)) := by
@@ -73,9 +73,9 @@ theorem Gxz_hom (nu : Lt → YoungDiagram) (I : KM.ColChoice N1 nu) :
   exact MvPolynomial.IsWeightedHomogeneous.prod Finset.univ _ _ fun c _ => minorXZ_hom N0 N1 a s _ (I s c)
 
 /- English proof (translation)
-Establish `h` using `Gxz_hom N0 N1 a nu I (MvPolynomial.mem_support_iff.mp hμ)`. Establish `hμ' : μ = Finsupp.sumElim (Finsupp.sumFinsuppEquivProdFinsupp μ).1 (Finsupp.sumFinsuppEquivProdFinsupp μ).2`. Apply the tactic sequence `ext x; cases x <;> simp`. Rewrite `h` using `[hμ', Finsupp.weight_apply, Finsupp.sum_sumElim]`. Generalize the expression as in `Finsupp.sumFinsuppEquivProdFinsupp μ = p at h ⊢`.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. Replace the chosen expression with an arbitrary variable.
 
-Establish `h2` using `congrArg Additive.toMul h`. Unfold `Finsupp.sum at h2`. Simplify using `only [Function.comp_apply, wt, Sum.elim_inl, Sum.elim_inr, smul_zero, Finset.sum_const_zero, zero_add, toMul_sum, toMul_nsmul, toMul_ofMul] at h2`. Conclude with `h2`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem prod_of_mem_support (nu : Lt → YoungDiagram) (I : KM.ColChoice N1 nu) (μ : KM.XZ Lt N0 N1 →₀ ℕ)
     (hμ : μ ∈ (KM.Gxz N0 N1 nu I).support) :
@@ -94,7 +94,7 @@ theorem prod_of_mem_support (nu : Lt → YoungDiagram) (I : KM.ColChoice N1 nu) 
 end Hom
 
 /- English proof (translation)
-Unfold `KM.applyAt0`. Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl fun μ hμ => ?_` and prove the remaining obligations. Rewrite using `[MvPowerSeries.coeff_rescale, prod_of_mem_support N0 N1 a nu I μ hμ, MvPolynomial.smul_monomial, smul_eq_mul]`. Use `congr 1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -110,11 +110,11 @@ theorem applyAt0_rescale {Lt : Type} [Fintype Lt] [DecidableEq Lt] (N0 N1 : ℕ)
   ring
 
 /- English proof (translation)
-Unfold `atLin`. Establish `hs : MvPowerSeries.HasSubst (fun k : σ => ∑ j : κ, algebraMap ℂ_[p] (MvPowerSeries κ ℂ_[p]) (c k j) * MvPowerSeries.X j)`. Use `MvPowerSeries.hasSubst_of_constantCoeff_zero fun k => ?_` and prove the remaining obligations. Simplify using `[map_sum]`. Rewrite using `[MvPowerSeries.rescale_eq_subst, MvPowerSeries.subst_comp_subst_apply hs (MvPowerSeries.HasSubst.smul_X a)]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `k`. Rewrite using `[← MvPowerSeries.rescale_eq_subst, map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← Algebra.smul_def, ← Algebra.smul_def, ← MvPowerSeries.rescaleAlgHom_apply, map_smul, MvPowerSeries.rescaleAlgHom_apply, MvPowerSeries.rescale_eq_subst, MvPowerSeries.subst_X (MvPowerSeries.HasSubst.smul_X a)]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show c k j • (a j • (MvPowerSeries.X j : MvPowerSeries κ ℂ_[p])) = (a j * c k j) • (MvPowerSeries.X j : MvPowerSeries κ ℂ_[p])`. Rewrite using `[mul_comm, mul_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rescale_atLin {σ κ : Type} [Finite σ] [Fintype κ] {p : ℕ} [Fact p.Prime] (c : σ → κ → ℂ_[p]) (a : κ → ℂ_[p])
     (F : MvPowerSeries σ ℂ_[p]) :
@@ -162,9 +162,9 @@ def kerEntR (ha : ∀ w u μ τ, ‖a w u μ τ‖ = 1) (h : KerEntHyp P O B Dx 
     field_simp
 
 /- English proof (translation)
-Use `show MvPowerSeries.rescale _ (thAtW P O B u μ w i c c') = _`. Unfold `thAtW`. Rewrite using `[rescale_atLin]`. Use `congr 1`. Use function extensionality and compare the values at `k j`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs with hk`. Rewrite using `[hk]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `mul_zero _`.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem kerEntR_Th (ha : ∀ w u μ τ, ‖a w u μ τ‖ = 1) (h : KerEntHyp P O B Dx Tw) (u : D.what₂.Word) (μ : D.what₂.Tup) (w : D.what₂.places.Pl)
     (i : ℕ) (c : (D.chTw u μ).cls i) (c' : (D.chTw u μ).cls (i + 1)) :
@@ -194,9 +194,9 @@ def tieR (ha : ∀ w u μ τ, ‖a w u μ τ‖ = 1) (hB : BasOk P O B) (hC : Ca
   prT_can := (kfTieOf P O B hB hC h u μ w).prT_can
 
 /- English proof (translation)
-Introduce `i hi c c'`. Use `show _ * unC P O B u μ w i c c' = _`. Unfold `unC`. Rewrite using `[if_neg (unF_ne P O B hB u μ hR w i hi c c')]`. Unfold `GL3Columns.KFTie.un`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_assoc]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem tieR_un (ha : ∀ w u μ τ, ‖a w u μ τ‖ = 1) (hB : BasOk P O B) (hC : CanOnto P) (h : KerEntHyp P O B Dx Tw) (u : D.what₂.Word)
     (μ : D.what₂.Tup) (hR : GL3Columns.RhoAlg (O u μ)) (w : D.what₂.places.Pl) : (tieR P O B a ha hB hC h u μ w).UnIs := by
@@ -209,7 +209,7 @@ theorem tieR_un (ha : ∀ w u μ τ, ‖a w u μ τ‖ = 1) (hB : BasOk P O B) (
   rfl
 
 /- English proof (translation)
-Establish `e : D.what₂.embLL (D.embE (D.host.sigmaOf (D.eTau τ : D.R.GG) x)) = embT D τ x` using `RingHom.congr_fun D.embE_φ₀ _`. Use `⟨D.embE (D.host.sigmaOf (D.eTau τ : D.R.GG) x), ?_⟩` and prove the remaining obligations. Rewrite using `[P.iL_lam, e]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem tauEmb_mem (w : D.what₂.places.Pl) (τ : D.what₂.Tau) (x : D.host.E) : ∃ y : D.what₂.LL, tauEmb D (P.lam w) τ x = P.iL w y := by
   have e : D.what₂.embLL (D.embE (D.host.sigmaOf (D.eTau τ : D.R.GG) x)) = embT D τ x := RingHom.congr_fun D.embE_φ₀ _
@@ -221,7 +221,7 @@ def adUnit (w : D.what₂.places.Pl) (u : D.what₂.Word) (μ : D.what₂.Tup) (
   if AdPl D w then (lamC (P.lam w) ((O u μ).dgen τ))⁻¹ else 1
 
 /- English proof (translation)
-Unfold `adUnit`. Use `split_ifs with hw`. Rewrite using `[norm_inv, hU w hw u μ τ, inv_one]`. Conclude with `norm_one`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_adUnit (hU : DgenUnitAd P O) (w : D.what₂.places.Pl) (u : D.what₂.Word) (μ : D.what₂.Tup) (τ : D.what₂.Tau) :
     ‖adUnit P O w u μ τ‖ = 1 := by
@@ -231,9 +231,9 @@ theorem norm_adUnit (hU : DgenUnitAd P O) (w : D.what₂.places.Pl) (u : D.what�
   · exact norm_one
 
 /- English proof (translation)
-Introduce `w hw u μ _`. Use `⟨Pm w u μ, h1 w u μ, h2 w u μ, h3 w u μ, fun i _ c c' => ?_⟩` and prove the remaining obligations. Rewrite using `[kerEntR_Th]`. Use `congr 1`. Use function extensionality and compare the values at `k j`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Unfold `adCoef adUnit`. Establish `hs : lamC (P.lam w) ((O u μ).dgen k.1) ≠ 0` using `norm_ne_zero_iff.1 (by rw [hU w hw u μ k.1]; exact one_ne_zero)`. Rewrite using `[if_pos hw, inv_mul_cancel₀ hs, one_mul]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem adaptedTh_kerEntR (hU : DgenUnitAd P O) (Pm : ∀ (_ : D.what₂.places.Pl) u μ, SysFam D u μ)
     (h1 : ∀ w u μ i, i ≤ D.R.m → ∀ c τ, GL3Columns.BasR D (P.lam w) τ ((O u μ).lat i c).1 ((Pm w u μ i c τ).map (tauEmb D (P.lam w) τ)))

@@ -13,13 +13,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar Formalism.BasicNot
 abbrev nFr (D : D7) (p : ℕ) : ℕ := orderOf (zH D.R.toFrame (hP D p))
 
 /- English proof (translation)
-Take `⟨hp, -, -, hz, -, -⟩` from `hg`. Establish `hne : (Formalism.MainNotions.G.frobSet D p).Nonempty` using `by haveI : Fact p.Prime := ⟨hp⟩ haveI : (Ideal.span {(p : ℤ)}).IsMaximal := Int.ideal_span_isMaximal_of_prime p`. Take `⟨P, hPm, hPl⟩` from `Ideal.exists_maximal_ideal_liesOver_of_isIntegral (S := 𝓞 D.host.E) (Ideal.span {(p : ℤ)})`. Use `haveI : IsGalois ℚ D.host.E := D.host.galois`. Take `⟨σ, hσ⟩` from `IsArithFrobAt.exists_of_isInvariant (R := ℤ) (G := D.host.E ≃ₐ[ℚ] D.host.E) P`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨_, P, hPm.isPrime, hPl, σ, hσ, rfl⟩`. Take `⟨P, hP1, hP2, σ, hσ, hgal⟩` from `Classical.epsilon_spec hne`. Establish `hev : Even (orderOf (D.host.galE σ).2)` using `@hz P hP1 hP2 σ hσ`. Rewrite `hev` using `[hgal]`. Establish `hA : addOrderOf (Formalism.MainNotions.G.hP D p) = orderOf (Classical.epsilon (fun g => g ∈ Formalism.MainNotions.G.frobSet D p)).2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `Formalism.MainNotions.G.hP`. Conclude with `Formalism.HC.Frame.addOrderOf_iotaInv _ _`. Establish `hn : nFr D p = addOrderOf (Formalism.MainNotions.G.hP D p)` using `orderOf_zH _ _`. Establish `hpos : 0 < orderOf (Classical.epsilon (fun g => g ∈ Formalism.MainNotions.G.frobSet D p)).2` using `orderOf_pos _`. Rewrite using `[hn, hA]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨?_, hev⟩` and prove the remaining obligations. Take `⟨k, hk⟩` from `hev`. Rewrite `hpos`, the goal using `[hk]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the hypotheses and the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem nFr_spec (D : D7) {T p : ℕ} (hg : GIdx D.host T p) : 2 ≤ nFr D p ∧ Even (nFr D p) := by
   obtain ⟨hp, -, -, hz, -, -⟩ := hg

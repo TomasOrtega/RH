@@ -6,7 +6,7 @@ import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.Afsplit
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.UG Matrix
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.PrimeOrderScalar.acts_by_same_integer` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FActsBySameInteger.lean&line=180#L180)
 -/

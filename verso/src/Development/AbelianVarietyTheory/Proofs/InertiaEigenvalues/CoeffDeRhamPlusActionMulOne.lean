@@ -14,11 +14,11 @@ variable {R O B K V C : Type} [CommSemiring R] [Semiring O] [Algebra R O] [Semir
   [CommSemiring K] [AddCommMonoid V] [Module K V] [Semiring C] [Module K C]
 
 /- English proof (translation)
-Proceed by induction on `d using TensorProduct.induction_on with`. Consider the case `zero => simp only [zero_mul, map_zero, AddMonoidHom.zero_apply]`. Consider the case `add x y hx hy => simp only [add_mul, map_add, AddMonoidHom.add_apply, hx, hy]`. Consider the case `tmul o b`. Proceed by induction on `d' using TensorProduct.induction_on with`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Proceed by induction.
 
-Consider the case `zero => simp only [mul_zero, map_zero, AddMonoidHom.zero_apply]`. Consider the case `add x y hx hy => simp only [mul_add, map_add, AddMonoidHom.add_apply, hx, hy]`. Consider the case `tmul o' b'`. Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul v c`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, h, h, h, hs, map_mul, mul_assoc]`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem tensorAct_mul (s : O → V → V) (φ : B →+* C)
     (act : O ⊗[R] B →+ (V ⊗[K] C →+ V ⊗[K] C))
@@ -40,7 +40,7 @@ theorem tensorAct_mul (s : O → V → V) (φ : B →+* C)
         rw [Algebra.TensorProduct.tmul_mul_tmul, h, h, h, hs, map_mul, mul_assoc]
 
 /- English proof (translation)
-Rewrite using `[Algebra.TensorProduct.one_def]`. Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul v c => rw [h, hs, map_one, one_mul]`.
+Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem tensorAct_one (s : O → V → V) (φ : B →+* C)
     (act : O ⊗[R] B →+ (V ⊗[K] C →+ V ⊗[K] C))
@@ -56,7 +56,7 @@ theorem tensorAct_one (s : O → V → V) (φ : B →+* C)
 end Abstract
 
 /- English proof (translation)
-Introduce `_ _ LL T _ _ Td act h` and use `⟨tensorAct_mul (fun (o : ↥(OL LL)) (v : T.V) => (o : ↥LL.1) • v) (cD Td) act (fun o o' v => mul_smul (o : ↥LL.1) (o' : ↥LL.1) v) h, tensorAct_one (fun (o : ↥(OL LL)) (v : T.V) => (o : ↥LL.1) • v) (cD Td) act (fun v => one_smul ↥LL.1 v) h⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem odAct_mul_one : ∀ (l : ℕ) [Fact l.Prime] (LL : FinExt l) (T : QLat LL) (Pl : LocPrime l) (AI : LocAinf l Pl) (Td : LocTied l Pl AI) (act : OD l ↥(OL LL) →+ (T.V ⊗[ℚ_[l]] Pl.R.BdR →+ T.V ⊗[ℚ_[l]] Pl.R.BdR)), (∀ (o : ↥(OL LL)) (b : Per.BdRp l) (v : T.V) (c : Pl.R.BdR), act (o ⊗ₜ[ℤ_[l]] b) (v ⊗ₜ[ℚ_[l]] c) = ((o : ↥LL.1) • v) ⊗ₜ[ℚ_[l]] (GlobalTheory.BKGal.JumpDR.cD Td b * c)) → (∀ (d d' : OD l ↥(OL LL)) (w : T.V ⊗[ℚ_[l]] Pl.R.BdR), act (d * d') w = act d (act d' w)) ∧ ∀ w : T.V ⊗[ℚ_[l]] Pl.R.BdR, act 1 w = w :=
   fun _ _ LL T _ _ Td act h =>

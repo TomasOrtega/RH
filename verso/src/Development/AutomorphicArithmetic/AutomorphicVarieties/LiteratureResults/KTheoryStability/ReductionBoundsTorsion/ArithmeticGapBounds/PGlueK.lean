@@ -15,14 +15,14 @@ abbrev iO : Matrix.SpecialLinearGroup (Fin N) (𝓞 L) →* Matrix.SpecialLinear
   Matrix.SpecialLinearGroup.map (algebraMap (𝓞 L) L)
 
 /- English proof (translation)
-Unfold `dg`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem dg_zero' (π : 𝓞 L) : dg L N π 0 = 1 := by
   unfold dg
   simp
 
 /- English proof (translation)
-Use `show (diagonal fun i : Fin N => if (i : ℕ) = 0 then (π : L) else 1) = dg L N π 1`. Unfold `dg`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem coe_qel (π : 𝓞 L) (hπ : π ≠ 0) :
     ((qel L N π hπ : GK L N) : Matrix (Fin N) (Fin N) L) = dg L N π 1 := by
@@ -40,11 +40,11 @@ theorem coe_toK_toGL (a : Matrix.SpecialLinearGroup (Fin N) (𝓞 L)) :
       ((iO L N a : Matrix.SpecialLinearGroup (Fin N) L) : Matrix (Fin N) (Fin N) L) := rfl
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hh`. Take `⟨x, ⟨δ, rfl⟩, hx⟩` from `Subgroup.mem_map.1 (Subgroup.mem_comap.1 hh)`. Use `⟨δ, ?_⟩` and prove the remaining obligations. Simplify using `only [MulEquiv.coe_toMonoidHom, MulAut.conj_apply, inv_inv] at hx`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[← hx]`. Use `group`. Introduce and unpack `⟨δ, hδ⟩`. Use `Subgroup.mem_comap.2 (Subgroup.mem_map.2 ⟨toK L N δ, ⟨δ, rfl⟩, ?_⟩)` and prove the remaining obligations. Simplify using `only [MulEquiv.coe_toMonoidHom, MulAut.conj_apply, inv_inv]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_assoc, ← hδ, inv_mul_cancel_left]`.
+A detailed English derivation is pending.
 -/
 theorem mem_Hq_iff (π : 𝓞 L) (hπ : π ≠ 0) (h : Gm L N) :
     h ∈ Hq L N π hπ ↔ ∃ δ : Gm L N, qel L N π hπ * toK L N h = toK L N δ * qel L N π hπ := by
@@ -61,9 +61,9 @@ theorem mem_Hq_iff (π : 𝓞 L) (hπ : π ≠ 0) (h : Gm L N) :
     rw [mul_assoc, ← hδ, inv_mul_cancel_left]
 
 /- English proof (translation)
-Use `show (∃ γ, dg L N π 0 * mt L N g = mo L N γ * dg L N π 0) ↔ _`. Rewrite using `[dg_zero']`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨γ, h⟩`. Use `⟨γ, Subtype.ext ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[one_mul, mul_one]`. Conclude with `h.symm`. Introduce and unpack `⟨a, rfl⟩`. Conclude with `⟨a, by rw [one_mul, mul_one]; rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_Kg_zero (π : 𝓞 L) (g : Matrix.SpecialLinearGroup (Fin N) L) :
     g ∈ Kg L N π 0 ↔ ∃ a, iO L N a = g := by
@@ -78,15 +78,13 @@ theorem mem_Kg_zero (π : 𝓞 L) (g : Matrix.SpecialLinearGroup (Fin N) L) :
     exact ⟨a, by rw [one_mul, mul_one]; rfl⟩
 
 /- English proof (translation)
-Rewrite using `[mem_Hq_iff]`. Use `show _ ↔ ∃ γ, dg L N π 1 * mt L N (iO L N a) = mo L N γ * dg L N π 1`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨δ, hδ⟩`. Establish `hm` using `congrArg (fun x : GK L N => (x : Matrix (Fin N) (Fin N) L)) hδ`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [GeneralLinearGroup.coe_mul, coe_qel, coe_toK_toGL] at hm`. Establish `hdet : (δ : Matrix (Fin N) (Fin N) (𝓞 L)).det = 1`. Establish `h1` using `congrArg Matrix.det hm`. Rewrite `h1` using `[det_mul, det_mul, Matrix.SpecialLinearGroup.det_coe, mul_one]`. Establish `hd : (dg L N π 1).det ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← coe_qel L N π hπ]`. Conclude with `(qel L N π hπ).isUnit.map (detMonoidHom) |>.ne_zero`. Establish `h2 : ((toK L N δ : GK L N) : Matrix (Fin N) (Fin N) L).det = 1` using `mul_right_cancel₀ hd (h1.symm.trans (one_mul _).symm)`. Establish `h3 : ((toK L N δ : GK L N) : Matrix (Fin N) (Fin N) L).det = algebraMap (𝓞 L) L (δ : Matrix (Fin N) (Fin N) (𝓞 L)).det`. Rewrite using `[RingHom.map_det]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite `h2` using `[h3]`. Conclude with `(FaithfulSMul.algebraMap_injective (𝓞 L) L) (by rw [h2, map_one])`. Use `⟨⟨δ, hdet⟩, ?_⟩` and prove the remaining obligations. Conclude with `hm`.
-
-Introduce and unpack `⟨γ, hγ⟩`. Use `⟨Matrix.SpecialLinearGroup.toGL γ, Units.ext ?_⟩` and prove the remaining obligations. Simplify using `only [GeneralLinearGroup.coe_mul, coe_qel, coe_toK_toGL]`. Conclude with `hγ`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_Hq (π : 𝓞 L) (hπ : π ≠ 0) (a : Matrix.SpecialLinearGroup (Fin N) (𝓞 L)) :
     Matrix.SpecialLinearGroup.toGL a ∈ Hq L N π hπ ↔ iO L N a ∈ Kg L N π 1 := by
@@ -118,21 +116,21 @@ theorem mem_Hq (π : 𝓞 L) (hπ : π ≠ 0) (a : Matrix.SpecialLinearGroup (Fi
     exact hγ
 
 /- English proof (translation)
-Set `i0 : Fin N` to `⟨0, hN⟩`. Set `u : (𝓞 L)ˣ` to `GeneralLinearGroup.det γ`. Set `du : Fin N → 𝓞 L` to `Function.update 1 i0 (u : 𝓞 L)`. Set `dv : Fin N → 𝓞 L` to `Function.update 1 i0 ((u⁻¹ : (𝓞 L)ˣ) : 𝓞 L)`. Establish `h1 : ∀ i, du i * dv i = 1`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `i`. Distinguish the cases in `hi : i = i0`. Substitute `hi` using the available equality. Simplify using `[du, dv]`. Simplify using `[du, dv, hi]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `h2 : ∀ i, dv i * du i = 1` using `fun i => by rw [mul_comm]; exact h1 i`. Set `h : Gm L N` to `⟨diagonal du, diagonal dv, by rw [diagonal_mul_diagonal, ← diagonal_one]; congr 1; funext i; exact h1 i, by rw [diagonal_mul_diagonal, ← diagonal_one]; congr 1; funext i; exact h2 i⟩`. Establish `hdeth : (h : Matrix (Fin N) (Fin N) (𝓞 L)).det = u` using `by show (diagonal du).det = u`. Rewrite using `[det_diagonal, Finset.prod_update_of_mem (Finset.mem_univ _)]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hdet : ((h⁻¹ * γ : Gm L N) : Matrix (Fin N) (Fin N) (𝓞 L)).det = 1`. Use `congrArg (fun x : (𝓞 L)ˣ => (x : 𝓞 L)) (map_mul (GeneralLinearGroup.det) h⁻¹ γ)` as an intermediate fact. Simplify using `only [map_inv, Units.val_mul] at this`. Rewrite using `[← GeneralLinearGroup.val_det_apply, this]`. Establish `e1 : ((GeneralLinearGroup.det h : (𝓞 L)ˣ) : 𝓞 L) = u`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[GeneralLinearGroup.val_det_apply, hdeth]`. Establish `e2 : GeneralLinearGroup.det h = u` using `Units.ext e1`. Rewrite using `[e2]`. Conclude with `Units.inv_mul u`. Use `⟨⟨_, hdet⟩, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hg : Matrix.SpecialLinearGroup.toGL ⟨_, hdet⟩ = h⁻¹ * γ` using `Units.ext rfl`. Rewrite using `[hg, _root_.mul_inv_rev, inv_inv, ← mul_assoc, mul_inv_cancel, one_mul]`. Rewrite using `[mem_Hq_iff]`. Use `⟨h, Units.ext ?_⟩` and prove the remaining obligations. Simplify using `only [GeneralLinearGroup.coe_mul, coe_qel]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hK : ((toK L N h : GK L N) : Matrix (Fin N) (Fin N) L) = diagonal fun i => algebraMap (𝓞 L) L (du i)` using `by show (diagonal du).map (algebraMap (𝓞 L) L) = _`. Rewrite using `[diagonal_map (map_zero _)]`. Rewrite using `[hK]`. Unfold `dg`. Rewrite using `[diagonal_mul_diagonal, diagonal_mul_diagonal]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use function extensionality and compare the values at `i`. Rewrite using `[mul_comm]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Hq_surj (π : 𝓞 L) (hπ : π ≠ 0) (hN : 0 < N) (γ : Gm L N) :
     ∃ a, γ * (Matrix.SpecialLinearGroup.toGL a)⁻¹ ∈ Hq L N π hπ := by
@@ -179,7 +177,7 @@ theorem Hq_surj (π : 𝓞 L) (hπ : π ≠ 0) (hN : 0 < N) (γ : Gm L N) :
   rw [mul_comm]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `w`. Use extensionality with `i j`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem toP_toGL (a : Matrix.SpecialLinearGroup (Fin N) (𝓞 L)) :
     toP L N (toK L N (Matrix.SpecialLinearGroup.toGL a)) = ofS L N (jS L N (iO L N a)) := by

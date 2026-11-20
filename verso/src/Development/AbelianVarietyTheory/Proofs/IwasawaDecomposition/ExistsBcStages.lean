@@ -21,7 +21,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.Mem.R3.Rw.OmExt
 
 /- English proof (translation)
-Consider the cases of `hP`. Consider the cases of `hβ`. Consider the cases of `he`. Conclude with `h`.
+Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. A detailed English derivation is pending.
 -/
 theorem levOver_cast' {D : D7} {G : Type} [Group G] {i : Fin D.R.m} {Pg₁ Pg₂ : Finset (Formalism.L2.DIV.Pl D.host.E)}
     {β₁ β₂ : ∀ i, GL (Fin (Wc D i).rank) (Lev.EAf D)} {e₁ : G ≃* G0 Pg₁ D.R.r} {e₂ : G ≃* G0 Pg₂ D.R.r}
@@ -35,49 +35,45 @@ theorem levOver_cast' {D : D7} {G : Type} [Group G] {i : Fin D.R.m} {Pg₁ Pg₂
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Take `⟨c₃, hF₃, h₃⟩` from `GlobalTheory.RefPins.exists_coeff_rows T' ht'.alg ht'.laws.pins.2.2.1`. Establish `hmem : ∀ y, X'.toD7.what₂.embLL y ∈ c₃.F` using `fun y => hF₃.ge ⟨y, rfl⟩`. Set `jL' : X'.toD7.what₂.LL →+* c₃.F` to `X'.toD7.what₂.embLL.codRestrict c₃.F hmem`. Establish `hjL' : (inC c₃).comp jL' = X'.toD7.what₂.embLL` using `RingHom.ext fun _ => rfl`. Establish `sj' : Function.Surjective jL'` using `fun y => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨x, hx⟩` from `hF₃.le y.2`. Conclude with `⟨x, Subtype.ext hx⟩`. Establish `sj : Function.Surjective O.jL` using `fun y => by`. Take `⟨x, hx⟩` from `hOF.le y.2`. Conclude with `⟨x, Subtype.ext ((RingHom.congr_fun hO.lift.field x).trans hx)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hs : O.c'.F ≤ c₃.F` using `fun y hy => by`. Take `⟨x, hx⟩` from `hOF.le hy`. Take `⟨x', hx'⟩` from `hLL ⟨x, hx⟩`. Conclude with `hF₃.ge ⟨x', hx'⟩`. Establish `hQ` using `GlobalTheory.RefPins.places_ref R hL`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hQ'` using `GlobalTheory.RefPins.places_ref R' hL'`. Establish `hV₃ : T'.V ((i' : ℕ) + 1) (sOv T'.toCore c₃ h₃) = Wc X'.toD7 i'` using `ht'.laws.spaceW _ (inR i') _ rfl`. Take `⟨g, r, c0L, hT, hbc⟩` from `hO.lift.c0`. Establish `hx1` using `hL.xi A.μ0`. Establish `hx1'` using `hL'.xi A'.μ0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hx1` using `[hL.xi_base]`. Rewrite `hx1'` using `[hL'.xi_base]`. Establish `hplace : ∀ (c0L') (c0'' : VsV X'.toD7 i' c₃.F →ₛₗ[inC c₃] (R'.cV i').W), CoefFam R' c0L' → CoefficientBaseChange R' i' jL' (inC c₃) (c0L' i') c0'' → ∀ (Cl : Type) [Fintype Cl] (h : Cl → GA X'.toD7 (Vc X'.toD7 i')), PlaceEx R' i' A'.μ0 h c0''`. Introduce and unpack `c0L' c0'' ⟨_, _, htie⟩ hc0 Cl _ h`. Conclude with `GlobalTheory.RationalValues.placeEx_of_type_mem R' i' jL' (inC c₃) A'.μ0 h c0'' hM'.jV htie hc0 (GlobalTheory.RationalValues.type_mem R' i' A'.μ0 _ (fun PP hPP x => by`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨y, hy⟩` from `GlobalTheory.RefPins.chiVal_of_tie T' R' κ' v₀' hL' ht' i' PP hPP x`. Conclude with `⟨jL' y, hy⟩)`. Use `fun PP hPP => absurd (hQ' ▸ hPP) (Finset.notMem_empty _))`. Establish `hv0'` using `ht'.hv₀ i' (sg0 X'.toD7 A')`. Establish `hκ'` using `ht'.kap i'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Use `clear ht'`. Establish `hc' : ∃ c0L', CoefFam R' c0L' ∧ (P ∨ ∀ (v : VsV X.toD7 i X.toD7.what₂.LL) (v' : VsV X'.toD7 i' X'.toD7.what₂.LL), HEq (MvPolynomial.map X'.toD7.what₂.embLL v'.1) (MvPolynomial.map X.toD7.what₂.embLL v.1) → HEq (c0L' i' v') (c0L i v))`. Break down `hc c0L ⟨g, r, hT⟩ with h | ⟨c, h1, h2⟩` into its components or cases. Take `⟨g', r', c, h1⟩` from `hF'`. Conclude with `⟨c, ⟨g', r', h1⟩, Or.inl h⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `⟨c, h1, Or.inr h2⟩`. Use `clear hc`. Take `⟨c0L', hT', hag⟩` from `hc'`. Take `⟨c0'', hbc'⟩` from `GlobalTheory.Mem.PlaceVal.exists_ext_VV (W := (R'.cV i').W) jL' (inC c₃) hjL' (lamV X'.toD7 i') (c0L' i')`. Establish `hpl'` using `hplace c0L' c0'' hT' hbc'`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Express the relevant assertion in an equivalent form by its definition. Substitute using the available equality. Extract witnesses or component facts from the available result.
 
-Use `clear hplace`. Take `⟨B', C', W', V', S', N', G'⟩` from `X'`. Break down `B' with ⟨P'⟩` into its components or cases. Express the relevant statement in the definitionally equal form `P' = X.B.toPre at hP`. Substitute `hP` using the available equality.
+Simplify by unfolding definitions. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨⟨H', l', c', Dw', Xo', eO'⟩, U', V'', dict', mu', Kf', pb'⟩, cE', chiW', x₀', iota'⟩` from `T'`. Simplify using `only at eH el ec eD eX ex eι`. Take `rfl` from `eq_of_heq eH`. Take `rfl` from `eq_of_heq el`. Take `rfl` from `eq_of_heq ec`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `rfl` from `eq_of_heq eD`. Take `rfl` from `eq_of_heq eX`. Take `rfl` from `eq_of_heq ex`. Take `rfl` from `eq_of_heq eι`. Take `rfl : i = i'` from `Fin.ext hi`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h0 : ∃ c0₃ : VsV X.toD7 i c₃.F →ₛₗ[inC c₃] (R.cV i).W, (∀ (v : VsV X.toD7 i O.c'.F) (v' : VsV X.toD7 i c₃.F), (v' : Pol c₃.F X.toD7.what₂.Tau (Vc X.toD7 i).rank) = MvPolynomial.map (incF O.c' c₃ hs) (v : Pol O.c'.F X.toD7.what₂.Tau (Vc X.toD7 i).rank) → c0₃ v' = O.c0' v) ∧ (HEq c …`. Break down `hag with hp | hag` into its components or cases. Take `⟨c0₃, h⟩` from `exists_coef_ext (incF O.c' c₃ hs) (σ := inC O.c') (inC c₃) (fun _ => rfl) (lamV X.toD7 i) O.c0'`. Conclude with `⟨c0₃, h, Or.inr hp⟩`. Take `⟨c0₃, h1, h2⟩` from `exists_cast_map (V := VsV X.toD7 i c₃.F) (σ := inC c₃) (R.cV i).nW (R.cV i).iW (R'.cV i).nW (R'.cV i).iW eW en ei ((by with_unfolding_all exact (c0'' :)))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨c0₃, fun v v' e => eq_of_heq ((h2 v').symm.trans ?_), Or.inl ((by with_unfolding_all exact (h1 :)))⟩` and prove the remaining obligations. Conclude with `coef_agree (W' := (R'.cV i).W) (lamV X.toD7 i) O.jL jL' (incF O.c' c₃ hs) hO.lift.field hjL' (RingHom.ext fun _ => rfl) sj sj' (cL' := (by with_unfolding_all exact ((c0L' i) :))) hbc ((by with_unfolding_all exact (hbc' :))) ((by with_unfolding_all exact (hag :))) v v' e`. Take `⟨c0₃, hc0, hor⟩` from `h0`. Take `⟨io₃, hw₃, h, J', hB⟩` from `exists_isBC O c₃ hs c0₃ (v₀ i (sg0 X.toD7 A)) hV hO hc0`. Establish `hM` using `hB.pins`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `eχ : R'.C.mu0 i * R'.xiH A'.μ0 * R'.C.eta⁻¹ = R.C.mu0 i * R.xiH A.μ0 * R.C.eta⁻¹` using `(by with_unfolding_all exact ((congrArg₂ (fun a b : Formalism.L2.Host.HChar X.toD7.host.E => a * b⁻¹) (congrArg₂ (fun a b : Formalism.L2.Host.HChar X.toD7.host.E => a * b) (congrFun (eq_of_heq emu) i) (hL'.xi_base.trans hL.xi_base.symm)) (eq_of_heq eeta)) :))`. Establish `eξ : R'.xi A'.μ0 = R.xi A.μ0` using `(GlobalTheory.ChrEqUnique.chrEq_unique X.toD7).2.1 _ _ _ ((by with_unfolding_all exact (hx1' :))) hx1`. Establish `hT1` using `(tupOver_iff R A.μ0).2 ⟨repsR_map (incF O.c' c₃ hs) hB.reps, (hM.tuple ()).B, (hM.tuple ()).xi, (hM.tuple ()).phi, (hM.tuple ()).half⟩`. Establish `hT2` using `tupOver_cast (D := X.toD7) (Pg₂ := R'.Pg) (Q₂ := R'.Q A'.μ0) (βV₂ := (by with_unfolding_all exact (R'.βV :))) (βW₂ := (by with_unfolding_all exact (R'.βW :))) (ξR₂ := (by with_unfolding_all exact ((R'.xiR A'.μ0) :))) ePg hQ hQ' ((by with_unfolding_all exact (eβV :))) ((by with_un …`. Establish `hl2` using `levOver_cast' (D := X.toD7) (Pg₂ := R'.Pg) (β₂ := (by with_unfolding_all exact (R'.βW :))) (e₂ := (by with_unfolding_all exact (R'.eG :))) ePg ((by with_unfolding_all exact (eβW :))) ((by with_unfolding_all exact (eG :))) ((levOver_iff T R i O.lev).2 hO.lift.lev)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Set `κ₀ : WeightFamilies.Wt X.toD7 ((i : ℕ) + 1)` to `⟨(by with_unfolding_all exact ((κ' i).aP :)), (by with_unfolding_all exact ((κ' i).aM :)), (by with_unfolding_all exact ((κ' i).aPlus_antitone :)), (by with_unfolding_all exact ((κ' i).aM_anti :)), (κ' i).n, (κ' i).n_even⟩`. Establish `ew : wtA κ₀ = wtA (κ i)` using `wtA_eq _ _ (funext fun τ => funext fun k => Eq.trans ((by with_unfolding_all exact (((hκ' τ).1 k) :))) ((hκ i τ).1 k).symm) (funext fun τ => funext fun k => Eq.trans ((by with_unfolding_all exact (((hκ' τ).2.1 k) :))) ((hκ i τ).2.1 k).symm)`. Establish `hio` using `hM.io`. Rewrite `hio` using `[← ew]`. Set `M` to `bc O c₃ hs c0₃ io₃ hw₃ h (v₀ i (sg0 X.toD7 A))`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Treat this case separately. Reduce the claim to the hypotheses of an applicable result. Treat this case separately.
 
-Use `⟨@OMDat.mk _ G _ _ Pl0' T0' A' _ alg' R' i Unit _ (c' := c₃) (hle := h₃) (jL := jL') (hV := hV₃) (c0' := c0'') (lev := (by with_unfolding_all exact (M.lev :))) (dδ := (by with_unfolding_all exact (M.dδ :))) (Cl' := M.Cl') (fCl := M.fCl) (bad := M.bad) (Lh := (by with_unfolding_al …` and prove the remaining obligations. Establish `hth` using `thAdIs_thAdOf R' i A'.μ0 (Cl := O.Cl' ()) ((by with_unfolding_all exact (h :))) c0'' hM'.HV (J' := (by with_unfolding_all exact (J' :))) ((by with_unfolding_all exact (hT2.1.2.2.1 :))) ((by with_unfolding_all exact (hT2.1.2.2.2.2.2.1 :))) (v₀' i (sg0 _ A'))`. Take `⟨g', r', hT'⟩` from `hT'`. Apply `(config := { synthAssignedInstances := false }) OMDat.Pins.mk` to reduce the goal to its premises. Use `case lift =>`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Apply `(config := { synthAssignedInstances := false }) ThPinsR.mk` to reduce the goal to its premises. Use `case field => exact hjL'`. Use `case std => exact (by with_unfolding_all exact (hO.lift.std :))`. Use `case v0 => exact hv0'`. Use `case lev => exact (by with_unfolding_all exact (hl2 :))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Use `case c0 => exact ⟨g', r', c0L', hT', hbc'⟩`. Use `case tuple =>`. Introduce `t`. Apply `(config := { synthAssignedInstances := false }) ThPinsT.mk` to reduce the goal to its premises. Use `case reps => exact ⟨(by with_unfolding_all exact (h :)), (by with_unfolding_all exact (J' :)), (by with_unfolding_all exact (hT2.1 :)), (by with_unfolding_all exact ((hpl' (O.Cl' ()) ((by with_unfolding_all exact (h :)))) :)), (by with_unfolding_all exact (hth :)), fun _ => Iff.r …`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Use `case B => exact (by with_unfolding_all exact (hT2.2.1 :))`. Use `case xi => exact (by with_unfolding_all exact (hT2.2.2.1 :))`. Use `case phi => exact (by with_unfolding_all exact (hT2.2.2.2.1 :))`. Use `case half => exact (by with_unfolding_all exact (hT2.2.2.2.2 :))`. Use `case act => exact (by with_unfolding_all exact (hM.act :))`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Use `case bad => exact (by with_unfolding_all exact (hM.bad :))`. Use `case reps => exact (by with_unfolding_all exact (hM.reps :))`. Use `case ep => exact (by with_unfolding_all exact (hM.ep :))`. Use `case io => exact (by with_unfolding_all exact (hio :))`. Use `case w => exact (by with_unfolding_all exact (hM.w :))`.
-
-Use `case cov => exact (by with_unfolding_all exact (hM.cov :))`. Use `case cxi => exact (by with_unfolding_all exact (hM.cxi :))`. Use `case model₂ => exact (by with_unfolding_all exact (hM.model₂ :))`. Establish `hth` using `thAdIs_thAdOf R' i A'.μ0 (Cl := O.Cl' ()) ((by with_unfolding_all exact (h :))) c0'' hM'.HV (J' := (by with_unfolding_all exact (J' :))) ((by with_unfolding_all exact (hT2.1.2.2.1 :))) ((by with_unfolding_all exact (hT2.1.2.2.2.2.2.1 :))) (v₀' i (sg0 _ A'))`. Use `⟨c₃, hs, c0₃, io₃, hw₃, h, J', hB, ?_, hor, (by with_unfolding_all exact (h :)), (by with_unfolding_all exact (J' :)), (by with_unfolding_all exact ((HEq.refl h) :)), (by with_unfolding_all exact ((HEq.refl J') :)), (by with_unfolding_all exact (hT2.1 :)), (by with_unfolding_all …` and prove the remaining obligations.
-
-Conclude with `⟨(by with_unfolding_all exact ((HEq.refl M.c') :)), (by with_unfolding_all exact ((HEq.refl M.lev) :)), (by with_unfolding_all exact ((HEq.refl M.dδ) :)), rfl, (by with_unfolding_all exact ((HEq.refl M.fCl) :)), rfl, (by with_unfolding_all exact ((HEq.refl M.Lh) :)), (by with_unf …`.
+Treat this case separately. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_bc_stages (X X' : Stages) (hP : X'.B.toPre = X.B.toPre) (hLL : Set.range X.B.embLL ⊆ Set.range X'.B.embLL)
     {G : Type} [Group G] [Fintype G] {Pl0 T0 Pl0' T0' : Type} {A : FamIn X.toD7.what₂.LL G Pl0 T0 X.toD7.R.m}

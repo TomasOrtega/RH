@@ -4,11 +4,9 @@ open GlobalTheory.CuspRep GlobalTheory.PRep Formalism.UG Formalism.BasicNotions 
 open scoped Classical TensorProduct
 
 /- English proof (translation)
-Establish `h : ∀ᶠ w : Pl E in cofinite, ∀ n ∈ R.support, algebraMap E (w.adicCompletion E) (R.coeff n) ∈ Ov E w`. Use `(Filter.eventually_all_finset _).2 fun n _ => ?_` and prove the remaining obligations. Use `filter_upwards [(HeightOneSpectrum.Support.finite (𝓞 E) (R.coeff n)).compl_mem_cofinite] with w hw`. Establish `hv : Valued.v (algebraMap E (w.adicCompletion E) (R.coeff n)) = w.valuation E (R.coeff n)` using `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' w (R.coeff n)`. Establish `hle : Valued.v (algebraMap E (w.adicCompletion E) (R.coeff n)) ≤ 1` using `hv.trans_le (not_lt.mp hw)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Conclude with `(HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).2 hle`. Use `filter_upwards [h] with w hw n`. Distinguish the cases in `hn : n ∈ R.support`. Conclude with `hw n hn`. Rewrite using `[Polynomial.notMem_support_iff.mp hn, map_zero]`.
-
-Conclude with `zero_mem _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem coeff_mem_eventually {E : Type} [Field E] [NumberField E] (R : E[X]) :
     ∀ᶠ w : Pl E in cofinite, ∀ n, algebraMap E (w.adicCompletion E) (R.coeff n) ∈ Ov E w := by
@@ -28,9 +26,9 @@ private theorem coeff_mem_eventually {E : Type} [Field E] [NumberField E] (R : E
     exact zero_mem _
 
 /- English proof (translation)
-Establish `hl : R.map (algebraMap E (w.adicCompletion E)) ∈ Polynomial.lifts (Ov E w).subtype`. Rewrite using `[Polynomial.lifts_iff_coeff_lifts]`. Introduce `n`. Rewrite using `[Polynomial.coeff_map]`. Conclude with `⟨⟨_, h n⟩, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `(Polynomial.mem_lifts _).1 hl`.
+A detailed English derivation is pending.
 -/
 private theorem exists_lift {E : Type} [Field E] [NumberField E] (w : Pl E) (R : E[X])
     (h : ∀ n, algebraMap E (w.adicCompletion E) (R.coeff n) ∈ Ov E w) :
@@ -43,11 +41,11 @@ private theorem exists_lift {E : Type} [Field E] [NumberField E] (w : Pl E) (R :
   exact (Polynomial.mem_lifts _).1 hl
 
 /- English proof (translation)
-Introduce `E _ _ P hP`. Take `⟨a, b, hab⟩` from `hP`. Use `filter_upwards [coeff_mem_eventually a, coeff_mem_eventually b] with w ha hb Q hQ`. Take `⟨a₀, ha₀⟩` from `exists_lift w a ha`. Take `⟨b₀, hb₀⟩` from `exists_lift w b hb`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨a₀, b₀, Polynomial.map_injective (Ov E w).subtype Subtype.val_injective ?_⟩` and prove the remaining obligations. Establish `hd : (derivative Q).map (Ov E w).subtype = (derivative P).map (algebraMap E (w.adicCompletion E))`. Rewrite using `[← Polynomial.derivative_map, hQ, Polynomial.derivative_map]`. Use `congrArg (Polynomial.map (algebraMap E (w.adicCompletion E))) hab` as an intermediate fact. Simplify using `only [Polynomial.map_add, Polynomial.map_mul, Polynomial.map_one] at this ⊢`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ha₀, hb₀, hQ, hd, this]`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.eventually_separable_of_integral_model :
     ∀ (E : Type) [Field E] [NumberField E] (P : E[X]), P.Separable → ∀ᶠ w : Pl E in cofinite,

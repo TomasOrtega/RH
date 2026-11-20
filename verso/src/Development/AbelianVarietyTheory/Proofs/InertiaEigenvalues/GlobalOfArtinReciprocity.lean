@@ -11,7 +11,7 @@ namespace GlobalTheory.StepGlobalPf
 variable {D : D7} (i : D.nd.Loc)
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `[mapM, twistM, RingHom.mapMatrix_apply, Matrix.map_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem mapM_twistM {k : ℕ} (M : GE D.nd →* Matrix (Fin k) (Fin k) (D.nd.O i)) (χ : GE D.nd →* (D.nd.O i)ˣ)
     (g : GE D.nd) :
@@ -23,9 +23,9 @@ variable (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i)))
   (ρ : D.nd.X i → (GE D.nd →* GL (Fin D.R.r) (D.nd.O i))) (π : D.nd.X i)
 
 /- English proof (translation)
-Take `⟨e, he⟩` from `hD`. Establish `ht : 0 < D.R.t` using `D.R.t_odd.pos`. Use `set u := e.symm (0, Pi.single (⟨0, ht⟩ : Fin D.R.t) 1) with hu`. Establish `h` using `congrArg (fun p => p.2 (⟨0, ht⟩ : Fin D.R.t)) (he γ u)`. Establish `h1 : mapM (toK D.nd i) (rO D.nd i r π) γ = 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[mapM, rO, hγ]`. Simplify using `only [h1, Matrix.one_mulVec, hu, LinearEquiv.apply_symm_apply, Pi.single_eq_same, mul_one] at h`. Apply `Units.ext` to reduce the goal to its premises. Apply `IsFractionRing.injective (D.nd.O i) (KK D.nd i)` to reduce the goal to its premises. Simplify using `using h.symm`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem chi_one_eq_one (hD : TruncatedSeriesCountingIdentities.SemisimpleDecomposition i r ρ π) {γ : GE D.nd} (hγ : r π γ = 1) : chiU D.nd i 1 γ = 1 := by
   obtain ⟨e, he⟩ := hD
@@ -40,9 +40,9 @@ theorem chi_one_eq_one (hD : TruncatedSeriesCountingIdentities.SemisimpleDecompo
   simpa using h.symm
 
 /- English proof (translation)
-Introduce `x _ hxZ u hu`. Assume the negation of the conclusion as `hu0`. Use `hxZ (hG6 x ⟨u, hu0, fun g => ?_⟩)` and prove the remaining obligations. Establish `h` using `hu g`. Rewrite `h` using `[rTwO, mapM_twistM, Matrix.smul_mulVec]`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `conv_rhs => rw [← h]`. Rewrite using `[smul_smul, ← map_mul, MonoidHom.inv_apply, ← Units.val_mul, mul_inv_cancel, Units.val_one, map_one, one_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem noChiOff (Xs : Set (D.nd.X i)) (hG6 : TruncatedSeriesCountingIdentities.admG6 i r) : GlobalTheory.Cut.NoChiOff i r Xs := by
   intro x _ hxZ u hu
@@ -55,7 +55,7 @@ theorem noChiOff (Xs : Set (D.nd.X i)) (hG6 : TruncatedSeriesCountingIdentities.
     one_smul]
 
 /- English proof (translation)
-Introduce `v hvl hvS hvQ x _ γ hγ`. Establish `hχ` using `chi_one_eq_one i r ρ π hD (hG4 π v hvl hvS hvQ γ hγ)`. Establish `hx : rO D.nd i r x γ = 1` using `by simp [rO, hG4 x v hvl hvS hvQ γ hγ]`. Rewrite using `[rTwO, twistM]`. Simplify using `[hx, hχ]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem unrOut (Xs : Set (D.nd.X i)) (hG4 : TruncatedSeriesCountingIdentities.admG4 i r) (hD : TruncatedSeriesCountingIdentities.SemisimpleDecomposition i r ρ π) :
     GlobalTheory.Cut.UnrOut i r Xs := by
@@ -66,15 +66,13 @@ theorem unrOut (Xs : Set (D.nd.X i)) (hG4 : TruncatedSeriesCountingIdentities.ad
   simp [hx, hχ]
 
 /- English proof (translation)
-Introduce `v hv`. Establish `hS` using `((D.nd.S_def i v).1 hv).1`. Establish `hv5` using `hG5 v (Or.inl hv)`. Establish `hv5x` using `hG5x v (Or.inl hv)`. Establish `hp : (∃ k, v ∈ placesOver D.host.E (D.host.g k)) ∨ (v ∈ placesOver D.host.E D.host.pde ∨ (D.nd.l i = D.host.pde ∧ v ∈ placesOver D.host.E D.host.pde'))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Break down `hS with h | h | h` into its components or cases. Conclude with `Or.inl ⟨0, h⟩`. Conclude with `Or.inl ⟨1, h⟩`. Use `right split_ifs at h with hl`. Conclude with `Or.inr ⟨hl, h⟩`.
+Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the first alternative. Prove the second alternative. Prove the first alternative.
 
-Conclude with `Or.inl h`. Break down `hp with hk | hp` into its components or cases. Use `right`. Take `⟨Pp, hu, hP⟩` from `hv5.2 hk hv hv5x.1`. Use `⟨Pp, fun x _ γ hγ => hP x γ hγ, ?_⟩` and prove the remaining obligations.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Polynomial.eval_map]`. Establish `hz : D.nd.zeta i v = evT D.nd i π (algebraMap (D.nd.O i) (D.nd.T i) (chi1 D.nd i (D.nd.gam0 i v)))` using `rfl`. Rewrite using `[hz, Polynomial.eval₂_at_apply]`. Conclude with `hu.map _`. Use `left`.
-
-Conclude with `⟨fun x _ γ hγ => ((hv5.1 (Or.inr hp)) x).1 γ hγ, hv5x.2.2.2 hv hp⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem atS (Xs : Set (D.nd.X i)) (hG5 : TruncatedSeriesCountingIdentities.admG5 i r) (hG5x : TruncatedSeriesCountingIdentities.TameGeneratorConditions i) :
     ∀ v ∈ D.nd.S i, (GlobalTheory.Cut.QuadAt i r Xs v ∧ IsUnit (D.nd.zeta i v - 1)) ∨ GlobalTheory.Cut.PolyAt i r Xs π v := by
@@ -104,7 +102,7 @@ theorem atS (Xs : Set (D.nd.X i)) (hG5 : TruncatedSeriesCountingIdentities.admG5
     exact ⟨fun x _ γ hγ => ((hv5.1 (Or.inr hp)) x).1 γ hγ, hv5x.2.2.2 hv hp⟩
 
 /- English proof (translation)
-Introduce `v hv` and use `⟨fun x _ γ hγ => ((hG5 v (Or.inr hv)).1 (Or.inl hv) x).1 γ hγ, (hG5x v (Or.inr hv)).2.2.1 hv⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem atQ (Xs : Set (D.nd.X i)) (hG5 : TruncatedSeriesCountingIdentities.admG5 i r) (hG5x : TruncatedSeriesCountingIdentities.TameGeneratorConditions i) :
     ∀ v ∈ D.nd.Q i, GlobalTheory.Cut.QuadAt i r Xs v ∧ D.nd.zeta i v ≠ 1 := fun v hv =>
@@ -114,7 +112,7 @@ set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `hA D i r ρ π Xs eρ eχ hr _ _ hG4 hG5 hG5x hG6 hDec _ _ hS hZ hπ hl hsel hsha`. Take `⟨S, hS⟩` from `hS`. Rewrite using `[GlobalTheory.T.cutCongruenceVal_eq_heckeValueIdealOffSupportVal]`. Conclude with `GlobalTheory.CutCore.main hA D i r ρ π Xs eρ eχ S hr hS hZ hπ (noChiOff i r Xs hG6) (unrOut i r ρ π Xs hG4 hDec) (atS i r π Xs hG5 hG5x) (atQ i r Xs hG5 hG5x) (fun w hw => ⟨(hl w hw).1, (GlobalTheory.T.lengths_modulo_submodule_agree.2 D i w hw r Xs _ _ eρ).1 (hl w hw).2.1, fun c …`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : GlobalTheory.Published.GlobalArtinReciprocity → StepGlobal := by
   intro hA D i r ρ π Xs eρ eχ hr _ _ hG4 hG5 hG5x hG6 hDec _ _ hS hZ hπ hl hsel hsha

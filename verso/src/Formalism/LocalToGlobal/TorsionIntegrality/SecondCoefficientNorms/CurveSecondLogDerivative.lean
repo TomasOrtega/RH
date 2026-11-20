@@ -4,19 +4,19 @@ import Formalism.LocalToGlobal.TorsionIntegrality.SecondCoefficientNorms.Binomia
 namespace Formalism.L2.Th1.C
 
 /- English proof (translation)
-The claim follows from `curve_formal_frame`.
+A detailed English derivation is pending.
 -/
 theorem curveFrame : CurveFrame := curve_formal_frame
 /- English proof (translation)
-The claim follows from `curve_second_log_derivative_holds`.
+A detailed English derivation is pending.
 -/
 theorem curve_second_log_derivative : CurveSecondLogDerivative := curve_second_log_derivative_holds
 /- English proof (translation)
-The claim follows from `curve_real_multiplication_series`.
+A detailed English derivation is pending.
 -/
 theorem curveEndoR : CurveEndoR := curve_real_multiplication_series
 /- English proof (translation)
-The claim follows from `curve_all_endomorphism_series`.
+A detailed English derivation is pending.
 -/
 theorem curveEndoAll : CurveEndoAll := curve_all_endomorphism_series
 

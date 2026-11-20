@@ -5,17 +5,17 @@ namespace GlobalTheory.DetDerivativeAtOne
 open Equiv Finset
 
 /- English proof (translation)
-Establish `hfun : (fun t : ℝ ↦ Matrix.det (A t)) = fun t ↦ ∑ σ : Perm n, ((Perm.sign σ : ℤ) : ℂ) * ∏ i, A t (σ i) i`. Use function extensionality and compare the values at `fun t ↦ Matrix.det_apply' _`. Rewrite using `[hfun]`. Establish `hσ : ∀ σ : Perm n, HasDerivAt (fun t : ℝ ↦ ∏ i, A t (σ i) i) (∑ i, (∏ j ∈ univ.erase i, A 0 (σ j) j) • A' (σ i) i) 0` using `fun σ ↦ HasDerivAt.fun_finsetProd (fun i _ ↦ hd (σ i) i)`. Establish `hsum` using `HasDerivAt.fun_sum (u := (univ : Finset (Perm n))) (fun σ _ ↦ (hσ σ).const_mul ((Perm.sign σ : ℤ) : ℂ))`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hsum.congr_deriv (Eq.symm ?_)` and prove the remaining obligations. Rewrite using `[h0]`. Rewrite using `[Finset.sum_eq_single (1 : Perm n)]`. Simplify using `[Matrix.trace, Perm.one_apply, Matrix.one_apply]`. Introduce `σ _ hσ1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hz : ∀ i, (∏ j ∈ univ.erase i, (1 : Matrix n n ℂ) (σ j) j) = 0`. Introduce `i`. Choose the witnesses or unpack the hypotheses as in `⟨k, hk⟩ : ∃ k, σ k ≠ k := by`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Consider separately whether the proposition holds or fails.
 
-Conclude with `hσ1 (Equiv.ext hc)`. Distinguish the cases in `hki : k = i`. Substitute `hki` using the available equality. Apply `Finset.prod_eq_zero (i := σ k)` to reduce the goal to its premises. Simplify using `[hk]`.
+Substitute using the available equality. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `: σ (σ k) ≠ σ k` using `fun h ↦ hk (σ.injective h)`. Simplify using `[Matrix.one_apply_ne this]`. Apply `Finset.prod_eq_zero (i := k)` to reduce the goal to its premises. Simplify using `[hki]`. Simplify using `[Matrix.one_apply_ne hk]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[hz]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+A detailed English derivation is pending.
 -/
 theorem hasDerivAt_det_of_one {n : Type} [Fintype n] [DecidableEq n]
     (A : ℝ → Matrix n n ℂ) (A' : Matrix n n ℂ) (h0 : A (0 : ℝ) = (1 : Matrix n n ℂ))

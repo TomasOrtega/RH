@@ -15,11 +15,11 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 variable {n : ℕ} {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Use `show fderiv ℝ (fun x => A (f x)) g (g * X) = A (fderiv ℝ f g (g * X))`. Distinguish the cases in `hf : DifferentiableAt ℝ f g`. Establish `h : HasFDerivAt (fun x => A (f x)) ((A.restrictScalars ℝ : V →L[ℝ] V).comp (fderiv ℝ f g)) g` using `(A.restrictScalars ℝ : V →L[ℝ] V).hasFDerivAt.comp g hf.hasFDerivAt`. Rewrite using `[h.fderiv]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `hn : ¬ DifferentiableAt ℝ (fun x => A (f x)) g`. Introduce `h`. Apply `hf` to reduce the goal to its premises. Establish `h2 : DifferentiableAt ℝ (fun x => A.symm (A (f x))) g` using `(A.symm.restrictScalars ℝ : V →L[ℝ] V).differentiableAt.comp g h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using h2`. Rewrite using `[fderiv_zero_of_not_differentiableAt hn, fderiv_zero_of_not_differentiableAt hf]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rd_equiv (A : V ≃L[ℂ] V) (X : Mat n) (f : Mat n → V) : Rd X (fun x => A (f x)) = fun x => A (Rd X f x) := by
   funext g
@@ -39,7 +39,7 @@ theorem rd_equiv (A : V ≃L[ℂ] V) (X : Mat n) (f : Mat n → V) : Rd X (fun x
     simp
 
 /- English proof (translation)
-Unfold `Eu`. Rewrite using `[rd_equiv, rd_equiv]`. Use function extensionality and compare the values at `x`. Apply the tactic sequence `by_cases hs : s = true <;> simp [hs, map_add, map_smul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem eu_equiv (A : V ≃L[ℂ] V) (s : Bool) (a b : Fin n) (f : Mat n → V) :
     Eu s a b (fun x => A (f x)) = fun x => A (Eu s a b f x) := by
@@ -49,11 +49,11 @@ theorem eu_equiv (A : V ≃L[ℂ] V) (s : Bool) (a b : Fin n) (f : Mat n → V) 
   by_cases hs : s = true <;> simp [hs, map_add, map_smul]
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero`. Introduce `a b f`. Rewrite using `[Epow.eq_1]`. Use function extensionality and compare the values at `x`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Apply the tactic sequence `split_ifs <;> simp`. Consider the case `succ m ih`. Introduce `a b f`. Rewrite using `[Epow.eq_2]`. Simplify using `only [ih, eu_equiv]`.
+Apply the first step, then apply the next step to every resulting obligation. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `x`. Simplify using `[Finset.sum_apply, map_sum]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem epow_equiv (A : V ≃L[ℂ] V) (s : Bool) (m : ℕ) : ∀ (a b : Fin n) (f : Mat n → V),
     Epow s m a b (fun x => A (f x)) = fun x => A (Epow s m a b f x) := by
@@ -71,7 +71,7 @@ theorem epow_equiv (A : V ≃L[ℂ] V) (s : Bool) (m : ℕ) : ∀ (a b : Fin n) 
     simp [Finset.sum_apply, map_sum]
 
 /- English proof (translation)
-Unfold `gel`. Simplify using `only [epow_equiv]`. Use function extensionality and compare the values at `x`. Simplify using `[Finset.sum_apply, map_sum]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem gel_equiv (A : V ≃L[ℂ] V) (s : Bool) (m : ℕ) (f : Mat n → V) :
     gel s m (fun x => A (f x)) = fun x => A (gel s m f x) := by
@@ -81,7 +81,7 @@ theorem gel_equiv (A : V ≃L[ℂ] V) (s : Bool) (m : ℕ) (f : Mat n → V) :
   simp [Finset.sum_apply, map_sum]
 
 /- English proof (translation)
-Unfold `Om`. Rewrite using `[gel_equiv, gel_equiv]`. Use function extensionality and compare the values at `x`. Simplify using `[map_add, map_nsmul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem om_equiv (A : V ≃L[ℂ] V) (f : Mat n → V) : Om (fun x => A (f x)) = fun x => A (Om f x) := by
   unfold Om
@@ -90,9 +90,9 @@ theorem om_equiv (A : V ≃L[ℂ] V) (f : Mat n → V) : Om (fun x => A (f x)) =
   simp [map_add, map_nsmul]
 
 /- English proof (translation)
-Introduce `w`. Proceed by induction on `w with`. Consider the case `nil`. Introduce `f`. Simplify using `[zOp.eq_1]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Consider the case `cons p w ih`. Introduce `f`. Rewrite using `[zOp.eq_2]`. Simplify using `only [ih, gel_equiv]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem zop_equiv (A : V ≃L[ℂ] V) : ∀ (w : List (Bool × ℕ)) (f : Mat n → V),
     zOp w (fun x => A (f x)) = fun x => A (zOp w f x) := by

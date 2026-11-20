@@ -26,18 +26,18 @@ Both sides reduce to the same expression.
 theorem cjE_coe (hκ : 0 < κ) (hτ : 0 < τ) : ⇑(cjE (k := k) (r := r) hκ hτ) = cjT k r κ τ := rfl
 
 /- English proof (translation)
-The claim follows from `continuous_cjT.measurable`.
+A detailed English derivation is pending.
 -/
 theorem measurable_cjT : Measurable (cjT k r κ τ) := continuous_cjT.measurable
 
 /- English proof (translation)
-The claim follows from `(measurable_cjT.prodMap measurable_cjT).prodMap (measurable_cjT.prodMap measurable_cjT)`.
+A detailed English derivation is pending.
 -/
 theorem measurable_phiP : Measurable (phiP k r κ τ) :=
   (measurable_cjT.prodMap measurable_cjT).prodMap (measurable_cjT.prodMap measurable_cjT)
 
 /- English proof (translation)
-The claim follows from `(continuous_cjIT.measurable.prodMap continuous_cjIT.measurable).prodMap (continuous_cjIT.measurable.prodMap continuous_cjIT.measurable)`.
+A detailed English derivation is pending.
 -/
 theorem measurable_phiPI : Measurable (phiPI k r κ τ) :=
   (continuous_cjIT.measurable.prodMap continuous_cjIT.measurable).prodMap
@@ -59,7 +59,7 @@ Both sides reduce to the same expression.
 theorem phiE_coe (hκ : 0 < κ) (hτ : 0 < τ) : ⇑(phiE (k := k) (r := r) hκ hτ) = phiP k r κ τ := rfl
 
 /- English proof (translation)
-Take `⟨⟨h, n⟩, ⟨h', n'⟩⟩` from `p`. Simplify using `only [besselIntg, trD, phiP, Prod.map_apply, of_cjT]`. Rewrite using `[psi_cj hκ hτ L.hz.1, psi_cj hκ hτ L.hz'.1, cjI_cj hκ hτ, ← cj_inv hκ hτ (Matrix.of h'), cjI_cj hκ hτ, ← cj_inv hκ hτ, ← cj_inv hκ hτ, ← cj_mul hκ hτ, ← cj_mul hκ hτ, ← cj_mul hκ hτ, ← cj_mul hκ hτ]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem besselIntg_trD (hκ : 0 < κ) (hτ : 0 < τ) (L : LocBessel k r) (κN₁ : ENNReal)
     (hz : inWb k r ((τ : ℂ) • L.z) ∧ 0 < Tz k r ((τ : ℂ) • L.z))
@@ -79,13 +79,13 @@ theorem besselIntg_trD (hκ : 0 < κ) (hτ : 0 < τ) (L : LocBessel k r) (κN₁
   rfl
 
 /- English proof (translation)
-Rewrite using `[Measure.map_apply measurable_cjT MeasurableSet.univ, Set.preimage_univ]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem map_cjT_univ (μ : Measure (Mt k r)) : (μ.map (cjT k r κ τ)) Set.univ = μ Set.univ := by
   rw [Measure.map_apply measurable_cjT MeasurableSet.univ, Set.preimage_univ]
 
 /- English proof (translation)
-Establish `: Continuous (lmulM (k` using `k) (r := r) s) := by show Continuous fun x : Mt k r => (s * (Matrix.of x : Mx k r) : Mx k r)`. Conclude with `continuous_const.matrix_mul (continuous_id : Continuous fun x : Mt k r => x)`. Conclude with `this.measurable`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem measurable_lmulM (s : Mx k r) : Measurable (lmulM (k := k) (r := r) s) := by
   have : Continuous (lmulM (k := k) (r := r) s) := by
@@ -94,7 +94,7 @@ theorem measurable_lmulM (s : Mx k r) : Measurable (lmulM (k := k) (r := r) s) :
   exact this.measurable
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i j`. Use `show (s * cj k r κ τ (Matrix.of x)) i j = cj k r κ τ (cjI k r κ τ s * Matrix.of x) i j`. Rewrite using `[cj_mul hκ hτ, cj_cjI hκ hτ]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lmulM_cjT (hκ : 0 < κ) (hτ : 0 < τ) (s : Mx k r) (x : Mt k r) :
     lmulM s (cjT k r κ τ x) = cjT k r κ τ (lmulM (cjI k r κ τ s) x) := by
@@ -103,13 +103,11 @@ theorem lmulM_cjT (hκ : 0 < κ) (hτ : 0 < τ) (s : Mx k r) (x : Mt k r) :
   rw [cj_mul hκ hτ, cj_cjI hκ hτ]
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4⟩` from `h`. Rewrite using `[UWset_smul hτ]`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← cjE_coe hκ hτ]`. Conclude with `MeasurableEquiv.sigmaFinite_map _`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Measure.map_ne_zero_iff measurable_cjT.aemeasurable).mpr h2`. Rewrite using `[← cjE_coe hκ hτ, MeasurableEquiv.map_apply]`. Use `h3 using 2` and compare the differences between its conclusion and the goal. Use extensionality with `x`. Simplify using `only [Set.mem_preimage, Set.mem_ofPred_eq, cjE_coe, of_cjT, cj_mem_UWset_iff hκ hτ hz]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `s hs`. Establish `hs' : cjI k r κ τ s ∈ UWset k r z`. Rewrite using `[← cj_mem_UWset_iff hκ hτ hz, cj_cjI hκ hτ]`. Conclude with `hs`. Rewrite using `[Measure.map_map (measurable_lmulM s) measurable_cjT]`.
-
-Establish `e : lmulM s ∘ cjT k r κ τ = cjT k r κ τ ∘ lmulM (cjI k r κ τ s)` using `funext (lmulM_cjT hκ hτ s)`. Rewrite using `[e, ← Measure.map_map measurable_cjT (measurable_lmulM _), h4 _ hs']`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isHaarOn_map_cjT (hκ : 0 < κ) (hτ : 0 < τ) {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z)
     {μ : Measure (Mt k r)} (h : IsHaarOn (UWset k r z) μ) :
@@ -131,13 +129,13 @@ theorem isHaarOn_map_cjT (hκ : 0 < κ) (hτ : 0 < τ) {z : Fin (2 * r + k + 1) 
     rw [e, ← Measure.map_map measurable_cjT (measurable_lmulM _), h4 _ hs']
 
 /- English proof (translation)
-Unfold `haarLie`. Use `infer_instance`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem sFinite_haarLie (S : Set (Mx k r)) (κN : ENNReal) : SFinite (haarLie S κN) := by
   unfold haarLie; infer_instance
 
 /- English proof (translation)
-Use `L.hμW.1.1` as an intermediate fact. Use `L.hμW'.1.1` as an intermediate fact. Establish `: SFinite L.μN` using `sFinite_haarLie _ _`. Unfold `pairMeas`. Rewrite using `[hW, hW', hN, Measure.map_prod_map _ _ measurable_cjT measurable_cjT, Measure.map_prod_map _ _ measurable_cjT measurable_cjT, Measure.map_prod_map _ _ (measurable_cjT.prodMap measurable_cjT) (measurable_cjT.prodMap measurable_cjT)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -180,7 +178,7 @@ Both sides reduce to the same expression.
 theorem scEI_apply (y : EuclideanSpace ℝ (IxE k r)) (p : IxE k r) : scEI k r κ τ y p = scFI k r κ τ p * y p := rfl
 
 /- English proof (translation)
-Use extensionality with `p`. Rewrite using `[scE_apply, scEI_apply, ← mul_assoc]`. Establish `h1` using `(tV_pos (k := k) (r := r) hκ hτ p.1).ne'`. Establish `h2` using `(tV_pos (k := k) (r := r) hκ hτ p.2.1).ne'`. Simplify using `only [scF, scFI]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
 Clear the denominators using the available nonvanishing facts.
 -/
@@ -193,7 +191,7 @@ theorem scE_scEI (hκ : 0 < κ) (hτ : 0 < τ) (y : EuclideanSpace ℝ (IxE k r)
   field_simp
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[cj_apply]`. Apply the tactic sequence `apply Complex.ext <;> simp [unrealify, scE_apply, scF]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem unrealify_scE (y : EuclideanSpace ℝ (IxE k r)) :
     unrealify (scE k r κ τ y) = cj k r κ τ (unrealify y) := by
@@ -202,7 +200,7 @@ theorem unrealify_scE (y : EuclideanSpace ℝ (IxE k r)) :
   apply Complex.ext <;> simp [unrealify, scE_apply, scF]
 
 /- English proof (translation)
-Use extensionality with `⟨i, j, b⟩`. Rewrite using `[scE_apply]`. Apply the tactic sequence `cases b <;> simp [realifyFun, cj_apply, scF]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem scE_realify (X : Mx k r) :
     scE k r κ τ ((WithLp.equiv 2 _).symm (realifyFun X)) = (WithLp.equiv 2 _).symm (realifyFun (cj k r κ τ X)) := by
@@ -211,7 +209,7 @@ theorem scE_realify (X : Mx k r) :
   cases b <;> simp [realifyFun, cj_apply, scF]
 
 /- English proof (translation)
-Use extensionality with `⟨i, j, b⟩`. Rewrite using `[scEI_apply]`. Apply the tactic sequence `cases b <;> simp [realifyFun, cjI_apply, scFI]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem scEI_realify (X : Mx k r) :
     scEI k r κ τ ((WithLp.equiv 2 _).symm (realifyFun X)) =
@@ -221,13 +219,13 @@ theorem scEI_realify (X : Mx k r) :
   cases b <;> simp [realifyFun, cjI_apply, scFI]
 
 /- English proof (translation)
-Unfold `cj`. Rewrite using `[Matrix.mul_smul, Matrix.smul_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem cj_smul (c : ℂ) (X : Mx k r) : cj k r κ τ (c • X) = c • cj k r κ τ X := by
   unfold cj; rw [Matrix.mul_smul, Matrix.smul_mul]
 
 /- English proof (translation)
-Establish `hu : IsUnit (dMi k r κ τ)` using `(Matrix.isUnit_iff_isUnit_det _).mpr (Matrix.isUnit_det_of_right_inverse (dMi_mul_dM hκ hτ))`. Unfold `cj`. Rewrite using `[← dMi_inv hκ hτ]`. Conclude with `Matrix.exp_conj _ _ hu`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exp_cj (hκ : 0 < κ) (hτ : 0 < τ) (X : Mx k r) :
     NormedSpace.exp (cj k r κ τ X) = cj k r κ τ (NormedSpace.exp X) := by
@@ -238,7 +236,7 @@ theorem exp_cj (hκ : 0 < κ) (hτ : 0 < τ) (X : Mx k r) :
   exact Matrix.exp_conj _ _ hu
 
 /- English proof (translation)
-Unfold `lieOf`. Simplify using `only [Set.mem_ofPred_eq, ← cj_smul, exp_cj hκ hτ, cj_mem_Nset_iff hκ hτ]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem cj_mem_lieOf_iff (hκ : 0 < κ) (hτ : 0 < τ) (X : Mx k r) :
     cj k r κ τ X ∈ lieOf (Nset k r) ↔ X ∈ lieOf (Nset k r) := by
@@ -246,7 +244,7 @@ theorem cj_mem_lieOf_iff (hκ : 0 < κ) (hτ : 0 < τ) (X : Mx k r) :
   simp only [Set.mem_ofPred_eq, ← cj_smul, exp_cj hκ hτ, cj_mem_Nset_iff hκ hτ]
 
 /- English proof (translation)
-Establish `h : f x ∈ (Submodule.span ℝ S).map f` using `Submodule.mem_map_of_mem hx`. Rewrite `h` using `[Submodule.map_span]`. Conclude with `Submodule.span_mono hS h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_mem_of_image {f : EuclideanSpace ℝ (IxE k r) →ₗ[ℝ] EuclideanSpace ℝ (IxE k r)}
     {S : Set (EuclideanSpace ℝ (IxE k r))} (hS : f '' S ⊆ S) {x : EuclideanSpace ℝ (IxE k r)}
@@ -256,7 +254,7 @@ theorem span_mem_of_image {f : EuclideanSpace ℝ (IxE k r) →ₗ[ℝ] Euclidea
   exact Submodule.span_mono hS h
 
 /- English proof (translation)
-Introduce `x hx`. Use `span_mem_of_image ?_ hx` and prove the remaining obligations. Introduce and unpack `_ ⟨_, ⟨X, hX, rfl⟩, rfl⟩`. Conclude with `⟨cj k r κ τ X, (cj_mem_lieOf_iff hκ hτ X).mpr hX, (scE_realify X).symm⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem scE_mem (hκ : 0 < κ) (hτ : 0 < τ) :
     ∀ x ∈ lieE (Nset k r), scE k r κ τ x ∈ lieE (Nset k r) := by
@@ -266,9 +264,9 @@ theorem scE_mem (hκ : 0 < κ) (hτ : 0 < τ) :
   exact ⟨cj k r κ τ X, (cj_mem_lieOf_iff hκ hτ X).mpr hX, (scE_realify X).symm⟩
 
 /- English proof (translation)
-Introduce `x hx`. Use `span_mem_of_image ?_ hx` and prove the remaining obligations. Introduce and unpack `_ ⟨_, ⟨X, hX, rfl⟩, rfl⟩`. Use `⟨cjI k r κ τ X, ?_, (scEI_realify X).symm⟩` and prove the remaining obligations. Rewrite using `[← cj_mem_lieOf_iff hκ hτ, cj_cjI hκ hτ]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hX`.
+A detailed English derivation is pending.
 -/
 theorem scEI_mem (hκ : 0 < κ) (hτ : 0 < τ) :
     ∀ x ∈ lieE (Nset k r), scEI k r κ τ x ∈ lieE (Nset k r) := by
@@ -286,9 +284,9 @@ def deltaN (k r : ℕ) (κ τ : ℝ) : ℝ :=
   else 1
 
 /- English proof (translation)
-Establish `hc : ((scE k r κ τ).restrict (scE_mem hκ hτ)) ∘ₗ ((scEI k r κ τ).restrict (scEI_mem hκ hτ)) = LinearMap.id`. Use `LinearMap.ext fun x => Subtype.ext ?_` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, LinearMap.coe_restrict_apply, LinearMap.id_apply]`. Conclude with `scE_scEI hκ hτ _`. Use `congrArg LinearMap.det hc` as an intermediate fact.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[LinearMap.det_comp, LinearMap.det_id]`. Conclude with `left_ne_zero_of_mul_eq_one this`.
+A detailed English derivation is pending.
 -/
 theorem det_scE_ne (hκ : 0 < κ) (hτ : 0 < τ) :
     LinearMap.det ((scE k r κ τ).restrict (scE_mem hκ hτ)) ≠ 0 := by
@@ -302,21 +300,21 @@ theorem det_scE_ne (hκ : 0 < κ) (hτ : 0 < τ) :
   exact left_ne_zero_of_mul_eq_one this
 
 /- English proof (translation)
-Rewrite using `[deltaN, dif_pos (scE_mem hκ hτ)]`. Conclude with `abs_pos.mpr (inv_ne_zero (det_scE_ne hκ hτ))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem deltaN_pos (hκ : 0 < κ) (hτ : 0 < τ) : 0 < deltaN k r κ τ := by
   rw [deltaN, dif_pos (scE_mem hκ hτ)]
   exact abs_pos.mpr (inv_ne_zero (det_scE_ne hκ hτ))
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `apply Complex.ext <;> simp [unrealify]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem unrealify_add' (x y : EuclideanSpace ℝ (IxE k r)) : unrealify (x + y) = unrealify x + unrealify y := by
   ext i j
   apply Complex.ext <;> simp [unrealify]
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `apply Complex.ext <;> simp [unrealify]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem unrealify_smul' (c : ℝ) (x : EuclideanSpace ℝ (IxE k r)) : unrealify (c • x) = (c : ℂ) • unrealify x := by
   ext i j
@@ -332,7 +330,7 @@ def unrealL' (k r : ℕ) : EuclideanSpace ℝ (IxE k r) →ₗ[ℝ] Mx k r where
 
 open scoped Matrix.Norms.Operator in
 /- English proof (translation)
-The claim follows from `NormedSpace.exp_continuous`.
+A detailed English derivation is pending.
 -/
 theorem continuous_expM' : Continuous (fun X : Mx k r => NormedSpace.exp X) := NormedSpace.exp_continuous
 
@@ -340,7 +338,7 @@ def expL (S : Set (Mx k r)) : lieE S → Mt k r :=
   fun x i j => NormedSpace.exp (unrealify (x : EuclideanSpace ℝ (IxE k r))) i j
 
 /- English proof (translation)
-Establish `h1 : Continuous (fun x : EuclideanSpace ℝ (IxE k r) => unrealify x)` using `(unrealL' k r).continuous_of_finiteDimensional`. Establish `h3 : Continuous (fun x : lieE S => (unrealify (x : EuclideanSpace ℝ (IxE k r)) : Mx k r))` using `h1.comp continuous_subtype_val`. Conclude with `continuous_expM'.comp h3`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_expL (S : Set (Mx k r)) : Continuous (expL S) := by
   have h1 : Continuous (fun x : EuclideanSpace ℝ (IxE k r) => unrealify x) :=
@@ -350,7 +348,7 @@ theorem continuous_expL (S : Set (Mx k r)) : Continuous (expL S) := by
   exact continuous_expM'.comp h3
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i j`. Use `show cj k r κ τ (NormedSpace.exp (unrealify (x : EuclideanSpace ℝ (IxE k r)))) i j = NormedSpace.exp (unrealify (((scE k r κ τ).restrict (scE_mem hκ hτ) x : lieE (Nset k r)) : EuclideanSpace ℝ (IxE k r))) i j`. Rewrite using `[LinearMap.coe_restrict_apply, unrealify_scE, exp_cj hκ hτ]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cjT_expL (hκ : 0 < κ) (hτ : 0 < τ) (x : lieE (Nset k r)) :
     cjT k r κ τ (expL (Nset k r) x) = expL (Nset k r) ((scE k r κ τ).restrict (scE_mem hκ hτ) x) := by
@@ -361,9 +359,9 @@ theorem cjT_expL (hκ : 0 < κ) (hτ : 0 < τ) (x : lieE (Nset k r)) :
   rw [LinearMap.coe_restrict_apply, unrealify_scE, exp_cj hκ hτ]
 
 /- English proof (translation)
-Establish `hA` using `det_scE_ne (k := k) (r := r) hκ hτ`. Establish `e : cjT k r κ τ ∘ expL (Nset k r) = expL (Nset k r) ∘ ((scE k r κ τ).restrict (scE_mem hκ hτ))`. Use function extensionality and compare the values at `(cjT_expL hκ hτ)`. Establish `h0 : haarLie (Nset k r) κN = κN • (volume : Measure (lieE (Nset k r))).map (expL (Nset k r))` using `rfl`. Establish `h1 : haarLie (Nset k r) (κN * ENNReal.ofReal (deltaN k r κ τ)) = (κN * ENNReal.ofReal (deltaN k r κ τ)) • (volume : Measure (lieE (Nset k r))).map (expL (Nset k r))` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h0, h1, Measure.map_smul, Measure.map_map measurable_cjT (continuous_expL _).measurable, e, ← Measure.map_map (continuous_expL _).measurable ((scE k r κ τ).restrict (scE_mem hκ hτ)).continuous_of_finiteDimensional.measurable, Measure.map_linearMap_addHaar_eq_smul_addHaar volume …`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem map_haarLie_N (hκ : 0 < κ) (hτ : 0 < τ) (κN : ENNReal) :
     (haarLie (Nset k r) κN).map (cjT k r κ τ) =
@@ -381,7 +379,7 @@ theorem map_haarLie_N (hκ : 0 < κ) (hτ : 0 < τ) (κN : ENNReal) :
     dif_pos (scE_mem hκ hτ)]
 
 /- English proof (translation)
-The claim follows from `pairMeas_eq_map L _ rfl rfl (map_haarLie_N hκ hτ L.κN).symm`.
+A detailed English derivation is pending.
 -/
 theorem pairMeas_trD (hκ : 0 < κ) (hτ : 0 < τ) (L : LocBessel k r)
     (hz : inWb k r ((τ : ℂ) • L.z) ∧ 0 < Tz k r ((τ : ℂ) • L.z))
@@ -402,7 +400,7 @@ theorem J_eq_integral (L : LocBessel k r) (F : Mx k r → (L.Wq →L[ℂ] L.Wp))
     L.J F g = ∫ p, besselIntg L F g p ∂(pairMeas L) := rfl
 
 /- English proof (translation)
-Use `(J_eq_integral (trD L κ τ (L.κN * ENNReal.ofReal (deltaN k r κ τ)) hz hz' hπ hπ' hμW hμW') F (cj k r κ τ g)).trans ?_` and prove the remaining obligations. Rewrite using `[J_eq_integral, pairMeas_trD hκ hτ, ← phiE_coe hκ hτ, integral_map_equiv]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun p => ?_)` and prove the remaining obligations. Conclude with `besselIntg_trD hκ hτ L _ hz hz' hπ hπ' hμW hμW' F g p`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem J_trD (hκ : 0 < κ) (hτ : 0 < τ) (L : LocBessel k r)
     (hz : inWb k r ((τ : ℂ) • L.z) ∧ 0 < Tz k r ((τ : ℂ) • L.z))
@@ -422,7 +420,7 @@ theorem J_trD (hκ : 0 < κ) (hτ : 0 < τ) (L : LocBessel k r)
   exact besselIntg_trD hκ hτ L _ hz hz' hπ hπ' hμW hμW' F g p
 
 /- English proof (translation)
-Unfold `OrbInt`. Rewrite using `[integral_smul_measure, ← phiE_coe hκ hτ, integral_map_equiv, Complex.coe_smul]`. Use `congr 1`. Use `integral_congr_ae (Filter.Eventually.of_forall fun p => ?_)` and prove the remaining obligations. Conclude with `besselIntg_trD hκ hτ L _ hz hz' hπ hπ' hμW hμW' F g p`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem OrbInt_trD (hκ : 0 < κ) (hτ : 0 < τ) (L : LocBessel k r) (κN₁ : ENNReal)
     (hz : inWb k r ((τ : ℂ) • L.z) ∧ 0 < Tz k r ((τ : ℂ) • L.z))

@@ -11,7 +11,7 @@ section
 variable (F : Type) {E : Type} [Field F] [NumberField F] [Field E] [Algebra F E]
 
 /- English proof (translation)
-Establish `: (a * b) v = a v * b v` using `RestrictedProduct.mul_apply _ a b v`. Rewrite using `[this]`. Conclude with `mul_mem ha hb`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adele_mul_integral {a b : FiniteAdeleRing (𝓞 F) F} {v : HeightOneSpectrum (𝓞 F)}
     (ha : a v ∈ v.adicCompletionIntegers F) (hb : b v ∈ v.adicCompletionIntegers F) :
@@ -20,7 +20,7 @@ theorem adele_mul_integral {a b : FiniteAdeleRing (𝓞 F) F} {v : HeightOneSpec
   rw [this]; exact mul_mem ha hb
 
 /- English proof (translation)
-Establish `: (a + b) v = a v + b v` using `RestrictedProduct.add_apply _ a b v`. Rewrite using `[this]`. Conclude with `add_mem ha hb`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adele_add_integral {a b : FiniteAdeleRing (𝓞 F) F} {v : HeightOneSpectrum (𝓞 F)}
     (ha : a v ∈ v.adicCompletionIntegers F) (hb : b v ∈ v.adicCompletionIntegers F) :
@@ -29,7 +29,7 @@ theorem adele_add_integral {a b : FiniteAdeleRing (𝓞 F) F} {v : HeightOneSpec
   rw [this]; exact add_mem ha hb
 
 /- English proof (translation)
-Establish `: (-a) v = -a v` using `RestrictedProduct.neg_apply _ a v`. Rewrite using `[this]`. Conclude with `neg_mem ha`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adele_neg_integral {a : FiniteAdeleRing (𝓞 F) F} {v : HeightOneSpectrum (𝓞 F)}
     (ha : a v ∈ v.adicCompletionIntegers F) :
@@ -38,7 +38,7 @@ theorem adele_neg_integral {a : FiniteAdeleRing (𝓞 F) F} {v : HeightOneSpectr
   rw [this]; exact neg_mem ha
 
 /- English proof (translation)
-Establish `: (1 : FiniteAdeleRing (𝓞 F) F) v = 1` using `RestrictedProduct.one_apply _ _`. Rewrite using `[this]`. Conclude with `one_mem _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adele_one_integral (v : HeightOneSpectrum (𝓞 F)) :
     (1 : FiniteAdeleRing (𝓞 F) F) v ∈ v.adicCompletionIntegers F := by
@@ -46,7 +46,7 @@ theorem adele_one_integral (v : HeightOneSpectrum (𝓞 F)) :
   rw [this]; exact one_mem _
 
 /- English proof (translation)
-Establish `: (0 : FiniteAdeleRing (𝓞 F) F) v = 0` using `RestrictedProduct.zero_apply _ _`. Rewrite using `[this]`. Conclude with `zero_mem _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adele_zero_integral (v : HeightOneSpectrum (𝓞 F)) :
     (0 : FiniteAdeleRing (𝓞 F) F) v ∈ v.adicCompletionIntegers F := by
@@ -54,7 +54,7 @@ theorem adele_zero_integral (v : HeightOneSpectrum (𝓞 F)) :
   rw [this]; exact zero_mem _
 
 /- English proof (translation)
-The claim follows from `AddSubgroup.subset_closure ⟨a, ha, x, hx, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem tmul_mem_adelicCompletion_of_integral {J : Set E} {a : FiniteAdeleRing (𝓞 F) F}
     (ha : ∀ v, a v ∈ v.adicCompletionIntegers F) {x : E} (hx : x ∈ J) :
@@ -62,20 +62,18 @@ theorem tmul_mem_adelicCompletion_of_integral {J : Set E} {a : FiniteAdeleRing (
   AddSubgroup.subset_closure ⟨a, ha, x, hx, rfl⟩
 
 /- English proof (translation)
-The claim follows from `tmul_mem_adelicCompletion_of_integral F (adele_one_integral F) hx`.
+A detailed English derivation is pending.
 -/
 theorem one_tmul_mem_adelicCompletionOfElementSet {J : Set E} {x : E} (hx : x ∈ J) :
     (1 : FiniteAdeleRing (𝓞 F) F) ⊗ₜ[F] x ∈ hat1 F J :=
   tmul_mem_adelicCompletion_of_integral F (adele_one_integral F) hx
 
 /- English proof (translation)
-Proceed by induction on `hx using AddSubgroup.closure_induction with`. Consider the case `mem x hx`. Take `⟨a, ha, x, hx, rfl⟩` from `hx`. Proceed by induction on `hy using AddSubgroup.closure_induction with`. Consider the case `mem y hy`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately.
 
-Take `⟨b, hb, y, hy, rfl⟩` from `hy`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul]`. Conclude with `tmul_mem_adelicCompletion_of_integral F (fun v => adele_mul_integral F (ha v) (hb v)) (h x hx y hy)`. Consider the case `zero => rw [mul_zero]`. Conclude with `zero_mem _`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `add y z _ _ h1 h2 => rw [mul_add]`. Conclude with `add_mem h1 h2`. Consider the case `neg y _ h1 => rw [mul_neg]`. Conclude with `neg_mem h1`. Consider the case `zero => rw [zero_mul]`.
-
-Conclude with `zero_mem _`. Consider the case `add y z _ _ h1 h2 => rw [add_mul]`. Conclude with `add_mem h1 h2`. Consider the case `neg y _ h1 => rw [neg_mul]`. Conclude with `neg_mem h1`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem mul_mem_adelicCompletionOfElementSet_of_mul_mem {I J K : Set E} (h : ∀ x ∈ I, ∀ y ∈ J, x * y ∈ K)
     {x y : RA F E} (hx : x ∈ hat1 F I) (hy : y ∈ hat1 F J) : x * y ∈ hat1 F K := by
@@ -96,9 +94,9 @@ theorem mul_mem_adelicCompletionOfElementSet_of_mul_mem {I J K : Set E} (h : ∀
   | neg y _ h1 => rw [neg_mul]; exact neg_mem h1
 
 /- English proof (translation)
-Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem x hx`. Take `⟨a, ha, x, hx, rfl⟩` from `hx`. Conclude with `tmul_mem_adelicCompletion_of_integral F ha (h x hx)`. Consider the case `zero => rw [map_zero]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Conclude with `zero_mem _`. Consider the case `add y z _ _ h1 h2 => rw [map_add]`. Conclude with `add_mem h1 h2`. Consider the case `neg y _ h1 => rw [map_neg]`. Conclude with `neg_mem h1`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem galoisAut_mem_adelicCompletionOfElementSet (c : E ≃ₐ[F] E) {I J : Set E} (h : ∀ x ∈ I, c x ∈ J)
     {z : RA F E} (hz : z ∈ hat1 F I) : sg (FiniteAdeleRing (𝓞 F) F) c z ∈ hat1 F J := by
@@ -111,7 +109,7 @@ theorem galoisAut_mem_adelicCompletionOfElementSet (c : E ≃ₐ[F] E) {I J : Se
   | neg y _ h1 => rw [map_neg]; exact neg_mem h1
 
 /- English proof (translation)
-Simplify using `only [FiniteAdeleRing.algebraMap_apply, HeightOneSpectrum.mem_adicCompletionIntegers, HeightOneSpectrum.valuedAdicCompletion_eq_valuation']`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, rfl⟩ v`. Conclude with `v.valuation_le_one a`. Conclude with `HeightOneSpectrum.mem_integers_of_valuation_le_one F x`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem mem_range_iff_adele_integral (x : F) :
     x ∈ (algebraMap (𝓞 F) F).range ↔
@@ -124,13 +122,13 @@ theorem mem_range_iff_adele_integral (x : F) :
   · exact HeightOneSpectrum.mem_integers_of_valuation_le_one F x
 
 /- English proof (translation)
-Set `T : RA F E →ₗ[F] FiniteAdeleRing (𝓞 F) F` to `(TensorProduct.rid F _).toLinearMap ∘ₗ LinearMap.lTensor _ t`. Establish `hT : ∀ a y, T (a ⊗ₜ[F] y) = algebraMap F _ (t y) * a`. Introduce `a y`. Simplify using `[T, Algebra.smul_def]`. Establish `key : ∀ z ∈ hat1 F I, ∀ v, T z v ∈ v.adicCompletionIntegers F`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `z hz v`. Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem x hx`. Take `⟨a, ha, y, hy, rfl⟩` from `hx`. Rewrite using `[hT]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `adele_mul_integral F ((mem_range_iff_adele_integral F _).1 (ht y hy) v) (ha v)`. Consider the case `zero => rw [map_zero]`. Conclude with `adele_zero_integral F v`. Consider the case `add y z _ _ h1 h2 => rw [map_add]`. Conclude with `adele_add_integral F h1 h2`.
+Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Consider the case `neg y _ h1 => rw [map_neg]`. Conclude with `adele_neg_integral F h1`. Rewrite using `[mem_range_iff_adele_integral]`. Use `key _ hx` as an intermediate fact. Rewrite `this` using `[hT, mul_one]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem linearForm_integral_of_one_tmul_mem_adelicCompletion {I : Set E} (t : E →ₗ[F] F)
     (ht : ∀ y ∈ I, t y ∈ (algebraMap (𝓞 F) F).range) {x : E}
@@ -159,13 +157,13 @@ theorem linearForm_integral_of_one_tmul_mem_adelicCompletion {I : Set E} (t : E 
 variable [NumberField E]
 
 /- English proof (translation)
-Use `⟨fun hx => ?_, fun hx => one_tmul_mem_adelicCompletionOfElementSet F hx⟩` and prove the remaining obligations. Distinguish the cases in `hI : I = 0`. Substitute `hI` using the available equality. Rewrite using `[FractionalIdeal.mem_zero_iff]`. Assume the negation of the conclusion as `h0`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Take `⟨t, ht⟩` from `Module.Projective.exists_dual_eq_one F h0`. Apply `RingOfIntegers.not_isField F` to reduce the goal to its premises. Rewrite using `[← IsFractionRing.surjective_iff_isField (K := F)]`. Introduce `c`. Use `linearForm_integral_of_one_tmul_mem_adelicCompletion F (c • t) (fun y hy => by` as an intermediate fact.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hy' : y = 0` using `(FractionalIdeal.mem_zero_iff _).1 hy`. Rewrite using `[hy', map_zero]`. Conclude with `zero_mem _) hx`. Simplify `this` using `[ht]`. Rewrite using `[← FractionalIdeal.dual_dual (𝓞 F) F I, FractionalIdeal.mem_dual (FractionalIdeal.dual_ne_zero _ _ hI)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y hy`. Rewrite `hy` using `[FractionalIdeal.mem_dual hI]`. Use `linearForm_integral_of_one_tmul_mem_adelicCompletion F (Algebra.traceForm F E y) hy hx` as an intermediate fact. Rewrite `this` using `[Algebra.traceForm_apply, mul_comm]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem one_tmul_mem_adelicCompletion_fractionalIdeal_iff (I : FractionalIdeal (𝓞 E)⁰ E) (x : E) :
     (1 : FiniteAdeleRing (𝓞 F) F) ⊗ₜ[F] x ∈ hat1 F (I : Set E) ↔ x ∈ I := by
@@ -190,11 +188,11 @@ theorem one_tmul_mem_adelicCompletion_fractionalIdeal_iff (I : FractionalIdeal (
     rwa [Algebra.traceForm_apply, mul_comm] at this
 
 /- English proof (translation)
-Establish `h1 : (1 : E) ∈ I * I⁻¹`. Rewrite using `[mul_inv_cancel₀ hI]`. Conclude with `FractionalIdeal.one_mem_one _`. Establish `key : ∀ w ∈ I * I⁻¹, z * ((1 : FiniteAdeleRing (𝓞 F) F) ⊗ₜ[F] w) ∈ hat1 F ((J * I⁻¹ : FractionalIdeal (𝓞 E)⁰ E) : Set E)`. Introduce `w hw`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `FractionalIdeal.mul_induction_on hw (fun x hx y hy => ?_) (fun x y hx hy => ?_)` and prove the remaining obligations. Use `mul_mem_adelicCompletionOfElementSet_of_mul_mem F (K := ((J * I⁻¹ : FractionalIdeal (𝓞 E)⁰ E) : Set E)) (fun a ha b hb => FractionalIdeal.mul_mem_mul ha hb) (h x hx) (one_tmul_mem_adelicCompletionOfElementSet F hy)` as an intermediate fact. Rewrite `this` using `[mul_assoc, Algebra.TensorProduct.tmul_mul_tmul, mul_one]`. Then use the resulting hypothesis. Rewrite using `[TensorProduct.tmul_add, mul_add]`. Conclude with `add_mem hx hy`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `key 1 h1` as an intermediate fact. Rewrite `this` using `[← Algebra.TensorProduct.one_def, mul_one]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem mem_adelicCompletion_mul_inv_fractionalIdeal (I J : FractionalIdeal (𝓞 E)⁰ E) (z : RA F E) (hI : I ≠ 0)
     (h : ∀ x ∈ I, z * ((1 : FiniteAdeleRing (𝓞 F) F) ⊗ₜ[F] x) ∈ hat1 F (J : Set E)) :
@@ -215,7 +213,7 @@ theorem mem_adelicCompletion_mul_inv_fractionalIdeal (I J : FractionalIdeal (�
 end
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _`. Conclude with `⟨fun I J x hx y hy => mul_mem_adelicCompletionOfElementSet_of_mul_mem F (fun a ha b hb => FractionalIdeal.mul_mem_mul ha hb) hx hy, one_tmul_mem_adelicCompletion_fractionalIdeal_iff F, mem_adelicCompletion_mul_inv_fractionalIdeal F, fun c I I' h z hz => galoisAut_mem_adelicComple …`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem adelicCompletion_fractionalIdeal_properties : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E], (∀ I J : FractionalIdeal (𝓞 E)⁰ E, ∀ x ∈ hat1 F (I : Set E), ∀ y ∈ hat1 F (J : Set E), x * y ∈ hat1 F ((I * J : FractionalIdeal (𝓞 E)⁰ E) : Set E)) ∧ (∀ (I : FractionalIdeal (𝓞 E)⁰ E) (x : E), (1 : FiniteAdeleRing (𝓞 F) F) ⊗ₜ[F] x ∈ hat1 F (I : Set E) ↔ x ∈ I) ∧ (∀ (I J : FractionalIdeal (𝓞 E)⁰ E) (z : RA F E), I ≠ 0 → (∀ x ∈ I, z * ((1 : FiniteAdeleRing (𝓞 F) F) ⊗ₜ[F] x) ∈ hat1 F (J : Set E)) → z ∈ hat1 F ((J * I⁻¹ : FractionalIdeal (𝓞 E)⁰ E) : Set E)) ∧ ∀ (c : E ≃ₐ[F] E) (I I' : FractionalIdeal (𝓞 E)⁰ E), (∀ x ∈ I, c x ∈ I') → ∀ z ∈ hat1 F (I : Set E), sg (FiniteAdeleRing (𝓞 F) F) c z ∈ hat1 F (I' : Set E) := by
   intro F E _ _ _ _ _

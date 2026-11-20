@@ -6,13 +6,13 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace GlobalTheory.UPel.HT.EtLev
 
 /- English proof (translation)
-Introduce `p _ D R _ b N S s o w0 r T T' l f h`. Take `⟨hadd, hlin, hker, hgeo⟩` from `h`. Use `⟨fun x y => ?_, fun c x => ?_, fun x hx => ?_, fun k _ _ x => ?_⟩` and prove the remaining obligations. Simplify using `only [hadd, MonObj.comp_mul]`. Simplify using `only [hlin, Category.assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [hker x hx, MonObj.comp_one]`. Take `⟨hinj, hsurj⟩` from `hgeo k (x ≫ f.left)`. Set `e : Over.mk (x ≫ T'.hom) ≅ Over.mk ((x ≫ f.left) ≫ T.hom)` to `Over.isoMk (Iso.refl _) (by simp [Over.w f])`. Establish `hfac : (Over.homMk x rfl : Over.mk (x ≫ T'.hom) ⟶ T') ≫ f = e.hom ≫ (Over.homMk (x ≫ f.left) rfl : Over.mk ((x ≫ f.left) ≫ T.hom) ⟶ T)` using `by ext; simp [e]`. Use `⟨fun y hy => hinj y ?_, fun g hg => ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : e.hom ≫ (Over.homMk (x ≫ f.left) rfl : Over.mk ((x ≫ f.left) ≫ T.hom) ⟶ T) ≫ l y = 1`. Rewrite using `[← Category.assoc, ← hfac, Category.assoc]`. Conclude with `hy`. Establish `h2` using `congrArg (fun z => e.inv ≫ z) h1`. Simplify `h2` using `[MonObj.comp_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy⟩` from `hsurj (e.inv ≫ g) (fun c hc => by`. Conclude with `(Category.assoc _ _ _).trans (by rw [hg c hc, MonObj.comp_one]))`. Use `⟨y, ?_⟩` and prove the remaining obligations. Rewrite using `[← Category.assoc, hfac, Category.assoc, hy, Iso.hom_inv_id_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isEtLevOver_pull : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [CommRing R] (b : Base D R) (N : ℕ) (S : Scheme.{0}) (s : S ⟶ Sp R) (o : Obj b N s) (w0 : Ideal (𝓞 D.F)) (r : ℕ) (T T' : Over S) (l : D.La → (T ⟶ o.A)) (f : T' ⟶ T), IsEtLevOver o w0 r l → IsEtLevOver o w0 r (fun y => f ≫ l y) := by
   intro p _ D R _ b N S s o w0 r T T' l f h

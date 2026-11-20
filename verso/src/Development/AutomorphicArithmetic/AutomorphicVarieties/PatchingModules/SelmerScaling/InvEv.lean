@@ -2,35 +2,33 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.Se
 open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.AlgebraTools UpperTheory.V.Pa
 
 /- English proof (translation)
-Introduce `l hl L G G0 h n x hl2 Y _ hT hd`. Establish `hmul : ∀ g g', x.ρX x.Fr (g * g') = x.ρX x.Fr g * x.ρX x.Fr g'`. Introduce `g g'`. Simplify using `only [NP.ρX, mat, map_mul, Units.val_mul]`. Conclude with `Matrix.map_mul`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hone : x.ρX x.Fr 1 = 1`. Simplify using `only [NP.ρX, mat, map_one, Units.val_one]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`. Establish `hsurj : Function.Surjective h.p₀`. Introduce `g`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨γ, hγ⟩` from `h.surj g.1`. Establish `hm : γ ∈ G.η.ker`. Rewrite using `[MonoidHom.mem_ker, ← h.η γ, hγ]`. Conclude with `g.2`. Conclude with `⟨⟨γ, hm⟩, Subtype.ext hγ⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hc : ∀ g, x.ρX x.Fr g * Y = Y * x.ρX x.Fr g`. Introduce `g`. Take `⟨γ, rfl⟩` from `hsurj g`. Establish `e` using `hd γ`. Simplify using `only [dY, sub_eq_zero] at e`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Establish `e2 : x.ρX x.Fr (h.p₀ γ⁻¹) * x.ρX x.Fr (h.p₀ γ) = 1`. Rewrite using `[← hmul, ← map_mul, inv_mul_cancel, map_one, hone]`. Combine the equalities or inequalities in the displayed calculation. Establish `hs : ∀ Z ∈ Submodule.span x.A (mat x.ρ '' (G0.frame.G' : Set G0.frame.G₀)), Z.map (algebraMap x.A x.Fr) * Y = Y * Z.map (algebraMap x.A x.Fr)`. Introduce `Z hZ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Proceed by induction on `hZ using Submodule.span_induction with`. Consider the case `mem Z hZ`. Take `⟨g, _, rfl⟩` from `hZ`. Conclude with `hc g`. Consider the case `zero => simp`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `add a b _ _ ha hb`. Rewrite using `[Matrix.map_add _ (map_add _), add_mul, mul_add, ha, hb]`. Consider the case `smul c a _ ha`. Establish `: (c • a).map (algebraMap x.A x.Fr) = algebraMap x.A x.Fr c • a.map (algebraMap x.A x.Fr)`. Use extensionality with `i j`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Rewrite using `[this, Matrix.smul_mul, Matrix.mul_smul, ha]`. Establish `h2 : (2 : x.Fr) ≠ 0`. Establish `hu : IsUnit (2 : ℤ_[l])`. Rewrite using `[PadicInt.isUnit_iff]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `: ¬ ‖((2 : ℤ) : ℤ_[l])‖ < 1`. Rewrite using `[PadicInt.norm_int_lt_one_iff_dvd]`. Introduce `hdv`. Establish `: l ∣ 2` using `by exact_mod_cast hdv`. Conclude with `hl2 ((Nat.prime_dvd_prime_iff_eq hl.out Nat.prime_two).1 this)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. By extensionality, compare the relevant components.
 
-Establish `h3 : ‖((2 : ℤ) : ℤ_[l])‖ = 1` using `le_antisymm (PadicInt.norm_le_one _) (not_lt.1 this)`. Simplify using `using h3`. Use `(hu.map (((algebraMap x.A x.Fr).comp (algebraMap x.K x.A)).comp (algebraMap ℤ_[l] x.K))).ne_zero` as an intermediate fact. Rewrite `this` using `[map_ofNat]`. Then use the resulting hypothesis. Use extensionality with `i j`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Establish `e` using `congrFun (congrFun hT i) i`. Simplify using `only [Matrix.transpose_apply, Matrix.neg_apply] at e`. Establish `: (2 : x.Fr) * Y i i = 0` using `by linear_combination e`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using (mul_eq_zero.1 this).resolve_left h2`. Establish `hE : (Matrix.single i i (1 : x.A)) ∈ Ev x.A x.A n x.a`. Introduce `p q`. Use `⟨fun _ => trivial, fun hne => ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.mem_bot]`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `Matrix.single_apply_of_ne` to reduce the goal to its premises. Introduce and unpack `⟨rfl, rfl⟩`. Conclude with `hne Iff.rfl`. Take `⟨s, hsp⟩` from `x.span _ hE`. Establish `e` using `hs _ hsp`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hm : ((PowerSeries.X : PowerSeries x.K) ^ s • Matrix.single i i (1 : x.A)).map (algebraMap x.A x.Fr) = Matrix.single i i (algebraMap x.A x.Fr (x.t ^ s))`. Rewrite using `[Matrix.smul_single, smul_eq_mul, mul_one, Matrix.map_single]`. Rewrite `e` using `[hm]`. Establish `e'` using `congrFun (congrFun e i) j`. Rewrite `e'` using `[Matrix.single_mul_apply_same, Matrix.mul_single_apply_of_ne _ _ _ _ _ (Ne.symm hij)]`.
-
-Establish `ht : algebraMap x.A x.Fr (x.t ^ s) ≠ 0`. Rewrite using `[Ne, IsFractionRing.to_map_eq_zero_iff]`. Conclude with `pow_ne_zero _ PowerSeries.X_ne_zero`. Simplify using `using (mul_eq_zero.1 e').resolve_left ht`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pa.invEv :
     ∀ (l : ℕ) [Fact l.Prime] (L : Loc) (G G0 : Glob l L) (h : G.Hom G0) (n : ℕ) (x : NP G0.frame n), l ≠ 2 → ∀ Y : Matrix (Fin n) (Fin n) x.Fr, Y ∈ Ev x.A x.Fr n x.a → Yᵀ = -Y → (∀ g : G.G₀, dY G.frame (fun g => x.ρX x.Fr (h.p₀ g)) Y g = 0) → Y = 0 := by

@@ -8,9 +8,9 @@ open AlgebraicGeometry CategoryTheory Limits ReciprocityTheory.ChartRestriction.
 namespace GlobalTheory.GlueStalk
 
 /- English proof (translation)
-Use `⟨?_⟩` and prove the remaining obligations. Establish `h : genericPoint X ∈ Set.range (X.fromSpecStalk x)`. Rewrite using `[Scheme.range_fromSpecStalk]`. Conclude with `(genericPoint_spec X).specializes trivial`. Establish `h2 : Dense ({genericPoint X} : Set X)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dense_iff_closure_eq]`. Conclude with `genericPoint_spec X`. Conclude with `h2.mono (Set.singleton_subset_iff.2 h)`.
+A detailed English derivation is pending.
 -/
 theorem isDominant_fromSpecStalk_of_isIntegral (X : Scheme.{0}) [IsIntegral X] (x : X) :
     IsDominant (X.fromSpecStalk x) := by
@@ -23,11 +23,9 @@ theorem isDominant_fromSpecStalk_of_isIntegral (X : Scheme.{0}) [IsIntegral X] (
   exact h2.mono (Set.singleton_subset_iff.2 h)
 
 /- English proof (translation)
-Establish `hmax : ∀ y, y ⤳ k (genericPoint P) → y = k (genericPoint P)` using `fun y hy => by`. Take `⟨p, rfl⟩ : y ∈ Set.range k` from `hy.mem_open k.isOpenEmbedding.isOpen_range ⟨_, rfl⟩`. Conclude with `(hy.antisymm (((genericPoint_spec P).specializes trivial).map k.continuous)).eq`. Establish `e₀ : V.ι (genericPoint V) = k (genericPoint P)` using `hmax _ (by`. Rewrite using `[← hk, Scheme.Hom.comp_apply]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `((genericPoint_spec V).specializes trivial).map V.ι.continuous)`. Establish `e : k (genericPoint P) ⤳ x`. Rewrite using `[← e₀]`. Conclude with `((genericPoint_spec V).specializes (y := (⟨x, hx⟩ : V)) trivial).map V.ι.continuous`. Rewrite using `[← H x _ e hmax, ← hf, ← Category.assoc, ← Category.assoc, ← Category.assoc]`.
-
-Use `congr 1`. Rewrite using `[← cancel_mono V.ι, Category.assoc, hk, Category.assoc, Category.assoc, Scheme.Opens.fromSpecStalkOfMem_ι, Scheme.SpecMap_stalkSpecializes_fromSpecStalk, Scheme.SpecMap_stalkMap_fromSpecStalk]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fromSpecStalk_generic {T S P : Scheme.{0}} (h : ∀ x : T, Spec (T.presheaf.stalk x) ⟶ S)
     (H : ∀ (x ξ : T) (e : ξ ⤳ x), (∀ y, y ⤳ ξ → y = ξ) → Spec.map (T.presheaf.stalkSpecializes e) ≫ h x = h ξ)
@@ -52,17 +50,17 @@ theorem fromSpecStalk_generic {T S P : Scheme.{0}} (h : ∀ x : T, Spec (T.presh
     Scheme.SpecMap_stalkMap_fromSpecStalk]
 
 /- English proof (translation)
-Introduce `B T S t s h _ _ _ hn hs H`. Establish `: GlobalTheory.IsNormalScheme T` using `GlobalTheory.IsNormalScheme.of_pred hn`. Establish `loc : ∀ x : T, ∃ (V : T.Opens) (hx : x ∈ V) (f : V.toScheme ⟶ S), IsIntegral V ∧ V.fromSpecStalkOfMem x hx ≫ f = h x ∧ f ≫ s = V.ι ≫ t` using `fun x => by`. Take `⟨U, hU, f, h₁, h₂⟩` from `spread_out_of_isGermInjective' t s (h x) (hs x)`. Set `Z : irreducibleComponents T` to `⟨_, irreducibleComponent_mem_irreducibleComponents x⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hx : x ∈ U ⊓ GlobalTheory.IsNormalScheme.component Z` using `⟨hU, mem_irreducibleComponent⟩`. Establish `: Nonempty (U ⊓ GlobalTheory.IsNormalScheme.component Z).toScheme` using `⟨⟨x, hx⟩⟩`. Use `⟨_, hx, T.homOfLE inf_le_left ≫ f, isIntegral_of_isOpenImmersion (T.homOfLE inf_le_right), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[h₁, ← Category.assoc]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← cancel_mono U.ι, Category.assoc, Scheme.homOfLE_ι, Scheme.Opens.fromSpecStalkOfMem_ι, Scheme.Opens.fromSpecStalkOfMem_ι]`. Rewrite using `[Category.assoc, h₂, Scheme.homOfLE_ι_assoc]`. Use `choose V hx f hi h₁ h₂ using loc`. Establish `hc : ⨆ x, V x = ⊤` using `top_le_iff.1 fun x _ => TopologicalSpace.Opens.mem_iSup.2 ⟨x, hx x⟩`. Establish `key : ∀ x y, pullback.fst (V x).ι (V y).ι ≫ f x = pullback.snd (V x).ι (V y).ι ≫ f y` using `fun x y => by`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hi x` as an intermediate fact. Use `hi y` as an intermediate fact. Consider the cases of `isEmpty_or_nonempty ↥(pullback (V x).ι (V y).ι) with`. Consider the case `inl _ => exact (isInitialOfIsEmpty (X := pullback (V x).ι (V y).ι)).hom_ext _ _`. Consider the case `inr _`.
+Establish an intermediate fact. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `: IsIntegral (pullback (V x).ι (V y).ι)` using `isIntegral_of_isOpenImmersion (pullback.fst (V x).ι (V y).ι)`. Use `isDominant_fromSpecStalk_of_isIntegral _ (genericPoint ↥(pullback (V x).ι (V y).ι))` as an intermediate fact. Use `ext_of_isDominant_of_isSeparated s ?_ ((pullback (V x).ι (V y).ι).fromSpecStalk (genericPoint _)) ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, Category.assoc, h₂, h₂, pullback.condition_assoc]`. Conclude with `(fromSpecStalk_generic h H (V x) (hx x) (f x) (h₁ x) _ _ rfl).trans (fromSpecStalk_generic h H (V y) (hx y) (f y) (h₁ y) _ _ pullback.condition.symm).symm`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨(T.openCoverOfIsOpenCover V hc).glueMorphisms f key, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[← Scheme.Opens.fromSpecStalkOfMem_ι (V x) x (hx x), Category.assoc, ← h₁ x]`. Conclude with `congrArg (_ ≫ ·) (Scheme.Cover.ι_glueMorphisms (T.openCoverOfIsOpenCover V hc) f key x)`.
+A detailed English derivation is pending.
 -/
 theorem exists_glue_of_stalks : ∀ (B T S : Scheme.{0}) (t : T ⟶ B) (s : S ⟶ B) (h : ∀ x : T, Spec (T.presheaf.stalk x) ⟶ S), LocallyOfFiniteType s → IsSeparated s → IsLocallyNoetherian T → ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme T → (∀ x, h x ≫ s = T.fromSpecStalk x ≫ t) → (∀ (x ξ : T) (e : ξ ⤳ x), (∀ y, y ⤳ ξ → y = ξ) → Spec.map (T.presheaf.stalkSpecializes e) ≫ h x = h ξ) → ∃ g : T ⟶ S, ∀ x, T.fromSpecStalk x ≫ g = h x := by
   intro B T S t s h _ _ _ hn hs H

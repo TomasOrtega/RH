@@ -10,9 +10,9 @@ open scoped TensorProduct
 namespace GlobalTheory.RegSS
 
 /- English proof (translation)
-Use `haveI : Module.Finite F P := Algebra.FormallyUnramified.finite_of_free F P`. Use `haveI : IsArtinianRing (Ω ⊗[F] P) := isArtinian_of_tower Ω inferInstance`. Set `e` to `Algebra.FormallyEtale.equivPiOfIsSepClosed Ω (Ω ⊗[F] P)`. Use `letI : Fintype (PrimeSpectrum (Ω ⊗[F] P)) := Fintype.ofFinite _`. Establish `hc : Fintype.card (PrimeSpectrum (Ω ⊗[F] P)) = Fintype.card n`.
+Introduce a local definition for the expression. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `e.toLinearEquiv.finrank_eq` as an intermediate fact. Rewrite `this` using `[Module.finrank_baseChange, h, Module.finrank_fintype_fun_eq_card]`. Conclude with `this.symm`. Conclude with `⟨e.trans (AlgEquiv.piCongrLeft' Ω (fun _ => Ω) (Fintype.equivOfCardEq hc))⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem splitClosed_etale (F P Ω n : Type) [Field F] [CommRing P] [Algebra F P] [Fintype n]
     [Algebra.Etale F P] [Field Ω] [Algebra F Ω] [IsAlgClosed Ω]
@@ -30,17 +30,17 @@ theorem splitClosed_etale (F P Ω n : Type) [Field F] [CommRing P] [Algebra F P]
   exact ⟨e.trans (AlgEquiv.piCongrLeft' Ω (fun _ => Ω) (Fintype.equivOfCardEq hc))⟩
 
 /- English proof (translation)
-Use `haveI := h.etale`. Use `haveI := quad_finite h`. Use `haveI : CharZero Ω := charZero_of_injective_algebraMap (algebraMap F Ω).injective`. Take `⟨e⟩` from `splitClosed_etale F E Ω (Fin 2) (by simp [h.finrank_eq])`. Set `θ : E →ₐ[F] Ω` to `(((Pi.evalAlgHom Ω (fun _ : Fin 2 => Ω) 0).comp e.toAlgHom).restrictScalars F).comp Algebra.TensorProduct.includeRight`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨b, d, -, hb1, hd, hbb⟩` from `quad_exists_basis h`. Establish `hc : θ (b 1) ≠ 0`. Introduce `h0`. Use `congrArg θ hbb` as an intermediate fact. Rewrite `this` using `[map_mul, h0, mul_zero, AlgHom.commutes]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hd ((map_eq_zero _).1 this.symm)`. Set `f : Ω ⊗[F] E →ₐ[Ω] Ω × Ω` to `Algebra.TensorProduct.lift (Algebra.ofId Ω (Ω × Ω)) (θ.prod (θ.comp σ)) (fun _ _ => Commute.all _ _)`. Establish `hf : ∀ ω x, f (ω ⊗ₜ x) = (ω * θ x, ω * θ (σ x))`. Introduce `ω x`. Simplify using `[f, Algebra.ofId_apply]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hs : Function.Surjective f`. Introduce and unpack `⟨x, y⟩`. Use `⟨((x + y) / 2) ⊗ₜ 1 + ((x - y) / (2 * θ (b 1))) ⊗ₜ b 1, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, hf, hf, hb1, map_neg, map_one, map_one]`. Apply the tactic sequence `ext <;> simp <;> field_simp <;> ring`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately.
 
-Establish `hi : Function.Injective f` using `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank (f := f.toLinearMap) (by simp [h.finrank_eq])).2 hs`. Use `⟨(Algebra.TensorProduct.comm F E Ω).trans ((AlgEquiv.ofBijective f ⟨hi, hs⟩).restrictScalars F), fun ω => (hf ω 1).trans (by simp), fun u => ?_⟩` and prove the remaining obligations. Proceed by induction on `u with`. Consider the case `zero => simp`. Consider the case `tmul a w`.
+Treat this case separately. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Treat this case separately.
 
-Express the relevant statement in the definitionally equal form `f (w ⊗ₜ σ a) = (f (w ⊗ₜ a)).swap`. Rewrite using `[hf, hf, h.invol]`. Both sides reduce to the same expression. Consider the case `add a w ha hw => rw [map_add, map_add, map_add, ha, hw, Prod.swap_add]`.
+A detailed English derivation is pending.
 -/
 theorem splitClosed_quad {F E : Type} [Field F] [CharZero F] [CommRing E] [Algebra F E]
     {σ : E →ₐ[F] E} (h : IsQuadInvol F E σ) (Ω : Type) [Field Ω] [Algebra F Ω] [IsAlgClosed Ω] :
@@ -90,11 +90,11 @@ def splitClosedPair (F Ω n : Type) [Field F] [Field Ω] [Algebra F Ω] :
   commutes' _ := rfl
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ σ h P _ _ n _ hP ⟨b⟩ Ω _ _ _`. Take `⟨e⟩` from `splitClosed_etale F P Ω n (Module.finrank_eq_card_basis b)`. Take `⟨g, hg1, hg⟩` from `splitClosed_quad h Ω`. Set `e' : P ⊗[F] Ω ≃ₐ[F] (n → Ω)` to `(Algebra.TensorProduct.comm F P Ω).trans (e.restrictScalars F)`. Establish `he' : ∀ ω : Ω, e' (1 ⊗ₜ ω) = fun _ => ω` using `fun ω => e.commutes ω`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `φ : P ⊗[F] (E ⊗[F] Ω) ≃ₐ[F] (n → Ω × Ω)` to `((Algebra.TensorProduct.congr (AlgEquiv.refl : P ≃ₐ[F] P) g).trans (Algebra.TensorProduct.prodRight F F P Ω Ω)).trans ((AlgEquiv.prodCongr e' e').trans (splitClosedPair F Ω n))`. Establish `hφ : ∀ p x i, φ (p ⊗ₜ x) i = (e' (p ⊗ₜ (g x).1) i, e' (p ⊗ₜ (g x).2) i)`. Introduce `p x i`. Both sides reduce to the same expression. Use `⟨φ, fun ω => funext fun i => by rw [hφ, hg1, he'], fun u i => ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Proceed by induction on `u with`. Consider the case `zero => simp`. Consider the case `tmul p x => rw [tConj3, Algebra.TensorProduct.map_tmul, hφ, hφ, hg]`. Both sides reduce to the same expression. Consider the case `add a w ha hw => rw [map_add, map_add, map_add, Pi.add_apply, Pi.add_apply, ha, hw, Prod.swap_add]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Both sides reduce to the same expression. Treat this case separately.
 -/
 theorem splitClosed : SplitClosed := by
   intro F E _ _ _ _ σ h P _ _ n _ hP ⟨b⟩ Ω _ _ _

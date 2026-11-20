@@ -13,27 +13,27 @@ open MvPowerSeries ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ Formalism.F
 variable {S : Type} [CommRing S]
 
 /- English proof (translation)
-Introduce `e he`. Rewrite using `[map_smul, hp e he, smul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem low_smul {τ : Type} {N : ℕ} (a : S) {p : MvPowerSeries τ S} (hp : Low N p) : Low N (a • p) := by
   intro e he
   rw [map_smul, hp e he, smul_zero]
 
 /- English proof (translation)
-Conclude with `Finset.sum_induction _ (Low N) (fun _ _ h1 h2 => low_add h1 h2) (fun e _ => by simp) hp`.
+A detailed English derivation is pending.
 -/
 theorem low_sum {τ ι : Type} {N : ℕ} (s : Finset ι) {p : ι → MvPowerSeries τ S} (hp : ∀ i ∈ s, Low N (p i)) :
     Low N (∑ i ∈ s, p i) := by
   exact Finset.sum_induction _ (Low N) (fun _ _ h1 h2 => low_add h1 h2) (fun e _ => by simp) hp
 
 /- English proof (translation)
-Establish `hk0 : ∀ i, constantCoeff (k i) = 0` using `fun i => (low_one_iff _).1 (hk i)`. Establish `ha : HasSubst k` using `⟨fun s => by rw [hk0 s]; exact IsNilpotent.zero, fun _ => Set.toFinite _⟩`. Establish `key : ∀ (m : ι →₀ ℕ) (t : Finset ι), Low (∑ s ∈ t, m s) (∏ s ∈ t, k s ^ m s)`. Introduce `m t`. Use `Finset.induction_on t ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.sum_empty]`. Conclude with `low_zero _`. Introduce `a t hat ih`. Rewrite using `[Finset.sum_insert hat, Finset.prod_insert hat]`. Conclude with `low_mul (low_pow (hk a) (m a)) ih`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `e he`. Establish `hz : ∀ m : ι →₀ ℕ, coeff m g • coeff e (m.prod fun s n => k s ^ n) = 0`. Introduce `m`. Distinguish the cases in `hm : m.degree < N`. Rewrite using `[hg m hm, zero_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hprod : Low m.degree (m.prod fun s n => k s ^ n)` using `key m m.support`. Rewrite using `[hprod e (lt_of_lt_of_le he (not_lt.mp hm)), smul_zero]`. Rewrite using `[coeff_subst ha]`. Simplify using `only [hz, finsum_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem low_subst' {ι τ : Type} [Finite ι] {N : ℕ} {k : ι → MvPowerSeries τ S} (hk : ∀ i, Low 1 (k i))
     {g : MvPowerSeries ι S} (hg : Low N g) : Low N (subst k g) := by
@@ -61,17 +61,17 @@ theorem low_subst' {ι τ : Type} [Finite ι] {N : ℕ} {k : ι → MvPowerSerie
 variable [Algebra ℚ S] {d : ℕ}
 
 /- English proof (translation)
-Introduce `e he`. Distinguish the cases in `hz : e = 0`. Substitute `hz` using the available equality. Rewrite using `[coeff_zero_eq_constantCoeff_apply]`. Conclude with `h0`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hw⟩` from `Finsupp.support_nonempty_iff.mpr hz`. Establish `hdeg : e.degree = ∑ s ∈ e.support, e s` using `rfl`. Rewrite `he` using `[hdeg]`. Establish `hw1 : 1 ≤ e w` using `Nat.one_le_iff_ne_zero.mpr (Finsupp.mem_support_iff.mp hw)`. Establish `hwle : e w ≤ ∑ s ∈ e.support, e s` using `Finset.single_le_sum (fun _ _ => Nat.zero_le _) hw`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hew : e w = 1` using `by omega`. Establish `hv : ∀ v, v ≠ w → e v = 0`. Introduce `v hvw`. Assume the negation of the conclusion as `hne`. Establish `hvs : v ∈ e.support` using `Finsupp.mem_support_iff.mpr hne`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsub : ({v, w} : Finset σ) ⊆ e.support` using `Finset.insert_subset_iff.mpr ⟨hvs, Finset.singleton_subset_iff.mpr hw⟩`. Establish `hle` using `Finset.sum_le_sum_of_subset (f := fun s => e s) hsub`. Rewrite `hle` using `[Finset.sum_pair hvw]`. Establish `hv1 : 1 ≤ e v` using `Nat.one_le_iff_ne_zero.mpr hne`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `he1 : e = Finsupp.single w 1`. Use extensionality with `v`. Distinguish the cases in `hvw : v = w`. Substitute `hvw` using the available equality. Simplify using `[hew]`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hv v hvw, Finsupp.single_apply, if_neg (Ne.symm hvw)]`. Rewrite using `[he1]`. Conclude with `h1 w`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma low_two_of_lemma {σ : Type} {f : MvPowerSeries σ S} (h0 : constantCoeff f = 0)
     (h1 : ∀ w, coeff (Finsupp.single w 1) f = 0) : Low 2 f := by
@@ -107,11 +107,11 @@ private lemma low_two_of_lemma {σ : Type} {f : MvPowerSeries σ S} (h0 : consta
     exact h1 w
 
 /- English proof (translation)
-Establish `ha : HasSubst a` using `⟨fun s => by rw [ha0 s]; exact IsNilpotent.zero, fun _ => Set.toFinite _⟩`. Establish `hR : Low 1 (f - coeff 0 f • (1 : MvPowerSeries σ S))`. Rewrite using `[low_one_iff, ← coeff_zero_eq_constantCoeff_apply, map_sub, map_smul, coeff_zero_one, smul_eq_mul, mul_one, sub_self]`. Establish `hS : Low 1 (subst a (f - coeff 0 f • (1 : MvPowerSeries σ S)))` using `low_subst (fun s => (low_one_iff _).2 (ha0 s)) hR`. Establish `hsub : subst a (f - coeff 0 f • (1 : MvPowerSeries σ S)) =`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Substitute `a f - coeff 0 f • (1 : MvPowerSeries τ S) := by` using the available equality. Rewrite using `[← coe_substAlgHom ha, map_sub, map_smul, map_one]`. Rewrite `hS` using `[hsub]`. Establish `h0` using `hS 0 (by simp)`. Rewrite `h0` using `[map_sub, map_smul, coeff_zero_one, smul_eq_mul, mul_one, sub_eq_zero]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h0`.
+A detailed English derivation is pending.
 -/
 private lemma cc_subst_lemma_2 {σ τ : Type} [Finite σ] {a : σ → MvPowerSeries τ S}
     (ha0 : ∀ s, constantCoeff (a s) = 0) (f : MvPowerSeries σ S) :
@@ -131,13 +131,13 @@ private lemma cc_subst_lemma_2 {σ τ : Type} [Finite σ] {a : σ → MvPowerSer
   exact h0
 
 /- English proof (translation)
-Establish `ha : HasSubst a` using `⟨fun s => by rw [ha0 s]; exact IsNilpotent.zero, fun _ => Set.toFinite _⟩`. Establish `hR : Low 2 (f - ∑ s, coeff (Finsupp.single s 1) f • X s)`. Apply `low_two_of_lemma` to reduce the goal to its premises. Rewrite using `[← coeff_zero_eq_constantCoeff_apply, map_sub, map_sum]`. Simplify using `only [map_smul, coeff_zero_X, smul_zero, Finset.sum_const_zero, sub_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[coeff_zero_eq_constantCoeff_apply]`. Conclude with `hf0`. Introduce `v`. Simplify using `[coeff_X, Finsupp.single_left_inj Nat.one_ne_zero]`. Establish `hS` using `low_subst' (fun s => (low_one_iff _).2 (ha0 s)) hR`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsplit : subst a f = subst a (f - ∑ s, coeff (Finsupp.single s 1) f • X s) + ∑ s, coeff (Finsupp.single s 1) f • a s`. Rewrite using `[← coe_substAlgHom ha, map_sub, map_sum]`. Simplify using `only [map_smul]`. Simplify using `only [coe_substAlgHom, subst_X ha, sub_add_cancel]`. Rewrite using `[hsplit, map_add, hS (Finsupp.single w 1) (by simp), zero_add, map_sum]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_smul, smul_eq_mul]`.
+A detailed English derivation is pending.
 -/
 private lemma lin_subst_lemma_3 {σ τ : Type} [Fintype σ] {a : σ → MvPowerSeries τ S}
     (ha0 : ∀ s, constantCoeff (a s) = 0) {f : MvPowerSeries σ S} (hf0 : constantCoeff f = 0) (w : τ) :
@@ -163,23 +163,21 @@ private lemma lin_subst_lemma_3 {σ τ : Type} [Fintype σ] {a : σ → MvPowerS
   simp only [map_smul, smul_eq_mul]
 
 /- English proof (translation)
-Establish `hlin : ∀ i b : Fin d, coeff (Finsupp.single ((1 : Fin 2), b) 1) (G.F i) = if b = i then 1 else 0`. Introduce `i b`. Establish `hu` using `congrArg (coeff (Finsupp.single ((0 : Fin 1), b) 1)) (G.unit i)`. Establish `ha0 : ∀ p : Fin 2 × Fin d, constantCoeff ((![0, pt S d 0] : Fin 2 → Pt S 1 d) p.1 p.2) = 0`. Introduce and unpack `⟨a, j⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Apply the tactic sequence `fin_cases a <;> simp [ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ.pt]`. Express the relevant statement in the definitionally equal form `coeff _ (subst (fun p : Fin 2 × Fin d => (![0, pt S d 0] : Fin 2 → Pt S 1 d) p.1 p.2) (G.F i)) = _ at hu`. Rewrite `hu` using `[lin_subst_lemma_3 ha0 (G.const i), Fintype.sum_prod_type, Fin.sum_univ_two]`. Simplify `hu` using `[ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ.pt, coeff_X, Finsupp.single_left_inj Nat.one_ne_zero]`. Establish `hJ : ∀ i b : Fin d, constantCoeff (ReciprocityTheory.ChartRestriction.G.TB.LogPf.Jac G i b) = if i = b then 1 else 0`.
+Apply the first step, then apply the next step to every resulting obligation. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Introduce `i b`. Establish `ha0 : ∀ p : Fin 2 × Fin d, constantCoeff ((![pt S d 0, 0] : Fin 2 → Pt S 1 d) p.1 p.2) = 0`. Introduce and unpack `⟨a, j⟩`. Apply the tactic sequence `fin_cases a <;> simp [ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ.pt]`. Express the relevant statement in the definitionally equal form `constantCoeff (subst (fun p : Fin 2 × Fin d => (![pt S d 0, 0] : Fin 2 → Pt S 1 d) p.1 p.2) (pderiv S ((1 : Fin 2), b) (G.F i))) = _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Apply the first step, then apply the next step to every resulting obligation. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[← coeff_zero_eq_constantCoeff_apply, cc_subst_lemma_2 ha0, coeff_pderiv, zero_add, hlin i b]`. Distinguish the cases in `h : i = b`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h, Ne.symm h]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `hM : (ReciprocityTheory.ChartRestriction.G.TB.LogPf.JM G).map constantCoeff = 1`. Use extensionality with `i b`. Rewrite using `[Matrix.map_apply, Matrix.one_apply]`. Conclude with `hJ i b`. Establish `hdet : IsUnit (ReciprocityTheory.ChartRestriction.G.TB.LogPf.JM G).det`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[isUnit_iff_constantCoeff, RingHom.map_det, RingHom.mapMatrix_apply, hM, Matrix.det_one]`. Conclude with `isUnit_one`. Establish `hOm : (ReciprocityTheory.ChartRestriction.G.TB.LogPf.Om G).map constantCoeff = 1`. Establish `h1` using `congrArg (fun A : Matrix (Fin d) (Fin d) (MvPowerSeries (Fin 1 × Fin d) S) => A.map constantCoeff) (Matrix.mul_nonsing_inv _ hdet)`. Simplify using `only [Matrix.map_mul, hM, Matrix.one_mul, Matrix.map_one, map_zero, map_one] at h1`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Conclude with `h1`. Use extensionality with `i j`. Establish `hcoef : coeff (Finsupp.single ((0 : Fin 1), j) 1) (ReciprocityTheory.ChartRestriction.G.TB.LogPf.logOf G i) = constantCoeff (ReciprocityTheory.ChartRestriction.G.TB.LogPf.Om G i j)` using `by show algebraMap ℚ S (((Finsupp.degree (Finsupp.single ((0 : Fin 1), j) (1 : ℕ)) : ℕ) : ℚ)⁻¹) * _ = _`. Rewrite using `[Finset.sum_eq_single ((0 : Fin 1), j)]`. Simplify using `[coeff_zero_eq_constantCoeff_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `w _ hw`. Simplify using `[Finsupp.single_apply, Ne.symm hw]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Use `show coeff (Finsupp.single ((0 : Fin 1), j) 1) (ReciprocityTheory.ChartRestriction.G.TB.LogPf.logOf G i) = (1 : Matrix (Fin d) (Fin d) S) i j`.
-
-Rewrite using `[hcoef]`. Establish `h2 : ((ReciprocityTheory.ChartRestriction.G.TB.LogPf.Om G).map constantCoeff) i j = (1 : Matrix (Fin d) (Fin d) S) i j`. Rewrite using `[hOm]`. Rewrite `h2` using `[Matrix.map_apply]`. Conclude with `h2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dLin_logOf (G : FGLaw S d) : ReciprocityTheory.ChartRestriction.G.TB.dLin (fun i => ReciprocityTheory.ChartRestriction.G.TB.LogPf.logOf G i) = 1 := by
   have hlin : ∀ i b : Fin d, coeff (Finsupp.single ((1 : Fin 2), b) 1) (G.F i) = if b = i then 1 else 0 := by
@@ -234,7 +232,7 @@ theorem dLin_logOf (G : FGLaw S d) : ReciprocityTheory.ChartRestriction.G.TB.dLi
   exact h2
 
 /- English proof (translation)
-Rewrite using `[← coeff_zero_eq_constantCoeff_apply]`. Use `show algebraMap ℚ S (((0 : Fin 1 × Fin d →₀ ℕ).degree : ℚ)⁻¹) * _ = 0`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cc_logOf (G : FGLaw S d) (i : Fin d) : constantCoeff (ReciprocityTheory.ChartRestriction.G.TB.LogPf.logOf G i) = 0 := by
   rw [← coeff_zero_eq_constantCoeff_apply]
@@ -242,11 +240,11 @@ theorem cc_logOf (G : FGLaw S d) (i : Fin d) : constantCoeff (ReciprocityTheory.
   simp
 
 /- English proof (translation)
-Apply `low_two_of_lemma` to reduce the goal to its premises. Rewrite using `[map_sub, cc_logOf, constantCoeff_X, sub_zero]`. Introduce `w`. Take `⟨a, j⟩` from `w`. Establish `ha : a = 0` using `Subsingleton.elim a 0`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Substitute `ha` using the available equality. Establish `h : ReciprocityTheory.ChartRestriction.G.TB.dLin (fun i => ReciprocityTheory.ChartRestriction.G.TB.LogPf.logOf G i) i j = (1 : Matrix (Fin d) (Fin d) S) i j`. Rewrite using `[dLin_logOf G]`. Express the relevant statement in the definitionally equal form `coeff (Finsupp.single ((0 : Fin 1), j) 1) (ReciprocityTheory.ChartRestriction.G.TB.LogPf.logOf G i) = (1 : Matrix (Fin d) (Fin d) S) i j at h`. Rewrite using `[map_sub, coeff_X, h, Matrix.one_apply]`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hij, Ne.symm hij, Finsupp.single_left_inj Nat.one_ne_zero]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem low_logOf (G : FGLaw S d) (i : Fin d) :
     Low 2 (ReciprocityTheory.ChartRestriction.G.TB.LogPf.logOf G i - X ((0 : Fin 1), i)) := by
@@ -268,11 +266,11 @@ theorem low_logOf (G : FGLaw S d) (i : Fin d) :
     · simp [hij, Ne.symm hij, Finsupp.single_left_inj Nat.one_ne_zero]
 
 /- English proof (translation)
-Establish `hk : ∀ p : Fin 1 × Fin d, Low 1 (![pt S d b] p.1 p.2)`. Introduce `p`. Rewrite using `[low_one_iff]`. Simplify using `[ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ.pt]`. Establish `hk0 : ∀ p : Fin 1 × Fin d, constantCoeff (![pt S d b] p.1 p.2) = 0` using `fun p => (low_one_iff _).1 (hk p)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `ha : HasSubst (fun p : Fin 1 × Fin d => ![pt S d b] p.1 p.2)` using `⟨fun s => by rw [hk0 s]; exact IsNilpotent.zero, fun _ => Set.toFinite _⟩`. Establish `e1 : CIndFrFix.lg G b i - X (b, i) =`. Substitute `(fun p : Fin 1 × Fin d => ![pt S d b] p.1 p.2) (ReciprocityTheory.ChartRestriction.G.TB.LogPf.logOf G i - X ((0 : Fin 1), i)) := by` using the available equality. Rewrite using `[← coe_substAlgHom ha, map_sub, coe_substAlgHom, subst_X ha]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[e1]`. Conclude with `low_subst' hk (low_logOf G i)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem low_lg (G : FGLaw S d) (b : Fin 2) (i : Fin d) :
     Low 2 (CIndFrFix.lg G b i - X (b, i)) := by
@@ -292,18 +290,18 @@ theorem low_lg (G : FGLaw S d) (b : Fin 2) (i : Fin d) :
   exact low_subst' hk (low_logOf G i)
 
 /- English proof (translation)
-Establish `h` using `low_add (low_mono (by norm_num) (low_lg G b i)) ((low_one_iff (X (b, i))).2 (constantCoeff_X _))`. Rewrite `h` using `[sub_add_cancel]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem log_low_order_one (G : FGLaw S d) (b : Fin 2) (i : Fin d) : Low 1 (CIndFrFix.lg G b i) := by
   have h := low_add (low_mono (by norm_num) (low_lg G b i)) ((low_one_iff (X (b, i))).2 (constantCoeff_X _))
   rwa [sub_add_cancel] at h
 
 /- English proof (translation)
-Establish `hB0 : constantCoeff B = 0` using `(low_one_iff _).1 (low_mono (by norm_num) hB2)`. Establish `hB : PowerSeries.HasSubst B` using `PowerSeries.HasSubst.of_constantCoeff_zero hB0`. Establish `hexp : PowerSeries.exp S = 1 + PowerSeries.X + PowerSeries.X ^ 2 * PowerSeries.mk (fun n => algebraMap ℚ S (1 / ((n + 2).factorial : ℚ)))`. Use extensionality with `n`. Apply the tactic sequence `rcases n with _ | _ | n <;> simp [PowerSeries.coeff_X_pow_mul', PowerSeries.coeff_X, PowerSeries.coeff_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[hexp, ← PowerSeries.coe_substAlgHom hB, map_add, map_add, map_mul, map_pow, map_one, PowerSeries.coe_substAlgHom, PowerSeries.subst_X hB]`. Establish `h4 : Low (2 + 2 + 0) (B ^ 2 * PowerSeries.subst B (PowerSeries.mk (fun n => algebraMap ℚ S (1 / ((n + 2).factorial : ℚ)))))`. Rewrite using `[pow_two]`. Conclude with `low_mul (low_mul hB2 hB2) (low_zero _)`. Establish `h3` using `low_mono (by norm_num : 3 ≤ 2 + 2 + 0) h4`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `h3 using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private lemma exp_split_lemma_4 {σ : Type} {B : MvPowerSeries σ S} (hB2 : Low 2 B) :
     Low 3 (PowerSeries.subst B (PowerSeries.exp S) - 1 - B) := by
@@ -324,33 +322,31 @@ private lemma exp_split_lemma_4 {σ : Type} {B : MvPowerSeries σ S} (hB2 : Low 
   ring
 
 /- English proof (translation)
-Establish `hB2 : Low 2 (CIndFrFix.bilL G c)`. Unfold `CIndFrFix.bilL`. Conclude with `low_sum _ (fun i _ => low_sum _ (fun l _ => low_smul _ (low_mul (log_low_order_one G 0 i) (log_low_order_one G 1 l))))`. Establish `hBQ : Low 3 (CIndFrFix.bilL G c - ∑ i, ∑ l, c i l • (X ((0 : Fin 2), i) * X ((1 : Fin 2), l)))`. Unfold `CIndFrFix.bilL`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Finset.sum_sub_distrib]`. Apply `low_sum` to reduce the goal to its premises. Introduce `i _`. Rewrite using `[← Finset.sum_sub_distrib]`. Apply `low_sum` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `l _`. Rewrite using `[← smul_sub]`. Apply `low_smul` to reduce the goal to its premises. Establish `key : Low 3 ((CIndFrFix.lg G (0 : Fin 2) i - X ((0 : Fin 2), i)) * CIndFrFix.lg G (1 : Fin 2) l + X ((0 : Fin 2), i) * (CIndFrFix.lg G (1 : Fin 2) l - X ((1 : Fin 2), l)))` using `low_add (low_mul (low_lg G 0 i) (log_low_order_one G 1 l)) (low_mul ((low_one_iff _).2 (constantCoeff_X _)) (low_lg G 1 l))`. Use `key using 1` and compare the differences between its conclusion and the goal.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hcoe : ((1 + ∑ i, ∑ l, MvPolynomial.C (c i l) * (MvPolynomial.X ((0 : Fin 2), i) * MvPolynomial.X ((1 : Fin 2), l)) : MvPolynomial (Fin 2 × Fin d) S) : MvPowerSeries (Fin 2 × Fin d) S) = 1 + ∑ i, ∑ l, c i l • (X ((0 : Fin 2), i) * X ((1 : Fin 2), l))`. Rewrite using `[← MvPolynomial.coeToMvPowerSeries.ringHom_apply, map_add, map_one, map_sum]`. Simplify using `only [map_sum, map_mul, MvPolynomial.coeToMvPowerSeries.ringHom_apply, MvPolynomial.coe_C, MvPolynomial.coe_X, MvPowerSeries.smul_eq_C_mul]`. Establish `hdiff : Low 3 (CIndFrFix.expP (CIndFrFix.bilL G c) - ((1 + ∑ i, ∑ l, MvPolynomial.C (c i l) * (MvPolynomial.X ((0 : Fin 2), i) * MvPolynomial.X ((1 : Fin 2), l)) : MvPolynomial (Fin 2 × Fin d) S) : MvPowerSeries (Fin 2 × Fin d) S))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hcoe]`. Establish `h1 : Low 3 (CIndFrFix.expP (CIndFrFix.bilL G c) - 1 - CIndFrFix.bilL G c)` using `exp_split_lemma_4 hB2`. Use `low_add h1 hBQ using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Establish `hmem : ∀ e : Fin 2 × Fin d →₀ ℕ, e ∈ degLE 2 ↔ e.degree ≤ 2`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `e`. Simplify using `only [degLE, Finset.mem_filter, Finset.mem_image, Finset.mem_univ, true_and]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, h⟩`. Conclude with `h`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `h`. Use `⟨⟨fun i => ⟨e i, ?_⟩, ?_⟩, h⟩` and prove the remaining obligations. Establish `hle : e i ≤ e.degree` using `by show e i ≤ ∑ j ∈ e.support, e j`. Distinguish the cases in `hi : i ∈ e.support`. Conclude with `Finset.single_le_sum (f := fun j => e j) (fun _ _ => Nat.zero_le _) hi`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Establish `h0 : e i = 0` using `by simpa using hi`. Rewrite using `[h0]`. Conclude with `Nat.zero_le _`. Use linear arithmetic over natural numbers and integers. Use extensionality with `i`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `hpt : ∀ (g : MvPowerSeries (Fin 2 × Fin d) S) (e : Fin 2 × Fin d →₀ ℕ), MvPolynomial.coeff e (psTrunc 2 g) = if e.degree ≤ 2 then coeff e g else 0`. Introduce `g e`. Rewrite using `[psTrunc, MvPolynomial.coeff_sum]`. Simplify using `only [MvPolynomial.coeff_monomial, Finset.sum_ite_eq', Finset.sum_ite_eq]`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Distinguish the cases in `h : e.degree ≤ 2`. Rewrite using `[if_pos ((hmem e).2 h), if_pos h]`. Rewrite using `[if_neg (fun h' => h ((hmem e).1 h')), if_neg h]`. Establish `hXX : ∀ (a b : Fin 2 × Fin d) (e : Fin 2 × Fin d →₀ ℕ), 2 < e.degree → coeff e (X a * X b : MvPowerSeries (Fin 2 × Fin d) S) = 0`. Introduce `a b e he`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MvPowerSeries.X, MvPowerSeries.X, monomial_mul_monomial, coeff_monomial, if_neg]`. Introduce and unpack `rfl`. Establish `hdeg : (Finsupp.single a 1 + Finsupp.single b 1 : Fin 2 × Fin d →₀ ℕ).degree = 2` using `by show (Finsupp.single a 1 + Finsupp.single b 1 : Fin 2 × Fin d →₀ ℕ).sum (fun _ k => k) = 2`. Rewrite using `[Finsupp.sum_add_index' (fun _ => rfl) (fun _ _ _ => rfl), Finsupp.sum_single_index rfl, Finsupp.sum_single_index rfl]`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `e`. Rewrite using `[hpt]`. Distinguish the cases in `hd : e.degree ≤ 2`. Rewrite using `[if_pos hd, ← MvPolynomial.coeff_coe]`. Establish `h` using `hdiff e (by omega)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[map_sub, sub_eq_zero]`. Then use the resulting hypothesis. Rewrite using `[if_neg hd, ← MvPolynomial.coeff_coe, hcoe, map_add, map_sum]`. Establish `h2 : 2 < e.degree` using `by omega`. Establish `hz : ∀ a b : Fin 2 × Fin d, coeff e (X a * X b : MvPowerSeries (Fin 2 × Fin d) S) = 0` using `fun a b => hXX a b e h2`. Simplify using `only [map_sum, map_smul, hz, smul_zero, Finset.sum_const_zero, add_zero]`.
-
-Rewrite using `[coeff_one, if_neg]`. Introduce and unpack `rfl`. Simplify using `at hd`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem psTrunc_two_twist (G : FGLaw S d) (c : Fin d → Fin d → S) :
     psTrunc 2 (CIndFrFix.expP (CIndFrFix.bilL G c)) =

@@ -23,11 +23,11 @@ variable {D : D7} {p : ℕ} [Fact p.Prime] {N : ℕ} {rk : Emb D p → ℕ} (M :
   (rt : Bool × Rt D.what₂.Tau N → M.Z.LB)
 
 /- English proof (translation)
-Simplify using `only [he, Finset.sum_mul, map_sum, capDeg_divP_pow hc]`. Rewrite using `[← map_sum, ← Finset.sum_mul]`. Use `congr 2`. Establish `e1 : ∀ F : D.what₂.Tau → MvPolynomial (Vm D.what₂.Tau N) ℚ, evC M rt (∑ τ, F τ) = ∑ τ, evC M rt (F τ)` using `fun F => by simp [evC, evQ]`. Establish `e2 : ∀ F G : MvPolynomial (Vm D.what₂.Tau N) ℚ, evC M rt (F + G) = evC M rt F + evC M rt G` using `fun F G => by simp [evC, evQ]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e1, e.sum_comp (fun r => ((if (r.2 : ℕ) < j then (1 : ℚ) else -1) • M.Z.c1 (rt (false, r))) ^ k), Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[e2, evC_liePow_inl, evC_liePow_inr, sum_split j]`. Use `congr 1`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[if_pos (Finset.mem_filter.1 hi).2, one_smul]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Rewrite using `[if_neg (not_lt.2 (Finset.mem_filter.1 hi).2), neg_one_smul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem lieW_pow_divP (hc : Comm M) (j : ℕ) (e : Fin (D.R.f * N) ≃ Rt D.what₂.Tau N)
     (V : Fin (D.R.f * N) → M.Z.VDiv)
@@ -53,9 +53,9 @@ theorem lieW_pow_divP (hc : Comm M) (j : ℕ) (e : Fin (D.R.f * N) ≃ Rt D.what
     rw [if_neg (not_lt.2 (Finset.mem_filter.1 hi).2), neg_one_smul]
 
 /- English proof (translation)
-Take `⟨e, V, he⟩` from `hg`. Introduce `m hm G hG`. Establish `hH : (∑ τ, (liePow (N` using `N) j 1 (Sum.inl τ) + liePow j 1 (Sum.inr τ))).IsWeightedHomogeneous (wt D.what₂.Tau N) 1 := IsWeightedHomogeneous.sum _ _ _ fun τ _ => (homog_liePow _ _ (Sum.inl τ)).add (homog_liePow _ _ (Sum.inr τ))`. Establish `hHG` using `hH.mul hG`. Rewrite `hHG` using `[show 1 + m = dimFl D.what₂.Tau N by omega]`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `key` using `hC _ hHG`. Rewrite `key` using `[evC_mul, ← lieW_pow_divP M rt hc j e V he 1]`. Establish `e3 : collapse D N (toR (∑ τ, (liePow (N` using `N) j 1 (Sum.inl τ) + liePow j 1 (Sum.inr τ)))) = chLieA D N j 1 := by`. Simplify using `only [chLieA, chLie_eq, toR, map_sum, map_add, Nat.factorial_one, Nat.cast_one, inv_one, map_one, one_mul]`. Rewrite using `[chDiv, Nat.factorial_one, Nat.cast_one, div_one, key, ← e3, ← map_mul, toR, toR, toR, map_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem consW_of (j : ℕ) (chern : MvPolynomial (Rt D.what₂.Tau N) ℝ →ₗ[ℝ] ℝ) (hc : Comm M)
     (hg : ∃ (e : Fin (D.R.f * N) ≃ Rt D.what₂.Tau N) (V : Fin (D.R.f * N) → M.Z.VDiv), ∀ l,
@@ -75,7 +75,7 @@ theorem consW_of (j : ℕ) (chern : MvPolynomial (Rt D.what₂.Tau N) ℝ →ₗ
   rw [chDiv, Nat.factorial_one, Nat.cast_one, div_one, key, ← e3, ← map_mul, toR, toR, toR, map_mul]
 
 /- English proof (translation)
-Introduce `D O hO p _ W hW jc hP z`. Conclude with `consW_of (mdlOf z jc) (rootOf z jc) O.Y.j O.Y.chern (GlobalTheory.VertCommAdm.comm_mdlOf D O.A O.N O.j O.S O.κ p Fact.out W hW z jc) (GlobalTheory.ShFam.Pad.LieGen.lieW_gen D O.A O.N O.j O.S O.κ p Fact.out W hW z jc) (hC D O hO p W hW jc hP z)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem consWSt_of (hC : AtAll fun _ O _ _ _ _ jc z => Cons (mdlOf z jc) (rootOf z jc) O.Y.chern) : ConsWSt := by
   intro D O hO p _ W hW jc hP z
@@ -84,7 +84,7 @@ theorem consWSt_of (hC : AtAll fun _ O _ _ _ _ jc z => Cons (mdlOf z jc) (rootOf
     (GlobalTheory.ShFam.Pad.LieGen.lieW_gen D O.A O.N O.j O.S O.κ p Fact.out W hW z jc) (hC D O hO p W hW jc hP z)
 
 /- English proof (translation)
-Introduce `h1 h2 h3 h4 h5` and use `consWSt_of (GlobalTheory.T.chern_model_root_consistent h1 h2 h3 h4 h5)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem consWSt : GlobalTheory.CovTop.Hypotheses2 → GlobalTheory.CovHt.HypothesesH → GlobalTheory.Published.RegularAlteration → GlobalTheory.Published.ScholzeWeinsteinB →
     GlobalTheory.Published.PrismaticDieudonnePerfd → ConsWSt :=

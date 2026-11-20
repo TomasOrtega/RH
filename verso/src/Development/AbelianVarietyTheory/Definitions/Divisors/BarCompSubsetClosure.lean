@@ -24,7 +24,7 @@ open GlobalTheory.FlagTan (dimFlag psiSet TIx IsTanFrame)
 open GlobalTheory.CompHt (hodgeWt uPrime)
 
 /- English proof (translation)
-Establish `e : (fun k => ∑ j, f.w j k • f.b j) = (f.b.equivFun.symm.restrictScalars (𝓞 F)) ∘ f.w.col`. Use function extensionality and compare the values at `fun k => (f.b.equivFun_symm_apply _).symm`. Use `conv_rhs => rw [← f.isFrame.span, e, Set.range_comp]`. Rewrite using `[Submodule.span_image_linearEquiv, Submodule.mem_map_equiv]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem LatFrame.mem_span_iff {F V : Type} [Field F] [NumberField F] [AddCommGroup V] [Module F V] [Module (𝓞 F) V]
     [IsScalarTower (𝓞 F) F V] {Nm : (F →+* ℂ) → V → ℝ} {M : Submodule (𝓞 F) V} (f : LatFrame Nm M) (x : V) :
@@ -48,7 +48,7 @@ def floorGaps (a : ℕ) (n : ℤ) (v : Fin N → ℤ) : Fin N → ℤ := ofGaps 
 def remGaps (a : ℕ) (n : ℤ) (v : Fin N → ℤ) : Fin N → ℤ := ofGaps a fun k => gap v k - n * (gap v k / n)
 
 /- English proof (translation)
-Use `j.2` as an intermediate fact. Rewrite using `[gap, dif_pos (by omega)]`. Conclude with `congrArg (fun x => v i - v x) (Fin.ext h.symm)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gap_eq (v : Fin N → ℤ) {i j : Fin N} (h : (j : ℕ) = i + 1) : gap v i = v i - v j := by
   have := j.2
@@ -56,18 +56,18 @@ theorem gap_eq (v : Fin N → ℤ) {i j : Fin N} (h : (j : ℕ) = i + 1) : gap v
   exact congrArg (fun x => v i - v x) (Fin.ext h.symm)
 
 /- English proof (translation)
-The claim follows from `sub_self _`.
+A detailed English derivation is pending.
 -/
 theorem ofGaps_anchor (g : ℕ → ℤ) (i : Fin N) : ofGaps i g i = 0 := sub_self _
 
 /- English proof (translation)
-Simplify using `[gap, h, ofGaps, Finset.sum_range_succ]`.
+Simplify using the standard rewrite rules.
 -/
 theorem gap_ofGaps (a : ℕ) (g : ℕ → ℤ) {k : ℕ} (h : k + 1 < N) : gap (ofGaps a g : Fin N → ℤ) k = g k := by
   simp [gap, h, ofGaps, Finset.sum_range_succ]
 
 /- English proof (translation)
-Establish `key : ∀ (n : ℕ) (h : n < N), ∑ k ∈ Finset.range n, gap v k = v ⟨0, by omega⟩ - v ⟨n, h⟩` using `fun n => by`. Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih => intro h; rw [Finset.sum_range_succ, ih (by omega), gap, dif_pos h]; ring`. Rewrite using `[ofGaps, key a a.2, key i i.2]`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -80,7 +80,7 @@ theorem ofGaps_gap (v : Fin N → ℤ) (a i : Fin N) : ofGaps a (gap v) i = v i 
   ring
 
 /- English proof (translation)
-Rewrite using `[← ofGaps_gap]`. Simplify using `only [floorGaps, remGaps, ofGaps, Finset.sum_sub_distrib, ← Finset.mul_sum]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem floorGaps_add_remGaps (n : ℤ) (v : Fin N → ℤ) (a i : Fin N) :
     n * floorGaps a n v i + remGaps a n v i = v i - v a := by
@@ -89,7 +89,7 @@ theorem floorGaps_add_remGaps (n : ℤ) (v : Fin N → ℤ) (a i : Fin N) :
   ring
 
 /- English proof (translation)
-Distinguish the cases in `h : k + 1 < N`. Rewrite using `[remGaps, gap_ofGaps _ _ h, ← Int.emod_def]`. Conclude with `⟨Int.emod_nonneg _ hn.ne', Int.emod_lt_of_pos _ hn⟩`. Rewrite using `[gap, dif_neg h]`. Conclude with `⟨le_rfl, hn⟩`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem gap_remGaps (a : ℕ) {n : ℤ} (hn : 0 < n) (v : Fin N → ℤ) (k : ℕ) :
     0 ≤ gap (remGaps a n v) k ∧ gap (remGaps a n v) k < n := by
@@ -142,44 +142,44 @@ def ub : AllWt.Weight Dw := fun τ => floorGaps P.a (dimFlag Dw + 3) (P.u₁ τ)
 def wt (j : ℕ) : AllWt.Weight Dw := P.uc + j • P.u₁
 
 /- English proof (translation)
-Rewrite using `[wt, uc]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem kap_add (j : ℕ) : FlagTan.kap Dw + (P.u₂ + dimFlag Dw • P.u₁ + j • P.u₁) = P.wt j := by
   rw [wt, uc]; abel
 
 /- English proof (translation)
-Rewrite using `[wt, wt, succ_nsmul]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem u₁_add_wt (j : ℕ) : P.u₁ + P.wt j = P.wt (j + 1) := by
   rw [wt, wt, succ_nsmul]; abel
 
 /- English proof (translation)
-The claim follows from `gap_ofGaps _ _ h`.
+A detailed English derivation is pending.
 -/
 theorem gap_u₁ (τ : Psi H) {k : ℕ} (h : k + 1 < Dw.p + Dw.q) :
     gap (P.u₁ τ) k = gap ((P.uMinus - FlagTan.kap Dw) τ) k / P.T₁ := gap_ofGaps _ _ h
 
 /- English proof (translation)
-The claim follows from `(gap_remGaps P.a (n := P.T₁) (by unfold T₁; positivity) _ k).imp_right Int.lt_add_one_iff.1`.
+A detailed English derivation is pending.
 -/
 theorem gap_rem (τ : Psi H) (k : ℕ) : 0 ≤ gap (P.rem τ) k ∧ gap (P.rem τ) k ≤ P.T + dimFlag Dw :=
   (gap_remGaps P.a (n := P.T₁) (by unfold T₁; positivity) _ k).imp_right Int.lt_add_one_iff.1
 
 /- English proof (translation)
-The claim follows from `gap_ofGaps _ _ h`.
+A detailed English derivation is pending.
 -/
 theorem gap_ub (τ : Psi H) {k : ℕ} (h : k + 1 < Dw.p + Dw.q) :
     gap (P.ub τ) k = gap (P.u₁ τ) k / (dimFlag Dw + 3) := gap_ofGaps _ _ h
 
 /- English proof (translation)
-Simplify using `[u₂, u₁, rem, ub, floorGaps, remGaps, ← h, ofGaps_anchor]`.
+Simplify using the standard rewrite rules.
 -/
 theorem anchored (τ : Psi H) {i : Fin (Dw.p + Dw.q)} (h : (i : ℕ) = P.a) :
     P.u₁ τ i = 0 ∧ P.rem τ i = 0 ∧ P.u₂ τ i = 0 ∧ P.ub τ i = 0 := by
   simp [u₂, u₁, rem, ub, floorGaps, remGaps, ← h, ofGaps_anchor]
 
 /- English proof (translation)
-Use `floorGaps_add_remGaps P.T₁ ((P.uMinus - FlagTan.kap Dw) τ) a i` as an intermediate fact. Rewrite `this` using `[h]`. Simplify using `only [wt, uc, u₂, u₁, rem, T₁, Pi.add_apply, Pi.smul_apply, Pi.sub_apply] at this ⊢`. Simplify using `only [nsmul_eq_mul]`. Take the linear combination `-this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem uMinus_eq (τ : Psi H) {a : Fin (Dw.p + Dw.q)} (h : (a : ℕ) = P.a) (i : Fin (Dw.p + Dw.q)) :
     P.uMinus τ i = P.wt P.T τ i + (P.uMinus τ a - FlagTan.kap Dw τ a) := by
@@ -190,7 +190,7 @@ theorem uMinus_eq (τ : Psi H) {a : Fin (Dw.p + Dw.q)} (h : (a : ℕ) = P.a) (i 
   linear_combination -this
 
 /- English proof (translation)
-Simplify using `only [gap, dif_pos h, uMinus, hodgeWt, CompHt.barWt, FlagTan.kap, Pi.sub_apply, Pi.smul_apply, smul_eq_mul]`. Apply the tactic sequence `split_ifs <;> push_cast <;> omega`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem gap_uMinus_sub_kap (τ : Psi H) {k : ℕ} (h : k + 1 < Dw.p + Dw.q) : gap ((P.uMinus - FlagTan.kap Dw) τ) k =
     gap (P.u τ) k + if k + 1 = Dw.p then -P.c₀ - (2 * ((Dw.p + Dw.q : ℕ) : ℤ) - 2) else 2 := by
@@ -200,7 +200,7 @@ theorem gap_uMinus_sub_kap (τ : Psi H) {k : ℕ} (h : k + 1 < Dw.p + Dw.q) : ga
 end WtPar
 
 /- English proof (translation)
-Rewrite using `[CompHt.dimFlag, Formalism.DegreeFormula.dimFl, dimFlag, Nat.choose_two_right, ← (FlagTan.isHalf_psiSet H).card]`. Use `congr 1`. Conclude with `Fintype.card_of_subtype _ fun τ => by simp [psiSet]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem dimFlag_eq (Dw : Datum H) : CompHt.dimFlag Dw = dimFlag Dw := by
   classical
@@ -233,12 +233,12 @@ def flagOpen : X.YY.Opens := X.π ⁻¹ᵁ LogKS.interior Y
 instance isOpenImmersion_inc : IsOpenImmersion X.inc := inferInstanceAs (IsOpenImmersion (pullback.fst X.π Y.j))
 
 /- English proof (translation)
-The claim follows from `Scheme.Hom.opensRange_pullbackFst _ _`.
+A detailed English derivation is pending.
 -/
 theorem opensRange_inc : X.inc.opensRange = flagOpen X := Scheme.Hom.opensRange_pullbackFst _ _
 
 /- English proof (translation)
-Introduce `z _` and use `(opensRange_inc X).le ⟨z, rfl⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem top_le_inc : ⊤ ≤ X.inc ⁻¹ᵁ flagOpen X := fun z _ => (opensRange_inc X).le ⟨z, rfl⟩
 
@@ -247,9 +247,9 @@ instance isReduced_flag : IsReduced X.YY :=
   isReduced_of_isReduced_stalk _
 
 /- English proof (translation)
-Establish `: IsIso (spMap (RingHom.id c.F))` using `by show IsIso (Spec.map (𝟙 _)) infer_instance`. Set `r` to `pullback.fst (X.π ≫ Y.s) (spMap (RingHom.id c.F))`. Use `(r.surjective.denseRange.dense_image r.continuous X.dense).mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨z, ⟨x, hx⟩, rfl⟩`. Use `⟨x, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Model.j, Scheme.Hom.comp_apply, hx, ← Scheme.Hom.comp_apply, ← Scheme.Hom.comp_apply, FlagMod.genMap, pullback.lift_fst]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem dense_flagOpen : Dense (flagOpen X : Set X.YY) := by
   have : IsIso (spMap (RingHom.id c.F)) := by
@@ -263,7 +263,7 @@ theorem dense_flagOpen : Dense (flagOpen X : Set X.YY) := by
     pullback.lift_fst]
 
 /- English proof (translation)
-Rewrite using `[← Category.assoc, (X.lies_ptY P).1, Category.assoc, Model.j, Category.assoc, pullback.condition, ← Category.assoc Y.jQ, Y.jQ_over, ← Category.assoc, FlagMod.frX_snd]`. Conclude with `(congrArg (_ ≫ ·) (Spec.map_id _)).trans (Category.comp_id _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ptY_str {S : Type} [CommRing S] [Algebra c.F S] (P : FrPt Xo c S) :
     X.ptY P ≫ flagStr X = spMap (algebraMap c.F S) := by
@@ -289,7 +289,7 @@ variable {X} {e : Ix Dw → ℤ}
 def toSecO (m : H0 (flagStr X) (X.LL e) (flagOpen X)) : X.SecO e := toSec (H0.pull X.inc (top_le_inc X) m)
 
 /- English proof (translation)
-The claim follows from `(val_ofSec (p := X.inc ≫ flagStr X) (O := ⊤) w (pIdx (X.LL e) X.inc k) le_top (FlagCover.le_pull hz) _).symm.trans ((congrArg _ (ofSec_toSec _)).trans (val_pull _ _ _ _ _ _ hO hz m))`.
+A detailed English derivation is pending.
 -/
 theorem coef_toSecO {S : Type} [CommRing S] (m : H0 (flagStr X) (X.LL e) (flagOpen X)) (k : X.F.J) (w : Sp S ⟶ X.Yo)
     (hz : ⊤ ≤ (w ≫ X.inc) ⁻¹ᵁ X.F.U k) (hO : ⊤ ≤ (w ≫ X.inc) ⁻¹ᵁ flagOpen X) :
@@ -298,7 +298,7 @@ theorem coef_toSecO {S : Type} [CommRing S] (m : H0 (flagStr X) (X.LL e) (flagOp
     ((congrArg _ (ofSec_toSec _)).trans (val_pull _ _ _ _ _ _ hO hz m))
 
 /- English proof (translation)
-The claim follows from `(Equiv.ofBijective _ bijective_ofSec_top).symm.bijective.comp ((isoOver_of_isOpenImmersion X.inc (opensRange_inc X).ge).bijective_pull (X.F.isLB_LL e) _ le_top)`.
+A detailed English derivation is pending.
 -/
 theorem bijective_toSecO : Function.Bijective (toSecO : H0 (flagStr X) (X.LL e) (flagOpen X) → X.SecO e) :=
   (Equiv.ofBijective _ bijective_ofSec_top).symm.bijective.comp
@@ -324,7 +324,7 @@ def ruleOf : H0 (flagStr X) (X.LL e) (flagOpen X) →ₗ[c.F] secZ Xo c e where
     exact evalPt_algX_of_eq _ _ (by rw [X.pt_inc]; exact ptY_str X P') _ _ a
 
 /- English proof (translation)
-Use `X.isReduced_Yo Function.injective_id fun x => ⟨x, 1, one_ne_zero, mul_one x⟩` as an intermediate fact. Use `⟨fun m m' h => bijective_toSecO.1 (FlagCover.toRule_injective (congrArg Subtype.val h)), fun f => ?_⟩` and prove the remaining obligations. Take `⟨s, hs⟩` from `FlagCover.exists_toRule_eq (X := X) f.2`. Take `⟨m, rfl⟩` from `bijective_toSecO.2 s`. Conclude with `⟨m, Subtype.ext hs⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem bijective_ruleOf : Function.Bijective (ruleOf X e) := by
   have := X.isReduced_Yo Function.injective_id fun x => ⟨x, 1, one_ne_zero, mul_one x⟩
@@ -341,7 +341,7 @@ def secOf : secZ Xo c e ≃ₗ[c.F] H0 (flagStr X) (X.LL e) (flagOpen X) :=
 open Classical in
 
 /- English proof (translation)
-Take `rfl : z = X.pt P ≫ X.inc` from `(FlagCover.eq_ptY (hQ.lies.frBor ht)).trans (X.pt_inc P).symm`. Take `⟨m, rfl⟩` from `(secOf X e).symm.surjective f`. Rewrite using `[LinearEquiv.apply_symm_apply, ← coef_toSecO, ← FlagCover.val_eq _ hQ ht]`. Conclude with `FlagCover.evR_toRule_of_isReduced _ P`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evR_eq_val_secOf {S : Type} [CommRing S] [Algebra c.F S] [_root_.IsReduced S] (f : secZ Xo c e)
     {P Q : FrPt Xo c S} {k : X.F.J} {z : Sp S ⟶ X.YY} {hz : ⊤ ≤ z ⁻¹ᵁ X.F.U k} (hO : ⊤ ≤ z ⁻¹ᵁ flagOpen X)
@@ -353,9 +353,9 @@ theorem evR_eq_val_secOf {S : Type} [CommRing S] [Algebra c.F S] [_root_.IsReduc
   exact FlagCover.evR_toRule_of_isReduced _ P
 
 /- English proof (translation)
-Establish `hr : Set.range z ⊆ Set.range X.inc`. Introduce and unpack `_ ⟨s, rfl⟩`. Conclude with `(opensRange_inc X).ge (hO (Set.mem_univ s))`. Take `⟨w, rfl⟩ : ∃ w, w ≫ X.inc = z` from `⟨_, IsOpenImmersion.lift_fac X.inc z hr⟩`. Take `⟨a, h⟩` from `FlagCover.exists_alg_chartFr w`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨a, fun k hz => (h k hz).imp fun _ => And.left⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_chartFr {S : Type} [CommRing S] (z : Sp S ⟶ X.YY) (hO : ⊤ ≤ z ⁻¹ᵁ flagOpen X) :
     ∃ _ : Algebra c.F S, ∀ (k : X.F.J) (hz : ⊤ ≤ z ⁻¹ᵁ X.F.U k), ∃ Q : FrPt Xo c S, X.F.ChartFr k z hz Q := by
@@ -366,11 +366,11 @@ theorem exists_chartFr {S : Type} [CommRing S] (z : Sp S ⟶ X.YY) (hO : ⊤ ≤
   exact ⟨a, fun k hz => (h k hz).imp fun _ => And.left⟩
 
 /- English proof (translation)
-Use `LB.sec_ext fun k => FlagMod.ext_ev_field fun L _ z hz => ?_` and prove the remaining obligations. Establish `hO` using `FlagMod.le_preimage_mono inf_le_left hz`. Establish `hk` using `FlagMod.le_preimage_mono inf_le_right hz`. Take `⟨_, hQ⟩` from `exists_chartFr z hO`. Take `⟨Q, hQ⟩` from `hQ k hk`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hb` using `(GlobalTheory.Reg.BorelGroupoid.frBor_groupoid E H Dw l Xo c L).1 Q`. Establish `a` using `evR_eq_val_secOf f hO hQ hb`. Establish `a₁` using `evR_eq_val_secOf f₁ hO hQ hb`. Establish `a₂` using `evR_eq_val_secOf f₂ hO hQ hb`. Simplify using `only [Pi.one_apply, one_zpow, Finset.prod_const_one, Units.val_one, one_mul] at a a₁ a₂`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `a.symm.trans (Eq.trans ?_ (((commonLL X).addChart h).val_mul _ _ k z hO hk hk hk).symm)` and prove the remaining obligations. Rewrite using `[hf]`. Conclude with `(evalAt_mul (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) _ _ Q).trans (congrArg₂ (· * ·) a₁ a₂)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem secOf_mul {e₁ e₂ : Ix Dw → ℤ} (h : e₁ + e₂ = e) (f₁ : secZ Xo c e₁) (f₂ : secZ Xo c e₂) (f : secZ Xo c e)
     (hf : f.1 = f₁.1 * f₂.1) : secOf X e f = ((commonLL X).addChart h).mul (secOf X e₁ f₁) (secOf X e₂ f₂) := by
@@ -400,7 +400,7 @@ variable (Y) in
 def barComp : Y.X.Opens := ⟨(closure (Y.j '' (Z : Set (Xo.XF c))ᶜ))ᶜ, isClosed_closure.isOpen_compl⟩
 
 /- English proof (translation)
-Establish `h` using `Y.j.isOpenEmbedding.isOpenMap.preimage_closure_image Y.j.isOpenEmbedding.injective Y.j.continuous _ (TrivOrderTieCompare.isClopen_comp Z).compl.isClosed`. Conclude with `(not_congr (Set.ext_iff.1 h x)).trans not_not`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem j_mem_barComp (x : Xo.XF c) : Y.j x ∈ barComp Y Z ↔ x ∈ (Z : Set (Xo.XF c)) := by
   have h := Y.j.isOpenEmbedding.isOpenMap.preimage_closure_image Y.j.isOpenEmbedding.injective Y.j.continuous _
@@ -408,7 +408,7 @@ theorem j_mem_barComp (x : Xo.XF c) : Y.j x ∈ barComp Y Z ↔ x ∈ (Z : Set (
   exact (not_congr (Set.ext_iff.1 h x)).trans not_not
 
 /- English proof (translation)
-Introduce `y hy` and use `by have h : y ∈ closure (Set.range Y.j) := LogKS.dense_interior Y y rw [← Set.image_univ, ← Set.union_compl_self (Z : Set (Xo.XF c)), Set.image_union, closure_union] at h exact h.resolve_right hy`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem barComp_subset_closure : (barComp Y Z : Set Y.X) ⊆ closure (Y.j '' (Z : Set (Xo.XF c))) := fun y hy => by
   have h : y ∈ closure (Set.range Y.j) := LogKS.dense_interior Y y
@@ -428,13 +428,13 @@ def bd₀ : Closeds (Y₀ X Z) := (U₀ X Z).compl
 instance isReduced_Y₀ : IsReduced (Y₀ X Z) := isReduced_of_isOpenImmersion (inc₀ X Z)
 
 /- English proof (translation)
-The claim follows from `(dense_flagOpen X).preimage (inc₀ X Z).isOpenEmbedding.isOpenMap`.
+A detailed English derivation is pending.
 -/
 theorem dense_U₀ : Dense (U₀ X Z : Set (Y₀ X Z)) :=
   (dense_flagOpen X).preimage (inc₀ X Z).isOpenEmbedding.isOpenMap
 
 /- English proof (translation)
-Rewrite using `[← Scheme.Hom.comp_preimage, (X.lies_ptY P).1]`. Conclude with `⟨fun h s => (j_mem_barComp Z _).1 (h (Set.mem_univ s)), fun h s _ => (j_mem_barComp Z _).2 (h s)⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem ptY_le_iff {S : Type} [CommRing S] [Algebra c.F S] (P : FrPt Xo c S) :
     ⊤ ≤ X.ptY P ⁻¹ᵁ (X.π ⁻¹ᵁ barComp Y Z) ↔ LiesOn Z P := by
@@ -454,7 +454,7 @@ Both sides reduce to the same expression.
 theorem L₀_eq (la : AllWt.Weight Dw) : L₀ X Z la = (X.Llam la).pull (inc₀ X Z) := rfl
 
 /- English proof (translation)
-The claim follows from `AllWt.exOf_add a b 0 0`.
+A detailed English derivation is pending.
 -/
 theorem exOf_add_zero (a b : AllWt.Weight Dw) : exOf Dw (a + b) 0 = exOf Dw a 0 + exOf Dw b 0 :=
   AllWt.exOf_add a b 0 0
@@ -462,7 +462,7 @@ theorem exOf_add_zero (a b : AllWt.Weight Dw) : exOf Dw (a + b) 0 = exOf Dw a 0 
 def common₀ : Common (L₀ X Z) := ((commonLL X).pull (inc₀ X Z)).comap (fun la => exOf Dw la 0) exOf_add_zero
 
 /- English proof (translation)
-The claim follows from `(common₀ X Z).isLB la`.
+A detailed English derivation is pending.
 -/
 theorem isLB_L₀ (la : AllWt.Weight Dw) : (L₀ X Z la).IsLB := (common₀ X Z).isLB la
 
@@ -470,13 +470,13 @@ def sec₀ (e : Ix Dw → ℤ) : secZ Xo c e →ₗ[c.F] H0 (str₀ X Z) (LL₀ 
   H0.pull (inc₀ X Z) le_rfl ∘ₗ (secOf X e).toLinearMap
 
 /- English proof (translation)
-Use `(secOf X e).map_eq_zero_iff.1 (LB.sec_ext fun k => FlagMod.ext_ev_field fun L _ z hz => ?_)` and prove the remaining obligations. Establish `hO` using `FlagMod.le_preimage_mono inf_le_left hz`. Establish `hk` using `FlagMod.le_preimage_mono inf_le_right hz`. Use `Eq.trans (b := 0) ?_ (map_zero _).symm` and prove the remaining obligations. Take `⟨_, hQ⟩` from `exists_chartFr z hO`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨Q, hQ⟩` from `hQ k hk`. Distinguish the cases in `hZ : LiesOn Z Q`. Establish `hY` using `(ptY_le_iff X Z Q).2 hZ`. Rewrite `hY` using `[← FlagCover.eq_ptY hQ.lies]`. Establish `hr : Set.range z ⊆ Set.range (inc₀ X Z)`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨s, rfl⟩`. Conclude with `⟨⟨_, hY (Set.mem_univ s)⟩, rfl⟩`. Take `⟨w, rfl⟩ : ∃ w, w ≫ inc₀ X Z = z` from `⟨_, IsOpenImmersion.lift_fac _ z hr⟩`. Conclude with `(H0.val_pull (O := flagOpen X) (W := U₀ X Z) (inc₀ X Z) le_rfl w (pIdx (X.LL e) _ k) hO (fun s hs => mem_pIdx.2 (hk hs)) hO hk _).symm.trans ((congrArg _ h).trans (map_zero _))`. Establish `a` using `evR_eq_val_secOf f hO hQ ((GlobalTheory.Reg.BorelGroupoid.frBor_groupoid E H Dw l Xo c L).1 Q)`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Pi.one_apply, one_zpow, Finset.prod_const_one, Units.val_one, one_mul] at a`. Conclude with `a.symm.trans (hf L Q ((AllWt.liesOff_iff Z Q).2 hZ))`.
+A detailed English derivation is pending.
 -/
 theorem eq_zero_of_sec₀ {e : Ix Dw → ℤ} {f : secZ Xo c e} (hf : f.1 ∈ suppOn Z) (h : sec₀ X Z e f = 0) : f = 0 := by
   refine (secOf X e).map_eq_zero_iff.1 (LB.sec_ext fun k => FlagMod.ext_ev_field fun L _ z hz => ?_)
@@ -498,7 +498,7 @@ theorem eq_zero_of_sec₀ {e : Ix Dw → ℤ} {f : secZ Xo c e} (hf : f.1 ∈ su
     exact a.symm.trans (hf L Q ((AllWt.liesOff_iff Z Q).2 hZ))
 
 /- English proof (translation)
-The claim follows from `(congrArg (H0.pull (inc₀ X Z) (le_refl (U₀ X Z))) (secOf_mul h f₁ f₂ f hf)).trans (((commonLL X).addChart h).pull_mul (inc₀ X Z) (le_refl (U₀ X Z)) (secOf X e₁ f₁) (secOf X e₂ f₂))`.
+A detailed English derivation is pending.
 -/
 theorem sec₀_mul {e₁ e₂ e : Ix Dw → ℤ} (h : e₁ + e₂ = e) (f₁ : secZ Xo c e₁) (f₂ : secZ Xo c e₂) (f : secZ Xo c e)
     (hf : f.1 = f₁.1 * f₂.1) : sec₀ X Z e f =
@@ -513,7 +513,7 @@ def vanBd (la : AllWt.Weight Dw) : Submodule c.F (H0 (str₀ X Z) (L₀ X Z la) 
   smul_mem' a s hs y hy i hi := by rw [germ_smul]; exact Ideal.mul_mem_left _ _ (hs y hy i hi)
 
 /- English proof (translation)
-Use `forall₂_congr fun y _ => ⟨fun h hy => ?_, fun h i hi hu => h ((isUnit_ger_iff _ hi).1 (by rwa [ger_toSec]))⟩` and prove the remaining obligations. Take `⟨i, hi⟩` from `exists_chart (isLB_L₀ X Z la) y`. Conclude with `h i hi (by rw [← ger_toSec]; exact (isUnit_ger_iff _ hi).2 hy)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem mem_vanBd {la : AllWt.Weight Dw} {s : H0 (str₀ X Z) (L₀ X Z la) ⊤} :
     s ∈ vanBd X Z la ↔ ∀ y ∈ bd₀ X Z, y ∉ nonzeroLocus (toSec s) := by
@@ -526,7 +526,7 @@ variable {r : ℕ} (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r)
 abbrev Cusp (la : AllWt.Weight Dw) : Submodule c.F (Rul Xo c) := cuspOn U Z (wtOf Dw la 0)
 
 /- English proof (translation)
-The claim follows from `(AllWt.cuspOn_le U Z _).trans (AllWt.cuspW_le_secZ _)`.
+A detailed English derivation is pending.
 -/
 theorem cusp_le_secZ (la : AllWt.Weight Dw) : Cusp Z U la ≤ secZ Xo c (exOf Dw la 0) :=
   (AllWt.cuspOn_le U Z _).trans (AllWt.cuspW_le_secZ _)
@@ -535,7 +535,7 @@ def cuspSec (la : AllWt.Weight Dw) : Cusp Z U la →ₗ[c.F] H0 (str₀ X Z) (L�
   sec₀ X Z _ ∘ₗ Submodule.inclusion (cusp_le_secZ Z U la)
 
 /- English proof (translation)
-The claim follows from `(injective_iff_map_eq_zero _).2 fun f h => Submodule.inclusion_injective (cusp_le_secZ Z U la) ((eq_zero_of_sec₀ X Z f.2.2 h).trans (map_zero _).symm)`.
+A detailed English derivation is pending.
 -/
 theorem cuspSec_injective (la : AllWt.Weight Dw) : Function.Injective (cuspSec X Z U la) :=
   (injective_iff_map_eq_zero _).2 fun f h =>
@@ -556,14 +556,14 @@ def ofSpace (la : AllWt.Weight Dw) : space X Z U la →ₗ[c.F] Cusp Z U la :=
     (restr le_top ∘ₗ (space X Z U la).subtype).codRestrict _ fun s => s.2
 
 /- English proof (translation)
-The claim follows from `congrArg Subtype.val ((LinearEquiv.ofInjective _ (cuspSec_injective X Z U la)).apply_symm_apply ⟨_, s.2⟩)`.
+A detailed English derivation is pending.
 -/
 theorem cuspSec_ofSpace (la : AllWt.Weight Dw) (s : space X Z U la) :
     cuspSec X Z U la (ofSpace X Z U la s) = restr le_top s.1 :=
   congrArg Subtype.val ((LinearEquiv.ofInjective _ (cuspSec_injective X Z U la)).apply_symm_apply ⟨_, s.2⟩)
 
 /- English proof (translation)
-Introduce `s s' h` and use `Subtype.ext (restr_injective_of_dense le_top (dense_U₀ X Z) (by rw [← cuspSec_ofSpace, h, cuspSec_ofSpace]))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem ofSpace_injective (la : AllWt.Weight Dw) : Function.Injective (ofSpace X Z U la) := fun s s' h =>
   Subtype.ext (restr_injective_of_dense le_top (dense_U₀ X Z) (by rw [← cuspSec_ofSpace, h, cuspSec_ofSpace]))
@@ -575,14 +575,14 @@ def Extends.equiv (h : Extends X Z U la) : Cusp Z U la ≃ₗ[c.F] space X Z U l
     ⟨⟨s, f, hs.2.symm⟩, cuspSec_injective X Z U la ((cuspSec_ofSpace X Z U la _).trans hs.2)⟩⟩).symm
 
 /- English proof (translation)
-The claim follows from `(cuspSec_ofSpace X Z U la _).symm.trans (congrArg _ (h.equiv.symm_apply_apply f))`.
+A detailed English derivation is pending.
 -/
 theorem Extends.restr_equiv (h : Extends X Z U la) (f : Cusp Z U la) :
     restr le_top (h.equiv f).1 = cuspSec X Z U la f :=
   (cuspSec_ofSpace X Z U la _).symm.trans (congrArg _ (h.equiv.symm_apply_apply f))
 
 /- English proof (translation)
-Introduce and unpack `s ⟨f, hf⟩`. Take `⟨s', hs', e⟩` from `h f`. Conclude with `restr_injective_of_dense le_top (dense_U₀ X Z) (e.trans hf) ▸ hs'`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem Extends.space_le (h : Extends X Z U la) : space X Z U la ≤ vanBd X Z la := by
   rintro s ⟨f, hf⟩
@@ -593,7 +593,7 @@ def Extends.toVanBd (h : Extends X Z U la) : Cusp Z U la →ₗ[c.F] vanBd X Z l
   Submodule.inclusion h.space_le ∘ₗ h.equiv.toLinearMap
 
 /- English proof (translation)
-The claim follows from `(Submodule.inclusion_injective h.space_le).comp h.equiv.injective`.
+A detailed English derivation is pending.
 -/
 theorem Extends.toVanBd_injective (h : Extends X Z U la) : Function.Injective h.toVanBd :=
   (Submodule.inclusion_injective h.space_le).comp h.equiv.injective

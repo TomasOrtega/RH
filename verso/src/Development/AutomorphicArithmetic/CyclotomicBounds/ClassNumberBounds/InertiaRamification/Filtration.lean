@@ -8,7 +8,7 @@ open DirichletCharacter
 variable {N : ℕ} [NeZero N] (l : ℕ) [Fact l.Prime]
 
 /- English proof (translation)
-Apply `Nat.gcd_eq_right` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation.
+Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation.
 -/
 private lemma filt_gcd_eq {t : ℕ} (ht : t ≤ N.factorization l) :
     Nat.gcd N (ordCompl[l] N * l ^ t) = ordCompl[l] N * l ^ t := by
@@ -18,11 +18,9 @@ private lemma filt_gcd_eq {t : ℕ} (ht : t ≤ N.factorization l) :
     _ = N := by rw [mul_comm]; exact Nat.ordProj_mul_ordCompl_eq_self N l
 
 /- English proof (translation)
-Establish `he0 : e ≠ 0`. Introduce and unpack `rfl`. Conclude with `NeZero.ne N (by simpa using he)`. Establish `h1 : g ∈ (ZMod.unitsMap hd).ker ↔ ZMod.castHom hd (ZMod d) ((g : ZMod N) - 1) = 0`. Rewrite using `[MonoidHom.mem_ker, Units.ext_iff, map_sub, map_one, sub_eq_zero]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[h1, addOrderOf_dvd_iff_nsmul_eq_zero]`. Take `⟨n, hn⟩` from `ZMod.natCast_zmod_surjective ((g : ZMod N) - 1)`. Rewrite using `[← hn, map_natCast, nsmul_eq_mul, ← Nat.cast_mul, ZMod.natCast_eq_zero_iff, ZMod.natCast_eq_zero_iff]`. Use `conv_rhs => rw [he]`.
-
-Conclude with `(Nat.mul_dvd_mul_iff_left (Nat.pos_of_ne_zero he0)).symm`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma filt_mem_ker_iff {d e : ℕ} (hd : d ∣ N) (he : N = e * d) (g : (ZMod N)ˣ) :
     g ∈ (ZMod.unitsMap hd).ker ↔ addOrderOf ((g : ZMod N) - 1) ∣ e := by
@@ -40,7 +38,7 @@ private lemma filt_mem_ker_iff {d e : ℕ} (hd : d ∣ N) (he : N = e * d) (g : 
   exact (Nat.mul_dvd_mul_iff_left (Nat.pos_of_ne_zero he0)).symm
 
 /- English proof (translation)
-Apply `filt_mem_ker_iff` to reduce the goal to its premises. Rewrite using `[filt_gcd_eq l ht, mul_left_comm, ← pow_add, Nat.sub_add_cancel ht, mul_comm]`. Conclude with `(Nat.ordProj_mul_ordCompl_eq_self N l).symm`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma filt_mem_higher {t : ℕ} (ht : t ≤ N.factorization l) (g : (ZMod N)ˣ) :
     g ∈ higherUnits N l t ↔ addOrderOf ((g : ZMod N) - 1) ∣ l ^ (N.factorization l - t) := by
@@ -49,7 +47,7 @@ private lemma filt_mem_higher {t : ℕ} (ht : t ≤ N.factorization l) (g : (ZMo
   exact (Nat.ordProj_mul_ordCompl_eq_self N l).symm
 
 /- English proof (translation)
-Use `haveI : NeZero d := ⟨ne_zero_of_dvd_ne_zero (NeZero.ne N) hd⟩`. Establish `h` using `Subgroup.card_mul_index (ZMod.unitsMap hd).ker`. Rewrite `h` using `[Subgroup.index_ker, MonoidHom.range_eq_top.mpr (ZMod.unitsMap_surjective hd), Subgroup.card_top]`. Simplify `h` using `[Nat.card_eq_fintype_card, ZMod.card_units_eq_totient]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private lemma filt_card_ker {d : ℕ} (hd : d ∣ N) :
     Nat.card (ZMod.unitsMap hd).ker * Nat.totient d = Nat.totient N := by
@@ -60,9 +58,9 @@ private lemma filt_card_ker {d : ℕ} (hd : d ∣ N) :
   simpa [Nat.card_eq_fintype_card, ZMod.card_units_eq_totient] using h
 
 /- English proof (translation)
-Establish `hl : l.Prime` using `Fact.out`. Establish `h` using `filt_card_ker (Nat.gcd_dvd_left N (ordCompl[l] N * l ^ t))`. Establish `hc : Nat.Coprime l (ordCompl[l] N)` using `Nat.coprime_ordCompl hl (NeZero.ne N)`. Establish `hN : Nat.totient N = Nat.totient (l ^ N.factorization l) * Nat.totient (ordCompl[l] N)`. Rewrite using `[← Nat.totient_mul (hc.pow_left _), Nat.ordProj_mul_ordCompl_eq_self]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hpos : 0 < Nat.totient (ordCompl[l] N)` using `Nat.totient_pos.mpr (Nat.ordCompl_pos l (NeZero.ne N))`. Express the relevant statement in the definitionally equal form `Nat.card (higherUnits N l t) * _ = _ at h`. Rewrite `h` using `[filt_gcd_eq l ht, Nat.totient_mul (hc.pow_left t).symm, hN]`. Apply `Nat.eq_of_mul_eq_mul_right hpos` to reduce the goal to its premises. Rewrite using `[← h]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -82,11 +80,11 @@ private lemma filt_card_higher {t : ℕ} (ht : t ≤ N.factorization l) :
   rw [← h]; ring
 
 /- English proof (translation)
-Establish `hl : l.Prime` using `Fact.out`. Rewrite using `[← Finset.sum_div, ← Nat.cast_sum]`. Establish `h1 : ∑ t ∈ Finset.range (k + 1), Nat.totient (l ^ t) = l ^ k`. Rewrite using `[← Nat.sum_divisors_prime_pow hl, Nat.sum_totient]`. Rewrite using `[h1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨j, rfl⟩ : ∃ j, v = k + j + 1` from `⟨v - k - 1, by omega⟩`. Establish `: k + j + 1 - k = j + 1` using `by omega`. Rewrite using `[this, Nat.totient_prime_pow_succ hl, Nat.totient_prime_pow_succ hl]`. Establish `h2 : ((l - 1 : ℕ) : ℚ) ≠ 0`. Use `hl.two_le` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Nat.cast_ne_zero.mpr (by omega)`. Establish `h3 : (l : ℚ) ≠ 0` using `Nat.cast_ne_zero.mpr hl.ne_zero`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private lemma filt_telescope {v k : ℕ} (hk : k < v) :
     ∑ t ∈ Finset.range (k + 1), (Nat.totient (l ^ t) : ℚ) / (Nat.totient (l ^ v) : ℚ) =
@@ -108,13 +106,13 @@ private lemma filt_telescope {v k : ℕ} (hk : k < v) :
   ring
 
 /- English proof (translation)
-Establish `hl : l.Prime` using `Fact.out`. Establish `h1 : ψ ∈ annihilator ℂ (higherUnits N l t : Set (ZMod N)ˣ) ↔ ψ.conductor ∣ Nat.gcd N (ordCompl[l] N * l ^ t)`. Rewrite using `[← mem_conductorSet_iff_conductor_dvd _ (Nat.gcd_dvd_left _ _), mem_conductorSet_iff, factorsThrough_iff_ker_unitsMap (Nat.gcd_dvd_left _ _), mem_annihilator_iff]`. Use `forall_congr' fun a => imp_congr Iff.rfl ?_` and prove the remaining obligations. Rewrite using `[MonoidHom.mem_ker, Units.ext_iff]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[h1, filt_gcd_eq l ht, condExp]`. Establish `hc` using `ψ.conductor_ne_zero`. Establish `hN' : ordCompl[l] N ≠ 0` using `(Nat.ordCompl_pos l (NeZero.ne N)).ne'`. Establish `hp : l ^ t ≠ 0` using `pow_ne_zero _ hl.ne_zero`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `(Nat.factorization_le_iff_dvd hc (mul_ne_zero hN' hp)).mpr h l` as an intermediate fact. Rewrite `this` using `[Nat.factorization_mul hN' hp]`. Simplify `this` using `[Nat.factorization_ordCompl, hl.factorization_pow]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `h`. Rewrite using `[← Nat.ordProj_mul_ordCompl_eq_self ψ.conductor l, mul_comm]`. Conclude with `Nat.mul_dvd_mul (Nat.ordCompl_dvd_ordCompl_of_dvd ψ.conductor_dvd_level l) (pow_dvd_pow _ h)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma filt_mem_ann {t : ℕ} (ht : t ≤ N.factorization l) (ψ : DirichletCharacter ℂ N) :
     ψ ∈ annihilator ℂ (higherUnits N l t : Set (ZMod N)ˣ) ↔ condExp l ψ ≤ t := by
@@ -141,7 +139,7 @@ private lemma filt_mem_ann {t : ℕ} (ht : t ≤ N.factorization l) (ψ : Dirich
       (pow_dvd_pow _ h)
 
 /- English proof (translation)
-Establish `: annihilator ℂ (H : Set (ZMod N)ˣ) = (MulChar.subgroupOrderIsoSubgroupMulChar (ZMod N) ℂ H).ofDual`. Use extensionality with `ψ`. Rewrite using `[mem_annihilator_iff, MulChar.mem_subgroupOrderIsoSubgroupMulChar_iff]`. Both sides reduce to the same expression. Rewrite using `[this, MulChar.card_subgroupOrderIsoSubgroupMulChar]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -156,9 +154,9 @@ private lemma filt_card_ann (H : Subgroup (ZMod N)ˣ) :
   rfl
 
 /- English proof (translation)
-Simplify using `only [mem_annihilator_iff, SetLike.mem_coe]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `⟨fun a ha => h a (Subgroup.mem_sup_right ha), fun a ha => h a (Subgroup.mem_sup_left ha)⟩`. Introduce and unpack `⟨h1, h2⟩ a ha`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Take `⟨x, hx, y, hy, rfl⟩` from `Subgroup.mem_sup.mp ha`. Rewrite using `[Units.val_mul, map_mul, h2 x hx, h1 y hy, mul_one]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 private lemma filt_ann_sup (U H : Subgroup (ZMod N)ˣ) (ψ : DirichletCharacter ℂ N) :
     ψ ∈ annihilator ℂ ((U ⊔ H : Subgroup (ZMod N)ˣ) : Set (ZMod N)ˣ) ↔
@@ -172,13 +170,11 @@ private lemma filt_ann_sup (U H : Subgroup (ZMod N)ˣ) (ψ : DirichletCharacter 
     rw [Units.val_mul, map_mul, h2 x hx, h1 y hy, mul_one]
 
 /- English proof (translation)
-Establish `h1 : H.relIndex U * (U ⊔ H).index = H.index`. Rewrite using `[← Subgroup.relIndex_sup_right U H]`. Conclude with `Subgroup.relIndex_mul_index le_sup_right`. Establish `h2 : H.relIndex U * Nat.card ↥(U ⊓ H) = Nat.card U`. Establish `h3 : Nat.card ↥(U ⊓ H) = Nat.card ((U ⊓ H).subgroupOf U)` using `(Nat.card_congr (Subgroup.subgroupOfEquivOfLe inf_le_left).toEquiv).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h3, Subgroup.inf_subgroupOf_left]`. Conclude with `Subgroup.index_mul_card _`. Establish `h4 : (H.relIndex U : ℚ) ≠ 0`. Establish `: Nat.card U ≠ 0` using `Nat.card_pos.ne'`. Rewrite `this` using `[← h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Nat.cast_ne_zero.mpr (left_ne_zero_of_mul this)`. Establish `h5 : ((U ⊔ H).index : ℚ) ≠ 0` using `Nat.cast_ne_zero.mpr Subgroup.index_ne_zero_of_finite`. Establish `h6 : (Nat.card ↥(U ⊓ H) : ℚ) ≠ 0` using `Nat.cast_ne_zero.mpr Nat.card_pos.ne'`. Rewrite using `[← h1, ← h2]`. Use `push_cast`.
-
-Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 private lemma filt_index {G : Type*} [CommGroup G] [Finite G] (U H : Subgroup G) :
     ((U ⊔ H).index : ℚ) / (H.index : ℚ) = (Nat.card ↥(U ⊓ H) : ℚ) / (Nat.card U : ℚ) := by
@@ -201,17 +197,17 @@ private lemma filt_index {G : Type*} [CommGroup G] [Finite G] (U H : Subgroup G)
   field_simp
 
 /- English proof (translation)
-Use `set X := annihilator ℂ (H : Set (ZMod N)ˣ) with hX`. Use `haveI : Fintype X := Fintype.ofFinite X`. Establish `hX0 : (Nat.card X : ℚ) ≠ 0` using `Nat.cast_ne_zero.mpr Nat.card_pos.ne'`. Establish `hc : ∀ ψ : DirichletCharacter ℂ N, (condExp l ψ : ℚ) = ∑ t ∈ Finset.range (N.factorization l), (1 - if ψ ∈ annihilator ℂ (higherUnits N l t : Set (ZMod N)ˣ) then (1 : ℚ) else 0)`. Introduce `ψ`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hle : condExp l ψ ≤ N.factorization l` using `(Nat.factorization_le_iff_dvd ψ.conductor_ne_zero (NeZero.ne N)).mpr ψ.conductor_dvd_level l`. Establish `h1 : ∀ t ∈ Finset.range (N.factorization l), (1 - if ψ ∈ annihilator ℂ (higherUnits N l t : Set (ZMod N)ˣ) then (1 : ℚ) else 0) = if t < condExp l ψ then 1 else 0`. Introduce `t ht`. Use `filt_mem_ann l (Finset.mem_range.mp ht).le ψ` as an intermediate fact. Distinguish the cases in `h : t < condExp l ψ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg (by rw [this]; omega), if_pos h, sub_zero]`. Rewrite using `[if_pos (by rw [this]; omega), if_neg h, sub_self]`. Rewrite using `[Finset.sum_congr rfl h1, Finset.sum_boole]`. Establish `: (Finset.range (N.factorization l)).filter (fun t => t < condExp l ψ) = Finset.range (condExp l ψ)`. Use extensionality with `t`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Simplify using `only [Finset.mem_filter, Finset.mem_range]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[this, Finset.card_range]`. Rewrite using `[avgCondExp, finsum_eq_sum_of_fintype]`. Simplify using `only [hc]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.sum_comm, Finset.sum_div]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Rewrite using `[← filt_index, ← filt_card_ann, ← filt_card_ann H, ← hX, Finset.sum_sub_distrib, Finset.sum_boole, sub_div]`. Use `congr 1`. Rewrite using `[Finset.sum_const, Finset.card_univ, ← Nat.card_eq_fintype_card, nsmul_eq_mul, mul_one, div_self hX0]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Rewrite using `[← Fintype.card_subtype, ← Nat.card_eq_fintype_card]`. Use `Nat.card_congr ((Equiv.subtypeSubtypeEquivSubtypeInter (· ∈ X) (· ∈ annihilator ℂ (higherUnits N l t : Set (ZMod N)ˣ))).trans (Equiv.subtypeEquivRight fun ψ => (filt_ann_sup _ _ ψ).symm))` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem avgCondExp_annihilator (H : Subgroup (ZMod N)ˣ) :
     avgCondExp l (annihilator ℂ (H : Set (ZMod N)ˣ)) =
@@ -256,21 +252,19 @@ theorem avgCondExp_annihilator (H : Subgroup (ZMod N)ˣ) :
         (Equiv.subtypeEquivRight fun ψ => (filt_ann_sup _ _ ψ).symm))
 
 /- English proof (translation)
-Establish `hl : l.Prime` using `Fact.out`. Establish `hm1 : addOrderOf ((g : ZMod N) - 1) ≠ 1`. Rewrite using `[Ne, AddMonoid.addOrderOf_eq_one_iff, sub_eq_zero]`. Conclude with `fun h => hg (Units.ext h)`. Establish `hmN : addOrderOf ((g : ZMod N) - 1) ∣ N`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact.
 
-Simplify using `using addOrderOf_dvd_card (x := (g : ZMod N) - 1)`. Unfold `rootWeight`. Use `split_ifs with h`. Take `⟨-, s, hs⟩` from `h`. Establish `hs1 : s ≠ 0` using `by rintro rfl; exact hm1 (by simpa using hs)`.
+Simplify to obtain the desired conclusion from the available facts. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsv : s ≤ N.factorization l`. Rewrite `hmN` using `[hs]`. Conclude with `(hl.pow_dvd_iff_le_factorization (NeZero.ne N)).mp hmN`. Establish `h1 : ∀ t ∈ Finset.range (N.factorization l), Set.indicator (higherUnits N l t : Set (ZMod N)ˣ) (fun _ => 1 / (Nat.card (higherUnits N l t) : ℚ)) g = if t < N.factorization l - s + 1 then (Nat.totient (l ^ t) : ℚ) / (Nat.totient (l ^ N.factorization l) : ℚ) else 0`. Introduce `t ht`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht'` using `(Finset.mem_range.mp ht).le`. Establish `h2` using `filt_mem_higher l ht' g`. Rewrite `h2` using `[hs, Nat.pow_dvd_pow_iff_le_right hl.one_lt]`. Rewrite using `[Set.indicator_apply]`. Use `if_congr (h2.trans (by omega)) ?_ rfl` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← filt_card_higher l ht']`. Establish `h3 : (Nat.totient (l ^ t) : ℚ) ≠ 0` using `Nat.cast_ne_zero.mpr (Nat.totient_pos.mpr (pow_pos hl.pos _)).ne'`. Establish `h4 : (Nat.card (higherUnits N l t) : ℚ) ≠ 0` using `Nat.cast_ne_zero.mpr Nat.card_pos.ne'`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Finset.sum_congr rfl h1, ← Finset.sum_filter]`. Establish `: (Finset.range (N.factorization l)).filter (fun t => t < N.factorization l - s + 1) = Finset.range (N.factorization l - s + 1)`. Use extensionality with `t`. Simplify using `only [Finset.mem_filter, Finset.mem_range]`. Use linear arithmetic over natural numbers and integers.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation.
 
-Rewrite using `[this, filt_telescope l (by omega), hs, Nat.sub_sub_self hsv]`. Use `symm`. Use `Finset.sum_eq_zero fun t ht => Set.indicator_of_notMem (fun hm => h ⟨hm1, ?_⟩) _` and prove the remaining obligations. Establish `h2` using `(filt_mem_higher l (Finset.mem_range.mp ht).le g).mp hm`. Take `⟨s, -, hs⟩` from `(Nat.dvd_prime_pow hl).mp h2`.
-
-Conclude with `⟨s, hs⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem rootWeight_eq_sum (g : (ZMod N)ˣ) (hg : g ≠ 1) :
     rootWeight l (addOrderOf ((g : ZMod N) - 1)) =
@@ -322,11 +316,11 @@ theorem rootWeight_eq_sum (g : (ZMod N)ˣ) (hg : g ≠ 1) :
 open Classical in
 
 /- English proof (translation)
-Rewrite using `[avgCondExp_annihilator, Finset.sum_congr rfl (fun g hg => rootWeight_eq_sum l g (by rintro rfl; exact (Finset.mem_filter.mp hg).2 H.one_mem)), Finset.sum_comm]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Generalize the expression as in `higherUnits N l t = U`. Establish `h4 : (Nat.card U : ℚ) ≠ 0` using `Nat.cast_ne_zero.mpr Nat.card_pos.ne'`. Simplify using `only [Set.indicator_apply, SetLike.mem_coe]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Finset.sum_filter, Finset.sum_const, nsmul_eq_mul, Finset.filter_comm]`. Establish `h1` using `Finset.card_filter_add_card_filter_not (s := Finset.univ.filter (fun g : (ZMod N)ˣ => g ∈ U)) (fun g => g ∈ H)`. Establish `h2 : (Finset.univ.filter (fun g : (ZMod N)ˣ => g ∈ U)).card = Nat.card U`. Rewrite using `[← Fintype.card_subtype, Nat.card_eq_fintype_card]`. Establish `h3 : ((Finset.univ.filter (fun g : (ZMod N)ˣ => g ∈ U)).filter (fun g => g ∈ H)).card = Nat.card ↥(U ⊓ H)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Finset.filter_filter, ← Fintype.card_subtype, ← Nat.card_eq_fintype_card]`. Both sides reduce to the same expression. Rewrite `h1` using `[h2, h3]`. Establish `h5` using `congrArg (Nat.cast : ℕ → ℚ) h1`. Move the coercions through the operations in `at h5`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
 Clear the denominators using the available nonvanishing facts. Combine the linear equalities and inequalities to obtain the conclusion.
 -/

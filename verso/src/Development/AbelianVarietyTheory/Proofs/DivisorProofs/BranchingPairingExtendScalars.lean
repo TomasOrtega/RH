@@ -20,9 +20,9 @@ noncomputable section
 namespace GlobalTheory.BrPairF
 
 /- English proof (translation)
-Establish `h1 : IsFunForm σ ((funEquiv σ).symm v) v`. Use `isFunForm_funEquiv σ ((funEquiv σ).symm v)` as an intermediate fact. Rewrite `this` using `[LinearEquiv.apply_symm_apply]`. Then use the resulting hypothesis. Establish `h2` using `GlobalTheory.BrRat.isFunForm_map φ σ h1`. Establish `h3` using `(isFunForm_iff_eq σ _ _).1 h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[LinearEquiv.symm_apply_eq]`. Conclude with `h3`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem funEquiv_symm_mapVV {K ι : Type} [Field K] [CharZero K] [Fintype ι] {n : ℕ} (φ : K →+* ℂ)
     (σ : ι → DomWeight n) (v : VV K fun τ => (σ τ).dual) :
@@ -37,9 +37,9 @@ theorem funEquiv_symm_mapVV {K ι : Type} [Field K] [CharZero K] [Fintype ι] {n
   exact h3
 
 /- English proof (translation)
-Introduce `K ι _ _ _ n N φ σ hN Λ u v`. Rewrite using `[brPair, LinearMap.compl₁₂_apply, pairBK_apply, pairB_apply, brPairF_apply, pairBK_apply, pairB_apply, GlobalTheory.BrRat.covOf_eq, funEquiv_symm_mapVV, GlobalTheory.CoefModel.mapVV_coe, Formalism.L2.Col.Br.brStd, LinearMap.comp_apply, Submodule.subtype_apply, Formalism.L2.Col.Br …`. Use `congr 2`. Unfold `extNormB`. Rewrite using `[map_prod]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[← GlobalTheory.Proof.TensorMapDescent.fockB_map, Formalism.L2.DIV.map_extremal]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem brPair_mapVV : ∀ {K ι : Type} [Field K] [CharZero K] [Fintype ι] {n N : ℕ} (φ : K →+* ℂ) (σ : ι → DomWeight n) (hN : N = n + 1)
     (Λ : ι → DomWeight N) (u : VV K Λ) (v : VV K fun τ => (σ τ).dual),

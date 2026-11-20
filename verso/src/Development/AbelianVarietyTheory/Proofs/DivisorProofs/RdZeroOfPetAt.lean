@@ -38,15 +38,13 @@ section Gen
 variable {D : D7} {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} {Comp : Type}
 
 /- English proof (translation)
-Introduce `la P hP`. Use `⟨fun γ hγ g => ?_, ?_⟩` and prove the remaining obligations. Take `⟨γ', hγ', he⟩` from `hd.1 γ hγ g`. Establish `hE` using `(eqv_holSub X la (holCusp_mem_holSub X la hP)).2 (dict g).1 γ' hγ' (dict g).2 (hd.2.2.2.1 g)`. Use `show mu (γ * g) * P (dict (γ * g)).1 (dict (γ * g)).2 = mu g * P (dict g).1 (dict g).2`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[he, hm.1, hm.2.2.1 γ hγ, one_mul]`. Use `show mu g * P (dict g).1 (lact γ' (dict g).2) = _`. Rewrite using `[hE, hχ _ _ _ hγ', one_mul]`. Rewrite using `[continuous_iff_continuousAt]`. Introduce `g₀`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨N, hN, k, x, hx, hs⟩` from `hL g₀`. Establish `hsec : (X k).IsSec (la k) (P k)` using `(hP k).1.1`. Establish `hPc : ContinuousOn (P k) (X k).dom` using `hsec.1.continuousOn`. Establish `hc : ContinuousOn (fun g => mu g * P k (x g)) N` using `hmc.continuousOn.mul (hPc.comp hx fun g hg => (hs g hg).1)`. Establish `heq : (fun g => mu g * P k (x g)) =ᶠ[𝓝 g₀] adel V dict mu P` using `by filter_upwards [hN] with g hg`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨hd', γ, hγ, he⟩` from `hs g hg`. Use `show mu g * P k (x g) = mu g * P (dict g).1 (dict g).2`. Rewrite using `[he]`. Use `show mu g * P k (x g) = mu g * P k (lact γ (x g))`. Rewrite using `[hsec.2.2 γ hγ (x g) hd', hχ _ _ _ hγ, one_mul]`.
-
-Conclude with `(hc.continuousAt hN).congr heq`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adelAut_of_gamma {V : HSp D} {X : Comp → Data E r} {dict : GA D V → Σ k, Frame (X k).Ψ r}
     {mu : GA D V → ℂ} {Kf : Subgroup (GA D V)} {th : ∀ c, (X c).Ψ → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)}
@@ -83,9 +81,9 @@ section Cover
 variable {D : D7} {T : Core D} {j : ℕ}
 
 /- English proof (translation)
-Take `⟨th, hr, hth, hd⟩` from `h.dictU σ hσ`. Use `⟨th, hr, hd, ?_⟩` and prove the remaining obligations. Establish `hN : 0 < D.host.g 0 * D.host.g 1 * Y.d.pd`. Rewrite using `[h.pd]`. Conclude with `Nat.mul_pos (Nat.mul_pos (D.host.g_prime 0).pos (D.host.g_prime 1).pos) (pow_pos (by norm_num) _)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hK : Y.Kf ≤ GfC (D.sp.W j)` using `fun k hk => ((h.levelK k).1 hk).1`. Conclude with `GlobalTheory.DictLocTest.locClause_of_unif_places hd hK (GlobalTheory.T.principalLevel_mul_archimedean_mem_nhds D _ _ Y.Kf hN h.levelK) (fun c τ => ⟨_, hth c τ⟩)`.
+A detailed English derivation is pending.
 -/
 theorem dictLoc_of_good (Y : Deep T j) {e : ℕ} {o : ℝ} (h : Y.Good e o) (σ : Y.d.c₂.F →+* ℂ)
     (hσ : GoodEmb Y.d.c₂ σ) : ∃ th hr, DictIsUnif (D.sp.W j) (Y.dict σ) Y.Kf th hr ∧ DictLoc (D.sp.W j) (Y.dict σ) := by
@@ -98,14 +96,14 @@ theorem dictLoc_of_good (Y : Deep T j) {e : ℕ} {o : ℝ} (h : Y.Good e o) (σ 
   exact GlobalTheory.DictLocTest.locClause_of_unif_places hd hK (GlobalTheory.T.principalLevel_mul_archimedean_mem_nhds D _ _ Y.Kf hN h.levelK) (fun c τ => ⟨_, hth c τ⟩)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ _ => (mul_one 1).symm, fun _ => norm_one, fun _ _ => rfl, h.unit σ hσ⟩`.
+Supply the required witnesses or components.
 -/
 theorem muUnit_one (Y : Deep T j) {e : ℕ} {o : ℝ} (h : Y.Good e o) (σ : Y.d.c₂.F →+* ℂ) (hσ : GoodEmb Y.d.c₂ σ) :
     MuUnit (D.sp.W j) (Y.dict σ) (fun _ => (1 : ℂ)) :=
   ⟨fun _ _ => (mul_one 1).symm, fun _ => norm_one, fun _ _ => rfl, h.unit σ hσ⟩
 
 /- English proof (translation)
-Take `⟨th, hr, hd, hL⟩` from `dictLoc_of_good Y h σ hσ`. Conclude with `adelAut_of_gamma (fun k la γ hγ => GlobalTheory.CovTop.Model.chi_eq_one h σ hσ k la γ hγ) hd (muUnit_one Y h σ hσ) hL continuous_const`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem adelAut_good (Y : Deep T j) {e : ℕ} {o : ℝ} (h : Y.Good e o) (σ : Y.d.c₂.F →+* ℂ) (hσ : GoodEmb Y.d.c₂ σ) :
     AdelAut (D.sp.W j) (Y.dict σ) (fun _ => (1 : ℂ)) := by
@@ -114,7 +112,7 @@ theorem adelAut_good (Y : Deep T j) {e : ℕ} {o : ℝ} (h : Y.Good e o) (σ : Y
     continuous_const
 
 /- English proof (translation)
-Take `⟨th, hr, hd, -⟩` from `dictLoc_of_good Y h σ hσ`. Take `⟨hP, hV⟩` from `GlobalTheory.FinalJoin2.volPairEx_and_finVol D (D.sp.W j) (D.sp.W_sig j)`. Conclude with `aeDom_of_aut Y.d.Xo₂ Y.d.c₂ (adelAut_good Y h σ hσ) (quotSupp_of _ hV hP) (muUnit_one Y h σ hσ) hd`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem aeDom_good (Y : Deep T j) {e : ℕ} {o : ℝ} (h : Y.Good e o) (σ : Y.d.c₂.F →+* ℂ) (hσ : GoodEmb Y.d.c₂ σ) :
     AeDom Y.U σ (D.sp.W j) (Y.dict σ) (fun _ => (1 : ℂ)) := by
@@ -123,15 +121,13 @@ theorem aeDom_good (Y : Deep T j) {e : ℕ} {o : ℝ} (h : Y.Good e o) (σ : Y.d
   exact aeDom_of_aut Y.d.Xo₂ Y.d.c₂ (adelAut_good Y h σ hσ) (quotSupp_of _ hV hP) (muUnit_one Y h σ hσ) hd
 
 /- English proof (translation)
-Establish `hP : rdU (Y.U σ) f ∈ holSub (Y.U σ).X (GlobalTheory.AllWt.modelWt (Y.U σ) G)` using `(GlobalTheory.AllWt.mem_cuspW.1 hf).2 σ hσ`. Take `⟨th, hr, hd, -⟩` from `dictLoc_of_good Y h σ hσ`. Establish `hfin` using `GlobalTheory.AllWt.petE_ne_top (D.sp.W j) (Y.dict σ) (muQ1 (D.sp.W j)) prob_le_one hd.2.2.2.1 hP`. Establish `hE : GlobalTheory.AllWt.petE (D.sp.W j) (Y.dict σ) (muQ1 (D.sp.W j)) (GlobalTheory.AllWt.modelWt (Y.U σ) G) (rdU (Y.U σ) f) = 0`. Unfold `GlobalTheory.AllWt.petAt at h0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Break down `mul_eq_zero.1 h0 with h1 | h1` into its components or cases. Conclude with `absurd h1 (GlobalTheory.AllWt.lieFacZ_pos _ _).ne'`. Conclude with `((ENNReal.toReal_eq_zero_iff _).1 h1).resolve_right hfin`. Establish `hmeas` using `aesm_of_holSub (adelMeas_of_aut Y.d.Xo₂ Y.d.c₂ (U := Y.U) (σ := σ) (adelAut_good Y h σ hσ)) _ hP`. Establish `heqn : (fun q : AutQ (D.sp.W j) => GlobalTheory.AllWt.ptN (GlobalTheory.AllWt.modelWt (Y.U σ) G) (rdU (Y.U σ) f) (Y.dict σ q.out)) = fun q => ‖onQ (D.sp.W j) (adel (D.sp.W j) (Y.dict σ) (fun _ => (1 : ℂ)) (rdU (Y.U σ) f)) q‖`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `q`. Use `show ((Y.U σ).X _).pnorm _ _ _ = ‖(1 : ℂ) * rdU (Y.U σ) f _ _‖`. Rewrite using `[pnorm_eq_of_unit _ _ _ _ (h.unit σ hσ q.out), one_mul]`. Establish `hz : onQ (D.sp.W j) (adel (D.sp.W j) (Y.dict σ) (fun _ => (1 : ℂ)) (rdU (Y.U σ) f)) =ᵐ[muQ1 (D.sp.W j)] 0`. Establish `h2 : eLpNorm (onQ (D.sp.W j) (adel (D.sp.W j) (Y.dict σ) (fun _ => (1 : ℂ)) (rdU (Y.U σ) f))) 2 (muQ1 (D.sp.W j)) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← eLpNorm_norm]`. Unfold `GlobalTheory.AllWt.petE at hE`. Rewrite `hE` using `[heqn]`. Conclude with `hE`. Conclude with `(eLpNorm_eq_zero_iff hmeas two_ne_zero).1 h2`.
-
-Conclude with `aeDom_good Y h σ hσ _ _ hP hz`.
+A detailed English derivation is pending.
 -/
 theorem rd_zero_of_petAt (Y : Deep T j) {e : ℕ} {o : ℝ} (h : Y.Good e o) (σ : Y.d.c₂.F →+* ℂ)
     (hσ : GoodEmb Y.d.c₂ σ) (G : WTZ D.host.E) (f : Rul Y.d.Xo₂ Y.d.c₂) (hf : f ∈ GlobalTheory.AllWt.cuspW Y.d.Xo₂ Y.d.c₂ Y.U G)
@@ -164,7 +160,7 @@ theorem rd_zero_of_petAt (Y : Deep T j) {e : ℕ} {o : ℝ} (h : Y.Good e o) (σ
 end Cover
 
 /- English proof (translation)
-Introduce `D T j Y e o h _ G v x h0`. Establish `hσ` using `goodEmb_goodOf Y.d.c₂ v.embedding`. Conclude with `GlobalTheory.T.eq_zero_of_restrictions_vanish D T j Y e o h _ hσ G x (rd_zero_of_petAt Y h _ hσ G x x.2 h0)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem nrm_eq_zero : ∀ (D : D7) (T : Core D) (j : ℕ) (Y : Deep T j) (e : ℕ) (o : ℝ), Y.Good e o →
     2 < Module.finrank ℚ D.host.E / 2 → ∀ (G : WTZ D.host.E) (v : InfinitePlace Y.d.c₂.F) (x : Y.V G),

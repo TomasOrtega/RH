@@ -9,7 +9,7 @@ namespace GlobalTheory.LogDescent
 open Complex Topology
 
 /- English proof (translation)
-Use `continuous_pi fun k => ?_` and prove the remaining obligations. Simplify using `only [logExp]`. Use `split_ifs`. Conclude with `Complex.continuous_exp.comp (continuous_apply k)`. Conclude with `continuous_apply k`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuous_logExp (n a : ℕ) : Continuous (logExp a : (Fin n → ℂ) → Fin n → ℂ) := by
   refine continuous_pi fun k => ?_
@@ -19,9 +19,9 @@ theorem continuous_logExp (n a : ℕ) : Continuous (logExp a : (Fin n → ℂ) �
   · exact continuous_apply k
 
 /- English proof (translation)
-Introduce `k`. Establish `hz` using `mem_ball_zero_iff.1 hs`. Establish `hk'` using `(norm_le_pi_norm (logExp a s) k).trans_lt hz`. Use `split_ifs with hk`. Simplify using `only [logExp, hk, if_true, Complex.norm_exp] at hk'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `Real.exp_lt_one_iff.mp (lt_of_lt_of_le hk' hρ1)`. Simplify using `only [logExp, hk, if_false] at hk'`. Conclude with `lt_of_lt_of_le hk' hρ1`.
+A detailed English derivation is pending.
 -/
 theorem mem_logDom_of_mem_ball {n a : ℕ} {ρ : ℝ} (hρ1 : ρ ≤ 1) (s : Fin n → ℂ)
     (hs : logExp a s ∈ Metric.ball (0 : Fin n → ℂ) ρ) : s ∈ logDom n a := by
@@ -35,9 +35,9 @@ theorem mem_logDom_of_mem_ball {n a : ℕ} {ρ : ℝ} (hρ1 : ρ ≤ 1) (s : Fin
     exact lt_of_lt_of_le hk' hρ1
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = k`. Substitute `hj` using the available equality. Simplify using `only [logExp, hk, if_true, Pi.add_apply, Pi.single_eq_same]`. Rewrite using `[Complex.exp_add, Complex.exp_int_mul_two_pi_mul_I, mul_one]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[logExp, Pi.single_eq_of_ne hj]`.
+Simplify using the standard rewrite rules.
 -/
 theorem logExp_shift {n a : ℕ} (s : Fin n → ℂ) (k : Fin n) (hk : (k : ℕ) < a) (m : ℤ) :
     logExp a (s + Pi.single k ((m : ℂ) * (2 * Real.pi * Complex.I))) = logExp a s := by
@@ -51,15 +51,15 @@ theorem logExp_shift {n a : ℕ} (s : Fin n → ℂ) (k : Fin n) (hk : (k : ℕ)
 variable {n a : ℕ} {ρ : ℝ} {h : (Fin n → ℂ) → ℂ}
 
 /- English proof (translation)
-Proceed by induction on `m using Int.induction_on with`. Consider the case `zero => simp`. Consider the case `succ m ih`. Establish `ht : logExp a (s + Pi.single k (((m : ℤ) : ℂ) * (2 * Real.pi * Complex.I))) ∈ Metric.ball (0 : Fin n → ℂ) ρ`. Rewrite using `[logExp_shift s k hk]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hs`. Use `hinv _ (mem_logDom_of_mem_ball hρ1 _ ht) ht k hk` as an intermediate fact. Establish `e : s + Pi.single k ((((m : ℤ) + 1 : ℤ) : ℂ) * (2 * Real.pi * Complex.I)) = s + Pi.single k (((m : ℤ) : ℂ) * (2 * Real.pi * Complex.I)) + Pi.single k (2 * Real.pi * Complex.I)`. Rewrite using `[add_assoc, ← Pi.single_add]`. Use `congr 2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, this, ih]`. Consider the case `pred m ih => set t := s + Pi.single k ((((-(m : ℤ) - 1 : ℤ)) : ℂ) * (2 * Real.pi * Complex.I)) with htdef`. Establish `ht : logExp a t ∈ Metric.ball (0 : Fin n → ℂ) ρ`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[htdef, logExp_shift s k hk]`. Conclude with `hs`. Use `hinv _ (mem_logDom_of_mem_ball hρ1 _ ht) ht k hk` as an intermediate fact. Establish `e : t + Pi.single k (2 * Real.pi * Complex.I) = s + Pi.single k ((((-(m : ℤ)) : ℤ) : ℂ) * (2 * Real.pi * Complex.I))`. Rewrite using `[htdef, add_assoc, ← Pi.single_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
-Use `congr 2`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← this, e, ih]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inv_int (hρ1 : ρ ≤ 1)
     (hinv : ∀ s ∈ logDom n a, logExp a s ∈ Metric.ball (0 : Fin n → ℂ) ρ → ∀ k : Fin n, (k : ℕ) < a →
@@ -87,21 +87,21 @@ theorem inv_int (hρ1 : ρ ≤ 1)
     rw [← this, e, ih]
 
 /- English proof (translation)
-It suffices to establish `H : ∀ S : Finset (Fin n), ∀ s s' : Fin n → ℂ, logExp a s ∈ Metric.ball (0 : Fin n → ℂ) ρ → logExp a s = logExp a s' → (∀ k ∉ S, s k = s' k) → h s = h s' from H Finset.univ s s' hs he (fun k hk => absurd (Finset.mem_univ k) hk)`. Introduce `S`. Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty`. Introduce `s s' _ _ hk`.
+Reduce the argument to an intermediate assertion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `congr 1`. Use function extensionality and compare the values at `k`. Conclude with `hk k (Finset.notMem_empty k)`. Consider the case `insert j S hjS ih`. Introduce `s s' hs he hk`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hej` using `congrFun he j`. Use `set s'' := Function.update s' j (s j) with hs''`. Establish `he'' : logExp a s = logExp a s''`. Use function extensionality and compare the values at `k`. Distinguish the cases in `hkj : k = j`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Substitute `hkj` using the available equality. Simplify using `[hs'', logExp]`. Use `congrFun he k` as an intermediate fact. Simplify `this` using `[hs'', logExp, Function.update_of_ne hkj]`. Establish `h1 : h s = h s''` using `ih s s'' hs he'' (fun k hk' => by`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Distinguish the cases in `hkj : k = j`. Substitute `hkj` using the available equality. Simplify using `[hs'']`. Rewrite using `[hs'', Function.update_of_ne hkj]`. Conclude with `hk k (by simp [hkj, hk']))`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[h1]`. Establish `hs2 : logExp a s'' ∈ Metric.ball (0 : Fin n → ℂ) ρ` using `he'' ▸ hs`. Distinguish the cases in `hja : (j : ℕ) < a`. Simplify using `only [logExp, hja, if_true] at hej`. Take `⟨m, hm⟩` from `Complex.exp_eq_exp_iff_exists_int.1 hej.symm`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Establish `e : s' = s'' + Pi.single j ((m : ℂ) * (2 * Real.pi * Complex.I))`. Use function extensionality and compare the values at `k`. Distinguish the cases in `hkj : k = j`. Substitute `hkj` using the available equality. Simplify using `[hs'', hm]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[hs'', Function.update_of_ne hkj, Pi.single_eq_of_ne hkj]`. Rewrite using `[e, inv_int hρ1 hinv s'' hs2 j hja m]`. Simplify using `only [logExp, hja, if_false] at hej`. Use `congr 1`. Rewrite using `[hs'', hej, Function.update_eq_self]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem key (hρ1 : ρ ≤ 1)
     (hinv : ∀ s ∈ logDom n a, logExp a s ∈ Metric.ball (0 : Fin n → ℂ) ρ → ∀ k : Fin n, (k : ℕ) < a →
@@ -147,7 +147,7 @@ theorem key (hρ1 : ρ ≤ 1)
       rw [hs'', hej, Function.update_eq_self]
 
 /- English proof (translation)
-Establish `ho : IsOpen (logExp a ⁻¹' Metric.ball (0 : Fin n → ℂ) ρ)` using `Metric.isOpen_ball.preimage (continuous_logExp n a)`. Use `Filter.mem_of_superset (ho.mem_nhds hs₀) ?_` and prove the remaining obligations. Introduce `s hs`. Rewrite `hs` using `[Set.mem_preimage]`. Conclude with `⟨mem_logDom_of_mem_ball hρ1 s hs, hs⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem dom_mem_nhds {ρ : ℝ} (hρ1 : ρ ≤ 1) (s₀ : Fin n → ℂ)
     (hs₀ : logExp a s₀ ∈ Metric.ball (0 : Fin n → ℂ) ρ) :
@@ -165,7 +165,7 @@ noncomputable def logSecAt (a : ℕ) {n : ℕ} (z₀ z : Fin n → ℂ) : Fin n 
   fun k => if (k : ℕ) < a then Complex.log (z₀ k) + Complex.log (z k / z₀ k) else z k
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Distinguish the cases in `hk : (k : ℕ) < a`. Simplify using `[logExp, logSec, hk, Complex.exp_log (hz k hk)]`. Simplify using `[logExp, logSec, hk]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem logExp_logSec (z : Fin n → ℂ) (hz : ∀ k : Fin n, (k : ℕ) < a → z k ≠ 0) : logExp a (logSec a z) = z := by
   funext k
@@ -174,9 +174,9 @@ theorem logExp_logSec (z : Fin n → ℂ) (hz : ∀ k : Fin n, (k : ℕ) < a →
   · simp [logExp, logSec, hk]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Distinguish the cases in `hk : (k : ℕ) < a`. Simplify using `only [logExp, logSecAt, hk, if_true]`. Rewrite using `[Complex.exp_add, Complex.exp_log (hz₀ k hk), Complex.exp_log (div_ne_zero (hz k hk) (hz₀ k hk))]`. Clear denominators, using `[hz₀ k hk]` for the nonvanishing conditions.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Simplify using `[logExp, logSecAt, hk]`.
+Simplify using the standard rewrite rules.
 -/
 theorem logExp_logSecAt (z₀ z : Fin n → ℂ) (hz₀ : ∀ k : Fin n, (k : ℕ) < a → z₀ k ≠ 0)
     (hz : ∀ k : Fin n, (k : ℕ) < a → z k ≠ 0) : logExp a (logSecAt a z₀ z) = z := by
@@ -188,11 +188,11 @@ theorem logExp_logSecAt (z₀ z : Fin n → ℂ) (hz₀ : ∀ k : Fin n, (k : �
   · simp [logExp, logSecAt, hk]
 
 /- English proof (translation)
-Rewrite using `[differentiableAt_pi]`. Introduce `k`. Establish `hpk : DifferentiableAt ℂ (fun z : Fin n → ℂ => z k) z₀` using `differentiableAt_apply k z₀`. Distinguish the cases in `hk : (k : ℕ) < a`. Simplify using `only [logSecAt, hk, if_true]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Use `(differentiableAt_const _).add ?_` and prove the remaining obligations. Establish `hq : DifferentiableAt ℂ (fun z : Fin n → ℂ => z k / z₀ k) z₀`. Simplify `hpk.mul_const (z₀ k)⁻¹` using `[div_eq_mul_inv]`. Use `hq.clog ?_` and prove the remaining obligations. Simplify using `[div_self (hz₀ k hk), Complex.one_mem_slitPlane]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify `hpk` using `[logSecAt, hk]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem differentiableAt_logSecAt (z₀ : Fin n → ℂ) (hz₀ : ∀ k : Fin n, (k : ℕ) < a → z₀ k ≠ 0) :
     DifferentiableAt ℂ (logSecAt a z₀) z₀ := by
@@ -209,19 +209,17 @@ theorem differentiableAt_logSecAt (z₀ : Fin n → ℂ) (hz₀ : ∀ k : Fin n,
   · simpa [logSecAt, hk] using hpk
 
 /- English proof (translation)
-Introduce `n a ρ h _ hρ1 hd hinv`. Use `⟨fun z => h (logSec a z), ?_, ?_⟩` and prove the remaining obligations. Introduce `z₀ hz₀`. Take `⟨hb₀, hn₀⟩` from `hz₀`. Establish `hU : ∀ᶠ z in 𝓝 z₀, z ∈ Metric.ball (0 : Fin n → ℂ) ρ ∧ ∀ k : Fin n, (k : ℕ) < a → z k ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1 : ∀ᶠ z in 𝓝 z₀, z ∈ Metric.ball (0 : Fin n → ℂ) ρ` using `Metric.isOpen_ball.mem_nhds hb₀`. Use `h1.and ?_` and prove the remaining obligations. Rewrite using `[Filter.eventually_all]`. Introduce `k`. Distinguish the cases in `hk : (k : ℕ) < a`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Conclude with `((continuous_apply k).continuousAt.eventually_ne (hn₀ k hk)).mono fun z hz _ => hz`. Conclude with `Filter.Eventually.of_forall fun z hk' => absurd hk' hk`. Establish `hEq : (fun z => h (logSec a z)) =ᶠ[𝓝 z₀] fun z => h (logSecAt a z₀ z)`. Use `hU.mono fun z ⟨hb, hn⟩ => ?_` and prove the remaining obligations. Use `key hρ1 hinv _ _ ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[logExp_logSec z hn]`. Conclude with `hb`. Rewrite using `[logExp_logSec z hn, logExp_logSecAt z₀ z hn₀ hn]`. Establish `hD : {s | s ∈ logDom n a ∧ logExp a s ∈ Metric.ball (0 : Fin n → ℂ) ρ} ∈ 𝓝 (logSecAt a z₀ z₀)`. Use `dom_mem_nhds hρ1 _ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[logExp_logSecAt z₀ z₀ hn₀ hn₀]`. Conclude with `hb₀`. Establish `hh : DifferentiableAt ℂ h (logSecAt a z₀ z₀)` using `hd.differentiableAt hD`. Establish `hcomp : DifferentiableAt ℂ (h ∘ logSecAt a z₀) z₀` using `DifferentiableAt.comp (𝕜 := ℂ) z₀ hh (differentiableAt_logSecAt z₀ hn₀)`. Conclude with `(hcomp.congr_of_eventuallyEq hEq).differentiableWithinAt`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `s _ hs`. Establish `hn : ∀ k : Fin n, (k : ℕ) < a → logExp a s k ≠ 0` using `fun k hk => by`. Simplify using `only [logExp, hk, if_true]`. Conclude with `Complex.exp_ne_zero _`. Use `key hρ1 hinv _ _ hs ?_` and prove the remaining obligations.
-
-Rewrite using `[logExp_logSec _ hn]`.
+A detailed English derivation is pending.
 -/
 theorem descent : ∀ (n a : ℕ) (ρ : ℝ) (h : (Fin n → ℂ) → ℂ), 0 < ρ → ρ ≤ 1 →
     DifferentiableOn ℂ h {s | s ∈ logDom n a ∧ logExp a s ∈ Metric.ball (0 : Fin n → ℂ) ρ} →

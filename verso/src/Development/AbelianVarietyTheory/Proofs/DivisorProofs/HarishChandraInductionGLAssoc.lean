@@ -15,22 +15,22 @@ def InParM (a : ℕ) {n : ℕ} (M : Matrix (Fin n) (Fin n) F) : Prop :=
   ∀ i j : Fin n, (j : ℕ) < a → a ≤ (i : ℕ) → M i j = 0
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem inPar_eq (a : ℕ) {n : ℕ} (x : GL (Fin n) F) :
     InPar a x ↔ InParM a (x : Matrix (Fin n) (Fin n) F) := Iff.rfl
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[gal]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem gal_id (n : ℕ) (y : GL (Fin n) F) : gal (RingHom.id F) n y = y := by
   ext i j
   simp [gal]
 
 /- English proof (translation)
-Introduce `i j hj hi`. Use `show (1 : Matrix (Fin n) (Fin n) F) i j = 0`. Rewrite using `[Matrix.one_apply_ne]`. Introduce `h`. Rewrite `hi` using `[h]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem inPar_one (a n : ℕ) : InPar a (1 : GL (Fin n) F) := by
   intro i j hj hi
@@ -41,7 +41,7 @@ theorem inPar_one (a n : ℕ) : InPar a (1 : GL (Fin n) F) := by
   omega
 
 /- English proof (translation)
-Take `⟨H, π, hH, -, hπ, hπ', -⟩` from `GlobalTheory.T.exists_blockParabolic_subgroup_levi_projection F a b n hn`. Establish `h` using `(hπ' ⟨x, (hH x).2 hx⟩).1`. Rewrite `h` using `[hπ]`. Conclude with `h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coe_tlG {a b n : ℕ} (hn : n = a + b) (x : GL (Fin n) F) (hx : InPar a x) :
     ((tlG a x : GL (Fin a) F) : Matrix (Fin a) (Fin a) F) = tl a (x : Matrix (Fin n) (Fin n) F) := by
@@ -51,7 +51,7 @@ theorem coe_tlG {a b n : ℕ} (hn : n = a + b) (x : GL (Fin n) F) (hx : InPar a 
   exact h
 
 /- English proof (translation)
-Take `⟨H, π, hH, -, hπ, hπ', -⟩` from `GlobalTheory.T.exists_blockParabolic_subgroup_levi_projection F a b n hn`. Establish `h` using `(hπ' ⟨x, (hH x).2 hx⟩).2`. Rewrite `h` using `[hπ]`. Conclude with `h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coe_brG {a b n : ℕ} (hn : n = a + b) (x : GL (Fin n) F) (hx : InPar a x) :
     ((brG a b x : GL (Fin b) F) : Matrix (Fin b) (Fin b) F) = br a b (x : Matrix (Fin n) (Fin n) F) := by
@@ -61,13 +61,13 @@ theorem coe_brG {a b n : ℕ} (hn : n = a + b) (x : GL (Fin n) F) (hx : InPar a 
   exact h
 
 /- English proof (translation)
-Take `⟨H, π, hH, hsu, hπ, -, -⟩` from `GlobalTheory.T.exists_blockParabolic_subgroup_levi_projection F a b n hn`. Take `⟨s, hs⟩` from `hsu (h₁, h₂)`. Use `⟨s.1, fun z => ⟨?_, fun hz => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[← hH, ← hH]`. Prove the components needed by the constructor for the conclusion.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h`. Use `H.mul_mem (H.mul_mem s.2 h) (H.inv_mem s.2)` as an intermediate fact. Rewrite `this` using `[show s.1 * (s.1⁻¹ * z * s.1) * s.1⁻¹ = z by group]`. Then use the resulting hypothesis. Introduce `h`. Conclude with `H.mul_mem (H.mul_mem (H.inv_mem s.2) h) s.2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hz' : z ∈ H` using `(hH z).2 hz`. Establish `e` using `hπ (s⁻¹ * ⟨z, hz'⟩ * s)`. Rewrite `e` using `[map_mul, map_mul, map_inv, hπ ⟨z, hz'⟩, hs]`. Establish `e1` using `congrArg Prod.fst e`. Establish `e2` using `congrArg Prod.snd e`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Prod.fst_mul, Prod.fst_inv, Prod.snd_mul, Prod.snd_inv, Subgroup.coe_mul, Subgroup.coe_inv] at e1 e2`. Conclude with `⟨e1.symm, e2.symm⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem conj_blocks {a b n : ℕ} (hn : n = a + b) (h₁ : GL (Fin a) F) (h₂ : GL (Fin b) F) :
     ∃ s : GL (Fin n) F, ∀ z : GL (Fin n) F, (InPar a (s⁻¹ * z * s) ↔ InPar a z) ∧
@@ -100,7 +100,7 @@ def blk0 (a b : ℕ) (α : GL (Fin a) F → ℂ) (β : GL (Fin b) F → ℂ) (n 
   if InPar a z then α (tlG a z) * β (brG a b z) else 0
 
 /- English proof (translation)
-Simplify using `only [hc, hcTw, hcT, gal_id, finsum_eq_sum_of_fintype]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hc_eq [Fintype F] (a b : ℕ) (α : GL (Fin a) F → ℂ) (β : GL (Fin b) F → ℂ) (n : ℕ) (x : GL (Fin n) F) :
     hc a b α β n x = (Nat.card {p : GL (Fin n) F // InPar a p} : ℂ)⁻¹ *
@@ -108,7 +108,7 @@ theorem hc_eq [Fintype F] (a b : ℕ) (α : GL (Fin a) F → ℂ) (β : GL (Fin 
   simp only [hc, hcTw, hcT, gal_id, finsum_eq_sum_of_fintype]
 
 /- English proof (translation)
-The claim follows from `hc_eq a b α β n x`.
+A detailed English derivation is pending.
 -/
 theorem hc_eq' [Fintype F] (a b : ℕ) (α : GL (Fin a) F → ℂ) (β : GL (Fin b) F → ℂ) (n : ℕ) (x : GL (Fin n) F) :
     hc a b α β n x = (Nat.card {p : GL (Fin n) F // InPar a p} : ℂ)⁻¹ *
@@ -116,9 +116,9 @@ theorem hc_eq' [Fintype F] (a b : ℕ) (α : GL (Fin a) F → ℂ) (β : GL (Fin
   hc_eq a b α β n x
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `conj_blocks hn h₁ h₂`. Unfold `hcT`. Use `Fintype.sum_equiv (Equiv.mulRight s) _ _ fun y => ?_` and prove the remaining obligations. Establish `e : (y * s)⁻¹ * x * (y * s) = s⁻¹ * (y⁻¹ * x * y) * s` using `by group`. Simplify using `only [Equiv.coe_mulRight, e]`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hz : InPar a (y⁻¹ * x * y)`. Rewrite using `[if_pos hz, if_pos ((hs _).1.2 hz), ((hs _).2 hz).1, ((hs _).2 hz).2]`. Rewrite using `[if_neg hz, if_neg (fun h => hz ((hs _).1.1 h))]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem hcT_conj [Fintype F] {a b n : ℕ} (hn : n = a + b) (Φ : GL (Fin a) F → GL (Fin b) F → ℂ)
     (h₁ : GL (Fin a) F) (h₂ : GL (Fin b) F) (x : GL (Fin n) F) :
@@ -133,7 +133,7 @@ theorem hcT_conj [Fintype F] {a b n : ℕ} (hn : n = a + b) (Φ : GL (Fin a) F �
   · rw [if_neg hz, if_neg (fun h => hz ((hs _).1.1 h))]
 
 /- English proof (translation)
-Unfold `hcT`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem hcT_sum [Fintype F] {a b n : ℕ} {ι : Type} [Fintype ι] (Φ : ι → GL (Fin a) F → GL (Fin b) F → ℂ)
     (x : GL (Fin n) F) : hcT a b (fun u v => ∑ i, Φ i u v) n x = ∑ i, hcT a b (Φ i) n x := by
@@ -143,7 +143,7 @@ theorem hcT_sum [Fintype F] {a b n : ℕ} {ι : Type} [Fintype ι] (Φ : ι → 
   split_ifs <;> simp
 
 /- English proof (translation)
-Unfold `hcT`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem hcT_smul [Fintype F] {a b n : ℕ} (k : ℂ) (Φ : GL (Fin a) F → GL (Fin b) F → ℂ) (x : GL (Fin n) F) :
     hcT a b (fun u v => k * Φ u v) n x = k * hcT a b Φ n x := by
@@ -153,9 +153,9 @@ theorem hcT_smul [Fintype F] {a b n : ℕ} (k : ℂ) (Φ : GL (Fin a) F → GL (
   split_ifs <;> simp
 
 /- English proof (translation)
-Establish `e : (fun (u : GL (Fin m) F) (v : GL (Fin c) F) => Fm u * γ v) = fun u v => ∑ h : GL (Fin m) F, k * (φ (h⁻¹ * u * h) * γ ((1 : GL (Fin c) F)⁻¹ * v * 1))`. Use function extensionality and compare the values at `u v`. Rewrite using `[hF]`. Simplify using `[Finset.mul_sum, Finset.sum_mul, mul_assoc]`. Rewrite using `[e, hcT_sum]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_congr rfl fun h _ => (show hcT m c (fun u v => k * (φ (h⁻¹ * u * h) * γ ((1 : GL (Fin c) F)⁻¹ * v * 1))) n x = k * hcT m c (fun u v => φ u * γ v) n x from (hcT_smul k _ x).trans (congrArg _ (hcT_conj hn (fun u v => φ u * γ v) h 1 x)))]`. Rewrite using `[Finset.sum_const, Finset.card_univ, nsmul_eq_mul, Nat.card_eq_fintype_card]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem stage_left [Fintype F] {m c n : ℕ} (hn : n = m + c) (k : ℂ) (φ Fm : GL (Fin m) F → ℂ)
     (γ : GL (Fin c) F → ℂ) (hF : ∀ u, Fm u = k * ∑ h : GL (Fin m) F, φ (h⁻¹ * u * h)) (x : GL (Fin n) F) :
@@ -175,9 +175,9 @@ theorem stage_left [Fintype F] {m c n : ℕ} (hn : n = m + c) (k : ℂ) (φ Fm :
   ring
 
 /- English proof (translation)
-Establish `e : (fun (u : GL (Fin a) F) (v : GL (Fin m) F) => α u * Fm v) = fun u v => ∑ h : GL (Fin m) F, k * (α ((1 : GL (Fin a) F)⁻¹ * u * 1) * φ (h⁻¹ * v * h))`. Use function extensionality and compare the values at `u v`. Rewrite using `[hF]`. Simplify using `[Finset.mul_sum, Finset.sum_mul, mul_left_comm]`. Rewrite using `[e, hcT_sum]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_congr rfl fun h _ => (show hcT a m (fun u v => k * (α ((1 : GL (Fin a) F)⁻¹ * u * 1) * φ (h⁻¹ * v * h))) n x = k * hcT a m (fun u v => α u * φ v) n x from (hcT_smul k _ x).trans (congrArg _ (hcT_conj hn (fun u v => α u * φ v) 1 h x)))]`. Rewrite using `[Finset.sum_const, Finset.card_univ, nsmul_eq_mul, Nat.card_eq_fintype_card]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem stage_right [Fintype F] {a m n : ℕ} (hn : n = a + m) (k : ℂ) (φ Fm : GL (Fin m) F → ℂ)
     (α : GL (Fin a) F → ℂ) (hF : ∀ u, Fm u = k * ∑ h : GL (Fin m) F, φ (h⁻¹ * u * h)) (x : GL (Fin n) F) :
@@ -197,7 +197,7 @@ theorem stage_right [Fintype F] {a m n : ℕ} (hn : n = a + m) (k : ℂ) (φ Fm 
   ring
 
 /- English proof (translation)
-Unfold `ent`. Rewrite using `[dif_pos ⟨hi, hj⟩]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ent_tl {m n : ℕ} (M : Matrix (Fin n) (Fin n) F) {i j : ℕ} (hi : i < m) (hj : j < m) :
     ent (tl m M) i j = ent M i j := by
@@ -206,7 +206,7 @@ theorem ent_tl {m n : ℕ} (M : Matrix (Fin n) (Fin n) F) {i j : ℕ} (hi : i < 
   rfl
 
 /- English proof (translation)
-Unfold `ent`. Rewrite using `[dif_pos ⟨hi, hj⟩]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ent_br {a m n : ℕ} (M : Matrix (Fin n) (Fin n) F) {i j : ℕ} (hi : i < m) (hj : j < m) :
     ent (br a m M) i j = ent M (a + i) (a + j) := by
@@ -215,9 +215,9 @@ theorem ent_br {a m n : ℕ} (M : Matrix (Fin n) (Fin n) F) {i j : ℕ} (hi : i 
   rfl
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h i j hi hj ha`. Unfold `ent`. Rewrite using `[dif_pos ⟨hi, by omega⟩]`. Conclude with `h _ _ hj ha`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h i j hj ha`. Use `h i j i.2 hj ha` as an intermediate fact. Unfold `ent at this`. Rewrite `this` using `[dif_pos ⟨i.2, j.2⟩]`. Conclude with `this`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inParM_iff {a n : ℕ} (M : Matrix (Fin n) (Fin n) F) :
     InParM a M ↔ ∀ i j : ℕ, i < n → j < a → a ≤ i → ent M i j = 0 := by
@@ -233,13 +233,11 @@ theorem inParM_iff {a n : ℕ} (M : Matrix (Fin n) (Fin n) F) :
     exact this
 
 /- English proof (translation)
-Simplify using `only [inParM_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Use `⟨fun i j hi hj ha => ?_, fun i j hi hj ha => ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : i < a + b`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[← ent_tl M h (by omega : j < a + b)]`. Conclude with `h2 i j h hj ha`. Conclude with `h1 i j hi (by omega) (by omega)`. Rewrite using `[ent_br M hi (by omega)]`. Conclude with `h1 _ _ (by omega) (by omega) (by omega)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Introduce and unpack `⟨h1, h2⟩`. Use `⟨fun i j hi hj ha => ?_, fun i j hi hj ha => ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : j < a`. Conclude with `h1 i j hi h (by omega)`. Use `h2 (i - a) (j - a) (by omega) (by omega) (by omega)` as an intermediate fact.
-
-Rewrite `this` using `[ent_br M (by omega) (by omega)]`. Rewrite `this` using `[show a + (i - a) = i by omega, show a + (j - a) = j by omega]`. Then use the resulting hypothesis. Rewrite using `[ent_tl M hi (by omega)]`. Conclude with `h1 _ _ (by omega) hj ha`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem par_par {a b c n : ℕ} (hn : n = a + b + c) (M : Matrix (Fin n) (Fin n) F) :
     (InParM (a + b) M ∧ InParM a (tl (a + b) M)) ↔ (InParM a M ∧ InParM b (br a (b + c) M)) := by
@@ -264,11 +262,11 @@ theorem par_par {a b c n : ℕ} (hn : n = a + b + c) (M : Matrix (Fin n) (Fin n)
       exact h1 _ _ (by omega) hj ha
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Rewrite `h2` using `[inPar_eq, coe_tlG hn z h1]`. Take `⟨h3, h4⟩` from `(par_par hn (z : Matrix (Fin n) (Fin n) F)).1 ⟨h1, h2⟩`. Use `⟨h3, ?_⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[inPar_eq, coe_brG (by omega : n = a + (b + c)) z h3]`. Conclude with `h4`. Introduce and unpack `⟨h3, h4⟩`. Rewrite `h4` using `[inPar_eq, coe_brG (by omega : n = a + (b + c)) z h3]`. Take `⟨h1, h2⟩` from `(par_par hn (z : Matrix (Fin n) (Fin n) F)).2 ⟨h3, h4⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨h1, ?_⟩` and prove the remaining obligations. Rewrite using `[inPar_eq, coe_tlG hn z h1]`. Conclude with `h2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem par_parG {a b c n : ℕ} (hn : n = a + b + c) (z : GL (Fin n) F) :
     (InPar (a + b) z ∧ InPar a (tlG (a + b) z)) ↔ (InPar a z ∧ InPar b (brG a (b + c) z)) := by
@@ -287,19 +285,19 @@ theorem par_parG {a b c n : ℕ} (hn : n = a + b + c) (z : GL (Fin n) F) :
     exact h2
 
 /- English proof (translation)
-Establish `hn' : n = a + (b + c)` using `by omega`. Establish `pp` using `par_parG hn z`. Establish `t1 : tl a (tl (a + b) (z : Matrix (Fin n) (Fin n) F)) = tl a (z : Matrix (Fin n) (Fin n) F)`. Use function extensionality and compare the values at `i j`. Conclude with `ent_tl _ (by omega) (by omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `t2 : br a b (tl (a + b) (z : Matrix (Fin n) (Fin n) F)) = tl b (br a (b + c) (z : Matrix (Fin n) (Fin n) F))`. Use function extensionality and compare the values at `i j`. Conclude with `(ent_tl _ (by omega) (by omega)).trans (ent_br _ (by omega) (by omega)).symm`. Establish `t3 : br b c (br a (b + c) (z : Matrix (Fin n) (Fin n) F)) = br (a + b) c (z : Matrix (Fin n) (Fin n) F)`. Use function extensionality and compare the values at `i j`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(ent_br _ (by omega) (by omega)).trans ?_` and prove the remaining obligations. Rewrite using `[← add_assoc, ← add_assoc]`. Both sides reduce to the same expression. Unfold `blk0`. Distinguish the cases in `h1 : InPar (a + b) z`.
+Both sides reduce to the same expression. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[if_pos h1]`. Distinguish the cases in `h2 : InPar a (tlG (a + b) z)`. Take `⟨h3, h4⟩` from `pp.1 ⟨h1, h2⟩`. Establish `e1 : tlG a (tlG (a + b) z) = tlG a z` using `by show toG (tl a ((tlG (a + b) z : GL (Fin (a + b)) F) : Matrix (Fin (a + b)) (Fin (a + b)) F)) = toG (tl a ((z : GL (Fin n) F) : Matrix (Fin n) (Fin n) F))`. Rewrite using `[coe_tlG hn z h1, t1]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : brG a b (tlG (a + b) z) = tlG b (brG a (b + c) z)` using `by show toG (br a b ((tlG (a + b) z : GL (Fin (a + b)) F) : Matrix (Fin (a + b)) (Fin (a + b)) F)) = toG (tl b ((brG a (b + c) z : GL (Fin (b + c)) F) : Matrix (Fin (b + c)) (Fin (b + c)) F))`. Rewrite using `[coe_tlG hn z h1, coe_brG hn' z h3, t2]`. Establish `e3 : brG b c (brG a (b + c) z) = brG (a + b) c z` using `by show toG (br b c ((brG a (b + c) z : GL (Fin (b + c)) F) : Matrix (Fin (b + c)) (Fin (b + c)) F)) = toG (br (a + b) c ((z : GL (Fin n) F) : Matrix (Fin n) (Fin n) F))`. Rewrite using `[coe_brG hn' z h3, t3]`. Rewrite using `[if_pos h2, if_pos h3, if_pos h4, e1, e2, e3, mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[if_neg h2, zero_mul]`. Distinguish the cases in `h3 : InPar a z`. Rewrite using `[if_pos h3, if_neg (fun h4 => h2 (pp.2 ⟨h3, h4⟩).2), mul_zero]`. Rewrite using `[if_neg h3]`. Rewrite using `[if_neg h1]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h3 : InPar a z`. Rewrite using `[if_pos h3, if_neg (fun h4 => h1 (pp.2 ⟨h3, h4⟩).1), mul_zero]`. Rewrite using `[if_neg h3]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem parabolicDiagonalBlocksProduct_assoc {a b c n : ℕ} (hn : n = a + b + c) (α : GL (Fin a) F → ℂ) (β : GL (Fin b) F → ℂ)
     (γ : GL (Fin c) F → ℂ) (z : GL (Fin n) F) :
@@ -346,7 +344,7 @@ theorem parabolicDiagonalBlocksProduct_assoc {a b c n : ℕ} (hn : n = a + b + c
     · rw [if_neg h3]
 
 /- English proof (translation)
-Establish `h1` using `Subgroup.card_mul_index (M.comap π)`. Establish `h2` using `Subgroup.card_mul_index M`. Rewrite `h1` using `[Subgroup.index_comap_of_surjective M hπ]`. Rewrite using `[← h1, ← h2]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem card_comap {H L : Type} [Group H] [Group L] (π : H →* L) (hπ : Function.Surjective π)
     (M : Subgroup L) : Nat.card (M.comap π) * Nat.card L = Nat.card M * Nat.card H := by
@@ -357,11 +355,11 @@ theorem card_comap {H L : Type} [Group H] [Group L] (π : H →* L) (hπ : Funct
   ring
 
 /- English proof (translation)
-Take `⟨H, π, hH, hsu, hπ, -, -⟩` from `GlobalTheory.T.exists_blockParabolic_subgroup_levi_projection F (a + b) c n hn`. Take `⟨H', -, hH', -, -, -, -⟩` from `GlobalTheory.T.exists_blockParabolic_subgroup_levi_projection F a b (a + b) rfl`. Establish `k` using `card_comap π hsu (H'.prod ⊤)`. Establish `mem : ∀ p : H, p ∈ (H'.prod ⊤).comap π ↔ InPar a (tlG (a + b) p.1)`. Introduce `p`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Subgroup.mem_comap, Subgroup.mem_prod, hπ]`. Simplify using `[hH']`. Establish `e1 : Nat.card ((H'.prod ⊤).comap π) = Nat.card {x : GL (Fin n) F // InPar (a + b) x ∧ InPar a (tlG (a + b) x)}` using `Nat.card_congr ⟨fun p => ⟨p.1.1, (hH _).1 p.1.2, (mem p.1).1 p.2⟩, fun x => ⟨⟨x.1, (hH _).2 x.2.1⟩, (mem _).2 x.2.2⟩, fun p => rfl, fun x => rfl⟩`. Establish `e2 : Nat.card (H'.prod (⊤ : Subgroup (GL (Fin c) F))) = Nat.card {p : GL (Fin (a + b)) F // InPar a p} * Nat.card (GL (Fin c) F)`. Rewrite using `[Nat.card_congr (Subgroup.prodEquiv H' ⊤).toEquiv, Nat.card_prod, Subgroup.card_top, Nat.card_congr (Equiv.subtypeEquivRight hH')]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e3 : Nat.card H = Nat.card {p : GL (Fin n) F // InPar (a + b) p}` using `Nat.card_congr (Equiv.subtypeEquivRight hH)`. Rewrite `k` using `[e1, e2, e3, Nat.card_prod]`. Establish `hc : 0 < Nat.card (GL (Fin c) F)` using `Nat.card_pos`. Apply `Nat.eq_of_mul_eq_mul_right hc` to reduce the goal to its premises. Rewrite using `[mul_assoc, k]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -392,11 +390,11 @@ theorem card_left [Finite F] {a b c n : ℕ} (hn : n = a + b + c) :
   ring
 
 /- English proof (translation)
-Take `⟨H, π, hH, hsu, hπ, -, -⟩` from `GlobalTheory.T.exists_blockParabolic_subgroup_levi_projection F a (b + c) n (by omega)`. Take `⟨H', -, hH', -, -, -, -⟩` from `GlobalTheory.T.exists_blockParabolic_subgroup_levi_projection F b c (b + c) rfl`. Establish `k` using `card_comap π hsu ((⊤ : Subgroup (GL (Fin a) F)).prod H')`. Establish `mem : ∀ p : H, p ∈ ((⊤ : Subgroup (GL (Fin a) F)).prod H').comap π ↔ InPar b (brG a (b + c) p.1)`. Introduce `p`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Subgroup.mem_comap, Subgroup.mem_prod, hπ]`. Simplify using `[hH']`. Establish `e1 : Nat.card (((⊤ : Subgroup (GL (Fin a) F)).prod H').comap π) = Nat.card {x : GL (Fin n) F // InPar a x ∧ InPar b (brG a (b + c) x)}` using `Nat.card_congr ⟨fun p => ⟨p.1.1, (hH _).1 p.1.2, (mem p.1).1 p.2⟩, fun x => ⟨⟨x.1, (hH _).2 x.2.1⟩, (mem _).2 x.2.2⟩, fun p => rfl, fun x => rfl⟩`. Establish `e2 : Nat.card ((⊤ : Subgroup (GL (Fin a) F)).prod H') = Nat.card (GL (Fin a) F) * Nat.card {p : GL (Fin (b + c)) F // InPar b p}`. Rewrite using `[Nat.card_congr (Subgroup.prodEquiv ⊤ H').toEquiv, Nat.card_prod, Subgroup.card_top, Nat.card_congr (Equiv.subtypeEquivRight hH')]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e3 : Nat.card H = Nat.card {p : GL (Fin n) F // InPar a p}` using `Nat.card_congr (Equiv.subtypeEquivRight hH)`. Rewrite `k` using `[e1, e2, e3, Nat.card_prod]`. Establish `ha : 0 < Nat.card (GL (Fin a) F)` using `Nat.card_pos`. Apply `Nat.eq_of_mul_eq_mul_left ha` to reduce the goal to its premises. Rewrite using `[show Nat.card (GL (Fin a) F) * (Nat.card {x : GL (Fin n) F // InPar a x ∧ InPar b (brG a (b + c) x)} * Nat.card (GL (Fin (b + c)) F)) = Nat.card {x : GL (Fin n) F // InPar a x ∧ InPar b (brG a (b + c) x)} * (Nat.card (GL (Fin a) F) * Nat.card (GL (Fin (b + c)) F)) by ring, k]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the hypotheses and the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -429,17 +427,15 @@ theorem card_right [Finite F] {a b c n : ℕ} (hn : n = a + b + c) :
   ring
 
 /- English proof (translation)
-Establish `hq1` using `card_left (F := F) hn`. Establish `hq2` using `card_right (F := F) hn`. Rewrite `hq1` using `[Nat.card_congr (Equiv.subtypeEquivRight (par_parG hn))]`. Use `set Q := Nat.card {x : GL (Fin n) F // InPar a x ∧ InPar b (brG a (b + c) x)}`. Use `set A := Nat.card {p : GL (Fin n) F // InPar (a + b) p}`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set B := Nat.card {p : GL (Fin (a + b)) F // InPar a p}`. Use `set C := Nat.card {p : GL (Fin n) F // InPar a p}`. Use `set D := Nat.card {p : GL (Fin (b + c)) F // InPar b p}`. Use `set X := Nat.card (GL (Fin (a + b)) F)`. Use `set Y := Nat.card (GL (Fin (b + c)) F)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hA : 0 < A` using `@Nat.card_pos _ ⟨⟨1, inPar_one _ _⟩⟩ _`. Establish `hB : 0 < B` using `@Nat.card_pos _ ⟨⟨1, inPar_one _ _⟩⟩ _`. Establish `hC : 0 < C` using `@Nat.card_pos _ ⟨⟨1, inPar_one _ _⟩⟩ _`. Establish `hD : 0 < D` using `@Nat.card_pos _ ⟨⟨1, inPar_one _ _⟩⟩ _`. Establish `hQ : 0 < Q` using `Nat.pos_of_ne_zero fun h => by`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hq2` using `[h, zero_mul]`. Conclude with `(Nat.mul_pos hD hC).ne' hq2.symm`. Establish `hXY : X * C * D = Y * A * B`. Apply `Nat.eq_of_mul_eq_mul_left hQ` to reduce the goal to its premises. Rewrite using `[show Q * (X * C * D) = (Q * X) * (C * D) by ring, hq1, show Q * (Y * A * B) = (Q * Y) * (A * B) by ring, hq2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hXYc : (X : ℂ) * C * D = Y * A * B` using `by exact_mod_cast hXY`. Establish `hA' : (A : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hA.ne'`. Establish `hB' : (B : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hB.ne'`. Establish `hC' : (C : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hC.ne'`.
-
-Establish `hD' : (D : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hD.ne'`. Clear the denominators using the available nonvanishing facts. Take the linear combination `S * hXYc`.
+A detailed English derivation is pending.
 -/
 theorem const_eq [Finite F] {a b c n : ℕ} (hn : n = a + b + c) (S : ℂ) :
     (Nat.card {p : GL (Fin n) F // InPar (a + b) p} : ℂ)⁻¹ *
@@ -477,9 +473,9 @@ theorem const_eq [Finite F] {a b c n : ℕ} (hn : n = a + b + c) (S : ℂ) :
   linear_combination S * hXYc
 
 /- English proof (translation)
-Introduce `F _ _ a b c n α β γ _ _ _ hn`. Use `Fintype.ofFinite F` as an intermediate fact. Use function extensionality and compare the values at `x`. Rewrite using `[hc_eq (a + b) c, hc_eq a (b + c), stage_left hn _ (blk0 a b α β (a + b)) _ γ (hc_eq' a b α β (a + b)) x, stage_right (by omega : n = a + (b + c)) _ (blk0 b c β γ (b + c)) _ α (hc_eq' b c β γ (b + c)) x]`. Establish `hs : hcT (a + b) c (fun u v => blk0 a b α β (a + b) u * γ v) n x = hcT a (b + c) (fun u v => α u * blk0 b c β γ (b + c) v) n x` using `by show ∑ y : GL (Fin n) F, blk0 (a + b) c (blk0 a b α β (a + b)) γ n (y⁻¹ * x * y) = ∑ y : GL (Fin n) F, blk0 a (b + c) α (blk0 b c β γ (b + c)) n (y⁻¹ * x * y)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Finset.sum_congr rfl fun y _ => parabolicDiagonalBlocksProduct_assoc hn α β γ _`. Rewrite using `[hs]`. Conclude with `const_eq hn _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hc_assoc : ∀ (F : Type) [Field F] [Finite F], ∀ (a b c n : ℕ) (α : GL (Fin a) F → ℂ)
     (β : GL (Fin b) F → ℂ) (γ : GL (Fin c) F → ℂ), IsCl α → IsCl β → IsCl γ → n = a + b + c →

@@ -102,11 +102,9 @@ def FamSt : Prop :=
     ∃ fam : Fam ct.Y (idx0 ct) C, fam.pt Z = y ∧ ∃ w' : Sp ↥K ⟶ ct.YY.X, spMap K.subtype ≫ w' = (fam.pt ct.YY).gen
 
 /- English proof (translation)
-Establish `h0 : ⊤ ≤ X.fromSpecStalk x ⁻¹ᵁ U` using `fun q _ => ((specializes_closedPoint (q : PrimeSpectrum _)).map (X.fromSpecStalk x).continuous).mem_open U.2 (by rw [Scheme.fromSpecStalk_closedPoint]; exact hU)`. Establish `e1 : (X.fromSpecStalk x).appLE U ⊤ h0 = X.presheaf.germ U x hU ≫ (Scheme.ΓSpecIso _).inv`. Rewrite using `[Scheme.Hom.appLE, Scheme.fromSpecStalk_app hU, Category.assoc, Category.assoc, ← Functor.map_comp]`. Conclude with `congrArg (_ ≫ ·) ((congrArg (_ ≫ ·) ((Spec (X.presheaf.stalk x)).presheaf.map_id _)).trans (Category.comp_id _))`. Establish `e2` using `Scheme.Hom.appLE_comp_appLE (spMap f) (X.fromSpecStalk x) U ⊤ ⊤ h0 le_rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e3 : (spMap f).appLE ⊤ ⊤ le_rfl = (spMap f).appTop` using `(Scheme.Hom.app_eq_appLE _).symm`. Establish `e4 : (spMap f ≫ X.fromSpecStalk x).appLE U ⊤ h ≫ (Scheme.ΓSpecIso (CommRingCat.of B)).hom = X.presheaf.germ U x hU ≫ CommRingCat.ofHom f`. Rewrite using `[← e2, e1, e3, Category.assoc, Category.assoc]`. Use `erw [Scheme.ΓSpecIso_naturality]`. Conclude with `congrArg (_ ≫ ·) ((Scheme.ΓSpecIso (X.presheaf.stalk x)).inv_hom_id_assoc _)`.
-
-Conclude with `congrArg (fun φ => φ.hom s) e4`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evAt_fromSpecStalk {X : Scheme.{0}} (x : X) {B : Type} [CommRing B] (f : X.presheaf.stalk x →+* B) {U : X.Opens}
     (hU : x ∈ U) (h : ⊤ ≤ (spMap f ≫ X.fromSpecStalk x) ⁻¹ᵁ U) (s : Γ(X, U)) :
@@ -132,7 +130,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {Xo : ∀ l : Level H, Moduli Dw l} {p : ℕ} {W : ValuationSubring ℂ} {Y : LocalSystem Xo p W} {i₀ : Idx H p}
 
 /- English proof (translation)
-Use `projProper _ _ _ (Y i).proj` as an intermediate fact. Establish `: (Y i).X.IsSeparated` using `⟨by rw [← terminal.comp_from (Y i).s]; infer_instance⟩`. Establish `: IsDominant (spMap (intO C).subtype)` using `⟨(PrimeSpectrum.denseRange_comap_iff_ker_le_nilRadical _).2 (by`. Conclude with `((RingHom.injective_iff_ker_eq_bot _).1 (intO C).subtype_injective).le.trans bot_le)⟩`. Conclude with `ext_of_isDominant _ h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem base_ext {C : Type} [NormedField C] [IsUltrametricDist C] (i : Idx H p) (x x' : Sp ↥(intO C) ⟶ (Y i).X)
     (h : spMap (intO C).subtype ≫ x = spMap (intO C).subtype ≫ x') : x = x' := by
@@ -143,7 +141,7 @@ theorem base_ext {C : Type} [NormedField C] [IsUltrametricDist C] (i : Idx H p) 
   exact ext_of_isDominant _ h
 
 /- English proof (translation)
-Take `⟨τ, mu, u, -, h₁, -⟩` from `h`. Establish `e : y₂.z ≫ Z₂.π = y₁.z ≫ Z₁.π ≫ τ` using `base_ext Z₂.i _ _ (by simpa [PtAt.gen] using h₁)`. Establish `e' : Z₂.π y₂.red = τ (Z₁.π y₁.red)` using `congrArg (fun f => f (closedPoint ↥(intO ↥C.S))) e`. Rewrite using `[Mdl.abP, Mdl.abP, e']`. Conclude with `(abLocus_pullback abLocusOne (Y Z₂.i).t.semi mu.cart.1 _).symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem abP_red_iff {Z₁ Z₂ : Mdl Y i₀} {C : SCF p} (y₁ : PtAt Z₁ C) (y₂ : PtAt Z₂ C) (h : NatImg Z₁ Z₂ y₁.gen y₂.gen) :
     Z₁.abP y₁.red ↔ Z₂.abP y₂.red := by
@@ -154,7 +152,7 @@ theorem abP_red_iff {Z₁ Z₂ : Mdl Y i₀} {C : SCF p} (y₁ : PtAt Z₁ C) (y
   exact (abLocus_pullback abLocusOne (Y Z₂.i).t.semi mu.cart.1 _).symm
 
 /- English proof (translation)
-Set `b : i.c.V W →+* i'.c.V W` to `((IntermediateField.inclusion hc).toRingHom.comp (i.c.V W).subtype).codRestrict (i'.c.V W) fun x => x.2`. Establish `hb : IsIncl b` using `fun _ => rfl`. Take `⟨π', mu, r, h⟩` from `hN.2.choose_spec.1 i i' hl hc b hb`. Conclude with `⟨mu, b, π', r, hb, h⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_isTrans (hN : N2 Y) (i i' : Idx H p) (hl : i.l.Dvd i'.l) (hc : i.c.F ≤ i'.c.F) :
     ∃ mu, IsTrans i i' (hN.2.choose i i' hl hc) mu := by
@@ -169,7 +167,7 @@ end Free
 variable {D : D7} {A : Amb D} {N j : ℕ} {S : Sig A N j} {κ : Lv A} {p : ℕ} {ct : At S κ p}
 
 /- English proof (translation)
-Establish `h : ct.Xm.i = idx0 ct` using `ct.B.lvl none`. Use `⟨h ▸ Z.dvd, ?_, fun σ => by rw [ct.B.ty none σ]; exact Finset.empty_subset _⟩` and prove the remaining obligations. Rewrite using `[h]`. Conclude with `Z.le`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem corr_base (Z : ct.Mdl) : Corr Z ct.Xm := by
   have h : ct.Xm.i = idx0 ct := ct.B.lvl none
@@ -177,17 +175,17 @@ theorem corr_base (Z : ct.Mdl) : Corr Z ct.Xm := by
   rw [h]; exact Z.le
 
 /- English proof (translation)
-The claim follows from `abP_red_iff _ _ (y.fam.compat Z ct.Xm (corr_base Z))`.
+A detailed English derivation is pending.
 -/
 theorem abP_redK_iff (Z : ct.Mdl) (y : DVP ct) : ct.abP (redK Z y) ↔ ct.abP (redK ct.Xm y) :=
   abP_red_iff _ _ (y.fam.compat Z ct.Xm (corr_base Z))
 
 /- English proof (translation)
-Establish `: Module.Finite (𝓞 D.host.E) (ct.Ylat x)` using `Module.Finite.of_restrictScalars_finite ℤ _ _`. Establish `: Module.IsTorsionFree (𝓞 D.host.E) (ct.Ylat x)`. Use `⟨fun r hr a b hab => ?_⟩` and prove the remaining obligations. Establish `hr0 : r ≠ 0` using `hr.ne_zero`. Choose the witnesses or unpack the hypotheses as in `⟨s, hs⟩ : r ∣ ((Algebra.norm ℤ r : ℤ) : 𝓞 D.host.E) := by`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `Ideal.absNorm_mem (Ideal.span {r})` as an intermediate fact. Rewrite `this` using `[Ideal.absNorm_span_singleton, Ideal.mem_span_singleton]`. Apply the tactic sequence `rcases Int.natAbs_eq (Algebra.norm ℤ r) with h | h <;> rw [h] <;> simpa using this`. Establish `hn : Algebra.norm ℤ r ≠ 0` using `Algebra.norm_ne_zero_iff.2 hr0`. Establish `h2 : r • a = r • b` using `hab`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : Algebra.norm ℤ r • a = Algebra.norm ℤ r • b`. Rewrite using `[← Int.cast_smul_eq_zsmul (𝓞 D.host.E), ← Int.cast_smul_eq_zsmul (𝓞 D.host.E), hs, mul_comm, mul_smul, mul_smul, h2]`. Conclude with `smul_right_injective _ hn h3`. Conclude with `Module.finrank_zero_iff`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_eq_zero_iff {Z : ct.Mdl} (x : ct.Pt Z) :
     Module.finrank (𝓞 D.host.E) (ct.Ylat x) = 0 ↔ Subsingleton (ct.Ylat x) := by
@@ -208,13 +206,13 @@ theorem finrank_eq_zero_iff {Z : ct.Mdl} (x : ct.Pt Z) :
   exact Module.finrank_zero_iff
 
 /- English proof (translation)
-The claim follows from `(hg Z (ptK Z y)).trans ((abP_redK_iff Z y).trans ((hg _ (ptK ct.Xm y)).symm.trans (finrank_eq_zero_iff _).symm))`.
+A detailed English derivation is pending.
 -/
 theorem ptK_good (hg : GoodIff ct) (Z : ct.Mdl) (y : DVP ct) : Subsingleton (ct.Ylat (ptK Z y)) ↔ dvRho y = 0 :=
   (hg Z (ptK Z y)).trans ((abP_redK_iff Z y).trans ((hg _ (ptK ct.Xm y)).symm.trans (finrank_eq_zero_iff _).symm))
 
 /- English proof (translation)
-Rewrite using `[Nat.pos_iff_ne_zero, ne_eq, ← ptK_good hg Z y]`. Conclude with `not_congr (hg Z (ptK Z y))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dvRho_pos_iff (hg : GoodIff ct) (Z : ct.Mdl) (y : DVP ct) : 0 < dvRho y ↔ ¬ ct.abP (redK Z y) := by
   rw [Nat.pos_iff_ne_zero, ne_eq, ← ptK_good hg Z y]
@@ -223,11 +221,9 @@ theorem dvRho_pos_iff (hg : GoodIff ct) (Z : ct.Mdl) (y : DVP ct) : 0 < dvRho y 
 variable {Z : ct.Mdl} {y : DVP ct} {e : Ext y}
 
 /- English proof (translation)
-Establish `h : CharZero ((Sp e.R).residueField (primeU e))`. Establish `hpr : (primeU e : PrimeSpectrum e.R).asIdeal.IsPrime` using `PowerSeries.span_X_isPrime`. Establish `hq : CharZero (primeU e : PrimeSpectrum e.R).asIdeal.ResidueField`. Use `⟨fun a b hab => ?_⟩` and prove the remaining obligations. Establish `h1 : algebraMap e.R (primeU e : PrimeSpectrum e.R).asIdeal.ResidueField ((a : e.R) - b) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[map_sub, map_natCast, map_natCast, hab, sub_self]`. Establish `h2 : (a : e.R) - b ∈ Ideal.span {(PowerSeries.X : e.R)}` using `Ideal.algebraMap_residueField_eq_zero.1 h1`. Rewrite `h2` using `[Ideal.mem_span_singleton, PowerSeries.X_dvd_iff, map_sub, map_natCast, map_natCast, sub_eq_zero]`. Conclude with `h2` after adjusting the coercions. Conclude with `@charZero_of_injective_ringHom _ _ _ _ (Scheme.Spec.residueFieldIso (CommRingCat.of e.R) (primeU e)).inv.hom (RingHom.injective _) hq`.
-
-Conclude with `RingHom.charZero (χ.hom.residueFieldMap (primeU e)).hom`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem imgU_inQ (χ : Chart Z y e) : ct.inQ (imgU χ) := by
   have h : CharZero ((Sp e.R).residueField (primeU e)) := by
@@ -244,9 +240,9 @@ theorem imgU_inQ (χ : Chart Z y e) : ct.inQ (imgU χ) := by
   exact RingHom.charZero (χ.hom.residueFieldMap (primeU e)).hom
 
 /- English proof (translation)
-Take `⟨ev, h₁, h₂, h₃⟩` from `h`. Establish `: IsLocalHom ev` using `IsLocalHom.of_surjective ev fun x => ⟨_, h₁ x⟩`. Establish `e1 : spMap (inclO e.L) (closedPoint _) = closedPoint e.O` using `comap_closedPoint (inclO e.L)`. Establish `e2 : spMap ev (closedPoint _) = closedPoint e.R` using `comap_closedPoint ev`. Rewrite using `[redK, PtAt.red, ← h₃]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(congrArg χ.hom ((congrArg (spMap ev) e1).trans e2)).symm`.
+A detailed English derivation is pending.
 -/
 theorem chAt_imgM (χ : Chart Z y e) (h : chAt χ) : imgM χ = redK Z y := by
   obtain ⟨ev, h₁, h₂, h₃⟩ := h
@@ -257,13 +253,13 @@ theorem chAt_imgM (χ : Chart Z y e) (h : chAt χ) : imgM χ = redK Z y := by
   exact (congrArg χ.hom ((congrArg (spMap ev) e1).trans e2)).symm
 
 /- English proof (translation)
-Introduce `h'` and use `(h (primeU e)).1 h' (Ideal.mem_span_singleton_self _)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem chAbExact_imgU (χ : Chart Z y e) (h : chAbExact χ) : ¬ ct.abP (imgU χ) :=
   fun h' => (h (primeU e)).1 h' (Ideal.mem_span_singleton_self _)
 
 /- English proof (translation)
-Introduce `Z x` and use `by have e : Z.π (x.z (closedPoint ↥(intO ↥x.C.S))) = x.P.yt (closedPoint _) := congrArg (fun f => f (closedPoint ↥(intO ↥x.C.S))) x.z_π rw [Mdl.abP, e] exact ⟨h₁ _ _ _ _ _ _ _ _ _ _ _ _ (ct.dat x) ct.hp, h₂ _ _ _ _ _ _ _ _ _ _ _ _ (ct.dat x) ct.hp⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem goodIff_of (h₁ : AbOfTrivSt) (h₂ : TrivOfAbSt) (ct : At S κ p) : GoodIff ct := fun Z x => by
   have e : Z.π (x.z (closedPoint ↥(intO ↥x.C.S))) = x.P.yt (closedPoint _) :=
@@ -272,23 +268,21 @@ theorem goodIff_of (h₁ : AbOfTrivSt) (h₂ : TrivOfAbSt) (ct : At S κ p) : Go
   exact ⟨h₁ _ _ _ _ _ _ _ _ _ _ _ _ (ct.dat x) ct.hp, h₂ _ _ _ _ _ _ _ _ _ _ _ _ (ct.dat x) ct.hp⟩
 
 /- English proof (translation)
-Introduce `Z η`. Take `⟨_, _, _, _, hp, hgen⟩` from `h₁ _ _ _ _ _ _ ct.Y _ ct.hp ct.hW Z η`. Take `⟨C, f, K, hinj, hloc, hK, hdvr, hdense⟩` from `h₂ p (Z.X.presheaf.stalk η.1) ct.hp hp`. Set `z : Sp ↥(intO ↥C.S) ⟶ Z.X` to `spMap f ≫ Z.X.fromSpecStalk η.1`. Establish `hz : Set.range (spMap (intO ↥C.S).subtype ≫ z) ⊆ Z.opn`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨q, rfl⟩`. Use `hgen (spMap f (spMap (intO ↥C.S).subtype q)) ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Ideal.comap f (Ideal.comap (intO ↥C.S).subtype q.asIdeal) = ⊥`. Rewrite using `[show q.asIdeal = ⊥ from @Ideal.eq_bot_of_prime _ _ _ q.2, Ideal.comap_bot_of_injective _ (intO ↥C.S).subtype_injective, Ideal.comap_bot_of_injective _ hinj]`. Take `⟨y, hy⟩` from `(h₃ _ _ _ _ _ _ ct.Y _).2.1 Z C z hz`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Set `g : Z.X.presheaf.stalk η.1 →+* ↥K` to `((intO ↥C.S).subtype.comp f).codRestrict K fun a => hK ▸ Subfield.le_topologicalClosure _ (Subfield.subset_closure ⟨a, rfl⟩)`. Take `⟨fam, hf, hrat⟩` from `h₄ _ _ _ _ _ _ _ ct Z C y K (spMap g ≫ Z.X.fromSpecStalk η.1) (by`. Rewrite using `[PtAt.gen, hy, ← Category.assoc, ← Category.assoc, ← spMap_comp, ← spMap_comp]`. Use the proof step `rfl)`. Use `⟨⟨C, K, hK ▸ Subfield.isClosed_topologicalClosure _, hdvr, hdense, fam, hrat⟩, ?_, ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `(fam.pt Z).red = η.1`. Establish `e1 : spMap f (closedPoint _) = closedPoint (Z.X.presheaf.stalk η.1)` using `comap_closedPoint f`. Rewrite using `[hf, PtAt.red, hy]`. Conclude with `(congrArg (Z.X.fromSpecStalk η.1) e1).trans Scheme.fromSpecStalk_closedPoint`. Express the relevant statement in the definitionally equal form `∃ h : (fam.pt Z).fnFld ≤ K, (Subfield.inclusion h).Finite`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: (fam.pt Z).fnFld = K`. Rewrite using `[hf, hK, PtAt.fnFld]`. Use `congr 2`. Use extensionality with `c`. Establish `key : ∀ (U : Z.X.Opens) (hU : η.1 ∈ U) (h : ⊤ ≤ y.z ⁻¹ᵁ U) (s : Γ(Z.X, U)), evAt y.z h s = f ((Z.X.presheaf.germ U η.1 hU).hom s)`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `U hU h s`. Use `revert h`. Rewrite using `[hy]`. Introduce `h`. Conclude with `evAt_fromSpecStalk η.1 f hU h s`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Establish `hred : y.z (closedPoint _) = η.1`. Rewrite using `[hy]`. Conclude with `(congrArg (Z.X.fromSpecStalk η.1) (comap_closedPoint f)).trans Scheme.fromSpecStalk_closedPoint`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨U, h, s, rfl⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hU : η.1 ∈ U` using `hred ▸ h (Set.mem_univ (closedPoint _))`. Conclude with `⟨_, congrArg Subtype.val (key U hU h s).symm⟩`. Introduce and unpack `⟨a, rfl⟩`. Take `⟨U, hU, s, rfl⟩` from `Z.X.presheaf.germ_exist a`. Establish `h : ⊤ ≤ y.z ⁻¹ᵁ U` using `fun q _ => ((specializes_closedPoint (q : PrimeSpectrum _)).map y.z.continuous).mem_open U.2 (hred ▸ hU)`.
-
-Conclude with `⟨U, h, s, congrArg Subtype.val (key U hU h s).symm⟩`. Conclude with `⟨this.le, RingHom.Finite.of_surjective _ fun x => ⟨⟨x.1, this ▸ x.2⟩, rfl⟩⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem genEx_of (h₁ : StalkSt) (h₂ : FieldSt) (h₃ : ExtendSt) (h₄ : FamSt) (ct : At S κ p) : GenEx ct := by
   intro Z η

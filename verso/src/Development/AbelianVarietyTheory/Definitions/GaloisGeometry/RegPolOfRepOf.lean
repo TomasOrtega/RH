@@ -25,24 +25,24 @@ structure Near (x y : WD h) : Prop where
     ∀ τ : Ine (F := K) A, x.charPol (ineIncl h τ) = y.charPol (ineIncl h τ)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Iff.rfl, fun _ => rfl, fun _ _ _ => rfl, fun _ _ _ _ => rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem Near.refl (x : WD h) : Near x x := ⟨Iff.rfl, fun _ => rfl, fun _ _ _ => rfl, fun _ _ _ _ => rfl⟩
 
 /- English proof (translation)
-The claim follows from `e ▸ Near.refl x`.
+A detailed English derivation is pending.
 -/
 theorem Near.of_eq {x y : WD h} (e : x = y) : Near x y := e ▸ Near.refl x
 
 /- English proof (translation)
-Use `congrArg Multiset.card (n.size 1)` as an intermediate fact. Simplify `this` using `only [Multiset.card_map, WD.card_eig]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem Near.lpDim_eq {x y : WD h} (n : Near x y) : x.lpDim = y.lpDim := by
   have := congrArg Multiset.card (n.size 1)
   simpa only [Multiset.card_map, WD.card_eig] using this
 
 /- English proof (translation)
-Introduce `n` and use `by have := n.lpDim_eq rw [WD.lpDim_lpSp, WD.lpZero, WD.lpDim_mk] at this simp at this`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example : ¬ Near (WD.lpZero h) (WD.lpSp h 1) := fun n => by
   have := n.lpDim_eq
@@ -80,7 +80,7 @@ variable {K M : Type} [Field K] [NumberField K] [IsCMField K] [Algebra K Ω] [Is
     [Field M] [NumberField M] [IsCMField M] [Algebra M Ω] [IsAlgClosure M Ω] [Algebra K M] [IsScalarTower K M Ω] {a : ℕ}
 
 /- English proof (translation)
-The claim follows from `hb.2.2 l ι r hr`.
+A detailed English derivation is pending.
 -/
 theorem BCof.repOf {π : CuspSub K a} {π' : CuspSub M a} (hb : BCof Ω π π') {l : ℕ} [Fact l.Prime] {ι : Qbar l ≃+* ℂ}
     {r : G K Ω →* GL (Fin a) (Qbar l)} (hr : RepOf π ι r) : RepOf π' ι (resTo M r) := hb.2.2 l ι r hr

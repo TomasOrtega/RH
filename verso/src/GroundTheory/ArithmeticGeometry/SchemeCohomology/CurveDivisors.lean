@@ -20,7 +20,7 @@ namespace PrimeDivisor
 
 omit [IsLocallyNoetherian X] [IsNormalScheme X] in
 /- English proof (translation)
-The claim follows from `IsFractionRing.injective _ _`.
+A detailed English derivation is pending.
 -/
 lemma algebraMap_stalk_injective (x : X) :
     Function.Injective (algebraMap (X.presheaf.stalk x) X.functionField) :=
@@ -55,7 +55,7 @@ noncomputable def divisorEquiv (hX : topologicalKrullDim X ≤ 1) :
 
 @[simp]
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `Finsupp.equivMapDomain (placeEquiv hX) D (placeEquiv (k := k) hX Z) = D Z`. Rewrite using `[Finsupp.equivMapDomain_apply, Equiv.symm_apply_apply]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 lemma divisorEquiv_apply_toPlace (hX : topologicalKrullDim X ≤ 1) (D : WeilDivisor X)
     (Z : PrimeDivisor X) : divisorEquiv (k := k) hX D Z.toPlace = D Z := by
@@ -65,9 +65,9 @@ lemma divisorEquiv_apply_toPlace (hX : topologicalKrullDim X ≤ 1) (D : WeilDiv
 variable [IsFunctionField k X.functionField]
 
 /- English proof (translation)
-Rewrite using `[Divisor.mem_L]`. Prove the components needed by the constructor for the conclusion. Introduce `h Z`. Use `h Z.toPlace` as an intermediate fact. Rewrite `this` using `[PrimeDivisor.toPlace_valuation, divisorEquiv_apply_toPlace]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Introduce `h v`. Take `⟨Z, rfl⟩` from `PrimeDivisor.toPlace_surjective (k := k) hX v`. Rewrite using `[PrimeDivisor.toPlace_valuation, divisorEquiv_apply_toPlace]`. Conclude with `h Z`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_L_divisorEquiv (hX : topologicalKrullDim X ≤ 1) (D : WeilDivisor X)
     (f : X.functionField) :

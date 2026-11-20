@@ -6,9 +6,9 @@ open Polynomial PeriodPair
 namespace GlobalTheory
 
 /- English proof (translation)
-Take `⟨d, hd⟩` from `exists_associated_pow_of_mul_eq_pow' hc h`. Establish `hd0 : d ≠ 0`. Introduce and unpack `rfl`. Conclude with `hD.ne_zero (by simpa using hd.symm)`. Use `⟨normalize d, monic_normalize hd0, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `eq_of_monic_of_associated hD ((monic_normalize hd0).pow 2) ?_` and prove the remaining obligations. Conclude with `hd.symm.trans ((associated_normalize d).pow_pow)`.
+A detailed English derivation is pending.
 -/
 lemma exists_monic_sq_eq_of_mul_eq_sq {D G P : ℂ[X]} (hD : D.Monic) (hc : IsCoprime D G)
     (h : D * G = P ^ 2) : ∃ h : ℂ[X], h.Monic ∧ D = h ^ 2 := by
@@ -21,37 +21,33 @@ lemma exists_monic_sq_eq_of_mul_eq_sq {D G P : ℂ[X]} (hD : D.Monic) (hc : IsCo
   exact hd.symm.trans ((associated_normalize d).pow_pow)
 
 /- English proof (translation)
-Establish `hα0 : α ≠ 0`. Introduce and unpack `rfl`. Establish `h0 : ((2 * m + 1 : ℕ) : ℂ) = 0`. Use `push_cast`. Take the linear combination `hα2`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 
-Conclude with `absurd (Nat.cast_eq_zero.mp h0) (by omega)`. Take `⟨A, D, c1, -, c3, c4, c5, c6, c7, c8, c9⟩` from `exists_weierstrassP_mul_eq_div hα0 hα k h₂ h₃ hαk hk`. Use `set F : ℂ[X] := X ^ 3 + C (-L.g₂ / 4) * X + C (-L.g₃ / 4) with hF`. Use `set n : ℂ[X] := C (α ^ 2) * A with hn`. Establish `hα20 : α ^ 2 ≠ 0` using `pow_ne_zero 2 hα0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hFe : ∀ z ∉ L.lattice, F.eval (℘[L] z) = ℘'[L] z ^ 2 / 4`. Introduce `z hz`. Rewrite using `[L.derivWeierstrassP_sq z hz]`. Simplify using `only [hF, eval_add, eval_mul, eval_pow, eval_X, eval_C]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hnD : IsCoprime n D`. Rewrite using `[hn]`. Conclude with `(isCoprime_mul_unit_left_left (isUnit_C.mpr (IsUnit.mk0 _ hα20)) A D).mpr c5`. Establish `key : F * (derivative n * D - n * derivative D) ^ 2 = D * (n ^ 3 + C (α ^ 4 * (-L.g₂ / 4)) * n * D ^ 2 + C (α ^ 6 * (-L.g₃ / 4)) * D ^ 3)`. Use `mul_left_cancel₀ c3.ne_zero (Polynomial.funext fun x ↦ ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Take `⟨z, hz, rfl⟩` from `exists_weierstrassP_eq L x`. Distinguish the cases in `h0 : D.eval (℘[L] z) = 0`. Simplify using `[h0]`. Establish `hz'` using `(c8 z hz).not.mp h0`. Establish `e1` using `derivWeierstrassP_mul_eq hα c9 hz' h0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `e2` using `L.derivWeierstrassP_sq _ hz'`. Rewrite `e2` using `[c9 z hz']`. Rewrite using `[eval_mul, eval_mul, eval_mul (p := D), hFe z hz]`. Use `congr 1`. Simplify using `only [hn, derivative_mul, derivative_C, eval_add, eval_mul, eval_pow, eval_sub, eval_C, zero_mul, zero_add] at e1 ⊢`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Establish `e3` using `congrArg (· ^ 2) e1`. Simplify using `only [mul_pow] at e3`. Rewrite `e3` using `[e2]`. Clear denominators, using `at e3` for the nonvanishing conditions. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take the linear combination `(-1 : ℂ) * e3`. Establish `hDF : IsCoprime D F`. Rewrite using `[Polynomial.isCoprime_iff_aeval_ne_zero_of_isAlgClosed ℂ ℂ]`. Introduce `x`. Take `⟨z, hz, rfl⟩` from `exists_weierstrassP_eq L x`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `by_contra! hc`. Simplify using `only [coe_aeval_eq_eval] at hc`. Establish `h1` using `(c8 z hz).mp hc.1`. Establish `h2 : ℘'[L] z = 0`. Use `hc.2` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[hFe z hz]`. Simplify using `using this`. Rewrite `h2` using `[derivWeierstrassP_eq_zero_iff L hz]`. Use `hz ?_` and prove the remaining obligations. Establish `h3` using `sub_mem (neg_mem (hα _ h1)) (nsmul_mem h2 m)`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `h3 using 1` and compare the differences between its conclusion and the goal. Rewrite using `[nsmul_eq_mul]`. Take the linear combination `z * hα2`. Establish `hDG : IsCoprime D (n ^ 3 + C (α ^ 4 * (-L.g₂ / 4)) * n * D ^ 2 + C (α ^ 6 * (-L.g₃ / 4)) * D ^ 3)`. Establish `: n ^ 3 + C (α ^ 4 * (-L.g₂ / 4)) * n * D ^ 2 + C (α ^ 6 * (-L.g₃ / 4)) * D ^ 3 = n ^ 3 + D * (C (α ^ 4 * (-L.g₂ / 4)) * n * D + C (α ^ 6 * (-L.g₃ / 4)) * D ^ 2)` using `by ring`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `(hnD.symm.pow_right).add_mul_left_right _`. Take `⟨h, hm, hD⟩` from `exists_monic_sq_eq_of_mul_eq_sq c3 (hDG.mul_right hDF) (P := F * (derivative n * D - n * derivative D)) (by linear_combination (-F) * key)`. Establish `hdn : n.natDegree = 2 * m + 1` using `by rw [hn, natDegree_C_mul hα20, c6, hind]`. Use `⟨n, h, ?_, hm, hdn, ?_, ?_, fun i ↦ ?_, fun x hx ↦ ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Monic, hn, leadingCoeff_mul, leadingCoeff_C, c4, mul_inv_cancel₀ hα20]`. Rewrite `c7` using `[c6, hind, hD, natDegree_pow]`. Use linear arithmetic over natural numbers and integers. Rewrite `hnD` using `[hD]`. Conclude with `(IsCoprime.pow_right_iff (by norm_num)).mp hnD`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hn, coeff_C_mul]`. Conclude with `mul_mem (pow_mem hαk 2) (c1 i)`. Take `⟨z, hz, rfl⟩` from `exists_weierstrassP_eq L x`. Use `⟨z, hz, (c8 z hz).mp ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[hD, eval_pow, hx.eq_zero]`.
-
-Evaluate the numerical expressions. Use `mul_left_cancel₀ (pow_ne_zero 2 hm.ne_zero) ?_` and prove the remaining obligations. Rewrite `key` using `[hD, derivative_sq]`. Establish `h2 : (C 2 : ℂ[X]) = 2` using `rfl`. Rewrite `key` using `[h2]`.
-
-Take the linear combination `key`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_mul_sqrt_neg_odd_polynomial_identity (L : PeriodPair) (α : ℂ) (m : ℕ)
     (k : Subfield ℂ) (hα2 : α ^ 2 = -(2 * (m : ℂ) + 1))

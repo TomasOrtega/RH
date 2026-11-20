@@ -11,20 +11,20 @@ namespace GlobalTheory.HermDen
 open ReciprocityTheory.ChartRestriction.G.FD
 
 /- English proof (translation)
-The claim follows from `hx.map (IsCMField.complexConj E).toRingEquiv.toRingHom.toIntAlgHom`.
+A detailed English derivation is pending.
 -/
 theorem isIntegral_conj {E : Type} [Field E] [NumberField E] [IsCMField E] {x : E}
     (hx : IsIntegral ℤ x) : IsIntegral ℤ (cc x) :=
   hx.map (IsCMField.complexConj E).toRingEquiv.toRingHom.toIntAlgHom
 
 /- English proof (translation)
-Take `⟨k, hk, hi⟩` from `GlobalTheory.LatFin.exists_common_den Λ hΛ`. Take `⟨l, hl, hG⟩` from `GlobalTheory.LatFin.exists_common_den (Submodule.span (𝓞 E) (Set.range fun a : Fin r => (G a : Fin r → E))) (Submodule.fg_span (Set.finite_range _))`. Establish `hG' : ∀ a b, IsIntegral ℤ ((l : E) * G a b)` using `fun a b => hG _ (Submodule.subset_span ⟨a, rfl⟩) b`. Use `⟨((k * k * l : ℤ) : 𝓞 E), Int.cast_ne_zero.2 (mul_ne_zero (mul_ne_zero hk hk) hl), fun x hx y hy => ?_⟩` and prove the remaining obligations. Establish `e : ((((k * k * l : ℤ) : 𝓞 E)) : E) * herm G x y = ∑ a, ∑ b, ((k : E) * x a) * ((l : E) * G a b) * cc ((k : E) * y b)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1 : ((((k * k * l : ℤ) : 𝓞 E)) : E) = (k : E) * k * l`. Rewrite using `[RingOfIntegers.coe_eq_algebraMap, map_intCast]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h1, herm, Finset.mul_sum]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Establish `h2 : cc ((k : E) * y b) = k * cc (y b)` using `by simp [cc]`. Rewrite using `[h2]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `IsIntegral.sum _ fun a _ => IsIntegral.sum _ fun b _ => ((hi x hx a).mul (hG' a b)).mul (isIntegral_conj (hi y hy b))`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_den (E : Type) [Field E] [NumberField E] [NumberField.IsCMField E] (r : ℕ)
     (G : Matrix (Fin r) (Fin r) E) (Λ : Submodule (𝓞 E) (Fin r → E)) (hΛ : Λ.FG) :

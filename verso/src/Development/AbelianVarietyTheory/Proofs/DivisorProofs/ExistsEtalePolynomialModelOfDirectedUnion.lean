@@ -7,23 +7,21 @@ namespace GlobalTheory.EtaleDescent
 open TensorProduct
 
 /- English proof (translation)
-Introduce `T _ ι _ _ _ 𝒜 hmono hcov E _ _ _`. Set `S : ι → Subring (Polynomial T)` to `fun i ↦ (Polynomial.mapRingHom (𝒜 i).subtype).range`. Establish `hSmono : Monotone S`. Introduce `i j hij p hp`. Take `⟨q, rfl⟩` from `RingHom.mem_range.mp hp`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `RingHom.mem_range.mpr ⟨q.map (Subring.inclusion (hmono hij)), ?_⟩` and prove the remaining obligations. Simplify using `only [coe_mapRingHom, Polynomial.map_map]`. Both sides reduce to the same expression. Establish `hScov : ∀ p, ∃ i, p ∈ S i` using `by classical`. Introduce `p`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `choose j hj using hcov`. Take `⟨i, hi⟩` from `Finset.exists_le (p.support.image (fun n ↦ j (p.coeff n)))`. Use `⟨i, ?_⟩` and prove the remaining obligations. Establish `: p ∈ Polynomial.lifts (𝒜 i).subtype`. Rewrite using `[Polynomial.lifts_iff_coeff_lifts]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `n`. Distinguish the cases in `hn : n ∈ p.support`. Conclude with `⟨⟨p.coeff n, hmono (hi _ (Finset.mem_image_of_mem _ hn)) (hj _)⟩, rfl⟩`. Rewrite using `[Polynomial.notMem_support_iff.mp hn]`. Conclude with `⟨0, map_zero _⟩`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨q, hq⟩` from `this`. Conclude with `RingHom.mem_range.mpr ⟨q, hq⟩`. Take `⟨i, E₀, _, _, hE₀, ⟨φ⟩⟩` from `exists_etale_model_of_directed_union (Polynomial T) ι S hSmono hScov E`. Set `f : Polynomial (𝒜 i) →+* Polynomial T` to `Polynomial.mapRingHom (𝒜 i).subtype`. Establish `hf : Function.Injective f` using `Polynomial.map_injective _ Subtype.val_injective`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `e : Polynomial (𝒜 i) ≃+* S i` to `RingEquiv.ofBijective f.rangeRestrict ⟨fun a b h ↦ hf (congrArg Subtype.val h), f.rangeRestrict_surjective⟩`. Establish `he : ∀ p, ((e p : S i) : Polynomial T) = f p` using `fun _ ↦ rfl`. Use `letI alg₀ : Algebra (Polynomial (𝒜 i)) E₀ := ((algebraMap (S i) E₀).comp e.toRingHom).toAlgebra`. Use `letI algT : Algebra (Polynomial (𝒜 i)) (Polynomial T) := f.toAlgebra`. Establish `hEt : Algebra.Etale (Polynomial (𝒜 i)) E₀`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← RingHom.etale_algebraMap]`. Conclude with `RingHom.Etale.respectsIso.2 (algebraMap (S i) E₀) e (RingHom.etale_algebraMap.mpr hE₀)`. Establish `hmapT : ∀ p, algebraMap (S i) (Polynomial T) (e p) = algebraMap (Polynomial (𝒜 i)) (Polynomial T) p` using `fun _ ↦ rfl`. Establish `hmapE : ∀ p, algebraMap (S i) E₀ (e p) = algebraMap (Polynomial (𝒜 i)) E₀ p` using `fun _ ↦ rfl`. Use `haveI c1 : SMulCommClass (S i) (Polynomial (𝒜 i)) (Polynomial T) := ⟨fun a b x ↦ by simp only [Algebra.smul_def]; ring⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI c2 : TensorProduct.CompatibleSMul (S i) (Polynomial (𝒜 i)) (Polynomial T) E₀ := ⟨fun p m n ↦ by`. Rewrite using `[Algebra.smul_def, Algebra.smul_def, ← hmapT, ← hmapE, ← Algebra.smul_def, ← Algebra.smul_def, TensorProduct.smul_tmul]⟩`. Use `haveI c3 : TensorProduct.CompatibleSMul (Polynomial (𝒜 i)) (S i) (Polynomial T) E₀ := ⟨fun s m n ↦ by`. Take `⟨p, rfl⟩` from `e.surjective s`. Rewrite using `[Algebra.smul_def, Algebra.smul_def, hmapT, hmapE, ← Algebra.smul_def, ← Algebra.smul_def, TensorProduct.smul_tmul]⟩`.
-
-Use `⟨i, E₀, inferInstance, alg₀, hEt, ⟨?_⟩⟩` and prove the remaining obligations. Conclude with `(Algebra.TensorProduct.equivOfCompatibleSMul (S i) (Polynomial (𝒜 i)) (Polynomial T) (Polynomial T) E₀).trans φ`.
+A detailed English derivation is pending.
 -/
 theorem exists_etale_polynomial_model_of_directed_union :
     ∀ (T : Type) [CommRing T] (ι : Type) [Preorder ι] [IsDirected ι (· ≤ ·)] [Nonempty ι]

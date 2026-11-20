@@ -21,9 +21,9 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.BaseZ
 
 /- English proof (translation)
-Establish `hv : IsArithVar (i ≫ p) 0` using `hX.of_isClosedImmersion i hc (by simpa using hd)`. Establish `e` using `GlobalTheory.T.sum_logNorm_eq_sum_embeddings k Z (i ≫ p) (i ≫ t) (Int.castRingHom ℂ) hv (L.restr i) (((toZ L t hL).restr i).φ (Int.castRingHom ℂ)) (wOver_restr_pow k X Z p t i L hL _).1 r hr`. Unfold `HermLB.curveDeg`. Use `congrArg (_ - ·) ?_` and prove the remaining obligations. Rewrite using `[finsum_eq_single _ (Int.castRingHom ℂ) fun τ h => absurd (RingHom.ext_int _ _) h]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `e`.
+A detailed English derivation is pending.
 -/
 theorem curveDeg_toZ {k : Type} [CommRing k] {X Z : Scheme.{0}} {p : X ⟶ Sp k} (t : X ⟶ Sp ℤ) {D : ℕ}
     (hX : IsArithVar p D) (L : HermLB p) (hL : ∀ τ, (wZ L t τ).IsCInf) (i : Z ⟶ X) [IsClosedImmersion i]
@@ -40,9 +40,9 @@ theorem curveDeg_toZ {k : Type} [CommRing k] {X Z : Scheme.{0}} {p : X ⟶ Sp k}
   exact e
 
 /- English proof (translation)
-Establish `hv : IsArithVar (i ≫ p) e` using `hX.of_isClosedImmersion i hc hd`. Establish `hw` using `wOver_restr_pow k X Z p t i L hL (Int.castRingHom ℂ)`. Take `⟨e₁, e₂⟩` from `GlobalTheory.T.archIntegrable_iff_over_integers k Z (i ≫ p) (i ≫ t) (Int.castRingHom ℂ) e hv (L.restr i) ((L.restr i).pow m) (((toZ L t hL).restr i).φ (Int.castRingHom ℂ)) ((((toZ L t hL).restr i).pow m).φ (Int.castRingHom ℂ)) hw.1 (hw.2 m) (((toZ L t hL).restr i).cInf _) e r hr`. Establish `hτ (τ : ℤ →+* ℂ) : τ = Int.castRingHom ℂ` using `RingHom.ext_int _ _`. Use `⟨⟨fun H => e₁.1 (H _), fun H τ => ?_⟩, fun H => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hτ τ]`. Conclude with `e₁.2 H`. Unfold `HermLB.archInt`. Rewrite using `[finsum_eq_single _ (Int.castRingHom ℂ) fun τ h => absurd (hτ τ) h]`. Conclude with `e₂ H`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem arch_toZ {k : Type} [CommRing k] {X Z : Scheme.{0}} {p : X ⟶ Sp k} (t : X ⟶ Sp ℤ) {D : ℕ}
     (hX : IsArithVar p D) (L : HermLB p) (hL : ∀ τ, (wZ L t τ).IsCInf) (i : Z ⟶ X) [IsClosedImmersion i]
@@ -68,11 +68,11 @@ theorem arch_toZ {k : Type} [CommRing k] {X Z : Scheme.{0}} {p : X ⟶ Sp k} (t 
     exact e₂ H
 
 /- English proof (translation)
-Introduce `k _ X p t D hX L hL h`. Use `⟨fun H => ⟨H.vertical, ?_, ?_⟩, fun H => ⟨H.vertical, ?_, ?_⟩⟩` and prove the remaining obligations. Introduce `Z i _ _ _ hc hd r hr`. Conclude with `(H.point Z i hc hd r hr).trans (curveDeg_toZ t hX L hL i hc hd r hr)`. Introduce `Z i _ _ _ hc e he hd m r hr`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨e₁, e₂⟩` from `arch_toZ t hX L hL i hc e hd m r hr`. Take `⟨h₁, h₂⟩` from `H.recursion Z i hc e he hd m r hr`. Establish `h₃` using `e₁.1 h₁`. Conclude with `⟨h₃, h₂.trans (congrArg (_ - ·) (e₂ h₃))⟩`. Introduce `Z i _ _ _ hc hd r hr`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(H.point Z i hc hd r hr).trans (curveDeg_toZ t hX L hL i hc hd r hr).symm`. Introduce `Z i _ _ _ hc e he hd m r hr`. Take `⟨e₁, e₂⟩` from `arch_toZ t hX L hL i hc e hd m r hr`. Take `⟨h₁, h₂⟩` from `H.recursion Z i hc e he hd m r hr`. Conclude with `⟨e₁.2 h₁, h₂.trans (congrArg (_ - ·) (e₂ h₁).symm)⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isArithHeight_toZ_iff : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) (t : X ⟶ Sp ℤ) (D : ℕ), IsArithVar p D → ∀ (L : HermLB p) (hL : ∀ τ, (wZ L t τ).IsCInf) (h : X → ℝ), (toZ L t hL).IsArithHeight h ↔ L.IsArithHeight h := by
   intro k _ X p t D hX L hL h

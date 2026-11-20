@@ -3,11 +3,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.TorsionBoundsChain
 open CategoryTheory UpperTheory.V.KH
 
 /- English proof (translation)
-Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `M N _ _ e B h`. Take `⟨hfin, hcard⟩` from `h`. Set `f : AddCommGroup.torsion M ≃ AddCommGroup.torsion N` to `(e : M ≃ N).subtypeEquiv fun x => by`. Simplify using `only [SetLike.mem_coe, AddCommGroup.mem_torsion, ← addOrderOf_pos_iff]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Conclude with `⟨Finite.of_equiv _ f, (Nat.card_congr f).symm ▸ hcard⟩`. Introduce `M N e B h`. Take `⟨hfin, hcard⟩` from `h`. Conclude with `⟨Finite.of_equiv _ e, (Nat.card_congr e).symm ▸ hcard⟩`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce `M _ B B' hB h`. Conclude with `⟨h.1, h.2.trans hB⟩`. Introduce `M B B' hB h`. Conclude with `⟨h.1, h.2.trans hB⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem UpperTheory.V.KH.transport :
     (∀ (M N : Type) [AddCommGroup M] [AddCommGroup N] (_ : M ≃+ N) (B : ℕ), TorsLe M B → TorsLe N B) ∧

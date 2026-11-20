@@ -4,7 +4,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.LiteratureResults.
 open NumberField
 
 /- English proof (translation)
-Introduce `L _ _ hL N hN`. Conclude with `⟨PositivityTheory.KB.HeightDistance.continuous_ht hN, PositivityTheory.KB.HeightDistance.ht_emb, PositivityTheory.KB.HeightDistance.ht_lower hN, PositivityTheory.KB.HeightDistance.ht_compact hN⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem PositivityTheory.KB.sHt_of : PositivityTheory.KB.SHt := by
   intro L _ _ hL N hN

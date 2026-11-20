@@ -2,19 +2,17 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 
 open Polynomial UniqueFactorizationMonoid in
 /- English proof (translation)
-Introduce `Λ _ _ _ χ hχ`. Establish `hinjK : Function.Injective (algebraMap Λ (FractionRing Λ))` using `IsFractionRing.injective Λ (FractionRing Λ)`. Establish `hinj : Function.Injective (Polynomial.map (algebraMap Λ (FractionRing Λ)))` using `Polynomial.map_injective _ hinjK`. Use `set P := χ.map (algebraMap Λ (FractionRing Λ)) with hPdef`. Establish `hP : P ≠ 0` using `(hχ.map _).ne_zero`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmon : ∀ f ∈ normalizedFactors P, f.Monic`. Introduce `f hf`. Rewrite using `[← normalize_normalized_factor f hf]`. Conclude with `Polynomial.monic_normalize (prime_of_normalized_factor f hf).ne_zero`. Establish `hlift : ∀ f ∈ normalizedFactors P, ∃ g : Λ[X], g.Monic ∧ g.map (algebraMap Λ (FractionRing Λ)) = f`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `f hf`. Take `⟨g, hg⟩` from `IsIntegrallyClosed.eq_map_mul_C_of_dvd (FractionRing Λ) hχ (dvd_of_mem_normalizedFactors hf)`. Rewrite `hg` using `[(hmon f hf).leadingCoeff, C_1, mul_one]`. Use `⟨g, Polynomial.monic_of_injective hinjK ?_, hg⟩` and prove the remaining obligations. Rewrite using `[hg]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `hmon f hf`. Use `choose! L hLm hLmap using hlift`. Establish `hprod : χ = ((normalizedFactors P).map L).prod`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[Polynomial.map_multiset_prod, Multiset.map_map]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1 : (normalizedFactors P).map ((Polynomial.map (algebraMap Λ (FractionRing Λ))) ∘ L) = normalizedFactors P` using `by conv_rhs => rw [← Multiset.map_id (normalizedFactors P)]`. Conclude with `Multiset.map_congr rfl (fun f hf => hLmap f hf)`. Rewrite using `[h1]`. Use `eq_of_monic_of_associated (hχ.map _) ?_ (prod_normalizedFactors hP).symm` and prove the remaining obligations. Conclude with `Multiset.prod_induction _ _ (fun a b ha hb => ha.mul hb) monic_one hmon`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Establish `memG : ∀ x ∈ (normalizedFactors P).map L, x.Monic ∧ Irreducible (x.map (algebraMap Λ (FractionRing Λ)))`. Introduce `x hx`. Take `⟨f, hf, rfl⟩` from `Multiset.mem_map.1 hx`. Conclude with `⟨hLm f hf, by rw [hLmap f hf]; exact irreducible_of_normalized_factor f hf⟩`. Set `e` to `((normalizedFactors P).map L).toFinset.equivFin`.
-
-Use `⟨_, fun i => (e.symm i).1, fun i => ((normalizedFactors P).map L).count (e.symm i).1, ⟨fun i => (memG _ (Multiset.mem_toFinset.1 (e.symm i).2)).1, fun i => (memG _ (Multiset.mem_toFinset.1 (e.symm i).2)).2, fun i j h => e.symm.injective (Subtype.ext h), fun i => Multiset.count_po …` and prove the remaining obligations. Use `hprod.trans ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_multiset_count, ← Finset.prod_coe_sort]`. Conclude with `Fintype.prod_equiv e _ _ (fun x => by simp)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.J.factEx :
     UpperTheory.V.J.FactEx := by

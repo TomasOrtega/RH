@@ -11,7 +11,7 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.GpUnip
 
 /- English proof (translation)
-Take `⟨v, hv⟩` from `MonoidHom.mem_range.mp (Subgroup.mem_subgroupOf.mp hu)`. Rewrite using `[← hv]`. Express the relevant statement in the definitionally equal form `(1 + GlobalTheory.BZMir.colMat k n (Multiplicative.toAdd v)) a b = _`. Simplify using `[GlobalTheory.BZMir.colMat, hb]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 theorem mirUin_entry (k : Type) [Field k] (n : ℕ) (u : Mir k n) (hu : u ∈ MirUin k n)
     (a b : Fin (n + 1)) (hb : b ≠ Fin.last n) :
@@ -23,11 +23,11 @@ theorem mirUin_entry (k : Type) [Field k] (n : ℕ) (u : Mir k n) (hu : u ∈ Mi
   simp [GlobalTheory.BZMir.colMat, hb]
 
 /- English proof (translation)
-Introduce `k _ _ _ _ m j u hu`. Apply the tactic sequence `have key : ∀ a b : Fin (m + j + 1), b ≠ Fin.last (m + j) → (((u : GlobalTheory.BZMir.Mir k (m + j)) : GL (Fin (m + j + 1)) k) : Matrix (Fin (m + j + 1)) (Fin (m + j + 1)) k) a b = (1 : Matrix (Fin (m + j + 1)) (Fin (m + j + 1)) k) a b := fun a b hb => GlobalTheory.CompanionTheory …`. Establish `e_inj` using `(GlobalTheory.BZMir.Leib.eGP m j).injective`. Prove the components needed by the constructor for the conclusion. Use extensionality with `i i'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. By extensionality, compare the relevant components.
 
-Establish `h` using `GlobalTheory.SmGL.leviProj_apply k (GlobalTheory.BZMir.Leib.eGP m j) (GlobalTheory.BZMir.Leib.hgpIncl k m j u) false i i'`. Use `h.trans ((key _ _ (GlobalTheory.BZMir.Leib.blockIndex_false_ne_last m j i')).trans ?_)` and prove the remaining obligations. Simplify using `only [Matrix.one_apply, e_inj.eq_iff, Sigma.mk.inj_iff, heq_eq_eq, true_and, Units.val_one]`. Apply `GlobalTheory.CompanionTheory.BZMirAdj.mem_of_mirProj_eq_one` to reduce the goal to its premises. Use extensionality with `i i'`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Establish `h` using `GlobalTheory.SmGL.leviProj_apply k (GlobalTheory.BZMir.Leib.eGP m j) (GlobalTheory.BZMir.Leib.hgpIncl k m j u) true (Fin.castSucc i) (Fin.castSucc i')`. Establish `hne : GlobalTheory.BZMir.Leib.eGP m j ⟨true, Fin.castSucc i'⟩ ≠ Fin.last (m + j)` using `fun hl => Fin.castSucc_ne_last i' ((GlobalTheory.BZMir.Leib.blockIndex_true_eq_last_iff m j _).mp hl)`. Use `h.trans ((key _ _ hne).trans ?_)` and prove the remaining obligations. Simplify using `only [Matrix.one_apply, e_inj.eq_iff, Sigma.mk.inj_iff, heq_eq_eq, true_and, Fin.castSucc_inj, Units.val_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem gpProj_unip : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (m j : ℕ) (u : MirabolicParabolic k m j), (u : Mir k (m + j)) ∈ MirUin k (m + j) →

@@ -14,7 +14,7 @@ section Ext
 variable {B B₁ B₂ : Scheme.{0}} {M : LB B} {M₁ : LB B₁} {M₂ : LB B₂} {b₁ : B ⟶ B₁} {b₂ : B ⟶ B₂}
 
 /- English proof (translation)
-Establish `hm : ψ z ∈ (extLB M₁ M₂ b₁ b₂).U (extIdx a₁ a₂) ⊓ (extLB M₁ M₂ b₁ b₂).U (extIdx a₁' a₂')` using `⟨mem_extIdx h₁ h₂, mem_extIdx h₁' h₂'⟩`. Use `(map_mul _ _ _).trans (congrArg₂ (· * ·) ((gm_res ψ z _ hm _).trans ?_) ((gm_res ψ z _ hm _).trans ?_))` and prove the remaining obligations. Conclude with `gm_pull_g M₁ b₁ ψ z (fun _ => a₁) (fun _ => a₁') (mem_pull.2 h₁) (mem_pull.2 h₁')`. Conclude with `gm_pull_g M₂ b₂ ψ z (fun _ => a₂) (fun _ => a₂') (mem_pull.2 h₂) (mem_pull.2 h₂')`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem gm_ext_g {Z : Scheme.{0}} (ψ : Z ⟶ B) (z : Z) (a₁ a₁' : M₁.ι) (a₂ a₂' : M₂.ι)
     (h₁ : b₁ (ψ z) ∈ M₁.U a₁) (h₁' : b₁ (ψ z) ∈ M₁.U a₁') (h₂ : b₂ (ψ z) ∈ M₂.U a₂) (h₂' : b₂ (ψ z) ∈ M₂.U a₂') :
@@ -28,7 +28,7 @@ theorem gm_ext_g {Z : Scheme.{0}} (ψ : Z ⟶ B) (z : Z) (a₁ a₁' : M₁.ι) 
   · exact gm_pull_g M₂ b₂ ψ z (fun _ => a₂) (fun _ => a₂') (mem_pull.2 h₂) (mem_pull.2 h₂')
 
 /- English proof (translation)
-Establish `hm : ψ z ∈ (LB.div (extLB M₁ M₂ b₁ b₂) M).U (extIdx a₁ a₂, j) ⊓ (LB.div (extLB M₁ M₂ b₁ b₂) M).U (extIdx a₁' a₂', j')` using `⟨⟨mem_extIdx h₁ h₂, hj⟩, mem_extIdx h₁' h₂', hj'⟩`. Establish `e` using `congrArg (gm ψ z _) (hw (extIdx a₁ a₂, j) (extIdx a₁' a₂', j'))`. Establish `e'` using `(gm_res ψ z _ hm _).symm.trans (e.trans ((map_mul _ _ _).trans (congrArg₂ (· * ·) (gm_div M (extLB M₁ M₂ b₁ b₂) ψ z _ _ hm) (gm_res ψ z _ hm _))))`. Rewrite `e'` using `[gm_ext_g ψ z a₁ a₁' a₂ a₂' h₁ h₁' h₂ h₂']`. Conclude with `e'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gm_ext_change {w : LB.Iso M (extLB M₁ M₂ b₁ b₂)} (hw : w.IsGen) {Z : Scheme.{0}} (ψ : Z ⟶ B) (z : Z)
     (a₁ a₁' : M₁.ι) (a₂ a₂' : M₂.ι) (j j' : M.ι)
@@ -68,11 +68,11 @@ noncomputable def germ (p : T ⟶ B) (f : T ⟶ G) (h₁ : T ⟶ T₁) (h₂ : T
 variable {p : T ⟶ B} {f : T ⟶ G} {h₁ : T ⟶ T₁} {h₂ : T ⟶ T₂}
 
 /- English proof (translation)
-Establish `q₁ : p₁ (h₁ (r z)) = b₁ (p (r z))` using `congrArg (fun g => g (r z)) eM₁.symm`. Establish `q₂ : p₂ (h₂ (r z)) = b₂ (p (r z))` using `congrArg (fun g => g (r z)) eM₂.symm`. Establish `k₁ : f₁ (h₁ (r z)) = g₁ (f (r z))` using `congrArg (fun g => g (r z)) eL₁.symm`. Establish `k₂ : f₂ (h₂ (r z)) = g₂ (f (r z))` using `congrArg (fun g => g (r z)) eL₂.symm`. Establish `A` using `gm_ext_change hwM (r ≫ p) z a₁ a₁' a₂ a₂' jM jM' c₁ c₁' c₂ c₂' cM cM'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `C` using `gm_ext_change hwL (r ≫ f) z n₁ n₁' n₂ n₂' jL jL' d₁ d₁' d₂ d₂' cL cL'`. Establish `W₁` using `hw₁ Z (r ≫ h₁) z a₁ a₁' (fun _ => n₁) (fun _ => n₁') (q₁ ▸ c₁) (q₁ ▸ c₁') (mem_pull.2 (k₁ ▸ d₁)) (mem_pull.2 (k₁ ▸ d₁'))`. Establish `W₂` using `hw₂ Z (r ≫ h₂) z a₂ a₂' (fun _ => n₂) (fun _ => n₂') (q₂ ▸ c₂) (q₂ ▸ c₂') (mem_pull.2 (k₂ ▸ d₂)) (mem_pull.2 (k₂ ▸ d₂'))`. Rewrite `W₁` using `[gm_pull_g L₁ f₁ (r ≫ h₁) z (fun _ => n₁) (fun _ => n₁') (mem_pull.2 (k₁ ▸ d₁)) (mem_pull.2 (k₁ ▸ d₁')), Category.assoc, Category.assoc, ← eM₁, ← eL₁]`. Rewrite `W₂` using `[gm_pull_g L₂ f₂ (r ≫ h₂) z (fun _ => n₂) (fun _ => n₂') (mem_pull.2 (k₂ ▸ d₂)) (mem_pull.2 (k₂ ▸ d₂')), Category.assoc, Category.assoc, ← eM₂, ← eL₂]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `A`, `C` using `[Category.assoc, Category.assoc]`. Unfold `germ`. Rewrite using `[A, C, W₁, W₂]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv]`.
+Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
 Normalize the expressions using the abelian group laws.
 -/
@@ -123,17 +123,15 @@ variable {B B₁ B₂ G G₁ G₂ T T₁ T₂ : Scheme.{0}} {M : LB B} {M₁ : L
   {f₁ : T₁ ⟶ G₁} {p₂ : T₂ ⟶ B₂} {f₂ : T₂ ⟶ G₂} {p : T ⟶ B} {f : T ⟶ G} {h₁ : T ⟶ T₁} {h₂ : T ⟶ T₂}
 
 /- English proof (translation)
-Establish `q₁ : ∀ x, p₁ (h₁ x) = b₁ (p x)` using `fun x => congrArg (fun g => g x) eM₁.symm`. Establish `q₂ : ∀ x, p₂ (h₂ x) = b₂ (p x)` using `fun x => congrArg (fun g => g x) eM₂.symm`. Establish `k₁ : ∀ x, f₁ (h₁ x) = g₁ (f x)` using `fun x => congrArg (fun g => g x) eL₁.symm`. Establish `k₂ : ∀ x, f₂ (h₂ x) = g₂ (f x)` using `fun x => congrArg (fun g => g x) eL₂.symm`. Take `⟨W, hW⟩ : ∃ W : M₁.ι × M₂.ι × L₁.ι × L₂.ι → T.Opens, ∀ a x, x ∈ W a ↔ (p x ∈ M.U jM ∧ f x ∈ L.U jL) ∧ (b₁ (p x) ∈ M₁.U a.1 ∧ b₂ (p x) ∈ M₂.U a.2.1) ∧ (g₁ (f x) ∈ L₁.U a.2.2.1 ∧ g₂ (f x) ∈ L₂.U a.2.2.2)` from `⟨fun a => (p ⁻¹ᵁ M.U jM ⊓ f ⁻¹ᵁ L.U jL) ⊓ ((p ⁻¹ᵁ (b₁ ⁻¹ᵁ M₁.U a.1) ⊓ p ⁻¹ᵁ (b₂ ⁻¹ᵁ M₂.U a.2.1)) ⊓ (f ⁻¹ᵁ (g₁ ⁻¹ᵁ L₁.U a.2.2.1) ⊓ f ⁻¹ᵁ (g₂ ⁻¹ᵁ L₂.U a.2.2.2))), fun _ _ => Iff.rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `l₀ : ∀ a, W a ≤ (M.pull p).U (fun _ => jM) ⊓ (L.pull f).U (fun _ => jL)` using `fun a x hx => ⟨mem_pull.2 ((hW a x).1 hx).1.1, mem_pull.2 ((hW a x).1 hx).1.2⟩`. Establish `lM : ∀ a, W a ≤ p ⁻¹ᵁ ((LB.div (extLB M₁ M₂ b₁ b₂) M).U (extIdx a.1 a.2.1, jM))` using `fun a x hx => ⟨mem_extIdx ((hW a x).1 hx).2.1.1 ((hW a x).1 hx).2.1.2, ((hW a x).1 hx).1.1⟩`. Establish `lL : ∀ a, W a ≤ f ⁻¹ᵁ ((LB.div (extLB L₁ L₂ g₁ g₂) L).U (extIdx a.2.2.1 a.2.2.2, jL))` using `fun a x hx => ⟨mem_extIdx ((hW a x).1 hx).2.2.1 ((hW a x).1 hx).2.2.2, ((hW a x).1 hx).1.2⟩`. Establish `l₁ : ∀ a, W a ≤ h₁ ⁻¹ᵁ ((LB.div (M₁.pull p₁) (L₁.pull f₁)).U (fun _ => a.1, fun _ => a.2.2.1))` using `fun a x hx => ⟨mem_pull.2 ((q₁ x).symm ▸ ((hW a x).1 hx).2.1.1), mem_pull.2 ((k₁ x).symm ▸ ((hW a x).1 hx).2.2.1)⟩`. Establish `l₂ : ∀ a, W a ≤ h₂ ⁻¹ᵁ ((LB.div (M₂.pull p₂) (L₂.pull f₂)).U (fun _ => a.2.1, fun _ => a.2.2.2))` using `fun a x hx => ⟨mem_pull.2 ((q₂ x).symm ▸ ((hW a x).1 hx).2.1.2), mem_pull.2 ((k₂ x).symm ▸ ((hW a x).1 hx).2.2.2)⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨u, hu⟩ : ∃ u : ∀ a, Γ(T, W a)ˣ, ∀ (Z : Scheme.{0}) (r : Z ⟶ T) (z : Z) a, r z ∈ W a → gm r z (W a) (u a) = germ p f h₁ h₂ wM wL we₁ we₂ r z jM jL a.1 a.2.1 a.2.2.1 a.2.2.2` from `⟨fun a => (res (lM a) (pullU p _ (wM.s (extIdx a.1 a.2.1, jM))))⁻¹ * res (l₁ a) (pullU h₁ _ (we₁.s (fun _ => a.1, fun _ => a.2.2.1))) * res (l₂ a) (pullU h₂ _ (we₂.s (fun _ => a.2.1, fun _ => a.2.2.2))) * res (lL a) (pullU f _ (wL.s (extIdx a.2.2.1 a.2.2.2, jL))), fun Z r z a hz …`. Simplify using `only [map_mul, map_inv]`. Rewrite using `[gm_res r z (lM a) hz, gm_pull r p z _ (lM a hz), gm_res r z (l₁ a) hz, gm_pull r h₁ z _ (l₁ a hz), gm_res r z (l₂ a) hz, gm_pull r h₂ z _ (l₂ a hz), gm_res r z (lL a) hz, gm_pull r f z _ (lL a hz)]`. Use the proof step `rfl⟩`. Take `⟨s, hs⟩` from `glue_unit _ W l₀ (fun x hx => by`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨a₁, ha₁⟩` from `exists_chart hM₁ (b₁ (p x))`. Take `⟨a₂, ha₂⟩` from `exists_chart hM₂ (b₂ (p x))`. Take `⟨n₁, hn₁⟩` from `exists_chart hL₁ (g₁ (f x))`. Take `⟨n₂, hn₂⟩` from `exists_chart hL₂ (g₂ (f x))`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨(a₁, a₂, n₁, n₂), (hW _ x).2 ⟨⟨mem_pull.1 hx.1, mem_pull.1 hx.2⟩, ⟨ha₁, ha₂⟩, ⟨hn₁, hn₂⟩⟩⟩) u`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the proof step `(fun a a' x hx => by`. Establish `i` using `(hW a x).1 hx.1`. Establish `i'` using `(hW a' x).1 hx.2`. Establish `k` using `germ_change eM₁ eM₂ eL₁ eL₂ hwM hwL hw₁ hw₂ (𝟙 T) x jM jM jL jL a.1 a'.1 a.2.1 a'.2.1 a.2.2.1 a'.2.2.1 a.2.2.2 a'.2.2.2 i.1.1 i.1.1 i.1.2 i.1.2 i.2.1.1 i'.2.1.1 i.2.1.2 i'.2.1.2 i.2.2.1 i'.2.2.1 i.2.2.2 i'.2.2.2`. Rewrite `k` using `[gm_self hM (𝟙 T ≫ p) x i.1.1, gm_self hL (𝟙 T ≫ f) x i.1.2, inv_one, _root_.one_mul, _root_.one_mul]`.
-
-Conclude with `(hu _ (𝟙 T) x a hx.1).trans (k.trans (hu _ (𝟙 T) x a' hx.2).symm))`. Use `⟨s, fun Z r z a₁ a₂ n₁ n₂ cM cL c₁ c₂ d₁ d₂ => ?_⟩` and prove the remaining obligations. Establish `hz` using `(hW (a₁, a₂, n₁, n₂) (r z)).2 ⟨⟨cM, cL⟩, ⟨c₁, c₂⟩, ⟨d₁, d₂⟩⟩`. Conclude with `(gm_res r z (l₀ _) hz s).symm.trans ((congrArg (gm r z (W _)) (hs _)).trans (hu Z r z _ hz))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_unit (hM : M.IsLB) (hM₁ : M₁.IsLB) (hM₂ : M₂.IsLB) (hL : L.IsLB) (hL₁ : L₁.IsLB) (hL₂ : L₂.IsLB)
     (eM₁ : p ≫ b₁ = h₁ ≫ p₁) (eM₂ : p ≫ b₂ = h₂ ≫ p₂) (eL₁ : f ≫ g₁ = h₁ ≫ f₁)
@@ -204,15 +202,13 @@ end GlobalTheory.ProdBoxIso
 namespace GlobalTheory.ProdBoxIso
 
 /- English proof (translation)
-Introduce `B B₁ B₂ G G₁ G₂ T T₁ T₂ M M₁ M₂ L L₁ L₂ b₁ b₂ g₁ g₂ p f p₁ f₁ p₂ f₂ h₁ h₂ wM wL we₁ we₂ hM hM₁ hM₂ hL hL₁ hL₂ eM₁ eM₂ eL₁ eL₂ hwM hwL hw₁ hw₂`. Rewrite `hw₁`, `hw₂` using `[isGen_iff]`. Use `choose s hs using exists_unit (h₁ := h₁) (h₂ := h₂) hM hM₁ hM₂ hL hL₁ hL₂ eM₁ eM₂ eL₁ eL₂ hwM hwL hw₁ hw₂`. Use `⟨⟨fun q => s (q.1 PUnit.unit) (q.2 PUnit.unit)⟩, (isGen_iff _).2 ?_, ?_⟩` and prove the remaining obligations. Introduce `Z r z j j' k k' a₂ b₂' a₄ b₄`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨a₁, ha₁⟩` from `exists_chart hM₁ (b₁ (p (r z)))`. Take `⟨a₂', ha₂⟩` from `exists_chart hM₂ (b₂ (p (r z)))`. Take `⟨n₁, hn₁⟩` from `exists_chart hL₁ (g₁ (f (r z)))`. Take `⟨n₂, hn₂⟩` from `exists_chart hL₂ (g₂ (f (r z)))`. Establish `a₄' : f (r z) ∈ L.U (k PUnit.unit)` using `mem_pull.1 a₄`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `b₄' : f (r z) ∈ L.U (k' PUnit.unit)` using `mem_pull.1 b₄`. Establish `c` using `germ_change eM₁ eM₂ eL₁ eL₂ hwM hwL hw₁ hw₂ r z j j' (k PUnit.unit) (k' PUnit.unit) a₁ a₁ a₂' a₂' n₁ n₁ n₂ n₂ a₂ b₂' a₄' b₄' ha₁ ha₁ ha₂ ha₂ hn₁ hn₁ hn₂ hn₂`. Rewrite `c` using `[← hs j _ Z r z a₁ a₂' n₁ n₂ a₂ a₄' ha₁ ha₂ hn₁ hn₂, ← hs j' _ Z r z a₁ a₂' n₁ n₂ b₂' b₄' ha₁ ha₂ hn₁ hn₂]`. Rewrite using `[gm_pull_g L f r z k k' a₄ b₄]`. Conclude with `c`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `Z r z J₁ J₂ J N₁ N₂ N hJ₁ hJ₂ hJ hN₁ hN₂ hN`. Establish `e` using `hs (J (r ≫ p)) (N (r ≫ f)) Z r z (J₁ ((r ≫ p) ≫ b₁)) (J₂ ((r ≫ p) ≫ b₂)) (N₁ ((r ≫ f) ≫ g₁)) (N₂ ((r ≫ f) ≫ g₂)) (hJ _) (hN _) (hJ₁ _) (hJ₂ _) (hN₁ _) (hN₂ _)`. Use `show om wM z J₁ J₂ J (r ≫ p) * gm r z _ (s (J (r ≫ p)) (N (r ≫ f))) = _`. Rewrite using `[e]`. Unfold `germ om`.
-
-Simplify using `only [_root_.mul_assoc, mul_inv_cancel_left]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_wiso : ∀ {B B₁ B₂ G G₁ G₂ T T₁ T₂ : Scheme.{0}} {M : LB B} {M₁ : LB B₁} {M₂ : LB B₂} {L : LB G} {L₁ : LB G₁} {L₂ : LB G₂} {b₁ : B ⟶ B₁} {b₂ : B ⟶ B₂} {g₁ : G ⟶ G₁} {g₂ : G ⟶ G₂} {p : T ⟶ B} {f : T ⟶ G} {p₁ : T₁ ⟶ B₁} {f₁ : T₁ ⟶ G₁} {p₂ : T₂ ⟶ B₂} {f₂ : T₂ ⟶ G₂} {h₁ : T ⟶ T₁} {h₂ : T ⟶ T₂} (wM : LB.Iso M (extLB M₁ M₂ b₁ b₂)) (wL : LB.Iso L (extLB L₁ L₂ g₁ g₂)) (we₁ : LB.Iso (L₁.pull f₁) (M₁.pull p₁)) (we₂ : LB.Iso (L₂.pull f₂) (M₂.pull p₂)), M.IsLB → M₁.IsLB → M₂.IsLB → L.IsLB → L₁.IsLB → L₂.IsLB → p ≫ b₁ = h₁ ≫ p₁ → p ≫ b₂ = h₂ ≫ p₂ → f ≫ g₁ = h₁ ≫ f₁ → f ≫ g₂ = h₂ ≫ f₂ → wM.IsGen → wL.IsGen → we₁.IsGen → we₂.IsGen → ∃ we : LB.Iso (L.pull f) (M.pull p), we.IsGen ∧ BoxSq wM wL we we₁ we₂ h₁ h₂ := by
   intro B B₁ B₂ G G₁ G₂ T T₁ T₂ M M₁ M₂ L L₁ L₂ b₁ b₂ g₁ g₂ p f p₁ f₁ p₂ f₂ h₁ h₂ wM wL we₁ we₂

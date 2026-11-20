@@ -11,9 +11,9 @@ namespace ReciprocityTheory.ChartRestriction.DS
 variable {n : ℕ}
 
 /- English proof (translation)
-Use `first`. Consider the case `(rw [EuclideanSpace.norm_eq]`. Use `congr 1`. Simplify using `[nsq, dot, Real.norm_eq_abs, sq])`. Consider the case `(rw [EuclideanSpace.norm_eq]`.
+Treat this case separately. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Treat this case separately. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Simplify using `only [nsq, dot, PiLp.toLp_apply, Real.norm_eq_abs, sq_abs, sq])`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sqrt_nsq_eq_norm' (x : Fin n → ℝ) :
     √(nsq x) = ‖(WithLp.toLp 2 x : EuclideanSpace ℝ (Fin n))‖ := by
@@ -26,7 +26,7 @@ theorem sqrt_nsq_eq_norm' (x : Fin n → ℝ) :
        simp only [nsq, dot, PiLp.toLp_apply, Real.norm_eq_abs, sq_abs, sq])
 
 /- English proof (translation)
-Unfold `nsq dot`. Conclude with `Finset.sum_nonneg fun i _ => mul_self_nonneg (x i)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem nsq_nonneg' (x : Fin n → ℝ) : 0 ≤ nsq x := by
   unfold nsq dot
@@ -38,13 +38,13 @@ variable {M : Type*} [NormedAddCommGroup M] [InnerProductSpace ℂ M] {ε : Fin 
   {E : Fin n → Fin n → Module.End ℂ M} {V : Submodule ℂ M}
 
 /- English proof (translation)
-Use `haveI := hVf`. Establish `hT : ∀ a, {r : ℝ | Module.End.HasEigenvalue ((E a a).restrict (hVK a a rfl)) (r : ℂ)}.Finite`. Introduce `a`. Establish `hf : Set.Finite (Module.End.HasEigenvalue ((E a a).restrict (hVK a a rfl)))` using `by first`. Consider the case `exact Module.End.finite_hasEigenvalue _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
-Consider the case `exact (Module.End.finite_spectrum _).subset fun μ h => h.mem_spectrum`. Conclude with `hf.preimage Complex.ofReal_injective.injOn`. Establish `hW` using `Set.Finite.pi hT`. Take `⟨B, hB⟩` from `(hW.image fun ν => √(nsq (ν + rhoC ε))).bddAbove`. Use `⟨max B 0, le_max_right _ _, fun v hv hv0 ν hν => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hmem : ν ∈ Set.pi Set.univ fun a => {r : ℝ | Module.End.HasEigenvalue ((E a a).restrict (hVK a a rfl)) (r : ℂ)}`. Introduce `a _`. Establish `hx : ((E a a).restrict (hVK a a rfl)) ⟨v, hv⟩ = (ν a : ℂ) • (⟨v, hv⟩ : V)`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[hν a]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Treat this case separately.
 
-Establish `hx0 : (⟨v, hv⟩ : V) ≠ 0` using `by simpa using hv0`. Use `first`. Consider the case `exact Module.End.hasEigenvalue_of_hasEigenvector (Module.End.hasEigenvector_iff.2 ⟨Module.End.mem_eigenspace_iff.2 hx, hx0⟩)`. Consider the case `exact Module.End.hasEigenvalue_of_hasEigenvector ⟨Module.End.mem_eigenspace_iff.2 hx, hx0⟩`. Conclude with `(hB ⟨ν, hmem, rfl⟩).trans (le_max_left _ _)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_weight_bound (hU : IsInfUnitary ε E) (hVf : FiniteDimensional ℂ V)
     (hVK : IsKStableSub ε E V) :
@@ -76,7 +76,7 @@ theorem exists_weight_bound (hU : IsInfUnitary ε E) (hVf : FiniteDimensional �
   exact (hB ⟨ν, hmem, rfl⟩).trans (le_max_left _ _)
 
 /- English proof (translation)
-Rewrite using `[sqrt_nsq_eq_norm', sqrt_nsq_eq_norm', sqrt_nsq_eq_norm']`. Use `first`. Consider the case `(rw [WithLp.toLp_add]; exact norm_add_le _ _)`. Consider the case `(have h := norm_add_le (WithLp.toLp 2 x : EuclideanSpace ℝ (Fin n)) (WithLp.toLp 2 y)`. Rewrite using `[← WithLp.toLp_add] at h)` and apply the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem sqrt_nsq_add_le (x y : Fin n → ℝ) : √(nsq (x + y)) ≤ √(nsq x) + √(nsq y) := by
   rw [sqrt_nsq_eq_norm', sqrt_nsq_eq_norm', sqrt_nsq_eq_norm']
@@ -86,7 +86,7 @@ theorem sqrt_nsq_add_le (x y : Fin n → ℝ) : √(nsq (x + y)) ≤ √(nsq x) 
        rwa [← WithLp.toLp_add] at h)
 
 /- English proof (translation)
-Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Simplify using `[nsq, dot]`. Introduce `a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha]`. Conclude with `(sqrt_nsq_add_le _ _).trans (add_le_add le_rfl ih)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sqrt_nsq_sum_le {ι : Type*} (s : Finset ι) (f : ι → Fin n → ℝ) :
     √(nsq (∑ i ∈ s, f i)) ≤ ∑ i ∈ s, √(nsq (f i)) := by
@@ -98,11 +98,11 @@ theorem sqrt_nsq_sum_le {ι : Type*} (s : Finset ι) (f : ι → Fin n → ℝ) 
     exact (sqrt_nsq_add_le _ _).trans (add_le_add le_rfl ih)
 
 /- English proof (translation)
-Take `⟨γ, hγ, rfl⟩` from `hω`. Establish `hroot : ∀ a b : Fin n, a ≠ b → nsq (root a b) = 2`. Introduce `a b hne`. Unfold `nsq dot`. Rewrite using `[Fintype.sum_eq_add a b hne]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Evaluate the numerical expressions using `[root, Pi.single_apply, hne, hne.symm]`. Introduce `c hc`. Simplify using `[root, Pi.single_apply, hc.1, hc.2]`. Establish `hr : ∀ i, √(nsq (root (γ i).1 (γ i).2)) ≤ √2` using `fun i => by`. Establish `hne : (γ i).1 ≠ (γ i).2` using `fun h => hγ i (congrArg ε h)`.
+Evaluate the numerical expressions. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `le_of_eq (by rw [hroot _ _ hne])`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul, mul_comm]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sqrt_nsq_add_ncSum_le {j : ℕ} {ω : Fin n → ℝ} (hω : IsNCSum ε j ω)
     (x : Fin n → ℝ) :
@@ -127,23 +127,23 @@ theorem sqrt_nsq_add_ncSum_le {j : ℕ} {ω : Fin n → ℝ} (hω : IsNCSum ε j
         rw [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul, mul_comm]
 
 /- English proof (translation)
-Establish `hspan` using `layer_le_span hE hU hVf hVK k hw`. Assume the negation of the conclusion as `hcon`. Establish `hP : ∀ s ∈ layerWtVecs ε E V k, (∀ a, ∃ l : ℂ, E a a s = l • s) ∧ (s = 0 ∨ ∃ a, ∃ l : ℝ, l ≠ μ a ∧ E a a s = (l : ℂ) • s)`. Introduce `s hs`. Take `⟨ν, ω, j, hj, hω, ⟨v, hv, hv0, hνv⟩, hs'⟩` from `hs`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨fun a => ⟨_, hs' a⟩, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hl : ν + ω = μ`. It suffices to derive a contradiction. Substitute `hl` using the available equality. Apply `hcon` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. It suffices to derive a contradiction. Substitute using the available equality. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[add_right_comm]`. Combine the equalities or inequalities in the displayed calculation. Use `right`. Take `⟨a, ha⟩` from `Function.ne_iff.1 hl`. Conclude with `⟨a, (ν + ω) a, ha, hs' a⟩`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `key : ∀ G : Finset M, (∀ s ∈ G, (∀ a, ∃ l : ℂ, E a a s = l • s) ∧ (s = 0 ∨ ∃ a, ∃ l : ℝ, l ≠ μ a ∧ E a a s = (l : ℂ) • s)) → ∃ T : Module.End ℂ M, ∃ c : ℂ, c ≠ 0 ∧ T w = c • w ∧ ∀ s ∈ G, T s = 0`. Introduce `G`. Use `Finset.induction_on G ?_ ?_` and prove the remaining obligations. Introduce `_`. Conclude with `⟨1, 1, one_ne_zero, by simp, by simp⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s G hsG ih hG`. Take `⟨T, c, hc, hTw, hTG⟩` from `ih fun x hx => hG x (Finset.mem_insert_of_mem hx)`. Break down `(hG s (Finset.mem_insert_self s G)).2 with h0 | ⟨a, l, hl, hs⟩` into its components or cases. Use `⟨T, c, hc, hTw, fun x hx => ?_⟩` and prove the remaining obligations. Break down `Finset.mem_insert.1 hx with rfl | hx` into its components or cases.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h0, map_zero]`. Conclude with `hTG x hx`. Use `⟨T * (E a a - (l : ℂ) • 1), c * ((μ a : ℂ) - l), mul_ne_zero hc (sub_ne_zero.2 (by exact_mod_cast hl.symm)), ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : (T * (E a a - (l : ℂ) • 1)) w = T (((μ a : ℂ) - l) • w)`. Simplify using `[hμ a, sub_smul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[h1, map_smul, hTw, smul_smul, mul_comm]`. Introduce `x hx`. Break down `Finset.mem_insert.1 hx with rfl | hx` into its components or cases. Simplify using `[hs]`. Take `⟨l', hx'⟩` from `(hG x (Finset.mem_insert_of_mem hx)).1 a`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h2 : (T * (E a a - (l : ℂ) • 1)) x = T ((l' - l) • x)`. Simplify using `[hx', sub_smul]`. Rewrite using `[h2, map_smul, hTG x hx, smul_zero]`. Take `⟨F, hFS, hwF⟩` from `Submodule.mem_span_finite_of_mem_span hspan`. Take `⟨T, c, hc, hTw, hTF⟩` from `key F fun s hs => hP s (hFS hs)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hle : Submodule.span ℂ (F : Set M) ≤ LinearMap.ker T` using `Submodule.span_le.2 fun s hs => LinearMap.mem_ker.2 (hTF s hs)`. Establish `h0 : T w = 0` using `LinearMap.mem_ker.1 (hle hwF)`. Rewrite `h0` using `[hTw]`. Conclude with `hw0 ((smul_eq_zero.1 h0).resolve_left hc)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem weight_layer_le (hE : IsGlRep E) (hU : IsInfUnitary ε E) (hVf : FiniteDimensional ℂ V)
     (hVK : IsKStableSub ε E V) {R : ℝ}
@@ -206,11 +206,11 @@ theorem weight_layer_le (hE : IsGlRep E) (hU : IsInfUnitary ε E) (hVf : FiniteD
   exact hw0 ((smul_eq_zero.1 h0).resolve_left hc)
 
 /- English proof (translation)
-Take `⟨R, hR0, hR⟩` from `exists_weight_bound hU hVf hVK`. Use `⟨R, hR0, fun k x hx => ?_⟩` and prove the remaining obligations. Use `re_inner_casimirK_le hE (isKUnitary_of_isInfUnitary hU) (finiteDimensional_layer hVf k) (layer_kStable hE hVK k) _ (fun w hw hw0 μ hμ => ?_) x hx` and prove the remaining obligations. Unfold `casValK`. Establish `h` using `weight_layer_le hE hU hVf hVK hR k hw hw0 hμ.1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `h0 : 0 ≤ nsq (μ + rhoC ε)` using `nsq_nonneg' _`. Establish `h1 : nsq (μ + rhoC ε) ≤ (R + √2 * k) ^ 2`. Rewrite using `[← Real.sq_sqrt h0]`. Use `first`. Consider the case `exact pow_le_pow_left₀ (Real.sqrt_nonneg _) h 2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Consider the case `exact pow_le_pow_left (Real.sqrt_nonneg _) h 2`. Consider the case `gcongr`. Combine the linear equalities and inequalities to obtain the conclusion.
+Treat this case separately. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_re_inner_casimirK_layer_le (hE : IsGlRep E) (hU : IsInfUnitary ε E)
     (hVf : FiniteDimensional ℂ V) (hVK : IsKStableSub ε E V) :

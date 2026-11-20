@@ -9,7 +9,7 @@ namespace Formalism.DworkPowerSeriesWeights.OddLevelGainBounds
 open Formalism.IncomingBounds
 
 /- English proof (translation)
-Apply `Set.Finite.bddAbove` to reduce the goal to its premises. Apply `(Set.finite_range (fun t : ZMod d => capL d TT nu1 nu2 t)).subset` to reduce the goal to its premises. Introduce and unpack `_ ⟨i, _, rfl⟩`. Conclude with `⟨_, rfl⟩`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem cap_values_bddAbove (d : ℕ) [NeZero d] (TT : Finset (ZMod d)) (nu1 nu2 : ZMod d → ℕ) (s : ZMod d)
     (I : Set ℕ) : BddAbove ((fun i : ℕ => capL d TT nu1 nu2 (s - (i : ZMod d))) '' I) := by
@@ -19,11 +19,11 @@ theorem cap_values_bddAbove (d : ℕ) [NeZero d] (TT : Finset (ZMod d)) (nu1 nu2
   exact ⟨_, rfl⟩
 
 /- English proof (translation)
-Establish `hc : (((-j).toNat : ℕ) : ZMod d) = -((j : ZMod d))`. Establish `: (((-j).toNat : ℕ) : ℤ) = -j` using `Int.toNat_of_nonneg (by omega)`. Rewrite using `[← Int.cast_natCast, this, Int.cast_neg]`. Establish `hs : s - (((-j).toNat : ℕ) : ZMod d) = s + (j : ZMod d)`. Rewrite using `[hc, sub_neg_eq_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Unfold `WcapOneLetter`. Apply `le_csSup (cap_values_bddAbove d TT nu1 nu2 s _)` to reduce the goal to its premises. Use `⟨(-j).toNat, ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Take `⟨k, hk⟩` from `hodd`. Conclude with `⟨(-k - 1).toNat, by omega⟩`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Rewrite using `[hs]`. Conclude with `hsz`. Simplify using `only`. Rewrite using `[hs]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cap_le_odd_shift_bound (l d : ℕ) [NeZero d] (TT : Finset (ZMod d)) (nu1 nu2 size : ZMod d → ℕ)
     (s : ZMod d) (j : ℤ) (hj : j < 0) (hodd : Odd j)
@@ -45,61 +45,57 @@ theorem cap_le_odd_shift_bound (l d : ℕ) [NeZero d] (TT : Finset (ZMod d)) (nu
     rw [hs]
 
 /- English proof (translation)
-Introduce `l d _ hl hd hde TT nu1 nu2 size h21 h1s sig hopt ι _ lt isTop spec κ htop htopsum hDsum hspec hcapsum`. Establish `hl2 : 2 ≤ l` using `by omega`. Establish `hsig : ∀ s, 0 ≤ sig s` using `fun s => (hopt.1.1 s).1`. Use `set Q : Finset (ZMod d × ℤ) := Finset.univ.biUnion (fun i => (spec i).toFinset) with hQdef`. Establish `hQ : ∀ q ∈ Q, ∃ i, spec i = some q`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `q hq`. Rewrite `hq` using `[hQdef, Finset.mem_biUnion]`. Take `⟨i, _, hi⟩` from `hq`. Conclude with `⟨i, Option.mem_toFinset.1 hi⟩`. Establish `hQmem : ∀ i q, spec i = some q → q ∈ Q`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i q hi`. Rewrite using `[hQdef, Finset.mem_biUnion]`. Conclude with `⟨i, Finset.mem_univ _, Option.mem_toFinset.2 hi⟩`. Establish `hQspec : ∀ q ∈ Q, q.1 ∈ TT ∧ Odd q.2 ∧ (q.2 < 0 → l ^ (-q.2).toNat ≤ Dl d TT nu1 size (q.1 + (q.2 : ZMod d)))`. Introduce `q hq`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨i, hi⟩` from `hQ q hq`. Take `⟨h1, h2, h3, _, h5⟩` from `hspec i q.1 q.2 hi`. Use `⟨h1, h2, fun h => ?_⟩` and prove the remaining obligations. Rewrite using `[← h3]`. Conclude with `h5 h`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set R : ZMod d → Finset ℕ := fun s => (Q.filter (fun q => q.1 = s ∧ 0 < q.2)).image (fun q => q.2.toNat) with hRdef`. Establish `hRs : ∀ s, R s = (Q.filter (fun q => q.1 = s ∧ 0 < q.2)).image (fun q => q.2.toNat)` using `fun s => rfl`. Establish `hRodd : ∀ s, ∀ j ∈ R s, Odd j`. Introduce `s j hj`. Rewrite `hj` using `[hRs, Finset.mem_image]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨q, hq, rfl⟩` from `hj`. Rewrite `hq` using `[Finset.mem_filter]`. Take `⟨hqQ, _, hpos⟩` from `hq`. Take `⟨k, hk⟩` from `(hQspec q hqQ).2.1`. Conclude with `⟨k.toNat, by omega⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hch` using `fun s => asmA_top l d hl2 TT nu1 nu2 s (R s) (hRodd s)`. Use `choose eps heps0 hepsD hepsT using hch`. Use `⟨eps, heps0, fun s _ e he => hepsD s e he, ?_⟩` and prove the remaining obligations. Establish `hrow : ∀ i, (if isTop i = true then (κ i : ℝ) * (gam l - eps (lt i)) else (κ i : ℝ) * (gam l - sig (lt i))) - (κ i : ℝ) * asmA_cost l eps (spec i) ≤ (κ i : ℝ) * (gam l - rowRad l sig eps lt isTop spec i)` using `fun i => asmA_row l sig eps hsig lt isTop spec κ i (fun h => (htop i h).2)`. Establish `hsum1 : (∑ i, (if isTop i = true then (κ i : ℝ) * (gam l - eps (lt i)) else (κ i : ℝ) * (gam l - sig (lt i)))) - ∑ i, (κ i : ℝ) * asmA_cost l eps (spec i) ≤ ∑ i, (κ i : ℝ) * (gam l - rowRad l sig eps lt isTop spec i)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Finset.sum_sub_distrib]`. Conclude with `Finset.sum_le_sum (fun i _ => hrow i)`. Rewrite `hsum1` using `[Finset.sum_ite]`. Establish `hT : ∑ i ∈ Finset.univ.filter (fun i => isTop i = true), (κ i : ℝ) * (gam l - eps (lt i)) = ∑ s ∈ TT, (nu1 s : ℝ) * (gam l - eps s)`. Rewrite using `[← Finset.sum_fiberwise_of_maps_to (g := lt) (t := TT) (fun i hi => (htop i (Finset.mem_filter.1 hi).2).1)]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `s hs`. Rewrite using `[← htopsum s hs, Finset.sum_mul, Finset.filter_filter]`. Apply `Finset.sum_congr (by ext i; simp [and_comm])` to reduce the goal to its premises. Introduce `i hi`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[(Finset.mem_filter.1 hi).2.1]`. Establish `hF : ∑ i ∈ Finset.univ.filter (fun i => ¬ isTop i = true), (κ i : ℝ) * (gam l - sig (lt i)) = Fnum l d (fun s => (Dl d TT nu1 size s : ℝ))`. Establish `hF' : Fnum l d (fun s => (Dl d TT nu1 size s : ℝ)) = ∑ s : ZMod d, (Dl d TT nu1 size s : ℝ) * (gam l - sig s)` using `hopt.2`. Rewrite using `[hF', ← Finset.sum_fiberwise_of_maps_to (g := lt) (t := Finset.univ) (fun i _ => Finset.mem_univ _)]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `s _`. Rewrite using `[← hDsum s, Finset.sum_mul, Finset.filter_filter]`. Apply `Finset.sum_congr (by ext i; simp [and_comm])` to reduce the goal to its premises. Introduce `i hi`. Rewrite using `[(Finset.mem_filter.1 hi).2.1]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Establish `hC1 : ∑ i, (κ i : ℝ) * asmA_cost l eps (spec i) = ∑ q ∈ Q, (∑ i ∈ Finset.univ.filter (fun i => spec i = some (q.1, q.2)), (κ i : ℝ)) * asmA_cost l eps (some q)`. Establish `hpt : ∀ i, (κ i : ℝ) * asmA_cost l eps (spec i) = ∑ q ∈ Q, if spec i = some (q.1, q.2) then (κ i : ℝ) * asmA_cost l eps (some q) else 0`. Introduce `i`. Consider the cases of `hs : spec i with`. Consider the case `none => simp [asmA_cost]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Consider the case `some q0`. Rewrite using `[Finset.sum_eq_single q0]`. Simplify using the standard rewrite rules. Introduce `b _ hb`. Rewrite using `[if_neg]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Substitute using the available equality. Both sides reduce to the same expression.
 
-Introduce `h`. Apply `hb` to reduce the goal to its premises. Simplify using `only [Option.some.injEq] at h`. Substitute `h` using the available equality. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Conclude with `absurd (hQmem i q0 hs) h`. Rewrite using `[Finset.sum_congr rfl (fun i _ => hpt i), Finset.sum_comm]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `q _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Finset.sum_mul, Finset.sum_filter]`. Establish `hC2 : ∑ q ∈ Q, (∑ i ∈ Finset.univ.filter (fun i => spec i = some (q.1, q.2)), (κ i : ℝ)) * asmA_cost l eps (some q) ≤ ∑ q ∈ Q, (capL d TT nu1 nu2 (q.1 + (q.2 : ZMod d)) : ℝ) * asmA_cost l eps (some q)` using `Finset.sum_le_sum (fun q _ => mul_le_mul_of_nonneg_right (hcapsum q.1 q.2) (asmA_cost_nonneg l eps _))`. Establish `hC3 : ∑ q ∈ Q, (capL d TT nu1 nu2 (q.1 + (q.2 : ZMod d)) : ℝ) * asmA_cost l eps (some q) ≤ ∑ s ∈ TT, ((∑ j ∈ R s, (capL d TT nu1 nu2 (s + (j : ZMod d)) : ℝ) * max (1 - (l : ℝ) ^ j * eps s) 0) + gam l * (WcapOneLetter l d TT nu1 nu2 size s : ℝ))`. Rewrite using `[← Finset.sum_fiberwise_of_maps_to (g := Prod.fst) (t := TT) (fun q hq => (hQspec q hq).1)]`. Apply `Finset.sum_le_sum` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `s hs`. Rewrite using `[← Finset.sum_filter_add_sum_filter_not _ (fun q => 0 < q.2)]`. Apply `add_le_add` to reduce the goal to its premises. Apply `le_of_eq` to reduce the goal to its premises. Rewrite using `[hRs s, Finset.sum_image]`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[Finset.filter_filter]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce and unpack `⟨s', j⟩ hq`. Simplify using `only [Finset.mem_filter] at hq`. Take `⟨_, rfl, hj⟩` from `hq`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hc : ((j.toNat : ℕ) : ZMod d) = (j : ZMod d)`. Establish `: ((j.toNat : ℕ) : ℤ) = j` using `Int.toNat_of_nonneg hj.le`. Rewrite using `[← Int.cast_natCast, this]`. Simplify using `[asmA_cost, hj, hc]`. Introduce `x hx y hy hxy`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Simplify using `only [Finset.mem_coe, Finset.mem_filter] at hx hy`. Conclude with `Prod.ext (hx.2.1.trans hy.2.1.symm) (by simp only at hxy; omega)`. Use `set S' := (Q.filter (fun q => q.1 = s)).filter (fun q => ¬ 0 < q.2) with hS'`. Establish `hmemS : ∀ q ∈ S', q ∈ Q ∧ q.1 = s ∧ q.2 < 0`. Introduce `q hq`.
+Supply the required witnesses or components. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Rewrite `hq` using `[hS', Finset.mem_filter, Finset.mem_filter]`. Take `⟨⟨hqQ, hq1⟩, hq2⟩` from `hq`. Take `⟨k, hk⟩` from `(hQspec q hqQ).2.1`. Conclude with `⟨hqQ, hq1, by omega⟩`. Establish `hb1 : ∑ q ∈ S', (capL d TT nu1 nu2 (q.1 + (q.2 : ZMod d)) : ℝ) * asmA_cost l eps (some q) ≤ ∑ q ∈ S', (WcapOneLetter l d TT nu1 nu2 size s : ℝ) * ((l : ℝ) ^ (-q.2).toNat)⁻¹`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce and unpack `⟨s', j⟩ hq`. Take `⟨hqQ, hq1, hj⟩` from `hmemS _ hq`. Simplify using `only at hq1 hj`. Establish `hcost : asmA_cost l eps (some (s', j)) = ((l : ℝ) ^ (-j).toNat)⁻¹`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Simplify using `[asmA_cost, not_lt.2 hj.le]`. Rewrite using `[hcost, ← hq1]`. Apply `mul_le_mul_of_nonneg_right _ (by positivity)` to reduce the goal to its premises. Use `cap_le_odd_shift_bound l d TT nu1 nu2 size s' j hj (hQspec _ hqQ).2.1 ((hQspec _ hqQ).2.2 hj)` as an intermediate fact. Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hinj : ∀ x ∈ S', ∀ y ∈ S', (-x.2).toNat = (-y.2).toNat → x = y`. Introduce `x hx y hy hxy`. Take `⟨_, hx1, hx2⟩` from `hmemS x hx`. Take `⟨_, hy1, hy2⟩` from `hmemS y hy`. Conclude with `Prod.ext (hx1.trans hy1.symm) (by omega)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hb2 : ∑ q ∈ S', ((l : ℝ) ^ (-q.2).toNat)⁻¹ ≤ gam l`. Rewrite using `[← Finset.sum_image (f := fun n : ℕ => ((l : ℝ) ^ n)⁻¹) (g := fun q : ZMod d × ℤ => (-q.2).toNat) hinj]`. Apply `asmA_sum_odd_le l hl2` to reduce the goal to its premises. Introduce `n hn`. Rewrite `hn` using `[Finset.mem_image]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Take `⟨q, hq, rfl⟩` from `hn`. Take `⟨hqQ, _, hq2⟩` from `hmemS q hq`. Take `⟨k, hk⟩` from `(hQspec q hqQ).2.1`. Conclude with `⟨(-k - 1).toNat, by omega⟩`. Rewrite `hb1` using `[← Finset.mul_sum]`.
-
-Establish `hW0 : (0 : ℝ) ≤ (WcapOneLetter l d TT nu1 nu2 size s : ℝ)` using `Nat.cast_nonneg _`. Combine the equalities or inequalities in the displayed calculation. Establish `hkey : ∑ s ∈ TT, (topTerm l d TT nu1 nu2 s - gam l * (WcapOneLetter l d TT nu1 nu2 size s : ℝ)) ≤ ∑ s ∈ TT, (nu1 s : ℝ) * (gam l - eps s) - ∑ s ∈ TT, ((∑ j ∈ R s, (capL d TT nu1 nu2 (s + (j : ZMod d)) : ℝ) * max (1 - (l : ℝ) ^ j * eps s) 0) + gam l * (WcapOneLetter l d TT nu1 nu2 …`. Rewrite using `[← Finset.sum_sub_distrib]`. Apply `Finset.sum_le_sum` to reduce the goal to its premises.
-
-Introduce `s _`. Use `hepsT s` as an intermediate fact. Combine the linear relations using `[mul_sub (nu1 s : ℝ) (gam l) (eps s)]`. Combine the linear relations using `[hT, hF, hC1, hC2, hC3, hkey, hsum1]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem gauss_jet_bound_of_parts : ThmAAssembly7 := by
   intro l d _ hl hd hde TT nu1 nu2 size h21 h1s sig hopt ι _ lt isTop spec κ htop htopsum hDsum
@@ -284,13 +280,13 @@ theorem gauss_jet_bound_of_parts : ThmAAssembly7 := by
   linarith [hT, hF, hC1, hC2, hC3, hkey, hsum1]
 
 /- English proof (translation)
-Introduce `l d _ hl TT nu1 size s`. Use `set M : ℕ := Finset.univ.sup nu1 + Dl d TT nu1 size s with hM`. Apply `((Set.finite_univ (α := ZMod d)).prod (Set.finite_Icc (-(M : ℤ)) (M : ℤ))).subset` to reduce the goal to its premises. Introduce and unpack `⟨s0, j⟩ ⟨_, _, _, hp, hn⟩`. Simplify using `only at hp hn`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Set.mem_univ _, ?_, ?_⟩` and prove the remaining obligations. Use `show -(M : ℤ) ≤ j`. Distinguish the cases in `hj : j < 0`. Establish `h1` using `hn hj`. Establish `h2 : (-j).toNat < l ^ (-j).toNat` using `Nat.lt_pow_self (by omega)`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers. Use `show j ≤ (M : ℤ)`. Distinguish the cases in `hj : 0 < j`. Establish `h1` using `hp hj`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Establish `h2 : j.toNat < l ^ j.toNat` using `Nat.lt_pow_self (by omega)`. Establish `h3 : nu1 s0 ≤ Finset.univ.sup nu1` using `Finset.le_sup (f := nu1) (Finset.mem_univ s0)`. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem letter_labels_finite : LabFinite7 := by
   intro l d _ hl TT nu1 size s

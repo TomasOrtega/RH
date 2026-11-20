@@ -8,13 +8,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `Module.Projective.out (R := R) (P := M)`. Take `⟨s', hs'⟩` from `Module.Projective.out (R := R) (P := N)`. Establish `key : ∀ (w : M ⊗[R] N) (c : M) (c' : N), finsuppTensorFinsupp' R M N (TensorProduct.map s s' w) (c, c') = TensorProduct.lift ((LinearMap.mul R R).compl₁₂ ((Finsupp.lapply c).comp s) ((Finsupp.lapply c').comp s')) w`. Introduce `w c c'`. Proceed by induction on `w using TensorProduct.induction_on with`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `tmul m n => simp [finsuppTensorFinsupp'_apply_apply]`. Consider the case `add v w hv hw => simp only [map_add, Finsupp.add_apply, hv, hw]`. Establish `h0 : TensorProduct.map s s' u = 0`. Apply `(finsuppTensorFinsupp' R M N).injective` to reduce the goal to its premises.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[map_zero]`. Use extensionality with `⟨c, c'⟩`. Rewrite using `[key]`. Conclude with `h _ _`. Establish `hl : (Finsupp.linearCombination R id).comp s = LinearMap.id` using `LinearMap.ext hs`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hl' : (Finsupp.linearCombination R id).comp s' = LinearMap.id` using `LinearMap.ext hs'`. Establish `: u = TensorProduct.map (Finsupp.linearCombination R id) (Finsupp.linearCombination R id) (TensorProduct.map s s' u)`. Rewrite using `[← LinearMap.comp_apply, ← TensorProduct.map_comp, hl, hl', TensorProduct.map_id, LinearMap.id_apply]`. Rewrite using `[this, h0, map_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tensor_eq_zero_of_forall_dual_pairing {R : Type} [CommRing R] {M N : Type 1}
     [AddCommGroup M] [Module R M] [AddCommGroup N] [Module R N]
@@ -47,17 +47,17 @@ theorem tensor_eq_zero_of_forall_dual_pairing {R : Type} [CommRing R] {M N : Typ
   rw [this, h0, map_zero]
 
 /- English proof (translation)
-Introduce `R _ M N _ _ _ _ _ _ F F' ⟨C, hC⟩ ⟨C', hC'⟩`. Use `set e : M →ₗ[R] M := C.subtype.comp (C.linearProjOfIsCompl F hC.symm) with he`. Use `set e' : N →ₗ[R] N := C'.subtype.comp (C'.linearProjOfIsCompl F' hC'.symm) with he'`. Establish `eF : ∀ f ∈ F, e f = 0` using `fun f hf => by`. Rewrite using `[he, LinearMap.comp_apply, show C.linearProjOfIsCompl F hC.symm f = 0 from Submodule.linearProjOfIsCompl_apply_right hC.symm ⟨f, hf⟩, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `eF' : ∀ f ∈ F', e' f = 0` using `fun f hf => by`. Rewrite using `[he', LinearMap.comp_apply, show C'.linearProjOfIsCompl F' hC'.symm f = 0 from Submodule.linearProjOfIsCompl_apply_right hC'.symm ⟨f, hf⟩, map_zero]`. Establish `sub : ∀ m, m - e m ∈ F` using `fun m => by`. Rewrite using `[← Submodule.linearProjOfIsCompl_ker hC.symm, LinearMap.mem_ker, map_sub, he, LinearMap.comp_apply, Submodule.subtype_apply, Submodule.linearProjOfIsCompl_apply_left]`. Conclude with `sub_self _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `sub' : ∀ m, m - e' m ∈ F'` using `fun m => by`. Rewrite using `[← Submodule.linearProjOfIsCompl_ker hC'.symm, LinearMap.mem_ker, map_sub, he', LinearMap.comp_apply, Submodule.subtype_apply, Submodule.linearProjOfIsCompl_apply_left]`. Conclude with `sub_self _`. Establish `ann : ∀ x : Module.Dual R M, x.comp e ∈ F.dualAnnihilator` using `fun x => by`. Rewrite using `[Submodule.mem_dualAnnihilator]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `f hf`. Simplify using `[eF f hf]`. Establish `ann' : ∀ y : Module.Dual R N, y.comp e' ∈ F'.dualAnnihilator` using `fun y => by`. Rewrite using `[Submodule.mem_dualAnnihilator]`. Introduce `f hf`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `[eF' f hf]`. Use `⟨fun c hc => ?_, fun n a b hab => ?_⟩` and prove the remaining obligations. Establish `: e c = 0` using `(Module.forall_dual_apply_eq_zero_iff R (e c)).mp fun x => hc _ (ann x)`. Simplify `sub c` using `[this]`. Use `⟨fun k => a k - e (a k), fun k => b k - e' (b k), fun k => sub _, fun k => sub' _, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [sub_sub_cancel]`. Apply `tensor_eq_zero_of_forall_dual_pairing` to reduce the goal to its premises. Introduce `x y`. Simplify using `only [map_sum, TensorProduct.lift.tmul, LinearMap.compl₁₂_apply, LinearMap.mul_apply']`. Conclude with `hab _ (ann x) _ (ann' y)`.
+A detailed English derivation is pending.
 -/
 theorem tensor_mem_of_dualAnnihilator : ∀ (R : Type) [CommRing R] (M N : Type 1) [AddCommGroup M] [Module R M] [AddCommGroup N] [Module R N] [Module.Projective R M] [Module.Projective R N] (F : Submodule R M) (F' : Submodule R N), (∃ C, IsCompl F C) → (∃ C, IsCompl F' C) → (∀ c : M, (∀ h ∈ F.dualAnnihilator, h c = 0) → c ∈ F) ∧ ∀ (n : ℕ) (a : Fin n → M) (b : Fin n → N), (∀ x ∈ F.dualAnnihilator, ∀ y ∈ F'.dualAnnihilator, ∑ k, x (a k) * y (b k) = 0) → ∃ (a₁ : Fin n → M) (b₁ : Fin n → N), (∀ k, a₁ k ∈ F) ∧ (∀ k, b₁ k ∈ F') ∧ ∑ k, (a k - a₁ k) ⊗ₜ[R] (b k - b₁ k) = 0 := by
   intro R _ M N _ _ _ _ _ _ F F' ⟨C, hC⟩ ⟨C', hC'⟩

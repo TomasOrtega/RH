@@ -29,13 +29,13 @@ Both sides reduce to the same expression.
 theorem middlePart_add [Add k] (i t : ℕ) (a b : Fin (i + t) → k) : middlePart i t (a + b) = middlePart i t a + middlePart i t b := rfl
 
 /- English proof (translation)
-The claim follows from `continuous_pi fun _ => continuous_apply _`.
+A detailed English derivation is pending.
 -/
 theorem continuous_topP [TopologicalSpace k] (i t : ℕ) : Continuous (topP (k := k) i t) :=
   continuous_pi fun _ => continuous_apply _
 
 /- English proof (translation)
-The claim follows from `continuous_pi fun _ => continuous_apply _`.
+A detailed English derivation is pending.
 -/
 theorem continuous_midP [TopologicalSpace k] (i t : ℕ) : Continuous (middlePart (k := k) i t) :=
   continuous_pi fun _ => continuous_apply _
@@ -148,16 +148,16 @@ def Lc (n : ℕ) (c : k) : Subgroup (Multiplicative (Fin n → k)) where
     exact neg_mem (ha j)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_Lc {n : ℕ} {c : k} {y : Multiplicative (Fin n → k)} : y ∈ Lc n c ↔ ∀ j, c * y.toAdd j ∈ 𝒪[k] := Iff.rfl
 
 variable [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Establish `hset : (Lc n c : Set (Multiplicative (Fin n → k))) = ⋂ j, (fun y : Multiplicative (Fin n → k) => c * y.toAdd j) ⁻¹' (𝒪[k] : Set k)`. Use extensionality with `y`. Simplify using `only [SetLike.mem_coe, mem_Lc, Set.mem_iInter, Set.mem_preimage]`. Rewrite using `[hset]`. Establish `hO : IsOpen (𝒪[k] : Set k)` using `by exact Valuation.isOpen_integer`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `isOpen_iInter_of_finite fun j => hO.preimage (continuous_const.mul ((continuous_apply j).comp continuous_toAdd))`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_Lc (n : ℕ) (c : k) : IsOpen (Lc n c : Set (Multiplicative (Fin n → k))) := by
   have hset : (Lc n c : Set (Multiplicative (Fin n → k))) =
@@ -170,11 +170,11 @@ theorem isOpen_Lc (n : ℕ) (c : k) : IsOpen (Lc n c : Set (Multiplicative (Fin 
     hO.preimage (continuous_const.mul ((continuous_apply j).comp continuous_toAdd))
 
 /- English proof (translation)
-Establish `hK : IsCompact (Set.pi Set.univ fun _ : Fin n => {x : k | valuation k x ≤ 1})` using `isCompact_univ_pi fun _ => IsNonarchimedeanLocalField.isCompact_closedBall k 1`. Establish `hf : Continuous fun x : Fin n → k => Multiplicative.ofAdd (c⁻¹ • x)` using `continuous_ofAdd.comp (continuous_const_smul _)`. Use `hK.image hf using 1` and compare the differences between its conclusion and the goal. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Introduce `hy`. Use `⟨c • y.toAdd, fun j _ => ?_, ?_⟩` and prove the remaining obligations. Establish `h` using `mem_Lc.1 hy j`. Rewrite `h` using `[Valuation.mem_integer_iff]`. Simplify using `using h`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `[smul_smul, hc]`. Introduce and unpack `⟨x, hx, rfl⟩`. Use `mem_Lc.2 fun j => ?_` and prove the remaining obligations. Rewrite using `[Valuation.mem_integer_iff]`. Simplify `hx j trivial` using `[smul_smul, hc]`.
+Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isCompact_Lc (n : ℕ) {c : k} (hc : c ≠ 0) : IsCompact (Lc n c : Set (Multiplicative (Fin n → k))) := by
   have hK : IsCompact (Set.pi Set.univ fun _ : Fin n => {x : k | valuation k x ≤ 1}) :=
@@ -206,7 +206,7 @@ def cosetSet (t : ℕ) (c : k) (a : Fin t → k) : Set (Fin t → k) :=
   {v | Multiplicative.ofAdd (v - a) ∈ Lc t c}
 
 /- English proof (translation)
-Establish `hcont : Continuous fun v : Fin t → k => Multiplicative.ofAdd (v - a)` using `continuous_ofAdd.comp (continuous_id.sub continuous_const)`. Establish `h1 : IsOpen (Lc t c : Set (Multiplicative (Fin t → k)))` using `isOpen_Lc t c`. Conclude with `⟨(Subgroup.isClosed_of_isOpen _ h1).preimage hcont, h1.preimage hcont⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem isClopen_cosetSet (t : ℕ) (c : k) (a : Fin t → k) : IsClopen (cosetSet t c a) := by
   have hcont : Continuous fun v : Fin t → k => Multiplicative.ofAdd (v - a) :=
@@ -215,9 +215,9 @@ theorem isClopen_cosetSet (t : ℕ) (c : k) (a : Fin t → k) : IsClopen (cosetS
   exact ⟨(Subgroup.isClosed_of_isOpen _ h1).preimage hcont, h1.preimage hcont⟩
 
 /- English proof (translation)
-Establish `h` using `(isCompact_Lc t hc).image (f := fun y : Multiplicative (Fin t → k) => y.toAdd + a) ((continuous_toAdd).add continuous_const)`. Use `h using 1` and compare the differences between its conclusion and the goal. Use extensionality with `v`. Prove the components needed by the constructor for the conclusion. Introduce `hv`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨Multiplicative.ofAdd (v - a), hv, by simp⟩`. Introduce and unpack `⟨y, hy, rfl⟩ show Multiplicative.ofAdd (y.toAdd + a - a) ∈ Lc t c`. Simplify using `using hy`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isCompact_cosetSet (t : ℕ) {c : k} (hc : c ≠ 0) (a : Fin t → k) : IsCompact (cosetSet t c a) := by
   have h := (isCompact_Lc t hc).image (f := fun y : Multiplicative (Fin t → k) => y.toAdd + a)

@@ -10,7 +10,7 @@ open scoped ComplexOrder
 namespace GlobalTheory.Mean4
 
 /- English proof (translation)
-Unfold `gap`. Conclude with `sub_nonneg.2 (hu τ _ _ (by simp [Fin.le_def]))`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem gap_nonneg_of_dominant {D : D7} (Y : ShimX D.what₂.Tau) (u : Wt Y) (hu : Dominant Y u) (τ : D.what₂.Tau) :
     0 ≤ gap Y u τ := by
@@ -18,9 +18,9 @@ theorem gap_nonneg_of_dominant {D : D7} (Y : ShimX D.what₂.Tau) (u : Wt Y) (hu
   exact sub_nonneg.2 (hu τ _ _ (by simp [Fin.le_def]))
 
 /- English proof (translation)
-Break down `isEmpty_or_nonempty D.what₂.Tau with he | hne` into its components or cases. Establish `h1 : supAbs Y u = 0`. Unfold `supAbs`. Conclude with `Real.iSup_of_isEmpty _`. Rewrite using `[h1, Real.iInf_of_isEmpty]`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Take `⟨τ, hτ⟩` from `exists_eq_ciInf_of_finite (f := fun τ => gap Y u τ)`. Rewrite using `[← hτ]`. Conclude with `(h τ).trans (mul_le_mul_of_nonneg_right (by linarith) (gap_nonneg_of_dominant Y u hu τ))`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nefCond_iInf {D : D7} (Y : ShimX D.what₂.Tau) (B q : ℝ) (hq : B ≤ q) (u : Wt Y) (hu : Dominant Y u)
     (h : NefCond Y B u) : 4 * (D.R.f : ℝ) * supAbs Y u ≤ (q - 2) * (⨅ τ, gap Y u τ) := by
@@ -35,9 +35,9 @@ theorem nefCond_iInf {D : D7} (Y : ShimX D.what₂.Tau) (B q : ℝ) (hq : B ≤ 
     exact (h τ).trans (mul_le_mul_of_nonneg_right (by linarith) (gap_nonneg_of_dominant Y u hu τ))
 
 /- English proof (translation)
-Introduce `D V P S κ hS hL h1 h2 A hfib hsp Λ`. Take `⟨s₀, hs₀, hsp⟩` from `hsp Λ`. Use `⟨s₀, hs₀, fun B hB u s hu hΛ hs hss hd hc => ⟨hsp B hB u s hu hΛ hs hss hd, hfib B u s hB hu hs ?_ ?_⟩⟩` and prove the remaining obligations. Introduce `p hp`. Conclude with `h1 S κ hS hL p ((mem_setB_iff_le _ B p).1 hp).1 _ hd`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `p hp hn`. Establish `h' : ¬ ((p : ℝ) ≤ B ∨ p ∣ 2 * dE D ∨ p ∈ (V.shv S κ).lev)` using `fun h => hn ((mem_setB_iff_le _ B p).2 ⟨hp, h⟩)`. Simplify using `only [not_or, not_le] at h'`. Conclude with `h2 S κ hS hL p hp h'.2.1 h'.2.2 _ hd (nefCond_iInf _ B p h'.1.le _ hd hc)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem positive_of_nef : ∀ (D : D7) (V : DivX D) (P : DIV.Align.PrinLev V) (S : HS D) (κ : V.Lev), HidaSetting D V S κ → DIV.Align.LevB P κ → NefHodgeTateLattices V P → Conclusion2 V P → ∀ A : SlopeTestRemainingChoices (V.shv S κ), (∀ (B : ℝ) (u : Wt (V.shv S κ)) (s : ℚ), 2 ≤ B → IsRat _ u → 0 < s → (∀ p ∈ setB (V.shv S κ) B, NefHT (V.shv S κ) p (A.sh u s)) → (∀ p : ℕ, p.Prime → p ∉ setB (V.shv S κ) B → NefDR (V.shv S κ) p (A.sh u s)) → (V.shv S κ).nefFib ((V.shv S κ).Mbar B u s)) → (∀ Λ : ℝ, ∃ s₀ : ℝ, 0 < s₀ ∧ ∀ B : ℝ, 2 ≤ B → ∀ (u : Wt (V.shv S κ)) (s : ℚ), IsRat _ u → supAbs _ u ≤ Λ → 0 < s → (s : ℝ) ≤ s₀ → Dominant _ (A.sh u s) → (V.shv S κ).semipos ((V.shv S κ).Mbar B u s)) → Positive A := by
   intro D V P S κ hS hL h1 h2 A hfib hsp Λ

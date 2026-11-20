@@ -15,7 +15,7 @@ variable {Wp Wq Wq' Wq'' : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ 
   [NormedAddCommGroup Wq''] [InnerProductSpace ℂ Wq''] [FiniteDimensional ℂ Wq'']
 
 /- English proof (translation)
-Rewrite using `[Formalism.FourierDecayAlt.P.TBBx4.hsVec_normSq_adj X, Formalism.FourierDecayAlt.P.TBBx4.hsVec_normSq_adj (X.comp A), Formalism.FourierDecayAlt.P.TBBx4.hsVec_normSq_adj (X.comp A'), ← Finset.sum_add_distrib, Finset.mul_sum]`. Use `Finset.sum_le_sum fun j _ => ?_` and prove the remaining obligations. Rewrite using `[ContinuousLinearMap.adjoint_comp, ContinuousLinearMap.adjoint_comp, ContinuousLinearMap.comp_apply, ContinuousLinearMap.comp_apply]`. Conclude with `h _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma hs_le_of_adj_sh (X : Wq →L[ℂ] Wp) (A : Wq' →L[ℂ] Wq) (A' : Wq'' →L[ℂ] Wq) (K : ℝ)
     (h : ∀ v : Wq, ‖v‖ ^ 2 ≤
@@ -29,9 +29,9 @@ lemma hs_le_of_adj_sh (X : Wq →L[ℂ] Wp) (A : Wq' →L[ℂ] Wq) (A' : Wq'' �
   exact h _
 
 /- English proof (translation)
-Rewrite using `[Formalism.FourierDecayAlt.P.TBBx4.hsVec_normSq_adj (X.comp A), Formalism.FourierDecayAlt.P.TBBx4.hsVec_normSq_adj X, Finset.mul_sum]`. Use `Finset.sum_le_sum fun j _ => ?_` and prove the remaining obligations. Rewrite using `[ContinuousLinearMap.adjoint_comp, ContinuousLinearMap.comp_apply]`. Establish `h1` using `(ContinuousLinearMap.adjoint A).le_opNorm ((ContinuousLinearMap.adjoint X) (stdOrthonormalBasis ℂ Wp j))`. Rewrite `h1` using `[LinearIsometryEquiv.norm_map]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 lemma hs_comp_le_sh (X : Wq →L[ℂ] Wp) (A : Wq' →L[ℂ] Wq) :
     ‖B.hsVec (X.comp A)‖ ^ 2 ≤ ‖A‖ ^ 2 * ‖B.hsVec X‖ ^ 2 := by
@@ -56,7 +56,7 @@ variable {P : M.Par} {Wp Wq Wq' : Type}
   {u u' : ℕ → ℝ}
 
 /- English proof (translation)
-Unfold `TTp`. Rewrite using `[hz, hz']`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 lemma ttp_sh (p : KB.Pl P Wp Wq) (q : KB.Pl (shP P u u') Wp Wq') (hz : q.T.base.z = p.T.base.z)
     (hz' : q.T.base.z' = p.T.base.z') : TTp q = TTp p := by
@@ -65,7 +65,7 @@ lemma ttp_sh (p : KB.Pl P Wp Wq) (q : KB.Pl (shP P u u') Wp Wq') (hz : q.T.base.
   rfl
 
 /- English proof (translation)
-Establish `h` using `Formalism.FourierDecayAlt.P.TBBx2.Tri.Ew_top q F hγ`. Rewrite `h` using `[ttp_sh p q hz hz']`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma ew_sh (p : KB.Pl P Wp Wq) (q : KB.Pl (shP P u u') Wp Wq') (hz : q.T.base.z = p.T.base.z)
     (hz' : q.T.base.z' = p.T.base.z') (F : B.Mat P.k P.r → (Wq' →L[ℂ] Wp)) {γ : C.LPt}
@@ -77,9 +77,9 @@ lemma ew_sh (p : KB.Pl P Wp Wq) (q : KB.Pl (shP P u u') Wp Wq') (hz : q.T.base.z
   exact h
 
 /- English proof (translation)
-Establish `hGq : Gp q γ = Gp p γ`. Unfold `Gp`. Rewrite using `[ttp_sh p q hz hz']`. Both sides reduce to the same expression. Establish `h` using `Formalism.FourierDecayAlt.P.TBBx4.vec_Gpow q (fun g => (f g).comp (A g)) p₀ hγ (hGq ▸ hG)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite `h` using `[hA, hGq]`. Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma V_fpmSh (p : KB.Pl P Wp Wq) (q : KB.Pl (shP P u u') Wp Wq') (f : B.Mat P.k P.r → (Wq →L[ℂ] Wp))
     (A : B.Mat P.k P.r → (Wq' →L[ℂ] Wq)) (APt : C.LPt → (Wq' →L[ℂ] Wq)) (p₀ : ℕ)
@@ -96,25 +96,23 @@ lemma V_fpmSh (p : KB.Pl P Wp Wq) (q : KB.Pl (shP P u u') Wp Wq') (f : B.Mat P.k
   exact h
 
 /- English proof (translation)
-Use `set γ := bigPt P.r c with hγdef`. Distinguish the cases in `hloc : D.IsLocPt γ (P.r + 1)`. Use `swap`. Establish `h0q : Ew q (fun _ => 1) (fpmSh (P` using `P) q f A p₀) (P.r + 1) [] γ = 0 := Formalism.FourierDecayAlt.P.TBBx4.ew_not_loc q _ hloc`. Rewrite using `[h0q, Formalism.FourierDecayAlt.P.TBBx4.ew_not_loc p _ hloc, mul_zero]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hGq : Gp q γ = Gp p γ`. Unfold `Gp`. Rewrite using `[ttp_sh p q hz hz']`. Both sides reduce to the same expression. Rewrite using `[ew_sh p q hz hz' _ hloc, Formalism.FourierDecayAlt.P.TBBx2.Tri.Ew_top p f hloc]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Use `set nn := Real.sqrt (nPt P.k P.r (TTp p) γ) * Real.sqrt (nPt P.k P.r (TTp p) γ) with hnn_def`. Establish `hnn : 0 ≤ nn` using `mul_self_nonneg _`. Distinguish the cases in `hG : 0 < Gp p γ`. Rewrite using `[V_fpmSh p q f A APt p₀ hz hz' hloc hG (hA γ hloc hG), Formalism.FourierDecayAlt.P.TBBx4.hsVec_real_smul_sq]`. Establish `h1` using `hs_comp_le_sh (p.V f γ) (APt γ)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `hn γ hloc hG`. Use `set X2 := ‖B.hsVec (p.V f γ)‖ ^ 2 with hX2_def`. Establish `hX2 : 0 ≤ X2` using `sq_nonneg _`. Establish `hTT : 0 ≤ TTp p` using `Formalism.FourierDecayAlt.P.Qx5.place_alt_alt p.hP`. Establish `hGd : Gp p γ ≤ ‖(D.ptMatN γ (P.r + 1)).det‖ ^ 2` using `by show D.ptG (TTp p) P.r γ ≤ _`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Unfold `D.ptG`. Rewrite using `[Complex.normSq_eq_norm_sq]`. Use `Complex.normSq_nonneg (D.ptMatN γ P.r).det` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish `hTq : 0 ≤ (Tq p)⁻¹ ^ n₀`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : 0 ≤ (Gp p γ / Tq p) ^ n₀` using `le_trans (sq_nonneg _) h2`. Rewrite `h3` using `[div_pow, div_eq_mul_inv, ← inv_pow]`. Conclude with `(mul_nonneg_iff_of_pos_left (pow_pos hG n₀)).mp h3`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[div_pow]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ (‖(D.ptMatN γ (P.r + 1)).det‖ ^ 2) ^ (2 * p₀ + n₀) * (Tq p)⁻¹ ^ n₀ * (nn * X2) := mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right (pow_le_pow_left₀ hG.le hGd _) hTq) (mul_nonneg hnn hX2)`. Use `_ = _ := by rw [← pow_mul]`. Establish `hq0 : q.V (fpmSh (P` using `P) q f A p₀) γ = 0 := by`. Unfold `KB.Pl.V D.vecV`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_neg]`. Introduce and unpack `⟨-, h⟩`. Apply `hG` to reduce the goal to its premises. Rewrite using `[← hGq]`. Conclude with `h`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hp0 : p.V f γ = 0`. Unfold `KB.Pl.V D.vecV`. Rewrite using `[dif_neg]`. Introduce and unpack `⟨-, h⟩`. Conclude with `hG h`.
-
-Establish `e1` using `Formalism.FourierDecayAlt.P.TBBx4.hsVec_real_smul_sq 0 (0 : Wq' →L[ℂ] Wp)`. Establish `e2` using `Formalism.FourierDecayAlt.P.TBBx4.hsVec_real_smul_sq 0 (0 : Wq →L[ℂ] Wp)`. Simplify using `only [Complex.ofReal_zero, zero_smul, ne_eq, OfNat.ofNat_ne_zero, not_false_eq_true, zero_pow, zero_mul] at e1 e2`. Rewrite using `[hq0, hp0, e1, e2, mul_zero, mul_zero]`.
+A detailed English derivation is pending.
 -/
 lemma big_sh (p : KB.Pl P Wp Wq) (q : KB.Pl (shP P u u') Wp Wq') (f : B.Mat P.k P.r → (Wq →L[ℂ] Wp))
     (A : B.Mat P.k P.r → (Wq' →L[ℂ] Wq)) (APt : C.LPt → (Wq' →L[ℂ] Wq)) (n₀ p₀ : ℕ)
@@ -187,11 +185,11 @@ lemma big_sh (p : KB.Pl P Wp Wq) (q : KB.Pl (shP P u u') Wp Wq') (f : B.Mat P.k 
 end sh
 
 /- English proof (translation)
-Introduce `P Wp Wq Wqp Wqm _ _ _ _ _ _ _ _ _ _ _ _ up up' um um' p pp pm f Ap Am ApPt AmPt b n₀ p₀ hz hz' hzm hzm' hA`. Take `⟨hAp, hAm, hadj, hnp, hnm⟩` from `hA`. Use `⟨fun γ hγ hG => ?_, fun c => big_sh p pp f Ap ApPt n₀ p₀ hz hz' hAp hnp c, fun c => big_sh p pm f Am AmPt n₀ p₀ hzm hzm' hAm hnm c⟩` and prove the remaining obligations. Rewrite using `[Formalism.FourierDecayAlt.P.TBBx2.Tri.Ew_top p f hγ, ew_sh p pp hz hz' _ hγ, ew_sh p pm hzm hzm' _ hγ, V_fpmSh p pp f Ap ApPt p₀ hz hz' hγ hG (hAp γ hγ hG), V_fpmSh p pm f Am AmPt p₀ hzm hzm' hγ hG (hAm γ hγ hG), Formalism.FourierDecayAlt.P.TBBx4.hsVec_real_smul_sq, Formalism.Fo …`. Establish `hX` using `hs_le_of_adj_sh (p.V f γ) (ApPt γ) (AmPt γ) ((3 * b) ^ (2 * n₀) * (Tq p / Gp p γ) ^ n₀) (hadj γ hγ hG)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set nn := Real.sqrt (nPt P.k P.r (TTp p) γ) * Real.sqrt (nPt P.k P.r (TTp p) γ) with hnn_def`. Use `set a1 := ‖B.hsVec ((p.V f γ).comp (ApPt γ))‖ ^ 2 with ha1`. Use `set a2 := ‖B.hsVec ((p.V f γ).comp (AmPt γ))‖ ^ 2 with ha2`. Establish `hnn : 0 ≤ nn` using `mul_self_nonneg _`. Establish `hcanc : (Gp p γ)⁻¹ ^ (2 * p₀) * (Gp p γ ^ p₀) ^ 2 = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[← pow_mul, mul_comm p₀ 2, inv_pow, inv_mul_cancel₀ (pow_ne_zero _ hG.ne')]`. Establish `e : (3 * b) ^ (2 * n₀) * (Tq p / Gp p γ) ^ n₀ * (Gp p γ)⁻¹ ^ (2 * p₀) * (nn * ((Gp p γ ^ p₀) ^ 2 * a1) + nn * ((Gp p γ ^ p₀) ^ 2 * a2)) = nn * ((3 * b) ^ (2 * n₀) * (Tq p / Gp p γ) ^ n₀ * (a1 + a2))`. Rewrite using `[show (3 * b) ^ (2 * n₀) * (Tq p / Gp p γ) ^ n₀ * (Gp p γ)⁻¹ ^ (2 * p₀) * (nn * ((Gp p γ ^ p₀) ^ 2 * a1) + nn * ((Gp p γ ^ p₀) ^ 2 * a2)) = nn * ((3 * b) ^ (2 * n₀) * (Tq p / Gp p γ) ^ n₀ * (a1 + a2)) * ((Gp p γ)⁻¹ ^ (2 * p₀) * (Gp p γ ^ p₀) ^ 2) by ring, hcanc, mul_one]`. Rewrite using `[e]`. Conclude with `mul_le_mul_of_nonneg_left hX hnn`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem normaliser_across_places : NormAtShOfAmaps := by
   intro P Wp Wq Wqp Wqm _ _ _ _ _ _ _ _ _ _ _ _ up up' um um' p pp pm f Ap Am ApPt AmPt b n₀ p₀

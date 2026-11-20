@@ -12,7 +12,7 @@ open GlobalTheory.ChainPts.PullHT (pullA)
 open scoped TensorProduct
 open GlobalTheory.ChainPts
 /- English proof (translation)
-The claim follows from `GlobalTheory.ChainPts.SysB.sysCoverSt`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.T.system_cover_of_chains : GlobalTheory.CovTop.Hypotheses2 → GlobalTheory.CovHt.HypothesesH → GlobalTheory.Published.PrismaticDieudonnePerfd → GlobalTheory.GroupBplus.GroupAllSt → GlobalTheory.RingChain.ExistsSt → GlobalTheory.RingChain.MapSt → GlobalTheory.ChainPts.SysCoverSt :=
   GlobalTheory.ChainPts.SysB.sysCoverSt

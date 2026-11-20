@@ -10,35 +10,33 @@ open PositivityTheory.RgBcC PositivityTheory.RgBcC.Real PositivityTheory.RgBcC.R
 namespace GlobalTheory.CompanionTheory.RealCount
 
 /- English proof (translation)
-Introduce `n ι _ _ c hc q hq`. Take `⟨h1, _⟩` from `hc`. Establish `two : (2 : Matrix ι ι ℂ) *ᵥ q = (2 : ℂ) • q`. Establish `: (2 : Matrix ι ι ℂ) = (2 : ℂ) • (1 : Matrix ι ι ℂ)`. Rewrite using `[two_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `one_add_one_eq_two.symm`. Rewrite using `[this, Matrix.smul_mulVec, Matrix.one_mulVec]`. Establish `anti : ∀ a b d e, c a b *ᵥ (c d e *ᵥ q) = (if a = e ∧ b = d then (2 : ℂ) • q else 0) - c d e *ᵥ (c a b *ᵥ q)`. Introduce `a b d e`. Establish `h` using `congrArg (fun M => M *ᵥ q) (h1 a b d e)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.add_mulVec, Matrix.mulVec_mulVec] at h`. Simplify using `only [Matrix.mulVec_mulVec]`. Rewrite using `[eq_sub_iff_add_eq, h]`. Use `split_ifs`. Conclude with `two`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using the standard rewrite rules. Establish `sumv : ∀ (a b : Fin n), (∑ e, c a e * c e b) *ᵥ q = ∑ e, c a e *ᵥ (c e b *ᵥ q)`. Introduce `a b`. Simplify using `only [Matrix.mulVec_mulVec]`. Conclude with `map_sum (Matrix.mulVec.addMonoidHomLeft q) _ _`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Establish `hT : ∀ a e : Fin n, c a e *ᵥ (c e a *ᵥ q) = (if e < a then (2 : ℂ) else if e = a then 1 else 0) • q`. Introduce `a e`. Break down `lt_trichotomy e a with h | h | h` into its components or cases. Rewrite using `[if_pos h, anti a e e a, hq e a h]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Substitute using the available equality. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Substitute `h` using the available equality. Establish `h2` using `anti e e e e`. Simplify using `only [and_self, if_true] at h2`. Establish `h3 : (2 : ℂ) • (c e e *ᵥ (c e e *ᵥ q)) = (2 : ℂ) • q`. Rewrite using `[two_smul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `nth_rewrite 1 [h2]`. Rewrite using `[two_smul]`. Normalize the expressions using the abelian group laws. Establish `h4` using `smul_right_injective (ι → ℂ) (two_ne_zero : (2 : ℂ) ≠ 0) h3`. Simplify using `using h4`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[if_neg (not_lt.mpr h.le), if_neg h.ne', hq a e h]`. Simplify using the standard rewrite rules. Establish `hs : ∀ a : Fin n, ∑ e : Fin n, (if e < a then (2 : ℂ) else if e = a then 1 else 0) = 2 * ((a : ℕ) : ℂ) + 1`. Introduce `a`. Establish `h0 : ∀ e : Fin n, (if e < a then (2 : ℂ) else if e = a then 1 else 0) = (if e < a then 2 else 0) + (if e = a then 1 else 0)`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Introduce `e`. Break down `lt_trichotomy e a with h | h | h` into its components or cases. Simplify using `[h, h.ne]`. Simplify using `[h]`. Simplify using `[not_lt.mpr h.le, h.ne']`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [h0]`. Rewrite using `[sum_add_distrib, ← Finset.sum_filter]`. Establish `h5 : univ.filter (fun e : Fin n => e < a) = Finset.Iio a` using `by ext; simp`. Rewrite using `[h5]`. Simplify using `[Fin.card_Iio, mul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun a => ?_, fun a b hab => ?_⟩` and prove the remaining obligations. Unfold `spinM`. Rewrite using `[if_pos rfl, Matrix.sub_mulVec, Matrix.smul_mulVec, Matrix.smul_mulVec, Matrix.one_mulVec, sumv]`. Simplify using `only [hT]`. Rewrite using `[← Finset.sum_smul, hs, smul_smul, ← sub_smul]`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Replace the relevant objects with their definitions.
 
-Use `congr 1`. Simplify using `only [rhoV]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Unfold `spinM`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg hab.ne', sub_zero, Matrix.smul_mulVec, sumv]`. Establish `: ∀ e : Fin n, c b e *ᵥ (c e a *ᵥ q) = 0`. Introduce `e`. Break down `lt_trichotomy e a with h | h | h` into its components or cases. Rewrite using `[anti b e e a, if_neg (fun hh => hab.ne' hh.1), hq e b (h.trans hab)]`.
+Simplify using the standard rewrite rules. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Substitute `h` using the available equality. Rewrite using `[anti b e e e, if_neg (fun hh => hab.ne' hh.1), hq e b hab]`. Simplify using the standard rewrite rules. Rewrite using `[hq a e h]`.
-
-Simplify using the standard rewrite rules. Simplify using `[this]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem spinM_vacuum_lowest : ∀ {n : ℕ} {ι : Type} [Fintype ι] [DecidableEq ι] (c : Fin n → Fin n → Matrix ι ι ℂ), IsCliff c →
     ∀ q : ι → ℂ, (∀ a b, a < b → c b a *ᵥ q = 0) →

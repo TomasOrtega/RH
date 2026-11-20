@@ -6,9 +6,9 @@ open GlobalTheory.JR Matrix MeasureTheory Filter Topology
 namespace GlobalTheory.JR.LinDesc
 
 /- English proof (translation)
-Distinguish the cases in `h : Function.Injective f ∧ ∀ s, MeasurableSet s → NullMeasurableSet (f '' s) μ`. Use `⟨⟨⟨fun n => f ⁻¹' spanningSets μ n, fun _ => trivial, fun n => ?_, ?_⟩⟩⟩` and prove the remaining obligations. Rewrite using `[Measure.comap_apply₀ f μ h.1 h.2 ((measurableSet_spanningSets μ n).preimage hf).nullMeasurableSet]`. Conclude with `lt_of_le_of_lt (measure_mono (Set.image_preimage_subset _ _)) (measure_spanningSets_lt_top μ n)`. Rewrite using `[← Set.preimage_iUnion, iUnion_spanningSets, Set.preimage_univ]`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Measure.comap, dif_neg h]`. Use `infer_instance`.
+A detailed English derivation is pending.
 -/
 theorem sigmaFinite_comap_of_measurable {X Y : Type} [MeasurableSpace X] [MeasurableSpace Y] (f : X → Y)
     (hf : Measurable f) (μ : Measure Y) [SigmaFinite μ] : SigmaFinite (μ.comap f) := by
@@ -20,29 +20,21 @@ theorem sigmaFinite_comap_of_measurable {X Y : Type} [MeasurableSpace X] [Measur
   · rw [Measure.comap, dif_neg h]; infer_instance
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ A r τ p hG M μK hμK α Φ hΦ hαlc hαcs hα0 c h1`. Use `letI := M.mG`. Use `haveI := M.bG`. Use `haveI := M.haarG`. Take `⟨hBor, hHaar, -⟩` from `GlobalTheory.JR.LinDesc.unitsMeas_isHaar F E A μK hμK`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI := hBor`. Use `haveI : LocallyCompactSpace F := Unram.lcF (F := F) (E := E)`. Use `haveI : ProperSpace F := ProperSpace.of_locallyCompactSpace F`. Use `haveI : SecondCountableTopology F := secondCountable_of_proper`. Use `haveI : SecondCountableTopology (Matrix (Fin r) (Fin r) F) := inferInstanceAs (SecondCountableTopology (Fin r → Fin r → F))`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : SecondCountableTopology (Matrix (Fin r) (Fin r) F)ᵐᵒᵖ := MulOpposite.opHomeomorph.symm.secondCountableTopology`. Use `haveI : SecondCountableTopology (GL (Fin r) F) := Units.isEmbedding_embedProduct.secondCountableTopology`. Use `haveI : T2Space (GL (Fin r) F) := Units.isEmbedding_embedProduct.t2Space`. Establish `e` using `(LinDesc.bas A hG).equivFun`. Establish `he1 : Continuous e` using `IsModuleTopology.continuous_of_linearMap e.toLinearMap`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `he2 : Continuous e.symm` using `IsModuleTopology.continuous_of_linearMap e.symm.toLinearMap`. Use `haveI : SecondCountableTopology A.K := (Homeomorph.mk e.toEquiv he1 he2).secondCountableTopology`. Use `haveI : SigmaFinite μK := inferInstance`. Use `haveI : SigmaFinite (LinDesc.unitsMeas A μK) := by`. Unfold `LinDesc.unitsMeas`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : SigmaFinite (μK.withDensity fun t => ENNReal.ofReal (A.absK t)⁻¹) := SigmaFinite.withDensity_ofReal _`. Conclude with `sigmaFinite_comap_of_measurable _ (measurable_iff_comap_le.2 le_rfl) _`. Establish `htm : Continuous (LinDesc.tm A hG)` using `Continuous.units_map _ (IsModuleTopology.continuous_of_linearMap (Algebra.leftMulMatrix (LinDesc.bas A hG)).toLinearMap)`. Establish `hΦc : Continuous Φ` using `hΦ.1.continuous`. Establish `hαc : Continuous α` using `hαlc.continuous`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hC : IsCompact (tsupport Φ)` using `hΦ.2`. Establish `hz : ∀ g, g ∉ tsupport Φ → Φ g = 0` using `fun g hg => image_eq_zero_of_notMem_tsupport hg`. Use `haveI : IsFiniteMeasure (M.μG.restrict (tsupport Φ)) := isFiniteMeasure_restrict.2 hC.measure_lt_top.ne`. Use `set ν := LinDesc.unitsMeas A μK with hν`. Use `set f : A.Kˣ → GL (Fin r) F → ℂ := fun s g => Φ g * (α (g * c * LinDesc.tm A hG s) : ℂ) with hf`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfc : Continuous (Function.uncurry f)`. Use `(hΦc.comp continuous_snd).mul (Complex.continuous_ofReal.comp (hαc.comp ?_))` and prove the remaining obligations. Conclude with `(continuous_snd.mul continuous_const).mul (htm.comp continuous_fst)`. Establish `hin : ∀ g, Integrable (fun s => f s g) ν`. Introduce `g`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hg : Φ g = 0`. Simplify using `[hf, hg]`. Establish `hi : Integrable (fun s => α (g * c * LinDesc.tm A hG s)) ν` using `Integrable.of_integral_ne_zero (by rw [h1 g hg]; exact one_ne_zero)`. Conclude with `hi.ofReal.const_mul (Φ g)`. Establish `hnorm : ∀ g, ∫ s, ‖f s g‖ ∂ν = ‖Φ g‖`.
-
-Introduce `g`. Distinguish the cases in `hg : Φ g = 0`. Simplify using `[hf, hg]`. Simplify using `only [hf, norm_mul, Complex.norm_real, Real.norm_of_nonneg (hα0 _)]`. Rewrite using `[integral_const_mul, h1 g hg, mul_one]`.
-
-Establish `hint : Integrable (Function.uncurry f) (ν.prod (M.μG.restrict (tsupport Φ)))`. Rewrite using `[integrable_prod_iff' hfc.aestronglyMeasurable]`. Use `⟨Eventually.of_forall hin, ?_⟩` and prove the remaining obligations. Conclude with `(hΦc.norm.continuousOn.integrableOn_compact hC).congr (Eventually.of_forall fun g => (hnorm g).symm)`. Establish `eL : ∀ s, ∫ g, f s g ∂M.μG = ∫ g in tsupport Φ, f s g ∂M.μG` using `fun s => (setIntegral_eq_integral_of_forall_compl_eq_zero fun g hg => by simp [hf, hz g hg]).symm`.
-
-Establish `eR : ∫ g, Φ g ∂M.μG = ∫ g in tsupport Φ, Φ g ∂M.μG` using `(setIntegral_eq_integral_of_forall_compl_eq_zero fun g hg => hz g hg).symm`. Use `show ∫ s, ∫ g, f s g ∂M.μG ∂ν = ∫ g, Φ g ∂M.μG`. Repeatedly rewrite using `[eL, eR]`. Rewrite using `[integral_integral_swap hint]`. Use `integral_congr_ae (Eventually.of_forall fun g => ?_)` and prove the remaining obligations.
-
-Distinguish the cases in `hg : Φ g = 0`. Simplify using `[hf, hg]`. Simplify using `only [hf]`. Rewrite using `[integral_const_mul, integral_complex_ofReal, h1 g hg, Complex.ofReal_one, mul_one]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fubini_cutoff : ∀ (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E] [StarRing E] [Unram F E] (A : Et F E) (r : ℕ) (τ : A.K) (p : Fin r → F) (hG : A.IsGen τ p) (M : Meas r F E) (μK : Measure A.K), μK.IsAddHaarMeasure → ∀ (α : GL (Fin r) F → ℝ) (Φ : GL (Fin r) F → ℂ), IsTest Φ → IsLocallyConstant α → HasCompactSupport α → (∀ g, 0 ≤ α g) → ∀ c : GL (Fin r) F, (∀ g, Φ g ≠ 0 → ∫ s, α (g * c * LinDesc.tm A hG s) ∂(LinDesc.unitsMeas A μK) = 1) → ∫ s, (letI := M.mG; ∫ g, Φ g * (α (g * c * LinDesc.tm A hG s) : ℂ) ∂M.μG) ∂(LinDesc.unitsMeas A μK) = (letI := M.mG; ∫ g, Φ g ∂M.μG) := by
   intro F E _ _ _ _ _ A r τ p hG M μK hμK α Φ hΦ hαlc hαcs hα0 c h1

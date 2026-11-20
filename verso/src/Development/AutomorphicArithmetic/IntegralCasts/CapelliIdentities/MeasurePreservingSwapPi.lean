@@ -2,9 +2,9 @@ import Mathlib
 
 open MeasureTheory in
 /- English proof (translation)
-Establish `hm : Measurable (fun (f : ι → κ → X) (p : ι × κ) ↦ f p.1 p.2)` using `by fun_prop`. Use `⟨hm, (Measure.pi_eq fun s hs ↦ ?_).symm⟩` and prove the remaining obligations. Rewrite using `[Measure.map_apply hm (MeasurableSet.univ_pi hs)]`. Establish `h : (fun (f : ι → κ → X) (p : ι × κ) ↦ f p.1 p.2) ⁻¹' Set.univ.pi s = Set.univ.pi fun i ↦ Set.univ.pi fun k ↦ s (i, k)`. Use extensionality with `f`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[Set.mem_pi]`. Rewrite using `[h, Measure.pi_pi, Fintype.prod_prod_type]`. Conclude with `Finset.prod_congr rfl fun i _ ↦ Measure.pi_pi _ _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.Reformulated.B.Qe3b.mp_left.{u_1, u_2, u_3}
     {ι : Type u_1} {κ : Type u_2} {X : Type u_3} [Fintype ι] [Fintype κ]
@@ -24,9 +24,9 @@ private theorem UpperTheory.Reformulated.B.Qe3b.mp_left.{u_1, u_2, u_3}
 
 open MeasureTheory in
 /- English proof (translation)
-Establish `hm : Measurable (fun (f : κ → ι → X) (p : ι × κ) ↦ f p.2 p.1)` using `by fun_prop`. Use `⟨hm, (Measure.pi_eq fun s hs ↦ ?_).symm⟩` and prove the remaining obligations. Rewrite using `[Measure.map_apply hm (MeasurableSet.univ_pi hs)]`. Establish `h : (fun (f : κ → ι → X) (p : ι × κ) ↦ f p.2 p.1) ⁻¹' Set.univ.pi s = Set.univ.pi fun k ↦ Set.univ.pi fun i ↦ s (i, k)`. Use extensionality with `f`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [Set.mem_preimage, Set.mem_pi, Set.mem_univ, forall_true_left, Prod.forall]`. Conclude with `forall_comm`. Rewrite using `[h, Measure.pi_pi, Fintype.prod_prod_type_right]`. Conclude with `Finset.prod_congr rfl fun i _ ↦ Measure.pi_pi _ _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.Reformulated.B.Qe3b.mp_right.{u_1, u_2, u_3}
     {ι : Type u_1} {κ : Type u_2} {X : Type u_3} [Fintype ι] [Fintype κ]
@@ -46,9 +46,7 @@ private theorem UpperTheory.Reformulated.B.Qe3b.mp_right.{u_1, u_2, u_3}
   exact Finset.prod_congr rfl fun i _ ↦ Measure.pi_pi _ _
 
 /- English proof (translation)
-Introduce `ι κ X _ _ _ ν _`. Set `e : (κ → ι → X) ≃ᵐ (ι × κ → X)` to `{ toFun := fun f p ↦ f p.2 p.1 invFun := fun g k i ↦ g (i, k) left_inv := fun _ ↦ rfl right_inv := fun _ ↦ rfl measurable_toFun := by`. Express the relevant statement in the definitionally equal form `Measurable (fun (f : κ → ι → X) (p : ι × κ) ↦ f p.2 p.1)`. Use `fun_prop`. Use `measurable_invFun := by`.
-
-Express the relevant statement in the definitionally equal form `Measurable (fun (g : ι × κ → X) (k : κ) (i : ι) ↦ g (i, k))`. Use `fun_prop }`. Conclude with `(MeasureTheory.MeasurePreserving.symm e (UpperTheory.Reformulated.B.Qe3b.mp_right (ι := ι) (κ := κ) ν)).comp (UpperTheory.Reformulated.B.Qe3b.mp_left ν)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Qe3b.measurePreserving_swapPi.{u_1, u_2, u_3} :
     ∀ {ι : Type u_1} {κ : Type u_2} {X : Type u_3} [inst : Fintype ι] [inst_1 : Fintype κ]

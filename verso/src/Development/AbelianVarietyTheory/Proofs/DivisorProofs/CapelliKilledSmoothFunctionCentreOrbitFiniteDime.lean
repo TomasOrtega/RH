@@ -10,15 +10,13 @@ open NumberField MeasureTheory GlobalTheory.CuspRep
 namespace GlobalTheory.KilledFinCentre
 
 /- English proof (translation)
-Introduce `E _ _ _ b q hq`. Take `⟨T, hT, hZ⟩` from `GlobalTheory.T.zalg_eq_adjoin_finite_capelli E b`. Set `p : Module.End ℂ (Sm E b) → Polynomial ℂ` to `fun t => if h : ∃ τ u, t = cap τ u then q h.choose h.choose_spec.choose else 1`. Establish `hp : ∀ t ∈ T, p t ≠ 0`. Introduce `t ht`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [p]`. Use `split_ifs with h`. Conclude with `hq _ _`. Conclude with `one_ne_zero`. Establish `hkill : ∀ ψ : Sm E b, (∀ τ u, Polynomial.aeval (cap τ u) (q τ u) ψ = 0) → ∀ t ∈ T, Polynomial.aeval t (p t) ψ = 0`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `ψ hψ t ht`. Establish `h : ∃ τ u, t = cap τ u` using `hT t ht`. Establish `key : ∀ τ u, t = cap τ u → Polynomial.aeval t (q τ u) ψ = 0`. Introduce and unpack `τ u rfl`. Conclude with `hψ τ u`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [p, dif_pos h]`. Conclude with `key _ _ h.choose_spec.choose_spec`. Establish `hc : ∀ s ∈ T, ∀ t ∈ T, Commute s t` using `fun s hs t ht => GlobalTheory.AutGrowth.KilledFin.Zalg_commute (hZ ▸ Algebra.subset_adjoin hs) (hZ ▸ Algebra.subset_adjoin ht)`. Take `⟨X', hX', hX'e⟩` from `GlobalTheory.T.exists_mem_eigencharacters_of_eigenvector _ T p hc hp`. Use `⟨X', ∏ t ∈ T, (p t).natDegree, hX', fun ψ hψ => ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[hZ]`. Take `⟨h1, h2⟩` from `GlobalTheory.T.finiteDimensional_span_algebra_orbit_of_annihilated _ T p hc hp ψ (hkill ψ hψ)`. Conclude with `⟨h1, h2, hX'e ψ (hkill ψ hψ)⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem centre_orbit_finite : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (b : ℕ) (q : (E →+* ℂ) → ℂ → Polynomial ℂ), (∀ τ u, q τ u ≠ 0) → ∃ (X' : Set (Module.End ℂ (Sm E b) → ℂ)) (D : ℕ), X'.Finite ∧ ∀ ψ : Sm E b, (∀ τ u, Polynomial.aeval (cap τ u) (q τ u) ψ = 0) → FiniteDimensional ℂ (Submodule.span ℂ ((fun z : Module.End ℂ (Sm E b) => z ψ) '' Zalg E b)) ∧ Module.finrank ℂ (Submodule.span ℂ ((fun z : Module.End ℂ (Sm E b) => z ψ) '' Zalg E b)) ≤ D ∧ ∀ (χ' : Module.End ℂ (Sm E b) → ℂ) (u : Sm E b), u ∈ Submodule.span ℂ ((fun z : Module.End ℂ (Sm E b) => z ψ) '' Zalg E b) → u ≠ 0 → (∀ z ∈ Zalg E b, z u = χ' z • u) → ∃ χ ∈ X', ∀ z ∈ Zalg E b, χ' z = χ z := by
   intro E _ _ _ b q hq

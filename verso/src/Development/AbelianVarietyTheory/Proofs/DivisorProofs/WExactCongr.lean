@@ -9,7 +9,7 @@ namespace GlobalTheory.EtC.WExactCongr
 variable {T : Type 1} [Category.{0} T]
 
 /- English proof (translation)
-Use `haveI : ∀ k, IsIso ((Functor.whiskerLeft X ε).app k) := fun k => hX k`. Establish `hw : IsIso (Functor.whiskerLeft X ε)` using `NatIso.isIso_of_isIso_app _`. Set `e` to `(AlgebraicTopology.alternatingCofaceMapComplex AddCommGrpCat.{1}).mapIso (@asIso _ _ _ _ (Functor.whiskerLeft X ε) hw)`. Conclude with `⟨fun h => h.of_iso e, fun h => h.of_iso e.symm⟩`.
+Establish an intermediate fact. Introduce a local definition for the expression. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exactAt_iff {N M : T ⥤ AddCommGrpCat.{1}} (ε : N ⟶ M) {X : CosimplicialObject T}
     (hX : ∀ k, IsIso (ε.app (X.obj k))) (n : ℕ) :
@@ -21,23 +21,21 @@ theorem exactAt_iff {N M : T ⥤ AddCommGrpCat.{1}} (ε : N ⟶ M) {X : Cosimpli
   exact ⟨fun h => h.of_iso e, fun h => h.of_iso e.symm⟩
 
 /- English proof (translation)
-Establish `nat : ∀ {P Q : T} (f : P ⟶ Q) (x : N.obj P), M.map f (ε.app P x) = ε.app Q (N.map f x)`. Introduce `P Q f x`. Conclude with `(ConcreteCategory.congr_hom (ε.naturality f) x).symm`. Establish `surj : ∀ (P : T), IsIso (ε.app P) → ∀ (x : M.obj P), ∃ x', ε.app P x' = x`. Introduce `P hP x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨inv (ε.app P) x, ?_⟩` and prove the remaining obligations. Use `ConcreteCategory.congr_hom (IsIso.inv_hom_id (ε.app P)) x` as an intermediate fact. Simplify using `using this`. Establish `inj : ∀ (P : T), IsIso (ε.app P) → ∀ (x y : N.obj P), ε.app P x = ε.app P y → x = y`. Introduce `P hP x y hxy`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h` using `congrArg (inv (ε.app P)) hxy`. Establish `hx` using `ConcreteCategory.congr_hom (IsIso.hom_inv_id (ε.app P)) x`. Establish `hy` using `ConcreteCategory.congr_hom (IsIso.hom_inv_id (ε.app P)) y`. Simplify using `only [ConcreteCategory.comp_apply] at hx hy`. Rewrite `h` using `[hx, hy]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using h`. Establish `h0` using `hX (SimplexCategory.mk 0)`. Establish `h1` using `hX (SimplexCategory.mk 1)`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨i1, i2, i3⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, ?_, fun n => (exactAt_iff ε hX n).1 (i3 n)⟩` and prove the remaining obligations. Introduce `x y hxy`. Take `⟨x, rfl⟩` from `surj _ hU x`. Take `⟨y, rfl⟩` from `surj _ hU y`. Use `erw [nat, nat] at hxy`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[i1 (inj _ h0 _ _ hxy)]`. Introduce `y hy`. Take `⟨y, rfl⟩` from `surj _ h0 y`. Use `erw [nat, nat] at hy`. Take `⟨x, hx⟩` from `i2 y (inj _ h1 _ _ hy)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨ε.app U x, (nat _ x).trans (congrArg _ hx)⟩`. Introduce and unpack `⟨i1, i2, i3⟩`. Use `⟨?_, ?_, fun n => (exactAt_iff ε hX n).2 (i3 n)⟩` and prove the remaining obligations. Introduce `x y hxy`. Establish `h` using `congrArg (ε.app _) hxy`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `erw [← nat, ← nat] at h`. Conclude with `inj _ hU _ _ (i1 h)`. Introduce `y hy`. Establish `h` using `congrArg (ε.app _) hy`. Use `erw [← nat, ← nat] at h`.
-
-Take `⟨x, hx⟩` from `i2 _ h`. Take `⟨x, rfl⟩` from `surj _ hU x`. Use `erw [nat] at hx`. Conclude with `⟨x, inj _ h0 _ _ hx⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem wExact_iff (U : T) (X : CosimplicialObject T) (a : (CosimplicialObject.const T).obj U ⟶ X)
     (N M : T ⥤ AddCommGrpCat.{1}) (ε : N ⟶ M) (hU : IsIso (ε.app U)) (hX : ∀ k, IsIso (ε.app (X.obj k))) :
@@ -90,7 +88,7 @@ theorem wExact_iff (U : T) (X : CosimplicialObject T) (a : (CosimplicialObject.c
 end GlobalTheory.EtC.WExactCongr
 
 /- English proof (translation)
-Introduce `_ _ U X a N M ε hU hX` and use `GlobalTheory.EtC.WExactCongr.wExact_iff U X a N M ε hU hX`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.EtC.wExact_congr : ∀ (T : Type 1) [Category.{0} T] (U : T) (X : CosimplicialObject T)
     (a : (CosimplicialObject.const T).obj U ⟶ X) (N M : T ⥤ AddCommGrpCat.{1}) (ε : N ⟶ M),

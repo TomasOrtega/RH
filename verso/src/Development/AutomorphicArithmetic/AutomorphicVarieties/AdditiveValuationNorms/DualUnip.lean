@@ -7,15 +7,15 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AdditiveValuationN
 open UpperTheory.V UpperTheory.V.PropA Formalism.GaloisCohomology
 
 /- English proof (translation)
-Introduce `l _ D _ _ g t hfin ht hnil`. Establish `hT` using `torsFin l D hfin`. Use `choose k hk using hnil`. Establish `key : ∀ (n : ℕ) (x : D →ₗ[ℤ_[l]] QZ l) (φ : D), ((t - 1) ^ n) x φ = x (((g - 1) ^ n) φ)`. Introduce `n`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `n with`. Consider the case `zero`. Introduce `x φ`. Simplify using the standard rewrite rules. Consider the case `succ n ih`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x φ`. Rewrite using `[pow_succ, Module.End.mul_apply, ih]`. Rewrite using `[pow_succ' (g - 1), Module.End.mul_apply]`. Simplify using `[ht, map_sub]`. Use `⟨hT.toFinset.sup k, fun x => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy⟩` from `dualDiv l D (((t - 1) ^ (hT.toFinset.sup k)) x) (by`. Introduce `φ hφ`. Rewrite using `[key]`. Establish `hmem : φ ∈ hT.toFinset` using `by simpa using hφ`. Establish `hle : k φ ≤ hT.toFinset.sup k` using `Finset.le_sup hmem`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Nat.sub_add_cancel hle, pow_add, Module.End.mul_apply, hk, map_zero, map_zero])`. Conclude with `⟨y, by simpa using hy⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.PropA.dualUnip :
     ∀ (l : ℕ) [Fact l.Prime] (D : Type) [AddCommGroup D] [Module ℤ_[l] D] (g : Module.End ℤ_[l] D) (t : Module.End ℤ_[l] (D →ₗ[ℤ_[l]] QZ l)),

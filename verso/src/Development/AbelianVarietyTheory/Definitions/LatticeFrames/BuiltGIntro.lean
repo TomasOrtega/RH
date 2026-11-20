@@ -15,14 +15,14 @@ def BuiltG (D : D7) (EX : ErrX D) : Prop :=
       (⟨D, EX.piG⟩ : Σ D' : D7, (Fin 2 → 𝓞 D'.host.E)) = ⟨I.rec7 l Z, X.piG⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨B, X, I, l, Z, h, hJ, l0, by rw [e]⟩`.
+Supply the required witnesses or components.
 -/
 theorem builtG_intro {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} (I : TC B X) (l : I.Laws) (Z : TC.Later B (I.cols l)) (h : I.Ok)
     (hJ : I.JetsIn) (l0 : I.Law0 l) (EX : ErrX (I.rec7 l Z)) (e : EX.piG = X.piG) : BuiltG (I.rec7 l Z) EX :=
   ⟨B, X, I, l, Z, h, hJ, l0, by rw [e]⟩
 
 /- English proof (translation)
-Take `⟨B, X, I, l, Z, h1, h2, h3, e⟩` from `h`. Establish `e1 : D = I.rec7 l Z` using `congrArg Sigma.fst e`. Substitute `e1` using the available equality. Conclude with `H B X I l Z h1 h2 h3 EX (eq_of_heq (Sigma.mk.inj_iff.1 e).2)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem builtG_ind {Q : ∀ D : D7, ErrX D → Prop}
     (H : ∀ (B : GlobalTheory.Mem.Base) (X : PreX B.toPre) (I : TC B X) (l : I.Laws) (Z : TC.Later B (I.cols l)), I.Ok → I.JetsIn → I.Law0 l →

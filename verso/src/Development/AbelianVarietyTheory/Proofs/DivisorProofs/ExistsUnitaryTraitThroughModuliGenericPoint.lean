@@ -17,13 +17,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.UTraitExt
 
 /- English proof (translation)
-Take `⟨hdvr, hc, hz⟩` from `hV`. Take `⟨tK, ⟨mK⟩, ⟨mx⟩⟩` from `hg`. Set `T : Formalism.L2.Pj.CDVR` to `@Formalism.L2.Pj.CDVR.mk V₁ _ _ hdvr hc hz`. Take `⟨T', φ, t', m', hi, hf, ⟨P⟩⟩` from `GlobalTheory.ChartCharacters.exists_finite_ext_pelUnif Xo T t tK mK (y₁ ≫ pullback.fst _ _) mx`. Set `fK : FractionRing V₁ →+* FractionRing T'.V` to `IsFractionRing.map (A := V₁) (B := T'.V) (K := FractionRing V₁) (L := FractionRing T'.V) hi`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hfK : ∀ a, fK (algebraMap V₁ _ a) = algebraMap T'.V _ (φ a)` using `fun a => IsLocalization.map_eq _ _`. Establish `hsq : spMap fK ≫ jK V₁ = jK T'.V ≫ spMap φ`. Simplify using `only [spMap, jK, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Use `congr 2`. Use extensionality with `a`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Conclude with `hfK a`. Take `⟨PP, cub, sym, adj, prim, n, -⟩` from `sabPull Out.CubePf.cubePull (spMap fK) tK`. Take `⟨b, -⟩` from `sabComp pullCubComp E H _ _ _ _ _ _ _ _ mK n`. Rewrite `b` using `[hsq]`. Take `⟨mK', -⟩` from `sabCancel pullCubCancel E H _ _ _ _ _ _ _ _ m' b`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨mx', -⟩` from `sabComp pullCubComp E H _ _ _ _ _ _ _ _ mx n`. Establish `hloc : IsLocalHom φ` using `RingHom.IsIntegral.isLocalHom hf.to_isIntegral hi`. Use `⟨T'.V, inferInstance, inferInstance, inferInstance, φ, fK, ⟨inferInstance, inferInstance, inferInstance⟩, hi, hloc, hf, hfK, t', ⟨_, ⟨mK'⟩, ⟨?_⟩⟩, ⟨P⟩⟩` and prove the remaining obligations. Rewrite using `[Category.assoc]`. Conclude with `mx'`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_ext_unif {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H}
     {l : Geo.Tor.Level H} (Xo : Moduli Dw l) (c : Coeff l) (V₁ : Type) [CommRing V₁] [IsDomain V₁] [IsLocalRing V₁]
@@ -61,13 +61,11 @@ end GlobalTheory.UTraitExt
 namespace GlobalTheory.UTraitExt
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c V _ _ _ hB hV y`. Take `⟨V₁, _, _, _, f₁, fK₁, hC₁, hi₁, hl₁, hf₁, hc₁, t₁, hg₁⟩` from `GlobalTheory.T.exists_finite_extension_unitary_point_generic_fibre E H Dw l Xo c V hB hV y`. Take `⟨W, _, _, _, f₂, fK₂, hC₂, hi₂, hl₂, hf₂, hc₂, t, hg, ⟨P⟩⟩` from `exists_ext_unif Xo c V₁ hC₁ _ t₁ hg₁`. Use `haveI : IsDiscreteValuationRing W := hC₂.1`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible W`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hg' : GenOf Xo c (spMap fK₂ ≫ spMap fK₁ ≫ y) t` using `by rw [← Category.assoc]; exact hg`. Take `⟨be, hbe, hmono⟩` from `GlobalTheory.MonPeriods.exists_isMonomial_levelOne hC₂ ϖ hϖ t P`. Establish `hy : spMap fK₂ ≫ spMap fK₁ ≫ y = spMap (fK₂.comp fK₁) ≫ y`. Rewrite using `[← Category.assoc]`. Use `congr 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Simplify using `[spMap, ← Spec.map_comp]`. Set `T : UTrait Xo c` to `{ V := W cdvr := hC₂ ϖ := ϖ irr := hϖ y := spMap fK₂ ≫ spMap fK₁ ≫ y t := t gen := hg' P := P be := be lev := hbe mono := hmono }`. Use `⟨T, f₂.comp f₁, fK₂.comp fK₁, hi₂.comp hi₁, ?_, hf₂.comp hf₁, fun a => ?_, hy⟩` and prove the remaining obligations. Conclude with `RingHom.isLocalHom_comp f₂ f₁`. Use `show fK₂ (fK₁ _) = _`.
-
-Rewrite using `[hc₁, hc₂]`. Both sides reduce to the same expression.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem uTraitExtSt : UTraitExtSt := by
   intro E _ _ _ H Dw l Xo c V _ _ _ hB hV y

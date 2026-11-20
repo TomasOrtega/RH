@@ -23,16 +23,14 @@ open scoped ComplexOrder
 namespace GlobalTheory.DefiniteFrame
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Formalism.UG.cT, Matrix.conjTranspose_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cT_conj_eq {m p : Type} (M : Matrix m p ℂ) :
     Formalism.UG.cT (starRingEnd ℂ) M = M.conjTranspose := by
   ext i j; simp [Formalism.UG.cT, Matrix.conjTranspose_apply]
 
 /- English proof (translation)
-Use extensionality with `i j`. Break down `i with i | i` into its components or cases. Break down `j with j | j` into its components or cases. Simplify using `[Formalism.UG.Jpq, Matrix.one_apply]`. Conclude with `j.elim0`.
-
-Conclude with `i.elim0`.
+By extensionality, compare the relevant components. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Jpq_zero (n : ℕ) : Formalism.UG.Jpq n 0 = 1 := by
   ext i j
@@ -43,15 +41,13 @@ theorem Jpq_zero (n : ℕ) : Formalism.UG.Jpq n 0 = 1 := by
   · exact i.elim0
 
 /- English proof (translation)
-Take `⟨e, P, hP⟩` from `h`. Rewrite `hP` using `[cT_conj_eq, Jpq_zero]`. Use `set Q : Matrix (Fin n ⊕ Fin 0) (Fin n ⊕ Fin 0) ℂ := P.inv`. Establish `hPQ : P.val * Q = 1`. Conclude with `P.val_inv`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hR : G.reindex e e = Q.conjTranspose * 1 * Q`. Rewrite using `[← hP]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hPQ]`. Simplify using the standard rewrite rules.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `_ = Q.conjTranspose * (P.val.conjTranspose * G.reindex e e * P.val) * Q := by`. Rewrite using `[Matrix.conjTranspose_mul]`. Simplify using `only [Matrix.mul_assoc]`. Establish `hpsd : (G.reindex e e).PosSemidef`. Rewrite using `[hR]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Conclude with `Matrix.PosSemidef.one.conjTranspose_mul_mul_same Q`. Establish `h2` using `hpsd.submatrix e`. Establish `: (G.reindex e e).submatrix e e = G`. Use extensionality with `i j`. Simplify using the standard rewrite rules.
-
-Rewrite `h2` using `[this]`. Then use the resulting hypothesis.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem posSemidef_of_hasSignature {n : ℕ} {G : Matrix (Fin n) (Fin n) ℂ}
     (h : Formalism.UG.HasSignature G n 0) : G.PosSemidef := by
@@ -78,11 +74,11 @@ end GlobalTheory.DefiniteFrame
 open Matrix in
 
 /- English proof (translation)
-Introduce `D V F τ hs j`. Establish `hG` using `GlobalTheory.DefiniteFrame.posSemidef_of_hasSignature hs`. Establish `hu : IsUnit (F.fr τ).det` using `(Matrix.isUnit_iff_isUnit_det _).mp (F.fr_unit τ)`. Establish `hJ : Formalism.REAL.Jm (F.ε τ) = ((F.fr τ)⁻¹).conjTranspose * gramAt D V τ * (F.fr τ)⁻¹`. Rewrite using `[← F.fr_gram τ, Matrix.conjTranspose_nonsing_inv]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[Matrix.mul_nonsing_inv _ hu, Matrix.mul_one, ← Matrix.mul_assoc, Matrix.nonsing_inv_mul (F.fr τ)ᴴ (by rw [Matrix.det_conjTranspose]; exact hu.star), Matrix.one_mul]`. Establish `hpsd : (Formalism.REAL.Jm (F.ε τ)).PosSemidef`. Rewrite using `[hJ]`. Conclude with `hG.conjTranspose_mul_mul_same _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hd` using `hpsd.diag_nonneg (i := j)`. Assume the negation of the conclusion as `hne`. Simplify using `only [Bool.not_eq_true] at hne`. Simplify using `[Formalism.REAL.Jm, hne] at hd`. Evaluate the numerical expressions using `at hd`.
+Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Evaluate the numerical expressions. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.DefiniteFrame.frame_signs_pos : ∀ (D : D7) (V : HSp D) (F : GlobalTheory.ChainFr.Fr V) (τ : D.what₂.Tau),
     Formalism.UG.HasSignature (gramAt D V τ) V.rank 0 → ∀ j, F.ε τ j = true := by

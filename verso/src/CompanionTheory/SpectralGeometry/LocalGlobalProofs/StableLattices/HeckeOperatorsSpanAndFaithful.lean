@@ -10,14 +10,14 @@ namespace GlobalTheory.CompanionTheory.HeckeBasis
 variable {G : Type} [Group G] (K : Subgroup G)
 
 /- English proof (translation)
-Simplify using `[lam, Finsupp.lmapDomain_apply, Finsupp.mapDomain_single]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lam_single (g : G) (y : G ⧸ K) (c : ℂ) :
     lam K g (Finsupp.single y c) = Finsupp.single (g • y) c := by
   simp [lam, Finsupp.lmapDomain_apply, Finsupp.mapDomain_single]
 
 /- English proof (translation)
-Proceed by induction on `u using Finsupp.induction_linear with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp [ha, hb]`. Consider the case `single y c => simp [lam_single, mul_smul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem lam_mul (g g' : G) (u : (G ⧸ K) →₀ ℂ) :
     lam K (g * g') u = lam K g (lam K g' u) := by
@@ -27,7 +27,7 @@ theorem lam_mul (g g' : G) (u : (G ⧸ K) →₀ ℂ) :
   | single y c => simp [lam_single, mul_smul]
 
 /- English proof (translation)
-Proceed by induction on `u using Finsupp.induction_linear with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp [ha, hb]`. Consider the case `single y c => simp [lam_single]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem lam_one (u : (G ⧸ K) →₀ ℂ) : lam K 1 u = u := by
   induction u using Finsupp.induction_linear with
@@ -36,7 +36,7 @@ theorem lam_one (u : (G ⧸ K) →₀ ℂ) : lam K 1 u = u := by
   | single y c => simp [lam_single]
 
 /- English proof (translation)
-The claim follows from `Finsupp.mapDomain_apply (MulAction.injective g) u y`.
+A detailed English derivation is pending.
 -/
 theorem lam_apply_smul (g : G) (u : (G ⧸ K) →₀ ℂ) (y : G ⧸ K) :
     lam K g u (g • y) = u y :=
@@ -47,7 +47,7 @@ def IsFixed (u : (G ⧸ K) →₀ ℂ) : Prop := ∀ k ∈ K, lam K k u = u
 variable {K}
 
 /- English proof (translation)
-Establish `hk : x⁻¹ * x' ∈ K` using `QuotientGroup.eq.1 h`. Establish `: x' = x * (x⁻¹ * x')` using `by group`. Rewrite using `[this, lam_mul, hu _ hk]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem lam_congr {u : (G ⧸ K) →₀ ℂ} (hu : IsFixed K u) {x x' : G}
     (h : (x : G ⧸ K) = x') : lam K x u = lam K x' u := by
@@ -61,7 +61,7 @@ def op (u : (G ⧸ K) →₀ ℂ) : Module.End ℂ ((G ⧸ K) →₀ ℂ) :=
   Finsupp.lsum ℂ fun y => LinearMap.toSpanSingleton ℂ _ (lam K (Quotient.out y) u)
 
 /- English proof (translation)
-Simplify using `[op, LinearMap.toSpanSingleton_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem op_single_out (u : (G ⧸ K) →₀ ℂ) (y : G ⧸ K) (c : ℂ) :
     op K u (Finsupp.single y c) = c • lam K (Quotient.out y) u := by
@@ -70,16 +70,16 @@ theorem op_single_out (u : (G ⧸ K) →₀ ℂ) (y : G ⧸ K) (c : ℂ) :
 variable {K}
 
 /- English proof (translation)
-Rewrite using `[op_single_out, lam_congr hu (QuotientGroup.out_eq' (x : G ⧸ K))]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem op_single {u : (G ⧸ K) →₀ ℂ} (hu : IsFixed K u) (x : G) (c : ℂ) :
     op K u (Finsupp.single (x : G ⧸ K) c) = c • lam K x u := by
   rw [op_single_out, lam_congr hu (QuotientGroup.out_eq' (x : G ⧸ K))]
 
 /- English proof (translation)
-Rewrite using `[Hk, Subalgebra.mem_centralizer_iff]`. Introduce and unpack `_ ⟨g, rfl⟩`. Use `Finsupp.lhom_ext' fun y => LinearMap.ext_ring ?_` and prove the remaining obligations. Proceed by induction on `y using QuotientGroup.induction_on with`. Consider the case `H x`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately.
 
-Establish `hgx : g • (x : G ⧸ K) = ((g * x : G) : G ⧸ K)` using `rfl`. Simplify using `only [Finsupp.lsingle_apply, Module.End.mul_apply, LinearMap.comp_apply]`. Rewrite using `[op_single hu, lam_single, hgx, op_single hu, lam_mul]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem op_mem {u : (G ⧸ K) →₀ ℂ} (hu : IsFixed K u) : op K u ∈ Hk K := by
   rw [Hk, Subalgebra.mem_centralizer_iff]
@@ -97,7 +97,7 @@ variable (K)
 def delta : (G ⧸ K) →₀ ℂ := Finsupp.single ((1 : G) : G ⧸ K) 1
 
 /- English proof (translation)
-Establish `: x • ((1 : G) : G ⧸ K) = (x : G ⧸ K)`. Express the relevant statement in the definitionally equal form `((x * 1 : G) : G ⧸ K) = x`. Rewrite using `[mul_one]`. Rewrite using `[delta, lam_single, this]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem lam_delta (x : G) : lam K x (delta K) = Finsupp.single (x : G ⧸ K) 1 := by
   have : x • ((1 : G) : G ⧸ K) = (x : G ⧸ K) := by
@@ -106,9 +106,9 @@ theorem lam_delta (x : G) : lam K x (delta K) = Finsupp.single (x : G ⧸ K) 1 :
   rw [delta, lam_single, this]
 
 /- English proof (translation)
-Introduce `k hk`. Establish `hc : lam K k * (h : Module.End ℂ ((G ⧸ K) →₀ ℂ)) = (h : Module.End ℂ ((G ⧸ K) →₀ ℂ)) * lam K k` using `(Subalgebra.mem_centralizer_iff ℂ).1 h.2 _ ⟨k, rfl⟩`. Establish `hd : lam K k (delta K) = delta K`. Establish `hk1 : (k : G ⧸ K) = ((1 : G) : G ⧸ K)` using `QuotientGroup.eq.2 (by simpa using K.inv_mem hk)`. Rewrite using `[lam_delta, delta, hk1]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `LinearMap.congr_fun hc (delta K)` as an intermediate fact. Simplify using `only [Module.End.mul_apply] at this`. Rewrite using `[this, hd]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem delta_fixed_eval (h : Hk K) : IsFixed K ((h : Module.End ℂ ((G ⧸ K) →₀ ℂ)) (delta K)) := by
   intro k hk
@@ -125,15 +125,15 @@ theorem delta_fixed_eval (h : Hk K) : IsFixed K ((h : Module.End ℂ ((G ⧸ K) 
 variable {K}
 
 /- English proof (translation)
-Rewrite using `[delta, op_single hu, lam_one, one_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem op_delta {u : (G ⧸ K) →₀ ℂ} (hu : IsFixed K u) : op K u (delta K) = u := by
   rw [delta, op_single hu, lam_one, one_smul]
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use `Finsupp.lhom_ext' fun y => LinearMap.ext_ring ?_` and prove the remaining obligations. Proceed by induction on `y using QuotientGroup.induction_on with`. Consider the case `H x`. Establish `hc : lam K x * (h : Module.End ℂ ((G ⧸ K) →₀ ℂ)) = (h : Module.End ℂ ((G ⧸ K) →₀ ℂ)) * lam K x` using `(Subalgebra.mem_centralizer_iff ℂ).1 h.2 _ ⟨x, rfl⟩`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Establish an intermediate fact.
 
-Use `LinearMap.congr_fun hc (delta K)` as an intermediate fact. Simplify using `only [Module.End.mul_apply] at this`. Rewrite `this` using `[h0, map_zero, lam_delta]`. Simplify using `using this.symm`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem eq_zero_of_delta (h : Hk K)
     (h0 : (h : Module.End ℂ ((G ⧸ K) →₀ ℂ)) (delta K) = 0) : h = 0 := by
@@ -153,7 +153,7 @@ def orbitVec (hK : IsHeckePair K) (g : G) : (G ⧸ K) →₀ ℂ :=
 
 open Classical in
 /- English proof (translation)
-Simplify using `[orbitVec, Finsupp.finsetSum_apply, Finsupp.single_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem orbitVec_apply (hK : IsHeckePair K) (g : G) (z : G ⧸ K) :
     orbitVec hK g z = if z ∈ MulAction.orbit K (g : G ⧸ K) then 1 else 0 := by
@@ -161,7 +161,7 @@ theorem orbitVec_apply (hK : IsHeckePair K) (g : G) (z : G ⧸ K) :
   simp [orbitVec, Finsupp.finsetSum_apply, Finsupp.single_apply]
 
 /- English proof (translation)
-Use `lam_apply_smul K k u ((k⁻¹ : G) • z)` as an intermediate fact. Rewrite `this` using `[smul_inv_smul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem lam_apply (k : G) (u : (G ⧸ K) →₀ ℂ) (z : G ⧸ K) :
     lam K k u z = u ((k⁻¹ : G) • z) := by
@@ -169,9 +169,9 @@ theorem lam_apply (k : G) (u : (G ⧸ K) →₀ ℂ) (z : G ⧸ K) :
   rwa [smul_inv_smul] at this
 
 /- English proof (translation)
-Introduce `k hk`. Use extensionality with `z`. Establish `hmem : ((k⁻¹ : G) • z ∈ MulAction.orbit K (g : G ⧸ K)) ↔ z ∈ MulAction.orbit K (g : G ⧸ K)`. Establish `e : (k⁻¹ : G) • z = (⟨k, hk⟩ : K)⁻¹ • z` using `rfl`. Rewrite using `[e, ← MulAction.orbit_eq_iff, ← MulAction.orbit_eq_iff (a := z), MulAction.orbit_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[lam_apply, orbitVec_apply, orbitVec_apply]`. Simplify using `only [hmem]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem orbitVec_fixed (hK : IsHeckePair K) (g : G) : IsFixed K (orbitVec hK g) := by
   classical
@@ -185,7 +185,7 @@ theorem orbitVec_fixed (hK : IsHeckePair K) (g : G) : IsFixed K (orbitVec hK g) 
   simp only [hmem]
 
 /- English proof (translation)
-Take `⟨k, rfl⟩` from `hz`. Establish `h` using `lam_apply_smul K (k : G) u x`. Rewrite `h` using `[hu _ k.2]`. Conclude with `h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsFixed.apply_of_mem_orbit {u : (G ⧸ K) →₀ ℂ} (hu : IsFixed K u) {x z : G ⧸ K}
     (hz : z ∈ MulAction.orbit K x) : u z = u x := by
@@ -198,28 +198,28 @@ def heckeOp (hK : IsHeckePair K) (g : G) : Hk K :=
   ⟨op K (orbitVec hK g), op_mem (orbitVec_fixed hK g)⟩
 
 /- English proof (translation)
-The claim follows from `op_delta (orbitVec_fixed hK g)`.
+A detailed English derivation is pending.
 -/
 theorem heckeOp_delta (hK : IsHeckePair K) (g : G) :
     (heckeOp hK g : Module.End ℂ ((G ⧸ K) →₀ ℂ)) (delta K) = orbitVec hK g :=
   op_delta (orbitVec_fixed hK g)
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Introduce `u _ hc`. Establish `: u = 0` using `by simpa using hc`. Conclude with `⟨0, Submodule.zero_mem _, by simp [this]⟩`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components.
 
-Consider the case `succ n ih`. Introduce `u hu hc`. Distinguish the cases in `h0 : u = 0`. Conclude with `⟨0, Submodule.zero_mem _, by simp [h0]⟩`. Take `⟨y, hy⟩` from `Finsupp.support_nonempty_iff.2 h0`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨g, rfl⟩` from `QuotientGroup.mk_surjective y`. Use `set c := u (g : G ⧸ K) with hcdef`. Establish `hc0 : c ≠ 0` using `Finsupp.mem_support_iff.1 hy`. Establish `hfix : IsFixed K (u - c • orbitVec hK g)`. Introduce `k hk`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sub, map_smul, hu k hk, orbitVec_fixed hK g k hk]`. Establish `hsub : (u - c • orbitVec hK g).support ⊆ u.support.erase (g : G ⧸ K)`. Introduce `z hz`. Establish `hz'` using `Finsupp.mem_support_iff.1 hz`. Simplify using `only [Finsupp.coe_sub, Finsupp.coe_smul, Pi.sub_apply, Pi.smul_apply, smul_eq_mul, orbitVec_apply] at hz'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.mem_erase.2 ⟨?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Apply `hz'` to reduce the goal to its premises. Simplify using `[MulAction.mem_orbit_self, ← hcdef]`. Use `Finsupp.mem_support_iff.2 fun hzu => hz' ?_` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hno : z ∉ MulAction.orbit K (g : G ⧸ K)` using `fun hm => hc0 (by rw [hcdef, ← hu.apply_of_mem_orbit hm, hzu])`. Simplify using `[hzu, hno]`. Establish `hcard : (u - c • orbitVec hK g).support.card ≤ n`. Use `Finset.card_le_card hsub` as an intermediate fact. Rewrite `this` using `[Finset.card_erase_of_mem hy]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Take `⟨t, ht, hte⟩` from `ih _ hfix hcard`. Use `⟨t + c • heckeOp hK g, Submodule.add_mem _ ht (Submodule.smul_mem _ _ (Submodule.subset_span ⟨g, rfl⟩)), ?_⟩` and prove the remaining obligations. Establish `: ((t + c • heckeOp hK g : Hk K) : Module.End ℂ ((G ⧸ K) →₀ ℂ)) (delta K) = (t : Module.End ℂ ((G ⧸ K) →₀ ℂ)) (delta K) + c • (heckeOp hK g : Module.End ℂ ((G ⧸ K) →₀ ℂ)) (delta K)` using `rfl`. Rewrite using `[this, hte, heckeOp_delta]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Normalize the expressions using the abelian group laws.
+A detailed English derivation is pending.
 -/
 theorem exists_mem_span_delta (hK : IsHeckePair K) (n : ℕ) :
     ∀ u : (G ⧸ K) →₀ ℂ, IsFixed K u → u.support.card ≤ n →
@@ -269,13 +269,13 @@ theorem exists_mem_span_delta (hK : IsHeckePair K) (n : ℕ) :
     abel
 
 /- English proof (translation)
-Introduce `G _ K hK`. Use `⟨heckeOp hK, ?_, ?_, fun h h0 => eq_zero_of_delta h h0⟩` and prove the remaining obligations. Introduce `g S hS`. Establish `hSe : S = (hK g).toFinset`. Use extensionality with `z`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[Set.Finite.mem_toFinset, ← hS, Finset.mem_coe]`. Use `heckeOp_delta hK g` as an intermediate fact. Rewrite `this` using `[orbitVec, ← hSe]`. Conclude with `this`. Rewrite using `[eq_top_iff]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h _`. Take `⟨t, ht, hte⟩` from `exists_mem_span_delta hK _ ((h : Module.End ℂ ((G ⧸ K) →₀ ℂ)) (delta K)) (delta_fixed_eval K h) le_rfl`. Establish `: h - t = 0` using `eq_zero_of_delta (h - t) (by`. Establish `e : ((h - t : Hk K) : Module.End ℂ ((G ⧸ K) →₀ ℂ)) (delta K) = (h : Module.End ℂ ((G ⧸ K) →₀ ℂ)) (delta K) - (t : Module.End ℂ ((G ⧸ K) →₀ ℂ)) (delta K)` using `rfl`. Rewrite using `[e, hte, sub_self])`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sub_eq_zero.1 this]`. Conclude with `ht`.
+A detailed English derivation is pending.
 -/
 theorem heckeBasis : ∀ (G : Type) [Group G] (K : Subgroup G), IsHeckePair K → ∃ T : G → Hk K, (∀ (g : G) (S : Finset (G ⧸ K)), (↑S : Set (G ⧸ K)) = MulAction.orbit K (g : G ⧸ K) → (T g : Module.End ℂ ((G ⧸ K) →₀ ℂ)) (Finsupp.single ((1 : G) : G ⧸ K) 1) = ∑ y ∈ S, Finsupp.single y (1 : ℂ)) ∧ Submodule.span ℂ (Set.range T) = ⊤ ∧ ∀ h : Hk K, (h : Module.End ℂ ((G ⧸ K) →₀ ℂ)) (Finsupp.single ((1 : G) : G ⧸ K) 1) = 0 → h = 0 := by
   intro G _ K hK

@@ -11,168 +11,168 @@ import Formalism.LocalToGlobal.TorsionIntegrality.QuadraticSemicharacters.Cayley
 namespace Formalism.L2.Th1.H
 
 /- English proof (translation)
-The claim follows from `heisenbergMul`.
+A detailed English derivation is pending.
 -/
 theorem opUMul : OpUMul := heisenbergMul
 /- English proof (translation)
-The claim follows from `heisenbergComm`.
+A detailed English derivation is pending.
 -/
 theorem opUComm : OpUComm := heisenbergComm
 /- English proof (translation)
-The claim follows from `heisenbergIsometry`.
+A detailed English derivation is pending.
 -/
 theorem opUIsom : OpUIsom := heisenbergIsometry
 /- English proof (translation)
-The claim follows from `precompHeisenberg`.
+A detailed English derivation is pending.
 -/
 theorem pullOpU : PullOpU := precompHeisenberg
 /- English proof (translation)
-The claim follows from `semicharacterBasic`.
+A detailed English derivation is pending.
 -/
 theorem semiCharBasic : SemiCharBasic := semicharacterBasic
 /- English proof (translation)
-The claim follows from `semicharacterHom`.
+A detailed English derivation is pending.
 -/
 theorem semiHom : SemiHom := semicharacterHom
 /- English proof (translation)
-The claim follows from `heisenbergAnalytic`.
+A detailed English derivation is pending.
 -/
 theorem opUAnalytic : OpUAnalytic := heisenbergAnalytic
 /- English proof (translation)
-The claim follows from `matrixFormBasic`.
+A detailed English derivation is pending.
 -/
 theorem matHBasic : MatHBasic := matrixFormBasic
 /- English proof (translation)
-The claim follows from `standardFormBasic`.
+A detailed English derivation is pending.
 -/
 theorem stdHBasic : StdHBasic := standardFormBasic
 /- English proof (translation)
-The claim follows from `heisenbergStandard`.
+A detailed English derivation is pending.
 -/
 theorem opUStd : OpUStd := heisenbergStandard
 /- English proof (translation)
-The claim follows from `heisenbergFourfold`.
+A detailed English derivation is pending.
 -/
 theorem opUBlk4 : OpUBlk4 := heisenbergFourfold
 
 /- English proof (translation)
-The claim follows from `InterClass_of semiHom`.
+A detailed English derivation is pending.
 -/
 theorem interClass : InterClass := InterClass_of semiHom
 /- English proof (translation)
-The claim follows from `cosetRepsExist`.
+A detailed English derivation is pending.
 -/
 theorem repsExist : RepsExist := cosetRepsExist
 /- English proof (translation)
-The claim follows from `InterReps_of semiHom`.
+A detailed English derivation is pending.
 -/
 theorem interReps : InterReps := InterReps_of semiHom
 /- English proof (translation)
-The claim follows from `InterFixed_of semiHom`.
+A detailed English derivation is pending.
 -/
 theorem interFixed : InterFixed := InterFixed_of semiHom
 /- English proof (translation)
-The claim follows from `InterTh_of semiHom opUAnalytic`.
+A detailed English derivation is pending.
 -/
 theorem interTh : InterTh := InterTh_of semiHom opUAnalytic
 /- English proof (translation)
-The claim follows from `ThIsom_of opUIsom`.
+A detailed English derivation is pending.
 -/
 theorem thIsom : ThIsom := ThIsom_of opUIsom
 /- English proof (translation)
-The claim follows from `characterSum`.
+A detailed English derivation is pending.
 -/
 theorem charSum : CharSum := characterSum
 /- English proof (translation)
-The claim follows from `IndexEq_of charSum repsExist`.
+A detailed English derivation is pending.
 -/
 theorem indexEq : IndexEq := IndexEq_of charSum repsExist
 /- English proof (translation)
-The claim follows from `InterInv_of opUComm interReps interFixed repsExist`.
+A detailed English derivation is pending.
 -/
 theorem interInv : InterInv := InterInv_of opUComm interReps interFixed repsExist
 /- English proof (translation)
-The claim follows from `LineTransport_of interInv interTh`.
+A detailed English derivation is pending.
 -/
 theorem lineTransport : LineTransport := LineTransport_of interInv interTh
 
 /- English proof (translation)
-The claim follows from `StdSelfDual_proof`.
+A detailed English derivation is pending.
 -/
 theorem stdSelfDual : StdSelfDual := StdSelfDual_proof
 /- English proof (translation)
-The claim follows from `StdSemiChar_proof`.
+A detailed English derivation is pending.
 -/
 theorem stdSemiChar : StdSemiChar := StdSemiChar_proof
 /- English proof (translation)
-The claim follows from `product_theta_mem`.
+A detailed English derivation is pending.
 -/
 theorem product_theta_mem' : ProductThetaMem := product_theta_mem
 /- English proof (translation)
-The claim follows from `ThStd_proof`.
+A detailed English derivation is pending.
 -/
 theorem thStd : ThStd := ThStd_proof
 /- English proof (translation)
-The claim follows from `fourfoldTensorMem`.
+A detailed English derivation is pending.
 -/
 theorem tens4Mem : Tens4Mem := fourfoldTensorMem
 /- English proof (translation)
-The claim follows from `fourth_root`.
+A detailed English derivation is pending.
 -/
 theorem fourthRoot : FourthRoot := fourth_root
 /- English proof (translation)
-The claim follows from `quadMultiplierSemicharacter`.
+A detailed English derivation is pending.
 -/
 theorem alphaQSemi : AlphaQSemi := quadMultiplierSemicharacter
 /- English proof (translation)
-The claim follows from `quadMultiplierRules`.
+A detailed English derivation is pending.
 -/
 theorem alphaQRules : AlphaQRules := quadMultiplierRules
 /- English proof (translation)
-The claim follows from `ThetaVector_of lineTransport thStd product_theta_mem' stdSelfDual stdSemiChar thIsom fourthRoot`.
+A detailed English derivation is pending.
 -/
 theorem thetaVector : ThetaVector :=
   ThetaVector_of lineTransport thStd product_theta_mem' stdSelfDual stdSemiChar thIsom fourthRoot
 
 /- English proof (translation)
-The claim follows from `lineUnique'`.
+A detailed English derivation is pending.
 -/
 theorem lineUnique : LineUnique := lineUnique'
 /- English proof (translation)
-The claim follows from `taylorLine'`.
+A detailed English derivation is pending.
 -/
 theorem taylorLine : TaylorLine := taylorLine'
 /- English proof (translation)
-The claim follows from `TaylorMvLinear_of lineUnique taylorLine`.
+A detailed English derivation is pending.
 -/
 theorem taylorMvLinear : TaylorMvLinear := TaylorMvLinear_of lineUnique taylorLine
 /- English proof (translation)
-The claim follows from `TaylorMvMul_of lineUnique taylorLine`.
+A detailed English derivation is pending.
 -/
 theorem taylorMvMul : TaylorMvMul := TaylorMvMul_of lineUnique taylorLine
 /- English proof (translation)
-The claim follows from `TaylorMvComp_of lineUnique taylorLine`.
+A detailed English derivation is pending.
 -/
 theorem taylorMvComp : TaylorMvComp := TaylorMvComp_of lineUnique taylorLine
 /- English proof (translation)
-The claim follows from `TaylorMvProd_of lineUnique taylorLine`.
+A detailed English derivation is pending.
 -/
 theorem taylorMvProd : TaylorMvProd := TaylorMvProd_of lineUnique taylorLine
 /- English proof (translation)
-The claim follows from `TaylorMvTens4_of lineUnique taylorLine`.
+A detailed English derivation is pending.
 -/
 theorem taylorMvTens4 : TaylorMvTens4 := TaylorMvTens4_of lineUnique taylorLine
 /- English proof (translation)
-The claim follows from `TaylorMvInj_of lineUnique taylorLine`.
+A detailed English derivation is pending.
 -/
 theorem taylorMvInj : TaylorMvInj := TaylorMvInj_of lineUnique taylorLine
 
 /- English proof (translation)
-The claim follows from `quadraticSemicharacters_of_productThetaMem product_theta_mem'`.
+A detailed English derivation is pending.
 -/
 theorem quadraticSemicharacter_identity_reformulated₂ : quadraticSemicharacterIdentityReformulated₂ := quadraticSemicharacters_of_productThetaMem product_theta_mem'
 /- English proof (translation)
-The claim follows from `quadraticSemicharacterIdentity_of_reformulated_of_taylorMv_of_repsExist_of_opUAnalytic quadraticSemicharacter_identity_reformulated₂ taylorMvLinear taylorMvComp taylorMvProd taylorMvTens4 repsExist opUAnalytic`.
+A detailed English derivation is pending.
 -/
 theorem quadraticSemicharacters_fact : quadraticSemicharacterIdentity :=
   quadraticSemicharacterIdentity_of_reformulated_of_taylorMv_of_repsExist_of_opUAnalytic quadraticSemicharacter_identity_reformulated₂ taylorMvLinear taylorMvComp taylorMvProd taylorMvTens4 repsExist opUAnalytic

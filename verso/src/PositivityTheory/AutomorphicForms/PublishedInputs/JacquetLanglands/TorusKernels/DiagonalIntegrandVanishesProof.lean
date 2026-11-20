@@ -15,23 +15,23 @@ Both sides reduce to the same expression.
 theorem D_apply (A s x : ℝ) : D A s x = (A : ℂ) * x + (s : ℂ) * Complex.I := rfl
 
 /- English proof (translation)
-Simplify using `[D]`.
+Simplify using the standard rewrite rules.
 -/
 theorem D_re (A s x : ℝ) : (D A s x).re = A * x := by simp [D]
 
 /- English proof (translation)
-Simplify using `[D]`.
+Simplify using the standard rewrite rules.
 -/
 theorem D_im (A s x : ℝ) : (D A s x).im = s := by simp [D]
 
 /- English proof (translation)
-Rewrite using `[Complex.sq_norm, Complex.normSq_apply, D_re, D_im]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem sq_norm_D (A s x : ℝ) : ‖D A s x‖ ^ 2 = A ^ 2 * x ^ 2 + s ^ 2 := by
   rw [Complex.sq_norm, Complex.normSq_apply, D_re, D_im]; ring
 
 /- English proof (translation)
-Introduce `h`. Use `congrArg Complex.im h` as an intermediate fact. Rewrite `this` using `[D_im]`. Conclude with `hs (by simpa using this)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem D_ne {A s : ℝ} (hs : s ≠ 0) (x : ℝ) : D A s x ≠ 0 := by
   intro h
@@ -40,14 +40,14 @@ theorem D_ne {A s : ℝ} (hs : s ≠ 0) (x : ℝ) : D A s x ≠ 0 := by
   exact hs (by simpa using this)
 
 /- English proof (translation)
-Unfold `D`. Conclude with `(continuous_const.mul Complex.continuous_ofReal).add continuous_const`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem cont_D (A s : ℝ) : Continuous (D A s) := by
   unfold D
   exact (continuous_const.mul Complex.continuous_ofReal).add continuous_const
 
 /- English proof (translation)
-Establish `h` using `Complex.abs_im_le_norm (D A s x)`. Rewrite `h` using `[D_im, abs_of_pos (by linarith)]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem one_le_norm_D {A s : ℝ} (hs : 1 ≤ s) (x : ℝ) : 1 ≤ ‖D A s x‖ := by
   have h := Complex.abs_im_le_norm (D A s x)
@@ -55,11 +55,11 @@ theorem one_le_norm_D {A s : ℝ} (hs : 1 ≤ s) (x : ℝ) : 1 ≤ ‖D A s x‖
   linarith
 
 /- English proof (translation)
-Use `set m := min (A ^ 2) 1 with hm`. Establish `hm0 : 0 < m` using `lt_min (by positivity) one_pos`. Use `⟨(m ^ 2)⁻¹, by positivity, fun x => ?_⟩` and prove the remaining obligations. Establish `h1 : m * (1 + x ^ 2) ≤ ‖D A s x‖ ^ 2`. Rewrite using `[sq_norm_D]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `a1` using `mul_le_mul_of_nonneg_right (min_le_left (A ^ 2) 1) (sq_nonneg x)`. Establish `a2` using `min_le_right (A ^ 2) 1`. Use the polynomial consequences of the given equalities and inequalities. Establish `h2 : ‖D A s x‖ ^ 4 ≤ ‖D A s x‖ ^ k` using `pow_le_pow_right₀ (one_le_norm_D hs x) hk`. Establish `h3 : (m * (1 + x ^ 2)) ^ 2 ≤ ‖D A s x‖ ^ k`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[norm_inv, norm_pow]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem bound {A s : ℝ} (hA : A ≠ 0) (hs : 1 ≤ s) {k : ℕ} (hk : 4 ≤ k) :
     ∃ K : ℝ, 0 ≤ K ∧ ∀ x, ‖(D A s x ^ k)⁻¹‖ ≤ K / (1 + x ^ 2) ^ 2 := by
@@ -82,7 +82,7 @@ theorem bound {A s : ℝ} (hA : A ≠ 0) (hs : 1 ≤ s) {k : ℕ} (hk : 4 ≤ k)
     _ = (m ^ 2)⁻¹ / (1 + x ^ 2) ^ 2 := by rw [mul_pow, mul_inv, div_eq_mul_inv]
 
 /- English proof (translation)
-Use `Integrable.mono' (integrable_inv_one_add_sq.const_mul K) hf.aestronglyMeasurable (ae_of_all _ fun x => ?_)` and prove the remaining obligations. Rewrite using `[← div_eq_mul_inv]`. Conclude with `h x`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integrable_of_bound {f : ℝ → ℂ} (hf : Continuous f) {K : ℝ} (_hK : 0 ≤ K)
     (h : ∀ x, ‖f x‖ ≤ K / (1 + x ^ 2)) : Integrable f := by
@@ -92,13 +92,13 @@ theorem integrable_of_bound {f : ℝ → ℂ} (hf : Continuous f) {K : ℝ} (_hK
   exact h x
 
 /- English proof (translation)
-The claim follows from `div_le_div_of_nonneg_left hK (by positivity) (by nlinarith [sq_nonneg x])`.
+A detailed English derivation is pending.
 -/
 theorem le_one_add_sq (x : ℝ) (K : ℝ) (hK : 0 ≤ K) : K / (1 + x ^ 2) ^ 2 ≤ K / (1 + x ^ 2) :=
   div_le_div_of_nonneg_left hK (by positivity) (by nlinarith [sq_nonneg x])
 
 /- English proof (translation)
-Take `⟨K, hK, h⟩` from `bound hA hs hk`. Use `integrable_of_bound (((cont_D A s).pow k).inv₀ fun x => pow_ne_zero _ (D_ne (by linarith) x)) hK fun x => (h x).trans (le_one_add_sq x K hK)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem integrable_D {A s : ℝ} (hA : A ≠ 0) (hs : 1 ≤ s) {k : ℕ} (hk : 4 ≤ k) :
     Integrable fun x => (D A s x ^ k)⁻¹ := by
@@ -107,7 +107,7 @@ theorem integrable_D {A s : ℝ} (hA : A ≠ 0) (hs : 1 ≤ s) {k : ℕ} (hk : 4
     fun x => (h x).trans (le_one_add_sq x K hK)
 
 /- English proof (translation)
-Use `tendsto_atTop_mono (fun x => ?_) (hl.const_mul_atTop (abs_pos.2 hA))` and prove the remaining obligations. Establish `h` using `Complex.abs_re_le_norm (D A s x)`. Rewrite `h` using `[D_re, abs_mul]`. Conclude with `h`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tendsto_norm_D {A s : ℝ} (hA : A ≠ 0) {l : Filter ℝ} (hl : Tendsto (fun x : ℝ => |x|) l atTop) :
     Tendsto (fun x => ‖D A s x‖) l atTop := by
@@ -117,7 +117,7 @@ theorem tendsto_norm_D {A s : ℝ} (hA : A ≠ 0) {l : Filter ℝ} (hl : Tendsto
   exact h
 
 /- English proof (translation)
-Rewrite using `[tendsto_zero_iff_norm_tendsto_zero]`. Use `(tendsto_inv_atTop_zero.comp ((tendsto_pow_atTop (Nat.succ_ne_zero n)).comp (tendsto_norm_D (s := s) hA hl))).congr fun x => ?_` and prove the remaining obligations. Simplify using `[norm_inv, norm_pow]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem tendsto_inv_D {A s : ℝ} (hA : A ≠ 0) {l : Filter ℝ} (hl : Tendsto (fun x : ℝ => |x|) l atTop)
     (n : ℕ) : Tendsto (fun x => (D A s x ^ (n + 1))⁻¹) l (𝓝 0) := by
@@ -127,13 +127,13 @@ theorem tendsto_inv_D {A s : ℝ} (hA : A ≠ 0) {l : Filter ℝ} (hl : Tendsto 
   simp [norm_inv, norm_pow]
 
 /- English proof (translation)
-Establish `hs0 : s ≠ 0` using `by linarith`. Establish `hA' : (A : ℂ) ≠ 0` using `by exact_mod_cast hA`. Establish `hn' : ((n : ℂ) + 1) ≠ 0` using `by exact_mod_cast Nat.succ_ne_zero n`. Establish `hderiv : ∀ x, HasDerivAt (fun x => (-((n : ℂ) + 1) * A)⁻¹ * (D A s x ^ (n + 1))⁻¹) ((D A s x ^ (n + 2))⁻¹) x`. Introduce `x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hD : HasDerivAt (D A s) (A : ℂ) x`. Use `(((hasDerivAt_id x).ofReal_comp).const_mul (A : ℂ)).add_const ((s : ℂ) * Complex.I)` as an intermediate fact. Simplify using `only [id, Complex.ofReal_one, mul_one] at this`. Conclude with `this`. Establish `h2` using `((hD.pow (n + 1)).fun_inv (pow_ne_zero _ (D_ne hs0 x))).const_mul (-((n : ℂ) + 1) * A)⁻¹`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `h2.congr_deriv ?_` and prove the remaining obligations. Establish `hx` using `D_ne (A := A) hs0 x`. Simplify using `only [Pi.pow_apply, Nat.add_sub_cancel]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `key` using `integral_of_hasDerivAt_of_tendsto hderiv (integrable_D hA hs hn) (by simpa using (tendsto_inv_D (s := s) hA tendsto_abs_atBot_atTop n).const_mul (-((n : ℂ) + 1) * A)⁻¹) (by simpa using (tendsto_inv_D (s := s) hA tendsto_abs_atTop_atTop n).const_mul (-((n : ℂ) + 1) * A)⁻¹)`. Rewrite using `[key, sub_self]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_D {A s : ℝ} (hA : A ≠ 0) (hs : 1 ≤ s) (n : ℕ) (hn : 4 ≤ n + 2) :
     ∫ x, (D A s x ^ (n + 2))⁻¹ = 0 := by
@@ -164,41 +164,37 @@ end UpperTheory.Esk.DiagonalIntegrandLemmas
 open UpperTheory.Esk UpperTheory.Esk.DiagonalIntegrandLemmas
 
 /- English proof (translation)
-Introduce `k hk g hb hc hne`. Establish `hdet : g.val.det = g 0 0 * g 1 1` using `by rw [det_eq, hb]; ring`. Establish `hdet0 : g 0 0 * g 1 1 ≠ 0` using `hdet ▸ g.det_ne_zero`. Establish `ha : g 0 0 ≠ 0` using `left_ne_zero_of_mul hdet0`. Establish `hd : g 1 1 ≠ 0` using `right_ne_zero_of_mul hdet0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hden : ∀ z : ℂ, den g z = ((g 1 1 : ℝ) : ℂ)` using `fun z => by simp [den, hc]`. Establish `hnum : ∀ z : ℂ, num g z = ((g 0 0 : ℝ) : ℂ) * z` using `fun z => by simp [num, hb]`. Establish `him : ∀ z : P, (g • z).1.im * z.1.im = g 0 0 * g 1 1 * (z.1.im ^ 2 / (g 1 1 * g 1 1))`. Introduce `z`. Rewrite using `[coe_smul, im_div, hden, Complex.normSq_ofReal, hdet]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Break down `lt_or_gt_of_ne hdet0 with hneg | hpos` into its components or cases. Use `⟨0, continuous_const, fun x y hy => ?_, integrable_zero _ _ _, by simp, by simp, Or.inl rfl⟩` and prove the remaining obligations. Establish `: ¬ (0 < (pt x y hy).1.im * (g • pt x y hy).1.im)`. Rewrite using `[mul_comm, him]`.
+Expand and normalize the polynomial expressions, which then agree. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: 0 ≤ (pt x y hy).1.im ^ 2 / (g 1 1 * g 1 1)` using `div_nonneg (sq_nonneg _) (mul_self_nonneg _)`. Use the polynomial consequences of the given equalities and inequalities. Simplify using `[q1, this]`. Use `set r : ℝ := g 0 0 / g 1 1 with hr`. Establish `hr0 : 0 < r`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hr]`. Break down `lt_or_gt_of_ne hd with h | h` into its components or cases. Conclude with `div_pos_of_neg_of_neg (by nlinarith) h`. Conclude with `div_pos (by nlinarith) h`. Establish `hr1 : 1 - r ≠ 0`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `h`. Apply `hne` to reduce the goal to its premises. Rewrite `h` using `[hr]`. Clear denominators, using `at h` for the nonvanishing conditions. Combine the linear equalities and inequalities to obtain the conclusion.
+Clear the denominators using the available nonvanishing facts. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hs : (1 : ℝ) ≤ 1 + r` using `by linarith`. Use `set c : ℂ := ((g 1 1 : ℝ) : ℂ) ^ k * ((|g.val.det| ^ (-(k : ℝ) / 2) : ℝ) : ℂ) with hcdef`. Use `set E : ℂ := ((k : ℂ) - 1) / (4 * Real.pi) * (2 * Complex.I * (r : ℂ)) ^ k * c with hE`. Establish `hc0 : c ≠ 0`. Use `mul_ne_zero (pow_ne_zero _ (by exact_mod_cast hd)) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: 0 < |g.val.det| ^ (-(k : ℝ) / 2)` using `Real.rpow_pos_of_pos (abs_pos.2 g.det_ne_zero) _`. Conclude with `this.ne'` after adjusting the coercions. Establish `hE0 : E ≠ 0`. Establish `hk1 : (k : ℂ) - 1 ≠ 0`. Establish `: (1 : ℂ) ≠ k` using `by exact_mod_cast (by omega : (1 : ℕ) ≠ k)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `sub_ne_zero.2 this.symm`. Establish `hpi : (4 * (Real.pi : ℂ)) ≠ 0` using `mul_ne_zero (by norm_num) (by exact_mod_cast Real.pi_ne_zero)`. Establish `hr' : (r : ℂ) ≠ 0` using `by exact_mod_cast hr0.ne'`. Conclude with `mul_ne_zero (mul_ne_zero (div_ne_zero hk1 hpi) (pow_ne_zero _ (mul_ne_zero (mul_ne_zero two_ne_zero Complex.I_ne_zero) hr'))) hc0`. Establish `hs0 : (1 + r) ≠ 0` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `⟨fun x => E * (D (1 - r) (1 + r) x ^ k)⁻¹, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `continuous_const.mul (((cont_D _ _).pow k).inv₀ fun x => pow_ne_zero _ (D_ne hs0 x))`. Introduce `x y hy`. Establish `hy' : (y : ℂ) ≠ 0` using `by exact_mod_cast hy`. Establish `hd' : ((g 1 1 : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast hd`.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hz : (pt x y hy).1 = (y : ℂ) * ((x : ℂ) + Complex.I)` using `rfl`. Establish `hw : (g • pt x y hy).1 = (r : ℂ) * ((y : ℂ) * ((x : ℂ) + Complex.I))`. Rewrite using `[coe_smul, hnum, hden, hz, hr]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hcw : conj (g • pt x y hy).1 = (r : ℂ) * ((y : ℂ) * ((x : ℂ) - Complex.I))`. Rewrite using `[hw]`. Simplify using `[map_mul, Complex.conj_ofReal, sub_eq_add_neg]`. Establish `hpos' : 0 < (pt x y hy).1.im * (g • pt x y hy).1.im`. Rewrite using `[mul_comm, him]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `: 0 < (pt x y hy).1.im ^ 2 / (g 1 1 * g 1 1)`. Establish `: (pt x y hy).1.im ≠ 0` using `(pt x y hy).2`. Conclude with `div_pos (lt_of_le_of_ne (sq_nonneg _) (Ne.symm (pow_ne_zero 2 this))) (mul_self_pos.2 hd)`. Conclude with `mul_pos hpos this`. Establish `hratio : ((g • pt x y hy).1 - conj (g • pt x y hy).1) / ((pt x y hy).1 - conj (g • pt x y hy).1) = (2 * Complex.I * (r : ℂ)) / D (1 - r) (1 + r) x`.
+Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hcw, hw, hz, D_apply]`. Establish `e1 : (r : ℂ) * ((y : ℂ) * ((x : ℂ) + Complex.I)) - (r : ℂ) * ((y : ℂ) * ((x : ℂ) - Complex.I)) = (y : ℂ) * (2 * Complex.I * (r : ℂ))` using `by ring`. Establish `e2 : (y : ℂ) * ((x : ℂ) + Complex.I) - (r : ℂ) * ((y : ℂ) * ((x : ℂ) - Complex.I)) = (y : ℂ) * (((1 - r : ℝ) : ℂ) * (x : ℂ) + ((1 + r : ℝ) : ℂ) * Complex.I)` using `by push_cast; ring`. Rewrite using `[e1, e2, mul_div_mul_left _ _ hy']`. Simplify using `only [q1, if_pos hpos', j1, hden]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hratio, div_pow, hE, hcdef]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨K, hK, h⟩` from `bound hr1 hs hk`. Use `integrable_of_bound (continuous_const.mul (((cont_D _ _).pow k).inv₀ fun x => pow_ne_zero _ (D_ne hs0 x))) (mul_nonneg (norm_nonneg E) hK) fun x => ?_` and prove the remaining obligations. Rewrite using `[norm_mul, mul_div_assoc]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result.
 
-Conclude with `mul_le_mul_of_nonneg_left ((h x).trans (le_one_add_sq x K hK)) (norm_nonneg E)`. Take `⟨K, hK, h⟩` from `bound hr1 hs hk`. Establish `hcont : Continuous fun x : ℝ => Real.log (1 + x ^ 2)` using `(continuous_const.add (continuous_pow 2)).log fun x => (by positivity : (0:ℝ) < 1 + x ^ 2).ne'`. Use `integrable_of_bound ((Complex.continuous_ofReal.comp hcont).mul (continuous_const.mul (((cont_D _ _).pow k).inv₀ fun x => pow_ne_zero _ (D_ne hs0 x)))) (mul_nonneg (norm_nonneg E) hK) fun x => ?_` and prove the remaining obligations. Establish `hl0 : 0 ≤ Real.log (1 + x ^ 2)` using `Real.log_nonneg (by nlinarith [sq_nonneg x])`.
-
-Establish `hl1 : Real.log (1 + x ^ 2) ≤ 1 + x ^ 2`. Use `Real.log_le_sub_one_of_pos (by positivity : (0 : ℝ) < 1 + x ^ 2)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hp : (0 : ℝ) < 1 + x ^ 2` using `by positivity`. Rewrite using `[norm_mul, norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg hl0]`.
-
-Combine the equalities or inequalities in the displayed calculation. Take `⟨n, rfl⟩ : ∃ n, k = n + 2` from `⟨k - 2, by omega⟩`. Rewrite using `[integral_const_mul, integral_D hr1 hs n hk, mul_zero]`. Conclude with `Or.inr fun x => mul_ne_zero hE0 (inv_ne_zero (pow_ne_zero _ (D_ne hs0 x)))`.
+Rewrite the conclusion using the stated equalities. Prove the second alternative. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Esk.diagonal_integrand_vanishes_proof : UpperTheory.Esk.DiagonalIntegrandVanishes := by
   intro k hk g hb hc hne

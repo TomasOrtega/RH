@@ -24,7 +24,7 @@ def twIdxTop (Λt : ∀ j, LevFam X.E X.K (R.N j) Pr.vGs) (Θt : ∀ j, LevQFam 
 variable {Ch sel mu cst m2}
 
 /- English proof (translation)
-The claim follows from `| 0, _, _ => rfl | i + 1, b, b' => by revert b b' by_cases h1 : i + 1 ≤ m2 · rw [twSt_succ_le Ch sel mu cst h1] intro b b' apply Subtype.ext funext P exact absurd (show P.1 ∈ (∅ : Finset (HeightOneSpectrum (𝓞 X.E))) from hE ▸ P.2) (Finset.notMem_empty _) · by_cases h2 : i + 1 = m …`.
+A detailed English derivation is pending.
 -/
 theorem twSt_subsingleton (hE : twQOff (Pr := Pr) sel mu = ∅) : ∀ j (b b' : (twSt Ch sel mu cst m2 j).β), b = b'
   | 0, _, _ => rfl

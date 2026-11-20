@@ -19,7 +19,7 @@ def relJacMap (e' : ∀ a, (Σ b, Fin (d' a b)) ≃ Fin (d a))
   twistMap (jacquetMap f _ _ _) _
 
 /- English proof (translation)
-Introduce `y` and use `by obtain ⟨w, rfl⟩ := Submodule.Quotient.mk_surjective _ y obtain ⟨v, rfl⟩ := hf w exact ⟨Submodule.Quotient.mk v, rfl⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem relJacMap_surjective (e' : ∀ a, (Σ b, Fin (d' a b)) ≃ Fin (d a))
     {σ : Representation ℂ (Levi k fun a => Fin (d a)) V}
@@ -30,15 +30,13 @@ theorem relJacMap_surjective (e' : ∀ a, (Σ b, Fin (d' a b)) ≃ Fin (d a))
   exact ⟨Submodule.Quotient.mk v, rfl⟩
 
 /- English proof (translation)
-Use `(injective_iff_map_eq_zero _).2 fun x hx => ?_` and prove the remaining obligations. Take `⟨v, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Establish `h1 : f v ∈ twKer τ (relUnipD k e') 1` using `(Submodule.Quotient.mk_eq_zero _).1 hx`. Take `⟨S, hS, h2⟩` from `GlobalTheory.JacquetExact.exists_finset_of_mem_twKer h1`. Establish `hH : ∀ a, ∃ H : Subgroup (GL (Fin (d a)) k), H ≤ unipRad k (e' a) ∧ IsCompact (H : Set (GL (Fin (d a)) k)) ∧ ∀ u ∈ S, u a ∈ H`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `a`. Establish `hN : unipRad k (e' a) = unipOf k fun i => ((blk (e' a) i).val : ℤ)` using `unipRad_eq_unipOf k fun i j => by simp`. Take `⟨H, hle, hc, hSH⟩` from `GlobalTheory.UnipCompact.exists_compact_subgroup k (Fin (d a)) _ (S.image fun u => u a) (by`. Introduce `u hu`. Take `⟨u', hu', rfl⟩` from `Finset.mem_image.1 hu`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hm : u' a ∈ unipRad k (e' a)` using `hS u' hu' a (Set.mem_univ a)`. Conclude with `hN ▸ hm)`. Conclude with `⟨H, hle.trans hN.ge, hc, fun u hu => hSH _ (Finset.mem_image_of_mem _ hu)⟩`. Use `choose H hle hc hSH using hH`. Set `H' : Subgroup (Levi k fun a => Fin (d a))` to `Subgroup.pi Set.univ H`.
+Establish an intermediate fact. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc' : IsCompact (H' : Set (Levi k fun a => Fin (d a)))`. Establish `: (H' : Set (Levi k fun a => Fin (d a))) = Set.pi Set.univ fun a => (H a : Set _)` using `rfl`. Rewrite using `[this]`. Conclude with `isCompact_univ_pi hc`. Establish `hle' : H' ≤ relUnipD k e'` using `fun u hu a _ => hle a (hu a (Set.mem_univ a))`.
-
-Use `(Submodule.Quotient.mk_eq_zero _).2 ?_` and prove the remaining obligations. Conclude with `GlobalTheory.IwahoriInj.twKer_mono hle' (GlobalTheory.JacquetExact.mem_twKer_of_compact hτ f hf hc' (h2 H' fun u hu a _ => hSH a u hu))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem relJacMap_injective (e' : ∀ a, (Σ b, Fin (d' a b)) ≃ Fin (d a))
     {σ : Representation ℂ (Levi k fun a => Fin (d a)) V}
@@ -73,7 +71,7 @@ theorem relJacMap_injective (e' : ∀ a, (Σ b, Fin (d' a b)) ≃ Fin (d a))
     (GlobalTheory.JacquetExact.mem_twKer_of_compact hτ f hf hc' (h2 H' fun u hu a _ => hSH a u hu))
 
 /- English proof (translation)
-Introduce `k _ _ _ _ s d t d' e' V W _ _ _ _ σ τ hτ h`. Take `⟨S, f, hf⟩` from `h`. Set `ι : S.toRepresentation.IntertwiningMap τ` to `⟨S.toSubmodule.subtype, fun _ => rfl⟩`. Conclude with `(IsSubquotient.of_surjective _ (relJacMap_surjective e' f hf)).trans (.of_injective _ (relJacMap_injective e' hτ ι Subtype.val_injective))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem isSubquotient_relJacD : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (s : ℕ) (d : Fin s → ℕ) (t : Fin s → ℕ) (d' : ∀ a, Fin (t a) → ℕ)

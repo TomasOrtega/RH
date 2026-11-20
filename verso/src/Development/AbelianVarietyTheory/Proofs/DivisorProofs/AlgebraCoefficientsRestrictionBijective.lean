@@ -11,11 +11,11 @@ universe u
 variable {R : Type} [CommRing R] {C : Type u} [Category.{0} C] (F : C ⥤ CommAlgCat.{0} R)
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(Cx.single (Coef.ofAlg F)).D1 c = 0 ↔ _`. Prove the components needed by the constructor for the conclusion. Introduce `h T T' T'' φ ψ`. Use `congrFun (congrFun (congrFun (congrFun (congrFun (congrArg Prod.fst h) T) T') T'') φ) ψ` as an intermediate fact. Express the relevant statement in the definitionally equal form `mp F ψ (c.1 T T' φ) - c.1 T T'' (φ ≫ ψ) + c.1 T' T'' ψ = 0 at this`.
+Express the relevant assertion in an equivalent form by its definition. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Take the linear combination `-this`. Introduce `h`. Use `Prod.ext ?_ (Subsingleton.elim _ _)` and prove the remaining obligations. Use function extensionality and compare the values at `T T' T'' φ ψ`. Express the relevant statement in the definitionally equal form `mp F ψ (c.1 T T' φ) - c.1 T T'' (φ ≫ ψ) + c.1 T' T'' ψ = 0`.
+Take a linear combination of the given relations to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[h φ ψ]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem singleComplex_mem_cocyclesOne_iff_algebraFunctor (c : (Cx.single (Coef.ofAlg F)).T1) :
     c ∈ (Cx.single (Coef.ofAlg F)).Z1 ↔ c.1 ∈ Z1 F := by
@@ -32,7 +32,7 @@ theorem singleComplex_mem_cocyclesOne_iff_algebraFunctor (c : (Cx.single (Coef.o
     rw [h φ ψ]; ring
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h _ _ _ _ φ ψ χ ↦ h.1 _ _ _ _ φ ψ χ, fun h ↦ ⟨fun _ _ _ _ φ ψ χ ↦ h φ ψ χ, fun _ _ _ _ _ ↦ Subsingleton.elim _ _, fun _ _ _ ↦ Subsingleton.elim _ _, fun _ ↦ Subsingleton.elim _ _⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem singleComplex_mem_cocyclesTwo_iff_algebraFunctor (c : (Cx.single (Coef.ofAlg F)).T2) :
     c ∈ (Cx.single (Coef.ofAlg F)).Z2 ↔ c.1 ∈ Z2 F :=
@@ -43,11 +43,11 @@ theorem singleComplex_mem_cocyclesTwo_iff_algebraFunctor (c : (Cx.single (Coef.o
 variable {C' : Type u} [Category.{0} C'] (G : C' ⥤ C)
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `c hc`. Take `⟨z, rfl⟩` from `QuotientAddGroup.mk_surjective c`. Establish `hz : z.1.1 ∈ Z1 F` using `(singleComplex_mem_cocyclesOne_iff_algebraFunctor F z.1).1 z.2`. Express the relevant statement in the definitionally equal form `(QuotientAddGroup.mk (((Cx.single (Coef.ofAlg F)).resMap G).z1 z) : ((Cx.single (Coef.ofAlg F)).res G).H1) = 0 at hc`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite `hc` using `[QuotientAddGroup.eq_zero_iff]`. Take `⟨g, hg⟩` from `hc`. Establish `h0 : (CoefMap.restrict F G).pull1 (H1.mk F ⟨z.1.1, hz⟩) = (CoefMap.restrict F G).pull1 0`. Rewrite using `[map_zero, CoefMap.pullCohomologyOne_class, H1.mk_eq_zero]`. Conclude with `⟨g, congrArg Prod.fst hg⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Take `⟨g', hg'⟩` from `H1.mk_eq_zero.1 (hi h0)`. Rewrite using `[QuotientAddGroup.eq_zero_iff]`. Conclude with `⟨g', Prod.ext hg' (Subsingleton.elim _ _)⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem h1_injective (hi : Function.Injective (CoefMap.restrict F G).pull1) :
     Function.Injective ((Cx.single (Coef.ofAlg F)).resMap G).h1 := by
@@ -67,13 +67,13 @@ theorem h1_injective (hi : Function.Injective (CoefMap.restrict F G).pull1) :
   exact ⟨g', Prod.ext hg' (Subsingleton.elim _ _)⟩
 
 /- English proof (translation)
-Introduce `c'`. Take `⟨z', rfl⟩` from `QuotientAddGroup.mk_surjective c'`. Establish `hz' : z'.1.1 ∈ Z1 (G ⋙ F)` using `(singleComplex_mem_cocyclesOne_iff_algebraFunctor (G ⋙ F) z'.1).1 z'.2`. Take `⟨c, hc⟩` from `hs (H1.mk _ ⟨z'.1.1, hz'⟩)`. Take `⟨f, rfl⟩` from `H1.mk_surjective F c`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite `hc` using `[CoefMap.pullCohomologyOne_class, H1.mk_eq_mk]`. Take `⟨g, hg⟩` from `hc`. Use `⟨QuotientAddGroup.mk ⟨(f.1, fun _ ↦ 0), (singleComplex_mem_cocyclesOne_iff_algebraFunctor F _).2 f.2⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(QuotientAddGroup.mk (((Cx.single (Coef.ofAlg F)).resMap G).z1 _) : ((Cx.single (Coef.ofAlg F)).res G).H1) = QuotientAddGroup.mk z'`. Rewrite using `[QuotientAddGroup.eq]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `⟨-g, Prod.ext ?_ (Subsingleton.elim _ _)⟩` and prove the remaining obligations. Rewrite using `[map_neg]`. Use function extensionality and compare the values at `T T' φ`. Use `congrFun (congrFun (congrFun hg T) T') φ` as an intermediate fact. Express the relevant statement in the definitionally equal form `-(d0 (G ⋙ F) g T T' φ) = -(f.1 _ _ (G.map φ)) + z'.1.1 T T' φ`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[this]`. Express the relevant statement in the definitionally equal form `-((f.1 _ _ (G.map φ)) - z'.1.1 T T' φ) = _`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Normalize the expressions using the abelian group laws.
 -/
 theorem h1_surjective (hs : Function.Surjective (CoefMap.restrict F G).pull1) :
     Function.Surjective ((Cx.single (Coef.ofAlg F)).resMap G).h1 := by
@@ -98,11 +98,11 @@ theorem h1_surjective (hs : Function.Surjective (CoefMap.restrict F G).pull1) :
   abel
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `c hc`. Take `⟨z, rfl⟩` from `QuotientAddGroup.mk_surjective c`. Establish `hz : z.1.1 ∈ Z2 F` using `(singleComplex_mem_cocyclesTwo_iff_algebraFunctor F z.1).1 z.2`. Express the relevant statement in the definitionally equal form `(QuotientAddGroup.mk (((Cx.single (Coef.ofAlg F)).resMap G).z2 z) : ((Cx.single (Coef.ofAlg F)).res G).H2) = 0 at hc`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite `hc` using `[QuotientAddGroup.eq_zero_iff]`. Take `⟨g, hg⟩` from `hc`. Establish `h0 : (CoefMap.restrict F G).pull2 (H2.mk F ⟨z.1.1, hz⟩) = (CoefMap.restrict F G).pull2 0`. Rewrite using `[map_zero, CoefMap.pullCohomologyTwo_class, H2.mk_eq_zero]`. Conclude with `⟨g.1, congrArg Prod.fst hg⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Take `⟨g', hg'⟩` from `H2.mk_eq_zero.1 (hi h0)`. Rewrite using `[QuotientAddGroup.eq_zero_iff]`. Conclude with `⟨(g', fun _ ↦ 0), Prod.ext hg' (Subsingleton.elim _ _)⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem h2_injective (hi : Function.Injective (CoefMap.restrict F G).pull2) :
     Function.Injective ((Cx.single (Coef.ofAlg F)).resMap G).h2 := by
@@ -122,13 +122,13 @@ theorem h2_injective (hi : Function.Injective (CoefMap.restrict F G).pull2) :
   exact ⟨(g', fun _ ↦ 0), Prod.ext hg' (Subsingleton.elim _ _)⟩
 
 /- English proof (translation)
-Introduce `c'`. Take `⟨z', rfl⟩` from `QuotientAddGroup.mk_surjective c'`. Establish `hz' : z'.1.1 ∈ Z2 (G ⋙ F)` using `(singleComplex_mem_cocyclesTwo_iff_algebraFunctor (G ⋙ F) z'.1).1 z'.2`. Take `⟨c, hc⟩` from `hs (H2.mk _ ⟨z'.1.1, hz'⟩)`. Take `⟨f, rfl⟩` from `H2.mk_surjective F c`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite `hc` using `[CoefMap.pullCohomologyTwo_class, H2.mk_eq_mk]`. Take `⟨g, hg⟩` from `hc`. Use `⟨QuotientAddGroup.mk ⟨(f.1, fun _ _ _ ↦ 0, fun _ ↦ 0), (singleComplex_mem_cocyclesTwo_iff_algebraFunctor F _).2 f.2⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(QuotientAddGroup.mk (((Cx.single (Coef.ofAlg F)).resMap G).z2 _) : ((Cx.single (Coef.ofAlg F)).res G).H2) = QuotientAddGroup.mk z'`. Rewrite using `[QuotientAddGroup.eq]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `⟨(-g, fun _ ↦ 0), Prod.ext ?_ (Subsingleton.elim _ _)⟩` and prove the remaining obligations. Use function extensionality and compare the values at `T T' T'' φ ψ`. Use `congrFun (congrFun (congrFun (congrFun (congrFun hg T) T') T'') φ) ψ` as an intermediate fact. Express the relevant statement in the definitionally equal form `d1 (G ⋙ F) (-g) T T' T'' φ ψ = -(f.1 _ _ _ (G.map φ) (G.map ψ)) + z'.1.1 T T' T'' φ ψ`. Rewrite using `[map_neg, Pi.neg_apply, Pi.neg_apply, Pi.neg_apply, Pi.neg_apply, Pi.neg_apply, this]`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `-((f.1 _ _ _ (G.map φ) (G.map ψ)) - z'.1.1 T T' T'' φ ψ) = _`. Normalize the expressions using the abelian group laws.
+Express the relevant assertion in an equivalent form by its definition. Normalize the expressions using the abelian group laws.
 -/
 theorem h2_surjective (hs : Function.Surjective (CoefMap.restrict F G).pull2) :
     Function.Surjective ((Cx.single (Coef.ofAlg F)).resMap G).h2 := by
@@ -154,7 +154,7 @@ theorem h2_surjective (hs : Function.Surjective (CoefMap.restrict F G).pull2) :
 end GlobalTheory.CxCoh.AlgDict
 
 /- English proof (translation)
-The claim follows from `fun _ _ _ _ _ _ F G h1 h2 ↦ ⟨⟨AlgDict.h1_injective F G h1.1, AlgDict.h1_surjective F G h1.2⟩, AlgDict.h2_injective F G h2.1, AlgDict.h2_surjective F G h2.2⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem GlobalTheory.CxCoh.single_algebra_restriction_bijective : ∀ (R : Type) [CommRing R] (C C' : Type 1) [Category.{0} C]
     [Category.{0} C'] (F : C ⥤ CommAlgCat.{0} R) (G : C' ⥤ C),

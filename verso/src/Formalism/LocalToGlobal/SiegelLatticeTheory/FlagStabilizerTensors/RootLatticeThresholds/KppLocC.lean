@@ -24,9 +24,7 @@ Both sides reduce to the same expression.
 theorem quadratic_character_eq_additive (x : X.B.I.Gf) : X.chi2 x = X.psiEf (divN X.B.I X.B.g (argC X x)) := rfl
 
 /- English proof (translation)
-Unfold `argC`. Use `add_mem (sum_mem fun a _ => ?_) (sum_mem fun i _ => ?_)` and prove the remaining obligations. Use `dual_hat_integral X.B.I _ (X.vectorsInLattice.1 a).2 _ (K_mv X.B.I hx ?_)` and prove the remaining obligations. Unfold `nxt`. Use `split_ifs`.
-
-Conclude with `(X.vectorsInLattice.1 _).1`. Conclude with `X.vectorsInLattice.2.1`. Use `split_ifs`. Conclude with `dual_hat_integral X.B.I _ (X.vectorsInLattice.2.2 i).2 _ (K_mv X.B.I hx (X.vectorsInLattice.2.2 _).1)`. Conclude with `zero_mem _`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem argC_int {x : X.B.I.Gf} (hx : x ∈ X.B.I.Kset) : argC X x ∈ IntAf X.B.I.F X.B.I.E := by
   unfold argC
@@ -40,7 +38,7 @@ theorem argC_int {x : X.B.I.Gf} (hx : x ∈ X.B.I.Kset) : argC X x ∈ IntAf X.B
     · exact zero_mem _
 
 /- English proof (translation)
-Rewrite using `[hhat_conj]`. Use `hhat_fmat X.B.I x v (X.B.I.fmat x⁻¹ *ᵥ u)` as an intermediate fact. Rewrite `this` using `[Matrix.mulVec_mulVec, ← fmat_mul, mul_inv_cancel, fmat_one, Matrix.one_mulVec]`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sg_swap (x : X.B.I.Gf) (u v : VA X.B.I) :
     sg X.B.I (hhat X.B.I u (X.B.I.fmat x *ᵥ v)) = hhat X.B.I v (X.B.I.fmat x⁻¹ *ᵥ u) := by
@@ -63,23 +61,23 @@ def tWc (ob : Bool) (N' : Matrix (Fin D.R.r) (Fin D.R.r) (ZMod p)) : ZMod p :=
       (if ob then 0 else N' (wI (hrD D) (rv ⟨i.1 + 1, h⟩)) (wI (hrD D) (rv i))) else 0
 
 /- English proof (translation)
-Rewrite using `[X.bw_w i]`. Conclude with `Wq_smul hew (X.vectorsInLattice.2.2 i).1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bw_Lq (hew : X.ew ∈ Wq X.B.I w) (i : Fin D.R.k) : X.bw i ∈ Lq X.B.I w := by
   rw [X.bw_w i]; exact Wq_smul hew (X.vectorsInLattice.2.2 i).1
 
 /- English proof (translation)
-Rewrite using `[X.bwd_w i]`. Conclude with `Wq_smul hsew (X.vectorsInLattice.2.2 i).2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bwd_Lq (hsew : sg X.B.I X.ew ∈ Wq X.B.I w) (i : Fin D.R.k) : X.bwd i ∈ Lq X.B.I w := by
   rw [X.bwd_w i]; exact Wq_smul hsew (X.vectorsInLattice.2.2 i).2
 
 /- English proof (translation)
-Unfold `argC tW`. Use `congW_add (congW_sum _ fun a _ => ?_) (congW_sum _ fun i _ => ?_)` and prove the remaining obligations. Unfold `nxt split_ifs with h`. Use `hN (xI (hrD D) a) (xI (hrD D) ⟨a.1 + 1, h⟩)` as an intermediate fact. Rewrite `this` using `[dual_frame_isotropic, frame_isotropic]`. Then use the resulting hypothesis.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `hN (xI (hrD D) a) (zI (hrD D))` as an intermediate fact. Rewrite `this` using `[dual_frame_isotropic, frame_anisotropic]`. Then use the resulting hypothesis. Use `split_ifs with h hob`. Use `hN (wI (hrD D) i) (wI (hrD D) ⟨i.1 + 1, h⟩)` as an intermediate fact. Rewrite `this` using `[hob]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[frd_wt, fr_wt]`. Then use the resulting hypothesis. Use `congW_zero_of (hhat_Lq_right (X.vectorsInLattice.2.2 i).2 (stab_w X.B.I w hx (bw_Lq X ?_ _)))` and prove the remaining obligations. Simplify using `only [hob, Bool.false_eq_true, if_false, sub_zero] at hew`. Conclude with `hew`. Conclude with `congW_zero_of (zero_mem _)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem congC (ob : Bool) (hew : X.ew - (if ob then 1 else 0) ∈ Wq X.B.I w) {x : X.B.I.Gf} (hx : x ∈ X.B.I.Kset)
     {N : Matrix (Fin D.R.r) (Fin D.R.r) (ZMod p)}
@@ -103,7 +101,7 @@ theorem congC (ob : Bool) (hew : X.ew - (if ob then 1 else 0) ∈ Wq X.B.I w) {x
     · exact congW_zero_of (zero_mem _)
 
 /- English proof (translation)
-Use `(congW_sg (I := X.B.I) (w := w) (t := sg X.B.I t) (m := m)).2 h` as an intermediate fact. Rewrite `this` using `[sg_sg]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem congW_of_sg {t : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F} {m : ZMod p} (h : CongW (w := w) p (sg X.B.I t) m) :
     CongW (w := wc X.B.I w) p t m := by
@@ -111,17 +109,13 @@ theorem congW_of_sg {t : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F} {m : ZMod p} (h : Cong
   rwa [sg_sg] at this
 
 /- English proof (translation)
-Use `congW_of_sg X ?_` and prove the remaining obligations. Unfold `argC tWc`. Rewrite using `[map_add, map_sum, map_sum]`. Use `congW_add (congW_sum _ fun a _ => ?_) (congW_sum _ fun i _ => ?_)` and prove the remaining obligations. Unfold `nxt split_ifs with h`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Use `show CongW p (sg X.B.I (hhat X.B.I _ _)) _`. Rewrite using `[sg_swap]`. Use `hN' (yI (hrD D) (rv ⟨a.1 + 1, h⟩)) (yI (hrD D) (rv a))` as an intermediate fact. Rewrite `this` using `[frd_y, fr_y, rv_rv, rv_rv]`. Then use the resulting hypothesis. Use `show CongW p (sg X.B.I (hhat X.B.I _ _)) _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[sg_swap]`. Use `congW_neg (hN' (zI (hrD D)) (yI (hrD D) (rv a)))` as an intermediate fact. Rewrite `this` using `[dual_frame_anisotropic, fr_y, rv_rv, hhat_neg_left, neg_neg]`. Then use the resulting hypothesis. Use `split_ifs with h hob`. Use `show CongW p (sg X.B.I (hhat X.B.I _ _)) _`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sg_swap]`. Use `congW_zero_of (hhat_Lq_right (X.vectorsInLattice.2.2 _).1 (stab_w X.B.I w (K_inv X.B.I hx) (bwd_Lq X ?_ i)))` and prove the remaining obligations. Simplify using `only [hob, if_true, sub_zero] at hsew`. Conclude with `hsew`. Use `show CongW p (sg X.B.I (hhat X.B.I _ _)) _`.
-
-Rewrite using `[sg_swap]`. Use `hN' (wI (hrD D) (rv ⟨i.1 + 1, h⟩)) (wI (hrD D) (rv i))` as an intermediate fact. Simplify using `only [hob, Bool.false_eq_true] at this ⊢`. Rewrite `this` using `[frd_wf, fr_wf, rv_rv, rv_rv]`. Then use the resulting hypothesis. Rewrite using `[map_zero]`.
-
-Conclude with `congW_zero_of (zero_mem _)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem congCc (ob : Bool) (hsew : sg X.B.I X.ew - (if ob then 0 else 1) ∈ Wq X.B.I w) {x : X.B.I.Gf}
     (hx : x ∈ X.B.I.Kset) {N' : Matrix (Fin D.R.r) (Fin D.R.r) (ZMod p)}
@@ -155,7 +149,7 @@ theorem congCc (ob : Bool) (hsew : sg X.B.I X.ew - (if ob then 0 else 1) ∈ Wq 
     · rw [map_zero]; exact congW_zero_of (zero_mem _)
 
 /- English proof (translation)
-Substitute `ha hb` using the available equality. Unfold `entN`. Rewrite using `[dif_pos ⟨i.2, j.2⟩]`.
+Substitute using the available equality. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem entN_eq {r : ℕ} (M : Matrix (Fin r) (Fin r) (ZMod p)) (i j : Fin r) {a b : ℕ} (ha : i.1 = a) (hb : j.1 = b) :
     M i j = entN M a b := by
@@ -164,15 +158,15 @@ theorem entN_eq {r : ℕ} (M : Matrix (Fin r) (Fin r) (ZMod p)) (i j : Fin r) {a
   rw [dif_pos ⟨i.2, j.2⟩]
 
 /- English proof (translation)
-Establish `hr` using `hrD D`. Rewrite using `[phi_key hr ob hinv]`. Unfold `tW tWc`. Establish `e1 : ∑ a : Fin D.R.rS, ((if h : a.1 + 1 < D.R.rS then N (xI hr a) (xI hr ⟨a.1 + 1, h⟩) else N (xI hr a) (zI hr)) + (if h : a.1 + 1 < D.R.rS then N' (yI hr (rv ⟨a.1 + 1, h⟩)) (yI hr (rv a)) else -N' (zI hr) (yI hr (rv a)))) = ∑ a ∈ range D.R.rS, (if a + 1 < D.R.rS then entN N a (a …`. Rewrite using `[← Fin.sum_univ_eq_sum_range]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Use `split_ifs with h`. Establish `q1 : N (xI hr a) (xI hr ⟨a.1 + 1, h⟩) = entN N a.1 (a.1 + 1)` using `entN_eq N _ _ rfl rfl`. Establish `q2 : N' (yI hr (rv ⟨a.1 + 1, h⟩)) (yI hr (rv a)) = entN N' (D.R.rS + D.R.k + 1 + (D.R.rS - 2 - a.1)) (D.R.rS + D.R.k + 1 + (D.R.rS - 1 - a.1))` using `entN_eq N' _ _ (by simp; omega) (by simp)`. Rewrite using `[q1, q2]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `q1 : N (xI hr a) (zI hr) = entN N a.1 (D.R.rS + D.R.k)` using `entN_eq N _ _ rfl rfl`. Establish `q2 : N' (zI hr) (yI hr (rv a)) = entN N' (D.R.rS + D.R.k) (D.R.rS + D.R.k + 1)` using `entN_eq N' _ _ rfl (by simp; omega)`. Rewrite using `[q1, q2]`. Expand and normalize the polynomial expressions, which then agree. Establish `e2 : ∑ i : Fin D.R.k, ((if h : i.1 + 1 < D.R.k then (if ob then N (wI hr i) (wI hr ⟨i.1 + 1, h⟩) else 0) else 0) + (if h : i.1 + 1 < D.R.k then (if ob then 0 else N' (wI hr (rv ⟨i.1 + 1, h⟩)) (wI hr (rv i))) else 0)) = ∑ i ∈ range D.R.k, (if i + 1 < D.R.k then (if ob then entN N …`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Fin.sum_univ_eq_sum_range]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `split_ifs with h hob`. Establish `q1 : N (wI hr i) (wI hr ⟨i.1 + 1, h⟩) = entN N (D.R.rS + i.1) (D.R.rS + i.1 + 1)` using `entN_eq N _ _ rfl (by simp; omega)`. Rewrite using `[q1, add_zero]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `q1 : N' (wI hr (rv ⟨i.1 + 1, h⟩)) (wI hr (rv i)) = entN N' (D.R.rS + (D.R.k - 2 - i.1)) (D.R.rS + (D.R.k - 1 - i.1))` using `entN_eq N' _ _ (by simp; omega) (by simp)`. Rewrite using `[q1, zero_add]`. Simplify using the standard rewrite rules. Rewrite using `[← e1, ← e2, Finset.sum_add_distrib, Finset.sum_add_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem sum_eq (ob : Bool) {N N' : Matrix (Fin D.R.r) (Fin D.R.r) (ZMod p)}
     (hinv : ∀ i, i + 1 < D.R.r → entN N' i (i + 1) = -entN N i (i + 1)) :

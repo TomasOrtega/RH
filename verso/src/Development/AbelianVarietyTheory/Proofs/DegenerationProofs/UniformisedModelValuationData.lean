@@ -26,7 +26,7 @@ namespace GlobalTheory.TestValuation
 open GlobalTheory.ZH.PsiForm
 
 /- English proof (translation)
-Take `⟨b, hb⟩` from `ha.exists_right_inv`. Establish `h3 : ‖f a‖ * ‖f b‖ = 1` using `by rw [← norm_mul, ← map_mul, hb, map_one, norm_one]`. Use `le_antisymm (h a) ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 -/
 theorem norm_eq_one_of_isUnit {o F : Type} [CommRing o] [NormedField F] (f : o →+* F) (h : ∀ a, ‖f a‖ ≤ 1)
     {a : o} (ha : IsUnit a) : ‖f a‖ = 1 := by
@@ -38,9 +38,9 @@ theorem norm_eq_one_of_isUnit {o F : Type} [CommRing o] [NormedField F] (f : o �
     _ = _ := mul_one _
 
 /- English proof (translation)
-Establish `h0 : algebraMap V (FractionRing V) a ≠ 0`. Introduce `h`. Rewrite `ha` using `[h, map_zero, norm_zero]`. Conclude with `zero_ne_one ha`. Take `⟨w, hw⟩` from `(hle (algebraMap V (FractionRing V) a)⁻¹).1 (by rw [map_inv₀, norm_inv, ha, inv_one])`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `IsUnit.of_mul_eq_one w (IsFractionRing.injective V (FractionRing V) ?_)` and prove the remaining obligations. Rewrite using `[map_mul, hw, mul_inv_cancel₀ h0, map_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_of_norm_eq_one {V : Type} [CommRing V] [IsDomain V] {F : Type} [NormedField F]
     [Algebra (FractionRing V) F]
@@ -55,7 +55,7 @@ theorem isUnit_of_norm_eq_one {V : Type} [CommRing V] [IsDomain V] {F : Type} [N
   rw [map_mul, hw, mul_inv_cancel₀ h0, map_one]
 
 /- English proof (translation)
-Establish `h1` using `h.isRoot_cyclotomic hn`. Establish `h2` using `h1.map (f := f)`. Rewrite `h2` using `[Polynomial.map_cyclotomic]`. Conclude with `(Polynomial.isRoot_cyclotomic_iff_charZero hn).1 h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isPrimitiveRoot_map {o F : Type} [CommRing o] [IsDomain o] [Field F] [CharZero F] (f : o →+* F) {ζ : o}
     {n : ℕ} (hn : 0 < n) (h : IsPrimitiveRoot ζ n) : IsPrimitiveRoot (f ζ) n := by
@@ -65,17 +65,15 @@ theorem isPrimitiveRoot_map {o F : Type} [CommRing o] [IsDomain o] [Field F] [Ch
   exact (Polynomial.isRoot_cyclotomic_iff_charZero hn).1 h2
 
 /- English proof (translation)
-Introduce `o Ω _ _ _ hA S ρ p _ y₀ u l hy`. Use `haveI : IsDomain o := hA.ded.toIsDomain`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible u.V`. Establish `hN : ‖((S.r * S.N : ℕ) : PadicAlgCl p)‖ = 1`. Use `norm_eq_one_of_isUnit (y₀.comp (algebraMap o S.R)) hy S.unit` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis. Establish `hpos : 0 < S.r * S.N` using `Nat.mul_pos S.r_pos (by have := S.N_ge; omega)`. Use `⟨?_, ?_, ⟨inferInstance, inferInstance, inferInstance, u.complete⟩, hN, isPrimitiveRoot_map (y₀.comp (algebraMap o S.R)) (pow_pos hpos 2) S.prim, ?_⟩` and prove the remaining obligations. Conclude with `((algebraMap (FractionRing u.V) (PadicAlgCl p)).comp (algebraMap u.V (FractionRing u.V))).charZero`. Establish `h1 : IsUnit ((S.r * S.N : ℕ) : u.V)` using `isUnit_of_norm_eq_one u.norm_le (by rw [map_natCast, map_natCast, hN])`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `isUnit_of_dvd_unit (Nat.cast_dvd_cast ?_) h1` and prove the remaining obligations. Rewrite using `[ρ.N_eq, ← pow_mul]`. Conclude with `Dvd.dvd.mul_left (dvd_pow_self _ (by have := ρ.two_le; omega)) _`. Use `choose Q hQ using QForm.exists_QVal hϖ u.D`. Establish `h0` using `norm_pos_of_irreducible (F := PadicAlgCl p) hϖ`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `norm_lt_one_of_irreducible u.norm_le hϖ`. Take `⟨v, hv1, hv2⟩` from `GlobalTheory.PadicVal.exists_addValuation_le_iff_eq_iff p _ h0 h1`. Use `⟨ϖ, Q, v, _, hϖ, ?_, neg_pos.2 (Real.log_neg h0 h1), hQ, fun χ => ?_, hv1, hv2⟩` and prove the remaining obligations. Introduce `c n hc`. Rewrite using `[hv2, norm_of_hasVal u.norm_le hϖ hc, Rat.cast_intCast]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hc` using `u.D.toPre.P.isLB.cover`. Set `x : Sp u.V` to `IsLocalRing.closedPoint u.V`. Establish `hx : (u.D.toPre.c χ).left x ∈ ⨆ i, u.D.toPre.P.L.U i` using `by rw [hc]; trivial`. Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.1 hx`. Establish `htop : ⊤ ≤ (u.D.toPre.c χ).left ⁻¹ᵁ u.D.toPre.P.L.U i` using `((IsLocalRing.closedPoint_mem_iff (R := u.V) _).1 hi).ge`.
-
-Establish `e1` using `l.q_eq χ (fun _ => i) htop`. Establish `e2` using `norm_of_hasVal u.norm_le hϖ (hasVal_valF u.D.toPre.P.L _ _ (QForm.ptK_eq u.D.toPre χ) (-1) _ (hQ χ) (fun _ => i) htop)`. Conclude with `neg_injective (Real.exp_injective (e1.symm.trans e2))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem main : ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [ArithBase o Ω] (S : ThetaSys o Ω) (ρ : S.Real) (p : ℕ) [Fact p.Prime] (y₀ : S.R →+* PadicAlgCl p) (u : ρ.UTest p y₀) (l : u.Lab), (∀ a : o, ‖y₀ (algebraMap o S.R a)‖ ≤ 1) → CharZero u.V ∧ IsUnit ((ρ.n : ℕ) : u.V) ∧ AdmBase u.V (IsLocalRing.maximalIdeal u.V) ∧ ‖((S.r * S.N : ℕ) : PadicAlgCl p)‖ = 1 ∧ IsPrimitiveRoot (y₀ (algebraMap o S.R S.ζ)) ((S.r * S.N) ^ 2) ∧ ∃ (ϖ : u.V) (Q : u.D.toPre.X → ℤ) (v : AddValuation (PadicAlgCl p) (WithTop ℚ)) (lam : ℝ), Irreducible ϖ ∧ ValOver ϖ (PadicAlgCl p) v ∧ NormIs u l ϖ Q v lam := by
   intro o Ω _ _ _ hA S ρ p _ y₀ u l hy

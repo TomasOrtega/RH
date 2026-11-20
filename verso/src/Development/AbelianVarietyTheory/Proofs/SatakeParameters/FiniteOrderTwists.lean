@@ -25,7 +25,7 @@ namespace GlobalTheory.RoadU.FinTwist
 open GlobalTheory.ContraPair GlobalTheory.HeightCounting.Blocks
 
 /- English proof (translation)
-Introduce `k` and use `isAlgPos_zero_of_orderDvd hm h k fun φ => by have h := IsTotallyComplex.complexEmbedding_not_isReal (Complex.ofRealHom.comp φ) refine absurd ?_ h rw [ComplexEmbedding.isReal_iff] ext x simp`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isAlg_zero {K : Type} [Field K] [NumberField K] [IsTotallyComplex K] {κ : HChar K} {m : ℕ} (hm : 0 < m)
     (h : κ ^ m = 1) : κ.IsAlg 0 := fun k => isAlgPos_zero_of_orderDvd hm h k fun φ => by
@@ -36,7 +36,7 @@ theorem isAlg_zero {K : Type} [Field K] [NumberField K] [IsTotallyComplex K] {κ
   simp
 
 /- English proof (translation)
-Establish `e` using `((ParLaws.hasInfChar_infChar (CG.mk P) τ).twist κ).infChar_eq`. Rewrite `e` using `[CG.twist_mk]`. Rewrite using `[e, (InfType.expo_of_infType K κ).1 0 hκ τ]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem infChar_twist {K : Type} [Field K] [NumberField K] [IsTotallyComplex K] {n : ℕ} (P : CuspSub K n) {κ : HChar K}
     (hκ : κ.IsAlg 0) (τ : K →+* ℂ) : (CG.mk (P.twist κ)).infChar τ = (CG.mk P).infChar τ := by

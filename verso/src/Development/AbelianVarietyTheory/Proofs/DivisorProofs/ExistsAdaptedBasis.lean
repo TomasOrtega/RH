@@ -13,11 +13,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.CompHt.FlagBasis
 
 /- English proof (translation)
-Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨k, hk, rfl⟩` from `hx`. Use `⟨Pi.single k 1, fun j hj => Pi.single_eq_of_ne ?_ _, by simp [Pi.single_apply]⟩` and prove the remaining obligations. Introduce and unpack `rfl`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `absurd hk (not_lt.2 hj)`. Consider the case `zero => exact ⟨0, fun _ _ => rfl, by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨r, hr, rfl⟩` from `hx`. Take `⟨s, hs, rfl⟩` from `hy`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨r + s, fun j hj => by simp [hr j hj, hs j hj], by simp [add_smul, Finset.sum_add_distrib]⟩`. Consider the case `smul a x _ hx`. Take `⟨r, hr, rfl⟩` from `hx`. Conclude with `⟨a • r, fun j hj => by simp [hr j hj], by simp [Finset.smul_sum, smul_smul]⟩`.
+Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_coeff {C U : Type} [Field C] [AddCommGroup U] [Module C U] {n : ℕ} (b : Fin n → U) (i : ℕ)
     {y : U} (hy : y ∈ step C b i) : ∃ r : Fin n → C, (∀ j : Fin n, i ≤ j → r j = 0) ∧ ∑ j, r j • b j = y := by
@@ -38,9 +38,9 @@ theorem exists_coeff {C U : Type} [Field C] [AddCommGroup U] [Module C U] {n : �
     exact ⟨a • r, fun j hj => by simp [hr j hj], by simp [Finset.smul_sum, smul_smul]⟩
 
 /- English proof (translation)
-Take `⟨c, hc, e, -⟩` from `exists_grAt_eq hv hfg b i (hb.notMem_span_image (by simp)) ha (Submodule.zero_mem _) (by rwa [add_zero])`. Take `⟨w, hw, hw'⟩ : c • (step C b i).mkQ (b i) ∈ grAt C La b i` from `e ▸ Submodule.mem_span_singleton_self _`. Establish `hw'' : (step C b i).mkQ w = c • (step C b i).mkQ (b i)` using `hw'`. Use `⟨w, c, hc, hw.1, (Submodule.Quotient.eq _).1 hw'', fun x hx hx' => ?_⟩` and prove the remaining obligations. Establish `h1 : (step C b i).mkQ x ∈ grAt C La b i` using `⟨x, ⟨hx, hx'⟩, rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h1` using `[e, ← hw'']`. Take `⟨o, ho⟩` from `Submodule.mem_span_singleton.1 h1`. Conclude with `⟨o, (Submodule.Quotient.eq _).1 ho.symm⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_lift {O C U : Type} [CommRing O] [Field C] [Algebra O C] [AddCommGroup U] [Module C U] [Module O U]
     [IsScalarTower O C U] {v : Valuation C ℝ≥0} (hv : v.Integers O) {n : ℕ} {La : Submodule O U} (hfg : La.FG)
@@ -59,19 +59,17 @@ theorem exists_lift {O C U : Type} [CommRing O] [Field C] [Algebra O C] [AddComm
   exact ⟨o, (Submodule.Quotient.eq _).1 ho.symm⟩
 
 /- English proof (translation)
-Introduce `O C U _ _ _ _ _ _ _ v hv n La hfg b hb hLa`. Use `choose a ha hLa using hLa`. Use `choose w c hc hw hwb hgen using fun i => exists_lift hv hfg hb i (ha i) (hLa i)`. Use `choose r hr hrb using fun i => exists_coeff b _ (hwb i)`. Set `g : Matrix (Fin n) (Fin n) C` to `fun i j => r i j + if j = i then c i else 0`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hg : ∀ i j, i < j → g i j = 0` using `fun i j h => by`. Simplify using `[g, hr i j h.le, h.ne']`. Establish `hd : ∀ i, g i i ≠ 0` using `fun i => by simpa [g, hr i i le_rfl] using hc i`. Establish `hgw : (fun i => ∑ j, g i j • b j) = w` using `funext fun i => by`. Simplify using `[g, add_smul, Finset.sum_add_distrib, hrb]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hws : ∀ i : Fin n, w i ∈ step C b (i + 1)` using `fun i => by`. Simplify using `using Submodule.add_mem _ (step_mono b (Nat.le_succ _) (hwb i)) (Submodule.smul_mem _ (c i) (mem_step_succ b i))`. Use `⟨g, hg, hd, ?_, ?_⟩` and prove the remaining obligations. Establish `hu : IsUnit g`. Rewrite using `[Matrix.isUnit_iff_isUnit_det, Matrix.det_of_isLowerTriangular _ fun i j hij => hg i j hij]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `(Finset.prod_ne_zero_iff.2 fun i _ => hd i).isUnit`. Conclude with `(Matrix.linearIndependent_rows_iff_isUnit.2 hu).map' (Fintype.linearCombination C b) (LinearMap.ker_eq_bot.2 fun s t h => funext (Fintype.linearIndependent_iffₛ.1 hb s t h))`. Rewrite using `[hgw]`. Use `le_antisymm (le_inf (Submodule.span_le.2 (Set.range_subset_iff.2 hw)) (Submodule.span_le_restrictScalars O C _)) ?_` and prove the remaining obligations. Establish `key : ∀ k, k ≤ n → ∀ x ∈ La, x ∈ step C b k → x ∈ Submodule.span O (Set.range w)`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `_ x _ hx`. Rewrite `hx` using `[step_zero, Submodule.mem_bot]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `hx ▸ Submodule.zero_mem _`. Consider the case `succ k ih`. Introduce `hk x hx hx'`. Take `⟨o, ho⟩` from `hgen ⟨k, hk⟩ x hx hx'`. Establish `h1` using `ih (Nat.le_of_succ_le hk) _ (La.sub_mem hx (La.smul_mem o (hw _))) ho`.
-
-Simplify using `using Submodule.add_mem _ h1 (Submodule.smul_mem _ o (Submodule.subset_span ⟨⟨k, hk⟩, rfl⟩))`. Introduce and unpack `x ⟨hx, hx'⟩`. Conclude with `key n le_rfl x hx (Submodule.span_le.2 (Set.range_subset_iff.2 fun i => step_mono b (Nat.succ_le_of_lt i.2) (hws i)) hx')`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem exists_adapted_basis : ∀ (O C U : Type) [CommRing O] [Field C] [Algebra O C] [AddCommGroup U] [Module C U] [Module O U] [IsScalarTower O C U] (v : Valuation C ℝ≥0), v.Integers O → ∀ (n : ℕ) (La : Submodule O U), La.FG → ∀ b : Fin n → U, LinearIndependent C b → (∀ j, ∃ a : C, a ≠ 0 ∧ a • b j ∈ La) → ∃ g : Matrix (Fin n) (Fin n) C, (∀ i j, i < j → g i j = 0) ∧ (∀ i, g i i ≠ 0) ∧ IsLatBasis C La fun i => ∑ j, g i j • b j := by
   intro O C U _ _ _ _ _ _ _ v hv n La hfg b hb hLa

@@ -22,23 +22,21 @@ section Loc
 variable {k r : ℕ} {z z' : Fin (2 * r + k + 1) → ℂ}
 
 /- English proof (translation)
-Introduce `_ _` and use `⟨Set.univ, fun _ => 0, isOpen_univ, trivial, contDiffOn_const, fun _ _ _ => rfl⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem smoothLev_zero {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] (D : Set (Mx k r)) :
     SmoothLev k r (Fin.last r) D (fun _ : Mx k r => (0 : E)) :=
   fun _ _ => ⟨Set.univ, fun _ => 0, isOpen_univ, trivial, contDiffOn_const, fun _ _ _ => rfl⟩
 
 /- English proof (translation)
-Introduce `g₀ hg₀` and use `hf g₀ ⟨hg₀.1, h hg₀.2⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem smoothLev_mono {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {D D' : Set (Mx k r)} (h : D ⊆ D')
     {f : Mx k r → E} (hf : SmoothLev k r (Fin.last r) D' f) : SmoothLev k r (Fin.last r) D f :=
   fun g₀ hg₀ => hf g₀ ⟨hg₀.1, h hg₀.2⟩
 
 /- English proof (translation)
-Establish `h` using `(Formalism.FourierDecayAlt.P.transfer_linear_local E k r z z' (Fin.last r) D Y p q (fun _ => (0 : E)) (fun _ => (0 : E)) 1 hD (smoothLev_zero D) (smoothLev_zero D) g hg).1`. Simplify using `only [smul_zero, add_zero, one_smul] at h`. Establish `h2 : tL k r z z' (Fin.last r) Y p q (fun _ : Mx k r => (0 : E)) g + tL k r z z' (Fin.last r) Y p q (fun _ : Mx k r => (0 : E)) g = tL k r z z' (Fin.last r) Y p q (fun _ : Mx k r => (0 : E)) g + 0`. Rewrite using `[add_zero]`. Conclude with `h.symm`.
-
-Conclude with `add_left_cancel h2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tL_zero_at {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {D : Set (Mx k r)} (hD : IsOpen D) (Y : ℂ)
     (p q : Fin 2) {g : Mx k r} (hg : g ∈ Glev k r (Fin.last r) ∩ D) :
@@ -53,7 +51,7 @@ theorem tL_zero_at {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {D : Se
   exact add_left_cancel h2
 
 /- English proof (translation)
-Rewrite using `[(Formalism.FourierDecayAlt.P.transfer_linear_local E k r z z' (Fin.last r) D Y p q f (fun _ => (0 : E)) 0 hD hf (smoothLev_zero D) g hg).2 h0]`. Conclude with `tL_zero_at hD Y p q hg`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tL_eq_zero_local {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {D : Set (Mx k r)} (hD : IsOpen D)
     {f : Mx k r → E} (hf : SmoothLev k r (Fin.last r) D f) (h0 : ∀ x ∈ Glev k r (Fin.last r) ∩ D, f x = 0) (Y : ℂ)
@@ -63,15 +61,13 @@ theorem tL_eq_zero_local {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {
   exact tL_zero_at hD Y p q hg
 
 /- English proof (translation)
-Establish `: LocallyCompactSpace (Mx k r)` using `(inferInstance : LocallyCompactSpace (Fin (2 * r + k + 1) → Fin (2 * r + k + 1) → ℂ))`. Take `⟨L, hLc, hKL, hLD⟩` from `exists_compact_between hKc (Qx5.Dp_open k r z z') hKD`. Take `⟨f₁, hsupp, hf₁, hrange⟩` from `(isOpen_interior : IsOpen (interior L)).exists_contDiff_support_eq (n := ⊤)`. Establish `hf₁c : Continuous f₁` using `hf₁.continuous`. Establish `hpos : ∀ g ∈ Kc, 0 < f₁ g` using `fun g hg => by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : g ∈ Function.support f₁` using `by rw [hsupp]; exact hKL hg`. Conclude with `lt_of_le_of_ne (hrange ⟨g, rfl⟩).1 (Ne.symm h1)`. Choose the witnesses or unpack the hypotheses as in `⟨m, hm, hmK⟩ : ∃ m : ℝ, 0 < m ∧ ∀ g ∈ Kc, m ≤ f₁ g := by`. Break down `Kc.eq_empty_or_nonempty with h | h` into its components or cases. Conclude with `⟨1, one_pos, by simp [h]⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨g₁, hg₁, hmin⟩` from `hKc.exists_isMinOn h hf₁c.continuousOn`. Conclude with `⟨f₁ g₁, hpos g₁ hg₁, fun g hg => hmin hg⟩`. Use `⟨fun g => Real.smoothTransition (2 * f₁ g / m), {g | m / 2 < f₁ g}, L, Real.smoothTransition.contDiff.comp ((contDiff_const.mul hf₁).div_const m), isOpen_lt continuous_const hf₁c, fun g hg => by have := hmK g hg; show m / 2 < f₁ g; linarith, hLc, hLD, fun g hg => ?_, fun g hg => …` and prove the remaining obligations. Establish `hg' : m / 2 < f₁ g` using `hg`. Conclude with `Real.smoothTransition.one_of_one_le (by rw [le_div_iff₀ hm]; linarith)`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `h0 : f₁ g = 0`. Assume the negation of the conclusion as `h`. Establish `h1 : g ∈ Function.support f₁` using `h`. Rewrite `h1` using `[hsupp]`. Conclude with `hg (interior_subset h1)`.
-
-Use `show Real.smoothTransition (2 * f₁ g / m) = 0`. Rewrite using `[h0, mul_zero, zero_div]`. Conclude with `Real.smoothTransition.zero_of_nonpos le_rfl`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bump_exists {Kc : Set (Mx k r)} (hKc : IsCompact Kc) (hKD : Kc ⊆ Qx5.Dp k r z z') :
     ∃ (χ : Mx k r → ℝ) (O L : Set (Mx k r)), ContDiff ℝ ∞ χ ∧ IsOpen O ∧ Kc ⊆ O ∧ IsCompact L ∧
@@ -113,7 +109,7 @@ variable {k r : ℕ} {z z' : Fin (2 * r + k + 1) → ℂ} {Wp Wq : Type} [Normed
   {π : Mx k r → (Wp →L[ℂ] Wp)} {π' : Mx k r → (Wq →L[ℂ] Wq)}
 
 /- English proof (translation)
-Distinguish the cases in `hx : x ∈ DomR k r z z'`. Rewrite using `[X.t_apply Y a b Ψ x hx]`. Conclude with `tL_eq_zero_local (hO.inter (Qx5.Dp_open k r z z')) (smoothLev_mono Set.inter_subset_right (Qx5.slice_smooth Ψ.2 hx.1)) (fun g hg => h0 g ⟨hg.1, hg.2.1⟩) Y a b ⟨hx.2.1, hxO, hx.2.2⟩`. Conclude with `Formalism.FourierDecayAlt.P5.radSp_zero_off _ hx`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem t_zero_near (X : ActualOps k r z z' π π') (Ψ : RadSp k r z z' π π') (Y : ℂ) (a b : Fin 2)
     {x : (Fin r → ℂ) × Mx k r} {O : Set (Mx k r)} (hO : IsOpen O) (hxO : x.2 ∈ O)
@@ -127,7 +123,7 @@ theorem t_zero_near (X : ActualOps k r z z' π π') (Ψ : RadSp k r z z' π π')
   · exact Formalism.FourierDecayAlt.P5.radSp_zero_off _ hx
 
 /- English proof (translation)
-Take `⟨K, hK, hKD, h0⟩` from `hΨ`. Use `⟨K, hK, hKD, fun x hx => ?_⟩` and prove the remaining obligations. Establish `hO : IsOpen {g : Mx k r | (x.1, g) ∉ K}` using `hK.isClosed.isOpen_compl.preimage (continuous_const.prodMk continuous_id)`. Conclude with `t_zero_near X Ψ Y a b hO (show (x.1, x.2) ∉ K from hx) fun g hg => h0 (x.1, g) hg.2`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem entry_operator_preserves_tests (X : ActualOps k r z z' π π') (Y : ℂ) (a b : Fin 2) {Ψ : RadSp k r z z' π π'} (hΨ : RTest Ψ) :
     RTest (X.t Y a b Ψ) := by
@@ -138,7 +134,7 @@ theorem entry_operator_preserves_tests (X : ActualOps k r z z' π π') (Y : ℂ)
   exact t_zero_near X Ψ Y a b hO (show (x.1, x.2) ∉ K from hx) fun g hg => h0 (x.1, g) hg.2
 
 /- English proof (translation)
-Take `⟨K, hK, hKD, h0⟩` from `hΨ`. Use `⟨Prod.snd '' (K ∩ Prod.fst ⁻¹' {c}), (hK.inter_right (isClosed_singleton.preimage continuous_fst)).image continuous_snd, ?_, fun g hg => h0 (c, g) fun hcg => hg ⟨(c, g), ⟨hcg, rfl⟩, rfl⟩⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨x, ⟨hxK, -⟩, rfl⟩`. Conclude with `(hKD hxK).2.2`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem slice_cpt {Ψ : RadSp k r z z' π π'} (hΨ : RTest Ψ) (c : Fin r → ℂ) :
     ∃ Kc : Set (Mx k r), IsCompact Kc ∧ Kc ⊆ Qx5.Dp k r z z' ∧
@@ -151,27 +147,25 @@ theorem slice_cpt {Ψ : RadSp k r z z' π π'} (hΨ : RTest Ψ) (c : Fin r → �
   exact (hKD hxK).2.2
 
 /- English proof (translation)
-Take `⟨χ, O, L, hχs, hO, hKO, hLc, hLD, χ1, χ0⟩` from `bump_exists hKc hKD`. Take `⟨fΨ, hfΨ⟩ : ∃ f : Mx k r → ℂ, f = fun y => φ ((Ψ : Fn k r (Wq →L[ℂ] Wp)) c y)` from `⟨_, rfl⟩`. Take `⟨fΦ, hfΦ⟩ : ∃ f : Mx k r → ℂ, f = fun y => (χ y : ℂ) * φ ((Φ : Fn k r (Wq →L[ℂ] Wp)) c y)` from `⟨_, rfl⟩`. Establish `hsΨ : SmoothLev k r (Fin.last r) Set.univ fΨ`. Rewrite using `[hfΨ]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Qx5.smooth_clm φ (Qx5.smooth_univ Ψ.2 hc hKc hKD fun g _ hg => h0 g hg)`. Establish `hcΨ : CptOn k r (Fin.last r) fΨ` using `⟨Kc, hKc, fun g _ hg => by rw [hfΨ]; simp [h0 g hg]⟩`. Establish `hsΦ : SmoothLev k r (Fin.last r) Set.univ fΦ`. Introduce `g₀ hg₀`. Distinguish the cases in `hgL : g₀ ∈ L`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Take `⟨U, F, hU, hgU, hF, he⟩` from `Qx5.smooth_clm φ (Qx5.slice_smooth Φ.2 hc) g₀ ⟨hg₀.1, hLD hgL⟩`. Use `⟨U, fun y => (χ y : ℂ) * F y, hU, hgU, (Complex.ofRealCLM.contDiff.comp_contDiffOn hχs.contDiffOn).mul hF, fun y hy hyG => ?_⟩` and prove the remaining obligations. Rewrite using `[hfΦ]`. Use `show (χ y : ℂ) * φ ((Φ : Fn k r (Wq →L[ℂ] Wp)) c y) = (χ y : ℂ) * F y`. Rewrite using `[← he y hy hyG]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨Lᶜ, fun _ => 0, hLc.isClosed.isOpen_compl, hgL, contDiffOn_const, fun y hy _ => ?_⟩` and prove the remaining obligations. Rewrite using `[hfΦ]`. Use `show (χ y : ℂ) * φ ((Φ : Fn k r (Wq →L[ℂ] Wp)) c y) = 0`. Rewrite using `[χ0 y hy, Complex.ofReal_zero, zero_mul]`. Establish `hcΦ : CptOn k r (Fin.last r) fΦ` using `⟨L, hLc, fun g _ hg => by rw [hfΦ]; simp [χ0 g hg]⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hh` using `Formalism.FourierDecayAlt.P.hermitian_haar_invariance k r z z' (Fin.last r) μ hμ hz hz' fΨ fΦ hsΨ hsΦ hcΨ hcΦ (star Y) b a`. Rewrite `hh` using `[star_star]`. Establish `eA : ∀ x : Mx k r, φ ((Ψ : Fn k r (Wq →L[ℂ] Wp)) c x) * star (φ ((X.t Y a b Φ : Fn k r (Wq →L[ℂ] Wp)) c x)) = fΨ x * star (tL k r z z' (Fin.last r) Y a b fΦ x)`. Introduce `x`. Rewrite using `[Qx5.key_pt X Φ Ψ hc Y a b φ x, hfΨ]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Distinguish the cases in `hx0 : (Ψ : Fn k r (Wq →L[ℂ] Wp)) c x = 0`. Simplify using `[hx0]`. Establish `hxK : x ∈ Kc`. Assume the negation of the conclusion as `h`. Conclude with `hx0 (h0 x h)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hxG : x ∈ Glev k r (Fin.last r)`. Assume the negation of the conclusion as `h`. Conclude with `hx0 (Formalism.FourierDecayAlt.P5.radSp_zero_off Ψ (x := (c, x)) fun hd => h hd.2.1)`. Establish `hloc` using `(Formalism.FourierDecayAlt.P.transfer_linear_local ℂ k r z z' (Fin.last r) (O ∩ Qx5.Dp k r z z') Y a b (fun y => φ ((Φ : Fn k r (Wq →L[ℂ] Wp)) c y)) fΦ 0 (hO.inter (Qx5.Dp_open k r z z')) (smoothLev_mono Set.inter_subset_right (Qx5.smooth_clm φ (Qx5.slice_smooth Φ.2 hc))) (smooth …`. Rewrite using `[hloc]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `eB : ∀ x : Mx k r, φ ((X.t (star Y) b a Ψ : Fn k r (Wq →L[ℂ] Wp)) c x) * star (φ ((Φ : Fn k r (Wq →L[ℂ] Wp)) c x)) = tL k r z z' (Fin.last r) (star Y) b a fΨ x * star (fΦ x)`. Introduce `x`. Establish `e0 : φ ((X.t (star Y) b a Ψ : Fn k r (Wq →L[ℂ] Wp)) c x) * star (φ ((Φ : Fn k r (Wq →L[ℂ] Wp)) c x)) = tL k r z z' (Fin.last r) (star Y) b a (fun y => φ ((Ψ : Fn k r (Wq →L[ℂ] Wp)) c y)) x * star (φ ((Φ : Fn k r (Wq →L[ℂ] Wp)) c x))`. Use `congrArg star (Qx5.key_pt X Ψ Φ hc (star Y) b a φ x)` as an intermediate fact. Simplify `this` using `[mul_comm]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Rewrite using `[e0, hfΨ, hfΦ]`. Use `show _ = _ * star ((χ x : ℂ) * φ ((Φ : Fn k r (Wq →L[ℂ] Wp)) c x))`. Distinguish the cases in `hxO : x ∈ O`. Rewrite using `[χ1 x hxO, Complex.ofReal_one, one_mul]`. Distinguish the cases in `hxD : (c, x) ∈ DomR k r z z'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hxK : x ∉ Kc` using `fun h => hxO (hKO h)`. Establish `ht0 : tL k r z z' (Fin.last r) (star Y) b a (fun y => φ ((Ψ : Fn k r (Wq →L[ℂ] Wp)) c y)) x = 0` using `tL_eq_zero_local hKc.isClosed.isOpen_compl (smoothLev_mono (Set.subset_univ _) (hfΨ ▸ hsΨ)) (fun y hy => by simp [h0 y hy.2]) (star Y) b a ⟨hxD.2.1, hxK⟩`. Rewrite using `[ht0, zero_mul, zero_mul]`. Establish `hΦ0 : (Φ : Fn k r (Wq →L[ℂ] Wp)) c x = 0` using `Formalism.FourierDecayAlt.P5.radSp_zero_off Φ (x := (c, x)) hxD`. Rewrite using `[hΦ0]`.
-
-Simplify using the standard rewrite rules. Simplify using `only [eA, eB]`. Conclude with `hh.symm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem slice_adj_clm (hz : inWb k r z) (hz' : inWb k r z') (X : ActualOps k r z z' π π') {μ : Measure (Mt k r)}
     (hμ : B.IsHaarOn (Glev k r (Fin.last r)) μ) (Φ Ψ : RadSp k r z z' π π') {c : Fin r → ℂ} (hc : c ∈ OmX r)
@@ -248,7 +242,7 @@ theorem slice_adj_clm (hz : inWb k r z) (hz' : inWb k r z') (X : ActualOps k r z
   exact hh.symm
 
 /- English proof (translation)
-Establish `htΨ : ∀ g ∈ Glev k r (Fin.last r), g ∉ Kc → (X.t (star Y) b a Ψ : Fn k r (Wq →L[ℂ] Wp)) c g = 0` using `fun g _ hg => t_zero_near X Ψ (star Y) b a (x := (c, g)) hKc.isClosed.isOpen_compl hg (fun g' hg' => h0 g' hg'.2)`. Simplify using `only [Qx5.inner_coef]`. Rewrite using `[integral_finsetSum _ fun j _ => (Qx5.integrable_pair hμ (X.t Y a b Φ) Ψ hc hKc hKD (fun g _ hg => h0 g hg) _).1, integral_finsetSum _ fun j _ => (Qx5.integrable_pair hμ Φ (X.t (star Y) b a Ψ) hc hKc hKD htΨ _).1]`. Conclude with `Finset.sum_congr rfl fun j _ => slice_adj_clm hz hz' X hμ Φ Ψ hc hKc hKD h0 Y a b _`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem slice_adj (hz : inWb k r z) (hz' : inWb k r z') (X : ActualOps k r z z' π π')
     {μ : Measure (Mt k r)} (hμ : B.IsHaarOn (Glev k r (Fin.last r)) μ) (Φ Ψ : RadSp k r z z' π π') {c : Fin r → ℂ}
@@ -268,9 +262,9 @@ theorem slice_adj (hz : inWb k r z) (hz' : inWb k r z') (X : ActualOps k r z z' 
   exact Finset.sum_congr rfl fun j _ => slice_adj_clm hz hz' X hμ Φ Ψ hc hKc hKD h0 Y a b _
 
 /- English proof (translation)
-Unfold `radIp`. Use `congr 1`. Use function extensionality and compare the values at `c`. Distinguish the cases in `hc : c ∈ OmX r`. Take `⟨Kc, hKc, hKD, h0⟩` from `slice_cpt hΨ c`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Establish `htΨ : ∀ g ∈ Glev k r (Fin.last r), g ∉ Kc → (X.t (star Y) b a Ψ : Fn k r (Wq →L[ℂ] Wp)) c g = 0` using `fun g _ hg => t_zero_near X Ψ (star Y) b a (x := (c, g)) hKc.isClosed.isOpen_compl hg (fun g' hg' => h0 g' hg'.2)`. Rewrite using `[Formalism.FourierDecayAlt.P.CutMP.Gauge.GC.RadAdj.int_hs_sum hμ (X.t Y a b Φ) Ψ hc hKc hKD (fun g _ hg => Or.inr (h0 g hg)), Formalism.FourierDecayAlt.P.CutMP.Gauge.GC.RadAdj.int_hs_sum hμ Φ (X.t (star Y) b a Ψ) hc hKc hKD (fun g hg hgK => Or.inr (htΨ g hg hgK))]`. Conclude with `Finset.sum_congr rfl fun i _ => slice_adj hz hz' X hμ Φ Ψ hc hKc hKD h0 Y a b _`. Establish `hz0 : ∀ (Θ : RadSp k r z z' π π') (g : Mx k r), (Θ : Fn k r (Wq →L[ℂ] Wp)) c g = 0` using `fun Θ g => Formalism.FourierDecayAlt.P5.radSp_zero_off Θ (x := (c, g)) fun hd => hc hd.1`. Simplify using `only [hz0]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem radIp_adj (hz : inWb k r z) (hz' : inWb k r z')
     (X : ActualOps k r z z' π π') {μ : Measure (Mt k r)} (hμ : B.IsHaarOn (Glev k r (Fin.last r)) μ)
@@ -293,7 +287,7 @@ theorem radIp_adj (hz : inWb k r z) (hz' : inWb k r z')
     simp only [hz0]
 
 /- English proof (translation)
-Use `⟨fun Ψ hΨ => entry_operator_preserves_tests X Y a b hΨ, fun Ψ hΨ => entry_operator_preserves_tests X (star Y) b a hΨ, fun Φ Ψ hΨ => radIp_adj hz hz' X hμ Φ Ψ hΨ Y a b, fun Φ Ψ hΨ => ?_⟩` and prove the remaining obligations. Establish `h` using `radIp_adj hz hz' X hμ Φ Ψ hΨ (star Y) b a`. Rewrite `h` using `[star_star]`. Conclude with `h`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rAdj_XQQ (hz : inWb k r z) (hz' : inWb k r z')
     (X : ActualOps k r z z' π π') {μ : Measure (Mt k r)} (hμ : B.IsHaarOn (Glev k r (Fin.last r)) μ) (Y : ℂ)
@@ -305,16 +299,16 @@ theorem rAdj_XQQ (hz : inWb k r z) (hz' : inWb k r z')
   exact h
 
 /- English proof (translation)
-Unfold `B.hsVec`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Both sides reduce to the same expression.
 -/
 theorem hsVec_smul_q (w : ℂ) (A : Wq →L[ℂ] Wp) : B.hsVec (w • A) = w • B.hsVec A := by
   unfold B.hsVec
   rfl
 
 /- English proof (translation)
-Unfold `radIp`. Rewrite using `[← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `c`. Rewrite using `[← integral_const_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `x`. Simplify using `only [Submodule.coe_smul, Pi.smul_apply]`. Rewrite using `[hsVec_smul_q, inner_smul_left]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem radIp_smul_left (μ : Measure (Mt k r)) (w : ℂ) (Φ Ψ : RadSp k r z z' π π') :
     radIp μ (w • Φ) Ψ = starRingEnd ℂ w * radIp μ Φ Ψ := by
@@ -329,9 +323,9 @@ theorem radIp_smul_left (μ : Measure (Mt k r)) (w : ℂ) (Φ Ψ : RadSp k r z z
   rw [hsVec_smul_q, inner_smul_left]
 
 /- English proof (translation)
-Unfold `radIp`. Rewrite using `[← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `c`. Rewrite using `[← integral_const_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `x`. Simplify using `only [Submodule.coe_smul, Pi.smul_apply]`. Rewrite using `[hsVec_smul_q, inner_smul_right]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem radIp_smul_right (μ : Measure (Mt k r)) (w : ℂ) (Φ Ψ : RadSp k r z z' π π') :
     radIp μ Φ (w • Ψ) = w * radIp μ Φ Ψ := by
@@ -346,11 +340,11 @@ theorem radIp_smul_right (μ : Measure (Mt k r)) (w : ℂ) (Φ Ψ : RadSp k r z 
   rw [hsVec_smul_q, inner_smul_right]
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4⟩` from `ha`. Establish `es : s • a = algebraMap ℂ (Pr (RadSp k r z z' π π')) s * a` using `Algebra.smul_def s a`. Establish `e1 : ∀ Φ, (s • a).1 Φ = s • a.1 Φ` using `fun Φ => by`. Rewrite using `[es, rds_fst_mul, Module.End.mul_apply, rds_fst_alg, Module.algebraMap_end_apply]`. Establish `e2 : ∀ Φ, (s • a).2.unop Φ = s • a.2.unop Φ` using `fun Φ => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[es, rds_snd_mul, Module.End.mul_apply, rds_snd_alg, Module.algebraMap_end_apply, map_smul, hs]`. Use `⟨fun Ψ hΨ => ?_, fun Ψ hΨ => ?_, fun Φ Ψ hΨ => ?_, fun Φ Ψ hΨ => ?_⟩` and prove the remaining obligations. Rewrite using `[e1]`. Conclude with `rTest_smul s (h1 Ψ hΨ)`. Rewrite using `[e2]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `rTest_smul s (h2 Ψ hΨ)`. Rewrite using `[e1, e2, radIp_smul_left, radIp_smul_right, h3 Φ Ψ hΨ, hs]`. Rewrite using `[e1, e2, radIp_smul_left, radIp_smul_right, h4 Φ Ψ hΨ, hs]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rAdj_smul_real {μ : Measure (Mt k r)} {a : Pr (RadSp k r z z' π π')}
     (ha : RAdj μ a) (s : ℂ) (hs : starRingEnd ℂ s = s) : RAdj μ (s • a) := by
@@ -375,9 +369,9 @@ namespace Formalism.FourierDecayAlt.P.CutSE
 open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt.Q Formalism.FourierDecayAlt.Wd Formalism.FourierDecayAlt.P5
 
 /- English proof (translation)
-Introduce `Wp Wq _ _ _ _ _ _ P z z' π π' X μ L st l0 D hD _ _ _ _ _ _ _ Y a b`. Establish `hz : inWb P.k P.r z` using `hD.1.2.1`. Establish `hz' : inWb P.k P.r z'` using `hD.1.2.2.1`. Rewrite using `[hD.2.2.2.1 Y, Matrix.smul_apply]`. Use `QQA.rAdj_smul_real (QQA.rAdj_XQQ hz hz' X hD.2.1 Y a b) _ ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[M.sgn]`.
+Simplify using the standard rewrite rules.
 -/
 theorem spectral_quadratic_adjoint : RDSQQAdj := by
   intro Wp Wq _ _ _ _ _ _ P z z' π π' X μ L st l0 D hD _ _ _ _ _ _ _ Y a b

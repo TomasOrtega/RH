@@ -9,11 +9,9 @@ namespace LateralTheory.E.CurveKrullDim
 variable {X : Type} [TopologicalSpace X]
 
 /- English proof (translation)
-Set `T : IrreducibleCloseds X` to `⟨univ, IrreducibleSpace.isIrreducible_univ X, isClosed_univ⟩`. Establish `h1 : A < B`. Rewrite using `[← SetLike.coe_ssubset_coe]`. Conclude with `hAB`. Establish `h2 : B < T`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← SetLike.coe_ssubset_coe]`. Conclude with `ssubset_univ_iff.mpr hB`. Set `l : LTSeries (IrreducibleCloseds X)` to `⟨2, ![A, B, T], fun i => by fin_cases i`. Conclude with `h1`. Conclude with `h2⟩`.
-
-Establish `hl : l.length = 2` using `rfl`. Unfold `topologicalKrullDim`. Conclude with `Order.le_krullDim_iff.mpr ⟨l, hl⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem two_le_dim (A B : IrreducibleCloseds X) (hAB : (A : Set X) ⊂ B) (hB : (B : Set X) ≠ univ)
     [IrreducibleSpace X] : (2 : WithBot ℕ∞) ≤ topologicalKrullDim X := by
@@ -31,11 +29,11 @@ theorem two_le_dim (A B : IrreducibleCloseds X) (hAB : (A : Set X) ⊂ B) (hB : 
   exact Order.le_krullDim_iff.mpr ⟨l, hl⟩
 
 /- English proof (translation)
-Rewrite using `[← closure_subset_iff_isClosed]`. Introduce `y hy`. Assume the negation of the conclusion as `hne`. Establish `hyz : closure ({y} : Set X) ⊂ closure {z}`. Use `⟨closure_minimal (by simpa using hy) isClosed_closure, fun h => hne ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : z ⤳ y` using `specializes_iff_mem_closure.mpr hy`. Establish `h2 : y ⤳ z` using `specializes_iff_mem_closure.mpr (h (subset_closure rfl))`. Conclude with `(h1.antisymm h2).eq.symm`. Use `two_le_dim ⟨closure {y}, isIrreducible_singleton.closure, isClosed_closure⟩ ⟨closure {z}, isIrreducible_singleton.closure, isClosed_closure⟩ hyz hz` as an intermediate fact. Establish `h3` using `this.trans hd`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Put the expressions in a common number system so they can be compared.
 
-Normalize the coercions in `at h3`.
+A detailed English derivation is pending.
 -/
 theorem closed_of_ne_univ [IrreducibleSpace X] [T0Space X] (hd : topologicalKrullDim X ≤ 1) (z : X)
     (hz : closure ({z} : Set X) ≠ univ) : IsClosed ({z} : Set X) := by
@@ -53,17 +51,15 @@ theorem closed_of_ne_univ [IrreducibleSpace X] [T0Space X] (hd : topologicalKrul
   norm_cast at h3
 
 /- English proof (translation)
-Establish `hpt : ∀ z ∈ Z, IsClosed ({z} : Set X)` using `fun z hz => closed_of_ne_univ hd z (fun h => hne (eq_univ_of_univ_subset (h ▸ closure_minimal (by simpa using hz) hZ)))`. Establish `hfin` using `NoetherianSpace.finite_irreducibleComponents (α := Z)`. Establish `hsub : ∀ S ∈ irreducibleComponents Z, (Subtype.val '' S).Subsingleton`. Introduce `S hS`. Establish `hirr : IsIrreducible (Subtype.val '' S)` using `hS.1.image _ continuous_subtype_val.continuousOn`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨g, hg⟩` from `QuasiSober.sober hirr.closure isClosed_closure`. Establish `hgZ : g ∈ Z` using `closure_minimal (by rintro _ ⟨x, -, rfl⟩; exact x.2) hZ (hg.mem)`. Establish `: closure (Subtype.val '' S) = {g}`. Rewrite using `[← hg.def, (hpt g hgZ).closure_eq]`. Introduce `a ha b hb`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `ha'` using `subset_closure ha`. Establish `hb'` using `subset_closure hb`. Rewrite `ha'`, `hb'` using `[this]`. Conclude with `ha'.trans hb'.symm`. Establish `: Z = ⋃ S ∈ irreducibleComponents Z, Subtype.val '' S`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Establish `: (⟨x, hx⟩ : Z) ∈ ⋃₀ irreducibleComponents Z` using `by rw [sUnion_irreducibleComponents]; trivial`. Take `⟨S, hS, hxS⟩` from `this`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `mem_iUnion₂.mpr ⟨S, hS, ⟨_, hxS, rfl⟩⟩`. Introduce `hx`. Take `⟨S, -, y, -, rfl⟩` from `mem_iUnion₂.mp hx`. Conclude with `y.2`. Rewrite using `[this]`.
-
-Conclude with `hfin.biUnion fun S hS => (hsub S hS).finite`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_of_closed [IrreducibleSpace X] [T0Space X] [QuasiSober X] [NoetherianSpace X]
     (hd : topologicalKrullDim X ≤ 1) (Z : Set X) (hZ : IsClosed Z) (hne : Z ≠ univ) : Z.Finite := by

@@ -14,17 +14,17 @@ open scoped Formalism.Per NNReal
 namespace GlobalTheory.BSP
 
 /- English proof (translation)
-Introduce `l _ K bk d ρ τ s ht hper B f g ι tb ε hrel`. Establish `hnorm` using `GlobalTheory.T.norm_breuilKisinHom_uniformizer_frobenius_le l K bk B f g`. Set `Φ : Disc l (BK.hf f X) bk.ρ₀ →+* Disc l (BK.hf f X) bk.ρ₀` to `Disc.map B.D.φ hnorm.2`. Establish `hΦ : IsDiscMap B.D.φ Φ` using `isDiscMap_map _ _`. Establish `hreg` using `GlobalTheory.T.toDisc_injective_and_nonZeroDivisors_of_topBasis l K bk B.A (BK.hf f) ι tb`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpair` using `GlobalTheory.T.breuilKisin_two_homs_E_regular_associated l K bk B f g`. Establish `heq` using `GlobalTheory.T.comparisonMatrix_frobenius_disc l K bk d ρ τ s ht hper B f hreg.2.1 f g ε hrel Φ hΦ`. Establish `hQ : ht.A.map (BK.hf g) * ht.A'.map (BK.hf g) = BK.hf g bk.E ^ ht.b • (1 : Matrix (Fin d) (Fin d) B.A)`. Rewrite using `[← Matrix.map_mul (f := BK.hf g), ht.A_mul, Matrix.map_smul' _ _ _ (map_mul _), Matrix.map_one _ (map_zero _) (map_one _), map_pow]`. Take `⟨h, c, hc⟩` from `GlobalTheory.T.matrix_phi_equation_to_family_equation B.A (Disc l (BK.hf f X) bk.ρ₀) (toDisc l (BK.hf f X) bk.ρ₀) Φ (BK.hf f bk.E) (BK.hf g bk.E) hpair.2.1 d d (ht.a + s.N) (ht.a + s.N) ht.b (ht.A.map (BK.hf f)) (ht.A.map (BK.hf g)) (ht.A'.map (BK.hf g)) hQ ε heq`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hφX : B.D.φ (BK.hf f X) = BK.hf f X ^ l`. Establish `h1 : B.D.φ (f.f X) = f.f (bk.prism.D.φ X)` using `(f.f_φ X).symm`. Establish `h2 : bk.prism.D.φ X = X ^ l` using `frobS_X l bk.a`. Conclude with `h1.trans ((congrArg f.f h2).trans (map_pow f.f _ l))`. Establish `key` using `GlobalTheory.T.exists_bounded_of_phi_equation_disc l K bk B.A (BK.hf f) ι tb B.D.φ hφX Φ hΦ (Fin d × Fin d) c (fun _ _ => Set.toFinite _) h (fun j => ε j.1 j.2)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `htend : Filter.Tendsto (fun j : Fin d × Fin d => ε j.1 j.2) Filter.cofinite (nhds (0 : Disc l (BK.hf f X) bk.ρ₀))`. Simplify using `only [Filter.cofinite_eq_bot, Filter.tendsto_bot]`. Establish `hsum : ∀ j : Fin d × Fin d, HasSum (fun i => Φ (ε i.1 i.2) * toDisc l (BK.hf f X) bk.ρ₀ (c i j)) (toDisc l (BK.hf f X) bk.ρ₀ (BK.hf f bk.E) ^ h * ε j.1 j.2)` using `fun j => by`. Establish `hs` using `hasSum_fintype (fun i : Fin d × Fin d => Φ (ε i.1 i.2) * toDisc l (BK.hf f X) bk.ρ₀ (c i j))`. Establish `e : toDisc l (BK.hf f X) bk.ρ₀ (BK.hf f bk.E) ^ h * ε j.1 j.2 = ∑ k : Fin d × Fin d, Φ (ε k.1 k.2) * toDisc l (BK.hf f X) bk.ρ₀ (c k j)` using `hc j`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `hs using 1` and compare the differences between its conclusion and the goal. Establish `k2` using `key htend hsum`. Take `⟨k, v, hv, -⟩` from `k2`. Use `⟨k, Matrix.of fun i j => v (i, j), ?_⟩` and prove the remaining obligations. Use extensionality with `i j`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.map_apply, Matrix.of_apply, Matrix.smul_apply, smul_eq_mul]`. Conclude with `hv (i, j)`.
+A detailed English derivation is pending.
 -/
 theorem comparisonMatrix_bounded : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (d : ℕ) (ρ : ↥(GK K) → Matrix (Fin d) (Fin d) ℤ_[l]) (τ : Ainf l) (s : Seed bk d ρ τ) (ht : Height s), bk.IsPer τ → ∀ (B : Obj l ↥(OL K)) (f g : Hom bk.prism B) (ι : Type), TopBasis (BK.hf f) bk.J ι → ∀ ε : Matrix (Fin d) (Fin d) (Disc l (BK.hf f X) bk.ρ₀), ht.Rel (BK.hf f X) f g ε → ∃ (k : ℕ) (x : Matrix (Fin d) (Fin d) B.A), x.map (toDisc l (BK.hf f X) bk.ρ₀) = ((l : ℕ) : Disc l (BK.hf f X) bk.ρ₀) ^ k • ε := by
   intro l _ K bk d ρ τ s ht hper B f g ι tb ε hrel

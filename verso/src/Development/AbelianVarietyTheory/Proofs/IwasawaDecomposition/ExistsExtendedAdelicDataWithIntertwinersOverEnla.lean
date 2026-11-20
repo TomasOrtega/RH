@@ -27,11 +27,11 @@ open GlobalTheory.Mem GlobalTheory.Mem.Col2 GlobalTheory.Mem.Top GlobalTheory.Me
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Introduce `x' hx'`. Take `⟨-, -, -, -, -, -, -, -, -, -, -, -, rI, -⟩` from `h`. Take `⟨-, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, rι⟩` from `rI i i' hi`. Distinguish the cases in `hex : ∃ ι : (w.st Z).toD7.what₂.LL →+* (w'.st Z').toD7.what₂.LL, ∀ y, (w'.st Z').toD7.what₂.embLL (ι y) = (w.st Z).toD7.what₂.embLL y`. Take `⟨ι, hι⟩` from `hex`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Take `⟨-, ⟨a, b⟩, -⟩` from `rι ι hι`. Take `⟨x, hx⟩` from `b x' hx'`. Use `⟨x, (a x x' hx).1 hx', fun ι' hι' => ?_⟩` and prove the remaining obligations. Establish `e : ι' = ι` using `RingHom.ext fun y => (w'.st Z').toD7.what₂.embLL.injective ((hι' y).trans (hι y).symm)`. Rewrite using `[e]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hx`. Conclude with `⟨0, Submodule.zero_mem _, fun ι hι => absurd ⟨ι, hι⟩ hex⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Mem.R3.Rw.RSideW.wk_image {B B' : Base} {f : Fr B.toPre} {f' : Fr B'.toPre} {T : TwDat B} {T' : TwDat B'} {w : ColW B f T}
     {w' : ColW B' f' T'} {Z : w.Lt} {Z' : w'.Lt} {hX : B.fields.Ok} {hX' : B'.fields.Ok} {Wt : Set B.places.Pl}
@@ -58,7 +58,7 @@ theorem GlobalTheory.Mem.R3.Rw.RSideW.wk_image {B B' : Base} {f : Fr B.toPre} {f
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Use `GlobalTheory.Mem.R3.Rw.datExt_rest_of_parts GlobalTheory.T.exists_analyticData_enlargedBase_tupleFree GlobalTheory.T.exists_characterisedData_weil_enlargedBase fun h1 h2 h3 h4 h5 h6 h7 => ?_` and prove the remaining obligations. Use `(GlobalTheory.T.geometricHalf_to_analyticData_enlargedBase h1 h2 h3 h4 h5 h6 h7).trans (Step.of_all fun K B' f' T' _ _ _ _ w' hd => ?_)` and prove the remaining obligations. Introduce `B f T w hE hf hP hpx Z hX Wt z hG hGA hF hH Z' hX' hG' hGA' hV core' alg' ha1 ha2 ha3 hc hL hC hD hpb Xg tr R' cG' s1`. Conclude with `hd B f T w hE hf hP hpx Z hX Wt z hG hGA hF hH Z' hX' hG' hGA' hV core' alg' ha1 ha2 ha3 hc hL hC hD hpb Xg tr R' cG' s1 (@GlobalTheory.Mem.R3.Rw.RSideW.wk_image _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ alg' _ _ _ _ _ s1.2.2.2.2.2.2.2.1)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Mem.R3.Rw.datExt_rest : GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.HarishChandraModules → GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.CasselmanWallach → GlobalTheory.Published.WeilRepresentationUnitaryPair → GlobalTheory.Published.DiscreteSeriesExists → GlobalTheory.Published.HarishChandraFinite → (StepW Pinned fun K B' f' T' w' => ∀ (B : Base) (f : Fr B.toPre) (T : TwDat B) (w : ColW B f T), Enl0 B B' →
   HEq f' f → Pinned K B f T w → HEq w'.px w.px → ∀ (Z : w.Lt) (hX : B.fields.Ok) (Wt : Set B.places.Pl)

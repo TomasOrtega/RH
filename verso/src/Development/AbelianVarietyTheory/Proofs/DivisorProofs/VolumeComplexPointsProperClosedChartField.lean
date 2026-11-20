@@ -16,15 +16,13 @@ namespace GlobalTheory.ChernNull
 open ReciprocityTheory.ChartRestriction.G.DVR.FlatBC (algX)
 
 /- English proof (translation)
-Introduce `k _ X _ p σ D Z hZ hgen c`. Break down `c.e.source.eq_empty_or_nonempty with hs | ⟨y0, hy0⟩` into its components or cases. Simplify using `[hs]`. Establish `hne : (c.U : Set X).Nonempty` using `⟨_, mem_ptsIn.1 (c.source_subset hy0)⟩`. Use `haveI : Nonempty c.U := ⟨⟨_, mem_ptsIn.1 (c.source_subset hy0)⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨g, hg0, hgZ⟩` from `exists_sec_vanish c.affine hne hZ hgen`. Take `⟨Q, hQ, r, hQr⟩` from `exists_poly_dvd _ c.etale g hg0`. Establish `hP : MvPolynomial.map σ Q ≠ 0` using `fun e => hQ (MvPolynomial.map_injective σ σ.injective (by rw [e, map_zero]))`. Use `measure_mono_null ?_ (volume_poly_zero D _ hP)` and prove the remaining obligations. Introduce and unpack `_ ⟨y, ⟨hys, hyZ⟩, rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hyU` using `c.source_subset hys`. Establish `hgy : ev p σ c.U g y = 0`. Assume the negation of the conclusion as `hne'`. Conclude with `hgZ _ (mem_ptsIn.1 hyU) hyZ (mem_ptsIn.1 ((mem_ptsIn_basicOpen hyU g).2 hne'))`. Establish `hcomp : (evHom hyU).comp (MvPolynomial.eval₂Hom (algX p c.U) c.x) = MvPolynomial.eval₂Hom σ (fun a => c.e y a)`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `MvPolynomial.ringHom_ext (fun a => ?_) (fun a => ?_)` and prove the remaining obligations. Simplify using `[← ev_eq hyU, ev_algX hyU]`. Simplify using `[← ev_eq hyU, c.apply_eq y hys]`. Use `congrArg (fun F => F Q) hcomp` as an intermediate fact. Simplify using `only [RingHom.comp_apply] at this`.
-
-Use `show MvPolynomial.eval (fun a => c.e y a) (MvPolynomial.map σ Q) = 0`. Rewrite using `[MvPolynomial.eval_map, ← MvPolynomial.coe_eval₂Hom, ← this, hQr, map_mul, ← ev_eq hyU, hgy, zero_mul]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chart_null_field : ∀ (k : Type) [Field k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (σ : k →+* ℂ) (D : ℕ) (Z : Set X), IsClosed Z → genericPoint X ∉ Z → ∀ c : AlgChart p σ D, volume (c.e '' (c.e.source ∩ {y : CxPts p σ | y.1 (IsLocalRing.closedPoint ℂ) ∈ Z})) = 0 := by
   intro k _ X _ p σ D Z hZ hgen c

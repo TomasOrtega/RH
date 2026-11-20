@@ -9,7 +9,7 @@ section
 variable {C : Type} [Field C]
 
 /- English proof (translation)
-Unfold `jetAt0`. Use `Finset.sum_subset hS fun m _ hm => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.notMem_support_iff.1 hm, zero_mul, zero_mul]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem tpjet_jetAt0_superset {σ : Type} (P : MvPolynomial σ C) (G : MvPowerSeries σ C)
     (S : Finset (σ →₀ ℕ)) (hS : P.support ⊆ S) :
@@ -19,9 +19,9 @@ theorem tpjet_jetAt0_superset {σ : Type} (P : MvPolynomial σ C) (G : MvPowerSe
   rw [MvPolynomial.notMem_support_iff.1 hm, zero_mul, zero_mul]
 
 /- English proof (translation)
-Rewrite `ha` using `[MvPolynomial.mem_support_iff, MvPolynomial.coeff_add]`. Rewrite using `[MvPolynomial.mem_support_iff, MvPolynomial.mem_support_iff]`. Distinguish the cases in `hP : MvPolynomial.coeff a P = 0`. Use `right`. Rewrite `ha` using `[hP, zero_add]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Prove the first alternative.
 
-Conclude with `Or.inl hP`.
+A detailed English derivation is pending.
 -/
 private theorem mem_support_or_of_mem_support_add {σ : Type} (P Q : MvPolynomial σ C)
     (a : σ →₀ ℕ) (ha : a ∈ (P + Q).support) : a ∈ P.support ∨ a ∈ Q.support := by
@@ -33,11 +33,11 @@ private theorem mem_support_or_of_mem_support_add {σ : Type} (P Q : MvPolynomia
   · exact Or.inl hP
 
 /- English proof (translation)
-Establish `h1 : (P + Q).support ⊆ P.support ∪ Q.support`. Introduce `a ha`. Conclude with `Finset.mem_union.2 (mem_support_or_of_mem_support_add P Q a ha)`. Establish `h2 : P.support ⊆ P.support ∪ Q.support`. Introduce `a ha`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `Finset.mem_union.2 (Or.inl ha)`. Establish `h3 : Q.support ⊆ P.support ∪ Q.support`. Introduce `a ha`. Conclude with `Finset.mem_union.2 (Or.inr ha)`. Rewrite using `[tpjet_jetAt0_superset (P + Q) G _ h1, tpjet_jetAt0_superset P G _ h2, tpjet_jetAt0_superset Q G _ h3, ← Finset.sum_add_distrib]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.coeff_add]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem tpjet_jetAt0_add {σ : Type} (P Q : MvPolynomial σ C) (G : MvPowerSeries σ C) :
     jetAt0 (P + Q) G = jetAt0 P G + jetAt0 Q G := by
@@ -58,7 +58,7 @@ theorem tpjet_jetAt0_add {σ : Type} (P Q : MvPolynomial σ C) (G : MvPowerSerie
   ring
 
 /- English proof (translation)
-Unfold `jetAt0`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem tpjet_jetAt0_zero {σ : Type} (G : MvPowerSeries σ C) :
     jetAt0 (0 : MvPolynomial σ C) G = 0 := by
@@ -66,7 +66,7 @@ theorem tpjet_jetAt0_zero {σ : Type} (G : MvPowerSeries σ C) :
   simp
 
 /- English proof (translation)
-Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_empty, Finset.sum_empty, tpjet_jetAt0_zero]`. Introduce `j t hj ih`. Rewrite using `[Finset.sum_insert hj, Finset.sum_insert hj, tpjet_jetAt0_add, ih]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem tpjet_jetAt0_sum {σ ι : Type} (s : Finset ι) (P : ι → MvPolynomial σ C)
     (G : MvPowerSeries σ C) : jetAt0 (∑ j ∈ s, P j) G = ∑ j ∈ s, jetAt0 (P j) G := by

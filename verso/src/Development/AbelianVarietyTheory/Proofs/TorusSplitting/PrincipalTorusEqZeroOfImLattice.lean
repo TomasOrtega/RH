@@ -13,11 +13,9 @@ noncomputable section
 variable {E : Type} [Field E] [NumberField E]
 
 /- English proof (translation)
-Establish `hspan : ∀ v, (Hf v a).im = 0`. Introduce `v`. Establish `hv : v ∈ Submodule.span ℝ (X.L : Set (Vsp X.dim))`. Establish `h1 : Submodule.span ℝ (Set.range X.b) ≤ Submodule.span ℝ (X.L : Set (Vsp X.dim))` using `Submodule.span_mono (fun z hz => Submodule.subset_span hz)`. Rewrite `h1` using `[X.b.span_eq]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h1 Submodule.mem_top`. Conclude with `Hf_im_span_left _ a h v hv`. Establish `h1` using `hspan (Complex.I • a)`. Establish `e : -(Complex.I • (Complex.I • a)) = a`. Rewrite using `[smul_smul, Complex.I_mul_I, neg_one_smul, neg_neg]`.
-
-Rewrite `h1` using `[Hf_im_eq', e]`. Conclude with `inner_self_eq_zero.1 h1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem principalTorus_eq_zero_of_im_lattice (X : PT E) {a : Vsp X.dim} (h : ∀ y ∈ X.L, (Hf y a).im = 0) : a = 0 := by
   have hspan : ∀ v, (Hf v a).im = 0 := by
@@ -35,15 +33,15 @@ theorem principalTorus_eq_zero_of_im_lattice (X : PT E) {a : Vsp X.dim} (h : ∀
   exact inner_self_eq_zero.1 h1
 
 /- English proof (translation)
-Establish `hfl : ∀ y ∈ X.L, ((⌊(Hf y a).im⌋ : ℤ) : ℝ) = (Hf y a).im`. Introduce `y hy`. Take `⟨k, hk⟩` from `h y hy`. Rewrite using `[hk, Int.floor_intCast]`. Set `φ : X.L →+ ℤ` to `{ toFun := fun y => ⌊(Hf (y : Vsp X.dim) a).im⌋ map_zero' := by simp [Hf_im_zero_left] map_add' := by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Introduce `y y'`. Apply `Int.cast_injective (α := ℝ)` to reduce the goal to its premises. Use `push_cast`. Rewrite using `[hfl _ (X.L.add_mem y.2 y'.2), hfl _ y.2, hfl _ y'.2]`. Simplify using `only [Hf_im_add_left] }`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨x0, hx0, hφ⟩` from `X.perfect φ`. Establish `h0 : a + x0 = 0`. Apply `principalTorus_eq_zero_of_im_lattice X` to reduce the goal to its premises. Introduce `y hy`. Use `hφ ⟨y, hy⟩` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [φ, AddMonoidHom.coe_mk, ZeroHom.coe_mk] at this`. Rewrite `this` using `[hfl y hy]`. Rewrite using `[Hf_im_add_right, this, Hf_im_antisymm x0 y]`. Expand and normalize the polynomial expressions, which then agree. Establish `: a = -x0` using `eq_neg_of_add_eq_zero_left h0`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `X.L.neg_mem hx0`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem principalTorus_mem_lattice_of_int (X : PT E) {a : Vsp X.dim} (h : ∀ y ∈ X.L, ∃ k : ℤ, (Hf y a).im = k) :
     a ∈ X.L := by
@@ -74,7 +72,7 @@ theorem principalTorus_mem_lattice_of_int (X : PT E) {a : Vsp X.dim} (h : ∀ y 
   exact X.L.neg_mem hx0
 
 /- English proof (translation)
-Introduce `_ _ _ X _` and use `⟨principalTorus_eq_zero_of_im_lattice X, principalTorus_mem_lattice_of_int X⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem principalTorus_im_perfect :
     (∀ (E : Type) [Field E] [NumberField E] (X : PT E) (a : Vsp X.dim),

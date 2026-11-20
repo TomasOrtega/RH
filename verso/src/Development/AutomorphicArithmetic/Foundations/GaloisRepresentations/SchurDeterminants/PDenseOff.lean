@@ -4,9 +4,9 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Schur
 open Finset MvPolynomial UpperTheory.Gal.Schur
 
 /- English proof (translation)
-Introduce `K σ _ D hD Q hQ P hP`. Establish `hPQ : P * Q = 0`. Apply `hD` to reduce the goal to its premises. Introduce `x hx`. Distinguish the cases in `hq : eval x Q = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[map_mul, hq, mul_zero]`. Rewrite using `[map_mul, hP x ⟨hx, hq⟩, zero_mul]`. Conclude with `(mul_eq_zero.1 hPQ).resolve_right hQ`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.Schur.denseOff :
     DenseOff := by

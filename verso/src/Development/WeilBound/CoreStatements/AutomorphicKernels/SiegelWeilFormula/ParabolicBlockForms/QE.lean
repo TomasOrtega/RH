@@ -20,7 +20,7 @@ def QE (n : ℕ) (ε : ℤˣ) : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) E :=
   Matrix.fromBlocks 0 1 ((((ε : ℤ) : E)) • 1) 0
 
 /- English proof (translation)
-Rewrite using `[← Finset.sum_image (fun a _ b _ hab => he hab)]`. Use `(Finset.sum_subset (Finset.subset_univ _) fun b _ hb => h b ?_).symm` and prove the remaining obligations. Introduce and unpack `⟨a, rfl⟩`. Conclude with `hb (Finset.mem_image_of_mem e (Finset.mem_univ a))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem sum_emb {α β M : Type} [Fintype α] [Fintype β] [AddCommMonoid M] (e : α → β) (he : Function.Injective e)
     (f : β → M) (h : ∀ b, b ∉ Set.range e → f b = 0) : ∑ b, f b = ∑ a, f (e a) := by
@@ -30,7 +30,7 @@ theorem sum_emb {α β M : Type} [Fintype α] [Fintype β] [AddCommMonoid M] (e 
   exact hb (Finset.mem_image_of_mem e (Finset.mem_univ a))
 
 /- English proof (translation)
-Establish `e : ∀ k l, (M.map f - 1) k l = f ((M - 1) k l)` using `fun k l => by`. Simplify using `only [Matrix.sub_apply, Matrix.map_apply, map_sub, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Conclude with `⟨fun k => by rw [e, hM.1 k, map_zero], fun k l h1 h2 h3 => by rw [e, hM.2 k l h1 h2 h3, map_zero]⟩`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Supply the required witnesses or components.
 -/
 theorem NQ.map {ι R S : Type} [Fintype ι] [DecidableEq ι] [CommRing R] [CommRing S] (f : R →+* S) {x y : ι}
     {M : Matrix ι ι R} (hM : NQ x y M) : NQ x y (M.map f) := by

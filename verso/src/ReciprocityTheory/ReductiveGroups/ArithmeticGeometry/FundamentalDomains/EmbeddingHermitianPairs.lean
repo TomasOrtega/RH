@@ -8,7 +8,7 @@ open scoped ComplexConjugate
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
 /- English proof (translation)
-The claim follows from `NumberField.IsCMField.complexEmbedding_complexConj E τ x`.
+A detailed English derivation is pending.
 -/
 lemma emb_cc' (τ : E →+* ℂ) (x : E) : τ (cc x) = conj (τ x) := NumberField.IsCMField.complexEmbedding_complexConj E τ x
 
@@ -17,19 +17,19 @@ section herm
 variable (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E)
 
 /- English proof (translation)
-Simplify using `only [hermC, Pi.add_apply, add_mul, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 lemma hermC_add_left (u u' v : Fin r → ℂ) : hermC τ G (u + u') v = hermC τ G u v + hermC τ G u' v := by
   simp only [hermC, Pi.add_apply, add_mul, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `only [hermC, Pi.add_apply, map_add, mul_add, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 lemma hermC_add_right (u v v' : Fin r → ℂ) : hermC τ G u (v + v') = hermC τ G u v + hermC τ G u v' := by
   simp only [hermC, Pi.add_apply, map_add, mul_add, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `only [hermC, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma hermC_smul_left (a : ℂ) (u v : Fin r → ℂ) : hermC τ G (a • u) v = a * hermC τ G u v := by
   simp only [hermC, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]
@@ -37,7 +37,7 @@ lemma hermC_smul_left (a : ℂ) (u v : Fin r → ℂ) : hermC τ G (a • u) v =
   ring
 
 /- English proof (translation)
-Simplify using `only [hermC, Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma hermC_smul_right (a : ℂ) (u v : Fin r → ℂ) : hermC τ G u (a • v) = conj a * hermC τ G u v := by
   simp only [hermC, Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]
@@ -45,7 +45,7 @@ lemma hermC_smul_right (a : ℂ) (u v : Fin r → ℂ) : hermC τ G u (a • v) 
   ring
 
 /- English proof (translation)
-Simplify using `only [hermC, map_sum, map_mul, Complex.conj_conj]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[← emb_cc' τ (G b a), hG]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma hermC_conj (hG : ∀ a b, cc (G a b) = G b a) (u v : Fin r → ℂ) :
     conj (hermC τ G u v) = hermC τ G v u := by
@@ -56,7 +56,7 @@ lemma hermC_conj (hG : ∀ a b, cc (G a b) = G b a) (u v : Fin r → ℂ) :
   ring
 
 /- English proof (translation)
-Simplify using `only [hermC, herm, map_sum, map_mul, emb_cc']`.
+Simplify using the standard rewrite rules.
 -/
 lemma hermC_emb (x y : Fin r → E) :
     hermC τ G (fun a => τ (x a)) (fun a => τ (y a)) = τ (herm G x y) := by
@@ -71,7 +71,7 @@ variable (X : Data E r)
 def wv (ξ : Fin r → E) (τ : X.Ψ) : Fin r → ℂ := fun b => ∑ k, τ.1 (X.Gm b k) * conj (τ.1 (ξ k))
 
 /- English proof (translation)
-Simplify using `only [dotProduct, wv, hermC, Data.emb, Finset.sum_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma wv_dot (ξ : Fin r → E) (τ : X.Ψ) (v : Fin r → ℂ) :
     wv X ξ τ ⬝ᵥ v = hermC τ.1 X.Gm v (Data.emb τ.1 ξ) := by
@@ -80,7 +80,7 @@ lemma wv_dot (ξ : Fin r → E) (τ : X.Ψ) (v : Fin r → ℂ) :
   ring
 
 /- English proof (translation)
-Rewrite using `[wv_dot]`. Conclude with `(hermC_emb τ.1 X.Gm ξ ξ).trans (by rw [hξ, map_zero])`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma wv_dot_self {ξ : Fin r → E} (hξ : herm X.Gm ξ ξ = 0) (τ : X.Ψ) :
     wv X ξ τ ⬝ᵥ Data.emb τ.1 ξ = 0 := by
@@ -88,7 +88,7 @@ lemma wv_dot_self {ξ : Fin r → E} (hξ : herm X.Gm ξ ξ = 0) (τ : X.Ψ) :
   exact (hermC_emb τ.1 X.Gm ξ ξ).trans (by rw [hξ, map_zero])
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [Data.flowMat, Matrix.of_apply, Matrix.add_apply, Matrix.one_apply, Matrix.smul_apply, vecMulVec_apply, wv, Data.emb, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma flowMat_eq (ξ : Fin r → E) (τ : X.Ψ) (s : ℂ) :
     X.flowMat ξ τ s = 1 + (-(I * X.c τ * s)) • vecMulVec (Data.emb τ.1 ξ) (wv X ξ τ) := by
@@ -98,9 +98,9 @@ lemma flowMat_eq (ξ : Fin r → E) (τ : X.Ψ) (s : ℂ) :
   ring
 
 /- English proof (translation)
-Use extensionality with `a b`. Establish `h0` using `wv_dot_self X hξ τ`. Simplify using `only [dotProduct] at h0`. Simplify using `only [Matrix.mul_apply, vecMulVec_apply, Matrix.zero_apply]`. Combine the equalities or inequalities in the displayed calculation.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Use `_ = 0 := by rw [h0, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 lemma nil_sq {ξ : Fin r → E} (hξ : herm X.Gm ξ ξ = 0) (τ : X.Ψ) :
     vecMulVec (Data.emb τ.1 ξ) (wv X ξ τ) * vecMulVec (Data.emb τ.1 ξ) (wv X ξ τ) = 0 := by
@@ -116,7 +116,7 @@ lemma nil_sq {ξ : Fin r → E} (hξ : herm X.Gm ξ ξ = 0) (τ : X.Ψ) :
     _ = 0 := by rw [h0, mul_zero]
 
 /- English proof (translation)
-Rewrite using `[flowMat_eq, flowMat_eq, flowMat_eq]`. Rewrite using `[add_mul, one_mul, mul_add, mul_one, Matrix.smul_mul, Matrix.mul_smul, nil_sq X hξ, smul_zero, smul_zero, add_zero, add_assoc, ← add_smul]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma flowMat_mul {ξ : Fin r → E} (hξ : herm X.Gm ξ ξ = 0) (τ : X.Ψ) (s s' : ℂ) :
     X.flowMat ξ τ s * X.flowMat ξ τ s' = X.flowMat ξ τ (s + s') := by
@@ -127,14 +127,14 @@ lemma flowMat_mul {ξ : Fin r → E} (hξ : herm X.Gm ξ ξ = 0) (τ : X.Ψ) (s 
   ring
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `[Data.flowMat, Matrix.one_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 lemma flowMat_zero (ξ : Fin r → E) (τ : X.Ψ) : X.flowMat ξ τ 0 = 1 := by
   ext a b
   simp [Data.flowMat, Matrix.one_apply]
 
 /- English proof (translation)
-Rewrite using `[flowMat_eq, Matrix.vecMulVec_eq Unit, ← Matrix.smul_mul, ← Matrix.replicateCol_smul, Matrix.det_one_add_replicateCol_mul_replicateRow, dotProduct_smul, wv_dot_self X hξ, smul_zero, add_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma det_flowMat {ξ : Fin r → E} (hξ : herm X.Gm ξ ξ = 0) (τ : X.Ψ) (s : ℂ) :
     (X.flowMat ξ τ s).det = 1 := by
@@ -143,7 +143,7 @@ lemma det_flowMat {ξ : Fin r → E} (hξ : herm X.Gm ξ ξ = 0) (τ : X.Ψ) (s 
     smul_zero, add_zero]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Use `show (X.flowMat ξ τ (s τ) * (X.flowMat ξ τ (s' τ) * mat x τ) : Matrix (Fin r) (Fin r) ℂ) = X.flowMat ξ τ ((s + s') τ) * mat x τ`. Rewrite using `[← Matrix.mul_assoc, flowMat_mul X hξ, Pi.add_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma flow_flow {ξ : Fin r → E} (hξ : herm X.Gm ξ ξ = 0) (s s' : X.Ψ → ℂ) (x : Frame X.Ψ r) :
     X.flow ξ s (X.flow ξ s' x) = X.flow ξ (s + s') x := by
@@ -153,7 +153,7 @@ lemma flow_flow {ξ : Fin r → E} (hξ : herm X.Gm ξ ξ = 0) (s s' : X.Ψ → 
   rw [← Matrix.mul_assoc, flowMat_mul X hξ, Pi.add_apply]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Use `show (X.flowMat ξ τ ((0 : X.Ψ → ℂ) τ) * mat x τ : Matrix (Fin r) (Fin r) ℂ) = x τ`. Rewrite using `[Pi.zero_apply, flowMat_zero, Matrix.one_mul]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 lemma flow_zero (ξ : Fin r → E) (x : Frame X.Ψ r) : X.flow ξ 0 x = x := by
   funext τ
@@ -162,9 +162,9 @@ lemma flow_zero (ξ : Fin r → E) (x : Frame X.Ψ r) : X.flow ξ 0 x = x := by
   rfl
 
 /- English proof (translation)
-Rewrite using `[flowMat_eq, Matrix.add_mulVec, Matrix.one_mulVec]`. Use `congr 1`. Use extensionality with `a`. Rewrite using `[← wv_dot X ξ τ v]`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.smul_apply, vecMulVec_apply, Pi.smul_apply, smul_eq_mul, Finset.mul_sum, Finset.sum_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma flowMat_mulVec (ξ : Fin r → E) (τ : X.Ψ) (s : ℂ) (v : Fin r → ℂ) :
     X.flowMat ξ τ s *ᵥ v = v + ((-(I * X.c τ * s)) * hermC τ.1 X.Gm v (Data.emb τ.1 ξ)) •

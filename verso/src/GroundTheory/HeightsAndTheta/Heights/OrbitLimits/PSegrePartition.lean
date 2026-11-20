@@ -28,14 +28,14 @@ def rho (i : (k : K) → ι k) (z : (Σ k, ι k) → ℂ) : ℝ :=
 
 omit [DecidableEq K] [∀ k, Fintype (ι k)] in
 /- English proof (translation)
-The claim follows from `sq_nonneg _`.
+A detailed English derivation is pending.
 -/
 theorem segreSq_nonneg (z : (Σ k, ι k) → ℂ) (i : (k : K) → ι k) : 0 ≤ segreSq z i :=
   sq_nonneg _
 
 omit [DecidableEq K] in
 /- English proof (translation)
-Establish `h : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun z : (Σ k, ι k) → ℂ => segre z i)` using `contDiff_prod fun k _ => contDiff_apply ℝ ℂ (⟨k, i k⟩ : Σ k, ι k)`. Conclude with `(contDiff_norm_sq ℝ).comp h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem contDiff_segreSq (i : (k : K) → ι k) :
     ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun z : (Σ k, ι k) → ℂ => segreSq z i) := by
@@ -44,14 +44,14 @@ theorem contDiff_segreSq (i : (k : K) → ι k) :
   exact (contDiff_norm_sq ℝ).comp h
 
 /- English proof (translation)
-The claim follows from `ContDiff.sum fun i _ => contDiff_segreSq i`.
+A detailed English derivation is pending.
 -/
 theorem contDiff_segreSqSum :
     ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun z : (Σ k, ι k) → ℂ => segreSqSum z) :=
   ContDiff.sum fun i _ => contDiff_segreSq i
 
 /- English proof (translation)
-Use `choose i hi using hz`. Establish `h : segre z i ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun k _ => hi k`. Conclude with `Finset.sum_pos' (fun j _ => segreSq_nonneg z j) ⟨i, Finset.mem_univ _, pow_pos (norm_pos_iff.mpr h) 2⟩`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem segreSqSum_pos {z : (Σ k, ι k) → ℂ} (hz : ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0) : 0 < segreSqSum z := by
   choose i hi using hz
@@ -62,7 +62,7 @@ theorem segreSqSum_pos {z : (Σ k, ι k) → ℂ} (hz : ∀ k, ∃ i, z ⟨k, i�
 omit [DecidableEq K] [∀ k, Fintype (ι k)] in
 
 /- English proof (translation)
-The claim follows from `Finset.prod_mul_distrib`.
+A detailed English derivation is pending.
 -/
 theorem segre_smul (c : K → ℂ) (z : (Σ k, ι k) → ℂ) (i : (k : K) → ι k) :
     segre (fun p => c p.1 * z p) i = (∏ k, c k) * segre z i :=
@@ -70,27 +70,27 @@ theorem segre_smul (c : K → ℂ) (z : (Σ k, ι k) → ℂ) (i : (k : K) → �
 
 omit [DecidableEq K] [∀ k, Fintype (ι k)] in
 /- English proof (translation)
-Simplify using `only [segreSq, segre_smul, norm_mul, mul_pow]`.
+Simplify using the standard rewrite rules.
 -/
 theorem segreSq_smul (c : K → ℂ) (z : (Σ k, ι k) → ℂ) (i : (k : K) → ι k) :
     segreSq (fun p => c p.1 * z p) i = ‖∏ k, c k‖ ^ 2 * segreSq z i := by
   simp only [segreSq, segre_smul, norm_mul, mul_pow]
 
 /- English proof (translation)
-Simplify using `only [segreSqSum, segreSq_smul, Finset.mul_sum]`.
+Simplify using the standard rewrite rules.
 -/
 theorem segreSqSum_smul (c : K → ℂ) (z : (Σ k, ι k) → ℂ) :
     segreSqSum (fun p => c p.1 * z p) = ‖∏ k, c k‖ ^ 2 * segreSqSum z := by
   simp only [segreSqSum, segreSq_smul, Finset.mul_sum]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Use `push Not at h`. Establish `hle : ∀ j, segreSq z j ≤ segreSqSum z / (2 * numIdx ι)`. Introduce `j`. Establish `h1 : 2 * numIdx ι * (segreSq z j / segreSqSum z) - 1 ≤ 0`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `h2`. Conclude with `absurd (Real.smoothTransition.pos_of_pos (lt_of_not_ge h2)) (not_lt.mpr (h j))`. Rewrite using `[le_div_iff₀ (by positivity)]`. Establish `h3 : 2 * numIdx ι * segreSq z j / segreSqSum z ≤ 1`. Rewrite using `[mul_div_assoc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Rewrite `h3` using `[div_le_one hS]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hsum : segreSqSum z ≤ numIdx ι * (segreSqSum z / (2 * numIdx ι))`. Use `Finset.sum_le_card_nsmul Finset.univ (fun j => segreSq z j) _ fun j _ => hle j` as an intermediate fact.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[Finset.card_univ, nsmul_eq_mul]`. Conclude with `this`. Establish `h4 : numIdx ι * (segreSqSum z / (2 * numIdx ι)) = segreSqSum z / 2`. Clear the denominators using the available nonvanishing facts. Combine the linear equalities and inequalities to obtain the conclusion.
+Clear the denominators using the available nonvanishing facts. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_bump_pos (hN : 0 < numIdx ι) {z : (Σ k, ι k) → ℂ} (hS : 0 < segreSqSum z) :
     ∃ j, 0 < bump z j := by
@@ -115,7 +115,7 @@ theorem exists_bump_pos (hN : 0 < numIdx ι) {z : (Σ k, ι k) → ℂ} (hS : 0 
   linarith
 
 /- English proof (translation)
-Take `⟨j, hj⟩` from `exists_bump_pos hN hS`. Conclude with `Finset.sum_pos' (fun i _ => Real.smoothTransition.nonneg _) ⟨j, Finset.mem_univ _, hj⟩`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem bump_sum_pos (hN : 0 < numIdx ι) {z : (Σ k, ι k) → ℂ} (hS : 0 < segreSqSum z) :
     0 < ∑ j, bump z j := by
@@ -123,7 +123,7 @@ theorem bump_sum_pos (hN : 0 < numIdx ι) {z : (Σ k, ι k) → ℂ} (hS : 0 < s
   exact Finset.sum_pos' (fun i _ => Real.smoothTransition.nonneg _) ⟨j, Finset.mem_univ _, hj⟩
 
 /- English proof (translation)
-Use `(Real.smoothTransition.contDiff (n := ⊤)).comp_contDiffOn ?_` and prove the remaining obligations. Use `ContDiffOn.sub (contDiffOn_const.mul ?_) contDiffOn_const` and prove the remaining obligations. Conclude with `ContDiffOn.div (contDiff_segreSq i).contDiffOn contDiff_segreSqSum.contDiffOn fun z hz => (segreSqSum_pos hz).ne'`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem contDiffOn_bump (i : (k : K) → ι k) :
     ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun z : (Σ k, ι k) → ℂ => bump z i)
@@ -134,7 +134,7 @@ theorem contDiffOn_bump (i : (k : K) → ι k) :
     fun z hz => (segreSqSum_pos hz).ne'
 
 /- English proof (translation)
-Establish `ha : ‖∏ k, c k‖ ^ 2 ≠ 0` using `pow_ne_zero 2 (norm_ne_zero_iff.mpr (Finset.prod_ne_zero_iff.mpr fun k _ => hc k))`. Simplify using `only [bump, segreSq_smul, segreSqSum_smul, mul_div_mul_left _ _ ha]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem bump_smul (c : K → ℂ) (z : (Σ k, ι k) → ℂ) (hc : ∀ k, c k ≠ 0) (i : (k : K) → ι k) :
     bump (fun p => c p.1 * z p) i = bump z i := by
@@ -143,9 +143,9 @@ theorem bump_smul (c : K → ℂ) (z : (Σ k, ι k) → ℂ) (hc : ∀ k, c k �
   simp only [bump, segreSq_smul, segreSqSum_smul, mul_div_mul_left _ _ ha]
 
 /- English proof (translation)
-Use `⟨?_, fun c z hc => ?_⟩` and prove the remaining obligations. Establish `hf : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun z : (Σ k, ι k) → ℂ => bump z i / ∑ j, bump z j) {z | ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0}` using `ContDiffOn.div (contDiffOn_bump i) (ContDiffOn.sum fun j _ => contDiffOn_bump j) fun z hz => (bump_sum_pos hN (segreSqSum_pos hz)).ne'`. Use `hf.congr fun z hz => ?_` and prove the remaining obligations. Simplify using `only [rho, if_pos (segreSqSum_pos hz)]`. Establish `ha : 0 < ‖∏ k, c k‖ ^ 2` using `pow_pos (norm_pos_iff.mpr (Finset.prod_ne_zero_iff.mpr fun k _ => hc k)) 2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hS : 0 < segreSqSum (fun p => c p.1 * z p) ↔ 0 < segreSqSum z`. Rewrite using `[segreSqSum_smul]`. Conclude with `mul_pos_iff_of_pos_left ha`. Simplify using `only [rho, hS, bump_smul c z hc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isDegZeroSmooth_rho (hN : 0 < numIdx ι) (i : (k : K) → ι k) :
     IsDegZeroSmooth (rho (ι := ι) i) := by
@@ -163,7 +163,7 @@ theorem isDegZeroSmooth_rho (hN : 0 < numIdx ι) (i : (k : K) → ι k) :
     simp only [rho, hS, bump_smul c z hc]
 
 /- English proof (translation)
-Distinguish the cases in `hS : 0 < segreSqSum z`. Simplify using `only [rho, if_pos hS]`. Rewrite using `[← Finset.sum_div, div_self (bump_sum_pos hN hS).ne']`. Simplify using `only [rho, if_neg hS, Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`. Rewrite `hN`, the goal using `[numIdx]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
 Clear the denominators using the available nonvanishing facts.
 -/
@@ -176,15 +176,15 @@ theorem sum_rho (hN : 0 < numIdx ι) (z : (Σ k, ι k) → ℂ) : ∑ i, rho (ι
     field_simp
 
 /- English proof (translation)
-Establish `hδ : 0 < (Real.sqrt (2 * numIdx ι))⁻¹` using `inv_pos.mpr (Real.sqrt_pos.mpr (by positivity))`. Establish `hw : 0 < ‖segre z‖`. Assume the negation of the conclusion as `h0`. Establish `: ‖segre z‖ = 0` using `le_antisymm (not_lt.mp h0) (norm_nonneg _)`. Rewrite `h` using `[this, mul_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `absurd h (not_lt.mpr (norm_nonneg _))`. Establish `hle : ‖segre z‖ ≤ Real.sqrt (segreSqSum z)`. Use `(pi_norm_le_iff_of_nonneg (Real.sqrt_nonneg _)).mpr fun j => ?_` and prove the remaining obligations. Use `Real.le_sqrt_of_sq_le ?_` and prove the remaining obligations. Conclude with `Finset.single_le_sum (f := fun j => segreSq z j) (fun j _ => segreSq_nonneg z j) (Finset.mem_univ j)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hS : 0 < segreSqSum z` using `Real.sqrt_pos.mp (lt_of_lt_of_le hw hle)`. Establish `h1 : ‖segre z i‖ < (Real.sqrt (2 * numIdx ι))⁻¹ * Real.sqrt (segreSqSum z)` using `lt_of_lt_of_le h (mul_le_mul_of_nonneg_left hle hδ.le)`. Establish `h2 : segreSq z i < segreSqSum z / (2 * numIdx ι)`. Establish `h3` using `pow_lt_pow_left₀ h1 (norm_nonneg _) two_ne_zero`. Rewrite `h3` using `[mul_pow, inv_pow, Real.sq_sqrt (by positivity), Real.sq_sqrt hS.le]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[segreSq]`. Combine the equalities or inequalities in the displayed calculation. Establish `hb : bump z i = 0`. Use `Real.smoothTransition.zero_of_nonpos ?_` and prove the remaining obligations. Rewrite `h2` using `[lt_div_iff₀ (by positivity)]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h4 : 2 * numIdx ι * (segreSq z i / segreSqSum z) ≤ 1`. Rewrite using `[← mul_div_assoc, div_le_one hS]`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using `only [rho, if_pos hS, hb, zero_div]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rho_eq_zero (hN : 0 < numIdx ι) (i : (k : K) → ι k) (z : (Σ k, ι k) → ℂ)
     (h : ‖segre z i‖ < (Real.sqrt (2 * numIdx ι))⁻¹ * ‖segre z‖) : rho i z = 0 := by
@@ -220,7 +220,7 @@ theorem rho_eq_zero (hN : 0 < numIdx ι) (i : (k : K) → ι k) (z : (Σ k, ι k
 end SegrePartition
 
 /- English proof (translation)
-Introduce `K _ _ ι _ hne`. Establish `hN : 0 < SegrePartition.numIdx ι`. Rewrite using `[SegrePartition.numIdx, Nat.cast_pos]`. Conclude with `Fintype.card_pos`. Conclude with `⟨(Real.sqrt (2 * SegrePartition.numIdx ι))⁻¹, inv_pos.mpr (Real.sqrt_pos.mpr (by positivity)), SegrePartition.rho, SegrePartition.isDegZeroSmooth_rho hN, SegrePartition.sum_rho hN, SegrePartition.rho_eq_zero hN⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem SegrePartition.proof : SegrePartition.Statement := by
   intro K _ _ ι _ hne

@@ -15,17 +15,17 @@ private theorem mulPow_apply {R : Type} [CommRing R] (ϖ : R) (k : ℕ) (a : R) 
     mulPow ϖ k a = Ideal.Quotient.mk (lev ϖ (k + 1)) (ϖ ^ k * a) := rfl
 
 /- English proof (translation)
-Conclude with `Ideal.span_singleton_le_span_singleton.mpr (pow_dvd_pow ϖ (Nat.le_succ k))`.
+A detailed English derivation is pending.
 -/
 private theorem lev_succ_le {R : Type} [CommRing R] (ϖ : R) (k : ℕ) : lev ϖ (k + 1) ≤ lev ϖ k := by
   exact Ideal.span_singleton_le_span_singleton.mpr (pow_dvd_pow ϖ (Nat.le_succ k))
 
 /- English proof (translation)
-Use extensionality with `a`. Rewrite using `[AddMonoidHom.mem_ker, mulPow_apply, Ideal.Quotient.eq_zero_iff_mem, Submodule.mem_toAddSubgroup]`. Simplify using `only [lev, Ideal.mem_span_singleton]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, hc⟩`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Use `⟨c, ?_⟩` and prove the remaining obligations. Establish `hinj : Function.Injective (fun y : R => ϖ ^ k • y)` using `hr.pow k`. Apply `hinj` to reduce the goal to its premises. Use `show ϖ ^ k • a = ϖ ^ k • (ϖ ^ 1 * c)`. Rewrite using `[smul_eq_mul, smul_eq_mul, hc]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Introduce and unpack `⟨c, hc⟩`. Conclude with `⟨c, by rw [hc]; ring⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem mulPow_ker {R : Type} [CommRing R] {ϖ : R} (hr : IsSMulRegular R ϖ) (k : ℕ) :
     (mulPow ϖ k).ker = (lev ϖ 1).toAddSubgroup := by
@@ -44,17 +44,17 @@ private theorem mulPow_ker {R : Type} [CommRing R] {ϖ : R} (hr : IsSMulRegular 
     exact ⟨c, by rw [hc]; ring⟩
 
 /- English proof (translation)
-Take `⟨φ, hφ⟩ : ∃ φ : R ⧸ lev ϖ (k + 1) →+ R ⧸ lev ϖ k, ∀ a, φ (Ideal.Quotient.mk _ a) = Ideal.Quotient.mk _ a` from `⟨(Ideal.Quotient.lift (lev ϖ (k + 1)) (Ideal.Quotient.mk (lev ϖ k)) (fun a ha => Ideal.Quotient.eq_zero_iff_mem.mpr (lev_succ_le ϖ k ha))).toAddMonoidHom, fun a => by simp⟩`. Establish `hsurj : Function.Surjective φ`. Introduce `y`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Conclude with `⟨Ideal.Quotient.mk _ a, hφ a⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hker : φ.ker = (mulPow ϖ k).range`. Use extensionality with `x`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Rewrite using `[AddMonoidHom.mem_ker, hφ, AddMonoidHom.mem_range, Ideal.Quotient.eq_zero_iff_mem]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce `ha`. Take `⟨c, hc⟩` from `Ideal.mem_span_singleton.mp ha`. Conclude with `⟨c, by rw [mulPow_apply, ← hc]⟩`. Introduce and unpack `⟨c, hc⟩`. Rewrite `hc` using `[mulPow_apply, Ideal.Quotient.eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1 : ϖ ^ k * c - a ∈ lev ϖ k` using `lev_succ_le ϖ k hc`. Establish `h2 : ϖ ^ k * c ∈ lev ϖ k` using `Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _)`. Use `sub_mem h2 h1` as an intermediate fact. Simplify using `using this`. Establish `e1` using `AddSubgroup.card_eq_card_quotient_mul_card_addSubgroup φ.ker`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `e2 : Nat.card ((R ⧸ lev ϖ (k + 1)) ⧸ φ.ker) = Nat.card (R ⧸ lev ϖ k)` using `Nat.card_congr (QuotientAddGroup.quotientKerEquivOfSurjective φ hsurj).toEquiv`. Establish `e3 : Nat.card φ.ker = Nat.card (R ⧸ lev ϖ 1)`. Rewrite using `[hker]`. Use `Nat.card_congr (QuotientAddGroup.quotientKerEquivRange (mulPow ϖ k)).toEquiv` as an intermediate fact. Rewrite using `[← this, mulPow_ker hr]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[e1, e2, e3]`. Expand and normalize the polynomial expressions, which then agree.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem card_quot_lev_succ {R : Type} [CommRing R] {ϖ : R} (hr : IsSMulRegular R ϖ) (k : ℕ) :
     Nat.card (R ⧸ lev ϖ (k + 1)) = Nat.card (R ⧸ lev ϖ 1) * Nat.card (R ⧸ lev ϖ k) := by
@@ -93,11 +93,9 @@ theorem card_quot_lev_succ {R : Type} [CommRing R] {ϖ : R} (hr : IsSMulRegular 
   ring
 
 /- English proof (translation)
-Introduce `R _ σ ϖ q ε hR k`. Proceed by induction on `k with`. Consider the case `zero`. Establish `htop : lev ϖ 0 = ⊤` using `by show Ideal.span {ϖ ^ 0} = ⊤`. Rewrite using `[pow_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.span_singleton_one`. Rewrite using `[Nat.mul_zero, pow_zero]`. Conclude with `Nat.card_eq_one_iff_unique.mpr ⟨Ideal.Quotient.subsingleton_iff.mpr htop, ⟨0⟩⟩`. Consider the case `succ k ih`. Rewrite using `[card_quot_lev_succ hR.reg k, ih, hR.card]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem card_quot_lev : ∀ (R : Type) [CommRing R] (σ : R →+* R) (ϖ : R) (q : ℕ) (ε : ℤ),
     IsUnrQuad R σ ϖ q ε → ∀ k : ℕ, Nat.card (R ⧸ lev ϖ k) = q ^ (2 * k) := by

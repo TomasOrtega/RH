@@ -17,7 +17,7 @@ def rowPermGL (A : Type) [CommRing A] {N : ℕ} (σ : Equiv.Perm (Fin N)) : GL (
     exact (Equiv.Perm.sign σ).isUnit.map (Int.castRingHom _))
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `∑ k, (1 : Matrix (Fin N) (Fin N) A) (σ i) k * g.1 k j = _`. Rewrite using `[← mul_apply, one_mul]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem rowPermGL_mul_apply {A : Type} [CommRing A] {N : ℕ} (σ : Equiv.Perm (Fin N)) (g : GL (Fin N) A) (i j : Fin N) :
     (rowPermGL A σ * g).1 i j = g.1 (σ i) j := by
@@ -25,7 +25,7 @@ theorem rowPermGL_mul_apply {A : Type} [CommRing A] {N : ℕ} (σ : Equiv.Perm (
   rw [← mul_apply, one_mul]
 
 /- English proof (translation)
-Introduce `h` and use `by have e := congrArg (evalGL fun _ : ι => rowPermGL ℤ σ) h rw [map_zero, RingHom.map_det] at e have e' : (evalGL fun _ : ι => rowPermGL ℤ σ).mapMatrix ((rowPermGL _ σ.symm * univGL ι N τ).1.submatrix (Fin.castLE hk) (Fin.castLE hk)) = 1 := by rw [← submatrix_one (α := ℤ) _ (Fin. …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem leading_minor_univGL_ne_zero {ι : Type} [Fintype ι] {N : ℕ} (σ : Equiv.Perm (Fin N)) (τ : ι) (k : ℕ)
     (hk : k ≤ N) :
@@ -45,13 +45,11 @@ theorem leading_minor_univGL_ne_zero {ι : Type} [Fintype ι] {N : ℕ} (σ : Eq
   exact one_ne_zero e
 
 /- English proof (translation)
-Use `set K := FractionRing (GLRing ι N)`. Use `set φ := algebraMap (GLRing ι N) K`. Establish `hφ : Function.Injective φ` using `IsFractionRing.injective _ _`. Establish `h (τ : ι)` using `exists_blockLower_mul_blockUpper K N {s | ∃ k, a k = τ ∧ (l k : ℕ) = s} (GeneralLinearGroup.map φ (rowPermGL _ (w τ).symm * univGL ι N τ)) fun k hk => by`. Use `Ne.isUnit fun h => leading_minor_univGL_ne_zero (w τ) τ k hk (hφ ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_zero, RingHom.map_det]`. Conclude with `h`. Use `choose L b hLb hL hb using h`. Establish `hB (τ : ι) (i j : Fin N) : Below a l τ i j ↔ ∃ s ∈ {s | ∃ k, a k = τ ∧ (l k : ℕ) = s}, (j : ℕ) < s ∧ s ≤ (i : ℕ)` using `⟨fun ⟨k, h₁, h₂⟩ => ⟨_, ⟨k, h₁, rfl⟩, h₂⟩, fun ⟨_, ⟨k, h₁, h₂⟩, h₃⟩ => ⟨k, h₁, h₂ ▸ h₃⟩⟩`. Use `⟨_, Eq.trans ?_ (flagPt_eq_comp_cell a l w (fun τ => rowPermGL K (w τ) * L τ) b (fun τ i j hij => by rw [rowPermGL_mul_apply]; exact hL τ _ _ (mt (hB _ _ _).2 hij)) fun τ i j hij => hb τ i j ((hB _ _ _).1 hij))⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← flagPt_univGL, spMap_flagPt]`. Use `congr 1`. Use function extensionality and compare the values at `τ`. Rewrite using `[Pi.mul_apply, mul_assoc, ← hLb]`. Use extensionality with `i j`.
-
-Rewrite using `[rowPermGL_mul_apply, GeneralLinearGroup.map_apply, GeneralLinearGroup.map_apply, rowPermGL_mul_apply, Equiv.symm_apply_apply]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_generic_comp_orbit_eq_comp_cell {ι κ : Type} [Fintype ι] [Finite κ] {N : ℕ} (a : κ → ι)
     (l : κ → Fin (N + 1)) (w : ι → Equiv.Perm (Fin N)) :
@@ -81,7 +79,7 @@ theorem exists_generic_comp_orbit_eq_comp_cell {ι κ : Type} [Fintype ι] [Fini
     Equiv.symm_apply_apply]
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `exists_generic_comp_orbit_eq_comp_cell a l w`. Establish `: IsSchemeTheoreticallyDominant (spMap (algebraMap (GLRing ι N) (FractionRing (GLRing ι N))))` using `(schemeDominant_specMap_iff (CommRingCat.ofHom _)).2 (IsFractionRing.injective _ _)`. Establish `: IsSchemeTheoreticallyDominant (s ≫ cell a l w)` using `⟨by rw [← hs, ker_comp_of_schemeDominant, Scheme.Hom.ker_eq_bot]⟩`. Conclude with `schemeDominant_of_comp s _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem schemeDominant_cell {ι κ : Type} [Fintype ι] [Finite κ] {N : ℕ} (a : κ → ι)
     (l : κ → Fin (N + 1)) (w : ι → Equiv.Perm (Fin N)) : IsSchemeTheoreticallyDominant (cell a l w) := by
@@ -93,9 +91,9 @@ theorem schemeDominant_cell {ι κ : Type} [Fintype ι] [Finite κ] {N : ℕ} (a
   exact schemeDominant_of_comp s _
 
 /- English proof (translation)
-Establish `: IsImmersion (cell a l w ≫ plEmb a l)`. Rewrite using `[cell, flagPt_plEmb]`. Conclude with `GlobalTheory.T.schubert_cell_point_immersion ι κ N a l w`. Establish `: IsImmersion (cell a l w)` using `IsImmersion.of_comp _ (plEmb a l)`. Establish `: QuasiCompact (cell a l w)` using `quasiCompact_of_noetherianSpace_source _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsIso (cell a l w).imageι` using `(isIso_imageι_iff _).2 (schemeDominant_cell a l w)`. Use `isOpenImmersion_toImage (cell a l w)` as an intermediate fact. Rewrite using `[← (cell a l w).toImage_imageι]`. Use `infer_instance`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpenImmersion_cell (ι κ : Type) [Fintype ι] [Finite κ] (N : ℕ) (a : κ → ι) (l : κ → Fin (N + 1))
     (w : ι → Equiv.Perm (Fin N)) : IsOpenImmersion (cell a l w) := by

@@ -21,7 +21,7 @@ def paTh {β : Type*} {n : ℕ} (l : Fin (n + 1)) (p : (Fin n → ℂ) × (ℂ �
   (Fin.insertNth l p.2.1 p.1, p.2.2)
 
 /- English proof (translation)
-Unfold `paWt`. Rewrite using `[Finset.prod_ne_zero_iff]`. Introduce `j _`. Conclude with `inv_ne_zero (pow_ne_zero _ (norm_ne_zero_iff.mpr (hc j)))`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem paWt_ne_zero {n : ℕ} {c : Fin n → ℂ} (hc : ∀ i, c i ≠ 0) : paWt n c ≠ 0 := by
   unfold paWt
@@ -30,17 +30,17 @@ theorem paWt_ne_zero {n : ℕ} {c : Fin n → ℂ} (hc : ∀ i, c i ≠ 0) : paW
   exact inv_ne_zero (pow_ne_zero _ (norm_ne_zero_iff.mpr (hc j)))
 
 /- English proof (translation)
-Use `set ρ : (Fin (n + 1) → ℂ) → NNReal := fun c => (∏ j, (‖c j‖ ^ 2)⁻¹ : ℝ).toNNReal with hρdef`. Establish `hρ : Measurable ρ` using `Measurable.real_toNNReal (by fun_prop)`. Establish `hd : dxc (n + 1) = (volume : Measure (Fin (n + 1) → ℂ)).withDensity (fun c => (ρ c : ENNReal))` using `rfl`. Establish `hprod : (dxc (n + 1)).prod μ = ((volume : Measure (Fin (n + 1) → ℂ)).prod μ).withDensity (fun q => (ρ q.1 : ENNReal))`. Rewrite using `[hd, prod_withDensity_left hρ.coe_nnreal_ennreal]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hρ1 : Measurable (fun q : (Fin (n + 1) → ℂ) × β => ρ q.1)` using `hρ.comp measurable_fst`. Set `E : (Fin n → ℂ) × (ℂ × β) ≃ᵐ (Fin (n + 1) → ℂ) × β` to `MeasurableEquiv.prodAssoc.symm.trans ((MeasurableEquiv.prodComm.trans (MeasurableEquiv.piFinSuccAbove (fun _ : Fin (n + 1) => ℂ) l).symm).prodCongr (MeasurableEquiv.refl β))`. Establish `hEv : ∀ p, E p = paTh l p`. Introduce and unpack `⟨c, t, x⟩`. Both sides reduce to the same expression.
+Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hpi` using `(measurePreserving_piFinSuccAbove (fun _ : Fin (n + 1) => (volume : Measure ℂ)) l).symm`. Establish `hE : MeasurePreserving E ((volume : Measure (Fin n → ℂ)).prod ((volume : Measure ℂ).prod μ)) ((volume : Measure (Fin (n + 1) → ℂ)).prod μ)` using `((hpi.comp Measure.measurePreserving_swap).prod (MeasurePreserving.id μ)).comp (measurePreserving_prodAssoc _ _ _).symm`. Establish `hval : ∀ p : (Fin n → ℂ) × (ℂ × β), ρ (E p).1 • f (E p) = ((paWt n p.1 : ℝ) : ℂ) * (f (paTh l p) / ((‖p.2.1‖ ^ 2 : ℝ) : ℂ))`. Introduce `p`. Rewrite using `[hEv]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hw : ((ρ (paTh l p).1 : NNReal) : ℝ) = (‖p.2.1‖ ^ 2)⁻¹ * paWt n p.1`. Rewrite using `[hρdef]`. Simplify using `only`. Rewrite using `[Real.coe_toNNReal _ (Finset.prod_nonneg fun j _ => inv_nonneg.mpr (sq_nonneg _)), Fin.prod_univ_succAbove _ l]`. Simplify using `[paTh, paWt, Fin.insertNth_apply_same, Fin.insertNth_apply_succAbove]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[NNReal.smul_def, hw, Complex.real_smul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hfun : (fun p : (Fin n → ℂ) × (ℂ × β) => ((paWt n p.1 : ℝ) : ℂ) * (f (paTh l p) / ((‖p.2.1‖ ^ 2 : ℝ) : ℂ))) = (fun q : (Fin (n + 1) → ℂ) × β => ρ q.1 • f q) ∘ E`. Use function extensionality and compare the values at `p`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Prove the components needed by the constructor for the conclusion.
 
-Conclude with `(hval p).symm`. Prove the components needed by the constructor for the conclusion. Rewrite using `[hprod, integrable_withDensity_iff_integrable_smul hρ1, hfun, hE.integrable_comp_emb E.measurableEmbedding]`. Rewrite using `[hprod, integral_withDensity_eq_integral_smul hρ1, hfun]`. Conclude with `(hE.integral_comp' (fun q : (Fin (n + 1) → ℂ) × β => ρ q.1 • f q)).symm`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pa_split {β : Type*} [MeasurableSpace β] (μ : Measure β) [SFinite μ] {n : ℕ} (l : Fin (n + 1))
     (f : (Fin (n + 1) → ℂ) × β → ℂ) :
@@ -107,30 +107,30 @@ Both sides reduce to the same expression.
 theorem ipF_eq_paHs (U V : RadSp k r z z' π π') : ipF U V = paHs V U := rfl
 
 /- English proof (translation)
-Rewrite using `[ipF_eq_paHs]`. Unfold `paHs`. Rewrite using `[Formalism.FourierDecayAlt.P5.HerA.hsInner_swap]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem paHs_conj (U V : RadSp k r z z' π π') (q : (Fin r → ℂ) × Mt k r) :
     paHs U V q = conj (ipF U V q) := by
   rw [ipF_eq_paHs]; unfold paHs; rw [Formalism.FourierDecayAlt.P5.HerA.hsInner_swap]
 
 /- English proof (translation)
-Consider the cases of `r with`. Consider the case `zero => exact l.elim0`. Consider the case `succ n`. Establish `I0` using `(pa_split μ l (paHs Φ Ψ)).1.mp i0`. Establish `I1` using `(pa_split μ l (paHs (X.op l 0 Φ) Ψ)).1.mp i1`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `I2` using `(pa_split μ l (paHs Φ (X.op l 3 Ψ))).1.mp i2`. Rewrite using `[(pa_split μ l _).2, (pa_split μ l _).2, integral_prod _ I1, integral_prod _ I2, ← integral_neg]`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [I0.prod_right_ae, I1.prod_right_ae, I2.prod_right_ae] with c h0 h1 h2`. Simplify using `only [integral_const_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← mul_neg]`. Use `congr 1`. Distinguish the cases in `hc : ∀ j, c j ≠ 0`. Use `set c0 : Fin (n + 1) → ℂ := Fin.insertNth l 1 c with hc0def`. Establish `hc0 : c0 ∈ OmX (n + 1)`.
+Reduce the equality to equality of the corresponding arguments. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `j`. Use `Fin.succAboveCases l ?_ (fun i => ?_) j` and prove the remaining obligations. Simplify using `[c0]`. Simplify using `[c0, Fin.insertNth_apply_succAbove, hc i]`. Establish `key : ∀ U V : RadSp k (n + 1) z z' π π', (fun q : ℂ × Mt k (n + 1) => paHs U V (paTh l (c, q)) / ((‖q.1‖ ^ 2 : ℝ) : ℂ)) = fun q => B.hsInner ((U : Fn k (n + 1) (Wq →L[ℂ] Wp)) (Function.update c0 l q.1) (Matrix.of q.2)) ((V : Fn k (n + 1) (Wq →L[ℂ] Wp)) (Function.update c0 l q.1) …`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Introduce `U V`. Use function extensionality and compare the values at `q`. Simplify using `[paHs, paTh, c0, Fin.update_insertNth]`. Establish `hw : IsUnit ((paWt n c : ℝ) : ℂ)` using `isUnit_iff_ne_zero.mpr (Complex.ofReal_ne_zero.mpr (paWt_ne_zero hc))`. Establish `g0` using `(integrable_const_mul_iff hw _).mp h0`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `g1` using `(integrable_const_mul_iff hw _).mp h1`. Establish `g2` using `(integrable_const_mul_iff hw _).mp h2`. Rewrite `g0`, `g1`, `g2` using `[key]`. Establish `hs` using `Formalism.FourierDecayAlt.P5.HerB.site_p_adj X μ Φ Ψ l c0 hc0 g0 g1 g2`. Unfold `pairAt at hs`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [← integral_div] at hs`. Rewrite using `[key, key, integral_prod _ g1, integral_prod _ g2]`. Conclude with `hs`. Use `push Not at hc`. Take `⟨j, hj⟩` from `hc`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `hz : ∀ U V : RadSp k (n + 1) z z' π π', (fun q : ℂ × Mt k (n + 1) => paHs U V (paTh l (c, q)) / ((‖q.1‖ ^ 2 : ℝ) : ℂ)) = fun _ => 0`. Introduce `U V`. Use function extensionality and compare the values at `q`. Establish `hn : ((paTh l (c, q)).1, Matrix.of (paTh l (c, q)).2) ∉ DomR k (n + 1) z z'`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Apply `h.1 (l.succAbove j)` to reduce the goal to its premises. Simplify using `[paTh, Fin.insertNth_apply_succAbove, hj]`. Simplify using `only [paHs]`. Rewrite using `[radSp_zero_off U hn, Formalism.FourierDecayAlt.P5.HerA.hsInner_zero_left, zero_div]`. Rewrite using `[hz, hz, integral_zero, neg_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pa_core (X : ActualOps k r z z' π π') (μ : Measure (Mt k r)) [SFinite μ] (Φ Ψ : RadSp k r z z' π π')
     (l : Fin r) (i0 : Integrable (paHs Φ Ψ) ((dxc r).prod μ)) (i1 : Integrable (paHs (X.op l 0 Φ) Ψ) ((dxc r).prod μ))
@@ -193,11 +193,9 @@ variable {k r : ℕ} {z z' : Fin (2 * r + k + 1) → ℂ} {Wp Wq : Type} [Normed
   {π : Mx k r → (Wp →L[ℂ] Wp)} {π' : Mx k r → (Wq →L[ℂ] Wq)}
 
 /- English proof (translation)
-Take `⟨K, hK, hKD, h0⟩` from `h`. Use `⟨K, hK, hKD, fun x hx => ?_⟩` and prove the remaining obligations. Establish `hopen : IsOpen {c : Fin r → ℂ | (c, x.2) ∉ K}` using `hK.isClosed.isOpen_compl.preimage (continuous_id.prodMk continuous_const)`. Establish `hev : (fun c' => (Ψ : Fn k r (Wq →L[ℂ] Wp)) c' x.2) =ᶠ[𝓝 x.1] fun _ => 0` using `by filter_upwards [hopen.mem_nhds (show (x.1, x.2) ∉ K from hx)] with c' hc'`. Conclude with `h0 (c', x.2) hc'`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfd : fderiv ℝ (fun c' => (Ψ : Fn k r (Wq →L[ℂ] Wp)) c' x.2) x.1 = 0`. Rewrite using `[hev.fderiv_eq]`. Conclude with `fderiv_const_apply _`. Establish `hf0 : (Ψ : Fn k r (Wq →L[ℂ] Wp)) x.1 x.2 = 0` using `h0 x hx`. Rewrite using `[X.op_apply]`.
-
-Use `show opL l i (fun c' => (Ψ : Fn k r (Wq →L[ℂ] Wp)) c' x.2) x.1 = 0`. Apply the tactic sequence `fin_cases i <;> simp [opL, pOp, pbOp, cOp, ciOp, cbOp, cbiOp, Formalism.QuantumDeterminants.wirt, Formalism.QuantumDeterminants.wirtBar, hfd, hf0]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem rTest_op (X : ActualOps k r z z' π π') (l : Fin r) (i : Fin 6) {Ψ : RadSp k r z z' π π'} (h : RTest Ψ) :
     RTest (X.op l i Ψ) := by
@@ -216,13 +214,13 @@ theorem rTest_op (X : ActualOps k r z z' π π') (l : Fin r) (i : Fin 6) {Ψ : R
   fin_cases i <;> simp [opL, pOp, pbOp, cOp, ciOp, cbOp, cbiOp, Formalism.QuantumDeterminants.wirt, Formalism.QuantumDeterminants.wirtBar, hfd, hf0]
 
 /- English proof (translation)
-Simplify using `using rTest_smul (-1 : ℂ) h`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem rTest_neg {Ψ : RadSp k r z z' π π'} (h : RTest Ψ) : RTest (-Ψ) := by
   simpa using rTest_smul (-1 : ℂ) h
 
 /- English proof (translation)
-Use function extensionality and compare the values at `q`. Simplify using `only [ipF, Submodule.coe_neg, Pi.neg_apply]`. Rewrite using `[show -(U : Fn k r (Wq →L[ℂ] Wp)) q.1 (Matrix.of q.2) = (-1 : ℂ) • (U : Fn k r (Wq →L[ℂ] Wp)) q.1 (Matrix.of q.2) by simp, rds_hsVec_smul, inner_smul_left]`. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem ipF_neg_left (U V : RadSp k r z z' π π') : ipF (-U) V = -ipF U V := by
   funext q
@@ -232,7 +230,7 @@ theorem ipF_neg_left (U V : RadSp k r z z' π π') : ipF (-U) V = -ipF U V := by
   simp
 
 /- English proof (translation)
-Use function extensionality and compare the values at `q`. Simplify using `only [ipF, Submodule.coe_neg, Pi.neg_apply]`. Rewrite using `[show -(V : Fn k r (Wq →L[ℂ] Wp)) q.1 (Matrix.of q.2) = (-1 : ℂ) • (V : Fn k r (Wq →L[ℂ] Wp)) q.1 (Matrix.of q.2) by simp, rds_hsVec_smul, inner_smul_right]`. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem ipF_neg_right (U V : RadSp k r z z' π π') : ipF U (-V) = -ipF U V := by
   funext q
@@ -242,9 +240,9 @@ theorem ipF_neg_right (U V : RadSp k r z z' π π') : ipF U (-V) = -ipF U V := b
   simp
 
 /- English proof (translation)
-Establish `h` using `(ipF_integrable hμ U V hV)`. Establish `e : paHs U V = fun q => (Complex.conjLIE : ℂ ≃ₗᵢ[ℝ] ℂ) (ipF U V q)`. Use function extensionality and compare the values at `q`. Rewrite using `[paHs_conj]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[e]`. Conclude with `(LinearIsometryEquiv.integrable_comp_iff _).mpr h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem paHs_integrable {μ : Measure (Mt k r)} (hμ : B.IsHaarOn (Glev k r (Fin.last r)) μ)
     (U V : RadSp k r z z' π π') (hV : RTest V) : Integrable (paHs U V) ((dxc r).prod μ) := by
@@ -255,9 +253,9 @@ theorem paHs_integrable {μ : Measure (Mt k r)} (hμ : B.IsHaarOn (Glev k r (Fin
   exact (LinearIsometryEquiv.integrable_comp_iff _).mpr h
 
 /- English proof (translation)
-Use `Formalism.FourierDecayAlt.P.B5.haar_sigmaFinite hμ` as an intermediate fact. Establish `hΨ3` using `rTest_op X l 3 hΨ`. Rewrite using `[radIp_eq_prod hμ _ _ hΨ, radIp_eq_prod hμ _ _ hΨ3]`. Establish `hc` using `pa_core X μ Φ Ψ l (paHs_integrable hμ _ _ hΨ) (paHs_integrable hμ _ _ hΨ) (paHs_integrable hμ _ _ hΨ3)`. Simplify using `only [paHs_conj, integral_conj] at hc`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hc'` using `congrArg conj hc`. Simplify using `only [Complex.conj_conj, map_neg] at hc'`. Conclude with `hc'`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pa_left (X : ActualOps k r z z' π π') {μ : Measure (Mt k r)} (hμ : B.IsHaarOn (Glev k r (Fin.last r)) μ)
     (l : Fin r) (Φ Ψ : RadSp k r z z' π π') (hΨ : RTest Ψ) :
@@ -273,7 +271,7 @@ theorem pa_left (X : ActualOps k r z z' π π') {μ : Measure (Mt k r)} (hμ : B
   exact hc'
 
 /- English proof (translation)
-Use `Formalism.FourierDecayAlt.P.B5.haar_sigmaFinite hμ` as an intermediate fact. Establish `hΨ0` using `rTest_op X l 0 hΨ`. Rewrite using `[radIp_eq_prod hμ _ _ hΨ0, radIp_eq_prod hμ _ _ hΨ]`. Simplify using `only [ipF_eq_paHs]`. Conclude with `pa_core X μ Ψ Φ l (ipF_integrable hμ Φ Ψ hΨ) (ipF_integrable hμ Φ _ hΨ0) (ipF_integrable hμ _ Ψ hΨ)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pa_right (X : ActualOps k r z z' π π') {μ : Measure (Mt k r)} (hμ : B.IsHaarOn (Glev k r (Fin.last r)) μ)
     (l : Fin r) (Φ Ψ : RadSp k r z z' π π') (hΨ : RTest Ψ) :
@@ -285,7 +283,7 @@ theorem pa_right (X : ActualOps k r z z' π π') {μ : Measure (Mt k r)} (hμ : 
   exact pa_core X μ Ψ Φ l (ipF_integrable hμ Φ Ψ hΨ) (ipF_integrable hμ Φ _ hΨ0) (ipF_integrable hμ _ Ψ hΨ)
 
 /- English proof (translation)
-Rewrite using `[radIp_eq_prod hμ _ _ hV, radIp_eq_prod hμ _ _ hV, ipF_neg_left, ← integral_neg]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem radIp_neg_left {μ : Measure (Mt k r)} (hμ : B.IsHaarOn (Glev k r (Fin.last r)) μ)
     (U V : RadSp k r z z' π π') (hV : RTest V) : radIp μ (-U) V = -radIp μ U V := by
@@ -293,7 +291,7 @@ theorem radIp_neg_left {μ : Measure (Mt k r)} (hμ : B.IsHaarOn (Glev k r (Fin.
   rfl
 
 /- English proof (translation)
-Rewrite using `[radIp_eq_prod hμ _ _ (rTest_neg hV), radIp_eq_prod hμ _ _ hV, ipF_neg_right, ← integral_neg]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem radIp_neg_right {μ : Measure (Mt k r)} (hμ : B.IsHaarOn (Glev k r (Fin.last r)) μ)
     (U V : RadSp k r z z' π π') (hV : RTest V) : radIp μ U (-V) = -radIp μ U V := by
@@ -301,9 +299,7 @@ theorem radIp_neg_right {μ : Measure (Mt k r)} (hμ : B.IsHaarOn (Glev k r (Fin
   rfl
 
 /- English proof (translation)
-Use `⟨fun Ψ h => rTest_op X l 0 h, fun Ψ h => ?_, fun Φ Ψ h => ?_, fun Φ Ψ h => ?_⟩` and prove the remaining obligations. Use `show RTest ((-X.op l 3) Ψ)`. Rewrite using `[LinearMap.neg_apply]`. Conclude with `rTest_neg (rTest_op X l 3 h)`. Use `show radIp μ (X.op l 0 Φ) Ψ = radIp μ Φ ((-X.op l 3) Ψ)`.
-
-Rewrite using `[LinearMap.neg_apply, radIp_neg_right hμ _ _ (rTest_op X l 3 h)]`. Conclude with `pa_left X hμ l Φ Ψ h`. Use `show radIp μ ((-X.op l 3) Φ) Ψ = radIp μ Φ (X.op l 0 Ψ)`. Rewrite using `[LinearMap.neg_apply, radIp_neg_left hμ _ _ h, pa_right X hμ l Φ Ψ h]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rAdj_p (X : ActualOps k r z z' π π') {μ : Measure (Mt k r)} (hμ : B.IsHaarOn (Glev k r (Fin.last r)) μ)
     (l : Fin r) : RAdj μ (mkP (X.op l 0) (-X.op l 3)) := by
@@ -317,9 +313,7 @@ theorem rAdj_p (X : ActualOps k r z z' π π') {μ : Measure (Mt k r)} (hμ : B.
     rw [LinearMap.neg_apply, radIp_neg_left hμ _ _ h, pa_right X hμ l Φ Ψ h]
 
 /- English proof (translation)
-Use `⟨fun Ψ h => rTest_op X l 3 h, fun Ψ h => ?_, fun Φ Ψ h => ?_, fun Φ Ψ h => ?_⟩` and prove the remaining obligations. Use `show RTest ((-X.op l 0) Ψ)`. Rewrite using `[LinearMap.neg_apply]`. Conclude with `rTest_neg (rTest_op X l 0 h)`. Use `show radIp μ (X.op l 3 Φ) Ψ = radIp μ Φ ((-X.op l 0) Ψ)`.
-
-Rewrite using `[LinearMap.neg_apply, radIp_neg_right hμ _ _ (rTest_op X l 0 h), pa_right X hμ l Φ Ψ h, neg_neg]`. Use `show radIp μ ((-X.op l 0) Φ) Ψ = radIp μ Φ (X.op l 3 Ψ)`. Rewrite using `[LinearMap.neg_apply, radIp_neg_left hμ _ _ h, pa_left X hμ l Φ Ψ h, neg_neg]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rAdj_pb (X : ActualOps k r z z' π π') {μ : Measure (Mt k r)} (hμ : B.IsHaarOn (Glev k r (Fin.last r)) μ)
     (l : Fin r) : RAdj μ (mkP (X.op l 3) (-X.op l 0)) := by
@@ -334,7 +328,7 @@ theorem rAdj_pb (X : ActualOps k r z z' π π') {μ : Measure (Mt k r)} (hμ : B
 end Adj
 
 /- English proof (translation)
-Introduce `Wp Wq _ _ _ _ _ _ P z z' π π' X μ L st l0 D hD _ _ _ _ _ _ _ l`. Take `⟨hp, hpb, -⟩` from `hD.2.2.1`. Rewrite using `[hp l, hpb l]`. Conclude with `⟨rAdj_p X hD.2.1 l, rAdj_pb X hD.2.1 l⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem spectral_pairing_adjoint : RDSPAdj := by
   intro Wp Wq _ _ _ _ _ _ P z z' π π' X μ L st l0 D hD _ _ _ _ _ _ _ l

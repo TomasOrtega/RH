@@ -6,9 +6,9 @@ open scoped Matrix
 open GlobalTheory.HodgeCoh GlobalTheory.CechDR Polynomial UpperTheory.Gal.W2
 
 /- English proof (translation)
-Introduce `V W _ _ _ _ _ _ T Θ R G hG`. Set `bV` to `Module.finBasis ℂ V`. Set `bW` to `Module.finBasis ℂ W`. Establish `hM : LinearMap.toMatrix (bV.prod bW) (bV.prod bW) G = Matrix.fromBlocks (LinearMap.toMatrix bV bV T) 0 (LinearMap.toMatrix bV bW R) (LinearMap.toMatrix bW bW Θ)`. Apply the tactic sequence `ext (i | i) (j | j) <;>`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `[LinearMap.toMatrix_apply, Module.Basis.prod_repr_inl, Module.Basis.prod_repr_inr, Module.Basis.prod_apply, hG]`. Rewrite using `[← LinearMap.charpoly_toMatrix G (bV.prod bW), ← LinearMap.charpoly_toMatrix T bV, ← LinearMap.charpoly_toMatrix Θ bW, hM, Matrix.charpoly_fromBlocks_zero₁₂]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.Gal.W2.triCharpoly_of :
     UpperTheory.Gal.W2.TriCharpoly := by

@@ -10,11 +10,11 @@ namespace GlobalTheory.ThKAutSmallGrowth
 open NumberField MeasureTheory Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.AdelicU GlobalTheory.SiegelSet GlobalTheory.UAut GlobalTheory.ThK.SquareIntegrability
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hσ B a a' G X om om' hKP hT c hc hcs Φ hΦ`. Take `⟨N, hN⟩` from `GlobalTheory.T.theta_lift_polynomial_growth_bound F E σ hσ B a a' G X om om' hKP hT c hc hcs`. Use `⟨N, fun l hl => ?_⟩` and prove the remaining obligations. Choose the witnesses or unpack the hypotheses as in `⟨Φ₁, h1, e⟩ : ∃ Φ₁ ∈ GlobalTheory.ThK.PolData B G.M' ⊓ G.M'.So B.ψ B.τ₁, l.foldr lineDer (fun x => G.M'.I om' Φ ((toGAd hσ G.W.J hc).symm x)) = fun x => G.M'.I om' Φ₁ ((toGAd hσ G.W.J hc).symm x) := by`. Proceed by induction on `l with`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Proceed by induction.
 
-Consider the case `nil => exact ⟨Φ, hΦ, rfl⟩`. Consider the case `cons γ l ih`. Take `⟨Φ₂, h2, e2⟩` from `ih (fun γ' hγ' => hl γ' (List.mem_cons_of_mem _ hγ'))`. Take `⟨Φ₃, h3, e3⟩` from `GlobalTheory.T.theta_lift_along_real_line_bound F E σ hσ B a a' G X om om' hKP hT c hc hcs Φ₂ h2 γ (hl γ List.mem_cons_self)`. Conclude with `⟨Φ₃, h3, by rw [List.foldr_cons, e2, e3]⟩`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨C, hC⟩` from `hN Φ₁ h1`. Conclude with `⟨C, fun g => by rw [e]; exact hC g⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem uniformGrowth_thetaIntegral_small : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (hσ : ∀ x, σ (σ x) = x) (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E)

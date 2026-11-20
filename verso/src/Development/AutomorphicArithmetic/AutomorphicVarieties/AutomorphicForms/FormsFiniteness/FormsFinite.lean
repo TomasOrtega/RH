@@ -22,9 +22,9 @@ namespace UpperTheory.V.Af.Fin
 variable {K : Type} [Field K] [NumberField K]
 
 /- English proof (translation)
-Introduce `f hf`. Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem f hf`. Take `⟨ψ, hψ, g, hg, hf⟩` from `hf`. Introduce `γ m`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hf, hf, h ψ hψ g hg]`. Consider the case `zero => exact isLeftInvariant_zero`. Consider the case `add x y _ _ hx hy => exact hx.add hy`. Consider the case `smul c x _ hx => exact hx.smul c`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 private theorem slLeft {a n : ℕ} (e : Fin a ↪ Fin n) (Γ : Set (AdelicGLn.AdelicGL K n))
     (S : Submodule ℂ (archSmooth K n))
@@ -41,17 +41,17 @@ private theorem slLeft {a n : ℕ} (e : Fin a ↪ Fin n) (Γ : Set (AdelicGLn.Ad
   | smul c x _ hx => exact hx.smul c
 
 /- English proof (translation)
-Take `⟨ι, _, ⟨D⟩⟩` from `UpperTheory.exists_idempotent_decomposition_mixedSpace K`. Take `⟨hN, hG, hL, hSat, hinv⟩` from `UpperTheory.constantTermSpace_automorphic_properties K r s S hS hK`. Establish `hT` using `UpperTheory.constantTermSpace_types_of_bdd K (r + s) r S hS`. Establish `hC` using `UpperTheory.constantTermSpace_centre_of_bdd K (r + s) r S hS`. Establish `hcap` using `UpperTheory.algebraic_module_of_vanishing_block K r s (ctSp r S) hN hC ι D`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb1 : ∀ γ : GL (Fin r) K, emb (e1 r s) γ = blk γ (1 : GL (Fin s) K)`. Introduce `γ`. Simplify using `[blk]`. Establish `hb2 : ∀ γ : GL (Fin s) K, emb (e2 r s) γ = blk (1 : GL (Fin r) K) γ`. Introduce `γ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[blk]`. Use `UpperTheory.finiteDimensional_of_finiteDimensional_levi_slices K r s (ctSp r S) hN hSat hL hT ?_ ?_` and prove the remaining obligations. Use `h₁ _ ⟨?_, (UpperTheory.slSp_preserves_growth_and_level K r (r + s) (e1 r s) _ _).1 hG, (UpperTheory.slSp_preserves_growth_and_level K r (r + s) (e1 r s) _ _).2 hL, UpperTheory.finiteDimensional_slSp_reduction K r (r + s) (e1 r s) _ _ hT, ?_⟩` and prove the remaining obligations. Apply `slLeft` to reduce the goal to its premises. Introduce and unpack `ψ hψ _ ⟨m₂, rfl⟩ γ m`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components.
 
-Rewrite using `[map_mul, ← mul_assoc, ← emb_comm, mul_assoc, (UpperTheory.blockEmbedding_finiteAdelicGL_compat_continuous K r (r + s) (e1 r s)).2.1 γ, hb1, hinv ψ hψ]`. Use `UpperTheory.siegelLevi_block_aeval_stable K r (r + s) (e1 r s) _ (ctSp r S) (Van K r s) ι D ?_ (fun τ u => (hcap τ u).1)` and prove the remaining obligations. Introduce and unpack `ψ hψ _ ⟨m₂, rfl⟩ m`. Rewrite using `[← emb_comm]`. Conclude with `hψ m m₂`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `h₂ _ ⟨?_, (UpperTheory.slSp_preserves_growth_and_level K s (r + s) (e2 r s) _ _).1 hG, (UpperTheory.slSp_preserves_growth_and_level K s (r + s) (e2 r s) _ _).2 hL, UpperTheory.finiteDimensional_slSp_reduction K s (r + s) (e2 r s) _ _ hT, ?_⟩` and prove the remaining obligations. Apply `slLeft` to reduce the goal to its premises. Introduce and unpack `ψ hψ _ ⟨m₁, rfl⟩ γ m`. Rewrite using `[map_mul, ← mul_assoc, emb_comm m₁ (AdelicGLn.diagonal K s γ), mul_assoc, (UpperTheory.blockEmbedding_finiteAdelicGL_compat_continuous K s (r + s) (e2 r s)).2.1 γ, hb2, hinv ψ hψ]`. Use `UpperTheory.siegelLevi_block_aeval_stable K s (r + s) (e2 r s) _ (ctSp r S) (Van K r s) ι D ?_ (fun τ u => (hcap τ u).2)` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `ψ hψ _ ⟨m₁, rfl⟩ m`. Conclude with `hψ m₁ m`.
+A detailed English derivation is pending.
 -/
 theorem ctFin {r s : ℕ} (h₁ : FinAt K r) (h₂ : FinAt K s) {S : Submodule ℂ (archSmooth K (r + s))} (hS : Bdd S)
     (hK : Sat S) : FiniteDimensional ℂ (ctSp r S) := by
@@ -88,7 +88,7 @@ theorem ctFin {r s : ℕ} (h₁ : FinAt K r) (h₂ : FinAt K s) {S : Submodule �
       exact hψ m₁ m
 
 /- English proof (translation)
-Apply `Module.rank_lt_aleph0_iff.mp` to reduce the goal to its premises. Rewrite using `[← LinearMap.rank_range_add_rank_ker f]`. Conclude with `Cardinal.add_lt_aleph0 (Module.rank_lt_aleph0 ℂ _) (Module.rank_lt_aleph0 ℂ _)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem fin_of_ker {M N : Type} [AddCommGroup M] [Module ℂ M] [AddCommGroup N] [Module ℂ N] (f : M →ₗ[ℂ] N)
     (h1 : FiniteDimensional ℂ (LinearMap.range f)) (h2 : FiniteDimensional ℂ (LinearMap.ker f)) :
@@ -98,15 +98,13 @@ private theorem fin_of_ker {M N : Type} [AddCommGroup M] [Module ℂ M] [AddComm
   exact Cardinal.add_lt_aleph0 (Module.rank_lt_aleph0 ℂ _) (Module.rank_lt_aleph0 ℂ _)
 
 /- English proof (translation)
-Introduce `S hS`. Take `⟨S', hSS', hB', hSat'⟩` from `UpperTheory.exists_automorphic_saturation_submodule K n S hS`. Establish `hct : ∀ r, 0 < r → r < n → FiniteDimensional ℂ (ctSp r S')`. Introduce `r hr0 hrn`. Take `⟨s, rfl⟩` from `Nat.exists_eq_add_of_le hrn.le`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `ctFin (ih r hrn) (ih s (by omega)) hB' hSat'`. Use `choose F hF1 _ using fun r => UpperTheory.exists_constantTerm_linearMap_equivariant_universalEnveloping K n r`. Set `ι : S' →ₗ[ℂ] automorphicForms K n` to `LinearMap.codRestrict _ ((archSmooth K n).subtype ∘ₗ S'.subtype) (fun φ => UpperTheory.isAutomorphicForm_of_bdd_submodule K n S' hB' φ.1 φ.2)`. Set `I` to `{r : Fin n // 0 < r.val}`. Establish `hmem : ∀ (i : I) (φ : S'), F i.1.val (ι φ) ∈ ctSp i.1.val S'` using `fun i φ => Submodule.subset_span ⟨φ.1, φ.2, hF1 _ _⟩`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Set `G : S' →ₗ[ℂ] ((i : I) → ctSp i.1.val S')` to `LinearMap.pi (fun i => LinearMap.codRestrict _ ((F i.1.val).comp ι) (hmem i))`. Use `haveI : ∀ i : I, FiniteDimensional ℂ (ctSp i.1.val S') := fun i => hct _ i.2 i.1.2`. Use `haveI : FiniteDimensional ℂ S' := by`. Use `fin_of_ker G inferInstance ?_` and prove the remaining obligations. Establish `hW : FiniteDimensional ℂ ((LinearMap.ker G).map S'.subtype)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `UpperTheory.finiteDimensional_of_bdd_cuspidal K n _ (hB'.mono (Submodule.map_subtype_le _ _)) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩ r hr0 hrn g`. Establish `h0 : F r (ι x) = 0`. Use `congrFun (LinearMap.mem_ker.mp hx) ⟨⟨r, hrn⟩, hr0⟩` as an intermediate fact. Conclude with `congrArg Subtype.val this`.
-
-Establish `h1` using `congrArg (fun ψ : archSmooth K n => (ψ : AdelicGLn.AdelicGL K n → ℂ) g) h0`. Simplify using `only [hF1] at h1`. Conclude with `h1`. Conclude with `LinearEquiv.finiteDimensional (Submodule.equivMapOfInjective _ S'.injective_subtype _).symm`. Conclude with `Submodule.finiteDimensional_of_le hSS'`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem finAt_of {n : ℕ} (ih : ∀ m < n, FinAt K m) : FinAt K n := by
   intro S hS
@@ -140,7 +138,7 @@ theorem finAt_of {n : ℕ} (ih : ∀ m < n, FinAt K m) : FinAt K n := by
   exact Submodule.finiteDimensional_of_le hSS'
 
 /- English proof (translation)
-Introduce `_ _ _ n` and use `Nat.strong_induction_on n fun _ ih => finAt_of ih`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem formsFinite : FormsFinite := fun _ _ _ n => Nat.strong_induction_on n fun _ ih => finAt_of ih
 

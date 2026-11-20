@@ -20,7 +20,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.DiagAH
 
 /- English proof (translation)
-Establish `h : ComplexEmbedding.IsReal φ` using `(NumberField.InfinitePlace.isReal_mk_iff).1 (IsTotallyReal.isReal _)`. Rewrite using `[← ComplexEmbedding.conjugate_coe_eq, ComplexEmbedding.isReal_iff.1 h]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_eq_of_totallyReal {F : Type} [Field F] [NumberField F] [IsTotallyReal F] (φ : F →+* ℂ) (x : F) :
     starRingEnd ℂ (φ x) = φ x := by
@@ -29,7 +29,7 @@ theorem conj_eq_of_totallyReal {F : Type} [Field F] [NumberField F] [IsTotallyRe
   rw [← ComplexEmbedding.conjugate_coe_eq, ComplexEmbedding.isReal_iff.1 h]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hall`. Use `push_neg at hall`. Conclude with `h (IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 F)) (RingHom.ext fun a ↦ hall a))`.
+Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem exists_int_ne {F : Type} [Field F] [NumberField F] {φ ψ : F →+* ℂ} (h : φ ≠ ψ) :
     ∃ a : 𝓞 F, φ (a : F) ≠ ψ (a : F) := by
@@ -38,11 +38,11 @@ theorem exists_int_ne {F : Type} [Field F] [NumberField F] {φ ψ : F →+* ℂ}
   exact h (IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 F)) (RingHom.ext fun a ↦ hall a))
 
 /- English proof (translation)
-Use extensionality with `i j`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Rewrite using `[Matrix.diagonal_apply_eq]`. Use `congrFun (congrFun hH i) i` as an intermediate fact.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [Matrix.conjTranspose_apply] at this`. Conclude with `(Complex.conj_eq_iff_re.1 this).symm`. Rewrite using `[Matrix.diagonal_apply_ne _ hij]`. Take `⟨a, ha⟩` from `exists_int_ne (he.ne hij)`. Establish `h1` using `h a i j`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[conj_eq_of_totallyReal]`. Establish `h2 : (e i (a : F) - e j (a : F)) * Hm i j = 0` using `by linear_combination h1`. Conclude with `(mul_eq_zero.1 h2).resolve_left (sub_ne_zero.2 ha)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eq_diagonal_of_comm {F : Type} [Field F] [NumberField F] [IsTotallyReal F] {n : ℕ}
     (Hm : Matrix (Fin n) (Fin n) ℂ) (hH : Hm.IsHermitian) (e : Fin n → (F →+* ℂ)) (he : Function.Injective e)
@@ -63,9 +63,9 @@ theorem eq_diagonal_of_comm {F : Type} [Field F] [NumberField F] [IsTotallyReal 
     exact (mul_eq_zero.1 h2).resolve_left (sub_ne_zero.2 ha)
 
 /- English proof (translation)
-Introduce `F _ _ _ 𝔠 X c hc u e he hact`. Take `⟨u', Hm, χ, hex, hAH⟩` from `GlobalTheory.T.exists_appell_humbert_uniformization F 𝔠 X c hc u`. Establish `hact' : ∀ (a : 𝓞 F) w, u'.ex (fun j ↦ e j (a : F) * w j) = u'.ex w ≫ X.rm.act a`. Rewrite using `[hex]`. Conclude with `hact`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hsym` using `GlobalTheory.T.appell_humbert_real_multiplication F 𝔠 X c hc u' e hact' Hm χ hAH`. Establish `hdiag` using `eq_diagonal_of_comm Hm hAH.1 e he hsym`. Use `⟨u', fun j ↦ (Hm j j).re, hex, χ, ?_⟩` and prove the remaining obligations. Rewrite using `[← hdiag]`. Conclude with `hAH`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem diagFrame : DiagFrame := by
   intro F _ _ _ 𝔠 X c hc u e he hact

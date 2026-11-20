@@ -7,55 +7,51 @@ open scoped TensorProduct
 namespace GlobalTheory.Mem.LocalDualBase
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ w n J L p hJ hp hL _`. Substitute `hJ` using the available equality. Establish `hform1 : ∀ x y : Fin n → E, hform (σ : E →+* E) (1 : Matrix (Fin n) (Fin n) E) x y = ∑ i, σ (x i) * y i`. Introduce `x y`. Unfold `hform`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `[Matrix.one_apply]`. Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Use `⟨0, fun t => ⟨0, ?_⟩⟩` and prove the remaining obligations. Establish `: (t - (0 : intV E w) • (0 : latS (F` using `F) (w.adicCompletion F) (intV E w) (Submodule.span (𝓞 E) (dualSet (σ : E →+* E) (1 : Matrix (Fin 0) (Fin 0) E) L)))).1 = 0 := Subsingleton.elim _ _`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `Submodule.zero_mem _`. Use `set R := w.adicCompletion F`. Set `l : Fin n` to `⟨n - 1, by omega⟩`. Establish `hl : l.1 + 1 = n` using `by simp [l]; omega`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hσO : ∀ r : 𝓞 E, σ (r : E) ∈ (algebraMap (𝓞 E) E).range` using `fun r => ⟨⟨σ (r : E), map_isIntegral_int σ (RingOfIntegers.isIntegral_coe r)⟩, rfl⟩`. Take `⟨pb, hpb⟩` from `hσO p`. Establish `hpb0 : (algebraMap (𝓞 E) E pb) ≠ 0`. Rewrite using `[hpb]`. Introduce `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hp (by simpa using (map_eq_zero σ).1 h)`. Use `set e0 : Fin n → E := Pi.single l (algebraMap (𝓞 E) E pb)⁻¹ with he0def`. Establish `he0 : e0 ∈ dualSet (σ : E →+* E) (1 : Matrix (Fin n) (Fin n) E) L`. Introduce `x hx`. Rewrite using `[hform1, Finset.sum_eq_single l (by intro b _ hb; simp [e0, hb]) (by simp)]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨r, hr, hd⟩` from `(hL x).1 hx l`. Take `⟨s, rfl⟩` from `hd hl`. Take `⟨u, hu⟩` from `hσO s`. Use `⟨u, ?_⟩` and prove the remaining obligations. Rewrite using `[hu, hr]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Simplify using `only [e0, Pi.single_eq_same]`. Use `push_cast`. Rewrite using `[map_mul, ← hpb]`. Clear the denominators using the available nonvanishing facts. Establish `hglob : ∀ y ∈ Submodule.span (𝓞 E) (dualSet (σ : E →+* E) (1 : Matrix (Fin n) (Fin n) E) L), ∃ r : 𝓞 E, y - (algebraMap (𝓞 E) E r) • e0 ∈ L`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Establish an intermediate fact.
 
-Introduce `y hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy`. Establish `hxl : Pi.single l (p : E) ∈ L`. Use `(hL _).2 fun i => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Distinguish the cases in `h : i = l`. Substitute `h` using the available equality. Conclude with `⟨p, by simp, fun _ => dvd_rfl⟩`. Conclude with `⟨0, by simp [h], fun _ => dvd_zero _⟩`. Establish `h1` using `hy _ hxl`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h1` using `[hform1, Finset.sum_eq_single l (by intro b _ hb; simp [hb]) (by simp)]`. Simplify using `only [Pi.single_eq_same] at h1`. Take `⟨r, hr⟩` from `h1`. Use `⟨r, (hL _).2 fun j => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hj : j = l`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Substitute `hj` using the available equality. Use `⟨0, ?_, fun _ => dvd_zero _⟩` and prove the remaining obligations. Simplify using `only [Pi.sub_apply, Pi.smul_apply, smul_eq_mul, e0, Pi.single_eq_same, hr, ← hpb]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hxj : Pi.single j (1 : E) ∈ L`. Use `(hL _).2 fun i => ?_` and prove the remaining obligations. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality.
+Substitute using the available equality. Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `⟨1, by simp, fun hi => absurd (Fin.ext (by omega)) hj⟩`. Conclude with `⟨0, by simp [h], fun _ => dvd_zero _⟩`. Establish `h2` using `hy _ hxj`. Rewrite `h2` using `[hform1, Finset.sum_eq_single j (by intro b _ hb; simp [hb]) (by simp)]`. Simplify using `only [Pi.single_eq_same, map_one, one_mul] at h2`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Treat this case separately.
 
-Take `⟨u, hu⟩` from `h2`. Use `⟨u, ?_, fun hj' => absurd (Fin.ext (by omega)) hj⟩` and prove the remaining obligations. Simplify using `[e0, hj, hu]`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `add y z _ _ h1 h2`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨r1, hr1⟩` from `h1`. Take `⟨r2, hr2⟩` from `h2`. Use `⟨r1 + r2, ?_⟩` and prove the remaining obligations. Establish `: y + z - (algebraMap (𝓞 E) E (r1 + r2)) • e0 = (y - (algebraMap (𝓞 E) E r1) • e0) + (z - (algebraMap (𝓞 E) E r2) • e0)`. Rewrite using `[map_add, add_smul]`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Normalize the expressions using the abelian group laws. Rewrite using `[this]`. Conclude with `L.add_mem hr1 hr2`. Consider the case `smul c y _ h`. Take `⟨r, hr⟩` from `h`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `⟨c * r, ?_⟩` and prove the remaining obligations. Establish `: c • y - (algebraMap (𝓞 E) E (c * r)) • e0 = c • (y - (algebraMap (𝓞 E) E r) • e0)`. Use extensionality with `j`. Simplify using `only [Pi.sub_apply, Pi.smul_apply, smul_eq_mul, map_mul]`. Simplify using `only [Algebra.smul_def]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `L.smul_mem c hr`. Establish `hincl : ∀ r : 𝓞 E, inclE (F` using `F) R (algebraMap (𝓞 E) E r) ∈ intV E w := by`. Introduce `r`.
+Extract witnesses or component facts from the available result. Reduce the argument to an intermediate assertion. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Proceed by induction.
 
-Conclude with `Subring.subset_closure (Or.inl ⟨⟨_, r, rfl⟩, rfl⟩)`. Use `⟨⟨fun i => inclE (F := F) R (e0 i), Submodule.subset_span ⟨e0, Submodule.subset_span he0, rfl⟩⟩, fun t => ?_⟩` and prove the remaining obligations. Take `⟨t, ht⟩` from `t`. It suffices to establish `H : ∃ s : intV E w, t - (s : E ⊗[F] R) • (fun i => inclE (F` using `F) R (e0 i)) ∈ latS (F := F) R (intV E w) L by`. Take `⟨s, hs⟩` from `H`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `⟨s, hs⟩`. Proceed by induction on `ht using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨y', hy', rfl⟩` from `hy`. Take `⟨r, hr⟩` from `hglob y' hy'`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Use `⟨⟨_, hincl r⟩, ?_⟩` and prove the remaining obligations. Establish `: (fun i => inclE (F` using `F) R (y' i)) - inclE (F := F) R (algebraMap (𝓞 E) E r) • (fun i => inclE (F := F) R (e0 i)) = fun i => inclE (F := F) R ((y' - (algebraMap (𝓞 E) E r) • e0) i) := by`. Use extensionality with `i`. Simplify using `only [Pi.sub_apply, Pi.smul_apply, smul_eq_mul, map_sub, map_mul]`. Rewrite using `[this]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.subset_span ⟨_, hr, rfl⟩`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `add x y _ _ h1 h2`. Take `⟨s1, hs1⟩` from `h1`. Take `⟨s2, hs2⟩` from `h2`.
+Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨s1 + s2, ?_⟩` and prove the remaining obligations. Establish `: x + y - ((s1 + s2 : intV E w) : E ⊗[F] R) • (fun i => inclE (F` using `F) R (e0 i)) = (x - (s1 : E ⊗[F] R) • (fun i => inclE (F := F) R (e0 i))) + (y - (s2 : E ⊗[F] R) • (fun i => inclE (F := F) R (e0 i))) := by`. Rewrite using `[Subring.coe_add, add_smul]`. Normalize the expressions using the abelian group laws. Rewrite using `[this]`.
-
-Conclude with `Submodule.add_mem _ hs1 hs2`. Consider the case `smul a x _ h`. Take `⟨s, hs⟩` from `h`. Use `⟨a * s, ?_⟩` and prove the remaining obligations. Establish `: a • x - ((a * s : intV E w) : E ⊗[F] R) • (fun i => inclE (F` using `F) R (e0 i)) = a • (x - (s : E ⊗[F] R) • (fun i => inclE (F := F) R (e0 i))) := by`.
-
-Rewrite using `[Subring.coe_mul, mul_smul, smul_sub]`. Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ a hs`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem localDual_eq_add_span : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (w : HeightOneSpectrum (𝓞 F)) (n : ℕ) (J : Matrix (Fin n) (Fin n) E) (L : Submodule (𝓞 E) (Fin n → E)) (p : 𝓞 E), J = 1 → p ≠ 0 → (∀ x, x ∈ L ↔ ∀ j : Fin n, ∃ r : 𝓞 E, x j = (r : E) ∧ (j.1 + 1 = n → p ∣ r)) → (∀ x, σ (σ x) = x) → ∃ e : latS (F := F) (w.adicCompletion F) (intV E w) (Submodule.span (𝓞 E) (dualSet (σ : E →+* E) J L)), ∀ t : latS (F := F) (w.adicCompletion F) (intV E w) (Submodule.span (𝓞 E) (dualSet (σ : E →+* E) J L)), ∃ s : intV E w, (t - s • e).1 ∈ latS (F := F) (w.adicCompletion F) (intV E w) L := by
   intro F E _ _ _ _ _ σ w n J L p hJ hp hL _

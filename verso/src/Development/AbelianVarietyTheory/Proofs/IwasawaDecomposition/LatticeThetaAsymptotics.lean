@@ -8,11 +8,11 @@ open scoped RealInnerProductSpace
 namespace GlobalTheory.PlaneTheta
 
 /- English proof (translation)
-Establish `h1` using `h.tendsto_cofinite_zero.eventually (gt_mem_nhds (Real.exp_pos (-1)))`. Rewrite `h1` using `[Filter.eventually_cofinite]`. Establish `h2 : {i | ¬ Real.exp (-q i) < Real.exp (-1) ∧ 0 < q i}.Finite` using `h1.subset fun i hi => hi.1`. Establish `h3 : ∀ᶠ δ in nhdsWithin (0 : ℝ) (Set.Ioi 0), ∀ i ∈ {i | ¬ Real.exp (-q i) < Real.exp (-1) ∧ 0 < q i}, δ < q i` using `(Filter.eventually_all_finite h2).2 fun i hi => nhdsWithin_le_nhds (gt_mem_nhds hi.2)`. Establish `h4 : ∀ᶠ δ in nhdsWithin (0 : ℝ) (Set.Ioi 0), δ < 1` using `nhdsWithin_le_nhds (gt_mem_nhds one_pos)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨δ, ⟨h5, h6⟩, h7⟩` from `((h3.and h4).and self_mem_nhdsWithin).exists`. Use `⟨δ, h7, fun i hi => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hc : Real.exp (-q i) < Real.exp (-1)`. Rewrite `hc` using `[Real.exp_lt_exp]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Conclude with `(h5 i ⟨hc, hi⟩).le`.
+A detailed English derivation is pending.
 -/
 theorem exists_pos_le_of_summable {ι : Type*} {q : ι → ℝ}
     (h : Summable fun i => Real.exp (-q i)) : ∃ δ : ℝ, 0 < δ ∧ ∀ i, 0 < q i → δ ≤ q i := by
@@ -32,7 +32,7 @@ theorem exists_pos_le_of_summable {ι : Type*} {q : ι → ℝ}
   · exact (h5 i ⟨hc, hi⟩).le
 
 /- English proof (translation)
-The claim follows from `|∑' i, f i| ≤ (Real.exp δ * ∑' i, Real.exp (-q i)) * Real.exp (-δ * s) := by have hb : ∀ i, ‖f i‖ ≤ Real.exp δ * Real.exp (-q i) * Real.exp (-δ * s) := by intro i by_cases h0 : f i = 0 · rw [h0, norm_zero]; positivity · refine (hf i).trans ?_ rw [← Real.exp_add, ← Real.exp_add, R …`.
+A detailed English derivation is pending.
 -/
 theorem abs_tsum_le {ι : Type*} {q f : ι → ℝ} {δ s : ℝ} (hs : 1 ≤ s)
     (h : Summable fun i => Real.exp (-q i)) (hf : ∀ i, |f i| ≤ Real.exp (-(s * q i)))
@@ -55,11 +55,11 @@ variable {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E] [FiniteDim
 
 omit [MeasurableSpace E] [BorelSpace E] [IsZLattice ℝ L] in
 /- English proof (translation)
-Establish `h : Summable fun x : L => Real.exp (-(Real.pi * ‖(x : E) + u‖ ^ 2))`. Simplify `summable_lattice_exp_neg_mul_norm_add_sq L Real.pi_pos u` using `only [neg_mul]`. Take `⟨δ, hδ, hq⟩` from `exists_pos_le_of_summable h`. Use `⟨δ, hδ, IsBigO.of_bound (Real.exp δ * ∑' x : L, Real.exp (-(Real.pi * ‖(x : E) + u‖ ^ 2))) ?_⟩` and prove the remaining obligations. Use `filter_upwards [eventually_ge_atTop (1 : ℝ)] with t ht`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Real.norm_of_nonneg (Real.exp_pos _).le, Real.norm_eq_abs]`. Use `abs_tsum_le ht h (fun x => ?_) (fun x _ => hq x ?_)` and prove the remaining obligations. Rewrite using `[abs_of_pos (Real.exp_pos _)]`. Apply `le_of_eq` to reduce the goal to its premises. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Use `norm_pos_iff.2 (hu x)` as an intermediate fact. Use `Real.pi_pos` as an intermediate fact. Check the signs of the components of the expression.
+Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression. A detailed English derivation is pending.
 -/
 theorem atTop_bound (u : E) (hu : ∀ x : L, (x : E) + u ≠ 0) :
     ∃ c : ℝ, 0 < c ∧ (fun t : ℝ => ∑' x : L, Real.exp (-Real.pi * t * ‖(x : E) + u‖ ^ 2))
@@ -78,25 +78,23 @@ theorem atTop_bound (u : E) (hu : ∀ x : L, (x : E) + u ≠ 0) :
     positivity
 
 /- English proof (translation)
-Establish `h : Summable fun y : dualLattice L => Real.exp (-(Real.pi * ‖(y : E)‖ ^ 2))`. Simplify `summable_lattice_exp_neg_mul_norm_sq (dualLattice L) Real.pi_pos` using `only [neg_mul]`. Take `⟨δ, hδ, hq⟩` from `exists_pos_le_of_summable h`. Establish `hV` using `ZLattice.covolume_pos L MeasureTheory.volume`. Use `set C := Real.exp δ * ∑' y : dualLattice L, Real.exp (-(Real.pi * ‖(y : E)‖ ^ 2)) with hC`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hC0 : 0 ≤ C` using `mul_nonneg (Real.exp_pos _).le (tsum_nonneg fun _ => (Real.exp_pos _).le)`. Use `⟨δ / 2, by positivity, IsBigO.of_bound ((ZLattice.covolume L)⁻¹ * (2 / δ) * C) ?_⟩` and prove the remaining obligations. Establish `h4 : ∀ᶠ t in nhdsWithin (0 : ℝ) (Set.Ioi 0), t < 1` using `nhdsWithin_le_nhds (gt_mem_nhds one_pos)`. Use `filter_upwards [h4, self_mem_nhdsWithin] with t ht1 ht`. Establish `ht : 0 < t` using `ht`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨h1, h2⟩` from `poisson_gaussian_lattice_cos L ht u`. Rewrite using `[h2, h1.tsum_eq_add_tsum_ite 0, hE]`. Establish `hs : 1 ≤ t⁻¹` using `(one_le_inv₀ ht).2 ht1.le`. Establish `h5` using `abs_tsum_le (δ := δ) (f := fun y : dualLattice L => if y = 0 then 0 else Real.exp (-Real.pi * ‖(y : E)‖ ^ 2 / t) * Real.cos (2 * Real.pi * ⟪(y : E), u⟫)) hs h (fun y => ?_) (fun y hy => hq y ?_)`. Generalize the expression as in `(∑' y : dualLattice L, if y = 0 then 0 else Real.exp (-Real.pi * ‖(y : E)‖ ^ 2 / t) * Real.cos (2 * Real.pi * ⟪(y : E), u⟫)) = S at h5 ⊢`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h5` using `[← hC]`. Establish `h6 : t ^ (-(((2 : ℕ) : ℝ) / 2)) = t⁻¹`. Rewrite using `[← Real.rpow_neg_one]`. Evaluate the numerical expressions. Rewrite using `[h6]`.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h7 : (ZLattice.covolume L)⁻¹ * t⁻¹ * (Real.exp (-Real.pi * ‖((0 : dualLattice L) : E)‖ ^ 2 / t) * Real.cos (2 * Real.pi * ⟪((0 : dualLattice L) : E), u⟫) + S) - 1 / (t * ZLattice.covolume L) = (ZLattice.covolume L)⁻¹ * t⁻¹ * S`. Simplify using `only [ZeroMemClass.coe_zero, norm_zero, inner_zero_left]`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h7, Real.norm_of_nonneg (Real.exp_pos _).le, Real.norm_eq_abs, abs_mul, abs_of_pos (by positivity)]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h8 : t⁻¹ ≤ 2 / δ * Real.exp (δ / 2 * t⁻¹)`. Use `Real.add_one_le_exp (δ / 2 * t⁻¹)` as an intermediate fact. Rewrite using `[div_mul_eq_mul_div, le_div_iff₀ hδ]`. Use the polynomial consequences of the given equalities and inequalities. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Chain the equalities or inequalities of the calculation. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Use `_ = (ZLattice.covolume L)⁻¹ * (2 / δ) * C * Real.exp (-(δ / 2) / t) := by`. Rewrite using `[← Real.exp_add]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs`. Rewrite using `[abs_zero]`. Check the signs of the components of the expression. Rewrite using `[abs_mul, abs_of_pos (Real.exp_pos _)]`. Use `(mul_le_of_le_one_right (Real.exp_pos _).le (Real.abs_cos_le_one _)).trans ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Apply `le_of_eq` to reduce the goal to its premises. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `hy0 : y ≠ 0` using `fun h0 => hy (if_pos h0)`. Establish `: 0 < ‖(y : E)‖` using `norm_pos_iff.2 (by simpa using hy0)`.
-
-Use `Real.pi_pos` as an intermediate fact. Check the signs of the components of the expression.
+Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression. A detailed English derivation is pending.
 -/
 theorem zero_bound (hE : Module.finrank ℝ E = 2) (u : E) :
     ∃ c : ℝ, 0 < c ∧ (fun t : ℝ => (∑' x : L, Real.exp (-Real.pi * t * ‖(x : E) + u‖ ^ 2))
@@ -158,7 +156,7 @@ theorem zero_bound (hE : Module.finrank ℝ E = 2) (u : E) :
 end Lattice
 
 /- English proof (translation)
-Rewrite using `[ZLattice.covolume_eq_det_mul_measureReal _ _ L.latticeBasis Complex.orthonormalBasisOneI.toBasis, MeasureTheory.measureReal_congr (ZSpan.fundamentalDomain_ae_parallelepiped _ _), MeasureTheory.Measure.real, OrthonormalBasis.coe_toBasis, Complex.orthonormalBasisOneI.volume_parall …`. Use `congr 1`. Rewrite using `[Module.Basis.det_apply, Matrix.det_fin_two]`. Simplify using `[Module.Basis.toMatrix_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem covolume_lattice (L : PeriodPair) :
     ZLattice.covolume L.lattice = |(starRingEnd ℂ L.ω₁ * L.ω₂).im| := by
@@ -172,23 +170,21 @@ theorem covolume_lattice (L : PeriodPair) :
   ring
 
 /- English proof (translation)
-Introduce `w₁ w₂ x₀ hw hx`. Set `L : PeriodPair` to `⟨w₁, w₂, by`. Rewrite using `[LinearIndependent.pair_iff]`. Introduce `s t e`. Establish `e1` using `congrArg Complex.re e`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e2` using `congrArg Complex.im e`. Simplify using `at e1 e2 hw`. Prove the components needed by the constructor for the conclusion. Apply `mul_left_cancel₀ hw` to reduce the goal to its premises. Take the linear combination `w₂.im * e1 - w₂.re * e2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion.
 
-Apply `mul_left_cancel₀ hw` to reduce the goal to its premises. Take the linear combination `w₁.re * e2 - w₁.im * e1⟩`. Establish `hsum : ∀ t : ℝ, ∑' p : ℤ × ℤ, Real.exp (-Real.pi * t * ‖x₀ + p.1 * w₁ + p.2 * w₂‖ ^ 2) = ∑' x : L.lattice, Real.exp (-Real.pi * t * ‖(x : ℂ) + x₀‖ ^ 2)`. Introduce `t`. Rewrite using `[← L.latticeEquivProd.symm.toEquiv.tsum_eq]`.
+Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `tsum_congr fun p => ?_` and prove the remaining obligations. Use `L.latticeEquiv_symm_apply p` as an intermediate fact. Establish `e : ((L.latticeEquivProd.symm.toEquiv p : L.lattice) : ℂ) + x₀ = x₀ + p.1 * w₁ + p.2 * w₂`. Express the relevant statement in the definitionally equal form `(L.latticeEquivProd.symm p).1 + x₀ = _`. Rewrite using `[this]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Establish `hu : ∀ x : L.lattice, (x : ℂ) + x₀ ≠ 0`. Introduce `x h`. Take `⟨m, n, hmn⟩` from `PeriodPair.mem_lattice.1 x.2`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Apply `hx m n` to reduce the goal to its premises. Rewrite using `[← h, ← hmn]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨c₁, hc₁, h₁⟩` from `atTop_bound L.lattice x₀ hu`. Take `⟨c₂, hc₂, h₂⟩` from `zero_bound L.lattice Complex.finrank_real_complex x₀`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite `h₂` using `[covolume_lattice]`. Simplify using `only [hsum]`. Use `⟨min c₁ c₂, lt_min hc₁ hc₂, h₁.trans (IsBigO.of_bound' ?_), h₂.trans (IsBigO.of_bound' ?_)⟩` and prove the remaining obligations. Use `filter_upwards [eventually_ge_atTop (0 : ℝ)] with t ht`. Rewrite using `[Real.norm_of_nonneg (Real.exp_pos _).le, Real.norm_of_nonneg (Real.exp_pos _).le, Real.exp_le_exp]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Use polynomial arithmetic with `[min_le_left c₁ c₂]`. Use `filter_upwards [self_mem_nhdsWithin] with t ht`. Establish `ht : 0 < t` using `ht`. Rewrite using `[Real.norm_of_nonneg (Real.exp_pos _).le, Real.norm_of_nonneg (Real.exp_pos _).le, Real.exp_le_exp]`. Use `gcongr`.
-
-Conclude with `min_le_right _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem theta_asymptotics : ∀ (w₁ w₂ x₀ : ℂ), (starRingEnd ℂ w₁ * w₂).im ≠ 0 → (∀ m n : ℤ, x₀ + m * w₁ + n * w₂ ≠ 0) → ∃ c : ℝ, 0 < c ∧ (fun t : ℝ => ∑' p : ℤ × ℤ, Real.exp (-Real.pi * t * ‖x₀ + p.1 * w₁ + p.2 * w₂‖ ^ 2)) =O[atTop] (fun t => Real.exp (-c * t)) ∧ (fun t : ℝ => (∑' p : ℤ × ℤ, Real.exp (-Real.pi * t * ‖x₀ + p.1 * w₁ + p.2 * w₂‖ ^ 2)) - 1 / (t * |(starRingEnd ℂ w₁ * w₂).im|)) =O[nhdsWithin 0 (Set.Ioi 0)] (fun t => Real.exp (-c / t)) := by
   intro w₁ w₂ x₀ hw hx

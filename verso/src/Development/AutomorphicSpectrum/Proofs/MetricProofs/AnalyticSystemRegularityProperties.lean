@@ -11,21 +11,19 @@ open scoped ComplexOrder
 open scoped ContDiff
 
 /- English proof (translation)
-Introduce `e σ S`. Establish `hcl : IsClosed (bdry S.s)` using `LeviFormBoundaryTopology.isClosed_bdry S.sec`. Use `⟨hcl.isOpen_compl, ?_, ?_, ?_, fun y _ => rW_ge S.L S.s S.norm_le y⟩` and prove the remaining obligations. Establish `hAn : S.A.IsAnalyticSubset (bdry S.s)`. Introduce `x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨S.L.U x, S.L.isOpen_U x, S.L.mem_U x, 1, fun _ => S.s x, fun _ => S.sec.1 x, ?_⟩` and prove the remaining obligations. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hz, hzU⟩`. Conclude with `⟨hzU, fun _ => (LeviFormBoundaryTopology.bdry_iff S.sec hzU).1 hz⟩`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨hzU, hz⟩`. Conclude with `⟨(LeviFormBoundaryTopology.bdry_iff S.sec hzU).2 (hz 0), hzU⟩`. Establish `hInt` using `LeviFormBoundaryTopology.interior_bdry_eq_empty S.sec S.snc`. Introduce `j`. Establish `h` using `analyticNull S.A (bdry S.s) hAn hInt j`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hc : S.open'ᶜ = bdry S.s` using `compl_compl _`. Rewrite using `[hc]`. Rewrite `h` using `[Set.inter_comm, (S.A.chart j).image_source_inter_eq']`. Conclude with `h`. Introduce `a x hx j hj`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨hth, hph, -, -⟩` from `S.sing a`. Establish `h1` using `hth.1 x j`. Establish `h2` using `hph j`. Establish `hO1 : IsOpen ((S.A.chart j).target ∩ (S.A.chart j).symm ⁻¹' (S.th a).U x)` using `(S.A.chart j).isOpen_inter_preimage_symm ((S.th a).isOpen_U x)`. Establish `hO2 : IsOpen ((S.A.chart j).target ∩ (S.A.chart j).symm ⁻¹' (bdry S.s)ᶜ)` using `(S.A.chart j).isOpen_inter_preimage_symm hcl.isOpen_compl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm1 : S.A.chart j x ∈ (S.A.chart j).target ∩ (S.A.chart j).symm ⁻¹' (S.th a).U x` using `⟨(S.A.chart j).map_source hj, by`. Simplify `(S.th a).mem_U x⟩` using `[(S.A.chart j).left_inv hj]`. Establish `hm2 : S.A.chart j x ∈ (S.A.chart j).target ∩ (S.A.chart j).symm ⁻¹' (bdry S.s)ᶜ` using `⟨(S.A.chart j).map_source hj, by`. Establish `hx' : x ∈ (bdry S.s)ᶜ` using `hx`. Simplify `hx'⟩` using `[(S.A.chart j).left_inv hj]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hle : (2 : WithTop ℕ∞) ≤ ∞` using `ENat.LEInfty.out`. Establish `hA` using `(h1.contDiffAt (hO1.mem_nhds hm1)).of_le hle`. Establish `hB` using `(h2.contDiffAt (hO2.mem_nhds hm2)).of_le hle`. Conclude with `hA.add hB`. Introduce `a t ht ht'`.
-
-Conclude with `isPotentialAdd S.A _ _ (S.sing a).1 (isPotential_ofFun S.A _ ((S.reg a).2.2 t ht ht').1)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CompanionTheory.Ar.PB.anSys_open_basics : ∀ (e : ℕ) (σ : Type) (S : AnSys e σ), IsOpen S.open' ∧ IsNull S.A S.open'ᶜ ∧ (∀ a, ∀ x ∈ S.open', IsTwiceDifferentiableAt S.A (S.potH a) x) ∧ (∀ a t, 0 < t → t ≤ S.t₀ → IsPotential S.A (S.potT a t)) ∧ ∀ y ∈ S.open', Real.exp 1 ≤ rW S.L S.s y := by
   intro e σ S

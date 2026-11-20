@@ -14,15 +14,15 @@ namespace UpperTheory.ConvolutionTheory.RankTwoDescent
 private def wr (k r : ℕ) (y : ℝ) : ℝ := y ^ k * ((1 + y) ^ r)⁻¹
 
 /- English proof (translation)
-Unfold `wr`. Check the signs of the components of the expression.
+Replace the relevant objects with their definitions. Check the signs of the components of the expression.
 -/
 private theorem wr_pos (k r : ℕ) {y : ℝ} (hy : 0 < y) : 0 < wr k r y := by
   unfold wr; positivity
 
 /- English proof (translation)
-Use `Asymptotics.IsBigO.of_bound 1 ?_` and prove the remaining obligations. Use `filter_upwards [eventually_ge_atTop 1] with y hy`. Establish `y0 : 0 < y` using `by linarith`. Rewrite using `[Real.norm_of_nonneg (wr_pos k r y0).le, Real.norm_of_nonneg (Real.rpow_nonneg y0.le _), one_mul]`. Establish `h1 : ((1 + y) ^ r)⁻¹ ≤ (y ^ r)⁻¹` using `inv_anti₀ (by positivity) (pow_le_pow_left₀ y0.le (by linarith) r)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 private theorem wr_top (k r : ℕ) (a : ℝ) (h : a + k ≤ r) : wr k r =O[atTop] (fun y : ℝ => y ^ (-a)) := by
   refine Asymptotics.IsBigO.of_bound 1 ?_
@@ -36,7 +36,7 @@ private theorem wr_top (k r : ℕ) (a : ℝ) (h : a + k ≤ r) : wr k r =O[atTop
     _ ≤ y ^ (-a) := Real.rpow_le_rpow_of_exponent_le hy (by linarith)
 
 /- English proof (translation)
-Use `Asymptotics.IsBigO.of_bound 1 ?_` and prove the remaining obligations. Use `filter_upwards [self_mem_nhdsWithin] with y hy`. Establish `y0 : 0 < y` using `hy`. Rewrite using `[Real.norm_of_nonneg (wr_pos k r y0).le, neg_neg, Real.rpow_natCast, Real.norm_of_nonneg (by positivity), one_mul]`. Conclude with `mul_le_of_le_one_right (by positivity) (inv_le_one_of_one_le₀ (one_le_pow₀ (by linarith)))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem wr_bot (k r : ℕ) : wr k r =O[𝓝[>] 0] (fun y : ℝ => y ^ (-(-(k : ℝ)))) := by
   refine Asymptotics.IsBigO.of_bound 1 ?_
@@ -46,7 +46,7 @@ private theorem wr_bot (k r : ℕ) : wr k r =O[𝓝[>] 0] (fun y : ℝ => y ^ (-
   exact mul_le_of_le_one_right (by positivity) (inv_le_one_of_one_le₀ (one_le_pow₀ (by linarith)))
 
 /- English proof (translation)
-Unfold `wr`. Use `ContinuousOn.mul (by fun_prop) (ContinuousOn.inv₀ (by fun_prop) fun y hy => ?_)` and prove the remaining obligations. Establish `: (0 : ℝ) < y` using `hy`. Check the signs of the components of the expression.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Check the signs of the components of the expression.
 -/
 private theorem wr_cont (k r : ℕ) : ContinuousOn (wr k r) (Set.Ioi 0) := by
   unfold wr
@@ -55,29 +55,25 @@ private theorem wr_cont (k r : ℕ) : ContinuousOn (wr k r) (Set.Ioi 0) := by
   positivity
 
 /- English proof (translation)
-Take `⟨r, hr⟩` from `exists_nat_ge ((s - 1).re + 1 + k)`. Take `⟨B, hB⟩` from `hb r`. Use `set c : ℂ := s - 2 with hcdef`. Establish `hsre : (s - 1).re = s.re - 1` using `by simp`. Establish `hbot : -(k : ℝ) < (s - 1).re` using `by rw [hsre]; linarith`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hwC : ContinuousOn (fun y => ((wr k r y : ℝ) : ℂ)) (Set.Ioi 0)` using `Complex.continuous_ofReal.comp_continuousOn (wr_cont k r)`. Establish `hM : MellinConvergent (fun y => ((wr k r y : ℝ) : ℂ)) (s - 1)` using `mellinConvergent_of_isBigO_rpow (a := (s - 1).re + 1) (b := -(k : ℝ)) (hwC.locallyIntegrableOn measurableSet_Ioi) ((Complex.isBigO_ofReal_left).2 (wr_top k r _ (by linarith))) (by linarith) ((Complex.isBigO_ofReal_left).2 (wr_bot k r)) hbot`. Establish `hW : IntegrableOn (fun y : ℝ => ‖(y : ℂ) ^ c‖ * wr k r y) (Set.Ioi 0)`. Establish `h : IntegrableOn _ (Set.Ioi (0 : ℝ))` using `Integrable.norm hM`. Use `IntegrableOn.congr_fun h (fun y hy => ?_) measurableSet_Ioi` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `y0 : (0 : ℝ) < y` using `hy`. Establish `e : s - 1 - 1 = c` using `by rw [hcdef]; ring`. Simplify using `only [norm_smul, e, Complex.norm_real, Real.norm_of_nonneg (wr_pos k r y0).le]`. Establish `hpw : ContinuousOn (fun y : ℝ => (y : ℂ) ^ c) (Set.Ioi 0)` using `fun y hy => (Complex.continuousAt_ofReal_cpow_const y c (Or.inr (ne_of_gt hy))).continuousWithinAt`. Establish `hbd : ∀ t ∈ Set.Icc 0 T, ∀ y : ℝ, 0 < y → ‖K t y * (y : ℂ) ^ c‖ ≤ B * (‖(y : ℂ) ^ c‖ * wr k r y)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `t ht y y0`. Rewrite using `[norm_mul]`. Combine the equalities or inequalities in the displayed calculation. Establish `hS : MeasurableSet (Set.Ioc (0 : ℝ) T ×ˢ Set.Ioi (0 : ℝ))` using `measurableSet_Ioc.prod measurableSet_Ioi`. Establish `hP : Integrable (fun p : ℝ × ℝ => K p.1 p.2 * (p.2 : ℂ) ^ c) ((volume.restrict (Set.Ioc 0 T)).prod (volume.restrict (Set.Ioi 0)))`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Integrable.mono' (g := fun p : ℝ × ℝ => B * (‖(p.2 : ℂ) ^ c‖ * wr k r p.2)) ?_ ?_ ?_` and prove the remaining obligations. Conclude with `(Integrable.const_mul hW B).comp_snd _`. Rewrite using `[Measure.prod_restrict]`. Use `ContinuousOn.aestronglyMeasurable ?_ hS` and prove the remaining obligations. Use `ContinuousOn.mul ?_ ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hc.mono fun p hp => ⟨Set.mem_univ _, hp.2⟩`. Conclude with `hpw.comp continuousOn_snd fun p hp => hp.2`. Rewrite using `[Measure.prod_restrict, ae_restrict_iff' hS]`. Conclude with `Eventually.of_forall fun p hp => hbd p.1 ⟨hp.1.1.le, hp.1.2⟩ p.2 hp.2`. Establish `hf : ContinuousOn (fun y => ∫ t in (0 : ℝ)..T, K t y) (Set.Ioi 0)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[continuousOn_iff_continuous_restrict]`. Establish `h2 : Continuous (Function.uncurry fun (y : Set.Ioi (0 : ℝ)) (t : ℝ) => K t y)`. Use `hc.comp_continuous (f := fun p : Set.Ioi (0 : ℝ) × ℝ => (p.2, (p.1 : ℝ))) (by fun_prop) fun p => ⟨Set.mem_univ _, p.1.2⟩` and prove the remaining obligations. Conclude with `intervalIntegral.continuous_parametric_intervalIntegral_of_continuous' h2 0 T`. Establish `hfb : ∀ y : ℝ, 0 < y → ‖∫ t in (0 : ℝ)..T, K t y‖ ≤ (B * T) * wr k r y`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `y y0`. Use `intervalIntegral.norm_integral_le_of_norm_le_const (a := 0) (b := T) (f := fun t => K t y) (C := B * wr k r y) fun t ht => hB t (by rw [Set.uIoc_of_le hT] at ht; exact ⟨ht.1.le, ht.2⟩) y y0` as an intermediate fact. Rewrite `this` using `[sub_zero, abs_of_nonneg hT]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hfO : ∀ l : Filter ℝ, (∀ᶠ y in l, 0 < y) → (fun y => ∫ t in (0 : ℝ)..T, K t y) =O[l] wr k r` using `fun l hl => Asymptotics.IsBigO.of_bound (B * T) (hl.mono fun y y0 => by`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Real.norm_of_nonneg (wr_pos k r y0).le]`. Conclude with `hfb y y0)`. Use `⟨fun t ht => ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `Integrable.mono' (Integrable.const_mul hW B) ?_ ?_` and prove the remaining obligations. Use `ContinuousOn.aestronglyMeasurable (ContinuousOn.mul ?_ hpw) measurableSet_Ioi` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `hc.comp (f := fun y : ℝ => (t, y)) (by fun_prop) fun y hy => ⟨Set.mem_univ _, hy⟩`. Rewrite using `[ae_restrict_iff' measurableSet_Ioi]`. Conclude with `Eventually.of_forall fun y hy => hbd t ht y hy`. Rewrite using `[intervalIntegrable_iff_integrableOn_Ioc_of_le hT]`. Conclude with `hP.integral_prod_left`.
-
-Rewrite using `[intervalIntegral.integral_of_le hT, mellin]`. Establish `sw` using `integral_integral_swap (f := fun (t y : ℝ) => K t y * (y : ℂ) ^ c) hP`. Rewrite using `[sw]`. Use `setIntegral_congr_fun measurableSet_Ioi fun y _ => ?_` and prove the remaining obligations. Establish `e : s - 1 - 1 = c` using `by rw [hcdef]; ring`.
-
-Simplify using `only [e, smul_eq_mul, intervalIntegral.integral_of_le hT]`. Rewrite using `[integral_mul_const, mul_comm]`. Conclude with `mellin_differentiableAt_of_isBigO_rpow (a := (s - 1).re + 1) (b := -(k : ℝ)) (hf.locallyIntegrableOn measurableSet_Ioi) ((hfO _ (eventually_gt_atTop 0)).trans (wr_top k r _ (by linarith))) (by linarith) ((hfO _ self_mem_nhdsWithin).trans (wr_bot k r)) hbot`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem one_side {T : ℝ} (hT : 0 ≤ T) (k : ℕ) {K : ℝ → ℝ → ℂ}
     (hc : ContinuousOn (Function.uncurry K) (Set.univ ×ˢ Set.Ioi 0))
@@ -161,9 +157,9 @@ private theorem one_side {T : ℝ} (hT : 0 ≤ T) (k : ℕ) {K : ℝ → ℝ →
       ((hfO _ self_mem_nhdsWithin).trans (wr_bot k r)) hbot
 
 /- English proof (translation)
-Establish `hL : IntegrableOn Φ (Set.Iic 0)`. Rewrite using `[integrableOn_Iic_iff_integrableOn_Iio]`. Establish `h3` using `(Measure.measurePreserving_neg (volume : Measure ℝ)).integrableOn_comp_preimage (MeasurableEquiv.neg ℝ).measurableEmbedding (f := Φ) (s := Set.Iio 0)`. Use `h3.1 ?_` and prove the remaining obligations. Establish `e : (Neg.neg : ℝ → ℝ) ⁻¹' Set.Iio 0 = Set.Ioi 0` using `by ext y; simp`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `h2`. Establish `e` using `integral_comp_neg_Ioi (0 : ℝ) Φ`. Rewrite using `[e, neg_zero, add_comm, intervalIntegral.integral_Iic_add_Ioi hL h1]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem split_int {Φ : ℝ → ℂ} (h1 : IntegrableOn Φ (Set.Ioi 0)) (h2 : IntegrableOn (fun y => Φ (-y)) (Set.Ioi 0)) :
     ∫ y, Φ y = (∫ y in Set.Ioi (0 : ℝ), Φ y) + ∫ y in Set.Ioi (0 : ℝ), Φ (-y) := by
@@ -179,27 +175,23 @@ private theorem split_int {Φ : ℝ → ℂ} (h1 : IntegrableOn Φ (Set.Ioi 0)) 
   rw [e, neg_zero, add_comm, intervalIntegral.integral_Iic_add_Ioi hL h1]
 
 /- English proof (translation)
-Take `⟨Q, hQ⟩` from `isCompact_Icc.exists_bound_of_continuousOn (s := Set.Icc 0 T) hq.continuousOn`. Establish `hQ0 : 0 ≤ Q` using `(norm_nonneg _).trans (hQ 0 ⟨le_rfl, hT⟩)`. Use `set Kp : ℝ → ℝ → ℂ := fun t y => q t * H t y * (y : ℂ) ^ k with hKp`. Use `set Km : ℝ → ℝ → ℂ := fun t y => q t * H t (-y) * ((-y : ℝ) : ℂ) ^ k with hKm`. Establish `hcp : ContinuousOn (Function.uncurry Kp) (Set.univ ×ˢ Set.Ioi 0)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `ContinuousOn.mul (ContinuousOn.mul ?_ ?_) ?_` and prove the remaining obligations. Conclude with `(hq.comp continuous_fst).continuousOn`. Conclude with `hc.mono fun p hp => ⟨Set.mem_univ _, ne_of_gt hp.2⟩`. Conclude with `(Continuous.pow (Complex.continuous_ofReal.comp continuous_snd) k).continuousOn`. Establish `hcm : ContinuousOn (Function.uncurry Km) (Set.univ ×ˢ Set.Ioi 0)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `ContinuousOn.mul (ContinuousOn.mul ?_ ?_) ?_` and prove the remaining obligations. Conclude with `(hq.comp continuous_fst).continuousOn`. Use `hc.comp (f := fun p : ℝ × ℝ => (p.1, -p.2)) (by fun_prop) fun p hp => ⟨Set.mem_univ _, ?_⟩` and prove the remaining obligations. Establish `: (0 : ℝ) < p.2` using `hp.2`. Simplify using `using this.ne'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Continuous.pow (Complex.continuous_ofReal.comp continuous_snd.neg) k).continuousOn`. Establish `hbound : ∀ (r : ℕ) (B : ℝ), (∀ t ∈ Set.Icc 0 T, ∀ y : ℝ, y ≠ 0 → ‖H t y‖ ≤ B * ((1 + |y|) ^ r)⁻¹) → ∀ t ∈ Set.Icc 0 T, ∀ y y' : ℝ, 0 < y → |y'| = y → ‖q t * H t y' * (y' : ℂ) ^ k‖ ≤ Q * B * wr k r y`. Introduce `r B hB t ht y y' y0 hy`. Establish `hy' : y' ≠ 0` using `by rintro rfl; simp at hy; exact y0.ne hy`. Establish `h1` using `hB t ht y' hy'`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Rewrite `h1` using `[hy]`. Rewrite using `[norm_mul, norm_mul, norm_pow, Complex.norm_real, Real.norm_eq_abs, hy]`. Combine the equalities or inequalities in the displayed calculation. Establish `hbp : ∀ r : ℕ, ∃ B : ℝ, ∀ t ∈ Set.Icc 0 T, ∀ y, 0 < y → ‖Kp t y‖ ≤ B * wr k r y` using `fun r => by`. Take `⟨B, hB⟩` from `hb r`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨Q * B, fun t ht y y0 => hbound r B hB t ht y y y0 (abs_of_pos y0)⟩`. Establish `hbm : ∀ r : ℕ, ∃ B : ℝ, ∀ t ∈ Set.Icc 0 T, ∀ y, 0 < y → ‖Km t y‖ ≤ B * wr k r y` using `fun r => by`. Take `⟨B, hB⟩` from `hb r`. Conclude with `⟨Q * B, fun t ht y y0 => hbound r B hB t ht y (-y) y0 (by rw [abs_neg, abs_of_pos y0])⟩`. Establish `op` using `fun {s : ℂ} (hs : 1 - (k : ℝ) < s.re) => one_side hT k hcp hbp hs`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `om` using `fun {s : ℂ} (hs : 1 - (k : ℝ) < s.re) => one_side hT k hcm hbm hs`. Establish `hd : DifferentiableOn ℂ (fun s : ℂ => mellin (fun y => ∫ t in (0 : ℝ)..T, Kp t y) (s - 1) + mellin (fun y => ∫ t in (0 : ℝ)..T, Km t y) (s - 1)) {s | 1 - (k : ℝ) < s.re}` using `fun s hs => by`. Establish `h1 : DifferentiableAt ℂ (fun s : ℂ => s - 1) s` using `differentiableAt_id.sub_const 1`. Conclude with `(DifferentiableAt.add (DifferentiableAt.comp s (op hs).2.2.2 h1) (DifferentiableAt.comp s (om hs).2.2.2 h1)).differentiableWithinAt`. Use `hd.congr fun s hs => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨ip, iip, ep, -⟩` from `op hs`. Take `⟨im, iim, em', -⟩` from `om hs`. Rewrite using `[← ep, ← em', ← intervalIntegral.integral_add iip iim]`. Use `intervalIntegral.integral_congr fun t ht => ?_` and prove the remaining obligations. Rewrite `ht` using `[Set.uIcc_of_le hT]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `e1 : ∀ y : ℝ, y ∈ Set.Ioi (0 : ℝ) → Kp t y * (y : ℂ) ^ (s - 2) = q t * (H t y * (y : ℂ) ^ k * ((|y| : ℝ) : ℂ) ^ (s - 2))` using `fun y hy => by`. Establish `y0 : (0 : ℝ) < y` using `hy`. Rewrite using `[abs_of_pos y0, hKp]`. Expand and normalize the polynomial expressions, which then agree. Establish `e2 : ∀ y : ℝ, y ∈ Set.Ioi (0 : ℝ) → Km t y * (y : ℂ) ^ (s - 2) = q t * (H t (-y) * ((-y : ℝ) : ℂ) ^ k * ((|-y| : ℝ) : ℂ) ^ (s - 2))` using `fun y hy => by`.
-
-Establish `y0 : (0 : ℝ) < y` using `hy`. Rewrite using `[abs_neg, abs_of_pos y0, hKm]`. Expand and normalize the polynomial expressions, which then agree. Establish `i1` using `IntegrableOn.congr_fun (ip t ht) e1 measurableSet_Ioi`. Establish `i2` using `IntegrableOn.congr_fun (im t ht) e2 measurableSet_Ioi`.
-
-Use `show q t * _ = _`. Rewrite using `[← integral_const_mul, split_int (Φ := fun y : ℝ => q t * (H t y * (y : ℂ) ^ k * ((|y| : ℝ) : ℂ) ^ (s - 2))) i1 i2, setIntegral_congr_fun measurableSet_Ioi e1, setIntegral_congr_fun measurableSet_Ioi e2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem two_side {T : ℝ} (hT : 0 ≤ T) (k : ℕ) {q : ℝ → ℂ} (hq : Continuous q) {H : ℝ → ℝ → ℂ}
     (hc : ContinuousOn (Function.uncurry H) (Set.univ ×ˢ {0}ᶜ))
@@ -268,13 +260,13 @@ private theorem two_side {T : ℝ} (hT : 0 ≤ T) (k : ℕ) {q : ℝ → ℂ} (h
 variable {E : Type} [Field E] [NumberField E]
 
 /- English proof (translation)
-The claim follows from `Continuous.units_map _ (continuous_id.matrix_map AdeleBaseChange.continuous_adeleMap)`.
+A detailed English derivation is pending.
 -/
 private theorem cont_em : Continuous (em E) :=
   Continuous.units_map _ (continuous_id.matrix_map AdeleBaseChange.continuous_adeleMap)
 
 /- English proof (translation)
-The claim follows from `Continuous.units_map _ (continuous_const.add (continuous_id.matrix_map ((TR.continuous_infEq ℚ).prodMk continuous_const : Continuous fun x : TR.Rinf ℚ => ((TR.infEq ℚ x, 0) : InfiniteAdeleRing ℚ × Af ℚ))))`.
+A detailed English derivation is pending.
 -/
 private theorem cont_infGL2 : Continuous (TR.infGL ℚ 2) :=
   Continuous.units_map _ (continuous_const.add (continuous_id.matrix_map
@@ -282,9 +274,9 @@ private theorem cont_infGL2 : Continuous (TR.infGL ℚ 2) :=
     Continuous fun x : TR.Rinf ℚ => ((TR.infEq ℚ x, 0) : InfiniteAdeleRing ℚ × Af ℚ))))
 
 /- English proof (translation)
-Establish `e : ∀ g : Matrix.SpecialLinearGroup (Fin 2) (TR.Rinf ℚ), (((Matrix.SpecialLinearGroup.toGL g)⁻¹ : GL (Fin 2) (TR.Rinf ℚ)) : Matrix (Fin 2) (Fin 2) (TR.Rinf ℚ)) = (g⁻¹).1` using `fun g => by`. Rewrite using `[← map_inv]`. Both sides reduce to the same expression. Use `Units.continuous_iff.2 ⟨continuous_matrix hf, continuous_matrix fun i j => ?_⟩` and prove the remaining obligations. Use `(?_ : Continuous fun t => ((f t)⁻¹).1 i j).congr fun t => (congrFun (congrFun (e (f t)) i) j).symm` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Matrix.SpecialLinearGroup.coe_inv, Matrix.adjugate_fin_two]`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp <;> first | exact hf _ _ | exact (hf _ _).neg`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem cont_toGL {f : ℝ → Matrix.SpecialLinearGroup (Fin 2) (TR.Rinf ℚ)} (hf : ∀ i j, Continuous fun t => (f t).1 i j) :
     Continuous fun t => Matrix.SpecialLinearGroup.toGL (f t) := by
@@ -297,16 +289,16 @@ private theorem cont_toGL {f : ℝ → Matrix.SpecialLinearGroup (Fin 2) (TR.Rin
   fin_cases i <;> fin_cases j <;> simp <;> first | exact hf _ _ | exact (hf _ _).neg
 
 /- English proof (translation)
-Use `cont_infGL2.comp (cont_toGL fun i j => ?_)` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp <;> fun_prop`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem cont_rot : Continuous rot := by
   refine cont_infGL2.comp (cont_toGL fun i j => ?_)
   fin_cases i <;> fin_cases j <;> simp <;> fun_prop
 
 /- English proof (translation)
-Rewrite using `[continuousOn_iff_continuous_restrict]`. Establish `h : Continuous fun y : ({0}ᶜ : Set ℝ) => (⟨fun _ => (y : ℝ), fun _ => (y : ℝ)⁻¹, funext fun _ => mul_inv_cancel₀ y.2,`. Use function extensionality and compare the values at `fun _ => inv_mul_cancel₀ y.2⟩ : (TR.Rinf ℚ)ˣ) := by`. Use `Units.continuous_iff.2 ⟨continuous_pi fun _ => continuous_subtype_val, continuous_pi fun _ => ?_⟩` and prove the remaining obligations. Conclude with `continuous_subtype_val.inv₀ fun y => y.2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `((TR.continuous_infId ℚ).comp h).congr fun y => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = iy y.1`. Rewrite using `[iy, dif_neg (show (y : ℝ) ≠ 0 from y.2)]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem cont_iy : ContinuousOn iy {0}ᶜ := by
   rw [continuousOn_iff_continuous_restrict]
@@ -320,7 +312,7 @@ private theorem cont_iy : ContinuousOn iy {0}ᶜ := by
   rfl
 
 /- English proof (translation)
-Establish `h : ∀ x, TR.pInf ℚ (TR.sInf ℚ x) = x` using `fun x => (TR.infEq ℚ).symm_apply_apply x`. Rewrite using `[re, iy, dif_neg hy]`. Express the relevant statement in the definitionally equal form `TR.pInf ℚ (1 - TR.sInf ℚ 1 + TR.sInf ℚ _) _ = y`. Simplify using `[h]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 private theorem re_iy {y : ℝ} (hy : y ≠ 0) : re (iy y : A ℚ) = y := by
   have h : ∀ x, TR.pInf ℚ (TR.sInf ℚ x) = x := fun x => (TR.infEq ℚ).symm_apply_apply x
@@ -329,11 +321,11 @@ private theorem re_iy {y : ℝ} (hy : y ≠ 0) : re (iy y : A ℚ) = y := by
   simp [h]
 
 /- English proof (translation)
-Take `⟨B, hB⟩` from `hb`. Take `⟨C, hC, hEC⟩ : ∃ C, IsCompact C ∧ fundamentalSet ℚ ⊆ C` from `⟨closure (fundamentalSetInfinite ℚ) ×ˢ _, (isCompact_closure_fundamentalSetInfinite ℚ).prod (isCompact_integralFiniteAdeles ℚ), fun x hx => ⟨subset_closure hx.1, hx.2⟩⟩`. Establish `hCp : IsCompact (Set.univ.pi fun _ : Fin 2 => C)` using `isCompact_univ_pi fun _ => hC`. Establish `hfin : adeleMeasurePi ℚ (FS2 ℚ) < ⊤` using `(measure_mono (show FS2 ℚ ⊆ Set.univ.pi fun _ : Fin 2 => C from fun x hx i hi => hEC (hx i hi))).trans_lt hCp.measure_lt_top`. Use `haveI : IsFiniteMeasure ((adeleMeasurePi ℚ).restrict (FS2 ℚ)) := ⟨by simpa using hfin⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn : Continuous fun u : Fin 2 → A ℚ => nE D u` using `continuous_gl.comp (continuous_nU.comp ((AdeleBaseChange.continuous_adeleMap.comp (continuous_apply 0)).add ((AdeleBaseChange.continuous_adeleMap.comp (continuous_apply 1)).mul continuous_const)))`. Establish `hψ : Continuous fun u : Fin 2 → A ℚ => ψ (u 1)` using `continuous_ψ.comp (continuous_apply 1)`. Use `continuous_of_dominated (bound := fun _ => B) (fun x => ?_) (fun x => ?_) (integrable_const _) ?_` and prove the remaining obligations. Conclude with `((hc.comp (hn.mul continuous_const)).mul hψ).aestronglyMeasurable`. Use `Eventually.of_forall fun u => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[norm_mul, norm_ψ, mul_one]`. Conclude with `hB _`. Use `Eventually.of_forall fun u => ?_` and prove the remaining obligations. Conclude with `(hc.comp (continuous_const.mul hh)).mul continuous_const`.
+A detailed English derivation is pending.
 -/
 private theorem cont_Wo (D : Dat ℚ E) {φ : GL (Fin 2) (A E) → ℂ} (hc : Continuous φ) (hb : ∃ B : ℝ, ∀ g, ‖φ g‖ ≤ B)
     {X : Type} [TopologicalSpace X] [FirstCountableTopology X] {h : X → GL (Fin 2) (A E)} (hh : Continuous h) :
@@ -360,7 +352,7 @@ private theorem cont_Wo (D : Dat ℚ E) {φ : GL (Fin 2) (A E) → ℂ} (hc : Co
     exact (hc.comp (continuous_const.mul hh)).mul continuous_const
 
 /- English proof (translation)
-Establish `h1` using `congrArg (fun u : ℂˣ => ‖(u : ℂ)‖) (h a)`. Simplify using `only [Units.val_pow_eq_pow_val, Units.val_mul, norm_pow, norm_mul, Units.val_one, norm_one, hω a, mul_one] at h1`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) two_ne_zero).1 h1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem norm_chi {ω χ : HChar ℚ} (hω : Unit1 ω) (h : ∀ a, (χ.1 a * ω.1 a) ^ 2 = 1) (a : (A ℚ)ˣ) :
     ‖((χ.1 a : ℂˣ) : ℂ)‖ = 1 := by
@@ -373,13 +365,13 @@ end UpperTheory.ConvolutionTheory.RankTwoDescent
 open UpperTheory.ConvolutionTheory.RankTwoDescent
 
 /- English proof (translation)
-Introduce `E _ _ _ D P ω χ hcen hω hsq k φ p hA`. Establish `hq : Continuous fun t : ℝ => MvPolynomial.eval ![(Real.sin t : ℂ), (Real.cos t : ℂ)] p`. Use `(MvPolynomial.continuous_eval p).comp (continuous_pi fun i => ?_)` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> simp <;> fun_prop`. Use `two_side (T := 2 * Real.pi) (by positivity) k hq (H := fun t y => Wo D φ (em E (aE (iy y) * rot t)) * ((χ.1 (iy y) : ℂˣ) : ℂ)) ?_ ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[continuousOn_iff_continuous_restrict]`. Establish `hi : Continuous fun x : ↥((Set.univ ×ˢ {0}ᶜ : Set (ℝ × ℝ))) => iy x.1.2` using `cont_iy.comp_continuous (continuous_snd.comp continuous_subtype_val) fun x => x.2.2`. Establish `hr : Continuous fun x : ↥((Set.univ ×ˢ {0}ᶜ : Set (ℝ × ℝ))) => rot x.1.1` using `cont_rot.comp (continuous_fst.comp continuous_subtype_val)`. Establish `hh : Continuous fun x : ↥((Set.univ ×ˢ {0}ᶜ : Set (ℝ × ℝ))) => em E (aE (iy x.1.2) * rot x.1.1)` using `cont_em.comp ((continuous_aE.comp hi).mul hr)`. Conclude with `(cont_Wo D hA.cont hA.bdd hh).mul (Units.continuous_val.comp (χ.2.1.comp hi))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `r`. Establish `hC : IsCompact ((fun t => em E (rot t)) '' Set.Icc 0 (2 * Real.pi))` using `isCompact_Icc.image (cont_em.comp cont_rot)`. Take `⟨K, -, hK⟩` from `hA.wdec _ hC`. Take `⟨B, hB⟩` from `hK r`. Use `⟨B, fun t ht y hy => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1` using `(hB (iy y) (em E (rot t)) ⟨t, ht, rfl⟩).1`. Rewrite `h1` using `[re_iy hy, ← map_mul]`. Rewrite using `[norm_mul, norm_chi hω hsq, mul_one]`. Conclude with `h1`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.RankTwoDescent.hol_of :
     Hol := by

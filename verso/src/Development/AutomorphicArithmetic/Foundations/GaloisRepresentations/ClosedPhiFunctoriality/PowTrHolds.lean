@@ -8,7 +8,7 @@ open scoped Formalism.Per NNReal
 open UpperTheory.Gal.ClosedPhiFromClosedTrace
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ w A h x σ n`. Establish `h1 : (x.charPol (σ ^ n)).roots = Multiset.map (fun y => y ^ n) (x.charPol σ).roots` using `GlobalTheory.AboveL.eig_pow_of_rep x σ n`. Use `show (Multiset.map (fun y => y ^ n) (x.charPol σ).roots).sum = _`. Rewrite using `[← h1, Polynomial.Splits.nextCoeff_eq_neg_sum_roots_of_monic (IsAlgClosed.splits _) (x.charPol_monic _), neg_neg]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.ClosedPhiFromClosedTrace.powTr_holds :
     PowTr := by

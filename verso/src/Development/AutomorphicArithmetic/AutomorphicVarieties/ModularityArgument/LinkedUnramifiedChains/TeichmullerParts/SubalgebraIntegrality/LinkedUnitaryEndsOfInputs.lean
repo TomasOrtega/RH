@@ -25,9 +25,9 @@ section Abstract
 variable {M : Type} [AddCommGroup M] [Module ℂ M] {J : Type} [Fintype J]
 
 /- English proof (translation)
-Establish `h1 : x i = - ∑ j ∈ Finset.univ.erase i, x j`. Rewrite using `[eq_neg_iff_add_eq_zero, Finset.add_sum_erase _ _ (Finset.mem_univ i)]`. Conclude with `h`. Establish `h2 : x i ∈ ⨆ (j) (_ : j ≠ i), Y j`. Rewrite using `[h1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `neg_mem (sum_mem fun j hj => ?_)` and prove the remaining obligations. Conclude with `Submodule.mem_iSup_of_mem j (Submodule.mem_iSup_of_mem (Finset.ne_of_mem_erase hj) (hx j))`. Conclude with `Submodule.disjoint_def.1 (hY i) _ (hx i) h2`.
+A detailed English derivation is pending.
 -/
 private theorem zd_zero (Y : J → Submodule ℂ M) (hY : iSupIndep Y) (x : J → M) (hx : ∀ i, x i ∈ Y i)
     (h : ∑ i, x i = 0) (i : J) : x i = 0 := by
@@ -42,11 +42,11 @@ private theorem zd_zero (Y : J → Submodule ℂ M) (hY : iSupIndep Y) (x : J �
   exact Submodule.disjoint_def.1 (hY i) _ (hx i) h2
 
 /- English proof (translation)
-Proceed by induction on `h using Submodule.iSup_induction' with`. Consider the case `mem i y hy`. Use `⟨Pi.single i y, fun j => ?_, by simp⟩` and prove the remaining obligations. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `using hy`. Simplify using `[Pi.single_eq_of_ne hj]`. Consider the case `zero => exact ⟨0, fun _ => zero_mem _, by simp⟩`. Consider the case `add y z _ _ hy hz`. Take `⟨a, ha, rfl⟩` from `hy`.
+Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb, rfl⟩` from `hz`. Conclude with `⟨a + b, fun i => add_mem (ha i) (hb i), by simp [Finset.sum_add_distrib]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem zd_dec (D : J → Submodule ℂ M) {F : M} (h : F ∈ ⨆ i, D i) :
     ∃ x : J → M, (∀ i, x i ∈ D i) ∧ ∑ i, x i = F := by
@@ -65,9 +65,9 @@ private theorem zd_dec (D : J → Submodule ℂ M) {F : M} (h : F ∈ ⨆ i, D i
     exact ⟨a + b, fun i => add_mem (ha i) (hb i), by simp [Finset.sum_add_distrib]⟩
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => intro y hy`. Simplify using `using hy`. Consider the case `succ k ih`. Introduce `y hy`.
+Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[pow_succ, Module.End.mul_apply]`. Use `ih _ ?_` and prove the remaining obligations. Establish `e : (T - a • (1 : Module.End ℂ M)) y = T y - a • y` using `by simp`. Rewrite using `[e]`. Conclude with `Y.sub_mem (h y hy) (Y.smul_mem a hy)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem zd_pow (T : Module.End ℂ M) (a : ℂ) (Y : Submodule ℂ M) (h : ∀ y ∈ Y, T y ∈ Y) (k : ℕ) :
     ∀ y ∈ Y, ((T - a • 1) ^ k) y ∈ Y := by
@@ -82,7 +82,7 @@ private theorem zd_pow (T : Module.End ℂ M) (a : ℂ) (Y : Submodule ℂ M) (h
     exact Y.sub_mem (h y hy) (Y.smul_mem a hy)
 
 /- English proof (translation)
-Take `⟨k, hk⟩` from `(Module.End.mem_maxGenEigenspace T a _).1 h`. Use `(Module.End.mem_maxGenEigenspace T a _).2 ⟨k, ?_⟩` and prove the remaining obligations. Conclude with `zd_zero Y hY (fun i => ((T - a • 1) ^ k) (x i)) (fun i => zd_pow T a (Y i) (hT i) k _ (hx i)) (by rw [← map_sum]; exact hk) i`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem zd_gen (Y : J → Submodule ℂ M) (hY : iSupIndep Y) (T : Module.End ℂ M) (a : ℂ)
     (hT : ∀ i, ∀ y ∈ Y i, T y ∈ Y i) (x : J → M) (hx : ∀ i, x i ∈ Y i)
@@ -93,13 +93,13 @@ private theorem zd_gen (Y : J → Submodule ℂ M) (hY : iSupIndep Y) (T : Modul
     (by rw [← map_sum]; exact hk) i
 
 /- English proof (translation)
-Establish `key : ∀ s : Finset J, Module.finrank ℂ ↥(⨆ i ∈ s, E i) = ∑ i ∈ s, Module.finrank ℂ ↥(E i)`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Establish `h0 : (⨆ i ∈ (∅ : Finset J), E i) = ⊥` using `by simp`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Establish an intermediate fact.
 
-Rewrite using `[h0]`. Simplify using the standard rewrite rules. Consider the case `insert a s ha ih`. Establish `hs : (⨆ i ∈ s, E i) ≤ Z` using `iSup₂_le fun i _ => hZ i`. Use `haveI : FiniteDimensional ℂ ↥(E a) := Submodule.finiteDimensional_of_le (hZ a)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : FiniteDimensional ℂ ↥(⨆ i ∈ s, E i) := Submodule.finiteDimensional_of_le hs`. Establish `hd : Disjoint (E a) (⨆ i ∈ s, E i)`. Simplify `ha)` using `using hE.disjoint_biSup (y := (s : Set J)) (by simpa`. Establish `h` using `Submodule.finrank_sup_add_finrank_inf_eq (E a) (⨆ i ∈ s, E i)`. Rewrite `h` using `[hd.eq_bot, finrank_bot, add_zero, ih]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Finset.iSup_insert, Finset.sum_insert ha]`. Conclude with `h`. Establish `h1 : (⨆ i ∈ (Finset.univ : Finset J), E i) = ⨆ i, E i` using `by simp`. Rewrite using `[← h1]`. Conclude with `key Finset.univ`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem zd_rank (E : J → Submodule ℂ M) (hE : iSupIndep E) (Z : Submodule ℂ M) [FiniteDimensional ℂ Z]
     (hZ : ∀ i, E i ≤ Z) : Module.finrank ℂ ↥(⨆ i, E i) = ∑ i, Module.finrank ℂ ↥(E i) := by
@@ -126,15 +126,13 @@ private theorem zd_rank (E : J → Submodule ℂ M) (hE : iSupIndep E) (Z : Subm
   exact key Finset.univ
 
 /- English proof (translation)
-Use `set O : Submodule ℂ M := ⨆ μ : {μ : ℂ // P μ}, C ⊓ u.maxGenEigenspace μ.1 with hO`. Use `set Z : Submodule ℂ M := O ⊓ ⨅ j, (t j).maxGenEigenspace (ev j) with hZdef`. Establish `hD : iSupIndep D` using `hY.mono hDY`. Establish `hOC : O ≤ C` using `iSup_le fun _ => inf_le_left`. Establish `hA : O ≤ ⨆ i, D i ⊓ O`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `iSup_le fun μ F hF => ?_` and prove the remaining obligations. Take `⟨x, hx, rfl⟩` from `zd_dec D (hC hF.1)`. Use `Submodule.sum_mem _ fun i _ => Submodule.mem_iSup_of_mem i ⟨hx i, ?_⟩` and prove the remaining obligations. Establish `h1` using `zd_gen Y hY u μ.1 hu x (fun i => hDY i (hx i)) hF.2 i`. Conclude with `(le_iSup (fun μ : {μ : ℂ // P μ} => C ⊓ u.maxGenEigenspace μ.1) μ) ⟨hDC i (hx i), h1⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hB : Z ≤ ⨆ i, Y i ⊓ Z`. Introduce `F hF`. Take `⟨x, hx, rfl⟩` from `zd_dec (fun i => D i ⊓ O) (hA hF.1)`. Use `Submodule.sum_mem _ fun i _ => Submodule.mem_iSup_of_mem i ⟨hDY i (hx i).1, (hx i).2, ?_⟩` and prove the remaining obligations. Use `(Submodule.mem_iInf _).2 fun j => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `zd_gen D hD (t j) (ev j) (fun i => ht i j) x (fun i => (hx i).1) ((Submodule.mem_iInf _).1 hF.2 j) i`. Establish `hE : iSupIndep fun i => Y i ⊓ Z` using `hY.mono fun _ => inf_le_left`. Use `haveI : FiniteDimensional ℂ ↥Z := Submodule.finiteDimensional_of_le (inf_le_left.trans hOC)`. Establish `hs : (⨆ i, Y i ⊓ Z) = Z` using `le_antisymm (iSup_le fun _ => inf_le_right) hB`. Establish `h` using `zd_rank (fun i => Y i ⊓ Z) hE Z fun _ => inf_le_right`.
-
-Rewrite `h` using `[hs]`. Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem zd_main (Y D : J → Submodule ℂ M) (C : Submodule ℂ M) [FiniteDimensional ℂ C] (hY : iSupIndep Y)
     (hDY : ∀ i, D i ≤ Y i) (hDC : ∀ i, D i ≤ C) (hC : C ≤ ⨆ i, D i) (u : Module.End ℂ M)
@@ -167,7 +165,7 @@ private theorem zd_main (Y D : J → Submodule ℂ M) (C : Submodule ℂ M) [Fin
   exact h
 
 /- English proof (translation)
-Unfold `Iwa.uOp`. Use `finsum_induction (fun φ : Module.End ℂ M => ∀ y ∈ Y, φ y ∈ Y) (fun y _ => by simp) (fun φ ψ h h' y hy => add_mem (h y hy) (h' y hy)) fun q => hY _` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 -/
 private theorem zd_uOp {G : Type} [Group G] (I : Iwa G) (π : Representation ℂ G M) (a : G) (Y : Submodule ℂ M)
     (hY : ∀ g, ∀ y ∈ Y, π g y ∈ Y) : ∀ y ∈ Y, I.uOp π a y ∈ Y := by
@@ -176,7 +174,7 @@ private theorem zd_uOp {G : Type} [Group G] (I : Iwa G) (π : Representation ℂ
     (fun φ ψ h h' y hy => add_mem (h y hy) (h' y hy)) fun q => hY _
 
 /- English proof (translation)
-Unfold `sphOp dc`. Use `finsum_induction (fun φ : Module.End ℂ M => ∀ y ∈ Y, φ y ∈ Y) (fun y _ => by simp) (fun φ ψ h h' y hy => add_mem (h y hy) (h' y hy)) fun q => hY _` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 -/
 private theorem zd_sph {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {n : ℕ}
     (π : Representation ℂ (GL (Fin n) k) M) (j : ℕ) (Y : Submodule ℂ M) (hY : ∀ g, ∀ y ∈ Y, π g y ∈ Y) :
@@ -186,7 +184,7 @@ private theorem zd_sph {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k
     (fun φ ψ h h' y hy => add_mem (h y hy) (h' y hy)) fun q => hY _
 
 /- English proof (translation)
-Set `S : Subgroup (∀ j, G j)` to `{ carrier := {g | (∀ y ∈ Y, π g y ∈ Y) ∧ ∀ y ∈ Y, π g⁻¹ y ∈ Y} one_mem' := by simp mul_mem' := fun {a b} ha hb => ⟨fun y hy => by rw [map_mul]; exact ha.1 _ (hb.1 y hy), fun y hy => by rw [mul_inv_rev, map_mul]; exact hb.2 _ (ha.2 y hy)⟩ inv_mem' := fun {a} ha => ⟨ha.2, by simpa …`. Introduce `g`. Establish `: g ∈ S` using `Subgroup.pi_mem_of_mulSingle_mem g fun j => ⟨h j _, by rw [← Pi.mulSingle_inv]; exact h j _⟩`. Conclude with `this.1`.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem zd_pi {I : Type} [Fintype I] [DecidableEq I] {G : I → Type} [∀ j, Group (G j)]
     (π : Representation ℂ (∀ j, G j) M) (Y : Submodule ℂ M) (h : ∀ j g, ∀ y ∈ Y, π (Pi.mulSingle j g) y ∈ Y) :
@@ -213,7 +211,7 @@ private def zdSt {G : Type} [Group G] (π : Representation ℂ G M) (y : M) : Su
     rw [← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one]; rfl
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 private theorem zd_fix {G : Type} [Group G] (π : Representation ℂ G M) (y : M) (U : Subgroup G) :
     y ∈ fixd π U ↔ U ≤ zdSt π y := Iff.rfl
@@ -228,7 +226,7 @@ variable {L Ω : Type} [Field L] [NumberField L] [Field Ω] [Algebra L Ω] [IsAl
   (ξ : GV n H.Sl →* GL (Fin d) ℂ) (K : H.Lev) (e : ℕ)
 
 /- English proof (translation)
-Simplify using `only [HSet.ClAt, Submodule.mem_inf, Submodule.mem_iInf, Module.End.mem_eigenspace_iff, and_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem zd_cl (F : Fin H.m → H.X.Fn ℂ d) : F ∈ H.ClAt θ ι x lam ξ K e ↔
     F ∈ H.Big ι ξ ∧ F ∈ fixd (H.X.raF d (H.τC ι)) (H.lev K) ∧ F ∈ fixd (H.X.rpF ℂ d H.m) H.X.I.N ∧
@@ -237,11 +235,11 @@ private theorem zd_cl (F : Fin H.m → H.X.Fn ℂ d) : F ∈ H.ClAt θ ι x lam 
   simp only [HSet.ClAt, Submodule.mem_inf, Submodule.mem_iInf, Module.End.mem_eigenspace_iff, and_assoc]
 
 /- English proof (translation)
-Take `⟨-, -, h1, h2, h3⟩` from `(zd_cl H ι θ x lam ξ K e F).1 hF`. Rewrite `h1`, `h2`, the goal using `[zd_fix]`. Use `sup_le (sup_le h1 fun t ht => ?_) h2` and prove the remaining obligations. Use `Subgroup.pi_mem_of_mulSingle_mem t fun v => ?_` and prove the remaining obligations. Establish `htv : t v ∈ (glIwa ((H.Sl v).adicCompletion L) n).Tc e` using `ht v trivial`.
+Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨y, hy, hy'⟩` from `(glBridge ((H.Sl v).adicCompletion L) n ℂ (Representation.trivial ℂ _ ℂ)).2.2.2.2.2.2.2.2.2 ⟨t v, (glIwa _ n).Tc_le e htv⟩`. Establish `hy1 : t v = _` using `hy`. Rewrite using `[hy1]`. Express the relevant statement in the definitionally equal form `MonoidHom.mulSingle (fun v : H.V => GLw n (H.Sl v)) v _ ∈ _`. Rewrite using `[map_list_prod, List.map_ofFn]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `Subgroup.list_prod_mem _ fun g hg => ?_` and prove the remaining obligations. Take `⟨i, rfl⟩` from `List.mem_ofFn.1 hg`. Use `h3 v i (y i)` as an intermediate fact. Rewrite `this` using `[triv v i (y i) (hy' e htv i), map_one, inv_one, one_smul]`. Conclude with `this`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem zero_dim_mem_iwahori_fixed
     (triv : ∀ v i (y : Uo ((H.Sl v).adicCompletion L)), (y : ((H.Sl v).adicCompletion L)ˣ) ∈ Uc _ (e + 1) →
@@ -266,7 +264,7 @@ private theorem zero_dim_mem_iwahori_fixed
   exact this
 
 /- English proof (translation)
-Use extensionality with `i g k`. Express the relevant statement in the definitionally equal form `((H.τC ι u : Matrix (Fin H.m) (Fin H.m) ℂ).mulVec fun j => F j (g * ((u : H.Ga), 1) * (1, b)) k) i = ((H.τC ι u : Matrix (Fin H.m) (Fin H.m) ℂ).mulVec fun j => F j (g * (1, b) * ((u : H.Ga), 1)) k) i`. Simplify using `[mul_assoc]`.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 private theorem zd_comm (u : H.X.Ub) (b : GV n H.Sl) (F : Fin H.m → H.X.Fn ℂ d) :
     H.X.raF d (H.τC ι) u (H.X.rpF ℂ d H.m b F) = H.X.rpF ℂ d H.m b (H.X.raF d (H.τC ι) u F) := by
@@ -276,7 +274,7 @@ private theorem zd_comm (u : H.X.Ub) (b : GV n H.Sl) (F : Fin H.m → H.X.Fn ℂ
   simp [mul_assoc]
 
 /- English proof (translation)
-Introduce `F hF` and use `by refine ⟨fun i hi γ g => ?_, fun u hu => ?_⟩ · have := hF.1 i hi γ (g * (1, b)) rw [← mul_assoc] at this exact this · rw [zd_comm, hF.2 u hu]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem zd_big (b : GV n H.Sl) :
     ∀ F ∈ H.Big ι ξ, H.X.rpF ℂ d H.m b F ∈ H.Big ι ξ := fun F hF => by
@@ -287,13 +285,11 @@ private theorem zd_big (b : GV n H.Sl) :
   · rw [zd_comm, hF.2 u hu]
 
 /- English proof (translation)
-Introduce `F hF`. Establish `hI` using `zero_dim_mem_iwahori_fixed H ι θ x lam ξ K e triv F hF`. Take `⟨hb, -, -, -, h3⟩` from `(zd_cl H ι θ x lam ξ K e F).1 hF`. Take `⟨y, hy, rfl⟩` from `zd_dec _ (hdec ⟨hb, hI⟩)`. Use `Submodule.sum_mem _ fun i _ => Submodule.mem_iSup_of_mem i ⟨(hy i).1, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hlev : H.lev K = H.UQ`. Unfold `HSet.lev`. Rewrite using `[iSup_of_empty]`. Conclude with `sup_bot_eq _`. Use `(zd_cl H ι θ x lam ξ K e _).2 ⟨hB i (hy i).1, ?_, fun u hu => (hy i).2 u (Subgroup.mem_sup_left (Subgroup.mem_sup_left hu)), fun u hu => (hy i).2 u (Subgroup.mem_sup_right hu), fun v a z => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hlev]`. Conclude with `(hB i (hy i).1).2`. Establish `h` using `h3 v a z`. Rewrite `h` using `[map_sum, Finset.smul_sum]`. Use `sub_eq_zero.1 (zd_zero Y hY (fun i => H.X.rpF ℂ d H.m (eV n H.Sl v a z : H.X.I.T) (y i) - (ι (H.finPart θ x lam v a z))⁻¹ • y i) (fun i => (Y i).sub_mem (hrp i _ _ (hy i).1) ((Y i).smul_mem _ (hy i).1)) ?_ i)` and prove the remaining obligations.
-
-Rewrite using `[Finset.sum_sub_distrib, h, sub_self]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem zd_C {J : Type} [Fintype J] (Y : J → Submodule ℂ (Fin H.m → H.X.Fn ℂ d)) (hY : iSupIndep Y)
     (hB : ∀ i, Y i ≤ H.Big ι ξ) (hrp : ∀ i g, ∀ y ∈ Y i, H.X.rpF ℂ d H.m g y ∈ Y i) (hq : IsEmpty H.Q)
@@ -321,7 +317,7 @@ private theorem zd_C {J : Type} [Fintype J] (Y : J → Submodule ℂ (Fin H.m �
     rw [Finset.sum_sub_distrib, h, sub_self]
 
 /- English proof (translation)
-The claim follows from `zd_main Y (fun i => Y i ⊓ H.ClAt θ ι x lam ξ K e) (H.ClAt θ ι x lam ξ K e) hY (fun _ => inf_le_left) (fun _ => inf_le_right) (zd_C H ι θ x lam ξ K e Y hY hB hrp hq triv hdec) (H.uzC ι lam d) (fun i y hy => Submodule.smul_mem _ _ (zd_uOp H.X.I (H.X.rpF ℂ d H.m) H.X.I.z (Y i) (hrp …`.
+A detailed English derivation is pending.
 -/
 private theorem zd_H {J : Type} [Fintype J] (Y : J → Submodule ℂ (Fin H.m → H.X.Fn ℂ d)) (hY : iSupIndep Y)
     (hB : ∀ i, Y i ≤ H.Big ι ξ) (hrp : ∀ i g, ∀ y ∈ Y i, H.X.rpF ℂ d H.m g y ∈ Y i) (hq : IsEmpty H.Q)
@@ -367,7 +363,7 @@ private def wS (σ : Submodule ℂ (UA L n → ℂ)) :
     exact σ.smul_mem a (hx i ℓ)
 
 /- English proof (translation)
-Use extensionality with `x`. Conclude with `(s.hw v (algebraMap (𝓞 (Lp L)) (𝓞 L) x)).symm.trans (s.hA v x)`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 private theorem zd_under (s : HidaSetting l L Ω) (v : Plc (Lp L)) : (s.w v).under (𝓞 (Lp L)) = v := by
   ext x
@@ -380,9 +376,9 @@ variable {m} {c : Coef l} (hn : 1 ≤ n) (Q : QData V) (τ₀ : KT n (wt s) →*
 include hn hξ hσ
 
 /- English proof (translation)
-Introduce `F hF i ℓ`. Establish `hsp : IsSplitAt (s.w v.1)` using `UpperTheory.isSplitAt_of_decomposition_le_restriction_range L Ω (s.A v.1) v.1 (s.hA v.1) (s.split v.1 (Or.inl v.2)) _ (zd_under s v.1)`. Take `⟨j, hj1, hj2, -⟩` from `(secU l L Ω s n hn (s.w v.1) hsp).1`. Establish `h` using `UpperTheory.V.Hi.partUR2AtV l L Ω s n hn V Q c ι m τ₀ lam d e ξ hξ v j hj1 hj2 F g i ℓ`. Rewrite using `[h]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hσ.stable (j g) _ (hF i ℓ)`.
+A detailed English derivation is pending.
 -/
 private theorem zd_atV (v : V.frame.Vl) (g : GLw n (s.w v.1)) :
     ∀ F ∈ wS ι m e σ, (hset Q τ₀).atV d v g F ∈ wS ι m e σ := by
@@ -395,7 +391,7 @@ private theorem zd_atV (v : V.frame.Vl) (g : GLw n (s.w v.1)) :
   exact hσ.stable (j g) _ (hF i ℓ)
 
 /- English proof (translation)
-Introduce `F hF i ℓ`. Take `⟨j, hj1, hj2, -⟩` from `(secU l L Ω s n hn w hsp).1`. Establish `h` using `UpperTheory.V.Hi.partUR2AtW l L Ω s n hn V Q c ι m τ₀ lam d e ξ hξ w hsp hS j hj1 hj2 F g i ℓ`. Rewrite using `[h]`. Conclude with `hσ.stable (j g) _ (hF i ℓ)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem zd_atW (w : Plc L) (hsp : IsSplitAt w) (hS : w.under (𝓞 (Lp L)) ∉ s.S) (g : GLw n w) :
     ∀ F ∈ wS ι m e σ, (hset Q τ₀).atW ι d w g F ∈ wS ι m e σ := by
@@ -406,7 +402,7 @@ private theorem zd_atW (w : Plc L) (hsp : IsSplitAt w) (hS : w.under (𝓞 (Lp L
   exact hσ.stable (j g) _ (hF i ℓ)
 
 /- English proof (translation)
-Conclude with `zd_pi (G := fun v : V.frame.Vl => GLw n (s.w v.1)) ((hset Q τ₀).X.rpF ℂ d m) (wS ι m e σ) (fun v g y hy => zd_atV ι e hn Q τ₀ hξ hσ v g y hy) g`.
+A detailed English derivation is pending.
 -/
 private theorem zd_rp (g : GV n (fun v : V.frame.Vl => s.w v.1)) :
     ∀ F ∈ wS ι m e σ, (hset Q τ₀).X.rpF ℂ d m g F ∈ wS ι m e σ := by
@@ -417,13 +413,11 @@ private theorem zd_rp (g : GV n (fun v : V.frame.Vl => s.w v.1)) :
 end Conc
 
 /- English proof (translation)
-Introduce `_ l _ L Ω _ _ _ _ _ _ s n hn V hV Q c ι m τ₀ lam d e ξ hξ A _ _ _ θ x c0 sp _ hs K ev _ J _ σ hσ hind hdec`. Establish `hq : IsEmpty (hset Q τ₀).Q` using `⟨fun q => by`. Establish `h : (Q.wq q).under (𝓞 (Lp L)) ∈ V.S'`. Rewrite using `[Q.range]`. Conclude with `Or.inr ⟨q, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the second alternative.
 
-Rewrite `h` using `[hV]`. Conclude with `Q.notS q h⟩`. Establish `hM` using `fun σ' => UpperTheory.V.Hi.partUR2Mem l L Ω s n hn V Q c ι m τ₀ lam d e ξ σ'`. Establish `hrp : ∀ i g, ∀ y ∈ YOf Q ι τ₀ e ξ (σ i), (hset Q τ₀).X.rpF ℂ d m g y ∈ YOf Q ι τ₀ e ξ (σ i)` using `fun i g y hy => (hM _ _).2 ⟨zd_big (hset Q τ₀) ι ξ g y ((hM _ y).1 hy).1, zd_rp ι e hn Q τ₀ hξ (hσ i) g y ((hM _ y).1 hy).2⟩`. Use `zd_H (hset Q τ₀) ι θ x.toRingHom lam ξ K c0 _ hind (fun i y hy => hy.1) hrp hq hs.triv hdec (hs.fin K c0 le_rfl) ev ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i j y hy`. Establish `hc` using `hs.stab K c0 le_rfl j y hy.2`. Use `⟨(hM _ _).2 ⟨((zd_cl (hset Q τ₀) ι θ x.toRingHom lam ξ K c0 _).1 hc).1, ?_⟩, hc⟩` and prove the remaining obligations. Establish `hw` using `((hM _ y).1 hy.1).2`. Break down `j with p | p` into its components or cases.
-
-Conclude with `zd_sph ((hset Q τ₀).atW ι d p.1.1) (p.2 + 1) (wS ι m e (σ i)) (zd_atW ι e hn Q τ₀ hξ (hσ i) p.1.1 p.1.2.2 fun h => p.1.2.1 (hV.symm ▸ h)) y hw`. Conclude with `(wS ι m e (σ i)).smul_mem _ (zd_uOp (hset Q τ₀).X.I ((hset Q τ₀).X.rpF ℂ d m) _ (wS ι m e (σ i)) (fun g => zd_rp ι e hn Q τ₀ hξ (hσ i) g) y hw)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.J.D.zDec :
     ZEq → ZDec := by

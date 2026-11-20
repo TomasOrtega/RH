@@ -53,17 +53,17 @@ def Normalises {Γ : Type} [Group Γ] (ρ : Γ →* Matrix ι ι R) : Prop :=
 
 variable {Φ R} in
 /- English proof (translation)
-Take `⟨h1, ⟨π, h2⟩, h3⟩` from `h`. Take `⟨⟨y1, y2⟩, y3⟩` from `hY`. Establish `key : ∀ a b, (ρ s * Y * ρ s⁻¹) a b ≠ 0 → ∃ c d, ρ s a c ≠ 0 ∧ Y c d ≠ 0 ∧ ρ s⁻¹ d b ≠ 0`. Introduce `a b hab`. Rewrite `hab` using `[Matrix.mul_apply]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨d, -, hd⟩` from `Finset.exists_ne_zero_of_sum_ne_zero hab`. Establish `hd1` using `left_ne_zero_of_mul hd`. Rewrite `hd1` using `[Matrix.mul_apply]`. Take `⟨c, -, hc⟩` from `Finset.exists_ne_zero_of_sum_ne_zero hd1`. Conclude with `⟨c, d, left_ne_zero_of_mul hc, right_ne_zero_of_mul hc, right_ne_zero_of_mul hd⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `⟨⟨?_, fun a b e => ?_⟩, fun a b e => ?_⟩` and prove the remaining obligations. Take `⟨ν, hν⟩` from `h1 s`. Establish `e1 : ρ s * ρ s⁻¹ = 1` using `by rw [← map_mul, mul_inv_cancel, map_one]`. Establish `e2 : (ρ s⁻¹)ᵀ * (ρ s)ᵀ = 1` using `by rw [← transpose_mul, e1, transpose_one]`. Establish `: (ρ s * Y * ρ s⁻¹)ᵀ * Φ.JR R + Φ.JR R * (ρ s * Y * ρ s⁻¹) = (ρ s⁻¹)ᵀ * (Yᵀ * ((ρ s)ᵀ * Φ.JR R * ρ s) + ((ρ s)ᵀ * Φ.JR R * ρ s) * Y) * ρ s⁻¹`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [transpose_mul, mul_add, add_mul, mul_assoc, e1, mul_one]`. Rewrite using `[← mul_assoc (ρ s⁻¹)ᵀ (ρ s)ᵀ, e2, one_mul]`. Rewrite using `[this, hν, mul_smul_comm, smul_mul_assoc, ← smul_add, y1, smul_zero, mul_zero, zero_mul]`. Assume the negation of the conclusion as `hab`. Take `⟨c, d, k1, k2, k3⟩` from `key a b hab`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Establish `k4 : Φ.blk c = Φ.blk d` using `by_contra fun n => k2 (y2 c d n)`. Apply `e` to reduce the goal to its premises. Rewrite using `[h2 s a c k1, k4, h2 s⁻¹ d b k3, map_inv]`. Simplify using the standard rewrite rules. Assume the negation of the conclusion as `hab`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction.
 
-Take `⟨c, d, k1, k2, k3⟩` from `key a b hab`. Establish `k4 : w c - w d = j` using `by_contra fun n => k2 (y3 c d n)`. Establish `k5 : w a = w c` using `by_contra fun n => k1 (h3 s a c n)`. Establish `k6 : w d = w b` using `by_contra fun n => k3 (h3 s⁻¹ d b n)`. Conclude with `e (by rw [k5, ← k6, k4])`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ad_mem {Γ : Type} [Group Γ] {ρ : Γ →* Matrix ι ι R} (h : Φ.Normalises ρ) (j : X) (s : Γ) {Y : Matrix ι ι R}
     (hY : Y ∈ Φ.gw R j) : ρ s * Y * ρ s⁻¹ ∈ Φ.gw R j := by

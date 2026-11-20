@@ -9,7 +9,7 @@ namespace GlobalTheory.WeilDeligne.FrobSemisimple
 variable {V : Type*} [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V]
 
 /- English proof (translation)
-Introduce `h0`. Establish `h1 : f.HasEigenvalue 0` using `End.hasEigenvalue_iff_isRoot.mpr h0`. Conclude with `spectrum.zero_notMem ℂ hf (End.hasEigenvalue_iff_mem_spectrum.mp h1)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem minpoly_eval_zero_ne_zero {f : End ℂ V} (hf : IsUnit f) : (minpoly ℂ f).eval 0 ≠ 0 := by
   intro h0
@@ -17,11 +17,11 @@ theorem minpoly_eval_zero_ne_zero {f : End ℂ V} (hf : IsUnit f) : (minpoly ℂ
   exact spectrum.zero_notMem ℂ hf (End.hasEigenvalue_iff_mem_spectrum.mp h1)
 
 /- English proof (translation)
-Establish `hsep : (minpoly ℂ (g ^ m)).Separable` using `PerfectField.separable_iff_squarefree.mpr hs.minpoly_squarefree`. Establish `h0` using `minpoly_eval_zero_ne_zero (hg.pow m)`. Use `set p := minpoly ℂ (g ^ m) with hp`. Use `End.isSemisimple_of_squarefree_aeval_eq_zero (p := expand ℂ m p) (Separable.squarefree ?_) ?_` and prove the remaining obligations. Rewrite using `[Separable, derivative_expand]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `IsCoprime.mul_right (IsCoprime.map hsep (expand ℂ m).toRingHom) (IsCoprime.mul_right ?_ (IsCoprime.pow_right ?_))` and prove the remaining obligations. Establish `: IsUnit ((m : ℕ) : ℂ[X])`. Rewrite using `[← C_eq_natCast]`. Conclude with `isUnit_C.mpr (Ne.isUnit (Nat.cast_ne_zero.mpr hm.ne'))`. Conclude with `(isCoprime_mul_unit_left_right this _ 1).mpr isCoprime_one_right |>.of_mul_right_left`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `((irreducible_X.coprime_iff_not_dvd).mpr ?_).symm` and prove the remaining obligations. Rewrite using `[X_dvd_iff, coeff_zero_eq_eval_zero, expand_eval, zero_pow hm.ne']`. Conclude with `h0`. Rewrite using `[expand_aeval]`. Conclude with `minpoly.aeval ℂ _`.
+A detailed English derivation is pending.
 -/
 theorem isSemisimple_of_pow {g : End ℂ V} (hg : IsUnit g) {m : ℕ} (hm : 0 < m)
     (hs : (g ^ m).IsSemisimple) : g.IsSemisimple := by
@@ -50,11 +50,11 @@ namespace GlobalTheory.WeilDeligne
 
 open NumberField IsDedekindDomain Polynomial Module in
 /- English proof (translation)
-Apply `_root_.GlobalTheory.WeilDeligne.isSemisimple_of_iSup_eigenspace` to reduce the goal to its premises. Establish `htop : ⨆ α, f.eigenspace α = ⊤` using `hf.iSup_maxGenEigenspace_eq_top_iff.1 (Module.End.iSup_maxGenEigenspace_eq_top f)`. Rewrite using `[eq_top_iff, ← htop]`. Use `iSup_le fun α => le_trans ?_ (le_iSup _ α⁻¹)` and prove the remaining obligations. Introduce `v hv`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hv`, the goal using `[Module.End.mem_eigenspace_iff]`. Establish `h1 : v = α • g v`. Use `congrArg g hv` as an intermediate fact. Rewrite `this` using `[← Module.End.mul_apply, hgf, Module.End.one_apply, map_smul]`. Then use the resulting hypothesis. Distinguish the cases in `hα : α = 0`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Consider separately whether the proposition holds or fails.
 
-Substitute `hα` using the available equality. Rewrite `h1` using `[zero_smul]`. Simplify using `[h1]`. Use `conv_rhs => rw [h1]`. Rewrite using `[smul_smul, inv_mul_cancel₀ hα, one_smul]`.
+Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isSemisimple_of_mul_eq_one' {V : Type*} [AddCommGroup V] [Module ℂ V]
     [FiniteDimensional ℂ V] {f g : End ℂ V} (hf : f.IsSemisimple) (hgf : g * f = 1) :
@@ -78,17 +78,15 @@ private theorem isSemisimple_of_mul_eq_one' {V : Type*} [AddCommGroup V] [Module
 
 open NumberField IsDedekindDomain Polynomial Module in
 /- English proof (translation)
-Establish `hint : IsIntegral ℂ (f ^ m)` using `Algebra.IsIntegral.isIntegral _`. Establish `hX : ¬ X ∣ minpoly ℂ (f ^ m)`. Introduce and unpack `⟨q, hq⟩`. Establish `h0 : aeval (f ^ m) q = 0`. Establish `h1` using `minpoly.aeval ℂ (f ^ m)`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[hq, map_mul, aeval_X]`. Conclude with `(hf.pow m).mul_right_eq_zero.1 h1`. Establish `hq0 : q ≠ 0`. Introduce and unpack `rfl`. Conclude with `minpoly.ne_zero hint (by simpa using hq)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hdeg` using `natDegree_le_of_dvd (minpoly.dvd ℂ (f ^ m) h0) hq0`. Rewrite `hdeg` using `[hq, natDegree_mul X_ne_zero hq0, natDegree_X]`. Use linear arithmetic over natural numbers and integers. Establish `hsep : (minpoly ℂ (f ^ m)).Separable` using `PerfectField.separable_iff_squarefree.2 hfm.minpoly_squarefree`. Establish `hXe : ¬ X ∣ expand ℂ m (minpoly ℂ (f ^ m))`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[X_dvd_iff, coeff_expand hm]`. Rewrite `hX` using `[X_dvd_iff]`. Simplify using `using hX`. Establish `hunit : IsUnit ((m : ℂ[X]))`. Rewrite using `[← map_natCast C]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `isUnit_C.2 (Ne.isUnit (by exact_mod_cast hm.ne'))`. Establish `hP : (expand ℂ m (minpoly ℂ (f ^ m))).Separable`. Rewrite using `[separable_def, derivative_expand]`. Use `IsCoprime.mul_right (((separable_def _).1 hsep).map (expand ℂ m).toRingHom) (IsCoprime.mul_right ?_ ?_)` and prove the remaining obligations. Conclude with `isCoprime_one_right.of_isCoprime_of_dvd_right (hunit.dvd)`.
-
-Conclude with `IsCoprime.pow_right ((Irreducible.coprime_iff_not_dvd irreducible_X).2 hXe).symm`. Apply `Module.End.isSemisimple_of_squarefree_aeval_eq_zero hP.squarefree` to reduce the goal to its premises. Rewrite using `[expand_aeval]`. Conclude with `minpoly.aeval ℂ (f ^ m)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isSemisimple_of_isUnit_of_pow_isSemisimple {V : Type*} [AddCommGroup V]
     [Module ℂ V] [FiniteDimensional ℂ V] {f : End ℂ V} (hf : IsUnit f) {m : ℕ} (hm : 0 < m)
@@ -128,13 +126,13 @@ private theorem isSemisimple_of_isUnit_of_pow_isSemisimple {V : Type*} [AddCommG
 open NumberField IsDedekindDomain Polynomial Module in
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ A w h V _ _ _ ρ hρ φ hφ hss σ`. Establish `hunit : IsUnit (ρ σ)` using `(Group.isUnit σ).map ρ`. Choose the witnesses or unpack the hypotheses as in `⟨τ, hτdeg, hτ⟩ : ∃ τ : _root_.GlobalTheory.WeilDeligne.Weil h, _root_.GlobalTheory.WeilDeligne.deg τ = _root_.GlobalTheory.WeilDeligne.deg σ ∧ End.IsSemisimple (ρ τ) := by`. Break down `le_or_gt 0 (_root_.GlobalTheory.WeilDeligne.deg σ) with hd | hd` into its components or cases. Take `⟨k, hk⟩` from `Int.eq_ofNat_of_zero_le hd`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Use `⟨φ ^ k, by rw [_root_.GlobalTheory.WeilDeligne.deg_pow, hφ, hk]; ring, ?_⟩` and prove the remaining obligations. Rewrite using `[map_pow]`. Conclude with `hss.of_mem_adjoin_singleton (pow_mem (Algebra.self_mem_adjoin_singleton ℂ _) k)`. Take `⟨k, hk⟩` from `Int.exists_eq_neg_ofNat hd.le`. Establish `hinv : End.IsSemisimple (ρ φ⁻¹)` using `isSemisimple_of_mul_eq_one' hss (by rw [← map_mul, inv_mul_cancel, map_one])`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨φ⁻¹ ^ k, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[_root_.GlobalTheory.WeilDeligne.deg_pow, ← zpow_neg_one, _root_.GlobalTheory.WeilDeligne.deg_zpow, hφ, hk]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[map_pow]`. Conclude with `hinv.of_mem_adjoin_singleton (pow_mem (Algebra.self_mem_adjoin_singleton ℂ _) k)`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Take `⟨m, hm, hpow⟩` from `_root_.GlobalTheory.WeilDeligne.exists_pow_eq_pow_of_deg_eq E Ω A w h V ρ hρ σ τ hτdeg.symm`. Apply `isSemisimple_of_isUnit_of_pow_isSemisimple hunit hm` to reduce the goal to its premises. Rewrite using `[hpow]`. Conclude with `hτ.of_mem_adjoin_singleton (pow_mem (Algebra.self_mem_adjoin_singleton ℂ _) m)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.WeilDeligne.isSemisimple_of_isSemisimple_frob :
     ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]

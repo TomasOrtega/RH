@@ -17,11 +17,11 @@ variable {ι ι' Y Y' : Type} [Fintype ι] [DecidableEq ι] [Fintype ι'] [Decid
   [Fintype Y'] [DecidableEq Y']
 
 /- English proof (translation)
-Take `⟨a1, a2⟩` from `mem_KO.1 (KOne_le_KO ha)`. Take `⟨b1, b2⟩` from `mem_KO.1 (KOne_le_KO hb)`. Distinguish the cases in `hx : IntM x`. Establish `e : a.val * x * b.val = x + ((a.val - 1) * x * b.val + x * (b.val - 1))`. Simplify using `only [Matrix.sub_mul, Matrix.mul_sub, Matrix.one_mul, Matrix.mul_one]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Conclude with `hp _ _ ((((mem_KOne.1 ha).mul_intM hx).mul_intM b1).add (hx.mul_maxM (mem_KOne.1 hb)))`. Establish `h1 : f x = 0` using `by_contra fun h => hx (hs _ h)`. Rewrite using `[h1]`.
+Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `h`. Use `(a2.mul (hs _ h)).mul b2` as an intermediate fact. Apply `hx` to reduce the goal to its premises. Simplify `this` using `[Matrix.mul_assoc, ← Matrix.mul_assoc (a⁻¹).val]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem apply_mul_KOne {f : Matrix ι ι' k → ℂ} (hs : ∀ x, f x ≠ 0 → IntM x) (hp : ∀ x y, MaxM y → f (x + y) = f x)
     {a : GL ι k} (ha : a ∈ KOne k ι) {b : GL ι' k} (hb : b ∈ KOne k ι') (x : Matrix ι ι' k) :
@@ -41,7 +41,7 @@ theorem apply_mul_KOne {f : Matrix ι ι' k → ℂ} (hs : ∀ x, f x ≠ 0 → 
     simpa [Matrix.mul_assoc, ← Matrix.mul_assoc (a⁻¹).val] using this
 
 /- English proof (translation)
-The claim follows from `mem_KOne.2 fun i j => by simpa [reGL_symm_val, Matrix.one_apply] using mem_KOne.1 hd (e i) (e j)`.
+A detailed English derivation is pending.
 -/
 theorem reGL_symm_mem_KOne (e : ι ≃ Y) {d : GL Y k} (hd : d ∈ KOne k Y) : (reGL e).symm d ∈ KOne k ι :=
   mem_KOne.2 fun i j => by simpa [reGL_symm_val, Matrix.one_apply] using mem_KOne.1 hd (e i) (e j)
@@ -49,7 +49,7 @@ theorem reGL_symm_mem_KOne (e : ι ≃ Y) {d : GL Y k} (hd : d ∈ KOne k Y) : (
 def Near (F G : LatFrame k ι Y) : Prop := G.ord = F.ord ∧ F.bas⁻¹ * G.bas ∈ KOne k Y
 
 /- English proof (translation)
-Use `⟨_, reGL_symm_mem_KOne F.ord h.2, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[MulEquiv.symm_apply_eq, LatFrame.conj_apply, h.1, map_mul, map_mul, map_inv, MulEquiv.apply_symm_apply]`. Establish `: reGL F.ord (F.conj.symm g) = F.bas⁻¹ * g * F.bas` using `by conv_rhs => rw [← F.conj.apply_symm_apply g, LatFrame.conj_apply] group`. Rewrite using `[this]`. Use `group`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Near.conj {F G : LatFrame k ι Y} (h : Near F G) :
     ∃ d ∈ KOne k ι, ∀ g, G.conj.symm g = d⁻¹ * F.conj.symm g * d := by
@@ -61,7 +61,7 @@ theorem Near.conj {F G : LatFrame k ι Y} (h : Near F G) :
   rw [this]; group
 
 /- English proof (translation)
-Take `⟨d, hd, e⟩` from `h.conj`. Use extensionality with `g`. Rewrite using `[Level.mem_map, Level.mem_map, e, P.J.mul_mem_cancel_right (P.KOne_le hd), P.J.mul_mem_cancel_left (inv_mem (P.KOne_le hd))]`.
+Extract witnesses or component facts from the available result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem Near.J_eq {F G : LatFrame k ι Y} (h : Near F G) (P : TypeDatum k ι) :
     (P.toLevel.map G.conj).J = (P.toLevel.map F.conj).J := by
@@ -71,7 +71,7 @@ theorem Near.J_eq {F G : LatFrame k ι Y} (h : Near F G) (P : TypeDatum k ι) :
     P.J.mul_mem_cancel_left (inv_mem (P.KOne_le hd))]
 
 /- English proof (translation)
-Use extensionality with `g`. Establish `hd` using `KOne_le_KO h.2`. Establish `e : G.bas⁻¹ * g * G.bas = (F.bas⁻¹ * G.bas)⁻¹ * (F.bas⁻¹ * g * F.bas) * (F.bas⁻¹ * G.bas)` using `by group`. Rewrite using `[mem_stabLat, mem_stabLat, e, (KO k Y).mul_mem_cancel_right hd, (KO k Y).mul_mem_cancel_left (inv_mem hd)]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem Near.stabLat_eq {F G : LatFrame k ι Y} (h : Near F G) : stabLat G.bas = stabLat F.bas := by
   ext g
@@ -80,9 +80,9 @@ theorem Near.stabLat_eq {F G : LatFrame k ι Y} (h : Near F G) : stabLat G.bas =
   rw [mem_stabLat, mem_stabLat, e, (KO k Y).mul_mem_cancel_right hd, (KO k Y).mul_mem_cancel_left (inv_mem hd)]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Express the relevant statement in the definitionally equal form `f (G.coords G' x) = f (F.coords F' x)`. Rewrite using `[← apply_mul_KOne hs hp (reGL_symm_mem_KOne F.ord (inv_mem h.2)) (reGL_symm_mem_KOne F'.ord h'.2) (F.coords F' x)]`. Use `congr 1`. Unfold `LatFrame.coords`.
+Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions.
 
-Rewrite using `[reGL_symm_val, reGL_symm_val, submatrix_mul_equiv, submatrix_mul_equiv, h.1, h'.1]`. Use `congr 1`. Simplify using `only [_root_.mul_inv_rev, inv_inv, Units.val_mul, Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc F.bas.val, Units.mul_inv, Matrix.one_mul, ← Matrix.mul_assoc F'.bas.val, Units.mul_inv, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem Near.transport_eq {F G : LatFrame k ι Y} {F' G' : LatFrame k ι' Y'} (h : Near F G) (h' : Near F' G')
     {f : Matrix ι ι' k → ℂ} (hs : ∀ x, f x ≠ 0 → IntM x) (hp : ∀ x y, MaxM y → f (x + y) = f x) :
@@ -99,16 +99,16 @@ theorem Near.transport_eq {F G : LatFrame k ι Y} {F' G' : LatFrame k ι' Y'} (h
     Matrix.one_mul]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨rfl, by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem near_refl (F : LatFrame k ι Y) : Near F F := ⟨rfl, by simp⟩
 
 /- English proof (translation)
-Establish `h1 : valuation k u ≤ 1`. Use `Valuation.map_add_le (valuation k) hu.le (le_of_eq (map_one (valuation k)))` as an intermediate fact. Simplify using `using this`. Proceed by induction on `m with`. Consider the case `zero => simp`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Proceed by induction. Treat this case separately.
 
-Consider the case `succ m ih`. Establish `e : u ^ (m + 1) - 1 = u * (u ^ m - 1) + (u - 1)` using `by ring`. Rewrite using `[e]`. Use `Valuation.map_add_lt _ ?_ hu` and prove the remaining obligations. Rewrite using `[map_mul]`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_lt_one_of_nonneg_of_lt_one_right h1 zero_le ih`.
+A detailed English derivation is pending.
 -/
 theorem val_pow_sub_one {u : k} (hu : valuation k (u - 1) < 1) (m : ℕ) : valuation k (u ^ m - 1) < 1 := by
   have h1 : valuation k u ≤ 1 := by
@@ -126,7 +126,7 @@ theorem val_pow_sub_one {u : k} (hu : valuation k (u - 1) < 1) (m : ℕ) : valua
 variable {ϖ ϖ' : kˣ}
 
 /- English proof (translation)
-Establish `e : (ϖ : k)⁻¹ * ϖ' - 1 = (ϖ : k)⁻¹ * ((ϖ' : k) - ϖ)` using `by field_simp`. Establish `h0 : 0 < valuation k (ϖ : k)` using `by simp [zero_lt_iff]`. Rewrite using `[e, map_mul, map_inv₀, inv_mul_lt_one₀ h0]` and apply the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem val_div_sub_one (h : valuation k ((ϖ' : k) - (ϖ : k)) < valuation k (ϖ : k)) :
     valuation k ((ϖ : k)⁻¹ * ϖ' - 1) < 1 := by
@@ -135,9 +135,9 @@ theorem val_div_sub_one (h : valuation k ((ϖ' : k) - (ϖ : k)) < valuation k (�
   rwa [e, map_mul, map_inv₀, inv_mul_lt_one₀ h0]
 
 /- English proof (translation)
-Use `⟨rfl, mem_KOne.2 fun i j => ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_mul, GlobalTheory.SymSupport.typeFrame_inv_val, GlobalTheory.SymSupport.typeFrame_val, diagonal_mul_diagonal, ← diagonal_one, diagonal_sub, diagonal_apply]`. Use `split_ifs`. Break down `i with i | i` into its components or cases. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `val_pow_sub_one (val_div_sub_one h) (i.val + 1)` as an intermediate fact. Rewrite `this` using `[mul_pow, inv_pow]`. Then use the resulting hypothesis. Simplify using the standard rewrite rules.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem near_typeFrame {n : Type} [Fintype n] [DecidableEq n] {c : ℕ}
     (h : valuation k ((ϖ' : k) - (ϖ : k)) < valuation k (ϖ : k)) (o : ι ≃ n ⊕ Fin c) :
@@ -153,21 +153,21 @@ theorem near_typeFrame {n : Type} [Fintype n] [DecidableEq n] {c : ℕ}
   · simp
 
 /- English proof (translation)
-The claim follows from `Valuation.map_eq_of_sub_lt _ h`.
+A detailed English derivation is pending.
 -/
 theorem val_eq (h : valuation k ((ϖ' : k) - (ϖ : k)) < valuation k (ϖ : k)) :
     valuation k (ϖ' : k) = valuation k (ϖ : k) := Valuation.map_eq_of_sub_lt _ h
 
 /- English proof (translation)
-Introduce `x` and use `by rw [val_eq h]; exact hϖ x`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isUnif_of_near (hϖ : IsUnif ϖ) (h : valuation k ((ϖ' : k) - (ϖ : k)) < valuation k (ϖ : k)) : IsUnif ϖ' :=
   fun x => by rw [val_eq h]; exact hϖ x
 
 /- English proof (translation)
-Establish `h1` using `(hϖ _).1 (val_div_sub_one h)`. Establish `e : ((ϖ'⁻¹ : kˣ) : k) - ((ϖ⁻¹ : kˣ) : k) = -((ϖ' : k)⁻¹ * ((ϖ : k)⁻¹ * ϖ' - 1))`. Simplify using `only [Units.val_inv_eq_inv_val]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `h0 : 0 < valuation k (ϖ : k)` using `by simp [zero_lt_iff]`. Rewrite using `[e, Valuation.map_neg, map_mul, map_inv₀, val_eq h, inv_mul_le_one₀ h0]` and apply the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem inv_sub_inv_mem (hϖ : IsUnif ϖ) (h : valuation k ((ϖ' : k) - (ϖ : k)) < valuation k (ϖ : k)) :
     valuation k (((ϖ'⁻¹ : kˣ) : k) - ((ϖ⁻¹ : kˣ) : k)) ≤ 1 := by
@@ -178,7 +178,7 @@ theorem inv_sub_inv_mem (hϖ : IsUnif ϖ) (h : valuation k ((ϖ' : k) - (ϖ : k)
   rwa [e, Valuation.map_neg, map_mul, map_inv₀, val_eq h, inv_mul_le_one₀ h0]
 
 /- English proof (translation)
-Establish `hi : (((ϖ'⁻¹ : kˣ) : k) - ((ϖ⁻¹ : kˣ) : k)) * x ∈ 𝒪[k]` using `mul_mem (inv_sub_inv_mem hϖ h) hx`. Establish `e : ((ϖ'⁻¹ : kˣ) : k) * x = (ϖ⁻¹ : kˣ) * x + (((ϖ'⁻¹ : kˣ) : k) - ((ϖ⁻¹ : kˣ) : k)) * x` using `by ring`. Rewrite using `[e, AddChar.map_add_eq_mul, hψ.eq_one (show _ ∈ cball (1 : kˣ) from hi), mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem psi_inv_mul {ψ : AddChar k Circle} (hψ : HasConductor ψ 1) (hϖ : IsUnif ϖ)
     (h : valuation k ((ϖ' : k) - (ϖ : k)) < valuation k (ϖ : k)) {x : k} (hx : x ∈ 𝒪[k]) :
@@ -188,9 +188,9 @@ theorem psi_inv_mul {ψ : AddChar k Circle} (hψ : HasConductor ψ 1) (hϖ : IsU
   rw [e, AddChar.map_add_eq_mul, hψ.eq_one (show _ ∈ cball (1 : kˣ) from hi), mul_one]
 
 /- English proof (translation)
-Use `⟨hP.1, fun g => ?_⟩` and prove the remaining obligations. Establish `hg` using `intM_of_mem_KO (P.le_KO g.2)`. Rewrite using `[hP.2 g, psi_inv_mul hψ hϖ h, psi_inv_mul hψ hϖ h]`. Use `sum_mem fun r _ => sum_mem fun s _ => ?_ split_ifs exacts [hg _ _, zero_mem _]` and prove the remaining obligations. Unfold `simpleSum`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Use `sum_mem fun r _ => sum_mem fun s _ => ?_` and prove the remaining obligations. Use `split_ifs`. Use `exacts [hg _ _, zero_mem _]`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isSymLevel_of_near {ψ : AddChar k Circle} (hψ : HasConductor ψ 1) (hϖ : IsUnif ϖ)
     (h : valuation k ((ϖ' : k) - (ϖ : k)) < valuation k (ϖ : k)) {ρ κ l : ℕ} {P : TypeDatum k (Fin κ ⊕ Fin l)}
@@ -209,7 +209,7 @@ theorem isSymLevel_of_near {ψ : AddChar k Circle} (hψ : HasConductor ψ 1) (h�
 variable {r t : Type} [Fintype r] [DecidableEq r] [Fintype t] [DecidableEq t]
 
 /- English proof (translation)
-The claim follows from `h.transport_eq h' (fun x hx i l => by simpa using TypeDatum.intM_of_Phi_ne_zero _ _ hx ((ixSucc r t j).symm i) l) fun x y hy => TypeDatum.Phi_add _ (hμ _) (x.submatrix (ixSucc r t j) id) (y := y.submatrix (ixSucc r t j) id) fun _ _ => hy _ _`.
+A detailed English derivation is pending.
 -/
 theorem transport_iterPhi (P : TypeDatum k r) (μ : ℕ → kˣ →* ℂˣ) (hμ : ∀ j, IsTame (μ j)) (j : ℕ)
     {F G : LatFrame k (Ix r t (j + 1)) Y} {F' G' : LatFrame k (Ix r t j) Y'} (h : Near F G) (h' : Near F' G') :
@@ -225,15 +225,15 @@ end UnifChange
 open UnifChange
 
 /- English proof (translation)
-Introduce `k _ _ _ _ _ _ s κ S ϖ' h`. Set `S' : SymData k s κ` to `{ S with ϖ := ϖ', unif := isUnif_of_near S.unif h, sym := isSymLevel_of_near S.cond S.unif h S.sym }`. Use `⟨S', rfl, rfl, rfl, rfl, rfl, fun τ ν => ?_⟩` and prove the remaining obligations. Establish `hPhi : ∀ j c H, (S'.T (Fin τ)).Phi j c H = (S.T (Fin τ)).Phi j c H` using `fun j c H => transport_iterPhi S.P S.μ S.tame j (near_typeFrame h _) (near_typeFrame h _)`. Establish `hTop : (S'.T (Fin τ)).PhiTop = (S.T (Fin τ)).PhiTop` using `transport_iterPhi S.P S.μ S.tame (s + 1) (near_refl _) (near_typeFrame h _)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hJ : ∀ j c H, ((S'.T (Fin τ)).lev j c H).J = ((S.T (Fin τ)).lev j c H).J` using `fun j c H => (near_typeFrame h _).J_eq _`. Establish `hB : ∀ j c (H : j + c = s + 1), stabLat ((S'.T (Fin τ)).bas j c H) = stabLat ((S.T (Fin τ)).bas j c H)` using `fun j c H => (near_typeFrame h (stdOrd (Fin κ) (Fin τ) j c H)).stabLat_eq`. Establish `hy : S'.y0 (Fin τ) - S.y0 (Fin τ) ∈ box (XIx (Fin κ) (Fin τ) (s + 1)) (1 : kˣ)`. Introduce `i`. Unfold `SymData.y0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Rewrite using `[← Pi.single_sub, Pi.single_apply]`. Use `split_ifs`. Simplify using `using inv_sub_inv_mem S.unif h`. Simplify using the standard rewrite rules. Use `⟨hPhi, fun j c H => ?_, fun x₀ => ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Apply the tactic sequence `unfold Chain.entry xi volNat`. Rewrite using `[hPhi, hJ, hB]`. Both sides reduce to the same expression. Use `(oneCoupling k s κ S (Fin τ) (pattern_iter k s κ S (Fin τ))).2.1 x₀ _ hy` as an intermediate fact. Rewrite using `[← this]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `Chain.Psi`. Rewrite using `[hPhi]`. Both sides reduce to the same expression. Unfold `Chain.xiTop`. Rewrite using `[hTop, (Submodule.Quotient.eq _).2 hy]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_symData_of_unif_congr : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] {s κ : ℕ} (S : SymData k s κ) (ϖ' : kˣ), valuation k ((ϖ' : k) - (S.ϖ : k)) < valuation k (S.ϖ : k) → ∃ S' : SymData k s κ, S'.ϖ = ϖ' ∧ S'.ψ = S.ψ ∧ S'.ρ = S.ρ ∧ S'.P = S.P ∧ S'.μ = S.μ ∧ ∀ (τ : ℕ) (ν : Measure k), (∀ j c h, (S'.T (Fin τ)).Phi j c h = (S.T (Fin τ)).Phi j c h) ∧ (∀ j c h, (S'.T (Fin τ)).entry S'.ψ ν j c h 1 1 = (S.T (Fin τ)).entry S.ψ ν j c h 1 1) ∧ (∀ x₀, (S'.T (Fin τ)).Psi 1 x₀ (S'.y0 (Fin τ)) = (S.T (Fin τ)).Psi 1 x₀ (S.y0 (Fin τ))) ∧ (S'.T (Fin τ)).xiTop (box _ (1 : kˣ)) S'.ψ ν (-1) (Submodule.Quotient.mk (S'.y0 (Fin τ))) = (S.T (Fin τ)).xiTop (box _ (1 : kˣ)) S.ψ ν (-1) (Submodule.Quotient.mk (S.y0 (Fin τ))) := by
   intro k _ _ _ _ _ _ s κ S ϖ' h

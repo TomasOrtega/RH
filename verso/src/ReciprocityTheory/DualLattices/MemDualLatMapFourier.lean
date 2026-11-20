@@ -16,14 +16,14 @@ def tableM (e : H ≃ AddChar N C) (σ : H ≃ N) : Matrix N N C :=
   Matrix.of fun x j => e (σ.symm j) x
 
 /- English proof (translation)
-Unfold `tableM`. Conclude with `charTable_isUnit (σ.symm.trans e)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem tableM_isUnit (e : H ≃ AddChar N C) (σ : H ≃ N) : IsUnit (tableM e σ).det := by
   unfold tableM
   exact charTable_isUnit (σ.symm.trans e)
 
 /- English proof (translation)
-Simplify using `only [fourier_apply', Matrix.mul_apply, Matrix.transpose_apply, tableM, Matrix.of_apply, Equiv.symm_apply_apply]`. Conclude with `Finset.sum_congr rfl fun a _ => mul_comm _ _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem fourier_column_eq (e : H ≃ AddChar N C) (σ : H ≃ N) (Dm : Matrix N N C) (h : H)
     (j : N) :
@@ -34,11 +34,11 @@ private theorem fourier_column_eq (e : H ≃ AddChar N C) (σ : H ≃ N) (Dm : M
   exact Finset.sum_congr rfl fun a _ => mul_comm _ _
 
 /- English proof (translation)
-Rewrite using `[Submodule.map_span]`. Use `congr 1`. Use extensionality with `f`. Simplify using `only [Set.mem_image, Set.mem_range]`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨_, ⟨j, rfl⟩, rfl⟩`. Use `⟨σ.symm j, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `h`. Simplify using `only [Matrix.submatrix_apply, Equiv.apply_symm_apply]`. Conclude with `(fourier_column_eq e σ Dm h j).symm`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨k, rfl⟩`. Use `⟨_, ⟨σ k, rfl⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `h`. Simplify using `only [Matrix.submatrix_apply]`. Conclude with `fourier_column_eq e σ Dm h (σ k)`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem map_fourier_spanCols (e : H ≃ AddChar N C) (σ : H ≃ N) (Dm : Matrix N N C) :
     (Submodule.span R (Set.range fun j x => Dm x j)).map (fourier (R := R) fun h a => e h a) =
@@ -60,9 +60,9 @@ theorem map_fourier_spanCols (e : H ≃ AddChar N C) (σ : H ≃ N) (Dm : Matrix
     exact fourier_column_eq e σ Dm h (σ k)
 
 /- English proof (translation)
-Introduce `h0`. Establish `h1 : ψ a * ψ (-a) = 1`. Rewrite using `[← AddChar.map_add_eq_mul]`. Simplify using the standard rewrite rules. Rewrite `h1` using `[h0, zero_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `zero_ne_one h1`.
+A detailed English derivation is pending.
 -/
 private theorem addChar_apply_ne_zero_dual_lattices (ψ : AddChar N C) (a : N) : ψ a ≠ 0 := by
   intro h0
@@ -73,9 +73,9 @@ private theorem addChar_apply_ne_zero_dual_lattices (ψ : AddChar N C) (a : N) :
   exact zero_ne_one h1
 
 /- English proof (translation)
-Establish `h0` using `he 0 0`. Rewrite `h0` using `[add_zero]`. Use extensionality with `a`. Establish `ha : e 0 a = e 0 a * e 0 a`. Use `congrArg (fun ψ : AddChar N C => ψ a) h0` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `this` using `only [AddChar.mul_apply]`. Rewrite using `[AddChar.one_apply]`. Conclude with `mul_left_cancel₀ (addChar_apply_ne_zero_dual_lattices (e 0) a) (by rw [mul_one]; exact ha.symm)`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem e_zero (e : H ≃ AddChar N C) (he : ∀ h h', e (h + h') = e h * e h') : e 0 = 1 := by
   have h0 := he 0 0
@@ -88,9 +88,9 @@ theorem e_zero (e : H ≃ AddChar N C) (he : ∀ h h', e (h + h') = e h * e h') 
   exact mul_left_cancel₀ (addChar_apply_ne_zero_dual_lattices (e 0) a) (by rw [mul_one]; exact ha.symm)
 
 /- English proof (translation)
-Establish `h1` using `he (-h) h`. Establish `hz : -h + h = 0` using `by simp`. Rewrite `h1` using `[hz, e_zero e he]`. Establish `h2` using `congrArg (fun ψ : AddChar N C => ψ a) h1`. Simplify using `only [AddChar.mul_apply, AddChar.one_apply] at h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h3 : e h (-a) * e h a = 1`. Rewrite using `[← AddChar.map_add_eq_mul]`. Simplify using the standard rewrite rules. Conclude with `mul_right_cancel₀ (addChar_apply_ne_zero_dual_lattices (e h) a) (h2.symm.trans h3.symm)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem e_neg_apply (e : H ≃ AddChar N C) (he : ∀ h h', e (h + h') = e h * e h') (h : H) (a : N) :
     e (-h) a = e h (-a) := by
@@ -105,15 +105,15 @@ theorem e_neg_apply (e : H ≃ AddChar N C) (he : ∀ h h', e (h + h') = e h * e
   exact mul_right_cancel₀ (addChar_apply_ne_zero_dual_lattices (e h) a) (h2.symm.trans h3.symm)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 private theorem mem_dualLat_iff_pairing_integral {X : Type} [Fintype X] {M : Submodule R (X → C)} {u : X → C} :
     u ∈ dualLat M ↔ ∀ f ∈ M, ∃ r : R, algebraMap R C r = ∑ a, u a * f a := Iff.rfl
 
 /- English proof (translation)
-Rewrite using `[Submodule.mem_map]`. Use `⟨fun a => u (-a), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_dualLat_iff_pairing_integral]`. Introduce `f hf`. Take `⟨r, hr⟩` from `(mem_dualLat_iff_pairing_integral.1 hu) (fun x => f (-x)) (AA.antipode f hf)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨r, hr.trans ?_⟩` and prove the remaining obligations. Conclude with `Fintype.sum_equiv (Equiv.neg N) _ _ (fun a => by simp)`. Use function extensionality and compare the values at `x`. Simplify using `only [fourier_apply']`. Conclude with `Fintype.sum_equiv (Equiv.neg N) _ _ (fun a => by simp [e_neg_apply e he])`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem antipode_fourier (e : H ≃ AddChar N C) (he : ∀ h h', e (h + h') = e h * e h')
     (AA : HopfOrder (C := C) R N) (u : N → C) (hu : u ∈ dualLat AA.carrier) :
@@ -131,11 +131,9 @@ theorem antipode_fourier (e : H ≃ AddChar N C) (he : ∀ h h', e (h + h') = e 
     exact Fintype.sum_equiv (Equiv.neg N) _ _ (fun a => by simp [e_neg_apply e he])
 
 /- English proof (translation)
-Establish `hBB : B * B⁻¹ = 1` using `Matrix.mul_nonsing_inv B hB`. Use `symm`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [fourier_apply', Finset.sum_mul]`.
+Establish an intermediate fact. Use symmetry to reverse the relation. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Use `_ = ∑ x, ∑ i, B a i * B⁻¹ i x * e h x := Finset.sum_comm`. Use `_ = ∑ x, (B * B⁻¹) a x * e h x := by`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[Matrix.mul_apply, Finset.sum_mul]`. Use `_ = e h a := by simp [hBB, Matrix.one_apply]`.
+Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem char_expand (e : H ≃ AddChar N C) (B : Matrix N N C) (hB : IsUnit B.det) (h : H) (a : N) :
     e h a = ∑ i, fourier (R := R) (fun h a => e h a) (fun x => B⁻¹ i x) h * B a i := by
@@ -154,29 +152,27 @@ theorem char_expand (e : H ≃ AddChar N C) (B : Matrix N N C) (hB : IsUnit B.de
     _ = e h a := by simp [hBB, Matrix.one_apply]
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 private theorem mem_intFun_iff_pairing {X : Type} {f : X → C} :
     f ∈ intFun (C := C) R X ↔ ∀ x, ∃ r : R, algebraMap R C r = f x := Iff.rfl
 
 /- English proof (translation)
-Establish `hg : ∀ i, (fun a => u a * B a i) ∈ dualLat AA.carrier`. Introduce `i`. Rewrite using `[mem_dualLat_iff_pairing_integral]`. Introduce `f hf`. Establish `hcol : (fun x => B x i) ∈ AA.carrier`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[hAA]`. Conclude with `Submodule.subset_span ⟨i, rfl⟩`. Take `⟨r, hr⟩` from `(mem_dualLat_iff_pairing_integral.1 hu) _ (AA.mul_mem _ _ hcol hf)`. Use `⟨r, hr.trans (Finset.sum_congr rfl fun a _ => ?_)⟩` and prove the remaining obligations. Simplify using `only [Pi.mul_apply]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hk : ∀ i, (fun x => B⁻¹ i x) ∈ dualLat AA.carrier`. Introduce `i`. Rewrite using `[hAA, mem_dualLat_spanCols_iff, mem_intFun_iff_pairing]`. Introduce `j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `show ∃ r : R, algebraMap R C r = (B⁻¹ * B) i j`. Rewrite using `[Matrix.nonsing_inv_mul B hB, Matrix.one_apply]`. Distinguish the cases in `hij : i = j`. Conclude with `⟨1, by simp [hij]⟩`. Conclude with `⟨0, by simp [hij]⟩`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hsplit : addPull R H (fourier (R` using `R) (fun h a => e h a) u) = ∑ i, fun p : H × H => fourier (R := R) (fun h a => e h a) (fun a => u a * B a i) p.1 * fourier (R := R) (fun h a => e h a) (fun x => B⁻¹ i x) p.2 := by`. Use function extensionality and compare the values at `p`. Rewrite using `[Finset.sum_apply]`. Simplify using `only [addPull, LinearMap.funLeft_apply]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[fourier_apply' (R := R) (fun h a => e h a) u (p.1 + p.2)]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Use `show u a * e (p.1 + p.2) a = _`. Rewrite using `[he, AddChar.mul_apply, char_expand (R := R) e B hB p.2 a]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `_ = ∑ a, ∑ i, u a * B a i * e p.1 a * fourier (R := R) (fun h a => e h a) (fun x => B⁻¹ i x) p.2 := by`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `_ = ∑ i, ∑ a, u a * B a i * e p.1 a * fourier (R := R) (fun h a => e h a) (fun x => B⁻¹ i x) p.2 := Finset.sum_comm`. Use `_ = ∑ i, fourier (R := R) (fun h a => e h a) (fun a => u a * B a i) p.1 * fourier (R := R) (fun h a => e h a) (fun x => B⁻¹ i x) p.2 := by`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[fourier_apply' (R := R) (fun h a => e h a) (fun a => u a * B a i) p.1, Finset.sum_mul]`. Rewrite using `[hsplit]`.
-
-Use `Submodule.sum_mem _ fun i _ => Submodule.subset_span ?_` and prove the remaining obligations. Conclude with `⟨_, Submodule.mem_map_of_mem (hg i), _, Submodule.mem_map_of_mem (hk i), rfl⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem comul_fourier (e : H ≃ AddChar N C) (he : ∀ h h', e (h + h') = e h * e h')
     (AA : HopfOrder (C := C) R N) (B : Matrix N N C) (hB : IsUnit B.det)
@@ -235,7 +231,7 @@ theorem comul_fourier (e : H ≃ AddChar N C) (he : ∀ h h', e (h + h') = e h *
   exact ⟨_, Submodule.mem_map_of_mem (hg i), _, Submodule.mem_map_of_mem (hk i), rfl⟩
 
 /- English proof (translation)
-Simplify using `only [fourier_apply', Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem pairing_fourier (e : H ≃ AddChar N C) (w : H → C) (u : N → C) :
     ∑ h, w h * fourier (R := R) (fun h a => e h a) u h =
@@ -246,9 +242,9 @@ theorem pairing_fourier (e : H ≃ AddChar N C) (w : H → C) (u : N → C) :
   ring
 
 /- English proof (translation)
-Rewrite using `[mem_dualLat_iff_pairing_integral, mem_dualLat_iff_pairing_integral]`. Prove the components needed by the constructor for the conclusion. Introduce `hw f hf`. Take `⟨r, hr⟩` from `hw _ (Submodule.mem_map_of_mem hf)`. Conclude with `⟨r, hr.trans (pairing_fourier (R := R) e w f)⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce `hw g hg`. Take `⟨f, hf, rfl⟩` from `Submodule.mem_map.1 hg`. Take `⟨r, hr⟩` from `hw f hf`. Conclude with `⟨r, hr.trans (pairing_fourier (R := R) e w f).symm⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem mem_dualLat_map_fourier (e : H ≃ AddChar N C) (M : Submodule R (N → C)) (w : H → C) :
     w ∈ dualLat (M.map (fourier (R := R) fun h a => e h a)) ↔
@@ -264,9 +260,9 @@ theorem mem_dualLat_map_fourier (e : H ≃ AddChar N C) (M : Submodule R (N → 
     exact ⟨r, hr.trans (pairing_fourier (R := R) e w f).symm⟩
 
 /- English proof (translation)
-Establish `hM` using `tableM_isUnit e σ`. Use `⟨fun h => ((tableM e σ)⁻¹ *ᵥ f) (σ h), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `a`. Simplify using `only [fourier_apply']`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 
-Simplify using `only [tableM, Matrix.of_apply, Equiv.symm_apply_apply]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = (tableM e σ *ᵥ ((tableM e σ)⁻¹ *ᵥ f)) a := rfl`. Use `_ = f a := by rw [Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ hM, Matrix.one_mulVec]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem fourier'_surjective (e : H ≃ AddChar N C) (σ : H ≃ N) (f : N → C) :
     ∃ w, fourier (R := R) (fun a h => e h a) w = f := by

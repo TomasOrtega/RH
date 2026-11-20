@@ -5,23 +5,21 @@ namespace GlobalTheory.TargetStatementSixOneNinetySeven
 open Module
 
 /- English proof (translation)
-Set `P : Submodule ℂ E → Prop` to `fun p => p ≠ ⊥ ∧ ∀ i, ∀ x ∈ p, f i x ∈ p`. Establish `hex : ∃ n, ∃ p : Submodule ℂ E, finrank ℂ p = n ∧ P p` using `⟨_, ⊤, rfl, top_ne_bot, fun i x _ => Submodule.mem_top⟩`. Take `⟨p, hpn, hpb, hpi⟩` from `Nat.find_spec hex`. Establish `hmin : ∀ q : Submodule ℂ E, P q → finrank ℂ p ≤ finrank ℂ q`. Introduce `q hq`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hpn]`. Conclude with `Nat.find_min' hex ⟨q, rfl, hq⟩`. Establish `hscal : ∀ i, ∃ μ : ℂ, ∀ x ∈ p, f i x = μ • x`. Introduce `i`. Use `haveI : Nontrivial p := Submodule.nontrivial_iff_ne_bot.mpr hpb`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Set `g : Module.End ℂ p` to `(f i).restrict (hpi i)`. Take `⟨μ, hμ⟩` from `Module.End.exists_eigenvalue g`. Take `⟨v, hv⟩` from `hμ.exists_hasEigenvector`. Use `⟨μ, ?_⟩` and prove the remaining obligations. Set `q : Submodule ℂ E` to `p ⊓ Module.End.eigenspace (f i) μ`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hvq : (v : E) ∈ q`. Use `Submodule.mem_inf.mpr ⟨v.2, ?_⟩` and prove the remaining obligations. Rewrite using `[Module.End.mem_eigenspace_iff]`. Establish `h1` using `Module.End.mem_eigenspace_iff.mp hv.1`. Establish `h2` using `congrArg Subtype.val h1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify `h2` using `[g]`. Establish `hqb : q ≠ ⊥`. Introduce `h`. Establish `h0 : (v : E) = 0` using `by rw [h] at hvq; exact (Submodule.mem_bot ℂ).mp hvq`. Conclude with `hv.2 (Subtype.ext h0)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hqi : ∀ j, ∀ x ∈ q, f j x ∈ q`. Introduce `j x hx`. Use `Submodule.mem_inf.mpr ⟨hpi j x (Submodule.mem_inf.mp hx).1, ?_⟩` and prove the remaining obligations. Rewrite using `[Module.End.mem_eigenspace_iff]`. Establish `hx2` using `Module.End.mem_eigenspace_iff.mp (Submodule.mem_inf.mp hx).2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hcomm : f i (f j x) = f j (f i x)`. Establish `h3` using `(hc i j).eq`. Conclude with `congrArg (fun T : Module.End ℂ E => T x) h3`. Rewrite using `[hcomm, hx2, map_smul]`. Establish `hle : q ≤ p` using `inf_le_left`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `heq : q = p` using `Submodule.eq_of_le_of_finrank_le hle (hmin q ⟨hqb, hqi⟩)`. Introduce `x hx`. Rewrite `hx` using `[← heq]`. Conclude with `Module.End.mem_eigenspace_iff.mp (Submodule.mem_inf.mp hx).2`. Take `⟨x, hxp, hx0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hpb`.
-
-Use `⟨x, hx0, fun i => ?_⟩` and prove the remaining obligations. Take `⟨μ, hμ⟩` from `hscal i`. Conclude with `⟨μ, hμ x hxp⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem main {ι E : Type} [AddCommGroup E] [Module ℂ E] [FiniteDimensional ℂ E] [Nontrivial E]
     (f : ι → Module.End ℂ E) (hc : ∀ i j, Commute (f i) (f j)) :

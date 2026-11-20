@@ -21,9 +21,7 @@ theorem conjHom_apply (x : E) : conjHom F E x = conj F E x :=
   rfl
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨x, hx⟩ : ∃ x, Algebra.trace F E x ≠ 0 := by`. Assume the negation of the conclusion as `H`. Use `push Not at H`. Conclude with `Algebra.trace_ne_zero F E (LinearMap.ext H)`. Use `⟨(Algebra.trace F E x)⁻¹ • x, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[map_smul, smul_eq_mul, inv_mul_cancel₀ hx]`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_trace_eq_one [Algebra.IsSeparable F E] : ∃ c : E, Algebra.trace F E c = 1 := by
   obtain ⟨x, hx⟩ : ∃ x, Algebra.trace F E x ≠ 0 := by
@@ -34,9 +32,7 @@ theorem exists_trace_eq_one [Algebra.IsSeparable F E] : ∃ c : E, Algebra.trace
   rw [map_smul, smul_eq_mul, inv_mul_cancel₀ hx]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `H`. Use `push Not at H`. Establish `hbij : Function.Bijective (Algebra.linearMap F E)` using `⟨(algebraMap F E).injective, fun y => H y⟩`. Establish `h1` using `(LinearEquiv.ofBijective _ hbij).finrank_eq`. Rewrite `h1` using `[Module.finrank_self, Algebra.IsQuadraticExtension.finrank_eq_two]`.
-
-Conclude with `absurd h1 (by norm_num)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_not_mem_range : ∃ ζ : E, ζ ∉ Set.range (algebraMap F E) := by
   by_contra H
@@ -48,15 +44,15 @@ theorem exists_not_mem_range : ∃ ζ : E, ζ ∉ Set.range (algebraMap F E) := 
   exact absurd h1 (by norm_num)
 
 /- English proof (translation)
-Use `⟨fun hx => ?_, fun ⟨c, hc⟩ => hc ▸ conj_algebraMap c⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Rewrite `hx` using `[conj_apply]`. Establish `h2 : algebraMap F E (Algebra.trace F E x) = 2 * x` using `by linear_combination hx`. Distinguish the cases in `h2E : (2 : E) = 0`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Establish `htx : Algebra.trace F E x = 0`. Apply `(algebraMap F E).injective` to reduce the goal to its premises. Rewrite using `[h2, h2E, zero_mul, map_zero]`. Establish `ht1 : Algebra.trace F E 1 = 0`. Use `trace_algebraMap_quadratic (F := F) (E := E) 1` as an intermediate fact.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[map_one, mul_one]`. Rewrite using `[this]`. Apply `(algebraMap F E).injective` to reduce the goal to its premises. Rewrite using `[map_ofNat, h2E, map_zero]`. Apply `Algebra.trace_ne_zero F E` to reduce the goal to its premises.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Use `(basisOneOf hne).ext fun i => ?_` and prove the remaining obligations. Use `fin_cases i`. Simplify using `[basisOneOf_zero, ht1]`. Simplify using `[basisOneOf_one, htx]`. Apply `hne` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨2⁻¹ * Algebra.trace F E x, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, h2, map_inv₀, map_ofNat, ← mul_assoc, inv_mul_cancel₀ h2E, one_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_eq_self_iff [Algebra.IsSeparable F E] {x : E} :
     conj F E x = x ↔ x ∈ Set.range (algebraMap F E) := by
@@ -84,11 +80,11 @@ theorem conj_eq_self_iff [Algebra.IsSeparable F E] {x : E} :
     rw [map_mul, h2, map_inv₀, map_ofNat, ← mul_assoc, inv_mul_cancel₀ h2E, one_mul]
 
 /- English proof (translation)
-Take `⟨ζ, hζ⟩` from `exists_not_mem_range (F := F) (E := E)`. Establish `hζ0 : ζ ≠ 0` using `fun h => hζ ⟨0, by rw [h, map_zero]⟩`. Establish `hc : conj F E ζ ≠ ζ` using `fun h => hζ (conj_eq_self_iff.1 h)`. Establish `hc0 : conj F E ζ ≠ 0`. Introduce `h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hζ0` to reduce the goal to its premises. Rewrite using `[← conj_conj (F := F) ζ, h, map_zero]`. Use `⟨conj F E ζ * ζ⁻¹, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_inv₀, conj_conj]`. Clear the denominators using the available nonvanishing facts.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Introduce `h`. Apply `hc` to reduce the goal to its premises. Clear denominators, using `at h` for the nonvanishing conditions. Conclude with `h`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem exists_mul_conj_eq_one_ne_one [Algebra.IsSeparable F E] :
     ∃ l : E, l * conj F E l = 1 ∧ l ≠ 1 := by
@@ -119,28 +115,28 @@ def Isometric (h : HermitianForm F E V) (h' : HermitianForm F E V') : Prop :=
   ∃ e : V ≃ₗ[E] V', ∀ x y, h'.toSesq (e x) (e y) = h.toSesq x y
 
 /- English proof (translation)
-The claim follows from `h.isSymm.eq x y`.
+A detailed English derivation is pending.
 -/
 theorem conj_toSesq (h : HermitianForm F E V) (x y : V) :
     conj F E (h.toSesq x y) = h.toSesq y x :=
   h.isSymm.eq x y
 
 /- English proof (translation)
-Rewrite using `[LinearMap.map_smulₛₗ₂, smul_eq_mul, conjHom_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem toSesq_smul_left (h : HermitianForm F E V) (c : E) (x y : V) :
     h.toSesq (c • x) y = conj F E c * h.toSesq x y := by
   rw [LinearMap.map_smulₛₗ₂, smul_eq_mul, conjHom_apply]
 
 /- English proof (translation)
-Rewrite using `[map_smul, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem toSesq_smul_right (h : HermitianForm F E V) (c : E) (x y : V) :
     h.toSesq x (c • y) = c * h.toSesq x y := by
   rw [map_smul, smul_eq_mul]
 
 /- English proof (translation)
-Apply `h.nonsingular.1` to reduce the goal to its premises. Rewrite using `[map_zero]`. Conclude with `LinearMap.ext hx`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_forall (h : HermitianForm F E V) {x : V} (hx : ∀ y, h.toSesq x y = 0) :
     x = 0 := by
@@ -149,9 +145,9 @@ theorem eq_zero_of_forall (h : HermitianForm F E V) {x : V} (hx : ∀ y, h.toSes
   exact LinearMap.ext hx
 
 /- English proof (translation)
-Rewrite using `[← h.conj_toSesq x y]`. Prove the components needed by the constructor for the conclusion. Introduce `hxy`. Rewrite using `[hxy, map_zero]`. Introduce `hxy`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← conj_conj (F := F) (h.toSesq x y), hxy, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem toSesq_eq_zero_comm (h : HermitianForm F E V) {x y : V} :
     h.toSesq x y = 0 ↔ h.toSesq y x = 0 := by
@@ -162,14 +158,14 @@ theorem toSesq_eq_zero_comm (h : HermitianForm F E V) {x y : V} :
     rw [← conj_conj (F := F) (h.toSesq x y), hxy, map_zero]
 
 /- English proof (translation)
-The claim follows from `h.conj_toSesq x x`.
+A detailed English derivation is pending.
 -/
 theorem conj_toSesq_self (h : HermitianForm F E V) (x : V) :
     conj F E (h.toSesq x x) = h.toSesq x x :=
   h.conj_toSesq x x
 
 /- English proof (translation)
-The claim follows from `conj_eq_self_iff.1 (h.conj_toSesq_self x)`.
+A detailed English derivation is pending.
 -/
 theorem toSesq_self_mem_range [Algebra.IsSeparable F E] (h : HermitianForm F E V) (x : V) :
     h.toSesq x x ∈ Set.range (algebraMap F E) :=
@@ -178,12 +174,12 @@ theorem toSesq_self_mem_range [Algebra.IsSeparable F E] (h : HermitianForm F E V
 namespace Isometric
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨LinearEquiv.refl E V, fun _ _ => rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem refl (h : HermitianForm F E V) : Isometric h h := ⟨LinearEquiv.refl E V, fun _ _ => rfl⟩
 
 /- English proof (translation)
-Take `⟨e, he⟩` from `H`. Use `⟨e.symm, fun x y => ?_⟩` and prove the remaining obligations. Rewrite using `[← he, e.apply_symm_apply, e.apply_symm_apply]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem symm {h : HermitianForm F E V} {h' : HermitianForm F E V'} (H : Isometric h h') :
     Isometric h' h := by
@@ -192,7 +188,7 @@ theorem symm {h : HermitianForm F E V} {h' : HermitianForm F E V'} (H : Isometri
   rw [← he, e.apply_symm_apply, e.apply_symm_apply]
 
 /- English proof (translation)
-Take `⟨e, he⟩` from `H`. Take `⟨e', he'⟩` from `H'`. Conclude with `⟨e.trans e', fun x y => by show h''.toSesq (e' (e x)) (e' (e y)) = _`. Rewrite using `[he', he]⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 -/
 theorem trans {h : HermitianForm F E V} {h' : HermitianForm F E V'}
     {h'' : HermitianForm F E V''} (H : Isometric h h') (H' : Isometric h' h'') :
@@ -204,7 +200,7 @@ theorem trans {h : HermitianForm F E V} {h' : HermitianForm F E V'}
     rw [he', he]⟩
 
 /- English proof (translation)
-Take `⟨e, -⟩` from `H`. Conclude with `e.finrank_eq`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem finrank_eq {h : HermitianForm F E V} {h' : HermitianForm F E V'} (H : Isometric h h') :
     finrank E V = finrank E V' := by
@@ -250,7 +246,7 @@ theorem prod_apply (h : HermitianForm F E V) (h' : HermitianForm F E V') (p q : 
     (h.prod h').toSesq p q = h.toSesq p.1 q.1 + h'.toSesq p.2 q.2 := rfl
 
 /- English proof (translation)
-Take `⟨e, he⟩` from `H`. Take `⟨e', he'⟩` from `H'`. Conclude with `⟨e.prodCongr e', fun p q => by show h₂.toSesq (e p.1) (e q.1) + h₄.toSesq (e' p.2) (e' q.2) = _`. Rewrite using `[he, he']`. Use the proof step `rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Isometric.prod {h₁ : HermitianForm F E V} {h₂ : HermitianForm F E V'}
     {V₃ V₄ : Type*} [AddCommGroup V₃] [Module E V₃] [AddCommGroup V₄] [Module E V₄]
@@ -264,7 +260,7 @@ theorem Isometric.prod {h₁ : HermitianForm F E V} {h₂ : HermitianForm F E V'
     rfl⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨LinearEquiv.prodComm E V V', fun p q => by show h'.toSesq p.2 q.2 + h.toSesq p.1 q.1 = h.toSesq p.1 q.1 + h'.toSesq p.2 q.2 rw [add_comm]⟩`.
+Supply the required witnesses or components.
 -/
 theorem isometric_prod_comm (h : HermitianForm F E V) (h' : HermitianForm F E V') :
     Isometric (h.prod h') (h'.prod h) :=
@@ -273,7 +269,7 @@ theorem isometric_prod_comm (h : HermitianForm F E V) (h' : HermitianForm F E V'
     rw [add_comm]⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨LinearEquiv.prodAssoc E V V' V'', fun p q => by show h.toSesq p.1.1 q.1.1 + (h'.toSesq p.1.2 q.1.2 + h''.toSesq p.2 q.2) = (h.toSesq p.1.1 q.1.1 + h'.toSesq p.1.2 q.1.2) + h''.toSesq p.2 q.2 rw [add_assoc]⟩`.
+Supply the required witnesses or components.
 -/
 theorem isometric_prod_assoc (h : HermitianForm F E V) (h' : HermitianForm F E V')
     (h'' : HermitianForm F E V'') :
@@ -320,7 +316,7 @@ def IsOrthoCompl (h : HermitianForm F E V) (W W' : Submodule E V) : Prop :=
   IsCompl W W' ∧ ∀ x ∈ W, ∀ y ∈ W', h.toSesq x y = 0
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hW.1.symm, fun x hx y hy => h.toSesq_eq_zero_comm.1 (hW.2 y hy x hx)⟩`.
+Supply the required witnesses or components.
 -/
 theorem IsOrthoCompl.symm {h : HermitianForm F E V} {W W' : Submodule E V}
     (hW : h.IsOrthoCompl W W') : h.IsOrthoCompl W' W :=
@@ -360,7 +356,7 @@ theorem restrict_apply (h : HermitianForm F E V) (W W' : Submodule E V)
     (h.restrict W W' hW).toSesq x y = h.toSesq x y := rfl
 
 /- English proof (translation)
-Use `⟨Submodule.prodEquivOfIsCompl W W' hW.1, fun p q => ?_⟩` and prove the remaining obligations. Simplify using `only [Submodule.coe_prodEquivOfIsCompl', prod_apply, restrict_apply, map_add, LinearMap.add_apply]`. Rewrite using `[hW.2 _ p.1.2 _ q.2.2, h.toSesq_eq_zero_comm.1 (hW.2 _ q.1.2 _ p.2.2)]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem isometric_prod_restrict (h : HermitianForm F E V) (W W' : Submodule E V)
     (hW : h.IsOrthoCompl W W') :
@@ -372,15 +368,15 @@ theorem isometric_prod_restrict (h : HermitianForm F E V) (W W' : Submodule E V)
   ring
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[isCompl_iff, disjoint_iff, codisjoint_iff]`. Prove the components needed by the constructor for the conclusion. Rewrite using `[eq_bot_iff]`. Introduce and unpack `x ⟨hx1, hx2⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Take `⟨t, rfl⟩` from `Submodule.mem_span_singleton.1 hx1`. Establish `: t * h.toSesq v v = 0`. Simplify `hx2` using `[LinearMap.mem_ker, h.toSesq_smul_right]`. Break down `mul_eq_zero.1 this with ht | ht` into its components or cases. Simplify using `[ht]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Conclude with `absurd ht hv`. Rewrite using `[eq_top_iff]`. Introduce `x _`. Rewrite using `[Submodule.mem_sup]`. Use `⟨(h.toSesq v x * (h.toSesq v v)⁻¹) • v, Submodule.mem_span_singleton.2 ⟨_, rfl⟩, x - (h.toSesq v x * (h.toSesq v v)⁻¹) • v, ?_, by abel⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearMap.mem_ker, map_sub, h.toSesq_smul_right]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Introduce `x hx y hy`. Take `⟨t, rfl⟩` from `Submodule.mem_span_singleton.1 hx`.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hy` using `[LinearMap.mem_ker]`. Rewrite using `[h.toSesq_smul_left, hy, mul_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOrthoCompl_span_singleton (h : HermitianForm F E V) {v : V}
     (hv : h.toSesq v v ≠ 0) :
@@ -414,13 +410,11 @@ section Separable
 variable [Algebra.IsSeparable F E]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `H`. Use `push Not at H`. Take `⟨x, hx⟩` from `exists_ne (0 : V)`. Choose the witnesses or unpack the hypotheses as in `⟨y, hy⟩ : ∃ y, h.toSesq x y ≠ 0 := by`. Assume the negation of the conclusion as `H'`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Use `push Not at H'`. Conclude with `hx (h.eq_zero_of_forall H')`. Take `⟨c, hc⟩` from `exists_trace_eq_one (F := F) (E := E)`. Use `set t := c * (h.toSesq x y)⁻¹ with ht_def`. Establish `ht : t * h.toSesq x y = c` using `by rw [ht_def]; field_simp`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `key : h.toSesq (x + t • y) (x + t • y) = t * h.toSesq x y + conj F E (t * h.toSesq x y)`. Rewrite using `[map_mul, h.conj_toSesq]`. Simplify using `only [map_add, LinearMap.add_apply, h.toSesq_smul_left, h.toSesq_smul_right, H]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `key` using `[H, ht, add_conj, hc, map_one]`.
-
-Conclude with `one_ne_zero key.symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_apply_self_ne_zero (h : HermitianForm F E V) [Nontrivial V] :
     ∃ x, h.toSesq x x ≠ 0 := by

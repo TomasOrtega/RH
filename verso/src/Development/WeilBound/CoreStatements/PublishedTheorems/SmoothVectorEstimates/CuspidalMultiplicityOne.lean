@@ -5,7 +5,7 @@ import Development.WeilBound.CoreStatements.PublishedTheorems.JacquetShalikaBoun
 namespace PositivityTheory.jumpWindows
 
 /- English proof (translation)
-The claim follows from `cuspidal_multiplicity_one PositivityTheory.JacquetShalikaLocal.minuscule_eigenvalue PositivityTheory.JacquetShalikaLocal.satake_eigenvalue_formula`.
+A detailed English derivation is pending.
 -/
 theorem cuspidalMultiplicityOne : GlobalTheory.Published.CuspidalMultiplicityOne := cuspidal_multiplicity_one PositivityTheory.JacquetShalikaLocal.minuscule_eigenvalue PositivityTheory.JacquetShalikaLocal.satake_eigenvalue_formula
 

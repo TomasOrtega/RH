@@ -24,7 +24,7 @@ noncomputable def gradSq (ε v : ℝ) : ℝ :=
   (curvK (curvX ε v) / curvEta (curvX ε v)) ^ 2 / thetaCoeff ε v
 
 /- English proof (translation)
-Use `log_nonneg hx` as an intermediate fact. Unfold `curvEta`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem le_curvEta {x : ℝ} (hx : 1 ≤ x) : x ≤ curvEta x := by
   have := log_nonneg hx
@@ -32,11 +32,11 @@ theorem le_curvEta {x : ℝ} (hx : 1 ≤ x) : x ≤ curvEta x := by
   linarith
 
 /- English proof (translation)
-Use `set t := x - 1 with ht`. Establish `ht0 : 0 ≤ t` using `by linarith`. Establish `hxt : x = 1 + t` using `by linarith`. Establish `he : exp x = exp 1 * exp t` using `by rw [← exp_add, hxt]`. Establish `hq : 1 + t + t ^ 2 / 2 ≤ exp t` using `quadratic_le_exp_of_nonneg ht0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he1 : (2.7 : ℝ) < exp 1` using `lt_trans (by norm_num) exp_one_gt_d9`. Establish `hp : 0 < 1 + t + t ^ 2 / 2` using `by positivity`. Establish `h1 : exp 1 * (1 + t + t ^ 2 / 2) ≤ exp 1 * exp t` using `mul_le_mul_of_nonneg_left hq (exp_pos 1).le`. Establish `h2 : 2.7 * (1 + t + t ^ 2 / 2) ≤ exp 1 * (1 + t + t ^ 2 / 2)` using `mul_le_mul_of_nonneg_right he1.le hp.le`. Rewrite using `[he, hxt]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Use polynomial arithmetic with `[sq_nonneg (t - 3 / 17)]`.
+A detailed English derivation is pending.
 -/
 theorem sq_add_four_mul_le_two_exp {x : ℝ} (hx : 1 ≤ x) : x ^ 2 + 4 * x ≤ 2 * exp x := by
   set t := x - 1 with ht
@@ -54,11 +54,11 @@ theorem sq_add_four_mul_le_two_exp {x : ℝ} (hx : 1 ≤ x) : x ^ 2 + 4 * x ≤ 
   nlinarith [sq_nonneg (t - 3 / 17)]
 
 /- English proof (translation)
-Establish `hlog : log x ≤ x - 1` using `log_le_sub_one_of_pos (by linarith)`. Establish `hη : 1 ≤ curvEta x` using `le_trans hx (le_curvEta hx)`. Establish `hden : 0 < (x + 1) ^ 2 + curvEta x` using `by positivity`. Establish `hden' : (x + 1) ^ 2 + curvEta x ≤ 2 * exp x`. Use `sq_add_four_mul_le_two_exp hx` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `curvEta`. Use the polynomial consequences of the given equalities and inequalities. Establish `hexp : exp (D - 1) * exp x ≤ exp (D * x)`. Rewrite using `[← exp_add, exp_le_exp]`. Use the polynomial consequences of the given equalities and inequalities.
+Replace the relevant objects with their definitions. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Rewrite using `[le_div_iff₀ hden]`. Establish `h0 : 0 < exp (D - 1)` using `exp_pos _`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem exp_div_ge_of_one_le {x D : ℝ} (hx : 1 ≤ x) (hD : 1 ≤ D) :
     exp (D - 1) / 2 ≤ exp (D * x) / ((x + 1) ^ 2 + curvEta x) := by

@@ -10,9 +10,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.GoodGenericInv
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (fun h : P => (⟨t * h * t⁻¹, ht h h.2⟩ : P))`. Introduce `a b e`. Apply `Subtype.ext` to reduce the goal to its premises. Use `congrArg Subtype.val e` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hbij : Function.Bijective (fun h : P => (⟨t * h * t⁻¹, ht h h.2⟩ : P))` using `(Finite.injective_iff_bijective).1 hinj`. Rewrite using `[← (Equiv.ofBijective _ hbij).sum_comp]`. Use `Finset.sum_congr rfl fun h _ => ?_` and prove the remaining obligations. Simplify using `only [Equiv.ofBijective_apply, MonoidHom.inv_apply, inv_inv]`. Rewrite using `[hχ, hψ h h.2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem typeSum_inv_eq {K G : Type} [Field K] [Group G] (P : Subgroup G) [Fintype P] (ψ : P →* Kˣ) (χ : G → K)
     (hχ : ∀ g h, χ (g * h * g⁻¹) = χ h) (t : G) (ht : ∀ h ∈ P, t * h * t⁻¹ ∈ P)
@@ -37,7 +37,7 @@ def sgnDiag (κ : Type) [CommRing κ] (r : ℕ) : GL (Fin r) κ where
   inv_val := by rw [Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]; congr 1; funext i; rw [← pow_add, ← two_mul, pow_mul]; simp
 
 /- English proof (translation)
-Use `show (Matrix.diagonal (fun i : Fin r => ((-1 : κ)) ^ i.val) * (u : Matrix (Fin r) (Fin r) κ) * Matrix.diagonal (fun i : Fin r => ((-1 : κ)) ^ i.val)) i j = _`. Rewrite using `[Matrix.mul_diagonal, Matrix.diagonal_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem sgnDiag_conj_apply {κ : Type} [CommRing κ] {r : ℕ} (u : GL (Fin r) κ) (i j : Fin r) :
     ((sgnDiag κ r * u * (sgnDiag κ r)⁻¹ : GL (Fin r) κ) : Matrix (Fin r) (Fin r) κ) i j =
@@ -54,7 +54,7 @@ namespace GlobalTheory.GoodGenericInv
 variable {κ : Type} [CommRing κ] {r : ℕ}
 
 /- English proof (translation)
-Use `⟨?_, fun i => ?_⟩` and prove the remaining obligations. Introduce `i j h`. Rewrite using `[sgnDiag_conj_apply, unip_lower hu (show j < i from h), mul_zero]`. Rewrite using `[sgnDiag_conj_apply, unip_diag hu i, ← pow_add, ← two_mul, pow_mul]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sgnDiag_conj_mem_unip {u : GL (Fin r) κ} (hu : u ∈ unip κ r) :
     sgnDiag κ r * u * (sgnDiag κ r)⁻¹ ∈ unip κ r := by
@@ -65,11 +65,11 @@ theorem sgnDiag_conj_mem_unip {u : GL (Fin r) κ} (hu : u ∈ unip κ r) :
     simp
 
 /- English proof (translation)
-Unfold `edgeSum`. Rewrite using `[← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `split_ifs with h`. Rewrite using `[sgnDiag_conj_apply]`. Unfold `supEdge at h`. Establish `hs : ((-1 : κ)) ^ (i : ℕ) * (-1) ^ (i : ℕ) = 1` using `by rw [← mul_pow]; simp`. Rewrite using `[h, pow_succ]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `(-(u : Matrix (Fin r) (Fin r) κ) i j) * hs`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem edgeSum_sup_conj (u : GL (Fin r) κ) :
     edgeSum supEdge (sgnDiag κ r * u * (sgnDiag κ r)⁻¹) = - edgeSum supEdge u := by
@@ -95,7 +95,7 @@ variable {E : Type} [Field E] [NumberField E] {Pg : Finset (Pl E)} {r : ℕ}
 def alternatingSignDiagonalLevelGroup (Pg : Finset (Pl E)) (r : ℕ) : G0 Pg r := fun PP => sgnDiag (kP PP.1) r
 
 /- English proof (translation)
-Introduce `PP _`. Conclude with `sgnDiag_conj_mem_unip (hx PP (Set.mem_univ _))`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem alternatingSignDiagonal_conj_mem_genericLevel (ψ : ∀ PP : Pl E, AddChar (kP PP) ℂ) {x : G0 Pg r} (hx : x ∈ (P0 Pg r ψ).H) :
     alternatingSignDiagonalLevelGroup Pg r * x * (alternatingSignDiagonalLevelGroup Pg r)⁻¹ ∈ (P0 Pg r ψ).H := by
@@ -103,9 +103,9 @@ theorem alternatingSignDiagonal_conj_mem_genericLevel (ψ : ∀ PP : Pl E, AddCh
   exact sgnDiag_conj_mem_unip (hx PP (Set.mem_univ _))
 
 /- English proof (translation)
-Use `show (∏ PP : ↥Pg, (addCharHom (ψ PP.1) (supHom (kP PP.1) r)).comp (LevelP.prj (fun PP => unip (kP PP.1) r) PP)) ⟨alternatingSignDiagonalLevelGroup Pg r * x * (alternatingSignDiagonalLevelGroup Pg r)⁻¹, alternatingSignDiagonal_conj_mem_genericLevel ψ hx⟩ = ((∏ PP : ↥Pg, (addCharHo …`. Rewrite using `[MonoidHom.finset_prod_apply, MonoidHom.finset_prod_apply, ← Finset.prod_inv_distrib]`. Use `Finset.prod_congr rfl fun PP _ => ?_` and prove the remaining obligations. Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [MonoidHom.comp_apply, addCharHom, MonoidHom.coe_toHomUnits, Units.val_inv_eq_inv_val]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `show ψ PP.1 (Multiplicative.toAdd (Multiplicative.ofAdd (edgeSum supEdge (sgnDiag (kP PP.1) r * x PP * (sgnDiag (kP PP.1) r)⁻¹)))) = (ψ PP.1 (Multiplicative.toAdd (Multiplicative.ofAdd (edgeSum supEdge (x PP)))))⁻¹`. Rewrite using `[toAdd_ofAdd, toAdd_ofAdd, edgeSum_sup_conj, AddChar.map_neg_eq_inv]`.
+A detailed English derivation is pending.
 -/
 theorem genericLevelCharacter_alternatingSign_conj_inv (ψ : ∀ PP : Pl E, AddChar (kP PP) ℂ) {x : G0 Pg r} (hx : x ∈ (P0 Pg r ψ).H) :
     (P0 Pg r ψ).chi ⟨alternatingSignDiagonalLevelGroup Pg r * x * (alternatingSignDiagonalLevelGroup Pg r)⁻¹, alternatingSignDiagonal_conj_mem_genericLevel ψ hx⟩ = ((P0 Pg r ψ).chi ⟨x, hx⟩)⁻¹ := by
@@ -125,7 +125,7 @@ end GlobalTheory.GoodGenericInv
 namespace GlobalTheory.GoodGenericInv
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem level_character_eq_of_eq {E : Type} [Field E] [NumberField E] {Pg : Finset (Pl E)} {r : ℕ} {LL : Type} [CommRing LL]
     {L L' : LevelP Pg r LL} (h : L = L') (x : G0 Pg r) (hx : x ∈ L.H) (hx' : x ∈ L'.H) :

@@ -7,7 +7,7 @@ open Matrix
 open scoped ComplexOrder
 
 /- English proof (translation)
-Establish `e : (1 - c • X') * M * (1 - c • X) = M - c • (X' * M) - c • (M * X) + (c * c) • (X' * M * X)`. Simplify using `only [sub_mul, mul_sub, one_mul, mul_one, smul_mul_assoc, mul_smul_comm, smul_sub, smul_smul]`. Normalize the expressions using the abelian group laws. Rewrite using `[e, h3, h1, h2]`. Simplify using `only [smul_smul, sub_smul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 Normalize the expressions using the abelian group laws.
 -/
@@ -24,29 +24,29 @@ private lemma expand_sandwich {ι : Type*} [Fintype ι] [DecidableEq ι] (M X X'
   abel
 
 /- English proof (translation)
-Introduce `H P hmaj ε hε v hv hAv`. Take `⟨hP, hH, -, hPHP⟩` from `hmaj`. Establish `hPh : Pᴴ = P` using `hP.isHermitian`. Establish `hHh : Hᴴ = H` using `hH`. Use `set y : ι → ℂ := P *ᵥ v with hy`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set q : ℂ := star v ⬝ᵥ (P *ᵥ v) with hqdef`. Establish `hqpos : 0 < q` using `hP.dotProduct_mulVec_pos hv`. Establish `hq0 : q ≠ 0` using `hqpos.ne'`. Establish `hqstar : star q = q` using `Complex.conj_eq_iff_im.mpr (Complex.pos_iff.mp hqpos).2.symm`. Apply the tactic sequence `have hεstar : star ε = ε := by rcases hε with rfl | rfl <;> simp`.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set c : ℂ := 2 / q with hc`. Establish `hcstar : star c = c` using `by rw [hc, star_div₀, hqstar]; simp`. Establish `hcq : c * q = 2` using `by rw [hc]; field_simp`. Establish `hwy : star v ᵥ* P = star y` using `by rw [hy, star_mulVec, hPh]`. Establish `hyv : star y ⬝ᵥ v = q` using `by rw [← hwy, ← dotProduct_mulVec]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hHv : H *ᵥ v = ε • y`. Establish `: H *ᵥ v = P *ᵥ ((H⁻¹ * P) *ᵥ v)` using `by rw [mulVec_mulVec, ← Matrix.mul_assoc, hPHP]`. Rewrite using `[this, show (H⁻¹ * P) *ᵥ v = ε • v from hAv, mulVec_smul]`. Establish `hvH : star v ᵥ* H = ε • star y`. Rewrite using `[← hHh, ← star_mulVec, hHv, star_smul, hεstar]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hR : pReflection P v = 1 - c • vecMulVec v (star y)`. Rewrite using `[pReflection, ← hqdef, ← hc, vecMulVec_mul, hwy]`. Establish `hRh : (pReflection P v)ᴴ = 1 - c • vecMulVec y (star v)`. Rewrite using `[hR, conjTranspose_sub, conjTranspose_one, conjTranspose_smul, hcstar, conjTranspose_vecMulVec, star_star]`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hRh, hR]`. Establish `h1 : vecMulVec y (star v) * P = (1 : ℂ) • vecMulVec y (star y)`. Rewrite using `[vecMulVec_mul, hwy, one_smul]`. Establish `h2 : P * vecMulVec v (star y) = (1 : ℂ) • vecMulVec y (star y)`. Rewrite using `[mul_vecMulVec, ← hy, one_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : vecMulVec y (star v) * P * vecMulVec v (star y) = q • vecMulVec y (star y)`. Rewrite using `[vecMulVec_mul, hwy, vecMulVec_mul_vecMulVec, hyv, vecMulVec_smul]`. Rewrite using `[expand_sandwich P _ _ _ c 1 1 q h1 h2 h3]`. Establish `: c * c * q - c * 1 - c * 1 = 0`. Rewrite using `[mul_assoc, hcq]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, zero_smul, add_zero]`. Rewrite using `[hRh, hR]`. Establish `h1 : vecMulVec y (star v) * H = ε • vecMulVec y (star y)`. Rewrite using `[vecMulVec_mul, hvH, vecMulVec_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Establish `h2 : H * vecMulVec v (star y) = ε • vecMulVec y (star y)`. Rewrite using `[mul_vecMulVec, hHv]`. Use extensionality with `i j`. Simplify using `[vecMulVec_apply, mul_assoc]`. Establish `h3 : vecMulVec y (star v) * H * vecMulVec v (star y) = (ε * q) • vecMulVec y (star y)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[vecMulVec_mul, hvH, vecMulVec_mul_vecMulVec, smul_dotProduct, hyv, vecMulVec_smul]`. Both sides reduce to the same expression. Rewrite using `[expand_sandwich H _ _ _ c ε ε (ε * q) h1 h2 h3]`. Establish `: c * c * (ε * q) - c * ε - c * ε = 0`. Establish `: c * c * (ε * q) = (c * q) * c * ε` using `by ring`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, hcq]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, zero_smul, add_zero]`. Rewrite using `[hR, sub_mulVec, one_mulVec, smul_mulVec, vecMulVec_mulVec, hyv]`. Rewrite using `[op_smul_eq_smul, smul_smul, hcq, two_smul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Normalize the expressions using the abelian group laws. Introduce `u hu`. Establish `hyu : star y ⬝ᵥ u = 0` using `by rw [← hwy, ← dotProduct_mulVec, hu]`. Rewrite using `[hR, sub_mulVec, one_mulVec, smul_mulVec, vecMulVec_mulVec, hyu]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem EigenReflection.proof (ι : Type*) [Fintype ι] [DecidableEq ι] :
     EigenReflection.Statement ι := by

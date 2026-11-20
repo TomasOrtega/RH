@@ -1,9 +1,9 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `n A G S _ _ _ P hP b x`. Rewrite using `[MvPolynomial.aeval_def, MvPolynomial.aeval_def, MvPolynomial.eval₂_eq, MvPolynomial.eval₂_eq, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun d hd ↦ ?_` and prove the remaining obligations. Establish `hdeg : ∑ i ∈ d.support, d i = n`. Establish `h` using `hP (MvPolynomial.mem_support_iff.mp hd)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `h` using `[Finsupp.weight_apply, Finsupp.sum]`. Simplify using `only [mul_pow]`. Rewrite using `[Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum, hdeg]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem UpperTheory.Reformulated.B.Qk4.aeval_mul_homog :
     ∀ {n : ℕ} {A G S : Type} [inst : CommRing A]

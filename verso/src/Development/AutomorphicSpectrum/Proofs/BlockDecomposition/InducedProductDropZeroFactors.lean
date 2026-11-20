@@ -20,11 +20,11 @@ variable (k : Type) [Field k] {r r' N : ℕ} (d : Fin r → ℕ) (hd : ∑ a, d 
 include ho hz
 
 /- English proof (translation)
-Establish `hE` using `GlobalTheory.CompanionTheory.StdCompat.stdBlocks_drop_empty d hd o ho hz hd'`. Rewrite using `[mem_parab_iff, mem_parab_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h a b i j hab`. Rewrite using `[hE, hE]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h _ _ i j (ho hab)`. Introduce `h a b i j hab`. Take `⟨a, rfl⟩` from `hz a (Nat.pos_iff_ne_zero.1 (Fin.pos i))`. Take `⟨b, rfl⟩` from `hz b (Nat.pos_iff_ne_zero.1 (Fin.pos j))`. Use `h a b i j (ho.lt_iff_lt.1 hab)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[hE, hE]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem mem_parab_drop (g : GL (Fin N) k) :
     g ∈ parab k (stdBlocks d hd) ↔ g ∈ parab k (stdBlocks (fun a => d (o a)) hd') := by
@@ -41,7 +41,7 @@ theorem mem_parab_drop (g : GL (Fin N) k) :
     rwa [hE, hE] at this
 
 /- English proof (translation)
-Establish `hE` using `GlobalTheory.CompanionTheory.StdCompat.stdBlocks_drop_empty d hd o ho hz hd'`. Use function extensionality and compare the values at `a`. Use extensionality with `i j`. Use `show (leviProj k (stdBlocks d hd) p (o a) : Matrix _ _ k) i j = _`. Rewrite using `[leviProj_apply, leviProj_apply, hE, hE, h]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dropHom_leviProj (p : parab k (stdBlocks d hd)) (q : parab k (stdBlocks (fun a => d (o a)) hd'))
     (h : (p : GL (Fin N) k) = q) :
@@ -53,9 +53,9 @@ theorem dropHom_leviProj (p : parab k (stdBlocks d hd)) (q : parab k (stdBlocks 
   rw [leviProj_apply, leviProj_apply, hE, hE, h]
 
 /- English proof (translation)
-Establish `h0 : ∀ j, j ∉ Set.range o → d j = 0` using `fun j hj => by_contra fun h => hj (hz j h)`. Unfold `modExp`. Simplify using `only [Fintype.card_fin, Finset.sum_filter]`. Use `congr 1`. Use `(Fintype.sum_of_injective o ho.injective _ _ (fun j hj => ?_) fun b => ?_).symm` and prove the remaining obligations.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[h0 j hj]`. Simplify using `[ho.lt_iff_lt]`. Use `(Fintype.sum_of_injective o ho.injective _ _ (fun j hj => ?_) fun b => ?_).symm` and prove the remaining obligations. Simplify using `[h0 j hj]`. Simplify using `[ho.lt_iff_lt]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem modExp_drop (a : Fin r') :
     modExp (fun j => Fin (d j)) (o a) = modExp (fun b => Fin (d (o b))) a := by
@@ -81,9 +81,9 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 include ho hz in
 
 /- English proof (translation)
-Rewrite using `[deltaHalf_apply, deltaHalf_apply]`. Use `(Fintype.prod_of_injective o ho.injective _ _ (fun j hj => ?_) fun a => ?_).symm` and prove the remaining obligations. Establish `hj0 : d j = 0` using `by_contra fun h => hj (hz j h)`. Establish `: IsEmpty (Fin (d j))` using `by rw [hj0]; infer_instance`. Establish `h1 : Matrix.GeneralLinearGroup.det (g j) = 1` using `Units.ext (by simp [Matrix.det_isEmpty])`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h1, map_one]`. Rewrite using `[modExp_drop d o ho hz]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem deltaHalf_drop (g : Levi k fun j => Fin (d j)) :
     deltaHalf k (fun j => Fin (d j)) g = deltaHalf k (fun a => Fin (d (o a))) (dropHom d o g) := by
@@ -99,9 +99,9 @@ theorem deltaHalf_drop (g : Levi k fun j => Fin (d j)) :
 include ho hz in
 
 /- English proof (translation)
-Establish `key : ∀ (p : parab k (stdBlocks d hd)) (q : parab k (stdBlocks (fun a => d (o a)) hd')), (p : GL (Fin N) k) = q → twist (τ.comp (dropHom d o) : Representation ℂ (Levi k fun j => Fin (d j)) W) (deltaHalf k _) (leviProj k (stdBlocks d hd) p) = twist τ (deltaHalf k _) (leviProj k (s …` using `fun p q h => by`. Use `LinearMap.ext fun v => ?_` and prove the remaining obligations. Rewrite using `[twist_apply, twist_apply, deltaHalf_drop d o ho hz, dropHom_leviProj k d hd o ho hz hd' p q h]`. Use `show _ • τ (dropHom d o _) v = _`. Rewrite using `[dropHom_leviProj k d hd o ho hz hd' p q h]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Placing.smInd_equiv 1 (fun q => ⟨⟨q.1, (mem_parab_drop k d hd o ho hz hd' q.1).2 q.2⟩, by simp, key _ _ rfl⟩) (fun p => ⟨⟨p.1, (mem_parab_drop k d hd o ho hz hd' p.1).1 p.2⟩, by simp, (key _ _ rfl).symm⟩)` and prove the remaining obligations.
+A detailed English derivation is pending.
 -/
 theorem parInd_comp_dropHom_equiv {W : Type} [AddCommGroup W] [Module ℂ W]
     (τ : Representation ℂ (Levi k fun a => Fin (d (o a))) W) :
@@ -125,9 +125,9 @@ end Local
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `k _ _ _ _ r r' N y hd o ho hz hd'`. Take `⟨φ⟩` from `GlobalTheory.CompanionTheory.FineProd.TensorLine.piTensor_drop_equiv y o ho hz`. Take `⟨χ⟩` from `parInd_comp_dropHom_equiv (k := k) (fun j => (y j).1) hd o ho hz hd' (piTensor fun a => (y (o a)).rep)`. Establish `e1` using `parIndEquiv (stdBlocks (fun j => (y j).1) hd) φ`. Establish `e2` using `e1.trans χ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `prodIrr multiProd`. Conclude with `⟨e2⟩`.
+Replace the relevant objects with their definitions. Supply the required witnesses or components.
 -/
 theorem prodIrr_drop : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {r r' N : ℕ} (y : Fin r → IrrGL k) (hd : ∑ a, (y a).1 = N) (o : Fin r' → Fin r), StrictMono o → (∀ j, (y j).1 ≠ 0 → j ∈ Set.range o) → ∀ (hd' : ∑ a, (y (o a)).1 = N), Nonempty ((prodIrr y hd).Equiv (prodIrr (fun a => y (o a)) hd')) := by
   intro k _ _ _ _ r r' N y hd o ho hz hd'

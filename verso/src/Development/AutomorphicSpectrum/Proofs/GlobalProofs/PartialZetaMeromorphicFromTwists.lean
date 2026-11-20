@@ -17,7 +17,7 @@ noncomputable def wsum {G : Type} (T : G → ℂ → ℂ) (l : ℕ) (τ : Equiv.
   ∑ e ∈ Finset.range h, mult l s ^ e * T ((τ ^ e) c) s
 
 /- English proof (translation)
-Introduce `s`. Establish `h0 : (l : ℂ) ≠ 0` using `by exact_mod_cast hl.ne_zero`. Conclude with `((differentiableAt_const _).sub differentiableAt_id).const_cpow (Or.inl h0)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma mult_differentiable {l : ℕ} (hl : l.Prime) : Differentiable ℂ (mult l) := by
   intro s
@@ -25,14 +25,14 @@ lemma mult_differentiable {l : ℕ} (hl : l.Prime) : Differentiable ℂ (mult l)
   exact ((differentiableAt_const _).sub differentiableAt_id).const_cpow (Or.inl h0)
 
 /- English proof (translation)
-Introduce `s`. Conclude with `(((mult_differentiable hl) s).pow h).sub (differentiableAt_const _)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 lemma efac_differentiable {l : ℕ} (hl : l.Prime) (h : ℕ) : Differentiable ℂ (efac l h) := by
   intro s
   exact (((mult_differentiable hl) s).pow h).sub (differentiableAt_const _)
 
 /- English proof (translation)
-Introduce `s`. Unfold `wsum`. Use `DifferentiableAt.fun_sum fun e _ => ?_` and prove the remaining obligations. Conclude with `(((mult_differentiable hl) s).pow e).mul (hT _ s)`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 lemma wsum_differentiable {G : Type} {T : G → ℂ → ℂ} {l : ℕ} (hl : l.Prime)
     (hT : ∀ c, Differentiable ℂ (T c)) (τ : Equiv.Perm G) (h : ℕ) (c : G) :
@@ -43,9 +43,9 @@ lemma wsum_differentiable {G : Type} {T : G → ℂ → ℂ} {l : ℕ} (hl : l.P
   exact (((mult_differentiable hl) s).pow e).mul (hT _ s)
 
 /- English proof (translation)
-Unfold `mult`. Rewrite using `[Complex.norm_natCast_cpow_of_pos hl.pos]`. Apply `Real.rpow_lt_one_of_one_lt_of_neg` to reduce the goal to its premises. Conclude with `hl.one_lt` after adjusting the coercions. Simplify using `only [Complex.sub_re, Complex.one_re]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 lemma norm_mult_lt_one {l : ℕ} (hl : l.Prime) {s : ℂ} (hs : 1 < s.re) : ‖mult l s‖ < 1 := by
   unfold mult
@@ -55,7 +55,7 @@ lemma norm_mult_lt_one {l : ℕ} (hl : l.Prime) {s : ℂ} (hs : 1 < s.re) : ‖m
   · simp only [Complex.sub_re, Complex.one_re]; linarith
 
 /- English proof (translation)
-Introduce `h0`. Establish `h1 : mult l s ^ h = 1` using `sub_eq_zero.mp h0`. Establish `h2 : ‖mult l s‖ ^ h = 1` using `by rw [← norm_pow, h1, norm_one]`. Establish `h3` using `pow_lt_one₀ (norm_nonneg _) (norm_mult_lt_one hl hs) hh`. Combine the linear equalities and inequalities to obtain the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 lemma efac_ne_zero {l h : ℕ} (hl : l.Prime) (hh : h ≠ 0) {s : ℂ} (hs : 1 < s.re) :
     efac l h s ≠ 0 := by
@@ -66,9 +66,9 @@ lemma efac_ne_zero {l h : ℕ} (hl : l.Prime) (hh : h ≠ 0) {s : ℂ} (hs : 1 <
   linarith
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp [wsum]`. Consider the case `succ n ih`. Establish `ih' : ∑ e ∈ Finset.range n, mult l s ^ e * T ((τ ^ e) c) s = mult l s ^ n * D ((τ ^ n) c) s - D c s` using `ih`. Establish `hstep : (τ ^ (n + 1)) c = τ ((τ ^ n) c)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[pow_succ', Equiv.Perm.mul_apply]`. Unfold `wsum`. Rewrite using `[Finset.sum_range_succ, ih', ← hrel ((τ ^ n) c), hstep]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma telescope {G : Type} {D T : G → ℂ → ℂ} {l : ℕ} {τ : Equiv.Perm G} {s : ℂ}
     (hrel : ∀ c, mult l s * D (τ c) s - D c s = T c s) (c : G) (n : ℕ) :
@@ -85,7 +85,7 @@ lemma telescope {G : Type} {D T : G → ℂ → ℂ} {l : ℕ} {τ : Equiv.Perm 
     ring
 
 /- English proof (translation)
-Rewrite using `[telescope hrel c, pow_orderOf_eq_one]`. Simplify using `only [efac, Equiv.Perm.coe_one, id_eq]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma efac_mul_eq {G : Type} [Fintype G] {D T : G → ℂ → ℂ} {l : ℕ} {τ : Equiv.Perm G} {s : ℂ}
     (hrel : ∀ c, mult l s * D (τ c) s - D c s = T c s) (c : G) :
@@ -95,31 +95,27 @@ lemma efac_mul_eq {G : Type} [Fintype G] {D T : G → ℂ → ℂ} {l : ℕ} {τ
   ring
 
 /- English proof (translation)
-Establish `hexp : ∀ {p : ℕ}, p.Prime → ∀ m : ℕ, mult p s ^ m = Complex.exp ((m : ℂ) * (((Real.log p : ℝ) : ℂ) * (1 - s)))`. Introduce `p hp m`. Establish `hp0 : (p : ℂ) ≠ 0` using `by exact_mod_cast hp.ne_zero`. Rewrite using `[Complex.exp_nat_mul, mult, Complex.cpow_def_of_ne_zero hp0, Complex.natCast_log]`. Establish `hu : (1 - s) ≠ 0` using `sub_ne_zero.mpr (Ne.symm hs)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hL : 0 < Real.log l` using `Real.log_pos (by exact_mod_cast hl.one_lt)`. Establish `hL' : 0 < Real.log l'` using `Real.log_pos (by exact_mod_cast hl'.one_lt)`. Establish `e1 : Complex.exp ((h : ℂ) * (((Real.log l : ℝ) : ℂ) * (1 - s))) = 1`. Rewrite using `[← hexp hl]`. Conclude with `sub_eq_zero.mp h1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e2 : Complex.exp ((h' : ℂ) * (((Real.log l' : ℝ) : ℂ) * (1 - s))) = 1`. Rewrite using `[← hexp hl']`. Conclude with `sub_eq_zero.mp h2`. Take `⟨n, hn⟩` from `Complex.exp_eq_one_iff.mp e1`. Take `⟨n', hn'⟩` from `Complex.exp_eq_one_iff.mp e2`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hLc : ((Real.log l : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast hL.ne'`. Establish `hLc' : ((Real.log l' : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast hL'.ne'`. Establish `hhc : (h : ℂ) ≠ 0` using `by exact_mod_cast hh`. Establish `hhc' : (h' : ℂ) ≠ 0` using `by exact_mod_cast hh'`. Establish `hn0 : n ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `rfl`. Establish `: (h : ℂ) * (((Real.log l : ℝ) : ℂ) * (1 - s)) ≠ 0` using `mul_ne_zero hhc (mul_ne_zero hLc hu)`. Apply `this` to reduce the goal to its premises. Rewrite using `[hn]`. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hn0' : n' ≠ 0`. Introduce and unpack `rfl`. Establish `: (h' : ℂ) * (((Real.log l' : ℝ) : ℂ) * (1 - s)) ≠ 0` using `mul_ne_zero hhc' (mul_ne_zero hLc' hu)`. Apply `this` to reduce the goal to its premises. Rewrite using `[hn']`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `hcross : ((n' : ℂ) * h * ((Real.log l : ℝ) : ℂ)) = (n : ℂ) * h' * ((Real.log l' : ℝ) : ℂ)`. Apply `mul_right_cancel₀ hu` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hn, hn']`.
+Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Use `_ = (n : ℂ) * h' * ((Real.log l' : ℝ) : ℂ) * (1 - s) := by ring`. Establish `hreal : (n' : ℝ) * h * Real.log l = (n : ℝ) * h' * Real.log l'`. Conclude with `hcross` after adjusting the coercions. Establish `habs : (n'.natAbs : ℝ) * h * Real.log l = (n.natAbs : ℝ) * h' * Real.log l'`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `congrArg abs hreal` as an intermediate fact. Simplify using `only [abs_mul, Nat.abs_cast, abs_of_pos hL, abs_of_pos hL'] at this`. Rewrite using `[Nat.cast_natAbs, Nat.cast_natAbs]`. Use `push_cast`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlog : Real.log ((l : ℝ) ^ (n'.natAbs * h)) = Real.log ((l' : ℝ) ^ (n.natAbs * h'))`. Rewrite using `[Real.log_pow, Real.log_pow]`. Use `push_cast`. Conclude with `habs`. Establish `hpos : (0 : ℝ) < (l : ℝ) ^ (n'.natAbs * h)`.
+Check the signs of the components of the expression. Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression. Establish an intermediate fact.
 
-Establish `: (0 : ℝ) < l` using `by exact_mod_cast hl.pos`. Check the signs of the components of the expression. Establish `hpos' : (0 : ℝ) < (l' : ℝ) ^ (n.natAbs * h')`. Establish `: (0 : ℝ) < l'` using `by exact_mod_cast hl'.pos`. Check the signs of the components of the expression.
-
-Establish `heq` using `Real.log_injOn_pos (Set.mem_Ioi.mpr hpos) (Set.mem_Ioi.mpr hpos') hlog`. Establish `hnat : l ^ (n'.natAbs * h) = l' ^ (n.natAbs * h')` using `by exact_mod_cast heq`. Establish `hexp0 : n'.natAbs * h ≠ 0` using `Nat.mul_ne_zero (Int.natAbs_ne_zero.mpr hn0') hh`. Establish `hdvd : l ∣ l' ^ (n.natAbs * h')`. Rewrite using `[← hnat]`.
-
-Conclude with `dvd_pow_self l hexp0`. Conclude with `hne ((Nat.prime_dvd_prime_iff_eq hl hl').mp (hl.dvd_of_dvd_pow hdvd))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma no_common_zero {l l' h h' : ℕ} (hl : l.Prime) (hl' : l'.Prime) (hne : l ≠ l')
     (hh : h ≠ 0) (hh' : h' ≠ 0) {s : ℂ} (hs : s ≠ 1)
@@ -185,9 +181,9 @@ lemma no_common_zero {l l' h h' : ℕ} (hl : l.Prime) (hl' : l'.Prime) (hne : l 
   exact hne ((Nat.prime_dvd_prime_iff_eq hl hl').mp (hl.dvd_of_dvd_pow hdvd))
 
 /- English proof (translation)
-Establish `hfa : AnalyticOnNhd ℂ f Set.univ` using `fun z _ => hf.analyticAt z`. Establish `hga : AnalyticOnNhd ℂ g Set.univ` using `fun z _ => hg.analyticAt z`. Establish `hopen : IsOpen {s : ℂ | 1 < s.re}` using `isOpen_lt continuous_const Complex.continuous_re`. Establish `hmem : {s : ℂ | 1 < s.re} ∈ 𝓝 (2 : ℂ)` using `hopen.mem_nhds (by simp)`. Use `hfa.eq_of_eventuallyEq hga (z₀ := 2) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `filter_upwards [hmem] with s hs using hfg s hs`.
+A detailed English derivation is pending.
 -/
 lemma entire_eq_of_halfplane {f g : ℂ → ℂ} (hf : Differentiable ℂ f) (hg : Differentiable ℂ g)
     (hfg : ∀ s : ℂ, 1 < s.re → f s = g s) : f = g := by
@@ -199,11 +195,11 @@ lemma entire_eq_of_halfplane {f g : ℂ → ℂ} (hf : Differentiable ℂ f) (hg
   filter_upwards [hmem] with s hs using hfg s hs
 
 /- English proof (translation)
-Distinguish the cases in `h : E s ≠ 0`. Establish `hev : ∀ᶠ t in 𝓝 s, E t ≠ 0` using `hE.continuous.continuousAt.eventually_ne h`. Use `((hW s).div (hE s) h).congr_of_eventuallyEq ?_` and prove the remaining obligations. Use `filter_upwards [hev] with t ht`. Simplify using `[ht]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h' : E' s ≠ 0` using `hs.resolve_left h`. Establish `hev : ∀ᶠ t in 𝓝 s, E' t ≠ 0` using `hE'.continuous.continuousAt.eventually_ne h'`. Use `((hW' s).div (hE' s) h').congr_of_eventuallyEq ?_` and prove the remaining obligations. Use `filter_upwards [hev] with t ht`. Rewrite using `[Pi.div_apply]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h0 : E t ≠ 0`. Rewrite using `[if_pos h0, div_eq_div_iff h0 ht]`. Conclude with `hcross t`. Rewrite using `[if_neg h0]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma glue_differentiableAt {E E' W W' : ℂ → ℂ} (hE : Differentiable ℂ E)
     (hE' : Differentiable ℂ E') (hW : Differentiable ℂ W) (hW' : Differentiable ℂ W')
@@ -225,31 +221,29 @@ lemma glue_differentiableAt {E E' W W' : ℂ → ℂ} (hE : Differentiable ℂ E
     · rw [if_neg h0]
 
 /- English proof (translation)
-Simplify using `[mult]`.
+Simplify using the standard rewrite rules.
 -/
 lemma mult_at_neg {l k : ℕ} : mult l (1 - (k : ℂ)) = ((l ^ k : ℕ) : ℂ) := by
   simp [mult]
 
 /- English proof (translation)
-Introduce `G _ D T T' l l' τ τ' hl hl' hne hT hT' hrel hrel'`. Establish `hh : orderOf τ ≠ 0` using `(orderOf_pos τ).ne'`. Establish `hh' : orderOf τ' ≠ 0` using `(orderOf_pos τ').ne'`. Establish `hED : ∀ c s, 1 < s.re → efac l (orderOf τ) s * D c s = wsum T l τ (orderOf τ) c s` using `fun c s hs => efac_mul_eq (fun c => hrel c s hs) c`. Establish `hED' : ∀ c s, 1 < s.re → efac l' (orderOf τ') s * D c s = wsum T' l' τ' (orderOf τ') c s` using `fun c s hs => efac_mul_eq (fun c => hrel' c s hs) c`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hEd` using `efac_differentiable hl (orderOf τ)`. Establish `hEd'` using `efac_differentiable hl' (orderOf τ')`. Establish `hWd` using `fun c => wsum_differentiable hl hT τ (orderOf τ) c`. Establish `hWd'` using `fun c => wsum_differentiable hl' hT' τ' (orderOf τ') c`. Establish `hcross : ∀ c s, wsum T l τ (orderOf τ) c s * efac l' (orderOf τ') s = wsum T' l' τ' (orderOf τ') c s * efac l (orderOf τ) s`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `c s`. Use `entire_eq_of_halfplane (f := fun s => wsum T l τ (orderOf τ) c s * efac l' (orderOf τ') s) (g := fun s => wsum T' l' τ' (orderOf τ') c s * efac l (orderOf τ) s) ((hWd c).mul hEd') ((hWd' c).mul hEd) (fun s hs => by show wsum T l τ (orderOf τ) c s * efac l' (orderOf τ') s = wsum T …` as an intermediate fact. Rewrite using `[← hED c s hs, ← hED' c s hs]`. Use the proof step `ring)`. Conclude with `congrFun this s`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨fun c t => if efac l (orderOf τ) t ≠ 0 then wsum T l τ (orderOf τ) c t / efac l (orderOf τ) t else wsum T' l' τ' (orderOf τ') c t / efac l' (orderOf τ') t, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `c s hs`. Establish `hs1 : s ≠ 1` using `hs`. Establish `hor : efac l (orderOf τ) s ≠ 0 ∨ efac l' (orderOf τ') s ≠ 0`. Assume the negation of the conclusion as `hcon`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `push_neg at hcon`. Conclude with `no_common_zero hl hl' hne hh hh' hs1 hcon.1 hcon.2`. Conclude with `(glue_differentiableAt hEd hEd' (hWd c) (hWd' c) (hcross c) hor).differentiableWithinAt`. Introduce `c s hs`. Establish `h0` using `efac_ne_zero hl hh hs`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show (if efac l (orderOf τ) s ≠ 0 then _ else _) = _`. Rewrite using `[if_pos h0, ← hED c s hs, mul_div_cancel_left₀ _ h0]`. Introduce `k hk hq c choose q hq using hq`. Establish `hm : mult l (1 - (k : ℂ)) = ((l ^ k : ℕ) : ℂ)` using `mult_at_neg`. Establish `hnat : (l ^ k) ^ orderOf τ ≠ 1` using `ne_of_gt (Nat.one_lt_pow hh (Nat.one_lt_pow (by omega) hl.one_lt))`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hE : efac l (orderOf τ) (1 - (k : ℂ)) = (((((l ^ k) ^ orderOf τ : ℕ) : ℚ) - 1 : ℚ) : ℂ)`. Simplify using `only [efac, hm]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `h0 : efac l (orderOf τ) (1 - (k : ℂ)) ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hE]`. Introduce `hz`. Establish `hz' : ((((l ^ k) ^ orderOf τ : ℕ) : ℚ) - 1 : ℚ) = 0` using `by exact_mod_cast hz`. Apply `hnat` to reduce the goal to its premises. Establish `: (((l ^ k) ^ orderOf τ : ℕ) : ℚ) = 1` using `by linarith`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this` after adjusting the coercions. Establish `hW : wsum T l τ (orderOf τ) c (1 - (k : ℂ)) = ((∑ e ∈ Finset.range (orderOf τ), (((l ^ k : ℕ) : ℚ)) ^ e * q ((τ ^ e) c) : ℚ) : ℂ)`. Simplify using `only [wsum, hm, hq]`. Use `push_cast`. Both sides reduce to the same expression.
-
-Use `⟨(∑ e ∈ Finset.range (orderOf τ), (((l ^ k : ℕ) : ℚ)) ^ e * q ((τ ^ e) c)) / ((((l ^ k) ^ orderOf τ : ℕ) : ℚ) - 1), ?_⟩` and prove the remaining obligations. Use `show (if efac l (orderOf τ) (1 - (k : ℂ)) ≠ 0 then _ else _) = _`. Rewrite using `[if_pos h0, hW, hE, Rat.cast_div]`.
+A detailed English derivation is pending.
 -/
 theorem continuation_of_two_relations :
     ∀ (G : Type) [Fintype G] (D T T' : G → ℂ → ℂ) (l l' : ℕ) (τ τ' : Equiv.Perm G),

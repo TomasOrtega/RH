@@ -26,9 +26,9 @@ namespace GlobalTheory.StepComb
 variable {D : D7}
 
 /- English proof (translation)
-Establish `h'` using `h`. Take `⟨⟨a1, a2, w, ε, hε, a3⟩, -⟩` from `h'`. Establish `hw` using `GlobalTheory.IdemUnder.under_eq_of_isIdemAt D es PP w ε h hε a3`. Establish `hε'` using `hε`. Take `⟨α, rfl, -, h0⟩` from `hε'`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hm : algebraMap (AF D.host.F) (AE D) (pairA D.host.F 0 α) ∈ GlobalTheory.FinPl.idAt D (· = w)` using `GlobalTheory.FinPl.LatMem.tmul_mem_idAt (P := (· = w)) (fun v hv => h0 v hv) 1`. Establish `e1 : es = es * (es + cA D es)` using `by rw [mul_add, a1, a2, add_zero]`. Rewrite using `[e1, a3, hw]`. Conclude with `Ideal.mul_mem_left _ _ hm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem idem_mem_idAt {es : AE D} {PP : Pl D.host.E} (h : Formalism.L2.NTheta.IsIdemAt es PP) :
     es ∈ GlobalTheory.FinPl.idAt D (· = PP.under (𝓞 D.host.F)) := by
@@ -44,7 +44,7 @@ theorem idem_mem_idAt {es : AE D} {PP : Pl D.host.E} (h : Formalism.L2.NTheta.Is
   exact Ideal.mul_mem_left _ _ hm
 
 /- English proof (translation)
-Take `⟨⟨es, hes, rfl⟩, -⟩` from `h`. Conclude with `Ideal.sum_mem _ fun PP hPP => GlobalTheory.FinPl.KSplit.idAt_mono (fun w hw => ⟨PP, hPP, hw⟩) (idem_mem_idAt (hes PP hPP))`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem idemSum_mem_idAt {e : AE D} {Z : Finset (Pl D.host.E)} (h : IsIdemSum e Z) :
     e ∈ GlobalTheory.FinPl.idAt D (fun p => ∃ PP ∈ Z, p = PP.under (𝓞 D.host.F)) := by
@@ -53,7 +53,7 @@ theorem idemSum_mem_idAt {e : AE D} {Z : Finset (Pl D.host.E)} (h : IsIdemSum e 
     GlobalTheory.FinPl.KSplit.idAt_mono (fun w hw => ⟨PP, hPP, hw⟩) (idem_mem_idAt (hes PP hPP))
 
 /- English proof (translation)
-Introduce `i j`. Rewrite using `[← (GlobalTheory.PlaceModel.isHalf_iff S T).2 hu i j]`. Conclude with `Ideal.mul_mem_right _ _ ha`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mxAt_of_mem_half {S T : HSp D} {a : AE D} {P : GlobalTheory.FinPl.Pl D → Prop} (ha : a ∈ GlobalTheory.FinPl.idAt D P)
     {u : WO S T} (hu : u ∈ GlobalTheory.PlaceModel.half S T a) : GlobalTheory.FinPl.MxAt P u := by
@@ -62,7 +62,7 @@ theorem mxAt_of_mem_half {S T : HSp D} {a : AE D} {P : GlobalTheory.FinPl.Pl D �
   exact Ideal.mul_mem_right _ _ ha
 
 /- English proof (translation)
-Establish `hinf` using `GlobalTheory.PlaceDatum.infPart_idemSum he`. Take `⟨K, hK, hC⟩` from `GlobalTheory.PlaceDatum.exists_nsmul_of_frMapO hS.1 hT.1 βS βT`. Conclude with `GlobalTheory.PlaceDatum.isSBHalf_of_red e _ (frMapO S T βS βT) (GlobalTheory.PlaceDatum.frMapO_add βS βT) (GlobalTheory.PlaceDatum.exists_den_frMapO hS.1.fg hT.1.fg βS βT) ⟨K, hK, fun t ht => hC t (GlobalTheory.PlaceDatum.infPart_of_half hinf ht)⟩ (L.Pg ∪ Q) (fun y => omegaG L χ …`. Rewrite using `[GlobalTheory.PlaceDatum.omegaG_congr L χ y y' fun PP hP => h PP (Finset.mem_union_left _ hP), GlobalTheory.PlaceDatum.omegaQ_congr Q L.r ξ 1 y y' fun PP hP => h PP (Finset.mem_union_right _ hP)]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isSBHalf_stepDatumQ (S T : HSp D) (ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E))
     (ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)) (βS : GL (Fin S.rank) (Lev.EAf D))
@@ -83,37 +83,37 @@ theorem isSBHalf_stepDatumQ (S T : HSp D) (ΛS : Submodule (𝓞 D.host.E) (Fin 
         GlobalTheory.PlaceDatum.omegaQ_congr Q L.r ξ 1 y y' fun PP hP => h PP (Finset.mem_union_right _ hP)]
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.FinPl.DatumBack.comb_eq_lc, GlobalTheory.FinPl.DatumBack.comb_eq_lc, GlobalTheory.FinPl.DatumBack.comb_eq_lc, map_add]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem comb_add' (ψ : AddChar (AF D.host.F) ℂ) {S T : HSp D} (c c' : WO S T →₀ ℂ) (f : WO S T → ℂ) :
     comb ψ S T (c + c') f = comb ψ S T c f + comb ψ S T c' f := by
   rw [GlobalTheory.FinPl.DatumBack.comb_eq_lc, GlobalTheory.FinPl.DatumBack.comb_eq_lc, GlobalTheory.FinPl.DatumBack.comb_eq_lc, map_add]
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.FinPl.DatumBack.comb_eq_lc, GlobalTheory.FinPl.DatumBack.comb_eq_lc, map_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem comb_smul' (ψ : AddChar (AF D.host.F) ℂ) {S T : HSp D} (a : ℂ) (c : WO S T →₀ ℂ) (f : WO S T → ℂ) :
     comb ψ S T (a • c) f = a • comb ψ S T c f := by
   rw [GlobalTheory.FinPl.DatumBack.comb_eq_lc, GlobalTheory.FinPl.DatumBack.comb_eq_lc, map_smul]
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.FinPl.DatumBack.comb_eq_lc, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem comb_zero' (ψ : AddChar (AF D.host.F) ℂ) {S T : HSp D} (f : WO S T → ℂ) :
     comb ψ S T 0 f = 0 := by
   rw [GlobalTheory.FinPl.DatumBack.comb_eq_lc, map_zero]
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.FinPl.DatumBack.comb_eq_lc, Finsupp.linearCombination_single]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem comb_single' (ψ : AddChar (AF D.host.F) ℂ) {S T : HSp D} (u : WO S T) (a : ℂ) (f : WO S T → ℂ) :
     comb ψ S T (Finsupp.single u a) f = a • heisO ψ S T u f := by
   rw [GlobalTheory.FinPl.DatumBack.comb_eq_lc, Finsupp.linearCombination_single]
 
 /- English proof (translation)
-Introduce `u hu`. Assume the negation of the conclusion as `hn`. Establish `h1 : c u = 0`. Assume the negation of the conclusion as `h`. Conclude with `hn (hc u (Finsupp.mem_support_iff.2 h))`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `h2 : c' u = 0`. Assume the negation of the conclusion as `h`. Conclude with `hn (hc' u (Finsupp.mem_support_iff.2 h))`. Conclude with `Finsupp.mem_support_iff.1 hu (by rw [Finsupp.add_apply, h1, h2, add_zero])`.
+Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem mem_of_mem_support_add {S T : HSp D} {H : Set (WO S T)} {c c' : WO S T →₀ ℂ} (hc : ∀ u ∈ c.support, u ∈ H)
     (hc' : ∀ u ∈ c'.support, u ∈ H) : ∀ u ∈ (c + c').support, u ∈ H := by
@@ -128,9 +128,7 @@ theorem mem_of_mem_support_add {S T : HSp D} {H : Set (WO S T)} {c c' : WO S T �
   exact Finsupp.mem_support_iff.1 hu (by rw [Finsupp.add_apply, h1, h2, add_zero])
 
 /- English proof (translation)
-Introduce `u hu`. Assume the negation of the conclusion as `hn`. Establish `h1 : c u = 0`. Assume the negation of the conclusion as `h`. Conclude with `hn (hc u (Finsupp.mem_support_iff.2 h))`.
-
-Conclude with `Finsupp.mem_support_iff.1 hu (by rw [Finsupp.smul_apply, h1, smul_zero])`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem mem_of_mem_support_smul {S T : HSp D} {H : Set (WO S T)} (a : ℂ) {c : WO S T →₀ ℂ}
     (hc : ∀ u ∈ c.support, u ∈ H) : ∀ u ∈ (a • c).support, u ∈ H := by
@@ -145,33 +143,31 @@ set_option maxHeartbeats 1000000 in
 open GlobalTheory.Mem GlobalTheory.Mem.Col2 GlobalTheory.Core.Rk GlobalTheory.AdForm GlobalTheory.PlaceModel GlobalTheory.PlaceDatum in
 
 /- English proof (translation)
-Take `⟨⟨Tm, hTm⟩, hall⟩` from `hθ`. Rewrite using `[hall Tm hTm]`. Use `clear hall`. Establish `hce : cA D e * e = 0` using `by rw [mul_comm, hec]`. Establish `hdual` using `(GlobalTheory.LatVac.latO_selfDual_approx_sign D ψ S T _ _ hψ hS hT).1`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfin` using `GlobalTheory.LatFinMod.latO_finite_mod D S T _ _ hS.1.fg hT.1.fg fun _ => True`. Establish `he' : cA D e * cA D e = cA D e` using `by rw [← RingHom.map_mul, he]`. Establish `hsm : ∀ a : AE D, a * a = a → ∀ u ∈ latO S T ΛS ΛT fun _ => True, a • u ∈ (latO S T ΛS ΛT fun _ => True) ⊓ half S T a` using `fun a ha u hu => AddSubgroup.mem_inf.2 ⟨GlobalTheory.LatticeStable.smul_mem_latO D S T _ _ _ a (GlobalTheory.AdIdem.idempotent_mem_intAE D _ (by rw [← RingHom.map_mul, ha])) u hu, by rw [mem_half, smul_smul, ha]⟩`. Establish `hLL' : ∀ u ∈ (latO S T ΛS ΛT fun _ => True) ⊓ half S T e, ∀ y ∈ (latO S T ΛS ΛT fun _ => True) ⊓ half S T (cA D e), ψ (symplO S T u y) = 1` using `fun u hu y hy => (hdual u (infPart_of_half hinf ((isHalf_iff S T).2 hu.2))).1 hu.1 y hy.1`. Establish `hX : ∀ x ∈ half S T e, (∀ y ∈ (latO S T ΛS ΛT fun _ => True) ⊓ half S T (cA D e), ψ (symplO S T x y) = 1) → x ∈ (latO S T ΛS ΛT fun _ => True) ⊓ half S T e` using `fun x hx h => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(hdual x (infPart_of_half hinf ((isHalf_iff S T).2 hx))).2 fun u hu => ?_, hx⟩` and prove the remaining obligations. Use `h _ (hsm _ he' u hu)` as an intermediate fact. Rewrite `this` using `[← symplO_smul, (mem_half S T).1 hx]`. Then use the resulting hypothesis. Establish `hfin' : ∀ k : ℕ, 0 < k → ∃ R : Set (WO S T), R.Finite ∧ ∀ t ∈ (latO S T ΛS ΛT fun _ => True) ⊓ half S T e, ∃ r ∈ R, ∃ u ∈ (latO S T ΛS ΛT fun _ => True) ⊓ half S T e, t = r + k • u` using `fun k hk => by`. Take `⟨R, hR, h⟩` from `hfin k hk`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(fun r => e • r) '' R, hR.image _, fun t ht => ?_⟩` and prove the remaining obligations. Take `⟨r, hr, u, hu, htr⟩` from `h t ht.1`. Use `⟨_, ⟨r, hr, rfl⟩, e • u, hsm e he u hu, ?_⟩` and prove the remaining obligations. Use `(mem_half S T).1 ht.2` as an intermediate fact. Rewrite using `[← this, htr, smul_add, smul_comm e k u]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hden : ∀ y ∈ half S T (cA D e), ∃ k : ℕ, 0 < k ∧ k • y ∈ (latO S T ΛS ΛT fun _ => True)` using `fun y hy => exists_nsmul_mem_latO' hS.1 hT.1 y (infPart_of_half (infPart_cA hinf) ((isHalf_iff S T).2 hy))`. Establish `tf : ∀ k : ℕ, 0 < k → Function.Injective fun t : WO S T => k • t` using `fun k hk a b hab => by`. Rewrite using `[← inv_smul_nsmul S T hk a, ← inv_smul_nsmul S T hk b]`. Conclude with `congrArg _ hab`. Establish `hb` using `isBichar_symplO S T ψ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hm : Φ ∈ waveSpan (fun x y : WO S T => ψ (symplO S T x y)) (half S T e) (half S T (cA D e)) ((latO S T ΛS ΛT fun _ => True) ⊓ half S T e)`. Take `⟨h1, k, hk, h2, h3⟩` from `hΦ`. Conclude with `mem_waveSpan hb inf_le_right inf_le_right hLL' hX (half_div S T e) (half_div S T _) tf hfin' Φ (fun t ht => (isHalf_iff S T).1 (h1 t ht)) k hk (fun u hu => h2 u hu.1 ((isHalf_iff S T).2 hu.2)) fun t ht => ⟨h3 t ht, (half S T e).nsmul_mem ((isHalf_iff S T).1 (h1 t ht)) _⟩`. Use `clear hΦ`. Proceed by induction on `hm using Submodule.span_induction with`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Consider the case `mem _ hh`. Take `⟨x, hx, y, hy, rfl⟩` from `hh`. Establish `s0` using `GlobalTheory.isSBHalf_halfInd e (latO S T ΛS ΛT fun _ => True)`. Establish `s1 : IsSBHalf e (latO S T ΛS ΛT fun _ => True) fun t => ψ (symplO S T t y) * halfInd e (latO S T ΛS ΛT fun _ => True) t`. Take `⟨k, hk, hk'⟩` from `hden y hy`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨a1, k', hk1, a2, a3⟩` from `s0`. Use `⟨fun t ht => a1 t (right_ne_zero_of_mul ht), k * k', Nat.mul_pos hk hk1, fun u hu hh t => ?_, fun t ht => ?_⟩` and prove the remaining obligations. Establish `e1 : halfInd e (latO S T ΛS ΛT fun _ => True) (t + (k * k') • u) = halfInd e (latO S T ΛS ΛT fun _ => True) t`. Rewrite using `[mul_nsmul]`. Conclude with `a2 _ (nsmul_mem hu k) ((isHalf_iff S T).2 (nsmul_mem ((isHalf_iff S T).1 hh) k)) t`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e2 : ψ (symplO S T ((k * k') • u) y) = 1`. Rewrite using `[mul_nsmul']`. Conclude with `(hb.nsmul k _ y).trans (hLL' _ (nsmul_mem (AddSubgroup.mem_inf.2 ⟨hu, (isHalf_iff S T).1 hh⟩) k') _ ⟨hk', nsmul_mem hy k⟩)`. Simplify using `only [e1, symplO_add_left, AddChar.map_add_eq_mul, e2, mul_one]`. Rewrite using `[mul_nsmul']`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `nsmul_mem (a3 t (right_ne_zero_of_mul ht)) k`. Establish `e1 : wave (fun x y : WO S T => ψ (symplO S T x y)) ((latO S T ΛS ΛT fun _ => True) ⊓ half S T e) x y = fun t => (fun t => ψ (symplO S T t y) * halfInd e (latO S T ΛS ΛT fun _ => True) t) (t + x)`. Rewrite using `[halfInd_eq_ind]`. Both sides reduce to the same expression. Establish `v1` using `hTm.vac`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite `v1` using `[one_smul]`. Rewrite using `[e1, hTm.trans _ s1 x ((isHalf_iff S T).2 hx), hTm.modul _ s0 y ((isHalf_iff S T).2 hy), v1]`. Establish `hxy` using `heisL_heisL S T ψ x y f₀`. Express the relevant statement in the definitionally equal form `heisO ψ S T x (heisO ψ S T y f₀) = ψ (symplOH S T x y) • heisO ψ S T (x + y) f₀ at hxy`. Rewrite using `[hxy]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Use `⟨Finsupp.single (x + y) (ψ (symplOH S T x y)), fun u hu => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.mem_singleton.1 (Finsupp.support_single_subset hu)]`. Conclude with `add_mem (GlobalTheory.FinPl.DatumBack.half_le_sum hce hx) (GlobalTheory.FinPl.DatumBack.half_le_sum' hec hy)`. Rewrite using `[comb_single']`. Consider the case `zero`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨0, fun u hu => absurd hu (Finsupp.notMem_support_iff.2 rfl), by rw [LinearMap.map_zero, comb_zero']⟩`. Consider the case `add g g' _ _ hg hg'`. Take `⟨c, hc, hc'⟩` from `hg`. Take `⟨c', hd, hd'⟩` from `hg'`. Use `⟨c + c', mem_of_mem_support_add hc hd, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[LinearMap.map_add, hc', hd', comb_add']`. Consider the case `smul a g _ hg`. Take `⟨c, hc, hc'⟩` from `hg`. Use `⟨a • c, mem_of_mem_support_smul a hc, ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.map_smul, hc', comb_smul']`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_comb_of_isThetaAt {S T : HSp D} (ψ : AddChar (AF D.host.F) ℂ)
     (ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)) (ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E))
@@ -269,9 +265,9 @@ theorem exists_comb_of_isThetaAt {S T : HSp D} (ψ : AddChar (AF D.host.F) ℂ)
     rw [LinearMap.map_smul, hc', comb_smul']
 
 /- English proof (translation)
-Introduce `D ψ θ S T sS sT ΛS ΛT βS βT LS χj Q ξ f₀ f hS hT _ _ hv`. Take `⟨hvac, e, he, hθ⟩` from `hv`. Establish `hSB` using `isSBHalf_stepDatumQ S T ΛS ΛT βS βT LS χj ξ Q e hS hT he`. Take `⟨d, hd, hf⟩` from `exists_comb_of_isThetaAt ψ ΛS ΛT e f₀ _ f hvac.1 hS hT (GlobalTheory.PlaceDatum.idemSum_mul_self he) he.2 (GlobalTheory.PlaceDatum.infPart_idemSum he) hSB hθ`. Establish `hI` using `idemSum_mem_idAt he`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `⟨d, fun u hu => mxAt_of_mem_half (add_mem hI (GlobalTheory.LastOpPf.cA_mem_idAt hI)) (hd u hu), hf⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_comb_of_isStepVecOf : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D) (sS : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ) (sT : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ) (ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)) (ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)) (βS : GL (Fin S.rank) (Lev.EAf D)) (βT : GL (Fin T.rank) (Lev.EAf D)) (LS : LevDat D.host.E ℂ S.rank) (χj : ∀ PP : Pl D.host.E, (kP PP)ˣ →* ℂˣ) (Q : Finset (Pl D.host.E)) (ξ : ∀ PP : Pl D.host.E, (kP PP)ˣ →* ℂˣ) (f₀ f : WO S T → ℂ), IsSelfDualC S ΛS → IsSelfDualC T ΛT → Formalism.L2.DIV.IsFrame βS ΛS → Formalism.L2.DIV.IsFrame βT ΛT → IsStepVecOf ψ θ S T sS sT ΛS ΛT βS βT LS χj Q ξ f₀ f → ∃ d : WO S T →₀ ℂ, GlobalTheory.FinPl.CombAt (fun p => ∃ PP ∈ LS.Pg ∪ Q, p = PP.under (𝓞 D.host.F)) d ∧ f = comb ψ S T d f₀ := by
   intro D ψ θ S T sS sT ΛS ΛT βS βT LS χj Q ξ f₀ f hS hT _ _ hv

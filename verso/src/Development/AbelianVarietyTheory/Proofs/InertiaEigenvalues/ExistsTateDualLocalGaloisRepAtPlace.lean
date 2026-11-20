@@ -43,7 +43,7 @@ variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
   {LL : Type} [Field LL] [TopologicalSpace LL] [IsTopologicalRing LL] {k : ℕ}
 
 /- English proof (translation)
-The claim follows from `hc.smul (hM.comp continuous_inv).matrix_transpose`.
+A detailed English derivation is pending.
 -/
 theorem continuous_dualTw (c : G →* LLˣ) (M : G →* Matrix (Fin k) (Fin k) LL)
     (hc : Continuous fun g => ((c g : LLˣ) : LL)) (hM : Continuous fun g => M g) :
@@ -51,7 +51,7 @@ theorem continuous_dualTw (c : G →* LLˣ) (M : G →* Matrix (Fin k) (Fin k) L
   hc.smul (hM.comp continuous_inv).matrix_transpose
 
 /- English proof (translation)
-Use `continuous_matrix fun a j => ?_` and prove the remaining obligations. Establish `h : Continuous (b.coord a)` using `IsModuleTopology.continuous_of_linearMap _`. Use `(h.comp (hρ (b j))).congr fun g => ?_` and prove the remaining obligations. Simplify using `[toMat_apply, LinearMap.toMatrix_apply]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem continuous_toMat {V : Type} [AddCommGroup V] [Module LL V] [TopologicalSpace V]
     [IsModuleTopology LL V] (b : Basis (Fin k) LL V)
@@ -78,11 +78,11 @@ variable {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field 
     [Module O V] [IsScalarTower O LL V] {k : ℕ}
 
 /- English proof (translation)
-Establish `hM : ∀ g x, b.equivFun (ρ g x) = matRep (toMat b ρ) g (b.equivFun x)`. Introduce `g x`. Express the relevant statement in the definitionally equal form `_ = (toMat b ρ g).mulVec _`. Rewrite using `[toMat_apply, Basis.equivFun_apply, Basis.equivFun_apply, LinearMap.toMatrix_mulVec_repr]`. Use `⟨fun g x y => ?_, fun x hx => ?_, fun y hy => ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `dotProductBilin LL LL (b.equivFun (ρ g x)) (matRep U g y) = _ * dotProductBilin LL LL (b.equivFun x) y`. Rewrite using `[hM]`. Conclude with `hd.1 g (b.equivFun x) y`. Use `hd.2.1 (b.equivFun x) fun y => hx y` as an intermediate fact. Conclude with `b.equivFun.injective (by rw [this, map_zero])`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `hd.2.2.1 y fun v => ?_` and prove the remaining obligations. Establish `h` using `hy (b.equivFun.symm v)`. Express the relevant statement in the definitionally equal form `dotProductBilin LL LL (b.equivFun (b.equivFun.symm v)) y = 0 at h`. Rewrite `h` using `[LinearEquiv.apply_symm_apply]`. Then use the resulting hypothesis. Rewrite using `[Module.finrank_fin_fun, Module.finrank_eq_card_basis b, Fintype.card_fin]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isDual1_basis (b : Basis (Fin k) LL V) (ρ : Representation LL G V)
     (U : G →* Matrix (Fin k) (Fin k) LL)
@@ -112,7 +112,7 @@ variable (D : D7) (i : D.nd.Loc) (w : HeightOneSpectrum (𝓞 D.host.E))
   (hw : w ∈ placesOver D.host.E (D.nd.l i))
 
 /- English proof (translation)
-Rewrite using `[← GlobalTheory.CycBridge.locChi_epsU_eq_cycLL D i w hw]`. Establish `hfc : Continuous (D.nbr i w hw).toLL` using `continuous_subtype_val.comp (D.nbr i w hw).eO_cont`. Establish `hι : Continuous fun g : Br.G D.nbr i w hw => ((Br.iota D.nbr i w hw g : Gw D.nd w) : GE D.nd)` using `continuous_subtype_val.comp (Br.iota_cont D.nbr i w hw)`. Conclude with `hfc.comp ((GlobalTheory.Pass.FamCont.epsU_cont D.nd i).comp hι)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_cyc : Continuous fun g : Br.G D.nbr i w hw =>
     ((cycLL (Br.PD D.loc D.nbr i w hw) (Br.LL D.nbr i w hw) g : (Br.LL D.nbr i w hw)ˣ) :
@@ -127,7 +127,7 @@ theorem continuous_cyc : Continuous fun g : Br.G D.nbr i w hw =>
 end Loc
 
 /- English proof (translation)
-Introduce `D i w hw X`. Establish `hU : Continuous fun g => dualTw (cycLL (Br.PD D.loc D.nbr i w hw) (Br.LL D.nbr i w hw)) (toMat (Module.finBasis (Br.LL D.nbr i w hw) X.V) X.ρ) g` using `continuous_dualTw _ _ (continuous_cyc D i w hw) (continuous_toMat _ X.ρ X.cont)`. Conclude with `⟨GlobalTheory.PotDual.bundle ℚ_[D.nd.l i] (Br.OLL D.nbr i w hw) _ hU, _, isDual1_basis (Br.PD D.loc D.nbr i w hw) (Module.finBasis (Br.LL D.nbr i w hw) X.V) X.ρ _ (GlobalTheory.PotDual.isDual1_of_eq (Br.PD D.loc D.nbr i w hw) _ _ fun g => dualTw_apply _ _ g)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_tateDual : ∀ (D : D7) (i : D.nd.Loc) (w : HeightOneSpectrum (𝓞 D.host.E))
     (hw : w ∈ placesOver D.host.E (D.nd.l i))

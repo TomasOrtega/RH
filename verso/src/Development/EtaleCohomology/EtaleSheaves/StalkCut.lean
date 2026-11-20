@@ -20,9 +20,7 @@ def EtClosed {A : CommRingCat.{0}} (P : ∀ C : CommRingCat.{0}, (A ⟶ C) → P
   ∀ {C D : CommRingCat.{0}} (c : A ⟶ C) (f : C ⟶ D), P C c → Et f → P D (c ≫ f)
 
 /- English proof (translation)
-Establish `hA9` using `(hH.2.2.2.2.2.1 (ZMod q) (tw q i)).1`. Use `⟨fun m hm y => ?_, fun x y _ => ?_⟩` and prove the remaining obligations. Use `haveI := hA9 (sch.obj (Spec B)) m (by omega)`. Conclude with `⟨0, Subsingleton.elim _ _⟩`. Use `haveI := hA9 (sch.obj (Spec A)) n hn`.
-
-Conclude with `Subsingleton.elim _ _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem relZ_neg (hH : Hyp) (q : ℕ) (i n : ℤ) {A B : CommRingCat.{0}} (f : A ⟶ B) (hn : n < 0) : RelZ q i n f := by
   have hA9 := (hH.2.2.2.2.2.1 (ZMod q) (tw q i)).1
@@ -33,7 +31,7 @@ theorem relZ_neg (hH : Hyp) (q : ℕ) (i n : ℤ) {A B : CommRingCat.{0}} (f : A
     exact Subsingleton.elim _ _
 
 /- English proof (translation)
-Introduce `m` and use `⟨(h m).2, (h (m + 1)).1 m rfl⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem re_of_relZ {q : ℕ} {i : ℤ} {A B : CommRingCat.{0}} {f : A ⟶ B} (h : ∀ n, RelZ q i n f) : RE q i f :=
   fun m => ⟨(h m).2, (h (m + 1)).1 m rfl⟩
@@ -53,15 +51,13 @@ def DescLoc : Prop := Hyp → ∀ (q : ℕ) [NeZero q] (i n : ℤ) {A Y : CommRi
   BCn q i n φ d
 
 /- English proof (translation)
-Introduce `hH q _ i A Y φ hq P hpush het hcov C c hC`. Establish `key : ∀ k : ℕ, ∀ m : ℤ, m < k → ∀ (C : CommRingCat.{0}) (c : A ⟶ C), P C c → BCn q i m φ c`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `m hm C c _ Y' w φ' _`. Conclude with `relZ_neg hH q i m φ' (by exact_mod_cast hm)`. Consider the case `succ k ih`. Introduce `m hm C c hC`. Establish `hm' : m ≤ (k : ℤ)` using `by push_cast at hm; omega`.
+Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `lt_or_eq_of_le hm' with h | h` into its components or cases. Conclude with `ih m h C c hC`. Substitute `h` using the available equality. Take `⟨D, g, hgi, hgs, hD, hpts⟩` from `hcov C c hC`. Establish `hDl : BCn q i (k : ℤ) φ (c ≫ g)` using `hLoc hH q i k φ hq P @hpush @het ih D (c ≫ g) hD (fun r hr => by`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨O, o, Q, h1, h2, h3, h4⟩` from `hpts r hr`. Conclude with `⟨O, o, Q, h1, h2, h3, by rwa [Category.assoc]⟩)`. Conclude with `hInt hH q i k φ hq P @hpush ih c g hC hD hgi hgs hDl`. Introduce `Y' w φ' hpo`. Use `re_of_relZ fun n => ?_` and prove the remaining obligations.
-
-Conclude with `key (n.toNat + 1) n (by omega) C c hC Y' w φ' hpo`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem goal_of (hInt : DescInt) (hLoc : DescLoc) : LateralTheory.E.t_E3Cut.Stalk := by
   intro hH q _ i A Y φ hq P hpush het hcov C c hC

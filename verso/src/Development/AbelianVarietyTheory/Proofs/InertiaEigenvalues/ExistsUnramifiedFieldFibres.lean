@@ -12,35 +12,25 @@ open GlobalTheory.CompRat
 namespace GlobalTheory.DetFibre
 
 /- English proof (translation)
-Set `e : A → R` to `fun a => ∏ i, if t i = a then 1 else 1 - χ i`. Set `z : R` to `∏ i, (1 - χ i)`. Establish `h1 : ∀ i, (1 - χ i) * (1 - χ i) = 1 - χ i` using `fun i => by linear_combination hχ i`. Establish `ee : ∀ a, e a * e a = e a` using `fun a => by`. Rewrite using `[← Finset.prod_mul_distrib]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `split_ifs`. Conclude with `one_mul _`. Conclude with `h1 i`. Establish `ez : ∀ a, e a * z = z` using `fun a => by`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `split_ifs`. Conclude with `one_mul _`. Conclude with `h1 i`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Establish `zz : z * z = z`. Rewrite using `[← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_congr rfl fun i _ => h1 i`. Establish `eb : ∀ a b, a ≠ b → e a * e b = z` using `fun a b hab => by`. Rewrite using `[← Finset.prod_mul_distrib]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `split_ifs with ha hb`. Conclude with `absurd (ha.symm.trans hb) hab`. Conclude with `one_mul _`. Conclude with `mul_one _`.
+Take a linear combination of the given relations to obtain the conclusion. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h1 i`. Set `f : A → R` to `fun a => e a - z`. Establish `ff : ∀ a, f a * f a = f a` using `fun a => by`. Simplify using `only [f]`. Take the linear combination `ee a - 2 * ez a + zz`.
+Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `fb : ∀ a b, a ≠ b → f a * f b = 0` using `fun a b hab => by`. Simplify using `only [f]`. Take the linear combination `eb a b hab - ez a - ez b + zz`. Set `s : R` to `∑ a, f a`. Establish `fs : ∀ a, f a * s = f a` using `fun a => by`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.mul_sum, Finset.sum_eq_single a (fun b _ hb => fb a b hb.symm) (by simp), ff]`. Establish `ss : s * s = s` using `by conv_lhs => rw [Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun a _ => fs a`. Use `⟨fun a => f a + if a = a₀ then 1 - s else 0, fun a => ?_, fun a b hab => ?_, ?_, fun S hS a => ?_, fun T _ φ i hφ a => ?_⟩` and prove the remaining obligations. Use `beta_reduce split_ifs`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `ff a - 2 * fs a + ss`. Simplify using `[ff]`. Use `beta_reduce split_ifs with ha hb`. Conclude with `absurd (ha.trans hb.symm) hab`. Take the linear combination `fb a b hab - fs b`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `fb a b hab - fs a`. Simplify using `[fb a b hab]`. Rewrite using `[Finset.sum_add_distrib, Finset.sum_ite_eq']`. Simplify using `[s]`. Establish `hf : ∀ a, f a ∈ S` using `fun a => by`.
-
-Use `sub_mem (prod_mem fun i _ => ?_) (prod_mem fun i _ => sub_mem (one_mem _) (hS i))` and prove the remaining obligations. Use `split_ifs`. Conclude with `one_mem _`. Conclude with `sub_mem (one_mem _) (hS i)`. Use `add_mem (hf a) ?_` and prove the remaining obligations.
-
-Use `split_ifs`. Conclude with `sub_mem (one_mem _) (sum_mem fun a _ => hf a)`. Conclude with `zero_mem _`. Establish `hz : φ z = 0`. Rewrite using `[map_prod]`.
-
-Conclude with `Finset.prod_eq_zero (Finset.mem_univ i) (by simp [hφ])`. Establish `hf : ∀ a, φ (f a) = if t i = a then 1 else 0` using `fun a => by`. Rewrite using `[map_sub, hz, sub_zero, map_prod]`. Use `split_ifs with h`. Use `Finset.prod_eq_one fun j _ => ?_ split_ifs with h'` and prove the remaining obligations.
-
-Conclude with `map_one _`. Establish `: i ≠ j` using `fun hij => h' (hij ▸ h)`. Simplify using `[hφ, this]`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ i) (by simp [hφ, h])`. Establish `hs : φ s = 1`.
-
-Rewrite using `[map_sum, Finset.sum_congr rfl fun a _ => hf a, Finset.sum_ite_eq]`. Simplify using the standard rewrite rules. Rewrite using `[map_add, hf]`. Apply the tactic sequence `split_ifs <;> simp [hs]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem exists_complete_of_idem {R ι A : Type} [CommRing R] [Fintype ι] [DecidableEq ι] [Fintype A] [DecidableEq A]
     (a₀ : A) (χ : ι → R) (hχ : ∀ i, χ i * χ i = χ i) (t : ι → A) :
@@ -132,9 +122,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l}
 
 /- English proof (translation)
-Establish `hA` using `GlobalTheory.Frames.allTest_of_secBaseChange GlobalTheory.allSixLaws.1.secBaseChange E H Dw l Xo c`. Use `choose χ h1 h2 h3 using GlobalTheory.CompFun.exists_idempotent hA σ F hcl`. Take `⟨cs, k1, k2, k3, k4, k5⟩` from `exists_complete_of_idem a₀ χ h2 t`. Set `S : Subring (Rul Xo c)` to `{ (sec Xo c 0 0).toAddSubgroup with one_mem' := GlobalTheory.CompFun.one_mem_sec mul_mem' := fun ha hb => by simpa using sec_mul Xo c 0 0 0 0 ha hb }`. Use `⟨cs, k4 S h1, k1, k2, k3, fun y i P hP hy a => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: IsReduced (CAt σ)` using `inferInstanceAs (IsReduced ℂ)`. Establish `hy'` using `hA (CAt σ) y`. Set `ev : Rul Xo c →+* CAt σ` to `{ toFun := fun f => evR Xo c f y map_one' := evalAt_one _ _ y hy' map_mul' := fun f f' => evalAt_mul _ _ f f' y map_zero' := evalAt_zero _ _ y map_add' := fun f f' => evalAt_add _ _ f f' y }`. Conclude with `k5 (CAt σ) ev i (fun j => h3 j y i P hP hy) a`.
+Establish an intermediate fact. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem exists_idem_of_map (σ : c.F →+* ℂ) {g : ℕ} {ty : Fin g → (E →+* ℂ)}
     (F : FamilyUnif Xo (σ.comp (IntermediateField.inclusion c.le).toRingHom) ty) (hcl : FnAlgClosed Xo c)
@@ -170,7 +160,7 @@ open GlobalTheory.CharRead
 variable {D : D7} {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E} {Dw : Datum H}
 
 /- English proof (translation)
-Take `⟨k1, -, k3, k4, -⟩` from `GlobalTheory.T.completedLattice_eq_adelicCompletion_and_gram D V`. Conclude with `det_cong_one D.host.F (latC V) k3 k4 N hN (finHom V u).1 (by rw [← k1]; exact hu)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem det_cong_of_finCong (V : HSp D) (N : ℕ) (hN : N ≠ 0) (u : GA D V) (hu : FinCong V N u) :
     ∃ w ∈ GlobalTheory.AdLat.hat1 D.host.F (Set.range (algebraMap (𝓞 D.host.E) D.host.E)),
@@ -182,17 +172,17 @@ theorem det_cong_of_finCong (V : HSp D) (N : ℕ) (hN : N ≠ 0) (u : GA D V) (h
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Substitute `hΛ hΛ'` using the available equality. Take `⟨r1, -, r3, -, r5⟩` from `GlobalTheory.T.rational_points_adelicUnitary_eq_unitary D V`. Take `⟨δ, hδ1, hδ2, hδ3⟩` from `exists_unitary_of_trace_eq _ _ (GlobalTheory.T.adelicElementLattice_full_and_completion D V g).2.1 (GlobalTheory.T.adelicElementLattice_full_and_completion D V g').2.1 φ φ' _ ξ hξ htr`. Take `⟨γ, hγ⟩` from `r3 δ hδ3`. Take `⟨m1, m2⟩` from `(GlobalTheory.T.adelicUnitaryLattice_rationalTranslate_invariance D V).1 γ δ g hγ`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hlat : latG V (γ * g) = latG V g'`. Use extensionality with `v`. Establish `hv : (δ : Matrix (Fin V.rank) (Fin V.rank) D.host.E) *ᵥ (((δ⁻¹ : GL (Fin V.rank) D.host.E) : Matrix (Fin V.rank) (Fin V.rank) D.host.E) *ᵥ v) = v`. Rewrite using `[Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec]`. Establish `a1` using `m1 (((δ⁻¹ : GL (Fin V.rank) D.host.E) : Matrix (Fin V.rank) (Fin V.rank) D.host.E) *ᵥ v)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `a2` using `hδ2 (((δ⁻¹ : GL (Fin V.rank) D.host.E) : Matrix (Fin V.rank) (Fin V.rank) D.host.E) *ᵥ v)`. Rewrite `a1`, `a2` using `[hv]`. Conclude with `a1.symm.trans a2`. Establish `hc : FinCong V l.M ((γ * g)⁻¹ * g')`. Use `finCong_of_marks l V io hio _ _ hlat (fun a => finVec V (φ' (t a) : Fin V.rank → D.host.E)) ?_ hM'` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a ha`. Take `⟨w, hw, e⟩` from `hM a ha`. Use `⟨_, (m2 w).1 hw, ?_⟩` and prove the remaining obligations. Establish `e2` using `congrArg (fun z => (finHom V γ).1 *ᵥ z) e`. Simplify using `only [Matrix.mulVec_sub, Matrix.mulVec_smul] at e2`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e2` using `[(r5 _ δ hγ).1, Matrix.mulVec_mulVec, ← Units.val_mul, ← map_mul, hδ1]`. Conclude with `e2`. Establish `hu : gLat V ((γ * g)⁻¹ * g') = latHat V`. Use `gLat_eq_of_finCong V _ ((GlobalTheory.T.adelicUnitaryLattice_rationalTranslate_invariance D V).2.2.2 _ _ hlat) ?_` and prove the remaining obligations. Establish `e0 : ((γ * g)⁻¹ * g')⁻¹ = g'⁻¹ * (γ * g)` using `by group`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite using `[e0]`. Conclude with `(GlobalTheory.T.adelicUnitaryLattice_rationalTranslate_invariance D V).2.2.2 _ _ hlat.symm`. Conclude with `⟨γ, (r1 γ).2 ⟨δ, hγ⟩, _, hu, hc, (mul_inv_cancel_left _ _).symm⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_rat_of_marks (l : Level H) (V : HSp D) (io : Dw.La →ₗ[𝓞 D.host.E] (Fin V.rank → D.host.E))
     (hio : LatEmb V io) {La : Type} [AddCommGroup La] [Module (𝓞 D.host.E) La] (t : Dw.La → La)
@@ -239,7 +229,7 @@ theorem exists_rat_of_marks (l : Level H) (V : HSp D) (io : Dw.La →ₗ[𝓞 D.
   exact ⟨γ, (r1 γ).2 ⟨δ, hγ⟩, _, hu, hc, (mul_inv_cancel_left _ _).symm⟩
 
 /- English proof (translation)
-Substitute `hi` using the available equality. Conclude with `exists_rat_of_marks l V io hio (F.t i) g g' Λ Λ' hΛ hΛ' φ φ' ξ hξ (fun a b => (htr a b).symm.trans (htr' a b)) hM hM'`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem exists_rat_of_index {l : Level H} {Xo : Moduli Dw l} {s : KA l →+* ℂ} {n : ℕ} {ty : Fin n → D.host.E →+* ℂ}
     (F : FamilyUnif Xo s ty) (V : HSp D) (io : Dw.La →ₗ[𝓞 D.host.E] (Fin V.rank → D.host.E))
@@ -264,13 +254,13 @@ theorem exists_rat_of_index {l : Level H} {Xo : Moduli Dw l} {s : KA l →+* ℂ
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Substitute `hr` using the available equality. Establish `hG : ∀ k, (U.X k).Gm = -V.gramᵀ` using `fun k => (hW k).1`. Establish `htr : ∀ k a b, (((F.Di (ik k)).EF a b : ℤ) : ℚ) = Algebra.trace ℚ D.host.E (-(-D.host.xi0) * herm (-V.gramᵀ) (φ k a : Fin V.rank → D.host.E) (φ k b))` using `fun k a b => by`. Rewrite using `[hD.1.1 k a b, hG k, (hW k).2]`. Establish `key : ∀ h γ h' γ', MarkBy U V rfl dict io F ik φ h γ → MarkBy U V rfl dict io F ik φ h' γ' → ik (dict h).1 = ik (dict h').1 → ν (γ * h) = ν (γ' * h')`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `h γ h' γ' hm hm' hi`. Establish `hξ : -(-D.host.xi0) ≠ 0`. Rewrite using `[← (hW (dict h).1).2]`. Conclude with `neg_ne_zero.2 (U.X _).ξ0_ne`. Take `⟨δ, hδ, u, hu1, hu2, hu3⟩` from `exists_rat_of_index F V io hio _ _ hi _ _ _ _ (SetLike.ext' (hm.2.1.trans (Set.image_id _))) (SetLike.ext' (hm'.2.1.trans (Set.image_id _))) (φ _) (φ _) _ hξ (htr _) (htr _) hm.2.2 hm'.2.2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hu3, h1 u hu1 hu2, h2 δ hδ]`. Establish `hv : ∀ i : Fin F.n, ∃ a : A, (∃ h, a = ν h) ∧ ∀ h γ, MarkBy U V rfl dict io F ik φ h γ → ik (dict h).1 = i → a = ν (γ * h)`. Introduce `i`. Distinguish the cases in `hex : ∃ h γ, MarkBy U V rfl dict io F ik φ h γ ∧ ik (dict h).1 = i`. Take `⟨h, γ, hm, hi⟩` from `hex`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨_, ⟨_, rfl⟩, fun h' γ' hm' hi' => key h γ h' γ' hm hm' (hi.trans hi'.symm)⟩`. Conclude with `⟨_, ⟨1, rfl⟩, fun h γ hm hi => absurd ⟨h, γ, hm, hi⟩ hex⟩`. Use `choose t ht1 ht2 using hv`. Conclude with `⟨t, ht1, fun h γ hm => ht2 _ h γ hm rfl⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_map_of_invariant {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} (V : HSp D)
     (io : Dw.La →ₗ[𝓞 D.host.E] (Fin V.rank → D.host.E))
@@ -313,9 +303,9 @@ theorem exists_map_of_invariant {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} (
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Take `⟨t, -, ht⟩` from `exists_map_of_invariant V io σ r hr U dict g e F ik φ th x₀ hio hW hD ν h1 h2`. Take `⟨cs, k0, k1, k2, k3, k4⟩` from `exists_idem_of_map σ F hcl (ν 1) t`. Use `⟨cs, k0, k1, k2, k3, fun h γ hm a => ⟨?_, fun y P hP hy => ?_⟩⟩` and prove the remaining obligations. Take `⟨Pm, -, hP, hx, -⟩` from `hD.1.2 (dict h).1 ⟨(dict h).2, hdom h⟩`. Rewrite using `[← ht h γ hm, ← k4 _ _ Pm hP hx a]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `dif_pos (hdom h)`. Rewrite using `[← ht h γ hm, ← k4 y _ P hP hy a]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_idem_of_invariant {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} (V : HSp D)
     (io : Dw.La →ₗ[𝓞 D.host.E] (Fin V.rank → D.host.E))
@@ -348,7 +338,7 @@ theorem exists_idem_of_invariant {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} 
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Take `⟨cs, k0, k1, k2, k3, k4⟩` from `exists_idem_of_invariant V io σ r hr U dict g e F ik φ th x₀ hio hW hD hdom hcl (fun h => ν (Matrix.GeneralLinearGroup.det (finHom V h))) (fun u hu hc => h1 u hu (det_cong_of_finCong V l.M (by have := l.three_le; omega) u hc)) h2`. Conclude with `⟨cs, k0, k1, k2, k3, fun h γ hm a => (k4 h γ hm a).1⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_idem_rdU_det {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} (V : HSp D)
     (io : Dw.La →ₗ[𝓞 D.host.E] (Fin V.rank → D.host.E))
@@ -379,21 +369,21 @@ theorem exists_idem_rdU_det {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} (V : 
   exact ⟨cs, k0, k1, k2, k3, fun h γ hm a => (k4 h γ hm a).1⟩
 
 /- English proof (translation)
-Simplify using `[hu]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hom_invariant {G A : Type} [Group G] [Group A] (κ : G →* A) {u : G} (hu : κ u = 1) (h : G) :
     κ (h * u) = κ h ∧ κ (u * h) = κ h := by
   simp [hu]
 
 /- English proof (translation)
-Rewrite using `[mul_pow, IsIdempotentElem.pow_succ_eq m hs, pow_succ, hf, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem idem_mul_pow_succ {R : Type} [CommRing R] {s f : R} {m : ℕ} (hs : s * s = s) (hf : f ^ m = 1) :
     (s * f) ^ (m + 1) = s * f := by
   rw [mul_pow, IsIdempotentElem.pow_succ_eq m hs, pow_succ, hf, one_mul]
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompRat.fnAlgClosed_of_curveOver _ H Dw l Xo c hpos hA (hrk.imp_right (Or.imp_right fun h => ⟨h, GlobalTheory.RankOneDatum.exists_datum_rank_one D H Dw V io hio hpos⟩)) hc`.
+A detailed English derivation is pending.
 -/
 theorem fnAlgClosed_of_iotaOK {l : Level H} (Xo : Moduli Dw l) (c : Coeff l) (V : HSp D)
     (io : Dw.La →ₗ[𝓞 D.host.E] (Fin V.rank → D.host.E)) (hio : IotaOK Dw V io) (hpos : 1 ≤ Dw.p + Dw.q)
@@ -406,9 +396,9 @@ end Marks
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Take `⟨c₂, hle, hc₂, hun⟩` from `GlobalTheory.T.exists_coeff_field_curve _ H l l₂ c n p hp hpn hMn hM hA hgood hcurve`. Use `⟨⟨c₂.F, c₂.fin, c₂.conj, hle c.zeta_mem, c.le.trans hle⟩, c₂, rfl, hle, hc₂, hun, ?_⟩` and prove the remaining obligations. Introduce `Dw Xo₂ V io hio hpos hrk`. Establish `hcl` using `fnAlgClosed_of_iotaOK Xo₂ c₂ V io hio hpos hrk hA hc₂`. Use `⟨hcl, fun σ r hr U dict g e F ik φ th x₀ hσ hW hD hdom => ⟨fun A _ _ ν h1 h2 => ?_, ?_⟩⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `exists_idem_rdU_det V io σ r hr U dict g e F ik φ th x₀ hio.emb hW hD hdom hcl ν h1 h2`. Conclude with `GlobalTheory.CharRead.exists_sec_rdU_eq_char D H Dw l₂ Xo₂ c₂ σ V r hr U dict io g e F ik φ th x₀ hio hpos hA hσ hW hD hdom hcl`.
+A detailed English derivation is pending.
 -/
 theorem exists_unramified_field_fibres (D : D7) (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E) (l l₂ : Level H) (c : Coeff l)
     (n p : ℕ) (hp : p.Prime) (hpn : ¬ p ∣ n) (hMn : Nat.Coprime l.M n) (hM : l₂.M = l.M * n) (hA : l₂.A = 1)

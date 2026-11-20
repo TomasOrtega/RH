@@ -19,11 +19,11 @@ open scoped Pointwise
 namespace GlobalTheory.Unf
 
 /- English proof (translation)
-Take `⟨_, _, _, _, _, _, hΓc⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D V`. Use `haveI := v.haar`. Take `⟨K, hKc, hKcov⟩` from `hc`. Establish `hcover : v.𝓕 ⊆ ⋃ g : GQ V, (g • K)`. Introduce `h _`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨γ, hγ, hk⟩` from `hKcov h`. Use `Set.mem_iUnion.2 ⟨⟨γ, hγ⟩⁻¹, ?_⟩` and prove the remaining obligations. Use `Set.mem_smul_set.2 ⟨γ * h, hk, ?_⟩` and prove the remaining obligations. Simplify using `[Subgroup.smul_def]`. Establish `hle : v.μ v.𝓕 ≤ v.μ K`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Conclude with `hle.trans_lt hKc.measure_lt_top`.
+A detailed English derivation is pending.
 -/
 theorem vol_fund_lt_top {D : D7} {V : HSp D} (hc : CoCpt V) (v : Vol V) : v.μ v.𝓕 < ⊤ := by
   obtain ⟨_, _, _, _, _, _, hΓc⟩ := GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D V
@@ -43,15 +43,15 @@ theorem vol_fund_lt_top {D : D7} {V : HSp D} (hc : CoCpt V) (v : Vol V) : v.μ v
   exact hle.trans_lt hKc.measure_lt_top
 
 /- English proof (translation)
-Establish `hcont` using `J.d.continuous_embed`. Take `⟨-, -, -, -, hnorm, -, -⟩` from `GlobalTheory.MixPer.flag_jacobi_structure D J.W J.W₀ ρ J.d`. Take `⟨⟨Kn, hKn, hcov⟩, -⟩` from `GlobalTheory.Mem.UnipCocompact.radicals_cocompact D J.W ρ J.d.e (isIsoSub_e J.d)`. Take `⟨K₀, hK₀, hcov₀⟩` from `J.cpt`. Take `⟨-, -, -, -, htop, -⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D J.W`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Set `f : flagN J.d × GA D J.W₀ → GA D J.W` to `fun p => p.1.1 * J.d.emb0 p.2 * h`. Establish `hf : Continuous f` using `((continuous_subtype_val.comp continuous_fst).mul (hcont.comp continuous_snd)).mul continuous_const`. Establish `hS : IsCompact (f '' (Kn ×ˢ K₀))` using `(hKn.prod hK₀).image hf`. Take `⟨C, hC⟩` from `hS.exists_bound_of_continuousOn hK.continuousOn`. Use `⟨C, fun n h' => ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨γ₀, hγ₀, hk₀⟩` from `hcov₀ h'`. Establish `hemb : J.d.emb0 γ₀ ∈ GQ J.W` using `J.d.wittDecomp_anisotropicEmbedding_mem_rationalPoints hγ₀`. Set `n' : flagN J.d` to `⟨J.d.emb0 γ₀ * n.1 * (J.d.emb0 γ₀)⁻¹, hnorm n.1 n.2 γ₀⟩`. Take `⟨γ, hγ, k, hk, hn'⟩` from `hcov n'`. Establish `hδ : (J.d.emb0 γ₀)⁻¹ * γ.1 ∈ GQ J.W ⊓ jacGrp J.d` using `Subgroup.mem_inf.2 ⟨Subgroup.mul_mem _ (Subgroup.inv_mem _ hemb) (Subgroup.mem_subgroupOf.1 hγ), Subgroup.mul_mem _ (Subgroup.inv_mem _ (Subgroup.mem_sup_right (MonoidHom.mem_range.2 ⟨γ₀, rfl⟩))) (Subgroup.mem_sup_left γ.2)⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1 : γ.1 * k.1 = J.d.emb0 γ₀ * n.1 * (J.d.emb0 γ₀)⁻¹` using `(congrArg Subtype.val hn').symm`. Establish `heq : n.1 * J.d.emb0 h' * h = ((J.d.emb0 γ₀)⁻¹ * γ.1) * (k.1 * J.d.emb0 (γ₀ * h') * h)`. Rewrite using `[map_mul, show ((J.d.emb0 γ₀)⁻¹ * γ.1) * (k.1 * (J.d.emb0 γ₀ * J.d.emb0 h') * h) = (J.d.emb0 γ₀)⁻¹ * (γ.1 * k.1) * J.d.emb0 γ₀ * J.d.emb0 h' * h by simp only [mul_assoc], h1]`. Simplify using `only [mul_assoc, inv_mul_cancel_left, inv_mul_cancel, mul_one]`. Rewrite using `[heq, hinv _ hδ]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hC _ ⟨(k, γ₀ * h'), ⟨hk, hk₀⟩, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem jac_bound (D : D7) (ρ : ℕ) (J : JacLev D ρ) (K : GA D J.W → ℂ) (hK : Continuous K)
     (hinv : ∀ γ ∈ GQ J.W ⊓ jacGrp J.d, ∀ h, K (γ * h) = K h) (h : GA D J.W) :
@@ -84,11 +84,9 @@ theorem jac_bound (D : D7) (ρ : ℕ) (J : JacLev D ρ) (K : GA D J.W → ℂ) (
   exact hC _ ⟨(k, γ₀ * h'), ⟨hk, hk₀⟩, rfl⟩
 
 /- English proof (translation)
-Introduce `D ρ J K hK hinv h`. Take `⟨C, hC⟩` from `jac_bound D ρ J K hK hinv h`. Establish `hcont` using `J.d.continuous_embed`. Take `⟨-, h2W, -, hbW, htW, -⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D J.W`. Take `⟨-, h20, -, hb0, -⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D J.W₀`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hμ : J.v0.μ J.v0.𝓕 < ⊤` using `vol_fund_lt_top J.cpt J.v0`. Establish `hν : J.vN.ν J.vN.𝓝 < ⊤` using `by rw [J.vN.unit.2.2]; exact ENNReal.one_lt_top`. Use `haveI : IsFiniteMeasure (J.v0.μ.restrict J.v0.𝓕) := isFiniteMeasure_restrict.2 hμ.ne`. Use `haveI : IsFiniteMeasure (J.vN.ν.restrict J.vN.𝓝) := isFiniteMeasure_restrict.2 hν.ne`. Unfold `AbsConv`.
-
-Use `Integrable.of_bound ?_ C (Filter.Eventually.of_forall fun p => hC p.2 p.1)` and prove the remaining obligations. Conclude with `(hK.comp (((continuous_subtype_val.comp continuous_snd).mul (hcont.comp continuous_fst)).mul continuous_const)).aestronglyMeasurable`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem jac_absConv : ∀ (D : D7) (ρ : ℕ) (J : JacLev D ρ) (K : GA D J.W → ℂ), Continuous K →
     (∀ γ ∈ GQ J.W ⊓ jacGrp J.d, ∀ h, K (γ * h) = K h) → ∀ h,

@@ -28,13 +28,13 @@ section Ad
 variable {Γ k : Type} [Group Γ] [CommRing k]
 
 /- English proof (translation)
-Take `⟨hmul, -, -, -, -, -, hinv, -⟩` from `grp k`. Take `⟨ν, hν⟩` from `h g`. Take `⟨ν', hν'⟩` from `h g⁻¹`. Establish `e1 : r g * r g⁻¹ = 1` using `by rw [← map_mul, mul_inv_cancel, map_one]`. Establish `e2 : r g⁻¹ * r g = 1` using `by rw [← map_mul, inv_mul_cancel, map_one]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a1` using `hinv ν _ _ hν e1`. Establish `a2` using `hinv ν' _ _ hν' e2`. Establish `a3 : adj (r g⁻¹) * adj (r g) = 1`. Take `⟨-, -, -, -, h1, -⟩` from `grp k`. Rewrite using `[← hmul, e1, h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hX' : adj X = -X` using `hX`. Use `show adj _ = -_`. Establish `a4 : (ν' * ν) • (1 : M4 k) = 1`. Rewrite `a3` using `[a1, a2, smul_mul_assoc, mul_smul_comm, e1, smul_smul]`. Conclude with `a3`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hmul, hmul, hX', a1, a2]`. Simplify using `only [smul_mul_assoc, mul_smul_comm, smul_smul, neg_mul, mul_neg, smul_neg, mul_assoc]`. Rewrite using `[← one_mul (r g * (X * r g⁻¹)), ← smul_mul_assoc, mul_comm ν ν', a4]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adjoint_mem_sp4 {r : Γ →* M4 k} (h : ∀ g, ∃ ν, IsGSp ν (r g)) (g : Γ) {X : M4 k} (hX : X ∈ sp4 k) :
     r g * X * r g⁻¹ ∈ sp4 k := by

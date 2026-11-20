@@ -12,7 +12,7 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 variable {V : Type} [AddCommGroup V] [Module ℂ V] {n : ℕ}
 
 /- English proof (translation)
-Simplify using `only [map_sum, LinearMap.sum_apply, LinearMap.map_smul, LinearMap.smul_apply, smul_eq_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem B_u (B : V →ₗ[ℂ] V →ₗ⋆[ℂ] ℂ) (c : (Fin n → k) → ℂ) (col : (Fin n → k) → V →ₗ[ℂ] V)
     (T : Finset (Fin n → k)) (v w : V) :
@@ -20,15 +20,13 @@ theorem B_u (B : V →ₗ[ℂ] V →ₗ⋆[ℂ] ℂ) (c : (Fin n → k) → ℂ)
   simp only [map_sum, LinearMap.sum_apply, LinearMap.map_smul, LinearMap.smul_apply, smul_eq_mul]
 
 /- English proof (translation)
-Use `set f : (Fin n → k) → ℂ := fun x => starRingEnd ℂ ((φ (ξ ⬝ᵥ x) : Circle) : ℂ) * B (col x v) v with hf`. Establish `hfH : ∀ x h, h ∈ H → f (x + h) = f x`. Introduce `x h hh`. Simplify using `only [hf, dotProduct_add, AddChar.map_add_eq_mul, hξ h hh, mul_one, hca, hv h hh]`. Establish `hsh : ∀ r ∈ T, ∑ t ∈ T, f (t + -r) = ∑ t ∈ T, f t` using `fun r hr => sum_transl A H hHA T hT hu f hfH (-r) (A.neg_mem (hT r hr))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : ∀ t r, B (col t v) (col r v) = B (col (t - r) v) v`. Introduce `t r`. Establish `h1 : col t v = col r (col (t - r) v)` using `by rw [← hca, add_sub_cancel]`. Rewrite using `[h1, hBc]`. Establish `hsplit : ∀ t r, starRingEnd ℂ ((φ (ξ ⬝ᵥ t) : Circle) : ℂ) = starRingEnd ℂ ((φ (ξ ⬝ᵥ (t + -r)) : Circle) : ℂ) * starRingEnd ℂ ((φ (ξ ⬝ᵥ r) : Circle) : ℂ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `t r`. Rewrite using `[← map_mul, ← Circle.coe_mul, ← AddChar.map_add_eq_mul, ← dotProduct_add, neg_add_cancel_right]`. Use `conv_lhs =>`. Simplify using `only [map_sum, LinearMap.sum_apply, LinearMap.map_smul, LinearMap.smul_apply, LinearMap.map_smulₛₗ, smul_eq_mul, starRingEnd_self_apply, RingHom.id_apply, key, Finset.mul_sum]`. Rewrite using `[Finset.sum_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun r hr => ?_` and prove the remaining obligations. Rewrite using `[← hsh r hr, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun t ht => ?_` and prove the remaining obligations. Rewrite using `[hsplit t r]`. Simplify using `only [hf, Circle.coe_mul, Circle.coe_inv_eq_conj, sub_eq_add_neg]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem gram (φ : AddChar k Circle) (col : (Fin n → k) → V →ₗ[ℂ] V)
     (hc0 : ∀ v, col 0 v = v) (hca : ∀ x y v, col (x + y) v = col x (col y v))
@@ -67,7 +65,7 @@ theorem gram (φ : AddChar k Circle) (col : (Fin n → k) → V →ₗ[ℂ] V)
   ring
 
 /- English proof (translation)
-Rewrite using `[av_eq' φ col hca A ξ v p hpξ, av_eq' φ col hca A ζ v p hpζ]`. Take `⟨h1, -, h3, h4, h5, h6⟩` from `hpξ`. Rewrite using `[LinearMap.map_smul, LinearMap.smul_apply, LinearMap.map_smulₛₗ, gram φ col hc0 hca B hBc A p.1 h1 p.2 h5 h6 v h3 ξ ζ h4, LinearMap.smul_apply, B_u]`. Simplify using `only [smul_eq_mul, map_inv₀, map_natCast]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem gram_av (φ : AddChar k Circle) (col : (Fin n → k) → V →ₗ[ℂ] V)
     (hc0 : ∀ v, col 0 v = v) (hca : ∀ x y v, col (x + y) v = col x (col y v))
@@ -85,11 +83,11 @@ theorem gram_av (φ : AddChar k Circle) (col : (Fin n → k) → V →ₗ[ℂ] V
   ring
 
 /- English proof (translation)
-Establish `hWW : B (∑ i ∈ s, w i) (∑ i ∈ s, w i) = ∑ i ∈ s, B (w i) v`. Simplify using `only [map_sum, LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_congr rfl fun d hd => hw d hd i hi]`. Simplify using `[hi]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hWv : B (∑ i ∈ s, w i) v = ∑ i ∈ s, B (w i) v`. Simplify using `only [map_sum, LinearMap.sum_apply]`. Establish `hvW : B v (∑ i ∈ s, w i) = starRingEnd ℂ (∑ i ∈ s, B (w i) v)`. Rewrite using `[hB.1 (∑ i ∈ s, w i) v, hWv]`. Establish `h0` using `hB.2 (v - ∑ i ∈ s, w i)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [map_sub, LinearMap.sub_apply, hWW, hWv, hvW, Complex.sub_re, Complex.conj_re] at h0`. Rewrite using `[← Complex.re_sum]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem bessel_abs (B : V →ₗ[ℂ] V →ₗ⋆[ℂ] ℂ) (hB : Psd B) {ι : Type*} [DecidableEq ι] (s : Finset ι)
     (w : ι → V) (v : V)
@@ -111,17 +109,15 @@ theorem bessel_abs (B : V →ₗ[ℂ] V →ₗ⋆[ℂ] ℂ) (hB : Psd B) {ι : T
   linarith
 
 /- English proof (translation)
-Take `⟨p, hp⟩` from `exists_AD φ hφ col hc0 hca hsm A hA s v`. Use `bessel_abs B hB s (fun ξ => av φ col ξ A v) v ?_` and prove the remaining obligations. Introduce `ξ hξ ξ' hξ'`. Use `show B (av φ col ξ A v) (av φ col ξ' A v) = if ξ = ξ' then B (av φ col ξ A v) v else 0`. Rewrite using `[gram_av φ col hc0 hca B hBc A ξ ξ' v p (hp ξ hξ) (hp ξ' hξ')]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hcard` using `card_ne_zero A p.1 p.2 (hp ξ hξ).2.2.2.2.2`. Use `split_ifs with hxx`. Substitute `hxx` using the available equality. Simplify using `only [inv_mul_cancel, Circle.coe_one, Finset.sum_const, nsmul_eq_mul, mul_one]`. Rewrite using `[inv_mul_cancel₀ hcard, one_mul]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hz : ∑ r ∈ p.2, ((((φ (ξ ⬝ᵥ r))⁻¹ * φ (ξ' ⬝ᵥ r) : Circle)) : ℂ) = 0`. Take `⟨h1, -, -, h4, h5, h6⟩` from `hp ξ hξ`. Take `⟨-, -, -, h4', -, -⟩` from `hp ξ' hξ'`. Assume the negation of the conclusion as `hne`. Apply `hxx` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hs ξ hξ ξ' hξ'` to reduce the goal to its premises. Use `show ∀ a ∈ A, φ ((ξ - ξ') ⬝ᵥ a) = 1`. Introduce `a ha`. Assume the negation of the conclusion as `hna`. Apply `hne` to reduce the goal to its premises.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use `sum_circ_eq_zero A p.1 h1 p.2 h5 h6 (fun r => (φ (ξ ⬝ᵥ r))⁻¹ * φ (ξ' ⬝ᵥ r)) (fun x y => circ_char φ φ ξ ξ' x y) (fun h hh => by simp [h4 h hh, h4' h hh]) a ha ?_` and prove the remaining obligations. Introduce `hχ`. Apply `hna` to reduce the goal to its premises. Establish `e : φ (ξ ⬝ᵥ a) = φ (ξ' ⬝ᵥ a)` using `inv_mul_eq_one.mp hχ`. Rewrite using `[sub_dotProduct, AddChar.map_sub_eq_div, e, div_self']`.
-
-Rewrite using `[hz, mul_zero, zero_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem av_bessel' (φ : AddChar k Circle) (hφ : Continuous φ) (col : (Fin n → k) → V →ₗ[ℂ] V)
     (hc0 : ∀ v, col 0 v = v) (hca : ∀ x y v, col (x + y) v = col x (col y v)) (hsm : ∀ v, IsOpen {x | col x v = v})

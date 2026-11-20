@@ -7,13 +7,11 @@ open NumberField IsDedekindDomain ValuativeRel GlobalTheory.PRep GlobalTheory.Sm
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Introduce `k _ _ _ _ n c V _ _ σ hc hu hs hirr hun`. Establish `hcont : Continuous (GlobalTheory.SplitFlip.invT : GL (Fin n) k →* GL (Fin n) k)`. Rewrite using `[Units.continuous_iff]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `show Continuous fun h : GL (Fin n) k => ((h⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k).transpose`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Units.continuous_coe_inv.matrix_transpose`. Use `show Continuous fun h : GL (Fin n) k => (h : Matrix (Fin n) (Fin n) k).transpose`. Conclude with `Units.continuous_val.matrix_transpose`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `isSmooth_twist (isSmooth_comp hs _ hcont) hc.detChar`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Conclude with `GlobalTheory.TypeTwo.EndTwist.isIrreducible_twist (GlobalTheory.InvTransposeEnds.isIrreducible_comp hirr _ fun h => ⟨GlobalTheory.SplitFlip.invT h, GlobalTheory.SplitFlip.invT_invT h⟩) _`. Take `⟨B, h1, h2, h3⟩` from `hun`. Use `⟨B, h1, h2, fun g v w => ?_⟩` and prove the remaining obligations. Rewrite using `[src_apply, src_apply, LinearMap.map_smul B, LinearMap.smul_apply, LinearMap.map_smulₛₗ, h3, smul_eq_mul, smul_eq_mul, ← mul_assoc]`. Establish `hn` using `hu (Matrix.GeneralLinearGroup.det g)`.
-
-Rewrite using `[show ((c (Matrix.GeneralLinearGroup.det g) : ℂ) * (starRingEnd ℂ) (c (Matrix.GeneralLinearGroup.det g) : ℂ)) = 1 by`. Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq, hn]`. Use the proof step `norm_num, one_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.TP.Loc.srcGood :
     UpperTheory.Gal.TP.Loc.SrcGood := by

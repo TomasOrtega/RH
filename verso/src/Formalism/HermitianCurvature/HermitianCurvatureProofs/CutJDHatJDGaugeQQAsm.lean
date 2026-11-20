@@ -62,7 +62,7 @@ def JAdjTrQQ : Prop :=
       MA.JAdj (D.parOf S v) L (trJ S T v e (B.JF (T v).base (f v))) (2 * S.Ntop + 2)
 
 /- English proof (translation)
-Use `⟨0, ?_⟩` and prove the remaining obligations. Introduce `E _ _ _ Wp Wq _ _ _ _ _ _ S T f χ ν' m₀ top A₀ hB v`. Conclude with `jdg_exists_of_gCore hK 0 E Wp Wq S T f χ ν' m₀ top A₀ hB v`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem gaugeExistsQQ_of_gCore (hK : Gauge.GCore) : GaugeExistsQQ := by
   refine ⟨0, ?_⟩
@@ -70,25 +70,25 @@ theorem gaugeExistsQQ_of_gCore (hK : Gauge.GCore) : GaugeExistsQQ := by
   exact jdg_exists_of_gCore hK 0 E Wp Wq S T f χ ν' m₀ top A₀ hB v
 
 /- English proof (translation)
-Take `⟨K3, g3⟩` from `h3`. Take `⟨K4, g4⟩` from `h4`. Take `⟨K5, g5⟩` from `h5`. Take `⟨K6, g6⟩` from `h6`. Take `⟨K7, g7⟩` from `h7`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨K8, g8⟩` from `h8`. Take `⟨K9, g9⟩` from `h9`. Take `⟨K10, g10⟩` from `h10`. Take `⟨LastRowCutoff, g11⟩` from `h11`. Use `⟨max 1 (max K3 (max K4 (max K5 (max K6 (max K7 (max K8 (max K9 (max K10 LastRowCutoff)))))))), ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `E _ _ _ Wp Wq _ _ _ _ _ _ S T f χ ν' m₀ top A₀ hB hJ hOk hW hW' c hc v`. Establish `hOW : ∀ C', C' ≤ max 1 (max K3 (max K4 (max K5 (max K6 (max K7 (max K8 (max K9 (max K10 LastRowCutoff)))))))) → BuiltOW C' S T f χ ν' m₀ top A₀` using `fun C' h => ⟨isBuiltPlace_mono h hB, hOk, hW, hW'⟩`. Take `⟨_, _, _, hIB, hl1, hlk, hGr, hLC, _, _, hk2, _, hOn⟩` from `hB`. Take `⟨e, hF, hG, hQQ⟩` from `g3 E Wp Wq S T f χ ν' m₀ top A₀ (hOW K3 (by simp)) v`. Establish `hR` using `g4 E Wp Wq S T f χ ν' m₀ top A₀ (hOW K4 (by simp)) hJ v`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hP` using `g5 E Wp Wq S T f χ ν' m₀ top A₀ (hOW K5 (by simp)) v`. Establish `hE` using `g6 E Wp Wq S T f χ ν' m₀ top A₀ (hOW K6 (by simp)) v`. Establish `hPOK : (D.parOf S v).OK` using `(hIB.2 v).2.2.2.1.1`. Take `⟨L, hL, -⟩` from `hMF (D.parOf S v) hPOK (S.l + 1) (by omega) (show S.l + 1 ≤ S.G.k by omega)`. Establish `hI` using `h1 E Wp Wq S hk2 hOk hW hW' v`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hlt : S.cutLo v < S.cutHi v`. Establish `hv` using `hLC v`. Establish `hN : (0 : ℝ) < S.Ntop` using `by unfold C.HidaSetting.Ntop C.Kst; positivity`. Establish `hX : 0 < (S.G.k : ℝ) * S.Ntop * ((S.G.r : ℝ) + 1) ^ 2 + (S.Ntop : ℝ) ^ 2 * ((S.G.r : ℝ) + 1) ^ 2 + (S.Ntop : ℝ) ^ 3` using `by positivity`. Establish `h1le : (1 : ℝ) ≤ max 1 (max K3 (max K4 (max K5 (max K6 (max K7 (max K8 (max K9 (max K10 LastRowCutoff))))))))` using `le_max_left _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the polynomial consequences of the given equalities and inequalities. Use `⟨L, trJ S T v e (B.JF (T v).base (f v)), lamCfg S v, 1, 1, hc, one_pos, one_pos, ⟨hPOK, by omega, show S.l + 1 ≤ S.G.k by omega, hL, hI.1, hI.2, hlt, hOn v⟩, g10 E Wp Wq S T f χ ν' m₀ top A₀ (hOW K10 (by simp)) v e L hF hG hQQ hL hR.1, g11 E Wp Wq S T f χ ν' m₀ top A₀ (hOW LastRo …` and prove the remaining obligations. Introduce `Y`. Rewrite using `[← hG _ hR.1 Y, trJ_congr S T v e _ (((S.P v Y : ℝ) : ℂ) • B.JF (T v).base (f v)) (hE Y), trJ_smul]`. Use function extensionality and compare the values at `π`.
+Use the polynomial consequences of the given equalities and inequalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[Pi.smul_apply, ← prod_lamCfg S v Y]`. Use `push_cast`. Both sides reduce to the same expression. Introduce `ε hε a ha`. Establish `key : C7.principalHermitianLattice (T v).base (M.sgn (D.parOf S v) (S.l + 1)) a (D.cutF (T v).base χ (f v) ε) = MA.ipA (D.parOf S v) (MA.actA (D.parOf S v) ((a.reverse.map fun x => Wd.C0 (MA.startM (D.parOf S v) (MA.DQ (D.parOf S v)) (S.l + 1)).QQ (MA.sites (D.parOf S v) (MA.DQ ( …`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[g7 E Wp Wq S T f χ ν' m₀ top A₀ (hOW K7 (by simp)) v e hF hP ε hε (hR.2 ε hε) a ha, (trJ_foldr S T v e hG hP a.reverse _ (hR.2 ε hε)).2, g8 E Wp Wq S T f χ ν' m₀ top A₀ (hOW K8 (by simp)) v e hF hR.1 c hc ε hε]`. Establish `hre` using `g9 E Wp Wq S T f χ ν' m₀ top A₀ (hOW K9 (by simp)) v ε hε a ha`. Rewrite `hre` using `[key]`. Rewrite using `[key]`. Use `clear g3 g4 g5 g6 g7 g8 g9 g10 g11 hOW key hE hP hR hG hF hI hQQ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `MA.cutoffEnergyForm`. Simplify using `only [one_mul]`. Apply `Complex.ext` to reduce the goal to its premises. Simplify using `only [Complex.ofReal_re]`. Simplify using `only [Complex.ofReal_im]`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hre`. Introduce `Lb a ha`. Conclude with `level_system_admissible_size S v a ha (h2 E Wp Wq S hGr v a ha) (S.l + 1) L _ c Lb`.
+A detailed English derivation is pending.
 -/
 theorem modelPlaceBuilt3_of_leavesQQ (hMF : MA.ModelFrameAn) (h1 : LamCfgInterlaces) (h2 : AdmInCut)
     (h3 : GaugeExistsQQ) (h4 : RegFF3) (h5 : CVPresFF) (h6 : BesselEigen) (h7 : EnergyTr) (h8 : CutTr)
@@ -159,7 +159,7 @@ theorem modelPlaceBuilt3_of_leavesQQ (hMF : MA.ModelFrameAn) (h1 : LamCfgInterla
     exact level_system_admissible_size S v a ha (h2 E Wp Wq S hGr v a ha) (S.l + 1) L _ c Lb
 
 /- English proof (translation)
-The claim follows from `modelPlaceBuilt3_of_leavesQQ Formalism.FourierDecayAlt.Final.ma_modelFrameAn eigenvalue_configuration_interlaces admissible_in_truncation_holds h3 regularity_smooth_forms_holds coefficient_vector_preserves_form bessel_eigenvalue_equation_holds h7 cutoff_transport_to_model h9 h10 …`.
+A detailed English derivation is pending.
 -/
 theorem modelPlaceBuilt3_of_openQQ (h3 : GaugeExistsQQ) (h7 : EnergyTr) (h9 : EnergyReal) (h10 : JDecayTrQQ)
     (h11 : JAdjTrQQ) : ModelPlaceBuilt3 :=
@@ -167,14 +167,14 @@ theorem modelPlaceBuilt3_of_openQQ (h3 : GaugeExistsQQ) (h7 : EnergyTr) (h9 : En
     regularity_smooth_forms_holds coefficient_vector_preserves_form bessel_eigenvalue_equation_holds h7 cutoff_transport_to_model h9 h10 h11
 
 /- English proof (translation)
-The claim follows from `modelPlaceBuilt3_of_openQQ (gaugeExistsQQ_of_gCore hK) h7 h9 h10 h11`.
+A detailed English derivation is pending.
 -/
 theorem modelPlaceBuilt3_of_openGC (hK : Gauge.GCore) (h7 : EnergyTr) (h9 : EnergyReal) (h10 : JDecayTrQQ)
     (h11 : JAdjTrQQ) : ModelPlaceBuilt3 :=
   modelPlaceBuilt3_of_openQQ (gaugeExistsQQ_of_gCore hK) h7 h9 h10 h11
 
 /- English proof (translation)
-The claim follows from `modelPlaceBuilt2_of_3 hJ (modelPlaceBuilt3_of_openGC hK h7 h9 h10 h11)`.
+A detailed English derivation is pending.
 -/
 theorem modelPlaceBuilt2_of_openQQ (hJ : JfSmoothDS) (hK : Gauge.GCore) (h7 : EnergyTr) (h9 : EnergyReal)
     (h10 : JDecayTrQQ) (h11 : JAdjTrQQ) : JCT.ModelPlaceBuilt2 :=

@@ -28,17 +28,17 @@ namespace GlobalTheory.CompanionTheory.Ar.GenSmooth
 open scoped KaehlerDifferential TensorProduct
 
 /- English proof (translation)
-Establish `: Algebra.FormallySmooth k A` using `inferInstance`. Establish `: Algebra.FinitePresentation k A` using `inferInstance`. Set `Aq` to `Localization.AtPrime q`. Establish `: Algebra.FormallySmooth A Aq` using `.of_isLocalization q.primeCompl`. Establish `hsm : Algebra.FormallySmooth k Aq` using `.comp k A Aq`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Algebra.IsSmoothAt k q` using `hsm`. Use `GlobalTheory.exists_isStandardSmoothOfRelativeDimension_of_isSmoothAt k q ?_` and prove the remaining obligations. Establish `hle : q.primeCompl ≤ nonZeroDivisors A` using `q.primeCompl_le_nonZeroDivisors`. Set `_ : Algebra Aq L` to `IsLocalization.localizationAlgebraOfSubmonoidLe _ _ _ _ hle`. Establish `: IsScalarTower A Aq L` using `IsLocalization.localization_isScalarTower_of_submonoid_le _ _ _ _ hle`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `: IsScalarTower k Aq L` using `.to₁₃₄ k A _ _`. Use `IsLocalization.isLocalization_of_submonoid_le Aq L _ _ hle` as an intermediate fact. Establish `: Algebra.FormallyEtale Aq L` using `.of_isLocalization ((nonZeroDivisors A).map (algebraMap A Aq))`. Establish `: Algebra.EssFiniteType A L` using `.of_isLocalization L (nonZeroDivisors A)`. Establish `: Algebra.EssFiniteType k L` using `.comp k A L`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Algebra.EssFiniteType A Aq` using `.of_isLocalization Aq q.primeCompl`. Establish `: Algebra.EssFiniteType k Aq` using `.comp k A Aq`. Establish `: Module.Projective Aq Ω[Aq⁄k]` using `Algebra.FormallySmooth.projective_kaehlerDifferential`. Establish `: Module.Finite Aq Ω[Aq⁄k]` using `inferInstance`. Establish `: Module.FinitePresentation Aq Ω[Aq⁄k]` using `Module.finitePresentation_of_projective _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Module.Flat Aq Ω[Aq⁄k]` using `Module.Flat.of_projective`. Establish `: Module.Free Aq Ω[Aq⁄k]` using `Module.free_of_flat_of_isLocalRing`. Establish `h1` using `(KaehlerDifferential.tensorKaehlerEquivOfFormallyEtale k Aq L).finrank_eq`. Rewrite `h1` using `[Module.finrank_baseChange]`. Use `show Module.finrank Aq Ω[Aq⁄k] = e`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, Module.finrank, GlobalTheory.rank_kaehler_eq_trdeg, he]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_away_of_smooth (k A L : Type) [Field k] [CharZero k] [CommRing A] [IsDomain A] [Algebra k A]
     [Algebra.Smooth k A] [Field L] [Algebra A L] [IsFractionRing A L] [Algebra k L] [IsScalarTower k A L]
@@ -73,9 +73,9 @@ theorem exists_away_of_smooth (k A L : Type) [Field k] [CharZero k] [CommRing A]
   simp
 
 /- English proof (translation)
-Use `(HasRingHomProperty.Spec_iff (P := @SmoothOfRelativeDimension e)).2 ?_` and prove the remaining obligations. Use `⟨{f | Algebra.IsStandardSmoothOfRelativeDimension e k (Localization.Away f)}, ?_, fun f hf => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Take `⟨m, hm, hle⟩` from `Ideal.exists_le_maximal _ h`. Take `⟨f, hf, hs⟩` from `exists_away_of_smooth k A L e he m`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `hf (hle (Ideal.subset_span hs))`. Establish `h : Algebra.IsStandardSmoothOfRelativeDimension e k (Localization.Away f)` using `hf`. Simplify `(RingHom.isStandardSmoothOfRelativeDimension_algebraMap e).2 h` using `[RingHom.algebraMap_toAlgebra, IsScalarTower.algebraMap_eq k A (Localization.Away f)]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem smoothOfRelativeDimension_spec (k A L : Type) [Field k] [CharZero k] [CommRing A] [IsDomain A] [Algebra k A]
     [Algebra.Smooth k A] [Field L] [Algebra A L] [IsFractionRing A L] [Algebra k L] [IsScalarTower k A L]
@@ -92,7 +92,7 @@ theorem smoothOfRelativeDimension_spec (k A L : Type) [Field k] [CharZero k] [Co
       (RingHom.isStandardSmoothOfRelativeDimension_algebraMap e).2 h
 
 /- English proof (translation)
-Establish `: Algebra.FormallySmooth ℚ A` using `inferInstance`. Establish `: Algebra.FinitePresentation ℚ A` using `inferInstance`. Establish `: Algebra.FormallyEtale ℚ F` using `Algebra.FormallyEtale.of_isSeparable ℚ F`. Conclude with `⟨Algebra.FormallySmooth.of_restrictScalars ℚ F A, Algebra.FinitePresentation.of_restrict_scalars_finitePresentation ℚ F A⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem smooth_of_numberField (F A : Type) [Field F] [NumberField F] [CommRing A] [Algebra ℚ A] [Algebra F A]
     [IsScalarTower ℚ F A] [Algebra.Smooth ℚ A] : Algebra.Smooth F A := by
@@ -105,9 +105,9 @@ theorem smooth_of_numberField (F A : Type) [Field F] [NumberField F] [CommRing A
 open Algebra in
 
 /- English proof (translation)
-Set `_ : Algebra ℚ Ω` to `DivisionRing.toRatAlgebra`. Establish `hQ : Algebra.trdeg ℚ Ω = Algebra.trdeg ℤ Ω` using `GlobalTheory.GenericEtale.trdeg_eq ℤ ℚ Ω Ω`. Establish `: IsScalarTower ℚ F Ω` using `IsScalarTower.of_algebraMap_eq fun r => by simp`. Establish `h` using `trdeg_add_eq ℚ F (A := Ω)`. Rewrite `h` using `[trdeg_eq_zero, zero_add]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[h, hQ]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem trdeg_numberField (F Ω : Type) [Field F] [NumberField F] [Field Ω] [CharZero Ω] [Algebra F Ω] :
     Algebra.trdeg F Ω = Algebra.trdeg ℤ Ω := by
@@ -119,9 +119,9 @@ theorem trdeg_numberField (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Ch
   rw [h, hQ]
 
 /- English proof (translation)
-Use `letI : Algebra F A := b.toAlgebra`. Establish `t1 : IsScalarTower ℚ F A` using `IsScalarTower.of_algebraMap_eq fun r => RingHom.congr_fun (Subsingleton.elim (algebraMap ℚ A) ((algebraMap F A).comp (algebraMap ℚ F))) r`. Establish `s1 : Algebra.Smooth F A` using `smooth_of_numberField F A`. Use `letI : Algebra F Ω := ((algebraMap A Ω).comp b).toAlgebra`. Establish `t2 : IsScalarTower F A Ω` using `IsScalarTower.of_algebraMap_eq' rfl`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Conclude with `smoothOfRelativeDimension_spec F A Ω n ((trdeg_numberField F Ω).trans ht)`.
+A detailed English derivation is pending.
 -/
 theorem smooth_spec_numberField (F A Ω : Type) [Field F] [NumberField F] [CommRing A] [IsDomain A] [Algebra ℚ A]
     [Algebra.Smooth ℚ A] [Field Ω] [CharZero Ω] [Algebra A Ω] [IsFractionRing A Ω] (b : F →+* A) (n : ℕ)
@@ -135,9 +135,9 @@ theorem smooth_spec_numberField (F A Ω : Type) [Field F] [NumberField F] [CommR
   exact smoothOfRelativeDimension_spec F A Ω n ((trdeg_numberField F Ω).trans ht)
 
 /- English proof (translation)
-Establish `h1` using `IsPullback.of_hasPullback g b'`. Establish `h2` using `isPullback_morphismRestrict (pullback.fst g b') U`. Establish `h3 : IsPullback ((pullback.fst g b' ⁻¹ᵁ U).ι ≫ pullback.snd g b') (pullback.fst g b' ∣_ U) b' (U.ι ≫ g)` using `h2.flip.paste_horiz h1.flip`. Establish `h4 : IsPullback b (j ≫ u.inv) b' (U.ι ≫ g)` using `hsq.of_iso (Iso.refl _) (Iso.refl _) u.symm (Iso.refl _) (by simp) (by simp) (by simp) (by rw [← hu]; simp)`. Establish `he` using `IsPullback.isoIsPullback_hom_fst _ _ h3 h4`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← he]`. Use `smoothOfRelativeDimension_comp 0 n (IsPullback.isoIsPullback _ _ h3 h4).hom b` as an intermediate fact. Rewrite `this` using `[zero_add]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem smooth_on_open {X S T Z Q : Scheme.{0}} (g : X ⟶ S) (b' : T ⟶ S) (U : X.Opens) (u : U.toScheme ≅ Z)
     (i : Z ⟶ S) (hu : u.hom ≫ i = U.ι ≫ g) (j : Q ⟶ Z) (b : Q ⟶ T) (hsq : IsPullback b j b' i) (n : ℕ)
@@ -155,19 +155,17 @@ theorem smooth_on_open {X S T Z Q : Scheme.{0}} (g : X ⟶ S) (b' : T ⟶ S) (U 
   rwa [zero_add] at this
 
 /- English proof (translation)
-Use `letI : Algebra (𝓞 F) Z := i.toAlgebra`. Use `letI : Algebra Z Q := j.toAlgebra`. Use `letI : Algebra F Q := b.toAlgebra`. Use `letI : Algebra (𝓞 F) Q := (j.comp i).toAlgebra`. Establish `t1 : IsScalarTower (𝓞 F) Z Q` using `IsScalarTower.of_algebraMap_eq' rfl`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Establish `t2 : IsScalarTower (𝓞 F) F Q` using `IsScalarTower.of_algebraMap_eq' h`. Establish `l1 : IsLocalization (Algebra.algebraMapSubmonoid (𝓞 F) (nonZeroDivisors ℤ)) F` using `IsIntegralClosure.isLocalization ℤ ℚ F (𝓞 F)`. Establish `l2 : IsLocalization (Algebra.algebraMapSubmonoid Z (Algebra.algebraMapSubmonoid (𝓞 F) (nonZeroDivisors ℤ))) Q`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨_, ⟨_, ⟨n, hn, rfl⟩, rfl⟩⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Establish `hn0 : n ≠ 0` using `nonZeroDivisors.ne_zero hn`. Establish `e : algebraMap Z Q (algebraMap (𝓞 F) Z (algebraMap ℤ (𝓞 F) n)) = (n : Q)` using `by simp`. Use `show IsUnit (algebraMap Z Q (algebraMap (𝓞 F) Z (algebraMap ℤ (𝓞 F) n)))`. Rewrite using `[e]`. Establish `hu'` using `hu n.natAbs (Int.natAbs_ne_zero.2 hn0)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `Int.natAbs_eq n with hh | hh` into its components or cases. Rewrite using `[hh]`. Simplify using `using hu'`. Rewrite using `[hh]`. Simplify using `using hu'`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `q`. Take `⟨m, hm, z, hz⟩` from `hs q`. Use `⟨⟨z, ⟨_, ⟨algebraMap ℤ (𝓞 F) (m : ℤ), ⟨(m : ℤ), mem_nonZeroDivisors_of_ne_zero (by exact_mod_cast hm), rfl⟩, rfl⟩⟩⟩, ?_⟩` and prove the remaining obligations. Use `show q * algebraMap Z Q (algebraMap (𝓞 F) Z (algebraMap ℤ (𝓞 F) (m : ℤ))) = algebraMap Z Q z`. Establish `e : algebraMap Z Q (algebraMap (𝓞 F) Z (algebraMap ℤ (𝓞 F) (m : ℤ))) = (m : Q)` using `by simp`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[e, mul_comm]`. Conclude with `hz.symm`. Introduce `a c hac`. Conclude with `⟨1, by rw [hj hac]⟩`. Establish `hp : Algebra.IsPushout (𝓞 F) Z F Q` using `Algebra.isPushout_of_isLocalization (Algebra.algebraMapSubmonoid (𝓞 F) (nonZeroDivisors ℤ)) F Z Q`.
-
-Establish `hc` using `(CommRingCat.isPushout_iff_isPushout (R := 𝓞 F) (S := F) (R' := Z) (S' := Q)).2 hp`. Conclude with `(isPullback_SpecMap_of_isPushout _ _ _ _ hc).flip`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isPullback_spec (F Z Q : Type) [Field F] [NumberField F] [CommRing Z] [CommRing Q]
     (i : 𝓞 F →+* Z) (j : Z →+* Q) (b : F →+* Q) (h : j.comp i = b.comp (algebraMap (𝓞 F) F))
@@ -208,7 +206,7 @@ theorem isPullback_spec (F Z Q : Type) [Field F] [NumberField F] [CommRing Z] [C
   exact (isPullback_SpecMap_of_isPushout _ _ _ _ hc).flip
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `hg.bij.2 a`. Use `⟨s, ?_⟩` and prove the remaining obligations. Use `show (X.presheaf.stalkSpecializes specializes_rfl ≫ Scheme.stalkClosedPointTo ξ).hom s = a`. Rewrite using `[TopCat.Presheaf.stalkSpecializes_refl, Category.id_comp]`. Conclude with `hs`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_regAt_gen {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRingCat.of Ω) ⟶ X} (hg : IsCptGen ξ) (a : Ω) :
     a ∈ regAt ξ ⟨genPt ξ, specializes_rfl⟩ := by
@@ -219,23 +217,21 @@ theorem mem_regAt_gen {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRi
   exact hs
 
 /- English proof (translation)
-Take `⟨U, hU, hm⟩` from `hT.affine c hc`. Establish `hgen : genPt ξ ∈ U` using `(hm _).2 ⟨specializes_rfl, hc, fun c' => mem_regAt_gen hT.gen _⟩`. Establish `hsp : ∀ q, q ∈ U → genPt ξ ⤳ q` using `fun q h => ((hm q).1 h).1`. Take `⟨inj, ran⟩` from `GlobalTheory.T.germ_genPt_injective_range_regAt X Ω ξ hT.gen U hgen hsp`. Set `val : Γ(X, U) →+* Ω` to `(X.presheaf.germ U (genPt ξ) hgen ≫ Scheme.stalkClosedPointTo ξ).hom`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `memZ : ∀ a, a ∈ Algebra.adjoin ℤ (Set.range fun j => x j / x c) ↔ a ∈ val.range` using `fun a => (hT.ring c hc a).trans ((forall_congr' fun q => imp_congr ⟨fun h => (hm q.1).2 ⟨q.2, h⟩, fun h => ((hm q.1).1 h).2⟩ Iff.rfl).trans (ran a).symm)`. Set `eU : Γ(X, U) ≃+* Algebra.adjoin ℤ (Set.range fun j => x j / x c)` to `RingEquiv.ofBijective (val.codRestrict _ fun t => (memZ _).2 ⟨t, rfl⟩) ⟨fun a b hab => inj (congrArg Subtype.val hab), fun r => by`. Take `⟨t, ht⟩` from `(memZ r.1).1 r.2`. Conclude with `⟨t, Subtype.ext ht⟩⟩`. Establish `hA : Spec.map (CommRingCat.ofHom val) ≫ hU.fromSpec = ξ`.
+Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `h` using `Scheme.Spec_stalkClosedPointTo_fromSpecStalk ξ`. Establish `h2` using `hU.fromSpecStalk_eq_fromSpecStalk hgen`. Rewrite `h2` using `[IsAffineOpen.fromSpecStalk]`. Establish `e : CommRingCat.ofHom val = X.presheaf.germ U (genPt ξ) hgen ≫ Scheme.stalkClosedPointTo ξ` using `rfl`. Rewrite using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `(congrArg (· ≫ hU.fromSpec) (Spec.map_comp (X.presheaf.germ U (genPt ξ) hgen) (Scheme.stalkClosedPointTo ξ))).trans ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, h2]`. Conclude with `h`. Set `ρ : O →+* Γ(X, U)` to `(Spec.preimage (hU.fromSpec ≫ g)).hom`. Establish `hρ : spMap ρ = hU.fromSpec ≫ g` using `by show Spec.map (CommRingCat.ofHom (Spec.preimage (hU.fromSpec ≫ g)).hom) = _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[CommRingCat.ofHom_hom, Spec.map_preimage]`. Establish `hval : ∀ o, val (ρ o) = φ o`. Establish `h1 : spMap (val.comp ρ) = spMap φ`. Rewrite using `[← hg, ← hA, Category.assoc, ← hρ]`. Use `show Spec.map (CommRingCat.ofHom (val.comp ρ)) = _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[CommRingCat.ofHom_comp, Spec.map_comp]`. Establish `h2` using `Spec.map_injective h1`. Introduce `o`. Conclude with `congrArg (fun f => f.hom o) h2`. Set `i : O →+* Algebra.adjoin ℤ (Set.range fun j => x j / x c)` to `(eU : Γ(X, U) →+* _).comp ρ`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `eS` to `eU.symm.toRingHom`. Establish `: IsIso (spMap eS)`. Establish `: IsIso (CommRingCat.ofHom eS)` using `(eU.symm.toCommRingCatIso).isIso_hom`. Use `infer_instance`. Use `⟨U, i, hU.isoSpec ≪≫ asIso (spMap eS), hm, ?_, fun o => hval o⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Establish `e : spMap eS ≫ spMap i = spMap ρ` using `by show Spec.map _ ≫ Spec.map _ = Spec.map _`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Use `congr 2`. Use extensionality with `o`. Simplify using `only [i, CommRingCat.hom_ofHom, RingHom.comp_apply]`.
-
-Conclude with `eU.symm_apply_apply _`. Simplify using `only [Iso.trans_hom, asIso_hom, Category.assoc]`. Rewrite using `[e, hρ, ← hU.isoSpec_inv_ι]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_chart {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Sp Ω ⟶ X} {κ : Type} {x : κ → Ω}
     (hT : CoordTie ℤ ξ x) {O : Type} [CommRing O] (g : X ⟶ Sp O) (φ : O →+* Ω) (hg : ξ ≫ g = spMap φ) (c : κ)
@@ -303,9 +299,9 @@ variable {Ω : Type} [Field Ω] [CharZero Ω] {κ : Type}
 open GlobalTheory.CompanionTheory.Ar.SncBase.Mdl
 
 /- English proof (translation)
-Establish `halg : IsAlgebraic ℤ r` using `(IsFractionRing.isAlgebraic_iff ℤ ℚ F).2 (Algebra.IsAlgebraic.isAlgebraic r)`. Take `⟨n, hn, hr⟩` from `halg.exists_integral_multiple`. Establish `hn' : (n : Ω) ≠ 0` using `Int.cast_ne_zero.2 hn`. Establish `e : cst r = algebraMap ℚ Ω (n : ℚ)⁻¹ * cst (algebraMap (𝓞 F) F (IsIntegralClosure.mk' (𝓞 F) (n • r) hr))`. Rewrite using `[IsIntegralClosure.algebraMap_mk', zsmul_eq_mul, map_mul, map_intCast]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[hn']`. Rewrite using `[e]`. Conclude with `Subalgebra.mul_mem _ (Subalgebra.algebraMap_mem _ _) (chartZ_le x c (h _))`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cst_mem_chartQ (F : Type) [Field F] [NumberField F] (cst : F →+* Ω) (x : κ → Ω) (c : κ)
     (h : ∀ a : 𝓞 F, cst (algebraMap (𝓞 F) F a) ∈ chartZ x c) (r : F) : cst r ∈ chartQ x c := by
@@ -319,9 +315,9 @@ theorem cst_mem_chartQ (F : Type) [Field F] [NumberField F] (cst : F →+* Ω) (
   exact Subalgebra.mul_mem _ (Subalgebra.algebraMap_mem _ _) (chartZ_le x c (h _))
 
 /- English proof (translation)
-Use `IsFractionRing.of_field _ _ fun a => ?_` and prove the remaining obligations. Establish `hin : InChart ξ x c ⟨genPt ξ, specializes_rfl⟩` using `⟨hc, fun c' => mem_regAt_gen hT.gen _⟩`. Take `⟨s, hs, hu, hsa⟩` from `(GlobalTheory.T.regAt_iff_chart_localization X Ω ξ ℤ κ x hT c _ hin a).1 (mem_regAt_gen hT.gen a)`. Use `⟨⟨s * a, chartZ_le x c hsa⟩, ⟨s, chartZ_le x c hs⟩, ?_⟩` and prove the remaining obligations. Use `show a = s * a / s`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_div_cancel_left₀ _ hu.1]`.
+A detailed English derivation is pending.
 -/
 theorem isFractionRing_chartQ {X : Scheme.{0}} {ξ : Sp Ω ⟶ X} {x : κ → Ω} (hT : CoordTie ℤ ξ x) {c : κ} (hc : x c ≠ 0) :
     IsFractionRing (chartQ x c) Ω := by
@@ -333,11 +329,11 @@ theorem isFractionRing_chartQ {X : Scheme.{0}} {ξ : Sp Ω ⟶ X} {x : κ → Ω
   rw [mul_div_cancel_left₀ _ hu.1]
 
 /- English proof (translation)
-Use `le_antisymm (Algebra.adjoin_le ?_) (Algebra.adjoin_le ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨c', rfl⟩ show (∏ k, y ⟨k, c' k⟩) / ∏ k, y ⟨k, cc k⟩ ∈ _`. Rewrite using `[← Finset.prod_div_distrib]`. Conclude with `Subalgebra.prod_mem _ fun k _ => Algebra.subset_adjoin ⟨⟨k, c' k⟩, rfl⟩`. Introduce and unpack `_ ⟨⟨k, i⟩, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `Algebra.subset_adjoin ⟨Function.update cc k i, ?_⟩` and prove the remaining obligations. Use `show (∏ k', y ⟨k', Function.update cc k i k'⟩) / ∏ k', y ⟨k', cc k'⟩ = y ⟨k, i⟩ / y ⟨k, cc k⟩`. Rewrite using `[← Finset.prod_div_distrib, Finset.prod_eq_single k]`. Simplify using the standard rewrite rules. Introduce `b _ hb`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Function.update_of_ne hb, div_self (hc b)]`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem chartQ_segre {K : Type} [Fintype K] {J : K → Type} (y : (Σ k, J k) → Ω) (cc : (k : K) → J k)
     (hc : ∀ k, y ⟨k, cc k⟩ ≠ 0) :
@@ -359,17 +355,15 @@ theorem chartQ_segre {K : Type} [Fintype K] {J : K → Type} (y : (Σ k, J k) �
     · simp
 
 /- English proof (translation)
-Establish `key : ∀ c : {c // x c ≠ 0}, ∃ U : X.Opens, (∀ q : X, q ∈ U ↔ ∃ h : genPt ξ ⤳ q, InChart ξ x c.1 ⟨q, h⟩) ∧ SmoothOfRelativeDimension n ((pullback.fst g (spMap (algebraMap (𝓞 F) F)) ⁻¹ᵁ U).ι ≫ pullback.snd g (spMap (algebraMap (𝓞 F) F)))`. Introduce and unpack `⟨c, hc⟩`. Take `⟨U, i, u, hU, hu, hi⟩` from `exists_chart hT g _ hg c hc`. Establish `hb : ∀ r, cst r ∈ chartQ x c` using `cst_mem_chartQ F cst x c fun a => by`. Rewrite using `[← RingHom.comp_apply, ← hi]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(i a).2`. Use `hn c hc hb` as an intermediate fact. Use `⟨U, hU, smooth_on_open g _ U u (spMap i) hu (spMap (chartIncl x c)) (spMap (cst.codRestrict (chartQ x c) hb)) ?_ n⟩` and prove the remaining obligations. Use `isPullback_spec F _ _ i (chartIncl x c) (cst.codRestrict (chartQ x c) hb) ?_ ?_ ?_ ?_` and prove the remaining obligations. Use extensionality with `a`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hi a`. Introduce `a b hab`. Conclude with `Subtype.ext (congrArg (fun t : chartQ x c => (t : Ω)) hab)`. Introduce `m hm`. Establish `hd : (m : Ω) ≠ 0` using `Nat.cast_ne_zero.2 hm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hi' : (m : Ω)⁻¹ ∈ chartQ x c`. Use `(chartQ x c).algebraMap_mem ((m : ℚ)⁻¹)` as an intermediate fact. Simplify using `using this`. Conclude with `IsUnit.of_mul_eq_one ⟨_, hi'⟩ (Subtype.ext (by simp [hd]))`. Introduce `q`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨m, hm, hq⟩` from `exists_natCast_mul_mem x c q.2`. Conclude with `⟨m, hm, ⟨_, hq⟩, Subtype.ext (by simp [chartIncl])⟩`. Use `choose U hU hS using key`. Establish `: IsZariskiLocalAtSource (@SmoothOfRelativeDimension n)` using `HasRingHomProperty.instIsZariskiLocalAtSource`. Use `IsZariskiLocalAtSource.of_iSup_eq_top (P := @SmoothOfRelativeDimension n) (fun c => pullback.fst g (spMap (algebraMap (𝓞 F) F)) ⁻¹ᵁ U c) ?_ hS` and prove the remaining obligations.
-
-Use `top_le_iff.1 fun p _ => ?_` and prove the remaining obligations. Take `⟨c, hc⟩` from `hT.cover ⟨pullback.fst g (spMap (algebraMap (𝓞 F) F)) p, hall _⟩`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨⟨c, hc.1⟩, (hU ⟨c, hc.1⟩ _).2 ⟨hall _, hc⟩⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem smooth_pullback {X : Scheme.{0}} {ξ : Sp Ω ⟶ X} (hall : ∀ q : X, genPt ξ ⤳ q) {x : κ → Ω}
     (hT : CoordTie ℤ ξ x) (F : Type) [Field F] [NumberField F] (g : X ⟶ Sp (𝓞 F)) (cst : F →+* Ω)
@@ -416,15 +410,13 @@ end Charts
 open GlobalTheory.CompanionTheory.Ar.SncBase.Mdl in
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c Y Ω _ _ K _ J _ y M f y₀ U hξ hsm htr`. Use `haveI : FiniteDimensional ℚ c.F := c.fin`. Use `haveI : NumberField c.F := { to_charZero := inferInstance, to_finiteDimensional := c.fin }`. Choose the witnesses or unpack the hypotheses as in `⟨cst, hcst⟩ : ∃ cst : c.F →+* Ω, y₀ ≫ Y.j ≫ Y.s = spMap (cst.comp (algebraMap (𝓞 c.F) c.F)) := by`. Use `⟨(Spec.preimage (y₀ ≫ pullback.snd _ _)).hom, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[Model.j, Category.assoc, pullback.condition, ← Category.assoc Y.jQ, Y.jQ_over, ← Category.assoc]`. Unfold `spMap`. Rewrite using `[CommRingCat.ofHom_comp, Spec.map_comp, CommRingCat.ofHom_hom, Spec.map_preimage]`. Establish `hg : M.ξ ≫ f ≫ Y.s = spMap (cst.comp (algebraMap (𝓞 c.F) c.F))`. Rewrite using `[← Category.assoc, hξ, Category.assoc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hcst`. Establish `hP : SmoothOfRelativeDimension D.dim (pullback.snd (f ≫ Y.s) (spMap (algebraMap (𝓞 c.F) c.F)))`. Use `smooth_pullback M.all M.tie c.F (f ≫ Y.s) cst hg D.dim fun c' hc' hb => ?_` and prove the remaining obligations. Establish `hy : ∀ k, y ⟨k, c' k⟩ ≠ 0` using `fun k => Finset.prod_ne_zero_iff.1 hc' k (Finset.mem_univ k)`. Establish `hA : Algebra.Smooth ℚ (chartQ (fun c' : (k : K) → J k => ∏ k, y ⟨k, c' k⟩) c')`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[chartQ_segre y c' hy]`. Conclude with `hsm c' hy`. Establish `f1 : IsFractionRing (chartQ (fun c' : (k : K) → J k => ∏ k, y ⟨k, c' k⟩) c') Ω` using `isFractionRing_chartQ M.tie hc'`. Conclude with `smooth_spec_numberField c.F _ Ω _ D.dim htr`. Use `smoothOfRelativeDimension_comp 0 D.dim U.ι (pullback.snd (f ≫ Y.s) (spMap (algebraMap (𝓞 c.F) c.F)))` as an intermediate fact.
-
-Rewrite `this` using `[zero_add]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem smooth_genericFibre : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Tor.Level H) (Xo : Moduli D l) (c : Coeff l) (Y : Model Xo c (algebraMap (𝓞 c.F) c.F)) (Ω : Type) [Field Ω] [CharZero Ω] (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (y : (Σ k, J k) → Ω) (M : PModel ℤ (fun c' : (k : K) → J k => ∏ k, y ⟨k, c' k⟩)) (f : M.X ⟶ Y.X) (y₀ : Sp Ω ⟶ Xo.XF c) (U : (pullback (f ≫ Y.s) (spMap (algebraMap (𝓞 c.F) c.F))).Opens), M.ξ ≫ f = y₀ ≫ Y.j → SmoothGenericFibreM y → Algebra.trdeg ℤ Ω = ((D.dim : ℕ) : Cardinal) → SmoothOfRelativeDimension D.dim (U.ι ≫ pullback.snd (f ≫ Y.s) (spMap (algebraMap (𝓞 c.F) c.F))) := by
   intro E _ _ _ H D l Xo c Y Ω _ _ K _ J _ y M f y₀ U hξ hsm htr

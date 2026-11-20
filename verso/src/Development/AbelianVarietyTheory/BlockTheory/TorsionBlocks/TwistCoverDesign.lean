@@ -61,11 +61,11 @@ def HalfOfLevelAndCoverReal : Prop :=
       ∀ t : T, TwistGuard D (R.Q t) → HalvesAt C.Q.l R.Pg (R.Q t)
 
 /- English proof (translation)
-Introduce `hz`. Unfold `Formalism.BasicNotions.Host.AA Formalism.BasicNotions.Host.AA0 at hz`. Break down `mul_eq_zero.mp hz with h1 | h1` into its components or cases. Rewrite `h1` using `[FractionalIdeal.coeIdeal_eq_zero]`. Unfold `Formalism.BasicNotions.Host.ccE at h1`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite `h1` using `[Ideal.map_eq_bot_iff_of_injective (FaithfulSMul.algebraMap_injective _ _)]`. Conclude with `D.host.ccK_ne_bot h1`. Rewrite `h1` using `[inv_eq_zero, FractionalIdeal.coeIdeal_eq_zero]`. Establish `h2` using `D.host.𝔟_spec.2`. Rewrite `h2` using `[h1]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `at h2`.
+A detailed English derivation is pending.
 -/
 theorem AA_ne_zero (D : D7) : D.host.AA ≠ 0 := by
   intro hz
@@ -81,9 +81,9 @@ theorem AA_ne_zero (D : D7) : D.host.AA ≠ 0 := by
     simp at h2
 
 /- English proof (translation)
-Unfold `ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level.Dvd`. Use `⟨⟨n, h.level⟩, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[h.half]`. Introduce `x hx`. Conclude with `(Submodule.mem_inf.mp (Ideal.mul_le_inf hx)).1`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h.aux]`.
+A detailed English derivation is pending.
 -/
 theorem IsCoverHalf.dvd {H : ModHost D} {l l₂ : Level H} {Q : Finset (Place D)} {n : ℕ} {I : Ideal (𝓞 D.host.E)}
     (h : IsCoverHalf l Q n I l₂) : l.Dvd l₂ := by

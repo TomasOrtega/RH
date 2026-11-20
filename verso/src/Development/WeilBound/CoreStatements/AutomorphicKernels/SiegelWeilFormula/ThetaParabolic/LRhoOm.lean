@@ -18,7 +18,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {l : ((κ → AF F) → ℂ) →ₗ[ℂ] ℂ}
 
 /- English proof (translation)
-Rewrite using `[dd.form]`. Use function extensionality and compare the values at `x`. Simplify using `only [Darboux.rho, schr, map_add, Pi.smul_apply, smul_eq_mul, ← mul_assoc, ← AddChar.map_add_eq_mul, Prod.fst_add, Prod.snd_add, add_assoc, add_dotProduct, dotProduct_add]`. Use `congr 2`. Take the linear combination `(-((dd.e a).1 ⬝ᵥ (dd.e b).2)) * invOf_mul_self (2 : AF F)`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem rho_rho (a b : Matrix (Fin m) (Fin n ⊕ Fin n) (AE F E)) (φ : (κ → AF F) → ℂ) :
     dd.rho ψ a (dd.rho ψ b φ) =
@@ -31,7 +31,7 @@ theorem rho_rho (a b : Matrix (Fin m) (Fin n ⊕ Fin n) (AE F E)) (φ : (κ → 
   linear_combination (-((dd.e a).1 ⬝ᵥ (dd.e b).2)) * invOf_mul_self (2 : AF F)
 
 /- English proof (translation)
-Establish `e1` using `congrArg l (rho_rho (dd := dd) (ψ := ψ) (Z * (diagCols (Fin n) : Matrix (Fin n ⊕ Fin n) (Fin n) (AE F E))ᵀ) w Φ)`. Establish `mem : dd.rho ψ w Φ ∈ schA F κ` using `GlobalTheory.HeisSchA.schr_mem_schA ψ hψ _ Φ hΦ`. Rewrite `e1` using `[map_smul, smul_eq_mul]`. Establish `e2` using `(h.kill Z _ mem).symm.trans e1`. Rewrite using `[e2, ← mul_assoc, ← AddChar.map_add_eq_mul, neg_add_cancel, AddChar.map_zero_eq_one, one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem l_shift (h : IsDbl (σ := σ) (A := A) (Y := Y) (κ := κ) ψ dd χ om S l) (hψ : IsStd ψ)
     (Z : Matrix (Fin m) (Fin n) (AE F E)) (w : Matrix (Fin m) (Fin n ⊕ Fin n) (AE F E)) {Φ : (κ → AF F) → ℂ}
@@ -46,9 +46,9 @@ theorem l_shift (h : IsDbl (σ := σ) (A := A) (Y := Y) (κ := κ) ψ dd χ om S
   rw [e2, ← mul_assoc, ← AddChar.map_add_eq_mul, neg_add_cancel, AddChar.map_zero_eq_one, one_mul]
 
 /- English proof (translation)
-Rewrite using `[h.weil.2.1.impl x _ Φ hΦ]`. Use `congr 3`. Simplify using `only [actB]`. Rewrite using `[Matrix.mul_assoc, ← Matrix.transpose_mul]`. Express the relevant statement in the definitionally equal form `u = u * (mat2 x * mat2 x⁻¹)ᵀ`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[show mat2 x * mat2 x⁻¹ = 1 from Units.mul_inv x.1, Matrix.transpose_one, Matrix.mul_one]`.
+Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem l_rho_om (h : IsDbl (σ := σ) (A := A) (Y := Y) (κ := κ) ψ dd χ om S l) (x : G2 σ Y)
     (u : Matrix (Fin m) (Fin n ⊕ Fin n) (AE F E)) {Φ : (κ → AF F) → ℂ} (hΦ : Φ ∈ schA F κ) :
@@ -61,7 +61,7 @@ theorem l_rho_om (h : IsDbl (σ := σ) (A := A) (Y := Y) (κ := κ) ψ dd χ om 
   rw [show mat2 x * mat2 x⁻¹ = 1 from Units.mul_inv x.1, Matrix.transpose_one, Matrix.mul_one]
 
 /- English proof (translation)
-Rewrite using `[h.weil.2.2 l h.adm h.kill x t hx φ hφ, modu_norm, Fintype.card_fin]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem l_om_par (h : IsDbl (σ := σ) (A := A) (Y := Y) (κ := κ) ψ dd χ om S l) {x : G2 σ Y}
     {t : GL (Fin n) (AE F E)} (hx : IsPar x t) {φ : (κ → AF F) → ℂ} (hφ : φ ∈ schA F κ) :
@@ -70,7 +70,7 @@ theorem l_om_par (h : IsDbl (σ := σ) (A := A) (Y := Y) (κ := κ) ψ dd χ om 
   rw [h.weil.2.2 l h.adm h.kill x t hx φ hφ, modu_norm, Fintype.card_fin]
 
 /- English proof (translation)
-Establish `e : S g (dd.rho ψ (mat g⁻¹ * u) Φ) = dd.rho ψ (mat g * (mat g⁻¹ * u)) (S g Φ)` using `h.lin.impl g _ Φ hΦ`. Rewrite `e` using `[← Matrix.mul_assoc, show mat g * mat g⁻¹ = 1 from Units.mul_inv g.1, Matrix.one_mul]`. Establish `mem : dd.rho ψ (mat g⁻¹ * u) Φ ∈ schA F κ` using `GlobalTheory.HeisSchA.schr_mem_schA ψ hψ _ Φ hΦ`. Rewrite using `[← e, h.fix g _ mem]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem l_rho_S (h : IsDbl (σ := σ) (A := A) (Y := Y) (κ := κ) ψ dd χ om S l) (hψ : IsStd ψ) (g : UA σ A.J)
     (u : Matrix (Fin m) (Fin n ⊕ Fin n) (AE F E)) {Φ : (κ → AF F) → ℂ} (hΦ : Φ ∈ schA F κ) :
@@ -81,9 +81,9 @@ theorem l_rho_S (h : IsDbl (σ := σ) (A := A) (Y := Y) (κ := κ) ψ dd χ om S
   rw [← e, h.fix g _ mem]
 
 /- English proof (translation)
-Take `⟨y, z, hyz⟩` from `h.rat a`. Take `⟨y', z', hyz'⟩` from `h.rat c`. Establish `h2 : ⅟(2 : AF F) = algebraMap F (AF F) (1 / 2)` using `invOf_eq_right_inv (by`. Rewrite using `[← map_ofNat (algebraMap F (AF F)) 2, ← map_mul, mul_one_div_cancel two_ne_zero, map_one])`. Establish `hd : ∀ u v : κ → F, (fun i => algebraMap F (AF F) (u i)) ⬝ᵥ (fun i => algebraMap F (AF F) (v i)) = algebraMap F (AF F) (u ⬝ᵥ v)` using `fun u v => by simp [dotProduct]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[dd.form, hyz, hyz']`. Simplify using `only [hd, h2, ← map_sub, ← map_mul, ← map_neg]`. Conclude with `hψ.2.1 _`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem psi_rat (h : IsDbl (σ := σ) (A := A) (Y := Y) (κ := κ) ψ dd χ om S l) (hψ : IsStd ψ)
     (a c : Matrix (Fin m) (Fin n ⊕ Fin n) E) :

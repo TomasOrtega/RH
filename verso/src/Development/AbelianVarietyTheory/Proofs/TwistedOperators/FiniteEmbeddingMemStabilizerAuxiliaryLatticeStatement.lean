@@ -17,7 +17,7 @@ set_option maxHeartbeats 1600000
 
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.FinEmbLat.finEmb_mem_stabGL` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FFiniteEmbeddingMemStabilizerAuxiliaryLattice.lean&line=84#L84)
 -/

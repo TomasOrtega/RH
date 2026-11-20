@@ -14,7 +14,7 @@ noncomputable section
 variable {m n : ℕ}
 
 /- English proof (translation)
-Simplify using `only [HermNorm.pointOf]`. Rewrite using `[← Matrix.mulVec_add]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem HermNorm.pointOf_add' (h : HermNorm n) (v w : EuclideanSpace ℂ (Fin n)) :
     h.pointOf (v + w) = h.pointOf v + h.pointOf w := by
@@ -23,7 +23,7 @@ theorem HermNorm.pointOf_add' (h : HermNorm n) (v w : EuclideanSpace ℂ (Fin n)
   rfl
 
 /- English proof (translation)
-Simplify using `only [HermNorm.pointOf]`. Rewrite using `[← Matrix.mulVec_smul]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem HermNorm.pointOf_smul' (h : HermNorm n) (c : ℂ) (v : EuclideanSpace ℂ (Fin n)) :
     h.pointOf (c • v) = c • h.pointOf v := by
@@ -105,7 +105,7 @@ def TangentGaussMoment.Statement : Prop :=
       ∫⁻ r in Set.Ioi (0 : ℝ), tangentGaussProfile n m r * ENNReal.ofReal (2 * m * r ^ (2 * m - 1)) < ⊤
 
 /- English proof (translation)
-Use `⟨isProjPrime_coordPlaneIdeal one_pos 1, one_pos, by norm_num, ?_, measurable_const⟩` and prove the remaining obligations. Use `filter_upwards [ae_coordPlaneBlock_det_ne_zero 1 1] with π hπ`. Use `Filter.Eventually.of_forall fun w => ?_` and prove the remaining obligations. Rewrite using `[fibreCount_coordPlaneIdeal π hπ w]`. Conclude with `ENat.one_ne_top`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ConeAreaFormula.hypotheses_inhabited :
     IsProjPrime (coordPlaneIdeal 1 1) ∧ 0 < 1 ∧ 1 ≤ 1 + 1 ∧
@@ -119,7 +119,7 @@ theorem ConeAreaFormula.hypotheses_inhabited :
   exact ENat.one_ne_top
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4, -⟩` from `ConeAreaFormula.hypotheses_inhabited`. Conclude with `⟨h1, h2, h3, h4⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem ConeTangentAverage.hypotheses_inhabited :
     IsProjPrime (coordPlaneIdeal 1 1) ∧ 0 < 1 ∧ 1 ≤ 1 + 1 ∧
@@ -130,7 +130,7 @@ by
   exact ⟨h1, h2, h3, h4⟩
 
 /- English proof (translation)
-Use `⟨one_pos, ?_, (coordBall_mass (by norm_num : 1 ≤ 1 + 1)).2, by fun_prop⟩` and prove the remaining obligations. Introduce `y hy t _ j hj`. Simplify using `[hy j hj]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem ConeRadialIntegral.hypotheses_inhabited :
     0 < 1 ∧

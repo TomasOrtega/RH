@@ -13,19 +13,17 @@ noncomputable section
 open Classical
 
 /- English proof (translation)
-Establish `hsum : ∀ (ι : Type) (s : Finset ι) (g : ι → T → ℂ), (∀ i ∈ s, K (g i)) → K (∑ i ∈ s, g i)`. Introduce `ι s g`. Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Introduce `_`. Rewrite using `[Finset.sum_empty]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hc 0`. Introduce `a s ha ih hg`. Rewrite using `[Finset.sum_insert ha]`. Conclude with `hadd _ _ (hg a (Finset.mem_insert_self a s)) (ih fun i hi => hg i (Finset.mem_insert_of_mem hi))`. Establish `hprod : ∀ (ι : Type) (s : Finset ι) (g : ι → T → ℂ), (∀ i ∈ s, K (g i)) → K (∏ i ∈ s, g i)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `ι s g`. Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Introduce `_`. Rewrite using `[Finset.prod_empty]`. Conclude with `hc 1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a s ha ih hg`. Rewrite using `[Finset.prod_insert ha]`. Conclude with `hmul _ _ (hg a (Finset.mem_insert_self a s)) (ih fun i hi => hg i (Finset.mem_insert_of_mem hi))`. Introduce `f`. Establish `key : f = ∑ t, (fun _ : T => f t) * ∏ s ∈ Finset.univ.erase t, ((x + fun _ : T => -x s) * fun _ : T => (x t - x s)⁻¹)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `u`. Simplify using `only [Finset.sum_apply, Pi.mul_apply, Finset.prod_apply, Pi.add_apply]`. Rewrite using `[Finset.sum_eq_single u]`. Rewrite using `[Finset.prod_eq_one, mul_one]`. Introduce `s hs`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hne : x u - x s ≠ 0` using `sub_ne_zero.mpr (fun h => (Finset.ne_of_mem_erase hs) (hinj h).symm)`. Rewrite using `[← sub_eq_add_neg, mul_inv_cancel₀ hne]`. Introduce `t _ htu`. Rewrite using `[Finset.prod_eq_zero (Finset.mem_erase.mpr ⟨Ne.symm htu, Finset.mem_univ u⟩), mul_zero]`. Rewrite using `[add_neg_cancel, zero_mul]`.
-
-Introduce `h`. Conclude with `absurd (Finset.mem_univ u) h`. Rewrite using `[key]`. Conclude with `hsum _ _ _ fun t _ => hmul _ _ (hc _) (hprod _ _ _ fun s _ => hmul _ _ (hadd _ _ hx (hc _)) (hc _))`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lagrange_all {T : Type} [Fintype T] (K : (T → ℂ) → Prop) (hc : ∀ c : ℂ, K fun _ => c)
     (hadd : ∀ f g, K f → K g → K (f + g)) (hmul : ∀ f g, K f → K g → K (f * g))
@@ -72,25 +70,23 @@ section main
 open Formalism.FourierDecayAlt.P.CutMP.Gauge Formalism.FourierDecayAlt.P.CutMP.Gauge.GC Formalism.FourierDecayAlt.P.CutMP.Gauge.GC.GT
 
 /- English proof (translation)
-Introduce `Wp Wq _ _ _ _ _ _ P Bs hk X d hA e he hQ`. Take `⟨hpl, hL, -, -, -⟩` from `hA`. Establish `hsm : ∀ (Φ : Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π') ρ, rawR P Bs.μsec e (Φ : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) ρ ∈ MA.smSub P.r P.TT` using `fun Φ ρ => radial_space_smoothness Wp Wq P Bs hpl hk e he Φ ρ`. Establish `hP : P.OK` using `hpl.1`. Establish `hz` using `fun q => (sec_pt P Bs hpl q).2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgg : ∀ q : MA.Qp P.r P.TT, ((ggS P : MA.SmQ P.r P.TT) : MA.Qp P.r P.TT → ℂ) q = q.1.2 * (starRingEnd ℂ) q.1.2 - (P.TT : ℂ)` using `fun q => by show ((MA.coordQ (r := P.r) (TT := P.TT) M.vz : MA.SmQ P.r P.TT) : MA.Qp P.r P.TT → ℂ) q * ((MA.coordQ (r := P.r) (TT := P.TT) M.vzb : MA.SmQ P.r P.TT) : MA.Qp P.r P.TT → ℂ) q - (P.TT : ℂ) = _`. Rewrite using `[coordQ_vz, coordQ_vzb]`. Establish `hggv : ∀ q : MA.Qp P.r P.TT, ((ggS P : MA.SmQ P.r P.TT) : MA.Qp P.r P.TT → ℂ) q ≠ 0` using `fun q => by rw [hgg]; exact gg_ne P q`. Establish `hGG : ∀ q : MA.Qp P.r P.TT, ((Q.GGl P.k P.r Bs.z Bs.z' (NF.muZ P.k P.r Bs.μsec q.1.2) : ℝ) : ℂ) = q.1.2 * (starRingEnd ℂ) q.1.2 - (P.TT : ℂ)` using `fun q => by`. Rewrite using `[Complex.mul_conj]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Unfold `Q.GGl`. Rewrite using `[hz q, hpl.2.2.2.1, hpl.2.2.2.2.1]`. Establish `hT : ((P.TT : ℝ) : ℂ) = (P.T : ℂ) * (P.T' : ℂ)` using `by show (((P.T * P.T' : ℝ)) : ℂ) = _ push_cast; ring`. Rewrite using `[hT]`. Use `push_cast`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hsc : ∀ (w : (MA.DQ P).Pr) (f : M.Ty P → MA.SmQ P.r P.TT), MA.actA P (MA.sc P (MA.DQ P) w) f = fun ρ => w.1 (f ρ)` using `VLem.actA_sc P`. Establish `hGGi : Intw P Bs e d.L.GGi (MA.ggiA P (MA.DQ P))`. Introduce `Φ`. Rewrite using `[hL.2.2.2.2.2.2.2.2.2.2.2.1]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `(trR_fn P Bs hpl X e 5 (Ring.inverse (ggS P)) (fun q => by rw [inverse_apply _ hggv]; exact inv_ne_zero (hggv q)) (fun q => by rw [inverse_apply _ hggv, hgg]; show ((Q.GGl _ _ _ _ _ : ℝ) : ℂ)⁻¹ = _; rw [hGG q]) Φ).trans ?_` and prove the remaining obligations. Conclude with `(hsc ((MA.DQ P).ggiP P.TT) (trR P Bs e Φ)).symm`. Establish `hTT : 0 ≤ P.TT` using `(mul_pos hP.T_pos hP.T'_pos).le`. Use `haveI : Fact ((MA.DQ P).Laws P.TT) := ⟨Formalism.FourierDecayAlt.P.analytic_laws P.r P.TT hTT⟩`. Establish `hx : ∀ Y : ℝ, Intw P Bs e (d.κ fun ρ => M.xC P ρ (Y : ℂ)) (MA.kap P (MA.DQ P) fun ρ => M.xC P ρ (Y : ℂ))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `Y`. Establish `h1` using `intw_mul hsm hGGi (hQ Y 1 1)`. Establish `e1 : d.L.GGi * d.QQ (Y : ℂ) 1 1 = d.κ fun ρ => M.xC P ρ (Y : ℂ)` using `by show d.L.GGi * (d.L.GG * d.x (Y : ℂ)) = _`. Rewrite using `[← mul_assoc, d.L.GGi_GG, one_mul]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : MA.ggiA P (MA.DQ P) * MA.QQr P (MA.DQ P) (Y : ℂ) 1 1 = MA.kap P (MA.DQ P) fun ρ => M.xC P ρ (Y : ℂ)` using `by show MA.ggiA P (MA.DQ P) * (MA.ggA P (MA.DQ P) * MA.xA P (MA.DQ P) (Y : ℂ)) = _`. Rewrite using `[← mul_assoc, Formalism.FourierDecayAlt.P.MAx1.D5.ggi_gg, one_mul]`. Both sides reduce to the same expression. Rewrite `h1` using `[e1, e2]`. Conclude with `h1`.
+Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨Y₀, hinj⟩` from `Formalism.FourierDecayAlt.P5.Kfp.sep_real hP`. Use `lagrange_all (fun f => Intw P Bs e (d.κ f) (MA.kap P (MA.DQ P) f)) ?_ ?_ ?_ _ (hx Y₀) hinj` and prove the remaining obligations. Introduce `c`. Establish `e1 : d.κ (fun _ => c) = algebraMap ℂ _ c` using `d.κ.commutes c`. Establish `e2 : MA.kap P (MA.DQ P) (fun _ => c) = algebraMap ℂ _ c` using `(MA.kap P (MA.DQ P)).commutes c`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `show Intw P Bs e (d.κ (fun _ => c)) (MA.kap P (MA.DQ P) (fun _ => c))`. Rewrite using `[e1, e2]`. Conclude with `intw_alg hsm c`. Introduce `f g hf hg show Intw P Bs e (d.κ (f + g)) (MA.kap P (MA.DQ P) (f + g))`. Rewrite using `[map_add, map_add]`.
-
-Conclude with `intw_add hsm hf hg`. Introduce `f g hf hg show Intw P Bs e (d.κ (f * g)) (MA.kap P (MA.DQ P) (f * g))`. Rewrite using `[map_mul, map_mul]`. Conclude with `intw_mul hsm hf hg`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem quadratic_kappa_identity : GQKap := by
   intro Wp Wq _ _ _ _ _ _ P Bs hk X d hA e he hQ

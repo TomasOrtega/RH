@@ -15,25 +15,21 @@ theorem dC_translate {Γ : Type} [Group Γ] {m : ℕ} (F : (Fin (m + 1) → Γ) 
     dC (fun y : Fin (m + 1) → Γ => F fun j => g * y j) y = dC F (fun j => g * y j) := rfl
 
 /- English proof (translation)
-Introduce `Γ X _ _ act h1 hm m Φ hΦ hd hcyc z hz`. Use `haveI : Fintype X := Fintype.ofFinite X`. Establish `hinv : ∀ x, Inv (stabR act h1 hm x).subtype (Φ x)`. Introduce `x g y`. Establish `hg : act x (g : Γ) = x` using `g.2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show (Φ x fun j => (g : Γ) * y j) = Φ x y`. Rewrite using `[← hΦ x g y, hg]`. Establish `hex : ∀ x, ∃ Ψ : (Fin (m + 1) → Γ) → ℝ, Inv (stabR act h1 hm x).subtype Ψ ∧ dC Ψ = Φ x` using `fun x => hC Γ (stabR act h1 hm x) m (Φ x) (hinv x) (hd x) (hcyc x)`. Use `choose Ψ hΨi hΨd using hex`. Choose the witnesses or unpack the hypotheses as in `⟨rep, hrep1, hrep2⟩ : ∃ rep : X → X, (∀ x h, rep (act x h) = rep x) ∧ ∀ x, ∃ g, act (rep x) g = x := by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `letI S : Setoid X := ⟨fun a b => ∃ g, act a g = b, ⟨fun a => ⟨1, h1 a⟩, fun ⟨g, hg⟩ => ⟨g⁻¹, by rw [← hg, ← hm, mul_inv_cancel, h1]⟩, fun ⟨g, hg⟩ ⟨k, hk⟩ => ⟨g * k, by rw [hm, hg, hk]⟩⟩⟩`. Use `⟨fun x => (Quotient.mk S x).out, fun x h => ?_, fun x => ?_⟩` and prove the remaining obligations. Conclude with `congrArg Quotient.out (@Quotient.sound _ S _ _ ⟨h⁻¹, by rw [← hm, mul_inv_cancel, h1]⟩)`. Conclude with `@Quotient.mk_out _ S x`. Take `⟨gs, hgs⟩ : ∃ gs : X → Γ, ∀ x, act (rep x) (gs x) = x` from `⟨fun x => (hrep2 x).choose, fun x => (hrep2 x).choose_spec⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hshift : ∀ x h (y : Fin (m + 1) → Γ), Ψ (rep x) (fun j => gs x * (h * y j)) = Ψ (rep (act x h)) (fun j => gs (act x h) * y j)`. Introduce `x h y`. Establish `e2` using `hgs (act x h)`. Rewrite `e2`, the goal using `[hrep1]`. Establish `hk : act (rep x) (gs x * h * (gs (act x h))⁻¹) = rep x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `t : act (act (rep x) (gs (act x h))) (gs (act x h))⁻¹ = rep x`. Rewrite using `[← hm, mul_inv_cancel, h1]`. Rewrite `t` using `[e2]`. Rewrite using `[hm, hm, hgs x, t]`. Use `hΨi (rep x) ⟨gs x * h * (gs (act x h))⁻¹, hk⟩ (fun j => gs (act x h) * y j)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← this]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Use `show gs x * (h * y j) = (gs x * h * (gs (act x h))⁻¹) * (gs (act x h) * y j)`. Use `group`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hEinv : Inv (MonoidHom.id Γ) (fun y : Fin (m + 1) → Γ => ∑ x, Ψ (rep x) fun j => gs x * y j)`. Introduce `g y`. Use `show ∑ x, Ψ (rep x) (fun j => gs x * (g * y j)) = ∑ x, Ψ (rep x) fun j => gs x * y j`. Rewrite using `[Finset.sum_congr rfl (fun x _ => hshift x g y)]`. Conclude with `Fintype.sum_equiv ⟨fun x => act x g, fun x => act x g⁻¹, fun x => by simp only; rw [← hm, mul_inv_cancel, h1], fun x => by simp only; rw [← hm, inv_mul_cancel, h1]⟩ _ _ (fun x => rfl)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hdE : dC (fun y : Fin (m + 1) → Γ => ∑ x, Ψ (rep x) fun j => gs x * y j) = fun y => ∑ x, Φ x y`. Use function extensionality and compare the values at `y`. Establish `hx : ∀ x, Φ x y = dC (fun y' : Fin (m + 1) → Γ => Ψ (rep x) fun j => gs x * y' j) y`. Introduce `x`. Rewrite using `[dC_translate (Ψ (rep x)) (gs x) y, hΨd (rep x), ← hΦ (rep x) (gs x) y, hgs x]`.
-
-Simplify using `only [hx, dC, Finset.mul_sum]`. Conclude with `Finset.sum_comm`. Establish `key` using `hE Γ Γ Γ (MonoidHom.id Γ) m (fun y : Fin (m + 1) → Γ => ∑ x, Ψ (rep x) fun j => gs x * y j) hEinv 1 z`. Rewrite `key` using `[hdE]`. Establish `hz' : bd Γ m z = 0` using `hz`.
-
-Rewrite `key` using `[hz']`. Simplify using `only [finsum_eq_sum_of_fintype]`. Rewrite using `[key]`. Simplify using `[ev]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pTransfer (hC : PCobSub) (hE : PEvDC) : PTransfer := by
   intro Γ X _ _ act h1 hm m Φ hΦ hd hcyc z hz

@@ -6,15 +6,15 @@ open scoped Formalism.Per NNReal
 open UpperTheory.Gal.ClosedPhiFromClosedTrace
 
 /- English proof (translation)
-Set `m₀ : ↥(Dpst P R)` to `⟨m, (mem_Dpst P R).mpr ⟨Bw.Kw, fun g _ => (mem_Dst P R).mp hm g⟩⟩`. Establish `hc : ∀ (n : ℕ) (y : ↥(Dpst P R)), (((phiD P R ^ n) y : ↥(Dpst P R)) : V ⊗[ℚ_[l]] Bst P) = (phiV P LL V ^ n) y`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro y`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Both sides reduce to the same expression. Consider the case `succ n ih`. Introduce `y`. Rewrite using `[pow_succ, pow_succ, Module.End.mul_apply, Module.End.mul_apply, ih]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hu : ∀ n : ℕ, ((phiU P R ^ (n : ℤ) : (Module.End LL ↥(Dpst P R))ˣ) : Module.End LL ↥(Dpst P R)) = phiD P R ^ n`. Introduce `n`. Rewrite using `[zpow_natCast, Units.val_pow_eq_pow_val, coe_phiU]`. Establish `hmul : ((phiU P R ^ (-alpha l g) : (Module.End LL ↥(Dpst P R))ˣ) : Module.End LL ↥(Dpst P R)) * phiD P R ^ n₂ = phiD P R ^ n₁`. Rewrite using `[← hu n₂, ← hu n₁, ← Units.val_mul, ← _root_.zpow_add, hα]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Expand and normalize the polynomial expressions, which then agree. Use `⟨(phiD P R ^ n₂) m₀, hc n₂ m₀, ?_⟩` and prove the remaining obligations. Establish `e : weilD Bw h P R g ((phiD P R ^ n₂) m₀) = actD P R (weilToGK Bw h g) ((phiD P R ^ n₁) m₀)`. Rewrite using `[weilD_apply, Module.End.mul_apply, ← hmul, Module.End.mul_apply]`.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, coe_actD, hc]`. Establish `hcomm : Commute (phiV P LL V) (stRep P R (weilToGK Bw h g))` using `phiV_stRep P R (weilToGK Bw h g)`. Establish `h2` using `LinearMap.congr_fun (hcomm.pow_left n₁).eq m`. Rewrite `h2` using `[Module.End.mul_apply, Module.End.mul_apply, (mem_Dst P R).mp hm]`. Conclude with `h2.symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem weilPhi_core {l : ℕ} [Fact l.Prime] (P : LocPrime l) {E Ω : Type} [Field E] [NumberField E]
     [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] {w : HeightOneSpectrum (𝓞 E)} {A : ValuationSubring Ω}
@@ -57,7 +57,7 @@ private theorem weilPhi_core {l : ℕ} [Fact l.Prime] (P : LocPrime l) {E Ω : T
   exact h2.symm
 
 /- English proof (translation)
-Introduce `l _ P E Ω _ _ _ _ _ w A h O _ _ _ Bw g n₁ n₂ hα L a R _ m hm`. Conclude with `weilPhi_core P h Bw g n₁ n₂ hα R m hm`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.ClosedPhiFromClosedTrace.weilPhi_holds :
     WeilPhi2 := by

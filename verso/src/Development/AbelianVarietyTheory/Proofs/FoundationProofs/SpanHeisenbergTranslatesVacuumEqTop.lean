@@ -8,27 +8,23 @@ open scoped BigOperators
 namespace GlobalTheory.FinWeil
 
 /- English proof (translation)
-Introduce `R X M _ _ _ _ _ σ w γ W h A hA e he hsm`. Rewrite using `[eq_top_iff]`. Introduce `v _`. Take `⟨T, hT, hv⟩` from `hsm v`. Set `S : Submodule R X` to `{ carrier := {a | a ∈ A ∧ ∀ t ∈ T, γ a t = 1} add_mem' := fun {a b} ha hb => ⟨A.add_mem ha.1 hb.1, fun t ht => by`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Rewrite using `[h.add_left, ha.2 t ht, hb.2 t ht, mul_one]⟩`. Use the proof step `zero_mem' := ⟨A.zero_mem, fun t _ => h.zero_left t⟩`. Use the proof step `smul_mem' := fun r a ha => ⟨A.smul_mem r ha.1, fun t ht => by`. Rewrite using `[h.adj]`. Conclude with `ha.2 _ (T.smul_mem _ ht)⟩ }`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hSm : ∀ a, a ∈ S ↔ a ∈ A ∧ ∀ t ∈ T, γ a t = 1` using `fun a => Iff.rfl`. Establish `hSv : Fixes W S v` using `fun a ha => hv a ha.1 ha.2`. Establish `hSt : ∀ t ∈ T, Fixes W S (W (-t) v)`. Introduce `t ht a ha`. Rewrite using `[h.comm, ha.2 _ (T.neg_mem ht), one_smul, hSv a ha]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Take `⟨h1, -, -⟩` from `perfect_pairing_quotients h S.toAddSubgroup A.toAddSubgroup A.toAddSubgroup T.toAddSubgroup (fun a ha => ⟨fun hs => hs.2, fun hs => ⟨ha, hs⟩⟩) (fun t _ => ⟨fun ht a ha => h.iso hA ha ht, fun ht => (hA t).2 fun a ha => h.swap_eq_one (ht a ha)⟩) hT`. Establish `hn : idx S A ≠ 0`. Unfold `idx`. Rewrite using `[h1]`. Conclude with `hT`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨-, -, h2⟩` from `perfect_pairing_quotients h A.toAddSubgroup T.toAddSubgroup S.toAddSubgroup A.toAddSubgroup (fun t _ => hA t) (fun a ha => ⟨fun hs t ht => h.swap_eq_one (hs.2 t ht), fun hs => ⟨ha, fun t ht => h.swap_eq_one (hs t ht)⟩⟩) hn`. Take `⟨t1, t2, -⟩` from `sumOp_transversal h S A hA`. Take `⟨⟨m, f, hf, hu⟩, hfix, -⟩` from `t2 hn`. Establish `hg : ∀ t ∈ T, ∑ i, γ t (f i) • W (f i) v ∈ Submodule.span ℂ (Set.range fun x => W x e)`. Introduce `t ht`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨c, hc⟩` from `he _ (hfix _ (hSt t ht))`. Rewrite `hc` using `[(t1 _ (hSt t ht) _ f hf hu).1]`. Establish `h3` using `congrArg (W t) hc`. Rewrite `h3` using `[map_sum, map_smul]`. Establish `h4 : ∀ i, W t (W (f i) (W (-t) v)) = γ (w • t) (-t) • (γ t (f i) • W (f i) v)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `i`. Rewrite using `[h.comm, h.comp t (-t), add_neg_cancel, h.zero, map_smul, smul_comm]`. Rewrite `h3` using `[Finset.sum_congr rfl fun i _ => h4 i, ← Finset.smul_sum]`. Rewrite using `[← Submodule.smul_mem_iff _ (h.ne_zero (w • t) (-t)), h3]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨t, rfl⟩)`.
+Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Use `haveI : Finite (T.toAddSubgroup ⧸ A.toAddSubgroup.addSubgroupOf T.toAddSubgroup) := Nat.finite_of_card_ne_zero hT`. Use `letI := Fintype.ofFinite (T.toAddSubgroup ⧸ A.toAddSubgroup.addSubgroupOf T.toAddSubgroup)`. Establish `h5` using `Submodule.sum_mem (Submodule.span ℂ (Set.range fun x => W x e)) (t := (Finset.univ : Finset (T.toAddSubgroup ⧸ A.toAddSubgroup.addSubgroupOf T.toAddSubgroup))) (fun q _ => hg _ (Quotient.out q : T.toAddSubgroup).2)`. Rewrite `h5` using `[Finset.sum_comm]`. Take `⟨i₀, hi₀, hi⟩` from `hu 0 A.zero_mem`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `only [zero_sub, neg_mem_iff] at hi₀ hi`. Establish `h6 : ∀ i, ∑ q : T.toAddSubgroup ⧸ A.toAddSubgroup.addSubgroupOf T.toAddSubgroup, γ ((Quotient.out q : T.toAddSubgroup) : X) (f i) • W (f i) v = if i = i₀ then (idx A T : ℂ) • v else 0`. Introduce `i`. Rewrite using `[← Finset.sum_smul, ← finsum_eq_sum_of_fintype, h2 _ (hf i)]`. Distinguish the cases in `hii : i = i₀`.
-
-Substitute `hii` using the available equality. Rewrite using `[if_pos rfl, if_pos (show f i ∈ S.toAddSubgroup from hi₀), hSv _ hi₀]`. Both sides reduce to the same expression. Rewrite using `[if_neg hii, if_neg (fun hh : f i ∈ S.toAddSubgroup => hii (hi i hh)), zero_smul]`. Rewrite `h5` using `[Finset.sum_congr rfl fun i _ => h6 i, Finset.sum_ite_eq', if_pos (Finset.mem_univ _)]`.
-
-Conclude with `(Submodule.smul_mem_iff _ (Nat.cast_ne_zero.2 hT)).1 h5`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_translates_vacuum : ∀ {R X M : Type} [CommRing R] [AddCommGroup X] [Module R X] [AddCommGroup M] [Module ℂ M] {σ : R →+* R} {w : R} {γ : X → X → ℂ} {W : X → M →ₗ[ℂ] M}, IsHeis σ w γ W → ∀ A : Submodule R X, SelfDual γ A → ∀ e : M, (∀ v, Fixes W A v → ∃ c : ℂ, v = c • e) → (∀ v : M, ∃ T : Submodule R X, idx A T ≠ 0 ∧ ∀ a ∈ A, (∀ t ∈ T, γ a t = 1) → W a v = v) → Submodule.span ℂ (Set.range fun x => W x e) = ⊤ := by
   intro R X M _ _ _ _ _ σ w γ W h A hA e he hsm

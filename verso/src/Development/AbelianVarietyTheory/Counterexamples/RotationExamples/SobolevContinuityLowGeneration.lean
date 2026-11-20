@@ -12,14 +12,14 @@ namespace GlobalTheory.Survey.SobolevContinuityLowGeneration
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨[], 0, by simp, by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem sobCont_zero {n : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     (Lie : Set (Matrix (Fin n) (Fin n) ℂ)) (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) : Sobolev₂ Lie σ 0 :=
   ⟨[], 0, by simp, by simp⟩
 
 /- English proof (translation)
-Take `⟨S, C, h1, h2⟩` from `h`. Use `⟨S, ‖c‖ * C, h1, fun w hw => ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.smul_apply, norm_smul, mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left (h2 w hw) (norm_nonneg c)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sobCont_smul {n : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     {Lie : Set (Matrix (Fin n) (Fin n) ℂ)} {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} {ℓ : H →ₗ[ℂ] ℂ} (c : ℂ)
@@ -30,11 +30,9 @@ theorem sobCont_smul {n : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSp
   exact mul_le_mul_of_nonneg_left (h2 w hw) (norm_nonneg c)
 
 /- English proof (translation)
-Take `⟨S, C, h1, h2⟩` from `h`. Take `⟨S', C', h1', h2'⟩` from `h'`. Use `⟨S ++ S', max C C', fun l hl => (List.mem_append.1 hl).elim (h1 l) (h1' l), fun w hw => ?_⟩` and prove the remaining obligations. Establish `p : ∀ S : List (List (Matrix (Fin n) (Fin n) ℂ)), 0 ≤ (S.map fun l => ‖l.foldr (dRep σ) w‖).sum`. Introduce `S`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `List.sum_nonneg fun x hx => ?_` and prove the remaining obligations. Take `⟨l, -, rfl⟩` from `List.mem_map.1 hx`. Conclude with `norm_nonneg _`. Rewrite using `[LinearMap.add_apply, List.map_append, List.sum_append, mul_add]`. Use `(norm_add_le _ _).trans (add_le_add ((h2 w hw).trans ?_) ((h2' w hw).trans ?_))` and prove the remaining obligations.
-
-Conclude with `mul_le_mul_of_nonneg_right (le_max_left _ _) (p S)`. Conclude with `mul_le_mul_of_nonneg_right (le_max_right _ _) (p S')`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem sobCont_add {n : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     {Lie : Set (Matrix (Fin n) (Fin n) ℂ)} {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} {ℓ ℓ' : H →ₗ[ℂ] ℂ}
@@ -61,13 +59,13 @@ def LowGenerates (M : DSModel V S) (τ : D.what₂.Tau) : Prop :=
 
 open Classical in
 /- English proof (translation)
-Proceed by induction on `hU using Submodule.span_induction with`. Consider the case `mem T hT => exact ⟨hT.equiv, hT.cont⟩`. Consider the case `zero => exact ⟨fun _ _ _ _ _ _ => rfl, fun τ v x => ⟨0, sobCont_zero _ _, fun _ => rfl⟩⟩`. Consider the case `add T T' _ _ h h'`. Use `⟨fun τ g hg v w hw => ?_, fun τ v x => ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[MultilinearMap.add_apply, h.1 τ g hg v w hw, h'.1 τ g hg v w hw]`. Both sides reduce to the same expression. Take `⟨ℓ, a, b⟩` from `h.2 τ v x`. Take `⟨ℓ', a', b'⟩` from `h'.2 τ v x`. Conclude with `⟨ℓ + ℓ', sobCont_add a a', fun w => by rw [LinearMap.add_apply, b, b']; rfl⟩`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Consider the case `smul c T _ h`. Use `⟨fun τ g hg v w hw => ?_, fun τ v x => ?_⟩` and prove the remaining obligations. Rewrite using `[MultilinearMap.smul_apply, h.1 τ g hg v w hw]`. Both sides reduce to the same expression. Take `⟨ℓ, a, b⟩` from `h.2 τ v x`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨c • ℓ, sobCont_smul c a, fun w => by rw [LinearMap.smul_apply, b]; rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem mult_equiv_cont {θ} {M : DSModel V S} {J χ} {U : MMap M} (hU : U ∈ Mult θ M J χ) :
     (∀ τ, ∀ g ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ), ∀ (v : M.Vec) (w : M.sm τ),
@@ -90,17 +88,17 @@ theorem mult_equiv_cont {θ} {M : DSModel V S} {J χ} {U : MMap M} (hU : U ∈ M
       exact ⟨c • ℓ, sobCont_smul c a, fun w => by rw [LinearMap.smul_apply, b]; rfl⟩
 
 /- English proof (translation)
-Take `⟨he, hc⟩` from `mult_equiv_cont hU`. Establish `key : ∀ s : Finset D.what₂.Tau, ∀ v : M.Vec, (∀ ρ, ρ ∉ s → v ρ ∈ lowT M ρ) → U v = 0`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => intro v hv; exact h0 fun ρ => ⟨v ρ, hv ρ (by simp)⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `insert τ s _ ih`. Introduce `v hv`. Use function extensionality and compare the values at `x`. Take `⟨ℓ, hℓ, e⟩` from `hc τ v x`. Use `hM τ ℓ hℓ (fun u hu g hg w hw => ?_) (v τ)` as an intermediate fact.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `this` using `[e]`. Simplify using `using this`. Establish `h1` using `he τ g hg (Function.update v τ u) w (by simpa using hw)`. Establish `h2 : U (Function.update v τ u) = 0`. Use `ih _ fun ρ hρ => ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `hh : ρ = τ`. Substitute `hh` using the available equality. Simplify using `using hu`. Rewrite using `[Function.update_of_ne hh]; exact hv ρ (by simp [hh, hρ])`. Rewrite using `[e]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Function.update_idem] at h1`. Establish `h3` using `congrFun h1 x`. Simplify using `only [rTr] at h3`. Rewrite using `[h3, h2]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Conclude with `MultilinearMap.ext fun v => key Finset.univ v (by simp)`.
+A detailed English derivation is pending.
 -/
 theorem eq_zero_of_lowGenerates {θ} {M : DSModel V S} (hM : ∀ τ, LowGenerates M τ) {J χ} {U : MMap M}
     (hU : U ∈ Mult θ M J χ) (h0 : ∀ v : ∀ ρ, lowT M ρ, U (fun ρ => (v ρ : M.sm ρ)) = 0) : U = 0 := by

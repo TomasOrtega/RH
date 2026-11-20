@@ -21,9 +21,9 @@ variable {k : Type} [CommRing k] {X Z : Scheme.{0}} {p : X ⟶ Sp k} {q : Z ⟶ 
 open ReciprocityTheory.L2DbarEstimates in
 
 /- English proof (translation)
-Establish `h1 : ContDiffAt ℝ 1 (fderiv ℝ g) x` using `hg.fderiv_right (by norm_num)`. Establish `h2 : ∀ l, ContDiffAt ℝ 1 (wdb D l g) x` using `fun l => ((h1.clm_apply contDiffAt_const).add (contDiffAt_const.mul (h1.clm_apply contDiffAt_const))).div_const 2`. Establish `h3 : ∀ j l, ContinuousAt (wd D j (wdb D l g)) x` using `fun j l => by`. Establish `h4 : ContinuousAt (fderiv ℝ (wdb D l g)) x` using `((h2 l).fderiv_right (m := 0) (by norm_num)).continuousAt`. Conclude with `((h4.clm_apply continuousAt_const).sub (continuousAt_const.mul (h4.clm_apply continuousAt_const))).div_const 2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `leviV`. Conclude with `tendsto_finset_sum _ fun j _ => tendsto_finset_sum _ fun l _ => ((h3 j l).mul continuousAt_const).mul continuousAt_const`.
+A detailed English derivation is pending.
 -/
 theorem continuousAt_levi {g : V D → ℂ} {x : V D} (hg : ContDiffAt ℝ 2 g x) (ξ : Fin D → ℂ) :
     ContinuousAt (fun v => leviV D g v ξ) x := by
@@ -41,17 +41,17 @@ theorem continuousAt_levi {g : V D → ℂ} {x : V D} (hg : ContDiffAt ℝ 2 g x
     ((h3 j l).mul continuousAt_const).mul continuousAt_const
 
 /- English proof (translation)
-Break down `c.e.source.eq_empty_or_nonempty with h | ⟨y, hy⟩` into its components or cases. Conclude with `.of_forall fun v hv => absurd (c.e.map_target hv) (h ▸ notMem_empty _)`. Establish `hy'` using `mem_ptsIn.1 (c.source_subset hy)`. Take `⟨x, hx, hx'⟩` from `nonempty_preirreducible_inter U.isOpen c.U.isOpen hU ⟨_, hy'⟩`. Take `⟨a, ha, ha'⟩` from `c.affine.exists_basicOpen_le (V := U) ⟨x, hx⟩ hx'`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h0 : a ≠ 0`. Introduce and unpack `rfl`. Rewrite `ha'` using `[Scheme.basicOpen_zero]`. Conclude with `ha'`. Establish `: Nonempty c.U` using `⟨⟨_, hy'⟩⟩`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `φ` to `MvPolynomial.eval₂Hom (algX p c.U) c.x`. Set `: Algebra (MvPolynomial (Fin D) k) Γ(X, c.U)` to `φ.toAlgebra`. Establish `: Algebra.Etale (MvPolynomial (Fin D) k) Γ(X, c.U)` using `c.etale`. Establish `h₁` using `isAlgebraic_of_flat_of_formallyUnramified (MvPolynomial (Fin D) k) Γ(X, c.U)`. Take `⟨r, hr, b, hb⟩` from `(h₁.isAlgebraic a).exists_nonzero_dvd (mem_nonZeroDivisors_of_ne_zero h0)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr' : MvPolynomial.map σ r ≠ 0` using `(map_ne_zero_iff _ (MvPolynomial.map_injective σ hσ)).2 hr`. Use `filter_upwards [ReciprocityTheory.MultiplicativeHeights.ae_eval_ne_zero_linear (volume : Measure (V D)) (WithLp.linearEquiv 2 ℂ (Fin D → ℂ)) _ hr'] with v hv hvt`. Establish `hs` using `c.e.map_target hvt`. Establish `hz` using `c.source_subset hs`. Use `ptsIn_mono ha ((mem_ptsIn_basicOpen hz a).2 fun e => hv ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `e₁ : (evHom hz).comp φ = (MvPolynomial.eval (WithLp.linearEquiv 2 ℂ (Fin D → ℂ) v)).comp (MvPolynomial.map σ)`. Use `MvPolynomial.ringHom_ext (fun t => ?_) fun i => ?_` and prove the remaining obligations. Simplify using `only [φ, RingHom.comp_apply, MvPolynomial.eval₂Hom_C, MvPolynomial.map_C, MvPolynomial.eval_C, ← ev_eq, ev_algX hz]`. Simplify using `only [φ, RingHom.comp_apply, MvPolynomial.eval₂Hom_X', MvPolynomial.map_X, MvPolynomial.eval_X, ← ev_eq, ← c.apply_eq _ hs, c.e.right_inv hvt]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `e₂ : φ r = a * b` using `hb`. Use `(RingHom.congr_fun e₁ r).symm.trans ?_` and prove the remaining obligations. Rewrite using `[RingHom.comp_apply, e₂, ← ev_eq, ev_mul, e, zero_mul]`.
+A detailed English derivation is pending.
 -/
 theorem ae_mem [IsDomain k] [IsIntegral X] (hσ : Function.Injective σ) (c : AlgChart p σ D)
     {U : X.Opens} (hU : (U : Set X).Nonempty) :
@@ -97,7 +97,7 @@ def PosOn (f : CxPts p σ → ℝ) (S : Set (CxPts p σ)) : Prop :=
     0 ≤ (leviV D (fun v => (f (c.e.symm v) : ℂ)) (c.e y) ξ).re
 
 /- English proof (translation)
-Introduce `c y hy ξ` and use `by have ho := (isOpen_over c.e hS).mem_nhds (mem_over c.e hy.1 hy.2) have hd : ContDiffAt ℝ 2 (fun v => f (c.e.symm v)) (c.e y) := ((contDiffOn_chart hf c).contDiffAt ho).of_le (by norm_cast) have hc := Complex.continuous_re.continuousAt.comp (continuousAt_levi (Complex.ofRealCLM …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem PosOn.of_inter [IsDomain k] [IsIntegral X] (hσ : Function.Injective σ)
     {f : CxPts p σ → ℝ} {S : Set (CxPts p σ)} (hS : IsOpen S) (hf : ∀ y ∈ S, CInfAt f y)
@@ -115,11 +115,11 @@ theorem PosOn.of_inter [IsDomain k] [IsIntegral X] (hσ : Function.Injective σ)
   rwa [c.e.right_inv h₂] at this
 
 /- English proof (translation)
-Establish `he (w) (hw : w ∈ c'.e.source) (hw' : PtsOver.map j hj (spMap σ) w ∈ c.e.source) : c'.e w = c.e (PtsOver.map j hj (spMap σ) w)`. Use extensionality with `a`. Rewrite using `[c'.apply_eq w hw, c.apply_eq _ hw', hx]`. Conclude with `valR_appLE w.1 j e (c'.source_subset hw) _`. Establish `hS : IsOpen (c'.e.source ∩ PtsOver.map j hj (spMap σ) ⁻¹' c.e.source)` using `c'.e.open_source.inter (c.e.open_source.preimage (PtsOver.continuous_map j hj _))`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← he z hz hz']`. Use `ReciprocityTheory.L2DbarEstimates.leviV_congr ?_ ξ` and prove the remaining obligations. Use `filter_upwards [(isOpen_over c'.e hS).mem_nhds (mem_over c'.e hz (S := _) ⟨hz, hz'⟩)] with v hv`. Establish `e₁ : c.e.symm v = PtsOver.map j hj _ (c'.e.symm v)`. Use `he _ hv.2.1 hv.2.2` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[c'.e.right_inv hv.1]`. Conclude with `(congrArg c.e.symm this).trans (c.e.left_inv hv.2.2)`. Rewrite using `[e₁]`.
+A detailed English derivation is pending.
 -/
 theorem levi_pull {j : Z ⟶ X} (hj : j ≫ p = q) (f : CxPts p σ → ℝ) (c : AlgChart p σ D)
     (c' : AlgChart q σ D) (e : c'.U ≤ j ⁻¹ᵁ c.U) (hx : ∀ a, c'.x a = (j.appLE _ _ e).hom (c.x a))
@@ -144,7 +144,7 @@ theorem levi_pull {j : Z ⟶ X} (hj : j ≫ p = q) (f : CxPts p σ → ℝ) (c :
   rw [e₁]
 
 /- English proof (translation)
-Substitute `hj` using the available equality. Use `MvPolynomial.ringHom_ext (fun t => ?_) fun i => ?_` and prove the remaining obligations. Rewrite using `[RingHom.comp_apply, MvPolynomial.eval₂Hom_C, MvPolynomial.eval₂Hom_C]`. Conclude with `congrArg (fun g : Γ(Sp k, ⊤) ⟶ Γ(Z, W) => g.hom ((Scheme.ΓSpecIso (.of k)).inv.hom t)) (Scheme.Hom.appLE_comp_appLE j p ⊤ U W le_top e)`. Rewrite using `[RingHom.comp_apply, MvPolynomial.eval₂Hom_X', MvPolynomial.eval₂Hom_X']`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem appLE_comp_eval {j : Z ⟶ X} (hj : j ≫ p = q) {U : X.Opens} {W : Z.Opens}
     (e : W ≤ j ⁻¹ᵁ U) (x : Fin D → Γ(X, U)) :
@@ -158,9 +158,7 @@ theorem appLE_comp_eval {j : Z ⟶ X} (hj : j ≫ p = q) {U : X.Opens} {W : Z.Op
   · rw [RingHom.comp_apply, MvPolynomial.eval₂Hom_X', MvPolynomial.eval₂Hom_X']
 
 /- English proof (translation)
-Establish `H : Set.range y.1 ⊆ Set.range j`. Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `hy (x := x) trivial`. Use `⟨⟨IsOpenImmersion.lift j y.1 H, ?_⟩, Subtype.ext (IsOpenImmersion.lift_fac _ _ _)⟩` and prove the remaining obligations. Rewrite using `[← hj, ← Category.assoc, IsOpenImmersion.lift_fac]`.
-
-Conclude with `y.2`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_map_eq (j : Z ⟶ X) [IsOpenImmersion j] (hj : j ≫ p = q) {y : CxPts p σ}
     (hy : y ∈ ptsIn p σ j.opensRange) : ∃ z : CxPts q σ, PtsOver.map j hj _ z = y := by
@@ -172,7 +170,7 @@ theorem exists_map_eq (j : Z ⟶ X) [IsOpenImmersion j] (hj : j ≫ p = q) {y : 
   exact y.2
 
 /- English proof (translation)
-Introduce `c' z hz ξ` and use `by have e : c'.U ≤ j ⁻¹ᵁ j ''ᵁ c'.U := (j.preimage_image_eq _).ge have hi : IsIso (j.appLE _ _ e) := by rw [← Scheme.Hom.appIso_hom'] infer_instance have hb := ConcreteCategory.bijective_of_isIso (j.appLE _ _ e) choose x hx using fun a => hb.2 (c'.x a) have h₁ := appLE_comp_eval …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem PosOn.pull (j : Z ⟶ X) [IsOpenImmersion j] (hj : j ≫ p = q) {f : CxPts p σ → ℝ}
     {S : Set (CxPts p σ)} (h : PosOn D f S) :
@@ -204,7 +202,7 @@ theorem PosOn.pull (j : Z ⟶ X) [IsOpenImmersion j] (hj : j ≫ p = q) {f : CxP
   exact h c _ ⟨hc, hz.2⟩ ξ
 
 /- English proof (translation)
-Introduce `c y hy ξ` and use `by obtain ⟨z, rfl⟩ := exists_map_eq j hj hy.2.2 obtain ⟨W, hW, hzW, e⟩ := exists_isAffineOpen_le z.1 (V := j ⁻¹ᵁ c.U) (c.source_subset hy.1) have h₂ : (MvPolynomial.eval₂Hom (algX q W) fun a => (j.appLE _ W e).hom (c.x a)).Etale := by rw [← appLE_comp_eval hj e] exact RingHom.Eta …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem PosOn.of_pull (j : Z ⟶ X) [IsOpenImmersion j] (hj : j ≫ p = q) {f : CxPts p σ → ℝ}
     {S : Set (CxPts p σ)}
@@ -221,7 +219,7 @@ theorem PosOn.of_pull (j : Z ⟶ X) [IsOpenImmersion j] (hj : j ≫ p = q) {f : 
   exact h c' _ ⟨hc, hy.2.1⟩ ξ
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => h.pull j hj, fun h => (h.of_pull j hj).of_inter hσ hS hf (range_nonempty _)⟩`.
+Supply the required witnesses or components.
 -/
 theorem posOn_iff_pull [IsDomain k] [IsIntegral X] (hσ : Function.Injective σ) (j : Z ⟶ X)
     [IsOpenImmersion j] [Nonempty Z] (hj : j ≫ p = q) {f : CxPts p σ → ℝ}
@@ -230,17 +228,17 @@ theorem posOn_iff_pull [IsDomain k] [IsIntegral X] (hσ : Function.Injective σ)
   ⟨fun h => h.pull j hj, fun h => (h.of_pull j hj).of_inter hσ hS hf (range_nonempty _)⟩
 
 /- English proof (translation)
-Introduce `k _ X X' p q D hp hq π hπ U hU hi L`. Use `hp.isDomain` as an intermediate fact. Use `hp.finite` as an intermediate fact. Use `hp.isIntegral` as an intermediate fact. Use `hq.isIntegral` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `forall_congr' fun σ => ?_` and prove the remaining obligations. Establish `hσ : Function.Injective σ`. Rewrite using `[RingHom.injective_iff_ker_eq_bot]`. Use `Ideal.eq_bot_of_comap_eq_bot (R := ℤ) ?_` and prove the remaining obligations. Rewrite using `[RingHom.comap_ker, ← RingHom.injective_iff_ker_eq_bot]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `RingHom.injective_int _`. Establish `: Nonempty U.toScheme` using `hU.to_subtype`. Establish `: Nonempty (π ⁻¹ᵁ U).toScheme` using `(π ∣_ U).surjective.nonempty`. Establish `: IsOpenImmersion ((π ⁻¹ᵁ U).ι ≫ π)`. Rewrite using `[← morphismRestrict_ι]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `infer_instance`. Establish `key (i : L.B.ι) : PosOn D ((L.φ σ).φ i) (ptsIn p σ (L.B.U i)) ↔ PosOn D (fun w => (L.φ σ).φ i (PtsOver.map π hπ _ w)) (PtsOver.map π hπ (spMap σ) ⁻¹' ptsIn p σ (L.B.U i))`. Rewrite using `[posOn_iff_pull hσ ((π ⁻¹ᵁ U).ι ≫ π) rfl (isOpen_ptsIn _) (L.cInf σ i), posOn_iff_pull hσ (π ⁻¹ᵁ U).ι (q := ((π ⁻¹ᵁ U).ι ≫ π) ≫ p) (by rw [Category.assoc, hπ]) ((isOpen_ptsIn _).preimage (PtsOver.continuous_map π hπ _)) fun y hy => CInfAt.pull π hπ (L.cInf σ i _ hy)]`. Establish `e (w : CxPts (((π ⁻¹ᵁ U).ι ≫ π) ≫ p) σ) : PtsOver.map ((π ⁻¹ᵁ U).ι ≫ π) rfl _ w = PtsOver.map π hπ _ (PtsOver.map (π ⁻¹ᵁ U).ι (by rw [Category.assoc, hπ]) _ w)` using `Subtype.ext (Category.assoc _ _ _).symm`. Rewrite using `[funext e]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Simplify using `only [e]`. Both sides reduce to the same expression. Establish `e₁ (J : (L.B.pull π).ι) : ptsIn q σ ((L.B.pull π).U J) = PtsOver.map π hπ (spMap σ) ⁻¹' ptsIn p σ (L.B.U (J PUnit.unit))` using `Set.ext fun z => by`. Rewrite using `[mem_preimage, mem_ptsIn, mem_ptsIn]`. Conclude with `⟨fun h => mem_iInter.1 h PUnit.unit, fun h => mem_iInter.2 fun _ => h⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `e₂ (J : (L.B.pull π).ι) : ((L.φ σ).pull π hπ).φ J = fun w => (L.φ σ).φ (J PUnit.unit) (PtsOver.map π hπ _ w)`. Use function extensionality and compare the values at `((L.φ σ).pull_φ π hπ J)`. Express the relevant statement in the definitionally equal form `(∀ i, PosOn D ((L.φ σ).φ i) (ptsIn p σ (L.B.U i))) ↔ ∀ J, PosOn D (((L.φ σ).pull π hπ).φ J) (ptsIn q σ ((L.B.pull π).U J))`. Simplify using `only [e₁, e₂, key]`. Conclude with `⟨fun h J => h _, fun h i => h fun _ => i⟩`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem semiPos_iff_pull : ∀ (k : Type) [CommRing k] (X X' : Scheme.{0}) (p : X ⟶ Sp k) (q : X' ⟶ Sp k) (D : ℕ), IsArithVar p D → IsArithVar q D → ∀ (π : X' ⟶ X) (hπ : π ≫ p = q) (U : X.Opens), (U : Set X).Nonempty → IsIso (π ∣_ U) → ∀ L : HermLB p, (L.SemiPos D ↔ (L.pull π hπ).SemiPos D) := by
   intro k _ X X' p q D hp hq π hπ U hU hi L

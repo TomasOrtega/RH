@@ -11,7 +11,7 @@ open Matrix
 variable {K : Type*} [Field K] {n : ℕ} {ι : Type*}
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `[gramAt, embVec, Matrix.mul_apply, dotProduct, Matrix.mulVec, Finset.mul_sum, Finset.sum_mul, mul_assoc]`. Rewrite using `[Finset.sum_comm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem gramAt_eq (h : Matrix (Fin n) (Fin n) ℂ) (σ : K →+* ℂ) (u : ι → Fin n → K) :
     gramAt h σ u = (((Matrix.of fun j a => u a j).map σ)ᴴ * h *
@@ -22,13 +22,13 @@ theorem gramAt_eq (h : Matrix (Fin n) (Fin n) ℂ) (σ : K →+* ℂ) (u : ι �
   rw [Finset.sum_comm]
 
 /- English proof (translation)
-Use `set Uk : Matrix (Fin n) ι K := Matrix.of fun j a => u a j with hUk`. Establish `hinj : LinearMap.ker Uk.mulVecLin = ⊥`. Rewrite using `[LinearMap.ker_eq_bot']`. Introduce `c hc`. Rewrite `hu` using `[Fintype.linearIndependent_iff]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `a`. Use `hu c ?_ a` and prove the remaining obligations. Use function extensionality and compare the values at `j`. Use `congrFun hc j` as an intermediate fact. Simplify `this` using `[Uk, Matrix.mulVec, dotProduct, mul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Take `⟨g, hg⟩` from `Uk.mulVecLin.exists_leftInverse_of_injective hinj`. Use `set Lk : Matrix ι (Fin n) K := LinearMap.toMatrix' g`. Establish `hL : Lk * Uk = 1`. Use `congrArg LinearMap.toMatrix' hg` as an intermediate fact. Rewrite `this` using `[LinearMap.toMatrix'_comp, LinearMap.toMatrix'_id, ← Matrix.toLin'_apply', LinearMap.toMatrix'_toLin']`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hLσ : Lk.map σ * Uk.map σ = 1`. Rewrite using `[← Matrix.map_mul, hL, Matrix.map_one _ σ.map_zero σ.map_one]`. Introduce `x y hxy`. Use `congrArg (fun v => (Lk.map σ) *ᵥ v) hxy` as an intermediate fact. Simplify `this` using `[Matrix.mulVec_mulVec, hLσ]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem mulVec_injective [Fintype ι] (σ : K →+* ℂ) (u : ι → Fin n → K) (hu : LinearIndependent K u) :
     Function.Injective ((Matrix.of fun j a => u a j).map σ).mulVec := by
@@ -60,7 +60,7 @@ end KLinesGramPosDef
 open KLinesGramPosDef Matrix ComplexOrder in
 
 /- English proof (translation)
-Introduce `K _ n h σ ι _ u hh hu`. Rewrite using `[gramAt_eq]`. Conclude with `hh.conjTranspose_mul_mul_same (mulVec_injective σ u hu)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem LinesGramPosDef.proof : LinesGramPosDef.Statement := by
   intro K _ n h σ ι _ u hh hu

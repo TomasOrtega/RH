@@ -13,11 +13,11 @@ open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.Toroi
 namespace GlobalTheory.CompanionTheory.Ar.Fan
 
 /- English proof (translation)
-Set `B₀ : X →ₗ[ℤ] X →ₗ[ℤ] ℝ` to `∑ k, toReal (GlobalTheory.RedTh.sqForm b (Pi.single k 1))`. Establish `hv : ∀ i j, B₀ (b i) (b j) = if i = j then 1 else 0` using `fun i j => by`. Simplify using `only [B₀, LinearMap.sum_apply, toReal_apply, GlobalTheory.RedTh.sqForm_basis]`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `[Pi.single_apply]`. Simplify using `[Pi.single_apply, h]`. Use `⟨B₀, fun y z => ?_, (isPosDef_iff_basis b B₀).2 fun c hc => ?_⟩` and prove the remaining obligations. Simplify using `only [B₀, LinearMap.sum_apply, toReal_apply, GlobalTheory.RedTh.sqForm_apply, mul_comm]`. Simplify using `only [hv, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Take `⟨i, hi⟩` from `Function.ne_iff.1 hc`. Conclude with `Finset.sum_pos' (fun j _ => mul_self_nonneg _) ⟨i, Finset.mem_univ _, mul_self_pos.2 hi⟩`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_isPosDef_of_basis {X : Type} [AddCommGroup X] {n : ℕ} (b : Module.Basis (Fin n) ℤ X) :
     ∃ B₀ : X →ₗ[ℤ] X →ₗ[ℤ] ℝ, (∀ y z, B₀ y z = B₀ z y) ∧ IsPosDef B₀ := by
@@ -36,17 +36,17 @@ theorem exists_isPosDef_of_basis {X : Type} [AddCommGroup X] {n : ℕ} (b : Modu
     exact Finset.sum_pos' (fun j _ => mul_self_nonneg _) ⟨i, Finset.mem_univ _, mul_self_pos.2 hi⟩
 
 /- English proof (translation)
-Introduce `X _ _ _`. Take `⟨n, hn⟩ : ∃ n, Module.finrank ℤ X = n` from `⟨_, rfl⟩`. Set `b₀ : Module.Basis (Fin n) ℤ X` to `Module.finBasisOfFinrankEq ℤ X hn`. Take `⟨B₀, hs₀, hp₀⟩` from `exists_isPosDef_of_basis b₀`. Take `⟨S, hS⟩` from `GlobalTheory.SiegelCone.gram_mem_cone n`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `GlobalTheory.RedTh.hasRedCover_of_fintype (ι := ↥S) _ (fun l => GlobalTheory.RedTh.sqForm b₀ l.1) (fun l y z => ?_) (fun l y => ?_) fun B hB => ?_` and prove the remaining obligations. Simplify using `only [GlobalTheory.RedTh.sqForm_apply, mul_comm]`. Simplify using `only [GlobalTheory.RedTh.sqForm_apply]`. Conclude with `mul_self_nonneg _`. Take `⟨X₁, _, m₁, hproj, r, B₁, hr, hB₁, hp₁, hBr⟩` from `hB`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `rfl : m₁ = AddCommGroup.toIntModule X₁` from `Subsingleton.elim _ _`. Establish `: Module.Finite ℤ X₁` using `Module.Finite.of_surjective r hr`. Establish `: Module.Free ℤ X₁` using `inferInstance`. Take `⟨σ, hσ⟩` from `Module.projective_lifting_property r LinearMap.id hr`. Establish `hrσ : ∀ y, r (σ y) = y` using `fun y => LinearMap.congr_fun hσ y`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨b, d, d', u, t, hd, -, -, hg, -⟩` from `GlobalTheory.RedTh.exists_siegel_split r σ hrσ B₀ hs₀ hp₀ B₁ hB₁.1 hp₁ n hn`. Take `⟨c, hc, hG⟩` from `hS d u hd`. Set `e : X ≃ₗ[ℤ] X` to `b₀.equiv b (Equiv.refl _)`. Establish `he : ∀ i, e (b₀ i) = b i` using `fun i => by simp [e]`. Use `⟨e, fun l => c l.1, fun l => hc _, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `b₀.ext fun i => b₀.ext fun j => ?_` and prove the remaining obligations. Establish `hl : B (b i) (b j) = ∑ l ∈ S, c l * ((l i : ℝ) * (l j : ℝ))`. Rewrite using `[hBr, hg, hG]`. Simplify using `[Matrix.sum_apply, Matrix.vecMulVec_apply]`. Simplify using `only [pullR_apply, LinearEquiv.coe_coe, he, hl, LinearMap.sum_apply, LinearMap.smul_apply, toReal_apply, smul_eq_mul, GlobalTheory.RedTh.sqForm_basis]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Finset.sum_coe_sort S]`. Use `push_cast`. Both sides reduce to the same expression.
+Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem hasRedCover_int : ∀ (X : Type) [AddCommGroup X] [Module.Finite ℤ X] [Module.Free ℤ X], HasRedCover (id : ℤ → ℤ) X := by
   intro X _ _ _

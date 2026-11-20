@@ -6,11 +6,11 @@ noncomputable section
 namespace GlobalTheory.HeightCounting.FracCharZero
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Take `⟨a, ha, ha0⟩` from `hne`. Establish `hker : (⊥ : Ideal B).comap (algebraMap A B) ≠ ⊥`.
+Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Apply `ha0` to reduce the goal to its premises. Establish `: a ∈ (⊥ : Ideal B).comap (algebraMap A B)` using `by simp [Ideal.mem_comap, ha]`. Rewrite `this` using `[h]`. Simplify using `using this`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hmax : ((⊥ : Ideal B).comap (algebraMap A B)).IsMaximal` using `Ideal.IsPrime.isMaximal inferInstance hker`. Establish `hbot : (⊥ : Ideal B).IsMaximal` using `Ideal.isMaximal_of_isIntegral_of_isMaximal_comap (R := A) _ hmax`. Conclude with `IsDiscreteValuationRing.not_a_field B (IsLocalRing.eq_maximalIdeal hbot).symm`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem injective_of_finite_dvr {A B : Type} [CommRing A] [IsDomain A] [IsPrincipalIdealRing A]
     [CommRing B] [IsDomain B] [IsDiscreteValuationRing B] [Algebra A B] [Module.Finite A B] :
@@ -32,7 +32,7 @@ theorem injective_of_finite_dvr {A B : Type} [CommRing A] [IsDomain A] [IsPrinci
   exact IsDiscreteValuationRing.not_a_field B (IsLocalRing.eq_maximalIdeal hbot).symm
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun m n h => by have : f (m : R) = f (n : R) := by simpa [map_natCast] using h exact Nat.cast_injective (hf this)⟩`.
+Supply the required witnesses or components.
 -/
 theorem charZero_of_injective {R S : Type*} [NonAssocSemiring R] [NonAssocSemiring S] [CharZero R]
     (f : R →+* S) (hf : Function.Injective f) : CharZero S :=
@@ -45,7 +45,7 @@ end GlobalTheory.HeightCounting.FracCharZero
 namespace GlobalTheory.HeightCounting
 
 /- English proof (translation)
-Introduce `D T i`. Establish `h1 : Function.Injective (algebraMap ℤ_[T.l i] (T.O0 i))` using `FracCharZero.injective_of_finite_dvr`. Establish `h2` using `T.O_inj i`. Establish `h3` using `IsFractionRing.injective (T.O i) (FractionRing (T.O i))`. Conclude with `FracCharZero.charZero_of_injective (((algebraMap (T.O i) (FractionRing (T.O i))).comp (algebraMap (T.O0 i) (T.O i))).comp (algebraMap ℤ_[T.l i] (T.O0 i))) (h3.comp (h2.comp h1))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem TwR.charZero_fractionRing_O : ∀ (D : D7) (T : TwR D.LL0 D.nd) (i : T.Tw),
     CharZero (FractionRing (T.O i)) := by

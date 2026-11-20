@@ -16,11 +16,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.GroupBplus.Aff
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw p _ K _ _ _ t₀ GG₀ act₀ pol₀ θ₀ ε₀ τ₀ hT hP n x x' y ζ hx' hc`. Establish `hpp : p.Prime` using `Fact.out`. Establish `hp : (p : K) ≠ 0` using `Nat.cast_ne_zero.2 hpp.ne_zero`. Establish `hpr : IsProper t₀.G.hom` using `hT.1`. Establish `hab : Set.range (spMap (algebraMap K K)) ⊆ abLocus t₀.G` using `fun _ _ _ _ _ _ _ => inferInstance`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hv : (θ₀.pt n K x (charElem (tateMap GG₀ GG₀.dual K pol₀.hom (τ₀ y)) n)) ^ p ^ n = 1`. Rewrite using `[← map_pow, charElem_pow_self, map_one]`. Set `u : Kˣ` to `Units.ofPowEqOne _ (p ^ n) hv (pow_ne_zero _ hpp.ne_zero)`. Establish `hw` using `hP.weil n K hp hab x x' y u hx' rfl`. Establish `hA : IsAbelianScheme t₀.G` using `⟨t₀.semi.comm, t₀.semi.smooth, hpr, t₀.semi.geomConnected⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hw'` using `(GlobalTheory.UU.cubWeil_iff_weilIs GlobalTheory.SemiRigid.globalFns hA hc.1 hc.2.1 _).1 hc`. Establish `e` using `GlobalTheory.weilIs_unique_fieldPoint (Sp K) t₀.G t₀.PP.L t₀.PP.isLB K (spMap (algebraMap K K)) _ x.1 x'.1 u ζ hw hw'`. Rewrite using `[← e]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem cubWeil_eq_polPairing : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (p : ℕ) [Fact p.Prime] (K : Type) [Field K] [IsAlgClosed K] [CharZero K] (t₀ : SAB H (Sp K)) (GG₀ : PDivGroup p K) (act₀ : Action (𝓞 E) GG₀) (pol₀ : GG₀ ≅ GG₀.dual) (θ₀ : TorsionMap t₀.G GG₀) (ε₀ : (PDivGroup.mu p K).Tate) (τ₀ : Dw.La →+ GG₀.Tate), IsOfType Dw t₀ → IsPropG Dw t₀ GG₀ act₀ pol₀ θ₀ ε₀ τ₀ → ∀ (n : ℕ) (x x' : Tors t₀.G (p ^ n) K) (y : Dw.La) (ζ : Kˣ), θ₀.pt n K x' = tatePt (τ₀ y) n K → GlobalTheory.UU.CubWeil t₀.cub (p ^ n) x.1 x'.1 (unitOn ζ) → (ζ : K) = θ₀.pt n K x (charElem (tateMap GG₀ GG₀.dual K pol₀.hom (τ₀ y)) n) := by
   intro E _ _ _ H Dw p _ K _ _ _ t₀ GG₀ act₀ pol₀ θ₀ ε₀ τ₀ hT hP n x x' y ζ hx' hc

@@ -8,17 +8,15 @@ namespace LateralTheory.E.PartAPf
 variable {B : Type} [CommRing B]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, by rw [hu, mul_one, he.eq]⟩`.
+Supply the required witnesses or components.
 -/
 theorem one_mem_S (I : Ideal B) {e : B ⧸ I} {u : B} (hu : Ideal.Quotient.mk I u = e) (he : IsIdempotentElem e) :
     u ∈ S I e := ⟨1, by rw [hu, mul_one, he.eq]⟩
 
 /- English proof (translation)
-Use `choose a ha using fun e : P.1 => (IsLocalization.mem_map_algebraMap_iff (S I e.1) (Localization (S I e.1))).1 (hz e)`. Establish `key : z = ∑ e : P.1, βP I P ((a e).1 : B) * Pi.single e (IsLocalization.mk' (Localization (S I e.1)) (1 : B) (a e).2)`. Use function extensionality and compare the values at `e'`. Rewrite using `[Finset.sum_apply, Finset.sum_eq_single e']`. Simplify using `only [Pi.mul_apply, Pi.single_eq_same, βP, RingHom.pi_apply]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← IsLocalization.mk'_eq_mul_mk'_one, IsLocalization.eq_mk'_iff_mul_eq]`. Conclude with `ha e'`. Introduce `e _ hne`. Simplify using `[Pi.single_eq_of_ne' hne]`. Introduce `h`.
-
-Conclude with `absurd (Finset.mem_univ _) h`. Rewrite using `[key]`. Conclude with `Ideal.sum_mem _ fun e _ => Ideal.mul_mem_right _ _ (Ideal.mem_map_of_mem _ (a e).1.2)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_map_of_comp (I : Ideal B) (P : PartDiagCut.Part (B ⧸ I)) (z : PiLocalization₂ I P)
     (hz : ∀ e : P.1, z e ∈ I.map (algebraMap B (Localization (S I e.1)))) : z ∈ I.map (βP I P) := by
@@ -39,7 +37,7 @@ theorem mem_map_of_comp (I : Ideal B) (P : PartDiagCut.Part (B ⧸ I)) (z : PiLo
   exact Ideal.sum_mem _ fun e _ => Ideal.mul_mem_right _ _ (Ideal.mem_map_of_mem _ (a e).1.2)
 
 /- English proof (translation)
-Establish `h` using `Ideal.mem_map_of_mem (Pi.evalRingHom (fun e : P.1 => Localization (S I e.1)) e) hz`. Rewrite `h` using `[Ideal.map_map]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comp_mem (I : Ideal B) (P : PartDiagCut.Part (B ⧸ I)) (z : PiLocalization₂ I P) (hz : z ∈ I.map (βP I P)) (e : P.1) :
     z e ∈ I.map (algebraMap B (Localization (S I e.1))) := by
@@ -48,9 +46,9 @@ theorem comp_mem (I : Ideal B) (P : PartDiagCut.Part (B ⧸ I)) (z : PiLocalizat
   exact h
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_mul, Finset.sum_eq_single e']`. Rewrite using `[mul_assoc, (P.idem e'.1 e'.2).1.eq]`. Introduce `e _ hne`. Rewrite using `[mul_assoc, P.orth e.1 e.2 e'.1 e'.2 (fun h => hne (Subtype.ext h)), mul_zero]`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `absurd (Finset.mem_univ _) h`.
+A detailed English derivation is pending.
 -/
 theorem sum_mul_single (I : Ideal B) (P : PartDiagCut.Part (B ⧸ I)) (c : P.1 → B ⧸ I) (e' : P.1) :
     (∑ e : P.1, c e * e.1) * e'.1 = c e' * e'.1 := by
@@ -62,25 +60,23 @@ theorem sum_mul_single (I : Ideal B) (P : PartDiagCut.Part (B ⧸ I)) (c : P.1 �
   · intro h; exact absurd (Finset.mem_univ _) h
 
 /- English proof (translation)
-Introduce `B _ I P`. Prove the components needed by the constructor for the conclusion. Apply `Ideal.quotientMap_injective'` to reduce the goal to its premises. Introduce `x hx`. Rewrite `hx` using `[Ideal.mem_comap]`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem]`. Establish `hcomp : ∀ e : P.1, Ideal.Quotient.mk I x * e.1 = 0`. Introduce `e`. Establish `h` using `comp_mem I P _ hx e`. Take `⟨⟨i, s⟩, hs⟩` from `(IsLocalization.mem_map_algebraMap_iff (S I e.1) (Localization (S I e.1))).1 h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Simplify using `only [βP, RingHom.pi_apply] at hs`. Rewrite `hs` using `[← map_mul]`. Take `⟨c, hc⟩` from `(IsLocalization.eq_iff_exists (S I e.1) (Localization (S I e.1))).1 hs`. Establish `hq` using `congrArg (Ideal.Quotient.mk I) hc`. Rewrite `hq` using `[map_mul, map_mul, map_mul, Ideal.Quotient.eq_zero_iff_mem.2 i.2, mul_zero]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨t, ht⟩` from `c.2`. Take `⟨t', ht'⟩` from `s.2`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[ht, ht', (P.idem e.1 e.2).1.eq]`. Use `_ = (Ideal.Quotient.mk I c * (Ideal.Quotient.mk I x * Ideal.Quotient.mk I s)) * (t * t' * e.1 * e.1) := by ring`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Use `_ = 0 := by rw [hq, zero_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.mul_sum, ← Finset.sum_coe_sort P.1]`. Use `_ = 0 := Finset.sum_eq_zero fun e _ => hcomp e`. Introduce `y`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Establish `hB : ∀ e : P.1, ∃ (b : B) (s : S I e.1), IsLocalization.mk' (Localization (S I e.1)) b s = y e` using `fun e => by`. Take `⟨⟨b, s⟩, h⟩` from `IsLocalization.mk'_surjective (S I e.1) (y e)`. Conclude with `⟨b, s, h⟩`. Use `choose b s hbs using hB`.
+Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hS : ∀ e : P.1, ∃ t, Ideal.Quotient.mk I (s e : B) * t * e.1 = e.1` using `fun e => (s e).2`. Use `choose t ht using hS`. Use `choose τ hτ using fun e : P.1 => Ideal.Quotient.mk_surjective (t e)`. Use `choose ε hε using fun e : P.1 => Ideal.Quotient.mk_surjective e.1`. Use `⟨Ideal.Quotient.mk _ (∑ e : P.1, b e * τ e * ε e), ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.quotientMap_mk, Ideal.Quotient.eq]`. Apply `mem_map_of_comp` to reduce the goal to its premises. Introduce `e'`. Use `set x := ∑ e : P.1, b e * τ e * ε e`. Establish `hεS : ε e' ∈ S I e'.1` using `one_mem_S I (hε e') (P.idem e'.1 e'.2).1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Rewrite using `[IsLocalization.mem_map_algebraMap_iff (S I e'.1) (Localization (S I e'.1))]`. Use `⟨⟨⟨(x * s e' - b e') * ε e', ?_⟩, s e' * ⟨ε e', hεS⟩⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_mul, map_sub, map_mul, hε]`. Establish `hx : Ideal.Quotient.mk I x = ∑ e : P.1, (Ideal.Quotient.mk I (b e) * t e) * e.1`. Simplify using `only [x, map_sum, map_mul, hτ, hε]`.
-
-Rewrite using `[sub_mul, mul_right_comm, hx, sum_mul_single]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Pi.sub_apply, βP, RingHom.pi_apply, Submonoid.coe_mul, map_mul, map_sub, ← hbs e']`. Rewrite using `[sub_mul, sub_mul, ← mul_assoc (IsLocalization.mk' _ _ _), IsLocalization.mk'_spec]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem PartA_of : PartA := by
   intro B _ I P

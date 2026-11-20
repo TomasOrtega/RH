@@ -15,17 +15,15 @@ open GlobalTheory.Doubling (absE)
 namespace GlobalTheory.ConeSmall
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ n J K x Eis hE s hs γ₀ hγ₀ g`. Take `⟨hf, -, -, hsum⟩` from `hE`. Take `⟨T, hTsub, hT⟩` from `GlobalTheory.ConeSmallCT.exists_isReps F E σ n J x`. Set `T' : Set (UA σ J)` to `(· * γ₀) '' T`. Establish `hT'sub : T' ⊆ ratU σ J`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨t, ht, rfl⟩`. Conclude with `mul_mem (hTsub ht) hγ₀`. Establish `hT' : ∀ γ ∈ ratU σ J, ∃! t, t ∈ T' ∧ ∃ l : (AE F E)ˣ, mat (γ * t⁻¹) *ᵥ incV F x = l.1 • incV F x`. Introduce `γ hγ`. Take `⟨t, ⟨htT, hl⟩, huniq⟩` from `hT (γ * γ₀⁻¹) (mul_mem hγ (inv_mem hγ₀))`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨t * γ₀, ⟨⟨t, htT, rfl⟩, ?_⟩, ?_⟩` and prove the remaining obligations. Establish `e1 : γ * (t * γ₀)⁻¹ = γ * γ₀⁻¹ * t⁻¹` using `by group`. Rewrite using `[e1]`. Conclude with `hl`. Introduce and unpack `_ ⟨⟨u, huT, rfl⟩, hu⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e2 : γ * (u * γ₀)⁻¹ = γ * γ₀⁻¹ * u⁻¹` using `by group`. Rewrite `hu` using `[e2]`. Rewrite using `[huniq u ⟨huT, hu⟩]`. Establish `h1` using `hsum T hTsub hT s hs (γ₀ * g)`. Establish `h2` using `hsum T' hT'sub hT' s hs g`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `e : T ≃ T'` to `Equiv.Set.image (· * γ₀) T (mul_left_injective γ₀)`. Establish `h3 : HasSum (fun t : T' => (hf (t.1 * g) : ℂ) ^ (s + ((n : ℂ) - 1) / 2)) (Eis s (γ₀ * g))`. Rewrite using `[← e.hasSum_iff]`. Use `h1 using 3 with t` and compare the differences between its conclusion and the goal. Use `show ((hf ((t.1 * γ₀) * g) : ℝ) : ℂ) ^ (s + ((n : ℂ) - 1) / 2) = _`.
-
-Rewrite using `[mul_assoc]`. Conclude with `h3.unique h2`.
+Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eis_rat_left_invariant : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {σ : E →ₐ[F] E} {n : ℕ}

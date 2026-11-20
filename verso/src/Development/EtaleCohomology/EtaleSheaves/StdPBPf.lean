@@ -16,7 +16,7 @@ def descR {T : Type} [CommRing T] (a : Localization.Away f →+* T) (b : Localiz
     · rw [h]; exact (IsLocalization.Away.algebraMap_isUnit g).map b)
 
 /- English proof (translation)
-The claim follows from `IsLocalization.lift_eq _ _`.
+A detailed English derivation is pending.
 -/
 theorem descR_alg {T : Type} [CommRing T] (a : Localization.Away f →+* T) (b : Localization.Away g →+* T)
     (h : a.comp (algebraMap S _) = b.comp (algebraMap S _)) (s : S) :
@@ -24,27 +24,27 @@ theorem descR_alg {T : Type} [CommRing T] (a : Localization.Away f →+* T) (b :
   IsLocalization.lift_eq _ _
 
 /- English proof (translation)
-The claim follows from `IsLocalization.Away.awayToAwayRight_eq f g s`.
+A detailed English derivation is pending.
 -/
 theorem rL_alg (s : S) : LateralTheory.E.t_E1Cut.rL f g (algebraMap S _ s) = algebraMap S _ s :=
   IsLocalization.Away.awayToAwayRight_eq f g s
 
 /- English proof (translation)
-The claim follows from `IsLocalization.Away.awayToAwayLeft_eq g f s`.
+A detailed English derivation is pending.
 -/
 theorem rR_alg (s : S) : LateralTheory.E.t_E1Cut.rR f g (algebraMap S _ s) = algebraMap S _ s :=
   IsLocalization.Away.awayToAwayLeft_eq g f s
 
 /- English proof (translation)
-Establish `hw : CommRingCat.ofHom (algebraMap S (Localization.Away f)) ≫ CommRingCat.ofHom (LateralTheory.E.t_E1Cut.rL f g) = CommRingCat.ofHom (algebraMap S (Localization.Away g)) ≫ CommRingCat.ofHom (LateralTheory.E.t_E1Cut.rR f g)`. Use extensionality with `x`. Simplify using `[rL_alg, rR_alg]`. Use `IsPushout.of_isColimit (c := PushoutCocone.mk _ _ hw) ?_` and prove the remaining obligations. Establish `hc : ∀ s : PushoutCocone (CommRingCat.ofHom (algebraMap S (Localization.Away f))) (CommRingCat.ofHom (algebraMap S (Localization.Away g))), s.inl.hom.comp (algebraMap S _) = s.inr.hom.comp (algebraMap S _)` using `fun s => by`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `congrArg CommRingCat.Hom.hom s.condition` as an intermediate fact. Simplify using `using this`. Use `PushoutCocone.IsColimit.mk _ (fun s => CommRingCat.ofHom (descR f g s.inl.hom s.inr.hom (hc s))) ?_ ?_ ?_` and prove the remaining obligations. Introduce `s ext1`. Apply `IsLocalization.ringHom_ext (Submonoid.powers f)` to reduce the goal to its premises.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use extensionality with `x`. Simplify using `[rL_alg, descR_alg]`. Introduce `s ext1`. Apply `IsLocalization.ringHom_ext (Submonoid.powers g)` to reduce the goal to its premises. Use extensionality with `x`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Use `congrArg (fun φ => φ x) (hc s)` as an intermediate fact. Simplify using `only [RingHom.comp_apply] at this`. Simplify using `[rR_alg, descR_alg, this]`. Introduce `s m h1 _ ext1`. Apply `IsLocalization.ringHom_ext (Submonoid.powers (f * g))` to reduce the goal to its premises.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use extensionality with `x`. Use `congrArg (fun φ => (CommRingCat.Hom.hom φ) (algebraMap S (Localization.Away f) x)) h1` as an intermediate fact. Simplify using `only [CommRingCat.hom_comp, CommRingCat.hom_ofHom, RingHom.comp_apply, rL_alg] at this`. Simplify using `[descR_alg, this]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem isPushout_away :
     IsPushout (CommRingCat.ofHom (algebraMap S (Localization.Away f)))
@@ -95,7 +95,7 @@ instance schPreserves (J : Type) [SmallCategory J] : PreservesLimitsOfShape J sc
   infer_instance
 
 /- English proof (translation)
-The claim follows from `(isPullback_SpecMap_of_isPushout _ _ _ _ (isPushout_away f g)).map sch`.
+A detailed English derivation is pending.
 -/
 theorem isPullback_sp :
     IsPullback (spMap (LateralTheory.E.t_E1Cut.rL f g)) (spMap (LateralTheory.E.t_E1Cut.rR f g))
@@ -106,7 +106,7 @@ end LateralTheory.E.StandardPushout
 
 open LateralTheory.E.StandardPushout in
 /- English proof (translation)
-Introduce `S _ f g`. Establish `h` using `isPullback_sp f g`. Conclude with `⟨h.isoPullback.hom, inferInstance, h.isoPullback_hom_fst, h.isoPullback_hom_snd⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem LateralTheory.E.MVPf.StdPB_of : LateralTheory.E.MVPf.StdPB := by
   intro S _ f g

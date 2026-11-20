@@ -10,13 +10,13 @@ namespace Har2
 variable {K : Type} [Field K] {k : ℕ}
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 private theorem mem_PolAB_iff_forall_support_bidegree {A B : ℕ} {f : PolXY K k} :
     f ∈ PolAB K k A B ↔ ∀ m ∈ f.support, xDeg m = A ∧ yDeg m = B := Iff.rfl
 
 /- English proof (translation)
-Use `mem_PolAB_iff_forall_support_bidegree.2 fun m' hm' => ?_` and prove the remaining obligations. Rewrite using `[Finset.mem_singleton.1 (MvPolynomial.support_monomial_subset hm')]`. Conclude with `⟨hx, hy⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem monomial_mem {A B : ℕ} {m : XY k →₀ ℕ} (c : K) (hx : xDeg m = A) (hy : yDeg m = B) :
     monomial m c ∈ PolAB K k A B := by
@@ -26,7 +26,7 @@ theorem monomial_mem {A B : ℕ} {m : XY k →₀ ℕ} (c : K) (hx : xDeg m = A)
   exact ⟨hx, hy⟩
 
 /- English proof (translation)
-Rewrite using `[MvPolynomial.as_sum f, map_sum]`. Conclude with `Submodule.sum_mem _ fun m hm => h m _ (mem_PolAB_iff_forall_support_bidegree.1 hf m hm).1 (mem_PolAB_iff_forall_support_bidegree.1 hf m hm).2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lin_mem {A B : ℕ} (T : PolXY K k →ₗ[K] PolXY K k) (S : Submodule K (PolXY K k))
     (h : ∀ (m : XY k →₀ ℕ) (c : K), xDeg m = A → yDeg m = B → T (monomial m c) ∈ S)
@@ -36,7 +36,7 @@ theorem lin_mem {A B : ℕ} (T : PolXY K k →ₗ[K] PolXY K k) (S : Submodule K
     h m _ (mem_PolAB_iff_forall_support_bidegree.1 hf m hm).1 (mem_PolAB_iff_forall_support_bidegree.1 hf m hm).2
 
 /- English proof (translation)
-Rewrite using `[MvPolynomial.as_sum f, map_sum, map_sum]`. Conclude with `Finset.sum_congr rfl fun m hm => h m _ (mem_PolAB_iff_forall_support_bidegree.1 hf m hm).1 (mem_PolAB_iff_forall_support_bidegree.1 hf m hm).2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lin_eq {A B : ℕ} (T T' : PolXY K k →ₗ[K] PolXY K k)
     (h : ∀ (m : XY k →₀ ℕ) (c : K), xDeg m = A → yDeg m = B → T (monomial m c) = T' (monomial m c))
@@ -46,38 +46,38 @@ theorem lin_eq {A B : ℕ} (T T' : PolXY K k →ₗ[K] PolXY K k)
     h m _ (mem_PolAB_iff_forall_support_bidegree.1 hf m hm).1 (mem_PolAB_iff_forall_support_bidegree.1 hf m hm).2
 
 /- English proof (translation)
-Simplify using `only [xDeg, Finsupp.coe_add, Pi.add_apply, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem xDeg_add (m m' : XY k →₀ ℕ) : xDeg (m + m') = xDeg m + xDeg m' := by
   simp only [xDeg, Finsupp.coe_add, Pi.add_apply, Finset.sum_add_distrib]
 /- English proof (translation)
-Simplify using `only [yDeg, Finsupp.coe_add, Pi.add_apply, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem yDeg_add (m m' : XY k →₀ ℕ) : yDeg (m + m') = yDeg m + yDeg m' := by
   simp only [yDeg, Finsupp.coe_add, Pi.add_apply, Finset.sum_add_distrib]
 /- English proof (translation)
-Simplify using `[xDeg, Finsupp.single_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem xDeg_inl (i : Fin k) : xDeg (Finsupp.single (Sum.inl i : XY k) 1) = 1 := by
   simp [xDeg, Finsupp.single_apply]
 /- English proof (translation)
-Simplify using `[yDeg, Finsupp.single_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem yDeg_inl (i : Fin k) : yDeg (Finsupp.single (Sum.inl i : XY k) 1) = 0 := by
   simp [yDeg, Finsupp.single_apply]
 /- English proof (translation)
-Simplify using `[xDeg, Finsupp.single_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem xDeg_inr (i : Fin k) : xDeg (Finsupp.single (Sum.inr i : XY k) 1) = 0 := by
   simp [xDeg, Finsupp.single_apply]
 /- English proof (translation)
-Simplify using `[yDeg, Finsupp.single_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem yDeg_inr (i : Fin k) : yDeg (Finsupp.single (Sum.inr i : XY k) 1) = 1 := by
   simp [yDeg, Finsupp.single_apply]
 
 /- English proof (translation)
-Establish `key` using `lin_mem (A := A) (B := B) (LinearMap.mulLeft K (X (Sum.inl i) : PolXY K k)) (PolAB K k (A + 1) B) (fun m c hx hy => by`. Rewrite using `[LinearMap.mulLeft_apply, show (X (Sum.inl i) : PolXY K k) = monomial (Finsupp.single (Sum.inl i) 1) 1 from rfl, monomial_mul, one_mul]`. Conclude with `monomial_mem _ (by rw [xDeg_add, xDeg_inl]; omega) (by rw [yDeg_add, yDeg_inl]; omega)) hf`. Simplify `key` using `only [LinearMap.mulLeft_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem X_inl_mul_mem {A B : ℕ} (i : Fin k) {f : PolXY K k} (hf : f ∈ PolAB K k A B) :
     X (Sum.inl i) * f ∈ PolAB K k (A + 1) B := by
@@ -90,7 +90,7 @@ theorem X_inl_mul_mem {A B : ℕ} (i : Fin k) {f : PolXY K k} (hf : f ∈ PolAB 
   simpa only [LinearMap.mulLeft_apply] using key
 
 /- English proof (translation)
-Establish `key` using `lin_mem (A := A) (B := B) (LinearMap.mulLeft K (X (Sum.inr i) : PolXY K k)) (PolAB K k A (B + 1)) (fun m c hx hy => by`. Rewrite using `[LinearMap.mulLeft_apply, show (X (Sum.inr i) : PolXY K k) = monomial (Finsupp.single (Sum.inr i) 1) 1 from rfl, monomial_mul, one_mul]`. Conclude with `monomial_mem _ (by rw [xDeg_add, xDeg_inr]; omega) (by rw [yDeg_add, yDeg_inr]; omega)) hf`. Simplify `key` using `only [LinearMap.mulLeft_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem X_inr_mul_mem {A B : ℕ} (i : Fin k) {f : PolXY K k} (hf : f ∈ PolAB K k A B) :
     X (Sum.inr i) * f ∈ PolAB K k A (B + 1) := by
@@ -103,7 +103,7 @@ theorem X_inr_mul_mem {A B : ℕ} (i : Fin k) {f : PolXY K k} (hf : f ∈ PolAB 
   simpa only [LinearMap.mulLeft_apply] using key
 
 /- English proof (translation)
-Simplify using `only [hXY, Finset.sum_mul]`. Conclude with `Submodule.sum_mem _ fun i _ => by`. Rewrite using `[mul_assoc]`. Conclude with `X_inl_mul_mem i (X_inr_mul_mem i hf)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem h_mul_mem {A B : ℕ} {f : PolXY K k} (hf : f ∈ PolAB K k A B) :
     hXY K k * f ∈ PolAB K k (A + 1) (B + 1) := by
@@ -112,7 +112,7 @@ theorem h_mul_mem {A B : ℕ} {f : PolXY K k} (hf : f ∈ PolAB K k A B) :
     rw [mul_assoc]; exact X_inl_mul_mem i (X_inr_mul_mem i hf)
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `zero => simpa using hf`. Consider the case `succ l ih`. Rewrite using `[pow_succ', mul_assoc, ← add_assoc, ← add_assoc]`. Conclude with `h_mul_mem ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem h_pow_mul_mem {A B : ℕ} (l : ℕ) {f : PolXY K k} (hf : f ∈ PolAB K k A B) :
     hXY K k ^ l * f ∈ PolAB K k (A + l) (B + l) := by
@@ -123,7 +123,7 @@ theorem h_pow_mul_mem {A B : ℕ} (l : ℕ) {f : PolXY K k} (hf : f ∈ PolAB K 
     exact h_mul_mem ih
 
 /- English proof (translation)
-Establish `hle : Finsupp.single v 1 ≤ m` using `Finsupp.single_le_iff.2 hv`. Rewrite using `[← xDeg_add, ← yDeg_add, tsub_add_cancel_of_le hle]`. Conclude with `⟨rfl, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 private theorem xDeg_yDeg_sub_single_add_single (m : XY k →₀ ℕ) (v : XY k) (hv : 1 ≤ m v) :
     xDeg (m - Finsupp.single v 1) + xDeg (Finsupp.single v 1) = xDeg m ∧
@@ -133,11 +133,9 @@ private theorem xDeg_yDeg_sub_single_add_single (m : XY k →₀ ℕ) (v : XY k)
   exact ⟨rfl, rfl⟩
 
 /- English proof (translation)
-Establish `key` using `lin_mem (A := A) (B := B) (pderiv (R := K) (Sum.inl i : XY k)).toLinearMap (PolAB K k (A - 1) B) (fun m c hx hy => by`. Express the relevant statement in the definitionally equal form `pderiv (Sum.inl i) (monomial m c) ∈ PolAB K k (A - 1) B`. Rewrite using `[pderiv_monomial]`. Distinguish the cases in `h0 : m (Sum.inl i) = 0`. Rewrite using `[h0, Nat.cast_zero, mul_zero, monomial_zero]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.zero_mem _`. Take `⟨h1, h2⟩` from `xDeg_yDeg_sub_single_add_single m (Sum.inl i) (Nat.one_le_iff_ne_zero.2 h0)`. Rewrite `h1` using `[xDeg_inl]`. Rewrite `h2` using `[yDeg_inl]`. Conclude with `monomial_mem _ (by omega) (by omega)) hf`.
-
-Conclude with `key`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pderiv_inl_mem {A B : ℕ} (i : Fin k) {f : PolXY K k} (hf : f ∈ PolAB K k A B) :
     pderiv (Sum.inl i) f ∈ PolAB K k (A - 1) B := by
@@ -153,11 +151,9 @@ theorem pderiv_inl_mem {A B : ℕ} (i : Fin k) {f : PolXY K k} (hf : f ∈ PolAB
   exact key
 
 /- English proof (translation)
-Establish `key` using `lin_mem (A := A) (B := B) (pderiv (R := K) (Sum.inr i : XY k)).toLinearMap (PolAB K k A (B - 1)) (fun m c hx hy => by`. Express the relevant statement in the definitionally equal form `pderiv (Sum.inr i) (monomial m c) ∈ PolAB K k A (B - 1)`. Rewrite using `[pderiv_monomial]`. Distinguish the cases in `h0 : m (Sum.inr i) = 0`. Rewrite using `[h0, Nat.cast_zero, mul_zero, monomial_zero]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.zero_mem _`. Take `⟨h1, h2⟩` from `xDeg_yDeg_sub_single_add_single m (Sum.inr i) (Nat.one_le_iff_ne_zero.2 h0)`. Rewrite `h1` using `[xDeg_inr]`. Rewrite `h2` using `[yDeg_inr]`. Conclude with `monomial_mem _ (by omega) (by omega)) hf`.
-
-Conclude with `key`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pderiv_inr_mem {A B : ℕ} (i : Fin k) {f : PolXY K k} (hf : f ∈ PolAB K k A B) :
     pderiv (Sum.inr i) f ∈ PolAB K k A (B - 1) := by
@@ -173,21 +169,21 @@ theorem pderiv_inr_mem {A B : ℕ} (i : Fin k) {f : PolXY K k} (hf : f ∈ PolAB
   exact key
 
 /- English proof (translation)
-Unfold `xDeg`. Conclude with `Finset.single_le_sum (f := fun j => m (Sum.inl j)) (fun _ _ => Nat.zero_le _) (Finset.mem_univ i)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private theorem apply_inl_le_xDeg (m : XY k →₀ ℕ) (i : Fin k) : m (Sum.inl i) ≤ xDeg m := by
   unfold xDeg
   exact Finset.single_le_sum (f := fun j => m (Sum.inl j)) (fun _ _ => Nat.zero_le _) (Finset.mem_univ i)
 
 /- English proof (translation)
-Unfold `yDeg`. Conclude with `Finset.single_le_sum (f := fun j => m (Sum.inr j)) (fun _ _ => Nat.zero_le _) (Finset.mem_univ i)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private theorem apply_inr_le_yDeg (m : XY k →₀ ℕ) (i : Fin k) : m (Sum.inr i) ≤ yDeg m := by
   unfold yDeg
   exact Finset.single_le_sum (f := fun j => m (Sum.inr j)) (fun _ _ => Nat.zero_le _) (Finset.mem_univ i)
 
 /- English proof (translation)
-Establish `key` using `lin_eq (A := 0) (B := B) (pderiv (R := K) (Sum.inl i : XY k)).toLinearMap 0 (fun m c hx _ => by`. Establish `h0 : m (Sum.inl i) = 0` using `by have := apply_inl_le_xDeg m i; omega`. Express the relevant statement in the definitionally equal form `pderiv (Sum.inl i) (monomial m c) = (0 : PolXY K k →ₗ[K] PolXY K k) (monomial m c)`. Rewrite using `[LinearMap.zero_apply, pderiv_monomial, h0, Nat.cast_zero, mul_zero, monomial_zero]) hf`. Simplify using `using key`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem pderiv_inl_zero {B : ℕ} (i : Fin k) {f : PolXY K k} (hf : f ∈ PolAB K k 0 B) :
     pderiv (Sum.inl i) f = 0 := by
@@ -199,7 +195,7 @@ theorem pderiv_inl_zero {B : ℕ} (i : Fin k) {f : PolXY K k} (hf : f ∈ PolAB 
   simpa using key
 
 /- English proof (translation)
-Establish `key` using `lin_eq (A := A) (B := 0) (pderiv (R := K) (Sum.inr i : XY k)).toLinearMap 0 (fun m c _ hy => by`. Establish `h0 : m (Sum.inr i) = 0` using `by have := apply_inr_le_yDeg m i; omega`. Express the relevant statement in the definitionally equal form `pderiv (Sum.inr i) (monomial m c) = (0 : PolXY K k →ₗ[K] PolXY K k) (monomial m c)`. Rewrite using `[LinearMap.zero_apply, pderiv_monomial, h0, Nat.cast_zero, mul_zero, monomial_zero]) hf`. Simplify using `using key`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem pderiv_inr_zero {A : ℕ} (i : Fin k) {f : PolXY K k} (hf : f ∈ PolAB K k A 0) :
     pderiv (Sum.inr i) f = 0 := by
@@ -211,7 +207,7 @@ theorem pderiv_inr_zero {A : ℕ} (i : Fin k) {f : PolXY K k} (hf : f ∈ PolAB 
   simpa using key
 
 /- English proof (translation)
-Unfold `ctrF`. Rewrite using `[LinearMap.sum_apply]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ctrF_apply (f : PolXY K k) :
     ctrF K k f = ∑ i : Fin k, pderiv (Sum.inl i) (pderiv (Sum.inr i) f) := by
@@ -220,7 +216,7 @@ theorem ctrF_apply (f : PolXY K k) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[ctrF_apply]`. Conclude with `Submodule.sum_mem _ fun i _ => pderiv_inl_mem i (pderiv_inr_mem i hf)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ctrF_mem {A B : ℕ} {f : PolXY K k} (hf : f ∈ PolAB K k A B) :
     ctrF K k f ∈ PolAB K k (A - 1) (B - 1) := by
@@ -228,21 +224,21 @@ theorem ctrF_mem {A B : ℕ} {f : PolXY K k} (hf : f ∈ PolAB K k A B) :
   exact Submodule.sum_mem _ fun i _ => pderiv_inl_mem i (pderiv_inr_mem i hf)
 
 /- English proof (translation)
-Rewrite using `[ctrF_apply]`. Conclude with `Finset.sum_eq_zero fun i _ => pderiv_inl_zero i (pderiv_inr_mem i hf)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ctrF_zero_left {B : ℕ} {f : PolXY K k} (hf : f ∈ PolAB K k 0 B) : ctrF K k f = 0 := by
   rw [ctrF_apply]
   exact Finset.sum_eq_zero fun i _ => pderiv_inl_zero i (pderiv_inr_mem i hf)
 
 /- English proof (translation)
-Rewrite using `[ctrF_apply]`. Conclude with `Finset.sum_eq_zero fun i _ => by rw [pderiv_inr_zero i hf, map_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ctrF_zero_right {A : ℕ} {f : PolXY K k} (hf : f ∈ PolAB K k A 0) : ctrF K k f = 0 := by
   rw [ctrF_apply]
   exact Finset.sum_eq_zero fun i _ => by rw [pderiv_inr_zero i hf, map_zero]
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `zero => simpa using hf`. Consider the case `succ l ih`. Rewrite using `[pow_succ', Module.End.mul_apply, Nat.sub_add_eq, Nat.sub_add_eq]`. Conclude with `ctrF_mem ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ctrF_pow_mem {A B : ℕ} (l : ℕ) {f : PolXY K k} (hf : f ∈ PolAB K k A B) :
     (ctrF K k ^ l) f ∈ PolAB K k (A - l) (B - l) := by
@@ -253,9 +249,9 @@ theorem ctrF_pow_mem {A B : ℕ} (l : ℕ) {f : PolXY K k} (hf : f ∈ PolAB K k
     exact ctrF_mem ih
 
 /- English proof (translation)
-Take `⟨d, rfl⟩ : ∃ d, l = d + (min A B + 1)` from `⟨l - (min A B + 1), by omega⟩`. Rewrite using `[pow_add, Module.End.mul_apply, pow_succ', Module.End.mul_apply]`. Establish `hm` using `ctrF_pow_mem (min A B) hf`. Break down `le_total A B with h | h` into its components or cases. Rewrite `hm`, the goal using `[min_eq_left h]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `hm` using `[Nat.sub_self]`. Rewrite using `[ctrF_zero_left hm, map_zero]`. Rewrite `hm`, the goal using `[min_eq_right h]`. Rewrite `hm` using `[Nat.sub_self]`. Rewrite using `[ctrF_zero_right hm, map_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem ctrF_pow_zero {A B : ℕ} {l : ℕ} (hl : min A B < l) {f : PolXY K k} (hf : f ∈ PolAB K k A B) :
     (ctrF K k ^ l) f = 0 := by
@@ -271,21 +267,21 @@ theorem ctrF_pow_zero {A B : ℕ} {l : ℕ} (hl : min A B < l) {f : PolXY K k} (
     rw [ctrF_zero_right hm, map_zero]
 
 /- English proof (translation)
-Simplify using `[hXY, Derivation.leibniz, pderiv_X, Pi.single_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pderiv_inr_h (i : Fin k) : pderiv (Sum.inr i) (hXY K k) = X (Sum.inl i) := by
   classical
   simp [hXY, Derivation.leibniz, pderiv_X, Pi.single_apply]
 
 /- English proof (translation)
-Simplify using `[hXY, Derivation.leibniz, pderiv_X, Pi.single_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pderiv_inl_h (i : Fin k) : pderiv (Sum.inl i) (hXY K k) = X (Sum.inr i) := by
   classical
   simp [hXY, Derivation.leibniz, pderiv_X, Pi.single_apply]
 
 /- English proof (translation)
-Rewrite using `[pderiv_monomial]`. Distinguish the cases in `h0 : m v = 0`. Simplify using `only [h0, Nat.cast_zero, mul_zero, monomial_zero]`. Rewrite using `[show (X v : PolXY K k) = monomial (Finsupp.single v 1) 1 from rfl, monomial_mul, one_mul, add_tsub_cancel_of_le (Finsupp.single_le_iff.2 (Nat.one_le_iff_ne_zero.2 h0))]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem X_mul_pderiv_monomialMultinomialDepth (v : XY k) (m : XY k →₀ ℕ) (c : K) :
     (X v : PolXY K k) * pderiv v (monomial m c) = monomial m (c * (m v : K)) := by
@@ -296,9 +292,9 @@ private theorem X_mul_pderiv_monomialMultinomialDepth (v : XY k) (m : XY k →�
       add_tsub_cancel_of_le (Finsupp.single_le_iff.2 (Nat.one_le_iff_ne_zero.2 h0))]
 
 /- English proof (translation)
-Establish `hf'` using `mem_PolAB_iff_forall_support_bidegree.1 hf`. Use `conv_lhs => rw [MvPolynomial.as_sum f]`. Use `conv_rhs => rw [MvPolynomial.as_sum f]`. Simplify using `only [map_sum, Finset.mul_sum, Finset.smul_sum]`. Rewrite using `[Finset.sum_comm]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations. Simplify using `only [X_mul_pderiv_monomialMultinomialDepth]`. Rewrite using `[← map_sum (monomial m), ← Finset.mul_sum, ← Nat.cast_sum, show (∑ i : Fin k, m (Sum.inl i)) = A from (hf' m hm).1, smul_monomial, smul_eq_mul, mul_comm]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem euler_X_sum {A B : ℕ} {f : PolXY K k} (hf : f ∈ PolAB K k A B) :
     ∑ i : Fin k, X (Sum.inl i) * pderiv (Sum.inl i) f = (A : K) • f := by
@@ -313,9 +309,9 @@ theorem euler_X_sum {A B : ℕ} {f : PolXY K k} (hf : f ∈ PolAB K k A B) :
     show (∑ i : Fin k, m (Sum.inl i)) = A from (hf' m hm).1, smul_monomial, smul_eq_mul, mul_comm]
 
 /- English proof (translation)
-Establish `hf'` using `mem_PolAB_iff_forall_support_bidegree.1 hf`. Use `conv_lhs => rw [MvPolynomial.as_sum f]`. Use `conv_rhs => rw [MvPolynomial.as_sum f]`. Simplify using `only [map_sum, Finset.mul_sum, Finset.smul_sum]`. Rewrite using `[Finset.sum_comm]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations. Simplify using `only [X_mul_pderiv_monomialMultinomialDepth]`. Rewrite using `[← map_sum (monomial m), ← Finset.mul_sum, ← Nat.cast_sum, show (∑ i : Fin k, m (Sum.inr i)) = B from (hf' m hm).2, smul_monomial, smul_eq_mul, mul_comm]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem euler_y {A B : ℕ} {f : PolXY K k} (hf : f ∈ PolAB K k A B) :
     ∑ i : Fin k, X (Sum.inr i) * pderiv (Sum.inr i) f = (B : K) • f := by
@@ -330,9 +326,9 @@ theorem euler_y {A B : ℕ} {f : PolXY K k} (hf : f ∈ PolAB K k A B) :
     show (∑ i : Fin k, m (Sum.inr i)) = B from (hf' m hm).2, smul_monomial, smul_eq_mul, mul_comm]
 
 /- English proof (translation)
-Rewrite using `[ctrF_apply, ctrF_apply]`. Establish `e : ∀ i : Fin k, pderiv (Sum.inl i) (pderiv (Sum.inr i) (hXY K k * f)) = f + X (Sum.inl i) * pderiv (Sum.inl i) f + X (Sum.inr i) * pderiv (Sum.inr i) f + hXY K k * pderiv (Sum.inl i) (pderiv (Sum.inr i) f)`. Introduce `i`. Simplify using `only [Derivation.leibniz, map_add, pderiv_inr_h, pderiv_inl_h, pderiv_X_self, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [e, Finset.sum_add_distrib, euler_X_sum hf, euler_y hf, ← Finset.mul_sum, Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul, MvPolynomial.smul_eq_C_mul, map_natCast]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem ctr_h {A B : ℕ} {f : PolXY K k} (hf : f ∈ PolAB K k A B) :
     ctrF K k (hXY K k * f) = hXY K k * ctrF K k f + ((A + B + k : ℕ) : K) • f := by
@@ -349,9 +345,9 @@ theorem ctr_h {A B : ℕ} {f : PolXY K k} (hf : f ∈ PolAB K k A B) :
   ring
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `zero`. Rewrite using `[zero_add, pow_one, ctr_h hg]`. Simplify using `only [MvPolynomial.smul_eq_C_mul, map_natCast]`. Use `push_cast`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Consider the case `succ l ih`. Rewrite using `[pow_succ' (hXY K k) (l + 1), mul_assoc, ctr_h (h_pow_mul_mem (l + 1) hg), ih]`. Simplify using `only [MvPolynomial.smul_eq_C_mul, map_natCast]`. Use `push_cast`.
+Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -371,26 +367,26 @@ theorem ctr_h_pow {a b : ℕ} (l : ℕ) {g : PolXY K k} (hg : g ∈ PolAB K k a 
     ring
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 private theorem mem_HarAB_iff_mem_PolAB_and_ctrF_eq_zero {A B : ℕ} {f : PolXY K k} :
     f ∈ HarAB K k A B ↔ f ∈ PolAB K k A B ∧ ctrF K k f = 0 := Iff.rfl
 
 /- English proof (translation)
-Rewrite using `[ctr_h_pow i (mem_HarAB_iff_mem_PolAB_and_ctrF_eq_zero.1 hw).1, (mem_HarAB_iff_mem_PolAB_and_ctrF_eq_zero.1 hw).2, mul_zero, zero_add]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ctr_h_pow_har {a b : ℕ} (i : ℕ) {w : PolXY K k} (hw : w ∈ HarAB K k a b) :
     ctrF K k (hXY K k ^ (i + 1) * w) = (((i + 1) * (a + b + k + i) : ℕ) : K) • (hXY K k ^ i * w) := by
   rw [ctr_h_pow i (mem_HarAB_iff_mem_PolAB_and_ctrF_eq_zero.1 hw).1, (mem_HarAB_iff_mem_PolAB_and_ctrF_eq_zero.1 hw).2, mul_zero, zero_add]
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `mem_HarAB_iff_mem_PolAB_and_ctrF_eq_zero.1 hw`. Proceed by induction on `m with`. Consider the case `zero => intro i`. Simplify using the standard rewrite rules. Consider the case `succ m ih`.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Introduce `i`. Rewrite using `[pow_succ, Module.End.mul_apply]`. Break down `i with _ | j` into its components or cases. Rewrite using `[pow_zero, one_mul, h2, map_zero, Nat.zero_descFactorial_succ, zero_mul, Nat.cast_zero, zero_smul]`. Rewrite using `[ctr_h_pow_har j hw, map_smul, ih j, smul_smul, Nat.add_sub_add_right]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Establish `hN : a + b + k + (j + 1) - 1 = (a + b + k + j - 1) + 1` using `by omega`. Rewrite using `[hN, Nat.succ_descFactorial_succ, Nat.succ_descFactorial_succ]`. Establish `hN2 : a + b + k + j - 1 + 1 = a + b + k + j` using `by omega`. Rewrite using `[hN2]`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem ctr_pow_h_pow_har (hk : 1 ≤ k) {a b : ℕ} {w : PolXY K k} (hw : w ∈ HarAB K k a b) (m : ℕ) :
     ∀ i : ℕ, (ctrF K k ^ m) (hXY K k ^ i * w) =
@@ -414,15 +410,13 @@ theorem ctr_pow_h_pow_har (hk : 1 ≤ k) {a b : ℕ} {w : PolXY K k} (hw : w ∈
       ring
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => intro a b w _ _ j hj`. Conclude with `absurd hj (Nat.not_lt_zero _)`. Consider the case `succ n ih`. Introduce `a b w hw hs`.
+Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hwn : w n = 0`. Establish `h1 : (ctrF K k ^ n) (∑ j ∈ range (n + 1), hXY K k ^ j * w j) = 0` using `by rw [hs, map_zero]`. Establish `hz : ∑ j ∈ range n, (ctrF K k ^ n) (hXY K k ^ j * w j) = 0` using `Finset.sum_eq_zero fun j hj => by`. Rewrite using `[ctr_pow_h_pow_har hk (hw j) n j, Nat.descFactorial_eq_zero_iff_lt.2 (Finset.mem_range.1 hj), zero_mul, Nat.cast_zero, zero_smul]`. Rewrite `h1` using `[map_sum, Finset.sum_range_succ, hz, zero_add, ctr_pow_h_pow_har hk (hw n) n n, Nat.sub_self, pow_zero, one_mul, smul_eq_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `h1 with h1 | h1` into its components or cases. It suffices to derive a contradiction. Rewrite `h1` using `[Nat.cast_eq_zero, mul_eq_zero, Nat.descFactorial_self, Nat.descFactorial_eq_zero_iff_lt]`. Break down `h1 with h1 | h1` into its components or cases. Conclude with `Nat.factorial_ne_zero n h1`.
+It suffices to derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses.
 
-Use linear arithmetic over natural numbers and integers. Conclude with `h1`. Introduce `j hj`. Break down `Nat.lt_succ_iff_lt_or_eq.1 hj with hj | hj` into its components or cases. Rewrite `hs` using `[Finset.sum_range_succ, hwn, mul_zero, add_zero]`.
-
-Conclude with `ih a b w hw hs j hj`. Rewrite using `[hj]`. Conclude with `hwn`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem har_indep [CharZero K] (hk : 1 ≤ k) (n : ℕ) : ∀ (a b : ℕ → ℕ) (w : ℕ → PolXY K k),
     (∀ j, w j ∈ HarAB K k (a j) (b j)) → ∑ j ∈ range n, hXY K k ^ j * w j = 0 → ∀ j < n, w j = 0 := by
@@ -455,13 +449,13 @@ def cP (K : Type) [Field K] (M l : ℕ) : K :=
   (-1 : K) ^ l / ((M.choose l : ℕ) : K) * (((l.factorial : ℕ) : K)⁻¹ * ((l.factorial : ℕ) : K)⁻¹)
 
 /- English proof (translation)
-Simplify using `[cP]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cPoint_zero (M : ℕ) : cP K M 0 = 1 := by
   simp [cP]
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `rfl : s = y * t / x := by`. Rewrite using `[eq_div_iff hx]`. Take the linear combination `-h`. Clear the denominators using the available nonvanishing facts. Apply the tactic sequence `all_goals ring`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem harmonic_identity_cancel (x y t s φ e : K) (hx : x ≠ 0) (hy : y ≠ 0) (ht : t ≠ 0) (hφ : φ ≠ 0) (h : y * t = x * s) :
     e / x * (φ⁻¹ * φ⁻¹) + (e * -1) / y * ((t * φ)⁻¹ * (t * φ)⁻¹) * (t * s) = 0 := by
@@ -472,7 +466,7 @@ theorem harmonic_identity_cancel (x y t s φ e : K) (hx : x ≠ 0) (hy : y ≠ 0
   all_goals ring
 
 /- English proof (translation)
-Unfold `cP`. Rewrite using `[pow_succ, Nat.factorial_succ, Nat.cast_mul, Nat.cast_mul]`. Conclude with `harmonic_identity_cancel _ _ _ _ _ _ (Nat.cast_ne_zero.2 (Nat.choose_pos h.le).ne') (Nat.cast_ne_zero.2 (Nat.choose_pos h).ne') (Nat.cast_ne_zero.2 (Nat.succ_ne_zero N)) (Nat.cast_ne_zero.2 (Nat.factorial_ne_zero N)) (by rw [← Nat.cast_mul, ← Nat.cast_mul, Nat.choose_succ_right_e …`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem harmonicCoeff_recurrence [CharZero K] {M N : ℕ} (h : N < M) :
     cP K M N + cP K M (N + 1) * (((N + 1) * (M - N) : ℕ) : K) = 0 := by
@@ -484,7 +478,7 @@ theorem harmonicCoeff_recurrence [CharZero K] {M N : ℕ} (h : N < M) :
     (by rw [← Nat.cast_mul, ← Nat.cast_mul, Nat.choose_succ_right_eq])
 
 /- English proof (translation)
-Unfold `harProj`. Rewrite using `[LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.smul_apply, LinearMap.comp_apply, hDiv, ctrDiv, LinearMap.mulLeft_apply, mul_smul_comm, smul_smul, cP]`. Apply the tactic sequence `all_goals (congr 1; ring)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem harProj_apply (A B : ℕ) (f : PolXY K k) : harProj K k A B f =
     ∑ l ∈ range (min A B + 1), cP K (A + B + k - 2) l • (hXY K k ^ l * (ctrF K k ^ l) f) := by
@@ -496,11 +490,11 @@ theorem harProj_apply (A B : ℕ) (f : PolXY K k) : harProj K k A B f =
   all_goals (congr 1; ring)
 
 /- English proof (translation)
-Proceed by induction on `N with`. Consider the case `zero => simp`. Consider the case `succ N ih`. Establish `h1` using `min_le_left A B`. Establish `h2` using `min_le_right A B`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : ctrF K k ((ctrF K k ^ (N + 1)) f) = (ctrF K k ^ (N + 1 + 1)) f`. Rewrite using `[pow_succ' (ctrF K k) (N + 1), Module.End.mul_apply]`. Establish `hc : (N + 1) * (A - (N + 1) + (B - (N + 1)) + k + N) = (N + 1) * (A + B + k - 2 - N)`. Use `congr 1`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers.
 
-Establish `hrec` using `harmonicCoeff_recurrence (K := K) (M := A + B + k - 2) (N := N) (by omega)`. Rewrite using `[Finset.sum_range_succ, map_add, ih (by omega), map_smul, ctr_h_pow N (ctrF_pow_mem (N + 1) hf), e1, hc, smul_add, smul_smul, add_left_comm, ← add_smul, hrec, zero_smul, add_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem ctr_partial [CharZero K] (hk : 1 ≤ k) {A B : ℕ} {f : PolXY K k} (hf : f ∈ PolAB K k A B) (N : ℕ)
     (hN : N ≤ min A B) :
@@ -522,7 +516,7 @@ theorem ctr_partial [CharZero K] (hk : 1 ≤ k) {A B : ℕ} {f : PolXY K k} (hf 
       hrec, zero_smul, add_zero]
 
 /- English proof (translation)
-Rewrite using `[harProj_apply, ctr_partial hk hf (min A B) le_rfl, ctrF_pow_zero (Nat.lt_add_one _) hf, mul_zero, smul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem harProj_ker [CharZero K] (hk : 1 ≤ k) {A B : ℕ} {f : PolXY K k} (hf : f ∈ PolAB K k A B) :
     ctrF K k (harProj K k A B f) = 0 := by
@@ -530,9 +524,9 @@ theorem harProj_ker [CharZero K] (hk : 1 ≤ k) {A B : ℕ} {f : PolXY K k} (hf 
     smul_zero]
 
 /- English proof (translation)
-Rewrite using `[harProj_apply]`. Use `Submodule.sum_mem _ fun l hl => Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Establish `hl'` using `Finset.mem_range.1 hl`. Establish `h1` using `min_le_left A B`. Establish `h2` using `min_le_right A B`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `h_pow_mul_mem l (ctrF_pow_mem l hf)` as an intermediate fact. Rewrite `this` using `[Nat.sub_add_cancel (by omega : l ≤ A), Nat.sub_add_cancel (by omega : l ≤ B)]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem harProj_memPol {A B : ℕ} {f : PolXY K k} (hf : f ∈ PolAB K k A B) :
     harProj K k A B f ∈ PolAB K k A B := by
@@ -545,16 +539,16 @@ theorem harProj_memPol {A B : ℕ} {f : PolXY K k} (hf : f ∈ PolAB K k A B) :
   rwa [Nat.sub_add_cancel (by omega : l ≤ A), Nat.sub_add_cancel (by omega : l ≤ B)] at this
 
 /- English proof (translation)
-Conclude with `mem_HarAB_iff_mem_PolAB_and_ctrF_eq_zero.2 ⟨harProj_memPol hf, harProj_ker hk hf⟩`.
+A detailed English derivation is pending.
 -/
 theorem harProj_mem [CharZero K] (hk : 1 ≤ k) {A B : ℕ} {f : PolXY K k} (hf : f ∈ PolAB K k A B) :
     harProj K k A B f ∈ HarAB K k A B := by
   exact mem_HarAB_iff_mem_PolAB_and_ctrF_eq_zero.2 ⟨harProj_memPol hf, harProj_ker hk hf⟩
 
 /- English proof (translation)
-Establish `h1` using `min_le_left A B`. Establish `h2` using `min_le_right A B`. Use `⟨-∑ l ∈ range (min A B), cP K (A + B + k - 2) (l + 1) • (hXY K k ^ l * (ctrF K k ^ (l + 1)) f), ?_, ?_⟩` and prove the remaining obligations. Use `Submodule.neg_mem _ (Submodule.sum_mem _ fun l hl => Submodule.smul_mem _ _ ?_)` and prove the remaining obligations. Establish `hl'` using `Finset.mem_range.1 hl`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `h_pow_mul_mem l (ctrF_pow_mem (l + 1) hf)` as an intermediate fact. Rewrite `this` using `[show A - (l + 1) + l = A - 1 by omega, show B - (l + 1) + l = B - 1 by omega]`. Then use the resulting hypothesis. Rewrite using `[harProj_apply, Finset.sum_range_succ']`. Simplify using `only [pow_zero, one_mul, Module.End.one_apply, cPoint_zero, one_smul, mul_neg, Finset.mul_sum, mul_smul_comm, ← mul_assoc, ← pow_succ']`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem harProj_sub {A B : ℕ} {f : PolXY K k} (hf : f ∈ PolAB K k A B) :
     ∃ g ∈ PolAB K k (A - 1) (B - 1), f - harProj K k A B f = hXY K k * g := by
@@ -572,7 +566,7 @@ theorem harProj_sub {A B : ℕ} {f : PolXY K k} (hf : f ∈ PolAB K k A B) :
     abel
 
 /- English proof (translation)
-Take `⟨_, h2⟩` from `mem_HarAB_iff_mem_PolAB_and_ctrF_eq_zero.1 hf`. Establish `hz : ∀ l : ℕ, cP K (A + B + k - 2) (l + 1) • (hXY K k ^ (l + 1) * (ctrF K k ^ (l + 1)) f) = 0` using `fun l => by rw [pow_succ (ctrF K k), Module.End.mul_apply, h2, map_zero, mul_zero, smul_zero]`. Rewrite using `[harProj_apply, Finset.sum_range_succ']`. Simplify using `[hz, cPoint_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem harProj_har {A B : ℕ} {f : PolXY K k} (hf : f ∈ HarAB K k A B) : harProj K k A B f = f := by
   obtain ⟨_, h2⟩ := mem_HarAB_iff_mem_PolAB_and_ctrF_eq_zero.1 hf
@@ -582,33 +576,33 @@ theorem harProj_har {A B : ℕ} {f : PolXY K k} (hf : f ∈ HarAB K k A B) : har
   simp [hz, cPoint_zero]
 
 /- English proof (translation)
-Conclude with `mem_HarAB_iff_mem_PolAB_and_ctrF_eq_zero.2 ⟨hf, ctrF_zero_left hf⟩`.
+A detailed English derivation is pending.
 -/
 theorem har_of_left {B : ℕ} {f : PolXY K k} (hf : f ∈ PolAB K k 0 B) : f ∈ HarAB K k 0 B := by
   exact mem_HarAB_iff_mem_PolAB_and_ctrF_eq_zero.2 ⟨hf, ctrF_zero_left hf⟩
 
 /- English proof (translation)
-Conclude with `mem_HarAB_iff_mem_PolAB_and_ctrF_eq_zero.2 ⟨hf, ctrF_zero_right hf⟩`.
+A detailed English derivation is pending.
 -/
 theorem har_of_right {A : ℕ} {f : PolXY K k} (hf : f ∈ PolAB K k A 0) : f ∈ HarAB K k A 0 := by
   exact mem_HarAB_iff_mem_PolAB_and_ctrF_eq_zero.2 ⟨hf, ctrF_zero_right hf⟩
 
 /- English proof (translation)
-Introduce `A`. Proceed by induction on `A with`. Consider the case `zero`. Introduce `B f hf`. Use `⟨fun j => if j = 0 then f else 0, fun j => ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `hj : j = 0`. Substitute `hj` using the available equality. Simplify using `using har_of_left hf`. Simplify using `[hj]`. Simplify using the standard rewrite rules.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Consider the case `succ A ih`. Introduce `B f hf`. Break down `B with _ | B` into its components or cases. Use `⟨fun j => if j = 0 then f else 0, fun j => ?_, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hj : j = 0`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Substitute `hj` using the available equality. Simplify using `using har_of_right hf`. Simplify using `[hj]`. Simplify using the standard rewrite rules. Take `⟨g, hg, hfg⟩` from `harProj_sub hf`.
+Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Simplify using `only [Nat.add_sub_cancel] at hg`. Take `⟨v, hv, hgv⟩` from `ih B g hg`. Use `⟨fun j => if j = 0 then harProj K k (A + 1) (B + 1) f else v (j - 1), fun j => ?_, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hj : j = 0`. Substitute `hj` using the available equality.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `using harProj_mem hk hf`. Simplify using `only [hj, ↓reduceIte]`. Use `hv (j - 1)` as an intermediate fact. Rewrite `this` using `[show A - (j - 1) = A + 1 - j by omega, show B - (j - 1) = B + 1 - j by omega]`. Then use the resulting hypothesis. Rewrite using `[min_add_add_right, Finset.sum_range_succ']`.
+Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Nat.add_one_ne_zero, ↓reduceIte, add_tsub_cancel_right, pow_zero, one_mul]`. Establish `e : f = harProj K k (A + 1) (B + 1) f + hXY K k * g` using `by rw [← hfg]; abel`. Use `conv_lhs => rw [e]`. Rewrite using `[hgv, Finset.mul_sum, add_comm]`. Use `congr 1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_assoc, ← pow_succ']`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem decomp_exists [CharZero K] (hk : 1 ≤ k) : ∀ (A B : ℕ) (f : PolXY K k), f ∈ PolAB K k A B →
     ∃ w : ℕ → PolXY K k, (∀ j, w j ∈ HarAB K k (A - j) (B - j)) ∧
@@ -652,11 +646,9 @@ theorem decomp_exists [CharZero K] (hk : 1 ≤ k) : ∀ (A B : ℕ) (f : PolXY K
         rw [← mul_assoc, ← pow_succ']
 
 /- English proof (translation)
-Take `⟨w, hw, hgw⟩` from `decomp_exists hk a b g hg`. Establish `key` using `har_indep hk (min a b + 1 + 1) (fun j => if j = 0 then A else a - (j - 1)) (fun j => if j = 0 then B else b - (j - 1)) (fun j => if j = 0 then u else -w (j - 1)) (fun j => by`. Distinguish the cases in `hj : j = 0`. Simplify using `[hj, hu]`. Simplify using `only [hj, ↓reduceIte]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `Submodule.neg_mem _ (hw (j - 1)))`. Use the proof step `(by`. Rewrite using `[Finset.sum_range_succ']`. Simplify using `only [Nat.add_one_ne_zero, ↓reduceIte, add_tsub_cancel_right, pow_zero, one_mul, mul_neg, Finset.sum_neg_distrib]`. Rewrite using `[neg_add_eq_zero, h, hgw, Finset.mul_sum]`.
-
-Conclude with `Finset.sum_congr rfl fun i _ => by rw [← mul_assoc, ← pow_succ'])`. Simplify using `using key 0 (by omega)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem har_inter [CharZero K] (hk : 1 ≤ k) {A B a b : ℕ} {u g : PolXY K k} (hu : u ∈ HarAB K k A B)
     (hg : g ∈ PolAB K k a b) (h : u = hXY K k * g) : u = 0 := by
@@ -677,7 +669,7 @@ theorem har_inter [CharZero K] (hk : 1 ≤ k) {A B a b : ℕ} {u g : PolXY K k} 
   simpa using key 0 (by omega)
 
 /- English proof (translation)
-Establish `hhg : hXY K k * g ∈ PolAB K k A B`. Use `h_mul_mem hg` as an intermediate fact. Rewrite `this` using `[Nat.sub_add_cancel hA, Nat.sub_add_cancel hB]`. Then use the resulting hypothesis. Take `⟨g', hg', he⟩` from `harProj_sub hhg`. Conclude with `har_inter hk (harProj_mem hk hhg) (Submodule.sub_mem _ hg hg') (by rw [mul_sub, ← he]; abel)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem harProj_kill [CharZero K] (hk : 1 ≤ k) {A B : ℕ} (hA : 1 ≤ A) (hB : 1 ≤ B) {g : PolXY K k}
     (hg : g ∈ PolAB K k (A - 1) (B - 1)) : harProj K k A B (hXY K k * g) = 0 := by
@@ -688,11 +680,11 @@ theorem harProj_kill [CharZero K] (hk : 1 ≤ k) {A B : ℕ} (hA : 1 ≤ A) (hB 
   exact har_inter hk (harProj_mem hk hhg) (Submodule.sub_mem _ hg hg') (by rw [mul_sub, ← he]; abel)
 
 /- English proof (translation)
-Take `⟨w, hw, hgw⟩` from `decomp_exists hk A B g hg`. Establish `h1` using `min_le_left A B`. Establish `h2` using `min_le_right A B`. Use `⟨∑ j ∈ range (min A B + 1), ((((j + 1) * (A - j + (B - j) + k + j) : ℕ) : K)⁻¹) • (hXY K k ^ (j + 1) * w j), ?_, ?_⟩` and prove the remaining obligations. Use `Submodule.sum_mem _ fun j hj => Submodule.smul_mem _ _ ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hj'` using `Finset.mem_range.1 hj`. Use `h_pow_mul_mem (j + 1) (mem_HarAB_iff_mem_PolAB_and_ctrF_eq_zero.1 (hw j)).1` as an intermediate fact. Rewrite `this` using `[show A - j + (j + 1) = A + 1 by omega, show B - j + (j + 1) = B + 1 by omega]`. Then use the resulting hypothesis. Rewrite using `[map_sum, hgw]`. Use `Finset.sum_congr rfl fun j hj => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_smul, ctr_h_pow_har j (hw j), smul_smul, inv_mul_cancel₀, one_smul]`. Conclude with `Nat.cast_ne_zero.2 (Nat.mul_ne_zero (Nat.succ_ne_zero j) (by omega))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_laplacian_eq [CharZero K] (hk : 1 ≤ k) {A B : ℕ} {g : PolXY K k} (hg : g ∈ PolAB K k A B) :
     ∃ f ∈ PolAB K k (A + 1) (B + 1), ctrF K k f = g := by
@@ -711,7 +703,7 @@ theorem exists_laplacian_eq [CharZero K] (hk : 1 ≤ k) {A B : ℕ} {g : PolXY K
     exact Nat.cast_ne_zero.2 (Nat.mul_ne_zero (Nat.succ_ne_zero j) (by omega))
 
 /- English proof (translation)
-Simplify using `only [levelProj, LinearMap.smul_apply, LinearMap.comp_apply, hDiv, LinearMap.mulLeft_apply, mul_smul_comm, smul_smul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem levelProj_apply (A B j : ℕ) (f : PolXY K k) : levelProj K k A B j f =
     hXY K k ^ j * (((((A + B + k - 2 * j + j - 1).choose j : ℕ) : K)⁻¹ * ((j.factorial : ℕ) : K)⁻¹) •
@@ -720,7 +712,7 @@ theorem levelProj_apply (A B j : ℕ) (f : PolXY K k) : levelProj K k A B j f =
     mul_smul_comm, smul_smul]
 
 /- English proof (translation)
-Simplify using `only [ctrDiv, LinearMap.smul_apply]`. Conclude with `Submodule.smul_mem _ _ (ctrF_pow_mem j hf)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ctrDiv_mem {A B : ℕ} (j : ℕ) {f : PolXY K k} (hf : f ∈ PolAB K k A B) :
     ctrDiv K k j f ∈ PolAB K k (A - j) (B - j) := by
@@ -728,7 +720,7 @@ theorem ctrDiv_mem {A B : ℕ} (j : ℕ) {f : PolXY K k} (hf : f ∈ PolAB K k A
   exact Submodule.smul_mem _ _ (ctrF_pow_mem j hf)
 
 /- English proof (translation)
-Conclude with `⟨((((A + B + k - 2 * j + j - 1).choose j : ℕ) : K)⁻¹ * ((j.factorial : ℕ) : K)⁻¹) • harProj K k (A - j) (B - j) (ctrDiv K k j f), Submodule.smul_mem _ _ (harProj_mem hk (ctrDiv_mem j hf)), levelProj_apply A B j f⟩`.
+Supply the required witnesses or components.
 -/
 theorem levelProj_image [CharZero K] (hk : 1 ≤ k) {A B : ℕ} (j : ℕ) {f : PolXY K k}
     (hf : f ∈ PolAB K k A B) :
@@ -738,17 +730,17 @@ theorem levelProj_image [CharZero K] (hk : 1 ≤ k) {A B : ℕ} (j : ℕ) {f : P
     Submodule.smul_mem _ _ (harProj_mem hk (ctrDiv_mem j hf)), levelProj_apply A B j f⟩
 
 /- English proof (translation)
-Rewrite using `[levelProj_apply]`. Take `⟨hw1, hw2⟩` from `mem_HarAB_iff_mem_PolAB_and_ctrF_eq_zero.1 hw`. Establish `hA` using `min_le_left A B`. Establish `hB` using `min_le_right A B`. Establish `hc : ctrDiv K k j (hXY K k ^ i * w) = (((j.factorial : ℕ) : K)⁻¹ * ((i.descFactorial j * (A - i + (B - i) + k + i - 1).descFactorial j : ℕ) : K)) • (hXY K k ^ (i - j) * w)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [ctrDiv, LinearMap.smul_apply]`. Rewrite using `[ctr_pow_h_pow_har hk hw j i, smul_smul]`. Rewrite using `[hc]`. Break down `lt_trichotomy i j with hij | hij | hij` into its components or cases. Rewrite using `[Nat.descFactorial_eq_zero_iff_lt.2 hij, zero_mul, Nat.cast_zero, mul_zero, zero_smul, map_zero, smul_zero, mul_zero, if_neg hij.ne]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Substitute `hij` using the available equality. Rewrite using `[if_pos rfl, Nat.sub_self, pow_zero, one_mul, map_smul, harProj_har hw, smul_smul]`. Use `congr 1`. Use `one_smul K w using 2` and compare the differences between its conclusion and the goal. Establish `hN : A - i + (B - i) + k + i - 1 = A + B + k - 2 * i + i - 1` using `by omega`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact.
 
-Establish `h1 : ((i.factorial : ℕ) : K) ≠ 0` using `Nat.cast_ne_zero.2 (Nat.factorial_ne_zero i)`. Establish `h2 : (((A + B + k - 2 * i + i - 1).choose i : ℕ) : K) ≠ 0` using `Nat.cast_ne_zero.2 (Nat.choose_pos (by omega)).ne'`. Rewrite using `[hN, Nat.descFactorial_self, Nat.descFactorial_eq_factorial_mul_choose, Nat.cast_mul, Nat.cast_mul]`. Clear the denominators using the available nonvanishing facts. Apply the tactic sequence `all_goals ring`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg hij.ne', map_smul]`. Establish `hpow : hXY K k ^ (i - j) * w = hXY K k * (hXY K k ^ (i - j - 1) * w)`. Rewrite using `[← mul_assoc, ← pow_succ', Nat.sub_add_cancel (by omega)]`. Establish `hg : hXY K k ^ (i - j - 1) * w ∈ PolAB K k (A - j - 1) (B - j - 1)`. Use `h_pow_mul_mem (i - j - 1) hw1` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[show A - i + (i - j - 1) = A - j - 1 by omega, show B - i + (i - j - 1) = B - j - 1 by omega]`. Then use the resulting hypothesis. Rewrite using `[hpow, harProj_kill hk (by omega) (by omega) hg, smul_zero, smul_zero, mul_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem levelProj_level [CharZero K] (hk : 1 ≤ k) {A B i j : ℕ} (hi : i ≤ min A B) (hj : j ≤ min A B)
     {w : PolXY K k} (hw : w ∈ HarAB K k (A - i) (B - i)) :
@@ -786,9 +778,9 @@ theorem levelProj_level [CharZero K] (hk : 1 ≤ k) {A B i j : ℕ} (hi : i ≤ 
     rw [hpow, harProj_kill hk (by omega) (by omega) hg, smul_zero, smul_zero, mul_zero]
 
 /- English proof (translation)
-Take `⟨w, hw, hfw⟩` from `decomp_exists hk A B f hf`. Use `conv_rhs => rw [hfw]`. Use `conv_lhs => rw [hfw]`. Simplify using `only [map_sum]`. Rewrite using `[Finset.sum_comm]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Establish `hi' : i ≤ min A B` using `Nat.lt_succ_iff.1 (Finset.mem_range.1 hi)`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem levelProj_sum [CharZero K] (hk : 1 ≤ k) {A B : ℕ} {f : PolXY K k} (hf : f ∈ PolAB K k A B) :
     ∑ j ∈ range (min A B + 1), levelProj K k A B j f = f := by
@@ -810,7 +802,7 @@ end Har2
 open Har2
 
 /- English proof (translation)
-Unfold `HarProj`. Introduce `K _ _ k A B hk`. Conclude with `⟨fun f hf => ⟨harProj_mem hk hf, harProj_sub hf⟩, fun f hf => harProj_har hf, fun hA hB g hg => harProj_kill hk hA hB hg⟩`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem harmonicProjection_holds : HarProj := by
   unfold HarProj
@@ -819,9 +811,9 @@ theorem harmonicProjection_holds : HarProj := by
     fun hA hB g hg => harProj_kill hk hA hB hg⟩
 
 /- English proof (translation)
-Unfold `LevelProj`. Introduce `K _ _ k A B hk`. Use `⟨fun f hf j _ => levelProj_image hk j hf, fun f hf => levelProj_sum hk hf, fun f hf i hi j hj => ?_, fun i hi j hj w hw => levelProj_level hk hi hj hw⟩` and prove the remaining obligations. Take `⟨w, hw, he⟩` from `levelProj_image hk j hf`. Rewrite using `[he, levelProj_level hk hj hi hw]`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[if_neg (Ne.symm h), if_neg h]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem isotypicProjection_holds : LevelProj := by
   unfold LevelProj
@@ -836,7 +828,7 @@ theorem isotypicProjection_holds : LevelProj := by
   · rw [if_neg (Ne.symm h), if_neg h]
 
 /- English proof (translation)
-Unfold `CtrSurj`. Introduce `K _ _ k A B hk g hg`. Conclude with `exists_laplacian_eq hk hg`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem laplacianSurjective_holds : CtrSurj := by
   unfold CtrSurj
@@ -844,15 +836,13 @@ theorem laplacianSurjective_holds : CtrSurj := by
   exact exists_laplacian_eq hk hg
 
 /- English proof (translation)
-Unfold `HarDecomp`. Introduce `K _ _ k A B hk f hf`. Take `⟨w, hw, hfw⟩` from `decomp_exists hk A B f hf`. Establish `e2` using `Fin.sum_univ_eq_sum_range (fun j => hXY K k ^ j * w j) (min A B + 1)`. Use `⟨fun j => w j, ⟨fun j => hw j, hfw.trans e2.symm⟩, ?_⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `v ⟨hv, hfv⟩`. Use function extensionality and compare the values at `j`. Establish `key` using `har_indep hk (min A B + 1) (fun j => A - j) (fun j => B - j) (fun j => if h : j < min A B + 1 then v ⟨j, h⟩ - w j else 0) (fun j => by`. Distinguish the cases in `h : j < min A B + 1`. Simplify using `only [h, ↓reduceDIte]`.
+Assume the hypotheses and unpack their components. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Conclude with `Submodule.sub_mem _ (hv ⟨j, h⟩) (hw j)`. Simplify using `only [h, ↓reduceDIte]`. Conclude with `Submodule.zero_mem _)`. Use the proof step `(by`. Establish `e1` using `Fin.sum_univ_eq_sum_range (fun j => hXY K k ^ j * (if h : j < min A B + 1 then v ⟨j, h⟩ - w j else 0)) (min A B + 1)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `e1.symm.trans ?_` and prove the remaining obligations. Simplify using `only [Fin.is_lt, ↓reduceDIte, Fin.eta, mul_sub, Finset.sum_sub_distrib]`. Rewrite using `[← hfv, e2, ← hfw, sub_self])`. Use `key j j.isLt` as an intermediate fact. Simplify using `only [j.isLt, ↓reduceDIte, Fin.eta, sub_eq_zero] at this`.
-
-Conclude with `this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem harmonicDecomposition_holds : HarDecomp := by
   unfold HarDecomp
@@ -885,7 +875,7 @@ namespace Har2
 variable {K : Type} [Field K] {k : ℕ}
 
 /- English proof (translation)
-Use extensionality with `f`. Rewrite using `[mem_PolAB_iff_forall_support_bidegree, MvPolynomial.mem_restrictSupport_iff]`. Conclude with `⟨fun h m hm => h m hm, fun h m hm => h hm⟩`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem polAB_eq_restrict (A B : ℕ) :
     PolAB K k A B = restrictSupport K {m : XY k →₀ ℕ | xDeg m = A ∧ yDeg m = B} := by
@@ -894,7 +884,7 @@ theorem polAB_eq_restrict (A B : ℕ) :
   exact ⟨fun h m hm => h m hm, fun h m hm => h hm⟩
 
 /- English proof (translation)
-Establish `e : {x : Fin (n + 1) →₀ ℕ // ∑ i, x i = A} ≃ Sym (Fin (n + 1)) A` using `Equiv.subtypeEquiv Multiset.toFinsupp.symm.toEquiv fun x => by`. Simplify using `[Multiset.toFinsupp_symm_apply, Finsupp.card_toMultiset, Finsupp.sum_fintype]`. Rewrite using `[Nat.card_congr e, Nat.card_eq_fintype_card, Sym.card_sym_eq_choose, Fintype.card_fin, show n + 1 + A - 1 = A + n by omega, Nat.choose_symm_add]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem card_finsupp_fin_sum_eq_choose (n A : ℕ) :
     Nat.card {x : Fin (n + 1) →₀ ℕ // ∑ i, x i = A} = (A + n).choose n := by
@@ -905,7 +895,7 @@ private theorem card_finsupp_fin_sum_eq_choose (n A : ℕ) :
     show n + 1 + A - 1 = A + n by omega, Nat.choose_symm_add]
 
 /- English proof (translation)
-Establish `e` using `(Equiv.subtypeEquiv (p := fun m : XY (k' + 1) →₀ ℕ => xDeg m = A ∧ yDeg m = B) (q := fun c : (Fin (k' + 1) →₀ ℕ) × (Fin (k' + 1) →₀ ℕ) => (∑ i, c.1 i = A) ∧ (∑ i, c.2 i = B)) Finsupp.sumFinsuppEquivProdFinsupp fun m => by`. Simplify using `[xDeg, yDeg, Finsupp.fst_sumFinsuppEquivProdFinsupp, Finsupp.snd_sumFinsuppEquivProdFinsupp]).trans`. Use the proof step `(Equiv.subtypeProdEquivProd (p := fun x : Fin (k' + 1) →₀ ℕ => ∑ i, x i = A) (q := fun y : Fin (k' + 1) →₀ ℕ => ∑ i, y i = B))`. Rewrite using `[show Nat.card ↥{m : XY (k' + 1) →₀ ℕ | xDeg m = A ∧ yDeg m = B} = _ from Nat.card_congr e, Nat.card_prod]`. Conclude with `congrArg₂ (· * ·) (card_finsupp_fin_sum_eq_choose k' A) (card_finsupp_fin_sum_eq_choose k' B)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_bideg (k' A B : ℕ) :
     Nat.card {m : XY (k' + 1) →₀ ℕ | xDeg m = A ∧ yDeg m = B} =
@@ -922,7 +912,7 @@ theorem card_bideg (k' A B : ℕ) :
   exact congrArg₂ (· * ·) (card_finsupp_fin_sum_eq_choose k' A) (card_finsupp_fin_sum_eq_choose k' B)
 
 /- English proof (translation)
-Rewrite using `[polAB_eq_restrict, ← card_bideg k' A B]`. Conclude with `Module.finrank_eq_nat_card_basis (MvPolynomial.basisRestrictSupport K _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_polAB (k' A B : ℕ) :
     Module.finrank K (PolAB K (k' + 1) A B) = (A + k').choose k' * (B + k').choose k' := by
@@ -930,7 +920,7 @@ theorem finrank_polAB (k' A B : ℕ) :
   exact Module.finrank_eq_nat_card_basis (MvPolynomial.basisRestrictSupport K _)
 
 /- English proof (translation)
-Conclude with `Module.finite_of_finrank_pos (by`. Rewrite using `[finrank_polAB]`. Conclude with `Nat.mul_pos (Nat.choose_pos (by omega)) (Nat.choose_pos (by omega)))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_polAB (k' A B : ℕ) : Module.Finite K (PolAB K (k' + 1) A B) := by
   exact Module.finite_of_finrank_pos (by
@@ -938,13 +928,13 @@ theorem finite_polAB (k' A B : ℕ) : Module.Finite K (PolAB K (k' + 1) A B) := 
     exact Nat.mul_pos (Nat.choose_pos (by omega)) (Nat.choose_pos (by omega)))
 
 /- English proof (translation)
-Establish `hk1 : (1 : ℕ) ≤ k' + 1` using `by omega`. Use `haveI := finite_polAB (K := K) k' (A + 1) (B + 1)`. Establish `hmaps : ∀ x ∈ PolAB K (k' + 1) (A + 1) (B + 1), ctrF K (k' + 1) x ∈ PolAB K (k' + 1) A B` using `fun x hx => by simpa using ctrF_mem hx`. Set `φ` to `(ctrF K (k' + 1)).restrict hmaps`. Establish `hsurj : LinearMap.range φ = ⊤`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `LinearMap.range_eq_top.2 fun y => ?_` and prove the remaining obligations. Take `⟨f, hf, hfy⟩` from `exists_laplacian_eq hk1 y.2`. Conclude with `⟨⟨f, hf⟩, Subtype.ext hfy⟩`. Establish `hker : (LinearMap.ker φ).map (PolAB K (k' + 1) (A + 1) (B + 1)).subtype = HarAB K (k' + 1) (A + 1) (B + 1)`. Use extensionality with `x`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [Submodule.mem_map, LinearMap.mem_ker, Submodule.subtype_apply]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Conclude with `mem_HarAB_iff_mem_PolAB_and_ctrF_eq_zero.2 ⟨y.2, congrArg Subtype.val hy⟩`. Introduce `hx`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨h1, h2⟩` from `mem_HarAB_iff_mem_PolAB_and_ctrF_eq_zero.1 hx`. Conclude with `⟨⟨x, h1⟩, Subtype.ext h2, rfl⟩`. Use `LinearMap.finrank_range_add_finrank_ker φ` as an intermediate fact. Rewrite `this` using `[hsurj, finrank_top, ← Submodule.finrank_map_subtype_eq, hker]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem finrank_har [CharZero K] (k' A B : ℕ) :
     Module.finrank K (HarAB K (k' + 1) (A + 1) (B + 1)) + Module.finrank K (PolAB K (k' + 1) A B) =
@@ -975,9 +965,9 @@ theorem finrank_har [CharZero K] (k' A B : ℕ) :
 end Har2
 
 /- English proof (translation)
-Unfold `HarDim`. Introduce `K _ _ k' A B`. Use `⟨finrank_polAB k' A B, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← finrank_polAB (K := K) k' A B, ← finrank_polAB (K := K) k' (A + 1) (B + 1)]`. Conclude with `finrank_har k' A B`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use extensionality with `f`. Conclude with `⟨fun h => (mem_HarAB_iff_mem_PolAB_and_ctrF_eq_zero.1 h).1, har_of_right⟩`. Use extensionality with `f`. Conclude with `⟨fun h => (mem_HarAB_iff_mem_PolAB_and_ctrF_eq_zero.1 h).1, har_of_left⟩`.
+Supply the required witnesses or components. By extensionality, compare the relevant components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem harmonicFinrank_holds : HarDim := by
   unfold HarDim

@@ -12,13 +12,13 @@ open scoped Pointwise ENNReal Classical
 namespace GlobalTheory.AmpArith
 
 /- English proof (translation)
-Establish `hv0 : v ≠ 0` using `by positivity`. Establish `h2v : 0 ≤ 2 * v` using `by positivity`. Establish `hexp : r * (k + 1) + r * (r - 1) = r * k + r ^ 2`. Take `⟨s, rfl⟩ : ∃ s, r = s + 1` from `⟨r - 1, by omega⟩`. Rewrite using `[Nat.add_sub_cancel]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hneg : (2 * v) ^ (-((r : ℝ) * k)) = ((2 * v) ^ (r * k))⁻¹`. Rewrite using `[Real.rpow_neg h2v, show ((r : ℝ) * k) = ((r * k : ℕ) : ℝ) by push_cast; ring, Real.rpow_natCast]`. Establish `key : ((2 * v) ^ (r * k))⁻¹ * 1 * (2 : ℝ) ^ (r * k + r ^ 2) = 2 ^ (r ^ 2) / v ^ (r * k)`. Rewrite using `[mul_pow, pow_add]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Establish `hle : v ^ (k * (r - j) * f) ≤ v ^ (r * k * f)`. Apply `pow_le_pow_right₀ hv` to reduce the goal to its premises. Establish `: r - j ≤ r` using `Nat.sub_le r j`. Combine the equalities or inequalities in the displayed calculation.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Use `_ = r * k * f := by ring`. Rewrite using `[hneg, hexp, key, div_pow, ← pow_mul, ← pow_mul, mul_div_assoc', div_le_iff₀ (by positivity)]`. Combine the equalities or inequalities in the displayed calculation. Use `_ = 2 ^ (r ^ 2 * f) * v ^ (r * k * f) := by ring`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem v_part (k r f j : ℕ) (v : ℝ) (hr : 1 ≤ r) (hv : 1 ≤ v) :
     v ^ (k * (r - j) * f) *
@@ -45,15 +45,13 @@ theorem v_part (k r f j : ℕ) (v : ℝ) (hr : 1 ≤ r) (hv : 1 ≤ v) :
   _ = 2 ^ (r ^ 2 * f) * v ^ (r * k * f) := by ring
 
 /- English proof (translation)
-Establish `hR2 : 1 ≤ R ^ 2` using `one_le_pow₀ hR`. Establish `hR4 : R ^ 2 ≤ R ^ 4` using `by nlinarith`. Establish `hR41 : 1 ≤ R ^ 4` using `le_trans hR2 hR4`. Establish `hS : 1 ≤ (R + 1) ^ 2` using `by nlinarith`. Establish `hP0 : 0 ≤ R ^ 4 * (R + 1) ^ 2` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : R ^ 2 ≤ R ^ 4 * (R + 1) ^ 2`. Combine the equalities or inequalities in the displayed calculation. Use `_ = R ^ 4 * 1 := by ring`. Use `_ ≤ R ^ 4 * (R + 1) ^ 2 := by gcongr`. Establish `e2 : (R + 1) ^ 2 ≤ R ^ 4 * (R + 1) ^ 2`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Use `_ ≤ R ^ 4 * (R + 1) ^ 2 := by gcongr`. Establish `e3 : R ^ 4 * (2 * R + 5) ≤ 5 * (R ^ 4 * (R + 1) ^ 2)`. Establish `: 2 * R + 5 ≤ 5 * (R + 1) ^ 2` using `by nlinarith`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Use `_ = 5 * (R ^ 4 * (R + 1) ^ 2) := by ring`. Establish `e4 : R ^ 4 * (2 * R + 2) ≤ 2 * (R ^ 4 * (R + 1) ^ 2)`. Establish `: 2 * R + 2 ≤ 2 * (R + 1) ^ 2` using `by nlinarith`. Combine the equalities or inequalities in the displayed calculation. Use `_ = 2 * (R ^ 4 * (R + 1) ^ 2) := by ring`.
-
-Establish `hC1 : 1000 ≤ C` using `by linarith`. Establish `hCC : 413 + 160 * CH ≤ 4 * C ^ 2` using `by nlinarith`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left e1 hF, mul_le_mul_of_nonneg_left e2 hF, mul_le_mul_of_nonneg_left e3 hF, mul_le_mul_of_nonneg_left e4 (mul_nonneg hF hCH), mul_le_mul_of_nonneg_left hCC (mul_nonneg hF hP0)]`.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem exponent_bound (CH C R F : ℝ) (hCH : 0 ≤ CH) (hC : 100 * (CH + 10) ≤ C) (hR : 1 ≤ R)
     (hF : 0 ≤ F) :
@@ -87,23 +85,19 @@ theorem exponent_bound (CH C R F : ℝ) (hCH : 0 ≤ CH) (hC : 100 * (CH + 10) �
     mul_le_mul_of_nonneg_left hCC (mul_nonneg hF hP0)]
 
 /- English proof (translation)
-Establish `hb0 : 0 < b` using `by linarith`. Establish `hb1 : 1 ≤ b` using `by linarith`. Establish `hmR : (m : ℝ) = 2 * r + 2` using `by rw [hm]; push_cast; ring`. Establish `hr1 : (1 : ℝ) ≤ r` using `by exact_mod_cast hr`. Establish `f1 : (2 : ℝ) ^ (r ^ 2 * f) ≤ b ^ ((r : ℝ) ^ 2 * f)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[show ((r : ℝ) ^ 2 * f) = ((r ^ 2 * f : ℕ) : ℝ) by push_cast; ring, Real.rpow_natCast]`. Conclude with `pow_le_pow_left₀ (by norm_num) hb _`. Establish `h8v : 8 * v ≤ b ^ (3 : ℝ)`. Rewrite using `[show (3 : ℝ) = ((3 : ℕ) : ℝ) by norm_num, Real.rpow_natCast]`. Establish `h4 : 4 ≤ b ^ 2` using `by nlinarith`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left h4 hb0.le]`. Establish `f2 : (8 * v) ^ (2 * (r + 1) ^ 2 * f) ≤ b ^ (3 * (2 * ((r : ℝ) + 1) ^ 2 * f))`. Rewrite using `[show (3 * (2 * ((r : ℝ) + 1) ^ 2 * f)) = 3 * ((2 * (r + 1) ^ 2 * f : ℕ) : ℝ) by push_cast; ring, Real.rpow_mul_natCast hb0.le]`. Conclude with `pow_le_pow_left₀ (by linarith) h8v _`. Establish `hn : 8 * r ≤ 2 ^ (m + 3)`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : r < 2 ^ r` using `Nat.lt_two_pow_self`. Establish `h2 : 2 ^ r ≤ 2 ^ m` using `Nat.pow_le_pow_right (by norm_num) (by omega)`. Rewrite using `[pow_add]`. Use linear arithmetic over natural numbers and integers. Establish `h8r : 8 * (r : ℝ) ≤ b ^ ((m : ℝ) + 3)`.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[show ((m : ℝ) + 3) = ((m + 3 : ℕ) : ℝ) by push_cast; ring, Real.rpow_natCast]`. Combine the equalities or inequalities in the displayed calculation. Use `_ ≤ ((2 ^ (m + 3) : ℕ) : ℝ) := by exact_mod_cast hn`. Use `_ = (2 : ℝ) ^ (m + 3) := by push_cast; ring`. Use `_ ≤ b ^ (m + 3) := pow_le_pow_left₀ (by norm_num) hb _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : 8 * (r : ℝ) * b ^ (CH * m) ≤ b ^ ((m : ℝ) + 3 + CH * m)`. Rewrite using `[Real.rpow_add hb0]`. Conclude with `mul_le_mul_of_nonneg_right h8r (Real.rpow_nonneg hb0.le _)`. Establish `f3 : (8 * (r : ℝ) * b ^ (CH * m)) ^ (80 * r ^ 4 * f) ≤ b ^ (((m : ℝ) + 3 + CH * m) * ((80 * r ^ 4 * f : ℕ) : ℝ))`. Rewrite using `[Real.rpow_mul_natCast hb0.le ((m : ℝ) + 3 + CH * m) (80 * r ^ 4 * f)]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `pow_le_pow_left₀ (mul_nonneg (by positivity) (Real.rpow_nonneg hb0.le _)) h3 _`. Establish `p2 : 0 ≤ (8 * v) ^ (2 * (r + 1) ^ 2 * f)` using `pow_nonneg (by linarith) _`. Establish `hE` using `exponent_bound CH C (r : ℝ) (f : ℝ) hCH hC hr1 (Nat.cast_nonneg f)`. Combine the equalities or inequalities in the displayed calculation. Apply `mul_le_mul _ f3 (pow_nonneg (mul_nonneg (by positivity) (Real.rpow_nonneg hb0.le _)) _) (mul_nonneg (mul_nonneg (Real.rpow_nonneg hb0.le _) (Real.rpow_nonneg hb0.le _)) (Real.rpow_nonneg hb0.le _))` to reduce the goal to its premises.
-
-Apply `mul_le_mul _ f2 p2 (mul_nonneg (Real.rpow_nonneg hb0.le _) (Real.rpow_nonneg hb0.le _))` to reduce the goal to its premises. Conclude with `mul_le_mul f1 f2 p2 (Real.rpow_nonneg hb0.le _)`. Use `_ = b ^ ((r : ℝ) ^ 2 * f + 3 * (2 * ((r : ℝ) + 1) ^ 2 * f) + 3 * (2 * ((r : ℝ) + 1) ^ 2 * f) + ((m : ℝ) + 3 + CH * m) * ((80 * r ^ 4 * f : ℕ) : ℝ)) := by`. Rewrite using `[Real.rpow_add hb0, Real.rpow_add hb0, Real.rpow_add hb0]`. Use `_ ≤ b ^ (C * (m : ℝ) ^ 2 * f * (C * (r : ℝ) ^ 4)) := by`.
-
-Apply `Real.rpow_le_rpow_of_exponent_le hb1` to reduce the goal to its premises. Rewrite using `[hmR]`. Use `push_cast`. Combine the linear relations using `[hE]`. Use `_ = _ := Real.rpow_mul hb0.le _ _`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem b_part (CH C : ℝ) (hCH : 0 ≤ CH) (hC : 100 * (CH + 10) ≤ C) (r m f : ℕ) (b v : ℝ)
     (hm : m = 2 * r + 2) (hr : 1 ≤ r) (hb : 2 ≤ b) (hv : 1 ≤ v) (hvb : 2 * v ≤ b) :
@@ -163,9 +157,9 @@ theorem b_part (CH C : ℝ) (hCH : 0 ≤ CH) (hC : 100 * (CH + 10) ≤ C) (r m f
   _ = _ := Real.rpow_mul hb0.le _ _
 
 /- English proof (translation)
-Establish `hU0 : 0 ≤ U` using `le_trans hA hU`. Establish `hBBH : 0 ≤ B * B * H` using `mul_nonneg (mul_nonneg hB hB) hH`. Establish `hGPT : 0 ≤ G * Pi * T` using `mul_nonneg (mul_nonneg hG0 hPi) hT`. Establish `hY0 : 0 ≤ Y` using `le_trans (mul_nonneg (mul_nonneg (mul_nonneg hU0 hB) hB) hH) hY`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Use `_ ≤ U * (B * B * H) * (G * Pi * T) := mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right hU hBBH) hGPT`. Use `_ = (U * B * B * H) * (G * Pi * T) := by ring`. Use `_ ≤ Y * (G * Pi * T) := mul_le_mul_of_nonneg_right hY hGPT`. Use `_ ≤ Y * (G' * Pi * T) := mul_le_mul_of_nonneg_left (mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right hG hPi) hT) hY0`. Use `_ = G' * Pi * Y * T := by ring`.
+A detailed English derivation is pending.
 -/
 theorem regroup {A B D G Pi H T G' Y U : ℝ} (hA : 0 ≤ A * D) (hB : 0 ≤ B) (hH : 0 ≤ H)
     (hG0 : 0 ≤ G) (hPi : 0 ≤ Pi) (hT : 0 ≤ T) (hU : A * D ≤ U) (hY : U * B * B * H ≤ Y)
@@ -189,17 +183,15 @@ end GlobalTheory.AmpArith
 open GlobalTheory.AmpArith in
 
 /- English proof (translation)
-Introduce `CH hCH`. Use `⟨100 * (CH + 10), ?_⟩` and prove the remaining obligations. Introduce `C hC k r m f j b v Del S Cs P hm hj1 hjr hrk hf hb hv hvb hP hDel hS`. Establish `hv0 : 0 ≤ v` using `by linarith`. Establish `hb0 : 0 < b` using `by linarith`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr : 1 ≤ r` using `le_trans hj1 hjr`. Establish `hk0 : (0 : ℝ) < k` using `Nat.cast_pos.mpr (by omega)`. Establish `hcast : ((k - 1 - j : ℕ) : ℝ) = (k : ℝ) - 1 - j`. Rewrite using `[Nat.cast_sub (by omega : j ≤ k - 1), Nat.cast_sub (by omega : 1 ≤ k), Nat.cast_one]`. Establish `hPi : Del ^ (-(((k : ℝ) - 1 - j) / 2)) = (P ^ (k - 1 - j))⁻¹`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hDel, ← Real.rpow_natCast P 2, ← Real.rpow_mul hP.le, show ((2 : ℕ) : ℝ) * (-(((k : ℝ) - 1 - j) / 2)) = -(((k - 1 - j : ℕ) : ℝ)) by`. Rewrite using `[hcast]`. Use `push_cast`. Use the proof step `ring,`. Use the proof step `Real.rpow_neg hP.le, Real.rpow_natCast]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hG : (16 * Real.pi * Real.exp 1 / k) ^ (j * (k - 1 - j) * f) ≤ (C / k) ^ ((j : ℝ) * ((k : ℝ) - 1 - j) * f)`. Rewrite using `[show ((j : ℝ) * ((k : ℝ) - 1 - j) * f) = ((j * (k - 1 - j) * f : ℕ) : ℝ) by`. Rewrite using `[Nat.cast_mul, Nat.cast_mul, hcast], Real.rpow_natCast]`. Apply `pow_le_pow_left₀ (by positivity)` to reduce the goal to its premises. Use `gcongr`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `Real.pi_lt_d2`. Establish `h2` using `Real.exp_one_lt_d9`. Establish `hpe : Real.pi * Real.exp 1 < 3.15 * 2.7182818286` using `mul_lt_mul'' h1 h2 Real.pi_pos.le (Real.exp_pos 1).le`. Use the polynomial consequences of the given equalities and inequalities. Rewrite using `[hPi]`.
-
-Conclude with `GlobalTheory.AmpArith.regroup (mul_nonneg (pow_nonneg hv0 _) (pow_nonneg (mul_nonneg (mul_nonneg (Real.rpow_nonneg (by positivity) _) zero_le_one) (by positivity)) _)) (pow_nonneg (by linarith) _) (pow_nonneg (mul_nonneg (by positivity) (Real.rpow_nonneg hb0.le _)) _) (pow_nonneg …`.
+Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.amplitude_arithmetic : ∀ CH : ℝ, 0 ≤ CH → ∃ C₀ : ℝ, ∀ C : ℝ, C₀ ≤ C → ∀ (k r m f j : ℕ) (b v Del S Cs P : ℝ), m = 2 * r + 2 → 1 ≤ j → j ≤ r → r + 2 ≤ k → 1 ≤ f → 2 ≤ b → 1 ≤ v → 2 * v ≤ b → 0 < P → Del = P ^ 2 → 1 ≤ S → (v ^ (k * (r - j) * f) * (8 * v) ^ (2 * (r + 1) ^ 2 * f)) * (8 * v) ^ (2 * (r + 1) ^ 2 * f) * ((2 * v) ^ (-((r : ℝ) * k)) * 1 * 2 ^ (r * (k + 1) + r * (r - 1))) ^ f * ((16 * Real.pi * Real.exp 1 / k) ^ (j * (k - 1 - j) * f) * (P ^ (k - 1 - j))⁻¹ * (8 * r * b ^ (CH * m)) ^ (80 * r ^ 4 * f) * S ^ (-(Cs * k))) ≤ (C / k) ^ ((j : ℝ) * ((k : ℝ) - 1 - j) * f) * Del ^ (-(((k : ℝ) - 1 - j) / 2)) * (b ^ (C * (m : ℝ) ^ 2 * f)) ^ (C * (r : ℝ) ^ 4) * S ^ (-(Cs * k)) := by
   intro CH hCH

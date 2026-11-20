@@ -3,7 +3,7 @@ import Formalism.PadicSubsetSums.CentralIdempotents.WindowSums
 namespace Formalism.IrreducibleCountingLemmas.WindowSums
 
 /- English proof (translation)
-Use `revert h`. Use `Finset.induction_on s (fun _ => by simp) ?_` and prove the remaining obligations. Introduce `a t ha ih h`. Establish `hrest : ∀ i ∈ t, f i ≠ 0` using `fun i hi => h i (Finset.mem_insert_of_mem hi)`. Rewrite using `[Finset.prod_insert ha, Finset.sum_insert ha, padicValNat.mul (h a (Finset.mem_insert_self a t)) (Finset.prod_ne_zero_iff.mpr hrest), ih hrest]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem padicValNat_finset_prod {ι : Type} (p : ℕ) [Fact p.Prime] (s : Finset ι) (f : ι → ℕ)
     (h : ∀ i ∈ s, f i ≠ 0) : padicValNat p (∏ i ∈ s, f i) = ∑ i ∈ s, padicValNat p (f i) := by
@@ -17,7 +17,7 @@ theorem padicValNat_finset_prod {ι : Type} (p : ℕ) [Fact p.Prime] (s : Finset
     ih hrest]
 
 /- English proof (translation)
-Establish `h1 : q ^ r = q ^ i * q ^ (r - i)` using `by rw [← pow_add, Nat.add_sub_cancel' hi.le]`. Establish `h2 : 1 ≤ q ^ (r - i)` using `Nat.one_le_pow _ _ hq`. Take `⟨k, hk⟩ : ∃ k, q ^ (r - i) = k + 1` from `⟨q ^ (r - i) - 1, (Nat.sub_add_cancel h2).symm⟩`. Rewrite using `[h1, hk]`. Simplify using `[mul_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem pow_sub_pow_eq_pow_mul_pow_sub_one_of_lt (q r i : ℕ) (hq : 0 < q) (hi : i < r) :
     q ^ r - q ^ i = q ^ i * (q ^ (r - i) - 1) := by
@@ -28,13 +28,13 @@ private theorem pow_sub_pow_eq_pow_mul_pow_sub_one_of_lt (q r i : ℕ) (hq : 0 <
   simp [mul_add]
 
 /- English proof (translation)
-Establish `hq0 : 0 < q` using `by omega`. Establish `hbig : ∀ i ∈ Finset.range r, q ^ (r - i) - 1 ≠ 0`. Introduce `i hi`. Establish `hi' : i < r` using `Finset.mem_range.mp hi`. Establish `h3 : q ≤ q ^ (r - i)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using Nat.pow_le_pow_right hq0 (show 1 ≤ r - i by omega)`. Use linear arithmetic over natural numbers and integers. Establish `hne : ∀ i ∈ Finset.range r, q ^ r - q ^ i ≠ 0`. Introduce `i hi`. Rewrite using `[pow_sub_pow_eq_pow_mul_pow_sub_one_of_lt q r i hq0 (Finset.mem_range.mp hi)]`.
+Simplify to obtain the desired conclusion from the available facts. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Nat.mul_ne_zero (pow_ne_zero _ hq0.ne') (hbig i hi)`. Establish `term : ∀ i ∈ Finset.range r, padicValNat g (q ^ r - q ^ i) = i * padicValNat g q + padicValNat g (q ^ (r - i) - 1)`. Introduce `i hi`. Rewrite using `[pow_sub_pow_eq_pow_mul_pow_sub_one_of_lt q r i hq0 (Finset.mem_range.mp hi), padicValNat.mul (pow_ne_zero _ hq0.ne') (hbig i hi), padicValNat.pow]`. Rewrite using `[padicValNat_finset_prod g _ _ hne, Finset.sum_congr rfl term, Finset.sum_add_distrib, ← Finset.sum_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Apply `Finset.sum_nbij' (fun i => r - i) (fun a => r - a)` to reduce the goal to its premises. Apply the tactic sequence `all_goals intro a ha`. Apply the tactic sequence `all_goals (try simp only [Finset.mem_range, Finset.mem_Icc] at ha ⊢)`. Apply the tactic sequence `all_goals (first | rfl | omega)`.
+Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem padicValNat_prod_pow_sub (g q r : ℕ) [Fact g.Prime] (hq : 2 ≤ q) :
     padicValNat g (∏ i ∈ Finset.range r, (q ^ r - q ^ i)) =
@@ -65,7 +65,7 @@ theorem padicValNat_prod_pow_sub (g q r : ℕ) [Fact g.Prime] (hq : 2 ≤ q) :
   all_goals (first | rfl | omega)
 
 /- English proof (translation)
-Establish `: NeZero q` using `⟨(Fact.out : q.Prime).ne_zero⟩`. Rewrite using `[Matrix.card_GL_field, ZMod.card]`. Conclude with `Fin.prod_univ_eq_prod_range (fun i => q ^ r - q ^ i) r`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_GL_zmod (q r : ℕ) [Fact q.Prime] :
     Nat.card (Matrix.GeneralLinearGroup (Fin r) (ZMod q)) =
@@ -75,13 +75,13 @@ theorem card_GL_zmod (q r : ℕ) [Fact q.Prime] :
   exact Fin.prod_univ_eq_prod_range (fun i => q ^ r - q ^ i) r
 
 /- English proof (translation)
-Unfold `GLCardVal`. Introduce `g g' r instg instg' hne`. Establish `hg : g.Prime` using `instg.out`. Establish `hg' : g'.Prime` using `instg'.out`. Prove the components needed by the constructor for the conclusion.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[card_GL_zmod, padicValNat_prod_pow_sub g g r hg.two_le, padicValNat_self, mul_one, Finset.sum_range_id, Finset.sum_eq_zero, add_zero]`. Introduce `a ha`. Apply `padicValNat.eq_zero_of_not_dvd` to reduce the goal to its premises. Introduce `hd`. Establish `ha1 : 1 ≤ a` using `(Finset.mem_Icc.mp ha).1`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1 : g ∣ g ^ a` using `dvd_pow_self g (by omega)`. Establish `h2 : 1 ≤ g ^ a` using `Nat.one_le_pow _ _ hg.pos`. Establish `h3 : g ∣ g ^ a - (g ^ a - 1)` using `by first`. Consider the case `exact Nat.dvd_sub' h1 hd`. Consider the case `exact Nat.dvd_sub h1 hd`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
-Rewrite `h3` using `[Nat.sub_sub_self h2]`. Conclude with `hg.one_lt.ne' (Nat.dvd_one.mp h3)`. Rewrite using `[card_GL_zmod, padicValNat_prod_pow_sub g g' r hg'.two_le]`. Establish `h0 : padicValNat g g' = 0` using `padicValNat.eq_zero_of_not_dvd fun hd => hne ((Nat.prime_dvd_prime_iff_eq hg hg').mp hd)`. Rewrite using `[h0, mul_zero, zero_add]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem padicValCardGeneralLinear : GLCardVal := by
   unfold GLCardVal

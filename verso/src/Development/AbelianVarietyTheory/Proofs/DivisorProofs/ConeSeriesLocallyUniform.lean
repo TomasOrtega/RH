@@ -24,11 +24,11 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {n : ℕ} {J : Matrix (Fin n) (Fin n) E}
 
 /- English proof (translation)
-Take `⟨l, hl⟩` from `hp`. Take `⟨m, hm⟩` from `hq`. Establish `e : ∀ a b : UA σ J, mat (a * b) = mat a * mat b` using `fun _ _ => rfl`. Establish `e1 : mat (1 : UA σ J) = 1` using `rfl`. Establish `key : mat q⁻¹ *ᵥ (mat q *ᵥ incV F x) = incV F x`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Matrix.mulVec_mulVec, ← e, inv_mul_cancel, e1, Matrix.one_mulVec]`. Rewrite `key` using `[hm, Matrix.mulVec_smul]`. Establish `h2 : mat q⁻¹ *ᵥ incV F x = (m⁻¹).1 • incV F x`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[smul_smul, ← Units.val_mul, inv_mul_cancel, Units.val_one, one_smul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `_ = (m⁻¹).1 • incV F x := by rw [key]`. Use `⟨l * m⁻¹, ?_⟩` and prove the remaining obligations. Rewrite using `[e, ← Matrix.mulVec_mulVec, h2, Matrix.mulVec_smul, hl, smul_smul, Units.val_mul, mul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stabLn_mul_inv {x : Fin n → E} {p q : UA σ J} (hp : StabLn x p) (hq : StabLn x q) : StabLn x (p * q⁻¹) := by
   obtain ⟨l, hl⟩ := hp
@@ -46,15 +46,13 @@ theorem stabLn_mul_inv {x : Fin n → E} {p q : UA σ J} (hp : StabLn x p) (hq :
   rw [e, ← Matrix.mulVec_mulVec, h2, Matrix.mulVec_smul, hl, smul_smul, Units.val_mul, mul_comm]
 
 /- English proof (translation)
-Establish `hr : ∀ t : T, t.1 * γ⁻¹ ∈ ratU σ J` using `fun t => mul_mem (hT.1 t.2) (inv_mem hγ)`. Use `choose r hrT hrs using fun t : T => (hT.2 _ (hr t)).exists`. Set `ρ : T → T` to `fun t => ⟨r t, hrT t⟩`. Establish `hinj : Function.Injective ρ`. Introduce `t₁ t₂ h`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h' : r t₁ = r t₂` using `congrArg Subtype.val h`. Establish `h1 : StabLn x (t₁.1 * γ⁻¹ * (r t₁)⁻¹)` using `hrs t₁`. Establish `h2 : StabLn x (t₂.1 * γ⁻¹ * (r t₂)⁻¹)` using `hrs t₂`. Establish `h3` using `stabLn_mul_inv h1 h2`. Establish `e : t₁.1 * γ⁻¹ * (r t₁)⁻¹ * (t₂.1 * γ⁻¹ * (r t₂)⁻¹)⁻¹ = t₁.1 * t₂.1⁻¹` using `by rw [h']; group`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h3` using `[e]`. Use `Subtype.ext ((hT.2 t₁.1 (hT.1 t₁.2)).unique ⟨t₁.2, 1, ?_⟩ ⟨t₂.2, h3⟩)` and prove the remaining obligations. Rewrite using `[mul_inv_cancel]`. Simplify using `[mat]`. Establish `hle : ∀ t : T, ‖f (t.1 * g)‖ ≤ b (ρ t)` using `fun t => by`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : t.1 * g = (t.1 * γ⁻¹ * (r t)⁻¹) * (r t * (γ * g))` using `by group`. Rewrite using `[e, hinv _ (mul_mem (hr t) (inv_mem (hT.1 (hrT t)))) (hrs t)]`. Conclude with `hbd (ρ t)`. Establish `hs : Summable (b ∘ ρ)` using `hb.comp_injective hinj`. Establish `hs' : Summable (fun t : T => ‖f (t.1 * g)‖)` using `Summable.of_nonneg_of_le (fun _ => norm_nonneg _) hle hs`.
-
-Conclude with `⟨hs', hs'.tsum_le_tsum_of_inj ρ hinj (fun c _ => (norm_nonneg _).trans (hbd c)) hle hb⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem tsum_norm_le {x : Fin n → E} {T : Set (UA σ J)} (hT : IsReps T x) {f : UA σ J → ℂ}
     (hinv : ∀ p ∈ ratU σ J, StabLn x p → ∀ h, f (p * h) = f h) {b : T → ℝ} (hb : Summable b)
@@ -83,9 +81,7 @@ theorem tsum_norm_le {x : Fin n → E} {T : Set (UA σ J)} (hT : IsReps T x) {f 
   exact ⟨hs', hs'.tsum_le_tsum_of_inj ρ hinj (fun c _ => (norm_nonneg _).trans (hbd c)) hle hb⟩
 
 /- English proof (translation)
-Use `haveI := GlobalTheory.AdelicUnitaryTop.t2Space_adeleRing_numberField F`. Use `haveI : FiniteDimensional F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Use `haveI : IsTopologicalRing (AE F E) := IsModuleTopology.isTopologicalRing (AF F) _`. Take `⟨e⟩` from `GlobalTheory.AdelicUnitaryTop.nonempty_homeomorph (F := F) (E := E) (AF F)`. Use `haveI : T2Space (AE F E) := e.isEmbedding.t2Space`.
-
-Establish `hcA : Continuous (cA σ)` using `IsModuleTopology.continuous_of_linearMap (cA σ).toLinearMap`. Establish `hc : IsClosed (UG (cA σ) (incM F J) : Set (GL (Fin n) (AE F E)))`. Establish `hv : Continuous fun g : GL (Fin n) (AE F E) => (g : Matrix (Fin n) (Fin n) (AE F E))` using `Units.continuous_val`. Conclude with `isClosed_eq (((hv.matrix_transpose.matrix_mul continuous_const).matrix_mul (hv.matrix_map hcA))) continuous_const`. Conclude with `hc.isClosedEmbedding_subtypeVal.isCompact_preimage (isCompact_heightGL_le F c)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isCompact_ht_le (c : ℝ≥0) : IsCompact {g : UA σ J | ht g ≤ c} := by
   haveI := GlobalTheory.AdelicUnitaryTop.t2Space_adeleRing_numberField F
@@ -100,9 +96,9 @@ theorem isCompact_ht_le (c : ℝ≥0) : IsCompact {g : UA σ J | ht g ≤ c} := 
   exact hc.isClosedEmbedding_subtypeVal.isCompact_preimage (isCompact_heightGL_le F c)
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ d d₁ W H' R hR T hT f hinv hL h`. Take `⟨b, hb, hbd⟩` from `hL _ (isCompact_ht_le (σ := σ) (J := W.J) (R * ht h))`. Use `⟨∑' t, b t, fun u hu => ?_⟩` and prove the remaining obligations. Take `⟨γ, hγ, hγR⟩` from `hR u hu`. Use `tsum_norm_le hT hinv hb hγ.1 fun t => hbd t _ ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← mul_assoc]`. Conclude with `(heightGL_mul_le F (γ * u).1 h.1).trans (mul_le_mul_left hγR _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_bounded : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (d d₁ : ℕ)
     (W : Spc F E d) (H' : Plane E d d₁) (R : ℝ≥0), (∀ u ∈ unip σ W H', ∃ γ ∈ ratU σ W.J ⊓ unip σ W H', ht (γ * u) ≤ R) →

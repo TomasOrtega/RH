@@ -30,13 +30,13 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.WhitFree.AvgInf
 
 /- English proof (translation)
-Use `⟨h.1, h.2.1, fun a w => ?_⟩` and prove the remaining obligations. Use `haveI : Module.Finite F E := Module.finite_of_finrank_pos (by rw [hCM.2.2.1]; norm_num)`. Establish `hs : sigR (Ainf F) σ (algebraMap (Ainf F) (Ainf F ⊗[F] E) a) = algebraMap (Ainf F) (Ainf F ⊗[F] E) a`. Simplify using `[sigR, Algebra.TensorProduct.algebraMap_apply]`. Establish `h1` using `h.2.1 (algebraMap (Ainf F) (Ainf F ⊗[F] E) a) w`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[hs]`. Establish `h2` using `h.2.2.2 (algebraMap (Ainf F) (Ainf F ⊗[F] E) a) w`. Rewrite `h2` using `[← h1]`. Establish `h3 : Algebra.trace (Ainf F) (Ainf F ⊗[F] E) (algebraMap (Ainf F) (Ainf F ⊗[F] E) a) = 2 * a`. Rewrite using `[Algebra.trace_algebraMap_of_basis (Algebra.TensorProduct.basis (Ainf F) (Module.finBasis F E))]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[hCM.2.2.1, two_mul, two_nsmul]`. Rewrite `h2` using `[h3, map_mul, map_ofNat]`. Establish `h4 : ((2 : NumberField.InfinitePlace F → ℝ) w) = 2` using `rfl`. Rewrite `h2` using `[Pi.mul_apply, h4]`. Move the coercions through the operations in `at h2`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `(-1 / 2 : ℂ) * h2`.
+A detailed English derivation is pending.
 -/
 theorem isSplitK_of_isCoord {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {σ : E →ₐ[F] E} (hCM : IsCMExt F E σ) {e : Ainf F ≃+* (NumberField.InfinitePlace F → ℝ)}
@@ -64,7 +64,7 @@ end GlobalTheory.CompanionTheory.WhitFree.AvgInf
 namespace GlobalTheory.CompanionTheory.WhitFree.AvgInf
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.Yhb9.main hT hτ hq ha hμ hν h`.
+A detailed English derivation is pending.
 -/
 theorem denLE_image {V H : Type} [MeasurableSpace V] [MeasurableSpace H] {μ : Measure V} {ν : Measure H} {q : V → H}
     {T : V → V} {τ : H → H} (hT : MeasurableEmbedding T) (hτ : Measurable τ) (hq : ∀ X, q (T X) = τ (q X))
@@ -73,17 +73,13 @@ theorem denLE_image {V H : Type} [MeasurableSpace V] [MeasurableSpace H] {μ : M
   _root_.UpperTheory.Reformulated.B.Yhb9.main hT hτ hq ha hμ hν h
 
 /- English proof (translation)
-Establish `hε2 : ε / 2 ≠ 0` using `by simp [ENNReal.div_eq_top, hε]`. Take `⟨R, hR, htail⟩` from `GlobalTheory.T.exists_box_radius_tail_lintegral_le_eps_mul K W κ n M H μ ν q C₀ hC hbox hq hbm φ hdec (ε / 2) hε2`. Use `set Bc : ℝ≥0∞ := ENNReal.ofReal B with hBc`. Establish `hBt : Bc + 1 ≠ ⊤` using `by simp [hBc]`. Establish `hδ : ε / 2 / (Bc + 1) ≠ 0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[ENNReal.div_eq_top, hε, hBc]`. Take `⟨ε', hε', hbad⟩` from `GlobalTheory.T.density_bound_from_box_volume_growth K W κ n M hn hM H μ ν q C₀ hC hbox hsh R hR _ hδ`. Use `⟨R, ε', hε', fun Y hY => ?_⟩` and prove the remaining obligations. Establish `hsub : (goodK κ R ε')ᶜ ∩ q ⁻¹' Y ⊆ ((boxK κ (fun _ _ => R))ᶜ ∩ q ⁻¹' Y) ∪ ((boxK κ (fun _ _ => R) \ goodK κ R ε') ∩ q ⁻¹' Y)`. Introduce and unpack `X ⟨hX, hXY⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hb : X ∈ boxK κ (fun _ _ => R)`. Conclude with `Or.inr ⟨⟨hb, hX⟩, hXY⟩`. Conclude with `Or.inl ⟨hb, hXY⟩`. Establish `h2 : ∫⁻ X in (boxK κ (fun _ _ => R) \ goodK κ R ε') ∩ q ⁻¹' Y, ‖φ X‖ₑ ∂μ ≤ ε / 2 * ν Y`. Combine the equalities or inequalities in the displayed calculation.
+Prove the second alternative. Prove the first alternative. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hBc, ← ofReal_norm_eq_enorm]`. Conclude with `ENNReal.ofReal_le_ofReal (hB X)`. Use `_ = Bc * μ ((boxK κ (fun _ _ => R) \ goodK κ R ε') ∩ q ⁻¹' Y) := by`. Rewrite using `[setLIntegral_const]`. Use `_ ≤ Bc * (ε / 2 / (Bc + 1) * ν Y) := by gcongr`.
-
-Conclude with `hbad Y hY`. Use `_ ≤ (Bc + 1) * (ε / 2 / (Bc + 1)) * ν Y := by`. Rewrite using `[← mul_assoc]`. Use `gcongr`. Conclude with `le_self_add`.
-
-Use `_ ≤ ε / 2 * ν Y := by gcongr`. Conclude with `ENNReal.mul_div_le`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem dom_generic {K W : Type} [CommRing K] [Fintype W] (κ : K ≃+* (W → ℂ)) {n M : ℕ} (hn : 0 < n) (hM : 2 * n < M)
     {H : Type} [MeasurableSpace H] [MeasurableSpace (Fin n → Fin M → K)] {μ : Measure (Fin n → Fin M → K)}
@@ -142,9 +138,9 @@ end GlobalTheory.CompanionTheory.WhitFree.AvgInf
 namespace GlobalTheory.CompanionTheory.WhitFree.AvgInf
 
 /- English proof (translation)
-Use function extensionality and compare the values at `c i`. Simplify using `only [shearK, GlobalTheory.CompanionTheory.SW.rmul, shearM, Matrix.add_apply, Matrix.of_apply, Matrix.one_apply, mul_add, Finset.sum_add_distrib, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Distinguish the cases in `h : c = a`. Substitute `h` using the available equality. Simplify using `[mul_comm]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[Function.update, h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem shearK_eq_rmul {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [CommRing R] [Algebra F R] {n M : ℕ}
     (a : Fin n) (s : Fin n → R ⊗[F] E) (X : Fin n → Fin M → R ⊗[F] E) :
@@ -158,13 +154,13 @@ theorem shearK_eq_rmul {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type)
   · simp [Function.update, h]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `c i`. Distinguish the cases in `h : c = a`. Substitute `h` using the available equality. Establish `h1 : ∀ b, (-s) b * shearK c s X b i = -(s b * X b i)`. Introduce `b`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hb : b = c`. Substitute `hb` using the available equality. Simplify using `[hs]`. Simplify using `[shearK, Function.update, hb]`. Simplify using `only [shearK, Function.update_self]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `h2 : ∑ b, (-s) b * (Function.update X c (fun i => X c i + ∑ b, s b * X b i)) b i = -∑ b, s b * X b i`. Rewrite using `[← Finset.sum_neg_distrib]`. Conclude with `Finset.sum_congr rfl fun b _ => h1 b`. Rewrite using `[h2]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Simplify using `[shearK, Function.update, h]`.
+A detailed English derivation is pending.
 -/
 theorem shearK_neg {K : Type} [CommRing K] {n M : ℕ} (a : Fin n) (s : Fin n → K) (hs : s a = 0)
     (X : Fin n → Fin M → K) : shearK a (-s) (shearK a s X) = X := by
@@ -190,105 +186,83 @@ end GlobalTheory.CompanionTheory.WhitFree.AvgInf
 namespace GlobalTheory.CompanionTheory.WhitFree.AvgInf
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hCM M J hJ n hn hM d b lam hinf minf hminf c φ hφ`. Establish `hlam : lam.IsAddHaarMeasure` using `hinf.1`. Take `⟨ρ0, e, hρ0, he, hρe, -⟩` from `GlobalTheory.T.infinite_adele_haar_map_eq_scaled_volume F hCM.1`. Take `⟨τ₀, κ, hco⟩` from `GlobalTheory.T.complex_coordinates_exist_at_infinity F E σ hCM ρ0 e hρ0 he hρe`. Take `⟨hκ, -, hκa⟩` from `isSplitK_of_isCoord hCM hco`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hloc` using `GlobalTheory.T.infinite_adeles_local_ring_totally_real F hCM.1`. Take `⟨hTR, hLC, hSC, hT2, -⟩` from `id hloc`. Use `haveI := hTR`. Use `haveI := hLC`. Use `haveI := hSC`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI := hT2`. Use `haveI : BorelSpace (Ainf F) := ⟨rfl⟩`. Take `⟨hTK, hLK, hSK, hTK2, -, -, -, hBor, -, -⟩` from `GlobalTheory.T.tensor_locally_compact_ring F E σ hCM (Ainf F)`. Use `haveI := hTK`. Use `haveI := hLK`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `haveI := hSK`. Use `haveI := hTK2`. Use `haveI := hBor n M`. Take `⟨hLH, hSH, hT2H, hBH, hG⟩` from `GlobalTheory.CompanionTheory.SW.HermTop.herm_top F E σ hCM (Ainf F) n`. Use `haveI := hLH`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `haveI := hSH`. Use `haveI := hT2H`. Use `haveI := hBH`. Use `haveI i1 : LocallyCompactSpace (HeckeCharacterZeroLocus.SiegelWeilU.HermR (Ainf F) σ n) := hLH`. Use `haveI i2 : SecondCountableTopology (HeckeCharacterZeroLocus.SiegelWeilU.HermR (Ainf F) σ n) := hSH`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `haveI i3 : T2Space (HeckeCharacterZeroLocus.SiegelWeilU.HermR (Ainf F) σ n) := hT2H`. Use `haveI i4 : BorelSpace (HeckeCharacterZeroLocus.SiegelWeilU.HermR (Ainf F) σ n) := ⟨rfl⟩`. Use `haveI i5 : LocallyCompactSpace (HermR (Ainf F) σ n) := hLH`. Use `haveI i6 : SecondCountableTopology (HermR (Ainf F) σ n) := hSH`. Use `haveI i7 : T2Space (HermR (Ainf F) σ n) := hT2H`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `haveI i8 : BorelSpace (HermR (Ainf F) σ n) := ⟨rfl⟩`. Take `⟨-, hW, hH⟩` from `GlobalTheory.T.coordinate_haar_measure F E σ hCM (Ainf F) d b lam hlam`. Use `haveI := hW n M`. Use `haveI := hH n`. Take `⟨halg, -, -, hmem, -⟩` from `GlobalTheory.CompanionTheory.SW.GramAlg.gram_algebra F E σ hCM M J hJ (Ainf F) n`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `set μ := GlobalTheory.CompanionTheory.SW.coordW (Ainf F) b lam n M with hμdef`. Use `set ν := GlobalTheory.CompanionTheory.SW.coordHerm (Ainf F) σ b lam n with hνdef`. Use `set Q := GlobalTheory.CompanionTheory.SiegelND.Coef.gramH hCM hJ (Ainf F) (n := n) with hQdef`. Establish `hQc : Continuous Q`. Take `⟨G, hGc, hGe⟩` from `hG M J hJ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `: Q = G`. Use function extensionality and compare the values at `X`. Conclude with `Subtype.ext (hGe X)`. Rewrite using `[this]`. Conclude with `hGc`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hQv : ∀ X, (Q X : Matrix (Fin n) (Fin n) (Ainf F ⊗[F] E)) = gramR (Ainf F) σ J X` using `fun _ => rfl`. Take `⟨hbc, hUo, hgood⟩` from `GlobalTheory.T.good_set_compact_linearly_independent (Ainf F ⊗[F] E) (NumberField.InfinitePlace F) κ hκ n M`. Establish `hd : d = 2`. Rewrite using `[← hCM.2.2.1, Module.finrank_eq_card_basis b, Fintype.card_fin]`. Substitute `hd` using the available equality.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨C₀, hC₀, hden⟩` from `GlobalTheory.T.archimedean_compact_set_density_bounded F E σ hCM M J hJ n hn hM 2 b lam hlam (boxK κ fun _ _ => 1) (hbc _)`. Establish `hcj : ∀ h : Matrix (Fin n) (Fin n) (Ainf F ⊗[F] E), Continuous fun S : HermR (Ainf F) σ n => HeckeCharacterZeroLocus.SiegelWeilU.cT (sigR (Ainf F) σ) h * (S : Matrix (Fin n) (Fin n) (Ainf F ⊗[F] E)) * h` using `fun h => (continuous_const.matrix_mul continuous_subtype_val).matrix_mul continuous_const`. Set `τg : Matrix (Fin n) (Fin n) (Ainf F ⊗[F] E) → HermR (Ainf F) σ n → HermR (Ainf F) σ n` to `fun g S => ⟨HeckeCharacterZeroLocus.SiegelWeilU.cT (sigR (Ainf F) σ) g * (S : Matrix (Fin n) (Fin n) (Ainf F ⊗[F] E)) * g, hmem S g⟩`. Establish `hτm : ∀ g, Measurable (τg g)` using `fun g => ((hcj g).subtype_mk _).measurable`. Establish `hτq : ∀ g X, Q (GlobalTheory.CompanionTheory.SW.rmul (Ainf F) X g) = τg g (Q X)` using `fun g X => Subtype.ext (halg X g)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hrc : ∀ h : Matrix (Fin n) (Fin n) (Ainf F ⊗[F] E), Continuous fun X : Fin n → Fin M → Ainf F ⊗[F] E => GlobalTheory.CompanionTheory.SW.rmul (Ainf F) X h`. Introduce `h`. Use `continuous_pi fun b => continuous_pi fun i => ?_` and prove the remaining obligations. Simplify using `only [GlobalTheory.CompanionTheory.SW.rmul]`. Use `continuous_finset_sum _ fun k _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `h1 : Continuous fun Y : Fin n → Fin M → Ainf F ⊗[F] E => Y k i` using `(continuous_apply i).comp (continuous_apply k)`. Conclude with `h1.mul continuous_const`. Establish `hsh : ∀ (S : Set (Fin n → Fin M → Ainf F ⊗[F] E)) (C : ℝ≥0∞) (a : Fin n) (s : Fin n → Ainf F ⊗[F] E), s a = 0 → DenLE μ ν Q S C → DenLE μ ν Q (shearK a s '' S) C`. Introduce `S C a s hs hS`. Establish `hsn : (-s) a = 0` using `by simp [hs]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hcs : ∀ s' : Fin n → Ainf F ⊗[F] E, Continuous (shearK a s' : (Fin n → Fin M → Ainf F ⊗[F] E) → _)`. Introduce `s'`. Establish `: (shearK a s' : (Fin n → Fin M → Ainf F ⊗[F] E) → _) = fun X => GlobalTheory.CompanionTheory.SW.rmul (Ainf F) X (shearM a s')` using `funext fun X => shearK_eq_rmul _ a s' X`. Rewrite using `[this]`. Conclude with `hrc _`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `eT : (Fin n → Fin M → Ainf F ⊗[F] E) ≃ₜ (Fin n → Fin M → Ainf F ⊗[F] E)` to `{ toFun := shearK a s invFun := shearK a (-s) left_inv := fun X => shearK_neg a s hs X right_inv := fun X => by`. Use `shearK_neg a (-s) hsn X` as an intermediate fact. Rewrite `this` using `[neg_neg]`. Then use the resulting hypothesis. Use `continuous_toFun := hcs s`. Use `continuous_invFun := hcs (-s) }`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hT : MeasurableEmbedding (shearK a s : (Fin n → Fin M → Ainf F ⊗[F] E) → _)` using `eT.measurableEmbedding`. Establish `hμ' : μ.map (shearK a s) = (1 : ℝ≥0) • μ`. Rewrite using `[one_smul]`. Conclude with `GlobalTheory.T.shear_preserves_archimedean_haar F E σ hCM n M 2 b lam hlam a s hs`. Establish `hν' : ν.map (τg (shearM a s)) = (1 : ℝ≥0) • ν`.
+Introduce a local definition for the expression. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[one_smul]`. Conclude with `GlobalTheory.T.shear_pushforward_hermitian_measure F E σ hCM n 2 b lam hlam a s hs _ (hτm _) fun S => rfl`. Use `denLE_image hT (hτm (shearM a s)) (fun X => by rw [shearK_eq_rmul]; exact hτq _ X) one_ne_zero hμ' hν' hS` as an intermediate fact. Establish `e1 : (((1 : ℝ≥0)⁻¹ * 1 : ℝ≥0) : ℝ≥0∞) * C = C` using `by simp`. Rewrite `this` using `[e1]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `this`. Establish `hbox : ∀ r : Fin n → NumberField.InfinitePlace F → ℝ, (∀ a w, 0 < r a w) → DenLE μ ν Q (boxK κ r) (C₀ * ∏ a, ∏ w, ENNReal.ofReal (r a w) ^ (2 * (M - n)))`. Introduce `r hr`. Set `t : Fin n → Ainf F` to `fun a => e.symm (r a)`. Set `ti : Fin n → Ainf F` to `fun a => e.symm (fun w => (r a w)⁻¹)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `het : ∀ a, e (t a) = r a` using `fun a => e.apply_symm_apply _`. Establish `htt : ∀ a, t a * ti a = 1`. Introduce `a`. Apply `e.injective` to reduce the goal to its premises. Rewrite using `[map_mul, map_one, het]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `w`. Simplify using `only [ti, e.apply_symm_apply, Pi.mul_apply, Pi.one_apply]`. Conclude with `mul_inv_cancel₀ (hr a w).ne'`. Establish `ht : ∀ a, IsUnit (t a)` using `fun a => IsUnit.of_mul_eq_one _ (htt a)`. Set `al : Ainf F → Ainf F ⊗[F] E` to `algebraMap (Ainf F) (Ainf F ⊗[F] E)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hal1 : ∀ a, al (t a) * al (ti a) = 1` using `fun a => by`. Simplify using `only [al]`. Rewrite using `[← map_mul, htt, map_one]`. Set `g : Matrix (Fin n) (Fin n) (Ainf F ⊗[F] E)` to `Matrix.diagonal fun a => al (t a)`. Set `T : (Fin n → Fin M → Ainf F ⊗[F] E) → (Fin n → Fin M → Ainf F ⊗[F] E)` to `fun X a i => al (t a) * X a i`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hTr : ∀ X, T X = GlobalTheory.CompanionTheory.SW.rmul (Ainf F) X g`. Introduce `X`. Use function extensionality and compare the values at `a i`. Simplify using `[T, g, GlobalTheory.CompanionTheory.SW.rmul, Matrix.diagonal_apply, mul_comm]`. Establish `hTc : ∀ u : Fin n → Ainf F ⊗[F] E, Continuous fun (X : Fin n → Fin M → Ainf F ⊗[F] E) a i => u a * X a i`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `u`. Use `continuous_pi fun a => continuous_pi fun i => ?_` and prove the remaining obligations. Conclude with `continuous_const.mul ((continuous_apply i).comp (continuous_apply a))`. Set `eT : (Fin n → Fin M → Ainf F ⊗[F] E) ≃ₜ (Fin n → Fin M → Ainf F ⊗[F] E)` to `{ toFun := T invFun := fun X a i => al (ti a) * X a i left_inv := fun X => by`. Use function extensionality and compare the values at `a i`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [T]`. Rewrite using `[← mul_assoc, mul_comm (al (ti a)), hal1, one_mul]`. Use `right_inv := fun X => by`. Use function extensionality and compare the values at `a i`. Simplify using `only [T]`.
+Use the polynomial consequences of the given equalities and inequalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[← mul_assoc, hal1, one_mul]`. Use `continuous_toFun := hTc _`. Use `continuous_invFun := hTc _ }`. Establish `hT : MeasurableEmbedding T` using `eT.measurableEmbedding`. Establish `hsal : ∀ x : Ainf F, sigR (Ainf F) σ (al x) = al x`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `x`. Simplify using `[al, sigR, Algebra.TensorProduct.algebraMap_apply]`. Establish `hτe : ∀ (S : HeckeCharacterZeroLocus.SiegelWeilU.HermR (Ainf F) σ n) i j, (τg g S : Matrix (Fin n) (Fin n) (Ainf F ⊗[F] E)) i j = al (t i) * (S : Matrix (Fin n) (Fin n) (Ainf F ⊗[F] E)) i j * al (t j)`. Introduce `S i j`. Establish `h1 : HeckeCharacterZeroLocus.SiegelWeilU.cT (sigR (Ainf F) σ) g = g`.
+Assume the negation of the conclusion and derive a contradiction. Use the polynomial consequences of the given equalities and inequalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `p q`. Distinguish the cases in `hpq : p = q`. Substitute `hpq` using the available equality. Simplify using `[HeckeCharacterZeroLocus.SiegelWeilU.cT, g, hsal]`. Establish `hqp : q ≠ p` using `fun h => hpq h.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `[HeckeCharacterZeroLocus.SiegelWeilU.cT, g, Matrix.diagonal_apply, hpq, hqp]`. Use `show (HeckeCharacterZeroLocus.SiegelWeilU.cT (sigR (Ainf F) σ) g * (S : Matrix (Fin n) (Fin n) (Ainf F ⊗[F] E)) * g) i j = _`. Rewrite using `[h1]`. Simplify using `only [g, Matrix.mul_diagonal, Matrix.diagonal_mul]`. Establish `hμ'` using `GlobalTheory.T.archimedean_measure_scaling_by_units F E σ hCM n M 2 b lam hlam e he t ht`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hν'` using `GlobalTheory.T.archimedean_hermitian_scaling_by_units F E σ hCM n 2 b lam hlam e he t ht (τg g) (hτm g) hτe`. Use `set P : Fin n → ℝ≥0 := fun a => ∏ w, ‖e (t a) w‖₊ with hP`. Establish `hP0 : ∀ a, P a ≠ 0`. Introduce `a`. Use `Finset.prod_ne_zero_iff.2 fun w _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[het]`. Conclude with `nnnorm_ne_zero_iff.2 (hr a w).ne'`. Establish `ha : (∏ a, ((P a)⁻¹) ^ (2 * M)) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun a _ => pow_ne_zero _ (inv_ne_zero (hP0 a))`. Establish `hq : ∀ X, Q (T X) = τg g (Q X)` using `fun X => by rw [hTr]; exact hτq g X`. Establish `h1` using `denLE_image hT (hτm g) hq ha hμ' hν' hden`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `himg : T '' (boxK κ fun _ _ => 1) = boxK κ r`. Establish `hκn : ∀ (a : Fin n) (x : Ainf F ⊗[F] E) w, ‖κ (al (t a) * x) w‖ = r a w * ‖κ x w‖`. Introduce `a x w`. Rewrite using `[map_mul, Pi.mul_apply, norm_mul, show κ (al (t a)) w = (e (t a) w : ℂ) from hκa _ _, het, Complex.norm_real, Real.norm_eq_abs, abs_of_pos (hr a w)]`. Use extensionality with `X`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨Z, hZ, rfl⟩ a i w show ‖κ (al (t a) * Z a i) w‖ ≤ r a w`. Rewrite using `[hκn]`. Use `hZ a i w` as an intermediate fact. Use polynomial arithmetic with `[hr a w, norm_nonneg (κ (Z a i) w)]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `hX`. Use `⟨eT.symm X, ?_, eT.apply_symm_apply X⟩` and prove the remaining obligations. Introduce `a i w`. Establish `h2 : T (eT.symm X) = X` using `eT.apply_symm_apply X`. Establish `h3` using `hX a i w`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite `h3` using `[← h2]`. Express the relevant statement in the definitionally equal form `‖κ (al (t a) * (eT.symm X) a i) w‖ ≤ r a w at h3`. Rewrite `h3` using `[hκn]`. Use `hr a w` as an intermediate fact. Assume the negation of the conclusion as `hc`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `push_neg at hc`. Use the polynomial consequences of the given equalities and inequalities. Rewrite `h1` using `[himg]`. Establish `hconst : (((∏ a, ((P a)⁻¹) ^ (2 * M))⁻¹ * ∏ a, ((P a)⁻¹) ^ (2 * n) : ℝ≥0) : ℝ≥0∞) * C₀ = C₀ * ∏ a, ∏ w, ENNReal.ofReal (r a w) ^ (2 * (M - n))`. Establish `hk : ∀ a, ((P a)⁻¹ ^ (2 * M))⁻¹ * (P a)⁻¹ ^ (2 * n) = P a ^ (2 * (M - n))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `a`. Take `⟨k, rfl⟩ : ∃ k, M = n + k` from `⟨M - n, by omega⟩`. Establish `hx` using `hP0 a`. Rewrite using `[Nat.add_sub_cancel_left, mul_add, inv_pow, inv_inv, pow_add, inv_pow, mul_comm, inv_mul_cancel_left₀ (pow_ne_zero _ hx)]`. Establish `h2 : ((∏ a, ((P a)⁻¹) ^ (2 * M))⁻¹ * ∏ a, ((P a)⁻¹) ^ (2 * n) : ℝ≥0) = ∏ a, P a ^ (2 * (M - n))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite using `[← Finset.prod_inv_distrib, ← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_congr rfl fun a _ => hk a`. Rewrite using `[h2, mul_comm]`. Use `congr 1`. Use `push_cast`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[hP]`. Use `push_cast`. Rewrite using `[← Finset.prod_pow]`. Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[het]`. Use `congr 1`. Rewrite using `[ENNReal.ofReal, Real.toNNReal_of_nonneg (hr a w).le]`. Use `congr 1`. Use `ext`.
-
-Simplify using `[abs_of_pos (hr a w)]`. Rewrite `h1` using `[hconst]`. Conclude with `h1`. Establish `hbm : ∀ r : Fin n → NumberField.InfinitePlace F → ℝ, MeasurableSet (boxK (M` using `M) κ r) := fun r => (hbc r).measurableSet`. Take `⟨hφc, hφi, ⟨B, hB⟩, hdec⟩` from `GlobalTheory.T.schwartz_arch_continuous_integrable F E σ hCM κ hκ n M 2 b lam hlam φ hφ`.
-
-Establish `hdom : ∀ ε : ℝ≥0∞, ε ≠ 0 → ∃ A : Set (Fin n → Fin M → Ainf F ⊗[F] E), IsCompact A ∧ A ⊆ {X | LinearIndependent (Ainf F ⊗[F] E) X} ∧ ∀ Y, MeasurableSet Y → ∫⁻ X in Aᶜ ∩ Q ⁻¹' Y, ‖φ X‖ₑ ∂μ ≤ ε * ν Y`. Introduce `ε hε`. Take `⟨R, ε', h0, h⟩` from `dom_generic κ hn hM hC₀ hbox hsh hQc.measurable hbm hB hdec hε`. Conclude with `⟨goodK κ R ε', (hgood R ε' h0).1, (hgood R ε' h0).2, h⟩`. Set `Q' : (Fin n → Fin M → Ainf F ⊗[F] E) → HeckeCharacterZeroLocus.SiegelWeilU.HermR (Ainf F) σ n` to `Q`.
-
-Establish `hQc' : Continuous Q'` using `hQc`. Establish `key` using `GlobalTheory.T.disintegration_along_continuous_quotient_map (Fin n → Fin M → Ainf F ⊗[F] E) (HeckeCharacterZeroLocus.SiegelWeilU.HermR (Ainf F) σ n) (Matrix (Fin n) (Fin n) (Ainf F ⊗[F] E)) μ ν (gramR (Ainf F) σ J) Subtype.val Q' _ minf hUo hQc' Subtype.val_injective hQv hminf φ …`. Use `⟨hφc.measurable, key.1, fun ρ hρ hs => ?_⟩` and prove the remaining obligations. Establish `hgt : ∀ k X, gramTest (Ainf F) σ J c (ρ k) X = ρ k (c - Q X)`. Introduce `k X`.
-
-Establish `hm : (c : Matrix (Fin n) (Fin n) (Ainf F ⊗[F] E)) - gramR (Ainf F) σ J X ∈ HermR (Ainf F) σ n` using `(c - Q X).2`. Unfold `gramTest`. Conclude with `dif_pos hm`. Set `r : ℕ → HermR (Ainf F) σ n → ℝ` to `fun k y => ρ k (c - y)`. Establish `hr1 : ∀ k, Continuous (r k)` using `fun k => (hρ k).1.comp (continuous_const.sub continuous_id)`.
-
-Establish `hr2 : ∀ k, HasCompactSupport (r k)` using `fun k => (hρ k).2.1.comp_homeomorph (Homeomorph.subLeft c)`. Establish `hint : ∀ k, ∫ y, r k y ∂ν = ∫ y, ρ k y ∂ν` using `fun k => integral_sub_left_eq_self (G := HeckeCharacterZeroLocus.SiegelWeilU.HermR (Ainf F) σ n) (ρ k) ν c`. Establish `hrk : ∀ k, Continuous (r k) ∧ HasCompactSupport (r k) ∧ (∀ y, 0 ≤ r k y) ∧ 0 < ∫ y, r k y ∂ν` using `fun k => ⟨hr1 k, hr2 k, fun y => (hρ k).2.2.1 _, by rw [hint]; exact (hρ k).2.2.2⟩`. Establish `hrs : Filter.Tendsto (fun k => tsupport (r k)) Filter.atTop (nhds c).smallSets`. Rewrite using `[Filter.tendsto_smallSets_iff]`.
-
-Introduce `t ht`. Establish `h0 : (fun u => c - u) ⁻¹' t ∈ nhds (0 : HermR (Ainf F) σ n)`. Establish `: Continuous fun u : HermR (Ainf F) σ n => c - u` using `continuous_const.sub continuous_id`. Conclude with `this.continuousAt.preimage_mem_nhds (by simpa using ht)`. Use `filter_upwards [(Filter.tendsto_smallSets_iff.1 hs) _ h0] with k hk y hy`.
-
-Establish `h1 : tsupport (r k) = (Homeomorph.subLeft c) ⁻¹' tsupport (ρ k)` using `tsupport_comp_eq_preimage (ρ k) (Homeomorph.subLeft c)`. Rewrite `hy` using `[h1]`. Use `hk hy` as an intermediate fact. Simplify using `using this`. Establish `hlim` using `key.2 r hrk hrs`.
-
-Use `⟨fun k => ?_, ?_⟩` and prove the remaining obligations. Take `⟨C, hC⟩` from `(hr2 k).exists_bound_of_continuous (hr1 k)`. Use `(hφi.norm.mul_const C).mono' ?_ (Filter.Eventually.of_forall fun X => ?_)` and prove the remaining obligations. Use `hφc.aestronglyMeasurable.mul ?_` and prove the remaining obligations. Establish `: (fun X => ((gramTest (Ainf F) σ J c (ρ k) X : ℝ) : ℂ)) = fun X => ((r k (Q X) : ℝ) : ℂ)`.
-
-Use function extensionality and compare the values at `X`. Rewrite using `[hgt]`. Rewrite using `[this]`. Conclude with `(Complex.continuous_ofReal.comp ((hr1 k).comp hQc)).aestronglyMeasurable`. Rewrite using `[norm_mul, hgt, Complex.norm_real]`.
-
-Conclude with `mul_le_mul_of_nonneg_left (hC _) (norm_nonneg _)`. Use `(hlim.congr fun k => ?_)` and prove the remaining obligations. Rewrite using `[hint]`. Use `congr 1`. Use `integral_congr_ae (Filter.Eventually.of_forall fun X => ?_)` and prove the remaining obligations.
-
-Use `show φ X * ((r k (Q X) : ℝ) : ℂ) = φ X * ((gramTest (Ainf F) σ J c (ρ k) X : ℝ) : ℂ)`. Rewrite using `[hgt]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem avgInf_tendsto : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → ∀ n : ℕ, 0 < n → 2 * n < M → ∀ (d : ℕ) (b : Module.Basis (Fin d) F E) (laminf : Measure (Ainf F)), GlobalTheory.CompanionTheory.SW.IsStdInf laminf → ∀ minf : HermR (Ainf F) σ n → Measure (Fin n → Fin M → Ainf F ⊗[F] E), IsGramFibFree (Ainf F) σ J n (GlobalTheory.CompanionTheory.SW.coordW (Ainf F) b laminf n M) (GlobalTheory.CompanionTheory.SW.coordHerm (Ainf F) σ b laminf n) minf → ∀ (c : HermR (Ainf F) σ n) (φ : (Fin n → Fin M → Ainf F ⊗[F] E) → ℂ), GlobalTheory.Published.SiegelOneVector.IsSchwartzArch φ → Measurable φ ∧ Integrable φ (minf c) ∧ ∀ ρ : ℕ → HermR (Ainf F) σ n → ℝ, (∀ k, Continuous (ρ k) ∧ HasCompactSupport (ρ k) ∧ (∀ y, 0 ≤ ρ k y) ∧ 0 < ∫ y, ρ k y ∂(GlobalTheory.CompanionTheory.SW.coordHerm (Ainf F) σ b laminf n)) → Filter.Tendsto (fun k => tsupport (ρ k)) Filter.atTop (nhds (0 : HermR (Ainf F) σ n)).smallSets → (∀ k, Integrable (fun X => φ X * (gramTest (Ainf F) σ J c (ρ k) X : ℂ)) (GlobalTheory.CompanionTheory.SW.coordW (Ainf F) b laminf n M)) ∧ Filter.Tendsto (fun k => (∫ X, φ X * (gramTest (Ainf F) σ J c (ρ k) X : ℂ) ∂(GlobalTheory.CompanionTheory.SW.coordW (Ainf F) b laminf n M)) / ((∫ y, ρ k y ∂(GlobalTheory.CompanionTheory.SW.coordHerm (Ainf F) σ b laminf n) : ℝ) : ℂ)) Filter.atTop (nhds (∫ X, φ X ∂(minf c))) := by
   intro F E _ _ _ _ _ σ hCM M J hJ n hn hM d b lam hinf minf hminf c φ hφ

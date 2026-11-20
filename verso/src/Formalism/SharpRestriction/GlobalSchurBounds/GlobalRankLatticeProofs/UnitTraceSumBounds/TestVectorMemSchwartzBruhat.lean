@@ -9,11 +9,11 @@ open Formalism.BasicNotions Formalism.MainNotions.GL3Theta Formalism.MainNotions
 variable (D : D7) {p : ℕ} [Fact p.Prime] (lam : Qbar →+* ℂ_[p])
 
 /- English proof (translation)
-Establish `hsq : D.host.conj D.host.sqd ∈ IntermediateField.adjoin ℚ {D.host.sqd}`. Rewrite using `[D.host.gal_sqd]`. Conclude with `mul_mem (intCast_mem _ _) (IntermediateField.mem_adjoin_simple_self ℚ _)`. Establish `hmap : IntermediateField.map (D.host.conj : D.host.E →ₐ[ℚ] D.host.E) (IntermediateField.adjoin ℚ {D.host.sqd}) ≤ IntermediateField.adjoin ℚ {D.host.sqd}`. Rewrite using `[IntermediateField.adjoin_map, Set.image_singleton]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `IntermediateField.adjoin_simple_le_iff.2 hsq`. Establish `hx : ((a : D.host.K) : D.host.E) ∈ IntermediateField.adjoin ℚ {D.host.sqd}` using `(a : D.host.K).2`. Establish `hK : D.host.conj ((a : D.host.K) : D.host.E) ∈ D.host.K` using `hmap ((IntermediateField.mem_map _).2 ⟨_, hx, rfl⟩)`. Establish `hint : IsIntegral ℤ (⟨_, hK⟩ : D.host.K)`. Rewrite using `[← isIntegral_algebraMap_iff (algebraMap D.host.K D.host.E).injective]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `ha : IsIntegral ℤ ((a : D.host.K) : D.host.E)` using `(isIntegral_algebraMap_iff (algebraMap D.host.K D.host.E).injective).2 a.isIntegral_coe`. Conclude with `ha.map D.host.conj.toAlgHom.toRingHom.toIntAlgHom`. Set `b : integralClosure ℤ D.host.K` to `⟨⟨_, hK⟩, hint⟩`. Conclude with `⟨b, rfl⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_conj_OK (a : 𝓞 D.host.K) : ∃ a' : 𝓞 D.host.K, (((a' : D.host.K)) : D.host.E) = D.host.conj ((a : D.host.K) : D.host.E) := by
   have hsq : D.host.conj D.host.sqd ∈ IntermediateField.adjoin ℚ {D.host.sqd} := by
@@ -35,9 +35,9 @@ theorem exists_conj_OK (a : 𝓞 D.host.K) : ∃ a' : 𝓞 D.host.K, (((a' : D.h
   exact ⟨b, rfl⟩
 
 /- English proof (translation)
-Establish `hc : ∀ x : D.host.E, D.host.φ₀ (D.host.conj x) = starRingEnd ℂ (D.host.φ₀ x)`. Introduce `x`. Simplify using `only [← D.embE_φ₀, RingHom.comp_apply, D.embE_conj, D.starLL_cx]`. Unfold `OKp at hα ⊢`. Use `map_mem_closure continuous_swap hα ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨a, rfl⟩`. Take `⟨a', ha'⟩` from `exists_conj_OK D a`. Use `⟨a', ?_⟩` and prove the remaining obligations. Simplify using `only [tauK, tauKc, ha', Prod.swap_prod_mk, hc, Complex.conj_conj]`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem okp_swap (α : ℂ_[p] × ℂ_[p]) (hα : α ∈ OKp D lam) : α.swap ∈ OKp D lam := by
   have hc : ∀ x : D.host.E, D.host.φ₀ (D.host.conj x) = starRingEnd ℂ (D.host.φ₀ x) := by
@@ -52,14 +52,14 @@ theorem okp_swap (α : ℂ_[p] × ℂ_[p]) (hα : α ∈ OKp D lam) : α.swap �
 
 omit [Fact p.Prime] in
 /- English proof (translation)
-Establish `h : IsIntegral ℚ z` using `Algebra.IsIntegral.isIntegral z`. Conclude with `mem_algebraicClosure_iff.2 (h.map D.host.φ₀.toRatAlgHom).isAlgebraic`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem test_vector_mem_schwartz_bruhat (z : D.host.E) : D.host.φ₀ z ∈ Qbar := by
   have h : IsIntegral ℚ z := Algebra.IsIntegral.isIntegral z
   exact mem_algebraicClosure_iff.2 (h.map D.host.φ₀.toRatAlgHom).isAlgebraic
 
 /- English proof (translation)
-Unfold `lamC`. Rewrite using `[dif_pos (test_vector_mem_schwartz_bruhat D (x + y)), dif_pos (test_vector_mem_schwartz_bruhat D x), dif_pos (test_vector_mem_schwartz_bruhat D y), ← map_add lam]`. Conclude with `congrArg lam (Subtype.ext (by simp))`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lamPhi_add (x y : D.host.E) : lamC lam (D.host.φ₀ (x + y)) = lamC lam (D.host.φ₀ x) + lamC lam (D.host.φ₀ y) := by
   unfold lamC
@@ -67,7 +67,7 @@ theorem lamPhi_add (x y : D.host.E) : lamC lam (D.host.φ₀ (x + y)) = lamC lam
   exact congrArg lam (Subtype.ext (by simp))
 
 /- English proof (translation)
-Unfold `lamC`. Rewrite using `[dif_pos (test_vector_mem_schwartz_bruhat D (x * y)), dif_pos (test_vector_mem_schwartz_bruhat D x), dif_pos (test_vector_mem_schwartz_bruhat D y), ← map_mul lam]`. Conclude with `congrArg lam (Subtype.ext (by simp))`.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lamPhi_mul (x y : D.host.E) : lamC lam (D.host.φ₀ (x * y)) = lamC lam (D.host.φ₀ x) * lamC lam (D.host.φ₀ y) := by
   unfold lamC
@@ -75,9 +75,9 @@ theorem lamPhi_mul (x y : D.host.E) : lamC lam (D.host.φ₀ (x * y)) = lamC lam
   exact congrArg lam (Subtype.ext (by simp))
 
 /- English proof (translation)
-Unfold `OKp at hα hβ ⊢`. Use `map_mem_closure₂ (f := fun u v : ℂ_[p] × ℂ_[p] => u + v) continuous_add hα hβ ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨a, rfl⟩ _ ⟨b, rfl⟩`. Use `⟨a + b, ?_⟩` and prove the remaining obligations. Establish `hab : (((a + b : 𝓞 D.host.K) : D.host.K) : D.host.E) = ((a : D.host.K) : D.host.E) + ((b : D.host.K) : D.host.E)` using `by simp`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [tauK, tauKc, hab, map_add D.host.conj, lamPhi_add, Prod.mk_add_mk]`.
+Simplify using the standard rewrite rules.
 -/
 theorem okp_add (α β : ℂ_[p] × ℂ_[p]) (hα : α ∈ OKp D lam) (hβ : β ∈ OKp D lam) : α + β ∈ OKp D lam := by
   unfold OKp at hα hβ ⊢
@@ -89,9 +89,9 @@ theorem okp_add (α β : ℂ_[p] × ℂ_[p]) (hα : α ∈ OKp D lam) (hβ : β 
   simp only [tauK, tauKc, hab, map_add D.host.conj, lamPhi_add, Prod.mk_add_mk]
 
 /- English proof (translation)
-Unfold `OKp at hα hβ ⊢`. Use `map_mem_closure₂ (f := fun u v : ℂ_[p] × ℂ_[p] => u * v) continuous_mul hα hβ ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨a, rfl⟩ _ ⟨b, rfl⟩`. Use `⟨a * b, ?_⟩` and prove the remaining obligations. Establish `hab : (((a * b : 𝓞 D.host.K) : D.host.K) : D.host.E) = ((a : D.host.K) : D.host.E) * ((b : D.host.K) : D.host.E)` using `by simp`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [tauK, tauKc, hab, map_mul D.host.conj, lamPhi_mul, Prod.mk_mul_mk]`.
+Simplify using the standard rewrite rules.
 -/
 theorem okp_mul (α β : ℂ_[p] × ℂ_[p]) (hα : α ∈ OKp D lam) (hβ : β ∈ OKp D lam) : α * β ∈ OKp D lam := by
   unfold OKp at hα hβ ⊢
@@ -103,9 +103,9 @@ theorem okp_mul (α β : ℂ_[p] × ℂ_[p]) (hα : α ∈ OKp D lam) (hβ : β 
   simp only [tauK, tauKc, hab, map_mul D.host.conj, lamPhi_mul, Prod.mk_mul_mk]
 
 /- English proof (translation)
-Establish `h0 : lamC lam (0 : ℂ) = 0`. Simplify using `using lamPhi_add D lam (0 : D.host.E) 0`. Unfold `OKp`. Apply `subset_closure` to reduce the goal to its premises. Use `⟨0, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[tauK, tauKc, h0]`.
+Simplify using the standard rewrite rules.
 -/
 theorem okp_zero : (0 : ℂ_[p] × ℂ_[p]) ∈ OKp D lam := by
   have h0 : lamC lam (0 : ℂ) = 0 := by
@@ -116,7 +116,7 @@ theorem okp_zero : (0 : ℂ_[p] × ℂ_[p]) ∈ OKp D lam := by
   simp [tauK, tauKc, h0]
 
 /- English proof (translation)
-Use `show (∑ k, x k * (y k).swap) ∈ OKp D lam`. Conclude with `Finset.sum_induction _ (· ∈ OKp D lam) (fun a b ha hb => okp_add D lam a b ha hb) (okp_zero D lam) (fun k _ => okp_mul D lam _ _ (hx k) (okp_swap D lam _ (hy k)))`.
+A detailed English derivation is pending.
 -/
 theorem okp_hP {ι : Type} [Fintype ι] (x y : ι → ℂ_[p] × ℂ_[p]) (hx : InOKp D lam x) (hy : InOKp D lam y) :
     hP x y ∈ OKp D lam := by

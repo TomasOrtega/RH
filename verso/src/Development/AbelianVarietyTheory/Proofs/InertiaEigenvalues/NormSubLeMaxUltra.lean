@@ -4,7 +4,7 @@ open GlobalTheory.JR Matrix MeasureTheory Filter Topology
 namespace GlobalTheory.LatL
 
 /- English proof (translation)
-Rewrite using `[sub_eq_add_neg, ← norm_neg y]`. Conclude with `IsUltrametricDist.norm_add_le_max _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_sub_le_max_ultra' {K : Type} [NormedField K] [IsUltrametricDist K] (x y : K) :
     ‖x - y‖ ≤ max ‖x‖ ‖y‖ := by
@@ -12,37 +12,35 @@ theorem norm_sub_le_max_ultra' {K : Type} [NormedField K] [IsUltrametricDist K] 
   exact IsUltrametricDist.norm_add_le_max _ _
 
 /- English proof (translation)
-Take `⟨i₀, hi₀⟩` from `Finite.exists_max (fun i => ‖w i‖)`. Establish `hw0 : w i₀ ≠ 0`. Introduce `h`. Establish `: w = 0` using `funext fun i => norm_le_zero_iff.mp (by simpa [h] using hi₀ i)`. Simplify using `[this] at hwv`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hratio : ∀ i, ‖w i / w i₀‖ ≤ 1` using `fun i => by`. Rewrite using `[norm_div]`. Conclude with `div_le_one_of_le₀ (hi₀ i) (norm_nonneg _)`. Set `s : Fin r → Fin (r + 1)` to `i₀.succAbove`. Establish `hs : ∀ c, s c ≠ i₀` using `fun c => Fin.succAbove_ne i₀ c`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `u : Fin r → Fin (r + 1) → F` to `fun c => Pi.single (s c) 1 - (w (s c) / w i₀) • Pi.single i₀ 1`. Set `ρ : Fin r → Fin (r + 1) → F` to `fun c => Pi.single (s c) 1 - v (s c) • w`. Set `col : Fin (r + 1) → Fin (r + 1) → F` to `Fin.lastCases v u`. Set `row : Fin (r + 1) → Fin (r + 1) → F` to `Fin.lastCases w ρ`. Set `K : Matrix (Fin (r + 1)) (Fin (r + 1)) F` to `Matrix.of fun a b => col b a`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `L : Matrix (Fin (r + 1)) (Fin (r + 1)) F` to `Matrix.of fun a b => row a b`. Establish `hwu : ∀ c, w ⬝ᵥ u c = 0`. Introduce `c`. Simplify using `only [u, dotProduct_sub, dotProduct_smul, dotProduct_single, smul_eq_mul, mul_one]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hdot : ∀ a b, row a ⬝ᵥ col b = (1 : Matrix (Fin (r + 1)) (Fin (r + 1)) F) a b`. Introduce `a b`. Proceed by induction on `a using Fin.lastCases with`. Consider the case `last`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Proceed by induction.
 
-Proceed by induction on `b using Fin.lastCases with`. Consider the case `last => simp [row, col, hwv]`. Consider the case `cast c => simp [row, col, hwu, Matrix.one_apply, (Fin.castSucc_lt_last c).ne']`. Consider the case `cast c`. Proceed by induction on `b using Fin.lastCases with`.
+Treat this case separately. Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Consider the case `last`. Simplify using `[row, col, ρ, sub_dotProduct, smul_dotProduct, single_dotProduct, hwv, Matrix.one_apply, (Fin.castSucc_lt_last c).ne]`. Consider the case `cast c'`. Simplify using `only [row, col, Fin.lastCases_castSucc, ρ, sub_dotProduct, smul_dotProduct, single_dotProduct, hwu, smul_eq_mul, mul_zero, sub_zero, one_mul, u, Pi.sub_apply, Pi.smul_apply, Pi.single_apply, hs c, if_false, mul_zero, sub_zero, Matrix.one_apply, Fin.castSucc_inj]`. Distinguish the cases in `h : c = c'`.
+Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `h` using the available equality. Simplify using the standard rewrite rules. Establish `: s c ≠ s c'` using `fun e => h (Fin.succAbove_right_injective e)`. Simplify using `[this, h]`. Establish `hLK : L * K = 1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `a b`. Rewrite using `[← hdot a b]`. Simplify using `[L, K, Matrix.mul_apply, dotProduct]`. Establish `hKL : K * L = 1` using `mul_eq_one_comm.mp hLK`. Set `k : GL (Fin (r + 1)) F` to `⟨K, L, hKL, hLK⟩`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hsingle : ∀ i j : Fin (r + 1), ‖(Pi.single i (1 : F) : Fin (r + 1) → F) j‖ ≤ 1`. Introduce `i j`. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[Pi.single_apply, h]`. Establish `hcol : ∀ b a, ‖col b a‖ ≤ 1`. Introduce `b a`. Proceed by induction on `b using Fin.lastCases with`. Consider the case `last => simpa [col] using hv a`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `cast c`. Simplify using `only [col, Fin.lastCases_castSucc, u, Pi.sub_apply, Pi.smul_apply, smul_eq_mul]`. Use `(norm_sub_le_max_ultra' _ _).trans (max_le (hsingle _ _) ?_)` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_le_one₀ (hratio _) (norm_nonneg _) (hsingle _ _)`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hrow : ∀ a b, ‖row a b‖ ≤ 1`. Introduce `a b`. Proceed by induction on `a using Fin.lastCases with`. Consider the case `last => simpa [row] using hw b`. Consider the case `cast c`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [row, Fin.lastCases_castSucc, ρ, Pi.sub_apply, Pi.smul_apply, smul_eq_mul]`. Use `(norm_sub_le_max_ultra' _ _).trans (max_le (hsingle _ _) ?_)` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_le_one₀ (hv _) (norm_nonneg _) (hw _)`. Use `⟨k, fun i j => ⟨by simpa [k, K] using hcol j i, by simpa [k, L] using hrow i j⟩, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. By extensionality, compare the relevant components.
 
-Use extensionality with `a`. Simplify using `[k, K, col, Matrix.mulVec_single]`. Use extensionality with `b`. Rewrite using `[show (w ᵥ* (k : Matrix _ _ F)) b = row (Fin.last r) ⬝ᵥ col b by`. Simplify using `[k, K, row, Matrix.vecMul, dotProduct]]`.
-
-Rewrite using `[hdot, Matrix.one_apply, Pi.single_apply]`. Simplify using `only [eq_comm]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_glO_pair {F : Type} [NormedField F] [IsUltrametricDist F] (r : ℕ)
     (v w : Fin (r + 1) → F) (hv : ∀ i, ‖v i‖ ≤ 1) (hw : ∀ i, ‖w i‖ ≤ 1) (hwv : w ⬝ᵥ v = 1) :
@@ -128,7 +126,7 @@ theorem exists_glO_pair {F : Type} [NormedField F] [IsUltrametricDist F] (r : �
     simp only [eq_comm]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ hU r v w hv hw hwv`. Use `haveI : IsUltrametricDist F := hU.ultraF`. Conclude with `exists_glO_pair r v w hv hw hwv`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem glO_transitive_pairs : ∀ (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField E]
     [NormedAlgebra F E] [StarRing E] [Unram F E] (r : ℕ) (v w : Fin (r + 1) → F), (∀ i, ‖v i‖ ≤ 1) →

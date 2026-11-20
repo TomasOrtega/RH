@@ -77,14 +77,14 @@ def IsStd (ϖ : L) (σ : L →+* L) (q : ℕ) (δ : L) (ψ : AddChar L ℂ) {n n
 
 omit [Valued L (WithZero (Multiplicative ℤ))] in
 /- English proof (translation)
-Simplify using `[Matrix.mul_apply, P.fIwasawa_antiJ]`.
+Simplify using the standard rewrite rules.
 -/
 theorem antiJ_mul_apply {n : ℕ} {β : Type} (A : Matrix (Fin n) β L) (i : Fin n) (j : β) : (antiJ L n * A) i j = A i.rev j := by
   simp [Matrix.mul_apply, P.fIwasawa_antiJ]
 
 omit [Valued L (WithZero (Multiplicative ℤ))] in
 /- English proof (translation)
-Simplify using `only [Matrix.mul_apply, P.fIwasawa_antiJ, mul_ite, mul_one, mul_zero]`. Apply the tactic sequence `rw [Finset.sum_eq_single j.rev] <;> simp +contextual [eq_comm (a := j), Fin.rev_eq_iff]`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem mul_antiJ_apply {n : ℕ} {β : Type} (A : Matrix β (Fin n) L) (i : β) (j : Fin n) : (A * antiJ L n) i j = A i j.rev := by
   simp only [Matrix.mul_apply, P.fIwasawa_antiJ, mul_ite, mul_one, mul_zero]
@@ -92,9 +92,9 @@ theorem mul_antiJ_apply {n : ℕ} {β : Type} (A : Matrix β (Fin n) L) (i : β)
 
 omit [Valued L (WithZero (Multiplicative ℤ))] in
 /- English proof (translation)
-Use `show δ * Matrix.trace (antiJ L n * (y.map σ)ᵀ * antiJ L n' * x) = _`. Use `congr 1`. Rewrite using `[Matrix.trace, Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.diag_apply, Matrix.mul_apply]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[mul_antiJ_apply, antiJ_mul_apply, mul_comm]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem locH_antiG (σ : L →+* L) (δ : L) {n n' : ℕ} (x y : Matrix (Fin n') (Fin n) L) :
     locH σ δ (antiG L n) (antiG L n') x y = δ * ∑ i, ∑ j, x i j * σ (y i.rev j.rev) := by
@@ -108,7 +108,7 @@ theorem locH_antiG (σ : L →+* L) (δ : L) {n n' : ℕ} (x y : Matrix (Fin n')
   rfl
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_intL {x : L} : x ∈ intL L ↔ Valued.v x ≤ 1 := Iff.rfl
 
@@ -120,12 +120,12 @@ def half (h2 : Valued.v (2 : L) = 1) : intL L := ⟨2⁻¹, mem_intL.2 (by rw [m
 variable {ϖ : L} {σ : L →+* L} {q : ℕ} {δ : L} {ψ : AddChar L ℂ} {n n' : ℕ}
 
 /- English proof (translation)
-Introduce `h` and use `by simp [h] at h2`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem two_ne_zero_of (h2 : Valued.v (2 : L) = 1) : (2 : L) ≠ 0 := fun h => by simp [h] at h2
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (hσ r) w_add := Subtype.ext (by have := two_ne_zero_of h2 show (2⁻¹ : L) + σ 2⁻¹ = 1 rw [map_inv₀, map_ofNat]; field_simp; norm_num) add_left x y z := by simp only [pairing, ← AddChar.map_add_eq_mul, Matrix.add_apply, add_mul, Finset.sum_add_distrib, mul_add, map_add] …`.
+A detailed English derivation is pending.
 -/
 theorem isHeis_of (hσ : ∀ x, σ (σ x) = x) (hv : ∀ x, Valued.v (σ x) = Valued.v x) (h2 : Valued.v (2 : L) = 1)
     (hδ : σ δ = -δ) {ρ : Matrix (Fin n') (Fin n) L → Module.End ℂ M} (h0 : ρ 0 = 1)
@@ -165,11 +165,11 @@ theorem isHeis_of (hσ : ∀ x, σ (σ x) = x) (hv : ∀ x, Valued.v (σ x) = Va
     congr 2; ring
 
 /- English proof (translation)
-Establish `: ∑ i', ∑ j', x i' j' * σ (Matrix.single i.rev j.rev u i'.rev j'.rev) = x i j * σ u`. Rewrite using `[Finset.sum_eq_single i, Finset.sum_eq_single j]`. Simplify using the standard rewrite rules. Introduce `b _ hb`. Rewrite using `[Matrix.single_apply_of_col_ne _ _ (fun h => hb (Fin.rev_injective h).symm), map_zero, mul_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Introduce `b _ hb`. Conclude with `Finset.sum_eq_zero fun c _ => by`. Rewrite using `[Matrix.single_apply_of_row_ne (fun h => hb (Fin.rev_injective h).symm), map_zero, mul_zero]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pairing, this]`.
+A detailed English derivation is pending.
 -/
 theorem pairing_single (x : Matrix (Fin n') (Fin n) L) (i : Fin n') (j : Fin n) (u : L) :
     pairing σ δ ψ x (Matrix.single i.rev j.rev u) = ψ (δ * (x i j * σ u) + σ (δ * (x i j * σ u))) := by
@@ -186,13 +186,11 @@ theorem pairing_single (x : Matrix (Fin n') (Fin n) L) (i : Fin n') (j : Fin n) 
   rw [pairing, this]
 
 /- English proof (translation)
-Take `⟨a, ha, ha', hne⟩` from `hψ`. Establish `h0 : x i j ≠ 0` using `fun h => hx (h ▸ zero_mem _)`. Establish `hd : δ ≠ 0` using `fun h => by simp [h] at hδ`. Establish `h20` using `two_ne_zero_of h2`. Establish `hϖ : Valued.v ϖ = WithZero.exp (-1 : ℤ)` using `hU.2.2.2.1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨σ (ϖ⁻¹ * a / (2 * δ * x i j)), mem_intL.2 ?_, ?_⟩` and prove the remaining obligations. Establish `hv0 : Valued.v (x i j) ≠ 0` using `(Valuation.ne_zero_iff _).2 h0`. Establish `h1 : WithZero.exp (1 : ℤ) ≤ Valued.v (x i j)`. Rewrite `hx` using `[mem_intL, not_le, ← WithZero.exp_log hv0, ← WithZero.exp_zero, WithZero.exp_lt_exp]`. Rewrite using `[← WithZero.exp_log hv0, WithZero.exp_le_exp]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[hU.2.1, map_div₀, map_mul, map_mul, map_mul, h2, hδ, one_mul, one_mul, map_inv₀, hϖ, ← WithZero.exp_neg, neg_neg, div_le_one₀ (zero_lt_iff.2 hv0)]`. Conclude with `(mul_le_of_le_one_right' ha).trans h1`. Establish `: δ * (x i j * (ϖ⁻¹ * a / (2 * δ * x i j))) = ϖ⁻¹ * a / 2` using `by field_simp`. Rewrite using `[pairing_single, hU.1, this, map_div₀, map_mul, map_inv₀, hU.2.2.1, ha', map_ofNat, show ϖ⁻¹ * a / 2 + ϖ⁻¹ * a / 2 = ϖ⁻¹ * a by field_simp; norm_num]`.
-
-Conclude with `hne`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_pairing_single_ne (hU : IsUnramInv ϖ σ q) (h2 : Valued.v (2 : L) = 1) (hδ : Valued.v δ = 1)
     (hψ : ∃ a ∈ intL L, σ a = a ∧ ψ (ϖ⁻¹ * a) ≠ 1) (x : Matrix (Fin n') (Fin n) L) {i : Fin n'} {j : Fin n}
@@ -215,9 +213,9 @@ theorem exists_pairing_single_ne (hU : IsUnramInv ϖ σ q) (h2 : Valued.v (2 : L
     exact hne
 
 /- English proof (translation)
-Establish `hs : ∀ a ∈ intL L, σ a ∈ intL L` using `fun a ha => mem_intL.2 ((hU.2.1 a).trans_le ha)`. Use `fun x => ⟨fun hx y hy => ?_, fun h i j => ?_⟩` and prove the remaining obligations. Establish `: δ * ∑ i, ∑ j, x i j * σ (y i.rev j.rev) ∈ intL L` using `mul_mem (mem_intL.2 hδ.le) (sum_mem fun i _ => sum_mem fun j _ => mul_mem (hx i j) (hs _ (hy _ _)))`. Conclude with `hψ0 _ (add_mem this (hs _ this)) (by rw [map_add, hU.1, add_comm])`. Assume the negation of the conclusion as `hx`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Take `⟨u, hu, hne⟩` from `exists_pairing_single_ne hU h2 hδ hψ x hx`. Use `hne (h _ fun i' j' => ?_)` and prove the remaining obligations. Rewrite using `[Matrix.single_apply]`. Use `split_ifs`. Use `exacts [hu, zero_mem _]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem selfDual_intMat (hU : IsUnramInv ϖ σ q) (h2 : Valued.v (2 : L) = 1) (hδ : Valued.v δ = 1)
     (hψ0 : ∀ a ∈ intL L, σ a = a → ψ a = 1) (hψ : ∃ a ∈ intL L, σ a = a ∧ ψ (ϖ⁻¹ * a) ≠ 1) :
@@ -237,29 +235,29 @@ theorem selfDual_intMat (hU : IsUnramInv ϖ σ q) (h2 : Valued.v (2 : L) = 1) (h
 variable {ρ : Matrix (Fin n') (Fin n) L → Module.End ℂ M} {ω : GU σ n × GU σ n' →* Module.End ℂ M} {s : M}
 
 /- English proof (translation)
-The claim follows from `LatModel.v_two h.1.unr h.1.odd`.
+A detailed English derivation is pending.
 -/
 theorem IsStd.v_two (h : IsStd ϖ σ q δ ψ ρ ω s) : Valued.v (2 : L) = 1 := LatModel.v_two h.1.unr h.1.odd
 
 /- English proof (translation)
-The claim follows from `isHeis_of h.1.unr.1 h.1.unr.2.1 h.v_two h.1.delta.2 h.1.rho_zero h.1.rho_mul`.
+A detailed English derivation is pending.
 -/
 theorem IsStd.isHeis (h : IsStd ϖ σ q δ ψ ρ ω s) : IsHeis (intConj h.1.unr.2.1) (half h.v_two) (pairing σ δ ψ) ρ :=
   isHeis_of h.1.unr.1 h.1.unr.2.1 h.v_two h.1.delta.2 h.1.rho_zero h.1.rho_mul
 
 /- English proof (translation)
-The claim follows from `selfDual_intMat h.1.unr h.v_two h.1.delta.1 h.1.psi_int h.1.psi_ne`.
+A detailed English derivation is pending.
 -/
 theorem IsStd.selfDual (h : IsStd ϖ σ q δ ψ ρ ω s) : SelfDual (pairing σ δ ψ) (intMat L (Fin n') (Fin n)) :=
   selfDual_intMat h.1.unr h.v_two h.1.delta.1 h.1.psi_int h.1.psi_ne
 
 /- English proof (translation)
-The claim follows from `h.2.2.1`.
+A detailed English derivation is pending.
 -/
 theorem IsStd.fixes (h : IsStd ϖ σ q δ ψ ρ ω s) : Fixes ρ (intMat L (Fin n') (Fin n)) s := h.2.2.1
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => h.2, fun h => ⟨g.2, h⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_KU_iff {g : GU σ n} : g ∈ KU σ n ↔ (g : GL (Fin n) L) ∈ GLint (Fin n) (intL L) :=
   ⟨fun h => h.2, fun h => ⟨g.2, h⟩⟩

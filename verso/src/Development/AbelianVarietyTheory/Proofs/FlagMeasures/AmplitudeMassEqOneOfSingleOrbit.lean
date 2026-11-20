@@ -9,17 +9,17 @@ open ValuativeRel Formalism.MainNotions.S.Loc GlobalTheory.HL
 open scoped Pointwise ENNReal Classical
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ E _ _ _ L r k S d P hex huniq hall`. Take `⟨Λ, hΛ⟩` from `hex`. Set `o₀ : MulAction.orbitRel.Quotient S.St (Submodule L.O S.V)` to `Quotient.mk'' Λ`. Establish `hout : S.IsTerm d o₀.out`. Establish `hm : o₀.out ∈ MulAction.orbit S.St Λ` using `MulAction.orbitRel_apply.1 (Quotient.mk_out (s := MulAction.orbitRel S.St _) Λ)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨g, hg⟩` from `hm`. Rewrite using `[← hg]`. Conclude with `(GlobalTheory.T.hermitianFrames_stabilizer_acts_on_terms L r k S d Λ hΛ g.1 g.2).1`. Establish `hother : ∀ o : MulAction.orbitRel.Quotient S.St (Submodule L.O S.V), o ≠ o₀ → ¬ S.IsTerm d o.out`. Introduce `o ho ht`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨h, hh, e⟩` from `huniq Λ o.out hΛ ht`. Apply `ho` to reduce the goal to its premises. Rewrite using `[← Quotient.out_eq' o]`. Apply `Quotient.sound'` to reduce the goal to its premises. Conclude with `MulAction.orbitRel_apply.2 ⟨⟨h, hh⟩, e.symm⟩`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion.
 
-Take `⟨hP, hmu, hom⟩` from `hall _ hout`. Prove the components needed by the constructor for the conclusion. Unfold `GlobalTheory.HL.Frames.amp`. Rewrite using `[tsum_eq_single o₀]`. Rewrite using `[if_pos ⟨hout, hP⟩, hmu, hom]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using the standard rewrite rules. Introduce `o ho`. Conclude with `if_neg fun hc => hother o ho hc.1`. Unfold `GlobalTheory.HL.Frames.mass`. Rewrite using `[tsum_eq_single o₀]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[if_pos ⟨hout, hP⟩, hmu]`. Simplify using the standard rewrite rules. Introduce `o ho`. Conclude with `if_neg fun hc => hother o ho hc.1`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.HL.Frames.amp_mass_eq_one_of_one_orbit : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [CharZero F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] (L : LocE F E), ∀ (r k : ℕ) (S : Frames L r k), ∀ (d : S.Datum) (P : Submodule L.O S.V → Prop), (∃ Λ, S.IsTerm d Λ) → (∀ Λ Λ', S.IsTerm d Λ → S.IsTerm d Λ' → ∃ h ∈ S.St, Λ' = h • Λ) → (∀ Λ, S.IsTerm d Λ → P Λ ∧ S.mu Λ = 1 ∧ S.om d Λ = 1) → S.amp d P = 1 ∧ S.mass d P = 1 := by
   intro F _ _ _ _ _ E _ _ _ L r k S d P hex huniq hall

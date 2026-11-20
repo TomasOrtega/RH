@@ -12,11 +12,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.CompanionTheory.Ar.Rec.FinRd.Roots
 
 /- English proof (translation)
-Establish `htan : ∀ e : E, IsTanAt G x (M.pt e ≫ f)`. Introduce `e`. Establish `h` using `M.tan e`. Unfold `IsTanAt at h ⊢`. Rewrite using `[CategoryTheory.Over.comp_left, ← Category.assoc, h, ← CategoryTheory.Over.comp_left, MonObj.one_comp]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `choose g hg using fun e => M.onto _ (htan e)`. Use `⟨{ toFun := g, map_add' := ?_, map_smul' := ?_ }, fun e => hg e⟩` and prove the remaining obligations. Introduce `e e'`. Apply `M.inj` to reduce the goal to its premises. Rewrite using `[hg, M.add, M.add, hg, hg, MonObj.mul_comp]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `c e`. Simplify using `only [RingHom.id_apply]`. Apply `M.inj` to reduce the goal to its premises. Apply `CategoryTheory.Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[hg, CategoryTheory.Over.comp_left, M.smul, M.smul, hg, CategoryTheory.Over.comp_left, Category.assoc]`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_isDiffOf_of_isMonHom {S : AlgebraicGeometry.Scheme} {R : Type} [CommRing R] {G : CategoryTheory.Over S} [GrpObj G]
     {x : Spec (CommRingCat.of R) ⟶ S} {E : Type} [AddCommGroup E] [Module R E]
@@ -39,7 +39,7 @@ private theorem exists_isDiffOf_of_isMonHom {S : AlgebraicGeometry.Scheme} {R : 
     rw [hg, CategoryTheory.Over.comp_left, M.smul, M.smul, hg, CategoryTheory.Over.comp_left, Category.assoc]
 
 /- English proof (translation)
-Use extensionality with `e`. Conclude with `M.inj ((hA e).trans (hB e).symm)`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 private theorem isDiffOf_unique {S : AlgebraicGeometry.Scheme} {R : Type} [CommRing R] {G : CategoryTheory.Over S} [GrpObj G]
     {x : Spec (CommRingCat.of R) ⟶ S} {E : Type} [AddCommGroup E] [Module R E]
@@ -49,13 +49,13 @@ private theorem isDiffOf_unique {S : AlgebraicGeometry.Scheme} {R : Type} [CommR
   exact M.inj ((hA e).trans (hB e).symm)
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c O _ β Y SS RM Sys Fx Or T zV`. Take `⟨EC, i1, i2, ⟨MC⟩⟩` from `GlobalTheory.CompanionTheory.Ar.lieModel_exists _ Or.𝔐.t.G T.Fr (FinRd.Roots.gen T zV)`. Use `choose D hD using fun o : 𝓞 E => exists_isDiffOf_of_isMonHom MC (Or.𝔐.t.act.act o) (Or.𝔐.t.act.hom o)`. Establish `hD' : ∀ (o : 𝓞 E) (e : EC), MC.pt (D o e) = MC.pt e ≫ Or.𝔐.t.act.act o` using `fun o e => hD o e`. Use `⟨EC, i1, i2, MC, RingHom.mk' ⟨⟨D, ?_⟩, ?_⟩ ?_, fun o => hD o⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Use `show D 1 = 1`. Apply `isDiffOf_unique MC (hD 1)` to reduce the goal to its premises. Introduce `e`. Rewrite using `[Or.𝔐.t.act.one, Module.End.one_apply, Category.comp_id]`. Introduce `o o' show D (o * o') = D o * D o'`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `isDiffOf_unique MC (hD (o * o'))` to reduce the goal to its premises. Introduce `e`. Rewrite using `[Module.End.mul_apply, hD', hD', mul_comm, Or.𝔐.t.act.mul, Category.assoc]`. Introduce `o o' show D (o + o') = D o + D o'`. Apply `isDiffOf_unique MC (hD (o + o'))` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `e`. Rewrite using `[LinearMap.add_apply, MC.add, hD', hD', Or.𝔐.t.act.add, MonObj.comp_mul]`.
+A detailed English derivation is pending.
 -/
 theorem exists_lieModel_act_gen : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (SS : Finset ℕ) (RM : Top.RootModel (CMType H) (Dw.p + Dw.q)) (Sys : PB.AnSys (Top.dimFl (CMType H) (Dw.p + Dw.q)) (Option (RootIx Dw))) (Fx : FixedData Y Sys) (Or : RootOrigin Y SS RM Fx) (T : CDVR) (zV : AlgebraicGeometry.Spec (CommRingCat.of T.V) ⟶ Or.𝔐.X), ∃ (EC : Type) (_ : AddCommGroup EC) (_ : Module T.Fr EC) (MC : LieModel Or.𝔐.t.G (FinRd.Roots.gen T zV) EC) (ρC : 𝓞 E →+* Module.End T.Fr EC), MC.IsActOf Or.𝔐.t.act.act ρC := by
   intro E _ _ _ H Dw l Xo c O _ β Y SS RM Sys Fx Or T zV

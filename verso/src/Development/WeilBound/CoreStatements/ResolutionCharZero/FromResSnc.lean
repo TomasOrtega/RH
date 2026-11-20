@@ -14,7 +14,7 @@ namespace PositivityTheory.ResPlug.FromRes
 open FunctorialResolution FunctorialResolution.EmbeddedResolution
 
 /- English proof (translation)
-Use `⟨h.1, fun x => ?_⟩` and prove the remaining obligations. Take `⟨U, hx, m, c, hc, he, a, h1, h2, h3⟩` from `h.2 x`. Conclude with `⟨U, hx, m, ⟨c, hc, he⟩, a, h1, h2, h3⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem inSNCPosition_of_hasSNC {X : Scheme.{0}} {k : Type} [Field k] {p : X ⟶ Spec (CommRingCat.of k)}
     {E : List X.IdealSheafData} (h : HasSimpleNormalCrossings p E) : InStrictNormalCrossingPosition p E := by
@@ -29,7 +29,7 @@ private theorem ideal_top {X : Scheme.{0}} (U : X.affineOpens) :
     (⊤ : X.IdealSheafData).ideal U = ⊤ := by simp
 
 /- English proof (translation)
-Rewrite using `[Scheme.IdealSheafData.comap_ideal_eq_map_appLE (I * J) g U V e, Scheme.IdealSheafData.comap_ideal_eq_map_appLE I g U V e, Scheme.IdealSheafData.comap_ideal_eq_map_appLE J g U V e, Scheme.IdealSheafData.ideal_mul, Pi.mul_apply, Ideal.map_mul]`.
+Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 private theorem ideal_comap_mul {X Y : Scheme.{0}} (g : X ⟶ Y) (U : Y.affineOpens)
     (V : X.affineOpens) (e : (V : X.Opens) ≤ g ⁻¹ᵁ (U : Y.Opens)) (I J : Y.IdealSheafData) :
@@ -40,7 +40,7 @@ private theorem ideal_comap_mul {X Y : Scheme.{0}} (g : X ⟶ Y) (U : Y.affineOp
     Scheme.IdealSheafData.ideal_mul, Pi.mul_apply, Ideal.map_mul]
 
 /- English proof (translation)
-Introduce `x _`. Conclude with `x.2`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem top_le_ι_preimage_self {Y : Scheme.{0}} (V : Y.Opens) :
     (⊤ : V.toScheme.Opens) ≤ (Opens.map V.ι.base).obj V := by
@@ -56,7 +56,7 @@ private theorem ι_appLE_top_eq_topIso_inv {Y : Scheme.{0}} (V : Y.Opens) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[ι_appLE_top_eq_topIso_inv]`. Conclude with `V.topIso.commRingCatIsoToRingEquiv.symm.bijective`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem ι_appLE_top_bijective {Y : Scheme.{0}} (V : Y.Opens) :
     Function.Injective (CommRingCat.Hom.hom (V.ι.appLE V ⊤ (top_le_ι_preimage_self V))) ∧
@@ -65,11 +65,11 @@ private theorem ι_appLE_top_bijective {Y : Scheme.{0}} (V : Y.Opens) :
   exact V.topIso.commRingCatIsoToRingEquiv.symm.bijective
 
 /- English proof (translation)
-Establish `: IsAffine V.toScheme` using `hV`. Establish `key` using `Scheme.IdealSheafData.comap_ideal_eq_map_appLE D V.ι ⟨V, hV⟩ ⟨⊤, isAffineOpen_top V.toScheme⟩ (top_le_ι_preimage_self V)`. Rewrite `key` using `[← restrictIdeal_eq_comap_ι, htop]`. Establish `h0 : ((⊤ : V.toScheme.IdealSheafData).ideal ⟨⊤, isAffineOpen_top V.toScheme⟩) = ⊤`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `key` using `[h0]`. Establish `key2 : Ideal.map (CommRingCat.Hom.hom (V.ι.appLE V ⊤ (top_le_ι_preimage_self V))) (D.ideal ⟨V, hV⟩) = ⊤` using `key.symm`. Establish `hbij` using `ι_appLE_top_bijective V`. Establish `hcomap : Ideal.comap (CommRingCat.Hom.hom (V.ι.appLE V ⊤ (top_le_ι_preimage_self V))) (Ideal.map (CommRingCat.Hom.hom (V.ι.appLE V ⊤ (top_le_ι_preimage_self V))) (D.ideal ⟨V, hV⟩)) = D.ideal ⟨V, hV⟩`. Apply `Ideal.comap_map_of_bijective` to reduce the goal to its premises.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `hbij`. Rewrite `hcomap` using `[key2, Ideal.comap_top]`. Conclude with `hcomap.symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem ideal_eq_top_of_isAffineOpen_of_restrictIdeal_eq_top {Y : Scheme.{0}} (D : Y.IdealSheafData)
     {V : Y.Opens} (hV : IsAffineOpen V) (htop : restrictIdeal D V = ⊤) :
@@ -93,7 +93,7 @@ private theorem ideal_eq_top_of_isAffineOpen_of_restrictIdeal_eq_top {Y : Scheme
   exact hcomap.symm
 
 /- English proof (translation)
-Rewrite using `[etaleChartCoord_def, c.algebraMap_eq_coordRingHom, c.coordRingHom_X]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem etaleChartCoord_eq_coord {X : Scheme.{0}} {k : Type} [Field k]
     {p : X ⟶ Spec (CommRingCat.of k)} {V : X.Opens} {m : ℕ} (c : EtaleChart p V m) (j : Fin m) :
@@ -101,9 +101,9 @@ private theorem etaleChartCoord_eq_coord {X : Scheme.{0}} {k : Type} [Field k]
   rw [etaleChartCoord_def, c.algebraMap_eq_coordRingHom, c.coordRingHom_X]
 
 /- English proof (translation)
-Establish `hres : X.presheaf.map (homOfLE hle).op ≫ X.presheaf.germ V' x hxV' = X.presheaf.germ V x hxV` using `X.presheaf.germ_res (homOfLE hle) x hxV'`. Establish `hgerm` using `congrArg (fun φ : Γ(X, V) ⟶ X.presheaf.stalk x => CommRingCat.Hom.hom φ s) hres`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply] at hgerm`. Establish `h1 : X.presheaf.germ V x hxV s ∈ IsLocalRing.maximalIdeal (X.presheaf.stalk x)` using `(germ_mem_maximalIdeal_iff hV x hxV s).mpr hs`. Use `(germ_mem_maximalIdeal_iff hV' x hxV' _).mp ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `show (X.presheaf.germ V' x hxV').hom ((X.presheaf.map (homOfLE hle).op).hom s) ∈ IsLocalRing.maximalIdeal (X.presheaf.stalk x)`. Rewrite using `[hgerm]`. Conclude with `h1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem presheaf_map_mem_primeIdealOf {X : Scheme.{0}} {V V' : X.Opens}
     (hV : IsAffineOpen V) (hV' : IsAffineOpen V') (hle : V' ≤ V) (x : ↥X)
@@ -124,25 +124,25 @@ private theorem presheaf_map_mem_primeIdealOf {X : Scheme.{0}} {V V' : X.Opens}
   exact h1
 
 /- English proof (translation)
-Introduce `F`. Proceed by induction on `F with`. Consider the case `nil`. Introduce `γ _ _ _`. Use `⟨∅, by simp, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : (([] : List W.IdealSheafData).prod).comap g = (⊤ : Y.IdealSheafData)`. Rewrite using `[Blowup.idealSheafData_prod_nil]`. Simplify using the standard rewrite rules. Rewrite using `[h1, Finset.prod_empty, Ideal.span_singleton_one]`. Conclude with `ideal_top _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `cons D F ih`. Introduce `γ hnone hsome hinj`. Establish `hlen : ∀ i, i < F.length → i + 1 < (D :: F).length`. Introduce `i hi`. Simplify using `only [List.length_cons]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Establish `hD0 : (0 : ℕ) < (D :: F).length`. Simplify using `only [List.length_cons]`. Use linear arithmetic over natural numbers and integers. Take `⟨J', hJ'mem, hJ'⟩` from `ih (fun i => γ (i + 1)) (fun i h hg => hnone (i + 1) (hlen i h) hg) (fun i h j hg => hsome (i + 1) (hlen i h) j hg) (fun i i' hi hi' j h1 h2 => by`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h3` using `hinj (i + 1) (i' + 1) (hlen i hi) (hlen i' hi') j h1 h2`. Use the proof step `omega)`. Establish `hprod : ((D :: F).prod.comap g).ideal ⟨V, hV⟩ = (D.comap g).ideal ⟨V, hV⟩ * ((F.prod).comap g).ideal ⟨V, hV⟩`. Rewrite using `[Blowup.idealSheafData_prod_cons]`. Conclude with `ideal_comap_mul g U ⟨V, hV⟩ e D F.prod`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data. Treat this case separately. Establish an intermediate fact.
 
-Consider the cases of `hγ0 : γ 0 with`. Consider the case `none`. Establish `hD : (D.comap g).ideal ⟨V, hV⟩ = ⊤` using `ideal_eq_top_of_isAffineOpen_of_restrictIdeal_eq_top _ hV (hnone 0 hD0 hγ0)`. Use `⟨J', ?_, ?_⟩` and prove the remaining obligations. Introduce `j hj`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Take `⟨i, hi, hγi⟩` from `hJ'mem j hj`. Conclude with `⟨i + 1, hlen i hi, hγi⟩`. Rewrite using `[hprod, hD, hJ', Ideal.top_mul]`. Consider the case `some j0`. Establish `hD : (D.comap g).ideal ⟨V, hV⟩ = Ideal.span {c.coord j0}`.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `EtaleChart.ideal_eq_span_coord c hV (D.comap g) {j0} (hsome 0 hD0 j0 hγ0)`. Rewrite `h2` using `[Finset.coe_singleton, Set.image_singleton]`. Conclude with `h2`. Establish `hj0 : j0 ∉ J'`. Introduce `hj0mem`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨i, hi, hγi⟩` from `hJ'mem j0 hj0mem`. Establish `h3` using `hinj 0 (i + 1) hD0 (hlen i hi) j0 hγ0 hγi`. Use linear arithmetic over natural numbers and integers. Use `⟨insert j0 J', ?_, ?_⟩` and prove the remaining obligations. Introduce `j hj`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Break down `Finset.mem_insert.mp hj with rfl | hj'` into its components or cases. Conclude with `⟨0, hD0, hγ0⟩`. Take `⟨i, hi, hγi⟩` from `hJ'mem j hj'`. Conclude with `⟨i + 1, hlen i hi, hγi⟩`. Rewrite using `[hprod, hD, hJ', Ideal.span_singleton_mul_span_singleton, Finset.prod_insert hj0]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_finset_comap_prod_ideal_eq_span_prod_coord {Y W : Scheme.{0}} {k : Type}
     [Field k] {pY : Y ⟶ Spec (CommRingCat.of k)} (g : Y ⟶ W) (U : W.affineOpens) {V : Y.Opens}
@@ -214,27 +214,23 @@ private theorem exists_finset_comap_prod_ideal_eq_span_prod_coord {Y W : Scheme.
               Finset.prod_insert hj0]
 
 /- English proof (translation)
-Establish `hid : E.prod.comap (𝟙 W) = E.prod` using `Scheme.IdealSheafData.comap_id _`. Rewrite using `[← hid]`. Introduce `y`. Take `⟨U0, sectionFrameQuotient, m, c0, a, h1, h2, h3⟩` from `hE.2 y`. Take `⟨V0, hV0, hyV0, hV0le⟩` from `TopologicalSpace.Opens.isBasis_iff_nbhd.mp (Scheme.isBasis_affineOpens W) sectionFrameQuotient`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨V, hV, hyV, n, c, γ, hγ, hinjγ, hmem⟩` from `exists_etaleChart_coord_mem_primeIdealOf E y V0 hV0 hyV0 (c0.restrict hV0le) a (fun i hi => ⟨fun hg => restrictIdeal_eq_top_of_le _ hV0le (h2 i hi hg), fun j hg => restrictIdeal_eq_restrict_coordIdeal_of_le hV0le c0 _ {j} (h3 i hi j hg)⟩) (fun i i' hi hi' j hj hj' => h1 i hi i' h …`. Establish `hyU : (𝟙 W : W ⟶ W).base y ∈ V` using `hyV`. Establish `hyVU : y ∈ (V ⊓ (𝟙 W : W ⟶ W) ⁻¹ᵁ V : W.Opens)` using `⟨hyV, hyU⟩`. Take `⟨fs, hfle, hyf⟩` from `hV.exists_basicOpen_le ⟨y, hyVU⟩ hyV`. Take `⟨V', hV', hV'V, hV'U, hyV'⟩ : ∃ V' : W.Opens, IsAffineOpen V' ∧ V' ≤ V ∧ V' ≤ (𝟙 W : W ⟶ W) ⁻¹ᵁ V ∧ y ∈ V'` from `⟨W.basicOpen fs, hV.basicOpen fs, le_trans hfle inf_le_left, le_trans hfle inf_le_right, hyf⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hγ' : ∀ i, ∀ h : i < E.length, (γ i = none → restrictIdeal ((E[i]'h).comap (𝟙 W)) V' = ⊤) ∧ (∀ j, γ i = some j → restrictIdeal ((E[i]'h).comap (𝟙 W)) V' = (c.restrict hV'V).coordIdeal {j})`. Introduce `i h`. Rewrite using `[Scheme.IdealSheafData.comap_id]`. Use `⟨fun hg => restrictIdeal_eq_top_of_le _ hV'V ((hγ i h).1 hg), fun j hg => ?_⟩` and prove the remaining obligations. Conclude with `restrictIdeal_eq_restrict_coordIdeal_of_le hV'V c _ {j} ((hγ i h).2 j hg)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨J₀, hJ₀mem, hJ₀⟩` from `exists_finset_comap_prod_ideal_eq_span_prod_coord (𝟙 W) ⟨V, hV⟩ hV' hV'U (c.restrict hV'V) E γ (fun i h => (hγ' i h).1) (fun i h => (hγ' i h).2) hinjγ`. Establish `hJ₀prime : ∀ j ∈ J₀, (c.restrict hV'V).coord j ∈ (hV'.primeIdealOf ⟨y, hyV'⟩).asIdeal`. Introduce `j hj`. Take `⟨i, hi, hγi⟩` from `hJ₀mem j hj`. Rewrite using `[FunctorialResolution.EmbeddedResolution.EtaleChart.coord_restrict c hV'V j]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `presheaf_map_mem_primeIdealOf hV hV' hV'V y hyV hyV' (c.coord j) (hmem i hi j hγi)`. Establish `hntr : Nontrivial ↥(W.presheaf.obj (op V'))`. Break down `subsingleton_or_nontrivial ↥(W.presheaf.obj (op V')) with hs | hs` into its components or cases. It suffices to derive a contradiction. Use `(hV'.primeIdealOf ⟨y, hyV'⟩).isPrime.ne_top ?_` and prove the remaining obligations.
+Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Ideal.eq_top_iff_one]`. Establish `h10 : (1 : ↥(W.presheaf.obj (op V'))) = 0` using `@Subsingleton.elim _ hs 1 0`. Rewrite using `[h10]`. Conclude with `Submodule.zero_mem _`. Conclude with `hs`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hcinj : Function.Injective (c.restrict hV'V).coord`. Establish `h` using `@etaleChartCoord_injective k _ n ↥(W.presheaf.obj (op V')) _ (c.restrict hV'V).algebra ((c.restrict hV'V).algebra_etale hV') hntr`. Introduce `a b hab`. Use `h ?_` and prove the remaining obligations. Simplify using `only [etaleChartCoord_eq_coord]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `hab`. Establish `hrad` using `@isRadical_span_singleton_prod_etaleChartCoord k _ n ↥(W.presheaf.obj (op V')) _ (c.restrict hV'V).algebra ((c.restrict hV'V).algebra_etale hV') J₀`. Simplify using `only [etaleChartCoord_eq_coord] at hrad`. Take `⟨N, f, hfcoord, hfreg⟩` from `exists_isRegularParameterSystem_with_coords_of_mem_prime hV' (c.restrict hV'V) y hyV' J₀ hJ₀prime`. Use `choose ι hι using hfcoord`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hinj2 : ∀ a ∈ J₀.attach, ∀ b ∈ J₀.attach, (fun j : { x // x ∈ J₀ } => ι j.1 j.2) a = (fun j : { x // x ∈ J₀ } => ι j.1 j.2) b → a = b`. Introduce `a _ b _ hab`. Establish `h1 : (c.restrict hV'V).coord a.1 = (c.restrict hV'V).coord b.1`. Rewrite using `[← hι a.1 a.2, ← hι b.1 b.2]`. Conclude with `congrArg f hab`.
-
-Conclude with `Subtype.ext (hcinj h1)`. Establish `hprodJ : (∏ i ∈ J₀.attach.image (fun j : { x // x ∈ J₀ } => ι j.1 j.2), f i) = ∏ j ∈ J₀, (c.restrict hV'V).coord j`. Rewrite using `[Finset.prod_image hinj2, ← Finset.prod_attach J₀ (fun j => (c.restrict hV'V).coord j)]`. Conclude with `Finset.prod_congr rfl fun j _ => hι j.1 j.2`. Use `⟨isRegularLocalRing_stalk_of_smooth p y, ⟨V', hV'⟩, hyV', N, f, J₀.attach.image (fun j : { x // x ∈ J₀ } => ι j.1 j.2), hfreg, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[Scheme.IdealSheafData.radical_ideal, hJ₀, hrad.radical, hprodJ]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isStrictNormalCrossings_radical_prod {W : Scheme.{0}} {k : Type} [Field k]
     (p : W ⟶ Spec (CommRingCat.of k)) [Smooth p] (E : List W.IdealSheafData)
@@ -314,9 +310,9 @@ theorem isStrictNormalCrossings_radical_prod {W : Scheme.{0}} {k : Type} [Field 
   rw [Scheme.IdealSheafData.radical_ideal, hJ₀, hrad.radical, hprodJ]
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil`. Rewrite using `[List.prod_nil, Scheme.IdealSheafData.one_eq_top]`. Simplify using `[Scheme.IdealSheafData.support_top]`. Consider the case `cons D L ih`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately.
 
-Rewrite using `[List.prod_cons, Scheme.IdealSheafData.support_mul]`. Simplify using `only [List.mem_cons, Set.iUnion_iUnion_eq_or_left]`. Rewrite using `[← ih]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem support_list_prod {X : Scheme.{0}} (L : List X.IdealSheafData) :
     (L.prod.support : Set X) = ⋃ D ∈ L, (D.support : Set X) := by
@@ -331,20 +327,18 @@ theorem support_list_prod {X : Scheme.{0}} (L : List X.IdealSheafData) :
     rfl
 
 /- English proof (translation)
-Rewrite using `[Scheme.IdealSheafData.support_comap]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem coe_support_comap {X Y : Scheme.{0}} (f : X ⟶ Y) (I : Y.IdealSheafData) :
     ((I.comap f).support : Set X) = f.base ⁻¹' (I.support : Set Y) := by
   rw [Scheme.IdealSheafData.support_comap]; rfl
 
 /- English proof (translation)
-Establish `e : FunctorialResolution.strictTransform π Z D = Blowup.strictTransform π Z D` using `rfl`. Establish `hcl : ((FunctorialResolution.strictTransform π Z D).support : Set X₁) = closure (π.base ⁻¹' ((D.support : Set X) \ (Z.support : Set X)))`. Rewrite using `[e]`. Conclude with `support_strictTransform_eq_closure_preimage π Z D`. Establish `hD : IsClosed (π.base ⁻¹' (D.support : Set X))` using `D.support.isClosed.preimage π.base.hom.continuous`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `(hx | hx)`. Distinguish the cases in `hz : x ∈ π.base ⁻¹' (Z.support : Set X)`. Conclude with `Or.inr hz`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Prove the second alternative. Rewrite the conclusion using the stated equalities.
 
-Use `left`. Rewrite using `[hcl]`. Conclude with `subset_closure ⟨hx, hz⟩`. Conclude with `Or.inr hx`. Introduce and unpack `(hx | hx)`.
-
-Use `left`. Rewrite `hx` using `[hcl]`. Conclude with `closure_minimal (fun y hy => hy.1) hD hx`. Conclude with `Or.inr hx`.
+Prove the second alternative. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Prove the second alternative. A detailed English derivation is pending.
 -/
 theorem preimage_union_eq_strictTransform_union {X X₁ : Scheme.{0}} [IsLocallyNoetherian X₁] (π : X₁ ⟶ X)
     (Z D : X.IdealSheafData) :
@@ -370,21 +364,21 @@ theorem preimage_union_eq_strictTransform_union {X X₁ : Scheme.{0}} [IsLocally
     · exact Or.inr hx
 
 /- English proof (translation)
-Take `⟨ideal, bd, -, hb0, -, -, -, -, hbsucc, -, -, hsm, hsnc⟩` from `h`. Use `⟨bd, hsnc, ?_⟩` and prove the remaining obligations. Establish `key : ∀ i, i ≤ s.length → ((s.exceptionalProduct i).support : Set (s.obj i)) = ((bd i).prod.support : Set (s.obj i))`. Introduce `i`. Proceed by induction on `i with`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero`. Introduce `_`. Rewrite using `[hb0]`. Simplify using `only [List.map_nil, List.prod_nil, Scheme.IdealSheafData.one_eq_top]`. Both sides reduce to the same expression.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Consider the case `succ n ih`. Introduce `hn`. Establish `hlt : n < s.length` using `hn`. Establish `: Smooth (s.structMap (n + 1) ≫ p)` using `hsm (n + 1) hn`. Establish `: IsLocallyNoetherian (s.obj (n + 1))` using `LocallyOfFiniteType.isLocallyNoetherian (s.structMap (n + 1) ≫ p)`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hE : s.exceptionalProduct (n + 1) = (s.exceptionalProduct n).comap (s.blowupMap n) * (s.center n).comap (s.blowupMap n)` using `rfl`. Rewrite using `[hE, hbsucc n hlt, List.prod_append, List.prod_singleton, Scheme.IdealSheafData.support_mul, Scheme.IdealSheafData.support_mul]`. Simplify using `only [TopologicalSpace.Closeds.coe_sup]`. Rewrite using `[coe_support_comap, ih hlt.le, support_list_prod, support_list_prod, Set.preimage_iUnion₂, coe_support_comap]`. Simplify using `only [List.mem_map]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use extensionality with `x`. Simplify using `only [Set.mem_union, Set.mem_iUnion, exists_prop]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `(⟨D, hD, hx⟩ | hx)`. Use `(preimage_union_eq_strictTransform_union (s.blowupMap n) (s.center n) D).subset (Or.inl hx : x ∈ _ ∪ _)` as an intermediate fact.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Break down `this with h1 | h1` into its components or cases. Conclude with `Or.inl ⟨_, ⟨D, hD, rfl⟩, h1⟩`. Conclude with `Or.inr h1`. Conclude with `Or.inr hx`. Introduce and unpack `(⟨_, ⟨D, hD, rfl⟩, hx⟩ | hx)`.
+Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative. Prove the second alternative. Assume the hypotheses and unpack their components.
 
-Use `(preimage_union_eq_strictTransform_union (s.blowupMap n) (s.center n) D).superset (Or.inl hx : x ∈ _ ∪ _)` as an intermediate fact. Break down `this with h1 | h1` into its components or cases. Conclude with `Or.inl ⟨D, hD, h1⟩`. Conclude with `Or.inr h1`. Conclude with `Or.inr hx`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative. Prove the second alternative.
 
-Conclude with `key s.length le_rfl`.
+A detailed English derivation is pending.
 -/
 theorem support_exceptionalProduct_eq {k : Type} [Field k] {X : Scheme.{0}}
     {p : X ⟶ Spec (CommRingCat.of k)} [LocallyOfFiniteType p] {I : X.IdealSheafData} {s : BlowupSequence X}
@@ -437,9 +431,9 @@ theorem support_exceptionalProduct_eq {k : Type} [Field k] {X : Scheme.{0}}
   exact key s.length le_rfl
 
 /- English proof (translation)
-Take `⟨bd, hbd, hsupp⟩` from `support_exceptionalProduct_eq h`. Take `⟨-, -, -, -, -, -, -, -, -, -, htop, hsm, -⟩` from `h`. Establish `: Smooth (s.topMap ≫ p)` using `hsm s.length le_rfl`. Establish `key` using `isStrictNormalCrossings_radical_prod (s.topMap ≫ p) (bd s.length) (inSNCPosition_of_hasSNC (hbd s.length le_rfl))`. Establish `e : reducedPreimage s.topMap I.support = (bd s.length).prod.radical`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `reducedInverseImage_eq_radical _ _ _ ?_` and prove the remaining obligations. Rewrite using `[← hsupp, ← htop, Scheme.IdealSheafData.support_comap]`. Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `key`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isStrictNormalCrossings_of_isPrincipalizingSequence_nil {k : Type} [Field k] {X : Scheme.{0}}
     {p : X ⟶ Spec (CommRingCat.of k)} [Smooth p] [LocallyOfFiniteType p] [QuasiCompact p]
@@ -458,11 +452,11 @@ theorem isStrictNormalCrossings_of_isPrincipalizingSequence_nil {k : Type} [Fiel
   rw [e]; exact key
 
 /- English proof (translation)
-Use `⟨fun D hD => hL.1 D (List.mem_of_mem_drop hD), fun x => ?_⟩` and prove the remaining obligations. Take `⟨U, hx, m, c, a, h1, h2, h3⟩` from `hL.2 x`. Use `⟨U, hx, m, c, fun i => a (i + d), ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i hi j hj t hit hjt`. Simplify using `only [List.length_drop] at hi hj`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `h1 (i + d) (by omega) (j + d) (by omega) t hit hjt` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Introduce `i hi hn`. Simplify using `only [List.length_drop] at hi`. Rewrite using `[List.getElem_drop]`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h2 (d + i) (by omega) (by simpa [Nat.add_comm] using hn)`. Introduce `i hi t ht`. Simplify using `only [List.length_drop] at hi`. Rewrite using `[List.getElem_drop]`. Conclude with `h3 (d + i) (by omega) t (by simpa [Nat.add_comm] using ht)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inSNCPosition_drop {X : Scheme.{0}} {k : Type} [Field k] {p : X ⟶ Spec (CommRingCat.of k)}
     {L : List X.IdealSheafData} (hL : InStrictNormalCrossingPosition p L) (d : ℕ) :
@@ -484,25 +478,25 @@ theorem inSNCPosition_drop {X : Scheme.{0}} {k : Type} [Field k] {p : X ⟶ Spec
     exact h3 (d + i) (by omega) t (by simpa [Nat.add_comm] using ht)
 
 /- English proof (translation)
-Take `⟨ideal, bd, -, hb0, -, -, -, -, hbsucc, -, -, hsm, hsnc⟩` from `h`. Use `⟨bd, hsnc, ?_⟩` and prove the remaining obligations. Establish `hlen : ∀ i, i ≤ s.length → (bd i).length = E.length + i`. Introduce `i`. Proceed by induction on `i with`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero => intro _`. Rewrite using `[hb0, List.length_map]`. Both sides reduce to the same expression. Consider the case `succ n ih`. Introduce `hn`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hbsucc n hn, List.length_append, List.length_map, ih (Nat.le_of_succ_le hn)]`. Simplify using `[Nat.add_assoc]`. Establish `key : ∀ i, i ≤ s.length → ((s.exceptionalProduct i).support : Set (s.obj i)) = (((bd i).drop E.length).prod.support : Set (s.obj i))`. Introduce `i`. Proceed by induction on `i with`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero`. Introduce `_`. Rewrite using `[hb0, List.drop_eq_nil_of_le (by rw [List.length_map])]`. Simplify using `only [List.prod_nil, Scheme.IdealSheafData.one_eq_top]`. Both sides reduce to the same expression.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Consider the case `succ n ih`. Introduce `hn`. Establish `hlt : n < s.length` using `hn`. Establish `: Smooth (s.structMap (n + 1) ≫ p)` using `hsm (n + 1) hn`. Establish `: IsLocallyNoetherian (s.obj (n + 1))` using `LocallyOfFiniteType.isLocallyNoetherian (s.structMap (n + 1) ≫ p)`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hE : s.exceptionalProduct (n + 1) = (s.exceptionalProduct n).comap (s.blowupMap n) * (s.center n).comap (s.blowupMap n)` using `rfl`. Establish `hdrop : ((bd n).map (strictTransform (s.blowupMap n) (s.center n)) ++ [(s.center n).comap (s.blowupMap n)]).drop E.length = ((bd n).drop E.length).map (strictTransform (s.blowupMap n) (s.center n)) ++ [(s.center n).comap (s.blowupMap n)]`. Rewrite using `[List.drop_append_of_le_length (by rw [List.length_map, hlen n hlt.le]; omega), List.map_drop]`. Rewrite using `[hE, hbsucc n hlt, hdrop, List.prod_append, List.prod_singleton, Scheme.IdealSheafData.support_mul, Scheme.IdealSheafData.support_mul]`. Simplify using `only [TopologicalSpace.Closeds.coe_sup]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[coe_support_comap, ih hlt.le, support_list_prod, support_list_prod, Set.preimage_iUnion₂, coe_support_comap]`. Simplify using `only [List.mem_map]`. Use extensionality with `x`. Simplify using `only [Set.mem_union, Set.mem_iUnion, exists_prop]`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `(⟨D, hD, hx⟩ | hx)`. Use `(preimage_union_eq_strictTransform_union (s.blowupMap n) (s.center n) D).subset (Or.inl hx : x ∈ _ ∪ _)` as an intermediate fact. Break down `this with h1 | h1` into its components or cases. Conclude with `Or.inl ⟨_, ⟨D, hD, rfl⟩, h1⟩`. Conclude with `Or.inr h1`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative.
 
-Conclude with `Or.inr hx`. Introduce and unpack `(⟨_, ⟨D, hD, rfl⟩, hx⟩ | hx)`. Use `(preimage_union_eq_strictTransform_union (s.blowupMap n) (s.center n) D).superset (Or.inl hx : x ∈ _ ∪ _)` as an intermediate fact. Break down `this with h1 | h1` into its components or cases. Conclude with `Or.inl ⟨D, hD, h1⟩`.
+Prove the second alternative. Assume the hypotheses and unpack their components. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative.
 
-Conclude with `Or.inr h1`. Conclude with `Or.inr hx`. Conclude with `key s.length le_rfl`.
+Prove the second alternative. Prove the second alternative. A detailed English derivation is pending.
 -/
 theorem support_exceptionalProduct_eq_drop {k : Type} [Field k] {X : Scheme.{0}}
     {p : X ⟶ Spec (CommRingCat.of k)} [LocallyOfFiniteType p] {I : X.IdealSheafData} {E : List X.IdealSheafData}
@@ -570,9 +564,9 @@ theorem support_exceptionalProduct_eq_drop {k : Type} [Field k] {X : Scheme.{0}}
   exact key s.length le_rfl
 
 /- English proof (translation)
-Take `⟨bd, hbd, hsupp⟩` from `support_exceptionalProduct_eq_drop h`. Take `⟨-, -, -, -, -, -, -, -, -, -, htop, hsm, -⟩` from `h`. Establish `: Smooth (s.topMap ≫ p)` using `hsm s.length le_rfl`. Establish `key` using `isStrictNormalCrossings_radical_prod (s.topMap ≫ p) ((bd s.length).drop E.length) (inSNCPosition_drop (inSNCPosition_of_hasSNC (hbd s.length le_rfl)) E.length)`. Establish `e : reducedPreimage s.topMap I.support = ((bd s.length).drop E.length).prod.radical`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `reducedInverseImage_eq_radical _ _ _ ?_` and prove the remaining obligations. Rewrite using `[← hsupp, ← htop, Scheme.IdealSheafData.support_comap]`. Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `key`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isStrictNormalCrossings_of_isPrincipalizingSequence {k : Type} [Field k] [CharZero k] {X : Scheme.{0}}
     {p : X ⟶ Spec (CommRingCat.of k)} [Smooth p] [LocallyOfFiniteType p] [QuasiCompact p]

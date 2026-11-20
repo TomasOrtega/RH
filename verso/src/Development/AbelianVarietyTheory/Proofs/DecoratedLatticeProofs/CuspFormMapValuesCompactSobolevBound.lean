@@ -23,9 +23,9 @@ open scoped NNReal
 variable {n : ℕ} {ε : Fin n → Bool} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
 
 /- English proof (translation)
-Use `⟨GlobalTheory.T.smoothVec_head_of_derivative_family n ε H σ hσ v hv, fun l => ?_⟩` and prove the remaining obligations. Proceed by induction on `l with`. Consider the case `nil => rfl`. Consider the case `cons X l ih => show dRep σ X (Dw σ (l.map Subtype.val) (v [])) = v (X :: l)`. Rewrite using `[ih]`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hv.1 l X).deriv`.
+A detailed English derivation is pending.
 -/
 theorem fam_smooth [CompleteSpace H] {σ : Mx n → (H →L[ℂ] H)} (hσ : IsURepOn (UJset ε) σ)
     {v : List (GlobalTheory.LowTypeDetermined.lie (Formalism.REAL.Jm ε)) → H} (hv : v ∈ Fam ε σ) :
@@ -40,9 +40,9 @@ theorem fam_smooth [CompleteSpace H] {σ : Mx n → (H →L[ℂ] H)} (hσ : IsUR
     exact (hv.1 l X).deriv
 
 /- English proof (translation)
-Establish `h` using `GlobalTheory.SmoothCyclic.hasDerivAt_dRep (σ := σ) (ε := ε) hw hX`. Establish `hm : HasDerivAt (fun t : ℝ => a * t) a 0` using `by simpa using (hasDerivAt_id (0 : ℝ)).const_mul a`. Establish `h2` using `HasDerivAt.scomp (0 : ℝ) (by simpa using h) hm`. Establish `e : (fun t : ℝ => σ (NormedSpace.exp (t • (a • X))) w) = (fun t : ℝ => σ (NormedSpace.exp (t • X)) w) ∘ fun t => a * t`. Use function extensionality and compare the values at `t`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[smul_smul, mul_comm]`. Use `show deriv (fun t : ℝ => σ (NormedSpace.exp (t • (a • X))) w) 0 = _`. Rewrite using `[e, h2.deriv, Complex.coe_smul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dRep_smul_of_sm {σ : Mx n → (H →L[ℂ] H)} {w : H} (hw : Sm ε σ w) {X : Mx n} (hX : X ∈ lieSet ε) (a : ℝ) :
     dRep σ (a • X) w = (a : ℂ) • dRep σ X w := by
@@ -57,19 +57,19 @@ theorem dRep_smul_of_sm {σ : Mx n → (H →L[ℂ] H)} {w : H} (hw : Sm ε σ w
   rw [e, h2.deriv, Complex.coe_smul]
 
 /- English proof (translation)
-Establish `hmem : ∀ l : List (GlobalTheory.LowTypeDetermined.lie (Formalism.REAL.Jm ε)), ∀ X ∈ l.map Subtype.val, X ∈ lieSet ε` using `fun l X hX => by`. Take `⟨Y, -, rfl⟩` from `List.mem_map.1 hX`. Conclude with `Y.2`. Establish `hs : ∀ l : List (GlobalTheory.LowTypeDetermined.lie (Formalism.REAL.Jm ε)), Sm ε σ (Dw σ (l.map Subtype.val) w)` using `fun l => Sm.word hσ hw (hmem l)`. Establish `hJ : (Formalism.REAL.Jm ε)ᴴ = Formalism.REAL.Jm ε`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `Formalism.REAL.Jm`. Rewrite using `[Matrix.diagonal_conjTranspose]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Rewrite using `[Pi.star_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `split_ifs <;> simp`. Establish `hJd : IsUnit (Formalism.REAL.Jm ε).det` using `(Matrix.isUnit_iff_isUnit_det _).1 (isUnit_Jm ε)`. Establish `hab` using `fun u (hu : Sm ε σ u) X (hX : X ∈ lieSet ε) Y (hY : Y ∈ lieSet ε) => GlobalTheory.DerivedAction.dRep_add_and_bracket n H (Formalism.REAL.Jm ε) σ hJ hJd hσ u hu X hX Y hY`. Establish `hcons : ∀ (Z : Mx n) (l : List (Mx n)) (u : H), Dw σ (Z :: l) u = dRep σ Z (Dw σ l u)` using `fun _ _ _ => rfl`. Use `⟨fun l X => ?_, fun l₁ l₂ a X Y => ?_, fun l₁ l₂ X Y Z hZ => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `GlobalTheory.SmoothCyclic.hasDerivAt_dRep (hs l) X.2`. Simplify using `only [List.map_append, List.map_cons, Dw_append, hcons]`. Establish `hu` using `hs l₂`. Establish `hX` using `GlobalTheory.SmoothCyclic.dRep_mem hσ hu X.2`. Establish `hY` using `GlobalTheory.SmoothCyclic.dRep_mem hσ hu Y.2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `haX : (a : ℂ) • dRep σ X (Dw σ (l₂.map Subtype.val) w) ∈ GlobalTheory.SmoothCyclic.smSub ε σ` using `(GlobalTheory.SmoothCyclic.smSub ε σ).smul_mem _ hX`. Rewrite using `[Submodule.coe_add, Submodule.coe_smul, (hab _ hu _ ((GlobalTheory.LowTypeDetermined.lie (Formalism.REAL.Jm ε)).smul_mem a X.2) _ Y.2).1, dRep_smul_of_sm hu X.2, Dw_add hσ (hmem l₁) haX hY, Dw_smul hσ (hmem l₁) _ hX]`. Simplify using `only [List.map_append, List.map_cons, Dw_append, hcons]`. Establish `hu` using `hs l₂`. Establish `hX` using `GlobalTheory.SmoothCyclic.dRep_mem hσ hu X.2`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hY` using `GlobalTheory.SmoothCyclic.dRep_mem hσ hu Y.2`. Establish `hXY` using `GlobalTheory.SmoothCyclic.dRep_mem hσ hY X.2`. Establish `hYX` using `GlobalTheory.SmoothCyclic.dRep_mem hσ hX Y.2`. Rewrite using `[hZ, (hab _ hu _ X.2 _ Y.2).2]`. Establish `e` using `Dw_add hσ (hmem l₁) ((GlobalTheory.SmoothCyclic.smSub ε σ).sub_mem hXY hYX) hYX`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `e` using `[sub_add_cancel]`. Rewrite using `[e, add_sub_cancel_right]`.
+A detailed English derivation is pending.
 -/
 theorem smooth_fam [CompleteSpace H] {σ : Mx n → (H →L[ℂ] H)} (hσ : IsURepOn (UJset ε) σ) {w : H}
     (hw : SmoothVec (lieSet ε) σ w) :
@@ -113,9 +113,7 @@ theorem smooth_fam [CompleteSpace H] {σ : Mx n → (H →L[ℂ] H)} (hσ : IsUR
     rw [e, add_sub_cancel_right]
 
 /- English proof (translation)
-Establish `hρ : ModRep ε σ` using `⟨hσ.1.1, hσ.1.2, 1, 0, fun g hg => by`. Rewrite using `[pow_zero, mul_one]`. Conclude with `ContinuousLinearMap.opNorm_le_bound _ zero_le_one fun v => by rw [hσ.2.1 g hg v, one_mul]⟩`. Take `⟨d, b, φ, hb⟩` from `exists_frame ε`. Use `haveI : IsUniformAddGroup (Fam ε σ) := (Fam ε σ).toAddSubgroup.isUniformAddGroup`.
-
-Use `haveI : CompleteSpace (Fam ε σ) := (GlobalTheory.T.isClosed_derivativeFamilies_moderateGrowth n ε H σ hρ).completeSpace_coe`. Use `haveI := (withSeminorms_sn (ρ := σ) hb).firstCountableTopology`. Use `haveI : (_root_.uniformity (Fam ε σ)).IsCountablyGenerated := IsUniformAddGroup.uniformity_countably_generated`. Use `letI := UniformSpace.pseudoMetricSpace (Fam ε σ)`. Use `infer_instance`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem fam_baire [CompleteSpace H] {σ : Mx n → (H →L[ℂ] H)} (hσ : IsURepOn (UJset ε) σ) :
     BaireSpace (Fam ε σ) := by
@@ -131,7 +129,7 @@ theorem fam_baire [CompleteSpace H] {σ : Mx n → (H →L[ℂ] H)} (hσ : IsURe
   infer_instance
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => exact ⟨[], rfl⟩`. Consider the case `cons X l ih`. Take `⟨l', hl'⟩` from `ih (fun Y hY => hl Y (List.mem_cons_of_mem _ hY))`. Conclude with `⟨⟨X, hl X List.mem_cons_self⟩ :: l', by simp [hl']⟩`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_lift (l : List (Mx n)) (hl : ∀ X ∈ l, X ∈ lieSet ε) :
     ∃ l' : List (GlobalTheory.LowTypeDetermined.lie (Formalism.REAL.Jm ε)), l'.map Subtype.val = l := by
@@ -142,9 +140,9 @@ theorem exists_lift (l : List (Mx n)) (hl : ∀ X ∈ l, X ∈ lieSet ε) :
     exact ⟨⟨X, hl X List.mem_cons_self⟩ :: l', by simp [hl']⟩
 
 /- English proof (translation)
-Proceed by induction on `S with`. Consider the case `nil => exact ⟨0, continuous_const, rfl, fun v => by simp⟩`. Consider the case `cons l S ih`. Take `⟨q, hq, hq0, hqb⟩` from `ih (fun l' hl' => hS l' (List.mem_cons_of_mem _ hl'))`. Take `⟨l', rfl⟩` from `exists_lift l (hS l List.mem_cons_self)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨C, -, h⟩` from `norm_le_sn (ρ := σ) hb l'`. Use `⟨fun v => C * sn σ b l'.length v + q v, (continuous_const.mul (continuous_sn b _)).add hq, by simp [hq0], fun v => ?_⟩` and prove the remaining obligations. Rewrite using `[List.map_cons, List.sum_cons, (fam_smooth hσ v.2).2 l']`. Conclude with `add_le_add (h v) (hqb v)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_cont_bound [CompleteSpace H] {σ : Mx n → (H →L[ℂ] H)} (hσ : IsURepOn (UJset ε) σ) {d : ℕ}
     {b : Fin d → GlobalTheory.LowTypeDetermined.lie (Formalism.REAL.Jm ε)} {φ : Fin d → (Mx n →ₗ[ℝ] ℝ)}
@@ -164,7 +162,7 @@ theorem exists_cont_bound [CompleteSpace H] {σ : Mx n → (H →L[ℂ] H)} (hσ
     exact add_le_add (h v) (hqb v)
 
 /- English proof (translation)
-Use `continuous_of_continuousAt_zero f ?_` and prove the remaining obligations. Rewrite using `[ContinuousAt, map_zero, tendsto_zero_iff_norm_tendsto_zero]`. Use `squeeze_zero (fun _ => norm_nonneg _) h ?_` and prove the remaining obligations. Simplify `hq.tendsto 0` using `[hq0]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem continuous_of_bound {E : Type} [AddCommGroup E] [Module ℂ E] [TopologicalSpace E]
     [IsTopologicalAddGroup E] (f : E →ₗ[ℂ] ℂ) (q : E → ℝ) (hq : Continuous q) (hq0 : q 0 = 0)
@@ -175,9 +173,9 @@ theorem continuous_of_bound {E : Type} [AddCommGroup E] [Module ℂ E] [Topologi
   simpa [hq0] using hq.tendsto 0
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => exact ⟨[[]], fun v => by simp [sn_zero]⟩`. Consider the case `succ k ih`. Take `⟨L, hL⟩` from `ih`. Use `⟨(List.ofFn fun j => L.map (· ++ [b j])).flatten, fun v => ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[sn_succ, List.map_flatten, List.sum_flatten, List.map_ofFn, List.map_ofFn, List.sum_ofFn]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hL]`. Simplify using `[Function.comp_def, der_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sn_eq_sum {σ : Mx n → (H →L[ℂ] H)} {d : ℕ} (b : Fin d → GlobalTheory.LowTypeDetermined.lie (Formalism.REAL.Jm ε))
     (k : ℕ) : ∃ L : List (List (GlobalTheory.LowTypeDetermined.lie (Formalism.REAL.Jm ε))), ∀ v : Fam ε σ,
@@ -193,25 +191,23 @@ theorem sn_eq_sum {σ : Mx n → (H →L[ℂ] H)} {d : ℕ} (b : Fin d → Globa
     simp [Function.comp_def, der_apply]
 
 /- English proof (translation)
-Take `⟨d, b, φ, hb⟩` from `exists_frame ε`. Use `haveI : IsUniformAddGroup (Fam ε σ) := (Fam ε σ).toAddSubgroup.isUniformAddGroup`. Use `haveI : BaireSpace (Fam ε σ) := fam_baire hσ`. Establish `hW` using `withSeminorms_sn (ρ := σ) hb`. Set `ev0 : Fam ε σ →ₗ[ℂ] H` to `(LinearMap.proj []).comp (Fam ε σ).subtype`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `Λ : ι → Fam ε σ →ₗ[ℂ] ℂ` to `fun i => (ℓ i).comp ev0`. Establish `hΛ : ∀ i v, Λ i v = ℓ i (v.1 [])` using `fun _ _ => rfl`. Establish `hc : ∀ i, Continuous (Λ i)`. Introduce `i`. Take `⟨S, C, hS, hC⟩` from `hℓ i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨q, hq, hq0, hqb⟩` from `exists_cont_bound hσ hb S hS`. Use `continuous_of_bound (Λ i) (fun v => |C| * q v) (continuous_const.mul hq) (by simp [hq0]) fun v => ?_` and prove the remaining obligations. Rewrite using `[hΛ]`. Establish `h0 : 0 ≤ (S.map fun l => ‖Dw σ l (v.1 [])‖).sum` using `List.sum_nonneg fun x hx => by`. Take `⟨l, -, rfl⟩` from `List.mem_map.1 hx`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Conclude with `norm_nonneg _`. Use `(hC _ (fam_smooth hσ v.2).1).trans ?_` and prove the remaining obligations. Conclude with `(mul_le_mul_of_nonneg_right (le_abs_self C) h0).trans (mul_le_mul_of_nonneg_left (hqb v) (abs_nonneg C))`. Set `p : ι → Seminorm ℂ (Fam ε σ)` to `fun i => (normSeminorm ℂ ℂ).comp (Λ i)`. Establish `hp : ∀ i v, p i v = ‖ℓ i (v.1 [])‖` using `fun _ _ => rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hpv : ∀ v : Fam ε σ, BddAbove (Set.range fun i => p i v)` using `fun v => by`. Take `⟨B, hB⟩` from `hbd _ (fam_smooth hσ v.2).1`. Conclude with `⟨B, by rintro _ ⟨i, rfl⟩; exact (hp i v).trans_le (hB i)⟩`. Establish `hpb : BddAbove (Set.range p)` using `Seminorm.bddAbove_range_iff.2 hpv`. Establish `hpc : Continuous (⨆ i, p i : Seminorm ℂ (Fam ε σ))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Seminorm.coe_iSup_eq hpb]`. Conclude with `Seminorm.continuous_iSup p (fun i => continuous_norm.comp (hc i)) hpb`. Take `⟨s, C, -, hle⟩` from `Seminorm.bound_of_continuous hW _ hpc`. Use `choose L hL using fun k => sn_eq_sum (σ := σ) b k`. Use `⟨(s.toList.map fun k => (L k).map fun l => l.map Subtype.val).flatten, C, ?_, fun i w hw => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Introduce `l hl X hX`. Take `⟨m, hm, hlm⟩` from `List.mem_flatten.1 hl`. Take `⟨k, -, rfl⟩` from `List.mem_map.1 hm`. Take `⟨l', -, rfl⟩` from `List.mem_map.1 hlm`. Take `⟨Y, -, rfl⟩` from `List.mem_map.1 hX`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Y.2`. Set `v : Fam ε σ` to `⟨fun l => Dw σ (l.map Subtype.val) w, smooth_fam hσ hw⟩`. Establish `hv : ∀ l, v.1 l = Dw σ (l.map Subtype.val) w` using `fun _ => rfl`. Establish `h1 : ‖ℓ i w‖ ≤ (⨆ i, p i : Seminorm ℂ (Fam ε σ)) v`. Rewrite using `[Seminorm.coe_iSup_eq hpb, iSup_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Chain the equalities or inequalities of the calculation.
 
-Conclude with `le_ciSup (hpv v) i`. Establish `h2 : (s.sup (sn σ b)) v ≤ ∑ k ∈ s, sn σ b k v` using `Seminorm.finset_sup_apply_le (Finset.sum_nonneg fun k _ => apply_nonneg _ _) fun k hk => Finset.single_le_sum (f := fun k => sn σ b k v) (fun _ _ => apply_nonneg _ _) hk`. Establish `h3 : ∑ k ∈ s, sn σ b k v = sobNorm σ ((s.toList.map fun k => (L k).map fun l => l.map Subtype.val).flatten) w`. Rewrite using `[sobNorm, List.map_flatten, List.sum_flatten, List.map_map, List.map_map, Finset.sum_map_toList]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[hL, Function.comp_apply, Function.comp_apply, List.map_map]`. Both sides reduce to the same expression. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem unif_model [CompleteSpace H] {σ : Mx n → (H →L[ℂ] H)} (hσ : IsURepOn (UJset ε) σ) {ι : Type}
     (ℓ : ι → H →ₗ[ℂ] ℂ) (hℓ : ∀ i, Sobolev₂ (lieSet ε) σ (ℓ i))
@@ -276,9 +272,9 @@ theorem unif_model [CompleteSpace H] {σ : Mx n → (H →L[ℂ] H)} (hσ : IsUR
       _ = _ := by rw [h3]
 
 /- English proof (translation)
-Establish `hd` using `(Matrix.isUnit_iff_isUnit_det P).1 hP`. Use function extensionality and compare the values at `w`. Unfold `dRep`. Use `congr 1`. Use function extensionality and compare the values at `t`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `show σ (P * NormedSpace.exp (t • (P⁻¹ * X * P)) * P⁻¹) w = σ (NormedSpace.exp (t • X)) w`. Rewrite using `[GlobalTheory.SmVec.exp_conj_inv hP, ← Matrix.mul_assoc, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hd, Matrix.one_mul, Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hd, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dRep_conj_eq (σ : Mx n → (H →L[ℂ] H)) {P : Mx n} (hP : IsUnit P) (X : Mx n) :
     dRep (fun g => σ (P * g * P⁻¹)) (P⁻¹ * X * P) = dRep σ X := by
@@ -292,7 +288,7 @@ theorem dRep_conj_eq (σ : Mx n → (H →L[ℂ] H)) {P : Mx n} (hP : IsUnit P) 
     Matrix.one_mul, Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hd, Matrix.mul_one]
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => rfl`. Consider the case `cons X l ih => simp only [List.map_cons, List.foldr_cons, ih, dRep_conj_eq σ hP]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem foldr_conj_eq (σ : Mx n → (H →L[ℂ] H)) {P : Mx n} (hP : IsUnit P) (l : List (Mx n)) (w : H) :
     (l.map fun X => P⁻¹ * X * P).foldr (dRep (fun g => σ (P * g * P⁻¹))) w = l.foldr (dRep σ) w := by
@@ -305,15 +301,13 @@ end GlobalTheory.SobUnif
 open GlobalTheory.SobUnif in
 
 /- English proof (translation)
-Introduce `D θ V S M J χ _ T hT Ω hΩ τ v`. Use `haveI : CompleteSpace (M.H τ) := (M.ds τ).1`. Establish `hσ : IsURepOn (UJset (M.ε τ)) (M.σ τ)` using `(M.ds τ).2.2.1`. Establish `hP` using `M.fr_unit τ`. Establish `hG` using `M.fr_gram τ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose ℓ hℓ hℓT using fun g : Ω => hT.cont τ v g.1`. Establish `hsm : ∀ u : M.H τ, SmoothVec (GlobalTheory.SmoothGlob.lieSet (M.ε τ)) (M.σ τ) u → u ∈ M.sm τ` using `fun u hu => Submodule.subset_span ((GlobalTheory.SmoothCyclic.smoothVec_transport hP hG u).2 hu)`. Take `⟨L, C, hL, hC⟩` from `unif_model hσ ℓ (fun g => GlobalTheory.SmoothCyclic.sobCont_transport hP hG (hℓ g)) (fun u hu => by`. Take `⟨B, hB⟩` from `hΩ.exists_bound_of_continuousOn (f := T (Function.update v τ ⟨u, hsm u hu⟩)) (hT.aut _).cont.continuousOn`. Conclude with `⟨B, fun g => by rw [hℓT g ⟨u, hsm u hu⟩]; exact hB g.1 g.2⟩)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨L.map fun l => l.map fun X => (M.fr τ)⁻¹ * X * M.fr τ, C, ?_, fun w g hg => ?_⟩` and prove the remaining obligations. Introduce `l hl Y hY`. Take `⟨l0, hl0, rfl⟩` from `List.mem_map.1 hl`. Take `⟨X, hX, rfl⟩` from `List.mem_map.1 hY`. Conclude with `GlobalTheory.SmoothCyclic.conj_lie (Matrix.nonsing_inv_mul _ ((Matrix.isUnit_iff_isUnit_det _).1 hP)) hG (hL l0 hl0 X hX)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hw` using `(GlobalTheory.SmoothCyclic.smoothVec_transport hP hG (w : M.H τ)).1 (GlobalTheory.HolRead.MultDer.smoothVec_of_mem M τ w.2)`. Establish `h1` using `hC ⟨g, hg⟩ (w : M.H τ) hw`. Rewrite `h1` using `[hℓT ⟨g, hg⟩ w]`. Use `h1.trans_eq ?_` and prove the remaining obligations. Use `congr 1`.
-
-Rewrite using `[GlobalTheory.SmoothGlob.sobNorm, List.map_map]`. Use `congrArg List.sum (List.map_congr_left fun l _ => ?_)` and prove the remaining obligations. Conclude with `congrArg norm (foldr_conj_eq (M.σ τ) hP l (w : M.H τ)).symm`.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Core.Mi.sobolev_unif_bound : ∀ (D : D7) (θ : InfFam D) (V : HSp D) (S : D.what₂.Tau → SPar) (M : DSModel V S) (J : Set (GA D V)) (χ : GA D V → ℂ), IsInfFam θ → ∀ T : MMap M, IsMultMap θ M J χ T → ∀ Ω : Set (GA D V), IsCompact Ω → ∀ τ (v : M.Vec), ∃ (L : List (List (Matrix (Fin V.rank) (Fin V.rank) ℂ))) (C : ℝ), (∀ l ∈ L, ∀ Y ∈ l, Y ∈ lieAt V τ) ∧ ∀ w : M.sm τ, ∀ g ∈ Ω, ‖T (Function.update v τ w) g‖ ≤ C * (L.map fun l => ‖l.foldr (dRep (M.rep τ)) (w : M.H τ)‖).sum := by
   intro D θ V S M J χ _ T hT Ω hΩ τ v

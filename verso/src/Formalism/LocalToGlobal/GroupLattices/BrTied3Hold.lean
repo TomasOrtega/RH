@@ -27,7 +27,7 @@ variable {G : Type} [Group G] [Fintype G] {Pl0 I0 Ty T : Type} {m : ℕ} {A3 : F
   {P0 : Subgroup G} {ψ0 : P0 →* D.what₂.LLˣ} {Ps : Subgroup G} {ψs : Ps →* D.what₂.LLˣ} {X0 : Formalism.BasicNotions.BaseLevelRowSide D}
 
 /- English proof (translation)
-Introduce `w` and use `by rw [hT.mu1]; exact hT.tup.muAt w v0 := fun t F _ => by obtain ⟨s0, hOk⟩ := hok refine ⟨I.jA t ((rV0 D A3.A Ps ψs t).mulVec F), ?_⟩ have h1 := (hT.sharp.forms t).op_eq ((rV0 D A3.A Ps ψs t).mulVec F) rw [ServJoint.level_operator_fixes_image hOk Ps ψs (A3.fam3.toSub2 Zs) t F] at …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem brTied_of {Zs : DefSub A3.fam3.amb3} {S0 : IndefData (A3.side3 P0 ψ0 Zs)} {S1 : IndefData (A3.side3 Ps ψs Zs)}
     {Dc : DefCols (A3.side3 Ps ψs Zs)} {Sp : SPer Dc} {C : ColData Dc Sp S1}

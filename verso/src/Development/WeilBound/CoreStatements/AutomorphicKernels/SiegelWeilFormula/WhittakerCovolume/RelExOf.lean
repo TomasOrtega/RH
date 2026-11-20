@@ -9,9 +9,9 @@ namespace PositivityTheory.SiegelWeilFormula.KWhit
 open PositivityTheory.SiegelWeilFormula
 
 /- English proof (translation)
-Introduce `_ _ F E _ _ _ _ _ σ d R Φ _ P gf hP x t u hx T hTnd`. Take `⟨η, hOf, hη, hherm, hof, haniso, hcm, hJ, hTT⟩` from `hA F E σ d`. Take `⟨T₀, hrat, hTdh, hTdd⟩` from `hTT T hTnd`. Take `⟨θ, fr, g, l, εs, Φg, Φf, Φv, hth, hfr, hg, hΦg, hεs, hchr, hpl, hfrm, hpf, hpr⟩` from `hR F E σ d R Φ P gf hP x t u hx η hη hherm`. Take `⟨⟨μ, hμ⟩, ⟨ν, hν⟩⟩` from `hS F E σ hcm d.m (Jd d η) hJ d.B.ψ hchr d.n`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨η, T₀, hOf, θ, fr, g, l, εs, Φg, Φf, Φv, μ, ν, ⟨hx, hrat, hη, hherm, hof, hth, hfr, hg⟩, hΦg, haniso, hεs, hcm, hJ, hTdh, hTdd, hchr, hpl, hfrm, hpf, hpr, hμ, hν⟩`.
+Supply the required witnesses or components.
 -/
 theorem relEx_of (hA : RelAlg) (hS : SdEx) (hR : ThetaDictR.RelRealP) : RelEx := by
   intro _ _ F E _ _ _ _ _ σ d R Φ _ P gf hP x t u hx T hTnd
@@ -24,7 +24,7 @@ theorem relEx_of (hA : RelAlg) (hS : SdEx) (hR : ThetaDictR.RelRealP) : RelEx :=
     hcm, hJ, hTdh, hTdd, hchr, hpl, hfrm, hpf, hpr, hμ, hν⟩
 
 /- English proof (translation)
-The claim follows from `relEx_of relAlg_pf sdEx ThetaDictR.relReal`.
+A detailed English derivation is pending.
 -/
 theorem relEx : RelEx := relEx_of relAlg_pf sdEx ThetaDictR.relReal
 

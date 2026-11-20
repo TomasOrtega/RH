@@ -5,11 +5,11 @@ open Complex Filter Topology
 namespace GlobalTheory.DivConvSum
 
 /- English proof (translation)
-Establish `hc : n.divisorsAntidiagonal.card = n.divisors.card`. Rewrite using `[← Nat.map_div_right_divisors, Finset.card_map]`. Use `(norm_sum_le _ _).trans ?_` and prove the remaining obligations. Rewrite using `[← hc, ← nsmul_eq_mul]`. Use `Finset.sum_le_card_nsmul _ _ _ fun p hp => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hle : p.1 ≤ n` using `Nat.divisor_le (Nat.fst_mem_divisors_of_mem_antidiagonal hp)`. Establish `hle' : (p.1 : ℝ) ^ k ≤ (n : ℝ) ^ k` using `pow_le_pow_left₀ (Nat.cast_nonneg _) (by exact_mod_cast hle) k`. Rewrite using `[norm_mul, norm_mul, norm_pow, Complex.norm_natCast]`. Establish `h1` using `(h p.1).1`. Establish `h2` using `(h p.2).2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : (0 : ℝ) ≤ (p.1 : ℝ) ^ k` using `by positivity`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem norm_divisorSum_le (k n : ℕ) (ψ θ : ℕ → ℂ) (h : ∀ n, ‖ψ n‖ ≤ 1 ∧ ‖θ n‖ ≤ 1) :
     ‖∑ p ∈ n.divisorsAntidiagonal, ψ p.1 * (p.1 : ℂ) ^ k * θ p.2‖
@@ -31,19 +31,17 @@ theorem norm_divisorSum_le (k n : ℕ) (ψ θ : ℕ → ℂ) (h : ∀ n, ‖ψ n
     _ ≤ (n : ℝ) ^ k := by simpa using hle'
 
 /- English proof (translation)
-Introduce `e ψ θ g b s he hs hψ hg hb`. Take `⟨k, rfl⟩ : ∃ k, e = k + 1` from `⟨e - 1, by omega⟩`. Establish `h1` using `hg s hs`. Establish `h2` using `GlobalTheory.DivSq.summable_card_divisors_sq_div_rpow s hs`. Use `Summable.of_norm_bounded (h1.add h2) fun n => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[LSeries.norm_term_eq]`. Use `split_ifs with hn`. Check the signs of the components of the expression. Establish `hN : (0 : ℝ) < n` using `by exact_mod_cast Nat.pos_of_ne_zero hn`. Establish `hbn : ‖b n‖ ≤ (n.divisors.card : ℝ) * (n : ℝ) ^ k`.
+Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hb n hn, Nat.add_sub_cancel]`. Conclude with `norm_divisorSum_le k n ψ θ hψ`. Establish `e1 : (n : ℝ) ^ (2 * ((k + 1 : ℕ) : ℝ) + s) = ((n : ℝ) ^ k * n) ^ 2 * (n : ℝ) ^ s`. Rewrite using `[Real.rpow_add hN, show (2 * ((k + 1 : ℕ) : ℝ)) = ((2 * (k + 1) : ℕ) : ℝ) by push_cast; ring, Real.rpow_natCast]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : (n : ℝ) ^ (((2 * (k + 1) + 1 : ℕ) : ℝ) + s) = ((n : ℝ) ^ k * n) ^ 2 * (n * (n : ℝ) ^ s)`. Rewrite using `[Real.rpow_add hN, Real.rpow_natCast]`. Expand and normalize the polynomial expressions, which then agree. Establish `e3 : (n : ℝ) ^ (1 + s) = n * (n : ℝ) ^ s`. Rewrite using `[Real.rpow_add hN, Real.rpow_one]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Complex.ofReal_re, norm_mul, e1, e2, e3]`. Establish `hu : (0 : ℝ) < (n : ℝ) ^ s` using `Real.rpow_pos_of_pos hN s`. Establish `hP : (0 : ℝ) < (n : ℝ) ^ k` using `by positivity`. Generalize the expression as in `(n : ℝ) ^ s = u at *`. Generalize the expression as in `(n : ℝ) ^ k = P at *`.
+Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Generalize the expression as in `(n.divisors.card : ℝ) = d at *`. Establish `hG : 0 ≤ ‖g n‖` using `norm_nonneg _`. Generalize the expression as in `‖g n‖ = G at *`. Generalize the expression as in `(n : ℝ) = N at *`. Combine the equalities or inequalities in the displayed calculation.
-
-Use polynomial arithmetic with `[sq_nonneg (G / (P * N) - d), sq_nonneg (G / (P * N)), sq_nonneg d]`. Use `_ = G ^ 2 / ((P * N) ^ 2 * (N * u)) + d ^ 2 / (N * u) := by field_simp`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Chain the equalities or inequalities of the calculation. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem lSeriesSummable_mul_divisorSum :
     ∀ (e : ℕ) (ψ θ g b : ℕ → ℂ) (s : ℝ), 1 ≤ e → 0 < s → (∀ n, ‖ψ n‖ ≤ 1 ∧ ‖θ n‖ ≤ 1) → (∀ t : ℝ, 0 < t → Summable fun n : ℕ => ‖g n‖ ^ 2 / (n : ℝ) ^ (((2 * e + 1 : ℕ) : ℝ) + t)) → (∀ n, n ≠ 0 → b n = ∑ p ∈ n.divisorsAntidiagonal, ψ p.1 * (p.1 : ℂ) ^ (e - 1) * θ p.2) → LSeriesSummable (fun n : ℕ => g n * b n) (((2 * (e : ℝ) + s : ℝ)) : ℂ) := by

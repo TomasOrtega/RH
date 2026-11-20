@@ -4,11 +4,11 @@ open NumberField IsDedekindDomain MeasureTheory ValuativeRel Matrix Formalism.Ba
 namespace GlobalTheory.PatPlaces
 
 /- English proof (translation)
-Distinguish the cases in `h1 : p < κ`. Conclude with `⟨.inl (.inl ⟨p, h1⟩), rfl⟩`. Distinguish the cases in `h2 : p < κ + l`. Conclude with `⟨.inl (.inr ⟨p - κ, by omega⟩), by simp only [zPos]; omega⟩`. Establish `hτ : 0 < τ`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Establish an intermediate fact.
 
-Break down `Nat.eq_zero_or_pos τ with h | h` into its components or cases. Substitute `h` using the available equality. Simplify using `at hp`. Use linear arithmetic over natural numbers and integers. Conclude with `h`.
+Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `hq : p - (κ + l) < τ * j` using `by rw [mul_comm]; omega`. Use `⟨.inr (⟨(p - (κ + l)) / τ, Nat.div_lt_of_lt_mul hq⟩, ⟨(p - (κ + l)) % τ, Nat.mod_lt _ hτ⟩), ?_⟩` and prove the remaining obligations. Use `Nat.div_add_mod' (p - (κ + l)) τ` as an intermediate fact. Simplify using `only [zPos]`. Use linear arithmetic over natural numbers and integers.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem zPos_surj {κ τ l j p : ℕ} (hp : p < κ + l + j * τ) :
     ∃ a : Ix (Fin κ ⊕ Fin l) (Fin τ) j, zPos a = p := by
@@ -26,35 +26,35 @@ theorem zPos_surj {κ τ l j p : ℕ} (hp : p < κ + l + j * τ) :
     simp only [zPos]; omega
 
 /- English proof (translation)
-Apply the tactic sequence `unfold symIdx; split_ifs <;> omega`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem symIdx_cases (κ ρ i : ℕ) :
     (i < κ ∧ symIdx κ ρ i = i + ρ) ∨ (κ ≤ i ∧ i < κ + ρ ∧ symIdx κ ρ i = i - κ) ∨ (κ + ρ ≤ i ∧ symIdx κ ρ i = i) := by
   unfold symIdx; split_ifs <;> omega
 
 /- English proof (translation)
-Establish `: r + i * τ + u - r = u + τ * i` using `by rw [mul_comm]; omega`. Rewrite using `[this, Nat.add_mul_div_left _ _ (by omega), Nat.div_eq_of_lt hu, zero_add]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem block_div {r τ i u : ℕ} (hu : u < τ) : (r + i * τ + u - r) / τ = i := by
   have : r + i * τ + u - r = u + τ * i := by rw [mul_comm]; omega
   rw [this, Nat.add_mul_div_left _ _ (by omega), Nat.div_eq_of_lt hu, zero_add]
 
 /- English proof (translation)
-Introduce `hR`. Establish `key : ∀ a b : Ix (Fin κ ⊕ Fin (s + 1)) (Fin τ) j, a ≠ b → ¬ FreeIx ρ a b → R (zPos a) (zPos b) = 0` using `fun a b hab h => by rw [hR a b h, if_neg hab]`. Use `⟨fun p' hp' => ⟨?_, fun p hp hne hc => ?_⟩, fun p p' h1 h2 h3 h4 => ?_⟩` and prove the remaining obligations. Take `⟨b, rfl⟩` from `zPos_surj (κ := κ) (τ := τ) (l := s + 1) (j := j) (p := p') (by omega)`. Rewrite using `[hR b b ?_, if_pos rfl]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Break down `b with (i | i) | ⟨i, u⟩` into its components or cases. Simplify using `[FreeIx, FreeTop]`. Simplify using `[FreeIx, FreeTop]`. Simplify using `only [zPos] at hp'`. Use linear arithmetic over natural numbers and integers.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Take `⟨b, rfl⟩` from `zPos_surj (κ := κ) (τ := τ) (l := s + 1) (j := j) (p := p') (by omega)`. Take `⟨a, rfl⟩` from `zPos_surj (κ := κ) (τ := τ) (l := s + 1) (j := j) (p := p) (by omega)`. Use `key a b (fun h => hne (h ▸ rfl)) ?_` and prove the remaining obligations. Establish `c1` using `symIdx_cases κ ρ (zPos a)`. Establish `c2` using `symIdx_cases κ ρ (zPos b)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply the tactic sequence `rcases a with (i | i) | ⟨i, u⟩ <;> rcases b with (i' | i') | ⟨i', u'⟩ <;>`. Apply the tactic sequence `simp only [zPos, FreeIx, FreeTop, Fin.lt_def, not_lt, not_false_eq_true] at hp' hp hne hc c1 c2 ⊢ <;> omega`. Take `⟨b, rfl⟩` from `zPos_surj (κ := κ) (τ := τ) (l := s + 1) (j := j) (p := p') (by omega)`. Take `⟨a, rfl⟩` from `zPos_surj (κ := κ) (τ := τ) (l := s + 1) (j := j) (p := p) (by omega)`. Break down `b with (i' | i') | ⟨i', u'⟩` into its components or cases.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using `only [zPos] at h1`. Use linear arithmetic over natural numbers and integers. Simplify using `only [zPos] at h1`. Use linear arithmetic over natural numbers and integers. Break down `a with (i | i) | ⟨i, u⟩` into its components or cases.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using `only [zPos] at h4; rw [show (i : ℕ) - (κ + s + 1) = 0 by omega, Nat.zero_div] at h4; exact absurd h4 (Nat.not_lt_zero _)`. Simplify using `only [zPos] at h4; rw [show κ + (i : ℕ) - (κ + s + 1) = 0 by omega, Nat.zero_div] at h4; exact absurd h4 (Nat.not_lt_zero _)`. Establish `e1 : κ + (s + 1) + (i' : ℕ) * τ + u' = κ + s + 1 + (i' : ℕ) * τ + u'` using `by omega`. Establish `e2 : κ + (s + 1) + (i : ℕ) * τ + u = κ + s + 1 + (i : ℕ) * τ + u` using `by omega`. Simplify using `only [zPos] at h4`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `h4` using `[e1, e2, block_div u'.isLt, block_div u.isLt]`. Use `key _ _ (fun h => ?_) ?_` and prove the remaining obligations. Simplify using `only [Sum.inr.injEq, Prod.mk.injEq] at h`. Rewrite `h4` using `[h.1]`. Conclude with `lt_irrefl _ h4`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [FreeIx, Fin.le_def, not_le]`. Conclude with `h4`.
+A detailed English derivation is pending.
 -/
 theorem pattern_to_places (F : Type) [Zero F] [One F] (κ ρ s τ j : ℕ) (R : ℕ → ℕ → F) :
     (∀ (a b : Ix (Fin κ ⊕ Fin (s + 1)) (Fin τ) j), ¬ FreeIx ρ a b → R (zPos a) (zPos b) = if a = b then 1 else 0) →

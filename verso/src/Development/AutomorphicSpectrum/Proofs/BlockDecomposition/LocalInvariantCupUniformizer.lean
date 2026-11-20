@@ -49,7 +49,7 @@ noncomputable def muEquiv {Ω : Type} [Field Ω] {n : ℕ} [NeZero n] (ζ : Ωˣ
     simp [ζ'])
 
 /- English proof (translation)
-Simplify using `[muEquiv]`.
+Simplify using the standard rewrite rules.
 -/
 theorem muEquiv_apply {Ω : Type} [Field Ω] {n : ℕ} [NeZero n] (ζ : Ωˣ) (hζ : IsPrimitiveRoot ζ n) (m : ZMod n) :
     (((Additive.toMul (muEquiv ζ hζ m) : rootsOfUnity n Ω) : Ωˣ)) = ζ ^ m.val := by
@@ -58,7 +58,7 @@ theorem muEquiv_apply {Ω : Type} [Field Ω] {n : ℕ} [NeZero n] (ζ : Ωˣ) (h
 attribute [local instance 2000] Rep.hV2
 
 /- English proof (translation)
-Establish `e` using `congrArg (fun ψ => cochainOf B (ψ.hom x)) (HomologicalComplex.cyclesMap_i (cochainsMap φ) 2)`. Simplify using `only [ModuleCat.hom_comp, LinearMap.comp_apply] at e`. Express the relevant statement in the definitionally equal form `cochainOf B (((cochainsComplex B).iCycles 2).hom _) s = _`. Rewrite using `[e, cochainOf_cochainsMap_f]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem cochainOf_cyclesMap {k G : Type} [CommRing k] [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     {A B : Rep.{0} k G} [IsDiscreteRep A] [IsDiscreteRep B] (φ : A ⟶ B) (x : cocycles A 2) (s : Fin 2 → G) :
@@ -71,7 +71,7 @@ theorem cochainOf_cyclesMap {k G : Type} [CommRing k] [Group G] [TopologicalSpac
   rfl
 
 /- English proof (translation)
-Establish `hJx` using `ConcreteCategory.congr_hom (cohomologyπ_comp_cohomologyMap (rootsOfUnityToUnits K Ω n) 2) x`. Establish `hJx' : (cohomologyMap (rootsOfUnityToUnits K Ω n) 2).hom (cohomologyπ _ 2 x) = cohomologyπ _ 2 ((HomologicalComplex.cyclesMap (cochainsMap (rootsOfUnityToUnits K Ω n)) 2).hom x)` using `hJx`. Rewrite using `[hJx']`. Use `GlobalTheory.T.kummer_character_tame_formula K Ω n ζ y a hζ.pow_eq_one ha hy κ χ hκ hadd hcont hF _ fun s => ?_` and prove the remaining obligations. Rewrite using `[cochainOf_cyclesMap, hx, rootsOfUnityToUnits_hom_apply, muEquiv_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem inv_class (K Ω : Type) [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
     [Field Ω] [Algebra K Ω] [IsSepClosure K Ω] [ValuativeRel Ω] [TopologicalSpace Ω]
@@ -93,13 +93,13 @@ theorem inv_class (K Ω : Type) [Field K] [ValuativeRel K] [TopologicalSpace K] 
   rw [cochainOf_cyclesMap, hx, rootsOfUnityToUnits_hom_apply, muEquiv_apply]
 
 /- English proof (translation)
-Establish `hTn : ∀ x, n • T x = 0`. Introduce `x`. Rewrite using `[← map_nsmul]`. Establish `: n • x = 0`. Rewrite using `[← Nat.cast_smul_eq_nsmul (ZMod n), ZMod.natCast_self, zero_smul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, map_zero]`. Rewrite using `[Submodule.eq_top_iff']`. Introduce `x`. Take `⟨b, hb⟩` from `exists_zmodToQZ_eq (hTn x)`. Establish `hx : x = (-b) • w`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Apply `hT` to reduce the goal to its premises. Rewrite using `[← hb]`. Establish `: (-b) • w = ((-b).val) • w`. Rewrite using `[← Nat.cast_smul_eq_nsmul (ZMod n), ZMod.natCast_zmod_val]`. Rewrite using `[this, map_nsmul, h, ← map_neg, ← map_nsmul, nsmul_eq_mul, ZMod.natCast_zmod_val]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[hx]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span rfl)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem generates_of_inv {n : ℕ} [NeZero n] {H : Type} [AddCommGroup H] [Module (ZMod n) H] (T : H →+ QZ)
     (hT : Function.Injective T) (w : H) (h : T w = - zmodToQZ n 1) :
@@ -124,9 +124,9 @@ theorem generates_of_inv {n : ℕ} [NeZero n] {H : Type} [AddCommGroup H] [Modul
   exact Submodule.smul_mem _ _ (Submodule.subset_span rfl)
 
 /- English proof (translation)
-Rewrite using `[galRootsOfUnity_ρ_apply]`. Apply `Additive.toMul.injective` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(((Additive.toMul (muEquiv ζ hζ (charRep c g m)) : rootsOfUnity n Ω) : Ωˣ) : Ω) = g (((Additive.toMul (muEquiv ζ hζ m) : rootsOfUnity n Ω) : Ωˣ) : Ω)`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[muEquiv_apply, muEquiv_apply, charRep_apply, Units.val_pow_eq_pow_val, Units.val_pow_eq_pow_val, map_pow, hc, ← pow_mul, ZMod.val_mul]`. Establish `h1 : (ζ : Ω) ^ n = 1`. Rewrite using `[← Units.val_pow_eq_pow_val, hζ.pow_eq_one, Units.val_one]`. Rewrite using `[← pow_eq_pow_mod _ h1]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem mu_equivariant (K Ω : Type) [Field K] [Field Ω] [Algebra K Ω] (n : ℕ) [NeZero n]
     (c : Gal(Ω/K) →* (ZMod n)ˣ) (ζ : Ωˣ) (hζ : IsPrimitiveRoot ζ n)
@@ -146,11 +146,11 @@ theorem mu_equivariant (K Ω : Type) [Field K] [Field Ω] [Algebra K Ω] (n : �
   rw [← pow_eq_pow_mod _ h1]
 
 /- English proof (translation)
-Establish `hcont` using `GlobalTheory.T.unramified_character_continuous K Ω n χ hadd hF`. Establish `he` using `mu_equivariant K Ω n c ζ hζ hc`. Take `⟨e2, hex, he2⟩` from `PositivityTheory.LocalTateOrthogonality.Gcoh.gc2 Gal(Ω/K) (ZMod n) (ZMod n) (charRep c) (galRootsOfUnity.{0} K Ω n) (muEquiv ζ hζ) he`. Establish `hJ : Function.Injective (cohomologyMap (rootsOfUnityToUnits K Ω n) 2).hom` using `cohomologyMap_f_injective_of_subsingleton (kummerSequence_shortExact (K := K) (L := Ω) n hn) 1 subsingleton_cohomology_one_galUnits`. Set `T : H2 (charRep c) →+ QZ` to `((brauerInv K Ω).comp (cohomologyMap (rootsOfUnityToUnits K Ω n) 2).hom.toAddMonoidHom).comp e2.toAddMonoidHom`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hTinj : Function.Injective T` using `(brauerInv_bijective K Ω).1.comp (hJ.comp e2.injective)`. Establish `hT1 : T (Submodule.Quotient.mk z) = - zmodToQZ n 1`. Take `⟨x, hx⟩` from `hex z`. Express the relevant statement in the definitionally equal form `brauerInv K Ω ((cohomologyMap (rootsOfUnityToUnits K Ω n) 2).hom (e2 (Submodule.Quotient.mk z))) = _`. Rewrite using `[he2 z x hx]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `inv_class K Ω n ζ y a hζ ha hy κ χ hκ hadd hcont hF x fun s => by rw [hx, hz]`. Conclude with `generates_of_inv T hTinj _ hT1`.
+A detailed English derivation is pending.
 -/
 theorem core (K Ω : Type) [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
     [Field Ω] [Algebra K Ω] [IsSepClosure K Ω] [ValuativeRel Ω] [TopologicalSpace Ω]
@@ -183,13 +183,13 @@ theorem core (K Ω : Type) [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNo
   exact generates_of_inv T hTinj _ hT1
 
 /- English proof (translation)
-Use `letI := algebraicValuativeRel K Ω`. Use `letI := algebraicTopology K Ω`. Use `haveI := algebraicValuativeRel_valuativeExtension K Ω`. Use `haveI := algebraicTopology_isValuativeTopology K Ω`. Set `c' : Gal(Ω/K) →* (ZMod n)ˣ` to `c.comp (ε : Gal(Ω/K) →* D)`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `T` to `ReciprocityTheory.Neutral.Bridge.equivH2OfIso ε (charRep c) (charRep c') (fun _ _ => rfl)`. Set `z' : Z2 (charRep c')` to `ReciprocityTheory.Gal.compatiblePairCocycles2 (charRep c) (charRep c') (ε : Gal(Ω/K) →* D) (ReciprocityTheory.Neutral.Bridge.continuous_coe_iso ε) LinearMap.id continuous_id (fun _ _ => rfl) z`. Establish `hspan` using `core K Ω n hn c' ζ y a hζ hc ha hy (fun g => κ (ε g)) (fun g => χ (ε g)) hκ (fun g h => by rw [map_mul, hadd]) hF z' (fun g h => hz _ _)`. Rewrite using `[Submodule.eq_top_iff']`. Introduce `x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hx : T x ∈ Submodule.span (ZMod n) {(Submodule.Quotient.mk z' : H2 (charRep c'))}`. Rewrite using `[hspan]`. Discharge the goal by the elementary cases of `trivial`. Take `⟨b, hb⟩` from `Submodule.mem_span_singleton.1 hx`. Establish `: x = b • (Submodule.Quotient.mk z : H2 (charRep c))`.
+Check the elementary cases of the proposition. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `T.injective` to reduce the goal to its premises. Rewrite using `[← hb, map_smul, show T (Submodule.Quotient.mk z) = Submodule.Quotient.mk z' from ReciprocityTheory.Neutral.Bridge.equivH2OfIso_mk ε _ _ _ z]`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span rfl)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem core_dec (K Ω : Type) [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
     [Field Ω] [Algebra K Ω] [IsSepClosure K Ω] (n : ℕ) [NeZero n] (hn : (n : K) ≠ 0)
@@ -226,7 +226,7 @@ theorem core_dec (K Ω : Type) [Field K] [ValuativeRel K] [TopologicalSpace K] [
   exact Submodule.smul_mem _ _ (Submodule.subset_span rfl)
 
 /- English proof (translation)
-Use `haveI : ∀ i, NeZero (l ^ i) := fun i => ⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩`. Use `haveI : ∀ i, HasEnoughRootsOfUnity Ω (l ^ i) := fun i => inferInstance`. Conclude with `cyclotomicCharacter.spec (L := Ω) l (σ : Ω ≃+* Ω) ζ hζ`.
+A detailed English derivation is pending.
 -/
 theorem cyc_apply (F Ω : Type) [Field F] [Field Ω] [Algebra F Ω] [IsAlgClosed Ω] [CharZero Ω] (l : ℕ)
     [Fact l.Prime] (r : ℕ) (ζ : Ω) (hζ : ζ ^ (l ^ r) = 1) (σ : G F Ω) :
@@ -236,19 +236,17 @@ theorem cyc_apply (F Ω : Type) [Field F] [Field Ω] [Algebra F Ω] [IsAlgClosed
   exact cyclotomicCharacter.spec (L := Ω) l (σ : Ω ≃+* Ω) ζ hζ
 
 /- English proof (translation)
-Introduce `F Ω _ _ _ _ _ l _ r hr ζ hζ A v hA ϖ y κ χ z h1 h2 h3 h4 h5 h6 h7 h8`. Establish `hl0 : l ^ r ≠ 0` using `pow_ne_zero _ (Fact.out : l.Prime).ne_zero`. Use `haveI : NeZero (l ^ r) := ⟨hl0⟩`. Take `⟨ι, e, hec, hes, hl⟩` from `GlobalTheory.CompanionTheory.DecGal.exists_algHom_mulEquiv_dec F Ω A v hA`. Use `haveI : CharZero (v.adicCompletion F) := charZero_of_injective_algebraMap (algebraMap F (v.adicCompletion F)).injective`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `haveI : IsSepClosure (v.adicCompletion F) (AlgebraicClosure (v.adicCompletion F)) := ⟨inferInstance, inferInstance⟩`. Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed F`. Use `haveI : CharZero Ω := charZero_of_injective_algebraMap (algebraMap F Ω).injective`. Establish `hϖ0 : (ϖ : F) ≠ 0`. Introduce `h`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `: ϖ = 0` using `by exact_mod_cast h`. Conclude with `h2 (this ▸ Ideal.zero_mem _)`. Establish `hy0 : y ≠ 0`. Introduce and unpack `rfl`. Rewrite `h3` using `[zero_pow hl0]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `hϖ0 ((map_eq_zero_iff _ (algebraMap F Ω).injective).1 h3.symm)`. Establish `hιζ : IsPrimitiveRoot (ι ζ) (l ^ r)` using `hζ.map_of_injective ι.injective`. Establish `hιy : ι y ≠ 0` using `(map_ne_zero_iff _ ι.injective).2 hy0`. Establish `ha0 : algebraMap F (v.adicCompletion F) (ϖ : F) ≠ 0` using `(map_ne_zero_iff _ (algebraMap F (v.adicCompletion F)).injective).2 hϖ0`. Use `core_dec (v.adicCompletion F) (AlgebraicClosure (v.adicCompletion F)) (l ^ r) (Nat.cast_ne_zero.2 hl0) (Dec (F := F) A) { e with continuous_toFun := hec, continuous_invFun := hes } ((cycMod F Ω l r).comp (Dec (F := F) A).subtype) (Units.mk0 (ι ζ) (hιζ.ne_zero hl0)) (Units.mk0 (ι …` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g`. Express the relevant statement in the definitionally equal form `g (ι ζ) = (ι ζ) ^ _`. Rewrite using `[← hl, cyc_apply F Ω l r ζ hζ.pow_eq_one, map_pow]`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `(ι y) ^ (l ^ r) = _`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[← map_pow, h3, ι.commutes]`. Conclude with `IsScalarTower.algebraMap_apply F _ _ _`. Introduce `g`. Express the relevant statement in the definitionally equal form `g (ι y) = (ι ζ) ^ _ * ι y`. Rewrite using `[← hl]`.
-
-Use `(congrArg ι (h4 (e g))).trans ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_pow]`. Both sides reduce to the same expression. Introduce `g hg`. Conclude with `h7 _ (GlobalTheory.T.decomposition_group_local_galois F Ω A v hA ι _ g (e g).2 (hl g) hg)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem span_class_eq_top : ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (l : ℕ) [Fact l.Prime] (r : ℕ), 0 < r → ∀ ζ : Ω, IsPrimitiveRoot ζ (l ^ r) → ∀ (A : ValuationSubring Ω) (v : HeightOneSpectrum (𝓞 F)), IsPlaceOver A v → ∀ (ϖ : 𝓞 F) (y : Ω) (κ χ : Dec (F := F) A → ZMod (l ^ r)) (z : Z2 (muLoc F l r A)), ϖ ∈ v.asIdeal → ϖ ∉ v.asIdeal ^ 2 → y ^ (l ^ r) = algebraMap F Ω (ϖ : F) → (∀ g : Dec (F := F) A, (g : G F Ω) y = ζ ^ (κ g).val * y) → (∀ g h, χ (g * h) = χ g + χ h) → (∀ g : Dec (F := F) A, (g : G F Ω) ∈ Ine (F := F) A → χ g = 0) → (∀ g : Dec (F := F) A, IsFrob (F := F) A (normV v) (g : G F Ω) → χ g = 1) → (∀ g h, z.1 (g, h) = κ g * χ h) → Submodule.span (ZMod (l ^ r)) {(Submodule.Quotient.mk z : H2 (muLoc F l r A))} = ⊤ := by
   intro F Ω _ _ _ _ _ l _ r hr ζ hζ A v hA ϖ y κ χ z h1 h2 h3 h4 h5 h6 h7 h8

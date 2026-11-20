@@ -18,29 +18,27 @@ private theorem md_single {B G G' : Type} [CommRing B] [Group G] [Group G'] (f :
   simp
 
 /- English proof (translation)
-Introduce `l _ L G G' g n O _ _ _ _ _ r r' B _ _ _ u H _ hHo hHη hHχ hker hc`. Take `⟨hc1, hc2, hc3⟩` from `hc`. Establish `hkill : ∀ k : G.G₀, g.p₀ k = 1 → u.D.Kills (MonoidAlgebra.single k 1 - 1)`. Introduce `k hk`. Establish `hk' : (k : G.Γ) ∈ PL l H`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[← hker, MonoidHom.mem_ker, ← g.coe_p₀, hk]`. Both sides reduce to the same expression. Establish `h1` using `pl_chBar l L G n O r B u H hHo hHη hHχ ∅ k hk'`. Use `UpperTheory.V.CA.d_closed u.D (maximalIdeal B) u.cont (u.D.CH ∪ ∅) ?_ _ h1` and prove the remaining obligations. Introduce and unpack `z (hz | hz)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `(UpperTheory.V.CA.d_toDet u.D z).2.2.2.1 ((UpperTheory.V.CA.d_ker _ z).1.1 (UpperTheory.V.CA.d_ch_ker _ ?_))` and prove the remaining obligations. Rewrite using `[UpperTheory.V.CA.d_toDet_CH]`. Conclude with `TwoSidedIdeal.subset_span hz`. Conclude with `hz.elim`. Take `⟨D', hD'⟩` from `gdet_desc n B G.G₀ G'.G₀ g.p₀ u.D g.p₀_surj hkill`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨-, hlam, htr, hmap, -, -⟩` from `comap_lam n B G.G₀ G'.G₀ g.p₀ D'`. Rewrite `hlam`, `htr`, `hmap` using `[hD']`. Take `⟨hstar, hoEl, -, -⟩` from `map_star l L G G' g n O B`. Use `⟨{ D := D', ψ := u.ψ, cont := ?_, red := ?_, psi := ?_, P := ?_, Ord := ?_, I := ?_ }, hD', rfl⟩` and prove the remaining obligations. Introduce `i`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `(g.adicCont_iff _ fun a => D'.lam i (MonoidAlgebra.single a 1)).1 ?_` and prove the remaining obligations. Establish `: (fun a => D'.lam i (MonoidAlgebra.single (g.p₀ a) 1)) = fun a : G.G₀ => u.D.lam i (MonoidAlgebra.single a 1)` using `funext fun a => by`. Rewrite using `[hlam, md_single]`. Rewrite using `[this]`. Conclude with `u.cont i`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨-, -, -, -, hrep, hinj⟩` from `comap_lam n (ResidueField O) G.G₀ G'.G₀ g.p₀ r'.Dbar`. Use `(hinj g.p₀_surj).1 _ ?_` and prove the remaining obligations. Rewrite using `[← hmap]`. Use `u.red.trans ?_` and prove the remaining obligations. Unfold `Resid.Dbar`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Rewrite using `[hrep]`. Use `congr 1`. Use extensionality with `a i j`. Simplify using `only [diagRep, MonoidHom.coe_mk, OneHom.coe_mk, MonoidHom.comp_apply, hc1]`. Introduce `v i`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `⟨(u.psi v i).cont, fun a => ?_, fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[← hc2]`. Conclude with `(u.psi v i).red a`. Rewrite using `[← hc3]`. Conclude with `(u.psi v i).mu a`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `i a`. Take `⟨a, rfl⟩` from `g.p₀_surj a`. Rewrite using `[← md_single, ← hstar, ← hlam, ← hlam]`. Conclude with `u.P i a`. Introduce `v a h`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨h, rfl⟩` from `g.p₀_surj h`. Rewrite using `[← md_single, ← hoEl, ← map_mul, ← htr]`. Conclude with `u.Ord v a h`. Introduce and unpack `w _ ⟨⟨a, ha, rfl⟩, ha'⟩ h`. Take `⟨h, rfl⟩` from `g.p₀_surj h`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hmem : G.φu w a ∈ r.Ip w`. Use `⟨⟨a, ha, rfl⟩, Subgroup.mem_iInf.2 fun i => ?_⟩` and prove the remaining obligations. Use `Subgroup.mem_iInf.1 ha' i` as an intermediate fact. Rewrite `this`, the goal using `[MonoidHom.mem_ker]`. Rewrite using `[hc1, MonoidHom.comp_apply, g.p₀_φu]`.
-
-Conclude with `this`. Use `u.I w _ hmem h` as an intermediate fact. Rewrite `this` using `[htr, map_mul, map_sub, map_one, md_single, md_single, g.p₀_φu]`. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pa.pair_desc :
     ∀ (l : ℕ) [Fact l.Prime] (L : Loc) (G G' : Glob l L) (g : G.Hom G') (n : ℕ) (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsCoef l O] [Algebra ℤ_[l] O] (r : Resid G.frame O n) (r' : Resid G'.frame O n) (B : Type) [CommRing B] [Algebra O B] [IsCO O B] (u : Pair r B) (H : Subgroup G.Γ) [H.Normal], IsOpen (H : Set G.Γ) → H ≤ G.η.ker → (∀ a : G.G₀, (a : G.Γ) ∈ H → ∀ i, r.chib i a = 1) → g.p.ker = PL l H → Glob.Compat g r r' → ∃ u' : Pair r' B, u'.D.comap g.p₀ = u.D ∧ u'.ψ = u.ψ := by

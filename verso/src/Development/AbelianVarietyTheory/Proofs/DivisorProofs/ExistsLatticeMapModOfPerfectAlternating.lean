@@ -8,19 +8,19 @@ namespace GlobalTheory
 open Module
 
 /- English proof (translation)
-Set `w : Fin g ⊕ Fin g → ℤ` to `Sum.elim u 1`. Establish `hw : ∀ j, IsCoprime (w j) (M : ℤ)`. Introduce and unpack `(i | i)`. Conclude with `⟨d i, -t i, by simp only [w, Sum.elim_inl]; linear_combination ht i⟩`. Conclude with `isCoprime_one_left`.
+Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Set `S : (Fin g ⊕ Fin g → ℤ) →ₗ[ℤ] (Fin g ⊕ Fin g → ℤ)` to `{ toFun := fun a j => w j * a j map_add' := fun a c => by funext j; simp [mul_add] map_smul' := fun r a => by funext j; simp; ring }`. Set `L : (Fin g ⊕ Fin g → ℤ) →+ La` to `(b.equivFun.symm.toLinearMap ∘ₗ S).toAddMonoidHom`. Establish `hrepr : ∀ v j, b.repr (b.equivFun.symm v) j = v j` using `fun v j => by`. Rewrite using `[← Basis.equivFun_apply, LinearEquiv.apply_symm_apply]`. Establish `hL : ∀ a j, b.repr (L a) j = w j * a j` using `fun a j => hrepr (S a) j`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨L, fun a => ⟨?_, ?_⟩, fun x => ?_, fun a c => ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨y, hy⟩`. Establish `hdiv : ∀ j, (M : ℤ) ∣ a j`. Introduce `j`. Use `hL a j` as an intermediate fact.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[hy, map_nsmul]`. Establish `h2 : (M : ℤ) ∣ w j * a j` using `⟨b.repr y j, by rw [← this]; simp⟩`. Conclude with `(hw j).symm.dvd_of_dvd_mul_left h2`. Use `choose c hc using hdiv`. Conclude with `⟨c, funext fun j => by simp [hc j]⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `⟨c, rfl⟩`. Conclude with `⟨L c, map_nsmul L M c⟩`. Use `⟨Sum.elim (fun i => d i * b.repr x (Sum.inl i)) (fun i => b.repr x (Sum.inr i)), b.equivFun.symm (Sum.elim (fun i => -(t i * b.repr x (Sum.inl i))) 0), ?_⟩` and prove the remaining obligations. Apply `b.repr.injective` to reduce the goal to its premises. Use extensionality with `j`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Rewrite using `[map_add, Finsupp.add_apply, hL, map_nsmul, Finsupp.smul_apply]`. Break down `j with i | i` into its components or cases. Simplify using `only [w, Sum.elim_inl, hrepr, nsmul_eq_mul]`. Take the linear combination `(-(b.repr x (Sum.inl i))) * ht i`. Simplify using `[w, hrepr]`.
+Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨∑ i, t i * (a (Sum.inl i) * c (Sum.inr i) - a (Sum.inr i) * c (Sum.inl i)), ?_⟩` and prove the remaining obligations. Rewrite using `[hb.apply_eq_sum hB, omegaStd, Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [hL, w, Sum.elim_inl, Sum.elim_inr, Pi.one_apply, one_mul]`. Take the linear combination `(a (Sum.inl i) * c (Sum.inr i) - a (Sum.inr i) * c (Sum.inl i)) * ht i`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_lattice_map_of_symplecticBasis {La : Type} [AddCommGroup La] {g : ℕ}
     (EF : LinearMap.BilinForm ℤ La) (hB : EF.IsAlt) (b : Basis (Fin g ⊕ Fin g) ℤ La)
@@ -71,13 +71,13 @@ theorem exists_lattice_map_of_symplecticBasis {La : Type} [AddCommGroup La] {g :
     linear_combination (a (Sum.inl i) * c (Sum.inr i) - a (Sum.inr i) * c (Sum.inl i)) * ht i
 
 /- English proof (translation)
-Introduce `La _ _ _ EF halt hinj e M hperf hcop`. Establish `hB : EF.IsAlt` using `halt`. Take `⟨g, b, d, hb, -, -⟩` from `exists_isSymplecticBasisOfType_pos hB hinj`. Establish `hg : Module.finrank ℤ La / 2 = g`. Rewrite using `[IsSymplecticBasisOfType.finrank_eq b, Fintype.card_fin]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[hg]`. Establish `hde : ∀ i, d i ∣ (e : ℤ)`. Introduce `i`. Take `⟨x, hx⟩` from `hperf (b.coord (Sum.inr i))`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `h1` using `hb.apply_right x i`. Rewrite `h1` using `[hx]`. Simplify using `only [LinearMap.smul_apply, Basis.coord_apply, Basis.repr_self, Finsupp.single_eq_same, nsmul_eq_mul, mul_one] at h1`. Conclude with `⟨b.repr x (Sum.inl i), by rw [h1, mul_comm]⟩`. Establish `hc : ∀ i, IsCoprime (M : ℤ) (d i)` using `fun i => (Nat.isCoprime_iff_coprime.2 hcop).of_isCoprime_of_dvd_right (hde i)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact.
 
-Use `choose p u hpu using hc`. Conclude with `exists_lattice_map_of_symplecticBasis EF hB b d hb M u (fun i => -p i) (fun i => by linear_combination hpu i)`.
+A detailed English derivation is pending.
 -/
 theorem exists_lattice_map_mod_of_perfect : ∀ (La : Type) [AddCommGroup La] [Module.Free ℤ La] [Module.Finite ℤ La] (EF : LinearMap.BilinForm ℤ La),
   (∀ x, EF x x = 0) → Function.Injective EF → ∀ (e M : ℕ), (∀ f : La →ₗ[ℤ] ℤ, ∃ x, EF x = e • f) → M.Coprime e →

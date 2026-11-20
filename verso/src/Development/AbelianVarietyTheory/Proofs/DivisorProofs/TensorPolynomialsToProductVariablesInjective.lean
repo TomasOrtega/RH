@@ -11,11 +11,11 @@ namespace GlobalTheory.CCRFock
 open MvPolynomial
 
 /- English proof (translation)
-Establish `key : ∀ (f : W → (Λ →₀ ℕ)) (w : W) (l : Λ), (∑ w, Finsupp.mapDomain (Prod.mk w) (f w)) (w, l) = f w l`. Introduce `f w l`. Rewrite using `[Finsupp.finset_sum_apply, Finset.sum_eq_single w]`. Conclude with `Finsupp.mapDomain_apply (Prod.mk_right_injective w) _ _`. Introduce `v _ hv`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Finsupp.mapDomain_notin_range` to reduce the goal to its premises. Introduce and unpack `⟨x, hx⟩`. Conclude with `hv (congrArg Prod.fst hx)`. Introduce `h`. Conclude with `absurd (Finset.mem_univ w) h`.
+Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components.
 
-Introduce `f g h`. Use function extensionality and compare the values at `w`. Use extensionality with `l`. Rewrite using `[← key f w l, ← key g w l]`. Conclude with `congrArg (fun F : (W × Λ) →₀ ℕ => F (w, l)) h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem polMap_index_injective (W Λ : Type) [Fintype W] :
     Function.Injective (fun f : W → (Λ →₀ ℕ) => ∑ w, Finsupp.mapDomain (Prod.mk w) (f w)) := by
@@ -37,7 +37,7 @@ theorem polMap_index_injective (W Λ : Type) [Fintype W] :
   exact congrArg (fun F : (W × Λ) →₀ ℕ => F (w, l)) h
 
 /- English proof (translation)
-Rewrite using `[monomial_sum_one]`. Simplify using `only [polMap, PiTensorProduct.lift.tprod, MultilinearMap.compLinearMap_apply, MultilinearMap.mkPiAlgebra_apply, AlgHom.toLinearMap_apply, rename_monomial]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem polMap_tprod_monomial (W Λ : Type) [Fintype W] [DecidableEq W] (f : W → (Λ →₀ ℕ)) :
     polMap W Λ (PiTensorProduct.tprod ℂ (fun w => (monomial (f w) (1 : ℂ) : MvPolynomial Λ ℂ))) =
@@ -47,13 +47,13 @@ theorem polMap_tprod_monomial (W Λ : Type) [Fintype W] [DecidableEq W] (f : W �
     MultilinearMap.mkPiAlgebra_apply, AlgHom.toLinearMap_apply, rename_monomial]
 
 /- English proof (translation)
-Set `B` to `Basis.piTensorProduct (fun _ : W => basisMonomials Λ ℂ)`. Establish `hli : LinearIndependent ℂ (polMap W Λ ∘ B)`. Establish `h` using `(basisMonomials (W × Λ) ℂ).linearIndependent.comp _ (polMap_index_injective W Λ)`. Establish `e : polMap W Λ ∘ B = (basisMonomials (W × Λ) ℂ) ∘ (fun f : W → (Λ →₀ ℕ) => ∑ w, Finsupp.mapDomain (Prod.mk w) (f w))`. Use function extensionality and compare the values at `f`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [Function.comp, B, Basis.piTensorProduct_apply, coe_basisMonomials]`. Conclude with `polMap_tprod_monomial W Λ f`. Rewrite using `[e]`. Conclude with `h`. Establish `h1 : polMap W Λ ∘ₗ Finsupp.linearCombination ℂ B = Finsupp.linearCombination ℂ (polMap W Λ ∘ B)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `f`. Simplify using the standard rewrite rules. Introduce `x y hxy`. Apply `B.repr.injective` to reduce the goal to its premises. Apply `hli` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← h1]`. Simplify using `only [LinearMap.comp_apply, Module.Basis.linearCombination_repr, hxy]`.
+A detailed English derivation is pending.
 -/
 theorem polMap_injective (W Λ : Type) [Fintype W] [DecidableEq W] :
     Function.Injective (polMap W Λ) := by

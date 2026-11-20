@@ -30,9 +30,9 @@ def JoinPin (Q : RealT R P Dcf Spf Zscf S Ks) : Prop :=
     ∀ hF : Formalism.L2.SG.PackageTie2.FinX S.Y, GlobalTheory.Mem.SRe.RowJ Q.Rl.toRealDat eE S.X S.inst S.G Q.tS (Formalism.L2.SG.JoinSI.jOf S hF)
 
 /- English proof (translation)
-Substitute `hzs` using the available equality. Substitute `hdc` using the available equality. Take `rfl` from `eq_of_heq hs1`. Take `rfl` from `eq_of_heq hsp`. Take `⟨Rd, M, hw, h1, h2, h3, h4, hon, hT⟩` from `GlobalTheory.T.kernel_join_on_V0_three D G Pl0 I0 T A3 Ks Rl F n hOk hSep hCh hPrim hSchur hSig S0 p0 C NuC I hDef hDivR hPt`.
+Substitute using the available equality. Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨Rd, M, hw, h1, h2, h3, h4, hon, fun j v₀ a hj => hT St h Gd hK pw wdD bR hwdD (eq_of_heq hSp) hbR t c hEv sEE sEEc κS hsE hκ hsee eE (fun y => hRead y y HEq.rfl) j v₀ a hj⟩`.
+Supply the required witnesses or components.
 -/
 theorem core {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type} {A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m}
     (Rl : RealDat3 D A3 Ks) (F : Face3 D A3) (n : ℕ) (hOk : A3.fam3.Ok3 n) (hSep : A3.fam3.TypesSep3)
@@ -89,9 +89,9 @@ theorem core {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type} {A3 : FamIn3 D.w
     sEE sEEc κS hsE hκ hsee eE (fun y => hRead y y HEq.rfl) j v₀ a hj⟩
 
 /- English proof (translation)
-Use `HEq.trans (heq_of_eq (hPin.bR_read (P.I.wU u) i)) ?_` and prove the remaining obligations. Establish `key : ∀ (w : D.what₂.Word) (hw : w = u) (hc : P.Dc.a (P.I.wU u) = P.Dc.a (P.I.wU w)), HEq (D.eMu w (D.jN w (P.I.eNu w (Pi.single (Fin.cast hc i) 1)))) (D.eMu u (D.jN u (P.I.eNu u (Pi.single i 1))))`. Introduce `w hw hc`. Substitute `hw` using the available equality. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Both sides reduce to the same expression.
 
-Conclude with `key _ (Q.wdD_wU u) _`.
+A detailed English derivation is pending.
 -/
 theorem bR_heq (Q : RealT R P Dcf Spf Zscf S Ks) (hPin : RealPins Q) (u : D.what₂.Word) (i : Fin (P.Dc.a (P.I.wU u))) :
     HEq (Q.bR (P.I.wU u) i) (D.eMu u (D.jN u (P.I.eNu u (Pi.single i 1)))) := by

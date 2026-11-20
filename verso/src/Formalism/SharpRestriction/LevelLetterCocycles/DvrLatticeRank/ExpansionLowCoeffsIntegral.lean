@@ -10,13 +10,13 @@ namespace Formalism.MainNotions.N.Ln34.LevelExpansions
 open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions.N.Ln34 Formalism.MainNotions.N.Ln34.DescentValuation PowerSeries
 
 /- English proof (translation)
-Establish `hI : I ≠ ⊤`. Introduce `h`. Establish `hH : IsHausdorff I O` using `inferInstance`. Rewrite `hH` using `[h]`. Conclude with `not_subsingleton O hH.subsingleton`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `H : (Polynomial.X ^ k - Polynomial.C (r ^ k) : Polynomial O).IsDistinguishedAt I`. Use `⟨⟨fun {i} hi => ?_⟩, Polynomial.monic_X_pow_sub_C _ hk.ne'⟩` and prove the remaining obligations. Rewrite `hi` using `[Polynomial.natDegree_X_pow_sub_C]`. Rewrite using `[Polynomial.coeff_sub, Polynomial.coeff_X_pow, if_neg hi.ne, Polynomial.coeff_C]`. Use `split_ifs`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 
-Simplify using `using hr`. Simplify using the standard rewrite rules. Establish `e` using `((H.isWeierstrassDivisorAt hI).isWeierstrassDivisionAt_div_mod g).eq_mul_add`. Take `⟨q, R, e⟩ : ∃ (q : PowerSeries O) (R : Polynomial O), g = ((Polynomial.X ^ k - Polynomial.C (r ^ k) : Polynomial O) : PowerSeries O) * q + R` from `⟨_, _, e⟩`. Take `⟨D', hD'⟩ : (X - C r : PowerSeries O) ∣ X ^ k - C r ^ k` from `sub_dvd_pow_sub_pow _ _ _`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨R', hR'⟩` from `Polynomial.X_sub_C_dvd_sub_C_eval (a := r) (p := R)`. Establish `h1` using `congrArg (fun p : Polynomial O => (p : PowerSeries O)) hR'`. Simplify using `only [Polynomial.coe_sub, Polynomial.coe_mul, Polynomial.coe_C, Polynomial.coe_X] at h1`. Rewrite `e` using `[Polynomial.coe_sub, Polynomial.coe_pow, Polynomial.coe_X, Polynomial.coe_C, map_pow, hD']`. Conclude with `⟨R.eval r, D' * q + R', by rw [e]; linear_combination h1⟩`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem ps_div {O : Type*} [CommRing O] [IsDomain O] (I : Ideal O) [IsAdicComplete I O] (r : O) (k : ℕ)
     (hk : 0 < k) (hr : r ^ k ∈ I) (g : PowerSeries O) :
@@ -44,11 +44,11 @@ theorem ps_div {O : Type*} [CommRing O] [IsDomain O] (I : Ideal O) [IsAdicComple
   exact ⟨R.eval r, D' * q + R', by rw [e]; linear_combination h1⟩
 
 /- English proof (translation)
-Take `⟨t, ht⟩` from `exists_add_pow_prime_eq hp (z - 1) (1 : O)`. Rewrite `ht` using `[sub_add_cancel, hz, one_pow]`. Establish `hx : z - 1 ≠ 0` using `sub_ne_zero.2 hz1`. Use `⟨-t, mul_left_cancel₀ hx ?_⟩` and prove the remaining obligations. Establish `: (z - 1) ^ p = (z - 1) * (z - 1) ^ (p - 1)`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← pow_succ']`. Use `congr 1`. Use `hp.pos` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[← this]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `-ht`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem dvd_zeta {O : Type*} [CommRing O] [IsDomain O] (p : ℕ) (hp : p.Prime) (z : O) (hz : z ^ p = 1)
     (hz1 : z ≠ 1) : (p : O) ∣ (z - 1) ^ (p - 1) := by
@@ -73,44 +73,44 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     (W : LocWach PD LL O v n)
 
 /- English proof (translation)
-Use `W.lev_letter c ζ (a - b) (by rw [Pi.sub_apply, h, sub_self])` as an intermediate fact. Rewrite `this` using `[map_sub, sub_eq_zero]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem lev_congr (c : ZMod n) (ζ : LL) {a b : LetA O n} (h : a c = b c) : W.lev c ζ a = W.lev c ζ b := by
   have := W.lev_letter c ζ (a - b) (by rw [Pi.sub_apply, h, sub_self])
   rwa [map_sub, sub_eq_zero] at this
 
 /- English proof (translation)
-Rewrite using `[AlgHom.commutes, PowerSeries.algebraMap_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lev_alg (c : ZMod n) (ζ : LL) (o : O) :
     W.lev c ζ (algebraMap O (LetA O n) o) = C (algebraMap O LL o) := by
   rw [AlgHom.commutes, PowerSeries.algebraMap_apply]
 
 /- English proof (translation)
-Use `show algebraMap O (PowerSeries O) o = C o`. Rewrite using `[PowerSeries.algebraMap_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem alg_apply (o : O) (c : ZMod n) : (algebraMap O (LetA O n) o) c = C o := by
   show algebraMap O (PowerSeries O) o = C o
   rw [PowerSeries.algebraMap_apply]; rfl
 
 /- English proof (translation)
-Rewrite using `[lev_congr W c ζ (b := 1) (by simp [letE]), map_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lev_letE (c : ZMod n) (ζ : LL) : W.lev c ζ (letE c : LetA O n) = 1 := by
   rw [lev_congr W c ζ (b := 1) (by simp [letE]), map_one]
 
 /- English proof (translation)
-Take `⟨E, hE0, hEd, hE⟩` from `W.lev_π c ζ ⟨1, by simpa using hζ⟩`. Establish `h0 : constantCoeff (W.lev c ζ letπ) = ζ - 1`. Establish `h` using `congrArg constantCoeff hE`. Rewrite `h` using `[map_add, map_one, map_mul, constantCoeff_C, hE0, mul_one]`. Take the linear combination `h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `hE1 : coeff 1 E = 1`. Establish `h1` using `congrArg (coeff 0) hEd`. Rewrite `h1` using `[PowerSeries.coeff_derivative]`. Simplify using `only [zero_add, Nat.cast_zero, mul_one, coeff_zero_eq_constantCoeff_apply, hE0] at h1`. Simplify using `using h1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Take `⟨u, hu, -⟩` from `framepf_lev_q_simple W c ζ hζ`. Establish `hq0 : constantCoeff (W.lev c ζ W.q) = 0` using `by rw [hu]; simp`. Use `⟨h0, ?_, ?_, hq0⟩` and prove the remaining obligations. Establish `h` using `congrArg (coeff 1) hE`. Rewrite `h` using `[map_add, coeff_C_mul, hE1, mul_one, coeff_one, if_neg one_ne_zero, zero_add]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h`. Establish `hπq : (letπ : LetA O n) * W.q = (1 + letπ) ^ PD.p - 1`. Use function extensionality and compare the values at `i`. Simplify using `only [letπ, LocWach.q, Pi.mul_apply, Pi.sub_apply, Pi.pow_apply, Pi.add_apply, Pi.one_apply]`. Conclude with `W.q₀_def`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hl` using `congrArg (W.lev c ζ) hπq`. Rewrite `hl` using `[map_mul, map_sub, map_pow, map_add, map_one]`. Rewrite `hl` using `[hE, mul_pow, ← map_pow, hζ.pow_eq_one, map_one, one_mul]`. Take `⟨w, hw, hw0⟩` from `framepf_exp_pow_sub_one E hE0 hEd PD.p`. Rewrite `hl` using `[hw]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h` using `congrArg (coeff 1) hl`. Rewrite `h` using `[coeff_one_mul, hq0, h0, coeff_succ_X_mul, coeff_zero_eq_constantCoeff_apply, hw0]`. Take the linear combination `h`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem levπ01 (c : ZMod n) (ζ : LL) (hζ : IsPrimitiveRoot ζ PD.p) :
     constantCoeff (W.lev c ζ letπ) = ζ - 1 ∧ coeff 1 (W.lev c ζ letπ) = ζ ∧
@@ -150,7 +150,7 @@ def yR (π' : LetA O n) (c : ZMod n) (r : O) (ζ : LL) : PowerSeries LL :=
 def evA (c : ZMod n) (ζ : LL) (a : ↥W.AΔ) : PowerSeries LL := W.lev c ζ (a : LetA O n)
 
 /- English proof (translation)
-Introduce `δ hδ`. Use function extensionality and compare the values at `i`. Use `show W.γ₀ δ (Polynomial.aeval (π' i) (E i)) = Polynomial.aeval (π' i) (E i)`. Rewrite using `[← Polynomial.aeval_algHom_apply]`. Conclude with `congrArg (fun p => Polynomial.aeval p (E i)) (congrFun (hπ δ hδ) i)`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Eat_mem {π' : LetA O n} (hπ : π' ∈ W.AΔ) (E : ZMod n → Polynomial O) :
     Formalism.MainNotions.DeltaInvariantLattices.Eat E π' ∈ W.AΔ := by
@@ -161,7 +161,7 @@ theorem Eat_mem {π' : LetA O n} (hπ : π' ∈ W.AΔ) (E : ZMod n → Polynomia
   exact congrArg (fun p => Polynomial.aeval p (E i)) (congrFun (hπ δ hδ) i)
 
 /- English proof (translation)
-Rewrite using `[Polynomial.aeval_algHom_apply]`. Apply `lev_congr` to reduce the goal to its premises. Conclude with `(Polynomial.aeval_algHom_apply (Pi.evalAlgHom O (fun _ : ZMod n => PowerSeries O) c) π' (E c))`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem lev_Eat (π' : LetA O n) (E : ZMod n → Polynomial O) (c : ZMod n) (ζ : LL) :
     W.lev c ζ (Formalism.MainNotions.DeltaInvariantLattices.Eat E π') = Polynomial.aeval (W.lev c ζ π') (E c) := by
@@ -170,7 +170,7 @@ theorem lev_Eat (π' : LetA O n) (E : ZMod n → Polynomial O) (c : ZMod n) (ζ 
   exact (Polynomial.aeval_algHom_apply (Pi.evalAlgHom O (fun _ : ZMod n => PowerSeries O) c) π' (E c))
 
 /- English proof (translation)
-Proceed by induction on `P using Polynomial.induction_on' with`. Consider the case `add p q hp hq => simp only [map_add, Polynomial.eval_add, hp, hq]`. Consider the case `monomial k a`. Rewrite using `[Polynomial.aeval_monomial, Polynomial.eval_monomial, map_mul, map_pow, hf, PowerSeries.algebraMap_apply, constantCoeff_C, map_mul, map_pow]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem cc_aeval (f : PowerSeries LL) (r : O) (hf : constantCoeff f = algebraMap O LL r)
     (P : Polynomial O) : constantCoeff (Polynomial.aeval f P) = algebraMap O LL (P.eval r) := by
@@ -181,7 +181,7 @@ theorem cc_aeval (f : PowerSeries LL) (r : O) (hf : constantCoeff f = algebraMap
       PowerSeries.algebraMap_apply, constantCoeff_C, map_mul, map_pow]
 
 /- English proof (translation)
-Rewrite using `[map_sub, Polynomial.aeval_X, Polynomial.aeval_C, PowerSeries.algebraMap_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem aeval_lin (π' : LetA O n) (c : ZMod n) (r : O) (ζ : LL) :
     Polynomial.aeval (W.lev c ζ π') (Polynomial.X - Polynomial.C r) = yR W π' c r ζ := by
@@ -195,7 +195,7 @@ variable [IsDomain O] (hinj : Function.Injective (algebraMap O LL))
 
 include hinj in
 /- English proof (translation)
-The claim follows from `dvd_zeta PD.p PD.hp z (hinj (by rw [map_pow, hz, map_one, hζ.pow_eq_one])) (fun h => hζ.ne_one PD.hp.one_lt (by rw [← hz, h, map_one]))`.
+A detailed English derivation is pending.
 -/
 theorem z_dvd {ζ : LL} (hζ : IsPrimitiveRoot ζ PD.p) {z : O} (hz : algebraMap O LL z = ζ) :
     (PD.p : O) ∣ (z - 1) ^ (PD.p - 1) :=
@@ -205,13 +205,13 @@ theorem z_dvd {ζ : LL} (hζ : IsPrimitiveRoot ζ PD.p) {z : O} (hz : algebraMap
 include hinj in
 
 /- English proof (translation)
-Establish `hx : (z - 1) ^ (PD.p - 1) ∈ Ideal.span {((PD.p : ℕ) : O)}` using `Ideal.mem_span_singleton.2 (z_dvd hinj hζ hz)`. Establish `hk : 0 < PD.p - 1` using `by have := PD.hp.one_lt; omega`. Take `⟨o₀, g₁, h₁⟩` from `ps_div _ (z - 1) _ hk hx (a c)`. Take `⟨o₁, g₂, h₂⟩` from `ps_div _ (z - 1) _ hk hx g₁`. Take `⟨h0, h1, -, -⟩` from `levπ01 W c ζ hζ`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `e : W.lev c ζ a = W.lev c ζ (algebraMap O (LetA O n) o₀ + (letπ - algebraMap O (LetA O n) (z - 1)) * (algebraMap O (LetA O n) o₁ + (letπ - algebraMap O (LetA O n) (z - 1)) * fun _ => g₂))`. Apply `lev_congr` to reduce the goal to its premises. Simplify using `only [Pi.add_apply, Pi.mul_apply, Pi.sub_apply, alg_apply, letπ]`. Rewrite using `[h₁, h₂]`. Use `set y := W.lev c ζ letπ - C (algebraMap O LL (z - 1)) with hy`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hy0 : constantCoeff y = 0`. Rewrite using `[hy, map_sub, h0, constantCoeff_C, map_sub, hz, map_one, sub_self]`. Establish `hy1 : coeff 1 y = ζ`. Rewrite using `[hy, map_sub, h1, coeff_C, if_neg one_ne_zero, sub_zero]`. Simplify using `only [map_add, map_mul, map_sub (W.lev c ζ), lev_alg] at e`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e` using `[← hy]`. Use `⟨o₀, o₁ * z, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[e, map_add, map_mul, hy0, zero_mul, add_zero, constantCoeff_C]`. Rewrite using `[e, map_add, coeff_C, if_neg one_ne_zero, zero_add, coeff_one_mul, hy0, hy1, map_add, map_mul, hy0, constantCoeff_C, map_mul, hz]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem expansion_low_coeffs_integral {ζ : LL} (hζ : IsPrimitiveRoot ζ PD.p) {z : O} (hz : algebraMap O LL z = ζ)
     (a : LetA O n) : ∃ o₀ o₁ : O, constantCoeff (W.lev c ζ a) = algebraMap O LL o₀ ∧
@@ -243,9 +243,9 @@ theorem expansion_low_coeffs_integral {ζ : LL} (hζ : IsPrimitiveRoot ζ PD.p) 
 include hinj hp9 hs in
 
 /- English proof (translation)
-Take `⟨-, -, ⟨w, hw⟩, -⟩` from `hp9`. Take `⟨o₀, -, h₀, -⟩` from `expansion_low_coeffs_integral W hinj c hζ hz (w : LetA O n)`. Use `⟨o₀ * (z - 1) ^ s', ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hw, map_mul, map_pow, map_mul, map_pow, h₀, (levπ01 W c ζ hζ).1, map_mul, map_pow, map_sub, hz, map_one]`. Rewrite using `[mul_pow, ← pow_mul, mul_comm s', hs]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Dvd.dvd.mul_left (z_dvd hinj hζ hz) _`.
+A detailed English derivation is pending.
 -/
 theorem root {ζ : LL} (hζ : IsPrimitiveRoot ζ PD.p) {z : O} (hz : algebraMap O LL z = ζ) :
     ∃ r : O, constantCoeff (W.lev c ζ π') = algebraMap O LL r ∧ (PD.p : O) ∣ r ^ 2 := by
@@ -260,7 +260,7 @@ theorem root {ζ : LL} (hζ : IsPrimitiveRoot ζ PD.p) {z : O} (hz : algebraMap 
 omit [IsDomain O] [IsAdicComplete (Ideal.span {((PD.p : ℕ) : O)}) O] in
 include hp9 hs1 in
 /- English proof (translation)
-Take `⟨-, -, ⟨w, hw⟩, -⟩` from `hp9`. Establish `: π' i = (w : LetA O n) i * PowerSeries.X ^ s'` using `by rw [hw]; rfl`. Rewrite using `[this, map_mul, map_pow, constantCoeff_X, zero_pow (by omega), mul_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem cc_π' (i : ZMod n) : constantCoeff (π' i) = 0 := by
   obtain ⟨-, -, ⟨w, hw⟩, -⟩ := hp9
@@ -270,13 +270,13 @@ theorem cc_π' (i : ZMod n) : constantCoeff (π' i) = 0 := by
 include hp9 hs1 in
 
 /- English proof (translation)
-Introduce `a`. Establish `hπ0` using `cc_π' W hp9 hs1`. Take `⟨hπΔ, hR, -⟩` from `hp9`. Take `⟨F, hF, -⟩` from `hR a a.2`. Take `⟨o, g', hg⟩` from `ps_div _ r 2 two_pos (Ideal.mem_span_singleton.2 hr) (F c)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `ha : (fun j => PowerSeries.subst (π' j) g') ∈ W.AΔ`. Introduce `δ hδ`. Use function extensionality and compare the values at `j`. Use `show W.γ₀ δ (PowerSeries.subst (π' j) g') = _`. Rewrite using `[DualFramesAlt.EigenUniformiser.algHom_subst (W.γ₀ δ) (W.γ₀_X δ).1 (hπ0 j)]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `congrArg (fun p => PowerSeries.subst p g') (congrFun (hπΔ δ hδ) j)`. Use `⟨o, ⟨_, ha⟩, fun ζ => ?_⟩` and prove the remaining obligations. Unfold `evA yR`. Rewrite using `[← lev_alg W c ζ, ← lev_alg W c ζ, ← map_sub, ← map_mul, ← map_add]`. Apply `lev_congr` to reduce the goal to its premises.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hS : PowerSeries.HasSubst (π' c)` using `PowerSeries.HasSubst.of_constantCoeff_zero' (hπ0 c)`. Simplify using `only [Pi.add_apply, Pi.mul_apply, Pi.sub_apply, alg_apply]`. Rewrite using `[hF c, hg, PowerSeries.subst_add hS, PowerSeries.subst_mul hS, PowerSeries.subst_sub hS, PowerSeries.subst_X hS, PowerSeries.subst_C, PowerSeries.subst_C]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem dv {r : O} (hr : (PD.p : O) ∣ r ^ 2) : Dv (evA W c) O (yR W π' c r) := by
   intro a
@@ -303,7 +303,7 @@ theorem dv {r : O} (hr : (PD.p : O) ∣ r ^ 2) : Dv (evA W c) O (yR W π' c r) :
 omit [IsDomain O] [IsAdicComplete (Ideal.span {((PD.p : ℕ) : O)}) O] in
 include hinj hp9 in
 /- English proof (translation)
-Take `⟨-, -, -, -, ⟨w, hw⟩, -⟩` from `hp9`. Take `⟨e₁, he, -⟩` from `u3downPf_lev_E W c ζ hζ _ w hw`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[← cc_aeval _ r hr, ← lev_Eat, he, map_zero]`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem is_root {ζ : LL} (hζ : IsPrimitiveRoot ζ PD.p) {r : O}
     (hr : constantCoeff (W.lev c ζ π') = algebraMap O LL r) : (E c).eval r = 0 := by
@@ -317,11 +317,11 @@ omit [IsDomain O] [IsAdicComplete (Ideal.span {((PD.p : ℕ) : O)}) O] in
 include hinj hp9 in
 
 /- English proof (translation)
-Take `⟨E₁, hE₁⟩` from `Polynomial.dvd_iff_isRoot.2 (is_root W hinj hp9 c hζ hr)`. Take `⟨-, -, -, -, ⟨w, hw⟩, -⟩` from `hp9`. Take `⟨e₁, he, he₁⟩` from `u3downPf_lev_E W c ζ hζ _ w hw`. Choose the witnesses or unpack the hypotheses as in `⟨u, hu⟩ : X ∣ yR W π' c r ζ := by`. Rewrite using `[X_dvd_iff, yR, map_sub, hr, constantCoeff_C, sub_self]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `⟨u, hu, ?_⟩` and prove the remaining obligations. Rewrite `he` using `[lev_Eat, hE₁, map_mul, aeval_lin, hu, mul_assoc]`. Establish `h2` using `mul_left_cancel₀ X_ne_zero he`. Rewrite using `[isUnit_iff_constantCoeff, isUnit_iff_ne_zero]`. Introduce `h0`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `he₁` to reduce the goal to its premises. Rewrite using `[← h2, map_mul, h0, zero_mul]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem simple {ζ : LL} (hζ : IsPrimitiveRoot ζ PD.p) {r : O}
     (hr : constantCoeff (W.lev c ζ π') = algebraMap O LL r) :
@@ -342,31 +342,29 @@ theorem simple {ζ : LL} (hζ : IsPrimitiveRoot ζ PD.p) {r : O}
 include hinj hp9 hs hs1 in
 
 /- English proof (translation)
-Establish `hπ0` using `cc_π' W hp9 hs1 c`. Take `⟨E₁, hE₁⟩` from `Polynomial.dvd_iff_isRoot.2 (is_root W hinj hp9 c hU hrU)`. Establish `hD1 : E₁.IsRoot rD`. Use `is_root W hinj hp9 c hD hrD` as an intermediate fact. Rewrite `this` using `[hE₁, Polynomial.eval_mul, Polynomial.eval_sub, Polynomial.eval_X, Polynomial.eval_C]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(mul_eq_zero.1 this).resolve_left (sub_ne_zero.2 hne.symm)`. Take `⟨E₂, hE₂⟩` from `Polynomial.dvd_iff_isRoot.2 hD1`. Take `⟨-, -, ⟨w, hw⟩, hdeg, ⟨w', hw'⟩, -⟩` from `hp9`. Establish `hd` using `hdeg c`. Establish `hE20 : E₂ ≠ 0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Rewrite `hd` using `[hE₁, hE₂, h, mul_zero, mul_zero]`. Simplify using `at hd`. Rewrite `hd` using `[hE₁, hE₂, Polynomial.natDegree_mul (Polynomial.X_sub_C_ne_zero _) (mul_ne_zero (Polynomial.X_sub_C_ne_zero _) hE20), Polynomial.natDegree_mul (Polynomial.X_sub_C_ne_zero _) hE20, Polynomial.natDegree_X_sub_C, Polynomial.natDegree_X_sub_C]`. Take `⟨a₂, ha₂⟩` from `Polynomial.natDegree_eq_zero.1 (show E₂.natDegree = 0 by omega)`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hfac : ∀ ζ, W.lev c ζ (Formalism.MainNotions.DeltaInvariantLattices.Eat E π') = C (algebraMap O LL a₂) * yR W π' c rU ζ * yR W π' c rD ζ`. Introduce `ζ`. Rewrite using `[lev_Eat, hE₁, hE₂, ← ha₂, map_mul, map_mul, aeval_lin, aeval_lin, Polynomial.aeval_C, PowerSeries.algebraMap_apply]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨a₂, ?_, hfac, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1` using `congrArg constantCoeff (congrFun hw' c)`. Establish `h2 : constantCoeff (Formalism.MainNotions.DeltaInvariantLattices.Eat E π' c) = rU * rD * a₂` using `by show constantCoeff (Polynomial.aeval (π' c) (E c)) = _`. Rewrite using `[hE₁, hE₂, ← ha₂]`. Simplify using `[hπ0, PowerSeries.algebraMap_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `h3 : constantCoeff (W.q c) = (PD.p : O)` using `Formalism.MainNotions.N.Ln34.CrystallineExponents.constantCoeff_q_zero_eq_p W`. Rewrite `h1` using `[Pi.mul_apply, map_mul, h2, h3]`. Take `⟨tU, htU⟩` from `hpU`. Take `⟨tD, htD⟩` from `hpD`. Establish `h4 : (PD.p : O) ^ 2 * (a₂ * (a₂ * constantCoeff ((w' : LetA O n) c) ^ 2 * tU * tD)) = (PD.p : O) ^ 2 * 1` using `by conv_rhs => rw [h1]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_pow, mul_pow, mul_pow, htU, htD]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `IsUnit.of_mul_eq_one _ (mul_left_cancel₀ (pow_ne_zero 2 hp0) h4)`. Take `⟨h0, h1, hq1, -⟩` from `levπ01 W c ζU hU`. Take `⟨o₀, o₁, ho₀, ho₁⟩` from `expansion_low_coeffs_integral W hinj c hU hz (w : LetA O n)`.
+Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨o₀', -, ho₀', -⟩` from `expansion_low_coeffs_integral W hinj c hU hz (w' : LetA O n)`. Establish `sectionFrameQuotient : constantCoeff (yR W π' c rU ζU) = 0`. Rewrite using `[yR, map_sub, hrU, constantCoeff_C, sub_self]`. Establish `hyD0 : constantCoeff (yR W π' c rD ζU) = algebraMap O LL (rU - rD)`. Rewrite using `[yR, map_sub, hrU, constantCoeff_C, map_sub]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨s₀, rfl⟩ : ∃ s₀, s' = s₀ + 1` from `⟨s' - 1, by omega⟩`. Establish `hyU1 : coeff 1 (yR W π' c rU ζU) = (ζU - 1) ^ s₀ * algebraMap O LL (o₁ * (z - 1) + o₀ * ((s₀ + 1 : ℕ) : O) * z)`. Rewrite using `[yR, map_sub, coeff_C, if_neg one_ne_zero, sub_zero, hw, map_mul, map_pow, coeff_one_mul, coeff_one_pow, map_pow, h0, h1, ho₀, ho₁]`. Simplify using `only [map_add, map_mul, map_sub, hz, map_one, map_natCast, Nat.add_sub_cancel]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `hq1` using `[hw', map_mul, hfac]`. Simplify using `only [coeff_one_mul, map_mul, sectionFrameQuotient, hyD0, hyU1, ho₀', constantCoeff_C, coeff_C, if_neg one_ne_zero] at hq1`. Establish `h5 : (PD.p : O) = (z - 1) ^ (s₀ + 1) * (rD - rU) * (-(o₀' * a₂ * (o₁ * (z - 1) + o₀ * ((s₀ + 1 : ℕ) : O) * z)))`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[map_natCast, ← hq1]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [map_add, map_mul, map_sub, hz, map_one, map_natCast, map_pow, map_neg]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨t, ht⟩` from `z_dvd hinj hU hz`. Rewrite `ht` using `[← hs]`. Use `set Ω := -(o₀' * a₂ * (o₁ * (z - 1) + o₀ * ((s₀ + 1 : ℕ) : O) * z))`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨t * Ω ^ 2, mul_left_cancel₀ hp0 ?_⟩` and prove the remaining obligations. Establish `: (PD.p : O) * (PD.p : O) = ((z - 1) ^ (s₀ + 1) * (rD - rU) * Ω) ^ 2`. Rewrite using `[← h5]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, mul_pow, mul_pow, ← pow_mul, mul_comm (s₀ + 1), ht]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem fact2 {ζU ζD : LL} (hU : IsPrimitiveRoot ζU PD.p) (hD : IsPrimitiveRoot ζD PD.p) {z : O}
     (hz : algebraMap O LL z = ζU) {rU rD : O}

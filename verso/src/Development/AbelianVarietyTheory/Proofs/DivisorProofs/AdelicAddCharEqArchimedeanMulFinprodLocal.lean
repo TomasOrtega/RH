@@ -18,7 +18,7 @@ def intFin (y : ∀ v : HeightOneSpectrum (𝓞 F), ↥(v.adicCompletionIntegers
     (fun v => ⟨(y v).1, (y v).2⟩)
 
 /- English proof (translation)
-The claim follows from `RestrictedProduct.isEmbedding_structureMap.continuous`.
+A detailed English derivation is pending.
 -/
 theorem continuous_intFin : Continuous (intFin (F := F)) :=
   RestrictedProduct.isEmbedding_structureMap.continuous
@@ -30,7 +30,7 @@ theorem evalV_intFin (y : ∀ v : HeightOneSpectrum (𝓞 F), ↥(v.adicCompleti
     (w : HeightOneSpectrum (𝓞 F)) : evalV F w (intFin y) = (y w : Fv F w) := rfl
 
 /- English proof (translation)
-Use `GlobalTheory.AdelicU.af_ext fun w => ?_` and prove the remaining obligations. Rewrite using `[map_nsmul, evalV_intFin, evalV_intFin]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem intFin_nsmul (n : ℕ) (y : ∀ v : HeightOneSpectrum (𝓞 F), ↥(v.adicCompletionIntegers F)) :
     intFin (n • y) = n • intFin y := by
@@ -39,15 +39,15 @@ theorem intFin_nsmul (n : ℕ) (y : ∀ v : HeightOneSpectrum (𝓞 F), ↥(v.ad
   rfl
 
 /- English proof (translation)
-Set `ι : (∀ v : HeightOneSpectrum (𝓞 F), ↥(v.adicCompletionIntegers F)) → AF F` to `fun y => LinearMap.inr F (Ainf F) (Af F) (intFin y)`. Establish `hι : Continuous ι` using `continuous_const.prodMk continuous_intFin`. Establish `hopen : IsOpen {y | ‖ψ (ι y) - 1‖ < 1 / 2}` using `isOpen_lt ((hψ.comp hι).sub continuous_const).norm continuous_const`. Establish `h0 : (0 : ∀ v : HeightOneSpectrum (𝓞 F), ↥(v.adicCompletionIntegers F)) ∈ {y | ‖ψ (ι y) - 1‖ < 1 / 2}`. Establish `: ι 0 = 0`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h : intFin (0 : ∀ v : HeightOneSpectrum (𝓞 F), ↥(v.adicCompletionIntegers F)) = 0`. Simplify using `using intFin_nsmul (F := F) 0 0`. Use `show LinearMap.inr F (Ainf F) (Af F) (intFin 0) = (0 : AF F)`. Rewrite using `[h, map_zero]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 
-Simplify using `[this, AddChar.map_zero_eq_one]`. Take `⟨I, u, hu, hsub⟩` from `isOpen_pi_iff.1 hopen 0 h0`. Use `⟨I, fun y hy => GlobalTheory.eq_one_of_forall_norm_pow_sub_one_lt _ fun n => ?_⟩` and prove the remaining obligations. Establish `hmem : n • y ∈ (I : Set _).pi u`. Introduce `a ha`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `: (n • y) a = 0` using `by rw [Pi.smul_apply, hy a ha, smul_zero]`. Rewrite using `[this]`. Conclude with `(hu a ha).2`. Establish `e : (ι (n • y) : AF F) = n • (ι y : AF F)` using `by show LinearMap.inr F (Ainf F) (Af F) (intFin (n • y)) = _`. Rewrite using `[intFin_nsmul, map_nsmul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `h` using `hsub hmem`. Simplify using `only [Set.mem_setOf_eq] at h`. Rewrite `h` using `[e, AddChar.map_nsmul_eq_pow]`. Then use the resulting hypothesis.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_finset_trivial (ψ : AddChar (AF F) ℂ) (hψ : Continuous ψ) :
     ∃ I : Finset (HeightOneSpectrum (𝓞 F)), ∀ y : ∀ v : HeightOneSpectrum (𝓞 F), ↥(v.adicCompletionIntegers F),
@@ -86,7 +86,7 @@ namespace GlobalTheory.PsiProd
 open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [AddChar.map_zero_eq_one]`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.prod_insert ha, AddChar.map_add_eq_mul, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem addChar_sum {A ι : Type} [AddCommMonoid A] (χ : AddChar A ℂ) (s : Finset ι) (f : ι → A) :
     χ (∑ i ∈ s, f i) = ∏ i ∈ s, χ (f i) := by
@@ -96,11 +96,11 @@ theorem addChar_sum {A ι : Type} [AddCommMonoid A] (χ : AddChar A ℂ) (s : Fi
   | insert a s ha ih => rw [Finset.sum_insert ha, Finset.prod_insert ha, AddChar.map_add_eq_mul, ih]
 
 /- English proof (translation)
-Set `y : ∀ u : HeightOneSpectrum (𝓞 F), ↥(u.adicCompletionIntegers F)` to `Pi.single v ⟨a, ha⟩`. Establish `hy : ∀ u ∈ I, y u = 0` using `fun u hu => Pi.single_eq_of_ne (by rintro rfl; exact hv hu) _`. Establish `hfin : intFin y = GlobalTheory.AdelicU.singleFin v a`. Use `GlobalTheory.AdelicU.af_ext fun w => ?_` and prove the remaining obligations. Rewrite using `[evalV_intFin]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `e : w = v`. Substitute `e` using the available equality. Rewrite using `[GlobalTheory.AdelicU.evalV_singleFin_self]`. Simplify using `[y]`. Rewrite using `[GlobalTheory.AdelicU.evalV_singleFin_ne e]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[y, Pi.single_eq_of_ne e]`. Use `hI y hy` as an intermediate fact. Rewrite `this` using `[hfin]`. Conclude with `this`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psiAt_eq_one_of_integral {F : Type} [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ)
     (I : Finset (HeightOneSpectrum (𝓞 F)))
@@ -125,23 +125,21 @@ theorem psiAt_eq_one_of_integral {F : Type} [Field F] [NumberField F] (ψ : AddC
   exact this
 
 /- English proof (translation)
-Introduce `F _ _ ψ hψ x`. Take `⟨I, hI⟩` from `exists_finset_trivial ψ hψ`. Use `set xf : Af F := sndA F x with hxf`. Establish `hT : {v : HeightOneSpectrum (𝓞 F) | evalV F v xf ∉ v.adicCompletionIntegers F}.Finite` using `Filter.eventually_cofinite.1 xf.2`. Set `S : Finset (HeightOneSpectrum (𝓞 F))` to `I ∪ hT.toFinset`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hev : ∀ v, evFin F v x = evalV F v xf` using `fun v => rfl`. Establish `hsupp : (Function.mulSupport fun v : Pl F => GlobalTheory.LatVac.psiAt ψ v (evFin F v x)) ⊆ (S : Set _)`. Introduce `v hv`. Assume the negation of the conclusion as `hvS`. Apply `hv` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Simplify using `only [S, Finset.coe_union, Set.mem_union, Finset.mem_coe, Set.Finite.mem_toFinset, Set.mem_setOf_eq, not_or, not_not] at hvS`. Use `show GlobalTheory.LatVac.psiAt ψ v (evFin F v x) = 1`. Rewrite using `[hev]`. Conclude with `psiAt_eq_one_of_integral ψ I hI v hvS.1 _ hvS.2`. Use `⟨(S.finite_toSet).subset hsupp, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `j : Af F →ₗ[F] AF F` to `LinearMap.inr F (Ainf F) (Af F)`. Set `χ : AddChar (Af F) ℂ` to `ψ.compAddMonoidHom j.toAddMonoidHom`. Establish `hχ : ∀ a, χ a = ψ (j a)` using `fun a => rfl`. Establish `hloc : ∀ v (a : Fv F v), GlobalTheory.LatVac.psiAt ψ v a = χ (GlobalTheory.AdelicU.singleFin v a)` using `fun v a => rfl`. Establish `hx : x = pairA F (fstA F x) 0 + j xf`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use `show x.1 = x.1 + (0 : Ainf F)`. Rewrite using `[add_zero]`. Use `show x.2 = (0 : Af F) + x.2`. Rewrite using `[zero_add]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `r : ∀ w : HeightOneSpectrum (𝓞 F), ↥(w.adicCompletionIntegers F)` to `fun w => if hw : w ∈ S then 0 else ⟨evalV F w xf, by`. Establish `: w ∉ hT.toFinset` using `fun h => hw (Finset.mem_union_right _ h)`. Simplify using `using this⟩`. Establish `hr : ∀ v ∈ I, r v = 0` using `fun v hv => dif_pos (Finset.mem_union_left _ hv)`. Establish `hdec : xf = ∑ v ∈ S, GlobalTheory.AdelicU.singleFin v (evalV F v xf) + intFin r`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `GlobalTheory.AdelicU.af_ext fun w => ?_` and prove the remaining obligations. Rewrite using `[map_add, map_sum, evalV_intFin]`. Distinguish the cases in `hw : w ∈ S`. Rewrite using `[Finset.sum_eq_single w (fun b _ hb => GlobalTheory.AdelicU.evalV_singleFin_ne (Ne.symm hb) _) (fun h => absurd hw h), GlobalTheory.AdelicU.evalV_singleFin_self]`. Simplify using `[r, hw]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_eq_zero (fun b hb => GlobalTheory.AdelicU.evalV_singleFin_ne (by rintro rfl; exact hw hb) _)]`. Simplify using `[r, hw]`. Establish `hrr : χ (intFin r) = 1` using `hI r hr`. Rewrite using `[finprod_eq_prod_of_mulSupport_subset _ hsupp]`. Use `conv_lhs => rw [hx]`.
-
-Rewrite using `[AddChar.map_add_eq_mul]`. Use `congr 1`. Rewrite using `[← hχ, hdec, AddChar.map_add_eq_mul, hrr, mul_one, addChar_sum]`. Conclude with `Finset.prod_congr rfl fun v _ => by rw [hloc, hev]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psi_prod : ∀ (F : Type) [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ), Continuous ψ → ∀ x : AF F,
     (Function.mulSupport fun v : Pl F => GlobalTheory.LatVac.psiAt ψ v (evFin F v x)).Finite ∧

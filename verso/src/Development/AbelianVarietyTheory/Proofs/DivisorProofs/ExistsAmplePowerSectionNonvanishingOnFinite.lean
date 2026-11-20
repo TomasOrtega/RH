@@ -10,9 +10,9 @@ open GlobalTheory GlobalTheory.ArInt GlobalTheory.CxPts GlobalTheory.Cartier Glo
 namespace GlobalTheory.HSAmp
 
 /- English proof (translation)
-Introduce `k _ X _ p D _ P hA S hS`. Take `⟨n, hn, s, h₁, -, -⟩` from `hA.exists_affine_finite_subset hS (U := ⊤) (Set.subset_univ _)`. Take `⟨f, hf, e⟩` from `(GlobalTheory.T.lineBundlePow_sections_rationalFunctions_loci k X p P n).1 s`. Use `⟨n, hn, f, hf, ?_⟩` and prove the remaining obligations. Rewrite using `[e]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h₁`.
+A detailed English derivation is pending.
 -/
 theorem exists_sec_nonvanishing_finite : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ), IsArithVar p D → ∀ (P : Pair p), IsAmpleLB P.L.B → ∀ S : Set X, S.Finite → ∃ e : ℕ, 0 < e ∧ ∃ f ∈ P.H e 0, S ⊆ NV P e 0 f := by
   intro k _ X _ p D _ P hA S hS

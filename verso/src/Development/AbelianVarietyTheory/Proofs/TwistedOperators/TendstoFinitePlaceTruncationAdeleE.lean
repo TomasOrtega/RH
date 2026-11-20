@@ -13,17 +13,17 @@ namespace GlobalTheory.VecInv
 open Filter Topology
 
 /- English proof (translation)
-Establish `hv : ∀ (s : Finset (HeightOneSpectrum (𝓞 F))) (w : HeightOneSpectrum (𝓞 F)), evalV F w (1 - ∑ v ∈ s, α v) = if w ∈ s then 0 else 1`. Introduce `s w`. Rewrite using `[map_sub, map_one, map_sum]`. Use `split_ifs with hw`. Rewrite using `[Finset.sum_eq_single_of_mem w hw (fun v _ hvw => h0 v w (Ne.symm hvw)), h1, sub_self]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_eq_zero (fun v hvs => h0 v w (by rintro rfl; exact hw hvs)), sub_zero]`. Set `y : Finset (HeightOneSpectrum (𝓞 F)) → (w : HeightOneSpectrum (𝓞 F)) → w.adicCompletionIntegers F` to `fun s w => if w ∈ s then 0 else 1`. Establish `hy : Tendsto y atTop (𝓝 0)`. Rewrite using `[tendsto_pi_nhds]`. Introduce `w`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `tendsto_const_nhds.congr' ?_` and prove the remaining obligations. Use `filter_upwards [Filter.eventually_ge_atTop {w}] with s hs`. Establish `hws : w ∈ s` using `Finset.singleton_subset_iff.mp hs`. Simplify using `[y, hws]`. Set `g : ((w : HeightOneSpectrum (𝓞 F)) → w.adicCompletionIntegers F) → GlobalTheoryTheory.GenusMassVolumes.Af F` to `RestrictedProduct.structureMap (fun w : HeightOneSpectrum (𝓞 F) => w.adicCompletion F) (fun w => (w.adicCompletionIntegers F : Set (w.adicCompletion F))) Filter.cofinite`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg : Continuous g` using `RestrictedProduct.isEmbedding_structureMap.continuous`. Establish `hgy : ∀ s, g (y s) = 1 - ∑ v ∈ s, α v`. Introduce `s`. Use `FiniteAdeleRing.ext (R := 𝓞 F) (K := F) (fun w => ?_)` and prove the remaining obligations. Establish `e1 : (g (y s)) w = ((y s w : w.adicCompletionIntegers F) : w.adicCompletion F)` using `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : (1 - ∑ v ∈ s, α v) w = evalV F w (1 - ∑ v ∈ s, α v)` using `rfl`. Rewrite using `[e1, e2, hv]`. Apply the tactic sequence `by_cases hw : w ∈ s <;> simp [y, hw]`. Establish `hg0 : g 0 = 0` using `FiniteAdeleRing.ext (R := 𝓞 F) (K := F) (fun w => rfl)`. Establish `hlim : Tendsto (fun s => 1 - ∑ v ∈ s, α v) atTop (𝓝 (0 : GlobalTheoryTheory.GenusMassVolumes.Af F))`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h` using `(hg.tendsto 0).comp hy`. Rewrite `h` using `[hg0]`. Conclude with `h.congr (fun s => hgy s)`. Simplify using `using (tendsto_const_nhds (x := (1 : GlobalTheoryTheory.GenusMassVolumes.Af F))).sub hlim`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem tendsto_sum_placeIdem {F : Type} [Field F] [NumberField F]
     (α : HeightOneSpectrum (𝓞 F) → GlobalTheoryTheory.GenusMassVolumes.Af F) (h1 : ∀ v, evalV F v (α v) = 1)
@@ -66,15 +66,13 @@ theorem tendsto_sum_placeIdem {F : Type} [Field F] [NumberField F]
   simpa using (tendsto_const_nhds (x := (1 : GlobalTheoryTheory.GenusMassVolumes.Af F))).sub hlim
 
 /- English proof (translation)
-Introduce `D ε hε a ha`. Use `choose α hαε hα1 hα0 using hε`. Establish `hsum : ∀ s : Finset (HeightOneSpectrum (𝓞 D.host.F)), ∑ v ∈ s, ε v = pairA D.host.F 0 (∑ v ∈ s, α v)`. Introduce `s`. Simplify using `only [hαε]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `(map_sum (AddMonoidHom.inr (InfiniteAdeleRing D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) α s).symm`. Establish `hpair : Continuous (pairA D.host.F 0)` using `by show Continuous fun y : GlobalTheoryTheory.GenusMassVolumes.Af D.host.F => ((0 : InfiniteAdeleRing D.host.F), y)`. Conclude with `continuous_const.prodMk continuous_id`. Establish `hlimF : Tendsto (fun s : Finset (HeightOneSpectrum (𝓞 D.host.F)) => ∑ v ∈ s, ε v) atTop (𝓝 (pairA D.host.F 0 1))`. Repeatedly rewrite using `[hsum]`.
+Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hpair.tendsto 1).comp (tendsto_sum_placeIdem α hα1 hα0)`. Establish `hidem : algebraMap (AF D.host.F) (AE D) (pairA D.host.F 0 1) * a = a`. Establish `hsplit : pairA D.host.F 0 1 = 1 - pairA D.host.F 1 0`. Rewrite using `[eq_sub_iff_add_eq]`. Use `show ((0 + 1, 1 + 0) : InfiniteAdeleRing D.host.F × FiniteAdeleRing (𝓞 D.host.F) D.host.F) = 1`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[zero_add, add_zero]`. Both sides reduce to the same expression. Establish `hr : algebraMap (AF D.host.F) (AE D) (pairA D.host.F 1 0) = GlobalTheory.SplitScalar.realIdem D`. Rewrite using `[GlobalTheory.SplitScalar.realIdem, Algebra.algebraMap_eq_smul_one, Algebra.TensorProduct.one_def, TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Rewrite using `[hsplit, map_sub, map_one, hr, sub_mul, one_mul, GlobalTheory.SplitScalar.realIdem_mul_of_fin ha, sub_zero]`.
-
-Establish `hT` using `hlimF.smul_const a`. Rewrite `hT` using `[Algebra.smul_def, hidem]`. Conclude with `hT.congr (fun s => Algebra.smul_def _ _)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tendsto_truncation : ∀ (D : D7) (ε : HeightOneSpectrum (𝓞 D.host.F) → AF D.host.F), (∀ v, IsPlaceIdem D v (ε v)) → ∀ a : AE D, infPart D a = 0 → Filter.Tendsto (fun s : Finset (HeightOneSpectrum (𝓞 D.host.F)) => algebraMap (AF D.host.F) (AE D) (∑ v ∈ s, ε v) * a) Filter.atTop (nhds a) := by
   intro D ε hε a ha

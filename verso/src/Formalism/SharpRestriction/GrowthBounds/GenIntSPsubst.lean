@@ -19,14 +19,14 @@ section GenPieces
 variable {V : VF C}
 
 /- English proof (translation)
-Unfold `VF.MM at *`. Conclude with `lt_of_lt_of_le (lt_min ha hb) (V.v.map_add a b)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem gen_mm_add {a b : C} (ha : V.MM a) (hb : V.MM b) : V.MM (a + b) := by
   unfold VF.MM at *
   exact lt_of_lt_of_le (lt_min ha hb) (V.v.map_add a b)
 
 /- English proof (translation)
-Unfold `VF.MM`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem gen_mm_zero : V.MM (0 : C) := by
   unfold VF.MM
@@ -36,9 +36,9 @@ def GenLow (V : VF C) (N : ℕ) (A : MvPowerSeries (Fin 2) C) : Prop :=
   ∀ μ : Fin 2 →₀ ℕ, μ 0 ≤ N → V.MM (MvPowerSeries.coeff μ A)
 
 /- English proof (translation)
-Introduce `μ hμ`. Rewrite using `[MvPowerSeries.coeff_mul]`. Use `Finset.sum_induction _ (fun x => V.MM x) (fun _ _ => gen_mm_add) gen_mm_zero ?_` and prove the remaining obligations. Introduce and unpack `⟨a, b⟩ hab`. Establish `hab' : a + b = μ` using `Finset.HasAntidiagonal.mem_antidiagonal.1 hab`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `ha0 : a 0 ≤ N`. Establish `: a 0 + b 0 = μ 0` using `by rw [← hab', Finsupp.add_apply]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[mul_comm]`. Conclude with `MaximalIdealCongruence.mm_mul_ge' (hR b) (hA a ha0)`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GenLow.mul {N : ℕ} {A R : MvPowerSeries (Fin 2) C} (hA : GenLow V N A) (hR : IntS V R) :
     GenLow V N (A * R) := by
@@ -54,9 +54,9 @@ theorem GenLow.mul {N : ℕ} {A R : MvPowerSeries (Fin 2) C} (hA : GenLow V N A)
   exact MaximalIdealCongruence.mm_mul_ge' (hR b) (hA a ha0)
 
 /- English proof (translation)
-Use `⟨?_, fun m => ?_⟩` and prove the remaining obligations. Rewrite using `[← PowerSeries.coeff_zero_eq_constantCoeff_apply, _root_.PowerSeries.coeff_subst_X_pow (by omega)]`. Simplify using `[PowerSeries.coeff_zero_eq_constantCoeff_apply, hf.1]`. Rewrite using `[_root_.PowerSeries.coeff_subst_X_pow (by omega)] split_ifs`. Simplify using `using hf.2 _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `VF.Ge.zero 0`.
+A detailed English derivation is pending.
 -/
 theorem gen_pw {N : ℕ} (hN : 0 < N) {f : PowerSeries C}
     (hf : PowerSeries.constantCoeff f = 0 ∧ ∀ m, V.Ge 0 (PowerSeries.coeff m f)) :
@@ -71,11 +71,9 @@ theorem gen_pw {N : ℕ} (hN : 0 < N) {f : PowerSeries C}
     · exact VF.Ge.zero 0
 
 /- English proof (translation)
-Rewrite using `[_root_.PowerSeries.coeff_subst_X_pow (by omega)]`. Use `split_ifs with hdvd`. Take `⟨k, rfl⟩` from `hdvd`. Establish `hk : k ≤ 1`. Assume the negation of the conclusion as `h`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `: N * 2 ≤ N * k` using `Nat.mul_le_mul_left N (by omega)`. Use linear arithmetic over natural numbers and integers. Rewrite using `[Nat.mul_div_cancel_left k hN]`. Use `interval_cases k`. Simplify using `[PowerSeries.coeff_zero_eq_constantCoeff_apply, hf0, gen_mm_zero]`.
-
-Simplify using `using hf1`. Conclude with `gen_mm_zero`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem gen_mm_pw {N : ℕ} (hN : 0 < N) {f : PowerSeries C} (hf0 : PowerSeries.constantCoeff f = 0)
     (hf1 : V.MM (PowerSeries.coeff 1 f)) (m : ℕ) (hm : m ≤ N) :
@@ -94,9 +92,7 @@ theorem gen_mm_pw {N : ℕ} (hN : 0 < N) {f : PowerSeries C} (hf0 : PowerSeries.
   · exact gen_mm_zero
 
 /- English proof (translation)
-Introduce `μ hμ`. Unfold `inV`. Rewrite using `[PowerSeries.coeff_subst_single]`. Use `split_ifs`. Conclude with `gen_mm_pw hN hf0 hf1 _ hμ`.
-
-Conclude with `gen_mm_zero`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gen_low_inV {N : ℕ} (hN : 0 < N) {f : PowerSeries C} (hf0 : PowerSeries.constantCoeff f = 0)
     (hf1 : V.MM (PowerSeries.coeff 1 f)) :
@@ -109,7 +105,7 @@ theorem gen_low_inV {N : ℕ} (hN : 0 < N) {f : PowerSeries C} (hf0 : PowerSerie
   · exact gen_mm_zero
 
 /- English proof (translation)
-Introduce `μ`. Rewrite using `[MvPowerSeries.coeff_X]`. Use `split_ifs`. Conclude with `VF.Ge.one`. Conclude with `VF.Ge.zero 0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gen_intS_X {τ : Type} (x : τ) : IntS V (MvPowerSeries.X x : MvPowerSeries τ C) := by
   intro μ
@@ -119,14 +115,14 @@ theorem gen_intS_X {τ : Type} (x : τ) : IntS V (MvPowerSeries.X x : MvPowerSer
   · exact VF.Ge.zero 0
 
 /- English proof (translation)
-The claim follows from `IntS.subst (σ := Unit) (fun _ => ha0) (fun _ => ha) (intS_ps.2 hf)`.
+A detailed English derivation is pending.
 -/
 theorem gen_intS_psubst {τ : Type} {a : MvPowerSeries τ C} (ha0 : MvPowerSeries.constantCoeff a = 0) (ha : IntS V a)
     {f : PowerSeries C} (hf : ∀ m, V.Ge 0 (PowerSeries.coeff m f)) : IntS V (PowerSeries.subst a f) :=
   IntS.subst (σ := Unit) (fun _ => ha0) (fun _ => ha) (intS_ps.2 hf)
 
 /- English proof (translation)
-The claim follows from `VP.cc_subst (σ := Unit) (fun _ => ha0) hf`.
+A detailed English derivation is pending.
 -/
 theorem gen_cc_psubst {τ : Type} {a : MvPowerSeries τ C} (ha0 : MvPowerSeries.constantCoeff a = 0)
     {f : PowerSeries C} (hf : PowerSeries.constantCoeff f = 0) :
@@ -134,9 +130,9 @@ theorem gen_cc_psubst {τ : Type} {a : MvPowerSeries τ C} (ha0 : MvPowerSeries.
   VP.cc_subst (σ := Unit) (fun _ => ha0) hf
 
 /- English proof (translation)
-Introduce `ν hν`. Establish `hk : ∀ k, k ≠ 0 → MvPowerSeries.coeff ν (E ^ k) = 0` using `fun k hk => by`. Take `⟨m, rfl⟩` from `Nat.exists_eq_succ_of_ne_zero hk`. Rewrite using `[pow_succ']`. Conclude with `(hE.mul_right _) ν hν`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : MvPowerSeries.coeff ν (mvExp E) = ∑ k ∈ Finset.range (ν.degree + 1), MvPowerSeries.coeff ν (E ^ k) / (k.factorial : C)` using `rfl`. Rewrite using `[map_sub, e, Finset.sum_eq_single 0 (fun k _ h => by rw [hk k h, zero_div]) (by simp)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gen_van_exp {τ : Type} {T : Set τ} {E : MvPowerSeries τ C} (hE : Van T E) : Van T (mvExp E - 1) := by
   intro ν hν
@@ -163,13 +159,13 @@ def genPhi (N : ℕ) (δ : κ → PowerSeries C) : κ ⊕ Unit → MvPowerSeries
   Sum.elim (fun i => inV 0 (pw N δ i)) fun _ => MvPowerSeries.X 1
 
 /- English proof (translation)
-Simplify using `[genS]`.
+Simplify using the standard rewrite rules.
 -/
 theorem genS_cc : MvPowerSeries.constantCoeff (genS (C := C) κ) = 0 := by
   simp [genS]
 
 /- English proof (translation)
-Use `show MvPowerSeries.subst b (MvPowerSeries.subst (fun _ : Unit => genS (C := C) κ) f) = MvPowerSeries.subst (fun _ : Unit => b (Sum.inr ())) f`. Rewrite using `[VP.subst_subst (fun _ => genS_cc) hb]`. Use `congr 1`. Use function extensionality and compare the values at `u`. Conclude with `VP.subst_X hb _`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem subst_genL {ρ : Type} {b : κ ⊕ Unit → MvPowerSeries ρ C} (hb : ∀ s, MvPowerSeries.constantCoeff (b s) = 0)
     (f : PowerSeries C) : MvPowerSeries.subst b (genL κ f) = PowerSeries.subst (b (Sum.inr ())) f := by
@@ -181,7 +177,7 @@ theorem subst_genL {ρ : Type} {b : κ ⊕ Unit → MvPowerSeries ρ C} (hb : �
   exact VP.subst_X hb _
 
 /- English proof (translation)
-Use `show _ = MvPowerSeries.subst (fun _ : Unit => genS (C := C) κ) (MvPowerSeries.subst γ f)`. Rewrite using `[VP.subst_subst hγ (fun _ => genS_cc)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem genL_alongCv {γ : κ → PowerSeries C} (hγ : ∀ i, PowerSeries.constantCoeff (γ i) = 0)
     (f : MvPowerSeries κ C) : MvPowerSeries.subst (fun i => genL κ (γ i)) f = genL κ (alongCv γ f) := by
@@ -190,7 +186,7 @@ theorem genL_alongCv {γ : κ → PowerSeries C} (hγ : ∀ i, PowerSeries.const
   rfl
 
 /- English proof (translation)
-Unfold `genL`. Rewrite using `[← PowerSeries.coe_substAlgHom (PowerSeries.HasSubst.of_constantCoeff_zero genS_cc), map_sum]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem genL_sum {ι : Type} (s : Finset ι) (f : ι → PowerSeries C) :
     genL κ (∑ k ∈ s, f k) = ∑ k ∈ s, genL κ (f k) := by
@@ -198,11 +194,9 @@ theorem genL_sum {ι : Type} (s : Finset ι) (f : ι → PowerSeries C) :
   rw [← PowerSeries.coe_substAlgHom (PowerSeries.HasSubst.of_constantCoeff_zero genS_cc), map_sum]
 
 /- English proof (translation)
-Establish `hP : ∀ q, MvPowerSeries.constantCoeff (pairSubst c b q) = 0`. Introduce `q`. Unfold `pairSubst`. Use `split_ifs`. Conclude with `hc _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hb _`. Unfold `hAt`. Rewrite using `[VP.subst_subst hP hΦ]`. Use `congr 1`. Use function extensionality and compare the values at `q`.
-
-Unfold `pairSubst`. Apply the tactic sequence `split_ifs <;> rfl`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem hAt_subst (X : RawChart C d I κ) {τ ρ : Type} [Finite τ] {c b : κ → MvPowerSeries τ C}
     (hc : ∀ i, MvPowerSeries.constantCoeff (c i) = 0) (hb : ∀ i, MvPowerSeries.constantCoeff (b i) = 0)
@@ -223,7 +217,7 @@ theorem hAt_subst (X : RawChart C d I κ) {τ ρ : Type} [Finite τ] {c b : κ �
   split_ifs <;> rfl
 
 /- English proof (translation)
-Introduce `ν hν`. Rewrite using `[MvPowerSeries.coeff_X, if_neg]`. Introduce and unpack `rfl`. Conclude with `hν (Sum.inl i) (by simp) ⟨i, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem gen_van_X (i : κ) :
     Van (Set.range (Sum.inl : κ → κ ⊕ Unit)) (MvPowerSeries.X (Sum.inl i) : MvPowerSeries (κ ⊕ Unit) C) := by
@@ -233,11 +227,9 @@ theorem gen_van_X (i : κ) :
   exact hν (Sum.inl i) (by simp) ⟨i, rfl⟩
 
 /- English proof (translation)
-Unfold `hAt`. Use `Van.subst {q : Fin 2 × κ | q.1 = 0} ?_ ?_ ?_` and prove the remaining obligations. Introduce `q`. Unfold `pairSubst`. Use `split_ifs`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Conclude with `hb _`. Introduce `q hq`. Unfold `pairSubst`. Rewrite using `[if_pos (show q.1 = 0 from hq)]`.
-
-Conclude with `gen_van_X _`. Introduce `e he`. Conclude with `h0 e fun s hs => he s hs`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem gen_van_hAt (X : RawChart C d I κ)
     (h0 : ∀ e : Fin 2 × κ →₀ ℕ, (∀ s ∈ e.support, s.1 ≠ 0) → MvPowerSeries.coeff e X.h = 0)
@@ -263,33 +255,31 @@ end SelfConjCharts
 
 open SelfConjCharts in
 /- English proof (translation)
-Introduce `C _ _ V d I _ κ _ X hB hBi ζ hζ n hn z ε δ hz hε hδ hNR hδ1 N hN0 p q hp`. Establish `hζint : V.Ge 0 ζ` using `V.ge_of_pow_eq_one V.l_prime.ne_zero hζ`. Establish `hzk : ∀ (k : ℕ) (i : κ), PowerSeries.constantCoeff (PowerSeries.rescale (ζ ^ k) (z i)) = 0 ∧ ∀ m, V.Ge 0 (PowerSeries.coeff m (PowerSeries.rescale (ζ ^ k) (z i)))`. Introduce `k i`. Use `⟨?_, fun m => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← PowerSeries.coeff_zero_eq_constantCoeff_apply, PowerSeries.coeff_rescale, PowerSeries.coeff_zero_eq_constantCoeff_apply, (hz i).1, mul_zero]`. Rewrite using `[PowerSeries.coeff_rescale]`. Conclude with `((hζint.pow k).pow m).mul_int ((hz i).2 m)`. Establish `hεn : ∀ i, PowerSeries.constantCoeff (pw n ε i) = 0 ∧ ∀ m, V.Ge 0 (PowerSeries.coeff m (pw n ε i))` using `fun i => gen_pw hn (hε i)`. Establish `hδN : ∀ i, PowerSeries.constantCoeff (pw N δ i) = 0 ∧ ∀ m, V.Ge 0 (PowerSeries.coeff m (pw N δ i))` using `fun i => gen_pw hN0 (hδ i)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpt : ∀ f : PowerSeries C, (PowerSeries.constantCoeff f = 0 ∧ ∀ m, V.Ge 0 (PowerSeries.coeff m f)) → MvPowerSeries.constantCoeff (genL κ f) = 0 ∧ IntS V (genL κ f)` using `fun f hf => ⟨gen_cc_psubst genS_cc hf.1, gen_intS_psubst genS_cc (gen_intS_X _) hf.2⟩`. Establish `BI` using `(hBi (κ ⊕ Unit) V.l (fun k i => genL κ (PowerSeries.rescale (ζ ^ k) (z i))) (fun i => genL κ (pw n ε i)) (fun i => MvPowerSeries.X (Sum.inl i)) (fun k i => hpt _ (hzk k i)) (fun i => hpt _ (hεn i)) (fun i => ⟨by simp, gen_intS_X _⟩) (by`. Introduce `i`. Establish `e1 : alongCv (pw n ε) (X.lg i) = PowerSeries.subst ((PowerSeries.X : PowerSeries C) ^ n) (alongCv ε (X.lg i))` using `alongCv_repar (fun i => (hε i).1) (by simp [hn.ne']) _`. Establish `e2 : ∀ k, PowerSeries.rescale (ζ ^ k) (alongCv z (X.lg i)) = alongCv (fun i => PowerSeries.rescale (ζ ^ k) (z i)) (X.lg i)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k`. Simplify using `only [PowerSeries.rescale_eq_subst]`. Conclude with `(alongCv_repar (fun i => (hz i).1) (by simp) _).symm`. Rewrite using `[genL_alongCv (fun i => (hεn i).1), e1, hNR i, genL_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[genL_alongCv (fun i => (hzk k i).1), e2 k])).2`. Use `set E : MvPowerSeries (κ ⊕ Unit) C := ∑ k ∈ Finset.range V.l, hAt X (fun i => MvPowerSeries.X (Sum.inl i)) (fun i => genL κ (PowerSeries.rescale (ζ ^ k) (z i))) - hAt X (fun i => MvPowerSeries.X (Sum.inl i)) (fun i => genL κ (pw n ε i)) with hEdef`. Establish `hEV : Van (Set.range (Sum.inl : κ → κ ⊕ Unit)) E`. Introduce `ν hν`. Rewrite using `[hEdef, map_sub, map_sum, Finset.sum_eq_zero fun k _ => gen_van_hAt X hB.axis0 (fun i => (hpt _ (hzk k i)).1) ν hν, gen_van_hAt X hB.axis0 (fun i => (hpt _ (hεn i)).1) ν hν, sub_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data.
 
-Establish `hΦ0 : ∀ s, MvPowerSeries.constantCoeff (genPhi N δ s) = 0`. Introduce `s`. Consider the cases of `s with`. Consider the case `inl i => exact gen_cc_psubst (by simp) (hδN i).1`. Consider the case `inr u => simp [genPhi]`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data.
 
-Establish `hΦint : ∀ s, IntS V (genPhi N δ s)`. Introduce `s`. Consider the cases of `s with`. Consider the case `inl i => exact gen_intS_psubst (by simp) (gen_intS_X _) (hδN i).2`. Consider the case `inr u => exact gen_intS_X _`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hXc : ∀ i, MvPowerSeries.constantCoeff (MvPowerSeries.X (Sum.inl i) : MvPowerSeries (κ ⊕ Unit) C) = 0` using `fun i => by simp`. Establish `hsE : MvPowerSeries.subst (genPhi N δ) E = ∑ k ∈ Finset.range V.l, HH X (pw N δ) (rc (ζ ^ k) z) - HH X (pw N δ) (pw n ε)`. Rewrite using `[hEdef, ← MvPowerSeries.substAlgHom_apply (VP.hs hΦ0), map_sub, map_sum]`. Simplify using `only [MvPowerSeries.substAlgHom_apply]`. Rewrite using `[hAt_subst X hXc (fun i => (hpt _ (hεn i)).1) hΦ0]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `congrArg₂ _ (Finset.sum_congr rfl fun k _ => ?_) ?_` and prove the remaining obligations. Rewrite using `[hAt_subst X hXc (fun i => (hpt _ (hzk k i)).1) hΦ0]`. Simplify using `only [VP.subst_X hΦ0, subst_genL hΦ0]`. Both sides reduce to the same expression. Simplify using `only [VP.subst_X hΦ0, subst_genL hΦ0]`.
+Both sides reduce to the same expression. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hG : mvExp (∑ k ∈ Finset.range V.l, HH X (pw N δ) (rc (ζ ^ k) z) - HH X (pw N δ) (pw n ε)) - 1 = MvPowerSeries.subst (genPhi N δ) (mvExp E - 1)`. Rewrite using `[← MvPowerSeries.substAlgHom_apply (VP.hs hΦ0), map_sub, map_one, MvPowerSeries.substAlgHom_apply, VP.subst_exp hΦ0 hEV.const, hsE]`. Establish `hF : IntS V (mvExp E - 1)` using `fun μ => by`. Rewrite using `[map_sub]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(BI μ).sub (IntS.one μ)`. Establish `hFV` using `gen_van_exp hEV`. Rewrite using `[hG, MvPowerSeries.coeff_subst (MvPowerSeries.hasSubst_of_constantCoeff_zero hΦ0)]`. Use `finsum_induction (fun x => V.MM x) gen_mm_zero (fun _ _ => gen_mm_add) fun e => ?_` and prove the remaining obligations. Rewrite using `[smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Distinguish the cases in `h : ∀ s ∈ e.support, s ∉ Set.range (Sum.inl : κ → κ ⊕ Unit)`. Rewrite using `[hFV e h, zero_mul]`. Conclude with `gen_mm_zero`. Use `push Not at h`. Take `⟨s0, hs0, i0, rfl⟩` from `h`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hp' : GenLow V N (e.prod fun s m => genPhi N δ s ^ m)`. Unfold `Finsupp.prod`. Rewrite using `[← Finset.mul_prod_erase _ _ hs0]`. Take `⟨m, hm⟩` from `Nat.exists_eq_succ_of_ne_zero (Finsupp.mem_support_iff.1 hs0)`. Simplify using `only`.
-
-Rewrite using `[hm, Nat.succ_eq_add_one, pow_succ', mul_assoc]`. Conclude with `(gen_low_inV hN0 (hδ i0).1 (hδ1 i0)).mul ((IntS.pow (hΦint _) m).mul (Finset.prod_induction _ (IntS V) (fun _ _ h1 h2 => h1.mul h2) IntS.one fun s _ => (hΦint s).pow _))`. Conclude with `MaximalIdealCongruence.mm_mul_ge' (hF e) (hp' _ (by simpa [ee] using hp))`.
+A detailed English derivation is pending.
 -/
 theorem generic_point_unit_congruence : GenericPointUnitCongruence := by
   intro C _ _ V d I _ κ _ X hB hBi ζ hζ n hn z ε δ hz hε hδ hNR hδ1 N hN0 p q hp

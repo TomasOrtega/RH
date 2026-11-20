@@ -149,19 +149,19 @@ instance : FiniteDimensional F D.B :=
 end HTDatum
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨le_rfl, 1, by ext i j; fin_cases i; fin_cases j; simp⟩`.
+Supply the required witnesses or components.
 -/
 example : HermSig (1 : Matrix (Fin 1) (Fin 1) ℂ) 1 :=
   ⟨le_rfl, 1, by ext i j; fin_cases i; fin_cases j; simp⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Nat.zero_le _, 1, by ext i j; fin_cases i <;> fin_cases j <;> simp⟩`.
+Supply the required witnesses or components.
 -/
 example : HermSig (-1 : Matrix (Fin 2) (Fin 2) ℂ) 0 :=
   ⟨Nat.zero_le _, 1, by ext i j; fin_cases i <;> fin_cases j <;> simp⟩
 
 /- English proof (translation)
-Use extensionality with `τ`. Simplify using `[embOver, Algebra.algebraMap_self]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 example (K : Type) [Field K] [NumberField K] [IsCMField K] (σ : K →+* ℂ) : embOver K K σ = {σ} := by
   ext τ; simp [embOver, Algebra.algebraMap_self]

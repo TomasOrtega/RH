@@ -4,9 +4,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra
 open IsLocalRing Filter Formalism.MainNotions.V.Pf.V2.Calc UpperTheory.V.Alg UpperTheory.V.Alg.M
 
 /- English proof (translation)
-Take `⟨m, rfl⟩` from `Nat.exists_eq_succ_of_ne_zero hn`. Introduce `f hf`. Rewrite `hf` using `[pow_succ]`. Use `Submodule.mul_induction_on hf (fun a _ b hb => ?_) (fun a b ha hb => ?_)` and prove the remaining obligations. Rewrite using `[map_mul, hN b hb, mul_zero]`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_add, ha, hb, add_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem UpperTheory.V.Alg.M.kill_pow {O B A κ : Type} [CommRing O] [CommRing B] [CommRing A] [Algebra O A]
     [Algebra B A] [Field κ] [Algebra O κ] (ξ : A →ₐ[O] κ) (N : Submodule B A) (hN : ∀ f ∈ N, ξ f = 0)
@@ -19,17 +19,15 @@ private theorem UpperTheory.V.Alg.M.kill_pow {O B A κ : Type} [CommRing O] [Com
   · rw [map_add, ha, hb, add_zero]
 
 /- English proof (translation)
-Introduce `O _ _ _ _ _ A _ _ 𝒜 _ _ x hx κ _ _ ξ`. Establish `hp` using `UpperTheory.V.Alg.M.oz_two_mul_eq_pow O A 𝒜 x hx`. Use `⟨⟨fun h => ?_, ?_⟩, ⟨fun h => ?_, ?_⟩⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hc push Not at hc`. Use `h fun j hj f hf => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨n, hn⟩` from `Int.eq_ofNat_of_zero_le (show 0 ≤ -j by omega)`. Establish `h2 : f * f ∈ oz 𝒜 (-(2 * (n : ℤ)))`. Use `SetLike.GradedMul.mul_mem hf hf` as an intermediate fact. Rewrite `this` using `[show j + j = -(2 * (n : ℤ)) by omega]`. Then use the resulting hypothesis. Rewrite `h2` using `[(hp n).1]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3` using `UpperTheory.V.Alg.M.kill_pow ξ (oz 𝒜 (-2)) hc n (by omega) _ h2`. Rewrite `h3` using `[map_mul]`. Conclude with `mul_self_eq_zero.1 h3`. Introduce and unpack `⟨f, hf, h0⟩ h`. Conclude with `h0 (h (-2) (by norm_num) f hf)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations.
 
-Assume the negation of the conclusion as `hc push Not at hc`. Use `h fun j hj f hf => ?_` and prove the remaining obligations. Take `⟨n, hn⟩` from `Int.eq_ofNat_of_zero_le (show 0 ≤ j by omega)`. Establish `h2 : f * f ∈ oz 𝒜 (2 * (n : ℤ))`. Use `SetLike.GradedMul.mul_mem hf hf` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[show j + j = 2 * (n : ℤ) by omega]`. Then use the resulting hypothesis. Rewrite `h2` using `[(hp n).2]`. Establish `h3` using `UpperTheory.V.Alg.M.kill_pow ξ (oz 𝒜 2) hc n (by omega) _ h2`. Rewrite `h3` using `[map_mul]`. Conclude with `mul_self_eq_zero.1 h3`.
-
-Introduce and unpack `⟨f, hf, h0⟩ h`. Conclude with `h0 (h 2 (by norm_num) f hf)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Alg.M.sign_holds :
     ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsAdicComplete (maximalIdeal O) O] [CharZero O]

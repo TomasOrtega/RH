@@ -15,9 +15,9 @@ noncomputable section
 namespace GlobalTheory.SiegLift0
 
 /- English proof (translation)
-Introduce `g n hg hn hodd K _ _ β c hc`. Take `⟨V, _, _, _, _, βV, π, hV, hinj, hπ, hβ⟩` from `GlobalTheory.T.exists_completeLocalDomain_lift_cyclotomicAway n hn K β`. Substitute `hβ` using the available equality. Take `⟨AV, _, _, φ, φ₂, PV, hAV, hpb, hsq, hPV, r₁, r₂, hsy, ham, hker, hiso⟩` from `GlobalTheory.T.exists_lift_principal_symmetric_bundle_complete K V hV π hπ c.A c.ab c.P c.isLB c.rig₁ c.rig₂ c.symm hc.1 hc.2`. Take `⟨lev, hadd, htor, hgeom, hcomp⟩` from `GlobalTheory.T.exists_unique_symplecticLevel_lift_closedPoint g n hn hodd K V hV βV π hπ c hc AV φ φ₂ PV hAV hpb hsq hPV r₁ r₂ hsy ham hker hiso`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Set `cV : SiegPre g n (zetaAway n) (spMap βV)` to `{ A := AV, ab := hAV, P := PV, isLB := hPV, rig₁ := r₁, rig₂ := r₂, symm := hsy, lev := lev, lev_add := hadd, lev_tors := htor, geom := hgeom }`. Conclude with `⟨V, inferInstance, inferInstance, βV, π, cV, hinj, rfl, ⟨ham, hker⟩, φ, φ₂, hpb, hsq, hiso, hcomp⟩`.
+Introduce a local definition for the expression. Supply the required witnesses or components.
 -/
 theorem exists_lift_domain : ∀ (g n : ℕ), 1 ≤ g → 3 ≤ n → Odd n → ∀ (K : Type) [Field K] [IsAlgClosed K]
     (β : cycAway n →+* K) (c : SiegPre g n (zetaAway n) (spMap β)), c.Principal →

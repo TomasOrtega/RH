@@ -23,12 +23,12 @@ def PointwiseBound : Prop :=
       ∀ y : B.I.GA, phe B d y ≠ 0 → y.2 ∈ B.I.Kset
 
 /- English proof (translation)
-Simplify using `[decHS]`.
+Simplify using the standard rewrite rules.
 -/
 example (q : ℕ) (h : ℝ) : decHS q h 0 = 1 := by simp [decHS]
 
 /- English proof (translation)
-Unfold `decHS`. Rewrite using `[Real.exp_le_one_iff]`. Establish `: 0 ≤ min (t ^ 2) (t / Real.sqrt (2 * (q : ℝ)))` using `le_min (by positivity) (by positivity)`. Use polynomial arithmetic with `[mul_nonneg hh this]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 example (q : ℕ) (h t : ℝ) (hh : 0 ≤ h) (ht : 0 ≤ t) : decHS q h t ≤ 1 := by
   unfold decHS

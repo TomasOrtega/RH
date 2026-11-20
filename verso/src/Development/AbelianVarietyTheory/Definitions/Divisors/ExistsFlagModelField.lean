@@ -16,19 +16,19 @@ open ReciprocityTheory.ChartRestriction.G.PullbackSections (TanM tv mkT tanM_ext
 section Alg
 
 /- English proof (translation)
-Establish `hcol : ∀ k, (fun i => φ (e i k)) ∈ N` using `fun k => (hN _).2 (by`. Use function extensionality and compare the values at `i`. Use `congrArg φ (congrFun (congrFun he i) k)` as an intermediate fact. Rewrite `this` using `[Matrix.mul_apply, map_sum]`. Simplify `this)` using `[Matrix.mulVec, dotProduct]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Take `rfl | rfl : m = 0 ∨ m = 1` from `by omega`. Establish `hb : N = ⊥` using `Submodule.finrank_eq_zero.1 hr`. Use `⟨by simp, fun ix => ?_⟩` and prove the remaining obligations. Use extensionality with `i k`. Use `hcol k` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Rewrite `this` using `[hb, Submodule.mem_bot]`. Establish `h0 : e i k = 0` using `hφ (by rw [map_zero]; exact congrFun this i)`. Simplify using `[Matrix.mul_apply, h0]`. Take `⟨v, hv0, hv⟩` from `finrank_eq_one_iff'.1 hr choose a ha using fun k => hv ⟨_, hcol k⟩`. Establish `hE : ∀ i k, φ (e i k) = a k * v.1 i` using `fun i k => (congrFun (congrArg Subtype.val (ha k)) i).symm`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Apply `hφ` to reduce the goal to its premises. Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, v.1 i ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push Not at h`.
+Prove the components needed by the constructor for the conclusion. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Conclude with `hv0 (Subtype.ext (funext h))`. Establish `h1` using `congrFun ((hN _).1 v.2) i`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.map_apply, hE] at h1`. Rewrite using `[map_sum, map_one, ← (Equiv.funUnique (Fin 1) (Fin n)).symm.sum_comp]`. Simplify using `only [Fin.prod_univ_one, Equiv.funUnique_symm_apply, uniqueElim_const, hE]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `mul_right_cancel₀ hi` to reduce the goal to its premises. Rewrite using `[_root_.one_mul, Finset.sum_mul]`. Use `Eq.trans (Finset.sum_congr rfl fun j _ => by ring) h1` and prove the remaining obligations. Introduce `ix`. Use extensionality with `i k`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Apply `hφ` to reduce the goal to its premises. Simplify using `only [Fin.prod_univ_one, Matrix.smul_apply, smul_eq_mul, Matrix.mul_apply, Fin.sum_univ_one, Matrix.submatrix_apply, id, map_mul, hE]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem idem_low {R L : Type} [CommRing R] [Field L] (φ : R →+* L) (hφ : Function.Injective φ) {n m : ℕ} (hm : m ≤ 1)
     (e : Matrix (Fin n) (Fin n) R) (he : e * e = e) (N : Submodule L (Fin n → L))
@@ -72,9 +72,9 @@ theorem idem_low {R L : Type} [CommRing R] [Field L] (φ : R →+* L) (hφ : Fun
       ring
 
 /- English proof (translation)
-Break down `i with _ | i` into its components or cases. Simplify using `[initSpan]`. Establish `e : {j : Fin m | (j : ℕ) < i + 1} = {j : Fin m | (j : ℕ) < m}`. Use extensionality with `j`. Use `j.2` as an intermediate fact.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Simplify using `only [Set.mem_ofPred_eq]`. Use linear arithmetic over natural numbers and integers. Unfold `initSpan at h ⊢`. Rewrite using `[e, h]`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem initSpan_low {R N : Type} [CommRing R] [AddCommGroup N] [Module R N] {m : ℕ} (hm : m ≤ 1) {v v' : Fin m → N}
     (h : initSpan R v m = initSpan R v' m) (i : ℕ) : initSpan R v i = initSpan R v' i := by
@@ -95,13 +95,13 @@ section Red
 variable {O : Type} [CommRing O] {β : O →+* c.F} {Y : Model Xo c β}
 
 /- English proof (translation)
-Take `⟨Λ₀⟩` from `MChart.nonempty_lift E H Dw l Xo c O β Y M S (ev _ M.U h) (frX P) (frX_snd P) (spMap_ev _ M.hU h).symm`. Set `Λ : M.Lift (ev _ M.U h) P.x` to `frX_fst P ▸ Λ₀`. Establish `eΛ : Λ.xF = frX P` using `eq_frX P Λ.xF_fst Λ.xF_snd`. Establish `hv : ∀ j, Λ.Vec ((vec M _ h).symm (frVec Y P rfl σ j)) (P.u σ j)` using `fun j => (vec_iff_toModel h Λ eΛ (frX_fst P) rfl _ (P.tan σ j)).2 (LinearEquiv.apply_symm_apply _ _).symm`. Establish `heig` using `GlobalTheory.Reg.isEigAt_iff_eig E H Dw l Xo c O β Y M S _ P.x Λ σ`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hex, htan, hco⟩` from `GlobalTheory.Reg.vec_bijective E H Dw l Xo c O β Y M S _ P.x Λ`. Use `le_antisymm (Submodule.span_le.2 ?_) fun v hv' => ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨j, -, rfl⟩`. Rewrite using `[← (vec M _ h).apply_symm_apply (frVec Y P rfl σ j)]`. Conclude with `(vec_mem_eigLie M _ h σ _).2 ((heig _ _ (hv j)).1 (P.eig σ j))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨cv, rfl⟩` from `(vec M _ h).surjective v`. Take `⟨w, hw⟩` from `(hex cv).exists`. Take `⟨a, ha⟩` from `(P.basis σ w (htan cv w hw) ((heig cv w hw).2 ((vec_mem_eigLie M _ h σ _).1 hv'))).exists`. Establish `h4` using `(VecComb.isCombAt_iff_vec E H Dw l Xo c O β Y M S _ P.x Λ _ _ (P.u σ) a w hv).1 ha`. Use `mem_initSpan.2 ⟨a, fun j hj => absurd j.2 (not_lt.2 hj), ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← (hco w (htan cv w hw)).unique h4 hw, map_sum]`. Simplify using `only [map_smul, LinearEquiv.apply_symm_apply]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem initSpan_frVec_top {S : Type} [CommRing S] [Algebra c.F S] (P : FrPt Xo c S) (M : MChart Y)
     (h : ⊤ ≤ (frX P ≫ Y.j) ⁻¹ᵁ M.U) (σ : E →+* ℂ) :
@@ -167,7 +167,7 @@ structure Proj (β : O →+* c.F) where
       (∑ k, algebraMap c.F R (β (κ σ k)) • ρ (a σ k)).mulVec x = x
 
 /- English proof (translation)
-Establish `hemb : Function.Injective (embF (E` using `E) c) := fun τ τ' h => RingHom.ext fun a => congrArg Subtype.val (RingHom.congr_fun h a)`. Use `choose m a κ h using GlobalTheory.exists_eigen_projector_ringOfIntegers E c.F (embF c) hemb`. Conclude with `⟨⟨m, a, κ, h⟩⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem nonempty_proj_id : Nonempty (Proj (RingHom.id c.F)) := by
   have hemb : Function.Injective (embF (E := E) c) := fun τ τ' h =>
@@ -176,7 +176,7 @@ theorem nonempty_proj_id : Nonempty (Proj (RingHom.id c.F)) := by
   exact ⟨⟨m, a, κ, h⟩⟩
 
 /- English proof (translation)
-Use `choose κ hκ using h`. Conclude with `⟨⟨p.m, p.a, κ, fun σ => by simp only [hκ]; exact p.spec σ⟩⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem nonempty_proj_of_mem (p : Proj (RingHom.id c.F)) (h : ∀ σ k, p.κ σ k ∈ β.range) : Nonempty (Proj β) := by
   choose κ hκ using h
@@ -187,13 +187,13 @@ variable {Y : Model Xo c β} {S : Type} [CommRing S]
 def str (x : Sp S ⟶ Y.X) : O →+* S := (ev (x ≫ Y.s) ⊤ le_top).comp (toΓ O)
 
 /- English proof (translation)
-The claim follows from `congrArg CommRingCat.Hom.hom (Spec.map_injective ((spMap_ev_top _).trans h))`.
+A detailed English derivation is pending.
 -/
 theorem str_eq {x : Sp S ⟶ Y.X} {g : O →+* S} (h : x ≫ Y.s = spMap g) : str x = g :=
   congrArg CommRingCat.Hom.hom (Spec.map_injective ((spMap_ev_top _).trans h))
 
 /- English proof (translation)
-Establish `: str x = (ev x M.U h).comp (str (tau M.hU))` using `str_eq (by`. Rewrite using `[← spMap_comp', str, spMap_ev_top, ← Category.assoc]`. Conclude with `congrArg (· ≫ Y.s) (spMap_ev x M.hU h).symm)`. Rewrite using `[this]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem ev_str (M : MChart Y) (x : Sp S ⟶ Y.X) (h : ⊤ ≤ x ⁻¹ᵁ M.U) (o : O) :
     ev x M.U h (str (tau M.hU) o) = str x o := by
@@ -203,7 +203,7 @@ theorem ev_str (M : MChart Y) (x : Sp S ⟶ Y.X) (h : ⊤ ≤ x ⁻¹ᵁ M.U) (o
   rw [this]; rfl
 
 /- English proof (translation)
-Rewrite using `[str_eq (g := (algebraMap c.F S).comp β) (by`. Rewrite using `[Model.j, Category.assoc, Category.assoc, pullback.condition, ← Category.assoc Y.jQ, Y.jQ_over, ← Category.assoc, hy, spMap_comp'])]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem str_gen [Algebra c.F S] {y : Sp S ⟶ Xo.XF c} (hy : y ≫ pullback.snd _ _ = spMap (algebraMap c.F S)) (o : O) :
     str (y ≫ Y.j) o = algebraMap c.F S (β o) := by
@@ -218,7 +218,7 @@ def pm (M : MChart Y) (σ : E →+* ℂ) : Matrix (Fin M.n) (Fin M.n) Γ(Y.X, M.
   ∑ k, str (tau M.hU) (p.κ σ k) • M.ρ (p.a σ k)
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [pm, Matrix.map_apply, Matrix.sum_apply, Matrix.smul_apply, smul_eq_mul, map_sum, map_mul, ev_str]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem pm_map (M : MChart Y) (σ : E →+* ℂ) (x : Sp S ⟶ Y.X) (h : ⊤ ≤ x ⁻¹ᵁ M.U) :
     (pm p M σ).map (ev x M.U h) = ∑ k, str x (p.κ σ k) • (M.ρ (p.a σ k)).map (ev x M.U h) := by
@@ -226,7 +226,7 @@ theorem pm_map (M : MChart Y) (σ : E →+* ℂ) (x : Sp S ⟶ Y.X) (h : ⊤ ≤
   simp only [pm, Matrix.map_apply, Matrix.sum_apply, Matrix.smul_apply, smul_eq_mul, map_sum, map_mul, ev_str]
 
 /- English proof (translation)
-Rewrite using `[pm_map, Matrix.sum_mulVec, map_sum]`. Simplify using `only [Matrix.smul_mulVec, map_smul, actR_vec]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem vec_pm (M : MChart Y) (σ : E →+* ℂ) (x : Sp S ⟶ Y.X) (h : ⊤ ≤ x ⁻¹ᵁ M.U) (cv : Fin M.n → S) :
     vec M x h (((pm p M σ).map (ev x M.U h)).mulVec cv) =
@@ -235,11 +235,9 @@ theorem vec_pm (M : MChart Y) (σ : E →+* ℂ) (x : Sp S ⟶ Y.X) (h : ⊤ ≤
   simp only [Matrix.smul_mulVec, map_smul, actR_vec]
 
 /- English proof (translation)
-Take `⟨ρ, hρ⟩` from `GlobalTheory.Reg.MChart.exists_ringHom_rho E H Dw l Xo c O _ Y M`. Take `⟨h1, h2⟩` from `p.spec σ S M.n ((ev _ M.U h).mapMatrix.comp ρ)`. Simplify using `only [RingHom.comp_apply, RingHom.mapMatrix_apply, hρ, ← str_gen (Y := Y) hy, ← pm_map] at h1 h2`. Use `⟨fun cv => ⟨h2 cv, fun hx b => ?_⟩, ?_⟩` and prove the remaining obligations. Use `congrArg (fun A => Matrix.mulVec A cv) (h1 b)` as an intermediate fact.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify `this` using `only [← Matrix.mulVec_mulVec, Matrix.smul_mulVec, hx]`. Use extensionality with `i j`. Use `h2 (fun k => (pm p M σ).map (ev _ M.U h) k j) (fun b => by` as an intermediate fact. Use function extensionality and compare the values at `k`. Conclude with `congrFun (congrFun (h1 b) k) j)`.
-
-Conclude with `congrFun this i`.
+Simplify to obtain the desired conclusion from the available facts. By extensionality, compare the relevant components. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem pm_gen [Algebra c.F S] (M : MChart Y) (σ : E →+* ℂ) {y : Sp S ⟶ Xo.XF c}
     (hy : y ≫ pullback.snd _ _ = spMap (algebraMap c.F S)) (h : ⊤ ≤ (y ≫ Y.j) ⁻¹ᵁ M.U) :
@@ -263,9 +261,9 @@ def GenIn (Y : Model Xo c β) : Prop :=
       Function.Injective (ev (y ≫ Y.j) M.U h)
 
 /- English proof (translation)
-Take `⟨L, _, _, y, h, hy, hi⟩` from `hg M`. Take `⟨h1, h2⟩` from `pm_gen p M σ hy h`. Establish `he : pm p M σ * pm p M σ = pm p M σ` using `Matrix.map_injective hi (Matrix.map_mul.trans h2)`. Take `⟨Λ⟩` from `MChart.nonempty_lift E H Dw l Xo c O β Y M L (ev _ M.U h) y hy (spMap_ev _ M.hU h).symm`. Set `N : Submodule L (Fin M.n → L)` to `Module.End.eigenspace ((pm p M σ).map (ev _ M.U h)).mulVecLin 1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hN : ∀ v, v ∈ N ↔ ((pm p M σ).map (ev _ M.U h)).mulVec v = v` using `fun v => Module.End.mem_eigenspace_iff.trans (by rw [one_smul]; rfl)`. Conclude with `⟨he, idem_low _ hi (hm σ) _ he N hN (finrank_chart_eig E H Dw l Xo c O β Y M L _ _ Λ σ N fun v => (hN v).trans (h1 v).symm)⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem pm_low (hm : ∀ σ, Dw.mult σ ≤ 1) (hg : GenIn Y) (M : MChart Y) (σ : E →+* ℂ) :
     pm p M σ * pm p M σ = pm p M σ ∧
@@ -294,15 +292,15 @@ structure ECh where
   uw : ∀ σ, u σ * w σ = (pm p M.toMChart σ).map (resG Y.X le)
 
 /- English proof (translation)
-Establish `ex : ∀ σ, ∃ ix : Fin (Dw.mult σ) → Fin M.n, Y.X.evaluation M.U x hx (∏ i, pm p M.toMChart σ (ix i) (ix i)) ≠ 0` using `fun σ => by`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Use `congrArg (Y.X.evaluation M.U x hx) (pm_low p hm hg M.toMChart σ).2.1` as an intermediate fact. Rewrite `this` using `[map_sum, map_one, Finset.sum_eq_zero fun ix _ => h ix]`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `zero_ne_one this`. Use `choose ix hix using ex`. Set `d` to `fun σ => ∏ i, pm p M.toMChart σ (ix σ i) (ix σ i)`. Set `r` to `resG Y.X (Y.X.basicOpen_le (∏ σ, d σ))`. Establish `hu : ∀ σ, IsUnit (r (d σ))` using `fun σ => isUnit_of_dvd_unit (map_dvd r (Finset.dvd_prod_of_mem d (Finset.mem_univ σ))) (RingedSpace.isUnit_res_basicOpen Y.X.toRingedSpace _)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨⟨M, Y.X.basicOpen (∏ σ, d σ), Y.X.basicOpen_le _, fun σ => ((pm p M.toMChart σ).submatrix id (ix σ)).map r, fun σ => (hu σ).unit⁻¹.val • ((pm p M.toMChart σ).submatrix (ix σ) id).map r, fun σ => ?_, fun σ => ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.smul_mul, ← Matrix.map_mul, ← Matrix.submatrix_mul _ _ _ id _ Function.bijective_id, (pm_low p hm hg M.toMChart σ).1]`. Establish `: Subsingleton (Fin (Dw.mult σ))` using `Fin.subsingleton_iff_le_one.2 (hm σ)`. Use extensionality with `i j`. Take `rfl` from `Subsingleton.elim i j`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hd : d σ = pm p M.toMChart σ (ix σ i) (ix σ i)` using `Fintype.prod_subsingleton _ i`. Rewrite using `[Matrix.one_apply_eq, Matrix.smul_apply, Matrix.map_apply, Matrix.submatrix_apply, ← hd]`. Conclude with `(hu σ).val_inv_mul`. Rewrite using `[Matrix.mul_smul, ← Matrix.map_mul, ← (pm_low p hm hg M.toMChart σ).2.2]`. Use extensionality with `i j`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.smul_apply, Matrix.map_apply, smul_eq_mul, map_mul]`. Rewrite using `[← _root_.mul_assoc, (hu σ).val_inv_mul, _root_.one_mul]`. Use `(Y.X.evaluation_ne_zero_iff_mem_basicOpen x hx _).1 ?_` and prove the remaining obligations. Rewrite using `[map_prod]`. Conclude with `Finset.prod_ne_zero_iff.2 fun σ _ => hix σ`.
+A detailed English derivation is pending.
 -/
 theorem exists_eCh (hm : ∀ σ, Dw.mult σ ≤ 1) (hg : GenIn Y) (M : GChart Y) (x : Y.X) (hx : x ∈ M.U) :
     ∃ k : ECh Y p, x ∈ k.V := by
@@ -342,9 +340,9 @@ theorem exists_eCh (hm : ∀ σ, Dw.mult σ ≤ 1) (hg : GenIn Y) (M : GChart Y)
 variable {p}
 
 /- English proof (translation)
-Establish `e : (pm p k.M.toMChart σ).map (ev z _ h) = (k.u σ).map (ev z _ hz) * (k.w σ).map (ev z _ hz)`. Rewrite using `[← Matrix.map_mul, k.uw]`. Use extensionality with `i j`. Conclude with `(ev_res z _ hz h _).symm`. Rewrite using `[e, ← Matrix.mulVec_mulVec]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun h => ⟨_, h⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨a, rfl⟩`. Rewrite using `[Matrix.mulVec_mulVec (M := (k.w σ).map _), ← Matrix.map_mul, k.wu, Matrix.map_one _ (map_zero _) (map_one _), Matrix.one_mulVec]`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ECh.fix_iff (k : ECh Y p) (σ : E →+* ℂ) (z : Sp S ⟶ Y.X) (hz : ⊤ ≤ z ⁻¹ᵁ k.V) (h : ⊤ ≤ z ⁻¹ᵁ k.M.U)
     (cv : Fin k.M.n → S) : ((pm p k.M.toMChart σ).map (ev z _ h)).mulVec cv = cv ↔
@@ -404,9 +402,9 @@ def eigFrames (hm : ∀ σ, Dw.mult σ ≤ 1) (hc : ∀ x : Y.X, ∃ k : ECh Y p
     exact h3.symm
 
 /- English proof (translation)
-Introduce `S _ _ y hy z hx k hz σ`. Take `rfl : z = y ≫ Y.j` from `(Category.comp_id _).symm.trans hx`. Express the relevant statement in the definitionally equal form `ECh Y p at k`. Establish `h : ⊤ ≤ (y ≫ Y.j) ⁻¹ᵁ k.M.U` using `(eigFrames p hm hc).inM hz hx`. Use extensionality with `v`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Take `⟨cv, rfl⟩` from `(vec k.M.toMChart _ h).surjective v`. Use `Iff.trans ?_ ((vec_mem_eigLie _ _ h σ cv).trans (((pm_gen p k.M.toMChart σ hy h).1 cv).trans (k.fix_iff σ _ hz h cv))).symm` and prove the remaining obligations. Rewrite using `[mem_initSpan]`. Conclude with `⟨fun ⟨a, _, e⟩ => ⟨a, (vec k.M.toMChart _ h).injective (((eigFrames p hm hc).sum_vecAt k _ hz hx σ a).symm.trans e)⟩, fun ⟨a, e⟩ => ⟨a, fun j hj => absurd j.2 (not_lt.2 hj), ((eigFrames p hm hc).sum_vecAt k _ hz hx σ a).trans (congrArg (vec k.M.toMChart _ h) e)⟩⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem eigFrames_top (hm : ∀ σ, Dw.mult σ ≤ 1) (hc : ∀ x : Y.X, ∃ k : ECh Y p, x ∈ k.V) :
     (eigFrames p hm hc).TopEigen := by
@@ -425,7 +423,7 @@ theorem eigFrames_top (hm : ∀ σ, Dw.mult σ ≤ 1) (hc : ∀ x : Y.X, ∃ k :
       ((eigFrames p hm hc).sum_vecAt k _ hz hx σ a).trans (congrArg (vec k.M.toMChart _ h) e)⟩⟩
 
 /- English proof (translation)
-Apply the tactic sequence `have hm : ∀ σ, Dw.mult σ ≤ 1 := fun σ => by unfold Datum.mult; split_ifs <;> assumption`. Establish `hc : ∀ x : Y.X, ∃ k : ECh Y p, x ∈ k.V` using `fun x => (exists_gChart hP x).elim fun M hM => exists_eCh p hm hg M x hM`. Conclude with `⟨ofFrames hm _ (eigFrames_top hm hc), rfl⟩`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_flagModel [IsNoetherianRing O] (p : Proj β) (hp : Dw.p ≤ 1) (hq : Dw.q ≤ 1) (hg : GenIn Y)
     (hP : PushInvertible Y.t.G Y.t.PP.L) : ∃ X : FlagModel Y, X.YY = Y.X := by
@@ -439,14 +437,14 @@ end Frames
 section Gen
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨FractionRing A, inferInstance, algebraMap _ _, IsFractionRing.injective _ _⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_field (A : Type) [CommRing A] [IsDomain A] :
     ∃ (L : Type) (_ : Field L) (f : A →+* L), Function.Injective f :=
   ⟨FractionRing A, inferInstance, algebraMap _ _, IsFractionRing.injective _ _⟩
 
 /- English proof (translation)
-Introduce `M` and use `by have := M.dom obtain ⟨L, _, f, hf⟩ := exists_field Γ(Y.X, M.U) obtain ⟨A, y, h1, h2⟩ := h M L f hf have hU : ⊤ ≤ (y ≫ Y.j) ⁻¹ᵁ M.U := h2 ▸ le_preimage_comp _ (tau_le M.hU le_rfl) refine ⟨L, inferInstance, A, y, hU, h1, ?_⟩ rw [ev_congr h2 _ _ (h2 ▸ hU), ev_spMap_tau] exact hf`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem genIn_of {O : Type} [CommRing O] {β : O →+* c.F} {Y : Model Xo c β}
     (h : ∀ (M : MChart Y) (L : Type) [Field L] (f : Γ(Y.X, M.U) →+* L), Function.Injective f →
@@ -462,7 +460,7 @@ theorem genIn_of {O : Type} [CommRing O] {β : O →+* c.F} {Y : Model Xo c β}
   exact hf
 
 /- English proof (translation)
-The claim follows from `genIn_of fun M L _ f hi => by obtain ⟨α, es, -, -, hinj, ⟨e, he⟩, hes, hop, -⟩ := GlobalTheory.Reg.ChartOpens.moduli_basicOpens E H Dw l Xo c O Y M have hi' : Function.Injective (f.comp α) := hi.comp hinj let A : Algebra c.F L := (IsFractionRing.lift hi').toAlgebra obtain ⟨y, h1, …`.
+A detailed English derivation is pending.
 -/
 theorem genIn_dvr {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Algebra O c.F]
     [IsFractionRing O c.F] (Y : Model Xo c (algebraMap O c.F)) : GenIn Y := genIn_of fun M L _ f hi => by
@@ -474,7 +472,7 @@ theorem genIn_dvr {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing 
   exact ⟨A, y, h1, h2⟩
 
 /- English proof (translation)
-Use `(PrimeSpectrum.le_iff_specializes _ _).1 ?_` and prove the remaining obligations. Take `rfl : q = ⊥` from `Subsingleton.elim _ _`. Use `show Ideal.comap f ⊥ ≤ _`. Rewrite using `[Ideal.comap_bot_of_injective _ hf]`. Conclude with `bot_le`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem spec_generic {A L : Type} [CommRing A] [Field L] (f : A →+* L) (hf : Function.Injective f)
     (q : PrimeSpectrum L) (t : PrimeSpectrum A) : PrimeSpectrum.comap f q ⤳ t := by
@@ -485,7 +483,7 @@ theorem spec_generic {A L : Type} [CommRing A] [Field L] (f : A →+* L) (hf : F
   exact bot_le
 
 /- English proof (translation)
-The claim follows from `genIn_of fun M L _ f hi => by have := M.dom have := Y.jQ_open have : IsIso (spMap (RingHom.id c.F)) := by rw [show spMap (RingHom.id c.F) = 𝟙 _ from Spec.map_id _]; infer_instance have : IsOpenImmersion Y.j := by unfold Model.j; infer_instance have hd : Dense (Set.range Y.j) := b …`.
+A detailed English derivation is pending.
 -/
 theorem genIn_id (Y : Model Xo c (RingHom.id c.F)) : GenIn Y := genIn_of fun M L _ f hi => by
   have := M.dom
@@ -516,14 +514,14 @@ theorem genIn_id (Y : Model Xo c (RingHom.id c.F)) : GenIn Y := genIn_of fun M L
   exact (spMap_ev_top _).symm
 
 /- English proof (translation)
-The claim follows from `nonempty_proj_id.elim fun p => exists_flagModel p hp hq (genIn_id Y) hP`.
+A detailed English derivation is pending.
 -/
 theorem exists_flagModel_field (Y : Model Xo c (RingHom.id c.F)) (hp : Dw.p ≤ 1) (hq : Dw.q ≤ 1)
     (hP : PushInvertible Y.t.G Y.t.PP.L) : ∃ X : FlagModel Y, X.YY = Y.X :=
   nonempty_proj_id.elim fun p => exists_flagModel p hp hq (genIn_id Y) hP
 
 /- English proof (translation)
-The claim follows from `(nonempty_proj_of_mem p hint).elim fun p => exists_flagModel p hp hq (genIn_dvr Y) hP`.
+A detailed English derivation is pending.
 -/
 theorem exists_flagModel_dvr {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Algebra O c.F]
     [IsFractionRing O c.F] (Y : Model Xo c (algebraMap O c.F)) (p : Proj (RingHom.id c.F))
@@ -532,7 +530,7 @@ theorem exists_flagModel_dvr {O : Type} [CommRing O] [IsDomain O] [IsDiscreteVal
   (nonempty_proj_of_mem p hint).elim fun p => exists_flagModel p hp hq (genIn_dvr Y) hP
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨X.ptY P (⊥ : PrimeSpectrum K)⟩`.
+Supply the required witnesses or components.
 -/
 theorem nonempty_of_frPt {O : Type} [CommRing O] {β : O →+* c.F} {Y : Model Xo c β} (X : FlagCover Y) {K : Type}
     [Field K] [Algebra c.F K] (P : FrPt Xo c K) : Nonempty X.YY := ⟨X.ptY P (⊥ : PrimeSpectrum K)⟩

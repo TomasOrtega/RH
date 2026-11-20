@@ -93,15 +93,13 @@ instance countable_GLR (D : D7) : Countable (Formalism.L2.SG.PairVal.GLR D) :=
     (fun a b h => Units.ext (Matrix.ext fun i j => congrFun (congrFun h i) j))
 
 /- English proof (translation)
-Take `⟨hσ, h0, hS, hinv⟩` from `h`. Establish `hm : Measurable (fun y : I.Ginf => c * y * c⁻¹)` using `(measurable_const_mul c).mul_const c⁻¹`. Set `e : I.Ginf ≃ᵐ I.Ginf` to `(MeasurableEquiv.mulLeft c).trans (MeasurableEquiv.mulRight c⁻¹)`. Establish `he : (fun y : I.Ginf => c * y * c⁻¹) = ⇑e` using `rfl`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI := hσ`. Rewrite using `[he]`. Conclude with `e.sigmaFinite_map`. Introduce `h'`. Conclude with `h0 ((Measure.map_eq_zero_iff hm.aemeasurable).mp h')`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components.
 
-Rewrite using `[he, e.map_apply]`. Use `hS using 2` and compare the differences between its conclusion and the goal. Use extensionality with `y`. Simplify using `[e, mul_assoc]`. Introduce `s hs`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[Measure.map_map (measurable_const_mul s) hm]`. Establish `hc : (fun x => s * x) ∘ (fun y : I.Ginf => c * y * c⁻¹) = (fun y : I.Ginf => c * y * c⁻¹) ∘ (fun x => (c⁻¹ * s * c) * x)`. Use function extensionality and compare the values at `y`. Simplify using `only [Function.comp]`. Use `group`.
-
-Rewrite using `[hc, ← Measure.map_map hm (measurable_const_mul _), hinv _ hs]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isHaarOnSet_conj {I : Formalism.MainNotions.S.AutInst} {S : Set I.Ginf} {μ : Measure I.Ginf}
     (h : IsHaarOnSet I S μ) (c : I.Ginf) :
@@ -130,11 +128,9 @@ private theorem isHaarOnSet_conj {I : Formalism.MainNotions.S.AutInst} {S : Set 
     rw [hc, ← Measure.map_map hm (measurable_const_mul _), hinv _ hs]
 
 /- English proof (translation)
-Establish `hset : Formalism.L2.SG.TermOp.Vanish.Rset t = {y | s⁻¹ * y * s ∈ Formalism.L2.SG.RealObj.StInf X u u' γw}`. Use extensionality with `y`. Establish `e1 : s * (s⁻¹ * y * s) * s⁻¹ = y` using `by group`. Establish `e2 : t.pt.1⁻¹ * y * t.pt.1 = s' * (γw⁻¹ * (s⁻¹ * y * s) * γw) * s'⁻¹` using `by rw [hdec]; group`. Establish `h1` using `Formalism.L2.SG.Pf.FormTranspose.sinf_conj_iff (X := X) u hs (s⁻¹ * y * s)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `Formalism.L2.SG.Pf.FormTranspose.sinf_conj_iff (X := X) u' hs' (γw⁻¹ * (s⁻¹ * y * s) * γw)`. Rewrite `h1` using `[e1]`. Use `show (y ∈ X.NinfU u ∧ t.pt.1⁻¹ * y * t.pt.1 ∈ X.NinfU u') ↔ (s⁻¹ * y * s ∈ X.NinfU u ∧ γw⁻¹ * (s⁻¹ * y * s) * γw ∈ X.NinfU u')`. Rewrite using `[e2, h1, h2]`. Rewrite using `[hset]`.
-
-Conclude with `isHaarOnSet_conj hμw s`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pinned_haar (t : TT Y u u') (w : Point D.host.E (D.R.rS + 1)) (γw s s' : X.B.I.Ginf) (μw : Measure X.B.I.Ginf)
     (hs : s ∈ X.SinfU u) (hs' : s' ∈ X.SinfU u') (hdec : t.pt.1 = s * γw * s'⁻¹)
@@ -154,9 +150,9 @@ theorem pinned_haar (t : TT Y u u') (w : Point D.host.E (D.R.rS + 1)) (γw s s' 
   exact isHaarOnSet_conj hμw s
 
 /- English proof (translation)
-Take `⟨ha1, ha2⟩` from `ha`. Take `⟨hb1, hb2⟩` from `hb`. Use `show a * b ∈ X.NinfU u ∧ t.pt.1⁻¹ * (a * b) * t.pt.1 ∈ X.NinfU u'`. Use `⟨Formalism.L2.SG.Pf.FormTranspose.ninf_mul (X := X) u ha1 hb1, ?_⟩` and prove the remaining obligations. Establish `e : t.pt.1⁻¹ * (a * b) * t.pt.1 = (t.pt.1⁻¹ * a * t.pt.1) * (t.pt.1⁻¹ * b * t.pt.1)` using `by group`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `Formalism.L2.SG.Pf.FormTranspose.ninf_mul (X := X) u' ha2 hb2`.
+A detailed English derivation is pending.
 -/
 theorem rset_mul (t : TT Y u u') {a b : X.B.I.Ginf} (ha : a ∈ Formalism.L2.SG.TermOp.Vanish.Rset t)
     (hb : b ∈ Formalism.L2.SG.TermOp.Vanish.Rset t) : a * b ∈ Formalism.L2.SG.TermOp.Vanish.Rset t := by
@@ -169,9 +165,9 @@ theorem rset_mul (t : TT Y u u') {a b : X.B.I.Ginf} (ha : a ∈ Formalism.L2.SG.
   exact Formalism.L2.SG.Pf.FormTranspose.ninf_mul (X := X) u' ha2 hb2
 
 /- English proof (translation)
-Take `⟨⟨h, hmk⟩, -⟩` from `hN`. Establish `hGF` using `PI.TermAttrConst.UnitaryGroupMassFormula.termGFun_holds D u u' (X.Fu u) t.toTerm.lam ((Y.rowsOK u).1 t.lam t.mem)`. Establish `e : t.G = Gval (lf D (X.Fu u)) F'` using `by show Formalism.L2.SG.TermDef.Gt _ _ _ t.toTerm.cls = _`. Rewrite using `[← hmk]`. Use `first`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `exact Formalism.L2.SG.TermDef.Gt_mk _ _ _ hGF _`. Consider the case `exact Formalism.L2.SG.TermDef.Gt_mk hGF _`. Rewrite `hG` using `[e]`. Conclude with `hG`.
+Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gval_of_normRep (t : TT Y u u') (w : Point D.host.E (D.R.rS + 1))
     (F' : LFlag (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E)) (L U : Formalism.L2.SG.PairVal.MatR D)
@@ -188,9 +184,9 @@ theorem gval_of_normRep (t : TT Y u u') (w : Point D.host.E (D.R.rS + 1))
   exact hG
 
 /- English proof (translation)
-Use `first`. Consider the case `exact Subgroup.relIndex_map_map_of_injective f hf`. Consider the case `exact Subgroup.relIndex_map_map_of_injective hf`. Consider the case `exact Subgroup.relIndex_map_map_of_injective H K hf`. Consider the case `(rw [← Subgroup.relIndex_comap, Subgroup.comap_map_eq_self_of_injective hf])`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact Subgroup.relindex_map_map_of_injective f hf`.
+A detailed English derivation is pending.
 -/
 private theorem relIndex_map_of_injective' {G G' : Type*} [Group G] [Group G'] (f : G →* G')
     (hf : Function.Injective f) (H K : Subgroup G) : (H.map f).relIndex (K.map f) = H.relIndex K := by
@@ -202,31 +198,25 @@ private theorem relIndex_map_of_injective' {G G' : Type*} [Group G] [Group G'] (
   | exact Subgroup.relindex_map_map_of_injective f hf
 
 /- English proof (translation)
-Use `set Rs := Formalism.L2.SG.TermOp.Vanish.Rset t with hRs`. Use `set R' : Set X.B.I.Ginf := {y | c⁻¹ * y * c ∈ Rs} with hR'`. Use `set A := ((Formalism.L2.SG.PairVal.stabInt D u u' Y.δ Y.M w).subgroupOf (StG w)).map Φ with hA`. Use `set B := ((Formalism.L2.SG.PairVal.stabAut D u u' (X.Fu u) (Y.what₂ u) t.toTerm F' L).subgroupOf (StG w)).map Φ with hB`. Take `⟨-, -, hc0, hinv⟩` from `isHaarOnSet_conj hH c`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hAsub : ∀ x ∈ A, x ∈ R'`. Introduce `x hx`. Take `⟨β, -, rfl⟩` from `Subgroup.mem_map.mp hx`. Conclude with `hDict.2.1 β`. Establish `hBsub : ∀ x ∈ B, x ∈ R'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `x hx`. Take `⟨β, -, rfl⟩` from `Subgroup.mem_map.mp hx`. Conclude with `hDict.2.1 β`. Establish `hmulR : ∀ x ∈ R', ∀ r ∈ R', x * r ∈ R'`. Introduce `x hx r hr`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h2` using `rset_mul t hx hr`. Use `show c⁻¹ * (x * r) * c ∈ Rs`. Establish `e : c⁻¹ * (x * r) * c = (c⁻¹ * x * c) * (c⁻¹ * r * c)` using `by group`. Rewrite using `[e]`. Conclude with `h2`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : Countable A := Set.Countable.to_subtype (s := (A : Set X.B.I.Ginf)) (by rw [hA, Subgroup.coe_map]; exact (Set.to_countable _).image _)`. Use `haveI : Countable B := Set.Countable.to_subtype (s := (B : Set X.B.I.Ginf)) (by rw [hB, Subgroup.coe_map]; exact (Set.to_countable _).image _)`. Use `set KB : Set X.B.I.Ginf := {y | c⁻¹ * y * c ∈ K} with hKBdef`. Establish `hKB : MeasurableSet KB` using `hK.preimage ((measurable_const_mul c⁻¹).mul_const c)`. Establish `hKBu : ∀ r ∈ R', ∃! x, x ∈ B ∧ x * r ∈ KB`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `r hr`. Take `⟨s0, ⟨hs0, hs0K⟩, huniq⟩` from `hKu _ hr`. Use `⟨c * s0 * c⁻¹, ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Take `⟨β, hβ, hβe⟩` from `(hDict.2.2.1 (c * s0 * c⁻¹)).mpr ⟨s0, hs0, rfl⟩`. Conclude with `Subgroup.mem_map.mpr ⟨β, Subgroup.mem_subgroupOf.mpr hβ, hβe⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show c⁻¹ * (c * s0 * c⁻¹ * r) * c ∈ K`. Establish `e : c⁻¹ * (c * s0 * c⁻¹ * r) * c = s0 * (c⁻¹ * r * c)` using `by group`. Rewrite using `[e]`. Conclude with `hs0K`. Introduce and unpack `x ⟨hx, hxK⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨β, hβ, rfl⟩` from `Subgroup.mem_map.mp hx`. Take `⟨r1, hr1, hr1e⟩` from `(hDict.2.2.1 (Φ β)).mp ⟨β, Subgroup.mem_subgroupOf.mp hβ, rfl⟩`. Establish `hr1s : r1 = s0`. Use `huniq r1 ⟨hr1, ?_⟩` and prove the remaining obligations. Establish `e : r1 * (c⁻¹ * r * c) = c⁻¹ * (Φ β * r) * c` using `by rw [hr1e]; group`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `hxK`. Rewrite using `[hr1e, hr1s]`. Establish `hBA : B.relIndex A = (Formalism.L2.SG.PairVal.stabAut D u u' (X.Fu u) (Y.what₂ u) t.toTerm F' L).relIndex (Formalism.L2.SG.PairVal.stabInt D u u' Y.δ Y.M w)`. Rewrite using `[hA, hB, relIndex_map_of_injective' Φ hDict.1, Subgroup.relIndex_subgroupOf hInt]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hAB : A.relIndex B = (Formalism.L2.SG.PairVal.stabInt D u u' Y.δ Y.M w).relIndex (Formalism.L2.SG.PairVal.stabAut D u u' (X.Fu u) (Y.what₂ u) t.toTerm F' L)`. Rewrite using `[hA, hB, relIndex_map_of_injective' Φ hDict.1, Subgroup.relIndex_subgroupOf hAut]`. Establish `hcomm` using `Formalism.L2.SG.Pf.CovolIdx.covol_commens (μR.map (fun y => c * y * c⁻¹)) R' hc0 A B (fun s hs => hinv s (hAsub s hs)) (fun s hs => hinv s (hBsub s hs)) (fun s hs r hr => hmulR s (hAsub s hs) r hr) (fun s hs r hr => hmulR s (hBsub s hs) r hr) KA KB hKA hKB (fun r hr => hKAu r hr) …`. Establish `hνKB : (μR.map (fun y => c * y * c⁻¹)) KB = μR K`. Rewrite using `[Measure.map_apply ((measurable_const_mul c).mul_const c⁻¹) hKB]`.
-
-Use `congr 1`. Use extensionality with `y`. Simplify using `only [hKBdef, Set.mem_preimage, Set.mem_setOf_eq]`. Establish `e : c⁻¹ * (c * y * c⁻¹) * c = y` using `by group`. Rewrite using `[e]`.
-
-Rewrite `hcomm` using `[hKA1, hνKB, one_mul, hBA, hAB]`. Establish `h2` using `congrArg ENNReal.toReal hcomm`. Rewrite `h2` using `[ENNReal.toReal_mul, ENNReal.toReal_natCast, ENNReal.toReal_natCast]`. Unfold `Formalism.L2.SG.PairVal.volIdx`. Rewrite using `[eq_div_iff (by exact_mod_cast hf2)]`.
-
-Conclude with `h2.symm`.
+A detailed English derivation is pending.
 -/
 private theorem H_affine_combination_eq_of_quadratic_relation (t : TT Y u u') (w : Point D.host.E (D.R.rS + 1))
     (F' : LFlag (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E)) (L : Formalism.L2.SG.PairVal.MatR D)
@@ -317,11 +307,11 @@ private theorem H_affine_combination_eq_of_quadratic_relation (t : TT Y u u') (w
   exact h2.symm
 
 /- English proof (translation)
-Introduce `D X Y u u' hP t hrel hgen hG w hw μR hpin K hK hKu F' L U hN`. Take `⟨γw, s, s', μw, hpt, hs, hs', hdec, hμw, hmap, rfl⟩` from `hpin`. Take `⟨c, Φ, hDict⟩` from `hD D X Y u u' t hrel hG w hw F' L U hN γw s s' hpt hs hs' hdec`. Take `⟨KA, hKA, hKAu, hKA1⟩` from `hC D X Y u u' t hrel hG w hw F' L U hN γw s s' μw hpt hs hs' hdec hμw hmap c Φ hDict`. Establish `hGv` using `gval_of_normRep t w F' L U hN hG`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hAut : Formalism.L2.SG.PairVal.stabAut D u u' (X.Fu u) (Y.what₂ u) t.toTerm F' L ≤ StG w` using `fun a ha => hBin D X Y u u' hP t w F' L U hrel hgen hN hGv ha`. Establish `hInt : Formalism.L2.SG.PairVal.stabInt D u u' Y.δ Y.M w ≤ StG w`. Unfold `Formalism.L2.SG.PairVal.stabInt`. Use `(Subgroup.closure_le _).mpr ?_` and prove the remaining obligations. Introduce `a ha`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨h1, b, hb, hwb, -⟩` from `ha`. Use `show a ∈ Formalism.L2.SG.Pf.StabilizerIndexVolumes.StSet (ptMat w)`. Conclude with `⟨h1, b, hb, hwb⟩`. Take `⟨hf1, hf2⟩` from `hFin D X Y u u' hP Y.agree t.toTerm w F' L U hrel hgen hN hGv`. Conclude with `H_affine_combination_eq_of_quadratic_relation t w F' L γw s c Φ hDict _ (pinned_haar t w γw s s' μw hs hs' hdec hμw) KA hKA hKAu hKA1 K hK hKu hAut hInt hf1 hf2`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem volPinGC_of (hD : DictC) (hC : CovolOneC)
     (hBin : ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (u u' : D.what₂.Word), PrimeHyp D u (Tu D u') →
@@ -353,11 +343,11 @@ theorem volPinGC_of (hD : DictC) (hC : CovolOneC)
     K hK hKu hAut hInt hf1 hf2
 
 /- English proof (translation)
-Introduce `D X Y u u' h3 hP t hrel hgen hG w hw μR hpin K hK hKu F' L U hN`. Take `⟨γw, s, s', μw, hpt, hs, hs', hdec, hμw, hmap, rfl⟩` from `hpin`. Take `⟨c, Φ, hDict⟩` from `hD D X Y u u' t hrel hG w hw F' L U hN γw s s' hpt hs hs' hdec`. Take `⟨KA, hKA, hKAu, hKA1⟩` from `hC D X Y u u' h3 hP t hrel hG w hw F' L U hN γw s s' μw hpt hs hs' hdec hμw hmap c Φ hDict`. Establish `hGv` using `gval_of_normRep t w F' L U hN hG`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hAut : Formalism.L2.SG.PairVal.stabAut D u u' (X.Fu u) (Y.what₂ u) t.toTerm F' L ≤ StG w` using `fun a ha => hBin D X Y u u' hP t w F' L U hrel hgen hN hGv ha`. Establish `hInt : Formalism.L2.SG.PairVal.stabInt D u u' Y.δ Y.M w ≤ StG w`. Unfold `Formalism.L2.SG.PairVal.stabInt`. Use `(Subgroup.closure_le _).mpr ?_` and prove the remaining obligations. Introduce `a ha`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨h1, b, hb, hwb, -⟩` from `ha`. Use `show a ∈ Formalism.L2.SG.Pf.StabilizerIndexVolumes.StSet (ptMat w)`. Conclude with `⟨h1, b, hb, hwb⟩`. Take `⟨hf1, hf2⟩` from `hFin D X Y u u' hP Y.agree t.toTerm w F' L U hrel hgen hN hGv`. Conclude with `H_affine_combination_eq_of_quadratic_relation t w F' L γw s c Φ hDict _ (pinned_haar t w γw s s' μw hs hs' hdec hμw) KA hKA hKAu hKA1 K hK hKu hAut hInt hf1 hf2`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem volume_generic_odd_of (hD : DictC) (hC : CovolOne3C)
     (hBin : ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (u u' : D.what₂.Word), PrimeHyp D u (Tu D u') →

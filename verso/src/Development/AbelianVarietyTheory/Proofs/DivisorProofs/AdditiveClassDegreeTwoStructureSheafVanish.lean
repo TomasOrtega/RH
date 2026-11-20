@@ -22,7 +22,7 @@ namespace GlobalTheory.Obs.PrimitivePullback
 variable {R : Type} [CommRing R]
 
 /- English proof (translation)
-Substitute `e` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem pullHO1_congr {X X' : Scheme.{0}} {s : X ⟶ Sp R} {s' : X' ⟶ Sp R} {φ ψ : X' ⟶ X} (e : φ = ψ)
     (h : φ ≫ s = s' ≫ spMap (RingHom.id R)) (h' : ψ ≫ s = s' ≫ spMap (RingHom.id R)) (c : HO1 s) :
@@ -30,7 +30,7 @@ theorem pullHO1_congr {X X' : Scheme.{0}} {s : X ⟶ Sp R} {s' : X' ⟶ Sp R} {�
   subst e; rfl
 
 /- English proof (translation)
-Substitute `e` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem isPullO_congr {X X' : Scheme.{0}} {s : X ⟶ Sp R} {s' : X' ⟶ Sp R} {φ ψ : X' ⟶ X} (e : φ = ψ)
     (h : φ ≫ s = s' ≫ spMap (RingHom.id R)) (h' : ψ ≫ s = s' ≫ spMap (RingHom.id R)) {c : HO1 s} {c' : HO1 s'} :
@@ -38,7 +38,7 @@ theorem isPullO_congr {X X' : Scheme.{0}} {s : X ⟶ Sp R} {s' : X' ⟶ Sp R} {�
   subst e; rfl
 
 /- English proof (translation)
-The claim follows from `(IsPullO.eq_pullHO1 h (CoefMap.pullCohomologyOne_eq_of_natTrans (pairPull h) (pairRes _ s) (pairIdTrans X) (fun _ _ ↦ rfl) c)).symm`.
+A detailed English derivation is pending.
 -/
 theorem pullHO1_self {X : Scheme.{0}} {s : X ⟶ Sp R} (h : 𝟙 X ≫ s = s ≫ spMap (RingHom.id R)) (c : HO1 s) :
     pullHO1 h c = c :=
@@ -46,7 +46,7 @@ theorem pullHO1_self {X : Scheme.{0}} {s : X ⟶ Sp R} (h : 𝟙 X ≫ s = s ≫
     (CoefMap.pullCohomologyOne_eq_of_natTrans (pairPull h) (pairRes _ s) (pairIdTrans X) (fun _ _ ↦ rfl) c)).symm
 
 /- English proof (translation)
-Establish `h'' : (g.left ≫ f.left) ≫ C.hom = A.hom ≫ spMap (RingHom.id R)`. Rewrite using `[← Over.comp_left]`. Conclude with `overW (g ≫ f)`. Establish `k` using `(GlobalTheory.T.structureSheaf_pullback_relations_basic R C.left B.left C.hom B.hom f.left (overW f)).2.2 A.left A.hom g.left (overW g) h'' a _ _ (isPullO_pullHO1 _ a) (isPullO_pullHO1 _ _)`. Conclude with `IsPullO.eq_pullHO1 _ ((isPullO_congr (show g.left ≫ f.left = (g ≫ f).left from rfl) _ _).1 k)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem pullHO1_comp {A B C : Over (Sp R)} (f : B ⟶ C) (g : A ⟶ B) (a : HO1 C.hom) :
     pullHO1 (overW g) (pullHO1 (overW f) a) = pullHO1 (overW (g ≫ f)) a := by
@@ -57,7 +57,7 @@ theorem pullHO1_comp {A B C : Over (Sp R)} (f : B ⟶ C) (g : A ⟶ B) (a : HO1 
   exact IsPullO.eq_pullHO1 _ ((isPullO_congr (show g.left ≫ f.left = (g ≫ f).left from rfl) _ _).1 k)
 
 /- English proof (translation)
-Rewrite using `[pullHO1_comp]`. Establish `h' : 𝟙 A.left ≫ A.hom = A.hom ≫ spMap (RingHom.id R)`. Rewrite using `[← Over.id_left]`. Conclude with `overW (𝟙 A)`. Rewrite using `[pullHO1_congr (show (g ≫ f).left = 𝟙 A.left by rw [e]; rfl) _ h', pullHO1_self]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pullHO1_pull_self {A B : Over (Sp R)} (f : B ⟶ A) (g : A ⟶ B) (e : g ≫ f = 𝟙 A) (a : HO1 A.hom) :
     pullHO1 (overW g) (pullHO1 (overW f) a) = a := by
@@ -67,9 +67,9 @@ theorem pullHO1_pull_self {A B : Over (Sp R)} (f : B ⟶ A) (g : A ⟶ B) (e : g
   rw [pullHO1_congr (show (g ≫ f).left = 𝟙 A.left by rw [e]; rfl) _ h', pullHO1_self]
 
 /- English proof (translation)
-Rewrite using `[pullHO1_comp]`. Establish `h' : (toUnit A ≫ η[A]).left ≫ A.hom = A.hom ≫ spMap (RingHom.id R)` using `overW _`. Rewrite using `[pullHO1_congr (show (g ≫ f).left = (toUnit A ≫ η[A]).left by rw [e, Hom.one_def]) _ h', ← pullHO1_comp]`. Establish `: pullHO1 (overW η[A]) a = 0` using `by haveI : IsAffine (𝟙_ (Over (Sp R))).left := by change IsAffine (Sp R); infer_instance`. Conclude with `(GlobalTheory.T.abelian_square_affine_h1_vanish R).2 _ _ _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, map_zero]`.
+A detailed English derivation is pending.
 -/
 theorem pullHO1_pull_one {A B : Over (Sp R)} [GrpObj A] (f : B ⟶ A) (g : A ⟶ B) (e : g ≫ f = 1) (a : HO1 A.hom) :
     pullHO1 (overW g) (pullHO1 (overW f) a) = 0 := by
@@ -90,9 +90,9 @@ def axesPull : HO1 (A ⊗ A).hom →ₗ[R] HO1 A.hom × HO1 A.hom :=
   (pullHO1 (overW (lift (𝟙 A) (1 : A ⟶ A)))).prod (pullHO1 (overW (lift (1 : A ⟶ A) (𝟙 A))))
 
 /- English proof (translation)
-Take `⟨a, b⟩` from `x`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `pullHO1 (overW (lift (𝟙 A) (1 : A ⟶ A))) (pullHO1 (overW (fst A A)) a + pullHO1 (overW (snd A A)) b) = a`. Rewrite using `[map_add, pullHO1_pull_self _ _ (lift_fst _ _), pullHO1_pull_one _ _ (lift_snd _ _), add_zero]`. Express the relevant statement in the definitionally equal form `pullHO1 (overW (lift (1 : A ⟶ A) (𝟙 A))) (pullHO1 (overW (fst A A)) a + pullHO1 (overW (snd A A)) b) = b`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[map_add, pullHO1_pull_one _ _ (lift_fst _ _), pullHO1_pull_self _ _ (lift_snd _ _), zero_add]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem axesPull_sumPull (x : HO1 A.hom × HO1 A.hom) : axesPull A (sumPull A x) = x := by
   obtain ⟨a, b⟩ := x
@@ -103,9 +103,9 @@ theorem axesPull_sumPull (x : HO1 A.hom × HO1 A.hom) : axesPull A (sumPull A x)
     rw [map_add, pullHO1_pull_one _ _ (lift_fst _ _), pullHO1_pull_self _ _ (lift_snd _ _), zero_add]
 
 /- English proof (translation)
-Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `x hx`. Establish `h1 : pullHO1 (overW (lift (𝟙 A) (1 : A ⟶ A))) x = 0` using `congrArg Prod.fst hx`. Establish `h2 : pullHO1 (overW (lift (1 : A ⟶ A) (𝟙 A))) x = 0` using `congrArg Prod.snd hx`. Use `hax R A g hA hg x ?_ ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `isPullO_pullHO1 (overW (lift (𝟙 A) (1 : A ⟶ A))) x` as an intermediate fact. Rewrite `this` using `[h1]`. Then use the resulting hypothesis. Use `isPullO_pullHO1 (overW (lift (1 : A ⟶ A) (𝟙 A))) x` as an intermediate fact. Rewrite `this` using `[h2]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem axesPull_injective (hax : AxesVanishingStructureSheafDegOne) (g : ℕ) (hA : IsAbelianScheme A) (hg : SmoothOfRelativeDimension g A.hom) :
     Function.Injective (axesPull A) := by
@@ -118,9 +118,9 @@ theorem axesPull_injective (hax : AxesVanishingStructureSheafDegOne) (g : ℕ) (
   · have := isPullO_pullHO1 (overW (lift (1 : A ⟶ A) (𝟙 A))) x; rwa [h2] at this
 
 /- English proof (translation)
-Apply `axesPull_injective A hax g hA hg` to reduce the goal to its premises. Rewrite using `[axesPull_sumPull]`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `pullHO1 (overW (lift (𝟙 A) (1 : A ⟶ A))) (pullHO1 (overW μ[A]) a) = a`. Conclude with `pullHO1_pull_self _ _ (by rw [Hom.one_def, lift_comp_one_right]) a`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `pullHO1 (overW (lift (1 : A ⟶ A) (𝟙 A))) (pullHO1 (overW μ[A]) a) = a`. Conclude with `pullHO1_pull_self _ _ (by rw [Hom.one_def, lift_comp_one_left]) a`.
+A detailed English derivation is pending.
 -/
 theorem pullHO1_mul (hax : AxesVanishingStructureSheafDegOne) (g : ℕ) (hA : IsAbelianScheme A) (hg : SmoothOfRelativeDimension g A.hom)
     (a : HO1 A.hom) : pullHO1 (overW μ[A]) a = sumPull A (a, a) := by
@@ -133,7 +133,7 @@ theorem pullHO1_mul (hax : AxesVanishingStructureSheafDegOne) (g : ℕ) (hA : Is
     exact pullHO1_pull_self _ _ (by rw [Hom.one_def, lift_comp_one_left]) a
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Function.LeftInverse.injective (axesPull_sumPull A), fun c ↦ ⟨axesPull A c, axesPull_injective A hax g hA hg (axesPull_sumPull A _)⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem sumPull_bijective (hax : AxesVanishingStructureSheafDegOne) (g : ℕ) (hA : IsAbelianScheme A) (hg : SmoothOfRelativeDimension g A.hom) :
     Function.Bijective (sumPull A) :=
@@ -148,42 +148,40 @@ variable {R : Type} [CommRing R] {X X' : Scheme.{0}} {s : X ⟶ Sp R} {s' : X' �
   {h : φ ≫ s = s' ≫ spMap (RingHom.id R)}
 
 /- English proof (translation)
-Unfold `IsPullbackH2Structure`. Rewrite using `[map_zero, map_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem isPullO2_zero : IsPullbackH2Structure h (0 : CatCoh.H2 (OAff s)) (0 : CatCoh.H2 (OAff s')) := by
   unfold IsPullbackH2Structure; rw [map_zero, map_zero]
 
 /- English proof (translation)
-Unfold `IsPullbackH2Structure at *`. Rewrite using `[map_add, map_add, ha, hb]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem isPullO2_add {a b : CatCoh.H2 (OAff s)} {a' b' : CatCoh.H2 (OAff s')} (ha : IsPullbackH2Structure h a a')
     (hb : IsPullbackH2Structure h b b') : IsPullbackH2Structure h (a + b) (a' + b') := by
   unfold IsPullbackH2Structure at *; rw [map_add, map_add, ha, hb]
 
 /- English proof (translation)
-Unfold `IsPullbackH2Structure at *`. Rewrite using `[map_smulₛₗ, map_smulₛₗ, ha]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem isPullO2_smul {a : CatCoh.H2 (OAff s)} {a' : CatCoh.H2 (OAff s')} (ha : IsPullbackH2Structure h a a') (r : R) :
     IsPullbackH2Structure h (r • a) (r • a') := by
   unfold IsPullbackH2Structure at *; rw [map_smulₛₗ, map_smulₛₗ, ha]
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.T.structureSheaf_pullback_relations_basic R X X' s s' φ h).1.1 (hx.symm.trans hy)`.
+A detailed English derivation is pending.
 -/
 theorem isPullO2_unique {c : CatCoh.H2 (OAff s)} {x y : CatCoh.H2 (OAff s')} (hx : IsPullbackH2Structure h c x)
     (hy : IsPullbackH2Structure h c y) : x = y :=
   (GlobalTheory.T.structureSheaf_pullback_relations_basic R X X' s s' φ h).1.1 (hx.symm.trans hy)
 
 /- English proof (translation)
-Establish `key : ∀ a b : HO1 s, IsPullbackH2Structure h (e (exteriorPower.ιMulti R 2 ![a, b])) (e' (exteriorPower.map 2 (pullHO1 h) (exteriorPower.ιMulti R 2 ![a, b])))`. Introduce `a b`. Establish `hc : (pullHO1 h) ∘ ![a, b] = ![pullHO1 h a, pullHO1 h b]`. Apply the tactic sequence `funext i; fin_cases i <;> try rfl`. Rewrite using `[exteriorPower.map_apply_ιMulti, hc, he, he']`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(GlobalTheory.T.structureSheaf_pullback_relations_basic R X X' s s' φ h).2.1 a b _ _ (isPullO_pullHO1 h a) (isPullO_pullHO1 h b)`. Establish `ht : t ∈ Submodule.span R (Set.range (exteriorPower.ιMulti R 2))`. Rewrite using `[exteriorPower.ιMulti_span]`. Discharge the goal by the elementary cases of `trivial`. Proceed by induction on `ht using Submodule.span_induction with`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Proceed by induction. Treat this case separately.
 
-Consider the case `mem x hx`. Take `⟨v, rfl⟩` from `hx`. Apply the tactic sequence `have hv : v = ![v 0, v 1] := by funext i; fin_cases i <;> try rfl`. Use `key (v 0) (v 1)` as an intermediate fact. Rewrite `this` using `[← hv]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Treat this case separately.
 
-Consider the case `zero => simp only [map_zero]`. Conclude with `isPullO2_zero`. Consider the case `add x y _ _ hx hy => simp only [map_add]`. Conclude with `isPullO2_add hx hy`. Consider the case `smul r x _ hx => simp only [map_smul]`.
-
-Conclude with `isPullO2_smul hx r`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem pullback_wedge_cup_square (h : φ ≫ s = s' ≫ spMap (RingHom.id R))
     (e : ⋀[R]^2 (HO1 s) ≃ₗ[R] CatCoh.H2 (OAff s))
@@ -215,21 +213,19 @@ end GlobalTheory.Obs.PrimitivePullback
 open GlobalTheory.Obs.PrimitivePullback in
 
 /- English proof (translation)
-Introduce `R _ A _ g hA hg c c₁ c₂ hm h1 h2`. Establish `hax : AxesVanishingStructureSheafDegOne` using `GlobalTheory.T.axesO1_of_projective_rank_cup H`. Take `⟨hAA, hgg⟩` from `(GlobalTheory.T.abelian_square_affine_h1_vanish R).1 A g hA hg`. Take `⟨⟨_, hproj, _⟩, e, he⟩` from `H R A g hA hg`. Take `⟨_, e', he'⟩` from `H R (A ⊗ A) (g + g) hAA hgg`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨t, rfl⟩` from `e.surjective c`. Establish `km` using `pullback_wedge_cup_square (overW μ[A]) e he e' he' t`. Establish `k1` using `pullback_wedge_cup_square (overW (fst A A)) e he e' he' t`. Establish `k2` using `pullback_wedge_cup_square (overW (snd A A)) e he e' he' t`. Establish `E : exteriorPower.map 2 (pullHO1 (overW μ[A])) t = exteriorPower.map 2 (pullHO1 (overW (fst A A))) t + exteriorPower.map 2 (pullHO1 (overW (snd A A))) t`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `e'.injective` to reduce the goal to its premises. Rewrite using `[map_add, ← isPullO2_unique hm km, ← isPullO2_unique h1 k1, ← isPullO2_unique h2 k2]`. Set `P` to `LinearEquiv.ofBijective (sumPull A) (sumPull_bijective A hax g hA hg)`. Establish `hμ : (pullHO1 (overW μ[A]) : HO1 A.hom →ₗ[R] HO1 (A ⊗ A).hom) = sumPull A ∘ₗ (LinearMap.inl R (HO1 A.hom) (HO1 A.hom) + LinearMap.inr R (HO1 A.hom) (HO1 A.hom))`. Use `LinearMap.ext fun a ↦ ?_` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[LinearMap.comp_apply, LinearMap.add_apply, LinearMap.inl_apply, LinearMap.inr_apply, Prod.mk_add_mk, add_zero, zero_add]`. Conclude with `pullHO1_mul A hax g hA hg a`. Establish `h₁ : (pullHO1 (overW (fst A A)) : HO1 A.hom →ₗ[R] HO1 (A ⊗ A).hom) = sumPull A ∘ₗ LinearMap.inl R (HO1 A.hom) (HO1 A.hom)`. Use `LinearMap.ext fun a ↦ ?_` and prove the remaining obligations. Rewrite using `[LinearMap.comp_apply, LinearMap.inl_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [sumPull, LinearMap.coprod_apply, map_zero, add_zero]`. Establish `h₂ : (pullHO1 (overW (snd A A)) : HO1 A.hom →ₗ[R] HO1 (A ⊗ A).hom) = sumPull A ∘ₗ LinearMap.inr R (HO1 A.hom) (HO1 A.hom)`. Use `LinearMap.ext fun a ↦ ?_` and prove the remaining obligations. Rewrite using `[LinearMap.comp_apply, LinearMap.inr_apply]`. Simplify using `only [sumPull, LinearMap.coprod_apply, map_zero, zero_add]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [hμ, h₁, h₂, exteriorPower.map_comp, LinearMap.comp_apply] at E`. Rewrite `E` using `[← map_add (exteriorPower.map 2 (sumPull A))]`. Establish `hid : P.symm.toLinearMap ∘ₗ sumPull A = LinearMap.id` using `LinearMap.ext fun x ↦ P.symm_apply_apply x`. Establish `hinj : Function.Injective (exteriorPower.map 2 (sumPull A))`. Introduce `x y hxy`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `k : ∀ z, exteriorPower.map 2 P.symm.toLinearMap (exteriorPower.map 2 (sumPull A) z) = z`. Introduce `z`. Rewrite using `[← LinearMap.comp_apply, ← exteriorPower.map_comp, hid, exteriorPower.map_id, LinearMap.id_apply]`. Rewrite using `[← k x, ← k y, hxy]`. Use `haveI := hproj`.
-
-Rewrite using `[GlobalTheory.T.exteriorPowerTwo_diagonal_additive_eq_zero_projective R (HO1 A.hom) t (hinj E), map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Obs.primitiveStructureSheafDegTwoVanish_of_cup_iso
     (H : ∀ (R : Type) [CommRing R] (A : Over (Sp R)) [GrpObj A] (g : ℕ), IsAbelianScheme A →

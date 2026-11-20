@@ -18,11 +18,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.CompanionTheory.Hodge.FormBC
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hQ`. Rewrite `hQ` using `[not_subsingleton_iff_nontrivial]`. Take `⟨p, hp⟩` from `Module.nonempty_support_of_nontrivial (R := R) (M := Q)`. Rewrite `hp` using `[Module.mem_support_iff_nontrivial_residueField_tensorProduct]`. Take `⟨i, q, hq⟩` from `hcov p`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `h i` as an intermediate fact. Set `κ` to `q.asIdeal.ResidueField`. Establish `h1 : Subsingleton (κ ⊗[R] Q)` using `(TensorProduct.AlgebraTensorModule.cancelBaseChange R (B i) κ κ Q).symm.subsingleton`. Establish `hpq : p.asIdeal = q.asIdeal.comap (algebraMap R (B i))` using `by rw [← hq]; rfl`. Use `letI : Algebra p.asIdeal.ResidueField κ := (Ideal.ResidueField.map p.asIdeal q.asIdeal (algebraMap R (B i)) hpq).toAlgebra`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure.
 
-Use `haveI : IsScalarTower R p.asIdeal.ResidueField κ := .of_algebraMap_eq fun r ↦ by`. Rewrite using `[IsScalarTower.algebraMap_apply R (B i) κ]`. Conclude with `(Ideal.ResidueField.map_algebraMap p.asIdeal q.asIdeal (algebraMap R (B i)) hpq r).symm`. Establish `h2 : Nontrivial (κ ⊗[p.asIdeal.ResidueField] (p.asIdeal.ResidueField ⊗[R] Q))` using `Module.FaithfullyFlat.lTensor_nontrivial _ _ _`. Conclude with `not_subsingleton _ (TensorProduct.AlgebraTensorModule.cancelBaseChange R p.asIdeal.ResidueField κ κ Q).subsingleton`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem subsingleton_of_tensor {R : Type} [CommRing R] {Q : Type} [AddCommGroup Q] [Module R Q] [Module.Finite R Q]
     {J : Type} (B : J → Type) [∀ i, CommRing (B i)] [∀ i, Algebra R (B i)]
@@ -49,17 +49,17 @@ theorem subsingleton_of_tensor {R : Type} [CommRing R] {Q : Type} [AddCommGroup 
     (TensorProduct.AlgebraTensorModule.cancelBaseChange R p.asIdeal.ResidueField κ κ Q).subsingleton
 
 /- English proof (translation)
-Establish `hs : Function.Surjective T`. Establish `hQ : Subsingleton (M ⧸ LinearMap.range T)` using `subsingleton_of_tensor B hcov fun i ↦ by`. Use `⟨fun a b ↦ ?_⟩` and prove the remaining obligations. Establish `key : ∀ x : B i ⊗[R] (M ⧸ LinearMap.range T), x = 0` using `fun x ↦ by`. Take `⟨y, rfl⟩` from `LinearMap.lTensor_surjective (B i) (Submodule.mkQ_surjective (LinearMap.range T)) x`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨z, rfl⟩` from `(h i).2 y`. Rewrite using `[← LinearMap.comp_apply, ← LinearMap.lTensor_comp, show (LinearMap.range T).mkQ ∘ₗ T = 0 from LinearMap.range_mkQ_comp T, LinearMap.lTensor_zero, LinearMap.zero_apply]`. Rewrite using `[key a, key b]`. Conclude with `fun m ↦ LinearMap.mem_range.1 ((Submodule.Quotient.mk_eq_zero (LinearMap.range T)).1 (Subsingleton.elim (Submodule.Quotient.mk m) 0))`. Take `⟨u, hu⟩` from `Module.projective_lifting_property T LinearMap.id hs`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Extract witnesses or component facts from the available result.
 
-Set `r : N →ₗ[R] LinearMap.ker T` to `LinearMap.codRestrict _ (LinearMap.id - u ∘ₗ T) fun x ↦ by`. Use `LinearMap.congr_fun hu (T x)` as an intermediate fact. Simplify using `only [LinearMap.comp_apply, LinearMap.id_apply] at this`. Simplify using `[this]`. Establish `hr : r ∘ₗ (LinearMap.ker T).subtype = LinearMap.id`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use extensionality with `x`. Simplify using `[r]`. Establish `hrs : Function.Surjective r` using `fun x ↦ ⟨x.1, LinearMap.congr_fun hr x⟩`. Use `haveI : Module.Finite R (LinearMap.ker T) := Module.Finite.of_surjective r hrs`. Establish `hK : Subsingleton (LinearMap.ker T)` using `subsingleton_of_tensor B hcov fun i ↦ by`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : ∀ x : B i ⊗[R] LinearMap.ker T, x = 0` using `fun x ↦ by`. Establish `e : (LinearMap.ker T).subtype.lTensor (B i) x = 0` using `(h i).1 <| by`. Rewrite using `[map_zero, ← LinearMap.comp_apply, ← LinearMap.lTensor_comp, show T ∘ₗ (LinearMap.ker T).subtype = 0 from LinearMap.ext fun x ↦ x.2, LinearMap.lTensor_zero, LinearMap.zero_apply]`. Establish `e2` using `congrArg (r.lTensor (B i)) e`. Rewrite `e2` using `[← LinearMap.comp_apply, ← LinearMap.lTensor_comp, hr, LinearMap.lTensor_id, LinearMap.id_apply, map_zero]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Supply the required witnesses or components.
 
-Conclude with `⟨fun a b ↦ by rw [key a, key b]⟩`. Conclude with `⟨(injective_iff_map_eq_zero T).2 fun x hx ↦ congrArg Subtype.val (Subsingleton.elim (⟨x, hx⟩ : LinearMap.ker T) 0), hs⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem bijective_of_lTensor {R : Type} [CommRing R] {N M : Type} [AddCommGroup N] [Module R N] [AddCommGroup M]
     [Module R M] [Module.Finite R N] [Module.Finite R M] [Module.Projective R M] (T : N →ₗ[R] M)
@@ -98,9 +98,9 @@ theorem bijective_of_lTensor {R : Type} [CommRing R] {N M : Type} [AddCommGroup 
   exact ⟨(injective_iff_map_eq_zero T).2 fun x hx ↦ congrArg Subtype.val (Subsingleton.elim (⟨x, hx⟩ : LinearMap.ker T) 0), hs⟩
 
 /- English proof (translation)
-Take `⟨C, _, ψ, hψ⟩` from `GlobalTheory.FlagTan.exists_isGrpPullback A (spMap (algebraMap R R'))`. Set `e : C ≅ Over.mk s'` to `Over.isoMk (hψ.1.isoIsPullback _ _ h) (by simp)`. Set `_ : GrpObj (Over.mk s')` to `GrpObj.ofIso e`. Establish `: IsMonHom e.hom` using `inferInstance`. Establish `hC` using `GlobalTheory.PolPull.isAbelianScheme_of_isGrpPullback hA hψ`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `smoothOfRelativeDimension_isStableUnderBaseChange.{0} g` as an intermediate fact. Establish `: IsMonHom e.symm.hom` using `inferInstanceAs (IsMonHom e.inv)`. Conclude with `⟨inferInstance, GlobalTheory.PolPull.isAbelianScheme_of_isGrpPullback hC (GlobalTheory.SymExtendDvr.isGrpPullback_of_iso e.symm), MorphismProperty.of_isPullback (P := @SmoothOfRelativeDimension g) h hg⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_grp {R R' : Type} [CommRing R] [CommRing R'] [Algebra R R'] (A : Over (Sp R)) [GrpObj A] (g : ℕ)
     (hA : IsAbelianScheme A) (hg : SmoothOfRelativeDimension g A.hom) {X' : Scheme.{0}} (s' : X' ⟶ Sp R')
@@ -117,9 +117,9 @@ theorem exists_grp {R R' : Type} [CommRing R] [CommRing R'] [Algebra R R'] (A : 
     MorphismProperty.of_isPullback (P := @SmoothOfRelativeDimension g) h hg⟩
 
 /- English proof (translation)
-Establish `e : ∀ x, h₁.equiv (T.lTensor B x) = h₂.equiv x` using `fun x ↦ by`. Proceed by induction on `x with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul b n => simp [IsBaseChange.equiv_tmul]`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Use `(Function.Bijective.of_comp_iff' h₁.equiv.bijective _).1 ?_` and prove the remaining obligations. Establish `e' : (h₁.equiv ∘ T.lTensor B) = h₂.equiv` using `funext e`. Rewrite using `[e']`. Conclude with `h₂.equiv.bijective`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lTensor_bijective_of_isBaseChange {S B N M P : Type} [CommRing S] [CommRing B] [Algebra S B]
     [AddCommGroup N] [Module S N] [AddCommGroup M] [Module S M] [AddCommGroup P] [Module S P] [Module B P]
@@ -136,7 +136,7 @@ theorem lTensor_bijective_of_isBaseChange {S B N M P : Type} [CommRing S] [CommR
   exact h₂.equiv.bijective
 
 /- English proof (translation)
-Proceed by induction on `x using ind1 with`. Consider the case `h b c`. Rewrite using `[SemiHom.oneFormMap_smul_semilinear, SemiHom.m1_D, map_smul, KaehlerDifferential.map_D, algebraMap_smul]`. Consider the case `h0 => simp`. Consider the case `ha x y hx hy => rw [map_add, map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 -/
 theorem oneFormMap_eq_kaehlerDifferential_map {R R' B B' : Type} [CommRing R] [CommRing R'] [CommRing B] [CommRing B'] [Algebra R R'] [Algebra R B]
     [Algebra R' B'] [Algebra B B'] [Algebra R B'] [IsScalarTower R R' B'] [IsScalarTower R B B']
@@ -149,11 +149,11 @@ theorem oneFormMap_eq_kaehlerDifferential_map {R R' B B' : Type} [CommRing R] [C
   | ha x y hx hy => rw [map_add, map_add, hx, hy]
 
 /- English proof (translation)
-Establish `h₁ : IsBaseChange B' (KaehlerDifferential.map R R' B B')` using `IsBaseChange.of_equiv (KaehlerDifferential.tensorKaehlerEquiv R R' B B') fun x ↦ by`. Establish `hx : x ∈ Submodule.span B (Set.range (KaehlerDifferential.D R B))` using `(KaehlerDifferential.span_range_derivation R B).ge Submodule.mem_top`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨a, rfl⟩` from `hx`.
+Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Simplify using the standard rewrite rules. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [TensorProduct.tmul_add, map_add, map_add, hx, hy]`. Consider the case `smul a x _ hx`. Rewrite using `[TensorProduct.tmul_smul, ← algebraMap_smul B', map_smul, hx, map_smul, algebraMap_smul]`.
+Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Establish `h₂` using `IsBaseChange.comp hev h₁`. Use `IsBaseChange.of_comp (TensorProduct.isBaseChange R W R') ?_` and prove the remaining obligations. Use `h₂ using 1` and compare the differences between its conclusion and the goal. Use `LinearMap.ext fun c ↦ ?_` and prove the remaining obligations. Conclude with `(hu c).trans (oneFormMap_eq_kaehlerDifferential_map hα _)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isBaseChange_of_isPushout {R R' B B' W : Type} [CommRing R] [CommRing R'] [CommRing B] [CommRing B']
     [Algebra R R'] [Algebra R B] [Algebra R' B'] [Algebra B B'] [Algebra R B'] [IsScalarTower R R' B']
@@ -187,9 +187,7 @@ def pairOf (h : IsPullback φ s' s (spMap (algebraMap R R'))) (U : X.affineOpens
   ⟨(⟨φ ⁻¹ᵁ U.1, GlobalTheory.AbLaw.isAffineOpen_preimage_of_isPullback h U.2⟩, U), le_rfl⟩
 
 /- English proof (translation)
-Use `letI : Algebra (Sec s U.1) (Sec s' (φ ⁻¹ᵁ U.1)) := (CechDR.secPull s s' (pairOf h U)).toAlgebra`. Use `letI : Algebra R (Sec s' (φ ⁻¹ᵁ U.1)) := ((algebraMap R' (Sec s' (φ ⁻¹ᵁ U.1))).comp (algebraMap R R')).toAlgebra`. Use `haveI : IsScalarTower R R' (Sec s' (φ ⁻¹ᵁ U.1)) := .of_algebraMap_eq fun _ ↦ rfl`. Use `haveI : IsScalarTower R (Sec s U.1) (Sec s' (φ ⁻¹ᵁ U.1)) := .of_algebraMap_eq fun r ↦ ((semiHom_secPull h.w (pairOf h U)).map_algebraMap r).symm`. Use `haveI : Algebra.IsPushout R R' (Sec s U.1) (Sec s' (φ ⁻¹ᵁ U.1)) := CommRingCat.isPushout_iff_isPushout.mp (GlobalTheory.AbLaw.isPushout_cst h U.2 rfl)`.
-
-Conclude with `isBaseChange_of_isPushout (B := Sec s U.1) (B' := Sec s' (φ ⁻¹ᵁ U.1)) (evForm (OAff s) (op U)) (hP (op U)) (semiHom_secPull h.w (pairOf h U)) u hu`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem isBaseChange_at (h : IsPullback φ s' s (spMap (algebraMap R R'))) (hP : Par (OAff s)) (U : X.affineOpens)
     (u : R' ⊗[R] GlobForm s →ₗ[R'] Ω[Sec s' (φ ⁻¹ᵁ U.1)⁄R'])
@@ -207,11 +205,11 @@ theorem isBaseChange_at (h : IsPullback φ s' s (spMap (algebraMap R R'))) (hP :
     (semiHom_secPull h.w (pairOf h U)) u hu
 
 /- English proof (translation)
-Set `y : Sp R'` to `p`. Take `⟨V, hV, hx, -⟩` from `exists_isAffineOpen_mem_and_subset (X := X) (U := ⊤) (x := φ (e y)) trivial`. Establish `hU'` using `GlobalTheory.AbLaw.isAffineOpen_preimage_of_isPullback h hV`. Use `⟨⟨V, hV⟩, hU'.primeIdealOf ⟨e y, hx⟩, ?_⟩` and prove the remaining obligations. Establish `e₁` using `hU'.fromSpec_primeIdealOf ⟨e y, hx⟩`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e₂` using `affPt_w s' ⟨φ ⁻¹ᵁ V, hU'⟩`. Establish `e₃` using `congrArg (fun f ↦ f (hU'.primeIdealOf ⟨e y, hx⟩)) e₂`. Establish `e₄ : s' (e y) = y`. Rewrite using `[← Scheme.Hom.comp_apply, he]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `e₅ : s' (hU'.fromSpec (hU'.primeIdealOf ⟨e y, hx⟩)) = spMap (algebraMap R' (Sec s' (φ ⁻¹ᵁ V))) (hU'.primeIdealOf ⟨e y, hx⟩)` using `(Scheme.Hom.comp_apply _ _ _).symm.trans e₃`. Conclude with `((congrArg (fun z ↦ s' z) e₁).symm.trans e₅).symm.trans e₄`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_prime (h : IsPullback φ s' s (spMap (algebraMap R R'))) (e : Sp R' ⟶ X') (he : e ≫ s' = 𝟙 _)
     (p : PrimeSpectrum R') : ∃ (U : X.affineOpens) (q : PrimeSpectrum (Sec s' (φ ⁻¹ᵁ U.1))),
@@ -233,15 +231,13 @@ theorem exists_prime (h : IsPullback φ s' s (spMap (algebraMap R R'))) (e : Sp 
 end Main
 
 /- English proof (translation)
-Introduce `_ hPar R _ A _ g hA hg R' _ _ X' s' φ h`. Take `⟨_, hA', hg'⟩` from `exists_grp A g hA hg s' φ h`. Take `⟨hP, hV⟩` from `hPar R A g hA hg`. Take `⟨hP', hV'⟩` from `hPar R' (Over.mk s') g hA' hg'`. Use `replace hP' : Par (OAff s') := hP'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `replace hV' : VB R' (GlobForm s') g := hV'`. Take `⟨f₁, f₂, -⟩` from `hV'`. Take `⟨f₃, -, -⟩` from `hV`. Set `_ : Module R (GlobForm s')` to `Module.compHom _ (algebraMap R R')`. Establish `: IsScalarTower R R' (GlobForm s')` using `.of_algebraMap_smul fun _ _ ↦ rfl`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `T : R' ⊗[R] GlobForm A.hom →ₗ[R'] GlobForm s'` to `LinearMap.liftBaseChange R' { toFun := pullForm h.w map_add' := map_add _ map_smul' := (pullForm h.w).map_smulₛₗ }`. Establish `hT : ∀ c : GlobForm A.hom, T (1 ⊗ₜ c) = pullForm h.w c` using `fun c ↦ by simp [T]`. Set `e : Sp R' ⟶ X'` to `(η[Over.mk s'] : 𝟙_ (Over (Sp R')) ⟶ Over.mk s').left`. Establish `he : e ≫ s' = 𝟙 _` using `Over.w (η[Over.mk s'] : 𝟙_ (Over (Sp R')) ⟶ Over.mk s')`. Establish `hb : Function.Bijective T` using `bijective_of_lTensor T (fun U : A.left.affineOpens ↦ Sec s' (φ ⁻¹ᵁ U.1)) (exists_prime h e he) fun U ↦ ?_`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨LinearEquiv.ofBijective T hb, fun c ↦ by`. Establish `: LinearEquiv.ofBijective T hb (1 ⊗ₜ c) = pullForm h.w c` using `hT c`. Rewrite using `[this]`. Conclude with `isPullForm_pullForm h.w c⟩`. Use `lTensor_bijective_of_isBaseChange T (evForm (OAff s') (op ⟨φ ⁻¹ᵁ U.1, GlobalTheory.AbLaw.isAffineOpen_preimage_of_isPullback h U.2⟩)) (hP' _) ?_` and prove the remaining obligations.
-
-Use `isBaseChange_at h hP U _ fun c ↦ ?_` and prove the remaining obligations. Establish `k` using `isPullForm_iff.1 (isPullForm_pullForm h.w c) (pairOf h U)`. Conclude with `(congrArg (fun z : GlobForm s' ↦ z.1 (op (pairOf h U).1.1)) (hT c)).trans k.symm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem formBC : SteinSt → ParSt → FormBCSt := by
   intro _ hPar R _ A _ g hA hg R' _ _ X' s' φ h

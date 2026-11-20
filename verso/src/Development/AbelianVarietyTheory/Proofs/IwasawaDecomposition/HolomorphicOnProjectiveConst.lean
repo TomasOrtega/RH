@@ -14,7 +14,7 @@ namespace GlobalTheory.ConstFn
 variable {F : Type} [Field F] {X : Scheme.{0}} {p : X ⟶ Sp F} {σ : F →+* ℂ}
 
 /- English proof (translation)
-Establish `h : ⊤ ≤ y.1 ⁻¹ᵁ (⊤ : X.Opens)` using `le_rfl`. Use `show valR y.1 ⊤ a = _`. Rewrite using `[valR, dif_pos h]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem ev_top_eq (a : Γ(X, ⊤)) (y : CxPts p σ) :
     ev p σ ⊤ a y = (Scheme.ΓSpecIso (CommRingCat.of ℂ)).hom.hom (y.1.appTop.hom a) := by
@@ -24,21 +24,19 @@ theorem ev_top_eq (a : Γ(X, ⊤)) (y : CxPts p σ) :
   rfl
 
 /- English proof (translation)
-Establish `hZ : IsIntegral (pullback p (spMap σ))` using `GeometricallyIntegral.geometrically_isIntegral (f := p) (spMap σ) _ _ (.of_hasPullback _ _)`. Set `fs` to `pullback.fst p (spMap σ)`. Set `sn` to `pullback.snd p (spMap σ)`. Set `e : ℂ →+* Γ(pullback p (spMap σ), ⊤)` to `sn.appTop.hom.comp (Scheme.ΓSpecIso (CommRingCat.of ℂ)).inv.hom`. Use `letI : Algebra ℂ Γ(pullback p (spMap σ), ⊤) := e.toAlgebra`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Equip the data with the indicated structure.
 
-Establish `hcomp : (algebraMap ℂ Γ(pullback p (spMap σ), ⊤)).comp ((Scheme.ΓSpecIso (CommRingCat.of ℂ)).hom.hom.comp (spMap σ).appTop.hom) = fs.appTop.hom.comp p.appTop.hom`. Establish `h : fs ≫ p = sn ≫ spMap σ` using `pullback.condition`. Use extensionality with `c`. Establish `h'` using `congrArg (fun m : pullback p (spMap σ) ⟶ Sp F => m.appTop.hom c) h`. Simplify using `only [Scheme.Hom.comp_appTop, CommRingCat.hom_comp, RingHom.comp_apply] at h'`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [RingHom.comp_apply]`. Use `Eq.trans ?_ h'.symm` and prove the remaining obligations. Use `show sn.appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of ℂ)).inv.hom ((Scheme.ΓSpecIso (CommRingCat.of ℂ)).hom.hom _)) = _`. Simplify using the standard rewrite rules. Establish `hint : IsIntegral ℂ (fs.appTop.hom a)`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨P, hP, h0⟩` from `isIntegral_appTop_of_universallyClosed p a`. Use `⟨P.map ((Scheme.ΓSpecIso (CommRingCat.of ℂ)).hom.hom.comp (spMap σ).appTop.hom), hP.map _, ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.eval₂_map, hcomp, ← Polynomial.hom_eval₂, h0, map_zero]`. Take `⟨r, hr⟩` from `(IsAlgClosed.algebraMap_bijective_of_isIntegral (k := ℂ) (K := integralClosure ℂ Γ(pullback p (spMap σ), ⊤))).2 ⟨_, hint⟩`. Establish `hr' : e r = fs.appTop.hom a` using `congrArg Subtype.val hr`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨r, fun y => ?_⟩` and prove the remaining obligations. Set `z : Sp ℂ ⟶ pullback p (spMap σ)` to `pullback.lift y.1 (𝟙 _) (by rw [y.2, Category.id_comp])`. Establish `h1 : z ≫ fs = y.1` using `pullback.lift_fst _ _ _`. Establish `h2 : z ≫ sn = 𝟙 _` using `pullback.lift_snd _ _ _`. Establish `h3 : y.1.appTop.hom a = z.appTop.hom (fs.appTop.hom a)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h1, Scheme.Hom.comp_appTop]`. Both sides reduce to the same expression. Establish `h4 : z.appTop.hom (sn.appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of ℂ)).inv.hom r)) = (Scheme.ΓSpecIso (CommRingCat.of ℂ)).inv.hom r`. Establish `e₂ : (z ≫ sn).appTop = sn.appTop ≫ z.appTop` using `Scheme.Hom.comp_appTop _ _`. Rewrite `e₂` using `[h2]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e₃` using `congrArg (fun m => m.hom ((Scheme.ΓSpecIso (CommRingCat.of ℂ)).inv.hom r)) e₂`. Conclude with `Eq.trans e₃.symm (by simp)`. Rewrite using `[ev_top_eq, h3, ← hr']`. Use `show (Scheme.ΓSpecIso (CommRingCat.of ℂ)).hom.hom (z.appTop.hom (sn.appTop.hom _)) = r`. Rewrite using `[h4]`.
-
-Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_ev_eq [UniversallyClosed p] [GeometricallyIntegral p] (a : Γ(X, ⊤)) :
     ∃ b : ℂ, ∀ y : CxPts p σ, ev p σ ⊤ a y = b := by
@@ -89,13 +87,13 @@ theorem exists_ev_eq [UniversallyClosed p] [GeometricallyIntegral p] (a : Γ(X, 
 end GlobalTheory.ConstFn
 
 /- English proof (translation)
-Introduce `F _ Y σ R q hq`. Establish `hB` using `LB.isLB_triv Y.X`. Establish `hs : (fun _ => q : (LB.triv Y.X).ι → CxPts Y.str σ → ℂ) ∈ R.holSec (LB.triv Y.X)`. Use `⟨⟨fun i j y hi _ => ?_, fun i y h => (h mem_ptsIn_top).elim⟩, fun i => hq.mono (Set.subset_univ _)⟩` and prove the remaining obligations. Consider the cases of `i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data.
 
-Consider the cases of `j`. Rewrite using `[gv_self hB hi, one_mul]`. Take `⟨x, hx⟩` from `(AnRead.bijective_valC Y.isProjOver R hB).2 ⟨_, hs⟩`. Set `M : Submodule ℂ ((LB.triv Y.X).ι → CxPts Y.str σ → ℂ)` to `{ carrier := {s | ∃ b : ℂ, ∀ i z, s i z = b} zero_mem' := ⟨0, fun _ _ => rfl⟩ add_mem' := fun {s t} ⟨b, hb⟩ ⟨c, hc⟩ => ⟨b + c, fun i z => by simp [hb, hc]⟩ smul_mem' := fun c s ⟨b, hb⟩ => ⟨c * b, fun i z => by simp [hb]⟩ }`. Take `⟨b, hb⟩ : SecC.val x ∈ M` from `SecC.val_mem_of (fun s => by`.
+Split into cases according to the possible forms of the given data. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb⟩` from `GlobalTheory.ConstFn.exists_ev_eq (p := Y.str) (σ := σ) (s.f PUnit.unit)`. Conclude with `⟨b, fun i z => by cases i; exact hb z⟩) x`. Use `⟨b, fun z => ?_⟩` and prove the remaining obligations. Establish `e` using `congrArg Subtype.val hx`. Rewrite `e` using `[AnRead.coe_valC]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `hb PUnit.unit z` as an intermediate fact. Rewrite `this` using `[e]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.ConstFn.holoOn_univ_const : ∀ (F : Type) [Field F] (Y : GlobalTheory.ProjVar.Var F) (σ : F →+* ℂ) (R : AnRead Y.str σ Y.dim)
     (q : CxPts Y.str σ → ℂ), R.HoloOn Set.univ q → ∃ b : ℂ, ∀ z, q z = b := by

@@ -32,20 +32,20 @@ def HasChartOf (φ : InvFun (𝓞 E)) (Z : Model Xo c β) (BD : EffCartierData Z
 variable {φ : InvFun (𝓞 E)} {Z : Model Xo c β} {BD : EffCartierData Z.X} {d : ℕ} {x : gen Z}
 
 /- English proof (translation)
-The claim follows from `(Nat.lcm_pos (by have := l.three_le; omega) l.A_pos).ne'`.
+A detailed English derivation is pending.
 -/
 theorem level_ne_zero (l : Geo.Tor.Level H) : l.M' ≠ 0 :=
   (Nat.lcm_pos (by have := l.three_le; omega) l.A_pos).ne'
 
 /- English proof (translation)
-Take `⟨k, _, m, e, ξ, t, P, γ, δ, a, hx, h₁, h₂, h₃, h₄, h₅, -, h₆, h₇, -⟩` from `h`. Conclude with `⟨k, _, m, e, ξ, t, P, γ, hx, h₁, h₂, h₃, h₄, h₅, h₆.isPartOfBasis_level (level_ne_zero l) h₇⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem HasChartOf.hasChart (h : HasChartOf φ Z BD d x) : HasChart Z x := by
   obtain ⟨k, _, m, e, ξ, t, P, γ, δ, a, hx, h₁, h₂, h₃, h₄, h₅, -, h₆, h₇, -⟩ := h
   exact ⟨k, _, m, e, ξ, t, P, γ, hx, h₁, h₂, h₃, h₄, h₅, h₆.isPartOfBasis_level (level_ne_zero l) h₇⟩
 
 /- English proof (translation)
-Take `⟨k, _, m, e, ξ, t, P, γ, δ, a, hx, h₁, h₂, h₃, h₄, h₅, h₀, h₆, h₇, h₈⟩` from `h`. Establish `: CharZero (ChartRing k m e)` using `(Spec.preimage (ξ ≫ genStr Z)).hom.charZero_iff (RingHom.injective _) |>.1 inferInstance`. Conclude with `⟨k, _, m, e, ξ, t, P, γ, δ, a, hx, ⟨h₁, h₂, h₃, h₄, GlobalTheory.FlatTors.torsionIso_holds E H _ _ (admissibleBase_chartRing k m e) t P, h₅, h₆.isPartOfBasis_level (level_ne_zero l) h₇⟩, h₀, h₆, h₇, h₈⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem HasChartOf.exists_isToricChart (h : HasChartOf φ Z BD d x) :
     ∃ (k : Type) (_ : Field k) (m e : ℕ) (ξ : Sp (ChartRing k m e) ⟶ gen Z) (t : SAB H (Sp (ChartRing k m e)))
@@ -79,7 +79,7 @@ def ToroidalChartsForFan : Prop :=
 namespace ToroidalChartsForFan
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw hr l Xo c`. Take `⟨φ, h₁, h₂⟩` from `hφ E H (min Dw.p Dw.q)`. Take `⟨Y, BD, d, k, -, -, h₃, h₄, -, h₅, -⟩` from `h E H Dw hr φ h₁ h₂ l Xo c`. Conclude with `⟨Y, h₃, h₄, fun x hx => (h₅ x hx).hasChart⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem toroidalCharts (h : ToroidalChartsForFan)
     (hφ : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (q : ℕ),
@@ -90,7 +90,7 @@ theorem toroidalCharts (h : ToroidalChartsForFan)
   exact ⟨Y, h₃, h₄, fun x hx => (h₅ x hx).hasChart⟩
 
 /- English proof (translation)
-Take `⟨Y, BD, d, k, a₁, a₂, a₃, a₄, a₅, a₆, a₇⟩` from `h E H Dw hr φ h₁ h₂ l Xo c`. Conclude with `⟨Y, BD, d, k, a₁, a₂, a₃, a₄, a₅, a₆, fun hP => a₇ (GlobalTheory.FlagMod.isLB_detOm hP)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_model (h : ToroidalChartsForFan) {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
     {Dw : Datum H} (hr : 1 ≤ Dw.p + Dw.q) {φ : InvFun (𝓞 E)} (h₁ : IsPolFan H.bar (min Dw.p Dw.q) φ)
@@ -104,7 +104,7 @@ theorem exists_model (h : ToroidalChartsForFan) {E : Type} [Field E] [NumberFiel
   exact ⟨Y, BD, d, k, a₁, a₂, a₃, a₄, a₅, a₆, fun hP => a₇ (GlobalTheory.FlagMod.isLB_detOm hP)⟩
 
 /- English proof (translation)
-Rewrite using `[h, Nat.min_zero]`. Conclude with `⟨isPolFan_zero, noSelfInt_zero⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 example {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} (Dw : Datum H) (h : Dw.q = 0)
     (φ : InvFun (𝓞 E)) : IsPolFan H.bar (min Dw.p Dw.q) φ ∧ NoSelfInt H.bar (min Dw.p Dw.q) φ := by

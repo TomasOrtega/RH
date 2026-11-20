@@ -20,15 +20,15 @@ open GlobalTheory.Sandwich GlobalTheory.IndefiniteRowSideFullHecke.SandwichMaps 
 namespace GlobalTheory.FrameModel
 
 /- English proof (translation)
-Introduce `C _ v O _ _ hv Λ _ _ α h N ρ ρ' X Φ hX hΦ1 hΦ2`. Use `⟨fun w hw => ?_, fun w hw => ?_, fun w hw c hc hcw => ?_⟩` and prove the remaining obligations. Take `⟨t, -, rfl⟩` from `(mem_modelLattice v hv Φ _ _).1 hw`. Conclude with `(mem_freeLattice_iff v hv α Φ hΦ2 _).2 ⟨t, rfl⟩`. Take `⟨t, ht, rfl⟩` from `(mem_modelLattice v hv Φ _ _).1 hw`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `(mem_modelLattice v hv Φ _ _).2 ⟨ρ α *ᵥ t, ?_, ?_⟩` and prove the remaining obligations. Rewrite `ht`, the goal using `[LinearMap.mem_ker, Matrix.toLin'_apply]`. Rewrite using `[Matrix.mulVec_mulVec, hX, ← Matrix.mulVec_mulVec, ht, Matrix.mulVec_zero]`. Use function extensionality and compare the values at `s`. Rewrite using `[← mulVec_incl, hΦ1]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Take `⟨t, rfl⟩` from `(mem_freeLattice_iff v hv α Φ hΦ2 _).1 hw`. Take `⟨t', ht', e⟩` from `(mem_modelLattice v hv Φ _ _).1 hcw`. Use `(mem_modelLattice v hv Φ _ _).2 ⟨t, ?_, rfl⟩` and prove the remaining obligations. Establish `hc' : (c : C) ≠ 0` using `fun e => hc (Subtype.ext e)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : incl C h t' = (c : C) • incl C h t`. Apply `Φ.injective` to reduce the goal to its premises. Rewrite using `[e, map_smul]`. Both sides reduce to the same expression. Rewrite `ht'`, the goal using `[LinearMap.mem_ker, Matrix.toLin'_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e2` using `congrArg (fun y => X.map (algebraMap O C) *ᵥ y) e1`. Simplify using `only [Matrix.mulVec_smul, mulVec_incl, ht', map_zero] at e2`. Apply `incl_injective v hv` to reduce the goal to its premises. Rewrite using `[map_zero]`. Conclude with `(smul_eq_zero.1 e2.symm).resolve_left hc'`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isFiltration_modelLattice_ker : ∀ (C : Type) [Field C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] (hv : v.Integers O) (Λ : Type) [CommRing Λ] [Finite (Λ →+* O)] (α : Λ) (h N : ℕ) (ρ ρ' : Λ → Matrix (Fin h) (Fin h) O) (X : Matrix (Fin h) (Fin h) O) (Φ : (Fin h → C) ≃ₗ[C] ((Λ →+* O) → Fin N → C)), (∀ l, X * ρ l = ρ' l * X) → (∀ l z σ, Φ ((ρ l).map (algebraMap O C) *ᵥ z) σ = algebraMap O C (σ l) • Φ z σ) → (∀ z, (∀ i, z i ∈ (algebraMap O C).range) ↔ ∀ i, ∃ f : Polynomial O, ∀ σ, Φ z σ i = algebraMap O C (f.eval (σ α))) → GlobalTheory.IndefiniteRowSideFullHecke.QuotientEigenDifference.IsFiltration (embVal v hv α) (modelLattice v Φ (LinearMap.ker (Matrix.toLin' X))) := by
   intro C _ v O _ _ hv Λ _ _ α h N ρ ρ' X Φ hX hΦ1 hΦ2
@@ -58,13 +58,13 @@ theorem isFiltration_modelLattice_ker : ∀ (C : Type) [Field C] (v : Valuation 
     exact (smul_eq_zero.1 e2.symm).resolve_left hc'
 
 /- English proof (translation)
-Introduce `C _ v O _ _ hv Λ _ _ α h N ρ ρ' X Φ hX hΦ1 hΦ2 hinj hfilt y`. Use `letI : Fintype (Λ →+* O) := Fintype.ofFinite _`. Take `⟨o, t, ho, ht⟩` from `exists_smul_eq_incl v hv y`. Establish `hb : X.map (algebraMap O C) *ᵥ y = 0 ↔ t ∈ LinearMap.ker (Matrix.toLin' X)`. Rewrite using `[LinearMap.mem_ker, Matrix.toLin'_apply, ← (incl_injective v hv h).eq_iff, ← mulVec_incl, ht, map_zero, Matrix.mulVec_smul, smul_eq_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨Or.inr, fun e => e.resolve_left ho⟩`. Establish `hs : ∀ s, Φ (incl C h t) s = algebraMap O C o • Φ y s` using `fun s => by`. Rewrite using `[ht, map_smul, Pi.smul_apply]`. Rewrite using `[Matrix.toLin'_apply, hb]`. Prove the components needed by the constructor for the conclusion.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce `htk s`. Rewrite using `[← Submodule.smul_mem_iff _ ho, ← hs]`. Conclude with `Submodule.subset_span ⟨_, (mem_modelLattice v hv Φ _ _).2 ⟨t, htk, rfl⟩, rfl⟩`. Introduce `hy`. Use `GlobalTheory.T.mem_filtration_of_components_mem_eigenSpan C v (Λ →+* O) (embVal v hv α) N _ hinj hfilt (Φ (incl C h t)) ((mem_freeLattice_iff v hv α Φ hΦ2 _).2 ⟨t, rfl⟩) (fun s => by rw [hs]; exact Submodule.smul_mem _ _ (hy s))` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨t', ht', e⟩` from `(mem_modelLattice v hv Φ _ _).1 this`. Rewrite using `[← incl_injective v hv h (Φ.injective e)]` and apply the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem mulVec_eq_zero_iff_mem_filSpace : ∀ (C : Type) [Field C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] (hv : v.Integers O) (Λ : Type) [CommRing Λ] [Finite (Λ →+* O)] (α : Λ) (h N : ℕ) (ρ ρ' : Λ → Matrix (Fin h) (Fin h) O) (X : Matrix (Fin h) (Fin h) O) (Φ : (Fin h → C) ≃ₗ[C] ((Λ →+* O) → Fin N → C)), (∀ l, X * ρ l = ρ' l * X) → (∀ l z σ, Φ ((ρ l).map (algebraMap O C) *ᵥ z) σ = algebraMap O C (σ l) • Φ z σ) → (∀ z, (∀ i, z i ∈ (algebraMap O C).range) ↔ ∀ i, ∃ f : Polynomial O, ∀ σ, Φ z σ i = algebraMap O C (f.eval (σ α))) → Function.Injective (embVal v hv α) → GlobalTheory.IndefiniteRowSideFullHecke.QuotientEigenDifference.IsFiltration (embVal v hv α) (modelLattice v Φ (LinearMap.ker (Matrix.toLin' X))) → ∀ y : Fin h → C, (Matrix.toLin' (X.map (algebraMap O C))) y = 0 ↔ ∀ s, Φ y s ∈ GlobalTheory.IndefiniteRowSideFullHecke.QuotientEigenDifference.filSpace (modelLattice v Φ (LinearMap.ker (Matrix.toLin' X))) s := by
   intro C _ v O _ _ hv Λ _ _ α h N ρ ρ' X Φ hX hΦ1 hΦ2 hinj hfilt y
@@ -90,19 +90,17 @@ theorem mulVec_eq_zero_iff_mem_filSpace : ∀ (C : Type) [Field C] (v : Valuatio
     rwa [← incl_injective v hv h (Φ.injective e)]
 
 /- English proof (translation)
-Introduce `C _ v O _ _ hv Λ _ h N ρ Φ b F hΦ hb s`. Set `π : eig C ρ s →ₗ[C] (Fin N → C)` to `((LinearMap.proj s : ((Λ →+* O) → Fin N → C) →ₗ[C] _) ∘ₗ Φ.toLinearMap) ∘ₗ (eig C ρ s).subtype`. Establish `hπ : Function.Bijective π`. Prove the components needed by the constructor for the conclusion. Rewrite using `[injective_iff_map_eq_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities.
 
-Introduce `x hx`. Conclude with `Subtype.ext (eq_zero_of_apply_eq_zero v hv ρ Φ hΦ s x x.2 hx)`. Introduce `w`. Take `⟨x, hx, e⟩` from `exists_eig_apply_eq v hv ρ Φ hΦ s w`. Conclude with `⟨⟨x, hx⟩, e⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Set `e` to `LinearEquiv.ofBijective π hπ`. Establish `h1` using `LinearMap.finrank_range_add_finrank_ker (b ∘ₗ (eig C ρ s).subtype)`. Establish `h2 : Module.finrank C (eig C ρ s) = N`. Rewrite using `[e.finrank_eq, Module.finrank_fin_fun]`. Establish `h3 : LinearMap.range (b ∘ₗ (eig C ρ s).subtype) = (eig C ρ s).map b`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearMap.range_comp, Submodule.range_subtype]`. Establish `h4 : LinearMap.ker (b ∘ₗ (eig C ρ s).subtype) = (F s).comap e.toLinearMap`. Use extensionality with `x`. Rewrite using `[LinearMap.mem_ker, Submodule.mem_comap]`. Use `show b x = 0 ↔ Φ x s ∈ F s`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hb]`. Use `⟨fun H => H s, fun H σ => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hσ : σ = s`. Rewrite using `[hσ]` and apply the resulting hypothesis. Rewrite using `[(mem_eig_iff_support v hv ρ Φ hΦ s x).1 x.2 σ hσ]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `zero_mem _`. Establish `h5 : Module.finrank C ((F s).comap e.toLinearMap) = Module.finrank C (F s)`. Rewrite using `[Submodule.comap_equiv_eq_map_symm]`. Conclude with `LinearEquiv.finrank_map_eq _ _`. Rewrite `h1` using `[h2, h3, h4, h5]`.
-
-Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem finrank_add_finrank_map_eig : ∀ (C : Type) [Field C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C], v.Integers O → ∀ (Λ : Type) [CommRing Λ] (h N : ℕ) (ρ : Λ → Matrix (Fin h) (Fin h) O) (Φ : (Fin h → C) ≃ₗ[C] ((Λ →+* O) → Fin N → C)) (b : (Fin h → C) →ₗ[C] (Fin h → C)) (F : (Λ →+* O) → Submodule C (Fin N → C)), (∀ l z σ, Φ ((ρ l).map (algebraMap O C) *ᵥ z) σ = algebraMap O C (σ l) • Φ z σ) → (∀ y, b y = 0 ↔ ∀ s, Φ y s ∈ F s) → ∀ s, Module.finrank C (F s) + Module.finrank C ((eig C ρ s).map b) = N := by
   intro C _ v O _ _ hv Λ _ h N ρ Φ b F hΦ hb s
@@ -139,35 +137,33 @@ theorem finrank_add_finrank_map_eig : ∀ (C : Type) [Field C] (v : Valuation C 
   omega
 
 /- English proof (translation)
-Introduce `C _ v O _ _ hv Λ _ _ α h N ρ ρ' X Φ hX hΦ1 hΦ2 hker _ τ n y hy`. Use `set F := GlobalTheory.IndefiniteRowSideFullHecke.QuotientEigenDifference.filSpace (modelLattice v Φ (LinearMap.ker (Matrix.toLin' X))) with hF`. Use `set b := Matrix.toLin' (X.map (algebraMap O C)) with hb`. Establish `hsup` using `mem_eig_iff_support v hv ρ Φ hΦ1 τ`. Set `π : (Fin h → C) →ₗ[C] ((Fin N → C) ⧸ F τ)` to `(F τ).mkQ ∘ₗ (LinearMap.proj τ : ((Λ →+* O) → Fin N → C) →ₗ[C] _) ∘ₗ Φ.toLinearMap`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hπ : ∀ x, π x = (F τ).mkQ (Φ x τ)` using `fun _ => rfl`. Establish `hk : ∀ x ∈ eig C ρ τ, (b x = 0 ↔ π x = 0)`. Introduce `x hx`. Rewrite using `[hker, hπ, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Use `⟨fun H => H τ, fun H σ => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Distinguish the cases in `hσ : σ = τ`. Rewrite using `[hσ]` and apply the resulting hypothesis. Rewrite using `[(hsup x).1 hx σ hσ]`. Conclude with `zero_mem _`. Establish `hmem : ∀ x ∈ eig C ρ τ, (π x ∈ GlobalTheory.IndefiniteRowSideFullHecke.QuotientEigenDifference.eigenSub (GlobalTheory.IndefiniteRowSideFullHecke.QuotientEigenDifference.lie (GlobalTheory.IndefiniteRowSideFullHecke.QuotientEigenDifference.freeLattice (embVal v hv α) N) (modelLatti …`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Establish `key : ∀ t : Fin h → O, b (incl C h t) = b x ↔ ∀ s, (F s).mkQ (Φ (incl C h t) s) = (Pi.single τ (π x) : ∀ s, (Fin N → C) ⧸ F s) s`. Introduce `t`. Rewrite using `[← sub_eq_zero, ← map_sub, hker]`. Use `forall_congr' fun s => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[map_sub, Pi.sub_apply]`. Distinguish the cases in `hs : s = τ`. Substitute `hs` using the available equality. Rewrite using `[Pi.single_eq_same, hπ, Submodule.mkQ_apply, Submodule.mkQ_apply, Submodule.Quotient.eq]`. Rewrite using `[Pi.single_eq_of_ne hs, (hsup x).1 hx s hs, sub_zero, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Unfold `GlobalTheory.IndefiniteRowSideFullHecke.QuotientEigenDifference.eigenSub GlobalTheory.IndefiniteRowSideFullHecke.QuotientEigenDifference.lie`. Rewrite using `[Submodule.mem_comap, Submodule.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w, hw, e⟩`. Take `⟨t, rfl⟩` from `(mem_freeLattice_iff v hv α Φ hΦ2 _).1 hw`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨t, (key t).2 fun s => congrFun e s⟩`. Introduce and unpack `⟨t, ht⟩`. Conclude with `⟨_, (mem_freeLattice_iff v hv α Φ hΦ2 _).2 ⟨t, rfl⟩, funext ((key t).1 ht)⟩`. Establish `hlie : ∀ x ∈ eig C ρ τ, ((∃ t : Fin h → O, b (incl C h t) = b x) ↔ b x ∈ Submodule.span O (Set.range fun i => b (y i)))`. Introduce `x hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Rewrite using `[hy.2, Submodule.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨t, ht⟩`. Establish `ht' : incl C h (X *ᵥ t) = b x` using `by rw [← ht, hb, Matrix.toLin'_apply, mulVec_incl]`. Use `⟨X *ᵥ t, ⟨⟨t, rfl⟩, ?_⟩, ht'⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[SetLike.mem_coe, Submodule.mem_iInf]`. Introduce `l`. Rewrite using `[Module.End.mem_eigenspace_iff, Matrix.toLin'_apply]`. Apply `incl_injective v hv` to reduce the goal to its premises. Rewrite using `[← mulVec_incl, map_smul, ht', hb, Matrix.toLin'_apply, Matrix.mulVec_mulVec, ← Matrix.map_mul, ← hX, Matrix.map_mul, ← Matrix.mulVec_mulVec, (mem_eig_iff ρ τ x).1 hx l, Matrix.mulVec_smul, algebraMap_smul]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Introduce and unpack `⟨_, ⟨⟨t, rfl⟩, -⟩, ht⟩`. Conclude with `⟨t, by rw [← ht, hb, Matrix.toLin'_apply, Matrix.toLin'_apply, mulVec_incl]⟩`. Establish `hsum : ∀ g : Fin n → C, ∑ i, g i • (y i : Fin h → C) ∈ eig C ρ τ` using `fun g => sum_mem fun i _ => Submodule.smul_mem _ _ (y i).2`. Prove the components needed by the constructor for the conclusion. Rewrite using `[Fintype.linearIndependent_iff]`.
+Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `g hg`. Use `Fintype.linearIndependent_iff.1 hy.1 g ?_` and prove the remaining obligations. Use `(hk _ (hsum g)).2 (by rw [map_sum]; simp only [map_smul]; exact hg)` as an intermediate fact. Rewrite `this` using `[map_sum]`. Simplify `this` using `only [map_smul]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `(hmem _ (y i).2).2 ((hlie _ (y i).2).2 (Submodule.subset_span ⟨i, rfl⟩))`. Introduce `q hq`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨w, rfl⟩` from `(F τ).mkQ_surjective q`. Take `⟨x, hx, rfl⟩` from `exists_eig_apply_eq v hv ρ Φ hΦ1 τ w`. Take `⟨g, hg⟩` from `(Submodule.mem_span_range_iff_exists_fun O).1 ((hlie x hx).1 ((hmem x hx).1 hq))`. Establish `h0` using `(hk _ (sub_mem hx (hsum fun i => algebraMap O C (g i)))).1 (by`. Rewrite using `[map_sub, map_sum, ← hg, sub_eq_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun i _ => by rw [map_smul, algebraMap_smul])`. Rewrite `h0` using `[map_sub, map_sum, sub_eq_zero]`. Rewrite using `[← hπ, h0]`. Use `sum_mem fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul]`.
-
-Conclude with `Submodule.smul_mem _ (⟨algebraMap O C (g i), (Valuation.mem_valuationSubring_iff _ _).2 (hv.map_le_one _)⟩ : v.valuationSubring) (Submodule.subset_span ⟨i, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem isLatticeBasis_lie : ∀ (C : Type) [Field C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] (hv : v.Integers O) (Λ : Type) [CommRing Λ] [Finite (Λ →+* O)] (α : Λ) (h N : ℕ) (ρ ρ' : Λ → Matrix (Fin h) (Fin h) O) (X : Matrix (Fin h) (Fin h) O) (Φ : (Fin h → C) ≃ₗ[C] ((Λ →+* O) → Fin N → C)), (∀ l, X * ρ l = ρ' l * X) → (∀ l z σ, Φ ((ρ l).map (algebraMap O C) *ᵥ z) σ = algebraMap O C (σ l) • Φ z σ) → (∀ z, (∀ i, z i ∈ (algebraMap O C).range) ↔ ∀ i, ∃ f : Polynomial O, ∀ σ, Φ z σ i = algebraMap O C (f.eval (σ α))) → (∀ y : Fin h → C, (Matrix.toLin' (X.map (algebraMap O C))) y = 0 ↔ ∀ s, Φ y s ∈ GlobalTheory.IndefiniteRowSideFullHecke.QuotientEigenDifference.filSpace (modelLattice v Φ (LinearMap.ker (Matrix.toLin' X))) s) → ∀ [DecidableEq (Λ →+* O)] (τ : Λ →+* O) (n : ℕ) (y : Fin n → eig C ρ τ), IsBasisOf C ((LinearMap.range (Matrix.toLin' X) ⊓ ⨅ l : Λ, Module.End.eigenspace (Matrix.toLin' (ρ' l)) (τ l)).map (incl C h)) (fun i => (Matrix.toLin' (X.map (algebraMap O C))) (y i)) → GlobalTheory.IndefiniteRowSideFullHecke.QuotientEigenDifference.IsLatticeBasis v (fun i => (GlobalTheory.IndefiniteRowSideFullHecke.QuotientEigenDifference.filSpace (modelLattice v Φ (LinearMap.ker (Matrix.toLin' X))) τ).mkQ (Φ (y i) τ)) (GlobalTheory.IndefiniteRowSideFullHecke.QuotientEigenDifference.eigenSub (GlobalTheory.IndefiniteRowSideFullHecke.QuotientEigenDifference.lie (GlobalTheory.IndefiniteRowSideFullHecke.QuotientEigenDifference.freeLattice (embVal v hv α) N) (modelLattice v Φ (LinearMap.ker (Matrix.toLin' X)))) τ) := by
   intro C _ v O _ _ hv Λ _ _ α h N ρ ρ' X Φ hX hΦ1 hΦ2 hker _ τ n y hy
@@ -258,29 +254,27 @@ theorem isLatticeBasis_lie : ∀ (C : Type) [Field C] (v : Valuation C NNReal) (
         (Submodule.subset_span ⟨i, rfl⟩)
 
 /- English proof (translation)
-Introduce `C _ w ℓ hℓ0 hℓ1 S _ _ a p q Fil τ ha hFil x u m hx hu hm`. Use `set F := GlobalTheory.IndefiniteRowSideFullHecke.QuotientEigenDifference.filSpace Fil τ with hF`. Establish `hfin : Module.finrank C F = q`. Establish `hsp : F = Submodule.span C (Set.range m)`. Rewrite using `[hF, GlobalTheory.IndefiniteRowSideFullHecke.QuotientEigenDifference.filSpace, ← hm.2, Submodule.span_span_of_tower]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hsp, finrank_span_eq_card hm.1, Fintype.card_fin]`. Establish `hd0 : GlobalTheory.IndefiniteRowSideFullHecke.QuotientEigenDifference.diffGen a τ ≠ 0`. Use `Finset.prod_ne_zero_iff.mpr fun s hs => sub_ne_zero.mpr ?_` and prove the remaining obligations. Conclude with `ha.ne (Finset.ne_of_mem_erase hs).symm`. Establish `h1` using `GlobalTheory.T.latticeDetRelation_herbrand_eigenspace C w ℓ hℓ0 hℓ1 S a p q Fil τ ha hFil hfin`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[GlobalTheory.T.piEigenSublattice_free_eq_differentScaled C w S a (p + q) τ ha]`. Establish `h2` using `GlobalTheory.T.latticeDetRelation_of_lsmul_shift C w ℓ hℓ0 hℓ1 p q _ _ _ _ _ _ hd0 h1`. Take `⟨x', u', m', c, hx', hu', hm', hmF, ⟨hc0, hcv⟩, hdet⟩` from `h2`. Take `⟨P, hP, hPdet⟩` from `GlobalTheory.DetRelCompare.transition x' x _ hx' hx`. Take `⟨A, hA, hAdet⟩` from `GlobalTheory.DetRelCompare.transition _ _ _ hu' hu`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨B, hB, hBdet⟩` from `GlobalTheory.DetRelCompare.transition m' m _ hm' hm`. Establish `hx'0 : (Matrix.of x').det ≠ 0` using `((Matrix.isUnit_iff_isUnit_det _).mp (Matrix.linearIndependent_rows_iff_isUnit.mp hx'.1)).ne_zero`. Establish `happ0 : (Matrix.of (Fin.append u' m')).det ≠ 0`. Introduce `h0`. Conclude with `hx'0 (by rw [hdet, h0, mul_zero])`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrel` using `GlobalTheory.DetRelCompare.det_append_eq F u u' m m' A B hA hB hu'.1 hmF happ0`. Establish `hxP : (Matrix.of x).det = P.det * (Matrix.of x').det`. Establish `hmat : Matrix.of x = P * Matrix.of x'`. Use extensionality with `i k`. Simplify using `[Matrix.mul_apply, hP i, Finset.sum_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hmat, Matrix.det_mul]`. Establish `hP0 : P.det ≠ 0`. Introduce `h0`. Rewrite `hPdet` using `[h0, map_zero]`. Conclude with `zero_ne_one hPdet`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨A.det * B.det * (P.det * c)⁻¹, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, map_inv₀, map_mul, hAdet, hBdet, hPdet, one_mul, one_mul, one_mul]`. Establish `hlam : Real.log (w ℓ : ℝ) ≠ 0` using `(Real.log_neg (NNReal.coe_pos.mpr hℓ0) (NNReal.coe_lt_one.mpr hℓ1)).ne`. Establish `hds : ∀ s ∈ Finset.univ.erase τ, ((w ((a τ : C) - (a s : C)) : NNReal) : ℝ) ≠ 0`. Introduce `s hs`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[NNReal.coe_ne_zero, Valuation.ne_zero_iff]`. Conclude with `sub_ne_zero.mpr (Subtype.coe_injective.ne (ha.ne (Finset.ne_of_mem_erase hs).symm))`. Establish `hdiff : ((GlobalTheory.IndefiniteRowSideFullHecke.QuotientEigenDifference.diffGen a τ : w.valuationSubring) : C) = ∏ s ∈ Finset.univ.erase τ, ((a τ : C) - (a s : C))`. Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.QuotientEigenDifference.diffGen]`. Establish `hle : ∀ s, Module.finrank C (GlobalTheory.IndefiniteRowSideFullHecke.QuotientEigenDifference.filSpace Fil s) ≤ p + q` using `fun s => (Submodule.finrank_le _).trans_eq (Module.finrank_fin_fun C)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hlogc : Real.log (w c : ℝ) = - ∑ s ∈ Finset.univ.erase τ, ((p + q - Module.finrank C (GlobalTheory.IndefiniteRowSideFullHecke.QuotientEigenDifference.filSpace Fil s) : ℕ) : ℝ) * Real.log (w ((a τ : C) - (a s : C)) : ℝ)`. Establish `e` using `hcv`. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.QuotientEigenDifference.addVal] at e`. Rewrite `e` using `[hdiff, map_prod, NNReal.coe_prod, Real.log_prod hds, div_eq_iff hlam]`. Rewrite using `[e, sub_mul, Finset.sum_mul, mul_assoc, div_mul_cancel₀ _ hlam, Finset.mul_sum, ← Finset.sum_sub_distrib, ← Finset.sum_neg_distrib]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[Nat.cast_sub (hle s)]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `hwc : 0 < ((w c : NNReal) : ℝ)` using `NNReal.coe_pos.mpr (pos_iff_ne_zero.mpr ((Valuation.ne_zero_iff w).mpr hc0))`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `NNReal.coe_injective` to reduce the goal to its premises. Rewrite using `[NNReal.coe_inv, NNReal.coe_prod]`. Simplify using `only [NNReal.coe_pow]`. Establish `hpos2 : 0 < ∏ s ∈ Finset.univ.erase τ, ((w ((a τ : C) - (a s : C)) : NNReal) : ℝ) ^ (p + q - Module.finrank C (GlobalTheory.IndefiniteRowSideFullHecke.QuotientEigenDifference.filSpace Fil s))` using `Finset.prod_pos fun s hs => pow_pos (lt_of_le_of_ne (NNReal.coe_nonneg _) (hds s hs).symm) _`. Rewrite using `[← Real.exp_log (inv_pos.mpr hwc), ← Real.exp_log hpos2, Real.log_inv, hlogc, neg_neg, Real.log_prod fun s hs => pow_ne_zero _ (hds s hs)]`.
-
-Simplify using `only [Real.log_pow]`. Rewrite using `[hrel, hxP, hdet]`. Clear the denominators using the available nonvanishing facts.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem det_append_eq_mul_det : ∀ (C : Type) [Field C] (w : Valuation C NNReal) (ℓ : C), 0 < w ℓ → w ℓ < 1 → ∀ (S : Type) [Fintype S] [DecidableEq S] (a : S → w.valuationSubring) (p q : ℕ) (Fil : Submodule w.valuationSubring (S → Fin (p + q) → C)) (τ : S), Function.Injective a → GlobalTheory.IndefiniteRowSideFullHecke.QuotientEigenDifference.IsFiltration a Fil → ∀ (x : Fin (p + q) → Fin (p + q) → C) (u : Fin p → Fin (p + q) → C) (m : Fin q → Fin (p + q) → C), GlobalTheory.IndefiniteRowSideFullHecke.QuotientEigenDifference.IsLatticeBasis w x (GlobalTheory.IndefiniteRowSideFullHecke.QuotientEigenDifference.eigenQuot (W := fun _ => Fin (p + q) → C) (GlobalTheory.IndefiniteRowSideFullHecke.QuotientEigenDifference.freeLattice a (p + q)) τ) → GlobalTheory.IndefiniteRowSideFullHecke.QuotientEigenDifference.IsLatticeBasis w (fun i => (GlobalTheory.IndefiniteRowSideFullHecke.QuotientEigenDifference.filSpace Fil τ).mkQ (u i)) (GlobalTheory.IndefiniteRowSideFullHecke.QuotientEigenDifference.eigenSub (GlobalTheory.IndefiniteRowSideFullHecke.QuotientEigenDifference.lie (GlobalTheory.IndefiniteRowSideFullHecke.QuotientEigenDifference.freeLattice a (p + q)) Fil) τ) → GlobalTheory.IndefiniteRowSideFullHecke.QuotientEigenDifference.IsLatticeBasis w m (GlobalTheory.IndefiniteRowSideFullHecke.QuotientEigenDifference.eigenQuot (W := fun _ => Fin (p + q) → C) Fil τ) → ∃ c : C, w c = ∏ s ∈ Finset.univ.erase τ, w ((a τ : C) - (a s : C)) ^ (p + q - Module.finrank C (GlobalTheory.IndefiniteRowSideFullHecke.QuotientEigenDifference.filSpace Fil s)) ∧ (Matrix.of (Fin.append u m)).det = c * (Matrix.of x).det := by
   intro C _ w ℓ hℓ0 hℓ1 S _ _ a p q Fil τ ha hFil x u m hx hu hm
@@ -362,7 +356,7 @@ section Small
 variable {C : Type} [Field C] (v : Valuation C NNReal) {O : Type} [CommRing O] [Algebra O C]
 
 /- English proof (translation)
-Rewrite using `[← sub_eq_zero, ← Module.forall_dual_apply_eq_zero_iff C]`. Introduce `φ`. Use `congrArg (fun g => g z) ((φ.compAlternatingMap f).eq_smul_basis_det e)` as an intermediate fact. Simplify using `only [LinearMap.compAlternatingMap_apply, AlternatingMap.smul_apply, smul_eq_mul] at this`. Rewrite using `[map_sub, this, map_smul, smul_eq_mul, mul_comm, sub_self]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem alternating_apply_eq_det_smul {E W : Type} [AddCommGroup E] [Module C E] [AddCommGroup W]
     [Module C W] {n : ℕ} (f : E [⋀^Fin n]→ₗ[C] W) (e : Module.Basis (Fin n) C E) (z : Fin n → E) :
@@ -374,11 +368,11 @@ theorem alternating_apply_eq_det_smul {E W : Type} [AddCommGroup E] [Module C E]
   rw [map_sub, this, map_smul, smul_eq_mul, mul_comm, sub_self]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Use `hli.map (f := π) ?_` and prove the remaining obligations. Rewrite using `[Submodule.disjoint_def]`. Introduce `x hx hx0`. Use `hE x ?_ hx0` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(Submodule.span_le.2 (by rintro _ ⟨i, rfl⟩; exact hy i)) hx`. Use extensionality with `w`. Rewrite using `[mem_span_valuationSubring_iff v hv, hL]`. Establish `: Set.range (fun i => π (y i)) = (π.restrictScalars O) '' Set.range y`. Rewrite using `[← Set.range_comp]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[this, ← Submodule.map_span, Submodule.mem_map]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem isLatticeBasis_map (hv : v.Integers O) {h N n : ℕ} (π : (Fin h → C) →ₗ[C] (Fin N → C))
     (E : Submodule C (Fin h → C)) (hE : ∀ x ∈ E, π x = 0 → x = 0) (y : Fin n → Fin h → C)
@@ -406,49 +400,47 @@ end GlobalTheory.FrameModel
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Introduce `p _ C _ _ _ v O _ _ _ _ hv ε hε Λ _ _ _ _ _ _ α hα a b h hh D τ z hzL hzF`. Take `⟨⟨hindT, -, -⟩, ⟨hindH, htopH, hdimH⟩⟩` from `GlobalTheory.T.sandwich_datum_eigen_multiplicity p C v O hv ε hε Λ (a + b) h hh D`. Take `⟨e, hQ, -, -, hdet⟩` from `GlobalTheory.T.exists_basis_quotient_lattice_eigen C v O Λ h (a + b) hv (actH D) τ hindH htopH (hdimH τ)`. Take `⟨Φ, hΦ1, hΦ2⟩` from `GlobalTheory.T.dvr_alpha_determinant_property p C v O hv ε hε Λ α hα (a + b) h hh D`. Use `haveI : Finite (Λ →+* O) := (GlobalTheory.T.ring_homs_dvr_card_eq_finrank p C v O hv Λ).1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Equip the data with the indicated structure.
 
-Use `letI : Fintype (Λ →+* O) := Fintype.ofFinite _`. Establish `hinj : Function.Injective (embVal v hv α)`. Introduce `σ σ' he`. Establish `he' : σ α = σ' α` using `hv.hom_inj (congrArg Subtype.val he)`. Set `S : Subalgebra ℤ_[p] Λ` to `{ σ.eqLocus σ' with algebraMap_mem' := fun r => by show σ (algebraMap ℤ_[p] Λ r) = σ' (algebraMap ℤ_[p] Λ r)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h1` using `GlobalTheory.T.padic_ring_hom_eq_canonical p O (σ.comp (algebraMap ℤ_[p] Λ))`. Establish `h2` using `GlobalTheory.T.padic_ring_hom_eq_canonical p O (σ'.comp (algebraMap ℤ_[p] Λ))`. Conclude with `(RingHom.congr_fun h1 r).trans (RingHom.congr_fun h2 r).symm }`. Establish `hle : Algebra.adjoin ℤ_[p] {α} ≤ S` using `Algebra.adjoin_le (by simpa [S] using he')`. Use extensionality with `x`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx : x ∈ Algebra.adjoin ℤ_[p] {α}` using `hα ▸ Algebra.mem_top`. Conclude with `hle hx`. Establish `hint` using `GlobalTheory.T.sandwich_datum_scalar_action p C v O hv ε hε Λ h D`. Establish `hX : ∀ l, D.G.map (WittVector.fontaineTheta O p) * actH D l = actT D l * D.G.map (WittVector.fontaineTheta O p)`. Introduce `l`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Establish `e'` using `congrArg (fun M => M.map (WittVector.fontaineTheta O p)) (hint.2.2.1 l)`. Simplify using `only [Matrix.map_mul] at e'`. Unfold `actH actT`. Rewrite using `[e']`. Simplify using `only [rhoTA, Matrix.map_map]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `hfilt : GlobalTheory.IndefiniteRowSideFullHecke.QuotientEigenDifference.IsFiltration (embVal v hv α) (modelLattice v Φ D.Fil)` using `isFiltration_modelLattice_ker C v O hv Λ α h (a + b) (actH D) (actT D) _ Φ hX hΦ1 hΦ2`. Establish `hker : ∀ y : Fin h → C, bC C D y = 0 ↔ ∀ s, Φ y s ∈ GlobalTheory.IndefiniteRowSideFullHecke.QuotientEigenDifference.filSpace (modelLattice v Φ D.Fil) s` using `mulVec_eq_zero_iff_mem_filSpace C v O hv Λ α h (a + b) (actH D) (actT D) _ Φ hX hΦ1 hΦ2 hinj hfilt`. Establish `hrank : ∀ s, a + b - Module.finrank C (GlobalTheory.IndefiniteRowSideFullHecke.QuotientEigenDifference.filSpace (modelLattice v Φ D.Fil) s) = D.lieRank s`. Introduce `s`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `finrank_add_finrank_map_eig C v O hv Λ h (a + b) (actH D) Φ (bC C D) _ hΦ1 hker s`. Establish `h2 : LinearMap.range (bC C D) ⊓ eig C (actT D) s = (eig C (actH D) s).map (bC C D)` using `(GlobalTheory.T.intertwiner_maps_eigenspaces C O Λ h (actH D) (actT D) (D.G.map (WittVector.fontaineTheta O p)) hX).2 htopH hindT s`. Rewrite using `[GlobalTheory.T.lie_rank_eq_finrank_eigen_inter p C v O hv ε Λ h D s, h2]`. Use linear arithmetic over natural numbers and integers. Establish `hu` using `isLatticeBasis_lie C v O hv Λ α h (a + b) (actH D) (actT D) _ Φ hX hΦ1 hΦ2 hker τ a (fun i => z (Fin.castAdd b i)) hzL`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `π : (Fin h → C) →ₗ[C] (Fin (a + b) → C)` to `(LinearMap.proj τ : ((Λ →+* O) → Fin (a + b) → C) →ₗ[C] _) ∘ₗ Φ.toLinearMap`. Establish `hπ : ∀ x, π x = Φ x τ` using `fun _ => rfl`. Establish `hE : ∀ x ∈ eig C (actH D) τ, π x = 0 → x = 0` using `eq_zero_of_apply_eq_zero v hv (actH D) Φ hΦ1 τ`. Establish `hm` using `isLatticeBasis_map v hv π _ hE (fun i => (z (Fin.natAdd a i) : Fin h → C)) (fun i => (z _).2) hzF.1 (GlobalTheory.IndefiniteRowSideFullHecke.QuotientEigenDifference.eigenQuot (W := fun _ => Fin (a + b) → C) (modelLattice v Φ D.Fil) τ) (by`. Introduce `w`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hzF.2]`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.QuotientEigenDifference.eigenQuot filQuot`. Rewrite using `[Submodule.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨t, ht, rfl⟩` from `(mem_modelLattice v hv Φ _ _).1 hy`. Take `⟨x, hx, hxe⟩` from `exists_eig_apply_eq v hv (actH D) Φ hΦ1 τ (Φ (incl C h t) τ)`. Conclude with `⟨x, (mem_eigPart_iff v hv (actH D) Φ hΦ1 τ _ x).2 ⟨hx, t, ht, hxe.symm⟩, hxe⟩`. Introduce and unpack `⟨x, hx, rfl⟩`. Take `⟨-, t, ht, hte⟩` from `(mem_eigPart_iff v hv (actH D) Φ hΦ1 τ _ x).1 hx`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨_, (mem_modelLattice v hv Φ _ _).2 ⟨t, ht, rfl⟩, hte⟩)`. Establish `hspan : ∀ x : Fin h → C, x ∈ Submodule.span O (Set.range fun i => (e i : Fin h → C)) ↔ ∃ x' ∈ quotLattice C (actH D) τ, (x' : Fin h → C) = x`. Introduce `x`. Establish `: Set.range (fun i => (e i : Fin h → C)) = ((eig C (actH D) τ).subtype.restrictScalars O) '' Set.range e`. Rewrite using `[← Set.range_comp]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[this, ← Submodule.map_span, Submodule.mem_map, hQ]`. Both sides reduce to the same expression. Establish `hx` using `isLatticeBasis_map v hv π _ hE (fun i => (e i : Fin h → C)) (fun i => (e _).2) (e.linearIndependent.map' _ (Submodule.ker_subtype _)) (GlobalTheory.IndefiniteRowSideFullHecke.QuotientEigenDifference.eigenQuot (W := fun _ => Fin (a + b) → C) (GlobalTheory.IndefiniteRowSideFullHeck …`. Introduce `w`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Unfold `GlobalTheory.IndefiniteRowSideFullHecke.QuotientEigenDifference.eigenQuot`. Rewrite using `[Submodule.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Take `⟨t, rfl⟩` from `(mem_freeLattice_iff v hv α Φ hΦ2 _).1 hy`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨x, hx, hxe⟩` from `exists_eig_apply_eq v hv (actH D) Φ hΦ1 τ (Φ (incl C h t) τ)`. Use `⟨x, (hspan x).2 ⟨⟨x, hx⟩, ⟨t, ?_⟩, rfl⟩, hxe⟩` and prove the remaining obligations. Rewrite using `[mem_iSup_eig_iff v hv (actH D) Φ hΦ1, map_sub, Pi.sub_apply, sub_eq_zero]`. Conclude with `hxe.symm`. Introduce and unpack `⟨x, hx, rfl⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Take `⟨x', ⟨t, ht⟩, rfl⟩` from `(hspan x).1 hx`. Rewrite `ht` using `[mem_iSup_eig_iff v hv (actH D) Φ hΦ1, map_sub, Pi.sub_apply, sub_eq_zero]`. Conclude with `⟨_, (mem_freeLattice_iff v hv α Φ hΦ2 _).2 ⟨t, rfl⟩, ht⟩)`. Establish `hp0 : (p : C) ≠ 0` using `Nat.cast_ne_zero.mpr (Fact.out : p.Prime).ne_zero`. Establish `hv0 : 0 < v (p : C)` using `zero_lt_iff.2 ((v.ne_zero_iff).2 hp0)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hv1 : v (p : C) < 1`. Establish `hp : algebraMap O C (p : O) = (p : C)` using `map_natCast _ _`. Use `lt_of_le_of_ne (hp ▸ hv.map_le_one _) fun h1 => (Fact.out : ¬IsUnit (p : O)) ?_` and prove the remaining obligations. Conclude with `hv.isUnit_of_one (hp ▸ hp0.isUnit) (hp ▸ h1)`. Take `⟨c, hc, hcd⟩` from `det_append_eq_mul_det C v (p : C) hv0 hv1 (Λ →+* O) (embVal v hv α) a b (modelLattice v Φ D.Fil) τ hinj hfilt _ _ _ hx hu hm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hX0 : (Matrix.of fun i => π (e i)).det ≠ 0`. Establish `hu : IsUnit (Matrix.of fun i => π (e i))` using `Matrix.linearIndependent_rows_iff_isUnit.1 hx.1`. Conclude with `((Matrix.isUnit_iff_isUnit_det _).1 hu).ne_zero`. Establish `hce : e.det z = c`. Establish `h1` using `alternating_apply_eq_det_smul ((Matrix.detRowAlternating : (Fin (a + b) → C) [⋀^Fin (a + b)]→ₗ[C] C).compLinearMap (π ∘ₗ (eig C (actH D) τ).subtype)) e z`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : (Fin.append (fun i => Φ (z (Fin.castAdd b i)) τ) (fun i => π (z (Fin.natAdd a i)))) = fun i => π (z i)`. Use function extensionality and compare the values at `i`. Use `Fin.addCases (fun j => ?_) (fun j => ?_) i` and prove the remaining obligations. Rewrite using `[Fin.append_left]`. Both sides reduce to the same expression.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Fin.append_right]`. Rewrite `hcd` using `[h2]`. Apply `mul_right_cancel₀ hX0` to reduce the goal to its premises. Rewrite using `[← hcd]`. Conclude with `h1.symm`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Use `⟨c, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hc, finprod_eq_prod_of_fintype]`. Rewrite using `[Finset.prod_subtype (p := fun σ : Λ →+* O => σ ≠ τ) (Finset.univ.erase τ) (by simp)]`. Use `Finset.prod_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[hrank]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Both sides reduce to the same expression. Rewrite using `[hdet, alternating_apply_eq_det_smul _ e z, hce]`. Use extensionality with `w`. Simplify using `only [SetLike.mem_coe, Submodule.mem_span_singleton, Set.mem_image]`. Prove the components needed by the constructor for the conclusion.
-
-Introduce and unpack `⟨o, rfl⟩`. Conclude with `⟨_, ⟨o, rfl⟩, smul_comm _ _ _⟩`. Introduce and unpack `⟨_, ⟨o, rfl⟩, rfl⟩`. Conclude with `⟨o, smul_comm _ _ _⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.DetInv.span_wedge_lie_fil_eq_smul_detLattice : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O], v.Integers O → ∀ (ε : PreTilt O p), IsPrimitiveRoot (root ε).untilt p → ∀ (Λ : Type) [CommRing Λ] [IsDomain Λ] [IsDiscreteValuationRing Λ] [Algebra ℤ_[p] Λ] [Module.Finite ℤ_[p] Λ] [FaithfulSMul ℤ_[p] Λ], ∀ (α : Λ), Algebra.adjoin ℤ_[p] {α} = ⊤ → ∀ (a b h : ℕ), h = Module.finrank ℤ_[p] Λ * (a + b) → ∀ (D : Datum ε h Λ) (τ : Λ →+* O) (z : Fin (a + b) → eig C (actH D) τ), IsBasisOf C (lieSub C D τ) (fun i => bC C D (z (Fin.castAdd b i))) → IsBasisOf C (filQuot C D τ) (fun i => (z (Fin.natAdd a i) : Fin h → C)) → ∃ c : C, v c = ∏ᶠ σ : {σ : Λ →+* O // σ ≠ τ}, v (algebraMap O C (τ α) - algebraMap O C (σ.1 α)) ^ D.lieRank σ.1 ∧ (Submodule.span O {exteriorPower.ιMulti C (a + b) z} : Set (detLine C (actH D) τ (a + b))) = (fun w => c • w) '' (detLattice C (actH D) τ (a + b) : Set (detLine C (actH D) τ (a + b))) := by
   intro p _ C _ _ _ v O _ _ _ _ hv ε hε Λ _ _ _ _ _ _ α hα a b h hh D τ z hzL hzF

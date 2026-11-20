@@ -4,17 +4,17 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FreeEtaleSheafSecti
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex GlobalTheory.EtC UpperTheory.Pbf
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.T.etaleSheafSections_ext_and_glue R F T).1 a 0 ⟨⊥, Scheme.bot_mem_grothendieckTopology T, fun _ _ h => h.elim⟩`.
+A detailed English derivation is pending.
 -/
 private theorem sec_empty {R : Type} [CommRing R] (F : Shv R) (T : Scheme.{0}) [IsEmpty T] (a : Sec F T) : a = 0 :=
   (GlobalTheory.T.etaleSheafSections_ext_and_glue R F T).1 a 0 ⟨⊥, Scheme.bot_mem_grothendieckTopology T, fun _ _ h => h.elim⟩
 
 /- English proof (translation)
-Take `⟨S, hS, h⟩` from `(GlobalTheory.T.freeEtaleSheaf_section_locally_finite_combination R P U).1 y`. Use `(GlobalTheory.T.etaleSheafSections_ext_and_glue R _ U).1 y 0 ⟨S, hS, fun V g hg => ?_⟩` and prove the remaining obligations. Take `⟨c, hc⟩` from `h V g hg`. Establish `h0 : Sec.res g (0 : Sec ((free R).obj P) U) = 0` using `map_zero (((free R).obj P).obj.map g.op).hom`. Rewrite using `[h0]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hV : IsEmpty V`. Conclude with `sec_empty _ _ _`. Rewrite using `[hc]`. Establish `: IsEmpty (P.obj (op V))` using `⟨fun x => hV (hP V ⟨x⟩)⟩`. Establish `hc0 : c = 0` using `Subsingleton.elim _ _`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[hc0]`.
+A detailed English derivation is pending.
 -/
 private theorem free_sec_zero (R : Type) [CommRing R] (P : PSh)
     (hP : ∀ T : Scheme.{0}, Nonempty (P.obj (op T)) → IsEmpty T) (U : Scheme.{0})
@@ -32,7 +32,7 @@ private theorem free_sec_zero (R : Type) [CommRing R] (P : PSh)
     simp [hc0]
 
 /- English proof (translation)
-Rewrite using `[IsZero.iff_id_eq_zero]`. Apply `Sheaf.hom_ext` to reduce the goal to its premises. Use extensionality with `U y`. Conclude with `free_sec_zero R P hP U.unop y`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 private theorem free_isZero (R : Type) [CommRing R] (P : PSh)
     (hP : ∀ T : Scheme.{0}, Nonempty (P.obj (op T)) → IsEmpty T) : IsZero ((free R).obj P) := by
@@ -42,11 +42,9 @@ private theorem free_isZero (R : Type) [CommRing R] (P : PSh)
   exact free_sec_zero R P hP U.unop y
 
 /- English proof (translation)
-Establish `y : Sx (PGL 0) p T` using `Sx.map (pullback.snd (triv E 0) (PGL.pr 0)) x`. Establish `v : Um 0 Γ(T, ⊤)` using `(show ComposableArrows (Um 0 Γ(T, ⊤)) p from y).obj 0`. Establish `h : (⊥ : Ideal Γ(T, ⊤)) = ⊤`. Use `v.2` as an intermediate fact. Rewrite `this` using `[Set.range_eq_empty, Ideal.span_empty]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hs : Subsingleton Γ(T, ⊤)`. Break down `subsingleton_or_nontrivial Γ(T, ⊤) with hs | hn` into its components or cases. Conclude with `hs`. Conclude with `absurd h bot_ne_top`. Use `⟨fun t => ?_⟩` and prove the remaining obligations.
-
-Use `(T.presheaf.germ ⊤ t trivial).hom.codomain_trivial` as an intermediate fact. Conclude with `not_subsingleton (T.presheaf.stalk t) this`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem sx_empty (E : Spc) (p : ℕ) (T : Scheme.{0})
     (x : Sx (pullback (triv E 0) (PGL.pr 0)) p T) : IsEmpty T := by
@@ -64,9 +62,9 @@ private theorem sx_empty (E : Spc) (p : ℕ) (T : Scheme.{0})
   exact not_subsingleton (T.presheaf.stalk t) this
 
 /- English proof (translation)
-Distinguish the cases in `hk : k ≤ 0`. Take `⟨p, rfl⟩ : ∃ p : ℕ, k = -(p : ℤ)` from `⟨(-k).toNat, by omega⟩`. Conclude with `(free_isZero R _ (hX p)).of_iso (chainsXIso R X p)`. Use `HomologicalComplex.isZero_extend_X _ ComplexShape.embeddingDownNat k fun i => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `-(i : ℤ) ≠ k`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 private theorem chains_isZero (R : Type) [CommRing R] (X : Spc)
     (hX : ∀ (p : ℕ) (T : Scheme.{0}), Nonempty (Sx X p T) → IsEmpty T) (k : ℤ) :
@@ -79,7 +77,7 @@ private theorem chains_isZero (R : Type) [CommRing R] (X : Spc)
     omega
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun a b => by obtain ⟨a, rfl⟩ := a.mk_surjective obtain ⟨b, rfl⟩ := b.mk_surjective congr 1 exact Cocycle.ext (Cochain.ext _ _ fun p q h => (chains_isZero R X hX p).eq_of_src _ _)⟩`.
+Supply the required witnesses or components.
 -/
 private theorem H_subsingleton (R : Type) [CommRing R] (X : Spc)
     (hX : ∀ (p : ℕ) (T : Scheme.{0}), Nonempty (Sx X p T) → IsEmpty T) (F : Shv R) (n : ℤ) :
@@ -90,7 +88,7 @@ private theorem H_subsingleton (R : Type) [CommRing R] (X : Spc)
   exact Cocycle.ext (Cochain.ext _ _ fun p q h => (chains_isZero R X hX p).eq_of_src _ _)⟩
 
 /- English proof (translation)
-Introduce `q _ E n i`. Use `haveI : Subsingleton (Ht q (pullback (triv E 0) (PGL.pr 0)) n i) := H_subsingleton _ _ (fun p T ⟨x⟩ => sx_empty E p T x) _ _`. Conclude with `⟨fun a b _ => Subsingleton.elim a b, fun y => ⟨fun j => j.elim0, Subsingleton.elim _ _⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.projectiveBundleFormula_rank_zero :
     ∀ (q : ℕ) [NeZero q] (E : Spc), PBF q E 0 := by

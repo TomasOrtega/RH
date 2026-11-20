@@ -9,15 +9,15 @@ open scoped ComplexOrder
 namespace GlobalTheory.CurveDens
 
 /- English proof (translation)
-Establish `hH` using `hG.isHermitian`. Establish `h11 : G (.inl 0) (.inl 0) ≠ 0` using `(hG.diag_pos (i := .inl 0)).ne'`. Establish `hr : starRingEnd ℂ (G (.inl 0) (.inl 0)) = G (.inl 0) (.inl 0)` using `hH.apply _ _`. Establish `h12 : G (.inl 0) (.inr 0) = starRingEnd ℂ (G (.inr 0) (.inl 0))` using `(hH.apply _ _).symm`. Establish `hinv : (G.toBlocks₁₁)⁻¹ 0 0 = (G (.inl 0) (.inl 0))⁻¹`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Matrix.inv_def, Matrix.det_unique, Matrix.adjugate_fin_one]`. Simplify using `[Matrix.toBlocks₁₁, Ring.inverse_eq_inv']`. Take `⟨r, hr'⟩ : ∃ r : ℝ, G (.inl 0) (.inl 0) = r` from `⟨_, (Complex.conj_eq_iff_re.1 hr).symm⟩`. Simplify using `only [form_eq_sum, Fintype.sum_sum_type, Finset.univ_unique, Finset.sum_singleton, Sum.elim_inl, Sum.elim_inr, Pi.zero_apply, map_zero, mul_zero, add_zero, quotGram, Matrix.sub_apply, Matrix.mul_apply, Matrix.toBlocks₂₂, Matrix.toBlocks₂₁, Matrix.toBlocks₁₂, Matrix.of_apply, Fin. …`. Rewrite using `[hinv, hv, h12]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h11`, the goal using `[hr']`. Generalize the expression as in `x (Sum.inl 0) = x₁ at ⊢`. Generalize the expression as in `x (Sum.inr 0) = x₂ at ⊢`. Generalize the expression as in `G (Sum.inr 0) (Sum.inl 0) = g at ⊢`. Generalize the expression as in `G (Sum.inr 0) (Sum.inr 0) = d at ⊢`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Establish `hr0 : (r : ℂ) ≠ 0` using `h11`. Establish `hB : τ * (r : ℂ) * starRingEnd ℂ τ + 0 * g * starRingEnd ℂ τ = ((r * Complex.normSq τ : ℝ) : ℂ)`. Rewrite using `[Complex.ofReal_mul, ← Complex.mul_conj]`. Expand and normalize the polynomial expressions, which then agree. Establish `hn (z : ℂ) : ‖z‖ ^ 2 = (z * starRingEnd ℂ z).re`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[Complex.mul_conj, Complex.ofReal_re, Complex.normSq_eq_norm_sq]`. Rewrite using `[hB, Complex.ofReal_re, hn, ← Complex.re_mul_ofReal, ← Complex.re_mul_ofReal, ← Complex.sub_re]`. Use `congr 1`. Simplify using `only [Complex.ofReal_mul, ← Complex.mul_conj, map_add, map_mul, Complex.conj_ofReal, Complex.conj_conj]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -58,17 +58,17 @@ theorem quotGram_pyth_rankTwo (G : Matrix (Fin 1 ⊕ Fin 1) (Fin 1 ⊕ Fin 1) �
   ring
 
 /- English proof (translation)
-Introduce `k _ X p σ S h hS h₁ h₃ U t w _ y hy`. Take `⟨a, ha⟩` from `Met.exists_adapted hS h₁ h₃ y`. Set `u : Γ(S.X₂, U) → Fin 1 ⊕ Fin 1 → ℂ` to `fun s i => (a.mid hS).crd p σ s y (finSumFinEquiv i)`. Establish `hform (s s' : Γ(S.X₂, U)) : h.form s s' y = form (h.gram a.frame y) (u s) (u s')`. Rewrite using `[h.form_eq (a.mid hS) ha s s' hy, h.gram_frame hS a ha, form_eq_sum, form_eq_sum, ← finSumFinEquiv.sum_comp]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← finSumFinEquiv.sum_comp]`. Both sides reduce to the same expression. Establish `hf : u (S.f.app U t) = Sum.elim (fun _ => a.sub.crd p σ t y 0) 0`. Use function extensionality and compare the values at `i`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `(congrFun ((a.mid hS).crd_app a.sub S.f t hy ha) (finSumFinEquiv i)).trans ?_` and prove the remaining obligations. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.of_apply, Fin.sum_univ_one]`. Establish `e` using `a.crd_frame hS ha i (.inl 0)`. Use `(congrArg (· * _) e).trans ?_` and prove the remaining obligations. Apply the tactic sequence `rcases i with i | i <;> simp [Matrix.one_apply, Subsingleton.elim i 0]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hg : a.quot.crd p σ (S.g.app U w) y 0 = u w (.inr 0)`. Use `(congrFun (a.quot.crd_app (a.mid hS) S.g w hy ha) 0).trans ?_` and prove the remaining obligations. Establish `e₃ (b) : (a.mid hS).e (finSumFinEquiv b) = a.frame b` using `by simp [VBExt.AdaptedChart.mid]`. Establish `e₁ : a.quot.crd p σ (S.g.app a.U (a.frame (.inl 0))) y = 0`. Rewrite using `[show S.g.app a.U (a.frame (.inl 0)) = 0 from congr(($(S.zero)).app a.U (a.e 0)), Chart.crd_zero]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e₂ : a.quot.crd p σ (S.g.app a.U (a.frame (.inr 0))) y = Pi.single 0 1` using `a.quot.crd_frame ha 0`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.of_apply]`. Rewrite using `[← finSumFinEquiv.sum_comp, Fintype.sum_sum_type, Fin.sum_univ_one, Fin.sum_univ_one]`. Use `(congrArg₂ (· + ·) (congrArg (· * _) (congrFun ((congrArg (fun t => a.quot.crd p σ (S.g.app a.U t) y) (e₃ _)).trans e₁) 0)) (congrArg (· * _) (congrFun ((congrArg (fun t => a.quot.crd p σ (S.g.app a.U t) y) (e₃ _)).trans e₂) 0))).trans ?_` and prove the remaining obligations. Simplify using `[u]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `hq : (h.quot hS h₁ h₃).form (S.g.app U w) (S.g.app U w) y = form (quotGram (h.gram a.frame y)) (a.quot.crd p σ (S.g.app U w) y) (a.quot.crd p σ (S.g.app U w) y)`. Rewrite using `[(h.quot hS h₁ h₃).form_eq a.quot ha _ _ hy, h.quot_G hS h₁ h₃ a ha]`. Rewrite using `[hq, hform, hform, hform, hf]`. Conclude with `quotGram_pyth_rankTwo _ (h.posDef_gram_frame hS a ha) _ _ _ hg`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem quot_form_pyth_rankTwo : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) (σ : k →+* ℂ)
     (S : ShortComplex X.Modules) (h : Met p σ S.X₂ (1 + 1)) (hS : S.ShortExact) (h₁ : IsVB S.X₁ 1)

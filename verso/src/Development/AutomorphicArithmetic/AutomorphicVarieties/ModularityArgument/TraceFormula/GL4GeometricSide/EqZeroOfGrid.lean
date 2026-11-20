@@ -10,11 +10,9 @@ open scoped Classical
 namespace UpperTheory.V.Z.GSp4Splitting.RealLieFiniteness
 
 /- English proof (translation)
-Set `ev : U → Module.Dual ℂ C` to `fun a => (LinearMap.proj a).comp C.subtype`. Establish `hfg : (Submodule.span ℂ (ev '' Set.univ)).FG` using `IsNoetherian.noetherian _`. Take `⟨t, ht, e⟩` from `(Submodule.fg_span_iff_fg_span_finset_subset _).1 hfg`. Take `⟨s, -, rfl⟩` from `Finset.subset_set_image_iff.1 ht`. Use `⟨s, fun f hf h0 => funext fun a => ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hle : Submodule.span ℂ (ev '' Set.univ) ≤ LinearMap.ker (Module.Dual.eval ℂ C ⟨f, hf⟩)`. Rewrite using `[e, Submodule.span_le]`. Introduce `l hl`. Take `⟨b, hb, rfl⟩` from `Finset.mem_image.1 (Finset.mem_coe.1 hl)`. Conclude with `h0 b hb`.
-
-Conclude with `hle (Submodule.subset_span ⟨a, trivial, rfl⟩)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem exists_detect {U : Type} (C : Submodule ℂ (U → ℂ)) [FiniteDimensional ℂ C] :
     ∃ s : Finset U, ∀ f ∈ C, (∀ a ∈ s, f a = 0) → f = 0 := by
@@ -31,11 +29,11 @@ private theorem exists_detect {U : Type} (C : Submodule ℂ (U → ℂ)) [Finite
   exact hle (Submodule.subset_span ⟨a, trivial, rfl⟩)
 
 /- English proof (translation)
-Establish `key : ∀ (T : Finset ι) (k : ι → U), (∀ i, i ∉ T → k i ∈ s i) → F k = 0`. Introduce `T`. Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty => exact fun k hk => h0 k fun i => hk i (Finset.notMem_empty i)`. Consider the case `insert i T _ ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Introduce `k hk`. Establish `h` using `hs i _ (hF i k) fun a ha => ih _ fun j hj => by`. Distinguish the cases in `e : j = i`. Substitute `e` using the available equality. Simplify using `using ha`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[Function.update_of_ne e]`. Conclude with `hk j (by simp [e, hj])`. Simplify using `using congrFun h (k i)`. Conclude with `key Finset.univ k fun i hi => absurd (Finset.mem_univ i) hi`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem eq_zero_of_grid {ι U : Type} [Fintype ι] (C : ι → Submodule ℂ (U → ℂ)) (s : ι → Finset U)
     (hs : ∀ i, ∀ f ∈ C i, (∀ a ∈ s i, f a = 0) → f = 0) (F : (ι → U) → ℂ)
@@ -68,7 +66,7 @@ private def glue (k : InfinitePlace E → Un n) : Kinf E n :=
     split_ifs <;> rfl⟩
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use extensionality with `i j v`. Use `show ((k v).1 * (k' v).1) i j = ((glue k).1 * (glue k').1) i j v`. Simplify using `only [glue, Matrix.mul_apply, Matrix.of_apply, Finset.sum_apply, Pi.mul_apply]`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem glue_mul (k k' : InfinitePlace E → Un n) : glue (k * k') = glue k * glue k' := by
   apply Subtype.ext
@@ -77,9 +75,9 @@ private theorem glue_mul (k k' : InfinitePlace E → Un n) : glue (k * k') = glu
   simp only [glue, Matrix.mul_apply, Matrix.of_apply, Finset.sum_apply, Pi.mul_apply]
 
 /- English proof (translation)
-Use `⟨fun v => ⟨Matrix.of fun i j => x.1 i j v, Matrix.mem_unitaryGroup_iff'.2 ?_⟩, rfl⟩` and prove the remaining obligations. Use extensionality with `i j`. Establish `h` using `congrFun (congrFun (congrFun (Matrix.mem_unitaryGroup_iff'.1 x.2) i) j) v`. Simplify using `only [Matrix.mul_apply, Matrix.star_apply, Matrix.one_apply, Finset.sum_apply, Pi.mul_apply, Pi.star_apply] at h`. Simplify using `only [Matrix.mul_apply, Matrix.star_apply, Matrix.one_apply, Matrix.of_apply, h]`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `split_ifs <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem glue_surj (x : Kinf E n) : ∃ k, glue k = x := by
   refine ⟨fun v => ⟨Matrix.of fun i j => x.1 i j v, Matrix.mem_unitaryGroup_iff'.2 ?_⟩, rfl⟩
@@ -90,9 +88,9 @@ private theorem glue_surj (x : Kinf E n) : ∃ k, glue k = x := by
   split_ifs <;> rfl
 
 /- English proof (translation)
-Rewrite using `[← chart_val φ g]`. Use `show chart φ g _ = chart φ g _`. Use `congr 1`. Use function extensionality and compare the values at `i j v`. Use `show atW w a.1 i j v = ((Function.update (1 : InfinitePlace E → Un n) w a) v).1 i j`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Distinguish the cases in `e : v = w`. Substitute `e` using the available equality. Simplify using `[atW]`. Simplify using `[atW, e]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem along_glue (w : InfinitePlace E) (a : Un n) (φ : GA E n → ℂ) (g : GA E n) :
     along w g φ a.1 = φ (g * infGL E n (Unitary.toUnits (glue (Function.update 1 w a)))) := by
@@ -113,11 +111,11 @@ private def box (C : InfinitePlace E → Submodule ℂ (Un n → ℂ)) : Submodu
   smul_mem' c _ hf w x := (C w).smul_mem c (hf w x)
 
 /- English proof (translation)
-Use `choose s hs using fun w => exists_detect (C w)`. Set `L : box C →ₗ[ℂ] ((∀ w, s w) → ℂ)` to `(LinearMap.funLeft ℂ ℂ fun k => glue fun w => (k w).1).comp (box C).subtype`. Use `FiniteDimensional.of_injective L ((injective_iff_map_eq_zero L).2 fun f hf => Subtype.ext (funext fun x => ?_))` and prove the remaining obligations. Take `⟨k, rfl⟩` from `glue_surj x`. Use `eq_zero_of_grid C s hs (fun k => f.1 (glue k)) (fun w k => ?_) (fun k hk => congrFun hf fun w => ⟨k w, hk w⟩) k` and prove the remaining obligations.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `f.2 w (glue (Function.update k w 1)) using 3 with a` and compare the differences between its conclusion and the goal. Rewrite using `[← glue_mul]`. Use `congr 1`. Use function extensionality and compare the values at `v`. Distinguish the cases in `e : v = w`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `e` using the available equality. Simplify using the standard rewrite rules. Simplify using `[e]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem box_fin (C : InfinitePlace E → Submodule ℂ (Un n → ℂ)) [∀ w, FiniteDimensional ℂ (C w)] :
     FiniteDimensional ℂ (box C) := by
@@ -141,9 +139,9 @@ private def coef (M : KMod n) : Module.Dual ℂ (M.V →L[ℂ] M.V) →ₗ[ℂ] 
   map_smul' _ _ := rfl
 
 /- English proof (translation)
-Set `L : V →ₗ[ℂ] (Un n → ℂ)` to `LinearMap.pi fun a => l.comp (σ a)`. Establish `hle : isoSp σ M ≤ (LinearMap.range (coef M)).comap L`. Use `iSup_le fun t => ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨ξ, rfl⟩`. Use `⟨l.comp (t.1.comp (ContinuousLinearMap.compL ℂ M.V M.V ℂ ξ).toLinearMap), funext fun a => ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `congrArg l (t.2 a ξ)`. Conclude with `hle hu`.
+A detailed English derivation is pending.
 -/
 private theorem iso_coef {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] (σ : Un n →* (V →ₗ[ℂ] V)) (M : KMod n)
     (l : V →ₗ[ℂ] ℂ) {u : V} (hu : u ∈ isoSp σ M) : (fun a => l (σ a u)) ∈ LinearMap.range (coef M) := by
@@ -156,7 +154,7 @@ private theorem iso_coef {V : Type} [NormedAddCommGroup V] [InnerProductSpace �
   exact hle hu
 
 /- English proof (translation)
-Use `π.exists_scalar (Algebra.subset_adjoin ⟨τ, z, rfl⟩) ?_` and prove the remaining obligations. Introduce and unpack `(k | k | X)`. Use `exacts [commute_cap_finRep τ z k, GlobalTheory.CapAdInv.cap_commute_rt_infGL E n τ z _, commute_cap_lie τ z X]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 private theorem cap_scalar (π : CuspSub E n) (τ : E →+* ℂ) (z : ℂ) : ∃ c : ℂ, ∀ φ ∈ π.V, cap τ z φ = c • φ := by
   refine π.exists_scalar (Algebra.subset_adjoin ⟨τ, z, rfl⟩) ?_
@@ -167,11 +165,11 @@ end UpperTheory.V.Z.GSp4Splitting.RealLieFiniteness
 
 open UpperTheory.V.Z.GSp4Splitting UpperTheory.V.Z.GSp4Splitting.RealLieFiniteness PositivityTheory.Rg.BcB.E.E3.fintype in
 /- English proof (translation)
-Introduce `E _ _ _ n _ π _ K hK _ _ _ _ μf _ D M`. Use `choose c hc using cap_scalar π`. Set `W` to `box fun w => LinearMap.range (coef (M w))`. Use `haveI : FiniteDimensional ℂ W := box_fin _`. Use `haveI := wl_fin W`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI := PositivityTheory.Rg.HF.GL.automorphicFormsFiniteGL E n K hK _ (sig W) (sig_cont W) c`. Set `j : D.U →ₗ[ℂ] Sm E n` to `π.V.subtype ∘ₗ D.i`. Establish `hj : Function.Injective j` using `π.V.injective_subtype.comp D.inj`. Establish `hm : ∀ u ∈ (⨅ w, isoSp (D.σ w) (M w) : Submodule ℂ D.U), j u ∈ Submodule.span ℂ (GlobalTheory.Published.AutFinGL.forms K (sig W) c)` using `fun u hu => by`. Use `Submodule.subset_span ⟨(π.cusp _ (D.i u).2).1, (D.rng _).1 ⟨u, rfl⟩, coeff_mem W _ fun g w x => ?_, fun τ z => hc τ z _ (D.i u).2⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Use `iso_coef (D.σ w) (M w) ((LinearMap.proj (g * infGL E n (Unitary.toUnits x))).comp ((Sm E n).subtype.comp j)) ((Submodule.mem_iInf _).1 hu w) using 2 with a` and compare the differences between its conclusion and the goal. Use `Eq.trans ?_ ((D.hσ w a u _).trans (along_glue w a _ _)).symm` and prove the remaining obligations. Simplify using `only [map_mul, mul_assoc]`. Both sides reduce to the same expression. Conclude with `FiniteDimensional.of_injective (j.restrict hm) fun a b e => Subtype.ext (hj (congrArg (fun y : Submodule.span ℂ (GlobalTheory.Published.AutFinGL.forms K (sig W) c) => y.1) e))`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.GSp4Splitting.rlFin :
     RlFin := by

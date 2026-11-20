@@ -7,9 +7,7 @@ open GlobalTheory.Toroidal GlobalTheory.Models GlobalTheory.LN GlobalTheory.ShFa
 namespace GlobalTheory.Member
 
 /- English proof (translation)
-Take `⟨h1, h2, h3⟩` from `h`. Use `⟨RingHom.Flat.comp (RingHom.Flat.of_bijective he) h1, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← Ideal.map_map, IsLocalRing.map_maximalIdeal_of_surjective e he.2]`. Conclude with `h2`. Rewrite using `[← RingHom.comp_assoc]`.
-
-Conclude with `RingHom.Finite.comp h3 (RingHom.Finite.of_surjective e he.2)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isEtaleCompletion_comp_bijective' {B A R : Type} [CommRing B] [IsLocalRing B] [CommRing A] [IsLocalRing A]
     [CommRing R] [IsLocalRing R] (e : B →+* A) (he : Function.Bijective e) (φ : A →+* R)
@@ -22,7 +20,7 @@ theorem isEtaleCompletion_comp_bijective' {B A R : Type} [CommRing B] [IsLocalRi
     exact RingHom.Finite.comp h3 (RingHom.Finite.of_surjective e he.2)
 
 /- English proof (translation)
-Introduce `R _ _ X Y ξ g _ h`. Establish `hb : Function.Bijective (g.stalkMap (ξ (IsLocalRing.closedPoint (CommRingCat.of R)))).hom` using `ConcreteCategory.bijective_of_isIso _`. Rewrite using `[Scheme.stalkClosedPointTo_comp]`. Conclude with `isEtaleCompletion_comp_bijective' _ hb _ h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isEtaleCompletion_stalkClosedPointTo_comp_iso : ∀ {R : Type} [CommRing R] [IsLocalRing R] {X Y : Scheme.{0}} (ξ : Spec (CommRingCat.of R) ⟶ X) (g : X ⟶ Y) [IsIso g], IsEtaleCompletion (Scheme.stalkClosedPointTo ξ).hom → IsEtaleCompletion (Scheme.stalkClosedPointTo (ξ ≫ g)).hom := by
   intro R _ _ X Y ξ g _ h

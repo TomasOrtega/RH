@@ -8,7 +8,7 @@ namespace GlobalTheory.Published
 def GreenCuspidal : Prop := GlobalTheory.GLq.Green
 
 /- English proof (translation)
-The claim follows from `h`.
+A detailed English derivation is pending.
 -/
 theorem GreenCuspidal.green (h : GreenCuspidal) : GlobalTheory.GLq.Green := h
 

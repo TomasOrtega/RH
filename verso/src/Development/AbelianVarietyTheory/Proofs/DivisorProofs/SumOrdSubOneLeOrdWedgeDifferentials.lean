@@ -21,27 +21,25 @@ open GlobalTheory.TopForm
 namespace GlobalTheory.Discrepancy.DivOver
 
 /- English proof (translation)
-Introduce `k _ _ X _ p _ n hn E U y hy hE z hz0 J _ e he u hu`. Use `letI := (Cartier.constFn p).toAlgebra`. Use `letI := E.const.toAlgebra`. Use `haveI : IsScalarTower k E.ring X.functionField := IsScalarTower.of_algebraMap_eq' rfl`. Set `x : Fin n → X.functionField` to `fun i => fnOf U (gen_mem hy) (z i)`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hxV : ∀ i, x i ∈ E.ring` using `fun i => hE _ (regAt_fnOf hy _ (z i))`. Establish `hη : formOf U (gen_mem hy) (dOn p z) = dWedge k x`. Express the relevant statement in the definitionally equal form `TopForm.formMap n _ _ (dForm _ z) = _`. Rewrite using `[formMap_dForm]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Take `⟨t, ht⟩` from `IsDiscreteValuationRing.exists_irreducible E.ring`. Establish `ht0 : algebraMap E.ring X.functionField t ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective E.ring X.functionField)).mpr ht.ne_zero`. Set `S : Finset (Fin n)` to `Finset.univ.map ⟨e, he⟩`. Establish `hxe : ∀ j, x (e j) = (u j : X.functionField)` using `fun j => (hu j).symm`. Establish `hxS : ∀ i ∈ S, x i ≠ 0`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i hi`. Take `⟨j, -, rfl⟩` from `Finset.mem_map.1 hi`. Express the relevant statement in the definitionally equal form `x (e j) ≠ 0`. Rewrite using `[hxe j]`. Conclude with `(u j).ne_zero`.
+Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨γ, hγ⟩` from `GlobalTheory.smul_dlogWedge_mem_regForms k t ht0 S x (fun i hi => exists_eq_unit_mul_zpow ht (hxS i hi)) (fun i _ => ⟨⟨x i, hxV i⟩, rfl⟩)`. Take `⟨ω, hω⟩` from `E.exists_isFreeGen hn`. Take `⟨a, rfl⟩` from `hω.2 γ`. Establish `hbr : ∀ θ, GlobalTheory.formMap k E.ring X.functionField n θ = E.toRat n θ` using `fun _ => rfl`. Establish `hP : (∏ i ∈ S, x i) = ∏ j, (u j : X.functionField)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Finset.prod_map]`. Conclude with `Finset.prod_congr rfl fun j _ => hxe j`. Establish `hPne : (∏ i ∈ S, x i) ≠ 0` using `Finset.prod_ne_zero_iff.2 hxS`. Establish `h2 : dWedge k x = (∏ i ∈ S, x i) • dlogWedge k S x`. Rewrite using `[GlobalTheory.dlogWedge_eq_smul, smul_smul, mul_inv_cancel₀ hPne, one_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `h3 : (algebraMap E.ring X.functionField t) • dlogWedge k S x = (algebraMap E.ring X.functionField a) • E.toRat n ω`. Combine the equalities or inequalities in the displayed calculation. Establish `key : formOf U (gen_mem hy) (dOn p z) = ((∏ i ∈ S, x i) * (algebraMap E.ring X.functionField t)⁻¹ * algebraMap E.ring X.functionField a) • E.toRat n ω`. Rewrite using `[hη, h2, mul_assoc, mul_smul, mul_smul, ← h3, inv_smul_smul₀ ht0]`. Establish `ha0 : algebraMap E.ring X.functionField a ≠ 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Apply `hz0` to reduce the goal to its premises. Rewrite using `[key, h, mul_zero, zero_smul]`. Set `f : X.functionFieldˣ` to `(∏ j, u j) * (Units.mk0 _ ht0)⁻¹ * Units.mk0 _ ha0`. Establish `hf : formOf U (gen_mem hy) (dOn p z) = (f : X.functionField) • E.toRat n ω`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[key, hP]`. Simplify using `[f]`. Establish `hsum : ∀ s : Finset J, E.ord (∏ j ∈ s, u j) = ∑ j ∈ s, E.ord (u j)`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `empty => simp`. Consider the case `insert j s hj ih => rw [Finset.prod_insert hj, Finset.sum_insert hj, E.ord_mul, ih]`. Establish `hordt : E.ord (Units.mk0 _ ht0) = 1` using `(congrArg WithZero.log (Ring.ordFrac_irreducible (K := X.functionField) ht)).trans (WithZero.log_exp 1)`. Establish `horda : 0 ≤ E.ord (Units.mk0 _ ha0)` using `(E.ord_nonneg_iff _).2 a.2`. Rewrite using `[IsFormOrd.formOrd_eq hz0 ⟨ω, hω, f, hf, rfl⟩]`.
-
-Simplify using `only [f, E.ord_mul, E.ord_inv, hsum, hordt]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem sum_ord_sub_one_le_formOrd_dOn : ∀ {k : Type} [Field k] [PerfectField k] {X : Scheme.{0}} [IsIntegral X] {p : X ⟶ Sp k}
     [LocallyOfFiniteType p] {n : ℕ}, topologicalKrullDim X = n → ∀ (E : DivOver p) {U : X.Opens} {y : X}

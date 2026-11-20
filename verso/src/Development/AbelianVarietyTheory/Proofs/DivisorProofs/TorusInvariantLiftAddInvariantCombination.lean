@@ -23,7 +23,7 @@ noncomputable section
 namespace GlobalTheory.Heat.Adjust
 
 /- English proof (translation)
-Use `(HolHom.valR_appLE q p ⊤ U le_top _ h).trans ?_` and prove the remaining obligations. Rewrite using `[hq, ← Category.comp_id (spMap f), HolHom.valR_spMap f (𝟙 _) ⊤ le_rfl, HolHom.valR_eq _ _ le_rfl]`. Use `congr 1`. Conclude with `congrArg (fun g : CommRingCat.of K ⟶ CommRingCat.of K => g.hom a) (Scheme.ΓSpecIso (CommRingCat.of K)).inv_hom_id`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem valR_const {K R : Type} [CommRing K] [CommRing R] {X : Scheme.{0}} (p : X ⟶ Sp K) (f : K →+* R)
     (q : Sp R ⟶ X) (hq : q ≫ p = spMap f) (U : X.Opens)
@@ -36,13 +36,11 @@ theorem valR_const {K R : Type} [CommRing K] [CommRing R] {X : Scheme.{0}} (p : 
     (Scheme.ΓSpecIso (CommRingCat.of K)).inv_hom_id
 
 /- English proof (translation)
-Use `GlobalTheory.KS.eq_of_rsT_eq (J := {W : X.affineOpens // W.1 ≤ U}) (fun W => W.1.1) (fun W => W.2) ?_ s 0 ?_` and prove the remaining obligations. Introduce `x hx`. Take `⟨W, hW, hxW, hWU⟩` from `exists_isAffineOpen_mem_and_subset hx`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨⟨⟨W, hW⟩, hWU⟩, hxW⟩`. Introduce and unpack `⟨⟨W, hW⟩, hWU⟩`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hW' : IsAffineOpen W` using `hW`. Establish `hle : ⊤ ≤ hW'.fromSpec ⁻¹ᵁ W` using `hW'.fromSpec_preimage_self.ge`. Establish `e` using `h Γ(X, W) hW'.fromSpec (hle.trans (hW'.fromSpec.preimage_mono hWU))`. Rewrite `e` using `[← HolHom.valR_res (A := Γ(X, W)) hW'.fromSpec hWU s hle, HolHom.valR_eq _ _ hle, HolHom.evalHom]`. Rewrite using `[GlobalTheory.KS.rsT_zero, GlobalTheory.KS.rsT_of_le hWU]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e2 : hW'.fromSpec.appLE W ⊤ hle = (Scheme.ΓSpecIso Γ(X, W)).inv`. Rewrite using `[Scheme.Hom.appLE, hW'.fromSpec_app_self, Category.assoc, ← Functor.map_comp]`. Conclude with `(congrArg _ ((Spec Γ(X, W)).presheaf.map_id _)).trans (Category.comp_id _)`. Use `erw [e2] at e`. Use `erw [Iso.inv_hom_id] at e`.
-
-Conclude with `e`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_valR_points {X : Scheme.{0}} (U : X.Opens) (s : Γ(X, U))
     (h : ∀ (S : Type) [CommRing S] (g : Sp S ⟶ X), ⊤ ≤ g ⁻¹ᵁ U → valR g U s = 0) : s = 0 := by
@@ -64,21 +62,19 @@ theorem eq_zero_of_valR_points {X : Scheme.{0}} (U : X.Opens) (s : Γ(X, U))
     exact e
 
 /- English proof (translation)
-Use `eq_zero_of_valR_points _ _ fun S _ a hV => ?_` and prove the remaining obligations. Take `⟨φ', hφ'⟩` from `Spec.map_surjective (R := CommRingCat.of R) (S := CommRingCat.of S) (a ≫ G.hom)`. Set `φ : R →+* S` to `φ'.hom`. Establish `hφ : a ≫ G.hom = spMap φ` using `hφ'.symm`. Set `x : Over.mk (spMap φ) ⟶ G` to `Over.homMk a hφ`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `φε : R →+* DualNumber S` to `(algebraMap S (DualNumber S)).comp φ`. Set `π : Over.mk (spMap φε) ⟶ Over.mk (spMap φ)` to `Over.homMk (spMap (algebraMap S (DualNumber S))) (by show spMap (algebraMap S (DualNumber S)) ≫ spMap φ = spMap φε`. Simplify using `only [spMap, φε, ← Spec.map_comp]`. Use the proof step `rfl)`. Set `ie : Over.mk (spMap φ) ⟶ Over.mk (spMap φε)` to `Over.homMk (spMap (TrivSqZeroExt.fstHom S S S).toRingHom) (by show spMap (TrivSqZeroExt.fstHom S S S).toRingHom ≫ spMap φε = spMap φ`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Simplify using the standard rewrite rules.
 
-Simplify using `only [spMap, φε, ← Spec.map_comp]`. Use `congr 1)`. Take `⟨v'', hv₁, hv₂⟩` from `InvWt.exists_tan_over G v φ`. Establish `hιπ : ie ≫ π = 𝟙 _` using `by ext1 show spMap (TrivSqZeroExt.fstHom S S S).toRingHom ≫ spMap (algebraMap S (DualNumber S)) = 𝟙 _`. Simplify using `only [spMap, ← Spec.map_comp]`.
+Reduce the equality to equality of the corresponding arguments. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Spec.map_id]`. Use `congr 1`. Establish `hiev : ie ≫ v'' = 1` using `by ext1`. Conclude with `hv₂`. Establish `hW : ie ≫ (π ≫ x * v'') = x`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[MonObj.comp_mul, ← Category.assoc, hιπ, Category.id_comp, hiev, _root_.mul_one]`. Establish `hWa : spMap (TrivSqZeroExt.fstHom S S S).toRingHom ≫ (π ≫ x * v'').left = a` using `congrArg (·.left) hW`. Establish `htr : IsTr G φ a v (π ≫ x * v'').left`. Set `e : tEpsG (a ≫ G.hom) ⟶ Over.mk (spMap φε)` to `Over.homMk (𝟙 _) (by show 𝟙 _ ≫ spMap φε = spMap (algebraMap S (DualNumber S)) ≫ a ≫ G.hom`. Rewrite using `[hφ]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Category.id_comp, spMap, φε]`. Rewrite using `[← Spec.map_comp]`. Use the proof step `rfl)`. Use `⟨e ≫ π ≫ x, e ≫ v'', ?_, ?_, ?_⟩` and prove the remaining obligations. Use `show 𝟙 _ ≫ spMap (algebraMap S (DualNumber S)) ≫ a = _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.id_comp]`. Use `show 𝟙 _ ≫ v''.left = _`. Rewrite using `[Category.id_comp, hv₁]`. Rewrite using `[← MonObj.comp_mul] show 𝟙 _ ≫ _ = _`. Rewrite using `[Category.id_comp]`.
-
-Rewrite using `[← hinv.2 S φ a (π ≫ x * v'').left V _ hφ hV htr, valR_const G.hom φε _ (Over.w (π ≫ x * v'')) V (InvWt.top_le_preimage_of_fst _ a V hWa hV)]`. Simplify using `[φε, TrivSqZeroExt.algebraMap_eq_inl]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem inv_constFn {R : Type} [CommRing R] (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G] (v : TanM (𝟙 (Sp R)) G)
     (dd : Fld G.left) (hinv : IsInv G v dd) (V : G.left.Opens) (r : R) : dd V (constFn G.hom V r) = 0 := by
@@ -129,11 +125,11 @@ theorem inv_constFn {R : Type} [CommRing R] (G : Over (Sp R)) [GrpObj G] [IsComm
   simp [φε, TrivSqZeroExt.algebraMap_eq_inl]
 
 /- English proof (translation)
-Use `⟨fun W hW f f' => ?_, fun W hW f f' => ?_, fun W W' hWW hW f => ?_⟩` and prove the remaining obligations. Simplify using `only [h₀.1 W hW, fun a => (h a).1 W le_top, mul_add, Finset.sum_add_distrib]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [h₀.2.1 W hW, fun a => (h a).2.1 W le_top, mul_add, Finset.sum_add_distrib, Finset.mul_sum]`. Establish `e : ∀ (g : Γ(Z, W)) (u : Fin n → Γ(Z, W)), ∑ a, rsT (y a) W * (g * u a) = ∑ a, g * (rsT (y a) W * u a)` using `fun g u => Finset.sum_congr rfl fun a _ => by ring`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[e, e]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [h₀.2.2 W W' hWW hW, fun a => (h a).2.2 W W' hWW le_top, map_add, map_sum, map_mul]`. Use `congr 1`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← GlobalTheory.KS.rsT_of_le hWW (rsT (y a) W), GlobalTheory.KS.rsT_rsT hW hWW]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem isField_add_comb {Z : Scheme.{0}} {n : ℕ} {U : Z.Opens} (d₀ : Fld Z) (dd : Fin n → Fld Z)
     (y : Fin n → Γ(Z, U)) (h₀ : IsField U d₀) (h : ∀ a, IsField ⊤ (dd a)) :
@@ -152,7 +148,7 @@ theorem isField_add_comb {Z : Scheme.{0}} {n : ℕ} {U : Z.Opens} (d₀ : Fld Z)
     rw [← GlobalTheory.KS.rsT_of_le hWW (rsT (y a) W), GlobalTheory.KS.rsT_rsT hW hWW]
 
 /- English proof (translation)
-Introduce `S _ φ x x' c a a' ha ha' hV hV' hq hc`. Rewrite using `[GlobalTheory.KS.rsT_of_le h]`. Use `(HolHom.valR_res a' h f hV').trans (Eq.trans ?_ (congrArg _ (HolHom.valR_res a h f hV)).symm)` and prove the remaining obligations. Conclude with `hf S φ x x' c a a' ha ha' (hV.trans (a.preimage_mono h)) (hV'.trans (a'.preimage_mono h)) hq hc`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isWt_rsT {R : Type} [CommRing R] [IsDomain R] {Q : DegPre R} {O : Type} [CommRing O] [StarRing O] [Module O Q.X]
     {oa : Q.OAct O} (Y : Ray oa) {α : Q.X} {V V' : Y.H.left.Opens} (h : V' ≤ V) {f : Γ(Y.H.left, V)}
@@ -163,7 +159,7 @@ theorem isWt_rsT {R : Type} [CommRing R] [IsDomain R] {Q : DegPre R} {O : Type} 
   exact hf S φ x x' c a a' ha ha' (hV.trans (a.preimage_mono h)) (hV'.trans (a'.preimage_mono h)) hq hc
 
 /- English proof (translation)
-Introduce `R _ _ _ _ _ _ Dd O _ _ _ oa Y n v dd hinv D V d₀ y hd hw hy`. Use `⟨⟨isField_add_comb d₀ dd y hd.1 fun a => (hinv a).1, fun W hW r => ?_⟩, fun α V' hV' f hf => ?_⟩` and prove the remaining obligations. Simplify using `only [hd.2 W hW r, fun a => inv_constFn Y.H (v a) (dd a) (hinv a) W r, mul_zero, Finset.sum_const_zero, add_zero]`. Conclude with `WtAlg.isWt_add (hw α V' hV' f hf) (WtAlg.isWt_sum _ _ fun a _ => WtAlg.isRaynaudTorusWeightFunction_weightZero_mul (isWt_rsT Y hV' (hy a)) (IsInv.isWt Y (v a) (dd a) (hinv a) α _ f hf))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isLift_add_invComb : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [IsNoetherianRing R] [IsAdicComplete (maximalIdeal R) R] [Algebra ℚ R] (Dd : DegData R (maximalIdeal R)) (O : Type) [CommRing O] [StarRing O] [Module O Dd.toPre.X] (oa : Dd.toPre.OAct O) (Y : Ray oa) (n : ℕ) (v : Module.Basis (Fin n) R (TanM (𝟙 (Sp R)) Y.H)) (dd : Fin n → Fld Y.H.left), (∀ a, IsInv Y.H (v a) (dd a)) → ∀ (D : Derivation ℤ R R) (V : Dd.toPre.P.A.left.Opens) (d₀ : Fld Y.H.left) (y : Fin n → Γ(Y.H.left, Y.q.left ⁻¹ᵁ V)), IsLift Y.H ⇑D (Y.q.left ⁻¹ᵁ V) d₀ → (∀ (α : Dd.toPre.X) (V' : Dd.toPre.P.A.left.Opens), Y.q.left ⁻¹ᵁ V' ≤ Y.q.left ⁻¹ᵁ V → ∀ f, IsWt Y α (Y.q.left ⁻¹ᵁ V') f → IsWt Y α (Y.q.left ⁻¹ᵁ V') (d₀ _ f)) → (∀ a, IsWt Y 0 _ (y a)) → IsLift Y.H ⇑D (Y.q.left ⁻¹ᵁ V) (fun W f => d₀ W f + ∑ a, rsT (y a) W * dd a W f) ∧ (∀ (α : Dd.toPre.X) (V' : Dd.toPre.P.A.left.Opens), Y.q.left ⁻¹ᵁ V' ≤ Y.q.left ⁻¹ᵁ V → ∀ f, IsWt Y α (Y.q.left ⁻¹ᵁ V') f → IsWt Y α (Y.q.left ⁻¹ᵁ V') ((fun W f => d₀ W f + ∑ a, rsT (y a) W * dd a W f) _ f)) := by
   intro R _ _ _ _ _ _ Dd O _ _ _ oa Y n v dd hinv D V d₀ y hd hw hy

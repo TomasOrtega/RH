@@ -9,15 +9,15 @@ namespace GlobalTheory.TrivSubgroup
 variable {D : D7} {q : ℕ}
 
 /- English proof (translation)
-Introduce `k` and use `⟨1, one_pos, Nat.coprime_one_left q, 0, zero_mem _, by simp⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem zeroAt_zero : ZeroAt D q 0 := fun k =>
   ⟨1, one_pos, Nat.coprime_one_left q, 0, zero_mem _, by simp⟩
 
 /- English proof (translation)
-Introduce `k`. Take `⟨m, hm, hmq, s, hs, h⟩` from `hx k`. Take `⟨m', hm', hmq', s', hs', h'⟩` from `hy k`. Use `⟨m * m', Nat.mul_pos hm hm', Nat.Coprime.mul_left hmq hmq', (m' : AE D) * s + (m : AE D) * s', add_mem (mul_mem (natCast_mem _ _) hs) (mul_mem (natCast_mem _ _) hs'), ?_⟩` and prove the remaining obligations. Use `push_cast`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations.
 
-Take the linear combination `(m' : AE D) * h + (m : AE D) * h'`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem zeroAt_add {x y : AE D} (hx : ZeroAt D q x) (hy : ZeroAt D q y) : ZeroAt D q (x + y) := by
   intro k
@@ -29,9 +29,9 @@ theorem zeroAt_add {x y : AE D} (hx : ZeroAt D q x) (hy : ZeroAt D q y) : ZeroAt
   linear_combination (m' : AE D) * h + (m : AE D) * h'
 
 /- English proof (translation)
-Introduce `k`. Take `⟨n, hn, hy⟩` from `GlobalTheory.AdelicApprox.exists_denom D y`. Take `⟨a, n', hn', rfl⟩` from `Nat.exists_eq_pow_mul_and_not_dvd hn.ne' q hq.ne_one`. Take `⟨m, hm, hmq, s, hs, h⟩` from `hx (k + a)`. Use `⟨m * n', Nat.mul_pos hm (Nat.pos_of_ne_zero (by rintro rfl; simp at hn')), Nat.Coprime.mul_left hmq ((Nat.Prime.coprime_iff_not_dvd hq).2 hn').symm, _, mul_mem hs hy, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `push_cast`. Take the linear combination `(n' : AE D) * y * h`.
+Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem zeroAt_mul_left (hq : q.Prime) (y : AE D) {x : AE D} (hx : ZeroAt D q x) :
     ZeroAt D q (y * x) := by
@@ -51,7 +51,7 @@ def zeroIdeal (D : D7) (hq : q.Prime) : Ideal (AE D) where
   smul_mem' := fun c _ hx => zeroAt_mul_left hq c hx
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply]`. Conclude with `I.sum_mem fun k _ => I.mul_mem_left _ (hB k j)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem entry_mul_mem {R : Type} [CommRing R] (I : Ideal R) {n : ℕ} (A B : Matrix (Fin n) (Fin n) R)
     (hB : ∀ i j, B i j ∈ I) (i j : Fin n) : (A * B) i j ∈ I := by
@@ -59,11 +59,9 @@ theorem entry_mul_mem {R : Type} [CommRing R] (I : Ideal R) {n : ℕ} (A B : Mat
   exact I.sum_mem fun k _ => I.mul_mem_left _ (hB k j)
 
 /- English proof (translation)
-Introduce `D n q hq`. Use `⟨fun i j => ?_, fun g h hg hh i j => ?_, fun g hg i j => ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_one, sub_self]`. Conclude with `zeroAt_zero`. Establish `e : ((g * h : GL (Fin n) (AE D)) : Matrix (Fin n) (Fin n) (AE D)) - 1 = (g : Matrix (Fin n) (Fin n) (AE D)) * ((h : Matrix (Fin n) (Fin n) (AE D)) - 1) + ((g : Matrix (Fin n) (Fin n) (AE D)) - 1)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Units.val_mul, mul_sub, mul_one, sub_add_sub_cancel]`. Rewrite using `[← Matrix.sub_apply, e, Matrix.add_apply]`. Conclude with `zeroAt_add (entry_mul_mem (zeroIdeal D hq) _ _ hh i j) (hg i j)`. Establish `e : ((g⁻¹ : GL (Fin n) (AE D)) : Matrix (Fin n) (Fin n) (AE D)) - 1 = (-((g⁻¹ : GL (Fin n) (AE D)) : Matrix (Fin n) (Fin n) (AE D))) * ((g : Matrix (Fin n) (Fin n) (AE D)) - 1)`. Rewrite using `[neg_mul, mul_sub, mul_one, Units.inv_mul, neg_sub]`.
-
-Rewrite using `[← Matrix.sub_apply, e]`. Conclude with `entry_mul_mem (zeroIdeal D hq) _ _ hg i j`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trivAt_subgroup : ∀ (D : D7) (n q : ℕ), q.Prime → TrivAt D q (1 : GL (Fin n) (AE D)) ∧
     (∀ g h : GL (Fin n) (AE D), TrivAt D q g → TrivAt D q h → TrivAt D q (g * h)) ∧

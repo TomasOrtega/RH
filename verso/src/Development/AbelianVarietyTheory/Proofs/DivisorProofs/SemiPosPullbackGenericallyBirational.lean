@@ -15,23 +15,21 @@ noncomputable section
 namespace GlobalTheory.SemiPullBir
 
 /- English proof (translation)
-Establish `hFX : IsField (X.presheaf.stalk (π (genericPoint Y)))`. Rewrite using `[hη]`. Conclude with `Field.toIsField X.functionField`. Establish `hFY : IsField (Y.presheaf.stalk (genericPoint Y))` using `Field.toIsField Y.functionField`. Establish `hrX : Function.Bijective (X.residue (π (genericPoint Y))).hom`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, IsLocalRing.residue_surjective⟩` and prove the remaining obligations. Use `letI := hFX.toField`. Conclude with `RingHom.injective _`. Establish `hrY : Function.Bijective (Y.residue (genericPoint Y)).hom`. Use `⟨?_, IsLocalRing.residue_surjective⟩` and prove the remaining obligations.
+Equip the data with the indicated structure. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Use `letI := hFY.toField`. Conclude with `RingHom.injective _`. Establish `hκ : Function.Bijective (π.residueFieldMap (genericPoint Y)).hom`. Use `letI := (π.residueFieldMap (genericPoint Y)).hom.toAlgebra`. Establish `h1 : Module.finrank (X.residueField (π (genericPoint Y))) (Y.residueField (genericPoint Y)) = 1` using `hd`.
+Equip the data with the indicated structure. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨RingHom.injective _, fun y => ?_⟩` and prove the remaining obligations. Establish `htop` using `Subalgebra.bot_eq_top_iff_finrank_eq_one.2 h1`. Establish `hy : y ∈ (⊥ : Subalgebra (X.residueField (π (genericPoint Y))) (Y.residueField (genericPoint Y)))`. Rewrite using `[htop]`. Conclude with `Algebra.mem_top`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨a, ha⟩` from `Algebra.mem_bot.1 hy`. Conclude with `⟨a, ha⟩`. Establish `hst : Function.Bijective (π.stalkMap (genericPoint Y)).hom`. Establish `e` using `Scheme.residue_residueFieldMap (f := π) (genericPoint Y)`. Establish `e' : (Y.residue (genericPoint Y)).hom.comp (π.stalkMap (genericPoint Y)).hom = (π.residueFieldMap (genericPoint Y)).hom.comp (X.residue (π (genericPoint Y))).hom`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← CommRingCat.hom_comp, ← CommRingCat.hom_comp, ← e]`. Establish `hc : Function.Bijective ((Y.residue (genericPoint Y)).hom.comp (π.stalkMap (genericPoint Y)).hom)`. Rewrite using `[e']`. Conclude with `hκ.comp hrX`. Use `(Function.Bijective.of_comp_iff' hrY _).1 hc` and prove the remaining obligations.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `: IsIso (π.stalkMap (genericPoint Y))` using `(ConcreteCategory.isIso_iff_bijective _).2 hst`. Set `φ : Spec (X.presheaf.stalk (π (genericPoint Y))) ⟶ Y` to `Spec.map (inv (π.stalkMap (genericPoint Y))) ≫ Y.fromSpecStalk (genericPoint Y)`. Establish `hφ : φ ≫ π = X.fromSpecStalk (π (genericPoint Y)) ≫ 𝟙 X`. Simplify using `only [φ, Category.assoc, Category.comp_id]`. Rewrite using `[← Scheme.SpecMap_stalkMap_fromSpecStalk, ← Category.assoc, ← Spec.map_comp, IsIso.hom_inv_id, Spec.map_id, Category.id_comp]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨U, hU, g, hg₁, hg₂⟩` from `spread_out_of_isGermInjective' (𝟙 X) π φ hφ`. Rewrite `hg₂` using `[Category.comp_id]`. Establish `: IsDominant (Y.fromSpecStalk (genericPoint Y))` using `⟨((dense_iff_closure_eq.2 (genericPoint_spec Y)).mono (Set.singleton_subset_iff.2 ⟨_, Scheme.fromSpecStalk_closedPoint⟩))⟩`. Establish `: IsDominant φ` using `inferInstance`. Establish `: IsDominant g`.
-
-Rewrite `this` using `[hg₁]`. Conclude with `IsDominant.of_comp (U.fromSpecStalkOfMem _ hU) g`. Conclude with `⟨U, ⟨_, hU⟩, GlobalTheory.ZH.isIso_morphismRestrict_of_local_dominant_sections π U fun y hy => ⟨U, U.ι, inferInstance, g, ⟨⟨y, hy⟩, rfl⟩, by simp, ‹_›, hg₂⟩⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_isIso_restrict {X Y : Scheme.{0}} [IsIntegral X] [IsIntegral Y] (π : Y ⟶ X)
     [IsSeparated π] [LocallyOfFiniteType π] (hη : π (genericPoint Y) = genericPoint X)
@@ -86,9 +84,9 @@ theorem exists_isIso_restrict {X Y : Scheme.{0}} [IsIntegral X] [IsIntegral Y] (
     ⟨U, U.ι, inferInstance, g, ⟨⟨y, hy⟩, rfl⟩, by simp, ‹_›, hg₂⟩⟩
 
 /- English proof (translation)
-Introduce `k _ X _ p D hp Y _ q hq π hπ hη hd L hL`. Establish `hpr : IsProper q` using `GlobalTheory.SchemeWords.isProper_of_isProjOver hq.isProjOver`. Establish `hsep : IsSeparated (π ≫ p)` using `by rw [hπ]; infer_instance`. Establish `hft : LocallyOfFiniteType (π ≫ p)` using `by rw [hπ]; infer_instance`. Establish `: IsSeparated π` using `IsSeparated.of_comp π p`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: LocallyOfFiniteType π` using `locallyOfFiniteType_of_comp π p`. Take `⟨U, hU, hi⟩` from `exists_isIso_restrict π hη hd`. Conclude with `(GlobalTheory.SemiPosBir.semiPos_iff_pull k X Y p q D hp hq π hπ U hU hi L).1 hL`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem semiPos_pull : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ), IsArithVar p D → ∀ (Y : Scheme.{0}) [IsIntegral Y] (q : Y ⟶ Sp k), IsArithVar q D → ∀ (π : Y ⟶ X) (hπ : π ≫ p = q), π (genericPoint Y) = genericPoint X → π.residueDegree (genericPoint Y) = 1 → ∀ L : HermLB p, L.SemiPos D → (L.pull π hπ).SemiPos D := by
   intro k _ X _ p D hp Y _ q hq π hπ hη hd L hL

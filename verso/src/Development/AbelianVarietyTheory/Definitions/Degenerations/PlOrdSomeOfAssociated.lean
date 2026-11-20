@@ -57,7 +57,7 @@ def plOrd (i : Option (MonIrr k)) (x : RatFunc k) : ℤ := -(plDeg k i : ℤ) * 
 variable {k}
 
 /- English proof (translation)
-Consider the cases of `i with`. Consider the case `none => exact Nat.one_pos`. Consider the case `some p => exact Polynomial.natDegree_pos_iff_degree_pos.2 (Polynomial.degree_pos_of_irreducible p.2.2)`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 -/
 theorem plDeg_pos (i : Option (MonIrr k)) : 0 < plDeg k i := by
   cases i with
@@ -65,7 +65,7 @@ theorem plDeg_pos (i : Option (MonIrr k)) : 0 < plDeg k i := by
   | some p => exact Polynomial.natDegree_pos_iff_degree_pos.2 (Polynomial.degree_pos_of_irreducible p.2.2)
 
 /- English proof (translation)
-Establish `hx' : plVal k i x ≠ 0` using `(Valuation.ne_zero_iff _).2 hx`. Establish `hy' : plVal k i y ≠ 0` using `(Valuation.ne_zero_iff _).2 hy`. Unfold `plOrd`. Rewrite using `[map_mul, WithZero.log_mul hx' hy']`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem plOrd_mul (i : Option (MonIrr k)) {x y : RatFunc k} (hx : x ≠ 0) (hy : y ≠ 0) :
     plOrd k i (x * y) = plOrd k i x + plOrd k i y := by
@@ -76,7 +76,7 @@ theorem plOrd_mul (i : Option (MonIrr k)) {x y : RatFunc k} (hx : x ≠ 0) (hy :
   ring
 
 /- English proof (translation)
-Establish `h : plVal k none (algebraMap k[X] (RatFunc k) p) = WithZero.exp (p.natDegree : ℤ)` using `by show RatFunc.inftyValuation k _ = _`. Rewrite using `[RatFunc.inftyValuation_apply, RatFunc.inftyValuation.polynomial (F := k) hp]`. Unfold `plOrd`. Rewrite using `[h, WithZero.log_exp]`. Simplify using `[plDeg]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem plOrd_none {p : k[X]} (hp : p ≠ 0) :
     plOrd k none (algebraMap k[X] (RatFunc k) p) = -(p.natDegree : ℤ) := by
@@ -89,9 +89,9 @@ theorem plOrd_none {p : k[X]} (hp : p ≠ 0) :
   simp [plDeg]
 
 /- English proof (translation)
-Establish `h1 : plVal k (some π) (algebraMap k[X] (RatFunc k) p) = 1` using `by show π.prime.valuation (RatFunc k) _ = 1`. Rewrite using `[HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.intValuation_eq_one_iff]`. Use `show p ∉ Ideal.span {π.1}`. Rewrite using `[Ideal.mem_span_singleton]` and apply the resulting hypothesis. Unfold `plOrd`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, WithZero.log_one, mul_zero]`.
+A detailed English derivation is pending.
 -/
 theorem plOrd_some_of_not_dvd (π : MonIrr k) {p : k[X]} (h : ¬ π.1 ∣ p) :
     plOrd k (some π) (algebraMap k[X] (RatFunc k) p) = 0 := by
@@ -105,9 +105,9 @@ theorem plOrd_some_of_not_dvd (π : MonIrr k) {p : k[X]} (h : ¬ π.1 ∣ p) :
   rw [h1, WithZero.log_one, mul_zero]
 
 /- English proof (translation)
-Establish `hp : p ≠ 0`. Introduce and unpack `rfl`. Conclude with `π.2.2.ne_zero ((associated_zero_iff_eq_zero _).1 h)`. Establish `h1 : plVal k (some π) (algebraMap k[X] (RatFunc k) p) = WithZero.exp (-1 : ℤ)` using `by show π.prime.valuation (RatFunc k) _ = _`. Rewrite using `[HeightOneSpectrum.valuation_of_algebraMap]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `π.prime.intValuation_singleton hp (show Ideal.span {π.1} = Ideal.span {p} from Ideal.span_singleton_eq_span_singleton.2 h)`. Establish `hd : p.natDegree = π.1.natDegree` using `Polynomial.natDegree_eq_of_degree_eq (Polynomial.degree_eq_degree_of_associated h).symm`. Unfold `plOrd`. Rewrite using `[h1, WithZero.log_exp, hd]`. Simplify using `[plDeg]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem plOrd_some_of_associated (π : MonIrr k) {p : k[X]} (h : Associated π.1 p) :
     plOrd k (some π) (algebraMap k[X] (RatFunc k) p) = p.natDegree := by
@@ -130,9 +130,9 @@ def PF (x : RatFunc k) : Prop :=
   (Function.support fun i => plOrd k i x).Finite ∧ ∑ᶠ i, plOrd k i x = 0
 
 /- English proof (translation)
-Establish `e : (fun i => plOrd k i (x * y)) = fun i => plOrd k i x + plOrd k i y`. Use function extensionality and compare the values at `fun i => plOrd_mul i hx hy`. Unfold `PF at *`. Take `⟨a1, a2⟩` from `a`. Take `⟨b1, b2⟩` from `b`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[e]`. Conclude with `(a1.union b1).subset (Function.support_add _ _)`. Rewrite using `[e, finsum_add_distrib a1 b1, a2, b2, add_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem PF.mul {x y : RatFunc k} (hx : x ≠ 0) (hy : y ≠ 0) (a : PF x) (b : PF y) : PF (x * y) := by
   have e : (fun i => plOrd k i (x * y)) = fun i => plOrd k i x + plOrd k i y :=
@@ -146,11 +146,11 @@ theorem PF.mul {x y : RatFunc k} (hx : x ≠ 0) (hy : y ≠ 0) (a : PF x) (b : P
   · rw [e, finsum_add_distrib a1 b1, a2, b2, add_zero]
 
 /- English proof (translation)
-Establish `e : (fun i => plOrd k i x⁻¹) = fun i => -plOrd k i x`. Use function extensionality and compare the values at `i`. Establish `h1` using `plOrd_mul i hx (inv_ne_zero hx)`. Establish `h0 : plOrd k i 1 = 0`. Unfold `plOrd`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[map_one, WithZero.log_one, mul_zero]`. Rewrite `h1` using `[mul_inv_cancel₀ hx, h0]`. Combine the linear equalities and inequalities to obtain the conclusion. Unfold `PF at *`. Take `⟨a1, a2⟩` from `a`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[e]`. Conclude with `a1.subset fun i hi => by simpa [Function.mem_support] using hi`. Rewrite using `[e, finsum_neg_distrib, a2, neg_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem PF.inv {x : RatFunc k} (hx : x ≠ 0) (a : PF x) : PF x⁻¹ := by
   have e : (fun i => plOrd k i x⁻¹) = fun i => -plOrd k i x := by
@@ -169,9 +169,9 @@ theorem PF.inv {x : RatFunc k} (hx : x ≠ 0) (a : PF x) : PF x⁻¹ := by
   · rw [e, finsum_neg_distrib, a2, neg_zero]
 
 /- English proof (translation)
-Establish `hz : ∀ i, plOrd k i (algebraMap k[X] (RatFunc k) u) = 0`. Introduce `i`. Consider the cases of `i with`. Consider the case `none => rw [plOrd_none hu.ne_zero, Polynomial.natDegree_eq_zero_of_isUnit hu]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Simplify using the standard rewrite rules.
 
-Consider the case `some π => exact plOrd_some_of_not_dvd π fun hd => π.2.2.not_isUnit (isUnit_of_dvd_unit hd hu)`. Establish `e : (fun i => plOrd k i (algebraMap k[X] (RatFunc k) u)) = fun _ => 0` using `funext hz`. Unfold `PF`. Rewrite using `[e]`. Conclude with `⟨by simp, by simp⟩`.
+Treat this case separately. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 private theorem pf_algebraMap_of_isUnit {u : k[X]} (hu : IsUnit u) : PF (algebraMap k[X] (RatFunc k) u) := by
   have hz : ∀ i, plOrd k i (algebraMap k[X] (RatFunc k) u) = 0 := by
@@ -185,15 +185,15 @@ private theorem pf_algebraMap_of_isUnit {u : k[X]} (hu : IsUnit u) : PF (algebra
   exact ⟨by simp, by simp⟩
 
 /- English proof (translation)
-Establish `hq0 : q ≠ 0` using `hq.ne_zero`. Set `π₀ : MonIrr k` to `⟨normalize q, Polynomial.monic_normalize hq0, (associated_normalize q).irreducible hq⟩`. Establish `hπ₀ : Associated π₀.1 q` using `(associated_normalize q).symm`. Establish `hz : ∀ i, i ≠ none → i ≠ some π₀ → plOrd k i (algebraMap k[X] (RatFunc k) q) = 0`. Introduce `i h1 h2`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the cases of `i with`. Consider the case `none => exact absurd rfl h1`. Consider the case `some π`. Apply `plOrd_some_of_not_dvd` to reduce the goal to its premises. Introduce `hd`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `h2` to reduce the goal to its premises. Use `congr 1`. Conclude with `Subtype.ext (Polynomial.eq_of_monic_of_associated π.2.1 π₀.2.1 ((π.2.2.associated_of_dvd hq hd).trans hπ₀.symm))`. Establish `hs : Function.support (fun i => plOrd k i (algebraMap k[X] (RatFunc k) q)) ⊆ ((({none, some π₀} : Finset (Option (MonIrr k)))) : Set (Option (MonIrr k)))`. Introduce `i hi`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hn`. Simplify using `only [Finset.coe_insert, Finset.coe_singleton, Set.mem_insert_iff, Set.mem_singleton_iff, not_or] at hn`. Conclude with `hi (hz i hn.1 hn.2)`. Unfold `PF`. Use `⟨(Finset.finite_toSet _).subset hs, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[finsum_eq_sum_of_support_subset _ hs, Finset.sum_pair (by simp), plOrd_none hq0, plOrd_some_of_associated π₀ hπ₀]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 private theorem pf_algebraMap_of_irreducible {q : k[X]} (hq : Irreducible q) : PF (algebraMap k[X] (RatFunc k) q) := by
   classical
@@ -225,9 +225,9 @@ private theorem pf_algebraMap_of_irreducible {q : k[X]} (hq : Irreducible q) : P
   ring
 
 /- English proof (translation)
-Proceed by induction on `p using WfDvdMonoid.induction_on_irreducible with`. Consider the case `zero => exact fun h => absurd rfl h`. Consider the case `unit u hu => exact fun _ => pf_algebraMap_of_isUnit hu`. Consider the case `mul a i ha hi ih`. Introduce `_`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[map_mul]`. Conclude with `PF.mul (RatFunc.algebraMap_ne_zero hi.ne_zero) (RatFunc.algebraMap_ne_zero ha) (pf_algebraMap_of_irreducible hi) (ih ha)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pf_poly (p : k[X]) : p ≠ 0 → PF (algebraMap k[X] (RatFunc k) p) := by
   induction p using WfDvdMonoid.induction_on_irreducible with
@@ -240,7 +240,7 @@ theorem pf_poly (p : k[X]) : p ≠ 0 → PF (algebraMap k[X] (RatFunc k) p) := b
       (pf_algebraMap_of_irreducible hi) (ih ha)
 
 /- English proof (translation)
-Introduce `hx`. Rewrite using `[← RatFunc.num_div_denom x, div_eq_mul_inv]`. Conclude with `PF.mul (RatFunc.algebraMap_ne_zero (RatFunc.num_ne_zero hx)) (inv_ne_zero (RatFunc.algebraMap_ne_zero (RatFunc.denom_ne_zero x))) (pf_poly _ (RatFunc.num_ne_zero hx)) (PF.inv (RatFunc.algebraMap_ne_zero (RatFunc.denom_ne_zero x)) (pf_poly _ (RatFunc.denom_ne_zero x)))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pf_all (x : RatFunc k) : x ≠ 0 → PF x := by
   intro hx
@@ -278,7 +278,7 @@ def projLinePlaces : Places k (RatFunc k) where
   sum := fun x => (pf_all x.1 x.ne_zero).2
 
 /- English proof (translation)
-Use `show plOrd k none RatFunc.X = -1`. Rewrite using `[← RatFunc.algebraMap_X, plOrd_none Polynomial.X_ne_zero, Polynomial.natDegree_X]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem projLinePlaces_X : (projLinePlaces k).v none (Units.mk0 RatFunc.X RatFunc.X_ne_zero) = -1 := by
   show plOrd k none RatFunc.X = -1
@@ -286,7 +286,7 @@ theorem projLinePlaces_X : (projLinePlaces k).v none (Units.mk0 RatFunc.X RatFun
   rfl
 
 /- English proof (translation)
-Substitute `hφ` using the available equality. Use `show (Y.presheaf.map (𝟙 (Opposite.op U))).hom f = f`. Rewrite using `[CategoryTheory.Functor.map_id]`. Both sides reduce to the same expression.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem appLE_apply_of_eq_id' {Y : Scheme.{0}} (φ : Y ⟶ Y) (hφ : φ = 𝟙 Y) {U : Y.Opens}
     (e : U ≤ φ ⁻¹ᵁ U) (f : Γ(Y, U)) : (φ.appLE U U e).hom f = f := by
@@ -298,9 +298,9 @@ private theorem appLE_apply_of_eq_id' {Y : Scheme.{0}} (φ : Y ⟶ Y) (hφ : φ 
 end ProjLine
 
 /- English proof (translation)
-Unfold `FrobG`. Use `⟨inferInstanceAs (IsMonHom (𝟙 G)), fun U _ f => ⟨1, le_rfl, ?_⟩⟩` and prove the remaining obligations. Establish `hh : Over.Hom.left (show G ⟶ G from (1 : End G) ^ 1) = 𝟙 G.left`. Conclude with `congrArg (fun φ => Over.Hom.left φ) (pow_one (1 : End G))`. Use `⟨by rw [hh]; rfl, ?_⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[appLE_apply_of_eq_id' _ hh]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem frobG_one {k : Type} [Field k] (G : Over (Sp k)) [GrpObj G] : FrobG G 1 1 := by
   unfold FrobG
@@ -312,7 +312,7 @@ theorem frobG_one {k : Type} [Field k] (G : Over (Sp k)) [GrpObj G] : FrobG G 1 
   simp
 
 /- English proof (translation)
-Use `⟨⟨fun _ => 1⟩, ?_⟩` and prove the remaining obligations. Unfold `LB.Gen.IsGen`. Introduce `i j`. Rewrite using `[Inh.linComb_triv_g]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem linComb_triv_gen {X Y : Scheme.{0}} {K : Type} [Fintype K] (φ : K → (Y ⟶ X)) (ε : K → ℤ) :
     ∃ t : LB.Gen (LB.LinComb (Inh.trivLB X) φ ε), t.IsGen := by
@@ -323,16 +323,16 @@ theorem linComb_triv_gen {X Y : Scheme.{0}} {K : Type} [Fintype K] (φ : K → (
   simp
 
 /- English proof (translation)
-Unfold `PullPow`. Conclude with `linComb_triv_gen _ _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem pullPow_triv {X : Scheme.{0}} (F : X ⟶ X) (q : ℤ) : PullPow F (Inh.trivLB X) q := by
   unfold PullPow
   exact linComb_triv_gen _ _
 
 /- English proof (translation)
-Unfold `AmpleCub`. Use `⟨Inh.trivLB_isLB _, linComb_triv_gen _ _, linComb_triv_gen _ _, 1, le_rfl, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[Nat.cast_one, pw_one]`. Use `⟨oneSec _, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[nonzeroLocus_oneSec]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Discharge the goal by the elementary cases of `trivial`. Rewrite using `[nonzeroLocus_oneSec]`. Conclude with `isAffineOpen_top _`.
+Check the elementary cases of the proposition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ampleCub_triv {S : Scheme.{0}} (G : Over S) [GrpObj G] [IsAffine G.left] :
     AmpleCub G (Inh.trivLB G.left) := by

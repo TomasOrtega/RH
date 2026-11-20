@@ -9,7 +9,7 @@ namespace Formalism.BasicNotions.Examples₂.NZ
 open Polynomial Formalism.CyclotomicNorms NumberField IsDedekindDomain
 
 /- English proof (translation)
-Introduce `a b h`. Use function extensionality and compare the values at `i`. Establish `h2` using `congrArg (fun p => Polynomial.coeff p i) h`. Simplify `h2` using `[monicOf, Polynomial.coeff_X_pow, Polynomial.finset_sum_coeff, Polynomial.coeff_C_mul, Fin.val_inj, (Fin.is_lt i).ne]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem monicOf_injective {K : Type} [Field K] {N : ℕ} : Function.Injective (monicOf (K := K) (N := N)) := by
   intro a b h
@@ -21,13 +21,13 @@ theorem monicOf_injective {K : Type} [Field K] {N : ℕ} : Function.Injective (m
 variable {R : Ranks} {H : Host R}
 
 /- English proof (translation)
-Conclude with `⟨(H.g_prime k).ne_zero⟩`.
+Supply the required witnesses or components.
 -/
 theorem neZero_g (k : Fin 2) : NeZero (H.g k) := by
   exact ⟨(H.g_prime k).ne_zero⟩
 
 /- English proof (translation)
-Conclude with `⟨H.g_prime k⟩`.
+Supply the required witnesses or components.
 -/
 theorem fact_g (k : Fin 2) : Fact (H.g k).Prime := by
   exact ⟨H.g_prime k⟩
@@ -57,7 +57,7 @@ variable (es : ∀ k, (ZMod (H.g k))[X] → MonoidAlgebra K (GL (Fin R.r) (ZMod 
 
 include hcen in
 /- English proof (translation)
-Unfold `e0F`. Apply `eSum_central` to reduce the goal to its premises. Introduce `i x b`. Conclude with `hcen i.1 (monicOf x) b`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem seriesIdempotent_central (a : MonoidAlgebra K (G0g N)) : e0F N es * a = a * e0F N es := by
   unfold e0F
@@ -67,9 +67,7 @@ theorem seriesIdempotent_central (a : MonoidAlgebra K (G0g N)) : e0F N es * a = 
 
 include hidem horth in
 /- English proof (translation)
-Unfold `e0F`. Apply `eSum_idem` to reduce the goal to its premises. Introduce `i x`. Conclude with `hidem i.1 (monicOf x)`. Introduce `i x y hxy`.
-
-Conclude with `horth i.1 _ _ (fun h => hxy (monicOf_injective h))`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem seriesIdempotent_idem : e0F N es * e0F N es = e0F N es := by
   unfold e0F
@@ -81,11 +79,9 @@ theorem seriesIdempotent_idem : e0F N es * e0F N es = e0F N es := by
 
 include hidem horth in
 /- English proof (translation)
-Establish `e : (fun k v => monicOf (fun i : Fin R.r => (f k v).coeff i)) = f`. Use function extensionality and compare the values at `k v`. Conclude with `Formalism.CyclotomicNorms.Sqf.monicOf_coeffs _ ((hf k).1.1 v).1 ((hf k).1.1 v).2.1`. Unfold `e0F`. Apply `eSum_ne_zero (I := Ix N) (G := fun kv => GL (Fin R.r) (ZMod (H.g kv.1))) (L := fun kv => Fin R.r → ZMod (H.g kv.1)) (E := fun kv a => es kv.1 (monicOf a)) (S := fun a => GoodT N fun k v => monicOf (a ⟨k, v⟩)) (b := fun kv : Ix N => fun i : Fin R.r => (f kv.1 kv.2).coeff i)` to reduce the goal to its premises.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i l`. Conclude with `hidem i.1 (monicOf l)`. Introduce `i x y hxy`. Conclude with `horth i.1 _ _ (fun h => hxy (monicOf_injective h))`. Use `show GoodT N fun k v => monicOf (fun i : Fin R.r => (f k v).coeff i)`.
-
-Rewrite using `[e]`. Conclude with `hf`. Introduce `kv show es kv.1 (monicOf fun i : Fin R.r => (f kv.1 kv.2).coeff i) ≠ 0`. Rewrite using `[Formalism.CyclotomicNorms.Sqf.monicOf_coeffs _ ((hf kv.1).1.1 kv.2).1 ((hf kv.1).1.1 kv.2).2.1]`. Conclude with `hne kv.1 kv.2`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem seriesIdempotent_ne_zero (f : ∀ k, N.PlG k → (ZMod (H.g k))[X]) (hf : GoodT N f) (hne : ∀ k v, es k (f k v) ≠ 0) :
     e0F N es ≠ 0 := by
@@ -111,7 +107,7 @@ theorem seriesIdempotent_ne_zero (f : ∀ k, N.PlG k → (ZMod (H.g k))[X]) (hf 
 variable {N}
 
 /- English proof (translation)
-Apply `MonoidAlgebra.ext` to reduce the goal to its premises. Use extensionality with `g`. Rewrite using `[e0F, eSum_coeff]`. Simplify using `only [Formalism.BasicNotions.NTypes.e0, MonoidAlgebra.coeff_ofCoeff, Finsupp.coe_equivFunOnFinite_symm]`. Rewrite using `[finsum_eq_sum_of_fintype]`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -124,7 +120,7 @@ theorem e0_eq {A : NAut N} (X : NTypes A) : X.e0 = e0F N X.eSer := by
   rfl
 
 /- English proof (translation)
-Rewrite using `[e0_eq X, Subalgebra.mem_center_iff]`. Introduce `b`. Conclude with `(seriesIdempotent_central N X.eSer X.eSer_central b).symm`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem idempotent_mem_center {A : NAut N} (X : NTypes A) :
     X.e0 ∈ Subalgebra.center ℂ (MonoidAlgebra ℂ (G0g N)) := by
@@ -133,21 +129,21 @@ theorem idempotent_mem_center {A : NAut N} (X : NTypes A) :
   exact (seriesIdempotent_central N X.eSer X.eSer_central b).symm
 
 /- English proof (translation)
-Rewrite using `[e0_eq X]`. Conclude with `seriesIdempotent_idem N X.eSer X.eSer_idem X.eSer_orth`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem idempotent_sum {A : NAut N} (X : NTypes A) : X.e0 * X.e0 = X.e0 := by
   rw [e0_eq X]
   exact seriesIdempotent_idem N X.eSer X.eSer_idem X.eSer_orth
 
 /- English proof (translation)
-Unfold `Formalism.BasicNotions.NTypes.onAmb`. Rewrite using `[dif_pos (idempotent_mem_center X)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem ambientAction_idempotent {A : NAut N} (X : NTypes A) (μ) : X.onAmb μ X.e0 = X.cenAmb μ ⟨X.e0, idempotent_mem_center X⟩ := by
   unfold Formalism.BasicNotions.NTypes.onAmb
   rw [dif_pos (idempotent_mem_center X)]
 
 /- English proof (translation)
-Unfold `Formalism.BasicNotions.NTypes.onMt`. Rewrite using `[dif_pos (idempotent_mem_center X)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem matrixAction_idempotent {A : NAut N} (X : NTypes A) (μ j) : X.onMt μ j X.e0 = X.cenMt μ j ⟨X.e0, idempotent_mem_center X⟩ := by
   unfold Formalism.BasicNotions.NTypes.onMt

@@ -1,23 +1,21 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `S _ n r g P m X Y B C Xd Yd d e hXdX hYdY hXdY hYdX hB hgX hXdg hd hu hP hm hdet`. Establish `hmm : m⁻¹ * m = 1` using `Matrix.nonsing_inv_mul m hdet`. Take `⟨f, hf⟩ : ∃ f : Fin r → S, ∀ i, f i * d i = 1` from `⟨fun i => (((hu i).unit⁻¹ : Sˣ) : S), fun i => (hu i).val_inv_mul⟩`. Establish `hDF : Matrix.diagonal d * Matrix.diagonal f = 1`. Rewrite using `[Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `i`. Rewrite using `[mul_comm]`. Conclude with `hf i`. Establish `hPX : P * X = 0`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hP, Matrix.sub_mul, Matrix.sub_mul, Matrix.one_mul, Matrix.mul_assoc X, Matrix.mul_assoc Y, hYdX, hXdX, Matrix.mul_one, Matrix.mul_zero, sub_self, sub_zero]`. Establish `hmX : m * X = X * Matrix.diagonal d`. Rewrite using `[hm, Matrix.add_mul, Matrix.add_mul, Matrix.mul_assoc _ Yd, Matrix.mul_assoc _ Xd, hYdX, hXdX, Matrix.mul_assoc _ P, hPX, Matrix.mul_one, Matrix.mul_zero, Matrix.mul_zero, add_zero, add_zero]`. Establish `hinvX : m⁻¹ * X = X * Matrix.diagonal f`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hDF, Matrix.mul_one]`. Use `_ = (m⁻¹ * m) * (X * Matrix.diagonal f) := by`. Rewrite using `[← Matrix.mul_assoc X, ← hmX, Matrix.mul_assoc m, Matrix.mul_assoc m⁻¹]`. Use `_ = X * Matrix.diagonal f := by rw [hmm, Matrix.one_mul]`. Establish `hPgX : P * g * X = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mul_assoc, hgX, ← Matrix.mul_assoc, hPX, Matrix.zero_mul]`. Establish `hPg : P * g = g - X * (Yd * g) - Y * C * Xd`. Rewrite using `[hP, sub_mul, sub_mul, Matrix.one_mul, Matrix.mul_assoc X, Matrix.mul_assoc Y, hXdg, Matrix.mul_assoc Y]`. Establish `hPgP : P * g * P = P * g - P * g * Y * Xd`. Establish `h0 : P * g * P = P * g * (1 - X * Yd - Y * Xd)` using `by rw [← hP]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h0, Matrix.mul_sub, Matrix.mul_sub, Matrix.mul_one, ← Matrix.mul_assoc _ X, hPgX, Matrix.zero_mul, sub_zero, ← Matrix.mul_assoc _ Y]`. Establish `hid : g - m = X * (Yd * g - Matrix.diagonal d * Yd) + (Y * C - Y * Matrix.diagonal e + P * g * Y) * Xd`. Rewrite using `[hm, hPgP, hPg]`. Simplify using `only [Matrix.mul_sub, Matrix.add_mul, Matrix.sub_mul, Matrix.mul_assoc]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `⟨⟨Matrix.diagonal f * B, ?_, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `i j hij`. Rewrite using `[Matrix.diagonal_mul, hB hij, mul_zero]`. Introduce `i`. Rewrite using `[Matrix.diagonal_mul, ← hd i]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hf i`. Rewrite using `[Matrix.mul_assoc, hgX, ← Matrix.mul_assoc, hinvX, Matrix.mul_assoc]`. Introduce `z hz`. Use `⟨(Matrix.diagonal f * (Yd * g - Matrix.diagonal d * Yd)).mulVec z, ?_⟩` and prove the remaining obligations. Establish `h1 : m⁻¹ * g - 1 = (X * Matrix.diagonal f) * (Yd * g - Matrix.diagonal d * Yd) + m⁻¹ * (Y * C - Y * Matrix.diagonal e + P * g * Y) * Xd`.
-
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hid, Matrix.mul_add, ← Matrix.mul_assoc, hinvX, ← Matrix.mul_assoc]`. Rewrite using `[h1, Matrix.add_mulVec, ← Matrix.mulVec_mulVec z _ Xd, hz, Matrix.mulVec_zero, add_zero, Matrix.mul_assoc X, Matrix.mulVec_mulVec]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.hermitian_projection_eq :
     ∀ {S : Type} [CommRing S] {n r : ℕ}

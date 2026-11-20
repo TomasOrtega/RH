@@ -25,16 +25,16 @@ open GlobalTheory.IdemSupport GlobalTheory.LocMod.SevPl
 variable {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Take `⟨h1, h2, -⟩` from `q.split`. Rewrite using `[mul_add, h1, h2, add_zero]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem e_mul_add (q : SplitPt D k) : q.e * (q.e + cA D q.e) = q.e := by
   obtain ⟨h1, h2, -⟩ := q.split
   rw [mul_add, h1, h2, add_zero]
 
 /- English proof (translation)
-Take `⟨Φ, hΦ⟩` from `exists_comp D`. Take `⟨ε, hε, hs⟩` from `q.above`. Assume the negation of the conclusion as `hne`. Establish `h0` using `(place_comp hΦ hε).2.2 P (fun e => hne e.symm)`. Establish `h1` using `ev_mul (Φ := Φ) q.e (q.e + cA D q.e) P`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[e_mul_add, hs, h0, mul_zero, (delta_of_isIdemAt hΦ h).2.1]`. Conclude with `one_ne_zero h1`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem v_eq_under (q : SplitPt D k) {P : HeightOneSpectrum (𝓞 D.host.E)} (h : Formalism.L2.NTheta.IsIdemAt q.e P) :
     q.v = P.under (𝓞 D.host.F) := by
@@ -47,9 +47,9 @@ theorem v_eq_under (q : SplitPt D k) {P : HeightOneSpectrum (𝓞 D.host.E)} (h 
   exact one_ne_zero h1
 
 /- English proof (translation)
-Take `⟨Φ, hΦ⟩` from `exists_comp D`. Establish `hd` using `delta_of_isIdemAt hΦ h`. Establish `hd'` using `delta_of_isIdemAt hΦ h'`. Use `hΦ.ext' (by rw [hd.1, hd'.1]) fun Q => ?_` and prove the remaining obligations. Distinguish the cases in `hQ : Q = P`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Substitute `hQ` using the available equality. Rewrite using `[hd.2.1, hd'.2.1]`. Rewrite using `[hd.2.2 Q hQ, hd'.2.2 Q hQ]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem idem_unique {P : HeightOneSpectrum (𝓞 D.host.E)} {e e' : Formalism.L2.Theta.AE D} (h : Formalism.L2.NTheta.IsIdemAt e P)
     (h' : Formalism.L2.NTheta.IsIdemAt e' P) : e = e' := by
@@ -62,11 +62,11 @@ theorem idem_unique {P : HeightOneSpectrum (𝓞 D.host.E)} {e e' : Formalism.L2
   · rw [hd.2.2 Q hQ, hd'.2.2 Q hQ]
 
 /- English proof (translation)
-Unfold `congGrp`. Rewrite using `[MonoidHom.mem_ker]`. Prove the components needed by the constructor for the conclusion. Introduce `h i j`. Use `congrArg (fun x : GL (Fin V.rank) (Formalism.L2.Theta.AE D ⧸ I) => x.1 i j) h` as an intermediate fact.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[Matrix.sub_apply, ← Ideal.Quotient.eq]`. Simplify using `[Formalism.L2.Theta.mt, Matrix.one_apply] at this ⊢`. Conclude with `this`. Introduce `h`. Use extensionality with `i j`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Use `h i j` as an intermediate fact. Rewrite `this` using `[Matrix.sub_apply, ← Ideal.Quotient.eq]`. Simplify using `[Formalism.L2.Theta.mt, Matrix.one_apply] at this ⊢`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_congGrp {V : HSp D} {I : Ideal (Formalism.L2.Theta.AE D)} {g : GA D V} :
     g ∈ congGrp V I ↔ ∀ i j, (mt V g - 1) i j ∈ I := by
@@ -86,7 +86,7 @@ theorem mem_congGrp {V : HSp D} {I : Ideal (Formalism.L2.Theta.AE D)} {g : GA D 
     exact this
 
 /- English proof (translation)
-Take `⟨ε, hε, hs⟩` from `q.above`. Establish `h1` using `((GlobalTheory.FinPl.placeIdem_acts D q.v ε hε).1 a).2 (hs ▸ h)`. Rewrite `h1`, the goal using `[GlobalTheory.FinPl.mem_supportedOnPlacesIdeal_iff_components_zero_elsewhere]`. Conclude with `⟨h1.1, fun w hw => h1.2 w fun e => hw (e ▸ hP)⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem mem_idAt_of_supp (q : SplitPt D k) {P : GlobalTheory.FinPl.Pl D → Prop} (hP : P q.v) {a : Formalism.L2.Theta.AE D}
     (h : (q.e + cA D q.e) * a = a) : a ∈ idAt D P := by
@@ -96,18 +96,18 @@ theorem mem_idAt_of_supp (q : SplitPt D k) {P : GlobalTheory.FinPl.Pl D → Prop
   exact ⟨h1.1, fun w hw => h1.2 w fun e => hw (e ▸ hP)⟩
 
 /- English proof (translation)
-The claim follows from `mem_congGrp.2 fun i j => mem_idAt_of_supp q hP (hg i j)`.
+A detailed English derivation is pending.
 -/
 theorem mem_grpAt_of_supp (q : SplitPt D k) {P : GlobalTheory.FinPl.Pl D → Prop} (hP : P q.v) {V : HSp D} {g : GA D V}
     (hg : SuppAt q.e V g) : g ∈ grpAt V P :=
   mem_congGrp.2 fun i j => mem_idAt_of_supp q hP (hg i j)
 
 /- English proof (translation)
-Establish `he : q.e ∈ idAt D (· = q.v)` using `mem_idAt_of_supp q (P := (· = q.v)) rfl (by rw [mul_comm, e_mul_add])`. Rewrite `he` using `[GlobalTheory.FinPl.mem_supportedOnPlacesIdeal_iff_components_zero_elsewhere]`. Establish `hv : compAt D q.v a = 0`. Unfold `idOff at ha`. Rewrite `ha` using `[Submodule.mem_iInf]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `RingHom.mem_ker.1 (ha ⟨q.v, hP⟩)`. Use `pr_eq_zero q (GlobalTheory.FinPl.CMAdele_eq_zero_of_infinite_and_finite_components_zero D _ ?_ fun w => ?_)` and prove the remaining obligations. Rewrite using `[RingHom.map_mul, he.1, zero_mul]`. Rewrite using `[RingHom.map_mul]`. Distinguish the cases in `hw : w = q.v`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hw, hv, mul_zero]`. Rewrite using `[he.2 w hw, zero_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pr_eq_zero_of_off (q : SplitPt D k) {P : GlobalTheory.FinPl.Pl D → Prop} (hP : P q.v) {a : Formalism.L2.Theta.AE D}
     (ha : a ∈ idOff D P) : q.pr a = 0 := by
@@ -125,9 +125,9 @@ theorem pr_eq_zero_of_off (q : SplitPt D k) {P : GlobalTheory.FinPl.Pl D → Pro
     · rw [he.2 w hw, zero_mul]
 
 /- English proof (translation)
-Use extensionality with `i j`. Establish `h1` using `pr_eq_zero_of_off q hP (mem_congGrp.1 hg i j)`. Rewrite `h1` using `[Matrix.sub_apply, map_sub]`. Rewrite using `[Matrix.map_apply, sub_eq_zero.1 h1]`. Distinguish the cases in `hij : i = j`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `hij` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Matrix.one_apply_ne hij]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem map_mt_eq_one_of_off (q : SplitPt D k) {P : GlobalTheory.FinPl.Pl D → Prop} (hP : P q.v) {V : HSp D} {g : GA D V}
     (hg : g ∈ grpOff V P) : (mt V g).map q.pr = 1 := by
@@ -140,19 +140,17 @@ theorem map_mt_eq_one_of_off (q : SplitPt D k) {P : GlobalTheory.FinPl.Pl D → 
   · simp [Matrix.one_apply_ne hij]
 
 /- English proof (translation)
-Introduce `D u d τ hIs h t₀ ht₀`. Establish `h' : ∀ PP : d.c.Pg, ∃ (t : ∀ j, GA D (d.st j).V) (G : GAt (d` using `{ d with t := t }) τ PP.1), ∀ j, SuppAt G.q.e (d.st j).V (t j) := fun PP => by`. Take `⟨e, t, he, ht, ⟨G⟩⟩` from `h PP`. Conclude with `⟨t, G, by rw [idem_unique G.idem he]; exact ht⟩`. Use `choose T G hS using h'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨E, hE⟩` from `hIs.split`. Establish `hv : ∀ PP : d.c.Pg, (G PP).q.v ∈ d.c.S` using `fun PP => by`. Rewrite using `[v_eq_under (G PP).q (G PP).idem]`. Conclude with `Finset.mem_image_of_mem _ PP.2`. Set `t' : ∀ j, GA D (d.st j).V` to `fun j => (d.c.Pg.attach.toList.map fun PP => T PP j).prod * t₀ j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨t', fun j => ?_, fun j h0 => mul_mem (list_prod_mem fun x hx => ?_) h0, ⟨fun PP => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[mul_inv_cancel_right]`. Use `list_prod_mem fun x hx => ?_` and prove the remaining obligations. Take `⟨Q, -, rfl⟩` from `List.mem_map.1 hx`. Conclude with `mem_grpAt_of_supp (G Q).q (hv Q) (hS Q j)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨Q, -, rfl⟩` from `List.mem_map.1 hx`. Conclude with `GlobalTheory.WeilProduct.mem_GfC_of_suppAt (G Q).q.split (hS Q j)`. Establish `key : ∀ j, (mt (d.st j).V (t' j)).map (ofSplit (G PP).q).π = (mt (d.st j).V (T PP j)).map (ofSplit (G PP).q).π`. Introduce `j`. Express the relevant statement in the definitionally equal form `locHom (ofSplit (G PP).q).π (d.st j).V _ = locHom (ofSplit (G PP).q).π (d.st j).V _`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h0 : locHom (ofSplit (G PP).q).π (d.st j).V (t₀ j) = 1` using `map_mt_eq_one_of_off (G PP).q (hv PP) (ht₀ j)`. Rewrite using `[map_mul, h0, mul_one, map_list_prod, List.map_map]`. Use `prod_map_single _ PP _ (Finset.nodup_toList _) (Finset.mem_toList.2 (Finset.mem_attach _ _)) fun PP' _ hne => ?_` and prove the remaining obligations. Conclude with `map_mt_eq_one _ _ _ (hS PP' j) (pr_eq_zero (G PP).q (mul_conj_add_eq_zero hE PP.2 PP'.2 (fun h => hne (Subtype.ext h).symm) (G PP).idem (G PP').idem))`. Establish `hfr : ∀ j c (hc : j + c = (G PP).s + 1), ∃ e : Ix (Fin D.R.k ⊕ Fin ((G PP).s + 1)) (Fin D.R.t) j ≃ Fin (d.st j).V.rank, GlobalTheory.SymBridge.IsOrd GlobalTheory.SymBridge.zPos e ∧ MovedTo (ofSplit (G PP).q) (d.st j).V (t' j) (d.st j).β ((((G PP).FY j c hc).β * (((G PP).S.T (Fin …`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `j c hc`. Take `⟨e, ho, hm⟩` from `(G PP).frame j c hc`. Use `⟨e, ho, fun b hb => ?_⟩` and prove the remaining obligations. Use `Eq.trans ?_ (hm b hb)` and prove the remaining obligations. Rewrite using `[Matrix.map_mul, Matrix.map_mul]`.
-
-Conclude with `congrArg (· * b.map _) (key j)`. Conclude with `{ G PP with frame := hfr }`.
+A detailed English derivation is pending.
 -/
 theorem exists_gAt_all_places_mul : ∀ (D : D7) (u : D.what₂.Word) (d : Dat D u) (τ : ∀ j h, Matrix (Fin (d.bes j 0 h).L.rank) (Fin d.Lz.rank) D.host.E), d.c.Is → (∀ PP : d.c.Pg, ∃ (e : Formalism.L2.Theta.AE D) (t : ∀ j, GA D (d.st j).V), Formalism.L2.NTheta.IsIdemAt e PP.1 ∧ (∀ j, SuppAt e (d.st j).V (t j)) ∧ Nonempty (GAt (d := { d with t := t }) τ PP.1)) → ∀ t₀ : ∀ j, GA D (d.st j).V, (∀ j, t₀ j ∈ GlobalTheory.FinPl.grpOff (d.st j).V (· ∈ d.c.S)) → ∃ t' : ∀ j, GA D (d.st j).V, (∀ j, t' j * (t₀ j)⁻¹ ∈ GlobalTheory.FinPl.grpAt (d.st j).V (· ∈ d.c.S)) ∧ (∀ j, t₀ j ∈ GfC (d.st j).V → t' j ∈ GfC (d.st j).V) ∧ Nonempty (∀ PP : d.c.Pg, GAt (d := { d with t := t' }) τ PP.1) := by
   intro D u d τ hIs h t₀ ht₀
@@ -198,7 +196,7 @@ theorem exists_gAt_all_places_mul : ∀ (D : D7) (u : D.what₂.Word) (d : Dat D
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨GlobalTheory.LevelComb.main, fun D u d τ hIs h => exists_gAt_all_places_mul D u d τ hIs fun PP => let ⟨t, G, ht⟩ := h PP ⟨G.q.e, t, G.idem, ht, ⟨G⟩⟩, GlobalTheory.T.exists_symmetric_data_conductor_one, GlobalTheory.LocMod.FullLatFrame.exists_frame, GlobalTheory.LocMod.TopFrames. …`.
+Supply the required witnesses or components.
 -/
 theorem main :
     (∀ (D : D7) (u : D.what₂.Word) (d : Dat D u) τ (G : ∀ PP : d.c.Pg, GAt d τ PP.1), d.c.Is → (∃ P : Formalism.L2.DIV.LevelP d.c.Pg D.R.r ℂ, (∀ g, g ∈ P.H ↔ ∀ PP, ∃ x, (G PP).Red x (g PP)) ∧ ∀ (g : P.H) (x : ∀ PP, (G PP).S.P.J), (∀ PP, (G PP).Red (x PP) (g.1 PP)) → P.chi g = ∏ PP, (G PP).S.P.lam (x PP)) ∧ ∃ cG : ∀ j, WO (D.sp.X j) (D.sp.X (j + 1)) →₀ ℂ, (∀ j, ∀ w ∈ (cG j).support, GlobalTheory.FinPl.MxAt (· ∈ d.c.S) w) ∧ ∀ j, j < D.R.m → ∀ f, IsThetaFunO d.c.ψ _ _ f → comb d.c.ψ _ _ (cG j) f = d.c.Pg.attach.toList.foldr (fun PP f' => comb d.c.ψ _ _ ((G PP).cg j) f') f) ∧

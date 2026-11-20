@@ -6,9 +6,9 @@ open CategoryTheory AlgebraicGeometry IsLocalRing GlobalTheory GlobalTheory.ValC
 open scoped Classical
 
 /- English proof (translation)
-Take `⟨ψ, _, hψ⟩` from `dominatesStalk_iff_exists_isLocalHom.mp h`. Use `⟨RingEquiv.ofBijective ψ ⟨fun a b e ↦ ?_, fun b ↦ ?_⟩, hψ⟩` and prove the remaining obligations. Apply `IsFractionRing.injective (X.presheaf.stalk x) X.functionField` to reduce the goal to its premises. Rewrite using `[← hψ, ← hψ, e]`. Take `⟨a, ha⟩` from `h.range_eq_of_valuationRing.ge b.2`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨a, Subtype.ext ((hψ a).trans ha)⟩`.
+Supply the required witnesses or components.
 -/
 private theorem exists_stalk_equiv_valuation {X : Scheme.{0}} [IsIntegral X] {W : ValuationSubring X.functionField} {x : X}
     [ValuationRing (X.presheaf.stalk x)] (h : DominatesStalk W x) :
@@ -22,9 +22,9 @@ private theorem exists_stalk_equiv_valuation {X : Scheme.{0}} [IsIntegral X] {W 
     exact ⟨a, Subtype.ext ((hψ a).trans ha)⟩
 
 /- English proof (translation)
-Use `letI := (ResidueField.map f).toAlgebra`. Use `letI := (ResidueField.map f').toAlgebra`. Use `Algebra.finrank_eq_of_equiv_equiv (ResidueField.mapEquiv i) (ResidueField.mapEquiv j) ?_` and prove the remaining obligations. Use extensionality with `a`. Take `⟨a, rfl⟩` from `residue_surjective a`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result.
 
-Express the relevant statement in the definitionally equal form `residue _ (f' (i a)) = residue _ (j (f a))`. Rewrite using `[h]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 private theorem finrank_generalized_eigenspace_eq {A B A' B' : Type} [CommRing A] [CommRing B] [CommRing A'] [CommRing B']
     [IsLocalRing A] [IsLocalRing B] [IsLocalRing A'] [IsLocalRing B']
@@ -41,9 +41,9 @@ private theorem finrank_generalized_eigenspace_eq {A B A' B' : Type} [CommRing A
   rw [h]
 
 /- English proof (translation)
-Introduce `X X' _ _ g hg ζ V hV h1 h2`. Use `haveI : IsDominant g := ⟨by`. Rewrite using `[denseRange_iff_closure_range, Set.eq_univ_iff_forall]`. Introduce `x`. Conclude with `(hg.trans (genericPoint_specializes x)).mem_closed isClosed_closure (subset_closure ⟨_, rfl⟩)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : SmallSec.fnMap g hg = functionFieldMap g` using `rfl`. Rewrite using `[e]`. Take `⟨j, hj⟩` from `exists_stalk_equiv_valuation hV`. Take `⟨i, hi⟩` from `exists_stalk_equiv_valuation (hV.comap g)`. Conclude with `finrank_generalized_eigenspace_eq (g.stalkMap ζ).hom (vres (functionFieldMap g) V) i j fun a => Subtype.ext (by rw [coe_vres, hi, hj, functionFieldMap_algebraMap])`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem UpperTheory.residueDegree_eq_valuation_degree :
     ∀ (X X' : Scheme.{0}) [IsIntegral X] [IsIntegral X'] (g : X' ⟶ X) (hg : g (genericPoint X') ⤳ genericPoint X) (ζ : X') (V : ValuationSubring X'.functionField), DominatesStalk V ζ → ValuationRing (X'.presheaf.stalk ζ) → ValuationRing (X.presheaf.stalk (g ζ)) → g.residueDegree ζ = vdeg (SmallSec.fnMap g hg) V := by

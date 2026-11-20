@@ -18,25 +18,25 @@ variable {E : Type} [Field E] [NumberField E] [StarRing E]
 def sgn {A : Type} [Ring A] (b : Bool) : A := if b then -1 else 1
 
 /- English proof (translation)
-Apply the tactic sequence `cases b <;> simp [sgn]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem star_sgn (b : Bool) : star (sgn b : E) = sgn b := by
   cases b <;> simp [sgn]
 
 /- English proof (translation)
-Apply the tactic sequence `cases b <;> simp [sgn]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sgn_mul_self {A : Type} [Ring A] (b : Bool) : (sgn b : A) * sgn b = 1 := by
   cases b <;> simp [sgn]
 
 /- English proof (translation)
-Apply the tactic sequence `cases b <;> simp [sgn]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sgn_ne_zero {A : Type} [Ring A] [Nontrivial A] (b : Bool) : (sgn b : A) ≠ 0 := by
   cases b <;> simp [sgn]
 
 /- English proof (translation)
-Apply the tactic sequence `cases b <;> simp [sgn]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem map_sgn {A B : Type} [Ring A] [Ring B] (f : A →+* B) (b : Bool) : f (sgn b) = sgn b := by
   cases b <;> simp [sgn]
@@ -60,9 +60,9 @@ theorem diagForm_apply (N : ℕ) (neg : Fin N → Bool) (x y : Fin N → E) :
     diagForm N neg x y = ∑ i, star (x i) * sgn (neg i) * y i := rfl
 
 /- English proof (translation)
-Rewrite using `[diagForm_apply, Finset.sum_eq_single i]`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Introduce `b _ hb`. Simplify using `[Pi.single_apply, hb]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem diagForm_single (N : ℕ) (neg : Fin N → Bool) (i j : Fin N) :
     diagForm N neg (Pi.single i 1) (Pi.single j 1) = if i = j then (sgn (neg i) : E) else 0 := by
@@ -74,7 +74,7 @@ theorem diagForm_single (N : ℕ) (neg : Fin N → Bool) (i j : Fin N) :
   · simp
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `x y`. Simplify using `only [diagForm_apply, map_sum, starRingEnd_apply, star_mul', star_star, star_sgn]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem diagForm_isSymm (N : ℕ) (neg : Fin N → Bool) : (diagForm (E := E) N neg).IsSymm := by
   constructor
@@ -84,11 +84,11 @@ theorem diagForm_isSymm (N : ℕ) (neg : Fin N → Bool) : (diagForm (E := E) N 
   ring
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `x hx`. Use function extensionality and compare the values at `i`. Establish `h` using `hx (Pi.single i 1)`. Rewrite `h` using `[diagForm_apply, Finset.sum_eq_single i (fun b _ hb => by simp [hb]) (by simp)]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [Pi.single_eq_same, mul_one] at h`. Use `(mul_eq_zero.1 h).resolve_right (sgn_ne_zero _)` as an intermediate fact. Simplify using `using this`. Introduce `y hy`. Use function extensionality and compare the values at `i`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `h` using `hy (Pi.single i 1)`. Rewrite `h` using `[diagForm_apply, Finset.sum_eq_single i (fun b _ hb => by simp [hb]) (by simp)]`. Simplify using `only [Pi.single_eq_same, star_one, one_mul] at h`. Use `(mul_eq_zero.1 h).resolve_left (sgn_ne_zero _)` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem diagForm_nondeg (N : ℕ) (neg : Fin N → Bool) : (diagForm (E := E) N neg).Nondegenerate := by
   constructor
@@ -119,7 +119,7 @@ def stdLat (N : ℕ) : Submodule (𝓞 E) (Fin N → E) :=
   Submodule.span (𝓞 E) (Set.range (Pi.basisFun E (Fin N)))
 
 /- English proof (translation)
-The claim follows from `Submodule.fg_span (Set.finite_range _) span_eq_top := by rw [stdLat, Submodule.span_span_of_tower] exact (Pi.basisFun E (Fin N)).span_eq`.
+A detailed English derivation is pending.
 -/
 theorem stdLat_isLattice (N : ℕ) : Submodule.IsLattice E (stdLat (E := E) N) where
   fg := Submodule.fg_span (Set.finite_range _)
@@ -128,24 +128,24 @@ theorem stdLat_isLattice (N : ℕ) : Submodule.IsLattice E (stdLat (E := E) N) w
     exact (Pi.basisFun E (Fin N)).span_eq
 
 /- English proof (translation)
-The claim follows from `hx.map (starRingEnd E).toIntAlgHom`.
+A detailed English derivation is pending.
 -/
 theorem star_isIntegral (x : E) (hx : IsIntegral ℤ x) : IsIntegral ℤ (star x) :=
   hx.map (starRingEnd E).toIntAlgHom
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨star (s : E), hstar _ s.2⟩, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem star_integral (hstar : ∀ x : E, IsIntegral ℤ x → IsIntegral ℤ (star x)) (s : 𝓞 E) :
     star (algebraMap (𝓞 E) E s) ∈ Set.range (algebraMap (𝓞 E) E) :=
   ⟨⟨star (s : E), hstar _ s.2⟩, rfl⟩
 
 /- English proof (translation)
-Establish `key` using `(Formalism.E.hermDual (𝓞 E) E (Fin N → E) (Fin N) (diagForm N neg) (Pi.basisFun E (Fin N)) (IsFractionRing.injective (𝓞 E) E) (star_integral hstar)).2 (Matrix.diagonal fun i => (sgn (neg i) : 𝓞 E)) (by`. Introduce `i j`. Rewrite using `[Pi.basisFun_apply, Pi.basisFun_apply, diagForm_single]`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `[map_sgn]`. Simplify using `[h]) (by`. Rewrite using `[Matrix.det_diagonal]`. Conclude with `Finset.prod_ne_zero_iff.2 fun i _ => sgn_ne_zero (neg i))`. Conclude with `key.2.2 (by`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Matrix.det_diagonal]`. Use `isUnit_iff_exists_inv.2 ⟨∏ i, (sgn (neg i) : 𝓞 E), ?_⟩` and prove the remaining obligations. Rewrite using `[← Finset.prod_mul_distrib]`. Simplify using `[sgn_mul_self])`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem stdLat_unimod (hstar : ∀ x : E, IsIntegral ℤ x → IsIntegral ℤ (star x)) (N : ℕ)
     (neg : Fin N → Bool) : Formalism.HermitianLatticesTheory.IsUnimodular (diagForm (E := E) N neg) (stdLat N) := by
@@ -188,7 +188,7 @@ def stdSpace (hstar : ∀ x : E, IsIntegral ℤ x → IsIntegral ℤ (star x)) (
 variable (hstar : ∀ x : E, IsIntegral ℤ x → IsIntegral ℤ (star x))
 
 /- English proof (translation)
-Use `show diagForm N neg ((Pi.basisFun E (Fin N)) i) ((Pi.basisFun E (Fin N)) j) = _`. Simplify using `only [Pi.basisFun_apply]`. Conclude with `diagForm_single N neg i j`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem stdSpace_gram_apply (N : ℕ) (neg : Fin N → Bool) (p q : ℕ) (i j : Fin N) :
     (stdSpace hstar N neg p q).gram i j = if i = j then (sgn (neg i) : E) else 0 := by
@@ -199,11 +199,11 @@ theorem stdSpace_gram_apply (N : ℕ) (neg : Fin N → Bool) (p q : ℕ) (i j : 
 def posSpace (N : ℕ) : HSpace E := stdSpace hstar N (fun _ => false) N 0
 
 /- English proof (translation)
-Introduce `τ`. Establish `hg : (posSpace hstar N).gram.map τ = 1`. Use extensionality with `i j`. Rewrite using `[Matrix.map_apply]`. Use `(congrArg τ (stdSpace_gram_apply hstar N (fun _ => false) N 0 i j)).trans ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `τ (if i = j then (sgn false : E) else 0) = if i = j then (1 : ℂ) else 0`. Apply the tactic sequence `by_cases h : i = j <;> simp [h, sgn]`. Rewrite using `[hg]`. Use `show Formalism.UG.HasSignature _ N 0`. Establish `h` using `Formalism.UG.P.stdform_sig_one (n := Fin N)`.
+Express the relevant assertion in an equivalent form by its definition. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[Fintype.card_fin]`. Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem posSpace_sigOK (N : ℕ) : (posSpace hstar N).SigOK := by
   intro τ
@@ -222,14 +222,14 @@ theorem posSpace_sigOK (N : ℕ) : (posSpace hstar N).SigOK := by
 def negLast : Fin (8 + 1) → Bool := fun i => decide ((i : ℕ) = 8)
 
 /- English proof (translation)
-Simplify using `only [negLast, decide_eq_false_iff_not, Fin.val_castAdd]`. Conclude with `i.isLt.ne`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem negLast_castAdd (i : Fin 8) : negLast (Fin.castAdd 1 i) = false := by
   simp only [negLast, decide_eq_false_iff_not, Fin.val_castAdd]
   exact i.isLt.ne
 
 /- English proof (translation)
-Introduce `h`. Use `congrArg Fin.val h` as an intermediate fact. Simplify using `only [Fin.val_castAdd, Fin.val_natAdd] at this`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem castAdd_ne_natAdd' (i : Fin 8) (j : Fin 1) : Fin.castAdd 1 i ≠ Fin.natAdd 8 j := by
   intro h
@@ -238,17 +238,17 @@ theorem castAdd_ne_natAdd' (i : Fin 8) (j : Fin 1) : Fin.castAdd 1 i ≠ Fin.nat
   omega
 
 /- English proof (translation)
-Use `fin_cases i`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem negLast_natAdd (i : Fin 1) : negLast (Fin.natAdd 8 i) = true := by
   fin_cases i; rfl
 
 /- English proof (translation)
-Use `⟨(finSumFinEquiv (m := 8) (n := 1)).symm, 1, ?_⟩` and prove the remaining obligations. Simplify using `only [Units.val_one, Formalism.UG.cT_one, Matrix.one_mul, Matrix.mul_one]`. Use extensionality with `i j`. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j`. Simplify using `only [Formalism.UG.Jpq, Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.symm_symm, finSumFinEquiv_apply_left, Matrix.fromBlocks_apply₁₁, Matrix.diagonal_apply, Matrix.one_apply, negLast_castAdd, (Fin.castAdd_injective 8 1).eq_iff]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Simplify using `[sgn]`. Simplify using `only [Formalism.UG.Jpq, Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.symm_symm, finSumFinEquiv_apply_left, finSumFinEquiv_apply_right, Matrix.fromBlocks_apply₁₂, Matrix.diagonal_apply, Matrix.zero_apply]`. Rewrite using `[if_neg (castAdd_ne_natAdd' i j)]`. Simplify using `only [Formalism.UG.Jpq, Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.symm_symm, finSumFinEquiv_apply_left, finSumFinEquiv_apply_right, Matrix.fromBlocks_apply₂₁, Matrix.diagonal_apply, Matrix.zero_apply]`. Rewrite using `[if_neg (castAdd_ne_natAdd' j i).symm]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `simp only [Formalism.UG.Jpq, Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.symm_symm, finSumFinEquiv_apply_right, Matrix.fromBlocks_apply₂₂, Matrix.diagonal_apply, Matrix.neg_apply, Matrix.one_apply, negLast_natAdd, (Fin.natAdd_injective 1 8).eq_iff] split_ifs <;> simp [sgn …`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem lorentzDiagonal_hasSignature : Formalism.UG.HasSignature
     (Matrix.diagonal fun i : Fin (8 + 1) => (sgn (negLast i) : ℂ)) 8 1 := by
@@ -276,9 +276,9 @@ theorem lorentzDiagonal_hasSignature : Formalism.UG.HasSignature
 def lorentzSpace : HSpace E := stdSpace hstar (8 + 1) negLast 8 1
 
 /- English proof (translation)
-Introduce `τ`. Establish `hg : (lorentzSpace hstar).gram.map τ = Matrix.diagonal fun i : Fin (8 + 1) => (sgn (negLast i) : ℂ)`. Use extensionality with `i j`. Rewrite using `[Matrix.map_apply]`. Use `(congrArg τ (stdSpace_gram_apply hstar (8 + 1) negLast 8 1 i j)).trans ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `τ (if i = j then (sgn (negLast i) : E) else 0) = if i = j then (sgn (negLast i) : ℂ) else 0`. Apply the tactic sequence `by_cases h : i = j <;> simp [h, map_sgn]`. Rewrite using `[hg]`. Conclude with `lorentzDiagonal_hasSignature`.
+Express the relevant assertion in an equivalent form by its definition. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lorentzSpace_signature_ok : (lorentzSpace hstar).SigOK := by
   intro τ
@@ -298,7 +298,7 @@ section Maps
 variable {E : Type} [Field E] [NumberField E] [StarRing E]
 
 /- English proof (translation)
-Rewrite using `[diagForm_apply, Finset.sum_eq_single j (fun i _ hi => by simp [hi]) (by simp)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem diagForm_single_left (N : ℕ) (neg : Fin N → Bool) (j : Fin N) (b : E) (x : Fin N → E) :
     diagForm N neg (Pi.single j b) x = star b * sgn (neg j) * x j := by
@@ -306,7 +306,7 @@ theorem diagForm_single_left (N : ℕ) (neg : Fin N → Bool) (j : Fin N) (b : E
   simp
 
 /- English proof (translation)
-Rewrite using `[diagForm_apply, Finset.sum_eq_single j (fun i _ hi => by simp [hi]) (by simp)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem diagForm_single_right (N : ℕ) (neg : Fin N → Bool) (x : Fin N → E) (j : Fin N) (b : E) :
     diagForm N neg x (Pi.single j b) = star (x j) * sgn (neg j) * b := by
@@ -325,19 +325,19 @@ def extZero (n : ℕ) : (Fin n → E) →ₗ[E] (Fin (n + 1) → E) where
     split_ifs <;> simp
 
 /- English proof (translation)
-Simplify using `[extZero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem extZero_castSucc (n : ℕ) (x : Fin n → E) (i : Fin n) : extZero n x (Fin.castSucc i) = x i := by
   simp [extZero]
 
 /- English proof (translation)
-Simplify using `[extZero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem extZero_last (n : ℕ) (x : Fin n → E) : extZero n x (Fin.last n) = 0 := by
   simp [extZero]
 
 /- English proof (translation)
-Rewrite using `[diagForm_apply, diagForm_apply, Fin.sum_univ_castSucc]`. Simplify using `[extZero_castSucc, extZero_last, hneg]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem extZero_isom (n : ℕ) (neg : Fin n → Bool) (neg' : Fin (n + 1) → Bool)
     (hneg : ∀ i, neg' (Fin.castSucc i) = neg i) (x y : Fin n → E) :
@@ -377,7 +377,7 @@ section SlopeTestRemainingChoices
 variable {E : Type} [Field E] [NumberField E] [StarRing E]
 
 /- English proof (translation)
-Rewrite using `[diagForm_single_left]`. Simplify using `[sgn]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem definite_last_vector_anisotropic : diagForm (E := E) (39 + 1) (fun _ => false) (Pi.single (Fin.last 39) 1)
     (Pi.single (Fin.last 39) 1) ≠ 0 := by
@@ -385,7 +385,7 @@ theorem definite_last_vector_anisotropic : diagForm (E := E) (39 + 1) (fun _ => 
   simp [sgn]
 
 /- English proof (translation)
-Rewrite using `[diagForm_single_right, extZero_last]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem definite_extension_orthogonal_last (x : Fin 39 → E) :
     diagForm (39 + 1) (fun _ => false) (extZero 39 x) (Pi.single (Fin.last 39) 1) = 0 := by
@@ -393,7 +393,7 @@ theorem definite_extension_orthogonal_last (x : Fin 39 → E) :
   simp
 
 /- English proof (translation)
-Rewrite using `[diagForm_single_left]`. Establish `hn : negLast (Fin.last 8) = true` using `rfl`. Simplify using `only [Pi.single_eq_same, hn, sgn, if_true]`. Rewrite using `[← hpz]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem lorentz_last_vector_norm (T : ℕ) (pz : E) (hpz : star pz * pz = T) :
     diagForm (8 + 1) negLast (Pi.single (Fin.last 8) pz) (Pi.single (Fin.last 8) pz) = -(T : E) := by
@@ -404,7 +404,7 @@ theorem lorentz_last_vector_norm (T : ℕ) (pz : E) (hpz : star pz * pz = T) :
   ring
 
 /- English proof (translation)
-Rewrite using `[diagForm_single_right, extZero_last]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem lorentz_extension_orthogonal_last (pz : E) (x : Fin 8 → E) :
     diagForm (8 + 1) negLast (extZero 8 x) (Pi.single (Fin.last 8) pz) = 0 := by
@@ -412,7 +412,7 @@ theorem lorentz_extension_orthogonal_last (pz : E) (x : Fin 8 → E) :
   simp
 
 /- English proof (translation)
-Use `⟨Pi.basisFun E (Fin 24), (Pi.basisFun E (Fin 24)).linearIndependent, (Pi.basisFun E (Fin 24)).span_eq, rfl, fun i j => ?_⟩` and prove the remaining obligations. Rewrite using `[Pi.basisFun_apply, Pi.basisFun_apply, diagForm_single]`. Simplify using `[sgn]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem standardLattice_orthogonal : Formalism.HermitianLatticesTheory.IsOrthoLattice (diagForm (E := E) 24 (fun _ => false)) (stdLat 24) 24 := by
   refine ⟨Pi.basisFun E (Fin 24), (Pi.basisFun E (Fin 24)).linearIndependent,
@@ -425,9 +425,9 @@ end SlopeTestRemainingChoices
 section Adelic
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Formalism.UG.cT, Matrix.transpose_apply, Matrix.map_apply, Matrix.diagonal_apply]`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[h, Ne.symm h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cT_diagonal {n A : Type} [Fintype n] [DecidableEq n] [CommRing A] (σ : A →+* A)
     (d : n → A) : Formalism.UG.cT σ (Matrix.diagonal d) = Matrix.diagonal (fun i => σ (d i)) := by
@@ -438,7 +438,7 @@ theorem cT_diagonal {n A : Type} [Fintype n] [DecidableEq n] [CommRing A] (σ : 
   · simp [h, Ne.symm h]
 
 /- English proof (translation)
-Rewrite using `[cT_diagonal, Matrix.diagonal_mul_diagonal, Matrix.diagonal_mul_diagonal]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Conclude with `h i`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem diag_congr {n A : Type} [Fintype n] [DecidableEq n] [CommRing A] (σ : A →+* A)
     (d s t : n → A) (h : ∀ i, σ (d i) * s i * d i = t i) :
@@ -480,17 +480,17 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarR
 
 include hy in
 /- English proof (translation)
-Introduce `j h1 h2`. Establish `hm : R0.m = 2` using `rfl`. Take `rfl | rfl : j = 1 ∨ j = 2` from `by omega`. Use `⟨Equiv.refl _, 1, ?_⟩` and prove the remaining obligations. Simplify using `only [Units.val_one, Formalism.UG.cT_one, Matrix.one_mul, Matrix.mul_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Take `⟨y, hy⟩` from `hy set A := FiniteAdeleRing (𝓞 F) F set σ := Formalism.UG.sigR cm.sig A`. Establish `hyu : y * (-(σ y)) = 1` using `by rw [mul_neg, mul_comm, hy, neg_neg]`. Apply the tactic sequence `refine ⟨Equiv.refl _, diagUnit (n := Fin (toyW hstar 2).rank) (fun i => if (i : ℕ) = 8 then y else 1) (fun i => if (i : ℕ) = 8 then -(σ y) else 1) (fun i => by split_ifs <;> simp [hyu]), ?_⟩`. Use extensionality with `i j`.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. By extensionality, compare the relevant components.
 
-Rewrite using `[diagUnit_val, cT_diagonal, Matrix.mul_diagonal, Matrix.diagonal_mul]`. Simplify using `only [Matrix.map_apply]`. Use `(congrArg (fun z => σ (if (i : ℕ) = 8 then y else 1) * Formalism.UG.inclE A z * (if (j : ℕ) = 8 then y else 1)) (stdSpace_gram_apply hstar (8 + 1) negLast 8 1 i j)).trans ?_` and prove the remaining obligations. Establish `e2 : (toyW hstar 2).gram i j = if i = j then (sgn false : E) else 0` using `stdSpace_gram_apply hstar R0.r (fun _ => false) R0.r 0 i j`. Rewrite using `[e2]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Rewrite using `[if_pos (show @Eq (Fin (8 + 1)) i i from rfl), if_pos rfl]`. Distinguish the cases in `hi : (i : ℕ) = 8`. Establish `hn : negLast i = true` using `by simp [negLast, hi]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Rewrite using `[hn]`. Simplify using `only [if_pos hi, sgn, if_true, Bool.false_eq_true, if_false, map_neg, map_one]`. Rewrite using `[mul_neg_one, neg_mul, hy, neg_neg]`. Establish `hn : negLast i = false` using `by simp [negLast, hi]`. Rewrite using `[hn]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[hi, sgn]`. Rewrite using `[if_neg (show ¬ @Eq (Fin (8 + 1)) i j from hij), if_neg hij]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem example_baseSpace_isometric_graded : ∀ j, 1 ≤ j → j ≤ R0.m → ∃ e : Fin (exampleTargetSpace hstar 0).rank ≃ Fin (toyW hstar j).rank,
     ∃ g : GL (Fin (toyW hstar j).rank) (E ⊗[F] FiniteAdeleRing (𝓞 F) F),
@@ -613,7 +613,7 @@ Both sides reduce to the same expression.
 theorem spacesToy_T : (spacesExample hstar cm T hT pz hpz hy).T = T := rfl
 
 /- English proof (translation)
-Introduce `j hj τ`. Establish `: R0.m = 2` using `rfl`. Take `rfl | rfl | rfl : j = 0 ∨ j = 1 ∨ j = 2` from `by omega`. Both sides reduce to the same expression. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Both sides reduce to the same expression. Both sides reduce to the same expression.
 
 Both sides reduce to the same expression.
 -/

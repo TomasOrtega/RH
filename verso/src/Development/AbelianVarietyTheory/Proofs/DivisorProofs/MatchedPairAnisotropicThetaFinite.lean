@@ -15,7 +15,7 @@ noncomputable section
 namespace GlobalTheory.ThK.DiffCont
 
 /- English proof (translation)
-Use `Submodule.sum_mem _ fun i _ => Submodule.subset_span ⟨f i, (h i).1, φ i, (h i).2.1, ?_, rfl⟩` and prove the remaining obligations. Use `Filter.eventually_cofinite.2 (T.finite_toSet.subset fun v hv => ?_)` and prove the remaining obligations. Assume the negation of the conclusion as `hT`. Conclude with `hv ((h i).2.2 v hT)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem polData_of_sum {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     {B : Base F E} {n d : ℕ} {X : Spc F E n} {W : Spc F E d} (M : Model σ X W) (T : Finset (Pl F)) {m : ℕ}
@@ -28,13 +28,13 @@ theorem polData_of_sum {F E : Type} [Field F] [NumberField F] [Field E] [NumberF
   exact hv ((h i).2.2 v hT)
 
 /- English proof (translation)
-Introduce `hKP F E _ _ _ _ _ σ B a a' G X om om' R Rf hM hq _ c Φ Φ' _ hPM c₀ hc₀ φ' hφ'`. Establish `hT` using `hM.triple`. Establish `hσ : ∀ x, σ (σ x) = x` using `GlobalTheory.SiegelSet.sigma_sigma hT.base.cm`. Take `⟨P, P'⟩` from `GlobalTheory.ThK.Check.isPair_of_isTriple hT`. Establish `hW` using `GlobalTheory.T.weil_convergence_of_kernel hKP F E σ B a (a + a') G.V G.W G.M X.β (X.β / X.α) om _ _ _ _ P (Or.inl (GlobalTheory.ThK.Check.conv_range hT.geo))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hW'` using `GlobalTheory.T.weil_convergence_of_kernel hKP F E σ B a' (a + a') G.V' G.W G.M' X.α (X.α / X.β) om' _ _ _ _ P' (Or.inr (by rw [hq]; exact Nat.zero_min _))`. Take `⟨T, -, m, m', f, φ, f₁, φ₁, hf, hf₁, rfl, rfl, -⟩` from `hPM`. Establish `hS : ∑ i, pure (f i) (φ i) ∈ schA F (Fin a × Fin (a + a'))` using `GlobalTheory.ThK.SqIntCont.polData_le_schA hT.geo.hM (polData_of_sum G.M T f φ hf)`. Establish `hS' : ∑ j, pure (f₁ j) (φ₁ j) ∈ schA F (Fin a' × Fin (a + a'))` using `GlobalTheory.ThK.SqIntCont.polData_le_schA hT.geo.hM' (polData_of_sum G.M' T f₁ φ₁ hf₁)`. Establish `hc : Continuous (G.M.I om (∑ i, pure (f i) (φ i)))` using `GlobalTheory.ThK.SqIntCont.continuous_I G.M om hT.weil.2.2 (IsUWeilPair.isUSplitting hT.weil).pres (fun Ψ hΨ => (hW.1 Ψ hΨ).1) hW.2 hS`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc' : Continuous (G.M'.I om' (∑ j, pure (f₁ j) (φ₁ j)))` using `GlobalTheory.ThK.SqIntCont.continuous_I G.M' om' hT.weil'.2.2 (IsUWeilPair.isUSplitting hT.weil').pres (fun Ψ hΨ => (hW'.1 Ψ hΨ).1) hW'.2 hS'`. Set `e` to `GlobalTheory.ThK.SquareIntegrability.toGAd hσ G.W.J hc₀`. Establish `he : Continuous fun x : GAd σ (c₀ • G.W.J.map σ) => e.symm x` using `continuous_subtype_val.subtype_mk _`. Establish `key : φ' = fun x => G.M.I om (∑ i, pure (f i) (φ i)) (e.symm x) - c * G.M'.I om' (∑ j, pure (f₁ j) (φ₁ j)) (e.symm x)`. Use function extensionality and compare the values at `fun x => hφ' (e.symm x) x rfl`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[key]`. Conclude with `(hc.comp he).sub (continuous_const.mul (hc'.comp he))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_diff : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E)
     (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W) (R : RealMaps F a a') (Rf : FinMaps F a a'), IsMatched B G X om om' R Rf → G.q = 0 → 1 ≤ G.p →

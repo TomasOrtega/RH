@@ -1,15 +1,15 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `K _ n e he`. Set `f : (Fin n → K) →ₗ[K] (Fin n → K)` to `Matrix.toLin' e`. Establish `hf : ∀ v, f (f v) = f v`. Introduce `v`. Establish `h : f.comp f = f` using `by show (Matrix.toLin' e).comp (Matrix.toLin' e) = Matrix.toLin' e`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[← Matrix.toLin'_mul, he]`. Conclude with `LinearMap.congr_fun h v`. Set `b` to `Module.finBasis K (LinearMap.range f)`. Set `c` to `Pi.basisFun K (Fin n)`. Use `⟨Module.finrank K (LinearMap.range f), LinearMap.toMatrix b c (LinearMap.range f).subtype, LinearMap.toMatrix c b f.rangeRestrict, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← LinearMap.toMatrix_comp]`. Establish `h : f.rangeRestrict.comp (LinearMap.range f).subtype = LinearMap.id`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce and unpack `⟨x, v, rfl⟩`. Apply `Subtype.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hf v`. Rewrite using `[h, LinearMap.toMatrix_id]`. Rewrite using `[← LinearMap.toMatrix_comp]`. Establish `h : (LinearMap.range f).subtype.comp f.rangeRestrict = f`. Apply `LinearMap.ext` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression.
 
-Introduce `v`. Both sides reduce to the same expression. Rewrite using `[h]`. Use `show LinearMap.toMatrix (Pi.basisFun K (Fin n)) (Pi.basisFun K (Fin n)) (Matrix.toLin' e) = e`. Rewrite using `[LinearMap.toMatrix_eq_toMatrix', LinearMap.toMatrix'_toLin']`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.ExistsFactor.exists_factor :
     ∀ {K : Type} [inst : Field K] {n : ℕ} (e : Matrix (Fin n) (Fin n) K),

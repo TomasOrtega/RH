@@ -32,9 +32,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.EtaVal
 
 /- English proof (translation)
-Establish `hN' : (0 : ℝ) < N` using `by exact_mod_cast hN`. Assume the negation of the conclusion as `hc`. Establish `h1 : (a : ℝ) / N < x`. Rewrite using `[div_lt_iff₀ hN', mul_comm]`. Conclude with `not_le.mp hc`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨q, hq1, hq2⟩` from `exists_rat_btwn h1`. Establish `h2 : (N : ℝ) * (q : ℝ) ≤ (a : ℝ)` using `by exact_mod_cast h q hq2.le`. Rewrite `hq1` using `[div_lt_iff₀ hN', mul_comm]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem mul_le_of_forall_rat_le (N : ℕ) (hN : 0 < N) (x : ℝ) (a : ℤ)
     (h : ∀ q : ℚ, (q : ℝ) ≤ x → (N : ℚ) * q ≤ (a : ℚ)) : (N : ℝ) * x ≤ (a : ℝ) := by
@@ -50,29 +50,25 @@ theorem mul_le_of_forall_rat_le (N : ℕ) (hN : 0 < N) (x : ℝ) (a : ℤ)
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c V _ _ _ _ hcpl _ y G S P ϖ hϖ Q hQ hQ0 cj hcj β hβ R hR hR1 J _ n cf xs val hsp hval hne`. Take `⟨hLL, h2, h3, h4, h5⟩` from `GlobalTheory.lawsAndExpansions`. Establish `hL : Laws` using `hLL.1`. Establish `hA : AdmBase V (maximalIdeal V)` using `⟨inferInstance, inferInstance, inferInstance, hcpl⟩`. Establish `htors` using `GlobalTheory.UT.torsionIso_of_pelUnif hLL h2 h3 h4 h5 E H V _ hA G P`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI hfin : Finite (LevGrp Dw (R ^ 4)) := (GlobalTheory.EtaCard.card_levGrp_and_span E H Dw R hR1).1`. Take `⟨v, hv, hvv⟩` from `GlobalTheory.T.exists_valuation_algebraicClosure_extending_vV V ϖ hϖ`. Set `F` to `AlgebraicClosure (FractionRing V)`. Use `letI : Algebra c.F F := ((algebraMap (FractionRing V) F).comp (algebraMap c.F (FractionRing V))).toAlgebra`. Set `ψ : FractionRing V →ₐ[c.F] F` to `{ algebraMap (FractionRing V) F with commutes' := fun _ => rfl }`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hψ : ψ.toRingHom = algebraMap (FractionRing V) F` using `rfl`. Take `⟨z, hz⟩` from `GlobalTheory.FramedBaseChange.exists_frMap hL E H Dw l Xo c _ F ψ y`. Establish `hzx : z.x = spMap (algebraMap (FractionRing V) F) ≫ y.x` using `hz.1`. Establish `hR0 : 0 < R` using `by omega`. Establish `e4 : (R ^ 2) ^ 2 = R ^ 4` using `by rw [← pow_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hR2 : Odd (R ^ 2)` using `hR.pow`. Take `⟨-, hbc, hloc, hex⟩` from `GlobalTheory.fullLevel_cover_baseChange_torsor hL E H Dw l Xo (R ^ 4) (pow_pos hR0 4)`. Take `⟨ev, hev⟩` from `hex F z.x`. Establish `hevt : ∀ q, ev q ^ ((R ^ 2) ^ 2) = 1`. Rewrite using `[e4]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(hbc F F (RingHom.id F) z.x z.x (𝟙 _) (by simp [spMap]) ev hev).2`. Establish `hevs : ∀ p : ptO Xo z.x ⟶ Xo.univ.t.G, p ^ ((R ^ 2) ^ 2) = 1 → ∃ q, ev q = p`. Rewrite using `[e4]`. Conclude with `(hloc F z.x ev hev).1`. Establish `hw` using `fun q => ((GlobalTheory.nullValue_existsUnique_natural_linear hL E H Dw l Xo c (R ^ 2) hR2).1 F z (ev q) (hevt q)).exists`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `choose w hw using hw`. Establish `hz' : EtaValAt Xo c R cf xs z (etaExpr (R ^ 4) cf xs w)` using `⟨F, inferInstance, inferInstance, AlgHom.id _ _, z, ev, w, RingHom.FaithfullyFlat.of_bijective Function.bijective_id, PullbackSections.frMap_refl z, hev, hw, rfl⟩`. Establish `hvalF : algebraMap (FractionRing V) F val = etaExpr (R ^ 4) cf xs w` using `(GlobalTheory.EtaForm.etaValAt_existsUnique_natural hL E H Dw l Xo c R hR J n cf xs).2 _ F ψ y z hz _ _ hval hz'`. Take `⟨Φ, w₀, hN, hact, hint⟩` from `GlobalTheory.T.exists_fib_normW_of_intSec E H Dw l Xo c V y G S P`. Take `⟨th, hth⟩` from `GlobalTheory.T.exists_abelianSection_of_universalFibreSection E H Dw l Xo V y.x P.A Φ F z.x hzx z.s`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨ϑ, hϑ, hν⟩` from `GlobalTheory.T.exists_expandsF_nuGe_zero_of_intTh V hcpl ϖ hϖ P.D Q hQ F v hv P.A G.G G.semi P.U w₀ hN.1 th (hint F ψ z th hψ hz hth)`. Take `⟨tr, htr, htra⟩` from `GlobalTheory.T.exists_mulEquiv_ptO_hom_of_eq_spMap_comp E H Dw l Xo V y.x P.A Φ F z.x hzx`. Take `⟨pt, hpt, hspan⟩` from `GlobalTheory.T.exists_heisenbergLifts_span_latticeClasses E H V G P htors F ((R ^ 2) ^ 2) (pow_pos (pow_pos hR0 2) 2) (LatMod Dw (R ^ 4)) (fun a => tr (ev a)) (fun a b => by rw [hev.1, map_mul]) (fun o a => by rw [hev.2.1]; exact htra _ _ (hact o) _) (fun a => by rw [← map_pow, h …`. Take `⟨a, ha⟩` from `hevs (tr.symm u) (by rw [← map_pow, hu, map_one])`. Conclude with `⟨a, by rw [ha, MulEquiv.apply_symm_apply]⟩)`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hb : ∀ a (q : ℚ), (∀ χ, q ≤ (Q ((R ^ 2) • χ + (pt a).y) : ℚ) / ((R ^ 2) ^ 2 : ℕ)) → (q : WithTop ℚ) ≤ v (w a)`. Introduce `a q hq`. Take `⟨t, ht⟩` from `GlobalTheory.T.normalisedThetaConstant_of_universal_origin_value E H Dw l Xo c V y.x P.A Φ F z hzx th hth (R ^ 2) hR2 (ev a) (tr (ev a)) (w a) (hevt a) (htr _) (hw a)`. Conclude with `GlobalTheory.T.le_valuation_oddLevel_thetaConstant_integralExpansion V hcpl ϖ hϖ P.D Q hQ F v hv P.A G.G G.semi P.U w₀ Φ.ρ hN th ϑ hϑ hν (R ^ 2) hR2 (pt a) (tr (ev a)) t (w a) (hpt a) ht q hq`. Use `haveI : Module.Finite ℤ P.D.toPre.X := P.D.toPre.finX`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hcj1 : ∀ a : 𝓞 E, ∃ a' : 𝓞 E, (a' : E) = cj a` using `fun a => ⟨H.bar a, by rw [H.bar_eq, hcj]⟩`. Establish `hcj2 : (H.w0 : E) + cj H.w0 = 1`. Rewrite using `[hcj, ← H.bar_eq, GlobalTheory.HostModel.cmHost_bar_halfIntegerGenerator]`. Simplify using the standard rewrite rules. Establish `key : ∀ q : ℚ, (q : ℝ) ≤ Formalism.MainNotions.ModuliIntegralCharts.phiC cj β / (R : ℝ) ^ 4 → (Nat.card (LevGrp Dw (R ^ 4)) : ℚ) * q ≤ ((vV V val : ℤ) : ℚ)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `q hq`. Establish `h` using `GlobalTheory.T.card_mul_le_val_etaExpr_of_le_sum_val E H Dw (R ^ 4) J n cf xs F v w q (fun g j => by`. Use `GlobalTheory.T.le_sum_of_le_phiC_div_sq E cj hcj1 H.w0 hcj2 P.D.toPre.X Q β hβ hQ0 (R ^ 2) (by nlinarith) n (fun b => (pt (g (xs j b))).y) (hspan n (fun b => g (xs j b)) ?_) (fun b => v (w (g (xs j b)))) (fun b => hb _) q ?_` and prove the remaining obligations. Use `congrArg (Submodule.map (g : LatMod Dw (R ^ 4) →ₗ[𝓞 E] LatMod Dw (R ^ 4))) (hsp j)` as an intermediate fact. Rewrite `this` using `[Submodule.map_span, ← Set.range_comp, Submodule.map_top, LinearEquiv.range]`.
-
-Conclude with `this`. Rewrite using `[Nat.cast_pow, ← pow_mul]`. Conclude with `hq)`. Rewrite `h` using `[← hvalF, hvv val hne]`. Conclude with `h` after adjusting the coercions.
-
-Use `mul_le_of_forall_rat_le _ Nat.card_pos _ _ key` as an intermediate fact. Rewrite using `[div_mul_eq_mul_div, mul_div_assoc]`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_mul_phiC_le_valuation : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [CharZero V] [IsAdicComplete (maximalIdeal V) V] [Algebra c.F (FractionRing V)] (y : FrPt Xo c (FractionRing V)) (G : SAB H (Sp V)) (_ : IntSec Xo V y.x y.s G) (P : PELUnif (maximalIdeal V) G) (ϖ : V), Irreducible ϖ → ∀ (Q : P.D.toPre.X → ℤ), QForm.IsQ P.D.toPre ϖ Q → (∀ a, 0 ≤ Q a) → ∀ (cj : E → E), (∀ a, cj a = IsCMField.complexConj E a) → ∀ (β : Formalism.MainNotions.ModuliIntegralCharts.SymB cj P.D.toPre.X), (∀ a, (β : _ →ₗ[ℤ] _ →ₗ[ℤ] ℝ) a a = 2 * (Q a : ℝ)) → ∀ (R : ℕ), Odd R → 1 < R → ∀ (J : Type) [Fintype J] (n : ℕ) (cf : J → ℤ) (xs : J → Fin n → LatMod Dw (R ^ 4)) (val : FractionRing V), GlobalTheory.EtaAn.Spans xs → EtaValAt Xo c R cf xs y val → val ≠ 0 → (Nat.card (LevGrp Dw (R ^ 4)) : ℝ) / (R : ℝ) ^ 4 * Formalism.MainNotions.ModuliIntegralCharts.phiC cj β ≤ (vV V val : ℝ) := by
   intro E _ _ _ H Dw l Xo c V _ _ _ _ hcpl _ y G S P ϖ hϖ Q hQ hQ0 cj hcj β hβ R hR hR1 J _ n cf xs val hsp hval hne

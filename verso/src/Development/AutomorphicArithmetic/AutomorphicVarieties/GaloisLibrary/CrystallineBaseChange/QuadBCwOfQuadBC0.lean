@@ -12,14 +12,14 @@ open UpperTheory.V UpperTheory.V.Af UpperTheory.V.Af.Bc UpperTheory.V.Published
 namespace UpperTheory.V.Br
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ _ h2 a _ ha π _` and use `(weakEx cyc F E h2 a ha π).imp_left fun ⟨η, hη, ht⟩ => ⟨η, normQuad art F E h2 η hη, selfIso smo F a ha π η (h2 ▸ hη.2.1) ht⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem quadBC0_of_cyclic (art : GlobalTheory.Published.GlobalArtinReciprocity) (smo : StrongMultOneReal) (cyc : CyclicBaseChange) : QuadBC0 :=
   fun F E _ _ _ _ _ _ _ h2 a _ ha π _ => (weakEx cyc F E h2 a ha π).imp_left fun ⟨η, hη, ht⟩ =>
     ⟨η, normQuad art F E h2 η hη, selfIso smo F a ha π η (h2 ▸ hη.2.1) ht⟩
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ _ h2 a _ ha π hr`. Use `(h F E h2 a ha π hr).imp_right fun ⟨P, hP⟩ => ⟨P, hP, fun hreg ⟨χ, hχ⟩ => ?_⟩` and prove the remaining obligations. Use `haveI : Algebra.IsQuadraticExtension F E := { finrank_eq_two' := h2 }`. Use `haveI : IsCMField E := IsCMField.ofCMExtension F E`. Conclude with `splitOf hN hC hR F E h2 a ha π χ P hreg hχ hP`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem quadBCw_of_quadBC0 (hN : GlobalTheory.Mem.LiteralAutomorphy.LitN) (hC : ExC) (hR : ExR) (h : QuadBC0) : QuadBCw := by
   intro F E _ _ _ _ _ _ _ h2 a _ ha π hr
@@ -29,7 +29,7 @@ theorem quadBCw_of_quadBC0 (hN : GlobalTheory.Mem.LiteralAutomorphy.LitN) (hC : 
   exact splitOf hN hC hR F E h2 a ha π χ P hreg hχ hP
 
 /- English proof (translation)
-The claim follows from `quadBCw_of_quadBC0 P.litN (galoisExistence_from_published P) (realExistence_from_published P) P.bc`.
+A detailed English derivation is pending.
 -/
 theorem quadBCw (P : Hypotheses₂) : QuadBCw :=
   quadBCw_of_quadBC0 P.litN (galoisExistence_from_published P) (realExistence_from_published P) P.bc

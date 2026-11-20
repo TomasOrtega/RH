@@ -16,7 +16,7 @@ section Gen
 variable {n m : ℕ} {ε : Fin n → Bool}
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem conj_cancel (Q : Matrix (Fin n) (Fin m) ℂ) (Qi : Matrix (Fin m) (Fin n) ℂ) (h : Q * Qi = 1)
     (A : Matrix (Fin n) (Fin n) ℂ) : Q * (Qi * A * Q) * Qi = A := by
@@ -24,9 +24,7 @@ theorem conj_cancel (Q : Matrix (Fin n) (Fin m) ℂ) (Qi : Matrix (Fin m) (Fin n
     _ = A := by rw [h, Matrix.one_mul, Matrix.mul_one]
 
 /- English proof (translation)
-Unfold `Formalism.REAL.inUJ`. Rewrite using `[Matrix.conjTranspose_mul, Matrix.conjTranspose_mul]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = Qiᴴ * (Qᴴ * Formalism.REAL.Jm ε * Q) * Qi := by rw [hH, hx, ← hH]`.
-
-Use `_ = (Q * Qi)ᴴ * Formalism.REAL.Jm ε * (Q * Qi) := by rw [Matrix.conjTranspose_mul]; simp only [Matrix.mul_assoc]`. Use `_ = Formalism.REAL.Jm ε := by rw [hQ]; simp`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem inUJ_conj (Q : Matrix (Fin n) (Fin m) ℂ) (Qi : Matrix (Fin m) (Fin n) ℂ) (H : Matrix (Fin m) (Fin m) ℂ)
     (hQ : Q * Qi = 1) (hH : Qᴴ * Formalism.REAL.Jm ε * Q = H) (x : Matrix (Fin m) (Fin m) ℂ) (hx : xᴴ * H * x = H) :
@@ -40,7 +38,7 @@ theorem inUJ_conj (Q : Matrix (Fin n) (Fin m) ℂ) (Qi : Matrix (Fin m) (Fin n) 
     _ = Formalism.REAL.Jm ε := by rw [hQ]; simp
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = 1 := by rw [h]; exact Formalism.REAL.Jm_mul_self ε`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem inv_mul_of_inUJ (M : Matrix (Fin n) (Fin n) ℂ) (h : Formalism.REAL.inUJ ε M) :
     Formalism.REAL.Jm ε * Mᴴ * Formalism.REAL.Jm ε * M = 1 := by
@@ -55,14 +53,14 @@ def mkUJ' (ε : Fin n → Bool) (M : Matrix (Fin n) (Fin n) ℂ) : Formalism.REA
   if h : Formalism.REAL.inUJ ε M then mkUJ M h else 1
 
 /- English proof (translation)
-Rewrite using `[mkUJ', dif_pos h]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mkUJ'_val (M : Matrix (Fin n) (Fin n) ℂ) (h : Formalism.REAL.inUJ ε M) :
     Formalism.MainNotions.S.uMat (mkUJ' ε M) = M := by
   rw [mkUJ', dif_pos h]; rfl
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Conclude with `mkUJ'_val _ γ.2`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem mkUJ'_coe (γ : Formalism.REAL.UJ ε) :
     mkUJ' ε (((γ : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ)) = γ := by
@@ -83,16 +81,16 @@ theorem trI_of (x : X.B.I.Ginf) (τ : D.what₂.Tau) :
   rfl
 
 /- English proof (translation)
-The claim follows from `X.pl.symm_apply_apply v`.
+A detailed English derivation is pending.
 -/
 theorem vOf_pl (v : InfinitePlace X.B.I.F) : vOf X (X.pl v) = v := X.pl.symm_apply_apply v
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Apply `Matrix.of.injective` to reduce the goal to its premises. Use `show Matrix.of (trI C (a * b) τ) = Matrix.of (trI C a τ) * Matrix.of (trI C b τ)`. Rewrite using `[trI_of, trI_of, trI_of]`. Rewrite using `[show Formalism.MainNotions.S.uMat ((a * b) (vOf X τ)) = Formalism.MainNotions.S.uMat (a (vOf X τ)) * Formalism.MainNotions.S.uMat (b (vOf X τ)) from rfl]`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `Formalism.MainNotions.S.uMat (a (vOf X τ)) = A`. Generalize the expression as in `Formalism.MainNotions.S.uMat (b (vOf X τ)) = B`. Establish `h` using `(C.isT τ).2.1`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h]`.
+Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mul_one, Matrix.mul_assoc]`. Use `_ = C.Qi τ * A * C.Q τ * (C.Qi τ * B * C.Q τ) := by simp only [Matrix.mul_assoc]`.
+A detailed English derivation is pending.
 -/
 theorem trI_mul (a b : X.B.I.Ginf) : trI C (a * b) = GlobalTheory.DegVol.mulP (trI C a) (trI C b) := by
   funext τ
@@ -108,9 +106,9 @@ theorem trI_mul (a b : X.B.I.Ginf) : trI C (a * b) = GlobalTheory.DegVol.mulP (t
     _ = C.Qi τ * A * C.Q τ * (C.Qi τ * B * C.Q τ) := by simp only [Matrix.mul_assoc]
 
 /- English proof (translation)
-Introduce `a b h`. Use function extensionality and compare the values at `v`. Establish `e` using `congrArg Matrix.of (congrFun h (X.pl v))`. Rewrite `e` using `[trI_of, trI_of]`. Establish `e2 : C.Q (X.pl v) * (C.Qi (X.pl v) * Formalism.MainNotions.S.uMat (a (vOf X (X.pl v))) * C.Q (X.pl v)) * C.Qi (X.pl v) = C.Q (X.pl v) * (C.Qi (X.pl v) * Formalism.MainNotions.S.uMat (b (vOf X (X.pl v))) * C.Q (X.pl v)) * C.Qi (X.pl v)` using `by rw [e]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `e2` using `[conj_cancel _ _ (C.isT _).2.1, conj_cancel _ _ (C.isT _).2.1, vOf_pl]`. Conclude with `Subtype.ext (Units.ext e2)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trI_inj : Function.Injective (trI C) := by
   intro a b h
@@ -135,7 +133,7 @@ def Sg : Set (D.what₂.Tau → Formalism.QuantumDeterminants.Mt D.R.k D.R.rS) :
   {x | ∀ τ, Formalism.REAL.inUJ (X.B.I.ε (vOf X τ)) (C.Q τ * Matrix.of (x τ) * C.Qi τ)}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `v`. Unfold `back`. Rewrite using `[trI_of, conj_cancel _ _ (C.isT _).2.1, vOf_pl]`. Conclude with `mkUJ'_coe _`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem back_trI (a : X.B.I.Ginf) : back C (trI C a) = a := by
   funext v
@@ -144,9 +142,9 @@ theorem back_trI (a : X.B.I.Ginf) : back C (trI C a) = a := by
   exact mkUJ'_coe _
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Apply `Matrix.of.injective` to reduce the goal to its premises. Rewrite using `[trI_of]`. Unfold `back`. Establish `h` using `hx τ`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Simplify using `only [vOf, Equiv.apply_symm_apply] at h ⊢`. Rewrite using `[mkUJ'_val _ h]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = Matrix.of (x τ) := by rw [(C.isT τ).1, Matrix.one_mul, Matrix.mul_one]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem trI_back {x : D.what₂.Tau → Formalism.QuantumDeterminants.Mt D.R.k D.R.rS} (hx : x ∈ Sg C) : trI C (back C x) = x := by
   funext τ
@@ -161,9 +159,9 @@ theorem trI_back {x : D.what₂.Tau → Formalism.QuantumDeterminants.Mt D.R.k D
     _ = Matrix.of (x τ) := by rw [(C.isT τ).1, Matrix.one_mul, Matrix.mul_one]
 
 /- English proof (translation)
-Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, rfl⟩ τ`. Rewrite using `[trI_of]`. Rewrite using `[conj_cancel _ _ (C.isT _).2.1]`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(a (vOf X τ)).2`. Introduce `hx`. Conclude with `⟨back C x, trI_back C hx⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem range_trI : Set.range (trI C) = Sg C := by
   ext x
@@ -176,13 +174,13 @@ theorem range_trI : Set.range (trI C) = Sg C := by
     exact ⟨back C x, trI_back C hx⟩
 
 /- English proof (translation)
-The claim follows from `Units.continuous_val.comp continuous_subtype_val`.
+A detailed English derivation is pending.
 -/
 theorem cont_uMat {n : ℕ} {ε : Fin n → Bool} : Continuous (fun γ : Formalism.REAL.UJ ε => Formalism.MainNotions.S.uMat γ) :=
   Units.continuous_val.comp continuous_subtype_val
 
 /- English proof (translation)
-Use `measurable_pi_lambda _ (fun τ => ?_)` and prove the remaining obligations. Establish `hc : Continuous (fun γ : Formalism.REAL.UJ (X.B.I.ε (vOf X τ)) => (Matrix.of.symm (C.Qi τ * Formalism.MainNotions.S.uMat γ * C.Q τ) : Formalism.QuantumDeterminants.Mt D.R.k D.R.rS))` using `(continuous_const.matrix_mul cont_uMat).matrix_mul continuous_const`. Conclude with `hc.measurable.comp (measurable_pi_apply (vOf X τ))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem measurable_trI : Measurable (trI C) := by
   refine measurable_pi_lambda _ (fun τ => ?_)
@@ -192,9 +190,9 @@ theorem measurable_trI : Measurable (trI C) := by
   exact hc.measurable.comp (measurable_pi_apply (vOf X τ))
 
 /- English proof (translation)
-Establish `: Sg C = ⋂ τ, (fun x : D.what₂.Tau → Formalism.QuantumDeterminants.Mt D.R.k D.R.rS => x τ) ⁻¹' {y : Formalism.QuantumDeterminants.Mt D.R.k D.R.rS | Formalism.REAL.inUJ (X.B.I.ε (vOf X τ)) (C.Q τ * Matrix.of y * C.Qi τ)}`. Use extensionality with `x`. Simplify using `[Sg]`. Rewrite using `[this]`. Use `MeasurableSet.iInter (fun τ => measurable_pi_apply τ ?_)` and prove the remaining obligations.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Apply `IsClosed.measurableSet` to reduce the goal to its premises. Unfold `Formalism.REAL.inUJ`. Establish `hm : Continuous (fun y : Formalism.QuantumDeterminants.Mt D.R.k D.R.rS => C.Q τ * Matrix.of y * C.Qi τ)` using `(continuous_const.matrix_mul continuous_id).matrix_mul continuous_const`. Conclude with `isClosed_eq ((hm.matrix_conjTranspose.matrix_mul continuous_const).matrix_mul hm) continuous_const`.
+Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem measurableSet_Sg : MeasurableSet (Sg C) := by
   have : Sg C = ⋂ τ, (fun x : D.what₂.Tau → Formalism.QuantumDeterminants.Mt D.R.k D.R.rS => x τ) ⁻¹'
@@ -209,13 +207,11 @@ theorem measurableSet_Sg : MeasurableSet (Sg C) := by
   exact isClosed_eq ((hm.matrix_conjTranspose.matrix_mul continuous_const).matrix_mul hm) continuous_const
 
 /- English proof (translation)
-Use `set S : Set (Fin m → Fin m → ℂ) := {y | Formalism.REAL.inUJ ε (Q * Matrix.of y * Qi)} with hS`. Establish `hm : Continuous (fun y : (Fin m → Fin m → ℂ) => Q * Matrix.of y * Qi)` using `(continuous_const.matrix_mul continuous_id).matrix_mul continuous_const`. Establish `hSc : IsClosed S`. Unfold `Formalism.REAL.inUJ at hS`. Rewrite using `[hS]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `isClosed_eq ((hm.matrix_conjTranspose.matrix_mul continuous_const).matrix_mul hm) continuous_const`. Establish `hf : Continuous (fun y : S => mkUJ (ε` using `ε) (Q * Matrix.of (y : Fin m → Fin m → ℂ) * Qi) y.2) := by`. Apply `Continuous.subtype_mk` to reduce the goal to its premises. Rewrite using `[Units.continuous_iff]`. Use `⟨hm.comp continuous_subtype_val, ?_⟩` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `((continuous_const.matrix_mul (hm.comp continuous_subtype_val).matrix_conjTranspose).matrix_mul continuous_const)`. Establish `e : (fun y : (Fin m → Fin m → ℂ) => mkUJ' ε (Q * Matrix.of y * Qi)) = fun y => if hy : y ∈ S then mkUJ (ε` using `ε) (Q * Matrix.of y * Qi) hy else (fun _ : (Sᶜ : Set _) => (1 : Formalism.REAL.UJ ε)) ⟨y, hy⟩ := by`. Use function extensionality and compare the values at `y`. Both sides reduce to the same expression. Rewrite using `[e]`.
-
-Conclude with `Measurable.dite hf.measurable measurable_const hSc.measurableSet`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem measurable_mkUJ' {n m : ℕ} (ε : Fin n → Bool) (Q : Matrix (Fin n) (Fin m) ℂ) (Qi : Matrix (Fin m) (Fin n) ℂ) :
     Measurable (fun y : (Fin m → Fin m → ℂ) => mkUJ' ε (Q * Matrix.of y * Qi)) := by
@@ -239,14 +235,14 @@ theorem measurable_mkUJ' {n m : ℕ} (ε : Fin n → Bool) (Q : Matrix (Fin n) (
   exact Measurable.dite hf.measurable measurable_const hSc.measurableSet
 
 /- English proof (translation)
-Use `measurable_pi_lambda _ (fun v => ?_)` and prove the remaining obligations. Conclude with `(measurable_mkUJ' _ _ _).comp (measurable_pi_apply (X.pl v))`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem measurable_back : Measurable (back C) := by
   refine measurable_pi_lambda _ (fun v => ?_)
   exact (measurable_mkUJ' _ _ _).comp (measurable_pi_apply (X.pl v))
 
 /- English proof (translation)
-The claim follows from `MeasurableEmbedding.of_measurable_inverse (measurable_trI C) (by rw [range_trI]; exact measurableSet_Sg C) (measurable_back C) (back_trI C)`.
+A detailed English derivation is pending.
 -/
 theorem measEmb_trI : MeasurableEmbedding (trI C) :=
   MeasurableEmbedding.of_measurable_inverse (measurable_trI C) (by rw [range_trI]; exact measurableSet_Sg C)
@@ -255,13 +251,13 @@ theorem measEmb_trI : MeasurableEmbedding (trI C) :=
 end Back
 
 /- English proof (translation)
-Introduce `D X Y u C`. Establish `hsub : ∀ a b, a ∈ Formalism.L2.SG.PoincareInHH.PoincareSetting.NOinf X u → b ∈ Formalism.L2.SG.PoincareInHH.PoincareSetting.NOinf X u → a * b⁻¹ ∈ Formalism.L2.SG.PoincareInHH.PoincareSetting.NOinf X u`. Introduce `a b ha hb`. Rewrite `ha`, `hb`, the goal using `[← Formalism.L2.SG.Pf.NOsub_coe X u Y.hK]`. Conclude with `Subgroup.mul_mem _ ha (Subgroup.inv_mem _ hb)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨hFm, hcov, hstr⟩` from `Y.FN_fund u`. Use `⟨(measEmb_trI C).measurableSet_image.2 hFm, fun x hx => ?_⟩` and prove the remaining obligations. Establish `hxS : x ∈ Sg C` using `fun τ => inUJ_conj _ _ _ (C.isT τ).2.1 (C.isT τ).2.2.1 _ (hx τ).1.1`. Establish `hy : trI C (back C x) = x` using `trI_back C hxS`. Take `⟨s, hs, hsF⟩` from `hcov (back C x)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨trI C s, ⟨⟨s, hs, rfl⟩, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← hy, ← trI_mul]`. Conclude with `⟨_, hsF, rfl⟩`. Introduce and unpack `m ⟨⟨s', hs', rfl⟩, ⟨f, hf, hfe⟩⟩`. Rewrite `hfe` using `[← hy, ← trI_mul]`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e : f = s' * back C x` using `trI_inj C hfe`. Rewrite `hf` using `[e]`. Establish `h1` using `hstr _ hsF (s' * s⁻¹) (hsub _ _ hs' hs) (by rwa [mul_assoc, inv_mul_cancel_left])`. Rewrite using `[mul_inv_eq_one.1 h1]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isFund_trI : ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (u : D.what₂.Word) (C : Choice X 1),
     GlobalTheory.DegVol.IsFund (trI C '' Formalism.L2.SG.PoincareInHH.PoincareSetting.NOinf X u)

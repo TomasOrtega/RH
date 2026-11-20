@@ -26,7 +26,7 @@ open IndefiniteRowSideFullHecke.NumbersDVR.Bundles (IsVertDiv mcIdeal joinCoord 
 namespace PairNumberJoinLeft
 
 /- English proof (translation)
-The claim follows from `VerticalComponentFibre.proof (FibreVarieties.proof GenericFibProps.full GenericDimBound.full GenericDimGe.proof SpecialIdealCorresp.full SpecialIdealMultiHomog.full SupSpanMultiHomog.full MinimalPrimeMultiHomog.full SpecialQuotDim.full ComponentDim.proof)`.
+A detailed English derivation is pending.
 -/
 theorem verticalComponentFibre : VerticalComponentFibre.Statement :=
   VerticalComponentFibre.proof (FibreVarieties.proof GenericFibProps.full GenericDimBound.full
@@ -34,17 +34,17 @@ theorem verticalComponentFibre : VerticalComponentFibre.Statement :=
     MinimalPrimeMultiHomog.full SpecialQuotDim.full ComponentDim.proof)
 
 /- English proof (translation)
-Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Take `⟨-, hM⟩` from `(BundleExamples.isModelOver_iff O P d).mp hP`. Unfold `IndefiniteRowSideFullHecke.NumbersDVR.Bundles.pairNum`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Establish `hdiv : IsVerticalDivisor P ϖ (y l - y' l) (f l) (g l)` using `(VerticalDivisorCharacterisation.proof O K ι P ϖ _ _ _ hϖ hM.multiProj).mp (hv l)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Unfold `IndefiniteRowSideFullHecke.NumbersDVR.Bundles.vEval`. Use `Finsupp.sum_congr fun W hW => ?_` and prove the remaining obligations. Establish `hW' : IndefiniteRowSideFullHecke.NumbersDVR.Bundles.ratCyc O P (f l) (g l) W ≠ 0` using `Finsupp.mem_support_iff.mp hW`. Establish `hvert : (C ϖ : MRing ι O) ∈ W` using `hdiv.vertical W (by rwa [← BundleExamples.ratCyc_eq])`. Take `⟨bf, bg, hf, hg, -⟩` from `hdiv.degrees`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hor : ReciprocityTheory.ChartRestriction.G.Geo.divCycle P (f l) W ≠ 0 ∨ ReciprocityTheory.ChartRestriction.G.Geo.divCycle P (g l) W ≠ 0`. Assume the negation of the conclusion as `hc`. Simplify using `only [not_or, ne_eq, not_not] at hc`. Apply `hW'` to reduce the goal to its premises. Simplify using `[IndefiniteRowSideFullHecke.NumbersDVR.Bundles.ratCyc, hc.1, hc.2]`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Establish `hVar : IsProjVarF (IndefiniteRowSideFullHecke.NumbersDVR.Bundles.redIdeal O W) d`. Break down `hor with h | h` into its components or cases. Establish `hs` using `JoinPointNumbers.mem_divSupp_of_ne _ _ _ h`. Take `⟨h1, h2⟩` from `verticalComponentFibre O ϖ hϖ K ι P d hM (f l) bf hf hdiv.num_not_mem W hs.1 hs.2 hvert`. Conclude with `⟨(Objects.isMultiProjPrime_iff _).mp h1, h2⟩`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hs` using `JoinPointNumbers.mem_divSupp_of_ne _ _ _ h`. Take `⟨h1, h2⟩` from `verticalComponentFibre O ϖ hϖ K ι P d hM (g l) bg hg hdiv.den_not_mem W hs.1 hs.2 hvert`. Conclude with `⟨(Objects.isMultiProjPrime_iff _).mp h1, h2⟩`. Use `congr 1`. Unfold `IndefiniteRowSideFullHecke.NumbersDVR.Bundles.polyNum`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions.
 
-Use `Finset.sum_congr rfl fun μ _ => ?_` and prove the remaining obligations. Use `congr 1`. Use `split_ifs with h`. Conclude with `Numbers.agree_of FieldNumbers.IntNumBase.full FieldNumbers.CutRational.full FieldNumbers.ExistsForm.full FieldNumbers.DivCycleSupport.full I hI _ d _ hVar`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem pairNum_fieldNum {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type} [∀ k, Fintype (ι k)] (P : Ideal (MRing ι O)) (d : ℕ)
@@ -104,27 +104,27 @@ def assocSigma (ι : K → Type) (ι' : K' → Type) (ι₂ : K₂ → Type) :
   right_inv := by rintro ⟨k | k | k, i⟩ <;> rfl
 
 /- English proof (translation)
-Apply the tactic sequence `obtain ⟨(k | k) | k, i⟩ := v <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem assocSigma_fst (v : Σ k : (K ⊕ K') ⊕ K₂, Sum.elim (Sum.elim ι ι') ι₂ k) :
     (assocSigma ι ι' ι₂ v).1 = Equiv.sumAssoc K K' K₂ v.1 := by
   obtain ⟨(k | k) | k, i⟩ := v <;> rfl
 
 /- English proof (translation)
-Apply the tactic sequence `obtain ⟨k | k | k, i⟩ := v <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem assocSigma_symm_fst (v : Σ k : K ⊕ (K' ⊕ K₂), Sum.elim ι (Sum.elim ι' ι₂) k) :
     ((assocSigma ι ι' ι₂).symm v).1 = (Equiv.sumAssoc K K' K₂).symm v.1 := by
   obtain ⟨k | k | k, i⟩ := v <;> rfl
 
 /- English proof (translation)
-Establish `hp : ∀ p, (σ.symm p).1 = e.symm p.1` using `fun p => by`. Rewrite using `[Equiv.eq_symm_apply, ← hσ, Equiv.apply_symm_apply]`. Establish `key : (pointConeMap R y).comp (rename σ.symm) = ((rename e.symm).restrictScalars R).comp (pointConeMap R (y ∘ σ.symm))`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `p`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[pointConeMap, hp]`. Establish `hmap : (pointIdeal R y).map (rename σ) = (pointIdeal R y).comap (rename σ.symm)`. Establish `h` using `Ideal.map_comap_of_equiv (I := pointIdeal R y) (renameEquiv R σ).toRingEquiv`. Conclude with `h`. Rewrite using `[hmap]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use extensionality with `f`. Rewrite using `[Ideal.mem_comap]`. Unfold `pointIdeal`. Rewrite using `[RingHom.mem_ker, RingHom.mem_ker]`. Establish `hf` using `congrArg (fun φ => φ f) key`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [AlgHom.comp_apply] at hf`. Express the relevant statement in the definitionally equal form `(pointConeMap R y) (rename σ.symm f) = 0 ↔ _`. Rewrite using `[hf, AlgHom.restrictScalars_apply]`. Conclude with `map_eq_zero_iff _ (rename_injective _ e.symm.injective)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pointIdeal_map_rename {K₁ K₃ : Type} {κ₁ : K₁ → Type} {κ₃ : K₃ → Type} (R : Type) [CommRing R]
     {Ω : Type} [Field Ω] [Algebra R Ω] (e : K₁ ≃ K₃) (σ : (Σ k, κ₁ k) ≃ (Σ k, κ₃ k))
@@ -152,7 +152,7 @@ theorem pointIdeal_map_rename {K₁ K₃ : Type} {κ₁ : K₁ → Type} {κ₃ 
   exact map_eq_zero_iff _ (rename_injective _ e.symm.injective)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Apply the tactic sequence `rcases k with (k | k) | k <;> rfl`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem assocDeg_comp (b : K ⊕ K' → ℤ) :
     assocDeg (K₂ := K₂) b ∘ Equiv.sumAssoc K K' K₂ = joinDeg (K' := K₂) b := by
@@ -160,7 +160,7 @@ theorem assocDeg_comp (b : K ⊕ K' → ℤ) :
   rcases k with (k | k) | k <;> rfl
 
 /- English proof (translation)
-Rewrite using `[joinForm, rename_rename]`. Use `congrArg (fun φ => rename φ f) ?_` and prove the remaining obligations. Use function extensionality and compare the values at `p`. Apply the tactic sequence `obtain ⟨k | k, i⟩ := p <;> rfl`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem rename_assocVar {R : Type} [CommRing R] (f : MRing (Sum.elim ι ι') R) :
     rename (assocVar ι₂) f = rename (assocSigma ι ι' ι₂) (joinForm (ι' := ι₂) f) := by
@@ -170,11 +170,9 @@ theorem rename_assocVar {R : Type} [CommRing R] (f : MRing (Sum.elim ι ι') R) 
   obtain ⟨k | k, i⟩ := p <;> rfl
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Use `Subfield.closure_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ (⟨c, rfl⟩ | ⟨⟨(k | k) | k, i, j⟩, rfl⟩)`. Conclude with `Subfield.subset_closure (Or.inl ⟨c, rfl⟩)`. Conclude with `Subfield.subset_closure (Or.inr ⟨⟨.inl k, i, j⟩, rfl⟩)`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Subfield.subset_closure (Or.inr ⟨⟨.inr k, i, j⟩, rfl⟩)`. Rewrite using `[← hfn]`. Conclude with `Subfield.subset_closure (Or.inr ⟨⟨.inr (.inr k), i, j⟩, rfl⟩)`. Use `Subfield.closure_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ (⟨c, rfl⟩ | ⟨⟨k, i, j⟩, rfl⟩)`.
-
-Conclude with `Subfield.subset_closure (Or.inl ⟨c, rfl⟩)`. Conclude with `Subfield.subset_closure (Or.inr ⟨⟨.inl k, i, j⟩, rfl⟩)`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem fnField_assoc (O : Type) [CommRing O] {Ω : Type} [Field Ω] [Algebra O Ω] (x : (Σ k, ι k) → Ω)
     (z : (Σ k, ι' k) → Ω) (w : (Σ k, ι₂ k) → Ω)
@@ -198,25 +196,23 @@ end PairNumberJoinLeft
 open PairNumberJoinLeft in
 
 /- English proof (translation)
-Introduce `O _ _ _ Ω _ _ K _ ι _ x K' _ ι' _ z K₂ _ ι₂ _ w d hF hZ hfn I I₁ hI hI₁ n a a' f g hv H hH`. Set `_` to `Classical.decEq K`. Set `_` to `Classical.decEq K'`. Set `_` to `Classical.decEq K₂`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Establish `hvZ : ∀ i, IsVertDiv O (mcIdeal O (joinCoord x (joinCoord z w))) (assocDeg (K₂` using `K₂) (a i) - assocDeg (K₂ := K₂) (a' i)) (rename (assocVar ι₂) (f i)) (rename (assocVar ι₂) (g i)) := by`. Introduce `i`. Establish `h` using `hVert O Ω K ι x K' ι' z K₂ ι₂ w _ _ _ (hv i)`. Use `h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `k`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Apply the tactic sequence `rcases k with k | k | k <;> simp [assocDeg]`. Rewrite using `[pairNum_fieldNum _ d hF I₁ hI₁ _ _ _ _ hv, pairNum_fieldNum _ d hZ I hI _ _ _ _ hvZ, BundleExamples.pairNum_eq _ d _ _ _ _ hH, BundleExamples.pairNum_eq _ d _ _ _ _ hH]`. Use `set Gs := fun l => rename finSumFinEquiv.symm (IndefiniteRowSideFullHecke.NumbersDVR.Bundles.divDiff l H) with hGs`. Establish `hσ` using `assocSigma_fst (ι := ι) (ι' := ι') (ι₂ := ι₂)`. Establish `hσ'` using `assocSigma_symm_fst (ι := ι) (ι' := ι') (ι₂ := ι₂)`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hPZ : (pointIdeal O (joinCoords (joinCoords x z) w)).map (rename (assocSigma ι ι' ι₂)) = mcIdeal O (joinCoord x (joinCoord z w))`. Rewrite using `[pointIdeal_map_rename O (Equiv.sumAssoc K K' K₂) _ hσ]`. Express the relevant statement in the definitionally equal form `pointIdeal O _ = pointIdeal O _`. Use `congr 1`. Use function extensionality and compare the values at `p`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `obtain ⟨k | k | k, i⟩ := p <;> rfl`. Establish `hZP : (mcIdeal O (joinCoord x (joinCoord z w))).map (rename (assocSigma ι ι' ι₂).symm) = pointIdeal O (joinCoords (joinCoords x z) w)`. Rewrite using `[BundleExamples.mcIdeal_eq_pointIdeal, pointIdeal_map_rename O (Equiv.sumAssoc K K' K₂).symm _ hσ']`. Use `congr 1`. Use function extensionality and compare the values at `p`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `obtain ⟨(k | k) | k, i⟩ := p <;> rfl`. Establish `hrel` using `(PairNumberRelabel.proof O ϖ ((K ⊕ K') ⊕ K₂) (Sum.elim (Sum.elim ι ι') ι₂) (K ⊕ (K' ⊕ K₂)) (Sum.elim ι (Sum.elim ι' ι₂)) (Equiv.sumAssoc K K' K₂) (assocSigma ι ι' ι₂) hσ (pointIdeal O (joinCoords (joinCoords x z) w))).2.2 n (fun i => assocDeg (a i)) (fun i => assocDeg (a' i)) (fu …`. Rewrite `hrel` using `[hPZ]`. Simplify using `only [← rename_assocVar, assocDeg_comp, List.map_nil] at hrel`. Rewrite using `[hrel]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hmodF : IsModelOver (pointIdeal O (joinCoords x z)) d`. Rewrite using `[BundleExamples.joinCoords_eq]`. Conclude with `((BundleExamples.isModelOver_iff O _ d).mp hF).2`. Establish `hmodZ : IsModelOver (pointIdeal O (joinCoords (joinCoords x z) w)) (d + 0)`. Rewrite using `[← hZP]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(PairNumberRelabel.proof O ϖ (K ⊕ (K' ⊕ K₂)) (Sum.elim ι (Sum.elim ι' ι₂)) ((K ⊕ K') ⊕ K₂) (Sum.elim (Sum.elim ι ι') ι₂) (Equiv.sumAssoc K K' K₂).symm (assocSigma ι ι' ι₂).symm hσ' (mcIdeal O (joinCoord x (joinCoord z w)))).1 d ((BundleExamples.isModelOver_iff O _ d).mp hZ).2`. Establish `hbir : IsBirationalJoin O (joinCoords x z) w`. Rewrite using `[BundleExamples.joinCoords_eq]`. Conclude with `hBir O Ω (K ⊕ K') (Sum.elim ι ι') (joinCoord x z) K₂ ι₂ w (fnField_assoc O x z w hfn)`. Establish `hvF : ∀ i, IsVerticalDivisor (pointIdeal O (joinCoords x z)) ϖ (a i - a' i) (f i) (g i)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `i`. Rewrite using `[BundleExamples.joinCoords_eq]`. Conclude with `(VerticalDivisorCharacterisation.proof O (K ⊕ K') (Sum.elim ι ι') _ ϖ _ _ _ hϖ ((BundleExamples.isModelOver_iff O _ d).mp hF).2.multiProj).mp (hv i)`. Establish `hexp` using `dividedDifferenceExpansion.proof n (d + 1) H hH`. Establish `key` using `(hPull O ϖ hϖ Ω (K ⊕ K') (Sum.elim ι ι') K₂ ι₂ (joinCoords x z) w d 0 hmodF hmodZ n a a' f g hvF (d + 1) H hH Gs hexp [] (by simp)).2 hbir`.
-
-Rewrite using `[BundleExamples.mcIdeal_eq_pointIdeal, ← BundleExamples.joinCoords_eq]`. Conclude with `key.symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem PairNumberJoinLeft.proof (hPull : PairNumberPullback.Statement)
     (hVert : JoinVerticalDivisorLeft.Statement) (hBir : BirationalJoin.Statement) :

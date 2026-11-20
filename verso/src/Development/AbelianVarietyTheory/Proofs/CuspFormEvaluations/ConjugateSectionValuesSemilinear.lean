@@ -19,7 +19,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
   {Xo : Moduli Dw l} {c : Coeff l} {ta : c.F ≃+* c.F}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun τ a => by rw [RingEquiv.symm_apply_eq, h.emb], fun a => by rw [RingEquiv.symm_apply_eq, h.base]⟩`.
+Supply the required witnesses or components.
 -/
 theorem fixes_symm (h : Fixes c ta) : Fixes c ta.symm :=
   ⟨fun τ a => by rw [RingEquiv.symm_apply_eq, h.emb], fun a => by rw [RingEquiv.symm_apply_eq, h.base]⟩
@@ -35,7 +35,7 @@ def untwHom {S T : Type} [CommRing S] [Algebra c.F S] [CommRing T] [Algebra c.F 
       (congrArg (algebraMap c.F T) (ta.apply_symm_apply a)) }
 
 /- English proof (translation)
-Use `haveI : IsReduced (Tw ta p.R) := ((GlobalTheory.reduced_finiteType_iff_testRing c.F).2 p).2`. Conclude with `hA _ _`.
+A detailed English derivation is pending.
 -/
 theorem fromT_tw_test (h : Fixes c ta) (hA : AllTest Xo c) (p : TRing c.F) (y : FrPt Xo c p.R) :
     FromT (twPt h y) := by
@@ -43,7 +43,7 @@ theorem fromT_tw_test (h : Fixes c ta) (hA : AllTest Xo c) (p : TRing c.F) (y : 
   exact hA _ _
 
 /- English proof (translation)
-Take `⟨p, ψ, y₀, h₀⟩` from `hy`. Conclude with `⟨p, _, y₀, map_trans ψ φ h₀ hm⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem fromT_of_map {S T : Type} [CommRing S] [Algebra c.F S] [CommRing T] [Algebra c.F T] {φ : S →ₐ[c.F] T}
     {y : FrPt Xo c S} {z : FrPt Xo c T} (hy : FromT y) (hm : FrMap φ y z) : FromT z := by
@@ -51,14 +51,14 @@ theorem fromT_of_map {S T : Type} [CommRing S] [Algebra c.F S] [CommRing T] [Alg
   exact ⟨p, _, y₀, map_trans ψ φ h₀ hm⟩
 
 /- English proof (translation)
-The claim follows from `hm`.
+A detailed English derivation is pending.
 -/
 theorem frMap_tw (h : Fixes c ta) {S T : Type} [CommRing S] [Algebra c.F S] [CommRing T] [Algebra c.F T]
     {φ : S →ₐ[c.F] T} {y : FrPt Xo c S} {z : FrPt Xo c T} (hm : FrMap φ y z) :
     FrMap (twHom ta φ) (twPt h y) (twPt h z) := hm
 
 /- English proof (translation)
-Take `⟨p, φ, y₀, h₀⟩` from `hy`. Establish `h₁ : FrMap (untwHom φ) (twPt (fixes_symm h) y₀) y` using `h₀`. Conclude with `fromT_of_map (fromT_tw_test (fixes_symm h) hA p y₀) h₁`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem fromT_of_tw (h : Fixes c ta) (hA : AllTest Xo c) {S : Type} [CommRing S] [Algebra c.F S]
     {y : FrPt Xo c S} (hy : FromT (twPt h y)) : FromT y := by
@@ -67,7 +67,7 @@ theorem fromT_of_tw (h : Fixes c ta) (hA : AllTest Xo c) {S : Type} [CommRing S]
   exact fromT_of_map (fromT_tw_test (fixes_symm h) hA p y₀) h₁
 
 /- English proof (translation)
-Distinguish the cases in `hy : FromT y`. Take `⟨q, φ, y₀, hm, e⟩` from `evR_spec hy`. Rewrite using `[e, evR_map hWD hf (fromT_tw_test h hA q y₀) (frMap_tw h hm)]`. Both sides reduce to the same expression. Rewrite using `[evR_not hy, evR_not (fun h' => hy (fromT_of_tw h hA h'))]`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -82,7 +82,7 @@ theorem evR_galRul (h : Fixes c ta) (hWD : ValueWD Xo c) (hA : AllTest Xo c) {f 
     rfl
 
 /- English proof (translation)
-Use `⟨fun p q φ y z hm => ?_, fun q t y y' hb => ?_⟩` and prove the remaining obligations. Conclude with `evR_map hWD hf.1 (fromT_tw_test h hA p y) (frMap_tw h hm)`. Establish `hb' : FrBor (S` using `Tw ta q.R) t (twPt h y) (twPt h y') := hb`. Establish `h3 : evR Xo c f (twPt h y') = _ * evR Xo c f (twPt h y)` using `wtAll_of_borChart hB (ex Dw a n) hf.1 hf.2 (Tw ta q.R) _ _ _ (fromT_tw_test h hA q y) (fromT_tw_test h hA q y') hb'`. Conclude with `h3`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem galRul_mem_sec (h : Fixes c ta) (hWD : ValueWD Xo c) (hA : AllTest Xo c) (hB : BorChartF Xo c)
     {a : (E →+* ℂ) × ℕ → ℕ} {n : ℕ} {f : Rul Xo c} (hf : f ∈ sec Xo c a n) : galRul h f ∈ sec Xo c a n := by
@@ -97,13 +97,13 @@ theorem galRul_mem_sec (h : Fixes c ta) (hWD : ValueWD Xo c) (hA : AllTest Xo c)
 end Rule
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c ta h`. Establish `hS` using `GlobalTheory.abelianSchemeLaws_all.1.secBaseChange`. Establish `hc` using `GlobalTheory.Frames.chartCoverF_of_secBaseChange hS E H Dw l Xo c`. Establish `hWD : ValueWD Xo c` using `evalWD_fr (frChartF_of hc)`. Establish `hA : AllTest Xo c` using `GlobalTheory.Frames.allTest_of_secBaseChange hS E H Dw l Xo c`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB : BorChartF Xo c` using `borChartF_of_cover hc`. Use `⟨fun a n f hf => ⟨Rule.galRul_mem_sec h hWD hA hB hf, fun S _ _ y => Rule.evR_galRul h hWD hA hf.1 y⟩, fun t f g => ?_, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `p y`. Establish `h1 : evR Xo c (t • f + g) (twPt h y) = algebraMap c.F (Tw ta p.R) t * evR Xo c f (twPt h y) + evR Xo c g (twPt h y)`. Unfold `evR`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[evalAt_add, evalAt_smul]`. Use `h1.trans ?_` and prove the remaining obligations. Use `show _ = ta t • galRul h f p y + galRul h g p y`. Rewrite using `[Algebra.smul_def]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `c₀ hle hfix a n m as fs f hf hbc S _ A _ ho y`. Use `letI : Algebra c₀.F (Tw ta S) := A`. Establish `ho' : AlgOver c₀ c hle (Tw ta S)` using `fun x => (congrArg (algebraMap c.F S) (hfix x)).trans (ho x)`. Rewrite using `[Rule.evR_galRul h hWD hA hf.1 y]`. Conclude with `hbc (Tw ta S) ho' (twPt h y)`.
+Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem galRul_sec_val_semilinear : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (ta : c.F ≃+* c.F) (h : Fixes c ta), (∀ (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ), ∀ f ∈ sec Xo c a n, galRul h f ∈ sec Xo c a n ∧ ∀ (S : Type) [CommRing S] [Algebra c.F S] (y : FrPt Xo c S), evR Xo c (galRul h f) y = (evR Xo c f (twPt h y)).val) ∧ (∀ (t : c.F) (f g : Rul Xo c), galRul h (t • f + g) = ta t • galRul h f + galRul h g) ∧ ∀ (c₀ : Coeff l) (hle : c₀.F ≤ c.F), (∀ x : c₀.F, ta (incF c₀ c hle x) = incF c₀ c hle x) → ∀ (a : (E →+* ℂ) × ℕ → ℕ) (n m : ℕ) (as : Fin m → c.F) (fs : Fin m → Rul Xo c₀), ∀ f ∈ sec Xo c a n, IsBC hle f as fs → IsBC hle (galRul h f) (fun i => ta (as i)) fs := by
   intro E _ _ _ H Dw l Xo c ta h

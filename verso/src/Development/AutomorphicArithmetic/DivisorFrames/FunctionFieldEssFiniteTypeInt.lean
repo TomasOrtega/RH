@@ -7,13 +7,9 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory GlobalTheory.QCoh GlobalTheory.CechPic GlobalTheory.Cartier GlobalTheory.ConsGeo
 
 /- English proof (translation)
-Introduce `k _ _ X _ s _`. Take `⟨x⟩ : Nonempty X` from `inferInstance`. Take `⟨_, ⟨U, hU, rfl⟩, hxU, -⟩` from `X.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ x) isOpen_univ`. Use `haveI : Nonempty U := ⟨⟨x, hxU⟩⟩`. Establish `hU' : IsAffineOpen U` using `hU`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI := functionField_isFractionRing_of_isAffineOpen X U hU'`. Establish `hft : (s.appLE ⊤ U le_top).hom.FiniteType` using `HasRingHomProperty.appLE @LocallyOfFiniteType s inferInstance ⟨⊤, isAffineOpen_top _⟩ ⟨U, hU'⟩ le_top`. Set `φ : k →+* Γ(X, U)` to `(s.appLE ⊤ U le_top).hom.comp (Scheme.ΓSpecIso (CommRingCat.of k)).inv.hom`. Establish `hφ : φ.FiniteType` using `hft.comp (RingHom.FiniteType.of_surjective _ (Scheme.ΓSpecIso (CommRingCat.of k)).symm.commRingCatIsoToRingEquiv.surjective)`. Use `letI : Algebra k Γ(X, U) := φ.toAlgebra`.
-
-Use `haveI : Algebra.FiniteType k Γ(X, U) := hφ`. Use `haveI h1 : Algebra.EssFiniteType ℤ ℚ := Algebra.EssFiniteType.of_isLocalization ℚ (nonZeroDivisors ℤ)`. Use `haveI h2 : Algebra.EssFiniteType ℤ k := Algebra.EssFiniteType.comp ℤ ℚ k`. Use `haveI h3 : Algebra.EssFiniteType ℤ Γ(X, U) := Algebra.EssFiniteType.comp ℤ k Γ(X, U)`. Use `haveI h4 : Algebra.EssFiniteType Γ(X, U) X.functionField := Algebra.EssFiniteType.of_isLocalization _ (nonZeroDivisors Γ(X, U))`.
-
-Conclude with `Algebra.EssFiniteType.comp ℤ Γ(X, U) X.functionField`.
+Introduce a local definition for the expression. Establish an intermediate fact. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem UpperTheory.functionField_essFiniteType_int :
     ∀ (k : Type) [Field k] [NumberField k] (X : Scheme.{0}) [IsIntegral X] (s : X ⟶ Sp k) [LocallyOfFiniteType s], Algebra.EssFiniteType ℤ X.functionField := by

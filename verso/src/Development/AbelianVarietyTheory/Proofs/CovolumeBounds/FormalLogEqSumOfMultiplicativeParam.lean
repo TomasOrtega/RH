@@ -11,7 +11,7 @@ variable {σ τ ι κ μ A : Type*} [CommRing A]
 section Tools
 
 /- English proof (translation)
-The claim follows from `subst_comp_subst_apply (hasSubst_of_constantCoeff_zero ha) hb f`.
+A detailed English derivation is pending.
 -/
 theorem subst_subst [Finite ι] {a : ι → MvPowerSeries κ A} {b : κ → MvPowerSeries μ A}
     (hb : HasSubst b) (ha : ∀ i, constantCoeff (a i) = 0) (f : MvPowerSeries ι A) :
@@ -19,7 +19,7 @@ theorem subst_subst [Finite ι] {a : ι → MvPowerSeries κ A} {b : κ → MvPo
   subst_comp_subst_apply (hasSubst_of_constantCoeff_zero ha) hb f
 
 /- English proof (translation)
-Apply the tactic sequence `funext i; cases i <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem subst_sumElim (b : κ → MvPowerSeries μ A) (u : σ → MvPowerSeries κ A)
     (t : τ → MvPowerSeries κ A) :
@@ -28,7 +28,7 @@ theorem subst_sumElim (b : κ → MvPowerSeries μ A) (u : σ → MvPowerSeries 
   funext i; cases i <;> rfl
 
 /- English proof (translation)
-Apply the tactic sequence `have : (Sum.elim (fun i => X (inl i)) fun j => X (inr j) : σ ⊕ τ → MvPowerSeries (σ ⊕ τ) A) = X := by funext i; cases i <;> rfl`. Rewrite using `[this, subst_self, id]`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 -/
 theorem subst_elim_X (f : MvPowerSeries (σ ⊕ τ) A) :
     subst (Sum.elim (fun i => X (inl i)) fun j => X (inr j) :
@@ -38,7 +38,7 @@ theorem subst_elim_X (f : MvPowerSeries (σ ⊕ τ) A) :
   rw [this, subst_self, id]
 
 /- English proof (translation)
-Establish `: (Sum.elim (fun i => X (inl i)) (Sum.elim (fun j => X (inr (inl j))) fun j => X (inr (inr j))) : σ ⊕ τ ⊕ ι → MvPowerSeries (σ ⊕ τ ⊕ ι) A) = X`. Apply the tactic sequence `funext i; rcases i with i | i | i <;> rfl`. Rewrite using `[this, subst_self, id]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 -/
 theorem subst_elim_elim_X (f : MvPowerSeries (σ ⊕ τ ⊕ ι) A) :
     subst (Sum.elim (fun i => X (inl i)) (Sum.elim (fun j => X (inr (inl j)))
@@ -49,7 +49,7 @@ theorem subst_elim_elim_X (f : MvPowerSeries (σ ⊕ τ ⊕ ι) A) :
   rw [this, subst_self, id]
 
 /- English proof (translation)
-The claim follows from `pderiv_subst (hasSubst_of_constantCoeff_zero ha) f j`.
+A detailed English derivation is pending.
 -/
 theorem pderiv_subst' [Fintype ι] {a : ι → MvPowerSeries κ A}
     (ha : ∀ i, constantCoeff (a i) = 0) (f : MvPowerSeries ι A) (j : κ) :
@@ -57,7 +57,7 @@ theorem pderiv_subst' [Fintype ι] {a : ι → MvPowerSeries κ A}
   pderiv_subst (hasSubst_of_constantCoeff_zero ha) f j
 
 /- English proof (translation)
-Use `split_ifs with h`. Rewrite using `[h, pderiv_X_self]`. Conclude with `pderiv_X_of_ne h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pderiv_X_ite [DecidableEq κ] (i j : κ) :
     pderiv A i (X j : MvPowerSeries κ A) = if j = i then 1 else 0 := by
@@ -68,13 +68,11 @@ theorem pderiv_X_ite [DecidableEq κ] (i j : κ) :
 open Classical in
 
 /- English proof (translation)
-Establish `hb : b = (fun k => if k ∈ Set.range e then (0 : A) else 1) • X`. Use function extensionality and compare the values at `k`. Distinguish the cases in `hk : k ∈ Set.range e`. Take `⟨i, rfl⟩` from `hk`. Simplify using `[hb0]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Simplify using `only [Pi.smul_apply', hb1 k hk, if_neg hk, one_smul]`. Rewrite using `[hb, ← rescale_eq_subst, coeff_rescale]`. Use `split_ifs with h`. Rewrite using `[Finsupp.prod, Finset.prod_eq_one, one_mul]`. Introduce `k hk`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg, one_pow]`. Introduce and unpack `⟨i, rfl⟩`. Conclude with `Finsupp.mem_support_iff.mp hk (h i)`. Use `push Not at h`. Take `⟨i, hi⟩` from `h`.
-
-Rewrite using `[Finsupp.prod, Finset.prod_eq_zero (Finsupp.mem_support_iff.mpr hi), zero_mul]`. Rewrite using `[if_pos ⟨i, rfl⟩, zero_pow hi]`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coeff_subst_kill (e : ι → κ) {b : κ → MvPowerSeries κ A} (hb0 : ∀ i, b (e i) = 0)
     (hb1 : ∀ k, k ∉ Set.range e → b k = X k) (f : MvPowerSeries κ A) (α : κ →₀ ℕ) :
@@ -98,7 +96,7 @@ theorem coeff_subst_kill (e : ι → κ) {b : κ → MvPowerSeries κ A} (hb0 : 
     rw [if_pos ⟨i, rfl⟩, zero_pow hi]
 
 /- English proof (translation)
-Use `ext_of_pderiv_of_coeff e hD fun α hα => ?_` and prove the remaining obligations. Use `congrArg (coeff α) h0` as an intermediate fact. Rewrite `this` using `[coeff_subst_kill e hb0 hb1, coeff_subst_kill e hb0 hb1, if_pos hα, if_pos hα]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem ext_of_pderiv_of_subst [IsAddTorsionFree A] (e : ι → κ) {b : κ → MvPowerSeries κ A}
     (hb0 : ∀ i, b (e i) = 0) (hb1 : ∀ k, k ∉ Set.range e → b k = X k)
@@ -109,13 +107,13 @@ theorem ext_of_pderiv_of_subst [IsAddTorsionFree A] (e : ι → κ) {b : κ → 
   rwa [coeff_subst_kill e hb0 hb1, coeff_subst_kill e hb0 hb1, if_pos hα, if_pos hα] at this
 
 /- English proof (translation)
-Establish `hk` using `coeff_subst_kill (A := A) (inl : σ → σ ⊕ τ) (b := Sum.elim (fun _ => 0) fun j => X (inr j)) (by simp) (by simp) f`. Prove the components needed by the constructor for the conclusion. Introduce `h α hα`. Establish `hb : HasSubst (fun j => X (inr j) : τ → MvPowerSeries (σ ⊕ τ) A)` using `hasSubst_of_constantCoeff_zero (by simp)`. Establish `h2` using `congrArg (subst (fun j => X (inr j) : τ → MvPowerSeries (σ ⊕ τ) A)) h`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[subst_subst hb, subst_sumElim, subst_X hb, subst_zero' hb] at h2`. Rewrite using `[← if_pos hα (t := coeff α f) (e := 0), ← hk, h2, map_zero]`. Introduce `h`. Establish `h1 : subst (Sum.elim (fun _ => 0) fun j => X (inr j) : σ ⊕ τ → MvPowerSeries (σ ⊕ τ) A) f = 0`. Use extensionality with `α`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[hk]`. Use `split_ifs with hα`. Simplify using `[h α hα]`. Simplify using the standard rewrite rules. Establish `hb : HasSubst (Sum.elim (fun _ => 0) X : σ ⊕ τ → MvPowerSeries τ A)` using `hasSubst_of_constantCoeff_zero (by simp)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `congrArg (subst (Sum.elim (fun _ => 0) X : σ ⊕ τ → MvPowerSeries τ A)) h1`. Simplify `h2` using `[subst_subst hb, subst_sumElim, subst_X hb, subst_zero' hb]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem subst_elim_zero_eq_zero_iff [Finite σ] [Finite τ] (f : MvPowerSeries (σ ⊕ τ) A) :
     subst (Sum.elim (fun _ => 0) X : σ ⊕ τ → MvPowerSeries τ A) f = 0 ↔
@@ -143,7 +141,7 @@ theorem subst_elim_zero_eq_zero_iff [Finite σ] [Finite τ] (f : MvPowerSeries (
     simpa [subst_subst hb, subst_sumElim, subst_X hb, subst_zero' hb] using h2
 
 /- English proof (translation)
-Simplify using `only [subst_elim_zero_eq_zero_iff]`. Conclude with `existsUnique_primitive_param inl_injective a ha`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem existsUnique_primitive_sum [Finite σ] [Finite τ] [Algebra ℚ A]
     (a : σ → MvPowerSeries (σ ⊕ τ) A)
@@ -161,11 +159,11 @@ section Additive
 variable [IsAddTorsionFree A]
 
 /- English proof (translation)
-Use `Fintype.ofFinite τ` as an intermediate fact. Establish `hb : HasSubst (Sum.elim (fun i => X (inl i)) (Sum.elim (fun _ => 0) fun j => X (inr j)) : σ ⊕ σ ⊕ τ → MvPowerSeries (σ ⊕ τ) A)` using `hasSubst_of_constantCoeff_zero (by simp)`. Establish `hc : HasSubst (fun j => X (inr j) : τ → MvPowerSeries (σ ⊕ τ) A)` using `hasSubst_of_constantCoeff_zero (by simp)`. Establish `hd : HasSubst (Sum.elim (fun _ => 0) fun j => X (inr j) : σ ⊕ τ → MvPowerSeries (σ ⊕ τ) A)` using `hasSubst_of_constantCoeff_zero (by simp)`. Use `ext_of_pderiv_of_subst inl (b := Sum.elim (fun _ => 0) fun j => X (inr j)) (by simp) (by simp) (fun i => ?_) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1` using `congrArg (pderiv A (inr (inl i))) h`. Simplify using `[pderiv_subst', pderiv_X_ite] at h1`. Establish `h2` using `congrArg (subst (Sum.elim (fun i => X (inl i)) (Sum.elim (fun _ => 0) fun j => X (inr j)) : σ ⊕ σ ⊕ τ → MvPowerSeries (σ ⊕ τ) A)) h1`. Simplify using `[subst_subst hb, subst_sumElim, subst_X hb, subst_add hb, subst_elim_X] at h2`. Use `conv_lhs => rw [h2]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[pderiv_subst', pderiv_X_ite, subst_subst hc, subst_sumElim, subst_X hc, subst_zero' hc]`. Establish `h2` using `congrArg (subst (Sum.elim (fun i => X (inl i)) (Sum.elim (fun _ => 0) fun j => X (inr j)) : σ ⊕ σ ⊕ τ → MvPowerSeries (σ ⊕ τ) A)) h`. Simplify using `[subst_subst hb, subst_sumElim, subst_X hb, subst_add hb, subst_elim_X] at h2`. Simplify using `[h2, subst_sum' hd, subst_mul hd, subst_X hd]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eq_sum_of_additive_param [Fintype σ] [Finite τ] {f : MvPowerSeries (σ ⊕ τ) A}
     (h : subst (Sum.elim (fun i => X (inl i) + X (inr (inl i))) fun j => X (inr (inr j)) :
@@ -205,29 +203,29 @@ section Cocycle
 variable [Algebra ℚ A]
 
 /- English proof (translation)
-Use `Fintype.ofFinite σ` as an intermediate fact. Use `Fintype.ofFinite τ` as an intermediate fact. Establish `: IsAddTorsionFree A` using `.of_module_rat A`. Establish `hz : HasSubst (Sum.elim (fun i => X (inl i)) (Sum.elim (fun i => X (inr (inl i))) (Sum.elim (fun _ => 0) fun j => X (inr (inr j)))) : σ ⊕ σ ⊕ σ ⊕ τ → MvPowerSeries (σ ⊕ σ ⊕ τ) A)` using `hasSubst_of_constantCoeff_zero (by simp)`. Establish `hyz : HasSubst (Sum.elim (fun i => X (inl i)) (Sum.elim (fun _ => 0) (Sum.elim (fun _ => 0) fun j => X (inr (inr j)))) : σ ⊕ σ ⊕ σ ⊕ τ → MvPowerSeries (σ ⊕ σ ⊕ τ) A)` using `hasSubst_of_constantCoeff_zero (by simp)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hxy : HasSubst (Sum.elim (fun i => X (inl i) + X (inr (inl i))) fun j => X (inr (inr j)) : σ ⊕ τ → MvPowerSeries (σ ⊕ σ ⊕ τ) A)` using `hasSubst_of_constantCoeff_zero (by simp)`. Establish `hx : HasSubst (Sum.elim (fun i => X (inl i)) fun j => X (inr (inr j)) : σ ⊕ τ → MvPowerSeries (σ ⊕ σ ⊕ τ) A)` using `hasSubst_of_constantCoeff_zero (by simp)`. Establish `hy : HasSubst (Sum.elim (fun i => X (inr (inl i))) fun j => X (inr (inr j)) : σ ⊕ τ → MvPowerSeries (σ ⊕ σ ⊕ τ) A)` using `hasSubst_of_constantCoeff_zero (by simp)`. Establish `hsw : HasSubst (Sum.elim (fun i => X (inr (inl i))) (Sum.elim (fun i => X (inl i)) fun j => X (inr (inr j))) : σ ⊕ σ ⊕ τ → MvPowerSeries (σ ⊕ σ ⊕ τ) A)` using `hasSubst_of_constantCoeff_zero (by simp)`. Establish `hy0 : HasSubst (Sum.elim (fun i => X (inl i)) (Sum.elim (fun _ => 0) fun j => X (inr j)) : σ ⊕ σ ⊕ τ → MvPowerSeries (σ ⊕ τ) A)` using `hasSubst_of_constantCoeff_zero (by simp)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy3 : HasSubst (Sum.elim (fun i => X (inl i)) (Sum.elim (fun _ => 0) fun j => X (inr (inr j))) : σ ⊕ σ ⊕ τ → MvPowerSeries (σ ⊕ σ ⊕ τ) A)` using `hasSubst_of_constantCoeff_zero (by simp)`. Establish `h00 : HasSubst (Sum.elim (fun _ => 0) (Sum.elim (fun _ => 0) X) : σ ⊕ σ ⊕ τ → MvPowerSeries τ A)` using `hasSubst_of_constantCoeff_zero (by simp)`. Establish `ht : HasSubst (fun j => X (inr (inr j)) : τ → MvPowerSeries (σ ⊕ σ ⊕ τ) A)` using `hasSubst_of_constantCoeff_zero (by simp)`. Establish `hz2 : HasSubst (Sum.elim (fun _ => 0) X : σ ⊕ τ → MvPowerSeries τ A)` using `hasSubst_of_constantCoeff_zero (by simp)`. Choose the witnesses or unpack the hypotheses as in `⟨a, ha⟩ : ∃ a : σ → MvPowerSeries (σ ⊕ τ) A, ∀ i, a i =`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Substitute `(Sum.elim (fun i => X (inl i)) (Sum.elim (fun _ => 0) fun j => X (inr j)) : σ ⊕ σ ⊕ τ → MvPowerSeries (σ ⊕ τ) A) (pderiv A (inr (inl i)) B) :=` using the available equality. Use the proof step `⟨_, fun _ => rfl⟩`. Establish `hP (i : σ) : pderiv A (inr (inl i)) B =`. Substitute `(Sum.elim (fun i => X (inl i) + X (inr (inl i))) fun j => X (inr (inr j)) : σ ⊕ τ → MvPowerSeries (σ ⊕ σ ⊕ τ) A) (a i) - subst (Sum.elim (fun i => X (inr (inl i))) fun j => X (inr (inr j)) : σ ⊕ τ → MvPowerSeries (σ ⊕ σ ⊕ τ) A) (a i) := by` using the available equality. Establish `h1` using `congrArg (pderiv A (inr (inr (inl i)))) hcoc`.
+Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[pderiv_subst', pderiv_X_ite] at h1`. Establish `h2` using `congrArg (subst (Sum.elim (fun i => X (inl i)) (Sum.elim (fun i => X (inr (inl i))) (Sum.elim (fun _ => 0) fun j => X (inr (inr j)))) : σ ⊕ σ ⊕ σ ⊕ τ → MvPowerSeries (σ ⊕ σ ⊕ τ) A)) h1`. Simplify using `[subst_subst hz, subst_X hz, subst_add hz, subst_sub hz, subst_zero' hz, subst_sumElim, subst_elim_elim_X] at h2`. Simplify using `[ha, subst_subst hxy, subst_X hxy, subst_add hxy, subst_sub hxy, subst_zero' hxy, subst_subst hy, subst_X hy, subst_add hy, subst_sub hy, subst_zero' hy, subst_sumElim, h2]`. Establish `hQ (i : σ) : pderiv A (inl i) B =`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Substitute using the available equality.
 
-Substitute `(Sum.elim (fun i => X (inl i) + X (inr (inl i))) fun j => X (inr (inr j)) : σ ⊕ τ → MvPowerSeries (σ ⊕ σ ⊕ τ) A) (a i) - subst (Sum.elim (fun i => X (inl i)) fun j => X (inr (inr j)) : σ ⊕ τ → MvPowerSeries (σ ⊕ σ ⊕ τ) A) (a i) := by` using the available equality. Establish `h1` using `congrArg (pderiv A (inl i)) hsymm`. Simplify using `[pderiv_subst', pderiv_X_ite] at h1`. Rewrite using `[← h1, hP]`. Simplify using `[subst_subst hsw, subst_X hsw, subst_add hsw, subst_sub hsw, subst_zero' hsw, subst_sumElim, add_comm]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hclosed (i j : σ) : pderiv A (inl i) (a j) = pderiv A (inl j) (a i)`. Establish `h1` using `pderiv_comm (inl i) (inr (inl j)) B`. Rewrite `h1` using `[hP, hQ]`. Simplify using `[pderiv_subst', pderiv_X_ite] at h1`. Establish `h2` using `congrArg (subst (Sum.elim (fun i => X (inl i)) (Sum.elim (fun _ => 0) fun j => X (inr j)) : σ ⊕ σ ⊕ τ → MvPowerSeries (σ ⊕ τ) A)) h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `h2` using `[subst_subst hy0, subst_X hy0, subst_add hy0, subst_sub hy0, subst_zero' hy0, subst_sumElim, subst_elim_X]`. Establish `ha0 (i : σ) : subst (Sum.elim (fun _ => 0) X : σ ⊕ τ → MvPowerSeries τ A) (a i) = 0`. Establish `h1` using `congrArg (subst (Sum.elim (fun _ => 0) (Sum.elim (fun _ => 0) X) : σ ⊕ σ ⊕ τ → MvPowerSeries τ A)) (hP i)`. Simplify using `[subst_subst h00, subst_X h00, subst_add h00, subst_sub h00, subst_zero' h00, subst_sumElim] at h1`. Simplify `h1` using `[ha, subst_subst hz2, subst_X hz2, subst_add hz2, subst_sub hz2, subst_zero' hz2, subst_sumElim]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Take `⟨k, ⟨hk0, hk⟩, -⟩` from `existsUnique_primitive_sum a hclosed`. Establish `hB : B = subst (Sum.elim (fun i => X (inl i) + X (inr (inl i))) fun j => X (inr (inr j)) : σ ⊕ τ → MvPowerSeries (σ ⊕ σ ⊕ τ) A) k -`. Substitute `(Sum.elim (fun i => X (inl i)) fun j => X (inr (inr j)) : σ ⊕ τ → MvPowerSeries (σ ⊕ σ ⊕ τ) A) k -` using the available equality. Substitute `(Sum.elim (fun i => X (inr (inl i))) fun j => X (inr (inr j)) : σ ⊕ τ → MvPowerSeries (σ ⊕ σ ⊕ τ) A) k := by` using the available equality. Use `ext_of_pderiv_of_subst (fun i : σ => (inr (inl i) : σ ⊕ σ ⊕ τ)) (b := Sum.elim (fun i => X (inl i)) (Sum.elim (fun _ => 0) fun j => X (inr (inr j)))) (by simp) (by simp) (fun i => ?_) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Substitute using the available equality. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `[pderiv_subst', pderiv_X_ite, hk, hP]`. Establish `h1` using `congrArg (subst (Sum.elim (fun i => X (inl i)) (Sum.elim (fun _ => 0) (Sum.elim (fun _ => 0) fun j => X (inr (inr j)))) : σ ⊕ σ ⊕ σ ⊕ τ → MvPowerSeries (σ ⊕ σ ⊕ τ) A)) hcoc`. Establish `h2` using `congrArg (subst (fun j => X (inr (inr j)) : τ → MvPowerSeries (σ ⊕ σ ⊕ τ) A)) h0`. Establish `h3` using `congrArg (subst (fun j => X (inr (inr j)) : τ → MvPowerSeries (σ ⊕ σ ⊕ τ) A)) hk0`. Simplify using `[subst_subst ht, subst_X ht, subst_add ht, subst_sub ht, subst_zero' ht, subst_sumElim] at h2 h3`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[subst_subst hyz, subst_X hyz, subst_add hyz, subst_sub hyz, subst_zero' hyz, subst_sumElim, h2] at h1`. Simplify using `[subst_subst hy3, subst_X hy3, subst_add hy3, subst_sub hy3, subst_zero' hy3, subst_sumElim, h1, h3]`. Use `⟨k, ⟨hk0, fun i => by rw [hk, ha0], hB⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `k' ⟨-, hk1, hk2⟩`. Establish `hd` using `eq_sum_of_additive_param (f := k' - k) (by`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[subst_sub hxy, subst_sub hx, subst_sub hy]`. Take the linear combination `hB - hk2)`. Rewrite using `[← sub_eq_zero, hd]`. Simplify using `[subst_sub hz2, hk1, hk, ha0, subst_zero' (hasSubst_of_constantCoeff_zero (by simp) : HasSubst (fun j => X (inr j) : τ → MvPowerSeries (σ ⊕ τ) A))]`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem existsUnique_coboundary_param [Finite σ] [Finite τ] {B : MvPowerSeries (σ ⊕ σ ⊕ τ) A}
     (h0 : subst (Sum.elim (fun _ => 0) (Sum.elim (fun _ => 0) X) :

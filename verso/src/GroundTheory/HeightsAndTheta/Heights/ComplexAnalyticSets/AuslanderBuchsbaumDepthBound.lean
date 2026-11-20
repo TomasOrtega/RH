@@ -12,11 +12,11 @@ universe u
 variable {R : Type u} [CommRing R]
 
 /- English proof (translation)
-Establish `hmk : ∀ y : R, y • (1 : R ⧸ maximalIdeal R) = Ideal.Quotient.mk (maximalIdeal R) y` using `fun y ↦ by`. Rewrite using `[Algebra.smul_def, mul_one, Ideal.Quotient.algebraMap_eq]`. Establish `hns : ¬ Subsingleton ((R ⧸ maximalIdeal R) →ₗ[R] R)`. Rewrite using `[IsSMulRegular.subsingleton_linearMap_iff]`. Introduce and unpack `⟨r, hr, hreg⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Use `h r ?_ hreg` and prove the remaining obligations. Establish `h1` using `Module.mem_annihilator.mp hr (1 : R ⧸ maximalIdeal R)`. Rewrite `h1` using `[hmk, Ideal.Quotient.eq_zero_iff_mem]`. Then use the resulting hypothesis. Rewrite `hns` using `[not_subsingleton_iff_nontrivial]`. Take `⟨f, hf⟩` from `exists_ne (0 : (R ⧸ maximalIdeal R) →ₗ[R] R)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨f 1, fun h0 ↦ hf (LinearMap.ext fun y ↦ ?_), fun a ha ↦ ?_⟩` and prove the remaining obligations. Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Rewrite using `[← hmk, map_smul, h0, smul_zero, LinearMap.zero_apply]`. Rewrite using `[← smul_eq_mul, ← map_smul, hmk, Ideal.Quotient.eq_zero_iff_mem.mpr ha, map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_ne_zero_mul_eq_zero_of_forall_not_isSMulRegular [IsLocalRing R] [IsNoetherianRing R]
     (h : ∀ y ∈ maximalIdeal R, ¬ IsSMulRegular R y) :
@@ -37,7 +37,7 @@ theorem exists_ne_zero_mul_eq_zero_of_forall_not_isSMulRegular [IsLocalRing R] [
   · rw [← smul_eq_mul, ← map_smul, hmk, Ideal.Quotient.eq_zero_iff_mem.mpr ha, map_zero]
 
 /- English proof (translation)
-Take `⟨s, hs, hms⟩` from `exists_ne_zero_mul_eq_zero_of_forall_not_isSMulRegular h`. Establish `: Module.Free R M` using `GroundTheory.Arith.SchemeCoh.free_of_hasProjectiveDimensionLT_of_mul_eq_zero hs hms k M hM`. Conclude with `(projective_iff_hasProjectiveDimensionLE_zero _).mp (by`. Rewrite using `[← IsProjective.iff_projective]`. Use the proof step `infer_instance)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasProjectiveDimensionLE_zero_of_forall_not_isSMulRegular [IsLocalRing R] [IsNoetherianRing R]
     (h : ∀ y ∈ maximalIdeal R, ¬ IsSMulRegular R y) (M : Type u) [AddCommGroup M] [Module R M]
@@ -49,27 +49,23 @@ theorem hasProjectiveDimensionLE_zero_of_forall_not_isSMulRegular [IsLocalRing R
     rw [← IsProjective.iff_projective]; infer_instance)
 
 /- English proof (translation)
-Establish `hne : span {x} ≠ ⊤` using `fun h ↦ (IsLocalRing.maximalIdeal.isMaximal R).ne_top (top_le_iff.mp (h ▸ (span_singleton_le_iff_mem _).mpr hx))`. Establish `: Nontrivial (R ⧸ span {x})` using `Ideal.Quotient.nontrivial_iff.mpr hne`. Establish `: IsLocalRing (R ⧸ span {x})` using `.of_surjective' _ Ideal.Quotient.mk_surjective`. Proceed by induction on `k generalizing M with`. Consider the case `zero`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Rewrite `hM`, the goal using `[zero_add, ← projective_iff_hasProjectiveDimensionLT_one, ← IsProjective.iff_projective]`. Establish `: Module.Finite (R ⧸ span {x}) (QuotSMulTop x M)` using `Module.Finite.of_restrictScalars_finite R _ _`. Establish `hfree : Module.Free (R ⧸ span {x}) (QuotSMulTop x M)` using `Module.free_of_flat_of_isLocalRing`. Use `Module.finitePresentation_of_finite R M` as an intermediate fact. Establish `: Module.Free R M` using `(Module.free_quotSMulTop_iff_free R M (IsLocalRing.maximalIdeal_le_jacobson _ hx) hxM).mp hfree`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `infer_instance`. Consider the case `succ k ih`. Take `⟨n, π, hπ⟩` from `Module.Finite.exists_fin' R M`. Set `K` to `LinearMap.ker π`. Establish `hS` using `LinearMap.shortExact_shortComplexKer hπ`.
+Treat this case separately. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hproj : Projective (π.shortComplexKer).X₂`. Rewrite using `[← IsProjective.iff_projective]`. Use `infer_instance`. Establish `hxF : IsSMulRegular (Fin n → R) x`. Introduce `a b h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i`. Conclude with `hxR (congrFun h i)`. Establish `hxK : IsSMulRegular K x` using `fun a b h ↦ Subtype.ext (hxF (congrArg Subtype.val h))`. Set `f₁ : QuotSMulTop x K →ₗ[R] QuotSMulTop x (Fin n → R)` to `QuotSMulTop.map x K.subtype`. Set `f₂ : QuotSMulTop x (Fin n → R) →ₗ[R] QuotSMulTop x M` to `QuotSMulTop.map x π`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hex0 : Function.Exact K.subtype π` using `fun y ↦ ⟨fun h ↦ ⟨⟨y, h⟩, rfl⟩, by rintro ⟨k, rfl⟩; exact k.2⟩`. Establish `ex : Function.Exact f₁ f₂` using `QuotSMulTop.map_exact x hex0 hπ`. Establish `surj : Function.Surjective f₂` using `QuotSMulTop.map_surjective x hπ`. Establish `inj : Function.Injective f₁`. Rewrite using `[← LinearMap.ker_eq_bot, eq_bot_iff]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `y hy`. Take `⟨y, rfl⟩` from `Submodule.mkQ_surjective _ y`. Rewrite `hy` using `[LinearMap.mem_ker]`. Simplify using `only [f₁, Submodule.mkQ_apply, QuotSMulTop.map_apply_mk, Submodule.Quotient.mk_eq_zero, Submodule.mem_smul_pointwise_iff_exists] at hy`. Take `⟨b, -, hb⟩` from `hy`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hπb : π b = 0`. Apply `hxM` to reduce the goal to its premises. Use `show x • π b = x • 0`. Rewrite using `[← map_smul, hb, smul_zero]`. Conclude with `y.2`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Rewrite using `[Submodule.mem_bot, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero, Submodule.mem_smul_pointwise_iff_exists]`. Conclude with `⟨⟨b, hπb⟩, Submodule.mem_top, Subtype.ext hb⟩`. Set `g₁` to `f₁.extendScalarsOfSurjective (Ideal.Quotient.mk_surjective (I := span {x}))`. Set `g₂` to `f₂.extendScalarsOfSurjective (Ideal.Quotient.mk_surjective (I := span {x}))`. Set `T` to `ModuleCat.shortComplexOfCompEqZero g₁ g₂ (LinearMap.ext fun y ↦ ex.apply_apply_eq_zero y)`.
-
-Establish `hT : T.ShortExact` using `ModuleCat.shortComplex_shortExact T ex inj surj`. Establish `hproj2 : Projective T.X₂`. Rewrite using `[← IsProjective.iff_projective]`. Use `infer_instance`. Establish `hK' : HasProjectiveDimensionLT (ModuleCat.of (R ⧸ span {x}) (QuotSMulTop x K)) (k + 1)` using `(hT.hasProjectiveDimensionLT_X₃_iff k hproj2).mp hM`.
-
-Conclude with `(hS.hasProjectiveDimensionLT_X₃_iff k hproj).mpr (ih K hxK hK')`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem hasProjectiveDimensionLT_of_quotSMulTop [IsLocalRing R] [IsNoetherianRing R] {x : R}
     (hx : x ∈ maximalIdeal R) (hxR : IsSMulRegular R x) (k : ℕ) (M : Type u) [AddCommGroup M]
@@ -136,15 +132,15 @@ theorem hasProjectiveDimensionLT_of_quotSMulTop [IsLocalRing R] [IsNoetherianRin
     exact (hS.hasProjectiveDimensionLT_X₃_iff k hproj).mpr (ih K hxK hK')
 
 /- English proof (translation)
-Set `lift : R ⧸ span {x} → R` to `Function.surjInv Ideal.Quotient.mk_surjective`. Establish `hlift : ∀ b, Ideal.Quotient.mk (span {x}) (lift b) = b` using `Function.surjInv_eq Ideal.Quotient.mk_surjective`. Establish `hrs' : (rs.map lift).map (algebraMap R (R ⧸ span {x})) = rs`. Rewrite using `[List.map_map]`. Use `conv_rhs => rw [← List.map_id rs]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `List.map_congr_left fun b _ ↦ by simp [Ideal.Quotient.algebraMap_eq, hlift]`. Establish `hloc : IsLocalHom (Ideal.Quotient.mk (span {x}))` using `IsLocalHom.of_surjective _ Ideal.Quotient.mk_surjective`. Establish `hcomap : (maximalIdeal (R ⧸ span {x})).comap (Ideal.Quotient.mk (span {x})) = maximalIdeal R` using `IsLocalRing.maximalIdeal_comap _`. Establish `hmem : ∀ r ∈ x :: rs.map lift, r ∈ maximalIdeal R`. Introduce `r hr`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Break down `List.mem_cons.mp hr with rfl | hr` into its components or cases. Conclude with `hx`. Take `⟨b, hb, rfl⟩` from `List.mem_map.mp hr`. Rewrite using `[← hcomap, Ideal.mem_comap, hlift]`. Conclude with `hrs b hb`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : (R ⧸ span {x}) ≃ₗ[R] QuotSMulTop x R` using `Submodule.quotEquivOfEq _ _ (by`. Rewrite using `[← Submodule.ideal_span_singleton_smul, smul_eq_mul, Ideal.mul_top])`. Establish `hreg' : IsWeaklyRegular R (x :: rs.map lift)`. Rewrite using `[isWeaklyRegular_cons_iff]`. Use `⟨hxR, (e.isWeaklyRegular_congr _).mp ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[← isWeaklyRegular_map_algebraMap_iff (R ⧸ span {x}), hrs']`. Conclude with `hreg`. Use `hd _ hmem hreg'` as an intermediate fact. Simplify using `only [List.length_cons, List.length_map] at this`. Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem length_le_of_isWeaklyRegular_quotient_span_singleton [IsLocalRing R] {x : R}
     (hx : x ∈ maximalIdeal R) (hxR : IsSMulRegular R x) [IsLocalRing (R ⧸ span {x})] (d : ℕ)
@@ -182,19 +178,17 @@ theorem length_le_of_isWeaklyRegular_quotient_span_singleton [IsLocalRing R] {x 
   omega
 
 /- English proof (translation)
-Proceed by induction on `d with`. Consider the case `zero`. Introduce `R _ _ _ hd M _ _ _ k hM`. Use `hasProjectiveDimensionLE_zero_of_forall_not_isSMulRegular (fun y hy hy' ↦ ?_) M k hM` and prove the remaining obligations. Use `hd [y] (by simpa using hy) ((isWeaklyRegular_singleton_iff R y).mpr hy')` as an intermediate fact.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `at this`. Consider the case `succ d ih`. Introduce `R _ _ _ hd M _ _ _ k hM`. Distinguish the cases in `hex : ∃ y ∈ maximalIdeal R, IsSMulRegular R y`. Use `swap`.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Use `push Not at hex`. Use `hasProjectiveDimensionLE_zero_of_forall_not_isSMulRegular hex M k hM` as an intermediate fact. Conclude with `hasProjectiveDimensionLT_of_ge _ (0 + 1) (d + 1 + 1) (by omega)`. Take `⟨x, hx, hxR⟩` from `hex`. Establish `hne : span {x} ≠ ⊤` using `fun h ↦ (IsLocalRing.maximalIdeal.isMaximal R).ne_top (top_le_iff.mp (h ▸ (span_singleton_le_iff_mem _).mpr hx))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Nontrivial (R ⧸ span {x})` using `Ideal.Quotient.nontrivial_iff.mpr hne`. Establish `: IsLocalRing (R ⧸ span {x})` using `.of_surjective' _ Ideal.Quotient.mk_surjective`. Establish `hd'` using `length_le_of_isWeaklyRegular_quotient_span_singleton hx hxR d hd`. Take `⟨n, π, hπ⟩` from `Module.Finite.exists_fin' R M`. Set `K` to `LinearMap.ker π`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hS` using `LinearMap.shortExact_shortComplexKer hπ`. Establish `hproj : Projective (π.shortComplexKer).X₂`. Rewrite using `[← IsProjective.iff_projective]`. Use `infer_instance`. Establish `hK : HasProjectiveDimensionLT (ModuleCat.of R K) (k + 1)` using `(hS.hasProjectiveDimensionLT_X₃_iff k hproj).mp (hasProjectiveDimensionLT_of_ge _ (k + 1) (k + 1 + 1) (by omega))`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `hxF : IsSMulRegular (Fin n → R) x`. Introduce `a b h`. Use function extensionality and compare the values at `i`. Conclude with `hxR (congrFun h i)`. Establish `hxK : IsSMulRegular K x` using `fun a b h ↦ Subtype.ext (hxF (congrArg Subtype.val h))`.
-
-Establish `hKx` using `GroundTheory.Arith.SchemeCoh.hasProjectiveDimensionLT_quotSMulTop hxR k K hxK hK`. Establish `: Module.Finite (R ⧸ span {x}) (QuotSMulTop x K)` using `Module.Finite.of_restrictScalars_finite R _ _`. Establish `hKx'` using `ih (R ⧸ span {x}) hd' (QuotSMulTop x K) k hKx`. Establish `hK2` using `hasProjectiveDimensionLT_of_quotSMulTop hx hxR d K hxK hKx'`. Conclude with `(hS.hasProjectiveDimensionLT_X₃_iff d hproj).mpr hK2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem hasProjectiveDimensionLE_of_forall_isWeaklyRegular_length_le (d : ℕ) :
     ∀ (R : Type u) [CommRing R] [IsLocalRing R] [IsNoetherianRing R],

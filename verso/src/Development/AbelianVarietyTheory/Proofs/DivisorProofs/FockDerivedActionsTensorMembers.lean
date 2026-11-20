@@ -11,9 +11,7 @@ section general
 variable {m n : Type} [Fintype m] [Fintype n] [DecidableEq m] [DecidableEq n]
 
 /- English proof (translation)
-Set `f : Matrix m m ℂ →+* Matrix (m × n) (m × n) ℂ` to `{ toFun Y := Y ⊗ₖ (1 : Matrix n n ℂ) map_one' := Matrix.one_kronecker_one map_mul' A B := by rw [← Matrix.mul_kronecker_mul, Matrix.mul_one] map_zero' := Matrix.zero_kronecker _ map_add' A B := Matrix.add_kronecker _ _ _ }`. Establish `hf : Continuous f`. Use `continuous_pi fun a => continuous_pi fun b => ?_` and prove the remaining obligations. Use `show Continuous fun Y : Matrix m m ℂ => Y a.1 b.1 * (1 : Matrix n n ℂ) a.2 b.2`. Use `fun_prop`.
-
-Use `open scoped Matrix.Norms.Operator in`. Conclude with `(NormedSpace.map_exp f hf Y).symm`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exp_kron_left (Y : Matrix m m ℂ) :
     NormedSpace.exp (Y ⊗ₖ (1 : Matrix n n ℂ)) = NormedSpace.exp Y ⊗ₖ (1 : Matrix n n ℂ) := by
@@ -31,9 +29,7 @@ theorem exp_kron_left (Y : Matrix m m ℂ) :
   exact (NormedSpace.map_exp f hf Y).symm
 
 /- English proof (translation)
-Set `f : Matrix n n ℂ →+* Matrix (m × n) (m × n) ℂ` to `{ toFun Z := (1 : Matrix m m ℂ) ⊗ₖ Z map_one' := Matrix.one_kronecker_one map_mul' A B := by rw [← Matrix.mul_kronecker_mul, Matrix.mul_one] map_zero' := Matrix.kronecker_zero _ map_add' A B := Matrix.kronecker_add _ _ _ }`. Establish `hf : Continuous f`. Use `continuous_pi fun a => continuous_pi fun b => ?_` and prove the remaining obligations. Use `show Continuous fun Y : Matrix n n ℂ => (1 : Matrix m m ℂ) a.1 b.1 * Y a.2 b.2`. Use `fun_prop`.
-
-Use `open scoped Matrix.Norms.Operator in`. Conclude with `(NormedSpace.map_exp f hf Z).symm`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exp_kron_right (Z : Matrix n n ℂ) :
     NormedSpace.exp ((1 : Matrix m m ℂ) ⊗ₖ Z) = (1 : Matrix m m ℂ) ⊗ₖ NormedSpace.exp Z := by
@@ -51,7 +47,7 @@ theorem exp_kron_right (Z : Matrix n n ℂ) :
   exact (NormedSpace.map_exp f hf Z).symm
 
 /- English proof (translation)
-Use `open scoped Matrix.Norms.Operator in`. Conclude with `(NormedSpace.map_exp (Matrix.reindexAlgEquiv ℂ ℂ e) (by`. Conclude with `LinearMap.continuous_of_finiteDimensional (Matrix.reindexAlgEquiv ℂ ℂ e).toLinearMap) X).symm`.
+A detailed English derivation is pending.
 -/
 theorem exp_reindex' (e : m ≃ n) (X : Matrix m m ℂ) :
     NormedSpace.exp (Matrix.reindex e e X) = Matrix.reindex e e (NormedSpace.exp X) := by
@@ -64,7 +60,7 @@ end general
 variable {p q r s : ℕ}
 
 /- English proof (translation)
-Establish `h : Xᴴ * Jm p q + Jm p q * X = 0` using `hX`. Use `show (t • X)ᴴ * Jm p q + Jm p q * (t • X) = 0`. Rewrite using `[Matrix.conjTranspose_smul, star_trivial, Matrix.smul_mul, Matrix.mul_smul, ← smul_add, h, smul_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smul_mem {X : Mat p q} (hX : X ∈ upq p q) (t : ℝ) : t • X ∈ upq p q := by
   have h : Xᴴ * Jm p q + Jm p q * X = 0 := hX
@@ -73,14 +69,14 @@ theorem smul_mem {X : Mat p q} (hX : X ∈ upq p q) (t : ℝ) : t • X ∈ upq 
     smul_zero]
 
 /- English proof (translation)
-The claim follows from `T.expt_cont.comp_continuous (by fun_prop) fun t => smul_mem hX t`.
+A detailed English derivation is pending.
 -/
 theorem continuous_expt (T : GrpData p q) {X : Mat p q} (hX : X ∈ upq p q) :
     Continuous fun t : ℝ => T.expt (t • X) :=
   T.expt_cont.comp_continuous (by fun_prop) fun t => smul_mem hX t
 
 /- English proof (translation)
-Establish `hsq : Continuous T.sq` using `continuous_snd.comp T.emb.continuous`. Establish `h` using `isPreconnected_univ.eq_of_sq_eq (α := ℝ) (f := fun t : ℝ => ((T.sq (γ t) : ℂˣ) : ℂ)) (g := fun t : ℝ => ((T.sq (δ t) : ℂˣ) : ℂ)) (Units.continuous_val.comp (hsq.comp hγ)).continuousOn (Units.continuous_val.comp (hsq.comp hδ)).continuousOn (fun t _ => by`. Simplify using `only [Pi.pow_apply]`. Rewrite using `[T.sq_sq, T.sq_sq, hc]) (fun _ => Units.ne_zero _) (Set.mem_univ 0) (by simp only [h0])`. Conclude with `T.emb.injective (Prod.ext (hc t) (Units.ext (h (Set.mem_univ t))))`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lift_unique (T : GrpData p q) {γ δ : ℝ → T.G} (hγ : Continuous γ) (hδ : Continuous δ)
     (hc : ∀ t, T.cov (γ t) = T.cov (δ t)) (h0 : γ 0 = δ 0) (t : ℝ) : γ t = δ t := by
@@ -94,7 +90,7 @@ theorem lift_unique (T : GrpData p q) {γ δ : ℝ → T.G} (hγ : Continuous γ
   exact T.emb.injective (Prod.ext (hc t) (Units.ext (h (Set.mem_univ t))))
 
 /- English proof (translation)
-Apply the tactic sequence `ext (a | a) (b | b) <;> simp [Jm, Formalism.UG.Jpq, Matrix.diagonal_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem Jm_diag (p q : ℕ) :
     Jm p q = Matrix.diagonal fun a => if a.isLeft then (1 : ℂ) else -1 := by
@@ -102,9 +98,9 @@ theorem Jm_diag (p q : ℕ) :
   split_ifs <;> simp
 
 /- English proof (translation)
-Rewrite using `[Jm_diag, Jm_diag, Jm_diag, Matrix.diagonal_kronecker_diagonal, Matrix.reindex_apply, Matrix.submatrix_diagonal_equiv]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Take `⟨l, rfl⟩` from `(lineEquiv p q r s).surjective x`. Rewrite using `[lineEquiv_isLeft, Function.comp, Equiv.symm_apply_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `rcases l with ⟨a | a, c | c⟩ <;> simp [linePos]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem Jm_eq (p q r s : ℕ) : Jm (p * r + q * s) (p * s + q * r) =
     Matrix.reindex (lineEquiv p q r s) (lineEquiv p q r s) (Jm p q ⊗ₖ Jm r s) := by
@@ -117,9 +113,9 @@ theorem Jm_eq (p q r s : ℕ) : Jm (p * r + q * s) (p * s + q * r) =
   rcases l with ⟨a | a, c | c⟩ <;> simp [linePos]
 
 /- English proof (translation)
-Establish `h : Yᴴ * Jm p q + Jm p q * Y = 0` using `hY`. Use `show _ᴴ * _ + _ * _ = 0`. Rewrite using `[Jm_eq, Matrix.conjTranspose_reindex]`. Simplify using `only [Matrix.reindex_apply, Matrix.submatrix_mul_equiv]`. Rewrite using `[Matrix.conjTranspose_kronecker, ← Matrix.mul_kronecker_mul, ← Matrix.mul_kronecker_mul, Matrix.conjTranspose_one, Matrix.one_mul, Matrix.mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `congrArg (fun A : Mat p q => (A ⊗ₖ Jm r s).submatrix (lineEquiv p q r s).symm (lineEquiv p q r s).symm) h` as an intermediate fact. Simplify `this` using `[Matrix.add_kronecker, Matrix.submatrix_add]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem left_mem {Y : Mat p q} (hY : Y ∈ upq p q) (r s : ℕ) :
     Matrix.reindex (lineEquiv p q r s) (lineEquiv p q r s) (Y ⊗ₖ (1 : Mat r s)) ∈
@@ -134,9 +130,9 @@ theorem left_mem {Y : Mat p q} (hY : Y ∈ upq p q) (r s : ℕ) :
   simpa [Matrix.add_kronecker, Matrix.submatrix_add] using this
 
 /- English proof (translation)
-Establish `h : Yᴴ * Jm r s + Jm r s * Y = 0` using `hY`. Use `show _ᴴ * _ + _ * _ = 0`. Rewrite using `[Jm_eq, Matrix.conjTranspose_reindex]`. Simplify using `only [Matrix.reindex_apply, Matrix.submatrix_mul_equiv]`. Rewrite using `[Matrix.conjTranspose_kronecker, ← Matrix.mul_kronecker_mul, ← Matrix.mul_kronecker_mul, Matrix.conjTranspose_one, Matrix.one_mul, Matrix.mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `congrArg (fun A : Mat r s => (Jm p q ⊗ₖ A).submatrix (lineEquiv p q r s).symm (lineEquiv p q r s).symm) h` as an intermediate fact. Simplify `this` using `[Matrix.kronecker_add, Matrix.submatrix_add]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem right_mem {Y : Mat r s} (hY : Y ∈ upq r s) (p q : ℕ) :
     Matrix.reindex (lineEquiv p q r s) (lineEquiv p q r s) ((1 : Mat p q) ⊗ₖ Y) ∈
@@ -153,13 +149,13 @@ theorem right_mem {Y : Mat r s} (hY : Y ∈ upq r s) (p q : ℕ) :
 variable {T0 : GrpData (p * r + q * s) (p * s + q * r)} {T1 : GrpData p q} {T2 : GrpData r s}
 
 /- English proof (translation)
-Establish `h1 : Continuous T1.cov` using `continuous_fst.comp T1.emb.continuous`. Establish `h2 : Continuous T2.cov` using `continuous_fst.comp T2.emb.continuous`. Establish `s1 : Continuous T1.sq` using `continuous_snd.comp T1.emb.continuous`. Establish `s2 : Continuous T2.sq` using `continuous_snd.comp T2.emb.continuous`. Establish `hv : Continuous fun x : T1.G × T2.G => ((T0.cov (F.emb x) : GL _ ℂ) : Mat (p * r + q * s) (p * s + q * r))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c1` using `(Units.continuous_val.comp h1).comp (continuous_fst (X := T1.G) (Y := T2.G))`. Establish `c2` using `(Units.continuous_val.comp h2).comp (continuous_snd (X := T1.G) (Y := T2.G))`. Use `continuous_pi fun a => continuous_pi fun b => ?_` and prove the remaining obligations. Use `(c1.matrix_elem ((lineEquiv p q r s).symm a).1 ((lineEquiv p q r s).symm b).1).mul (c2.matrix_elem ((lineEquiv p q r s).symm a).2 ((lineEquiv p q r s).symm b).2)` as an intermediate fact. Use `this.congr fun x => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[show x = (x.1, x.2) from rfl, F.emb_cov]`. Both sides reduce to the same expression. Rewrite using `[T0.emb.isInducing.continuous_iff]`. Use `Continuous.prodMk (Units.continuous_iff.2 ⟨hv, ?_⟩) ?_` and prove the remaining obligations. Use `(hv.comp continuous_inv).congr fun x => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Function.comp, map_inv]`. Use `(((s1.comp continuous_fst).pow (r + s)).mul ((s2.comp continuous_snd).pow (p + q))).congr fun x => ?_` and prove the remaining obligations. Conclude with `(F.emb_sq x.1 x.2).symm`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_emb (F : FockData T0 T1 T2) : Continuous F.emb := by
   have h1 : Continuous T1.cov := continuous_fst.comp T1.emb.continuous
@@ -185,9 +181,9 @@ theorem continuous_emb (F : FockData T0 T1 T2) : Continuous F.emb := by
     exact (F.emb_sq x.1 x.2).symm
 
 /- English proof (translation)
-Use `lift_unique T0 (γ := fun t : ℝ => F.emb (T1.expt (t • Y), 1)) ((continuous_emb F).comp ((continuous_expt T1 hY).prodMk continuous_const)) (continuous_expt T0 (left_mem hY r s)) (fun t => Units.ext ?_) ?_ t` and prove the remaining obligations. Rewrite using `[F.emb_cov, T0.expt_cov _ (smul_mem (left_mem hY r s) t), T1.expt_cov _ (smul_mem hY t), map_one, Units.val_one, ← exp_kron_left, ← exp_reindex']`. Use `congr 1`. Use extensionality with `a b`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Simplify using `only [zero_smul, T1.expt_zero, T0.expt_zero]`. Conclude with `map_one F.emb`.
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem emb_expt_left (F : FockData T0 T1 T2) {Y : Mat p q} (hY : Y ∈ upq p q) (t : ℝ) :
     F.emb (T1.expt (t • Y), 1) = T0.expt (t • Matrix.reindex (lineEquiv p q r s) (lineEquiv p q r s)
@@ -205,9 +201,9 @@ theorem emb_expt_left (F : FockData T0 T1 T2) {Y : Mat p q} (hY : Y ∈ upq p q)
     exact map_one F.emb
 
 /- English proof (translation)
-Use `lift_unique T0 (γ := fun t : ℝ => F.emb (1, T2.expt (t • Y))) ((continuous_emb F).comp (continuous_const.prodMk (continuous_expt T2 hY))) (continuous_expt T0 (right_mem hY p q)) (fun t => Units.ext ?_) ?_ t` and prove the remaining obligations. Rewrite using `[F.emb_cov, T0.expt_cov _ (smul_mem (right_mem hY p q) t), T2.expt_cov _ (smul_mem hY t), map_one, Units.val_one, ← exp_kron_right, ← exp_reindex']`. Use `congr 1`. Use extensionality with `a b`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Simplify using `only [zero_smul, T2.expt_zero, T0.expt_zero]`. Conclude with `map_one F.emb`.
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem emb_expt_right (F : FockData T0 T1 T2) {Y : Mat r s} (hY : Y ∈ upq r s) (t : ℝ) :
     F.emb (1, T2.expt (t • Y)) = T0.expt (t • Matrix.reindex (lineEquiv p q r s) (lineEquiv p q r s)
@@ -225,9 +221,9 @@ theorem emb_expt_right (F : FockData T0 T1 T2) {Y : Mat r s} (hY : Y ∈ upq r s
     exact map_one F.emb
 
 /- English proof (translation)
-Introduce `p q r s T0 T1 T2 F`. Use `⟨continuous_emb F, fun Y hY P => ?_, fun Y hY P => ?_⟩` and prove the remaining obligations. Establish `h` using `F.der _ (left_mem hY r s) P`. Rewrite `h` using `[← Matrix.reindex_symm, Equiv.symm_apply_apply]`. Simplify using `only [FockData.π, MonoidHom.comp_apply, emb_expt_left F hY]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `h`. Establish `h` using `F.der _ (right_mem hY p q) P`. Rewrite `h` using `[← Matrix.reindex_symm, Equiv.symm_apply_apply]`. Simplify using `only [FockData.π, MonoidHom.comp_apply, emb_expt_right F hY]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fock_derived : ∀ (p q r s : ℕ) (T0 : GrpData (p * r + q * s) (p * s + q * r)) (T1 : GrpData p q) (T2 : GrpData r s) (F : FockData T0 T1 T2), Continuous F.emb ∧ (∀ Y ∈ upq p q, ∀ P, HasDerivAt (fun t : ℝ => F.π (T1.expt (t • Y), 1) (F.ι P)) (F.ι (fockAct1 p q r s Y P)) 0) ∧ (∀ Y ∈ upq r s, ∀ P, HasDerivAt (fun t : ℝ => F.π (1, T2.expt (t • Y)) (F.ι P)) (F.ι (fockAct2 p q r s Y P)) 0) := by
   intro p q r s T0 T1 T2 F

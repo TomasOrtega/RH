@@ -7,11 +7,11 @@ open GlobalTheory.SeqCx Matrix
 namespace GlobalTheory.SeqCx
 
 /- English proof (translation)
-Introduce `R _ n z hz x w hx hw`. Take `⟨h1, h2, h3⟩` from `hz`. Take `⟨f, hf⟩` from `List.sublist_iff_exists_fin_orderEmbedding_get_eq.mp hx`. Take `⟨g, hg⟩` from `List.sublist_iff_exists_fin_orderEmbedding_get_eq.mp hw`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `i j`. Rewrite using `[hf i, hf j, h1 (f i) (f j)]`. Simplify using `only [f.eq_iff_eq]`. Take `⟨F, hF⟩` from `h2`. Use `⟨fun i => F (g i), fun i j => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hg j, hF]`. Simplify using `only [g.eq_iff_eq]`. Introduce `y hy u hu`. Conclude with `h3 y (hx.subset hy) u (hw.subset hu)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem splitPairs_subClosed2 : ∀ (R : Type) [CommRing R] (n : ℕ), SubClosed2 (splitPairs R n) := by
   intro R _ n z hz x w hx hw
@@ -34,7 +34,7 @@ end GlobalTheory.SeqCx
 section
 open GlobalTheory.SeqCx
 /- English proof (translation)
-Use `first`. Consider the case `exact @GlobalTheory.SeqCx.splitPairs_subClosed2`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.T.subClosed2_splitPairs : ∀ (R : Type) [CommRing R] (n : ℕ), SubClosed2 (splitPairs R n) := by
   first

@@ -11,27 +11,23 @@ namespace GlobalTheory.LKGeo.IntDvd
 open IsDedekindDomain HeightOneSpectrum
 
 /- English proof (translation)
-Proceed by induction on `n using Nat.strong_induction_on generalizing c with`. Consider the case `_ n ih`. Break down `Nat.lt_or_ge n 2 with h1 | h2` into its components or cases. Take `rfl : n = 1` from `by omega`. Simplify using the standard rewrite rules.
+Proceed by induction. Treat this case separately. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Take `⟨ℓ, hℓ, n₁, hn₁⟩ : ∃ ℓ, ℓ.Prime ∧ ∃ n₁, n = ℓ * n₁` from `⟨n.minFac, Nat.minFac_prime (by omega), Nat.minFac_dvd n⟩`. Establish `hℓp : ℓ ≠ p`. Introduce `he`. Establish `h3 : ℓ.Coprime p` using `Nat.Coprime.coprime_dvd_left ⟨n₁, hn₁⟩ hc`. Rewrite `h3` using `[he, Nat.coprime_self]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(Fact.out : p.Prime).one_lt.ne' h3`. Set `w : HeightOneSpectrum ℤ` to `⟨Ideal.span {(ℓ : ℤ)}, (Ideal.span_singleton_prime (by exact_mod_cast hℓ.ne_zero)).2 (Nat.prime_iff_prime_int.1 hℓ), by simp [hℓ.ne_zero]⟩`. Establish `hw : w.asIdeal ≠ Ideal.span {(p : ℤ)}`. Introduce `he`. Rewrite `he` using `[Ideal.span_singleton_eq_span_singleton, Int.associated_iff_natAbs]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Int.natAbs_natCast] at he`. Conclude with `hℓp he`. Set `v : AwayP p` to `⟨w, hw⟩`. Establish `hval : ∀ c : ℤ, Valued.v (algebraMap ℚ (v.1.adicCompletion ℚ) (c : ℚ)) = v.1.intValuation c`. Introduce `c`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[← valuation_of_algebraMap (K := ℚ), ← valuedAdicCompletion_eq_valuation]`. Both sides reduce to the same expression. Establish `hℓc : (ℓ : ℤ) ∣ c`. Take `⟨y, hy, e⟩` from `h v`. Establish `hy' : Valued.v y ≤ 1` using `(mem_adicCompletionIntegers ℤ ℚ v.1).1 hy`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : v.1.intValuation c ≤ v.1.intValuation (n : ℤ)`. Rewrite using `[← hval, ← hval, e, map_mul]`. Conclude with `mul_le_of_le_one_right' hy'`. Establish `h2 : v.1.intValuation (n : ℤ) < 1` using `(intValuation_lt_one_iff_mem _ _).2 (Ideal.mem_span_singleton.2 ⟨n₁, by rw [hn₁]; push_cast; ring⟩)`. Conclude with `Ideal.mem_span_singleton.1 ((intValuation_lt_one_iff_mem _ _).1 (lt_of_le_of_lt h1 h2))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨c₁, rfl⟩` from `hℓc`. Establish `hn₁pos : 0 < n₁`. Break down `Nat.eq_zero_or_pos n₁ with h0 | h0` into its components or cases. Rewrite `hn₁` using `[h0, mul_zero]`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h0`. Establish `hlt : n₁ < n`. Rewrite using `[hn₁]`. Conclude with `lt_mul_left hn₁pos hℓ.one_lt`. Establish `hc₁ : n₁.Coprime p` using `Nat.Coprime.coprime_dvd_left ⟨ℓ, by rw [hn₁, Nat.mul_comm]⟩ hc`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hd : (n₁ : ℤ) ∣ c₁` using `ih n₁ hlt hn₁pos hc₁ c₁ fun v' => by`. Take `⟨y, hy, e⟩` from `h v'`. Use `⟨y, hy, ?_⟩` and prove the remaining obligations. Establish `hne : algebraMap ℚ (v'.1.adicCompletion ℚ) ((ℓ : ℤ) : ℚ) ≠ 0` using `(map_ne_zero _).2 (by exact_mod_cast hℓ.ne_zero)`. Apply `mul_left_cancel₀ hne` to reduce the goal to its premises.
-
-Rewrite using `[← map_mul, ← _root_.mul_assoc, ← map_mul, ← Int.cast_mul, ← Int.cast_mul, e, hn₁]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hn₁]`. Use `push_cast`.
-
-Conclude with `mul_dvd_mul_left _ hd`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem int_dvd_of_local (p : ℕ) [Fact p.Prime] (n : ℕ) (hn : 0 < n) (hc : n.Coprime p) (c : ℤ)
     (h : ∀ v : AwayP p, ∃ y ∈ v.1.adicCompletionIntegers ℚ,
@@ -93,7 +89,7 @@ theorem int_dvd_of_local (p : ℕ) [Fact p.Prime] (n : ℕ) (hn : 0 < n) (hc : n
     exact mul_dvd_mul_left _ hd
 
 /- English proof (translation)
-Introduce `p _ n hn hc c a ha e`. Use `int_dvd_of_local p n hn hc c fun v => ⟨AfP.eval v a, ha v, ?_⟩` and prove the remaining obligations. Establish `e'` using `congrArg (AfP.eval v) e`. Rewrite `e'` using `[(AfP.eval v).commutes, map_mul, map_natCast]`. Rewrite using `[e']`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/

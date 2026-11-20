@@ -7,14 +7,14 @@ import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.MapTor
 open Matrix IsLocalRing ReciprocityTheory.Gal UpperTheory.V.U3 UpperTheory.V.Alg UpperTheory.V.UnitaryThreeInertia
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.H71.map_tor f t`.
+A detailed English derivation is pending.
 -/
 private theorem map_tor {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) (t : Aˣ) :
     GeneralLinearGroup.map f (tor A t) = tor B (Units.map f.toMonoidHom t) :=
   _root_.UpperTheory.Reformulated.B.H71.map_tor f t
 
 /- English proof (translation)
-Establish `e : GG.map f (GG.ofGL h) = GG.ofGL (GeneralLinearGroup.map f h)`. Unfold `GG.map`. Rewrite using `[SemidirectProduct.map_inl]`. Use `MonoidHom.ext fun g => ?_` and prove the remaining obligations. Simplify using `only [conjBy, MonoidHom.comp_apply, MulEquiv.coe_toMonoidHom, MulAut.conj_apply, map_mul, map_inv, e]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 private theorem map_conjBy {A B D : Type} [CommRing A] [CommRing B] [Group D] (f : A →+* B) (h : GL (Fin 3) A)
     (r : D →* GG 3 A) :
@@ -26,7 +26,7 @@ private theorem map_conjBy {A B D : Type} [CommRing A] [CommRing B] [Group D] (f
   simp only [conjBy, MonoidHom.comp_apply, MulEquiv.coe_toMonoidHom, MulAut.conj_apply, map_mul, map_inv, e]
 
 /- English proof (translation)
-Use `ext1 g`. Simplify using `only [conjBy, MonoidHom.comp_apply, MulEquiv.coe_toMonoidHom, MulAut.conj_apply, map_mul, _root_.mul_inv_rev, mul_assoc, MulAut.mul_apply]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem conj_conj {A D : Type} [CommRing A] [Group D] (h h' : GL (Fin 3) A) (r : D →* GG 3 A) :
     conjBy (h * h') r = conjBy h (conjBy h' r) := by
@@ -35,14 +35,14 @@ private theorem conj_conj {A D : Type} [CommRing A] [Group D] (h h' : GL (Fin 3)
     _root_.mul_inv_rev, mul_assoc, MulAut.mul_apply]
 
 /- English proof (translation)
-Use `ext1 g`. Simplify using `[conjBy]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem conj_one {A D : Type} [CommRing A] [Group D] (r : D →* GG 3 A) : conjBy 1 r = r := by
   ext1 g
   simp [conjBy]
 
 /- English proof (translation)
-Establish `: (conjBy h r g).left = h * (r g).left * sgnAct 3 A (r g).right h⁻¹`. Simplify using `[conjBy, SemidirectProduct.mul_left, SemidirectProduct.inv_left]`. Simplify using `only [GG.mat, this, Units.val_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private theorem conj_mat {A D : Type} [CommRing A] [Group D] (h : GL (Fin 3) A) (r : D →* GG 3 A) (g : D) :
     (conjBy h r g).mat = (h : Matrix _ _ A) * (r g).mat *
@@ -52,9 +52,9 @@ private theorem conj_mat {A D : Type} [CommRing A] [Group D] (h : GL (Fin 3) A) 
   simp only [GG.mat, this, Units.val_mul]
 
 /- English proof (translation)
-Use `⟨(Units.map ((residue R).comp (algebraMap O R)).toMonoidHom).comp F.Ψ, ?_, ⟨hF.csq, hF.ηc, by simp [hF.Ψc], hg.1, ?_⟩, ?_⟩` and prove the remaining obligations. Simplify `hF.two.map (algebraMap O R)` using `[map_ofNat]`. Simplify using `using hg.2.map ((residue R).comp (algebraMap O R))`. Use `MonoidHom.ext fun g => SemidirectProduct.ext (Units.ext ?_) (hr.mult g)` and prove the remaining obligations. Rewrite using `[unitaryThreeReflection_left, MonoidHom.comp_apply, MonoidHom.comp_apply, ← map_tor]`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `a b`. Conclude with `Ideal.Quotient.eq.2 (hr.red g a b)`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 private theorem setup {O : Type} [CommRing O] [IsLocalRing O] {G Γ ι : Type} [Group G] [TopologicalSpace G]
     [IsTopologicalGroup G] [Group Γ] [TopologicalSpace Γ] (F : Frame O G Γ ι) (hF : F.Ok) (g₁ : Γ)
@@ -72,25 +72,23 @@ private theorem setup {O : Type} [CommRing O] [IsLocalRing O] {G Γ ι : Type} [
     exact Ideal.Quotient.eq.2 (hr.red g a b)
 
 /- English proof (translation)
-Introduce `O _ _ G Γ ι _ _ _ _ _ F hF g₁ hg R R' _ _ _ _ _ _ q hq r r' hr hlc hp hr'`. Use `haveI : IsAdicComplete (maximalIdeal R) R := IsCO.complete (O := O)`. Establish `hm : ∀ x : R, q x ∈ maximalIdeal R' ↔ x ∈ maximalIdeal R` using `fun x => by`. Rewrite using `[← res_eq_zero_iff O, res_map, res_eq_zero_iff]`. Establish `hent : ∀ (h : GL (Fin 3) R), InHat (GeneralLinearGroup.map (q : R →+* R') h) ↔ InHat h` using `fun h => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `forall_congr' fun a => forall_congr' fun b => ?_` and prove the remaining obligations. Rewrite using `[← hm]`. Use `iff_of_eq (congrArg (· ∈ maximalIdeal R') ?_)` and prove the remaining obligations. Apply the tactic sequence `by_cases hab : a = b <;> simp [Matrix.one_apply, hab]`. Take `⟨Ψ, h2, hM, hred⟩` from `setup F hF g₁ hg r hr.toRed`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨Ψ', h2', hM', hred'⟩` from `setup F hF g₁ hg r' hr'.toRed`. Take `⟨h, hh, hN⟩` from `exists_normalised F.η Ψ F.c g₁ r h2 hM hred`. Establish `hpush : ∀ H : GL (Fin 3) R, push q (conjBy H r) = conjBy (GeneralLinearGroup.map (q : R →+* R') H) r'` using `fun H => by`. Rewrite using `[← hp]`. Conclude with `map_conjBy _ _ _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hN' : Normalised F.c g₁ (conjBy (GeneralLinearGroup.map (q : R →+* R') h) r')`. Rewrite using `[← hpush]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[MonoidHom.comp_apply, GG.map_mat, hN.atc, Matrix.map_one _ (map_zero _) (map_one _)]`. Use `congrArg q hN.z12` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify `this` using `[zmat]`. Use `congrArg q hN.z21` as an intermediate fact. Simplify `this` using `[zmat]`. Take `⟨t', -, ht'⟩` from `normalised_unique F.η Ψ' F.c g₁ r' _ h2' hM' hred' ((hent h).2 hh) hr'.norm hN'`. Take `⟨t₀, ht₀⟩` from `hq t'`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Choose the witnesses or unpack the hypotheses as in `⟨t, rfl⟩ : IsUnit t₀ := by`. Assume the negation of the conclusion as `hn`. Use `(hm t₀).2 hn` as an intermediate fact. Rewrite `this` using `[ht₀]`. Conclude with `this t'.isUnit`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `ht : Units.map (q : R →+* R').toMonoidHom t = t'` using `Units.ext ht₀`. Establish `hH : GeneralLinearGroup.map (q : R →+* R') (tor R t⁻¹ * h) = 1`. Rewrite using `[map_mul, ht', map_tor, map_inv, ht, map_inv, inv_mul_cancel]`. Establish `hHhat : InHat (tor R t⁻¹ * h)`. Rewrite using `[← hent, hH]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `a b`. Simplify using the standard rewrite rules. Use `⟨conjBy (tor R t⁻¹ * h) r, ⟨⟨(cond_conj F _ hHhat).2 r hr, ?_⟩, fun n => ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[conj_conj]`. Conclude with `(conjBy_tor _ _).2.2.1 _ _ hN`.
+Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Generalize the expression as in `tor R t⁻¹ * h = H`. Use `(hlc.prodMk hF.η_cont).comp fun p : Matrix (Fin 3) (Fin 3) R × ℤˣ => ((H : Matrix _ _ R) * p.1 * ((sgnAct 3 R p.2 H⁻¹ : GL (Fin 3) R) : Matrix _ _ R)).map (Ideal.Quotient.mk (maximalIdeal R ^ n))` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `g`. Rewrite using `[conj_mat, hr.mult g]`.
-
-Both sides reduce to the same expression. Rewrite using `[hpush, hH, conj_one]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.lift_along_surjection_graded :
     ∀ {O : Type} [CommRing O] [IsLocalRing O] {G Γ ι : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Group Γ] [TopologicalSpace Γ] (F : Frame O G Γ ι), F.Ok → ∀ g₁, F.Marked g₁ → ∀ {R R' : Type} [CommRing R] [Algebra O R] [IsCO O R] [CommRing R'] [Algebra O R'] [IsCO O R'] (q : R →ₐ[O] R'), Function.Surjective q → ∀ (r : Γ →* GG 3 R) (r' : Γ →* GG 3 R'), F.Cond r → IsLocallyConstant (mats r) → push q r = r' → F.CondN g₁ r' →

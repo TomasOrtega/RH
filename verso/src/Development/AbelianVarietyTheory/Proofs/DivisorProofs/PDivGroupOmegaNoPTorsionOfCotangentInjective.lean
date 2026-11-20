@@ -6,9 +6,9 @@ namespace GlobalTheory
 open PDiv
 
 /- English proof (translation)
-Introduce `p R _ G hinj w hw`. Use `Subtype.ext (funext fun n => ?_)` and prove the remaining obligations. Establish `hp : (p : R) • w.1 (n + 1) = 0` using `congrArg (fun v : G.omega => v.1 (n + 1)) hw`. Apply `hinj n` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `cotMap (G.mulP n) (w.1 n) = cotMap (G.mulP n) 0`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[map_zero, ← w.2 n, ← LinearMap.comp_apply, ← cotMap_comp, G.mulP_comp_res, cotMap_mulBy, hp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem omega_eq_zero_of_p_smul_eq_zero :
     ∀ (p : ℕ) (R : Type) [CommRing R] (G : GlobalTheory.PDivGroup p R),

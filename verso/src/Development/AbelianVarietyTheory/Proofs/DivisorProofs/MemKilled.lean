@@ -41,14 +41,14 @@ def space (L : Subgroup (GL (Fin a) (Af E))) (W : Submodule ℂ (Kinf E a → �
   leftInv E a ⊓ fixL E a L ⊓ ktype E a W ⊓ killed E a q ⊓ tame E a
 
 /- English proof (translation)
-Simplify using `[killed, Submodule.mem_iInf]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_killed {q : (E →+* ℂ) → ℂ → Polynomial ℂ} {ψ : Sm E a} :
     ψ ∈ killed E a q ↔ ∀ τ u, Polynomial.aeval (cap τ u) (q τ u) ψ = 0 := by
   simp [killed, Submodule.mem_iInf]
 
 /- English proof (translation)
-Rewrite using `[space, Submodule.mem_inf, Submodule.mem_inf, Submodule.mem_inf, Submodule.mem_inf, mem_killed]`. Conclude with `⟨fun ⟨⟨⟨⟨h1, h2⟩, h3⟩, h4⟩, h5⟩ => ⟨h1, h2, h3, h4, h5⟩, fun ⟨h1, h2, h3, h4, h5⟩ => ⟨⟨⟨⟨h1, h2⟩, h3⟩, h4⟩, h5⟩⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem mem_space {L : Subgroup (GL (Fin a) (Af E))} {W : Submodule ℂ (Kinf E a → ℂ)}
     {q : (E →+* ℂ) → ℂ → Polynomial ℂ} {ψ : Sm E a} :

@@ -8,21 +8,21 @@ open scoped ComplexOrder
 namespace PositivityTheory.Xgp.gram_grad
 
 /- English proof (translation)
-Use `set w : Fin k → ℂ := fun i => H⁻¹ i q with hw`. Establish `hu : IsUnit H.det` using `isUnit_iff_ne_zero.mpr hH.det_pos.ne'`. Establish `h1 : H *ᵥ w = Pi.single q 1`. Use extensionality with `i`. Use `congrFun (congrFun (Matrix.mul_nonsing_inv H hu) i) q` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[Matrix.mul_apply]`. Simplify using `only [mulVec, dotProduct, hw, this, Matrix.one_apply, Pi.single_apply]`. Establish `h2` using `h.re_dotProduct_nonneg w`. Rewrite `h2` using `[sub_mulVec, h1, smul_mulVec, one_mulVec, dotProduct_sub, dotProduct_smul, dotProduct_single]`. Establish `h3 : star w ⬝ᵥ w = ((∑ i, ‖w i‖ ^ 2 : ℝ) : ℂ)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [dotProduct, Pi.star_apply, Complex.star_def, Complex.conj_mul']`. Use `push_cast`. Both sides reduce to the same expression. Rewrite `h2` using `[h3, smul_eq_mul, ← Complex.ofReal_mul]`. Simplify using `only [RCLike.re_to_complex, Complex.sub_re, Complex.ofReal_re, mul_one, Pi.star_apply] at h2`.
+Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h4 : (star (w q)).re ≤ ‖w q‖`. Use `Complex.re_le_norm (star (w q))` as an intermediate fact. Rewrite `this` using `[norm_star]`. Then use the resulting hypothesis. Establish `h5 : ∀ i, ‖w i‖ ^ 2 ≤ ∑ i, ‖w i‖ ^ 2` using `fun i => Finset.single_le_sum (f := fun i => ‖w i‖ ^ 2) (fun _ _ => by positivity) (Finset.mem_univ i)`. Establish `h6 : a * ‖w q‖ ≤ 1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Establish `hq : 0 < ‖w q‖`. Assume the negation of the conclusion as `h0`. Establish `: ‖w q‖ = 0` using `le_antisymm (not_lt.mp h0) (norm_nonneg _)`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite `hc` using `[this]`. Combine the linear equalities and inequalities to obtain the conclusion. Use polynomial arithmetic with `[h5 q, mul_le_mul_of_nonneg_left (h5 q) ha.le]`. Establish `h7 : (a * ‖w p‖) ^ 2 ≤ 1`. Establish `e1` using `mul_le_mul_of_nonneg_left (h5 p) ha.le`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : a * ‖w p‖ ^ 2 ≤ ‖w q‖` using `by linarith`. Establish `e3` using `mul_le_mul_of_nonneg_left e2 ha.le`. Use the polynomial consequences of the given equalities and inequalities. Establish `h8 : a * ‖w p‖ ≤ 1`. Use polynomial arithmetic with `[mul_nonneg ha.le (norm_nonneg (w p))]`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite using `[le_div_iff₀ ha]`. Use `show ‖w p‖ * a ≤ 1`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem inv_entry {k : ℕ} (H : Matrix (Fin k) (Fin k) ℂ) (a : ℝ) (ha : 0 < a) (hH : H.PosDef)
     (h : (H - (a : ℂ) • (1 : Matrix (Fin k) (Fin k) ℂ)).PosSemidef) (p q : Fin k) : ‖H⁻¹ p q‖ ≤ 1 / a := by
@@ -67,7 +67,7 @@ theorem inv_entry {k : ℕ} (H : Matrix (Fin k) (Fin k) ℂ) (a : ℝ) (ha : 0 <
   linarith
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[norm_mul]`. Conclude with `mul_le_mul (hA p j) (hB j q) (norm_nonneg _) hα`. Use `_ = _ := by simp`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_entry {l m n : ℕ} (A : Matrix (Fin l) (Fin m) ℂ) (B : Matrix (Fin m) (Fin n) ℂ) (α β : ℝ)
     (hα : 0 ≤ α) (hA : ∀ p q, ‖A p q‖ ≤ α) (hB : ∀ p q, ‖B p q‖ ≤ β) (p : Fin l) (q : Fin n) :
@@ -79,7 +79,7 @@ theorem mul_entry {l m n : ℕ} (A : Matrix (Fin l) (Fin m) ℂ) (B : Matrix (Fi
     _ = _ := by simp
 
 /- English proof (translation)
-The claim follows from `mul_entry _ _ _ _ (by positivity) (mul_entry _ _ _ _ hα (fun p q => by rw [conjTranspose_apply, norm_star]; exact hU q p) hG) hW p q`.
+A detailed English derivation is pending.
 -/
 theorem triple_entry {n k : ℕ} (U W : Matrix (Fin n) (Fin k) ℂ) (G : Matrix (Fin n) (Fin n) ℂ) (α β γ : ℝ)
     (hα : 0 ≤ α) (hβ : 0 ≤ β) (hU : ∀ p q, ‖U p q‖ ≤ α) (hG : ∀ p q, ‖G p q‖ ≤ β) (hW : ∀ p q, ‖W p q‖ ≤ γ)
@@ -90,19 +90,19 @@ theorem triple_entry {n k : ℕ} (U W : Matrix (Fin n) (Fin k) ℂ) (G : Matrix 
 end PositivityTheory.Xgp.gram_grad
 
 /- English proof (translation)
-Introduce `n k E _ _ G V x a M ha hM hG hV hev hpsd bG bV`. Distinguish the cases in `hd : DifferentiableAt ℝ (fun y => Real.log ((V y)ᴴ * G y * V y).det.re) x`. Use `swap`. Rewrite using `[fderiv_zero_of_not_differentiableAt hd, norm_zero]`. Check the signs of the components of the expression.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `ContinuousLinearMap.opNorm_le_bound _ (by positivity) fun v => ?_` and prove the remaining obligations. Take `⟨hGx, hVx⟩` from `hev.self_of_nhds`. Establish `hpos : ((V x)ᴴ * G x * V x).PosDef` using `hGx.conjTranspose_mul_mul_same (Matrix.mulVec_injective_iff.mpr hVx)`. Set `G' : Matrix (Fin n) (Fin n) ℂ` to `fun p q => fderiv ℝ (fun y => G y p q) x v`. Set `V' : Matrix (Fin n) (Fin k) ℂ` to `fun p q => fderiv ℝ (fun y => V y p q) x v`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h1` using `PositivityTheory.Xgp.gram_grad.triple_deriv (fun s : ℝ => G (x + s • v)) (fun s : ℝ => V (x + s • v)) G' V' 0 (fun p q => PositivityTheory.Xgp.gram_grad.line_deriv _ x (hG p q) v) (fun p q => PositivityTheory.Xgp.gram_grad.line_deriv _ x (hV p q) v)`. Establish `h2` using `ReciprocityTheory.GeometryOfNumbersTheory.hasDerivAt_log_det (fun s : ℝ => (V (x + s • v))ᴴ * G (x + s • v) * V (x + s • v)) _ 0 h1 (by simpa using hpos)`. Establish `h3` using `(PositivityTheory.Xgp.gram_grad.line_deriv _ x hd v).unique h2`. Simplify using `only [zero_smul, add_zero] at h3`. Rewrite using `[h3]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hv` using `norm_nonneg v`. Establish `bG' : ∀ p q, ‖G' p q‖ ≤ M * ‖v‖` using `fun p q => ((fderiv ℝ (fun y => G y p q) x).le_opNorm v).trans (mul_le_mul_of_nonneg_right (bG p q).2 hv)`. Establish `bV' : ∀ p q, ‖V' p q‖ ≤ M * ‖v‖` using `fun p q => ((fderiv ℝ (fun y => V y p q) x).le_opNorm v).trans (mul_le_mul_of_nonneg_right (bV p q).2 hv)`. Establish `b3 : ∀ p q, ‖(V'ᴴ * G x * V x + (V x)ᴴ * G' * V x + (V x)ᴴ * G x * V') p q‖ ≤ 3 * (n : ℝ) ^ 2 * M ^ 3 * ‖v‖`. Introduce `p q`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Apply the tactic sequence `have t1 := PositivityTheory.Xgp.gram_grad.triple_entry V' (V x) (G x) _ _ _ (by positivity) hM bV' (fun p q => (bG p q).1) (fun p q => (bV p q).1) p q`. Apply the tactic sequence `have t2 := PositivityTheory.Xgp.gram_grad.triple_entry (V x) (V x) G' _ _ _ hM (by positivity) (fun p q => (bV p q).1) bG' (fun p q => (bV p q).1) p q`. Apply the tactic sequence `have t3 := PositivityTheory.Xgp.gram_grad.triple_entry (V x) V' (G x) _ _ _ hM hM (fun p q => (bV p q).1) (fun p q => (bG p q).1) bV' p q`. Rewrite using `[Matrix.add_apply, Matrix.add_apply]`. Use `norm_add₃_le.trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Use the polynomial consequences of the given equalities and inequalities.
 
-Use the polynomial consequences of the given equalities and inequalities. Apply the tactic sequence `have b4 := PositivityTheory.Xgp.gram_grad.mul_entry _ _ _ _ (by positivity) (PositivityTheory.Xgp.gram_grad.inv_entry _ a ha hpos hpsd) b3`. Use `(Complex.abs_re_le_norm _).trans ?_` and prove the remaining obligations. Unfold `Matrix.trace`. Use `(norm_sum_le _ _).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `(Finset.sum_le_sum fun i _ => b4 i i).trans (le_of_eq ?_)` and prove the remaining obligations. Simplify using `only [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]`. Clear the denominators using the available nonvanishing facts.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem PositivityTheory.Xgp.t_gram_grad : ∀ (n k : ℕ) (E : Type) [NormedAddCommGroup E] [NormedSpace ℝ E] (G : E → Matrix (Fin n) (Fin n) ℂ) (V : E → Matrix (Fin n) (Fin k) ℂ) (x : E) (a M : ℝ), 0 < a → 0 ≤ M → (∀ p q, DifferentiableAt ℝ (fun y => G y p q) x) → (∀ p q, DifferentiableAt ℝ (fun y => V y p q) x) → (∀ᶠ y in nhds x, (G y).PosDef ∧ LinearIndependent ℂ (V y)ᵀ) → ((V x)ᴴ * G x * V x - (a : ℂ) • (1 : Matrix (Fin k) (Fin k) ℂ)).PosSemidef → (∀ p q, ‖G x p q‖ ≤ M ∧ ‖fderiv ℝ (fun y => G y p q) x‖ ≤ M) → (∀ p q, ‖V x p q‖ ≤ M ∧ ‖fderiv ℝ (fun y => V y p q) x‖ ≤ M) → ‖fderiv ℝ (fun y => Real.log ((V y)ᴴ * G y * V y).det.re) x‖ ≤ 3 * (k : ℝ) ^ 2 * (n : ℝ) ^ 2 * M ^ 3 / a := by
   intro n k E _ _ G V x a M ha hM hG hV hev hpsd bG bV

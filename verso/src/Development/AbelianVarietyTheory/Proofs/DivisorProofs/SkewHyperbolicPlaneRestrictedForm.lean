@@ -16,20 +16,20 @@ open GlobalTheory.ThK.UnipDom.Additive
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[incV]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem incV_add {n : ℕ} (v w : Fin n → E) : incV F (v + w) = incV F v + incV F w := by
   funext i; simp [incV]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[incV]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem incV_smul {n : ℕ} (s : E) (v : Fin n → E) :
     incV F (s • v) = inclR (F := F) (AF F) s • incV F v := by
   funext i; simp [incV]
 
 /- English proof (translation)
-Establish `: (fun i => cA σ ((w + w') i)) = (fun i => cA σ (w i)) + (fun i => cA σ (w' i))`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Simplify using `only [fA, this, Matrix.mulVec_add, dotProduct_add]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem fA_add_right (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (v w w' : Fin n → AE F E) :
     fA σ J v (w + w') = fA σ J v w + fA σ J v w' := by
@@ -38,7 +38,7 @@ theorem fA_add_right (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) 
   simp only [fA, this, Matrix.mulVec_add, dotProduct_add]
 
 /- English proof (translation)
-Establish `: (fun i => cA σ ((c • w) i)) = cA σ c • (fun i => cA σ (w i))`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Simplify using `only [fA, this, Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem fA_smul_right (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (c : AE F E)
     (v w : Fin n → AE F E) : fA σ J v (c • w) = cA σ c * fA σ J v w := by
@@ -47,9 +47,9 @@ theorem fA_smul_right (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n)
   simp only [fA, this, Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul]
 
 /- English proof (translation)
-Establish `hu : (mat u)ᵀ * incM F J * (mat u).map (cA σ) = incM F J` using `u.2`. Establish `hc : (fun i => cA σ ((mat u *ᵥ w) i)) = (mat u).map (cA σ) *ᵥ fun i => cA σ (w i)`. Use function extensionality and compare the values at `i`. Conclude with `RingHom.map_mulVec (cA σ).toRingHom (mat u) w i`. Simplify using `only [fA, hc]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Matrix.vecMul_transpose (mat u) v, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hu]`.
+A detailed English derivation is pending.
 -/
 theorem fA_unitary {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (u : UA σ J)
     (v w : Fin n → AE F E) : fA σ J (mat u *ᵥ v) (mat u *ᵥ w) = fA σ J v w := by
@@ -61,9 +61,9 @@ theorem fA_unitary {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E}
     Matrix.mulVec_mulVec, hu]
 
 /- English proof (translation)
-Simplify using `only [fA]`. Rewrite using `[← Matrix.vecMul_transpose N z, ← Matrix.dotProduct_mulVec]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Rewrite using `[Matrix.mulVec_single_one]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Matrix.mulVec, dotProduct, Matrix.transpose_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem fA_mulVec_left (σ : E →ₐ[F] E) {m n : ℕ} (J : Matrix (Fin n) (Fin n) E)
     (N : Matrix (Fin n) (Fin m) (AE F E)) (z : Fin m → AE F E) (w : Fin n → AE F E) :
@@ -76,7 +76,7 @@ theorem fA_mulVec_left (σ : E →ₐ[F] E) {m n : ℕ} (J : Matrix (Fin n) (Fin
   simp [Matrix.mulVec, dotProduct, Matrix.transpose_apply]
 
 /- English proof (translation)
-Simplify using `only [form, dotProduct, Matrix.mulVec, map_sum, map_mul, hσ, hsk, Finset.mul_sum, mul_neg, Finset.sum_neg_distrib, neg_neg]`. Simplify using `only [neg_mul, mul_neg, Finset.sum_neg_distrib, neg_neg]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl (fun i _ => Finset.sum_congr rfl (fun j _ => ?_))` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem form_swap {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (hσ : ∀ e, σ (σ e) = e)
     (hsk : ∀ i j, σ (J j i) = -J i j) (v w : Fin n → E) : form σ J v w = -σ (form σ J w v) := by

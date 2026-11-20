@@ -8,11 +8,11 @@ open GlobalTheory.KZ
 namespace GlobalTheory.KZ
 
 /- English proof (translation)
-Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ`. Use `haveI : CharZero Ω := algebraRat.charZero Ω`. Use `haveI : NeZero r.den := ⟨r.den_nz⟩`. Use `haveI : NeZero (r.den : Ω) := ⟨Nat.cast_ne_zero.2 r.den_nz⟩`. Take `⟨ζ, hζ⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot Ω r.den`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hζ' : IsPrimitiveRoot (ε ζ) r.den` using `hζ.map_of_injective ε.injective`. Establish `he : Complex.exp (2 * Real.pi * Complex.I * (r : ℂ)) ^ r.den = 1`. Rewrite using `[← Complex.exp_nat_mul, Complex.exp_eq_one_iff]`. Use `⟨r.num, ?_⟩` and prove the remaining obligations. Establish `h1 : ((r.den : ℚ) * r : ℚ) = r.num` using `Rat.den_mul_eq_num r`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result.
 
-Establish `h2 : (r.den : ℂ) * (r : ℂ) = (r.num : ℂ)` using `by exact_mod_cast congrArg (fun x : ℚ => (x : ℂ)) h1`. Rewrite using `[← h2]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨i, -, hi⟩` from `hζ'.eq_pow_of_pow_eq_one he`. Conclude with `⟨ζ ^ i, by rw [map_pow, hi]⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exp_two_pi_rat_mem_range {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (ε : Ω →+* ℂ) (r : ℚ) :
     ∃ a : Ω, ε a = Complex.exp (2 * Real.pi * Complex.I * (r : ℂ)) := by
@@ -32,13 +32,13 @@ theorem exp_two_pi_rat_mem_range {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgC
   exact ⟨ζ ^ i, by rw [map_pow, hi]⟩
 
 /- English proof (translation)
-Establish `e : ∀ (γ : SL(2, ℤ)) (i j : Fin 2), ent (ofSL γ) i j = ((γ.1 i j : ℤ) : ℚ)` using `fun _ _ _ => rfl`. Establish `e10 : ent (ofSL ModularGroup.T) 1 0 = 0` using `by rw [e]; simp [ModularGroup.T]`. Establish `e00 : ent (ofSL ModularGroup.T) 0 0 = 1` using `by rw [e]; simp [ModularGroup.T]`. Establish `e01 : ent (ofSL ModularGroup.T) 0 1 = 1` using `by rw [e]; simp [ModularGroup.T]`. Establish `e11 : ent (ofSL ModularGroup.T) 1 1 = 1` using `by rw [e]; simp [ModularGroup.T]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key` using `X.exp_upper _ e10 h r`. Rewrite `key` using `[hh, e00, e01, e11, mul_one, div_one]`. Establish `h1 : eOm ε r = 1`. Establish `: eOm ε r * (X.exp h).coeff r = 1 * (X.exp h).coeff r` using `by rw [one_mul]; exact key.symm`. Conclude with `mul_right_cancel₀ hr this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : ε (eOm ε r) = Complex.exp (2 * Real.pi * Complex.I * (r : ℂ))` using `Function.invFun_eq (exp_two_pi_rat_mem_range ε r)`. Rewrite `h2` using `[h1, map_one]`. Take `⟨n, hn⟩` from `Complex.exp_eq_one_iff.1 h2.symm`. Use `⟨n, ?_⟩` and prove the remaining obligations. Establish `h3 : (r : ℂ) = (n : ℂ)`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hne : (2 * Real.pi * Complex.I : ℂ) ≠ 0` using `Complex.two_pi_I_ne_zero`. Apply `mul_left_cancel₀ hne` to reduce the goal to its premises. Rewrite using `[hn]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `h3` after adjusting the coercions.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem Tower.exponent_integral_of_translation_invariant {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω]
     {ε : Ω →+* ℂ} (X : Tower Ω ε) (h : X.K) (hh : X.sl (ofSL ModularGroup.T) h = h) (r : ℚ)

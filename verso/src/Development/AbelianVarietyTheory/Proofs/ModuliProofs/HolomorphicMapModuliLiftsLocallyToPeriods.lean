@@ -19,17 +19,15 @@ noncomputable section
 variable {X : Scheme.{0}} {G : Over X} [GrpObj G] {g m : ℕ}
 
 /- English proof (translation)
-Set `bs` to `Module.Free.chooseBasis ℤ La`. Use `choose ζ h1 h2 h3 using fun i => hl.lift (W := B) (β := id) (fun b => (1 : Over.mk (y b) ⟶ G)) (w₀ := b₀) (z₀ := P₀ (bs i)) hB hb₀ differentiableOn_id (fun _ h => h) (isHolTo_congr (isHolTo_comp_hom hy η[G].left) fun b _ => one_left _) ((hk _).2 ⟨_, rfl⟩)`. Set `P : (Fin m → ℂ) → (La →+ (Fin g → ℂ))` to `fun b => (bs.constr ℤ fun i => ζ i b).toAddMonoidHom`. Establish `hP : ∀ b x, P b x = ∑ i, bs.equivFun x i • ζ i b` using `fun b x => bs.constr_apply_fintype ℤ _ x`. Establish `hP₀ : P b₀ = P₀`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (bs.constr ℤ fun i => ζ i b₀) = P₀.toIntLinearMap` using `bs.ext fun i => by`. Rewrite using `[bs.constr_basis, h1]`. Both sides reduce to the same expression. Use `ext1 x`. Conclude with `DFunLike.congr_fun this x`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Establish `hd : ∀ᶠ b in 𝓝 b₀, ∀ x, DifferentiableAt ℂ (fun b => P b x) b` using `by filter_upwards [eventually_all.2 fun i => (h2 i).eventually_analyticAt] with b hb x`. Simplify using `only [hP]`. Conclude with `DifferentiableAt.fun_sum fun i _ => (hb i).differentiableAt.fun_const_smul _`. Set `K : (Fin m → ℂ) → AddSubgroup (Fin g → ℂ)` to `fun b => if hb : b ∈ B then homKer (he b hb).1.1 else ⊥`. Establish `hK : ∀ b ∈ B, ∀ z, z ∈ K b ↔ e b z = 1` using `fun b hb z => by simp only [K, dif_pos hb, mem_homKer]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components.
 
-Take `⟨C, hC, hCo, hC₀⟩` from `eventually_nhds_iff.1 ((eventually_all.2 h3).and (hB.mem_nhds hb₀))`. Use `hLat La g m C b₀ K P r hCo hC₀ hr (fun b hb z hz hn => (he b (hC b hb).2).2 z hn ((hK b (hC b hb).2 z).1 hz)) (fun b z z₀ hb hz hm => ?_) (fun x => (hd.self_of_nhds x).continuousAt) (fun b hb => ?_) (by rw [hP₀]; ext z; rw [hK b₀ hb₀, hk]) (hP₀ ▸ hi) (hP₀ ▸ hs)` as an intermediate fact. Use `⟨P, hP₀, ?_⟩ filter_upwards [this, hd, hB.mem_nhds hb₀] with b h h' hb` and prove the remaining obligations. Conclude with `⟨h', fun z => by rw [h.1, hK b hb], h.2⟩`. Rewrite using `[hK b₀ hb₀]`.
+Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components.
 
-Assume the negation of the conclusion as `hne`. Establish `ho` using `isOpen_ne_one (y := fun bz : (Fin m → ℂ) × (Fin g → ℂ) => y bz.1) hol`. Take `⟨i, hi1, hi2⟩` from `((hb.prodMk_nhds hz).eventually (ho.mem_nhds ⟨⟨hb₀, trivial⟩, hne⟩)).exists`. Conclude with `hi2 ((hK _ hi1.1 _).1 (hm i))`. Introduce and unpack `_ ⟨x, rfl⟩`.
-
-Rewrite using `[hP]`. Conclude with `sum_mem fun i _ => zsmul_mem ((hK b (hC b hb).2 _).2 ((hC b hb).1 i)) _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_periods
     (hLat : ∀ (La : Type) [AddCommGroup La] [Module.Free ℤ La] [Module.Finite ℤ La] (g m : ℕ) (B : Set (Fin m → ℂ)) (b₀ : Fin m → ℂ) (K : (Fin m → ℂ) → AddSubgroup (Fin g → ℂ)) (P : (Fin m → ℂ) → (La →+ (Fin g → ℂ))) (r : ℝ), IsOpen B → b₀ ∈ B → 0 < r → (∀ b ∈ B, ∀ z ∈ K b, ‖z‖ < r → z = 0) → (∀ (b : ℕ → (Fin m → ℂ)) (z : ℕ → (Fin g → ℂ)) (z₀ : Fin g → ℂ), Filter.Tendsto b Filter.atTop (nhds b₀) → Filter.Tendsto z Filter.atTop (nhds z₀) → (∀ i, z i ∈ K (b i)) → z₀ ∈ K b₀) → (∀ x, ContinuousAt (fun b => P b x) b₀) → (∀ b ∈ B, (P b).range ≤ K b) → (P b₀).range = K b₀ → Function.Injective (P b₀) → Submodule.span ℝ (Set.range (P b₀)) = ⊤ → ∀ᶠ b in nhds b₀, (P b).range = K b ∧ Function.Injective (P b) ∧ Submodule.span ℝ (Set.range (P b)) = ⊤ ∧ DiscreteTopology (P b).range)
@@ -78,9 +76,7 @@ theorem exists_periods
     exact sum_mem fun i _ => zsmul_mem ((hK b (hC b hb).2 _).2 ((hC b hb).1 i)) _
 
 /- English proof (translation)
-Use `haveI : Algebra.FormallyUnramified ℤ ℚ := Algebra.FormallyUnramified.of_isLocalization (nonZeroDivisors ℤ)`. Use `haveI : Algebra.EssFiniteType ℤ ℚ := Algebra.EssFiniteType.of_isLocalization ℚ (nonZeroDivisors ℤ)`. Use `haveI : Algebra.FormallyUnramified ℚ E := Algebra.FormallyUnramified.of_isSeparable ℚ E`. Use `haveI : Algebra.FormallyUnramified ℤ E := Algebra.FormallyUnramified.comp ℤ ℚ E`. Use `haveI : Algebra.EssFiniteType ℤ E := Algebra.EssFiniteType.comp ℤ ℚ E`.
-
-Use `haveI : IsReduced (ℂ ⊗[ℤ] E) := Algebra.FormallyUnramified.isReduced_of_field ℂ (ℂ ⊗[ℤ] E)`. Establish `hinj : Function.Injective (Algebra.TensorProduct.map (AlgHom.id ℤ ℂ) (IsScalarTower.toAlgHom ℤ (𝓞 E) E))` using `Module.Flat.lTensor_preserves_injective_linearMap _ (IsFractionRing.injective _ _)`. Conclude with `isReduced_of_injective _ hinj`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isReduced_complex_tensor (E : Type) [Field E] [NumberField E] : IsReduced (ℂ ⊗[ℤ] 𝓞 E) := by
   haveI : Algebra.FormallyUnramified ℤ ℚ := Algebra.FormallyUnramified.of_isLocalization (nonZeroDivisors ℤ)
@@ -94,9 +90,9 @@ theorem isReduced_complex_tensor (E : Type) [Field E] [NumberField E] : IsReduce
   exact isReduced_of_injective _ hinj
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Establish `: Set.range P' = (h.symm.toLinearEquiv.toLinearMap.restrictScalars ℝ) '' Set.range P`. Rewrite using `[← Set.range_comp]`. Use `congr 1`. Use `ext1 x`.
+Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h.eq_symm_apply.2 (hP x)`. Rewrite using `[this, ← Submodule.map_span, hs, Submodule.map_top, LinearMap.range_eq_top]`. Conclude with `h.symm.surjective`. Use `DiscreteTopology.of_continuous_injective (β := P.range) (f := fun z => ⟨h z, by obtain ⟨_, x, rfl⟩ := z; exact ⟨x, (hP x).symm⟩⟩) (by fun_prop) fun a b hab => ?_` and prove the remaining obligations. Conclude with `Subtype.ext (h.injective (congrArg Subtype.val hab))`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem lattice_comp {La : Type} [AddCommGroup La] {P : La →+ (Fin g → ℂ)} (h : (Fin g → ℂ) ≃L[ℂ] (Fin g → ℂ))
     {P' : La →+ (Fin g → ℂ)} (hP : ∀ x, h (P' x) = P x) (hs : Submodule.span ℝ (Set.range P) = ⊤)
@@ -114,14 +110,14 @@ theorem lattice_comp {La : Type} [AddCommGroup La] {P : La →+ (Fin g → ℂ)}
     exact Subtype.ext (h.injective (congrArg Subtype.val hab))
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun b => (Matrix.toLin' (M b)).toAddMonoidHom.comp (P b), fun b x => Matrix.toLin'_apply (M b) (P b x)⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_mulVec_comp {La T : Type} [AddCommGroup La] (M : T → Matrix (Fin g) (Fin g) ℂ)
     (P : T → (La →+ (Fin g → ℂ))) : ∃ P' : T → (La →+ (Fin g → ℂ)), ∀ b x, P' b x = (M b).mulVec (P b x) :=
   ⟨fun b => (Matrix.toLin' (M b)).toAddMonoidHom.comp (P b), fun b x => Matrix.toLin'_apply (M b) (P b x)⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(Matrix.toLin'OfInv (Matrix.nonsing_inv_mul _ h) (Matrix.mul_nonsing_inv _ h)).toContinuousLinearEquiv, fun z => (Matrix.toLin'_apply M z).symm⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_equiv_mulVec {M : Matrix (Fin g) (Fin g) ℂ} (h : IsUnit M.det) :
     ∃ j : (Fin g → ℂ) ≃L[ℂ] (Fin g → ℂ), ∀ z, M.mulVec z = j z :=
@@ -129,7 +125,7 @@ theorem exists_equiv_mulVec {M : Matrix (Fin g) (Fin g) ℂ} (h : IsUnit M.det) 
     fun z => (Matrix.toLin'_apply M z).symm⟩
 
 /- English proof (translation)
-Use `Ideal.mul_le_left (J := l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E)) ?_` and prove the remaining obligations. Rewrite using `[l.prod]`. Conclude with `Ideal.mem_span_singleton_self _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem natCast_mem_level {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} (l : Level H) :
     (l.M : 𝓞 E) ∈ l.Mb := by
@@ -138,7 +134,7 @@ theorem natCast_mem_level {E : Type} [Field E] [NumberField E] [IsCMField E] {H 
   exact Ideal.mem_span_singleton_self _
 
 /- English proof (translation)
-Establish `h` using `PeriodDatum.two_mul_eq_of_isTypeFn H hty`. Rewrite `h`, the goal using `[IsTotallyComplex.finrank E]`. Rewrite using `[Nat.mul_div_cancel_left _ two_pos]`. Rewrite `h` using `[_root_.mul_assoc]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem dim_eq {E : Type} [Field E] [NumberField E] [IsCMField E] (H : Host E) {p q : ℕ} {ty : Fin g → (E →+* ℂ)}
     (hty : IsTypeFn H p q ty) : Module.finrank ℚ E / 2 * (p + q) = g := by
@@ -149,7 +145,7 @@ theorem dim_eq {E : Type} [Field E] [NumberField E] [IsCMField E] (H : Host E) {
   omega
 
 /- English proof (translation)
-Establish `h : IsUnit (k : K)` using `IsUnit.mk0 _ (Nat.cast_ne_zero.2 hk.ne')`. Simplify `h.map ((Scheme.ΓSpecIso (CommRingCat.of K)).inv ≫ s.appTop).hom` using `only [map_natCast]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isUnit_natCast_of_over {K : Type} [Field K] [CharZero K] (s : X ⟶ Sp K) {k : ℕ} (hk : 0 < k) :
     IsUnit (k : Γ(X, ⊤)) := by
@@ -157,7 +153,7 @@ theorem isUnit_natCast_of_over {K : Type} [Field K] [CharZero K] (s : X ⟶ Sp K
   simpa only [map_natCast] using h.map ((Scheme.ΓSpecIso (CommRingCat.of K)).inv ≫ s.appTop).hom
 
 /- English proof (translation)
-Rewrite using `[← hom_nsmul (e := fun a => toUnit T ≫ η' a) (fun a c => by rw [h, MonObj.comp_mul]), hn, MonObj.comp_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem section_pow {La : Type} [AddCommGroup La] {η' : La → (𝟙_ (Over X) ⟶ G)} (h : ∀ a c, η' (a + c) = η' a * η' c)
     {n : ℕ} {a : La} (hn : η' (n • a) = 1) (T : Over X) : (toUnit T ≫ η' a) ^ n = 1 := by
@@ -174,45 +170,35 @@ open LocLift
 set_option maxHeartbeats 400000 in
 
 /- English proof (translation)
-Introduce `hT hL hsm hpol _ hrel hLat hdiag hweil E _ _ _ H D l Xo σ g ty _ _ hty D' t m B y b₀ P₀ e₀ hB hb₀ hyσ hy ⟨_, ⟨q1, q2, _, q4, _⟩, he₀, k₀, l₀, w₀, η₀, ηA₀⟩`. Take `⟨hab, hdim, hrig, hsym⟩` from `hpol E H D l _ _ _ _ Xo.univ`. Use `haveI := Xo.smooth`. Use `haveI : Smooth Xo.s := SmoothOfRelativeDimension.smooth D.dim _`. Use `haveI := (hsm _ _ Xo.s inferInstance).2.2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `haveI := hab.proper`. Set `A : Out.PolAV Xo.X` to `{ A := Xo.univ.t.G, isAb := hab, g := _, smoothDim := hdim, L := Xo.univ.t.PP.L, isLB := Xo.univ.t.PP.isLB, rigid := hrig, sym := hsym, ample := Xo.univ.ample, ktriv := Xo.univ.ktriv }`. Rewrite `hdim` using `[dim_eq H hty]`. Take `⟨B₁, e, r, hB₁, hb₁, hB₁B, rfl, hr, hol, he, hl⟩` from `hrel _ σ _ Xo.s Xo.univ.t.G g m B y b₀ e₀ inferInstance hab hdim hB hb₀ hyσ hy he₀`. Express the relevant statement in the definitionally equal form `HasLifts B₁ y e at hl`.
+Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `∀ b ∈ B₁, IsExp (y b) (e b) ∧ _ at he`. Establish `hy₁` using `isHolTo_mono hy hB₁ hB₁B`. Take `⟨F, hF, hFd⟩` from `exists_hol_rep hB₁ hb₁ hr hol he hl Xo.univ.t.act`. Establish `hF₀ : ∀ a, F b₀ a = Matrix.diagonal (fun i => ((ty i).comp (algebraMap (𝓞 E) E)) a)` using `fun a => Matrix.toLin'.injective (linear_lift_unique he₀.1 hr (he b₀ hb₁).2 fun z => by`. Rewrite using `[Matrix.toLin'_apply, hF b₀ hb₁, ← l₀, Matrix.toLin'_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `congr 1`. Use extensionality with `i`. Rewrite using `[Matrix.mulVec_diagonal]`. Use the proof step `rfl)`. Take `⟨B₂, h, hB₂, hb₂, hB₂₁, hh₀, hhd, hh⟩` from `hdiag (𝓞 E) g m B₁ b₀ F _ inferInstance (isReduced_complex_tensor E) hB₁ hb₁ hFd hF₀`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI := D'.fin`. Use `haveI : Module.Finite ℤ D'.La := Module.Finite.trans (𝓞 E) D'.La`. Use `haveI := datum_free_int D'`. Take `⟨P, hP₀, hP⟩` from `exists_periods hLat hB₁ hb₁ hy₁ hr hol he hl P₀ q2 q4 k₀`. Take `⟨ε, hε, hball⟩` from `Metric.eventually_nhds_iff_ball.1 (hP.and (hB₂.mem_nhds hb₂))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `set C := Metric.ball b₀ ε`. Establish `hCo : IsOpen C` using `Metric.isOpen_ball`. Establish `hCc : IsPreconnected C` using `(convex_ball b₀ ε).isPreconnected`. Establish `hC₀ : b₀ ∈ C` using `Metric.mem_ball_self hε`. Establish `hC₂ : C ⊆ B₂` using `fun b hb => (hball b hb).2`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hC₁ : C ⊆ B₁` using `hC₂.trans hB₂₁`. Establish `hPd : ∀ x, DifferentiableOn ℂ (fun b => P b x) C` using `fun x b hb => ((hball b hb).1.1 x).differentiableWithinAt`. Establish `hmv : ∀ {M : (Fin m → ℂ) → Matrix (Fin g) (Fin g) ℂ} {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] {W : Set V} {β : V → (Fin m → ℂ)} {v : V → (Fin g → ℂ)}, (∀ i j, DifferentiableOn ℂ (fun w => M (β w) i j) W) → DifferentiableOn ℂ v W → DifferentiableOn ℂ (fun w => (M (β w)) …` using `fun hM hv => differentiableOn_pi.2 fun i => by`. Simplify using `only [Matrix.mulVec, dotProduct]`. Conclude with `DifferentiableOn.fun_sum fun j _ => (hM i j).fun_mul (differentiableOn_pi.1 hv j)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hk1 : ∀ b ∈ C, ∀ x, e b (P b x) = 1` using `fun b hb x => ((hball b hb).1.2.1 _).2 ⟨x, rfl⟩`. Establish `hlin : ∀ (a : 𝓞 E) x, ∀ b ∈ C, P b (a • x) - (F b a).mulVec (P b x) = 0` using `fun a x => by`. Use `eq_zero_of_small hCc ((hPd _).sub (hmv (M := fun b => F b a) (β := id) (fun i j => (hFd a i j).mono hC₁) (hPd x))).continuousOn hr (fun b hb hn => (he b (hC₁ hb)).2 _ hn ?_) hC₀ ?_` and prove the remaining obligations. Use `haveI := Xo.univ.t.act.hom a`. Conclude with `(hom_sub_eq_one (he b (hC₁ hb)).1.1).2 (by rw [hF b (hC₁ hb), hk1 b hb, hk1 b hb, MonObj.one_comp])`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Use extensionality with `i`. Simplify using `[hP₀, hF₀, q1, Matrix.mulVec_diagonal]`. Establish `htor : ∀ (k : ℕ) x, IsHolTo C (fun b => (e b ((k : ℂ)⁻¹ • P b x)).left)` using `fun k x => isHolTo_comp (β := fun b => (b, (k : ℂ)⁻¹ • P b x)) hol hCo (differentiableOn_id.prodMk ((hPd x).fun_const_smul _)) fun b hb => ⟨hC₁ hb, trivial⟩`. Establish `hpow : ∀ (k : ℕ), 0 < k → ∀ x, ∀ b ∈ C, e b ((k : ℂ)⁻¹ • P b x) ^ k = 1` using `fun k hk x b hb => by`. Rewrite using `[← hom_nsmul (he b (hC₁ hb)).1.1, ← Nat.cast_smul_eq_nsmul ℂ, smul_inv_smul₀ (Nat.cast_ne_zero.2 hk.ne'), hk1 b hb]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hwe : ∀ b ∈ C, ∀ (k : ℕ) (a a₂ : D'.La) (c : ℂˣ), 0 < k → (c : ℂ) = Complex.exp (-(2 * Real.pi * Complex.I) * (D'.EF a a₂ : ℂ) / k) → Out.WeilIs Xo.univ.t.G Xo.univ.t.PP.L k (e b ((k : ℂ)⁻¹ • P b a)) (e b ((k : ℂ)⁻¹ • P b a₂)) (unitOn c)` using `fun b hb k a a₂ c hk hc => (hweil Xo.X A m k C y (fun b => e b ((k : ℂ)⁻¹ • P b a)) (fun b => e b ((k : ℂ)⁻¹ • P b a₂)) c b₀ hk (isUnit_natCast_of_over Xo.s hk) hCo hCc hC₀ (htor k a) (htor k a₂) fun b hb => ⟨hpow k hk a b hb, hpow k hk a₂ b hb⟩).2 (by rw [hP₀]; exact w₀ k a a₂ c …`. Establish `hsec : ∀ (k : ℕ), 0 < k → ∀ (s : 𝟙_ (Over Xo.X) ⟶ Xo.univ.t.G) x, (∀ T, (toUnit T ≫ s) ^ k = 1) → toUnit _ ≫ s = e b₀ ((k : ℂ)⁻¹ • P₀ x) → ∀ b ∈ C, toUnit _ ≫ s = e b ((k : ℂ)⁻¹ • P b x)` using `fun k hk s x hs h0 => (hweil Xo.X A m k C y (fun b => toUnit _ ≫ s) (fun b => e b ((k : ℂ)⁻¹ • P b x)) 1 b₀ hk (isUnit_natCast_of_over Xo.s hk) hCo hCc hC₀ (isHolTo_congr (isHolTo_comp_hom (isHolTo_mono hy₁ hCo hC₁) s.left) fun b _ => by`. Rewrite using `[Over.comp_left, Over.toUnit_left]`. Use the proof step `rfl) (htor k x)`. Use `fun b hb => ⟨hs _, hpow k hk x b hb⟩).1 (by rw [hP₀]; exact h0)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Establish `hform : ∀ b ∈ C, HasForm D'.EF (P b)` using `fun b hb => hasForm_of_weil hT hL.polBaseChange A (y b) (y b) (Category.id_comp _).symm (he b (hC₁ hb)).1 hr (he b (hC₁ hb)).2 (fun n x hx h0 => by`. Take `⟨ζ, -, h2, h3⟩` from `hl n Set.univ (fun _ => b) x 0 0 isOpen_univ trivial (differentiableOn_const _) (fun _ _ => hC₁ hb) hx h0`. Conclude with `⟨ζ, h2, h3⟩) D'.EF (P b) (hk1 b hb) (hwe b hb)`. Establish `hM` using `natCast_mem_level l`. Take `⟨P', hP'd⟩` from `exists_mulVec_comp (fun b => (h b)⁻¹) P`.
+Both sides reduce to the same expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hdet : ∀ b ∈ C, IsUnit (h b).det` using `fun b hb => (Matrix.isUnit_iff_isUnit_det _).1 (hh b (hC₂ hb)).1`. Establish `hP' : ∀ b ∈ C, ∀ x, (h b).mulVec (P' b x) = P b x` using `fun b hb x => by`. Rewrite using `[hP'd, Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ (hdet b hb), Matrix.one_mulVec]`. Establish `hj : ∀ b ∈ C, ∃ j : (Fin g → ℂ) ≃L[ℂ] (Fin g → ℂ), ∀ z, (h b).mulVec z = j z` using `fun b hb => exists_equiv_mulVec (hdet b hb)`. Establish `hFh : ∀ b ∈ C, ∀ (a : 𝓞 E) z, (h b).mulVec (fun k => ty k (a : E) * z k) = (F b a).mulVec ((h b).mulVec z)` using `fun b hb a z => by`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mulVec_mulVec, (hh b (hC₂ hb)).2, ← Matrix.mulVec_mulVec]`. Use `congr 1`. Use extensionality with `i`. Rewrite using `[Matrix.mulVec_diagonal]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Establish `hper : ∀ b ∈ C, IsPeriod D' ty (P' b)` using `fun b hb => by`. Take `⟨j, hj⟩` from `hj b hb`. Establish `e1 : ∀ x, j (P' b x) = P b x` using `fun x => by rw [← hj, hP' b hb]`. Take `⟨s1, s2⟩` from `lattice_comp j e1 (hball b hb).1.2.2.2.1 (hball b hb).1.2.2.2.2`. Use `⟨fun a x i => congrFun (j.injective ?_ : P' b (a • x) = fun i => ty i (a : E) * P' b x i) i, fun x x' hx => (hball b hb).1.2.2.1 (by rw [← e1, hx, e1]), s2, s1, HasForm.of_comp j.toLinearEquiv.toLinearMap j.injective (by` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[show (fun x => j.toLinearEquiv.toLinearMap (P' b x)) = P b from funext e1]`. Conclude with `hform b hb)⟩`. Rewrite using `[e1, ← hj, hFh b hb, hP' b hb]`. Conclude with `sub_eq_zero.1 (hlin a x b hb)`. Use `⟨C, P', fun b z => e b ((h b).mulVec z), hCo, hC₀, hC₁.trans hB₁B, ?_, ⟨hper, fun x => ?_⟩, ?_, fun b hb => ⟨hyσ b (hB₁B (hC₁ hb)), hper b hb, ?_, fun z => ?_, fun a z => ?_, ?_, fun a ha => ?_, fun a => ?_⟩⟩` and prove the remaining obligations.
-
-Use `ext1 x`. Rewrite using `[← hP₀, ← hP' b₀ hC₀, hh₀, Matrix.one_mulVec]`. Simplify using `only [hP'd]`. Conclude with `hmv (M := fun b => (h b)⁻¹) (β := id) (RiemannRel.differentiableOn_left_inverse h _ (fun i j => (hhd i j).mono hC₂) fun b hb => Matrix.nonsing_inv_mul _ (hdet b hb)) (hPd x)`. Conclude with `isHolTo_comp (β := fun bz : (Fin m → ℂ) × (Fin g → ℂ) => (bz.1, (h bz.1).mulVec bz.2)) hol (hCo.prod isOpen_univ) (differentiableOn_fst.prodMk (hmv (β := Prod.fst) (fun i j => (hhd i j).comp differentiableOn_fst fun _ hw => hC₂ hw.1) differentiableOn_snd)) fun _ hw => ⟨hC₁ hw.1, …`.
-
-Take `⟨j, hj⟩` from `hj b hb`. Express the relevant statement in the definitionally equal form `IsExp (y b) (fun z => e b ((h b).mulVec z))`. Simplify using `only [hj]`. Conclude with `(he b (hC₁ hb)).1.comp j`. Take `⟨j, hj⟩` from `hj b hb`.
-
-Rewrite using `[(hball b hb).1.2.1]`. Use `exists_congr fun x => ?_` and prove the remaining obligations. Rewrite using `[← hP' b hb, hj, hj]`. Conclude with `j.injective.eq_iff`. Use `beta_reduce`.
-
-Rewrite using `[hFh b hb, hF b (hC₁ hb)]`. Simplify `hwe b hb` using `only [Matrix.mulVec_smul, hP' b hb]`. Simplify using `only [Matrix.mulVec_smul, hP' b hb]`. Use `hsec l.M (by have := l.three_le; omega) _ _ (section_pow Xo.univ.eta_add (Xo.univ.eta_ker _ ?_)) (η₀ a ha) b hb` and prove the remaining obligations. Rewrite using `[← Nat.cast_smul_eq_nsmul (𝓞 E)]`.
-
-Conclude with `Submodule.smul_mem_smul hM trivial`. Simplify using `only [Matrix.mulVec_smul, hP' b hb]`. Conclude with `hsec l.A l.A_pos _ _ (section_pow Xo.univ.etaA_add (Xo.univ.etaA_ker a)) (ηA₀ a) b hb`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem LocLift.holomorphic_map_lifts_to_periods : ThetaUnifAV → Out.Laws → (∀ (k : Type) [Field
     k] (X : Scheme.{0}) (s

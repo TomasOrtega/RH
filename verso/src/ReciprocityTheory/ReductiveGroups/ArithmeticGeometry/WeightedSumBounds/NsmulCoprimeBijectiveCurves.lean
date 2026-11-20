@@ -17,7 +17,7 @@ def ptNs (G : LogFGL v d) : ℕ → Fin d → MvPowerSeries (Fin d) C
   | n + 1 => fun a => subst (Sum.elim (fun b => X b) (ptNs G n)) (G.F a)
 
 /- English proof (translation)
-The claim follows from `| 0, a => by simp [ptNs] | n + 1, a => by have h0 : ∀ i, constantCoeff (Sum.elim (fun b => (X b : MvPowerSeries (Fin d) C)) (ptNs G n) i) = 0 := by rintro (i | i) · simp · exact ptNs_const G n i exact constantCoeff_subst_eq_zero (hasSubst_of_constantCoeff_zero h0) h0 (G.F_const a …`.
+A detailed English derivation is pending.
 -/
 theorem ptNs_const (G : LogFGL v d) : ∀ n a, constantCoeff (ptNs G n a) = 0
   | 0, a => by simp [ptNs]
@@ -30,7 +30,7 @@ theorem ptNs_const (G : LogFGL v d) : ∀ n a, constantCoeff (ptNs G n a) = 0
     exact constantCoeff_subst_eq_zero (hasSubst_of_constantCoeff_zero h0) h0 (G.F_const a)
 
 /- English proof (translation)
-Conclude with `MvPowerSeries.hasSubst_of_constantCoeff_zero fun i => by`. Consider the cases of `i with`. Consider the case `inl b => simp`. Consider the case `inr b => exact ptNs_const G n b`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem ptNs_hasSubst (G : LogFGL v d) (n : ℕ) :
     HasSubst (Sum.elim (fun b => (X b : MvPowerSeries (Fin d) C)) (ptNs G n)) := by
@@ -40,7 +40,7 @@ theorem ptNs_hasSubst (G : LogFGL v d) (n : ℕ) :
     | inr b => exact ptNs_const G n b
 
 /- English proof (translation)
-The claim follows from `| 0, a => by simp only [ptNs, Pi.zero_apply]; exact Subring.zero_mem _ | n + 1, a => by refine ptIntSer_subst (ptNs_hasSubst G n) ?_ (G.F_int a) rintro (i | i) · exact ptIntSer_X i · exact ptNs_int G n i`.
+A detailed English derivation is pending.
 -/
 theorem ptNs_int (G : LogFGL v d) : ∀ n a, ptNs G n a ∈ ptIntSer v (Fin d)
   | 0, a => by simp only [ptNs, Pi.zero_apply]; exact Subring.zero_mem _
@@ -51,7 +51,7 @@ theorem ptNs_int (G : LogFGL v d) : ∀ n a, ptNs G n a ∈ ptIntSer v (Fin d)
     · exact ptNs_int G n i
 
 /- English proof (translation)
-The claim follows from `| 0, a, s => by simp [ptNs] | n + 1, a, s => by have h0 : ∀ i, constantCoeff (Sum.elim (fun b => (X b : MvPowerSeries (Fin d) C)) (ptNs G n) i) = 0 := by rintro (i | i) · simp · exact ptNs_const G n i show coeff (Finsupp.single s 1) (subst _ (G.F a)) = _ rw [pt_coeff_single_subst …`.
+A detailed English derivation is pending.
 -/
 theorem ptNs_lin (G : LogFGL v d) : ∀ (n : ℕ) (a s : Fin d),
     coeff (Finsupp.single s 1) (ptNs G n a) = if s = a then (n : C) else 0
@@ -70,7 +70,7 @@ theorem ptNs_lin (G : LogFGL v d) : ∀ (n : ℕ) (a s : Fin d),
     split_ifs <;> push_cast <;> ring
 
 /- English proof (translation)
-The claim follows from `| 0 => by funext a simp only [LogFGL.nsmulF, ptNs, Pi.zero_apply] rw [← substAlgHom_apply hga, map_zero] | n + 1 => by funext a simp only [LogFGL.nsmulF, LogFGL.add, ptNs] rw [subst_comp_subst_apply (ptNs_hasSubst G n) hga, nsmulF_eq_subst G hga n] congr 1 funext i rcases i with …`.
+A detailed English derivation is pending.
 -/
 theorem nsmulF_eq_subst (G : LogFGL v d) {ga : Fin d → PowerSeries C}
     (hga : HasSubst ga) : ∀ n, G.nsmulF n ga = fun a => subst ga (ptNs G n a)
@@ -89,7 +89,7 @@ theorem nsmulF_eq_subst (G : LogFGL v d) {ga : Fin d → PowerSeries C}
     · rfl
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h a`. Conclude with `⟨(h a).1, (ptPsIsInt_iff _).mp (h a).2⟩`. Introduce `h a`. Conclude with `⟨(h a).1, (ptPsIsInt_iff _).mpr (h a).2⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem isCurve_iff_good {ga : Fin d → PowerSeries C} : IsCurve v ga ↔ PTGood v ga := by
   constructor
@@ -99,13 +99,11 @@ theorem isCurve_iff_good {ga : Fin d → PowerSeries C} : IsCurve v ga ↔ PTGoo
     exact ⟨(h a).1, (ptPsIsInt_iff _).mpr (h a).2⟩
 
 /- English proof (translation)
-Establish `hcop : IsCoprime (p : ℤ) (n : ℤ)` using `Nat.isCoprime_iff_coprime.mpr ((Nat.Prime.coprime_iff_not_dvd hp).mpr hn)`. Take `⟨u, w, huw⟩` from `hcop`. Establish `hC : (u : C) * p + (w : C) * n = 1` using `by exact_mod_cast congrArg (Int.cast : ℤ → C) huw`. Establish `hu : 0 ≤ v (u : C)` using `intCast_mem (ptIntSub v) u`. Establish `hw : 0 ≤ v (w : C)` using `intCast_mem (ptIntSub v) w`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn0 : 0 ≤ v (n : C)` using `natCast_mem (ptIntSub v) n`. Use `le_antisymm ?_ hn0` and prove the remaining obligations. Assume the negation of the conclusion as `hpos`. Use `push_neg at hpos`. Establish `h1 : 0 < v ((u : C) * p)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[v.map_mul, hvp]`. Conclude with `lt_of_lt_of_le zero_lt_one (le_add_of_nonneg_left hu)`. Establish `h2 : 0 < v ((w : C) * n)`. Rewrite using `[v.map_mul]`. Conclude with `lt_of_lt_of_le hpos (le_add_of_nonneg_left hw)`.
-
-Establish `h3` using `v.map_add ((u : C) * p) ((w : C) * n)`. Rewrite `h3` using `[hC, v.map_one]`. Conclude with `absurd h3 (not_le.mpr (lt_min h1 h2))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem valuation_natCast_eq_zero_of_not_dvd {p : ℕ} (hp : p.Prime) (hvp : v (p : C) = 1) (n : ℕ)
     (hn : ¬ p ∣ n) : v (n : C) = 0 := by
@@ -130,13 +128,13 @@ private theorem valuation_natCast_eq_zero_of_not_dvd {p : ℕ} (hp : p.Prime) (h
   exact absurd h3 (not_le.mpr (lt_min h1 h2))
 
 /- English proof (translation)
-Establish `hne : α ≠ 0`. Introduce and unpack `rfl`. Simplify using `at h`. Take `⟨s, hs⟩` from `Finsupp.support_nonempty_iff.mpr hne`. Use `⟨s, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hsum : ∑ i ∈ α.support, α i = 1` using `by rw [← h]; rfl`. Establish `hle : α s ≤ 1` using `hsum ▸ Finset.single_le_sum (fun i _ => Nat.zero_le (α i)) hs`. Establish `hs1 : α s = 1` using `le_antisymm hle (Nat.one_le_iff_ne_zero.mpr (Finsupp.mem_support_iff.mp hs))`. Establish `hrest : ∑ i ∈ α.support.erase s, α i = 0`. Rewrite `hsum` using `[← Finset.add_sum_erase _ _ hs, hs1]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Use extensionality with `i`. Distinguish the cases in `hi : i = s`. Substitute `hi` using the available equality. Simplify using `[hs1]`.
+Use linear arithmetic over natural numbers and integers. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finsupp.single_apply, if_neg (Ne.symm hi)]`. Assume the negation of the conclusion as `hne'`. Establish `hmem : i ∈ α.support.erase s` using `Finset.mem_erase.mpr ⟨hi, Finsupp.mem_support_iff.mpr hne'⟩`. Use `Finset.single_le_sum (fun j _ => Nat.zero_le (α j)) hmem` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 private theorem exists_eq_single_of_degree_eq_one {σ : Type} (α : σ →₀ ℕ) (h : α.degree = 1) :
     ∃ s, α = Finsupp.single s 1 := by
@@ -163,33 +161,29 @@ private theorem exists_eq_single_of_degree_eq_one {σ : Type} (α : σ →₀ �
     omega
 
 /- English proof (translation)
-Establish `hn0' : n ≠ 0` using `fun h => hn (h ▸ dvd_zero p)`. Establish `hn0 : (n : C) ≠ 0` using `by exact_mod_cast hn0'`. Establish `hvn` using `valuation_natCast_eq_zero_of_not_dvd hp hvp n hn`. Establish `hvinv : (n : C)⁻¹ ∈ ptIntSub v` using `by show 0 ≤ v (n : C)⁻¹`. Establish `h` using `v.map_mul (n : C) (n : C)⁻¹`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[mul_inv_cancel₀ hn0, v.map_one, hvn, zero_add]`. Rewrite using `[← h]`. Take `⟨M, hM⟩ : ∃ M : Matrix (Fin d) (Fin d) C, M = (n : C) • 1` from `⟨_, rfl⟩`. Take `⟨N, hN⟩ : ∃ N : Matrix (Fin d) (Fin d) C, N = (n : C)⁻¹ • 1` from `⟨_, rfl⟩`. Establish `hNM : N * M = 1`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hN, hM, smul_mul_smul_comm, mul_one, inv_mul_cancel₀ hn0, one_smul]`. Establish `hMN : M * N = 1`. Rewrite using `[hN, hM, smul_mul_smul_comm, mul_one, mul_inv_cancel₀ hn0, one_smul]`. Establish `hMab : ∀ a b, M a b = if a = b then (n : C) else 0`. Introduce `a b`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hM, Matrix.smul_apply, Matrix.one_apply, smul_eq_mul]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `hNint : ∀ i j, N i j ∈ ptIntSub v`. Introduce `i j`. Rewrite using `[hN, Matrix.smul_apply, Matrix.one_apply, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs`. Rewrite using `[mul_one]`. Conclude with `hvinv`. Rewrite using `[mul_zero]`. Conclude with `(ptIntSub v).zero_mem`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hMint : ∀ a b, M a b ∈ ptIntSub v`. Introduce `a b`. Rewrite using `[hMab]`. Use `split_ifs`. Conclude with `natCast_mem (ptIntSub v) n`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `(ptIntSub v).zero_mem`. Take `⟨K, hK⟩ : ∃ K : Fin d → MvPowerSeries (Fin d) C, K = fun b => ptNs G n b - ∑ a, M a b • X a` from `⟨_, rfl⟩`. Establish `hK0 : ∀ b, constantCoeff (K b) = 0`. Introduce `b`. Simplify using `[hK, ptNs_const]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hKi : ∀ b, K b ∈ ptIntSer v (Fin d)`. Introduce `b`. Rewrite using `[hK]`. Conclude with `(ptIntSer v (Fin d)).sub_mem (ptNs_int G n b) ((ptIntSer v (Fin d)).sum_mem fun a _ => ptIntSer_smul (hMint a b) (ptIntSer_X a))`. Establish `hKdeg : ∀ b α, coeff α (K b) ≠ 0 → 2 ≤ α.degree ∨ ∀ x y : Fin d → PowerSeries C, PTGood v x → PTGood v y → ∀ s ∈ α.support, x s = y s`.
+Reduce the claim to the hypotheses of an applicable result. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Introduce `b α hα`. Use `left`. Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`. Apply `hα` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Break down `(show α.degree = 0 ∨ α.degree = 1 by omega) with hd | hd` into its components or cases. Rewrite using `[(Finsupp.degree_eq_zero_iff α).mp hd, MvPowerSeries.coeff_zero_eq_constantCoeff_apply, hK0 b]`. Take `⟨s, rfl⟩` from `exists_eq_single_of_degree_eq_one α hd`. Rewrite using `[hK]`. Simplify using `only [map_sub, map_sum, MvPowerSeries.coeff_smul, ptNs_lin, MvPowerSeries.coeff_X, Finsupp.single_left_inj one_ne_zero, hMab, smul_eq_mul, mul_ite, mul_one, mul_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Finset.sum_ite_eq, Finset.sum_ite_eq', eq_comm]`. Establish `hf : PTGood v gb` using `isCurve_iff_good.mp hgb`. Establish `key : ∀ y : Fin d → PowerSeries C, PTGood v y → (G.nsmulF n y = gb ↔ ∀ b, ∑ a, M a b • y a + subst y (K b) = gb b)`. Introduce `y hy`. Establish `hys : HasSubst y` using `MvPowerSeries.hasSubst_of_constantCoeff_zero fun a => (hy a).1`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[nsmulF_eq_subst G hys n]`. Prove the components needed by the constructor for the conclusion. Introduce `h b`. Rewrite using `[← congrFun h b, pt_subst_lin_split hys (ptNs G n b) (fun a => M a b), hK]`. Introduce `h`.
-
-Use function extensionality and compare the values at `b`. Rewrite using `[pt_subst_lin_split hys (ptNs G n b) (fun a => M a b), ← h b, hK]`. Take `⟨x, ⟨hx, hxeq⟩, huniq⟩` from `pt_solve (A := fun x => x) (K := K) (M := M) (N := N) (f := gb) hNM hMN hNint hf (fun x hx s => (hx s).1) (fun x hx s => (hx s).2) (fun k x y _ _ hxy s e he => hxy s e he) hKdeg hKi hK0`. Use `⟨x, ⟨isCurve_iff_good.mpr hx, (key x hx).mpr hxeq⟩, fun y hy => ?_⟩` and prove the remaining obligations. Establish `hyg` using `isCurve_iff_good.mp hy.1`.
-
-Conclude with `huniq y ⟨hyg, (key y hyg).mp hy.2⟩`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem nsmul_coprime_bijective_curves [CharZero C] (G : LogFGL v d) {p : ℕ} (hp : p.Prime) (hvp : v (p : C) = 1)
     (n : ℕ) (hn : ¬ p ∣ n) (gb : Fin d → PowerSeries C) (hgb : IsCurve v gb) :

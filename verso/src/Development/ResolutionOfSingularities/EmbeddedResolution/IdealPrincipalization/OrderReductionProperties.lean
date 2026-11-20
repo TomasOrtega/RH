@@ -24,7 +24,7 @@ def kerSubschemeIso {X Y : Scheme.{u}} (f : X ⟶ Y)
   (asIso (Scheme.Hom.toImage f)).symm
 
 /- English proof (translation)
-Establish `key` using `IsIso.inv_hom_id_assoc (Scheme.Hom.toImage f) (Scheme.Hom.imageι f)`. Rewrite `key` using `[Scheme.Hom.toImage_imageι]`. Conclude with `key`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kerSubschemeIso_hom_comp {X Y : Scheme.{u}} (f : X ⟶ Y)
     [AlgebraicGeometry.IsClosedImmersion f] :
@@ -34,7 +34,7 @@ theorem kerSubschemeIso_hom_comp {X Y : Scheme.{u}} (f : X ⟶ Y)
   exact key
 
 /- English proof (translation)
-Rewrite using `[← kerSubschemeIso_hom_comp f, Iso.inv_hom_id_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem kerSubschemeIso_inv_comp {X Y : Scheme.{u}} (f : X ⟶ Y)
     [AlgebraicGeometry.IsClosedImmersion f] :
@@ -261,7 +261,7 @@ def SameNontrivialBoundary {X : Scheme.{u}} (E E' : List X.IdealSheafData) : Pro
   nontrivialPart E = nontrivialPart E'
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem sameNontrivialBoundary_iff {X : Scheme.{u}} (E E' : List X.IdealSheafData) :
     SameNontrivialBoundary E E' ↔ nontrivialPart E = nontrivialPart E' := Iff.rfl
@@ -273,26 +273,26 @@ theorem SameNontrivialBoundary.refl {X : Scheme.{u}} (E : List X.IdealSheafData)
     SameNontrivialBoundary E E := rfl
 
 /- English proof (translation)
-The claim follows from `Eq.symm h`.
+A detailed English derivation is pending.
 -/
 theorem SameNontrivialBoundary.symm {X : Scheme.{u}} {E E' : List X.IdealSheafData}
     (h : SameNontrivialBoundary E E') : SameNontrivialBoundary E' E := Eq.symm h
 
 /- English proof (translation)
-The claim follows from `Eq.trans h h'`.
+A detailed English derivation is pending.
 -/
 theorem SameNontrivialBoundary.trans {X : Scheme.{u}} {E E' E'' : List X.IdealSheafData}
     (h : SameNontrivialBoundary E E') (h' : SameNontrivialBoundary E' E'') : SameNontrivialBoundary E E'' := Eq.trans h h'
 
 /- English proof (translation)
-Simplify using `[nontrivialPart, List.filter_append]`.
+Simplify using the standard rewrite rules.
 -/
 theorem nontrivialPart_append {X : Scheme.{u}} (A B : List X.IdealSheafData) :
     nontrivialPart (A ++ B) = nontrivialPart A ++ nontrivialPart B := by
   simp [nontrivialPart, List.filter_append]
 
 /- English proof (translation)
-Establish `e₁ : nontrivialPart L₁ = nontrivialPart L₁'` using `h₁`. Establish `e₂ : nontrivialPart L₂ = nontrivialPart L₂'` using `h₂`. Use `show nontrivialPart (L₁ ++ L₂) = nontrivialPart (L₁' ++ L₂')`. Rewrite using `[nontrivialPart_append, nontrivialPart_append, e₁, e₂]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem SameNontrivialBoundary.append {X : Scheme.{u}} {L₁ L₁' L₂ L₂' : List X.IdealSheafData}
     (h₁ : SameNontrivialBoundary L₁ L₁') (h₂ : SameNontrivialBoundary L₂ L₂') :
@@ -303,13 +303,13 @@ theorem SameNontrivialBoundary.append {X : Scheme.{u}} {L₁ L₁' L₂ L₂' : 
   rw [nontrivialPart_append, nontrivialPart_append, e₁, e₂]
 
 /- English proof (translation)
-Establish `hcons_top : ∀ {Z : Scheme.{u}} {a : Z.IdealSheafData}, a = ⊤ → ∀ M : List Z.IdealSheafData, nontrivialPart (a :: M) = nontrivialPart M`. Introduce `Z a ha M`. Establish `hb : (@decide (a = ⊤) (Classical.propDecidable (a = ⊤))) = true` using `by simp [ha]`. Simplify using `[nontrivialPart, hb]`. Establish `hcons_ne : ∀ {Z : Scheme.{u}} {a : Z.IdealSheafData}, ¬ a = ⊤ → ∀ M : List Z.IdealSheafData, nontrivialPart (a :: M) = a :: nontrivialPart M`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `Z a ha M`. Establish `hb : (@decide (a = ⊤) (Classical.propDecidable (a = ⊤))) = false` using `by simp [ha]`. Simplify using `[nontrivialPart, hb]`. Proceed by induction on `L with`. Consider the case `nil => simp [nontrivialPart]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Proceed by induction. Treat this case separately.
 
-Consider the case `cons a L ih`. Distinguish the cases in `ha : a = ⊤`. Establish `hfa : f a = ⊤` using `by rw [ha]; exact hf`. Rewrite using `[hcons_top ha L, List.map_cons, hcons_top hfa (L.map f), ih]`. Distinguish the cases in `hfa : f a = ⊤`.
+Treat this case separately. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[hcons_ne ha L, List.map_cons, List.map_cons, hcons_top hfa ((nontrivialPart L).map f), hcons_top hfa (L.map f), ih]`. Rewrite using `[hcons_ne ha L, List.map_cons, List.map_cons, hcons_ne hfa ((nontrivialPart L).map f), hcons_ne hfa (L.map f), ih]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem nontrivialPart_map_nontrivialPart {X Y : Scheme.{u}}
     (f : X.IdealSheafData → Y.IdealSheafData) (hf : f ⊤ = ⊤) (L : List X.IdealSheafData) :
@@ -337,7 +337,7 @@ private theorem nontrivialPart_map_nontrivialPart {X Y : Scheme.{u}}
           hcons_ne hfa ((nontrivialPart L).map f), hcons_ne hfa (L.map f), ih]
 
 /- English proof (translation)
-Establish `e : nontrivialPart L = nontrivialPart L'` using `h`. Use `show nontrivialPart (L.map f) = nontrivialPart (L'.map f)`. Rewrite using `[← nontrivialPart_map_nontrivialPart f hf L, ← nontrivialPart_map_nontrivialPart f hf L', e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem SameNontrivialBoundary.map {X Y : Scheme.{u}} (f : X.IdealSheafData → Y.IdealSheafData)
     (hf : f ⊤ = ⊤) {L L' : List X.IdealSheafData} (h : SameNontrivialBoundary L L') :
@@ -354,7 +354,7 @@ def IsOrderBoundedByMult (T : MarkedIdealWithBoundary.{u}) : Prop :=
   ∀ x : ↥T.scheme, orderAt T.ideal x ≤ (T.mult : ℕ∞)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem isOrderBoundedByMult_iff (T : MarkedIdealWithBoundary.{u}) :
     T.IsOrderBoundedByMult ↔ ∀ x : ↥T.scheme, orderAt T.ideal x ≤ (T.mult : ℕ∞) := Iff.rfl
@@ -376,9 +376,9 @@ def boundaryLocus (s : MarkedSequenceOfBlowups p I m E) (t : ℕ) : Set ↥(s.to
   ⋃ D ∈ s.boundary t, ((D.support : Set ↥(s.toSequenceOfBlowups.schemeAt t)))
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hx`. Establish `hx' : x ∈ ⋃ D ∈ s.boundary t, ((D.support : Set ↥(s.toSequenceOfBlowups.schemeAt t)))` using `hx`. Take `⟨D, hD, hxD⟩` from `Set.mem_iUnion₂.mp hx'`. Conclude with `⟨D, hD, hxD⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce and unpack `⟨D, hD, hxD⟩`. Establish `hx' : x ∈ ⋃ D ∈ s.boundary t, ((D.support : Set ↥(s.toSequenceOfBlowups.schemeAt t)))` using `Set.mem_iUnion₂.mpr ⟨D, hD, hxD⟩`. Conclude with `hx'`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mem_boundaryLocus_iff (s : MarkedSequenceOfBlowups p I m E) (t : ℕ)
     (x : ↥(s.toSequenceOfBlowups.schemeAt t)) :
@@ -400,9 +400,9 @@ def otherBoundaryLocus (s : MarkedSequenceOfBlowups p I m E) (j t : ℕ) :
     (((s.boundary t).get i).support : Set ↥(s.toSequenceOfBlowups.schemeAt t))
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hx`. Establish `hx' : x ∈ ⋃ (i : Fin (s.boundary t).length) (_ : (i : ℕ) ≠ j), (((s.boundary t).get i).support : Set ↥(s.toSequenceOfBlowups.schemeAt t))` using `hx`. Take `⟨i, hi, hxi⟩` from `Set.mem_iUnion₂.mp hx'`. Conclude with `⟨i, hi, hxi⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce and unpack `⟨i, hi, hxi⟩`. Establish `hx' : x ∈ ⋃ (i : Fin (s.boundary t).length) (_ : (i : ℕ) ≠ j), (((s.boundary t).get i).support : Set ↥(s.toSequenceOfBlowups.schemeAt t))` using `Set.mem_iUnion₂.mpr ⟨i, hi, hxi⟩`. Conclude with `hx'`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mem_otherBoundaryLocus_iff (s : MarkedSequenceOfBlowups p I m E) (j t : ℕ)
     (x : ↥(s.toSequenceOfBlowups.schemeAt t)) :
@@ -473,20 +473,18 @@ structure IsMaxOrderReduction (P : ℕ → Prop) (A B : PrincipalizationAssignme
     orderAtLeastLocus T.ideal T.mult = ∅ → (A T).toSequenceOfBlowups.length = 0
 
 /- English proof (translation)
-Apply the tactic sequence `constructor <;> exact fun T _ hd => absurd hd (hP T.krullDimSucc)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem isMaxOrderReduction_of_forall_not (P : ℕ → Prop) (hP : ∀ n, ¬ P n)
     (A B : PrincipalizationAssignment.{u}) : IsMaxOrderReduction P A B := by
   constructor <;> exact fun T _ hd => absurd hd (hP T.krullDimSucc)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `T hV hQ`. Conclude with `hs.cert T hV (hQP _ hQ)`. Introduce `T hV hQ`. Conclude with `hs.orderRed_equiv T hV (hQP _ hQ)`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `T hV hQ L _ _ f E' hBE hV' hQ'`. Conclude with `hs.base_change T hV (hQP _ hQ) L f E' hBE hV' (hQP _ hQ')`. Introduce `T hV hQ L _ _ f E' hBE hV' hQ'`. Conclude with `hs.base_change_strict T hV (hQP _ hQ) L f E' hBE hV' (hQP _ hQ')`. Introduce `T hV hQ`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hs.center_nonempty T hV (hQP _ hQ)`. Introduce `T hV hQ`. Conclude with `hs.resolves T hV (hQP _ hQ)`. Introduce `T hV hQ Y q h _ hq E' hBE hV' hQ'`. Conclude with `hs.smooth_pullback T hV (hQP _ hQ) Y q h hq E' hBE hV' (hQP _ hQ')`.
-
-Introduce `T hV hQ Y q h _ _ hq E' hBE hV' hQ'`. Conclude with `hs.smooth_pullback_strict T hV (hQP _ hQ) Y q h hq E' hBE hV' (hQP _ hQ')`. Introduce `T hV hQ`. Conclude with `hs.trivial_of_coSupport_empty T hV (hQP _ hQ)`.
+A detailed English derivation is pending.
 -/
 theorem IsMaxOrderReduction.mono {P : ℕ → Prop} {A B : PrincipalizationAssignment.{u}}
     (hs : IsMaxOrderReduction P A B) (Q : ℕ → Prop) (hQP : ∀ n, Q n → P n) :
@@ -512,7 +510,7 @@ theorem IsMaxOrderReduction.mono {P : ℕ → Prop} {A B : PrincipalizationAssig
     exact hs.trivial_of_coSupport_empty T hV (hQP _ hQ)
 
 /- English proof (translation)
-The claim follows from `hs.smooth_pullback T hV hP Y q h hq (T.pullbackAlong Y q h).boundary (MarkedIdealWithBoundary.SameNontrivialBoundary.refl _) hV' hP'`.
+A detailed English derivation is pending.
 -/
 theorem IsMaxOrderReduction.isPullbackBlowupSequence_of_smooth {P : ℕ → Prop} {A B : PrincipalizationAssignment.{u}}
     (hs : IsMaxOrderReduction P A B) (T : MarkedIdealWithBoundary.{u}) (hV : T.IsAdmissible) (hP : P T.krullDimSucc)
@@ -524,7 +522,7 @@ theorem IsMaxOrderReduction.isPullbackBlowupSequence_of_smooth {P : ℕ → Prop
     (MarkedIdealWithBoundary.SameNontrivialBoundary.refl _) hV' hP'
 
 /- English proof (translation)
-Conclude with `hs.smooth_pullback_strict T hV hP Y q h hq (T.pullbackAlong Y q h).boundary (MarkedIdealWithBoundary.SameNontrivialBoundary.refl _) hV' hP'`.
+A detailed English derivation is pending.
 -/
 theorem IsMaxOrderReduction.isStrictPullbackBlowupSeq_of_smooth_surjective {P : ℕ → Prop} {A B : PrincipalizationAssignment.{u}}
     (hs : IsMaxOrderReduction P A B) (T : MarkedIdealWithBoundary.{u}) (hV : T.IsAdmissible) (hP : P T.krullDimSucc)
@@ -536,7 +534,7 @@ theorem IsMaxOrderReduction.isStrictPullbackBlowupSeq_of_smooth_surjective {P : 
     (MarkedIdealWithBoundary.SameNontrivialBoundary.refl _) hV' hP'
 
 /- English proof (translation)
-Conclude with `hs.base_change T hV hP L f (T.baseChange L f).boundary (MarkedIdealWithBoundary.SameNontrivialBoundary.refl _) hV' hP'`.
+A detailed English derivation is pending.
 -/
 theorem IsMaxOrderReduction.isPullbackBlowupSequence_baseChange {P : ℕ → Prop} {A B : PrincipalizationAssignment.{u}}
     (hs : IsMaxOrderReduction P A B) (T : MarkedIdealWithBoundary.{u}) (hV : T.IsAdmissible) (hP : P T.krullDimSucc)
@@ -548,7 +546,7 @@ theorem IsMaxOrderReduction.isPullbackBlowupSequence_baseChange {P : ℕ → Pro
     (MarkedIdealWithBoundary.SameNontrivialBoundary.refl _) hV' hP'
 
 /- English proof (translation)
-Conclude with `hs.base_change_strict T hV hP L f (T.baseChange L f).boundary (MarkedIdealWithBoundary.SameNontrivialBoundary.refl _) hV' hP'`.
+A detailed English derivation is pending.
 -/
 theorem IsMaxOrderReduction.isStrictPullbackBlowupSeq_baseChange {P : ℕ → Prop}
     {A B : PrincipalizationAssignment.{u}} (hs : IsMaxOrderReduction P A B) (T : MarkedIdealWithBoundary.{u})
@@ -738,7 +736,7 @@ structure IsBoundaryDivisorReduction (P : ℕ → Prop) (j : ℕ) (A B : Princip
     orderAtLeastLocus T.ideal T.mult = ∅ → (A T).toSequenceOfBlowups.length = 0
 
 /- English proof (translation)
-Conclude with `hs.smooth_pullback T hV hP hO hD hj Y q h hq (T.pullbackAlong Y q h).boundary (MarkedIdealWithBoundary.SameNontrivialBoundary.refl _) rfl hV' hP' hO' hD' hj'`.
+A detailed English derivation is pending.
 -/
 theorem IsBoundaryDivisorReduction.isPullbackBlowupSequence_of_smooth {P : ℕ → Prop} {j : ℕ}
     {A B : PrincipalizationAssignment.{u}} (hs : IsBoundaryDivisorReduction P j A B) (T : MarkedIdealWithBoundary.{u})
@@ -755,7 +753,7 @@ theorem IsBoundaryDivisorReduction.isPullbackBlowupSequence_of_smooth {P : ℕ �
     (MarkedIdealWithBoundary.SameNontrivialBoundary.refl _) rfl hV' hP' hO' hD' hj'
 
 /- English proof (translation)
-Conclude with `hs.smooth_pullback_strict T hV hP hO hD hj Y q h hq (T.pullbackAlong Y q h).boundary (MarkedIdealWithBoundary.SameNontrivialBoundary.refl _) rfl hV' hP' hO' hD' hj'`.
+A detailed English derivation is pending.
 -/
 theorem IsBoundaryDivisorReduction.isStrictPullbackBlowupSeq_of_smooth_surjective {P : ℕ → Prop} {j : ℕ}
     {A B : PrincipalizationAssignment.{u}} (hs : IsBoundaryDivisorReduction P j A B) (T : MarkedIdealWithBoundary.{u})
@@ -772,7 +770,7 @@ theorem IsBoundaryDivisorReduction.isStrictPullbackBlowupSeq_of_smooth_surjectiv
     (MarkedIdealWithBoundary.SameNontrivialBoundary.refl _) rfl hV' hP' hO' hD' hj'
 
 /- English proof (translation)
-Conclude with `hs.base_change_strict T hV hP hO hD hj L f (T.baseChange L f).boundary (MarkedIdealWithBoundary.SameNontrivialBoundary.refl _) rfl hV' hP' hO' hD' hj'`.
+A detailed English derivation is pending.
 -/
 theorem IsBoundaryDivisorReduction.isStrictPullbackBlowupSeq_baseChange {P : ℕ → Prop} {j : ℕ}
     {A B : PrincipalizationAssignment.{u}} (hs : IsBoundaryDivisorReduction P j A B) (T : MarkedIdealWithBoundary.{u})

@@ -11,9 +11,9 @@ open CategoryTheory AlgebraicGeometry CategoryTheory.Limits
 namespace FunctorialResolution.Blowup
 
 /- English proof (translation)
-Use `And.intro (isLocallyGeneratedByNonZeroDivisor_comap_top f) ?_` and prove the remaining obligations. Introduce `W g _`. Use `ExistsUnique.intro (g ≫ inv f) ?_ ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Introduce `a ha`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← ha]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem IsBlowupAlongIdealSheaf.of_isIso {X X' : Scheme.{u}} (f : X' ⟶ X) [IsIso f] :
     IsBlowupAlongIdealSheaf f (⊤ : X.IdealSheafData) := by
@@ -26,22 +26,20 @@ theorem IsBlowupAlongIdealSheaf.of_isIso {X X' : Scheme.{u}} (f : X' ⟶ X) [IsI
     simp
 
 /- English proof (translation)
-The claim follows from `IsBlowupAlongIdealSheaf.of_isIso (𝟙 X)`.
+A detailed English derivation is pending.
 -/
 theorem isBlowupAlongIdealSheaf_id_top (X : Scheme.{u}) : IsBlowupAlongIdealSheaf (𝟙 X) (⊤ : X.IdealSheafData) :=
   IsBlowupAlongIdealSheaf.of_isIso (𝟙 X)
 
 /- English proof (translation)
-The claim follows from `IsBlowupAlongIdealSheaf.of_isIso e.hom`.
+A detailed English derivation is pending.
 -/
 theorem isBlowupAlongIdealSheaf_iso_hom_top {X X' : Scheme.{u}} (e : X' ≅ X) :
     IsBlowupAlongIdealSheaf e.hom (⊤ : X.IdealSheafData) :=
   IsBlowupAlongIdealSheaf.of_isIso e.hom
 
 /- English proof (translation)
-Establish `hs : (I.comap f).support = ⊥`. Rewrite using `[Scheme.IdealSheafData.support_comap]`. Use `SetLike.ext fun x => ⟨fun hx => ?_, fun hx => ?_⟩` and prove the remaining obligations. Conclude with `absurd (show f.base x ∈ I.support from hx) (h x)`. Conclude with `(show False from hx).elim`.
-
-Conclude with `(Scheme.IdealSheafData.support_eq_bot_iff _).mp hs`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem comap_eq_top_of_notMem_support {X X' : Scheme.{u}} (f : X' ⟶ X)
     (I : X.IdealSheafData) (h : ∀ x : X', f.base x ∉ I.support) :
@@ -54,7 +52,7 @@ theorem comap_eq_top_of_notMem_support {X X' : Scheme.{u}} (f : X' ⟶ X)
   exact (Scheme.IdealSheafData.support_eq_bot_iff _).mp hs
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨z, rfl⟩`. Conclude with `⟨f.base z, by simp⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 private theorem range_comp_coprod_inl_subset {X Y Z : Scheme.{u}} (f : Z ⟶ X) :
     Set.range ⇑(f ≫ (coprod.inl : X ⟶ X ⨿ Y)).base
@@ -63,9 +61,9 @@ private theorem range_comp_coprod_inl_subset {X Y Z : Scheme.{u}} (f : Z ⟶ X) 
   exact ⟨f.base z, by simp⟩
 
 /- English proof (translation)
-Use `comap_eq_top_of_notMem_support (coprod.inr : Y ⟶ X ⨿ Y) ((f ≫ (coprod.inl : X ⟶ X ⨿ Y)).ker) ?_` and prove the remaining obligations. Introduce `y hy`. Establish `hy' : (coprod.inr : Y ⟶ X ⨿ Y).base y ∈ ((f ≫ (coprod.inl : X ⟶ X ⨿ Y)).ker.support : Set ↥(X ⨿ Y))` using `hy`. Rewrite `hy'` using `[Scheme.Hom.support_ker]`. Establish `hsub : closure (Set.range ⇑(f ≫ (coprod.inl : X ⟶ X ⨿ Y)).base) ⊆ Set.range ⇑(coprod.inl : X ⟶ X ⨿ Y).base` using `closure_minimal (range_comp_coprod_inl_subset f) (isClosed_range_coprod_inl X Y)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : (coprod.inr : Y ⟶ X ⨿ Y).base y ∈ Set.range ⇑(coprod.inr : Y ⟶ X ⨿ Y).base` using `Set.mem_range_self y`. Rewrite `h2` using `[range_coprod_inr_eq_compl X Y]`. Conclude with `h2 (hsub hy')`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ker_comp_coprod_inl_comap_inr {X Y Z : Scheme.{u}} (f : Z ⟶ X)
     [QuasiCompact (f ≫ (coprod.inl : X ⟶ X ⨿ Y))] :
@@ -85,7 +83,7 @@ theorem ker_comp_coprod_inl_comap_inr {X Y Z : Scheme.{u}} (f : Z ⟶ X)
   exact h2 (hsub hy')
 
 /- English proof (translation)
-Rewrite using `[RingHom.ker_eq_comap_bot (ψ.comp φ), ← Ideal.comap_comap, ← RingHom.ker_eq_comap_bot]`. Conclude with `Ideal.map_comap_of_surjective φ hφ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem map_ker_comp_of_surjective {A B C : Type u} [CommRing A] [CommRing B] [CommRing C]
     (φ : A →+* B) (ψ : B →+* C) (hφ : Function.Surjective φ) :
@@ -94,7 +92,7 @@ private theorem map_ker_comp_of_surjective {A B C : Type u} [CommRing A] [CommRi
   exact Ideal.map_comap_of_surjective φ hφ _
 
 /- English proof (translation)
-Use `hφ` as an intermediate fact. Introduce `y`. Conclude with `⟨CommRingCat.Hom.hom (inv φ) y, congrArg (fun ψ : B ⟶ B => CommRingCat.Hom.hom ψ y) (IsIso.inv_hom_id φ)⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 private theorem surjective_of_isIso {A B : CommRingCat.{u}} (φ : A ⟶ B) (hφ : IsIso φ) :
     Function.Surjective (CommRingCat.Hom.hom φ) := by
@@ -104,14 +102,14 @@ private theorem surjective_of_isIso {A B : CommRingCat.{u}} (φ : A ⟶ B) (hφ 
     congrArg (fun ψ : B ⟶ B => CommRingCat.Hom.hom ψ y) (IsIso.inv_hom_id φ)⟩
 
 /- English proof (translation)
-The claim follows from `hV.image_of_isOpenImmersion g`.
+A detailed English derivation is pending.
 -/
 private theorem isAffineOpen_image {W Z : Scheme.{u}} (g : W ⟶ Z) [IsOpenImmersion g]
     (V : W.Opens) (hV : IsAffineOpen V) : IsAffineOpen (g ''ᵁ V) :=
   hV.image_of_isOpenImmersion g
 
 /- English proof (translation)
-Use `TopologicalSpace.Opens.ext ?_` and prove the remaining obligations. Use `show ⇑g.base ⁻¹' (⇑g.base '' (V : Set ↥W)) = (V : Set ↥W)`. Conclude with `Set.preimage_image_eq _ g.isOpenEmbedding.injective`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem preimage_image_opens {W Z : Scheme.{u}} (g : W ⟶ Z) [IsOpenImmersion g]
     (V : W.Opens) : g ⁻¹ᵁ (g ''ᵁ V) = V := by
@@ -128,9 +126,9 @@ private theorem ker_ideal_eq_ker_app {T W : Scheme.{u}} (f : T ⟶ W) [QuasiComp
   simp
 
 /- English proof (translation)
-Substitute `hUV` using the available equality. Establish `hid : g.appLE U (g ⁻¹ᵁ U) e = g.app U` using `by show g.app U ≫ W.presheaf.map (homOfLE e).op = g.app U`. Establish `h1 : (homOfLE e).op = 𝟙 (Opposite.op (g ⁻¹ᵁ U))` using `rfl`. Rewrite using `[h1, W.presheaf.map_id, Category.comp_id]`. Establish `hcomp : CommRingCat.Hom.hom ((f ≫ g).app U) = RingHom.comp (CommRingCat.Hom.hom (f.app (g ⁻¹ᵁ U))) (CommRingCat.Hom.hom (g.app U))` using `rfl`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hid, hcomp]`. Conclude with `map_ker_comp_of_surjective _ _ hsurj`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem map_appLE_ker_comp {T W Z : Scheme.{u}} (f : T ⟶ W) (g : W ⟶ Z)
     (U : Z.Opens) (V : W.Opens) (hUV : g ⁻¹ᵁ U = V) (e : V ≤ g ⁻¹ᵁ U)
@@ -150,9 +148,9 @@ private theorem map_appLE_ker_comp {T W Z : Scheme.{u}} (f : T ⟶ W) (g : W ⟶
   exact map_ker_comp_of_surjective _ _ hsurj
 
 /- English proof (translation)
-Establish `key : ∀ V : W.affineOpens, ((f ≫ g).ker.comap g).ideal V = f.ker.ideal V`. Introduce `V`. Establish `hU : IsAffineOpen (g ''ᵁ (V : W.Opens))` using `isAffineOpen_image g (V : W.Opens) V.2`. Establish `hpre : g ⁻¹ᵁ (g ''ᵁ (V : W.Opens)) = (V : W.Opens)` using `preimage_image_opens g (V : W.Opens)`. Establish `e : (V : W.Opens) ≤ g ⁻¹ᵁ (g ''ᵁ (V : W.Opens))` using `hpre.ge`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ((f ≫ g).ker.comap g).ideal V = Ideal.map (CommRingCat.Hom.hom (g.appLE (g ''ᵁ (V : W.Opens)) (V : W.Opens) e)) ((f ≫ g).ker.ideal ⟨g ''ᵁ (V : W.Opens), hU⟩)` using `Scheme.IdealSheafData.comap_ideal_eq_map_appLE ((f ≫ g).ker) g ⟨g ''ᵁ (V : W.Opens), hU⟩ V e`. Rewrite using `[h1, ker_ideal_eq_ker_app (f ≫ g) ⟨g ''ᵁ (V : W.Opens), hU⟩, ker_ideal_eq_ker_app f V]`. Conclude with `map_appLE_ker_comp f g (g ''ᵁ (V : W.Opens)) (V : W.Opens) hpre e (surjective_of_isIso (g.app (g ''ᵁ (V : W.Opens))) inferInstance)`. Use extensionality with `V`. Rewrite using `[key V]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem ker_comap_of_isOpenImmersion {T W Z : Scheme.{u}} (f : T ⟶ W) (g : W ⟶ Z)
     [IsOpenImmersion g] [QuasiCompact f] [QuasiCompact (f ≫ g)] :
@@ -175,7 +173,7 @@ private theorem ker_comap_of_isOpenImmersion {T W Z : Scheme.{u}} (f : T ⟶ W) 
   rw [key V]
 
 /- English proof (translation)
-The claim follows from `ker_comap_of_isOpenImmersion f (coprod.inl : X ⟶ X ⨿ Y)`.
+A detailed English derivation is pending.
 -/
 theorem ker_comp_coprod_inl_comap_inl {X Y Z : Scheme.{u}} (f : Z ⟶ X)
     [QuasiCompact f] [QuasiCompact (f ≫ (coprod.inl : X ⟶ X ⨿ Y))] :
@@ -183,9 +181,9 @@ theorem ker_comp_coprod_inl_comap_inl {X Y Z : Scheme.{u}} (f : Z ⟶ X)
   ker_comap_of_isOpenImmersion f (coprod.inl : X ⟶ X ⨿ Y)
 
 /- English proof (translation)
-Establish `key : ∀ K' L' : Ideal A, Ideal.map φ K' = Ideal.map φ L' → K' ≤ L'`. Introduce `K' L' h' x hx`. Establish `hx' : φ x ∈ Ideal.map φ L'`. Rewrite using `[← h']`. Conclude with `Ideal.mem_map_of_mem φ hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy, hxy⟩` from `(Ideal.mem_map_iff_of_surjective φ hφ.2).mp hx'`. Rewrite using `[← hφ.1 hxy]` and apply the resulting hypothesis. Conclude with `le_antisymm (key K L h) (key L K h.symm)`.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 private theorem ideal_eq_of_map_eq_of_bijective {A B : Type u} [CommRing A] [CommRing B]
     (φ : A →+* B) (hφ : Function.Bijective φ) {K L : Ideal A}
@@ -200,9 +198,9 @@ private theorem ideal_eq_of_map_eq_of_bijective {A B : Type u} [CommRing A] [Com
   exact le_antisymm (key K L h) (key L K h.symm)
 
 /- English proof (translation)
-Establish `h3 : ∀ c : A, CommRingCat.Hom.hom (inv φ) (CommRingCat.Hom.hom φ c) = c` using `fun c => congrArg (fun ψ : A ⟶ A => CommRingCat.Hom.hom ψ c) (IsIso.hom_inv_id φ)`. Prove the components needed by the constructor for the conclusion. Introduce `a a' h`. Establish `h2 : CommRingCat.Hom.hom (inv φ) (CommRingCat.Hom.hom φ a) = CommRingCat.Hom.hom (inv φ) (CommRingCat.Hom.hom φ a')` using `by rw [h]`. Simplify using `only [h3] at h2`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `h2`. Introduce `b`. Conclude with `⟨CommRingCat.Hom.hom (inv φ) b, congrArg (fun ψ : B ⟶ B => CommRingCat.Hom.hom ψ b) (IsIso.inv_hom_id φ)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem bijective_of_isIso {A B : CommRingCat.{u}} (φ : A ⟶ B) [IsIso φ] :
     Function.Bijective (CommRingCat.Hom.hom φ) := by
@@ -219,7 +217,7 @@ private theorem bijective_of_isIso {A B : CommRingCat.{u}} (φ : A ⟶ B) [IsIso
       congrArg (fun ψ : B ⟶ B => CommRingCat.Hom.hom ψ b) (IsIso.inv_hom_id φ)⟩
 
 /- English proof (translation)
-Establish `hpre : g ⁻¹ᵁ (g ''ᵁ V) = V` using `preimage_image_opens g V`. Establish `: IsIso (homOfLE e)` using `⟨homOfLE hpre.le, rfl, rfl⟩`. Establish `: IsIso (g.appLE (g ''ᵁ V) V e)` using `by show IsIso (g.app (g ''ᵁ V) ≫ W.presheaf.map (homOfLE e).op) infer_instance`. Conclude with `bijective_of_isIso (g.appLE (g ''ᵁ V) V e)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem appLE_image_bijective_of_isOpenImmersion {W Z : Scheme.{u}} (g : W ⟶ Z)
     [IsOpenImmersion g] (V : W.Opens) (e : V ≤ g ⁻¹ᵁ (g ''ᵁ V)) :
@@ -232,9 +230,9 @@ private theorem appLE_image_bijective_of_isOpenImmersion {W Z : Scheme.{u}} (g :
   exact bijective_of_isIso (g.appLE (g ''ᵁ V) V e)
 
 /- English proof (translation)
-Establish `e : (V : W.Opens) ≤ g ⁻¹ᵁ (g ''ᵁ (V : W.Opens))` using `(preimage_image_opens g (V : W.Opens)).ge`. Establish `h1` using `Scheme.IdealSheafData.comap_ideal_eq_map_appLE I g ⟨g ''ᵁ (V : W.Opens), isAffineOpen_image g (V : W.Opens) V.2⟩ V e`. Establish `h2` using `Scheme.IdealSheafData.comap_ideal_eq_map_appLE J g ⟨g ''ᵁ (V : W.Opens), isAffineOpen_image g (V : W.Opens) V.2⟩ V e`. Establish `h3 : (I.comap g).ideal V = (J.comap g).ideal V` using `by rw [h]`. Rewrite `h3` using `[h1, h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `ideal_eq_of_map_eq_of_bijective _ (appLE_image_bijective_of_isOpenImmersion g (V : W.Opens) e) h3`.
+A detailed English derivation is pending.
 -/
 private theorem ideal_image_eq_of_comap_eq {W Z : Scheme.{u}} (g : W ⟶ Z) [IsOpenImmersion g]
     {I J : Z.IdealSheafData} (h : I.comap g = J.comap g) (V : ↥(W.affineOpens)) :
@@ -251,7 +249,7 @@ private theorem ideal_image_eq_of_comap_eq {W Z : Scheme.{u}} (g : W ⟶ Z) [IsO
   exact ideal_eq_of_map_eq_of_bijective _ (appLE_image_bijective_of_isOpenImmersion g (V : W.Opens) e) h3
 
 /- English proof (translation)
-Establish `h : x ∈ (⨆ V : ↥(X.affineOpens), (V : X.Opens))`. Rewrite using `[iSup_affineOpens_eq_top X]`. Conclude with `trivial`. Take `⟨V, hV⟩` from `TopologicalSpace.Opens.mem_iSup.mp h`. Conclude with `⟨V, SetLike.mem_coe.mpr hV⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem exists_affineOpen_mem (X : Scheme.{u}) (x : ↥X) :
     ∃ V : ↥(X.affineOpens), x ∈ ((V : X.Opens) : Set ↥X) := by
@@ -262,13 +260,11 @@ private theorem exists_affineOpen_mem (X : Scheme.{u}) (x : ↥X) :
   exact ⟨V, SetLike.mem_coe.mpr hV⟩
 
 /- English proof (translation)
-Use `Scheme.IdealSheafData.ext_of_iSup_eq_top (Sum.elim (fun V : ↥(X.affineOpens) => (⟨(coprod.inl : X ⟶ X ⨿ Y) ''ᵁ (V : X.Opens), isAffineOpen_image (coprod.inl : X ⟶ X ⨿ Y) (V : X.Opens) V.2⟩ : ↥((X ⨿ Y).affineOpens))) (fun V : ↥(Y.affineOpens) => (⟨(coprod.inr : Y ⟶ X ⨿ Y) ''ᵁ (V : …` and prove the remaining obligations. Rewrite using `[eq_top_iff]`. Introduce `z _`. Distinguish the cases in `hz : z ∈ Set.range ⇑(coprod.inl : X ⟶ X ⨿ Y).base`. Take `⟨x, rfl⟩` from `hz`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Take `⟨V, hV⟩` from `exists_affineOpen_mem X x`. Use `TopologicalSpace.Opens.mem_iSup.mpr ⟨Sum.inl V, ?_⟩` and prove the remaining obligations. Conclude with `SetLike.mem_coe.mp (Set.mem_image_of_mem _ hV)`. Establish `hz' : z ∈ Set.range ⇑(coprod.inr : Y ⟶ X ⨿ Y).base`. Rewrite using `[range_coprod_inr_eq_compl X Y]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `hz`. Take `⟨y, rfl⟩` from `hz'`. Take `⟨V, hV⟩` from `exists_affineOpen_mem Y y`. Use `TopologicalSpace.Opens.mem_iSup.mpr ⟨Sum.inr V, ?_⟩` and prove the remaining obligations. Conclude with `SetLike.mem_coe.mp (Set.mem_image_of_mem _ hV)`.
-
-Introduce and unpack `(V | V)`. Conclude with `ideal_image_eq_of_comap_eq (coprod.inl : X ⟶ X ⨿ Y) hl V`. Conclude with `ideal_image_eq_of_comap_eq (coprod.inr : Y ⟶ X ⨿ Y) hr V`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem idealSheafData_ext_coprod {X Y : Scheme.{u}} (I J : (X ⨿ Y).IdealSheafData)
     (hl : I.comap (coprod.inl : X ⟶ X ⨿ Y) = J.comap (coprod.inl : X ⟶ X ⨿ Y))
@@ -309,13 +305,13 @@ private theorem base_comp_apply {U V W : Scheme.{u}} (f : U ⟶ V) (g : V ⟶ W)
     (f ≫ g).base x = g.base (f.base x) := by simp
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨t, rfl⟩`. Assume the negation of the conclusion as `hmem`. Establish `hy : (PullbackCone.fst s).base t ∈ Set.range ⇑(coprod.inr : B' ⟶ A' ⨿ B').base`. Rewrite using `[range_coprod_inr_eq_compl A' B', Set.mem_compl_iff]`. Conclude with `hmem`.
+Assume the hypotheses and unpack their components. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb⟩` from `hy`. Establish `e1 : (coprod.map p q).base ((PullbackCone.fst s).base t) = (coprod.inl : A ⟶ A ⨿ B).base ((PullbackCone.snd s).base t)`. Establish `h` using `congrArg (fun m : s.pt ⟶ A ⨿ B => m.base t) s.condition`. Simplify using `using h`. Establish `hmapr : ((coprod.inr : B' ⟶ A' ⨿ B') ≫ coprod.map p q) = q ≫ (coprod.inr : B ⟶ A ⨿ B)` using `by simp`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : (coprod.map p q).base ((coprod.inr : B' ⟶ A' ⨿ B').base b) = (coprod.inr : B ⟶ A ⨿ B).base (q.base b)`. Rewrite using `[← base_comp_apply, hmapr, base_comp_apply]`. Establish `key : (coprod.map p q).base ((PullbackCone.fst s).base t) = (coprod.map p q).base ((coprod.inr : B' ⟶ A' ⨿ B').base b)` using `by rw [hb]`. Establish `hfin : (coprod.inl : A ⟶ A ⨿ B).base ((PullbackCone.snd s).base t) = (coprod.inr : B ⟶ A ⨿ B).base (q.base b)` using `by rw [← e1, key, e2]`. Establish `hmem2 : (coprod.inl : A ⟶ A ⨿ B).base ((PullbackCone.snd s).base t) ∈ Set.range ⇑(coprod.inr : B ⟶ A ⨿ B).base` using `⟨q.base b, hfin.symm⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hmem2` using `[range_coprod_inr_eq_compl A B]`. Conclude with `hmem2 ⟨(PullbackCone.snd s).base t, rfl⟩`.
+A detailed English derivation is pending.
 -/
 private theorem range_fst_subset_range_inl {A B A' B' : Scheme.{u}} (p : A' ⟶ A) (q : B' ⟶ B)
     (s : PullbackCone (coprod.map p q) (coprod.inl : A ⟶ A ⨿ B)) :
@@ -345,11 +341,11 @@ private theorem range_fst_subset_range_inl {A B A' B' : Scheme.{u}} (p : A' ⟶ 
   exact hmem2 ⟨(PullbackCone.snd s).base t, rfl⟩
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨t, rfl⟩`. Rewrite using `[range_coprod_inr_eq_compl A' B', Set.mem_compl_iff]`. Introduce `hy`. Take `⟨a, ha⟩` from `hy`. Establish `e1 : (coprod.map p q).base ((PullbackCone.fst s).base t) = (coprod.inr : B ⟶ A ⨿ B).base ((PullbackCone.snd s).base t)`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h` using `congrArg (fun m : s.pt ⟶ A ⨿ B => m.base t) s.condition`. Simplify using `using h`. Establish `hmapl : ((coprod.inl : A' ⟶ A' ⨿ B') ≫ coprod.map p q) = p ≫ (coprod.inl : A ⟶ A ⨿ B)` using `by simp`. Establish `e2 : (coprod.map p q).base ((coprod.inl : A' ⟶ A' ⨿ B').base a) = (coprod.inl : A ⟶ A ⨿ B).base (p.base a)`. Rewrite using `[← base_comp_apply, hmapl, base_comp_apply]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `key : (coprod.map p q).base ((PullbackCone.fst s).base t) = (coprod.map p q).base ((coprod.inl : A' ⟶ A' ⨿ B').base a)` using `by rw [ha]`. Establish `hfin : (coprod.inr : B ⟶ A ⨿ B).base ((PullbackCone.snd s).base t) = (coprod.inl : A ⟶ A ⨿ B).base (p.base a)` using `by rw [← e1, key, e2]`. Establish `hmem2 : (coprod.inr : B ⟶ A ⨿ B).base ((PullbackCone.snd s).base t) ∈ Set.range ⇑(coprod.inr : B ⟶ A ⨿ B).base` using `⟨(PullbackCone.snd s).base t, rfl⟩`. Rewrite `hmem2` using `[range_coprod_inr_eq_compl A B, hfin]`. Conclude with `hmem2 ⟨p.base a, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem range_fst_subset_range_inr {A B A' B' : Scheme.{u}} (p : A' ⟶ A) (q : B' ⟶ B)
     (s : PullbackCone (coprod.map p q) (coprod.inr : B ⟶ A ⨿ B)) :
@@ -377,13 +373,11 @@ private theorem range_fst_subset_range_inr {A B A' B' : Scheme.{u}} (p : A' ⟶ 
   exact hmem2 ⟨p.base a, rfl⟩
 
 /- English proof (translation)
-Establish `hw : (coprod.inl : A' ⟶ A' ⨿ B') ≫ coprod.map p q = p ≫ (coprod.inl : A ⟶ A ⨿ B)` using `by simp`. Use `IsPullback.of_isLimit' ⟨hw⟩ (PullbackCone.IsLimit.mk hw (fun s => IsOpenImmersion.lift (coprod.inl : A' ⟶ A' ⨿ B') (PullbackCone.fst s) (range_fst_subset_range_inl p q s)) ?_ ?_ ?_)` and prove the remaining obligations. Introduce `s`. Simplify using `[IsOpenImmersion.lift_fac]`. Introduce `s`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hl : IsOpenImmersion.lift (coprod.inl : A' ⟶ A' ⨿ B') (PullbackCone.fst s) (range_fst_subset_range_inl p q s) ≫ (coprod.inl : A' ⟶ A' ⨿ B') = PullbackCone.fst s`. Simplify using `[IsOpenImmersion.lift_fac]`. Establish `h2 : (IsOpenImmersion.lift (coprod.inl : A' ⟶ A' ⨿ B') (PullbackCone.fst s) (range_fst_subset_range_inl p q s) ≫ p) ≫ (coprod.inl : A ⟶ A ⨿ B) = PullbackCone.snd s ≫ (coprod.inl : A ⟶ A ⨿ B)`. Rewrite using `[Category.assoc, ← hw, ← Category.assoc, hl]`. Conclude with `s.condition`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(cancel_mono _).mp h2`. Introduce `s m hm _`. Establish `hl : IsOpenImmersion.lift (coprod.inl : A' ⟶ A' ⨿ B') (PullbackCone.fst s) (range_fst_subset_range_inl p q s) ≫ (coprod.inl : A' ⟶ A' ⨿ B') = PullbackCone.fst s`. Simplify using `[IsOpenImmersion.lift_fac]`. Establish `h2 : m ≫ (coprod.inl : A' ⟶ A' ⨿ B') = IsOpenImmersion.lift (coprod.inl : A' ⟶ A' ⨿ B') (PullbackCone.fst s) (range_fst_subset_range_inl p q s) ≫ (coprod.inl : A' ⟶ A' ⨿ B')`.
-
-Rewrite using `[hm, hl]`. Conclude with `(cancel_mono _).mp h2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isPullback_coprod_inl_map {A B A' B' : Scheme.{u}} (p : A' ⟶ A) (q : B' ⟶ B) :
     IsPullback (coprod.inl : A' ⟶ A' ⨿ B') p (coprod.map p q) (coprod.inl : A ⟶ A ⨿ B) := by
@@ -417,13 +411,11 @@ private theorem isPullback_coprod_inl_map {A B A' B' : Scheme.{u}} (p : A' ⟶ A
     exact (cancel_mono _).mp h2
 
 /- English proof (translation)
-Establish `hw : (coprod.inr : B' ⟶ A' ⨿ B') ≫ coprod.map p q = q ≫ (coprod.inr : B ⟶ A ⨿ B)` using `by simp`. Use `IsPullback.of_isLimit' ⟨hw⟩ (PullbackCone.IsLimit.mk hw (fun s => IsOpenImmersion.lift (coprod.inr : B' ⟶ A' ⨿ B') (PullbackCone.fst s) (range_fst_subset_range_inr p q s)) ?_ ?_ ?_)` and prove the remaining obligations. Introduce `s`. Simplify using `[IsOpenImmersion.lift_fac]`. Introduce `s`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hl : IsOpenImmersion.lift (coprod.inr : B' ⟶ A' ⨿ B') (PullbackCone.fst s) (range_fst_subset_range_inr p q s) ≫ (coprod.inr : B' ⟶ A' ⨿ B') = PullbackCone.fst s`. Simplify using `[IsOpenImmersion.lift_fac]`. Establish `h2 : (IsOpenImmersion.lift (coprod.inr : B' ⟶ A' ⨿ B') (PullbackCone.fst s) (range_fst_subset_range_inr p q s) ≫ q) ≫ (coprod.inr : B ⟶ A ⨿ B) = PullbackCone.snd s ≫ (coprod.inr : B ⟶ A ⨿ B)`. Rewrite using `[Category.assoc, ← hw, ← Category.assoc, hl]`. Conclude with `s.condition`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(cancel_mono _).mp h2`. Introduce `s m hm _`. Establish `hl : IsOpenImmersion.lift (coprod.inr : B' ⟶ A' ⨿ B') (PullbackCone.fst s) (range_fst_subset_range_inr p q s) ≫ (coprod.inr : B' ⟶ A' ⨿ B') = PullbackCone.fst s`. Simplify using `[IsOpenImmersion.lift_fac]`. Establish `h2 : m ≫ (coprod.inr : B' ⟶ A' ⨿ B') = IsOpenImmersion.lift (coprod.inr : B' ⟶ A' ⨿ B') (PullbackCone.fst s) (range_fst_subset_range_inr p q s) ≫ (coprod.inr : B' ⟶ A' ⨿ B')`.
-
-Rewrite using `[hm, hl]`. Conclude with `(cancel_mono _).mp h2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isPullback_coprod_inr_map {A B A' B' : Scheme.{u}} (p : A' ⟶ A) (q : B' ⟶ B) :
     IsPullback (coprod.inr : B' ⟶ A' ⨿ B') q (coprod.map p q) (coprod.inr : B ⟶ A ⨿ B) := by
@@ -457,19 +449,15 @@ private theorem isPullback_coprod_inr_map {A B A' B' : Scheme.{u}} (p : A' ⟶ A
     exact (cancel_mono _).mp h2
 
 /- English proof (translation)
-Establish `hb₁ : IsBlowupAlongIdealSheaf (pullback.snd (coprod.map π₁ π₂) (coprod.inl : X₁ ⟶ X₁ ⨿ X₂)) (I.comap (coprod.inl : X₁ ⟶ X₁ ⨿ X₂))`. Establish `hpb` using `isPullback_coprod_inl_map π₁ π₂`. Establish `hfac : hpb.isoPullback.symm.hom ≫ π₁ = pullback.snd (coprod.map π₁ π₂) (coprod.inl : X₁ ⟶ X₁ ⨿ X₂)`. Rewrite using `[Iso.symm_hom, Iso.inv_comp_eq]`. Conclude with `hpb.isoPullback_hom_snd.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hbl` using `h₁.iso_hom_comp hpb.isoPullback.symm`. Rewrite `hbl` using `[hfac]`. Then use the resulting hypothesis. Establish `hb₂ : IsBlowupAlongIdealSheaf (pullback.snd (coprod.map π₁ π₂) (coprod.inr : X₂ ⟶ X₁ ⨿ X₂)) (I.comap (coprod.inr : X₂ ⟶ X₁ ⨿ X₂))`. Establish `hpb` using `isPullback_coprod_inr_map π₁ π₂`. Establish `hfac : hpb.isoPullback.symm.hom ≫ π₂ = pullback.snd (coprod.map π₁ π₂) (coprod.inr : X₂ ⟶ X₁ ⨿ X₂)`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Iso.symm_hom, Iso.inv_comp_eq]`. Conclude with `hpb.isoPullback_hom_snd.symm`. Establish `hbl` using `h₂.iso_hom_comp hpb.isoPullback.symm`. Rewrite `hbl` using `[hfac]`. Then use the resulting hypothesis. Establish `hoi : ∀ b : Bool, IsOpenImmersion (Bool.rec (motive` using `fun b : Bool => (cond b X₁ X₂) ⟶ X₁ ⨿ X₂) (coprod.inr : X₂ ⟶ X₁ ⨿ X₂) (coprod.inl : X₁ ⟶ X₁ ⨿ X₂) b) := by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data.
 
-Introduce `b`. Consider the cases of `b`. Conclude with `(inferInstance : IsOpenImmersion (coprod.inr : X₂ ⟶ X₁ ⨿ X₂))`. Conclude with `(inferInstance : IsOpenImmersion (coprod.inl : X₁ ⟶ X₁ ⨿ X₂))`. Use `IsBlowupAlongIdealSheaf.of_comap_of_isOpenImmersion_cover (coprod.map π₁ π₂) I (fun b : Bool => cond b X₁ X₂) (Bool.rec (motive := fun b : Bool => (cond b X₁ X₂) ⟶ X₁ ⨿ X₂) (coprod.inr : X₂ ⟶ X₁ ⨿ X₂) (coprod.inl : X₁ ⟶ X₁ ⨿ X₂)) ?_ ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `x`. Distinguish the cases in `hx : x ∈ Set.range ⇑(coprod.inl : X₁ ⟶ X₁ ⨿ X₂).base`. Conclude with `⟨true, hx⟩`. Use `⟨false, ?_⟩` and prove the remaining obligations. Establish `hx' : x ∈ Set.range ⇑(coprod.inr : X₂ ⟶ X₁ ⨿ X₂).base`.
-
-Rewrite using `[range_coprod_inr_eq_compl X₁ X₂]`. Conclude with `hx`. Conclude with `hx'`. Introduce `b`. Consider the cases of `b`.
-
-Conclude with `hb₂`. Conclude with `hb₁`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. A detailed English derivation is pending.
 -/
 theorem IsBlowupAlongIdealSheaf.coprod {X₁ X₂ X₁' X₂' : Scheme.{u}} {π₁ : X₁' ⟶ X₁} {π₂ : X₂' ⟶ X₂}
     {I : (X₁ ⨿ X₂).IdealSheafData}
@@ -519,9 +507,9 @@ theorem IsBlowupAlongIdealSheaf.coprod {X₁ X₂ X₁' X₂' : Scheme.{u}} {π�
     · exact hb₁
 
 /- English proof (translation)
-Rewrite `hU` using `[Scheme.Opens.range_ι]`. Rewrite `hV` using `[Scheme.Opens.range_ι]`. Establish `h1 : U ⊓ V = ⊥` using `h.inf_eq_bot`. Establish `h2 : x ∈ ((U ⊓ V : X.Opens) : Set ↥X)`. Simplify using `only [TopologicalSpace.Opens.coe_inf, Set.mem_inter_iff]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `⟨hU, hV⟩`. Rewrite `h2` using `[h1]`. Simplify using `at h2`.
+Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem range_ι_disjoint {X : Scheme.{u}} {U V : X.Opens} (h : IsCompl U V)
     (x : ↥X) (hU : x ∈ Set.range ⇑U.ι.base) (hV : x ∈ Set.range ⇑V.ι.base) : False := by
@@ -535,13 +523,11 @@ private theorem range_ι_disjoint {X : Scheme.{u}} {U V : X.Opens} (h : IsCompl 
   simp at h2
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨t, rfl⟩`. Assume the negation of the conclusion as `hmem`. Establish `hy : (PullbackCone.fst s).base t ∈ Set.range ⇑(coprod.inr : F ⟶ A ⨿ F).base`. Rewrite using `[range_coprod_inr_eq_compl A F, Set.mem_compl_iff]`. Conclude with `hmem`.
+Assume the hypotheses and unpack their components. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb⟩` from `hy`. Establish `e1 : (coprod.desc f g).base ((PullbackCone.fst s).base t) = U.ι.base ((PullbackCone.snd s).base t)`. Establish `hc` using `congrArg (fun m : s.pt ⟶ X => m.base t) s.condition`. Simplify using `using hc`. Establish `e2 : (coprod.desc f g).base ((coprod.inr : F ⟶ A ⨿ F).base b) = g.base b`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← base_comp_apply, coprod.inr_desc]`. Establish `hfin : U.ι.base ((PullbackCone.snd s).base t) = g.base b`. Rewrite using `[← e1, ← hb]`. Conclude with `e2`. Establish `hmemV : U.ι.base ((PullbackCone.snd s).base t) ∈ Set.range ⇑V.ι.base`.
-
-Rewrite using `[hfin]`. Conclude with `hg (Set.mem_range_self b)`. Conclude with `range_ι_disjoint h (U.ι.base ((PullbackCone.snd s).base t)) (Set.mem_range_self _) hmemV`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem range_fst_subset_range_inl_of_isCompl {X A F : Scheme.{u}} (f : A ⟶ X)
     (g : F ⟶ X) {U V : X.Opens} (h : IsCompl U V)
@@ -570,13 +556,13 @@ private theorem range_fst_subset_range_inl_of_isCompl {X A F : Scheme.{u}} (f : 
     (Set.mem_range_self _) hmemV
 
 /- English proof (translation)
-Establish `hw : (coprod.inl : A ⟶ A ⨿ F) ≫ coprod.desc f g = IsOpenImmersion.lift U.ι f hf ≫ U.ι`. Rewrite using `[coprod.inl_desc, IsOpenImmersion.lift_fac]`. Use `IsPullback.of_isLimit' ⟨hw⟩ (PullbackCone.IsLimit.mk hw (fun s => IsOpenImmersion.lift (coprod.inl : A ⟶ A ⨿ F) (PullbackCone.fst s) (range_fst_subset_range_inl_of_isCompl f g h hg s)) ?_ ?_ ?_)` and prove the remaining obligations. Introduce `s`. Simplify using `[IsOpenImmersion.lift_fac]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `s`. Establish `hl : IsOpenImmersion.lift (coprod.inl : A ⟶ A ⨿ F) (PullbackCone.fst s) (range_fst_subset_range_inl_of_isCompl f g h hg s) ≫ (coprod.inl : A ⟶ A ⨿ F) = PullbackCone.fst s`. Simplify using `[IsOpenImmersion.lift_fac]`. Establish `h2 : (IsOpenImmersion.lift (coprod.inl : A ⟶ A ⨿ F) (PullbackCone.fst s) (range_fst_subset_range_inl_of_isCompl f g h hg s) ≫ IsOpenImmersion.lift U.ι f hf) ≫ U.ι = PullbackCone.snd s ≫ U.ι`. Rewrite using `[Category.assoc, ← hw, ← Category.assoc, hl]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `s.condition`. Conclude with `(cancel_mono _).mp h2`. Introduce `s m hm _`. Establish `hl : IsOpenImmersion.lift (coprod.inl : A ⟶ A ⨿ F) (PullbackCone.fst s) (range_fst_subset_range_inl_of_isCompl f g h hg s) ≫ (coprod.inl : A ⟶ A ⨿ F) = PullbackCone.fst s`. Simplify using `[IsOpenImmersion.lift_fac]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : m ≫ (coprod.inl : A ⟶ A ⨿ F) = IsOpenImmersion.lift (coprod.inl : A ⟶ A ⨿ F) (PullbackCone.fst s) (range_fst_subset_range_inl_of_isCompl f g h hg s) ≫ (coprod.inl : A ⟶ A ⨿ F)`. Rewrite using `[hm, hl]`. Conclude with `(cancel_mono _).mp h2`.
+A detailed English derivation is pending.
 -/
 private theorem isPullback_inl_coprod_desc {X A F : Scheme.{u}} (f : A ⟶ X) (g : F ⟶ X)
     {U V : X.Opens} (h : IsCompl U V)
@@ -616,9 +602,7 @@ private theorem isPullback_inl_coprod_desc {X A F : Scheme.{u}} (f : A ⟶ X) (g
     exact (cancel_mono _).mp h2
 
 /- English proof (translation)
-Establish `hpb` using `isPullback_inl_coprod_desc f g h hf hg`. Use `⟨hpb.isoPullback.symm, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Iso.symm_hom, Iso.inv_comp_eq]`. Conclude with `hpb.isoPullback_hom_snd.symm`. Rewrite using `[Iso.symm_inv]`.
-
-Conclude with `hpb.isoPullback_hom_fst`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_iso_pullback_coprod_desc_left {X A F : Scheme.{u}} (f : A ⟶ X) (g : F ⟶ X)
     {U V : X.Opens} (h : IsCompl U V)
@@ -643,9 +627,9 @@ private theorem range_opens_ι {X : Scheme.{u}} (U : X.Opens) :
   simp
 
 /- English proof (translation)
-Establish `h1 : U ⊓ V = ⊥` using `h.inf_eq_bot`. Establish `h2 : ((U ⊓ V : X.Opens) : Set ↥X) = ((⊥ : X.Opens) : Set ↥X)` using `by rw [h1]`. Establish `hd : (U : Set ↥X) ∩ (V : Set ↥X) = (∅ : Set ↥X)` using `by simpa using h2`. Establish `hx : x ∈ (∅ : Set ↥X)`. Rewrite using `[← hd]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨hU, hV⟩`. Simplify using `at hx`.
+Supply the required witnesses or components. Simplify using the standard rewrite rules.
 -/
 private theorem notMem_of_isCompl {X : Scheme.{u}} {U V : X.Opens} (h : IsCompl U V)
     (x : ↥X) (hU : x ∈ (U : Set ↥X)) (hV : x ∈ (V : Set ↥X)) : False := by
@@ -658,13 +642,11 @@ private theorem notMem_of_isCompl {X : Scheme.{u}} {U V : X.Opens} (h : IsCompl 
   simp at hx
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨t, rfl⟩`. Rewrite using `[range_coprod_inr_eq_compl A F, Set.mem_compl_iff]`. Introduce and unpack `⟨a, ha⟩`. Establish `hc` using `congrArg (fun m : s.pt ⟶ X => m.base t) s.condition`. Establish `e1 : (coprod.desc f g).base ((PullbackCone.fst s).base t) = V.ι.base ((PullbackCone.snd s).base t)`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← base_comp_apply, ← base_comp_apply]`. Conclude with `hc`. Establish `hd : (coprod.inl : A ⟶ A ⨿ F) ≫ coprod.desc f g = f` using `coprod.inl_desc f g`. Establish `e2 : (coprod.desc f g).base ((coprod.inl : A ⟶ A ⨿ F).base a) = f.base a`. Rewrite using `[← base_comp_apply, hd]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hfa : f.base a = V.ι.base ((PullbackCone.snd s).base t)`. Rewrite using `[← e2, ha, e1]`. Use `notMem_of_isCompl h (f.base a) ?_ ?_` and prove the remaining obligations. Rewrite using `[← range_opens_ι U]`. Conclude with `hf (Set.mem_range_self a)`.
-
-Rewrite using `[hfa, ← range_opens_ι V]`. Conclude with `Set.mem_range_self _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem range_fst_subset_range_inr_of_isCompl {X A F : Scheme.{u}} (f : A ⟶ X)
     (g : F ⟶ X) {U V : X.Opens} (h : IsCompl U V)
@@ -691,13 +673,13 @@ private theorem range_fst_subset_range_inr_of_isCompl {X A F : Scheme.{u}} (f : 
     exact Set.mem_range_self _
 
 /- English proof (translation)
-Establish `hinr : (coprod.inr : F ⟶ A ⨿ F) ≫ coprod.desc f g = g` using `coprod.inr_desc f g`. Establish `hliftfac : IsOpenImmersion.lift V.ι g hg ≫ V.ι = g` using `IsOpenImmersion.lift_fac V.ι g hg`. Establish `hw : (coprod.inr : F ⟶ A ⨿ F) ≫ coprod.desc f g = IsOpenImmersion.lift V.ι g hg ≫ V.ι` using `hinr.trans hliftfac.symm`. Use `IsPullback.of_isLimit' ⟨hw⟩ (PullbackCone.IsLimit.mk hw (fun s => IsOpenImmersion.lift (coprod.inr : F ⟶ A ⨿ F) (PullbackCone.fst s) (range_fst_subset_range_inr_of_isCompl f g h hf s)) ?_ ?_ ?_)` and prove the remaining obligations. Introduce `s`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[IsOpenImmersion.lift_fac]`. Introduce `s`. Establish `hl : IsOpenImmersion.lift (coprod.inr : F ⟶ A ⨿ F) (PullbackCone.fst s) (range_fst_subset_range_inr_of_isCompl f g h hf s) ≫ (coprod.inr : F ⟶ A ⨿ F) = PullbackCone.fst s`. Simplify using `[IsOpenImmersion.lift_fac]`. Establish `h2 : (IsOpenImmersion.lift (coprod.inr : F ⟶ A ⨿ F) (PullbackCone.fst s) (range_fst_subset_range_inr_of_isCompl f g h hf s) ≫ IsOpenImmersion.lift V.ι g hg) ≫ V.ι = PullbackCone.snd s ≫ V.ι`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[Category.assoc, ← hw, ← Category.assoc, hl]`. Conclude with `s.condition`. Conclude with `(cancel_mono _).mp h2`. Introduce `s m hm _`. Establish `hl : IsOpenImmersion.lift (coprod.inr : F ⟶ A ⨿ F) (PullbackCone.fst s) (range_fst_subset_range_inr_of_isCompl f g h hf s) ≫ (coprod.inr : F ⟶ A ⨿ F) = PullbackCone.fst s`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[IsOpenImmersion.lift_fac]`. Establish `h2 : m ≫ (coprod.inr : F ⟶ A ⨿ F) = IsOpenImmersion.lift (coprod.inr : F ⟶ A ⨿ F) (PullbackCone.fst s) (range_fst_subset_range_inr_of_isCompl f g h hf s) ≫ (coprod.inr : F ⟶ A ⨿ F)`. Rewrite using `[hm, hl]`. Conclude with `(cancel_mono _).mp h2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isPullback_inr_coprod_desc {X A F : Scheme.{u}} (f : A ⟶ X) (g : F ⟶ X)
     {U V : X.Opens} (h : IsCompl U V)
@@ -739,9 +721,7 @@ private theorem isPullback_inr_coprod_desc {X A F : Scheme.{u}} (f : A ⟶ X) (g
     exact (cancel_mono _).mp h2
 
 /- English proof (translation)
-Establish `hpb` using `isPullback_inr_coprod_desc f g h hf hg`. Use `⟨hpb.isoPullback.symm, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Iso.symm_hom, Iso.inv_comp_eq]`. Conclude with `hpb.isoPullback_hom_snd.symm`. Rewrite using `[Iso.symm_inv]`.
-
-Conclude with `hpb.isoPullback_hom_fst`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_iso_pullback_coprod_desc_right {X A F : Scheme.{u}} (f : A ⟶ X) (g : F ⟶ X)
     {U V : X.Opens} (h : IsCompl U V)
@@ -759,15 +739,15 @@ theorem exists_iso_pullback_coprod_desc_right {X A F : Scheme.{u}} (f : A ⟶ X)
     exact hpb.isoPullback_hom_fst
 
 /- English proof (translation)
-The claim follows from `@HasRingHomProperty.instIsZariskiLocalAtSource (@Smooth.{u}) RingHom.Smooth inferInstance`.
+A detailed English derivation is pending.
 -/
 private theorem isZariskiLocalAtSource_smooth : IsZariskiLocalAtSource (@Smooth.{u}) :=
   @HasRingHomProperty.instIsZariskiLocalAtSource (@Smooth.{u}) RingHom.Smooth inferInstance
 
 /- English proof (translation)
-Use `isZariskiLocalAtSource_smooth.of_openCover (coprodOpenCover.{u, u} A B) ?_` and prove the remaining obligations. Introduce `i`. Consider the cases of `i with`. Consider the case `inl _ => show Smooth ((coprod.inl : A ⟶ A ⨿ B) ≫ coprod.desc f g)`. Rewrite using `[coprod.inl_desc]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hf`. Consider the case `inr _ => show Smooth ((coprod.inr : B ⟶ A ⨿ B) ≫ coprod.desc f g)`. Rewrite using `[coprod.inr_desc]`. Conclude with `hg`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smooth_coprod_desc {X A B : Scheme.{u}} (f : A ⟶ X) (g : B ⟶ X)
     (hf : Smooth f) (hg : Smooth g) : Smooth (coprod.desc f g) := by
@@ -784,7 +764,7 @@ theorem smooth_coprod_desc {X A B : Scheme.{u}} (f : A ⟶ X) (g : B ⟶ X)
       exact hg
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hcon`. Establish `: Nontrivial ↥(X.presheaf.obj (Opposite.op V))` using `not_subsingleton_iff_nontrivial.mp hcon`. Take `⟨p⟩ : Nonempty (PrimeSpectrum ↥(X.presheaf.obj (Opposite.op V)))` from `inferInstance`. Conclude with `IsEmpty.false (hV.fromSpec.base p)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem subsingleton_presheaf_of_isEmpty {X : Scheme.{u}} [IsEmpty ↥X] {V : X.Opens}
     (hV : IsAffineOpen V) : Subsingleton ↥(X.presheaf.obj (Opposite.op V)) := by
@@ -795,7 +775,7 @@ private theorem subsingleton_presheaf_of_isEmpty {X : Scheme.{u}} [IsEmpty ↥X]
   exact IsEmpty.false (hV.fromSpec.base p)
 
 /- English proof (translation)
-Establish `hloc : IsLocalization.Away (0 : R) S` using `{ map_units := fun y => ⟨1, Subsingleton.elim _ _⟩ surj := fun z => ⟨⟨0, 1⟩, Subsingleton.elim _ _⟩ exists_of_eq := fun _ => ⟨⟨0, Submonoid.mem_powers 0⟩, by simp⟩ }`. Conclude with `⟨Algebra.FormallySmooth.of_isLocalization (Submonoid.powers (0 : R)), IsLocalization.Away.finitePresentation (0 : R)⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 private theorem algebra_smooth_of_subsingleton (R S : Type u) [CommRing R] [CommRing S]
     [Algebra R S] [Subsingleton S] : Algebra.Smooth R S := by
@@ -807,14 +787,14 @@ private theorem algebra_smooth_of_subsingleton (R S : Type u) [CommRing R] [Comm
     IsLocalization.Away.finitePresentation (0 : R)⟩
 
 /- English proof (translation)
-The claim follows from `@algebra_smooth_of_subsingleton R S _ _ φ.toAlgebra hS`.
+A detailed English derivation is pending.
 -/
 private theorem ringHom_smooth_of_subsingleton {R S : Type u} [CommRing R] [CommRing S]
     (hS : Subsingleton S) (φ : R →+* S) : RingHom.Smooth φ :=
   @algebra_smooth_of_subsingleton R S _ _ φ.toAlgebra hS
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `U _ V hV e`. Conclude with `ringHom_smooth_of_subsingleton (subsingleton_presheaf_of_isEmpty hV) (CommRingCat.Hom.hom (Scheme.Hom.appLE f U V e))`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem smooth_of_isEmpty {X Y : Scheme.{u}} (f : X ⟶ Y) [IsEmpty ↥X] : Smooth f := by
   constructor

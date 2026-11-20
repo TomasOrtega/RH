@@ -18,9 +18,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.HL.StabIntCoord
 
 /- English proof (translation)
-Establish `heq` using `((GlobalTheory.HL.FrameStab.stab_eq L r k S).2 s s' hs hs').2 ⟨x, hx, h1, h2⟩`. Establish `hint` using `((GlobalTheory.HL.BlockStab.stabiliser_blockDiag L r k S).1 s s' hs hs' heq).2`. Establish `hli` using `(GlobalTheory.FrameBasic.main L r k S).1`. Establish `hl1 : LinearIndependent E S.f` using `hli.comp Sum.inl Sum.inl_injective`. Establish `hl2 : LinearIndependent E S.f'` using `hli.comp Sum.inr Sum.inr_injective`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1` using `GlobalTheory.T.mem_stabilizer_span_iff_unitriangular_integral L S.f hl1 x s hs h1`. Establish `e2` using `GlobalTheory.T.mem_stabilizer_span_iff_unitriangular_integral L S.f' hl2 x s' hs' h2`. Unfold `Frames.K0`. Simplify using `only [Subgroup.mem_inf]`. Rewrite using `[e1, e2, hint]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 The claim follows by propositional logic.
 -/
@@ -48,11 +48,11 @@ namespace GlobalTheory.HL.StabIntCoord
 open IsDedekindDomain
 
 /- English proof (translation)
-Establish `hc : ∀ m : ℕ, ((c : (A.loc p).Fp) ^ m) ≠ 0` using `fun m => pow_ne_zero _ c.ne_zero`. Establish `hvl : ∀ a : Fin (r + 1), vl a = algebraMap (A.loc p).Fp (A.loc p).Ep (((c : (A.loc p).Fp) ^ (r - (a : ℕ)))⁻¹) • A.bc p (v a)`. Introduce `a`. Rewrite using `[← hv a, smul_smul, ← map_mul, inv_mul_cancel₀ (hc _), map_one, one_smul]`. Establish `hbc : ∀ (l : Fin (r + 1) → E) (w : Fin (r + 1) → Fin n → E), A.bc p (∑ a, l a • w a) = ∑ a, (A.loc p).ιE (l a) • A.bc p (w a)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `l w`. Use function extensionality and compare the values at `i`. Simplify using `[Places.bc, Finset.sum_apply, map_sum, smul_eq_mul, map_mul]`. Rewrite using `[hvl b, map_smul, hE, hM b, hbc, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hv a, smul_smul, smul_smul]`. Use `congr 1`. Rewrite using `[div_eq_mul_inv, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem loc_act {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {sig : E →ₐ[F] E}
     (A : Places F E sig) {n r : ℕ} (p : HeightOneSpectrum (𝓞 F)) (c : ((A.loc p).Fp)ˣ)
@@ -85,35 +85,29 @@ namespace GlobalTheory.HL.StabIntCoord
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D X Y u u' _ _ w F00 F'0 FP _ _ _ G c x hx B hB`. Take `⟨s, s', hs, hs', hsf, hsf'⟩` from `GlobalTheory.T.globalFrameStabilizer_acts_unitriangular _ _ _ G x hx`. Establish `key : ∀ p : PlF D, (∃ g' ∈ (G.S p).K0, (placesOf (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D)).Ext p x g') ↔ ∀ a b : Fin (D.R.rS + 1), a < b → (D.s.atP p).ιE (B a b) * (algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (Y.δ p) * (D.s.atP p).ιE (uP p : D.host.E)) ^ ((b : ℕ) - (a : ℕ)) ∈ (Y.M p).L.O`. Introduce `p`. Use `haveI := (D.s.atP p).lf`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `haveI := (D.s.atP p).char0`. Use `haveI : IsNonarchimedeanLocalField ((placesOf (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D)).loc p).Fp := (D.s.atP p).lf`. Use `haveI : CharZero ((placesOf (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D)).loc p).Fp := (D.s.atP p).char0`. Take `⟨xp, hxp, hExt⟩` from `hx p`. Establish `huniq` using `((GlobalTheory.HL.RatExt.rational_extend (placesOf (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D)) _ p).2.2.1 x)`.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Establish `hK : (∃ g' ∈ (G.S p).K0, (placesOf (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D)).Ext p x g') ↔ xp ∈ (G.S p).K0`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g', hg', hgE⟩`. Rewrite using `[huniq.unique hExt hgE]` and apply the resulting hypothesis. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨xp, h, hExt⟩`. Rewrite using `[hK]`. Establish `h1` using `loc_act (placesOf (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D)) p (G.c p) x xp hExt G.f (G.S p).f (G.f_eq p) s hsf`. Establish `h2` using `loc_act (placesOf (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D)) p (G.c p) x xp hExt G.f' (G.S p).f' (G.f'_eq p) s' hsf'`. Establish `h3` using `loc_act (placesOf (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D)) p (G.c p) x xp hExt G.f' (G.S p).f' (G.f'_eq p) B hB`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hceq : algebraMap ((placesOf (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D)).loc p).Fp ((placesOf (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D)).loc p).Ep (G.c p).val = algebraMap ((placesOf (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D)).loc p).Fp ((placesOf (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D)).loc p).Ep (Y.δ p) * ((place …` using `c.c_eq p`. Use `show _ ↔ ∀ a b : Fin (D.R.rS + 1), a < b → ((placesOf (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D)).loc p).ιE (B a b) * (algebraMap ((placesOf (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D)).loc p).Fp ((placesOf (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D)).loc p).Ep (Y.δ p) * ((placesOf (⟨Y.δ, Y.M, Y.agree⟩ : LocDat …`. Establish `hcne : ∀ m : ℕ, ((G.c p).val ^ m) ≠ 0` using `fun m => pow_ne_zero _ (G.c p).ne_zero`. Establish `huni : ∀ M : Matrix (Fin (D.R.rS + 1)) (Fin (D.R.rS + 1)) D.host.E, IsUni M → IsUni (fun a b : Fin (D.R.rS + 1) => algebraMap ((placesOf (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D)).loc p).Fp ((placesOf (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D)).loc p).Ep ((G.c p).val ^ (D.R.rS - (a : ℕ)) / (G.c p). …`. Introduce `M hM`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨fun i j hij => ?_, fun i => ?_⟩` and prove the remaining obligations. Simplify using `[hM.1 i j hij]`. Simplify using `[hM.2 i, div_self (hcne _)]`. Rewrite using `[mem_maxUnramifiedSubfield_conj_iff _ _ _ (G.S p) xp hxp _ _ (huni s hs) (huni s' hs') h1 h2]`. Establish `hli : LinearIndependent ((placesOf (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D)).loc p).Ep (G.S p).f'` using `(GlobalTheory.FrameBasic.main _ _ _ (G.S p)).1.comp Sum.inr Sum.inr_injective`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses repeatedly using the stated equalities.
 
-Establish `hsB : ∀ a b, ((placesOf (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D)).loc p).ιE (s' a b) = ((placesOf (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D)).loc p).ιE (B a b)`. Introduce `a b`. Establish `e` using `(h2 b).symm.trans (h3 b)`. Rewrite `e` using `[← sub_eq_zero, ← Finset.sum_sub_distrib]`. Rewrite `e` using `[← sub_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h0` using `Fintype.linearIndependent_iff.1 hli _ e a`. Establish `hu : IsUnit (algebraMap ((placesOf (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D)).loc p).Fp ((placesOf (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D)).loc p).Ep ((G.c p).val ^ (D.R.rS - (a : ℕ)) / (G.c p).val ^ (D.R.rS - (b : ℕ))))` using `(isUnit_iff_ne_zero.2 (div_ne_zero (hcne _) (hcne _))).map _`. Rewrite `h0` using `[← mul_sub, hu.mul_right_eq_zero, sub_eq_zero]`. Conclude with `h0`. Establish `hent : ∀ a b : Fin (D.R.rS + 1), a < b → algebraMap ((placesOf (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D)).loc p).Fp ((placesOf (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D)).loc p).Ep ((G.c p).val ^ (D.R.rS - (a : ℕ)) / (G.c p).val ^ (D.R.rS - (b : ℕ))) * ((placesOf (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D)).l …`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a b hab`. Establish `hab' : (a : ℕ) < b` using `hab`. Establish `hb` using `b.isLt`. Rewrite using `[show D.R.rS - (a : ℕ) = (D.R.rS - b) + ((b : ℕ) - a) by omega, pow_add, mul_div_cancel_left₀ _ (hcne _), map_pow, hceq, hsB, mul_comm]`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `h a b hab`. Rewrite using `[← hent a b hab]`. Conclude with `h a b`. Introduce `h a b`. Break down `lt_trichotomy a b with hab | rfl | hab` into its components or cases.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `beta_reduce`. Rewrite using `[hent a b hab]`. Conclude with `h a b hab`. Use `show _ ∈ _`. Simplify using `[hs'.2 a, div_self (hcne _)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show _ ∈ _`. Simplify using `[hs'.1 a b hab]`. Establish `hK0 : x ∈ G.K0 ↔ ∀ p, ∃ g' ∈ (G.S p).K0, (placesOf (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D)).Ext p x g'` using `Iff.rfl`. Rewrite using `[hK0, forall_congr' key]`. Establish `hI : ∀ a b : Fin (D.R.rS + 1), a < b → (B a b ∈ ((ddS D ^ (-((b : ℤ) - (a : ℤ))) : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E)) ↔ ∀ p : PlF D, (D.s.atP p).ιE (B a b) * (algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (Y.δ p) * (D.s.atP p).ιE (uP p : D.host.E)) ^ ((b : ℕ) - …`.
-
-Introduce `a b hab`. Establish `hab' : (a : ℕ) < b` using `hab`. Establish `hb` using `b.isLt`. Establish `hn : (b : ℕ) - (a : ℕ) ≤ D.R.rS` using `by omega`. Establish `e : (-((b : ℤ) - (a : ℤ))) = -((((b : ℕ) - (a : ℕ) : ℕ)) : ℤ)`.
-
-Rewrite using `[Nat.cast_sub hab'.le]`. Rewrite using `[e]`. Conclude with `GlobalTheory.T.mem_inv_pow_different_iff_local D ⟨Y.δ, Y.M, Y.agree⟩ _ hn (B a b)`. Prove the components needed by the constructor for the conclusion. Introduce `h a b hab`.
-
-Conclude with `(hI a b hab).2 fun p => h p a b hab`. Introduce `h p a b hab`. Conclude with `(hI a b hab).1 (h a b hab) p`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem integralStabiliser_iff_rational_coords_alt : ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (u u' : D.what₂.Word), Formalism.MainNotions.S.Cnt.Stand D u u' → 4 * D.R.rS + 7 ≤ D.R.k → ∀ (w : Point D.host.E (D.R.rS + 1)) (F00 : LFlag (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E)) (F'0 : LFlag (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E)) (FP : ∀ p : PlF D, LocNG.FPair (locH (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D) p) D.R.rS), ZhatOM (ZhatL F00 F'0) = ptMat w → Gval F00 F'0 ≠ 0 → (∀ p, AtBase (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D) p F00 F'0 (Tu D u) (Tu D u') (FP p) ∧ (FP p).RelG (LocNG.theta (Y.M p))) → ∀ (G : GFrames (placesOf (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D)) D.R.rS D.R.k) (c : GCoord (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D) F00 F'0 FP G), ∀ x ∈ G.St, ∀ B : Formalism.L2.SG.PairVal.MatR D, (∀ b, x (G.f' b) = ∑ a, B a b • G.f' a) → (x ∈ G.K0 ↔ ∀ a b : Fin (D.R.rS + 1), a < b → B a b ∈ ((ddS D ^ (-((b : ℤ) - (a : ℤ))) : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E))) := by
   intro D X Y u u' _ _ w F00 F'0 FP _ _ _ G c x hx B hB

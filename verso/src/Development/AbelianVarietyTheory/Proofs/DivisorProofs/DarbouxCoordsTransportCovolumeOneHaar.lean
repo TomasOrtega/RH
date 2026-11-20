@@ -25,15 +25,13 @@ open MeasureTheory
 namespace GlobalTheory.DarbouxMeasure
 
 /- English proof (translation)
-Introduce `D S T κ _ e he ν 𝓕 hc`. Use `letI mP : MeasurableSpace ((κ → AF D.host.F) × (κ → AF D.host.F)) := borel _`. Use `haveI : BorelSpace ((κ → AF D.host.F) × (κ → AF D.host.F)) := ⟨rfl⟩`. Use `haveI : BorelSpace (Formalism.IndefR.Datum.WO S T) := ⟨rfl⟩`. Use `haveI : IsModuleTopology (AF D.host.F) (Matrix (Fin T.rank) (Fin S.rank) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.AE D.host.F D.host.E)) := inferInstanceAs (IsModuleTopology (AF D.host.F) (Fin T.rank → Fin S.rank → GlobalTheory.IndefiniteRowSideFullHecke.WeilTens …`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hH, hF, h1⟩` from `hc`. Establish `hc1 : Continuous e` using `IsModuleTopology.continuous_of_linearMap e.toLinearMap`. Establish `hc2 : Continuous e.symm` using `IsModuleTopology.continuous_of_linearMap e.symm.toLinearMap`. Set `h : Formalism.IndefR.Datum.WO S T ≃ₜ ((κ → AF D.host.F) × (κ → AF D.host.F))` to `{ toEquiv := e.toEquiv, continuous_toFun := hc1, continuous_invFun := hc2 }`. Set `m` to `h.toMeasurableEquiv`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Measure.map m ν, m '' 𝓕, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `AddEquiv.isAddHaarMeasure_map ν e.toAddEquiv hc1 hc2`. Set `r : GlobalTheory.WeilUnitaryTransport.ratPair D.host.F κ ≃ ratL T S` to `{ toFun := fun p => ⟨e.symm p, (he (e.symm p)).2 (by simpa using p.2)⟩ invFun := fun γ => ⟨e γ, (he γ).1 γ.2⟩ left_inv := fun p => by ext1; simp right_inv := fun γ => by ext1; simp }`. Use `hF.image_of_equiv m.toEquiv (m.measurePreserving_symm ν).quasiMeasurePreserving r ?_` and prove the remaining obligations. Introduce `g x`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Express the relevant statement in the definitionally equal form `e (e.symm (g : (κ → AF D.host.F) × (κ → AF D.host.F)) + x) = (g : (κ → AF D.host.F) × (κ → AF D.host.F)) + e x`. Rewrite using `[map_add, LinearEquiv.apply_symm_apply]`. Rewrite using `[MeasurableEquiv.map_apply, Set.preimage_image_eq _ m.injective, h1]`. Introduce `g`. Rewrite using `[m.measurableEmbedding.setIntegral_map, Set.preimage_image_eq _ m.injective]`.
-
-Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem transport_covol_one : ∀ (D : D7) (S T : HSp D) (κ : Type) [Fintype κ]
     (e : Matrix (Fin T.rank) (Fin S.rank) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.AE D.host.F D.host.E) ≃ₗ[AF D.host.F]

@@ -19,13 +19,13 @@ variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
   (B : FinHolAtlas e Y) {V : Y → Set Y} {μ : Y → Y → (Σ k, ι k) → ℂ} {h : Y → R.X}
 
 /- English proof (translation)
-Rewrite using `[continuous_iff_continuousAt]`. Introduce `y`. Rewrite using `[ContinuousAt, tendsto_iff_ultrafilter]`. Introduce `F hF`. Take `⟨x, -, hx⟩` from `isCompact_univ.ultrafilter_le_nhds (F.map h) (by simp)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hth : Tendsto h F (𝓝 x)` using `hx`. Establish `hUx : ∀ᶠ y' in (F : Filter Y), h y' ∈ R.U x` using `hth ((R.isOpen_U x).mem_nhds (R.mem_U x))`. Establish `hVy : ∀ᶠ y' in (F : Filter Y), y' ∈ V y` using `hF ((hVo y).mem_nhds (hVm y))`. Establish `hcr : ∀ k (i i' : ι k), R.lift x x ⟨k, i⟩ * μ y y ⟨k, i'⟩ = R.lift x x ⟨k, i'⟩ * μ y y ⟨k, i⟩`. Introduce `k i i'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `t1 : ∀ q, Tendsto (fun y' => R.lift x (h y') q) F (𝓝 (R.lift x x q))` using `fun q => (Proj.continuousAt_of_holoOn R.A (R.holo x q) (R.mem_U x)).tendsto.comp hth`. Establish `t2 : ∀ q, Tendsto (fun y' => μ y y' q) F (𝓝 (μ y y q))` using `fun q => (Proj.continuousAt_of_holoOn B (hμ y q) (hVm y)).tendsto.mono_left hF`. Use `tendsto_nhds_unique ((t1 ⟨k, i⟩).mul (t2 ⟨k, i'⟩)) (((t1 ⟨k, i'⟩).mul (t2 ⟨k, i⟩)).congr' ?_)` and prove the remaining obligations. Use `filter_upwards [hUx, hVy] with y' h1 h2`. Conclude with `Proj.orbit_cross (Proj.local_orbit R hVm hc hh h1 h2) k i' i`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hxy : SameOrbit (R.lift x x) (μ y y)` using `Proj.orbit_of_cross (R.mem x x (R.mem_U x)).1 (hne y) hcr`. Establish `hxe : x = h y` using `R.inj x (h y) (Proj.not_mem_mcPts_top _) (Proj.orbit_trans hxy (Proj.orbit_symm (hh y)))`. Rewrite using `[← hxe]`. Conclude with `hx`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_of_orbit_of_ne (hVo : ∀ y, IsOpen (V y)) (hVm : ∀ y, y ∈ V y)
     (hμ : ∀ y q, B.HoloOn (V y) fun u => μ y u q) (hne : ∀ y k, ∃ i, μ y y ⟨k, i⟩ ≠ 0)
@@ -60,15 +60,13 @@ theorem continuous_of_orbit_of_ne (hVo : ∀ y, IsOpen (V y)) (hVm : ∀ y, y �
 end Orbit
 
 /- English proof (translation)
-Introduce `K _ ι _ K' _ ι' _ P J P' J' D D' R R' g hJ hg`. Substitute `hJ` using the available equality. Use `choose Vs f hVs hxV hf hcomp using hg`. Establish `hcl : ∀ y, ContinuousOn (R'.lift y) (R'.U y)` using `fun y => continuousOn_pi.2 fun p x hx => (Proj.continuousAt_of_holoOn R'.A (R'.holo y p) hx).continuousWithinAt`. Set `V : R'.X → Set R'.X` to `fun y => R'.U y ∩ R'.lift y ⁻¹' Vs y`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `μ : R'.X → R'.X → (Σ k, ι k) → ℂ` to `fun y u => f y (R'.lift y u)`. Establish `hVo : ∀ y, IsOpen (V y)` using `fun y => (hcl y).isOpen_inter_preimage (R'.isOpen_U y) (hVs y)`. Establish `hVm : ∀ y, y ∈ V y` using `fun y => ⟨R'.mem_U y, hxV y⟩`. Establish `hμ : ∀ y q, R'.A.HoloOn (V y) fun u => μ y u q`. Introduce and unpack `y q j w ⟨hw, hwV⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `h1 : AnalyticAt ℂ (fun w' => R'.lift y ((R'.A.chart j).symm w')) w` using `AnalyticAt.pi fun p => R'.holo y p j w ⟨hw, hwV.1⟩`. Establish `h2 : AnalyticAt ℂ (f y ∘ fun w' => R'.lift y ((R'.A.chart j).symm w')) w` using `AnalyticAt.comp (hf y _ hwV.2) h1`. Conclude with `(ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : (Σ k, ι k) => ℂ) q).analyticAt _ |>.comp h2`. Establish `hor : ∀ y, ∀ u ∈ V y, SameOrbit (μ y u) (R.lift (g u) (g u))` using `fun y u hu => hcomp y _ ⟨hu.2, R'.mem y u hu.1⟩ u (R'.compat y u u ⟨hu.1, R'.mem_U u⟩)`. Establish `hc : ∀ y y', ∀ u ∈ V y ∩ V y', SameOrbit (μ y u) (μ y' u)` using `fun y y' u hu => Proj.orbit_trans (hor y u hu.1) (Proj.orbit_symm (hor y' u hu.2))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hh : ∀ y, SameOrbit (R.lift (g y) (g y)) (μ y y)` using `fun y => Proj.orbit_symm (hor y y (hVm y))`. Establish `hne : ∀ y k, ∃ i, μ y y ⟨k, i⟩ ≠ 0` using `fun y k => by`. Take `⟨i, hi⟩` from `(R.mem (g y) (g y) (R.mem_U _)).1 k`. Conclude with `⟨i, Proj.orbit_ne (hh y) hi⟩`. Establish `hcont : Continuous g` using `continuous_of_orbit_of_ne R R'.A hVo hVm hμ hne hc hh`.
-
-Conclude with `⟨hcont, Proj.analytic_of_orbit R R'.A hVo hVm hμ hc hh hcont⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem holoMap_of_local_analytic : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (K' : Type) [Fintype K'] (ι' : K' → Type) [∀ k, Fintype (ι' k)] (P J : Ideal (MRing ι)) (P' J' : Ideal (MRing ι')) (D D' : ℕ) (R : AnLogRes P J D) (R' : AnLogRes P' J' D') (g : R'.X → R.X), J = ⊤ → (∀ x, ∃ (V : Set ((Σ k, ι' k) → ℂ)) (f : ((Σ k, ι' k) → ℂ) → (Σ k, ι k) → ℂ), IsOpen V ∧ R'.lift x x ∈ V ∧ AnalyticOnNhd ℂ f V ∧ ∀ z' ∈ V ∩ mcPts P', ∀ x', SameOrbit z' (R'.lift x' x') → SameOrbit (f z') (R.lift (g x') (g x'))) → HoloMap R'.A R.A g := by
   intro K _ ι _ K' _ ι' _ P J P' J' D D' R R' g hJ hg

@@ -8,9 +8,9 @@ namespace GroundTheory.Heights₂.Heights.HilbertSamuel
 open ReciprocityTheory.ChartRestriction.G.Geo
 
 /- English proof (translation)
-Introduce `K _ ι _ Ω _ y D A hV hA`. Establish `h` using `hDG K ι (mCoordIdeal y) D (fun _ => A) hV (fun _ => hA)`. Establish `hpot : pot (fun _ : Fin D => A) = fun (_ : Fin D) z => Real.log (A.h z)` using `rfl`. Rewrite `h` using `[hpot]`. Unfold `geomDeg genDeg`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem GenDegGeomDeg.proof (hDG : GroundTheory.Heights₂.Heights.Inter.DegreeGeneric.Statement) :
     GenDegGeomDeg.Statement := by

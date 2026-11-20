@@ -3,6 +3,6 @@ import Formalism.PeriodIntegrals.ScGapBig
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.SpectralGapLarge.ScGapBigMain
 
 /- English proof (translation)
-The claim follows from `PI.UnitaryGroupMassFormula.ScGapBig.scGapBig_main`.
+A detailed English derivation is pending.
 -/
 theorem scGapBig : PI.ScGapBig.ScGapBig := PI.UnitaryGroupMassFormula.ScGapBig.scGapBig_main

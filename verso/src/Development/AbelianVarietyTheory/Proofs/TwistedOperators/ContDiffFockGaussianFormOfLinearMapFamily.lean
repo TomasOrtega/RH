@@ -6,15 +6,15 @@ open MeasureTheory
 namespace GlobalTheory.FockFamily
 
 /- English proof (translation)
-Introduce `hB hD hU`. Set `β₁ : V →ₗ[ℝ] (V →L[ℝ] ℝ)` to `(LinearMap.toContinuousLinearMap : (V →ₗ[ℝ] ℝ) ≃ₗ[ℝ] (V →L[ℝ] ℝ)).toLinearMap ∘ₗ β`. Set `βc : V →L[ℝ] V →L[ℝ] ℝ` to `LinearMap.toContinuousLinearMap β₁`. Establish `hβc : ∀ x y, βc x y = β x y` using `fun x y => rfl`. Establish `hC : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun t => Ring.inverse (blockB (J t)))`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[contDiff_iff_contDiffAt]`. Introduce `t`. Conclude with `(contDiffAt_ringInverse ℝ (hU t).unit).comp t hB.contDiffAt`. Establish `hDC : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun t => (blockD (J t)).comp (Ring.inverse (blockB (J t))))` using `hD.clm_comp hC`. Establish `hπ : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun _ : ℝ × V => (Real.pi : ℂ) * Complex.I)` using `contDiff_const`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hπ' : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun _ : ℝ => (Real.pi : ℂ) * Complex.I)` using `contDiff_const`. Establish `hR : ∀ {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] {f : E → ℝ}, ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) f → ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun e => ((f e : ℝ) : ℂ))` using `fun hf => Complex.ofRealCLM.contDiff.comp hf`. Prove the components needed by the constructor for the conclusion. Introduce `x y`. Establish `h1 : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun t => Real.pi * βc x (Ring.inverse (blockB (J t)) y))` using `contDiff_const.mul (contDiff_const.clm_apply (hC.clm_apply contDiff_const))`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun t => βc x (((blockD (J t)).comp (Ring.inverse (blockB (J t)))) y))` using `contDiff_const.clm_apply (hDC.clm_apply contDiff_const)`. Use `(hR h1).add (hπ'.mul (hR h2))` as an intermediate fact. Simplify `this` using `only [fockForm_apply, hβc, ContinuousLinearMap.comp_apply]`. Establish `hCp : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun p : ℝ × V => Ring.inverse (blockB (J p.1)) p.2)` using `(hC.comp contDiff_fst).clm_apply contDiff_snd`. Establish `hDCp : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun p : ℝ × V => ((blockD (J p.1)).comp (Ring.inverse (blockB (J p.1)))) p.2)` using `(hDC.comp contDiff_fst).clm_apply contDiff_snd`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hβp : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun p : ℝ × V => βc p.2)` using `βc.contDiff.comp contDiff_snd`. Establish `h1 : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun p : ℝ × V => Real.pi * βc p.2 (Ring.inverse (blockB (J p.1)) p.2))` using `contDiff_const.mul (hβp.clm_apply hCp)`. Establish `h2 : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun p : ℝ × V => βc p.2 (((blockD (J p.1)).comp (Ring.inverse (blockB (J p.1)))) p.2))` using `hβp.clm_apply hDCp`. Use `(hR h1).add (hπ.mul (hR h2))` as an intermediate fact. Simplify `this` using `only [fockForm_apply, hβc, ContinuousLinearMap.comp_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem fockForm_family_contDiff {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V]
     (β : V →ₗ[ℝ] V →ₗ[ℝ] ℝ)

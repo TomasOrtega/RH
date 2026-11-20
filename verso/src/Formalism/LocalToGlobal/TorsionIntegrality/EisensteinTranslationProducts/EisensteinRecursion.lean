@@ -8,31 +8,31 @@ import Formalism.LocalToGlobal.TorsionIntegrality.EisensteinTranslationProducts.
 namespace Formalism.L2.Th1.F
 
 /- English proof (translation)
-The claim follows from `weierstrass_numerator_denominator`.
+A detailed English derivation is pending.
 -/
 theorem wpNumDen : WpNumDen := weierstrass_numerator_denominator
 /- English proof (translation)
-The claim follows from `weierstrass_p_of_series`.
+A detailed English derivation is pending.
 -/
 theorem pOfIsWp : POfIsWp := weierstrass_p_of_series
 /- English proof (translation)
-The claim follows from `weierstrass_p_of_lattice`.
+A detailed English derivation is pending.
 -/
 theorem pOfLattice : POfLattice := weierstrass_p_of_lattice
 /- English proof (translation)
-The claim follows from `curve_weierstrass_series_eq`.
+A detailed English derivation is pending.
 -/
 theorem curveBridge : CurveBridge := curve_weierstrass_series_eq
 /- English proof (translation)
-The claim follows from `iotaExists_thm`.
+A detailed English derivation is pending.
 -/
 theorem iotaExists : IotaExists := iotaExists_thm
 /- English proof (translation)
-The claim follows from `sigma_universal`.
+A detailed English derivation is pending.
 -/
 theorem sigmaUniversal : SigmaUniversal := sigma_universal
 /- English proof (translation)
-The claim follows from `hasCMByIsogeny_of' isogenyFormulaInstance`.
+A detailed English derivation is pending.
 -/
 theorem hasCMByIsogeny : HasCMByIsogeny := hasCMByIsogeny_of' isogenyFormulaInstance
 

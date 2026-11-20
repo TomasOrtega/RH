@@ -13,21 +13,21 @@ theorem rop_apply_eq (K : Type) [Field K] (k : ℕ) (a b : Fin k) (f : Pol K k) 
     Rop K k a b f = X (Sum.inl a) * pderiv (Sum.inl b) f - X (Sum.inr b) * pderiv (Sum.inr a) f := rfl
 
 /- English proof (translation)
-Simplify using `[tt, Derivation.leibniz, pderiv_X, Pi.single_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pderiv_inl_tt (K : Type) [Field K] (k : ℕ) (b : Fin k) :
     pderiv (Sum.inl b) (tt K k) = X (Sum.inr b) := by
   simp [tt, Derivation.leibniz, pderiv_X, Pi.single_apply]
 
 /- English proof (translation)
-Simplify using `[tt, Derivation.leibniz, pderiv_X, Pi.single_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pderiv_inr_tt (K : Type) [Field K] (k : ℕ) (a : Fin k) :
     pderiv (Sum.inr a) (tt K k) = X (Sum.inl a) := by
   simp [tt, Derivation.leibniz, pderiv_X, Pi.single_apply]
 
 /- English proof (translation)
-Introduce `K _ _ k a b g`. Rewrite using `[rop_apply_eq, rop_apply_eq]`. Simplify using `only [Derivation.leibniz, pderiv_inl_tt, pderiv_inr_tt, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem rttRelation : RTT := by
   intro K _ _ k a b g
@@ -36,13 +36,13 @@ theorem rttRelation : RTT := by
   ring
 
 /- English proof (translation)
-Rewrite using `[f.as_sum, map_sum, Finset.mul_sum]`. Apply `IsWeightedHomogeneous.sum` to reduce the goal to its premises. Introduce `m hm`. Establish `hwm : weight w m = n` using `hf (MvPolynomial.mem_support_iff.1 hm)`. Rewrite using `[pderiv_monomial]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hmj : m j = 0`. Simplify using `[hmj, isWeightedHomogeneous_zero]`. Establish `hle : Finsupp.single j 1 ≤ m`. Rewrite using `[Finsupp.single_le_iff]`. Use linear arithmetic over natural numbers and integers.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Establish `hs : ∀ v, weight w (Finsupp.single v 1) = w v`. Introduce `v`. Simplify using `[Finsupp.weight_apply, Finsupp.sum_single_index]`. Establish `h1 : weight w (m - Finsupp.single j 1) + w j = n`. Rewrite using `[← hs j, ← map_add, tsub_add_cancel_of_le hle, hwm]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[X, monomial_mul, one_mul]`. Apply `isWeightedHomogeneous_monomial` to reduce the goal to its premises. Rewrite using `[map_add, hs i, hij, add_comm, h1]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem iwh_X_pderiv {σ : Type} {K : Type} [Field K] (w : σ → ℕ) (i j : σ) (hij : w i = w j)
     {f : MvPolynomial σ K} {n : ℕ} (hf : IsWeightedHomogeneous w f n) :
@@ -68,11 +68,9 @@ theorem iwh_X_pderiv {σ : Type} {K : Type} [Field K] (w : σ → ℕ) (i j : σ
     rw [map_add, hs i, hij, add_comm, h1]
 
 /- English proof (translation)
-Introduce `K _ _ k d a b f hf`. Establish `hf' : f ∈ weightedHomogeneousSubmodule K (wx k) d ⊓ weightedHomogeneousSubmodule K (wxi k) d` using `hf`. Take `⟨h1, h2⟩` from `Submodule.mem_inf.1 hf'`. Rewrite `h1`, `h2` using `[mem_weightedHomogeneousSubmodule]`. Use `show Rop K k a b f ∈ weightedHomogeneousSubmodule K (wx k) d ⊓ weightedHomogeneousSubmodule K (wxi k) d`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[rop_apply_eq]`. Apply the tactic sequence `refine Submodule.mem_inf.2 ⟨Submodule.sub_mem _ ?_ ?_, Submodule.sub_mem _ ?_ ?_⟩ <;>`. Rewrite using `[mem_weightedHomogeneousSubmodule]`. Conclude with `iwh_X_pderiv _ _ _ (by simp [wx]) h1`. Conclude with `iwh_X_pderiv _ _ _ (by simp [wx]) h1`.
-
-Conclude with `iwh_X_pderiv _ _ _ (by simp [wxi]) h2`. Conclude with `iwh_X_pderiv _ _ _ (by simp [wxi]) h2`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem polarizationBihomogeneous : RBihom := by
   intro K _ _ k d a b f hf
@@ -89,13 +87,13 @@ theorem polarizationBihomogeneous : RBihom := by
   · exact iwh_X_pderiv _ _ _ (by simp [wxi]) h2
 
 /- English proof (translation)
-Proceed by induction on `f using MvPolynomial.induction_on'`. Use `next u a =>`. Rewrite using `[pderiv_monomial]`. Distinguish the cases in `hu : u i = 0`. Distinguish the cases in `h : u = m`.
+Proceed by induction. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `h` using the available equality. Simplify using `[hu]`. Simplify using `[hu, coeff_monomial, h]`. Establish `hle : Finsupp.single i 1 ≤ u`. Rewrite using `[Finsupp.single_le_iff]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[X, monomial_mul, one_mul, add_tsub_cancel_of_le hle, coeff_monomial, coeff_monomial]`. Use `split_ifs with h`. Substitute `h` using the available equality. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Substitute using the available equality. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Use `next p q hp hq =>`. Simplify using `only [map_add, mul_add, coeff_add, hp, hq, add_mul]`.
+A detailed English derivation is pending.
 -/
 theorem coeff_X_pderiv_self {σ : Type} {K : Type} [Field K] (i : σ) (f : MvPolynomial σ K)
     (m : σ →₀ ℕ) : coeff m (X i * pderiv i f) = coeff m f * (m i : K) := by
@@ -120,9 +118,9 @@ theorem coeff_X_pderiv_self {σ : Type} {K : Type} [Field K] (i : σ) (f : MvPol
     simp only [map_add, mul_add, coeff_add, hp, hq, add_mul]
 
 /- English proof (translation)
-Introduce `K _ _ k a w f h m hm`. Establish `h1` using `congrArg (coeff m) h`. Rewrite `h1` using `[rop_apply_eq, coeff_sub, coeff_X_pderiv_self, coeff_X_pderiv_self, coeff_smul]`. Establish `hc : coeff m f ≠ 0` using `MvPolynomial.mem_support_iff.1 hm`. Establish `h2 : (((m (Sum.inl a) : ℤ) - m (Sum.inr a) : ℤ) : K) = (w : K)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `mul_left_cancel₀ hc` to reduce the goal to its premises. Use `push_cast`. Take the linear combination `h1`. Conclude with `h2` after adjusting the coercions.
+Reduce the claim to the hypotheses of an applicable result. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem weightOfEigenvector : WtOfEig := by
   intro K _ _ k a w f h m hm
@@ -139,14 +137,14 @@ def va (k : ℕ) (a : Fin k) : Fin k ⊕ Fin k → ℤ :=
   Sum.elim (fun i => if i = a then 1 else 0) (fun i => if i = a then -1 else 0)
 
 /- English proof (translation)
-Simplify using `[Finsupp.weight_apply, Finsupp.sum_fintype, va, Fintype.sum_sum_type, sub_eq_add_neg]`.
+Simplify using the standard rewrite rules.
 -/
 theorem weight_va (k : ℕ) (a : Fin k) (m : Fin k ⊕ Fin k →₀ ℕ) :
     weight (va k a) m = (m (Sum.inl a) : ℤ) - m (Sum.inr a) := by
   simp [Finsupp.weight_apply, Finsupp.sum_fintype, va, Fintype.sum_sum_type, sub_eq_add_neg]
 
 /- English proof (translation)
-Use `show IsWeightedHomogeneous (va k a) (∑ i, X (Sum.inl i) * X (Sum.inr i) : Pol K k) 0`. Apply `IsWeightedHomogeneous.sum` to reduce the goal to its premises. Introduce `i _`. Establish `h` using `(isWeightedHomogeneous_X K (va k a) (Sum.inl i)).mul (isWeightedHomogeneous_X K (va k a) (Sum.inr i))`. Apply the tactic sequence `by_cases hi : i = a <;> simpa [va, hi] using h`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem tt_va (K : Type) [Field K] (k : ℕ) (a : Fin k) :
     IsWeightedHomogeneous (va k a) (tt K k) 0 := by
@@ -158,15 +156,15 @@ theorem tt_va (K : Type) [Field K] (k : ℕ) (a : Fin k) :
   by_cases hi : i = a <;> simpa [va, hi] using h
 
 /- English proof (translation)
-Use extensionality with `d`. Rewrite using `[coeff_weightedHomogeneousComponent, coeff_mul, coeff_mul]`. Use `split_ifs with hd`. Use `Finset.sum_congr rfl fun x hx => ?_` and prove the remaining obligations. Rewrite using `[coeff_weightedHomogeneousComponent]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h0 : coeff x.1 φ = 0`. Simplify using `[h0]`. Establish `hx0` using `hφ h0`. Establish `hsum` using `by simpa using hx`. Establish `hw : weight w x.2 = n`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hd, ← hsum, map_add, hx0, zero_add]`. Rewrite using `[if_pos hw]`. Use `symm`. Use `Finset.sum_eq_zero fun x hx => ?_` and prove the remaining obligations. Rewrite using `[coeff_weightedHomogeneousComponent]`.
+Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h0 : coeff x.1 φ = 0`. Simplify using `[h0]`. Establish `hx0` using `hφ h0`. Establish `hsum` using `by simpa using hx`. Establish `hw : weight w x.2 ≠ n`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hd` using `[← hsum, map_add, hx0, zero_add]`. Conclude with `hd`. Rewrite using `[if_neg hw, mul_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comp_mul_zero {σ : Type} {K : Type} [Field K] (w : σ → ℤ) {φ : MvPolynomial σ K}
     (hφ : IsWeightedHomogeneous w φ 0) (n : ℤ) (ψ : MvPolynomial σ K) :
@@ -197,7 +195,7 @@ theorem comp_mul_zero {σ : Type} {K : Type} [Field K] (w : σ → ℤ) {φ : Mv
       rw [if_neg hw, mul_zero]
 
 /- English proof (translation)
-Introduce `h`. Establish `h1` using `congrArg (eval (fun _ : Fin k ⊕ Fin k => (1 : K))) h`. Simplify using `[tt] at h1`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem tt_ne_zero (K : Type) [Field K] [CharZero K] (k : ℕ) (hk : 0 < k) : tt K k ≠ 0 := by
   intro h
@@ -206,15 +204,13 @@ theorem tt_ne_zero (K : Type) [Field K] [CharZero K] (k : ℕ) (hk : 0 < k) : tt
   omega
 
 /- English proof (translation)
-Introduce `K _ _ k c g h m hm a`. Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`. Take `⟨n, hn⟩ : ∃ n : ℤ, n = (m (Sum.inl a) : ℤ) - m (Sum.inr a)` from `⟨_, rfl⟩`. Establish `hwm : weight (va k a) m = n` using `by rw [weight_va, hn]`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hk : 0 < k` using `Fin.pos a`. Establish `hcomp : weightedHomogeneousComponent (va k a) n g ≠ 0`. Introduce `h0`. Establish `h3` using `congrArg (coeff m) h0`. Rewrite `h3` using `[coeff_weightedHomogeneousComponent, if_pos hwm]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(MvPolynomial.mem_support_iff.1 hm) (by simpa using h3)`. Establish `hprod : weightedHomogeneousComponent (va k a) n (tt K k * g) ≠ 0`. Rewrite using `[comp_mul_zero (va k a) (tt_va K k a) n g]`. Conclude with `mul_ne_zero (tt_ne_zero K k hk) hcomp`. Apply `hprod` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Use extensionality with `m'`. Rewrite using `[coeff_weightedHomogeneousComponent, coeff_zero]`. Use `split_ifs with hw`. Assume the negation of the conclusion as `hne`. Establish `h4` using `h m' (MvPolynomial.mem_support_iff.2 hne) a`.
-
-Rewrite `hw` using `[weight_va]`. Use linear arithmetic over natural numbers and integers. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem pairingWeightCancel : TTWt := by
   intro K _ _ k c g h m hm a

@@ -5,9 +5,9 @@ open NumberField
 namespace GlobalTheory.CompanionTheory.Ar.Flat
 
 /- English proof (translation)
-Take `⟨φ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Apply `φ.injective` to reduce the goal to its premises. Establish `h1 : ‖φ x‖ = 1`. Establish `h : ‖φ x‖ ^ n = 1` using `by rw [← norm_pow, ← map_pow, hx, map_one, norm_one]`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) hn.ne').1 h`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, IsCMField.complexEmbedding_complexConj, map_one, Complex.mul_conj, Complex.normSq_eq_norm_sq, h1]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem root_mul_complexConj_eq_one {E : Type} [Field E] [NumberField E] [IsCMField E]
     (x : E) (n : ℕ) (hn : 0 < n) (hx : x ^ n = 1) : x * IsCMField.complexConj E x = 1 := by
@@ -21,13 +21,13 @@ theorem root_mul_complexConj_eq_one {E : Type} [Field E] [NumberField E] [IsCMFi
   simp
 
 /- English proof (translation)
-Introduce `E _ _ _ bar hbar I M hM hI hco u n hn hu h1`. Establish `hub : u * bar u = 1`. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Establish `hx : (u : E) ^ n = 1`. Use `congrArg (fun a : 𝓞 E => (a : E)) hu` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using this`. Use `root_mul_complexConj_eq_one (u : E) n hn hx` as an intermediate fact. Rewrite `this` using `[← hbar]`. Simplify using `using this`. Establish `h2 : bar u - 1 ∈ I.map (bar : 𝓞 E →+* 𝓞 E)`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `Ideal.mem_map_of_mem (bar : 𝓞 E →+* 𝓞 E) h1` as an intermediate fact. Simplify using `using this`. Establish `h3 : u - 1 ∈ I.map (bar : 𝓞 E →+* 𝓞 E)`. Establish `e : u - 1 = (-u) * (bar u - 1)` using `by linear_combination hub`. Rewrite using `[e]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.mul_mem_left _ _ h2`. Establish `h4 : u - 1 ∈ Ideal.span {(M : 𝓞 E)}`. Rewrite using `[← hI, Ideal.mul_eq_inf_of_isCoprime (Ideal.isCoprime_iff_sup_eq.2 hco)]`. Conclude with `⟨h1, h3⟩`. Conclude with `GlobalTheory.CompanionTheory.Ar.Flat.root_of_unity_eq_one_of_dvd_sub_one E u n M hn hu hM (Ideal.mem_span_singleton.1 h4)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem root_eq_one_of_halfLevel : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (bar : 𝓞 E ≃+* 𝓞 E), (∀ a : 𝓞 E, ((bar a : 𝓞 E) : E) = IsCMField.complexConj E (a : E)) → ∀ (I : Ideal (𝓞 E)) (M : ℕ), 3 ≤ M → I * I.map (bar : 𝓞 E →+* 𝓞 E) = Ideal.span {(M : 𝓞 E)} → I ⊔ I.map (bar : 𝓞 E →+* 𝓞 E) = ⊤ → ∀ (u : 𝓞 E) (n : ℕ), 0 < n → u ^ n = 1 → u - 1 ∈ I → u = 1 := by
   intro E _ _ _ bar hbar I M hM hI hco u n hn hu h1

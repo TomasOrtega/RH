@@ -19,7 +19,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.StdUnn.ConjElt
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul r y => simp [compInf, Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem compInf_sigR_comm {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] (σ : E →ₐ[F] E)
     (w : NumberField.InfinitePlace F) (x : AF F ⊗[F] E) :
@@ -30,7 +30,7 @@ theorem compInf_sigR_comm {F E : Type} [Field F] [NumberField F] [Field E] [Alge
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Simplify using `[compInf, Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.inclR]`.
+Simplify using the standard rewrite rules.
 -/
 theorem compInf_inclR_eq {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E]
     (w : NumberField.InfinitePlace F) (y : E) :
@@ -38,11 +38,11 @@ theorem compInf_inclR_eq {F E : Type} [Field F] [NumberField F] [Field E] [Algeb
   simp [compInf, Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.inclR]
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `ha w`. Rewrite `hs` using `[← hbw w]`. Establish `h1 : ((b.1.map (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR (AF F) σ))ᵀ).map (compInf F E w) = Formalism.UG.cT (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR w.Completion σ) (Formalism.UG.bc (compInf F E w) b).1` using `Matrix.ext fun i j => compInf_sigR_comm σ w _`. Establish `h2 : (J.map (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.inclR (F` using `F) (AF F))).map (compInf F E w) = Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.JR (F := F) w.Completion J := Matrix.ext fun i j => compInf_inclR_eq w _`. Establish `hH : ((b.1.map (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR (AF F) σ))ᵀ * J.map (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.inclR (AF F)) * b.1).map (compInf F E w) = Matrix.diagonal fun i => if s i = true then 1 else -1`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hs, Matrix.map_mul, Matrix.map_mul, h1, h2]`. Both sides reduce to the same expression. Rewrite using `[Matrix.map_mul, hH, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Apply the tactic sequence `split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sq_real_of_majorant {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] (σ : E →ₐ[F] E) {n : ℕ}
     (J : Matrix (Fin n) (Fin n) E) (a b : GL (Fin n) (AF F ⊗[F] E)) (ha : IsMajorantFrame σ J a)
@@ -68,9 +68,9 @@ theorem sq_real_of_majorant {F E : Type} [Field F] [NumberField F] [Field E] [Al
   split_ifs <;> simp
 
 /- English proof (translation)
-Establish `h : Formalism.UG.cT c (blkMat finSumFinEquiv b b * M) = Formalism.UG.cT c M * Formalism.UG.cT c (blkMat finSumFinEquiv b b)`. Rewrite using `[Formalism.UG.cT, Matrix.map_mul, Matrix.transpose_mul]`. Both sides reduce to the same expression. Establish `h2 : Formalism.UG.cT c (blkMat finSumFinEquiv b b) * dblGram finSumFinEquiv J * blkMat finSumFinEquiv b b = dblGram finSumFinEquiv (Formalism.UG.cT c b * J * b)`. Rewrite using `[cT_blkMat, dblGram, dblGram, blkMat_mul, blkMat_mul, Matrix.mul_neg, Matrix.neg_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h, ← h2]`. Simplify using `only [Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem gram_blk_mul {R : Type} [CommRing R] (c : R →+* R) {n : ℕ} (b J : Matrix (Fin n) (Fin n) R)
     (M : Matrix (Fin (n + n)) (Fin (n + n)) R) :
@@ -86,7 +86,7 @@ theorem gram_blk_mul {R : Type} [CommRing R] (c : R →+* R) {n : ℕ} (b J : Ma
   simp only [Matrix.mul_assoc]
 
 /- English proof (translation)
-Simplify using `only [Matrix.mul_apply, ← (finSumFinEquiv (m := n) (n := n)).sum_comp, Fintype.sum_sum_type, blkMat, Matrix.submatrix_apply, Equiv.symm_apply_apply, Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₁₂, Matrix.fromBlocks_apply₂₁, Matrix.fromBlocks_apply₂₂, Matrix.zero_apply, zero …`.
+Simplify using the standard rewrite rules.
 -/
 theorem diag_blk_mul {R : Type} [CommRing R] {n : ℕ} (b : Matrix (Fin n) (Fin n) R)
     (M : Matrix (Fin (n + n)) (Fin (n + n)) R) (l : Fin (n + n))
@@ -100,14 +100,14 @@ theorem diag_blk_mul {R : Type} [CommRing R] {n : ℕ} (b : Matrix (Fin n) (Fin 
     add_zero, zero_add, h]
 
 /- English proof (translation)
-The claim follows from `(congrArg (fun x => x.map (incA D)) (gram_hdbl A)).trans ((blkMat_map _ _ (map_zero _) _ _).trans (congrArg (blkMat finSumFinEquiv (gA A)) (Matrix.map_neg _ (map_neg _) _)))`.
+A detailed English derivation is pending.
 -/
 theorem gA_dblSp {D : D7} (A : HSp D) : gA (dblSp A) = dblGram finSumFinEquiv (gA A) :=
   (congrArg (fun x => x.map (incA D)) (gram_hdbl A)).trans ((blkMat_map _ _ (map_zero _) _ _).trans
     (congrArg (blkMat finSumFinEquiv (gA A)) (Matrix.map_neg _ (map_neg _) _)))
 
 /- English proof (translation)
-The claim follows from `(congrArg (fun X : Mx D (A.rank + A.rank) (A.rank + A.rank) => adj (blkGL finSumFinEquiv (b, b) * M).1 * X * (blkGL finSumFinEquiv (b, b) * M).1) (gA_dblSp A)).trans (gram_blk_mul (cA D) b.1 (gA A) M.1)`.
+A detailed English derivation is pending.
 -/
 theorem gram_frame {D : D7} (A : HSp D) (b : GL (Fin A.rank) (AE D)) (M : GL (Fin (A.rank + A.rank)) (AE D)) :
     adj (blkGL finSumFinEquiv (b, b) * M).1 * gA (dblSp A) * (blkGL finSumFinEquiv (b, b) * M).1 =
@@ -117,7 +117,7 @@ theorem gram_frame {D : D7} (A : HSp D) (b : GL (Fin A.rank) (AE D)) (M : GL (Fi
     (gram_blk_mul (cA D) b.1 (gA A) M.1)
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.StdUnn.exists_siegel_mul_Tm D A μ hμ (blkGL finSumFinEquiv (b, b) * M) ((gram_frame A b M).trans hMg) fun i j => diag_blk_mul b.1 M.1 _ (fun k => hMc k j) i`.
+A detailed English derivation is pending.
 -/
 theorem exists_siegel_frame {D : D7} (A : HSp D) (μ : D.host.E) (hμ : IsSkew μ) (b : GL (Fin A.rank) (AE D))
     (M : GL (Fin (A.rank + A.rank)) (AE D))
@@ -131,13 +131,13 @@ theorem exists_siegel_frame {D : D7} (A : HSp D) (μ : D.host.E) (hμ : IsSkew �
     fun i j => diag_blk_mul b.1 M.1 _ (fun k => hMc k j) i
 
 /- English proof (translation)
-Rewrite using `[adj_mul, adj_mul, adj_adj, adj_gA, Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem adj_gram {D : D7} (A : HSp D) (b : Mx D A.rank A.rank) : adj (adj b * gA A * b) = adj b * gA A * b := by
   rw [adj_mul, adj_mul, adj_adj, adj_gA, Matrix.mul_assoc]
 
 /- English proof (translation)
-The claim follows from `sq_real_of_majorant _ _ a b ha hbw w`.
+A detailed English derivation is pending.
 -/
 theorem sq_real {D : D7} (A : HSp D) (a b : GL (Fin A.rank) (AE D)) (ha : IsMaj A a)
     (hbw : ∀ w, Formalism.UG.bc (compInf D.host.F D.host.E w) b = Formalism.UG.bc (compInf D.host.F D.host.E w) a)
@@ -146,11 +146,11 @@ theorem sq_real {D : D7} (A : HSp D) (a b : GL (Fin A.rank) (AE D)) (ha : IsMaj 
   sq_real_of_majorant _ _ a b ha hbw w
 
 /- English proof (translation)
-Introduce `D`. Take `⟨μ, hμ, u, ε, hue⟩` from `GlobalTheory.StdUnn.scalData_exists D`. Take `⟨t, ht⟩` from `GlobalTheory.StdUnn.exists_halfData D`. Use `⟨μ, hμ, fun A a ha κ hκ => ?_⟩` and prove the remaining obligations. Take `⟨b, hbL, hbw⟩` from `GlobalTheory.StdUnn.exists_isLatticeFrame_bc_eq D A a`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨Hm, hHm, hHmI⟩` from `GlobalTheory.StdUnn.Unimod.gram_unimodular D A b hbL`. Establish `hherm : adj Hm.1 = Hm.1` using `by rw [hHm]; exact adj_gram A b.1`. Establish `hsq : ∀ w, (Hm.1 * Hm.1).map (compInf D.host.F D.host.E w) = 1` using `fun w => by`. Rewrite using `[hHm]`. Conclude with `sq_real A a b ha hbw w`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨M, M', hMg, hMc, hM'I, hMu, hMw⟩` from `GlobalTheory.StdUnn.Frame.exists_frame D A.rank Hm hherm hHmI hsq μ u ε t hμ hue ht`. Rewrite `hMg` using `[hHm]`. Take `⟨p, hp⟩` from `exists_siegel_frame A μ hμ b M hMg hMc`. Conclude with `⟨p, GlobalTheory.StdUnn.Conj.isConj_of_frame D A μ hμ κ hκ a b hbL hbw M M' u hM'I hMu hMw p hp⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_isConj : ∀ D : D7, ∃ μ : D.host.E, IsSkew μ ∧ ∀ (A : HSp D) (a : GL (Fin A.rank) (AE D)), IsMaj A a → ∀ κ : GA D (dblSp A) ≃* G D A.rank, IsChart A μ κ → ∃ p : siegel A, IsConj A a κ p := by
   intro D

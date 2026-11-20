@@ -11,68 +11,68 @@ section Core
 variable {P : Type} [Fintype P] [DecidableEq P] {n g : ℕ}
 
 /- English proof (translation)
-Use extensionality with `i`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem smulR (c : ℝ) {m : ℕ} (z : Fin m → ℂ) : c • z = (c : ℂ) • z := by
   ext i; simp
 
 /- English proof (translation)
-Simplify using `[hermForm, add_dotProduct]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem hf_add_l (H : Matrix (Fin g) (Fin g) ℂ) (a b c : Fin g → ℂ) :
     hermForm H (a + b) c = hermForm H a c + hermForm H b c := by
   simp [hermForm, add_dotProduct]
 
 /- English proof (translation)
-Simplify using `[hermForm, star_add, Matrix.mulVec_add, dotProduct_add]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem hf_add_r (H : Matrix (Fin g) (Fin g) ℂ) (a b c : Fin g → ℂ) :
     hermForm H a (b + c) = hermForm H a b + hermForm H a c := by
   simp [hermForm, star_add, Matrix.mulVec_add, dotProduct_add]
 
 /- English proof (translation)
-Simplify using `[hermForm, smul_dotProduct]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem hf_smul_l (H : Matrix (Fin g) (Fin g) ℂ) (t : ℂ) (a b : Fin g → ℂ) :
     hermForm H (t • a) b = t * hermForm H a b := by
   simp [hermForm, smul_dotProduct]
 
 /- English proof (translation)
-Use extensionality with `i`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem star_smulC {m : ℕ} (t : ℂ) (b : Fin m → ℂ) : star (t • b) = (starRingEnd ℂ) t • star b := by
   ext i; simp
 
 /- English proof (translation)
-Simplify using `only [hermForm, star_smulC, Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem hf_smul_r (H : Matrix (Fin g) (Fin g) ℂ) (t : ℂ) (a b : Fin g → ℂ) :
     hermForm H a (t • b) = (starRingEnd ℂ) t * hermForm H a b := by
   simp only [hermForm, star_smulC, Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul]
 
 /- English proof (translation)
-Simplify using `[hv, Matrix.mulVec_add, dotProduct_add]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem hv_add_l (M : Matrix (Fin n) (Fin n) ℂ) (a b c : Fin n → ℂ) :
     hv M (a + b) c = hv M a c + hv M b c := by
   simp [hv, Matrix.mulVec_add, dotProduct_add]
 
 /- English proof (translation)
-Simplify using `[hv, star_add, add_dotProduct]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem hv_add_r (M : Matrix (Fin n) (Fin n) ℂ) (a b c : Fin n → ℂ) :
     hv M a (b + c) = hv M a b + hv M a c := by
   simp [hv, star_add, add_dotProduct]
 
 /- English proof (translation)
-Simplify using `only [hv, Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem hv_smul_l (M : Matrix (Fin n) (Fin n) ℂ) (t : ℂ) (a b : Fin n → ℂ) :
     hv M (t • a) b = t * hv M a b := by
   simp only [hv, Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul]
 
 /- English proof (translation)
-Simplify using `only [hv, star_smulC, smul_dotProduct, smul_eq_mul]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem hv_smul_r (M : Matrix (Fin n) (Fin n) ℂ) (t : ℂ) (a b : Fin n → ℂ) :
     hv M a (t • b) = (starRingEnd ℂ) t * hv M a b := by
@@ -109,7 +109,7 @@ private noncomputable def eBil (M : P → Matrix (Fin n) (Fin n) ℂ) (s : P →
       ring)
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.HermitianFormImEqSum.bil_eq R Hm M s r S hS h x y`.
+A detailed English derivation is pending.
 -/
 private theorem bil_eq (R : (P → Fin n → ℂ) ≃ₗ[ℝ] (Fin g → ℂ)) (Hm : Matrix (Fin g) (Fin g) ℂ)
     (M : P → Matrix (Fin n) (Fin n) ℂ) (s : P → ℂ) (r : P → ℝ) (S : Set (P → Fin n → ℂ))
@@ -123,46 +123,46 @@ private noncomputable def jz {X : Type} [AddCommGroup X] [Module ℝ X] (R : X �
   R.symm (Complex.I • R x)
 
 /- English proof (translation)
-The claim follows from `R.apply_symm_apply _`.
+A detailed English derivation is pending.
 -/
 private theorem R_jz {X : Type} [AddCommGroup X] [Module ℝ X] (R : X ≃ₗ[ℝ] (Fin g → ℂ)) (x : X) :
     R (jz R x) = Complex.I • R x := R.apply_symm_apply _
 
 /- English proof (translation)
-Apply `R.injective` to reduce the goal to its premises. Simplify using `only [map_add, R_jz, smul_add]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 -/
 private theorem jz_add {X : Type} [AddCommGroup X] [Module ℝ X] (R : X ≃ₗ[ℝ] (Fin g → ℂ)) (x y : X) :
     jz R (x + y) = jz R x + jz R y := by
   apply R.injective; simp only [map_add, R_jz, smul_add]
 
 /- English proof (translation)
-Apply `R.injective` to reduce the goal to its premises. Simplify using `only [map_zero, R_jz, smul_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 -/
 private theorem jz_zero {X : Type} [AddCommGroup X] [Module ℝ X] (R : X ≃ₗ[ℝ] (Fin g → ℂ)) :
     jz R (0 : X) = 0 := by
   apply R.injective; simp only [map_zero, R_jz, smul_zero]
 
 /- English proof (translation)
-Apply `R.injective` to reduce the goal to its premises. Simplify using `only [map_smul, R_jz, smulR, smul_comm Complex.I]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 -/
 private theorem jz_smul {X : Type} [AddCommGroup X] [Module ℝ X] (R : X ≃ₗ[ℝ] (Fin g → ℂ)) (c : ℝ) (x : X) :
     jz R (c • x) = c • jz R x := by
   apply R.injective; simp only [map_smul, R_jz, smulR, smul_comm Complex.I]
 
 /- English proof (translation)
-Establish `hoff : ∀ v (a : Fin n → ℂ) w, w ≠ v → jz R (Pi.single v a) w = 0`. Introduce `v a w hw`. Establish `h` using `congrFun (hc (Pi.single v 1) (Pi.single v a)) w`. Establish `e : (fun u => (Pi.single v (1 : ℂ) : P → ℂ) u • (Pi.single v a : P → Fin n → ℂ) u) = Pi.single v a`. Use function extensionality and compare the values at `u`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Distinguish the cases in `hu : u = v`. Substitute `hu` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hu]`. Rewrite `h` using `[e]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify `h` using `[hw]`. Establish `hlin : ∀ v (c : ℂ) (a : Fin n → ℂ), jz R (Pi.single v (c • a)) v = c • jz R (Pi.single v a) v`. Introduce `v c a`. Establish `h` using `congrFun (hc (fun _ => c) (Pi.single v a)) v`. Establish `e : (fun u => (fun _ => c : P → ℂ) u • (Pi.single v a : P → Fin n → ℂ) u) = Pi.single v (c • a)`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `u`. Distinguish the cases in `hu : u = v`. Substitute `hu` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hu]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite `h` using `[e]`. Conclude with `h`. Set `T : P → (Fin n → ℂ) →ₗ[ℂ] (Fin n → ℂ)` to `fun v => { toFun := fun a => jz R (Pi.single v a) v map_add' := fun a b => by rw [Pi.single_add, jz_add]; rfl map_smul' := fun c a => hlin v c a }`. Set `J0 : (P → Fin n → ℂ) →+ (P → Fin n → ℂ)` to `{ toFun := jz R, map_zero' := jz_zero R, map_add' := jz_add R }`. Use `⟨fun v => LinearMap.toMatrix' (T v), fun x => ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← R_jz]`. Use `congr 1`. Use function extensionality and compare the values at `v`. Establish `h1 : jz R x = ∑ w, jz R (Pi.single w (x w))` using `by conv_lhs => rw [← Finset.univ_sum_single x]`. Conclude with `map_sum J0 _ _`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[LinearMap.toMatrix'_mulVec, h1, Finset.sum_apply, Finset.sum_eq_single v]`. Both sides reduce to the same expression. Introduce `w _ hw`. Conclude with `hoff w _ v (Ne.symm hw)`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem exists_J (R : (P → Fin n → ℂ) ≃ₗ[ℝ] (Fin g → ℂ))
     (hc : ∀ (t : P → ℂ) (x : P → Fin n → ℂ), jz R (fun v => t v • x v) = fun v => t v • jz R x v) :
@@ -206,31 +206,29 @@ private theorem exists_J (R : (P → Fin n → ℂ) ≃ₗ[ℝ] (Fin g → ℂ))
   · simp
 
 /- English proof (translation)
-Take `⟨J, hJ⟩` from `exists_J R hc`. Use `⟨J, hJ, fun v => ?_⟩` and prove the remaining obligations. Establish `hsv : ∀ a : Fin n → ℂ, R (Pi.single v (J v *ᵥ a)) = Complex.I • R (Pi.single v a)`. Introduce `a`. Rewrite using `[← hJ]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `u`. Distinguish the cases in `hu : u = v`. Substitute `hu` using the available equality. Simplify using the standard rewrite rules.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[hu]`. Establish `hEv : ∀ a b : Fin n → ℂ, (hermForm Hm (R (Pi.single v a)) (R (Pi.single v b))).im = r v * (-(s v) * Complex.I * hv (M v) a b).re`. Introduce `a b`. Rewrite using `[hE, Finset.sum_eq_single v]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `u _ hu`. Simplify using `[hu, hv]`. Simplify using the standard rewrite rules. Establish `hJJ : ∀ a, J v *ᵥ (J v *ᵥ a) = -a`. Introduce `a`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `Pi.single_injective v` to reduce the goal to its premises. Apply `R.injective` to reduce the goal to its premises. Rewrite using `[hsv, hsv, smul_smul, Complex.I_mul_I, Pi.single_neg, map_neg, neg_one_smul]`. Establish `hinvRe : ∀ a b, (-(s v) * Complex.I * hv (M v) (J v *ᵥ a) (J v *ᵥ b)).re = (-(s v) * Complex.I * hv (M v) a b).re`. Introduce `a b`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `hEv (J v *ᵥ a) (J v *ᵥ b)`. Rewrite using `[hsv, hsv, hf_smul_l, hf_smul_r, show Complex.I * ((starRingEnd ℂ) Complex.I * hermForm Hm (R (Pi.single v a)) (R (Pi.single v b))) = hermForm Hm (R (Pi.single v a)) (R (Pi.single v b)) by`. Rewrite using `[Complex.conj_I, ← _root_.mul_assoc, mul_neg, Complex.I_mul_I]`. Use the proof step `simp, hEv] at h1`. Conclude with `(mul_left_cancel₀ (hr v).ne' h1).symm`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hinv : ∀ a b, hv (M v) (J v *ᵥ a) (J v *ᵥ b) = hv (M v) a b`. Introduce `a b`. Establish `h1` using `hinvRe a b`. Establish `h2` using `hinvRe (Complex.I • a) b`. Rewrite `h2` using `[Matrix.mulVec_smul, hv_smul_l, hv_smul_l]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `rcases hs v with h | h <;> rw [h] at h1 h2 <;>`. Apply the tactic sequence `simp [Complex.mul_re, Complex.mul_im] at h1 h2 <;> exact Complex.ext (by linarith) (by linarith)`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Apply `Matrix.mulVec_injective` to reduce the goal to its premises. Use function extensionality and compare the values at `a`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Matrix.mulVec_mulVec, hJJ, Matrix.neg_mulVec, Matrix.one_mulVec]`. Establish `key : ∀ a b, hv ((J v)ᴴ * M v * J v) a b = hv (M v) a b`. Introduce `a b`. Rewrite using `[← hinv a b]`. Simplify using `only [hv]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Rewrite using `[Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, Matrix.mul_assoc]`. Use extensionality with `i j`. Use `key (Pi.single j 1) (Pi.single i 1)` as an intermediate fact. Simplify `this` using `[hv, ← Pi.single_star]`. Introduce `x hx`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hz : R (Pi.single v x) ≠ 0`. Introduce `h0`. Establish `h1 : (Pi.single v x : P → Fin n → ℂ) = 0` using `by simpa using h0`. Conclude with `hx (by simpa using h1)`. Establish `h1` using `hEv (J v *ᵥ x) x`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[hsv, hf_smul_l]`. Establish `h2` using `hpos _ hz`. Establish `h3 : 0 < r v * (-(s v) * Complex.I * hv (M v) (J v *ᵥ x) x).re`. Rewrite using `[← h1]`. Simplify `h2` using `[Complex.mul_im]`.
-
-Conclude with `(mul_pos_iff_of_pos_left (hr v)).1 h3`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem core (R : (P → Fin n → ℂ) ≃ₗ[ℝ] (Fin g → ℂ)) (Hm : Matrix (Fin g) (Fin g) ℂ)
     (hpos : ∀ z : Fin g → ℂ, z ≠ 0 → 0 < (hermForm Hm z z).re)
@@ -307,43 +305,43 @@ private theorem core (R : (P → Fin n → ℂ) ≃ₗ[ℝ] (Fin g → ℂ)) (Hm
 end Core
 
 /- English proof (translation)
-Introduce `hA p _ D G L A β ρ Q hQ _ R hR`. Take `⟨hact, -, Hm, -, hpos, hform⟩` from `hQ`. Establish `hm1 : ∀ (c : 𝓞 D.F) (x : Arch G), R (fun v => v.embedding (L.e (c : D.F)) • x v) = ρ (algebraMap (𝓞 D.F) D.O c) *ᵥ R x`. Introduce `c x`. Establish `hx : x ∈ Submodule.span ℝ (Set.range A.th)` using `by rw [A.span]; trivial`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨w, rfl⟩` from `hy`. Establish `e : (fun v => v.embedding (L.e (c : D.F)) • A.th w v) = A.th (actQ D (algebraMap (𝓞 D.F) D.O c) w)`. Use function extensionality and compare the values at `v`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[← L.rep_F, A.act, G.psi_F]`. Use extensionality with `i`. Simplify using `[Matrix.mulVec_diagonal, Matrix.scalar_apply]`. Rewrite using `[e, ← hR, ← hR, hact]`. Consider the case `zero`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Establish `e : (fun v => v.embedding (L.e (c : D.F)) • (0 : Arch G) v) = 0` using `by funext v; simp`. Rewrite using `[e, map_zero, Matrix.mulVec_zero]`. Consider the case `add a b _ _ ha hb`. Establish `e : (fun v => v.embedding (L.e (c : D.F)) • (a + b) v) = (fun v => v.embedding (L.e (c : D.F)) • a v) + (fun v => v.embedding (L.e (c : D.F)) • b v)`. Use function extensionality and compare the values at `v`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[smul_add]`. Rewrite using `[e, map_add, map_add, ha, hb, Matrix.mulVec_add]`. Consider the case `smul t a _ ha`. Establish `e : (fun v => v.embedding (L.e (c : D.F)) • (t • a) v) = t • (fun v => v.embedding (L.e (c : D.F)) • a v)`. Use function extensionality and compare the values at `v`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [Pi.smul_apply]`. Rewrite using `[smul_comm]`. Rewrite using `[e, map_smul, map_smul, ha, Matrix.mulVec_smul]`. Establish `hm2 : ∀ (c : 𝓞 D.F) (x : Arch G), jz R (fun v => v.embedding (L.e (c : D.F)) • x v) = fun v => v.embedding (L.e (c : D.F)) • jz R x v`. Introduce `c x`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `R.injective` to reduce the goal to its premises. Rewrite using `[R_jz, hm1, hm1, R_jz, Matrix.mulVec_smul]`. Establish `hm3 : ∀ (y : G.F) (x : Arch G), jz R (fun v => v.embedding y • x v) = fun v => v.embedding y • jz R x v`. Introduce `y x`. Take `⟨a, b, hb, hab⟩` from `IsFractionRing.div_surjective (𝓞 D.F) (L.e.symm y)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hab' : ((a : 𝓞 D.F) : D.F) / ((b : 𝓞 D.F) : D.F) = L.e.symm y` using `hab`. Establish `hb0 : ((b : 𝓞 D.F) : D.F) ≠ 0`. Use `nonZeroDivisors.ne_zero hb` as an intermediate fact. Simplify using `using this`. Establish `hy : y * L.e (b : D.F) = L.e (a : D.F)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Apply `L.e.symm.injective` to reduce the goal to its premises. Rewrite using `[map_mul, L.e.symm_apply_apply, L.e.symm_apply_apply, ← hab']`. Conclude with `div_mul_cancel₀ _ hb0`. Establish `hemb : ∀ v : InfinitePlace G.F, v.embedding (L.e (b : D.F)) ≠ 0` using `fun v => (_root_.map_ne_zero _).2 ((_root_.map_ne_zero L.e).2 hb0)`. Establish `h1` using `hm2 b (fun v => v.embedding y • x v)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `hm2 a x`. Establish `e : (fun v : InfinitePlace G.F => v.embedding (L.e (b : D.F)) • (fun v : InfinitePlace G.F => v.embedding y • x v) v) = fun v => v.embedding (L.e (a : D.F)) • x v`. Use function extensionality and compare the values at `v`. Simplify using `only`. Rewrite using `[smul_smul, ← map_mul, _root_.mul_comm, hy]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[e, h2]`. Use function extensionality and compare the values at `v`. Establish `h3` using `congrFun h1 v`. Rewrite `h3` using `[← hy, map_mul, _root_.mul_comm, mul_smul]`. Conclude with `(smul_right_injective _ (hemb v) h3).symm`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hT : ∀ (T : InfinitePlace G.F → Fin 1 → ℂ) (x : Arch G), jz R (fun v => T v 0 • x v) = fun v => T v 0 • jz R x v`. Introduce `T`. Establish `hmem : T ∈ Submodule.span ℝ (Set.range fun (x : Fin 1 → G.F) (v : InfinitePlace G.F) (i : Fin 1) => v.embedding (x i))` using `by rw [(hA G.F 1).1]; trivial`. Proceed by induction on `hmem using Submodule.span_induction with`. Consider the case `mem y hy`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Take `⟨xx, rfl⟩` from `hy`. Conclude with `fun x => hm3 (xx 0) x`. Consider the case `zero`. Introduce `x`. Establish `e : (fun v => (0 : InfinitePlace G.F → Fin 1 → ℂ) v 0 • x v) = 0` using `by funext v; simp`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[e, jz_zero]`. Use function extensionality and compare the values at `v`. Simplify using the standard rewrite rules. Consider the case `add a b _ _ ha hb`. Introduce `x`.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `e : (fun v => (a + b) v 0 • x v) = (fun v => a v 0 • x v) + (fun v => b v 0 • x v)`. Use function extensionality and compare the values at `v`. Simplify using `[add_smul]`. Rewrite using `[e, jz_add, ha, hb]`. Use function extensionality and compare the values at `v`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Treat this case separately.
 
-Simplify using `[add_smul]`. Consider the case `smul t a _ ha`. Introduce `x`. Establish `e : (fun v => (t • a) v 0 • x v) = t • (fun v => a v 0 • x v)`. Use function extensionality and compare the values at `v`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Pi.smul_apply, smulR (m := G.n), Complex.real_smul, mul_smul]`. Rewrite using `[e, jz_smul, ha]`. Use function extensionality and compare the values at `v`. Simplify using `only [Pi.smul_apply, Complex.real_smul, mul_smul]`. Rewrite using `[smulR]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `core R Hm hpos (fun v => GlobalTheory.LKCx.herm G v β) (sgnV L) A.r A.r_pos (fun v => ?_) ?_ (fun t x => hT (fun v _ => t v) x)` and prove the remaining obligations. Apply the tactic sequence `unfold sgnV; split_ifs <;> simp`. Use `bil_eq R Hm _ _ _ (Set.range A.th) A.span ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨u, rfl⟩ _ ⟨w, rfl⟩`. Rewrite using `[← hR, ← hR, hform, formB, A.form]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[A.act]`. Simplify using `only [hv, GlobalTheory.LKCx.herm, Matrix.mulVec_mulVec]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.W2.jStruct_of :
     UpperTheory.Gal.W2.ArchSpan → UpperTheory.Gal.W2.JStruct := by

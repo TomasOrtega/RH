@@ -7,7 +7,7 @@ open GlobalTheory.SeqCx Matrix
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `V F S y hF hy p hlink c hc hbd`. Take `⟨b, hb, hc', hbd'⟩` from `GlobalTheory.T.exists_homologous_cycle_with_entries_in_of_exactAt_links V F S hF p hlink c hc hbd`. Take `⟨b', hb', hbb'⟩` from `GlobalTheory.T.seqChain_cycle_bounded_by_cone V F (linkIn F S []) y hy p (c - bd V b) hc' hbd'`. Use `⟨b + b', Submodule.add_mem _ hb hb', ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, hbb']`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Normalize the expressions using the abelian group laws.
 -/

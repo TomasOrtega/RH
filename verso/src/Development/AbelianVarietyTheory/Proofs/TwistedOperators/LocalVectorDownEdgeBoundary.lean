@@ -21,17 +21,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.Local
 namespace GlobalTheory.FlipStart
 
 /- English proof (translation)
-Introduce `_`. Use `⟨0, fun ε CF _ => ⟨0, fun D large₂ _ _ Γ _ _ Pl0 T A Ks _ _ _ R F s ch hch _ => ?_⟩⟩` and prove the remaining obligations. Introduce `t j g hj hg`. Use `⟨1, one_mem _, fun e he Φ => ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_one, one_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨e', he', hθ⟩` from `GlobalTheory.T.rowChain_last_step_vector_eq_theta_of_datum s ch hch t j g hj hg`. Establish `hL : R.toLevCh.Is A.μ0` using `s.core.lev`. Establish `hS : IsSelfDualC (ch.G.pS (.mu t 0 j)) (ch.G.latS (.mu t 0 j))` using `(colY_isV D T R.toLevCh A.μ0 hL j j.2.le).sd`. Establish `hT : IsSelfDualC (ch.G.pT (.mu t 0 j)) (ch.G.latT (.mu t 0 j))` using `(colY_isV D T R.toLevCh A.μ0 hL (j + 1) j.2).sd`. Establish `hv` using `ch.rm.vT_is t 0 j (Nat.zero_le _) j.2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsub : GlobalTheory.FlipTop.topPl R.toLevCh t ⊆ locPl ch.G t` using `by classical`. Introduce `w hw`. Break down `Finset.mem_union.1 hw with h | h` into its components or cases. Conclude with `Finset.mem_union_left _ (levelChainTypePlaces_subset_chosenPlaces ch.G hL t h)`. Conclude with `Finset.mem_union_right _ h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨h1, h2⟩` from `GlobalTheory.T.isThetaAt_enlarge_placeIdempotent_latticeIndicator hS hT hv he he' hsub (GlobalTheory.T.gridFirstColumnStep_isSchwartzBruhat_half ch.G ch.S.B hL t he' j j.2) hθ`. Establish `hAA : ∀ w ∈ locPl ch.G t, w ∉ GlobalTheory.FlipTop.topPl R.toLevCh t → ((∀ a ∈ D.host.AA, Valued.v (algebraMap D.host.E (Kw w) a) ≤ 1) ∧ ∃ a ∈ D.host.AA, Valued.v (algebraMap D.host.E (Kw w) a) = 1)`. Introduce `w hw _`. Establish `hb` using `GlobalTheory.FunObj.Good.badInt_notMem hL (GlobalTheory.FlipIntegrand.pde_ne_q_of_setting s) (hch.guard t) hw`. Establish `h2q` using `fun h => hb (GlobalTheory.HalfCompare.mem_of_dvd h (Dvd.intro _ rfl))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hN` using `fun h => hb (GlobalTheory.HalfCompare.mem_of_dvd h (Dvd.intro_left _ rfl))`. Use `⟨fun a ha => ?_, ⟨_, GlobalTheory.HostClear.absNorm_mem_AA D, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.FunObj.Good.valued_alg]`. Conclude with `GlobalTheory.FunObj.Good.valuation_le_one_of_mem h2q (Or.inl ha)`. Rewrite using `[GlobalTheory.FunObj.Good.valued_alg]`.
-
-Conclude with `GlobalTheory.FunObj.Good.valuation_nat hN`. Rewrite `h1`, `h2` using `[GlobalTheory.T.first_column_type_twist_datum_eq_given_function ch.G ch.S.B hL t he he' hAA Φ j j.2]`. Conclude with `⟨h1, h2⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem topVec : GlobalTheory.FunPr.Hypotheses₂ → GlobalTheory.RowClaim.Big fun {D} _ _ _ _ {T} _ _ _ _ _ {R} ch => ∀ (t : T) (j : Fin D.R.m) (g : Sch ch.G (.down t 0 j)), (j : ℕ) + 1 = D.R.m → HEq g (R.vX t) → ∃ c : ℂˣ, c ∈ xiVals R.toLevCh t ∧ ∀ e : AE D, IsIdemSum e (locPl ch.G t) → ∀ Φ : ch.G.Datum, IsLocVec ch.W (.mu t 0 j) e (ch.rm.vT 0 j) ((c : ℂ) • GlobalTheory.FlipStart.givenFn ch.S.B t Φ e (.down t 0 j)) g := by
   intro _

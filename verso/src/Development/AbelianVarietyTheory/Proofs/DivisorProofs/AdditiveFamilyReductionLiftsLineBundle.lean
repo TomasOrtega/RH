@@ -13,7 +13,7 @@ noncomputable section
 namespace GlobalTheory.AddFamLift
 
 /- English proof (translation)
-Establish `outer : IsPullback (fst Z (U ⊗ S')).left (snd Z (U ⊗ S')).left Z.hom (U ⊗ S').hom` using `IsPullback.of_hasPullback Z.hom (U ⊗ S').hom`. Establish `e : (U ⊗ S').hom = (fst U S').left ≫ U.hom` using `(Over.w _).symm`. Rewrite `outer` using `[e, ← hj₁]`. Establish `left : IsPullback j (snd Z (U ⊗ S')).left t (fst U S').left` using `IsPullback.of_right outer hj₂ hp`. Conclude with `left.paste_vert (IsPullback.of_hasPullback U.hom S'.hom)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isPullback_lift {S : Scheme.{0}} (Z U S' : Over S) {W : Scheme.{0}} {pr : W ⟶ Z.left} {t : W ⟶ U.left}
     (hp : IsPullback pr t Z.hom U.hom) (j : (Z ⊗ (U ⊗ S')).left ⟶ W)
@@ -29,23 +29,23 @@ theorem isPullback_lift {S : Scheme.{0}} (Z U S' : Over S) {W : Scheme.{0}} {pr 
 abbrev Ov {R C : Type} [CommRing R] [CommRing C] (σ : R →+* C) : Over (Sp R) := Over.mk (spMap σ)
 
 /- English proof (translation)
-Use `letI := σ.toAlgebra`. Set `U` to `Ov σ`. Set `S'` to `Ov (Ideal.Quotient.mk J)`. Take `⟨B, _, pr, pr', hB, hBg, hp, hp', hμ, h₁, h₂, -, -⟩` from `GlobalTheory.T.exists_abelianScheme_baseChange_and_square R C A g hA hg`. Establish `hp : IsPullback pr B.hom A.hom U.hom` using `hp`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hp' : IsPullback pr' (B ⊗ B).hom (A ⊗ A).hom U.hom` using `hp'`. Establish `wZ : ∀ Z : Over (Sp R), (fst Z (U ⊗ S')).left ≫ Z.hom = ((snd Z (U ⊗ S')).left ≫ (fst U S').left) ≫ U.hom` using `fun Z ↦ by rw [Category.assoc, Over.w, Over.w, Over.w]`. Take `⟨i, hi₁, hi₂⟩ : ∃ i : (A ⊗ (U ⊗ S')).left ⟶ B.left, i ≫ pr = (fst A (U ⊗ S')).left ∧ i ≫ B.hom = (snd A (U ⊗ S')).left ≫ (fst U S').left` from `⟨hp.lift _ _ (wZ A), hp.lift_fst _ _ _, hp.lift_snd _ _ _⟩`. Take `⟨i', hi'₁, hi'₂⟩ : ∃ i' : ((A ⊗ A) ⊗ (U ⊗ S')).left ⟶ (B ⊗ B).left, i' ≫ pr' = (fst (A ⊗ A) (U ⊗ S')).left ∧ i' ≫ (B ⊗ B).hom = (snd (A ⊗ A) (U ⊗ S')).left ≫ (fst U S').left` from `⟨hp'.lift _ _ (wZ (A ⊗ A)), hp'.lift_fst _ _ _, hp'.lift_snd _ _ _⟩`. Establish `hJ' : J.map σ ^ 2 = ⊥` using `by rw [← Ideal.map_pow, hJ, Ideal.map_bot]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `th : IsThick (J.map σ) B.hom i`. Establish `q` using `isPullback_lift A U S' hp i hi₁ hi₂`. Conclude with `GlobalTheory.T.isIdealThickeningImmersion_of_isPullback_square_zero_quotient R C σ J hJ _ _ B.hom _ i q`. Establish `th' : IsThick (J.map σ) (B ⊗ B).hom i'`. Establish `q` using `isPullback_lift (A ⊗ A) U S' hp' i' hi'₁ hi'₂`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `GlobalTheory.T.isIdealThickeningImmersion_of_isPullback_square_zero_quotient R C σ J hJ _ _ (B ⊗ B).hom _ i' q`. Establish `key : ∀ (φ : A ⊗ A ⟶ A) (φB : B ⊗ B ⟶ B), φB.left ≫ pr = pr' ≫ φ.left → (φ ▷ (U ⊗ S')).left ≫ i = i' ≫ φB.left`. Introduce `φ φB hφ`. Apply `hp.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, hi₁, Category.assoc, hφ, ← Category.assoc, hi'₁, ← Over.comp_left, ← Over.comp_left, whiskerRight_fst]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Category.assoc, hi₂, Category.assoc, Over.w φB, hi'₂, ← Category.assoc, ← Over.comp_left, whiskerRight_snd]`. Establish `ev : ∀ φ : A ⊗ A ⟶ A, CechPic.pull (φ ▷ (U ⊗ S')).left (cls N hN) = evc hN (fst (A ⊗ A) (U ⊗ S') ≫ φ) (snd (A ⊗ A) (U ⊗ S'))` using `fun φ ↦ by`. Establish `: φ ▷ (U ⊗ S') = lift (fst (A ⊗ A) (U ⊗ S') ≫ φ) (snd (A ⊗ A) (U ⊗ S'))`. Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises. Rewrite using `[whiskerRight_fst, lift_fst]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[whiskerRight_snd, lift_snd]`. Rewrite using `[this]`. Both sides reduce to the same expression. Establish `hm : fst (A ⊗ A) (U ⊗ S') ≫ μ[A] = (fst (A ⊗ A) (U ⊗ S') ≫ fst A A) * (fst (A ⊗ A) (U ⊗ S') ≫ snd A A)`. Rewrite using `[← MonObj.comp_mul]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `show μ[A] = lift (fst A A) (snd A A) ≫ μ[A]`. Rewrite using `[lift_fst_snd, Category.id_comp]`. Establish `add : CechPic.pull (μ[A] ▷ (U ⊗ S')).left (cls N hN) = CechPic.pull (fst A A ▷ (U ⊗ S')).left (cls N hN) + CechPic.pull (snd A A ▷ (U ⊗ S')).left (cls N hN)`. Rewrite using `[ev, ev, ev, hm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(isAdditive_iff hN).1 hadd _ _ _ _`. Take `⟨c', hc'⟩` from `hAb C (J.map σ) hJ' B g hB hBg _ _ i i' _ _ _ th th' (key _ _ hμ) (key _ _ h₁) (key _ _ h₂) (cls N hN) add`. Take `⟨k, hk₁, hk₂⟩ : ∃ k : (A ⊗ U).left ⟶ B.left, k ≫ pr = (fst A U).left ∧ k ≫ B.hom = (snd A U).left` from `⟨hp.lift _ _ (by rw [Over.w, Over.w]), hp.lift_fst _ _ _, hp.lift_snd _ _ _⟩`. Use `⟨CechPic.pull k c', ?_⟩` and prove the remaining obligations. Establish `hk : (A ◁ fst U S').left ≫ k = i`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Apply `hp.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, hk₁, hi₁, ← Over.comp_left, whiskerLeft_fst]`. Rewrite using `[Category.assoc, hk₂, hi₂, ← Over.comp_left, whiskerLeft_snd, Over.comp_left]`. Rewrite using `[← pull_comp, hk, hc']`.
+A detailed English derivation is pending.
 -/
 theorem finiteRing_sq_sub_mul_sq_eq_of_card (hAb : AbLift) (R : Type) [CommRing R] (J : Ideal R) (hJ : J ^ 2 = ⊥) (A : Over (Sp R)) [GrpObj A]
     (g : ℕ) (hA : IsAbelianScheme A) (hg : SmoothOfRelativeDimension g A.hom) (C : Type) [CommRing C] (σ : R →+* C)
@@ -109,7 +109,7 @@ theorem finiteRing_sq_sub_mul_sq_eq_of_card (hAb : AbLift) (R : Type) [CommRing 
   rw [← pull_comp, hk, hc']
 
 /- English proof (translation)
-The claim follows from `fun hAb R _ J hJ A _ g hA hg C _ σ N hN hadd ↦ finiteRing_sq_sub_mul_sq_eq_of_card hAb R J hJ A g hA hg C σ N hN hadd`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem main : AbLift → ∀ (R : Type) [CommRing R] (J : Ideal R), J ^ 2 = ⊥ → ∀ (A : Over (Sp R)) [GrpObj A] (g : ℕ), IsAbelianScheme A → SmoothOfRelativeDimension g A.hom → ∀ (C : Type) [CommRing C] (σ : R →+* C) (N : LB (A ⊗ (Over.mk (spMap σ) ⊗ Over.mk (spMap (Ideal.Quotient.mk J)))).left) (hN : N.IsLB), IsAdditive N → ∃ c : Pic (A ⊗ Over.mk (spMap σ)).left, GlobalTheory.CechPic.pull (A ◁ fst (Over.mk (spMap σ)) (Over.mk (spMap (Ideal.Quotient.mk J)))).left c = cls N hN := fun hAb R _ J hJ A _ g hA hg C _ σ N hN hadd ↦
   finiteRing_sq_sub_mul_sq_eq_of_card hAb R J hJ A g hA hg C σ N hN hadd

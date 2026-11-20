@@ -13,13 +13,13 @@ variable {V W ι : Type} [AddCommGroup V] [TopologicalSpace V] [IsTopologicalAdd
   [BorelSpace W] [Fintype ι] [DecidableEq ι]
 
 /- English proof (translation)
-Establish `sL : ∀ (r : ℝ) x y, β (r • x) y = r * β x y` using `fun r x y => map_real_smul (AddMonoidHom.mk' (fun x => β x y) (fun x x' => hL x x' y)) (hcL y) r x`. Establish `sR : ∀ (r : ℝ) x y, β x (r • y) = r * β x y` using `fun r x y => map_real_smul (AddMonoidHom.mk' (fun y => β x y) (fun y y' => hR x y y')) (hcR x) r y`. Set `A : W →ₗ[ℝ] W` to `{ toFun := fun y => ∑ i, β (b i) y • b i map_add' := fun y y' => by simp only [hR, add_smul, Finset.sum_add_distrib] map_smul' := fun r y => by simp only [sR, mul_smul, Finset.smul_sum, RingHom.id_apply] }`. Establish `hA : ∀ x y, β x y = ⟪x, A y⟫`. Introduce `x y`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : β x y = ∑ i, ⟪b i, x⟫ * β (b i) y` using `by conv_lhs => rw [← b.sum_repr' x]`. Express the relevant statement in the definitionally equal form `(AddMonoidHom.mk' (fun x => β x y) (fun x x' => hL x x' y)) (∑ i, ⟪b i, x⟫ • b i) = _`. Rewrite using `[map_sum]`. Simplify using `[sL]`. Establish `h2 : ⟪x, A y⟫ = ∑ i, β (b i) y * ⟪x, b i⟫`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[A, inner_sum, inner_smul_right]`. Rewrite using `[h1, h2]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[real_inner_comm, mul_comm]`. Use `⟨A, hA, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← LinearMap.det_toMatrix b.toBasis]`. Use `congr 1`. Use extensionality with `i j`. Rewrite using `[LinearMap.toMatrix_apply, Matrix.of_apply, hA]`. Simplify using `[OrthonormalBasis.repr_apply_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem exists_linearMap_inner_eq_and_det_eq_gram_det (β : W → W → ℝ)
     (hL : ∀ x x' y, β (x + x') y = β x y + β x' y) (hR : ∀ x y y', β x (y + y') = β x y + β x y')
@@ -55,13 +55,13 @@ private theorem exists_linearMap_inner_eq_and_det_eq_gram_det (β : W → W → 
   simp [OrthonormalBasis.repr_apply_apply]
 
 /- English proof (translation)
-Establish `hme : MeasurableEmbedding e` using `e.measurableEmbedding`. Establish `hmap : ∀ g : W → ℂ, ∫ w, g w ∂(μ.map e) = ∫ x, g (e x) ∂μ` using `fun g => hme.integral_map g`. Establish `hχ' : ∀ x y, χ x y = ((𝐞 (β (e x) (e y)) : Circle) : ℂ)` using `fun x y => by`. Simplify using `using hχ (e x) (e y)`. Use `set F := fun y => ∫ x, Φ x * ((𝐞 (β x y) : Circle) : ℂ) ∂(μ.map e) with hFdef`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hF : ∀ y, ∫ x, (Φ ∘ e) x * χ x y ∂μ = F (e y)`. Introduce `y`. Simplify using `only [hFdef, hmap, Function.comp_apply, hχ']`. Establish `hint' : Integrable (fun y => ∫ x, (Φ ∘ e) x * χ x y ∂μ) μ`. Simplify using `only [hF]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `hme.integrable_map_iff.mp hint`. Establish `key` using `hμ.2 (Φ ∘ e) (hΦc.comp e.continuous) (hΦs.comp_homeomorph e) hint' (e.symm z)`. Establish `hneg : e (-(e.symm z)) = -z`. Use `map_neg (AddMonoidHom.mk' e he) (e.symm z)` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hF, hχ', Homeomorph.apply_symm_apply, Function.comp_apply, hneg] at key`. Rewrite using `[hmap]`. Simplify using `only [hFdef, hmap]`. Conclude with `key`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem integral_fourier_map_eq_neg_of_integrable (μ : Measure V) (χ : V → V → ℂ) (hμ : SelfDual μ χ) (e : V ≃ₜ W)
     (he : ∀ x y, e (x + y) = e x + e y) (β : W → W → ℝ)
@@ -92,19 +92,19 @@ private theorem integral_fourier_map_eq_neg_of_integrable (μ : Measure V) (χ :
   exact key
 
 /- English proof (translation)
-Establish `hkpos : 0 < ‖k‖` using `norm_pos_iff.mpr hk`. Set `bump : ContDiffBump (0 : W)` to `⟨‖k‖ / 2, ‖k‖, by positivity, by linarith⟩`. Set `ψ : W → ℂ` to `fun x => ((bump x : ℝ) : ℂ)`. Establish `hψc : Continuous ψ` using `Complex.continuous_ofReal.comp bump.continuous`. Establish `hψs : HasCompactSupport ψ` using `bump.hasCompactSupport.comp_left Complex.ofReal_zero`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hψs' : HasCompactSupport (fun x => ψ (x + k))` using `hψs.comp_homeomorph (Homeomorph.addRight k)`. Set `Φ : W → ℂ` to `fun x => ψ x - ψ (x + k)`. Establish `hΦc : Continuous Φ` using `hψc.sub (hψc.comp (continuous_add_right k))`. Establish `hΦs : HasCompactSupport Φ` using `hψs.sub hψs'`. Establish `hzero : ∀ y, ∫ x, Φ x * ((𝐞 (β x y) : Circle) : ℂ) ∂ν = 0`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `y`. Set `g : W → ℂ` to `fun x => ψ x * ((𝐞 (β x y) : Circle) : ℂ)`. Establish `hgc : Continuous g`. Use `hcL y` as an intermediate fact. Use `fun_prop`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg : Integrable g ν` using `hgc.integrable_of_hasCompactSupport hψs.mul_right`. Establish `heq : (fun x => Φ x * ((𝐞 (β x y) : Circle) : ℂ)) = fun x => g x - g (x + k)`. Use function extensionality and compare the values at `x`. Simplify using `only [Φ, g, hL, hk0, add_zero]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[heq, integral_sub hg (hg.comp_add_right k), integral_add_right_eq_self, sub_self]`. Establish `hint : Integrable (fun y => ∫ x, Φ x * ((𝐞 (β x y) : Circle) : ℂ) ∂ν) ν`. Simplify using `only [hzero]`. Conclude with `integrable_zero _ _ _`. Establish `key` using `hP Φ hΦc hΦs hint 0`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [hzero, zero_mul, integral_zero, neg_zero] at key`. Establish `h0 : bump 0 = 1` using `bump.one_of_mem_closedBall (by simp; positivity)`. Establish `h1 : bump k = 0`. Apply `Function.notMem_support.mp` to reduce the goal to its premises. Rewrite using `[bump.support_eq]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Conclude with `le_rfl`. Simplify using `[Φ, ψ, h0, h1] at key`.
+A detailed English derivation is pending.
 -/
 private theorem false_of_degenerate_of_fourier_inversion (ν : Measure W) [ν.IsAddHaarMeasure] (β : W → W → ℝ)
     (hL : ∀ x x' y, β (x + x') y = β x y + β x' y) (hcL : ∀ y, Continuous fun x => β x y)
@@ -148,29 +148,27 @@ private theorem false_of_degenerate_of_fourier_inversion (ν : Measure W) [ν.Is
   simp [Φ, ψ, h0, h1] at key
 
 /- English proof (translation)
-Use `set s := ν.addHaarScalarFactor volume with hsdef`. Establish `hs : 0 < s` using `Measure.addHaarScalarFactor_pos_of_isAddHaarMeasure ν volume`. Establish `hν : ν = (s : ENNReal) • volume`. Rewrite using `[← ENNReal.smul_def]`. Conclude with `Measure.isAddLeftInvariant_eq_smul ν volume`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `bump : ContDiffBump (0 : W)` to `⟨1, 2, one_pos, one_lt_two⟩`. Establish `h0 : bump 0 = 1` using `bump.one_of_mem_closedBall (by simp; exact bump.rIn_pos.le)`. Set `Φ : W → ℂ` to `fun x => ((bump x : ℝ) : ℂ)`. Establish `hΦs : HasCompactSupport Φ` using `bump.hasCompactSupport.comp_left Complex.ofReal_zero`. Establish `hΦd : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) Φ` using `Complex.ofRealCLM.contDiff.comp (bump.contDiff (n := ⊤))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `S : SchwartzMap W ℂ` to `hΦs.toSchwartzMap hΦd`. Establish `hSΦ : (S : W → ℂ) = Φ` using `rfl`. Set `g : W → ℂ` to `𝓕⁻ Φ`. Establish `hgS : g = ⇑(𝓕⁻ S : SchwartzMap W ℂ)` using `by rw [SchwartzMap.fourierInv_coe, hSΦ]`. Establish `hgi : Integrable g` using `by rw [hgS]; exact (𝓕⁻ S : SchwartzMap W ℂ).integrable`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgg : ∫ v, g v = 1`. Establish `h1 : 𝓕⁻ g 0 = ∫ v, g v` using `by simp [Real.fourierInv_eq]`. Establish `h2 : 𝓕⁻ g 0 = Φ 0`. Rewrite using `[Real.fourierInv_eq_fourier_neg, hgS, ← SchwartzMap.fourier_coe, FourierInvPair.fourier_fourierInv_eq, hSΦ, neg_zero]`. Rewrite using `[← h1, h2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[Φ, h0]`. Establish `hAc : Continuous A` using `A.continuous_of_finiteDimensional`. Establish `hAm : AEMeasurable A volume` using `hAc.measurable.aemeasurable`. Establish `hmapA : (volume : Measure W).map A = ENNReal.ofReal |(LinearMap.det A)⁻¹| • volume` using `Measure.map_linearMap_addHaar_eq_smul_addHaar volume hdet`. Establish `hgim : Integrable g ((volume : Measure W).map A)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hmapA]`. Conclude with `hgi.smul_measure ENNReal.ofReal_ne_top`. Establish `hgA : Integrable (fun y => g (A y)) volume` using `(integrable_map_measure hgim.aestronglyMeasurable hAm).mp hgim`. Establish `hinner : ∀ y, ∫ x, Φ x * ((𝐞 ⟪x, A y⟫ : Circle) : ℂ) ∂ν = (s : ℝ) • g (A y)`. Introduce `y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments.
 
-Use `show _ = (s : ℝ) • 𝓕⁻ Φ (A y)`. Rewrite using `[hν, integral_smul_measure, ENNReal.coe_toReal, Real.fourierInv_eq]`. Use `congr 1`. Use `congr 1`. Use function extensionality and compare the values at `x`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Circle.smul_def, smul_eq_mul, mul_comm]`. Establish `hint : Integrable (fun y => ∫ x, Φ x * ((𝐞 ⟪x, A y⟫ : Circle) : ℂ) ∂ν) ν`. Simplify using `only [hinner]`. Rewrite using `[hν]`. Conclude with `(hgA.smul (s : ℝ)).smul_measure ENNReal.coe_ne_top`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hcomp : ∫ y, g (A y) = (ENNReal.ofReal |(LinearMap.det A)⁻¹|).toReal • (1 : ℂ)`. Rewrite using `[← integral_map hAm hgim.aestronglyMeasurable, hmapA, integral_smul_measure, hgg]`. Establish `key` using `hP Φ hΦd.continuous hΦs hint 0`. Simplify using `only [hinner, inner_zero_right, AddChar.map_zero_eq_one, Circle.coe_one, mul_one] at key`. Rewrite `key` using `[hν, integral_smul_measure, integral_smul, hcomp, ENNReal.coe_toReal, ENNReal.toReal_ofReal (abs_nonneg _)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hreal : (s : ℝ) * ((s : ℝ) * |(LinearMap.det A)⁻¹|) = 1`. Establish `h2 : Φ (-0) = 1` using `by simp [Φ, h0]`. Rewrite `key` using `[h2]`. Use `congrArg Complex.re key` as an intermediate fact. Simplify using `only [Complex.smul_re, Complex.one_re, smul_eq_mul, mul_one] at this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Clear the denominators using the available nonvanishing facts. Use the polynomial consequences of the given equalities and inequalities.
 
-Conclude with `this`. Establish `hdpos : 0 < |LinearMap.det A|` using `abs_pos.mpr hdet`. Establish `hsq : (s : ℝ) ^ 2 = |LinearMap.det A|`. Rewrite `hreal` using `[abs_inv]`. Clear denominators, using `at hreal` for the nonvanishing conditions.
-
-Use polynomial arithmetic with `[hreal]`. Rewrite using `[hν]`. Use `congr 1`. Rewrite using `[← ENNReal.ofReal_coe_nnreal, ← hsq, Real.sqrt_sq s.coe_nonneg]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem measure_eq_sqrt_abs_det_smul_volume_of_inversion (ν : Measure W) [ν.IsAddHaarMeasure] (A : W →ₗ[ℝ] W)
     (hdet : LinearMap.det A ≠ 0)
@@ -244,13 +242,11 @@ private theorem measure_eq_sqrt_abs_det_smul_volume_of_inversion (ν : Measure W
   rw [← ENNReal.ofReal_coe_nnreal, ← hsq, Real.sqrt_sq s.coe_nonneg]
 
 /- English proof (translation)
-Take `⟨A, hA, hdet⟩` from `exists_linearMap_inner_eq_and_det_eq_gram_det β hL hR hcL hcR b`. Establish `hP` using `fun Φ hc hs hi z => integral_fourier_map_eq_neg_of_integrable μ χ hμ e he β hχ Φ hc hs hi z`. Use `haveI : μ.IsAddHaarMeasure := hμ.1`. Use `haveI : (μ.map e).IsAddHaarMeasure := Measure.isAddHaarMeasure_map μ (AddMonoidHom.mk' e he) e.continuous e.surjective e.isClosedEmbedding.tendsto_cocompact`. Distinguish the cases in `hd : (Matrix.of fun i j => β (b i) (b j)).det = 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails. It suffices to derive a contradiction. Rewrite the indicated hypotheses using the stated equalities.
 
-It suffices to derive a contradiction. Rewrite `hd` using `[← hdet]`. Take `⟨k, hkker, hk⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot (LinearMap.det_eq_zero_iff_ker_ne_bot.mp hd)`. Establish `hk0 : ∀ y, β k y = 0` using `fun y => by`. Rewrite using `[hS, hA, LinearMap.mem_ker.mp hkker, inner_zero_right]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `false_of_degenerate_of_fourier_inversion (μ.map e) β hL hcL k hk hk0 hP`. Rewrite `hd`, the goal using `[← hdet]`. Apply `measure_eq_sqrt_abs_det_smul_volume_of_inversion (μ.map e) A hd` to reduce the goal to its premises. Introduce `Φ hc hs hi z`. Establish `hβ' : ∀ y z, ⟪A y, z⟫ = β y z` using `fun y z => by rw [hS, hA, real_inner_comm]`.
-
-Simplify using `only [← hA, hβ'] at hi ⊢`. Conclude with `hP Φ hc hs hi z`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dens_generic (μ : Measure V) (χ : V → V → ℂ) (hμ : SelfDual μ χ) (e : V ≃ₜ W)
     (he : ∀ x y, e (x + y) = e x + e y) (β : W → W → ℝ)

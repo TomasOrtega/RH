@@ -38,60 +38,60 @@ def FieldGT : Prop :=
 namespace Old
 
 /- English proof (translation)
-Introduce `x χ hχ _` and use `H.twist x χ hχ`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem twist (H : Laws a ha ε rc) : ∀ x χ hχ, Good x → rc (x.tw χ hχ) = (rc x).lpChar (rc (.ofChar χ hχ)) :=
   fun x χ hχ _ => H.twist x χ hχ
 
 /- English proof (translation)
-Introduce `x ω _` and use `H.central x ω`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem central (H : Laws a ha ε rc) : ∀ (x : IrrGL (w.adicCompletion E)) ω, Good x → HasCentralChar x.rep ω →
     ∀ σ, ((rc x).eig σ).prod = (ω (a σ) : ℂ) := fun x ω _ => H.central x ω
 
 /- English proof (translation)
-Introduce `x ω hω σ` and use `by rw [H.central x ω hω σ]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem absCentral (H : Laws a ha ε rc) : ∀ (x : IrrGL (w.adicCompletion E)) ω, HasCentralChar x.rep ω →
     ∀ σ, ‖((rc x).eig σ).prod‖ = ‖(ω (a σ) : ℂ)‖ := fun x ω hω σ => by rw [H.central x ω hω σ]
 
 /- English proof (translation)
-Introduce `n π π' _` and use `H.dual n π π'`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem dual (H : Laws a ha ε rc) : ∀ (n : ℕ) (π π' : IrrRep (GL (Fin n) (w.adicCompletion E))), Good (cls π) →
     Nonempty (π'.ρ.Equiv (contra π.ρ)) → rc (cls π') = (rc (cls π)).lpDual := fun n π π' _ => H.dual n π π'
 
 /- English proof (translation)
-Introduce `_ _ _ e` and use `H.bij.1 e`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem inj (H : Laws a ha ε rc) : ∀ x y, Good y → rc x = rc y → x = y := fun _ _ _ e => H.bij.1 e
 
 /- English proof (translation)
-Introduce `x _` and use `(H.depth x).1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem depth (H : Laws a ha ε rc) :
     ∀ x, Good x → fixed x.rep (KOne (w.adicCompletion E) (Fin x.1)) ≠ ⊥ → IsTameWD (rc x) := fun x _ => (H.depth x).1
 
 /- English proof (translation)
-Introduce `E' _ _ _ _ _ _ g _ w' h'`. Conclude with `hD E E' Ω g A w h w' h' rc H`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem type (hD : DepthZeroTypeInertia) (H : IsRec h rc) : TypeLaw h rc := by
   intro E' _ _ _ _ _ _ g _ w' h'
   exact hD E E' Ω g A w h w' h' rc H
 
 /- English proof (translation)
-The claim follows from `(hL.1 E Ω A w h).exists`.
+A detailed English derivation is pending.
 -/
 theorem ex (hL : LocalLanglandsGL) (h : IsPlaceOver A w) : ∃ rc, IsRec h rc := (hL.1 E Ω A w h).exists
 
 /- English proof (translation)
-Introduce `x _` and use `congrFun ((hL.1 E Ω A w h).unique H H') x`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem uniq (hL : LocalLanglandsGL) {rc' : IrrGL (w.adicCompletion E) → WD h} (H : IsRec h rc) (H' : IsRec h rc') :
     ∀ x, Good x → rc x = rc' x := fun x _ => congrFun ((hL.1 E Ω A w h).unique H H') x
 
 /- English proof (translation)
-Introduce `φ j i h1 h2 h3 h4 n π π' e he _` and use `hL.2 E Ω A w h E' Ω' A' w' h' rc rc' H H' φ j i h1 h2 h3 h4 n π π' e he`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem field (hL : LocalLanglandsGL) {E' Ω' : Type} [Field E'] [NumberField E'] [Field Ω'] [Algebra E' Ω'] [IsAlgClosure E' Ω']
     {A' : ValuationSubring Ω'} {w' : HeightOneSpectrum (𝓞 E')} {h' : IsPlaceOver A' w'}
@@ -99,7 +99,7 @@ theorem field (hL : LocalLanglandsGL) {E' Ω' : Type} [Field E'] [NumberField E'
   fun φ j i h1 h2 h3 h4 n π π' e he _ => hL.2 E Ω A w h E' Ω' A' w' h' rc rc' H H' φ j i h1 h2 h3 h4 n π π' e he
 
 /- English proof (translation)
-The claim follows from `have _ := hL; isRecT_of_isRec hD H`.
+A detailed English derivation is pending.
 -/
 theorem abConv (hL : LocalLanglandsGL) (hD : DepthZeroTypeInertia) (H : IsRec h rc) : IsRecT h rc :=
   have _ := hL; isRecT_of_isRec hD H
@@ -109,28 +109,28 @@ end Old
 namespace New
 
 /- English proof (translation)
-The claim follows from `H.choose_spec.choose_spec.type`.
+A detailed English derivation is pending.
 -/
 theorem type (_hD : DepthZeroTypeInertia) (H : IsRecT h rc) : TypeLaw h rc := H.choose_spec.choose_spec.type
 
 /- English proof (translation)
-The claim follows from `hL E Ω A w h`.
+A detailed English derivation is pending.
 -/
 theorem ex (hL : RecTExists) (h : IsPlaceOver A w) : ∃ rc, IsRecT h rc := hL E Ω A w h
 
 /- English proof (translation)
-The claim follows from `recTUnique E Ω A w h rc rc' H H'`.
+A detailed English derivation is pending.
 -/
 theorem uniq (_hL : RecTExists) {rc' : IrrGL (w.adicCompletion E) → WD h} (H : IsRecT h rc) (H' : IsRecT h rc') :
     ∀ x, Good x → rc x = rc' x := recTUnique E Ω A w h rc rc' H H'
 
 /- English proof (translation)
-The claim follows from `H`.
+A detailed English derivation is pending.
 -/
 theorem abConv (_hL : RecTExists) (_hD : DepthZeroTypeInertia) (H : IsRecT h rc) : IsRecT h rc := H
 
 /- English proof (translation)
-Introduce `h _ _ _ _ _ _ _ _ _ _ _ _` and use `h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem llOf : RecTExists → LocalConverseGL → DepthZeroCuspidalLL → DepthZeroInduction →
     BrauerDegreeZero → ChevalleyUnits → GlobalArtinReciprocity → LanglandsExhaustionGL → LanglandsMultisegments →

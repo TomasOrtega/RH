@@ -27,7 +27,7 @@ variable (K) in
 def idx (m : ℕ) (L N : Submodule (𝓞 K) V) : Ideal (𝓞 K) := (detSpan K m N).colon (detSpan K m L)
 
 /- English proof (translation)
-The claim follows from `(Ideal.eq_top_iff_one _).2 (Submodule.mem_colon.2 fun _ h => by simpa using h)`.
+A detailed English derivation is pending.
 -/
 example (m : ℕ) (L : Submodule (𝓞 K) V) : idx K m L L = ⊤ :=
   (Ideal.eq_top_iff_one _).2 (Submodule.mem_colon.2 fun _ h => by simpa using h)

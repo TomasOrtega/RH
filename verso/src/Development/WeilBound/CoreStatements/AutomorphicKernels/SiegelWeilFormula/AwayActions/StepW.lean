@@ -17,37 +17,29 @@ namespace SDf
 variable (d : SD σ)
 
 /- English proof (translation)
-Take `⟨⟨ν, hν⟩, -, -⟩` from `hA F E σ d`. Use `hν.1` as an intermediate fact. Take `⟨i1, i2, i3, i4⟩` from `(PositivityTheory.ThKCT.ideleTop F E).1`. Use `haveI : BorelSpace (AE F E) := ⟨rfl⟩`. Use `haveI : IsTopologicalAddGroup (Mx F E d.m d.n) := inferInstanceAs (IsTopologicalAddGroup (Fin d.m → Fin d.n → AE F E))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `haveI : LocallyCompactSpace (Mx F E d.m d.n) := inferInstanceAs (LocallyCompactSpace (Fin d.m → Fin d.n → AE F E))`. Use `haveI : SecondCountableTopology (Mx F E d.m d.n) := inferInstanceAs (SecondCountableTopology (Fin d.m → Fin d.n → AE F E))`. Use `haveI : BorelSpace (Mx F E d.m d.n) := inferInstanceAs (BorelSpace (Fin d.m → Fin d.n → AE F E))`. Establish `hsm : ∀ c : AF F, Continuous fun Z : Mx F E d.m d.n => c • Z` using `fun c => continuous_pi fun i => continuous_pi fun j => Continuous.fun_smul (f := fun _ : Mx F E d.m d.n => c) (g := fun Z : Mx F E d.m d.n => Z i j) continuous_const ((continuous_apply j).comp (continuous_apply i))`. Set `VI : AddSubgroup (Mx F E d.m d.n)` to `{ carrier := {Z | finOne F • Z = 0} add_mem' := fun {a b} ha hb => by`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Simplify using `only [Set.mem_setOf_eq] at *`. Rewrite using `[smul_add, ha, hb, add_zero]`. Use the proof step `zero_mem' := by simp`. Use the proof step `neg_mem' := fun {a} ha => by`. Simplify using `only [Set.mem_setOf_eq] at *`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[smul_neg, ha, neg_zero] }`. Set `VF : AddSubgroup (Mx F E d.m d.n)` to `{ carrier := {Z | eInf F • Z = 0} add_mem' := fun {a b} ha hb => by`. Simplify using `only [Set.mem_setOf_eq] at *`. Rewrite using `[smul_add, ha, hb, add_zero]`. Use the proof step `zero_mem' := by simp`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `neg_mem' := fun {a} ha => by`. Simplify using `only [Set.mem_setOf_eq] at *`. Rewrite using `[smul_neg, ha, neg_zero] }`. Establish `hVI : IsClosed ((VI : AddSubgroup (Mx F E d.m d.n)) : Set (Mx F E d.m d.n))` using `isClosed_eq (hsm (finOne F)) continuous_const`. Establish `hVF : IsClosed ((VF : AddSubgroup (Mx F E d.m d.n)) : Set (Mx F E d.m d.n))` using `isClosed_eq (hsm (eInf F)) continuous_const`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : LocallyCompactSpace VI := hVI.isClosedEmbedding_subtypeVal.locallyCompactSpace`. Use `haveI : LocallyCompactSpace VF := hVF.isClosedEmbedding_subtypeVal.locallyCompactSpace`. Use `haveI : SecondCountableTopology VI := TopologicalSpace.Subtype.secondCountableTopology ((VI : AddSubgroup (Mx F E d.m d.n)) : Set (Mx F E d.m d.n))`. Use `haveI : SecondCountableTopology VF := TopologicalSpace.Subtype.secondCountableTopology ((VF : AddSubgroup (Mx F E d.m d.n)) : Set (Mx F E d.m d.n))`. Use `haveI : BorelSpace VI := Subtype.borelSpace ((VI : AddSubgroup (Mx F E d.m d.n)) : Set (Mx F E d.m d.n))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : BorelSpace VF := Subtype.borelSpace ((VF : AddSubgroup (Mx F E d.m d.n)) : Set (Mx F E d.m d.n))`. Establish `h₁ : ∀ Z : Mx F E d.m d.n, eInf F • Z ∈ VI` using `fun Z => by show finOne F • eInf F • Z = 0`. Rewrite using `[smul_smul, finOne_mul_eInf, zero_smul]`. Establish `h₂ : ∀ Z : Mx F E d.m d.n, finOne F • Z ∈ VF` using `fun Z => by show eInf F • finOne F • Z = 0`. Rewrite using `[smul_smul, eInf_mul_finOne, zero_smul]`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `Φs : VI × VF ≃ₜ+ Mx F E d.m d.n` to `{ toFun := fun p => p.1.1 + p.2.1 invFun := fun Z => (⟨eInf F • Z, h₁ Z⟩, ⟨finOne F • Z, h₂ Z⟩) left_inv := fun p => by`. Take `⟨⟨a, ha⟩, ⟨b, hb⟩⟩` from `p`. Establish `ha' : finOne F • a = 0` using `ha`. Establish `hb' : eInf F • b = 0` using `hb`. Establish `ea : eInf F • a = a` using `by conv_rhs => rw [← smul_split a]`.
+Establish an intermediate fact. Simplify by unfolding definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ha', add_zero]`. Establish `eb : finOne F • b = b` using `by conv_rhs => rw [← smul_split b]`. Rewrite using `[hb', zero_add]`. Use `Prod.ext (Subtype.ext ?_) (Subtype.ext ?_)` and prove the remaining obligations. Use `show eInf F • (a + b) = a`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify by unfolding definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[smul_add, ea, hb', add_zero]`. Use `show finOne F • (a + b) = b`. Rewrite using `[smul_add, eb, ha', zero_add]`. Use `right_inv := fun Z => smul_split Z`. Use the proof step `map_add' := fun p q => by show p.1.1 + q.1.1 + (p.2.1 + q.2.1) = p.1.1 + p.2.1 + (q.1.1 + q.2.1)`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Normalize the expressions using the abelian group laws. Use `continuous_toFun := (continuous_subtype_val.comp continuous_fst).add (continuous_subtype_val.comp continuous_snd)`. Use `continuous_invFun := ((hsm (eInf F)).subtype_mk h₁).prodMk ((hsm (finOne F)).subtype_mk h₂) }`. Take `⟨C, -, hC⟩` from `KFock.integral_split ν (Measure.addHaar : Measure VI) (Measure.addHaar : Measure VF) Φs`. Use `⟨fun f X => (C : ℂ) * ∫ a : VI, d.B.ψ (((ε : ℤ) : AF F) * d.tt (d.gram X a.1)) * f a.1 ∂Measure.addHaar, fun G X => ∫ b : VF, d.B.ψ (((ε : ℤ) : AF F) * d.tt (d.gram X b.1)) * G b.1 ∂Measure.addHaar, fun f hf => ?_, fun G hG => ⟨?_, fun f hf Φ hΦ hTΦ => ?_⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Introduce `X Z hZ`. Establish `hZ'` using `(cw_zero_iff d Z).1 hZ`. Simplify using `only`. Use `congr 2`. Use function extensionality and compare the values at `a`.
-
-Rewrite using `[gram_add_left, gram_fin_inf d hZ' a.2, add_zero]`. Introduce `X Z hZ dsimp only`. Use `congr 1`. Use function extensionality and compare the values at `b`. Rewrite using `[gram_add_left, gram_inf_fin d hZ b.2, add_zero]`.
-
-Use function extensionality and compare the values at `X`. Rewrite using `[(hT.2.2.1 F E σ d) ν hν ε w hw Φ hΦ X, hTΦ, hC]`. Establish `hpt : ∀ p : VI × VF, d.B.ψ (((ε : ℤ) : AF F) * d.tt (d.gram X (Φs p))) * (f (Φs p) * G (Φs p)) = (d.B.ψ (((ε : ℤ) : AF F) * d.tt (d.gram X p.1.1)) * f p.1.1) * (d.B.ψ (((ε : ℤ) : AF F) * d.tt (d.gram X p.2.1)) * G p.2.1)`. Introduce `p`. Establish `e1 : Φs p = p.1.1 + p.2.1` using `rfl`.
-
-Establish `hf' : f (p.1.1 + p.2.1) = f p.1.1` using `hf p.1.1 p.2.1 ((cw_zero_iff d _).2 p.2.2)`. Establish `hG' : G (p.1.1 + p.2.1) = G p.2.1` using `by rw [add_comm]; exact hG p.2.1 p.1.1 p.1.2`. Rewrite using `[e1, hf', hG', gram_add_right, tt_add, mul_add, AddChar.map_add_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [hpt]`.
-
-Rewrite using `[integral_prod_mul (μ := (Measure.addHaar : Measure VI)) (ν := (Measure.addHaar : Measure VF)) (fun a : VI => d.B.ψ (((ε : ℤ) : AF F) * d.tt (d.gram X a.1)) * f a.1) (fun b : VF => d.B.ψ (((ε : ℤ) : AF F) * d.tt (d.gram X b.1)) * G b.1)]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem stepW (hT : TAll) (hA : AuxiliaryPrimeFunction) (ε : ℤˣ) (w : d.G) (hw : d.IsW ε w) : ∃ A B, StepF d w A B := by
   obtain ⟨⟨ν, hν⟩, -, -⟩ := hA F E σ d

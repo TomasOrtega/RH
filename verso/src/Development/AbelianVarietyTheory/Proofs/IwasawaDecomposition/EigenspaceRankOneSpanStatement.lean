@@ -7,7 +7,7 @@ open GlobalTheory.EigenSplit
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.EigenSplit.eigenSub_eq_range_tensorAction_of_le_span | exact GlobalTheory.EigenSplit.eigenSub_eq_range_tensorAction_of_le_span | (intros; apply GlobalTheory.EigenSplit.eigenSub_eq_range_tensorAction_of_le_span <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.eigenspace_rank_one_span : ∀ {O R Λ : Type} [CommRing O] [CommRing R] [AddCommGroup Λ] [Module O Λ] [Module.Finite O Λ]
     [Module.Projective O Λ] (χ : O →+* R) (e : R ⊗[ℤ] O),

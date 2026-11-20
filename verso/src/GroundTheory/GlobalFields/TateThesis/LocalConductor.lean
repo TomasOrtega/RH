@@ -8,9 +8,9 @@ open Topology Filter IsDedekindDomain WithZero
 noncomputable section
 
 /- English proof (translation)
-Take `⟨U, hU, hsmall⟩` from `hH`. Establish `hW : χ ⁻¹' U ∈ 𝓝 (1 : G)` using `hχ.continuousAt.preimage_mem_nhds (by rwa [map_one])`. Take `⟨L, hL, hLW⟩` from `hP _ hW`. Use `⟨L, hL, ?_⟩` and prove the remaining obligations. Rewrite using `[← Subgroup.map_eq_bot_iff]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `hsmall _ ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `hLW hx`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem exists_le_ker_of_noSmallSubgroups {G H : Type*} [Group G] [TopologicalSpace G] [Group H]
     [TopologicalSpace H] {P : Subgroup G → Prop}
@@ -53,7 +53,7 @@ def unitsLevel (n : ℕ) : Subgroup (v.adicCompletion K)ˣ where
 
 variable {v} in
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_unitsLevel {n : ℕ} {x : (v.adicCompletion K)ˣ} :
     x ∈ unitsLevel v n ↔ Valued.v (x : v.adicCompletion K) = 1 ∧
@@ -63,9 +63,9 @@ theorem mem_unitsLevel {n : ℕ} {x : (v.adicCompletion K)ˣ} :
 variable {v} in
 
 /- English proof (translation)
-Use `⟨And.right, fun h ↦ ⟨?_, h⟩⟩` and prove the remaining obligations. Establish `hlt : Valued.v ((x : v.adicCompletion K) - 1) < Valued.v (1 : v.adicCompletion K)`. Rewrite using `[map_one]`. Use `h.trans_lt ?_` and prove the remaining obligations. Rewrite using `[← exp_zero, exp_lt_exp]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Simplify using `using Valuation.map_eq_of_sub_lt _ hlt`.
+Use linear arithmetic over natural numbers and integers. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mem_unitsLevel_of_one_le {n : ℕ} (hn : 1 ≤ n) {x : (v.adicCompletion K)ˣ} :
     x ∈ unitsLevel v n ↔ Valued.v ((x : v.adicCompletion K) - 1) ≤ exp (-(n : ℤ)) := by
@@ -78,11 +78,11 @@ theorem mem_unitsLevel_of_one_le {n : ℕ} (hn : 1 ≤ n) {x : (v.adicCompletion
   simpa using Valuation.map_eq_of_sub_lt _ hlt
 
 /- English proof (translation)
-Use extensionality with `x`. Rewrite using `[Submonoid.mem_units_iff, mem_unitsLevel]`. Express the relevant statement in the definitionally equal form `_ ↔ (x : v.adicCompletion K) ∈ v.adicCompletionIntegers K ∧ ((x⁻¹ : (v.adicCompletion K)ˣ) : v.adicCompletion K) ∈ v.adicCompletionIntegers K`. Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers, HeightOneSpectrum.mem_adicCompletionIntegers, Units.val_inv_eq_inv_val, map_inv₀]`. Prove the components needed by the constructor for the conclusion.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨h1, -⟩`. Simplify using `[h1]`. Introduce and unpack `⟨h1, h2⟩`. Establish `hx0 : Valued.v (x : v.adicCompletion K) ≠ 0` using `by simp`. Establish `h3 : 1 ≤ Valued.v (x : v.adicCompletion K)`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(inv_le_one₀ (zero_lt_iff.2 hx0)).1 h2`. Use `⟨le_antisymm h1 h3, ?_⟩` and prove the remaining obligations. Rewrite using `[Nat.cast_zero, neg_zero, exp_zero]`. Conclude with `Valuation.map_sub_le _ h1 (by simp)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unitsLevel_zero :
     unitsLevel (K := K) v 0 = (Submonoid.ofClass (v.adicCompletionIntegers K)).units := by
@@ -104,7 +104,7 @@ theorem unitsLevel_zero :
     exact Valuation.map_sub_le _ h1 (by simp)
 
 /- English proof (translation)
-Introduce `m n hmn x hx`. Use `⟨hx.1, hx.2.trans ?_⟩` and prove the remaining obligations. Rewrite using `[exp_le_exp]`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem unitsLevel_antitone : Antitone (unitsLevel (K := K) v) := by
   intro m n hmn x hx
@@ -113,13 +113,11 @@ theorem unitsLevel_antitone : Antitone (unitsLevel (K := K) v) := by
   omega
 
 /- English proof (translation)
-Use `Subgroup.isOpen_of_mem_nhds (g := 1) _ ?_` and prove the remaining obligations. Take `⟨a, ha⟩` from `HeightOneSpectrum.valuedAdicCompletion_surjective (K := K) (v := v) (exp (-(n : ℤ)))`. Establish `ha0 : Valued.v a ≠ 0` using `by simp [ha]`. Establish `h1 : {y : v.adicCompletion K | Valued.v y = 1} ∈ 𝓝 (1 : v.adicCompletion K)`. Simplify using `using Valued.locally_const (x := (1 : v.adicCompletion K)) (by simp)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h2 : {y : v.adicCompletion K | Valued.v (y - 1) ≤ exp (-(n : ℤ))} ∈ 𝓝 (1 : v.adicCompletion K)`. Establish `hc : Continuous fun y : v.adicCompletion K ↦ y - 1 + a` using `(continuous_id.sub continuous_const).add continuous_const`. Establish `h` using `hc.continuousAt.preimage_mem_nhds (x := (1 : v.adicCompletion K)) (by simpa using Valued.locally_const (x := a) ha0)`. Use `Filter.mem_of_superset h fun y hy ↦ ?_` and prove the remaining obligations. Establish `hy' : Valued.v (y - 1 + a) = exp (-(n : ℤ))` using `by rw [← ha]; exact hy`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: y - 1 = (y - 1 + a) - a` using `by ring`. Express the relevant statement in the definitionally equal form `Valued.v (y - 1) ≤ exp (-(n : ℤ))`. Rewrite using `[this]`. Conclude with `Valuation.map_sub_le _ hy'.le ha.le`. Establish `h3` using `Units.continuous_val.continuousAt.preimage_mem_nhds (x := (1 : (v.adicCompletion K)ˣ)) (by rw [Units.val_one]; exact Filter.inter_mem h1 h2)`.
-
-Conclude with `Filter.mem_of_superset h3 fun x hx ↦ hx`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isOpen_unitsLevel (n : ℕ) : IsOpen (unitsLevel (K := K) v n : Set (v.adicCompletion K)ˣ) := by
   refine Subgroup.isOpen_of_mem_nhds (g := 1) _ ?_
@@ -145,11 +143,11 @@ theorem isOpen_unitsLevel (n : ℕ) : IsOpen (unitsLevel (K := K) v n : Set (v.a
   exact Filter.mem_of_superset h3 fun x hx ↦ hx
 
 /- English proof (translation)
-Rewrite `ht` using `[Units.isEmbedding_val₀.nhds_eq_comap, Units.val_one, mem_comap]`. Take `⟨t', ht', hsub⟩` from `ht`. Take `⟨γ, hγ⟩` from `Valued.mem_nhds.1 ht'`. Use `set c := MonoidWithZeroHom.ValueGroup₀.embedding γ.1 with hc`. Establish `hc0 : c ≠ 0` using `fun h ↦ γ.ne_zero (MonoidWithZeroHom.ValueGroup₀.embedding_injective (h.trans (map_zero _).symm))`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(-(log c)).toNat + 1, by omega, fun x hx ↦ hsub (hγ ?_)⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Valued.v.restrict ((x : v.adicCompletion K) - 1) < γ.1`. Rewrite using `[Valuation.restrict_lt_iff_lt_embedding, ← hc]`. Use `hx.2.trans_lt (lt_of_lt_of_eq ?_ (exp_log hc0))` and prove the remaining obligations. Rewrite using `[exp_lt_exp]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem exists_unitsLevel_subset {t : Set (v.adicCompletion K)ˣ} (ht : t ∈ 𝓝 1) :
     ∃ n : ℕ, 1 ≤ n ∧ (unitsLevel (K := K) v n : Set (v.adicCompletion K)ˣ) ⊆ t := by
@@ -171,7 +169,7 @@ section Character
 variable {H : Type*} [Group H] [TopologicalSpace H]
 
 /- English proof (translation)
-Take `⟨L, ⟨n, hn, rfl⟩, hL⟩` from `exists_le_ker_of_noSmallSubgroups (P := fun L ↦ ∃ n : ℕ, 1 ≤ n ∧ L = unitsLevel v n) (fun W hW ↦ by`. Take `⟨n, hn, h⟩` from `exists_unitsLevel_subset v hW`. Conclude with `⟨_, ⟨n, hn, rfl⟩, h⟩) hH χ hχ`. Conclude with `⟨n, hn, hL⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem exists_unitsLevel_le_ker (hH : NoSmallSubgroups H) (χ : (v.adicCompletion K)ˣ →* H)
     (hχ : Continuous χ) : ∃ n : ℕ, 1 ≤ n ∧ unitsLevel v n ≤ χ.ker := by
@@ -183,7 +181,7 @@ theorem exists_unitsLevel_le_ker (hH : NoSmallSubgroups H) (χ : (v.adicCompleti
   exact ⟨n, hn, hL⟩
 
 /- English proof (translation)
-Take `⟨n, -, hn⟩` from `exists_unitsLevel_le_ker v hH χ hχ`. Conclude with `Subgroup.isOpen_mono hn (isOpen_unitsLevel v n)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isOpen_ker_of_continuous (hH : NoSmallSubgroups H) (χ : (v.adicCompletion K)ˣ →* H)
     (hχ : Continuous χ) : IsOpen (χ.ker : Set (v.adicCompletion K)ˣ) := by
@@ -194,7 +192,7 @@ def conductorExponent (χ : (v.adicCompletion K)ˣ →* H) : ℕ :=
   sInf {n : ℕ | unitsLevel v n ≤ χ.ker}
 
 /- English proof (translation)
-Establish `hne : {n : ℕ | unitsLevel v n ≤ χ.ker}.Nonempty` using `(exists_unitsLevel_le_ker v hH χ hχ).imp fun _ h ↦ h.2`. Use `⟨fun h ↦ Nat.sInf_le h, fun h ↦ (unitsLevel_antitone v h).trans (Nat.sInf_mem hne)⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem unitsLevel_le_ker_iff (hH : NoSmallSubgroups H) (χ : (v.adicCompletion K)ˣ →* H)
     (hχ : Continuous χ) {n : ℕ} : unitsLevel v n ≤ χ.ker ↔ conductorExponent v χ ≤ n := by
@@ -203,7 +201,7 @@ theorem unitsLevel_le_ker_iff (hH : NoSmallSubgroups H) (χ : (v.adicCompletion 
   refine ⟨fun h ↦ Nat.sInf_le h, fun h ↦ (unitsLevel_antitone v h).trans (Nat.sInf_mem hne)⟩
 
 /- English proof (translation)
-Rewrite using `[← unitsLevel_zero, unitsLevel_le_ker_iff v hH χ hχ, Nat.le_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem conductorExponent_eq_zero_iff (hH : NoSmallSubgroups H) (χ : (v.adicCompletion K)ˣ →* H)
     (hχ : Continuous χ) :

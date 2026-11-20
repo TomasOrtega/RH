@@ -7,9 +7,9 @@ open MeasureTheory NumberField Matrix Finset Formalism.MainNotions.S GlobalTheor
 namespace GlobalTheory.FlagStabMul
 
 /- English proof (translation)
-Take `⟨γ, hγ, rfl, hk⟩` from `hx`. Take `⟨δ, hδ, rfl, hl⟩` from `hy`. Use `⟨γ * δ, (GlobalTheory.RatDiscrete.ratSub I).mul_mem hγ hδ, rfl, ?_⟩` and prove the remaining obligations. Establish `h : xf⁻¹ * (γ * δ).2 * xf = (xf⁻¹ * γ.2 * xf) * (xf⁻¹ * δ.2 * xf)`. Rewrite using `[Prod.snd_mul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `group`. Rewrite using `[h]`. Conclude with `(Formalism.UG.stabGL I.Lf).mul_mem hk hl`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem latGroup_mul (I : AutInst) (xf : I.Gf) {x y : I.Ginf} (hx : x ∈ latGroup I xf)
     (hy : y ∈ latGroup I xf) : x * y ∈ latGroup I xf := by
@@ -22,7 +22,7 @@ theorem latGroup_mul (I : AutInst) (xf : I.Gf) {x y : I.Ginf} (hx : x ∈ latGro
   exact (Formalism.UG.stabGL I.Lf).mul_mem hk hl
 
 /- English proof (translation)
-Introduce `I xf a S x hx y hy`. Use `⟨latGroup_mul I xf hx.1 hy.1, fun v k z hz => ?_⟩` and prove the remaining obligations. Establish `h : uMat ((x * y) v) = uMat (x v) * uMat (y v)` using `rfl`. Rewrite using `[h, ← Matrix.mulVec_mulVec]`. Conclude with `hx.2 v k _ (hy.2 v k z hz)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem flagGroup_mul : ∀ (I : AutInst) (xf : I.Gf) (a : ℕ) (S : Fin (a + 1) → Submodule (𝓞 I.E) (Fin I.n → I.E)), ∀ x ∈ flagGroup I xf S, ∀ y ∈ flagGroup I xf S, x * y ∈ flagGroup I xf S := by
   intro I xf a S x hx y hy

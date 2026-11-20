@@ -20,7 +20,7 @@ def gStep {G : Type*} [AddCommGroup G] (b : K → ℤ) (h : (K → ℤ) → G) :
   fun m => h m - h (m - b)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `m`. Simplify using `only [gStep]`. Rewrite using `[sub_right_comm m a b]`. Normalize the expressions using the abelian group laws.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem gStep_comm {G : Type*} [AddCommGroup G] (a b : K → ℤ) (h : (K → ℤ) → G) :
     gStep a (gStep b h) = gStep b (gStep a h) := by
@@ -43,14 +43,14 @@ theorem mixedDiff_eq {n : ℕ} (bs : Fin n → K → ℤ) (h : (K → ℤ) → �
 
 omit [DecidableEq K] in
 /- English proof (translation)
-Simplify using `only [mixedDiff_eq, List.ofFn_succ, Fin.cons_zero, Fin.cons_succ, List.foldr_cons]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mixedDiff_cons {n : ℕ} (v : K → ℤ) (t : Fin n → K → ℤ) (h : (K → ℤ) → ℤ) :
     mixedDiff (Fin.cons v t : Fin (n + 1) → K → ℤ) h = gStep v (mixedDiff t h) := by
   simp only [mixedDiff_eq, List.ofFn_succ, Fin.cons_zero, Fin.cons_succ, List.foldr_cons]
 
 /- English proof (translation)
-Unfold `intNum`. Rewrite using `[mixedDiff_eq, mixedDiff_eq, (σ.ofFn_comp_perm bs).foldr_eq]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem intNum_perm (F : Type*) [Field F] {ι : K → Type*} (q : Ideal (MRing ι F)) {d : ℕ}
     (σ : Equiv.Perm (Fin d)) (bs : Fin d → K → ℤ) : intNum F q (bs ∘ σ) = intNum F q bs := by
@@ -59,7 +59,7 @@ theorem intNum_perm (F : Type*) [Field F] {ι : K → Type*} (q : Ideal (MRing �
 
 omit [DecidableEq K] in
 /- English proof (translation)
-Establish `hex : ∃ c, ∀ᶠ m in atTop, f m = c` using `⟨c, h⟩`. Unfold `eventualValue`. Rewrite using `[dif_pos hex]`. Take `⟨m, hm1, hm2⟩` from `(hex.choose_spec.and h).exists`. Conclude with `hm1.symm.trans hm2`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem eventualValue_of_eventually {f : (K → ℤ) → ℤ} {c : ℤ} (h : ∀ᶠ m in atTop, f m = c) :
     eventualValue f = c := by
@@ -71,7 +71,7 @@ theorem eventualValue_of_eventually {f : (K → ℤ) → ℤ} {c : ℤ} (h : ∀
 
 omit [DecidableEq K] in
 /- English proof (translation)
-Take `⟨a, ha⟩` from `Filter.eventually_atTop.1 h`. Conclude with `Filter.eventually_atTop.2 ⟨a + x, fun m hm => ha _ (le_sub_iff_add_le.2 hm)⟩`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem eventually_sub {P : (K → ℤ) → Prop} (h : ∀ᶠ m in atTop, P m) (x : K → ℤ) :
     ∀ᶠ m in atTop, P (m - x) := by
@@ -80,9 +80,9 @@ theorem eventually_sub {P : (K → ℤ) → Prop} (h : ∀ᶠ m in atTop, P m) (
 
 omit [DecidableEq K] in
 /- English proof (translation)
-Take `⟨cx, hcx⟩` from `hx`. Take `⟨cy, hcy⟩` from `hy`. Rewrite using `[eventualValue_of_eventually hcx, eventualValue_of_eventually hcy]`. Apply `eventualValue_of_eventually` to reduce the goal to its premises. Use `filter_upwards [hcx, eventually_sub hcy x] with m h1 h2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h1, ← h2]`. Simplify using `only [gStep]`. Rewrite using `[show m - x - y = m - (x + y) from sub_sub m x y]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem eventualValue_step_add (G : (K → ℤ) → ℤ) (x y : K → ℤ)
     (hx : ∃ c, ∀ᶠ m in atTop, gStep x G m = c) (hy : ∃ c, ∀ᶠ m in atTop, gStep y G m = c) :
@@ -98,15 +98,15 @@ theorem eventualValue_step_add (G : (K → ℤ) → ℤ) (x y : K → ℤ)
   abel
 
 /- English proof (translation)
-Consider the cases of `d with`. Consider the case `zero => exact j.elim0`. Consider the case `succ n => set σ : Equiv.Perm (Fin (n + 1)) := Equiv.swap 0 j with hσ set t : Fin n → K → ℤ := fun i => bs (σ i.succ) with ht`. Establish `key : ∀ v, intNum F q (Function.update bs j v) = eventualValue (gStep v (mixedDiff t (hilbFn q)))`. Introduce `v`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← intNum_perm F q σ]`. Establish `hc : Function.update bs j v ∘ σ = Fin.cons v t`. Use function extensionality and compare the values at `i`. Use `Fin.cases ?_ (fun i => ?_) i` and prove the remaining obligations. Simplify using `[hσ]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `hne : σ i.succ ≠ j`. Introduce `hij`. Establish `h0 : σ 0 = j` using `by simp [hσ]`. Conclude with `Fin.succ_ne_zero i (σ.injective (hij.trans h0.symm))`. Simplify using `only [Function.comp_apply, Fin.cons_succ, ht]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Function.update_of_ne hne]`. Rewrite using `[hc]`. Unfold `intNum`. Rewrite using `[mixedDiff_cons]`. Rewrite using `[key, key, key]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `eventualValue_step_add` to reduce the goal to its premises. Simplify `hex (Fin.cons x t)` using `only [mixedDiff_cons]`. Simplify `hex (Fin.cons y t)` using `only [mixedDiff_cons]`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem intNum_update_add (F : Type*) [Field F] {ι : K → Type*} (q : Ideal (MRing ι F)) {d : ℕ}
     (hex : ∀ bs : Fin d → K → ℤ, ∃ c, ∀ᶠ m in atTop, mixedDiff bs (hilbFn q) m = c)
@@ -150,7 +150,7 @@ def dPoly (b : K → ℤ) (p : MvPolynomial K ℚ) : MvPolynomial K ℚ :=
   p - bind₁ (fun k => X k - C (b k : ℚ)) p
 
 /- English proof (translation)
-Use `show aeval (fun k => (m k : ℚ)) (dPoly b p) = aeval (fun k => (m k : ℚ)) p - aeval (fun k => ((m - b) k : ℚ)) p`. Establish `hx : (fun i => aeval (fun k => (m k : ℚ)) (X i - C (b i : ℚ))) = fun k => ((m - b) k : ℚ)`. Use function extensionality and compare the values at `k`. Simplify using the standard rewrite rules. Rewrite using `[dPoly, map_sub, aeval_bind₁, hx]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eval_dPoly (b : K → ℤ) (p : MvPolynomial K ℚ) (m : K → ℤ) :
     eval (fun k => (m k : ℚ)) (dPoly b p) =
@@ -166,9 +166,9 @@ theorem eval_dPoly (b : K → ℤ) (p : MvPolynomial K ℚ) (m : K → ℤ) :
 def Low (A : MvPolynomial K ℚ) (N : ℕ) : Prop := A = 0 ∨ A.totalDegree < N
 
 /- English proof (translation)
-Break down `hA with hA | hA` into its components or cases. Simplify `hB` using `[hA]`. Break down `hB with hB | hB` into its components or cases. Rewrite using `[hB, add_zero]`. Conclude with `Or.inr hA`.
+Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Prove the second alternative.
 
-Conclude with `Or.inr ((totalDegree_add A B).trans_lt (max_lt hA hB))`.
+Prove the second alternative.
 -/
 theorem low_add {A B : MvPolynomial K ℚ} {N : ℕ} (hA : Low A N) (hB : Low B N) :
     Low (A + B) N := by
@@ -180,13 +180,13 @@ theorem low_add {A B : MvPolynomial K ℚ} {N : ℕ} (hA : Low A N) (hB : Low B 
   exact Or.inr ((totalDegree_add A B).trans_lt (max_lt hA hB))
 
 /- English proof (translation)
-The claim follows from `hA.imp id (fun h' => h'.trans_le h)`.
+A detailed English derivation is pending.
 -/
 theorem low_mono {A : MvPolynomial K ℚ} {N N' : ℕ} (hA : Low A N) (h : N ≤ N') : Low A N' :=
   hA.imp id (fun h' => h'.trans_le h)
 
 /- English proof (translation)
-Break down `hA with hA | hA` into its components or cases. Conclude with `Or.inl (by simp [hA])`. Conclude with `Or.inr ((totalDegree_mul A B).trans_lt (by omega))`.
+Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative.
 -/
 theorem low_mul_right {A B : MvPolynomial K ℚ} {N M : ℕ} (hA : Low A N) (hB : B.totalDegree ≤ M) :
     Low (A * B) (N + M) := by
@@ -195,7 +195,7 @@ theorem low_mul_right {A B : MvPolynomial K ℚ} {N M : ℕ} (hA : Low A N) (hB 
   exact Or.inr ((totalDegree_mul A B).trans_lt (by omega))
 
 /- English proof (translation)
-Rewrite using `[mul_comm, add_comm]`. Conclude with `low_mul_right hB hA`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem low_mul_left {A B : MvPolynomial K ℚ} {N M : ℕ} (hB : Low B N) (hA : A.totalDegree ≤ M) :
     Low (A * B) (M + N) := by
@@ -203,7 +203,7 @@ theorem low_mul_left {A B : MvPolynomial K ℚ} {N M : ℕ} (hB : Low B N) (hA :
   exact low_mul_right hB hA
 
 /- English proof (translation)
-Simplify using `only [dPoly, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem dPoly_mul (b : K → ℤ) (A B : MvPolynomial K ℚ) :
     dPoly b (A * B) = dPoly b A * B + (A - dPoly b A) * dPoly b B := by
@@ -211,7 +211,7 @@ theorem dPoly_mul (b : K → ℤ) (A B : MvPolynomial K ℚ) :
   ring
 
 /- English proof (translation)
-Use `(totalDegree_sub _ _).trans (max_le hd ?_)` and prove the remaining obligations. Break down `hl with hl | hl` into its components or cases. Simplify using `[hl]`. Conclude with `hl.le`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem totalDegree_sub_dPoly_le {b : K → ℤ} {A : MvPolynomial K ℚ} {N : ℕ}
     (hd : A.totalDegree ≤ N) (hl : Low (dPoly b A) N) : (A - dPoly b A).totalDegree ≤ N := by
@@ -221,7 +221,7 @@ theorem totalDegree_sub_dPoly_le {b : K → ℤ} {A : MvPolynomial K ℚ} {N : �
   · exact hl.le
 
 /- English proof (translation)
-Rewrite using `[dPoly_mul]`. Conclude with `low_add (low_mul_right hA hdB) (low_mul_left hB (totalDegree_sub_dPoly_le hdA hA))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem low_dPoly_mul {b : K → ℤ} {A B : MvPolynomial K ℚ} {α β : ℕ}
     (hA : Low (dPoly b A) α) (hB : Low (dPoly b B) β) (hdA : A.totalDegree ≤ α)
@@ -230,9 +230,9 @@ theorem low_dPoly_mul {b : K → ℤ} {A B : MvPolynomial K ℚ} {α β : ℕ}
   exact low_add (low_mul_right hA hdB) (low_mul_left hB (totalDegree_sub_dPoly_le hdA hA))
 
 /- English proof (translation)
-Use `MvPolynomial.induction_on_monomial (motive := fun p => Low (dPoly b p) p.totalDegree) (fun a => ?_) (fun p n ih => ?_) s a` and prove the remaining obligations. Conclude with `Or.inl (by simp [dPoly])`. Distinguish the cases in `hp : p = 0`. Conclude with `Or.inl (by simp [hp, dPoly])`. Use `show Low (dPoly b (p * X n)) (p * X n).totalDegree`.
+Reduce the conclusion to the remaining proof obligations. Prove the first alternative. Consider separately whether the proposition holds or fails. Prove the first alternative. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[totalDegree_mul_of_isDomain hp (X_ne_zero n), totalDegree_X]`. Use `low_dPoly_mul ih (Or.inr ?_) le_rfl (totalDegree_X n).le` and prove the remaining obligations. Establish `hXn : dPoly b (X n) = C (b n : ℚ)` using `by simp [dPoly]`. Rewrite using `[hXn, totalDegree_C]`. Conclude with `Nat.zero_lt_one`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem low_dPoly_monomial (b : K → ℤ) (s : K →₀ ℕ) (a : ℚ) :
     Low (dPoly b (monomial s a)) (monomial s a).totalDegree := by
@@ -249,9 +249,9 @@ theorem low_dPoly_monomial (b : K → ℤ) (s : K →₀ ℕ) (a : ℚ) :
     exact Nat.zero_lt_one
 
 /- English proof (translation)
-Establish `hsum : dPoly b p = ∑ s ∈ p.support, dPoly b (monomial s (coeff s p))`. Simplify using `only [dPoly]`. Use `conv_lhs => rw [p.as_sum]`. Rewrite using `[map_sum, ← Finset.sum_sub_distrib]`. Rewrite using `[hsum]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_induction _ (fun A => Low A p.totalDegree) (fun _ _ => low_add) (Or.inl rfl) (fun s hs => low_mono (low_dPoly_monomial b s _) ?_)` and prove the remaining obligations. Conclude with `(totalDegree_monomial_le s _).trans (le_totalDegree hs)`.
+A detailed English derivation is pending.
 -/
 theorem low_dPoly (b : K → ℤ) (p : MvPolynomial K ℚ) : Low (dPoly b p) p.totalDegree := by
   have hsum : dPoly b p = ∑ s ∈ p.support, dPoly b (monomial s (coeff s p)) := by
@@ -264,7 +264,7 @@ theorem low_dPoly (b : K → ℤ) (p : MvPolynomial K ℚ) : Low (dPoly b p) p.t
   exact (totalDegree_monomial_le s _).trans (le_totalDegree hs)
 
 /- English proof (translation)
-Break down `low_dPoly b p with h | h` into its components or cases. Simplify using `[h]`. Use linear arithmetic over natural numbers and integers.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem totalDegree_dPoly_le (b : K → ℤ) (p : MvPolynomial K ℚ) :
     (dPoly b p).totalDegree ≤ p.totalDegree - 1 := by
@@ -273,7 +273,7 @@ theorem totalDegree_dPoly_le (b : K → ℤ) (p : MvPolynomial K ℚ) :
   · omega
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => simp`. Consider the case `cons b l ih`. Simplify using `only [List.foldr_cons, List.length_cons]`. Use `totalDegree_dPoly_le b (l.foldr dPoly p)` as an intermediate fact.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -287,7 +287,7 @@ theorem totalDegree_foldr_dPoly_le (l : List (K → ℤ)) (p : MvPolynomial K �
     omega
 
 /- English proof (translation)
-Proceed by induction on `l generalizing m with`. Consider the case `nil => rfl`. Consider the case `cons b l ih`. Simplify using `only [List.foldr_cons, gStep, ih, eval_dPoly]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 -/
 theorem foldr_gStep_eval (l : List (K → ℤ)) (p : MvPolynomial K ℚ) (m : K → ℤ) :
     l.foldr gStep (fun m : K → ℤ => eval (fun k => (m k : ℚ)) p) m =
@@ -298,9 +298,9 @@ theorem foldr_gStep_eval (l : List (K → ℤ)) (p : MvPolynomial K ℚ) (m : K 
     simp only [List.foldr_cons, gStep, ih, eval_dPoly]
 
 /- English proof (translation)
-Proceed by induction on `l generalizing m with`. Consider the case `nil => rfl`. Consider the case `cons b l ih`. Simplify using `only [List.foldr_cons, gStep]`. Use `push_cast`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[ih, ih]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem foldr_gStep_cast (l : List (K → ℤ)) (h : (K → ℤ) → ℤ) (m : K → ℤ) :
     ((l.foldr gStep h m : ℤ) : ℚ) = l.foldr gStep (fun m => (h m : ℚ)) m := by
@@ -312,7 +312,7 @@ theorem foldr_gStep_cast (l : List (K → ℤ)) (h : (K → ℤ) → ℤ) (m : K
     rw [ih, ih]
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => simpa using hh`. Consider the case `cons b l ih => filter_upwards [ih, eventually_sub ih b] with m h1 h2`. Simplify using `only [List.foldr_cons, gStep, h1, h2]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 -/
 theorem foldr_gStep_congr {G : Type*} [AddCommGroup G] (l : List (K → ℤ)) {h h' : (K → ℤ) → G}
     (hh : ∀ᶠ m in atTop, h m = h' m) :
@@ -326,15 +326,13 @@ theorem foldr_gStep_congr {G : Type*} [AddCommGroup G] (l : List (K → ℤ)) {h
 end Polynomials
 
 /- English proof (translation)
-Take `⟨p, a₀, hdeg, hp⟩` from `h F K ι q d hq hdim`. Establish `hev : ∀ᶠ m in atTop, ((hilbFn q m : ℤ) : ℚ) = eval (fun k => (m k : ℚ)) p` using `by filter_upwards [eventually_ge_atTop (fun _ : K => (a₀ : ℤ))] with m hm`. Establish `hm' : ∀ k, (a₀ : ℤ) ≤ m k` using `fun k => hm k`. Establish `e1 : (fun k => (((m k).toNat : ℕ) : ℤ)) = m`. Use function extensionality and compare the values at `fun k => Int.toNat_of_nonneg (by have := hm' k; omega)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `e2 : (fun k => (((m k).toNat : ℕ) : ℚ)) = fun k => (m k : ℚ)`. Use function extensionality and compare the values at `k`. Rewrite using `[← Int.cast_natCast, Int.toNat_of_nonneg (by have := hm' k; omega)]`. Use `hp (fun k => (m k).toNat) (fun k => by have := hm' k; omega)` as an intermediate fact. Rewrite `this` using `[e1, e2]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`. Use `set P := (List.ofFn bs).foldr dPoly p with hP`. Establish `hP0 : P.totalDegree = 0`. Use `totalDegree_foldr_dPoly_le (List.ofFn bs) p` as an intermediate fact. Rewrite `this` using `[List.length_ofFn, ← hP]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `Nat.eq_zero_of_le_zero (this.trans (Nat.sub_eq_zero_of_le hdeg).le)`. Take `⟨c, hc⟩ : ∃ c, P = C c` from `⟨_, totalDegree_eq_zero_iff_eq_C.1 hP0⟩`. Establish `hconst : ∀ᶠ m in atTop, ((mixedDiff bs (hilbFn q) m : ℤ) : ℚ) = c` using `by filter_upwards [foldr_gStep_congr (List.ofFn bs) hev] with m hm`. Rewrite using `[mixedDiff_eq, foldr_gStep_cast, hm, foldr_gStep_eval, ← hP, hc, eval_C]`. Take `⟨m₀, hm₀⟩` from `hconst.exists`.
-
-Use `⟨mixedDiff bs (hilbFn q) m₀, ?_⟩` and prove the remaining obligations. Use `filter_upwards [hconst] with m hm`. Conclude with `hm.trans hm₀.symm` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_eventually_const (h : MultigradedHilbertPolynomial.Statement.{u}) (F : Type u)
     [Field F] (K : Type) [Fintype K] [DecidableEq K] (ι : K → Type) [∀ k, Fintype (ι k)]
@@ -370,7 +368,7 @@ theorem exists_eventually_const (h : MultigradedHilbertPolynomial.Statement.{u})
 end MixedNumberPolynomial
 
 /- English proof (translation)
-Introduce `F _ K _ _ ι _ q d hq hdim`. Conclude with `⟨fun σ bs => MixedNumberPolynomial.intNum_perm F q σ bs, fun bs j x y => MixedNumberPolynomial.intNum_update_add F q (MixedNumberPolynomial.exists_eventually_const h F K ι q d hq hdim) bs j x y⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem MixedNumberPolynomial.proof (h : MultigradedHilbertPolynomial.Statement.{u}) :
     MixedNumberPolynomial.Statement.{u} := by

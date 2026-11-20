@@ -6,23 +6,23 @@ open scoped TensorProduct
 namespace GlobalTheory.Mem.SignatureFactor
 
 /- English proof (translation)
-Simplify using `[Formalism.UG.Jpq, Matrix.fromBlocks_multiply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Jpq_mul_self (p q : ℕ) : Formalism.UG.Jpq p q * Formalism.UG.Jpq p q = 1 := by
   simp [Formalism.UG.Jpq, Matrix.fromBlocks_multiply]
 
 /- English proof (translation)
-Introduce `M p q G h`. Take `⟨e, P, hP⟩` from `h`. Establish `hP' : P.valᴴ * (reindex e e G) * P.val = Formalism.UG.Jpq p q` using `hP`. Use `set Q : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ := Units.val (P⁻¹ : GL (Fin p ⊕ Fin q) ℂ) with hQ`. Establish `hPQ : P.val * Q = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hQ, ← Units.val_mul, mul_inv_cancel, Units.val_one]`. Establish `hG' : Qᴴ * Formalism.UG.Jpq p q * Q = reindex e e G`. Rewrite using `[← hP']`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `_ = _ := by rw [hPQ]; simp`. Establish `hdet : G.det ≠ 0`. Introduce `h0`. Establish `h1 : (Formalism.UG.Jpq p q).det = 0`. Rewrite using `[← hP', Matrix.det_mul, Matrix.det_mul, Matrix.det_reindex_self, h0]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `h2` using `congrArg Matrix.det (Jpq_mul_self p q)`. Rewrite `h2` using `[Matrix.det_mul, h1]`. Simplify using `at h2`. Use `⟨?_, ⟨Q.submatrix id e, ?_⟩, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. By extensionality, compare the relevant components.
 
-Simplify using `using (Fintype.card_congr e).symm`. Use extensionality with `i j`. Use `congrFun (congrFun hG' (e i)) (e j)` as an intermediate fact. Simplify `this` using `[Matrix.mul_apply]`. Introduce `A hA`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hBA : (G⁻¹ * (Aᴴ * Formalism.UG.Jpq p q)) * A = 1`. Rewrite using `[Matrix.mul_assoc, hA]`. Conclude with `Matrix.nonsing_inv_mul G (isUnit_iff_ne_zero.mpr hdet)`. Conclude with `⟨_, (Matrix.mul_eq_one_comm_of_equiv e).mp hBA, hBA⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_factor : ∀ (M p q : ℕ) (G : Matrix (Fin M) (Fin M) ℂ), Formalism.UG.HasSignature G p q → p + q = M ∧ (∃ A : Matrix (Fin p ⊕ Fin q) (Fin M) ℂ, Aᴴ * Formalism.UG.Jpq p q * A = G) ∧ ∀ A : Matrix (Fin p ⊕ Fin q) (Fin M) ℂ, Aᴴ * Formalism.UG.Jpq p q * A = G → ∃ B : Matrix (Fin M) (Fin p ⊕ Fin q) ℂ, A * B = 1 ∧ B * A = 1 := by
   intro M p q G h

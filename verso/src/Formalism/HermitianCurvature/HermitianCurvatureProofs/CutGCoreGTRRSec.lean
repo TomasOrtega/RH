@@ -14,7 +14,7 @@ section block
 variable {k : ℕ}
 
 /- English proof (translation)
-Rewrite using `[show star (Complex.exp ((φ : ℂ) * Complex.I)) = (starRingEnd ℂ) (Complex.exp ((φ : ℂ) * Complex.I)) from rfl, ← Complex.exp_conj, ← Complex.exp_add]`. Simplify using `[Complex.conj_ofReal]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem phase_star_mul (φ : ℝ) :
     star (Complex.exp ((φ : ℂ) * Complex.I)) * Complex.exp ((φ : ℂ) * Complex.I) = 1 := by
@@ -23,7 +23,7 @@ theorem phase_star_mul (φ : ℝ) :
   simp [Complex.conj_ofReal]
 
 /- English proof (translation)
-Unfold `Hb`. Rewrite using `[diagonal_mul_diagonal, ← diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Apply the tactic sequence `split_ifs <;> norm_num`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem Hb_mul_self : Hb k * Hb k = 1 := by
   unfold Hb
@@ -33,7 +33,7 @@ theorem Hb_mul_self : Hb k * Hb k = 1 := by
   split_ifs <;> norm_num
 
 /- English proof (translation)
-Establish `hg' : gᴴ * Hb k * g = Hb k` using `hg`. Establish `hl : (Hb k * gᴴ * Hb k) * g = 1`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.inv_eq_left_inv hl]`. Conclude with `⟨hl, mul_eq_one_comm.1 hl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem inv_of_UH {g : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ} (hg : g ∈ UH (Hb k)) :
     g⁻¹ * g = 1 ∧ g * g⁻¹ = 1 := by
@@ -45,7 +45,7 @@ theorem inv_of_UH {g : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ} (hg : g ∈ UH (H
   exact ⟨hl, mul_eq_one_comm.1 hl⟩
 
 /- English proof (translation)
-Establish `e1 : gᴴ * Hb k * g = Hb k` using `hg`. Establish `e2 : hᴴ * Hb k * h = Hb k` using `hh`. Use `show (g * h)ᴴ * Hb k * (g * h) = Hb k`. Rewrite using `[conjTranspose_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem UH_mul {g h : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ} (hg : g ∈ UH (Hb k)) (hh : h ∈ UH (Hb k)) :
     g * h ∈ UH (Hb k) := by
@@ -57,7 +57,7 @@ theorem UH_mul {g h : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ} (hg : g ∈ UH (Hb
     _ = Hb k := by rw [e1, e2]
 
 /- English proof (translation)
-Establish `hg' : gᴴ * Hb k * g = Hb k` using `hg`. Take `⟨_, h2⟩` from `inv_of_UH hg`. Use `show (g⁻¹)ᴴ * Hb k * g⁻¹ = Hb k`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem UH_inv {g : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ} (hg : g ∈ UH (Hb k)) : g⁻¹ ∈ UH (Hb k) := by
   have hg' : gᴴ * Hb k * g = Hb k := hg
@@ -68,9 +68,9 @@ theorem UH_inv {g : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ} (hg : g ∈ UH (Hb k
     _ = Hb k := by rw [h2]; simp
 
 /- English proof (translation)
-Use `show (diagonal d)ᴴ * Hb k * diagonal d = Hb k`. Rewrite using `[diagonal_conjTranspose]`. Simplify using `only [Hb, diagonal_mul_diagonal]`. Use `congr 1`. Use function extensionality and compare the values at `j`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `only [Pi.star_apply]`. Rewrite using `[mul_comm (star (d j)) _, mul_assoc, hd j, mul_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem diag_phase_UH (d : Fin (k + 1) → ℂ) (hd : ∀ j, star (d j) * d j = 1) : diagonal d ∈ UH (Hb k) := by
   show (diagonal d)ᴴ * Hb k * diagonal d = Hb k
@@ -82,7 +82,7 @@ theorem diag_phase_UH (d : Fin (k + 1) → ℂ) (hd : ∀ j, star (d j) * d j = 
   rw [mul_comm (star (d j)) _, mul_assoc, hd j, mul_one]
 
 /- English proof (translation)
-Use `diag_phase_UH _ fun j => ?_` and prove the remaining obligations. Use `split_ifs`. Simplify using the standard rewrite rules. Conclude with `phase_star_mul φ`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dOne_UH (φ : ℝ) : dOne k φ ∈ UH (Hb k) := by
   refine diag_phase_UH _ fun j => ?_
@@ -91,7 +91,7 @@ theorem dOne_UH (φ : ℝ) : dOne k φ ∈ UH (Hb k) := by
   · exact phase_star_mul φ
 
 /- English proof (translation)
-Use `diag_phase_UH _ fun j => ?_` and prove the remaining obligations. Use `split_ifs`. Conclude with `phase_star_mul φ`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dTwo_UH (φ : ℝ) : dTwo k φ ∈ UH (Hb k) := by
   refine diag_phase_UH _ fun j => ?_
@@ -100,7 +100,7 @@ theorem dTwo_UH (φ : ℝ) : dTwo k φ ∈ UH (Hb k) := by
   · simp
 
 /- English proof (translation)
-Establish `e : Complex.exp ((φ : ℂ) * Complex.I) • (1 : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) = diagonal (fun _ => Complex.exp ((φ : ℂ) * Complex.I))`. Use extensionality with `i j`. Simplify using `[Matrix.one_apply, diagonal_apply]`. Rewrite using `[e]`. Conclude with `diag_phase_UH _ (fun _ => phase_star_mul φ)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smul_one_UH (φ : ℝ) :
     (Complex.exp ((φ : ℂ) * Complex.I) • (1 : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ)) ∈ UH (Hb k) := by
@@ -117,14 +117,14 @@ Simplify using the standard rewrite rules.
 theorem exp_zero_I : Complex.exp (((0 : ℝ) : ℂ) * Complex.I) = 1 := by simp
 
 /- English proof (translation)
-Use `push_cast`. Conclude with `Complex.exp_two_pi_mul_I`.
+Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem exp_two_pi_I : Complex.exp (((2 * Real.pi : ℝ) : ℂ) * Complex.I) = 1 := by
   push_cast
   exact Complex.exp_two_pi_mul_I
 
 /- English proof (translation)
-Rewrite using `[← Complex.exp_add]`. Use `push_cast`. Put the polynomial expressions in normal form.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Put the polynomial expressions in normal form.
 -/
 theorem exp_add_I (φ ψ : ℝ) : Complex.exp (((φ + ψ : ℝ) : ℂ) * Complex.I) =
     Complex.exp ((φ : ℂ) * Complex.I) * Complex.exp ((ψ : ℂ) * Complex.I) := by
@@ -133,21 +133,21 @@ theorem exp_add_I (φ ψ : ℝ) : Complex.exp (((φ + ψ : ℝ) : ℂ) * Complex
   ring_nf
 
 /- English proof (translation)
-Simplify using `[dOne, h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dOne_eq_one {φ : ℝ} (h : Complex.exp ((φ : ℂ) * Complex.I) = 1) : dOne k φ = 1 := by
   simp [dOne, h]
 
 /- English proof (translation)
-Simplify using `[dTwo, h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dTwo_eq_one {φ : ℝ} (h : Complex.exp ((φ : ℂ) * Complex.I) = 1) : dTwo k φ = 1 := by
   simp [dTwo, h]
 
 /- English proof (translation)
-Simplify using `only [dOne, diagonal_mul_diagonal]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Use `split_ifs`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[exp_add_I]`.
+A detailed English derivation is pending.
 -/
 theorem dOne_add (φ ψ : ℝ) : dOne k (φ + ψ) = dOne k φ * dOne k ψ := by
   simp only [dOne, diagonal_mul_diagonal]
@@ -158,9 +158,9 @@ theorem dOne_add (φ ψ : ℝ) : dOne k (φ + ψ) = dOne k φ * dOne k ψ := by
   · rw [exp_add_I]
 
 /- English proof (translation)
-Simplify using `only [dTwo, diagonal_mul_diagonal]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Use `split_ifs`. Rewrite using `[exp_add_I]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem dTwo_add (φ ψ : ℝ) : dTwo k (φ + ψ) = dTwo k φ * dTwo k ψ := by
   simp only [dTwo, diagonal_mul_diagonal]
@@ -184,17 +184,17 @@ section block2
 variable {k : ℕ}
 
 /- English proof (translation)
-Establish `hl : (0 : Fin (k + 1)) ≠ Fin.last k`. Introduce `h`. Use `congrArg Fin.val h` as an intermediate fact. Simplify using `at this`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Establish `he` using `phase_star_mul φ`. Rewrite `he` using `[Complex.star_def]`. Rewrite using `[Matrix.mul_smul, Matrix.mul_one]`. Use extensionality with `i j`. Simplify using `only [dOne, dTwo, Matrix.diagonal_mul, Matrix.mul_diagonal, Matrix.smul_apply, smul_eq_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `rcases eq_or_ne i 0 with rfl | hi0 <;> rcases eq_or_ne j 0 with rfl | hj0`. Simplify using `[nu, vecMulVec, Matrix.one_apply, Pi.single_apply, hl, hl.symm]`. Take the linear combination `(-(Complex.exp (↑φ * Complex.I) * (starRingEnd ℂ) w)) * he`. Break down `eq_or_ne j (Fin.last k) with rfl | hjl` into its components or cases. Simplify using `[nu, vecMulVec, Matrix.one_apply, Pi.single_apply, hl, hl.symm]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Simplify using `[nu, vecMulVec, Matrix.one_apply, Pi.single_apply, hl, hl.symm, hj0, hjl, Ne.symm hj0, Ne.symm hjl]`. Break down `eq_or_ne i (Fin.last k) with rfl | hil` into its components or cases. Simplify using `[nu, vecMulVec, Matrix.one_apply, Pi.single_apply, hl, hl.symm]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `[nu, vecMulVec, Matrix.one_apply, Pi.single_apply, hl, hl.symm, hi0, hil, Ne.symm hi0, Ne.symm hil]`.
+Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `rcases eq_or_ne i (Fin.last k) with rfl | hil <;> rcases eq_or_ne j (Fin.last k) with rfl | hjl`. Simplify using `[nu, vecMulVec, Matrix.one_apply, Pi.single_apply, hl, hl.symm]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `[nu, vecMulVec, Matrix.one_apply, Pi.single_apply, hl, hl.symm, hj0, hjl, Ne.symm hj0, Ne.symm hjl]`. Simplify using `[nu, vecMulVec, Matrix.one_apply, Pi.single_apply, hl, hl.symm, hi0, hil, Ne.symm hi0, Ne.symm hil]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[nu, vecMulVec, Matrix.one_apply, Pi.single_apply, hi0, hil, hj0, hjl, Ne.symm hi0, Ne.symm hil, Ne.symm hj0, Ne.symm hjl]`.
+Simplify using the standard rewrite rules.
 -/
 theorem nu_rot (hk : 1 ≤ k) (w s : ℂ) (φ : ℝ) :
     nu k w s * (Complex.exp ((φ : ℂ) * Complex.I) • (1 : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ)) =
@@ -227,13 +227,13 @@ theorem nu_rot (hk : 1 ≤ k) (w s : ℂ) (φ : ℝ) :
     · simp [nu, vecMulVec, Matrix.one_apply, Pi.single_apply, hi0, hil, hj0, hjl, Ne.symm hi0, Ne.symm hil, Ne.symm hj0, Ne.symm hjl]
 
 /- English proof (translation)
-Unfold `wZ`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem wZ_rot (T T' : ℝ) (ζ e : ℂ) : wZ T T' (ζ * e) = wZ T T' ζ * e := by
   unfold wZ; ring
 
 /- English proof (translation)
-Establish `h1 : Complex.normSq (Complex.exp ((φ : ℂ) * Complex.I)) = 1`. Rewrite using `[Complex.normSq_eq_norm_sq, Complex.norm_exp_ofReal_mul_I]`. Evaluate the numerical expressions. Simplify using `only [sZ, Complex.normSq_mul, h1, mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Simplify using the standard rewrite rules.
 -/
 theorem sZ_rot (T T' : ℝ) (ζ : ℂ) (φ : ℝ) : sZ T T' (ζ * Complex.exp ((φ : ℂ) * Complex.I)) = sZ T T' ζ := by
   have h1 : Complex.normSq (Complex.exp ((φ : ℂ) * Complex.I)) = 1 := by
@@ -242,13 +242,11 @@ theorem sZ_rot (T T' : ℝ) (ζ : ℂ) (φ : ℝ) : sZ T T' (ζ * Complex.exp ((
   simp only [sZ, Complex.normSq_mul, h1, mul_one]
 
 /- English proof (translation)
-Take `⟨hA1, _⟩` from `inv_of_UH hA`. Take `⟨_, hB2⟩` from `inv_of_UH hB`. Use `set e := Complex.exp ((φ : ℂ) * Complex.I)`. Use `set A := gA k a T`. Use `set B := gB k b T'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hsc : B * (e • (1 : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ)) = (e • (1 : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ)) * B`. Rewrite using `[Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_one, Matrix.one_mul]`. Simplify using `only [theSecB]`. Rewrite using `[wZ_rot, sZ_rot]`. Establish `hn` using `nu_rot hk (wZ T T' ζ) (sZ T T' ζ) φ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_assoc _ B, hsc]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = A * (dOne k φ * nu k (wZ T T' ζ * e) (sZ T T' ζ) * dTwo k φ) * B := by rw [hn]`. Use `_ = A * dOne k φ * (A⁻¹ * A) * nu k (wZ T T' ζ * e) (sZ T T' ζ) * (B * B⁻¹) * dTwo k φ * B := by`.
-
-Rewrite using `[hA1, hB2]`. Simplify using `only [Matrix.mul_one, Matrix.mul_assoc]`. Use `_ = _ := by`. Simplify using `only [Matrix.mul_assoc]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem secB_rot (hk : 1 ≤ k) {a b : Fin (k + 1) → ℂ} {T T' : ℝ}
     (hA : gA k a T ∈ UH (Hb k)) (hB : gB k b T' ∈ UH (Hb k)) (ζ : ℂ) (φ : ℝ) :
@@ -278,9 +276,9 @@ theorem secB_rot (hk : 1 ≤ k) {a b : Fin (k + 1) → ℂ} {T T' : ℝ}
         rfl
 
 /- English proof (translation)
-Use extensionality with `j`. Simplify using `only [dOne]`. Rewrite using `[mulVec_diagonal]`. Distinguish the cases in `hj : j = Fin.last k`. Simplify using `[dOne, hj]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify using `[dOne, hj, Pi.single_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dOne_fix_last (φ : ℝ) (c : ℂ) :
     dOne k φ *ᵥ (c • Pi.single (Fin.last k) 1) = c • Pi.single (Fin.last k) 1 := by
@@ -292,11 +290,11 @@ theorem dOne_fix_last (φ : ℝ) (c : ℂ) :
   · simp [dOne, hj, Pi.single_apply]
 
 /- English proof (translation)
-Use extensionality with `j`. Simplify using `only [dTwo]`. Rewrite using `[mulVec_diagonal]`. Distinguish the cases in `hj : j = Fin.last k`. Establish `h0 : (Fin.last k) ≠ 0`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Introduce `h`. Use `congrArg Fin.val h` as an intermediate fact. Simplify using `at this`. Use linear arithmetic over natural numbers and integers. Simplify using `[dTwo, hj, h0]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules.
 
-Simplify using `[dTwo, hj, Pi.single_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dTwo_fix_last (hk : 1 ≤ k) (φ : ℝ) (c : ℂ) :
     dTwo k φ *ᵥ (c • Pi.single (Fin.last k) 1) = c • Pi.single (Fin.last k) 1 := by
@@ -322,7 +320,7 @@ open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt Form
 open Formalism.FourierDecayAlt.P.GTRRSecH
 
 /- English proof (translation)
-Use extensionality with `i`. Simplify using `only [jV, Pi.smul_apply, smul_eq_mul]`. Apply the tactic sequence `split_ifs <;> simp`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem jV_smul' {k r : ℕ} (c : ℂ) (u : Fin (k + 1) → ℂ) : jV k r (c • u) = c • jV k r u := by
   ext i
@@ -330,23 +328,23 @@ theorem jV_smul' {k r : ℕ} (c : ℂ) (u : Fin (k + 1) → ℂ) : jV k r (c •
   split_ifs <;> simp
 
 /- English proof (translation)
-Rewrite using `[smul_mulVec, one_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem smul_one_mulVec' {k : ℕ} (c : ℂ) (u : Fin (k + 1) → ℂ) :
     (c • (1 : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ)) *ᵥ u = c • u := by
   rw [smul_mulVec, one_mulVec]
 
 /- English proof (translation)
-Simplify using `[herm, Matrix.mulVec_smul, dotProduct_smul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem herm_smul_left' {ι : Type*} [Fintype ι] (H : Matrix ι ι ℂ) (c : ℂ) (v w : ι → ℂ) :
     herm H (c • v) w = c * herm H v w := by
   simp [herm, Matrix.mulVec_smul, dotProduct_smul]
 
 /- English proof (translation)
-Establish `h : herm (Hb k) u u = ∑ j, (((if j = Fin.last k then (-1 : ℝ) else 1) * Complex.normSq (u j) : ℝ) : ℂ)`. Simplify using `only [herm, Hb, dotProduct, mulVec_diagonal, Pi.star_apply]`. Use `Finset.sum_congr rfl (fun j _ => ?_)` and prove the remaining obligations. Rewrite using `[Complex.ofReal_mul, Complex.normSq_eq_conj_mul_self, Complex.star_def]`. Apply the tactic sequence `split_ifs <;> push_cast <;> ring`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[h, ← Complex.ofReal_sum, Complex.ofReal_re]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem herm_Hb_self_eq_ofReal_re {k : ℕ} (u : Fin (k + 1) → ℂ) :
     herm (Hb k) u u = ((herm (Hb k) u u).re : ℂ) := by
@@ -359,39 +357,37 @@ private theorem herm_Hb_self_eq_ofReal_re {k : ℕ} (u : Fin (k + 1) → ℂ) :
   rw [h, ← Complex.ofReal_sum, Complex.ofReal_re]
 
 /- English proof (translation)
-Introduce `k r z z' hk hz hz' hT hT'`. Establish `hzj : jV k r (wbPart k r z) = z` using `jV_wbPart hz`. Establish `hzj' : jV k r (wbPart k r z') = z'` using `jV_wbPart hz'`. Establish `haa : herm (Hb k) (wbPart k r z) (wbPart k r z) = -↑(Tz k r z)`. Rewrite using `[herm_Hb_self_eq_ofReal_re]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Tz]`. Use `conv_rhs => rw [← hzj, herm_jV]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hbb : herm (Hb k) (wbPart k r z') (wbPart k r z') = -↑(Tz k r z')`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[herm_Hb_self_eq_ofReal_re]`. Simplify using `only [Tz]`. Use `conv_rhs => rw [← hzj', herm_jV]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hAU, hAv⟩` from `gA_spec k hT haa`. Take `⟨hBU, hBv⟩` from `gB_spec k hT' hbb`. Establish `hA : gA k (wbPart k r z) (Tz k r z) ∈ UH (Hb k)` using `hAU`. Establish `hB : gB k (wbPart k r z') (Tz k r z') ∈ UH (Hb k)` using `hBU`. Take `⟨hA1, hA2⟩` from `inv_of_UH hA`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨hB1, hB2⟩` from `inv_of_UH hB`. Establish `hsec` using `theSection_isSection k r z z' hk hz hz' hT hT'`. Use `⟨fun φ => ⟨?_, ?_⟩, ⟨?_, ?_, ?_, ?_⟩, fun φ ψ => ⟨?_, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Use `(UWset_iff hz _).2 ⟨_, Formalism.FourierDecayAlt.P.GTRRSecH.UH_mul (Formalism.FourierDecayAlt.P.GTRRSecH.UH_mul hA (dOne_UH φ)) (UH_inv hA), ?_, rfl⟩` and prove the remaining obligations. Establish `hinv : (gA k (wbPart k r z) (Tz k r z))⁻¹ *ᵥ wbPart k r z = (↑√(Tz k r z) : ℂ) • Pi.single (Fin.last k) 1`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mulVec_mulVec, ← mulVec_mulVec, hinv, dOne_fix_last, hAv]`. Use `(UWset_iff hz' _).2 ⟨_, Formalism.FourierDecayAlt.P.GTRRSecH.UH_mul (Formalism.FourierDecayAlt.P.GTRRSecH.UH_mul (UH_inv hB) (dTwo_UH φ)) hB, ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[← mulVec_mulVec, ← mulVec_mulVec, hBv, dTwo_fix_last hk, ← hBv, mulVec_mulVec, hB1, one_mulVec]`. Simplify using `only [hL]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[dOne_eq_one exp_zero_I, Matrix.mul_one, hA2, emb_one]`. Simplify using `only [hR]`. Rewrite using `[dTwo_eq_one exp_zero_I, Matrix.mul_one, hB1, emb_one]`. Simplify using `only [hL]`. Rewrite using `[dOne_eq_one exp_two_pi_I, Matrix.mul_one, hA2, emb_one]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hR]`. Rewrite using `[dTwo_eq_one exp_two_pi_I, Matrix.mul_one, hB1, emb_one]`. Simplify using `only [hL]`. Rewrite using `[← emb_mul, dOne_add]`. Use `congr 1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `set A := gA k (wbPart k r z) (Tz k r z)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hA1]`. Simplify using `only [Matrix.mul_one, Matrix.mul_assoc]`. Use `_ = A * dOne k φ * A⁻¹ * (A * dOne k ψ * A⁻¹) := by simp only [Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Chain the equalities or inequalities of the calculation.
 
-Simplify using `only [hR]`. Rewrite using `[← emb_mul, dTwo_add]`. Use `congr 1`. Use `set B := gB k (wbPart k r z') (Tz k r z')`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Rewrite using `[hB2]`. Simplify using `only [Matrix.mul_one, Matrix.mul_assoc]`. Use `_ = B⁻¹ * dTwo k φ * B * (B⁻¹ * dTwo k ψ * B) := by simp only [Matrix.mul_assoc]`. Introduce `φ g hg`. Take `⟨μ, _, _, rfl⟩` from `(UWset_iff hz' g).1 hg`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [zc]`. Rewrite using `[← emb_mul, ← emb_mul, Matrix.smul_mul, Matrix.mul_smul, Matrix.one_mul, Matrix.mul_one]`. Introduce `ζ hζ φ`. Establish `hSU : theSection k r z z' ζ ∈ UH (Hb k)` using `(hsec.2 ζ hζ).1`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [NF.muZ, zc, hL, hR]`. Rewrite using `[← emb_mul, show theSection k r z z' ζ = theSecB k (wbPart k r z) (wbPart k r z') (Tz k r z) (Tz k r z') ζ from rfl, secB_rot hk hA hB ζ φ, emb_mul, emb_mul]`. Both sides reduce to the same expression. Introduce `c hc`. Establish `hprod : NF.muZ k r (theSection k r z z') ζ * zc k r φ = embWb k r (theSection k r z z' ζ * (Complex.exp ((φ : ℂ) * Complex.I) • 1))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Simplify using `only [NF.muZ, zc]`. Rewrite using `[emb_mul]`. Use `⟨hc, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hprod]`. Take `⟨hU, hfix⟩` from `emb_mem_UWb (r := r) (Formalism.FourierDecayAlt.P.GTRRSecH.UH_mul hSU (smul_one_UH φ))`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `⟨hU, fun a _ => hfix a⟩`. Use `show 0 < Q.GGl k r z z' _`. Simplify using `only [Q.GGl]`. Rewrite using `[Formalism.FourierDecayAlt.P5.Rad.zetaL_last]`. Establish `hv : (NF.muZ k r (theSection k r z z') ζ * zc k r φ) *ᵥ z' = Complex.exp ((φ : ℂ) * Complex.I) • (embWb k r (theSection k r z z' ζ) *ᵥ z')`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Rewrite using `[← mulVec_mulVec]`. Simplify using `only [NF.muZ, zc]`. Use `conv_lhs => rw [← hzj', emb_mulVec_jV, smul_one_mulVec', jV_smul', hzj']`. Rewrite using `[mulVec_smul]`. Rewrite using `[hv, herm_smul_left', (sec_vec hz hz' hsec hζ).2.2, Complex.normSq_mul]`.
-
-Establish `h1 : Complex.normSq (Complex.exp ((φ : ℂ) * Complex.I)) = 1`. Rewrite using `[Complex.normSq_eq_norm_sq, Complex.norm_exp_ofReal_mul_I]`. Evaluate the numerical expressions. Rewrite using `[h1, one_mul]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem rotation_section_holds : GTRRSec := by
   intro k r z z' hk hz hz' hT hT'

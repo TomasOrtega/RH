@@ -23,13 +23,13 @@ namespace GlobalTheory.ChainPts.PrePull
 local notation "pb" => Scheme.Modules.pullback
 
 /- English proof (translation)
-Take `⟨h₁, h₂⟩` from `PresMod.shortExact_pullback S.g q S.f ι S.zero w hS hT`. Use `FlagPull.isQuasicoherent_X₂ _ h₂ hA` as an intermediate fact. Establish `hm` using `FlagPull.mono_pullback_map_f f _ h₂ hA`. Use `h₁.epi_g` as an intermediate fact. Establish `hex` using `(QCoh.exact_map_pullback f h₁.exact).1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only at hm`. Use `Preadditive.mono_of_cancel_zero _ fun {W} z hz => ?_` and prove the remaining obligations. Take `⟨W', u, hu, e, he⟩` from `hex.exact_up_to_refinements (z ≫ (pb f).map (pullback.lift S.f 0 (by simp) : S.X₁ ⟶ pullback S.g q)) (by`. Express the relevant statement in the definitionally equal form `(z ≫ _) ≫ (pb f).map (pullback.fst S.g q) = 0`. Rewrite using `[Category.assoc, ← Functor.map_comp, pullback.lift_fst, hz])`.
+Simplify by unfolding definitions. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `u ≫ z ≫ _ = e ≫ (pb f).map (pullback.lift 0 ι _) at he`. Establish `he0 : e = 0`. Establish `h` using `he =≫ (pb f).map (pullback.snd S.g q)`. Simplify using `only [Category.assoc, ← Functor.map_comp, pullback.lift_snd, Functor.map_zero, comp_zero] at h`. Conclude with `zero_of_comp_mono _ h.symm`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Substitute using the available equality.
 
-Substitute `he0` using the available equality. Conclude with `zero_of_comp_mono _ (zero_of_epi_comp u (he.trans zero_comp))`.
+A detailed English derivation is pending.
 -/
 theorem mono_pullback_of_resolution {X Y : Scheme.{0}} (f : Y ⟶ X) (S : ShortComplex X.Modules) (hS : S.ShortExact)
     [S.X₁.IsQuasicoherent] {K A : X.Modules} (ι : K ⟶ A) (q : A ⟶ S.X₃) (w : ι ≫ q = 0)
@@ -55,7 +55,7 @@ theorem mono_pullback_of_resolution {X Y : Scheme.{0}} (f : Y ⟶ X) (S : ShortC
   exact zero_of_comp_mono _ (zero_of_epi_comp u (he.trans zero_comp))
 
 /- English proof (translation)
-Introduce `y` and use `by obtain ⟨U, r, hx, ⟨e⟩⟩ := h (f y) obtain ⟨e₁⟩ := LocFreeQuot.nonempty_pullback_quot f r a _ rfl obtain ⟨e₂⟩ := LocFreeQuot.nonempty_pullback_of_range U.ι ((f ⁻¹ᵁ U).ι ≫ f) (by rintro _ ⟨y, rfl⟩ rw [Scheme.Opens.range_ι] exact y.2) e exact ⟨f ⁻¹ᵁ U, r, hx, ⟨(Scheme.Modules.pull …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem locFreeMod_pullback {X Y : Scheme.{0}} (f : Y ⟶ X) {a : Γ(X, ⊤)} {F : X.Modules} (h : LocFreeMod a F) :
     LocFreeMod (f.appTop a) ((pb f).obj F) := fun y => by
@@ -87,7 +87,7 @@ variable {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (p : �
   {B B' : Vert.Model O} (g : Vert.Model.Hom B' B) {Λ : Type} [CommRing Λ]
 
 /- English proof (translation)
-The claim follows from `inferInstanceAs ((Scheme.Modules.pushforward (fibI p B).subschemeι).obj ((pb (GlobalTheory.SS.FrobField.absFrob _ p 1 Fact.out h ≫ (fibI p B).subschemeι)).obj M.V)).IsQuasicoherent`.
+A detailed English derivation is pending.
 -/
 theorem qc_frobA (h : (p : Γ((fibI p B).subscheme, ⊤)) = 0) (M : AM B Λ) [M.V.IsQuasicoherent] :
     (frobA p h M).V.IsQuasicoherent :=
@@ -95,13 +95,13 @@ theorem qc_frobA (h : (p : Γ((fibI p B).subscheme, ⊤)) = 0) (M : AM B Λ) [M.
     ((pb (GlobalTheory.SS.FrobField.absFrob _ p 1 Fact.out h ≫ (fibI p B).subschemeι)).obj M.V)).IsQuasicoherent
 
 /- English proof (translation)
-Take `⟨f₀, hf₀⟩` from `PullFrob.exists_fib_lift p g`. Set `i` to `(fibI p B).subschemeι`. Set `i'` to `(fibI p B').subschemeι`. Set `Fr` to `GlobalTheory.SS.FrobField.absFrob _ p 1 Fact.out h`. Set `Fr'` to `GlobalTheory.SS.FrobField.absFrob _ p 1 Fact.out h'`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hsq : f₀ ≫ Fr ≫ i = (Fr' ≫ i') ≫ g.f`. Rewrite using `[← Category.assoc, ← GlobalTheory.SS.FrobField.absFrob_nat f₀ p 1 Fact.out h' h, Category.assoc, hf₀, Category.assoc]`. Set `σ : frobFun p h ⋙ pb g.f ⟶ pb g.f ⋙ frobFun p h'` to `bcMap (Scheme.Modules.pullbackPushforwardAdjunction i) (Scheme.Modules.pullbackPushforwardAdjunction i') (G₀ := pb f₀) (Scheme.Modules.pullbackComp i' g.f ≪≫ Scheme.Modules.pullbackCongr hf₀.symm ≪≫ (Scheme.Modules.pullbackComp f₀ i).symm) (Scheme.Modules.pullbackComp f₀ (Fr ≫ i) …`. Set `G` to `(pb (Fr ≫ i)).obj M.V`. Establish `hk : smulHom ((pb g.f).obj ((Scheme.Modules.pushforward i).obj G)) (p : Γ(B'.X, ⊤)) = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `VB.pullback_map_smulHom (F := (Scheme.Modules.pushforward i).obj G) g.f (p : Γ(B.X, ⊤))` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Rewrite using `[← this, smulHom_pushforward, map_natCast, h, smulHom_zero, Functor.map_zero, Functor.map_zero]`. Establish `h₁` using `FrobQuot.isIso_unit_fibI p B' _ hk`. Establish `h₂` using `ClosedCounit.isIso_counit_subschemeι (fibI p B) G`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsIso (σ.app M.V)`. Express the relevant statement in the definitionally equal form `IsIso (_ ≫ (Scheme.Modules.pushforward i').map (_ ≫ (pb f₀).map _ ≫ _))`. Use `infer_instance`. Conclude with `⟨Action.mkIso (asIso (σ.app M.V)) fun a => σ.naturality (M.ρ a : M.V ⟶ M.V)⟩`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem pull_frobA (h : (p : Γ((fibI p B).subscheme, ⊤)) = 0) (h' : (p : Γ((fibI p B').subscheme, ⊤)) = 0)
     (M : AM B Λ) [M.V.IsQuasicoherent] :
@@ -133,9 +133,9 @@ theorem pull_frobA (h : (p : Γ((fibI p B).subscheme, ⊤)) = 0) (h' : (p : Γ((
   exact ⟨Action.mkIso (asIso (σ.app M.V)) fun a => σ.naturality (M.ρ a : M.V ⟶ M.V)⟩
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => exact ⟨hM, ⟨e⟩⟩`. Consider the case `succ k ih`. Take `⟨_, ⟨e₁⟩⟩` from `ih`. Rewrite using `[Function.iterate_succ_apply', Function.iterate_succ_apply']`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨e₂⟩` from `pull_frobA p g h h' ((frobA p h)^[k] M)`. Conclude with `⟨qc_frobA p h _, ⟨((frobFun p h').mapAction Λ).mapIso e₁ ≪≫ e₂.symm⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem pull_frobA_iter (h : (p : Γ((fibI p B).subscheme, ⊤)) = 0) (h' : (p : Γ((fibI p B').subscheme, ⊤)) = 0)
     (M : AM B Λ) [hM : M.V.IsQuasicoherent] (M' : AM B' Λ) (e : M' ≅ (pullA g.f).obj M) (k : ℕ) :
@@ -150,7 +150,7 @@ theorem pull_frobA_iter (h : (p : Γ((fibI p B).subscheme, ⊤)) = 0) (h' : (p :
     exact ⟨qc_frobA p h _, ⟨((frobFun p h').mapAction Λ).mapIso e₁ ≪≫ e₂.symm⟩⟩
 
 /- English proof (translation)
-The claim follows from `Action.Hom.ext (VB.pullback_map_smulHom g.f a)`.
+A detailed English derivation is pending.
 -/
 theorem pullA_smulA (M : AM B Λ) (a : Γ(B.X, ⊤)) :
     (pullA g.f).map (smulA M a) = smulA ((pullA g.f).obj M) (g.f.appTop a) :=
@@ -160,7 +160,7 @@ def modIso (P : EPres B Λ) : (PullHT.EPres.pull g P).mod ≅ (pullA g.f).obj P.
   (PreservesCokernel.iso (pullA g.f) P.ψ).symm
 
 /- English proof (translation)
-Use `P.vb.isQuasicoherent` as an intermediate fact. Use `P.vb'.isQuasicoherent` as an intermediate fact. Conclude with `(SheafOfModules.isQuasicoherent _).prop_of_iso (Examples₂.cokV P.ψ).symm (inferInstanceAs (cokernel P.ψ.hom).IsQuasicoherent)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem qc_mod (P : EPres B Λ) : P.mod.V.IsQuasicoherent := by
   have := P.vb.isQuasicoherent
@@ -169,11 +169,11 @@ theorem qc_mod (P : EPres B Λ) : P.mod.V.IsQuasicoherent := by
     (inferInstanceAs (cokernel P.ψ.hom).IsQuasicoherent)
 
 /- English proof (translation)
-Take `⟨S, hS, ⟨e₁⟩, ⟨e₂⟩, ⟨e₃⟩⟩` from `h`. Use `hS.epi_g` as an intermediate fact. Establish `hS' : (S.map (Action.forget _ Λ)).ShortExact` using `hS.map_of_exact _`. Establish `: (S.map (Action.forget _ Λ)).X₁.IsQuasicoherent` using `(SheafOfModules.isQuasicoherent _).prop_of_iso ((Action.forget _ Λ).mapIso e₁).symm (qc_mod P₁)`. Establish `: Mono P₃.ψ.hom` using `FrobFilt.ExtPres.mono_ψ P₃.toPres`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Mono ((pb g.f).map P₃.ψ.hom)` using `FrobFilt.ExtPres.mono_ψ (PullHT.EPres.pull g P₃).toPres`. Set `e : cokernel P₃.ψ.hom ≅ (S.map (Action.forget _ Λ)).X₃` to `((Action.forget _ Λ).mapIso e₃ ≪≫ Examples₂.cokV P₃.ψ).symm`. Establish `hT : (ShortComplex.mk P₃.ψ.hom (cokernel.π _ ≫ e.hom) (by simp)).ShortExact` using `ShortComplex.shortExact_of_iso (S₁ := ShortComplex.mk P₃.ψ.hom (cokernel.π _) (by simp)) (ShortComplex.isoMk (Iso.refl _) (Iso.refl _) e (by simp) (by simp)) { exact := ShortComplex.exact_of_g_is_cokernel _ (cokernelIsCokernel _) }`. Establish `hm` using `mono_pullback_of_resolution g.f _ hS' _ _ _ hT P₃.vb`. Use `⟨S.map (pullA g.f), ?_, ⟨(pullA g.f).mapIso e₁ ≪≫ (modIso g P₁).symm⟩, ⟨(pullA g.f).mapIso e₂ ≪≫ (modIso g P₂).symm⟩, ⟨(pullA g.f).mapIso e₃ ≪≫ (modIso g P₃).symm⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `ShortComplex.ShortExact.mk' (hS.exact.map_of_epi_of_preservesCokernel _ inferInstance inferInstance) ((Action.forget _ Λ).mono_of_mono_map hm) (inferInstanceAs (Epi ((pullA g.f).map S.g)))`.
+A detailed English derivation is pending.
 -/
 theorem isExtA_pull {P₁ P₂ P₃ : EPres B Λ} (h : IsExtA P₁.mod P₂.mod P₃.mod) :
     IsExtA (PullHT.EPres.pull g P₁).mod (PullHT.EPres.pull g P₂).mod (PullHT.EPres.pull g P₃).mod := by
@@ -196,7 +196,7 @@ theorem isExtA_pull {P₁ P₂ P₃ : EPres B Λ} (h : IsExtA P₁.mod P₂.mod 
     ((Action.forget _ Λ).mono_of_mono_map hm) (inferInstanceAs (Epi ((pullA g.f).map S.g)))
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `h`. Conclude with `⟨Units.map g.f.appTop.hom.toMonoidHom u, by`. Rewrite using `[← map_pow]`. Simplify using `[hu, map_mul, map_natCast]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem isRootOfP_pull {a : Γ(B.X, ⊤)} {n : ℕ} (h : IsRootOfP p a n) : IsRootOfP p (g.f.appTop a) n := by
   obtain ⟨u, hu⟩ := h
@@ -205,15 +205,13 @@ theorem isRootOfP_pull {a : Γ(B.X, ⊤)} {n : ℕ} (h : IsRootOfP p a n) : IsRo
     simp [hu, map_mul, map_natCast]⟩
 
 /- English proof (translation)
-Introduce `O _ _ _ p _ _ _ B B' g Λ _ o Lie Om π P`. Establish `h'` using `FrobQuot.natCast_eq_zero_fibI p B'`. Set `j'` to `(pullA g.f).map P.j ≫ (modIso g (P.q 0)).inv`. Set `c : cokernel j' ≅ (pullA g.f).obj (cokernel P.j)` to `cokernelCompIsIso _ _ ≪≫ (PreservesCokernel.iso (pullA g.f) P.j).symm`. Use `P.ρ_epi` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `⟨{ g := g.f.appTop P.g γ := fun n => g.f.appTop (P.γ n) π_root := isRootOfP_pull p g P.π_root g_root := isRootOfP_pull p g P.g_root γ_root := fun n h => isRootOfP_pull p g (P.γ_root n h) hp := h' q := fun n => PullHT.EPres.pull g (P.q n) l := fun n => PullHT.EPres.pull g (P.l n) …` and prove the remaining obligations. Use `qc_mod (P.l n)` as an intermediate fact. Take `⟨e₁⟩` from `(pull_frobA_iter p g P.hp h' _ _ (modIso g (P.l n)) (n + 1)).2`. Take `⟨e₂⟩` from `P.l_last n h`. Conclude with `⟨e₁ ≪≫ (pullA g.f).mapIso e₂ ≪≫ PreservesCokernel.iso (pullA g.f) _ ≪≫ cokernelIsoOfEq (by rw [pullA_smulA, map_natCast])⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `k` using `P.q_kill n h`. Set `e` to `(Action.forget _ Λ).mapIso (modIso g (P.q (n + 1)))`. Unfold `Kills at k ⊢`. Use `zero_of_comp_mono e.hom ?_` and prove the remaining obligations. Use `erw [smulHom_comp e.hom, ← VB.pullback_map_smulHom, k, Functor.map_zero, comp_zero]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `qc_mod (P.q (n + 1))` as an intermediate fact. Take `⟨e₁⟩` from `(pull_frobA_iter p g P.hp h' _ _ (modIso g (P.q (n + 1))) 1).2`. Take `⟨e₂⟩` from `P.q_frob n h`. Conclude with `⟨modIso g _ ≪≫ (pullA g.f).mapIso e₂ ≪≫ e₁.symm⟩`. Conclude with `congrArg Action.Hom.hom (show j' ≫ (modIso g (P.q 0)).hom = (pullA g.f).map P.j by simp [j'])`.
-
-Conclude with `congrArg Action.Hom.hom (show ((pullA g.f).map P.ρ ≫ c.inv) ≫ c.hom = (pullA g.f).map P.ρ by simp)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem preChain_pull : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (p : ℕ) [Fact p.Prime] [CharZero O] [CharP (ResidueField O) p] (B B' : GlobalTheory.Vert.Model O) (g : GlobalTheory.Vert.Model.Hom B' B) (Λ : Type) [CommRing Λ] (o : ℕ) (Lie Om : AM B Λ) (π : Γ(B.X, ⊤)) (P : PreChain p o Lie Om π), ∃ (P' : PreChain p o ((pullA g.f).obj Lie) ((pullA g.f).obj Om) (g.f.appTop π)) (e : (P'.q 0).mod.V ≅ (Scheme.Modules.pullback g.f).obj (P.q 0).mod.V) (e' : (cokernel P'.j).V ≅ (Scheme.Modules.pullback g.f).obj (cokernel P.j).V), P'.j.hom ≫ e.hom = (Scheme.Modules.pullback g.f).map P.j.hom ∧ P'.ρ.hom ≫ e'.hom = (Scheme.Modules.pullback g.f).map P.ρ.hom := by
   intro O _ _ _ p _ _ _ B B' g Λ _ o Lie Om π P

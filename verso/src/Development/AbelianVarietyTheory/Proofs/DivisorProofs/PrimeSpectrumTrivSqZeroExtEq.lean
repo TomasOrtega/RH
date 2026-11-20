@@ -20,11 +20,9 @@ open TrivSqZeroExt hiding map lift
 open scoped Classical
 
 /- English proof (translation)
-Establish `h : ∀ z : PrimeSpectrum (TrivSqZeroExt L (ι → L)), ∀ a, a ∈ z.asIdeal ↔ a.fst = 0` using `fun z a => by`. Prove the components needed by the constructor for the conclusion. Introduce `ha`. Assume the negation of the conclusion as `h0`. Conclude with `z.2.ne_top (z.asIdeal.eq_top_of_isUnit_mem ha (TrivSqZeroExt.isUnit_iff_isUnit_fst.2 (Ne.isUnit h0)))`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `ha`. Use `z.2.mem_of_pow_mem 2 ?_` and prove the remaining obligations. Apply the tactic sequence `rw [show a ^ 2 = 0 by ext <;> simp [pow_two, ha]]`. Conclude with `z.asIdeal.zero_mem`. Use extensionality with `a`.
-
-Rewrite using `[h, h]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem primeSpectrum_trivSqZeroExt_eq {L ι : Type} [Field L] (x y : PrimeSpectrum (TrivSqZeroExt L (ι → L))) :
     x = y := by
@@ -41,13 +39,13 @@ theorem primeSpectrum_trivSqZeroExt_eq {L ι : Type} [Field L] (x y : PrimeSpect
   rw [h, h]
 
 /- English proof (translation)
-The claim follows from `PrimeSpectrum.ext ((Ideal.eq_bot_of_prime _).trans (Ideal.eq_bot_of_prime _).symm)`.
+A detailed English derivation is pending.
 -/
 theorem primeSpectrum_field_eq {L : Type} [Field L] (x y : PrimeSpectrum L) : x = y :=
   PrimeSpectrum.ext ((Ideal.eq_bot_of_prime _).trans (Ideal.eq_bot_of_prime _).symm)
 
 /- English proof (translation)
-Introduce `s _`. Establish `hp : (spMap φ) (IsLocalRing.closedPoint R') = s` using `hR _ _`. Establish `h₁ : (spMap φ ≫ x) (IsLocalRing.closedPoint R') ∈ V` using `h (Set.mem_univ _)`. Conclude with `hp ▸ h₁`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem le_preimage_of_unique {R R' : Type} [CommRing R] [CommRing R'] [IsLocalRing R']
     (hR : ∀ x y : PrimeSpectrum R, x = y) {T : Scheme.{0}} (φ : R →+* R') (x : Sp R ⟶ T) (V : T.Opens)
@@ -58,13 +56,13 @@ theorem le_preimage_of_unique {R R' : Type} [CommRing R] [CommRing R'] [IsLocalR
   exact hp ▸ h₁
 
 /- English proof (translation)
-Introduce `s _` and use `h (Set.mem_univ (f s))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem top_le_comp {S T U : Scheme.{0}} (f : S ⟶ T) (x : T ⟶ U) (V : U.Opens) (h : ⊤ ≤ x ⁻¹ᵁ V) :
     ⊤ ≤ (f ≫ x) ⁻¹ᵁ V := fun s _ => h (Set.mem_univ (f s))
 
 /- English proof (translation)
-The claim follows from `le_preimage_of_unique hR ρ p O (e ▸ h)`.
+A detailed English derivation is pending.
 -/
 theorem top_le_of_red {L R : Type} [Field L] [CommRing R] (hR : ∀ x y : PrimeSpectrum R, x = y) (ρ : R →+* L)
     {T : Scheme.{0}} {p : Sp R ⟶ T} {z : Sp L ⟶ T} (e : spMap ρ ≫ p = z) {O : T.Opens} (h : ⊤ ≤ z ⁻¹ᵁ O) :
@@ -76,9 +74,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
   (M : Modif (str₀ X Z) (U₀ X Z) (dimFlag Dw))
 
 /- English proof (translation)
-Establish `hU : ⊤ ≤ (a ≫ M.σ) ⁻¹ᵁ U₀ X Z` using `fun s _ => by`. Use `ha (Set.mem_univ s)` as an intermediate fact. Rewrite `this` using `[M.off_eq]`. Conclude with `this`. Establish `e : a ≫ M.σ = b ≫ M.σ`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← cancel_mono (inc₀ X Z), Category.assoc, Category.assoc]`. Conclude with `h`. Conclude with `(M.existsUnique_lift (a ≫ M.σ) hU).unique rfl e.symm`.
+A detailed English derivation is pending.
 -/
 theorem lift_eq {S : Scheme.{0}} {a b : S ⟶ M.X} (h : a ≫ toFlag M = b ≫ toFlag M) (ha : ⊤ ≤ a ⁻¹ᵁ M.off) :
     a = b := by
@@ -92,13 +90,13 @@ theorem lift_eq {S : Scheme.{0}} {a b : S ⟶ M.X} (h : a ≫ toFlag M = b ≫ t
   exact (M.existsUnique_lift (a ≫ M.σ) hU).unique rfl e.symm
 
 /- English proof (translation)
-Establish `e` using `(X.ptY_frMap hd).trans hz.symm`. Establish `hU : ⊤ ≤ (z ≫ M.σ) ⁻¹ᵁ U₀ X Z` using `fun s _ => by`. Use `ho (Set.mem_univ s)` as an intermediate fact. Rewrite `this` using `[M.off_eq]`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hb : ⊤ ≤ X.ptY W ⁻¹ᵁ (inc₀ X Z).opensRange` using `le_preimage_of_unique hR ρ.toRingHom _ _ (by`. Rewrite using `[e]`. Introduce and unpack `s -`. Conclude with `⟨(z ≫ M.σ) s, rfl⟩)`. Establish `hr : Set.range (X.ptY W) ⊆ Set.range (inc₀ X Z)`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨s, rfl⟩`. Conclude with `hb (Set.mem_univ s)`. Take `⟨w, hw⟩ : ∃ w, w ≫ inc₀ X Z = X.ptY W` from `⟨_, IsOpenImmersion.lift_fac _ _ hr⟩`. Establish `ered : spMap ρ.toRingHom ≫ w = z ≫ M.σ`. Rewrite using `[← cancel_mono (inc₀ X Z), Category.assoc, hw, e, Category.assoc]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hwU : ⊤ ≤ w ⁻¹ᵁ U₀ X Z` using `le_preimage_of_unique hR ρ.toRingHom _ _ (by rw [ered]; exact hU)`. Take `⟨zv, hzv, -⟩` from `M.existsUnique_lift w hwU`. Establish `hred : spMap ρ.toRingHom ≫ zv = z` using `(M.existsUnique_lift (z ≫ M.σ) hU).unique (by rw [Category.assoc, hzv, ered]) rfl`. Use `⟨zv, ?_, hred⟩` and prove the remaining obligations. Rewrite using `[toFlag, ← Category.assoc, hzv, hw]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_lift_of_unique {L R : Type} [Field L] [Algebra c.F L] [CommRing R] [Algebra c.F R]
     (hR : ∀ x y : PrimeSpectrum R, x = y) (ρ : R →ₐ[c.F] L) {Q : FrPt Xo c L} {W : FrPt Xo c R} (hd : FrMap ρ W Q)
@@ -127,7 +125,7 @@ theorem exists_lift_of_unique {L R : Type} [Field L] [Algebra c.F L] [CommRing R
   rw [toFlag, ← Category.assoc, hzv, hw]
 
 /- English proof (translation)
-The claim follows from `(lift_eq M (by rw [Category.assoc, hp, X.ptY_frMap hu, hz]) ho).symm`.
+A detailed English derivation is pending.
 -/
 theorem red_eq {L : Type} [Field L] [Algebra c.F L] {Q : FrPt Xo c L} {z : Sp L ⟶ M.X}
     (hz : z ≫ toFlag M = X.ptY Q) (ho : ⊤ ≤ z ⁻¹ᵁ M.off) {R : Type} [CommRing R] [Algebra c.F R]
@@ -138,9 +136,9 @@ theorem red_eq {L : Type} [Field L] [Algebra c.F L] {Q : FrPt Xo c L} {z : Sp L 
 variable {K : Type} [Field K] [Algebra c.F K]
 
 /- English proof (translation)
-Take `⟨ZW, h1, h2⟩` from `exists_lift_of_unique M primeSpectrum_trivSqZeroExt_eq _ hW hz ho`. Establish `hZo : ⊤ ≤ ZW ⁻¹ᵁ M.off` using `top_le_of_red primeSpectrum_trivSqZeroExt_eq _ h2 ho`. Use `⟨ZW, fun m u p hu hp O g hpO => ?_⟩` and prove the remaining obligations. Establish `e : p = spMap (dir c m).toRingHom ≫ ZW` using `(lift_eq M (by rw [Category.assoc, h1, X.ptY_frMap hu, hp]) (top_le_comp _ _ _ hZo)).symm`. Substitute `e` using the available equality.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Substitute using the available equality.
 
-Establish `hZ : ⊤ ≤ ZW ⁻¹ᵁ O` using `le_preimage_of_unique primeSpectrum_trivSqZeroExt_eq _ ZW O hpO`. Use `⟨hZ, ?_⟩` and prove the remaining obligations. Rewrite using `[evalPt_spMap_comp _ ZW O hZ hpO]`. Conclude with `snd_dir m _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem der_dir {ι : Type} [Fintype ι] {Q : FrPt Xo c K} {z : Sp K ⟶ M.X} (hz : z ≫ toFlag M = X.ptY Q)
     (ho : ⊤ ≤ z ⁻¹ᵁ M.off) {W : FrPt Xo c (TrivSqZeroExt K (ι → K))} (hW : FrMap (fstHom c.F K (ι → K)) W Q) :
@@ -160,9 +158,9 @@ theorem der_dir {ι : Type} [Fintype ι] {Q : FrPt Xo c K} {z : Sp K ⟶ M.X} (h
   exact snd_dir m _
 
 /- English proof (translation)
-Take `⟨y₀, h₀, hs⟩` from `h`. Establish `hb : FrBor (fun k => oneAddEps (Multiplicative.ofAdd (diagOf N k))) y₀ u` using `(frBor_iff_frChg _ _ _).2 ⟨unip K N, fun σ i j hij => by simp [unip, hN σ i j hij, hij.ne], fun _ _ => by simp [unip, oneAddEps, diagOf], hs⟩`. Establish `e : p = spMap (cst c K).toRingHom ≫ z`. Use `(lift_eq M ?_ (top_le_comp _ _ _ ho)).symm` and prove the remaining obligations. Rewrite using `[Category.assoc, hz, X.ptY_frMap h₀, X.ptY_frBor hb, hp]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Substitute `e` using the available equality. Establish `hzO : ⊤ ≤ z ⁻¹ᵁ O` using `le_preimage_of_unique primeSpectrum_field_eq _ z O h1`. Rewrite using `[evalPt_spMap_comp _ z O hzO h1]`. Both sides reduce to the same expression.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem der_vert_eq_zero {y : FrPt Xo c K} {z : Sp K ⟶ M.X} (hz : z ≫ toFlag M = X.ptY y) (ho : ⊤ ≤ z ⁻¹ᵁ M.off)
     {N : FIx Dw → K} {u : FrPt Xo c (DualNumber K)} (h : IsVert y N u)
@@ -181,17 +179,17 @@ theorem der_vert_eq_zero {y : FrPt Xo c K} {z : Sp K ⟶ M.X} (hz : z ≫ toFlag
   rfl
 
 /- English proof (translation)
-Set `emb : DualNumber K →ₐ[c.F] TrivSqZeroExt K (Option (FIx Dw) → K)` to `(TrivSqZeroExt.map (LinearMap.single K (fun _ : Option (FIx Dw) => K) none)).restrictScalars c.F`. Establish `e1 : ∀ a, (emb a).fst = a.fst` using `fun a => fst_map _ a`. Establish `e2 : ∀ a, (emb a).snd = Pi.single none a.snd` using `fun a => snd_map _ a`. Take `⟨W₀, hW₀⟩` from `exists_frMap emb v`. Set `n : FIx Dw → Option (FIx Dw) → K` to `fun k => Pi.single (some k) 1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `⟨W, hW, -⟩` from `existsUnique_frChg E H Dw l Xo c _ W₀ _ (isUnit_unip₀ (K := K) n).unit (isUnit_det_unip n)`. Establish `key : ∀ (m : Option (FIx Dw) → K) (z₀ z : FrPt Xo c (DualNumber K)), FrMap (dir c m) W₀ z₀ → IsShift (fun k => m (some k)) z₀ z → FrMap (dir c m) W z` using `fun m z₀ z k₀ k => by`. Use `(frMap_iff_frChg hW k₀).2 ?_` and prove the remaining obligations. Unfold `IsShift at k`. Use `k using 2 with τ` and compare the differences between its conclusion and the goal.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Apply the tactic sequence `ext i j <;> simp [unip, n, Pi.single_apply]`. Apply the tactic sequence `ext <;> simp [unip₀, n, Pi.single_apply]`. Apply the tactic sequence `have k1 : ∀ m : Option (FIx Dw) → K, m none = 1 → FrMap (dir c m) W₀ v := fun m hm => frMap_of_comp hW₀ (frMap_id v) fun a => by ext <;> simp [e1, e2, Pi.single_apply, hm]`. Establish `kv : FrMap (dir c (Pi.single none 1)) W v` using `key _ v v (k1 _ (by simp)) (by convert isShift_zero v using 2; simp)`. Establish `hWy : FrMap (fstHom c.F K (Option (FIx Dw) → K)) W y` using `frMap_comp kv h fun a => by simp`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨ZW, hZW⟩` from `der_dir M hz ho hWy`. Take `⟨hZ1, a1⟩` from `hZW _ _ p' (key (fun k => k.elim 1 N) v v' (k1 _ rfl) h') hp' O g h2`. Take `⟨hZ2, a2⟩` from `hZW _ _ p kv hp O g h1`. Rewrite using `[a1, a2, Fintype.sum_option]`. Use `congr 1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `[Pi.single_apply]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Take `⟨y₀, h₀, hk⟩` from `hzz k`. Take `⟨hZ3, a3⟩` from `hZW _ _ (q k) (key (Pi.single (some k) 1) y₀ (zz k) (frMap_of_comp hW₀ (frMap_comp (χ := (cst c K).comp (red c K)) h h₀ fun _ => rfl) fun a => by`. Apply the tactic sequence `ext <;> simp [e1, e2, Pi.single_apply]) (by`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `hk using 2` and compare the differences between its conclusion and the goal. Simplify using `[Pi.single_apply])) (hq k) O g (h3 k)`. Rewrite using `[a3]`. Simplify using `[Pi.single_apply, mul_comm]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem der_shift {y : FrPt Xo c K} {z : Sp K ⟶ M.X} (hz : z ≫ toFlag M = X.ptY y) (ho : ⊤ ≤ z ⁻¹ᵁ M.off)
     {N : FIx Dw → K} {v v' : FrPt Xo c (DualNumber K)} (h : IsDef y v) (h' : IsShift N v v')
@@ -235,7 +233,7 @@ theorem der_shift {y : FrPt Xo c K} {z : Sp K ⟶ M.X} (hz : z ≫ toFlag M = X.
   simp [Pi.single_apply, mul_comm]
 
 /- English proof (translation)
-Substitute `e` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem evalPt_eq_of_eq {R : Type} [CommRing R] {T : Scheme.{0}} {a b : Sp R ⟶ T} (e : a = b) (O : T.Opens)
     (ha : ⊤ ≤ a ⁻¹ᵁ O) (hb : ⊤ ≤ b ⁻¹ᵁ O) (g : Γ(T, O)) : evalPt a O ha g = evalPt b O hb g := by

@@ -19,7 +19,7 @@ variable {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field 
     {V'' : Type} [AddCommGroup V''] [Module LL V''] [Module Qp V''] [IsScalarTower Qp LL V'']
 
 /- English proof (translation)
-Use `⟨fun h y => ?_, fun h y => ?_⟩` and prove the remaining obligations. Take `⟨m, b, d, hd, rfl⟩` from `h y`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.subset_span ⟨b i, d i, hd i, rfl⟩`. Take `⟨m, c, z, rfl⟩` from `Submodule.mem_span_set'.1 (h y) choose b d hd hz using fun i => (z i).2`. Conclude with `⟨m, b, fun i => c i • d i, fun i => Submodule.smul_mem _ _ (hd i), by simp only [hz, map_smul]⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem spans_iff (ρ : Representation LL G V) : Spans PD ρ ↔
     ∀ y, y ∈ Submodule.span LL {z | ∃ (b : F), ∃ d ∈ DdR PD ρ, z = mulR Qp F LL V b d} := by
@@ -31,20 +31,20 @@ theorem spans_iff (ρ : Representation LL G V) : Spans PD ρ ↔
     exact ⟨m, b, fun i => c i • d i, fun i => Submodule.smul_mem _ _ (hd i), by simp only [hz, map_smul]⟩
 
 /- English proof (translation)
-Simplify using `only [← sm_one_tmul, ← sm_mul, Algebra.TensorProduct.tmul_mul_tmul, mul_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mulR_mulR (b b' : F) (x : V ⊗[Qp] F) :
     mulR Qp F LL V b (mulR Qp F LL V b' x) = mulR Qp F LL V (b * b') x := by
   simp only [← sm_one_tmul, ← sm_mul, Algebra.TensorProduct.tmul_mul_tmul, mul_one]
 
 /- English proof (translation)
-Rewrite using `[← sm_one_tmul, ← Algebra.TensorProduct.one_def, sm_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mulR_one (x : V ⊗[Qp] F) : mulR Qp F LL V 1 x = x := by
   rw [← sm_one_tmul, ← Algebra.TensorProduct.one_def, sm_one]
 
 /- English proof (translation)
-Rewrite using `[← sm_one_tmul]`. Conclude with `sm_mem_FilV PD (tmul_mem_FilV PD 1 hb) hx`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mulR_mem_FilV {a n : ℤ} {b : F} {x : V ⊗[Qp] F} (hb : b ∈ PD.Fil a)
     (hx : x ∈ FilV PD (LL := LL) (V := V) n) :
@@ -56,7 +56,7 @@ abbrev tensBil (E : V ⊗[LL] V' ≃ₗ[LL] V'') : V →ₗ[LL] V' →ₗ[LL] V'
   (TensorProduct.mk LL V V').compr₂ E.toLinearMap
 
 /- English proof (translation)
-The claim follows from `(mem_DdR PD _ _).2 fun g => by rw [act_bil PD ρ ρ' ρ'' β hβ, (mem_DdR PD _ _).1 hx, (mem_DdR PD _ _).1 hy]`.
+A detailed English derivation is pending.
 -/
 theorem bil_mem_DdR (ρ : Representation LL G V) (ρ' : Representation LL G V') (ρ'' : Representation LL G V'')
     (β : V →ₗ[LL] V' →ₗ[LL] V'') (hβ : ∀ g v w, β (ρ g v) (ρ' g w) = ρ'' g (β v w))
@@ -74,13 +74,13 @@ theorem tmul_eq_sm_bil (E : V ⊗[LL] V' ≃ₗ[LL] V'') (v : V) (w : V') (b : F
   simp
 
 /- English proof (translation)
-Rewrite using `[spans_iff]`. Introduce `y`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => exact Submodule.zero_mem _`. Consider the case `add x y hx hy => exact Submodule.add_mem _ hx hy`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `tmul u b`. Take `⟨t, rfl⟩` from `E.surjective u`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simpa only [map_add, add_tmul] using Submodule.add_mem _ hx hy`.
+Treat this case separately. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `tmul v w`. Take `⟨m, c, d, hd, h1⟩` from `h (v ⊗ₜ[Qp] (1 : F))`. Take `⟨m', c', d', hd', h2⟩` from `h' (w ⊗ₜ[Qp] (1 : F))`. Rewrite using `[tmul_eq_sm_bil, h1, h2]`. Simplify using `only [map_sum, LinearMap.sum_apply]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `Submodule.sum_mem _ fun j _ => Submodule.sum_mem _ fun i _ => Submodule.subset_span ⟨b * (c i * c' j), _, bil_mem_DdR PD ρ ρ' ρ'' (tensBil E) (fun g v w => (hE g v w).symm) (hd i) (hd' j), ?_⟩` and prove the remaining obligations. Rewrite using `[← sm_one_tmul (c i), ← sm_one_tmul (c' j), bil_sm_left, bil_sm_right]`. Simplify using `only [sm_one_tmul, mulR_mulR]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem Spans.tensor {ρ : Representation LL G V} {ρ' : Representation LL G V'} {ρ'' : Representation LL G V''}
     (E : V ⊗[LL] V' ≃ₗ[LL] V'') (hE : ∀ g x y, ρ'' g (E (x ⊗ₜ[LL] y)) = E (ρ g x ⊗ₜ[LL] ρ' g y))
@@ -113,9 +113,9 @@ variable (ρ : Representation LL G V) (ρ' : Representation LL G V') (f : V →�
 include hw hf
 
 /- English proof (translation)
-Rewrite `hx`, the goal using `[mem_DdR]`. Introduce `g`. Establish `: ∀ x, actVdR PD ρ' g (mulR Qp F LL V' w (ext Qp F f x)) = mulR Qp F LL V' w (ext Qp F f (actVdR PD ρ g x))`. Introduce `x`. Proceed by induction on `x using TensorProduct.induction_on with`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul v b => simp [hw, ← hf, TensorProduct.smul_tmul]`. Rewrite using `[this, hx]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem twist_mem_DdR {x : V ⊗[Qp] F} (hx : x ∈ DdR PD ρ) :
     mulR Qp F LL V' w (ext Qp F f x) ∈ DdR PD ρ' := by
@@ -131,7 +131,7 @@ theorem twist_mem_DdR {x : V ⊗[Qp] F} (hx : x ∈ DdR PD ρ) :
   rw [this, hx]
 
 /- English proof (translation)
-Use `⟨(mem_DdRE PD _ _ _).2 ⟨twist_mem_DdR PD ρ ρ' f w ψ hw hf hx.1.1, fun c => ?_⟩, mulR_mem_FilV PD hn (ext_mem_FilV PD f hx.2)⟩` and prove the remaining obligations. Rewrite using `[mulR_mulR, mul_comm, ← mulR_mulR, ← sm_one_tmul (algebraMap K F c), ← ext_sm, sm_one_tmul, ((mem_DdRE PD _ _ _).1 hx.1).2 c, map_smul, map_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem twist_mem_FildR (τ : K →ₐ[Qp] LL) {n a : ℤ} (hn : w ∈ PD.Fil n) {x : V ⊗[Qp] F}
     (hx : x ∈ FildR PD ρ τ a) : mulR Qp F LL V' w (ext Qp F f x) ∈ FildR PD ρ' τ (n + a) := by
@@ -143,23 +143,23 @@ theorem twist_mem_FildR (τ : K →ₐ[Qp] LL) {n a : ℤ} (hn : w ∈ PD.Fil n)
 end Twist
 
 /- English proof (translation)
-Take `⟨e, he⟩` from `h`. Establish `he' : ∀ g x, ρ' g (e x) = ((PD.χ g : Qpˣ) : Qp) • e (ρ g x)` using `fun g x => by`. Rewrite using `[he]`. Conclude with `algebraMap_smul LL _ _`. Establish `hsm : ∀ (q : Qp) (b : B), PD.ι (q • b) = q • PD.ι b` using `fun q b => (PD.ι.toLinearMap.restrictScalars Qp).map_smul q b`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht : ∀ g, PD.actdR g (PD.ι PD.t) = ((PD.χ g : Qpˣ) : Qp) • PD.ι PD.t` using `fun g => by`. Rewrite using `[← PD.ι_comm, PD.t_act, hsm]`. Establish `hug : ∀ g, PD.actdR g u = ((PD.χ g : Qpˣ) : Qp)⁻¹ • u` using `fun g => by`. Establish `h1` using `congrArg (PD.actdR g) hu`. Rewrite `h1` using `[map_mul, map_one, ht, smul_mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `congrArg (fun z => ((PD.χ g : Qpˣ) : Qp)⁻¹ • (u * z)) h1`. Simplify using `only [mul_smul_comm, smul_smul, ← mul_assoc, mul_comm u (PD.ι PD.t), hu, one_mul, mul_one] at h2`. Rewrite `h2` using `[inv_mul_cancel₀ (Units.ne_zero _), one_smul]`. Conclude with `h2`. Establish `f1 : ∀ g x, ((PD.χ g : Qpˣ) : Qp)⁻¹ • ρ' g (e.toLinearMap x) = e.toLinearMap (ρ g x)` using `fun g x => by`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[he', smul_smul]`. Establish `f2 : ∀ g x, ((PD.χ g : Qpˣ) : Qp) • ρ g (e.symm.toLinearMap x) = e.symm.toLinearMap (ρ' g x)`. Introduce `g x`. Take `⟨x, rfl⟩` from `e.surjective x`. Apply `e.injective` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Simplify using `[he']`. Set `Φ : V ⊗[Qp] F →ₗ[LL] V' ⊗[Qp] F` to `mulR Qp F LL V' u ∘ₗ ext Qp F e.toLinearMap`. Set `Ψ : V' ⊗[Qp] F →ₗ[LL] V ⊗[Qp] F` to `mulR Qp F LL V (PD.ι PD.t) ∘ₗ ext Qp F e.symm.toLinearMap`. Establish `h1 : ∀ x, Φ (Ψ x) = x`. Introduce `x`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul v b => simp [Φ, Ψ, ← mul_assoc, (mul_comm u _).trans hu]`. Establish `h2 : ∀ x, Ψ (Φ x) = x`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Introduce `x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul v b => simp [Φ, Ψ, ← mul_assoc, hu]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `⟨LinearEquiv.ofLinear Φ Ψ (LinearMap.ext h1) (LinearMap.ext h2), le_antisymm ?_ fun y hy => ?_, fun τ a => le_antisymm ?_ fun y hy => ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `twist_mem_DdR PD ρ ρ' _ u _ hug f1 hx`. Conclude with `⟨Ψ y, twist_mem_DdR PD ρ' ρ _ _ _ ht f2 hy, h1 y⟩`. Introduce and unpack `_ ⟨x, hx, rfl⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Use `twist_mem_FildR PD ρ ρ' _ u _ hug f1 τ hu' hx` as an intermediate fact. Rewrite `this` using `[neg_add_eq_sub]`. Then use the resulting hypothesis. Use `twist_mem_FildR PD ρ' ρ _ _ _ ht f2 τ PD.mem_filtration_one hy` as an intermediate fact. Rewrite `this` using `[add_sub_cancel]`. Conclude with `⟨Ψ y, this, h1 y⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_twist_equiv (ρ : Representation LL G V) (ρ' : Representation LL G V')
     (h : IsTwistRep (cycLL PD LL) ρ ρ') (u : F) (hu : PD.ι PD.t * u = 1) (hu' : u ∈ PD.Fil (-1)) :
@@ -216,9 +216,9 @@ theorem exists_twist_equiv (ρ : Representation LL G V) (ρ' : Representation LL
 variable [FiniteDimensional Qp K] [CharZero Qp]
 
 /- English proof (translation)
-Introduce `h`. Use `nontrivial_dR PD` as an intermediate fact. Use `idem_ne_zero (F := F) τ (eq_zero_of_forall_mem_FilV PD (LL := LL) _ fun a => ?_)` and prove the remaining obligations. Establish `hn : ∀ n : ℕ, idem F τ ∈ FilV PD (LL` using `LL) (V := LL) n := by`. Introduce `n`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `n with`. Consider the case `zero => exact idem_mem_FilV PD τ`. Consider the case `succ n ih => simpa [idem_mul_idem] using mul_mem_FilV PD ih h`. Conclude with `FilV_antitone PD (Int.self_le_toNat a) (hn a.toNat)`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem idem_notMem_FilV_one (τ : K →ₐ[Qp] LL) : idem F τ ∉ FilV PD (LL := LL) (V := LL) 1 := by
   intro h
@@ -232,7 +232,7 @@ theorem idem_notMem_FilV_one (τ : K →ₐ[Qp] LL) : idem F τ ∉ FilV PD (LL 
   exact FilV_antitone PD (Int.self_le_toNat a) (hn a.toNat)
 
 /- English proof (translation)
-Introduce `_ _ h` and use `inf_le_inf_left _ (FilV_antitone PD h)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem FildR_antitone (ρ : Representation LL G V) (τ : K →ₐ[Qp] LL) : Antitone (FildR PD ρ τ) :=
   fun _ _ h => inf_le_inf_left _ (FilV_antitone PD h)
@@ -244,14 +244,14 @@ variable {PD} {ρ : Representation LL G V} {τ : K →ₐ[Qp] LL} {ι : Type} [F
 include h
 
 /- English proof (translation)
-The claim follows from `sm_idem_of_mem_DdRE PD ρ τ (h.mem i).1`.
+A detailed English derivation is pending.
 -/
 theorem sm_idem (i : ι) : sm Qp F LL V (idem F τ) (d i) = d i := sm_idem_of_mem_DdRE PD ρ τ (h.mem i).1
 
 /- English proof (translation)
-Use `nontrivial_dR PD` as an intermediate fact. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `c hc i`. Establish `h1` using `h.indep (fun i => c i • 1) (by simpa using hc) i`. Rewrite `h1` using `[mul_smul_comm, mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(smul_eq_zero.1 h1).resolve_right (idem_ne_zero τ)`.
+A detailed English derivation is pending.
 -/
 theorem linearIndependent : LinearIndependent LL d := by
   have := nontrivial_dR PD
@@ -262,19 +262,17 @@ theorem linearIndependent : LinearIndependent LL d := by
   exact (smul_eq_zero.1 h1).resolve_right (idem_ne_zero τ)
 
 /- English proof (translation)
-Use `le_antisymm (fun y hy => ?_) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Take `⟨r, hr, hy'⟩` from `h.span a y hy.2`. Rewrite `hy'` using `[sm_idem_of_mem_DdRE PD ρ τ hy.1]`. Establish `hinv : ∀ i g, actR PD LL g (idem F τ * r i) = idem F τ * r i`. Introduce `i g`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `h.indep (fun i => actR PD LL g (r i) - r i) (by` as an intermediate fact. Establish `h1` using `(mem_DdR PD ρ y).1 hy.1.1 g`. Rewrite `h1` using `[hy', map_sum]`. Simplify using `only [act_sm, (mem_DdR PD ρ _).1 (h.mem _).1.1 g] at h1`. Simplify using `only [map_sub, LinearMap.sub_apply, Finset.sum_sub_distrib, h1, sub_self]) i`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[actR_mul, actR_idem, ← sub_eq_zero, ← mul_sub, this]`. Establish `hc : ∀ i, ∃ c : LL, idem F τ * r i = c • idem F τ`. Introduce `i`. Take `⟨n, a, c, hn⟩` from `exists_of_actR_fixed PD _ (hinv i)`. Conclude with `⟨_, by rw [← exists_smul_idem τ n a c, ← hn, ← mul_assoc, idem_mul_idem]⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `choose c hc using hc`. Rewrite using `[hy']`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Establish `e1 : sm Qp F LL V (r i) (d i) = c i • d i`. Rewrite using `[← h.sm_idem i, ← sm_mul, mul_comm, hc, map_smul, LinearMap.smul_apply, h.sm_idem i]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1]`. Distinguish the cases in `hi : a ≤ k i`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, hi, rfl⟩)`. Distinguish the cases in `h0 : c i = 0`. Simplify using `[h0]`.
+Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. It suffices to derive a contradiction. Establish an intermediate fact.
 
-It suffices to derive a contradiction. Establish `h1` using `mul_mem_FilV PD (idem_mem_FilV PD τ) (hr i)`. Rewrite `h1` using `[hc]`. Establish `h2` using `Submodule.smul_mem _ (c i)⁻¹ h1`. Rewrite `h2` using `[smul_smul, inv_mul_cancel₀ h0, one_smul]`.
-
-Conclude with `idem_notMem_FilV_one PD τ (FilV_antitone PD (by omega) h2)`. Introduce and unpack `_ ⟨i, hi, rfl⟩`. Conclude with `FildR_antitone PD ρ τ hi (h.mem i)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem fil_eq (a : ℤ) : FildR PD ρ τ a = Submodule.span LL (d '' {i | a ≤ k i}) := by
   refine le_antisymm (fun y hy => ?_) (Submodule.span_le.2 ?_)
@@ -312,7 +310,7 @@ theorem fil_eq (a : ℤ) : FildR PD ρ τ a = Submodule.span LL (d '' {i | a ≤
     exact FildR_antitone PD ρ τ hi (h.mem i)
 
 /- English proof (translation)
-Rewrite using `[h.fil_eq, Set.image_eq_range]`. Conclude with `(finrank_span_eq_card (h.linearIndependent.comp (Subtype.val : {i | a ≤ k i} → ι) Subtype.val_injective)).trans (Fintype.card_subtype _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_fil (a : ℤ) :
     finrank LL ↥(FildR PD ρ τ a) = (Finset.univ.filter fun i => a ≤ k i).card := by
@@ -321,7 +319,7 @@ theorem finrank_fil (a : ℤ) :
     Subtype.val_injective)).trans (Fintype.card_subtype _)
 
 /- English proof (translation)
-Rewrite using `[multV, h.finrank_fil, h.finrank_fil, Finset.card_filter, Finset.card_filter]`. Use `push_cast`. Rewrite using `[← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> omega`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem multV_eq (a : ℤ) : multV PD ρ τ a = ∑ i, if k i = a then 1 else 0 := by
   rw [multV, h.finrank_fil, h.finrank_fil, Finset.card_filter, Finset.card_filter]
@@ -331,11 +329,11 @@ theorem multV_eq (a : ℤ) : multV PD ρ τ a = ∑ i, if k i = a then 1 else 0 
   split_ifs <;> omega
 
 /- English proof (translation)
-Use `⟨fun hj => ?_, fun ⟨i, hi⟩ hj => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hn push Not at hn`. Apply `hj` to reduce the goal to its premises. Rewrite using `[h.fil_eq, h.fil_eq]`. Use `congr 2`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `i`. Use `hn i` as an intermediate fact. Simplify using `only [Set.mem_setOf_eq]`. Use linear arithmetic over natural numbers and integers. Establish `h1` using `h.multV_eq a`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Rewrite `h1` using `[multV, hj, sub_self]`. Use `(Finset.sum_eq_zero_iff_of_nonneg (fun i _ => by positivity)).1 h1.symm i (Finset.mem_univ i)` as an intermediate fact. Simplify using `[hi] at this`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem isJumpV_iff (a : ℤ) : IsJumpV PD ρ τ a ↔ ∃ i, k i = a := by
   refine ⟨fun hj => ?_, fun ⟨i, hi⟩ hj => ?_⟩
@@ -354,11 +352,11 @@ theorem isJumpV_iff (a : ℤ) : IsJumpV PD ρ τ a ↔ ∃ i, k i = a := by
     simp [hi] at this
 
 /- English proof (translation)
-Take `⟨v, w, hvw⟩` from `exists_dual_bases β hβ'`. Use `choose r hr hr' using fun a => h.span 0 (v a ⊗ₜ[Qp] (1 : F)) (tmul_mem_FilV PD _ PD.one_mem)`. Take `⟨h1, h2, h3⟩` from `dual_family PD ρ ρ' β hβ v w hvw (idem F τ) (idem_mul_idem τ) (actR_idem PD τ) d (fun i => (h.mem i).1.1) h.sm_idem h.indep r hr' _ (fun _ => rfl)`. Use `⟨_, fun i => ⟨?_, ?_⟩, fun s hs i => ?_, fun n y hy => ⟨_, fun i => ?_, h3 y⟩⟩` and prove the remaining obligations. Use `sm_idem_mem_DdRE PD ρ' τ (h1 i)` as an intermediate fact.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[sm_idem_idem]`. Then use the resulting hypothesis. Use `sm_idem_mem_FilV PD τ (Submodule.sum_mem _ fun a _ => ?_)` and prove the remaining obligations. Simplify using `using sm_mem_FilV PD (hr a i) (tmul_mem_FilV PD (w a) PD.one_mem)`. Use `congrArg (bil Qp F β (d i)) hs` as an intermediate fact. Rewrite `this` using `[map_sum, map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [bil_sm_right β (s _), h2, sm_self] at this`. Rewrite `this` using `[Finset.sum_eq_single i (fun b _ hb => by simp [Ne.symm hb]) (by simp)]`. Simplify `this` using `[mul_comm]`. Use `bil_mem_FilV PD β (h.mem i).2 hy` as an intermediate fact. Rewrite `this` using `[show k i + n = n - -k i by ring]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem dual [FiniteDimensional LL V] (ρ' : Representation LL G V') (β : V →ₗ[LL] V' →ₗ[LL] LL)
     (hβ : ∀ g x y, β (ρ g x) (ρ' g y) = β x y) (hβ' : Function.Bijective β.flip) :
@@ -382,25 +380,25 @@ theorem dual [FiniteDimensional LL V] (ρ' : Representation LL G V') (β : V →
     rwa [show k i + n = n - -k i by ring] at this
 
 /- English proof (translation)
-Use `⟨fun p => ⟨?_, bil_mem_FilV PD _ (h.mem p.1).2 (h'.mem p.2).2⟩, fun r hr p => ?_, fun n y hy => ?_⟩` and prove the remaining obligations. Use `sm_idem_mem_DdRE PD ρ'' τ (bil_mem_DdR PD ρ ρ' ρ'' (tensBil E) (fun g v w => (hE g v w).symm) (h.mem p.1).1.1 (h'.mem p.2).1.1)` as an intermediate fact. Rewrite `this` using `[← bil_sm_left, h.sm_idem]`. Then use the resulting hypothesis. Establish `key : ∑ j, sm Qp F LL V' (idem F τ * r (p.1, j)) (d' j) = 0`. Use `eq_zero_of_forall_ext (LL := LL) _ fun φ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Set `C : V'' →ₗ[LL] V` to `(TensorProduct.rid LL V).toLinearMap ∘ₗ φ.lTensor V ∘ₗ E.symm.toLinearMap`. Establish `hC : ∀ x y, ext Qp F C (bil Qp F (tensBil E) x y) = sm Qp F LL V (ext Qp F φ y) x`. Introduce `x y`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `add r s hr hs => simp only [map_add, LinearMap.add_apply, hr, hs]`. Consider the case `tmul v b'`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add r s hr hs => simp only [map_add, LinearMap.add_apply, hr, hs]`.
+Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `tmul w b'' => simp [C, mul_comm]`. Establish `h1` using `congrArg (ext Qp F C) hr`. Rewrite `h1` using `[map_sum, map_zero, Fintype.sum_prod_type]`. Simplify using `only [ext_sm, hC, ← sm_mul] at h1`. Establish `h2` using `h.indep (fun i => ∑ j, r (i, j) * ext Qp F φ (d' j)) (by simpa only [map_sum, LinearMap.sum_apply] using h1) p.1`.
+Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[map_sum]`. Simplify using `only [ext_sm, sm_self, mul_assoc]`. Rewrite using `[← Finset.mul_sum, h2]`. Use `h'.indep _ key p.2` as an intermediate fact. Rewrite `this` using `[← mul_assoc, idem_mul_idem]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Set `q : V'' ⊗[Qp] F → Prop` to `fun y => ∃ r : ι × ι' → LL ⊗[Qp] F, (∀ p, r p ∈ FilV PD (LL := LL) (V := LL) (n - (k p.1 + k' p.2))) ∧ sm Qp F LL V'' (idem F τ) y = ∑ p, sm Qp F LL V'' (r p) (bil Qp F (tensBil E) (d p.1) (d' p.2))`. Establish `q0 : q 0` using `⟨0, fun _ => Submodule.zero_mem _, by simp⟩`. Establish `qa : ∀ x y, q x → q y → q (x + y)`. Introduce and unpack `x y ⟨r, hr, hx⟩ ⟨s, hs, hy⟩`. Conclude with `⟨r + s, fun p => Submodule.add_mem _ (hr p) (hs p), by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Simplify using `only [map_add, hx, hy, Pi.add_apply, LinearMap.add_apply, Finset.sum_add_distrib]⟩`. Use `FilV_induction PD (p := q) q0 (fun u b hb => ?_) qa hy` and prove the remaining obligations. Take `⟨t, rfl⟩` from `E.surjective u`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simpa using q0`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately.
 
-Consider the case `add x y hx hy => simpa only [map_add, add_tmul] using qa _ _ hx hy`. Consider the case `tmul v w`. Take `⟨r, hr, h1⟩` from `h.span 0 (v ⊗ₜ[Qp] (1 : F)) (tmul_mem_FilV PD _ PD.one_mem)`. Take `⟨s, hs, h2⟩` from `h'.span 0 (w ⊗ₜ[Qp] (1 : F)) (tmul_mem_FilV PD _ PD.one_mem)`. Use `⟨fun p => ((1 : LL) ⊗ₜ[Qp] b) * (r p.1 * s p.2), fun p => ?_, ?_⟩` and prove the remaining obligations.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `mul_mem_FilV PD (tmul_mem_FilV PD (1 : LL) hb) (mul_mem_FilV PD (hr p.1) (hs p.2))` as an intermediate fact. Rewrite `this` using `[show n + (0 - k p.1 + (0 - k' p.2)) = n - (k p.1 + k' p.2) by ring]`. Then use the resulting hypothesis. Rewrite using `[tmul_eq_sm_bil, sm_comm, ← sm_idem_idem, ← bil_sm_right, ← bil_sm_left, h1, h2, Fintype.sum_prod_type_right, map_sum, map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_sum, LinearMap.sum_apply, map_sum]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[bil_sm_left, bil_sm_right, sm_mul, sm_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem tensor {ρ' : Representation LL G V'} {ι' : Type} [Fintype ι'] {d' : ι' → V' ⊗[Qp] F} {k' : ι' → ℤ}
     (h' : Adapted PD ρ' τ d' k') (ρ'' : Representation LL G V'') (E : V ⊗[LL] V' ≃ₗ[LL] V'')

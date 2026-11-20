@@ -5,31 +5,27 @@ namespace ReciprocityTheory.GeometryOfNumbersTheory
 open MeasureTheory Filter Topology
 
 /- English proof (translation)
-Use `set s := Real.sqrt (n : ℝ) with hs_def`. Establish `hn' : (0 : ℝ) < n` using `by exact_mod_cast hn`. Establish `hs : 0 < s` using `Real.sqrt_pos.mpr hn'`. Establish `hss : s * s = n` using `Real.mul_self_sqrt hn'.le`. Use `set r := R / s with hr_def`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr : 0 < r` using `div_pos hR hs`. Use `set K := Real.exp (-(C * R ^ 3 / s)) * (1 - C * r) with hK`. Establish `hK0 : 0 ≤ K` using `mul_nonneg (Real.exp_pos _).le (by linarith)`. Establish `hsub : Metric.closedBall (0 : Fin D → ℂ) r ⊆ Metric.ball 0 ρ₀` using `Metric.closedBall_subset_ball hRn`. Establish `hcont : ContinuousOn (fun z => ‖f z‖ ^ 2 * Real.exp (-((n : ℝ) * φ z)) * ν z) (Metric.closedBall (0 : Fin D → ℂ) r)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ContinuousOn f (Metric.closedBall (0 : Fin D → ℂ) r)` using `hf.continuousOn.mono hsub`. Establish `h2 : ContinuousOn φ (Metric.closedBall (0 : Fin D → ℂ) r)` using `hφc.mono hsub`. Establish `h3 : ContinuousOn ν (Metric.closedBall (0 : Fin D → ℂ) r)` using `hνc.mono hsub`. Conclude with `((h1.norm.pow 2).mul ((continuousOn_const.mul h2).neg.rexp)).mul h3`. Establish `hint : IntegrableOn (fun z => ‖f z‖ ^ 2 * Real.exp (-((n : ℝ) * φ z)) * ν z) (Metric.ball (0 : Fin D → ℂ) r)` using `(hcont.integrableOn_compact (isCompact_closedBall 0 r)).mono_set Metric.ball_subset_closedBall`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpt : ∀ z ∈ Metric.ball (0 : Fin D → ℂ) r, K * (‖f z‖ ^ 2 * Real.exp (-∑ j, ((n : ℝ) * lam j) * ‖z j‖ ^ 2)) ≤ ‖f z‖ ^ 2 * Real.exp (-((n : ℝ) * φ z)) * ν z`. Introduce `z hz`. Establish `hzρ : z ∈ Metric.ball (0 : Fin D → ℂ) ρ₀` using `hsub (Metric.ball_subset_closedBall hz)`. Establish `hzr : ‖z‖ < r` using `by simpa using hz`. Establish `hz0 : 0 ≤ ‖z‖` using `norm_nonneg _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Establish `hz3 : ‖z‖ ^ 3 ≤ r ^ 3` using `pow_le_pow_left₀ hz0 hzr.le 3`. Establish `hnr : (n : ℝ) * r ^ 3 = R ^ 3 / s`. Rewrite using `[hr_def, ← hss]`. Clear the denominators using the available nonvanishing facts. Establish `hφn : (n : ℝ) * φ z ≤ ∑ j, ((n : ℝ) * lam j) * ‖z j‖ ^ 2 + C * R ^ 3 / s`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `hφ z hzρ` as an intermediate fact. Establish `e1 : ∑ j, ((n : ℝ) * lam j) * ‖z j‖ ^ 2 = (n : ℝ) * ∑ j, lam j * ‖z j‖ ^ 2`. Rewrite using `[Finset.mul_sum]`. Use `congr 1`. Use extensionality with `j`.
+By extensionality, compare the relevant components. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `e2 : C * R ^ 3 / s = C * ((n : ℝ) * r ^ 3)` using `by rw [hnr]; ring`. Rewrite using `[e1, e2]`. Establish `: (n : ℝ) * φ z ≤ (n : ℝ) * (∑ j, lam j * ‖z j‖ ^ 2 + C * ‖z‖ ^ 3)` using `mul_le_mul_of_nonneg_left this hn'.le`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left hz3 (mul_nonneg hC hn'.le)]`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hexp : Real.exp (-∑ j, ((n : ℝ) * lam j) * ‖z j‖ ^ 2) * Real.exp (-(C * R ^ 3 / s)) ≤ Real.exp (-((n : ℝ) * φ z))`. Rewrite using `[← Real.exp_add]; exact Real.exp_le_exp.mpr (by linarith)`. Establish `hνz : 1 - C * r ≤ ν z`. Use `hν z hzρ` as an intermediate fact. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left hzr.le hC]`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hCr : 0 ≤ 1 - C * r` using `by linarith`. Establish `hf2 : 0 ≤ ‖f z‖ ^ 2` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Apply `mul_le_mul (mul_le_mul_of_nonneg_left hexp hf2) hνz hCr` to reduce the goal to its premises. Conclude with `mul_nonneg hf2 (Real.exp_pos _).le`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmono : ∫ z in Metric.ball (0 : Fin D → ℂ) r, K * (‖f z‖ ^ 2 * Real.exp (-∑ j, ((n : ℝ) * lam j) * ‖z j‖ ^ 2)) ≤ ∫ z in Metric.ball (0 : Fin D → ℂ) r, ‖f z‖ ^ 2 * Real.exp (-((n : ℝ) * φ z)) * ν z`. Apply `integral_mono_of_nonneg _ hint` to reduce the goal to its premises. Conclude with `ae_restrict_of_forall_mem measurableSet_ball hpt`. Conclude with `ae_of_all _ (fun z => mul_nonneg hK0 (mul_nonneg (by positivity) (Real.exp_pos _).le))`. Rewrite `hmono` using `[integral_const_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hgauss` using `polydisc_gauss_le hr hRn f hf (fun j => (n : ℝ) * lam j)`. Establish `hscale : ∀ j, discI ((n : ℝ) * lam j) r = discI (lam j) R / n`. Introduce `j`. Rewrite using `[hr_def, hs_def]`. Conclude with `discI_scale (hlam j) hR.le hn'`.
-
-Establish `hprod : ∏ j, discI ((n : ℝ) * lam j) r = (∏ j, discI (lam j) R) / (n : ℝ) ^ D`. Repeatedly rewrite using `[hscale]`. Rewrite using `[Finset.prod_div_distrib]`. Simplify using the standard rewrite rules. Rewrite `hgauss` using `[hprod]`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem morse_normal_bound {D : ℕ} {ρ₀ C : ℝ} (hC : 0 ≤ C) (lam : Fin D → ℝ)
     (hlam : ∀ j, 0 ≤ lam j) (φ ν : (Fin D → ℂ) → ℝ)
@@ -119,27 +115,23 @@ theorem morse_normal_bound {D : ℕ} {ρ₀ C : ℝ} (hC : 0 ≤ C) (lam : Fin D
     _ ≤ _ := hmono
 
 /- English proof (translation)
-Use `set R := min (ρ₀ / 2) (1 / (2 * (C + 1))) with hRdef`. Establish `hC1 : 0 < C + 1` using `by linarith`. Establish `hR : 0 < R` using `lt_min (by linarith) (by positivity)`. Establish `hRρ : R < ρ₀` using `(min_le_left _ _).trans_lt (by linarith)`. Establish `hCR : C * R ≤ 1 / 2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : R ≤ 1 / (2 * (C + 1))` using `min_le_right _ _`. Establish `h2 : (C + 1) * R ≤ 1 / 2`. Combine the equalities or inequalities in the displayed calculation. Use the polynomial consequences of the given equalities and inequalities. Use `set G := discI Λ R ^ D with hG`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hG0 : 0 < G` using `pow_pos (discI_pos hΛ hR) D`. Use `set E := Real.exp (-(C * R ^ 3)) with hE`. Establish `hE0 : 0 < E` using `Real.exp_pos _`. Use `⟨2 / (G * E), by positivity, ?_⟩` and prove the remaining obligations. Introduce `n hnpos lam φ ν f hlam hφc hνc hφ hν hν0 hf hint`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn' : (0 : ℝ) < n` using `by exact_mod_cast hnpos`. Establish `hs1 : 1 ≤ Real.sqrt n` using `Real.one_le_sqrt.mpr (by exact_mod_cast hnpos)`. Establish `hRs : R / Real.sqrt n ≤ R` using `div_le_self hR.le hs1`. Establish `hφ' : ∀ z ∈ Metric.ball (0 : Fin D → ℂ) ρ₀, φ z ≤ ∑ j, (fun _ => Λ) j * ‖z j‖ ^ 2 + C * ‖z‖ ^ 3`. Introduce `z hz`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(hφ z hz).trans ?_` and prove the remaining obligations. Use `gcongr with j`. Conclude with `(hlam j).2`. Establish `hCRs : C * (R / Real.sqrt n) ≤ C * R` using `mul_le_mul_of_nonneg_left hRs hC`. Establish `B` using `morse_normal_bound hC (fun _ => Λ) (fun _ => hΛ) φ ν hφc hνc hφ' hν f hf n hnpos R hR (hRs.trans_lt hRρ) (by linarith)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hprod : ∏ _j : Fin D, discI Λ R = G` using `by simp [hG]`. Rewrite `B` using `[hprod]`. Use `set h := Real.exp (-(C * R ^ 3 / Real.sqrt n)) * (1 - C * (R / Real.sqrt n)) with hh`. Establish `hhE : E / 2 ≤ h`. Establish `e1 : E ≤ Real.exp (-(C * R ^ 3 / Real.sqrt n))`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[hE]`. Apply `Real.exp_le_exp.mpr` to reduce the goal to its premises. Establish `: C * R ^ 3 / Real.sqrt n ≤ C * R ^ 3` using `div_le_self (by positivity) hs1`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `e2 : (1 : ℝ) / 2 ≤ 1 - C * (R / Real.sqrt n)` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hh0 : 0 < h` using `lt_of_lt_of_le (by positivity) hhE`. Establish `hsub : Metric.ball (0 : Fin D → ℂ) (R / Real.sqrt n) ⊆ Metric.ball 0 ρ₀` using `Metric.ball_subset_ball (hRs.trans hRρ.le)`. Establish `hI : ∫ z in Metric.ball (0 : Fin D → ℂ) (R / Real.sqrt n), ‖f z‖ ^ 2 * Real.exp (-((n : ℝ) * φ z)) * ν z ≤ ∫ z in Metric.ball (0 : Fin D → ℂ) ρ₀, ‖f z‖ ^ 2 * Real.exp (-((n : ℝ) * φ z)) * ν z`. Apply `setIntegral_mono_set hint` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Conclude with `ae_restrict_of_forall_mem measurableSet_ball (fun z hz => mul_nonneg (mul_nonneg (by positivity) (Real.exp_pos _).le) (hν0 z hz))`. Conclude with `Eventually.of_forall hsub`. Use `set I := ∫ z in Metric.ball (0 : Fin D → ℂ) ρ₀, ‖f z‖ ^ 2 * Real.exp (-((n : ℝ) * φ z)) * ν z`. Establish `hI0 : 0 ≤ I` using `setIntegral_nonneg measurableSet_ball (fun z hz => mul_nonneg (mul_nonneg (by positivity) (Real.exp_pos _).le) (hν0 z hz))`. Establish `hnD : (0 : ℝ) < (n : ℝ) ^ D` using `pow_pos hn' D`.
-
-Establish `hB' : ‖f 0‖ ^ 2 * (G / (n : ℝ) ^ D) * h ≤ I` using `B.trans hI`. Establish `e : ‖f 0‖ ^ 2 = (‖f 0‖ ^ 2 * (G / (n : ℝ) ^ D) * h) * ((n : ℝ) ^ D * (G⁻¹ / h))`. Clear the denominators using the available nonvanishing facts. Establish `key : G⁻¹ / h ≤ 2 / (G * E)`. Rewrite using `[div_le_div_iff₀ hh0 (by positivity)]`.
-
-Establish `: G⁻¹ * (G * E) = E` using `by field_simp`. Use the polynomial consequences of the given equalities and inequalities. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem morse_normal_uniform {D : ℕ} {ρ₀ C Λ : ℝ} (hρ₀ : 0 < ρ₀) (hC : 0 ≤ C) (hΛ : 0 ≤ Λ) :
     ∃ M : ℝ, 0 < M ∧ ∀ n : ℕ, 0 < n → ∀ (lam : Fin D → ℝ) (φ ν : (Fin D → ℂ) → ℝ)

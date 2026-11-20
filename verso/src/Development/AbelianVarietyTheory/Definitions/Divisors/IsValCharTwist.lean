@@ -15,17 +15,17 @@ namespace GlobalTheory.FunObj.SqNum.Model
 variable (D : D7)
 
 /- English proof (translation)
-Use `set P := D.hc τ`. Establish `hk` using `D.R.m_add_three_le_k`. Establish `hm` using `D.R.two_le_m`. Establish `ht : (0 : ℚ) ≤ D.R.t` using `by positivity`. Establish `h1 : ∀ a (h : a < D.R.m), P.b ⟨0, by omega⟩ ≤ P.b ⟨a, h⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a`. Proceed by induction on `a with`. Consider the case `zero => intro _`. Conclude with `le_rfl`. Consider the case `succ a ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `h; have := ih (by omega); have := P.gap_be ⟨a, by omega⟩; have := P.gap_eb ⟨a, by omega⟩ h`. Simplify using `only at *`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h2 : ∀ a (h : a < D.R.k - 1), P.u ⟨a + 1, by omega⟩ < P.v ⟨0, by omega⟩`. Introduce `a`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `a with`. Consider the case `zero => intro h`. Conclude with `P.v_gt_u ⟨0, h⟩`. Consider the case `succ a ih`. Introduce `h; have := ih (by omega); have := P.v_gt_u ⟨a + 1, h⟩; have := P.u_gt_v ⟨a + 1, h⟩`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Simplify using `only at *`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h3` using `P.u_last_gt (by omega) (by omega)`. Establish `h4` using `h2 (D.R.k - 2) (by omega)`. Establish `e : (⟨D.R.k - 2 + 1, by omega⟩ : Fin D.R.k) = ⟨D.R.k - 1, by omega⟩` using `Fin.ext (by simp only; omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h4` using `[e]`. Establish `h5` using `h1 j.1 j.2`. Establish `h6` using `P.gap_be j`. Simplify using `only [Fin.eta] at h5`. Combine the linear equalities and inequalities to obtain the conclusion.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem e_add_v (τ : D.what₂.Tau) (j : Fin D.R.m) :
     0 < (D.hc τ).e j + (D.hc τ).v ⟨0, by have := D.R.m_add_three_le_k; omega⟩ := by
@@ -55,13 +55,13 @@ theorem e_add_v (τ : D.what₂.Tau) (j : Fin D.R.m) :
   linarith
 
 /- English proof (translation)
-Establish `h` using `e_add_v D τ j`. Establish `s` using `GlobalTheory.SignedHC.GridData.ofHCParam_spec (D.hc τ) (sLen D) (gap D C) (cen D C τ)`. Establish `s0` using `GlobalTheory.SignedHC.GridData.ofHCParam_spec (D.hc τ) (sLen D) (gap D C) 0`. Rewrite `h` using `[s.2.2, s0.1]`. Rewrite using `[← sub_le_iff_le_add', cen, Int.le_floor]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [GlobalTheory.SignedHC.GridData.mid, GlobalTheory.SignedHC.GridData.a]`. Establish `hi` using `i.2`. Establish `e1 : ((D.R.m - i - 1 : ℕ) : ℚ) = D.R.m - i - 1`. Rewrite using `[Nat.cast_sub (by omega), Nat.cast_sub (by omega)]; simp`. Establish `e2 : ((D.R.m - i : ℕ) : ℚ) = D.R.m - i` using `by rw [Nat.cast_sub (by omega)]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e1, e2]`. Establish `g0 : (0 : ℚ) ≤ gap D C` using `by positivity`. Establish `i0 : (0 : ℚ) ≤ (i : ℕ)` using `by positivity`. Use `mul_nonneg g0 i0` as an intermediate fact. Express the relevant statement in the definitionally equal form `_ ≤ (_ + 1 / 2 + ((D.R.m : ℚ) + 1 - _) * (gap D C : ℚ) + (_ + 1 / 2 + ((D.R.m : ℚ) + 1 - _) * (gap D C : ℚ))) / 2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Simplify using `only [zero_add] at h`. Use `push_cast`. Unfold `num`. Use the polynomial consequences of the given equalities and inequalities.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Replace the relevant objects with their definitions. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem gap_le (C : ℝ) (i j : Fin D.R.m) (τ : D.what₂.Tau) :
     (gap D C : ℤ) ≤ (num D C τ).e (j + 1) + cen D C τ (D.R.m - i) := by
@@ -87,11 +87,11 @@ theorem gap_le (C : ℝ) (i j : Fin D.R.m) (τ : D.what₂.Tau) :
   nlinarith
 
 /- English proof (translation)
-Establish `h` using `gap_le D C i j τ`. Establish `h2` using `(isLeast_gap D C).1.2.1`. Establish `h3 : halfRank D i j ≤ bigN D`. Establish `a : rankV D (i + 1) (j + 1) ≤ bigN D`. Establish `h1 : (j + 1) * D.R.t ≤ D.R.m * D.R.t` using `Nat.mul_le_mul_right _ j.2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : (i + 1) * sLen D ≤ D.R.m * sLen D` using `Nat.mul_le_mul_right _ i.2`. Simplify using `only [rankV, bigN, Ranks.r, mul_add] at *`. Use linear arithmetic over natural numbers and integers. Establish `e : rankV D (i + 1) (j + 1) = rankV D i j + D.R.t + sLen D` using `by simp only [rankV]; ring`. Unfold `halfRank`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use linear arithmetic over natural numbers and integers. Establish `h4 : bigN D ≤ bigN D ^ 3` using `Nat.le_self_pow (by norm_num) _`. Unfold `kap`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers.
 -/
 theorem kap_add (C : ℝ) (i j : Fin D.R.m) (τ : D.what₂.Tau) {s : ℕ} (hs : s ≤ halfRank D i j) :
     (kap D C i j s τ : ℤ) + s = (num D C τ).e (j + 1) + cen D C τ (D.R.m - i) ∧ 0 < kap D C i j s τ := by
@@ -114,11 +114,9 @@ variable {D} {T : Type} {L : LevCh D T} {sc : Consts}
 open Classical in
 
 /- English proof (translation)
-Establish `key : ∀ S : Finset (HeightOneSpectrum (𝓞 D.host.F)), v ∉ S → ¬ v.asIdeal ∣ ∏ u ∈ S, u.asIdeal ^ condExp P u` using `fun S hS h => by`. Take `⟨u, hu, h⟩` from `(v.prime.dvd_finset_prod_iff _).1 h`. Establish `h2` using `v.prime.dvd_of_dvd_pow h`. Establish `: v = u` using `HeightOneSpectrum.ext (associated_iff_eq.1 (v.irreducible.associated_of_dvd u.irreducible h2))`. Conclude with `hS (this ▸ hu)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show multiplicity v.asIdeal (∏ u ∈ P.S0, u.asIdeal ^ condExp P u) = _`. Use `split_ifs with h`. Rewrite using `[← Finset.mul_prod_erase _ _ h]`. Use `multiplicity_eq_of_dvd_of_not_dvd (dvd_mul_right _ _) fun h' => ?_` and prove the remaining obligations. Rewrite `h'` using `[pow_succ, mul_dvd_mul_iff_left (pow_ne_zero _ v.ne_bot)]`.
-
-Conclude with `key _ (Finset.notMem_erase _ _) h'`. Conclude with `multiplicity_eq_zero.2 (key _ h)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem expIn_condF (P : Places L) (v : HeightOneSpectrum (𝓞 D.host.F)) :
     GlobalTheory.CMVal.expIn (condF P) v = if v ∈ P.S0 then condExp P v else 0 := by
@@ -137,22 +135,20 @@ theorem expIn_condF (P : Places L) (v : HeightOneSpectrum (𝓞 D.host.F)) :
   · exact multiplicity_eq_zero.2 (key _ h)
 
 /- English proof (translation)
-Introduce `x hx hx'` and use `h x hx (hx'.trans (WithZero.exp_le_exp.2 (by omega)))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem levelLe_mono {χ : HChar D.host.E} {v : HeightOneSpectrum (𝓞 D.host.E)} {m n : ℕ} (h : χ.LevelLe v m)
     (hmn : m ≤ n) : χ.LevelLe v n := fun x hx hx' =>
   h x hx (hx'.trans (WithZero.exp_le_exp.2 (by omega)))
 
 /- English proof (translation)
-Establish `back : ∀ n, θ.LevelLe P n → (θ / G.ch.chiH k).LevelLe P n → (G.ch.chiH k).LevelLe P n` using `fun n a b => by`. Use `a.mul b.inv` as an intermediate fact. Rewrite `this` using `[inv_div, mul_div_cancel]`. Then use the resulting hypothesis. Establish `fwd : ∀ n, θ.LevelLe P n → (G.ch.chiH k).LevelLe P n → (θ / G.ch.chiH k).LevelLe P n` using `fun n a b => by`. Rewrite using `[div_eq_mul_inv]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `a.mul b.inv`. Rewrite using `[expIn_condF]`. Introduce `n`. Use `split_ifs with h`. Distinguish the cases in `e : P.under (𝓞 D.host.F) = G.pl.v0`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `l` using `G.ch.lev0 k h1 h2 P e`. Establish `u` using `hu P (e ▸ G.ch.basePlace_not_mem_chiGridBadPlaces)`. Rewrite using `[condExp, if_pos e]`. Use `⟨fun hn => ?_, fun hn => levelLe_mono (fwd 1 (ht P) l.1) hn⟩` and prove the remaining obligations. Assume the negation of the conclusion as `c`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `rfl : n = 0` from `by omega`. Conclude with `l.2 ((HChar.unrAt_iff _ _).2 (back 0 (u.levelLe 0) hn))`. Establish `l` using `G.ch.lev1 k h1 h2 P ((G.pl.mem_S0_of_sum_eq.1 h).resolve_left e)`. Rewrite using `[condExp, if_neg e]`. Use `⟨fun hn => ?_, fun hn => levelLe_mono (fwd 2 (levelLe_mono (ht P) (by omega)) l.1) hn⟩` and prove the remaining obligations.
-
-Assume the negation of the conclusion as `c`. Conclude with `l.2 (back 1 (ht P) (levelLe_mono hn (by omega)))`. Use `⟨fun _ => Nat.zero_le _, fun _ => fwd n ((hu P fun c => h (G.pl.mem_S0_of_sum_eq.2 (Or.inr c))).levelLe n) ((G.ch.unr k h1 h2 P h).levelLe n)⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem expAt_div (G : GridData L sc) {k : ℕ} (h1 : 1 ≤ k) (h2 : k ≤ D.R.m) {θ : HChar D.host.E} (ht : ∀ P, θ.TameAt P)
     (hu : ∀ P : HeightOneSpectrum (𝓞 D.host.E), P.under (𝓞 D.host.F) ∉ S1 D → θ.UnrAt P)
@@ -183,23 +179,21 @@ theorem expAt_div (G : GridData L sc) {k : ℕ} (h1 : 1 ≤ k) (h2 : k ≤ D.R.m
       ((G.ch.unr k h1 h2 P h).levelLe n)⟩
 
 /- English proof (translation)
-Take `⟨n, hn, hf⟩` from `hf`. Establish `hm` using `L.C.isMu0 j`. Establish `a1 : 1 ≤ D.R.m - i` using `by have := i.2; omega`. Establish `a2 : D.R.m - i ≤ D.R.m` using `by omega`. Establish `e : nuH G μ₀ i j * ξ = L.C.mu0 j * ξ / G.ch.chiH (D.R.m - i)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[nuH, hL.xi_base, mul_one, div_mul_eq_mul_div]`. Use `⟨(GlobalTheory.ChrEqUnique.isUnitary_of_chrEq D _ _ (chrEq_nu G μ₀ i j hL)).mul (HChar.isUnitary_of_order hn hf), ?_, ?_, fun v P hP => ⟨fun h => absurd h (Finset.notMem_empty _), fun _ => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[e, div_eq_mul_inv]`. Conclude with `(hm.triv.mul htr).mul (G.ch.triv _ a1 a2).inv`. Introduce `k`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨n', hn', hinf⟩` from `hm.inf`. Establish `hk : ∀ τ, embTau D τ (k : D.host.E) ≠ 0` using `fun τ => by simp`. Rewrite using `[e, div_eq_mul_inv, HChar.inf_mul, HChar.inf_mul, HChar.inf_inv, GlobalTheory.TypeValues.inf_eq_one ξ hn hf, mul_one, Units.val_mul, Units.val_inv_eq_inv_val, hinf k, G.ch.inf _ a1 a2 k, ← D.eTau.prod_comp, ← Finset.prod_inv_distrib, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Establish `h1 : n' (D.eTau τ) = -(2 * (num D sc.cGap τ).e (j + 1))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hn' (D.eTau τ)` as an intermediate fact. Use `beta_reduce at this`. Rewrite `this` using `[Formalism.L2.Host.eExp, Equiv.symm_apply_apply, (GlobalTheory.SignedHC.GridData.ofHCParam_spec (D.hc τ) (sLen D) (gap D sc.cGap) (cen D sc.cGap τ)).2.2]`. Establish `h2 : ((n' (D.eTau τ) : ℤ) : ℚ) = ((-(2 * (num D sc.cGap τ).e (j + 1)) : ℤ) : ℚ)`. Rewrite using `[this]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Replace the relevant objects with their definitions.
 
-Use `push_cast`. Unfold `num`. Expand and normalize the polynomial expressions, which then agree. Conclude with `h2` after adjusting the coercions. Use `beta_reduce`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, (kap_add D sc.cGap i j τ hs).1]`. Establish `hz : (cmPhi D τ (k : D.host.E) / ((‖cmPhi D τ (k : D.host.E)‖ : ℝ) : ℂ)) = (embTau D τ (k : D.host.E) / ((‖embTau D τ (k : D.host.E)‖ : ℝ) : ℂ))⁻¹`. Establish `: cmPhi D τ (k : D.host.E) = starRingEnd ℂ (embTau D τ (k : D.host.E))` using `rfl`. Rewrite using `[this, RCLike.norm_conj, inv_div, div_eq_div_iff (by simpa using hk τ) (hk τ), Complex.conj_mul']`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `hne : (embTau D τ (k : D.host.E) / ((‖embTau D τ (k : D.host.E)‖ : ℝ) : ℂ)) ≠ 0` using `div_ne_zero (hk τ) (by simpa using hk τ)`. Rewrite using `[hz, inv_zpow', ← zpow_neg]`. Express the relevant statement in the definitionally equal form `(embTau D τ (k : D.host.E) / ((‖embTau D τ (k : D.host.E)‖ : ℝ) : ℂ)) ^ _ * _ = _`. Rewrite using `[← zpow_add₀ hne]`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Expand and normalize the polynomial expressions, which then agree. Take `rfl : P.under (𝓞 D.host.F) = v` from `HeightOneSpectrum.ext hP`. Rewrite using `[e]`. Use `expAt_div G a1 a2 (fun Q => HChar.LevelLe.mul (hm.tame Q) (ht Q)) (fun Q hQ => HChar.UnrAt.mul (hm.unr Q fun k hk => hQ ((S1_mem_OmF D).2 ?_)) (hu Q hQ)) P` and prove the remaining obligations. Establish `: ((D.host.g k : ℕ) : 𝓞 D.host.F) ∈ (Q.under (𝓞 D.host.F)).asIdeal` using `by show algebraMap _ (𝓞 D.host.E) _ ∈ Q.asIdeal`.
-
-Rewrite using `[map_natCast]`. Conclude with `hk`. Use `fin_cases k`. Conclude with `Or.inl this`. Conclude with `Or.inr (Or.inl this)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the first alternative. Prove the second alternative. A detailed English derivation is pending.
 -/
 theorem isValChar_twist {μ₀ : T} (hL : L.Is μ₀) (G : GridData L sc) (i j : Fin D.R.m) {s : ℕ} (hs : s ≤ halfRank D i j)
     {ξ : HChar D.host.E} (hf : ∃ n, 0 < n ∧ ξ.OrderDvd n) (htr : ξ.TrivOn D.host.F) (ht : ∀ P, ξ.TameAt P)
@@ -256,9 +250,9 @@ theorem isValChar_twist {μ₀ : T} (hL : L.Is μ₀) (G : GridData L sc) (i j :
     · exact Or.inr (Or.inl this)
 
 /- English proof (translation)
-Establish `up : ∀ (p : ℕ) (Q : HeightOneSpectrum (𝓞 D.host.E)), Formalism.L2.Host.OverP D.host p Q → ((p : ℕ) : 𝓞 D.host.F) ∈ (Q.under (𝓞 D.host.F)).asIdeal` using `fun p Q h => by show algebraMap _ (𝓞 D.host.E) _ ∈ Q.asIdeal`. Rewrite using `[map_natCast]`. Conclude with `h`. Use `⟨?_, fun c => ?_⟩` and prove the remaining obligations. Simplify using `using isValChar_twist hL G i j hs (ξ := 1) ⟨1, one_pos, one_pow 1⟩ (hL.xi_base ▸ hL.xi_triv μ₀) (fun _ _ _ _ => rfl) (fun _ _ _ _ => rfl)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Split into cases according to the possible forms of the given data.
 
-Consider the cases of `c`. Establish `h` using `L.C.isDel`. Conclude with `isValChar_twist hL G i j hs h.fin h.triv h.tame fun Q hQ => h.unr Q fun o => hQ ((S1_mem_OmF D).2 (Or.inr (Or.inr (Or.inl (up _ Q o)))))`. Establish `h` using `L.C.isDel'`. Conclude with `isValChar_twist hL G i j hs h.fin h.triv h.tame fun Q hQ => h.unr Q fun o => hQ ((S1_mem_OmF D).2 (Or.inr (Or.inr (Or.inr (up _ Q o)))))`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isValChar_nu {μ₀ : T} (hL : L.Is μ₀) (G : GridData L sc) (i j : Fin D.R.m) {s : ℕ} (hs : s ≤ halfRank D i j) :
     GlobalTheory.CMVal.IsValChar (cmPhi D) s (kap D sc.cGap i j s) (condF G.pl) ∅ (nuH G μ₀ i j) ∧
@@ -279,9 +273,9 @@ theorem isValChar_nu {μ₀ : T} (hL : L.Is μ₀) (G : GridData L sc) (i j : Fi
         hQ ((S1_mem_OmF D).2 (Or.inr (Or.inr (Or.inr (up _ Q o)))))
 
 /- English proof (translation)
-Take `⟨x, h1, -, -, Λ, p, hΛ, hp, hg⟩` from `h`. Take `⟨x', h1', -, -, Λ', p', hΛ', hp', hg'⟩` from `h'`. Take `rfl` from `h1.2.unique h1'.2`. Establish `e : Λ.lattice = Λ'.lattice` using `Submodule.ext fun y => (hΛ y).trans (hΛ' y).symm`. Establish `e2 : GlobalTheory.CMVal.latDisc Λ = GlobalTheory.CMVal.latDisc Λ'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [GlobalTheory.CMVal.latDisc, PeriodPair.g₂, PeriodPair.g₃, PeriodPair.G]`. Rewrite using `[e]`. Establish `e3 : p = p'`. Rewrite using `[hp.eq_minpoly, hp'.eq_minpoly, GlobalTheory.CMVal.beta, GlobalTheory.CMVal.beta, e2]`. Conclude with `funext fun w => by rw [hg, hg', e3]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gauge_unique {G : GridData L sc} {t : T} {i j : Fin D.R.m} {s : ℕ} {zd zd' g g'} (h : IsTorVal G t i j s zd g)
     (h' : IsTorVal G t i j s zd' g') : g = g' := by
@@ -297,11 +291,11 @@ theorem gauge_unique {G : GridData L sc} {t : T} {i j : Fin D.R.m} {s : ℕ} {zd
   exact funext fun w => by rw [hg, hg', e3]
 
 /- English proof (translation)
-Take `⟨h1, h2, h3⟩` from `ranks_exact D i j`. Establish `e : rankV D (i + 1) (j + 1) = rankV D i j + D.R.t + sLen D` using `by simp only [rankV]; ring`. Establish `a : rankV D (i + 1) (j + 1) ≤ bigN D`. Establish `h1 : (j + 1) * D.R.t ≤ D.R.m * D.R.t` using `Nat.mul_le_mul_right _ j.2`. Establish `h2 : (i + 1) * sLen D ≤ D.R.m * sLen D` using `Nat.mul_le_mul_right _ i.2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [rankV, bigN, Ranks.r, mul_add] at *`. Use linear arithmetic over natural numbers and integers. Establish `h4 : D.R.r ≤ rankV D i j` using `by simp only [rankV]; omega`. Establish `h5` using `D.R.m_add_three_le_k`. Establish `h6 : D.R.r = D.R.k + D.R.m - 1` using `rfl`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h7 : sLen D = D.R.r + 6` using `rfl`. Use `⟨by omega, by omega, Nat.even_iff.2 (by omega), by omega⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem bot_ranks (i j : Fin D.R.m) : 2 ≤ botSmall D i j ∧ botSmall D i j < botBig D i j ∧
     Even (botBig D i j + botSmall D i j) ∧ botBig D i j + botSmall D i j ≤ 2 * bigN D := by

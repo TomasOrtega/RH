@@ -10,15 +10,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.FinPl.DiagInt
 
 /- English proof (translation)
-Use `AddSubgroup.closure_induction₂ (p := fun x y _ _ => x * y ∈ intAE D) ?_ ?_ ?_ ?_ ?_ ?_ ?_ hx hy` and prove the remaining obligations. Introduce and unpack `_ _ ⟨a, ha, u, rfl⟩ ⟨b, hb, w, rfl⟩`. Use `AddSubgroup.subset_closure ⟨a * b, fun w' => ?_, u * w, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `mul_mem (ha w') (hb w')`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul]`. Both sides reduce to the same expression. Introduce `x _`. Rewrite using `[zero_mul]`. Conclude with `zero_mem _`.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `x _`. Rewrite using `[mul_zero]`. Conclude with `zero_mem _`. Introduce `x y z _ _ _ h1 h2`. Rewrite using `[add_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `add_mem h1 h2`. Introduce `x y z _ _ _ h1 h2`. Rewrite using `[mul_add]`. Conclude with `add_mem h1 h2`. Introduce `x y _ _ h`.
-
-Rewrite using `[neg_mul]`. Conclude with `neg_mem h`. Introduce `x y _ _ h`. Rewrite using `[mul_neg]`. Conclude with `neg_mem h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finMul {D : D7} {x y : Af D.host.F ⊗[D.host.F] D.host.E} (hx : x ∈ intAE D) (hy : y ∈ intAE D) :
     x * y ∈ intAE D := by
@@ -35,21 +33,21 @@ theorem finMul {D : D7} {x y : Af D.host.F ⊗[D.host.F] D.host.E} (hx : x ∈ i
   · intro x y _ _ h; rw [mul_neg]; exact neg_mem h
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨add_mem ha.1 hb.1, by rw [RingHom.map_add]; exact add_mem ha.2 hb.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem intAt_add {D : D7} {v : Pl D} {a b : AE D} (ha : a ∈ intAt D (· = v)) (hb : b ∈ intAt D (· = v)) :
     a + b ∈ intAt D (· = v) :=
   ⟨add_mem ha.1 hb.1, by rw [RingHom.map_add]; exact add_mem ha.2 hb.2⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Ideal.mul_mem_left _ _ hb.1, by rw [RingHom.map_mul]; exact finMul ha.2 hb.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem intAt_mul {D : D7} {v : Pl D} {a b : AE D} (ha : a ∈ intAt D (· = v)) (hb : b ∈ intAt D (· = v)) :
     a * b ∈ intAt D (· = v) :=
   ⟨Ideal.mul_mem_left _ _ hb.1, by rw [RingHom.map_mul]; exact finMul ha.2 hb.2⟩
 
 /- English proof (translation)
-Establish `e : a * b - 1 = (a - 1) * (b - 1) + (a - 1) + (b - 1)` using `by ring`. Rewrite using `[e]`. Conclude with `intAt_add (intAt_add (intAt_mul ha hb) ha) hb`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_sub_one {D : D7} {v : Pl D} {a b : AE D} (ha : a - 1 ∈ intAt D (· = v)) (hb : b - 1 ∈ intAt D (· = v)) :
     a * b - 1 ∈ intAt D (· = v) := by
@@ -58,9 +56,9 @@ theorem mul_sub_one {D : D7} {v : Pl D} {a b : AE D} (ha : a - 1 ∈ intAt D (·
   exact intAt_add (intAt_add (intAt_mul ha hb) ha) hb
 
 /- English proof (translation)
-Establish `h0 : (t⁻¹).1 * t.1 = 1` using `t.inv_mul`. Establish `h` using `congrFun (congrFun h0 j) j`. Rewrite `h` using `[Matrix.mul_apply, Matrix.one_apply_eq]`. Rewrite using `[← h, Finset.sum_eq_single j]`. Introduce `k _ hk`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[ht k j hk, mul_zero]`. Introduce `h'`. Conclude with `absurd (Finset.mem_univ j) h'`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem inv_diag_mul {R : Type*} [CommRing R] {ρ : ℕ} (t : GL (Fin ρ) R) (ht : ∀ i j, i ≠ j → t.1 i j = 0)
     (j : Fin ρ) : (t⁻¹).1 j j * t.1 j j = 1 := by
@@ -72,13 +70,13 @@ theorem inv_diag_mul {R : Type*} [CommRing R] {ρ : ℕ} (t : GL (Fin ρ) R) (ht
   · intro h'; exact absurd (Finset.mem_univ j) h'
 
 /- English proof (translation)
-Introduce `D ρ v t ht _ hr hl`. Establish `key : ∀ k : ℕ, ∀ i : Fin ρ, i.1 + k + 1 = ρ → t.1 i i - 1 ∈ intAt D (· = v)`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => intro i hi; exact hl i (by omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `succ k ih`. Introduce `i hi`. Establish `hj : i.1 + 1 < ρ` using `by omega`. Set `j : Fin ρ` to `⟨i.1 + 1, hj⟩`. Establish `h1` using `hr i j rfl`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h2` using `ih j (by simp [j]; omega)`. Establish `e : t.1 i i = t.1 i i * (t⁻¹).1 j j * t.1 j j`. Rewrite using `[mul_assoc, inv_diag_mul t ht j, mul_one]`. Rewrite using `[e]`. Conclude with `mul_sub_one h1 h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i`. Conclude with `key (ρ - 1 - i.1) i (by omega)`.
+A detailed English derivation is pending.
 -/
 theorem diag_int : ∀ (D : D7) (ρ : ℕ) (v : Pl D) (t : GL (Fin ρ) (AE D)), (∀ i j, i ≠ j → t.1 i j = 0) → (∀ i, (t⁻¹).1 i i - 1 ∈ intAt D (· = v)) → (∀ i j : Fin ρ, j.1 = i.1 + 1 → t.1 i i * (t⁻¹).1 j j - 1 ∈ intAt D (· = v)) → (∀ i : Fin ρ, i.1 + 1 = ρ → t.1 i i - 1 ∈ intAt D (· = v)) → ∀ i, t.1 i i - 1 ∈ intAt D (· = v) := by
   intro D ρ v t ht _ hr hl

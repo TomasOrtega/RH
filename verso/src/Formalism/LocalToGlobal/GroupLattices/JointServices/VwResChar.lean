@@ -9,7 +9,7 @@ noncomputable section
 namespace Formalism.L2.G.ServJoint
 
 /- English proof (translation)
-Establish `hp0 : ((D.what₂.places.resChar w : ℕ) : D.what₂.LL) ≠ 0` using `Nat.cast_ne_zero.mpr (D.what₂.places.resChar_prime w).ne_zero`. Establish `h1` using `D.what₂.places.val_resChar w`. Rewrite `h1` using `[D.val_eq w _ hp0, vAdd_eq_vw _ _ hp0]`. Conclude with `h1` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vw_resChar (D : D7) (w : D.what₂.places.Pl) :
     Formalism.DivisionValues.vw (D.plEq w) ((D.what₂.places.resChar w : ℕ) : D.what₂.LL) = (D.what₂.places.ramIdx w : ℤ) := by
@@ -20,7 +20,7 @@ theorem vw_resChar (D : D7) (w : D.what₂.places.Pl) :
   exact_mod_cast h1
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Establish `h0` using `Formalism.L2.DIV.vw_prime_eq_zero (D.plEq w) (D.what₂.places.resChar_prime w) (fun h => hne h.symm)`. Rewrite `h0` using `[vw_resChar]`. Use `D.what₂.places.ramIdx_pos w` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem plc_plEq (D : D7) (w : D.what₂.places.Pl) : Formalism.EigenvalueLevelCeiling.plc (D.plEq w) = D.what₂.places.resChar w := by
   by_contra hne

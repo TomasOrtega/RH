@@ -7,9 +7,9 @@ namespace LateralTheory.E.LeafShIsoPf
 open LateralTheory.E.LeafDegCut LateralTheory.E.EtaleTopologySheaves
 
 /- English proof (translation)
-Take `⟨S, hS, hP⟩` from `h`. Set `R : Sieve U` to `{ arrows := fun Z c => ∀ (W : B.Etale) (d : W ⟶ Z), Q W (d ≫ c) downward_closed := fun {Z Z'} c hc e W d => by simpa [Category.assoc] using hc W (d ≫ e) }`. Use `⟨R, (EtTop B).transitive hS R ?_, fun U' a ha => by simpa using ha U' (𝟙 _)⟩` and prove the remaining obligations. Introduce `Y f hf`. Take `⟨S', hS', hQ⟩` from `hPQ Y f (hP Y f hf)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `(EtTop B).superset_covering ?_ hS'` and prove the remaining obligations. Introduce `Z c hc W d`. Simplify `hQ W (d ≫ c) (S'.downward_closed hc d)` using `[Category.assoc]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem Cov.bind {B : Scheme.{0}} {U : B.Etale} {P Q : ∀ U' : B.Etale, (U' ⟶ U) → Prop} (h : Cov U P)
     (hPQ : ∀ U' (a : U' ⟶ U), P U' a → Cov U' (fun U'' b => Q U'' (b ≫ a))) : Cov U Q := by
@@ -41,13 +41,13 @@ def LeafSheafIso : Prop := ∀ (B : Scheme.{0}) (q : ℕ) (F G : SShv B q) (g : 
   IsIso g
 
 /- English proof (translation)
-Introduce `B q L K ℓ m hinj hsurj`. Use `set f := (shiftFunctor (DerivedCategory (SShv B q)) m).map ℓ with hf`. Establish `key : IsIso ((H0 B q).map f)`. Apply `hS` to reduce the goal to its premises. Introduce `U t ht`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `Cov.bind (hL B q _ U t) ?_` and prove the remaining obligations. Introduce and unpack `U' a ⟨x, hx⟩`. Establish `h1 : (H0 B q).map (x ≫ f) = 0`. Rewrite using `[Functor.map_comp, ← hx, Category.assoc, ht, comp_zero]`. Establish `h2` using `hinj U' x 0 ((hK B q _ U' _ h1).mono (fun U'' b hb => by simpa using hb))`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `h2.mono (fun U'' b hb => ?_)` and prove the remaining obligations. Rewrite using `[Functor.map_comp, Functor.map_comp, Category.assoc, hx, ← Functor.map_comp, hb, comp_zero, Functor.map_zero]`. Introduce `U s`. Use `Cov.bind (hL B q _ U s) ?_` and prove the remaining obligations. Introduce and unpack `U' a ⟨y, hy⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `(hsurj U' y).mono (fun U'' b ⟨x, hx⟩ => ⟨(H0 B q).map x, ?_⟩)` and prove the remaining obligations. Rewrite using `[Functor.map_comp, Functor.map_comp, Category.assoc, hy, ← Functor.map_comp, hx, Functor.map_comp]`. Establish `e` using `((H0 B q).isoShift m)`. Conclude with `(NatIso.isIso_map_iff e ℓ).1 key`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem LeafShIso_of (hL : EtaleDerivedDegreeZeroHomologyLocallyLifts) (hK : EtaleDerivedDegreeZeroHomologyKernelLocallyVanishes) (hS : LeafSheafIso) : LeafShIso := by
   intro B q L K ℓ m hinj hsurj

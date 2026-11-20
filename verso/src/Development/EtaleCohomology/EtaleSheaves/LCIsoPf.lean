@@ -21,15 +21,15 @@ def SecIso : Prop := ∀ (q : ℕ) (i : ℤ) (S : Scheme.{0}) (ζ : Prim q Γ(S,
       Sec.res f (e X s g) = e Y t (g.comap f.base.hom)
 
 /- English proof (translation)
-The claim follows from `(ζ.map s.appTop.hom).2.1`.
+A detailed English derivation is pending.
 -/
 theorem unit_of {q : ℕ} {S X : Scheme.{0}} (ζ : Prim q Γ(S, ⊤)) (s : X ⟶ S) : IsUnit (q : Γ(X, ⊤)) :=
   (ζ.map s.appTop.hom).2.1
 
 /- English proof (translation)
-Introduce `q i S ζ`. Take `⟨eT, heT⟩` from `hT q i S ζ`. Take `⟨c, hc⟩` from `h0 q`. Use `⟨fun X s => (c X (unit_of ζ s)).trans (eT X s), ?_⟩` and prove the remaining obligations. Introduce `X Y s t f hf g`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [AddEquiv.trans_apply]`. Rewrite using `[heT s t f hf, hc f (unit_of ζ t) (unit_of ζ s)]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem SecIso_of (hT : TwTriv) (h0 : Tw0) : SecIso := by
   intro q i S ζ
@@ -41,9 +41,9 @@ theorem SecIso_of (hT : TwTriv) (h0 : Tw0) : SecIso := by
   rw [heT s t f hf, hc f (unit_of ζ t) (unit_of ζ s)]
 
 /- English proof (translation)
-Introduce `H q i S ζ`. Take `⟨eS, heS⟩` from `hS q i S ζ`. Take `⟨-, eA, heA, -⟩` from `H.a9 (ZMod q) (tw q i)`. Use `⟨fun X s => (eS X s).trans (eA X), ?_⟩` and prove the remaining obligations. Introduce `X Y s t f hf g`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [AddEquiv.trans_apply]`. Rewrite using `[heA, heS s t f hf g]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem SecIso_LCIso (hS : SecIso) : LCIso := by
   intro H q i S ζ

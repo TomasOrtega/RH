@@ -10,11 +10,11 @@ open scoped ENNReal Classical
 namespace GlobalTheory.CovHt
 
 /- English proof (translation)
-Introduce `hP hH D O hC _ A T H R c σ`. Establish `pos` using `GlobalTheory.T.chern_potential_positive_on_components hP hH D O hC A T H R c σ`. Take `⟨k, hk, hpsh⟩` from `GlobalTheory.T.positive_potential_minus_small_multiple_psh ((T.M c).A σ) ((T.F c).a σ) ((T.M c).Om σ) (T.a_pot c σ) pos ((T.M c).bd σ).2.2.1`. Take `⟨x, P, hxP⟩` from `hC`. Take `⟨m, L, s, hL, hLp, hs, n, mu, W, hsnc, hmu, hW⟩` from `GlobalTheory.T.local_potential_of_metric_exists hP hH D O x P hxP A T H R c σ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨g, hg, hlev⟩` from `GlobalTheory.T.potential_chern_form_smooth_function_exists hP hH D O x P hxP A T H R c σ m L hL hLp`. Use `⟨fun y j z hz w => ?_, ⟨k, hk, hpsh⟩, L, s, g, hg, hLp, hs, ⟨n, mu, W, hsnc, hmu, hW⟩, hlev⟩` and prove the remaining obligations. Distinguish the cases in `hw : w = 0`. Substitute `hw` using the available equality. Simplify using `[ReciprocityTheory.AnForm.levi]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Conclude with `(pos y j z hz w hw).le`.
+A detailed English derivation is pending.
 -/
 theorem qPolBd_onObj : Hypotheses2 → HypothesesH → OnObj fun _ _ A T _ _ => ∀ c, (T.F c).QPolBd A.dir := by
   intro hP hH D O hC _ A T H R c σ

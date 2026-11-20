@@ -7,11 +7,9 @@ open scoped ComplexConjugate ValuativeRel
 namespace GlobalTheory.CompanionTheory.QL.HaarGL
 
 /- English proof (translation)
-Introduce `F _ _ _ _ O ϖ nrm q hLF n`. Take `⟨hKo, hKc, hlc, _hsc, ht2, -, -⟩` from `GlobalTheory.T.generalLinear_integral_compact_open hLF n`. Use `haveI := hlc`. Use `haveI := ht2`. Use `haveI : BorelSpace (GL (Fin n) F) := GlobalTheory.CompanionTheory.QL.instBorelGL n`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `⟨?_, fun μ hμ => ?_⟩` and prove the remaining obligations. Set `μ₀ : Measure (GL (Fin n) F)` to `Measure.haar`. Establish `hpos : μ₀ (GLint O n : Set (GL (Fin n) F)) ≠ 0` using `hKo.measure_ne_zero μ₀ ⟨1, (GLint O n).one_mem⟩`. Establish `hfin : μ₀ (GLint O n : Set (GL (Fin n) F)) ≠ ⊤` using `hKc.measure_lt_top.ne`. Use `⟨(μ₀ (GLint O n : Set (GL (Fin n) F)))⁻¹ • μ₀, inferInstance, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[Measure.smul_apply, smul_eq_mul, ENNReal.inv_mul_cancel hpos hfin]`. Use `haveI := hμ`. Conclude with `⟨GroundTheory.Automorphic.Measures.isMulRightInvariant_GL F n μ, ⟨GroundTheory.Automorphic.Measures.inv_eq_self_GL F n μ⟩⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_haar_unimodular : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] {O : Subring F} {ϖ : F} {nrm : AbsoluteValue F ℝ} {q : ℕ}, LF O ϖ nrm q → ∀ n : ℕ, (∃ κ : Measure (GL (Fin n) F), κ.IsMulLeftInvariant ∧ κ (GLint O n : Set (GL (Fin n) F)) = 1) ∧ ∀ μ : Measure (GL (Fin n) F), μ.IsHaarMeasure → μ.IsMulRightInvariant ∧ μ.IsInvInvariant := by
   intro F _ _ _ _ O ϖ nrm q hLF n

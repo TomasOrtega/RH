@@ -16,9 +16,9 @@ open GlobalTheory.StdUnn PositivityTheory.GramSchwartzFunctions PositivityTheory
 variable {D : D7} {n : ℕ}
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `a.1 * ((a⁻¹).1 * b.1 * adj (a⁻¹).1) * adj a.1 = b.1`. Establish `h1 : a.1 * (a⁻¹).1 = 1` using `Units.mul_inv a`. Establish `h2 : adj (a⁻¹).1 * adj a.1 = 1`. Rewrite using `[← adj_mul, h1]`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Unfold `adj`. Rewrite using `[Matrix.map_one _ (map_zero _) (map_one _), Matrix.transpose_one]`. Combine the equalities or inequalities in the displayed calculation.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem conjH_conjH_inv' (a : GL (Fin n) (AE D)) (b : hermA D n) : conjH a (conjH a⁻¹ b) = b := by
   apply Subtype.ext
@@ -33,9 +33,9 @@ theorem conjH_conjH_inv' (a : GL (Fin n) (AE D)) (b : hermA D n) : conjH a (conj
     _ = b.1 := by rw [h1, h2, one_mul, mul_one]
 
 /- English proof (translation)
-Unfold `npow`. Break down `eq_or_ne x 0 with rfl | hx` into its components or cases. Simplify using `[Complex.zero_cpow hw, Complex.zero_cpow (neg_ne_zero.2 hw)]`. Establish `hpos : (0 : ℝ) ≤ (x : ℝ)` using `x.2`. Establish `harg : ((x : ℝ) : ℂ).arg ≠ Real.pi`.
+Replace the relevant objects with their definitions. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Complex.arg_ofReal_of_nonneg hpos]`. Conclude with `Real.pi_ne_zero.symm`. Rewrite using `[Complex.ofReal_inv, Complex.inv_cpow _ _ harg, Complex.cpow_neg, inv_inv]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inv_cpow_neg' (x : ℝ≥0) {w : ℂ} (hw : w ≠ 0) : (((x : ℝ)⁻¹ : ℝ) : ℂ) ^ (-w) = npow x w := by
   unfold npow
@@ -49,7 +49,7 @@ theorem inv_cpow_neg' (x : ℝ≥0) {w : ℂ} (hw : w ≠ 0) : (((x : ℝ)⁻¹ 
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Conclude with `congrArg₂ (· * ·) (hRc D θ hθ n a c) (finprod_congr fun v => hnu2 v c)`.
+A detailed English derivation is pending.
 -/
 theorem nu_conj {θ : InfFam D} (hRc : RealConj) (hθ : IsInfFam θ) (a : GL (Fin n) (AE D))
     (lam : ∀ v : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers D.host.F),

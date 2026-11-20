@@ -32,9 +32,9 @@ noncomputable section
 namespace GlobalTheory.Mem.R3.Rw.Second
 
 /- English proof (translation)
-Take `⟨R⟩` from `GlobalTheory.Mem.Df.rowsDef_nonempty w.I w.ok w.pins w.l hX`. Take `⟨kb, ks, hk⟩` from `GlobalTheory.Mem.Df.Model.exists_ka B`. Set `W' : RowsRest B w.C` to `{ R.W with eOp := fun _ => 0 eOp_idem := fun _ => LinearMap.comp_zero _ eOp_sa := fun _ => LinearMap.IsSymmetric.zero kaBig := kb kaSmall := ks }`. Take `⟨V, -⟩` from `GlobalTheory.Mem.DivModel.exists_divStage B w.C W'`. Take `⟨S, -⟩` from `GlobalTheory.Mem.SProv.exists_sStage_true K B w.C W' G.cd hO (GlobalTheory.Mem.Df.cols_pos w.I w.ok w.pins w.l hX) (show R.W.Drows ≤ R.W.Dall by rw [R.std.drows, R.std.dall])`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hMt : ∀ (μ : w.C.Tup) (j : ℕ), W'.eMt μ j = 0` using `fun μ j => by haveI := R.std.mt μ j`. Conclude with `LinearMap.ext fun _ => Subsingleton.elim _ _`. Take `⟨N, -, -, hN, -⟩` from `GlobalTheory.Mem.Top.exists_nStage_grpTrue hG B w.C W' R.std.sha (fun j v _ _ => R.std.eta j v) (fun _ => rfl) hMt f`. Conclude with `⟨⟨W', V, S, N, G⟩, rfl, hN, GlobalTheory.Mem.R3.Model.grpAt_of_grpTrue (w.st ⟨W', V, S, N, G⟩) w.I w.ok (by show GrpTrue N w.I.C; rw [w.C_eq]; exact hN), hk w.C W' rfl rfl V S N G⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_lt_of_stage (hG : GlobalTheory.Published.GreenCuspidal) {K : Ctx} {B : Base} {f : Fr B.toPre} {T : TwDat B} (w : ColW B f T)
     (hO : K.Over B.toPre) (hX : B.fields.Ok) (G : GJStage B w.C) :
@@ -60,11 +60,9 @@ theorem exists_lt_of_stage (hG : GlobalTheory.Published.GreenCuspidal) {K : Ctx}
     (by show GrpTrue N w.I.C; rw [w.C_eq]; exact hN), hk w.C W' rfl rfl V S N G⟩
 
 /- English proof (translation)
-Use `first`. Consider the case `(run_tac Lean.Elab.Tactic.liftMetaTactic (fun g => do pure [← g.revertAll]))`. Conclude with `@_root_.GlobalTheory.PrimeBelow.exists_below`. Consider the case `(run_tac Lean.Elab.Tactic.liftMetaTactic (fun g => do pure [← g.revertAll]))`. Conclude with `_root_.GlobalTheory.PrimeBelow.exists_below`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact @_root_.GlobalTheory.PrimeBelow.exists_below`. Consider the case `exact _root_.GlobalTheory.PrimeBelow.exists_below`. Consider the case `(apply _root_.GlobalTheory.PrimeBelow.exists_below <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.PrimeBelow.exists_below <;> assumption)`. Consider the case `(intros; apply @_root_.GlobalTheory.PrimeBelow.exists_below <;> first | assumption | infer_instance)`.
-
-Consider the case `(intros; exact _root_.GlobalTheory.PrimeBelow.exists_below ..)`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_below_of_range (D D' : D7) (h : Set.range D.what₂.embLL ⊆ Set.range D'.what₂.embLL) (v' : D'.what₂.places.Pl) :
     ∃ v : D.what₂.places.Pl, Below D D' v v' := by
@@ -79,7 +77,7 @@ theorem exists_below_of_range (D D' : D7) (h : Set.range D.what₂.embLL ⊆ Set
   | (intros; exact _root_.GlobalTheory.PrimeBelow.exists_below ..)
 
 /- English proof (translation)
-Use `GlobalTheory.LvT.Inh.resChar_eq_of_mem_plEq D' v' (D.what₂.places.resChar_prime v) ((hB _ _ ?_).1 (GlobalTheory.LvT.Inh.resChar_mem_plEq D v))` and prove the remaining obligations. Simplify using `only [map_natCast]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem resChar_of_below {D D' : D7} {v : D.what₂.places.Pl} {v' : D'.what₂.places.Pl} (hB : Below D D' v v') :
     D'.what₂.places.resChar v' = D.what₂.places.resChar v := by
@@ -87,7 +85,7 @@ theorem resChar_of_below {D D' : D7} {v : D.what₂.places.Pl} {v' : D'.what₂.
   simp only [map_natCast]
 
 /- English proof (translation)
-Introduce and unpack `⟨_, _, _, h⟩`. Conclude with `h rfl`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem not_mem_W1F_zero (D : D7) (v : D.what₂.places.Pl) : v ∉ placesWithNonzeroContentOrConj D (fun _ _ => 0) := by
   rintro ⟨_, _, _, h⟩
@@ -98,17 +96,15 @@ end GlobalTheory.Mem.R3.Rw.Second
 namespace GlobalTheory.Mem.R3.Rw.Second
 
 /- English proof (translation)
-Introduce `hG hDE`. Establish `hP : StepW Pinned Pinned` using `StepW.of_all fun _ _ _ _ _ _ _ h => h`. Use `((hP.and hDE).and GlobalTheory.T.exists_GJStage_GIs2_pinned).trans (StepW.of_all fun K B' f' T' w' hO' _ H => ?_)` and prove the remaining obligations. Take `⟨⟨⟨pin'⟩, hDE'⟩, G, hG2⟩` from `H`. Introduce `B f T w hE hf hPin hpx hpl Z hX Wt z hGT hGA hKap hFine hHL hWt hsub hpsi`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨Z', rfl, hGT', hGA', hKap'⟩` from `exists_lt_of_stage hG w' hO' pin'.hX G`. Take `⟨z', hFine', hExt⟩` from `hDE' B f T w hE hf hPin hpx Z hX Wt z hGT hGA hFine hHL Z' pin'.hX hGT' hGA' (hG2 Z'.W Z'.V Z'.S Z'.N).1`. Establish `key : ∀ v v', Below (w.D Z) (w'.D Z') v v' → (v ∈ Wt ↔ v' ∈ z'.W1 (F0K K.s (w'.D Z')))`. Introduce `v v' hB`. Establish `h0` using `hExt.W1 v v' hB`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `a` using `Dat.mem_auxiliaryPlaces_iff_three_parts z (fun _ _ => 0) v`. Establish `b` using `Dat.mem_auxiliaryPlaces_iff_three_parts z' (fun _ _ => 0) v'`. Establish `i0 : (v ∈ z.IwasawaPlaceIndex ∨ v ∈ z.W1jw) ↔ (v' ∈ z'.IwasawaPlaceIndex ∨ v' ∈ z'.W1jw)` using `⟨fun h => (b.1 (h0.1 (a.2 (Or.inl h)))).resolve_right (not_mem_W1F_zero _ _), fun h => (a.1 (h0.2 (b.2 (Or.inl h)))).resolve_right (not_mem_W1F_zero _ _)⟩`. Establish `c` using `Dat.mem_auxiliaryPlaces_iff_three_parts z (F0K K.s (w.D Z)) v`. Establish `d` using `Dat.mem_auxiliaryPlaces_iff_three_parts z' (F0K K.s (w'.D Z')) v'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e` using `nonzeroForcedContentPlaces_agree_over_enlargement K B f T w B' f' T' w' hE Z Z' hKap hKap' v v' hB`. Rewrite using `[hWt]`. Conclude with `c.trans ((or_congr i0 e).trans d.symm)`. Use `⟨Z', pin'.hX, z', hG2, hGT', hGA', hKap', hFine', ?_, ?_, hExt, key⟩` and prove the remaining obligations. Introduce `v' hv'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨v, hB⟩` from `exists_below_of_range (w.D Z) (w'.D Z') hE.2.2.2 v'`. Establish `hv` using `(key v v' hB).2 hv'`. Establish `hr` using `resChar_of_below hB`. Rewrite using `[hpl]`. Conclude with `hr ▸ hsub v hv`.
-
-Introduce `v' hv'`. Conclude with `hpsi Z' v' fun v hB hv => hv' ((key v v' hB).1 hv)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_ext_twisted_places : GlobalTheory.Published.GreenCuspidal → DatExt → StepW Pinned fun K B' f' T' w' => ∀ (B : Base) (f : Fr B.toPre) (T : TwDat B) (w : ColW B f T), Enl B B' → HEq f' f → Pinned K B f T w → HEq w'.px w.px → T'.pl = T.pl → ∀ (Z : w.Lt) (hX : B.fields.Ok) (Wt : Set B.places.Pl) (z : Dat (w.st Z) w.I hX T Wt), GrpTrue Z.N f → GrpAt (w.st Z) w.I → DV.KapDef (w.D Z) → Fine z → HoldsL z.R z.F → Wt = z.W1 (F0K K.s (w.D Z)) → (∀ v ∈ Wt, B.places.resChar v ∈ T.pl) → (∀ (Z' : w'.Lt) v', (∀ v, Below (w.D Z) (w'.D Z') v v' → v ∉ Wt) → T'.psi v' = 1) → ∃ (Z' : w'.Lt) (hX' : B'.fields.Ok) (z' : Dat (w'.st Z') w'.I hX' T' {v | B'.places.resChar v ∈ T'.pl}), GIs2 K w' Z'.G ∧ GrpTrue Z'.N f' ∧ GrpAt (w'.st Z') w'.I ∧ DV.KapDef (w'.D Z') ∧ Fine z' ∧ (∀ v ∈ z'.W1 (F0K K.s (w'.D Z')), B'.places.resChar v ∈ T'.pl) ∧ (∀ v, v ∉ z'.W1 (F0K K.s (w'.D Z')) → T'.psi v = 1) ∧ Ext z z' ∧ ∀ v v', Below (w.D Z) (w'.D Z') v v' → (v ∈ Wt ↔ v' ∈ z'.W1 (F0K K.s (w'.D Z'))) := by
   intro hG hDE

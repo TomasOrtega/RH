@@ -41,9 +41,9 @@ def prependCenter {X : Scheme.{u}} (d : BlowupSequenceData X) (Z : X.IdealSheafD
   | (n + 1) => d.center n
 
 /- English proof (translation)
-Consider the cases of `i with`. Consider the case `zero`. Establish `h` using `hZ.iso_hom_comp d.isoZero`. Rewrite `h` using `[Category.comp_id]`. Conclude with `h`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Treat this case separately.
 
-Consider the case `succ n`. Conclude with `d.isBlowup n (by omega)`.
+A detailed English derivation is pending.
 -/
 theorem isBlowupAlongIdealSheaf_prependMap {X : Scheme.{u}} (Z : X.IdealSheafData)
     (hZ : Blowup.IsBlowupAlongIdealSheaf (𝟙 X) Z) (d : BlowupSequenceData X) (i : ℕ) (hi : i < d.length + 1) :
@@ -133,7 +133,7 @@ noncomputable def containedComponentsIdeal (T : MarkedIdealWithBoundary.{u}) (j 
   else ⊤
 
 /- English proof (translation)
-The claim follows from `dif_pos h`.
+A detailed English derivation is pending.
 -/
 theorem containedComponentsIdeal_eq_ker (T : MarkedIdealWithBoundary.{u}) (j : ℕ) (hj : j < T.boundary.length)
     (h : IsOpen {x : ↥(T.boundary.get ⟨j, hj⟩).subscheme |
@@ -148,7 +148,7 @@ theorem containedComponentsIdeal_eq_ker (T : MarkedIdealWithBoundary.{u}) (j : �
           (T.boundary.get ⟨j, hj⟩).subschemeι) := dif_pos h
 
 /- English proof (translation)
-Conclude with `dif_neg h`.
+A detailed English derivation is pending.
 -/
 theorem containedComponentsIdeal_eq_top_of_not_isOpen (T : MarkedIdealWithBoundary.{u}) (j : ℕ) (hj : j < T.boundary.length)
     (h : ¬ IsOpen {x : ↥(T.boundary.get ⟨j, hj⟩).subscheme |
@@ -186,7 +186,7 @@ noncomputable def liftSeqFromDivisor (hres : FunctorialResolution.Blowup.StrictT
   else emptyMarkedSequenceOfBlowups T.structMap T.ideal T.mult T.boundary
 
 /- English proof (translation)
-Establish `h1 : (restrictToBoundaryDivisor T j hj I₀ E₀).krullDimSucc < T.krullDimSucc ∧ AlgebraicGeometry.IsNoetherian T.scheme` using `⟨hdim, inferInstance⟩`. Conclude with `(dif_pos h1).trans ((dif_pos hpr).trans (dif_pos hmk))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem liftSeqFromDivisor_eq_toMarkedSequence (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hno : BlowupPreservesNoetherian.{u}) (T : MarkedIdealWithBoundary.{u})
@@ -231,7 +231,7 @@ noncomputable def divisorReductionSeq (hres : FunctorialResolution.Blowup.Strict
   else emptyMarkedSequenceOfBlowups T.structMap T.ideal T.mult T.boundary
 
 /- English proof (translation)
-Unfold `divisorReductionSeq`. Rewrite using `[dif_pos hj, if_pos hcs]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem divisorReductionSeq_eq_empty_of_orderAtLeastLocus_eq_empty (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hno : BlowupPreservesNoetherian.{u}) (T : MarkedIdealWithBoundary.{u})
@@ -242,7 +242,7 @@ theorem divisorReductionSeq_eq_empty_of_orderAtLeastLocus_eq_empty (hres : Funct
   rw [dif_pos hj, if_pos hcs]
 
 /- English proof (translation)
-Unfold `divisorReductionSeq`. Rewrite using `[dif_pos hj, if_neg hcs, if_pos hZ]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem divisorReductionSeq_eq_liftSeqFromDivisor_of_eq_top (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hno : BlowupPreservesNoetherian.{u}) (T : MarkedIdealWithBoundary.{u})
@@ -256,7 +256,7 @@ theorem divisorReductionSeq_eq_liftSeqFromDivisor_of_eq_top (hres : FunctorialRe
   rw [dif_pos hj, if_neg hcs, if_pos hZ]
 
 /- English proof (translation)
-Unfold `divisorReductionSeq`. Rewrite using `[dif_pos hj, if_neg hcs, if_neg hZ, dif_pos hb]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem divisorReductionSeq_eq_liftSeqFromDivisor_prepend (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hno : BlowupPreservesNoetherian.{u}) (T : MarkedIdealWithBoundary.{u})

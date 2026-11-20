@@ -4,13 +4,13 @@ open Matrix Polynomial
 namespace GlobalTheory
 
 /- English proof (translation)
-Take `⟨n, y, hy⟩` from `IsArtinian.exists_pow_succ_smul_dvd a (1 : R)`. Simplify using `only [smul_eq_mul, mul_one, Nat.succ_eq_add_one] at hy`. Establish `key : ∀ k : ℕ, a ^ n = a ^ (n + k) * y ^ k`. Introduce `k`. Proceed by induction on `k with`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `succ k ih => linear_combination ih + (-(a ^ k * y ^ k)) * hy`. Establish `hm : a ^ (n + 1) = a ^ (n + 1 + (n + 1)) * y ^ (n + 1)`. Take the linear combination `a * key (n + 1)`. Use `⟨a ^ (n + 1) * y ^ (n + 1), a ^ n * y ^ (n + 1), ?_, by ring, ?_⟩` and prove the remaining obligations.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Take the linear combination `(-(y ^ (n + 1))) * hm`. Establish `h0 : (1 - a ^ (n + 1) * y ^ (n + 1)) * a ^ (n + 1) = 0` using `by linear_combination hm`. Establish `hnil : IsNilpotent ((1 - a ^ (n + 1) * y ^ (n + 1)) * a)`. Use `⟨n + 1, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_pow, pow_succ (1 - a ^ (n + 1) * y ^ (n + 1)) n, mul_assoc, h0, mul_zero]`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `hnil.eq_zero` as an intermediate fact. Take the linear combination `-this`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem reducedArtinian_exists_idem {R : Type} [CommRing R] [IsReduced R] [IsArtinianRing R]
     (a : R) : ∃ e b : R, e * e = e ∧ e = a * b ∧ a * e = a := by
@@ -33,27 +33,25 @@ theorem reducedArtinian_exists_idem {R : Type} [CommRing R] [IsReduced R] [IsArt
     linear_combination -this
 
 /- English proof (translation)
-Introduce `R _ _ _ σ hσ`. Set `S : Set (Ideal R)` to `{I | ∃ e : R, e * e = e ∧ e * σ e = 0 ∧ I = Ideal.span {1 - e - σ e}}`. Establish `hS : S.Nonempty` using `⟨_, 0, by simp, by simp, rfl⟩`. Take `⟨I, ⟨e, he, heσ, rfl⟩, hmin⟩` from `WellFounded.has_min wellFounded_lt S hS`. Establish `hσe : σ e * σ e = σ e` using `by rw [← map_mul, he]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set f := 1 - e - σ e with hfdef`. Establish `hf : f * f = f` using `by linear_combination he + hσe + 2 * heσ`. Establish `hσf : σ f = f` using `by simp only [hfdef, map_sub, map_one, hσ]; ring`. Establish `hef : e * f = 0` using `by linear_combination -he - heσ`. Establish `hσef : σ e * f = 0` using `by linear_combination -hσe - heσ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨e, f, he, hf, heσ, by ring, ?_⟩` and prove the remaining obligations. Introduce `w hw`. Assume the negation of the conclusion as `hwf`. Use `set w' := w * f with hw'def`. Establish `hw'σ : w' * σ w' = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite using `[hw'def, map_mul, hσf]`. Take the linear combination `(f * f) * hw`. Take `⟨ε, a, hε, hεa, hw'ε⟩` from `reducedArtinian_exists_idem w'`. Establish `hεne : ε ≠ 0`. Introduce `h0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hw'ε` using `[h0, mul_zero]`. Conclude with `hwf hw'ε.symm`. Establish `hεσ : ε * σ ε = 0`. Rewrite using `[hεa, map_mul]`. Take the linear combination `(a * σ a) * hw'σ`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hw'f : w' * f = w'` using `by rw [hw'def, mul_assoc, hf]`. Establish `hεf : ε * f = ε` using `by rw [hεa]; linear_combination a * hw'f`. Establish `hσεf : σ ε * f = σ ε`. Use `congrArg σ hεf` as an intermediate fact. Rewrite `this` using `[map_mul, hσf]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this`. Establish `hσε : σ ε * σ ε = σ ε` using `by rw [← map_mul, hε]`. Establish `heε : e * ε = 0` using `by linear_combination (-e) * hεf + ε * hef`. Establish `heσε : e * σ ε = 0` using `by linear_combination (-e) * hσεf + σ ε * hef`. Establish `hσeε : σ e * ε = 0` using `by linear_combination (-σ e) * hεf + ε * hσef`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hmem : Ideal.span {1 - (e + ε) - σ (e + ε)} ∈ S` using `⟨e + ε, by linear_combination he + hε + 2 * heε, by rw [map_add]; linear_combination heσ + heσε + hσeε + hεσ, rfl⟩`. Apply `hmin _ hmem` to reduce the goal to its premises. Establish `hff : f * (1 - (e + ε) - σ (e + ε)) = 1 - (e + ε) - σ (e + ε)`. Rewrite using `[map_add]`. Take the linear combination `hf - hεf - hσεf`.
+Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `lt_of_le_of_ne ?_ ?_` and prove the remaining obligations. Rewrite using `[Ideal.span_singleton_le_span_singleton]`. Conclude with `⟨_, hff.symm⟩`. Introduce `hEq`. Establish `: f ∈ Ideal.span {1 - (e + ε) - σ (e + ε)}`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Rewrite using `[hEq]`. Conclude with `Ideal.mem_span_singleton_self f`. Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.mp this`. Apply `hεne` to reduce the goal to its premises. Establish `hεg : ε * (1 - (e + ε) - σ (e + ε)) = 0`.
-
-Rewrite using `[map_add]`. Take the linear combination `-heε - hσeε - hε - hεσ`. Take the linear combination `-hεf - ε * hc + c * hεg`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem reducedArtinian_involution_split :
     ∀ (R : Type) [CommRing R] [IsReduced R] [IsArtinianRing R] (σ : R →+* R), (∀ x, σ (σ x) = x) →

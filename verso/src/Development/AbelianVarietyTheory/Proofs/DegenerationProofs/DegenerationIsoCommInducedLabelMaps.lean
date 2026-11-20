@@ -11,9 +11,9 @@ open GlobalTheory.ModelData
 namespace GlobalTheory.ModelData
 
 /- English proof (translation)
-Set `b` to `Module.Free.chooseBasis ℤ X`. Use `b.ext_elem fun i => ?_` and prove the remaining obligations. Rewrite using `[map_zero, Finsupp.zero_apply]`. Take `⟨z, hz⟩` from `h (b.repr v i).natAbs`. Use `Int.eq_zero_of_dvd_of_natAbs_lt_natAbs (d := ((n ^ (b.repr v i).natAbs : ℕ) : ℤ)) ⟨b.repr z i, ?_⟩ ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `congrArg (fun w => b.repr w i) hz` as an intermediate fact. Simplify `this` using `only [map_nsmul, Finsupp.smul_apply, nsmul_eq_mul]`. Rewrite using `[Int.natAbs_natCast]`. Conclude with `Nat.lt_pow_self hn`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_forall_pow_smul {X : Type} [AddCommGroup X] [Module.Free ℤ X] {n : ℕ} (hn : 1 < n) (v : X)
     (h : ∀ j : ℕ, ∃ z, v = n ^ j • z) : v = 0 := by
@@ -28,7 +28,7 @@ theorem eq_zero_of_forall_pow_smul {X : Type} [AddCommGroup X] [Module.Free ℤ 
     exact Nat.lt_pow_self hn
 
 /- English proof (translation)
-Establish `r` using `(TateInh.homOfIso J).rel_img p.1.2`. Establish `r₁` using `r.pow k`. Rewrite `r₁` using `[N.mem_QT.1 p.2]`. Establish `r₂` using `(TateInh.homOfIso J).rel_io p.1.1.toAdd`. Conclude with `⟨⟨(Multiplicative.ofAdd (J.e p.1.1.toAdd), (TateInh.homOfIso J).img p.1.2), ((TateInh.homOfIso J).rel_existsUnique _).unique r₁ r₂⟩, rfl, r⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_qt_image {O : Type} [CommRing O] {N N' : NumD O} (J : NumD.Iso N N') {k : ℕ} (p : N.QT k) :
     ∃ p' : N'.QT k, p'.1.1.toAdd = J.e p.1.1.toAdd ∧ J.Rel p.1.2 p'.1.2 := by
@@ -40,15 +40,15 @@ theorem exists_qt_image {O : Type} [CommRing O] {N N' : NumD O} (J : NumD.Iso N 
     ((TateInh.homOfIso J).rel_existsUnique _).unique r₁ r₂⟩, rfl, r⟩
 
 /- English proof (translation)
-Introduce `C _ N N' La _ EF ζ ζ' lab lab' n hn hL hL' J hJ hs α α' gam ha ha' y`. Establish `hk : ∀ j, 0 < n ^ j` using `fun j => pow_pos (by omega) j`. Establish `key : ∀ j x, ∃ z, J.e (lab (n ^ j) x).1.1.toAdd = (lab' (n ^ j) x).1.1.toAdd + n ^ j • z`. Introduce `j x`. Take `⟨p', e, r⟩` from `exists_qt_image J (lab (n ^ j) x)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨x₀, h, h'⟩` from `hJ j _ p' e r`. Establish `h₁` using `(hL'.2.1 _ (hk j) x₀ x).2 ((hL.2.1 _ (hk j) x₀ x).1 h)`. Take `⟨z, hz, -⟩` from `(N'.qEq_equivalence _).trans ((N'.qEq_equivalence _).symm h₁) h'`. Conclude with `⟨z, e ▸ hz⟩`. Use `sub_eq_zero.1 (eq_zero_of_forall_pow_smul hn _ fun j => ?_)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨p, rfl⟩` from `hs j y`. Take `⟨x, z₀, h₀, -⟩` from `hL.2.2.1 _ (hk j) p`. Take `⟨z₁, h₁⟩` from `ha j x`. Take `⟨z₂, h₂⟩` from `ha' j x`. Take `⟨z₃, h₃⟩` from `key j x`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨z₄, h₄⟩` from `key j (gam x)`. Use `⟨J.e (α z₀) - J.e z₁ + z₄ + z₂ - α' z₃ - α' (J.e z₀), ?_⟩` and prove the remaining obligations. Rewrite `h₄` using `[h₁, h₂, map_add, map_nsmul]`. Rewrite using `[h₀]`. Simplify using `only [map_add, map_nsmul, h₃]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take the linear combination `(norm := module) h₄`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem iso_comm_of_labels : ∀ (C : Type) [NormedField C] (N N' : NumD C) (La : Type) [AddCommGroup La] (EF : LinearMap.BilinForm ℤ La) (ζ ζ' : ℕ → Cˣ) (lab : ∀ k : ℕ, La → N.QT k) (lab' : ∀ k : ℕ, La → N'.QT k) (n : ℕ), 1 < n → Labels N EF ζ lab → Labels N' EF ζ' lab' → ∀ J : NumD.Iso N N', (∀ j (p : N.QT (n ^ j)) (p' : N'.QT (n ^ j)), p'.1.1.toAdd = J.e p.1.1.toAdd → J.Rel p.1.2 p'.1.2 → ∃ x, N.QEq (lab _ x) p ∧ N'.QEq (lab' _ x) p') → (∀ j (y : N.X), ∃ p : N.QT (n ^ j), p.1.1.toAdd = y) → ∀ (α : N.X →+ N.X) (α' : N'.X →+ N'.X) (gam : La → La), (∀ j x, ∃ z, (lab (n ^ j) (gam x)).1.1.toAdd = α (lab (n ^ j) x).1.1.toAdd + n ^ j • z) → (∀ j x, ∃ z, (lab' (n ^ j) (gam x)).1.1.toAdd = α' (lab' (n ^ j) x).1.1.toAdd + n ^ j • z) → ∀ y, J.e (α y) = α' (J.e y) := by
   intro C _ N N' La _ EF ζ ζ' lab lab' n hn hL hL' J hJ hs α α' gam ha ha' y

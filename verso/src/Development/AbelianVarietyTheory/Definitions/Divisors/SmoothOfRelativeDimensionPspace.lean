@@ -17,9 +17,9 @@ open GlobalTheory.Points GlobalTheory.Twist GlobalTheory.ProjSpace
 attribute [local instance] MvPolynomial.gradedAlgebra
 
 /- English proof (translation)
-Set `P₀ : Algebra.Presentation R (MvPolynomial σ R) σ Empty` to `{ __ := Algebra.Generators.mvPolynomial R σ relation := Empty.elim span_range_relation_eq_ker := by`. Rewrite using `[Algebra.Generators.ker_mvPolynomial]`. Simplify using `}`. Set `P₁ : Algebra.PreSubmersivePresentation R (MvPolynomial σ R) σ Empty` to `{ __ := P₀ map := Empty.elim map_inj := fun a => a.elim }`. Set `P₂ : Algebra.SubmersivePresentation R (MvPolynomial σ R) σ Empty` to `{ __ := P₁ jacobian_isUnit := by`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Rewrite using `[Algebra.PreSubmersivePresentation.jacobian_eq_jacobiMatrix_det]`. Simplify using `}`. Conclude with `P₂.isStandardSmoothOfRelativeDimension (by simp [Algebra.Presentation.dimension])`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isStandardSmooth_mvPolynomial (R σ : Type) [CommRing R] [Finite σ] :
     Algebra.IsStandardSmoothOfRelativeDimension (Nat.card σ) R (MvPolynomial σ R) := by
@@ -41,9 +41,9 @@ theorem isStandardSmooth_mvPolynomial (R σ : Type) [CommRing R] [Finite σ] :
   exact P₂.isStandardSmoothOfRelativeDimension (by simp [Algebra.Presentation.dimension])
 
 /- English proof (translation)
-Use `HasRingHomProperty.instIsZariskiLocalAtSource (P := @SmoothOfRelativeDimension.{0} M) (Q := RingHom.Locally (RingHom.IsStandardSmoothOfRelativeDimension M))` as an intermediate fact. Use `IsZariskiLocalAtSource.of_openCover (P := @SmoothOfRelativeDimension.{0} M) (chartCover R M) fun (i : Fin (M + 1)) => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `SmoothOfRelativeDimension M (chartι R M i ≫ _)`. Rewrite using `[chartι_str]`. Use `(HasRingHomProperty.Spec_iff (P := @SmoothOfRelativeDimension M)).2 ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `RingHom.locally_of RingHom.isStandardSmoothOfRelativeDimension_respectsIso _ ?_` and prove the remaining obligations. Establish `h` using `isStandardSmooth_mvPolynomial R {j : Fin (M + 1) // j ≠ i}`. Rewrite `h` using `[show Nat.card {j : Fin (M + 1) // j ≠ i} = M by simp]`. Conclude with `(RingHom.isStandardSmoothOfRelativeDimension_algebraMap M).2 h`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smoothOfRelativeDimension_pspace (R : Type) [CommRing R] (M : ℕ) :
     SmoothOfRelativeDimension M (PSpace.str R M) := by
@@ -62,7 +62,7 @@ theorem smoothOfRelativeDimension_pspace (R : Type) [CommRing R] (M : ℕ) :
 variable (k : Type) [Field k] (M : ℕ)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨geometrically_iff_of_commRing.2 fun K _ _ _ _ _ h => have e := (isPullback_baseChange M (algebraMap k K)).isoIsPullback _ _ h e.hom.homeomorph.surjective.connectedSpace e.hom.continuous⟩`.
+Supply the required witnesses or components.
 -/
 theorem geometricallyConnected_pspace : GeometricallyConnected (PSpace.str k M) :=
   ⟨geometrically_iff_of_commRing.2 fun K _ _ _ _ _ h =>
@@ -81,25 +81,25 @@ abbrev projSys : LinSys k where
 namespace projSys
 
 /- English proof (translation)
-The claim follows from `Algebra.algebra_ext _ _ fun r => (LB.resG_self (X := PSpace k M) le_top _).symm`.
+A detailed English derivation is pending.
 -/
 theorem algebraΓ_eq : (projSys k M).algebraΓ = algebraSections k M ⊤ :=
   Algebra.algebra_ext _ _ fun r => (LB.resG_self (X := PSpace k M) le_top _).symm
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨smoothOfRelativeDimension_pspace k M, ⟨M, 𝟙 _, inferInstance, Category.id_comp _⟩, geometricallyConnected_pspace k M, hM⟩`.
+Supply the required witnesses or components.
 -/
 theorem isVariety (hM : 1 ≤ M) : (projSys k M).IsVariety :=
   ⟨smoothOfRelativeDimension_pspace k M, ⟨M, 𝟙 _, inferInstance, Category.id_comp _⟩,
     geometricallyConnected_pspace k M, hM⟩
 
 /- English proof (translation)
-The claim follows from `iSup_nonzeroLocus_coord k M`.
+A detailed English derivation is pending.
 -/
 theorem basePointFree : (projSys k M).BasePointFree := iSup_nonzeroLocus_coord k M
 
 /- English proof (translation)
-Rewrite using `[ProjCoh.formSec_eq]`. Conclude with `congrArg (fun a : Algebra k Γ(PSpace k M, ⊤) =>`. Use `letI := a`. Use the proof step `Twist.formSec (coord k M) (mem_polyGrading_natCast.2 hg)) (algebraΓ_eq k M)`.
+Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem form_eq {d : ℕ} {g : MvPolynomial (Fin (M + 1)) k} (hg : g.IsHomogeneous d) :
     (projSys k M).form hg = ProjSpace.formSec d g hg := by
@@ -108,7 +108,7 @@ theorem form_eq {d : ℕ} {g : MvPolynomial (Fin (M + 1)) k} (hg : g.IsHomogeneo
     letI := a; Twist.formSec (coord k M) (mem_polyGrading_natCast.2 hg)) (algebraΓ_eq k M)
 
 /- English proof (translation)
-Use `le_bot_iff.1 (Ideal.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `g ⟨d, hg, h⟩`. Use `(formSec_inj hg (isHomogeneous_zero _ k d)).1 ((form_eq k M hg).symm.trans (h.trans ?_))` and prove the remaining obligations. Conclude with `LB.f_injective (funext fun j => (formOn_zero (hi := (On_U k M d j).le)).symm)`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem imageIdeal_eq_bot : (projSys k M).imageIdeal = ⊥ := by
   refine le_bot_iff.1 (Ideal.span_le.2 ?_)
@@ -117,7 +117,7 @@ theorem imageIdeal_eq_bot : (projSys k M).imageIdeal = ⊥ := by
   exact LB.f_injective (funext fun j => (formOn_zero (hi := (On_U k M d j).le)).symm)
 
 /- English proof (translation)
-Establish `h` using `interNum_const_of_polynomial k (structureModule (PSpace k M)) (O1_isLB k M) (d := M) (Polynomial.preHilbertPoly ℚ M 0) (Polynomial.natDegree_preHilbertPoly ℚ M 0).le (ProjCoh.chi_sheafO_eq_eval k M)`. Rewrite `h` using `[Polynomial.coeff_preHilbertPoly_self, mul_inv_cancel₀ (Nat.cast_ne_zero.2 M.factorial_ne_zero)]`. Rewrite using `[LinSys.del, algebraΓ_eq]`. Conclude with `h` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem del_eq_one : (projSys k M).del = 1 := by
   have h := interNum_const_of_polynomial k (structureModule (PSpace k M)) (O1_isLB k M) (d := M)
@@ -128,7 +128,7 @@ theorem del_eq_one : (projSys k M).del = 1 := by
   exact_mod_cast h
 
 /- English proof (translation)
-Use `ProjectiveSpectrum.ext (HomogeneousIdeal.ext' fun d g hg => ?_)` and prove the remaining obligations. Use `replace hg : g.IsHomogeneous d := hg`. Use `h d g hg` as an intermediate fact. Rewrite `this` using `[form_eq, nonzeroLocus_formSec]`. Conclude with `not_iff_not.1 this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_of_sameImage {y y' : PSpace k M} (h : (projSys k M).SameImage y y') : y = y' := by
   refine ProjectiveSpectrum.ext (HomogeneousIdeal.ext' fun d g hg => ?_)
@@ -138,7 +138,7 @@ theorem eq_of_sameImage {y y' : PSpace k M} (h : (projSys k M).SameImage y y') :
   exact not_iff_not.1 this
 
 /- English proof (translation)
-Introduce `C _ _ hC _ h` and use `by have : Subsingleton C := ⟨fun a b => Subtype.ext (eq_of_sameImage k M (h _ a.2 _ b.2))⟩ have := topologicalKrullDim_zero_of_discreteTopology C rw [hC] at this exact absurd this (by decide)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem noContract (bd : Set (PSpace k M)) : (projSys k M).NoContract bd := fun C _ _ hC _ h => by
   have : Subsingleton C := ⟨fun a b => Subtype.ext (eq_of_sameImage k M (h _ a.2 _ b.2))⟩
@@ -149,12 +149,12 @@ theorem noContract (bd : Set (PSpace k M)) : (projSys k M).NoContract bd := fun 
 abbrev gen : PSpace k M := AmpleModel.genericPt k M
 
 /- English proof (translation)
-Introduce `h` and use `X_ne_zero (R := k) i h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem gen_mem (i : Fin (M + 1)) : gen k M ∈ chart k M i := fun h => X_ne_zero (R := k) i h
 
 /- English proof (translation)
-Introduce `u hu` and use `by have hg : (∑ j, C (u j) * X j : MvPolynomial (Fin (M + 1)) k).IsHomogeneous 1 := IsHomogeneous.sum _ _ _ fun j _ => (isHomogeneous_X k j).C_mul _ have h0 : (∑ j, C (u j) * X j : MvPolynomial (Fin (M + 1)) k) = 0 := by by_contra hne have h1 : ptOf (resPt (gen k M)) ∈ nonzeroLoc …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem indep : (projSys k M).Indep := fun u hu => by
   have hg : (∑ j, C (u j) * X j : MvPolynomial (Fin (M + 1)) k).IsHomogeneous 1 :=
@@ -174,11 +174,9 @@ theorem indep : (projSys k M).Indep := fun u hu => by
   simpa [Pi.single_apply] using this
 
 /- English proof (translation)
-Establish `ht : ⊤ ≤ Y.fromSpecStalk y ⁻¹ᵁ U` using `(le_preimage_iff (C := Y.presheaf.stalk y) _ U).2 (by`. Rewrite using `[show Y.fromSpecStalk y (IsLocalRing.closedPoint (Y.presheaf.stalk y)) = y from Scheme.fromSpecStalk_closedPoint]`. Conclude with `hy)`. Establish `e : valMap (C` using `Y.presheaf.stalk y) (Y.fromSpecStalk y) U ht = Y.presheaf.germ U y hy := by`. Express the relevant statement in the definitionally equal form `(Y.fromSpecStalk y).appLE U ⊤ ht ≫ (Scheme.ΓSpecIso (Y.presheaf.stalk y)).hom = _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Scheme.Hom.appLE, Scheme.fromSpecStalk_app hy]`. Simplify using `only [Category.assoc]`. Establish `e : (Spec (Y.presheaf.stalk y)).presheaf.map (homOfLE (le_top : Y.fromSpecStalk y ⁻¹ᵁ U ≤ ⊤)).op ≫ (Spec (Y.presheaf.stalk y)).presheaf.map (homOfLE ht).op = 𝟙 _`. Rewrite using `[← Functor.map_comp]`. Conclude with `CategoryTheory.Functor.map_id _ _`.
-
-Rewrite using `[reassoc_of% e, Iso.inv_hom_id, Category.comp_id]`. Conclude with `(valR_spMap_comp (Y.residue y).hom (Y.fromSpecStalk y) U ht f).trans (congrArg (Y.residue y).hom ((valR_eq (C := Y.presheaf.stalk y) _ _ ht f).trans (congrArg (fun q => q.hom f) e)))`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valR_resPt {Y : Scheme.{0}} (y : Y) (U : Y.Opens) (hy : y ∈ U) (f : Γ(Y, U)) :
     valR (resPt y) U f = Y.evaluation U y hy f := by
@@ -197,19 +195,17 @@ theorem valR_resPt {Y : Scheme.{0}} (y : Y) (U : Y.Opens) (hy : y ∈ U) (f : Γ
     ((valR_eq (C := Y.presheaf.stalk y) _ _ ht f).trans (congrArg (fun q => q.hom f) e)))
 
 /- English proof (translation)
-Use `⟨gen k M, ?_, eq_top_iff.2 fun r _ => ?_⟩` and prove the remaining obligations. Conclude with `Set.eq_univ_of_forall fun x => (ProjectiveSpectrum.le_iff_mem_closure _ _ x).1 (show ⊥ ≤ x.asHomogeneousIdeal from bot_le)`. Establish `hx : ptOf (resPt (gen k M)) ∈ chart k M 0` using `by rw [ptOf_resPt]; exact gen_mem k M 0`. Establish `hx'` using `(le_iff_ptOf_mem _ _).2 hx`. Take `⟨c, hc, h, -⟩` from `(projSys k M).exists_frame_change (resPt (gen k M)) (0 : Fin (M + 1)) hx`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `key : ∀ f : Γ(PSpace k M, chart k M 0), valR (resPt (gen k M)) _ f ∈ (projSys k M).ratioField (resPt (gen k M))` using `fun f => by`. Take `⟨p, rfl⟩` from `aeval_ratio_surjective k M 0 f`. Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C a`. Use `Subfield.subset_closure (Or.inl ⟨a, ?_⟩)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[algHom_C, ← resG_algebraMap le_top, ← algebraΓ_eq]`. Conclude with `((valR_res _ le_top hx' _).trans ((projSys k M).valR_algebraMap _ a)).symm`. Consider the case `add p q hp hq => rw [map_add, valR_add _ _ hx']`. Conclude with `add_mem hp hq`. Consider the case `mul_X p j hp`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[map_mul, valR_mul _ _ hx', aeval_X]`. Use `mul_mem hp (Subfield.subset_closure (Or.inr ⟨j, (0 : Fin (M + 1)), ?_⟩))` and prove the remaining obligations. Establish `h0 : 1 = c * (projSys k M).coords (resPt (gen k M)) (0 : Fin (M + 1))` using `(valR_one _ _ hx').symm.trans ((congrArg _ (ratioOn_self (hi := le_rfl)).symm).trans (h (coord k M 0)))`. Rewrite using `[← mul_div_mul_left _ _ hc, ← h0, div_one]`. Conclude with `h (coord k M j)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨t, rfl⟩` from `(PSpace k M).residue_surjective _ r`. Set `` to `(PSpace k M).presheaf.algebra_section_stalk (U := chart k M 0) ⟨gen k M, gen_mem k M 0⟩`. Use `(isAffineOpen_chart k M 0).isLocalization_stalk ⟨gen k M, gen_mem k M 0⟩` as an intermediate fact. Take `⟨⟨a, s⟩, e⟩` from `IsLocalization.surj ((isAffineOpen_chart k M 0).primeIdealOf ⟨gen k M, gen_mem k M 0⟩).asIdeal.primeCompl t`. Establish `hs` using `(IsLocalization.map_units ((PSpace k M).presheaf.stalk (gen k M)) s).map ((PSpace k M).residue (gen k M)).hom`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e'` using `congrArg ((PSpace k M).residue (gen k M)).hom e`. Rewrite `e'` using `[map_mul, ← eq_div_iff hs.ne_zero]`. Establish `ha` using `key a`. Establish `hb` using `key s`. Rewrite `ha`, `hb` using `[valR_resPt _ _ (gen_mem k M 0)]`.
-
-Conclude with `e' ▸ div_mem ha hb`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem birational : (projSys k M).Birational := by
   refine ⟨gen k M, ?_, eq_top_iff.2 fun r _ => ?_⟩

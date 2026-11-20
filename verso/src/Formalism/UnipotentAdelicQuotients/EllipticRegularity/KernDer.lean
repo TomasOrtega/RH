@@ -12,31 +12,29 @@ noncomputable section
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Establish `hinf : ∀ m : ℕ, (m : WithTop ℕ∞) ≤ ((⊤ : ℕ∞) : WithTop ℕ∞)` using `fun m => by exact_mod_cast le_top`. Establish `hbnd : ∀ k : ℕ, ∃ M : ℝ, 0 ≤ M ∧ ∀ x, ‖iteratedFDeriv ℝ k b x‖ ≤ M`. Introduce `k`. Take `⟨M, hM⟩` from `(hb.continuous_iteratedFDeriv (hinf k)).norm.bddAbove_range_of_hasCompactSupport (hbc.iteratedFDeriv (𝕜 := ℝ) k).norm`. Conclude with `⟨max M 0, le_max_right _ _, fun x => (hM ⟨x, rfl⟩).trans (le_max_left _ _)⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `choose M hM0 hM using hbnd`. Take `⟨L0, hL0⟩` from `(hb.continuous_fderiv (by simp)).norm.bddAbove_range_of_hasCompactSupport (hbc.fderiv (𝕜 := ℝ)).norm`. Establish `hL : ∀ x, ‖fderiv ℝ b x‖ ≤ max L0 0` using `fun x => (hL0 ⟨x, rfl⟩).trans (le_max_left _ _)`. Establish `hLn : 0 ≤ max L0 0` using `le_max_right _ _`. Establish `hR1 : 1 ≤ max 1 r0` using `le_max_left _ _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsumn : 0 ≤ ∑ k ∈ Finset.range (n + 1), M k * (max 1 r0) ^ k` using `Finset.sum_nonneg fun k _ => mul_nonneg (hM0 k) (by positivity)`. Establish `hAL : max L0 0 ≤ max L0 0 + ∑ k ∈ Finset.range (n + 1), M k * (max 1 r0) ^ k` using `le_add_of_nonneg_right hsumn`. Establish `hAk : ∀ k ∈ Finset.range (n + 1), M k * (max 1 r0) ^ k ≤ max L0 0 + ∑ k ∈ Finset.range (n + 1), M k * (max 1 r0) ^ k` using `fun k hk => (Finset.single_le_sum (f := fun k => M k * (max 1 r0) ^ k) (fun k _ => mul_nonneg (hM0 k) (by positivity)) hk).trans (le_add_of_nonneg_left hLn)`. Establish `hA0 : 0 ≤ max L0 0 + ∑ k ∈ Finset.range (n + 1), M k * (max 1 r0) ^ k` using `hLn.trans hAL`. Use `set A := max L0 0 + ∑ k ∈ Finset.range (n + 1), M k * (max 1 r0) ^ k with hA`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `h : ℕ → E d → ℝ` to `fun j y => ∑ i ∈ Finset.range (j + 1), (j.choose i : ℝ) * ‖iteratedFDeriv ℝ i ψ y‖ * (1 + ‖y‖)`. Establish `hhi : ∀ j, Integrable (h j)`. Introduce `j`. Use `show Integrable (fun y => ∑ i ∈ Finset.range (j + 1), (j.choose i : ℝ) * ‖iteratedFDeriv ℝ i ψ y‖ * (1 + ‖y‖))`. Use `integrable_finset_sum _ fun i _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0` using `integrable_iteratedFDeriv hψ hψc 0 i`. Establish `h1` using `integrable_iteratedFDeriv hψ hψc 1 i`. Establish `he : (fun y => (j.choose i : ℝ) * ‖iteratedFDeriv ℝ i ψ y‖ * (1 + ‖y‖)) = fun y => (j.choose i : ℝ) * (‖y‖ ^ 0 * ‖iteratedFDeriv ℝ i ψ y‖ + ‖y‖ ^ 1 * ‖iteratedFDeriv ℝ i ψ y‖)`. Use function extensionality and compare the values at `y`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[he]`. Conclude with `(h0.add h1).const_mul _`. Use `⟨A * ∑ j ∈ Finset.range (n + 1), ∫ y, h j y, fun r hr hr0 => ?_⟩` and prove the remaining obligations. Establish `hg : ContDiff ℝ ∞ (fun y => b (x0 + r • y) - b x0)`. Establish `h1 : ContDiff ℝ ∞ (fun y : E d => x0 + r • y)` using `by fun_prop`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `(hb.comp h1).sub contDiff_const`. Establish `hgb : ∀ k ∈ Finset.range (n + 1), ∀ y, ‖iteratedFDeriv ℝ k (fun y => b (x0 + r • y) - b x0) y‖ ≤ r * A * (1 + ‖y‖)`. Introduce `k hk y`. Establish `hy : 0 ≤ ‖y‖` using `norm_nonneg _`. Break down `Nat.eq_zero_or_pos k with hk0 | hk0` into its components or cases.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Substitute `hk0` using the available equality. Rewrite using `[norm_iteratedFDeriv_zero]`. Establish `h1` using `gr_zero b hb (max L0 0) hL x0 y r hr`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left hAL (mul_nonneg hr.le hy), mul_nonneg hr.le hA0]`. Establish `h1` using `gr_pos b hb k hk0 (M k) (hM k) x0 y r hr`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `hrk : r ^ k ≤ r * (max 1 r0) ^ k`. Combine the equalities or inequalities in the displayed calculation. Establish `h2 : M k * r ^ k ≤ r * A`. Combine the equalities or inequalities in the displayed calculation. Use polynomial arithmetic with `[mul_nonneg (mul_nonneg hr.le hA0) hy]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hpt : ∀ j ∈ Finset.range (n + 1), ∀ y, ‖iteratedFDeriv ℝ j (fun y => ψ y * (b (x0 + r • y) - b x0)) y‖ ≤ r * A * h j y`. Introduce `j hj y`. Use `(norm_iteratedFDeriv_mul_le hψ hg y (hinf j)).trans ?_` and prove the remaining obligations. Simplify using `only [h, Finset.mul_sum]`. Use `Finset.sum_le_sum fun i hi => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Replace the relevant objects with their definitions.
 
-Establish `hji : j - i ∈ Finset.range (n + 1)` using `Finset.mem_range.mpr (by have := Finset.mem_range.mp hj; omega)`. Establish `h3` using `hgb (j - i) hji y`. Establish `hc : (0 : ℝ) ≤ (j.choose i : ℝ) * ‖iteratedFDeriv ℝ i ψ y‖` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Unfold `derivL1Norm`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum fun j hj => ?_` and prove the remaining obligations. Conclude with `integral_mono_of_nonneg (Filter.Eventually.of_forall fun y => norm_nonneg _) ((hhi j).const_mul _) (Filter.Eventually.of_forall fun y => hpt j hj y)`. Use `_ = (A * ∑ j ∈ Finset.range (n + 1), ∫ y, h j y) * r := by`. Rewrite using `[Finset.mul_sum, Finset.sum_mul]`.
-
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[integral_const_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 lemma derivL1Norm_rescaled_difference_le {d : ℕ} (ψ : E d → ℂ) (hψ : ContDiff ℝ ∞ ψ) (hψc : HasCompactSupport ψ)
     (b : E d → ℂ) (hb : ContDiff ℝ ∞ b) (hbc : HasCompactSupport b) (x0 : E d) (r0 : ℝ) (n : ℕ) :

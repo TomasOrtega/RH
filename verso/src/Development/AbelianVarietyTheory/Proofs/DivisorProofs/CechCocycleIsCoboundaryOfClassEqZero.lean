@@ -11,7 +11,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace GlobalTheory.CechCmp
 
 /- English proof (translation)
-Establish `e` using `congrArg (resG Z (le_inf (le_inf hi hj) hk)) (hc i j k)`. Simplify using `only [map_add, resG_resG'] at e`. Conclude with `e`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem IsCocycle.res_on {Z : Scheme.{0}} {J : Type} {W : J → Z.Opens}
     {c : ∀ i i' : J, Γ(Z, W i ⊓ W i')} (hc : IsCocycle W c) {U : Z.Opens} {i j k : J}
@@ -23,17 +23,17 @@ theorem IsCocycle.res_on {Z : Scheme.{0}} {J : Type} {W : J → Z.Opens}
   exact e
 
 /- English proof (translation)
-Establish `h1` using `restrict_cmp s W hW hc`. Rewrite `h1` using `[h0, map_zero]`. Take `⟨g, hg⟩` from `CatCoh.H1.mk_eq_zero.1 h1.symm`. Set `g' : ∀ V : Bas W, Γ(Z, V.1.1)` to `fun V ↦ g (Opposite.op V)`. Establish `key : ∀ (V V' : Bas W) (h : V'.1.1 ≤ V.1.1), g' V' - resG Z h (g' V) = resG Z (le_inf (h.trans (le_idx V)) (le_idx V')) (c (idx V) (idx V'))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `V V' h`. Conclude with `congrFun (congrFun (congrFun hg (Opposite.op V)) (Opposite.op V')) (homOfLE (show V' ≤ V from h)).op`. Set `Ω : J → Bas W` to `fun i ↦ ⟨⟨W i, hWa i⟩, i, le_rfl⟩`. Establish `hΩ : ∀ i, W i ≤ W (idx (Ω i))` using `fun i ↦ le_idx (Ω i)`. Set `g₁ : ∀ i, Γ(Z, W i)` to `fun i ↦ g' (Ω i)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun i ↦ resG Z (le_inf le_rfl (hΩ i)) (c i (idx (Ω i))) - g₁ i, fun i i' ↦ ?_⟩` and prove the remaining obligations. Set `Ω₂ : Bas W` to `⟨⟨W i ⊓ W i', hWb i i'⟩, i, inf_le_left⟩`. Establish `hd : W i ⊓ W i' ≤ W (idx Ω₂)` using `le_idx Ω₂`. Set `g₂ : Γ(Z, W i ⊓ W i')` to `g' Ω₂`. Establish `k1 : g₂ - resG Z inf_le_left (g₁ i) = resG Z (le_inf (inf_le_left.trans (hΩ i)) hd) (c (idx (Ω i)) (idx Ω₂))` using `key (Ω i) Ω₂ inf_le_left`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `k2 : g₂ - resG Z inf_le_right (g₁ i') = resG Z (le_inf (inf_le_right.trans (hΩ i')) hd) (c (idx (Ω i')) (idx Ω₂))` using `key (Ω i') Ω₂ inf_le_right`. Establish `e1` using `hc.res_on (inf_le_left : W i ⊓ W i' ≤ _) (inf_le_left.trans (hΩ i)) hd`. Establish `e2` using `hc.res_on (inf_le_right : W i ⊓ W i' ≤ _) (inf_le_right.trans (hΩ i')) hd`. Establish `e3` using `hc.res_on (inf_le_left : W i ⊓ W i' ≤ _) inf_le_right hd`. Establish `e4 : resG Z (le_inf (inf_le_left : W i ⊓ W i' ≤ _) inf_le_right) (c i i') = c i i'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (homOfLE (le_inf (inf_le_left : W i ⊓ W i' ≤ _) inf_le_right)).op = 𝟙 _` using `rfl`. Simplify using `only [resG, this, CategoryTheory.Functor.map_id]`. Both sides reduce to the same expression. Rewrite `e3` using `[e4]`. Simplify using `only [map_sub, resG_resG']`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `e3 - e1 + e2 - k1 + k2`.
+A detailed English derivation is pending.
 -/
 theorem exists_coboundary_of_cmp_eq_zero (R : Type) [CommRing R] (Z : Scheme.{0}) (s : Z ⟶ Sp R)
     (J : Type) (W : J → Z.Opens) (hW : ⨆ i, W i = ⊤) (hWa : ∀ i, IsAffineOpen (W i))

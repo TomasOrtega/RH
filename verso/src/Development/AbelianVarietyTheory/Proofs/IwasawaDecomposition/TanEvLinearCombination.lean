@@ -17,7 +17,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.LocM
 
 /- English proof (translation)
-The claim follows from `| 0, z, hz, h => by rw [Finset.univ_eq_empty, Finset.sum_empty] exact cotMap_eq_zero (by rw [List.ofFn_zero, List.prod_nil, Hom.one_def]) _ | m + 1, z, hz, h => by have e : (List.ofFn z).prod = z 0 * (List.ofFn fun i : Fin m => z i.succ).prod := by rw [List.ofFn_succ, List.prod_c …`.
+A detailed English derivation is pending.
 -/
 theorem cotMap_list_prod {S : Scheme.{0}} {T G : Over S} [GrpObj G] [QuasiSeparated G.hom] {s : 𝟙_ (Over S) ⟶ T} :
     ∀ {m : ℕ} (z : Fin m → (T ⟶ G)) (hz : ∀ i, s ≫ z i = η) (h : s ≫ (List.ofFn z).prod = η),
@@ -42,7 +42,7 @@ variable {X : Scheme.{0}} (t : SAB H X) {k : Type} [CommRing k] {x : Sp k ⟶ X}
 variable {G' : Over (Sp k)} [GrpObj G'] {φ : G'.left ⟶ t.G.left}
 
 /- English proof (translation)
-Use `⟨Over.homMk (hp.1.lift v _ hv.1) (hp.1.lift_snd _ _ _), Over.OverMorphism.ext (hp.1.hom_ext ?_ ?_), hp.1.lift_fst _ _ _⟩` and prove the remaining obligations. Use `(Category.assoc _ _ _).trans ((congrArg (sec (epsZero k) ≫ ·) (hp.1.lift_fst _ _ _)).trans ?_)` and prove the remaining obligations. Conclude with `(epsZero_comp_of_isTanAtG t hv).trans (unitSec_comp hp).symm`. Conclude with `(Over.w _).trans (Over.w _).symm`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_fibre_vector (hp : IsGrpPullback G' t.G x φ) {v : Sp (DualNumber k) ⟶ t.G.left} (hv : IsTanAtG t x v) :
     ∃ y : specO k (DualNumber k) ⟶ G', epsZero k ≫ y = η ∧ y.left ≫ φ = v := by
@@ -53,9 +53,9 @@ theorem exists_fibre_vector (hp : IsGrpPullback G' t.G x φ) {v : Sp (DualNumber
   · exact (Over.w _).trans (Over.w _).symm
 
 /- English proof (translation)
-Use `Eq.trans (congrArg (· ≫ (epsIso k).hom) ?_) (Category.assoc _ _ _)` and prove the remaining obligations. Use `pullback_hom_ext (sec_hom η[t.G]) fun W a => ?_` and prove the remaining obligations. Establish `k₁` using `le_of_sq (unitSec_comp hp) (le_refl (unitSec t.G ⁻¹ᵁ W)) le_rfl`. Establish `k₂` using `le_of_sq (epsZero_comp_of_isTanAtG t hv) (le_refl (unitSec t.G ⁻¹ᵁ W)) le_rfl`. Establish `k₃` using `(le_preimage_of_comp e).2 (le_refl (v ⁻¹ᵁ W))`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(baseMap_d (sec_hom η[t.G]) (sec_hom (epsZero k)) hv.1 (epsZero_comp_of_isTanAtG t hv) le_rfl le_rfl k₂ le_rfl a).trans (Eq.symm ?_)` and prove the remaining obligations. Use `(congrArg ((cotMap y hy).app _) (omegaBase_dUnit hp le_rfl le_rfl k₁ le_rfl a)).trans ?_` and prove the remaining obligations. Conclude with `(cotMap_d y hy k₁ k₂ k₃ _).trans (congrArg _ (appLE_appLE e _ _ _ a))`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem tanForm_eq_fibre (hp : IsGrpPullback G' t.G x φ) {v : Sp (DualNumber k) ⟶ t.G.left} (hv : IsTanAtG t x v)
     {y : specO k (DualNumber k) ⟶ G'} (hy : epsZero k ≫ y = η) (e : y.left ≫ φ = v) :
@@ -71,19 +71,19 @@ theorem tanForm_eq_fibre (hp : IsGrpPullback G' t.G x φ) {v : Sp (DualNumber k)
   exact (cotMap_d y hy k₁ k₂ k₃ _).trans (congrArg _ (appLE_appLE e _ _ _ a))
 
 /- English proof (translation)
-Introduce and unpack `E _ _ _ H X t k _ x V h m v hv cf w hw ⟨u, hu, hw'⟩ s`. Establish `hp` using `isGrpPullback_pullback t.G x`. Use `t.semi` as an intermediate fact. Establish `: QuasiSeparated ((Over.pullback x).obj t.G).hom` using `MorphismProperty.of_isPullback hp.1 inferInstance`. Use `choose y hy ey using fun i => exists_fibre_vector t hp (hv i)`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨yw, hyw, eyw⟩` from `exists_fibre_vector t hp hw`. Set `z` to `fun i => ptMap (dualScale (cf i)) ≫ y i`. Establish `hz (i : Fin m) : epsZero k ≫ z i = η`. Rewrite using `[← Category.assoc, epsZero_dualScale, hy]`. Establish `hu' : u = fun i => pushHom hp _ (z i)` using `funext fun i => Over.OverMorphism.ext <| by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(hu i).trans (Eq.symm ((Category.assoc _ _ _).trans ?_))` and prove the remaining obligations. Rewrite using `[ey]`. Both sides reduce to the same expression. Establish `hprod : yw = (List.ofFn z).prod`. Use `Over.OverMorphism.ext (hp.1.hom_ext ?_ ((Over.w _).trans (Over.w _).symm))` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `eyw.trans (hw'.symm.trans ?_)` and prove the remaining obligations. Rewrite using `[hu']`. Conclude with `(congrArg (fun q => q.left) ((map_list_prod (pushHom hp (specO k (DualNumber k))) (List.ofFn z)).trans (congrArg List.prod List.map_ofFn))).symm`. Substitute `hprod` using the available equality. Set `σ` to `(omegaBase hp).app ⊤ (pullbackSections x (omega t.G) h s)`.
+Rewrite the conclusion using the stated equalities. Substitute using the available equality. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `F : (conormal (unitSec ((Over.pullback x).obj t.G)) ⟶ conormal (sec (epsZero k))) →+ k` to `AddMonoidHom.mk' (fun α => (Scheme.ΓSpecIso (.of k)).hom ((epsIso k).hom.app ⊤ (α.app ⊤ σ))) fun α β => (congrArg (Scheme.ΓSpecIso (.of k)).hom (map_add ((epsIso k).hom.app ⊤).hom (α.app ⊤ σ) (β.app ⊤ σ))).trans (map_add _ _ _)`. Establish `hF {v' : Sp (DualNumber k) ⟶ t.G.left} (hv' : IsTanAtG t x v') {y'} (hy' : epsZero k ≫ y' = η) (e : y'.left ≫ pullback.fst t.G.hom x = v') : tanEv t hv' h s = F (cotMap y' hy')`. Rewrite using `[tanEv, tanForm_eq_fibre t hp hv' hy' e]`. Both sides reduce to the same expression. Rewrite using `[hF hw hyw eyw, cotMap_list_prod z hz, map_sum]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `e` using `cotMap_comp (hy i) (epsZero_dualScale (cf i)) rfl (hz i)`. Rewrite `e` using `[cotMap_dualScale]`. Rewrite using `[hF (hv i) (hy i) (ey i), ← e]`. Use `(congrArg (Scheme.ΓSpecIso (.of k)).hom ((epsIso k).hom.app_smul (cst k (cf i)) ((cotMap (y i) (hy i)).app ⊤ σ))).trans ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(map_mul _ _ _).trans ?_` and prove the remaining obligations. Rewrite using `[Iso.inv_hom_id_apply]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem tanEv_comb : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E)
     (X : Scheme.{0}) (t : SAB H X) (k : Type) [CommRing k] (x : Sp k ⟶ X) (V : X.Opens) (h : ⊤ ≤ x ⁻¹ᵁ V),

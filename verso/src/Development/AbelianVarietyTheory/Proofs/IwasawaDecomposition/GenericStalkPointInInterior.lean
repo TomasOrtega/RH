@@ -8,13 +8,11 @@ open GlobalTheory GlobalTheory.Toroidal GlobalTheory.Models GlobalTheory.LN Glob
 namespace GlobalTheory.TorRef
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c Z z p hp`. Use `haveI := c.fin`. Use `haveI : NumberField c.F := {}`. Use `haveI hdom : IsDomain (Z.X.presheaf.stalk z) := (Z.normal z).1`. Establish `hfl : (Scheme.stalkClosedPointTo (Z.X.fromSpecStalk z)).hom.Flat`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Rewrite using `[Scheme.stalkClosedPointTo_fromSpecStalk]`. Conclude with `RingHom.Flat.of_bijective (Iso.commRingCatIsoToRingEquiv _).bijective`. Take `⟨y, hy⟩` from `@DomFine.exists_generic_point (𝓞 c.F) c.F _ _ _ _ _ Z.X (Xo.XF c) Z.s Z.jQ Z.flat Z.proj Z.jQ_open Z.jQ_dense (Z.X.presheaf.stalk z) _ hdom _ (Z.X.fromSpecStalk z) hfl`. Set `w : PrimeSpectrum (FractionRing (Z.X.presheaf.stalk z))` to `⊥`. Establish `hw : (jK (Z.X.presheaf.stalk z)) w = p`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Apply `PrimeSpectrum.ext` to reduce the goal to its premises. Rewrite using `[hp]`. Use `show Ideal.comap (algebraMap (Z.X.presheaf.stalk z) (FractionRing (Z.X.presheaf.stalk z))) (⊥ : Ideal _) = ⊥`. Rewrite using `[← RingHom.ker_eq_comap_bot]`. Conclude with `(RingHom.injective_iff_ker_eq_bot _).mp (IsFractionRing.injective _ _)`.
-
-Use `⟨y w, ?_⟩` and prove the remaining obligations. Establish `e` using `congrArg (fun f => f w) hy`. Simplify using `only [Scheme.Hom.comp_apply] at e`. Rewrite using `[← hw]`. Conclude with `e`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fromSpecStalk_bot_mem_range_j : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H)
     (l : Level H) (Xo : Moduli D l) (c : Coeff l) (Z : GMod Xo c) (z : Z.X) (p : PrimeSpectrum (Z.X.presheaf.stalk z)),

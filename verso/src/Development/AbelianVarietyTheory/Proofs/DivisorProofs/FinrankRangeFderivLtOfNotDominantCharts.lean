@@ -14,19 +14,17 @@ open GlobalTheory GlobalTheory.Cartier GlobalTheory.CxPts GlobalTheory.Points Gl
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `k _ X Y _ _ p q σ D A A' hA hA' π hπ hgen j l y hy hyl`. Use `set m := PtsOver.map π hπ (spMap σ) with hm_def`. Establish `hm : ∀ z : CxPts q σ, (m z).1 = z.1 ≫ π` using `fun _ => rfl`. Establish `hH` using `hA.holoMap hA' (f := π) hm`. Use `set W := (A'.chart j).target ∩ (A'.chart j).symm ⁻¹' (m ⁻¹' (A.chart l).source) with hW_def`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hWo : IsOpen W` using `(A'.chart j).isOpen_inter_preimage_symm ((A.chart l).open_source.preimage hH.1)`. Establish `han : AnalyticOnNhd ℂ (A.chart l ∘ m ∘ (A'.chart j).symm) W` using `hH.2 j l`. Use `set Z : Set X := closure {π (genericPoint Y)} with hZ_def`. Establish `hZc : IsClosed Z` using `isClosed_closure`. Establish `hZg : genericPoint X ∉ Z`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `h`. Establish `h1 : π (genericPoint Y) ⤳ genericPoint X` using `specializes_iff_mem_closure.2 h`. Establish `h2 : genericPoint X ⤳ π (genericPoint Y)` using `genericPoint_specializes _`. Conclude with `hgen (h1.antisymm h2).eq`. Establish `hZm : ∀ z : CxPts q σ, (m z).1 (IsLocalRing.closedPoint ℂ) ∈ Z`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `z`. Establish `hs : genericPoint Y ⤳ z.1 (IsLocalRing.closedPoint ℂ)` using `genericPoint_specializes _`. Use `hs.map π.continuous` as an intermediate fact. Rewrite using `[hm]`. Conclude with `specializes_iff_mem_closure.1 this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨c, hc⟩` from `hA l`. Establish `hnull` using `GlobalTheory.T.volume_complexPoints_properClosed_chart_field k X p σ D Z hZc hZg c`. Establish `hsub : (A.chart l ∘ m ∘ (A'.chart j).symm) '' W ⊆ FinChart.toV D ⁻¹' (c.e '' (c.e.source ∩ {x : CxPts p σ | x.1 (IsLocalRing.closedPoint ℂ) ∈ Z}))`. Introduce and unpack `_ ⟨z, hz, rfl⟩`. Use `⟨m ((A'.chart j).symm z), ⟨?_, hZm _⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use `hz.2` as an intermediate fact. Rewrite `this` using `[hc]`. Conclude with `this`. Simplify using `only [Function.comp_apply, hc]`. Both sides reduce to the same expression.
-
-Establish `h0 : volume ((A.chart l ∘ m ∘ (A'.chart j).symm) '' W) = 0` using `measure_mono_null hsub (FinChart.measurePreserving_toV.quasiMeasurePreserving.preimage_null hnull)`. Conclude with `finrank_range_fderiv_lt_of_volume_image_eq_zero D _ W hWo han h0 y ⟨hy, hyl⟩`.
+A detailed English derivation is pending.
 -/
 theorem finrank_range_fderiv_lt_of_not_dominant : ∀ (k : Type) [Field k] (X Y : Scheme.{0}) [IsIntegral X] [IsIntegral Y] (p : X ⟶ Sp k) (q : Y ⟶ Sp k) (σ : k →+* ℂ) (D : ℕ) (A : FinHolAtlas D (CxPts p σ)) (A' : FinHolAtlas D (CxPts q σ)), IsAlgAtlas A → IsAlgAtlas A' → ∀ (π : Y ⟶ X) (hπ : π ≫ p = q), π (genericPoint Y) ≠ genericPoint X → ∀ j l, ∀ y ∈ (A'.chart j).target, PtsOver.map π hπ (spMap σ) ((A'.chart j).symm y) ∈ (A.chart l).source → Module.finrank ℂ (LinearMap.range (fderiv ℂ (A.chart l ∘ PtsOver.map π hπ (spMap σ) ∘ (A'.chart j).symm) y : (Fin D → ℂ) →ₗ[ℂ] (Fin D → ℂ))) < D := by
   intro k _ X Y _ _ p q σ D A A' hA hA' π hπ hgen j l y hy hyl

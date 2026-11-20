@@ -14,14 +14,14 @@ open Formalism.L2.SG.RealObj Formalism.L2.SG.HidaSetting Formalism.REAL Formalis
 variable {n r : ℕ} (ε : Fin n → Bool) (e p : Fin r → Fin n → ℂ) (z : Fin n → ℂ)
 
 /- English proof (translation)
-Use `show (((g⁻¹ : UJ ε) : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ) * _ = 1`. Rewrite using `[Subgroup.coe_inv, Units.inv_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem uMat_inv_mul (g : UJ ε) : Formalism.MainNotions.S.uMat g⁻¹ * Formalism.MainNotions.S.uMat g = 1 := by
   show (((g⁻¹ : UJ ε) : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ) * _ = 1
   rw [Subgroup.coe_inv, Units.inv_mul]
 
 /- English proof (translation)
-Use `show _ * (((g⁻¹ : UJ ε) : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ) = 1`. Rewrite using `[Subgroup.coe_inv, Units.mul_inv]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem uMat_mul_inv (g : UJ ε) : Formalism.MainNotions.S.uMat g * Formalism.MainNotions.S.uMat g⁻¹ = 1 := by
   show _ * (((g⁻¹ : UJ ε) : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ) = 1
@@ -33,16 +33,16 @@ Both sides reduce to the same expression.
 theorem uMat_mul (g h : UJ ε) : Formalism.MainNotions.S.uMat (g * h) = Formalism.MainNotions.S.uMat g * Formalism.MainNotions.S.uMat h := rfl
 
 /- English proof (translation)
-Use `conv_lhs => rw [← h]`. Rewrite using `[mulVec_mulVec, uMat_inv_mul, one_mulVec]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inv_fix {g : UJ ε} {v : Fin n → ℂ} (h : Formalism.MainNotions.S.uMat g *ᵥ v = v) : Formalism.MainNotions.S.uMat g⁻¹ *ᵥ v = v := by
   conv_lhs => rw [← h]
   rw [mulVec_mulVec, uMat_inv_mul, one_mulVec]
 
 /- English proof (translation)
-Introduce `x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨b, _, rfl⟩` from `hy`. Conclude with `hg b`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately.
 
-Consider the case `zero => exact mulVec_zero _`. Consider the case `add x y _ _ hx hy => rw [mulVec_add, hx, hy]`. Consider the case `smul c x _ hx => rw [mulVec_smul, hx]`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem fix_span {g : Matrix (Fin n) (Fin n) ℂ} (hg : ∀ a, g *ᵥ e a = e a) (a : ℕ) :
     ∀ x ∈ spanLt e a, g *ᵥ x = x := by
@@ -56,15 +56,15 @@ theorem fix_span {g : Matrix (Fin n) (Fin n) ℂ} (hg : ∀ a, g *ᵥ e a = e a)
   | smul c x _ hx => rw [mulVec_smul, hx]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨UnitaryIsometries.RI.inS_one e z, fun y _ => by rw [sub_self, zero_mulVec]; exact Submodule.zero_mem _⟩`.
+Supply the required witnesses or components.
 -/
 theorem InN_one : InN ε e z (1 : Matrix (Fin n) (Fin n) ℂ) :=
   ⟨UnitaryIsometries.RI.inS_one e z, fun y _ => by rw [sub_self, zero_mulVec]; exact Submodule.zero_mem _⟩
 
 /- English proof (translation)
-Use `⟨UnitaryIsometries.RI.inS_mul e z hg.1 hh.1, fun y hy => ?_⟩` and prove the remaining obligations. Establish `key : (g * h - 1) *ᵥ y = g *ᵥ ((h - 1) *ᵥ y) + (g - 1) *ᵥ y`. Simplify using `only [Matrix.sub_mulVec, Matrix.one_mulVec, Matrix.mulVec_sub, Matrix.mulVec_mulVec]`. Normalize the expressions using the abelian group laws. Rewrite using `[key]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.add_mem _ (UnitaryIsometries.RI.inS_pres e z hg.1 r _ (hh.2 y hy)) (hg.2 y hy)`.
+A detailed English derivation is pending.
 -/
 theorem InN_mul {g h : Matrix (Fin n) (Fin n) ℂ} (hg : InN ε e z g) (hh : InN ε e z h) : InN ε e z (g * h) := by
   refine ⟨UnitaryIsometries.RI.inS_mul e z hg.1 hh.1, fun y hy => ?_⟩
@@ -106,9 +106,9 @@ Both sides reduce to the same expression.
 theorem coe_HG : (HG ε e p z : Set (UJ ε)) = HLoc ε e p z := rfl
 
 /- English proof (translation)
-Establish `hc : ∀ v : Fin n → ℂ, Continuous (fun g : UJ ε => (Formalism.MainNotions.S.uMat g - 1) *ᵥ v)` using `fun v => ((UnitaryIsometries.RI.continuous_uMat ε).sub continuous_const).matrix_mulVec continuous_const`. Establish `e1 : (NG ε e z : Set (UJ ε)) = (UnitaryIsometries.RI.SG ε e z : Set (UJ ε)) ∩ ⋂ y ∈ {y : Fin n → ℂ | ∀ a, hJ ε (e a) y = 0}, (fun g : UJ ε => (Formalism.MainNotions.S.uMat g - 1) *ᵥ y) ⁻¹' (spanLt e r : Set (Fin n → ℂ))`. Use extensionality with `g`. Simplify using `only [coe_NG, NLoc, InN, Set.mem_setOf_eq, Set.mem_inter_iff, Set.mem_iInter, Set.mem_preimage, SetLike.mem_coe]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Rewrite using `[e1]`. Conclude with `(UnitaryIsometries.RI.SG_closed ε e z).inter (isClosed_biInter fun y _ => (Submodule.closed_of_finiteDimensional _).preimage (hc y))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem NG_closed : IsClosed (NG ε e z : Set (UJ ε)) := by
   have hc : ∀ v : Fin n → ℂ, Continuous (fun g : UJ ε => (Formalism.MainNotions.S.uMat g - 1) *ᵥ v) := fun v =>
@@ -125,9 +125,9 @@ theorem NG_closed : IsClosed (NG ε e z : Set (UJ ε)) := by
     (Submodule.closed_of_finiteDimensional _).preimage (hc y))
 
 /- English proof (translation)
-Establish `hc : ∀ v : Fin n → ℂ, Continuous (fun g : UJ ε => Formalism.MainNotions.S.uMat g *ᵥ v)` using `fun v => (UnitaryIsometries.RI.continuous_uMat ε).matrix_mulVec continuous_const`. Establish `e1 : (HG ε e p z : Set (UJ ε)) = (⋂ a, {g : UJ ε | Formalism.MainNotions.S.uMat g *ᵥ e a = e a}) ∩ ((⋂ a, {g : UJ ε | Formalism.MainNotions.S.uMat g *ᵥ p a = p a}) ∩ {g : UJ ε | Formalism.MainNotions.S.uMat g *ᵥ z = z})`. Use extensionality with `g`. Simplify using `only [coe_HG, HLoc, Set.mem_setOf_eq, Set.mem_inter_iff, Set.mem_iInter]`. Rewrite using `[e1]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(isClosed_iInter fun a => isClosed_eq (hc _) continuous_const).inter ((isClosed_iInter fun a => isClosed_eq (hc _) continuous_const).inter (isClosed_eq (hc _) continuous_const))`.
+A detailed English derivation is pending.
 -/
 theorem HG_closed : IsClosed (HG ε e p z : Set (UJ ε)) := by
   have hc : ∀ v : Fin n → ℂ, Continuous (fun g : UJ ε => Formalism.MainNotions.S.uMat g *ᵥ v) := fun v =>
@@ -141,14 +141,12 @@ theorem HG_closed : IsClosed (HG ε e p z : Set (UJ ε)) := by
     ((isClosed_iInter fun a => isClosed_eq (hc _) continuous_const).inter (isClosed_eq (hc _) continuous_const))
 
 /- English proof (translation)
-Introduce `_ hg` and use `hg.1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem NG_le_SG : NG ε e z ≤ UnitaryIsometries.RI.SG ε e z := fun _ hg => hg.1
 
 /- English proof (translation)
-Introduce `g hg`. Use `⟨fun a => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.sub_mulVec, one_mulVec, hg.1 a, sub_self]`. Conclude with `Submodule.zero_mem _`. Rewrite using `[Matrix.sub_mulVec, one_mulVec, hg.2.2, sub_self]`.
-
-Conclude with `Submodule.zero_mem _`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem HG_le_SG : HG ε e p z ≤ UnitaryIsometries.RI.SG ε e z := by
   intro g hg
@@ -159,11 +157,11 @@ theorem HG_le_SG : HG ε e p z ≤ UnitaryIsometries.RI.SG ε e z := by
     exact Submodule.zero_mem _
 
 /- English proof (translation)
-Establish `hfix : ∀ a, Formalism.MainNotions.S.uMat h *ᵥ e a = e a` using `hh.1`. Establish `hfix' : ∀ a, Formalism.MainNotions.S.uMat h⁻¹ *ᵥ e a = e a` using `fun a => inv_fix ε (hh.1 a)`. Establish `key : ∀ v, (Formalism.MainNotions.S.uMat (h * g * h⁻¹) - 1) *ᵥ v = Formalism.MainNotions.S.uMat h *ᵥ ((Formalism.MainNotions.S.uMat g - 1) *ᵥ (Formalism.MainNotions.S.uMat h⁻¹ *ᵥ v))`. Introduce `v`. Rewrite using `[uMat_mul, uMat_mul, mulVec_mulVec, mulVec_mulVec, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, uMat_mul_inv, Matrix.sub_mulVec]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `⟨⟨fun a => ?_, ?_⟩, fun y hy => ?_⟩` and prove the remaining obligations. Rewrite using `[key, hfix', fix_span e hfix a.1 _ (hg.1.1 a)]`. Conclude with `hg.1.1 a`. Rewrite using `[key, inv_fix ε hh.2.2, fix_span e hfix r _ hg.1.2]`. Conclude with `hg.1.2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hy' : ∀ a, hJ ε (e a) (Formalism.MainNotions.S.uMat h⁻¹ *ᵥ y) = 0`. Introduce `a`. Rewrite using `[← hfix' a, UnitaryIsometries.isIsom_uMat ε h⁻¹, hy a]`. Rewrite using `[key, fix_span e hfix r _ (hg.2 _ hy')]`. Conclude with `hg.2 _ hy'`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_mem {h g : UJ ε} (hh : h ∈ HG ε e p z) (hg : g ∈ NG ε e z) : h * g * h⁻¹ ∈ NG ε e z := by
   have hfix : ∀ a, Formalism.MainNotions.S.uMat h *ᵥ e a = e a := hh.1

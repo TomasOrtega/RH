@@ -10,14 +10,14 @@ namespace GlobalTheory.StabRef
 variable {E : Type} [Field E] [NumberField E] {P : HeightOneSpectrum (𝓞 E)} {q : ℕ}
 
 /- English proof (translation)
-Use `IntAt.coe P 0` as an intermediate fact. Rewrite `this` using `[map_zero]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem intAt_zero : IntAt P (0 : E) := by
   have := IntAt.coe P 0
   rwa [map_zero] at this
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using (intAt_zero (P := P))`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha]`. Conclude with `(h a (Finset.mem_insert_self a s)).add (ih fun i hi => h i (Finset.mem_insert_of_mem hi))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intAt_sum {ι : Type} (s : Finset ι) (f : ι → E) (h : ∀ i ∈ s, IntAt P (f i)) : IntAt P (∑ i ∈ s, f i) := by
   classical
@@ -28,25 +28,25 @@ theorem intAt_sum {ι : Type} (s : Finset ι) (f : ι → E) (h : ∀ i ∈ s, I
     exact (h a (Finset.mem_insert_self a s)).add (ih fun i hi => h i (Finset.mem_insert_of_mem hi))
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_locP' {n : ℕ} (L : Submodule (𝓞 E) (Sp E n)) (x : Sp E n) :
     x ∈ localization₂ P.asIdeal L ↔ ∃ s : 𝓞 E, s ∉ P.asIdeal ∧ s • x ∈ L := Iff.rfl
 
 /- English proof (translation)
-Simplify using `only [stdLat, Submodule.mem_pi, Set.mem_univ, true_imp_iff, Submodule.mem_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_stdLat' {n : ℕ} (x : Sp E n) : x ∈ stdLat E n ↔ ∀ i, ∃ r : 𝓞 E, algebraMap (𝓞 E) E r = x i := by
   simp only [stdLat, Submodule.mem_pi, Set.mem_univ, true_imp_iff, Submodule.mem_one]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hx i`. Take `⟨s, hs, h⟩` from `(mem_locP' _ x).1 hx`. Take `⟨r, hr⟩` from `(mem_stdLat' _).1 h i`. Conclude with `⟨r, s, hs, by rw [hr, Pi.smul_apply, Algebra.smul_def]⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce `H`. Establish `: x = ∑ i, (Pi.single i (x i) : Sp E n)` using `(Finset.univ_sum_single x).symm`. Rewrite using `[this]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Take `⟨r, s, hs, h⟩` from `H i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `(mem_locP' _ _).2 ⟨s, hs, ?_⟩` and prove the remaining obligations. Establish `e : s • (Pi.single i (x i) : Sp E n) = Pi.single i (algebraMap (𝓞 E) E r)`. Rewrite using `[← Pi.single_smul, Algebra.smul_def, ← h]`. Rewrite using `[e]`. Rewrite using `[mem_stdLat']`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `j`. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality. Conclude with `⟨r, by simp⟩`. Conclude with `⟨0, by simp [hj]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem mem_locStd {n : ℕ} (x : Sp E n) : x ∈ localization₂ P.asIdeal (stdLat E n) ↔ ∀ i, IntAt P (x i) := by
   constructor
@@ -71,7 +71,7 @@ theorem mem_locStd {n : ℕ} (x : Sp E n) : x ∈ localization₂ P.asIdeal (std
     · exact ⟨0, by simp [hj]⟩
 
 /- English proof (translation)
-Unfold `LocE.sclLat stdAt`. Rewrite using `[Submodule.mem_comap, mem_locStd]`. Simplify using `[LinearMap.pi_apply, smul_eq_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mem_sclLat {N : ℕ} (e : ℕ → ℤ) (v : Sp E N) :
     v ∈ LocE.sclLat P q N e ↔ ∀ l : Fin N, IntAt P (((q : E) ^ e l.1)⁻¹ * v l) := by
@@ -80,30 +80,30 @@ theorem mem_sclLat {N : ℕ} (e : ℕ → ℤ) (v : Sp E N) :
   simp [LinearMap.pi_apply, smul_eq_mul]
 
 /- English proof (translation)
-Unfold `LocE.fIdx`. Apply the tactic sequence `split_ifs <;> omega`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem fIdx_lt {k₀ c n p : ℕ} (hk : k₀ ≤ n) (hp : p < n + c) : LocE.fIdx k₀ c n p < n + c := by
   unfold LocE.fIdx
   split_ifs <;> omega
 
 /- English proof (translation)
-Unfold `LocE.fPos LocE.fIdx`. Apply the tactic sequence `split_ifs <;> omega`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem fIdx_fPos {k₀ c n l : ℕ} (hk : k₀ ≤ n) (hl : l < n + c) : LocE.fIdx k₀ c n (LocE.fPos k₀ c n l) = l := by
   unfold LocE.fPos LocE.fIdx
   split_ifs <;> omega
 
 /- English proof (translation)
-Unfold `LocE.fPos`. Apply the tactic sequence `split_ifs <;> omega`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem fPos_lt {k₀ c n l : ℕ} (hk : k₀ ≤ n) (hl : l < n + c) : LocE.fPos k₀ c n l < n + c := by
   unfold LocE.fPos
   split_ifs <;> omega
 
 /- English proof (translation)
-Use function extensionality and compare the values at `l`. Unfold `Loc.eN`. Distinguish the cases in `h : l = ⟨i, hi⟩`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Rewrite using `[Pi.single_eq_of_ne h, if_neg (fun h' => h (Fin.ext h'))]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem eN_eq {N i : ℕ} (hi : i < N) : Loc.eN E N i = Pi.single (⟨i, hi⟩ : Fin N) (1 : E) := by
   funext l
@@ -114,9 +114,9 @@ theorem eN_eq {N i : ℕ} (hi : i < N) : Loc.eN E N i = Pi.single (⟨i, hi⟩ :
   · rw [Pi.single_eq_of_ne h, if_neg (fun h' => h (Fin.ext h'))]
 
 /- English proof (translation)
-Establish `hv : v = ∑ l' : Fin N, v l' • (Pi.single l' (1 : E) : Sp E N)`. Use function extensionality and compare the values at `i`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Use `conv_lhs => rw [hv]`. Rewrite using `[map_sum, Finset.sum_apply]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun l' _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, Pi.smul_apply, smul_eq_mul, mul_comm]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem apply_sum {N : ℕ} (φ : Sp E N ≃ₗ[E] Sp E N) (v : Sp E N) (l : Fin N) :
     φ v l = ∑ l' : Fin N, φ (Pi.single l' 1) l * v l' := by
@@ -129,7 +129,7 @@ theorem apply_sum {N : ℕ} (φ : Sp E N ≃ₗ[E] Sp E N) (v : Sp E N) (l : Fin
   rw [map_smul, Pi.smul_apply, smul_eq_mul, mul_comm]
 
 /- English proof (translation)
-Unfold `LocE.entB`. Rewrite using `[eN_eq (fIdx_lt hk hp')]`. Unfold `Loc.atN`. Rewrite using `[dif_pos (fIdx_lt hk hp)]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem entB_eq {k₀ n c p p' : ℕ} (hk : k₀ ≤ n) (hp : p < n + c) (hp' : p' < n + c) (κ : Sp E (n + c) ≃ₗ[E] Sp E (n + c)) :
     LocE.entB q k₀ c n c n (fun i => i + 1) (fun i => i + 1) κ.toLinearMap p p' =
@@ -142,11 +142,11 @@ theorem entB_eq {k₀ n c p p' : ℕ} (hk : k₀ ≤ n) (hp : p < n + c) (hp' : 
   rfl
 
 /- English proof (translation)
-Unfold `LocE.lamY`. Rewrite using `[mem_sclLat]`. Introduce `l`. Rewrite using `[Pi.smul_apply, smul_eq_mul]`. Distinguish the cases in `h : l = l'`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `h` using the available equality. Rewrite using `[Pi.single_eq_same, mul_one, inv_mul_cancel₀ (zpow_ne_zero _ hq0)]`. Use `IntAt.coe P 1` as an intermediate fact. Rewrite `this` using `[map_one]`. Then use the resulting hypothesis. Rewrite using `[Pi.single_eq_of_ne h, mul_zero, mul_zero]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 
-Conclude with `intAt_zero`.
+A detailed English derivation is pending.
 -/
 theorem bas_mem (hq0 : (q : E) ≠ 0) {n c : ℕ} (l' : Fin (n + c)) :
     ((q : E) ^ LocE.scE n (fun i => i + 1) l'.1) • (Pi.single l' (1 : E) : Sp E (n + c)) ∈
@@ -164,9 +164,9 @@ theorem bas_mem (hq0 : (q : E) ≠ 0) {n c : ℕ} (l' : Fin (n + c)) :
     exact intAt_zero
 
 /- English proof (translation)
-Establish `h1` using `(hκ _).2 (bas_mem (P := P) hq0 l')`. Unfold `LocE.lamY at h1`. Rewrite `h1` using `[mem_sclLat]`. Establish `h2` using `h1 l`. Rewrite `h2` using `[map_smul, Pi.smul_apply, smul_eq_mul]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e : ((q : E) ^ LocE.scE n (fun i => i + 1) l.1)⁻¹ * ((q : E) ^ LocE.scE n (fun i => i + 1) l'.1 * κ (Pi.single l' 1) l) = κ (Pi.single l' 1) l * (q : E) ^ (LocE.scE n (fun i => i + 1) l'.1 - LocE.scE n (fun i => i + 1) l.1)`. Rewrite using `[zpow_sub₀ hq0]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h2` using `[e]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem coord_int (hq0 : (q : E) ≠ 0) {n c : ℕ} {κ : Sp E (n + c) ≃ₗ[E] Sp E (n + c)}
     (hκ : κ ∈ stabL E (n + c) (LocE.lamY P q n c fun i => i + 1)) (l l' : Fin (n + c)) :
@@ -183,11 +183,11 @@ theorem coord_int (hq0 : (q : E) ≠ 0) {n c : ℕ} {κ : Sp E (n + c) ≃ₗ[E]
   rwa [e] at h2
 
 /- English proof (translation)
-Unfold `LocE.lamY at hv ⊢`. Rewrite `hv`, the goal using `[mem_sclLat]`. Introduce `l`. Rewrite using `[apply_sum κ v l, Finset.mul_sum]`. Use `intAt_sum _ _ fun l' _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : ((q : E) ^ LocE.scE n (fun i => i + 1) l.1)⁻¹ * (κ (Pi.single l' 1) l * v l') = (κ (Pi.single l' 1) l * (q : E) ^ (LocE.scE n (fun i => i + 1) l'.1 - LocE.scE n (fun i => i + 1) l.1)) * (((q : E) ^ LocE.scE n (fun i => i + 1) l'.1)⁻¹ * v l')`. Rewrite using `[zpow_sub₀ hq0]`. Establish `h1 : (q : E) ^ LocE.scE n (fun i => i + 1) l'.1 ≠ 0` using `zpow_ne_zero _ hq0`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hκ l l').mul (hv l')`.
+A detailed English derivation is pending.
 -/
 theorem map_mem (hq0 : (q : E) ≠ 0) {n c : ℕ} (κ : Sp E (n + c) ≃ₗ[E] Sp E (n + c))
     (hκ : ∀ l l' : Fin (n + c),
@@ -208,9 +208,9 @@ theorem map_mem (hq0 : (q : E) ≠ 0) {n c : ℕ} (κ : Sp E (n + c) ≃ₗ[E] S
   exact (hκ l l').mul (hv l')
 
 /- English proof (translation)
-Establish `h1` using `h _ _ (fPos_lt hk l.2) (fPos_lt hk l'.2)`. Rewrite `h1` using `[entB_eq hk (fPos_lt hk l.2) (fPos_lt hk l'.2)]`. Establish `e1 : (⟨LocE.fIdx k₀ c n (LocE.fPos k₀ c n l.1), fIdx_lt hk (fPos_lt hk l.2)⟩ : Fin (n + c)) = l` using `Fin.ext (fIdx_fPos hk l.2)`. Establish `e2 : (⟨LocE.fIdx k₀ c n (LocE.fPos k₀ c n l'.1), fIdx_lt hk (fPos_lt hk l'.2)⟩ : Fin (n + c)) = l'` using `Fin.ext (fIdx_fPos hk l'.2)`. Rewrite `h1` using `[e1, e2, fIdx_fPos hk l.2, fIdx_fPos hk l'.2]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h1`.
+A detailed English derivation is pending.
 -/
 theorem coord_of_entB {k₀ n c : ℕ} (hk : k₀ ≤ n) (κ : Sp E (n + c) ≃ₗ[E] Sp E (n + c))
     (h : ∀ p p', p < n + c → p' < n + c →
@@ -226,13 +226,11 @@ theorem coord_of_entB {k₀ n c : ℕ} (hk : k₀ ≤ n) (κ : Sp E (n + c) ≃�
   exact h1
 
 /- English proof (translation)
-Introduce `E _ _ P q hq0 κ n c hk γ`. Prove the components needed by the constructor for the conclusion. Introduce `hγ`. Establish `hγi : γ⁻¹ ∈ stabL E (n + c) (LocE.lamY P q n c fun i => i + 1)` using `Subgroup.inv_mem _ hγ`. Use `⟨fun p p' hp hp' => ?_, fun p p' hp hp' => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[entB_eq hk hp hp']`. Conclude with `coord_int hq0 hγ _ _`. Rewrite using `[entB_eq hk hp hp']`. Conclude with `coord_int hq0 hγi _ _`. Introduce and unpack `⟨h1, h2⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion.
 
-Introduce `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Establish `e : (γ⁻¹ : Sp E (n + c) ≃ₗ[E] Sp E (n + c)) (γ x) = x` using `LinearEquiv.symm_apply_apply γ x`. Rewrite using `[← e]`.
-
-Conclude with `map_mem hq0 _ (coord_of_entB hk _ h2) hx`. Introduce `hx`. Conclude with `map_mem hq0 γ (coord_of_entB hk γ h1) hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem mem_stabL_iff : ∀ {E : Type} [Field E] [NumberField E] (P : HeightOneSpectrum (𝓞 E)) (q : ℕ), (q : E) ≠ 0 →
     ∀ (κ n c : ℕ), κ ≤ n → ∀ (γ : Sp E (n + c) ≃ₗ[E] Sp E (n + c)),

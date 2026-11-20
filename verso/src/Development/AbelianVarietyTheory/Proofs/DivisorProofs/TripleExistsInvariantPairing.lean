@@ -25,41 +25,35 @@ open MeasureTheory
 open scoped ComplexConjugate
 
 /- English proof (translation)
-Introduce `hKP F E _ _ _ _ _ σ B a a' G X om om' hT`. Take `⟨i1, i2, i3, i4⟩` from `GlobalTheory.UnitaryAdelicTop.lcsc_UA F E σ (a + a') G.W.J`. Use `haveI := i1`. Use `haveI := i2`. Use `haveI := i3`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI := i4`. Use `haveI := GlobalTheory.RatUDiscrete.discreteTopology_ratU F E σ (a + a') G.W.J`. Use `haveI : BorelSpace (UA σ G.W.J) := ⟨rfl⟩`. Use `haveI : Countable (ratU σ G.W.J) := TopologicalSpace.separableSpace_iff_countable.1 inferInstance`. Take `⟨𝓕, h𝓕⟩` from `GlobalTheory.FundDomDiscrete.exists_isFundamentalDomain (ratU σ G.W.J) (Measure.haar)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Use `set μ : Measure (UA σ G.W.J) := Measure.haar with hμdef`. Establish `hμ : μ.IsHaarMeasure` using `inferInstance`. Use `haveI : μ.IsMulRightInvariant := GlobalTheory.ThetaCplV.isMulRightInvariant_skew hT.base.cm B G.W hT.geo.hW μ`. Use `set D := PolData B G.M with hD`. Establish `hP` using `GlobalTheory.ThK.Inhab.pairV hT`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hdim : a + a' + 2 * min (a - G.p) G.p < 2 * a ∨ min (a - G.p) G.p = 0` using `by left`. Establish `h1` using `hT.geo.eBig`. Establish `h2 : min (a - G.p) G.p ≤ G.p` using `min_le_right _ _`. Use linear arithmetic over natural numbers and integers. Establish `wc` using `(GlobalTheory.T.weil_convergence_of_kernel hKP F E σ B a (a + a') G.V G.W G.M X.β (X.β / X.α) om _ _ _ _ hP hdim).1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `pres : ∀ x, ∀ Φ ∈ schA F (Fin a × Fin (a + a')), om x Φ ∈ schA F (Fin a × Fin (a + a'))` using `fun x Φ hΦ => (IsUWeilPair.isUSplitting hP.weil).pres x Φ hΦ`. Establish `hDS : D ≤ schA F (Fin a × Fin (a + a'))` using `GlobalTheory.ThKRatInv.polData_le_schA B G.M hT.geo.hM`. Establish `lin : ∀ Φ ∈ D, ∀ Ψ ∈ D, ∀ c : ℂ, G.M.I om (Φ + c • Ψ) = G.M.I om Φ + c • G.M.I om Ψ`. Introduce `Φ hΦ Ψ hΨ c`. Use function extensionality and compare the values at `h`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `i1` using `(wc Φ (hDS hΦ)).1 h`. Establish `i2` using `(wc Ψ (hDS hΨ)).1 h`. Establish `e : ∀ g, theta om (Φ + c • Ψ) g h = theta om Φ g h + c * theta om Ψ g h` using `fun g => by`. Simplify using `only [theta, map_add, map_smul]`. Rewrite using `[thetaSum_add F (pres _ Φ (hDS hΦ)) ((schA F _).smul_mem c (pres _ Ψ (hDS hΨ))), thetaSum_smul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Model.I, e, Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[integral_add i1 (i2.const_mul c), integral_const_mul]`. Establish `sq` using `(GlobalTheory.T.square_integrability hKP F E σ B a a' G X om om' hT μ 𝓕 hμ h𝓕).1`. Establish `cont` using `GlobalTheory.T.continuous_left_invariant_theta hKP F E σ B a a' G X om om' hT`. Set `Bf : Fn F a (a + a') → Fn F a (a + a') → ℂ` to `fun Φ Ψ => ∫ x in 𝓕, G.M.I om Φ x * conj (G.M.I om Ψ x) ∂μ`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hint : ∀ Φ ∈ D, ∀ Ψ ∈ D, Integrable (fun x => G.M.I om Φ x * conj (G.M.I om Ψ x)) (μ.restrict 𝓕)`. Introduce `Φ hΦ Ψ hΨ`. Establish `e : (fun x => G.M.I om Φ x * conj (G.M.I om Ψ x)) = fun x => (((‖G.M.I om (Φ + (1 : ℂ) • Ψ) x‖ ^ 2 : ℝ) : ℂ) - ((‖G.M.I om (Φ + (-1 : ℂ) • Ψ) x‖ ^ 2 : ℝ) : ℂ) + Complex.I * ((‖G.M.I om (Φ + Complex.I • Ψ) x‖ ^ 2 : ℝ) : ℂ) - Complex.I * ((‖G.M.I om (Φ + (-Complex.I) • Ψ) x‖ ^ 2 : …`. Use function extensionality and compare the values at `x`. Rewrite using `[lin Φ hΦ Ψ hΨ 1, lin Φ hΦ Ψ hΨ (-1), lin Φ hΦ Ψ hΨ Complex.I, lin Φ hΦ Ψ hΨ (-Complex.I)]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, one_mul]`. Conclude with `GlobalTheory.ThetaFacCompl.mul_conj_polar _ _`. Rewrite using `[e]`. Establish `hi : ∀ c : ℂ, Integrable (fun x => ((‖G.M.I om (Φ + c • Ψ) x‖ ^ 2 : ℝ) : ℂ)) (μ.restrict 𝓕)` using `fun c => Integrable.ofReal (sq _ (D.add_mem hΦ (D.smul_mem c hΨ)))`. Conclude with `((((hi 1).sub (hi (-1))).add ((hi Complex.I).const_mul Complex.I)).sub ((hi (-Complex.I)).const_mul Complex.I)).div_const 4`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `I0 : G.M.I om 0 = 0` using `by simpa using lin 0 D.zero_mem 0 D.zero_mem 1`. Establish `hself : ∀ Φ, Bf Φ Φ = ((∫ x in 𝓕, ‖G.M.I om Φ x‖ ^ 2 ∂μ : ℝ) : ℂ)`. Introduce `Φ`. Simplify using `only [Bf]`. Rewrite using `[← integral_complex_ofReal]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Use function extensionality and compare the values at `x`. Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Use `⟨Bf, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `Φ hΦ Ψ hΨ Θ hΘ`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `e` using `lin Φ hΦ Ψ hΨ 1`. Rewrite `e` using `[one_smul, one_smul]`. Simplify using `only [Bf, e, Pi.add_apply, add_mul]`. Conclude with `integral_add (hint Φ hΦ Θ hΘ) (hint Ψ hΨ Θ hΘ)`. Introduce `c Φ hΦ Ψ hΨ`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e` using `lin 0 D.zero_mem Φ hΦ c`. Rewrite `e` using `[zero_add, I0, zero_add]`. Simplify using `only [Bf, e, Pi.smul_apply, smul_eq_mul, mul_assoc]`. Conclude with `integral_const_mul c _`. Introduce `Φ _ Ψ _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion.
 
-Simplify using `only [Bf]`. Rewrite using `[← integral_conj]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Simplify using `[map_mul, mul_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `Φ _`. Rewrite using `[hself, Complex.ofReal_re]`. Conclude with `integral_nonneg fun x => sq_nonneg _`. Introduce `v h _ Φ hΦ Ψ hΨ`. Establish `hleft : ∀ γ ∈ ratU σ G.W.J, ∀ x, G.M.I om Φ (γ * x) * conj (G.M.I om Ψ (γ * x)) = G.M.I om Φ x * conj (G.M.I om Ψ x)`.
-
-Introduce `γ hγ x`. Rewrite using `[(cont Φ hΦ).2 γ hγ, (cont Ψ hΨ).2 γ hγ]`. Simplify using `only [Bf, GlobalTheory.ThetaFacCompl.I_transl]`. Conclude with `GlobalTheory.ThetaCplV.setIntegral_mul_right h𝓕 (fun x => G.M.I om Φ x * conj (G.M.I om Ψ x)) hleft h`. Introduce `Φ hΦ`.
-
-Prove the components needed by the constructor for the conclusion. Introduce `h0`. Rewrite `h0` using `[hself]`. Establish `h0' : ∫ x in 𝓕, ‖G.M.I om Φ x‖ ^ 2 ∂μ = 0` using `by exact_mod_cast h0`. Establish `hae` using `(integral_eq_zero_iff_of_nonneg (fun x => sq_nonneg _) (sq Φ hΦ)).1 h0'`.
-
-Apply `GlobalTheory.ThetaFacCompl.eq_zero_of_ae_restrict_fd σ G.W.J μ 𝓕 hμ h𝓕 _ (cont Φ hΦ).1 (cont Φ hΦ).2` to reduce the goal to its premises. Use `filter_upwards [hae] with x hx`. Simplify using `using hx`. Introduce `h0`. Simplify using `[Bf, h0]`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem l2form : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base F E) (a a' : ℕ) (G : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo σ a a') (X : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chars F E) (om : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ G.V G.W) (om' : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ G.V' G.W), GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsTriple B G X om om' → ∃ Bf : GlobalTheory.ThK.Fn F a (a + a') → GlobalTheory.ThK.Fn F a (a + a') → ℂ,
     (∀ Φ ∈ GlobalTheory.ThK.PolData B G.M, ∀ Ψ ∈ GlobalTheory.ThK.PolData B G.M, ∀ Θ ∈ GlobalTheory.ThK.PolData B G.M, Bf (Φ + Ψ) Θ = Bf Φ Θ + Bf Ψ Θ) ∧

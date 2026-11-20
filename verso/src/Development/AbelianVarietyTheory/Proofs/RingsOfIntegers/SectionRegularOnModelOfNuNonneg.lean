@@ -27,27 +27,23 @@ variable {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] {ϖ : 
   {F : Type} [Field F] [Algebra (FractionRing V) F] {v : AddValuation F (WithTop ℚ)}
 
 /- English proof (translation)
-Set `: Algebra V F` to `((algebraMap (FractionRing V) F).comp (algebraMap V (FractionRing V))).toAlgebra`. Establish `: IsScalarTower V (FractionRing V) F` using `.of_algebraMap_eq fun _ => rfl`. Establish `: FaithfulSMul V F` using `(faithfulSMul_iff_algebraMap_injective V F).2 ((algebraMap (FractionRing V) F).injective.comp (IsFractionRing.injective V (FractionRing V)))`. Establish `hV : ∀ x : V, 0 ≤ v (algebraMap V F x)` using `GC.v_alg_nonneg hϖ hv`. Set `M : Submodule V F` to `Submodule.span V (insert 1 (Set.range a))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `: Module.Finite V M` using `Module.Finite.span_of_finite V ((Set.finite_range a).insert 1)`. Establish `hM : ∀ x ∈ M, 0 ≤ v x` using `fun x hx => by`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`. Break down `hy with rfl | ⟨i, rfl⟩` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[v.map_one]`. Conclude with `ha i`. Consider the case `zero => rw [v.map_zero]`. Conclude with `le_top`. Consider the case `add y z _ _ hy hz => exact v.map_le_add hy hz`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. Introduce a local definition for the expression.
 
-Consider the case `smul c y _ hy => rw [Algebra.smul_def, v.map_mul]`. Conclude with `add_nonneg (hV c) hy`. Set `b` to `Module.Free.chooseBasis V M`. Set `e : M` to `⟨1, Submodule.subset_span (Set.mem_insert _ _)⟩`. Choose the witnesses or unpack the hypotheses as in `⟨j, hj⟩ : ∃ j, IsUnit (b.repr e j) := by`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Assume the negation of the conclusion as `hn`. Use `push Not at hn`. Establish `hd : ∀ j, ϖ ∣ b.repr e j` using `fun j => by`. Rewrite using `[← Ideal.mem_span_singleton, ← hϖ.maximalIdeal_eq]`. Conclude with `hn j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `choose d hd using hd`. Establish `h1 : e = ϖ • ∑ j, d j • b j`. Rewrite using `[Finset.smul_sum, ← b.sum_repr e]`. Conclude with `Finset.sum_congr rfl fun j _ => by rw [hd j, mul_smul]`. Establish `h2 : (1 : F) = algebraMap V F ϖ * ((∑ j, d j • b j : M) : F)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Algebra.smul_def]`. Conclude with `congrArg Subtype.val h1`. Establish `h3 : v (algebraMap V F ϖ) = (((1 : ℤ) : ℚ) : WithTop ℚ)` using `hv _ 1 ⟨1, by simp⟩`. Establish `h4` using `congrArg v h2`. Rewrite `h4` using `[v.map_one, v.map_mul, h3]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h5 : (((1 : ℤ) : ℚ) : WithTop ℚ) ≤ 0` using `h4 ▸ le_add_of_nonneg_right (hM _ (∑ j, d j • b j : M).2)`. Conclude with `absurd (by exact_mod_cast h5 : (1 : ℚ) ≤ 0) (by norm_num)`. Establish `li : LinearIndependent V (fun i => (b i : F))` using `b.linearIndependent.map' M.subtype M.ker_subtype`. Establish `lk : LinearIndependent (FractionRing V) (fun i => (b i : F))` using `(LinearIndependent.iff_fractionRing V (FractionRing V)).1 li`. Take `⟨ℓ, hℓ⟩` from `LinearMap.exists_extend (Finsupp.lapply j ∘ₗ lk.repr)`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hb : ∀ i, ℓ (b i) = algebraMap V (FractionRing V) (b.repr (b i) j)` using `fun i => by`. Use `LinearMap.congr_fun hℓ ⟨b i, Submodule.subset_span ⟨i, rfl⟩⟩` as an intermediate fact. Use `this.trans ?_` and prove the remaining obligations. Use `show lk.repr _ j = _`. Rewrite using `[lk.repr_eq_single i _ rfl, b.repr_self]`.
-
-Simplify using `only [Finsupp.single_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `hm : ∀ m : M, ℓ m = algebraMap V (FractionRing V) (b.repr m j)` using `fun m => LinearMap.congr_fun (b.ext (f₁ := ℓ.restrictScalars V ∘ₗ M.subtype) (f₂ := Algebra.linearMap V (FractionRing V) ∘ₗ b.coord j) hb) m`. Take `⟨u, hu⟩` from `hj`. Use `⟨algebraMap V (FractionRing V) (u⁻¹ : Vˣ) • ℓ, ?_, fun i => ⟨(u⁻¹ : Vˣ) * b.repr ⟨a i, Submodule.subset_span (Set.mem_insert_of_mem _ ⟨i, rfl⟩)⟩ j, ?_⟩⟩` and prove the remaining obligations.
-
-Rewrite using `[LinearMap.smul_apply, show ℓ 1 = _ from hm e, ← hu, smul_eq_mul, ← map_mul, Units.inv_mul, map_one]`. Rewrite using `[LinearMap.smul_apply, map_mul, smul_eq_mul, ← hm]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_functional (hϖ : Irreducible ϖ) (hv : ValOver ϖ F v) {n : ℕ} (a : Fin n → F) (ha : ∀ i, 0 ≤ v (a i)) :
     ∃ ℓ : F →ₗ[FractionRing V] FractionRing V, ℓ 1 = 1 ∧ ∀ i, ∃ b : V, ℓ (a i) = algebraMap V (FractionRing V) b := by
@@ -108,11 +104,11 @@ theorem exists_functional (hϖ : Irreducible ϖ) (hv : ValOver ϖ F v) {n : ℕ}
   · rw [LinearMap.smul_apply, map_mul, smul_eq_mul, ← hm]
 
 /- English proof (translation)
-Take `⟨n, a, σ, σF, hσ, hva, hsum⟩` from `h`. Take `⟨ℓ, h1, hℓ⟩` from `exists_functional hϖ hv a (fun i => by exact_mod_cast hva i)`. Take `⟨Λ, hΛ⟩` from `(isExtension_termPull D.toPre (FractionRing V) F k α).coord ℓ`. Establish `e₁ : ∀ i, σF i = termPull D.toPre (FractionRing V) F k α (genericTerm D k α (σ i))` using `fun i => sec_ext' D.toPre.P.isLB fun y J hJ => (SectionScalarValuation.secScal_sval (hσ i) (𝟙 _) y hJ).symm.trans ((sval_pullOver _ _ _ _ hJ).trans ((sval_pullOver _ _ _ _ hJ).trans (congrArg (fun q => sval (σ i) q y J) ((Category.assoc _ _ _).trans (congrArg (𝟙 _ ≫ ·) (congrArg …`. Establish `e₂ : termPull D.toPre (FractionRing V) F k α E = ∑ i, a i • termPull D.toPre (FractionRing V) F k α (genericTerm D k α (σ i))` using `SecOver.ext _ _ fun j => (hsum j).trans (Eq.trans (Finset.sum_congr rfl fun i _ => by rw [e₁ i]; rfl) (map_sum (chartLin (famBase D.toPre F) _ j) _ _).symm)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e₃ : E = ∑ i, ℓ (a i) • genericTerm D k α (σ i)`. Use `hΛ 1 E` as an intermediate fact. Rewrite `this` using `[one_smul, h1, one_smul, e₂, map_sum]`. Rewrite using `[← this]`. Conclude with `Finset.sum_congr rfl fun i _ => hΛ _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨n, fun i => ℓ (a i), σ, fun i => genericTerm D k α (σ i), fun i => SectionScalarValuation.secScal_of_sval D.toPre.P.isLB fun y J hJ => (sval_pullOver _ _ _ _ hJ).symm, fun i => ?_, fun j => ?_⟩` and prove the remaining obligations. Take `⟨b, hb⟩` from `hℓ i show _ ≤ vK (ℓ (a i))`. Rewrite using `[hb]`. Conclude with `GC.v_alg_nonneg hϖ hvK b`. Conclude with `(congrArg (chartLin (famBase D.toPre (FractionRing V)) _ j) e₃).trans (map_sum (chartLin (famBase D.toPre (FractionRing V)) _ j) _ _)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vge_descend (hϖ : Irreducible ϖ) (hv : ValOver ϖ F v) {vK : AddValuation (FractionRing V) (WithTop ℚ)}
     (hvK : ValOver ϖ (FractionRing V) vK) {D : DegData V (maximalIdeal V)} {k : ℕ} {α : D.toPre.X}
@@ -145,11 +141,11 @@ theorem vge_descend (hϖ : Irreducible ϖ) (hv : ValOver ϖ F v) {vK : AddValuat
       (map_sum (chartLin (famBase D.toPre (FractionRing V)) _ j) _ _)
 
 /- English proof (translation)
-Take `⟨E, hE⟩` from `((U.expand k hk).1 s).exists`. Establish `hG : GlobalFnsSt` using `GlobalTheory.ExpansionTotal.globalFns`. Set `vK : AddValuation (FractionRing V) (WithTop ℚ)` to `v.comap (algebraMap (FractionRing V) F)`. Establish `hvK : ValOver ϖ (FractionRing V) vK` using `fun c n hc => hv c n hc`. Take `⟨r, hr, x, hx, e₁, e₂⟩` from `(expands_iff U.toUnifPre k s E).1 hE`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hr' : algebraMap (FractionRing V) F (algebraMap V (FractionRing V) r) ≠ 0`. Rewrite using `[map_ne_zero]`. Conclude with `(map_ne_zero_iff _ (IsFractionRing.injective V (FractionRing V))).2 hr`. Establish `hx` using `h (famPull D.toPre (FractionRing V) F hG k E) ((expandsG_iff U.toUnifPre F k _ _).2 ⟨1, fun _ => (algebraMap (FractionRing V) F (algebraMap V (FractionRing V) r))⁻¹, fun _ => x, fun _ => hx, by`. Rewrite using `[Fin.sum_univ_one, e₁]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Eq.symm ((congrArg _ (map_smulₛₗ (extendSec U.toUnifPre F k) _ _)).trans ?_)` and prove the remaining obligations. Rewrite using `[smul_smul, inv_mul_cancel₀ hr', one_smul],`. Use `fun α => by rw [Fin.sum_univ_one, e₂, map_smulₛₗ, smul_smul, inv_mul_cancel₀ hr', one_smul]; rfl⟩)`. Conclude with `GlobalTheory.IntegralSection.main V ϖ hϖ D vK hvK A G U.toUnifPre k s E hE fun α => vge_descend hϖ hv hvK (E.s α) (n1e V ϖ hϖ D Q hQ F v k _ hx α)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_extension (hϖ : Irreducible ϖ) (hv : ValOver ϖ F v) {D : DegData V (maximalIdeal V)}
     {Q : D.toPre.X → ℤ} (hQ : IsQ D.toPre ϖ Q) {A : PolAV (Spec (CommRingCat.of (FractionRing V)))}
@@ -187,7 +183,7 @@ def isoSrc (w : LB.Iso L' (L.pull φ)) : LB.Iso (L'.pull (𝟙 Y)) (L.pull φ) :
     (L.pull φ).U p.1 ⊓ (L'.pull (𝟙 Y)).U p.2 ≤ (L.pull φ).U p.1 ⊓ L'.U (p.2 PUnit.unit)) (w.s (p.1, p.2 PUnit.unit))⟩
 
 /- English proof (translation)
-The claim follows from `gm_res r z _ (show r z ∈ (L.pull φ).U (fun _ => i) ⊓ (L'.pull (𝟙 Y)).U j from ⟨mem_pull.2 hi, hj⟩) _`.
+A detailed English derivation is pending.
 -/
 theorem gw_isoSrc (w : LB.Iso L' (L.pull φ)) {Z : Scheme.{0}} (r : Z ⟶ Y) (z : Z) (i : L.ι) (j : PUnit → L'.ι)
     (hi : φ (r z) ∈ L.U i) (hj : r z ∈ (L'.pull (𝟙 Y)).U j) :
@@ -195,7 +191,7 @@ theorem gw_isoSrc (w : LB.Iso L' (L.pull φ)) {Z : Scheme.{0}} (r : Z ⟶ Y) (z 
   gm_res r z _ (show r z ∈ (L.pull φ).U (fun _ => i) ⊓ (L'.pull (𝟙 Y)).U j from ⟨mem_pull.2 hi, hj⟩) _
 
 /- English proof (translation)
-Use `(isGen_iff _).2 fun Z r z i i' j j' hi hi' hj hj' => ?_` and prove the remaining obligations. Rewrite using `[gw_isoSrc w r z i j hi hj, gw_isoSrc w r z i' j' hi' hj', gm_pull_g L' (𝟙 Y) r z j j' hj hj', Category.comp_id]`. Conclude with `(isGen_iff _).1 hw Z r z i i' _ _ hi hi' ((mem_pull (F := 𝟙 Y)).1 hj) ((mem_pull (F := 𝟙 Y)).1 hj')`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isoSrc_isGen {w : LB.Iso L' (L.pull φ)} (hw : w.IsGen) : (isoSrc w).IsGen := by
   refine (isGen_iff _).2 fun Z r z i i' j j' hi hi' hj hj' => ?_
@@ -203,7 +199,7 @@ theorem isoSrc_isGen {w : LB.Iso L' (L.pull φ)} (hw : w.IsGen) : (isoSrc w).IsG
   exact (isGen_iff _).1 hw Z r z i i' _ _ hi hi' ((mem_pull (F := 𝟙 Y)).1 hj) ((mem_pull (F := 𝟙 Y)).1 hj')
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `exists_move_back hL' hL (isoSrc_isGen hw) (𝟙 Y) k g (e.trans (Category.id_comp _).symm) (Category.id_comp (𝟙 Y)).symm b`. Use `⟨a, fun Z r z i i' hi hi' => (ha Z r z i i' hi hi').trans (congrArg (· * _) ?_)⟩` and prove the remaining obligations. Rewrite using `[zpow_natCast, Units.val_pow_eq_pow_val, Category.comp_id]`. Conclude with `congrArg (fun u : (Z.presheaf.stalk z)ˣ => u.val ^ k) (gw_isoSrc w r z i (fun _ => i') hi (mem_pull.2 hi'))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_back (hL : L.IsLB) (hL' : L'.IsLB) {w : LB.Iso L' (L.pull φ)} (hw : w.IsGen) (k : ℕ) {P : Scheme.{0}}
     {p : P ⟶ X} (g : Y ⟶ P) (e : g ≫ p = φ)
@@ -218,7 +214,7 @@ theorem exists_back (hL : L.IsLB) (hL' : L'.IsLB) {w : LB.Iso L' (L.pull φ)} (h
   exact congrArg (fun u : (Z.presheaf.stalk z)ˣ => u.val ^ k) (gw_isoSrc w r z i (fun _ => i') hi (mem_pull.2 hi'))
 
 /- English proof (translation)
-Take `⟨b, hb⟩` from `exists_move hL' hL (isoSrc_isGen hw) n k n rfl e a`. Use `⟨b, fun Z r z i i' hi hi' => (hb Z r z i i' hi hi').trans (congrArg (· * _) ?_)⟩` and prove the remaining obligations. Rewrite using `[zpow_natCast, Units.val_pow_eq_pow_val]`. Conclude with `congrArg (fun u : (Z.presheaf.stalk z)ˣ => u.val ^ k) (gw_isoSrc w (r ≫ n) z i (fun _ => i') hi (mem_pull.2 hi'))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_forth (hL : L.IsLB) (hL' : L'.IsLB) {w : LB.Iso L' (L.pull φ)} (hw : w.IsGen) (k : ℕ) {P : Scheme.{0}}
     {p : P ⟶ X} (n : P ⟶ Y) (e : p = n ≫ φ)
@@ -233,13 +229,13 @@ theorem exists_forth (hL : L.IsLB) (hL' : L'.IsLB) {w : LB.Iso L' (L.pull φ)} (
     (gw_isoSrc w (r ≫ n) z i (fun _ => i') hi (mem_pull.2 hi'))
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `hw`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem isoCast_isGen {L₂ : LB X} (h : L = L₂) {w : LB.Iso L' (L.pull φ)} (hw : w.IsGen) : (isoCast h φ w).IsGen := by
   subst h; exact hw
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `⟨σ, hσ⟩`.
+Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem exists_of_cast {L₂ : LB X} (h : L = L₂) (w : LB.Iso L' (L.pull φ)) (k : ℕ)
     (a : LB.Sec (LB.LinComb L' (K := Fin 1) (fun _ => 𝟙 Y) (fun _ => (k : ℤ))))
@@ -254,7 +250,7 @@ theorem exists_of_cast {L₂ : LB X} (h : L = L₂) (w : LB.Iso L' (L.pull φ)) 
   subst h; exact ⟨σ, hσ⟩
 
 /- English proof (translation)
-Establish `m : r z ∈ (LPow A M a T').U (fun _ => i)` using `mem_wchart.2 fun _ => hi`. Conclude with `(congrArg (gs r z _) (H _)).trans ((gs_res r z _ m _).trans (gs_pull r h.left z _ (chart_le_res A M h hh a _ m) _))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem sval_isPullSec {S : Scheme.{0}} {A T T' : Over S} [GrpObj A] {M : LB A.left} {a : ℤ} {h : T' ⊗ A ⟶ T ⊗ A}
     {hh : h ≫ snd T A = snd T' A} {s : LB.Sec (LPow A M a T)} {s' : LB.Sec (LPow A M a T')}
@@ -267,27 +263,27 @@ theorem sval_isPullSec {S : Scheme.{0}} {A T T' : Over S} [GrpObj A] {M : LB A.l
 end Move
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c T io y I P _ ϖ hϖ Q hQ F _ _ _ _ _ v hv xF h hl k F₀ hh hk hp hν`. Use `letI := io.toAlgebra`. Establish `c1` using `I.m1.cart.1`. Establish `c2` using `I.m2.cart.1`. Establish `hx : xF = spMap (algebraMap T.Fr F) ≫ y.1.x` using `by rw [← hl]; exact (Over.w h).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `g : I.t'.G.left ⟶ (ptO Xo (xOf y) ⊗ Xo.univ.t.G).left` to `pullback.lift I.t'.G.hom I.m1.φ c1.w.symm`. Establish `g1 : g ≫ (fst (ptO Xo (xOf y)) Xo.univ.t.G).left = I.t'.G.hom` using `pullback.lift_fst _ _ _`. Establish `g2 : g ≫ (snd (ptO Xo (xOf y)) Xo.univ.t.G).left = I.m1.φ` using `pullback.lift_snd _ _ _`. Take `⟨σt, hσt⟩` from `exists_back Xo.univ.t.PP.isLB I.t'.PP.isLB I.rig1.1 k g g2 F₀`. Set `n : pullback I.G.G.hom (jK T.V) ⟶ I.t'.G.left` to `c2.lift (pullback.fst _ _) (pullback.snd _ _) pullback.condition`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `n1 : n ≫ I.m2.φ = pullback.fst _ _` using `c2.lift_fst _ _ _`. Establish `n2 : n ≫ I.t'.G.hom = pullback.snd _ _` using `c2.lift_snd _ _ _`. Establish `hb : I.G.PP.L = P.U.LG.L` using `(congrArg RigLB.L P.bundle).symm`. Take `⟨s, hs⟩` from `exists_forth P.U.LG.isLB I.t'.PP.isLB (isoCast_isGen hb I.rig2.1) k n n1.symm σt`. Establish `hg : ∀ {Z : Scheme.{0}} (r : Z ⟶ I.t'.G.left) (zp : Z ⟶ (ptO Xo (xOf y) ⊗ Xo.univ.t.G).left), zp ≫ (snd (ptO Xo (xOf y)) Xo.univ.t.G).left = r ≫ I.m1.φ → zp ≫ (fst (ptO Xo (xOf y)) Xo.univ.t.G).left = r ≫ I.t'.G.hom → zp = r ≫ g` using `fun r zp e₂ e₁ => pullback.hom_ext (e₁.trans ((Category.assoc _ _ _).trans (congrArg _ g1)).symm) (e₂.trans ((Category.assoc _ _ _).trans (congrArg _ g2)).symm)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `tie : SecTieF I P F xF k (extendSec P.U.toUnifPre F k s) hh`. Use `⟨hx, fun Z r zG zU e1 e2 e3 e4 z J₁ J₂ j' h₁ h₂ hj => ?_⟩` and prove the remaining obligations. Set `q` to `zG ≫ (snd (TFK (R := T.V) F) ((Over.pullback (jK T.V)).obj I.G.G)).left`. Establish `q1 : q ≫ pullback.fst I.G.G.hom (jK T.V) = r ≫ I.m2.φ` using `(Category.assoc _ _ _).trans e1`. Establish `q2 : q ≫ pullback.snd I.G.G.hom (jK T.V) = r ≫ I.t'.G.hom`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Eq.trans ?_ e4` and prove the remaining obligations. Rewrite using `[← Category.assoc zU, ← e3]`. Use `(Category.assoc _ _ _).trans (Eq.trans (congrArg _ ?_) (Category.assoc _ _ _).symm)` and prove the remaining obligations. Conclude with `(Over.w (snd (TFK (R := T.V) F) ((Over.pullback (jK T.V)).obj I.G.G))).trans (Over.w (fst (TFK (R := T.V) F) ((Over.pullback (jK T.V)).obj I.G.G))).symm`. Establish `qn : q ≫ n = r` using `c2.hom_ext ((Category.assoc _ _ _).trans ((congrArg _ n1).trans q1)) ((Category.assoc _ _ _).trans ((congrArg _ n2).trans q2))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a₁ : sval (extendSec P.U.toUnifPre F k s) zG z J₂ = powVal s q z (J₂ (r ≫ I.m2.φ))` using `(sval_pullOver _ _ _ _ h₂).trans (congrArg (fun t => powVal s q z (J₂ t)) q1)`. Establish `a₂` using `hs Z q z (J₂ (r ≫ I.m2.φ)) j' (by rw [qn]; exact h₂ (r ≫ I.m2.φ)) (by rw [qn]; exact hj)`. Rewrite `a₂` using `[qn]`. Establish `u : zU ≫ (h ▷ Xo.univ.t.G).left = r ≫ g`. Use `hg r _ ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, ← Over.comp_left, whiskerRight_snd, e2]`. Rewrite using `[Category.assoc, ← Over.comp_left, whiskerRight_fst, Over.comp_left, hl, e4]`. Establish `b₁ : sval hh zU z J₁ = powVal F₀ (r ≫ g) z (J₁ (r ≫ I.m1.φ))`. Use `(congrArg (fun t => powVal hh zU z (J₁ t)) e2).trans ((sval_isPullSec hp zU z _ ?_).trans (by rw [u]))` and prove the remaining obligations. Rewrite using `[← e2]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h₁ _`. Establish `b₂` using `hσt Z r z (J₁ (r ≫ I.m1.φ)) j' (h₁ (r ≫ I.m1.φ)) hj`. Use `(congrArg (· * _) (a₁.trans a₂)).trans (Eq.trans ?_ (congrArg (· * _) (b₁.trans b₂)).symm)` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Take `⟨σ₀, h₀⟩` from `exists_extension hϖ hv hQ P.U hk s fun t ht => hν _ t tie ht`.
+Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `u : I.t'.G.left ⟶ pullback I.G.G.hom (jK T.V)` to `pullback.lift I.m2.φ I.t'.G.hom c2.w`. Establish `u1 : u ≫ pullback.fst _ _ = I.m2.φ` using `pullback.lift_fst _ _ _`. Establish `u2 : u ≫ pullback.snd _ _ = I.t'.G.hom` using `pullback.lift_snd _ _ _`. Establish `un : u ≫ n = 𝟙 _` using `c2.hom_ext ((Category.assoc _ _ _).trans ((congrArg _ n1).trans (u1.trans (Category.id_comp _).symm))) ((Category.assoc _ _ _).trans ((congrArg _ n2).trans (u2.trans (Category.id_comp _).symm)))`. Take `⟨σ, hσ⟩` from `exists_of_cast hb I.w2 k σt σ₀ fun Z r z J J' hJ hJ' => by`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `r1 : (r ≫ u) ≫ pullback.fst I.G.G.hom (jK T.V) = r ≫ I.m2.φ` using `by rw [Category.assoc, u1]`. Establish `rn : (r ≫ u) ≫ n = r` using `by rw [Category.assoc, un, Category.comp_id]`. Establish `a₁` using `SectionScalarValuation.secScal_sval h₀ (r ≫ u) z hJ`. Establish `a₂` using `hs Z (r ≫ u) z (J (r ≫ I.m2.φ)) (J' (r ≫ 𝟙 _)) (by rw [rn]; exact hJ (r ≫ I.m2.φ)) (by rw [rn]; exact hJ' (r ≫ 𝟙 _))`. Rewrite `a₂` using `[rn]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `a₁` using `[r1]`. Conclude with `a₁.trans ((congrArg (fun t => powVal s (r ≫ u) z (J t)) r1).trans a₂)`. Use `⟨σ, σt, fun Z r zp e₂ e₁ z J J' hJ hJ' => ?_, hσ⟩` and prove the remaining obligations. Take `rfl` from `hg r zp e₂ e₁`. Conclude with `(congrArg (fun t => powVal F₀ (r ≫ g) z (J t)) e₂).trans (hσt Z r z (J (r ≫ I.m1.φ)) (J' (r ≫ 𝟙 _)) (hJ (r ≫ I.m1.φ)) (hJ' (r ≫ 𝟙 _)))`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem main : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (T : CDVR) (io : c.F →+* T.Fr) (y : IntFr Xo c T io) (I : IntData Xo c T io y.1) (P : PELUnif (maximalIdeal T.V) I.G), P.TorsionIso → ∀ (ϖ : T.V), Irreducible ϖ → ∀ (Q : P.D.toPre.X → ℤ), IsQ P.D.toPre ϖ Q → ∀ (F : Type) [Field F] [IsAlgClosed F] [Algebra T.Fr F] [Algebra T.V F] [IsScalarTower T.V T.Fr F] (v : AddValuation F (WithTop ℚ)), ValOver ϖ F v → ∀ (xF : Sp F ⟶ Xo.X) (h : ptO Xo xF ⟶ ptO Xo (xOf y)), h.left = spMap (algebraMap T.Fr F) → ∀ (k : ℕ) (F₀ : SecN Xo (xOf y) k) (hh : SecN Xo xF k), 1 ≤ k → IsPullSec Xo.univ.t.G Xo.univ.t.PP.L ((k : ℕ) : ℤ) (h ▷ Xo.univ.t.G) (whiskerRight_snd _ _) F₀ hh → (∀ σ s, SecTieF I P F xF k σ hh → P.U.toUnifPre.ExpandsG F k σ s → NuGe P.D Q F v k s 0) → ∃ σ, ReciprocityTheory.ChartRestriction.G.PullbackSections.SecTie I k F₀ σ := by
   intro E _ _ _ H Dw l Xo c T io y I P _ ϖ hϖ Q hQ F _ _ _ _ _ v hv xF h hl k F₀ hh hk hp hν

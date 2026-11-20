@@ -27,7 +27,7 @@ Both sides reduce to the same expression.
 @[simp] lemma divQ_apply (m : Fin r →₀ ℕ) (i : Fin r) : divQ Q m i = m i / Q := rfl
 
 /- English proof (translation)
-Use extensionality with `i`. Simplify using `[modQ, Nat.mod_add_div]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 lemma decomp (hQ : 0 < Q) (m : Fin r →₀ ℕ) : E (modQ hQ m) + Q • divQ Q m = m := by
   ext i

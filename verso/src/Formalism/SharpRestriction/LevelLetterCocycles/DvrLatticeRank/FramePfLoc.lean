@@ -11,7 +11,7 @@ section Coeff
 variable {R : Type} [CommRing R]
 
 /- English proof (translation)
-Take `⟨g, rfl⟩` from `PowerSeries.X_dvd_iff.mpr hf`. Rewrite using `[mul_pow, PowerSeries.coeff_X_pow_mul', if_neg (by omega)]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem framepf_coeff_pow_lt (f : PowerSeries R) (hf : PowerSeries.constantCoeff f = 0) (m j : ℕ)
     (hj : j < m) : PowerSeries.coeff j (f ^ m) = 0 := by
@@ -19,7 +19,7 @@ theorem framepf_coeff_pow_lt (f : PowerSeries R) (hf : PowerSeries.constantCoeff
   rw [mul_pow, PowerSeries.coeff_X_pow_mul', if_neg (by omega)]
 
 /- English proof (translation)
-Take `⟨g, rfl⟩` from `PowerSeries.X_dvd_iff.mpr hf`. Rewrite using `[mul_pow, PowerSeries.coeff_X_pow_mul', if_pos le_rfl, Nat.sub_self, PowerSeries.coeff_zero_eq_constantCoeff_apply, map_pow, PowerSeries.coeff_succ_X_mul, PowerSeries.coeff_zero_eq_constantCoeff_apply]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem framepf_coeff_pow_self (f : PowerSeries R) (hf : PowerSeries.constantCoeff f = 0) (m : ℕ) :
     PowerSeries.coeff m (f ^ m) = PowerSeries.coeff 1 f ^ m := by
@@ -47,9 +47,9 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     (Ct : CmpTie W E ιdR p1 tS zS) (T : LocLat G Qp LL O)
 
 /- English proof (translation)
-Establish `h : ∀ y, ιV PD (LL` using `LL) (V := T.V) y = ((PD.ι.toLinearMap.restrictScalars Qp).lTensor T.V) y := fun y => by`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x b => simp [ιV]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Establish `hi : Function.Injective (PD.ι.toLinearMap.restrictScalars Qp)` using `PD.ι_inj`. Introduce `a b hab`. Rewrite `hab` using `[h, h]`. Conclude with `Module.Flat.lTensor_preserves_injective_linearMap _ hi hab`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem framepf_ιV_inj : Function.Injective (ιV PD (LL := LL) (V := T.V)) := by
   have h : ∀ y, ιV PD (LL := LL) (V := T.V) y =
@@ -64,7 +64,7 @@ theorem framepf_ιV_inj : Function.Injective (ιV PD (LL := LL) (V := T.V)) := b
   exact Module.Flat.lTensor_preserves_injective_linearMap _ hi hab
 
 /- English proof (translation)
-The claim follows from `Ct.levB_Γ T hc g i 1 1 0 1 (by simpa using IsPrimitiveRoot.one) (by simpa using hv) (by simp) x hx k`.
+A detailed English derivation is pending.
 -/
 theorem framepf_levB_gam (hc : IsCrys PD T.ρ) (g : W.Gam)
     (hv : (0 : WithTop ℚ) ≤ v (algebraMap O LL (W.χΓ g : O) - 1)) (i : ZMod n) (x : ↥(W.N T))
@@ -73,15 +73,13 @@ theorem framepf_levB_gam (hc : IsCrys PD T.ρ) (g : W.Gam)
   Ct.levB_Γ T hc g i 1 1 0 1 (by simpa using IsPrimitiveRoot.one) (by simpa using hv) (by simp) x hx k
 
 /- English proof (translation)
-Establish `hx : W.γD T W.gam (x : W.DD T) ∈ W.N T` using `W.N_Γ T W.gam x x.2`. Establish `haw : a • (w : W.DD T) ∈ W.N T` using `(W.N T).smul_mem a w.2`. Establish `hsub : (⟨_, hx⟩ : ↥(W.N T)) - x = ⟨_, haw⟩` using `Subtype.ext (by simp [hxw])`. Establish `hlev` using `congrArg (fun y => Ct.levB T i 1 y r) hsub`. Simplify using `only [map_sub, Pi.sub_apply] at hlev`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `hlev` using `[framepf_levB_gam Ct T hc W.gam hv i x hx r]`. Establish `hzero : Ct.levB T i 1 ⟨_, haw⟩ r = 0`. Use `framepf_ιV_inj (PD := PD) T ?_` and prove the remaining obligations. Rewrite using `[map_zero, ← Ct.levN_eq]`. Establish `: (⟨_, haw⟩ : ↥(W.N T)) = a • w` using `rfl`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this, W.levN_smul]`. Apply `finsum_eq_zero_of_forall_eq_zero` to reduce the goal to its premises. Introduce `j`. Distinguish the cases in `hj : j < R`. Rewrite using `[ha j hj, zero_smul]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hw (r - (j : ℤ)) (by omega), smul_zero]`. Rewrite `hlev` using `[hzero]`. Establish `h2 : ((algebraMap O LL (W.χΓ W.gam : O)) ^ r - 1) • Ct.levB T i 1 x r = 0`. Rewrite using `[sub_smul, one_smul]`. Conclude with `hlev`.
-
-Conclude with `(smul_eq_zero.1 h2).resolve_left (sub_ne_zero.2 (hχ r h1))`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem framepf_levB_zero (hc : IsCrys PD T.ρ) (i : ZMod n)
     (hv : (0 : WithTop ℚ) ≤ v (algebraMap O LL (W.χΓ W.gam : O) - 1))
@@ -112,13 +110,13 @@ theorem framepf_levB_zero (hc : IsCrys PD T.ρ) (i : ZMod n)
   exact (smul_eq_zero.1 h2).resolve_left (sub_ne_zero.2 (hχ r h1))
 
 /- English proof (translation)
-Rewrite using `[Ct.levB_φ T hc i ζ hζ x m hm k, hζ1]`. Unfold `serC`. Use `split_ifs with hk0`. Rewrite using `[finsum_eq_single _ k.toNat]`. Establish `: k - (k.toNat : ℤ) = 0` using `by omega`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, zpow_zero, one_smul]`. Introduce `j hj`. Distinguish the cases in `hjm : j < m`. Rewrite using `[hQ j hjm, zero_smul]`. Distinguish the cases in `hjk : (j : ℤ) < k`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hmid (k - (j : ℤ)) (by omega) (by omega), map_zero, smul_zero, smul_zero]`. Establish `: (j : ℤ) ≠ k` using `fun h => hj (by omega)`. Rewrite using `[hneg (k - (j : ℤ)) (by omega), map_zero, smul_zero, smul_zero]`. Apply `finsum_eq_zero_of_forall_eq_zero` to reduce the goal to its premises. Introduce `j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hneg (k - (j : ℤ)) (by omega), map_zero, smul_zero, smul_zero]`.
+A detailed English derivation is pending.
 -/
 theorem framepf_levB_phi (hc : IsCrys PD T.ρ) (i : ZMod n) (ζ : LL)
     (hζ : ∃ j : ℕ, IsPrimitiveRoot ζ (PD.p ^ j)) (hζ1 : ζ ^ PD.p = 1)
@@ -146,9 +144,9 @@ theorem framepf_levB_phi (hc : IsCrys PD T.ρ) (i : ZMod n) (ζ : LL)
     rw [hneg (k - (j : ℤ)) (by omega), map_zero, smul_zero, smul_zero]
 
 /- English proof (translation)
-Unfold `valAt`. Rewrite using `[dif_pos hex]`. Establish `hm` using `Nat.find_spec hex`. Establish `hC` using `framepf_levB_phi Ct T hc c ζ hζ hζ1 x (Nat.find hex) 1 hm (fun j hj => by rw [map_pow]; exact framepf_coeff_pow_lt _ hQ0 _ _ hj) hneg (fun r h1 h2 => by omega) (Nat.find hex : ℤ) (by omega)`. Rewrite using `[Ct.levN_eq, hC]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Unfold `serC`. Rewrite using `[if_pos (by omega), map_smul, map_pow, Int.toNat_natCast, framepf_coeff_pow_self _ hQ0, smul_smul, inv_mul_cancel₀ (pow_ne_zero _ hQ1), one_smul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem framepf_valAt (hc : IsCrys PD T.ρ) (c : ZMod n) (ζ : LL)
     (hζ : ∃ j : ℕ, IsPrimitiveRoot ζ (PD.p ^ j)) (hζ1 : ζ ^ PD.p = 1)
@@ -169,7 +167,7 @@ theorem framepf_valAt (hc : IsCrys PD T.ρ) (c : ZMod n) (ζ : LL)
     inv_mul_cancel₀ (pow_ne_zero _ hQ1), one_smul]
 
 /- English proof (translation)
-Rewrite using `[framepf_valAt Ct T hc c ζ hζ hζ1 hQ0 hQ1 x hneg ⟨m, hm⟩, Ct.levN_eq, framepf_levB_phi Ct T hc c ζ hζ hζ1 x m R hm (fun j hj => by rw [map_pow]; exact framepf_coeff_pow_lt _ hQ0 _ _ hj) hneg hmid k hk]`. Unfold `serC`. Use `split_ifs`. Rewrite using `[map_smul]`. Rewrite using `[map_zero]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem framepf_levN_phi (hc : IsCrys PD T.ρ) (c : ZMod n) (ζ : LL)
     (hζ : ∃ j : ℕ, IsPrimitiveRoot ζ (PD.p ^ j)) (hζ1 : ζ ^ PD.p = 1)

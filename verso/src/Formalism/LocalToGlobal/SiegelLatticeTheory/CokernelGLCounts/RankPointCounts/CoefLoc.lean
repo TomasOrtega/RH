@@ -17,7 +17,7 @@ variable {D : Formalism.BasicNotions.D7} {M : ∀ p : PlF D, Loc.Model (D.s.atP 
   {what₂ : Finset (Submodule (𝓞 D.host.E) (VS D).V)}
 
 /- English proof (translation)
-Introduce `γ w hγ`. Take `⟨y, hy⟩` from `hN γ w hγ.2 (PCount.eligRel_holds γ w hγ) hγ.1.1`. Conclude with `⟨(w, y), hy⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem normRepElig_of (hN : PairVal.NormRepExists D u u' F0 what₂) : NormRepElig u u' F0 what₂ := by
   intro γ w hγ
@@ -25,9 +25,9 @@ theorem normRepElig_of (hN : PairVal.NormRepExists D u u' F0 what₂) : NormRepE
   exact ⟨(w, y), hy⟩
 
 /- English proof (translation)
-Introduce `γ w hγ p`. Use `⟨fun a b => ?_, hO ⟨δ, M, hA⟩ w (zT γ) (PCount.atMat_zT hN hrows hγ (PCount.eligRel_holds γ w hγ)) p⟩` and prove the remaining obligations. Take `⟨Λ, hΛ, F', hF'⟩` from `dnInDens_of (normRepElig_of hN) hrows γ w hγ`. Establish `hI` using `PI.CntNotIntW.integral_on_pairs_holds D δ M hA u u' hT F0 what₂ hrows Λ hΛ (zT γ) F' hF' p`. Simplify using `only [yT, LsDatumB.sgnP, Matrix.mul_diagonal]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `Subring.mul_mem _ (hI a b) (Subring.pow_mem _ (Subring.neg_mem _ (Subring.one_mem _)) _)`.
+A detailed English derivation is pending.
 -/
 theorem locClsE_of (hA : ∀ p, Agree δ M p) (hT : (D.mem u).A.T ≡ (D.mem u').A.T [MOD (Lat.gS D) ^ 2])
     (hrows : IsRowReps D F0 what₂) (hN : PairVal.NormRepExists D u u' F0 what₂)

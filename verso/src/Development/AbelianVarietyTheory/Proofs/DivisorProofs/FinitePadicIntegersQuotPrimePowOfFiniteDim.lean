@@ -8,9 +8,9 @@ open scoped TensorProduct Classical
 namespace GlobalTheory.LKLoc.IntFin
 
 /- English proof (translation)
-Introduce `p _ L hL m`. Establish `hp : p ≠ 0` using `(Fact.out : p.Prime).ne_zero`. Establish `h` using `ReciprocityTheory.DiscreteGroups.LocalClassField.Euler.card_OK_quot_natCast p L hL (pow_ne_zero m hp)`. Establish `hf : Finite (ReciprocityTheory.DiscreteGroups.LocalClassField.OK p L ⧸ Ideal.span {((p ^ m : ℕ) : ReciprocityTheory.DiscreteGroups.LocalClassField.OK p L)})` using `Nat.finite_of_card_ne_zero (by rw [h]; positivity)`. Move the coercions through the operations in `at hf`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Conclude with `hf`.
+A detailed English derivation is pending.
 -/
 theorem finite_intK_quot_pow : ∀ (p : ℕ) [Fact p.Prime] (L : IntermediateField ℚ_[p] (PadicAlgCl p))
     [FiniteDimensional ℚ_[p] L] (m : ℕ),

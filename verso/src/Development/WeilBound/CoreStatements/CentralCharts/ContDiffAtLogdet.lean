@@ -12,9 +12,9 @@ open ReciprocityTheory.AnForm GlobalTheory.CompanionTheory.Ar Filter Topology Ma
 open scoped ComplexOrder
 
 /- English proof (translation)
-Establish `hdet : ContDiffAt ℝ m (fun u => (Γ u).det) t`. Simplify using `only [Matrix.det_apply]`. Use `ContDiffAt.sum fun σ _ => ?_` and prove the remaining obligations. Use `ContDiffAt.const_smul _ ?_` and prove the remaining obligations. Conclude with `contDiffAt_prod fun i _ => h (σ i) i`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hre : ContDiffAt ℝ m (fun u => (Γ u).det.re) t` using `Complex.reCLM.contDiff.contDiffAt.comp t hdet`. Use `hre.log ?_` and prove the remaining obligations. Establish `hpos` using `hp.det_pos`. Establish `h0 : 0 < (Γ t).det.re` using `(Complex.pos_iff.mp hpos).1`. Conclude with `h0.ne'`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem contDiffAt_logdet {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] {r : ℕ} {m : WithTop ℕ∞}
     {Γ : E → Matrix (Fin r) (Fin r) ℂ} {t : E} (h : ∀ p q, ContDiffAt ℝ m (fun u => Γ u p q) t) (hp : (Γ t).PosDef) :
@@ -35,39 +35,35 @@ theorem contDiffAt_logdet {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] 
 variable {n a : ℕ}
 
 /- English proof (translation)
-Take `⟨ε, c, C, hε, hερ, hc, hC, hB⟩` from `GlobalTheory.T.period_gram_comparison_bound n a₀ k r a Λ L U 0 π ρ hρ hρ1 hU hli (fun i hi => ⟨ha i hi, rfl⟩)`. Use `set G : (Fin n → ℂ) → Matrix (Fin r) (Fin r) ℂ := fun y => HodgeMetric.periodGram L U (HodgeMetric.uncentre 0 ρ π y) with hGdef`. Establish `hpunct : ∀ y : Fin n → ℂ, ‖y‖ < ε → (∀ i : Fin n, (i : ℕ) < a → y i ≠ 0) → HodgeMetric.uncentre 0 ρ π y ∈ Flat.punct n a₀ 1`. Introduce `y hy hy0`. Use `⟨HodgeMetric.uncentre_mem_ball hρ π (by simpa using hy.trans_le hερ), ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i hi`. Simplify using `only [HodgeMetric.uncentre, Pi.zero_apply, sub_zero]`. Conclude with `mul_ne_zero (inv_ne_zero (by exact_mod_cast hρ.ne')) (hy0 _ (ha i hi))`. Establish `hB' : ∀ y : Fin n → ℂ, ‖y‖ < ε → ‖y‖ < 1 → (∀ i : Fin n, (i : ℕ) < a → y i ≠ 0) → ((G y)⁻¹ - (c : ℂ) • 1).PosSemidef ∧ (((C * logR a y : ℝ) : ℂ) • 1 - (G y)⁻¹).PosSemidef ∧ ∀ p q, ‖fderiv ℝ (fun y' => G y' p q) y‖ ≤ C * Real.exp (logR a y / 2)`. Introduce `y hy hy1 hy0`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hB y (by simpa using hy) hy1 (hpunct y hy hy0)`. Establish `hPD : ∀ y : Fin n → ℂ, ‖y‖ < ε → ‖y‖ < 1 → (∀ i : Fin n, (i : ℕ) < a → y i ≠ 0) → (G y).PosDef` using `fun y hy hy1 hy0 => posDef_of_inv_ge hc (hB' y hy hy1 hy0).1`. Apply the tactic sequence `have hentry : ∀ y : Fin n → ℂ, ‖y‖ < ε → (∀ i : Fin n, (i : ℕ) < a → y i ≠ 0) → ∀ p q, ContDiffAt ℝ (⊤ : ℕ∞) (fun u => G u p q) y := by`. Introduce `y hy hy0 p q`. Conclude with `(GlobalTheory.T.period_gram_smooth_punctured n a₀ k r Λ L U hU p q _ (hpunct y hy hy0)).comp y (HodgeMetric.contDiff_uncentre 0 ρ π).contDiffAt`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hgood : ∀ y : Fin n → ℂ, ‖y‖ < ε → ‖y‖ < 1 → (∀ i : Fin n, (i : ℕ) < a → y i ≠ 0) → ∀ᶠ z in 𝓝 y, ‖z‖ < ε ∧ ‖z‖ < 1 ∧ ∀ i : Fin n, (i : ℕ) < a → z i ≠ 0`. Introduce `y hy hy1 hy0`. Use `(continuous_norm.continuousAt.eventually_lt continuousAt_const hy).and ((continuous_norm.continuousAt.eventually_lt continuousAt_const hy1).and ?_)` and prove the remaining obligations. Use `Filter.eventually_all.2 fun i => ?_` and prove the remaining obligations. Distinguish the cases in `hi : (i : ℕ) < a`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hc' : ContinuousAt (fun z : Fin n → ℂ => z i) y` using `(continuous_apply i).continuousAt filter_upwards [hc'.eventually_ne (hy0 i hi)] with z hz _ using hz`. Conclude with `Filter.Eventually.of_forall fun z h => absurd h hi`. Use `tame_of (C₁ := r * (|Real.log c| + |Real.log C| + 1)) (C₂ := 3 * r ^ 4 * (max 1 c⁻¹) ^ 2 * max (max 1 c⁻¹) C * C) (e := 1) hε (by positivity) (by positivity) zero_le_one ?_` and prove the remaining obligations. Introduce `y hy hy1 hy0`. Establish `hB1` using `hB' y hy hy1 hy0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hpd` using `hPD y hy hy1 hy0`. Establish `hR1 : 1 ≤ logR a y` using `one_le_logR hy1 hy0`. Establish `hLL : 1 ≤ Real.log (logR a y)` using `one_le_log_logR hy1 hy0`. Establish `hK : 0 < C * logR a y` using `mul_pos hC (by linarith)`. Apply the tactic sequence `refine ⟨contDiffAt_logdet (Γ := G) (hentry y hy hy0) hpd, ?_, ?_⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hlo` using `logdet_mono (posDef_smul_one (r := r) hc) hpd.inv hB1.1`. Establish `hhi` using `logdet_mono hpd.inv (posDef_smul_one (r := r) hK) hB1.2.1`. Rewrite `hlo` using `[logdet_smul_one hc, logdet_inv hpd]`. Rewrite `hhi` using `[logdet_smul_one hK, logdet_inv hpd, Real.log_mul hC.ne' (by linarith)]`. Establish `hr : (0 : ℝ) ≤ r` using `Nat.cast_nonneg r`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h1 : -|Real.log c| ≤ Real.log c` using `neg_abs_le _`. Establish `h2 : Real.log C ≤ |Real.log C|` using `le_abs_self _`. Establish `h3 : -((r : ℝ) * |Real.log c|) ≤ r * Real.log c`. Use `mul_le_mul_of_nonneg_left h1 hr` as an intermediate fact. Rewrite `this` using `[mul_neg]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `p1 : 0 ≤ (r : ℝ) * |Real.log C|` using `mul_nonneg hr (abs_nonneg _)`. Establish `p2 : 0 ≤ (r : ℝ) * |Real.log c|` using `mul_nonneg hr (abs_nonneg _)`. Establish `p3 : (r : ℝ) * (|Real.log c| + |Real.log C|) ≤ r * (|Real.log c| + |Real.log C|) * Real.log (logR a y)`. Establish `: 0 ≤ (r : ℝ) * (|Real.log c| + |Real.log C|)` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Establish `h4 : (r : ℝ) * Real.log C ≤ r * |Real.log C|` using `mul_le_mul_of_nonneg_left h2 hr`. Establish `h5 : (r : ℝ) * (|Real.log c| + |Real.log C| + 1) ≤ r * (|Real.log c| + |Real.log C| + 1) * Real.log (logR a y)`. Establish `: 0 ≤ (r : ℝ) * (|Real.log c| + |Real.log C| + 1)` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities. Establish `h6 : (r : ℝ) * Real.log (logR a y) ≤ r * (|Real.log c| + |Real.log C| + 1) * Real.log (logR a y)`.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `: 0 ≤ Real.log (logR a y)` using `by linarith`. Establish `: (0 : ℝ) ≤ |Real.log c| + |Real.log C|` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities. Rewrite using `[abs_le]`. Apply the tactic sequence `constructor <;> linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set P : ℝ := max 1 c⁻¹ with hP set Q : ℝ := max P C * Real.exp (logR a y / 2) with hQ`. Establish `hP1 : 1 ≤ P` using `le_max_left _ _`. Establish `hE : 1 ≤ Real.exp (logR a y / 2)` using `Real.one_le_exp (by linarith)`. Establish `hPQ : P ≤ Q`. Establish `: P ≤ max P C` using `le_max_left _ _`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `: 0 ≤ max P C` using `by linarith`. Use the polynomial consequences of the given equalities and inequalities. Apply the tactic sequence `have hd := GlobalTheory.T.gram_matrix_sub_scalar_posSemidef r r (Fin n → ℂ) G (fun _ => (1 : Matrix (Fin r) (Fin r) ℂ)) y (C * logR a y)⁻¹ P Q (inv_pos.2 hK) (by linarith) hPQ (fun p q => ((hentry y hy hy0 p q).differentiableAt (by simp))) (fun p q => differentiableAt_const _) (b …`. Use `⟨hPD z hz.1 hz.2.1 hz.2.2, ?_⟩` and prove the remaining obligations. Establish `h1 : (1 : Matrix (Fin r) (Fin r) ℂ) = ⇑(Pi.basisFun ℂ (Fin r))`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `i j`. Simplify using `[Matrix.one_apply, Pi.single_apply, eq_comm]`. Rewrite using `[Matrix.transpose_one, h1]`. Conclude with `(Pi.basisFun ℂ (Fin r)).linearIndependent)`. Use the proof step `(by`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.conjTranspose_one, Matrix.one_mul, Matrix.mul_one]`. Conclude with `ge_of_inv_le hK hpd hB1.2.1)`. Use the proof step `(fun p q => ⟨(norm_entry_le hpd.posSemidef (le_of_inv_ge hc hpd hB1.1) p q).trans (le_max_right _ _), (hB1.2.2 p q).trans (by`. Establish `: C ≤ max P C` using `le_max_right _ _`. Establish `: 0 ≤ Real.exp (logR a y / 2)` using `by positivity`.
-
-Use the proof step `nlinarith)⟩)`. Use the proof step `(fun p q => ⟨by`. Rewrite using `[Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp <;> linarith,`. Use `by simp [fderiv_const_apply]; linarith⟩)`.
-
-Simplify using `only [Matrix.conjTranspose_one, Matrix.one_mul, Matrix.mul_one] at hd`. Use `hd.trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[Real.rpow_one, hQ, div_inv_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem tame_logdet {a₀ k r : ℕ} {Λ : Type} [AddCommGroup Λ] (L : Flat.LogPeriods n a₀ k Λ)
     (U : Fin r → (Fin n → ℂ) → Fin k → ℂ) (π : Equiv.Perm (Fin n)) (ρ : ℝ) (hρ : 0 < ρ) (hρ1 : ρ ≤ 1)

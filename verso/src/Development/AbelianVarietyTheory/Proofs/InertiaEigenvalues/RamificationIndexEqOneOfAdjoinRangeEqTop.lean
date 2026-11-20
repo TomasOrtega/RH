@@ -8,15 +8,13 @@ namespace GlobalTheory
 open GroundTheory.LocalField IntermediateField
 
 /- English proof (translation)
-Introduce `he hadj`. Take `⟨ζ, hζ, htop⟩` from `exists_isPrimitiveRoot_adjoin_eq_top_of_unramified F E he`. Use `set m := Nat.card 𝓀[E] - 1 with hm_def`. Establish `hmE : (m : 𝓀[E]) ≠ 0` using `natCast_card_residueField_sub_one_ne_zero E`. Establish `hmF : (m : 𝓀[F]) ≠ 0` using `fun h0 ↦ hmE (by rw [← map_natCast (algebraMap 𝓀[F] 𝓀[E]), h0, map_zero])`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmK : (m : 𝓀[K]) ≠ 0` using `fun h0 ↦ hmF ((algebraMap 𝓀[F] 𝓀[K]).injective (by rw [map_natCast, h0, map_zero]))`. Establish `hζ' : IsPrimitiveRoot (algebraMap E L ζ) m` using `hζ.map_of_injective (algebraMap E L).injective`. Establish `hE : Set.range (algebraMap E L) ⊆ Algebra.adjoin K {algebraMap E L ζ}`. Introduce and unpack `_ ⟨e, rfl⟩`. Establish `he' : e ∈ Algebra.adjoin F {ζ}`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[algebra_adjoin_eq_top_of_adjoin_eq_top htop]`. Discharge the goal by the elementary cases of `trivial`. Establish `h1 : algebraMap E L e ∈ (Algebra.adjoin F {ζ}).map (IsScalarTower.toAlgHom F E L)` using `⟨e, he', rfl⟩`. Rewrite `h1` using `[AlgHom.map_adjoin, Set.image_singleton]`. Establish `h2 : Algebra.adjoin F {(IsScalarTower.toAlgHom F E L) ζ} ≤ (Algebra.adjoin K {algebraMap E L ζ}).restrictScalars F` using `Algebra.adjoin_le (by simpa using Algebra.subset_adjoin (R := K) (s := {algebraMap E L ζ}))`.
+Check the elementary cases of the proposition. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h2 h1`. Establish `hadjK : Algebra.adjoin K {algebraMap E L ζ} = ⊤`. Rewrite using `[eq_top_iff, ← hadj]`. Conclude with `Algebra.adjoin_le hE`. Establish `htopK : K⟮algebraMap E L ζ⟯ = ⊤` using `(IntermediateField.adjoin_eq_top_iff (F := K) (E := L)).mpr hadjK`.
-
-Conclude with `ramificationIndex_eq_one_of_adjoin_eq_top hζ' hmK htopK`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ramificationIndex_eq_one_of_adjoin_range_eq_top (F E K L : Type) [Field F] [ValuativeRel F]
     [TopologicalSpace F] [IsNonarchimedeanLocalField F] [Field E] [ValuativeRel E]

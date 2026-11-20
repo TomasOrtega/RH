@@ -21,19 +21,17 @@ namespace GlobalTheory.TowerResNonzero
 variable {D : D7}
 
 /- English proof (translation)
-Use `set P := adj D C * V.gram with hP`. Establish `hinj : Function.Injective (Matrix.toLin' Pᵀ)`. Use `(injective_iff_map_eq_zero _).2 fun a ha => ?_` and prove the remaining obligations. Rewrite `ha` using `[Matrix.toLin'_apply]`. Rewrite `ha` using `[Matrix.mulVec_transpose, hP, ← Matrix.vecMul_vecMul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hG` using `GlobalTheory.LatVac.gram_det_isUnit V`. Establish `h1 : a ᵥ* adj D C = 0`. Use `congrArg (fun v => v ᵥ* V.gram⁻¹) ha` as an intermediate fact. Simplify using `only [Matrix.vecMul_vecMul, Matrix.zero_vecMul] at this`. Rewrite `this` using `[Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hG, Matrix.mul_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `h2 : C *ᵥ star a = 0`. Establish `e : a ᵥ* adj D C = star (C *ᵥ star a)`. Rewrite using `[Matrix.star_mulVec, star_star]`. Both sides reduce to the same expression. Rewrite `h1` using `[e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `star_eq_zero.1 h1`. Establish `h3 : star a = 0`. Use function extensionality and compare the values at `j`. Use `Fintype.linearIndependent_iff.1 hC (star a) ?_ j` and prove the remaining obligations. Use function extensionality and compare the values at `i`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `congrFun h2 i` as an intermediate fact. Simplify using `only [Matrix.mulVec, dotProduct] at this`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Matrix.transpose_apply, Pi.zero_apply] at this ⊢`. Rewrite using `[← this]`. Conclude with `Finset.sum_congr rfl fun j _ => mul_comm _ _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `star_eq_zero.1 h3`. Take `⟨g, hg⟩` from `LinearMap.exists_leftInverse_of_injective (Matrix.toLin' Pᵀ) (LinearMap.ker_eq_bot.2 hinj)`. Use `⟨(LinearMap.toMatrix' g)ᵀ, ?_⟩` and prove the remaining obligations. Establish `e : LinearMap.toMatrix' g * Pᵀ = 1`. Use `congrArg LinearMap.toMatrix' hg` as an intermediate fact.
-
-Rewrite `this` using `[LinearMap.toMatrix'_comp, LinearMap.toMatrix'_toLin', LinearMap.toMatrix'_id]`. Then use the resulting hypothesis. Use `congrArg Matrix.transpose e` as an intermediate fact. Rewrite `this` using `[Matrix.transpose_mul, Matrix.transpose_transpose, Matrix.transpose_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_right_inv {V : HSp D} {r : ℕ} {C : Matrix (Fin V.rank) (Fin r) D.host.E}
     (hC : LinearIndependent D.host.E C.transpose) :
@@ -72,7 +70,7 @@ theorem exists_right_inv {V : HSp D} {r : ℕ} {C : Matrix (Fin V.rank) (Fin r) 
   rwa [Matrix.transpose_mul, Matrix.transpose_transpose, Matrix.transpose_one] at this
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.AdelicMatrixLattice.lattice D (Examples₂.posSpace Examples₂.star_isIntegral m) (Examples₂.posSpace Examples₂.star_isIntegral n)`.
+A detailed English derivation is pending.
 -/
 theorem lattice_ratMx (D : D7) (m n : ℕ) : IsTopologicalAddGroup (Mx D m n) ∧ LocallyCompactSpace (Mx D m n) ∧
     SecondCountableTopology (Mx D m n) ∧ T2Space (Mx D m n) ∧ DiscreteTopology (ratMx D m n) ∧
@@ -80,30 +78,30 @@ theorem lattice_ratMx (D : D7) (m n : ℕ) : IsTopologicalAddGroup (Mx D m n) �
   GlobalTheory.AdelicMatrixLattice.lattice D (Examples₂.posSpace Examples₂.star_isIntegral m) (Examples₂.posSpace Examples₂.star_isIntegral n)
 
 /- English proof (translation)
-The claim follows from `Matrix.add_mul _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem isoPart_add' {V W : HSp D} {r : ℕ} (C : Matrix (Fin V.rank) (Fin r) D.host.E) (y y' : Mx D W.rank r) :
     isoPart V W C (y + y') = isoPart V W C y + isoPart V W C y' :=
   Matrix.add_mul _ _ _
 
 /- English proof (translation)
-The claim follows from `Matrix.zero_mul _`.
+A detailed English derivation is pending.
 -/
 theorem isoPart_zero' {V W : HSp D} {r : ℕ} (C : Matrix (Fin V.rank) (Fin r) D.host.E) :
     isoPart V W C (0 : Mx D W.rank r) = 0 := Matrix.zero_mul _
 
 /- English proof (translation)
-The claim follows from `Matrix.zero_mul _`.
+A detailed English derivation is pending.
 -/
 theorem midPart_zero' {V V' W : HSp D} (B : Matrix (Fin V.rank) (Fin V'.rank) D.host.E) :
     midPart V V' W B (0 : WO V' W) = 0 := Matrix.zero_mul _
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨Q, hQ⟩`. Take `⟨N, hN⟩` from `exists_right_inv (V := V) hC`. Use `⟨Q * N, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(Q * N).map (incA D) = y`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hQ' : Q.map (incA D) = y * (adj D C * V.gram).map (incA D)` using `hQ`. Rewrite using `[Matrix.map_mul, hQ', Matrix.mul_assoc, ← Matrix.map_mul, hN, Matrix.map_one _ (map_zero _) (map_one _), Matrix.mul_one]`. Introduce and unpack `⟨γ₀, rfl⟩`. Conclude with `⟨γ₀ * (adj D C * V.gram), by show (γ₀ * (adj D C * V.gram)).map (incA D) = _`. Rewrite using `[Matrix.map_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem isoPart_mem_iff {V W : HSp D} {r : ℕ} {C : Matrix (Fin V.rank) (Fin r) D.host.E}
     (hC : LinearIndependent D.host.E C.transpose) (y : Mx D W.rank r) :
@@ -122,27 +120,21 @@ theorem isoPart_mem_iff {V W : HSp D} {r : ℕ} {C : Matrix (Fin V.rank) (Fin r)
       rw [Matrix.map_mul]; rfl⟩
 
 /- English proof (translation)
-Introduce `D V V' W r C B hs hF ψ hψ μ 𝓨 h`. Take `⟨f₀, hf₀, hne₀⟩` from `GlobalTheory.Mem.ThetaNonzero.exists_thetaO_ne_zero hψ V W`. Choose the witnesses or unpack the hypotheses as in `⟨x₀, hx₀⟩ : ∃ x, f₀ x ≠ 0 := by`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Conclude with `hne₀ (funext hc)`. Establish `hf₁ : IsThetaFunO ψ V W (heisO ψ V W x₀ f₀)` using `GlobalTheory.ThetaClosed.isThetaFunO_heisO_all hψ hf₀ x₀`. Establish `h0 : heisO ψ V W x₀ f₀ 0 ≠ 0`. Simplify using `only [heisO, zero_add, GlobalTheory.FinTranslate.symplOH_zero_left, AddChar.map_zero_eq_one, one_mul]`. Conclude with `hx₀`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hiso : ∀ y y' : Mx D W.rank r, symplOH V W (isoPart V W C y) (isoPart V W C y') = 0` using `fun y y' => by`. Use `hF y y' 0 0` as an intermediate fact. Rewrite `this` using `[midPart_zero', add_zero, add_zero, GlobalTheory.FinTranslate.symplOH_zero_left]`. Then use the resulting hypothesis. Establish `hc : ∀ (g : WO V W → ℂ), IsThetaFunO ψ V W g → ∀ a ∈ ratL W V, ∀ z, heisO ψ V W a g z = ψ (symplO V W z a) * g z`. Introduce `g hg a ha z`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `GlobalTheory.ThetaCoefficient.char_mul_heisO hg ha 0 z` as an intermediate fact. Simplify using `only [heisO, GlobalTheory.FinTranslate.symplOH_zero_right, add_zero, AddChar.map_zero_eq_one, one_mul] at this`. Conclude with `this.symm`. Use `by_contra fun hall => ?_` and prove the remaining obligations. Use `push_neg at hall`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take `⟨i1, i2, i3, i4, i5, K, hK, hKc⟩` from `lattice_ratMx D W.rank r`. Establish `: BorelSpace (Mx D W.rank r)` using `⟨rfl⟩`. Establish `hcont : Continuous (isoPart V W C : Mx D W.rank r → WO V W)` using `continuous_id.matrix_mul continuous_const`. Establish `key` using `GlobalTheory.SeparatingCharacters.eq_zero_of_coefficients_eq_zero (Mx D W.rank r) (ratMx D W.rank r) K hK hKc (ratL W V) (fun a y => ψ (symplO V W (isoPart V W C y) a)) (fun a => by`. Simplify using `only [GlobalTheory.ThetaCoefficient.symplO_eq]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hψ.1.1.comp (((GlobalTheory.FinTranslate.continuous_symplOH V W _).comp hcont).add ((GlobalTheory.FinTranslate.continuous_symplOH V W _).comp hcont)))`. Use the proof step `(fun a x y => by`. Simplify using `only [isoPart_add', GlobalTheory.ThetaCoefficient.symplO_eq, GlobalTheory.FinTranslate.symplOH_add_left, ← AddChar.map_add_eq_mul]`. Rewrite using `[add_add_add_comm])`. Use the proof step `(fun a b x => by show ψ (symplO V W (isoPart V W C x) (a + b)) = _`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [GlobalTheory.ThetaCoefficient.symplO_eq, GlobalTheory.FinTranslate.symplOH_add_right, ← AddChar.map_add_eq_mul]`. Rewrite using `[add_add_add_comm])`. Use the proof step `(fun x => by show ψ (symplO V W (isoPart V W C x) 0) = 1`. Rewrite using `[GlobalTheory.ThetaCoefficient.symplO_eq, GlobalTheory.FinTranslate.symplOH_zero_right, add_zero, AddChar.map_zero_eq_one])`. Use the proof step `(fun a x => hψ.1.2.1 _)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use the proof step `(fun y => by`. Rewrite using `[← isoPart_mem_iff hs.frame.2.1 y, ← GlobalTheory.RatAnnih.ratL_annihilator D ψ hψ V W]`. Conclude with `Subtype.forall)`. Use `μ 𝓨 h.1 h.2.1 (fun y => heisO ψ V W x₀ f₀ (isoPart V W C y)) (hf₁.cont.comp hcont)`. Use the proof step `(fun γ hγ y => by`.
-
-Take `⟨γ₀, hγ₀⟩` from `(isoPart_mem_iff (V := V) hs.frame.2.1 γ).2 hγ`. Establish `e` using `hf₁.quasi γ₀ (isoPart V W C y)`. Express the relevant statement in the definitionally equal form `ratW W V γ₀ = isoPart V W C γ at hγ₀`. Rewrite `e` using `[hγ₀, hiso, neg_zero, AddChar.map_zero_eq_one, one_mul]`. Simplify using `only [isoPart_add']`.
-
-Conclude with `e)`. Use the proof step `(fun a => by`. Establish `e` using `congrFun (hall _ (GlobalTheory.ThetaClosed.isThetaFunO_heisO_all hψ hf₁ (a : WO V W))) 0`. Simplify using `only [res, midPart_zero', add_zero, Pi.zero_apply] at e`. Rewrite using `[← e]`.
-
-Conclude with `integral_congr_ae (Filter.Eventually.of_forall fun y => (hc _ hf₁ a a.2 _).symm))`. Use `congrFun key 0` as an intermediate fact. Simplify using `only [isoPart_zero', Pi.zero_apply] at this`. Conclude with `h0 this`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_res_ne_zero : ∀ (D : D7) (V V' W : HSp D) (r : ℕ) (C : Matrix (Fin V.rank) (Fin r) D.host.E) (B : Matrix (Fin V.rank) (Fin V'.rank) D.host.E), IsIsoSplit V V' C B → (∀ (y y' : Mx D W.rank r) (x x' : WO V' W), symplOH V W (isoPart V W C y + midPart V V' W B x) (isoPart V W C y' + midPart V V' W B x') = symplOH V' W x x') → ∀ (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (μ : Measure (Mx D W.rank r)) (𝓨 : Set (Mx D W.rank r)), IsCovolOne (ratMx D W.rank r) μ 𝓨 → ∃ f, IsThetaFunO ψ V W f ∧ res V V' W C B μ 𝓨 f ≠ 0 := by
   intro D V V' W r C B hs hF ψ hψ μ 𝓨 h

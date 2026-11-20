@@ -16,7 +16,7 @@ noncomputable section
 namespace GlobalTheory.FieldPair.TensorTower
 
 /- English proof (translation)
-Use `haveI : IsDomain A := hi.isDomain (algebraMap A F)`. Use `⟨fun y => ?_, fun z => ?_, fun {x y} e => ⟨1, by simp [hi e]⟩⟩` and prove the remaining obligations. Conclude with `(map_ne_zero_iff _ hi).2 (nonZeroDivisors.ne_zero y.2) |>.isUnit`. Take `⟨x, y, hy, e⟩` from `hs z`. Conclude with `⟨⟨x, y, mem_nonZeroDivisors_of_ne_zero fun h => hy (by simp [h])⟩, e⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isFractionRing_of_injective {A F : Type} [CommRing A] [Field F] [Algebra A F]
     (hi : Function.Injective (algebraMap A F))
@@ -29,7 +29,7 @@ theorem isFractionRing_of_injective {A F : Type} [CommRing A] [Field F] [Algebra
     exact ⟨⟨x, y, mem_nonZeroDivisors_of_ne_zero fun h => hy (by simp [h])⟩, e⟩
 
 /- English proof (translation)
-The claim follows from `isFractionRing_of_injective Subtype.val_injective fun z => by obtain ⟨a, ha, b, hb, hb0, e⟩ := h z exact ⟨⟨a, ha⟩, ⟨b, hb⟩, hb0, e⟩`.
+A detailed English derivation is pending.
 -/
 theorem isFractionRing_subring {K : Type} [Field K] (R : Subring K)
     (h : ∀ f : K, ∃ a ∈ R, ∃ b ∈ R, b ≠ 0 ∧ f * b = a) : IsFractionRing R K :=
@@ -38,13 +38,11 @@ theorem isFractionRing_subring {K : Type} [Field K] (R : Subring K)
     exact ⟨⟨a, ha⟩, ⟨b, hb⟩, hb0, e⟩
 
 /- English proof (translation)
-Use `haveI := hB.isLocalRing`. Set `c0 : ℂ →+* B` to `(algebraMap ℂ κ).codRestrict B hB.const_mem`. Set `g : ℂ →+* IsLocalRing.ResidueField B` to `(IsLocalRing.residue B).comp c0`. Establish `key : ∀ (b : B) (a : ℂ), NonUnit B ((b : κ) - algebraMap ℂ κ a) ↔ IsLocalRing.residue B b = g a` using `fun b a => by`. Rewrite using `[show (b : κ) - algebraMap ℂ κ a = ((b - c0 a : B) : κ) from rfl, nonUnit_iff, ← mem_nonunits_iff, ← IsLocalRing.mem_maximalIdeal]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show _ ↔ Ideal.Quotient.mk _ b = Ideal.Quotient.mk _ (c0 a)`. Rewrite using `[Ideal.Quotient.eq]`. Establish `hbij : Function.Bijective g` using `⟨g.injective, fun y => by`. Take `⟨b, rfl⟩` from `IsLocalRing.residue_surjective y`. Take `⟨a, ha⟩` from `hr b b.2`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Conclude with `⟨a, ((key b a).1 ha).symm⟩⟩`. Set `e` to `RingEquiv.ofBijective g hbij`. Use `⟨e.symm.toRingHom.comp (IsLocalRing.residue B), fun b a => ?_⟩` and prove the remaining obligations. Rewrite using `[key]`. Use `show _ ↔ e.symm _ = a`.
-
-Rewrite using `[e.symm_apply_eq]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_residue {κ : Type} [Field κ] [Algebra ℂ κ] (B : Subring κ)
     (hB : IsLocModel (algebraMap ℂ κ) B) (hr : RatRes (algebraMap ℂ κ) B) :
@@ -70,43 +68,31 @@ theorem exists_residue {κ : Type} [Field κ] [Algebra ℂ κ] (B : Subring κ)
   rfl
 
 /- English proof (translation)
-Introduce `K κ L _ _ _ _ _ _ _ _ _ R B hB r τ hR hRn hRr hBr hm he`. Use `haveI := hR.isLocalRing`. Use `haveI := hB.isLocalRing`. Use `letI iR : Algebra ℂ R := ((algebraMap ℂ K).codRestrict R hR.const_mem).toAlgebra`. Use `letI iB : Algebra ℂ B := ((algebraMap ℂ κ).codRestrict B hB.const_mem).toAlgebra`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Equip the data with the indicated structure.
 
-Use `haveI : IsScalarTower ℂ R K := IsScalarTower.of_algebraMap_eq' rfl`. Use `haveI : IsScalarTower ℂ B κ := IsScalarTower.of_algebraMap_eq' rfl`. Use `haveI : IsFractionRing R K := isFractionRing_subring R hR.frac`. Use `haveI : IsFractionRing B κ := isFractionRing_subring B hB.frac`. Take `⟨hinj, hsurj⟩` from `GlobalTheory.T.isFractionRing_tensor_of_fraction_fields (k := ℂ) (R := R) (B := B) (K := K) (κ := κ) (L := L)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Use `set f := (algebraMap (K ⊗[ℂ] κ) L).comp (Algebra.TensorProduct.map (IsScalarTower.toAlgHom ℂ R K) (IsScalarTower.toAlgHom ℂ B κ)).toRingHom with hf`. Use `letI iA : Algebra (R ⊗[ℂ] B) L := f.toAlgebra`. Use `haveI : IsFractionRing (R ⊗[ℂ] B) L := isFractionRing_of_injective hinj hsurj`. Use `haveI : IsDomain (R ⊗[ℂ] B) := hinj.isDomain f`. Use `haveI : Nontrivial (R ⊗[ℂ] B) := IsDomain.toNontrivial`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hft : ∀ (a : R) (b : B), algebraMap (R ⊗[ℂ] B) L (a ⊗ₜ b) = algebraMap (K ⊗[ℂ] κ) L ((a : K) ⊗ₜ (b : κ))` using `fun a b => rfl`. Take `⟨ev, hev⟩` from `exists_residue B hB hBr`. Establish `hevc : ∀ a : ℂ, ev (algebraMap ℂ B a) = a` using `fun a => (hev _ a).1 (by`. Rewrite using `[show ((algebraMap ℂ B a : B) : κ) = algebraMap ℂ κ a from rfl, sub_self]`. Conclude with `nonUnit_zero B)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `ev' : B →ₐ[ℂ] ℂ` to `{ ev with commutes' := hevc }`. Set `φ : R ⊗[ℂ] B →ₐ[ℂ] R` to `Algebra.TensorProduct.lift (AlgHom.id ℂ R) ((Algebra.ofId ℂ R).comp ev') (fun _ _ => Commute.all _ _)`. Establish `hφ : ∀ (a : R) (b : B), φ (a ⊗ₜ b) = a * algebraMap ℂ R (ev b)` using `fun a b => by`. Simplify using `[φ, ev']`. Set `q : Ideal (R ⊗[ℂ] B)` to `(IsLocalRing.maximalIdeal R).comap φ`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `haveI : q.IsPrime := Ideal.comap_isPrime _ _`. Establish `hq : q.primeCompl ≤ nonZeroDivisors (R ⊗[ℂ] B)` using `q.primeCompl_le_nonZeroDivisors`. Set `A : Subalgebra (R ⊗[ℂ] B) L` to `Localization.subalgebra.ofField L q.primeCompl hq`. Use `haveI hA : IsLocalization q.primeCompl A := Localization.subalgebra.isLocalization_ofField L _ hq`. Establish `hu : ∀ y : q.primeCompl, IsUnit (φ.toRingHom y)` using `fun y => by`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Assume the negation of the conclusion as `hy`. Conclude with `y.2 (show (y : R ⊗[ℂ] B) ∈ q from (IsLocalRing.mem_maximalIdeal _).2 hy)`. Set `ψ : A →+* R` to `IsLocalization.lift hu`. Establish `hψ : ∀ x, ψ (algebraMap _ A x) = φ x` using `IsLocalization.lift_eq hu`. Set `a : R ⊗[ℂ] B →+* A` to `algebraMap _ A`.
+Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Establish `ha : ∀ x, (a x : L) = algebraMap (R ⊗[ℂ] B) L x` using `fun x => rfl`. Set `ι : R →+* A` to `a.comp Algebra.TensorProduct.includeLeftRingHom`. Set `j : B →+* A` to `a.comp Algebra.TensorProduct.includeRight.toRingHom`. Establish `hcL : ∀ z : ℂ, algebraMap (R ⊗[ℂ] B) L (algebraMap ℂ _ z) = algebraMap ℂ L z` using `fun z => by`. Rewrite using `[Algebra.TensorProduct.algebraMap_apply, hft, IsScalarTower.algebraMap_apply ℂ (K ⊗[ℂ] κ) L, Algebra.TensorProduct.algebraMap_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hcl : ∀ x, a x ∈ Subring.closure (Set.range ι ∪ Set.range j)` using `fun x => by`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x y`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e : a (x ⊗ₜ y) = ι x * j y`. Simplify using `[ι, j, ← map_mul, Algebra.TensorProduct.tmul_mul_tmul]`. Rewrite using `[e]`. Conclude with `Subring.mul_mem _ (Subring.subset_closure (Or.inl ⟨x, rfl⟩)) (Subring.subset_closure (Or.inr ⟨y, rfl⟩))`. Consider the case `add x y hx hy => rw [map_add]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `Subring.add_mem _ hx hy`. Establish `hmem : ∀ z : ℂ, algebraMap ℂ L z ∈ A.toSubring` using `fun z => by`. Rewrite using `[← hcL]`. Conclude with `A.algebraMap_mem _`. Establish `hevτ : ∀ i, ev (τ i) = 0` using `fun i => by`.
+Establish an intermediate fact. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `(hev _ 0).1 ?_` and prove the remaining obligations. Rewrite using `[map_zero, sub_zero]`. Use `(nonUnit_iff (τ i)).2 fun hu => ?_` and prove the remaining obligations. Establish `: τ i ∈ IsLocalRing.maximalIdeal B`. Rewrite using `[hm]`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Conclude with `Ideal.subset_span ⟨i, rfl⟩`. Conclude with `(IsLocalRing.mem_maximalIdeal _).1 this hu`. Use `⟨A.toSubring, ι, ψ, j, ⟨hR, hRn, ⟨hmem, IsLocalization.AtPrime.isLocalRing A q, ?_, ?_⟩, fun z => ?_, fun x => ?_, fun i => ?_, ?_⟩, fun x => rfl, fun y => rfl, fun b z hbz => ?_, fun t => ?_⟩` and prove the remaining obligations. Establish `e : (algebraMap ℂ L).codRestrict A.toSubring hmem = a.comp (algebraMap ℂ (R ⊗[ℂ] B))` using `RingHom.ext fun z => Subtype.ext (hcL z).symm`. Rewrite using `[e]`.
-
-Use `haveI : Algebra.EssFiniteType ℂ R := RingHom.essFiniteType_algebraMap.1 hR.essFiniteType`. Use `haveI : Algebra.EssFiniteType ℂ B := RingHom.essFiniteType_algebraMap.1 hB.essFiniteType`. Use `haveI : Algebra.EssFiniteType ℂ (R ⊗[ℂ] B) := Algebra.EssFiniteType.comp ℂ R _`. Establish `h1 : (algebraMap (R ⊗[ℂ] B) A).EssFiniteType` using `RingHom.essFiniteType_algebraMap.2 (Algebra.EssFiniteType.of_isLocalization A q.primeCompl)`. Establish `h2 : (algebraMap ℂ (R ⊗[ℂ] B)).EssFiniteType` using `RingHom.essFiniteType_algebraMap.2 inferInstance`.
-
-Conclude with `h2.comp h1`. Introduce `z`. Take `⟨x, y, hy, rfl⟩` from `IsFractionRing.div_surjective (A := R ⊗[ℂ] B) z`. Establish `hy' : algebraMap (R ⊗[ℂ] B) L y ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors hy`. Conclude with `⟨_, A.algebraMap_mem x, _, A.algebraMap_mem y, hy', div_mul_cancel₀ _ hy'⟩`.
-
-Conclude with `(ha _).trans (hcL z)`. Use `show ψ (a (x ⊗ₜ 1)) = x`. Rewrite using `[hψ, hφ, map_one, map_one, mul_one]`. Use `show ψ (a (1 ⊗ₜ τ i)) = 0`. Rewrite using `[hψ, hφ, hevτ, map_zero, mul_zero]`.
-
-Establish `e : MvPolynomial.eval₂Hom ι (fun i => j (τ i)) = a.comp (MvPolynomial.eval₂Hom (Algebra.TensorProduct.includeLeftRingHom : R →+* R ⊗[ℂ] B) (fun i => (1 : R) ⊗ₜ[ℂ] τ i))`. Apply the tactic sequence `ext x <;> simp [ι, j]`. Rewrite using `[e]`. Establish `h1 : (algebraMap (R ⊗[ℂ] B) A).FormallyEtale` using `RingHom.formallyEtale_algebraMap.2 (Algebra.FormallyEtale.of_isLocalization q.primeCompl)`. Conclude with `(GlobalTheory.T.formallyEtale_baseChange_eval_hom τ he).comp h1`.
-
-Use `show ((ψ (a (1 ⊗ₜ b)) : R) : K) = _`. Rewrite using `[hψ, hφ, one_mul, (hev b z).1 hbz]`. Both sides reduce to the same expression. Take `⟨⟨x, y⟩, e⟩` from `IsLocalization.surj q.primeCompl (S := A) t`. Use `⟨a x, a y, hcl x, hcl y, ?_, congrArg Subtype.val e⟩` and prove the remaining obligations.
-
-Rewrite using `[hψ]`. Conclude with `hu y`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isEtTower_tensor : ∀ {K κ L : Type} [Field K] [Field κ] [Field L] [Algebra ℂ K] [Algebra ℂ κ] [Algebra ℂ L]
     [Algebra (K ⊗[ℂ] κ) L] [IsScalarTower ℂ (K ⊗[ℂ] κ) L] [IsFractionRing (K ⊗[ℂ] κ) L]

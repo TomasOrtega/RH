@@ -14,17 +14,17 @@ noncomputable section
 namespace GlobalTheory.FunObj
 
 /- English proof (translation)
-Take `⟨hn, A, hA⟩` from `h`. Set `e : Fin n ≃ Fin r ⊕ Fin s` to `(finCongr hn.symm).trans finSumFinEquiv.symm`. Set `P : Matrix (Fin r ⊕ Fin s) (Fin r ⊕ Fin s) ℂ` to `A.submatrix e.symm id`. Establish `h2` using `congrArg (fun X => X.map (starRingEnd ℂ)) hA`. Simplify using `only [Matrix.map_mul, Matrix.transpose_map, Matrix.map_map, Matrix.fromBlocks_map] at h2`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hc : (starRingEnd ℂ) ∘ (starRingEnd ℂ) = id` using `funext fun z => Complex.conj_conj z`. Establish `hc' : (starRingEnd ℂ) ∘ (star : ℂ → ℂ) = id` using `funext fun z => Complex.conj_conj z`. Simplify using `only [hc, hc', Matrix.map_id] at h2`. Establish `key : (A.map (starRingEnd ℂ))ᵀ * M * A = Formalism.UG.Jpq r s`. Rewrite using `[Formalism.UG.Jpq, h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use extensionality with `a b`. Simplify using `[Matrix.one_apply]`. Use extensionality with `a b`. Simplify using the standard rewrite rules.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `a b`. Simplify using the standard rewrite rules. Use extensionality with `a b`. Simplify using `[Matrix.one_apply]`. Establish `key2 : Formalism.UG.cT (starRingEnd ℂ) P * Matrix.reindex e e M * P = Formalism.UG.Jpq r s`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← key, Formalism.UG.cT, Matrix.reindex_apply]`. Establish `hm : (A.submatrix e.symm id).map (starRingEnd ℂ) = (A.map (starRingEnd ℂ)).submatrix e.symm id` using `rfl`. Simplify using `only [P, hm, Matrix.transpose_submatrix]`. Rewrite using `[Matrix.submatrix_mul_equiv, Matrix.submatrix_mul_equiv, Matrix.submatrix_id_id]`. Establish `hinv : (Formalism.UG.Jpq r s * (Formalism.UG.cT (starRingEnd ℂ) P * Matrix.reindex e e M)) * P = 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Matrix.mul_assoc, key2, Formalism.UG.Jpq, Matrix.fromBlocks_multiply]`. Simplify using the standard rewrite rules. Conclude with `⟨e, ⟨P, _, mul_eq_one_comm.mp hinv, hinv⟩, key2⟩`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem hasSignature_of_hasSig_conj {n r s : ℕ} {M : Matrix (Fin n) (Fin n) ℂ}
     (h : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.HasSig (M.map (starRingEnd ℂ)) r s) : Formalism.UG.HasSignature M r s := by
@@ -54,13 +54,13 @@ theorem hasSignature_of_hasSig_conj {n r s : ℕ} {M : Matrix (Fin n) (Fin n) �
   exact ⟨e, ⟨P, _, mul_eq_one_comm.mp hinv, hinv⟩, key2⟩
 
 /- English proof (translation)
-Introduce `D T L sc G W t i j hT M hM`. Take `⟨e, Bs, Γ, X, om, om', h, hTr, -⟩` from `hT.of_forall hM`. Use `⟨Γ.p, ?_, ?_⟩` and prove the remaining obligations. Take `⟨w⟩ : Nonempty (InfinitePlace D.host.F)` from `inferInstance`. Take `⟨τ, hτ, -⟩` from `h.cart w`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨τ, hasSignature_of_hasSig_conj ?_⟩` and prove the remaining obligations. Establish `hs` using `hTr.geo.hV.sig w`. Rewrite `hs` using `[h.JW, one_smul]`. Establish `hmap : (G.V (.grid (↑i + 1) (↑j + 1))).gram.map (Bs.emb w).1 = (gramAt D _ τ).map (starRingEnd ℂ)`. Use extensionality with `a b`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[gramAt, hτ]`. Rewrite `hs` using `[hmap]`. Conclude with `hs`. Establish `hc` using `Fintype.card_congr e`. Simplify using `only [Fintype.card_sum, Fintype.card_fin] at hc`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hb` using `hTr.geo.eBig`. Establish `hl` using `hTr.geo.lt`. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.spW, GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.spW₁, GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.spV, GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.spV₁] at hc hb hl`. Use `show (G.V (.grid (↑i) (↑j + 1))).rank + (G.V (.grid (↑i + 1) ↑j)).rank < _`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Simplify by unfolding definitions. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem squareTriple_sig_rank : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} (W : G.Weil) (t : T) (i j : Fin D.R.m)
     (hT : SquareTriple W t i j) (M : Vol G) (hM : M.Is t),

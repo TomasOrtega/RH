@@ -15,11 +15,11 @@ open GlobalTheory.CompanionTheory.FexTheta
 namespace GlobalTheory.CompanionTheory.FexThetaMeas
 
 /- English proof (translation)
-Consider the cases of `L with`. Consider the case `ns w σ η Φ => exact continuous_const`. Consider the case `sp w₁ w₂ Φ`. Take `⟨-, hlc, hcs⟩` from `hL`. Establish `hψ : IsStd (GP.psiF v)` using `GlobalTheory.CompanionTheory.StdCharQ.stdChar v`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨hχc, hχ1, -⟩` from `(GlobalTheory.CompanionTheory.StdAddChar.isStd_inv_and_trivial_and_nontrivial (Qv v) _ hψ).1`. Establish `hf` using `(GlobalTheory.CompanionTheory.SplitPi.piS_mem hχc hχ1 (cAt c v w₁) (show Φ ∈ GL2LocalData.SBE (Qv v × Qv v) from ⟨hlc, hcs⟩) g).1`. Establish `hτ : Continuous (fun τ : (Qv v)ˣ => (dg1 v w₁ ξ, dg1 v w₂ ξ) * ((τ : Qv v), ((τ⁻¹ : (Qv v)ˣ) : Qv v)))` using `continuous_const.mul (Units.continuous_val.prodMk (Units.continuous_val.comp continuous_inv))`. Establish `e : (fun τ : (Qv v)ˣ => ((LM.sp w₁ w₂ Φ : LM c v).tw τ).val g ξ) = fun τ : (Qv v)ˣ => GL2LocalData.piS (GP.psiF v)⁻¹ (cAt c v w₁) g Φ ((dg1 v w₁ ξ, dg1 v w₂ ξ) * ((τ : Qv v), ((τ⁻¹ : (Qv v)ˣ) : Qv v)))`. Use function extensionality and compare the values at `τ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `GlobalTheory.CompanionTheory.SplitTorus.piS_torus (Qv v) _ hχc hχ1 (cAt c v w₁) g Φ τ _`. Rewrite using `[e]`. Conclude with `hf.continuous.comp hτ`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_val_tw (K : Type) [Field K] [NumberField K] (c : HeckeCharacter K) (v : Pl)
     (L : LM c v) (hL : L.ok) (g : GL (Fin 2) (Qv v)) (ξ : K) :
@@ -45,14 +45,14 @@ theorem continuous_val_tw (K : Type) [Field K] [NumberField K] (c : HeckeCharact
     exact hf.continuous.comp hτ
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.CompanionTheory.CtMeas.continuous_ct L).mul (continuous_val_tw K c v L hL g ξ)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_fL (K : Type) [Field K] [NumberField K] (c : HeckeCharacter K) (v : Pl)
     (L : LM c v) (hL : L.ok) (g : GL (Fin 2) (Qv v)) (ξ : K) : Continuous (fL L g ξ) :=
   (GlobalTheory.CompanionTheory.CtMeas.continuous_ct L).mul (continuous_val_tw K c v L hL g ξ)
 
 /- English proof (translation)
-Introduce `K _ _ _ c v L hL g ξ`. Conclude with `(continuous_fL K c v L hL g ξ).measurable`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem measurable_fL : ∀ (K : Type) [Field K] [NumberField K], Module.finrank ℚ K = 2 →
     ∀ (c : HeckeCharacter K) (v : Pl) (L : LM c v),

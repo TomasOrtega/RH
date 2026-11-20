@@ -17,15 +17,15 @@ set_option autoImplicit false in
 variable {p : ℕ} {R : Type} [CommRing R] (G : _root_.GlobalTheory.PDivGroup p R) in
 
 /- English proof (translation)
-Use `set f := G.mulP n`. Use `set ρ := G.resOne n`. Establish `hcomul : comul x = x ⊗ₜ[R] 1 + 1 ⊗ₜ[R] x + TensorProduct.map (f : G.A n →ₗ[R] G.A (n + 1)) (f : G.A n →ₗ[R] G.A (n + 1)) t`. Use `h` as an intermediate fact. Unfold `_root_.GlobalTheory.PDiv.cobOne _root_.GlobalTheory.PDiv.pullbackTwo at this`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [LinearMap.sub_apply, LinearMap.flip_apply, TensorProduct.mk_apply] at this`. Rewrite using `[← this]`. Normalize the expressions using the abelian group laws. Establish `hε : counit x = (0 : R)`. Use `CoalgHomClass.counit_comp_apply ρ x` as an intermediate fact.
+Normalize the expressions using the abelian group laws. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[h1, map_zero]`. Conclude with `this.symm`. Establish `hρf : (ρ : G.A (n + 1) →ₗ[R] G.A 1) ∘ₗ (f : G.A n →ₗ[R] G.A (n + 1)) = Algebra.linearMap R _ ∘ₗ counit`. Use extensionality with `a`. Conclude with `_root_.GlobalTheory.PDivGroup.resOne_mulP G n a`.
+By extensionality, compare the relevant components. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hεf : (counit : _ →ₗ[R] R) ∘ₗ (f : G.A n →ₗ[R] G.A (n + 1)) = counit`. Use extensionality with `a`. Conclude with `CoalgHomClass.counit_comp_apply f a`. Establish `hzero : TensorProduct.map (f : G.A n →ₗ[R] G.A (n + 1)) (counit : _ →ₗ[R] R) t = 0`. Use `congrArg (LinearMap.lTensor _ (counit : _ →ₗ[R] R)) hcomul` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `this` using `[Coalgebra.lTensor_counit_comul, map_add, map_add, LinearMap.lTensor_tmul, LinearMap.lTensor_tmul, hε, counit_one, ← LinearMap.comp_apply, LinearMap.lTensor_comp_map, hεf, tmul_zero, add_zero]`. Simplify using `using this`. Rewrite using `[_root_.GlobalTheory.PDivGroup.transl_apply, hcomul, map_add, map_add, LinearMap.lTensor_tmul, LinearMap.lTensor_tmul, ← LinearMap.comp_apply, LinearMap.lTensor_comp_map, hρf, ← LinearMap.lTensor_comp_map, LinearMap.comp_apply, hzero, map_zero, add_zero]`. Establish `h1' : G.resOne n x = 0` using `h1`. Simplify using `[h1']`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.PDivGroup.transl_eq_of_cobOne_eq_pullTwo (n : ℕ) (x : G.A (n + 1))
     (t : G.A n ⊗[R] G.A n)
@@ -73,21 +73,19 @@ open TensorProduct Coalgebra Bialgebra CategoryTheory WithConv in
 set_option autoImplicit false in
 
 /- English proof (translation)
-Introduce `p _ R _ G c B hB hB1`. Establish `hcobf : ∀ {m m' : ℕ} (f : G.A m →ₐc[R] G.A m') (a), _root_.GlobalTheory.PDiv.cobOne R _ (f a) = _root_.GlobalTheory.PDiv.pullbackTwo f (_root_.GlobalTheory.PDiv.cobOne R _ a)`. Introduce `m m' f a`. Unfold `_root_.GlobalTheory.PDiv.cobOne _root_.GlobalTheory.PDiv.pullbackTwo`. Simplify using `only [LinearMap.sub_apply, LinearMap.flip_apply, TensorProduct.mk_apply, map_sub, TensorProduct.map_tmul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Rewrite using `[← CoalgHomClass.map_comp_comul_apply f a]`. Simplify using the standard rewrite rules. Establish `hpull : ∀ {m m' m'' : ℕ} (f : G.A m' →ₐc[R] G.A m'') (g : G.A m →ₐc[R] G.A m') (z), _root_.GlobalTheory.PDiv.pullbackTwo (f.comp g) z = _root_.GlobalTheory.PDiv.pullbackTwo f (_root_.GlobalTheory.PDiv.pullbackTwo g z)`. Introduce `m m' m'' f g z`. Unfold `_root_.GlobalTheory.PDiv.pullbackTwo`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Rewrite using `[← LinearMap.comp_apply, ← TensorProduct.map_comp]`. Both sides reduce to the same expression. Establish `hlevel : ∀ n, _root_.GlobalTheory.PDiv.cobOne R _ (B.1 (n + 1)) = _root_.GlobalTheory.PDiv.pullbackTwo (G.mulP n) (c.1 n)`. Introduce `n`. Establish `h` using `congrArg (fun z => z.1 (n + 1)) hB`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Unfold `_root_.GlobalTheory.PDivGroup.cob _root_.GlobalTheory.PDivGroup.cocyclesMap at h`. Simplify using `only [LinearMap.coe_mk, AddHom.coe_mk] at h`. Rewrite using `[h, _root_.GlobalTheory.PDivGroup.natCast_smul_id_app, ← _root_.GlobalTheory.PDivGroup.mulP_comp_res, hpull]`. Use `congr 1`. Conclude with `(c.2 n).2`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Establish `hres1 : ∀ n, G.resOne n (B.1 (n + 1)) = 0`. Introduce `n`. Rewrite using `[_root_.GlobalTheory.PDivGroup.resOne_funs, hB1]`. Establish `hex : ∀ n, ∃ e, G.mulP n e = B.1 (n + 1)` using `fun n => _root_.GlobalTheory.PDivGroup.exists_mulP_eq_of_transl_eq G n _ (_root_.GlobalTheory.PDivGroup.transl_eq_of_cobOne_eq_pullTwo G n _ _ (hlevel n) (hres1 n))`. Use `choose e he using hex`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hcompat : ∀ n, G.res n (e (n + 1)) = e n`. Introduce `n`. Apply `_root_.GlobalTheory.PDivGroup.Test.mulP_injective G n` to reduce the goal to its premises. Rewrite using `[_root_.GlobalTheory.PDivGroup.mulP_res, ← _root_.GlobalTheory.PDivGroup.res_mulP, he, he]`. Conclude with `B.2 (n + 1)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `⟨⟨e, hcompat⟩, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `n`. Apply `_root_.GlobalTheory.PDivGroup.pullbackTwo_mulP_injective G n` to reduce the goal to its premises. Rewrite using `[← hlevel, ← he, hcobf]`.
-
-Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.cocycle_mem_range_cob_of_pullback_mulP :
     ∀ {p : ℕ} [Fact p.Prime] {R : Type} [CommRing R] (G : _root_.GlobalTheory.PDivGroup p R)

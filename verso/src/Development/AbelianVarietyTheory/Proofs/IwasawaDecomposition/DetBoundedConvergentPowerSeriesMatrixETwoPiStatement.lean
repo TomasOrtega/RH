@@ -6,7 +6,7 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor
 
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.det_bounded_eTwoPi` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FDetBoundedConvergentPowerSeriesMatrixETwoPi.lean&line=32#L32)
 -/

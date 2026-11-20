@@ -13,15 +13,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `D V A Λ h`. Take `⟨hlat, hdual⟩` from `h`. Establish `hf : ∀ v, IsUnit (A.fr ((Formalism.L2.Host.tauPl D).symm v))` using `fun v => A.fr_unit _`. Use `⟨{ ε := fun v => A.ε ((Formalism.L2.Host.tauPl D).symm v) P := fun v => (A.fr ((Formalism.L2.Host.tauPl D).symm v))⁻¹ unit := fun v => (Matrix.isUnit_nonsing_inv_iff).2 (hf v) spec := ?_ Λ := Λ Λ_fg := hlat.fg Λ_span := hlat.span_eq_top Λ_dual := ?_ }, rfl, fun τ => ?_⟩` and prove the remaining obligations. Introduce `v set τ := (Formalism.L2.Host.tauPl D).symm v`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hg : V.gram.map (Formalism.IndefR.Eqv.UI.phiV D v) = (A.fr τ)ᴴ * Formalism.REAL.Jm (A.ε τ) * A.fr τ`. Rewrite using `[A.fr_gram τ]`. Both sides reduce to the same expression. Establish `hd : IsUnit (A.fr τ).det` using `(Matrix.isUnit_iff_isUnit_det _).1 (hf v)`. Establish `hdH : IsUnit ((A.fr τ)ᴴ).det`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Matrix.det_conjTranspose]`. Conclude with `hd.star`. Rewrite using `[hg, Matrix.conjTranspose_nonsing_inv]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `_ = Formalism.REAL.Jm (A.ε τ) := by`. Rewrite using `[Matrix.nonsing_inv_mul _ hdH, Matrix.mul_nonsing_inv _ hd, Matrix.one_mul, Matrix.mul_one]`. Introduce `x`. Rewrite using `[hdual x]`. Use `forall₂_congr fun y _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Unfold `Formalism.UG.hform`. Simplify using `only [RingHom.mem_range, starRingEnd_apply]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem frames_of_diagonalising_frame : ∀ (D : D7) (V : HSp D) (A : Fr V) (Λ : Lat V), IsSelfDualC V Λ → ∃ fr : Formalism.IndefR.Eqv.UI.Frames D V, fr.Λ = Λ ∧ ∀ τ, fr.ε (Formalism.L2.Host.tauPl D τ) = A.ε τ ∧ fr.P (Formalism.L2.Host.tauPl D τ) = (A.fr τ)⁻¹ := by
   intro D V A Λ h

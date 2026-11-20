@@ -9,19 +9,15 @@ open scoped TensorProduct NNReal ENNReal
 namespace GlobalTheory.GaugeEx
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ d b n M mi mv hc`. Take `⟨hi, hv, hs⟩` from `hc`. Use `haveI : FiniteDimensional F E := Module.Finite.of_basis b`. Use `haveI : Countable (𝓞 F) := Countable.of_equiv _ (RingOfIntegers.basis F).equivFun.symm.toEquiv`. Use `haveI : Countable (Ideal (𝓞 F)) := by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hsurj : Function.Surjective (fun s : Finset (𝓞 F) => Ideal.span (s : Set (𝓞 F)))` using `fun I => (IsNoetherian.noetherian I)`. Conclude with `hsurj.countable`. Use `haveI : Countable (HeightOneSpectrum (𝓞 F)) := Function.Injective.countable (f := fun v : HeightOneSpectrum (𝓞 F) => v.asIdeal) (fun _ _ h => HeightOneSpectrum.ext h)`. Take `⟨hint, -⟩` from `GlobalTheory.T.integralPointsFinitePlaceTensor_properties F E (AlgHom.id F E) d b`. Take `⟨hemb, hrange, -, -⟩` from `GlobalTheory.T.measurableEmbedding_adelicTuple_localComponents F E d b n M`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hlat : ∀ v, (latV b v : Set (Fin n → Fin M → Fv F v ⊗[F] E)) = Set.pi Set.univ fun _ => Set.pi Set.univ fun _ => intV b v`. Introduce `v`. Use extensionality with `Y`. Rewrite using `[mem_latV_iff]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hcpt : ∀ v, IsCompact (latV b v : Set (Fin n → Fin M → Fv F v ⊗[F] E))`. Introduce `v`. Rewrite using `[hlat]`. Conclude with `isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => (hint v).1`. Establish `hmeas : ∀ v, MeasurableSet (latV b v : Set (Fin n → Fin M → Fv F v ⊗[F] E))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `v`. Rewrite using `[hlat]`. Conclude with `MeasurableSet.univ_pi fun _ => MeasurableSet.univ_pi fun _ => (hint v).2.measurableSet`. Establish `hsi : SigmaFinite mi` using `inferInstance`. Establish `hsv : ∀ v, SigmaFinite (mv v)` using `fun v => by haveI := hv v infer_instance`.
-
-Take `⟨ν, hν0, hν⟩` from `GlobalTheory.T.exists_restricted_product_measure_countable (HeightOneSpectrum (𝓞 F)) _ _ (fun v => latV b v) mi mv hsi hsv hmeas (fun v => by haveI := hv v; exact (hcpt v).measure_lt_top.ne) hs`. Use `set e := (fun X : (Fin n → Fin M → AF F ⊗[F] E) => (projInf X, fun v : HeightOneSpectrum (𝓞 F) => projV v (projFin X))) with he`. Establish `hmap : (ν.comap e).map e = ν`. Rewrite using `[hemb.map_comap, hrange]`. Conclude with `Measure.restrict_eq_self_of_ae_mem hν0`.
-
-Use `⟨ν.comap e, ⟨hi, hv, hs⟩, fun S fi fv hfi hfv => ?_⟩` and prove the remaining obligations. Establish `h` using `hν S fi fv hfi hfv`. Rewrite `h` using `[← hmap, hemb.restrict_map, hemb.lintegral_map]`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isProd : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E], ∀ (d : ℕ) (b : Module.Basis (Fin d) F E) (n M : ℕ) (mi : Measure (Fin n → Fin M → Ainf F ⊗[F] E)) (mv : ∀ v : HeightOneSpectrum (𝓞 F), Measure (Fin n → Fin M → Fv F v ⊗[F] E)), Conv b mi mv → ∃ ν, IsProd b ν mi mv := by
   intro F E _ _ _ _ _ d b n M mi mv hc

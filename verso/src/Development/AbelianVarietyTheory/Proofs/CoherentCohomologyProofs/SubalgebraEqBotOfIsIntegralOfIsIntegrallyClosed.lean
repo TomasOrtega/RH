@@ -7,7 +7,7 @@ namespace GlobalTheory
 open scoped PowerSeries TensorProduct in
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `only [Subalgebra.mem_restrictScalars, mem_integralClosure_iff]`. Conclude with `⟨fun h => isIntegral_trans x h, fun h => h.tower_top⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem _root_.GlobalTheory.integralClosure_restrictScalars_of_isIntegral (A A' B : Type*) [CommRing A] [CommRing A']
     [CommRing B] [Algebra A A'] [Algebra A' B] [Algebra A B] [IsScalarTower A A' B]

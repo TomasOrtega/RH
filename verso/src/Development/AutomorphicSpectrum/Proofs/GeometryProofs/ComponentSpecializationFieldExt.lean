@@ -11,9 +11,9 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.Flat.Rep
 
 /- English proof (translation)
-Use `letI : Algebra F F' := f.toAlgebra`. Substitute `hz` using the available equality. Take `⟨hc, v, hext, hw0⟩` from `h`. Establish `hbot : ∀ x : PrimeSpectrum F, x.asIdeal = ⊥` using `fun x => (Ideal.eq_bot_or_top _).resolve_right x.isPrime.ne_top`. Establish `hp : (spMap f) (IsLocalRing.closedPoint F') = IsLocalRing.closedPoint F` using `PrimeSpectrum.ext ((hbot _).trans (hbot _).symm)`.
+Equip the data with the indicated structure. Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcen : GlobalTheory.CompanionTheory.Ar.centre (spMap f ≫ z) = GlobalTheory.CompanionTheory.Ar.centre z`. Express the relevant statement in the definitionally equal form `z ((spMap f) (IsLocalRing.closedPoint F')) = z (IsLocalRing.closedPoint F)`. Rewrite using `[hp]`. Establish `hc' : GlobalTheory.CompanionTheory.Ar.genPt ξ ⤳ GlobalTheory.CompanionTheory.Ar.centre (spMap f ≫ z)` using `hcen ▸ hc`. Conclude with `GlobalTheory.CompanionTheory.Ar.LieFib.valAt_base M z hc hc' v hext w' w hw hw0`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem lieValAt_spMap {X : Scheme.{0}} {Ω : Type} [Field Ω] {G : Over X} [GrpObj G] {ξ : Sp Ω ⟶ X}
     {V : Type} [AddCommGroup V] [Module Ω V] (M : LieModel G ξ V) (hξ : IsCptGen ξ) {F F' : Type} [Field F]
@@ -34,11 +34,11 @@ theorem lieValAt_spMap {X : Scheme.{0}} {Ω : Type} [Field Ω] {G : Over X} [Grp
   exact GlobalTheory.CompanionTheory.Ar.LieFib.valAt_base M z hc hc' v hext w' w hw hw0
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c O _ β Y U Z F F' _ _ f y y' hy n b v v' hv' hv`. Substitute `hy` using the available equality. Simplify using `only [GlobalTheory.CompanionTheory.Ar.Flat.Rep.IsValFam] at hv ⊢`. Introduce `i`. Take `⟨u, hval, t, ht1, ht2, ht3⟩` from `hv i`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hzz : spMap f ≫ (y ≫ Y.j) = (spMap f ≫ y) ≫ Y.j` using `(Category.assoc _ _ _).symm`. Use `⟨GlobalTheory.CompanionTheory.Ar.LieTangent.epsBase f hzz ≫ u, ?_, ?_⟩` and prove the remaining obligations. Conclude with `lieValAt_spMap Z.M Z.gen f hzz rfl hval`. Simplify using `only [GlobalTheory.CompanionTheory.Ar.Flat.SameVec]`. Use `⟨spMap (GlobalTheory.CompanionTheory.Ar.dualMap f) ≫ t, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, ht1]`. Simplify using `only [ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap]`. Rewrite using `[← Category.assoc, GlobalTheory.CompanionTheory.Ar.LieTangent.spec_dual_alg, Category.assoc]`. Rewrite using `[Category.assoc, ht2, hv' i]`. Apply the tactic sequence `rw [Category.assoc, ht3] try rfl`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isValFam_spMap : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (U : Set (Xo.XF c)) (Z : CptOver Y U) (F F' : Type) [Field F] [Field F'] (f : F →+* F') (y : Sp F ⟶ Xo.XF c) (y' : Sp F' ⟶ Xo.XF c), y' = spMap f ≫ y → ∀ (n : ℕ) (b : Fin n → Z.V) (v : Vecs y n) (v' : Vecs y' n), (∀ i, (v' i).left = spMap (dualMap f) ≫ (v i).left) → IsValFam Z y b v → IsValFam Z y' b v' := by
   intro E _ _ _ H D l Xo c O _ β Y U Z F F' _ _ f y y' hy n b v v' hv' hv

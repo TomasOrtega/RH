@@ -43,12 +43,12 @@ def conjInv : Via ((starRingEnd ℂ).comp φ) →ₗ[R] Via φ where
     rw [map_mul, Complex.conj_conj]
 
 /- English proof (translation)
-The claim follows from `Complex.conj_conj (show ℂ from z)`.
+A detailed English derivation is pending.
 -/
 lemma conjInv_conj (z : Via φ) : conjInv φ (conj φ z) = z := Complex.conj_conj (show ℂ from z)
 
 /- English proof (translation)
-The claim follows from `Complex.conj_conj (show ℂ from z)`.
+A detailed English derivation is pending.
 -/
 lemma conj_conjInv (z : Via ((starRingEnd ℂ).comp φ)) : conj φ (conjInv φ z) = z :=
   Complex.conj_conj (show ℂ from z)
@@ -77,14 +77,14 @@ def germR {U : X.Opens} {p : X} (hp : p ∈ U) (r : ringOn X U) : locRing X p :=
   TopCat.Presheaf.germ (X := X.toTopCat) X.sheaf.obj U p hp r
 
 /- English proof (translation)
-The claim follows from `PresheafOfModules.germ_smul _ _ _ _ _ _`.
+A detailed English derivation is pending.
 -/
 lemma germM_smul {U : X.Opens} {p : X} (hp : p ∈ U) (r : ringOn X U)
     (s : ((preMod X).obj L).obj (op U)) : germM hp (r • s) = germR hp r • germM hp s :=
   PresheafOfModules.germ_smul _ _ _ _ _ _
 
 /- English proof (translation)
-The claim follows from `TopCat.Presheaf.germ_res_apply (X := X.toTopCat) (C := Ab.{u}) ((preMod X).obj L).presheaf (homOfLE hVU) p hp s`.
+A detailed English derivation is pending.
 -/
 lemma germM_resM {U V : X.Opens} (hVU : V ≤ U) {p : X} (hp : p ∈ V)
     (s : ((preMod X).obj L).obj (op U)) : germM hp (resM _ hVU s) = germM (hVU hp) s :=
@@ -92,29 +92,29 @@ lemma germM_resM {U V : X.Opens} (hVU : V ≤ U) {p : X} (hp : p ∈ V)
     (homOfLE hVU) p hp s
 
 /- English proof (translation)
-The claim follows from `TopCat.Presheaf.germ_res_apply (X := X.toTopCat) X.sheaf.obj (homOfLE hVU) p hp r`.
+A detailed English derivation is pending.
 -/
 lemma germR_resR {U V : X.Opens} (hVU : V ≤ U) {p : X} (hp : p ∈ V) (r : ringOn X U) :
     germR hp (resR hVU r) = germR (hVU hp) r :=
   TopCat.Presheaf.germ_res_apply (X := X.toTopCat) X.sheaf.obj (homOfLE hVU) p hp r
 
 /- English proof (translation)
-The claim follows from `map_zero _`.
+A detailed English derivation is pending.
 -/
 lemma germM_zero {U : X.Opens} {p : X} (hp : p ∈ U) :
     germM (L := L) hp (0 : ((preMod X).obj L).obj (op U)) = 0 :=
   map_zero _
 
 /- English proof (translation)
-Establish `key : ∀ r : locRing X p, r • germM hp e = 0 → r = 0`. Introduce `r hr`. Take `⟨V, hVU, hpV, r', rfl⟩` from `TopCat.Presheaf.exists_le_germ_eq (X := X.toTopCat) X.sheaf.obj r hp`. Express the relevant statement in the definitionally equal form `germR hpV r' • germM hp e = 0 at hr`. Rewrite `hr` using `[← germM_resM hVU hpV, ← germM_smul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨W, hpW, iV, iV', hW⟩` from `TopCat.Presheaf.germ_eq (X := X.toTopCat) (C := Ab.{u}) ((preMod X).obj L).presheaf p hpV hpV _ 0 (hr.trans (germM_zero hpV).symm)`. Establish `h0 : resR iV.le r' • resM _ (iV.le.trans hVU) e = 0`. Rewrite using `[← resM_smul_res]`. Conclude with `hW.trans (map_zero _)`. Establish `hz : resR iV.le r' = 0` using `(he W (iV.le.trans hVU)).1 (a₁ := resR iV.le r') (a₂ := 0) (by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [zero_smul]`. Conclude with `h0)`. Express the relevant statement in the definitionally equal form `germR hpV r' = 0`. Rewrite using `[← germR_resR iV.le hpW, hz]`. Conclude with `map_zero _`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Introduce `r₁ r₂ h`. Use `key (r₁ - r₂) (by simp only at h; rw [sub_smul, h, sub_self])` as an intermediate fact. Conclude with `sub_eq_zero.mp this`. Introduce `m`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Take `⟨V, hVU, hpV, t, rfl⟩` from `TopCat.Presheaf.exists_le_germ_eq (X := X.toTopCat) (C := Ab.{u}) ((preMod X).obj L).presheaf m hp`. Take `⟨r, hr⟩` from `(he V hVU).2 t`. Use `⟨germR hpV r, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `germR hpV r • germM hp e = germM hpV t`. Rewrite using `[← hr, germM_smul, germM_resM]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bijective_smul_germ {U : X.Opens} {p : X} (hp : p ∈ U) {e : ((preMod X).obj L).obj (op U)}
     (he : IsBasisOn ((preMod X).obj L) U e) :
@@ -196,7 +196,7 @@ def fibreEquiv {U : X.Opens} (hp : p ∈ U) {e : ((preMod X).obj L).obj (op U)}
       (TensorProduct.AlgebraTensorModule.rid (locRing X p) (Via φ) (Via φ))
 
 /- English proof (translation)
-Establish `: (stalkEquiv hp he).symm (r • germM hp e) = r`. Rewrite using `[LinearEquiv.symm_apply_eq, stalkEquiv_apply]`. Express the relevant statement in the definitionally equal form `TensorProduct.AlgebraTensorModule.rid (locRing X p) (Via φ) (Via φ) (c ⊗ₜ (stalkEquiv hp he).symm (r • germM hp e)) = _`. Rewrite using `[this, TensorProduct.AlgebraTensorModule.rid_tmul, Algebra.smul_def]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 lemma fibreEquiv_fibreMk {U : X.Opens} (hp : p ∈ U) {e : ((preMod X).obj L).obj (op U)}
     (he : IsBasisOn ((preMod X).obj L) U e) (c : Via φ) (r : locRing X p) :
@@ -209,7 +209,7 @@ lemma fibreEquiv_fibreMk {U : X.Opens} (hp : p ∈ U) {e : ((preMod X).obj L).ob
   rfl
 
 /- English proof (translation)
-Use `fibreEquiv_fibreMk (φ := φ) hp he 1 1` as an intermediate fact. Rewrite `this` using `[one_smul, map_one, mul_one]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma fibreEquiv_value {U : X.Opens} (hp : p ∈ U) {e : ((preMod X).obj L).obj (op U)}
     (he : IsBasisOn ((preMod X).obj L) U e) : fibreEquiv φ hp he (value φ hp e) = 1 := by
@@ -231,7 +231,7 @@ def fibreEquivComplex {U : X.Opens} (hp : p ∈ U) {e : ((preMod X).obj L).obj (
   right_inv c := by simp
 
 /- English proof (translation)
-Introduce `h`. Use `fibreEquiv_value (φ := φ) hp he` as an intermediate fact. Rewrite `this` using `[h, map_zero]`. Conclude with `zero_ne_one this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma value_ne_zero {U : X.Opens} (hp : p ∈ U) {e : ((preMod X).obj L).obj (op U)}
     (he : IsBasisOn ((preMod X).obj L) U e) : value φ hp e ≠ 0 := by

@@ -10,11 +10,11 @@ namespace Formalism.CohomologicalDescent
 open Classical
 
 /- English proof (translation)
-Introduce `l b t κ U hU`. Rewrite using `[mwCount]`. Apply `Finset.card_eq_zero.2` to reduce the goal to its premises. Apply `Finset.eq_empty_of_forall_notMem` to reduce the goal to its premises. Introduce `u hu'`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Finset.mem_filter] at hu'`. Take `⟨hu, x, hx, hxu⟩` from `hu'`. Establish `hd : (l : ℤ) ∣ u - x` using `Int.ModEq.dvd hxu`. Break down `hU u hu.1 hu.2 x hx with ⟨h1, h2⟩ | h` into its components or cases. Establish `h0` using `Int.eq_zero_of_abs_lt_dvd hd h2`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Rewrite `h1` using `[h0, abs_zero]`. Conclude with `lt_irrefl 0 h1`. Conclude with `h hd`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem windowResidueCountEqZero_holds : NoResidue := by
   intro l b t κ U hU

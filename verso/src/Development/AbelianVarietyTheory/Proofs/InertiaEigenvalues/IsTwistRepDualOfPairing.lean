@@ -12,13 +12,13 @@ open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.Weakl
 namespace GlobalTheory.DualOne
 
 /- English proof (translation)
-Establish `hinj : Function.Injective m.flip`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `y hy`. Conclude with `h2 y fun x => by simpa using LinearMap.congr_fun hy x`. Establish `hdim : finrank L V' = finrank L (Module.Dual L V)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Subspace.dual_finrank_eq, h3]`. Set `f : V' ≃ₗ[L] Module.Dual L V` to `m.flip.linearEquivOfInjective hinj hdim`. Establish `hf : ∀ y x, f y x = m x y` using `fun y x => rfl`. Use `⟨f.symm, fun g φ => ?_⟩` and prove the remaining obligations. Take `⟨y, rfl⟩` from `f.surjective φ`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `f.injective` to reduce the goal to its premises. Rewrite using `[map_smul, f.apply_symm_apply, f.symm_apply_apply]`. Use extensionality with `x`. Establish `hx : ρ g (ρ g⁻¹ x) = x`. Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `h1 g (ρ g⁻¹ x) y` as an intermediate fact. Rewrite `this` using `[hx]`. Rewrite using `[hf, this, LinearMap.smul_apply, Representation.dual_apply, smul_eq_mul]`. Use `congr 1`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem isTwistRep_dual_of_pairing {G L : Type} [Group G] [Field L]
     {V : Type} [AddCommGroup V] [Module L V] [FiniteDimensional L V]
@@ -49,9 +49,9 @@ theorem isTwistRep_dual_of_pairing {G L : Type} [Group G] [Field L]
   congr 1
 
 /- English proof (translation)
-Introduce `l _ P AI hT K LL V _ _ _ _ _ ρ V' _ _ _ _ _ ρ' m hD hρ`. Take `⟨h1, -, h2, h3⟩` from `hD`. Establish `htw` using `isTwistRep_dual_of_pairing ρ ρ' _ m h1 h2 h3`. Establish `hreg` using `(GlobalTheory.MemLoc.tied_regular_and_onto l P AI hT).1`. Establish `hdual` using `GlobalTheory.Per.TiedDual.tied_isCrys_dual l P AI hT hreg K LL V ρ hρ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcyc` using `(GlobalTheory.CycPow.cyc_zpow_crys_dR_jump l P AI hT K LL 1).1`. Rewrite `hcyc` using `[zpow_one]`. Conclude with `(GlobalTheory.T.crystalline_twist_crystallineCharacter_jumps_shift l P AI hT K LL _ ρ.dual V' ρ' _ htw hcyc hdual).1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCrys_of_isDual1 : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P), LocTied l P AI → ∀ (K LL : FinExt l) (V : Type) [AddCommGroup V] [Module ↥LL.1 V] [Module ℚ_[l] V] [IsScalarTower ℚ_[l] ↥LL.1 V] [FiniteDimensional ↥LL.1 V] (ρ : Representation ↥LL.1 ↥(GK K) V) (V' : Type) [AddCommGroup V'] [Module ↥LL.1 V'] [Module ℚ_[l] V'] [IsScalarTower ℚ_[l] ↥LL.1 V'] [FiniteDimensional ↥LL.1 V'] (ρ' : Representation ↥LL.1 ↥(GK K) V') (m : V →ₗ[↥LL.1] V' →ₗ[↥LL.1] ↥LL.1), IsDual1 (P.PD K) ρ ρ' m → IsCrys (P.PD K) ρ → IsCrys (P.PD K) ρ' := by
   intro l _ P AI hT K LL V _ _ _ _ _ ρ V' _ _ _ _ _ ρ' m hD hρ

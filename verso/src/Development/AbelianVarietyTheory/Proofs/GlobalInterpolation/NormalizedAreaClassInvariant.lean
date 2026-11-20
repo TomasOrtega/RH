@@ -20,23 +20,21 @@ open scoped nonZeroDivisors Pointwise
 open GlobalTheory.IndefiniteRowSideFullHecke.EquidistributedConjugates in
 
 /- English proof (translation)
-Set `σ : D.host.K →+* ℂ` to `D.host.φ₀.comp D.host.K.val.toRingHom`. Set `σM : D.host.K →+* M` to `σ.codRestrict M hm`. Establish `hsq` using `D.host.sqd_sq`. Set `b : D.host.K` to `⟨D.host.sqd, IntermediateField.mem_adjoin_simple_self ℚ _⟩`. Establish `hb : b ^ 2 = -(D.host.d : D.host.K)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `using hsq`. Establish `hall : ∀ ψ : D.host.K →+* ℂ, ψ b ^ 2 = -(D.host.d : ℂ)` using `fun ψ => by`. Rewrite using `[← map_pow, hb, map_neg, map_natCast]`. Establish `hcj : ∀ ψ : D.host.K →+* ℂ, (starRingEnd ℂ) (ψ b) = -ψ b` using `fun ψ => by`.
+Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : (ψ b) ^ 2 = (Complex.I * (Real.sqrt D.host.d : ℂ)) ^ 2`. Rewrite using `[hall, mul_pow, Complex.I_sq, ← Complex.ofReal_pow, Real.sq_sqrt (Nat.cast_nonneg _)]`. Simplify using the standard rewrite rules. Apply the tactic sequence `rcases sq_eq_sq_iff_eq_or_eq_neg.1 h1 with h | h <;> rw [h] <;>`. Apply the tactic sequence `simp only [map_neg, map_mul, Complex.conj_I, Complex.conj_ofReal] <;> ring`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hne : σ b ≠ 0`. Introduce `h0`. Use `hall σ` as an intermediate fact. Rewrite `this` using `[h0]`. Establish `hd : (0 : ℂ) ≠ -(D.host.d : ℂ)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[ne_eq, eq_comm, neg_eq_zero, Nat.cast_eq_zero]`. Conclude with `D.host.hyp.2.1.ne_zero`. Conclude with `hd (by simpa using this)`. Establish `key : ∀ ρ' : M →ₐ[ℚ] ℂ, ρ' (σM b) = σ b → FixesK D M ρ'` using `fun ρ' h x y hy => by`. Establish `: ((ρ' : M →+* ℂ).comp σM).toRatAlgHom = σ.toRatAlgHom`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `IntermediateField.algHom_ext_of_eq_adjoin ℚ (S := D.host.K) (s := {D.host.sqd}) rfl fun x hx => ?_` and prove the remaining obligations. Take `rfl : x = _` from `hx`. Conclude with `h`. Establish `h2 : ρ' (σM x) = σ x` using `DFunLike.congr_fun this x`. Establish `hyx : y = σM x` using `Subtype.ext hy`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hyx]`. Conclude with `h2`. Establish `back : ∀ ρ' : M →ₐ[ℚ] ℂ, FixesK D M ρ' → ρ' (σM b) = σ b` using `fun ρ' h => h b (σM b) rfl`. Establish `h1 : ρ (σM b) ^ 2 = σ b ^ 2` using `(hall ((ρ : M →+* ℂ).comp σM)).trans (hall σ).symm`. Prove the components needed by the constructor for the conclusion.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `hc hf`. Establish `e1` using `back _ hc`. Establish `e2` using `back _ hf`. Rewrite `e1` using `[conjEmb_apply, e2, hcj]`. Conclude with `hne (by linear_combination -e1 / 2)`.
-
-Introduce `hf`. Break down `sq_eq_sq_iff_eq_or_eq_neg.1 h1 with h | h` into its components or cases. Conclude with `absurd (key ρ h) hf`. Use `key _ ?_` and prove the remaining obligations. Rewrite using `[conjEmb_apply, h, map_neg, hcj, neg_neg]`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fixesK_conjEmb_iff (D : D7) (M : IntermediateField ℚ ℂ) (ρ : M →ₐ[ℚ] ℂ)
     (hm : ∀ a : D.host.K, D.host.φ₀ (a : D.host.E) ∈ M) :
@@ -90,7 +88,7 @@ theorem fixesK_conjEmb_iff (D : D7) (M : IntermediateField ℚ ℂ) (ρ : M →�
       rw [conjEmb_apply, h, map_neg, hcj, neg_neg]
 
 /- English proof (translation)
-Introduce `a` and use `by refine ⟨hm a, ?_⟩ unfold Formalism.MainNotions.StandardLatticesGL3.cj Formalism.MainNotions.TaylorLogMetric.liftM rw [dif_pos (hm a)] exact h a _ rfl`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem fixK_of_fixesK (D : D7) (M : IntermediateField ℚ ℂ) (ρ : M →ₐ[ℚ] ℂ)
     (hm : ∀ a : D.host.K, D.host.φ₀ (a : D.host.E) ∈ M) (h : GlobalTheory.IndefiniteRowSideFullHecke.EquidistributedConjugates.FixesK D M ρ) :

@@ -11,7 +11,7 @@ namespace GlobalTheory.Shares.PolyDict
 variable {D : D7} {B : WeightFamilies.Prov D} {P : ModuliIntegralCharts.Prov D} {j : ℕ} {X : PJ D B P j}
 
 /- English proof (translation)
-Introduce `m`. Rewrite using `[MvPolynomial.coeff_C]`. Use `split_ifs`. Conclude with `LinearMap.mem_range.mpr ⟨F, rfl⟩`. Conclude with `Submodule.zero_mem _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ofWt_C {ι : Type} (u : WeightFamilies.Wt D j) (F : B.Cusp j u) :
     OfWt X u (MvPolynomial.C (X.inc u F) : MvPolynomial ι X.Forms) := by
@@ -23,7 +23,7 @@ theorem ofWt_C {ι : Type} (u : WeightFamilies.Wt D j) (F : B.Cusp j u) :
   · exact Submodule.zero_mem _
 
 /- English proof (translation)
-Introduce `m`. Rewrite using `[MvPolynomial.coeff_sum]`. Conclude with `Submodule.sum_mem _ fun k hk => h k hk m`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ofWt_sum {ι κ : Type} (u : WeightFamilies.Wt D j) (s : Finset κ) (p : κ → MvPolynomial ι X.Forms)
     (h : ∀ k ∈ s, OfWt X u (p k)) : OfWt X u (∑ k ∈ s, p k) := by
@@ -32,7 +32,7 @@ theorem ofWt_sum {ι κ : Type} (u : WeightFamilies.Wt D j) (s : Finset κ) (p :
   exact Submodule.sum_mem _ fun k hk => h k hk m
 
 /- English proof (translation)
-Introduce `m`. Rewrite using `[MvPolynomial.coeff_X_mul']`. Use `split_ifs`. Conclude with `h _`. Conclude with `Submodule.zero_mem _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ofWt_X_mul {ι : Type} (u : WeightFamilies.Wt D j) (i : ι) (p : MvPolynomial ι X.Forms) (h : OfWt X u p) :
     OfWt X u (MvPolynomial.X i * p) := by
@@ -44,9 +44,9 @@ theorem ofWt_X_mul {ι : Type} (u : WeightFamilies.Wt D j) (i : ι) (p : MvPolyn
   · exact Submodule.zero_mem _
 
 /- English proof (translation)
-Introduce `m`. Rewrite using `[MvPolynomial.coeff_mul]`. Use `Submodule.sum_mem _ fun x _ => ?_` and prove the remaining obligations. Take `⟨F, hF⟩` from `LinearMap.mem_range.mp (hp x.1)`. Take `⟨G, hG⟩` from `LinearMap.mem_range.mp (hq x.2)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨H, hH⟩` from `X.inc_mul u u' F G`. Rewrite using `[← hF, ← hG, hH]`. Conclude with `LinearMap.mem_range_self _ _`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ofWt_mul {ι : Type} (u u' : WeightFamilies.Wt D j) (p q : MvPolynomial ι X.Forms) (hp : OfWt X u p)
     (hq : OfWt X u' q) : OfWt X (wadd u u') (p * q) := by
@@ -61,31 +61,31 @@ theorem ofWt_mul {ι : Type} (u u' : WeightFamilies.Wt D j) (p q : MvPolynomial 
   exact LinearMap.mem_range_self _ _
 
 /- English proof (translation)
-The claim follows from `MvPolynomial.eval₂Hom_C _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem toRp_C (la : HeightOneSpectrum (𝓞 B.KO)) (N : ℕ) (F : X.Forms) :
     toRp X la N (MvPolynomial.C F) = emb X la N F := MvPolynomial.eval₂Hom_C _ _ _
 
 /- English proof (translation)
-The claim follows from `MvPolynomial.eval₂Hom_X' _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem toRp_X (la : HeightOneSpectrum (𝓞 B.KO)) (N : ℕ) (p : Idx D j N) :
     toRp X la N (MvPolynomial.X p) = algebraMap (Op X la N) (Rp X la N) (Tv X la N p) := MvPolynomial.eval₂Hom_X' _ _ _
 
 /- English proof (translation)
-The claim follows from `MvPolynomial.eval₂Hom_C _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem toFn_C (R : Rdg X) {N : ℕ} (t : Idx D j N → ℂ) (F : X.Forms) :
     R.toFn t (MvPolynomial.C F) = R.ev F := MvPolynomial.eval₂Hom_C _ _ _
 
 /- English proof (translation)
-The claim follows from `MvPolynomial.eval₂Hom_X' _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem toFn_X (R : Rdg X) {N : ℕ} (t : Idx D j N → ℂ) (p : Idx D j N) :
     R.toFn t (MvPolynomial.X p) = fun _ => t p := MvPolynomial.eval₂Hom_X' _ _ _
 
 /- English proof (translation)
-Rewrite using `[IsScalarTower.algebraMap_apply (Op X la N) (Kp X la N) (Rp X la N), ← Algebra.smul_def]`. Conclude with `Submodule.smul_mem _ _ hv`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma algebraMap_mul_mem_Vw (la : HeightOneSpectrum (𝓞 B.KO)) (N : ℕ) (u : WeightFamilies.Wt D j)
     (x : Op X la N) {v : Rp X la N} (hv : v ∈ Vw X la N u) :
@@ -94,13 +94,13 @@ private lemma algebraMap_mul_mem_Vw (la : HeightOneSpectrum (𝓞 B.KO)) (N : �
   exact Submodule.smul_mem _ _ hv
 
 /- English proof (translation)
-Rewrite using `[p.as_sum, map_sum]`. Use `Submodule.sum_mem _ fun m _ => ?_` and prove the remaining obligations. Take `⟨F, hF⟩` from `LinearMap.mem_range.mp (hp m)`. Establish `key : toRp X la N (MvPolynomial.monomial m (p.coeff m)) = emb X la N (p.coeff m) * m.prod fun n e => (algebraMap (Op X la N) (Rp X la N) (Tv X la N n)) ^ e`. Rewrite using `[toRp, MvPolynomial.coe_eval₂Hom, MvPolynomial.eval₂_monomial]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key, ← hF, mul_comm]`. Establish `hbase : emb X la N (X.inc u F) ∈ Vw X la N u` using `Submodule.subset_span ⟨F, rfl⟩`. It suffices to establish `H : ∀ v ∈ Vw X la N u, (m.prod fun n e => (algebraMap (Op X la N) (Rp X la N) (Tv X la N n)) ^ e) * v ∈ Vw X la N u from H _ hbase`. Unfold `Finsupp.prod`. Use `Finset.prod_induction _ (fun x => ∀ v ∈ Vw X la N u, x * v ∈ Vw X la N u) ?_ ?_ ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the argument to an intermediate assertion. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `a b ha hb v hv`. Rewrite using `[mul_assoc]`. Conclude with `ha _ (hb v hv)`. Introduce `v hv`. Rewrite using `[one_mul]` and apply the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `n _ v hv show algebraMap (Op X la N) (Rp X la N) (Tv X la N n) ^ (m n) * v ∈ _`. Rewrite using `[← map_pow]`. Conclude with `algebraMap_mul_mem_Vw la N u _ hv`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toRp_mem (la : HeightOneSpectrum (𝓞 B.KO)) (N : ℕ) (u : WeightFamilies.Wt D j)
     (p : MvPolynomial (Idx D j N) X.Forms) (hp : OfWt X u p) : toRp X la N p ∈ Vw X la N u := by
@@ -128,15 +128,13 @@ theorem toRp_mem (la : HeightOneSpectrum (𝓞 B.KO)) (N : ℕ) (u : WeightFamil
     exact algebraMap_mul_mem_Vw la N u _ hv
 
 /- English proof (translation)
-Rewrite using `[p.as_sum, map_sum]`. Use `Submodule.sum_mem _ fun m _ => ?_` and prove the remaining obligations. Take `⟨F, hF⟩` from `LinearMap.mem_range.mp (hp m)`. Establish `key : R.toFn t (MvPolynomial.monomial m (p.coeff m)) = R.ev (p.coeff m) * m.prod fun n e => (fun _ : R.Y => t n) ^ e`. Rewrite using `[Rdg.toFn, MvPolynomial.coe_eval₂Hom, MvPolynomial.eval₂_monomial]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key, ← hF, mul_comm]`. Establish `hbase : R.ev (X.inc u F) ∈ R.sp u Set.univ` using `Submodule.subset_span ⟨F, Set.mem_univ _, rfl⟩`. It suffices to establish `H : ∀ v ∈ R.sp u Set.univ, (m.prod fun n e => (fun _ : R.Y => t n) ^ e) * v ∈ R.sp u Set.univ from H _ hbase`. Unfold `Finsupp.prod`. Use `Finset.prod_induction _ (fun x => ∀ v ∈ R.sp u Set.univ, x * v ∈ R.sp u Set.univ) ?_ ?_ ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the argument to an intermediate assertion. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `a b ha hb v hv`. Rewrite using `[mul_assoc]`. Conclude with `ha _ (hb v hv)`. Introduce `v hv`. Rewrite using `[one_mul]` and apply the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `n _ v hv show (fun _ : R.Y => t n) ^ (m n) * v ∈ _`. Establish `hc : (fun _ : R.Y => t n) ^ (m n) * v = (t n ^ m n) • v`. Use function extensionality and compare the values at `y`. Simplify using `[Pi.pow_apply, Pi.mul_apply, Pi.smul_apply]`. Rewrite using `[hc]`.
-
-Conclude with `Submodule.smul_mem _ _ hv`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toFn_mem (R : Rdg X) {N : ℕ} (t : Idx D j N → ℂ) (u : WeightFamilies.Wt D j)
     (p : MvPolynomial (Idx D j N) X.Forms) (hp : OfWt X u p) : R.toFn t p ∈ R.sp u Set.univ := by
@@ -166,9 +164,9 @@ theorem toFn_mem (R : Rdg X) {N : ℕ} (t : Idx D j N → ℂ) (u : WeightFamili
     exact Submodule.smul_mem _ _ hv
 
 /- English proof (translation)
-Establish `hfg` using `Submodule.mul_mem_mul hf hg`. Simplify using `only [Rdg.sp, Submodule.span_mul_span] at hfg ⊢`. Use `Submodule.span_le.mpr ?_ hfg` and prove the remaining obligations. Introduce and unpack `_ ⟨_, ⟨F, -, rfl⟩, _, ⟨G, -, rfl⟩, rfl⟩`. Take `⟨H, hH⟩` from `X.inc_mul u u' F G`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Use `show R.ev (X.inc u F) * R.ev (X.inc u' G) ∈ _`. Rewrite using `[← map_mul R.ev, hH]`. Conclude with `Submodule.subset_span ⟨H, Set.mem_univ _, rfl⟩`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sp_mul (R : Rdg X) (u u' : WeightFamilies.Wt D j) (f : R.Y → ℂ) (hf : f ∈ R.sp u Set.univ) (g : R.Y → ℂ)
     (hg : g ∈ R.sp u' Set.univ) : f * g ∈ R.sp (wadd u u') Set.univ := by
@@ -182,13 +180,11 @@ theorem sp_mul (R : Rdg X) (u u' : WeightFamilies.Wt D j) (f : R.Y → ℂ) (hf 
   exact Submodule.subset_span ⟨H, Set.mem_univ _, rfl⟩
 
 /- English proof (translation)
-Unfold `Rdg.sp`. Apply `le_antisymm` to reduce the goal to its premises. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨F, hF, rfl⟩`. Establish `hF' : F ∈ Submodule.span B.KO s` using `hF`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use `clear hF`. Proceed by induction on `hF' using Submodule.span_induction with`. Consider the case `mem x hx => exact Submodule.subset_span ⟨x, hx, rfl⟩`. Consider the case `zero`. Simplify using `only [map_zero]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Conclude with `Submodule.zero_mem _`. Consider the case `add x y _ _ hx hy`. Simplify using `only [map_add]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul a x _ hx`.
-
-Simplify using `only [map_smul, R.ev_smul]`. Conclude with `Submodule.smul_mem _ _ hx`. Conclude with `Submodule.span_mono (Set.image_mono Submodule.subset_span)`.
+Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sp_span (R : Rdg X) (u : WeightFamilies.Wt D j) (s : Set (B.Cusp j u)) :
     R.sp u (Submodule.span B.KO s) = R.sp u s := by
@@ -212,11 +208,11 @@ theorem sp_span (R : Rdg X) (u : WeightFamilies.Wt D j) (s : Set (B.Cusp j u)) :
   · exact Submodule.span_mono (Set.image_mono Submodule.subset_span)
 
 /- English proof (translation)
-Set `b` to `Module.finBasis B.KO M`. Establish `hli : LinearIndependent B.KO (fun i => (b i : B.Cusp j u))` using `b.linearIndependent.map' M.subtype (Submodule.ker_subtype M)`. Establish `hli'` using `R.indep u _ _ hli`. Establish `hspan : Submodule.span B.KO (Set.range fun i => (b i : B.Cusp j u)) = M`. Rewrite using `[show (Set.range fun i => (b i : B.Cusp j u)) = M.subtype '' Set.range b from Set.range_comp _ _, Submodule.span_image, b.span_eq, Submodule.map_subtype_top]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hs` using `sp_span R u (Set.range fun i => (b i : B.Cusp j u))`. Rewrite `hs` using `[hspan]`. Establish `e : R.sp u (M : Set (B.Cusp j u)) = Submodule.span ℂ (Set.range fun i => R.ev (X.inc u (b i : B.Cusp j u)))`. Rewrite using `[hs]`. Unfold `Rdg.sp`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[← Set.range_comp]`. Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `⟨FiniteDimensional.span_of_finite ℂ (Set.finite_range _), (finrank_span_eq_card hli').trans (Fintype.card_fin _)⟩`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem sp_finrank (R : Rdg X) (u : WeightFamilies.Wt D j) (M : Submodule B.KO (B.Cusp j u)) :
     FiniteDimensional ℂ (R.sp u M) ∧ Module.finrank ℂ (R.sp u M) = Module.finrank B.KO M := by
@@ -246,11 +242,11 @@ namespace GlobalTheory.Shares
 open PolyDict in
 
 /- English proof (translation)
-Introduce `D B P j X R la N wL w t`. Use `⟨fun i => ⟨?_, ?_, ?_⟩, fun F => ⟨PolyDict.toRp_C la N F, PolyDict.toFn_C R t F⟩, fun u F => PolyDict.ofWt_C u F, fun u u' p q hp hq => PolyDict.ofWt_mul u u' p q hp hq, fun u p hp => ⟨PolyDict.toRp_mem la N u p hp, PolyDict.toFn_mem R t u p hp⟩, fun u u' f hf g hg => PolyDict.sp …` and prove the remaining obligations. Rewrite using `[map_sum]`. Unfold `Formalism.MainNotions.Gaps.EtaleWeightGaps.sec`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_mul, PolyDict.toRp_X, PolyDict.toRp_C, Algebra.smul_def, IsScalarTower.algebraMap_apply (Op X la N) (Kp X la N) (Rp X la N)]`. Rewrite using `[map_sum]`. Unfold `Rdg.s`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, PolyDict.toFn_X, PolyDict.toFn_C]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `y`. Simplify using `[Pi.mul_apply, Pi.smul_apply]`. Conclude with `PolyDict.ofWt_sum wL _ _ fun k _ => PolyDict.ofWt_X_mul wL _ _ (PolyDict.ofWt_C wL (w k))`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem polyDictionary : ∀ (D : D7) (B : WeightFamilies.Prov D) (P : ModuliIntegralCharts.Prov D) (j : ℕ) (X : PJ D B P j) (R : Rdg X) (la : HeightOneSpectrum (𝓞 B.KO)) (N : ℕ) (wL : WeightFamilies.Wt D j) (w : Fin N → B.Cusp j wL) (t : Idx D j N → ℂ), (∀ i, toRp X la N (∑ k, MvPolynomial.X (i, k) * MvPolynomial.C (X.inc wL (w k))) = sec X la w i ∧ R.toFn t (∑ k, MvPolynomial.X (i, k) * MvPolynomial.C (X.inc wL (w k))) = R.s w t i ∧ OfWt X wL (∑ k, MvPolynomial.X (i, k) * MvPolynomial.C (X.inc wL (w k)) : MvPolynomial (Idx D j N) X.Forms)) ∧ (∀ F, toRp X la N (MvPolynomial.C F) = emb X la N F ∧ R.toFn t (MvPolynomial.C F) = R.ev F) ∧ (∀ u (F : B.Cusp j u), OfWt X u (MvPolynomial.C (X.inc u F) : MvPolynomial (Idx D j N) X.Forms)) ∧ (∀ u u' (p q : MvPolynomial (Idx D j N) X.Forms), OfWt X u p → OfWt X u' q → OfWt X (wadd u u') (p * q)) ∧ (∀ u (p : MvPolynomial (Idx D j N) X.Forms), OfWt X u p → toRp X la N p ∈ Vw X la N u ∧ R.toFn t p ∈ R.sp u Set.univ) ∧ (∀ u u', ∀ f ∈ R.sp u Set.univ, ∀ g ∈ R.sp u' Set.univ, f * g ∈ R.sp (wadd u u') Set.univ) ∧ (∀ u (s : Set (B.Cusp j u)), R.sp u (Submodule.span B.KO s) = R.sp u s) ∧ (∀ u (M : Submodule B.KO (B.Cusp j u)), FiniteDimensional ℂ (R.sp u M) ∧ Module.finrank ℂ (R.sp u M) = Module.finrank B.KO M) := by
   intro D B P j X R la N wL w t

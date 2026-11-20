@@ -23,14 +23,14 @@ def semiInv {X Y : Type} [AddCommGroup X] [Module ℂ X] [AddCommGroup Y] [Modul
     simp)
 
 /- English proof (translation)
-The claim follows from `Function.surjInv_eq hφ.2 y`.
+A detailed English derivation is pending.
 -/
 theorem semiInv_apply {X Y : Type} [AddCommGroup X] [Module ℂ X] [AddCommGroup Y] [Module ℂ Y]
     (φ : X →ₛₗ[starRingEnd ℂ] Y) (hφ : Function.Bijective φ) (y : Y) : φ (semiInv φ hφ y) = y :=
   Function.surjInv_eq hφ.2 y
 
 /- English proof (translation)
-The claim follows from `hφ.1 (semiInv_apply φ hφ (φ x))`.
+A detailed English derivation is pending.
 -/
 theorem semiInv_apply' {X Y : Type} [AddCommGroup X] [Module ℂ X] [AddCommGroup Y] [Module ℂ Y]
     (φ : X →ₛₗ[starRingEnd ℂ] Y) (hφ : Function.Bijective φ) (x : X) : semiInv φ hφ (φ x) = x :=
@@ -43,7 +43,7 @@ variable {α : Type} [Fintype α] {X Y : α → Type} [∀ a, AddCommGroup (X a)
 
 omit [Fintype α] in
 /- English proof (translation)
-Use function extensionality and compare the values at `a`. Conclude with `Function.apply_update (fun a => φ a) x i w a`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem update_comp (φ : ∀ a, X a →ₛₗ[starRingEnd ℂ] Y a) [DecidableEq α] (x : ∀ a, X a) (i : α) (w : X i) :
     (fun a => φ a (Function.update x i w a)) = Function.update (fun a => φ a (x a)) i (φ i w) := by
@@ -74,7 +74,7 @@ def tmap (φ : ∀ a, X a →ₛₗ[starRingEnd ℂ] Y a) : (⨂[ℂ] a, X a) �
     rfl
 
 /- English proof (translation)
-Use `show (PiTensorProduct.lift (mlin φ) (PiTensorProduct.tprod ℂ x) : Cj (⨂[ℂ] a, Y a)) = _`. Rewrite using `[PiTensorProduct.lift.tprod]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem tmap_tprod (φ : ∀ a, X a →ₛₗ[starRingEnd ℂ] Y a) (x : ∀ a, X a) :
     tmap φ (PiTensorProduct.tprod ℂ x) = PiTensorProduct.tprod ℂ (fun a => φ a (x a)) := by
@@ -83,7 +83,7 @@ theorem tmap_tprod (φ : ∀ a, X a →ₛₗ[starRingEnd ℂ] Y a) (x : ∀ a, 
   rfl
 
 /- English proof (translation)
-Proceed by induction on `t using PiTensorProduct.induction_on with`. Consider the case `smul_tprod r x`. Rewrite using `[map_smulₛₗ, map_smulₛₗ, tmap_tprod, tmap_tprod]`. Simplify using `[h]`. Consider the case `add s t hs ht => rw [map_add, map_add, hs, ht]`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately.
 -/
 theorem tmap_comp (φ : ∀ a, X a →ₛₗ[starRingEnd ℂ] Y a) (ψ : ∀ a, Y a →ₛₗ[starRingEnd ℂ] X a)
     (h : ∀ a (x : X a), ψ a (φ a x) = x) (t : ⨂[ℂ] a, X a) : tmap ψ (tmap φ t) = t := by
@@ -96,11 +96,9 @@ theorem tmap_comp (φ : ∀ a, X a →ₛₗ[starRingEnd ℂ] Y a) (ψ : ∀ a, 
 end Tensor
 
 /- English proof (translation)
-Use `choose φ hφ heq using h`. Use `⟨tmap φ, ⟨fun s t hst => ?_, fun t => ⟨tmap (fun a => semiInv (φ a) (hφ a)) t, ?_⟩⟩, fun g t => ?_⟩` and prove the remaining obligations. Use `congrArg (tmap (fun a => semiInv (φ a) (hφ a))) hst` as an intermediate fact. Rewrite `this` using `[tmap_comp _ _ (fun a x => semiInv_apply' (φ a) (hφ a) x), tmap_comp _ _ (fun a x => semiInv_apply' (φ a) (hφ a) x)]`. Then use the resulting hypothesis. Conclude with `tmap_comp (fun a => semiInv (φ a) (hφ a)) φ (fun a y => semiInv_apply (φ a) (hφ a) y) t`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `t using PiTensorProduct.induction_on with`. Consider the case `smul_tprod r x`. Rewrite using `[map_smul, map_smulₛₗ, map_smulₛₗ, map_smul, piTensor_tprod, tmap_tprod, tmap_tprod, piTensor_tprod]`. Use `congr 2`. Use function extensionality and compare the values at `a`.
-
-Conclude with `heq a (g a) (x a)`. Consider the case `add s t hs ht => rw [map_add, map_add, hs, ht, map_add, map_add]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem conjEquiv_piTensor {α : Type} [Fintype α] {Γ X Y : α → Type} [∀ a, Group (Γ a)]
     [∀ a, AddCommGroup (X a)] [∀ a, Module ℂ (X a)] [∀ a, AddCommGroup (Y a)] [∀ a, Module ℂ (Y a)]
@@ -127,7 +125,7 @@ variable {α : Type} [Fintype α] [LinearOrder α] {m : α → Type} [∀ a, Fin
   {n : Type} [Fintype n] [DecidableEq n]
 
 /- English proof (translation)
-Rewrite using `[deltaHalf_apply, Units.coe_prod, map_prod]`. Use `Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations. Establish `e : ((modExp m a : ℂ) / 2) = (((modExp m a : ℝ) / 2 : ℝ) : ℂ)` using `by push_cast; ring`. Use `show starRingEnd ℂ (((nabs k (Matrix.GeneralLinearGroup.det (g a)) : ℝ) : ℂ) ^ ((modExp m a : ℂ) / 2)) = ((nabs k (Matrix.GeneralLinearGroup.det (g a)) : ℝ) : ℂ) ^ ((modExp m a : ℂ) / 2)`. Rewrite using `[e, ← Complex.ofReal_cpow (nabs_pos' k _).le, Complex.conj_ofReal]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem star_deltaHalf (g : Levi k m) : starRingEnd ℂ (deltaHalf k m g : ℂ) = deltaHalf k m g := by
   rw [deltaHalf_apply, Units.coe_prod, map_prod]
@@ -165,13 +163,13 @@ theorem indMap_apply (e : (Σ a, m a) ≃ n) {ρ : Representation ℂ (Levi k m)
     (indMap e φ hφ f).1.1 g = φ (f.1.1 g) := rfl
 
 /- English proof (translation)
-Take `⟨φ, hφ, heq⟩` from `h`. Establish `hinv : ∀ g w, semiInv φ hφ (τ g w) = ρ g (semiInv φ hφ w)` using `fun g w => by`. Apply `hφ.1` to reduce the goal to its premises. Rewrite using `[semiInv_apply, heq, semiInv_apply]`. Use `⟨indMap e φ heq, ⟨fun f f' hff => ?_, fun f => ⟨indMap e (semiInv φ hφ) hinv f, ?_⟩⟩, fun g f => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `x`. Apply `hφ.1` to reduce the goal to its premises. Use `congrArg (fun F : IndSp e τ => F.1.1 x) hff` as an intermediate fact.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Simplify `this` using `only [indMap_apply]`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `x show φ (semiInv φ hφ (f.1.1 x)) = f.1.1 x`. Conclude with `semiInv_apply φ hφ _`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `x`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem conjEquiv_parInd (e : (Σ a, m a) ≃ n) (ρ : Representation ℂ (Levi k m) V)
     (τ : Representation ℂ (Levi k m) W) (h : ConjEquiv ρ τ) : ConjEquiv (parInd e ρ) (parInd e τ) := by
@@ -198,7 +196,7 @@ namespace PositivityTheory.RgGu.NR
 
 open ConjProd in
 /- English proof (translation)
-Introduce `h N d hd X Y _ _ _ _ π σ hc`. Conclude with `conjEquiv_parInd _ _ _ (conjEquiv_piTensor π σ hc)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem conjProd (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] :
     ConjProd k := by

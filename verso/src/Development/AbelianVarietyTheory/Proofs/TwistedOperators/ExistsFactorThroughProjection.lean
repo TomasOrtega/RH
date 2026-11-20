@@ -3,17 +3,17 @@ import Mathlib
 namespace GlobalTheory.FactorThroughProjection
 
 /- English proof (translation)
-Establish `hsum : ∑ i : J, χ (Pi.single i (1 : A i)) = 1`. Rewrite using `[← map_sum]`. Establish `h : ∑ i : J, (Pi.single i (1 : A i) : (j : J) → A j) = 1` using `Finset.univ_sum_single (1 : (j : J) → A j)`. Rewrite using `[h, map_one]`. Establish `hne : ∑ i : J, χ (Pi.single i (1 : A i)) ≠ 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hsum]`. Conclude with `one_ne_zero`. Take `⟨i, -, hi⟩` from `Finset.exists_ne_zero_of_sum_ne_zero hne`. Establish `hmul : ∀ a b : A i, (Pi.single i (a * b) : (j : J) → A j) = Pi.single i a * Pi.single i b`. Introduce `a b`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_eq_of_ne hj]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hone : χ (Pi.single i (1 : A i)) = 1`. Apply `mul_left_cancel₀ hi` to reduce the goal to its premises. Rewrite using `[← map_mul, ← hmul, mul_one, mul_one]`. Set `ψ : A i →+* k` to `{ toFun := fun a => χ (Pi.single i a) map_one' := hone map_mul' := fun a b => by rw [hmul, map_mul] map_zero' := by simp map_add' := fun a b => by rw [Pi.single_add, map_add] }`. Use `⟨i, ψ, fun x => ?_⟩` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `χ x = χ (Pi.single i (x i))`. Establish `hx : (Pi.single i (x i) : (j : J) → A j) = x * Pi.single i (1 : A i)`. Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Simplify using `[Pi.single_eq_of_ne hj]`. Rewrite using `[hx, map_mul, hone, mul_one]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_factor_through_projection {J : Type} [Fintype J] [DecidableEq J] (A : J → Type)
     [inst : (i : J) → CommRing (A i)] {k : Type} [inst_1 : CommRing k] [IsDomain k]

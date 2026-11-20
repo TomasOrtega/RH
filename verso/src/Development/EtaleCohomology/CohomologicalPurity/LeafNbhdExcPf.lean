@@ -10,7 +10,7 @@ def nbhdRet {A B : Type} [CommRing A] [CommRing B] (φ : A →+* B) (I : Ideal A
   ((RingEquiv.ofBijective _ hb).symm : (B ⧸ I.map φ) →+* A ⧸ I).comp (Ideal.Quotient.mk (I.map φ))
 
 /- English proof (translation)
-Unfold `nbhdRet`. Simplify using `only [RingHom.coe_comp, Function.comp_apply]`. Rewrite using `[RingEquiv.coe_toRingHom, RingEquiv.symm_apply_eq]`. Simplify using `[Ideal.quotientMap_mk]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem nbhdRet_comp {A B : Type} [CommRing A] [CommRing B] (φ : A →+* B) (I : Ideal A) (hb : Function.Bijective
     (Ideal.quotientMap (I.map φ) φ Ideal.le_comap_map)) (a : A) :
@@ -21,19 +21,19 @@ theorem nbhdRet_comp {A B : Type} [CommRing A] [CommRing B] (φ : A →+* B) (I 
   simp [Ideal.quotientMap_mk]
 
 /- English proof (translation)
-Establish `w : CommRingCat.ofHom φ ≫ CommRingCat.ofHom (nbhdRet φ I hb) = CommRingCat.ofHom (Ideal.Quotient.mk I) ≫ 𝟙 (CommRingCat.of (A ⧸ I))`. Use extensionality with `a`. Simplify using `[nbhdRet_comp]`. Use `IsPushout.of_isColimit' ⟨w⟩ (PushoutCocone.IsColimit.mk _ (fun s => s.inr) ?_ ?_ ?_)` and prove the remaining obligations. Introduce `s`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use extensionality with `b`. Take `⟨x, hx⟩` from `hb.2 (Ideal.Quotient.mk (I.map φ) b)`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Rewrite `hx` using `[Ideal.quotientMap_mk, Ideal.Quotient.eq]`. Establish `hker : ∀ y ∈ I.map φ, s.inl y = 0`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `y hy`. Establish `hle : I.map φ ≤ RingHom.ker s.inl.hom`. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `i hi`. Use `congrArg (fun g => g.hom i) s.condition` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply, CommRingCat.hom_ofHom] at this`. Simplify using `only [Ideal.mem_comap, RingHom.mem_ker, this, Ideal.Quotient.eq_zero_iff_mem.2 hi, map_zero]`. Conclude with `hle hy`. Establish `h1 : s.inl b = s.inl (φ a)`. Use `hker _ hx` as an intermediate fact.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[map_sub, sub_eq_zero]`. Conclude with `this.symm`. Establish `h2` using `congrArg (fun g => g.hom a) s.condition`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply, CommRingCat.hom_ofHom] at h2`. Establish `h3 : nbhdRet φ I hb b = Ideal.Quotient.mk I a`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Unfold `nbhdRet`. Simplify using `only [RingHom.coe_comp, Function.comp_apply]`. Rewrite using `[RingEquiv.coe_toRingHom, RingEquiv.symm_apply_eq, RingEquiv.ofBijective_apply, Ideal.quotientMap_mk]`. Conclude with `(Ideal.Quotient.eq.2 hx).symm`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply, CommRingCat.hom_ofHom]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[h3, h1, h2]`. Introduce `s`. Simplify using the standard rewrite rules. Introduce `s m h1 h2`. Simplify using `using h2`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem nbhd_isPushout {A B : Type} [CommRing A] [CommRing B] (φ : A →+* B) (I : Ideal A) (hb : Function.Bijective
     (Ideal.quotientMap (I.map φ) φ Ideal.le_comap_map)) :
@@ -75,7 +75,7 @@ theorem nbhd_isPushout {A B : Type} [CommRing A] [CommRing B] (φ : A →+* B) (
     simpa using h2
 
 /- English proof (translation)
-Use `isPullback_SpecMap_of_isPushout _ _ _ _ (nbhd_isPushout φ I hb)` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem nbhd_isPullback {A B : Type} [CommRing A] [CommRing B] (φ : A →+* B) (I : Ideal A) (hb : Function.Bijective
     (Ideal.quotientMap (I.map φ) φ Ideal.le_comap_map)) :
@@ -85,7 +85,7 @@ theorem nbhd_isPullback {A B : Type} [CommRing A] [CommRing B] (φ : A →+* B) 
   simpa using this
 
 /- English proof (translation)
-Use extensionality with `x`. Express the relevant statement in the definitionally equal form `x ∈ (PrimeSpectrum.zeroLocus (I : Set A))ᶜ ↔ x ∈ (Set.range (PrimeSpectrum.comap (Ideal.Quotient.mk I)))ᶜ`. Rewrite using `[range_comap_of_surjective _ _ (Ideal.Quotient.mk_surjective (I := I)), Ideal.mk_ker]`.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem range_spec_quot {A : Type} [CommRing A] (I : Ideal A) :
     (off A I : Set (Spec (CommRingCat.of A))) = (Set.range (Spec.map (CommRingCat.ofHom (Ideal.Quotient.mk I))))ᶜ := by
@@ -94,7 +94,7 @@ theorem range_spec_quot {A : Type} [CommRing A] (I : Ideal A) :
   rw [range_comap_of_surjective _ _ (Ideal.Quotient.mk_surjective (I := I)), Ideal.mk_ker]
 
 /- English proof (translation)
-Introduce `a1 q A B _ _ φ I hN hq h`. Take `⟨het, hb⟩` from `hN`. Establish `: Etale (Spec.map (CommRingCat.ofHom φ))` using `HasRingHomProperty.Spec_iff.2 het`. Establish `: IsClosedImmersion (Spec.map (CommRingCat.ofHom (Ideal.Quotient.mk I)))` using `IsClosedImmersion.spec_of_surjective _ Ideal.Quotient.mk_surjective`. Conclude with `hE a1 q (Spec.map (CommRingCat.ofHom φ)) (Spec.map (CommRingCat.ofHom (nbhdRet φ I hb))) (Spec.map (CommRingCat.ofHom (Ideal.Quotient.mk I))) (nbhd_isPullback φ I hb) _ _ (range_spec_quot I) (off_map φ I)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem leafNbhdExc_of (hE : LeafExc) : LeafNbhdExc := by
   intro a1 q A B _ _ φ I hN hq h

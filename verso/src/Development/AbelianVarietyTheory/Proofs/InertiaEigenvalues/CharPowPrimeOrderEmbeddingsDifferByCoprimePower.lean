@@ -5,25 +5,21 @@ open scoped TensorProduct Classical
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `Γ _ C _ _ l n hl ψ hψ e e'`. Use `haveI : NeZero (l ^ n) := ⟨pow_ne_zero _ hl.ne_zero⟩`. Take `⟨ζ, hζ⟩` from `IsCyclic.exists_generator (α := rootsOfUnity (l ^ n) C)`. Use `set u : Cˣ := (ζ : Cˣ) with hu`. Establish `hul : u ^ (l ^ n) = 1` using `(mem_rootsOfUnity _ _).mp ζ.2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set k := orderOf u with hk`. Establish `hkd : k ∣ l ^ n` using `orderOf_dvd_of_pow_eq_one hul`. Establish `hk0 : 0 < k` using `Nat.pos_of_ne_zero (fun h => by`. Rewrite `hkd` using `[h]`. Conclude with `(NeZero.ne (l ^ n)) (Nat.eq_zero_of_zero_dvd hkd))`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `haveI : NeZero k := ⟨hk0.ne'⟩`. Establish `hpu : IsPrimitiveRoot (u : C) k` using `IsPrimitiveRoot.coe_units_iff.mpr (IsPrimitiveRoot.orderOf u)`. Establish `h1 : IsPrimitiveRoot (e (u : C)) k` using `hpu.map_of_injective e.injective`. Establish `h2 : IsPrimitiveRoot (e' (u : C)) k` using `hpu.map_of_injective e'.injective`. Take `⟨i, hik, hi⟩` from `h1.eq_pow_of_pow_eq_one h2.pow_eq_one`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hic : i.Coprime k` using `(h1.pow_iff_coprime hk0 i).mp (by rw [hi]; exact h2)`. Use `⟨i + k, ?_, ?_⟩` and prove the remaining obligations. Establish `hc : (i + k).Coprime k` using `by simpa using hic`. Rewrite using `[Nat.coprime_comm, Nat.Prime.coprime_iff_not_dvd hl]`. Introduce `hdvd`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Substitute using the available equality.
 
-Take `⟨m, -, hm⟩` from `(Nat.dvd_prime_pow hl).mp hkd`. Break down `m with _ | m` into its components or cases. Simplify using `at hm`. Establish `: i = 0` using `by omega`. Substitute `this` using the available equality.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hdvd` using `[hm]`. Conclude with `hl.one_lt.ne' (Nat.dvd_one.mp (by simpa using hdvd))`. Establish `hlk : l ∣ k` using `by rw [hm]; exact dvd_pow_self l (Nat.succ_ne_zero m)`. Use `Nat.Coprime.coprime_dvd_left hdvd hc` as an intermediate fact. Use `Nat.Coprime.coprime_dvd_right hlk this` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hl.one_lt.ne' (by simpa using this)`. Establish `hEu : e' (u : C) = e (u : C) ^ (i + k)`. Rewrite using `[pow_add, hi, h1.pow_eq_one, mul_one]`. Set `E : Cˣ →* ℂˣ` to `Units.map (e : C →* ℂ)`. Set `E' : Cˣ →* ℂˣ` to `Units.map (e' : C →* ℂ)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hEu' : E' u = E u ^ (i + k)` using `by ext; simp [E, E', hEu]`. Introduce `g`. Establish `hmem : ψ g ∈ rootsOfUnity (l ^ n) C` using `(mem_rootsOfUnity _ _).mpr (hψ g)`. Take `⟨j, hj⟩` from `Subgroup.mem_zpowers_iff.mp (hζ ⟨ψ g, hmem⟩)`. Establish `hj' : u ^ j = ψ g`.
-
-Use `congrArg Subtype.val hj` as an intermediate fact. Simplify `this` using `[hu]`. Establish `key : E' (ψ g) = E (ψ g ^ (i + k))`. Rewrite using `[← hj', map_zpow, map_pow, map_zpow, hEu', ← zpow_natCast, ← zpow_natCast, ← _root_.zpow_mul, ← _root_.zpow_mul, mul_comm]`. Use `congrArg Units.val key` as an intermediate fact.
-
-Simplify `this` using `[E, E']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem charPowPrimeOrder_embeddings_differ_by_coprime_power :
     ∀ (Γ : Type) [Group Γ] (C : Type) [Field C] [CharZero C] (l n : ℕ), l.Prime →

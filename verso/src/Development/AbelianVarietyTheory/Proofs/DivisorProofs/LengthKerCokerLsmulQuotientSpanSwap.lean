@@ -19,11 +19,11 @@ lemma mulMap_mk (a b c : A) (hc : a * b = c) (x : A) :
     mulMap a b c hc (Ideal.Quotient.mk _ x) = Ideal.Quotient.mk _ (b * x) := rfl
 
 /- English proof (translation)
-Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `q hq`. Proceed by induction on `q using Submodule.Quotient.induction_on with`. Consider the case `H x`. Express the relevant statement in the definitionally equal form `mulMap a b c hc (Ideal.Quotient.mk _ x) = 0 at hq`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite `hq` using `[mulMap_mk, Ideal.Quotient.eq_zero_iff_mem, Ideal.mem_span_singleton']`. Take `⟨r, hr⟩` from `hq`. Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk _ x = 0`. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem, Ideal.mem_span_singleton']`. Use `⟨r, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Apply `mul_left_cancel₀ hb` to reduce the goal to its premises. Rewrite using `[← hr, ← hc]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma mulMap_injective (a b c : A) (hb : b ≠ 0) (hc : a * b = c) :
     Function.Injective (mulMap a b c hc) := by
@@ -41,13 +41,13 @@ lemma mulMap_injective (a b c : A) (hb : b ≠ 0) (hc : a * b = c) :
     rw [← hr, ← hc]; ring
 
 /- English proof (translation)
-Use extensionality with `z`. Simplify using `only [Submodule.mem_map, LinearMap.mem_ker, LinearMap.lsmul_apply, Submodule.mem_inf]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨q, hq, rfl⟩`. Proceed by induction on `q using Submodule.Quotient.induction_on with`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Proceed by induction.
 
-Consider the case `H x`. Use `⟨b * x, ⟨?_, ?_⟩, rfl⟩` and prove the remaining obligations. Establish `hq' : Ideal.Quotient.mk (Ideal.span {a}) (b * x) = 0` using `hq`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.mp hq'`. Conclude with `Ideal.mem_span_singleton'.mpr ⟨x, mul_comm _ _⟩`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `⟨t, ⟨hta, htb⟩, rfl⟩`. Take `⟨x, rfl⟩` from `Ideal.mem_span_singleton'.mp htb`. Use `⟨Ideal.Quotient.mk _ x, ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk (Ideal.span {a}) (b * x) = 0`. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem, mul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hta`. Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk _ (b * x) = Ideal.Quotient.mk _ (x * b)`. Rewrite using `[mul_comm]`.
+A detailed English derivation is pending.
 -/
 lemma map_mulMap_ker (a b c : A) (hc : a * b = c) :
     (LinearMap.ker (LinearMap.lsmul A (A ⧸ Ideal.span {a}) b)).map (mulMap a b c hc) =
@@ -79,11 +79,11 @@ noncomputable def kerEquiv (a b : A) (ha : a ≠ 0) (hb : b ≠ 0) :
       (Submodule.equivMapOfInjective _ (mulMap_injective b a (a * b) ha (mul_comm b a)) _).symm)
 
 /- English proof (translation)
-Use extensionality with `z`. Simplify using `only [LinearMap.mem_range, LinearMap.lsmul_apply, Submodule.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨q, rfl⟩`. Proceed by induction on `q using Submodule.Quotient.induction_on with`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Proceed by induction.
 
-Consider the case `H x => exact ⟨x * b, Ideal.mem_span_singleton'.mpr ⟨x, rfl⟩, by`. Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk _ (x * b) = Ideal.Quotient.mk _ (b * x)`. Rewrite using `[mul_comm]⟩`. Introduce and unpack `⟨t, ht, rfl⟩`. Take `⟨x, rfl⟩` from `Ideal.mem_span_singleton'.mp ht`.
+Treat this case separately. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨Ideal.Quotient.mk _ x, by`. Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk _ (b * x) = Ideal.Quotient.mk _ (x * b)`. Rewrite using `[mul_comm]⟩`.
+Supply the required witnesses or components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 lemma range_lsmul_eq (a b : A) :
     LinearMap.range (LinearMap.lsmul A (A ⧸ Ideal.span {a}) b) =
@@ -109,7 +109,7 @@ noncomputable def cokerEquiv (a b : A) :
 end GlobalTheory.ASwap
 
 /- English proof (translation)
-Introduce `A _ _ a b ha hb`. Use `⟨(GlobalTheory.ASwap.kerEquiv a b ha hb).length_eq, ?_⟩` and prove the remaining obligations. Conclude with `((GlobalTheory.ASwap.cokerEquiv a b).trans ((Submodule.quotEquivOfEq _ _ (sup_comm _ _)).trans (GlobalTheory.ASwap.cokerEquiv b a).symm)).length_eq`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.kernel_cokernel_length_swap :
     ∀ (A : Type) [CommRing A] [IsDomain A] (a b : A), a ≠ 0 → b ≠ 0 → Module.length A (LinearMap.ker (LinearMap.lsmul A (A ⧸ Ideal.span {a}) b)) = Module.length A (LinearMap.ker (LinearMap.lsmul A (A ⧸ Ideal.span {b}) a)) ∧ Module.length A ((A ⧸ Ideal.span {a}) ⧸ LinearMap.range (LinearMap.lsmul A (A ⧸ Ideal.span {a}) b)) = Module.length A ((A ⧸ Ideal.span {b}) ⧸ LinearMap.range (LinearMap.lsmul A (A ⧸ Ideal.span {b}) a)) := by

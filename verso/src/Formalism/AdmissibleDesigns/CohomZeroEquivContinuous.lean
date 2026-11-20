@@ -60,7 +60,7 @@ def bwd : ↥(finiteCocycles PD (repL e ρ ι)) →ₛₗ[(e.symm : LL →+* Fra
   map_smul' _ _ := rfl
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `γ`. Conclude with `congrArg c.1 ((Equiv.ofBijective ι hι).apply_symm_apply γ)`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem bwd_fwd (c : ↥(finZ e PD ρ ι)) : bwd e PD ρ hι (fwd e PD ι ρ c) = c := by
   apply Subtype.ext
@@ -68,7 +68,7 @@ theorem bwd_fwd (c : ↥(finZ e PD ρ ι)) : bwd e PD ρ hι (fwd e PD ι ρ c) 
   exact congrArg c.1 ((Equiv.ofBijective ι hι).apply_symm_apply γ)
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `g`. Conclude with `congrArg c.1 ((Equiv.ofBijective ι hι).symm_apply_apply g)`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem fwd_bwd (c : ↥(finiteCocycles PD (repL e ρ ι))) : fwd e PD ι ρ (bwd e PD ρ hι c) = c := by
   apply Subtype.ext
@@ -76,11 +76,9 @@ theorem fwd_bwd (c : ↥(finiteCocycles PD (repL e ρ ι))) : fwd e PD ι ρ (bw
   exact congrArg c.1 ((Equiv.ofBijective ι hι).symm_apply_apply g)
 
 /- English proof (translation)
-Rewrite using `[B1, LinearMap.mem_range, LinearMap.mem_range]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨v, hv⟩`. Use `⟨(show TrV e V from v), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `g`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `congrFun hv (ι g)`. Introduce and unpack `⟨w, hw⟩`. Use `⟨(show V from w), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `γ`. Take `⟨g, rfl⟩` from `hι.2 γ`.
-
-Conclude with `congrFun hw g`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem mem_cob_iff (c : ↥(finZ e PD ρ ι)) :
     c.1 ∈ LinearMap.range (cobK ρ) ↔ (fwd e PD ι ρ c).1 ∈ B1 (repL e ρ ι) := by
@@ -121,7 +119,7 @@ def quotEquiv : (↥(finZ e PD ρ ι) ⧸ (LinearMap.range (cobK ρ)).comap (fin
   map_add' x y := map_add (fwdQ e PD ρ hι) x y
 
 /- English proof (translation)
-The claim follows from `rank_eq_of_equiv_equiv e (quotEquiv e PD ρ hι) e.bijective (fun k x => (fwdQ e PD ρ hι).map_smulₛₗ k x)`.
+A detailed English derivation is pending.
 -/
 theorem rank_finQuot :
     Module.rank (FractionRing O)
@@ -132,7 +130,7 @@ theorem rank_finQuot :
 
 omit hι in
 /- English proof (translation)
-Simplify using `only [H0V, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, sub_eq_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_H0V' {W : Type} [AddCommGroup W] [Module LL W] (σ : Representation LL G W) (v : W) :
     v ∈ H0V σ ↔ ∀ g, σ g v = v := by
@@ -156,7 +154,7 @@ def cohomZeroEquivContinuous : ↥(LinearMap.ker (cobK ρ)) ≃+ ↥(H0V (repL e
   map_add' _ _ := rfl
 
 /- English proof (translation)
-The claim follows from `rank_eq_of_equiv_equiv e (cohomZeroEquivContinuous e ρ hι) e.bijective (fun k v => by apply Subtype.ext show k • (v.1 : V) = e.symm (e k) • (v.1 : V) rw [RingEquiv.symm_apply_apply])`.
+A detailed English derivation is pending.
 -/
 theorem rank_invariants_eq :
     Module.rank (FractionRing O) ↥(LinearMap.ker (cobK ρ)) = Module.rank LL ↥(H0V (repL e ρ ι)) :=
@@ -166,7 +164,7 @@ theorem rank_invariants_eq :
     rw [RingEquiv.symm_apply_apply])
 
 /- English proof (translation)
-Conclude with `congrArg Cardinal.toNat (rank_invariants_eq e ρ hι)`.
+A detailed English derivation is pending.
 -/
 theorem finrank_invariants_eq :
     Module.finrank (FractionRing O) ↥(LinearMap.ker (cobK ρ)) = Module.finrank LL ↥(H0V (repL e ρ ι)) := by
@@ -175,7 +173,7 @@ theorem finrank_invariants_eq :
 omit hι [TopologicalSpace LL] in
 
 /- English proof (translation)
-Establish `h : Module.rank (FractionRing O) V = Module.rank LL (TrV e V)` using `rank_eq_of_equiv_equiv e (AddEquiv.refl V) e.bijective (fun k v => by show k • v = e.symm (e k) • v`. Rewrite using `[RingEquiv.symm_apply_apply])`. Establish `h1 : Module.rank (FractionRing O) V < Cardinal.aleph0` using `Module.rank_lt_aleph0_iff.mpr inferInstance`. Rewrite `h1` using `[h]`. Conclude with `Module.rank_lt_aleph0_iff.mp h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finDim_TrV [FiniteDimensional (FractionRing O) V] : FiniteDimensional LL (TrV e V) := by
   have h : Module.rank (FractionRing O) V = Module.rank LL (TrV e V) :=
@@ -204,13 +202,13 @@ def FilLow {V : Type} [AddCommGroup V] [Module LL V] [Module Qp V] [IsScalarTowe
     ∃ lo : ℤ, lo ≤ 0 ∧ ∀ a, a ≤ lo → FildR PD ρ τ a = DdRE PD ρ τ
 
 /- English proof (translation)
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `lo h`. Establish `h0 : lo = 0` using `by omega`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Substitute `h0` using the available equality. Simplify using the standard rewrite rules. Consider the case `succ k ih`. Introduce `lo h`. Establish `hs : Finset.Ico lo 0 = insert lo (Finset.Ico (lo + 1) 0)`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use extensionality with `x`. Simplify using `only [Finset.mem_Ico, Finset.mem_insert]`. Use linear arithmetic over natural numbers and integers. Establish `hn : lo ∉ Finset.Ico (lo + 1) 0`. Simplify using `only [Finset.mem_Ico]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[hs, Finset.sum_insert hn, ih (lo + 1) (by omega)]`. Expand and normalize the polynomial expressions, which then agree.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem sum_Ico_sub_succ_eq_telescope (f : ℤ → ℤ) : ∀ (n : ℕ) (lo : ℤ), lo + n = 0 →
     ∑ a ∈ Finset.Ico lo 0, (f a - f (a + 1)) = f lo - f 0 := by
@@ -234,9 +232,9 @@ private theorem sum_Ico_sub_succ_eq_telescope (f : ℤ → ℤ) : ∀ (n : ℕ) 
     ring
 
 /- English proof (translation)
-Establish `hn : lo + (((-lo).toNat : ℕ) : ℤ) = 0`. Rewrite using `[Int.toNat_of_nonneg (by omega)]`. Expand and normalize the polynomial expressions, which then agree. Establish `h` using `sum_Ico_sub_succ_eq_telescope (fun a => (finrank LL ↥(FildR PD ρ τ a) : ℤ)) (-lo).toNat lo hn`. Rewrite using `[← hF]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h.symm`.
+A detailed English derivation is pending.
 -/
 theorem negdim_eq {V : Type} [AddCommGroup V] [Module LL V] [Module Qp V] [IsScalarTower Qp LL V]
     (ρ : Representation LL G V) (τ : K →ₐ[Qp] LL) (hfin : FiniteDimensional LL ↥(DdRE PD ρ τ))
@@ -251,11 +249,11 @@ theorem negdim_eq {V : Type} [AddCommGroup V] [Module LL V] [Module Qp V] [IsSca
   exact h.symm
 
 /- English proof (translation)
-Establish `hV` using `hBK hS V ρ hcV hcrV`. Establish `hW` using `hBK hS W ρW hcW hcrW`. Establish `hsum : ∀ τ : K →ₐ[Qp] LL, ((finrank LL ↥(DdRE PD ρ τ) : ℤ) - finrank LL ↥(FildR PD ρ τ 0)) = ((finrank LL ↥(DdRE PD ρW τ) : ℤ) - finrank LL ↥(FildR PD ρW τ 0))`. Introduce `τ`. Take `⟨hfV, loV, hloV, hFV⟩` from `hlowV τ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨hfW, loW, hloW, hFW⟩` from `hlowW τ`. Rewrite using `[negdim_eq PD ρ τ hfV (min loV loW) (le_trans (min_le_left _ _) hloV) (hFV _ (min_le_left _ _)), negdim_eq PD ρW τ hfW (min loV loW) (le_trans (min_le_left _ _) hloV) (hFW _ (min_le_right _ _))]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `a ha`. Conclude with `hneg τ a (Finset.mem_Ico.mp ha).2`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hV, hW, Finset.sum_congr rfl (fun τ _ => hsum τ), h0W]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem count_eq (hBK : BlochKatoDim PD LL) (hS : Splits LL (K := K) (Qp := Qp))
     {V : Type} [AddCommGroup V] [Module LL V] [Module Qp V] [IsScalarTower Qp LL V]
@@ -284,9 +282,9 @@ theorem count_eq (hBK : BlochKatoDim PD LL) (hS : Splits LL (K := K) (Qp := Qp))
   simp
 
 /- English proof (translation)
-Establish `h` using `count_eq PD hBK hS ρ ρW hcV hcW hcrV hcrW hlowV hlowW hneg h0W`. Establish `h' : finrank LL (FiniteCohomology PD ρ) = finrank LL (FiniteCohomology PD ρW) + finrank LL ↥(H0V ρ)` using `by omega`. Rewrite using `[← h']`. Establish `hlt : Module.rank LL (FiniteCohomology PD ρ) < Cardinal.aleph0` using `Module.rank_lt_aleph0_iff.mpr hfin`. Use `first`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Treat this case separately.
 
-Consider the case `exact le_of_eq (Module.finrank_eq_rank (R := LL) (M := FiniteCohomology PD ρ)).symm`. Consider the case `exact (Cardinal.cast_toNat_of_lt_aleph0 hlt).symm.le`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem rank_le_count (hBK : BlochKatoDim PD LL) (hS : Splits LL (K := K) (Qp := Qp))
     {V : Type} [AddCommGroup V] [Module LL V] [Module Qp V] [IsScalarTower Qp LL V]
@@ -324,15 +322,15 @@ variable {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field 
     {V : Type} [AddCommGroup V] [Module LL V] [Module Qp V] [IsScalarTower Qp LL V]
 
 /- English proof (translation)
-Conclude with `antitone_int_of_succ_le PD.Fil_anti`.
+A detailed English derivation is pending.
 -/
 theorem fil_anti : Antitone PD.Fil := by
   exact antitone_int_of_succ_le PD.Fil_anti
 
 /- English proof (translation)
-Establish `hle : (PD.Fil b).restrictScalars Qp ≤ (PD.Fil a).restrictScalars Qp` using `fun x hx => fil_anti PD h hx`. Introduce `x hx`. Take `⟨y, rfl⟩` from `LinearMap.mem_range.mp hx`. Use `clear hx`. Proceed by induction on `y using TensorProduct.induction_on with`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => rw [map_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `tmul v f => exact LinearMap.mem_range.mpr ⟨v ⊗ₜ[Qp] Submodule.inclusion hle f, rfl⟩`. Consider the case `add y z hy hz => rw [map_add]`. Conclude with `Submodule.add_mem _ hy hz`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem filV_mono {a b : ℤ} (h : a ≤ b) : FilV PD (LL := LL) (V := V) b ≤ FilV PD a := by
   have hle : (PD.Fil b).restrictScalars Qp ≤ (PD.Fil a).restrictScalars Qp := fun x hx => fil_anti PD h hx
@@ -345,9 +343,9 @@ theorem filV_mono {a b : ℤ} (h : a ≤ b) : FilV PD (LL := LL) (V := V) b ≤ 
   | add y z hy hz => rw [map_add]; exact Submodule.add_mem _ hy hz
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, Submodule.zero_mem _⟩`. Consider the case `tmul v f`. Take `⟨a, ha⟩` from `PD.Fil_exh f`. Conclude with `⟨a, LinearMap.mem_range.mpr ⟨v ⊗ₜ[Qp] (⟨f, ha⟩ : ↥((PD.Fil a).restrictScalars Qp)), rfl⟩⟩`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Consider the case `add x y hx hy`. Take `⟨a, ha⟩` from `hx`. Take `⟨b, hb⟩` from `hy`. Conclude with `⟨min a b, Submodule.add_mem _ (filV_mono PD (min_le_left a b) ha) (filV_mono PD (min_le_right a b) hb)⟩`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_filV (x : TensorProduct Qp V BdR) : ∃ a, x ∈ FilV PD (LL := LL) a := by
   induction x using TensorProduct.induction_on with
@@ -362,9 +360,9 @@ theorem exists_filV (x : TensorProduct Qp V BdR) : ∃ a, x ∈ FilV PD (LL := L
       (filV_mono PD (min_le_right a b) hb)⟩
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact ⟨0, le_refl 0, fun x hx => by simp at hx⟩`. Consider the case `@insert x s hxs ih`. Take `⟨a, ha0, ha⟩` from `ih`. Take `⟨b, hb⟩` from `exists_filV PD (LL := LL) x`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨min a b, le_trans (min_le_left a b) ha0, fun y hy => ?_⟩` and prove the remaining obligations. Break down `Finset.mem_insert.mp hy with rfl | hy'` into its components or cases. Conclude with `filV_mono PD (min_le_right a b) hb`. Conclude with `filV_mono PD (min_le_left a b) (ha y hy')`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem exists_low_finset (s : Finset (TensorProduct Qp V BdR)) :
     ∃ a : ℤ, a ≤ 0 ∧ ∀ x ∈ s, x ∈ FilV PD (LL := LL) a := by
@@ -381,11 +379,11 @@ theorem exists_low_finset (s : Finset (TensorProduct Qp V BdR)) :
 variable (ρ : Representation LL G V)
 
 /- English proof (translation)
-Set `b` to `Module.finBasis LL ↥(DdRE PD ρ τ)`. Take `⟨lo, hlo, hs⟩` from `exists_low_finset PD (LL := LL) (Finset.univ.image (fun j => ((b j : ↥(DdRE PD ρ τ)) : TensorProduct Qp V BdR)))`. Use `⟨lo, hlo, fun a ha => ?_⟩` and prove the remaining obligations. Establish `hb : ∀ j, ((b j : ↥(DdRE PD ρ τ)) : TensorProduct Qp V BdR) ∈ FilV PD (LL` using `LL) a := fun j => filV_mono PD ha (hs _ (Finset.mem_image_of_mem _ (Finset.mem_univ j)))`. Unfold `FildR`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Apply `inf_eq_left.mpr` to reduce the goal to its premises. Introduce `y hy`. Establish `hspan : Submodule.span LL (Set.range b) ≤ (FilV PD (LL` using `LL) a).comap (DdRE PD ρ τ).subtype := by`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨j, rfl⟩`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `hb j`. Rewrite `hspan` using `[b.span_eq]`. Conclude with `hspan (Submodule.mem_top (x := (⟨y, hy⟩ : ↥(DdRE PD ρ τ))))`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem low_of_fin (τ : K →ₐ[Qp] LL) (hfin : FiniteDimensional LL ↥(DdRE PD ρ τ)) :
     ∃ lo : ℤ, lo ≤ 0 ∧ ∀ a, a ≤ lo → FildR PD ρ τ a = DdRE PD ρ τ := by
@@ -406,9 +404,9 @@ theorem low_of_fin (τ : K →ₐ[Qp] LL) (hfin : FiniteDimensional LL ↥(DdRE 
   exact hspan (Submodule.mem_top (x := (⟨y, hy⟩ : ↥(DdRE PD ρ τ))))
 
 /- English proof (translation)
-Introduce `τ`. Use `haveI := PD.finK`. Establish `hK : 0 < Module.finrank Qp K` using `Module.finrank_pos`. Establish `hpos : 0 < finrank LL ↥(DdR PD ρ)`. Rewrite using `[hDR]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Nat.mul_pos hK hV`. Use `haveI : FiniteDimensional LL ↥(DdR PD ρ) := Module.finite_of_finrank_pos hpos`. Establish `hle : DdRE PD ρ τ ≤ DdR PD ρ` using `inf_le_left`. Use `haveI hfin : FiniteDimensional LL ↥(DdRE PD ρ τ) := Submodule.finiteDimensional_of_le hle`. Conclude with `⟨hfin, low_of_fin PD ρ τ hfin⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem filLow_of_dR [FiniteDimensional LL V] (hV : 0 < finrank LL V)
     (hDR : finrank LL ↥(DdR PD ρ) = finrank Qp K * finrank LL V) : FilLow PD ρ := by
@@ -436,9 +434,9 @@ variable {D : D7} (i : D.nd.Loc) (dc : TruncatedSeriesCountingIdentities.Decl D 
   (ρ : D.nd.X i → (GE D.nd →* GL (Fin D.R.r) (D.nd.O i))) (π : D.nd.X i)
 
 /- English proof (translation)
-Establish `hmem : l.1 ∈ K.plSet i dc`. Unfold `K.plSet`. Simplify using `only [Finset.mem_union]`. Conclude with `Or.inl (Or.inr l.2)`. Establish `hidx : K.plOf i dc (K.colIdx i dc l) = l.1`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Prove the first alternative. Establish an intermediate fact.
 
-Unfold `K.plOf K.colIdx K.idx`. Rewrite using `[dif_pos hmem, dif_pos ((K.plSet i dc).equivFin ⟨l.1, hmem⟩).isLt]`. Simplify using the standard rewrite rules. Rewrite using `[hidx]`. Conclude with `(dc.cover l.1).mp (Or.inr l.2)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem col_over (l : K.Col i dc) : K.plOf i dc (K.colIdx i dc l) ∈ placesOver D.host.E (D.nd.l i) := by
   have hmem : l.1 ∈ K.plSet i dc := by
@@ -453,7 +451,7 @@ theorem col_over (l : K.Col i dc) : K.plOf i dc (K.colIdx i dc l) ∈ placesOver
   exact (dc.cover l.1).mp (Or.inr l.2)
 
 /- English proof (translation)
-The claim follows from `evalTower i (R' := R') x' colD (K := FractionRing (D.nd.O i)) (V := EvalSp (D.nd.O i) d R' x') r χ (Γn i dc n) = cobK (repE i dc r χ x' n) := by first | rfl | exact LinearMap.ext fun v => funext fun g => rfl`.
+A detailed English derivation is pending.
 -/
 theorem colD_eq (x' : X') (n : ℕ) :
     letI := evalModO i (R' := R') x'
@@ -481,7 +479,7 @@ def ContX (x' : X') (l : K.Col i dc) : Prop :=
   ∀ v, Continuous fun g => repX i dc r χ x' (K.colIdx i dc l) (col_over i dc l) g v
 
 /- English proof (translation)
-The claim follows from `evalTower i (R' := R') x' OrbC i dc (repE i dc r χ x' (K.colIdx i dc l)) → ContX i dc r χ x' l := by intro h exact h (col_over i dc l)`.
+A detailed English derivation is pending.
 -/
 theorem contX_of_orbC (x' : X') (l : K.Col i dc) :
     letI := evalModO i (R' := R') x'
@@ -517,7 +515,7 @@ def GoodW (l : K.Col i dc) : Prop :=
 omit [DecidableEq d] in
 
 /- English proof (translation)
-Establish `h` using `(hG2 (K.plOf i dc n) hn (TruncatedSeriesCountingIdentities.CoefExt.self (D := D) (i := i) (hw := hn))).1`. Conclude with `h.2.2.2.2.2.1`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem invariants_twist_eq_bot (rX : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i))) (hG2 : TruncatedSeriesCountingIdentities.admG2 i rX ρ π)
     (n : ℕ) (hn : K.plOf i dc n ∈ placesOver D.host.E (D.nd.l i)) :
@@ -538,7 +536,7 @@ variable {D : D7} (i : D.nd.Loc) (dc : TruncatedSeriesCountingIdentities.Decl D 
   (ρ : D.nd.X i → (GE D.nd →* GL (Fin D.R.r) (D.nd.O i))) (π : D.nd.X i)
 
 /- English proof (translation)
-The claim follows from `evalTower i (R' := R') x' Lx i dc r χ x' l = finZ (eK (D.nbr i _ (col_over i dc l))) (Br.PD D.loc D.nbr i _ (col_over i dc l)) (repE i dc r χ x' (K.colIdx i dc l)) (Br.iota D.nbr i _ (col_over i dc l)) := by unfold Lx fZ rw [dif_pos (col_over i dc l)]`.
+A detailed English derivation is pending.
 -/
 private theorem lx_col_eq (x' : X') (l : K.Col i dc) :
     letI := evalModO i (R' := R') x'
@@ -549,7 +547,7 @@ private theorem lx_col_eq (x' : X') (l : K.Col i dc) :
   rw [dif_pos (col_over i dc l)]
 
 /- English proof (translation)
-Unfold `jK`. Rewrite using `[dif_pos (col_over i dc l)]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem jK_colIdx_eq_finrank_cohomology (l : K.Col i dc) :
     jK i dc ρ π (K.colIdx i dc l) = Module.finrank (Br.LL D.nbr i _ (col_over i dc l))
@@ -560,7 +558,7 @@ private theorem jK_colIdx_eq_finrank_cohomology (l : K.Col i dc) :
   rfl
 
 /- English proof (translation)
-The claim follows from `(D.nbr i _ (col_over i dc l)).e.symm.bijective`.
+A detailed English derivation is pending.
 -/
 private theorem iota_bijective_col (l : K.Col i dc) :
     Function.Bijective (Br.iota D.nbr i _ (col_over i dc l)) :=
@@ -569,9 +567,9 @@ private theorem iota_bijective_col (l : K.Col i dc) :
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Establish `hw` using `col_over i dc l`. Use `letI := evalModO i (R' := R') x'`. Use `haveI := evalTower i (R' := R') x'`. Establish `hι` using `iota_bijective_col i dc l`. Unfold `DimLx`.
+Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[lx_col_eq i dc r χ x' l, colD_eq i dc r χ x' (K.colIdx i dc l), jK_colIdx_eq_finrank_cohomology i dc ρ π l, rank_finQuot (eK (D.nbr i _ hw)) (Br.PD D.loc D.nbr i _ hw) (repE i dc r χ x' (K.colIdx i dc l)) hι, finrank_invariants_eq (eK (D.nbr i _ hw)) (repE i dc r χ x' (K.colIdx …`. Use `haveI := finDim_TrV (V := EvalSp (D.nd.O i) d R' x') (eK (D.nbr i _ hw))`. Establish `hBK' : BlochKatoDim (Br.PD D.loc D.nbr i _ hw) (Br.LL D.nbr i _ hw)` using `(hBK (K.plOf i dc (K.colIdx i dc l)) hw (TruncatedSeriesCountingIdentities.CoefExt.self (D := D) (i := i) (hw := hw))).2.1`. Establish `hS : Splits (Br.LL D.nbr i _ hw) (K` using `Br.Kw D.nbr i _ hw) (Qp := ℚ_[D.nd.l i]) := LargeLevelLemmas.splits_coef (TruncatedSeriesCountingIdentities.CoefExt.self (D := D) (i := i) (hw := hw))`. Conclude with `rank_le_count (Br.PD D.loc D.nbr i _ hw) hBK' hS (repX i dc r χ x' (K.colIdx i dc l) hw) (repW i dc ρ π (K.colIdx i dc l) hw) hc hW.2.1 hcr hW.1 hlow hW.2.2 hneg (invariants_twist_eq_bot i dc ρ π rX hG2 (K.colIdx i dc l) hw) hfin`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem dimLx_of (rX : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i))) (x' : X') (l : K.Col i dc)
     (hBK : TruncatedSeriesCountingIdentities.admBK i) (hG2 : TruncatedSeriesCountingIdentities.admG2 i rX ρ π)
@@ -607,9 +605,9 @@ variable {D : D7} (i : D.nd.Loc) (dc : TruncatedSeriesCountingIdentities.Decl D 
   (ρ : D.nd.X i → (GE D.nd →* GL (Fin D.R.r) (D.nd.O i))) (π : D.nd.X i)
 
 /- English proof (translation)
-Establish `h : Module.rank (FractionRing (D.nd.O i)) (d → FractionRing (D.nd.O i)) = Module.rank LL (TrV e (EvalSp (D.nd.O i) d R' x'))` using `rank_eq_of_equiv_equiv e (AddEquiv.refl _) e.bijective (fun k v => by show k • v = e.symm (e k) • v`. Rewrite using `[RingEquiv.symm_apply_apply])`. Establish `h2 : Module.finrank (FractionRing (D.nd.O i)) (d → FractionRing (D.nd.O i)) = Module.finrank LL (TrV e (EvalSp (D.nd.O i) d R' x'))` using `congrArg Cardinal.toNat h`. Rewrite using `[← h2]`. Use `first`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `simp`. Consider the case `exact Module.finrank_fintype_fun_eq_card _`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem finrank_TrV (x' : X') {LL : Type} [Field LL] (e : FractionRing (D.nd.O i) ≃+* LL) :
     Module.finrank LL (TrV e (EvalSp (D.nd.O i) d R' x')) = Fintype.card d := by
@@ -646,9 +644,7 @@ def grepX (x' : X') (l : K.Col i dc) (hc : ContX i dc r χ x' l) :
     cont := hc }
 
 /- English proof (translation)
-Establish `hw` using `col_over i dc l`. Establish `hF` using `(hFont (K.plOf i dc (K.colIdx i dc l)) hw (TruncatedSeriesCountingIdentities.CoefExt.self (D := D) (i := i) (hw := hw))).2.2.2`. Establish `hDR` using `hF (grepX i dc r χ x' l hc) hcr`. Use `letI := evalModO i (R' := R') x'`. Use `haveI := evalTower i (R' := R') x'`.
-
-Use `haveI := finDim_TrV (V := EvalSp (D.nd.O i) d R' x') (eK (D.nbr i _ hw))`. Conclude with `filLow_of_dR (Br.PD D.loc D.nbr i _ hw) (repX i dc r χ x' (K.colIdx i dc l) hw) (by rw [finrank_TrV]; exact hd) hDR`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem filLowX_of (hFont : TruncatedSeriesCountingIdentities.FontaineAtPlacesOverL i) (hd : 0 < Fintype.card d) (x' : X') (l : K.Col i dc)
     (hc : ContX i dc r χ x' l) (hcr : CrysX i dc r χ x' l) : FilLowX i dc r χ x' l := by
@@ -670,9 +666,9 @@ def grepW (l : K.Col i dc)
   cont := hc
 
 /- English proof (translation)
-Use `⟨hcr, hc, ?_⟩` and prove the remaining obligations. Establish `hw` using `col_over i dc l`. Establish `hF` using `(hFont (K.plOf i dc (K.colIdx i dc l)) hw (TruncatedSeriesCountingIdentities.CoefExt.self (D := D) (i := i) (hw := hw))).2.2.2`. Establish `hDR` using `hF (grepW i dc ρ π l hc) hcr`. Establish `hpos : 0 < Module.finrank (Br.LL D.nbr i _ hw) (Fin D.R.r → Br.LL D.nbr i _ hw)` using `by first`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Consider the case `(rw [Module.finrank_fin_fun]; exact hr)`. Consider the case `simpa using hr`. Conclude with `filLow_of_dR (Br.PD D.loc D.nbr i _ hw) (repW i dc ρ π (K.colIdx i dc l) hw) hpos hDR`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem goodW_of (hFont : TruncatedSeriesCountingIdentities.FontaineAtPlacesOverL i) (hr : 0 < D.R.r) (l : K.Col i dc)
     (hcr : IsCrys (Br.PD D.loc D.nbr i _ (col_over i dc l)) (repW i dc ρ π (K.colIdx i dc l) (col_over i dc l)))
@@ -707,7 +703,7 @@ def ContW (l : K.Col i dc) : Prop :=
   ∀ v, Continuous fun g => repW i dc ρ π (K.colIdx i dc l) (col_over i dc l) g v
 
 /- English proof (translation)
-The claim follows from `dimLx_of i dc r χ ρ π rX x' l hBK hG2 hc hcr hneg (filLowX_of i dc r χ hFont hd x' l hc hcr) hfin (goodW_of i dc ρ π hFont hr l hcrW hcW)`.
+A detailed English derivation is pending.
 -/
 theorem dimLx_of_font (rX : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i))) (x' : X') (l : K.Col i dc)
     (hd : 0 < Fintype.card d) (hr : 0 < D.R.r)

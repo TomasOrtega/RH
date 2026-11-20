@@ -16,11 +16,11 @@ noncomputable def UT (A : Matrix (Fin n) (Fin n) L) : Prop :=
   _root_.UpperTheory.Reformulated.B.UpperTriangular.UT A
 
 /- English proof (translation)
-Use `⟨fun i j hij => ?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Break down `lt_or_ge k i with h | h` into its components or cases. Rewrite using `[hA.1 i k h, zero_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hB.1 k j (lt_of_lt_of_le hij h), mul_zero]`. Rewrite using `[Matrix.mul_apply, Fintype.sum_eq_single i]`. Rewrite using `[hA.2, hB.2, one_mul]`. Introduce `k hk`. Break down `lt_or_gt_of_ne hk with h | h` into its components or cases.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[hA.1 i k h, zero_mul]`. Rewrite using `[hB.1 k i h, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem UT.mul {A B : Matrix (Fin n) (Fin n) L} (hA : UT A) (hB : UT B) : UT (A * B) := by
   refine ⟨fun i j hij => ?_, fun i => ?_⟩
@@ -41,7 +41,7 @@ def pn (n a b : ℕ) : ℕ :=
     if b = n - 2 - a then n - 1 - a else if b = n - 1 - a then n - 2 - a else b
 
 /- English proof (translation)
-Apply the tactic sequence `unfold pn; split_ifs <;> omega`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem pn_lt {a b : ℕ} (h : 2 * (a + 2) ≤ n) (hb : b < n) : pn n a b < n := by
   unfold pn; split_ifs <;> omega
@@ -49,7 +49,7 @@ theorem pn_lt {a b : ℕ} (h : 2 * (a + 2) ≤ n) (hb : b < n) : pn n a b < n :=
 def pF (a : ℕ) (h : 2 * (a + 2) ≤ n) (b : Fin n) : Fin n := ⟨pn n a b.val, pn_lt h b.2⟩
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.AntidiagonalWeylElement.sR_uR_mul_unip`.
+A detailed English derivation is pending.
 -/
 theorem sR_uR_mul_unip : ∀ (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))] (σ : L →+* L) (n : ℕ) (hσ : ∀ x, σ (σ x) = x) (a : ℕ) (h : 2 * (a + 2) ≤ n) (v : GU σ n), IsUnipU v →
     ∃ y : L, ∀ x : L, ∃ b : GU σ n, IsUnipU b ∧

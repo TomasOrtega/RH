@@ -16,7 +16,7 @@ def GenAt (D : D7) (l : ℕ) (Q : Finset (PlE D.host)) (v : PlE D.host) (k : ℕ
   IsSplitPl D.host v ∧ v ∉ placesOver D.host.E l ∧ v ∉ placesS D l ∧ v ∉ Q ∧ 1 ≤ k ∧ k ≤ D.R.nV
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `(D.nd.locs_mem j w i).1 h`. Rewrite using `[D.nd.mu_w i, h1, h2]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem mtL_eq (D : D7) {j : ℕ} {w : D.what₂.places.Pl} {i : D.nd.Loc} (h : i ∈ D.nd.locs j w) :
     D.what₂.MtL (D.nd.mu i) (D.nd.j i) = D.what₂.MtL (D.what₂.muTw w) j := by
@@ -32,7 +32,7 @@ def castMtInv (D : D7) {j : ℕ} {w : D.what₂.places.Pl} {i : D.nd.Loc} (h : i
   cast (mtL_eq D h).symm y
 
 /- English proof (translation)
-Unfold `castMt castMtInv`. Conclude with `cast_cast _ _ y`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem castMt_castMtInv (D : D7) {j : ℕ} {w : D.what₂.places.Pl} {i : D.nd.Loc} (h : i ∈ D.nd.locs j w)
     (y : D.what₂.MtL (D.what₂.muTw w) j) : castMt D h (castMtInv D h y) = y := by
@@ -151,14 +151,14 @@ def LocPl (D : D7) (j : ℕ) (w : D.what₂.places.Pl) : Prop :=
   D.what₂.muAt w ≠ D.what₂.mu0 ∨ (D.nd.locs j w).Nonempty
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => h.elim id (hw j w), Or.inl⟩`.
+Supply the required witnesses or components.
 -/
 theorem locPl_iff (D : D7) (hw : ∀ j w, (D.nd.locs j w).Nonempty → D.what₂.muAt w ≠ D.what₂.mu0) (j : ℕ)
     (w : D.what₂.places.Pl) : LocPl D j w ↔ D.what₂.muAt w ≠ D.what₂.mu0 :=
   ⟨fun h => h.elim id (hw j w), Or.inl⟩
 
 /- English proof (translation)
-The claim follows from `Or.inr ⟨i, h⟩`.
+Prove the second alternative.
 -/
 theorem locPl_of_mem (D : D7) {j : ℕ} {w : D.what₂.places.Pl} {i : D.nd.Loc} (h : i ∈ D.nd.locs j w) :
     LocPl D j w :=
@@ -172,7 +172,7 @@ def HeckeStdTw {D : D7} {M : MtFam D} (B : NLocBase D M) : Prop :=
       μ ∈ (algebraMap (B.Oc j w) (FractionRing (B.Oc j w))).range)
 
 /- English proof (translation)
-Introduce `j w h1 h2 _` and use `h j w h1 h2`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem heckeStdTw_of_std {D : D7} {M : MtFam D} {B : NLocBase D M} (h : HeckeStd B) : HeckeStdTw B :=
   fun j w h1 h2 _ => h j w h1 h2

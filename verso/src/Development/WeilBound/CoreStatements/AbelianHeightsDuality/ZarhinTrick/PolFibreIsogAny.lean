@@ -28,11 +28,11 @@ namespace PositivityTheory.PrwZar.Z2
 open GlobalTheory.CompanionTheory.Hypotheses₂ GlobalTheory.CompanionTheory.Ar.GR
 
 /- English proof (translation)
-Introduce `C _ _ v R _ _ hv A B _ _ P l g hA hB hgA hgB hD hD' hp Ω _ _ s`. Establish `: IsMonHom l` using `hp.1`. Take `⟨L, hL, ha, e⟩` from `hp.2 Ω s`. Establish `hA'` using `GlobalTheory.isAbelianScheme_pullback_obj s A hA`. Establish `hB'` using `GlobalTheory.isAbelianScheme_pullback_obj s B hB`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgA'` using `GlobalTheory.FiniteData.relDim_pullback s A hgA`. Establish `hgB'` using `GlobalTheory.FiniteData.relDim_pullback s B hgB`. Use `haveI := hA'.comm`. Take `⟨H, j, -, hH, hK⟩` from `GlobalTheory.T.exists_finite_closed_subscheme_represents_kernel_ample GlobalTheory.globalFns_holds Ω ((Over.pullback s).obj A) hA' L hL ha`. Establish `hfin : IsFinite ((Over.pullback s).map l).left` using `isFinite_of_ker hA' hB' _ H j hH fun T x hx => (hK T x).1 (ker_memKL hD l s L hL e x hx)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨hfl, hsu⟩` from `flat_surj_of_finite hA' hB' g hgA' hgB' _ hfin`. Conclude with `⟨hfin, hfl, hsu⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem polFibreIsogAny : PositivityTheory.PrwZar.PolFibreIsogAny := by
   intro C _ _ v R _ _ hv A B _ _ P l g hA hB hgA hgB hD hD' hp Ω _ _ s

@@ -11,11 +11,11 @@ open scoped Classical
 
 open GroundTheory.Automorphic GroundTheory.Automorphic.Reduction in
 /- English proof (translation)
-Introduce `E _ _ _ P ω hc hu f hf`. Take `⟨φ, rfl⟩` from `UpperTheory.V.Cm.mem_range_ofCusp.2 (P.cusp f hf)`. Take `⟨B₀, hB₀⟩` from `CuspidalSpectrum.exists_norm_le_of_mem_cuspForms φ.2`. Use `⟨B₀, fun g => ?_⟩` and prove the remaining obligations. Set `u : (A E)ˣ` to `posIdeleHom E (rpowHom ((((2 : ℕ) : ℝ) * Module.finrank ℚ E))⁻¹ (detModule E 2 g))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Establish `e : Matrix.GeneralLinearGroup.scalar (Fin 2) u = centralSection E 2 (detModule E 2 g)` using `Units.ext rfl`. Establish `h2 : (centralSection E 2 (detModule E 2 g))⁻¹ * g ∈ normOneGL E 2`. Rewrite using `[mem_normOneGL_iff_detModule, map_mul, map_inv, detModule_centralSection two_pos, inv_mul_cancel]`. Establish `h3` using `hc _ hf u ((centralSection E 2 (detModule E 2 g))⁻¹ * g)`. Rewrite `h3` using `[e, mul_inv_cancel_left]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[show (UpperTheory.V.Cm.ofCusp E 2 φ).1 g = _ from h3, norm_mul, hu, one_mul]`. Conclude with `hB₀ _ h2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.exists_bound_cuspForm_of_unitary_centralCharacter :
     ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (P : CuspSub E 2) (ω : HChar ℚ), CenN P ω → Unit1 ω →

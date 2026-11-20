@@ -7,11 +7,11 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 namespace GlobalTheory.AutQuot
 
 /- English proof (translation)
-Establish `hc : ∀ x : D.host.E, D.host.conj x = IsCMField.complexConj D.host.E x` using `fun x => by`. Apply `D.host.φ₀.injective` to reduce the goal to its premises. Rewrite using `[NumberField.IsCMField.complexEmbedding_complexConj]`. Conclude with `Formalism.HC.HostAx.conjE_apply _ _ _`. Use `⟨⟨s.v, s.i.comp (IsCMField.complexConj D.host.E).toAlgHom⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `HeightOneSpectrum.ext` to reduce the goal to its premises. Use extensionality with `x`. Establish `hy : ((IsCMField.ringOfIntegersComplexConj D.host.E x : 𝓞 D.host.E) : D.host.E) = D.host.conj (x : D.host.E)`. Rewrite using `[hc]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h x _ hy]`. Conclude with `Iff.rfl`.
+Unfold both sides to obtain the same proposition, which implies itself. A detailed English derivation is pending.
 -/
 theorem conjLoc_exists_split (D : D7) (s : SplitPlace D.host.E) (w : PlE D.host) (h : IsConjPl D.host w s.w) :
     ∃ s' : SplitPlace D.host.E, s'.w = w := by
@@ -28,7 +28,7 @@ theorem conjLoc_exists_split (D : D7) (s : SplitPlace D.host.E) (w : PlE D.host)
   exact Iff.rfl
 
 /- English proof (translation)
-Take `⟨s', rfl⟩` from `conjLoc_exists_split D s w h`. Take `⟨σ, hσ, -⟩` from `GlobalTheory.T.splitPlaceLocalComponent_exists_unique_class D.host.E D.R.nV π s'`. Conclude with `⟨_, s', σ, rfl, hσ, HEq.rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem conjLoc (D : D7) (π : NG.AutRep D.host.E D.R.nV) (s : SplitPlace D.host.E) (w : PlE D.host)
     (h : IsConjPl D.host w s.w) : ∃ x, GlobalTheory.AutQuot.LocAt π w x := by

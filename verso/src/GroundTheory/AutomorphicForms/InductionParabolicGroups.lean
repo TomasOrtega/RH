@@ -23,7 +23,7 @@ theorem blockDiagPart_apply (A : Matrix (Fin n) (Fin n) F) (i j : Fin n) :
     blockDiagPart F n β A i j = if β i = β j then A i j else 0 := rfl
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[blockDiagPart_apply]`. Use `split_ifs with h`. Both sides reduce to the same expression. Rewrite using `[one_apply_ne fun hij => h (by rw [hij])]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem blockDiagPart_one : blockDiagPart F n β 1 = 1 := by
   ext i j
@@ -33,11 +33,11 @@ theorem blockDiagPart_one : blockDiagPart F n β 1 = 1 := by
   · rw [one_apply_ne fun hij => h (by rw [hij])]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [blockDiagPart_apply, mul_apply]`. Use `split_ifs with h`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Distinguish the cases in `hk : β i = β k`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_pos hk, if_pos (hk.symm.trans h)]`. Rewrite using `[if_neg hk, zero_mul]`. Break down `lt_or_gt_of_ne hk with hlt | hlt` into its components or cases. Rewrite using `[hB (h ▸ hlt : β j < β k), mul_zero]`. Rewrite using `[hA hlt, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(Finset.sum_eq_zero fun k _ => ?_).symm` and prove the remaining obligations. Distinguish the cases in `hk : β i = β k`. Rewrite using `[if_neg fun h' => h (hk.trans h'), mul_zero]`. Rewrite using `[if_neg hk, zero_mul]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem blockDiagPart_mul {A B : Matrix (Fin n) (Fin n) F} (hA : A.BlockTriangular β)
     (hB : B.BlockTriangular β) :
@@ -58,7 +58,7 @@ theorem blockDiagPart_mul {A B : Matrix (Fin n) (Fin n) F} (hA : A.BlockTriangul
     · rw [if_neg hk, zero_mul]
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[blockDiagPart_apply]`. Use `split_ifs with h`. Both sides reduce to the same expression. Conclude with `(hA i j h).symm`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem blockDiagPart_of_forall {A : Matrix (Fin n) (Fin n) F}
     (hA : ∀ i j, β i ≠ β j → A i j = 0) : blockDiagPart F n β A = A := by
@@ -76,9 +76,9 @@ def levi : Subgroup (GL (Fin n) F) :=
 variable {F n β}
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩ i j hij`. Break down `lt_or_gt_of_ne hij with h | h` into its components or cases. Conclude with `h2 (show OrderDual.toDual (β j) < OrderDual.toDual (β i) from h)`. Conclude with `h1 h`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Introduce `h`. Conclude with `⟨fun i j hij => h i j hij.ne', fun i j hij => h i j (show β i < β j from hij).ne⟩`.
+A detailed English derivation is pending.
 -/
 theorem mem_levi {g : GL (Fin n) F} :
     g ∈ levi F n β ↔ ∀ i j, β i ≠ β j → g i j = 0 := by
@@ -92,12 +92,12 @@ theorem mem_levi {g : GL (Fin n) F} :
       (show β i < β j from hij).ne⟩
 
 /- English proof (translation)
-The claim follows from `inf_le_left`.
+A detailed English derivation is pending.
 -/
 theorem levi_le_blockUpper : levi F n β ≤ blockUpper F n β := inf_le_left
 
 /- English proof (translation)
-Rewrite using `[mem_levi]`. Introduce `i j hij`. Establish `: i ≠ j` using `fun h => hij (h ▸ rfl)`. Simplify using `[diagonal_apply_ne _ this]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem diagGL_mem_levi (d : Fin n → Fˣ) : diagGL F n d ∈ levi F n β := by
   rw [mem_levi]
@@ -116,7 +116,7 @@ def leviProjFun (p : blockUpper F n β) : GL (Fin n) F where
       Subgroup.coe_one, Units.val_one, blockDiagPart_one]
 
 /- English proof (translation)
-Rewrite using `[mem_levi]`. Introduce `i j hij`. Use `show blockDiagPart F n β _ i j = 0`. Rewrite using `[blockDiagPart_apply, if_neg hij]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem leviProjFun_mem (p : blockUpper F n β) : leviProjFun p ∈ levi F n β := by
   rw [mem_levi]
@@ -147,7 +147,7 @@ theorem leviProj_apply (p : blockUpper F n β) (i j : Fin n) :
       if β i = β j then (p : GL (Fin n) F) i j else 0 := rfl
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (Units.ext (blockDiagPart_of_forall (mem_levi.1 hm)))`.
+A detailed English derivation is pending.
 -/
 theorem leviProj_of_mem_levi {m : GL (Fin n) F} (hm : m ∈ levi F n β) :
     leviProj F n β ⟨m, levi_le_blockUpper hm⟩ = ⟨m, hm⟩ :=
@@ -157,7 +157,7 @@ def leviIncl : levi F n β →* blockUpper F n β :=
   Subgroup.inclusion levi_le_blockUpper
 
 /- English proof (translation)
-The claim follows from `leviProj_of_mem_levi m.2`.
+A detailed English derivation is pending.
 -/
 theorem leviProj_leviIncl (m : levi F n β) : leviProj F n β (leviIncl m) = m :=
   leviProj_of_mem_levi m.2
@@ -173,11 +173,11 @@ def oppositeUnipotentRadical : Subgroup (GL (Fin n) F) :=
 variable {F n β}
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨p, hp, rfl⟩`. Use `⟨p.2, fun i j hij => ?_⟩` and prove the remaining obligations. Establish `h` using `congrArg (fun m : levi F n β => ((m : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) i j) ((leviProj F n β).mem_ker.1 hp)`. Simplify using `only [leviProj_apply, if_pos hij] at h`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `using h`. Introduce and unpack `⟨hP, h⟩`. Use `⟨⟨g, hP⟩, (leviProj F n β).mem_ker.2 (Subtype.ext (Units.ext ?_)), rfl⟩` and prove the remaining obligations. Use extensionality with `i j`. Use `show (if β i = β j then g i j else 0) = ((1 : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) i j`.
+Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs with hij`. Rewrite using `[h i j hij, Units.val_one]`. Rewrite using `[Units.val_one, one_apply_ne fun e => hij (by rw [e])]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_unipotentRadical {g : GL (Fin n) F} :
     g ∈ unipotentRadical F n β ↔ g ∈ blockUpper F n β ∧
@@ -198,7 +198,7 @@ theorem mem_unipotentRadical {g : GL (Fin n) F} :
     · rw [Units.val_one, one_apply_ne fun e => hij (by rw [e])]
 
 /- English proof (translation)
-Rewrite using `[oppositeUnipotentRadical, mem_unipotentRadical, mem_blockUpper]`. Conclude with `⟨fun ⟨h1, h2⟩ => ⟨fun i j hij => h1 (show OrderDual.toDual (β j) < OrderDual.toDual (β i) from hij), fun i j hij => h2 i j (by simpa using hij)⟩, fun ⟨h1, h2⟩ => ⟨fun i j hij => h1 i j hij, fun i j hij => h2 i j (by simpa using hij)⟩⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem mem_oppositeUnipotentRadical {g : GL (Fin n) F} :
     g ∈ oppositeUnipotentRadical F n β ↔ (∀ i j, β i < β j → g i j = 0) ∧
@@ -209,15 +209,15 @@ theorem mem_oppositeUnipotentRadical {g : GL (Fin n) F} :
     fun ⟨h1, h2⟩ => ⟨fun i j hij => h1 i j hij, fun i j hij => h2 i j (by simpa using hij)⟩⟩
 
 /- English proof (translation)
-Introduce `_ hg` and use `(mem_unipotentRadical.1 hg).1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem unipotentRadical_le_blockUpper : unipotentRadical F n β ≤ blockUpper F n β :=
   fun _ hg => (mem_unipotentRadical.1 hg).1
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨q, hq, hqp⟩`. Rewrite using `[← (Subtype.ext hqp : q = p)]`. Conclude with `hq`. Introduce `h`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Conclude with `⟨p, h, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem mem_unipotentRadical_iff_leviProj {p : blockUpper F n β} :
     (p : GL (Fin n) F) ∈ unipotentRadical F n β ↔ leviProj F n β p = 1 := by
@@ -229,9 +229,9 @@ theorem mem_unipotentRadical_iff_leviProj {p : blockUpper F n β} :
     exact ⟨p, h, rfl⟩
 
 /- English proof (translation)
-Establish `huP` using `unipotentRadical_le_blockUpper hu`. Establish `h` using `(mem_unipotentRadical_iff_leviProj (p := ⟨u, huP⟩)).1 hu`. Establish `hm : p * u * p⁻¹ ∈ blockUpper F n β` using `(blockUpper F n β).mul_mem ((blockUpper F n β).mul_mem hp huP) ((blockUpper F n β).inv_mem hp)`. Use `(mem_unipotentRadical_iff_leviProj (p := ⟨_, hm⟩)).2 ?_` and prove the remaining obligations. Establish `: (⟨p * u * p⁻¹, hm⟩ : blockUpper F n β) = ⟨p, hp⟩ * ⟨u, huP⟩ * (⟨p, hp⟩)⁻¹` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[this, map_mul, map_mul, h, mul_one, map_inv, mul_inv_cancel]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_mem_unipotentRadical {p u : GL (Fin n) F} (hp : p ∈ blockUpper F n β)
     (hu : u ∈ unipotentRadical F n β) : p * u * p⁻¹ ∈ unipotentRadical F n β := by
@@ -244,7 +244,7 @@ theorem conj_mem_unipotentRadical {p u : GL (Fin n) F} (hp : p ∈ blockUpper F 
   rw [this, map_mul, map_mul, h, mul_one, map_inv, mul_inv_cancel]
 
 /- English proof (translation)
-Rewrite using `[mem_unipotentRadical_iff_leviProj, map_mul, map_inv, leviProj_leviIncl, inv_mul_cancel]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem leviProj_inv_mul_mem (p : blockUpper F n β) :
     ((leviIncl (leviProj F n β p))⁻¹ * p : blockUpper F n β).1 ∈ unipotentRadical F n β := by
@@ -252,7 +252,7 @@ theorem leviProj_inv_mul_mem (p : blockUpper F n β) :
 
 variable (F n) in
 /- English proof (translation)
-Rewrite using `[← map_inv]`. Use `show ((diagGL F n d : Matrix (Fin n) (Fin n) F) * (g : Matrix (Fin n) (Fin n) F) * (diagGL F n d⁻¹ : Matrix (Fin n) (Fin n) F)) i j = _`. Rewrite using `[coe_diagGL, coe_diagGL, mul_diagonal, diagonal_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem diagGL_conj_apply (d : Fin n → Fˣ) (g : GL (Fin n) F) (i j : Fin n) :
     (diagGL F n d * g * (diagGL F n d)⁻¹ : GL (Fin n) F) i j =
@@ -265,7 +265,7 @@ theorem diagGL_conj_apply (d : Fin n → Fˣ) (g : GL (Fin n) F) (i j : Fin n) :
 
 variable (F n) in
 /- English proof (translation)
-Rewrite using `[← map_inv]`. Use `show ((diagGL F n d⁻¹ : Matrix (Fin n) (Fin n) F) * (g : Matrix (Fin n) (Fin n) F) * (diagGL F n d : Matrix (Fin n) (Fin n) F)) i j = _`. Rewrite using `[coe_diagGL, coe_diagGL, mul_diagonal, diagonal_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem diagGL_inv_conj_apply (d : Fin n → Fˣ) (g : GL (Fin n) F) (i j : Fin n) :
     ((diagGL F n d)⁻¹ * g * diagGL F n d : GL (Fin n) F) i j =
@@ -281,7 +281,7 @@ variable (β) in
 def blockRank (i : Fin n) : ℕ := (Finset.univ.filter fun j => β j < β i).card
 
 /- English proof (translation)
-Use `Finset.card_lt_card ⟨fun k hk => ?_, fun hsub => ?_⟩` and prove the remaining obligations. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hk ⊢`. Conclude with `hk.trans h`. Use `hsub (Finset.mem_filter.2 ⟨Finset.mem_univ i, h⟩)` as an intermediate fact. Simplify using `at this`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem blockRank_lt {i j : Fin n} (h : β i < β j) : blockRank β i < blockRank β j := by
   refine Finset.card_lt_card ⟨fun k hk => ?_, fun hsub => ?_⟩
@@ -291,7 +291,7 @@ theorem blockRank_lt {i j : Fin n} (h : β i < β j) : blockRank β i < blockRan
     simp at this
 
 /- English proof (translation)
-Simplify using `[blockRank, h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem blockRank_eq {i j : Fin n} (h : β i = β j) : blockRank β i = blockRank β j := by
   simp [blockRank, h]

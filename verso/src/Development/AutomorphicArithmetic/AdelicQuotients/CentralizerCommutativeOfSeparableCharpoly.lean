@@ -3,9 +3,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 open UpperTheory.ConvolutionTheory.G UpperTheory.ConvolutionTheory.T4
 
 /- English proof (translation)
-Establish `hl : ∀ (r : R) (x : F), φ (r * algebraMap F R x) = φ r * x`. Introduce `r x`. Rewrite using `[mul_comm, ← Algebra.smul_def, map_smul, smul_eq_mul, mul_comm]`. Establish `hr : ∀ (r : R) (x : F), φ (algebraMap F R x * r) = x * φ r`. Introduce `r x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← Algebra.smul_def, map_smul, smul_eq_mul]`. Use `show s.map φ * γ = γ * s.map φ`. Use extensionality with `a c`. Establish `h` using `congrArg φ (congrFun (congrFun hs a) c)`. Simplify `h` using `only [Matrix.mul_apply, Matrix.map_apply, map_sum, hl, hr]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem coord_comm {F R : Type} [Field F] [CommRing R] [Algebra F R] {n : ℕ}
     (γ : Matrix (Fin n) (Fin n) F) (φ : R →ₗ[F] F) (s : Matrix (Fin n) (Fin n) R)
@@ -23,9 +23,9 @@ private theorem coord_comm {F R : Type} [Field F] [CommRing R] [Algebra F R] {n 
   simpa only [Matrix.mul_apply, Matrix.map_apply, map_sum, hl, hr] using h
 
 /- English proof (translation)
-Use extensionality with `a c`. Rewrite using `[Matrix.sum_apply]`. Use `conv_lhs => rw [← b.linearCombination_repr (s a c)]`. Rewrite using `[Finsupp.linearCombination_apply, Finsupp.sum_of_support_subset _ (hB a c) _ (by simp)]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `[Algebra.smul_def, mul_comm]`.
+A detailed English derivation is pending.
 -/
 private theorem coord_sum {F R ι : Type} [Field F] [CommRing R] [Algebra F R] {n : ℕ}
     (b : Module.Basis ι F R) (B : Finset ι) (s : Matrix (Fin n) (Fin n) R)
@@ -39,7 +39,7 @@ private theorem coord_sum {F R ι : Type} [Field F] [CommRing R] [Algebra F R] {
   simp [Algebra.smul_def, mul_comm]
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_mul_sum, Finset.sum_mul_sum, Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[smul_mul_smul_comm, smul_mul_smul_comm, mul_comm (e i), ← Matrix.map_mul, ← Matrix.map_mul, h]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem sum_comm_of {F R ι : Type} [Field F] [CommRing R] [Algebra F R] {n : ℕ}
     (e : ι → R) (B : Finset ι) (S T : ι → Matrix (Fin n) (Fin n) F)
@@ -51,9 +51,9 @@ private theorem sum_comm_of {F R ι : Type} [Field F] [CommRing R] [Algebra F R]
   rw [smul_mul_smul_comm, smul_mul_smul_comm, mul_comm (e i), ← Matrix.map_mul, ← Matrix.map_mul, h]
 
 /- English proof (translation)
-Set `b` to `Module.Basis.ofVectorSpace F R`. Set `B` to `Finset.univ.biUnion fun a => Finset.univ.biUnion fun c => (b.repr (s a c)).support ∪ (b.repr (t a c)).support`. Establish `hsB : ∀ a c, (b.repr (s a c)).support ⊆ B` using `fun a c i hi => Finset.mem_biUnion.2 ⟨a, Finset.mem_univ _, Finset.mem_biUnion.2 ⟨c, Finset.mem_univ _, Finset.mem_union_left _ hi⟩⟩`. Establish `htB : ∀ a c, (b.repr (t a c)).support ⊆ B` using `fun a c i hi => Finset.mem_biUnion.2 ⟨a, Finset.mem_univ _, Finset.mem_biUnion.2 ⟨c, Finset.mem_univ _, Finset.mem_union_right _ hi⟩⟩`. Establish `h` using `sum_comm_of (R := R) (fun i => b i) B (fun i => s.map (b.coord i)) (fun i => t.map (b.coord i)) fun i j => (UpperTheory.V.Z.Tf.Orb.centComm F n γ _ _ hγ (coord_comm γ _ s hs) (coord_comm γ _ t ht)).eq`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[← coord_sum b B s hsB, ← coord_sum b B t htB]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 private theorem comm_alg {F R : Type} [Field F] [CommRing R] [Algebra F R] {n : ℕ}
     (γ : Matrix (Fin n) (Fin n) F) (hγ : γ.charpoly.Separable) (s t : Matrix (Fin n) (Fin n) R)
@@ -75,7 +75,7 @@ private theorem comm_alg {F R : Type} [Field F] [CommRing R] [Algebra F R] {n : 
   rwa [← coord_sum b B s hsB, ← coord_sum b B t htB] at h
 
 /- English proof (translation)
-Introduce `F R _ _ _ f n γ hγ s t hs ht`. Use `letI : Algebra F R := f.toAlgebra`. Conclude with `comm_alg γ hγ s t hs ht`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem UpperTheory.centralizer_commutative_of_separable_charpoly :
     CentComm := by

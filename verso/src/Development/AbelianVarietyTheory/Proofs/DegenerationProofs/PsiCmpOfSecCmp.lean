@@ -28,7 +28,7 @@ variable {R V : Type} [CommRing R] [IsDomain R] [CommRing V] [IsDomain V] {φ : 
   {β : D'.P.A.left ⟶ D.P.A.left} {v : LB.Iso D'.P.L (D.P.L.pull β)} {xe : D'.X ≃+ D.X}
 
 /- English proof (translation)
-Establish `a : (lift (toUnit T) y).left ≫ (snd _ D'.P.A).left = y.left` using `congrArg (fun q => q.left) (lift_snd (toUnit T) y)`. Use `(h α _ (lift (toUnit T) y).left r (by rw [hr, ← Category.assoc, a]) z J J' hJ hJ').trans ?_` and prove the remaining obligations. Use `congrArg (fun u : (T.left.presheaf.stalk z)ˣ => u.val * sval (f' α) (lift (toUnit T) y).left z J') ?_` and prove the remaining obligations. Simplify using `only [← Category.assoc, ← hΩ, PsiExists.comp_famφT, lift_snd]`. Simplify using `[Fin.prod_univ_four, DegPre.famε]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem secCmp_val {f : ∀ α, SecBT D (𝟙_ _) 1 α} {f' : ∀ α, SecBT D' (𝟙_ _) 1 α} (h : SecCmp D D' β v xe f f')
     (α : D'.X) {T : Over (Spec (CommRingCat.of V))} (y : T ⟶ D'.P.A) (r : T.left ⟶ (𝟙_ _ ⊗ D.P.A).left)
@@ -43,19 +43,19 @@ theorem secCmp_val {f : ∀ α, SecBT D (𝟙_ _) 1 α} {f' : ∀ α, SecBT D' (
   simp [Fin.prod_univ_four, DegPre.famε]
 
 /- English proof (translation)
-Set `T₀ : Over (Spec (CommRingCat.of R))` to `Over.mk (T.hom ≫ spMap φ)`. Set `κ₀ : T₀ ⟶ TK R` to `Over.homMk (κ.left ≫ gam) (by`. Establish `w : κ.left ≫ jK V = T.hom` using `Over.w κ`. Use `show (κ.left ≫ gam) ≫ jK R = T.hom ≫ spMap φ`. Rewrite using `[Category.assoc, hg, ← Category.assoc, w])`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `b : (T ⟶ D'.P.A) →* (T₀ ⟶ D.P.A)` to `pushHom gp T`. Establish `bc : b (cT D' T x) = cT D T₀ (xe x)` using `Over.OverMorphism.ext (by show (T.hom ≫ (D'.c x).left) ≫ β = (T.hom ≫ spMap φ) ≫ (D.c (xe x)).left`. Rewrite using `[Category.assoc, hc, Category.assoc])`. Set `Ω : (T.left ⟶ D'.P.A.left) → (T.left.presheaf.stalk z)ˣ` to `fun q => gw v q z (J (q ≫ β)) (J' q)`. Set `y : T ⟶ D'.P.A` to `p * (cT D' T x)⁻¹`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hy : y * cT D' T x = p` using `inv_mul_cancel_right _ _`. Establish `hyb : b y * cT D T₀ (xe x) = b p` using `by rw [← bc, ← map_mul, hy]`. Establish `sn : ∀ q : T ⟶ D'.P.A, (lift (toUnit T₀) (b q)).left ≫ (snd _ D.P.A).left = q.left ≫ β` using `fun q => congrArg (fun q => q.left) (lift_snd (toUnit T₀) (b q))`. Establish `e₁` using `h (xe x) T₀ (toUnit _) κ₀ (b y) z J hJ`. Establish `e₂` using `h' x T (toUnit _) κ y z J' hJ'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e₃` using `secCmp_val hf x y _ (sn y) z hJ hJ' Ω fun _ => rfl`. Establish `e₄` using `secCmp_val hf 0 p _ (sn p) z hJ hJ' Ω fun _ => rfl`. Establish `e₀ : ∀ α : D.X, α = 0 → sval (f α) (lift (toUnit T₀) (b p)).left z J = sval (f 0) (lift (toUnit T₀) (b p)).left z J`. Introduce and unpack `_ rfl`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e₄` using `[PsiExists.cT_zero, _root_.mul_one, inv_mul_cancel_right]`. Rewrite `e₂`, `e₃` using `[hy]`. Rewrite `e₁` using `[hyb]`. Establish `e₅ : @id (T.left.presheaf.stalk z)ˣ (rigV D (T` using `T₀) z J) = Ω (1 : T ⟶ D'.P.A).left * rigV D' z J' := by`. Use `CubTransport.val_pmaps (fun _ => (cubeMapOf gp).e_comm) hrig T.hom hJ hJ'` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[Fintype.prod_unique, zpow_one]`. Conclude with `this`. Establish `e₆ : κ.left ≫ D'.xK x = (cT D' T x).left` using `congrArg (fun q => q.left) (show κ ≫ cT D' _ x = cT D' _ x by rw [← Category.assoc, comp_toUnit])`. Establish `e₇` using `e₃.symm.trans (e₁.trans (congrArg₂ (· * ·) (congrArg (fun u : (T.left.presheaf.stalk z)ˣ => (val (D.psi (xe x)) (κ.left ≫ gam) z J * u).val) e₅) ((e₀ _ (map_zero xe)).symm.trans e₄)))`. Rewrite `e₇` using `[e₂]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e₆]`. Use `PsiCompare.unit_cancel (a := Ω p.left) (c := Ω (1 : T ⟶ D'.P.A).left) (q := rigV D' z J') ne ?_` and prove the remaining obligations. Rewrite using `[mul_comm (sval _ _ _ _)]`. Conclude with `e₇.trans (mul_comm _ _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_psi (gp : IsGrpPullback D'.P.A D.P.A (spMap φ) β)
     (hc : ∀ x, (D'.c x).left ≫ β = spMap φ ≫ (D.c (xe x)).left) (hrig : RigCmp φ D D' β v)
@@ -114,19 +114,19 @@ namespace GlobalTheory
 open PsiBaseChange in
 
 /- English proof (translation)
-Introduce `R V _ _ _ _ φ D D' β v xe gp hv hc hrig f f' hf h h' hne gam hg x`. Establish `hL` using `D.P.isLB`. Establish `hL'` using `D'.P.isLB`. Establish `pg` using `(isGen_iff v).1 hv`. Use `D'.P.isAb.smooth` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `D'.P.isAb.geomConnected` as an intermediate fact. Establish `: IsIntegral (TF (R` using `V) (FractionRing V)).left := inferInstanceAs (IsIntegral (Spec (CommRingCat.of _)))`. Establish `: IsIntegral (DegPre.BF D' (FractionRing V)).left` using `isIntegral_tensor_left_of_smooth_grpObj _ D'.P.A (TF (R := V) (FractionRing V))`. Establish `hx : D'.xK x ≫ β = gam ≫ D.xK (xe x)` using `by show (jK V ≫ (D'.c x).left) ≫ β = gam ≫ jK R ≫ (D.c (xe x)).left`. Rewrite using `[Category.assoc, hc, ← Category.assoc gam, hg, Category.assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `T` to `DegPre.BF D' (FractionRing V)`. Set `π : T.left ⟶ (TK V).left` to `(fst (TF (R := V) (FractionRing V)) D'.P.A).left ≫ jFK (R := V) (FractionRing V)`. Set `κ : T ⟶ TK V` to `Over.homMk π ((Category.assoc _ _ _).trans (Over.w (fst (TF (R := V) (FractionRing V)) D'.P.A)))`. Take `⟨s, hs⟩` from `PsiExists.exists_pullB D' (FractionRing V) (toUnit _) 1 f'`. Establish `hs0` using `(pullB_ne_zero_iff V D' _ 1 f' s hs 0).2 hne`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `wl : toUnit (TF (R` using `V) (FractionRing V)) ▷ D'.P.A = lift (toUnit T) (snd _ D'.P.A) := CartesianMonoidalCategory.hom_ext _ _ (toUnit_unique _ _) ((whiskerRight_snd _ _).trans (lift_snd _ _).symm)`. Establish `key : ∀ (z : T.left) J J', Good D.P.L z J → Good D'.P.L z J' → val (D.psi (xe x)) (π ≫ gam) z J = (gw v (π ≫ D'.xK x) z (J ((π ≫ D'.xK x) ≫ β)) (J' (π ≫ D'.xK x)))⁻¹ * val (D'.psi x) π z J'` using `fun z J J' hJ hJ' => val_psi gp hc hrig hf h h' hg x κ (snd _ D'.P.A) z hJ hJ' (by`. Rewrite using `[← wl, ← hs 0 z J' hJ']`. Conclude with `(exists_ne_zero_iff_sval_ne_zero _ hJ').1 hs0)`. Take `⟨t, ht, hv⟩` from `exists_up pg hL hL' (φ' := fun _ : PUnit => D'.xK x) (D'.psi x) (D'.psi_gen x)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hcorr : LB.Gen.Corr D.P.L _ _ _ _ (LB.pullGen D.P.L _ _ (D.psi (xe x)) (π ≫ gam)) (LB.pullGen D.P.L _ _ t π)` using `corr_of_val hL fun z J hJ => by choose J' hJ' using fun ψ : T.left ⟶ D'.P.A.left => exists_chart hL' (ψ z)`. Rewrite using `[val_pull hJ, val_pull hJ, Category.id_comp, Category.id_comp, key z J J' hJ hJ']`. Use `Eq.trans ?_ (hv _ π z _ _ (Good.mem hJ _ π) (Good.mem hJ' _ π)).symm` and prove the remaining obligations. Rewrite using `[pw, Fintype.prod_unique, zpow_neg_one, Category.assoc]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hz : (DegPre.zF D' (FractionRing V)).left ≫ π = 𝟙 (TK V).left` using `PsiCompare.zF_fst D'`. Use `EvenPull.pmaps_of_section pg hL hL' gam (fun _ => hx) _ (D'.psi_gen x) _ (D.psi_gen _) (𝟙 _) (𝟙 _) (Category.id_comp _) (by rw [Scheme.Hom.id_appTop]; exact Function.surjective_id) fun y J J' hJ hJ' => ?_` and prove the remaining obligations. Use `val_corr hJ hcorr (DegPre.zF D' (FractionRing V)).left` as an intermediate fact. Rewrite `this` using `[val_pull hJ, val_pull hJ, ← Category.assoc, hz]`. Use `this.trans ((hv _ (𝟙 _) y _ _ (Good.mem hJ _ _) (Good.mem hJ' _ _)).trans ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `congrArg₂ (· * ·) ?_ rfl` and prove the remaining obligations. Rewrite using `[pw, Fintype.prod_unique, Fintype.prod_unique, Category.assoc]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psiCmp_of_secCmp : ∀ (R V : Type) [CommRing R] [IsDomain R] [CommRing V] [IsDomain V] (φ : R →+* V) (D : DegPre R) (D' : DegPre V) (β : D'.P.A.left ⟶ D.P.A.left) (v : LB.Iso D'.P.L (D.P.L.pull β)) (xe : D'.X ≃+ D.X), IsGrpPullback D'.P.A D.P.A (spMap φ) β → v.IsGen → (∀ x, (D'.c x).left ≫ β = spMap φ ≫ (D.c (xe x)).left) → RigCmp φ D D' β v → ∀ (f : ∀ α, SecBT D (𝟙_ _) 1 α) (f' : ∀ α, SecBT D' (𝟙_ _) 1 α), SecCmp D D' β v xe f f' → PsiRel D (𝟙_ _) f → PsiRel D' (𝟙_ _) f' → (∃ j, (f' 0).f j ≠ 0) → ∀ gam : (TK V).left ⟶ (TK R).left, gam ≫ jK R = jK V ≫ spMap φ → PsiCmp D D' β v xe gam := by
   intro R V _ _ _ _ φ D D' β v xe gp hv hc hrig f f' hf h h' hne gam hg x

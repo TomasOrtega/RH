@@ -184,7 +184,7 @@ def eqv (ρ : Multiplicative G →* (M →ₗ[R] M)) (S : Set G) (n : ℕ) : Sub
     rw [ha g hg, map_smul]
 
 /- English proof (translation)
-Rewrite using `[Cos.d_apply]`. Conclude with `(map_sum (LocallyConstant.evalₗ R x) _ _).trans (Finset.sum_congr rfl fun i _ => map_zsmul _ _ _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lc_d_apply (n : ℕ) (f : LocallyConstant (Fin (n + 1) → G) M) (x : Fin (n + 2) → G) :
     (lcCos R G M).d n f x = ∑ i : Fin (n + 2), (-1 : ℤ) ^ (i : ℕ) • f fun k => x (i.succAbove k) := by

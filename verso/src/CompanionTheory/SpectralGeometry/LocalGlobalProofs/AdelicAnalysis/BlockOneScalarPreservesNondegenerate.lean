@@ -7,7 +7,7 @@ open scoped TensorProduct ENNReal NNReal Matrix
 namespace GlobalTheory.CompanionTheory.SW.PiLocalization₂
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_succ_row_zero, Fin.sum_univ_succ]`. Establish `hsub : (Matrix.of (Fin.cons (Fin.cons t fun _ ↦ 0) fun i ↦ Fin.cons 0 (A i)) : Matrix (Fin (M + 1)) (Fin (M + 1)) K).submatrix Fin.succ Fin.succ = A`. Use extensionality with `i j`. Simplify using the standard rewrite rules. Simplify using `[blockOne, hsub]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem det_blockOne_eq_mul {K : Type} [CommRing K] {M : ℕ} (t : K) (A : Matrix (Fin M) (Fin M) K) :
     (blockOne t A).det = t * A.det := by
@@ -19,9 +19,9 @@ theorem det_blockOne_eq_mul {K : Type} [CommRing K] {M : ℕ} (t : K) (A : Matri
   simp [blockOne, hsub]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ M J hJ t ht`. Use `⟨fun i j => ?_, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `refine Fin.cases ?_ (fun i => ?_) i <;> refine Fin.cases ?_ (fun j => ?_) j`. Simplify using `[blockOne]`. Simplify using `[blockOne]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[blockOne]`. Simplify `hJ.1 i j` using `[blockOne]`. Rewrite using `[det_blockOne_eq_mul]`. Conclude with `mul_ne_zero ((map_ne_zero _).2 ht) hJ.2`.
+Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isHermND_blockOne_algebraMap : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → ∀ t : F, t ≠ 0 → IsHermND σ (blockOne (algebraMap F E t) J) := by
   intro F E _ _ _ _ _ σ M J hJ t ht

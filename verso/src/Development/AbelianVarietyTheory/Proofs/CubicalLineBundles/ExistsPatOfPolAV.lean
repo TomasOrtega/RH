@@ -16,11 +16,11 @@ noncomputable section
 namespace GlobalTheory.LamF
 
 /- English proof (translation)
-Introduce `laws E _ _ _ H R _ _ P act hadj`. Establish `: IsCommMonObj P.A` using `P.isAb.comm`. Take `⟨L', hL', ⟨rig, hrig⟩, hsym, hamp, hk, hlam, prim⟩` from `exists_normalised_polarisation laws R P (act.act H.w0) (act.act (H.bar H.w0)) (act.hom _) (act.hom _) (by rw [← act.add, GlobalTheory.HostModel.cmHost_bar_halfIntegerGenerator, add_sub_cancel, act.one]) (hadj H.w0)`. Set `PP : RigLB P.A` to `⟨L', rig, hL', hrig⟩`. Set `P' : Out.PolAV (Sp R)` to `{ A := P.A, isAb := P.isAb, g := P.g, smoothDim := P.smoothDim, L := L', isLB := hL', rigid := ⟨rig, hrig⟩, sym := hsym, ample := hamp, ktriv := hk }`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Take `⟨cub⟩` from `(laws.cube _ P' PP rfl).1`. Establish `sym : PP.IsSymmetric` using `GlobalTheory.PrimNorm.isSymmetric_of_hasGen PP (exists_gen_neg_of_sym laws.globalFns P.isAb hL' hsym)`. Establish `lb : ∀ {T : Over (Sp R)} (x : Fin 2 → (T ⟶ P.A)) {L : LB P.A.left}, L.IsLB → (cubeLB P.A x L).IsLB` using `fun x L hL => DVR.linComb_isLB _ hL _ _`. Establish `pts` using `((GlobalTheory.LamCalc.lamEq_calculus _ P.A P.A P.A P.A P.A L' P.L P.L hL' P.isLB P.isLB (𝟙 _) (𝟙 _) (𝟙 _) (𝟙 _) (𝟙 _) (𝟙 _) (𝟙 _) (𝟙 _) (𝟙 _) (𝟙 _)).2.1 hlam).2.2.2.2`. Simplify using `only [Category.comp_id] at pts`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `adj : ∀ a, LBIso (cubeLB P.A ![fst P.A P.A ≫ act.act a, snd P.A P.A] L') (cubeLB P.A ![fst P.A P.A, snd P.A P.A ≫ act.act (H.bar a)] L')` using `fun a => LBIso.trans (lb _ hL') (lb _ P.isLB) (lb _ hL') (pts _ _ _) (LBIso.trans (lb _ P.isLB) (lb _ P.isLB) (lb _ hL') (by simpa only [LamEq, Category.comp_id] using hadj a) (pts _ _ _).symm)`. Conclude with `⟨{ t := { G := P.A, semi := GlobalTheory.isSemiAbelian_of_isAbelianScheme _ P.isAb, act := act, PP := PP, cub := cub, sym := sym, adj := adj, prim := prim }, ab := P.isAb, g := P.g, dim := P.smoothDim, sym := hsym, ample := hamp, ktriv := hk }, Iso.refl _, rfl, Serre.IsLinearHom. …`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_pat_of_polAV : Out.Laws → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (R : Type) [CommRing R] [IsNoetherianRing R] (P : Out.PolAV (Sp R)) (act : OAct (𝓞 E) P.A), (∀ a, LamEq P.L (act.act a) (𝟙 P.A) P.L (𝟙 P.A) (act.act (H.bar a))) → ∃ (T : PAT H (Sp R)) (e : T.t.G ≅ P.A), T.g = P.g ∧ Serre.IsLinearHom T.t.act act e.hom ∧ LamEq P.L e.hom e.hom T.t.PP.L (𝟙 T.t.G) (𝟙 T.t.G) := by
   intro laws E _ _ _ H R _ _ P act hadj

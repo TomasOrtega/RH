@@ -17,9 +17,9 @@ open NumberField GlobalTheory.CuspRep GlobalTheory.CuspRep.CuspidalL2GL GlobalTh
 namespace PositivityTheory.Rg.Cz.J
 
 /- English proof (translation)
-Establish `h1` using `GlobalTheory.CompanionTheory.HeckeAlg.dchi_eq_sum (Model.absC E 1) z`. Establish `h2` using `GlobalTheory.GKCoh.Tests.dchi_absC (E := E) 1 z`. Simplify using `only [Model.expo_absC, one_mul] at h1 h2`. Rewrite using `[← h1, h2, map_sum]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_mul, Complex.conj_ofReal, map_ofNat]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_sum_coord {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] (z : Cinf E) :
     starRingEnd ℂ (∑ τ : E →+* ℂ, coord τ z) = ∑ τ : E →+* ℂ, coord τ z := by
@@ -31,27 +31,27 @@ theorem conj_sum_coord {E : Type} [Field E] [NumberField E] [IsTotallyComplex E]
   rw [map_mul, Complex.conj_ofReal, map_ofNat]
 
 /- English proof (translation)
-Introduce `E _ _ _ a ha π`. Take `⟨s, hs⟩` from `GlobalTheory.CompanionTheory.Clozel.exists_twist_isNormalised E a ha π (fun τ => ⟨_, ParLaws.hasInfChar_infChar (CG.mk π) τ⟩)`. Take `⟨μ, h1, h2⟩` from `GlobalTheory.CompanionTheory.AdelicHaar.exists_haar_rightInvariant E a`. Use `h1` as an intermediate fact. Use `h2` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set χ := Model.absC E s with hχ`. Use `set π' := π.twist χ with hπ'`. Establish `hl` using `GlobalTheory.CompanionTheory.CuspForms.memL2_and_bounded_of_normalised GlobalTheory.CompanionTheory.CuspFinGL.cuspFormsBoundedGL E a μ π' hs`. Establish `hm : ∀ φ ∈ π'.V, GlobalTheory.AutomorphicL2Unitary.MemL2Quotient (GlobalTheory.UnitaryBC.latticeGL E a) μ φ.1` using `fun φ hφ => (hl φ hφ).1`. Establish `hb : ∀ φ ∈ π'.V, ∃ C : ℝ, ∀ g, ‖φ.1 g‖ ≤ C` using `fun φ hφ => (hl φ hφ).2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hi : Function.Injective (toL2ₗ μ π'.V hm)` using `toL2ₗ_injective hm fun ψ hψ => ContAut.continuous_of_isOpen_stab E a ψ (π'.cusp ψ hψ).1.level`. Set `U` to `π.toTwist χ`. Set `F` to `toL2ₗ μ π'.V hm ∘ₗ U.toLinearMap`. Establish `hF : Function.Injective F` using `hi.comp U.injective`. Set `H : π.V →ₗ⋆[ℂ] π.V →ₗ[ℂ] ℂ` to `LinearMap.mk₂'ₛₗ (starRingEnd ℂ) (RingHom.id ℂ) (fun φ ψ => inner ℂ (F φ) (F ψ)) (fun φ φ' ψ => by simp only [map_add, inner_add_left]) (fun c φ ψ => by simp only [map_smul, inner_smul_left, smul_eq_mul]) (fun φ ψ ψ' => by simp only [map_add, inner_add_right]) (fun c φ ψ => by si …`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hH : ∀ φ ψ, H φ ψ = inner ℂ (F φ) (F ψ)` using `fun φ ψ => rfl`. Establish `hU : ∀ (X : Lie E a) (φ : π.V), F (lieOp π X φ) = toL2ₗ μ π'.V hm (π'.op (.lie X) (U φ)) - dchi χ (Matrix.of X).trace • F φ` using `fun X φ => by`. Establish `e` using `π.op_toTwist χ (.lie X) φ`. Establish `e3 : opMul χ (.lie X : Op E a) = 1` using `rfl`. Establish `e2 : opAdd χ (.lie X : Op E a) = dchi χ (Matrix.of X).trace` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite `e` using `[e3, e2, Units.val_one, one_smul]`. Express the relevant statement in the definitionally equal form `toL2ₗ μ π'.V hm (U (π.op (.lie X) φ)) = _`. Rewrite using `[e]`. Simplify using `only [map_add, map_smul, F, LinearMap.comp_apply, LinearEquiv.coe_coe, U]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `htr : ∀ X : Lie E a, dchi χ (Matrix.of X).trace = s * ∑ τ : E →+* ℂ, ∑ i, coord τ (X i i)` using `fun X => by`. Rewrite using `[GlobalTheory.CompanionTheory.HeckeAlg.dchi_eq_sum, hχ]`. Simplify using `only [Model.expo_absC, ← Finset.mul_sum]`. Use `congr 1`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[Matrix.trace, map_sum]`. Both sides reduce to the same expression. Use `⟨H, -2 * s.re, fun φ ψ => ?_, fun φ hφ => ?_, fun X φ ψ => ?_⟩` and prove the remaining obligations. Rewrite using `[hH, hH, inner_conj_symm]`. Rewrite using `[hH]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: F φ ≠ 0` using `fun h => hφ (hF (h.trans (map_zero F).symm))`. Establish `hn : 0 < ‖F φ‖` using `norm_pos_iff.2 this`. Establish `e` using `inner_self_eq_norm_sq (𝕜 := ℂ) (F φ)`. Express the relevant statement in the definitionally equal form `0 < RCLike.re (inner ℂ (F φ) (F φ))`. Rewrite using `[e]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression. Establish an intermediate fact.
 
-Check the signs of the components of the expression. Establish `sk : inner ℂ (F φ) (toL2ₗ μ π'.V hm (π'.op (.lie X) (U ψ))) = -inner ℂ (toL2ₗ μ π'.V hm (π'.op (.lie X) (U φ))) (F ψ)` using `GlobalTheory.CompanionTheory.PeterssonSkew.lie_skew_adjoint E a μ π' hm hb X (U ψ) (U φ)`. Rewrite using `[hH, hH, hH, hU, hU, inner_sub_left, inner_sub_right, inner_smul_left, inner_smul_right, sk, htr]`. Establish `hr : starRingEnd ℂ (∑ τ : E →+* ℂ, ∑ i, coord τ (X i i)) = ∑ τ : E →+* ℂ, ∑ i, coord τ (X i i)`. Simplify `conj_sum_coord (E := E) (∑ i, X i i)` using `only [map_sum]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set t := ∑ τ : E →+* ℂ, ∑ i, coord τ (X i i) with ht`. Establish `hc : starRingEnd ℂ (s * t) = starRingEnd ℂ s * t` using `by rw [map_mul, hr]`. Rewrite using `[hc]`. Establish `hs2 : ((-2 * s.re : ℝ) : ℂ) = -(starRingEnd ℂ s + s)`. Rewrite using `[add_comm, Complex.add_conj]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hs2]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem unitTw_holds : PositivityTheory.Rg.Cz.UnitTw := by
   intro E _ _ _ a ha π

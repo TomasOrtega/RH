@@ -14,7 +14,7 @@ namespace GlobalTheory.AdicPt
 open IsLocalRing
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Spec.preimage (IsOpenImmersion.lift j f h), by rw [Spec.map_preimage, IsOpenImmersion.lift_fac]⟩`.
+Supply the required witnesses or components.
 -/
 private theorem factor_range {S : Type} [CommRing S] {Y : Scheme.{0}} {A : CommRingCat.{0}} (j : Spec A ⟶ Y)
     [IsOpenImmersion j] (f : Spec (CommRingCat.of S) ⟶ Y) (h : Set.range f ⊆ Set.range j) :
@@ -22,7 +22,7 @@ private theorem factor_range {S : Type} [CommRing S] {Y : Scheme.{0}} {A : CommR
   ⟨Spec.preimage (IsOpenImmersion.lift j f h), by rw [Spec.map_preimage, IsOpenImmersion.lift_fac]⟩
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨y, rfl⟩`. Conclude with `((IsLocalRing.specializes_closedPoint y).map f.continuous).mem_open j.isOpenEmbedding.isOpen_range h`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 private theorem range_subset {S : Type} [CommRing S] [IsLocalRing S] {Y : Scheme.{0}} {A : CommRingCat.{0}}
     (j : Spec A ⟶ Y) [IsOpenImmersion j] (f : Spec (CommRingCat.of S) ⟶ Y)
@@ -33,7 +33,7 @@ private theorem range_subset {S : Type} [CommRing S] [IsLocalRing S] {Y : Scheme
 variable {R : Type} [CommRing R] [IsLocalRing R] {a : R}
 
 /- English proof (translation)
-Use `haveI : Nontrivial (R ⧸ Ideal.span {a ^ (m + 1)}) := by`. Use `Ideal.Quotient.nontrivial_iff.mpr ?_` and prove the remaining obligations. Rewrite using `[Ne, Ideal.span_singleton_eq_top]`. Conclude with `fun h => ha (isUnit_of_dvd_unit (dvd_pow_self a (Nat.succ_ne_zero m)) h)`. Conclude with `IsLocalRing.of_surjective' (Ideal.Quotient.mk _) Ideal.Quotient.mk_surjective`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 private theorem quot_local (ha : ¬ IsUnit a) (m : ℕ) : IsLocalRing (R ⧸ Ideal.span {a ^ (m + 1)}) := by
   haveI : Nontrivial (R ⧸ Ideal.span {a ^ (m + 1)}) := by
@@ -43,7 +43,7 @@ private theorem quot_local (ha : ¬ IsUnit a) (m : ℕ) : IsLocalRing (R ⧸ Ide
   exact IsLocalRing.of_surjective' (Ideal.Quotient.mk _) Ideal.Quotient.mk_surjective
 
 /- English proof (translation)
-Use `haveI : IsLocalHom f := IsLocalHom.of_surjective f hf`. Use `haveI : IsLocalHom (CommRingCat.ofHom f).hom := this`. Conclude with `congrArg g (Spec_closedPoint (f := CommRingCat.ofHom f))`.
+A detailed English derivation is pending.
 -/
 private theorem spec_closed {S S' : Type} [CommRing S] [CommRing S'] [IsLocalRing S] [IsLocalRing S']
     (f : S →+* S') (hf : Function.Surjective f) {Y : Scheme.{0}} (g : Spec (CommRingCat.of S) ⟶ Y) :
@@ -53,11 +53,11 @@ private theorem spec_closed {S S' : Type} [CommRing S] [CommRing S'] [IsLocalRin
   exact congrArg g (Spec_closedPoint (f := CommRingCat.ofHom f))
 
 /- English proof (translation)
-Use `haveI := quot_local ha 0`. Establish `hcl : f (closedPoint R) = g (closedPoint R)`. Rewrite using `[← spec_closed (Ideal.Quotient.mk (Ideal.span {a ^ (0 + 1)})) Ideal.Quotient.mk_surjective f, ← spec_closed (Ideal.Quotient.mk (Ideal.span {a ^ (0 + 1)})) Ideal.Quotient.mk_surjective g, h]`. Take `⟨A, j, _, hx, -⟩` from `Scheme.exists_affine_mem_range_and_range_subset (x := f (closedPoint R)) (U := ⊤) trivial`. Take `⟨φ, rfl⟩` from `factor_range j f (range_subset j f hx)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨ψ, rfl⟩` from `factor_range j g (range_subset j g (hcl ▸ hx))`. Use `congr 2`. Use extensionality with `z`. Use `ChPt.eq_of_mod a hc.toIsHausdorff _ _ fun m => ?_` and prove the remaining obligations. Establish `e` using `h m`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e` using `[← Category.assoc, ← Category.assoc, cancel_mono, ← Spec.map_comp, ← Spec.map_comp]`. Conclude with `congrArg (fun k => k.hom z) (Spec.map_injective e)`.
+A detailed English derivation is pending.
 -/
 theorem scheme_ext (ha : ¬ IsUnit a) (hc : IsAdicComplete (Ideal.span {a}) R) {Y : Scheme.{0}}
     (f g : Spec (CommRingCat.of R) ⟶ Y)
@@ -79,17 +79,15 @@ theorem scheme_ext (ha : ¬ IsUnit a) (hc : IsAdicComplete (Ideal.span {a}) R) {
   exact congrArg (fun k => k.hom z) (Spec.map_injective e)
 
 /- English proof (translation)
-Use `haveI := quot_local ha`. Take `⟨A, j, _, hx, -⟩` from `Scheme.exists_affine_mem_range_and_range_subset (x := y (0 + 1) (closedPoint _)) (U := ⊤) trivial`. Establish `hcl : ∀ m : ℕ, y (m + 1) (closedPoint _) ∈ Set.range j`. Introduce `m`. Proceed by induction on `m with`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => exact hx`. Consider the case `succ m ih`. Establish `e` using `spec_closed _ (Ideal.Quotient.factor_surjective (Ideal.span_singleton_le_span_singleton.mpr (pow_dvd_pow a (Nat.le_succ (m + 1))))) (y (m + 1 + 1))`. Rewrite `e` using `[hy (m + 1)]`. Take `⟨u, hu⟩` from `ih`.
+Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨u, hu.trans e⟩`. Establish `hr : ∀ m : ℕ, Set.range (y m) ⊆ Set.range j`. Introduce `m`. Rewrite using `[← hy m]`. Introduce and unpack `_ ⟨z, rfl⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Scheme.Hom.comp_apply]`. Conclude with `range_subset j _ (hcl m) ⟨_, rfl⟩`. Use `choose φ hφ using fun m => factor_range j (y m) (hr m)`. Take `⟨L, hL⟩` from `ChPt.algLimSt ℤ A R a hc (fun m => (φ m).hom.toIntAlgHom) (by`. Introduce `m z w hw`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e` using `hy m`. Rewrite `e` using `[← hφ, ← hφ, ← Category.assoc, cancel_mono, ← Spec.map_comp]`. Establish `e'` using `congrArg (fun k => k.hom z) (Spec.map_injective e)`. Conclude with `(congrArg (Ideal.Quotient.factor (Ideal.span_singleton_le_span_singleton.mpr (pow_dvd_pow a (Nat.le_succ m)))) hw).trans e')`. Use `⟨Spec.map (CommRingCat.ofHom L.toRingHom) ≫ j, fun m => ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[← hφ m, ← Category.assoc, ← Spec.map_comp]`. Use `congr 2`. Use extensionality with `z`. Conclude with `congrArg (fun k => k z) (hL m)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem scheme_lim (ha : ¬ IsUnit a) (hc : IsAdicComplete (Ideal.span {a}) R) {Y : Scheme.{0}}
     (y : ∀ m : ℕ, Spec (CommRingCat.of (R ⧸ Ideal.span {a ^ m})) ⟶ Y)
@@ -131,9 +129,9 @@ theorem scheme_lim (ha : ¬ IsUnit a) (hc : IsAdicComplete (Ideal.span {a}) R) {
   exact congrArg (fun k => k z) (hL m)
 
 /- English proof (translation)
-Introduce `O R _ _ _ _ a ha hc X x hx`. Take `⟨Q, hQ⟩` from `scheme_lim ha hc (Y := X.left) (fun m => (x m).left) (fun m => congrArg CommaMorphism.left (hx m))`. Establish `hw : Q ≫ X.hom = (specO O R).hom`. Use `scheme_ext ha hc _ _ fun m => ?_` and prove the remaining obligations. Rewrite using `[← Category.assoc, hQ]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Over.w (x m)).trans (Over.w (ptMap (Ideal.Quotient.mkₐ O (Ideal.span {a ^ m})))).symm`. Use `⟨Over.homMk Q hw, fun m => Over.OverMorphism.ext (hQ m), fun Q' hQ' => Over.OverMorphism.ext ?_⟩` and prove the remaining obligations. Use `scheme_ext ha hc _ _ fun m => ?_` and prove the remaining obligations. Conclude with `(congrArg CommaMorphism.left (hQ' m)).trans (hQ m).symm`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem existsUnique_lim : ∀ (O R : Type) [CommRing O] [CommRing R] [Algebra O R] [IsLocalRing R] (a : R), ¬ IsUnit a → IsAdicComplete (Ideal.span {a}) R → ∀ (X : Over (Spec (CommRingCat.of O))) (x : ∀ m : ℕ, specO O (R ⧸ Ideal.span {a ^ m}) ⟶ X), (∀ m : ℕ, ptMap (Ideal.Quotient.factorₐ O (Ideal.span_singleton_le_span_singleton.mpr (pow_dvd_pow a (Nat.le_succ m)))) ≫ x (m + 1) = x m) → ∃! Q : specO O R ⟶ X, ∀ m : ℕ, ptMap (Ideal.Quotient.mkₐ O (Ideal.span {a ^ m})) ≫ Q = x m := by
   intro O R _ _ _ _ a ha hc X x hx

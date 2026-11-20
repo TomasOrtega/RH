@@ -25,9 +25,9 @@ noncomputable section
 namespace GlobalTheory.GaussThetaFinite
 
 /- English proof (translation)
-Use `⟨Submodule.smul_mem _ c h.1, fun u => ?_⟩` and prove the remaining obligations. Establish `h2` using `h.2 u`. Simplify using `only [Pi.smul_apply, smul_eq_mul, ← h2, GlobalTheory.WeilM.thetaSum, GlobalTheory.WeilM.Darboux.rho, GlobalTheory.WeilM.schr] at *`. Rewrite using `[← tsum_mul_left]`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `ξ`. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem isDatum_smul {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] {σ : E →ₐ[F] E} {n d : ℕ}
     {Y : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E n} {Wd : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E d} (M : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Model σ Y Wd)
@@ -41,7 +41,7 @@ theorem isDatum_smul {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F
   congr 1; ext ξ; ring
 
 /- English proof (translation)
-Use function extensionality and compare the values at `w`. Establish `h2` using `h.2 (crd.symm w)`. Rewrite `h2` using `[AddEquiv.apply_symm_apply]`. Rewrite using `[← h2]`. Simplify using `[GlobalTheory.WeilM.thetaSum, GlobalTheory.WeilM.Darboux.rho, GlobalTheory.WeilM.schr]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem eq_zero_of_isDatum_zero {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] {σ : E →ₐ[F] E} {n d : ℕ}
     {Y : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E n} {Wd : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E d} (M : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Model σ Y Wd)
@@ -54,13 +54,13 @@ theorem eq_zero_of_isDatum_zero {F E : Type} [Field F] [NumberField F] [Field E]
   simp [GlobalTheory.WeilM.thetaSum, GlobalTheory.WeilM.Darboux.rho, GlobalTheory.WeilM.schr]
 
 /- English proof (translation)
-Introduce `D ψ θ hθ ε S X A B d e Bs hBs hψ Vs Ws r s r' s' hJ hJW hV hW hemb M hM cS hcS g φ hg hφ hvac f hf τ`. Unfold `IsFockVacAt`. Introduce `z`. Establish `hstd : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsStd Bs.ψ` using `hBs.std`. Take `⟨g₁, h₁⟩` from `GlobalTheory.T.exists_heisenberg_derivative_archimedean_direction M Bs.ψ hstd g _ (GlobalTheory.T.archimedean_preimage_realPlace_line D θ hθ ε S X e cS hcS τ z)`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨g₁', h₁'⟩` from `GlobalTheory.T.exists_heisenberg_derivative_archimedean_direction M Bs.ψ hstd g _ (GlobalTheory.T.archimedean_preimage_realPlace_line D θ hθ ε S X e cS hcS τ (cplxO ((frSgn ε A).cart τ) (B.cart τ) z))`. Establish `d1` using `GlobalTheory.T.heisenbergDerivative_realPlace_pureDatum D ψ θ hθ ε S X A B e Bs hBs hψ Vs Ws r s r' s' hJ hJW hV hW hemb M hM cS hcS g φ hφ hvac f hf τ z g₁ h₁`. Establish `d2` using `GlobalTheory.T.heisenbergDerivative_realPlace_pureDatum D ψ θ hθ ε S X A B e Bs hBs hψ Vs Ws r s r' s' hJ hJW hV hW hemb M hM cS hcS g φ hφ hvac f hf τ _ g₁' h₁'`. Establish `h0` using `GlobalTheory.T.gaussianVacuum_heisenbergDerivative_complexStructure_cancel D ψ θ hθ ε S X A B e Bs hBs hψ Vs Ws r s r' s' hJ hJW hV hW hemb M hM cS hcS g φ hg hφ hvac τ z g₁ g₁' h₁ h₁'`. Establish `hsum` using `GlobalTheory.SquareAgree.isDatum_add M ψ (hψ ▸ hstd) cS _ _ _ _ d1 (isDatum_smul M ψ cS _ _ Complex.I d2)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpure : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure g₁ φ + Complex.I • GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure g₁' φ = 0`. Use function extensionality and compare the values at `x`. Use `congrArg (fun h : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.SInf D.host.F (Fin S.rank × Fin d) => h (fun i => GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.evI D.host.F (x i))) h0` as an intermediate fact. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure, Pi.add_apply, Pi.smul_apply, smul_eq_mul, Pi.zero_apply] at this ⊢`. Simplify using `only [SchwartzMap.add_apply, SchwartzMap.smul_apply, SchwartzMap.zero_apply, smul_eq_mul] at this`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Take the linear combination `(∏ᶠ (v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl D.host.F), φ v fun i ↦ (GlobalTheory.AdelicU.evFin D.host.F v) (x i)) * this`. Rewrite `hsum` using `[hpure]`. Use `eq_zero_of_isDatum_zero M ψ cS _ hsum` as an intermediate fact. Simplify `this` using `[annih]`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem fockVac_of_isGauss : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsInfFam θ →
     ∀ (ε : Bool) (S X : HSp D) (A : Fr S) (B : Fr X) {d : ℕ} (e : Fin X.rank ≃ Fin d)
@@ -98,9 +98,9 @@ theorem fockVac_of_isGauss : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ :
   simpa [annih] using this
 
 /- English proof (translation)
-Introduce `D ψ θ hθ ε S X A B d e Bs hBs hψ Vs Ws r s r' s' hJ hJW hV hW hemb M hM cS hcS g φ hg hφ hvac`. Establish `hsch : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure g φ ∈ GlobalTheory.WeilM.schA D.host.F (Fin S.rank × Fin d)` using `GlobalTheory.TensUniq.pure_mem_schA g φ hφ ((hvac.and hM.std).mono fun v hv => hv.1.trans hv.2)`. Take `⟨ξ, JB, co, hξ, hrat, hiff⟩` from `GlobalTheory.T.exists_rational_darboux_orientedPair_transport D ψ θ hθ ε S X A B e Bs hBs hψ Vs Ws r s r' s' hJ hJW hV hW hemb M hM cS hcS`. Establish `hstd : IsStdChar D ψ (-1)` using `GlobalTheory.StdCharFromIsStd.isStdChar_of_isStd D ψ (hψ ▸ hBs.std)`. Establish `hD : IsDatum M ψ cS (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure g φ) (GlobalTheory.WeilSchrodinger.thetaTr D.host.F co ψ (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure g φ))` using `(hiff _ _).2 ⟨hsch, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨GlobalTheory.WeilSchrodinger.thetaTr D.host.F co ψ (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure g φ), ⟨?_, fockVac_of_isGauss D ψ θ hθ ε S X A B e Bs hBs hψ Vs Ws r s r' s' hJ hJW hV hW hemb M hM cS hcS g φ hg hφ hvac _ hD⟩, hD⟩` and prove the remaining obligations. Conclude with `GlobalTheory.ThetaTransformTheta.isThetaFunO_thetaTr D ψ hstd (sgn ε S) X _ JB ξ rfl hξ _ co hrat _ hsch`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isFinF_of_isGauss : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsInfFam θ →
     ∀ (ε : Bool) (S X : HSp D) (A : Fr S) (B : Fr X) {d : ℕ} (e : Fin X.rank ≃ Fin d)

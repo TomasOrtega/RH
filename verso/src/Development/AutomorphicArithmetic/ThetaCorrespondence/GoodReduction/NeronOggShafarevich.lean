@@ -20,9 +20,7 @@ namespace UpperTheory.Lit.Nos.Nos
 open GlobalTheory
 
 /- English proof (translation)
-Introduce `R K Ω _ _ _ _ _ _ _ _ _ _ V hV A _ _ hA`. Use `tfae_have 1 → 2 := GlobalTheory.T.torsionUnramified_of_hasGoodReduction_alt R K Ω V hV A`. Use `tfae_have 2 → 4 := fun hb => (GlobalTheory.T.torsionUnramified_imp_tateModule_and_infinite R K Ω V A hb).1`. Use `tfae_have 2 → 3 := fun hb => (GlobalTheory.T.torsionUnramified_imp_tateModule_and_infinite R K Ω V A hb).2`. Use `tfae_have 4 → 3 := by`.
-
-Introduce and unpack `⟨l, hf, hl, ht⟩`. Conclude with `GlobalTheory.T.infinite_torsionUnramified_of_tateModuleUnramified R K Ω V hV A hA l hl ht`. Use `tfae_have 3 → 1 := UpperTheory.Lit.Nos.C6.hasGoodReduction_of_infinite_torsionUnramified R K Ω V hV A hA`. Use `tfae_finish`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem neronOggShafarevich : NeronOggShafarevichSt := by
   intro R K Ω _ _ _ _ _ _ _ _ _ _ V hV A _ _ hA

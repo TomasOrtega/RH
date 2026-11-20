@@ -12,7 +12,7 @@ noncomputable section
 namespace GlobalTheory.ShFam.Pad.LieGen
 
 /- English proof (translation)
-Introduce and unpack `r ⟨cf, h0, hz, ⟨w, hw, hc⟩, rfl⟩`. Take `⟨cg, hg0, hgj, hg⟩` from `(GlobalTheory.Proof.frame_combination_coeff_unique.concat_frame _ _ _ _ _ _ _ _ f x u hu).2 j cf w hz hc`. Conclude with `⟨cg, hgj ▸ h0, hg0, ⟨w, hw, hg⟩, by rw [hgj]⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem grSet_subset_whole {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {Dw : Datum H} {l : Level H} {c : Coeff l} {X : Scheme.{0}} (t : SAB H X) {C : Type} [NontriviallyNormedField C]
@@ -25,11 +25,11 @@ theorem grSet_subset_whole {E : Type} [Field E] [NumberField E] [IsCMField E] {H
   exact ⟨cg, hgj ▸ h0, hg0, ⟨w, hw, hg⟩, by rw [hgj]⟩
 
 /- English proof (translation)
-Take `⟨hl, hx⟩` from `List.getElem?_eq_some_iff.1 h`. Use `set j : Fin (letters Dw).length := ⟨l, hl⟩`. Establish `hx' : (letters Dw).get j = x` using `hx`. Substitute `hx'` using the available equality. Take `⟨m, hm⟩` from `GlobalTheory.T.exists_slope_bounds_frames Dw Z.i.c (Y Z.i).t p hp`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨m, fun y a φ hφ => ?_⟩` and prove the remaining obligations. Establish `F` using `Pull.chart_frame Z hφ`. Take `⟨c', h1, h2, h3⟩` from `hm y.C.S y.C.norm_p _ _ _ F j`. Establish `hpos : (0 : ℝ) < p` using `Nat.cast_pos.2 hp.pos`. Simplify using `only [lnStep, dif_pos ((letters Dw).get j).2.2, dif_pos hl, Bool.false_eq_true, false_and, if_false, sub_zero]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `(HTFrame.abs_log_sInf_sub_le h1 ?_ (grSet_subset_whole _ F _ j) h3).trans ?_` and prove the remaining obligations. Introduce and unpack `r ⟨cf, -, -, -, rfl⟩`. Check the signs of the components of the expression. Rewrite using `[← Real.log_pow]`. Conclude with `Real.log_le_log (by linarith) h2`.
+Assume the hypotheses and unpack their components. Check the signs of the components of the expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bdd_whole {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {Dw : Datum H} {Xo : ∀ l : Level H, Moduli Dw l} {p : ℕ} {W : ValuationSubring ℂ} {Y : LocalSystem Xo p W}
@@ -56,13 +56,13 @@ section
 variable {D : D7} {A : Amb D} {N j : ℕ} (S : Sig A N j)
 
 /- English proof (translation)
-Rewrite using `[Datum.mult, if_pos (A.cm t), S.p_eq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mult_tau (t : D.what₂.Tau) : S.Dw.mult (DV.tauEmb D t) = j := by
   rw [Datum.mult, if_pos (A.cm t), S.p_eq]
 
 /- English proof (translation)
-Rewrite using `[Datum.mult, if_neg (GlobalTheory.Proof.LetterConjugation.conj_ne (A.cm t))]`. Use `S.p_eq` as an intermediate fact. Use `S.rank_eq` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem mult_conj_tau (t : D.what₂.Tau) : S.Dw.mult (conjEmb (DV.tauEmb D t)) = N - j := by
   rw [Datum.mult, if_neg (GlobalTheory.Proof.LetterConjugation.conj_ne (A.cm t))]
@@ -75,15 +75,13 @@ def rootLetter (r : DV.Rt D.what₂.Tau N) : Pad.Letter S.Dw :=
   else ⟨conjEmb (DV.tauEmb D r.1), ⟨N - 1 - r.2, by rw [mult_conj_tau S]; have := r.2.2; omega⟩⟩
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (DV.tauEmb D)` using `fun a b e => D.eTau.injective (Subtype.ext (Formalism.MainNotions.LocalModelPeriodLattices.emb_injective D e))`. Establish `hc : Function.Injective (conjEmb : (D.host.E →+* ℂ) → (D.host.E →+* ℂ))` using `fun a b e => by`. Establish `h2 : ∀ τ : D.host.E →+* ℂ, conjEmb (conjEmb τ) = τ` using `fun τ => by ext x; simp [conjEmb]`. Rewrite using `[← h2 a, ← h2 b, e]`. Introduce and unpack `⟨t, i⟩ ⟨t', i'⟩ h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Unfold `rootLetter at h`. Simplify using `only at h`. Use `split_ifs at h with h1 h2 h2`. Take `⟨e1, e2⟩` from `Sigma.mk.inj_iff.1 h`. Take `rfl` from `hinj e1`.
+Replace the relevant objects with their definitions. Simplify by unfolding definitions. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `Fin.mk.inj_iff.1 (eq_of_heq e2)` as an intermediate fact. Conclude with `Prod.ext rfl (Fin.ext this)`. Take `⟨e1, -⟩` from `Sigma.mk.inj_iff.1 h`. Conclude with `absurd ((congrArg (fun σ : D.host.E →+* ℂ => σ (A.H.rt : D.host.E)) e1).symm.trans (A.cm t)) (GlobalTheory.Proof.LetterConjugation.conj_ne (A.cm t'))`. Take `⟨e1, -⟩` from `Sigma.mk.inj_iff.1 h`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `absurd ((congrArg (fun σ : D.host.E →+* ℂ => σ (A.H.rt : D.host.E)) e1).trans (A.cm t')) (GlobalTheory.Proof.LetterConjugation.conj_ne (A.cm t))`. Take `⟨e1, e2⟩` from `Sigma.mk.inj_iff.1 h`. Take `rfl` from `hinj (hc e1)`. Establish `e3 : N - 1 - (i : ℕ) = N - 1 - (i' : ℕ)` using `Fin.mk.inj_iff.1 (eq_of_heq e2)`. Use `i.2` as an intermediate fact.
-
-Use `i'.2` as an intermediate fact. Use `Prod.ext rfl (Fin.ext ?_)` and prove the remaining obligations. Use `show (i : ℕ) = i'`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem rootLetter_injective : Function.Injective (rootLetter S) := by
   have hinj : Function.Injective (DV.tauEmb D) := fun a b e =>
@@ -122,7 +120,7 @@ def rootIdx (r : DV.Rt D.what₂.Tau N) : Fin (D.R.f * N) :=
       (rootLetter S r))
 
 /- English proof (translation)
-Use `(Fintype.bijective_iff_injective_and_card _).2 ⟨fun r r' h => rootLetter_injective S ?_, by` and prove the remaining obligations. Simplify using `[D.what₂.card_Tau]⟩`. Simplify `h` using `[rootIdx]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem rootIdx_bijective : Function.Bijective (rootIdx S) := by
   classical
@@ -133,9 +131,9 @@ theorem rootIdx_bijective : Function.Bijective (rootIdx S) := by
 def rootEquiv : Fin (D.R.f * N) ≃ DV.Rt D.what₂.Tau N := (Equiv.ofBijective _ (rootIdx_bijective S)).symm
 
 /- English proof (translation)
-Rewrite using `[letterOf_whole S l]`. Use `congr 1`. Establish `h` using `(Equiv.ofBijective _ (rootIdx_bijective S)).apply_symm_apply l`. Express the relevant statement in the definitionally equal form `rootIdx S (rootEquiv S l) = l at h`. Unfold `rootIdx at h`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Replace the relevant objects with their definitions.
 
-Rewrite `h` using `[Equiv.apply_eq_iff_eq_symm_apply, Equiv.symm_apply_eq]`. Rewrite using `[h]`. Both sides reduce to the same expression.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem letterOf_rootEquiv (l : Fin (D.R.f * N)) :
     letterOf S.Dw (.inr (l : ℕ)) = some (rootLetter S (rootEquiv S l)) := by
@@ -157,9 +155,9 @@ variable {D : D7} {A : Amb D} {N j : ℕ} {S : Sig A N j} {κ : Lv A} {p : ℕ} 
   {W : ValuationSubring ℂ} {hW : (p : ℂ) ∈ W.nonunits} (z : AdmAt S κ hp hW) (jc : DV.KW p →+* ℂ)
 
 /- English proof (translation)
-Establish `h1 : letterOf S.Dw (.inl (x.1, (x.2 : ℕ))) = some x` using `dif_pos x.2.2`. Take `⟨u, -⟩` from `exists_isGenId hp hW z.full (bdd_whole hp z.Z l x h) (z.line false _ x h1) (z.line false _ x h)`. Establish `e : (mdlOf z jc).Z.c1 (z.line false _ x h).L = (mdlOf z jc).Z.c1 (z.line false _ x h1).L - (mdlOf z jc).Z.cD (vdiv hp hW (Formalism.DegreeFormula.dimFl D.what₂.Tau N) (z.line false _ x h1).L (z.line false _ x h).L u)` using `firstChern_eq_sub_divisor hp hW (Formalism.DegreeFormula.dimFl D.what₂.Tau N) (z.line false _ x h1).L (z.line false _ x h).L u`. Use `⟨-vdiv hp hW (Formalism.DegreeFormula.dimFl D.what₂.Tau N) (z.line false _ x h1).L (z.line false _ x h).L u, ?_⟩` and prove the remaining obligations. Establish `e2` using `LinearMap.map_neg (mdlOf z jc).Z.cD (vdiv hp hW (Formalism.DegreeFormula.dimFl D.what₂.Tau N) (z.line false _ x h1).L (z.line false _ x h).L u : (mdlOf z jc).Z.VDiv)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `(congrArg _ (mdlOf_lieW z jc l).1).trans ((congrArg _ (z.stepLB_of_some false h)).trans (e.trans ?_))` and prove the remaining obligations. Rewrite using `[sub_eq_add_neg, ← e2]`. Conclude with `congrArg (· + _) (congrArg _ (z.stepLB_of_some false h1).symm)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem c1_whole (l : Fin (D.R.f * N)) (x : Pad.Letter S.Dw) (h : letterOf S.Dw (.inr (l : ℕ)) = some x) :
     ∃ V : (mdlOf z jc).Z.VDiv, (mdlOf z jc).Z.c1 ((mdlOf z jc).lieW.x l) =
@@ -178,7 +176,7 @@ theorem c1_whole (l : Fin (D.R.f * N)) (x : Pad.Letter S.Dw) (h : letterOf S.Dw 
   exact congrArg (· + _) (congrArg _ (z.stepLB_of_some false h1).symm)
 
 /- English proof (translation)
-The claim follows from `firstChern_dual_eq_neg hp hW z.Z _ L`.
+A detailed English derivation is pending.
 -/
 theorem c1_dual_mdl (L : FinLB z.Z.X) : (mdlOf z jc).Z.c1 L.dual = -(mdlOf z jc).Z.c1 L :=
   firstChern_dual_eq_neg hp hW z.Z _ L
@@ -186,15 +184,15 @@ theorem c1_dual_mdl (L : FinLB z.Z.X) : (mdlOf z jc).Z.c1 L.dual = -(mdlOf z jc)
 end Main
 
 /- English proof (translation)
-Introduce `D A N j S κ p _ hp W hW z jc`. Use `choose V hV using fun l => c1_whole z jc l _ (letterOf_rootEquiv S l)`. Use `⟨rootEquiv S, V, fun l => ?_⟩` and prove the remaining obligations. Rewrite using `[hV l]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `rootEquiv S l = r`. Take `⟨t, i⟩` from `r`. Establish `hp'` using `S.p_eq`. Establish `hq` using `S.rank_eq`. Unfold `rootOf admitted.rootLB`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify by unfolding definitions.
 
-Simplify using `only`. Distinguish the cases in `hi : (i : ℕ) < j`. Establish `hx : ((rootLetter S (t, i)).1, ((rootLetter S (t, i)).2 : ℕ)) = (DV.tauEmb D t, (i : ℕ))`. Unfold `rootLetter`. Rewrite using `[dif_pos hi]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_pos (show (i : ℕ) < S.Dw.p by omega), if_pos hi, one_smul, hx]`. Establish `hx : ((rootLetter S (t, i)).1, ((rootLetter S (t, i)).2 : ℕ)) = (conjEmb (DV.tauEmb D t), S.Dw.p + S.Dw.q - 1 - (i : ℕ))`. Unfold `rootLetter`. Rewrite using `[dif_neg hi]`. Simplify using `only [Prod.mk.injEq, true_and]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[if_neg (show ¬ (i : ℕ) < S.Dw.p by omega), if_neg hi, hx, c1_dual_mdl, neg_one_smul, neg_neg]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lieW_gen : ∀ (D : D7) (A : Amb D) (N j : ℕ) (S : Sig A N j) (κ : Lv A) (p : ℕ) [Fact p.Prime] (hp : p.Prime)
     (W : ValuationSubring ℂ) (hW : (p : ℂ) ∈ W.nonunits) (z : AdmAt S κ hp hW) (jc : DV.KW p →+* ℂ),

@@ -12,7 +12,7 @@ open scoped TensorProduct GlobalTheory.CuspRep.CuspidalL2GL
 open UpperTheory.V.Cj UpperTheory.V.Cj.H
 
 /- English proof (translation)
-Use `AlternatingMap.ext fun X => ?_` and prove the remaining obligations. Rewrite using `[← sum_cmp (α X), ← sum_cmp (β X)]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [h X i]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem co_ext {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ} {Ξ : AlgRep E a} {q : ℕ}
     {α β : Co Ξ q} (h : ∀ X i, cmp i (α X) = cmp i (β X)) : α = β := by
@@ -21,7 +21,7 @@ private theorem co_ext {E : Type} [Field E] [NumberField E] [IsTotallyComplex E]
   exact Finset.sum_congr rfl fun i _ => by rw [h X i]
 
 /- English proof (translation)
-The claim follows from `AlternatingMap.ext fun X => by rw [app_apply, AlternatingMap.zero_apply, map_zero]`.
+A detailed English derivation is pending.
 -/
 private theorem app_zero' {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ} {Ξ : AlgRep E a} {q : ℕ}
     (T : Module.End ℂ (Sm E a)) : app T (0 : Co Ξ q) = 0 :=
@@ -29,9 +29,9 @@ private theorem app_zero' {E : Type} [Field E] [NumberField E] [IsTotallyComplex
     rw [app_apply, AlternatingMap.zero_apply, map_zero]
 
 /- English proof (translation)
-Use `isOpen_iff_forall_mem_open.2 fun k hk => ⟨(fun x => k⁻¹ * x) ⁻¹' U, fun x hx => ?_, hU.preimage (continuous_const.mul continuous_id), by simp⟩` and prove the remaining obligations. Establish `e1 : finRep E a (k⁻¹ * x) φ = φ` using `h _ hx`. Establish `e2 : finRep E a k φ = φ` using `hk`. Express the relevant statement in the definitionally equal form `finRep E a x φ = φ`. Establish `e3 : x = k * (k⁻¹ * x)` using `by simp`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Rewrite using `[e3, map_mul, Module.End.mul_apply, e1, e2]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem hasLev_of {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
     {U : Subgroup (GL (Fin a) (Af E))} (hU : IsOpen (U : Set (GL (Fin a) (Af E)))) {φ : Sm E a}
@@ -45,9 +45,9 @@ private theorem hasLev_of {E : Type} [Field E] [NumberField E] [IsTotallyComplex
   rw [e3, map_mul, Module.End.mul_apply, e1, e2]
 
 /- English proof (translation)
-Introduce `C hC`. Use `h C hC` as an intermediate fact. Rewrite `this`, the goal using `[Metric.tendstoUniformlyOn_iff]`. Introduce `ε hε`. Use `filter_upwards [this ε hε] with k hk x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e` using `hk x hx`. Express the relevant statement in the definitionally equal form `dist (0 : ℂ) ((f k).1 x - φ.1 x) < ε`. Rewrite using `[dist_comm, dist_zero_right, ← dist_eq_norm, dist_comm]` and apply the resulting hypothesis.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 private theorem locLim_sub {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ} {f : ℕ → Sm E a} {φ : Sm E a}
     (h : LocLim f φ) : LocLim (fun k => f k - φ) 0 := by
@@ -61,21 +61,19 @@ private theorem locLim_sub {E : Type} [Field E] [NumberField E] [IsTotallyComple
   rwa [dist_comm, dist_zero_right, ← dist_eq_norm, dist_comm]
 
 /- English proof (translation)
-Introduce `E _ _ _ a ha n e he U hUo hUc Ξ r hr q α hα hd hs`. Take `⟨c, hc⟩` from `casB E a n e he Ξ r`. Take `⟨N, P, Q, S, hN, hR⟩` from `fnProj E a ha r n e he c`. Take `⟨l1, -, l3, l4⟩` from `levLin E a U Ξ q`. Establish `l2` using `(levLin E a U Ξ q).2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `sub_eq : ∀ {p : ℕ} (x y : Co Ξ p), x - y = (1 : ℂ) • x + (-1 : ℂ) • y` using `fun x y => by`. Use `AlternatingMap.ext fun X => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `x X - y X = (1 : ℂ) • x X + (-1 : ℂ) • y X`. Rewrite using `[one_smul, neg_one_smul, sub_eq_add_neg]`. Establish `lsub : ∀ x y : Co Ξ q, IsLev U Ξ x → IsLev U Ξ y → IsLev U Ξ (x - y)` using `fun x y hx hy => by`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[sub_eq]`. Conclude with `l1 x y _ _ hx hy`. Establish `dsub : ∀ x y : Co Ξ q, dCo (smLie Ξ) x = 0 → dCo (smLie Ξ) y = 0 → dCo (smLie Ξ) (x - y) = 0` using `fun x y hx hy => by`. Rewrite using `[sub_eq, l2, hx, hy, smul_zero, smul_zero, add_zero]`. Establish `hV : Val N α` using `fun X i => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨p1, p2, p3⟩` from `l3 α hα X i`. Take `⟨R, hR'⟩` from `hs`. Use `hN.cpt _ p1 (hasLev_of hUo p2) (p3 r hr) ⟨R, fun g hg => ?_⟩` and prove the remaining obligations. Rewrite using `[Pf.cmp_ev, hR' X g hg]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `key : ∀ T, IsOp N T → IsLev U Ξ (app T α) ∧ Val N (app T α) ∧ Val (sqSub E a r) (app T α) ∧ dCo (smLie Ξ) (app T α) = 0` using `fun T hT => by`. Take `⟨p1, p2, p3, p4⟩` from `appFacts E a U Ξ r hr N hN T hT q α hα hV`. Conclude with `⟨p1, p2, p3, by rw [p4, hd, app_zero']⟩`. Take `⟨h1, h2, h3, h4⟩` from `key P hR.opP`. Use `⟨app P α, h1, h4, (resExact E a ha n e he U Ξ r c hc q _ h1 h4).2 h3 (co_ext fun X i => ?_), h3, fun X i => hN.grow _ (h2 X i), ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[l4, l4, hR.ker _ (hV X i), AlternatingMap.zero_apply, map_zero]`. Use `exactLim E a ha U hUc Ξ q _ (fun k => app (Q k) α - app P α) (lsub _ _ hα h1) (dsub _ _ hd h4) (fun k => lsub _ _ (key _ (hR.opQ k)).1 h1) (fun k => dsub _ _ (key _ (hR.opQ k)).2.2.2 h4) (fun X i => ?_) fun k => ?_` and prove the remaining obligations. Use `locLim_sub (hR.lim _ (hV X i))` as an intermediate fact. Simplify `this` using `only [AlternatingMap.sub_apply, map_sub, l4]`. Take `⟨s1, -, -, s4⟩` from `key _ (hR.opS k)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e1 : α - app P α - (app (Q k) α - app P α) = app (casA r c e) (app (S k) α)`. Rewrite using `[sub_sub_sub_cancel_right]`. Use `co_ext fun X i => ?_` and prove the remaining obligations. Rewrite using `[AlternatingMap.sub_apply, map_sub, l4, l4, l4, hR.res k _ (hV X i)]`. Rewrite using `[e1]`.
-
-Conclude with `(resExact E a ha n e he U Ξ r c hc q _ s1 s4).1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Cj.H.hodgeEx :
     UpperTheory.V.Cj.H.HodgeEx := by

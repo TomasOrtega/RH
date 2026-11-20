@@ -7,9 +7,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PrimitiveFrobenius
 open Matrix IsLocalRing ReciprocityTheory.Gal UpperTheory.V.HV UpperTheory.V.U3 UpperTheory.V.Alg UpperTheory.V.UnitaryThreeInertia
 
 /- English proof (translation)
-Simplify using `only [Module.length_submodule] at hV ⊢`. Establish `hlt : ⨆ k, Order.height (P k) < ⊤` using `lt_of_le_of_lt (iSup_le hV) (ENat.coe_lt_top V)`. Take `⟨k, hk⟩` from `ENat.exists_eq_iSup_of_lt_top hlt`. Use `le_trans (Order.height_mono fun x hx => ?_) (hV k)` and prove the remaining obligations. Take `⟨k', hk'⟩` from `hT x hx`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `h1 : P k = P (max k k')`. Assume the negation of the conclusion as `h`. Establish `h2` using `Order.height_strictMono (lt_of_le_of_ne (hm (le_max_left k k')) h) (hk ▸ hlt)`. Conclude with `absurd h2 (not_lt.2 (hk ▸ le_iSup (fun k => Order.height (P k)) _))`. Conclude with `h1 ▸ hm (le_max_right k k') hk'`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem len_union {R H : Type} [CommRing R] [AddCommGroup H] [Module R H] (T : Submodule R H)
     (P : ℕ → Submodule R H) (hm : Monotone P) (hT : ∀ x ∈ T, ∃ k, x ∈ P k) (V : ℕ)
@@ -33,27 +33,25 @@ variable {O : Type} [CommRing O] [IsLocalRing O] {G Γ : Type} [Group G] [Group 
   [ContinuousConstSMul O M]
 
 /- English proof (translation)
-Establish `he : ∀ g y, j (oqRep F.Ψ⁻¹ a g y) = ρ g (j y)` using `fun g y => hρ ▸ map_smul j _ y`. Set `J` to `mapH1 (oqRep F.Ψ⁻¹ a) ρ j continuous_of_discreteTopology he`. Establish `hle : P ≤ (F.ShaO a).map J`. Introduce `x hx`. Take `⟨z₀, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `h0 : (a • z₀).1 ∈ B1 ρ` using `(Submodule.Quotient.mk_eq_zero ((B1 ρ).comap (Z1 ρ).subtype) (x := a • z₀)).1 (ha _ hx)`. Take `⟨m₀, hm₀⟩` from `(mem_coboundaries1 _ _).1 h0`. Take `⟨m₁, rfl⟩` from `hd m₀`. Establish `hm₁ : ∀ g, a • z₀.1 g = ρ g (a • m₁) - a • m₁` using `hm₀`. Establish `hk : ∀ g, a • (z₀.1 g - (ρ g m₁ - m₁)) = 0` using `fun g => by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[smul_sub, hm₁, map_smul, smul_sub, sub_self]`. Use `choose y hy using fun g => hr _ (hk g)`. Establish `hc : Continuous fun g => ρ g m₁` using `hcont.comp (Continuous.prodMk_left m₁)`. Establish `hyZ : y ∈ Z1 (oqRep F.Ψ⁻¹ a)`. Use `⟨?_, fun g h => hj ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1 : Continuous (j ∘ y)`. Rewrite using `[show j ∘ y = _ from funext hy]`. Conclude with `z₀.2.1.sub (hc.sub continuous_const)`. Conclude with `(((IsLocallyConstant.iff_continuous _).2 h1).desc _ _ hj).continuous`. Rewrite using `[map_add, he, hy, hy, hy, z₀.2.2, map_mul, Module.End.mul_apply, map_sub, map_sub]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Normalize the expressions using the abelian group laws. Establish `hloc : ∀ v, ∃ m, ∀ g : F.D v, j (y (F.loc v g)) = ρ (F.loc v g) m - m` using `fun v => by`. Take `⟨m, hm⟩` from `hP z₀ hx v`. Use `⟨m - m₁, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[hy, hm, map_sub]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Normalize the expressions using the abelian group laws. Use `⟨Submodule.Quotient.mk ⟨y, hyZ⟩, Submodule.subset_span ⟨⟨y, hyZ⟩, rfl, fun v hv s hs => hj ?_, fun v hv => ?_⟩, ?_⟩` and prove the remaining obligations. Take `⟨m, hm⟩` from `hloc v`. Establish `h1 : F.Ψ (F.loc v s) = 1` using `hF.teich v hv s hs`. Use `show j (y _) = _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hm, map_zero]`. Simplify using `[hρ, h1]`. Take `⟨m, hm⟩` from `hloc v`. Take `⟨x, -, hx⟩` from `hF.x v hv`. Establish `h1 : IsUnit ((F.Ψ (F.loc v x) : O) - 1)`.
+Establish an intermediate fact. Establish an intermediate fact. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: ((F.Ψv v x : Oˣ) : O) ^ 2 - 1 = ((F.Ψ (F.loc v x) : O) - 1) * ((F.Ψ (F.loc v x) : O) + 1)` using `by show ((F.Ψ (F.loc v x) : Oˣ) : O) ^ 2 - 1 = _`. Expand and normalize the polynomial expressions, which then agree. Conclude with `isUnit_of_mul_isUnit_left (this ▸ hx)`. Establish `h2 : a • (ρ (F.loc v x) m - m) = 0`. Rewrite using `[← hm, hy, hk]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : a • m = 0`. Use `h1.smul_eq_zero.1 ?_` and prove the remaining obligations. Establish `h4` using `congrArg (fun t => -((F.Ψ (F.loc v x) : Oˣ) : O) • t) h2`. Simplify using `only [hρ, Formalism.GaloisCohomology.scalRep_apply, MonoidHom.inv_apply, smul_zero] at h4`. Rewrite using `[← h4, smul_comm _ a, smul_comm _ a, smul_sub, smul_smul _ _ m, smul_smul _ _ m, ← sub_smul, smul_smul]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `congr 2`. Rewrite using `[neg_mul, Units.mul_inv]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨m', rfl⟩` from `hr m h3`. Conclude with `⟨m', fun g => hj (by rw [map_sub, he]; exact hm g)⟩`.
-
-Use `(Submodule.Quotient.eq _).2 ((mem_coboundaries1 _ _).2 ⟨-m₁, fun g => ?_⟩) show j (y g) - z₀.1 g = _` and prove the remaining obligations. Rewrite using `[hy, map_neg]`. Normalize the expressions using the abelian group laws. Conclude with `(Module.length_le_of_injective _ (Submodule.inclusion_injective hle)).trans (Module.length_le_of_surjective (J.submoduleMap _) (LinearMap.submoduleMap_surjective _ _))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 private theorem tors_le (hF : F.Ok) (a : O) (j : OQ a →ₗ[O] M) (hj : Function.Injective j)
     (hr : ∀ m : M, a • m = 0 → ∃ y, j y = m) (hd : ∀ m : M, ∃ m', a • m' = m)
@@ -120,15 +118,15 @@ private theorem tors_le (hF : F.Ok) (a : O) (j : OQ a →ₗ[O] M) (hj : Functio
     (Module.length_le_of_surjective (J.submoduleMap _) (LinearMap.submoduleMap_surjective _ _))
 
 /- English proof (translation)
-Use `len_union _ (fun k => Sha1 ρ φ hφ ⊓ Submodule.torsionBy O _ (p ^ k)) (fun k k' h => inf_le_inf_left _ (Submodule.torsionBy_le_torsionBy_of_dvd _ _ (pow_dvd_pow _ h))) (fun x hx => ?_) V fun k => ?_` and prove the remaining obligations. Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Establish `hfin : (Set.range z.1).Finite` using `(isCompact_range z.2.1).finite_of_discrete`. Use `choose n hn using htor`. Take `⟨k, hk⟩` from `(hfin.image n).bddAbove`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨k, hx, (Submodule.mem_torsionBy_iff _ _).2 ?_⟩` and prove the remaining obligations. Establish `h0 : p ^ k • z = 0` using `Subtype.ext (funext fun g => by`. Take `⟨d, rfl⟩` from `Nat.exists_eq_add_of_le' (hk ⟨_, ⟨g, rfl⟩, rfl⟩)`. Use `show p ^ (d + n (z.1 g)) • z.1 g = 0`. Rewrite using `[pow_add, mul_smul, hn, smul_zero])`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← Submodule.Quotient.mk_smul, h0, Submodule.Quotient.mk_zero]`. Take `⟨w, hw, hgen⟩` from `hex k`. Establish `hker : Ideal.span {p ^ k} = LinearMap.ker (LinearMap.toSpanSingleton O _ w)`. Use extensionality with `y`. Rewrite using `[Ideal.mem_span_singleton, LinearMap.mem_ker, LinearMap.toSpanSingleton_apply, hw]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `le_trans (tors_le F hF (p ^ k) (Submodule.liftQ _ (LinearMap.toSpanSingleton O _ w) hker.le) (LinearMap.ker_eq_bot.1 (Submodule.ker_liftQ_eq_bot _ _ _ hker.ge)) (fun m hm => ?_) (hd k) ρ hρ hcont _ (fun z hz v => ?_) fun x hx => hx.2) (hV k)` and prove the remaining obligations. Take `⟨y, rfl⟩` from `hgen m hm`. Conclude with `⟨Ideal.Quotient.mk _ y, rfl⟩`. Establish `h1` using `(Submodule.mem_iInf _).1 hz.1 v`. Take `⟨m, hm⟩` from `(mem_coboundaries1 _ _).1 (Submodule.mem_comap.1 ((Submodule.Quotient.mk_eq_zero _).1 h1))`.
+Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨m, fun g => ?_⟩` and prove the remaining obligations. Take `⟨g', hg⟩` from `hD v g`. Rewrite using `[← hg]`. Conclude with `hm g'`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem sha_le [CompactSpace Γ] (hF : F.Ok) (p : O) (htor : ∀ m : M, ∃ n : ℕ, p ^ n • m = 0)
     (hex : ∀ k : ℕ, ∃ w : M, (∀ y : O, y • w = 0 ↔ p ^ k ∣ y) ∧ ∀ m : M, p ^ k • m = 0 → ∃ y : O, m = y • w)
@@ -168,17 +166,15 @@ private theorem sha_le [CompactSpace Γ] (hF : F.Ok) (p : O) (htor : ∀ m : M, 
 end
 
 /- English proof (translation)
-Introduce `Ω _ _ _ l hl c N _ e ψ o₁ hH S A F hF V hV`. Establish `hok` using `hostFrame_ok Ω c e ψ o₁ hH S A F hF`. Establish `hS : (S : Set Pl) = Formalism.GaloisCohomology.Above ℚ (l * N)` using `Set.ext hF.mem`. Establish `hsurj : Function.Surjective (toGS (F` using `ℚ) Ω (S : Set Pl)) := QuotientGroup.mk_surjective`. Establish `: IsGalois ℚ Ω` using `IsAlgClosure.isGalois ℚ Ω`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: CompactSpace (Gam Ω S)` using `hsurj.compactSpace (continuous_toGS Ω _)`. Take `⟨θ, hθ, hc⟩` from `Chr.factorGS ℚ Ω l c.O N e (Chr.dirG ℚ Ω ψ) (fun g hg => by show ψ.toUnitHom (Chr.cls ℚ Ω N g) = 1`. Rewrite using `[MonoidHom.mem_ker.1 hg, map_one]) S hS`. Establish `hθ' : θ = F.Ψ⁻¹` using `MonoidHom.ext fun g => by`. Take `⟨g, rfl⟩` from `hsurj g`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h1` using `DFunLike.congr_fun hθ g`. Establish `h2` using `DFunLike.congr_fun hF.Ψ g`. Rewrite `h2` using `[hF.π]`. Conclude with `h1.trans (congrArg Inv.inv h2.symm)`. Establish `hlen` using `(Chr.litV ℚ Ω l c.O e (Chr.dirG ℚ Ω ψ)).1 (l * N) S A (mul_ne_zero hl.out.ne_zero (NeZero.ne N)) hS hF.isOver θ hθ hc`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `le_of_eq_of_le hlen.symm ?_` and prove the remaining obligations. Take `⟨-, htor, hdiv, -⟩` from `Base.qoFacts l c.O`. Take `⟨-, hex, hgen, -⟩` from `ML.qoCyc l c.O`. Establish `hl0 : (l : c.O) ≠ 0` using `Nat.cast_ne_zero.2 hl.out.ne_zero`. Use `sha_le F hok (l : c.O) (fun m => ?_) (fun k => ?_) (fun k => hdiv _ (pow_ne_zero k hl0)) (Base.twist₂ l θ) (by rw [hθ']) hc _ _ (fun v g => ⟨⟨g.1, hF.D v ▸ g.2⟩, ?_⟩) V fun k => hV _ (pow_ne_zero k hl0)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨n, hn⟩` from `htor m`. Conclude with `⟨n, by rw [← Nat.cast_pow, Nat.cast_smul_eq_nsmul, hn]⟩`. Take `⟨w, hw⟩` from `hex _ (pow_ne_zero k hl0)`. Conclude with `⟨w, hw, hgen _ w (pow_ne_zero k hl0) hw⟩`. Use `show toGS Ω _ g.1 = F.π g.1`.
-
-Rewrite using `[hF.π]`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.UnitaryThreeInertia.vlen_le :
     ∀ (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] (c : Coef l) {N : ℕ} [NeZero N] (e : ℕ) (ψ : DirichletCharacter c.O N) (o₁ : ℕ), HostData l e ψ o₁ →

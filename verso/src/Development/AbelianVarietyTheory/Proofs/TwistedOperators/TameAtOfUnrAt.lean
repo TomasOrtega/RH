@@ -13,11 +13,11 @@ namespace GlobalTheory.VecInv
 variable {D : D7}
 
 /- English proof (translation)
-Introduce `a k u hk hu`. Establish `ha : a ∉ PP.asIdeal`. Introduce `hmem`. Establish `h0 : (u : kP PP) = 0` using `by rw [hu]; exact Ideal.Quotient.eq_zero_iff_mem.mpr hmem`. Conclude with `u.ne_zero h0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hv : Formalism.L2.Host.IsUnitAt PP (Formalism.L2.Host.atFin PP k)` using `by show Valued.v (algebraMap D.host.E (PP.adicCompletion D.host.E) (k : D.host.E)) = 1 first`. Consider the case `rw [IsDedekindDomain.HeightOneSpectrum.valuedAdicCompletion_eq_valuation]`. Consider the case `erw [IsDedekindDomain.HeightOneSpectrum.valuedAdicCompletion_eq_valuation']`. Rewrite using `[hk, Algebra.algebraMap_self, RingHom.id_apply, IsDedekindDomain.HeightOneSpectrum.valuation_of_algebraMap]`. Conclude with `(IsDedekindDomain.HeightOneSpectrum.intValuation_eq_one_iff).mpr ha`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `h _ hv` as an intermediate fact. Rewrite using `[MonoidHom.one_apply]`. Conclude with `this.symm`.
+A detailed English derivation is pending.
 -/
 theorem isRes_one {χ : Formalism.L2.Host.HChar D.host.E} {PP : Pl D.host.E} (h : χ.UnrAt PP) : IsRes χ PP 1 := by
   intro a k u hk hu
@@ -37,21 +37,21 @@ theorem isRes_one {χ : Formalism.L2.Host.HChar D.host.E} {PP : Pl D.host.E} (h 
   exact this.symm
 
 /- English proof (translation)
-Introduce `x hx _`. Conclude with `h x hx`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem tameAt_of_unrAt {χ : Formalism.L2.Host.HChar D.host.E} {PP : Pl D.host.E} (h : χ.UnrAt PP) : χ.TameAt PP := by
   intro x hx _
   exact h x hx
 
 /- English proof (translation)
-Introduce `x h1 h2 h3 h4`. Rewrite using `[MonoidHom.mul_apply, h x h1 h2 h3 h4, h' x h1 h2 h3 h4, one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem UnrOff.mul {b : AE D} {χ χ' : (AE D)ˣ →* Circle} (h : UnrOff b χ) (h' : UnrOff b χ') : UnrOff b (χ * χ') := by
   intro x h1 h2 h3 h4
   rw [MonoidHom.mul_apply, h x h1 h2 h3 h4, h' x h1 h2 h3 h4, one_mul]
 
 /- English proof (translation)
-Introduce `x h1 h2 h3 h4`. Rewrite using `[MonoidHom.inv_apply, h x h1 h2 h3 h4, inv_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem UnrOff.inv {b : AE D} {χ : (AE D)ˣ →* Circle} (h : UnrOff b χ) : UnrOff b χ⁻¹ := by
   intro x h1 h2 h3 h4
@@ -60,11 +60,11 @@ theorem UnrOff.inv {b : AE D} {χ : (AE D)ˣ →* Circle} (h : UnrOff b χ) : Un
 variable {T0 : Type} {L : LevCh D T0} {μ0 : T0}
 
 /- English proof (translation)
-Take `⟨-, hQ, -, hoff⟩` from `GlobalTheory.T.levelCharacters_ramification_levelPlaces D T0 L μ0 hL t j`. Establish `hsub : ∀ PP', PP' ∉ P → (∀ PP ∈ P, ¬ Formalism.IndefR.Lev.IsConjPl PP PP') → PP' ∉ L.Pg ∧ PP' ∉ L.Q t ∧ (∀ PP ∈ L.Pg, ¬ Formalism.IndefR.Lev.IsConjPl PP PP') ∧ ∀ PP ∈ L.Q t, ¬ Formalism.IndefR.Lev.IsConjPl PP PP'`. Introduce `PP' hn hc`. Conclude with `⟨fun hm => hn ((hP PP').mpr (Or.inl hm)), fun hm => hn ((hP PP').mpr (Or.inr hm)), fun PP hm => hc PP ((hP PP).mpr (Or.inl hm)), fun PP hm => hc PP ((hP PP).mpr (Or.inr hm))⟩`. Establish `h0 : UnrOff (e + cA D e) (L.mu0 ((j : ℕ) + 1))` using `GlobalTheory.T.heckeChar_trivial_on_idempotentIntegralUnits D _ (L.C.mu0 j) P e (hL.mu0 j) he (fun PP' hn hc => hoff PP' (hsub PP' hn hc).1 (hsub PP' hn hc).2.2.1)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `h1 : UnrOff (e + cA D e) (L.xi t)`. Use `GlobalTheory.T.heckeChar_trivial_on_idempotentIntegralUnits D _ (L.xiH t) P e (hL.xi t) he (fun PP' hn hc => ?_)` and prove the remaining obligations. Assume the negation of the conclusion as `hr`. Break down `(hL.Q_ram t PP').mp hr with hm | ⟨PP, hm, hcj⟩` into its components or cases. Conclude with `(hsub PP' hn hc).2.1 hm`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(hsub PP' hn hc).2.2.2 PP hm hcj`. Use `⟨?_, GlobalTheory.T.heckeChar_trivial_on_idempotentIntegralUnits D _ L.C.eta P e hL.eta he (fun PP' _ _ => L.C.isEta.unr PP')⟩` and prove the remaining obligations. Use `show UnrOff (e + cA D e) (L.mu0 ((j : ℕ) + 1) * L.xi t)`. Conclude with `h0.mul h1`.
+A detailed English derivation is pending.
 -/
 theorem unrOff_mu (hL : L.Is μ0) (t : T0) (j : Fin D.R.m) {P : Finset (Pl D.host.E)} {e : AE D}
     (hP : ∀ PP, PP ∈ P ↔ PP ∈ L.Pg ∨ PP ∈ L.Q t) (he : IsIdemSum e P) :
@@ -91,19 +91,19 @@ theorem unrOff_mu (hL : L.Is μ0) (t : T0) (j : Fin D.R.m) {P : Finset (Pl D.hos
   exact h0.mul h1
 
 /- English proof (translation)
-Take `⟨hdisj, hQ, hPg, -⟩` from `GlobalTheory.T.levelCharacters_ramification_levelPlaces D T0 L μ0 hL t j`. Establish `hPu : P = L.Pg ∪ L.Q t`. Use extensionality with `PP`. Rewrite using `[hP PP, Finset.mem_union]`. Establish `hA` using `GlobalTheory.T.tameHeckeChar_splitSupported_eq_prod_residue D (L.mu0 ((j : ℕ) + 1)) (L.C.mu0 j) P e (fun PP => if PP ∈ L.Pg then (L.chi ((j : ℕ) + 1) PP)⁻¹ else 1) (hL.mu0 j) he (fun PP hm => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Distinguish the cases in `hg : PP ∈ L.Pg`. Simplify using `only [if_pos hg]`. Conclude with `⟨(L.C.isMu0 j).tame PP, hL.chi j PP hg⟩`. Simplify using `only [if_neg hg]`. Establish `hq : PP ∈ L.Q t` using `((hP PP).mp hm).resolve_left hg`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Supply the required witnesses or components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `⟨tameAt_of_unrAt (hQ PP hq), isRes_one (hQ PP hq)⟩) x a a' u hx ha hu`. Establish `hB` using `GlobalTheory.T.tameHeckeChar_splitSupported_eq_prod_residue D (L.xi t) (L.xiH t) P e (fun PP => if PP ∈ L.Q t then L.xiR t PP else 1) (hL.xi t) he (fun PP hm => by`. Distinguish the cases in `hq : PP ∈ L.Q t`. Simplify using `only [if_pos hq]`. Conclude with `⟨hL.xi_tame t PP, hL.xiR t PP hq⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Simplify using `only [if_neg hq]`. Establish `hg : PP ∈ L.Pg` using `((hP PP).mp hm).resolve_right hq`. Conclude with `⟨tameAt_of_unrAt (hPg PP hg), isRes_one (hPg PP hg)⟩) x a a' u hx ha hu`. Establish `hC` using `GlobalTheory.T.tameHeckeChar_splitSupported_eq_prod_residue D L.eta L.C.eta P e (fun _ => 1) hL.eta he (fun PP _ => ⟨tameAt_of_unrAt (L.C.isEta.unr PP), isRes_one (L.C.isEta.unr PP)⟩) x a a' u hx ha hu`. Rewrite `hA`, `hB` using `[hPu, Finset.prod_union hdisj]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hA' : ((L.mu0 ((j : ℕ) + 1) x : Circle) : ℂ) = ∏ PP ∈ L.Pg, (((L.chi ((j : ℕ) + 1) PP (u PP))⁻¹ : ℂˣ) : ℂ)`. Rewrite using `[hA, Finset.prod_eq_one (s := L.Q t) (fun PP hm => ?_), mul_one]`. Conclude with `Finset.prod_congr rfl (fun PP hm => by simp only [if_pos hm, MonoidHom.inv_apply])`. Simplify using `only [if_neg (Finset.disjoint_right.mp hdisj hm), MonoidHom.one_apply, Units.val_one]`. Establish `hB' : ((L.xi t x : Circle) : ℂ) = ∏ PP ∈ L.Q t, ((L.xiR t PP (u PP) : ℂˣ) : ℂ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hB, Finset.prod_eq_one (s := L.Pg) (fun PP hm => ?_), one_mul]`. Conclude with `Finset.prod_congr rfl (fun PP hm => by simp only [if_pos hm])`. Simplify using `only [if_neg (Finset.disjoint_left.mp hdisj hm), MonoidHom.one_apply, Units.val_one]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_mul, Units.coe_prod, Units.coe_prod] show ((L.mu0 ((j : ℕ) + 1) x * L.xi t x : Circle) : ℂ) = _`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Circle.coe_mul, hA', hB']`. Establish `hC' : ((L.eta x : Circle) : ℂ) = 1`. Rewrite using `[hC]`. Conclude with `Finset.prod_eq_one (fun PP _ => by simp only [MonoidHom.one_apply, Units.val_one])`. Conclude with `Circle.ext (by rw [hC', Circle.coe_one])`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mu_val (hL : L.Is μ0) (t : T0) (j : Fin D.R.m) {P : Finset (Pl D.host.E)} {e : AE D}
     (hP : ∀ PP, PP ∈ P ↔ PP ∈ L.Pg ∨ PP ∈ L.Q t) (he : IsIdemSum e P) (x : (AE D)ˣ) (a : AE D)

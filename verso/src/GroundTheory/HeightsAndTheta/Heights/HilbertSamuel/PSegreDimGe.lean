@@ -10,33 +10,29 @@ open MvPolynomial GroundTheory.Heights₂.Heights.NumbersDVR Cardinal
 noncomputable section
 
 /- English proof (translation)
-Introduce `F _ K _ _ _ ι _ q e hq hdim`. Use `hq.isPrime` as an intermediate fact. Set `π : MRing ι F →ₐ[F] MRing ι F ⧸ q` to `Ideal.Quotient.mkₐ F q`. Set `φ : MRing (fun _ : Unit => ∀ k, ι k) F →ₐ[F] MRing ι F ⧸ q` to `π.comp (segreMap F)`. Set `R' : Subalgebra F (MRing ι F ⧸ q)` to `φ.range`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `choose i hi using hq.relevant`. Set `x : K → MRing ι F ⧸ q` to `fun k => π (X ⟨k, i k⟩)`. Establish `hx0 : ∀ k, x k ≠ 0` using `fun k h => hi k (Ideal.Quotient.eq_zero_iff_mem.mp (by simpa [x, π, Ideal.Quotient.mkₐ_eq_mk] using h))`. Establish `hkey : ∀ k (j : ι k), (∏ l ∈ Finset.univ.erase k, x l) * π (X ⟨k, j⟩) = φ (X ⟨(), Function.update i k j⟩)`. Introduce `k j`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[AlgHom.comp_apply, segreMap_X, map_prod, ← Finset.mul_prod_erase _ _ (Finset.mem_univ k), Function.update_self, mul_comm]`. Use `congr 1`. Use `Finset.prod_congr rfl fun l hl => ?_` and prove the remaining obligations. Rewrite using `[Function.update_of_ne (Finset.ne_of_mem_erase hl)]`. Set `k0 : K` to `Classical.arbitrary K`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `s : Set (MRing ι F ⧸ q)` to `x '' ↑(Finset.univ.erase k0)`. Set `B : Subalgebra R' (MRing ι F ⧸ q)` to `Algebra.adjoin R' s`. Establish `hR'B : ∀ a ∈ R', IsAlgebraic B a` using `fun a ha => isAlgebraic_algebraMap (⟨a, Subalgebra.algebraMap_mem B (⟨a, ha⟩ : R')⟩ : B)`. Establish `hsB : ∀ l, l ≠ k0 → IsAlgebraic B (x l)` using `fun l hl => isAlgebraic_algebraMap (⟨x l, Algebra.subset_adjoin ⟨l, Finset.mem_coe.mpr (Finset.mem_erase.mpr ⟨hl, Finset.mem_univ l⟩), rfl⟩⟩ : B)`. Establish `hgen : ∀ k, (∀ l, l ≠ k → IsAlgebraic B (x l)) → ∀ j : ι k, IsAlgebraic B (π (X ⟨k, j⟩))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k hk j`. Establish `hy : IsAlgebraic B (∏ l ∈ Finset.univ.erase k, x l)` using `Finset.prod_induction _ _ (fun a b ha hb => ha.mul hb) isAlgebraic_one fun l hl => hk l (Finset.ne_of_mem_erase hl)`. Use `IsAlgebraic.of_mul (mem_nonZeroDivisors_of_ne_zero ?_) hy ?_` and prove the remaining obligations. Conclude with `Finset.prod_ne_zero_iff.mpr fun l _ => hx0 l`. Rewrite using `[hkey]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hR'B _ ⟨_, rfl⟩`. Establish `hall : ∀ l, IsAlgebraic B (x l)`. Introduce `l`. Distinguish the cases in `hl : l = k0`. Substitute `hl` using the available equality.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `hgen _ hsB (i _)`. Conclude with `hsB l hl`. Establish `hA : ∀ a : MRing ι F ⧸ q, IsAlgebraic B a`. Introduce `a`. Take `⟨p, rfl⟩` from `Ideal.Quotient.mkₐ_surjective F q a`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C c`. Rewrite using `[MvPolynomial.algHom_C]`. Conclude with `hR'B _ (R'.algebraMap_mem c)`. Consider the case `add p r hp hr => rw [map_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `hp.add hr`. Consider the case `mul_X p v hp => rw [map_mul]`. Conclude with `hp.mul (hgen v.1 (fun l _ => hall l) v.2)`. Establish `: Algebra.IsAlgebraic B (MRing ι F ⧸ q)` using `⟨hA⟩`. Establish `htop : Algebra.trdeg R' (MRing ι F ⧸ q) ≤ #s` using `Algebra.IsAlgebraic.trdeg_le_cardinalMk R' s`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hs : #s ≤ (Fintype.card K - 1 : ℕ)`. Use `Cardinal.mk_image_le.trans ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Establish `: FaithfulSMul F R'` using `(faithfulSMul_iff_algebraMap_injective F R').mpr (algebraMap F R').injective`. Establish `: FaithfulSMul R' (MRing ι F ⧸ q)` using `⟨fun {r₁ r₂} h => Subtype.ext (by simpa [Subalgebra.smul_def] using h 1)⟩`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `htower` using `trdeg_add_eq (A := MRing ι F ⧸ q) F R'`. Set `g : (MRing (fun _ : Unit => ∀ k, ι k) F ⧸ segrePrime F q) →ₐ[F] R'` to `Ideal.Quotient.liftₐ (segrePrime F q) φ.rangeRestrict fun p hp => by`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify `hp` using `[φ, π, segrePrime, Ideal.Quotient.mkₐ_eq_mk, Ideal.Quotient.eq_zero_iff_mem]`. Establish `hg : Function.Surjective g`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce and unpack `⟨y, p, rfl⟩`. Conclude with `⟨Ideal.Quotient.mk _ p, rfl⟩`. Establish `hR'le` using `trdeg_le_of_surjective g hg`. Take `⟨n, hn, htn⟩` from `GroundTheory.Arith.Abelian.Jacobian.exists_ringKrullDim_eq_trdeg (k := F) (A := MRing ι F ⧸ q)`. Take `⟨m, hm, htm⟩` from `GroundTheory.Arith.Abelian.Jacobian.exists_ringKrullDim_eq_trdeg (k := F) (A := MRing (fun _ : Unit => ∀ k, ι k) F ⧸ segrePrime F q)`.
-
-Establish `hne : n = e + Fintype.card K`. Rewrite `hdim` using `[hn]`. Conclude with `hdim` after adjusting the coercions. Establish `hcard : (n : Cardinal) ≤ (m + (Fintype.card K - 1) : ℕ)`. Rewrite using `[← htn, ← htower, Nat.cast_add, ← htm]`.
-
-Conclude with `add_le_add hR'le (htop.trans hs)`. Establish `hK : 0 < Fintype.card K` using `Fintype.card_pos`. Establish `hnm : n ≤ m + (Fintype.card K - 1)` using `by exact_mod_cast hcard`. Rewrite using `[hm]`. Conclude with `(show e + 1 ≤ m by omega)` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem SegreDimGe.proof : SegreDimGe.Statement := by
   intro F _ K _ _ _ ι _ q e hq hdim

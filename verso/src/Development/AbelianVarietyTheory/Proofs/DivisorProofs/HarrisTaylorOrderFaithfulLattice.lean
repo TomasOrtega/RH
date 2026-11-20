@@ -7,13 +7,13 @@ open scoped TensorProduct
 namespace GlobalTheory.HTFaith
 
 /- English proof (translation)
-Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, 0, by simp⟩`. Consider the case `tmul a s`. Choose the witnesses or unpack the hypotheses as in `⟨t, ht⟩ : ∃ t : ℤ_[p], s - (PadicInt.appr s 1 : ℤ_[p]) = (p : ℤ_[p]) * t := by`. Use `PadicInt.appr_spec 1 s` as an intermediate fact.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `this` using `[pow_one, Ideal.mem_span_singleton]`. Take `⟨t, ht⟩` from `this`. Conclude with `⟨t, ht⟩`. Use `⟨(PadicInt.appr s 1 : ℤ) • a, a ⊗ₜ t, ?_⟩` and prove the remaining obligations. Establish `hs : s = (PadicInt.appr s 1 : ℤ) • (1 : ℤ_[p]) + (p : ℤ) • t`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[zsmul_eq_mul, zsmul_eq_mul, _root_.mul_one]`. Use `push_cast`. Rewrite using `[← ht]`. Expand and normalize the polynomial expressions, which then agree. Use `conv_lhs => rw [hs]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[TensorProduct.tmul_add, TensorProduct.tmul_smul, TensorProduct.tmul_smul, TensorProduct.smul_tmul']`. Consider the case `add w1 w2 h1 h2`. Take `⟨a1, z1, rfl⟩` from `h1`. Take `⟨a2, z2, rfl⟩` from `h2`. Conclude with `⟨a1 + a2, z1 + z2, by rw [TensorProduct.add_tmul, smul_add]; abel⟩`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 lemma approx (p : ℕ) [Fact p.Prime] (M : Type) [AddCommGroup M] (w : M ⊗[ℤ] ℤ_[p]) :
     ∃ a : M, ∃ z : M ⊗[ℤ] ℤ_[p], w = a ⊗ₜ 1 + (p : ℤ) • z := by
@@ -36,15 +36,13 @@ lemma approx (p : ℕ) [Fact p.Prime] (M : Type) [AddCommGroup M] (w : M ⊗[ℤ
     exact ⟨a1 + a2, z1 + z2, by rw [TensorProduct.add_tmul, smul_add]; abel⟩
 
 /- English proof (translation)
-Set `b` to `Module.Free.chooseBasis ℤ M`. Establish `hd : ∀ i, (p : ℤ) ∣ b.repr x i`. Introduce `i`. Set `f : M ⊗[ℤ] ℤ_[p] →ₗ[ℤ] ℤ_[p]` to `(TensorProduct.lid ℤ ℤ_[p]).toLinearMap ∘ₗ TensorProduct.map (b.coord i) LinearMap.id`. Establish `h1 : f (x ⊗ₜ 1) = f ((p : ℤ) • z)` using `by rw [h]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h0 : f (x ⊗ₜ 1) = ((b.repr x i : ℤ) : ℤ_[p])` using `by show (TensorProduct.lid ℤ ℤ_[p]) (TensorProduct.map (b.coord i) LinearMap.id (x ⊗ₜ[ℤ] (1 : ℤ_[p]))) = _`. Rewrite using `[TensorProduct.map_tmul, TensorProduct.lid_tmul, LinearMap.id_apply, Module.Basis.coord_apply, zsmul_eq_mul, _root_.mul_one]`. Rewrite `h1` using `[map_zsmul, h0, zsmul_eq_mul]`. Establish `h3 : ‖((b.repr x i : ℤ) : ℤ_[p])‖ < 1`. Rewrite using `[h1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Rewrite using `[norm_mul, PadicInt.norm_p]`. Use `PadicInt.norm_le_one (f z)` as an intermediate fact. Establish `hp : (1:ℝ) < p` using `by exact_mod_cast (Fact.out : p.Prime).one_lt`. Combine the equalities or inequalities in the displayed calculation.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Conclude with `(PadicInt.norm_int_lt_one_iff_dvd _).1 h3`. Use `choose c hc using hd`. Use `⟨∑ i ∈ (b.repr x).support, c i • b i, ?_⟩` and prove the remaining obligations. Use `conv_lhs => rw [← b.linearCombination_repr x]`. Rewrite using `[Finsupp.linearCombination_apply, Finsupp.sum, Finset.smul_sum]`.
-
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hc i, smul_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma kernel (p : ℕ) [Fact p.Prime] (M : Type) [AddCommGroup M] [Module.Free ℤ M] (x : M)
     (z : M ⊗[ℤ] ℤ_[p]) (h : x ⊗ₜ 1 = (p : ℤ) • z) : ∃ u : M, x = (p : ℤ) • u := by
@@ -76,15 +74,15 @@ lemma kernel (p : ℕ) [Fact p.Prime] (M : Type) [AddCommGroup M] [Module.Free �
   rw [hc i, smul_smul]
 
 /- English proof (translation)
-Set `b` to `Module.Free.chooseBasis ℤ M`. Set `N : M → ℕ` to `fun x => ∑ i, (b.repr x i).natAbs`. Establish `hp1 : 1 < p` using `(Fact.out : p.Prime).one_lt`. Establish `hNpos : ∀ u : M, u ≠ 0 → 0 < N u`. Introduce `u hu`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Assume the negation of the conclusion as `h`. Use `push_neg at h`. Apply `hu` to reduce the goal to its premises. Establish `h0 : ∀ i, b.repr u i = 0` using `fun i => Int.natAbs_eq_zero.1 (Nat.eq_zero_of_le_zero ((Finset.single_le_sum (fun j _ => Nat.zero_le _) (Finset.mem_univ i)).trans h))`. Conclude with `b.repr.injective (by ext i; simp [h0 i])`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hNs : ∀ u : M, N ((p : ℤ) • u) = p * N u`. Introduce `u`. Simplify using `only [N, map_zsmul, Finsupp.smul_apply, smul_eq_mul, Int.natAbs_mul, Int.natAbs_natCast, Finset.mul_sum]`. Proceed by induction on `hN : N x using Nat.strong_induction_on generalizing x with`. Consider the case `_ n ih`.
+Simplify using the standard rewrite rules. Proceed by induction. Treat this case separately. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `h : ∃ u, x = (p : ℤ) • u`. Take `⟨u, rfl⟩` from `h`. Establish `hu : u ≠ 0` using `by rintro rfl; simp at hx`. Establish `hlt : N u < n`. Rewrite using `[← hN, hNs]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Use `hNpos u hu` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Take `⟨k, x', hk, h'⟩` from `ih _ hlt u hu rfl`. Conclude with `⟨k + 1, x', by rw [hk, smul_smul, pow_succ'], h'⟩`. Conclude with `⟨0, x, by simp, h⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 lemma saturate (p : ℕ) [Fact p.Prime] (M : Type) [AddCommGroup M] [Module.Free ℤ M] [Module.Finite ℤ M]
     (x : M) (hx : x ≠ 0) :
@@ -120,35 +118,31 @@ lemma saturate (p : ℕ) [Fact p.Prime] (M : Type) [AddCommGroup M] [Module.Free
   · exact ⟨0, x, by simp, h⟩
 
 /- English proof (translation)
-Use `haveI := D.freeLa`. Use `haveI := D.finLa`. Establish `hp0 : (p : ℤ) ≠ 0` using `by exact_mod_cast (Fact.out : p.Prime).ne_zero`. Establish `hfaith : ∀ q : 𝓞 D.F, (∀ y : D.La, algebraMap (𝓞 D.F) D.O q • y = 0) → q = 0`. Introduce `q hq`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hq0`. Establish `hI : Ideal.span {q} ≠ ⊥` using `by simpa [Ideal.span_singleton_eq_bot] using hq0`. Establish `hne : Ideal.absNorm (Ideal.span {q}) ≠ 0` using `fun h => hI (Ideal.absNorm_eq_zero_iff.1 h)`. Take `⟨r, hr⟩` from `Ideal.mem_span_singleton'.1 (Ideal.absNorm_mem (Ideal.span {q}))`. Use `haveI : Nontrivial D.La := Module.nontrivial_of_finrank_pos (R := ℤ) (by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[D.rankLa]`. Use `D.m_pos` as an intermediate fact. Use `D.n_pos` as an intermediate fact. Use `Module.finrank_pos (R := ℚ) (M := D.F)` as an intermediate fact. Use the proof step `positivity)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨y, hy⟩` from `exists_ne (0 : D.La)`. Apply `hy` to reduce the goal to its premises. Establish `h1 : algebraMap (𝓞 D.F) D.O (r * q) • y = 0` using `by rw [map_mul, mul_smul, hq, smul_zero]`. Rewrite `h1` using `[hr, map_natCast, Nat.cast_smul_eq_nsmul]`. Establish `h2 : ((Ideal.absNorm (Ideal.span {q}) : ℕ) : ℤ) • y = 0` using `by rw [natCast_zsmul]; exact h1`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(smul_eq_zero.1 h2).resolve_left (by exact_mod_cast hne)`. Use `choose z hz using h`. Establish `hadd : ∀ y1 y2, z (y1 + y2) = z y1 + z y2`. Introduce `y1 y2`. Apply `smul_right_injective D.La hp0` to reduce the goal to its premises.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `show (p : ℤ) • z (y1 + y2) = (p : ℤ) • (z y1 + z y2)`. Rewrite using `[← hz, smul_add, smul_add, ← hz, ← hz]`. Set `g : D.La →ₗ[ℤ] D.La` to `(AddMonoidHom.mk' z hadd).toIntLinearMap`. Establish `hg : ∀ y, g y = z y` using `fun y => rfl`. Take `⟨P, hPm, hP⟩` from `LinearMap.isIntegral g`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `ψ : 𝓞 D.F →+* Module.End ℤ D.La` to `(Module.toModuleEnd ℤ (S := D.O) D.La).comp (algebraMap (𝓞 D.F) D.O)`. Establish `hψ : ∀ q y, ψ q y = algebraMap (𝓞 D.F) D.O q • y` using `fun q y => rfl`. Establish `hψc : ψ c = (p : ℤ) • g`. Use extensionality with `y`. Rewrite using `[hψ, hz, LinearMap.smul_apply, hg]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `set d := P.natDegree`. Establish `hQ : Polynomial.aeval (ψ c) (P.scaleRoots (p : ℤ)) = 0`. Rewrite using `[hψc, Polynomial.aeval_eq_sum_range, Polynomial.natDegree_scaleRoots]`. Establish `h1 : ∀ i ∈ Finset.range (d + 1), (P.scaleRoots (p : ℤ)).coeff i • ((p : ℤ) • g) ^ i = (p : ℤ) ^ d • (P.coeff i • g ^ i)`. Introduce `i hi`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Polynomial.coeff_scaleRoots, smul_pow, smul_smul, smul_smul]`. Use `congr 1`. Rewrite using `[_root_.mul_assoc, pow_sub_mul_pow _ (Nat.lt_succ_iff.1 (Finset.mem_range.1 hi)), _root_.mul_comm]`. Rewrite using `[Finset.sum_congr rfl h1, ← Finset.smul_sum, ← Polynomial.aeval_eq_sum_range, Polynomial.aeval_def, hP, smul_zero]`. Establish `hQ0 : Polynomial.aeval c (P.scaleRoots (p : ℤ)) = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Apply `hfaith` to reduce the goal to its premises. Establish `h2 : ψ (Polynomial.aeval c (P.scaleRoots (p : ℤ))) = Polynomial.aeval (ψ c) (P.scaleRoots (p : ℤ))` using `(Polynomial.aeval_algHom_apply ψ.toIntAlgHom c _).symm`. Introduce `y`. Rewrite using `[← hψ, h2, hQ, LinearMap.zero_apply]`. Establish `hQF : Polynomial.aeval (c : D.F) (P.scaleRoots (p : ℤ)) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 
-Establish `h3` using `congrArg (algebraMap (𝓞 D.F) D.F) hQ0`. Rewrite `h3` using `[← Polynomial.aeval_algebraMap_apply, map_zero]`. Then use the resulting hypothesis. Use `set gam : D.F := (c : D.F) / (p : D.F)`. Establish `hpF : (p : D.F) ≠ 0` using `by exact_mod_cast (Fact.out : p.Prime).ne_zero`. Establish `hgam : Polynomial.aeval gam P = 0`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `h4` using `Polynomial.scaleRoots_eval₂_mul (p := P) (algebraMap ℤ D.F) gam (p : ℤ)`. Establish `h5 : algebraMap ℤ D.F (p : ℤ) * gam = (c : D.F)`. Simplify using `only [gam, map_natCast, eq_intCast, Int.cast_natCast]`. Clear the denominators using the available nonvanishing facts. Rewrite `h4` using `[h5, ← Polynomial.aeval_def, hQF, ← Polynomial.aeval_def]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h6 : algebraMap ℤ D.F (p : ℤ) ^ P.natDegree ≠ 0`. Apply `pow_ne_zero` to reduce the goal to its premises. Simplify using `using hpF`. Conclude with `(mul_eq_zero.1 h4.symm).resolve_left h6`. Establish `hint : IsIntegral ℤ gam` using `⟨P, hPm, by rw [← Polynomial.aeval_def]; exact hgam⟩`.
-
-Use `⟨⟨gam, (mem_integralClosure_iff ℤ D.F).2 hint⟩, ?_⟩` and prove the remaining obligations. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(c : D.F) = (p : ℤ) • gam`. Rewrite using `[zsmul_eq_mul, Int.cast_natCast]`. Simplify using `only [gam]`.
-
-Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 lemma integral (p : ℕ) [Fact p.Prime] (D : GlobalTheory.UPel.HT.Datum p) (c : 𝓞 D.F)
     (h : ∀ y : D.La, ∃ z : D.La, algebraMap (𝓞 D.F) D.O c • y = (p : ℤ) • z) :
@@ -227,41 +221,37 @@ lemma integral (p : ℕ) [Fact p.Prime] (D : GlobalTheory.UPel.HT.Datum p) (c : 
 end GlobalTheory.HTFaith
 
 /- English proof (translation)
-Introduce `p _ D x hx`. Use `haveI := D.freeO`. Use `haveI := D.finO`. Use `haveI := D.freeLa`. Use `haveI := D.finLa`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hne`. Take `⟨k, x', rfl, hx'⟩` from `GlobalTheory.HTFaith.saturate p D.O x hne`. Establish `hp0 : (p : ℤ) ≠ 0` using `by exact_mod_cast (Fact.out : p.Prime).ne_zero`. Establish `hx'0 : ∀ y : D.La, x' • y = 0`. Introduce `y`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Use `hx y` as an intermediate fact. Rewrite `this` using `[smul_assoc]`. Conclude with `(smul_eq_zero.1 this).resolve_left (pow_ne_zero _ hp0)`. Take `⟨φ⟩` from `D.splitP`. Set `J : Ideal (𝓞 D.F ⊗[ℤ] ℤ_[p])` to `Ideal.span {((p : ℤ) : 𝓞 D.F ⊗[ℤ] ℤ_[p])}`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `π : (𝓞 D.F ⊗[ℤ] ℤ_[p]) →+* (𝓞 D.F ⊗[ℤ] ℤ_[p]) ⧸ J` to `Ideal.Quotient.mk J`. Establish `hπ : ∀ r, π ((p : ℤ) • r) = 0`. Introduce `r`. Rewrite using `[zsmul_eq_mul]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _))`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `Φ : D.O →+* Matrix (Fin D.m) (Fin D.m) ((𝓞 D.F ⊗[ℤ] ℤ_[p]) ⧸ J)` to `π.mapMatrix.comp (φ.toRingHom.comp Algebra.TensorProduct.includeLeftRingHom)`. Establish `hΦ : ∀ a, Φ a = (φ (a ⊗ₜ 1)).map π` using `fun a => rfl`. Establish `hker : ∀ a : D.O, Φ a = 0 → ∃ u, a = (p : ℤ) • u`. Introduce `a ha`. Establish `hr : ∀ i j, ∃ r, φ (a ⊗ₜ 1) i j = (p : ℤ) • r`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `i j`. Establish `h1` using `congrFun (congrFun ha i) j`. Rewrite `h1` using `[hΦ, Matrix.map_apply, Matrix.zero_apply]`. Take `⟨r, hr⟩` from `Ideal.mem_span_singleton'.1 (Ideal.Quotient.eq_zero_iff_mem.1 h1)`. Conclude with `⟨r, by rw [← hr, zsmul_eq_mul, mul_comm]⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `choose r hr using hr`. Apply `GlobalTheory.HTFaith.kernel p D.O a (φ.symm (Matrix.of r))` to reduce the goal to its premises. Rewrite using `[← map_zsmul φ.symm, ← φ.symm_apply_apply (a ⊗ₜ 1)]`. Use `congr 1`. Use extensionality with `i j`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hr, Matrix.smul_apply, Matrix.of_apply]`. Establish `hsurj : ∀ A : Matrix (Fin D.m) (Fin D.m) ((𝓞 D.F ⊗[ℤ] ℤ_[p]) ⧸ J), ∃ a, Φ a = A`. Introduce `A`. Use `choose B hB using fun i j => Ideal.Quotient.mk_surjective (I := J) (A i j)`. Take `⟨a, z, hz⟩` from `GlobalTheory.HTFaith.approx p D.O (φ.symm (Matrix.of B))`.
+Normalize the expressions using the abelian group laws. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨a, ?_⟩` and prove the remaining obligations. Establish `h1 : φ (a ⊗ₜ 1) = Matrix.of B - (p : ℤ) • φ z`. Rewrite using `[← map_zsmul, ← φ.apply_symm_apply (Matrix.of B), hz, map_add]`. Normalize the expressions using the abelian group laws. Use extensionality with `i j`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hΦ, h1, Matrix.map_apply, Matrix.sub_apply, Matrix.smul_apply, map_sub, hπ, sub_zero, Matrix.of_apply]`. Conclude with `hB i j`. Establish `hsurjF : ∀ r : (𝓞 D.F ⊗[ℤ] ℤ_[p]) ⧸ J, ∃ c : 𝓞 D.F, π (c ⊗ₜ 1) = r`. Introduce `r`. Take `⟨s, rfl⟩` from `Ideal.Quotient.mk_surjective r`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 
-Take `⟨c, z, hz⟩` from `GlobalTheory.HTFaith.approx p (𝓞 D.F) s`. Conclude with `⟨c, by rw [hz, map_add, hπ, add_zero]⟩`. Establish `hscal : ∀ c : 𝓞 D.F, Φ (algebraMap _ _ c) = Matrix.scalar _ (π (c ⊗ₜ 1))`. Introduce `c`. Rewrite using `[hΦ]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h1 : φ (algebraMap (𝓞 D.F) D.O c ⊗ₜ 1) = Matrix.scalar _ (c ⊗ₜ (1 : ℤ_[p]))` using `φ.commutes c`. Rewrite using `[h1]`. Use extensionality with `i j`. Apply the tactic sequence `by_cases hij : i = j <;> simp [Matrix.scalar_apply, Matrix.diagonal_apply, hij]`. Establish `hne' : Φ x' ≠ 0` using `fun h => hx' (hker x' h)`.
+Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Choose the witnesses or unpack the hypotheses as in `⟨i, j, hij⟩ : ∃ i j, Φ x' i j ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hne' (Matrix.ext h)`. Use `choose E hE using fun k l => hsurj (Matrix.single k l 1)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Set `y` to `∑ k, E k i * x' * E j k`. Establish `hy : Φ y = Matrix.scalar _ (Φ x' i j)`. Simplify using `only [y, map_sum, map_mul, hE, Matrix.single_mul_mul_single, _root_.one_mul, _root_.mul_one]`. Use extensionality with `a b`. Rewrite using `[Matrix.sum_apply]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Rewrite using `[Finset.sum_eq_single a (fun k _ hk => by simp [Matrix.single_apply, hk]) (by simp)]`. Simplify using `[Matrix.single_apply]`. Rewrite using `[Finset.sum_eq_zero (fun k _ => by simp [Matrix.single_apply]; intro h1 h2; exact absurd (h1.symm.trans h2) hab)]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Matrix.scalar_apply, Matrix.diagonal_apply, hab]`. Take `⟨c, hc⟩` from `hsurjF (Φ x' i j)`. Establish `h0 : Φ (y - algebraMap _ _ c) = 0` using `by rw [map_sub, hy, hscal, hc, sub_self]`. Take `⟨u, hu⟩` from `hker _ h0`. Establish `hyk : ∀ v : D.La, y • v = 0`.
-
-Introduce `v`. Simplify using `only [y, Finset.sum_smul, mul_smul, hx'0, smul_zero, Finset.sum_const_zero]`. Establish `hc' : ∀ v : D.La, ∃ w, algebraMap (𝓞 D.F) D.O c • v = (p : ℤ) • w`. Introduce `v`. Use `⟨-(u • v), ?_⟩` and prove the remaining obligations.
-
-Establish `: algebraMap (𝓞 D.F) D.O c = y - (p : ℤ) • u` using `by rw [← hu]; abel`. Rewrite using `[this, sub_smul, hyk, smul_assoc, zero_sub, smul_neg]`. Take `⟨c', rfl⟩` from `GlobalTheory.HTFaith.integral p D c hc'`. Apply `hij` to reduce the goal to its premises. Rewrite using `[← hc, ← TensorProduct.smul_tmul', hπ]`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.HTFaith.faithful : ∀ (p : ℕ) [Fact p.Prime] (D : GlobalTheory.UPel.HT.Datum p) (x : D.O), (∀ y : D.La, x • y = 0) → x = 0 := by
   intro p _ D x hx

@@ -16,15 +16,15 @@ noncomputable section
 universe u v w
 
 /- English proof (translation)
-Introduce `S _ _ Ω _ _ N x E _ _ _ _ F hF H r h hH`. Take `⟨F', hF'⟩` from `hFam S Ω N x E F H r h hH`. Establish `hmem : ∀ J e, e ∈ F'.sub J ↔ e ∈ secsOnZ F.toSubSystem H.toSubSystem h J` using `fun J e => by`. Rewrite using `[← hF' J, Submodule.restrictScalars_mem]`. Use `⟨F', fun J => ?_, fun a i => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨t, ht, hle⟩` from `hFin S Ω N x E F hF H r h hH J`. Conclude with `⟨t, le_antisymm (Submodule.span_le.mpr fun e he => (hmem J e).mpr (ht he)) fun e he => hle ((hmem J e).mp he)⟩`. Take `⟨G, hG⟩` from `hPow S Ω N x E F H.toSubFamily a`. Take `⟨e₁⟩` from `hSub S Ω N x E G.toSubSystem i`. Take `⟨e₂⟩` from `hDbl S Ω N r x h E (fun I => (G.sub I).restrictScalars S) (secsOnZ G.toSubSystem H.toSubSystem h) (secsOnZChart G.toSubSystem H.toSubSystem h) (fun I I' J hI => (hRow S Ω N x E G H r h hH J).1 I I' hI) (fun I J J' hJ => (hCol S Ω N x E G H r h hH I).1 J J' hJ) (fun I => (hCol S Ω …`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨e₃⟩` from `hSub S Ω r h E (F'.twist (twistSys S h (a : ℤ))) i`. Establish `hfun : (fun J => ((F'.twist (twistSys S h (a : ℤ))).sub J).restrictScalars S) = secsOnZ G.toSubSystem H.toSubSystem h`. Use function extensionality and compare the values at `J`. Rewrite using `[hG, ← hTw S Ω N x E F H r h hH a J]`. Express the relevant statement in the definitionally equal form `(Submodule.span (chartRing S h J) {z | ∃ q ∈ twistMod S h (a : ℤ) J, ∃ y ∈ F'.sub J, z = q • y}).restrictScalars S = _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Use `congr 3`. Use extensionality with `z`. Simplify using `only [hmem J]`. Rewrite `e₃` using `[hfun]`. Rewrite using `[← hG]`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨e₁.trans (e₂.trans e₃.symm)⟩`.
+Supply the required witnesses or components.
 -/
 theorem VeryAmpleCech.proof (hFam : VeryAmpleZFamily.Statement.{u, v, w})
     (hFin : VeryAmpleZFinite.Statement.{u, v, w}) (hTw : VeryAmpleZTwist.Statement.{u, v, w})

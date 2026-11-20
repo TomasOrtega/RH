@@ -37,15 +37,15 @@ def siegLamData (hG : Out.GlobalFnsSt) {R : Type} [CommRing R] [IsDomain R] (Q :
     exact GlobalTheory.EighthPowerFactor.weilIs_one_one hG Q.isAb (pull_isLB (LB.isLB_linComb Q.M.isLB _ _) _) _
 
 /- English proof (translation)
-Establish `hL` using `Q.M.isLB`. Establish `hT : ∃ t : LB.Gen (Theta Q.B Q.M.L), t.IsGen` using `⟨Q.cub.t, Q.cub.isGen⟩`. Establish `hc` using `fun x y z => diff₃_ptCls (T := Q.B) hL hT x y z`. Establish `hrM : Out.Rigidified Q.B Q.M.L` using `⟨Q.M.rig, Q.M.rigGen⟩`. Establish `p1 : ptCls Q.M.L Q.B 1 = 1` using `ptCls_one hL hrM Q.B`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `einv : GrpObj.inv (X` using `Q.B) = (𝟙 Q.B)⁻¹ := by simp [Hom.inv_def]`. Establish `key : diff₂ (ptCls Q.M.L Q.B) (𝟙 Q.B) (𝟙 Q.B) = ptCls Q.M.L Q.B (𝟙 Q.B) * ptCls Q.M.L Q.B (𝟙 Q.B)⁻¹`. Establish `a` using `diff₂_mul_right hc (𝟙 Q.B) (𝟙 Q.B) (𝟙 Q.B)⁻¹`. Rewrite `a` using `[mul_inv_cancel]`. Establish `b : diff₂ (ptCls Q.M.L Q.B) (𝟙 Q.B) 1 = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [diff₂, _root_.mul_one, p1, inv_one, mul_inv_cancel]`. Establish `c : diff₂ (ptCls Q.M.L Q.B) (𝟙 Q.B) (𝟙 Q.B)⁻¹ = 1 * (ptCls Q.M.L Q.B (𝟙 Q.B))⁻¹ * (ptCls Q.M.L Q.B (𝟙 Q.B)⁻¹)⁻¹ * 1`. Rewrite using `[diff₂, mul_inv_cancel, p1]`. Rewrite `a` using `[b, c]`. Conclude with `GlobalTheory.AdjPolLocal.le_val_one_add_pow_sub a`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `lbIso_nested hL _ _ _ _ _ _ ?_` and prove the remaining obligations. Rewrite using `[Fintype.prod_unique, zpow_one, Fin.prod_univ_two]`. Use `(prod_lam _ _ (cls Q.M.L)).trans ?_` and prove the remaining obligations. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, zpow_one]`. Use `key.trans ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[einv]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem lbIso_diag_data {R : Type} [CommRing R] [IsDomain R] (Q : Data R) :
     LBIso ((abelian₂ Q.B Q.M.L).pull (lift (𝟙 Q.B) (𝟙 Q.B)).left)
@@ -76,9 +76,9 @@ theorem lbIso_diag_data {R : Type} [CommRing R] [IsDomain R] (Q : Data R) :
   rfl
 
 /- English proof (translation)
-Use `Q.isAb.proper` as an intermediate fact. Establish `hMa : IsAmpleLB Q.M.L` using `isAmpleLB_of_relAmple_of_isAffine Q.B Q.M.isLB Q.ample`. Establish `hN : IsAmpleLB (LB.LinComb Q.M.L (K` using `Fin 2) ![𝟙 Q.B.left, (GrpObj.inv (X := Q.B)).left] ![1, 1]) := by`. Use `GlobalTheory.GraphVolume.isAmpleLB_graph hMa (GrpObj.inv (X := Q.B)).left (N := 1) le_rfl` as an intermediate fact. Rewrite `this` using `[Nat.cast_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hDa` using `hN.of_lbIso hD (lbIso_diag_data Q)`. Use `relAmple_of_isAmpleLB Q.B hD fun U hU => ?_` and prove the remaining obligations. Establish `: CompactSpace (Q.B.hom ⁻¹ᵁ U)` using `isCompact_iff_compactSpace.mp (QuasiCompact.isCompact_preimage (f := Q.B.hom) _ U.isOpen hU.isCompact)`. Conclude with `hDa.pull_of_isOpenImmersion _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem relAmple_diag {R : Type} [CommRing R] [IsDomain R] [IsNoetherianRing R] (Q : Data R)
     (hD : ((abelian₂ Q.B Q.M.L).pull (lift (𝟙 Q.B) (𝟙 Q.B)).left).IsLB) :

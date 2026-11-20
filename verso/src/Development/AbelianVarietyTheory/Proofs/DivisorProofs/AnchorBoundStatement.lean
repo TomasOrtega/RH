@@ -22,11 +22,11 @@ variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotio
   {Y0 : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y0 cX} {Csz : ℝ} (p : PtAt ex Csz) (i : Fin D.R.m)
 
 /- English proof (translation)
-Establish `hk` using `D.R.m_add_three_le_k`. Establish `hmain` using `GlobalTheory.CovTop.WtRead.main D p.T p.fw.laws i (p.κ i)`. Establish `hsw : (D.R.sigW ((i : ℕ) + 1)).1 = D.R.k + (i : ℕ)` using `by simp only [Ranks.sigW]; omega`. Establish `hpq : (dat p i).p = (D.R.sigW ((i : ℕ) + 1)).1` using `hmain.1`. Establish `hlt : D.R.k - 1 - 1 < (dat p i).p + (dat p i).q` using `by omega`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hj : D.R.k - 2 < (D.R.sigW ((i : ℕ) + 1)).1` using `by omega`. Take `⟨-, hnn⟩` from `GlobalTheory.RecGaps.bigEnt p P i t (D.R.k - 2) hj`. Unfold `anchor`. Rewrite using `[dif_pos hlt, GlobalTheory.CovTop.WtRead.laOf_big D p.T p.fw.laws i (p.κ i) t τ hτ _ ⟨D.R.k - 2, hj⟩ (by simp; omega), (p.fw.kap i t).1 ⟨D.R.k - 2, hj⟩]`. Rewrite using `[GlobalTheory.RecGaps.sig_Wc]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Unfold `aPl`. Rewrite using `[if_pos hj, Int.toNat_of_nonneg hnn]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem anchor_eq (P : ParameterChoice' D L) (t : D.what₂.Tau) (τ : Psi p.T.Q.H) (hτ : τ.1 = DV.tauEmb D t) :
     (anchor (dat p i) (wtA (p.κ i)) (p.κ i).n (D.R.k - 1) τ : ℤ) =
@@ -48,7 +48,7 @@ theorem anchor_eq (P : ParameterChoice' D L) (t : D.what₂.Tau) (τ : Psi p.T.Q
   rw [if_pos hj, Int.toNat_of_nonneg hnn]
 
 /- English proof (translation)
-The claim follows from `|((anchor (dat p i) (wtA (p.κ i)) (p.κ i).n (D.R.k - 1) τ : ℤ) : ℝ) - (((D.hc t).e i : ℚ) : ℝ)| ≤ L.Sc + D.R.nV + D.R.m + D.R.t + 2 := by have hk := D.R.m_add_three_le_k have ha := anchor_eq p i P t τ hτ have hn : (p.κ i).n = D.R.nV := (p.fw.kap i t).2.2 have hv : Formalism.L2.NT …`.
+A detailed English derivation is pending.
 -/
 theorem abs_anchor_sub_le (P : ParameterChoice' D L) (t : D.what₂.Tau) (τ : Psi p.T.Q.H) (hτ : τ.1 = DV.tauEmb D t) :
     |((anchor (dat p i) (wtA (p.κ i)) (p.κ i).n (D.R.k - 1) τ : ℤ) : ℝ) - (((D.hc t).e i : ℚ) : ℝ)| ≤
@@ -85,45 +85,43 @@ theorem abs_anchor_sub_le (P : ParameterChoice' D L) (t : D.what₂.Tau) (τ : P
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Establish `hk` using `D.R.m_add_three_le_k`. Establish `hm2` using `D.R.two_le_m`. Take `⟨hp, hq, hcard, -, -, E, hE, -⟩` from `GlobalTheory.CovTop.WtRead.main D p.T p.fw.laws i (p.κ i)`. Establish `hL10` using `hh.big.2.1`. Establish `hLx` using `hh.big.2.2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hll` using `hh.big.2.2.2`. Establish `hxA : 1 ≤ L.sc.x ^ A` using `Real.one_le_rpow (by linarith) (by linarith [hh.poly.1])`. Establish `hb : L.sc.x ^ A ≤ L.sc.b` using `by simpa using hh.room`. Establish `hb1 : 1 ≤ L.sc.b` using `hxA.trans hb`. Establish `hf : (8 : ℝ) ≤ D.R.f` using `by exact_mod_cast hh.f8`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm : (2 : ℝ) ≤ D.R.m` using `by exact_mod_cast hm2`. Establish `hunit` using `hw.unit`. Establish `hom` using `hw.om`. Establish `hanc : ∀ τ, |((anchor (dat p i) (wtA (p.κ i)) (p.κ i).n (D.R.k - 1) τ : ℤ) : ℝ)| ≤ 4 * L.sc.b`. Introduce `τ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `anchor`. Use `split_ifs with h`. Conclude with `hw.up τ _`. Simplify using `only [Int.cast_zero, abs_zero]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hpr : ((dat p i).p : ℝ) + (dat p i).q = D.R.r`. Rewrite using `[hp, hq]`. Conclude with `GlobalTheory.CovTop.WtRead.sigW_add D i` after adjusting the coercions. Establish `hp0 : (0 : ℝ) ≤ (dat p i).p` using `by positivity`. Establish `hq0 : (0 : ℝ) ≤ (dat p i).q` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hcr : |((dat p i).p : ℝ) - (dat p i).q| ≤ D.R.r` using `abs_le.2 ⟨by linarith, by linarith⟩`. Establish `hqm : ((dat p i).q : ℝ) ≤ D.R.m`. Rewrite using `[hq]; exact_mod_cast (by simp only [Ranks.sigW]; omega : (D.R.sigW ((i : ℕ) + 1)).2 ≤ D.R.m)`. Establish `hc_eq : ((D.R.k : ℝ) + (((i : ℕ) + 1 : ℕ) : ℝ) - 1) - ((D.R.m : ℝ) - (((i : ℕ) + 1 : ℕ) : ℝ)) = ((dat p i).p : ℝ) - (dat p i).q`. Rewrite using `[hp, hq]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Simplify using `only [Ranks.sigW]`. Rewrite using `[Nat.cast_sub (by omega), Nat.cast_sub (by omega)]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hmainS : mainT p i = ∑ t : D.what₂.Tau, (((dat p i).p : ℝ) - (dat p i).q) * (((D.hc t).e i : ℚ) : ℝ) * (ofRecord D L p.Del p.h0).logOm` using `by show ∑ ρ : RPl D.R, (((D.R.k : ℝ) + (((i : ℕ) + 1 : ℕ) : ℝ) - 1) - ((D.R.m : ℝ) - (((i : ℕ) + 1 : ℕ) : ℝ))) * (ofRecord D L p.Del p.h0).w ((i : ℕ) + 1) ρ * (ofRecord D L p.Del p.h0).logOm = _`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[hc_eq, ← (tauPl_bijective D).sum_comp (fun t => (((dat p i).p : ℝ) - (dat p i).q) * (((D.hc t).e i : ℚ) : ℝ) * (ofRecord D L p.Del p.h0).logOm)]`. Use `Finset.sum_congr rfl fun ρ _ => ?_` and prove the remaining obligations. Use `congr 2`. Simplify using `only [NumDatum.w, NumDatum.eQ]`. Rewrite using `[dif_pos ⟨by omega, by omega⟩]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congr 3`. Establish `hancS : ∑ τ : Psi p.T.Q.H, (((dat p i).p : ℝ) - (dat p i).q) * ((anchor (dat p i) (wtA (p.κ i)) (p.κ i).n (D.R.k - 1) τ : ℤ) : ℝ) * (ofRecord D L p.Del p.h0).logOm = ∑ t : D.what₂.Tau, (((dat p i).p : ℝ) - (dat p i).q) * ((anchor (dat p i) (wtA (p.κ i)) (p.κ i).n (D.R.k - 1) (E t …` using `(Equiv.sum_comp E (fun τ => (((dat p i).p : ℝ) - (dat p i).q) * ((anchor (dat p i) (wtA (p.κ i)) (p.κ i).n (D.R.k - 1) τ : ℤ) : ℝ) * (ofRecord D L p.Del p.h0).logOm)).symm`. Establish `hcardT : (Fintype.card D.what₂.Tau : ℝ) = D.R.f` using `by exact_mod_cast Formalism.MainNotions.Lnk.card_Tau D`. Establish `hne : Nonempty D.what₂.Tau` using `Fintype.card_pos_iff.1 (by rw [Formalism.MainNotions.Lnk.card_Tau]; have := hh.f8; omega)`. Take `⟨t0⟩` from `hne`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hw'' : L.sc.w'' D.R.n ≤ 8 * L.sc.b`. Establish `a1` using `hw.low (E t0)`. Establish `a2` using `(abs_le.1 (hanc (E t0))).2`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hr2k : (D.R.r : ℝ) ≤ 2 * D.R.k` using `by exact_mod_cast (by unfold Ranks.r; omega : D.R.r ≤ 2 * D.R.k)`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hSc0 : 0 ≤ L.Sc` using `L.Sc_pos.le`. Establish `hrS : (D.R.r : ℝ) * L.Sc ≤ 16 * L.sc.b`. Establish `a1` using `P.kS_le`. Establish `a2 : (D.R.r : ℝ) * L.Sc ≤ 2 * D.R.k * L.Sc` using `mul_le_mul_of_nonneg_right hr2k hSc0`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnV : (D.R.nV : ℝ) = D.R.r + D.R.t` using `by unfold Ranks.nV; push_cast; ring`. Establish `hmr : (D.R.m : ℝ) ≤ D.R.r` using `by exact_mod_cast (by unfold Ranks.r; omega : D.R.m ≤ D.R.r)`. Establish `ht0 : (0 : ℝ) ≤ D.R.t` using `by positivity`. Establish `hrnV : (D.R.r : ℝ) * D.R.nV ≤ L.sc.b`. Establish `a1` using `hh.poly.2.2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `e0 : (0 : ℝ) ≤ (D.R.r : ℝ) * D.R.nV` using `by positivity`. Establish `a2 : (D.R.r : ℝ) * D.R.nV * 1 ≤ (D.R.r : ℝ) * D.R.nV * (D.R.f * L.sc.L)` using `mul_le_mul_of_nonneg_left (one_le_mul_of_one_le_of_one_le (by linarith) (by linarith)) e0`. Combine the equalities or inequalities in the displayed calculation. Establish `hB : (D.R.r : ℝ) * (L.Sc + D.R.nV + D.R.m + D.R.t + 2) ≤ 20 * L.sc.b`. Establish `e1 : (D.R.r : ℝ) * (D.R.nV + D.R.m + D.R.t + 2) ≤ 4 * ((D.R.r : ℝ) * D.R.nV)`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Use `⟨?_, ?_, hh.poly.2.2.trans hb⟩` and prove the remaining obligations. Rewrite using `[hmainS, hancS, ← Finset.sum_sub_distrib]`. Establish `hterm : ∀ t : D.what₂.Tau, |(((dat p i).p : ℝ) - (dat p i).q) * (((D.hc t).e i : ℚ) : ℝ) * (ofRecord D L p.Del p.h0).logOm - (((dat p i).p : ℝ) - (dat p i).q) * ((anchor (dat p i) (wtA (p.κ i)) (p.κ i).n (D.R.k - 1) (E t) : ℤ) : ℝ) * (ofRecord D L p.Del p.h0).logOm| ≤ (D.R.r : ℝ) …`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Introduce `t`. Establish `a1` using `abs_anchor_sub_le p i P t (E t) (hE t)`. Rewrite using `[show (((dat p i).p : ℝ) - (dat p i).q) * (((D.hc t).e i : ℚ) : ℝ) * (ofRecord D L p.Del p.h0).logOm - (((dat p i).p : ℝ) - (dat p i).q) * ((anchor (dat p i) (wtA (p.κ i)) (p.κ i).n (D.R.k - 1) (E t) : ℤ) : ℝ) * (ofRecord D L p.Del p.h0).logOm = -((((dat p i).p : ℝ) - (dat p i).q …`. Conclude with `mul_le_mul (mul_le_mul hcr a1 (abs_nonneg _) (by positivity)) hom (abs_nonneg _) (by positivity)`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Finset.sum_const, Finset.card_univ, nsmul_eq_mul, hcardT]`. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ D.R.f * (20 * L.sc.b) * (3 * L.sc.L) := by gcongr`. Use `_ ≤ 100 * unitE p := by`. Rewrite using `[hunit]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `e1 : (0 : ℝ) ≤ D.R.f * L.sc.b * L.sc.L` using `by positivity`. Establish `e2 : D.R.f * L.sc.b * L.sc.L * 1 ≤ D.R.f * L.sc.b * L.sc.L * (D.R.m * Real.log (Real.log L.sc.x))` using `mul_le_mul_of_nonneg_left (one_le_mul_of_one_le_of_one_le (by linarith) hll) e1`. Establish `e3 : (D.R.f : ℝ) * D.R.m * L.sc.b * L.sc.L * Real.log (Real.log L.sc.x) = D.R.f * L.sc.b * L.sc.L * (D.R.m * Real.log (Real.log L.sc.x))` using `by ring`. Establish `e4 : (D.R.f : ℝ) * (20 * L.sc.b) * (3 * L.sc.L) = 60 * (D.R.f * L.sc.b * L.sc.L * 1)` using `by ring`. Rewrite using `[e3, e4]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hsum : ∑ τ : Psi p.T.Q.H, |((anchor (dat p i) (wtA (p.κ i)) (p.κ i).n (D.R.k - 1) τ : ℤ) : ℝ)| ≤ D.R.f * (4 * L.sc.b)`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hunit]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `e1 : (0 : ℝ) ≤ D.R.f * L.sc.b * D.R.m * L.sc.L` using `by positivity`. Establish `e2 : D.R.f * L.sc.b * D.R.m * L.sc.L * 1 ≤ D.R.f * L.sc.b * D.R.m * L.sc.L * Real.log (Real.log L.sc.x)` using `mul_le_mul_of_nonneg_left hll e1`. Establish `e3 : (D.R.f : ℝ) * D.R.m * L.sc.b * L.sc.L * Real.log (Real.log L.sc.x) = D.R.f * L.sc.b * D.R.m * L.sc.L * Real.log (Real.log L.sc.x)` using `by ring`. Establish `e4 : (D.R.f : ℝ) * (4 * L.sc.b) * D.R.m * L.sc.L = 4 * (D.R.f * L.sc.b * D.R.m * L.sc.L * 1)` using `by ring`. Rewrite using `[e3, e4]`.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem anchorAt_of {PP A : ℝ} (P : ParameterChoice' D L) (hw : WtNum p i PP) (hh : HostNum D L PP A 1) : AnchorAt p i 100 := by
   have hk := D.R.m_add_three_le_k
@@ -264,7 +262,7 @@ end GlobalTheory.CovTop.AnchorRd
 namespace GlobalTheory.CovTop
 
 /- English proof (translation)
-Use `Closed.imp (Closed.and WtShape.wtN (Sizes.hostN 1)) ?_` and prove the remaining obligations. Introduce and unpack `eps Fm CH - ⟨⟨C1, -, hW⟩, ⟨A, -, hH⟩⟩`. Take `⟨x0, h⟩` from `EvTied.and hW hH`. Conclude with `⟨100, by norm_num, x0, fun x hx hle ι p hp i => AnchorRd.anchorAt_of p i (Fm.params x hx ι) ((h x hx hle ι p hp).1 i) ((h x hx hle ι p hp).2 i)⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem anchor_holds : Anchor := by
   refine Closed.imp (Closed.and WtShape.wtN (Sizes.hostN 1)) ?_

@@ -7,9 +7,9 @@ open NumberField IsDedekindDomain Matrix Filter Topology
 open GlobalTheory.CuspRep GlobalTheory.PRep Formalism.UG Formalism.BasicNotions GlobalTheory.UnitaryBC Formalism.L2.Host GlobalTheory.LFun UpperTheory.V.Z.Tf.GlobalTraceComparison UpperTheory.V.Z.Tf.GlobalTraceComparison.Cusp
 
 /- English proof (translation)
-Introduce `E _ _ _ N hN π π₀ z hπ h₀ e`. Establish `hI : π.Iso (π₀.twist (Model.absC E z))` using `Quotient.exact e.symm`. Establish `hz : z = 0` using `PositivityTheory.Rg.Rs.StrStepB.eq_zero_of_iso_twist hN hπ h₀ hI`. Substitute `hz` using the available equality. Establish `e'` using `(UpperTheory.ConvolutionTheory.Dp.isoEq E N π (π₀.twist (Model.absC E 0))).1 hI`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
 
-Rewrite `e'` using `[PositivityTheory.Rg.Rs.StrStepB.absC_zero, CuspSub.twist_one]`. Conclude with `e'.symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Tf.GlobalTraceComparison.Cusp.normUniq :
     NormUniq := by

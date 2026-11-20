@@ -15,9 +15,9 @@ variable {D : D7} (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep)
   (δ : ∀ p : PlF D, (D.s.atP p).Fp) (u u' : D.what₂.Word) (w : Point D.host.E (D.R.rS + 1))
 
 /- English proof (translation)
-Use `set σ := Formalism.L2.SG.Pf.fσ w`. Establish `hσ : ∀ x, σ (σ x) = x` using `Formalism.L2.SG.Pf.fσ_fσ w`. Use `set ν : Fin (D.R.rS + 1) → D.host.E := fun x => Formalism.L2.SG.Pf.pv w.1 x`. Establish `hν : ∀ x, IsUnit (ν x)` using `fun x => isUnit_iff_ne_zero.2 (Formalism.L2.SG.Pf.pv_ne' w x)`. Establish `hfix` using `fix_cOf hσ ν hν a`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨hc1, hc2⟩` from `cOf_up hσ ν a (fun i => (ha i i).2 rfl) hpat hν`. Establish `hcU : IsUpUni (cOf σ ν a)` using `fun i j => ⟨fun h => hc2 i j h, fun h => by subst h; exact hc1 i⟩`. Take `⟨hbU, -, hcb⟩` from `ZsVolGrp.isUpUni_inv hcU`. Use `⟨(cOf σ ν a)⁻¹, hbU, ?_⟩` and prove the remaining obligations. Rewrite using `[ptMat_mono, hfix, Matrix.mul_assoc, hcb, Matrix.mul_one]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_stSet_of_pat (a : Formalism.L2.SG.PairVal.MatR D) (ha : IsLoUni a)
     (hpat : ∀ i j, Formalism.L2.SG.Pf.fσ w j < Formalism.L2.SG.Pf.fσ w i → a i j = 0) :
@@ -34,31 +34,25 @@ theorem mem_stSet_of_pat (a : Formalism.L2.SG.PairVal.MatR D) (ha : IsLoUni a)
   rw [ptMat_mono, hfix, Matrix.mul_assoc, hcb, Matrix.mul_one]
 
 /- English proof (translation)
-Use `set σ := Formalism.L2.SG.Pf.fσ w with hσd`. Use `choose c hc0 hcO hcong using fun p => cong_at M δ u u' w (hA p) L U hL hU`. Use `choose τ hτ1 hτ2 hτ3 c' hc'0 hc'O hcl using fun p => close_at M δ u u' w (hA p) (h p) (c p) (hc0 p) (hcO p)`. Use `choose t ht1 ht2 using fun ij : Fin (D.R.rS + 1) × Fin (D.R.rS + 1) => sa_lat (fun p => D.s.atP p) S (fun p => τ p ij.1 ij.2) c' (fun p _ => hc'0 p)`. Use `set a : Formalism.L2.SG.PairVal.MatR D := fun i j => if j < i ∧ σ i < σ j then t (i, j) else (1 : Formalism.L2.SG.PairVal.MatR D) i j with had`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `ha : IsLoUni a`. Introduce `i j`. Use `⟨fun hij => ?_, fun hij => ?_⟩` and prove the remaining obligations. Establish `: ¬ (j < i ∧ σ i < σ j)` using `fun h' => absurd h'.1 (not_lt.2 hij.le)`. Simplify using `only [had, if_neg this]`.
+Substitute using the available equality. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Matrix.one_apply_ne (ne_of_lt hij)`. Substitute `hij` using the available equality. Establish `: ¬ (i < i ∧ σ i < σ i)` using `fun h' => lt_irrefl _ h'.1`. Simplify using `only [had, if_neg this, Matrix.one_apply_eq]`. Establish `hpat : ∀ i j, σ j < σ i → a i j = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Introduce `i j hij`. Establish `hne : i ≠ j` using `fun e => by subst e; exact lt_irrefl _ hij`. Establish `: ¬ (j < i ∧ σ i < σ j)` using `fun h' => absurd h'.2 (not_lt.2 hij.le)`. Simplify using `only [had, if_neg this]`. Conclude with `Matrix.one_apply_ne hne`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hdet : IsUnit a.det` using `by rw [ZsVolGrp.det_lo (fun x => (ha x x).2 rfl) (fun x y hxy => (ha x y).1 hxy)]; exact isUnit_one`. Take `⟨b, hb, hab⟩` from `mem_stSet_of_pat w a ha hpat`. Set `gGL : Formalism.L2.SG.PairVal.GLR D` to `Matrix.nonsingInvUnit a hdet`. Establish `hgv : (gGL : Formalism.L2.SG.PairVal.MatR D) = a` using `rfl`. Set `g : Formalism.L2.SG.Pf.VolPinAsm.StG w` to `⟨gGL, ⟨by rw [hgv]; exact ha, b, hb, by rw [hgv]; exact hab⟩⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Establish `hgv' : ((g : Formalism.L2.SG.PairVal.GLR D) : Formalism.L2.SG.PairVal.MatR D) = a` using `rfl`. Use `⟨g, fun p hp => ?_, fun p hp => hS p hp g ?_⟩` and prove the remaining obligations. Establish `hclose : EntIn (latS (D.s.atP p) (c' p)) (((g : Formalism.L2.SG.PairVal.GLR D) : Formalism.L2.SG.PairVal.MatR D).map (D.s.atP p).ιE - τ p)`. Introduce `i j`. Rewrite using `[hgv', Matrix.sub_apply, Matrix.map_apply]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Substitute using the available equality.
 
-Distinguish the cases in `hz : j < i ∧ σ i < σ j`. Simplify using `only [had, if_pos hz]`. Conclude with `mem_latS.2 (ht1 (i, j) p hp)`. Simplify using `only [had, if_neg hz]`. Establish `e : (D.s.atP p).ιE ((1 : Formalism.L2.SG.PairVal.MatR D) i j) - τ p i j = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Break down `lt_trichotomy i j with hij | hij | hij` into its components or cases. Rewrite using `[Matrix.one_apply_ne (ne_of_lt hij), map_zero, hτ1 p i j hij, sub_zero]`. Substitute `hij` using the available equality. Rewrite using `[Matrix.one_apply_eq, map_one, hτ2 p i, sub_self]`. Establish `hs : σ j < σ i`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Break down `lt_or_gt_of_ne (fun e : σ i = σ j => (ne_of_gt hij) (by` into its components or cases. Rewrite using `[← Formalism.L2.SG.Pf.fσ_fσ w i, ← Formalism.L2.SG.Pf.fσ_fσ w j]`. Conclude with `congrArg _ e)) with h' | h'`. Conclude with `absurd ⟨hij, h'⟩ hz`. Conclude with `h'`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.one_apply_ne (ne_of_gt hij), map_zero, hτ3 p i j hs, sub_zero]`. Rewrite using `[e]`. Conclude with `(latS (D.s.atP p) (c' p)).zero_mem`. Take `⟨h1, h2⟩` from `hcl p g hclose`. Conclude with `hcong p _ h1 h2`.
-
-Introduce `i j`. Rewrite using `[hgv']`. Distinguish the cases in `hz : j < i ∧ σ i < σ j`. Simplify using `only [had, if_pos hz]`. Conclude with `ht2 (i, j) p hp`.
-
-Simplify using `only [had, if_neg hz]`. Rewrite using `[Matrix.one_apply]`. Use `split_ifs`. Rewrite using `[map_one]`. Conclude with `(D.s.atP p).O.one_mem`.
-
-Rewrite using `[map_zero]`. Conclude with `(D.s.atP p).O.zero_mem`.
+A detailed English derivation is pending.
 -/
 theorem approx_core (hA : ∀ p, Agree δ M p) (L U : Formalism.L2.SG.PairVal.MatR D) (hL : IsLoUni L) (hU : IsUpUni U)
     (S : Finset (PlF D))

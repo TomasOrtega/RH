@@ -7,15 +7,13 @@ open scoped Matrix nonZeroDivisors TensorProduct
 namespace GlobalTheory.LatticeDatum
 
 /- English proof (translation)
-Establish `h1 : ∀ v : V, ∃ N : ℕ, 0 < N ∧ N • v ∈ B` using `fun v => by`. Establish `hv : v ∈ Submodule.span E (B : Set V)` using `by rw [hB]; trivial`. Take `⟨t, ht⟩` from `multiple_mem_span_of_mem_localization_span (𝓞 E)⁰ E _ v hv`. Rewrite `ht` using `[Submodule.span_eq]`. Establish `ht0 : (t : 𝓞 E) ≠ 0` using `nonZeroDivisors.coe_ne_zero t`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Take `⟨s, hs⟩` from `Ideal.mem_span_singleton'.mp (Ideal.absNorm_mem (Ideal.span {(t : 𝓞 E)}))`. Use `⟨Ideal.absNorm (Ideal.span {(t : 𝓞 E)}), Nat.pos_of_ne_zero ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff, Ideal.span_singleton_eq_bot]`. Conclude with `ht0`. Rewrite using `[← Nat.cast_smul_eq_nsmul (𝓞 E), ← hs, mul_smul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `B.smul_mem s ht`. Take `⟨S, rfl⟩` from `hA`. Use `choose n hn0 hn using h1`. Use `⟨∏ s ∈ S, n s, Finset.prod_pos fun s _ => hn0 s, fun x hx => ?_⟩` and prove the remaining obligations. Proceed by induction on `hx using Submodule.span_induction with`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Consider the case `mem x hx`. Take `⟨k, hk⟩` from `Finset.dvd_prod_of_mem n (Finset.mem_coe.mp hx)`. Rewrite using `[hk, mul_comm, mul_smul]`. Conclude with `B.toAddSubmonoid.nsmul_mem (hn x) k`. Consider the case `zero => simp`.
-
-Consider the case `add x y _ _ hx hy => rw [smul_add]`. Conclude with `B.add_mem hx hy`. Consider the case `smul c x _ hx => rw [smul_comm]`. Conclude with `B.smul_mem c hx`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_nsmul_mem {E V : Type} [Field E] [NumberField E] [AddCommGroup V] [Module (𝓞 E) V] [Module E V]
     [IsScalarTower (𝓞 E) E V] (A B : Submodule (𝓞 E) V) (hA : A.FG)
@@ -43,9 +41,9 @@ theorem exists_nsmul_mem {E V : Type} [Field E] [NumberField E] [AddCommGroup V]
   | smul c x _ hx => rw [smul_comm]; exact B.smul_mem c hx
 
 /- English proof (translation)
-Establish `hfg : (LinearMap.range φ').FG`. Rewrite using `[LinearMap.range_eq_map]`. Conclude with `Module.Finite.fg_top.map φ'`. Take `⟨N, hN, h⟩` from `exists_nsmul_mem (LinearMap.range φ') (LinearMap.range φ) hfg (by rw [LinearMap.coe_range]; exact hs)`. Use `choose g hg using fun x : L' => h (φ' x) ⟨x, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨N, ⟨⟨g, fun x y => hφ ?_⟩, fun a x => hφ ?_⟩, hN, hg⟩` and prove the remaining obligations. Rewrite using `[map_add, hg, hg, hg, map_add, smul_add]`. Rewrite using `[map_smul, hg, hg, map_smul, smul_comm]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_factor {E V L L' : Type} [Field E] [NumberField E] [AddCommGroup V] [Module (𝓞 E) V] [Module E V]
     [IsScalarTower (𝓞 E) E V] [AddCommGroup L] [Module (𝓞 E) L] [AddCommGroup L'] [Module (𝓞 E) L']
@@ -62,27 +60,27 @@ theorem exists_factor {E V L L' : Type} [Field E] [NumberField E] [AddCommGroup 
   · rw [map_smul, hg, hg, map_smul, smul_comm]; rfl
 
 /- English proof (translation)
-Take `⟨J, hJ1, hJ2, hJ3, hJ4⟩` from `h`. Establish `hK' : (K : ℝ) ≠ 0` using `by exact_mod_cast hK.ne'`. Establish `hc' : (0 : ℝ) < c` using `by exact_mod_cast hc`. Set `f : ℝ ⊗[ℤ] L' →ₗ[ℝ] ℝ ⊗[ℤ] L` to `ψ.toAddMonoidHom.toIntLinearMap.baseChange ℝ`. Set `g : ℝ ⊗[ℤ] L →ₗ[ℝ] ℝ ⊗[ℤ] L'` to `(K : ℝ)⁻¹ • χ.toAddMonoidHom.toIntLinearMap.baseChange ℝ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hf : ∀ (s : ℝ) x, f (s ⊗ₜ x) = s ⊗ₜ ψ x` using `fun s x => rfl`. Establish `hg : ∀ (s : ℝ) x, g (s ⊗ₜ x) = (K : ℝ)⁻¹ • (s ⊗ₜ χ x)` using `fun s x => rfl`. Establish `hfg : ∀ x, f (g x) = x` using `fun x => by`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`. Consider the case `tmul s x`. Rewrite using `[hg, map_smul, hf, h1, ← TensorProduct.mk_apply, map_nsmul, ← Nat.cast_smul_eq_nsmul ℝ, smul_smul, inv_mul_cancel₀ hK', one_smul, TensorProduct.mk_apply]`. Establish `hgf : ∀ x, g (f x) = x` using `fun x => by`. Proceed by induction on `x using TensorProduct.induction_on with`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`. Consider the case `tmul s x`. Rewrite using `[hf, hg, h2, ← TensorProduct.mk_apply, map_nsmul, ← Nat.cast_smul_eq_nsmul ℝ, smul_smul, inv_mul_cancel₀ hK', one_smul, TensorProduct.mk_apply]`. Establish `hBf : ∀ x y, B.baseChange ℝ (f x) (f y) = c * B'.baseChange ℝ x y` using `fun x y => by`.
+Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x x' hx hx' => simp only [map_add, LinearMap.add_apply, hx, hx', mul_add]`. Consider the case `tmul s x`. Proceed by induction on `y using TensorProduct.induction_on with`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `add y y' hy hy' => simp only [map_add, hy, hy', mul_add]`. Consider the case `tmul u y`. Rewrite using `[hf, hf, LinearMap.BilinForm.baseChange_tmul, LinearMap.BilinForm.baseChange_tmul, hB]`. Simplify using `only [zsmul_eq_mul]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Set `e : (ℝ ⊗[ℤ] L') ≃ₗ[ℝ] ℝ ⊗[ℤ] L` to `LinearEquiv.ofLinear f g (LinearMap.ext hfg) (LinearMap.ext hgf)`. Use `⟨g ∘ₗ J ∘ₗ f, fun x => ?_, fun x y => ?_, fun x hx => ?_, fun a A t hA ht => ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, hfg, hJ1, map_neg, hgf]`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Apply `mul_left_cancel₀ hc'.ne'` to reduce the goal to its premises. Rewrite using `[← hBf, ← hBf]`. Simplify using `only [LinearMap.comp_apply, hfg, hJ2]`. Establish `hx' : f x ≠ 0` using `fun h0 => hx (by rw [← hgf x, h0, map_zero])`. Use `hJ3 _ hx'` as an intermediate fact.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← mul_pos_iff_of_pos_left hc', ← hBf]`. Simplify `this` using `only [LinearMap.comp_apply, hfg]`. Take `⟨k1, k2, k3⟩` from `hJ4 a (f ∘ₗ A ∘ₗ g) t (fun x => by`. Rewrite using `[LinearMap.comp_apply, LinearMap.comp_apply, hg, map_smul, hA, ← map_smul χ, ← hg, hfg]) ht`. Use `⟨LinearMap.ext fun x => ?_, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `congrArg g (LinearMap.congr_fun k1 (f x))` as an intermediate fact. Simplify `this` using `only [LinearMap.comp_apply, hgf]`. Rewrite using `[← k2, ← LinearMap.trace_conj' A e]`. Use `congr 1`. Rewrite using `[← k3, ← LinearMap.trace_conj' _ e]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `f (g (J (f (A (g x))))) = J (f (A (g x)))`. Rewrite using `[hfg]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem transport_complexStructure {O L L' : Type} [CommRing O] [AddCommGroup L] [Module O L]
     [AddCommGroup L'] [Module O L'] (B : LinearMap.BilinForm ℤ L) (B' : LinearMap.BilinForm ℤ L')
@@ -158,7 +156,7 @@ theorem transport_complexStructure {O L L' : Type} [CommRing O] [AddCommGroup L]
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
 /- English proof (translation)
-Simplify using `[herm, add_mul, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem herm_add_left (G : Matrix (Fin r) (Fin r) E) (x x' y : Fin r → E) :
     herm G (x + x') y = herm G x y + herm G x' y := by
@@ -173,35 +171,29 @@ noncomputable def traceHerm (ξ : E) (G : Matrix (Fin r) (Fin r) E) : (Fin r →
       rw [herm_add_left, mul_add, map_add]
 
 /- English proof (translation)
-Use `haveI := D.fin`. Take `⟨N, ψ, hN, hψ⟩` from `exists_factor φ φ' hinj hspan`. Take `⟨M, χ, hM, hχ⟩` from `exists_factor φ' φ hinj' hspan'`. Establish `h1 : ∀ x, ψ (χ x) = (N * M) • x` using `fun x => hinj (by rw [hψ, hχ, map_nsmul, mul_smul])`. Establish `h2 : ∀ x, χ (ψ x) = (N * M) • x` using `fun x => hinj' (by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hχ, hψ, map_nsmul, mul_comm, mul_smul])`. Use `choose n hn using fun x : L => (hdual (φ' x)).mpr ⟨x, rfl⟩`. Establish `hl : ∀ x x' y, n (x + x') y = n x y + n x' y` using `fun x x' y => by`. Use `hn (x + x') y` as an intermediate fact. Rewrite `this` using `[map_add, map_add, AddMonoidHom.add_apply, hn, hn]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this.symm` after adjusting the coercions. Establish `hr : ∀ x y y', n x (y + y') = n x y + n x y'` using `fun x y y' => by`. Use `hn x (y + y')` as an intermediate fact. Rewrite `this` using `[map_add, map_add, hn, hn]`. Conclude with `this.symm` after adjusting the coercions.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `B : LinearMap.BilinForm ℤ L` to `(AddMonoidHom.mk' (fun x => (AddMonoidHom.mk' (n x) (hr x)).toIntLinearMap) fun x x' => LinearMap.ext fun y => hl x x' y).toIntLinearMap`. Establish `hB : ∀ x y, ((B x y : ℤ) : ℚ) = traceHerm ξ Gm (φ' x) (φ' y)` using `fun x y => (hn x y).symm`. Establish `hNQ : (N : ℚ) ≠ 0` using `by exact_mod_cast hN.ne'`. Establish `hMQ : (M : ℚ) ≠ 0` using `by exact_mod_cast hM.ne'`. Establish `hNN : ((N * N : ℕ) : ℤ) ≠ 0` using `by exact_mod_cast (Nat.mul_pos hN hN).ne'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hsc : ∀ x y, D.EF (ψ x) (ψ y) = (N * N : ℕ) * B x y` using `fun x y => by`. Use `hEF (ψ x) (ψ y)` as an intermediate fact. Rewrite `this` using `[hψ, hψ, map_nsmul, map_nsmul, AddMonoidHom.nsmul_apply, ← hB, nsmul_eq_mul, nsmul_eq_mul, ← mul_assoc]`. Conclude with `this` after adjusting the coercions. Establish `hmix : ∀ x y, (N : ℤ) * B x (χ y) = M * D.EF (ψ x) y` using `fun x y => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e1` using `hEF (ψ x) y`. Establish `e2` using `hB x (χ y)`. Rewrite `e1` using `[hψ, map_nsmul, AddMonoidHom.nsmul_apply, nsmul_eq_mul]`. Rewrite `e2` using `[hχ, map_nsmul, nsmul_eq_mul]`. Establish `: (N : ℚ) * (B x (χ y) : ℤ) = M * (D.EF (ψ x) y : ℤ)` using `by rw [e1, e2]; ring`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `this` after adjusting the coercions. Establish `hbij : Function.Bijective B`. Prove the components needed by the constructor for the conclusion. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h0 : ψ x = 0`. Apply `D.unimod.1` to reduce the goal to its premises. Use extensionality with `y`. Use `hmix x y` as an intermediate fact. Rewrite `this` using `[hx, LinearMap.zero_apply, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hMZ : (M : ℤ) ≠ 0` using `by exact_mod_cast hM.ne'`. Rewrite using `[(mul_eq_zero.mp this.symm).resolve_left hMZ, map_zero, LinearMap.zero_apply]`. Establish `h3` using `hψ x`. Rewrite `h3` using `[h0, map_zero, ← Nat.cast_smul_eq_nsmul ℚ]`. Conclude with `hinj' (by rw [map_zero]; exact (smul_eq_zero.mp h3.symm).resolve_left hNQ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Introduce `f`. Take `⟨x, hx⟩` from `D.unimod.2 (f ∘ₗ χ.toAddMonoidHom.toIntLinearMap)`. Establish `hx' : ∀ y, D.EF x y = f (χ y)` using `fun y => by rw [hx]; rfl`. Establish `hv : ∀ z, traceHerm ξ Gm ((M : ℚ)⁻¹ • φ x) (φ' z) = f z` using `fun z => by`. Establish `e1` using `hEF x (ψ z)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `e1` using `[hx', h2, map_nsmul, hψ, map_nsmul, nsmul_eq_mul, nsmul_eq_mul]`. Move the coercions through the operations in `at e1`. Establish `e2 : traceHerm ξ Gm (φ x) (φ' z) = M * traceHerm ξ Gm ((M : ℚ)⁻¹ • φ x) (φ' z)`. Rewrite using `[← nsmul_eq_mul, ← AddMonoidHom.nsmul_apply, ← map_nsmul, ← Nat.cast_smul_eq_nsmul ℚ, smul_smul, mul_inv_cancel₀ hMQ, one_smul]`. Rewrite `e1` using `[e2, ← mul_assoc]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `(mul_left_cancel₀ (mul_ne_zero hNQ hMQ) e1).symm`. Take `⟨w, hw⟩` from `(hdual _).mp fun z => ⟨f z, hv z⟩`. Use `⟨w, LinearMap.ext fun z => ?_⟩` and prove the remaining obligations. Use `hB w z` as an intermediate fact. Rewrite `this` using `[hw, hv]`.
-
-Conclude with `this` after adjusting the coercions. Use `haveI : Module.IsTorsionFree (𝓞 E) L := Function.Injective.moduleIsTorsionFree φ' hinj' (map_smul φ')`. Use `haveI : Module.FinitePresentation (𝓞 E) L := Module.finitePresentation_of_finite _ _`. Establish `hproj : Module.Projective (𝓞 E) L` using `Module.Flat.projective_of_finitePresentation`. Use `⟨{ La := L, fin := inferInstance, proj := hproj, EF := B, alt := fun x => ?_, unimod := hbij, adj := fun a x y => ?_, p := D.p, q := D.q, rank := ?_, dom := ?_ }, φ', rfl, rfl, rfl, hinj', hB⟩` and prove the remaining obligations.
-
-Apply `mul_left_cancel₀ hNN` to reduce the goal to its premises. Rewrite using `[← hsc, D.alt, mul_zero]`. Apply `mul_left_cancel₀ hNN` to reduce the goal to its premises. Rewrite using `[← hsc, ← hsc, map_smul ψ, map_smul ψ, D.adj]`. Rewrite using `[← D.rank, HermModel.finrank_eq_of_injective_of_span (K := E) φ hinj hspan, HermModel.finrank_eq_of_injective_of_span (K := E) φ' hinj' hspan']`.
-
-Conclude with `transport_complexStructure D.EF B ψ χ (N * M) (N * N) (Nat.mul_pos hN hM) (Nat.mul_pos hN hN) h1 h2 hsc _ D.dom`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_datum_of_embedding (H : Host E) (D : Datum H) (ξ : E) (Gm : Matrix (Fin r) (Fin r) E)
     (φ : D.La →ₗ[𝓞 E] (Fin r → E)) (hinj : Function.Injective φ)
@@ -294,9 +286,9 @@ theorem exists_datum_of_embedding (H : Host E) (D : Datum H) (ξ : E) (Gm : Matr
       h1 h2 hsc _ D.dom
 
 /- English proof (translation)
-Take `⟨hinj, hspan, hG, hdet, hEF⟩` from `h`. Use `haveI : Module.Finite (𝓞 E) Λ' := Module.Finite.iff_fg.mpr hfg`. Take `⟨D', φ', hp, hq, hr, hi, hE⟩` from `exists_datum_of_embedding H D ξ Gm φ hinj hspan hEF Λ' Λ'.subtype Λ'.injective_subtype (by rw [← LinearMap.coe_range, Submodule.range_subtype]; exact hspan') (fun v => by`. Rewrite using `[Submodule.range_subtype, ← hdual]`. Conclude with `⟨fun h y hy => h ⟨y, hy⟩, fun h y => h y y.2⟩)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hr` using `[Submodule.range_subtype]`. Conclude with `⟨D', φ', hp, hq, hr, hi, by rw [← LinearMap.coe_range, hr]; exact hspan', hG, hdet, hE⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_datum_of_selfDual (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H)
     (r : ℕ) (ξ : E) (Gm : Matrix (Fin r) (Fin r) E) (φ : D.La →ₗ[𝓞 E] (Fin r → E))

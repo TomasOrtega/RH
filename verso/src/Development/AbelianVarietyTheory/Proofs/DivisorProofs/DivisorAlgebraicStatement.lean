@@ -11,7 +11,7 @@ namespace GlobalTheory.NefComparisonAlg
 open Formalism.MainNotions.WeightThresholdDefs
 
 /- English proof (translation)
-The claim follows from `|a * (∑' n : ℕ, r ^ (n + 1) * F (s n)) / d| ≤ ∑' n : ℕ, |a * r ^ (n + 1) * F (s n) / d| := by obtain ⟨M, hM⟩ := (Set.finite_range (fun i => |F i|)).bddAbove have hM' : ∀ i, |F i| ≤ M := fun i => hM ⟨i, rfl⟩ have hg : Summable (fun n : ℕ => r ^ n * (|a| * r * M / |d|)) := (summabl …`.
+A detailed English derivation is pending.
 -/
 theorem abs_tsum_geom_le {ι : Type*} [Finite ι] (F : ι → ℝ) (s : ℕ → ι) (a r d : ℝ)
     (hr0 : 0 ≤ r) (hr1 : r < 1) :

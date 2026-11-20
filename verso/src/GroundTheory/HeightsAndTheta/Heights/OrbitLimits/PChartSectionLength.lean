@@ -18,9 +18,9 @@ open GroundTheory.Heights₂.Heights (localMult localMult_map_of_flat map_eq_max
 attribute [local instance] MvPolynomial.algebraMvPolynomial
 
 /- English proof (translation)
-Use `HilbertSamuel.mvPolynomial_int_complex_flat τ` as an intermediate fact. Establish `hAlg` using `HilbertSamuel.algebraMap_mvPolynomial_int_complex τ`. Establish `: W''.IsPrime` using `hW''.1.1`. Establish `hc : W''.comap (MvPolynomial.map (Int.castRingHom ℂ)) = W` using `HilbertSamuel.ComplexMinimalPrimesContract.proof τ W ‹_› W'' hW''`. Establish `: W''.LiesOver W` using `⟨by rw [Ideal.under, hAlg, hc]⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrad` using `HilbertSamuel.PrimeComplexRadical.proof τ W ‹_›`. Establish `key` using `localMult_map_of_flat J W W'' (by rw [hAlg]; exact map_eq_maximalIdeal_of_isRadical hrad hW'')`. Rewrite `key` using `[hAlg]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem localMult_map_intCast_complex {τ : Type} [Fintype τ] (J W : Ideal (MvPolynomial τ ℤ)) [W.IsPrime]
     (W'' : Ideal (MvPolynomial τ ℂ)) (hW'' : W'' ∈ (W.map (MvPolynomial.map (Int.castRingHom ℂ))).minimalPrimes) :
@@ -37,7 +37,7 @@ theorem localMult_map_intCast_complex {τ : Type} [Fintype τ] (J W : Ideal (MvP
   rwa [hAlg] at key
 
 /- English proof (translation)
-Unfold `multAt localMult`. Rewrite using `[dif_pos ‹_›, dif_pos ‹_›, ObjectsChow.VerticalPartMultiplicity.length_localizedModule_quotient]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem multAt_eq_localMult {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] (J W : Ideal (MRing ι))
     [W.IsPrime] : multAt J W = localMult J W := by
@@ -45,7 +45,7 @@ theorem multAt_eq_localMult {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fin
   rw [dif_pos ‹_›, dif_pos ‹_›, ObjectsChow.VerticalPartMultiplicity.length_localizedModule_quotient]
 
 /- English proof (translation)
-Introduce `K _ _ ι _ P n m σ i A s hP hs W hW hWh W' hW'`. Establish `hWa` using `(divSuppArith K ι P (n + 1) A s W hP hs hW).1 hWh`. Establish `: W.IsPrime` using `hW.1.1.1`. Take `⟨W'', hW'', hle⟩` from `hComp K ι W m σ i hWa.2.1 W' hW'`. Rewrite using `[hLen K ι P n m σ i A s hP hs W hW hWh W' hW' W'' hW'' hle, multAt_eq_localMult, localMult_map_intCast_complex _ W W'' hW'']`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem ChartSectionLength.proof (hComp : ChartConeComponent.Statement) (hLen : ChartConeLength.Statement) :
     ChartSectionLength.Statement := by

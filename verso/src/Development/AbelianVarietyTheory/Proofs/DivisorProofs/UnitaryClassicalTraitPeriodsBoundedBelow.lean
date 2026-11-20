@@ -20,13 +20,13 @@ open Classical
 namespace GlobalTheory.UPoinc.ShortBound
 
 /- English proof (translation)
-Introduce `k`. Proceed by induction on `k using Nat.strong_induction_on with`. Consider the case `_ k ih`. Introduce `x hk hx`. Distinguish the cases in `hd : ∃ v, x = m • v`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Take `⟨v, rfl⟩` from `hd`. Establish `hv : v ≠ 0` using `by rintro rfl; simp at hx`. Establish `hvv` using `hβ v hv`. Establish `e : β (m • v) (m • v) = (m : ℤ) * ((m : ℤ) * β v v)`. Simplify using `[map_nsmul, LinearMap.smul_apply, nsmul_eq_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hm' : (2 : ℤ) ≤ m` using `by exact_mod_cast hm`. Establish `h2 : 2 * β v v ≤ (m : ℤ) * β v v` using `mul_le_mul_of_nonneg_right hm' hvv.le`. Establish `h3 : 2 * ((m : ℤ) * β v v) ≤ (m : ℤ) * ((m : ℤ) * β v v)` using `mul_le_mul_of_nonneg_right hm' (by linarith)`. Establish `hlt : β v v < β (m • v) (m • v)` using `by rw [e]; linarith`. Take `⟨x', h1, h2, h3⟩` from `ih (β v v).toNat (by omega) v rfl hv`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨x', h1, h2, h3.trans hlt.le⟩`. Conclude with `⟨x, hx, hd, le_rfl⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem exists_not_dvd_le {X : Type} [AddCommGroup X] (β : LinearMap.BilinForm ℤ X)
     (hβ : ∀ y, y ≠ 0 → 0 < β y y) (m : ℕ) (hm : 2 ≤ m) :
@@ -52,9 +52,7 @@ theorem exists_not_dvd_le {X : Type} [AddCommGroup X] (β : LinearMap.BilinForm 
     · exact ⟨x, hx, hd, le_rfl⟩
 
 /- English proof (translation)
-Establish `hfin : {x | ¬ q a < q x}.Finite` using `Filter.eventually_cofinite.1 (hq.eventually_gt_atTop (q a))`. Take `⟨b, ⟨hb, v, rfl⟩, hmin⟩` from `Set.exists_min_image ({x | ¬ q a < q x} ∩ Set.range fun v => a + N • v) q (hfin.inter_of_left _) ⟨a, lt_irrefl _, 0, by simp⟩`. Use `⟨v, fun v0 => ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : q a < q (a + N • v + N • v0)`. Conclude with `(not_lt.1 hb).trans h.le`.
-
-Conclude with `hmin _ ⟨h, v + v0, by simp [add_assoc]⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. A detailed English derivation is pending.
 -/
 theorem exists_shortest {X : Type} [AddCommGroup X] (q : QuadraticMap ℤ X ℝ)
     (hq : Filter.Tendsto q Filter.cofinite Filter.atTop) (N : ℕ) (a : X) :
@@ -68,9 +66,9 @@ theorem exists_shortest {X : Type} [AddCommGroup X] (q : QuadraticMap ℤ X ℝ)
   · exact hmin _ ⟨h, v + v0, by simp [add_assoc]⟩
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Establish `h : q a ≤ 0` using `not_lt.1 h`. Establish `hfin : {x | ¬ (0 : ℝ) < q x}.Finite` using `Filter.eventually_cofinite.1 (hq.eventually_gt_atTop 0)`. Use `Set.infinite_of_injective_forall_mem (f := fun n : ℤ => n • a) (smul_left_injective ℤ ha) (fun n => ?_) hfin` and prove the remaining obligations. Simplify using `only [Set.mem_setOf_eq, not_lt, QuadraticMap.map_smul, zsmul_eq_mul]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `push_cast`. Conclude with `mul_nonpos_of_nonneg_of_nonpos (mul_self_nonneg _) h`.
+Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem pos_of_tendsto {X : Type} [AddCommGroup X] [Module.Free ℤ X] (q : QuadraticMap ℤ X ℝ)
     (hq : Filter.Tendsto q Filter.cofinite Filter.atTop) (a : X) (ha : a ≠ 0) : 0 < q a := by
@@ -86,7 +84,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
   {Xo : Moduli Dw l} {c : Coeff l}
 
 /- English proof (translation)
-Take `⟨j, hj⟩` from `IsMonomial.exists_pos (IsLocalRing.maximalIdeal.isMaximal T.V).ne_top T.mono hx`. Use `fin_cases j`. Simplify using `using hj`.
+Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem be_pos (T : UTrait Xo c) (x : T.P.D.toPre.X) (hx : x ≠ 0) : 0 < T.be x x := by
   obtain ⟨j, hj⟩ := IsMonomial.exists_pos (IsLocalRing.maximalIdeal.isMaximal T.V).ne_top T.mono hx
@@ -94,11 +92,11 @@ theorem be_pos (T : UTrait Xo c) (x : T.P.D.toPre.X) (hx : x ≠ 0) : 0 < T.be x
   simpa using hj
 
 /- English proof (translation)
-Establish `hϖ0 : algebraMap t.T.V (FractionRing t.T.V) t.T.ϖ ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective _ _)).2 t.T.irr.ne_zero`. Establish `h0 : t.ι (algebraMap t.T.V (FractionRing t.T.V) t.T.ϖ) ≠ 0` using `(map_ne_zero _).2 hϖ0`. Establish `hlt : ‖t.ι (algebraMap t.T.V (FractionRing t.T.V) t.T.ϖ)‖ < 1`. Assume the negation of the conclusion as `hge`. Establish `hinv : ‖t.ι (algebraMap t.T.V (FractionRing t.T.V) t.T.ϖ)⁻¹‖ ≤ 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Rewrite using `[map_inv₀, norm_inv]`. Conclude with `inv_le_one_of_one_le₀ (not_lt.1 hge)`. Take `⟨w, hw⟩` from `(t.int _).1 hinv`. Apply `t.T.irr.not_isUnit` to reduce the goal to its premises. Use `isUnit_iff_exists_inv.2 ⟨w, IsFractionRing.injective t.T.V (FractionRing t.T.V) ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, hw, map_one, mul_inv_cancel₀ hϖ0]`. Unfold `UCTrait.sc`. Use `Real.log_neg (norm_pos_iff.2 h0) hlt` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem sc_pos {C : UCompact Xo c} {X₁ : USetup C} {p : ℕ} [Fact p.Prime] {z₁ : X₁.M.Z} (t : UCTrait X₁ p z₁) :
     0 < t.sc := by
@@ -119,9 +117,7 @@ theorem sc_pos {C : UCompact Xo c} {X₁ : USetup C} {p : ℕ} [Fact p.Prime] {z
   linarith
 
 /- English proof (translation)
-Use `haveI : Module.Projective (𝓞 E) T.P.D.toPre.X := GlobalTheory.Forms.projective_of_int (𝓞 E) _`. Use `haveI : Module.Finite (𝓞 E) T.P.D.toPre.X := Module.Finite.of_restrictScalars_finite ℤ _ _`. Use `haveI : Nontrivial T.P.D.toPre.X := ⟨x, 0, hx⟩`. Establish `h1 : 0 < Module.finrank (𝓞 E) T.P.D.toPre.X` using `Module.finrank_pos`. Establish `h2` using `UTrait.finrank_le_min E H Dw l Xo c T`.
-
-Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem one_le_of_ne_zero (T : UTrait Xo c) {x : T.P.D.toPre.X} (hx : x ≠ 0) : 1 ≤ Dw.p + Dw.q := by
   haveI : Module.Projective (𝓞 E) T.P.D.toPre.X := GlobalTheory.Forms.projective_of_int (𝓞 E) _
@@ -132,21 +128,19 @@ theorem one_le_of_ne_zero (T : UTrait Xo c) {x : T.P.D.toPre.X} (hx : x ≠ 0) :
   omega
 
 /- English proof (translation)
-Take `⟨hL, hL2⟩` from `GlobalTheory.abelianSchemeLaws_all`. Take `⟨hU, hUT⟩` from `GlobalTheory.ZH.thmU_and_uTors`. Take `⟨x', hx', hnd, hle⟩` from `exists_not_dvd_le t.T.be (be_pos t.T) X₁.S.N X₁.S.N_ge _ x rfl hx`. Take `⟨wi⟩` from `nonempty_uWit X₁`. Take `⟨yy, hyy⟩` from `GlobalTheory.T.exists_labels_unitaryClassicalTrait E H Dw (one_le_of_ne_zero t.T hx) l Xo c C X₁ wi p z₁ t`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨c₀, hc, R', fg, frac, hth, hev, ρ', u', -, -, -, hR, G, _, α, β, -, -, -, y₀, hat, u, lb, j, hq, -⟩` from `hyy.uIsLab`. Set `S'` to `X₁.S.rechart c₀ hc R' fg frac hth hev`. Establish `hdiv' : X₁.M.HasDiv S'.th` using `fun z => (X₁.hasDiv z).imp fun k hk => (RatModel.div_mul_iff hc).2 hk`. Establish `htests : S'.HasTests` using `(hasTests_of_real GlobalTheory.SS.semistableReductionSt hU hL hL2 hUT X₁.o₁ X₁.Ω₁ S' ρ').1`. Establish `hy : ∀ a : X₁.o₁, ‖y₀ (algebraMap X₁.o₁ S'.R a)‖ ≤ 1` using `fun a => by`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hat]`. Conclude with `RatModel.norm_val_le_one t.cen ((X₁.M.O z₁).algebraMap_mem a)`. Take `⟨τ, e, hτ, -⟩` from `exists_test_match X₁.o₁ X₁.Ω₁ S' ρ' p y₀ u lb (GlobalTheory.T.thetaConstant_bounded_by_shortestVector hL hL2 hUT _ _ S' ρ' p y₀ u lb hy) (GlobalTheory.T.unitThetaConstants_generate_integralTorsion hL hL2 hUT _ _ S' ρ' p y₀ u lb hy) (GlobalTheory.T.weightSpace_values_integralTorsi …`. Set `α₀ : τ.X` to `e.symm (j.symm x')`. Take `⟨v, hv⟩` from `exists_shortest τ.q τ.pos X₁.S.N α₀`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hne : α₀ + X₁.S.N • v ≠ 0` using `fun h0 => hnd ⟨-(j (e v)), by`. Establish `h1` using `congrArg (fun s => j (e s)) h0`. Simplify using `only [α₀, map_add, map_nsmul, AddEquiv.apply_symm_apply, map_zero] at h1`. Rewrite using `[smul_neg]`. Conclude with `eq_neg_of_add_eq_zero_left h1⟩`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hqle : τ.q (α₀ + X₁.S.N • v) ≤ t.sc * t.T.be x' x' / 2`. Establish `h1` using `hv (-v)`. Rewrite `h1` using `[smul_neg, add_neg_cancel_right]`. Use `h1.trans_eq ?_` and prove the remaining obligations. Rewrite using `[hτ, hq]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Simplify using `only [α₀, AddEquiv.apply_symm_apply]`. Take `⟨h, hm, hh⟩` from `GlobalTheory.exists_mem_maximalIdeal_exp_le_norm_val X₁.o₁ X₁.Ω₁ S' X₁.M X₁.normal hdiv' htests z₁ hz p t.y y₀ t.cen (fun a ha => hR ha) hat τ _ hv (pos_of_tendsto τ.q τ.pos _ hne)`. Use `⟨h, hm, le_trans (Real.exp_le_exp.2 ?_) hh⟩` and prove the remaining obligations. Establish `hsc` using `sc_pos t`. Establish `hNpos : (0 : ℝ) < X₁.S.N`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `X₁.S.N_ge` as an intermediate fact. Conclude with `(by omega : 0 < X₁.S.N)` after adjusting the coercions. Establish `hb : (t.T.be x' x' : ℝ) ≤ t.T.be x x` using `by exact_mod_cast hle`. Establish `h1 : τ.q (α₀ + X₁.S.N • v) ≤ t.sc * t.T.be x x / 2` using `hqle.trans (div_le_div_of_nonneg_right (mul_le_mul_of_nonneg_left hb hsc.le) zero_le_two)`. Rewrite using `[neg_le_neg_iff]`.
-
-Use `(div_le_div_of_nonneg_right h1 hNpos.le).trans_eq ?_` and prove the remaining obligations. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem exists_mem_maximalIdeal {C : UCompact Xo c} (X₁ : USetup C) (p : ℕ) [Fact p.Prime] (z₁ : X₁.M.Z)
     (hz : IsClosed ({z₁} : Set X₁.M.Z)) (t : UCTrait X₁ p z₁) (x : t.T.P.D.toPre.X) (hx : x ≠ 0) :
@@ -199,7 +193,7 @@ theorem exists_mem_maximalIdeal {C : UCompact Xo c} (X₁ : USetup C) (p : ℕ) 
   field_simp
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c C X' p _`. Conclude with `⟨1 / (2 * X'.S.N), fun z' hz t _ x hx => exists_mem_maximalIdeal X' p z' hz t x hx⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem main : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (C : UCompact Xo c) (X' : USetup C) (p : ℕ) [Fact p.Prime], ∃ K : ℝ, ∀ (z' : X'.M.Z), IsClosed ({z'} : Set X'.M.Z) → ∀ t : UCTrait X' p z', X'.S.R ≤ X'.M.O ((gPt p ≫ t.y) (IsLocalRing.closedPoint (PadicAlgCl p))) → ∀ x : t.T.P.D.toPre.X, x ≠ 0 → ∃ h ∈ maximalIdeal (X'.M.Z.presheaf.stalk z'), Real.exp (-(K * (t.sc * t.T.be x x))) ≤ ‖t.val h‖ := by
   intro E _ _ _ H Dw l Xo c C X' p _

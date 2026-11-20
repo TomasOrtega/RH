@@ -12,7 +12,7 @@ noncomputable section
 universe u w
 
 /- English proof (translation)
-Use `SubSystem.ext_sub fun I => ?_` and prove the remaining obligations. Rewrite using `[SubSystem.twist_sub_eq_mul_of_line, twistMul_sub, twistMul_sub, twistMul_sub, pow_add, ← twistSys_sub_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem twistMul_twist_twistMul {S : Type u} [CommRing S] {Ω : Type w} [Field Ω] [Algebra S Ω] {N : ℕ}
     {x : Fin (N + 1) → Ω} (M : SubSystem S x Ω) (a a' : ℕ) (c c' : ℤ) :
@@ -23,9 +23,9 @@ theorem twistMul_twist_twistMul {S : Type u} [CommRing S] {Ω : Type w} [Field �
   ring
 
 /- English proof (translation)
-Introduce `S _ Ω _ _ N x M p q m m' b₁ b₂ h`. Rewrite using `[pow_twistMul, pow_twistMul, pow_twistMul, twistMul_twist_twistMul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Use `push_cast`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Move the embeddings inside the algebraic operations.
 
-Take the linear combination `(b₁ : ℤ) * h`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem TwistAlg.proof : TwistAlg.Statement.{u, w} := by
   intro S _ Ω _ _ N x M p q m m' b₁ b₂ h

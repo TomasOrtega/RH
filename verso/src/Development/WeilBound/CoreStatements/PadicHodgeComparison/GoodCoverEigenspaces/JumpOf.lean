@@ -9,9 +9,9 @@ open UpperTheory.Gal.Int.Geo GlobalTheory.WeilDeligne GlobalTheory.HeckeGal
 namespace PositivityTheory.AutomorphicGaloisHodgeTate.G8
 
 /- English proof (translation)
-Take `⟨hops, hloc⟩` from `h5 E Ω l (low D) θ₁ hN Gw O Bw τK hτ`. Take `⟨hNK, ⟨bc⟩⟩` from `h8 E _ ℂ τK (ι.toRingHom.comp (algebraMap ↥Bw.Kw.1 (Qbar l))) (low D) hN`. Establish `hocc` using `h9 l Bw.Kw ι (bcAlong (low D) τK) (bcAlong (low D) ((ι.toRingHom.comp (algebraMap ↥Bw.Kw.1 (Qbar l))).comp τK)) (fun g => g) bc θ₁ (fun g => ι (θ₁ g)) b (fun _ => rfl) hNK hops (h6 hS E l H θ w C D Bw.Kw τK hi) hb d _ (hloc d ρ hρ)`. Establish `e : ∀ σ : ↥(GK Bw.Kw), (IntermediateField.fixingSubgroupEquiv Bw.Kw.1).symm (IntermediateField.fixingSubgroupEquiv Bw.Kw.1 σ) = σ` using `fun σ => MulEquiv.symm_apply_apply _ σ`. Take `⟨S, z, hz, h⟩` from `hocc`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨S, z, hz, fun σ hσ => ?_⟩` and prove the remaining obligations. Use `h σ hσ` as an intermediate fact. Use `beta_reduce at this`. Rewrite `this` using `[e σ]`. Conclude with `this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem occ_low (hS : CrystallineSemistableComparison.HTSpecB.HTSpecGood) (h5 : LocalMat) (h6 : CoverLow) (h8 : BCTower) (h9 : LocE)
     {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] {l : ℕ} [Fact l.Prime] (ι : Qbar l ≃+* ℂ)
@@ -37,13 +37,13 @@ theorem occ_low (hS : CrystallineSemistableComparison.HTSpecB.HTSpecGood) (h5 : 
   exact this
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ l _ ι H θ hN dd ρ₀ ρ hM hG w hw P AI hT A hA O _ _ _ Bw hj hcr τ LL' τ' hτ`. Take `⟨J, hJ⟩` from `h11 E Ω l P AI hT _ O Bw dd _ hcr τ LL' τ' hτ`. Use `⟨J, hJ, fun b hb => ?_⟩` and prove the remaining obligations. Take `⟨γ, O', _, _, _, Bw', hc, hτ'⟩` from `h12 E Ω l _ O Bw τ LL' τ' hτ`. Take `⟨C, hO, hGood⟩` from `hw`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨D⟩` from `lowData_ex C hGood`. Establish `hN'` using `h1 _ _ H θ _ C D`. Take `⟨τK, hτK⟩ : ∃ τK : E →+* ↥Bw'.Kw.1, ∀ x, (τK x : Qbar l) = Bw'.j (algebraMap E Ω x)` from `⟨(Bw'.j.comp (algebraMap E Ω)).codRestrict Bw'.Kw.1 Bw'.j_E, fun _ => rfl⟩`. Take `⟨d₁, ρ₁, hρ₁⟩` from `h4 E Ω l (low D) (fun g => θ g / D.m g) hN'`. Establish `e : ι.toRingHom.comp τ = (ι.toRingHom.comp (algebraMap ↥Bw'.Kw.1 (Qbar l))).comp τK` using `RingHom.ext fun x => congrArg ι ((DFunLike.congr_fun hτ' x).symm.trans (hτK x).symm)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hb'` using `h2 E _ ℂ _ ι.toRingHom H θ _ C D hN hO b hb`. Rewrite `hb'` using `[e]`. Establish `hocc` using `occ_low hS h5 h6 h8 h9 ι D hN' (fun g => θ g / D.m g) Bw' τK hτK (fun x => by rw [hτK, hc.1]; exact h7 E Ω l w A hA O Bw hj γ x) b hb' ρ₁ hρ₁`. Take `⟨M, hMi, hMρ⟩` from `h3 E Ω l H θ _ C D hN hO d₁ dd ρ₁ ρ₀ hρ₁ hM`. Take `⟨c, hcg⟩` from `hG`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `h13 E Ω l P AI hT _ O O' Bw Bw' γ hc dd _ b J ?_ (by rw [hτ']; exact hJ)` and prove the remaining obligations. Conclude with `(h10 l Bw'.Kw b).2 dd (fun σ => (ρ₀ (Bw'.e.symm σ : Dec (F := E) A)).val) _ c (fun σ => hcg _) ((h10 l Bw'.Kw b).1 d₁ dd _ _ M hMi (fun σ => hMρ _) hocc)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem jumpCore_of (hS : CrystallineSemistableComparison.HTSpecB.HTSpecGood) (h1 : LowNice) (h2 : LowHodge) (h3 : LowPiece) (h4 : MatEx) (h5 : LocalMat)
     (h6 : CoverLow) (h7 : BridgeInt) (h8 : BCTower) (h9 : LocE) (h10 : OccMove) (h11 : JumpsEx) (h12 : ConjBridge)

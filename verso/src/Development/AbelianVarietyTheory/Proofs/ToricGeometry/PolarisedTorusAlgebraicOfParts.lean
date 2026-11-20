@@ -11,9 +11,9 @@ open scoped BigOperators Real
 namespace GlobalTheory
 
 /- English proof (translation)
-Use function extensionality and compare the values at `z`. Unfold `thetaChar theta thetaTerm eC`. Use `tsum_congr fun n => ?_` and prove the remaining obligations. Establish `h : ((fun i => (n i : ℂ)) + ofRealVec a) = shiftVec a n` using `rfl`. Rewrite using `[h]`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem thetaChar_ofRealVec_eq_theta {g : ℕ} (τ : Matrix (Fin g) (Fin g) ℂ) (a b : Fin g → ℝ) :
     thetaChar τ (ofRealVec a) (ofRealVec b) = fun z => theta a b z τ := by
@@ -26,9 +26,9 @@ theorem thetaChar_ofRealVec_eq_theta {g : ℕ} (τ : Matrix (Fin g) (Fin g) ℂ)
   ring
 
 /- English proof (translation)
-Use `⟨fun i => (a i).re, fun i => ?_, funext fun i => ?_⟩` and prove the remaining obligations. Break down `ha i with h | h` into its components or cases. Use `left`. Simplify using `[h]`. Use `right`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `[h]`. Apply the tactic sequence `rcases ha i with h | h <;> simp [ofRealVec, h]`.
+A detailed English derivation is pending.
 -/
 theorem exists_ofRealVec_of_half {g : ℕ} (a : Fin g → ℂ) (ha : ∀ i, a i = 0 ∨ a i = 1 / 2) :
     ∃ a' : Fin g → ℝ, (∀ i, a' i = 0 ∨ a' i = 1 / 2) ∧ a = ofRealVec a' := by
@@ -39,17 +39,17 @@ theorem exists_ofRealVec_of_half {g : ℕ} (a : Fin g → ℂ) (ha : ∀ i, a i 
   · rcases ha i with h | h <;> simp [ofRealVec, h]
 
 /- English proof (translation)
-Introduce `h1 h2 h3 h4 h5 h6 h7 h8 h9 h10 g τ a₀ b₀ hs hp ha₀ hb₀`. Establish `hτ : τ ∈ SiegelH (Fin g)` using `⟨hs, hp⟩`. Take `⟨a, ha, rfl⟩` from `exists_ofRealVec_of_half a₀ ha₀`. Take `⟨b, hb, rfl⟩` from `exists_ofRealVec_of_half b₀ hb₀`. Take `⟨N, hN, hE, hgen⟩` from `h1 g τ hτ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨X, ex, D, hX⟩` from `h2 g τ hτ N hN`. Establish `hq` using `h3 g τ hτ N hN hgen X ex D hX`. Take `⟨inst, hc, hadd⟩` from `h4 g τ hτ N hN X ex D hX hq`. Take `⟨hab, hsm⟩` from `h5 g τ hτ N hN X ex D hX hq hc`. Take `⟨L, u, hL, hu⟩` from `h6 g τ hτ N hN X ex D hX hq hE hadd a b ha hb`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hr, hsy, th, hth⟩` from `h7 g τ hτ N hN X ex D hX hq hE hadd a b ha hb L u hL hu`. Establish `ham` using `h8 g τ hτ N hN X ex D hX hq hE hadd a b ha hb L u hL hu`. Establish `hk` using `h9 g τ hτ N hN X ex D hX hq hE hadd a b ha hb L u hL hu hab hsm`. Establish `hend` using `h10 g τ hτ N hN X ex D hX hq hadd`. Take `⟨hex, hΛ, -⟩` from `hu`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨{ A := X, isAb := hab, g := g, smoothDim := hsm, L := L, isLB := hL, rigid := hr, sym := hsy, ample := ham, ktriv := hk }, u, th, rfl, fun z => ?_, ?_, fun F hF => ?_⟩` and prove the remaining obligations. Use `(hΛ z).trans ⟨?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨n, n', rfl⟩`. Conclude with `⟨n', n, add_comm _ _⟩`. Introduce and unpack `⟨m, n, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨n, m, add_comm _ _⟩`. Rewrite using `[thetaChar_ofRealVec_eq_theta]`. Conclude with `hth`. Take `⟨f, hf, hfz⟩` from `hend F fun l hl => (hΛ _).1 (hF l ((hΛ _).2 hl))`. Use `⟨f, hf, fun z => ?_⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Substitute using the available equality.
 
-Substitute `hex` using the available equality. Conclude with `hfz z`.
+A detailed English derivation is pending.
 -/
 theorem polarisedTorus_algebraic_of_parts :
     (∀ (g : ℕ) (τ : Matrix (Fin g) (Fin g) ℂ), τ ∈ SiegelH (Fin g) → ∃ N : ℕ, 3 ≤ N ∧ Even N ∧ (∀ (d

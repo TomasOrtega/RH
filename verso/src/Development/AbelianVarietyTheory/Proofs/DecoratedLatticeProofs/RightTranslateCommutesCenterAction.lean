@@ -32,7 +32,7 @@ open Formalism.MainNotions.StandardLattice (infMat)
 variable {D : D7} {θ : InfFam D} {V : HSp D}
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => simp`. Consider the case `cons i l ih => rw [List.map_cons, List.map_cons, List.foldr_cons, List.prod_cons, Module.End.mul_apply, ih, h]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem foldr_map_eq {M α : Type} [AddCommGroup M] [Module ℂ M] (S : Submodule ℂ M) (f : α → M → M)
     (a : α → Module.End ℂ S) (h : ∀ i (x : S), f i x.1 = (a i x).1) (l : List α) (x : S) :
@@ -42,7 +42,7 @@ theorem foldr_map_eq {M α : Type} [AddCommGroup M] [Module ℂ M] (S : Submodul
   | cons i l ih => rw [List.map_cons, List.map_cons, List.foldr_cons, List.prod_cons, Module.End.mul_apply, ih, h]
 
 /- English proof (translation)
-Rewrite using `[gelfT, GlobalTheory.SmoothForms.gelfA, Finset.unop_sum, LinearMap.sum_apply, Submodule.coe_sum]`. Use `congr 1`. Use `Finset.sum_congr rfl fun idx _ => ?_` and prove the remaining obligations. Rewrite using `[MulOpposite.unop_list_prod, List.map_ofFn, List.ofFn_eq_map, List.ofFn_eq_map, ← List.map_reverse, ← List.map_reverse]`. Conclude with `foldr_map_eq _ _ _ (fun _ _ => rfl) _ φ`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gelfT_eq (hθ : IsInfFam θ) (τ : D.what₂.Tau) (k : ℕ) (φ : SmFun θ V) :
     gelfT θ V τ k φ.1 = (-1 : ℂ) ^ (k + 1) • (MulOpposite.unop (GlobalTheory.SmoothForms.gelfA
@@ -55,15 +55,15 @@ theorem gelfT_eq (hθ : IsInfFam θ) (τ : D.what₂.Tau) (k : ℕ) (φ : SmFun 
   exact foldr_map_eq _ _ _ (fun _ _ => rfl) _ φ
 
 /- English proof (translation)
-Set `T : Module.End ℂ (SmFun θ V)` to `(rTrLin h).restrict fun _ hx => rTr_mem hθ hh hx`. Establish `h1` using `infMat_mul_inv θ V τ h`. Establish `h2` using `mul_eq_one_comm.1 h1`. Establish `hQP : (infMat D.sp.cm.sig V.gram (θ τ) h⁻¹)ᵀ * (infMat D.sp.cm.sig V.gram (θ τ) h)ᵀ = 1`. Rewrite using `[← Matrix.transpose_mul, h1, Matrix.transpose_one]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `key` using `GlobalTheory.Dec.GelfAd.trace_pow_comm (fun a b => MulOpposite.op (derEnd (V := V) hθ τ (Matrix.single a b 1))) (MulOpposite.op T) _ _ hQP (fun a b => by`. Simplify using `only [← MulOpposite.op_smul, ← Finset.op_sum, ← MulOpposite.op_mul, ← map_smul, ← map_sum]`. Establish `e : ∑ c, ∑ d, ((infMat D.sp.cm.sig V.gram (θ τ) h)ᵀ a c * (infMat D.sp.cm.sig V.gram (θ τ) h⁻¹)ᵀ d b) • (Matrix.single c d 1 : Matrix (Fin V.rank) (Fin V.rank) ℂ) = infMat D.sp.cm.sig V.gram (θ τ) h * Matrix.single a b 1 * infMat D.sp.cm.sig V.gram (θ τ) h⁻¹`. Rewrite using `[Matrix.matrix_eq_sum_single (_ * Matrix.single a b 1 * _)]`. Use `Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Matrix.smul_single, smul_eq_mul, mul_one]`. Use `congr 1`. Simplify using `[Matrix.mul_apply, Matrix.single, ite_and]`. Rewrite using `[e]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `LinearMap.ext fun ψ => Subtype.ext ?_` and prove the remaining obligations. Use `RderC_rTr hθ hh τ (infMat D.sp.cm.sig V.gram (θ τ) h * Matrix.single a b 1 * infMat D.sp.cm.sig V.gram (θ τ) h⁻¹) ψ.1` as an intermediate fact. Rewrite `this` using `[adAt, ← Matrix.mul_assoc, ← Matrix.mul_assoc, h2, Matrix.one_mul, Matrix.mul_assoc (Matrix.single a b 1), h2, Matrix.mul_one]`. Conclude with `this.symm) (k + 1)`. Rewrite `key` using `[← GlobalTheory.SmoothForms.gelfA_eq_sum_pow]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `congrArg (fun S : (Module.End ℂ (SmFun θ V))ᵐᵒᵖ => (S.unop ⟨φ, hφ⟩).1) key` as an intermediate fact. Rewrite using `[gelfT_eq hθ τ k ⟨φ, hφ⟩, gelfT_eq hθ τ k ⟨_, rTr_mem hθ hh hφ⟩]`. Conclude with `congrArg (fun F => (-1 : ℂ) ^ (k + 1) • F) this.symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gelfT_rTr_real (hθ : IsInfFam θ) {h : GA D V} (hh : IsRealPt θ h) (τ : D.what₂.Tau) (k : ℕ) {φ : GA D V → ℂ}
     (hφ : φ ∈ SmFun θ V) : gelfT θ V τ k (rTr V h φ) = rTr V h (gelfT θ V τ k φ) := by
@@ -99,9 +99,9 @@ theorem gelfT_rTr_real (hθ : IsInfFam θ) {h : GA D V} (hh : IsRealPt θ h) (τ
   exact congrArg (fun F => (-1 : ℂ) ^ (k + 1) • F) this.symm
 
 /- English proof (translation)
-Unfold `gelfT`. Rewrite using `[Finset.sum_congr rfl fun idx _ => GlobalTheory.Mem.FinTranslate.foldr_rTr u _ _ (fun a ha ψ => ?_) φ]`. Use function extensionality and compare the values at `g`. Simplify using `only [rTr, Finset.sum_apply, Pi.smul_apply]`. Take `⟨b, rfl⟩` from `List.mem_ofFn.1 (List.mem_reverse.1 ha)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Unfold `RderC`. Rewrite using `[GlobalTheory.Mem.FinTranslate.Rder_rTr hu, GlobalTheory.Mem.FinTranslate.Rder_rTr hu]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem gelfT_rTr_fin {u : GA D V} (hu : u ∈ GfC V) (τ : D.what₂.Tau) (n : ℕ) (φ : GA D V → ℂ) :
     gelfT θ V τ n (rTr V u φ) = rTr V u (gelfT θ V τ n φ) := by
@@ -115,9 +115,9 @@ theorem gelfT_rTr_fin {u : GA D V} (hu : u ∈ GfC V) (τ : D.what₂.Tau) (n : 
     rfl
 
 /- English proof (translation)
-Introduce `n τs Xs hX g`. Use `hφ n τs Xs hX (g * u)` as an intermediate fact. Use `this using 2 with t` and compare the differences between its conclusion and the goal. Unfold `rTr`. Rewrite using `[mul_assoc, mul_assoc, comm_of_mem V (list_prod_mem fun a ha => ?_) hu]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Take `⟨b, rfl⟩` from `List.mem_ofFn.1 ha`. Conclude with `atTau_mem V _ _`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem rTr_mem_fin {u : GA D V} (hu : u ∈ GfC V) {φ : GA D V → ℂ} (hφ : φ ∈ SmFun θ V) : rTr V u φ ∈ SmFun θ V := by
   intro n τs Xs hX g
@@ -129,21 +129,21 @@ theorem rTr_mem_fin {u : GA D V} (hu : u ∈ GfC V) {φ : GA D V → ℂ} (hφ :
   exact atTau_mem V _ _
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Simplify using `only [rTr, mul_assoc]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem rTr_mul (u a : GA D V) (φ : GA D V → ℂ) : rTr V (u * a) φ = rTr V u (rTr V a φ) := by
   funext g
   simp only [rTr, mul_assoc]
 
 /- English proof (translation)
-Take `⟨u, hu, a, ha, e⟩` from `Formalism.IndefR.TopMult.ga_decomp x`. Conclude with `⟨u, hu, a, ⟨ha, GlobalTheory.FockCompare.RealAction.infMat_mem_UH hθ V a⟩, e⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem decomp (hθ : IsInfFam θ) (x : GA D V) : ∃ u ∈ GfC V, ∃ a, IsRealPt θ a ∧ x = u * a := by
   obtain ⟨u, hu, a, ha, e⟩ := Formalism.IndefR.TopMult.ga_decomp x
   exact ⟨u, hu, a, ⟨ha, GlobalTheory.FockCompare.RealAction.infMat_mem_UH hθ V a⟩, e⟩
 
 /- English proof (translation)
-Take `⟨u, hu, a, ha, rfl⟩` from `decomp hθ x`. Rewrite using `[rTr_mul]`. Conclude with `rTr_mem_fin hu (rTr_mem hθ ha hφ)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rTr_mem_all (hθ : IsInfFam θ) (x : GA D V) {φ : GA D V → ℂ} (hφ : φ ∈ SmFun θ V) : rTr V x φ ∈ SmFun θ V := by
   obtain ⟨u, hu, a, ha, rfl⟩ := decomp hθ x
@@ -151,7 +151,7 @@ theorem rTr_mem_all (hθ : IsInfFam θ) (x : GA D V) {φ : GA D V → ℂ} (hφ 
   exact rTr_mem_fin hu (rTr_mem hθ ha hφ)
 
 /- English proof (translation)
-Take `⟨u, hu, a, ha, rfl⟩` from `decomp hθ x`. Rewrite using `[rTr_mul, rTr_mul, GlobalTheory.Mem.FinTranslate.gelf_rTr hu, gelf_rTr hθ ha τ k hφ]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem gelf_rTr_all (hθ : IsInfFam θ) (x : GA D V) (τ : D.what₂.Tau) (k : ℕ) {φ : GA D V → ℂ} (hφ : φ ∈ SmFun θ V) :
     gelf θ V τ k (rTr V x φ) = rTr V x (gelf θ V τ k φ) := by
@@ -159,7 +159,7 @@ theorem gelf_rTr_all (hθ : IsInfFam θ) (x : GA D V) (τ : D.what₂.Tau) (k : 
   rw [rTr_mul, rTr_mul, GlobalTheory.Mem.FinTranslate.gelf_rTr hu, gelf_rTr hθ ha τ k hφ]
 
 /- English proof (translation)
-Take `⟨u, hu, a, ha, rfl⟩` from `decomp hθ x`. Rewrite using `[rTr_mul, rTr_mul, gelfT_rTr_fin hu, gelfT_rTr_real hθ ha τ k hφ]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem gelfT_rTr_all (hθ : IsInfFam θ) (x : GA D V) (τ : D.what₂.Tau) (k : ℕ) {φ : GA D V → ℂ} (hφ : φ ∈ SmFun θ V) :
     gelfT θ V τ k (rTr V x φ) = rTr V x (gelfT θ V τ k φ) := by
@@ -167,7 +167,7 @@ theorem gelfT_rTr_all (hθ : IsInfFam θ) (x : GA D V) (τ : D.what₂.Tau) (k :
   rw [rTr_mul, rTr_mul, gelfT_rTr_fin hu, gelfT_rTr_real hθ ha τ k hφ]
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => rfl`. Consider the case `cons i l ih`. Rewrite using `[List.foldr_cons, List.foldr_cons, ih, gelf_rTr_all hθ x τ i ((linOnSm_foldr (fun i => gelf θ V τ i) l fun j _ => linOnSm_gelf τ j).mem φ hφ)]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem foldr_gelf_rTr (hθ : IsInfFam θ) (x : GA D V) (τ : D.what₂.Tau) {φ : GA D V → ℂ} (hφ : φ ∈ SmFun θ V)
     (l : List ℕ) : l.foldr (fun i g => gelf θ V τ i g) (rTr V x φ) = rTr V x (l.foldr (fun i g => gelf θ V τ i g) φ) := by
@@ -178,7 +178,7 @@ theorem foldr_gelf_rTr (hθ : IsInfFam θ) (x : GA D V) (τ : D.what₂.Tau) {φ
       ((linOnSm_foldr (fun i => gelf θ V τ i) l fun j _ => linOnSm_gelf τ j).mem φ hφ)]
 
 /- English proof (translation)
-Unfold `centreAct polyAct opPow`. Simplify using `only [foldr_gelf_rTr hθ x τ hφ]`. Use function extensionality and compare the values at `g`. Simplify using `only [rTr, Finset.sum_apply, Pi.smul_apply]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem centreAct_rTr (hθ : IsInfFam θ) (x : GA D V) (τ : D.what₂.Tau) (p : MvPolynomial ℕ ℂ) {φ : GA D V → ℂ}
     (hφ : φ ∈ SmFun θ V) : centreAct θ τ V p (rTr V x φ) = rTr V x (centreAct θ τ V p φ) := by
@@ -188,7 +188,7 @@ theorem centreAct_rTr (hθ : IsInfFam θ) (x : GA D V) (τ : D.what₂.Tau) (p :
   simp only [rTr, Finset.sum_apply, Pi.smul_apply]
 
 /- English proof (translation)
-Introduce `_ _ _ hθ τ _ hf x` and use `⟨rTr_mem_all hθ x hf, fun p => centreAct_rTr hθ x τ p hf, fun k => ⟨gelf_rTr_all hθ x τ k hf, gelfT_rTr_all hθ x τ k hf⟩⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem centre_comm_right : ∀ (D : D7) (V : HSp D), ∀ θ : InfFam D, IsInfFam θ → ∀ (τ : D.what₂.Tau) (f : GA D V → ℂ), f ∈ SmFun θ V → ∀ x : GA D V, (fun h => f (h * x)) ∈ SmFun θ V ∧ (∀ p, centreAct θ τ V p (fun h => f (h * x)) = fun h => centreAct θ τ V p f (h * x)) ∧ ∀ k, gelf θ V τ k (fun h => f (h * x)) = (fun h => gelf θ V τ k f (h * x)) ∧ gelfT θ V τ k (fun h => f (h * x)) = fun h => gelfT θ V τ k f (h * x) :=
   fun _ _ _ hθ τ _ hf x => ⟨rTr_mem_all hθ x hf, fun p => centreAct_rTr hθ x τ p hf,

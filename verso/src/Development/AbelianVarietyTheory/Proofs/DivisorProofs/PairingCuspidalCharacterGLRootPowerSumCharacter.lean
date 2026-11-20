@@ -11,7 +11,7 @@ noncomputable section
 namespace GlobalTheory.Shin
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil => simp [deg]`. Consider the case `cons a L ih`. Simplify using `only [deg, List.map_cons, List.sum_cons, List.length_cons] at ih ⊢`. Rewrite using `[ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -24,11 +24,11 @@ theorem deg_map_const_fst (m : ℕ) (e : ℕ → ℕ) (L : List ℕ) :
     rw [ih]; ring
 
 /- English proof (translation)
-Simplify using `only [finsum_eq_sum_of_fintype, chG]`. Establish `e1 : ∀ (x : GL (Fin a) F) (y : GL (Fin b) F), ∏ j ∈ T, r j (Matrix.charpoly (x : Matrix (Fin a) (Fin a) F) * Matrix.charpoly (y : Matrix (Fin b) (Fin b) F)) = ∑ U ∈ T.powerset, (∏ j ∈ U, r j (Matrix.charpoly (x : Matrix (Fin a) (Fin a) F))) * ∏ j ∈ T \ U, r j (Matrix.charpoly (y …`. Introduce `x y`. Rewrite using `[← Finset.prod_add]`. Conclude with `Finset.prod_congr rfl fun j _ => hr j _ _ (Matrix.charpoly_monic _) (Matrix.charpoly_monic _)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [e1, star_sum, star_mul', Finset.mul_sum, Finset.sum_mul]`. Use `conv_lhs => arg 2`. Use extensionality with `x`. Rewrite using `[Finset.sum_comm]`. Rewrite using `[Finset.sum_comm]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun U _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`.
+A detailed English derivation is pending.
 -/
 theorem pair_prod_split {F : Type} [Field F] [Fintype F] {a b : ℕ} (α : GL (Fin a) F → ℂ)
     (β : GL (Fin b) F → ℂ) (r : ℕ → F[X] → ℂ) (hr : ∀ j, IsAdditive (r j)) (T : Finset ℕ) :
@@ -53,19 +53,17 @@ theorem pair_prod_split {F : Type} [Field F] [Fintype F] {a b : ℕ} (α : GL (F
   exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring
 
 /- English proof (translation)
-Establish `hz : ∀ U ∈ T.powerset, U ≠ {i} → f U * g U = 0`. Introduce `U hU hUi`. Distinguish the cases in `h0 : U = ∅`. Rewrite using `[h0, hf0, zero_mul]`. Rewrite using `[hg U hU h0]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs with hc`. Establish `hsub : U ⊆ T` using `Finset.mem_powerset.1 hU`. Establish `h1` using `Finset.card_sdiff_add_card_eq_card hsub`. Rewrite `h1` using `[hc]`. Establish `hpos : 0 < U.card` using `Finset.card_pos.2 (Finset.nonempty_iff_ne_empty.2 h0)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hU1 : U.card = 1` using `by omega`. Take `⟨j, rfl⟩` from `Finset.card_eq_one.1 hU1`. Establish `hjT : j ∈ T` using `hsub (Finset.mem_singleton_self j)`. Rewrite using `[hf1 j hjT, if_neg (fun h => hUi (by rw [h])), zero_mul]`. Rewrite using `[mul_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hiT : i ∈ T`. Establish `hmem : {i} ∈ T.powerset` using `Finset.mem_powerset.2 (Finset.singleton_subset_iff.2 hiT)`. Rewrite using `[Finset.sum_eq_single_of_mem {i} hmem hz, hf1 i hiT, if_pos rfl, hg {i} hmem (Finset.singleton_ne_empty i)]`. Establish `hiff : (T \ {i} = S) ↔ T = insert i S`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Rewrite using `[← h, Finset.sdiff_singleton_eq_erase, Finset.insert_erase hiT]`. Introduce `h`. Rewrite using `[h, Finset.sdiff_singleton_eq_erase, Finset.erase_insert hiS]`. Distinguish the cases in `hc : T = insert i S`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_pos (hiff.2 hc), if_pos hc]`. Rewrite using `[if_neg (fun h => hc (hiff.1 h)), if_neg hc, mul_zero]`. Rewrite using `[Finset.sum_eq_zero fun U hU => hz U hU (fun h => hiT (by`. Rewrite `hU` using `[h]`. Conclude with `Finset.singleton_subset_iff.1 (Finset.mem_powerset.1 hU)))]`.
-
-Rewrite using `[if_neg (fun h => hiT (by rw [h]; exact Finset.mem_insert_self i S))]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_powerset_single (i : ℕ) (S T : Finset ℕ) (hiS : i ∉ S) (hT : T.card ≤ S.card + 1)
     (f g : Finset ℕ → ℂ) (A B : ℂ) (hf0 : f ∅ = 0) (hf1 : ∀ j ∈ T, f {j} = if i = j then A else 0)
@@ -104,19 +102,19 @@ theorem sum_powerset_single (i : ℕ) (S T : Finset ℕ) (hiS : i ∉ S) (hT : T
     rw [if_neg (fun h => hiT (by rw [h]; exact Finset.mem_insert_self i S))]
 
 /- English proof (translation)
-Introduce `F _ _ θ m e ε h1 N h2 L`. Proceed by induction on `L with`. Consider the case `nil`. Introduce `T _ _ _ hT n hn`. Establish `hT0 : T = ∅` using `Finset.card_eq_zero.1 (by simpa using hT)`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Substitute `hT0` using the available equality. Simplify using `only [List.length_nil, mul_zero] at hn`. Substitute `hn` using the available equality. Use `haveI : Subsingleton (GL (Fin 0) F) := ⟨fun a b => Units.ext (Subsingleton.elim _ _)⟩`. Use `haveI : Unique (GL (Fin 0) F) := ⟨⟨1⟩, fun a => Subsingleton.elim _ _⟩`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Substitute using the available equality. Simplify using the standard rewrite rules. Treat this case separately.
 
-Simplify using `[J_nil, chG, finsum_unique]`. Consider the case `cons i L ih`. Introduce `T hnd hLN hTN hT n hn`. Use `haveI : Fintype F := Fintype.ofFinite F`. Establish `hiS : i ∉ L.toFinset` using `by simpa using (List.nodup_cons.1 hnd).1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnd' : L.Nodup` using `(List.nodup_cons.1 hnd).2`. Establish `hb` using `deg_map_const_fst m e L`. Establish `hn' : n = m + deg (L.map fun i => (m, e i))` using `by rw [hn, hb, List.length_cons]; ring`. Establish `hmass` using `GlobalTheory.T.pairing_harishChandraInduction_charpolyFunction F m (deg (L.map fun i => (m, e i))) n hn' (cusp θ m (e i)) (J θ (L.map fun i => (m, e i)) (deg (L.map fun i => (m, e i)))) (fun P => ∏ j ∈ T, rootSum θ (e j) P)`. Establish `hs` using `pair_prod_split (cusp θ m (e i)) (J θ (L.map fun i => (m, e i)) (deg (L.map fun i => (m, e i)))) (fun j => rootSum θ (e j)) (fun j => (rootSum_isAdditive_and_pow_X_sub_one F θ (e j)).1) T`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hiN : i < N` using `hLN i (List.mem_cons_self ..)`. Establish `hsum` using `sum_powerset_single i L.toFinset T hiS (by rw [List.toFinset_card_of_nodup hnd']; simpa using hT) (fun U => ∑ᶠ x : GL (Fin m) F, cusp θ m (e i) x * star (∏ j ∈ U, rootSum θ (e j) (Matrix.charpoly (x : Matrix (Fin m) (Fin m) F)))) (fun U => ∑ᶠ y : GL (Fin (deg (L.map fun i => (m, …`. Establish `hsub` using `Finset.mem_powerset.1 hU`. Establish `hc` using `Finset.card_sdiff_add_card_eq_card hsub`. Establish `hpos : 0 < U.card` using `Finset.card_pos.2 (Finset.nonempty_iff_ne_empty.2 hU0)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [List.length_cons] at hT`. Conclude with `ih (T \ U) hnd' (fun k hk => hLN k (List.mem_cons_of_mem _ hk)) (fun k hk => hTN k (Finset.mem_sdiff.1 hk).1) (by omega) _ hb)`. Use `beta_reduce at hmass hs hsum`. Rewrite `hmass` using `[hs, hsum]`. Establish `hG : ((Nat.card (GL (Fin m) F) : ℂ) * (Nat.card (GL (Fin (deg (L.map fun i => (m, e i)))) F) : ℂ)) ≠ 0`.
+Apply the first step, then apply the next step to every resulting obligation. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `apply mul_ne_zero <;> exact_mod_cast Nat.card_pos.ne'`. Apply `mul_left_cancel₀ hG` to reduce the goal to its premises. Use `hmass.trans ?_` and prove the remaining obligations. Rewrite using `[List.toFinset_cons, List.length_cons]`. Apply the tactic sequence `split_ifs <;> ring`.
+A detailed English derivation is pending.
 -/
 theorem pair_J_prod_rootSum : ∀ (F : Type) [Field F] [Finite F], ∀ (θ : AlgebraicClosure F →* ℂ) (m : ℕ) (e : ℕ → ℕ) (ε : ℤ), (∀ i, ∑ᶠ x, cusp θ m (e i) x = 0) → ∀ N : ℕ, (∀ i j, i < N → j < N → ∑ᶠ x, cusp θ m (e i) x * star (chG (rootSum θ (e j)) m x) = if i = j then (ε : ℂ) * (Nat.card (GL (Fin m) F) : ℂ) else 0) → ∀ (L : List ℕ) (T : Finset ℕ), L.Nodup → (∀ i ∈ L, i < N) → (∀ j ∈ T, j < N) → T.card ≤ L.length → ∀ n, n = m * L.length → ∑ᶠ x, J θ (L.map fun i => (m, e i)) n x * star (chG (fun P => ∏ j ∈ T, rootSum θ (e j) P) n x) = if T = L.toFinset then (ε : ℂ) ^ L.length * (Nat.card (GL (Fin n) F) : ℂ) else 0 := by
   intro F _ _ θ m e ε h1 N h2 L

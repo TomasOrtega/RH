@@ -9,11 +9,11 @@ namespace RootsOfUnityDenseAlt
 open Complex
 
 /- English proof (translation)
-Establish `hprim : ∀ m : ℕ, IsPrimitiveRoot (exp (2 * Real.pi * I / ((m + 1 : ℕ) : ℂ))) (m + 1)` using `fun m => Complex.isPrimitiveRoot_exp (m + 1) (Nat.succ_ne_zero m)`. Use `Set.infinite_of_injective_forall_mem (f := fun m : ℕ => exp (2 * Real.pi * I / ((m + 1 : ℕ) : ℂ))) ?_ ?_` and prove the remaining obligations. Introduce `a b hab`. Establish `ha` using `hprim a`. Establish `hb` using `hprim b`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only at hab`. Rewrite `ha` using `[hab]`. Use `IsPrimitiveRoot.unique ha hb` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Introduce `m`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨m + 1, Nat.succ_pos m, (hprim m).pow_eq_one⟩`.
+Supply the required witnesses or components.
 -/
 theorem rootsOfUnity_infinite :
     {z : ℂ | ∃ k : ℕ, 0 < k ∧ z ^ k = 1}.Infinite := by
@@ -35,7 +35,7 @@ theorem rootsOfUnity_infinite :
 end RootsOfUnityDenseAlt
 
 /- English proof (translation)
-Introduce `n P hP`. Use `MvPolynomial.funext_set (p := P) (q := 0) (fun _ => {z : ℂ | ∃ k : ℕ, 0 < k ∧ z ^ k = 1}) (fun _ => RootsOfUnityDenseAlt.rootsOfUnity_infinite) ?_` and prove the remaining obligations. Introduce `x hx`. Rewrite using `[map_zero]`. Conclude with `hP x fun i => hx i (Set.mem_univ i)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem RootsOfUnityDense.proof : RootsOfUnityDense.Statement := by
   intro n P hP

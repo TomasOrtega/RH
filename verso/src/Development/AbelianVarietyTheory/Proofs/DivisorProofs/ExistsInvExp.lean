@@ -78,7 +78,7 @@ def scale {s : S ⟶ Sp R} (o : Obj b N s) (e : ℕ) {s' : S ⟶ Sp R} (h : s = 
     exact ⟨scaleTate I e, fun y => hI _⟩
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => rw [zero_smul, pow_zero, eta_zero]`. Consider the case `succ n ih => rw [succ_nsmul, o.eta_add, ih, pow_succ]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem eta_nsmul {s : S ⟶ Sp R} (o : Obj b N s) (n : ℕ) (x : D.La) : o.eta (n • x) = o.eta x ^ n := by
   induction n with
@@ -86,7 +86,7 @@ theorem eta_nsmul {s : S ⟶ Sp R} (o : Obj b N s) (n : ℕ) (x : D.La) : o.eta 
   | succ n ih => rw [succ_nsmul, o.eta_add, ih, pow_succ]
 
 /- English proof (translation)
-Take `⟨k, hk⟩` from `(Nat.modEq_iff_dvd' hn0).1 hn.symm`. Establish `: n = 1 + N * k` using `by omega`. Rewrite using `[this, add_smul, one_smul, mul_smul, o.eta_add, o.eta_ker, _root_.mul_one]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem eta_congr {s : S ⟶ Sp R} (o : Obj b N s) {n : ℕ} (hn : n ≡ 1 [MOD N]) (hn0 : 0 < n) (x : D.La) :
     o.eta (n • x) = o.eta x := by
@@ -95,9 +95,9 @@ theorem eta_congr {s : S ⟶ Sp R} (o : Obj b N s) {n : ℕ} (hn : n ≡ 1 [MOD 
   rw [this, add_smul, one_smul, mul_smul, o.eta_add, o.eta_ker, _root_.mul_one]
 
 /- English proof (translation)
-Use `⟨e * (N.totient - 1), ?_⟩` and prove the remaining obligations. Establish `h1 : 1 ≤ N.totient` using `Nat.totient_pos.2 hN`. Establish `: e + e * (N.totient - 1) = N.totient * e`. Take `⟨m, hm⟩` from `Nat.exists_eq_add_of_le h1`. Rewrite using `[hm]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, pow_mul]`. Simplify using `using (Nat.ModEq.pow_totient hp.symm).pow e`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem exists_inv_exp (hN : 0 < N) (hp : N.Coprime p) (e : ℕ) : ∃ f : ℕ, p ^ (e + f) ≡ 1 [MOD N] := by
   refine ⟨e * (N.totient - 1), ?_⟩
@@ -137,13 +137,13 @@ def compMap {S₁ S₂ S₃ : Scheme.{0}} {s₁ : S₁ ⟶ Sp R} {s₂ : S₂ �
   eta y := by rw [← Category.assoc, h₁.eta, Category.assoc, h₂.eta, Category.assoc]
 
 /- English proof (translation)
-Set `u : Over.mk (A'.hom ≫ f) ⟶ A` to `Over.homMk φ h.1.w`. Establish `key : ∀ n : ℕ, (u ^ n).left = ((𝟙 A') ^ n).left ≫ φ`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Set `v : Over.mk (A'.hom ≫ f) ⟶ A` to `Over.homMk ((1 : A' ⟶ A').left ≫ φ) (by`. Rewrite using `[Category.assoc, h.1.w, Over.w_assoc]`. Use the proof step `rfl)`. Establish `h1` using `h.2 A' 1 1 v v rfl rfl`. Rewrite `h1` using `[_root_.mul_one]`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : v = 1` using `mul_eq_left.1 (Over.OverMorphism.ext h1 : v * v = v)`. Rewrite using `[pow_zero, pow_zero, ← h2]`. Both sides reduce to the same expression. Consider the case `succ n ih`. Rewrite using `[pow_succ, pow_succ]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h.2 A' _ _ _ _ ih (Category.id_comp _).symm`. Rewrite using `[← key]`. Establish `: u ^ c = u ≫ (𝟙 A) ^ c` using `by rw [MonObj.comp_pow, Category.comp_id]`. Rewrite using `[this]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem pow_left_comm {S' : Scheme.{0}} {A : Over S} {A' : Over S'} [GrpObj A] [GrpObj A'] {f : S' ⟶ S}
     {φ : A'.left ⟶ A.left} (h : IsGrpPullback A' A f φ) (c : ℕ) :
@@ -167,7 +167,7 @@ theorem pow_left_comm {S' : Scheme.{0}} {A : Over S} {A' : Over S'} [GrpObj A] [
   rw [this]; rfl
 
 /- English proof (translation)
-Take `⟨hfl, hsu, hqc⟩` from `GlobalTheory.UPel.HT.SiegUniqBase.flat_surjective_qc_pow S' B' hB c hc`. Use `haveI : Epi ((𝟙 B') ^ c).left := Flat.epi_of_flat_of_surjective _`. Use `haveI : Epi (χ'.left ≫ ψ'.left) := by rw [← Over.comp_left, h₃]; infer_instance`. Use `haveI : Epi ψ'.left := epi_of_epi χ'.left ψ'.left`. Rewrite using `[← cancel_epi ψ'.left, ← Category.assoc, ← sq, Category.assoc, ← Over.comp_left, h₁, ← pow_left_comm h, ← h₂, Over.comp_left, Category.assoc]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem square_dual {S' : Scheme.{0}} {A B : Over S} {A' B' : Over S'} [GrpObj A] [GrpObj A'] [GrpObj B'] {f : S' ⟶ S}
     {φ : A'.left ⟶ A.left} (h : IsGrpPullback A' A f φ) (hB : IsAbelianScheme B') (φ' : B'.left ⟶ B.left) {c : ℕ}
@@ -184,15 +184,15 @@ theorem square_dual {S' : Scheme.{0}} {A B : Over S} {A' B' : Over S'} [GrpObj A
 open GlobalTheory.BirigidPow GlobalTheory.CechPic in
 
 /- English proof (translation)
-Establish `hc` using `hψ.pos`. Take `⟨-, hm, -, -, ⟨hP⟩, -⟩` from `hψ`. Establish `nat : ∀ {A : Over S} [GrpObj A] [IsCommMonObj A] {P : LB (G2 A).left} (hP : P.IsLB) {U V : Over S} (r : U ⟶ V) (x y : V ⟶ A), pull r.left (BirigidPow.val hP x y) = BirigidPow.val hP (r ≫ x) (r ≫ y)`. Introduce `A _ _ P hP U V r x y`. Rewrite using `[BirigidPow.val, BirigidPow.val, ← pull_comp, ← Over.comp_left, comp_lift]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hsq : ∀ {U : Over S} (x y : U ⟶ o.A), BirigidPow.val o'.isLB (x ≫ ψ) (y ≫ ψ) = c • BirigidPow.val o.isLB x y`. Introduce `U x y`. Establish `hL : (Hecke.lbPow o.P c).IsLB` using `LB.isLB_linComb o.isLB _ _`. Establish `e` using `(cls_eq_iff hL (pull_isLB o'.isLB _)).2 hP`. Rewrite `e` using `[BirigidPow.cls_lbPow o.isLB, cls_pull o'.isLB _ (pull_isLB o'.isLB _)]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e'` using `congrArg (pull (lift x y).left) e`. Rewrite `e'` using `[map_nsmul]`. Use `Eq.trans ?_ e'.symm` and prove the remaining obligations. Use `nat o'.isLB (lift x y) (fst o.A o.A ≫ ψ) (snd o.A o.A ≫ ψ)` as an intermediate fact. Rewrite `this` using `[lift_fst_assoc, lift_snd_assoc]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this.symm`. Take `⟨hfl, hsu, hqc⟩` from `GlobalTheory.UPel.HT.SiegUniqBase.flat_surjective_qc_pow S o'.A o'.ab c hc`. Establish `H : BirigidPow.val o'.isLB (snd o.A o'.A) (fst o.A o'.A ≫ ψ) - BirigidPow.val o.isLB (snd o.A o'.A ≫ ψ') (fst o.A o'.A) = 0`. Use `GlobalTheory.BirigUniq.pic_eq_zero_of_fpqc o.A o'.A o'.A o.ab ((𝟙 o'.A) ^ c) hfl hsu hqc _ ?_ ?_` and prove the remaining obligations. Rewrite using `[map_sub, nat, nat, lift_fst_assoc, lift_fst, MonObj.one_comp, val_one_right _ o'.rig₂, val_one_right _ o.rig₂, sub_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sub, nat, nat, lift_fst_assoc, lift_fst, lift_snd, lift_snd_assoc, sub_eq_zero] conv_lhs => rw [← h₂, ← Category.assoc, hsq]`. Rewrite using `[← val_pow_left o.isLB o.ab o.ample o.rig₁ o.rig₂, MonObj.comp_pow, Category.comp_id, MonObj.pow_comp]`. Use `congrArg (pull (lift y x).left) H` as an intermediate fact. Rewrite `this` using `[map_sub, nat, nat, lift_fst_assoc, lift_fst, lift_snd, lift_snd_assoc, map_zero, sub_eq_zero]`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_adj {s : S ⟶ Sp R} {c : ℕ} {o o' : Obj b N s} {ψ : o.A ⟶ o'.A} (hψ : IsPIsog c o o' ψ)
     {ψ' : o'.A ⟶ o.A} [IsMonHom ψ'] (h₂ : ψ' ≫ ψ = (𝟙 o'.A) ^ c) {T : Over S} (x : T ⟶ o'.A) (y : T ⟶ o.A) :
@@ -229,9 +229,9 @@ theorem val_adj {s : S ⟶ Sp R} {c : ℕ} {o o' : Obj b N s} {ψ : o.A ⟶ o'.A
 open GlobalTheory.BirigidPow GlobalTheory.CechPic in
 
 /- English proof (translation)
-Establish `hc` using `hψ.pos`. Use `⟨fun a => ?_, fun x => ?_, ⟨?_⟩⟩` and prove the remaining obligations. Use `haveI := GlobalTheory.UPel.HT.MulEpi.epi_pow_of_isAbelianScheme S o'.A o'.ab c hc haveI : Epi (ψ' ≫ ψ) := by rw [h₂]; infer_instance haveI : Epi ψ := epi_of_epi ψ' ψ haveI := o.act.hom a`. Rewrite using `[← cancel_epi ψ, ← Category.assoc, ← hψ.2.2.1, Category.assoc, h₁, ← Category.assoc, h₁, MonObj.comp_pow, MonObj.pow_comp, Category.comp_id, Category.id_comp]`. Rewrite using `[hψ.2.2.2.1, Category.assoc, h₁, MonObj.comp_pow, Category.comp_id, eta_nsmul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hL : (Hecke.lbPow o'.P c).IsLB` using `LB.isLB_linComb o'.isLB _ _`. Use `(cls_eq_iff hL (pull_isLB o.isLB _)).1 ?_` and prove the remaining obligations. Rewrite using `[BirigidPow.cls_lbPow o'.isLB, cls_pull o.isLB _ (pull_isLB o.isLB _)]`. Express the relevant statement in the definitionally equal form `_ = BirigidPow.val o.isLB (fst o'.A o'.A ≫ ψ') (snd o'.A o'.A ≫ ψ')`. Rewrite using `[← val_adj hψ h₂, Category.assoc, h₂, MonObj.comp_pow, Category.comp_id, val_pow_right o'.isLB o'.ab o'.ample o'.rig₁ o'.rig₂, BirigidPow.val, lift_fst_snd, Over.id_left, pull_id]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dual_clauses {s : S ⟶ Sp R} {c : ℕ} {o o' : Obj b N s} {ψ : o.A ⟶ o'.A} (hψ : IsPIsog c o o' ψ)
     {ψ' : o'.A ⟶ o.A} [IsMonHom ψ'] (h₁ : ψ ≫ ψ' = (𝟙 o.A) ^ c) (h₂ : ψ' ≫ ψ = (𝟙 o'.A) ^ c) :

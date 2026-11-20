@@ -26,7 +26,7 @@ local instance : SecondCountableTopology (G n) :=
 local instance : LocallyCompactSpace (G n) := inferInstanceAs (LocallyCompactSpace (Mat n)ˣ)
 
 /- English proof (translation)
-Establish `h` using `GlobalTheory.CompanionTheory.ConeHaar.hOf_coords (n := n) 1 isHermitian_one`. Establish `e : oPt n = fun p => ((hb p * 1).trace).re` using `by funext p; simp [oPt, coords]`. Rewrite using `[e]`. Conclude with `h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hOf_oPt : hOf (oPt n) = 1 := by
   have h := GlobalTheory.CompanionTheory.ConeHaar.hOf_coords (n := n) 1 isHermitian_one
@@ -34,7 +34,7 @@ theorem hOf_oPt : hOf (oPt n) = 1 := by
   rw [e]; exact h
 
 /- English proof (translation)
-Use `show (hOf (oPt n)).PosDef`. Rewrite using `[hOf_oPt]`. Conclude with `PosDef.one`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem oPt_mem : oPt n ∈ cone n := by
   show (hOf (oPt n)).PosDef
@@ -66,24 +66,22 @@ def thE : G n ≃ₜ* G n where
       simp only [inv_inv, Units.coe_star]; exact Units.continuous_val.star
 
 /- English proof (translation)
-Use `show (((star y)⁻¹ : G n) : Mat n) = _`. Rewrite using `[Matrix.coe_units_inv]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem thE_val (y : G n) : ((thE y : G n) : Mat n) = (y : Mat n)ᴴ⁻¹ := by
   show (((star y)⁻¹ : G n) : Mat n) = _
   rw [Matrix.coe_units_inv]; rfl
 
 /- English proof (translation)
-Use extensionality with `y`. Simplify using `[thE, star_inv]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem thE_thE : (thE (n := n)).trans thE = ContinuousMulEquiv.refl _ := by
   ext y; simp [thE, star_inv]
 
 /- English proof (translation)
-Establish `h1 : mulEquivHaarChar (thE (n` using `n)) = 1 := by`. Establish `h` using `mulEquivHaarChar_trans (φ := (thE (n := n))) (ψ := thE)`. Rewrite `h` using `[thE_thE, mulEquivHaarChar_refl]`. Establish `hpos` using `mulEquivHaarChar_pos (thE (n := n))`. Establish `h' : ((mulEquivHaarChar (thE (n` using `n)) : ℝ)) * (mulEquivHaarChar (thE (n := n)) : ℝ) = 1 := by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h.symm` after adjusting the coercions. Establish `hp : (0 : ℝ) < mulEquivHaarChar (thE (n` using `n)) := by exact_mod_cast hpos`. Establish `: (mulEquivHaarChar (thE (n` using `n)) : ℝ) = 1 := by nlinarith`. Conclude with `this` after adjusting the coercions. Use `mulEquivHaarChar_smul_map μ (thE (n := n))` as an intermediate fact.
-
-Rewrite `this` using `[h1, one_smul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem map_thE [MeasurableSpace (G n)] [BorelSpace (G n)] (μ : Measure (G n)) [μ.IsHaarMeasure] [μ.Regular] :
     μ.map thE = μ := by
@@ -100,38 +98,38 @@ theorem map_thE [MeasurableSpace (G n)] [BorelSpace (G n)] (μ : Measure (G n)) 
   rwa [h1, one_smul] at this
 
 /- English proof (translation)
-Simplify using `only [GLs, Set.mem_setOf_eq, Matrix.det_mul] at *`. Conclude with `mul_ne_zero hx hy`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_GLs_mul {x y : Mat n} (hx : x ∈ GLs n) (hy : y ∈ GLs n) : x * y ∈ GLs n := by
   simp only [GLs, Set.mem_setOf_eq, Matrix.det_mul] at *
   exact mul_ne_zero hx hy
 
 /- English proof (translation)
-The claim follows from `(Matrix.isUnit_nonsing_inv_det x (isUnit_iff_ne_zero.2 hx)).ne_zero`.
+A detailed English derivation is pending.
 -/
 theorem inv_mem_GLs {x : Mat n} (hx : x ∈ GLs n) : x⁻¹ ∈ GLs n :=
   (Matrix.isUnit_nonsing_inv_det x (isUnit_iff_ne_zero.2 hx)).ne_zero
 
 /- English proof (translation)
-Simplify using `only [GLs, Set.mem_setOf_eq, Matrix.det_conjTranspose, star_ne_zero] at *`. Conclude with `hx`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cT_mem_GLs {x : Mat n} (hx : x ∈ GLs n) : xᴴ ∈ GLs n := by
   simp only [GLs, Set.mem_setOf_eq, Matrix.det_conjTranspose, star_ne_zero] at *
   exact hx
 
 /- English proof (translation)
-Simplify using `[GLs]`.
+Simplify using the standard rewrite rules.
 -/
 theorem one_mem_GLs : (1 : Mat n) ∈ GLs n := by simp [GLs]
 
 /- English proof (translation)
-The claim follows from `(Matrix.UnitaryGroup.det_isUnit κ).ne_zero`.
+A detailed English derivation is pending.
 -/
 theorem unitary_mem_GLs (κ : Matrix.unitaryGroup (Fin n) ℂ) : κ.1 ∈ GLs n :=
   (Matrix.UnitaryGroup.det_isUnit κ).ne_zero
 
 /- English proof (translation)
-Unfold `GlobalTheory.CompanionTheory.LengthGL.hs`. Rewrite using `[Finset.sum_comm]`. Simplify using `[Matrix.conjTranspose_apply]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem hs_cT (y : Mat n) : GlobalTheory.CompanionTheory.LengthGL.hs yᴴ = GlobalTheory.CompanionTheory.LengthGL.hs y := by
   unfold GlobalTheory.CompanionTheory.LengthGL.hs
@@ -139,21 +137,21 @@ theorem hs_cT (y : Mat n) : GlobalTheory.CompanionTheory.LengthGL.hs yᴴ = Glob
   simp [Matrix.conjTranspose_apply]
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.CompanionTheory.LengthGL.lg_eq, GlobalTheory.CompanionTheory.LengthGL.lg_eq, hs_cT, ← Matrix.conjTranspose_nonsing_inv, hs_cT]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lg_cT {y : Mat n} (hy : y ∈ GLs n) : lg yᴴ = lg y := by
   rw [GlobalTheory.CompanionTheory.LengthGL.lg_eq, GlobalTheory.CompanionTheory.LengthGL.lg_eq, hs_cT, ← Matrix.conjTranspose_nonsing_inv, hs_cT]
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.CompanionTheory.LengthGL.lg_inv (cT_mem_GLs hy), lg_cT hy]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lg_cT_inv {y : Mat n} (hy : y ∈ GLs n) : lg yᴴ⁻¹ = lg y := by
   rw [GlobalTheory.CompanionTheory.LengthGL.lg_inv (cT_mem_GLs hy), lg_cT hy]
 
 /- English proof (translation)
-Rewrite using `[Matrix.mem_unitaryGroup_iff]`. Rewrite using `[Matrix.star_eq_conjTranspose, Matrix.diagonal_conjTranspose, Matrix.diagonal_mul_diagonal]`. Rewrite using `[← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `a`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [Pi.star_apply, RCLike.star_def, Complex.mul_conj, Complex.normSq_eq_norm_sq, hz a]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem diag_unitary {z : Fin n → ℂ} (hz : ∀ a, ‖z a‖ = 1) : diagonal z ∈ Matrix.unitaryGroup (Fin n) ℂ := by
   rw [Matrix.mem_unitaryGroup_iff]
@@ -165,7 +163,7 @@ theorem diag_unitary {z : Fin n → ℂ} (hz : ∀ a, ‖z a‖ = 1) : diagonal 
   simp
 
 /- English proof (translation)
-Establish `h` using `GlobalTheory.CompanionTheory.LengthGL.lg_unitary x ⟨diagonal z, diag_unitary hz⟩ 1`. Simplify using `using h`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem lg_diag_mul {z : Fin n → ℂ} (hz : ∀ a, ‖z a‖ = 1) (x : Mat n) : lg (diagonal z * x) = lg x := by
   have h := GlobalTheory.CompanionTheory.LengthGL.lg_unitary x ⟨diagonal z, diag_unitary hz⟩ 1
@@ -183,67 +181,63 @@ theorem trL_apply {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] [F
     trL A B = LinearMap.trace ℂ V ((A * B : V →L[ℂ] V) : V →ₗ[ℂ] V) := rfl
 
 /- English proof (translation)
-Introduce `n lam E Fr ε ι S Γ T hCx _ _ μ _ σ c hσ hσ2 hform k val hkc hkeq hkΓ hksupp heig d z hd hz hz2`. Take `⟨Rk, hRk⟩` from `hksupp`. Establish `hdG : d.val ∈ GLs n` using `GlobalTheory.CompanionTheory.LengthGL.mem_GLs_val d`. Use `set F : Mat n → ℂ := fun y => LinearMap.trace ℂ E.V ((Γ * S 0 * (k (d.val * yᴴ⁻¹) * Γ * T * Fr y⁻¹) : E.V →L[ℂ] E.V) : E.V →ₗ[ℂ] E.V) with hFdef`. Establish `hu0 : σ (oPt n) * (σ (oPt n))ᴴ = 1` using `by rw [hσ2 _ oPt_mem, hOf_oPt]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu0' : (σ (oPt n))ᴴ * σ (oPt n) = 1` using `mul_eq_one_comm.mp hu0`. Use `set U0 : Matrix.unitaryGroup (Fin n) ℂ := ⟨σ (oPt n), Matrix.mem_unitaryGroup_iff.2 hu0⟩ with hU0`. Establish `hU0inv : (σ (oPt n))⁻¹ = (U0⁻¹ : Matrix.unitaryGroup (Fin n) ℂ).1`. Rewrite using `[Matrix.inv_eq_left_inv hu0']`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hpt : ∀ v ∈ cone n, LinearMap.trace ℂ E.V ((Γ * S 0 * Kc σ c Fr k Γ T d.val (oPt n, v) : E.V →L[ℂ] E.V) : E.V →ₗ[ℂ] E.V) = F (σ v) * ((c : ℂ) * ((hOf v).det ^ n)⁻¹)`. Introduce `v hv`. Establish `hyG : σ v ∈ GLs n` using `GlobalTheory.CompanionTheory.ConeHaar.det_ne_of_gram (hσ2 v hv) hv`. Establish `hmem : d.val * (σ v)ᴴ⁻¹ ∈ GLs n` using `mem_GLs_mul hdG (inv_mem_GLs (cT_mem_GLs hyG))`. Establish `hk1 : k ((σ (oPt n))⁻¹ * d.val * (σ v)ᴴ⁻¹) = E.ρ U0⁻¹ * k (d.val * (σ v)ᴴ⁻¹)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h` using `hkeq _ hmem U0⁻¹ 1`. Rewrite `h` using `[map_one, mul_one]`. Rewrite using `[← h, hU0inv, mul_assoc]`. Simplify using the standard rewrite rules. Establish `hFr0 : Fr (σ (oPt n)) = E.ρ U0` using `hCx.onK U0`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hρ : E.ρ U0 * E.ρ U0⁻¹ = 1` using `by rw [← map_mul, mul_inv_cancel, map_one]`. Establish `hKf : Kf Fr k Γ T d.val (σ (oPt n)) (σ v) = k (d.val * (σ v)ᴴ⁻¹) * Γ * T * Fr (σ v)⁻¹`. Unfold `Kf`. Rewrite using `[hk1, hFr0, ← mul_assoc (E.ρ U0), hρ, one_mul]`. Simplify using `only [Kc]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hKf, mul_smul_comm, ContinuousLinearMap.coe_smul, map_smul, smul_eq_mul, mul_comm]`. Establish `hcont_ci : ContinuousOn (fun y : Mat n => yᴴ⁻¹) (GLs n)`. Establish `h1 : ContinuousOn (fun y : Mat n => y⁻¹) (GLs n)` using `GlobalTheory.CompanionTheory.LengthGL.contDiffOn_inv.continuousOn`. Establish `h2 : Continuous (fun y : Mat n => yᴴ)` using `continuous_id.matrix_conjTranspose`. Conclude with `h1.comp h2.continuousOn fun y hy => cT_mem_GLs hy`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcont_k : ContinuousOn (fun y : Mat n => k (d.val * yᴴ⁻¹)) (GLs n)` using `hkc.comp (continuousOn_const.mul hcont_ci) fun y hy => mem_GLs_mul hdG (inv_mem_GLs (cT_mem_GLs hy))`. Establish `hcont_Fr : ContinuousOn (fun y : Mat n => Fr y⁻¹) (GLs n)` using `hCx.smooth.continuousOn.comp GlobalTheory.CompanionTheory.LengthGL.contDiffOn_inv.continuousOn fun y hy => inv_mem_GLs hy`. Establish `hcont_B : ContinuousOn (fun y : Mat n => k (d.val * yᴴ⁻¹) * Γ * T * Fr y⁻¹) (GLs n)` using `((hcont_k.mul continuousOn_const).mul continuousOn_const).mul hcont_Fr`. Establish `hFcont : ContinuousOn F (GLs n)`. Use `(trL (Γ * S 0)).continuous.comp_continuousOn hcont_B` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `this`. Establish `hkz : ∀ y ∈ GLs n, Rk < lg y → k (d.val * yᴴ⁻¹) = 0`. Introduce `y hy hlt`. Apply `hRk _ (mem_GLs_mul hdG (inv_mem_GLs (cT_mem_GLs hy)))` to reduce the goal to its premises. Rewrite using `[hd, lg_diag_mul hz, lg_cT_inv hy]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `hlt`. Establish `hFsupp : ∃ R, ∀ y ∈ GLs n, R < lg y → F y = 0` using `⟨Rk, fun y hy hlt => by simp only [hFdef, hkz y hy hlt, zero_mul, mul_zero, ContinuousLinearMap.coe_zero, map_zero]⟩`. Establish `hFinv : ∀ y ∈ GLs n, ∀ κ : Matrix.unitaryGroup (Fin n) ℂ, F (y * κ.1) = F y`. Introduce `y hy κ`. Establish `hκ : κ.1 * star κ.1 = 1` using `Matrix.mem_unitaryGroup_iff.1 κ.2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hκ' : star κ.1 * κ.1 = 1` using `Matrix.mem_unitaryGroup_iff'.1 κ.2`. Establish `hci : (y * κ.1)ᴴ⁻¹ = yᴴ⁻¹ * κ.1`. Establish `hstar : (κ.1)ᴴ⁻¹ = κ.1`. Rewrite using `[← Matrix.star_eq_conjTranspose]`. Conclude with `Matrix.inv_eq_right_inv hκ'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Matrix.conjTranspose_mul, Matrix.mul_inv_rev, hstar]`. Establish `hinvκ : (y * κ.1)⁻¹ = (κ⁻¹ : Matrix.unitaryGroup (Fin n) ℂ).1 * y⁻¹`. Rewrite using `[Matrix.mul_inv_rev, Matrix.inv_eq_left_inv hκ']`. Both sides reduce to the same expression. Establish `hmem : d.val * yᴴ⁻¹ ∈ GLs n` using `mem_GLs_mul hdG (inv_mem_GLs (cT_mem_GLs hy))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Establish `hk2 : k (d.val * (y * κ.1)ᴴ⁻¹) = k (d.val * yᴴ⁻¹) * E.ρ κ`. Establish `h` using `hkeq _ hmem 1 κ`. Rewrite `h` using `[map_one, one_mul]`. Rewrite using `[hci, ← h]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[mul_assoc]`. Establish `hFr2 : Fr (y * κ.1)⁻¹ = E.ρ κ⁻¹ * Fr y⁻¹`. Rewrite using `[hinvκ, hCx.mul _ (unitary_mem_GLs _) _ (inv_mem_GLs hy), hCx.onK]`. Establish `hΓρ : Γ * E.ρ κ = E.ρ κ * Γ` using `by rw [← hCx.onK κ]; exact hCx.ΓFr _ (unitary_mem_GLs κ)`. Establish `hTρ : T * E.ρ κ = E.ρ κ * T` using `hCx.TK κ`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hρρ : E.ρ κ * E.ρ κ⁻¹ = 1` using `by rw [← map_mul, mul_inv_cancel, map_one]`. Establish `hop : k (d.val * yᴴ⁻¹) * E.ρ κ * Γ * T * (E.ρ κ⁻¹ * Fr y⁻¹) = k (d.val * yᴴ⁻¹) * Γ * T * Fr y⁻¹`. Simplify using `only [mul_assoc]`. Rewrite using `[← mul_assoc (E.ρ κ) Γ, ← hΓρ, mul_assoc Γ (E.ρ κ), ← mul_assoc (E.ρ κ) T, ← hTρ, mul_assoc T (E.ρ κ), ← mul_assoc (E.ρ κ) (E.ρ κ⁻¹), hρρ, one_mul]`. Simplify using `only [hFdef]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[hk2, hFr2, hop]`. Establish `hcone : ∫ v in cone n, LinearMap.trace ℂ E.V ((Γ * S 0 * Kc σ c Fr k Γ T d.val (oPt n, v) : E.V →L[ℂ] E.V) : E.V →ₗ[ℂ] E.V) = ∫ y : G n, F y.val ∂μ`. Rewrite using `[setIntegral_congr_fun (GlobalTheory.CompanionTheory.ConeHaar.cone_open n).measurableSet hpt, hform F hFcont hFsupp hFinv, ← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `v`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hcone]`. Use `set B : G n → (E.V →L[ℂ] E.V) := fun y => k (d.val * (y.val)ᴴ⁻¹) * Γ * T * Fr (y.val)⁻¹ with hBdef`. Establish `hBcont : Continuous B` using `hcont_B.comp_continuous Units.continuous_val fun y => GlobalTheory.CompanionTheory.LengthGL.mem_GLs_val y`. Establish `hBsupp : HasCompactSupport B` using `HasCompactSupport.intro (GlobalTheory.CompanionTheory.LengthGL.isCompact_G (n := n) Rk) fun y hy => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Simplify using `only [Set.mem_setOf_eq, not_le] at hy`. Simplify using `only [hBdef, hkz _ (GlobalTheory.CompanionTheory.LengthGL.mem_GLs_val y) hy, zero_mul]`. Establish `hBint : Integrable B μ` using `hBcont.integrable_of_hasCompactSupport hBsupp`. Establish `hIF : ∫ y : G n, F y.val ∂μ = trL (Γ * S 0) (∫ y, B y ∂μ)`. Rewrite using `[← (trL (Γ * S 0)).integral_comp_comm hBint]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `hkey : (∫ y, B y ∂μ) * S 0 = val (infOf lam) • (Fr d.val * T * S 0)`. Use `ContinuousLinearMap.ext fun w => ?_` and prove the remaining obligations. Rewrite using `[ContinuousLinearMap.mul_apply, ContinuousLinearMap.integral_apply hBint (S 0 w)]`. Use `set v := Fr d.val (T (S 0 w)) with hv`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hS0v : S 0 v = v`. Rewrite using `[hv]`. Establish `e1 : S 0 (Fr d.val (T (S 0 w))) = (S 0 * Fr d.val) (T (S 0 w))` using `rfl`. Rewrite using `[e1, hCx.sym_zero_comm_frame _ hdG, ContinuousLinearMap.mul_apply]`. Establish `e2 : S 0 (T (S 0 w)) = (S 0 * T) (S 0 w)` using `rfl`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e2, ← hCx.time_comm_sym_zero, ContinuousLinearMap.mul_apply]`. Establish `e3 : S 0 (S 0 w) = (S 0 * S 0) w` using `rfl`. Rewrite using `[e3, hCx.S0sq]`. Use `set f : Mat n → E.V := fun x => Fr x⁻¹ (S 0 v) with hfdef`. Use `set hh : G n → E.V := fun y' => k y'.val (Fr ((y'.val)⁻¹ * d.val) (T (S 0 w))) with hhdef`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hBw : ∀ y : G n, B y (S 0 w) = hh (d * thE y)`. Introduce `y`. Establish `hyG` using `GlobalTheory.CompanionTheory.LengthGL.mem_GLs_val y`. Establish `hcG : (y.val)ᴴ ∈ GLs n` using `cT_mem_GLs hyG`. Establish `hθ : T (Fr (y.val)⁻¹ (S 0 w)) = Fr (y.val)ᴴ (T (S 0 w))`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `hCx.S0θ _ hcG`. Rewrite `h` using `[Matrix.conjTranspose_conjTranspose]`. Use `congrArg (fun A : E.V →L[ℂ] E.V => A w) h` as an intermediate fact. Simplify `this` using `[ContinuousLinearMap.mul_apply]`. Establish `hΓ : Γ (Fr (y.val)ᴴ (T (S 0 w))) = Fr (y.val)ᴴ (T (S 0 w))`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : Γ (Fr (y.val)ᴴ (T (S 0 w))) = Fr (y.val)ᴴ (Γ (T (S 0 w)))`. Use `congrArg (fun A : E.V →L[ℂ] E.V => A (T (S 0 w))) (hCx.ΓFr _ hcG)` as an intermediate fact. Simplify `this` using `[ContinuousLinearMap.mul_apply]`. Establish `h2 : Γ (T (S 0 w)) = T (Γ (S 0 w))`. Use `congrArg (fun A : E.V →L[ℂ] E.V => A (S 0 w)) hCx.ΓT` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify `this` using `[ContinuousLinearMap.mul_apply]`. Establish `h3 : Γ (S 0 w) = S 0 w`. Use `congrArg (fun A : E.V →L[ℂ] E.V => A w) hCx.S0Γ` as an intermediate fact. Simplify `this` using `[ContinuousLinearMap.mul_apply]`. Rewrite using `[h1, h2, h3]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hval : (d * thE y).val = d.val * (y.val)ᴴ⁻¹` using `by rw [Units.val_mul, thE_val]`. Establish `hinv : ((d * thE y).val)⁻¹ * d.val = (y.val)ᴴ`. Rewrite using `[hval, Matrix.mul_inv_rev, Matrix.nonsing_inv_nonsing_inv _ (isUnit_iff_ne_zero.2 hcG), mul_assoc, Matrix.nonsing_inv_mul _ (isUnit_iff_ne_zero.2 hdG), mul_one]`. Simplify using `only [hBdef, hhdef, ContinuousLinearMap.mul_apply]`. Rewrite using `[hθ, hΓ, hinv, hval]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hmp : MeasurePreserving (thE (n` using `n)) μ μ := ⟨thE.continuous.measurable, map_thE μ⟩`. Establish `hI1 : ∫ y, B y (S 0 w) ∂μ = ∫ y, hh y ∂μ`. Simplify using `only [hBw]`. Rewrite using `[hmp.integral_comp thE.toHomeomorph.measurableEmbedding (fun y => hh (d * y))]`. Conclude with `integral_mul_left_eq_self hh d`.
+Both sides reduce to the same expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfCE : f ∈ CE E`. Use `⟨?_, fun g hg κ => ?_⟩` and prove the remaining obligations. Establish `h1 : ContDiffOn ℝ ∞ (fun x : Mat n => Fr x⁻¹) (GLs n)` using `hCx.smooth.comp GlobalTheory.CompanionTheory.LengthGL.contDiffOn_inv fun y hy => inv_mem_GLs hy`. Conclude with `((ContinuousLinearMap.apply ℂ E.V (S 0 v)).restrictScalars ℝ).contDiff.comp_contDiffOn h1`. Establish `hκ' : star κ.1 * κ.1 = 1` using `Matrix.mem_unitaryGroup_iff'.1 κ.2`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hinvκ : (g * κ.1)⁻¹ = (κ⁻¹ : Matrix.unitaryGroup (Fin n) ℂ).1 * g⁻¹`. Rewrite using `[Matrix.mul_inv_rev, Matrix.inv_eq_left_inv hκ']`. Both sides reduce to the same expression. Simplify using `only [hfdef]`. Rewrite using `[hinvκ, hCx.mul _ (unitary_mem_GLs _) _ (inv_mem_GLs hg), hCx.onK, ContinuousLinearMap.mul_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hact : act μ E k f 1 = val (infOf lam) • f 1` using `heig (infOf lam) f hfCE (hCx.eig v) 1 one_mem_GLs`. Establish `hI2 : ∫ y, hh y ∂μ = act μ E k f 1`. Unfold `act`. Use `congr 1`. Use function extensionality and compare the values at `y`.
-
-Establish `hyG` using `GlobalTheory.CompanionTheory.LengthGL.mem_GLs_val y`. Simplify using `only [hhdef, hfdef, one_mul, hS0v]`. Rewrite using `[hCx.mul _ (inv_mem_GLs hyG) _ hdG, ContinuousLinearMap.mul_apply]`. Establish `hf1 : f 1 = v` using `by simp only [hfdef, inv_one, hCx.one, ContinuousLinearMap.one_apply, hS0v]`. Rewrite using `[hI1, hI2, hact, hf1, ContinuousLinearMap.smul_apply, ContinuousLinearMap.mul_apply, ContinuousLinearMap.mul_apply]`.
-
-Rewrite using `[hIF, trL_apply, hCx.S0Γ, ContinuousLinearMap.coe_mul, LinearMap.trace_mul_comm, ← ContinuousLinearMap.coe_mul, hkey, ContinuousLinearMap.coe_smul, map_smul, smul_eq_mul]`. Use `congr 1`. Rewrite using `[ContinuousLinearMap.coe_mul, LinearMap.trace_mul_comm, ← ContinuousLinearMap.coe_mul, ← mul_assoc, hd]`. Conclude with `hCx.char z hz hz2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem end0 : End0 := by
   intro n lam E Fr ε ι S Γ T hCx _ _ μ _ σ c hσ hσ2 hform k val hkc hkeq hkΓ hksupp heig d z hd hz hz2

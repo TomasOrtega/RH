@@ -19,9 +19,9 @@ variable {K : Type} [Field K] [NumberField K] [StarRing K]
 namespace CxData
 
 /- English proof (translation)
-Establish `hex : ∃ R : Matrix (Fin n) (Fin d) K, P * R = 1` using `by choose f hf using h`. Use `⟨Matrix.of fun i k => f (Pi.single k 1) i, ?_⟩` and prove the remaining obligations. Use extensionality with `i k`. Establish `h1` using `congrFun (hf (Pi.single k 1)) i`. Rewrite `h1` using `[Pi.single_apply]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Matrix.one_apply, ← h1]`. Simplify using `only [Matrix.mul_apply, Matrix.mulVec, dotProduct, Matrix.of_apply]`. Unfold `rinv`. Rewrite using `[dif_pos hex]`. Conclude with `hex.choose_spec`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rinv_spec {d n : ℕ} (P : Matrix (Fin d) (Fin n) K) (h : Function.Surjective P.mulVec) :
     P * rinv P = 1 := by
@@ -40,13 +40,11 @@ theorem rinv_spec {d n : ℕ} (P : Matrix (Fin d) (Fin n) K) (h : Function.Surje
 variable {Bs : DefBase K} {A : DefAmb Bs} (X : CxData A) {fc : DefSub A → DefFace Bs} (cr : Crd A fc)
 
 /- English proof (translation)
-Introduce `ζ sEE hW h2 hBt hMI hZ`. Use `⟨?_, fun u => by simp [colDef, colOf, hZ.1 u], fun u t => inv_ne_zero (hZ.2.1 u t), fun u w => ?_⟩` and prove the remaining obligations. Use `swap`. Use `show vw w (ζ u (X.μ w))⁻¹ = 0`. Rewrite using `[ValuationRepresentative.vw_inv, hZ.2.2 u w, neg_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Introduce `u t φ F`. Distinguish the cases in `ht : t = Bs.μ0`. Substitute `ht show (fc X.zs).Dc.Pt u Bs.μ0 φ F = (ζ u Bs.μ0)⁻¹ * X.Bdef u φ ((X.rowMat cr true Bs.μ0).mulVec (((lv (fc X.zs) true).Pq Bs.μ0).mulVec F))` using the available equality. Rewrite using `[rowMat_base X cr true h2, Matrix.one_mulVec, hZ.1 u, inv_one, one_mul]`. Use `show (fc X.zs).Dc.Pt u Bs.μ0 φ F = (fc X.zs).Dc.Pt u Bs.μ0 φ ((rinv ((fc X.zs).Df1.Pq Bs.μ0)).mulVec (((fc X.zs).Df1.Pq Bs.μ0).mulVec F))`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hR` using `rinv_spec _ (hW.Pq_surj Bs.μ0)`. Establish `hk : F - (rinv ((fc X.zs).Df1.Pq Bs.μ0)).mulVec (((fc X.zs).Df1.Pq Bs.μ0).mulVec F) ∈ (fc X.zs).Df1.U Bs.μ0`. Rewrite using `[DefSide.U, LinearMap.mem_ker, Matrix.mulVecLin_apply, Matrix.mulVec_sub, Matrix.mulVec_mulVec, hR, Matrix.one_mulVec, sub_self]`. Establish `h0` using `hBt u φ _ hk`. Rewrite `h0` using `[map_sub, sub_eq_zero]`.
-
-Conclude with `h0`. Use `show (fc X.zs).Dc.Pt u t φ F = (ζ u t)⁻¹ * X.Bdef u φ ((X.rowMat cr true t).mulVec (((fc X.zs).Df1.Pq t).mulVec F))`. Rewrite using `[← hMI u t ht φ F, ← mul_assoc, inv_mul_cancel₀ (hZ.2.1 u t), one_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cutPairing : X.CutPairing cr := by
   intro ζ sEE hW h2 hBt hMI hZ
@@ -75,11 +73,11 @@ theorem cutPairing : X.CutPairing cr := by
     rw [← hMI u t ht φ F, ← mul_assoc, inv_mul_cancel₀ (hZ.2.1 u t), one_mul]
 
 /- English proof (translation)
-Introduce `hH0 hW1`. Apply `Formalism.IndefR.NonGenericAndKTwoTheorems.hecke_tuple_condition K Bs _ (X.data cr false) _` to reduce the goal to its premises. Introduce and unpack `w ⟨j, hj⟩ show X.μ w ≠ Bs.μ0`. Rewrite using `[← hH0.2 w]`. Apply `hW1` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Break down `hj with h | h` into its components or cases. Assume the negation of the conclusion as `hc`. Apply `h` to reduce the goal to its premises. Simplify using `only [CxData.W1, not_exists, not_or, not_not] at hc`. Take `⟨h1, h2, h3, -, -, -⟩` from `hc j`.
+Separate the alternatives or extract the components of the hypothesis. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Simplify using `[Formalism.IndefR.HeckeTupleConditions.Atup, h1, h2, h3]`. Conclude with `⟨j, Or.inr (Or.inr (Or.inr (Or.inr (Or.inl h))))⟩`. Conclude with `hH0.2`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem cutTuples2 (C CH : ℝ) : X.CutTuples2 cr C CH := by
   intro hH0 hW1

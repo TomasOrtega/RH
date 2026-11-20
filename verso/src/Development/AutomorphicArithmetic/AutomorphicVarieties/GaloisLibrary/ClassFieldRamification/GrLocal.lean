@@ -6,21 +6,19 @@ open NumberField IsDedekindDomain IntermediateField UpperTheory.V.Kum UpperTheor
 open scoped Pointwise
 
 /- English proof (translation)
-Introduce `p _ R G _ _ _ _ hpm hG`. Use `set J : Ideal (MonoidAlgebra R G) := (IsLocalRing.maximalIdeal R).comap (aug R G) with hJdef`. Establish `hJ : J.IsMaximal` using `Ideal.comap_isMaximal_of_surjective (aug R G) (UpperTheory.V.CF.augKer R G).2`. Establish `huniq : ∃! I : Ideal (MonoidAlgebra R G), I.IsMaximal` using `⟨J, hJ, fun M hM => UpperTheory.V.CF.grMaxOf p R G hpm hG M hM⟩`. Use `letI hloc : IsLocalRing (MonoidAlgebra R G) := IsLocalRing.of_unique_max_ideal huniq`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Establish `hmax : IsLocalRing.maximalIdeal (MonoidAlgebra R G) = J` using `(IsLocalRing.eq_maximalIdeal hJ).symm`. Establish `hsec : ∀ r : R, aug R G (algebraMap R (MonoidAlgebra R G) r) = r` using `fun r => (aug R G).commutes r`. Use `⟨hloc, hmax, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hmax]`. Apply `le_antisymm` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Establish `hax : aug R G x ∈ IsLocalRing.maximalIdeal R` using `hx`. Establish `h1 : algebraMap R (MonoidAlgebra R G) (aug R G x) ∈ (IsLocalRing.maximalIdeal R).map (algebraMap R (MonoidAlgebra R G))` using `Ideal.mem_map_of_mem _ hax`. Establish `h2 : x - algebraMap R (MonoidAlgebra R G) (aug R G x) ∈ augIdeal R G`. Rewrite using `[← (UpperTheory.V.CF.augKer R G).1, RingHom.mem_ker]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show aug R G (x - algebraMap R (MonoidAlgebra R G) (aug R G x)) = 0`. Rewrite using `[map_sub, hsec, sub_self]`. Establish `: x = algebraMap R (MonoidAlgebra R G) (aug R G x) + (x - algebraMap R (MonoidAlgebra R G) (aug R G x))` using `by ring`. Rewrite using `[this]`. Conclude with `Ideal.add_mem _ (Ideal.mem_sup_left h1) (Ideal.mem_sup_right h2)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `sup_le` to reduce the goal to its premises. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `r hr`. Use `show aug R G (algebraMap R (MonoidAlgebra R G) r) ∈ IsLocalRing.maximalIdeal R`. Rewrite using `[hsec]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hr`. Introduce `x hx`. Rewrite `hx` using `[← (UpperTheory.V.CF.augKer R G).1, RingHom.mem_ker]`. Use `show aug R G x ∈ IsLocalRing.maximalIdeal R`. Rewrite using `[show aug R G x = 0 from hx]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Conclude with `zero_mem _`. Introduce `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Conclude with `hx.map (aug R G)`.
-
-Introduce `hx`. Assume the negation of the conclusion as `hnx`. Establish `hxm : x ∈ IsLocalRing.maximalIdeal (MonoidAlgebra R G)` using `hnx`. Rewrite `hxm` using `[hmax]`. Conclude with `hxm hx`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.CF.grLocal :
     ∀ (p : ℕ) [Fact p.Prime] (R G : Type) [CommRing R] [IsLocalRing R] [CommGroup G] [Finite G], (p : R) ∈ IsLocalRing.maximalIdeal R → IsPGroup p G → ∃ _ : IsLocalRing (MonoidAlgebra R G), IsLocalRing.maximalIdeal (MonoidAlgebra R G) = (IsLocalRing.maximalIdeal R).comap (aug R G) ∧ IsLocalRing.maximalIdeal (MonoidAlgebra R G) = (IsLocalRing.maximalIdeal R).map (algebraMap R (MonoidAlgebra R G)) ⊔ augIdeal R G ∧ ∀ x, IsUnit x ↔ IsUnit (aug R G x) := by

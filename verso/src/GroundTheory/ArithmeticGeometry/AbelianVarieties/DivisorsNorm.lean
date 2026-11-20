@@ -13,27 +13,27 @@ universe u
 variable {F : Type u} [Field F] (W : WeierstrassCurve F)
 
 /- English proof (translation)
-The claim follows from `(Module.finrank_eq_card_basis (CoordinateRing.basis W.toAffine)).trans (Fintype.card_fin 2)`.
+A detailed English derivation is pending.
 -/
 theorem finrank_coordinateRing : Module.finrank F[X] W.toAffine.CoordinateRing = 2 :=
   (Module.finrank_eq_card_basis (CoordinateRing.basis W.toAffine)).trans (Fintype.card_fin 2)
 
 /- English proof (translation)
-Simplify using `only [XClass, AdjoinRoot.mk_C, AdjoinRoot.algebraMap_eq]`.
+Simplify using the standard rewrite rules.
 -/
 theorem algebraMap_X_sub_C (x : F) :
     algebraMap F[X] W.toAffine.CoordinateRing (X - C x) = XClass W.toAffine x := by
   simp only [XClass, AdjoinRoot.mk_C, AdjoinRoot.algebraMap_eq]
 
 /- English proof (translation)
-Rewrite using `[XIdeal, Ideal.map_span, Set.image_singleton, algebraMap_X_sub_C]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem XIdeal_eq_map (x : F) : XIdeal W.toAffine x =
     (Ideal.span {X - C x}).map (algebraMap F[X] W.toAffine.CoordinateRing) := by
   rw [XIdeal, Ideal.map_span, Set.image_singleton, algebraMap_X_sub_C]
 
 /- English proof (translation)
-Rewrite using `[Ideal.span_le, Set.singleton_subset_iff, SetLike.mem_coe, Ideal.mem_comap, algebraMap_X_sub_C]`. Conclude with `Ideal.subset_span (Set.mem_insert _ _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_X_sub_C_le_comap_XYIdeal (x : F) (y : F[X]) :
     Ideal.span {X - C x} ≤ (XYIdeal W.toAffine x y).comap (algebraMap F[X] _) := by
@@ -44,13 +44,13 @@ theorem span_X_sub_C_le_comap_XYIdeal (x : F) (y : F[X]) :
 variable [IsAlgClosed F] [W.IsElliptic]
 
 /- English proof (translation)
-Establish `hq : (Ideal.span {X - C x} : Ideal F[X]).IsMaximal` using `PrincipalIdealRing.isMaximal_of_irreducible (irreducible_X_sub_C x)`. Establish `hle : ∀ {y' : F}, W.toAffine.Nonsingular x y' → Ideal.relNorm F[X] (XYIdeal W.toAffine x (C y')) ≤ Ideal.span {X - C x}`. Introduce `y' h'`. Use `(Ideal.relNorm_le_comap F[X] _).trans ?_` and prove the remaining obligations. Conclude with `(hq.eq_of_le (Ideal.comap_ne_top _ (isMaximal_XYIdeal h'.1).ne_top) (span_X_sub_C_le_comap_XYIdeal W x (C y'))).ge`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hmul : Ideal.relNorm F[X] (XYIdeal W.toAffine x (C (W.toAffine.negY x y))) * Ideal.relNorm F[X] (XYIdeal W.toAffine x (C y)) = Ideal.span {X - C x} ^ 2`. Rewrite using `[← map_mul, XYIdeal_neg_mul h, XIdeal_eq_map, Ideal.relNorm_algebraMap, finrank_coordinateRing]`. Take `⟨a, ha⟩` from `Ideal.dvd_iff_le.mpr (hle h)`. Take `⟨b, hb⟩` from `Ideal.dvd_iff_le.mpr (hle ((nonsingular_neg ..).mpr h))`. Rewrite `hmul` using `[ha, hb, pow_two]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hq0 : (Ideal.span {X - C x} : Ideal F[X]) ≠ 0`. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `X_sub_C_ne_zero x`. Establish `hba : b * a = 1`. Use `mul_left_cancel₀ (mul_ne_zero hq0 hq0) ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `ha1 : a = 1`. Rewrite `hba`, the goal using `[Ideal.one_eq_top]`. Conclude with `eq_top_iff.mpr (by rw [← hba, mul_comm]; exact Ideal.mul_le_left)`. Rewrite using `[ha, ha1, mul_one]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem relNorm_XYIdeal {x y : F} (h : W.toAffine.Nonsingular x y) :
     Ideal.relNorm F[X] (XYIdeal W.toAffine x (C y)) = Ideal.span {X - C x} := by
@@ -85,7 +85,7 @@ theorem relNorm_XYIdeal {x y : F} (h : W.toAffine.Nonsingular x y) :
 
 omit [IsAlgClosed F] [W.IsElliptic] in
 /- English proof (translation)
-The claim follows from `Filter.eventually_cofinite.mp (FractionalIdeal.finite_factors I)`.
+A detailed English derivation is pending.
 -/
 theorem finite_support_count [IsDedekindDomain W.toAffine.CoordinateRing]
     (I : FractionalIdeal W.toAffine.CoordinateRing⁰ W.toAffine.FunctionField) :
@@ -94,7 +94,7 @@ theorem finite_support_count [IsDedekindDomain W.toAffine.CoordinateRing]
   Filter.eventually_cofinite.mp (FractionalIdeal.finite_factors I)
 
 /- English proof (translation)
-Establish `hc` using `fun v => FractionalIdeal.count_maximal W.toAffine.FunctionField v (heightOneOfNonsingular h)`. Simplify using `only [heightOneOfNonsingular_asIdeal] at hc`. Rewrite using `[finsum_eq_single _ (heightOneOfNonsingular h) (fun v hv => by`. Rewrite using `[hc v, if_neg (fun e => hv e.symm)]), hc, if_pos rfl]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem finsum_count_XYIdeal {x y : F} (h : W.toAffine.Nonsingular x y) :
     ∑ᶠ v : HeightOneSpectrum W.toAffine.CoordinateRing,
@@ -109,15 +109,15 @@ theorem finsum_count_XYIdeal {x y : F} (h : W.toAffine.Nonsingular x y) :
     rw [hc v, if_neg (fun e => hv e.symm)]), hc, if_pos rfl]
 
 /- English proof (translation)
-Proceed by induction on `I using UniqueFactorizationMonoid.induction_on_prime generalizing p with`. Consider the case `h₁ => exact absurd rfl hI`. Consider the case `h₂ I hu`. Rewrite `hp` using `[Ideal.isUnit_iff.mp hu, Ideal.relNorm_top, eq_comm, Ideal.span_singleton_eq_top]`. Rewrite using `[Ideal.isUnit_iff.mp hu, FractionalIdeal.coeIdeal_top]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[FractionalIdeal.count_one, natDegree_eq_zero_of_isUnit hp]`. Consider the case `h₃ a P ha hP ih`. Establish `hP0 : P ≠ ⊥` using `hP.ne_zero`. Use `Ideal.isPrime_of_prime hP` as an intermediate fact. Take `⟨x, y, h, rfl⟩` from `exists_eq_XYIdeal W hP0`.
+Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨g, hg⟩ : ∃ g, Ideal.relNorm F[X] a = Ideal.span {g}` from `⟨_, (Submodule.IsPrincipal.span_singleton_generator _).symm⟩`. Establish `hg0 : g ≠ 0`. Introduce and unpack `rfl`. Establish `hb : Ideal.relNorm F[X] a = ⊥` using `by rw [hg]; simp`. Conclude with `ha (Ideal.relNorm_eq_bot_iff.mp hb)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hp` using `[map_mul, relNorm_XYIdeal W h, hg, Ideal.span_singleton_mul_span_singleton, Ideal.span_singleton_eq_span_singleton]`. Establish `hdeg : p.natDegree = ((X - C x) * g).natDegree` using `natDegree_eq_of_degree_eq (degree_eq_degree_of_associated hp).symm`. Establish `hc0 : ((XYIdeal W.toAffine x (C y) : Ideal _) : FractionalIdeal W.toAffine.CoordinateRing⁰ W.toAffine.FunctionField) ≠ 0` using `FractionalIdeal.coeIdeal_ne_zero.mpr hP0`. Establish `ha0 : (a : FractionalIdeal W.toAffine.CoordinateRing⁰ W.toAffine.FunctionField) ≠ 0` using `FractionalIdeal.coeIdeal_ne_zero.mpr ha`. Rewrite using `[hdeg, natDegree_mul (X_sub_C_ne_zero x) hg0, natDegree_X_sub_C, FractionalIdeal.coeIdeal_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Repeatedly rewrite using `[FractionalIdeal.count_mul _ _ hc0 ha0]`. Rewrite using `[finsum_add_distrib (finite_support_count W _) (finite_support_count W _), finsum_count_XYIdeal W h, ← ih ha hg]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem natDegree_eq_finsum_count_of_relNorm_eq {I : Ideal W.toAffine.CoordinateRing} (hI : I ≠ 0)
     {p : F[X]} (hp : Ideal.relNorm F[X] I = Ideal.span {p}) :
@@ -158,7 +158,7 @@ theorem natDegree_eq_finsum_count_of_relNorm_eq {I : Ideal W.toAffine.Coordinate
     ring
 
 /- English proof (translation)
-Use `natDegree_eq_finsum_count_of_relNorm_eq W ?_ ?_` and prove the remaining obligations. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]` and apply the resulting hypothesis. Rewrite using `[Ideal.relNorm_singleton, Algebra.intNorm_eq_norm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 -/
 theorem natDegree_norm_eq_finsum_count {f : W.toAffine.CoordinateRing} (hf : f ≠ 0) :
     ((Algebra.norm F[X] f).natDegree : ℤ) = ∑ᶠ v : HeightOneSpectrum W.toAffine.CoordinateRing,

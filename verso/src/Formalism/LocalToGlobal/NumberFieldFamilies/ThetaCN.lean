@@ -19,21 +19,21 @@ variable {R : Type} [CommRing R] {ρ : ℕ}
 def UTri (T : Matrix (Fin ρ) (Fin ρ) R) : Prop := ∀ j i, i ≤ j → (T - 1) j i = 0
 
 /- English proof (translation)
-Use `h j i e.le` as an intermediate fact. Rewrite `this` using `[Matrix.sub_apply, Matrix.one_apply_ne e.ne', sub_zero]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem UTri.low {T : Matrix (Fin ρ) (Fin ρ) R} (h : UTri T) {j i : Fin ρ} (e : i < j) : T j i = 0 := by
   have := h j i e.le
   rwa [Matrix.sub_apply, Matrix.one_apply_ne e.ne', sub_zero] at this
 
 /- English proof (translation)
-Use `h i i le_rfl` as an intermediate fact. Rewrite `this` using `[Matrix.sub_apply, Matrix.one_apply_eq, sub_eq_zero]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem UTri.diag {T : Matrix (Fin ρ) (Fin ρ) R} (h : UTri T) (i : Fin ρ) : T i i = 1 := by
   have := h i i le_rfl
   rwa [Matrix.sub_apply, Matrix.one_apply_eq, sub_eq_zero] at this
 
 /- English proof (translation)
-Introduce `j i e`. Break down `e.lt_or_eq with e | rfl` into its components or cases. Rewrite using `[Matrix.sub_apply, Matrix.one_apply_ne e.ne', sub_zero, h1 j i e]`. Rewrite using `[Matrix.sub_apply, Matrix.one_apply_eq, h2, sub_self]`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem uTri_of {T : Matrix (Fin ρ) (Fin ρ) R} (h1 : ∀ j i, i < j → T j i = 0) (h2 : ∀ i, T i i = 1) : UTri T := by
   intro j i e
@@ -42,9 +42,9 @@ theorem uTri_of {T : Matrix (Fin ρ) (Fin ρ) R} (h1 : ∀ j i, i < j → T j i 
   · rw [Matrix.sub_apply, Matrix.one_apply_eq, h2, sub_self]
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single i]`. Introduce `k _ hk`. Break down `lt_or_gt_of_ne hk with e | e` into its components or cases. Rewrite using `[h i k e, zero_mul]`. Rewrite using `[h' k i e, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `fun h => absurd (Finset.mem_univ i) h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem tri_diag {T W : Matrix (Fin ρ) (Fin ρ) R} (h : ∀ j i, i < j → T j i = 0) (h' : ∀ j i, i < j → W j i = 0) (i : Fin ρ) :
     (T * W) i i = T i i * W i i := by
@@ -56,9 +56,9 @@ theorem tri_diag {T W : Matrix (Fin ρ) (Fin ρ) R} (h : ∀ j i, i < j → T j 
   · exact fun h => absurd (Finset.mem_univ i) h
 
 /- English proof (translation)
-Use `uTri_of (fun j i e => ?_) fun i => by rw [tri_diag (fun _ _ => h.low) (fun _ _ => h'.low), h.diag, h'.diag, one_mul]` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Break down `lt_or_ge k j with a | a` into its components or cases. Rewrite using `[h.low a, zero_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h'.low (lt_of_lt_of_le e a), mul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem UTri.mul {T W : Matrix (Fin ρ) (Fin ρ) R} (h : UTri T) (h' : UTri W) : UTri (T * W) := by
   refine uTri_of (fun j i e => ?_) fun i => by rw [tri_diag (fun _ _ => h.low) (fun _ _ => h'.low), h.diag, h'.diag, one_mul]
@@ -69,11 +69,11 @@ theorem UTri.mul {T W : Matrix (Fin ρ) (Fin ρ) R} (h : UTri T) (h' : UTri W) :
   · rw [h'.low (lt_of_lt_of_le e a), mul_zero]
 
 /- English proof (translation)
-Establish `hij : i ≠ j` using `fun a => by rw [a] at e; omega`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_add i j hij, h.diag, h'.diag, one_mul, mul_one, add_comm]`. Introduce `k _ hk`. Distinguish the cases in `a : k < i`. Rewrite using `[h.low a, zero_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Establish `: j < k`. Establish `h1 : k.1 ≠ i.1` using `fun b => hk.1 (Fin.ext b)`. Establish `h2 : k.1 ≠ j.1` using `fun b => hk.2 (Fin.ext b)`. Establish `h3 : ¬ k.1 < i.1` using `a`. Use `show j.1 < k.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[h'.low this, mul_zero]`. Conclude with `fun h => absurd (Finset.mem_univ i) h`. Conclude with `fun h => absurd (Finset.mem_univ j) h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem UTri.sup {T W : Matrix (Fin ρ) (Fin ρ) R} (h : UTri T) (h' : UTri W) {i j : Fin ρ} (e : j.1 = i.1 + 1) :
     (T * W) i j = T i j + W i j := by
@@ -93,7 +93,7 @@ theorem UTri.sup {T W : Matrix (Fin ρ) (Fin ρ) R} (h : UTri T) (h' : UTri W) {
   · exact fun h => absurd (Finset.mem_univ j) h
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `LinearMap.exists_leftInverse_of_injective (Matrix.toLin' C) (LinearMap.ker_eq_bot.2 (Matrix.mulVec_injective_iff.2 h))`. Use `⟨LinearMap.toMatrix' g, ?_⟩` and prove the remaining obligations. Rewrite using `[← LinearMap.toMatrix'_toLin' C, ← LinearMap.toMatrix'_comp, hg, LinearMap.toMatrix'_id]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem left_inv {K : Type} [Field K] {n : ℕ} (C : Matrix (Fin n) (Fin ρ) K) (h : LinearIndependent K C.transpose) :
     ∃ L : Matrix (Fin ρ) (Fin n) K, L * C = 1 := by
@@ -111,14 +111,14 @@ def eA : Matrix (Fin B.rank) (Fin d.ρ) (AE D) := d.e.map (incA D)
 def lA : Matrix (Fin d.ρ) (Fin B.rank) (AE D) := (left_inv d.e d.e_iso.1).choose.map (incA D)
 
 /- English proof (translation)
-Unfold `lA eA`. Rewrite using `[← Matrix.map_mul, (left_inv d.e d.e_iso.1).choose_spec, Matrix.map_one _ (incA D).map_zero (incA D).map_one]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem lA_eA : HMul.hMul (lA d) (eA d) = (1 : Matrix (Fin d.ρ) (Fin d.ρ) (AE D)) := by
   unfold lA eA
   rw [← Matrix.map_mul, (left_inv d.e d.e_iso.1).choose_spec, Matrix.map_one _ (incA D).map_zero (incA D).map_one]
 
 /- English proof (translation)
-Rewrite using `[Matrix.mulVec_mulVec, lA_eA, Matrix.one_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lA_vec (a : Fin d.ρ → AE D) : (lA d).mulVec ((eA d).mulVec a) = a := by
   rw [Matrix.mulVec_mulVec, lA_eA, Matrix.one_mulVec]
@@ -142,7 +142,7 @@ Both sides reduce to the same expression.
 theorem mt_mul (g h : GA D B) : mt B (g * h) = mt B g * mt B h := rfl
 
 /- English proof (translation)
-Establish `e : tM d n = T` using `by rw [tM, h1, ← Matrix.mul_assoc, lA_eA, Matrix.one_mul]`. Use `⟨⟨e ▸ h1, e ▸ h2, fun x hx => ?_⟩, e⟩` and prove the remaining obligations. Take `⟨a, ha⟩` from `h3 x hx`. Rewrite using `[bV, ha, add_sub_cancel_left, lA_vec]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem good_of {n : GA D B} (T : Matrix (Fin d.ρ) (Fin d.ρ) (AE D)) (h1 : HMul.hMul (mt B n) (eA d) = HMul.hMul (eA d) T)
     (h2 : UTri T) (h3 : ∀ x, Perp d x → ∃ a, (mt B n).mulVec (ratV x) = ratV x + (eA d).mulVec a) : Good d n ∧ tM d n = T := by
@@ -152,7 +152,7 @@ theorem good_of {n : GA D B} (T : Matrix (Fin d.ρ) (Fin d.ρ) (AE D)) (h1 : HMu
   rw [bV, ha, add_sub_cancel_left, lA_vec]
 
 /- English proof (translation)
-Establish `key : ∀ x, Perp d x → (mt B (n * n')).mulVec (ratV x) = ratV x + (eA d).mulVec (bV d n x + (tM d n).mulVec (bV d n' x))` using `fun x hx => by`. Rewrite using `[mt_mul, ← Matrix.mulVec_mulVec, h'.2.2 x hx, Matrix.mulVec_add, h.2.2 x hx, Matrix.mulVec_mulVec, h.1, ← Matrix.mulVec_mulVec, Matrix.mulVec_add, add_assoc]`. Use `⟨good_of _ ?_ (h.2.1.mul h'.2.1) fun x hx => ⟨_, key x hx⟩, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[mt_mul, Matrix.mul_assoc, h'.1, ← Matrix.mul_assoc, h.1, Matrix.mul_assoc]`. Rewrite using `[bV, key x hx, add_sub_cancel_left, lA_vec]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem Good.mul {n n' : GA D B} (h : Good d n) (h' : Good d n') : (Good d (n * n') ∧ tM d (n * n') = tM d n * tM d n') ∧
     ∀ x, Perp d x → bV d (n * n') x = bV d n x + (tM d n).mulVec (bV d n' x) := by
@@ -171,7 +171,7 @@ def valN (n : GA D B) : AE D :=
     ∑ i : Fin d.ρ, if i.1 + 1 = d.ρ then incA D (d.c i) * bV d n d.z i else 0
 
 /- English proof (translation)
-Rewrite using `[Algebra.trace_apply, Algebra.trace_apply, ← LinearMap.trace_baseChange, Algebra.baseChange_lmul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem trace_gen {F E R : Type} [Field F] [Field E] [Algebra F E] [FiniteDimensional F E] [CommRing R] [Algebra F R] (r : E) :
     Algebra.trace R (R ⊗[F] E) (inclR R r) = algebraMap F R (Algebra.trace F E r) := by

@@ -13,37 +13,31 @@ open scoped NNReal
 namespace GlobalTheory.K5.TopRoots
 
 /- English proof (translation)
-Introduce `p _ Ω _ _ hp2 hclo T v hv _ hp1`. Establish `hpp : p.Prime` using `Fact.out`. Set `S : Set Ω` to `Set.range T.ζ ∪ Set.range T.qq`. Set `B` to `Algebra.adjoin (O0 p) S`. Set `F` to `Fix Ω (⨅ n, Gn T n)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hBle : B ≤ integralClosure (O0 p) Ω`. Rewrite using `[Algebra.adjoin_le_iff]`. Introduce and unpack `y (⟨n, rfl⟩ | ⟨n, rfl⟩)`. Use `IsIntegral.of_pow (pow_pos hpp.pos n) ?_` and prove the remaining obligations. Rewrite using `[(T.prim n).pow_eq_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `isIntegral_one`. Use `IsIntegral.of_pow (pow_pos hpp.pos n) ?_` and prove the remaining obligations. Rewrite using `[Basic.qq_pow]`. Conclude with `isIntegral_algebraMap`. Establish `hBint : ∀ x ∈ B, v x ≤ 1` using `fun x hx => (hv x).2 (hBle hx)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hBF : ∀ x ∈ B, x ∈ F`. Introduce `x hx g`. Establish `hg : (g : Gal p Ω) ∈ ⨅ n, Gn T n` using `g.2`. Rewrite `hg` using `[Subgroup.mem_iInf]`. Establish `hle : B ≤ AlgHom.equalizer (g : Gal p Ω).toAlgHom (AlgHom.id (O0 p) Ω)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[Algebra.adjoin_le_iff]`. Introduce and unpack `y (⟨n, rfl⟩ | ⟨n, rfl⟩)`. Conclude with `((Basic.mem_gn T n _).1 (hg n)).1`. Conclude with `((Basic.mem_gn T n _).1 (hg n)).2`. Use `hle hx` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Rewrite `this` using `[AlgHom.mem_equalizer]`. Conclude with `this`. Use `set θ := v (T.ζ 1 - 1) with hθ`. Establish `hz1` using `GlobalTheory.T.valuation_tower_zeta_sub_one p Ω hp2 T v hp1 1 le_rfl`. Establish `hθ1 : θ < 1` using `hz1.1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Set `good : Ω → Prop` to `fun x => ∃ w ∈ F, v (x - w ^ p) ≤ θ * v x`. Establish `hgoodB : ∀ x ∈ B, v (p : Ω) ≤ θ * v x → good x`. Introduce `x hx hvx`. Take `⟨y, hy, z, hz, e⟩` from `GlobalTheory.T.frobenius_surjective_mod_prime_cyclotomicKummerTower p Ω T x hx`. Use `⟨y, hBF y hy, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `: x - y ^ p = (p : Ω) * z` using `by rw [e]; ring`. Rewrite using `[this, map_mul]`. Combine the equalities or inequalities in the displayed calculation. Establish `hunit : ∀ u ∈ B, ∀ u' ∈ B, u * u' = 1 → good u`. Introduce `u hu u' hu' e`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hvu : v u = 1`. Establish `h1` using `hBint u hu`. Establish `h2` using `hBint u' hu'`. Establish `h3 : v u * v u' = 1` using `by rw [← map_mul, e, map_one]`. Assume the negation of the conclusion as `hne`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Establish `hlt : v u < 1` using `lt_of_le_of_ne h1 hne`. Establish `: v u * v u' < 1`. Combine the equalities or inequalities in the displayed calculation. Conclude with `absurd h3 (ne_of_lt this)`. Use `hgoodB u hu ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hvu, mul_one]`. Combine the equalities or inequalities in the displayed calculation. Establish `hzeta : ∀ n, 1 ≤ n → good (T.ζ n - 1)`. Introduce `n hn`. Establish `hmem : T.ζ n - 1 ∈ B` using `Subalgebra.sub_mem _ (Algebra.subset_adjoin (Or.inl ⟨n, rfl⟩)) (Subalgebra.one_mem _)`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `hgoodB _ hmem (GlobalTheory.T.valuation_tower_zeta_sub_one p Ω hp2 T v hp1 n hn).2`. Establish `hB : ∀ b ∈ B, good b`. Introduce `b hb`. Distinguish the cases in `hb0 : b = 0`. Use `⟨0, F.zero_mem, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[hb0, zero_pow hpp.ne_zero, sub_zero, map_zero]`. Conclude with `zero_le`. Take `⟨n, k, hn, u, hu, u', hu', e, rfl⟩` from `GlobalTheory.T.eq_unit_mul_pow_cyclotomic_uniformizer p Ω hclo T b hb hb0`. Establish `h1` using `hunit u hu u' hu' e`. Establish `h2` using `(GlobalTheory.T.approxPthRoot_closed_mul_div_pow Ω v p F θ hθ1 _ _ (hzeta n hn) (hzeta n hn)).2.2 k`.
-
-Conclude with `(GlobalTheory.T.approxPthRoot_closed_mul_div_pow Ω v p F θ hθ1 _ _ h1 h2).1`. Use `⟨θ, hθ1, fun x hx => ?_⟩` and prove the remaining obligations. Use `haveI : CharZero Ω := Basic.charZero_of_isClo hclo`. Use `haveI : IsAlgClosed Ω := hclo.clo`. Use `haveI : Algebra.IsAlgebraic (O0 p) Ω := hclo.alg`.
-
-Establish `hfix : ∀ g : Ω ≃ₐ[O0 p] Ω, (∀ s ∈ S, g s = s) → g x = x`. Introduce `g hg`. Establish `hgm : g ∈ ⨅ n, Gn T n`. Rewrite using `[Subgroup.mem_iInf]`. Introduce `n`.
-
-Conclude with `(Basic.mem_gn T n g).2 ⟨hg _ (Or.inl ⟨n, rfl⟩), hg _ (Or.inr ⟨n, rfl⟩)⟩`. Conclude with `hx ⟨g, hgm⟩`. Take `⟨b, hb, c, hc, hc0, rfl⟩` from `GlobalTheory.T.exists_div_mem_adjoin_of_fixed (O0 p) Ω hclo.inj S x hfix`. Conclude with `(GlobalTheory.T.approxPthRoot_closed_mul_div_pow Ω v p F θ hθ1 _ _ (hB b hb) (hB c hc)).2.1 hc0`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem approxRoot_fix_tower : ∀ (p : ℕ) [Fact p.Prime] (Ω : Type) [Field Ω] [Algebra (O0 p) Ω],
     p ≠ 2 → IsClo p Ω → ∀ (T : Tower p Ω) (v : Valuation Ω ℝ≥0), (∀ x : Ω, v x ≤ 1 ↔ IsInt p x) →

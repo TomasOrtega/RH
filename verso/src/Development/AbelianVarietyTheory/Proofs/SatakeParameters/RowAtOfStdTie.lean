@@ -11,15 +11,13 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.Inhab Fo
 namespace GlobalTheory.Pdv
 
 /- English proof (translation)
-Introduce `hA hG hD hI Bd Q Lk ker hE`. Use `choose x0 hx0 using GlobalTheory.ShapeUniform.shape_uniform`. Use `⟨fun κ D O c b => x0 κ.eps ≤ O.L.sc.x ∧ StdTie D O (ker D O c b), ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : RowE Q Lk (fun κ D O _ _ => x0 κ.eps ≤ O.L.sc.x)`. Unfold `RowE EvP`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Use `ParEv.of_all fun κ _ => ⟨x0 κ.eps, fun K hk hx β _ c b _ => ?_⟩` and prove the remaining obligations. Use `show x0 κ.eps ≤ β.p.L.sc.x`. Rewrite using `[β.sc]`. Conclude with `hx`. Conclude with `(h1.and hE).mono fun _ _ _ H => H`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `𝒜 σ s eps Fm hc x hx i`. Take `⟨κ, hl, _, ht⟩` from `s Fm hc`. Take `⟨_, h0, hst⟩` from `ht x hx i`. Establish `hxx : (Fm.L x i).sc.x = x` using `Fm.L_x x i hx`. Establish `hge : x0 eps ≤ x`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0' : x0 κ.eps ≤ (Fm.L x i).sc.x` using `h0`. Rewrite `h0'` using `[hl.eps_eq, hxx]`. Conclude with `h0'`. Establish `hsh` using `hx0 eps Fm x hge hx i`. Establish `hsb : 3 ≤ (Fm.D x i).host.splitBound` using `(hsh (OrbitPlaces.ofKer (nuRowOK (Fm.D x i)) (ker _ _ _ (σ Fm hc x hx i)).ent (fun _ => 0) (fun _ _ => 0) (fun _ _ => 0))).2.2`.
-
-Conclude with `GlobalTheory.T.kernelDatumConditions_at_standardKernelComparison hA hG hD hI (Fm.D x i) (objAt Fm x hx i) (ker _ _ _ (σ Fm hc x hx i)) hst hsb Fm.fixed.2.1.ge Fm.fixed.2.2.1.ge (fun Ee => ⟨(hsh Ee).1, (hsh Ee).2.1⟩)`.
+A detailed English derivation is pending.
 -/
 theorem rowAt_of_stdTie : Formalism.L2.KerInert.AlgTAll → Formalism.L2.KerInert.GenusOneModelExistsLattice → Formalism.L2.KerInert.Rep.CurveDict → Formalism.L2.KerInert.IntInert → ∀ {Bd : BdT} (Q : V4.Slot) (Lk : LkT Bd) (ker : ∀ (D : D7) (O : Obj D) (c : ℝ), Bd D O c → KerEntTied O.ex), RowE Q Lk (fun _ D O c b => StdTie D O (ker D O c b)) → Row Q Lk (AtAll fun D O c b => GlobalTheory.Pdv.At O.ex (ker D O c b).ent) := by
   intro hA hG hD hI Bd Q Lk ker hE

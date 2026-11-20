@@ -6,11 +6,11 @@ namespace Bl.CurryModusPonens
 
 open MeasureTheory in
 /- English proof (translation)
-Use `⟨(MeasurableEquiv.curry ι κ X).measurable, ?_⟩` and prove the remaining obligations. Establish `h : (Measure.pi fun _ : ι × κ => μ) = (Measure.pi fun _ : ι => Measure.pi fun _ : κ => μ).map (MeasurableEquiv.curry ι κ X).symm`. Use `Measure.pi_eq fun s hs => ?_` and prove the remaining obligations. Rewrite using `[MeasurableEquiv.map_apply]`. Establish `hpre : (MeasurableEquiv.curry ι κ X).symm ⁻¹' (Set.univ.pi s) = Set.univ.pi (fun i => Set.univ.pi (fun j => s (i, j)))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use extensionality with `f`. Simplify using `[MeasurableEquiv.coe_curry_symm, Set.mem_pi, Prod.forall]`. Rewrite using `[hpre, Measure.pi_pi]`. Repeatedly rewrite using `[Measure.pi_pi]`. Rewrite using `[Fintype.prod_prod_type]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h]`. Conclude with `(MeasurableEquiv.curry ι κ X).map_map_symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma curry_mp {ι : Type u_1} {κ : Type u_2} {X : Type} [Fintype ι] [Fintype κ]
     [MeasurableSpace X] (μ : Measure X) [SigmaFinite μ] :
@@ -32,7 +32,7 @@ private lemma curry_mp {ι : Type u_1} {κ : Type u_2} {X : Type} [Fintype ι] [
   exact (MeasurableEquiv.curry ι κ X).map_map_symm
 
 /- English proof (translation)
-Introduce `ι κ _ _`. Conclude with `curry_mp _`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem goal1 :
   ∀ (ι : Type u_1) (κ : Type u_2) [inst : Fintype.{u_1} ι] [inst_1 : Fintype.{u_2} κ],

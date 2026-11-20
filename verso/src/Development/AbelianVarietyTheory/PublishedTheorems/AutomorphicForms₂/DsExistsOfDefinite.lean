@@ -12,7 +12,7 @@ namespace GlobalTheory.Published.DSExistsRecordModel
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Use `⟨Finset.univ.image fun a : Fin n => ((((n : ℚ) - 1) / 2 - ((a : ℕ) : ℚ)), ε a), DSExistsModel.lamDet n 0, ε, ⟨(DSExistsModel.lamDet_hc n 0).1, fun a => ((n : ℚ) - 1) / 2 - ((a : ℕ) : ℚ), fun a => ?_, rfl⟩, DSExistsModel.lamDet_hc n 0, rfl, rfl⟩` and prove the remaining obligations. Simplify using `[DSExistsModel.lamDet, Formalism.QuantumDeterminants.rhoStd]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem goodPar_of_signs (n : ℕ) (ε : Fin n → Bool) :
     ∃ S : SPar, GoodPar n (Finset.univ.filter fun a => ε a = true).card
@@ -23,9 +23,9 @@ theorem goodPar_of_signs (n : ℕ) (ε : Fin n → Bool) :
   simp [DSExistsModel.lamDet, Formalism.QuantumDeterminants.rhoStd]
 
 /- English proof (translation)
-Break down `h with h | h` into its components or cases. Use `⟨false, funext fun a => ?_⟩` and prove the remaining obligations. Rewrite `h` using `[Finset.card_eq_zero, Finset.filter_eq_empty_iff]`. Simplify using `using h (Finset.mem_univ a)`. Use `⟨true, funext fun a => ?_⟩` and prove the remaining obligations.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h` using `[Finset.card_eq_zero, Finset.filter_eq_empty_iff]`. Simplify using `using h (Finset.mem_univ a)`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem const_of_card {n : ℕ} (ε : Fin n → Bool)
     (h : (Finset.univ.filter fun a => ε a = true).card = 0 ∨ (Finset.univ.filter fun a => ε a = false).card = 0) :
@@ -39,9 +39,9 @@ theorem const_of_card {n : ℕ} (ε : Fin n → Bool)
     simpa using h (Finset.mem_univ a)
 
 /- English proof (translation)
-Introduce `hV hS`. Use `choose lam ε hE hP hp hq using hS`. Establish `key : ∀ τ, ∃ (H : Type) (_ : NormedAddCommGroup H) (_ : InnerProductSpace ℂ H) (σ : Matrix (Fin V.rank) (Fin V.rank) ℂ → (H →L[ℂ] H)), IsDS (ε τ) (lam τ) σ`. Introduce `τ`. Take `⟨b, hb⟩` from `const_of_card (ε τ) (by rw [hp, hq]; exact hd τ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hb]`. Conclude with `GlobalTheory.CompactDS.exists_isDS_const _ b _ (hP τ)`. Use `choose H i1 i2 σ hσ using key`. Use `choose A hA hG using fun τ => exists_frame_of_hasSignature (hV (tauE D τ)) (ε τ) (hp τ) (hq τ)`. Conclude with `⟨@Formalism.IndefR.Mult.DSModel.mk D V S H i1 i2 σ lam ε A hE hσ hA hG⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem dsExists_of_definite (D : D7) (V : HSp D) (S : D.what₂.Tau → SPar)
     (hd : ∀ τ, (V.sig (tauE D τ)).1 = 0 ∨ (V.sig (tauE D τ)).2 = 0) : Formalism.IndefR.Mult.DSExists V S := by
@@ -58,9 +58,9 @@ theorem dsExists_of_definite (D : D7) (V : HSp D) (S : D.what₂.Tau → SPar)
   exact ⟨@Formalism.IndefR.Mult.DSModel.mk D V S H i1 i2 σ lam ε A hE hσ hA hG⟩
 
 /- English proof (translation)
-Rewrite using `[discreteSeriesExists_iff]`. Use `⟨fun h n ε lam _ hl => h n ε lam hl, fun h n ε lam hl => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hc : ∃ a b, ε a ≠ ε b`. Conclude with `h n ε lam hc hl`. Use `push Not at hc`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Conclude with `DSExistsModel.holds_rank_le_one 0 (by norm_num) ε lam hl`. Establish `: ε = fun _ => ε ⟨0, hn⟩` using `funext fun a => hc _ _`. Rewrite using `[this]`. Conclude with `GlobalTheory.CompactDS.exists_isDS_const _ _ _ hl`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iff_indefinite : DiscreteSeriesExists ↔
     ∀ (n : ℕ) (ε : Fin n → Bool) (lam : Fin n → ℝ), (∃ a b, ε a ≠ ε b) → Formalism.QuantumDeterminants.IsHCParam lam →
@@ -78,28 +78,28 @@ theorem iff_indefinite : DiscreteSeriesExists ↔
       exact GlobalTheory.CompactDS.exists_isDS_const _ _ _ hl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(M.enum τ).1, DSExistsModel.integral_of_isDS (M.ε τ) (M.lam τ) (M.σ τ) (M.ds τ)⟩`.
+Supply the required witnesses or components.
 -/
 theorem isHCParam_of_model {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} (M : Formalism.IndefR.Mult.DSModel V S)
     (τ : D.what₂.Tau) : Formalism.QuantumDeterminants.IsHCParam (M.lam τ) :=
   ⟨(M.enum τ).1, DSExistsModel.integral_of_isDS (M.ε τ) (M.lam τ) (M.σ τ) (M.ds τ)⟩
 
 /- English proof (translation)
-Introduce and unpack `⟨-, -, ⟨⟨h1, hm⟩, hn, -⟩, -, -, ⟨S, -, hK, -, ⟨v, hvS, hv, hw⟩, hc⟩, -⟩`. Establish `hL : Formalism.QuantumDeterminants.lowK (fun _ : Fin 2 => true) (fun _ => 1 / 2) = ![0, 1]`. Use function extensionality and compare the values at `a`. Rewrite using `[GlobalTheory.DefiniteCheck.lowK_const]`. Apply the tactic sequence `fin_cases a <;> simp <;> norm_num`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite `hw`, `hc` using `[hL]`. Establish `hJ : Formalism.REAL.Jm (fun _ : Fin 2 => true) = 1` using `by simp [Formalism.REAL.Jm]`. Establish `hKU : ∀ g ∈ Formalism.REAL.Kset (fun _ : Fin 2 => true), g ∈ UJset (fun _ : Fin 2 => true)`. Introduce `g hg`. Use `(Matrix.mem_unitaryGroup_iff').1 hg.1` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `show gᴴ * _ * g = _`. Rewrite using `[hJ, Matrix.mul_one]`. Conclude with `this`. Set `w : Matrix (Fin 2) (Fin 2) ℂ` to `!![0, 1; 1, 0]`. Establish `hwK : w ∈ Formalism.REAL.Kset (fun _ : Fin 2 => true)`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨?_, by rw [hJ]; simp⟩` and prove the remaining obligations. Rewrite using `[Matrix.mem_unitaryGroup_iff]`. Apply the tactic sequence `ext i j; fin_cases i <;> fin_cases j <;> simp [w, Matrix.mul_apply, Fin.sum_univ_two]`. Establish `hne : σ w v ≠ 0`. Introduce `h0`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `hn w (hKU w hwK) v` as an intermediate fact. Rewrite `this` using `[h0, norm_zero]`. Conclude with `hv (norm_eq_zero.1 this.symm)`. Establish `hwt : IsWtOn (Formalism.REAL.Kset (fun _ : Fin 2 => true)) σ ![1, 0] (σ w v)`. Introduce `θ hθ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `h2` using `hw ![θ 1, θ 0] (DSExistsModel.diag_mem _ _)`. Establish `e : Matrix.diagonal (fun a => Complex.exp ((θ a : ℂ) * Complex.I)) * w = w * Matrix.diagonal (fun a => Complex.exp (((![θ 1, θ 0] : Fin 2 → ℝ) a : ℂ) * Complex.I))`. Apply the tactic sequence `ext i j; fin_cases i <;> fin_cases j <;> simp [w, Matrix.mul_apply, Fin.sum_univ_two, Matrix.diagonal_apply]`. Establish `a1` using `congrArg (fun T : H →L[ℂ] H => T v) (hm _ (hKU _ hθ) w (hKU w hwK))`. Establish `a2` using `congrArg (fun T : H →L[ℂ] H => T v) (hm w (hKU w hwK) _ (hKU _ (DSExistsModel.diag_mem _ ![θ 1, θ 0])))`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [ContinuousLinearMap.comp_apply] at a1 a2`. Rewrite using `[← a1, e, a2, h2, map_smul]`. Simplify using `[Fin.sum_univ_two]`. Take `⟨c, hc1, hc2⟩` from `hc _ _ (hK w hwK v hvS) hne hwt`. Establish `h10 : c 1 0 = 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Assume the negation of the conclusion as `h; exact absurd (hc1 1 0 h).1 (by decide)`. Use `congrFun hc2 0` as an intermediate fact. Simplify using `[Fin.sum_univ_two, Formalism.REAL.root, h10] at this`. Establish `h0 : (0 : ℝ) ≤ c 0 1` using `Nat.cast_nonneg _`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem not_isDS_singular {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     (σ : Matrix (Fin 2) (Fin 2) ℂ → (H →L[ℂ] H)) : ¬ IsDS (fun _ => true) (fun _ => 1 / 2) σ := by

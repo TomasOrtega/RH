@@ -8,9 +8,9 @@ section
 variable {C : Type} [NormedField C] [IsUltrametricDist C]
 
 /- English proof (translation)
-Proceed by induction on `i with`. Consider the case `zero => simp`. Consider the case `succ i ih`. Establish `e : y ^ (i + 1) - a ^ (i + 1) = y * (y ^ i - a ^ i) + (y - a) * a ^ i` using `by ring`. Rewrite using `[e]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le ?_ ?_)` and prove the remaining obligations. Rewrite using `[norm_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[norm_mul, norm_pow]`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 lemma norm_pow_sub_pow_le {y a : C} (hy : ‖y‖ ≤ 1) (ha : ‖a‖ ≤ 1) (i : ℕ) :
     ‖y ^ i - a ^ i‖ ≤ ‖y - a‖ := by
@@ -30,7 +30,7 @@ lemma norm_pow_sub_pow_le {y a : C} (hy : ‖y‖ ≤ 1) (ha : ‖a‖ ≤ 1) (i
         _ = ‖y - a‖ := mul_one _
 
 /- English proof (translation)
-Rewrite using `[eval_eq_sum_range, eval_eq_sum_range, ← Finset.sum_sub_distrib]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (norm_nonneg _) fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_sub, norm_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 lemma norm_eval_sub_le (Q : C[X]) (hc : ∀ i, ‖Q.coeff i‖ ≤ 1) {y a : C} (hy : ‖y‖ ≤ 1)
     (ha : ‖a‖ ≤ 1) : ‖Q.eval y - Q.eval a‖ ≤ ‖y - a‖ := by
@@ -42,13 +42,13 @@ lemma norm_eval_sub_le (Q : C[X]) (hc : ∀ i, ‖Q.coeff i‖ ≤ 1) {y a : C} 
     _ = ‖y - a‖ := one_mul _
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`. Use `set n := Q.natDegree`. Establish `hpos : 0 < ‖a‖` using `lt_trans zero_lt_one hlt`. Establish `hs : ‖∑ i ∈ Finset.range n, Q.coeff i * a ^ i‖ ≤ ‖a‖ ^ n / ‖a‖`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (by positivity) fun i hi => ?_` and prove the remaining obligations. Establish `hi' : i + 1 ≤ n` using `Finset.mem_range.mp hi`. Rewrite using `[norm_mul, norm_pow, le_div_iff₀ hpos]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `hc i`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `_ = ‖a‖ ^ (i + 1) := by ring`. Use `_ ≤ ‖a‖ ^ n := pow_le_pow_right₀ hlt.le hi'`. Establish `hlt2 : ‖a‖ ^ n / ‖a‖ < ‖a‖ ^ n` using `div_lt_self (by positivity) hlt`. Establish `he : Q.eval a = a ^ n + ∑ i ∈ Finset.range n, Q.coeff i * a ^ i` using `by conv_lhs => rw [hm.as_sum]`. Simplify using `[eval_finset_sum, n]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite `he` using `[h]`. Establish `: a ^ n = -∑ i ∈ Finset.range n, Q.coeff i * a ^ i` using `by linear_combination -he`. Establish `h3 : ‖a‖ ^ n = ‖∑ i ∈ Finset.range n, Q.coeff i * a ^ i‖`. Rewrite using `[← norm_pow, this, norm_neg]`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 lemma norm_le_one_of_root (Q : C[X]) (hm : Q.Monic) (hc : ∀ i, ‖Q.coeff i‖ ≤ 1) {a : C}
     (h : Q.eval a = 0) : ‖a‖ ≤ 1 := by
@@ -77,27 +77,25 @@ lemma norm_le_one_of_root (Q : C[X]) (hm : Q.Monic) (hc : ∀ i, ‖Q.coeff i‖
 end
 
 /- English proof (translation)
-Introduce `d1 C _ _ F _ _ hdense`. Establish `mem : ∀ x : C, x ∈ d1 F ↔ x ∈ F ∧ ‖x‖ ≤ 1`. Introduce `x`. Simplify using `only [d1, Subring.mem_inf, Subfield.mem_toSubring, Valuation.mem_integer_iff, NormedField.valuation_apply]`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨h1, h2⟩; exact ⟨h1, by exact_mod_cast h2⟩`. Introduce and unpack `⟨h1, h2⟩; exact ⟨h1, by exact_mod_cast h2⟩`. Apply `IsAlgClosed.of_exists_root` to reduce the goal to its premises. Introduce `p hmon hirr`. Establish `hlift : p ∈ lifts (IsLocalRing.residue (d1 F))` using `(mem_lifts p).mpr (Polynomial.map_surjective _ IsLocalRing.residue_surjective p)`.
+Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨q, hqmap, hqdeg, hqmon⟩` from `lifts_and_degree_eq_and_monic hlift hmon`. Use `set Q : C[X] := q.map (d1 F).subtype with hQ`. Establish `hQc : ∀ i, ‖Q.coeff i‖ ≤ 1` using `fun i => by`. Rewrite using `[hQ, coeff_map]`. Conclude with `((mem _).mp (q.coeff i).2).2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hQm : Q.Monic` using `hqmon.map _`. Establish `hQdeg : Q.degree ≠ 0`. Rewrite using `[hQ, degree_map_eq_of_injective (Subring.subtype_injective _), hqdeg]`. Conclude with `(degree_pos_of_irreducible hirr).ne'`. Take `⟨a, ha⟩` from `IsAlgClosed.exists_root Q hQdeg`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `ha1 : ‖a‖ ≤ 1` using `norm_le_one_of_root Q hQm hQc ha`. Take `⟨y, hyF, hya⟩` from `hdense a ha1`. Establish `hy1 : ‖y‖ ≤ 1`. Establish `: y = a - (a - y)` using `by ring`. Rewrite using `[this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sub_eq_add_neg]`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le ha1 ?_)` and prove the remaining obligations. Rewrite using `[norm_neg]`. Conclude with `hya.le`. Set `y' : d1 F` to `⟨y, (mem y).mpr ⟨hyF, hy1⟩⟩`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `⟨IsLocalRing.residue _ y', ?_⟩` and prove the remaining obligations. Rewrite using `[← hqmap, eval_map, eval₂_hom, IsLocalRing.residue_eq_zero_iff, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Introduce `hu`. Establish `hval : ((q.eval y' : d1 F) : C) = Q.eval y`. Rewrite using `[hQ, eval_map]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(eval₂_hom (d1 F).subtype y').symm`. Establish `hn : ‖((q.eval y' : d1 F) : C)‖ < 1`. Rewrite using `[hval]`. Establish `: Q.eval y = Q.eval y - Q.eval a` using `by rw [IsRoot.def.mp ha, sub_zero]`. Rewrite using `[this]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `lt_of_le_of_lt (norm_eval_sub_le Q hQc hy1 ha1) ?_` and prove the remaining obligations. Rewrite using `[norm_sub_rev]` and apply the resulting hypothesis. Take `⟨v, huv⟩` from `hu.exists_right_inv`. Establish `h1 : ((q.eval y' : d1 F) : C) * (v : C) = 1`. Use `congrArg Subtype.val huv` as an intermediate fact.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Simplify using `using this`. Establish `hv : ‖(v : C)‖ ≤ 1` using `((mem _).mp v.2).2`. Establish `: ‖((q.eval y' : d1 F) : C) * (v : C)‖ < 1`. Rewrite using `[norm_mul]`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite `this` using `[h1, norm_one]`. Conclude with `lt_irrefl _ this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main_theorem : (let d1 : {C : Type} → [inst : NormedField C] → [IsUltrametricDist C] → Subfield C → Subring C := @(fun {C : Type} [NormedField C] [IsUltrametricDist C] (F : Subfield C) ↦ Subfield.toSubring F ⊓ Valuation.integer NormedField.valuation); ∀ {C : Type} [inst : NormedField C] [inst_1 : IsUltrametricDist C] {F : Subfield C} [IsAlgClosed C] [inst_3 : IsLocalRing ↥(d1 F)], (∀ (x : C), ‖x‖ ≤ (1 : ℝ) → ∃ y ∈ F, ‖x - y‖ < (1 : ℝ)) → IsAlgClosed (IsLocalRing.ResidueField ↥(d1 F))) := by
   intro d1 C _ _ F _ _ hdense

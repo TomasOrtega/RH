@@ -6,15 +6,15 @@ open scoped Classical
 namespace UpperTheory.Gal.CertificateRingHomMap
 
 /- English proof (translation)
-Establish `hv : ∀ v : Plc ℚ, HeightOneSpectrum.valuation ℚ v (s : ℚ) = 1` using `fun v => by`. Establish `h1 : Valued.v ((algebraMap ℚ AfQ (s : ℚ)) v) = 1` using `h v`. Rewrite `h1` using `[FiniteAdeleRing.algebraMap_apply, HeightOneSpectrum.valuedAdicCompletion_eq_valuation']`. Conclude with `h1`. Establish `hi : ∀ x : ℚ, (∀ v : Plc ℚ, HeightOneSpectrum.valuation ℚ v x ≤ 1) → ∃ m : ℤ, (m : ℚ) = x` using `fun x hx => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨a, rfl⟩` from `HeightOneSpectrum.mem_integers_of_valuation_le_one ℚ x hx`. Establish `h2 : IsIntegral ℤ (algebraMap (𝓞 ℚ) ℚ a)` using `a.2`. Take `⟨m, hm⟩` from `IsIntegrallyClosed.isIntegral_iff.1 h2`. Conclude with `⟨m, by simpa using hm⟩`. Take `⟨m, hm⟩` from `hi s (fun v => (hv v).le)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨m', hm'⟩` from `hi (s : ℚ)⁻¹ (fun v => by rw [map_inv₀, hv v, inv_one])`. Establish `hmm : m * m' = 1`. Establish `h3 : (m : ℚ) * m' = 1` using `by rw [hm, hm']; exact mul_inv_cancel₀ s.ne_zero`. Conclude with `h3` after adjusting the coercions. Establish `hm1 : m = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality.
 
-Break down `Int.eq_one_or_neg_one_of_mul_eq_one hmm with h4 | h4` into its components or cases. Conclude with `h4`. Substitute `h4` using the available equality. Rewrite `hpos` using `[← hm]`. Evaluate the numerical expressions using `at hpos`.
+Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `ext`. Rewrite using `[← hm, hm1]`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 private theorem rat_eq_one_of_ZU (s : ℚˣ) (hpos : 0 < (s : ℚ))
     (h : Units.map (algebraMap ℚ AfQ).toMonoidHom s ∈ ZU) : s = 1 := by
@@ -45,7 +45,7 @@ private theorem rat_eq_one_of_ZU (s : ℚˣ) (hpos : 0 < (s : ℚ))
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
 
 /- English proof (translation)
-Establish `h : ∀ w : InfinitePlace E, pInf E (algebraMap E (Ad E) x) w = w.embedding x` using `fun w => pInf_algebraMap _ _`. Unfold `coord`. Simplify using `[h]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 private theorem coord_emb (v : InfinitePlace E) (x : E) :
     coord v.embedding (pInf E (algebraMap E (Ad E) x)) = v.embedding x := by
@@ -54,23 +54,21 @@ private theorem coord_emb (v : InfinitePlace E) (x : E) :
   simp [h]
 
 /- English proof (translation)
-Establish `hy : (γ.1.1.val.map (GlobalTheory.SplitPts.conjE E).toRingHom)ᵀ * γ.1.1.val = 1`. Establish `h : (γ.1.1.val.map (GlobalTheory.SplitPts.conjE E).toRingHom)ᵀ * γ.1.1.val = algebraMap ℚ E γ.1.2 • (1 : Matrix (Fin n) (Fin n) E)` using `γ.2.1`. Rewrite using `[h, h1]`. Simplify using the standard rewrite rules. Establish `hY : ratGL E n γ.1.1 ∈ UA E n`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `Formalism.UG.cT (conjAd E) (γ.1.1.val.map (algebraMap E (Ad E))) * 1 * γ.1.1.val.map (algebraMap E (Ad E)) = 1`. Rewrite using `[GlobalTheory.DefU.ClassFin.cT_map (algebraMap E (Ad E)) (IsCMField.complexConj E).toRingEquiv.toRingHom (conjAd E) (fun y => (conjAd_algebraMap y).symm), mul_one, ← Matrix.map_mul]`. Establish `h2 : Formalism.UG.cT (IsCMField.complexConj E).toRingEquiv.toRingHom γ.1.1.val * γ.1.1.val = 1` using `hy`. Rewrite using `[h2]`. Simplify using the standard rewrite rules.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Set `Y : UA E n` to `⟨ratGL E n γ.1.1, hY⟩`. Establish `hYr : Y ∈ ratU E n` using `Subgroup.mem_subgroupOf.2 ⟨γ.1.1, rfl⟩`. Set `a` to `GlobalTheory.UnitarySplit.finPart Y`. Set `b` to `GlobalTheory.UnitarySplit.infPart Y`. Establish `hab : Y = a.1 * b.1` using `GlobalTheory.UnitarySplit.finPart_mul_infPart Y`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `⟨a, ?_, fun u => ?_⟩` and prove the remaining obligations. Use `Subtype.ext (Prod.ext ?_ ?_)` and prove the remaining obligations. Conclude with `pFin_finGL _`. Use `show (1 : AfQˣ) = Units.map (algebraMap ℚ AfQ).toMonoidHom γ.1.2`. Rewrite using `[h1, map_one]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : a.1 * u.1 = Y * (u.1 * ((b⁻¹ : infU E n) : UA E n))`. Establish `hc` using `GlobalTheory.DefU.fin_mul_inf u.2 b.2`. Rewrite using `[hab, Subgroup.coe_inv, mul_assoc, ← mul_assoc b.1, ← hc, mul_assoc u.1, mul_inv_cancel, mul_one]`. Establish `hc : cAll b.1 = embAll E n γ.1.1`. Use function extensionality and compare the values at `v`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `show cEmb v.embedding b.1 = GeneralLinearGroup.map v.embedding γ.1.1`. Use `Units.ext (Matrix.ext fun i k => ?_)` and prove the remaining obligations. Establish `h3 : (cEmb v.embedding b.1).val i k = coord v.embedding ((cInf b.1).val i k)` using `rfl`. Rewrite using `[h3, GlobalTheory.UnitarySplit.cInf_infPart]`. Conclude with `coord_emb v _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, algForms.val_left f hYr, algForms.val_right, inv_inv]`. Establish `h4 : xi0 W j γ = Representation.dual ((Formalism.L2.DIV.rhoK (K` using `ℂ) (ι := InfinitePlace E) W).comp (embAll E n)) γ.1.1 := by`. Establish `h6 : xi0 W j γ = (((γ.1.2 : ℚ) : ℂ) ^ j) • Representation.dual ((Formalism.L2.DIV.rhoK (K` using `ℂ) (ι := InfinitePlace E) W).comp (embAll E n)) γ.1.1 := rfl`. Rewrite using `[h6, h1]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h4, Representation.dual_apply, Representation.dual_apply]`. Establish `h5 : W.rep b⁻¹ = ((Formalism.L2.DIV.rhoK (K` using `ℂ) (ι := InfinitePlace E) W).comp (embAll E n)) γ.1.1⁻¹ := by`. Establish `h7 : cAll (b⁻¹ : infU E n).1 = embAll E n γ.1.1⁻¹`. Rewrite using `[Subgroup.coe_inv, map_inv, hc, map_inv]`. Use `show Formalism.L2.DIV.rhoK (K := ℂ) (ι := InfinitePlace E) W (cAll (b⁻¹ : infU E n).1) = Formalism.L2.DIV.rhoK (K := ℂ) (ι := InfinitePlace E) W (embAll E n γ.1.1⁻¹)`.
-
-Rewrite using `[h7]`. Rewrite using `[h5]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem val_rat (W : Wt E n) (j : ℤ) (f : algForms W) (γ : Gam0 E n) (h1 : γ.1.2 = 1) :
     ∃ a : finU E n, ofU a = rat γ ∧
@@ -124,21 +122,19 @@ private theorem val_rat (W : Wt E n) (j : ℤ) (f : algForms W) (γ : Gam0 E n) 
     rw [h5]
 
 /- English proof (translation)
-Introduce `hB E _ _ _ n W j f hf K hK hfix`. Take `⟨hinj, hsurj⟩` from `hB E n`. Set `φ : GUf E n → Module.Dual ℂ W.Sp` to `fun g => if h : ∃ u, ofU u = g then algForms.val f h.choose.1 else 0`. Establish `hφ : ∀ u : finU E n, φ (ofU u) = algForms.val f u.1` using `fun u => by`. Establish `h : ∃ u', ofU u' = ofU u` using `⟨u, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show (if h : ∃ u', ofU u' = ofU u then algForms.val f h.choose.1 else 0) = _`. Rewrite using `[dif_pos h, hinj h.choose_spec]`. Establish `hone : ∀ γ : Gam0 E n, sim (rat γ) ∈ ZU → γ.1.2 = 1` using `fun γ h => rat_eq_one_of_ZU γ.1.2 γ.2.2 h`. Use `⟨φ, ⟨?_, ?_, ?_⟩, hφ, ?_⟩` and prove the remaining obligations. Introduce `γ k hk he`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1` using `hone γ (he ▸ hK k hk)`. Rewrite using `[← he]`. Use `show Units.map (algebraMap ℚ AfQ).toMonoidHom γ.1.2 = 1`. Rewrite using `[h1, map_one]`. Introduce `γ u hγ hu`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨u₀, rfl⟩` from `hsurj u hu`. Take `⟨a, ha, hau⟩` from `val_rat W j f γ (hone γ (hγ ▸ ZU.one_mem))`. Rewrite using `[← ha, ← map_mul, hφ, hφ]`. Conclude with `hau u₀`. Introduce `k hk u hk1 hu`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨u₀, rfl⟩` from `hsurj u hu`. Take `⟨u', rfl⟩` from `hsurj k hk1`. Rewrite using `[← map_mul, hφ, hφ]`. Use `show algForms.val f (u₀.1 * u'.1) = _`. Rewrite using `[← algForms.val_algRep, hfix u' hk]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hex : ∃ g, algForms.val f g ≠ 0`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Use `hf (Subtype.ext (LinearMap.ext fun v => funext fun g => ?_))` and prove the remaining obligations. Conclude with `LinearMap.congr_fun (hc g) v`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Take `⟨g, hg⟩` from `hex`. Use `⟨ofU (GlobalTheory.UnitarySplit.finPart g), sim_ofU _, ?_⟩` and prove the remaining obligations. Rewrite using `[hφ]`. Introduce `h0`. Apply `hg` to reduce the goal to its premises.
-
-Establish `h1` using `algForms.val_right f (GlobalTheory.UnitarySplit.finPart g).1 (GlobalTheory.UnitarySplit.infPart g)`. Rewrite `h1` using `[← GlobalTheory.UnitarySplit.finPart_mul_infPart g]`. Rewrite using `[h1, h0, map_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pKerFormU_of :
     UpperTheory.Gal.CertificateRingHomMap.OfUBij → UpperTheory.Gal.CertificateRingHomMap.KerFormU := by

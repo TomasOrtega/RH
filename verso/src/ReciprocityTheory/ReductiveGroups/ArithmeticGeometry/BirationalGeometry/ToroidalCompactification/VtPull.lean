@@ -16,9 +16,9 @@ section Germ
 variable {X Y Y' : Scheme.{0}} {L : LB X} {K : Type} [Fintype K]
 
 /- English proof (translation)
-Unfold `LB.wchart at hy ⊢`. Simplify using `only [TopologicalSpace.Opens.mem_mk, Set.mem_iInter, Set.mem_preimage, SetLike.mem_coe] at hy ⊢`. Introduce `k`. Use `first`. Consider the case `simpa [e k] using hy k`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Treat this case separately.
 
-Consider the case `(have hk := hy k; rw [e k] at hk; exact hk)`.
+A detailed English derivation is pending.
 -/
 theorem mem_wchart_pull {φ : K → (Y ⟶ X)} {φ' : K → (Y' ⟶ X)} {h : Y' ⟶ Y} (e : ∀ k, φ' k = h ≫ φ k)
     {j : K → L.ι} {y : Y'} (hy : y ∈ LB.wchart L φ' j) : h y ∈ LB.wchart L φ j := by
@@ -30,7 +30,7 @@ theorem mem_wchart_pull {φ : K → (Y ⟶ X)} {φ' : K → (Y' ⟶ X)} {h : Y' 
     | (have hk := hy k; rw [e k] at hk; exact hk)
 
 /- English proof (translation)
-Take `rfl : φ' = fun k => h ≫ φ k` from `funext e`. Use `⟨LB.pullGen L φ ε t h, fun ht => pullGen_isGen L φ ε t ht h, fun r z j hz => ?_⟩` and prove the remaining obligations. Conclude with `(gm_res r z _ hz _).trans (gm_pull r h z (LB.wchart L φ j) (Set.mem_iInter.2 fun k => Set.mem_iInter.1 hz k) _)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_gen_pull (φ : K → (Y ⟶ X)) (ε : K → ℤ) (t : LB.Gen (LB.LinComb L φ ε)) (h : Y' ⟶ Y)
     (φ' : K → (Y' ⟶ X)) (e : ∀ k, φ' k = h ≫ φ k) :
@@ -41,7 +41,7 @@ theorem exists_gen_pull (φ : K → (Y ⟶ X)) (ε : K → ℤ) (t : LB.Gen (LB.
   exact (gm_res r z _ hz _).trans (gm_pull r h z (LB.wchart L φ j) (Set.mem_iInter.2 fun k => Set.mem_iInter.1 hz k) _)
 
 /- English proof (translation)
-Take `rfl : φ' = fun k => h ≫ φ k` from `funext e`. Use `⟨pullSec L φ ε s h, fun r z j hz => ?_⟩` and prove the remaining obligations. Conclude with `(gs_res r z _ hz _).trans (gs_pull r h z (LB.wchart L φ j) (Set.mem_iInter.2 fun k => Set.mem_iInter.1 hz k) _)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_sec_pull (φ : K → (Y ⟶ X)) (ε : K → ℤ) (s : LB.Sec (LB.LinComb L φ ε)) (h : Y' ⟶ Y)
     (φ' : K → (Y' ⟶ X)) (e : ∀ k, φ' k = h ≫ φ k) :
@@ -52,11 +52,11 @@ theorem exists_sec_pull (φ : K → (Y ⟶ X)) (ε : K → ℤ) (s : LB.Sec (LB.
   exact (gs_res r z _ hz _).trans (gs_pull r h z (LB.wchart L φ j) (Set.mem_iInter.2 fun k => Set.mem_iInter.1 hz k) _)
 
 /- English proof (translation)
-Take `rfl : φ' = fun k => h ≫ φ k` from `funext e`. Unfold `val`. Simplify using `only [Category.assoc]`. Rewrite using `[H]`. Apply the tactic sequence `all_goals first`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `rfl`. Consider the case `(unfold LB.wchart`. Simplify using `only [TopologicalSpace.Opens.mem_mk, Set.mem_iInter, Set.mem_preimage, SetLike.mem_coe]`. Introduce `k`. Simplify using `using hJ (r ≫ h ≫ φ k))`.
+Treat this case separately. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Consider the case `(simp only [LB.wchart, TopologicalSpace.Opens.mem_mk, Set.mem_iInter, Set.mem_preimage]`. Introduce `k`. Simplify using `using hJ (r ≫ h ≫ φ k))`. Consider the case `(simp [Category.assoc])`. Consider the case `(congr 1)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem val_of_pull {φ : K → (Y ⟶ X)} {ε : K → ℤ} {φ' : K → (Y' ⟶ X)} {h : Y' ⟶ Y} (e : ∀ k, φ' k = h ≫ φ k)
     {t : LB.Gen (LB.LinComb L φ ε)} {t' : LB.Gen (LB.LinComb L φ' ε)}
@@ -89,7 +89,7 @@ section Nat
 variable {T T' : Over S} (σ : T' ⟶ T)
 
 /- English proof (translation)
-Use `first`. Consider the case `exact whiskerRight_fst σ A`. Consider the case `(simp; done)`. Consider the case `exact CartesianMonoidalCategory.whiskerRight_fst σ A`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem whisk_fst : (σ ▷ A) ≫ fst T A = fst T' A ≫ σ := by
   first
@@ -98,7 +98,7 @@ theorem whisk_fst : (σ ▷ A) ≫ fst T A = fst T' A ≫ σ := by
     | exact CartesianMonoidalCategory.whiskerRight_fst σ A
 
 /- English proof (translation)
-Use `first`. Consider the case `exact whiskerRight_snd σ A`. Consider the case `(simp; done)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem whisk_snd : (σ ▷ A) ≫ snd T A = snd T' A := by
   first
@@ -106,7 +106,7 @@ theorem whisk_snd : (σ ▷ A) ≫ snd T A = snd T' A := by
     | (simp; done)
 
 /- English proof (translation)
-Use `first`. Consider the case `(simp only [translPt, comp_lift_assoc, whiskerRight_fst_assoc, whiskerRight_snd]; done)`. Consider the case `(simp [translPt]; done)`. Consider the case `(unfold translPt; rw [comp_lift_assoc, whiskerRight_fst_assoc, whiskerRight_snd])`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem translPt_whisk (x : T ⟶ A) : (σ ▷ A) ≫ translPt A x = translPt A (σ ≫ x) := by
   first
@@ -115,7 +115,7 @@ theorem translPt_whisk (x : T ⟶ A) : (σ ▷ A) ≫ translPt A x = translPt A 
     | (unfold translPt; rw [comp_lift_assoc, whiskerRight_fst_assoc, whiskerRight_snd])
 
 /- English proof (translation)
-Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises. Simplify using `[translT]`. Simplify using `[translT, translPt_whisk]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem transl_whisk (x : T ⟶ A) : translT A (σ ≫ x) ≫ (σ ▷ A) = (σ ▷ A) ≫ translT A x := by
   apply CartesianMonoidalCategory.hom_ext
@@ -123,7 +123,7 @@ theorem transl_whisk (x : T ⟶ A) : translT A (σ ≫ x) ≫ (σ ▷ A) = (σ �
   · simp [translT, translPt_whisk]
 
 /- English proof (translation)
-Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises. Simplify using `[negT]`. Simplify using `[negT]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem neg_whisk : negT A T' ≫ (σ ▷ A) = (σ ▷ A) ≫ negT A T := by
   apply CartesianMonoidalCategory.hom_ext
@@ -131,9 +131,9 @@ theorem neg_whisk : negT A T' ≫ (σ ▷ A) = (σ ▷ A) ≫ negT A T := by
   · simp [negT]
 
 /- English proof (translation)
-Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises. Simplify using `[mulT]`. Use `first`. Consider the case `(simp [mulT, comp_pow]; done)`. Consider the case `(simp [mulT]; done)`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(simp only [mulT, Category.assoc, whiskerRight_snd, lift_snd]`. Proceed by induction on `N with`. Consider the case `zero => simp`. Consider the case `succ n ih => simp [pow_succ, comp_mul, ih])`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem mul_whisk (N : ℕ) : mulT A T' N ≫ (σ ▷ A) = (σ ▷ A) ≫ mulT A T N := by
   apply CartesianMonoidalCategory.hom_ext
@@ -154,11 +154,11 @@ def PullRel (L : LB A.left) (a : ℤ) {T T' : Over S} (h : T' ⊗ A ⟶ T ⊗ A)
     gs r z ((LPow A L a T').U j) (s'.f j) = gs (r ≫ h.left) z ((LPow A L a T).U j) (s.f j)
 
 /- English proof (translation)
-Introduce `Z r z j hz`. Rewrite using `[H j]`. Establish `hz1 : r z ∈ h.left ⁻¹ᵁ (LPow A L a T).U j` using `chart_le_res A L h hh a j hz`. Establish `hz2 : (r ≫ h.left) z ∈ (LPow A L a T).U j` using `by first`. Consider the case `exact hz1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Treat this case separately.
 
-Consider the case `simpa using hz1`. Unfold `gs`. Rewrite using `[dif_pos hz, dif_pos hz2]`. Establish `k1` using `congrArg (fun g => g.hom (((T' ⊗ A).left.presheaf.map (homOfLE (chart_le_res A L h hh a j)).op).hom ((h.left.app _).hom (s.f j)))) (Scheme.Hom.germ_stalkMap r _ z hz)`. Establish `k2` using `congrArg (fun g => g.hom ((h.left.app _).hom (s.f j))) (Scheme.Hom.germ_stalkMap r _ z hz1)`.
+Treat this case separately. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply] at k1 k2`. Rewrite using `[← k1]`. Use `erw [TopCat.Presheaf.germ_res_apply]`. Conclude with `k2`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pullRel_of {L : LB A.left} {a : ℤ} {T T' : Over S} {h : T' ⊗ A ⟶ T ⊗ A} {hh : h ≫ snd T A = snd T' A}
     {s : LB.Sec (LPow A L a T)} {s' : LB.Sec (LPow A L a T')} (H : IsPullSec A L a h hh s s') : PullRel L a h s s' := by
@@ -181,20 +181,18 @@ theorem pullRel_of {L : LB A.left} {a : ℤ} {T T' : Over S} {h : T' ⊗ A ⟶ T
   exact k2
 
 /- English proof (translation)
-The claim follows from `exists_sec_pull _ _ s h.left _ fun _ => by rw [← Over.comp_left, hh]`.
+A detailed English derivation is pending.
 -/
 theorem exists_pullRel (L : LB A.left) (a : ℤ) {T T' : Over S} (h : T' ⊗ A ⟶ T ⊗ A) (hh : h ≫ snd T A = snd T' A)
     (s : LB.Sec (LPow A L a T)) : ∃ s' : LB.Sec (LPow A L a T'), PullRel L a h s s' :=
   exists_sec_pull _ _ s h.left _ fun _ => by rw [← Over.comp_left, hh]
 
 /- English proof (translation)
-Establish `e1 : h.left ≫ (snd T A).left = (snd T' A).left` using `by rw [← Over.comp_left, hh]`. Establish `e2 : h.left ≫ m.left = m'.left`. Rewrite using `[← Over.comp_left, ← hm, ← hm', ← Category.assoc, ← hψ, Category.assoc, hh]`. Establish `e : ∀ k, (![(snd T' A).left, m'.left] : Fin 2 → _) k = h.left ≫ (![(snd T A).left, m.left] : Fin 2 → _) k`. Introduce `k`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `fin_cases k`. Conclude with `e1.symm`. Conclude with `e2.symm`. Establish `eψ : ψ'.left ≫ h.left = h.left ≫ ψ.left` using `by rw [← Over.comp_left, hψ, Over.comp_left]`. Introduce `j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `fn_ext fun y hy => ?_` and prove the remaining obligations. Establish `hy'` using `mem_wchart_pull e hy`. Establish `t1` using `congrArg (gs h.left y (LB.wchart L ![(snd T A).left, m.left] j)) (tw j)`. Use `erw [gs_res _ y _ hy', gs_mul _ y _ hy', gs_unit _ y _ hy', gs_res _ y _ hy', gs_pull h.left ψ.left y (LB.wchart L (fun _ : Fin 1 => (snd T A).left) (fun _ => j 1)) (chart_le_pull A L ψ m hm j hy')] at t1`. Use `erw [gs_res _ y _ hy, gs_mul _ y _ hy, gs_unit _ y _ hy, gs_res _ y _ hy, gs_pull (𝟙 _) ψ'.left y (LB.wchart L (fun _ : Fin 1 => (snd T' A).left) (fun _ => j 1)) (chart_le_pull A L ψ' m' hm' j hy), hs₁ _ y _ (chart_le_zero A L m' j hy), hα _ y j hy, hs _ y _ (chart_le_pull A L ψ' …`.
-
-Use `erw [eψ]`. Conclude with `t1`.
+A detailed English derivation is pending.
 -/
 theorem twist_pull {L : LB A.left} {T T' : Over S} (h : T' ⊗ A ⟶ T ⊗ A) (hh : h ≫ snd T A = snd T' A)
     {ψ : T ⊗ A ⟶ T ⊗ A} {m : T ⊗ A ⟶ A} {hm : ψ ≫ snd T A = m} {ψ' : T' ⊗ A ⟶ T' ⊗ A} {m' : T' ⊗ A ⟶ A}
@@ -235,7 +233,7 @@ section Theta
 variable {L : LB A.left} {k : ℤ}
 
 /- English proof (translation)
-Establish `e : ∀ j₀ : Fin n, val (LB.pullGen L _ _ θ.φ (translT A (θ.pt ^ (j₀ : ℕ))).left) r z J = val θ.φ (r ≫ (translT A (θ.pt ^ (j₀ : ℕ))).left) z J` using `fun j₀ => val_pull hJ _ _ _`. Simplify using `only [← e]`. Simplify using `only [val, powGen]`. Conclude with `(map_prod _ _ _).trans (Finset.prod_congr rfl fun j₀ _ => gm_res r z _ (hJ.mem (powφ A θ.pt n) r) _)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem val_powGenT {T : Over S} (θ : ThetaGrp A L k T) (n : ℕ) {Z : Scheme.{0}} (r : Z ⟶ (T ⊗ A).left) (z : Z)
     {J : (Z ⟶ A.left) → L.ι} (hJ : Good L z J) :
@@ -247,7 +245,7 @@ theorem val_powGenT {T : Over S} (θ : ThetaGrp A L k T) (n : ℕ) {Z : Scheme.{
   exact (map_prod _ _ _).trans (Finset.prod_congr rfl fun j₀ _ => gm_res r z _ (hJ.mem (powφ A θ.pt n) r) _)
 
 /- English proof (translation)
-Unfold `symGen`. Conclude with `(val_mul hJ _ _ r).trans (congrArg₂ (· * ·) ((val_mul hJ _ _ r).trans (congrArg₂ (· * ·) (val_pull hJ _ _ r) rfl)) ((val_mul hJ _ _ r).trans (congrArg₂ (· * ·) (val_pull hJ _ _ r) ((val_inv _ r).trans (congrArg (·⁻¹) (val_pull hJ _ _ r))))))`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem val_symGen {T : Over S} (θ : ThetaGrp A L k T) (nu : LB.Gen (negLB A L k T)) {Z : Scheme.{0}}
     (r : Z ⟶ (T ⊗ A).left) (z : Z) {J : (Z ⟶ A.left) → L.ι} (hJ : Good L z J) :
@@ -258,7 +256,7 @@ theorem val_symGen {T : Over S} (θ : ThetaGrp A L k T) (nu : LB.Gen (negLB A L 
     ((val_mul hJ _ _ r).trans (congrArg₂ (· * ·) (val_pull hJ _ _ r) ((val_inv _ r).trans (congrArg (·⁻¹) (val_pull hJ _ _ r))))))
 
 /- English proof (translation)
-Introduce `kk`. Use `fin_cases kk`. Simplify using `[← Over.comp_left]`. Simplify using `[← Over.comp_left, translPt_whisk]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eθ {T T' : Over S} (σ : T' ⟶ T) (x : T ⟶ A) :
     ∀ kk, (![(snd T' A).left, (translPt A (σ ≫ x)).left] : Fin 2 → _) kk =
@@ -269,7 +267,7 @@ theorem eθ {T T' : Over S} (σ : T' ⟶ T) (x : T ⟶ A) :
   · simp [← Over.comp_left, translPt_whisk]
 
 /- English proof (translation)
-Take `⟨φ', g, H⟩` from `exists_gen_pull (L := L) ![(snd T A).left, (translPt A θ.pt).left] ![k, -k] θ.φ (σ ▷ A).left ![(snd T' A).left, (translPt A (σ ≫ θ.pt)).left] (eθ σ θ.pt)`. Conclude with `⟨φ', g θ.isGen, H⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_phi_pull {T T' : Over S} (σ : T' ⟶ T) (θ : ThetaGrp A L k T) :
     ∃ φ' : LB.Gen (thetaLB A L k (σ ≫ θ.pt)), φ'.IsGen ∧ ∀ {Z : Scheme.{0}} (r : Z ⟶ (T' ⊗ A).left) (z : Z)
@@ -281,21 +279,19 @@ theorem exists_phi_pull {T T' : Over S} (σ : T' ⟶ T) (θ : ThetaGrp A L k T) 
   exact ⟨φ', g θ.isGen, H⟩
 
 /- English proof (translation)
-Use `show σ ≫ θ.pt = σ ≫ x`. Rewrite using `[hθ.pt_eq]`. Use `pow_eq := by`. Use `corr_of_val hL fun y J hJ => ?_` and prove the remaining obligations. Establish `c` using `val_corr hJ hθ.pow_eq (σ ▷ A).left`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `c` using `[val_powGenT θ n _ y hJ, val_one]`. Rewrite using `[val_powGenT _ n _ y hJ, val_one, ← c]`. Use `Finset.prod_congr rfl fun j₀ _ => ?_` and prove the remaining obligations. Establish `m : (𝟙 _ ≫ (translT A ((σ ≫ θ.pt) ^ (j₀ : ℕ))).left) ≫ (σ ▷ A).left = (σ ▷ A).left ≫ (translT A (θ.pt ^ (j₀ : ℕ))).left`. Rewrite using `[Category.id_comp, ← MonObj.comp_pow, ← Over.comp_left, ← Over.comp_left, transl_whisk]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `(hv _ y hJ).trans (by rw [m])`. Use `sym := by`. Take `⟨nu, gnu, cnu⟩` from `hθ.sym`. Establish `e1 : (σ ▷ A).left ≫ (snd T A).left = (snd T' A).left` using `by rw [← Over.comp_left, whisk_snd]`. Establish `e2 : (σ ▷ A).left ≫ (snd T A ≫ (GrpObj.inv : A ⟶ A)).left = (snd T' A ≫ (GrpObj.inv : A ⟶ A)).left`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← Over.comp_left, ← Category.assoc, whisk_snd]`. Establish `eN : ∀ kk, (![(snd T' A).left, (snd T' A ≫ (GrpObj.inv : A ⟶ A)).left] : Fin 2 → _) kk = (σ ▷ A).left ≫ (![(snd T A).left, (snd T A ≫ (GrpObj.inv : A ⟶ A)).left] : Fin 2 → _) kk`. Introduce `kk`. Use `fin_cases kk`. Conclude with `e1.symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `e2.symm`. Take `⟨nu', gnu', Hnu⟩` from `exists_gen_pull (L := L) _ ![k, -k] nu (σ ▷ A).left _ eN`. Use `⟨nu', gnu' gnu, corr_of_val hL fun y J hJ => ?_⟩` and prove the remaining obligations. Establish `c` using `val_corr hJ cnu (σ ▷ A).left`. Rewrite `c` using `[val_symGen θ nu _ y hJ, val_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[val_symGen _ nu' _ y hJ, val_one, ← c]`. Establish `m1 : (𝟙 _ ≫ (translT A (σ ≫ θ.pt)⁻¹).left) ≫ (σ ▷ A).left = (σ ▷ A).left ≫ (translT A θ.pt⁻¹).left`. Rewrite using `[Category.id_comp, ← GrpObj.comp_inv, ← Over.comp_left, ← Over.comp_left, transl_whisk]`. Establish `m3 : (𝟙 _ ≫ (negT A T').left) ≫ (σ ▷ A).left = (σ ▷ A).left ≫ (negT A T).left`. Rewrite using `[Category.id_comp, ← Over.comp_left, ← Over.comp_left, neg_whisk]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `v1` using `hv (𝟙 _ ≫ (translT A (σ ≫ θ.pt)⁻¹).left) y hJ`. Establish `v2` using `hv (𝟙 _ ≫ (negT A T').left) y hJ`. Establish `v3` using `val_of_pull eN Hnu (𝟙 _) y hJ`. Establish `v4` using `val_of_pull eN Hnu (𝟙 _ ≫ (translT A (σ ≫ θ.pt)⁻¹).left) y hJ`. Rewrite `v1`, `v4` using `[m1]`.
-
-Rewrite `v2` using `[m3]`. Rewrite `v3` using `[Category.id_comp]`. Conclude with `congrArg₂ (· * ·) (congrArg₂ (· * ·) v1 v3) (congrArg₂ (· * ·) v2 (congrArg (·⁻¹) v4))`.
+A detailed English derivation is pending.
 -/
 theorem symLift_pull (hL : L.IsLB) {T T' : Over S} (σ : T' ⟶ T) {n : ℕ} {x : T ⟶ A} {θ : ThetaGrp A L k T}
     (hθ : SymLift A L k n x θ) (φ' : LB.Gen (thetaLB A L k (σ ≫ θ.pt))) (gφ' : φ'.IsGen)
@@ -348,13 +344,11 @@ end Theta
 variable [IsCommMonObj A]
 
 /- English proof (translation)
-Take `⟨t', α₀, α, s₁, U, ht, o, g₀, n₀, cα, tw, sl, ac⟩` from `h`. Establish `e1 : (σ ▷ A).left ≫ (snd T A).left = (snd T' A).left` using `by rw [← Over.comp_left, whisk_snd]`. Establish `e2 : (σ ▷ A).left ≫ (snd T A ^ N).left = (snd T' A ^ N).left`. Rewrite using `[← Over.comp_left, MonObj.comp_pow, whisk_snd]`. Establish `eα : ∀ kk, (![(snd T' A).left, (snd T' A ^ N).left] : Fin 2 → _) kk = (σ ▷ A).left ≫ (![(snd T A).left, (snd T A ^ N).left] : Fin 2 → _) kk`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `kk`. Use `fin_cases kk`. Conclude with `e1.symm`. Conclude with `e2.symm`. Take `⟨α', -, hα'⟩` from `exists_gen_pull (L := L.L) _ _ α (σ ▷ A).left _ eα`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨s₁', hs₁'⟩` from `exists_pullRel L.L ((N : ℤ) ^ 2) (σ ▷ A) (whiskerRight_snd σ A) s₁`. Take `⟨φ', gφ', HU⟩` from `exists_phi_pull σ U`. Use `⟨σ ≫ t', α₀, α', s₁', ⟨σ ≫ U.pt, φ', gφ'⟩, by rw [← MonObj.comp_pow, ht], hok _ o, g₀, n₀, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `corr_of_val L.isLB fun y J hJ => ?_` and prove the remaining obligations. Rewrite using `[val_of_pull eα hα' _ y hJ, val_corr hJ cα, val_pull hJ, val_pull hJ, Category.id_comp, Category.id_comp, e1]`.
-
-Conclude with `twist_pull (σ ▷ A) (whiskerRight_snd σ A) (mul_whisk σ N) hα' (pullRel_of hs) hs₁' tw`. Conclude with `symLift_pull L.isLB σ sl φ' gφ' fun r z J hJ => val_of_pull (eθ σ U.pt) HU r z hJ`. Conclude with `twist_pull (σ ▷ A) (whiskerRight_snd σ A) (transl_whisk σ U.pt) HU hs₁' (pullRel_of hF) ac`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vtOver_pull (L : RigLB A) (N : ℕ) {T T' : Over S} (σ : T' ⟶ T) {ok : (T ⟶ A) → Prop}
     {ok' : (T' ⟶ A) → Prop} (hok : ∀ x, ok x → ok' (σ ≫ x)) {s : LB.Sec (LPow A L.L 1 T)}

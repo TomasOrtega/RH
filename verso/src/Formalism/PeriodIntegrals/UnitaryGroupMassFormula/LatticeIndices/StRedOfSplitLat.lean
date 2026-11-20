@@ -12,14 +12,14 @@ open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.SG.S
   IsDedekindDomain Formalism.BasicNotions Formalism.L2.SG.HidaSetting Formalism.L2.SG.AdBridge
 
 /- English proof (translation)
-Introduce `K T _ _ _ O n _ _ θ s J P hs hJ hJu`. Conclude with `MassDataIdxCore.coreAll_gen O hs J P hJ hJu`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem coreAll : CoreAll := by
   intro K T _ _ _ O n _ _ θ s J P hs hJ hJu
   exact MassDataIdxCore.coreAll_gen O hs J P hJ hJu
 
 /- English proof (translation)
-The claim follows from `latCore_of coreAll`.
+A detailed English derivation is pending.
 -/
 theorem latCore_holds : LatCore := latCore_of coreAll
 
@@ -27,13 +27,13 @@ def LatBasisAll {D : D7} (X : HidaSetting D) (p : TypX X) : Prop :=
   ∀ θ : TpX X p ≃ₐ[FpX X p] FpX X p × FpX X p, IsSplitEquiv X p θ → ∃ P, LatBasis X p θ P
 
 /- English proof (translation)
-The claim follows from `stRed_of_core X p (stResZ_holds X p) hS coreAll`.
+A detailed English derivation is pending.
 -/
 theorem stRed_of_splitLat {D : D7} (X : HidaSetting D) (p : TypX X) (hS : StSplitLat X p) : StRed X p :=
   stRed_of_core X p (stResZ_holds X p) hS coreAll
 
 /- English proof (translation)
-Take `⟨θ, hθ⟩` from `splitTheta_of X p hE`. Take `⟨P, hP⟩` from `hL θ hθ`. Conclude with `stRed_of_splitLat X p ⟨θ, hθ, P, hP⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem stRed_of_emb {D : D7} (X : HidaSetting D) (p : TypX X) (hE : EmbP X p) (hL : LatBasisAll X p) :
     StRed X p := by

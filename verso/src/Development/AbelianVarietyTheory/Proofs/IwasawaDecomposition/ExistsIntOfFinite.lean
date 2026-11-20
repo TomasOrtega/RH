@@ -6,9 +6,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.MtIn
 
 /- English proof (translation)
-Take `⟨y, hy⟩` from `h`. Establish `hn : 0 < Nat.card G` using `Nat.card_pos`. Establish `hfg : (f g) ^ Nat.card G = 1` using `by rw [← map_pow, pow_card_eq_one', map_one]`. Establish `hy1 : y ^ Nat.card G = 1`. Apply `σ.injective` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[map_pow, hy, map_one, ← Units.val_pow_eq_pow_val, hfg, Units.val_one]`. Establish `hint : IsIntegral ℤ y` using `IsIntegral.of_pow hn (by rw [hy1]; exact isIntegral_one)`. Conclude with `⟨⟨y, hint⟩, hy⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_int_of_finite {K : Type} [Field K] [NumberField K] (σ : K →+* ℂ) {G : Type} [Group G] [Finite G]
     (f : G →* ℂˣ) (g : G) (h : ∃ y : K, σ y = ((f g : ℂˣ) : ℂ)) : ∃ z : 𝓞 K, σ (z : K) = ((f g : ℂˣ) : ℂ) := by
@@ -26,25 +26,23 @@ end GlobalTheory.MtIn
 open GlobalTheory.MtIn in
 
 /- English proof (translation)
-Introduce `X px I U L hI hL i t k`. Establish `hfin : ∀ PP : Pl X.toD7.host.E, Finite (kP PP)ˣ` using `fun PP => haveI : Finite (kP PP) := Ideal.finiteQuotientOfFreeOfNeBot PP.asIdeal PP.ne_bot Finite.of_injective _ Units.val_injective`. Establish `lift : ∀ (PP : Pl X.toD7.host.E) (d : (kP PP)ˣ), ∃ (a : 𝓞 X.toD7.host.E) (kE : X.toD7.host.Eˣ), (kE : X.toD7.host.E) = a ∧ (d : kP PP) = Ideal.Quotient.mk _ a`. Introduce `PP d`. Take `⟨a, ha⟩` from `Ideal.Quotient.mk_surjective (d : kP PP)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `ha0 : (a : X.toD7.host.E) ≠ 0`. Introduce `h0`. Establish `: a = 0` using `by exact_mod_cast h0`. Apply `d.ne_zero` to reduce the goal to its premises. Rewrite using `[← ha, this, map_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨a, Units.mk0 _ ha0, rfl, ha.symm⟩`. Establish `hchi : ∀ PP ∈ L.Pg, ∀ d : (kP PP)ˣ, ∃ y, X.toD7.what₂.embLL y = (((L.chi ((i : ℕ) + 1) PP)⁻¹ d : ℂˣ) : ℂ)`. Introduce `PP hPP d`. Take `⟨a, kE, h1, h2⟩` from `lift PP d`. Establish `hres` using `hL.is.chi i PP hPP a kE d h1 h2`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hres, hL.C]`. Establish `hw : PP ∈ (X.B.primes px).vGs` using `hL.Pg ▸ hPP`. Conclude with `⟨_, ((hI.ch_tied.mu0 i).atg ⟨PP, hw⟩ kE a d h1 h2).symm⟩`. Establish `hxi : ∀ PP ∈ L.Q t, ∀ d : (kP PP)ˣ, ∃ y, X.toD7.what₂.embLL y = ((L.xiR t PP d : ℂˣ) : ℂ)`. Introduce `PP hPP d`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨a, kE, h1, h2⟩` from `lift PP d`. Establish `hres` using `hL.is.xiR t PP hPP a kE d h1 h2`. Rewrite using `[hres, hL.xiH t]`. Conclude with `⟨_, (hI.xi_reads (ixOf I U t) _).symm⟩`. Set `Pr : ℂˣ → Prop` to `fun u => ∃ z : 𝓞 X.toD7.what₂.LL, X.toD7.what₂.embLL (z : X.toD7.what₂.LL) = (u : ℂ)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Establish `hmul : ∀ a b : ℂˣ, Pr a → Pr b → Pr (a * b)`. Introduce and unpack `a b ⟨za, ha⟩ ⟨zb, hb⟩`. Conclude with `⟨za * zb, by rw [Units.val_mul, ← ha, ← hb, ← map_mul]; rfl⟩`. Establish `hone : Pr 1` using `⟨1, by rw [Units.val_one, ← map_one X.toD7.what₂.embLL]; rfl⟩`. Establish `gchi : ∀ PP ∈ L.Pg, ∀ (c : ℕ) (d : (kP PP)ˣ), Pr ((if Frm.A = Frm.B then (fun _ : ℕ => L.chi ((i : ℕ) + 1)) else fun (_ : ℕ) (PP : Pl X.toD7.host.E) => (L.chi ((i : ℕ) + 1) PP)⁻¹) c PP d)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `PP hPP c d`. Use `haveI := hfin PP`. Establish `e : (if Frm.A = Frm.B then (fun _ : ℕ => L.chi ((i : ℕ) + 1)) else fun (_ : ℕ) (PP : Pl X.toD7.host.E) => (L.chi ((i : ℕ) + 1) PP)⁻¹) = fun (_ : ℕ) (PP : Pl X.toD7.host.E) => (L.chi ((i : ℕ) + 1) PP)⁻¹` using `if_neg (by decide)`. Rewrite using `[e]`. Conclude with `exists_int_of_finite X.toD7.what₂.embLL (L.chi ((i : ℕ) + 1) PP)⁻¹ d (hchi PP hPP d)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `gxi : ∀ PP ∈ L.Q t, ∀ d : (kP PP)ˣ, Pr ((if Frm.A = Frm.B then (fun PP => (L.xiR t PP)⁻¹) else L.xiR t) PP d)`. Introduce `PP hPP d`. Use `haveI := hfin PP`. Establish `e : (if Frm.A = Frm.B then (fun PP => (L.xiR t PP)⁻¹) else L.xiR t) = L.xiR t` using `if_neg (by decide)`. Rewrite using `[e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Conclude with `exists_int_of_finite X.toD7.what₂.embLL (L.xiR t PP) d (hxi PP hPP d)`. Use `show Pr (Formalism.L2.DIV.levFn (L.βV i) (flag1L (L.datVt i t)) _)`. Unfold `Formalism.L2.DIV.levFn`. Use `hmul _ _ (hmul _ _ ?_ (Finset.prod_induction _ Pr hmul hone fun PP hPP => Finset.prod_induction _ Pr hmul hone fun c _ => ?_)) (Finset.prod_induction _ Pr hmul hone fun PP hPP => ?_)` and prove the remaining obligations. Unfold `Formalism.L2.DIV.ext1 split_ifs`.
-
-Conclude with `hone`. Conclude with `hone`. Conclude with `gchi PP hPP (c + 1) _`. Conclude with `gxi PP hPP _`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.MtIn.levChi_integral : ∀ (X : Stages) (px : PreX X.B.toPre) (I : Col2.ColIn X.B px) (U : Set I.ι) (L : Formalism.IndefR.Links.LevCh X.toD7 (TupU I U)), I.Ok → LevOf X I U L → ∀ (i : Fin X.toD7.R.m) (t : TupU I U) (k : (levEnv (Vc X.toD7 i) (L.βV i) (L.datVt i t)).J), ∃ z : 𝓞 X.toD7.what₂.LL, X.toD7.what₂.embLL (z : X.toD7.what₂.LL) = ((levEnv (Vc X.toD7 i) (L.βV i) (L.datVt i t)).χ k : ℂ) := by
   intro X px I U L hI hL i t k

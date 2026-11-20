@@ -40,7 +40,7 @@ def uliftIntLinearEquivAddHom : (A →ₗ[ULift.{u} ℤ] B) ≃+ (A →+ B) wher
 
 @[simp]
 /- English proof (translation)
-The claim follows from `rfl @[simp]`.
+A detailed English derivation is pending.
 -/
 theorem uliftIntLinearEquivAddHom_apply (f : A →ₗ[ULift.{u} ℤ] B) (a : A) :
     uliftIntLinearEquivAddHom A B f a = f a :=
@@ -68,7 +68,7 @@ def cartierDualEquivMonoidHom (M : Rep.{u} (ULift.{u} ℤ) Gal(L/K)) :
 
 @[simp]
 /- English proof (translation)
-The claim follows from `rfl @[simp]`.
+A detailed English derivation is pending.
 -/
 theorem cartierDualEquivMonoidHom_apply (M : Rep.{u} (ULift.{u} ℤ) Gal(L/K))
     (f : M →ₗ[ULift.{u} ℤ] galUnits.{u} K L) (m : M) :
@@ -89,7 +89,7 @@ end MonoidHom
 section RootsOfUnity
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(cartierDualEquivMonoidHom K L M f (Multiplicative.ofAdd m)) ^ n = 1`. Rewrite using `[← map_pow, ← ofAdd_nsmul, hn m, ofAdd_zero, map_one]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem cartierDual_pow_eq_one {M : Rep.{u} (ULift.{u} ℤ) Gal(L/K)} {n : ℕ}
     (hn : ∀ m : M, n • m = 0) (f : M →ₗ[ULift.{u} ℤ] galUnits.{u} K L) (m : M) :
@@ -98,13 +98,13 @@ theorem cartierDual_pow_eq_one {M : Rep.{u} (ULift.{u} ℤ) Gal(L/K)} {n : ℕ}
   rw [← map_pow, ← ofAdd_nsmul, hn m, ofAdd_zero, map_one]
 
 /- English proof (translation)
-Use `⟨fun f g h => ?_, fun f₀ => ?_⟩` and prove the remaining obligations. Use `LinearMap.ext fun m => ?_` and prove the remaining obligations. Use `LinearMap.congr_fun h m` as an intermediate fact. Conclude with `Additive.toMul.injective (Subtype.ext (congrArg (Additive.toMul (α := Lˣ)) this))`. Set `f : M →ₗ[ULift.{u} ℤ] galUnits.{u} K L` to `f₀`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `g : M →+ Additive (rootsOfUnity n L)` to `{ toFun := fun m => Additive.ofMul ⟨Additive.toMul (α := Lˣ) (f m), (mem_rootsOfUnity n _).2 (cartierDual_pow_eq_one hn f m)⟩ map_zero' := by`. Apply `Additive.toMul.injective` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `Additive.toMul (α := Lˣ) (f 0) = 1`. Rewrite using `[map_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Use the proof step `map_add' := fun a b => by`. Apply `Additive.toMul.injective` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `Additive.toMul (α := Lˣ) (f (a + b)) = Additive.toMul (α := Lˣ) (f a) * Additive.toMul (α := Lˣ) (f b)`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[map_add]`. Use `rfl }`. Use `⟨(uliftIntLinearEquivAddHom M (galRootsOfUnity.{u} K L n)).symm g, ?_⟩` and prove the remaining obligations. Use `LinearMap.ext fun m => ?_` and prove the remaining obligations. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem bijective_ihom_map_rootsOfUnityToUnits (M : Rep.{u} (ULift.{u} ℤ) Gal(L/K)) {n : ℕ}
     (hn : ∀ m : M, n • m = 0) :
@@ -201,7 +201,7 @@ instance isDiscreteRep_cartierDual [Algebra.IsIntegral K L] (M : Rep.{u} (ULift.
       exact (isOpen_stabilizer M m).inter (isOpen_stabilizer (galUnits.{u} K L) (f' m))
 
 /- English proof (translation)
-Establish `: HasEnoughRootsOfUnity L (Monoid.exponent (Multiplicative M))`. Rewrite using `[Monoid.exponent_multiplicative]` and apply the resulting hypothesis. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Chain the equalities or inequalities of the calculation.
 -/
 theorem card_cartierDual (M : Rep.{u} (ULift.{u} ℤ) Gal(L/K)) [Finite M]
     [HasEnoughRootsOfUnity L (AddMonoid.exponent M)] :
@@ -217,9 +217,9 @@ theorem card_cartierDual (M : Rep.{u} (ULift.{u} ℤ) Gal(L/K)) [Finite M]
 variable (K) in
 
 /- English proof (translation)
-Establish `hdvd : AddMonoid.exponent M ∣ Nat.card M` using `AddGroup.exponent_dvd_nat_card`. Establish `hK : (AddMonoid.exponent M : K) ≠ 0`. Take `⟨c, hc⟩` from `hdvd`. Introduce `h0`. Apply `h` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hc, Nat.cast_mul, h0, zero_mul]`. Establish `: NeZero (AddMonoid.exponent M : L)` using `⟨by`. Rewrite using `[← map_natCast (algebraMap K L)]`. Conclude with `(map_ne_zero (algebraMap K L)).2 hK⟩`. Use `infer_instance`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasEnoughRootsOfUnity_exponent_of_isSepClosed [IsSepClosed L] (M : Type*)
     [AddCommGroup M] [Finite M] (h : (Nat.card M : K) ≠ 0) :
@@ -261,9 +261,9 @@ end Pairing
 section Biduality
 
 /- English proof (translation)
-Establish `: HasEnoughRootsOfUnity L (Monoid.exponent (Multiplicative M))`. Rewrite using `[Monoid.exponent_multiplicative]` and apply the resulting hypothesis. Assume the negation of the conclusion as `hm`. Establish `hm' : Multiplicative.ofAdd m ≠ 1` using `fun h1 => hm (Multiplicative.ofAdd.injective h1)`. Take `⟨φ, hφ⟩` from `CommGroup.exists_apply_ne_one_of_hasEnoughRootsOfUnity (Multiplicative M) L hm'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Apply `hφ` to reduce the goal to its premises. Use `h ((cartierDualEquivMonoidHom K L M).symm φ)` as an intermediate fact. Rewrite `this` using `[cartierDualEquivMonoidHom_symm_apply]`. Conclude with `Additive.ofMul.injective this`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_forall_cartierDual_apply_eq_zero {M : Rep.{u} (ULift.{u} ℤ) Gal(L/K)}
     [Finite M] [HasEnoughRootsOfUnity L (AddMonoid.exponent M)] {m : M}
@@ -279,7 +279,7 @@ theorem eq_zero_of_forall_cartierDual_apply_eq_zero {M : Rep.{u} (ULift.{u} ℤ)
   exact Additive.ofMul.injective this
 
 /- English proof (translation)
-Use `AddMonoid.exponent_dvd_of_forall_nsmul_eq_zero fun f => ?_` and prove the remaining obligations. Set `f' : M →ₗ[ULift.{u} ℤ] galUnits.{u} K L` to `f`. Express the relevant statement in the definitionally equal form `AddMonoid.exponent M • f' = 0`. Use `LinearMap.ext fun m => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.smul_apply, ← map_nsmul, AddMonoid.exponent_nsmul_eq_zero, map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -293,7 +293,7 @@ theorem exponent_cartierDual_dvd (M : Rep.{u} (ULift.{u} ℤ) Gal(L/K)) :
   rfl
 
 /- English proof (translation)
-Establish `: NeZero (AddMonoid.exponent M)` using `⟨AddMonoid.exponent_ne_zero_of_finite⟩`. Conclude with `HasEnoughRootsOfUnity.of_dvd L (exponent_cartierDual_dvd M)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem hasEnoughRootsOfUnity_exponent_cartierDual (M : Rep.{u} (ULift.{u} ℤ) Gal(L/K))
     [Finite M] [HasEnoughRootsOfUnity L (AddMonoid.exponent M)] :
@@ -302,9 +302,9 @@ theorem hasEnoughRootsOfUnity_exponent_cartierDual (M : Rep.{u} (ULift.{u} ℤ) 
   exact HasEnoughRootsOfUnity.of_dvd L (exponent_cartierDual_dvd M)
 
 /- English proof (translation)
-Use `hasEnoughRootsOfUnity_exponent_cartierDual (K := K) (L := L) M` as an intermediate fact. Establish `: Finite (cartierDual K L M)` using `finite_cartierDual K L M`. Establish `: Finite (cartierDual K L (cartierDual K L M))` using `finite_cartierDual K L _`. Rewrite using `[Nat.bijective_iff_injective_and_card, card_cartierDual, card_cartierDual]`. Use `⟨(injective_iff_map_eq_zero _).2 fun m hm => ?_, rfl⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `eq_zero_of_forall_cartierDual_apply_eq_zero (K := K) (L := L) fun f => ?_` and prove the remaining obligations. Use `LinearMap.congr_fun hm f` as an intermediate fact. Conclude with `this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem toCartierDualCartierDual_bijective (M : Rep.{u} (ULift.{u} ℤ) Gal(L/K)) [Finite M]
     [HasEnoughRootsOfUnity L (AddMonoid.exponent M)] :
@@ -365,7 +365,7 @@ end Exact
 section ZMod
 
 /- English proof (translation)
-Take `⟨z⟩` from `x`. Apply `ULift.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `n • z = 0`. Use `AddMonoid.exponent_nsmul_eq_zero z` as an intermediate fact. Rewrite `this` using `[ZMod.exponent]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem nsmul_zmodRep_eq_zero (G : Type*) [Monoid G] (n : ℕ) (x : zmodRep.{u} G n) : n • x = 0 := by
   obtain ⟨z⟩ := x
@@ -375,7 +375,7 @@ theorem nsmul_zmodRep_eq_zero (G : Type*) [Monoid G] (n : ℕ) (x : zmodRep.{u} 
   rwa [ZMod.exponent] at this
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `AddMonoid.exponent (ULift.{u} (ZMod n)) = n`. Rewrite using `[AddMonoid.exponent_eq_of_addEquiv AddEquiv.ulift, ZMod.exponent]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem exponent_zmodRep (G : Type*) [Monoid G] (n : ℕ) :
     AddMonoid.exponent (zmodRep.{u} G n) = n := by
@@ -386,7 +386,7 @@ instance finite_zmodRep (G : Type*) [Monoid G] (n : ℕ) [NeZero n] : Finite (zm
   inferInstanceAs (Finite (ULift.{u} (ZMod n)))
 
 /- English proof (translation)
-Apply `ULift.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(k : ZMod n) = k • (1 : ZMod n)`. Rewrite using `[zsmul_one]`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem zmodRep_eq_zsmul (G : Type*) [Monoid G] (n : ℕ) (k : ℤ) :
     (ULift.up (k : ZMod n) : zmodRep.{u} G n) = k • (ULift.up 1 : zmodRep.{u} G n) := by
@@ -421,13 +421,13 @@ theorem coe_cartierDualZModHom_hom_apply (n : ℕ)
   rfl
 
 /- English proof (translation)
-Use `⟨fun f₀ g₀ h => ?_, fun x => ?_⟩` and prove the remaining obligations. Set `f : zmodRep.{u} Gal(L/K) n →ₗ[ULift.{u} ℤ] galUnits.{u} K L` to `f₀`. Set `g : zmodRep.{u} Gal(L/K) n →ₗ[ULift.{u} ℤ] galUnits.{u} K L` to `g₀`. Establish `h1 : f (ULift.up 1) = g (ULift.up 1)`. Use `congrArg (fun y => ((Additive.toMul y : rootsOfUnity n L) : Lˣ)) h` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Additive.toMul.injective this`. Express the relevant statement in the definitionally equal form `f = g`. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Take `⟨z⟩` from `x`. Rewrite using `[← ZMod.intCast_zmod_cast z, zmodRep_eq_zsmul Gal(L/K) n, map_zsmul, map_zsmul, h1]`.
+Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `ζ : Lˣ` to `(Additive.toMul x : rootsOfUnity n L)`. Establish `hζ : ζ ^ n = 1` using `(mem_rootsOfUnity _ _).1 (Additive.toMul x).2`. Set `h₀ : ZMod n →+ Additive Lˣ` to `ZMod.lift n ⟨zmultiplesHom (Additive Lˣ) (Additive.ofMul ζ), by`. Rewrite using `[zmultiplesHom_apply, natCast_zsmul, ← ofMul_pow, hζ, ofMul_one]⟩`. Use `⟨(uliftIntLinearEquivAddHom (zmodRep.{u} Gal(L/K) n) (galUnits.{u} K L)).symm (h₀.comp (AddEquiv.ulift : ULift.{u} (ZMod n) ≃+ ZMod n).toAddMonoidHom), ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Additive.toMul.injective` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `Additive.toMul (h₀ 1) = ζ`. Rewrite using `[← Int.cast_one, ZMod.lift_coe, zmultiplesHom_apply, one_zsmul, toMul_ofMul]`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cartierDualZModHom_bijective (n : ℕ) :
     Function.Bijective (cartierDualZModHom K L n).hom := by

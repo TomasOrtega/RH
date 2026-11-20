@@ -100,7 +100,7 @@ def PartFixed : Prop := All fun {_} _ _ _ {G} W M => ∀ ρ Φ u i h, ∀ k ∈ 
   part W M ρ Φ u (i + 1) h (g * k) = part W M ρ Φ u (i + 1) h g
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, one_mem _, 1, rfl, 1, one_mem _, by simp⟩`.
+Supply the required witnesses or components.
 -/
 example (W : HSp D) (R : Subgroup (GA D W)) : (1 : GA D W) ∈ strip W R {1} := ⟨1, one_mem _, 1, rfl, 1, one_mem _, by simp⟩
 

@@ -19,7 +19,7 @@ Both sides reduce to the same expression.
 theorem wt_apply (s : ℝ) (n : ℕ) : wt s n = (((n : ℝ≥0) ^ (-s) : ℝ≥0) : ℝ≥0∞) := rfl
 
 /- English proof (translation)
-Rewrite `h` using `[← ENNReal.coe_tsum hg, ← ENNReal.coe_pow]`. Establish `hf : Summable f` using `ENNReal.tsum_coe_ne_top_iff_summable.mp (ne_top_of_le_ne_top ENNReal.coe_ne_top h)`. Use `⟨hf, ?_⟩` and prove the remaining obligations. Rewrite `h` using `[← ENNReal.coe_tsum hf]`. Conclude with `h` after adjusting the coercions.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nnreal_of_ennreal {β : Type*} (f : β → ℝ≥0) (g : ℕ → ℝ≥0) (m : ℕ) (hg : Summable g)
     (h : ∑' b, (f b : ℝ≥0∞) ≤ (∑' k, (g k : ℝ≥0∞)) ^ m) :
@@ -32,13 +32,13 @@ theorem nnreal_of_ennreal {β : Type*} (f : β → ℝ≥0) (g : ℕ → ℝ≥0
   exact_mod_cast h
 
 /- English proof (translation)
-Introduce `E _ _ s hs`. Establish `h` using `tsum_ideal_le E (wt s)`. Establish `h0 : wt s 0 = 0`. Rewrite using `[wt_apply, Nat.cast_zero, NNReal.zero_rpow (by linarith : -s ≠ 0), ENNReal.coe_zero]`. Rewrite `h` using `[tsum_eq_zero_add' ENNReal.summable, h0, zero_add]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [wt_apply] at h`. Establish `hg : Summable (fun n : ℕ => (((n + 1 : ℕ) : ℝ≥0) ^ (-s)))`. Rewrite using `[← NNReal.summable_coe]`. Use `(summable_nat_add_iff 1).mpr (Real.summable_nat_rpow.mpr (by linarith : -s < -1))` as an intermediate fact. Simplify using `using this`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Take `⟨hf, hle⟩` from `nnreal_of_ennreal (fun I : {I : Ideal (𝓞 E) // I ≠ ⊥} => ((Ideal.absNorm I.1 : ℝ≥0) ^ (-s))) _ _ hg h`. Prove the components needed by the constructor for the conclusion. Use `NNReal.summable_coe.mpr hf` as an intermediate fact. Simplify using `using this`. Use `NNReal.coe_le_coe.mpr hle` as an intermediate fact.
+Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite `this` using `[NNReal.coe_tsum, NNReal.coe_pow, NNReal.coe_tsum]`. Simplify `this` using `[idealZeta, zetaR]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem zetaLePow : ZetaLePow := by
   intro E _ _ s hs

@@ -14,9 +14,9 @@ open IsLocalRing Polynomial
 namespace GlobalTheory.KeyOriginEnlarge
 
 /- English proof (translation)
-Introduce `T O _ _ _ _ _ _ _ _ hT P _ φ hφ hsh hP q hq hqT A _ _ _ _ _ _ i EA _ _ _ _ _ QA _ jA ψA DA _ _ actA hFits ρ hρ hpt`. Establish `htor` using `hFits.2.2.2.2.2.2`. Take `⟨a, ha0, ha⟩` from `GlobalTheory.T.exists_ne_zero_closureEtaleAt_alt q A EA QA DA actA hq hFits.2.2.1 htor`. Take `⟨A₁, _, _, _, _, _, _, f, i₁, hf, hi₁, hloc₁, hcomp, hK⟩` from `GlobalTheory.T.exists_kummerEnlargement_rootsOfUniformisers T hT q hq hqT A i hFits.1 hFits.2.1 a ha0`. Take `⟨EA₁, _, _, _, _, _, QA₁, _, jA₁, ψA₁, DA₁, _, _, actA₁, hFits₁, ⟨ρ₁, hρ₁, hpt₁⟩, hEt, β, h, hβ, hh⟩` from `GlobalTheory.T.baseChange_integralClosure_etale_height_one T O hT P φ hφ hsh hP q hq hqT A i EA QA jA ψA DA actA hFits ρ hρ hpt a ha0 ha A₁ f i₁ hf hi₁ hloc₁ hcomp hK`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨A₁, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, i₁, EA₁, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, QA₁, inferInstance, jA₁, ψA₁, DA₁, inferInstance, inferInstance, actA₁, hFits₁, ⟨ρ₁, hρ₁, ?_⟩, β, h, …` and prove the remaining obligations. Conclude with `(GlobalTheory.KeyOriginEnlarge.good_iff_etaleAt _ _ _ _).2 ⟨GlobalTheory.T.integralClosureEtaleAt_of_height_le_one_purity q A₁ EA₁ QA₁ DA₁ actA₁ hFits₁.2.2.2.2.2.2 hEt, hpt₁⟩`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem etale_enlarge : ∀ (T O : Type) [CommRing T] [IsDomain T] [IsLocalRing T] [CommRing O] [IsLocalRing O] [Algebra T O]
     [Algebra (Polynomial T) O] [IsScalarTower T (Polynomial T) O], GlobalTheory.LocAcyc.AbsIntClosed T →

@@ -31,13 +31,13 @@ def Rel (Q : DegPre R) {k : ℕ} {β : Q.X} (σ : Q.SecB k β)
       gs (x ≫ (DegPre.BF Q (FractionRing R)).hom) z ⊤ ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom r) * sval s x z J
 
 /- English proof (translation)
-Rewrite using `[gs_eq f z ⊤ trivial, map_zero, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem gs_zero {Y Z : Scheme.{0}} (f : Z ⟶ Y) (z : Z) : gs f z ⊤ (0 : Γ(Y, ⊤)) = 0 := by
   rw [gs_eq f z ⊤ trivial, map_zero, map_zero]
 
 /- English proof (translation)
-The claim follows from `(gs_mul r z _ (hJ.mem φ r) _ _).trans (congrArg (· * _) (gs_res r z le_top (hJ.mem φ r) c))`.
+A detailed English derivation is pending.
 -/
 theorem sval_secScale {X Y Z : Scheme.{0}} {L : LB X} {K : Type} [Fintype K] {φ : K → (Y ⟶ X)} {ε : K → ℤ}
     (c : Γ(Y, ⊤)) (s : LB.Sec (LB.LinComb L φ ε)) (r : Z ⟶ Y) (z : Z) {J : (Z ⟶ X) → L.ι} (hJ : Good L z J) :
@@ -45,9 +45,9 @@ theorem sval_secScale {X Y Z : Scheme.{0}} {L : LB X} {K : Type} [Fintype K] {φ
   (gs_mul r z _ (hJ.mem φ r) _ _).trans (congrArg (· * _) (gs_res r z le_top (hJ.mem φ r) c))
 
 /- English proof (translation)
-Introduce `Z x z J hJ`. Rewrite using `[sval_secScale _ _ _ _ hJ, h Z x z J hJ, ← _root_.mul_assoc, map_mul, gs_mul _ z ⊤ trivial]`. Use `congrArg (· * _) (congrArg (· * _) ?_)` and prove the remaining obligations. Establish `e : (x ≫ (DegPre.prB Q (FractionRing R)).left) ≫ Q.P.A.hom = x ≫ (DegPre.BF Q (FractionRing R)).hom`. Rewrite using `[Category.assoc, Over.w]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← e]`. Conclude with `gs_pull _ Q.P.A.hom z ⊤ trivial _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rel_scale {Q : DegPre R} {k : ℕ} {β : Q.X} {σ : Q.SecB k β}
     {s : LB.Sec (LB.LinComb Q.P.L (DegPre.famφ Q (FractionRing R) β) (DegPre.famε k))} {r : R} (h : Rel Q σ s r) (a : R) :
@@ -61,7 +61,7 @@ theorem rel_scale {Q : DegPre R} {k : ℕ} {β : Q.X} {σ : Q.SecB k β}
   exact gs_pull _ Q.P.A.hom z ⊤ trivial _
 
 /- English proof (translation)
-Substitute `h` using the available equality. Simplify `H` using `only [cast_eq]`.
+Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem rel_cast {Q : DegPre R} {k : ℕ} {F : Fam Q (FractionRing R) k} {a b : Q.X} (h : a = b) (σ : Q.SecB k b)
     (e : Q.SecB k b = Q.SecB k a) {r : R} (H : Rel Q σ (F.s b) r) : Rel Q (cast e σ) (F.s a) r := by
@@ -69,13 +69,11 @@ theorem rel_cast {Q : DegPre R} {k : ℕ} {F : Fam Q (FractionRing R) k} {a b : 
   simpa only [cast_eq] using H
 
 /- English proof (translation)
-Establish `e : x ≫ (DegPre.BF Q (FractionRing R)).hom = (x ≫ (fst (TF (R` using `R) (FractionRing R)) Q.P.A).left ≫ jFK (R := R) (FractionRing R)) ≫ jK R := by`. Rewrite using `[← Over.w (fst (TF (R := R) (FractionRing R)) Q.P.A)]`. Simplify using `only [Category.assoc]`. Both sides reduce to the same expression. Rewrite using `[e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Use `set q := x ≫ (fst (TF (R := R) (FractionRing R)) Q.P.A).left ≫ jFK (R := R) (FractionRing R)`. Rewrite using `[← gs_pull q (jK R) z ⊤ (Set.mem_univ _), gs_eq q z (jK R ⁻¹ᵁ ⊤) (Set.mem_univ _)]`. Establish `n` using `congrArg (fun t => t.hom r) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom (algebraMap R (FractionRing R))))`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply, CommRingCat.hom_ofHom] at n`. Establish `u : IsUnit (algebraMap R (FractionRing R) r)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: algebraMap R (FractionRing R) r ≠ 0` using `fun h0 => hr (IsFractionRing.injective R (FractionRing R) (by rw [h0, map_zero]))`. Conclude with `this.isUnit`. Establish `u' : IsUnit ((jK R).appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom r))`. Rewrite using `[show jK R = Spec.map (CommRingCat.ofHom (algebraMap R (FractionRing R))) from rfl, ← n]`. Conclude with `u.map _`.
-
-Conclude with `(u'.map _).map _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_gs {Q : DegPre R} {r : R} (hr : r ≠ 0) {Z : Scheme.{0}} (x : Z ⟶ (DegPre.BF Q (FractionRing R)).left) (z : Z) :
     IsUnit (gs (x ≫ (DegPre.BF Q (FractionRing R)).hom) z ⊤ ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom r)) := by
@@ -98,9 +96,9 @@ theorem isUnit_gs {Q : DegPre R} {r : R} (hr : r ≠ 0) {Z : Scheme.{0}} (x : Z 
   exact (u'.map _).map _
 
 /- English proof (translation)
-Introduce `u hu hc z J hJ`. Establish `fe` using `(secRel_iff Q.P.isLB _ _ (F.s (α + k • mu)) _ _ (F.s α) (DegPre.trF Q (FractionRing R) mu).left _ _ u).1 (F.fe mu α u hu hc) _ (𝟙 _) z J hJ`. Establish `a₁` using `h₁ _ (𝟙 _) z J hJ`. Establish `a₀` using `h₀ _ (DegPre.trF Q (FractionRing R) mu).left z J hJ`. Establish `w : (DegPre.trF Q (FractionRing R) mu).left ≫ (DegPre.BF Q (FractionRing R)).hom = (DegPre.BF Q (FractionRing R)).hom` using `Over.w _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Category.id_comp] at a₁ fe`. Rewrite `a₀` using `[w]`. Establish `z0 : Out.scal (DegPre.BF Q (FractionRing R)).hom (0 : R) = 0` using `by simp [Out.scal]`. Rewrite using `[Over.comp_left, a₀, a₁, fe, z0, gs_zero, zero_mul, add_zero]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem shiftEq_of_rel (Q : DegPre R) (k : ℕ) (F : Fam Q (FractionRing R) k) (mu α : Q.X) (r : R) (σ : Q.SecB k α)
     (σ₁ : Q.SecB k (α + k • mu)) (h₀ : Rel Q σ (F.s α) r) (h₁ : Rel Q σ₁ (F.s (α + k • mu)) r) :
@@ -119,15 +117,13 @@ theorem shiftEq_of_rel (Q : DegPre R) (k : ℕ) (F : Fam Q (FractionRing R) k) (
   ring
 
 /- English proof (translation)
-Introduce `R _ _ _ _ _ Dd k hk mu mu' α`. Take `⟨s₀, hs₀⟩` from `GlobalTheory.FamFree.exists_sec_ne_zero (D := Dd.toPre) (F := FractionRing R) GlobalTheory.CMClaims.secTwist hk α`. Take `⟨F, hFα, -⟩` from `GlobalTheory.FamFree.exists_fam_single GlobalTheory.CMClaims.laws.globalFns Dd.tau_bimult hk α s₀`. Take `⟨r₀, hr₀, σ₀, h₀⟩` from `GlobalTheory.T.exists_clear_denominator_bundleSection_genericFibre R Dd.toPre k α (F.s α)`. Take `⟨r₁, hr₁, σ₁, h₁⟩` from `GlobalTheory.T.exists_clear_denominator_bundleSection_genericFibre R Dd.toPre k (α + k • mu) (F.s (α + k • mu))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨r₂, hr₂, σ₂, h₂⟩` from `GlobalTheory.T.exists_clear_denominator_bundleSection_genericFibre R Dd.toPre k (α + k • (mu + mu')) (F.s (α + k • (mu + mu')))`. Establish `g₀` using `rel_scale (Q := Dd.toPre) (σ := σ₀) h₀ (r₁ * r₂)`. Establish `g₁` using `rel_scale (Q := Dd.toPre) (σ := σ₁) h₁ (r₀ * r₂)`. Establish `g₂` using `rel_scale (Q := Dd.toPre) (σ := σ₂) h₂ (r₀ * r₁)`. Rewrite `g₀` using `[show r₁ * r₂ * r₀ = r₀ * r₁ * r₂ by ring]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `g₁` using `[show r₀ * r₂ * r₁ = r₀ * r₁ * r₂ by ring]`. Establish `hX : α + k • mu + k • mu' = α + k • (mu + mu')` using `by rw [smul_add, add_assoc]`. Establish `e : Dd.toPre.SecB k (α + k • mu + k • mu') = Dd.toPre.SecB k (α + k • (mu + mu'))` using `by rw [hX]`. Establish `g₂'` using `rel_cast (F := F) hX _ e.symm g₂`. Use `⟨_, _, cast e.symm (DVR.SecOps.secScale (Out.scal Dd.toPre.P.A.hom (r₀ * r₁)) σ₂), e, shiftEq_of_rel Dd.toPre k F mu α _ _ _ g₀ g₁, shiftEq_of_rel Dd.toPre k F mu' (α + k • mu) _ _ _ g₁ g₂', ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[cast_cast, cast_eq]`. Conclude with `shiftEq_of_rel Dd.toPre k F (mu + mu') α _ _ _ g₀ g₂`. Take `⟨z, J, hJ, hu⟩` from `GlobalTheory.T.exists_unit_value_translated_bundleSection R Dd.toPre k α (mu + mu') (F.s α) (by rw [hFα]; exact hs₀)`. Use `⟨z, J, hJ, ?_⟩` and prove the remaining obligations. Rewrite using `[Over.comp_left, g₀ _ _ z J hJ]`.
-
-Conclude with `(isUnit_gs (mul_ne_zero (mul_ne_zero hr₀ hr₁) hr₂) _ z).mul hu`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_triple : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [IsNoetherianRing R] [IsAdicComplete (maximalIdeal R) R] (Dd : DegData R (maximalIdeal R)) (k : ℕ), 1 ≤ k → ∀ (mu mu' α : Dd.toPre.X), ∃ (σ : Dd.toPre.SecB k α) (σ₁ : Dd.toPre.SecB k (α + k • mu)) (σ₂ : Dd.toPre.SecB k (α + k • mu + k • mu')) (e : Dd.toPre.SecB k (α + k • mu + k • mu') = Dd.toPre.SecB k (α + k • (mu + mu'))), ShiftEq Dd.toPre k mu α σ σ₁ 0 σ₁ ∧ ShiftEq Dd.toPre k mu' (α + k • mu) σ₁ σ₂ 0 σ₂ ∧ ShiftEq Dd.toPre k (mu + mu') α σ (cast e σ₂) 0 (cast e σ₂) ∧ ∃ (z : (DegPre.BF Dd.toPre (FractionRing R)).left) (J : ((DegPre.BF Dd.toPre (FractionRing R)).left ⟶ Dd.toPre.P.A.left) → Dd.toPre.P.L.ι), Good Dd.toPre.P.L z J ∧ IsUnit (sval σ (DegPre.trF Dd.toPre (FractionRing R) (mu + mu') ≫ DegPre.prB Dd.toPre (FractionRing R)).left z J) := by
   intro R _ _ _ _ _ Dd k hk mu mu' α

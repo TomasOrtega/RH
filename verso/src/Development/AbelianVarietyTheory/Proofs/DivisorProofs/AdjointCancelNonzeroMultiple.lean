@@ -18,9 +18,9 @@ namespace GlobalTheory.AdjCancel
 variable {K : Type} [Field K]
 
 /- English proof (translation)
-Set `F : (Y ⟶ A'.X) →* Multiplicative (Pic Y.left)` to `MonoidHom.mk' (fun b => Multiplicative.ofAdd (AbDual.evc hP.isLB a b)) (fun b b' => by`. Rewrite using `[GlobalTheory.T.poincareClass_additive_in_dual_variable K A A' P hP Y a b b']`. Use the proof step `rfl)`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `map_zpow F b k` as an intermediate fact.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this`. Use `map_one F` as an intermediate fact. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem evc_zpow {A A' : AbVar K} {P : LB (A.X ⊗ A'.X).left} (hP : AbDual.IsDual A.X A'.X P)
     {Y : Over (Sp K)} (a : Y ⟶ A.X) (b : Y ⟶ A'.X) (k : ℤ) :

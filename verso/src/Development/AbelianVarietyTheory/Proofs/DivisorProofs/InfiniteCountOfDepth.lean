@@ -13,7 +13,7 @@ open GlobalTheory.SumSize GlobalTheory.RowClaim
 namespace GlobalTheory.SumCount
 
 /- English proof (translation)
-Introduce `hP hD` and use `infCountK_of GlobalTheory.T.datumCountBound_largeData (GlobalTheory.T.cosine_count_of_hypotheses hP) (GlobalTheory.T.pureTensorCountBound_of_cosetDepthBound hD)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem infCountK : GlobalTheory.FunPr.Hypotheses₂ → DepthK → InfCountK := fun hP hD =>
   infCountK_of GlobalTheory.T.datumCountBound_largeData (GlobalTheory.T.cosine_count_of_hypotheses hP) (GlobalTheory.T.pureTensorCountBound_of_cosetDepthBound hD)

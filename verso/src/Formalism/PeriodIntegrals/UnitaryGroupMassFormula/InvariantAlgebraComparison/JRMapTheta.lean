@@ -15,7 +15,7 @@ def pre (hs : ThetaSurj) (I : AutInst) (z : (InfinitePlace I.F → ℂ) × (I.E 
     Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF I.F ⊗[I.F] I.E := (hs I z).choose
 
 /- English proof (translation)
-The claim follows from `(hs I z).choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem theta_pre (hs : ThetaSurj) (I : AutInst)
     (z : (InfinitePlace I.F → ℂ) × (I.E ⊗[I.F] Formalism.MainNotions.S.Af I.F)) : Theta I (pre hs I z) = z :=
@@ -30,7 +30,7 @@ def coM (hs : ThetaSurj) (I : AutInst) (y : I.GA) :
   Matrix.of fun i j => pre hs I (coZ I y i j)
 
 /- English proof (translation)
-Use extensionality with `i j`. Conclude with `congrArg (fun z => z.1 v) (theta_pre hs I (coZ I y i j))`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem coM_theta (hs : ThetaSurj) (I : AutInst) (y : I.GA) (v : InfinitePlace I.F) :
     (coM hs I y).map (thetaV I v) = I.P v * uMat (y.1 v) * (I.P v)⁻¹ := by
@@ -38,7 +38,7 @@ theorem coM_theta (hs : ThetaSurj) (I : AutInst) (y : I.GA) (v : InfinitePlace I
   exact congrArg (fun z => z.1 v) (theta_pre hs I (coZ I y i j))
 
 /- English proof (translation)
-Use extensionality with `i j`. Conclude with `congrArg (fun z => z.2) (theta_pre hs I (coZ I y i j))`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem coM_tau (hs : ThetaSurj) (I : AutInst) (y : I.GA) :
     (coM hs I y).map (tauF I) = I.fmat y.2 := by
@@ -46,11 +46,11 @@ theorem coM_tau (hs : ThetaSurj) (I : AutInst) (y : I.GA) :
   exact congrArg (fun z => z.2) (theta_pre hs I (coZ I y i j))
 
 /- English proof (translation)
-Apply `matEq_of_inj hi I` to reduce the goal to its premises. Introduce `v`. Rewrite using `[Matrix.map_mul, coM_theta, coM_theta, coM_theta]`. Establish `: uMat ((y * z).1 v) = uMat (y.1 v) * uMat (z.1 v)` using `rfl`. Rewrite using `[this]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_one, Matrix.mul_assoc]`. Use `_ = I.P v * uMat (y.1 v) * (I.P v)⁻¹ * (I.P v * uMat (z.1 v) * (I.P v)⁻¹) := by`. Rewrite using `[← P_inv_mul I v]`. Simplify using `only [Matrix.mul_assoc]`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.map_mul, coM_tau, coM_tau, coM_tau]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem coM_mul (hi : ThetaInj) (hs : ThetaSurj) (I : AutInst) (y z : I.GA) :
     coM hs I (y * z) = coM hs I y * coM hs I z := by
@@ -68,9 +68,9 @@ theorem coM_mul (hi : ThetaInj) (hs : ThetaSurj) (I : AutInst) (y z : I.GA) :
     rfl
 
 /- English proof (translation)
-Apply `matEq_of_inj hi I` to reduce the goal to its premises. Introduce `v`. Rewrite using `[coM_theta, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `: uMat ((1 : I.GA).1 v) = 1` using `rfl`. Rewrite using `[this, Matrix.mul_one, P_mul_inv]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[coM_tau, Matrix.map_one _ (map_zero _) (map_one _)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem coM_one (hi : ThetaInj) (hs : ThetaSurj) (I : AutInst) : coM hs I 1 = 1 := by
   apply matEq_of_inj hi I
@@ -82,7 +82,7 @@ theorem coM_one (hi : ThetaInj) (hs : ThetaSurj) (I : AutInst) : coM hs I 1 = 1 
     rfl
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Formalism.UG.cT, Matrix.conjTranspose_apply, thetaV_sigR]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cT_map_theta (I : AutInst) (v : InfinitePlace I.F)
     (M : Matrix (Fin I.n) (Fin I.n) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF I.F ⊗[I.F] I.E)) :
@@ -92,7 +92,7 @@ theorem cT_map_theta (I : AutInst) (v : InfinitePlace I.F)
   simp [Formalism.UG.cT, Matrix.conjTranspose_apply, thetaV_sigR]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.JR, thetaV_inclR]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem JR_map_theta (I : AutInst) (v : InfinitePlace I.F) :
     (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.JR (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF I.F) I.J).map (thetaV I v) = I.J.map (I.φ v) := by
@@ -100,7 +100,7 @@ theorem JR_map_theta (I : AutInst) (v : InfinitePlace I.F) :
   simp [Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.JR, thetaV_inclR]
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a y => simp [Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR, Formalism.UG.sigR, tauF_tmul]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem tauF_sigR (I : AutInst) (x : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF I.F ⊗[I.F] I.E) :
     tauF I (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF I.F) I.cm.sig x) =
@@ -111,7 +111,7 @@ theorem tauF_sigR (I : AutInst) (x : Formalism.MainNotions.GlobalTheoryTheory.Ge
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Formalism.UG.cT, tauF_sigR]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cT_map_tau (I : AutInst)
     (M : Matrix (Fin I.n) (Fin I.n) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF I.F ⊗[I.F] I.E)) :
@@ -121,7 +121,7 @@ theorem cT_map_tau (I : AutInst)
   simp [Formalism.UG.cT, tauF_sigR]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.JR, tauF_inclR]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem JR_map_tau (I : AutInst) :
     (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.JR (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF I.F) I.J).map (tauF I) =
@@ -130,11 +130,11 @@ theorem JR_map_tau (I : AutInst) :
   simp [Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.JR, tauF_inclR]
 
 /- English proof (translation)
-Use `set P := I.P v`. Use `set Q := (I.P v)⁻¹`. Use `set Jv := I.J.map (I.φ v)`. Establish `hS : Pᴴ * Jv * P = Formalism.REAL.Jm (I.ε v)` using `I.P_spec v`. Establish `hPQ : P * Q = 1` using `P_mul_inv I v`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Establish `hJ : Jv = Qᴴ * Formalism.REAL.Jm (I.ε v) * Q`. Rewrite using `[← hS]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hPQ, Matrix.conjTranspose_one, Matrix.one_mul, Matrix.mul_one]`. Use `_ = Qᴴ * (Pᴴ * Jv * P) * Q := by`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Rewrite using `[Matrix.conjTranspose_mul]`. Simplify using `only [Matrix.mul_assoc]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = Jv := by rw [hS, hX, ← hJ]`.
+A detailed English derivation is pending.
 -/
 theorem conj_unitary (I : AutInst) (v : InfinitePlace I.F) (X : Matrix (Fin I.n) (Fin I.n) ℂ)
     (hX : Xᴴ * Formalism.REAL.Jm (I.ε v) * X = Formalism.REAL.Jm (I.ε v)) :
@@ -156,9 +156,7 @@ theorem conj_unitary (I : AutInst) (v : InfinitePlace I.F) (X : Matrix (Fin I.n)
     _ = Jv := by rw [hS, hX, ← hJ]
 
 /- English proof (translation)
-Apply `matEq_of_inj hi I` to reduce the goal to its premises. Introduce `v`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, cT_map_theta, JR_map_theta, coM_theta]`. Conclude with `conj_unitary I v _ (y.1 v).2`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, cT_map_tau, JR_map_tau, coM_tau]`.
-
-Conclude with `y.2.2`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coM_mem (hi : ThetaInj) (hs : ThetaSurj) (I : AutInst) (y : I.GA) :
     Formalism.UG.cT (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF I.F) I.cm.sig) (coM hs I y) *

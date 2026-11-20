@@ -16,9 +16,9 @@ namespace PosFs
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
 /- English proof (translation)
-Rewrite using `[fsHerm_h]`. Unfold `refNorm`. Simplify using `only [GroundTheory.Heights₂.Heights.fsMulti, HermLine.ofMetrics, zpow_one]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = ‖WithLp.toLp 2 (fun i => y ⟨k, i⟩)‖`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[EuclideanSpace.norm_eq, Real.sqrt_eq_rpow]`. Evaluate the numerical expressions.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 theorem fsHerm_one_h (y : (Σ k, ι k) → ℂ) :
     (fsHerm ι fun _ => 1).h y = (GroundTheory.Heights₂.Heights.fsMulti ι).h y := by
@@ -31,9 +31,9 @@ theorem fsHerm_one_h (y : (Σ k, ι k) → ℂ) :
   norm_num
 
 /- English proof (translation)
-Establish `h` using `GlobalTheory.CompanionTheory.Ar.FS.levi_fsMulti_pos hz hw`. Establish `e : (fun y => Real.log ((fsHerm ι fun _ => 1).h y)) = fun y => Real.log ((GroundTheory.Heights₂.Heights.fsMulti ι).h y)`. Use function extensionality and compare the values at `y`. Rewrite using `[fsHerm_one_h]`. Rewrite using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem levi_fs_pos {z w : (Σ k, ι k) → ℂ} (hz : ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0)
     (hw : ∀ c : K → ℂ, w ≠ torusSmul c z) :
@@ -47,9 +47,7 @@ theorem levi_fs_pos {z w : (Σ k, ι k) → ℂ} (hz : ∀ k, ∃ i, z ⟨k, i�
   exact h
 
 /- English proof (translation)
-Establish `hopen : ∀ᶠ y in 𝓝 z, ∀ k, ∃ i, y ⟨k, i⟩ ≠ 0`. Use `Filter.eventually_all.mpr fun k => ?_` and prove the remaining obligations. Take `⟨i, hi⟩` from `hz k`. Conclude with `Filter.mem_of_superset (((continuous_apply _).isOpen_preimage _ isOpen_ne).mem_nhds hi) fun y hy => ⟨i, hy⟩`. Establish `h1 : ContDiffAt ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) A.h z` using `hA.contDiffAt hopen`.
-
-Apply the tactic sequence `exact (h1.of_le (by first | exact WithTop.coe_le_coe.2 (le_top : (2 : ℕ∞) ≤ ⊤) | (rw [show (2 : WithTop ℕ∞) = ((2 : ℕ∞) : WithTop ℕ∞) by norm_cast]; exact WithTop.coe_le_coe.2 le_top))).log (A.pos z hz).ne'`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem contDiffAt_log_h {A : HermLine ι} (hA : IsSmoothHerm A) {z : (Σ k, ι k) → ℂ}
     (hz : ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0) : ContDiffAt ℝ 2 (fun y => Real.log (A.h y)) z := by
@@ -62,11 +60,11 @@ theorem contDiffAt_log_h {A : HermLine ι} (hA : IsSmoothHerm A) {z : (Σ k, ι 
   exact (h1.of_le (by first | exact WithTop.coe_le_coe.2 (le_top : (2 : ℕ∞) ≤ ⊤) | (rw [show (2 : WithTop ℕ∞) = ((2 : ℕ∞) : WithTop ℕ∞) by norm_cast]; exact WithTop.coe_le_coe.2 le_top))).log (A.pos z hz).ne'
 
 /- English proof (translation)
-Establish `hd` using `hγ.hasFDerivAt`. Establish `hq : ∀ q : Σ k, ι k, HasFDerivAt (fun y' => γ y' q) ((ContinuousLinearMap.proj q).comp (fderiv ℂ γ y)) y` using `fun q => hasFDerivAt_pi'.1 hd q`. Establish `hu : ∀ q : Σ k, ι k, HasFDerivAt (fun y' => affCoord p (γ y') q) ((γ y q) • ((-((γ y ⟨q.1, p q.1⟩) ^ 2)⁻¹) • ((ContinuousLinearMap.proj ⟨q.1, p q.1⟩).comp (fderiv ℂ γ y))) + ((γ y ⟨q.1, p q.1⟩)⁻¹) • ((ContinuousLinearMap.proj q).comp (fderiv ℂ γ y))) y`. Introduce `q`. Establish `hinv` using `(hasDerivAt_inv (hp q.1)).comp_hasFDerivAt y (hq ⟨q.1, p q.1⟩)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hm` using `(hq q).mul hinv`. Use `hm.congr_of_eventuallyEq (Filter.Eventually.of_forall fun y' => ?_)` and prove the remaining obligations. Simplify using `[affCoord, div_eq_mul_inv]`. Establish `hall : fderiv ℂ (fun y' => affCoord p (γ y')) y = ContinuousLinearMap.pi _` using `(hasFDerivAt_pi.2 hu).fderiv`. Rewrite using `[hall]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `q`. Establish `h1 : fderiv ℂ γ y w q = c q.1 * γ y q` using `congrFun hc q`. Establish `h2 : fderiv ℂ γ y w ⟨q.1, p q.1⟩ = c q.1 * γ y ⟨q.1, p q.1⟩` using `congrFun hc _`. Establish `hr` using `hp q.1`. Simplify using `only [ContinuousLinearMap.coe_pi', ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, ContinuousLinearMap.comp_apply, ContinuousLinearMap.proj_apply, h1, h2, smul_eq_mul, Pi.zero_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
 Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -100,21 +98,19 @@ theorem fderiv_affCoord_torus {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ
   ring
 
 /- English proof (translation)
-Introduce `x j y hy w hw`. Take `⟨hyt, hyU⟩` from `hy`. Establish `hx₀ : (R.A.chart j).symm y ∈ (R.A.chart j).source` using `(R.A.chart j).map_target hyt`. Establish `hex₀ : R.A.chart j ((R.A.chart j).symm y) = y` using `(R.A.chart j).right_inv hyt`. Establish `hxU : (R.A.chart j).symm y ∈ R.U x` using `hyU`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `γ : (Fin D → ℂ) → (Σ k, ι k) → ℂ` to `fun y' => R.lift x ((R.A.chart j).symm y')`. Establish `hγ : AnalyticAt ℂ γ y` using `analyticAt_pi_iff.2 fun q => R.holo x q j y ⟨hyt, hyU⟩`. Establish `hz : ∀ k, ∃ i, γ y ⟨k, i⟩ ≠ 0` using `(R.mem x _ hxU).1`. Establish `hc2` using `contDiffAt_log_h (GlobalTheory.CompanionTheory.Ar.PB.StepW.fsHerm_isSmoothHerm K ι fun _ => 1) hz`. Establish `heq : levi ((potOf R (fsHerm ι fun _ => 1)).φ x ∘ (R.A.chart j).symm) y w = levi (fun z => Real.log ((fsHerm ι fun _ => 1).h z)) (γ y) (fderiv ℂ γ y w)` using `levi_comp w hγ hc2`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[heq]`. Use `levi_fs_pos hz fun c hc => hw ?_` and prove the remaining obligations. Use `choose p hp using (R.mem _ _ (R.mem_U ((R.A.chart j).symm y))).1`. Establish `hnot : R.lift ((R.A.chart j).symm y) ((R.A.chart j).symm y) ∉ mcPts (⊤ : Ideal (MRing ι))`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `h.2 1 trivial` as an intermediate fact. Simplify using `at this`. Establish `himm` using `R.immersion _ hnot p hp j hx₀`. Rewrite `himm` using `[hex₀]`. Establish `hev : (fun y' => affCoord p (R.lift ((R.A.chart j).symm y) ((R.A.chart j).symm y'))) =ᶠ[𝓝 y] fun y' => affCoord p (γ y')`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmem : (R.A.chart j).symm ⁻¹' (R.U x ∩ R.U ((R.A.chart j).symm y)) ∈ 𝓝 y` using `((R.A.chart j).continuousAt_symm hyt).preimage_mem_nhds (((R.isOpen_U x).inter (R.isOpen_U _)).mem_nhds ⟨hxU, R.mem_U _⟩)`. Use `filter_upwards [hmem] with y' hy'`. Take `⟨c', hc', h⟩` from `R.compat _ x _ ⟨hy'.2, hy'.1⟩`. Use function extensionality and compare the values at `q`. Simplify using `only [affCoord, γ]`.
+Extract witnesses or component facts from the available result. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[h]`. Conclude with `mul_div_mul_left _ _ (hc' q.1)`. Rewrite `himm` using `[hev.fderiv_eq]`. Establish `hpγ : ∀ k, γ y ⟨k, p k⟩ ≠ 0`. Introduce `k`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨c', hc', h⟩` from `R.compat _ x _ ⟨R.mem_U _, hxU⟩`. Use `hp k` as an intermediate fact. Rewrite `this` using `[h]`. Conclude with `right_ne_zero_of_mul this`. Establish `hk` using `fderiv_affCoord_torus p hγ.differentiableAt hpγ hc`.
-
-Establish `hmem : w ∈ (fderiv ℂ (fun y' => affCoord p (γ y')) y).ker` using `hk`. Rewrite `hmem` using `[himm]`. Conclude with `(Submodule.mem_bot _).1 hmem`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isPosPot_fs (P : Ideal (MRing ι)) (D : ℕ) (R : AnLogRes P ⊤ D) :
     IsPosPot R.A (potOf R (fsHerm ι fun _ => 1)) := by
@@ -166,7 +162,7 @@ theorem isPosPot_fs (P : Ideal (MRing ι)) (D : ℕ) (R : AnLogRes P ⊤ D) :
 end PosFs
 
 /- English proof (translation)
-Introduce `K _ ι _ P D R` and use `⟨fun _ hA => isPotential_potOf R hA, GlobalTheory.CompanionTheory.Ar.PB.StepW.fsHerm_isSmoothHerm K ι _, PosFs.isPosPot_fs P D R⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem fs_pos_potential : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (P : Ideal (MRing ι)) (D : ℕ) (R : AnLogRes P ⊤ D), (∀ A : HermLine ι, IsSmoothHerm A → IsPotential R.A (potOf R A)) ∧ IsSmoothHerm (fsHerm ι fun _ => 1) ∧ IsPosPot R.A (potOf R (fsHerm ι fun _ => 1)) :=
   fun K _ ι _ P D R => ⟨fun _ hA => isPotential_potOf R hA,

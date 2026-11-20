@@ -9,11 +9,11 @@ variable {𝕜 : Type*} [RCLike 𝕜] {E : Type*} [NormedAddCommGroup E] [InnerP
 variable {ι κ : Type*} [Fintype ι] [DecidableEq ι] [Fintype κ] [DecidableEq κ]
 
 /- English proof (translation)
-Use `haveI : FiniteDimensional 𝕜 E := b.toBasis.finiteDimensional_of_finite`. Use `letI : LinearOrder ι := LinearOrder.lift' (Fintype.equivFin ι) (Fintype.equivFin ι).injective`. Use `letI : LocallyFiniteOrderBot ι := LocallyFiniteOrderBot.ofIic ι (fun a => Finset.univ.filter (· ≤ a)) (by simp)`. Establish `h : finrank 𝕜 E = Fintype.card ι` using `finrank_eq_card_basis b.toBasis`. Use `set c := InnerProductSpace.gramSchmidtOrthonormalBasis h x with hc`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h1 : b.toBasis.det x = b.toBasis.det c * c.toBasis.det x` using `by conv_lhs => rw [b.toBasis.det.eq_smul_basis_det c.toBasis]`. Simplify using the standard rewrite rules. Establish `h2 : c.toBasis.det x = ∏ i, ⟪c i, x i⟫_𝕜`. Use `InnerProductSpace.gramSchmidtOrthonormalBasis_det h x` and compare the differences between its conclusion and the goal. Rewrite using `[h1, norm_mul, b.det_to_matrix_orthonormalBasis c, one_mul, h2, norm_prod]`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Use `Finset.prod_le_prod (fun _ _ => norm_nonneg _) fun i _ => ?_` and prove the remaining obligations. Simplify `norm_inner_le_norm (𝕜 := 𝕜) (c i) (x i)` using `[c.orthonormal.1 i]`.
+A detailed English derivation is pending.
 -/
 theorem norm_orthonormalBasis_det_le (b : OrthonormalBasis ι 𝕜 E) (x : ι → E) :
     ‖b.toBasis.det x‖ ≤ ∏ k, ‖x k‖ := by
@@ -34,7 +34,7 @@ theorem norm_orthonormalBasis_det_le (b : OrthonormalBasis ι 𝕜 E) (x : ι �
   simpa [c.orthonormal.1 i] using norm_inner_le_norm (𝕜 := 𝕜) (c i) (x i)
 
 /- English proof (translation)
-Establish `h` using `norm_orthonormalBasis_det_le (EuclideanSpace.basisFun ι 𝕜) (fun j => (WithLp.toLp 2 fun i => A i j : EuclideanSpace 𝕜 ι))`. Simplify using `only [EuclideanSpace.norm_eq] at h`. Use `h using 2` and compare the differences between its conclusion and the goal. Rewrite using `[Basis.det_apply]`. Use `congr 1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem norm_det_le_prod_col (A : Matrix ι ι 𝕜) :
     ‖A.det‖ ≤ ∏ j, √(∑ i, ‖A i j‖ ^ 2) := by
@@ -46,7 +46,7 @@ theorem norm_det_le_prod_col (A : Matrix ι ι 𝕜) :
   congr 1
 
 /- English proof (translation)
-Rewrite using `[← det_transpose]`. Conclude with `norm_det_le_prod_col Aᵀ`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_det_le_prod_row (A : Matrix ι ι 𝕜) :
     ‖A.det‖ ≤ ∏ i, √(∑ j, ‖A i j‖ ^ 2) := by
@@ -54,7 +54,7 @@ theorem norm_det_le_prod_row (A : Matrix ι ι 𝕜) :
   exact norm_det_le_prod_col Aᵀ
 
 /- English proof (translation)
-Use `(pow_le_pow_left₀ (norm_nonneg _) (norm_det_le_prod_col A) 2).trans_eq ?_` and prove the remaining obligations. Rewrite using `[← Finset.prod_pow]`. Conclude with `Finset.prod_congr rfl fun j _ => Real.sq_sqrt (by positivity)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_det_sq_le_prod_col (A : Matrix ι ι 𝕜) :
     ‖A.det‖ ^ 2 ≤ ∏ j, ∑ i, ‖A i j‖ ^ 2 := by
@@ -63,7 +63,7 @@ theorem norm_det_sq_le_prod_col (A : Matrix ι ι 𝕜) :
   exact Finset.prod_congr rfl fun j _ => Real.sq_sqrt (by positivity)
 
 /- English proof (translation)
-Rewrite using `[← det_transpose]`. Conclude with `norm_det_sq_le_prod_col Aᵀ`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_det_sq_le_prod_row (A : Matrix ι ι 𝕜) :
     ‖A.det‖ ^ 2 ≤ ∏ i, ∑ j, ‖A i j‖ ^ 2 := by
@@ -71,13 +71,13 @@ theorem norm_det_sq_le_prod_row (A : Matrix ι ι 𝕜) :
   exact norm_det_sq_le_prod_col Aᵀ
 
 /- English proof (translation)
-The claim follows from `(posSemidef_gram 𝕜 x).det_nonneg`.
+A detailed English derivation is pending.
 -/
 theorem det_gram_nonneg (x : ι → E) : 0 ≤ (gram 𝕜 x).det :=
   (posSemidef_gram 𝕜 x).det_nonneg
 
 /- English proof (translation)
-The claim follows from `(RCLike.nonneg_iff.mp (det_gram_nonneg x)).1`.
+A detailed English derivation is pending.
 -/
 theorem re_det_gram_nonneg (x : ι → E) : 0 ≤ RCLike.re (gram 𝕜 x).det :=
   (RCLike.nonneg_iff.mp (det_gram_nonneg x)).1
@@ -85,7 +85,7 @@ theorem re_det_gram_nonneg (x : ι → E) : 0 ≤ RCLike.re (gram 𝕜 x).det :=
 omit [DecidableEq ι] [Fintype κ] [DecidableEq κ] in
 
 /- English proof (translation)
-Use extensionality with `j k`. Simplify using `only [gram_apply, sum_inner, inner_sum, inner_smul_left, inner_smul_right, mul_apply, conjTranspose_apply, Finset.sum_mul, Finset.mul_sum, RCLike.star_def]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => by ring` and prove the remaining obligations.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem gram_sum_smul [Fintype κ] (e : ι → E) (m : Matrix ι κ 𝕜) :
     gram 𝕜 (fun j => ∑ i, m i j • e i) = mᴴ * gram 𝕜 e * m := by
@@ -95,7 +95,7 @@ theorem gram_sum_smul [Fintype κ] (e : ι → E) (m : Matrix ι κ 𝕜) :
   refine Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => by ring
 
 /- English proof (translation)
-Rewrite using `[gram_sum_smul, det_mul, det_mul, det_conjTranspose, mul_right_comm, RCLike.star_def, RCLike.conj_mul]`. Use `norm_cast`. Rewrite using `[RCLike.re_ofReal_mul]`.
+Rewrite the conclusion using the stated equalities. Put the expressions in a common number system so they can be compared. Rewrite the conclusion using the stated equalities.
 -/
 theorem re_det_gram_sum_smul (e : ι → E) (m : Matrix ι ι 𝕜) :
     RCLike.re (gram 𝕜 (fun j => ∑ i, m i j • e i)).det
@@ -106,9 +106,9 @@ theorem re_det_gram_sum_smul (e : ι → E) (m : Matrix ι ι 𝕜) :
   rw [RCLike.re_ofReal_mul]
 
 /- English proof (translation)
-Use `set S := Submodule.span 𝕜 (Set.range x)`. Use `haveI : FiniteDimensional 𝕜 S := FiniteDimensional.span_of_finite 𝕜 (Set.finite_range x)`. Establish `h : finrank 𝕜 S = Fintype.card ι` using `finrank_span_eq_card hx`. Set `b : OrthonormalBasis ι 𝕜 S` to `(stdOrthonormalBasis 𝕜 S).reindex (Fintype.equivFinOfCardEq h.symm).symm`. Set `y : ι → S` to `fun j => ⟨x j, Submodule.subset_span ⟨j, rfl⟩⟩`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Apply the tactic sequence `refine ⟨fun i => (b i : E), of fun i j => b.repr (y j) i, b.orthonormal.comp_linearIsometry S.subtypeₗᵢ, fun j => ?_⟩`. Use `congrArg (fun s : S => (s : E)) (b.sum_repr (y j))` as an intermediate fact. Simplify using `using this.symm`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_orthonormal_of_linearIndependent {x : ι → E} (hx : LinearIndependent 𝕜 x) :
     ∃ (e : ι → E) (m : Matrix ι ι 𝕜), Orthonormal 𝕜 e ∧ ∀ j, x j = ∑ i, m i j • e i := by
@@ -125,7 +125,7 @@ theorem exists_orthonormal_of_linearIndependent {x : ι → E} (hx : LinearIndep
 
 omit [DecidableEq ι] [Fintype κ] [DecidableEq κ] in
 /- English proof (translation)
-Establish `h` using `he.inner_sum c c Finset.univ`. Rewrite `h` using `[inner_self_eq_norm_sq_to_K]`. Simplify using `only [RCLike.conj_mul] at h`. Conclude with `h` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem norm_sum_smul_sq {e : ι → E} (he : Orthonormal 𝕜 e) (c : ι → 𝕜) :
     ‖∑ i, c i • e i‖ ^ 2 = ∑ i, ‖c i‖ ^ 2 := by
@@ -135,9 +135,9 @@ theorem norm_sum_smul_sq {e : ι → E} (he : Orthonormal 𝕜 e) (c : ι → �
   exact_mod_cast h
 
 /- English proof (translation)
-Distinguish the cases in `hx : LinearIndependent 𝕜 x`. Take `⟨e, m, he, hm⟩` from `exists_orthonormal_of_linearIndependent hx`. Take `rfl : x = fun j => ∑ i, m i j • e i` from `funext hm`. Rewrite using `[re_det_gram_sum_smul, gram_eq_one_iff_orthonormal.mpr he]`. Simplify using `only [det_one, RCLike.one_re, mul_one, norm_sum_smul_sq he]`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `norm_det_sq_le_prod_col m`. Rewrite `hx` using `[← det_gram_ne_zero_iff_linearIndependent, not_not]`. Rewrite using `[hx, map_zero]`. Check the signs of the components of the expression.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression. A detailed English derivation is pending.
 -/
 theorem re_det_gram_le_prod (x : ι → E) : RCLike.re (gram 𝕜 x).det ≤ ∏ k, ‖x k‖ ^ 2 := by
   by_cases hx : LinearIndependent 𝕜 x
@@ -153,7 +153,7 @@ theorem re_det_gram_le_prod (x : ι → E) : RCLike.re (gram 𝕜 x).det ≤ ∏
 omit [DecidableEq ι] in
 
 /- English proof (translation)
-The claim follows from `det_submatrix_equiv_self σ (gram 𝕜 x)`.
+A detailed English derivation is pending.
 -/
 theorem det_gram_comp_equiv [DecidableEq ι] (x : ι → E) (σ : κ ≃ ι) :
     (gram 𝕜 (x ∘ σ)).det = (gram 𝕜 x).det :=
@@ -162,9 +162,9 @@ theorem det_gram_comp_equiv [DecidableEq ι] (x : ι → E) (σ : κ ≃ ι) :
 omit [DecidableEq ι] [Fintype κ] [DecidableEq κ] in
 
 /- English proof (translation)
-Use `set s := ∑ i, ‖φ (e i)‖ ^ 2 with hs`. Use `set v := ∑ i, (starRingEnd 𝕜) (φ (e i)) • e i with hv`. Establish `hs0 : 0 ≤ s` using `by positivity`. Establish `h1 : ‖v‖ ^ 2 = s` using `by simp [hv, norm_sum_smul_sq he, hs]`. Establish `h2 : φ v = (s : 𝕜)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[hv, hs, RCLike.conj_mul]`. Establish `h3 : s ≤ ‖φ‖ * ‖v‖`. Use `φ.le_opNorm v` as an intermediate fact. Rewrite `this` using `[h2, RCLike.norm_ofReal, abs_of_nonneg hs0]`. Then use the resulting hypothesis. Use polynomial arithmetic with `[sq_nonneg (‖φ‖ - ‖v‖)]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem sum_norm_apply_sq_le {e : ι → E} (he : Orthonormal 𝕜 e) (φ : E →L[𝕜] 𝕜) :
     ∑ i, ‖φ (e i)‖ ^ 2 ≤ ‖φ‖ ^ 2 := by
@@ -180,13 +180,13 @@ theorem sum_norm_apply_sq_le {e : ι → E} (he : Orthonormal 𝕜 e) (φ : E �
   nlinarith [sq_nonneg (‖φ‖ - ‖v‖)]
 
 /- English proof (translation)
-Distinguish the cases in `hx : LinearIndependent 𝕜 x`. Take `⟨e, m, he, hm⟩` from `exists_orthonormal_of_linearIndependent hx`. Establish `h : (of fun j k => φ j (x k)) = (of fun j i => φ j (e i)) * m`. Use extensionality with `j k`. Simplify using `[hm, mul_apply, mul_comm]`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[h]`. Take `rfl : x = fun j => ∑ i, m i j • e i` from `funext hm`. Rewrite using `[re_det_gram_sum_smul, gram_eq_one_iff_orthonormal.mpr he, det_mul, norm_mul, mul_pow, det_one, RCLike.one_re, mul_one, mul_comm]`. Use `mul_le_mul_of_nonneg_left ((norm_det_sq_le_prod_row _).trans ?_) (by positivity)` and prove the remaining obligations. Conclude with `Finset.prod_le_prod (fun _ _ => by positivity) fun j _ => sum_norm_apply_sq_le he (φ j)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨g, hg, i, hi⟩` from `Fintype.not_linearIndependent_iff.mp hx`. Establish `h0 : (of fun j k => φ j (x k)).det = 0`. Use `exists_mulVec_eq_zero_iff.mp ⟨g, fun h => hi (congrFun h i), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `j`. Use `congrArg (φ j) hg` as an intermediate fact.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this` using `[mulVec, dotProduct, mul_comm]`. Rewrite using `[h0, norm_zero]`. Conclude with `(by norm_num : (0 : ℝ) ^ 2 ≤ 0).trans (mul_nonneg (re_det_gram_nonneg x) (by positivity))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_det_apply_sq_le (φ : ι → E →L[𝕜] 𝕜) (x : ι → E) :
     ‖(of fun j k => φ j (x k)).det‖ ^ 2 ≤ RCLike.re (gram 𝕜 x).det * ∏ j, ‖φ j‖ ^ 2 := by
@@ -212,7 +212,7 @@ theorem norm_det_apply_sq_le (φ : ι → E →L[𝕜] 𝕜) (x : ι → E) :
       (mul_nonneg (re_det_gram_nonneg x) (by positivity))
 
 /- English proof (translation)
-Use `(pow_le_pow_iff_left₀ (norm_nonneg _) (by positivity) two_ne_zero).mp ?_` and prove the remaining obligations. Rewrite using `[mul_pow, ← Finset.prod_pow, ← Finset.prod_pow]`. Conclude with `(norm_det_apply_sq_le φ x).trans (mul_le_mul_of_nonneg_right (re_det_gram_le_prod x) (by positivity))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_det_apply_le (φ : ι → E →L[𝕜] 𝕜) (x : ι → E) :
     ‖(of fun j k => φ j (x k)).det‖ ≤ (∏ k, ‖x k‖) * ∏ j, ‖φ j‖ := by

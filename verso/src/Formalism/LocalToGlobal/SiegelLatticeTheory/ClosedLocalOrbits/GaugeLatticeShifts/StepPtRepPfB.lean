@@ -36,7 +36,7 @@ structure Fr (r k : ℕ) where
 variable {ε}
 
 /- English proof (translation)
-Rewrite using `[← h]`. Simplify using `only [hJ, Formalism.REAL.Jm, Matrix.mulVec_diagonal, dotProduct, star_sum, Pi.star_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp [star_mul'] <;> ring`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem swapJ {x y : Fin n → ℂ} {c : ℂ} (h : hJ ε x y = c) : hJ ε y x = star c := by
   rw [← h]
@@ -45,14 +45,14 @@ theorem swapJ {x y : Fin n → ℂ} {c : ℂ} (h : hJ ε x y = c) : hJ ε y x = 
   split_ifs <;> simp [star_mul'] <;> ring
 
 /- English proof (translation)
-Simplify using `[fam]`.
+Simplify using the standard rewrite rules.
 -/
 theorem fam_cs {r : ℕ} (e : Fin r → Fin n → ℂ) (z : Fin n → ℂ) (a : Fin r) :
     fam e z (Fin.castSucc a) = e a := by
   simp [fam]
 
 /- English proof (translation)
-Simplify using `[fam]`.
+Simplify using the standard rewrite rules.
 -/
 theorem fam_last {r : ℕ} (e : Fin r → Fin n → ℂ) (z : Fin n → ℂ) : fam e z (Fin.last r) = z := by
   simp [fam]
@@ -62,7 +62,7 @@ namespace Fr
 variable {r k : ℕ} (F : Fr ε r k)
 
 /- English proof (translation)
-Rewrite using `[swapJ (F.ef b a)]`. Distinguish the cases in `h : a = b`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h, Ne.symm h]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem fe (a b : Fin r) : hJ ε (F.fd a) (F.e b) = if a = b then 1 else 0 := by
   rw [swapJ (F.ef b a)]
@@ -72,39 +72,39 @@ theorem fe (a b : Fin r) : hJ ε (F.fd a) (F.e b) = if a = b then 1 else 0 := by
   · simp [h, Ne.symm h]
 
 /- English proof (translation)
-Rewrite using `[swapJ (F.ez a), star_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ze (a : Fin r) : hJ ε F.z (F.e a) = 0 := by
   rw [swapJ (F.ez a), star_zero]
 /- English proof (translation)
-Rewrite using `[swapJ (F.fz a), star_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem zf (a : Fin r) : hJ ε F.z (F.fd a) = 0 := by
   rw [swapJ (F.fz a), star_zero]
 /- English proof (translation)
-Rewrite using `[swapJ (F.ew a i), star_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem we (i : Fin k) (a : Fin r) : hJ ε (F.wb i) (F.e a) = 0 := by
   rw [swapJ (F.ew a i), star_zero]
 /- English proof (translation)
-Rewrite using `[swapJ (F.fw a i), star_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem wf (i : Fin k) (a : Fin r) : hJ ε (F.wb i) (F.fd a) = 0 := by
   rw [swapJ (F.fw a i), star_zero]
 /- English proof (translation)
-Rewrite using `[swapJ (F.zw i), star_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem wz (i : Fin k) : hJ ε (F.wb i) F.z = 0 := by
   rw [swapJ (F.zw i), star_zero]
 
 /- English proof (translation)
-Conclude with `F.T_pos.ne'` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem T_ne : (F.T : ℂ) ≠ 0 := by
   exact_mod_cast F.T_pos.ne'
 
 /- English proof (translation)
-Simplify using `[Complex.star_def]`.
+Simplify using the standard rewrite rules.
 -/
 theorem star_cz : star (-(F.T : ℂ)⁻¹) = -(F.T : ℂ)⁻¹ := by
   simp [Complex.star_def]
@@ -112,77 +112,77 @@ theorem star_cz : star (-(F.T : ℂ)⁻¹) = -(F.T : ℂ)⁻¹ := by
 def zd : Fin n → ℂ := (-(F.T : ℂ)⁻¹) • F.z
 
 /- English proof (translation)
-Simplify using `only [hJ, star_smul, smul_dotProduct, smul_eq_mul]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma hJ_smul_left_eq_star_mul (c : ℂ) (x y : Fin n → ℂ) : hJ ε (c • x) y = star c * hJ ε x y := by
   simp only [hJ, star_smul, smul_dotProduct, smul_eq_mul]
 
 /- English proof (translation)
-Simplify using `only [hJ, Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma hJ_smul_right_gauge_lattice_shifts (c : ℂ) (x y : Fin n → ℂ) : hJ ε x (c • y) = c * hJ ε x y := by
   simp only [hJ, Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul]
 
 /- English proof (translation)
-Rewrite using `[zd, hJ_smul_left_eq_star_mul, F.star_cz, F.zz]`. Clear denominators, using `[F.T_ne]` for the nonvanishing conditions.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 -/
 theorem frame_dual_z_pairing_one : hJ ε F.zd F.z = 1 := by
   rw [zd, hJ_smul_left_eq_star_mul, F.star_cz, F.zz]
   field_simp [F.T_ne]
 
 /- English proof (translation)
-Rewrite using `[zd, hJ_smul_right_gauge_lattice_shifts, F.zz]`. Clear denominators, using `[F.T_ne]` for the nonvanishing conditions.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 -/
 theorem z_zd : hJ ε F.z F.zd = 1 := by
   rw [zd, hJ_smul_right_gauge_lattice_shifts, F.zz]
   field_simp [F.T_ne]
 
 /- English proof (translation)
-Rewrite using `[zd, hJ_smul_left_eq_star_mul, hJ_smul_right_gauge_lattice_shifts, F.star_cz, F.zz]`. Clear denominators, using `[F.T_ne]` for the nonvanishing conditions.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 -/
 theorem zd_zd : hJ ε F.zd F.zd = -(F.T : ℂ)⁻¹ := by
   rw [zd, hJ_smul_left_eq_star_mul, hJ_smul_right_gauge_lattice_shifts, F.star_cz, F.zz]
   field_simp [F.T_ne]
 
 /- English proof (translation)
-Rewrite using `[zd, hJ_smul_left_eq_star_mul, F.star_cz]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem zd_left (y : Fin n → ℂ) : hJ ε F.zd y = -(F.T : ℂ)⁻¹ * hJ ε F.z y := by
   rw [zd, hJ_smul_left_eq_star_mul, F.star_cz]
 
 /- English proof (translation)
-Rewrite using `[zd, hJ_smul_right_gauge_lattice_shifts]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem zd_right (y : Fin n → ℂ) : hJ ε y F.zd = -(F.T : ℂ)⁻¹ * hJ ε y F.z := by
   rw [zd, hJ_smul_right_gauge_lattice_shifts]
 
 /- English proof (translation)
-Rewrite using `[F.zd_left, F.ze, mul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem zd_e (a : Fin r) : hJ ε F.zd (F.e a) = 0 := by
   rw [F.zd_left, F.ze, mul_zero]
 /- English proof (translation)
-Rewrite using `[F.zd_left, F.zf, mul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem zd_f (a : Fin r) : hJ ε F.zd (F.fd a) = 0 := by
   rw [F.zd_left, F.zf, mul_zero]
 /- English proof (translation)
-Rewrite using `[F.zd_left, F.zw, mul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem zd_w (i : Fin k) : hJ ε F.zd (F.wb i) = 0 := by
   rw [F.zd_left, F.zw, mul_zero]
 /- English proof (translation)
-Rewrite using `[F.zd_right, F.ez, mul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem e_zd (a : Fin r) : hJ ε (F.e a) F.zd = 0 := by
   rw [F.zd_right, F.ez, mul_zero]
 /- English proof (translation)
-Rewrite using `[F.zd_right, F.fz, mul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem f_zd (a : Fin r) : hJ ε (F.fd a) F.zd = 0 := by
   rw [F.zd_right, F.fz, mul_zero]
 /- English proof (translation)
-Rewrite using `[F.zd_right, F.wz, mul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem w_zd (i : Fin k) : hJ ε (F.wb i) F.zd = 0 := by
   rw [F.zd_right, F.wz, mul_zero]
@@ -195,14 +195,14 @@ def dv : Ix r k → Fin n → ℂ :=
   Sum.elim (Sum.elim F.fd F.e) (Sum.elim (fun _ => F.zd) F.wb)
 
 /- English proof (translation)
-Simplify using `only [Ix, Fintype.card_sum, Fintype.card_fin, Fintype.card_unit]`. Conclude with `G.card.symm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem card_ix (G : Fr ε r k) : Fintype.card (Ix r k) = n := by
   simp only [Ix, Fintype.card_sum, Fintype.card_fin, Fintype.card_unit]
   exact G.card.symm
 
 /- English proof (translation)
-Apply the tactic sequence `rcases j with (a | a) | (⟨⟩ | a) <;> rcases i with (b | b) | (⟨⟩ | b) <;>`. Simplify using `[dv, bv, F.fe, F.ff, F.fz, F.fw, F.ee, F.ef, F.ez, F.ew, F.zd_e, F.zd_f, F.frame_dual_z_pairing_one, F.zd_w, F.we, F.wf, F.wz, F.ww]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem dual (j i : Ix r k) : hJ ε (F.dv j) (F.bv i) = if j = i then 1 else 0 := by
   rcases j with (a | a) | (⟨⟩ | a) <;> rcases i with (b | b) | (⟨⟩ | b) <;>
@@ -210,31 +210,29 @@ theorem dual (j i : Ix r k) : hJ ε (F.dv j) (F.bv i) = if j = i then 1 else 0 :
       F.we, F.wf, F.wz, F.ww]
 
 /- English proof (translation)
-Simplify using `only [hJ, star_sum, sum_dotProduct]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma hJ_finset_sum_left' {ι : Type*} (s : Finset ι) (f : ι → Fin n → ℂ) (y : Fin n → ℂ) :
     hJ ε (∑ a ∈ s, f a) y = ∑ a ∈ s, hJ ε (f a) y := by
   simp only [hJ, star_sum, sum_dotProduct]
 
 /- English proof (translation)
-Simplify using `only [hJ, Matrix.mulVec_sum, dotProduct_sum]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma hJ_finset_sum_right_eq_sum {ι : Type*} (s : Finset ι) (x : Fin n → ℂ) (f : ι → Fin n → ℂ) :
     hJ ε x (∑ a ∈ s, f a) = ∑ a ∈ s, hJ ε x (f a) := by
   simp only [hJ, Matrix.mulVec_sum, dotProduct_sum]
 
 /- English proof (translation)
-Establish `hcoef : ∀ (g : Ix r k → ℂ) (j : Ix r k), hJ ε (F.dv j) (∑ i, g i • F.bv i) = g j`. Introduce `g j`. Rewrite using `[hJ_finset_sum_right_eq_sum]`. Simplify using `only [hJ_smul_right_gauge_lattice_shifts, F.dual, mul_ite, mul_one, mul_zero]`. Simplify using `[Finset.sum_ite_eq]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `hli : LinearIndependent ℂ F.bv`. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg j`. Establish `h1` using `hcoef g j`. Rewrite `h1` using `[hg]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← h1]`. Simplify using `[hJ]`. Establish `hspan` using `hli.span_eq_top_of_card_eq_finrank (by rw [F.card_ix, Module.finrank_fin_fun])`. Establish `hwm : w ∈ Submodule.span ℂ (Set.range F.bv)`. Rewrite using `[hspan]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Discharge the goal by the elementary cases of `trivial`. Take `⟨g, hg⟩` from `(Submodule.mem_span_range_iff_exists_fun ℂ).1 hwm`. Establish `hgj : ∀ j, g j = hJ ε (F.dv j) w` using `fun j => by rw [← hg, hcoef]`. Use `conv_lhs => rw [← hg, hJ_finset_sum_left']`. Simplify using `only [hJ_smul_left_eq_star_mul, hgj]`.
+Check the elementary cases of the proposition. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Fintype.sum_sum_type, Fintype.sum_sum_type, Fintype.sum_sum_type]`. Simplify using `only [bv, dv, Sum.elim_inl, Sum.elim_inr, hy, hw, mul_zero, star_zero, zero_mul, Finset.sum_const_zero, zero_add, Fintype.univ_unit, Finset.sum_singleton]`. Rewrite using `[F.zd_left, star_mul', F.star_cz]`. Use `clear hcoef hli hspan hwm hg hgj hw hy`. Rewrite using `[Finset.sum_congr rfl (fun i _ => mul_comm (star (hJ ε (F.wb i) w)) (hJ ε (F.wb i) y))]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem pair (w y : Fin n → ℂ) (hw : ∀ a, hJ ε (F.e a) w = 0) (hy : ∀ a, hJ ε (F.e a) y = 0) :
     hJ ε w y = -(F.T : ℂ)⁻¹ * hJ ε F.z y * star (hJ ε F.z w) +
@@ -268,7 +266,7 @@ theorem pair (w y : Fin n → ℂ) (hw : ∀ a, hJ ε (F.e a) w = 0) (hy : ∀ a
   ring
 
 /- English proof (translation)
-Apply the tactic sequence `rcases Fin.eq_castSucc_or_eq_last a with ⟨a, rfl⟩ | rfl <;>`. Apply the tactic sequence `rcases Fin.eq_castSucc_or_eq_last b with ⟨b, rfl⟩ | rfl <;>`. Simplify using `[fam_cs, fam_last, F.ee, F.ez, F.ze, F.zz, Fin.castSucc_ne_last]`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem gf (a b : Fin (r + 1)) :
     hJ ε (fam F.e F.z a) (fam F.e F.z b) = if a = Fin.last r ∧ b = Fin.last r then -(F.T : ℂ) else 0 := by
@@ -277,13 +275,13 @@ theorem gf (a b : Fin (r + 1)) :
     simp [fam_cs, fam_last, F.ee, F.ez, F.ze, F.zz, Fin.castSucc_ne_last]
 
 /- English proof (translation)
-Apply the tactic sequence `rcases Fin.eq_castSucc_or_eq_last a with ⟨a, rfl⟩ | rfl <;> simp [fam_cs, fam_last, F.we, F.wz]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem w_fam (i : Fin k) (a : Fin (r + 1)) : hJ ε (F.wb i) (fam F.e F.z a) = 0 := by
   rcases Fin.eq_castSucc_or_eq_last a with ⟨a, rfl⟩ | rfl <;> simp [fam_cs, fam_last, F.we, F.wz]
 
 /- English proof (translation)
-Apply the tactic sequence `rcases Fin.eq_castSucc_or_eq_last a with ⟨a, rfl⟩ | rfl <;> simp [fam_cs, fam_last, F.ew, F.zw]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem fam_w (a : Fin (r + 1)) (i : Fin k) : hJ ε (fam F.e F.z a) (F.wb i) = 0 := by
   rcases Fin.eq_castSucc_or_eq_last a with ⟨a, rfl⟩ | rfl <;> simp [fam_cs, fam_last, F.ew, F.zw]
@@ -293,7 +291,7 @@ def Fv : Fin (r + 1) → Fin n → ℂ := fam F.fd F.zd
 def E0 : Fin (r + 1) → Fin n → ℂ := fam F.e 0
 
 /- English proof (translation)
-Apply the tactic sequence `rcases Fin.eq_castSucc_or_eq_last a with ⟨a, rfl⟩ | rfl <;>`. Apply the tactic sequence `rcases Fin.eq_castSucc_or_eq_last b with ⟨b, rfl⟩ | rfl <;>`. Simplify using `[Fv, fam_cs, fam_last, F.fe, F.fz, F.zd_e, F.frame_dual_z_pairing_one, Fin.castSucc_ne_last, (Fin.castSucc_ne_last _).symm]`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem Fv_fam (a b : Fin (r + 1)) : hJ ε (F.Fv a) (fam F.e F.z b) = if a = b then 1 else 0 := by
   rcases Fin.eq_castSucc_or_eq_last a with ⟨a, rfl⟩ | rfl <;>
@@ -302,19 +300,19 @@ theorem Fv_fam (a b : Fin (r + 1)) : hJ ε (F.Fv a) (fam F.e F.z b) = if a = b t
       (Fin.castSucc_ne_last _).symm]
 
 /- English proof (translation)
-Apply the tactic sequence `rcases Fin.eq_castSucc_or_eq_last a with ⟨a, rfl⟩ | rfl <;> simp [Fv, fam_cs, fam_last, F.fw, F.zd_w]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem Fv_w (a : Fin (r + 1)) (i : Fin k) : hJ ε (F.Fv a) (F.wb i) = 0 := by
   rcases Fin.eq_castSucc_or_eq_last a with ⟨a, rfl⟩ | rfl <;> simp [Fv, fam_cs, fam_last, F.fw, F.zd_w]
 
 /- English proof (translation)
-Apply the tactic sequence `rcases Fin.eq_castSucc_or_eq_last a with ⟨a, rfl⟩ | rfl <;> simp [Fv, fam_cs, fam_last, F.wf, F.w_zd]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem w_Fv (i : Fin k) (a : Fin (r + 1)) : hJ ε (F.wb i) (F.Fv a) = 0 := by
   rcases Fin.eq_castSucc_or_eq_last a with ⟨a, rfl⟩ | rfl <;> simp [Fv, fam_cs, fam_last, F.wf, F.w_zd]
 
 /- English proof (translation)
-Break down `Fin.eq_castSucc_or_eq_last a with ⟨a, rfl⟩ | rfl` into its components or cases. Simplify using `[E0, fam_cs, F.we]`. Simplify using `[E0, fam_last, hJ]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem frame_w_e_zero_orthogonal (i : Fin k) (a : Fin (r + 1)) : hJ ε (F.wb i) (F.E0 a) = 0 := by
   rcases Fin.eq_castSucc_or_eq_last a with ⟨a, rfl⟩ | rfl
@@ -328,20 +326,20 @@ def yv (i0 : Fin k) (Z Aα : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ) (t : Fin (r
 variable (i0 : Fin k) (Z Aα : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ) (t : Fin (r + 1) → ℂ)
 
 /- English proof (translation)
-Simplify using `only [hJ, Matrix.mulVec_add, dotProduct_add]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma hJ_add_right_gauge_lattice_shifts (x y y' : Fin n → ℂ) : hJ ε x (y + y') = hJ ε x y + hJ ε x y' := by
   simp only [hJ, Matrix.mulVec_add, dotProduct_add]
 
 /- English proof (translation)
-Simplify using `only [hJ, Matrix.mulVec_sum, dotProduct_sum]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma hJ_finset_sum_right' {ι : Type*} (s : Finset ι) (x : Fin n → ℂ) (f : ι → Fin n → ℂ) :
     hJ ε x (∑ a ∈ s, f a) = ∑ a ∈ s, hJ ε x (f a) := by
   simp only [hJ, Matrix.mulVec_sum, dotProduct_sum]
 
 /- English proof (translation)
-Unfold `yv`. Rewrite using `[hJ_add_right_gauge_lattice_shifts, hJ_add_right_gauge_lattice_shifts, hJ_finset_sum_right', hJ_finset_sum_right', hJ_smul_right_gauge_lattice_shifts]`. Simplify using `only [hJ_smul_right_gauge_lattice_shifts]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem pair_yv (x : Fin n → ℂ) (b : Fin (r + 1)) :
     hJ ε x (F.yv i0 Z Aα t b) =
@@ -351,11 +349,11 @@ theorem pair_yv (x : Fin n → ℂ) (b : Fin (r + 1)) :
   simp only [hJ_smul_right_gauge_lattice_shifts]
 
 /- English proof (translation)
-Rewrite using `[F.pair_yv]`. Establish `h1 : ∀ c, hJ ε (fam F.e F.z a) (F.Fv c) = if c = a then 1 else 0` using `fun c => by`. Rewrite using `[swapJ (F.Fv_fam c a)]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `h2 : ∀ c, hJ ε (fam F.e F.z a) (F.E0 c) = 0` using `fun c => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Apply the tactic sequence `rcases Fin.eq_castSucc_or_eq_last a with ⟨a, rfl⟩ | rfl <;>`. Apply the tactic sequence `rcases Fin.eq_castSucc_or_eq_last c with ⟨c, rfl⟩ | rfl <;>`. Use `first`. Consider the case `(simp [E0, fam_cs, fam_last, F.ee, F.ze]; done)`. Consider the case `(simp [E0, fam_cs, fam_last, hJ]; done)`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using `only [h1, h2, F.fam_w, mul_zero, Finset.sum_const_zero, add_zero, mul_ite, mul_one]`. Simplify using `[Finset.sum_ite_eq']`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem p1 (a b : Fin (r + 1)) : hJ ε (fam F.e F.z a) (F.yv i0 Z Aα t b) = Z a b := by
   rw [F.pair_yv]
@@ -372,13 +370,13 @@ theorem p1 (a b : Fin (r + 1)) : hJ ε (fam F.e F.z a) (F.yv i0 Z Aα t b) = Z a
   simp [Finset.sum_ite_eq']
 
 /- English proof (translation)
-Rewrite using `[F.pair_yv]`. Establish `h1 : ∀ d, hJ ε (F.Fv a) (F.Fv d) = if a = Fin.last r ∧ d = Fin.last r then -(F.T : ℂ)⁻¹ else 0` using `fun d => by`. Apply the tactic sequence `rcases Fin.eq_castSucc_or_eq_last a with ⟨a, rfl⟩ | rfl <;>`. Apply the tactic sequence `rcases Fin.eq_castSucc_or_eq_last d with ⟨d, rfl⟩ | rfl <;>`. Simplify using `[Fv, fam_cs, fam_last, F.ff, F.f_zd, F.zd_f, F.zd_zd, Fin.castSucc_ne_last]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Establish `h2 : ∀ d, hJ ε (F.Fv a) (F.E0 d) = if d = a ∧ a ≠ Fin.last r then 1 else 0` using `fun d => by`. Apply the tactic sequence `rcases Fin.eq_castSucc_or_eq_last a with ⟨a, rfl⟩ | rfl <;>`. Break down `Fin.eq_castSucc_or_eq_last d with ⟨d, rfl⟩ | rfl` into its components or cases. Simplify using `[Fv, E0, fam_cs, F.fe, Fin.castSucc_ne_last, eq_comm]`. Simplify using `[Fv, E0, fam_cs, fam_last, hJ, (Fin.castSucc_ne_last _).symm]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[Fv, E0, fam_cs, fam_last, F.zd_e]`. Simplify using `[Fv, E0, fam_last, hJ]`. Simplify using `only [h1, h2, F.Fv_w, mul_zero, add_zero]`. Distinguish the cases in `ha : a = Fin.last r`. Substitute `ha` using the available equality.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `[hA, mul_comm]`. Simplify using `[ha, mul_ite, Finset.sum_ite_eq']`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem p2 (hA : ∀ j, Aα (Fin.last r) j = 0) (a c : Fin (r + 1)) :
     hJ ε (F.Fv a) (F.yv i0 Z Aα t c) =
@@ -403,15 +401,13 @@ theorem p2 (hA : ∀ j, Aα (Fin.last r) j = 0) (a c : Fin (r + 1)) :
   · simp [ha, mul_ite, Finset.sum_ite_eq']
 
 /- English proof (translation)
-Rewrite using `[F.pair_yv]`. Establish `h1 : ∀ d, hJ ε (F.E0 a) (F.Fv d) = if a = Fin.last r then 0 else (if d = a then 1 else 0)` using `fun d => by`. Apply the tactic sequence `rcases Fin.eq_castSucc_or_eq_last a with ⟨a, rfl⟩ | rfl <;>`. Apply the tactic sequence `rcases Fin.eq_castSucc_or_eq_last d with ⟨d, rfl⟩ | rfl <;>`. Use `first`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Treat this case separately.
 
-Consider the case `(simp [E0, Fv, fam_cs, fam_last, F.ef, F.e_zd, Fin.castSucc_ne_last, (Fin.castSucc_ne_last _).symm, eq_comm]; done)`. Consider the case `(simp [E0, Fv, fam_cs, fam_last, hJ]; done)`. Establish `h2 : ∀ d, hJ ε (F.E0 a) (F.E0 d) = 0` using `fun d => by`. Apply the tactic sequence `rcases Fin.eq_castSucc_or_eq_last a with ⟨a, rfl⟩ | rfl <;>`. Apply the tactic sequence `rcases Fin.eq_castSucc_or_eq_last d with ⟨d, rfl⟩ | rfl <;>`.
+Treat this case separately. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Treat this case separately.
 
-Use `first`. Consider the case `(simp [E0, fam_cs, fam_last, F.ee]; done)`. Consider the case `(simp [E0, fam_cs, fam_last, hJ]; done)`. Establish `h3 : hJ ε (F.E0 a) (F.wb i0) = 0`. Break down `Fin.eq_castSucc_or_eq_last a with ⟨a, rfl⟩ | rfl` into its components or cases.
+Treat this case separately. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[E0, fam_cs, F.ew]`. Simplify using `[E0, fam_last, hJ]`. Simplify using `only [h1, h2, h3, mul_zero, Finset.sum_const_zero, add_zero]`. Use `split_ifs with ha`. Simplify using the standard rewrite rules.
-
-Simplify using `[mul_ite, Finset.sum_ite_eq']`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem p3 (a c : Fin (r + 1)) :
     hJ ε (F.E0 a) (F.yv i0 Z Aα t c) = if a = Fin.last r then 0 else Z a c := by
@@ -438,9 +434,9 @@ theorem p3 (a c : Fin (r + 1)) :
   · simp [mul_ite, Finset.sum_ite_eq']
 
 /- English proof (translation)
-Rewrite using `[F.pair_yv]`. Simplify using `only [F.w_Fv, F.frame_w_e_zero_orthogonal, mul_zero, Finset.sum_const_zero, zero_add, F.ww]`. Use `split_ifs with h`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[Ne.symm h]`.
+A detailed English derivation is pending.
 -/
 theorem p4 (i : Fin k) (c : Fin (r + 1)) :
     hJ ε (F.wb i) (F.yv i0 Z Aα t c) = if i = i0 then t c else 0 := by
@@ -452,7 +448,7 @@ theorem p4 (i : Fin k) (c : Fin (r + 1)) :
   · simp [Ne.symm h]
 
 /- English proof (translation)
-Establish `hs : ∀ x, star (hJ ε y x) = hJ ε x y` using `fun x => (swapJ rfl).symm`. Rewrite using `[swapJ (rfl : hJ ε y (F.yv i0 Z Aα t b) = _), F.pair_yv]`. Simplify using `only [star_add, star_sum, star_mul', hs]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private lemma hJ_yv_left_eq_sum (y : Fin n → ℂ) (b : Fin (r + 1)) :
     hJ ε (F.yv i0 Z Aα t b) y = ∑ a, star (Z a b) * hJ ε (F.Fv a) y +
@@ -462,9 +458,9 @@ private lemma hJ_yv_left_eq_sum (y : Fin n → ℂ) (b : Fin (r + 1)) :
   simp only [star_add, star_sum, star_mul', hs]
 
 /- English proof (translation)
-Rewrite using `[hJ_yv_left_eq_sum, F.p4 i0 Z Aα t i0 c, if_pos rfl]`. Simplify using `only [F.p2 i0 Z Aα t hA, F.p3 i0 Z Aα t]`. Establish `hAZ : ∑ a, star (Aα a b) * (if a = Fin.last r then 0 else Z a c) = ∑ a, star (Aα a b) * Z a c`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Distinguish the cases in `ha : a = Fin.last r`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Substitute `ha` using the available equality. Simplify using `[hA]`. Simplify using `[ha]`. Rewrite using `[hAZ, Matrix.mul_apply, Matrix.mul_apply]`. Simplify using `only [Matrix.conjTranspose_apply, mul_add, Finset.sum_add_distrib, mul_ite, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -494,7 +490,7 @@ section Mat
 variable {m : ℕ}
 
 /- English proof (translation)
-Simplify using `only [dotProduct, mulVec, vecMulVec, Matrix.of_apply]`. Rewrite using `[Finset.sum_mul_sum]`. Simplify using `only [Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem dot_vmv (x a b y : Fin m → ℂ) : star x ⬝ᵥ (vecMulVec a b *ᵥ y) = (star x ⬝ᵥ a) * (b ⬝ᵥ y) := by
   simp only [dotProduct, mulVec, vecMulVec, Matrix.of_apply]
@@ -504,27 +500,25 @@ theorem dot_vmv (x a b y : Fin m → ℂ) : star x ⬝ᵥ (vecMulVec a b *ᵥ y)
   ring
 
 /- English proof (translation)
-Use `set e : Fin (m + 1) → ℂ := Pi.single (Fin.last m) 1 with he`. Use `set c : Fin (m + 1) → ℂ := Z⁻¹ *ᵥ e with hcdef`. Establish `hZc : Z *ᵥ c = e`. Rewrite using `[hcdef, Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ hZ, Matrix.one_mulVec]`. Establish `hc0 : c ≠ 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `h0`. Rewrite `hZc` using `[h0, Matrix.mulVec_zero]`. Establish `h1` using `congrFun hZc (Fin.last m)`. Simplify using `[he] at h1`. Establish `hs : star c ⬝ᵥ c ≠ 0` using `fun h0 => hc0 (dotProduct_star_self_eq_zero.1 h0)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set q := Q *ᵥ c with hq`. Use `set c' := (star c ⬝ᵥ c)⁻¹ • c with hc'`. Use `set W : Matrix (Fin (m + 1)) (Fin (m + 1)) ℂ := (1 / 2 : ℂ) • Q + (1 / 2 : ℂ) • (vecMulVec q (star c') - vecMulVec c' (star q)) with hW`. Establish `hZH : IsUnit (Zᴴ).det`. Rewrite using `[det_conjTranspose]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hZ.star`. Use `⟨(Zᴴ)⁻¹ * W, ?_, ?_⟩` and prove the remaining obligations. Introduce `j`. Establish `hrow : ∀ k, (Zᴴ)⁻¹ (Fin.last m) k = star (c k)`. Introduce `k`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Matrix.conjTranspose_nonsing_inv, Matrix.conjTranspose_apply, hcdef]`. Simplify using `[Matrix.mulVec, dotProduct, he, Pi.single_apply]`. Establish `hvv : ∀ (x a b : Fin (m + 1) → ℂ), x ᵥ* vecMulVec a b = (x ⬝ᵥ a) • b`. Introduce `x a b`. Use extensionality with `l`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Matrix.vecMul, dotProduct, vecMulVec, Finset.sum_mul, mul_assoc]`. Establish `hcq : star c ⬝ᵥ q = 0` using `hc`. Establish `hcc : star c ⬝ᵥ c' = 1`. Rewrite using `[hc', dotProduct_smul, smul_eq_mul, inv_mul_cancel₀ hs]`. Establish `hsq : star c ᵥ* Q = star q`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[hq, Matrix.star_mulVec Q c, hQ]`. Establish `hv : star c ᵥ* W = 0`. Rewrite using `[hW, Matrix.vecMul_add, Matrix.vecMul_smul, Matrix.vecMul_smul, Matrix.vecMul_sub, hvv, hvv, hcq, hcc, hsq]`. Use extensionality with `l`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2` using `congrFun hv j`. Rewrite using `[Matrix.mul_apply]`. Simplify using `only [hrow]`. Simplify `h2` using `[Matrix.vecMul, dotProduct]`. Establish `h1 : Zᴴ * ((Zᴴ)⁻¹ * W) = W`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hZH, Matrix.one_mul]`. Establish `h2 : ((Zᴴ)⁻¹ * W)ᴴ * Z = Wᴴ`. Rewrite using `[Matrix.conjTranspose_mul, Matrix.conjTranspose_nonsing_inv, Matrix.conjTranspose_conjTranspose, Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hZ, Matrix.mul_one]`. Rewrite using `[h1, h2]`. Use extensionality with `a b`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [hW, Matrix.add_apply, Matrix.smul_apply, Matrix.sub_apply, Matrix.conjTranspose_apply, vecMulVec, Matrix.of_apply, smul_eq_mul, star_add, star_mul', star_sub, Pi.star_apply, star_star]`. Establish `hQab : star (Q b a) = Q a b`. Use `congrFun (congrFun hQ a) b` as an intermediate fact. Rewrite `this` using `[Matrix.conjTranspose_apply]`. Then use the resulting hypothesis. Rewrite using `[hQab]`.
-
-Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem solveHerm (Z Q : Matrix (Fin (m + 1)) (Fin (m + 1)) ℂ) (hZ : IsUnit Z.det) (hQ : Qᴴ = Q)
     (hc : star (Z⁻¹ *ᵥ Pi.single (Fin.last m) 1) ⬝ᵥ (Q *ᵥ (Z⁻¹ *ᵥ Pi.single (Fin.last m) 1)) = 0) :
@@ -587,7 +581,7 @@ theorem solveHerm (Z Q : Matrix (Fin (m + 1)) (Fin (m + 1)) ℂ) (hZ : IsUnit Z.
     ring
 
 /- English proof (translation)
-Unfold `Dl`. Rewrite using `[dif_pos le_rfl]`. Use `congr 1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem dl_top {r : ℕ} (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ) : Dl Z (r + 1) = Z.det := by
   unfold Dl
@@ -595,9 +589,9 @@ theorem dl_top {r : ℕ} (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ) : Dl Z (r 
   congr 1
 
 /- English proof (translation)
-Unfold `Dl`. Rewrite using `[dif_pos (Nat.le_succ r), Matrix.adjugate_fin_succ_eq_det_submatrix, Fin.succAbove_last]`. Establish `h1 : (Fin.castLE (Nat.le_succ r) : Fin r → Fin (r + 1)) = Fin.castSucc`. Use function extensionality and compare the values at `i`. Conclude with `Fin.ext rfl`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, Even.neg_one_pow ⟨_, rfl⟩, one_mul]`.
+A detailed English derivation is pending.
 -/
 theorem dl_r {r : ℕ} (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ) :
     Dl Z r = adjugate Z (Fin.last r) (Fin.last r) := by
@@ -609,18 +603,18 @@ theorem dl_r {r : ℕ} (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ) :
   rw [h1, Even.neg_one_pow ⟨_, rfl⟩, one_mul]
 
 /- English proof (translation)
-Rewrite using `[Matrix.inv_def, Matrix.smul_apply, smul_eq_mul, Ring.inverse_eq_inv', dl_r]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem inv_last {r : ℕ} (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ) :
     Z⁻¹ (Fin.last r) (Fin.last r) = (Z.det)⁻¹ * Dl Z r := by
   rw [Matrix.inv_def, Matrix.smul_apply, smul_eq_mul, Ring.inverse_eq_inv', dl_r]
 
 /- English proof (translation)
-Unfold `Gv at hG`. Rewrite `hG` using `[dl_top]`. Establish `hdet : Z.det ≠ 0`. Introduce `h0`. Rewrite `hG` using `[h0, norm_zero]`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Use polynomial arithmetic with `[sq_nonneg ‖Dl Z r‖, mul_pos hT hT']`. Use `⟨isUnit_iff_ne_zero.2 hdet, ?_⟩` and prove the remaining obligations. Rewrite using `[inv_last, norm_mul, norm_inv, mul_pow, inv_pow]`. Establish `hd : 0 < ‖Z.det‖ ^ 2` using `by positivity`. Rewrite using `[show T * T' * ((‖Z.det‖ ^ 2)⁻¹ * ‖Dl Z r‖ ^ 2) = (T * T' * ‖Dl Z r‖ ^ 2) / ‖Z.det‖ ^ 2 by ring]`.
+Use the polynomial consequences of the given equalities and inequalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[div_lt_one hd]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem gv_facts {r : ℕ} {T T' : ℝ} (hT : 0 < T) (hT' : 0 < T') (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ)
     (hG : 0 < Gv T T' Z) : IsUnit Z.det ∧ T * T' * ‖Z⁻¹ (Fin.last r) (Fin.last r)‖ ^ 2 < 1 := by

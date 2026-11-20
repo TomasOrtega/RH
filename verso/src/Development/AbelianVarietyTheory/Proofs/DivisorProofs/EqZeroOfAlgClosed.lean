@@ -21,15 +21,13 @@ section Generic
 open GlobalTheory.CompHt
 
 /- English proof (translation)
-Set `v` to `Module.Basis.ofVectorSpace K V`. Establish `h1 : LinearIndependent K' fun i => φ (v i)`. Rewrite using `[linearIndependent_iff']`. Introduce `s x hx i hi'`. Use `choose a ha using fun i => hb (x i)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2` using `hi (fun j => ∑ i ∈ s, a i j • v i) (by`. Rewrite using `[← hx]`. Simplify using `only [map_sum, map_smulₛₗ, Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ha i, Finset.sum_smul]`. Conclude with `Finset.sum_congr rfl fun j _ => by rw [mul_comm])`. Rewrite using `[ha i]`. Conclude with `Finset.sum_eq_zero fun j _ => by`. Rewrite using `[linearIndependent_iff'.1 v.linearIndependent s _ (h2 j) i hi', map_zero, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2 : ⊤ ≤ Submodule.span K' (Set.range fun i => φ (v i))` using `fun v' _ => by`. Take `⟨g, rfl⟩` from `hs v'`. Use `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Rewrite using `[← v.linearCombination_repr (g j), Finsupp.linearCombination_apply, Finsupp.sum, map_sum]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[map_smulₛₗ]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Rewrite using `[← (Module.Basis.mk h1 h2).mk_eq_rank'', ← v.mk_eq_rank'']`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rank_eq_of_coord {K K' V V' : Type} [Field K] [Field K'] [AddCommGroup V] [Module K V] [AddCommGroup V']
     [Module K' V'] (ι : K →+* K') (φ : V →ₛₗ[ι] V') {d : ℕ} (b : Fin d → K')
@@ -62,7 +60,7 @@ theorem rank_eq_of_coord {K K' V V' : Type} [Field K] [Field K'] [AddCommGroup V
   rw [← (Module.Basis.mk h1 h2).mk_eq_rank'', ← v.mk_eq_rank'']
 
 /- English proof (translation)
-Proceed by induction on `m using ENat.recTopCoe with`. Consider the case `top => rw [ENat.top_pow hd, logCard_top, ENNReal.mul_top (Nat.cast_ne_zero.2 hd)]`. Consider the case `coe m => rw [← Nat.cast_pow, logCard_coe, logCard_coe, Nat.cast_pow, Real.log_pow, ENNReal.ofReal_mul (Nat.cast_nonneg d), ENNReal.ofReal_natCast]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem logCard_pow (m : ℕ∞) {d : ℕ} (hd : d ≠ 0) : logCard (m ^ d) = d * logCard m := by
   induction m using ENat.recTopCoe with
@@ -71,9 +69,9 @@ theorem logCard_pow (m : ℕ∞) {d : ℕ} (hd : d ≠ 0) : logCard (m ^ d) = d 
       ENNReal.ofReal_mul (Nat.cast_nonneg d), ENNReal.ofReal_natCast]
 
 /- English proof (translation)
-Use `limsup_le_limsup (h.mono fun k hk => ?_)` and prove the remaining obligations. Establish `h1 : logCard (m' (a * k)) ≤ d * logCard (m (a * k))`. Rewrite using `[← logCard_pow _ hd]`. Conclude with `EReal.toENNReal_le_toENNReal (ENNReal.log_monotone (ENat.toENNReal_le.2 hk))`. Use `(ENNReal.div_le_div_right (mul_le_mul_right h1 _) _).trans_eq ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_left_comm, Nat.cast_mul n, mul_comm (n : ℝ≥0∞), mul_assoc, ENNReal.mul_div_mul_left _ _ (Nat.cast_ne_zero.2 hd) (ENNReal.natCast_ne_top d)]`.
+A detailed English derivation is pending.
 -/
 theorem countVol_le_of_pow (D n a : ℕ) {d : ℕ} (hd : d ≠ 0) {m m' : ℕ → ℕ∞}
     (h : ∀ᶠ k in atTop, m' (a * k) ≤ m (a * k) ^ d) : countVol D (n * d) a m' ≤ countVol D n a m := by
@@ -86,9 +84,9 @@ theorem countVol_le_of_pow (D n a : ℕ) {d : ℕ} (hd : d ≠ 0) {m m' : ℕ �
     ENNReal.mul_div_mul_left _ _ (Nat.cast_ne_zero.2 hd) (ENNReal.natCast_ne_top d)]
 
 /- English proof (translation)
-Use `le_iInf fun t => ?_` and prove the remaining obligations. Rewrite using `[EReal.le_sub_iff_add_le (Or.inl (EReal.coe_ne_bot t)) (Or.inl (EReal.coe_ne_top t)), ← EReal.coe_add]`. Use `le_of_forall_lt fun x hx => ?_` and prove the remaining obligations. Take `⟨y, hxy, hy⟩` from `EReal.lt_iff_exists_real_btwn.1 hx`. Establish `hy' : y < s + t` using `EReal.coe_lt_coe_iff.1 hy`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1` using `(hs.trans (iInf_le _ (y - s)))`. Rewrite `h1` using `[EReal.le_sub_iff_add_le (Or.inl (EReal.coe_ne_bot _)) (Or.inl (EReal.coe_ne_top _)), ← EReal.coe_add, add_sub_cancel]`. Use `hxy.trans_le (h1.trans (EReal.coe_ennreal_le_coe_ennreal_iff.2 (ENNReal.div_le_div_right ?_ _)))` and prove the remaining obligations. Simplify using `using h (y - s) (s + t - y) (by linarith)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem le_volSlope_of_shift {δ : ℝ} {vol vol' : ℝ → ℝ≥0∞} (h : ∀ t ε : ℝ, 0 < ε → vol' t ≤ vol (t + ε)) {s : ℝ}
     (hs : (s : EReal) ≤ volSlope δ vol') : (s : EReal) ≤ volSlope δ vol := by
@@ -104,7 +102,7 @@ theorem le_volSlope_of_shift {δ : ℝ} {vol vol' : ℝ → ℝ≥0∞} (h : ∀
   simpa using h (y - s) (s + t - y) (by linarith)
 
 /- English proof (translation)
-Set `φ : S → (Fin d → T)` to `fun x j => ⟨g x j, hT x x.2 j⟩`. Establish `hφ : Function.Injective φ` using `fun x y h => Subtype.ext (hg x.2 y.2 (funext fun j => congrArg Subtype.val (congrFun h j)))`. Use `ENat.card_le_card_of_injective hφ` as an intermediate fact. Use `this.trans_eq ?_` and prove the remaining obligations. Simplify using `only [Set.encard, ENat.card, Cardinal.mk_pi, Cardinal.prod_const, Cardinal.lift_id, Cardinal.mk_fin, Cardinal.lift_natCast, Cardinal.power_natCast, map_pow, Cardinal.lift_uzero]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem encard_le_pow {α β : Type} {S : Set α} {T : Set β} {d : ℕ} (g : α → Fin d → β) (hg : Set.InjOn g S)
     (hT : ∀ x ∈ S, ∀ j, g x j ∈ T) : S.encard ≤ T.encard ^ d := by
@@ -117,13 +115,13 @@ theorem encard_le_pow {α β : Type} {S : Set α} {T : Set β} {d : ℕ} (g : α
     Cardinal.lift_natCast, Cardinal.power_natCast, map_pow, Cardinal.lift_uzero]
 
 /- English proof (translation)
-Set `B` to `Module.finBasis K K'`. Set `B'` to `B.traceDual`. Take `⟨N, hN⟩` from `exists_integral_multiples ℤ ℚ (Finset.univ.image B')`. Use `⟨_, N.natAbs, B, fun j => (N.natAbs : K') * B' j, Module.finrank_pos.ne', Int.natAbs_ne_zero.2 hN.1, (Module.finrank_mul_finrank ℚ K K').symm, fun j => ?_, fun Ω _ _ _ => ?_⟩` and prove the remaining obligations. Use `hN.2 (B' j) (Finset.mem_image_of_mem _ (Finset.mem_univ j))` as an intermediate fact.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[zsmul_eq_mul]`. Rewrite using `[← Int.cast_natCast, Int.natCast_natAbs]`. Apply the tactic sequence `rcases abs_choice N with h | h <;> rw [h]`. Conclude with `this`. Simplify using `using this.neg`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression.
 
-Set `e` to `(Fintype.equivFin (K' →ₐ[K] Ω)).symm`. Use `⟨_, e, fun i j => ?_⟩` and prove the remaining obligations. Rewrite using `[e.sum_comp fun s => s ((N.natAbs : K') * B' j) * s (B i)]`. Use `trace_eq_sum_embeddings Ω (K := K) (x := B' j * B i)` as an intermediate fact. Rewrite `this` using `[Module.Basis.trace_traceDual_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_mul, map_natCast, mul_assoc, ← Finset.mul_sum] at this ⊢`. Rewrite using `[← this]`. Distinguish the cases in `h : i = j`. Simplify using `[h]`. Simplify using `[h, Ne.symm h]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_dual (K K' : Type) [Field K] [Field K'] [NumberField K] [NumberField K'] [Algebra K K'] :
     ∃ (d N : ℕ) (B : Module.Basis (Fin d) K K') (bs : Fin d → K'), d ≠ 0 ∧ N ≠ 0 ∧
@@ -177,7 +175,7 @@ def rulHom : Rul Xo c →+* Rul Xo c' where
     exact evalAt_add _ _ f g (y.res hle (fun _ => rfl))
 
 /- English proof (translation)
-The claim follows from `funext fun p => funext fun y => by letI := resAlg hle p.R refine (evalAt_smul _ _ a f (y.res hle (fun _ => rfl))).trans ?_ show _ = incF c c' hle a • rulBC hle f p y rw [Algebra.smul_def] rfl`.
+A detailed English derivation is pending.
 -/
 theorem rulBC_smul (a : c.F) (f : Rul Xo c) : rulBC hle (a • f) = incF c c' hle a • rulBC hle f :=
   funext fun p => funext fun y => by
@@ -188,7 +186,7 @@ theorem rulBC_smul (a : c.F) (f : Rul Xo c) : rulBC hle (a • f) = incF c c' hl
     rfl
 
 /- English proof (translation)
-Use `⟨rulBC_natural hle hf.1, fun p t y y' h => ?_⟩` and prove the remaining obligations. Use `letI := resAlg hle p.R`. Use `haveI : IsReduced p.R := (Ideal.isRadical_iff_quotient_reduced _).1 p.rad`. Conclude with `GlobalTheory.evR_frBor_of_mem_secZ GlobalTheory.abelianSchemeLaws_all.1.secBaseChange Xo c e hf p.R t (y.res hle (fun _ => rfl)) (y'.res hle (fun _ => rfl)) h`.
+Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem rulBC_mem_secZ {e : Ix Dw → ℤ} {f : Rul Xo c} (hf : f ∈ GlobalTheory.AllWt.secZ Xo c e) :
     rulBC hle f ∈ GlobalTheory.AllWt.secZ Xo c' e := by
@@ -201,27 +199,27 @@ theorem rulBC_mem_secZ {e : Ix Dw → ℤ} {f : Rul Xo c} (hf : f ∈ GlobalTheo
 include hle in
 
 /- English proof (translation)
-The claim follows from `h.elim fun κ => ⟨⟨Units.map (rulHom hle).toMonoidHom κ.ρ, rulBC_mem_secZ hle κ.mem⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem nonempty_keySec_bc (h : Nonempty (GlobalTheory.ShFam.KeySec Xo c)) : Nonempty (GlobalTheory.ShFam.KeySec Xo c') :=
   h.elim fun κ => ⟨⟨Units.map (rulHom hle).toMonoidHom κ.ρ, rulBC_mem_secZ hle κ.mem⟩⟩
 
 /- English proof (translation)
-Establish `hS` using `GlobalTheory.abelianSchemeLaws_all.1.secBaseChange`. Establish `hBC : HasBC Xo c` using `hasBC_of hS`. Establish `hA` using `GlobalTheory.Frames.allTest_of_secBaseChange hS E H Dw l Xo c`. Establish `hA'` using `GlobalTheory.Frames.allTest_of_secBaseChange hS E H Dw l Xo c'`. Establish `hov : ∀ p : TRing c.F, AlgOver c c' hle (Ext c.F c'.F p.R)` using `fun p x => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← halg]`. Conclude with `ext_tower x`. Use `choose z hz using fun (p : TRing c.F) (y : FrPt Xo c p.R) => hBC p.R (Ext c.F c'.F p.R) (inR c'.F p.R) y`. Establish `hT : ∀ (p : TRing c.F) (y : FrPt Xo c p.R), FromT ((z p y).ext hle (hov p))` using `fun p y => by haveI := ext_reduced (K' := c'.F) p`. Conclude with `hA' _ _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨fs, hfs⟩ : ∃ fs : Fin d → Rul Xo c, ∀ j p y, fs j p y = crd (B.coord j) (evR Xo c' f' ((z p y).ext hle (hov p)))` from `⟨fun j p y => _, fun _ _ _ => rfl⟩`. Establish `hnat : ∀ j, Natural c (fs j)`. Introduce `j p q ψ y w h`. Establish `h' : FrMap ψ y w` using `h`. Take `⟨Ψ, Ψ₀, e₁, e₂, e₃⟩` from `exists_map (K' := c'.F) ψ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0` using `map_trans ψ (inR c'.F q.R) h' (hz q w)`. Establish `h1` using `map_cancel hBC e₂ (hz p y) h0`. Establish `h2` using `frMap_ext hle (hov p) (hov q) Ψ₀ Ψ e₁ h1`. Rewrite using `[hfs, hfs, evR_map (wd c') hf'.1 (hT p y) h2, e₃]`. Use `⟨fs, fun j => ⟨hnat j, ?_⟩, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `p t y y' h`. Establish `h2` using `frBor_ext hle (hov p) (frBor_map h (hz p y) (hz p y'))`. Use `haveI := ext_reduced (K' := c'.F) p`. Establish `h3` using `GlobalTheory.evR_frBor_of_mem_secZ hS Xo c' e hf' _ _ _ _ h2`. Rewrite using `[hfs, hfs, h3, ← crd_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Apply function extensionality and compare values at an arbitrary argument. Equip the data with the indicated structure.
 
-Simplify using `only [← map_zpow, ← map_prod]`. Both sides reduce to the same expression. Use function extensionality and compare the values at `q y`. Use `letI := resAlg hle q.R`. Establish `h : AlgOver c c' hle q.R` using `fun _ => rfl`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨p, φ, y₀, hy₀'⟩` from `fromT_res hle q h y`. Establish `hy₀ : FrMap φ y₀ (y.res hle h)` using `hy₀'`. Take `⟨Φ, Φ₀, e₁, e₂, e₃⟩` from `exists_lift (K' := c'.F) (fun x => by rw [halg]; exact h x) φ`. Establish `h1` using `map_cancel hBC e₂ (hz p y₀) hy₀`. Establish `h2 : FrMap Φ ((z p y₀).ext hle (hov p)) y` using `frMap_ext hle (hov p) h Φ₀ Φ e₁ h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[← evR_test hf'.1 q y, evR_map (wd c') hf'.1 (hT p y₀) h2, e₃ d B, Finset.sum_apply, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← hfs, ← evR_of_map (wd c) (hnat j) hy₀, ← Algebra.smul_def]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem exists_coord [Algebra c.F c'.F] (halg : ∀ x, algebraMap c.F c'.F x = incF c c' hle x) {d : ℕ}
     (B : Module.Basis (Fin d) c.F c'.F) {e : Ix Dw → ℤ} {f' : Rul Xo c'} (hf' : f' ∈ GlobalTheory.AllWt.secZ Xo c' e) :
@@ -274,9 +272,9 @@ def evAlong {Ω : Type} [Field Ω] [Algebra c.F Ω] (s : c'.F →+* Ω) (hs : �
   evR Xo c' f' (y.ext hle hs)
 
 /- English proof (translation)
-Establish `h1 : ∀ k, evAlong hle (s k) (hs k) (∑ i, b i • rulBC hle (fs i)) y = ∑ i, s k (b i) * evR Xo c (fs i) y` using `fun k => by`. Use `letI := (s k).toAlgebra`. Use `(evR_sum_smul (c := c') (y.ext hle (hs k)) b _).trans (Finset.sum_congr rfl fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[evR_rulBC hle (hf i) (hs k)]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Simplify using `only [h1, Finset.mul_sum, ← mul_assoc]`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [← Finset.sum_mul, hd, ite_mul, zero_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Conclude with `(evalAt_smul _ _ _ _ y).trans (by rw [map_natCast]; rfl)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem evR_coord {Ω : Type} [Field Ω] [Algebra c.F Ω] {d n N : ℕ} {b bs : Fin d → c'.F} {s : Fin n → (c'.F →+* Ω)}
     (hs : ∀ k a, s k (incF c c' hle a) = algebraMap c.F Ω a)
@@ -294,9 +292,9 @@ theorem evR_coord {Ω : Type} [Field Ω] [Algebra c.F Ω] {d n N : ℕ} {b bs : 
   exact (evalAt_smul _ _ _ _ y).trans (by rw [map_natCast]; rfl)
 
 /- English proof (translation)
-Use `secZ_eq_zero_of_genVal hg fun Z => ?_` and prove the remaining obligations. Establish `h0 : GenFrEx Xo c` using `(Reg.genFrEx_and_genFromTest E H Dw l Xo c).1`. Set `φ : Om Z →ₐ[c.F] AlgebraicClosure (Om Z)` to `IsScalarTower.toAlgHom _ _ _`. Take `⟨z, hz⟩` from `GlobalTheory.FlagTan.exists_frMap φ (genFr h0 Z)`. Use `h _ z` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `this` using `[GlobalTheory.FlagTan.evR_frMap hg.1 hz]`. Conclude with `(map_eq_zero φ).1 this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_algClosed {e : Ix Dw → ℤ} {g : Rul Xo c} (hg : g ∈ GlobalTheory.AllWt.secZ Xo c e)
     (h : ∀ (Ω : Type) [Field Ω] [IsAlgClosed Ω] [Algebra c.F Ω] (y : FrPt Xo c Ω), evR Xo c g y = 0) : g = 0 := by
@@ -309,15 +307,13 @@ theorem eq_zero_of_algClosed {e : Ix Dw → ℤ} {g : Rul Xo c} (hg : g ∈ Glob
   exact (map_eq_zero φ).1 this
 
 /- English proof (translation)
-Establish `hg : ∀ (c : Coeff l) (Z Z' : Comp Xo c), genVal Z' (idem Z) = if Z' = Z then 1 else 0` using `fun c Z Z' => by`. Establish `h0` using `Reg.genFrEx_and_genFromTest E H Dw l Xo c`. Use `split_ifs with e`. Substitute `e` using the available equality. Conclude with `evR_idem (liesOn_genFr h0.1 Z') (h0.2 _ Z')`.
+Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `evC_eq_zero h0.1 e (idem_mem_suppOn Z)`. Establish `hs : GlobalTheory.AllWt.secZ Xo c 0 = sec Xo c 0 0`. Rewrite using `[← secZ_nat]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Apply the tactic sequence `rcases i with _ | i <;> rfl`. Use `sub_eq_zero.1 (secZ_eq_zero_of_genVal (Submodule.sub_mem _ (rulBC_mem_secZ hle (idem_mem_secZ Z)) (idem_mem_secZ _)) fun Z' => ?_)` and prove the remaining obligations. Take `⟨Z', rfl⟩` from `eC.surjective Z'`. Rewrite using `[map_sub, hg]`. Distinguish the cases in `e : Z' = Z`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact.
 
-Substitute `e` using the available equality. Establish `h1` using `(h Z' _ (hs ▸ Submodule.sub_mem _ (idem_mem_secZ Z') one_mem_secZ)).2 (by rw [map_sub, hg]; simp)`. Establish `h2 : rulBC hle (idem Z' - 1) = rulBC hle (idem Z') - 1`. Conclude with `((rulHom hle).map_sub (idem Z') 1).trans (congrArg (_ - ·) (rulBC_one hle))`. Rewrite `h1` using `[h2, map_sub, map_one]`.
-
-Rewrite using `[if_pos rfl]` and apply the resulting hypothesis. Rewrite using `[if_neg (eC.injective.ne e), sub_zero]`. Conclude with `(h Z' _ (hs ▸ idem_mem_secZ Z)).2 (by rw [hg, if_neg e])`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rulBC_idem (eC : Comp Xo c ≃ Comp Xo c')
     (h : ∀ Z : Comp Xo c, ∀ f ∈ sec Xo c 0 0, genVal (eC Z) (rulBC hle f) = 0 ↔ genVal Z f = 0) (Z : Comp Xo c) :

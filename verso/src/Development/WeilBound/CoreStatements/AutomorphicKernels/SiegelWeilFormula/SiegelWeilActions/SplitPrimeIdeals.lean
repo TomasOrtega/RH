@@ -25,12 +25,12 @@ def padM (M : Matrix (Fin L.n ⊕ Fin L.n) (Fin L.n ⊕ Fin L.n) (AE F E)) :
     else (1 : Matrix (Fin d.n ⊕ Fin d.n) (Fin d.n ⊕ Fin d.n) (AE F E)) r c
 
 /- English proof (translation)
-The claim follows from `Sum.map_injective.2 ⟨L.inj, L.inj⟩`.
+A detailed English derivation is pending.
 -/
 theorem emS_inj : Function.Injective (emS L) := Sum.map_injective.2 ⟨L.inj, L.inj⟩
 
 /- English proof (translation)
-Establish `h : (∃ x, emS L x = emS L a) ∧ ∃ x, emS L x = emS L a'` using `⟨⟨a, rfl⟩, ⟨a', rfl⟩⟩`. Simplify using `only [padM]`. Rewrite using `[dif_pos h, emS_inj L h.1.choose_spec, emS_inj L h.2.choose_spec]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem padM_emS (M : Matrix (Fin L.n ⊕ Fin L.n) (Fin L.n ⊕ Fin L.n) (AE F E)) (a a' : Fin L.n ⊕ Fin L.n) :
     padM L M (emS L a) (emS L a') = M a a' := by
@@ -39,7 +39,7 @@ theorem padM_emS (M : Matrix (Fin L.n ⊕ Fin L.n) (Fin L.n ⊕ Fin L.n) (AE F E
   rw [dif_pos h, emS_inj L h.1.choose_spec, emS_inj L h.2.choose_spec]
 
 /- English proof (translation)
-Simplify using `only [padM]`. Rewrite using `[dif_neg (fun h => hr h.1)]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem padM_out_row (M : Matrix (Fin L.n ⊕ Fin L.n) (Fin L.n ⊕ Fin L.n) (AE F E)) {r : Fin d.n ⊕ Fin d.n}
     (hr : ¬ ∃ a, emS L a = r) (c : Fin d.n ⊕ Fin d.n) : padM L M r c = (1 : Matrix _ _ (AE F E)) r c := by
@@ -47,7 +47,7 @@ theorem padM_out_row (M : Matrix (Fin L.n ⊕ Fin L.n) (Fin L.n ⊕ Fin L.n) (AE
   rw [dif_neg (fun h => hr h.1)]
 
 /- English proof (translation)
-Simplify using `only [padM]`. Rewrite using `[dif_neg (fun h => hc h.2)]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem padM_out_col (M : Matrix (Fin L.n ⊕ Fin L.n) (Fin L.n ⊕ Fin L.n) (AE F E)) (r : Fin d.n ⊕ Fin d.n)
     {c : Fin d.n ⊕ Fin d.n} (hc : ¬ ∃ a, emS L a = c) : padM L M r c = (1 : Matrix _ _ (AE F E)) r c := by
@@ -55,9 +55,9 @@ theorem padM_out_col (M : Matrix (Fin L.n ⊕ Fin L.n) (Fin L.n ⊕ Fin L.n) (AE
   rw [dif_neg (fun h => hc h.2)]
 
 /- English proof (translation)
-Break down `r with i | i` into its components or cases. Distinguish the cases in `hi : i = L.i₀`. Simplify using `[hi]`. Take `⟨a, ha⟩` from `(L.rng i).1 hi`. Conclude with `(h ⟨Sum.inl a, by simp [emS, ha]⟩).elim`.
+Separate the alternatives or extract the components of the hypothesis. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hi : i = L.i₀`. Simplify using `[hi]`. Take `⟨a, ha⟩` from `(L.rng i).1 hi`. Conclude with `(h ⟨Sum.inr a, by simp [emS, ha]⟩).elim`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem mem_out {r : Fin d.n ⊕ Fin d.n} (h : ¬ ∃ a, emS L a = r) :
     r ∈ ({Sum.inl L.i₀, Sum.inr L.i₀} : Set (Fin d.n ⊕ Fin d.n)) := by
@@ -72,12 +72,12 @@ theorem mem_out {r : Fin d.n ⊕ Fin d.n} (h : ¬ ∃ a, emS L a = r) :
       exact (h ⟨Sum.inr a, by simp [emS, ha]⟩).elim
 
 /- English proof (translation)
-The claim follows from `(L.rng (L.em a)).2 ⟨a, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem em_ne (a : Fin L.n) : L.em a ≠ L.i₀ := (L.rng (L.em a)).2 ⟨a, rfl⟩
 
 /- English proof (translation)
-Introduce and unpack `⟨a | a, ha⟩`. Simplify using `only [emS, Sum.map_inl, Sum.inl.injEq] at ha`. Conclude with `em_ne L a (ha.trans hi)`. Simplify using `[emS] at ha`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem not_inl (i : Fin d.n) (hi : i = L.i₀) : ¬ ∃ a, emS L a = Sum.inl i := by
   rintro ⟨a | a, ha⟩
@@ -86,7 +86,7 @@ theorem not_inl (i : Fin d.n) (hi : i = L.i₀) : ¬ ∃ a, emS L a = Sum.inl i 
   · simp [emS] at ha
 
 /- English proof (translation)
-Introduce and unpack `⟨a | a, ha⟩`. Simplify using `[emS] at ha`. Simplify using `only [emS, Sum.map_inr, Sum.inr.injEq] at ha`. Conclude with `em_ne L a (ha.trans hi)`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem not_inr (i : Fin d.n) (hi : i = L.i₀) : ¬ ∃ a, emS L a = Sum.inr i := by
   rintro ⟨a | a, ha⟩
@@ -95,11 +95,9 @@ theorem not_inr (i : Fin d.n) (hi : i = L.i₀) : ¬ ∃ a, emS L a = Sum.inr i 
     exact em_ne L a (ha.trans hi)
 
 /- English proof (translation)
-Use extensionality with `r c`. Distinguish the cases in `h : (∃ a, emS L a = r) ∧ ∃ a, emS L a = c`. Take `⟨⟨a, rfl⟩, ⟨a', rfl⟩⟩` from `h`. Rewrite using `[padM_emS]`. Use `congrFun (congrFun (L.j_in g) a) a'` as an intermediate fact.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify `this` using `[Matrix.submatrix_apply, emS]`. Break down `not_and_or.1 h with h1 | h1` into its components or cases. Rewrite using `[padM_out_row L _ h1]`. Conclude with `(L.j_out g r (mem_out L h1) c).1`. Rewrite using `[padM_out_col L _ r h1]`.
-
-Conclude with `(L.j_out g c (mem_out L h1) r).2`.
+Simplify to obtain the desired conclusion from the available facts. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inFrame_j (g : G2 σ L.Y) : inFrame d.b (L.j g) = padM L (inFrame L.b g) := by
   ext r c
@@ -115,9 +113,9 @@ theorem inFrame_j (g : G2 σ L.Y) : inFrame d.b (L.j g) = padM L (inFrame L.b g)
       exact (L.j_out g c (mem_out L h1) r).2
 
 /- English proof (translation)
-Take `⟨⟨ε, hε⟩, -⟩` from `d.ok.frame`. Take `⟨⟨ε', hε'⟩, -⟩` from `L.ok.frame`. Establish `hee : ε = ε'` using `Afc.eps_eq L hε hε'`. Substitute `hee` using the available equality. Rewrite using `[kunf.mem_nA_iff hε']`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : β.1 ∈ kfour.nCond σ d.n ε` using `(kunf.mem_nA_iff hε β.1).1 β.2`. Conclude with `Afc.sub_nCond (σ := σ) L.em β.1 h1`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem sub_mem_nA (β : nA σ d.Y d.b) : β.1.submatrix L.em L.em ∈ nA σ L.Y L.b := by
   obtain ⟨⟨ε, hε⟩, -⟩ := d.ok.frame
@@ -143,18 +141,18 @@ Both sides reduce to the same expression.
 theorem prj_val (β : nA σ d.Y d.b) : (prj L β).1 = β.1.submatrix L.em L.em := rfl
 
 /- English proof (translation)
-Use `Continuous.subtype_mk ?_ _` and prove the remaining obligations. Conclude with `continuous_subtype_val.matrix_submatrix L.em L.em`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_prj : Continuous (prj L) := by
   refine Continuous.subtype_mk ?_ _
   exact continuous_subtype_val.matrix_submatrix L.em L.em
 
 /- English proof (translation)
-Use extensionality with `i k`. Simplify using `only [Matrix.toBlocks₂₁, Matrix.of_apply, Matrix.zero_apply]`. Distinguish the cases in `hi : i = L.i₀`. Rewrite using `[padM_out_row L M (not_inr L i hi)]`. Simplify using `[Matrix.one_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hk : k = L.i₀`. Rewrite using `[padM_out_col L M _ (not_inl L k hk)]`. Simplify using `[Matrix.one_apply]`. Take `⟨a, rfl⟩` from `(L.rng i).1 hi`. Take `⟨a', rfl⟩` from `(L.rng k).1 hk`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `h1` using `padM_emS L M (Sum.inr a) (Sum.inl a')`. Simplify using `only [emS, Sum.map_inr, Sum.map_inl] at h1`. Rewrite using `[h1]`. Establish `h2` using `congrFun (congrFun hM a) a'`. Simplify `h2` using `[Matrix.toBlocks₂₁]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem pad_matrix_lower_block (M : Matrix (Fin L.n ⊕ Fin L.n) (Fin L.n ⊕ Fin L.n) (AE F E)) (hM : M.toBlocks₂₁ = 0) :
     (padM L M).toBlocks₂₁ = 0 := by
@@ -175,9 +173,9 @@ theorem pad_matrix_lower_block (M : Matrix (Fin L.n ⊕ Fin L.n) (Fin L.n ⊕ Fi
       simpa [Matrix.toBlocks₂₁] using h2
 
 /- English proof (translation)
-Establish `h1` using `congrArg Matrix.toBlocks₁₁ h`. Rewrite `h1` using `[← Matrix.fromBlocks_toBlocks P, ← Matrix.fromBlocks_toBlocks Q, Matrix.fromBlocks_multiply, hQ]`. Establish `h2 : (1 : Matrix (Fin k ⊕ Fin k) (Fin k ⊕ Fin k) (AE F E)).toBlocks₁₁ = 1`. Use extensionality with `i j`. Simplify using `[Matrix.toBlocks₁₁, Matrix.one_apply]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify `h1` using `[h2]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem upper_block_mul_of_lower_zero {k : ℕ} {P Q : Matrix (Fin k ⊕ Fin k) (Fin k ⊕ Fin k) (AE F E)} (hQ : Q.toBlocks₂₁ = 0)
     (h : P * Q = 1) : P.toBlocks₁₁ * Q.toBlocks₁₁ = 1 := by
@@ -188,7 +186,7 @@ theorem upper_block_mul_of_lower_zero {k : ℕ} {P Q : Matrix (Fin k ⊕ Fin k) 
   simpa [h2] using h1
 
 /- English proof (translation)
-Take `⟨t, ht⟩` from `hx`. Take `⟨-, t₀, ht₀⟩` from `L.ok.frame`. Rewrite using `[inFrame_j]`. Conclude with `pad_matrix_lower_block L _ ((kunf.isPar_frame ht₀ x t).1 ht).1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lower_block_embedded_parabolic {x : G2 σ L.Y} (hx : ∃ t, IsPar x t) : (inFrame d.b (L.j x)).toBlocks₂₁ = 0 := by
   obtain ⟨t, ht⟩ := hx
@@ -197,17 +195,15 @@ theorem lower_block_embedded_parabolic {x : G2 σ L.Y} (hx : ∃ t, IsPar x t) :
   exact pad_matrix_lower_block L _ ((kunf.isPar_frame ht₀ x t).1 ht).1
 
 /- English proof (translation)
-Take `⟨t, ht⟩` from `mem_parabolic_GL2_iff.1 h`. Take `⟨-, t₁, ht₁⟩` from `d.ok.frame`. Use `set P := inFrame d.b (L.j g)`. Use `set Q := inFrame d.b (L.j g⁻¹)`. Establish `hP : P.toBlocks₂₁ = 0` using `lower_block_embedded_parabolic L ⟨t, ht⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hQ : Q.toBlocks₂₁ = 0` using `lower_block_embedded_parabolic L ⟨t⁻¹, ht.inv⟩`. Establish `hPQ : P * Q = 1`. Rewrite using `[← GlobalTheory.EisBL.DoubledParabolic.inFrame_mul, ← map_mul, mul_inv_cancel, map_one, GlobalTheory.EisBL.DoubledParabolic.inFrame_one]`. Establish `hQP : Q * P = 1`. Rewrite using `[← GlobalTheory.EisBL.DoubledParabolic.inFrame_mul, ← map_mul, inv_mul_cancel, map_one, GlobalTheory.EisBL.DoubledParabolic.inFrame_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1` using `upper_block_mul_of_lower_zero hQ hPQ`. Establish `e2` using `upper_block_mul_of_lower_zero hP hQP`. Use `set T0 := incM F t₁.1`. Use `set Ti := incM F (t₁⁻¹).1`. Establish `hT : T0 * Ti = 1` using `by show incM F t₁.1 * incM F (t₁⁻¹).1 = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← kunf.incM_mul', Units.mul_inv]`. Use extensionality with `i j`. Simplify using `[incM, Matrix.one_apply]`. Establish `hT' : Ti * T0 = 1` using `by show incM F (t₁⁻¹).1 * incM F t₁.1 = 1`. Rewrite using `[← kunf.incM_mul', Units.inv_mul]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Chain the equalities or inequalities of the calculation.
 
-Use extensionality with `i j`. Simplify using `[incM, Matrix.one_apply]`. Set `t' : GL (Fin d.n) (AE F E)` to `⟨T0 * P.toBlocks₁₁ * Ti, T0 * Q.toBlocks₁₁ * Ti, by`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`.
-
-Use `_ = 1 := by rw [hT', Matrix.mul_one, e1, Matrix.mul_one, hT], by`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = 1 := by rw [hT', Matrix.mul_one, e2, Matrix.mul_one, hT]⟩`. Conclude with `mem_parabolic_GL2_iff.2 ⟨t', (kunf.isPar_frame ht₁ (L.j g) t').2 ⟨hP, rfl⟩⟩`.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem j_par {g : G2 σ L.Y} (h : g ∈ par2 σ L.Y) : L.j g ∈ par2 σ d.Y := by
   obtain ⟨t, ht⟩ := mem_parabolic_GL2_iff.1 h
@@ -244,7 +240,7 @@ def padE (N : Matrix (Fin L.n ⊕ Fin L.n) (Fin L.n ⊕ Fin L.n) E) : Matrix (Fi
     else (1 : Matrix (Fin d.n ⊕ Fin d.n) (Fin d.n ⊕ Fin d.n) E) r c
 
 /- English proof (translation)
-Use extensionality with `r c`. Simplify using `only [padM, padE, incM, Matrix.map_apply]`. Use `split_ifs with h`. Both sides reduce to the same expression. Apply the tactic sequence `rw [Matrix.one_apply, Matrix.one_apply] split_ifs <;> simp`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem padM_incM (N : Matrix (Fin L.n ⊕ Fin L.n) (Fin L.n ⊕ Fin L.n) E) : padM L (incM F N) = incM F (padE L N) := by
   ext r c
@@ -255,9 +251,9 @@ theorem padM_incM (N : Matrix (Fin L.n ⊕ Fin L.n) (Fin L.n ⊕ Fin L.n) E) : p
     split_ifs <;> simp
 
 /- English proof (translation)
-Take `⟨γ, hγ⟩` from `Subgroup.mem_subgroupOf.1 h`. Establish `hm : mat2 g = incM F γ.1` using `by show g.1.1 = _`. Rewrite using `[← hγ]`. Both sides reduce to the same expression. Establish `hf : inFrame L.b g = incM F ((L.b⁻¹).1 * γ.1 * L.b.1)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[kunf.incM_mul', kunf.incM_mul', ← hm]`. Both sides reduce to the same expression. Use `kunf.rat_of_inFrame (b := d.b) (M := padE L ((L.b⁻¹).1 * γ.1 * L.b.1)) ?_` and prove the remaining obligations. Rewrite using `[inFrame_j, hf, padM_incM]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem j_rat {g : G2 σ L.Y} (h : g ∈ rat2 σ L.Y) : L.j g ∈ rat2 σ d.Y := by
   obtain ⟨γ, hγ⟩ := Subgroup.mem_subgroupOf.1 h

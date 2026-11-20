@@ -5,17 +5,17 @@ open NumberField IsDedekindDomain
 namespace GlobalTheory.CompanionTheory.GlobalFiniteness
 
 /- English proof (translation)
-Assume the negation of the conclusion as `ht`. Establish `hv0 : P.under (𝓞 F) ≠ ⊥` using `Ideal.under_ne_bot (𝓞 F) hP0`. Establish `hvp : (P.under (𝓞 F)).IsPrime` using `inferInstance`. Set `v : HeightOneSpectrum (𝓞 F)` to `⟨P.under (𝓞 F), hvp, hv0⟩`. Establish `hcast : ∀ (n : ℕ), (n : 𝓞 F) ∈ v.asIdeal → (n : 𝓞 E) ∈ P` using `fun n hn => by`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `: algebraMap (𝓞 F) (𝓞 E) (n : 𝓞 F) ∈ P` using `hn`. Simplify `this` using `[map_natCast]`. Establish `hvS : v ∉ S`. Introduce `hvS`. Apply `ht` to reduce the goal to its premises.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Nat.cast_mul]`. Apply `Ideal.mul_mem_left` to reduce the goal to its premises. Establish `hd : v.asIdeal.absNorm ∣ ∏ w ∈ S, w.asIdeal.absNorm` using `Finset.dvd_prod_of_mem _ hvS`. Take `⟨c, hc⟩` from `hd`. Rewrite using `[hc, Nat.cast_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.mul_mem_right _ _ (hcast _ (Ideal.absNorm_mem _))`. Establish `hlies : P.LiesOver v.asIdeal` using `⟨rfl⟩`. Establish `hun : Algebra.IsUnramifiedAt (𝓞 F) P` using `hS v hvS P hP hlies`. Rewrite `hdvd` using `[differentIdeal_eq_differentIdeal_mul_differentIdeal ℤ (𝓞 F) (𝓞 E)]`. Break down `(Ideal.prime_of_isPrime hP0 hP).dvd_or_dvd hdvd with h | h` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `not_dvd_differentIdeal_iff.2 hun h`. Apply `ht` to reduce the goal to its premises. Rewrite using `[Nat.cast_mul]`. Apply `Ideal.mul_mem_right` to reduce the goal to its premises. Apply `hcast` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hmap : differentIdeal ℤ (𝓞 F) ≤ v.asIdeal` using `Ideal.map_le_iff_le_comap.1 (Ideal.le_of_dvd h)`. Apply `hmap` to reduce the goal to its premises. Rewrite using `[← absNorm_differentIdeal F (𝓞 F)]`. Conclude with `Ideal.absNorm_mem _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem natAbs_discr_mul_prod_absNorm_mem_of_dvd_differentIdeal
     (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]

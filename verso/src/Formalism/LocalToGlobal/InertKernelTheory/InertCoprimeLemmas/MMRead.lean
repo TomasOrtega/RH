@@ -15,16 +15,14 @@ open IntegralOrthonormalChange
 variable {p : ℕ} [Fact p.Prime]
 
 /- English proof (translation)
-The claim follows from `PowerSeries.constantCoeff_subst_eq_zero (MvPowerSeries.constantCoeff_X i) f hf`.
+A detailed English derivation is pending.
 -/
 theorem constantCoeff_inVar_eq_zero {σ : Type*} (i : σ) (f : PowerSeries ℂ_[p]) (hf : PowerSeries.constantCoeff f = 0) :
     MvPowerSeries.constantCoeff (PowerSeries.subst (MvPowerSeries.X i : MvPowerSeries σ ℂ_[p]) f) = 0 :=
   PowerSeries.constantCoeff_subst_eq_zero (MvPowerSeries.constantCoeff_X i) f hf
 
 /- English proof (translation)
-Introduce `n`. Rewrite using `[PowerSeries.coeff_subst_single]`. Use `split_ifs`. Conclude with `hf _`. Use `show ‖(0 : ℂ_[p])‖ ≤ 1`.
-
-Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem integral_subst_single_variable {σ : Type*} (i : σ) (f : PowerSeries ℂ_[p]) (hf : ∀ n, IsIntP (PowerSeries.coeff n f)) :
     IntegralMv (PowerSeries.subst (MvPowerSeries.X i : MvPowerSeries σ ℂ_[p]) f) := by
@@ -36,7 +34,7 @@ theorem integral_subst_single_variable {σ : Type*} (i : σ) (f : PowerSeries �
     simp
 
 /- English proof (translation)
-Use `Finset.prod_induction f IntegralMv (fun a b ha hb => IntegralOrthonormalChange.integral_mul ha hb) ?_ hf` and prove the remaining obligations. Introduce `n`. Use `show ‖MvPowerSeries.coeff n (1 : MvPowerSeries σ ℂ_[p])‖ ≤ 1`. Rewrite using `[MvPowerSeries.coeff_one]`. Apply the tactic sequence `split_ifs <;> simp`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem integral_prod {σ ι : Type*} (s : Finset ι) (f : ι → MvPowerSeries σ ℂ_[p])
     (hf : ∀ i ∈ s, IntegralMv (f i)) : IntegralMv (∏ i ∈ s, f i) := by
@@ -47,7 +45,7 @@ theorem integral_prod {σ ι : Type*} (s : Finset ι) (f : ι → MvPowerSeries 
   split_ifs <;> simp
 
 /- English proof (translation)
-Establish `hX : MvPowerSeries.HasSubst (fun _ : Unit => (MvPowerSeries.X i : MvPowerSeries σ ℂ_[p]))` using `(PowerSeries.HasSubst.X i).const`. Rewrite using `[PowerSeries.subst, MvPowerSeries.subst_comp_subst_apply hX hS, PowerSeries.subst]`. Use `congr 1`. Use function extensionality and compare the values at `_`. Conclude with `MvPowerSeries.subst_X hS i`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem subst_single_var {σ τ : Type*} (S : σ → MvPowerSeries τ ℂ_[p]) (hS : MvPowerSeries.HasSubst S)
     (f : PowerSeries ℂ_[p]) (i : σ) :
@@ -61,11 +59,11 @@ theorem subst_single_var {σ τ : Type*} (S : σ → MvPowerSeries τ ℂ_[p]) (
   exact MvPowerSeries.subst_X hS i
 
 /- English proof (translation)
-Establish `hs : PowerSeries.HasSubst a` using `PowerSeries.HasSubst.of_constantCoeff_zero ha`. Distinguish the cases in `hf : PowerSeries.constantCoeff f = 0`. Establish `h1 : f⁻¹ = 0` using `PowerSeries.inv_eq_zero.mpr hf`. Establish `h2 : MvPowerSeries.constantCoeff (PowerSeries.subst a f) = 0` using `PowerSeries.constantCoeff_subst_eq_zero ha f hf`. Rewrite using `[h1, MvPowerSeries.inv_eq_zero.mpr h2, ← PowerSeries.coe_substAlgHom hs, map_zero]`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hm : PowerSeries.subst a f * PowerSeries.subst a f⁻¹ = 1`. Rewrite using `[← PowerSeries.subst_mul hs, PowerSeries.mul_inv_cancel f hf, ← PowerSeries.coe_substAlgHom hs, map_one]`. Establish `hc : MvPowerSeries.constantCoeff (PowerSeries.subst a f) ≠ 0`. Introduce `h0`. Use `congrArg MvPowerSeries.constantCoeff hm` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `this` using `[map_mul, h0, zero_mul, map_one]`. Conclude with `zero_ne_one this`. Rewrite using `[MvPowerSeries.eq_inv_iff_mul_eq_one hc, mul_comm, hm]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem subst_inv {σ : Type*} (a : MvPowerSeries σ ℂ_[p]) (ha : MvPowerSeries.constantCoeff a = 0)
     (f : PowerSeries ℂ_[p]) : PowerSeries.subst a f⁻¹ = (PowerSeries.subst a f)⁻¹ := by
@@ -85,37 +83,33 @@ theorem subst_inv {σ : Type*} (a : MvPowerSeries σ ℂ_[p]) (ha : MvPowerSerie
     rw [MvPowerSeries.eq_inv_iff_mul_eq_one hc, mul_comm, hm]
 
 /- English proof (translation)
-Use `set u := PowerSeries.coeff 1 h with hudef`. Establish `hu0 : u ≠ 0`. Introduce `hu`. Rewrite `h1` using `[hu, norm_zero]`. Conclude with `zero_ne_one h1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨h', hh'⟩ : PowerSeries.X ∣ h` from `PowerSeries.X_dvd_iff.mpr h0`. Establish `hcc : PowerSeries.constantCoeff h' = u`. Rewrite using `[hudef, hh', PowerSeries.coeff_succ_X_mul, PowerSeries.coeff_zero_eq_constantCoeff_apply]`. Establish `hpow : ∀ m k, PowerSeries.coeff k (h ^ m) = if m ≤ k then PowerSeries.coeff (k - m) (h' ^ m) else 0`. Introduce `m k`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hh', mul_pow, PowerSeries.coeff_X_pow_mul']`. Establish `hlow : ∀ m k, k < m → PowerSeries.coeff k (h ^ m) = 0`. Introduce `m k hk`. Rewrite using `[hpow, if_neg (by omega)]`. Establish `hdiag : ∀ m, PowerSeries.coeff m (h ^ m) = u ^ m`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `m`. Rewrite using `[hpow, if_pos le_rfl, Nat.sub_self, PowerSeries.coeff_zero_eq_constantCoeff_apply, map_pow, hcc]`. Set `b : ℕ → ℂ_[p]` to `Nat.strongRec fun n rec => (u ^ n)⁻¹ * PowerSeries.coeff n (PowerSeries.X - ∑ m : Fin n, PowerSeries.C (rec m m.isLt) * h ^ (m : ℕ))`. Establish `hb : ∀ n, b n = (u ^ n)⁻¹ * PowerSeries.coeff n (PowerSeries.X - ∑ m ∈ Finset.range n, PowerSeries.C (b m) * h ^ m)`. Introduce `n`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Fin.sum_univ_eq_sum_range (fun m => PowerSeries.C (b m) * h ^ m) n]`. Conclude with `Nat.strongRecOn'_beta _ n`. Establish `hcoeffP : ∀ N k, PowerSeries.coeff k (∑ m ∈ Finset.range N, PowerSeries.C (b m) * h ^ m) = ∑ m ∈ Finset.range N, b m * PowerSeries.coeff k (h ^ m)`. Introduce `N k`. Simplify using `only [map_sum, PowerSeries.coeff_C_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Establish `hA : ∀ N, ∀ k < N, PowerSeries.coeff k (PowerSeries.X - ∑ m ∈ Finset.range N, PowerSeries.C (b m) * h ^ m) = 0`. Introduce `N`. Proceed by induction on `N with`. Consider the case `zero => intro k hk`. Use linear arithmetic over natural numbers and integers.
+Treat this case separately. Use linear arithmetic over natural numbers and integers. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Consider the case `succ N ih`. Introduce `k hk`. Rewrite using `[Finset.sum_range_succ, ← sub_sub, map_sub]`. Break down `Nat.lt_succ_iff_lt_or_eq.mp hk with hk | hk` into its components or cases. Rewrite using `[ih k hk, PowerSeries.coeff_C_mul, hlow N k hk, mul_zero, sub_zero]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Substitute `hk` using the available equality. Rewrite using `[PowerSeries.coeff_C_mul, hdiag, hb k, mul_comm ((u ^ k)⁻¹) _, mul_assoc, inv_mul_cancel₀ (pow_ne_zero k hu0), mul_one, sub_self]`. Establish `hb0 : b 0 = 0`. Rewrite using `[hb 0]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hb1 : b 1 = u⁻¹`. Rewrite using `[hb 1]`. Simplify using `[hb0]`. Establish `hH : PowerSeries.HasSubst h` using `PowerSeries.HasSubst.of_constantCoeff_zero' h0`. Establish `hhI : Formalism.L2.Th1.C.IntPS (IntegralOrthonormalChange.intRing p) h` using `fun n => hI n`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Establish `hpowI : ∀ m, Formalism.L2.Th1.C.IntPS (IntegralOrthonormalChange.intRing p) (h ^ m)`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => simpa using Formalism.L2.Th1.C.USideA.intPS_C (R := IntegralOrthonormalChange.intRing p) (one_mem _)`. Consider the case `succ m ihm => rw [pow_succ]`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Conclude with `Formalism.L2.Th1.C.USideA.intPS_mul ihm hhI`. Establish `hint : ∀ n, b n ∈ IntegralOrthonormalChange.intRing p`. Introduce `n`. Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hb n]`. Use `Subring.mul_mem _ ?_ ?_` and prove the remaining obligations. Use `show ‖(u ^ n)⁻¹‖ ≤ 1`. Rewrite using `[norm_inv, norm_pow, h1, one_pow, inv_one]`. Conclude with `Formalism.L2.Th1.C.USideA.intPS_sub Formalism.L2.Th1.C.USideA.intPS_X (Formalism.L2.Th1.C.USideA.intPS_sum _ fun m hm => Formalism.L2.Th1.C.USideA.intPS_mul (Formalism.L2.Th1.C.USideA.intPS_C (ih m (Finset.mem_range.mp hm))) (hpowI m)) n`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use `⟨PowerSeries.mk b, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← PowerSeries.coeff_zero_eq_constantCoeff_apply, PowerSeries.coeff_mk, hb0]`. Introduce `n`. Rewrite using `[PowerSeries.coeff_mk]`. Conclude with `hint n`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[PowerSeries.coeff_mk, hb1, norm_inv, h1, inv_one]`. Use extensionality with `k`. Rewrite using `[PowerSeries.coeff_subst' hH]`. Simplify using `only [PowerSeries.coeff_mk, smul_eq_mul]`. Rewrite using `[finsum_eq_sum_of_support_subset _ (s := Finset.range (k + 1)) ?_]`.
-
-Use `hA (k + 1) k (Nat.lt_succ_self k)` as an intermediate fact. Rewrite `this` using `[map_sub, hcoeffP, sub_eq_zero]`. Conclude with `this.symm`. Introduce `d hd`. Simplify using `only [Function.mem_support] at hd`.
-
-Simplify using `only [Finset.coe_range, Set.mem_Iio]`. Assume the negation of the conclusion as `hdk`. Conclude with `hd (by rw [hlow d k (by omega), mul_zero])`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 private theorem exists_integral_subst_inverse_of_unit_linear (h : PowerSeries ℂ_[p]) (h0 : PowerSeries.constantCoeff h = 0)
     (hI : ∀ n, ‖PowerSeries.coeff n h‖ ≤ 1) (h1 : ‖PowerSeries.coeff 1 h‖ = 1) :
@@ -209,11 +203,11 @@ private theorem exists_integral_subst_inverse_of_unit_linear (h : PowerSeries �
       exact hd (by rw [hlow d k (by omega), mul_zero])
 
 /- English proof (translation)
-Take `⟨g, g0, gI, g1, hg⟩` from `exists_integral_subst_inverse_of_unit_linear h h0 hI h1`. Take `⟨k, k0, -, -, hk⟩` from `exists_integral_subst_inverse_of_unit_linear g g0 gI g1`. Establish `hG : PowerSeries.HasSubst g` using `PowerSeries.HasSubst.of_constantCoeff_zero' g0`. Establish `hH : PowerSeries.HasSubst h` using `PowerSeries.HasSubst.of_constantCoeff_zero' h0`. Establish `hkh : k = h`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : PowerSeries.subst h (PowerSeries.subst g k) = h`. Rewrite using `[hk, PowerSeries.subst_X hH]`. Rewrite `e1` using `[PowerSeries.subst_comp_subst_apply hG hH, hg, PowerSeries.X_subst]`. Conclude with `e1`. Use `⟨g, g0, gI, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hkh]`. Conclude with `hk`.
+A detailed English derivation is pending.
 -/
 theorem exists_inv (h : PowerSeries ℂ_[p]) (h0 : PowerSeries.constantCoeff h = 0)
     (hI : ∀ n, IsIntP (PowerSeries.coeff n h)) (h1 : ‖PowerSeries.coeff 1 h‖ = 1) :

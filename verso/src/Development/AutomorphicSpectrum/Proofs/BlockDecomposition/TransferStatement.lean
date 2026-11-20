@@ -16,19 +16,19 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 variable {n : ℕ}
 
 /- English proof (translation)
-The claim follows from `Ps1.isOpen_omega'`.
+A detailed English derivation is pending.
 -/
 lemma isOpen_omegaSet : IsOpen (OmegaSet n) := Ps1.isOpen_omega'
 
 /- English proof (translation)
-The claim follows from `PsW.diffAt hF.1 isOpen_omegaSet hz`.
+A detailed English derivation is pending.
 -/
 lemma omF_diffAt {F : Matrix (Fin n) (Fin n) ℂ → ℂ} (hF : F ∈ OmF n) {z : Matrix (Fin n) (Fin n) ℂ}
     (hz : z ∈ OmegaSet n) : DifferentiableAt ℂ F z :=
   PsW.diffAt hF.1 isOpen_omegaSet hz
 
 /- English proof (translation)
-Establish `h1 : ContDiffOn ℂ ⊤ (fderiv ℂ F) S` using `hF.fderiv_of_isOpen hS le_top`. Establish `h2 : ContDiff ℂ ⊤ fun z : Fin n → Fin n → ℂ => PsW.mmul Y z` using `PsW.contDiff_mmul contDiff_const contDiff_id`. Conclude with `(h1.clm_apply h2.contDiffOn).neg`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma contDiffOn_vector_field_derivative (Y : Fin n → Fin n → ℂ) (F : (Fin n → Fin n → ℂ) → ℂ) (S : Set (Fin n → Fin n → ℂ))
     (hS : IsOpen S) (hF : ContDiffOn ℂ ⊤ F S) :
@@ -39,7 +39,7 @@ lemma contDiffOn_vector_field_derivative (Y : Fin n → Fin n → ℂ) (F : (Fin
   exact (h1.clm_apply h2.contDiffOn).neg
 
 /- English proof (translation)
-Use `⟨?_, fun z hz => if_neg hz⟩` and prove the remaining obligations. Conclude with `(contDiffOn_vector_field_derivative Y F _ isOpen_omegaSet hF.1).congr fun z hz => if_pos hz`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 lemma lop_mem (Y : Matrix (Fin n) (Fin n) ℂ) {F : Matrix (Fin n) (Fin n) ℂ → ℂ} (hF : F ∈ OmF n) :
     lop Y F ∈ OmF n := by
@@ -47,16 +47,16 @@ lemma lop_mem (Y : Matrix (Fin n) (Fin n) ℂ) {F : Matrix (Fin n) (Fin n) ℂ �
   exact (contDiffOn_vector_field_derivative Y F _ isOpen_omegaSet hF.1).congr fun z hz => if_pos hz
 
 /- English proof (translation)
-Use `⟨?_, fun z hz => Set.indicator_of_notMem hz _⟩` and prove the remaining obligations. Conclude with `(PsW.contDiffOn_phiQ μ).congr fun z hz => Set.indicator_of_mem hz _`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 lemma phiO_mem (μ : Fin n → ℤ) : PhiO μ ∈ OmF n := by
   refine ⟨?_, fun z hz => Set.indicator_of_notMem hz _⟩
   exact (PsW.contDiffOn_phiQ μ).congr fun z hz => Set.indicator_of_mem hz _
 
 /- English proof (translation)
-Use function extensionality and compare the values at `z`. Distinguish the cases in `hz : z ∈ OmegaSet n`. Simplify using `only [lop, if_pos hz, Pi.add_apply]`. Establish `e` using `DFunLike.congr_fun ((omF_diffAt hF hz).hasFDerivAt.add (omF_diffAt hG hz).hasFDerivAt).fderiv (Y * z)`. Conclude with `(congrArg Neg.neg e).trans (neg_add _ _)`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[lop, if_neg hz]`.
+A detailed English derivation is pending.
 -/
 lemma lop_add (Y : Matrix (Fin n) (Fin n) ℂ) {F G : Matrix (Fin n) (Fin n) ℂ → ℂ} (hF : F ∈ OmF n)
     (hG : G ∈ OmF n) : lop Y (F + G) = lop Y F + lop Y G := by
@@ -69,9 +69,9 @@ lemma lop_add (Y : Matrix (Fin n) (Fin n) ℂ) {F G : Matrix (Fin n) (Fin n) ℂ
   · simp [lop, if_neg hz]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `z`. Distinguish the cases in `hz : z ∈ OmegaSet n`. Simplify using `only [lop, if_pos hz, Pi.smul_apply]`. Establish `e` using `DFunLike.congr_fun ((omF_diffAt hF hz).hasFDerivAt.const_smul c).fderiv (Y * z)`. Conclude with `(congrArg Neg.neg e).trans (smul_neg c ((fderiv ℂ F z) (Y * z))).symm`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[lop, if_neg hz]`.
+A detailed English derivation is pending.
 -/
 lemma lop_smul (Y : Matrix (Fin n) (Fin n) ℂ) (c : ℂ) {F : Matrix (Fin n) (Fin n) ℂ → ℂ} (hF : F ∈ OmF n) :
     lop Y (c • F) = c • lop Y F := by
@@ -83,13 +83,13 @@ lemma lop_smul (Y : Matrix (Fin n) (Fin n) ℂ) (c : ℂ) {F : Matrix (Fin n) (F
   · simp [lop, if_neg hz]
 
 /- English proof (translation)
-Simplify using `using lop_smul Y 0 (OmF n).zero_mem`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma lop_zero (Y : Matrix (Fin n) (Fin n) ℂ) : lop Y (0 : Matrix (Fin n) (Fin n) ℂ → ℂ) = 0 := by
   simpa using lop_smul Y 0 (OmF n).zero_mem
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using lop_zero Y`. Consider the case `insert i s hi ih`. Rewrite using `[Finset.sum_insert hi, Finset.sum_insert hi, lop_add Y ((OmF n).smul_mem _ (hF i)) ((OmF n).sum_mem fun j _ => (OmF n).smul_mem _ (hF j)), lop_smul Y _ (hF i), ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 lemma lop_sum {ι : Type*} (Y : Matrix (Fin n) (Fin n) ℂ) (s : Finset ι) (c : ι → ℂ)
     (F : ι → Matrix (Fin n) (Fin n) ℂ → ℂ) (hF : ∀ i, F i ∈ OmF n) :
@@ -103,7 +103,7 @@ lemma lop_sum {ι : Type*} (Y : Matrix (Fin n) (Fin n) ℂ) (s : Finset ι) (c :
       lop_smul Y _ (hF i), ih]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `z`. Distinguish the cases in `hz : z ∈ OmegaSet n`. Simplify using `only [lop, if_pos hz, Finset.sum_apply, Pi.smul_apply, Finset.sum_mul, map_sum, Matrix.smul_mul, map_smul, smul_neg, Finset.sum_neg_distrib]`. Simplify using `[lop, if_neg hz]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 lemma lop_sum_left {ι : Type*} (s : Finset ι) (c : ι → ℂ) (Y : ι → Matrix (Fin n) (Fin n) ℂ)
     (F : Matrix (Fin n) (Fin n) ℂ → ℂ) :
@@ -119,7 +119,7 @@ def lwM (D : List (Matrix (Fin n) (Fin n) ℂ)) (F : Matrix (Fin n) (Fin n) ℂ 
   D.foldr lop F
 
 /- English proof (translation)
-Proceed by induction on `w with`. Consider the case `nil => exact hF`. Consider the case `cons p w ih => exact lop_mem _ ih`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 lemma lw_mem (w : List (Fin n × Fin n)) {F : Matrix (Fin n) (Fin n) ℂ → ℂ} (hF : F ∈ OmF n) :
     lw w F ∈ OmF n := by
@@ -128,9 +128,9 @@ lemma lw_mem (w : List (Fin n × Fin n)) {F : Matrix (Fin n) (Fin n) ℂ → ℂ
   | cons p w ih => exact lop_mem _ ih
 
 /- English proof (translation)
-Proceed by induction on `D with`. Consider the case `nil => exact hFF`. Consider the case `cons Z D ih`. Introduce `z hz`. Establish `hev : lWord (D.map Neg.neg) F =ᶠ[𝓝 z] lwM D F'` using `Filter.eventually_of_mem (isOpen_omegaSet.mem_nhds hz) fun y hy => ih hy`.
+Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `show fderiv ℂ (lWord (D.map Neg.neg) F) z (-Z * z) = lop Z (lwM D F') z`. Rewrite using `[hev.fderiv_eq, lop, if_pos hz, Matrix.neg_mul, map_neg]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma lWord_neg_eq {F F' : Matrix (Fin n) (Fin n) ℂ → ℂ} (hFF : Set.EqOn F F' (OmegaSet n))
     (D : List (Matrix (Fin n) (Fin n) ℂ)) :
@@ -145,7 +145,7 @@ lemma lWord_neg_eq {F F' : Matrix (Fin n) (Fin n) ℂ → ℂ} (hFF : Set.EqOn F
     rw [hev.fderiv_eq, lop, if_pos hz, Matrix.neg_mul, map_neg]
 
 /- English proof (translation)
-The claim follows from `| 0, c => by simp [lwM, lw] | l + 1, c => by rw [List.ofFn_succ] show lop _ (lwM _ F) = _ rw [lwM_expand hF l (fun i => c i.succ), lop_sum_left, ← (Fin.consEquiv (fun _ : Fin (l + 1) => Fin n × Fin n)).sum_comp (fun w' => (∏ i, c i (w' i)) • lw (List.ofFn w') F)] conv_rhs => rw [ …`.
+A detailed English derivation is pending.
 -/
 lemma lwM_expand {F : Matrix (Fin n) (Fin n) ℂ → ℂ} (hF : F ∈ OmF n) :
     ∀ (l : ℕ) (c : Fin l → Fin n × Fin n → ℂ),
@@ -168,7 +168,7 @@ lemma lwM_expand {F : Matrix (Fin n) (Fin n) ℂ → ℂ} (hF : F ∈ OmF n) :
     rfl
 
 /- English proof (translation)
-Establish `hinv : (toMK k⁻¹)⁻¹ = toMK k` using `Matrix.inv_eq_left_inv (PsW.toMK_mul_inv k)`. Use extensionality with `i j`. Rewrite using `[Matrix.sum_apply, Fintype.sum_prod_type, Matrix.mul_assoc, Matrix.mul_apply]`. Simplify using `[adC, hinv, Matrix.mul_apply, Matrix.single_apply, Matrix.smul_apply, ite_and]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma conj_single {ε : Fin n → Bool} (k : KG ε) (p : Fin n × Fin n) :
     toMK k⁻¹ * Matrix.single p.1 p.2 (1 : ℂ) * toMK k =
@@ -179,9 +179,9 @@ lemma conj_single {ε : Fin n → Bool} (k : KG ε) (p : Fin n × Fin n) :
   simp [adC, hinv, Matrix.mul_apply, Matrix.single_apply, Matrix.smul_apply, ite_and]
 
 /- English proof (translation)
-Establish `hD : adW ε k ((List.ofFn w).map fun p => Matrix.single p.1 p.2 (1 : ℂ)) = List.ofFn fun i => ∑ q : Fin n × Fin n, adC (toMK k⁻¹) (w i) q • Matrix.single q.1 q.2 (1 : ℂ)`. Simplify using `only [adW, List.map_ofFn]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Conclude with `conj_single k (w i)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[tt_adW_neg, hD, lWord_neg_eq (F' := PhiO μ) (fun z hz => (Set.indicator_of_mem hz _).symm) _ hy, lwM_expand (phiO_mem μ) l fun i q => adC (toMK k⁻¹) (w i) q]`. Simplify using `[Finset.sum_apply]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma lWord_adW_expand {ε : Fin n → Bool} (μ : Fin n → ℤ) (k : KG ε) {l : ℕ} (w : Fin l → Fin n × Fin n)
     {y : Matrix (Fin n) (Fin n) ℂ} (hy : y ∈ OmegaSet n) :
@@ -200,7 +200,7 @@ lemma lWord_adW_expand {ε : Fin n → Bool} (μ : Fin n → ℤ) (k : KG ε) {l
 variable {ε : Fin n → Bool} {Λ : Fin n → ℝ}
 
 /- English proof (translation)
-Simplify using `only [Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun w _ => Finset.sum_congr rfl fun w' _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma sum_swap {ι : Type*} [Fintype ι] (A : ι → ι → ℂ) (B C : ι → ℂ) :
     ∑ w', (∑ w, A w w' * B w) * C w' = ∑ w, B w * ∑ w', A w w' * C w' := by
@@ -210,9 +210,9 @@ lemma sum_swap {ι : Type*} [Fintype ι] (A : ι → ι → ℂ) (B C : ι → �
   ring
 
 /- English proof (translation)
-Establish `hrho : ∀ (l : Fin (m + 1)) (w' : Fin l → Fin n × Fin n), inner ℂ T.w (rhoA T m κ a ⟨l, w'⟩) = ∑ w : Fin l → Fin n × Fin n, (∏ i, adC (toMK κ) (w i) (w' i)) * inner ℂ T.w (T.op κ (a ⟨l, w⟩))`. Introduce `l w'`. Simplify using `only [rhoA, inner_sum, inner_smul_right]`. Simplify using `only [betaF, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, ofW]`. Rewrite using `[Fintype.sum_sigma, Fintype.sum_sigma]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Simplify using `only [hrho]`. Conclude with `sum_swap (ι := Fin l → Fin n × Fin n) (fun w w' => ∏ i, adC (toMK κ) (w i) (w' i)) (fun w => inner ℂ T.w (T.op κ (a ⟨l, w⟩))) fun w' => lw (List.ofFn w') (PhiO μ) y`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma betaF_rhoA (T : KType ε Λ) (μ : Fin n → ℤ) (m : ℕ) (κ : KG ε) (a : AS T m)
     (y : Matrix (Fin n) (Fin n) ℂ) :
@@ -230,9 +230,9 @@ lemma betaF_rhoA (T : KType ε Λ) (μ : Fin n → ℤ) (m : ℕ) (κ : KG ε) (
     (fun w => inner ℂ T.w (T.op κ (a ⟨l, w⟩))) fun w' => lw (List.ofFn w') (PhiO μ) y
 
 /- English proof (translation)
-Proceed by induction on `D with`. Consider the case `nil => exact fun _ _ => rfl`. Consider the case `cons Z D ih`. Introduce `z hz`. Establish `hev : lWord D (fun y => ℓ (P y)) =ᶠ[𝓝 z] fun y => ℓ (lWord D P y)` using `Filter.eventually_of_mem (hU.mem_nhds hz) fun y hy => ih hy`.
+Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hd` using `((hP D).differentiableAt (hU.mem_nhds hz)).hasFDerivAt`. Establish `h` using `(ℓ.hasFDerivAt.comp z hd).fderiv`. Use `show fderiv ℂ (lWord D fun y => ℓ (P y)) z (Z * z) = ℓ (fderiv ℂ (lWord D P) z (Z * z))`. Rewrite using `[hev.fderiv_eq]`. Conclude with `DFunLike.congr_fun h _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma lWord_clm {E E' : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] [NormedAddCommGroup E']
     [NormedSpace ℂ E'] (ℓ : E →L[ℂ] E') {U : Set (Matrix (Fin n) (Fin n) ℂ)} (hU : IsOpen U)
@@ -252,7 +252,7 @@ lemma lWord_clm {E E' : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] [Norme
     exact DFunLike.congr_fun h _
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil => exact hf`. Consider the case `cons p L ih`. Introduce `g hg hgu`. Conclude with `ta_ecV_local ε hW hg hgu ((hdiff _).differentiableAt (hU.mem_nhds (hWU g hg))) ih (Matrix.single p.1 p.2 (1 : ℂ))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 lemma eword_local (ε : Fin n → Bool) {F f : Matrix (Fin n) (Fin n) ℂ → ℂ}
     {U W : Set (Matrix (Fin n) (Fin n) ℂ)} {m : Matrix (Fin n) (Fin n) ℂ} (hU : IsOpen U) (hW : IsOpen W)
@@ -268,21 +268,19 @@ lemma eword_local (ε : Fin n → Bool) {F f : Matrix (Fin n) (Fin n) ℂ → �
       (Matrix.single p.1 p.2 (1 : ℂ))
 
 /- English proof (translation)
-The claim follows from `continuous_subtype_val.comp T.cont`.
+A detailed English derivation is pending.
 -/
 lemma continuous_op (T : KType ε Λ) : Continuous fun k : KG ε => T.op k :=
   continuous_subtype_val.comp T.cont
 
 /- English proof (translation)
-Establish `: IsFiniteMeasureOnCompacts (muK ε)` using `by unfold muK; infer_instance`. Set `ℓ : (T.V →L[ℂ] T.V) →L[ℂ] ℂ` to `(innerSL ℂ T.w).comp ((T.op k₀).comp (ContinuousLinearMap.apply ℂ T.V v))`. Establish `hEq` using `fun D => lWord_clm ℓ hU (fun D => (hword D).1) D`. Establish `hdiff : ∀ D, DifferentiableOn ℂ (lWord D fun y => ℓ (psM T μ y)) U` using `fun D => (ℓ.differentiable.comp_differentiableOn (hword D).1).congr (hEq D)`. Establish `hz : g⁻¹ * toMK k₀ ∈ U` using `(hWU g hg).2`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hf : ∀ h ∈ W, inUJ ε h → inner ℂ T.w (PsiM T μ h v) = ℓ (psM T μ (h⁻¹ * toMK k₀))` using `fun h hh hhu => by rw [hloc h hh hhu]; rfl`. Use `set D := (L.map fun p => Matrix.single p.1 p.2 (1 : ℂ)).map Neg.neg with hDdef`. Establish `hA : Continuous fun k : KG ε => T.op k * projW T * T.op k⁻¹` using `Ps1.continuous_P T`. Establish `hint : Integrable (fun k : KG ε => lWord (adW ε k D) (PhiM μ) (toMK k⁻¹ * (g⁻¹ * toMK k₀) * toMK k) • (T.op k * projW T * T.op k⁻¹)) (muK ε)` using `integrableOn_univ.mp ((((hword D).2.1 _ hz).smul hA).continuousOn.integrableOn_compact isCompact_univ)`. Rewrite using `[eword_local ε hU hW hdiff (fun h hh => (hWU h hh).2) hf L g hg hgu, hEq D hz]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show ℓ (lWord D (psM T μ) (g⁻¹ * toMK k₀)) = _`. Rewrite using `[(hword D).2.2 _ hz, map_smul, smul_eq_mul, ← ContinuousLinearMap.integral_comp_comm ℓ hint]`. Use `congr 1`. Use `integral_congr_ae (Filter.Eventually.of_forall fun k => ?_)` and prove the remaining obligations. Use `show ℓ (_ • _) = _`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Rewrite using `[map_smul, smul_eq_mul]`. Use `congr 1`. Use `show inner ℂ T.w (T.op k₀ ((T.op k * projW T * T.op k⁻¹) v)) = _`. Establish `hAv : (T.op k * projW T * T.op k⁻¹) v = inner ℂ T.w (T.op k⁻¹ v) • T.op k T.w`. Simplify using `only [ContinuousLinearMap.mul_apply, projW, ContinuousLinearMap.smulRight_apply, innerSL_apply_apply, map_smul]`.
-
-Rewrite using `[hAv, map_smul, inner_smul_right, op_mul']`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 lemma word_formula [CompactSpace (KG ε)] (T : KType ε Λ) (μ : Fin n → ℤ)
     {U W : Set (Matrix (Fin n) (Fin n) ℂ)} {k₀ : KG ε} (hU : IsOpen U) (hW : IsOpen W)
@@ -330,15 +328,13 @@ lemma word_formula [CompactSpace (KG ε)] (T : KType ε Λ) (μ : Fin n → ℤ)
   rfl
 
 /- English proof (translation)
-Introduce `n ε lam T μ m _hlam hμ a g₀ hg₀`. Take `⟨U, hU, hpos, hconj, hword⟩` from `psM_word n ε (lowK ε lam) T μ`. Take `⟨W, k₀, hW, hg₀W, hWU, hloc⟩` from `psiM_local T μ hμ U hU hpos hg₀`. Use `⟨W, hW.mem_nhds hg₀W, k₀, fun g hgW hgU => ?_⟩` and prove the remaining obligations. Use `compactSpace_KG ε` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: IsFiniteMeasureOnCompacts (muK ε)` using `by unfold muK; infer_instance`. Establish `hz : g⁻¹ * toMK k₀ ∈ U` using `(hWU g hgW).2`. Establish `hop` using `continuous_op T`. Establish `hint : ∀ x ∈ (univ : Finset (Wd n m)), Integrable (fun k : KG ε => lWord (adW ε k (((ofW x).map fun p => Matrix.single p.1 p.2 (1 : ℂ)).map Neg.neg)) (PhiM μ) (toMK k⁻¹ * (g⁻¹ * toMK k₀) * toMK k) * (inner ℂ T.w (T.op k⁻¹ (a x)) * inner ℂ T.w (T.op (k₀ * k) T.w))) (muK ε)` using `fun x _ => by`. Establish `h1 : Continuous fun k : KG ε => inner ℂ T.w (T.op k⁻¹ (a x))` using `continuous_const.inner ((hop.comp continuous_inv).clm_apply continuous_const)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : Continuous fun k : KG ε => inner ℂ T.w (T.op (k₀ * k) T.w)` using `continuous_const.inner ((hop.comp (continuous_const.mul continuous_id)).clm_apply continuous_const)`. Conclude with `integrableOn_univ.mp ((((hword _).2.1 _ hz).mul (h1.mul h2)).continuousOn.integrableOn_compact isCompact_univ)`. Unfold `actF`. Rewrite using `[Finset.sum_apply, Finset.sum_congr rfl fun x _ => word_formula T μ hU hW hword hWU hloc (a x) (ofW x) hgW hgU, ← Finset.mul_sum, ← integral_finsetSum _ hint]`. Use `congr 1`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `integral_congr_ae (Filter.Eventually.of_forall fun k => ?_)` and prove the remaining obligations. Use `show ∑ x : Wd n m, _ = betaF T μ (rhoA T m k⁻¹ a) (toMK k⁻¹ * (g⁻¹ * toMK k₀) * toMK k) * inner ℂ T.w (T.op (k₀ * k) T.w)`. Rewrite using `[betaF_rhoA, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[show ofW x = List.ofFn x.2 from rfl, lWord_adW_expand μ k x.2 (hconj _ hz k)]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem transfer : Transfer := by
   intro n ε lam T μ m _hlam hμ a g₀ hg₀

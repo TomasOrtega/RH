@@ -10,47 +10,39 @@ noncomputable section
 namespace GlobalTheory.EisM
 
 /- English proof (translation)
-Introduce `L ρ Ψ W hρ hΨ hΨm hW`. Use `haveI : Countable (Matrix (Fin 2) (Fin 2) ℤ) := inferInstanceAs (Countable (Fin 2 → Fin 2 → ℤ))`. Use `haveI : Countable SL(2, ℤ) := inferInstanceAs (Countable {A : Matrix (Fin 2) (Fin 2) ℤ // A.det = 1})`. Use `haveI : Countable (Gamma0 L) := Subtype.countable`. Establish `memΓ : ∀ γ : SL(2, ℤ), γ ∈ Gamma0 L ↔ (L : ℤ) ∣ γ 1 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `γ`. Rewrite using `[Gamma0_mem]`. Conclude with `ZMod.intCast_zmod_eq_zero_iff_dvd _ _`. Establish `hs : MeasurableSet strip`. Establish `: strip = (fun τ : ℍ => τ.re) ⁻¹' Set.Ico 0 1`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use extensionality with `τ`. Simplify using `[strip]`. Rewrite using `[this]`. Conclude with `UpperHalfPlane.continuous_re.measurable measurableSet_Ico`. Use `set f : ℍ → ℂ := strip.indicator Ψ with hf_def`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hfi : Integrable f` using `(integrable_indicator_iff hs).2 hΨ`. Establish `hfm : AEStronglyMeasurable f` using `hfi.aestronglyMeasurable`. Establish `mp : ∀ γ : SL(2, ℤ), MeasurePreserving (fun τ : ℍ => γ • τ) volume volume` using `fun γ => measurePreserving_smul ((γ : GL (Fin 2) ℝ)) (volume : Measure ℍ)`. Establish `me : ∀ γ : SL(2, ℤ), MeasurableEmbedding (fun τ : ℍ => γ • τ)` using `fun γ => (MeasurableEquiv.smul ((γ : GL (Fin 2) ℝ))).measurableEmbedding`. Establish `rowEq : ∀ (γ : SL(2, ℤ)) (a b : ℤ), γ 1 0 = a → γ 1 1 = b → UpperTheory.V.Af.Rs.row γ = ![a, b]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `γ a b ha hb`. Use function extensionality and compare the values at `i`. Use `fin_cases i`. Simplify `ha` using `[UpperTheory.V.Af.Rs.row]`. Simplify `hb` using `[UpperTheory.V.Af.Rs.row]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `step1 : ∀ τ : ℍ, ∑' x : {x : ℤ × ℤ // IsCoprime x.1 x.2 ∧ (L : ℤ) ∣ x.1}, W x.1 τ = ∑' γ : Gamma0 L, f ((γ : SL(2, ℤ)) • τ)`. Introduce `τ`. Establish `key : ∀ x : {x : ℤ × ℤ // IsCoprime x.1 x.2 ∧ (L : ℤ) ∣ x.1}, ∃ γ : Gamma0 L, ((γ : SL(2, ℤ)) 1 0, (γ : SL(2, ℤ)) 1 1) = x.1 ∧ (γ : SL(2, ℤ)) • τ ∈ strip`. Introduce `x`. Take `⟨γ, ⟨hr, hst⟩, -⟩` from `UpperTheory.V.Af.Rs.rowBij.2 τ ⟨![x.1.1, x.1.2], by simpa using x.2.1⟩`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h0 : γ 1 0 = x.1.1` using `by simpa [UpperTheory.V.Af.Rs.row] using congrFun hr 0`. Establish `h1 : γ 1 1 = x.1.2` using `by simpa [UpperTheory.V.Af.Rs.row] using congrFun hr 1`. Use `⟨⟨γ, (memΓ γ).2 (h0 ▸ x.2.2)⟩, ?_, hst⟩` and prove the remaining obligations. Simplify using `[h0, h1]`. Use `choose g hg using key`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `ginj : Function.Injective g`. Introduce `x y hxy`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[← (hg x).1, ← (hg y).1, hxy]`. Establish `hsupp : Function.support (fun γ : Gamma0 L => f ((γ : SL(2, ℤ)) • τ)) ⊆ Set.range g`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `γ hγ`. Establish `hin : (γ : SL(2, ℤ)) • τ ∈ strip`. Assume the negation of the conclusion as `h`. Conclude with `hγ (Set.indicator_of_notMem h _)`. Establish `hL : (L : ℤ) ∣ (γ : SL(2, ℤ)) 1 0` using `(memΓ γ).1 γ.2`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hcop : IsCoprime ((γ : SL(2, ℤ)) 1 0) ((γ : SL(2, ℤ)) 1 1)` using `UpperTheory.V.Af.Rs.rowBij.1 γ`. Use `⟨⟨((γ : SL(2, ℤ)) 1 0, (γ : SL(2, ℤ)) 1 1), hcop, hL⟩, ?_⟩` and prove the remaining obligations. Use `set x : {x : ℤ × ℤ // IsCoprime x.1 x.2 ∧ (L : ℤ) ∣ x.1} := ⟨((γ : SL(2, ℤ)) 1 0, (γ : SL(2, ℤ)) 1 1), hcop, hL⟩`. Establish `hx` using `hg x`. Apply `Subtype.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(UpperTheory.V.Af.Rs.rowBij.2 τ ⟨![x.1.1, x.1.2], by simpa using x.2.1⟩).unique ⟨rowEq _ _ _ (congrArg Prod.fst hx.1) (congrArg Prod.snd hx.1), hx.2⟩ ⟨rowEq _ _ _ rfl rfl, hin⟩`. Rewrite using `[← ginj.tsum_eq hsupp]`. Use `tsum_congr fun x => ?_` and prove the remaining obligations. Establish `hx` using `hg x`. Establish `hL : (L : ℤ) ∣ (g x : SL(2, ℤ)) 1 0` using `(memΓ _).1 (g x).2`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hf_def, Set.indicator_of_mem hx.2, hW _ hL τ, hx.1]`. Establish `hsum : ∀ τ, HasSum (fun γ : Gamma0 L => ρ ((γ : SL(2, ℤ))⁻¹ • τ)) 1` using `fun τ => by`. Use `(Equiv.inv (Gamma0 L)).hasSum_iff.mpr (hρ.sum τ)` as an intermediate fact. Simplify `this` using `[Function.comp_def]`. Use `set F : Gamma0 L → ℍ → ℂ := fun γ τ => (ρ τ : ℂ) * f ((γ : SL(2, ℤ)) • τ) with hF`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set G : Gamma0 L → ℍ → ℂ := fun γ τ => (ρ ((γ : SL(2, ℤ))⁻¹ • τ) : ℂ) * f τ with hG`. Establish `hFG : ∀ γ, F γ = fun τ => G γ ((γ : SL(2, ℤ)) • τ)`. Introduce `γ`. Use function extensionality and compare the values at `τ`. Simplify using `[hF, hG]`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `Gm : ∀ γ, AEStronglyMeasurable (G γ)` using `fun γ => ((Complex.measurable_ofReal.comp (hρ.meas.comp (me ((γ : SL(2, ℤ))⁻¹)).measurable)).aestronglyMeasurable).mul hfm`. Establish `Fm : ∀ γ, AEStronglyMeasurable (F γ)` using `fun γ => by`. Rewrite using `[hFG γ]`. Conclude with `(Gm γ).comp_measurePreserving (mp γ)`. Establish `tot : ∀ τ, ∑' γ : Gamma0 L, ‖G γ τ‖ₑ = ‖f τ‖ₑ`.
+Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Introduce `τ`. Simplify using `only [hG, enorm_mul]`. Rewrite using `[ENNReal.tsum_mul_right]`. Establish `: ∑' γ : Gamma0 L, ‖((ρ ((γ : SL(2, ℤ))⁻¹ • τ) : ℝ) : ℂ)‖ₑ = 1`. Repeatedly rewrite using `[← ofReal_norm_eq_enorm, Complex.norm_real, Real.norm_of_nonneg (hρ.nonneg _)]`.
+Chain the equalities or inequalities of the calculation. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← ENNReal.ofReal_tsum_of_nonneg (fun _ => hρ.nonneg _) (hsum τ).summable, (hsum τ).tsum_eq, ENNReal.ofReal_one]`. Rewrite using `[this, one_mul]`. Establish `finG : ∑' γ, ∫⁻ τ, ‖G γ τ‖ₑ ≠ ⊤`. Rewrite using `[← lintegral_tsum (fun γ => (Gm γ).enorm)]`. Repeatedly rewrite using `[tot]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hfi.hasFiniteIntegral.ne`. Establish `finF : ∑' γ, ∫⁻ τ, ‖F γ τ‖ₑ ≠ ⊤`. Establish `: ∀ γ, ∫⁻ τ, ‖F γ τ‖ₑ = ∫⁻ τ, ‖G γ τ‖ₑ` using `fun γ => by`. Rewrite using `[hFG γ]`. Conclude with `(mp γ).lintegral_comp_emb (me γ) (fun τ => ‖G γ τ‖ₑ)`.
-
-Repeatedly rewrite using `[this]`. Conclude with `finG`. Combine the equalities or inequalities in the displayed calculation. Use `congr 1`. Use function extensionality and compare the values at `τ`.
-
-Rewrite using `[step1 τ, ← tsum_mul_left]`. Use `_ = ∑' γ, ∫ τ, F γ τ := integral_tsum Fm finF`. Use `_ = ∑' γ, ∫ τ, G γ τ := by`. Use `tsum_congr fun γ => ?_` and prove the remaining obligations. Rewrite using `[hFG γ]`.
-
-Conclude with `(mp γ).integral_comp (me γ) (G γ)`. Use `_ = ∫ τ, ∑' γ, G γ τ := (integral_tsum Gm finG).symm`. Use `_ = ∫ τ, f τ := by`. Use `congr 1`. Use function extensionality and compare the values at `τ`.
-
-Simplify using `only [hG]`. Rewrite using `[tsum_mul_right, ← Complex.ofReal_tsum, (hsum τ).tsum_eq]`. Simplify using the standard rewrite rules. Use `_ = ∫ τ in strip, Ψ τ := integral_indicator hs`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem unfold_strip : ∀ (L : ℕ) (ρ : ℍ → ℝ) (Ψ : ℍ → ℂ) (W : ℤ × ℤ → ℍ → ℂ), Wt L ρ → IntegrableOn Ψ strip → AEStronglyMeasurable Ψ → (∀ γ : SL(2, ℤ), (L : ℤ) ∣ γ 1 0 → ∀ τ, Ψ (γ • τ) = W (γ 1 0, γ 1 1) τ) → ∫ τ : ℍ, (ρ τ : ℂ) * ∑' x : {x : ℤ × ℤ // IsCoprime x.1 x.2 ∧ (L : ℤ) ∣ x.1}, W x.1 τ = ∫ τ in strip, Ψ τ := by
   intro L ρ Ψ W hρ hΨ hΨm hW

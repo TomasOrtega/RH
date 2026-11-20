@@ -21,15 +21,15 @@ namespace GlobalTheory.LevYZero
 open Formalism.IndefR.Lev Formalism.L2.DIV
 
 /- English proof (translation)
-Substitute `hL` using the available equality. Establish `hP : (datY (D` using `D) V.rank r t 0 hr Pg ∅ P χ ξ Frm.B).P = P := by simp [datY]`. Prove the components needed by the constructor for the conclusion. Rewrite using `[mem_lev, mem_parLev]`. Prove the components needed by the constructor for the conclusion.
+Substitute using the available equality. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨⟨-, hS, -, -⟩, hH⟩`. Use `⟨hS, ?_⟩` and prove the remaining obligations. Rewrite `hH` using `[hP]`. Conclude with `hH`. Introduce and unpack `⟨hS, hH⟩`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨hU, hS, fun PP _ => ?_, fun PP hPP => absurd hPP (Finset.notMem_empty _)⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_blockTri]`. Introduce `i j hij`. It suffices to derive a contradiction. Establish `hi : (i : ℕ) < r` using `hn ▸ i.2`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. It suffices to derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hj : (j : ℕ) < r` using `hn ▸ j.2`. Simplify using `[datY, blkOf, hi, hj] at hij`. Use `show rTup β _ g ∈ _`. Rewrite using `[hP]`. Conclude with `hH`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Express the relevant assertion in an equivalent form by its definition.
 
-Introduce `h`. Unfold `levFn`. Express the relevant statement in the definitionally equal form `ext1 P.H P.chi (fun PP : Pg => upperLeftBlock hr (redFn β PP.1 g)) * _ * _ = _`. Simplify using `only [datY, Finset.range_zero, Finset.prod_empty, Finset.prod_const_one, mul_one]`. Conclude with `extendOne_of_mem _ h`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lev_datY_zero {D : D7} (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (L : LevDat D.host.E ℂ V.rank)
     (r t : ℕ) (hr : r ≤ V.rank) (hn : V.rank = r) (Pg : Finset (Pl D.host.E)) (P : LevelP Pg r ℂ)

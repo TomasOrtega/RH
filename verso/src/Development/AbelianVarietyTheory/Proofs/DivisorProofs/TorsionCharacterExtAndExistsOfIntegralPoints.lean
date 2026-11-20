@@ -17,11 +17,11 @@ namespace GlobalTheory.TorsionCharacterExt
 open Algebra.TensorProduct in
 
 /- English proof (translation)
-Use `tensor_eq_zero_of_forall_geometric_point O F hinj A A t fun x => ?_` and prove the remaining obligations. Apply `(TensorProduct.comm O F A).injective` to reduce the goal to its premises. Rewrite using `[map_zero]`. Use `tensor_eq_zero_of_forall_geometric_point O F hinj A F _ fun y => ?_` and prove the remaining obligations. Apply `hmul` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[map_zero, ← ht x y]`. Use `clear ht`. Proceed by induction on `t with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`.
+Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `tmul a b => simp [mul_comm]`.
+A detailed English derivation is pending.
 -/
 theorem tensor_eq_zero_of_forall_pair (O F : Type) [CommRing O] [Field F] [IsAlgClosed F]
     [Algebra O F] [Module.Flat O F] (hinj : Function.Injective (algebraMap O F)) (A : Type)
@@ -44,9 +44,9 @@ theorem tensor_eq_zero_of_forall_pair (O F : Type) [CommRing O] [Field F] [IsAlg
 variable {O : Type} [CommRing O]
 
 /- English proof (translation)
-Establish `h1 : ((lift x y).left ≫ (pullbackSpecIso O A A).hom) ≫ Spec.map (CommRingCat.ofHom Algebra.TensorProduct.includeLeftRingHom) = x.left`. Rewrite using `[Category.assoc, pullbackSpecIso_hom_fst]`. Conclude with `congrArg Over.Hom.left (lift_fst x y)`. Establish `h2 : ((lift x y).left ≫ (pullbackSpecIso O A A).hom) ≫ (ptMap (Algebra.TensorProduct.includeRight : A →ₐ[O] A ⊗[O] A)).left = y.left`. Use `(Category.assoc _ _ _).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `(congrArg ((lift x y).left ≫ ·) (pullbackSpecIso_hom_snd O A A)).trans ?_` and prove the remaining obligations. Conclude with `congrArg Over.Hom.left (lift_snd x y)`. Use `⟨Over.homMk ((lift x y).left ≫ (pullbackSpecIso O A A).hom) ?_, Over.OverMorphism.ext h1, Over.OverMorphism.ext h2⟩` and prove the remaining obligations. Rewrite using `[← Over.w y, ← h2, Category.assoc _ (ptMap _).left, Over.w]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_pair {A : Type} [CommRing A] [Algebra O A] {T : Over (Spec (CommRingCat.of O))}
     (x y : T ⟶ specO O A) : ∃ t : T ⟶ specO O (A ⊗[O] A),
@@ -72,41 +72,39 @@ namespace GlobalTheory
 open KernelNoTorsion TangentPow TorsionCharacter GmPoints in
 
 /- English proof (translation)
-Introduce `C _ _ _ v O _ _ hv G _ _ N hN hfin hflat`. Establish `hinj` using `hv.hom_inj`. Establish `: IsDomain O` using `hinj.isDomain _`. Use `ValuationRing.of_integers v hv` as an intermediate fact. Use `hv.isFractionRing` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsIntegrallyClosed O` using `inferInstance`. Take `⟨A, _, _, _, _, ⟨e⟩⟩` from `exists_finite_free (torsion G N)`. Establish `hred` using `isReduced_torsion_geometric_fibre O C G N (Nat.cast_ne_zero.2 (by omega)) hfin`. Establish `h0 : IsIso (specO O C ◁ e.hom).left` using `inferInstanceAs (IsIso ((Over.forget _).map (specO O C ◁ e.hom)))`. Establish `h3 : IsReduced (specO O C ⊗ specO O A).left` using `isReduced_of_isOpenImmersion (specO O C ◁ e.hom).left`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : IsReduced (Spec (CommRingCat.of (C ⊗[O] A)))` using `@isReduced_of_isOpenImmersion _ _ (pullbackSpecIso O C A).inv _ h3`. Establish `hA : _root_.IsReduced (C ⊗[O] A)` using `(affine_isReduced_iff _).mp h4`. Establish `hint : ∀ x : A →ₐ[O] C, ∃ ψ : A →ₐ[O] O, ∀ a, algebraMap O C (ψ a) = x a` using `fun x => by`. Establish `h : ∀ a, ∃ y, algebraMap O C y = x a` using `fun a => IsIntegrallyClosed.isIntegral_iff.1 ((Algebra.IsIntegral.isIntegral (R := O) a).map x)`. Use `choose g hg using h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 
-Conclude with `⟨{ toFun := g map_one' := hinj (by simp [hg]) map_mul' := fun a b => hinj (by simp [hg]) map_zero' := hinj (by simp [hg]) map_add' := fun a b => hinj (by simp [hg]) commutes' := fun r => hinj (by simp [hg]) }, hg⟩`. Use `choose σ hσ using hint`. Establish `hσu : ∀ (x : A →ₐ[O] C) (ψ : A →ₐ[O] O), (∀ a, algebraMap O C (ψ a) = x a) → σ x = ψ` using `fun x ψ h => AlgHom.ext fun a => hinj ((hσ x a).trans (h a).symm)`. Establish `hsep : ∀ a b : A, (∀ x : A →ₐ[O] C, x a = x b) → a = b` using `fun a b h => sub_eq_zero.1 (FlatPoints.eq_zero_of_forall_point O C hinj A _ fun x => by`. Rewrite using `[map_sub, h, sub_self])`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun f f' h => ?_, fun κ hκ => ?_⟩` and prove the remaining obligations. Rewrite using `[← cancel_epi e.hom]`. Use `unitOf_bijective.1 (Units.ext (hsep _ _ fun x => ?_))` and prove the remaining obligations. Rewrite using `[← hσ, ← hσ, ← unitOf_ptMap, ← unitOf_ptMap, ← Category.assoc, h, Category.assoc]`. Set `j : specO O A ⟶ G` to `e.hom ≫ torsion.ι G N`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hj : j ^ N = 1` using `by rw [← MonObj.comp_pow, torsionι_pow, comp_one]`. Establish `hp : ∀ {T} (t : T ⟶ specO O A), (t ≫ j) ^ N = 1` using `fun t => by`. Rewrite using `[← MonObj.comp_pow, hj, comp_one]`. Establish `hjm : ∀ {T} (s t : T ⟶ specO O A), s ≫ j = t ≫ j → s = t` using `fun s t h => (cancel_mono e.hom).1 (torsion_hom_ext (by simpa [j] using h))`. Establish `hl : ∀ {T} (s : T ⟶ G), s ^ N = 1 → ∃ t : T ⟶ specO O A, t ≫ j = s` using `fun s hs => ⟨torsionLift s hs ≫ e.inv, by simp [j, torsionLift_ι]⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `i₁ : A →ₐ[O] A ⊗[O] A` to `Algebra.TensorProduct.includeLeft`. Set `i₂ : A →ₐ[O] A ⊗[O] A` to `Algebra.TensorProduct.includeRight`. Take `⟨d, hd⟩` from `hl ((ptMap i₁ ≫ j) * (ptMap i₂ ≫ j)) (by rw [mul_pow, hp, hp, _root_.mul_one])`. Take `⟨Δ, rfl⟩` from `exists_ptMap d`. Take `⟨d, hε⟩` from `hl (1 : specO O O ⟶ G) (one_pow N)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `⟨ε, rfl⟩` from `exists_ptMap d`. Set `k : (A →ₐ[O] C) → Cˣ` to `fun x => κ (ptMap (σ x) ≫ j)`. Establish `hk : ∀ x y : A →ₐ[O] C, k ((Algebra.TensorProduct.lift x y (fun _ _ => Commute.all _ _)).comp Δ) = k x * k y` using `fun x y => by`. Establish `h1 : σ ((Algebra.TensorProduct.lift x y (fun _ _ => Commute.all _ _)).comp Δ) = (Algebra.TensorProduct.lift (σ x) (σ y) (fun _ _ => Commute.all _ _)).comp Δ`. Use `hσu _ _ fun a => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable.
 
-Rewrite using `[AlgHom.comp_apply, AlgHom.comp_apply]`. Generalize the expression as in `Δ a = t`. Proceed by induction on `t with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Consider the case `tmul a b => simp only [Algebra.TensorProduct.lift_tmul, map_mul, hσ]`. Simplify using `only [k]`. Rewrite using `[h1, ← ptMap_comp_ptMap, Category.assoc, hd, comp_mul, ← Category.assoc _ _ j, ← Category.assoc _ _ j, ptMap_comp_ptMap, ptMap_comp_ptMap, Algebra.TensorProduct.lift_comp_includeLeft, Algebra.TensorProduct.lift_comp_includeRight']`. Conclude with `hκ _ _ (hp _) (hp _)`. Establish `hk1 : k ((Algebra.ofId O C).comp ε) = 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1 : σ ((Algebra.ofId O C).comp ε) = ε` using `hσu _ _ fun a => rfl`. Establish `h2` using `hκ 1 1 (one_pow N) (one_pow N)`. Rewrite `h2` using `[_root_.mul_one]`. Simplify using `only [k]`. Rewrite using `[h1, hε]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `left_eq_mul.1 h2`. Take `⟨b, hb⟩` from `GlobalTheory.exists_eval_eq_of_multiplicative_on_points O C A hA Δ ε (fun x => k x) (fun x y => by rw [hk, Units.val_mul]) (by rw [hk1, Units.val_one])`. Take `⟨b', hb'⟩` from `GlobalTheory.exists_eval_eq_of_multiplicative_on_points O C A hA Δ ε (fun x => ((k x)⁻¹ : Cˣ)) (fun x y => by rw [hk, mul_inv, Units.val_mul]) (by rw [hk1, inv_one, Units.val_one])`. Establish `hbb : b * b' = 1` using `hsep _ _ fun x => by`. Rewrite using `[map_mul, hb, hb', map_one, Units.mul_inv]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨f₀, hf₀⟩` from `(unitOf_bijective (O := O) (R := A)).2 (Units.mkOfMulEqOne b b' hbb)`. Establish `hf : (unitOf f₀ : A) = b` using `by rw [hf₀]; rfl`. Establish `hΔ : Δ b = i₁ b * i₂ b`. Establish `: Module.Flat O C` using `IsLocalization.flat C (nonZeroDivisors O)`. Use `sub_eq_zero.1 (TorsionCharacterExt.tensor_eq_zero_of_forall_pair O C hinj A _ (fun x y => ?_) ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h` using `hb ((Algebra.TensorProduct.lift x y (fun _ _ => Commute.all _ _)).comp Δ)`. Rewrite `h` using `[hk, AlgHom.comp_apply, Units.val_mul, ← hb, ← hb]`. Rewrite using `[map_sub, h]`. Simplify using `[i₁, i₂]`. Conclude with `(IsLocalization.bijective_linearMap_mul' (nonZeroDivisors O) C).1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hmul : ptMap Δ ≫ f₀ = (ptMap i₁ ≫ f₀) * (ptMap i₂ ≫ f₀)`. Use `unitOf_bijective.1 (Units.ext ?_)` and prove the remaining obligations. Rewrite using `[unitOf_mul, Units.val_mul, unitOf_ptMap, unitOf_ptMap, unitOf_ptMap, hf, hΔ]`. Use `⟨e.inv ≫ f₀, fun T x y z h => ?_, fun w => ?_⟩` and prove the remaining obligations. Take `⟨t, ht₁, ht₂⟩` from `TorsionCharacterExt.exists_pair (x ≫ e.inv) (y ≫ e.inv)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hz : z ≫ e.inv = t ≫ ptMap Δ` using `hjm _ _ (by`. Rewrite using `[Category.assoc t, hd, comp_mul, ← Category.assoc t, ← Category.assoc t, ht₁, ht₂]`. Simplify `h)` using `[j]`. Rewrite using `[← Category.assoc, hz, Category.assoc, hmul, comp_mul, ← Category.assoc t, ← Category.assoc t, ht₁, ht₂, Category.assoc, Category.assoc]`. Take `⟨ψ, hψ⟩` from `exists_ptMap (w ≫ e.inv)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : σ ((Algebra.ofId O C).comp ψ) = ψ` using `hσu _ _ fun a => rfl`. Establish `h2` using `hb ((Algebra.ofId O C).comp ψ)`. Simplify using `only [k] at h2`. Rewrite `h2` using `[h1, ← hψ]`. Rewrite using `[← Category.assoc, hψ, unitOf_ptMap, hf]`.
-
-Simplify `h2` using `[j]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem torsionCharacter_ext_and_exists_of_integral_points :
     ∀ (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C], v.Integers O → ∀ (G : Over (Spec (CommRingCat.of O))) [GrpObj G] [IsCommMonObj G], ∀ N : ℕ, 1 ≤ N → IsFinite (torsion G N).hom → Flat (torsion G N).hom → (∀ f f' : torsion G N ⟶ Gm (Spec (CommRingCat.of O)), (∀ w : specO O O ⟶ torsion G N, w ≫ f = w ≫ f') → f = f') ∧ ∀ κ : (specO O O ⟶ G) → Cˣ, (∀ x y : specO O O ⟶ G, x ^ N = 1 → y ^ N = 1 → κ (x * y) = κ x * κ y) → ∃ f : torsion G N ⟶ Gm (Spec (CommRingCat.of O)), IsCharTors G N f ∧ ∀ w : specO O O ⟶ torsion G N, algebraMap O C (unitOf (w ≫ f) : O) = (κ (w ≫ torsion.ι G N) : C) := by

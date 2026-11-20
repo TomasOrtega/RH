@@ -7,17 +7,15 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.IndefiniteRowSideFullH
 namespace GlobalTheory.QhtUnip
 
 /- English proof (translation)
-Introduce `hdet`. Use `set P := incM F (basQ H) with hP`. Establish `hPu : IsUnit P.det`. Establish `: P.det = inclR (F` using `F) (E := E) (AF F) (basQ H).det := by`. Rewrite using `[hP, incM, RingHom.map_det]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `hdet.map _`. Establish `h1 : P * P⁻¹ = 1` using `Matrix.mul_nonsing_inv P hPu`. Establish `h2 : P⁻¹ * P = 1` using `Matrix.nonsing_inv_mul P hPu`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmul : ∀ g h : UA σ J, mat (g * h) = mat g * mat h` using `fun g h => rfl`. Establish `hone : mat (1 : UA σ J) = 1` using `rfl`. Use `⟨fun g h => ?_, ?_, fun g => ?_⟩` and prove the remaining obligations. Simplify using `only [crd]`. Rewrite using `[Matrix.submatrix_mul_equiv, hmul]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Rewrite using `[← hP]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h1]`. Simplify using `[Matrix.mul_assoc]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `_ = P⁻¹ * mat g * P * (P⁻¹ * mat h * P) := by simp only [Matrix.mul_assoc]`. Simplify using `only [crd]`. Rewrite using `[← hP, hone, Matrix.mul_one, h2, Matrix.submatrix_one_equiv]`. Simplify using `only [crd, Matrix.submatrix_submatrix, Equiv.symm_comp_self, Matrix.submatrix_id_id]`. Rewrite using `[← hP]`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem crd_mul_one_mat (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) {m : ℕ} (J : Matrix (Fin (m + 2)) (Fin (m + 2)) E) (H : Plane E (m + 2) m) :
     IsUnit (basQ H).det → (∀ g h : UA σ J, crd H (g * h) = crd H g * crd H h) ∧ crd H (1 : UA σ J) = 1 ∧

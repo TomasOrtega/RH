@@ -20,13 +20,13 @@ def cmat (m : X → σ →₀ ℕ) (F : X → MvPolynomial σ ℤ) : Matrix X X 
   Matrix.of fun x y => coeff (m y) (F x)
 
 /- English proof (translation)
-Use extensionality with `d`. Rewrite using `[coeff_map, MvPolynomial.coeff_sum]`. Simplify using `only [coeff_smul, coeff_monomial, Matrix.map_apply, cmat, Matrix.of_apply, smul_eq_mul, mul_ite, mul_one, mul_zero]`. Distinguish the cases in `hd : d ∈ Set.range m`. Take `⟨y₀, rfl⟩` from `hd`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Finset.sum_eq_single y₀]`. Simplify using the standard rewrite rules. Introduce `y _ hy`. Rewrite using `[if_neg (hm.ne hy)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h0 : coeff d (F x) = 0`. Assume the negation of the conclusion as `h`. Conclude with `hd (hF x d (mem_support_iff.mpr h))`. Rewrite using `[h0, map_zero, Finset.sum_eq_zero]`. Introduce `y _`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg]`. Introduce and unpack `rfl`. Conclude with `hd ⟨y, rfl⟩`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem expand (m : X → σ →₀ ℕ) (hm : Function.Injective m) (F : X → MvPolynomial σ ℤ)
     (hF : ∀ x, ∀ d ∈ (F x).support, d ∈ Set.range m) (S : Type) [CommRing S] (x : X) :
@@ -54,7 +54,7 @@ theorem expand (m : X → σ →₀ ℕ) (hm : Function.Injective m) (F : X → 
     exact hd ⟨y, rfl⟩
 
 /- English proof (translation)
-Simplify using `only [Finset.smul_sum, smul_smul, Finset.sum_smul]`. Conclude with `Finset.sum_comm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem sum_smul_sum_smul_eq_sum_mul_smul {S : Type} [CommRing S] (M : Matrix X X S) (e : X → MvPolynomial σ S)
     (g : X → S) : ∑ x, g x • ∑ y, M x y • e y = ∑ y, (∑ x, g x * M x y) • e y := by
@@ -62,9 +62,9 @@ private theorem sum_smul_sum_smul_eq_sum_mul_smul {S : Type} [CommRing S] (M : M
   exact Finset.sum_comm
 
 /- English proof (translation)
-Rewrite `h`, the goal using `[Fintype.linearIndependent_iff]`. Introduce `g hg`. Apply `h g` to reduce the goal to its premises. Simplify using `only [expand m hm F hF S, sum_smul_sum_smul_eq_sum_mul_smul]`. Establish `hy : ∀ y, ∑ x, g x * ((cmat m F).map (Int.castRingHom S)) x y = 0`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `y`. Use `congrFun hg y` as an intermediate fact. Simplify `this` using `[Finset.sum_apply, Matrix.row]`. Use `Finset.sum_eq_zero fun y _ => ?_` and prove the remaining obligations. Rewrite using `[hy y, zero_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem rows_indep (m : X → σ →₀ ℕ) (hm : Function.Injective m) (F : X → MvPolynomial σ ℤ)
     (hF : ∀ x, ∀ d ∈ (F x).support, d ∈ Set.range m) (S : Type) [CommRing S]
@@ -82,11 +82,9 @@ theorem rows_indep (m : X → σ →₀ ℕ) (hm : Function.Injective m) (F : X 
   rw [hy y, zero_smul]
 
 /- English proof (translation)
-Rewrite using `[Int.isUnit_iff_natAbs_eq]`. Assume the negation of the conclusion as `hne`. Take `⟨p, hpp, hpd⟩` from `Nat.exists_prime_and_dvd hne`. Use `haveI : Fact p.Prime := ⟨hpp⟩`. Establish `hrows` using `rows_indep m hm F hF (ZMod p) (hp p ⟨hpp⟩)`.
+Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu : IsUnit ((cmat m F).map (Int.castRingHom (ZMod p)))` using `Matrix.linearIndependent_rows_iff_isUnit.mp (by simpa [Matrix.row] using hrows)`. Rewrite `hu` using `[Matrix.isUnit_iff_isUnit_det, isUnit_iff_ne_zero]`. Apply `hu` to reduce the goal to its premises. Establish `hdet : ((cmat m F).map (Int.castRingHom (ZMod p))).det = Int.castRingHom (ZMod p) (cmat m F).det` using `(RingHom.map_det _ _).symm`. Rewrite using `[hdet, eq_intCast]`.
-
-Conclude with `(ZMod.intCast_zmod_eq_zero_iff_dvd _ p).mpr (Int.ofNat_dvd_left.mpr hpd)`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_unit (m : X → σ →₀ ℕ) (hm : Function.Injective m) (F : X → MvPolynomial σ ℤ)
     (hF : ∀ x, ∀ d ∈ (F x).support, d ∈ Set.range m)
@@ -108,21 +106,19 @@ theorem det_unit (m : X → σ →₀ ℕ) (hm : Function.Injective m) (F : X �
   exact (ZMod.intCast_zmod_eq_zero_iff_dvd _ p).mpr (Int.ofNat_dvd_left.mpr hpd)
 
 /- English proof (translation)
-Use `set M := (cmat m F).map (Int.castRingHom R) with hM`. Establish `hdet : IsUnit M.det`. Establish `h1` using `(det_unit m hm F hF hp).map (Int.castRingHom R)`. Rewrite `h1` using `[RingHom.map_det]`. Conclude with `h1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hNM : M⁻¹ * M = 1` using `Matrix.nonsing_inv_mul M hdet`. Establish `hMN : M * M⁻¹ = 1` using `Matrix.mul_nonsing_inv M hdet`. Establish `he : LinearIndependent R fun y => (monomial (m y) (1 : R) : MvPolynomial σ R)`. Establish `h1` using `(MvPolynomial.basisMonomials σ R).linearIndependent.comp m hm`. Simplify `h1` using `[Function.comp_def, MvPolynomial.coe_basisMonomials]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Establish `hexp : ∀ x, MvPolynomial.map (Int.castRingHom R) (F x) = ∑ y, M x y • (monomial (m y) (1 : R) : MvPolynomial σ R)` using `expand m hm F hF R`. Prove the components needed by the constructor for the conclusion. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg`. Simplify using `only [hexp, sum_smul_sum_smul_eq_sum_mul_smul] at hg`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0` using `Fintype.linearIndependent_iff.mp he _ hg`. Establish `hv : Matrix.vecMul g M = 0` using `funext fun y => by`. Simplify `h0 y` using `[Matrix.vecMul, dotProduct]`. Establish `h2` using `congrArg (fun v => Matrix.vecMul v M⁻¹) hv`. Simplify using `only [Matrix.vecMul_vecMul, hMN, Matrix.vecMul_one, Matrix.zero_vecMul] at h2`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrFun h2`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨x, rfl⟩`. Simplify using `only`.
+Assume the hypotheses and unpack their components. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[hexp]`. Conclude with `Submodule.sum_mem _ fun y _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨y, rfl⟩)`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨y, rfl⟩`. Establish `key : ∑ x, M⁻¹ y x • MvPolynomial.map (Int.castRingHom R) (F x) = (monomial (m y) (1 : R) : MvPolynomial σ R)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [hexp, sum_smul_sum_smul_eq_sum_mul_smul]`. Establish `h1 : ∀ z, ∑ x, M⁻¹ y x * M x z = (1 : Matrix X X R) y z` using `fun z => by`. Rewrite using `[← hNM, Matrix.mul_apply]`. Simplify using `only [h1, Matrix.one_apply, ite_smul, one_smul, zero_smul, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Simplify using `only`.
-
-Rewrite using `[← key]`. Conclude with `Submodule.sum_mem _ fun x _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨x, rfl⟩)`.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem basis_of (m : X → σ →₀ ℕ) (hm : Function.Injective m) (F : X → MvPolynomial σ ℤ)
     (hF : ∀ x, ∀ d ∈ (F x).support, d ∈ Set.range m)
@@ -180,9 +176,9 @@ def expSet (n N : ℕ) (B : ℕ → ℕ) : Set (ℕ × Fin n →₀ ℕ) :=
   {e : ℕ × Fin n →₀ ℕ | ∀ i, ∑ a, e (i, a) = if i < N then B i else 0}
 
 /- English proof (translation)
-Establish `hfin` using `(pathProductDegrees ℤ n N isVec B μ I hμ hI).1`. Establish `h` using `(MvPolynomial.map (Int.castRingHom R) : MvPolynomial (ℕ × Fin n) ℤ →+* MvPolynomial (ℕ × Fin n) R).toMonoidHom.map_finprod hfin`. Simplify using `only [RingHom.toMonoidHom_eq_coe, MonoidHom.coe_coe] at h`. Unfold `psiPath`. Rewrite using `[h]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `c`. Rewrite using `[A1hw.map_pathWord]`. Simplify using `[map_X]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem psi_map (R : Type) [CommRing R] {n N : ℕ} {isVec : ℕ → Bool} {B : ℕ → ℕ} {μ : ℕ → Fin n → ℤ}
     {I : ℤ → Finset (Fin n)} (hμ : IsPath n isVec B μ N) (hI : IsIndex (μ N) I) :
@@ -199,11 +195,11 @@ theorem psi_map (R : Type) [CommRing R] {n N : ℕ} {isVec : ℕ → Bool} {B : 
   simp [map_X]
 
 /- English proof (translation)
-Proceed by induction on `d using Finsupp.induction_linear with`. Consider the case `zero => simp`. Consider the case `add d₁ d₂ h₁ h₂`. Rewrite using `[map_add, h₁, h₂]`. Simplify using `[Finset.sum_add_distrib]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Consider the case `single x k`. Take `⟨j, b⟩` from `x`. Rewrite using `[Finsupp.weight_single]`. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality.
+Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `[Finsupp.single_apply, Prod.ext_iff]`. Simplify using `[Finsupp.single_apply, Prod.ext_iff, hj]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private theorem weight_indicator_fst_eq_sum {n : ℕ} (i : ℕ) (d : ℕ × Fin n →₀ ℕ) :
     Finsupp.weight (fun x : ℕ × Fin n => if x.1 = i then 1 else 0) d = ∑ a, d (i, a) := by
@@ -221,7 +217,7 @@ private theorem weight_indicator_fst_eq_sum {n : ℕ} (i : ℕ) (d : ℕ × Fin 
     · simp [Finsupp.single_apply, Prod.ext_iff, hj]
 
 /- English proof (translation)
-Introduce `d hd i`. Rewrite using `[← weight_indicator_fst_eq_sum]`. Conclude with `(pathProductDegrees ℤ n N isVec B μ I hμ hI).2 i (mem_support_iff.mp hd)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psi_support (hr : PolBRank) {n N : ℕ} {isVec : ℕ → Bool} {B : ℕ → ℕ} {μ : ℕ → Fin n → ℤ}
     {I : ℤ → Finset (Fin n)} (hμ : IsPath n isVec B μ N) (hI : IsIndex (μ N) I) :
@@ -235,19 +231,17 @@ end MinorDeterminantBasis
 open MinorDeterminantBasis
 
 /- English proof (translation)
-Introduce `hA hF hR n N isVec B hC R _`. Use `haveI := hF n N isVec B`. Use `letI := Fintype.ofFinite (PathIdx n N isVec B)`. Take `⟨hcard, hfin, hspan⟩` from `hR n N B`. Use `haveI : Finite (expSet n N B) := hfin.to_subtype`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hce : Nat.card (PathIdx n N isVec B) = Nat.card (expSet n N B)`. Rewrite using `[hC, Nat.card_coe_set_eq, ← hcard]`. Both sides reduce to the same expression. Take `⟨e⟩` from `Finite.card_eq.mp hce`. Set `m : PathIdx n N isVec B → ℕ × Fin n →₀ ℕ` to `fun x => (e x : ℕ × Fin n →₀ ℕ)`.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm : Function.Injective m` using `Subtype.val_injective.comp e.injective`. Establish `hFs : ∀ x : PathIdx n N isVec B, ∀ d ∈ (psiPath ℤ isVec x.1.1 N x.1.2).support, d ∈ Set.range m`. Introduce `x d hd`. Establish `h1` using `psi_support hR x.2.1 x.2.2.2.1 d hd`. Conclude with `⟨e.symm ⟨d, h1⟩, by simp [m]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hfun : ∀ (S : Type) [CommRing S], (fun x : PathIdx n N isVec B => MvPolynomial.map (Int.castRingHom S) (psiPath ℤ isVec x.1.1 N x.1.2)) = fun x => psiPath S isVec x.1.1 N x.1.2` using `fun S _ =>`. Use function extensionality and compare the values at `fun x => (psi_map S x.2.1 x.2.2.2.1).symm`. Establish `hp : ∀ p : ℕ, ∀ _ : Fact p.Prime, LinearIndependent (ZMod p) fun x : PathIdx n N isVec B => MvPolynomial.map (Int.castRingHom (ZMod p)) (psiPath ℤ isVec x.1.1 N x.1.2)`. Introduce `p hpp`. Rewrite using `[hfun]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hA (ZMod p) n N isVec B`. Take `⟨h1, h2⟩` from `basis_of m hm (fun x => psiPath ℤ isVec x.1.1 N x.1.2) hFs hp R`. Rewrite `h1`, `h2` using `[hfun]`. Use `⟨h1, h2.trans ?_⟩` and prove the remaining obligations. Rewrite using `[hspan R]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Use `congr 1`. Use extensionality with `f`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩`. Conclude with `⟨m y, (e y).2, rfl⟩`.
-
-Introduce and unpack `⟨d, hd, rfl⟩`. Conclude with `⟨e.symm ⟨d, hd⟩, by simp [m]⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem path_basis_of_count : LemmaA2indep → PathIdxFinite → PolBRank → PathBasisOfCount := by
   classical

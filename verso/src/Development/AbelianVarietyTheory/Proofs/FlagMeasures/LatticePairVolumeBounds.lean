@@ -30,7 +30,7 @@ theorem toMat_entries {R : Type} {a b : ℕ} (φ : Matrix (Fin b) (Fin a) R) :
     toMat (fun p : Fin b × Fin a => φ p.1 p.2) = φ := rfl
 
 /- English proof (translation)
-Simplify using `[dotProduct, Matrix.trace, Matrix.mul_apply, toMat, Fintype.sum_prod_type, mul_comm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dot_eq_trace {R : Type} [CommRing R] {a b : ℕ} (f y : Fin b × Fin a → R) :
     f ⬝ᵥ y = Matrix.trace (toMat y * (toMat f)ᵀ) := by
@@ -48,13 +48,11 @@ def homLat {K : Type} [Field K] [NumberField K] {a b : ℕ} (A : Submodule (𝓞
     rw [toMat_smul, Matrix.smul_mulVec]; exact B.smul_mem s (hy x hx)
 
 /- English proof (translation)
-Take `⟨s, rfl⟩` from `hA`. Set `F : (Fin b × Fin a → K) →ₗ[𝓞 K] (s → Fin b → K)` to `{ toFun := fun y x => toMat y *ᵥ x map_add' := fun y z => by ext1 x; simp [toMat_add, Matrix.add_mulVec] map_smul' := fun c y => by ext1 x; simp [toMat_smul, Matrix.smul_mulVec] }`. Establish `hF : Function.Injective F`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `y hy`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hAs` using `[Submodule.span_span_of_tower]`. Establish `: Matrix.toLin' (toMat y) = 0`. Use `LinearMap.ext_on hAs fun x hx => ?_` and prove the remaining obligations. Conclude with `congrFun hy ⟨x, hx⟩`. Establish `h0 : toMat y = 0` using `by simpa using this`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `p`. Conclude with `congrFun (congrFun h0 p.1) p.2`. Use `Submodule.fg_of_fg_map_injective F hF ?_` and prove the remaining obligations. Establish `hP : (Submodule.pi Set.univ (fun _ : s => B)).FG` using `Submodule.fg_pi fun _ => hB`. Use `hP.of_le ?_` and prove the remaining obligations.
-
-Introduce and unpack `_ ⟨y, hy, rfl⟩ x _`. Conclude with `hy x (Submodule.subset_span x.2)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem homLat_fg {K : Type} [Field K] [NumberField K] {a b : ℕ}
     (A : Submodule (𝓞 K) (Fin a → K)) (B : Submodule (𝓞 K) (Fin b → K)) (hA : A.FG) (hB : B.FG)
@@ -81,9 +79,9 @@ theorem homLat_fg {K : Type} [Field K] [NumberField K] {a b : ℕ}
   exact hy x (Submodule.subset_span x.2)
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.FiniteSumFlagMeasures.main`. Consider the case `exact _root_.GlobalTheory.FiniteSumFlagMeasures.main`. Consider the case `(apply _root_.GlobalTheory.FiniteSumFlagMeasures.main <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.FiniteSumFlagMeasures.main <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.FiniteSumFlagMeasures.main <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.FiniteSumFlagMeasures.main ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_smul_mem {K : Type} [Field K] [NumberField K] {b : ℕ}
     (B : Submodule (𝓞 K) (Fin b → K)) (hBs : Submodule.span K (B : Set (Fin b → K)) = ⊤)
@@ -97,15 +95,13 @@ theorem exists_smul_mem {K : Type} [Field K] [NumberField K] {b : ℕ}
   | (intros; exact _root_.GlobalTheory.FiniteSumFlagMeasures.main ..)
 
 /- English proof (translation)
-Take `⟨s, rfl⟩` from `hA`. Rewrite using `[eq_top_iff]`. Introduce `y _`. Use `choose d hd0 hd using fun x : Fin a → K => exists_smul_mem B hBs (toMat y *ᵥ x)`. Establish `hD : ∏ x ∈ s, d x ≠ 0` using `Finset.prod_ne_zero_iff.2 fun x _ => hd0 x`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmem : (∏ x ∈ s, d x) • y ∈ homLat (Submodule.span (𝓞 K) (s : Set (Fin a → K))) B`. Introduce `x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Rewrite using `[toMat_smul, Matrix.smul_mulVec, ← Finset.prod_erase_mul s d hx, mul_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `B.smul_mem _ (hd x)`. Consider the case `zero => simp`. Consider the case `add x z _ _ hx hz => rw [Matrix.mulVec_add]`. Conclude with `B.add_mem hx hz`. Consider the case `smul c x _ hx => rw [Matrix.mulVec_smul]`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Conclude with `B.smul_mem _ hx`. Establish `h1 : algebraMap (𝓞 K) K (∏ x ∈ s, d x) ≠ 0`. Rewrite using `[Ne, FaithfulSMul.algebraMap_eq_zero_iff]` and apply the resulting hypothesis. Establish `: y = (algebraMap (𝓞 K) K (∏ x ∈ s, d x))⁻¹ • ((∏ x ∈ s, d x) • y)`. Rewrite using `[← algebraMap_smul K (∏ x ∈ s, d x) y, smul_smul, inv_mul_cancel₀ h1, one_smul]`.
-
-Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span hmem)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem homLat_span {K : Type} [Field K] [NumberField K] {a b : ℕ}
     (A : Submodule (𝓞 K) (Fin a → K)) (B : Submodule (𝓞 K) (Fin b → K)) (hA : A.FG)
@@ -163,9 +159,9 @@ theorem toMat_frameEquiv {a b : ℕ} (P : Matrix (Fin b) (Fin b) ℂ) (Q : Matri
     toMat (frameEquiv P Q hP hQ y) = P⁻¹ * toMat y * Q := rfl
 
 /- English proof (translation)
-Use `dotProduct_eq _ _ fun z => ?_` and prove the remaining obligations. Take `⟨y, rfl⟩` from `(frameEquiv P Q hP hQ).surjective z`. Rewrite using `[← h, dot_eq_trace, dot_eq_trace, toMat_frameEquiv]`. Establish `: (toMat fun p : Fin b × Fin a => (Q⁻¹ * (toMat f)ᵀ * P) p.2 p.1)ᵀ = Q⁻¹ * (toMat f)ᵀ * P` using `rfl`. Rewrite using `[this, ← Matrix.mul_assoc, Matrix.trace_mul_comm _ P]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[Matrix.mul_nonsing_inv_cancel_left _ _ hQ, Matrix.mul_nonsing_inv_cancel_left _ _ hP]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem dual_coord {a b : ℕ} (P : Matrix (Fin b) (Fin b) ℂ) (Q : Matrix (Fin a) (Fin a) ℂ)
     (hP : IsUnit P.det) (hQ : IsUnit Q.det) (f c : Fin b × Fin a → ℂ)
@@ -181,25 +177,23 @@ theorem dual_coord {a b : ℕ} (P : Matrix (Fin b) (Fin b) ℂ) (Q : Matrix (Fin
   rw [Matrix.mul_nonsing_inv_cancel_left _ _ hQ, Matrix.mul_nonsing_inv_cancel_left _ _ hP]
 
 /- English proof (translation)
-Introduce `K _ _ _ _ a b X X' A B lo hi hX hX' hA hB hAs hBs hlo hhi hlow hup T`. Use `set rd : ℝ := |(discr K : ℝ)| ^ ((1 : ℝ) / (2 * (nPl K : ℝ))) with hrd`. Establish `hrd0 : 0 < rd` using `Real.rpow_pos_of_pos (abs_pos.2 (by exact_mod_cast discr_ne_zero K)) _`. Establish `hn : (Fintype.card (InfinitePlace K) : ℝ) = (nPl K : ℝ)` using `rfl`. Establish `hn0 : (0 : ℝ) < nPl K`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hn]`. Conclude with `Fintype.card_pos` after adjusting the coercions. Establish `hs0 : 0 < Real.sqrt (nPl K)` using `Real.sqrt_pos.2 hn0`. Establish `hss : Real.sqrt (nPl K) ^ 2 = nPl K` using `Real.sq_sqrt hn0.le`. Take `⟨y, hy, hle⟩` from `GlobalTheory.T.lattice_covering_of_trace_dual_lower_bound K (Fin b × Fin a) (Fin b × Fin a) (homLat A B) (fun w => frameEquiv (X' w) (X w) (hX' w) (hX w)) (Real.sqrt (nPl K) * (lo / (rd * hi))) (homLat_fg A B hA hB hAs) (homLat_span A B hA hBs) (by positivity) (fun f c hf hint hc …`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc' : ∀ w, c w = fun p => ((X w)⁻¹ * ((toMat f)ᵀ).map w.embedding * X' w) p.2 p.1` using `fun w => by`. Establish `h` using `dual_coord (X' w) (X w) (hX' w) (hX w) (fun i => w.embedding (f i)) (c w) (hc w)`. Establish `e : (toMat fun i => w.embedding (f i))ᵀ = ((toMat f)ᵀ).map w.embedding`. Use extensionality with `i j`. Both sides reduce to the same expression.
+Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h` using `[e]`. Conclude with `h`. Establish `h1 : ∃ y ∈ B, (toMat f)ᵀ *ᵥ y ≠ 0`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `: Matrix.toLin' (toMat f)ᵀ = 0` using `LinearMap.ext_on hBs fun x hx => hcon x hx`. Establish `h0 : (toMat f)ᵀ = 0` using `by simpa using this`. Apply `hf` to reduce the goal to its premises. Use function extensionality and compare the values at `p`. Conclude with `congrFun (congrFun h0 p.2) p.1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h2` using `GlobalTheory.TraceDualHom.different_smul_mem_of_trace_integral K a b A B hA hB hAs hBs (Matrix.toLin' (toMat f)ᵀ) (fun S hS => by`. Take `⟨φ, rfl⟩` from `Matrix.toLin'.surjective S`. Take `⟨m, hm⟩` from `hint (fun p => φ p.1 p.2) hS`. Use `⟨m, ?_⟩` and prove the remaining obligations. Rewrite using `[← hm, ← Matrix.toLin'_mul, Matrix.trace_toLin'_eq, dot_eq_trace, toMat_entries])`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h3` using `GlobalTheory.T.hilbertSchmidt_lower_bound_inverseDifferent K a b X X' A B lo hi hX hX' hA hB hlo hlow hup (toMat f)ᵀ h1 h2`. Rewrite using `[mul_pow, hss]`. Use `h3.trans (le_of_eq ?_)` and prove the remaining obligations. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[hc' w, Fintype.sum_prod_type, Finset.sum_comm])`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use the proof step `(fun w p => T w p.1 p.2)`. Use `⟨toMat y, hy, ?_⟩` and prove the remaining obligations. Establish `e1 : ∑ w, ∑ i, ∑ j, ‖(T w - (X' w)⁻¹ * (toMat y).map w.embedding * X w) i j‖ ^ 2 = ∑ w, ∑ p : Fin b × Fin a, ‖T w p.1 p.2 - frameEquiv (X' w) (X w) (hX' w) (hX w) (fun j => w.embedding (y j)) p‖ ^ 2`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[Fintype.sum_prod_type]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[e1]`. Use `hle.trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[hn, Fintype.card_prod, Fintype.card_fin, Fintype.card_fin]`. Use `push_cast`.
-
-Use `set r := Real.sqrt (nPl K)`. Rewrite using `[← hss]`. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem exists_hom_near : ∀ (K : Type) [Field K] [NumberField K] [StarRing K] [IsTotallyComplex K] (a b : ℕ) (X : InfinitePlace K → Matrix (Fin a) (Fin a) ℂ) (X' : InfinitePlace K → Matrix (Fin b) (Fin b) ℂ) (A : Submodule (𝓞 K) (Fin a → K)) (B : Submodule (𝓞 K) (Fin b → K)) (lo hi : ℝ), (∀ w, IsUnit (X w).det) → (∀ w, IsUnit (X' w).det) → A.FG → B.FG → Submodule.span K (A : Set (Fin a → K)) = ⊤ → Submodule.span K (B : Set (Fin b → K)) = ⊤ → 0 < lo → 0 < hi → (∀ N, N ≤ A → N ≠ ⊥ → lo ≤ size (Pi.basisFun K (Fin a)) X N) → largestSize (Pi.basisFun K (Fin b)) X' B ≤ hi → ∀ T : InfinitePlace K → Matrix (Fin b) (Fin a) ℂ, ∃ φ : Matrix (Fin b) (Fin a) K, (∀ y ∈ A, φ *ᵥ y ∈ B) ∧ Real.sqrt (∑ w, ∑ i, ∑ j, ‖(T w - (X' w)⁻¹ * φ.map w.embedding * X w) i j‖ ^ 2) ≤ (a : ℝ) * b * Real.sqrt (nPl K) * |(discr K : ℝ)| ^ ((1 : ℝ) / (2 * (nPl K : ℝ))) * hi / (2 * lo) := by
   intro K _ _ _ _ a b X X' A B lo hi hX hX' hA hB hAs hBs hlo hhi hlow hup T

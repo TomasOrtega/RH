@@ -14,7 +14,7 @@ open GlobalTheory.PlaceInt
 namespace GlobalTheory.PlaceInt
 
 /- English proof (translation)
-Establish `h3 : g ∈ Ideal.span (Set.range (MvPowerSeries.X : σ → MvPowerSeries σ R))`. Rewrite using `[← germIdeal_eq_span]`. Conclude with `hg`. Establish `h4` using `Ideal.mem_map_of_mem ψ h3`. Rewrite `h4` using `[Ideal.map_span, ← Set.range_comp]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem map_mem_span_of_constantCoeff_eq_zero {σ R S : Type} [Finite σ] [CommRing R] [CommRing S]
     (ψ : MvPowerSeries σ R →+* S) (g : MvPowerSeries σ R) (hg : MvPowerSeries.constantCoeff g = 0) :
@@ -26,27 +26,27 @@ theorem map_mem_span_of_constantCoeff_eq_zero {σ R S : Type} [Finite σ] [CommR
   rwa [Ideal.map_span, ← Set.range_comp] at h4
 
 /- English proof (translation)
-Introduce `V _ _ _ _ _ d O _ _ B hB n p p' N hN hp`. Take `⟨M, hM⟩` from `hB N hN`. Establish `hpt0 : ∀ (b : Fin n) (i : Fin d), MvPowerSeries.constantCoeff (pt V (n` using `n) d b i) = 0 := by`. Introduce `b i`. Simplify using `[pt]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hpt : ∀ (b : Fin n) (i : Fin d), MvPowerSeries.constantCoeff (pt V (n` using `n) d b i) ∈ maximalIdeal V := by`. Introduce `b i`. Rewrite using `[hpt0]`. Conclude with `zero_mem _`. Take `⟨-, hmul, -, hsm, -, -, -⟩` from `GlobalTheory.T.formalModuleMatrixApplyPoints_action_laws V d O B n n p' p (fun j => pt V d j) (fun j => pt V d j) hpt hpt`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hy, -, -, -, -, -, -⟩` from `GlobalTheory.T.formalModuleMatrixApplyPoints_action_laws V d O B n n p p (fun j => pt V d j) (fun j => pt V d j) hpt hpt`. Use `set y : Fin n → Pt V n d := matV B p (fun j => pt V d j) with hydef`. Take `⟨-, -, -, -, hev, h0, -⟩` from `GlobalTheory.T.formalModuleMatrixApplyPoints_action_laws V d O B n n p' p y y hy hy`. Take `⟨⟨ψ, hψX, hψ⟩, -⟩` from `evC_spec V (Fin n × Fin d) (Fin n × Fin d) Unit (fun s => y s.1 s.2) (fun s => hy s.1 s.2)`. Establish `hA : ∀ (b : Fin n) (i : Fin d), compV (B.A.act (N : O)) (pt V (n` using `n) d b) i ∈ Ideal.span (Set.range fun s : Fin n × Fin d => y s.1 s.2) := by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `b i`. Establish `e1 : compV (B.A.act (N : O)) (pt V (n` using `n) d b) i = matV B p' y b i := by`. Rewrite using `[← hmul, hp, hsm]`. Rewrite using `[e1, ← hev, evV, hψ]`. Use `map_mem_span_of_constantCoeff_eq_zero ψ.toRingHom _ (h0 b i)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Simplify `this` using `[hψX]`. Use `Ideal.exists_pow_le_of_le_radical_of_fg ?_ (Submodule.fg_span (Set.finite_range _))` and prove the remaining obligations. Rewrite using `[Ideal.span_le]`. Introduce and unpack `_ ⟨⟨b, i⟩, rfl⟩`. Set `a : Fin 1 × Fin d → PS V n d` to `fun q => (![pt V (n := n) d b] : Fin 1 → Pt V n d) q.1 q.2`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `ha : ∀ q, a q = MvPowerSeries.X (b, q.2)`. Introduce and unpack `⟨q1, q2⟩`. Take `rfl : q1 = 0` from `Subsingleton.elim _ _`. Both sides reduce to the same expression. Establish `ha0 : ∀ q, MvPowerSeries.constantCoeff (a q) = 0`.
+Extract witnesses or component facts from the available result. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `q`. Rewrite using `[ha]`. Simplify using the standard rewrite rules. Take `⟨-, -, hs, -⟩` from `evC_spec V (Fin 1 × Fin d) (Fin n × Fin d) Unit a (fun q => by rw [ha0]; exact zero_mem _)`. Establish `hS : MvPowerSeries.HasSubst a` using `MvPowerSeries.hasSubst_of_constantCoeff_zero ha0`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hS' : MvPowerSeries.HasSubst (fun q => MvPowerSeries.map (residue V) (a q))` using `MvPowerSeries.hasSubst_of_constantCoeff_zero (fun q => by rw [ha]; simp)`. Set `θ : PS (ResidueField V) 1 d →ₐ[ResidueField V] PS (ResidueField V) n d` to `MvPowerSeries.substAlgHom hS'`. Establish `hθ : ∀ f : PS V 1 d, θ (MvPowerSeries.map (residue V) f) = MvPowerSeries.map (residue V) (evC a f)`. Introduce `f`. Rewrite using `[hs ha0, MvPowerSeries.map_subst hS]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [θ, MvPowerSeries.coe_substAlgHom]`. Establish `hX : θ (MvPowerSeries.X (0, i)) = MvPowerSeries.X (b, i)`. Simplify using `only [θ, MvPowerSeries.coe_substAlgHom]`. Rewrite using `[MvPowerSeries.subst_X hS', ha]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `Ideal.mem_map_of_mem θ (hM (Ideal.pow_mem_pow (Ideal.subset_span (Set.mem_range_self (0, i))) M))`. Rewrite `h1` using `[map_pow, hX]`. Use `⟨M, ?_⟩` and prove the remaining obligations. Use `SetLike.le_def.1 ?_ h1` and prove the remaining obligations. Rewrite using `[Ideal.map_span, Ideal.span_le]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨_, ⟨j, rfl⟩, rfl⟩`. Establish `h2` using `Ideal.mem_map_of_mem (MvPowerSeries.map (σ := Fin n × Fin d) (residue V)) (hA b j)`. Rewrite `h2` using `[Ideal.map_span, ← Set.range_comp]`. Rewrite using `[SetLike.mem_coe, hθ]`. Conclude with `h2`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_pow_span_X_le_span_matV : ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [IsAdicComplete (maximalIdeal V) V] [CharZero V] (d : ℕ) (O : Type) [CommRing O] [StarRing O] (B : FB V d O), FinHt B → ∀ (n : ℕ) (p p' : Matrix (Fin n) (Fin n) O) (N : ℕ), 1 ≤ N → p' * p = (N : O) • (1 : Matrix (Fin n) (Fin n) O) → ∃ M : ℕ, Ideal.span (Set.range (MvPowerSeries.X : Fin n × Fin d → PS (ResidueField V) n d)) ^ M ≤ Ideal.span (Set.range fun s : Fin n × Fin d => MvPowerSeries.map (residue V) (matV B p (fun j => pt V (n := n) d j) s.1 s.2)) := by
   intro V _ _ _ _ _ d O _ _ B hB n p p' N hN hp

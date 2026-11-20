@@ -14,16 +14,16 @@ variable {F : Type} [Field F] [NumberField F]
 noncomputable def adAt (v : Pl F) (a : Fv F v) : AF F := LinearMap.inr F (Ainf F) (Af F) (singleFin v a)
 
 /- English proof (translation)
-Use `show Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F v (sndA F (adAt v a)) = a`. Conclude with `evalV_singleFin_self v a`.
+A detailed English derivation is pending.
 -/
 theorem evFin_adAt_self (v : Pl F) (a : Fv F v) : evFin F v (adAt v a) = a := by
   show Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F v (sndA F (adAt v a)) = a
   exact evalV_singleFin_self v a
 
 /- English proof (translation)
-Establish `h2 : u.2 * singleFin v a = 0`. Apply `af_ext` to reduce the goal to its premises. Introduce `t`. Rewrite using `[map_mul, map_zero]`. Distinguish the cases in `h : t = v`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `h` using the available equality. Establish `: Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F t u.2 = 0` using `hu`. Rewrite using `[this, zero_mul]`. Rewrite using `[evalV_singleFin_ne h, mul_zero]`. Conclude with `Prod.ext (mul_zero _) h2`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_adAt_eq_zero (v : Pl F) (a : Fv F v) {u : AF F} (hu : evFin F v u = 0) : u * adAt v a = 0 := by
   have h2 : u.2 * singleFin v a = 0 := by
@@ -41,9 +41,9 @@ end GlobalTheory.FinComm.Surj
 
 open GlobalTheory.FinComm.Surj in
 /- English proof (translation)
-Use `⟨M.co.e.symm (fun i => adAt v (p.1 i), fun i => adAt v (p.2 i)), ?_, ?_⟩` and prove the remaining obligations. Introduce `u hu`. Rewrite using `[← map_smul]`. Use `M.co.e.symm.map_zero using 2` and compare the differences between its conclusion and the goal. Use extensionality with `i`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components.
 
-Conclude with `mul_adAt_eq_zero v _ hu`. Conclude with `mul_adAt_eq_zero v _ hu`. Rewrite using `[LinearEquiv.apply_symm_apply]`. Conclude with `Prod.ext (funext fun i => evFin_adAt_self v _) (funext fun i => evFin_adAt_self v _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.FinComm.exists_At_locPt_eq {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {σ : E →ₐ[F] E} {n d : ℕ}

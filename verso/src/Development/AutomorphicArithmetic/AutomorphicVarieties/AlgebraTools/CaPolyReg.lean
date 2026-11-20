@@ -5,13 +5,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.CaFla
 open IsLocalRing UpperTheory.V.AlgebraTools
 
 /- English proof (translation)
-Establish `hJn : RingHom.ker (Ideal.Quotient.mk J) ≤ n`. Rewrite using `[Ideal.mk_ker]` and apply the resulting hypothesis. Establish `hm : (n.map (Ideal.Quotient.mk J)).IsPrime` using `Ideal.map_isPrime_of_surjective Ideal.Quotient.mk_surjective hJn`. Establish `hle : J ≤ (J.map (algebraMap R A)).comap (algebraMap R A)` using `Ideal.le_comap_map`. Use `letI : Algebra (R ⧸ J) (A ⧸ J.map (algebraMap R A)) := (Ideal.quotientMap _ _ hle).toAlgebra`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure.
 
-Establish `hl` using `IsLocalization.of_surjective n.primeCompl A (S' := A ⧸ J.map (algebraMap R A)) (Ideal.Quotient.mk J) Ideal.Quotient.mk_surjective (Ideal.Quotient.mk _) Ideal.Quotient.mk_surjective rfl (by rw [Ideal.mk_ker, Ideal.mk_ker])`. Establish `e : n.primeCompl.map (Ideal.Quotient.mk J) = (n.map (Ideal.Quotient.mk J)).primeCompl`. Establish `hc : (n.map (Ideal.Quotient.mk J)).comap (Ideal.Quotient.mk J) = n`. Rewrite using `[Ideal.comap_map_of_surjective' _ Ideal.Quotient.mk_surjective, sup_eq_left.2 hJn]`. Use extensionality with `y`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Take `⟨x, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x', hx', e⟩ hx`. Conclude with `hx' (hc.le (show Ideal.Quotient.mk J x' ∈ _ from e ▸ hx))`. Conclude with `fun hx => ⟨x, fun h => hx (Ideal.mem_map_of_mem _ h), rfl⟩`.
+Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hl` using `[e]`. Use `IsRegularRing.isRegularLocalRing_localization (n.map (Ideal.Quotient.mk J))` as an intermediate fact. Conclude with `IsRegularLocalRing.of_ringEquiv (IsLocalization.algEquiv (n.map (Ideal.Quotient.mk J)).primeCompl (Localization.AtPrime (n.map (Ideal.Quotient.mk J))) _).toRingEquiv`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem fibre_reg (R : Type) [CommRing R] (J n : Ideal R) [n.IsPrime] (hn : J ≤ n)
     [IsRegularRing (R ⧸ J)] (A : Type) [CommRing A] [Algebra R A] [IsLocalization.AtPrime A n] :
@@ -40,13 +40,11 @@ private theorem fibre_reg (R : Type) [CommRing R] (J n : Ideal R) [n.IsPrime] (h
     (Localization.AtPrime (n.map (Ideal.Quotient.mk J))) _).toRingEquiv
 
 /- English proof (translation)
-Introduce `A _ _ σ _ Q _ hQ`. Establish `hcomp : algebraMap A (Localization.AtPrime Q) = (algebraMap (MvPolynomial σ A) (Localization.AtPrime Q)).comp MvPolynomial.C` using `IsScalarTower.algebraMap_eq A (MvPolynomial σ A) (Localization.AtPrime Q)`. Use `haveI : IsRegularRing (MvPolynomial σ A ⧸ (maximalIdeal A).map (MvPolynomial.C : A →+* MvPolynomial σ A)) := by`. Use `letI := Ideal.Quotient.field (maximalIdeal A)`. Use `haveI : IsRegularRing (MvPolynomial σ (A ⧸ maximalIdeal A)) := inferInstance`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `IsRegularRing.of_ringEquiv (MvPolynomial.quotientEquivQuotientMvPolynomial (σ := σ) (maximalIdeal A)).toRingEquiv`. Establish `hf` using `fibre_reg _ _ Q hQ (Localization.AtPrime Q)`. Rewrite `hf` using `[Ideal.map_map, ← hcomp]`. Use `haveI : IsNoetherianRing (Localization.AtPrime Q) := IsLocalization.isNoetherianRing Q.primeCompl _ inferInstance`. Use `haveI : Module.Flat (MvPolynomial σ A) (Localization.AtPrime Q) := IsLocalization.flat _ Q.primeCompl`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `haveI : Module.Flat A (Localization.AtPrime Q) := Module.Flat.trans A (MvPolynomial σ A) (Localization.AtPrime Q)`. Use `haveI : IsLocalHom (algebraMap A (Localization.AtPrime Q)) := by`. Use `⟨fun a ha => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hna`. Establish `h1 : MvPolynomial.C a ∈ Q` using `hQ (Ideal.mem_map_of_mem _ ((mem_maximalIdeal a).2 hna))`.
-
-Rewrite `ha` using `[hcomp]`. Conclude with `(IsLocalization.AtPrime.isUnit_to_map_iff (Localization.AtPrime Q) Q _).1 ha h1`. Establish `H` using `regular_of_flat_fibre A (Localization.AtPrime Q)`. Rewrite `H` using `[hcomp]`. Conclude with `H`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.AlgebraTools.regular_polynomial_localization :
     ∀ (A : Type) [CommRing A] [IsRegularLocalRing A] (σ : Type) [Finite σ] (Q : Ideal (MvPolynomial σ A)) [Q.IsPrime],

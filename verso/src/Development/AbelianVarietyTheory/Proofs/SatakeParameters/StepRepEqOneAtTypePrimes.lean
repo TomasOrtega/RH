@@ -14,13 +14,11 @@ namespace GlobalTheory.Pdv
 open Classical in
 
 /- English proof (translation)
-Consider the cases of `j with`. Consider the case `zero => rfl`. Consider the case `succ i`. Distinguish the cases in `h1 : i + 1 ≤ m2`. Use `revert b`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show twSt Ch sel mu cst m2 (i+1) = twNext Ch sel mu cst (twSt Ch sel mu cst m2 i) by simp [twSt, h1]]`. Introduce `b`. Establish `hq : P.1 ∉ twQOff (Pr` using `Pr) sel mu := fun hq => (Finset.mem_sdiff.1 hq).2 hP`. Simplify using `only [twNext, hq, dif_neg, not_false_eq_true]`. Distinguish the cases in `h2 : i + 1 = m2 + 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Use `revert b`. Rewrite using `[show twSt Ch sel mu cst m2 (i+1) = twUnitSt _ (i+1) by simp [twSt, h1, h2]]`. Introduce `b`. Both sides reduce to the same expression. Use `revert b`.
-
-Rewrite using `[show twSt Ch sel mu cst m2 (i+1) = twEmptySt _ (i+1) by simp only [twSt, if_neg h1, if_neg h2]]`. Introduce `b`. Conclude with `b.elim`.
+Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem stepRep_eq_one_at_typePrimes {X : Fields} {Pr : Primes X} {R : Ranks} (Ch : Chars X Pr R.m)
     (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) {S : Set ℕ}
@@ -45,11 +43,9 @@ theorem stepRep_eq_one_at_typePrimes {X : Fields} {Pr : Primes X} {R : Ranks} (C
         intro b; exact b.elim
 
 /- English proof (translation)
-Introduce `B X I H a`. Take `⟨hc, hi⟩` from `H a`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hc]`. Use `show B.R.m ≤ B.R.m + 1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[hc]`. Use `show B.R.m ≤ B.R.m`. Conclude with `le_rfl`. Rewrite using `[hi]`.
-
-Introduce `j _ b P hP`. Conclude with `stepRep_eq_one_at_typePrimes _ _ _ _ _ _ b P hP`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem colNorm_of_tw : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), (∀ a, I.cst a = twCst I.Ch I.sel (I.tup a) I.glob ∧ I.idx a = twIdx I.Ch I.sel (I.tup a) (I.cst a) (B.R.m - 2)) → GlobalTheory.Pdv.ColNorm I := by
   intro B X I H a

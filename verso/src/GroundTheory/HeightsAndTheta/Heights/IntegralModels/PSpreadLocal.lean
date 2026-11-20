@@ -13,7 +13,7 @@ noncomputable section
 universe u
 
 /- English proof (translation)
-Introduce `y`. Take `⟨V, hV, hyV, -⟩` from `Opens.isBasis_iff_nbhd.mp Y.isBasis_affineOpens (show y ∈ (⊤ : Y.Opens) from trivial)`. Conclude with `⟨V, hV, hyV, n, _, (h Y n).restrict le_top⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isVectorBundle_freeModule (h : FreeSheafBasis.Statement.{u}) (Y : Scheme.{u}) (n : ℕ) :
     IsVectorBundle (freeModule Y n) := by
@@ -23,7 +23,7 @@ theorem isVectorBundle_freeModule (h : FreeSheafBasis.Statement.{u}) (Y : Scheme
   exact ⟨V, hV, hyV, n, _, (h Y n).restrict le_top⟩
 
 /- English proof (translation)
-Establish `: IsPreimmersion (Spec.map (CommRingCat.ofHom (Int.castRingHom (ZLoc p))))`. Establish `h` using `IsPreimmersion.of_isLocalization (R := ℤ) (S := ZLoc p) (Ideal.span {((p : ℕ) : ℤ)}).primeCompl`. Use `h using 3` and compare the differences between its conclusion and the goal. Conclude with `RingHom.ext_int _ _`. Use `infer_instance`.
+Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. A detailed English derivation is pending.
 -/
 theorem isPreimmersion_baseChangeMap {X : Scheme.{0}} (f : X ⟶ SpecZ) (p : Nat.Primes) :
     IsPreimmersion (baseChangeMap f (ZLoc p)) := by
@@ -35,11 +35,11 @@ theorem isPreimmersion_baseChangeMap {X : Scheme.{0}} (f : X ⟶ SpecZ) (p : Nat
   infer_instance
 
 /- English proof (translation)
-Introduce `X f p E hE x`. Take `⟨U, -, hxU, n, s, hs⟩` from `hE x`. Use `isPreimmersion_baseChangeMap f p` as an intermediate fact. Take `⟨W, hWo, hW⟩` from `(baseChangeMap f (ZLoc p)).isEmbedding.isInducing.isOpen_iff.mp U.2`. Set `W' : X.Opens` to `⟨W, hWo⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hWU : baseChangeMap f (ZLoc p) ⁻¹ᵁ W' = U` using `Opens.ext hW`. Use `⟨W', hWU ▸ hxU, ?_⟩` and prove the remaining obligations. Set `V` to `baseChangeMap f (ZLoc p) ⁻¹ᵁ W'`. Establish `hle : V.ι ''ᵁ ⊤ ≤ U` using `by simp [V, hWU]`. Take `⟨eF⟩` from `h₂ _ (E.restrict V.ι) n _ ((hs.restrict hle).restrictImage V.ι)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Set `φ` to `(baseChangeMap f (ZLoc p) ∣_ W').toRingCatSheafHom`. Establish `: (SheafOfModules.pushforward φ).IsRightAdjoint` using `(Scheme.Modules.pullbackPushforwardAdjunction (baseChangeMap f (ZLoc p) ∣_ W')).isRightAdjoint`. Conclude with `⟨_, isVectorBundle_freeModule h₁ _ n, ⟨SheafOfModules.pullbackObjFreeIso φ (ULift.{0} (Fin n)) ≪≫ eF.symm ≪≫ (Scheme.Modules.restrictFunctorIsoPullback V.ι).app E⟩⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem SpreadLocal.proof (h₁ : FreeSheafBasis.Statement.{0}) (h₂ : BasisIsoFree.Statement.{0}) :
     SpreadLocal.Statement := by

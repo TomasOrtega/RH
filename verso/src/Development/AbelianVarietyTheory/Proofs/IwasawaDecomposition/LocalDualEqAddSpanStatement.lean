@@ -6,7 +6,7 @@ import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.Afsplit
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.UG Matrix
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.Mem.LocalDualBase.localDual_eq_add_span` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FLocalDualEqAddSpan.lean&line=9#L9)
 -/

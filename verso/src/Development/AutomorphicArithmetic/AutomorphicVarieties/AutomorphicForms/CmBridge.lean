@@ -23,17 +23,17 @@ Both sides reduce to the same expression.
 @[simp] theorem coe_ofCusp (ψ : cuspForms E a) : (ofCusp E a ψ).1 = ψ.1 := rfl
 
 /- English proof (translation)
-The claim follows from `Submodule.inclusion_injective _`.
+A detailed English derivation is pending.
 -/
 theorem ofCusp_injective : Function.Injective (ofCusp E a) := Submodule.inclusion_injective _
 
 /- English proof (translation)
-The claim follows from `(isCuspForm_iff _).2 ψ.2`.
+A detailed English derivation is pending.
 -/
 theorem isCuspForm_ofCusp (ψ : cuspForms E a) : GlobalTheory.CuspRep.IsCuspForm (ofCusp E a ψ) := (isCuspForm_iff _).2 ψ.2
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun ⟨ψ, h⟩ => h ▸ isCuspForm_ofCusp ψ, fun h => ⟨⟨φ.1, (isCuspForm_iff φ).1 h⟩, rfl⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_range_ofCusp {φ : Sm E a} : φ ∈ LinearMap.range (ofCusp E a) ↔ GlobalTheory.CuspRep.IsCuspForm φ :=
   ⟨fun ⟨ψ, h⟩ => h ▸ isCuspForm_ofCusp ψ, fun h => ⟨⟨φ.1, (isCuspForm_iff φ).1 h⟩, rfl⟩⟩
@@ -45,7 +45,7 @@ theorem ofCusp_uAction (u : UEnv E a) (ψ : cuspForms E a) :
     ofCusp E a (uActionCusp E a u ψ) = uTC E a u (ofCusp E a ψ) := rfl
 
 /- English proof (translation)
-Rewrite using `[gkModuleCusp_ρ_apply, ofCusp_uAction, uTC_ι]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ofCusp_ρ (X : Lie E a) (ψ : cuspForms E a) :
     ofCusp E a ((gkModuleCusp E a).ρ (lieEq E a X) ψ) = act (.lie X) (ofCusp E a ψ) := by
@@ -53,21 +53,21 @@ theorem ofCusp_ρ (X : Lie E a) (ψ : cuspForms E a) :
   rfl
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (funext fun g => congrArg (fun x => ψ.1 (g * x)) (infEmb_cptEq k))`.
+A detailed English derivation is pending.
 -/
 theorem ofCusp_σ (k : Kinf E a) (ψ : cuspForms E a) :
     ofCusp E a ((gkModuleCusp E a).σ (cptEq E a k) ψ) = act (.cpt k) (ofCusp E a ψ) :=
   Subtype.ext (funext fun g => congrArg (fun x => ψ.1 (g * x)) (infEmb_cptEq k))
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (funext fun g => congrArg (fun f : GL (Fin a) (Af E) →* GA E a => ψ.1 (g * f k)) Fb.finEmb_eq)`.
+A detailed English derivation is pending.
 -/
 theorem ofCusp_τ (k : GL (Fin a) (Af E)) (ψ : cuspForms E a) :
     ofCusp E a (finRepCusp E a k ψ) = act (.fin k) (ofCusp E a ψ) :=
   Subtype.ext (funext fun g => congrArg (fun f : GL (Fin a) (Af E) →* GA E a => ψ.1 (g * f k)) Fb.finEmb_eq)
 
 /- English proof (translation)
-Take `⟨p, hp, q, hq, rfl⟩` from `mem_Zalg_iff.1 hz`. Conclude with `⟨p, hp, q, hq, fun ψ => by rw [map_add, map_smul, ofCusp_uAction, ofCusp_uAction]; rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_center_ofCusp {z : Module.End ℂ (Sm E a)} (hz : z ∈ Zalg E a) :
     ∃ p ∈ (isExpLieAlgebra E a).centerU, ∃ q ∈ (isExpLieAlgebra E a).centerU, ∀ ψ : cuspForms E a,
@@ -76,7 +76,7 @@ theorem exists_center_ofCusp {z : Module.End ℂ (Sm E a)} (hz : z ∈ Zalg E a)
   exact ⟨p, hp, q, hq, fun ψ => by rw [map_add, map_smul, ofCusp_uAction, ofCusp_uAction]; rfl⟩
 
 /- English proof (translation)
-Introduce and unpack `o _ ⟨ψ, rfl⟩`. Consider the cases of `o with`. Consider the case `fin k => exact ⟨_, ofCusp_τ k ψ⟩`. Consider the case `cpt k => exact ⟨_, ofCusp_σ k ψ⟩`. Consider the case `lie X => exact ⟨_, ofCusp_ρ X ψ⟩`.
+Assume the hypotheses and unpack their components. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem isStable_range : GlobalTheory.CuspRep.IsStable (LinearMap.range (ofCusp E a)) := by
   rintro o _ ⟨ψ, rfl⟩
@@ -86,7 +86,7 @@ theorem isStable_range : GlobalTheory.CuspRep.IsStable (LinearMap.range (ofCusp 
   | lie X => exact ⟨_, ofCusp_ρ X ψ⟩
 
 /- English proof (translation)
-The claim follows from `mem_range_ofCusp.1 (isStable_range o φ (mem_range_ofCusp.2 h))`.
+A detailed English derivation is pending.
 -/
 theorem isCuspForm_act (o : Op E a) {φ : Sm E a} (h : GlobalTheory.CuspRep.IsCuspForm φ) : GlobalTheory.CuspRep.IsCuspForm (act o φ) :=
   mem_range_ofCusp.1 (isStable_range o φ (mem_range_ofCusp.2 h))
@@ -101,12 +101,12 @@ Both sides reduce to the same expression.
 @[simp] theorem coe_ofAut (ψ : automorphicForms E a) : (ofAut E a ψ).1 = ψ.1 := rfl
 
 /- English proof (translation)
-The claim follows from `Submodule.inclusion_injective _`.
+A detailed English derivation is pending.
 -/
 theorem ofAut_injective : Function.Injective (ofAut E a) := Submodule.inclusion_injective _
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun ⟨ψ, h⟩ => h ▸ (isAutForm_iff _).2 ψ.2, fun h => ⟨⟨φ.1, (isAutForm_iff φ).1 h⟩, rfl⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_range_ofAut {φ : Sm E a} : φ ∈ LinearMap.range (ofAut E a) ↔ IsAutForm φ :=
   ⟨fun ⟨ψ, h⟩ => h ▸ (isAutForm_iff _).2 ψ.2, fun h => ⟨⟨φ.1, (isAutForm_iff φ).1 h⟩, rfl⟩⟩
@@ -121,7 +121,7 @@ Both sides reduce to the same expression.
 @[simp] theorem coe_ofKZ (ψ : smoothKZ E a) : (ofKZ E a ψ).1 = ψ.1 := rfl
 
 /- English proof (translation)
-Rewrite using `[← uTC_ι]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ofKZ_ρ (X : Lie E a) (ψ : smoothKZ E a) :
     ofKZ E a ((gkModule E a).ρ (lieEq E a X) ψ) = lie E a X (ofKZ E a ψ) := by
@@ -129,21 +129,21 @@ theorem ofKZ_ρ (X : Lie E a) (ψ : smoothKZ E a) :
   rfl
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (funext fun g => congrArg (fun x => ψ.1 (g * x)) (infEmb_cptEq k))`.
+A detailed English derivation is pending.
 -/
 theorem ofKZ_σ (k : Kinf E a) (ψ : smoothKZ E a) :
     ofKZ E a ((gkModule E a).σ (cptEq E a k) ψ) = cptRep E a k (ofKZ E a ψ) :=
   Subtype.ext (funext fun g => congrArg (fun x => ψ.1 (g * x)) (infEmb_cptEq k))
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (funext fun g => congrArg (fun f : GL (Fin a) (Af E) →* GA E a => ψ.1 (g * f k)) Fb.finEmb_eq)`.
+A detailed English derivation is pending.
 -/
 theorem ofKZ_τ (k : GL (Fin a) (Af E)) (ψ : smoothKZ E a) :
     ofKZ E a (finRepKZ E a k ψ) = GlobalTheory.CuspRep.finRep E a k (ofKZ E a ψ) :=
   Subtype.ext (funext fun g => congrArg (fun f : GL (Fin a) (Af E) →* GA E a => ψ.1 (g * f k)) Fb.finEmb_eq)
 
 /- English proof (translation)
-Introduce and unpack `o _ ⟨ψ, hψ, rfl⟩`. Consider the cases of `o with`. Consider the case `fin k => exact ⟨_, h.τ k ψ hψ, ofCusp_τ k ψ⟩`. Consider the case `cpt k => exact ⟨_, h.σ _ ψ hψ, ofCusp_σ k ψ⟩`. Consider the case `lie X => exact ⟨_, h.ρ _ ψ hψ, ofCusp_ρ X ψ⟩`.
+Assume the hypotheses and unpack their components. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem isStable_map {U : Submodule ℂ (cuspForms E a)} (h : Stab U) : GlobalTheory.CuspRep.IsStable (U.map (ofCusp E a)) := by
   rintro o _ ⟨ψ, hψ, rfl⟩
@@ -153,9 +153,9 @@ theorem isStable_map {U : Submodule ℂ (cuspForms E a)} (h : Stab U) : GlobalTh
   | lie X => exact ⟨_, h.ρ _ ψ hψ, ofCusp_ρ X ψ⟩
 
 /- English proof (translation)
-Use `⟨fun X ψ hψ => ?_, fun k ψ hψ => ?_, fun k ψ hψ => ?_⟩` and prove the remaining obligations. Take `⟨X, rfl⟩` from `(lieEq E a).surjective X`. Rewrite using `[Submodule.mem_comap, ofCusp_ρ]`. Conclude with `h _ _ hψ`. Take `⟨k, rfl⟩` from `(cptEq E a).surjective k`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Submodule.mem_comap, ofCusp_σ]`. Conclude with `h _ _ hψ`. Rewrite using `[Submodule.mem_comap, ofCusp_τ]`. Conclude with `h _ _ hψ`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stab_comap {V : Submodule ℂ (Sm E a)} (h : GlobalTheory.CuspRep.IsStable V) : Stab (V.comap (ofCusp E a)) := by
   refine ⟨fun X ψ hψ => ?_, fun k ψ hψ => ?_, fun k ψ hψ => ?_⟩
@@ -171,18 +171,18 @@ theorem stab_comap {V : Submodule ℂ (Sm E a)} (h : GlobalTheory.CuspRep.IsStab
 def carrier (π : CuspSub E a) : Submodule ℂ (cuspForms E a) := π.V.comap (ofCusp E a)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_carrier {π : CuspSub E a} {ψ : cuspForms E a} : ψ ∈ carrier π ↔ ofCusp E a ψ ∈ π.V := Iff.rfl
 
 /- English proof (translation)
-The claim follows from `Submodule.map_comap_eq_self fun φ h => mem_range_ofCusp.2 (π.cusp φ h)`.
+A detailed English derivation is pending.
 -/
 theorem map_carrier (π : CuspSub E a) : (carrier π).map (ofCusp E a) = π.V :=
   Submodule.map_comap_eq_self fun φ h => mem_range_ofCusp.2 (π.cusp φ h)
 
 /- English proof (translation)
-The claim follows from `stab_comap π.stable`.
+A detailed English derivation is pending.
 -/
 theorem stab_carrier (π : CuspSub E a) : Stab (carrier π) := stab_comap π.stable
 
@@ -190,7 +190,7 @@ abbrev toModule (π : CuspSub E a) : AdelicGKModule E a (carrier π) :=
   cuspSubmodule E a (carrier π) (stab_carrier π).ρ (stab_carrier π).σ (stab_carrier π).τ
 
 /- English proof (translation)
-Use `(stab_carrier π).isIrreducible_iff.2 ⟨fun e => π.ne_bot (by rw [← map_carrier, e, Submodule.map_bot]), fun W hW hst => ?_⟩` and prove the remaining obligations. Use `(π.irred _ ((Submodule.map_mono hW).trans (map_carrier π).le) (isStable_map hst)).imp (fun e => ?_) fun e => ?_` and prove the remaining obligations. Conclude with `Submodule.map_injective_of_injective ofCusp_injective (e.trans (Submodule.map_bot _).symm)`. Conclude with `Submodule.map_injective_of_injective ofCusp_injective (e.trans (map_carrier π).symm)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isIrreducible_toModule (π : CuspSub E a) : (toModule π).IsIrreducible := by
   refine (stab_carrier π).isIrreducible_iff.2 ⟨fun e => π.ne_bot (by rw [← map_carrier, e, Submodule.map_bot]),
@@ -200,7 +200,7 @@ theorem isIrreducible_toModule (π : CuspSub E a) : (toModule π).IsIrreducible 
   · exact Submodule.map_injective_of_injective ofCusp_injective (e.trans (map_carrier π).symm)
 
 /- English proof (translation)
-The claim follows from `UnitaryAdmissible.isAdmissible_cuspSubmodule _ _ _ _ (isIrreducible_toModule π)`.
+A detailed English derivation is pending.
 -/
 theorem isAdmissible_toModule (π : CuspSub E a) : (toModule π).IsAdmissible :=
   UnitaryAdmissible.isAdmissible_cuspSubmodule _ _ _ _ (isIrreducible_toModule π)
@@ -214,27 +214,27 @@ Both sides reduce to the same expression.
 @[simp] theorem coe_carrierEq (π : CuspSub E a) (ψ : carrier π) : (carrierEq π ψ).1 = ofCusp E a ψ.1 := rfl
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (ofCusp_ρ X ψ.1)`.
+A detailed English derivation is pending.
 -/
 theorem carrierEq_ρ (π : CuspSub E a) (X : Lie E a) (ψ : carrier π) :
     carrierEq π ((toModule π).gk.ρ (lieEq E a X) ψ) = π.op (.lie X) (carrierEq π ψ) := Subtype.ext (ofCusp_ρ X ψ.1)
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (ofCusp_σ k ψ.1)`.
+A detailed English derivation is pending.
 -/
 theorem carrierEq_σ (π : CuspSub E a) (k : Kinf E a) (ψ : carrier π) :
     carrierEq π ((toModule π).gk.σ (cptEq E a k) ψ) = π.op (.cpt k) (carrierEq π ψ) := Subtype.ext (ofCusp_σ k ψ.1)
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (ofCusp_τ k ψ.1)`.
+A detailed English derivation is pending.
 -/
 theorem carrierEq_τ (π : CuspSub E a) (k : GL (Fin a) (Af E)) (ψ : carrier π) :
     carrierEq π ((toModule π).τ k ψ) = π.op (.fin k) (carrierEq π ψ) := Subtype.ext (ofCusp_τ k ψ.1)
 
 /- English proof (translation)
-Proceed by induction on `w using FreeMonoid.inductionOn' with`. Consider the case `one => rw [map_one, map_one]`. Both sides reduce to the same expression. Consider the case `of_mul x w ih`. Rewrite using `[map_mul, map_mul, Module.End.mul_apply, Module.End.mul_apply, ← ih]`.
+Proceed by induction. Treat this case separately. Both sides reduce to the same expression. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Break down `x with X | k` into its components or cases. Conclude with `hρ X _`. Conclude with `hσ k _`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 private theorem rep_comm {π π' : CuspSub E a} (T : carrier π →ₗ[ℂ] carrier π')
     (hρ : ∀ X ψ, T ((toModule π).gk.ρ X ψ) = (toModule π').gk.ρ X (T ψ))
@@ -250,17 +250,17 @@ private theorem rep_comm {π π' : CuspSub E a} (T : carrier π →ₗ[ℂ] carr
     · exact hσ k _
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨T, hT⟩`. Set `S : carrier π ≃ₗ[ℂ] carrier π'` to `((carrierEq π).trans T).trans (carrierEq π').symm`. Establish `hS : ∀ ψ, carrierEq π' (S ψ) = T (carrierEq π ψ)` using `fun ψ => (carrierEq π').apply_symm_apply _`. Use `⟨.mk S fun p => LinearMap.ext fun ψ => ?_⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hτ : S ((toModule π).τ p.2 ψ) = (toModule π').τ p.2 (S ψ)` using `(carrierEq π').injective (by rw [hS, carrierEq_τ, carrierEq_τ, hT, hS])`. Use `(rep_comm S.toLinearMap (fun X ψ => ?_) (fun k ψ => ?_) p.1 _).trans (congrArg ((toModule π').gk.rep p.1) hτ)` and prove the remaining obligations. Take `⟨X, rfl⟩` from `(lieEq E a).surjective X`. Conclude with `(carrierEq π').injective (by rw [LinearEquiv.coe_coe, hS, carrierEq_ρ, carrierEq_ρ, hT, hS])`. Take `⟨k, rfl⟩` from `(cptEq E a).surjective k`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components.
 
-Conclude with `(carrierEq π').injective (by rw [LinearEquiv.coe_coe, hS, carrierEq_σ, carrierEq_σ, hT, hS])`. Introduce and unpack `⟨e⟩`. Establish `he : ∀ w g ψ, e.toLinearEquiv ((toModule π).gk.rep w ((toModule π).τ g ψ)) = (toModule π').gk.rep w ((toModule π').τ g (e.toLinearEquiv ψ))` using `fun w g ψ => Representation.IntertwiningMap.isIntertwining _ _ e.toIntertwiningMap (w, g) ψ`. Use `⟨((carrierEq π).symm.trans e.toLinearEquiv).trans (carrierEq π'), fun o φ => ?_⟩` and prove the remaining obligations. Take `⟨ψ, rfl⟩` from `(carrierEq π).surjective φ`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Consider the cases of `o with`. Consider the case `fin k`. Use `he 1 k ψ` as an intermediate fact. Simplify using `only [map_one, Module.End.one_apply] at this`. Simplify using `only [← carrierEq_τ, LinearEquiv.trans_apply, LinearEquiv.symm_apply_apply, this]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `cpt k`. Use `he (FreeMonoid.of (Sum.inr (cptEq E a k))) 1 ψ` as an intermediate fact. Simplify using `only [map_one, Module.End.one_apply] at this`. Simplify using `only [← carrierEq_σ, LinearEquiv.trans_apply, LinearEquiv.symm_apply_apply]`. Conclude with `congrArg _ this`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Consider the case `lie X`. Use `he (FreeMonoid.of (Sum.inl (lieEq E a X))) 1 ψ` as an intermediate fact. Simplify using `only [map_one, Module.End.one_apply] at this`. Simplify using `only [← carrierEq_ρ, LinearEquiv.trans_apply, LinearEquiv.symm_apply_apply]`. Conclude with `congrArg _ this`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem iso_iff (π π' : CuspSub E a) :
     π.Iso π' ↔ Nonempty ((toModule π).fullRep.Equiv (toModule π').fullRep) := by
@@ -300,7 +300,7 @@ theorem iso_iff (π π' : CuspSub E a) :
       exact congrArg _ this
 
 /- English proof (translation)
-The claim follows from `(Quotient.eq (r := CuspSub.setoid E a)).trans (iso_iff π π')`.
+A detailed English derivation is pending.
 -/
 theorem mk_eq_mk_iff (π π' : CuspSub E a) :
     CG.mk π = CG.mk π' ↔ Nonempty ((toModule π).fullRep.Equiv (toModule π').fullRep) :=
@@ -322,26 +322,26 @@ def ofIrr (U : Submodule ℂ (cuspForms E a)) (h : Stab U) (hi : (cuspSubmodule 
     · rw [← e, e']
 
 /- English proof (translation)
-The claim follows from `Submodule.comap_map_eq_of_injective ofCusp_injective U`.
+A detailed English derivation is pending.
 -/
 theorem carrier_ofIrr (U : Submodule ℂ (cuspForms E a)) (h : Stab U) (hi) : carrier (ofIrr U h hi) = U :=
   Submodule.comap_map_eq_of_injective ofCusp_injective U
 
 /- English proof (translation)
-The claim follows from `CuspSub.ext (map_carrier π)`.
+A detailed English derivation is pending.
 -/
 theorem ofIrr_carrier (π : CuspSub E a) : ofIrr _ (stab_carrier π) (isIrreducible_toModule π) = π :=
   CuspSub.ext (map_carrier π)
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (by rw [UnitaryAdmissible.coe_centralZ, Algebra.algebraMap_eq_smul_one, ← lieEq_oneL]; rfl)`.
+A detailed English derivation is pending.
 -/
 theorem centralZ_eq :
     UnitaryAdmissible.centralZ E a = UnitaryAdmissible.centralExp E a • lieEq E a (oneL E a) :=
   Subtype.ext (by rw [UnitaryAdmissible.coe_centralZ, Algebra.algebraMap_eq_smul_one, ← lieEq_oneL]; rfl)
 
 /- English proof (translation)
-Introduce `s x` and use `by have h1 : (gkModuleCusp E a).ρ (lieEq E a (oneL E a)) ψ = 0 := ofCusp_injective ((ofCusp_ρ _ _).trans (h.trans (map_zero _).symm)) have h2 : lieActionCusp E a (UnitaryAdmissible.centralZ E a) ψ = (0 : ℂ) • ψ := by rw [centralZ_eq, map_smul, zero_smul, LinearMap.smul_apply] exa …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mem_centralCuspForms_of {ψ : cuspForms E a} (h : lie E a (oneL E a) (ofCusp E a ψ) = 0) :
     ψ ∈ centralCuspForms E a := fun s x => by
@@ -354,9 +354,9 @@ theorem mem_centralCuspForms_of {ψ : cuspForms E a} (h : lie E a (oneL E a) (of
   simp
 
 /- English proof (translation)
-Break down `Nat.eq_zero_or_pos a with rfl | ha` into its components or cases. Rewrite using `[Subsingleton.elim (oneL E 0) 0, map_zero, LinearMap.zero_apply]`. Establish `h1` using `ρ_centralZ_eq_zero h`. Establish `h2 : UnitaryAdmissible.centralExp E a ≠ 0` using `inv_ne_zero (mul_ne_zero (Nat.cast_ne_zero.2 ha.ne') (Nat.cast_ne_zero.2 Module.finrank_pos.ne'))`. Rewrite `h1` using `[centralZ_eq, map_smul, LinearMap.smul_apply, smul_eq_zero_iff_right h2]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(ofCusp_ρ _ ψ).symm.trans (by rw [h1, map_zero])`.
+A detailed English derivation is pending.
 -/
 theorem lie_oneL_eq_zero {ψ : cuspForms E a} (h : ψ ∈ centralCuspForms E a) :
     lie E a (oneL E a) (ofCusp E a ψ) = 0 := by
@@ -380,18 +380,18 @@ Both sides reduce to the same expression.
 theorem carrier_toRep (π : CuspSub E a) (h) : (toRep π h).carrier = carrier π := rfl
 
 /- English proof (translation)
-The claim follows from `carrier_ofIrr _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem carrier_ofRep (π : CuspidalAutomorphicRepresentation E a) : carrier (ofRep π) = π.carrier :=
   carrier_ofIrr _ _ _
 
 /- English proof (translation)
-The claim follows from `ofIrr_carrier π`.
+A detailed English derivation is pending.
 -/
 theorem ofRep_toRep (π : CuspSub E a) (h) : ofRep (toRep π h) = π := ofIrr_carrier π
 
 /- English proof (translation)
-Introduce `_ hψ` and use `mem_centralCuspForms_of (h _ hψ)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem carrier_le_central (π : CuspSub E a) (h : ∀ φ ∈ π.V, lie E a (oneL E a) φ = 0) :
     carrier π ≤ centralCuspForms E a := fun _ hψ => mem_centralCuspForms_of (h _ hψ)

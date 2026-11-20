@@ -23,20 +23,20 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Annih
 namespace UpperTheory.Gal.crystallineComparison
 
 /- English proof (translation)
-The claim follows from `admissibleExact_of_dualInvariantExact dinvExact_of`.
+A detailed English derivation is pending.
 -/
 theorem admissible_sequence_exact : AdmExact := admissibleExact_of_dualInvariantExact dinvExact_of
 /- English proof (translation)
-The claim follows from `joinAbs_of nilEmb_of (nilSubq_of admissible_sequence_exact nilEmb_of) nilAnn_of annSub_of (annExt_of dinvExt_of) admissible_sequence_exact`.
+A detailed English derivation is pending.
 -/
 theorem joinAbs_holds : JoinAbs :=
   joinAbs_of nilEmb_of (nilSubq_of admissible_sequence_exact nilEmb_of) nilAnn_of annSub_of (annExt_of dinvExt_of) admissible_sequence_exact
 /- English proof (translation)
-The claim follows from `boundSt_of`.
+A detailed English derivation is pending.
 -/
 theorem boundSt_holds : BoundSt := boundSt_of
 /- English proof (translation)
-The claim follows from `stOfCr_of annPer_of boundSt_of`.
+A detailed English derivation is pending.
 -/
 theorem stOfCr_holds : StOfCr := stOfCr_of annPer_of boundSt_of
 

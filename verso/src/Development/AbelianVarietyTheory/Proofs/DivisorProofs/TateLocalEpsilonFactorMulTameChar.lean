@@ -11,23 +11,19 @@ open Formalism.L2.Host (unif atFin unif_spec IsUnitAt)
 namespace GlobalTheory.TameTwist
 
 /- English proof (translation)
-Set `Bad : U → Prop` to `fun u => ∃ h ∈ H, ∃ μ : ℂ, μ ≠ 1 ∧ ∀ k ∈ H, f (u * k * h) = μ * f (u * k)`. Establish `hzero : ∀ u, Bad u → ∑ k : H, f (u * k) = 0`. Introduce and unpack `u ⟨h, hh, μ, hμ, hf⟩`. Establish `e : ∑ k : H, f (u * k) = μ * ∑ k : H, f (u * k)`. Rewrite using `[Finset.mul_sum]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Subgroup.coe_mul, ← mul_assoc]`. Conclude with `hf k k.2`. Establish `h2 : (1 - μ) * ∑ k : H, f (u * k) = 0` using `by rw [sub_mul, one_mul, ← e, sub_self]`. Conclude with `(mul_eq_zero.1 h2).resolve_left (sub_ne_zero.2 (Ne.symm hμ))`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `main : ∀ u₀ : U, (∀ u, ¬ Bad u → g u = g u₀) → ∑ u, f u * g u = g u₀ * ∑ u, f u`. Introduce `u₀ hu₀`. Establish `key : ∀ u, ∑ k : H, f (u * k) * (g (u * k) - g u₀) = 0`. Introduce `u`. Establish `hgk : ∀ k : H, g (u * k) = g u` using `fun k => hg u k k.2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Repeatedly rewrite using `[hgk, ← Finset.sum_mul]`. Distinguish the cases in `hu : Bad u`. Rewrite using `[hzero u hu, zero_mul]`. Rewrite using `[hu₀ u hu, sub_self, mul_zero]`. Establish `e : ∀ k : H, ∑ u, f (u * k) * (g (u * k) - g u₀) = ∑ u, f u * (g u - g u₀)` using `fun k => Fintype.sum_equiv (Equiv.mulRight (k : U)) _ _ (fun u => rfl)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `h2 : (Fintype.card H : ℂ) * ∑ u, f u * (g u - g u₀) = 0`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`. Use `_ = ∑ k : H, ∑ u, f (u * k) * (g (u * k) - g u₀) := by simp_rw [e]`. Use `_ = ∑ u, ∑ k : H, f (u * k) * (g (u * k) - g u₀) := Finset.sum_comm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `_ = 0 := by simp_rw [key, Finset.sum_const_zero]`. Establish `h3 : ∑ u, f u * (g u - g u₀) = 0` using `(mul_eq_zero.1 h2).resolve_left (Nat.cast_ne_zero.2 Fintype.card_ne_zero)`. Establish `h4 : ∑ u, f u * g u - g u₀ * ∑ u, f u = ∑ u, f u * (g u - g u₀)`. Rewrite using `[Finset.mul_sum, ← Finset.sum_sub_distrib]`. Conclude with `Finset.sum_congr rfl fun u _ => by ring`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← sub_eq_zero, h4, h3]`. Distinguish the cases in `hex : ∃ u₀, ¬ Bad u₀`. Take `⟨u₀, hu₀⟩` from `hex`. Use `⟨u₀, main u₀ fun u hu => ?_⟩` and prove the remaining obligations. Establish `h1 : u₀ * (u₀⁻¹ * u) = u` using `mul_inv_cancel_left u₀ u`.
-
-Establish `h2 : u₀⁻¹ * u ∈ H`. Use `huniq u u₀ hu hu₀` as an intermediate fact. Rewrite `this` using `[mul_comm]`. Then use the resulting hypothesis. Rewrite using `[← hg u₀ _ h2, h1]`. Use `push_neg at hex`.
-
-Conclude with `⟨1, main 1 fun u hu => absurd (hex u) hu⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem sum_mul_eq_of_concentrated {U : Type} [CommGroup U] [Fintype U] (H : Subgroup U) (f g : U → ℂ)
     (hg : ∀ u, ∀ h ∈ H, g (u * h) = g u)
@@ -88,9 +84,9 @@ namespace GlobalTheory.TameTwist
 variable {E : Type} [Field E] [NumberField E]
 
 /- English proof (translation)
-Establish `hval : ∀ x : E, Valued.v (algebraMap E (w.adicCompletion E) x) = w.valuation E x` using `fun x => HeightOneSpectrum.valuedAdicCompletion_eq_valuation' w x`. Establish `e : ((atFin w (a * b⁻¹) : (w.adicCompletion E)ˣ) : w.adicCompletion E) = algebraMap E (w.adicCompletion E) ((a : E) / b)`. Simplify using `[atFin, div_eq_mul_inv]`. Establish `h1 : ξ.loc w (atFin w (a * b⁻¹)) = 1`. Use `hξ _ ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[IsUnitAt, e, hval, map_div₀, ha, hb, div_one]`. Rewrite using `[e, ← map_one (algebraMap E (w.adicCompletion E)), ← map_sub, hval, div_sub_one b.ne_zero, map_div₀, hb, div_one]`. Conclude with `hd`. Establish `h2 : ξ.locK w (a * b⁻¹) = 1` using `h1`. Rewrite `h2` using `[map_mul, map_inv, mul_inv_eq_one]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem locK_eq_of_levelLe {ξ : HChar E} {w : HeightOneSpectrum (𝓞 E)} {m : ℕ} (hξ : ξ.LevelLe w m) {a b : Eˣ}
     (ha : w.valuation E (a : E) = 1) (hb : w.valuation E (b : E) = 1)
@@ -114,9 +110,9 @@ def twInv (ξ : HChar E) (w : HeightOneSpectrum (𝓞 E)) (y : E) : ℂ :=
   if h : y = 0 then 0 else (((ξ.locK w (Units.mk0 y h))⁻¹ : ℂˣ) : ℂ)
 
 /- English proof (translation)
-Establish `hm : ∀ x, (χ * ξ).locK w x = χ.locK w x * ξ.locK w x` using `fun x => rfl`. Unfold `gaussTerm twInv`. Use `split_ifs with h`. Simplify using the standard rewrite rules. Rewrite using `[hm, mul_inv, Units.val_mul]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem gaussTerm_mul (χ ξ : HChar E) (w : HeightOneSpectrum (𝓞 E)) (c : Eˣ) (y : E) :
     gaussTerm (χ * ξ) w c y = gaussTerm χ w c y * twInv ξ w y := by
@@ -128,7 +124,7 @@ theorem gaussTerm_mul (χ ξ : HChar E) (w : HeightOneSpectrum (𝓞 E)) (c : E�
     ring
 
 /- English proof (translation)
-Establish `h1 : r * (1 + z) ≠ 0` using `by rw [← he]; exact mul_ne_zero hr e.ne_zero`. Establish `hu : Units.mk0 _ h1 = Units.mk0 r hr * e` using `by ext; simp [he]`. Establish `hψ : r * (1 + z) / c = r / c + r * z / c` using `by ring`. Rewrite using `[gaussTerm, gaussTerm, dif_neg h1, dif_neg hr, hu, map_mul, hψ, map_add, psiAt_add]`. Simplify using `only [mul_inv, Units.val_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -144,9 +140,9 @@ theorem gaussTerm_mul_one_add (χ : HChar E) (w : HeightOneSpectrum (𝓞 E)) (c
   ring
 
 /- English proof (translation)
-Establish `e : (r : E) * z / c = (r' : E) * z / c + (((r - r') * z : 𝓞 E) : E) / c` using `by push_cast; ring`. Establish `hm : (r - r') * z - 0 ∈ w.asIdeal ^ 2` using `by rw [sub_zero, pow_two]; exact Ideal.mul_mem_mul h hz`. Establish `hv` using `valuation_sub_le (E := E) hm`. Rewrite using `[e, map_add, psiAt_add, psiAt_eq_one (t := algebraMap E _ ((((r - r') * z : 𝓞 E) : E) / c)), mul_one]`. Establish `hval : ∀ x : E, Valued.v (algebraMap E (w.adicCompletion E) x) = w.valuation E x` using `fun x => HeightOneSpectrum.valuedAdicCompletion_eq_valuation' w x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hval, map_div₀, hc, div_le_iff₀ (zero_lt_iff.2 WithZero.exp_ne_zero), ← WithZero.exp_add]`. Rewrite `hv` using `[show ((0 : 𝓞 E) : E) = 0 from rfl, sub_zero]`. Use `hv using 2` and compare the differences between its conclusion and the goal. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem psiAt_mul_congr {w : HeightOneSpectrum (𝓞 E)} {c : Eˣ}
     (hc : w.valuation E (c : E) = WithZero.exp (-((2 + diffExp w : ℕ) : ℤ))) {r r' z : 𝓞 E} (h : r - r' ∈ w.asIdeal)
@@ -173,23 +169,21 @@ namespace GlobalTheory.TameTwist
 variable {E : Type} [Field E] [NumberField E]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hd`. Take `⟨π, hπ⟩` from `w.intValuation_exists_uniformizer`. Establish `hval : ∀ x : E, Valued.v (algebraMap E (w.adicCompletion E) x) = w.valuation E x` using `fun x => HeightOneSpectrum.valuedAdicCompletion_eq_valuation' w x`. Establish `hd1 : w.valuation E (d : E) = 1` using `(w.valuation_eq_one_iff_notMem (K := E)).2 hd`. Establish `hπ1 : w.valuation E (π : E) = WithZero.exp (-1)`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hπ, ← w.valuation_of_algebraMap (K := E)]`. Establish `hπP : π ∈ w.asIdeal`. Rewrite using `[← w.intValuation_lt_one_iff_mem, hπ, ← WithZero.exp_zero, WithZero.exp_lt_exp]`. Use linear arithmetic over natural numbers and integers. Use `set t := algebraMap E (w.adicCompletion E) ((d : E) * π / c) with ht_def`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `ht : Valued.v t = WithZero.exp ((1 + diffExp w : ℕ) : ℤ)`. Rewrite using `[ht_def, hval, map_div₀, map_mul, hd1, hπ1, hc, one_mul, ← WithZero.exp_sub]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hnot : ¬ ∀ r ∈ w.adicCompletionIntegers E, psiAt w (t * r) = 1`. Rewrite using `[psiAt_conductor, ht, WithZero.exp_le_exp]`. Use `push_cast`. Use linear arithmetic over natural numbers and integers. Use `push_neg at hnot`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨r, hr, hψ⟩` from `hnot`. Take `⟨r₀, hr₀⟩` from `Formalism.UG.P.glint_exists_approx w ⟨r, hr⟩`. Apply `hψ` to reduce the goal to its premises. Establish `hr₀' : Valued.v (r - algebraMap (𝓞 E) (w.adicCompletion E) r₀) ≤ WithZero.exp (-1)`. Establish `h1 : Valued.v (r - algebraMap (𝓞 E) (w.adicCompletion E) r₀) < 1` using `hr₀`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Consider separately whether the proposition holds or fails.
 
-Generalize the expression as in `Valued.v (r - algebraMap (𝓞 E) (w.adicCompletion E) r₀) = x at h1 ⊢`. Distinguish the cases in `hx : x = 0`. Rewrite using `[hx]`. Conclude with `zero_le'`. Rewrite `h1`, the goal using `[← WithZero.exp_log hx]`.
+Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Rewrite `h1` using `[← WithZero.exp_zero, WithZero.exp_lt_exp]`. Rewrite using `[WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers. Establish `e : t * r = algebraMap E (w.adicCompletion E) ((d : E) * ((π * r₀ : 𝓞 E) : E) / c) + t * (r - algebraMap (𝓞 E) (w.adicCompletion E) r₀)`. Rewrite using `[ht_def, IsScalarTower.algebraMap_apply (𝓞 E) E (w.adicCompletion E) r₀, show (d : E) * ((π * r₀ : 𝓞 E) : E) / c = ((d : E) * π / c) * algebraMap (𝓞 E) E r₀ by`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[show algebraMap (𝓞 E) E r₀ = (r₀ : E) from rfl]`. Use `push_cast`. Use the proof step `ring, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, psiAt_add, h _ (Ideal.mul_mem_right _ _ hπP), one_mul]`.
-
-Apply `psiAt_eq_one` to reduce the goal to its premises. Rewrite using `[map_mul, ht]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem mem_of_psiAt_eq_one {w : HeightOneSpectrum (𝓞 E)} {c : Eˣ}
     (hc : w.valuation E (c : E) = WithZero.exp (-((2 + diffExp w : ℕ) : ℤ))) {d : 𝓞 E}
@@ -247,41 +241,37 @@ namespace GlobalTheory.TameTwist
 variable {E : Type} [Field E] [NumberField E]
 
 /- English proof (translation)
-Use `w.isMaximal` as an intermediate fact. Use `Fintype.ofFinite (𝓞 E ⧸ w.asIdeal ^ 2)ˣ` as an intermediate fact. Set `rep : 𝓞 E ⧸ w.asIdeal ^ 2 → 𝓞 E` to `fun x => Quotient.out x`. Set `φ : 𝓞 E ⧸ w.asIdeal ^ 2 →+* 𝓞 E ⧸ w.asIdeal` to `Ideal.Quotient.factor (Ideal.pow_le_self two_ne_zero)`. Set `H : Subgroup (𝓞 E ⧸ w.asIdeal ^ 2)ˣ` to `(Units.map φ.toMonoidHom).ker`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hrep2 : ∀ x, Ideal.Quotient.mk (w.asIdeal ^ 2) (rep x) = x` using `fun x => Ideal.Quotient.mk_out x`. Establish `hrep : ∀ x, Ideal.Quotient.mk w.asIdeal (rep x) = φ x` using `fun x => by conv_rhs => rw [← hrep2 x]`. Both sides reduce to the same expression. Establish `hnm : ∀ u : (𝓞 E ⧸ w.asIdeal ^ 2)ˣ, rep u ∉ w.asIdeal` using `fun u => out_notMem w two_ne_zero u`. Establish `hv1 : ∀ u : (𝓞 E ⧸ w.asIdeal ^ 2)ˣ, w.valuation E (rep u : E) = 1` using `fun u => (w.valuation_eq_one_iff_notMem (K := E)).2 (hnm u)`.
+Establish an intermediate fact. Establish an intermediate fact. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hne : ∀ u : (𝓞 E ⧸ w.asIdeal ^ 2)ˣ, (rep u : E) ≠ 0` using `fun u h => by`. Use `hv1 u` as an intermediate fact. Rewrite `this` using `[h, map_zero]`. Conclude with `zero_ne_one this`. Establish `hmemH : ∀ u v : (𝓞 E ⧸ w.asIdeal ^ 2)ˣ, u * v⁻¹ ∈ H ↔ rep u - rep v ∈ w.asIdeal`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `u v`. Rewrite using `[MonoidHom.mem_ker, map_mul, map_inv, mul_inv_eq_one, ← Ideal.Quotient.eq, hrep, hrep, Units.ext_iff]`. Both sides reduce to the same expression. Establish `hH' : ∀ u k : (𝓞 E ⧸ w.asIdeal ^ 2)ˣ, k ∈ H → rep (u * k : (𝓞 E ⧸ w.asIdeal ^ 2)ˣ) - rep u ∈ w.asIdeal`. Introduce `u k hk`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hmemH, mul_comm u k, mul_inv_cancel_right]`. Conclude with `hk`. Set `f : (𝓞 E ⧸ w.asIdeal ^ 2)ˣ → ℂ` to `fun u => gaussTerm χ w c (rep u)`. Set `g : (𝓞 E ⧸ w.asIdeal ^ 2)ˣ → ℂ` to `fun u => twInv ξ w (rep u)`. Establish `hg : ∀ u, ∀ k ∈ H, g (u * k) = g u`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Introduce `u k hk`. Use `show twInv ξ w (rep ↑(u * k)) = twInv ξ w (rep ↑u)`. Rewrite using `[twInv, twInv, dif_neg (hne (u * k)), dif_neg (hne u)]`. Establish `hd` using `valuation_sub_le (E := E) (w := w) (a := 1) (y := rep ↑(u * k)) (y' := rep ↑u) (by rw [pow_one]; exact hH' u k hk)`. Establish `hξ1 : ξ.LevelLe w 1` using `hξ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hd' : w.valuation E (((Units.mk0 _ (hne (u * k)) : Eˣ) : E) - ((Units.mk0 _ (hne u) : Eˣ) : E)) ≤ WithZero.exp (-((1 : ℕ) : ℤ))`. Rewrite using `[Units.val_mk0, Units.val_mk0]`. Conclude with `hd`. Establish `ha : w.valuation E ((Units.mk0 _ (hne (u * k)) : Eˣ) : E) = 1` using `by rw [Units.val_mk0]; exact hv1 (u * k)`. Establish `hb : w.valuation E ((Units.mk0 _ (hne u) : Eˣ) : E) = 1` using `by rw [Units.val_mk0]; exact hv1 u`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[locK_eq_of_levelLe hξ1 ha hb hd']`. Establish `hmult : ∀ (u' h : (𝓞 E ⧸ w.asIdeal ^ 2)ˣ) (z : 𝓞 E) (e : Eˣ), (h : 𝓞 E ⧸ w.asIdeal ^ 2) = Ideal.Quotient.mk _ (1 + z) → (e : E) = 1 + z → z ∈ w.asIdeal → f (u' * h) = f u' * ((((χ.locK w e)⁻¹ : ℂˣ) : ℂ) * psiAt w (algebraMap E (w.adicCompletion E) ((rep u' : E) * z / c)))`. Introduce `u' h z e hh he hz`. Establish `h1 : (1 + z) ∉ w.asIdeal` using `fun h1 => w.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 (by`. Simplify using `using w.asIdeal.sub_mem h1 hz))`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h2 : rep u' * (1 + z) ∉ w.asIdeal` using `fun h2 => (w.isPrime.mem_or_mem h2).elim (hnm u') h1`. Establish `h3 : rep (u' * h : (𝓞 E ⧸ w.asIdeal ^ 2)ˣ) - rep u' * (1 + z) ∈ w.asIdeal ^ 2`. Rewrite using `[← Ideal.Quotient.eq, hrep2, map_mul, hrep2, ← hh, Units.val_mul]`. Simplify using `only [f]`. Rewrite using `[gaussTerm_congr hχ hc (hnm _) h2 h3, show ((rep u' * (1 + z) : 𝓞 E) : E) = (rep u' : E) * (1 + (z : E)) by push_cast; ring]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `gaussTerm_mul_one_add χ w c (hne u') e (by rw [he])`. Establish `huniq : ∀ u v : (𝓞 E ⧸ w.asIdeal ^ 2)ˣ, (¬ ∃ h ∈ H, ∃ μ : ℂ, μ ≠ 1 ∧ ∀ k ∈ H, f (u * k * h) = μ * f (u * k)) → (¬ ∃ h ∈ H, ∃ μ : ℂ, μ ≠ 1 ∧ ∀ k ∈ H, f (v * k * h) = μ * f (v * k)) → u * v⁻¹ ∈ H`. Introduce `u v hu hv`. Rewrite using `[hmemH]`. Use `mem_of_psiAt_eq_one hc fun z hz => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : (1 + z) ∉ w.asIdeal` using `fun h1 => w.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 (by`. Simplify using `using w.asIdeal.sub_mem h1 hz))`. Establish `he0 : ((1 + z : 𝓞 E) : E) ≠ 0` using `fun h0 => h1 (by`. Establish `: (1 + z : 𝓞 E) = 0` using `Subtype.ext h0`. Rewrite using `[this]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `w.asIdeal.zero_mem)`. Set `e : Eˣ` to `Units.mk0 _ he0`. Establish `he : (e : E) = 1 + (z : E)` using `by simp [e]`. Take `⟨h, hh⟩` from `Ideal.Quotient.isUnit_mk_pow_of_notMem w.asIdeal (n := 2) h1`. Establish `hhH : h ∈ H`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite using `[MonoidHom.mem_ker, Units.ext_iff, Units.val_one]`. Use `show φ h = 1`. Rewrite using `[hh]`. Use `show Ideal.Quotient.mk w.asIdeal (1 + z) = 1`. Rewrite using `[map_add, map_one, Ideal.Quotient.eq_zero_iff_mem.2 hz, add_zero]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `key : ∀ u : (𝓞 E ⧸ w.asIdeal ^ 2)ˣ, (¬ ∃ h ∈ H, ∃ μ : ℂ, μ ≠ 1 ∧ ∀ k ∈ H, f (u * k * h) = μ * f (u * k)) → psiAt w (algebraMap E (w.adicCompletion E) ((rep u : E) * z / c)) = ((χ.locK w e : ℂˣ) : ℂ)`. Introduce `u hu`. Assume the negation of the conclusion as `hne'`. Use `hu ⟨h, hhH, (((χ.locK w e)⁻¹ : ℂˣ) : ℂ) * psiAt w (algebraMap E (w.adicCompletion E) ((rep u : E) * z / c)), ?_, fun k hk => ?_⟩` and prove the remaining obligations. Introduce `h1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Apply `hne'` to reduce the goal to its premises. Rewrite `h1` using `[Units.val_inv_eq_inv_val, inv_mul_eq_one₀ (χ.locK w e).ne_zero]`. Conclude with `h1.symm`. Rewrite using `[hmult (u * k) h z e hh he hz, psiAt_mul_congr hc (hH' u k hk) hz, mul_comm]`. Establish `ev` using `key v hv`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact.
 
-Establish `eu` using `key u hu`. Establish `e2 : ((rep u : E) * z / c) = (rep v : E) * z / c + (((rep u - rep v : 𝓞 E) : E) * z / c)` using `by push_cast; ring`. Rewrite `eu` using `[e2, map_add, psiAt_add, ev]`. Use `(χ.locK w e).ne_zero` as an intermediate fact. Conclude with `(mul_eq_left₀ this).1 eu`.
-
-Take `⟨u₀, hu₀⟩` from `sum_mul_eq_of_concentrated H f g hg huniq`. Use `⟨Units.mk0 _ (hne u₀), ?_⟩` and prove the remaining obligations. Rewrite using `[gaussSumAt, gaussSumAt, finsum_eq_sum_of_fintype, finsum_eq_sum_of_fintype]`. Repeatedly rewrite using `[gaussTerm_mul]`. Establish `hg0 : g u₀ = (((ξ.locK w (Units.mk0 _ (hne u₀)))⁻¹ : ℂˣ) : ℂ)`.
-
-Simplify using `only [g, twInv, dif_neg (hne u₀)]`. Rewrite using `[← hg0]`. Conclude with `hu₀`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gaussSumAt_mul_tame {χ ξ : HChar E} {w : HeightOneSpectrum (𝓞 E)} (hχ : χ.LevelLe w 2) (hξ : ξ.TameAt w) {c : Eˣ}
     (hc : w.valuation E (c : E) = WithZero.exp (-((2 + diffExp w : ℕ) : ℤ))) :
@@ -396,13 +386,13 @@ end GlobalTheory.TameTwist
 namespace GlobalTheory.TameTwist
 
 /- English proof (translation)
-Introduce `E _ _ χ ξ w q s _ _ _ hχ hξ`. Establish `mono : ∀ {θ : HChar E} {m m' : ℕ}, m ≤ m' → θ.LevelLe w m → θ.LevelLe w m'` using `fun hm h x hx hd => h x hx (hd.trans (WithZero.exp_le_exp.2 (by omega)))`. Establish `hξ1 : ξ.LevelLe w 1` using `hξ`. Establish `hmul : ∀ {θ θ' : HChar E} {m : ℕ}, θ.LevelLe w m → θ'.LevelLe w m → (θ * θ').LevelLe w m` using `fun h h' x hx hd => by rw [Formalism.L2.Host.HChar.loc_mul, h x hx hd, h' x hx hd, one_mul]`. Establish `hχ2 : χ.LevelLe w 2` using `(hχ 2).2 le_rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨fun m => ⟨fun h => ?_, fun hm => hmul ((hχ m).2 hm) (mono (by omega) hξ1)⟩, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hm`. Establish `h1 : (χ * ξ).LevelLe w 1` using `mono (by omega) h`. Establish `h2 : χ.LevelLe w 1`. Establish `h3 : (χ * ξ * ξ⁻¹).LevelLe w 1` using `hmul h1 (fun x hx hd => by rw [Formalism.L2.Host.HChar.loc_inv, hξ1 x hx hd, inv_one])`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h3` using `[mul_inv_cancel_right]`. Then use the resulting hypothesis. Conclude with `absurd ((hχ 1).1 h2) (by omega)`. Take `⟨x₀, hx₀⟩` from `gaussSumAt_mul_tame hχ2 hξ (valuation_unif_pow w (2 + diffExp w))`. Use `⟨unif w ^ (2 + diffExp w) * x₀⁻¹, ?_⟩` and prove the remaining obligations. Rewrite using `[locEps, locEps, if_neg two_ne_zero, if_neg two_ne_zero, hx₀]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hm : ∀ x, (χ * ξ).locK w x = χ.locK w x * ξ.locK w x` using `fun x => rfl`. Rewrite using `[hm, map_mul, map_inv]`. Simplify using `only [Units.val_mul, Units.val_inv_eq_inv_val]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem locEps_mul_tame : ∀ (E : Type) [Field E] [NumberField E] (χ ξ : HChar E) (w : HeightOneSpectrum (𝓞 E)) (q : ℕ) (s : ℂ),
     q.Prime → Nat.card (𝓞 E ⧸ w.asIdeal) = q → (q : 𝓞 E) ∉ w.asIdeal ^ 2 → ExpAt χ w 2 → ξ.TameAt w →

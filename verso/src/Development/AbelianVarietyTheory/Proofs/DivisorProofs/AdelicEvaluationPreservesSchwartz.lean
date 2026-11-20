@@ -10,9 +10,9 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 namespace GlobalTheory.ThK.PlaneEv.SchMap
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Take `⟨s, rfl⟩` from `(idx hd).symm.surjective k`. Break down `s with p | p` into its components or cases. Rewrite using `[planeZeroInsertion_apply_inl]`. Conclude with `((((idx hd).symm.injective).comp Sum.inl_injective).extend_apply x 0 p).symm`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[planeZeroInsertion_apply_inr, Function.extend_apply']`. Both sides reduce to the same expression. Introduce and unpack `⟨a, ha⟩`. Simplify using `only [Function.comp_apply, (idx hd).symm.injective.eq_iff] at ha`. Conclude with `Sum.inl_ne_inr ha`.
+Both sides reduce to the same expression. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ins0_eq_extend {R : Type} [Zero R] {n d d₁ : ℕ} (hd : d = d₁ + 2) (x : Fin n × Fin d₁ → R) :
     ins0 hd x = Function.extend ((idx hd).symm ∘ Sum.inl) x 0 := by
@@ -28,7 +28,7 @@ theorem ins0_eq_extend {R : Type} [Zero R] {n d d₁ : ℕ} (hd : d = d₁ + 2) 
       exact Sum.inl_ne_inr ha
 
 /- English proof (translation)
-Introduce `F _ _ n d d₁ hd Φ hΦ`. Establish `h` using `GlobalTheory.RestrSchA.mem_schA_comp_extend F ((idx hd).symm ∘ Sum.inl) (((idx hd).symm.injective).comp Sum.inl_injective) Φ hΦ`. Use `h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `y`. Rewrite using `[evA_apply, ins0_eq_extend]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem evA_mem_schA : ∀ (F : Type) [Field F] [NumberField F] (n d d₁ : ℕ) (hd : d = d₁ + 2), ∀ Φ ∈ schA F (Fin n × Fin d),
     evA F hd Φ ∈ schA F (Fin n × Fin d₁) := by

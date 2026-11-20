@@ -15,7 +15,7 @@ section Pt
 variable {F : Type} [Field F] {X : Scheme.{0}} {M : LB X} {K K' : Type} [Fintype K] [Fintype K']
 
 /- English proof (translation)
-The claim follows from `corr_of_val hM fun y' I hI => by have : Subsingleton (Sp F) := inferInstanceAs (Subsingleton (PrimeSpectrum F)) obtain rfl := Subsingleton.elim y y' exact (gen_trans ht (𝟙 _) y (hI.mem _ _) (hJ.mem _ _)).trans ((congrArg₂ (· * ·) (hF.trF (𝟙 _) y (fun ψ => I (𝟙 _ ≫ ψ)) fun ψ => J …`.
+A detailed English derivation is pending.
 -/
 theorem corr_pt (hM : M.IsLB) {φ : K → (Sp F ⟶ X)} {ε : K → ℤ} {φ' : K' → (Sp F ⟶ X)} {ε' : K' → ℤ} (hF : FormEq φ ε φ' ε')
     {t : LB.Gen (LB.LinComb M φ ε)} {t' : LB.Gen (LB.LinComb M φ' ε')} (ht : t.IsGen) (ht' : t'.IsGen) {y : Sp F} {J}
@@ -28,7 +28,7 @@ theorem corr_pt (hM : M.IsLB) {φ : K → (Sp F ⟶ X)} {ε : K → ℤ} {φ' : 
       (gen_trans ht' (𝟙 _) y (hI.mem _ _) (hJ.mem _ _)).symm)
 
 /- English proof (translation)
-Introduce `s` and use `by obtain ⟨U, hU, a, rfl⟩ := (Sp F).presheaf.exists_germ_eq s obtain rfl : U = ⊤ := top_le_iff.1 ((top_le_iff_mem (𝟙 (Sp F)) U y).2 hU) exact ⟨(Scheme.ΓSpecIso (CommRingCat.of F)).hom.hom a, by simp [toStk]⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem toStk_surj (y : Sp F) : Function.Surjective (toStk y) := fun s => by
   obtain ⟨U, hU, a, rfl⟩ := (Sp F).presheaf.exists_germ_eq s
@@ -36,11 +36,11 @@ theorem toStk_surj (y : Sp F) : Function.Surjective (toStk y) := fun s => by
   exact ⟨(Scheme.ΓSpecIso (CommRingCat.of F)).hom.hom a, by simp [toStk]⟩
 
 /- English proof (translation)
-Establish `all : ∀ w : Sp F, w ∈ LB.wchart M φ fun k => J (𝟙 _ ≫ φ k)` using `fun w => (top_le_iff_mem (𝟙 (Sp F)) _ y).2 (hJ.mem φ (𝟙 _)) trivial`. Establish `le : ∀ j, LB.wchart M φ j ≤ LB.wchart M φ j ⊓ LB.wchart M φ fun k => J (𝟙 _ ≫ φ k)` using `fun j w hw => ⟨hw, all w⟩`. Take `⟨f, hf⟩` from `toStk_surj y u.val`. Establish `f0 : f ≠ 0` using `fun h => Units.ne_zero _ (hf.symm.trans (by rw [h, map_zero]))`. Set `c : Γ(Sp F, ⊤)ˣ` to `Units.map (Scheme.ΓSpecIso (CommRingCat.of F)).inv.hom.toMonoidHom (Units.mk0 f f0)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hc : gm (𝟙 (Sp F)) y ⊤ c = u` using `Units.ext ((gm_val (𝟙 _) y ⊤ trivial c).trans hf)`. Set `t : LB.Gen (LB.LinComb M φ ε)` to `⟨fun j => res (le j) ((LB.LinComb M φ ε).g j fun k => J (𝟙 _ ≫ φ k)) * res le_top c⟩`. Establish `v : ∀ (w : Sp F) j, w ∈ LB.wchart M φ j → gm (𝟙 (Sp F)) w (LB.wchart M φ j) (t.s j) = trF φ ε (𝟙 _) w j (fun k => J (𝟙 _ ≫ φ k)) * gm (𝟙 (Sp F)) w ⊤ c` using `fun w j h => (map_mul _ _ _).trans (congrArg₂ (· * ·) ((gm_res _ w (le j) h _).trans (gm_linComb M _ ε (𝟙 _) w j _ h (all w))) (gm_res _ w le_top h c))`. Use `⟨t, isGen_of_gm _ fun w j j' h h' => ?_, (v y _ (all y)).trans ?_⟩` and prove the remaining obligations. Use `(v w j h).trans (Eq.trans ?_ (congrArg _ (v w j' h')).symm)` and prove the remaining obligations.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← trF_trans hM _ ε (𝟙 _) w h h' (all w), _root_.mul_assoc]`. Rewrite using `[mul_eq_left.1 (trF_trans hM φ ε (𝟙 _) y (all y) (all y) (all y)), _root_.one_mul, hc]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_gen_val (hM : M.IsLB) (φ : K → (Sp F ⟶ X)) (ε : K → ℤ) {y : Sp F} {J} (hJ : Good M y J)
     (u : ((Sp F).presheaf.stalk y)ˣ) : ∃ t : LB.Gen (LB.LinComb M φ ε), t.IsGen ∧ val t (𝟙 _) y J = u := by
@@ -70,9 +70,9 @@ variable {y : (TF (R := R) F).left} {J : ((TF (R := R) F).left ⟶ D.P.A.left) �
 include hJ
 
 /- English proof (translation)
-Use `choose s hs hv using fun χ => exists_gen_val D.P.isLB (DegPre.gtφ D F b χ) DegPre.gtε hJ (v χ)`. Use `⟨⟨b, s, hs, corr_pt D.P.isLB (fun U _ h => ?_) (hs 0) (fun i j => (map_one _).trans ((congrArg₂ (· * ·) (Fintype.prod_empty _) (map_one _)).trans (_root_.mul_one _)).symm) hJ ((hv 0).trans (m₀.trans (val_one _).symm)), fun χ χ' => corr_pt D.P.isLB (fun U _ h => ?_) (mulGen_isGen …` and prove the remaining obligations. Rewrite using `[prod_gt, cPoint_zero, _root_.one_mul]`. Simplify using the standard rewrite rules. Use `(prod_sum₂ (K := Fin 4) (K' := thK.{0}) (U := U) _ (prod_gt b _ h) (prod_cub (cP D _ χ) (cP D _ χ') b h)).trans (Eq.trans ?_ (prod_sum₂ (K := Fin 4) (K' := Fin 4) (U := U) _ (prod_gt b χ h) (prod_gt b χ' h)).symm)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[cPoint_add]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv]`. Normalize the expressions using the abelian group laws.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem exists_gt_pt (b : TF (R := R) F ⟶ D.P.A) (v : D.X → ((TF (R := R) F).left.presheaf.stalk y)ˣ) (m₀ : v 0 = 1)
     (m : ∀ χ χ', v (χ + χ') * th D y J (cP D _ χ) (cP D _ χ') b = v χ * v χ') :
@@ -93,9 +93,9 @@ theorem exists_gt_pt (b : TF (R := R) F ⟶ D.P.A) (v : D.X → ((TF (R := R) F)
     abel
 
 /- English proof (translation)
-Take `⟨b, s, hs, z, m⟩` from `g`. Take `⟨b', s', hs', z', m'⟩` from `g'`. Take `rfl : b = b'` from `hb`. Take `rfl : s = s'` from `funext fun χ => by`. Establish `e : (s χ).s = (s' χ).s` using `funext fun j => unit_ext fun w hw => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: Subsingleton (TF (R` using `R) F).left := inferInstanceAs (Subsingleton (PrimeSpectrum F))`. Take `rfl` from `Subsingleton.elim y w`. Conclude with `(gen_trans (hs χ) (𝟙 _) y hw (hJ.mem _ _)).trans ((congrArg _ (hv χ)).trans (gen_trans (hs' χ) (𝟙 _) y hw (hJ.mem _ _)).symm)`. Conclude with `congrArg LB.Gen.mk e`. Both sides reduce to the same expression.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem gt_ext {g g' : GtPtF D F} (hb : g.b = g'.b) (hv : ∀ χ, val (g.s χ) (𝟙 _) y J = val (g'.s χ) (𝟙 _) y J) :
     g = g' := by
@@ -112,7 +112,7 @@ theorem gt_ext {g g' : GtPtF D F} (hb : g.b = g'.b) (hv : ∀ χ, val (g.s χ) (
   rfl
 
 /- English proof (translation)
-Use `⟨fun h => ⟨h.1, fun χ => ((isZero_iff g).1 h).2 χ y J hJ⟩, fun ⟨hb, hv⟩ => ⟨hb, fun χ => corr_pt D.P.isLB (fun U _ h => ?_) (g.isGen χ) (fun i j => (map_one _).trans ((congrArg₂ (· * ·) (Fintype.prod_empty _) (map_one _)).trans (_root_.mul_one _)).symm) hJ ((hv χ).trans (val_one …` and prove the remaining obligations. Use `show ∏ i, h (DegPre.gtφ D F g.b χ i) ^ DegPre.gtε i = _`. Rewrite using `[prod_gt, hb, _root_.mul_one]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isZero_pt (g : GtPtF D F) : g.IsZero ↔ g.b = 1 ∧ ∀ χ, val (g.s χ) (𝟙 _) y J = 1 := by
   refine ⟨fun h => ⟨h.1, fun χ => ((isZero_iff g).1 h).2 χ y J hJ⟩, fun ⟨hb, hv⟩ => ⟨hb, fun χ =>
@@ -123,7 +123,7 @@ theorem isZero_pt (g : GtPtF D F) : g.IsZero ↔ g.b = 1 ∧ ∀ χ, val (g.s χ
   rw [prod_gt, hb, _root_.mul_one]; simp
 
 /- English proof (translation)
-Use `⟨fun h => ⟨h.1, fun χ => ((isAdd_iff _ _ _).1 h).2 χ y J hJ⟩, fun ⟨e, hv⟩ => ⟨e, fun χ => corr_pt D.P.isLB (fun U _ h => ?_) (mulGen_isGen _ _ _ _ _ _ _ (g''.isGen χ) (pullGen_isGen _ _ _ _ D.cub.isGen _)) (mulGen_isGen _ _ _ _ _ _ _ (g.isGen χ) (g'.isGen χ)) hJ (((val_mul hJ _ _ …` and prove the remaining obligations. Use `(prod_sum₂ (K := Fin 4) (K' := thK.{0}) (U := U) _ (prod_gt g''.b χ h) (prod_cub (cP D _ χ) g.b g'.b h)).trans (Eq.trans ?_ (prod_sum₂ (K := Fin 4) (K' := Fin 4) (U := U) _ (prod_gt g.b χ h) (prod_gt g'.b χ h)).symm)` and prove the remaining obligations. Rewrite using `[e, _root_.mul_assoc (cP D _ χ)]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
 Normalize the expressions using the abelian group laws.
 -/
@@ -144,7 +144,7 @@ theorem isAdd_pt (g g' g'' : GtPtF D F) : g.IsAdd g' g'' ↔ g''.b = g.b * g'.b 
   abel
 
 /- English proof (translation)
-Use `⟨fun h => ⟨h.1, fun χ => ((isIota_iff _ _).1 h).2 χ y J hJ⟩, fun ⟨e, hv⟩ => ⟨e, fun χ => corr_pt D.P.isLB (fun U _ h => ?_) (g.isGen χ) (pullGen_isGen _ _ _ _ (mulGen_isGen _ _ _ _ _ _ _ (mulGen_isGen _ _ _ _ _ _ _ (mulGen_isGen _ _ _ _ _ _ _ (D.psi_gen _) (invGen_isGen _ _ _ _ ( …` and prove the remaining obligations. Establish `a : ∀ x, jFK (R` using `R) F ≫ ptK (D.c x) = (cP D (TF (R := R) F) x).left := fun x => (Category.assoc _ _ _).symm`. Establish `a₀ : jFK (R` using `R) F ≫ (toUnit (TK R)).left ≫ eSec D.P.A = (1 : TF (R := R) F ⟶ D.P.A).left := (Category.assoc _ _ _).symm`. Rewrite using `[prod_gt, e]`. Simplify using `only [Fintype.prod_sum_type, Sum.elim_inl, Sum.elim_inr, Fintype.prod_unique, a, a₀, cPoint_add, neg_neg, zpow_neg, zpow_one, mul_comm (cP D _ z)]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 The two sides agree by associativity and commutativity.
 -/
@@ -169,7 +169,7 @@ end OneGauge
 def toStkU (y : Sp F) : Fˣ →* ((Sp F).presheaf.stalk y)ˣ := Units.map (toStk y).toMonoidHom
 
 /- English proof (translation)
-Use `⟨fun a b h => Units.ext ((toStk y).injective (congrArg Units.val h)), fun u => ?_⟩` and prove the remaining obligations. Take `⟨f, hf⟩` from `toStk_surj y u.val`. Conclude with `⟨Units.mk0 f fun h => u.ne_zero (hf.symm.trans (by rw [h, map_zero])), Units.ext hf⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem toStkU_bijective (y : Sp F) : Function.Bijective (toStkU y) := by
   refine ⟨fun a b h => Units.ext ((toStk y).injective (congrArg Units.val h)), fun u => ?_⟩
@@ -177,14 +177,14 @@ theorem toStkU_bijective (y : Sp F) : Function.Bijective (toStkU y) := by
   exact ⟨Units.mk0 f fun h => u.ne_zero (hf.symm.trans (by rw [h, map_zero])), Units.ext hf⟩
 
 /- English proof (translation)
-The claim follows from `toStk_valF r _ y (hJ.mem φ r) _`.
+A detailed English derivation is pending.
 -/
 theorem toStk_vF {X Y : Scheme.{0}} {L : LB X} {K : Type} [Fintype K] {φ : K → (Y ⟶ X)} {ε : K → ℤ}
     (t : LB.Gen (LB.LinComb L φ ε)) (r : Sp F ⟶ Y) {y : Sp F} {J : (Sp F ⟶ X) → L.ι} (hJ : Good L y J) :
     toStk y (vF t r J) = (val t r y J).val := toStk_valF r _ y (hJ.mem φ r) _
 
 /- English proof (translation)
-Rewrite using `[← (toStk y).injective.eq_iff, toStk_vF t r hJ, ← Units.val_inj]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem eq_vF_iff {X Y : Scheme.{0}} {L : LB X} {K : Type} [Fintype K] {φ : K → (Y ⟶ X)} {ε : K → ℤ}
     (t : LB.Gen (LB.LinComb L φ ε)) (r : Sp F ⟶ Y) {y : Sp F} {J : (Sp F ⟶ X) → L.ι} (hJ : Good L y J) (u : Fˣ) :
@@ -194,21 +194,21 @@ theorem eq_vF_iff {X Y : Scheme.{0}} {L : LB X} {K : Type} [Fintype K] {φ : K �
 variable {N : NumD F} (ν : NumOf D F N) (y : Sp F)
 
 /- English proof (translation)
-Introduce `ψ` and use `(top_le_iff_mem ψ _ y).1 (ν.good ψ)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem good : Good D.P.L y ν.J := fun ψ => (top_le_iff_mem ψ _ y).1 (ν.good ψ)
 
 /- English proof (translation)
-The claim follows from `(eq_vF_iff (L := D.P.L) (φ := thφ D.P.A (x3 D.P.A)) (ε := thε) D.cub.t _ (good ν y) _).1 (ν.θ_eq a b c)`.
+A detailed English derivation is pending.
 -/
 theorem theta_eq (a b c : N.A) :
     toStkU y (N.θ a b c) = th D (T := TF (R := R) F) y ν.J (ν.eA a) (ν.eA b) (ν.eA c) :=
   (eq_vF_iff (L := D.P.L) (φ := thφ D.P.A (x3 D.P.A)) (ε := thε) D.cub.t _ (good ν y) _).1 (ν.θ_eq a b c)
 
 /- English proof (translation)
-Establish `hJ` using `good ν y`. Establish `p : ∀ χ, toStkU y (N.ψ χ) = val (D.psi (ν.eX χ)) (jFK (R` using `R) F) y ν.J * val D.rigK (jFK (R := R) F) y ν.J := fun χ => Units.ext (by`. Use `(congrArg (toStk y) (ν.ψ_eq χ)).trans ((map_mul _ _ _).trans (congrArg₂ (· * ·) (toStk_vF _ _ hJ) ((toStk_vF _ _ hJ).trans (congrArg Units.val ?_))))` and prove the remaining obligations. Conclude with `(val_pull (φ := fun _ : PUnit => eSec D.P.A) (ε := fun _ => 1) hJ D.rig (toUnit (TK R)).left (jFK (R := R) F)).symm)`. Rewrite using `[Category.id_comp]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Eq.trans ?_ ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) rfl (val_inv _ _))) (val_inv _ _))) (val_inv _ _))).symm` and prove the remaining obligations. Rewrite using `[NumD.τ, map_div, map_div, p, p, p, map_add]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv, ofMul_div]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem tau_eq (a b : N.X) :
     toStkU y (N.τ a b) = val (D.tau (ν.eX a) (ν.eX b)) (𝟙 _ ≫ jFK (R := R) F) y ν.J := by
@@ -228,23 +228,23 @@ theorem tau_eq (a b : N.X) :
   abel
 
 /- English proof (translation)
-The claim follows from `and_congr Iff.rfl (forall_congr' fun _ => eq_vF_iff _ _ (good ν y) _)`.
+A detailed English derivation is pending.
 -/
 theorem pt_iff (g : GtPtF D F) (c : N.Gt) :
     ν.Pt g c ↔ ν.eA c.b = g.b ∧ ∀ χ, toStkU y (c.s χ) = val (g.s (ν.eX χ)) (𝟙 _) y ν.J :=
   and_congr Iff.rfl (forall_congr' fun _ => eq_vF_iff _ _ (good ν y) _)
 
 /- English proof (translation)
-The claim follows from `ν.c_eq χ`.
+A detailed English derivation is pending.
 -/
 theorem c_eq (χ : N.X) : ν.eA (N.c χ) = cP D _ (ν.eX χ) := ν.c_eq χ
 
 omit y in
 
 /- English proof (translation)
-Set `y : Sp F` to `(⊥ : PrimeSpectrum F)`. Use `choose s hs using fun χ => (toStkU_bijective y).2 (val (g.s (ν.eX χ)) (𝟙 _) y ν.J)`. Use `⟨⟨ν.eA.symm g.b, s, fun χ χ' => (toStkU_bijective y).1 ?_⟩, (pt_iff ν y _ _).2 ⟨ν.eA.apply_symm_apply _, hs⟩⟩` and prove the remaining obligations. Establish `e` using `gt_mul (𝟙 (TF (R := R) F)) (good ν y) g (ν.eX χ) (ν.eX χ')`. Rewrite `e` using `[Category.id_comp]`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, map_mul, hs, hs, hs, theta_eq ν y, c_eq, c_eq, ν.eA.apply_symm_apply, map_add]`. Conclude with `e`.
+A detailed English derivation is pending.
 -/
 theorem exists_val (g : GtPtF D F) : ∃ c, ν.Pt g c := by
   let y : Sp F := (⊥ : PrimeSpectrum F)
@@ -258,7 +258,7 @@ theorem exists_val (g : GtPtF D F) : ∃ c, ν.Pt g c := by
 omit y in
 
 /- English proof (translation)
-The claim follows from `NumD.Gt.ext (ν.eA.injective (h.1.trans h'.1.symm)) (funext fun χ => Units.ext ((h.2 χ).trans (h'.2 χ).symm))`.
+A detailed English derivation is pending.
 -/
 theorem val_unique {g : GtPtF D F} {c c' : N.Gt} (h : ν.Pt g c) (h' : ν.Pt g c') : c = c' :=
   NumD.Gt.ext (ν.eA.injective (h.1.trans h'.1.symm)) (funext fun χ => Units.ext ((h.2 χ).trans (h'.2 χ).symm))
@@ -266,9 +266,9 @@ theorem val_unique {g : GtPtF D F} {c c' : N.Gt} (h : ν.Pt g c) (h' : ν.Pt g c
 omit y in
 
 /- English proof (translation)
-Set `y : Sp F` to `(⊥ : PrimeSpectrum F)`. Take `⟨g, hb, hv⟩` from `exists_gt_pt (D := D) (F := F) (good ν y) (ν.eA c.b) (fun χ => toStkU y (c.s (ν.eX.symm χ))) (by rw [map_zero, NumD.Gt.s_zero]; exact map_one _) (fun χ χ' => by`. Establish `e` using `congrArg (toStkU y) (c.mult (ν.eX.symm χ) (ν.eX.symm χ'))`. Rewrite `e` using `[map_mul, map_mul, theta_eq ν y, c_eq, c_eq, ν.eX.apply_symm_apply, ν.eX.apply_symm_apply, ← map_add]`. Conclude with `e)`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨g, (pt_iff ν y _ _).2 ⟨hb.symm, fun χ => ((hv _).trans (by rw [ν.eX.symm_apply_apply])).symm⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_pt (c : N.Gt) : ∃ g, ν.Pt g c := by
   let y : Sp F := (⊥ : PrimeSpectrum F)
@@ -282,9 +282,9 @@ theorem exists_pt (c : N.Gt) : ∃ g, ν.Pt g c := by
 omit y in
 
 /- English proof (translation)
-Set `y : Sp F` to `(⊥ : PrimeSpectrum F)`. Take `⟨a, b⟩` from `(pt_iff ν y _ _).1 h`. Take `⟨a', b'⟩` from `(pt_iff ν y _ _).1 h'`. Use `gt_ext (good ν y) (a.symm.trans a') fun χ => ?_` and prove the remaining obligations. Take `⟨χ, rfl⟩` from `ν.eX.surjective χ`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `(b χ).symm.trans (b' χ)`.
+A detailed English derivation is pending.
 -/
 theorem pt_unique {g g' : GtPtF D F} {c : N.Gt} (h : ν.Pt g c) (h' : ν.Pt g' c) : g = g' := by
   let y : Sp F := (⊥ : PrimeSpectrum F)
@@ -297,9 +297,9 @@ theorem pt_unique {g g' : GtPtF D F} {c : N.Gt} (h : ν.Pt g c) (h' : ν.Pt g' c
 omit y in
 
 /- English proof (translation)
-Set `y : Sp F` to `(⊥ : PrimeSpectrum F)`. Take `⟨a, b⟩` from `(pt_iff ν y _ _).1 h`. Rewrite using `[isZero_pt (good ν y), NumD.Gt.ext_iff, funext_iff, ν.eX.surjective.forall]`. Use `and_congr ?_ (forall_congr' fun χ => ?_)` and prove the remaining obligations. Rewrite using `[← a]`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ν.eA.map_eq_one_iff`. Conclude with `(Eq.congr (b χ).symm (map_one (toStkU y)).symm).trans (toStkU_bijective y).1.eq_iff`.
+A detailed English derivation is pending.
 -/
 theorem isZero_val {g : GtPtF D F} {c : N.Gt} (h : ν.Pt g c) : g.IsZero ↔ c = 1 := by
   let y : Sp F := (⊥ : PrimeSpectrum F)
@@ -312,11 +312,11 @@ theorem isZero_val {g : GtPtF D F} {c : N.Gt} (h : ν.Pt g c) : g.IsZero ↔ c =
 omit y in
 
 /- English proof (translation)
-Set `y : Sp F` to `(⊥ : PrimeSpectrum F)`. Take `⟨a, b⟩` from `(pt_iff ν y _ _).1 h`. Take `⟨a', b'⟩` from `(pt_iff ν y _ _).1 h'`. Take `⟨a'', b''⟩` from `(pt_iff ν y _ _).1 h''`. Rewrite using `[isAdd_pt (good ν y), NumD.Gt.ext_iff, funext_iff, ν.eX.surjective.forall]`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `and_congr ?_ (forall_congr' fun χ => ?_)` and prove the remaining obligations. Rewrite using `[← a, ← a', ← a'', ← map_mul]`. Conclude with `ν.eA.injective.eq_iff`. Establish `t` using `theta_eq ν y (N.c χ) c.b c'.b`. Rewrite `t` using `[c_eq, a, a']`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[NumD.Gt.mul_s, eq_div_iff_mul_eq', ← (toStkU_bijective y).1.eq_iff, map_mul, map_mul, b, b', b'', t]`.
+A detailed English derivation is pending.
 -/
 theorem isAdd_val {g g' g'' : GtPtF D F} {c c' c'' : N.Gt} (h : ν.Pt g c) (h' : ν.Pt g' c') (h'' : ν.Pt g'' c'') :
     GtPtF.IsAdd g g' g'' ↔ c'' = c * c' := by
@@ -334,9 +334,9 @@ theorem isAdd_val {g g' g'' : GtPtF D F} {c c' c'' : N.Gt} (h : ν.Pt g c) (h' :
 omit y in
 
 /- English proof (translation)
-Set `y : Sp F` to `(⊥ : PrimeSpectrum F)`. Take `⟨a, b⟩` from `(pt_iff ν y _ _).1 h`. Rewrite using `[isIota_pt (good ν y), NumD.Gt.ext_iff, funext_iff, ν.eX.surjective.forall]`. Use `and_congr ?_ (forall_congr' fun χ => ?_)` and prove the remaining obligations. Rewrite using `[← a, ← c_eq]`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ν.eA.injective.eq_iff`. Conclude with `(Eq.congr (b χ).symm (tau_eq ν y z χ).symm).trans (toStkU_bijective y).1.eq_iff`.
+A detailed English derivation is pending.
 -/
 theorem isIota_val {z : N.X} {g : GtPtF D F} {c : N.Gt} (h : ν.Pt g c) : GtPtF.IsIota (ν.eX z) g ↔ c = N.io z := by
   let y : Sp F := (⊥ : PrimeSpectrum F)
@@ -349,9 +349,9 @@ theorem isIota_val {z : N.X} {g : GtPtF D F} {c : N.Gt} (h : ν.Pt g c) : GtPtF.
 omit y in
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨gs, g₀, st, rfl⟩ choose cs hcs using fun i => exists_val ν (gs i)`. Establish `: ∀ (i : ℕ) (hi : i < k + 1), cs ⟨i, hi⟩ = c ^ i` using `fun i hi => by`. Proceed by induction on `i with`. Consider the case `zero => exact ((isZero_val ν (hcs _)).1 g₀).trans (pow_zero c).symm`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Consider the case `succ i ih`. Conclude with `((isAdd_val ν (hcs _) h (hcs _)).1 (st ⟨i, by omega⟩)).trans (by rw [pow_succ, ← ih (by omega)]; rfl)`. Conclude with `(val_unique ν h' (hcs _)).trans (this k (Nat.lt_succ_self k))`. Introduce and unpack `rfl choose gs hgs using fun i : ℕ => exists_pt ν (c ^ i)`. Conclude with `⟨fun i => gs i, (isZero_val ν (hgs 0)).2 (pow_zero c), fun i => (isAdd_val ν (hgs i) h (hgs (i + 1))).2 (pow_succ c i), pt_unique ν (hgs k) h'⟩`.
+Treat this case separately. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isNsmul_val (k : ℕ) {g g' : GtPtF D F} {c c' : N.Gt} (h : ν.Pt g c) (h' : ν.Pt g' c') :
     GtPtF.IsNsmul k g g' ↔ c' = c ^ k := by
@@ -370,15 +370,15 @@ theorem isNsmul_val (k : ℕ) {g g' : GtPtF D F} {c c' : N.Gt} (h : ν.Pt g c) (
       fun i => (isAdd_val ν (hgs i) h (hgs (i + 1))).2 (pow_succ c i), pt_unique ν (hgs k) h'⟩
 
 /- English proof (translation)
-Introduce `R _ _ D _ _ F _ _ _ N ν`. Use `⟨fun g => ?_, fun c => ?_, fun _ _ _ _ _ _ => isAdd_val ν, fun _ _ _ => isIota_val ν, fun k => ⟨fun p => ?_, fun q => ?_, fun p p' q q' h h' => ?_⟩⟩` and prove the remaining obligations. Take `⟨c, h⟩` from `exists_val ν g`. Conclude with `⟨c, h, fun _ h' => val_unique ν h' h⟩`. Take `⟨g, h⟩` from `exists_pt ν c`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨g, h, fun _ h' => pt_unique ν h' h⟩`. Take `⟨c, hc⟩` from `exists_val ν p.g`. Take `⟨g', hn, hi⟩` from `p.eq`. Take `⟨c', hc'⟩` from `exists_val ν g'`. Rewrite `hi` using `[← ν.eX.apply_symm_apply p.y]`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨⟨(Multiplicative.ofAdd (ν.eX.symm p.y), c), ((isNsmul_val ν k hc hc').1 hn).symm.trans ((isIota_val ν hc').1 hi)⟩, ⟨ν.eX.apply_symm_apply _, hc⟩, fun q hq => ?_⟩` and prove the remaining obligations. Conclude with `Subtype.ext (Prod.ext (ν.eX.eq_symm_apply.2 hq.1) (val_unique ν hq.2 hc))`. Take `⟨g, hg⟩` from `exists_pt ν q.1.2`. Take `⟨g', hg'⟩` from `exists_pt ν (q.1.2 ^ k)`. Conclude with `⟨⟨ν.eX q.1.1.toAdd, g, g', (isNsmul_val ν k hg hg').2 rfl, (isIota_val ν hg').2 q.2⟩, rfl, hg⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Use `ν.eX.surjective.exists.trans (exists_congr fun z => and_congr ?_ ?_)` and prove the remaining obligations. Rewrite using `[← h.1, ← h'.1, ← map_nsmul, ← map_add]`. Conclude with `ν.eX.injective.eq_iff`. Take `⟨g, hg⟩` from `exists_pt ν (N.io z)`. Use `⟨fun ⟨g', hi, ha⟩ => ?_, fun e => ⟨g, (isIota_val ν hg).2 rfl, (isAdd_val ν h.2 hg h'.2).2 e⟩⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨c', hc'⟩` from `exists_val ν g'`. Rewrite using `[← (isIota_val ν hc').1 hi]`. Conclude with `(isAdd_val ν h.2 hc' h'.2).1 ha`.
+A detailed English derivation is pending.
 -/
 theorem points_correspond : BrGtSt := by
   intro R _ _ D _ _ F _ _ _ N ν

@@ -27,13 +27,13 @@ open MeasureTheory NumberField Formalism.BasicNotions Formalism.MainNotions.S Fo
 namespace Formalism.L2.SG.Pf
 
 /- English proof (translation)
-The claim follows from `normExpDegC_of_leaves Formalism.L2.SG.Closed.FinLeviC_holds Formalism.L2.SG.Closed.OOLintSumC_holds`.
+A detailed English derivation is pending.
 -/
 theorem normExpDegC_holds : NormExpDegC :=
   normExpDegC_of_leaves Formalism.L2.SG.Closed.FinLeviC_holds Formalism.L2.SG.Closed.OOLintSumC_holds
 
 /- English proof (translation)
-The claim follows from `Formalism.L2.SG.Pf.MainEqPoints.stepPointsG_of_leaves Formalism.L2.SG.Closed.AvgCore_holds Formalism.L2.SG.Pf.ginfUnimod_holds Formalism.L2.SG.Pf.nLamNinf_holds Formalism.L2.SG.Closed.ChiTrivialC_holds Formalism.L2.SG.Pf.psiInfChar_holds Formalism.L2.SG.Pf.rClosedC_holds Formalis …`.
+A detailed English derivation is pending.
 -/
 theorem stepPointsG_holds : StepPointsG :=
   Formalism.L2.SG.Pf.MainEqPoints.stepPointsG_of_leaves Formalism.L2.SG.Closed.AvgCore_holds Formalism.L2.SG.Pf.ginfUnimod_holds
@@ -42,7 +42,7 @@ theorem stepPointsG_holds : StepPointsG :=
     Formalism.L2.SG.NonRelPf.nonRelCharC_holds (fun D X Y u u' => Formalism.L2.SG.LeadingMinorsNonvanishing.atSomeAll_holds D X Y u u')
 
 /- English proof (translation)
-The claim follows from `Formalism.L2.SG.NGCut.LeadingMinorIntegrality.Gen.stepNormOneG_of_leaves Formalism.L2.SG.Closed.AvgCore_holds Formalism.L2.SG.Pf.ginfUnimod_holds Formalism.L2.SG.Pf.nLamNinf_holds Formalism.L2.SG.Closed.ChiTrivialC_holds Formalism.L2.SG.Pf.psiInfChar_holds Formalism.L2.SG.Pf.rClo …`.
+A detailed English derivation is pending.
 -/
 theorem stepNormOneG_holds : StepNormOneG :=
   Formalism.L2.SG.NGCut.LeadingMinorIntegrality.Gen.stepNormOneG_of_leaves Formalism.L2.SG.Closed.AvgCore_holds Formalism.L2.SG.Pf.ginfUnimod_holds
@@ -51,7 +51,7 @@ theorem stepNormOneG_holds : StepNormOneG :=
     Formalism.L2.SG.NonRelPf.nonRelCharC_holds (fun D X Y u u' => Formalism.L2.SG.LeadingMinorsNonvanishing.atSomeAll_holds D X Y u u')
 
 /- English proof (translation)
-The claim follows from `rowMainEqC_of_pinned Formalism.FourierDecayAlt.P.norm_chain stepClassG_holds (Formalism.L2.SG.NGCut.NormalInvariants.Gen.stepNormalsG_of hNI Formalism.L2.SG.NGCut.NormalCount.NormCount_holds stepNormOneG_holds) stepPointsG_holds stepNormOneG_holds (tieOfCtx_of Formalism.L2.SG.NGL …`.
+A detailed English derivation is pending.
 -/
 theorem rowMainEqC_of_open (hNI : Formalism.L2.SG.NGCut.NormalInvariants.Gen.NmlInvG) (hB : StepChoiceConstantsC) (hE : StepPinExists)
     (hF : Formalism.L2.SG.Pf.FormRel.FormRelC) (hL : Formalism.L2.SG.Pf.MainEqLoc.StepLocPinnedG)
@@ -63,7 +63,7 @@ theorem rowMainEqC_of_open (hNI : Formalism.L2.SG.NGCut.NormalInvariants.Gen.Nml
     (stepThmBPinnedG_of_bdat hT)
 
 /- English proof (translation)
-The claim follows from `rowMainEqC_of_open (nmlInvG_of hNL hNI hNS) hB hE formRelC_holds (stepLocPinnedG_of_fam (Formalism.L2.SG.NGLeaves.ranks_of_dictionary hDict) hFam) hT`.
+A detailed English derivation is pending.
 -/
 theorem rowMainEqC_of_fam (hNL : Formalism.L2.SG.NGCut.NormalVectorPairings.NmlLine) (hNI : Formalism.L2.SG.NGCut.NormalVectorPairings.NmlInt)
     (hNS : Formalism.L2.SG.NGCut.NormalVectorPairings.NmlSep) (hB : StepChoiceConstantsC) (hE : StepPinExists)
@@ -73,7 +73,7 @@ theorem rowMainEqC_of_fam (hNL : Formalism.L2.SG.NGCut.NormalVectorPairings.NmlL
     (stepLocPinnedG_of_fam (Formalism.L2.SG.NGLeaves.ranks_of_dictionary hDict) hFam) hT
 
 /- English proof (translation)
-The claim follows from `rowMainEqC_of_fam Formalism.L2.SG.NGCut.NormalVectorPairings.NmlLine_holds Formalism.L2.SG.NGCut.NormalIntegrality.NmlInt_holds Formalism.L2.SG.NGCut.NormalVectorPairings.NmlSep_holds hB Formalism.L2.SG.Closed.StepPinExists_holds hDict hFam hT`.
+A detailed English derivation is pending.
 -/
 theorem rowMainEquation_of_family (hB : StepChoiceConstantsC)
     (hDict : ∀ k r : ℕ, 4 * r + 7 ≤ k → Formalism.L2.SG.NGDict.DictAll k r) (hFam : Formalism.L2.SG.Pf.MainEqFam.StepFamG)
@@ -82,7 +82,7 @@ theorem rowMainEquation_of_family (hB : StepChoiceConstantsC)
     Formalism.L2.SG.NGCut.NormalVectorPairings.NmlSep_holds hB Formalism.L2.SG.Closed.StepPinExists_holds hDict hFam hT
 
 /- English proof (translation)
-The claim follows from `rowMainEquation_of_family (choice_massData hSW hPC hInfG) hDict hFam (theoremB_generic_final hB3 hA hR)`.
+A detailed English derivation is pending.
 -/
 theorem rowMainEqC_of_shared (hSW : PI.VolStabS.MassDataS.SWXS)
     (hPC : Formalism.L2.SG.NGAnalytic.MassDataLemmas.OnTied fun _ X _ _ u u' _ ψ => Formalism.L2.SG.LocVol.ProdConv X u u' ψ)
@@ -94,7 +94,7 @@ theorem rowMainEqC_of_shared (hSW : PI.VolStabS.MassDataS.SWXS)
   rowMainEquation_of_family (choice_massData hSW hPC hInfG) hDict hFam (theoremB_generic_final hB3 hA hR)
 
 /- English proof (translation)
-The claim follows from `rowMainEqC_of_shared hSW Formalism.L2.SG.Pf.ProdConvCut2.prodConv_onTied hInfG hDict hFam hB3 hA hR`.
+A detailed English derivation is pending.
 -/
 theorem rowMainEqC_of_shared2 (hSW : PI.VolStabS.MassDataS.SWXS)
     (hInfG : ∀ (D : D7) (X : HidaSetting D) (u u' : D.what₂.Word), Formalism.L2.SG.ConcreteSettingExists.GapHyp D →

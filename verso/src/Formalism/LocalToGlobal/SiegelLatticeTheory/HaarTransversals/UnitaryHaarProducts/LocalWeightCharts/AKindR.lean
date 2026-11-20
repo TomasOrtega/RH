@@ -23,7 +23,7 @@ def bLin (z : Fin (2 * r + k + 1) → ℂ) (c : Fin r → ℂ) (σ : Mat k r →
     ((innerSL ℂ w').comp (σ (Matrix.of p.1 * Matrix.of p.2))).smulRight (π (Matrix.of p.1)⁻¹ ξ)
 
 /- English proof (translation)
-Simplify using `only [bLin, bInt, _root_.smul_apply, ContinuousLinearMap.smulRight_apply, ContinuousLinearMap.comp_apply, innerSL_apply_apply, smul_smul]`. Rewrite using `[mul_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem bLin_apply (z : Fin (2 * r + k + 1) → ℂ) (c : Fin r → ℂ) (w' : H) (ξ : Vp)
     (p : Mt k r × Mt k r) (v : H) : bLin z c σ π w' ξ p v = bInt z c σ π w' ξ v p := by
@@ -32,33 +32,27 @@ theorem bLin_apply (z : Fin (2 * r + k + 1) → ℂ) (c : Fin r → ℂ) (w' : H
   rw [mul_comm]
 
 /- English proof (translation)
-Use `set F : Mt k r × (Mt k r × Mt k r) → Vp := fun q => β (Matrix.of q.1) • bInt z c σ π w' ξ (σ (x * Matrix.of q.1) w) q.2 with hFdef`. Establish `hG : ∀ᵐ g ∂μG, Matrix.of g ∈ Gr k r` using `ae_gr hGc`. Establish `hq1 : ∀ᵐ q ∂(μG.prod (μW.prod μN)), Matrix.of q.1 ∈ Gr k r` using `Measure.quasiMeasurePreserving_fst.ae hG`. Establish `hq2 : ∀ᵐ q ∂(μG.prod (μW.prod μN)), Matrix.of q.2.1 ∈ UWset k r z ∧ Matrix.of q.2.1 * Matrix.of q.2.2 ∈ Gr k r` using `Measure.quasiMeasurePreserving_snd.ae hae`. Use `set T : Set (Mt k r × (Mt k r × Mt k r)) := {q | Matrix.of q.1 ∈ Gr k r ∧ Matrix.of q.2.1 ∈ UWset k r z ∧ Matrix.of q.2.1 * Matrix.of q.2.2 ∈ Gr k r} with hTdef`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc1 : Continuous fun q : Mt k r × (Mt k r × Mt k r) => (Matrix.of q.1 : Mat k r)` using `continuous_fst`. Establish `hc21 : Continuous fun q : Mt k r × (Mt k r × Mt k r) => (Matrix.of q.2.1 : Mat k r)` using `continuous_fst.comp continuous_snd`. Establish `hc22 : Continuous fun q : Mt k r × (Mt k r × Mt k r) => (Matrix.of q.2.2 : Mat k r)` using `continuous_snd.comp continuous_snd`. Establish `hcm : Continuous fun q : Mt k r × (Mt k r × Mt k r) => (Matrix.of q.2.1 * Matrix.of q.2.2 : Mat k r)` using `hc21.matrix_mul hc22`. Establish `hcy : Continuous fun q : Mt k r × (Mt k r × Mt k r) => (Matrix.of q.2.1 * Matrix.of q.2.2 * (x * Matrix.of q.1) : Mat k r)` using `hcm.matrix_mul (continuous_const.matrix_mul hc1)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hTc : IsClosed T` using `(gr_isClosed.preimage hc1).inter ((hUWc.preimage hc21).inter (gr_isClosed.preimage hcm))`. Establish `hTae : ∀ᵐ q ∂(μG.prod (μW.prod μN)), q ∈ T` using `by filter_upwards [hq1, hq2] with q h1 h2`. Conclude with `⟨h1, h2⟩`. Use `set F' : Mt k r × (Mt k r × Mt k r) → Vp := fun q => (⟪w', σ (Matrix.of q.2.1 * Matrix.of q.2.2 * (x * Matrix.of q.1)) w⟫_ℂ * star (psiGen k r z c (Matrix.of q.2.2))) • π (Matrix.of q.2.1)⁻¹ ξ with hF'def`. Establish `hF'c : ContinuousOn F' T`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ContinuousOn (fun q : Mt k r × (Mt k r × Mt k r) => σ (Matrix.of q.2.1 * Matrix.of q.2.2 * (x * Matrix.of q.1)) w) T` using `(hσ.2.2 w).comp hcy.continuousOn (fun q hq => gr_mul hq.2.2 (gr_mul hx hq.1))`. Establish `hi : ContinuousOn (fun q : Mt k r × (Mt k r × Mt k r) => (Matrix.of q.2.1)⁻¹) T` using `inv_contOn.comp hc21.continuousOn (fun q hq => hUWG hq.2.1)`. Establish `h2 : ContinuousOn (fun q : Mt k r × (Mt k r × Mt k r) => π (Matrix.of q.2.1)⁻¹ ξ) T` using `(hπc ξ).comp hi (fun q hq => hUWinv _ hq.2.1)`. Establish `h3 : Continuous fun q : Mt k r × (Mt k r × Mt k r) => star (psiGen k r z c (Matrix.of q.2.2))` using `continuous_star.comp ((psiGen_cont z c).comp hc22)`. Conclude with `((continuousOn_const.inner h1).mul h3.continuousOn).smul h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hF'm : AEStronglyMeasurable F' (μG.prod (μW.prod μN))`. Use `hF'c.aestronglyMeasurable (μ := μG.prod (μW.prod μN)) hTc.measurableSet` as an intermediate fact. Rewrite `this` using `[Measure.restrict_eq_self_of_ae_mem hTae]`. Then use the resulting hypothesis. Establish `hFm : AEStronglyMeasurable F (μG.prod (μW.prod μN))`. Use `((hβm.comp_quasiMeasurePreserving Measure.quasiMeasurePreserving_fst).smul hF'm).congr ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `filter_upwards [hTae] with q hq`. Use `show β (Matrix.of q.1) • F' q = β (Matrix.of q.1) • bInt z c σ π w' ξ (σ (x * Matrix.of q.1) w) q.2`. Use `congr 1`. Simplify using `only [hF'def, bInt]`. Rewrite using `[← sigma_mul hσ hq.2.2 (gr_mul hx hq.1)]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hlin : ∫⁻ q, ‖F q‖ₑ ∂(μG.prod (μW.prod μN)) < ⊤`. Rewrite using `[lintegral_prod _ hFm.enorm]`. Combine the equalities or inequalities in the displayed calculation. Use `lintegral_congr fun g => ?_` and prove the remaining obligations. Simplify using `only [hFdef, enorm_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Conclude with `lintegral_const_mul' _ _ enorm_ne_top`. Use `_ ≤ ∫⁻ g, ENNReal.ofReal (C * opn x ^ N1H k r) * (‖β (Matrix.of g)‖ₑ * ENNReal.ofReal (opn (Matrix.of g) ^ N1H k r)) ∂μG := by`. Apply `lintegral_mono_ae` to reduce the goal to its premises. Use `filter_upwards [hG] with g hg`. Establish `hb` using `hB _ (gr_mul hx hg)`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hN` using `nilradical_half_sum_nonneg (k := k) (r := r)`. Establish `h1 : C * opn (x * Matrix.of g) ^ N1H k r ≤ C * opn x ^ N1H k r * opn (Matrix.of g) ^ N1H k r`. Rewrite using `[mul_assoc, ← Real.mul_rpow (opn_nonneg _) (opn_nonneg _)]`. Conclude with `mul_le_mul_of_nonneg_left (Real.rpow_le_rpow (opn_nonneg _) (opn_mul _ _) hN) hC`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `hb.trans (ENNReal.ofReal_le_ofReal h1)`. Use `_ = _ := by`. Rewrite using `[ENNReal.ofReal_mul (mul_nonneg hC (Real.rpow_nonneg (opn_nonneg _) _))]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = ENNReal.ofReal (C * opn x ^ N1H k r) * ∫⁻ g, ‖β (Matrix.of g)‖ₑ * ENNReal.ofReal (opn (Matrix.of g) ^ N1H k r) ∂μG := lintegral_const_mul' _ _ ENNReal.ofReal_ne_top`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `_ < ⊤ := ENNReal.mul_lt_top ENNReal.ofReal_lt_top hβw`. Establish `hint : Integrable F (μG.prod (μW.prod μN))` using `⟨hFm, hlin⟩`. Establish `hsl : ∀ g : Mt k r, ∫ p, F (g, p) ∂(μW.prod μN) = β (Matrix.of g) • B0 z c σ π μW μN w' ξ (σ (x * Matrix.of g) w)` using `fun g => by`. Simplify using `only [hFdef, B0]`. Conclude with `integral_smul _ _`.
-
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `hint.integral_prod_left` as an intermediate fact. Simplify using `only [hsl] at this`. Conclude with `this`. Establish `hsw` using `integral_integral_swap (f := fun g p => F (g, p)) hint`.
-
-Simplify using `only [hsl] at hsw`. Rewrite using `[hsw]`. Simplify using `only [B0]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun p => ?_)` and prove the remaining obligations. Use `show ∫ g, F (g, p) ∂μG = bInt z c σ π w' ξ (σ x w) p`.
-
-Establish `hcomp : ∀ᵐ g ∂μG, F (g, p) = ((bLin z c σ π w' ξ p).comp (σ x)) (β (Matrix.of g) • σ (Matrix.of g) w)` using `by filter_upwards [hG] with g hg`. Simplify using `only [hFdef, ContinuousLinearMap.comp_apply, map_smul, bLin_apply]`. Rewrite using `[sigma_mul hσ hx hg]`. Rewrite using `[integral_congr_ae hcomp, ContinuousLinearMap.integral_comp_comm _ hβi, hβr, ContinuousLinearMap.comp_apply, bLin_apply]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integrable_and_integral_smul_B0_eq (z : Fin (2 * r + k + 1) → ℂ) (c : Fin r → ℂ) (hσ : IsURepOn (Gr k r) σ)
     {μG μW μN : Measure (Mt k r)} [SFinite μG] [SFinite μW] [SFinite μN]
@@ -185,11 +179,11 @@ theorem integrable_and_integral_smul_B0_eq (z : Fin (2 * r + k + 1) → ℂ) (c 
 end Kernel
 
 /- English proof (translation)
-Establish `h1 : IsClosed {g : Mat k r | gᴴ * Hpk k r * g = Hpk k r}` using `isClosed_eq ((continuous_id.matrix_conjTranspose.matrix_mul continuous_const).matrix_mul continuous_id) continuous_const`. Establish `h2 : ∀ v : Fin (2 * r + k + 1) → ℂ, IsClosed {g : Mat k r | g *ᵥ v = v}` using `fun v => isClosed_eq (continuous_id.matrix_mulVec continuous_const) continuous_const`. Establish `e : UWset k r z = {g : Mat k r | gᴴ * Hpk k r * g = Hpk k r} ∩ ((⋂ a : Fin r, ({g : Mat k r | g *ᵥ bvec (eI k r a) = bvec (eI k r a)} ∩ {g : Mat k r | g *ᵥ bvec (esI k r a) = bvec (esI k r a)})) ∩ {g : Mat k r | g *ᵥ z = z})`. Use extensionality with `g`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨ha, hb, hc⟩`. Conclude with `⟨ha, Set.mem_iInter.2 fun a => ⟨(hb a).1, (hb a).2⟩, hc⟩`. Introduce and unpack `⟨ha, hb, hc⟩`. Conclude with `⟨ha, fun a => ⟨(Set.mem_iInter.1 hb a).1, (Set.mem_iInter.1 hb a).2⟩, hc⟩`. Rewrite using `[e]`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h1.inter ((isClosed_iInter fun a => (h2 _).inter (h2 _)).inter (h2 z))`.
+A detailed English derivation is pending.
 -/
 theorem uw_isClosed (z : Fin (2 * r + k + 1) → ℂ) : IsClosed (UWset k r z) := by
   have h1 : IsClosed {g : Mat k r | gᴴ * Hpk k r * g = Hpk k r} :=
@@ -210,13 +204,13 @@ theorem uw_isClosed (z : Fin (2 * r + k + 1) → ℂ) : IsClosed (UWset k r z) :
   exact h1.inter ((isClosed_iInter fun a => (h2 _).inter (h2 _)).inter (h2 z))
 
 /- English proof (translation)
-Establish `h1 : opn (1 : Mat k r) ≤ opn g⁻¹ * opn g`. Rewrite using `[← Matrix.nonsing_inv_mul _ (gr_isUnit hg)]`. Conclude with `opn_mul _ _`. Establish `h2` using `opn_inv_le hg`. Establish `hone : opn (1 : Mat k r) = 1` using `by unfold opn; rw [map_one]; exact norm_one`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[hone]`. Establish `h0` using `opn_nonneg g`. Establish `hH` using `opn_nonneg (Hpk k r)`. Establish `h4 : 1 ≤ (opn (Hpk k r) * opn g) ^ 2`. Use `mul_le_mul_of_nonneg_right h2 h0` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Use the polynomial consequences of the given equalities and inequalities. Establish `h3 : 1 ≤ opn (Hpk k r) * opn g`. Assume the negation of the conclusion as `hlt`. Use `push Not at hlt`. Use `pow_lt_one₀ (mul_nonneg hH h0) hlt two_ne_zero` as an intermediate fact.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[← Real.mul_rpow hH h0]`. Conclude with `Real.one_le_rpow h3 nilradical_half_sum_nonneg`.
+A detailed English derivation is pending.
 -/
 theorem ak_one_le {g : Mat k r} (hg : g ∈ Gr k r) :
     1 ≤ opn (Hpk k r) ^ N1H k r * opn g ^ N1H k r := by
@@ -239,13 +233,11 @@ theorem ak_one_le {g : Mat k r} (hg : g ∈ Gr k r) :
   exact Real.one_le_rpow h3 nilradical_half_sum_nonneg
 
 /- English proof (translation)
-Take `⟨C, hC0, hC⟩` from `hAB k r z c u v b H σ Vp π w μG μS ν μW μN hH hR hCW x₀ hx₀ ξ`. Take `⟨hSet, hDS, hHC, _, hμG, _, _, hμW, hμN, _, _⟩` from `hH`. Establish `hz` using `hSet.2.2.1`. Establish `hT` using `hSet.2.2.2.1`. Establish `hσ : IsURepOn (Gr k r) σ` using `hSG k r _ _ H σ hDS`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hUWG, hNG, hUW, _, _⟩` from `hS k r z c hz hT`. Establish `hπc` using `representation_continuous k r z u Vp π hz hT hHC`. Use `hμG.1` as an intermediate fact. Use `hμW.1` as an intermediate fact. Use `hμN.1` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hae : ∀ᵐ p ∂(μW.prod μN), Matrix.of p.1 ∈ UWset k r z ∧ Matrix.of p.1 * Matrix.of p.2 ∈ Gr k r`. Establish `h1 : ∀ᵐ p ∂(μW.prod μN), Matrix.of p.1 ∈ UWset k r z` using `Measure.quasiMeasurePreserving_fst.ae (ae_iff.mpr hμW.2.2.1)`. Establish `h2 : ∀ᵐ p ∂(μW.prod μN), Matrix.of p.2 ∈ Nset k r` using `Measure.quasiMeasurePreserving_snd.ae (ae_iff.mpr hμN.2.2.1)`. Use `filter_upwards [h1, h2] with p hp1 hp2`. Conclude with `⟨hp1, gr_mul (hUWG hp1) (hNG hp2)⟩`.
-
-Conclude with `integrable_and_integral_smul_B0_eq z c hσ hμG.2.2.1 (uw_isClosed z) hUWG (fun h hh => (hUW h hh h hh).2.1) hπc hae (σ x₀ w) w ξ hC0 hC hβm hβw hβi hβr hx`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem conv_of (hSG : SigmaG) (hS : SGrp) (hAB : ABound)
     {z : Fin (2 * r + k + 1) → ℂ} {c : Fin r → ℂ} {u : Fin k → ℝ} {v : Fin (k - 1) → ℝ}
@@ -281,13 +273,11 @@ theorem conv_of (hSG : SigmaG) (hS : SGrp) (hAB : ABound)
     (σ x₀ w) w ξ hC0 hC hβm hβw hβi hβr hx
 
 /- English proof (translation)
-Establish `hGae` using `ae_gr hGc`. Establish `hof : Continuous (fun x : Mt k r => (Matrix.of x : Mat k r))` using `continuous_id`. Establish `hsm : AEStronglyMeasurable (fun g : Mt k r => σ (Matrix.of g) w) μG`. Establish `hcl : IsClosed {g : Mt k r | Matrix.of g ∈ Gr k r}` using `gr_isClosed.preimage hof`. Use `((hσ.2.2 w).comp hof.continuousOn (fun g hg => hg)).aestronglyMeasurable (μ := μG) hcl.measurableSet` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[Measure.restrict_eq_self_of_ae_mem hGae]`. Conclude with `this`. Use `⟨hβm.smul hsm, ?_⟩` and prove the remaining obligations. Use `show ∫⁻ g, ‖β (Matrix.of g) • σ (Matrix.of g) w‖ₑ ∂μG < ⊤`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `lintegral_mono_ae` to reduce the goal to its premises. Use `filter_upwards [hGae] with g hg`. Rewrite using `[enorm_smul, ← ofReal_norm (σ _ w), hσ.2.1 _ hg, hw1, ENNReal.ofReal_one, mul_one]`. Combine the equalities or inequalities in the displayed calculation. Use `_ = ENNReal.ofReal (opn (Hpk k r) ^ N1H k r) * ∫⁻ g, ‖β (Matrix.of g)‖ₑ * ENNReal.ofReal (opn (Matrix.of g) ^ N1H k r) ∂μG := lintegral_const_mul' _ _ ENNReal.ofReal_ne_top`.
-
-Use `_ < ⊤ := ENNReal.mul_lt_top ENNReal.ofReal_lt_top hβw`.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem smul_int {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
     {σ : Mat k r → (H →L[ℂ] H)} (hσ : IsURepOn (Gr k r) σ) {μG : Measure (Mt k r)}
@@ -322,29 +312,27 @@ theorem smul_int {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [Co
     _ < ⊤ := ENNReal.mul_lt_top ENNReal.ofReal_lt_top hβw
 
 /- English proof (translation)
-Introduce `k r z c u v b H _ _ _ σ Vp _ _ _ π w μG μS ν μW μN hH hR hCW x₀ hx₀ ξ x hx`. Establish `hdec` using `hD hCW k r z c u v b H σ Vp π w μG μS ν μW μN hH`. Take `⟨d, hd, hSc⟩` from `hSch k r z c u v b H σ Vp π w μG μS ν μW μN hH`. Establish `hH'` using `hH`. Take `⟨_, hDS, _, hLow, hμG, _⟩` from `hH'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hσ : IsURepOn (Gr k r) σ` using `hSG k r _ _ H σ hDS`. Take `⟨_, _, hw1, _⟩` from `hLow`. Establish `hGae` using `ae_gr hμG.2.2.1`. Establish `hww : ⟪w, w⟫_ℂ = 1` using `by rw [inner_self_eq_norm_sq_to_K, hw1]; simp`. Establish `hd' : (d : ℂ) ≠ 0` using `by exact_mod_cast hd.ne'`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfd : fdegH μG σ w = d`. Establish `h` using `(hSc w w w w).2`. Rewrite `h` using `[hww]`. Establish `h2 : ∀ g : Mt k r, ⟪w, σ (Matrix.of g) w⟫_ℂ * star ⟪w, σ (Matrix.of g) w⟫_ℂ = ((‖⟪w, σ (Matrix.of g) w⟫_ℂ‖ ^ 2 : ℝ) : ℂ)` using `fun g => by`. Rewrite using `[Complex.ofReal_pow]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `RCLike.mul_conj _`. Rewrite `h` using `[h2]`. Rewrite `h` using `[integral_complex_ofReal]`. Establish `h3 : ((∫ g, ‖⟪w, σ (Matrix.of g) w⟫_ℂ‖ ^ 2 ∂μG : ℝ) : ℂ) = ((1 / d : ℝ) : ℂ)`. Rewrite using `[h]`.
+Rewrite the indicated hypotheses repeatedly using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `h4 : ∫ g, ‖⟪w, σ (Matrix.of g) w⟫_ℂ‖ ^ 2 ∂μG = 1 / d` using `by exact_mod_cast h3`. Unfold `fdegH`. Rewrite using `[h4, hw1]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts. Establish `hof : Continuous (fun x : Mt k r => (Matrix.of x : Mat k r))` using `continuous_id`. Establish `hcl : IsClosed {g : Mt k r | Matrix.of g ∈ Gr k r}` using `gr_isClosed.preimage hof`. Establish `hβm : AEStronglyMeasurable (fun g : Mt k r => eFun μG σ w (Matrix.of g)) μG`. Establish `hc : ContinuousOn (fun g : Mt k r => eFun μG σ w (Matrix.of g)) {g | Matrix.of g ∈ Gr k r}` using `continuousOn_const.mul (continuous_star.comp_continuousOn (continuousOn_const.inner ((hσ.2.2 w).comp hof.continuousOn (fun g hg => hg))))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hc.aestronglyMeasurable (μ := μG) hcl.measurableSet` as an intermediate fact. Rewrite `this` using `[Measure.restrict_eq_self_of_ae_mem (s := {g : Mt k r | Matrix.of g ∈ Gr k r}) hGae]`. Conclude with `this`. Establish `hnorm : ∀ g : Mt k r, ‖eFun μG σ w (Matrix.of g)‖ₑ = ‖(d : ℂ)‖ₑ * ‖⟪w, σ (Matrix.of g) w⟫_ℂ‖ₑ`. Introduce `g`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `eFun`. Rewrite using `[hfd, enorm_mul, ← ofReal_norm (star _), norm_star, ofReal_norm]`. Establish `hβw : ∫⁻ g, ‖eFun μG σ w (Matrix.of g)‖ₑ * ENNReal.ofReal (opn (Matrix.of g) ^ N1H k r) ∂μG < ⊤`. Combine the equalities or inequalities in the displayed calculation. Use `lintegral_congr fun g => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hnorm, mul_assoc]`. Use `_ = ‖(d : ℂ)‖ₑ * ∫⁻ g, ‖⟪w, σ (Matrix.of g) w⟫_ℂ‖ₑ * ENNReal.ofReal (opn (Matrix.of g) ^ N1H k r) ∂μG := lintegral_const_mul' _ _ enorm_ne_top`. Use `_ < ⊤ := ENNReal.mul_lt_top enorm_lt_top hdec`. Establish `hβi` using `smul_int hσ hμG.2.2.1 hw1 hβm hβw`. Establish `hβr : ∫ g, eFun μG σ w (Matrix.of g) • σ (Matrix.of g) w ∂μG = w`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Apply `ext_inner_left ℂ` to reduce the goal to its premises. Introduce `v'`. Rewrite using `[← integral_inner hβi v']`. Repeatedly rewrite using `[inner_smul_right]`. Establish `he : ∀ g : Mt k r, eFun μG σ w (Matrix.of g) * ⟪v', σ (Matrix.of g) w⟫_ℂ = (d : ℂ) * (⟪v', σ (Matrix.of g) w⟫_ℂ * star ⟪w, σ (Matrix.of g) w⟫_ℂ)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Introduce `g`. Unfold `eFun`. Rewrite using `[hfd]`. Expand and normalize the polynomial expressions, which then agree. Repeatedly rewrite using `[he]`.
-
-Rewrite using `[integral_const_mul, (hSc w v' w w).2, hww]`. Clear the denominators using the available nonvanishing facts. Conclude with `conv_of hSG hS hAB hH hR hCW hx₀ ξ hβm hβw hβi hβr hx`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem aKind_of (hSG : SigmaG) (hS : SGrp) (hAB : ABound) (hD : Decay)
     (hSch : SchurG) : AKind := by
@@ -410,13 +398,13 @@ theorem aKind_of (hSG : SigmaG) (hS : SGrp) (hAB : ABound) (hD : Decay)
   exact conv_of hSG hS hAB hH hR hCW hx₀ ξ hβm hβw hβi hβr hx
 
 /- English proof (translation)
-Introduce `k r z c u v b H _ _ _ σ Vp _ _ _ π w μG μS ν μW μN hH hR hCW x₀ hx₀ ξ`. Take `⟨α, Ω, a, hΩ, hΩG, hαm, hsupp, hbd, hint, hrep⟩` from `hRG hR k r z c u v b H σ Vp π w μG μS ν μW μN hH`. Establish `hH'` using `hH`. Take `⟨_, hDS, _, hLow, hμG, _⟩` from `hH'`. Establish `hσ : IsURepOn (Gr k r) σ` using `hSG k r _ _ H σ hDS`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨_, _, hw1, _⟩` from `hLow`. Establish `hGae` using `ae_gr hμG.2.2.1`. Take `⟨K, hK⟩` from `hΩ.exists_bound_of_continuousOn (opn_continuous (k := k) (r := r)).continuousOn`. Establish `hw : ∫⁻ g, ‖α (Matrix.of g)‖ₑ * ENNReal.ofReal (opn (Matrix.of g) ^ N1H k r) ∂μG < ⊤`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Apply `lintegral_mono_ae` to reduce the goal to its premises. Use `filter_upwards [hGae] with g hg`. Rewrite using `[enorm_smul, ← ofReal_norm (σ _ w), hσ.2.1 _ hg, hw1, ENNReal.ofReal_one, mul_one]`. Distinguish the cases in `h0 : α (Matrix.of g) = 0`. Simplify using `[h0]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(mul_comm _ _).trans_le (mul_le_mul' (ENNReal.ofReal_le_ofReal (Real.rpow_le_rpow (opn_nonneg _) (((Real.le_norm_self _).trans (hK _ (hsupp _ h0))).trans (le_max_left _ _)) nilradical_half_sum_nonneg)) le_rfl)`. Use `_ = ENNReal.ofReal (max K 0 ^ N1H k r) * ∫⁻ g, ‖α (Matrix.of g) • σ (Matrix.of g) w‖ₑ ∂μG := lintegral_const_mul' _ _ ENNReal.ofReal_ne_top`. Use `_ < ⊤ := ENNReal.mul_lt_top ENNReal.ofReal_lt_top hint.2`. Use `⟨α, Ω ∪ {1}, a, hΩ.union isCompact_singleton, Set.mem_union_right _ rfl, Set.union_subset hΩG (Set.singleton_subset_iff.2 gr_one), hαm, fun y hy => Or.inl (hsupp y hy), hbd, fun x hx => ?_⟩` and prove the remaining obligations. Conclude with `conv_of hSG hS hAB hH hR hCW hx₀ ξ hαm.aestronglyMeasurable hw hint hrep hx`.
+A detailed English derivation is pending.
 -/
 theorem aReprod_of (hSG : SigmaG) (hS : SGrp) (hAB : ABound) (hRG : ReprodG) :
     AReprod := by

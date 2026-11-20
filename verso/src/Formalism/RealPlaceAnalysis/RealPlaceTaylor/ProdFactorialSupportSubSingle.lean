@@ -11,7 +11,7 @@ section general
 variable {σ : Type*}
 
 /- English proof (translation)
-Unfold `fockF`. Apply `Finset.sum_subset h` to reduce the goal to its premises. Introduce `m _ hm`. Simplify using `[MvPolynomial.notMem_support_iff.mp hm]`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 lemma fischerInner_eq_sum_of_subset (f g : MvPolynomial σ ℂ) (s : Finset (σ →₀ ℕ)) (h : f.support ⊆ s) :
     fockF f g = ∑ m ∈ s, f.coeff m * star (g.coeff m) *
@@ -22,7 +22,7 @@ lemma fischerInner_eq_sum_of_subset (f g : MvPolynomial σ ℂ) (s : Finset (σ 
   simp [MvPolynomial.notMem_support_iff.mp hm]
 
 /- English proof (translation)
-Rewrite using `[fischerInner_eq_sum_of_subset _ _ (f1.support ∪ f2.support) MvPolynomial.support_add, fischerInner_eq_sum_of_subset f1 g (f1.support ∪ f2.support) Finset.subset_union_left, fischerInner_eq_sum_of_subset f2 g (f1.support ∪ f2.support) Finset.subset_union_right, ← Finset.sum_add_d …`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Simplify using `only [coeff_add]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma fischerInner_add_left (f1 f2 g : MvPolynomial σ ℂ) :
     fockF (f1 + f2) g = fockF f1 g + fockF f2 g := by
@@ -35,7 +35,7 @@ lemma fischerInner_add_left (f1 f2 g : MvPolynomial σ ℂ) :
   simp only [coeff_add]; ring
 
 /- English proof (translation)
-Unfold `fockF`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Simplify using `only [coeff_add, star_add]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma fischerInner_add_right (f g1 g2 : MvPolynomial σ ℂ) :
     fockF f (g1 + g2) = fockF f g1 + fockF f g2 := by
@@ -51,33 +51,33 @@ def fischerInnerRightHom (f : MvPolynomial σ ℂ) : MvPolynomial σ ℂ →+ �
   AddMonoidHom.mk' (fun g => fockF f g) (fun a b => fischerInner_add_right f a b)
 
 /- English proof (translation)
-The claim follows from `map_sum (fischerInnerLeftHom g) h s`.
+A detailed English derivation is pending.
 -/
 lemma fischerInner_sum_left {ι : Type*} (s : Finset ι) (h : ι → MvPolynomial σ ℂ) (g : MvPolynomial σ ℂ) :
     fockF (∑ a ∈ s, h a) g = ∑ a ∈ s, fockF (h a) g :=
   map_sum (fischerInnerLeftHom g) h s
 
 /- English proof (translation)
-The claim follows from `map_sum (fischerInnerRightHom f) h s`.
+A detailed English derivation is pending.
 -/
 lemma fischerInner_sum_right {ι : Type*} (s : Finset ι) (f : MvPolynomial σ ℂ) (h : ι → MvPolynomial σ ℂ) :
     fockF f (∑ a ∈ s, h a) = ∑ a ∈ s, fockF f (h a) :=
   map_sum (fischerInnerRightHom f) h s
 
 /- English proof (translation)
-The claim follows from `map_neg (fischerInnerLeftHom g) f`.
+A detailed English derivation is pending.
 -/
 lemma fischerInner_neg_left (f g : MvPolynomial σ ℂ) : fockF (-f) g = -fockF f g :=
   map_neg (fischerInnerLeftHom g) f
 
 /- English proof (translation)
-The claim follows from `map_neg (fischerInnerRightHom f) g`.
+A detailed English derivation is pending.
 -/
 lemma fischerInner_neg_right (f g : MvPolynomial σ ℂ) : fockF f (-g) = -fockF f g :=
   map_neg (fischerInnerRightHom f) g
 
 /- English proof (translation)
-Rewrite using `[fischerInner_eq_sum_of_subset f g (f.support ∪ g.support) Finset.subset_union_left, fischerInner_eq_sum_of_subset g f (f.support ∪ g.support) Finset.subset_union_right, star_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Simplify using `only [star_mul', star_star, star_natCast]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma fischerInner_eq_star (f g : MvPolynomial σ ℂ) : fockF f g = star (fockF g f) := by
   classical
@@ -87,7 +87,7 @@ lemma fischerInner_eq_star (f g : MvPolynomial σ ℂ) : fockF f g = star (fockF
   simp only [star_mul', star_star, star_natCast]; ring
 
 /- English proof (translation)
-Rewrite using `[fischerInner_eq_sum_of_subset _ _ {u} support_monomial_subset, Finset.sum_singleton, coeff_monomial, if_pos rfl]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma fischerInner_monomial_left (u : σ →₀ ℕ) (c : ℂ) (g : MvPolynomial σ ℂ) :
     fockF (monomial u c) g = c * star (g.coeff u) * ((∏ k ∈ u.support, (u k).factorial : ℕ) : ℂ) := by
@@ -96,13 +96,13 @@ lemma fischerInner_monomial_left (u : σ →₀ ℕ) (c : ℂ) (g : MvPolynomial
     if_pos rfl]
 
 /- English proof (translation)
-Establish `hsub : (u - Finsupp.single v 1 : σ →₀ ℕ).support ⊆ u.support`. Introduce `k hk`. Rewrite `hk`, the goal using `[Finsupp.mem_support_iff]`. Introduce `h0`. Apply `hk` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `[Finsupp.tsub_apply, h0]`. Establish `e : ∏ k ∈ (u - Finsupp.single v 1 : σ →₀ ℕ).support, ((u - Finsupp.single v 1 : σ →₀ ℕ) k).factorial = ∏ k ∈ u.support, ((u - Finsupp.single v 1 : σ →₀ ℕ) k).factorial` using `Finset.prod_subset hsub (fun k _ hk => by rw [Finsupp.notMem_support_iff.mp hk]; rfl)`. Rewrite using `[e]`. Establish `hmem : v ∈ u.support` using `Finsupp.mem_support_iff.mpr hv`. Rewrite using `[← Finset.mul_prod_erase _ _ hmem, ← Finset.mul_prod_erase _ _ hmem]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : ∏ k ∈ u.support.erase v, ((u - Finsupp.single v 1 : σ →₀ ℕ) k).factorial = ∏ k ∈ u.support.erase v, (u k).factorial`. Use `Finset.prod_congr rfl fun k hk => ?_` and prove the remaining obligations. Establish `hk' : k ≠ v` using `Finset.ne_of_mem_erase hk`. Simplify using `[Finsupp.tsub_apply, Finsupp.single_apply, Ne.symm hk']`. Rewrite using `[h2, ← mul_assoc]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Simplify using `only [Finsupp.tsub_apply, Finsupp.single_eq_same]`. Conclude with `(Nat.mul_factorial_pred hv).symm`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma prod_factorial_support_sub_single [DecidableEq σ] (u : σ →₀ ℕ) (v : σ) (hv : u v ≠ 0) :
     (∏ k ∈ u.support, (u k).factorial) =
@@ -128,11 +128,11 @@ lemma prod_factorial_support_sub_single [DecidableEq σ] (u : σ →₀ ℕ) (v 
   exact (Nat.mul_factorial_pred hv).symm
 
 /- English proof (translation)
-Proceed by induction on `f using MvPolynomial.induction_on' with`. Consider the case `monomial u c`. Rewrite using `[pderiv_monomial, fischerInner_monomial_left, fischerInner_monomial_left, coeff_X_mul']`. Distinguish the cases in `hv : u v = 0`. Establish `: v ∉ u.support` using `Finsupp.notMem_support_iff.mpr hv`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Simplify using `[hv, this]`. Establish `: v ∈ u.support` using `Finsupp.mem_support_iff.mpr hv`. Rewrite using `[if_pos this, prod_factorial_support_sub_single u v hv]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Consider the case `add p q hp hq => rw [map_add, fischerInner_add_left, fischerInner_add_left, hp, hq]`.
+Treat this case separately.
 -/
 lemma fischerInner_pderiv_left [DecidableEq σ] (v : σ) (f g : MvPolynomial σ ℂ) :
     fockF (pderiv v f) g = fockF f (X v * g) := by
@@ -148,7 +148,7 @@ lemma fischerInner_pderiv_left [DecidableEq σ] (v : σ) (f g : MvPolynomial σ 
   | add p q hp hq => rw [map_add, fischerInner_add_left, fischerInner_add_left, hp, hq]
 
 /- English proof (translation)
-Rewrite using `[fischerInner_eq_star, ← fischerInner_pderiv_left, ← fischerInner_eq_star]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma fischerInner_X_mul_left [DecidableEq σ] (v : σ) (f g : MvPolynomial σ ℂ) :
     fockF (X v * f) g = fockF f (pderiv v g) := by
@@ -159,9 +159,9 @@ end general
 variable {M n' : ℕ}
 
 /- English proof (translation)
-Unfold `bop bpl`. Use `split_ifs with h`. Simplify using `only [LinearMap.mulLeft_apply, Derivation.coeFn_coe, one_mul]`. Conclude with `fischerInner_pderiv_left _ f g`. Simplify using `only [LinearMap.mulLeft_apply, LinearMap.neg_apply, Derivation.coeFn_coe, fischerInner_neg_right]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[fischerInner_X_mul_left]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 lemma fischerInner_oscillatorLower (ε : Fin M → Bool) (ε' : Fin n' → Bool) (i : Fin M) (a : Fin n')
     (f g : MvPolynomial (Fin M × Fin n') ℂ) :
@@ -174,9 +174,9 @@ lemma fischerInner_oscillatorLower (ε : Fin M → Bool) (ε' : Fin n' → Bool)
     rw [fischerInner_X_mul_left]; ring
 
 /- English proof (translation)
-Unfold `bop bpl`. Use `split_ifs with h`. Simplify using `only [LinearMap.mulLeft_apply, Derivation.coeFn_coe, one_mul]`. Conclude with `fischerInner_X_mul_left _ f g`. Simplify using `only [LinearMap.mulLeft_apply, LinearMap.neg_apply, Derivation.coeFn_coe, fischerInner_neg_left]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[fischerInner_pderiv_left]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 lemma fischerInner_oscillatorRaise (ε : Fin M → Bool) (ε' : Fin n' → Bool) (i : Fin M) (a : Fin n')
     (f g : MvPolynomial (Fin M × Fin n') ℂ) :
@@ -189,7 +189,7 @@ lemma fischerInner_oscillatorRaise (ε : Fin M → Bool) (ε' : Fin n' → Bool)
     rw [fischerInner_pderiv_left]; ring
 
 /- English proof (translation)
-Unfold `sgnv sgn`. Generalize the expression as in `ε i = x`. Generalize the expression as in `ε j = y`. Generalize the expression as in `ε' a = z`. Apply the tactic sequence `cases x <;> cases y <;> cases z <;> norm_num`.
+Replace the relevant objects with their definitions. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma signMatch_mul_left (ε : Fin M → Bool) (ε' : Fin n' → Bool) (i j : Fin M) (a : Fin n') :
     ((if sgnv ε ε' i a then 1 else -1 : ℂ) * (if sgnv ε ε' j a then 1 else -1)) =
@@ -199,7 +199,7 @@ lemma signMatch_mul_left (ε : Fin M → Bool) (ε' : Fin n' → Bool) (i j : Fi
   cases x <;> cases y <;> cases z <;> norm_num
 
 /- English proof (translation)
-Unfold `sgnv sgn`. Generalize the expression as in `ε i = x`. Generalize the expression as in `ε' a = y`. Generalize the expression as in `ε' b = z`. Apply the tactic sequence `cases x <;> cases y <;> cases z <;> norm_num`.
+Replace the relevant objects with their definitions. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma signMatch_mul_right (ε : Fin M → Bool) (ε' : Fin n' → Bool) (i : Fin M) (a b : Fin n') :
     ((if sgnv ε ε' i b then 1 else -1 : ℂ) * (if sgnv ε ε' i a then 1 else -1)) =
@@ -209,9 +209,9 @@ lemma signMatch_mul_right (ε : Fin M → Bool) (ε' : Fin n' → Bool) (i : Fin
   cases x <;> cases y <;> cases z <;> norm_num
 
 /- English proof (translation)
-Introduce `M n' ε ε' f g`. Use `⟨fun i a => fischerInner_oscillatorLower ε ε' i a f g, fun i j => ?_, fun a b => ?_⟩` and prove the remaining obligations. Simplify using `only [Eg, LinearMap.sum_apply, Module.End.mul_apply, fischerInner_sum_left, fischerInner_sum_right, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[fischerInner_oscillatorRaise, fischerInner_oscillatorLower, ← mul_assoc, signMatch_mul_left]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Eg', LinearMap.neg_apply, LinearMap.sum_apply, Module.End.mul_apply, fischerInner_neg_left, fischerInner_neg_right, fischerInner_sum_left, fischerInner_sum_right, mul_neg, Finset.mul_sum]`. Use `congr 1`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[fischerInner_oscillatorRaise, fischerInner_oscillatorLower, ← mul_assoc, signMatch_mul_right]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem fischerAdjointness_holds : FockAdj := by
   intro M n' ε ε' f g

@@ -12,25 +12,25 @@ variable {ι : Type} [Fintype ι]
 def nsq (y : ι → ℂ) : ℝ := ∑ j, ‖y j‖ ^ 2
 
 /- English proof (translation)
-The claim follows from `(contDiff_norm_sq ℝ).comp (contDiff_apply ℝ ℂ i)`.
+A detailed English derivation is pending.
 -/
 lemma contDiff_coordSq (i : ι) {n : WithTop ℕ∞} : ContDiff ℝ n fun y : ι → ℂ => ‖y i‖ ^ 2 :=
   (contDiff_norm_sq ℝ).comp (contDiff_apply ℝ ℂ i)
 
 /- English proof (translation)
-The claim follows from `ContDiff.sum fun j _ => contDiff_coordSq j`.
+A detailed English derivation is pending.
 -/
 lemma contDiff_nsq {n : WithTop ℕ∞} : ContDiff ℝ n (nsq : (ι → ℂ) → ℝ) :=
   ContDiff.sum fun j _ => contDiff_coordSq j
 
 /- English proof (translation)
-The claim follows from `Finset.single_le_sum (f := fun j => ‖y j‖ ^ 2) (fun _ _ => by positivity) (Finset.mem_univ i)`.
+A detailed English derivation is pending.
 -/
 lemma coordSq_le_nsq (y : ι → ℂ) (i : ι) : ‖y i‖ ^ 2 ≤ nsq y :=
   Finset.single_le_sum (f := fun j => ‖y j‖ ^ 2) (fun _ _ => by positivity) (Finset.mem_univ i)
 
 /- English proof (translation)
-Simplify using `only [nsq, Pi.smul_apply, smul_eq_mul, norm_mul, mul_pow, Finset.mul_sum]`.
+Simplify using the standard rewrite rules.
 -/
 lemma nsq_smul (t : ℂ) (v : ι → ℂ) : nsq (t • v) = ‖t‖ ^ 2 * nsq v := by
   simp only [nsq, Pi.smul_apply, smul_eq_mul, norm_mul, mul_pow, Finset.mul_sum]
@@ -38,13 +38,13 @@ lemma nsq_smul (t : ℂ) (v : ι → ℂ) : nsq (t • v) = ‖t‖ ^ 2 * nsq v 
 def radial : ContDiffBump (1 : ℝ) := ⟨1 / 4, 1 / 2, by norm_num, by norm_num⟩
 
 /- English proof (translation)
-The claim follows from `radial.one_of_mem_closedBall (Metric.mem_closedBall_self radial.rIn_pos.le)`.
+A detailed English derivation is pending.
 -/
 lemma radial_one : radial 1 = 1 :=
   radial.one_of_mem_closedBall (Metric.mem_closedBall_self radial.rIn_pos.le)
 
 /- English proof (translation)
-Use `radial.zero_of_le_dist ?_` and prove the remaining obligations. Rewrite using `[Real.dist_eq, abs_of_nonpos (by linarith)]`. Express the relevant statement in the definitionally equal form `(1 / 2 : ℝ) ≤ _`. Combine the linear equalities and inequalities to obtain the conclusion.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 lemma radial_zero_of_le {x : ℝ} (h : x ≤ 1 / 2) : radial x = 0 := by
   refine radial.zero_of_le_dist ?_
@@ -53,7 +53,7 @@ lemma radial_zero_of_le {x : ℝ} (h : x ≤ 1 / 2) : radial x = 0 := by
   linarith
 
 /- English proof (translation)
-Use `radial.zero_of_le_dist ?_` and prove the remaining obligations. Rewrite using `[Real.dist_eq, abs_of_nonneg (by linarith)]`. Express the relevant statement in the definitionally equal form `(1 / 2 : ℝ) ≤ _`. Combine the linear equalities and inequalities to obtain the conclusion.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 lemma radial_zero_of_ge {x : ℝ} (h : 3 / 2 ≤ x) : radial x = 0 := by
   refine radial.zero_of_le_dist ?_
@@ -65,13 +65,13 @@ def angular {δ : ℝ} (hδ : 0 < δ) : ContDiffBump (1 : ℝ) :=
   ⟨δ / 2, δ, by positivity, by linarith⟩
 
 /- English proof (translation)
-The claim follows from `(angular hδ).one_of_mem_closedBall (Metric.mem_closedBall_self (angular hδ).rIn_pos.le)`.
+A detailed English derivation is pending.
 -/
 lemma angular_one {δ : ℝ} (hδ : 0 < δ) : angular hδ 1 = 1 :=
   (angular hδ).one_of_mem_closedBall (Metric.mem_closedBall_self (angular hδ).rIn_pos.le)
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hx`. Use `h ((angular hδ).zero_of_le_dist ?_)` and prove the remaining obligations. Rewrite using `[Real.dist_eq, abs_of_nonpos (by linarith [not_lt.1 hx])]`. Express the relevant statement in the definitionally equal form `δ ≤ _`. Combine the linear relations using `[not_lt.1 hx]`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 lemma lt_of_angular_ne {δ : ℝ} (hδ : 0 < δ) {x : ℝ} (h : angular hδ x ≠ 0) : 1 - δ < x := by
   by_contra hx
@@ -86,9 +86,9 @@ def bigF (i₀ : ι) {δ : ℝ} (hδ : 0 < δ) (y : ι → ℂ) : ℝ :=
 def smallF (t : ℂ) : ℝ := radial (‖t‖ ^ 2)
 
 /- English proof (translation)
-Rewrite using `[contDiff_iff_contDiffAt]`. Introduce `y`. Distinguish the cases in `h : 0 < nsq y`. Conclude with `(radial.contDiff.contDiffAt.comp y contDiff_nsq.contDiffAt).mul ((angular hδ).contDiff.contDiffAt.comp y ((contDiff_coordSq i₀).contDiffAt.div contDiff_nsq.contDiffAt h.ne'))`. Establish `h0 : nsq y < 1 / 2` using `by linarith [not_lt.1 h]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(contDiffAt_const (c := (0 : ℝ))).congr_of_eventuallyEq ?_` and prove the remaining obligations. Use `filter_upwards [(contDiff_nsq (n := 0)).continuous.continuousAt.eventually (gt_mem_nhds h0)] with z hz`. Simplify using `[bigF, radial_zero_of_le (le_of_lt hz)]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma contDiff_bigF (i₀ : ι) {δ : ℝ} (hδ : 0 < δ) {n : ℕ∞} :
     ContDiff ℝ (n : WithTop ℕ∞) (bigF i₀ hδ) := by
@@ -104,11 +104,11 @@ lemma contDiff_bigF (i₀ : ι) {δ : ℝ} (hδ : 0 < δ) {n : ℕ∞} :
     simp [bigF, radial_zero_of_le (le_of_lt hz)]
 
 /- English proof (translation)
-Use `HasCompactSupport.intro (isCompact_closedBall (0 : ι → ℂ) 2) fun y hy => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Establish `hr : radial (nsq y) ≠ 0` using `fun h => hne (by simp [bigF, h])`. Establish `hlt : nsq y < 3 / 2`. Assume the negation of the conclusion as `hge`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `hr (radial_zero_of_ge (not_lt.1 hge))`. Use `hy ?_` and prove the remaining obligations. Rewrite using `[mem_closedBall_zero_iff, pi_norm_le_iff_of_nonneg (by norm_num)]`. Introduce `i`. Use `coordSq_le_nsq y i` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Use polynomial arithmetic with `[norm_nonneg (y i)]`.
+A detailed English derivation is pending.
 -/
 lemma hasCompactSupport_bigF (i₀ : ι) {δ : ℝ} (hδ : 0 < δ) :
     HasCompactSupport (bigF i₀ hδ) := by
@@ -125,13 +125,13 @@ lemma hasCompactSupport_bigF (i₀ : ι) {δ : ℝ} (hδ : 0 < δ) :
   nlinarith [norm_nonneg (y i)]
 
 /- English proof (translation)
-The claim follows from `radial.contDiff.comp (contDiff_norm_sq ℝ)`.
+A detailed English derivation is pending.
 -/
 lemma contDiff_smallF {n : ℕ∞} : ContDiff ℝ (n : WithTop ℕ∞) smallF :=
   radial.contDiff.comp (contDiff_norm_sq ℝ)
 
 /- English proof (translation)
-Use `HasCompactSupport.intro (isCompact_closedBall (0 : ℂ) 2) fun t ht => ?_` and prove the remaining obligations. Use `radial_zero_of_ge ?_` and prove the remaining obligations. Establish `: 2 < ‖t‖` using `by simpa using ht`. Use the polynomial consequences of the given equalities and inequalities.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 lemma hasCompactSupport_smallF : HasCompactSupport smallF := by
   refine HasCompactSupport.intro (isCompact_closedBall (0 : ℂ) 2) fun t ht => ?_
@@ -144,17 +144,17 @@ end GlobalTheory.CompanionTheory.TestBump
 open GlobalTheory.CompanionTheory.TestBump in
 
 /- English proof (translation)
-Introduce `ι _ _ i₀ δ hδ`. Use `⟨bigF i₀ hδ, smallF, contDiff_bigF i₀ hδ, hasCompactSupport_bigF i₀ hδ, contDiff_smallF, hasCompactSupport_smallF, ?_, ?_, fun t => radial.nonneg, fun v => mul_nonneg radial.nonneg (angular hδ).nonneg, ?_⟩` and prove the remaining obligations. Establish `h1 : nsq (Pi.single i₀ 1 : ι → ℂ) = 1`. Simplify using `only [nsq]`. Rewrite using `[Finset.sum_eq_single i₀]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Introduce `j _ hj`. Simplify using `[Pi.single_eq_of_ne hj]`. Simplify using the standard rewrite rules. Simplify using `[bigF, h1, radial_one, angular_one]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Introduce `t ht`. Simplify using `[smallF, ht, radial_one]`. Introduce `v hv`. Establish `hv1 : nsq v = 1` using `hv`. Establish `hFv : bigF i₀ hδ v = angular hδ (‖v i₀‖ ^ 2)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[bigF, hv1, radial_one]`. Use `⟨fun t => ?_, fun h => ?_⟩` and prove the remaining obligations. Rewrite using `[hFv]`. Distinguish the cases in `ht : t = 0`. Substitute `ht` using the available equality.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Establish `hz : radial (0 : ℝ) = 0` using `radial_zero_of_le (by norm_num)`. Simplify using `[bigF, smallF, nsq, hz]`. Establish `hn : nsq (t • v) = ‖t‖ ^ 2` using `by rw [nsq_smul, hv1, mul_one]`. Establish `ht2 : ‖t‖ ^ 2 ≠ 0` using `by positivity`. Simplify using `only [bigF, smallF, hn, Pi.smul_apply, smul_eq_mul, norm_mul, mul_pow]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[mul_div_cancel_left₀ _ ht2]`. Conclude with `lt_of_angular_ne hδ (by rwa [hFv] at h)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CompanionTheory.TestBump.cplxBump : CplxBump := by
   classical

@@ -9,11 +9,11 @@ open scoped Classical MatrixGroups nonZeroDivisors
 namespace GlobalTheory.HilbFam
 
 /- English proof (translation)
-Introduce `k n c y v`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Unfold `lag`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hmn : m ≤ n` using `Nat.lt_succ_iff.mp (Finset.mem_range.mp hm)`. Establish `h : v ^ n = v ^ (n - m) * v ^ m` using `by rw [← pow_add, Nat.sub_add_cancel hmn]`. Rewrite using `[h, mul_pow, mul_pow]`. Expand and normalize the polynomial expressions, which then agree. Unfold `lag`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Replace the relevant objects with their definitions.
 
-Rewrite using `[Finset.sum_range_succ, Finset.sum_eq_zero]`. Simplify using `[rco]`. Introduce `m hm`. Establish `hmn : n - m ≠ 0` using `Nat.sub_ne_zero_of_lt (Finset.mem_range.mp hm)`. Simplify using `[hmn]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem lag_homogeneous : ∀ (k n : ℕ) (c y v : ℂ), lag k n (v * c) (v * y) = v ^ n * lag k n c y ∧ lag k n 0 y = y ^ n := by
   intro k n c y v

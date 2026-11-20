@@ -8,21 +8,21 @@ open CategoryTheory AlgebraicGeometry
 namespace FunctorialResolution.EmbeddedResolution
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨inferInstance, inferInstance⟩`.
+Supply the required witnesses or components.
 -/
 private theorem algebra_smooth_mvPolynomial (k : Type u) [Field k] (n : ℕ) :
     Algebra.Smooth k (MvPolynomial (ULift.{u} (Fin n)) k) :=
   ⟨inferInstance, inferInstance⟩
 
 /- English proof (translation)
-The claim follows from `RingHom.smooth_algebraMap.mpr (algebra_smooth_mvPolynomial k n)`.
+A detailed English derivation is pending.
 -/
 private theorem ringHom_smooth_algebraMap_mvPolynomial (k : Type u) [Field k] (n : ℕ) :
     RingHom.Smooth (algebraMap k (MvPolynomial (ULift.{u} (Fin n)) k)) :=
   RingHom.smooth_algebraMap.mpr (algebra_smooth_mvPolynomial k n)
 
 /- English proof (translation)
-The claim follows from `AffineSpace.SpecIso_inv_over _`.
+A detailed English derivation is pending.
 -/
 private theorem specIso_inv_comp_affineSpaceIndexedByToSpec (k : Type u) [Field k] (n : ℕ) :
     (AffineSpace.SpecIso (ULift.{u} (Fin n)) (CommRingCat.of k)).inv ≫
@@ -32,7 +32,7 @@ private theorem specIso_inv_comp_affineSpaceIndexedByToSpec (k : Type u) [Field 
   AffineSpace.SpecIso_inv_over _
 
 /- English proof (translation)
-Rewrite using `[← specIso_inv_comp_affineSpaceIndexedByToSpec k n, Iso.hom_inv_id_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem affineSpaceIndexedByToSpec_eq (k : Type u) [Field k] (n : ℕ) :
     affineSpaceIndexedByToSpec k (ULift.{u} (Fin n)) =
@@ -42,7 +42,7 @@ private theorem affineSpaceIndexedByToSpec_eq (k : Type u) [Field k] (n : ℕ) :
   rw [← specIso_inv_comp_affineSpaceIndexedByToSpec k n, Iso.hom_inv_id_assoc]
 
 /- English proof (translation)
-Introduce `k _ n`. Establish `hC : AlgebraicGeometry.Smooth (Spec.map (CommRingCat.ofHom (MvPolynomial.C : k →+* MvPolynomial (ULift.{u} (Fin n)) k)))` using `(AlgebraicGeometry.HasRingHomProperty.Spec_iff (P := @AlgebraicGeometry.Smooth)).mpr (ringHom_smooth_algebraMap_mvPolynomial k n)`. Rewrite using `[affineSpaceIndexedByToSpec_eq k n]`. Use `infer_instance`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem affineSpaceIsSmooth : AffineSpaceIsSmooth.{u} := by
   intro k _ n
@@ -55,7 +55,7 @@ theorem affineSpaceIsSmooth : AffineSpaceIsSmooth.{u} := by
   infer_instance
 
 /- English proof (translation)
-Introduce `k _ n`. Use `⟨by simp, fun x => ⟨⊤, trivial, n, ⟨(⊤ : (affineSpaceIndexedBy k (ULift.{u} (Fin n))).Opens).ι, rfl, ?_⟩, fun _ => none, by simp, by simp, by simp⟩⟩` and prove the remaining obligations. Use `infer_instance`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem nilIsStrictNormalCrossingsOnAffineSpace : NilIsStrictNormalCrossingsOnAffineSpace.{u} := by
   intro k _ n

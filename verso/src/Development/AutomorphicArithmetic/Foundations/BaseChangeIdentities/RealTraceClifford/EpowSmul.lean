@@ -17,7 +17,7 @@ section SlopeTestRemainingChoices
 variable {n : ℕ} {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V]
 
 /- English proof (translation)
-Introduce `x hx`. Establish `h1` using `(UpperTheory.RealTr.rdcalc n V).1 f f' h`. Simplify using `only [Eu, Pi.smul_apply, Pi.add_apply, h1 _ hx]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 private theorem eu_loc (s : Bool) (a b : Fin n) {f f' : Mat n → V} (h : Set.EqOn f f' (GLs n)) :
     Set.EqOn (Eu s a b f) (Eu s a b f') (GLs n) := by
@@ -26,7 +26,7 @@ private theorem eu_loc (s : Bool) (a b : Fin n) {f f' : Mat n → V} (h : Set.Eq
   simp only [Eu, Pi.smul_apply, Pi.add_apply, h1 _ hx]
 
 /- English proof (translation)
-Establish `h1` using `((UpperTheory.RealTr.rdcalc n V).2 f h).1`. Conclude with `((h1 _).add ((h1 _).const_smul _)).const_smul _`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem eu_smo (s : Bool) (a b : Fin n) {f : Mat n → V} (h : ContDiffOn ℝ ∞ f (GLs n)) :
     ContDiffOn ℝ ∞ (Eu s a b f) (GLs n) := by
@@ -34,7 +34,7 @@ private theorem eu_smo (s : Bool) (a b : Fin n) {f : Mat n → V} (h : ContDiffO
   exact ((h1 _).add ((h1 _).const_smul _)).const_smul _
 
 /- English proof (translation)
-Introduce `g hg`. Establish `hd : DifferentiableAt ℝ f g` using `(h.differentiableOn (by simp)).differentiableAt (((UpperTheory.RealTr.basic n).1).mem_nhds hg)`. Establish `e : fderiv ℝ (fun y => c • f y) g = c • fderiv ℝ f g` using `(hd.hasFDerivAt.const_smul c).fderiv`. Simplify using `only [Rd, e]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 private theorem rd_smul (c : ℂ) {f : Mat n → V} (h : ContDiffOn ℝ ∞ f (GLs n)) (X : Mat n) :
     Set.EqOn (Rd X (fun y => c • f y)) (fun y => c • Rd X f y) (GLs n) := by
@@ -46,7 +46,7 @@ private theorem rd_smul (c : ℂ) {f : Mat n → V} (h : ContDiffOn ℝ ∞ f (G
   rfl
 
 /- English proof (translation)
-Introduce `x hx`. Simplify using `only [Eu, Pi.smul_apply, Pi.add_apply, rd_smul c h _ hx]`. Rewrite using `[smul_comm _ c, ← smul_add, smul_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem eu_smul (s : Bool) (a b : Fin n) (c : ℂ) {f : Mat n → V} (h : ContDiffOn ℝ ∞ f (GLs n)) :
     Set.EqOn (Eu s a b (fun y => c • f y)) (fun y => c • Eu s a b f y) (GLs n) := by
@@ -55,11 +55,9 @@ private theorem eu_smul (s : Bool) (a b : Fin n) (c : ℂ) {f : Mat n → V} (h 
   rw [smul_comm _ c, ← smul_add, smul_comm]
 
 /- English proof (translation)
-Proceed by induction on `m generalizing a b with`. Consider the case `zero`. Introduce `x hx`. Simplify using `only [Epow.eq_1]`. Use `split_ifs`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Conclude with `h hx`. Both sides reduce to the same expression. Consider the case `succ m ih`. Introduce `x hx`. Simplify using `only [Epow.eq_2, Finset.sum_apply]`.
-
-Conclude with `Finset.sum_congr rfl fun d _ => eu_loc s a d (ih d b) hx`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem epow_loc (s : Bool) (m : ℕ) (a b : Fin n) {f f' : Mat n → V} (h : Set.EqOn f f' (GLs n)) :
     Set.EqOn (Epow s m a b f) (Epow s m a b f') (GLs n) := by
@@ -76,9 +74,9 @@ private theorem epow_loc (s : Bool) (m : ℕ) (a b : Fin n) {f f' : Mat n → V}
     exact Finset.sum_congr rfl fun d _ => eu_loc s a d (ih d b) hx
 
 /- English proof (translation)
-Proceed by induction on `m generalizing a b with`. Consider the case `zero`. Simplify using `only [Epow.eq_1]`. Use `split_ifs`. Conclude with `h`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules.
 
-Conclude with `contDiffOn_const`. Consider the case `succ m ih`. Simplify using `only [Epow.eq_2]`. Rewrite using `[Finset.sum_fn]`. Conclude with `ContDiffOn.sum fun d _ => eu_smo s a d (ih d b)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem epow_smo (s : Bool) (m : ℕ) (a b : Fin n) {f : Mat n → V} (h : ContDiffOn ℝ ∞ f (GLs n)) :
     ContDiffOn ℝ ∞ (Epow s m a b f) (GLs n) := by
@@ -94,11 +92,11 @@ private theorem epow_smo (s : Bool) (m : ℕ) (a b : Fin n) {f : Mat n → V} (h
     exact ContDiffOn.sum fun d _ => eu_smo s a d (ih d b)
 
 /- English proof (translation)
-Proceed by induction on `m generalizing a b with`. Consider the case `zero`. Introduce `x hx`. Simplify using `only [Epow.eq_1]`. Apply the tactic sequence `split_ifs <;> simp`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Consider the case `succ m ih`. Introduce `x hx`. Simplify using `only [Epow.eq_2, Finset.sum_apply, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Rewrite using `[eu_loc s a d (ih d b) hx]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `eu_smul s a d c (epow_smo s m d b h) hx`.
+A detailed English derivation is pending.
 -/
 private theorem epow_smul (s : Bool) (m : ℕ) (a b : Fin n) (c : ℂ) {f : Mat n → V}
     (h : ContDiffOn ℝ ∞ f (GLs n)) :
@@ -116,7 +114,7 @@ private theorem epow_smul (s : Bool) (m : ℕ) (a b : Fin n) (c : ℂ) {f : Mat 
     exact eu_smul s a d c (epow_smo s m d b h) hx
 
 /- English proof (translation)
-Introduce `g hg`. Simplify using `only [gel, Finset.sum_apply]`. Conclude with `Finset.sum_congr rfl fun a _ => epow_loc s m a a h hg`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem gel_loc (s : Bool) (m : ℕ) {f f' : Mat n → V} (h : Set.EqOn f f' (GLs n)) :
     Set.EqOn (gel s m f) (gel s m f') (GLs n) := by
@@ -125,7 +123,7 @@ private theorem gel_loc (s : Bool) (m : ℕ) {f f' : Mat n → V} (h : Set.EqOn 
   exact Finset.sum_congr rfl fun a _ => epow_loc s m a a h hg
 
 /- English proof (translation)
-Introduce `g hg`. Simplify using `only [gel, Finset.sum_apply, Finset.smul_sum]`. Conclude with `Finset.sum_congr rfl fun a _ => epow_smul s m a a c h hg`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem gel_smul (s : Bool) (m : ℕ) (c : ℂ) {f : Mat n → V} (h : ContDiffOn ℝ ∞ f (GLs n)) :
     Set.EqOn (gel s m (fun y => c • f y)) (fun y => c • gel s m f y) (GLs n) := by
@@ -136,11 +134,11 @@ private theorem gel_smul (s : Bool) (m : ℕ) (c : ℂ) {f : Mat n → V} (h : C
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Introduce `n V _ _ χ f hf hE c`. Use `⟨fun x hx => ?_, fun w => ?_⟩` and prove the remaining obligations. Simplify using `only [Om, Pi.smul_apply, Pi.add_apply, gel_smul _ _ c hf hx, hE _ _ x hx, cas] module`. Proceed by induction on `w with`. Consider the case `nil`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Proceed by induction. Treat this case separately.
 
-Introduce `x hx`. Simplify using `[zOp.eq_1, zVal]`. Consider the case `cons p w ih`. Introduce `x hx`. Simplify using `only [zOp.eq_2]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[gel_loc p.1 p.2 ih hx, gel_smul p.1 p.2 _ hf hx]`. Use `beta_reduce`. Rewrite using `[hE _ _ x hx]`. Simplify using `only [zVal, List.map_cons, List.prod_cons, smul_smul]`. Put the polynomial expressions in normal form.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Put the polynomial expressions in normal form. A detailed English derivation is pending.
 -/
 theorem UpperTheory.RealTr.zEig :
     ∀ (n : ℕ) (V : Type) [NormedAddCommGroup V] [NormedSpace ℂ V] (χ : Inf n) (f : Mat n → V), ContDiffOn ℝ ∞ f (GLs n) → IsEig χ f →

@@ -23,7 +23,7 @@ noncomputable def deg (L : Type) [Field L] [NumberField L] [Algebra L K] (v : Fi
   v.maximalIdeal.asIdeal.ramificationIdx (𝓞 L) * v.maximalIdeal.asIdeal.inertiaDeg (𝓞 L)
 
 /- English proof (translation)
-Substitute `h` using the available equality. Break down `eq_or_ne z 0 with rfl | hz` into its components or cases. Simplify using `[hf]`. Rewrite using `[WithZeroMulInt.toNNReal_neg_apply _ hz, WithZeroMulInt.toNNReal_neg_apply _ hz, ← zpow_natCast, ← zpow_natCast, ← zpow_mul, ← zpow_mul, mul_comm]`.
+Substitute using the available equality. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 lemma toNNReal_pow {b c : NNReal} (hc : c ≠ 0) (hb : b ≠ 0) {f : ℕ} (hf : f ≠ 0) (h : c = b ^ f)
     (z : WithZero (Multiplicative ℤ)) :
@@ -35,9 +35,9 @@ lemma toNNReal_pow {b c : NNReal} (hc : c ≠ 0) (hb : b ≠ 0) {f : ℕ} (hf : 
       ← zpow_natCast, ← zpow_natCast, ← zpow_mul, ← zpow_mul, mul_comm]
 
 /- English proof (translation)
-Establish `hQ : (below (L` using `L) v).asIdeal ≠ ⊥ := (below v).ne_bot`. Establish `hf : (below (L` using `L) v).asIdeal.inertiaDeg' v.maximalIdeal.asIdeal ≠ 0 := (inertiaDeg'_pos' _ _).ne'`. Establish `hN` using `absNorm_eq_pow_inertiaDeg'_of_liesOver v.maximalIdeal.asIdeal (below (L := L) v).asIdeal inferInstance hQ`. Rewrite using `[← FinitePlace.norm_embedding_eq v, FinitePlace.mk_apply, FinitePlace.norm_embedding', FinitePlace.norm_embedding', ← HeightOneSpectrum.valuation_liesOver K (below (L := L) v) v.maximalIdeal, map_pow, toNNReal_pow _ (NumberField.HeightOneSpectrum.absNorm_ne_zero (below (L := L) v …`. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[mul_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem apply_algebraMap (v : FinitePlace K) (x : L) :
     v (algebraMap L K x) = FinitePlace.mk (below v) x ^ deg L v := by
@@ -54,7 +54,7 @@ theorem apply_algebraMap (v : FinitePlace K) (x : L) :
   rw [mul_comm]
 
 /- English proof (translation)
-Use `mul_ne_zero ?_ (inertiaDeg_pos _ _).ne'` and prove the remaining obligations. Rewrite using `[← ramificationIdx'_eq_ramificationIdx _ _ (below (L := L) v).ne_bot]`. Conclude with `IsDedekindDomain.ramificationIdx'_ne_zero_of_liesOver _ (below v).ne_bot`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma deg_ne_zero (v : FinitePlace K) : deg L v ≠ 0 := by
   refine mul_ne_zero ?_ (inertiaDeg_pos _ _).ne'
@@ -62,7 +62,7 @@ lemma deg_ne_zero (v : FinitePlace K) : deg L v ≠ 0 := by
   exact IsDedekindDomain.ramificationIdx'_ne_zero_of_liesOver _ (below v).ne_bot
 
 /- English proof (translation)
-Establish `h1 : ∀ a : ℝ, 0 ≤ a → (a ^ deg L v ≤ 1 ↔ a ≤ 1)` using `fun a ha ↦ pow_le_one_iff_of_nonneg ha (deg_ne_zero v)`. Establish `h2 : ∀ a : ℝ, 0 ≤ a → (a ^ deg L v < 1 ↔ a < 1)` using `fun a ha ↦ pow_lt_one_iff_of_nonneg ha (deg_ne_zero v)`. Unfold `AbsCentredAt`. Simplify using `only [apply_algebraMap]`. Conclude with `and_congr (forall_congr' fun u ↦ h1 _ (apply_nonneg _ _)) (forall_congr' fun u ↦ by rw [h2 _ (apply_nonneg _ _)])`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem centred_iff (O : Subalgebra ℤ L) (m : Ideal O) (v : FinitePlace K) :
     AbsCentredAt O m (fun u ↦ v (algebraMap L K u)) ↔
@@ -77,7 +77,7 @@ theorem centred_iff (O : Subalgebra ℤ L) (m : Ideal O) (v : FinitePlace K) :
     (forall_congr' fun u ↦ by rw [h2 _ (apply_nonneg _ _)])
 
 /- English proof (translation)
-Rewrite using `[apply_algebraMap, Real.log_pow]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem neg_log_apply (v : FinitePlace K) (t : L) :
     -Real.log (v (algebraMap L K t)) = deg L v * -Real.log (FinitePlace.mk (below v) t) := by
@@ -98,7 +98,7 @@ noncomputable instance (Q : HeightOneSpectrum (𝓞 L)) : Fintype {v : FinitePla
   Fintype.ofEquiv _ (fibreEquiv Q).symm
 
 /- English proof (translation)
-Rewrite using `[← (fibreEquiv Q).symm.sum_comp, IsFractionRing.finrank_eq (𝓞 L) L (𝓞 K) K, ← sum_ramification_inertia_eq_finrank Q.asIdeal (𝓞 K)]`. Use `Finset.sum_congr rfl fun P _ ↦ ?_` and prove the remaining obligations. Simplify using `only [deg, fibreEquiv, Equiv.coe_fn_symm_mk, FinitePlace.maximalIdeal_mk]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem sum_fibre (Q : HeightOneSpectrum (𝓞 L)) :
     ∑ v : {v : FinitePlace K // below v = Q}, deg L v.1 = Module.finrank L K := by
@@ -108,11 +108,11 @@ theorem sum_fibre (Q : HeightOneSpectrum (𝓞 L)) :
   simp only [deg, fibreEquiv, Equiv.coe_fn_symm_mk, FinitePlace.maximalIdeal_mk]
 
 /- English proof (translation)
-Establish `hfin : ∀ b, (π ⁻¹' {b}).Finite` using `fun b ↦ Set.finite_coe_iff.mp (Finite.of_fintype {a // π a = b})`. Establish `hA : (π ⁻¹' g.support).Finite`. Rewrite using `[← Set.biUnion_preimage_singleton]`. Conclude with `hg.biUnion fun b _ ↦ hfin b`. Rewrite using `[finsum_eq_sum_of_support_subset _ (s := hA.toFinset) ?_, finsum_eq_sum_of_support_subset _ (s := hg.toFinset) (by simp), Finset.mul_sum]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Finset.sum_fiberwise_of_maps_to (s := hA.toFinset) (t := hg.toFinset) (g := π) (fun a ha ↦ by simpa using ha)]`. Use `Finset.sum_congr rfl fun b hb ↦ ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_subtype (p := fun a ↦ π a = b) _ (fun a ↦ by`. Simplify using `only [Finset.mem_filter, Set.Finite.mem_toFinset, Set.mem_preimage]`. Conclude with `⟨And.right, fun h ↦ ⟨by rw [h]; simpa using hb, h⟩⟩)]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `: ∀ a : {a // π a = b}, (n a.1 : ℝ) * g (π a.1) = n a.1 * g b` using `fun a ↦ by rw [a.2]`. Rewrite using `[Fintype.sum_congr _ _ this, ← Finset.sum_mul, ← Nat.cast_sum, hsum]`. Introduce `a ha`. Simplify using `only [Set.Finite.coe_toFinset, Set.mem_preimage, Function.mem_support]`. Conclude with `right_ne_zero_of_mul ha`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma finsum_fibre {α β : Type*} (π : α → β) [∀ b, Fintype {a // π a = b}] (n : α → ℕ) (N : ℕ)
     (g : β → ℝ) (hg : g.support.Finite) (hsum : ∀ b, ∑ a : {a // π a = b}, n a.1 = N) :
@@ -138,15 +138,15 @@ lemma finsum_fibre {α β : Type*} (π : α → β) [∀ b, Fintype {a // π a =
     exact right_ne_zero_of_mul ha
 
 /- English proof (translation)
-Introduce `L K _ _ _ _ _ O m t`. Set `g : HeightOneSpectrum (𝓞 L) → ℝ` to `fun Q ↦ if AbsCentredAt O m (fun u ↦ FinitePlace.mk Q u) then -Real.log (FinitePlace.mk Q t) else 0`. Establish `hL : ∑ᶠ w ∈ {w : FinitePlace L | AbsCentredAt O m fun u ↦ w u}, -Real.log (w t) = ∑ᶠ Q, g Q`. Rewrite using `[finsum_mem_def, ← finsum_comp_equiv FinitePlace.equivHeightOneSpectrum.symm]`. Use `finsum_congr fun Q ↦ ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Set.indicator, Set.mem_ofPred_eq, g, FinitePlace.equivHeightOneSpectrum, Equiv.coe_fn_symm_mk]`. Conclude with `if_congr Iff.rfl rfl rfl`. Establish `hK : ∑ᶠ v ∈ {v : FinitePlace K | AbsCentredAt O m fun u ↦ v (algebraMap L K u)}, -Real.log (v (algebraMap L K t)) = ∑ᶠ v : FinitePlace K, (deg L v : ℝ) * g (below v)`. Rewrite using `[finsum_mem_def]`. Use `finsum_congr fun v ↦ ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [Set.indicator, Set.mem_ofPred_eq, g, centred_iff, neg_log_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `hg : g.support.Finite`. Break down `eq_or_ne t 0 with rfl | ht` into its components or cases. Use `Set.finite_empty.subset fun Q hQ ↦ ?_` and prove the remaining obligations.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `[g] at hQ`. Use `((FinitePlace.hasFiniteMulSupport ht).preimage (fun a _ b _ h ↦ FinitePlace.mk_eq_iff.mp h)).subset fun Q hQ ↦ ?_` and prove the remaining obligations. Simplify using `only [Function.mem_support, g] at hQ`. Use `split_ifs at hQ`. Simplify using `only [Set.mem_preimage, Function.mem_mulSupport]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `h1`. Conclude with `hQ (by simp [h1])`. Conclude with `absurd rfl hQ`. Rewrite using `[hK, hL]`. Conclude with `finsum_fibre below (deg L) _ g hg sum_fibre`.
+A detailed English derivation is pending.
 -/
 theorem proof : PlaceCentredSum.Statement := by
   intro L K _ _ _ _ _ O m t

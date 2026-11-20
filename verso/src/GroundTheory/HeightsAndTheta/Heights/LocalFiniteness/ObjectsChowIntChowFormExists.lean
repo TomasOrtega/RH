@@ -68,181 +68,181 @@ import GroundTheory.HeightsAndTheta.Heights.OrbitLimits.PProjRankTransfer
 set_option maxSynthPendingDepth 1
 
 /- English proof (translation)
-The claim follows from `@GroundTheory.Heights₂.Heights.DualStdGenDeg.proof GroundTheory.Heights₂.Heights.OneBlockPointDeg.proof GroundTheory.Heights₂.Heights.AutoClose.DualStdFibreRatios`.
+A detailed English derivation is pending.
 -/
 theorem GroundTheory.Heights₂.Heights.AutoClose.DualStdGenDeg : GroundTheory.Heights₂.Heights.DualStdGenDeg.Statement :=
   @GroundTheory.Heights₂.Heights.DualStdGenDeg.proof GroundTheory.Heights₂.Heights.OneBlockPointDeg.proof GroundTheory.Heights₂.Heights.AutoClose.DualStdFibreRatios
 
 /- English proof (translation)
-The claim follows from `@GroundTheory.Heights₂.Heights.DualGeomDegStandard.proof GroundTheory.Heights₂.Heights.AutoClose.DualGeomDegCharts GroundTheory.Heights₂.Heights.GrassGeomDegChart.proof GroundTheory.Heights₂.Heights.ChartMassInvariant.proof`.
+A detailed English derivation is pending.
 -/
 theorem GroundTheory.Heights₂.Heights.AutoClose.DualGeomDegStandard : GroundTheory.Heights₂.Heights.DualGeomDegStandard.Statement :=
   @GroundTheory.Heights₂.Heights.DualGeomDegStandard.proof GroundTheory.Heights₂.Heights.AutoClose.DualGeomDegCharts GroundTheory.Heights₂.Heights.GrassGeomDegChart.proof GroundTheory.Heights₂.Heights.ChartMassInvariant.proof
 
 /- English proof (translation)
-The claim follows from `@GroundTheory.Heights₂.Heights.ChartIbpCutoff.proof GroundTheory.Heights₂.Heights.ChartCutoffEnergy.proof GroundTheory.Heights₂.Heights.AutoClose.ChartDiffEnergy`.
+A detailed English derivation is pending.
 -/
 theorem GroundTheory.Heights₂.Heights.AutoClose.ChartIbpCutoff : GroundTheory.Heights₂.Heights.ChartIbpCutoff.Statement :=
   @GroundTheory.Heights₂.Heights.ChartIbpCutoff.proof GroundTheory.Heights₂.Heights.ChartCutoffEnergy.proof GroundTheory.Heights₂.Heights.AutoClose.ChartDiffEnergy
 
 /- English proof (translation)
-The claim follows from `@GroundTheory.Heights₂.Heights.ThetaInnerMean.proof GroundTheory.Heights₂.Heights.ThetaSummandNorm.proof GroundTheory.Heights₂.Heights.AutoClose.ThetaCubeParseval`.
+A detailed English derivation is pending.
 -/
 theorem GroundTheory.Heights₂.Heights.AutoClose.ThetaInnerMean : GroundTheory.Heights₂.Heights.ThetaInnerMean.Statement :=
   @GroundTheory.Heights₂.Heights.ThetaInnerMean.proof GroundTheory.Heights₂.Heights.ThetaSummandNorm.proof GroundTheory.Heights₂.Heights.AutoClose.ThetaCubeParseval
 
 /- English proof (translation)
-The claim follows from `@GroundTheory.Heights₂.Heights.RestCutTermEq.proof GroundTheory.Heights₂.Heights.AutoClose.RestCutRealSyzygy GroundTheory.Heights₂.Heights.RestCutPsiFlag.proof GroundTheory.Heights₂.Heights.RestCutTransportPsum.proof`.
+A detailed English derivation is pending.
 -/
 theorem GroundTheory.Heights₂.Heights.AutoClose.RestCutTermEq : GroundTheory.Heights₂.Heights.RestCutTermEq.Statement :=
   @GroundTheory.Heights₂.Heights.RestCutTermEq.proof GroundTheory.Heights₂.Heights.AutoClose.RestCutRealSyzygy GroundTheory.Heights₂.Heights.RestCutPsiFlag.proof GroundTheory.Heights₂.Heights.RestCutTransportPsum.proof
 
 /- English proof (translation)
-The claim follows from `@GroundTheory.Heights₂.Heights.RestCutCompare.proof GroundTheory.Heights₂.Heights.RestTerms.CoinvariantTopDegree.full GroundTheory.Heights₂.Heights.RestCutStairHom.proof GroundTheory.Heights₂.Heights.AutoClose.RestCutFlagKillsIdeal GroundTheory.Heights₂.Heights.AutoClose.RestCutI …`.
+A detailed English derivation is pending.
 -/
 theorem GroundTheory.Heights₂.Heights.AutoClose.RestCutCompare : GroundTheory.Heights₂.Heights.RestCutCompare.Statement :=
   @GroundTheory.Heights₂.Heights.RestCutCompare.proof GroundTheory.Heights₂.Heights.RestTerms.CoinvariantTopDegree.full GroundTheory.Heights₂.Heights.RestCutStairHom.proof GroundTheory.Heights₂.Heights.AutoClose.RestCutFlagKillsIdeal GroundTheory.Heights₂.Heights.AutoClose.RestCutIKillsIdeal
 
 /- English proof (translation)
-The claim follows from `@GroundTheory.Heights₂.Heights.GaussShellSum.proof GroundTheory.Heights₂.Heights.AutoClose.GaussShell`.
+A detailed English derivation is pending.
 -/
 theorem GroundTheory.Heights₂.Heights.AutoClose.GaussShellSum : GroundTheory.Heights₂.Heights.GaussShellSum.Statement :=
   @GroundTheory.Heights₂.Heights.GaussShellSum.proof GroundTheory.Heights₂.Heights.AutoClose.GaussShell
 
 /- English proof (translation)
-The claim follows from `@GroundTheory.Heights₂.Heights.CurveCharts.proof GroundTheory.Heights₂.Heights.AutoClose.ClosedPointChart`.
+A detailed English derivation is pending.
 -/
 theorem GroundTheory.Heights₂.Heights.AutoClose.CurveCharts : GroundTheory.Heights₂.Heights.CurveCharts.Statement :=
   @GroundTheory.Heights₂.Heights.CurveCharts.proof GroundTheory.Heights₂.Heights.AutoClose.ClosedPointChart
 
 /- English proof (translation)
-The claim follows from `@GroundTheory.Heights₂.Heights.GaussPoissonBound.proof GroundTheory.Heights₂.Heights.GaussLatticeIsLattice.proof GroundTheory.Heights₂.Heights.AutoClose.GaussLatticeCovolume GroundTheory.Heights₂.Heights.GaussLatticeCoords.proof GroundTheory.Heights₂.Heights.GaussFourierSelf.proo …`.
+A detailed English derivation is pending.
 -/
 theorem GroundTheory.Heights₂.Heights.AutoClose.GaussPoissonBound : GroundTheory.Heights₂.Heights.GaussPoissonBound.Statement :=
   @GroundTheory.Heights₂.Heights.GaussPoissonBound.proof GroundTheory.Heights₂.Heights.GaussLatticeIsLattice.proof GroundTheory.Heights₂.Heights.AutoClose.GaussLatticeCovolume GroundTheory.Heights₂.Heights.GaussLatticeCoords.proof GroundTheory.Heights₂.Heights.GaussFourierSelf.proof
 
 /- English proof (translation)
-The claim follows from `@GroundTheory.Heights₂.Heights.ChartEnergyIntegrable.proof GroundTheory.Heights₂.Heights.HermFormCompare.proof GroundTheory.Heights₂.Heights.AutoClose.ChartHessCompare`.
+A detailed English derivation is pending.
 -/
 theorem GroundTheory.Heights₂.Heights.AutoClose.ChartEnergyIntegrable : GroundTheory.Heights₂.Heights.ChartEnergyIntegrable.Statement :=
   @GroundTheory.Heights₂.Heights.ChartEnergyIntegrable.proof GroundTheory.Heights₂.Heights.HermFormCompare.proof GroundTheory.Heights₂.Heights.AutoClose.ChartHessCompare
 
 /- English proof (translation)
-The claim follows from `@GroundTheory.Heights₂.Heights.RestCutStairNonzero.proof GroundTheory.Heights₂.Heights.RestTerms.CoinvariantTopDegree.full GroundTheory.Heights₂.Heights.AutoClose.RestCutFlagKillsIdeal`.
+A detailed English derivation is pending.
 -/
 theorem GroundTheory.Heights₂.Heights.AutoClose.RestCutStairNonzero : GroundTheory.Heights₂.Heights.RestCutStairNonzero.Statement :=
   @GroundTheory.Heights₂.Heights.RestCutStairNonzero.proof GroundTheory.Heights₂.Heights.RestTerms.CoinvariantTopDegree.full GroundTheory.Heights₂.Heights.AutoClose.RestCutFlagKillsIdeal
 
 /- English proof (translation)
-The claim follows from `@GroundTheory.Heights₂.Heights.StrongApprox.SAOpenHolds.proof GroundTheory.Heights₂.Heights.AutoClose.StrongApprox_SAHolds GroundTheory.Heights₂.Heights.StrongApprox.AETopologicalRing.proof`.
+A detailed English derivation is pending.
 -/
 theorem GroundTheory.Heights₂.Heights.AutoClose.StrongApprox_SAOpenHolds : GroundTheory.Heights₂.Heights.StrongApprox.SAOpenHolds.Statement :=
   @GroundTheory.Heights₂.Heights.StrongApprox.SAOpenHolds.proof GroundTheory.Heights₂.Heights.AutoClose.StrongApprox_SAHolds GroundTheory.Heights₂.Heights.StrongApprox.AETopologicalRing.proof
 
 /- English proof (translation)
-The claim follows from `@GroundTheory.Heights₂.Heights.Targets.CurveVertPointInj.proof GroundTheory.Heights₂.Heights.AutoClose.Targets_CurveVertPointChart`.
+A detailed English derivation is pending.
 -/
 theorem GroundTheory.Heights₂.Heights.AutoClose.Targets_CurveVertPointInj : GroundTheory.Heights₂.Heights.Targets.CurveVertPointInj.Statement :=
   @GroundTheory.Heights₂.Heights.Targets.CurveVertPointInj.proof GroundTheory.Heights₂.Heights.AutoClose.Targets_CurveVertPointChart
 
 /- English proof (translation)
-The claim follows from `@GroundTheory.Heights₂.Heights.GoodChartModel.proof GroundTheory.Heights₂.Heights.GoodChartZeroSet.proof GroundTheory.Heights₂.Heights.AutoClose.GoodChartDim`.
+A detailed English derivation is pending.
 -/
 theorem GroundTheory.Heights₂.Heights.AutoClose.GoodChartModel : GroundTheory.Heights₂.Heights.GoodChartModel.Statement :=
   @GroundTheory.Heights₂.Heights.GoodChartModel.proof GroundTheory.Heights₂.Heights.GoodChartZeroSet.proof GroundTheory.Heights₂.Heights.AutoClose.GoodChartDim
 
 /- English proof (translation)
-The claim follows from `@GroundTheory.Heights₂.Heights.Targets.ProjRankTransfer.of_found GroundTheory.Heights₂.Heights.Targets.ProjPotMassEq.proof GroundTheory.Heights₂.Heights.AutoClose.Targets_ProjPotMassPos GroundTheory.Heights₂.Heights.Targets.ProjPotDensVanish.proof`.
+A detailed English derivation is pending.
 -/
 theorem GroundTheory.Heights₂.Heights.AutoClose.Targets_ProjRankTransfer : GroundTheory.Heights₂.Heights.Targets.ProjRankTransfer.Statement :=
   @GroundTheory.Heights₂.Heights.Targets.ProjRankTransfer.of_found GroundTheory.Heights₂.Heights.Targets.ProjPotMassEq.proof GroundTheory.Heights₂.Heights.AutoClose.Targets_ProjPotMassPos GroundTheory.Heights₂.Heights.Targets.ProjPotDensVanish.proof
 
 /- English proof (translation)
-The claim follows from `@GroundTheory.Heights₂.Heights.Targets.CurveIndexLinear.proof GroundTheory.Heights₂.Heights.Targets.CurveRingFinite.proof GroundTheory.Heights₂.Heights.Targets.CurveClosedPointChart.proof GroundTheory.Heights₂.Heights.AutoClose.Targets_InvertibleIndexMul`.
+A detailed English derivation is pending.
 -/
 theorem GroundTheory.Heights₂.Heights.AutoClose.Targets_CurveIndexLinear : GroundTheory.Heights₂.Heights.Targets.CurveIndexLinear.Statement :=
   @GroundTheory.Heights₂.Heights.Targets.CurveIndexLinear.proof GroundTheory.Heights₂.Heights.Targets.CurveRingFinite.proof GroundTheory.Heights₂.Heights.Targets.CurveClosedPointChart.proof GroundTheory.Heights₂.Heights.AutoClose.Targets_InvertibleIndexMul
 
 /- English proof (translation)
-The claim follows from `@GroundTheory.Heights₂.Heights.Targets.CurveVertPointNagata.proof GroundTheory.Heights₂.Heights.AutoClose.Targets_CurveVertPointChart`.
+A detailed English derivation is pending.
 -/
 theorem GroundTheory.Heights₂.Heights.AutoClose.Targets_CurveVertPointNagata : GroundTheory.Heights₂.Heights.Targets.CurveVertPointNagata.Statement :=
   @GroundTheory.Heights₂.Heights.Targets.CurveVertPointNagata.proof GroundTheory.Heights₂.Heights.AutoClose.Targets_CurveVertPointChart
 
 /- English proof (translation)
-The claim follows from `@GroundTheory.Heights₂.Heights.Targets.ChartSectionLength.proof GroundTheory.Heights₂.Heights.Targets.ChartConeComponent.proof GroundTheory.Heights₂.Heights.AutoClose.Targets_ChartConeLength`.
+A detailed English derivation is pending.
 -/
 theorem GroundTheory.Heights₂.Heights.AutoClose.Targets_ChartSectionLength : GroundTheory.Heights₂.Heights.Targets.ChartSectionLength.Statement :=
   @GroundTheory.Heights₂.Heights.Targets.ChartSectionLength.proof GroundTheory.Heights₂.Heights.Targets.ChartConeComponent.proof GroundTheory.Heights₂.Heights.AutoClose.Targets_ChartConeLength
 
 /- English proof (translation)
-The claim follows from `@GroundTheory.Heights₂.Heights.DefectConstZero.proof GroundTheory.Heights₂.Heights.AutoClose.DefectPoint GroundTheory.Heights₂.Heights.MahlerZeroSpec.proof`.
+A detailed English derivation is pending.
 -/
 theorem GroundTheory.Heights₂.Heights.AutoClose.DefectConstZero : GroundTheory.Heights₂.Heights.DefectConstZero.Statement :=
   @GroundTheory.Heights₂.Heights.DefectConstZero.proof GroundTheory.Heights₂.Heights.AutoClose.DefectPoint GroundTheory.Heights₂.Heights.MahlerZeroSpec.proof
 
 /- English proof (translation)
-The claim follows from `@GroundTheory.Heights₂.Heights.CycleSectionChow.proof GroundTheory.Heights₂.Heights.ChowFormSection.full GroundTheory.Heights₂.Heights.AutoClose.ChowFormCycleAdd GroundTheory.Heights₂.Heights.ChowFormCycleSmul.proof`.
+A detailed English derivation is pending.
 -/
 theorem GroundTheory.Heights₂.Heights.AutoClose.CycleSectionChow : GroundTheory.Heights₂.Heights.CycleSectionChow.Statement :=
   @GroundTheory.Heights₂.Heights.CycleSectionChow.proof GroundTheory.Heights₂.Heights.ChowFormSection.full GroundTheory.Heights₂.Heights.AutoClose.ChowFormCycleAdd GroundTheory.Heights₂.Heights.ChowFormCycleSmul.proof
 
 /- English proof (translation)
-The claim follows from `@GroundTheory.Heights₂.Heights.AreaFormulaInj.proof GroundTheory.Heights₂.Heights.AutoClose.AreaFormulaInjSet`.
+A detailed English derivation is pending.
 -/
 theorem GroundTheory.Heights₂.Heights.AutoClose.AreaFormulaInj : GroundTheory.Heights₂.Heights.AreaFormulaInj.Statement :=
   @GroundTheory.Heights₂.Heights.AreaFormulaInj.proof GroundTheory.Heights₂.Heights.AutoClose.AreaFormulaInjSet
 
 /- English proof (translation)
-The claim follows from `@GroundTheory.Heights₂.Heights.ChartPointSeparable.proof GroundTheory.Heights₂.Heights.AutoClose.ChartFreeParAlgIndep`.
+A detailed English derivation is pending.
 -/
 theorem GroundTheory.Heights₂.Heights.AutoClose.ChartPointSeparable : GroundTheory.Heights₂.Heights.ChartPointSeparable.Statement :=
   @GroundTheory.Heights₂.Heights.ChartPointSeparable.proof GroundTheory.Heights₂.Heights.AutoClose.ChartFreeParAlgIndep
 
 /- English proof (translation)
-The claim follows from `@GroundTheory.Heights₂.Heights.GraphAreaFibre.proof GroundTheory.Heights₂.Heights.AutoClose.GraphAreaIntegral GroundTheory.Heights₂.Heights.TangentJacComp.proof GroundTheory.Heights₂.Heights.AreaMultiplicityWeight.proof`.
+A detailed English derivation is pending.
 -/
 theorem GroundTheory.Heights₂.Heights.AutoClose.GraphAreaFibre : GroundTheory.Heights₂.Heights.GraphAreaFibre.Statement :=
   @GroundTheory.Heights₂.Heights.GraphAreaFibre.proof GroundTheory.Heights₂.Heights.AutoClose.GraphAreaIntegral GroundTheory.Heights₂.Heights.TangentJacComp.proof GroundTheory.Heights₂.Heights.AreaMultiplicityWeight.proof
 
 /- English proof (translation)
-The claim follows from `@GroundTheory.Heights₂.Heights.ObjectsChow.IntChowFormExists.proof GroundTheory.Heights₂.Heights.AutoClose.chow_form_of_incidence_zero_locus GroundTheory.Heights₂.Heights.ObjectsChow.GenericFibreIdeal.proof GroundTheory.Heights₂.Heights.ObjectsChow.GenericFibreDim.proof`.
+A detailed English derivation is pending.
 -/
 theorem GroundTheory.Heights₂.Heights.AutoClose.ObjectsChow_IntChowFormExists : GroundTheory.Heights₂.Heights.ObjectsChow.IntChowFormExists.Statement :=
   @GroundTheory.Heights₂.Heights.ObjectsChow.IntChowFormExists.proof GroundTheory.Heights₂.Heights.AutoClose.chow_form_of_incidence_zero_locus GroundTheory.Heights₂.Heights.ObjectsChow.GenericFibreIdeal.proof GroundTheory.Heights₂.Heights.ObjectsChow.GenericFibreDim.proof
 
 /- English proof (translation)
-The claim follows from `@GroundTheory.Heights₂.Heights.FsLogAverage.proof GroundTheory.Heights₂.Heights.BallAverageLinear.proof GroundTheory.Heights₂.Heights.FsLogPointOf.proof GroundTheory.Heights₂.Heights.AutoClose.SphereMeanLinearBall GroundTheory.Heights₂.Heights.BallVolume.proof`.
+A detailed English derivation is pending.
 -/
 theorem GroundTheory.Heights₂.Heights.AutoClose.FsLogAverage : GroundTheory.Heights₂.Heights.FsLogAverage.Statement :=
   @GroundTheory.Heights₂.Heights.FsLogAverage.proof GroundTheory.Heights₂.Heights.BallAverageLinear.proof GroundTheory.Heights₂.Heights.FsLogPointOf.proof GroundTheory.Heights₂.Heights.AutoClose.SphereMeanLinearBall GroundTheory.Heights₂.Heights.BallVolume.proof
 
 /- English proof (translation)
-The claim follows from `@GroundTheory.Heights₂.Heights.ChowFormExistsRat.proof GroundTheory.Heights₂.Heights.AutoClose.chow_form_of_incidence_zero_locus GroundTheory.Heights₂.Heights.ObjectsChow.GenericFibreDim.proof`.
+A detailed English derivation is pending.
 -/
 theorem GroundTheory.Heights₂.Heights.AutoClose.ChowFormExistsRat : GroundTheory.Heights₂.Heights.ChowFormExistsRat.Statement :=
   @GroundTheory.Heights₂.Heights.ChowFormExistsRat.proof GroundTheory.Heights₂.Heights.AutoClose.chow_form_of_incidence_zero_locus GroundTheory.Heights₂.Heights.ObjectsChow.GenericFibreDim.proof
 
 /- English proof (translation)
-The claim follows from `@GroundTheory.Heights₂.Heights.PrimeQuasiFiniteSheets.proof GroundTheory.Heights₂.Heights.FiniteFibresDimLe.proof GroundTheory.Heights₂.Heights.AutoClose.DominantPrimitiveFibres GroundTheory.Heights₂.Heights.ComplexSets.SimpleRootBranch.proof`.
+A detailed English derivation is pending.
 -/
 theorem GroundTheory.Heights₂.Heights.AutoClose.PrimeQuasiFiniteSheets : GroundTheory.Heights₂.Heights.PrimeQuasiFiniteSheets.Statement :=
   @GroundTheory.Heights₂.Heights.PrimeQuasiFiniteSheets.proof GroundTheory.Heights₂.Heights.FiniteFibresDimLe.proof GroundTheory.Heights₂.Heights.AutoClose.DominantPrimitiveFibres GroundTheory.Heights₂.Heights.ComplexSets.SimpleRootBranch.proof
 
 /- English proof (translation)
-The claim follows from `@GroundTheory.Heights₂.Heights.SectionLengthSum.proof GroundTheory.Heights₂.Heights.AutoClose.LocalSectionLengthSum`.
+A detailed English derivation is pending.
 -/
 theorem GroundTheory.Heights₂.Heights.AutoClose.SectionLengthSum : GroundTheory.Heights₂.Heights.SectionLengthSum.Statement :=
   @GroundTheory.Heights₂.Heights.SectionLengthSum.proof GroundTheory.Heights₂.Heights.AutoClose.LocalSectionLengthSum
 
 /- English proof (translation)
-The claim follows from `@GroundTheory.Heights₂.Heights.FormsThroughPoint.proof GroundTheory.Heights₂.Heights.IncidenceZeroLocus.proof GroundTheory.Heights₂.Heights.ThroughPointIncIdeal.proof GroundTheory.Heights₂.Heights.AutoClose.ChartZeroTrdeg GroundTheory.Heights₂.Heights.AutoClose.ThroughTwoPointsTr …`.
+A detailed English derivation is pending.
 -/
 theorem GroundTheory.Heights₂.Heights.AutoClose.FormsThroughPoint : GroundTheory.Heights₂.Heights.FormsThroughPoint.Statement :=
   @GroundTheory.Heights₂.Heights.FormsThroughPoint.proof GroundTheory.Heights₂.Heights.IncidenceZeroLocus.proof GroundTheory.Heights₂.Heights.ThroughPointIncIdeal.proof GroundTheory.Heights₂.Heights.AutoClose.ChartZeroTrdeg GroundTheory.Heights₂.Heights.AutoClose.ThroughTwoPointsTrdeg GroundTheory.Heights₂.Heights.TrdegBaseAlgebraic.proof
 
 /- English proof (translation)
-The claim follows from `@GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.ModelCechRefine.proof GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.CechContract.proof GroundTheory.Heights₂.Heights.AutoClose.model_cech_exact_sequence_holds GroundTheory.Heights₂.Heights.AutoClose. …`.
+A detailed English derivation is pending.
 -/
 theorem GroundTheory.Heights₂.Heights.AutoClose.model_cech_refinement_holds : GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.ModelCechRefine.Statement :=
   @GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.ModelCechRefine.proof GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.CechContract.proof GroundTheory.Heights₂.Heights.AutoClose.model_cech_exact_sequence_holds GroundTheory.Heights₂.Heights.AutoClose.double_cech_complex_holds

@@ -13,7 +13,7 @@ noncomputable section
 namespace GlobalTheory.VacFactor
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure]`. Rewrite using `[GlobalTheory.PureFactor.finprod_update φ w (r • h) hφ x, GlobalTheory.PureFactor.finprod_update φ w h hφ x]`. Simplify using `only [SchwartzMap.smul_apply, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem pure_update_smul {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ] (f : SInf F κ)
     (φ : ∀ v : Pl F, (κ → Fv F v) → ℂ) (w : Pl F) (r : ℂ) (h : (κ → Fv F w) → ℂ)
@@ -26,7 +26,7 @@ theorem pure_update_smul {F : Type} [Field F] [NumberField F] {κ : Type} [Finty
   ring
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `[tens, mul_assoc]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem tens_smul {F : Type} [Field F] [NumberField F] {R κ : Type} (ev : AF F → R) (c : ℂ) (g : (κ → R) → ℂ)
     (r : (κ → AF F) → ℂ) : tens ev (c • g) r = c • tens ev g r := by
@@ -34,7 +34,7 @@ theorem tens_smul {F : Type} [Field F] [NumberField F] {R κ : Type} (ev : AF F 
   simp [tens, mul_assoc]
 
 /- English proof (translation)
-Use `filter_upwards [hvac, U.finite_toSet.compl_mem_cofinite] with v h1 h2`. Rewrite using `[h v h2, h1]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem std_of_off {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ] (vac φ : ∀ v : Pl F, (κ → Fv F v) → ℂ)
     (hvac : ∀ᶠ v in Filter.cofinite, vac v = Set.indicator {x | ∀ j, x j ∈ v.adicCompletionIntegers F} 1)
@@ -44,27 +44,25 @@ theorem std_of_off {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ]
   rw [h v h2, h1]
 
 /- English proof (translation)
-Introduce `hP F E _ _ _ _ _ σ B a a' G X om om' hT S f φ hφSB hφvac Ψ hΨ hyp`. Establish `hvstd` using `hT.geo.hM'.std`. Establish `hvSB : ∀ v, G.M'.vac v ∈ SB (Fin a' × Fin (a + a') → Fv F v)` using `fun v => (hT.geo.hM'.vac v).1`. Establish `hyp' : ∀ w, w ∉ S → ∀ γ ∈ latAtV G.V' G.W w, ∀ c : ℂ, Acts (evFin F w) (G.M'.co.rho B.ψ γ) (G.M'.vac w) (c • G.M'.vac w) → G.M'.co.rho B.ψ γ Ψ = c • Ψ`. Introduce `w hw γ hγ c hc`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hstd` using `std_of_off G.M'.vac φ hvstd S hφvac`. Take `⟨r, hr1, hr2⟩` from `GlobalTheory.PureFactor.exists_rest_factor w f φ hstd`. Establish `e : pure f φ = tens (evFin F w) (G.M'.vac w) r`. Rewrite using `[hr2, ← hφvac w hw, Function.update_eq_self]`. Use `hyp w hw γ hγ c ?_` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hR : Rest (evFin F w) (G.M'.vac w) r` using `⟨hr1, e ▸ GlobalTheory.TensUniq.pure_mem_schA f φ hφSB hstd⟩`. Rewrite using `[e, hc r hR, tens_smul]`. Take `⟨T, m, f₀, φ₀, hSB₀, hstd₀, hsum₀⟩` from `GlobalTheory.T.adelic_schwartz_finite_pure_tensors F _ Ψ hΨ`. Establish `hfin : {v | ¬ G.M'.vac v = Set.indicator {x | ∀ j, x j ∈ v.adicCompletionIntegers F} 1}.Finite` using `Filter.eventually_cofinite.1 hvstd`. Establish `key : ∀ U : Finset (Pl F), ∀ (f : Fin m → SInf F (Fin a' × Fin (a + a'))) (φ : Fin m → ∀ v : Pl F, (Fin a' × Fin (a + a') → Fv F v) → ℂ), (∀ i v, φ i v ∈ SB (Fin a' × Fin (a + a') → Fv F v)) → (∀ i v, v ∉ S → v ∉ U → φ i v = G.M'.vac v) → Ψ = ∑ i, pure (f i) (φ i) → ∃ (f' : Fin m …`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `U`. Proceed by induction on `U using Finset.induction_on with`. Consider the case `empty => exact fun f φ h1 h2 h3 => ⟨f, φ, h1, fun i v hv => h2 i v hv (Finset.notMem_empty v), h3⟩`. Consider the case `insert w U hwU ih`. Introduce `f φ h1 h2 h3`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hwS : w ∈ S`. Use `ih f φ h1 (fun i v hv hvU => h2 i v hv ?_) h3` and prove the remaining obligations. Rewrite using `[Finset.mem_insert]`. Introduce and unpack `(rfl | h)`. Use `exacts [hv hwS, hvU h]`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hstd : ∀ i, ∀ᶠ v in Filter.cofinite, φ i v = Set.indicator {x | ∀ j, x j ∈ v.adicCompletionIntegers F} 1` using `fun i => std_of_off G.M'.vac (φ i) hvstd (S ∪ insert w U) fun v hv => h2 i v (fun h => hv (Finset.mem_union_left _ h)) (fun h => hv (Finset.mem_union_right _ h))`. Take `⟨g, hgSB, hgE, hgsum⟩` from `GlobalTheory.T.triple_lattice_invariant_schwartz_global hP F E σ B a a' G X om om' hT w Ψ hΨ (hyp' w hwS) m f φ h1 hstd h3`. Use `choose r hr using fun i => GlobalTheory.T.triple_lattice_invariant_schwartz_local hP F E σ B a a' G X om om' hT w (g i) (hgSB i) (hgE i)`. Use `ih (fun i => r i • f i) (fun i => Function.update (φ i) w (G.M'.vac w)) (fun i v => ?_) (fun i v hv hvU => ?_) ?_` and prove the remaining obligations. Distinguish the cases in `hvw : v = w`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Substitute `hvw` using the available equality. Rewrite using `[Function.update_self]`. Conclude with `hvSB _`. Rewrite using `[Function.update_of_ne hvw]`. Conclude with `h1 i v`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hvw : v = w`. Substitute `hvw` using the available equality. Rewrite using `[Function.update_self]`. Rewrite using `[Function.update_of_ne hvw]`. Use `h2 i v hv ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.mem_insert]`. Introduce and unpack `(h | h)`. Use `exacts [hvw h, hvU h]`. Rewrite using `[hgsum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Supply the required witnesses or components.
 
-Rewrite using `[hr i, pure_update_smul _ _ _ _ _ (hstd i)]`. Take `⟨f', φ', h1, h2, h3⟩` from `key (T ∪ hfin.toFinset) f₀ φ₀ hSB₀ (fun i v _ hv => by`. Rewrite using `[hstd₀ i v (fun h => hv (Finset.mem_union_left _ h))]`. Assume the negation of the conclusion as `hne`. Conclude with `hv (Finset.mem_union_right _ (hfin.mem_toFinset.2 fun h => hne h.symm))) hsum₀`.
-
-Conclude with `⟨m, f', φ', h1, h2, h3⟩`.
+A detailed English derivation is pending.
 -/
 theorem factor : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' →

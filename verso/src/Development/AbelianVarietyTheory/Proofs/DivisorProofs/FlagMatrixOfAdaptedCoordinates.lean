@@ -15,9 +15,9 @@ namespace GlobalTheory.FlagCls.AdaptMat
 open GlobalTheory.Twist (resM resM_resM resM_self resM_smul app_resM)
 
 /- English proof (translation)
-Establish `h1 : IsUnit ((he.basis hWU).toMatrix (hs.basis le_rfl)).det` using `(he.basis hWU).isUnit_det (hs.basis le_rfl)`. Establish `h2` using `h1.map φ`. Rewrite `h2` using `[RingHom.map_det, ← Matrix.det_transpose]`. Use `h2 using 2` and compare the differences between its conclusion and the goal. Use extensionality with `i b`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components.
 
-Simplify using `[Module.Basis.toMatrix_apply, resM_self]`.
+Simplify using the standard rewrite rules.
 -/
 theorem isUnit_det {Y : Scheme.{0}} {N : Y.Modules} {r : ℕ} {U W : Y.Opens} {e : Fin r → Γ(N, U)} (he : IsFrame e)
     (hWU : W ≤ U) {s : Fin r → Γ(N, W)} (hs : IsFrame s) {K : Type} [CommRing K] (φ : Γ(Y, W) →+* K) :
@@ -31,13 +31,13 @@ theorem isUnit_det {Y : Scheme.{0}} {N : Y.Modules} {r : ℕ} {U W : Y.Opens} {e
   simp [Module.Basis.toMatrix_apply, resM_self]
 
 /- English proof (translation)
-Take `⟨u, hu, hus⟩` from `hs.2 k`. Establish `h0 : ⊤ ≤ y ⁻¹ᵁ (W ⊓ W')` using `fun p hp => ⟨hy hp, hy' hp⟩`. Take `⟨a, ha⟩` from `(hu (W ⊓ W') inf_le_left).2 (resM (fl.F k) inf_le_right t)`. Establish `hk : (k : ℕ) ≤ r` using `Nat.lt_succ_iff.1 k.2`. Use `⟨fun l => if h : (l : ℕ) < k then TangentOrigin.evalPt y _ h0 (a ⟨l, h⟩) else 0, fun l hl => dif_neg (not_lt.2 hl), ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `b`. Establish `h1 : resM N (inf_le_right : W ⊓ W' ≤ W') ((fl.ι k).app W' t) = ∑ i : Fin k, a i • resM N (inf_le_left : W ⊓ W' ≤ W) (s (Fin.castLE hk i))`. Rewrite using `[← app_resM, ← ha, Fintype.linearCombination_apply]`. Use `(map_sum (QCoh.appLinear (fl.ι k) (W ⊓ W')) _ _).trans (Finset.sum_congr rfl fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[map_smul, QCoh.appLinear_apply, app_resM, hus]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← TangentOrigin.evalPt_res y inf_le_right hy' h0, ← he.repr_resM, h1]`. Simplify using `only [map_sum, map_smul, Finsupp.finsetSum_apply, Finsupp.smul_apply, smul_eq_mul, map_mul]`. Rewrite using `[Matrix.vecMul, dotProduct]`. Use `symm`. Use `(Finset.sum_of_injOn (Fin.castLE hk) (Fin.castLE_injective hk).injOn (fun _ _ => Finset.mem_univ _) (fun l _ hl => ?_) (fun i _ => ?_)).symm` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[dif_neg, zero_mul]`. Conclude with `fun h => hl ⟨⟨l, h⟩, Finset.mem_coe.2 (Finset.mem_univ _), rfl⟩`. Rewrite using `[dif_pos (show ((Fin.castLE hk i : Fin r) : ℕ) < k from i.2), Matrix.of_apply, ← TangentOrigin.evalPt_res y inf_le_left hy h0, ← he.repr_resM]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem exists_comb {Y : Scheme.{0}} {N : Y.Modules} {r : ℕ} (fl : Vert.Flag N r) {U W W' : Y.Opens}
     {e : Fin r → Γ(N, U)} (he : IsFrame e) (hWU : W ≤ U) (hWU' : W' ≤ U) {s : Fin r → Γ(N, W)} (hs : Adapted fl s)
@@ -71,7 +71,7 @@ theorem exists_comb {Y : Scheme.{0}} {N : Y.Modules} {r : ℕ} (fl : Vert.Flag N
     rfl
 
 /- English proof (translation)
-Introduce `B Y M r hM π fl V f hf K _ y W hWV hy s hs`. Use `haveI := hM.isQuasicoherent`. Conclude with `⟨isUnit_det (hf.pullback π) hWV hs.1 (TangentOrigin.evalPt y W hy), fun k W' hWV' t hy' => exists_comb fl (hf.pullback π) hWV hWV' hs y hy hy' k t⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem flagMat_of_adapted : ∀ (B Y : Scheme.{0}) (M : B.Modules) (r : ℕ) (hM : IsVB M r) (π : Y ⟶ B) (fl : Vert.Flag ((Scheme.Modules.pullback π).obj M) r) (V : B.Opens) (f : Fin r → Γ(M, V)) (hf : IsFrame f) (K : Type) [CommRing K] (y : Sp K ⟶ Y) (W : Y.Opens) (hWV : W ≤ π ⁻¹ᵁ V) (hy : ⊤ ≤ y ⁻¹ᵁ W) (s : Fin r → Γ((Scheme.Modules.pullback π).obj M, W)), Adapted fl s → FlagMat hM π fl hf y (Matrix.of fun i => coordAt hM π hf y hWV hy (s i)) := by
   intro B Y M r hM π fl V f hf K _ y W hWV hy s hs

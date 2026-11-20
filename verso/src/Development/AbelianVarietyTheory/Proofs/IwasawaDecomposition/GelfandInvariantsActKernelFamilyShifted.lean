@@ -15,17 +15,17 @@ section Abstract
 variable {n : ℕ} {Y S M : Type} [AddCommGroup S] [Module ℂ S] [AddCommGroup M] [Module ℂ M]
 
 /- English proof (translation)
-Distinguish the cases in `h0 : ∀ y f, L y f = 0`. Conclude with `⟨0, fun i j y f => by rw [h0, h0, map_zero]⟩`. Use `push Not at h0`. Take `⟨y, f, h0⟩` from `h0`. Establish `key : ∀ i j k l, (if j = k then lam i l else 0) = (if l = i then lam k j else 0)`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i j k l`. Establish `h1 : (A i j * A k l - A k l * A i j) (L y f) = L y ((B i j * B k l - B k l * B i j) f)`. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply, h, map_add, map_smul, map_sub, smul_add]`. Use `module`. Rewrite `h1` using `[hA, hB]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : ((if j = k then lam i l else 0) - (if l = i then lam k j else 0)) • L y f = 0`. Rewrite using `[sub_smul]`. Apply the tactic sequence `split_ifs at h1 ⊢ <;>`. Apply the tactic sequence `simp only [LinearMap.sub_apply, LinearMap.zero_apply, h, map_add, map_smul, map_sub, map_zero, zero_smul] at h1 ⊢ <;>`. Take the linear combination `(norm := module) h1`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Take a linear combination of the given relations to obtain the conclusion. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components.
 
-Conclude with `sub_eq_zero.1 ((smul_eq_zero.1 h2).resolve_right h0)`. Break down `n with _ | n` into its components or cases. Conclude with `⟨0, fun i => i.elim0⟩`. Use `⟨lam 0 0, fun i j y f => ?_⟩` and prove the remaining obligations. Rewrite using `[h]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact.
 
-Distinguish the cases in `c : i = j`. Substitute `c` using the available equality. Use `key i 0 0 i` as an intermediate fact. Simplify using `only [if_true] at this`. Simplify using `[this]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `key i i i j` as an intermediate fact. Simplify using `only [if_true, if_neg (Ne.symm c)] at this`. Simplify using `[this, c]`.
+A detailed English derivation is pending.
 -/
 theorem exists_shift (A : Fin n → Fin n → Module.End ℂ S) (B : Fin n → Fin n → Module.End ℂ M)
     (hA : Formalism.REAL.GlRel A) (hB : Formalism.REAL.GlRel B) (L : Y → M →ₗ[ℂ] S) (lam : Fin n → Fin n → ℂ)
@@ -63,7 +63,7 @@ theorem exists_shift (A : Fin n → Fin n → Module.End ℂ S) (B : Fin n → F
     simp [this, c]
 
 /- English proof (translation)
-The claim follows from `| 0, _, _, _, f => by simp | k + 1, a, b, e, f => by rw [List.ofFn_succ, List.ofFn_succ, List.prod_cons, List.prod_cons, Module.End.mul_apply, Module.End.mul_apply, prod_intertwine L k _ _ fun i => e i.succ, e]`.
+A detailed English derivation is pending.
 -/
 theorem prod_intertwine (L : M →ₗ[ℂ] S) : ∀ (k : ℕ) (a : Fin k → Module.End ℂ S) (b : Fin k → Module.End ℂ M),
     (∀ i f, a i (L f) = L (b i f)) → ∀ f, (List.ofFn a).prod (L f) = L ((List.ofFn b).prod f)
@@ -73,7 +73,7 @@ theorem prod_intertwine (L : M →ₗ[ℂ] S) : ∀ (k : ℕ) (a : Fin k → Mod
       prod_intertwine L k _ _ fun i => e i.succ, e]
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.SmoothForms.gelfA, GlobalTheory.SmoothForms.gelfA, LinearMap.sum_apply, LinearMap.sum_apply, map_sum]`. Conclude with `Finset.sum_congr rfl fun idx _ => prod_intertwine L _ _ _ (fun _ => h _ _) f`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gelfA_intertwine (L : M →ₗ[ℂ] S) (A : Fin n → Fin n → Module.End ℂ S) (B : Fin n → Fin n → Module.End ℂ M)
     (h : ∀ i j f, A i j (L f) = L (B i j f)) (k : ℕ) (f : M) :
@@ -84,15 +84,13 @@ theorem gelfA_intertwine (L : M →ₗ[ℂ] S) (A : Fin n → Fin n → Module.E
 end Abstract
 
 /- English proof (translation)
-Introduce `D θ hθ V Y M _ _ κ hκ τ Q hQ hd`. Use `choose lam hlam using hd`. Establish `hR : ∀ X (hX : X ∈ lieAt V τ) f y, Rder θ V τ X (κ f y) = κ (Q X f + lam X hX • f) y` using `fun X hX f y => funext fun g => (hlam X hX f y g).deriv`. Establish `hC : ∀ Z, ∃ l : ℂ, ∀ f y, RderC θ V τ Z (κ f y) = κ (Q Z f + l • f) y`. Introduce `Z`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨h1, h2⟩` from `GlobalTheory.SmoothAutCheck.parts_mem V τ Z`. Use `⟨lam _ h1 + Complex.I * lam _ h2, fun f y => ?_⟩` and prove the remaining obligations. Rewrite using `[RderC, hR _ h1, hR _ h2]`. Establish `e` using `GlobalTheory.SmoothAutCheck.parts_sum V τ Z`. Generalize the expression as in `lam _ h1 = a`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `lam _ h2 = b`. Generalize the expression as in `(1 / 2 : ℂ) • (Z + conjAt V τ Z) = P at e ⊢`. Generalize the expression as in `(1 / (2 * Complex.I)) • (Z - conjAt V τ Z) = P' at e ⊢`. Rewrite using `[← e]`. Simplify using `only [map_add, map_smul, LinearMap.add_apply, LinearMap.smul_apply, Pi.add_apply, Pi.smul_apply]`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Use `module`. Use `choose l hl using hC`. Set `L : Y → M →ₗ[ℂ] SmFun θ V` to `fun y => LinearMap.codRestrict (SmFun θ V) ((LinearMap.proj y).comp κ) fun f => hκ f y`. Take `⟨c, hc⟩` from `exists_shift _ _ (glRel_derEnd hθ V τ) hQ L (fun i j => l (Matrix.single i j 1)) fun i j y f => Subtype.ext (hl _ f y)`. Use `⟨c, fun k f y => ?_⟩` and prove the remaining obligations.
-
-Use `gelfA_intertwine (L y) _ (fun i j => Q (Matrix.single i j 1) + if i = j then algebraMap ℂ (Module.End ℂ M) c else 0) (fun i j => hc i j y) k f` as an intermediate fact. Conclude with `(GlobalTheory.Mem.RealTranslate.gelf_eq hθ τ k (L y f)).trans (congrArg Subtype.val this)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem gelf_kernel : ∀ (D : D7) (θ : InfF D), IsInfFam θ → ∀ (V : HSp D), ∀ (Y M : Type) [AddCommGroup M] [Module ℂ M] (κ : M →ₗ[ℂ] (Y → GA D V → ℂ)), (∀ f y, κ f y ∈ SmFun θ V) → ∀ (τ : D.what₂.Tau) (Q : Matrix (Fin V.rank) (Fin V.rank) ℂ →ₗ[ℂ] Module.End ℂ M), Formalism.REAL.GlRel (fun i j => Q (Matrix.single i j 1)) → (∀ X ∈ lieAt V τ, ∃ lam : ℂ, ∀ f y g, HasDerivAt (fun t : ℝ => κ f y (g * oneP θ V τ X t)) (κ (Q X f + lam • f) y g) 0) → ∃ c : ℂ, ∀ k f y, gelf θ V τ k (κ f y) = κ (GlobalTheory.SmoothForms.gelfA (fun i j => Q (Matrix.single i j 1) + if i = j then algebraMap ℂ (Module.End ℂ M) c else 0) k f) y := by
   intro D θ hθ V Y M _ _ κ hκ τ Q hQ hd

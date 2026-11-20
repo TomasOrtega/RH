@@ -16,7 +16,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 namespace GlobalTheory.CompanionTheory.Ar.TopGood
 
 /- English proof (translation)
-Take `⟨j, rfl⟩ : ∃ j, p = j + 1` from `⟨p - 1, by omega⟩`. Take `⟨k, rfl⟩ : ∃ k, q = k + 1` from `⟨q - 1, by omega⟩`. Conclude with `GlobalTheory.T.tower_i5_of_fibre_input Ψ j k T II R hII hR h`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem tower_intersection_of_ample_flat (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (p q : ℕ) (hp : 1 ≤ p) (hq : 1 ≤ q)
     (T : Top.RootTower Ψ (p + q)) (II : IntersectionSystem) (R : T.Comp → Top.RootModel Ψ (p + q))
@@ -28,11 +28,11 @@ theorem tower_intersection_of_ample_flat (Ψ : Type) [Fintype Ψ] [DecidableEq �
   exact GlobalTheory.T.tower_i5_of_fibre_input Ψ j k T II R hII hR h
 
 /- English proof (translation)
-Introduce `hG hA E _ _ _ H D l Xo c Y _ T g II hII hsp hS`. Take `⟨⟨hI, hab, -⟩, -, hext, -, hres, -, -, -, hsl, -⟩` from `hG`. Establish `hR : Ht.HasRef T g.R` using `GlobalTheory.T.has_reference_of_sandwich_all_primes E H D l Xo c Y T g hS`. Establish `hj` using `g.j_eq`. Establish `h1` using `T.j_pos`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `T.j_lt`. Establish `hp : 1 ≤ D.p` using `by omega`. Establish `hq : 1 ≤ D.q` using `by omega`. Establish `hN : 1 ≤ D.p + D.q` using `by omega`. Use `⟨tower_intersection_of_ample_flat _ D.p D.q hp hq T II g.R hII hR fun a => ⟨g.ample a, ?_, ?_⟩, GlobalTheory.T.tower_i6_of_reference _ _ T II g.R hII hR⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `GlobalTheory.T.flat_unit_of_split_root_lines hA E H D l Xo c Y ∅ (g.R a) (g.refOr a).𝔐 (g.refOr a).Fl (g.refOr a).e hN hsp (g.refOr a).lines`. Conclude with `GlobalTheory.T.root_model_flag_height hab hI hres hext hsl E H D l Xo c Y ∅ (g.R a) (g.refOr a).𝔐 (g.refOr a).Fl (g.refOr a).e hN (g.refOr a).lines`.
+A detailed English derivation is pending.
 -/
 theorem tower_good_of_sandwich_split : Top.Given → Flat.FlatLineGenerator → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E)
     (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (Y : Model Xo c (algebraMap (𝓞 c.F) c.F))

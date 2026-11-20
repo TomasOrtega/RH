@@ -15,9 +15,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.Fam
 
 /- English proof (translation)
-Introduce `D L hT Gi Gl Kc Yd cX ex W h`. Use `haveI : Finite W.P.T := h.fin`. Establish `hU : {PP : Pl D.host.E | PP ∈ (pk W).Pg ∨ QAll W PP} = ((pk W).Pg : Set (Pl D.host.E)) ∪ ⋃ t, ((pk W).Q t : Set (Pl D.host.E))`. Use extensionality with `PP`. Simplify using `[QAll]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hU]`. Conclude with `(Finset.finite_toSet _).union (Set.finite_iUnion fun t => Finset.finite_toSet _)`.
+A detailed English derivation is pending.
 -/
 theorem finite_levelPlaces_or_tuplePlaces : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX} (W : RealPack ex), PkHyp W → Set.Finite {PP : Pl D.host.E | PP ∈ (pk W).Pg ∨ QAll W PP} := by
   intro D L hT Gi Gl Kc Yd cX ex W h

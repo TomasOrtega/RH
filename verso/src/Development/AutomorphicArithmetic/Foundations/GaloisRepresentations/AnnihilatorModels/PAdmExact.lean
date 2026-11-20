@@ -5,11 +5,11 @@ open TensorProduct Module
 open UpperTheory.Gal.crystallineComparison
 
 /- English proof (translation)
-Take `⟨fU, bU⟩` from `hB U ρU`. Take `⟨fV, -⟩` from `hB V ρV`. Take `⟨fW, bW⟩` from `hB W ρW`. Take `⟨hle, hdim⟩` from `hD F G B σ L U V W ρU ρV ρW i p hi hp inj ex fV`. Establish `hmono` using `Submodule.finrank_mono hle`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hrank : finrank L V = finrank L U + finrank L W`. Establish `h1` using `LinearMap.finrank_range_add_finrank_ker p`. Rewrite `h1` using `[LinearMap.range_eq_top.mpr surj, finrank_top, LinearMap.exact_iff.mp ex, LinearMap.finrank_range_of_inj inj]`. Use linear arithmetic over natural numbers and integers. Unfold `admitted at hA ⊢`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Replace the relevant objects with their definitions.
 
-Rewrite `hA` using `[hrank, mul_add]`. Establish `h2 : finrank L (Dinv σ ρU) = e * finrank L U` using `by omega`. Establish `h3 : finrank L (Dinv σ ρW) = e * finrank L W` using `by omega`. Use `⟨h2, h3, Submodule.eq_of_le_of_finrank_eq hle ?_⟩` and prove the remaining obligations. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Use linear arithmetic over natural numbers and integers.
 -/
 private theorem admissible_exact_sequence (hD : DinvExact) {F G B : Type} [Field F] [Group G] [AddCommGroup B] [Module F B]
     (σ : G → End F B) {L : Type} [Field L] [Algebra F L] {e : ℕ} (hB : Bound σ L e)
@@ -40,17 +40,17 @@ private theorem admissible_exact_sequence (hD : DinvExact) {F G B : Type} [Field
   omega
 
 /- English proof (translation)
-Introduce `hD`. Unfold `AdmExact`. Introduce `F G B _ _ _ _ σ L _ _ e hB V W _ _ _ _ _ _ _ _ _ _ ρ ρ' f hf`. Use `⟨fun inj hA => ?_, fun surj hA => ?_⟩` and prove the remaining obligations. Set `ρQ : Representation L G (W ⧸ LinearMap.range f)` to `{ toFun := fun g => (LinearMap.range f).mapQ (LinearMap.range f) (ρ' g) (by`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Introduce and unpack `_ ⟨v, rfl⟩`. Conclude with `⟨ρ g v, hf g v⟩)`. Use the proof step `map_one' := by`. Use extensionality with `w`. Simplify using the standard rewrite rules.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Use the proof step `map_mul' := by`. Introduce `g h`. Use extensionality with `w`. Simplify using `[map_mul] }`. Establish `hQ : UpperTheory.Gal.crystallineComparison.Inter ρ' ρQ (LinearMap.range f).mkQ` using `fun g w => rfl`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(admissible_exact_sequence hD σ hB ρ ρ' ρQ f (LinearMap.range f).mkQ hf hQ inj (LinearMap.exact_map_mkQ_range f) (Submodule.mkQ_surjective _) hA).1`. Establish `hK : ∀ (g : G) (x : LinearMap.ker f), ρ g x ∈ LinearMap.ker f`. Introduce `g x`. Rewrite using `[LinearMap.mem_ker, hf g x, LinearMap.mem_ker.mp x.2, map_zero]`. Set `ρK : Representation L G (LinearMap.ker f)` to `{ toFun := fun g => LinearMap.codRestrict (LinearMap.ker f) ((ρ g).comp (LinearMap.ker f).subtype) (hK g) map_one' := by`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Use extensionality with `x`. Simplify using the standard rewrite rules. Use the proof step `map_mul' := by`. Introduce `g h`. Use extensionality with `x`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Simplify using `only [map_mul, Module.End.mul_apply]`. Use `rfl }`. Establish `hKi : UpperTheory.Gal.crystallineComparison.Inter ρK ρ (LinearMap.ker f).subtype` using `fun g x => rfl`. Take `⟨-, hW, hmap⟩` from `admissible_exact_sequence hD σ hB ρK ρ ρ' (LinearMap.ker f).subtype f hKi hf (LinearMap.ker f).injective_subtype (LinearMap.exact_subtype_ker_map f) surj hA`. Conclude with `⟨hW, hmap⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.crystallineComparison.admissibleExact_of_dualInvariantExact :
     DinvExact → AdmExact := by

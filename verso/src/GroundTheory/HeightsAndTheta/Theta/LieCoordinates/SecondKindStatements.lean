@@ -122,13 +122,13 @@ Both sides reduce to the same expression.
 @[simp] theorem block_entry_inr_inr (a b c d : ℂ) (i j : Fin 1) : m2 a b c d (.inr i) (.inr j) = d := rfl
 
 /- English proof (translation)
-Use `show Xᴴ * indefJ 1 1 + indefJ 1 1 * X = 0 ↔ _`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `e1` using `congrFun (congrFun h (.inl 0)) (.inl 0)`. Establish `e2` using `congrFun (congrFun h (.inl 0)) (.inr 0)`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e3` using `congrFun (congrFun h (.inr 0)) (.inr 0)`. Simplify using `[indefJ, Matrix.mul_diagonal, Matrix.diagonal_mul, conjTranspose_apply] at e1 e2 e3`. Use `⟨e1, ?_, ?_⟩` and prove the remaining obligations. Take the linear combination `e2`. Take the linear combination `-e3`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion. Take a linear combination of the given relations to obtain the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨h1, h2, h3⟩`. Use extensionality with `i j`. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j <;>`. Apply the tactic sequence `simp only [Fin.fin_one_eq_zero i, Fin.fin_one_eq_zero j] <;>`. Simplify using `[indefJ, Matrix.mul_diagonal, Matrix.diagonal_mul, conjTranspose_apply]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Conclude with `h1`. Take the linear combination `h2`. Rewrite using `[h2, Complex.conj_conj]`. Expand and normalize the polynomial expressions, which then agree. Take the linear combination `-h3`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem mem_unitaryOneOne_iff (X : Matrix (Fin 1 ⊕ Fin 1) (Fin 1 ⊕ Fin 1) ℂ) :
     X ∈ indefiniteUnitaryLieAlgebra 1 1 ↔
@@ -156,7 +156,7 @@ theorem mem_unitaryOneOne_iff (X : Matrix (Fin 1 ⊕ Fin 1) (Fin 1 ⊕ Fin 1) �
     · linear_combination -h3
 
 /- English proof (translation)
-The claim follows from `(mem_unitaryOneOne_iff _).2 ⟨ha, hb, hd⟩`.
+A detailed English derivation is pending.
 -/
 theorem block_mem_unitaryOneOne (a b c d : ℂ) (ha : starRingEnd ℂ a + a = 0) (hb : b = starRingEnd ℂ c)
     (hd : starRingEnd ℂ d + d = 0) :
@@ -164,7 +164,7 @@ theorem block_mem_unitaryOneOne (a b c d : ℂ) (ha : starRingEnd ℂ a + a = 0)
   (mem_unitaryOneOne_iff _).2 ⟨ha, hb, hd⟩
 
 /- English proof (translation)
-Simplify using `[trace, Matrix.mul_apply, Fintype.sum_sum_type, conjTranspose_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem trace_block_mul_conjTranspose (a b c d a' b' c' d' : ℂ) :
     trace (m2 a b c d * (m2 a' b' c' d')ᴴ) =
@@ -175,13 +175,13 @@ theorem trace_block_mul_conjTranspose (a b c d a' b' c' d' : ℂ) :
 def s2 : ℝ := (Real.sqrt 2)⁻¹
 
 /- English proof (translation)
-Rewrite using `[s2, ← mul_inv, Real.mul_self_sqrt (by norm_num : (0 : ℝ) ≤ 2), one_div]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem inv_sqrt_two_mul_self : s2 * s2 = 1 / 2 := by
   rw [s2, ← mul_inv, Real.mul_self_sqrt (by norm_num : (0 : ℝ) ≤ 2), one_div]
 
 /- English proof (translation)
-The claim follows from `mul_inv_cancel₀ (by positivity)`.
+A detailed English derivation is pending.
 -/
 theorem sqrt_two_mul_inv_sqrt_two : Real.sqrt 2 * s2 = 1 :=
   mul_inv_cancel₀ (by positivity)

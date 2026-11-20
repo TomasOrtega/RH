@@ -23,9 +23,9 @@ open Matrix Formalism.UG
 variable {D : D7}
 
 /- English proof (translation)
-Use `conv_lhs => rw [← V.frame.sum_repr x, ← V.frame.sum_repr y]`. Simplify using `only [map_sum, map_smulₛₗ, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul, hform, HSpace.gram, Finset.mul_sum, RingHom.id_apply]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `show _ = star _ * _ * _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[starRingEnd_apply]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem hT_eq_hform (V : HSp D) (x y : V.V) :
     V.hT x y = hform (D.sp.cm.sig : D.host.E →+* D.host.E) V.gram (V.frame.repr x) (V.frame.repr y) := by
@@ -39,7 +39,7 @@ theorem hT_eq_hform (V : HSp D) (x y : V.V) :
   ring
 
 /- English proof (translation)
-Establish `h2 : (fun i => σ ((M *ᵥ a) i)) = (M.map σ) *ᵥ (fun i => σ (a i))`. Use function extensionality and compare the values at `i`. Simplify using `[Matrix.mulVec, dotProduct]`. Rewrite using `[GlobalTheory.IndefiniteRowSideFullHecke.CentralizerTensorForms.hform_eq, GlobalTheory.IndefiniteRowSideFullHecke.CentralizerTensorForms.hform_eq, h2, Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec, Matrix.dotProduct_mulVec, ← Matrix.vecMul_transpose, Matrix.vecMul_vecMul, cT, Ma …`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem hform_mulVec {A : Type} [CommRing A] {n : Type} [Fintype n] [DecidableEq n] (σ : A →+* A)
     (J M N : Matrix n n A) (a b : n → A) :
@@ -51,21 +51,21 @@ theorem hform_mulVec {A : Type} [CommRing A] {n : Type} [Fintype n] [DecidableEq
     Matrix.vecMul_vecMul, cT, Matrix.mul_assoc]
 
 /- English proof (translation)
-Simplify using `[hform]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hform_zero {A : Type} [CommRing A] {n : Type} [Fintype n] (σ : A →+* A) (a b : n → A) :
     hform σ (0 : Matrix n n A) a b = 0 := by
   simp [hform]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[cT]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cT_sub' {A : Type} [CommRing A] {n : Type} (σ : A →+* A) (M N : Matrix n n A) :
     cT σ (M - N) = cT σ M - cT σ N := by
   ext i j; simp [cT]
 
 /- English proof (translation)
-Rewrite using `[hT_eq_hform, Matrix.repr_toLin, Matrix.repr_toLin, hform_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hT_toLin (V : HSp D) (M N : Matrix (Fin V.rank) (Fin V.rank) D.host.E) (a b : V.V) :
     V.hT (Matrix.toLin V.frame V.frame M a) (Matrix.toLin V.frame V.frame N b) =
@@ -74,7 +74,7 @@ theorem hT_toLin (V : HSp D) (M N : Matrix (Fin V.rank) (Fin V.rank) D.host.E) (
   rw [hT_eq_hform, Matrix.repr_toLin, Matrix.repr_toLin, hform_mulVec]
 
 /- English proof (translation)
-Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Use `show star (V.hT (V.frame j) (V.frame i)) = V.hT (V.frame i) (V.frame j)`. Conclude with `V.herm.eq (V.frame j) (V.frame i)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem gram_herm (V : HSp D) : cT (D.sp.cm.sig : D.host.E →+* D.host.E) V.gram = V.gram := by
   refine Matrix.ext fun i j => ?_
@@ -82,39 +82,37 @@ theorem gram_herm (V : HSp D) : cT (D.sp.cm.sig : D.host.E →+* D.host.E) V.gra
   exact V.herm.eq (V.frame j) (V.frame i)
 
 /- English proof (translation)
-Introduce `D V γ ε hmem hidem hne hiso`. Use `set σ := (D.sp.cm.sig : D.host.E →+* D.host.E) with hσ`. Use `set J := V.gram with hJdef`. Establish `hdet : IsUnit J.det` using `isUnit_iff_ne_zero.2 (GlobalTheory.Mem.Vol.hspace_gram_det_ne_zero V)`. Establish `hJJ : J * J⁻¹ = 1` using `Matrix.mul_nonsing_inv _ hdet`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hJJ' : J⁻¹ * J = 1` using `Matrix.nonsing_inv_mul _ hdet`. Establish `cancel : ∀ A B : Matrix (Fin V.rank) (Fin V.rank) D.host.E, J * A = J * B → A = B`. Introduce `A B h`. Rewrite using `[← Matrix.one_mul A, ← Matrix.one_mul B, ← hJJ', Matrix.mul_assoc, h, ← Matrix.mul_assoc]`. Use `set ε' := J⁻¹ * cT σ ε * J with hε'`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hR : J * ε' = cT σ ε * J`. Rewrite using `[hε', ← Matrix.mul_assoc, ← Matrix.mul_assoc, hJJ, Matrix.one_mul]`. Use `clear_value ε'`. Establish `hTL : ∀ (M N : Matrix (Fin V.rank) (Fin V.rank) D.host.E) (a b : V.V), V.hT (Matrix.toLin V.frame V.frame M a) (Matrix.toLin V.frame V.frame N b) = hform σ (cT σ M * J * N) (V.frame.repr a) (V.frame.repr b)` using `hT_toLin V`. Establish `hσσ : ∀ e, σ (σ e) = e` using `fun e => star_star e`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `cTcT : ∀ M : Matrix (Fin V.rank) (Fin V.rank) D.host.E, cT σ (cT σ M) = M`. Introduce `M`. Use extensionality with `i j`. Simplify using `[cT, hσσ]`. Establish `herm : cT σ J = J` using `gram_herm V`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hR' : cT σ ε' * J = J * ε`. Establish `h` using `congrArg (cT σ) hR`. Rewrite `h` using `[cT_mul, cT_mul, herm, cTcT]`. Conclude with `h`. Establish `h0 : ε' * ε = 0` using `cancel _ _ (by rw [← Matrix.mul_assoc, hR, hiso, Matrix.mul_zero])`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set g := (γ.1 : Matrix (Fin V.rank) (Fin V.rank) D.host.E) with hg`. Use `set gi := ((γ.1⁻¹ : GL (Fin V.rank) D.host.E) : Matrix (Fin V.rank) (Fin V.rank) D.host.E) with hgi`. Establish `hγ : cT σ g * J * g = J` using `γ.2`. Establish `hggi : g * gi = 1` using `Units.mul_inv γ.1`. Establish `hgig : gi * g = 1` using `Units.inv_mul γ.1`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hmem' : ε ∈ Algebra.adjoin D.host.E {g}` using `hmem`. Establish `hJg : J * g = cT σ gi * J`. Combine the equalities or inequalities in the displayed calculation. Establish `hεgi : Commute gi ε` using `Algebra.commute_of_mem_adjoin_singleton_of_commute hmem' (by rw [Commute, SemiconjBy, hgig, hggi])`. Establish `hε'g : ε' * g = g * ε'` using `cancel _ _ (by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Matrix.mul_assoc, hR, Matrix.mul_assoc, hJg, ← Matrix.mul_assoc J g, hJg, Matrix.mul_assoc, hR, ← Matrix.mul_assoc, ← Matrix.mul_assoc, ← cT_mul, ← cT_mul, hεgi.eq])`. Establish `hcomm : Commute ε' ε` using `Algebra.commute_of_mem_adjoin_singleton_of_commute hmem' hε'g`. Establish `hgε : Commute g ε` using `Algebra.commute_of_mem_adjoin_singleton_of_commute hmem' (Commute.refl g)`. Establish `h1 : ε * ε' = 0` using `by rw [← hcomm.eq, h0]`. Establish `mA : cT σ (1 - ε - ε') * J * ε = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[cT_sub', cT_sub', cT_one, Matrix.sub_mul, Matrix.sub_mul, Matrix.sub_mul, Matrix.sub_mul, Matrix.one_mul, hiso, hR', Matrix.mul_assoc, hidem, sub_zero, sub_self]`. Establish `mB : cT σ ε' * J * (1 - ε - ε') = 0`. Rewrite using `[hR', Matrix.mul_sub, Matrix.mul_sub, Matrix.mul_one, Matrix.mul_assoc, Matrix.mul_assoc, hidem, h1, Matrix.mul_zero, sub_self, sub_zero]`. Establish `mC : cT σ ε' * J * ε' = 0` using `by rw [hR', Matrix.mul_assoc, h1, Matrix.mul_zero]`. Establish `split : ∀ v : V.V, v = Matrix.toLin V.frame V.frame ε v + Matrix.toLin V.frame V.frame ε' v + Matrix.toLin V.frame V.frame (1 - ε - ε') v`.
+Normalize the expressions using the abelian group laws. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `v`. Simplify using `only [map_sub, Matrix.toLin_one, LinearMap.sub_apply, LinearMap.id_apply]`. Normalize the expressions using the abelian group laws. Establish `mem_perp : ∀ (W : Submodule D.host.E V.V) (y : V.V), y ∈ GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.perp V W ↔ ∀ w ∈ W, V.hT w y = 0`. Introduce `W y`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.perp, Submodule.mem_iInf, LinearMap.mem_ker]`. Establish `ratAct_eq : ∀ x, GlobalTheory.Cusp.ratAct D.sp.cm V γ x = Matrix.toLin V.frame V.frame g x` using `fun _ => rfl`. Use `⟨LinearMap.range (Matrix.toLin V.frame V.frame ε), LinearMap.range (Matrix.toLin V.frame V.frame ε'), ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `h`. Rewrite `h` using `[LinearMap.range_eq_bot]`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `hne ((Matrix.toLin V.frame V.frame).map_eq_zero_iff.1 h)`. Introduce and unpack `_ ⟨b, rfl⟩`. Rewrite using `[mem_perp]`. Introduce and unpack `_ ⟨a, rfl⟩`. Rewrite using `[hTL, hiso, hform_zero]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨b, rfl⟩`. Rewrite using `[mem_perp]`. Introduce and unpack `_ ⟨a, rfl⟩`. Rewrite using `[hTL, mC, hform_zero]`. Introduce and unpack `_ ⟨a, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨Matrix.toLin V.frame V.frame g a, ?_⟩` and prove the remaining obligations. Rewrite using `[ratAct_eq, ← LinearMap.comp_apply, ← LinearMap.comp_apply, ← Matrix.toLin_mul, ← Matrix.toLin_mul, hgε.eq]`. Introduce and unpack `_ ⟨a, rfl⟩`. Use `⟨Matrix.toLin V.frame V.frame g a, ?_⟩` and prove the remaining obligations. Rewrite using `[ratAct_eq, ← LinearMap.comp_apply, ← LinearMap.comp_apply, ← Matrix.toLin_mul, ← Matrix.toLin_mul, hε'g]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨a, rfl⟩ hy`. Use `V.nondeg.2 _ fun v => ?_` and prove the remaining obligations. Rewrite using `[split v, map_add, map_add, LinearMap.add_apply, LinearMap.add_apply, hTL ε ε, hiso, hform_zero, hTL (1 - ε - ε') ε, mA, hform_zero, zero_add, add_zero]`. Conclude with `hy _ ⟨v, rfl⟩`. Introduce and unpack `_ ⟨b, rfl⟩ hx`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Use `V.nondeg.1 _ fun v => ?_` and prove the remaining obligations. Establish `e1 : V.hT (Matrix.toLin V.frame V.frame ε' b) v = V.hT (Matrix.toLin V.frame V.frame ε' b) (Matrix.toLin V.frame V.frame ε v) + V.hT (Matrix.toLin V.frame V.frame ε' b) (Matrix.toLin V.frame V.frame ε' v) + V.hT (Matrix.toLin V.frame V.frame ε' b) (Matrix.toLin V.frame V.frame (1 …` using `by conv_lhs => rw [split v]`. Simplify using `only [map_add]`. Establish `e2 : V.hT (Matrix.toLin V.frame V.frame ε' b) (Matrix.toLin V.frame V.frame ε' v) = 0`. Rewrite using `[hTL, mC, hform_zero]`.
-
-Establish `e3 : V.hT (Matrix.toLin V.frame V.frame ε' b) (Matrix.toLin V.frame V.frame (1 - ε - ε') v) = 0`. Rewrite using `[hTL, mB, hform_zero]`. Establish `e4 : V.hT (Matrix.toLin V.frame V.frame ε' b) (Matrix.toLin V.frame V.frame ε v) = 0` using `hx _ ⟨v, rfl⟩`. Take the linear combination `e1 + e2 + e3 + e4`.
+A detailed English derivation is pending.
 -/
 theorem idem_isotropic_pair : ∀ {D : D7} {V : HSp D} (γ : GF V) (ε : Matrix (Fin V.rank) (Fin V.rank) D.host.E), ε ∈ GlobalTheory.IndefiniteRowSideFullHecke.CentralizerTensorForms.genAlg γ.1.1 → ε * ε = ε → ε ≠ 0 → Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) ε * V.gram * ε = 0 → ∃ X X' : Submodule D.host.E V.V, X ≠ ⊥ ∧ X ≤ GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.perp V X ∧ X' ≤ GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.perp V X' ∧ (∀ x ∈ X, GlobalTheory.Cusp.ratAct D.sp.cm V γ x ∈ X) ∧ (∀ x ∈ X', GlobalTheory.Cusp.ratAct D.sp.cm V γ x ∈ X') ∧ (∀ x ∈ X, (∀ y ∈ X', V.hD x y = 0) → x = 0) ∧ (∀ y ∈ X', (∀ x ∈ X, V.hD x y = 0) → y = 0) := by
   intro D V γ ε hmem hidem hne hiso

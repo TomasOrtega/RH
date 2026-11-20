@@ -47,13 +47,11 @@ variable {l : ℕ} [Fact l.Prime] {L : Loc} {G0 : Glob l L} {T : TWGrp G0} {n : 
     (A : TWAut u J Unit D T)
 
 /- English proof (translation)
-Take `⟨x', h1, h2⟩` from `exists_lift_ker_eq B (Spo A) x.x.A x.f.toRingHom _ _ (fun p : Fin T.q × Fin n => u.D.chi (MonoidAlgebra.single (T.sg p.1) 1)) hadj (fun p => by`. Use `⟨(chiRes l G0.frame n O r B u (T.sg p.1) (A.ut p.1) (A.ut_res p.1)).1, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.aeval_def, Polynomial.eval₂_eq_eval_map, ← (spRoots B T.q n (fun j => u.D.chi (MonoidAlgebra.single (T.sg j) 1)) _ p.1).1, Polynomial.eval_prod]`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ p.2) (by simp)`. Establish `e1` using `((CA.d_gmap u.D).2.2.1 x.f.toRingHom (MonoidAlgebra.single (T.sg p.1) 1)).1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← e1, x.maps.1, MonoidAlgebra.mapRingHom_single, map_one]`. Establish `e2 : (GDet.ofRep (mat x.x.ρ)).chi (MonoidAlgebra.single (T.sg p.1) 1) = (mat x.x.ρ (T.sg p.1)).charpoly` using `by show (GDet.repAlg _ _ _).det = _`. Rewrite using `[Matrix.charpoly]`. Use `congr 1`. Use extensionality with `i j : 2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `by_cases hij : i = j <;> simp [GDet.repAlg, Matrix.charmatrix_apply, hij, Matrix.one_apply, Matrix.diagonal_apply]`. Rewrite using `[e2, (x.eig p.1).2]`. Conclude with `Polynomial.Splits.prod fun i _ => Polynomial.Splits.X_sub_C _) P hP h`. Use `⟨{ x' with commutes' := fun a => ?_ }, fun b => DFunLike.congr_fun h1 b, h2⟩` and prove the remaining obligations. Rewrite using `[IsScalarTower.algebraMap_apply O B (Spo A)]`.
-
-Conclude with `(DFunLike.congr_fun h1 (algebraMap O B a)).trans (x.f.commutes a)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem lift_pt (hA : Adapted T (r := r))
     (hadj : Algebra.adjoin B (Set.range fun p : Fin T.q × Fin n => (Sp.u _ _ p.1 p.2 : Spo A)) = ⊤)
@@ -83,43 +81,29 @@ private theorem lift_pt (hA : Adapted T (r := r))
 end
 
 /- English proof (translation)
-Introduce `l _ L G0 T n O _ _ _ _ _ r B _ _ _ u J D A hl hP hA hgen h x hx e he hq₁ q hq hqle hst`. Use `haveI : IsAdicComplete (maximalIdeal O) O := IsCoef.complete (l := l)`. Use `haveI : Finite (ResidueField O) := IsCoef.finite (l := l)`. Establish `hn : 1 ≤ n` using `(x 0).x.a_pos.trans (x 0).x.a_le`. Take `⟨Λ⟩` from `s4 l L G0 T hP`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨W⟩` from `rrEx l L G0 T Λ n O r B u J D A`. Take `⟨m⟩` from `rmapsEx l L G0 T Λ n O r B u J D A W hA`. Take `⟨⟨hco, hfree, hfin, hadj⟩, -⟩` from `spoCo l L G0 T Λ n O r B u J D A hA`. Establish `hker` using `piKer l L G0 T Λ n O r B u J D A W m hn hA`. Establish `hsurj` using `piSurj l L G0 T Λ n O r B u J D A W m hA hgen`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `πb : (W.R ⧸ ii W) →ₐ[O] Spo A` to `Ideal.Quotient.liftₐ (ii W) m.π fun a ha => hker ha`. Establish `hπb : ∀ a, πb (Ideal.Quotient.mk (ii W) a) = m.π a` using `fun a => rfl`. Use `haveI : Nontrivial (W.R ⧸ ii W) := πb.toRingHom.domain_nontrivial`. Use `haveI : IsCO O (W.R ⧸ ii W) := co_quot O W.R _ (Ideal.Quotient.mkₐ O (ii W)) Ideal.Quotient.mk_surjective`. Take `⟨o⟩` from `ooPair l L G0 T Λ n O r B u J D A W hn`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI : FaithfulSMul B (Spo A) := inferInstance`. Take `⟨⟨P, E, hPp, hE⟩, hdown⟩` from `BC.chain_lift B (Spo A) h (fun i => RingHom.ker (x i).f) e (fun i => RingHom.ker_isPrime _) fun i => ⟨(he i).1, (he i).2.2⟩`. Use `choose x' hx'1 hx'2 using fun i => lift_pt A hA hadj (x i) (P i) (hPp i).1 (hPp i).2`. Establish `hpt` using `fun i => ooPt l L G0 T Λ n O r B u J D A W m o πb hπb hA _ (x i) (x' i) (hx'1 i) (hx i).1 (hx i).2`. Take `⟨hf1, hf2, hf3, hf4⟩` from `patchedModule_free_finite_over_iwasawaAlgebra l L G0 T Λ n O r B u J D A W m hA`.
+Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Use `haveI : IsCO O (abelian₂ O Unit D) := co_mvps O O _`. Use `haveI : Finite (ResidueField (abelian₂ O Unit D)) := Finite.of_surjective _ (resMap_bijective O (abelian₂ O Unit D)).2`. Establish `hy0 : ∀ p, m.π (m.s (MvPowerSeries.X p)) = 0` using `fun p => by rw [m.π_s]; simp`. Take `⟨o5⟩` from `s5 (abelian₂ O Unit D) W.R (Fin T.q × Fin n) m.s.toRingHom Λ.U (fo W) (ii W) (MN m) (X0 m) Λ.U_le hf3 hf4 (freeN l L G0 T Λ n O r B u J D A W m) (eventually_exists_patchedModule_quotient_maps l L G0 T Λ n O r B u J D A W m hP hA) ⟨A.ex + 1, {a | Rel W a}, rfl, fun a ha => t3Of l …`. Consider the cases of `ha with`.
+Treat this case separately. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Consider the case `ker h k e => exact patched_trace_single_mul_sub_one_approx_annihilated l L G0 T Λ n O r B u J D A W m hn hA h k e`. Consider the case `pol i g g' e => exact patched_lam_conj_twist_approx_annihilated l L G0 T Λ n O r B u J D A W m hA i g g' e`. Consider the case `ord v g ga h e => exact patched_trace_local_charPoly_approx_annihilated l L G0 T Λ n O r B u J D A W m hA v g ga h e`. Consider the case `ine w g ga h e e' => exact eventually_trace_inertia_congruence_of_adapted l L G0 T Λ n O r B u J D A W m hA w g ga h e e'`. Consider the case `q1 j ph h e => exact t3Q1 l L G0 T Λ n O r B u J D A W m hA j ph h e`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Consider the case `q2 j i ph ta h e e' => exact t3Q2 l L G0 T Λ n O r B u J D A W m hA j i ph ta h e e')⟩`. Use the proof step `(Fin (h + 1)) (fun i => (P i).comap m.π) (1 + D)`. Use the proof step `(fun i => by haveI := (hPp i).1`. Use `⟨Ideal.comap_isPrime _ _, fun a ha => ?_, fun hf => (hpt i).1 ?_, fun a => ?_⟩` and prove the remaining obligations. Use `show m.π a ∈ P i`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[show m.π a = 0 from hker ha]`. Conclude with `zero_mem _`. Establish `: m.π (fo W) ∈ RingHom.ker (x' i)` using `by rw [hx'2]; exact hf`. Conclude with `this`. Use `show m.π (m.s (MvPowerSeries.X a)) ∈ P i`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hy0]`. Conclude with `zero_mem _)`. Use the proof step `(fun i => by`. Take `⟨La, j1, j2, j3, h1, h2, h3⟩` from `laDim O (x i).x.K D ((x i).f.comp A.b.lam) (hx i).1 (hx i).2`. Use `⟨La, j1, j2, j3, ?_, h2, h3⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `h1 using 1` and compare the differences between its conclusion and the goal. Use extensionality with `a`. Use `show m.π (m.s (MvPowerSeries.C a)) ∈ P i ↔ (x i).f (A.b.lam a) = 0`. Rewrite using `[m.π_s, ← hx'2, RingHom.mem_ker, hx'1]`. Use the proof step `simp)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result.
 
-Establish `hmaps` using `ooMaps l L G0 T Λ n O r B u J D A W m o πb hπb`. Establish `hSt : ∀ Q : Ideal (Spo A), DiscSt o.p.D (Q.comap πb) ↔ DiscSt u.D (Q.comap (algebraMap B (Spo A)))` using `fun Q => by`. Establish `h1` using `(BC.discSt_map n _ (Spo A) _ o.p.D).1 πb.toRingHom Q`. Rewrite `h1` using `[hmaps.1, (BC.discSt_map n _ (Spo A) _ _).1, (BC.discSt_map n B B _ u.D).2.1 _ _ Λ.h.p₀_surj]`. Conclude with `h1.symm`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Establish `hyE : ∀ (Q : Ideal (Spo A)) a, Ideal.Quotient.mk (ii W) (m.s.toRingHom (MvPowerSeries.X a)) ∈ Q.comap πb` using `fun Q a => by show m.π (m.s (MvPowerSeries.X a)) ∈ Q`. Rewrite using `[hy0]`. Conclude with `zero_mem _`. Take `⟨q₁, a1, a2, a3, a4⟩` from `hq₁`. Take `⟨Q₁, b1, b2, b3⟩` from `hdown (P 0) q₁ (hPp 0).1 a1 (by rw [(hPp 0).2]; exact a4)`.
-
-Take `⟨Q, c1, c2, c3⟩` from `hdown (P (Fin.last h)) q (hPp _).1 hq (by rw [(hPp _).2]; exact hqle)`. Establish `key` using `chainAbs (abelian₂ O Unit D) W.R (Fin T.q × Fin n) m.s.toRingHom (ii W) _ h _ _ o5 (DiscSt o.p.D) (fun i Q => NonSS (ooKer o) (algebraMap _ (o5.B i)) Q) (fun i => by haveI := (hPp i).1`. Use `⟨Ideal.comap_isPrime _ _, fun a ha => ?_⟩` and prove the remaining obligations. Use `show m.π a ∈ P i`. Rewrite using `[show m.π a = 0 from hker ha]`.
-
-Conclude with `zero_mem _)`. Use the proof step `(BC.discSt_map n _ B _ o.p.D).2.2`. Use the proof step `(fun i Z Q hZ hQ h1 h2 h3 => by`. Take `⟨Pt, e1, e2⟩` from `(hpt i).2`. Take `⟨k1, k2, k3⟩` from `cohLim l L G0 T Λ n (x i).x (x i).k (x i).al _ hl hP (x i).eig (x i).b1 (x i).b2`.
-
-Establish `hc : IsCplAt (W.R ⧸ ii W) (RingHom.ker Pt.f) (o5.B i)`. Use `o5.cpl i using 1` and compare the differences between its conclusion and the goal. Use extensionality with `a`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective a`. Rewrite using `[Ideal.mem_quotient_iff_mem (fun b hb => by show m.π b ∈ P i`.
-
-Rewrite using `[show m.π b = 0 from hker hb]`. Conclude with `zero_mem _), e1, ← hx'2]`. Both sides reduce to the same expression. Use `galOut l L Λ.G G0 Λ.h n (x i).x (x i).k O o.r' _ o.p Pt (o5.B i) _ hl hc k1 k2 k3 Z Q hZ hQ (((BC.discSt_map n _ _ _ o.p.D).1 _ _).2 h1) ?_ ?_` and prove the remaining obligations. Use `h2 using 2` and compare the differences between its conclusion and the goal.
-
-Simplify using `[mul_comm, add_assoc]`. Rewrite using `[e2]`. Conclude with `h3.imp_left ((BC.discSt_map n _ _ _ o.p.D).1 _ _).2)`. Use the proof step `(fun i => (E i).comap πb)`. Use the proof step `(fun i => by haveI := (hE i).1`.
-
-Use `⟨Ideal.comap_isPrime _ _, hyE _, Ideal.comap_mono (f := m.π) (hE i).2.2.1, Ideal.comap_mono (f := m.π) (hE i).2.2.2, fun Q hQ hQE => nonssT l L G0 T Λ n O r B u J D A W m o πb hπb hP hA hn _ _ Q (E i) hQ (hE i).1 hQE ?_⟩` and prove the remaining obligations. Rewrite using `[(hE i).2.1]`. Conclude with `(he i).2.1)`. Use the proof step `⟨Q₁.comap πb, Ideal.comap_isPrime _ _, hyE _, Ideal.comap_mono (f := m.π) b3, (hSt _).2 (b2 ▸ a2), (patchedModule_annihilator_le_comap_iff_ideal_le l L G0 T Λ n O r B u J D A W m hsurj Q₁ b1).2 (b2 ▸ a3)⟩`. Use the proof step `(Q.comap πb) (Ideal.comap_isPrime _ _) (hyE _) (Ideal.comap_mono (f := m.π) c3)`.
-
-Use the proof step `(hst.imp (fun h1 => (hSt _).2 (c2 ▸ h1)) fun h1 Q' hQ' e => nonssT l L G0 T Λ n O r B u J D A W m o πb hπb hP hA hn _ _ Q' Q hQ' c1 e (c2 ▸ h1))`. Conclude with `c2 ▸ (patchedModule_annihilator_le_comap_iff_ideal_le l L G0 T Λ n O r B u J D A W m hsurj Q c1).1 key`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem core : Core := by
   intro l _ L G0 T n O _ _ _ _ _ r B _ _ _ u J D A hl hP hA hgen h x hx e he hq₁ q hq hqle hst

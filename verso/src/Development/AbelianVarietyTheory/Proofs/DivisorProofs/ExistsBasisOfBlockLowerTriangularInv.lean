@@ -5,17 +5,17 @@ namespace GlobalTheory
 open Matrix
 
 /- English proof (translation)
-Establish `hAA : P.toBlocks₁₁ * P'.toBlocks₁₁ = 1`. Use extensionality with `i i'`. Use `congrFun (congrFun h1 (Sum.inl i)) (Sum.inl i')` as an intermediate fact. Simplify `this` using `[Matrix.mul_apply, Fintype.sum_sum_type, hz, Matrix.one_apply, Matrix.toBlocks₁₁]`. Establish `hA'A : P'.toBlocks₁₁ * P.toBlocks₁₁ = 1` using `mul_eq_one_comm.mp hAA`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hAB : P.toBlocks₁₁ * P'.toBlocks₁₂ = 0`. Use extensionality with `i j`. Use `congrFun (congrFun h1 (Sum.inl i)) (Sum.inr j)` as an intermediate fact. Simplify `this` using `[Matrix.mul_apply, Fintype.sum_sum_type, hz, Matrix.one_apply, Matrix.toBlocks₁₁, Matrix.toBlocks₁₂]`. Establish `hB : P'.toBlocks₁₂ = 0`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hb : ∀ a j, P' (Sum.inl a) (Sum.inr j) = 0` using `fun a j => by`. Simplify `congrFun (congrFun hB a) j` using `[Matrix.toBlocks₁₂]`. Establish `hDD : P.toBlocks₂₂ * P'.toBlocks₂₂ = 1`. Use extensionality with `j j2`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use `congrFun (congrFun h1 (Sum.inr j)) (Sum.inr j2)` as an intermediate fact. Simplify `this` using `[Matrix.mul_apply, Fintype.sum_sum_type, hb, Matrix.one_apply, Matrix.toBlocks₂₂]`. Establish `hD'D : P'.toBlocks₂₂ * P.toBlocks₂₂ = 1`. Use extensionality with `j j2`. Use `congrFun (congrFun h2 (Sum.inr j)) (Sum.inr j2)` as an intermediate fact.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Simplify `this` using `[Matrix.mul_apply, Fintype.sum_sum_type, hz, Matrix.one_apply, Matrix.toBlocks₂₂]`. Use `set D := P.toBlocks₂₂ with hDdef`. Use `set D' := P'.toBlocks₂₂`. Set `L : (Fin k → O) ≃ₗ[O] (Fin k' → O)` to `LinearEquiv.ofLinear (Matrix.toLin' Dᵀ) (Matrix.toLin' D'ᵀ) (by rw [← Matrix.toLin'_mul, ← Matrix.transpose_mul, hD'D, Matrix.transpose_one, Matrix.toLin'_one]) (by rw [← Matrix.toLin'_mul, ← Matrix.transpose_mul, hDD, Matrix.transpose_one, Matrix.toLin'_one])`. Use `⟨Module.Basis.ofEquivFun (lbs.equivFun.trans L.symm), fun j => ?_⟩` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Module.Basis.coe_ofEquivFun]`. Simplify using `only [LinearEquiv.symm_trans_apply, LinearEquiv.symm_symm, Module.Basis.equivFun_symm_apply]`. Use `Finset.sum_congr rfl fun j' _ => ?_` and prove the remaining obligations. Use `congr 1`. Simplify using `[L, Matrix.mulVec, dotProduct, Pi.single_apply, hDdef, Matrix.toBlocks₂₂]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_basis_of_blockLowerTriangular_inv (O M : Type) [CommRing O] [AddCommGroup M] [Module O M]
     (d k k' : ℕ) (lbs : Module.Basis (Fin k') O M)

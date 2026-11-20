@@ -17,7 +17,7 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.Approx
 
 /- English proof (translation)
-Establish `sq : IsPullback h.isoPullback.inv (pullback.snd b f) a (𝟙 S')` using `IsPullback.of_horiz_isIso ⟨by simp⟩`. Conclude with `P.of_isPullback sq ha`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem prop_snd_of_isPullback (P : MorphismProperty Scheme.{0}) [P.IsStableUnderBaseChange]
     {X Y S' S : Scheme.{0}} {φ : X ⟶ Y} {a : X ⟶ S'} {b : Y ⟶ S} {f : S' ⟶ S}
@@ -27,11 +27,11 @@ theorem prop_snd_of_isPullback (P : MorphismProperty Scheme.{0}) [P.IsStableUnde
   exact P.of_isPullback sq ha
 
 /- English proof (translation)
-Establish `key : ∀ {T : Over S'} (x y : T ⟶ G'), x * y = y * x`. Introduce `T x y`. Set `x₀ : Over.mk (T.hom ≫ b) ⟶ G` to `Over.homMk (x.left ≫ φ) (by`. Simplify using `only [Over.mk_hom, Category.assoc, h.1.w, Over.w_assoc])`. Set `y₀ : Over.mk (T.hom ≫ b) ⟶ G` to `Over.homMk (y.left ≫ φ) (by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Simplify using `only [Over.mk_hom, Category.assoc, h.1.w, Over.w_assoc])`. Establish `e₁` using `h.2 T x y x₀ y₀ rfl rfl`. Establish `e₂` using `h.2 T y x y₀ x₀ rfl rfl`. Establish `c : x₀ * y₀ = y₀ * x₀` using `mul_comm _ _`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `h.1.hom_ext` to reduce the goal to its premises. Rewrite using `[← e₁, ← e₂, c]`. Rewrite using `[Over.w, Over.w]`. Use `⟨?_⟩` and prove the remaining obligations. Rewrite using `[mul_eq_mul, comp_mul, key]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -55,15 +55,13 @@ theorem isCommMonObj_of_isGrpPullback {S S' : Scheme.{0}} {G' : Over S'} {G : Ov
   simp
 
 /- English proof (translation)
-Introduce `R _ A _ F hA`. Use `haveI : IsCommMonObj A := hA.comm`. Use `haveI : IsProper A.hom := hA.proper`. Take `⟨k, A₀, i₀, c₀, φ, hFk, hk, s₀, sep₀, qc₀, hφ⟩` from `GlobalTheory.smooth_grpScheme_descends_to_fg_subring R A F hA.smooth inferInstance inferInstance`. Use `haveI : IsNoetherianRing k := Algebra.FiniteType.isNoetherianRing ℤ k`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hφ' : IsGrpPullback A A₀ (spMap (algebraMap k R)) φ` using `hφ`. Take `⟨R₁, hR₁, pr₁⟩` from `GlobalTheory.T.separated_properness_fg_subalgebra k R A₀.left A₀.hom sep₀ inferInstance qc₀ (prop_snd_of_isPullback @IsProper hφ.1 hA.proper)`. Take `⟨i₁, φ₁, h₁₀, h₁, -⟩` from `GlobalTheory.T.abelianScheme_model_baseChange_subalgebra k R A A₀ φ hφ' R₁`. Use `haveI : Algebra.FiniteType k R₁ := (Subalgebra.fg_iff_finiteType R₁).1 hR₁`. Use `haveI : IsNoetherianRing R₁ := Algebra.FiniteType.isNoetherianRing k R₁`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI : IsCommMonObj (Over.mk (pullback.snd A₀.hom (spMap (algebraMap k R₁)))) := isCommMonObj_of_isGrpPullback h₁₀`. Establish `hk₁ : Algebra.FiniteType ℤ R₁` using `Algebra.FiniteType.trans hk inferInstance`. Establish `h₁' : IsGrpPullback A (Over.mk (pullback.snd A₀.hom (spMap (algebraMap k R₁)))) (spMap (algebraMap R₁ R)) φ₁` using `h₁`. Establish `sm₁ : Smooth (pullback.snd A₀.hom (spMap (algebraMap k R₁)))` using `by haveI := s₀; infer_instance`. Take `⟨R₂, hR₂, gc₂⟩` from `GlobalTheory.T.geometricallyConnected_descends_to_finitelyGenerated R₁ R (Over.mk (pullback.snd A₀.hom (spMap (algebraMap k R₁)))) sm₁ pr₁ (prop_snd_of_isPullback @GeometricallyConnected h₁.1 hA.geomConnected)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components.
 
-Take `⟨i₂, φ₂, h₂₁, h₂, -⟩` from `@GlobalTheory.T.abelianScheme_model_baseChange_subalgebra R₁ R _ _ _ A _ (Over.mk (pullback.snd A₀.hom (spMap (algebraMap k R₁)))) i₁ φ₁ h₁' R₂`. Use `haveI : Algebra.FiniteType R₁ R₂ := (Subalgebra.fg_iff_finiteType R₂).1 hR₂`. Establish `hk₂ : Algebra.FiniteType ℤ R₂` using `Algebra.FiniteType.trans hk₁ inferInstance`. Use `⟨R₂.toSubring, Over.mk (pullback.snd (Over.mk (pullback.snd A₀.hom (spMap (algebraMap k R₁)))).hom (spMap (algebraMap R₁ R₂))), i₂, φ₂, ?_, hk₂, ?_, h₂⟩` and prove the remaining obligations. Introduce `x hx`.
-
-Establish `hx₁ : x ∈ R₁` using `R₁.algebraMap_mem (⟨x, hFk hx⟩ : k)`. Conclude with `R₂.algebraMap_mem (⟨x, hx₁⟩ : R₁)`. Use `haveI := sm₁ haveI := pr₁`. Conclude with `⟨isCommMonObj_of_isGrpPullback h₂₁, by dsimp only [Over.mk_hom]; infer_instance, by dsimp only [Over.mk_hom]; infer_instance, gc₂⟩`.
+A detailed English derivation is pending.
 -/
 theorem abelianScheme_descends_to_fg_subring : ∀ (R : Type) [CommRing R] (A : Over (Sp R)) [GrpObj A] (F : Finset R), IsAbelianScheme A → ∃ (S : Subring R) (B : Over (Sp S)) (_ : GrpObj B) (φ : A.left ⟶ B.left), (F : Set R) ⊆ S ∧ Algebra.FiniteType ℤ S ∧ IsAbelianScheme B ∧ IsGrpPullback A B (spMap S.subtype) φ := by
   intro R _ A _ F hA

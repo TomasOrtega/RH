@@ -14,15 +14,15 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E}
 
 /- English proof (translation)
-Rewrite `hγ` using `[← range_ratEmb]`. Take `⟨γ0, rfl⟩` from `hγ`. Establish `hmat : (matHom _ σ J (ratEmb σ J γ0)).1 = (γ0.1.1 : Matrix (Fin n) (Fin n) E).map (inclR (F` using `F) (AF F)) := by`. Use extensionality with `s t`. Both sides reduce to the same expression.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression.
 
-Establish `hL' : adMat F L * adMat F X = 1`. Rewrite using `[← Matrix.map_mul, hL, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `hb : β.1 = (L * γ0.1.1 * X).map (inclR (F` using `F) (AF F)) := by`. Use `congrArg (adMat F L * ·) e` as an intermediate fact. Establish `h2 : adMat F L * (adMat F X * β.1) = β.1` using `by rw [← Matrix.mul_assoc, hL', Matrix.one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[h2, hmat]`. Rewrite using `[← this]`. Simplify using `only [adMat, Matrix.map_mul, Matrix.mul_assoc]`. Use `set c : E := (L * γ0.1.1 * X).det with hc`. Establish `hd : (Matrix.GeneralLinearGroup.det β).1 = inclR (F` using `F) (AF F) c := by`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply, hb, hc, RingHom.map_det]`. Both sides reduce to the same expression. Distinguish the cases in `hc0 : c = 0`. Establish `: Subsingleton (AF F ⊗[F] E)`. Establish `h01` using `(Matrix.GeneralLinearGroup.det β).mul_inv`.
+Both sides reduce to the same expression. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h01` using `[hd, hc0, map_zero, zero_mul]`. Conclude with `subsingleton_of_zero_eq_one h01`. Rewrite using `[Subsingleton.elim (Matrix.GeneralLinearGroup.det β) 1, map_one]`. Use `GlobalTheory.Doubling.absE_inclR (F := F) (E := E) (Units.mk0 c hc0)` as an intermediate fact. Rewrite `this` using `[show (Units.map (inclR (F := F) (AF F)).toMonoidHom (Units.mk0 c hc0)) = Matrix.GeneralLinearGroup.det β from Units.ext (by simp [hd])]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem absE_det_of_scalesBy {k : ℕ} {X : Matrix (Fin n) (Fin k) E} {L : Matrix (Fin k) (Fin n) E} (hL : L * X = 1)
     {γ : GAd σ J} (hγ : γ ∈ ratPts σ J) {β : GL (Fin k) (AF F ⊗[F] E)} (e : ScalesBy σ J X γ β) :
@@ -60,11 +60,11 @@ namespace GlobalTheory.ResidueEisenstein
 open GlobalTheory.StdPar GlobalTheory.ResLine.LeviFacts in
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ n J r X Y h hJ hW`. Establish `hX : initCols X (Fin.last r) = X` using `rfl`. Establish `hY : initCols Y (Fin.last r) = Y` using `rfl`. Establish `hlev : ∀ m ∈ levi σ J X Y {Fin.last r}, m ∈ frameStab σ J X ⊤ ∧ m ∈ frameStab σ J Y ⊤` using `fun m hm => by`. Simplify using `only [levi, Subgroup.mem_iInf] at hm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `hm _ (Finset.mem_singleton_self _)`. Use `⟨fun m hm u hu => conj_mem hW (Fin.last r) (hlev m hm).1 hu, fun g hg hm => eq_one h hJ hW (Fin.last r) hg (hlev g hm).2, fun u hu => (unipRad_fix hu).trans (by simp), fun m hm => ?_, fun γ hγ β e => FrameLeviFacts.absE_det_of_scalesBy (yx h hJ hW) hγ e, inf_le_left, (isClosed_le …` and prove the remaining obligations. Establish `h2 : m ∈ ⨅ k ∈ ({Fin.last r} : Finset (Fin (r + 1))), frameStab σ J (initCols X k) ((absE F E).comp Matrix.GeneralLinearGroup.det).ker` using `hm.2`. Simplify using `only [Subgroup.mem_iInf] at h2`. Take `⟨B, hB, e⟩` from `h2 _ (Finset.mem_singleton_self _)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨B, e, hB⟩`.
+A detailed English derivation is pending.
 -/
 theorem frame_levi_facts : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ) (J : Matrix (Fin n) (Fin n) E) (r : ℕ) (X Y : Matrix (Fin n) (Fin (r + 1)) E), IsCMExt F E σ → IsHermND σ J → IsWittFrame σ J X Y → (∀ m ∈ GlobalTheory.StdPar.levi σ J X Y {Fin.last r}, ∀ u ∈ unipRad σ J X, m * u * m⁻¹ ∈ unipRad σ J X) ∧ (∀ g ∈ unipRad σ J X, g ∈ GlobalTheory.StdPar.levi σ J X Y {Fin.last r} → g = 1) ∧ (∀ u ∈ unipRad σ J X, ScalesBy σ J X u 1) ∧ (∀ m ∈ GlobalTheory.StdPar.leviOne σ J X Y {Fin.last r}, ∃ β, ScalesBy σ J X m β ∧ absE F E (Matrix.GeneralLinearGroup.det β) = 1) ∧ (∀ γ ∈ ratPts σ J, ∀ β, ScalesBy σ J X γ β → absE F E (Matrix.GeneralLinearGroup.det β) = 1) ∧ GlobalTheory.StdPar.leviOne σ J X Y {Fin.last r} ≤ GlobalTheory.StdPar.levi σ J X Y {Fin.last r} ∧ IsClosed ((GlobalTheory.StdPar.leviOne σ J X Y {Fin.last r} : Subgroup (GAd σ J)) : Set (GAd σ J)) := by
   intro F E _ _ _ _ _ σ n J r X Y h hJ hW

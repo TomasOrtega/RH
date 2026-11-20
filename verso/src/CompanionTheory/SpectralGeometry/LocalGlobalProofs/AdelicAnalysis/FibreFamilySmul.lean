@@ -7,11 +7,11 @@ open scoped ENNReal NNReal
 namespace GlobalTheory.CompanionTheory.SW.Rescale
 
 /- English proof (translation)
-Unfold `Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.IsFibreFamily at h ⊢`. Use `⟨fun b => ?_, fun φ hφ => ?_, fun φ hφc hφs hφU => ?_⟩` and prove the remaining obligations. Rewrite using `[Measure.smul_apply, h.1 b, smul_zero]`. Simplify using `only [Measure.restrict_smul, lintegral_smul_measure, ENNReal.smul_def, smul_eq_mul]`. Rewrite using `[h.2.1 φ hφ, lintegral_const_mul' _ _ ENNReal.coe_ne_top, ← mul_assoc, ← ENNReal.coe_mul, mul_comm c, div_mul_cancel₀ a hc]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Take `⟨h1, h2⟩` from `h.2.2 φ hφc hφs hφU`. Use `⟨fun b hb => (h1 b hb).smul_measure_nnreal, ?_⟩` and prove the remaining obligations. Establish `e : (fun b => ∫ v, φ v ∂((a / c) • fib b)) = fun b => ((a / c : ℝ≥0) : ℝ) • ∫ v, φ v ∂fib b`. Use function extensionality and compare the values at `b`. Rewrite using `[integral_smul_nnreal_measure, NNReal.smul_def]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `h2.const_smul ((a / c : ℝ≥0) : ℝ)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isFibreFamily_rescale (V X Y : Type) [TopologicalSpace V] [MeasurableSpace V]
     [TopologicalSpace X] [MeasurableSpace X] (μ : Measure V) (ν : Measure X) (f : V → Y)

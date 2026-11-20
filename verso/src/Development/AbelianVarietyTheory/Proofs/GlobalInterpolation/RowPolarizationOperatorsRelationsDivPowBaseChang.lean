@@ -9,16 +9,16 @@ noncomputable section
 namespace GlobalTheory.Alc
 
 /- English proof (translation)
-Simplify using `[rowE, LinearMap.sum_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem rowE_apply (R : Type) [CommRing R] (r n : ℕ) (a b : Fin r) (P : MvPolynomial (Fin r × Fin n) R) :
     rowE R r n a b P = ∑ s : Fin n, X (a, s) * pderiv (b, s) P := by
   simp [rowE, LinearMap.sum_apply]
 
 /- English proof (translation)
-Rewrite using `[rowE_apply]`. Use `split_ifs with h`. Substitute `h` using the available equality. Rewrite using `[Finset.sum_eq_single t]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s _ hs`. Rewrite using `[pderiv_X_of_ne (by simp [Ne.symm hs])]; simp`. Simplify using the standard rewrite rules. Use `Finset.sum_eq_zero fun s _ => ?_` and prove the remaining obligations. Rewrite using `[pderiv_X_of_ne (by simp [Ne.symm h])]; simp`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rowE_X (R : Type) [CommRing R] (r n : ℕ) (a b c : Fin r) (t : Fin n) :
     rowE R r n a b (X (c, t)) = if b = c then X (a, t) else 0 := by
@@ -34,7 +34,7 @@ theorem rowE_X (R : Type) [CommRing R] (r n : ℕ) (a b c : Fin r) (t : Fin n) :
     rw [pderiv_X_of_ne (by simp [Ne.symm h])]; simp
 
 /- English proof (translation)
-Simplify using `only [rowE_apply, Finset.sum_mul, Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Simplify using `only [Derivation.leibniz, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem rowE_mul (R : Type) [CommRing R] (r n : ℕ) (a b : Fin r) (P Q : MvPolynomial (Fin r × Fin n) R) :
     rowE R r n a b (P * Q) = rowE R r n a b P * Q + P * rowE R r n a b Q := by
@@ -43,20 +43,20 @@ theorem rowE_mul (R : Type) [CommRing R] (r n : ℕ) (a b : Fin r) (P Q : MvPoly
   simp only [Derivation.leibniz, smul_eq_mul]; ring
 
 /- English proof (translation)
-Simplify using `[rowE_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem rowE_C (R : Type) [CommRing R] (r n : ℕ) (a b : Fin r) (x : R) :
     rowE R r n a b (C x) = 0 := by
   simp [rowE_apply]
 
 /- English proof (translation)
-Introduce `a b c d`. Use `LinearMap.ext fun P => ?_` and prove the remaining obligations. Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C x => split_ifs <;> simp [rowE_C]`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `mul_X p v hp`. Take `⟨e, t⟩` from `v`. Establish `hX : (rowE R r n a b * rowE R r n c d - rowE R r n c d * rowE R r n a b) (X (e, t)) = ((if b = c then rowE R r n a d else 0) - (if d = a then rowE R r n c b else 0)) (X (e, t))`. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply, rowE_X]`. Apply the tactic sequence `split_ifs <;> simp_all [rowE_X]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hL : ∀ P Q, (rowE R r n a b * rowE R r n c d - rowE R r n c d * rowE R r n a b) (P * Q) = (rowE R r n a b * rowE R r n c d - rowE R r n c d * rowE R r n a b) P * Q + P * (rowE R r n a b * rowE R r n c d - rowE R r n c d * rowE R r n a b) Q`. Introduce `P Q`. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply, rowE_mul, map_add]`. Expand and normalize the polynomial expressions, which then agree. Establish `hR : ∀ P Q, ((if b = c then rowE R r n a d else 0) - (if d = a then rowE R r n c b else 0)) (P * Q) = ((if b = c then rowE R r n a d else 0) - (if d = a then rowE R r n c b else 0)) P * Q + P * ((if b = c then rowE R r n a d else 0) - (if d = a then rowE R r n c b else 0)) Q`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Introduce `P Q`. Apply the tactic sequence `split_ifs <;> simp [rowE_mul] <;> ring`. Rewrite using `[hL, hR, hp, hX]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 -/
 theorem glRel_rowE (R : Type) [CommRing R] (r n : ℕ) : GlRel (rowE R r n) := by
   intro a b c d
@@ -83,13 +83,13 @@ theorem glRel_rowE (R : Type) [CommRing R] (r n : ℕ) : GlRel (rowE R r n) := b
     rw [hL, hR, hp, hX]
 
 /- English proof (translation)
-Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C x => simp [rowE_C, rowDiv, rowGen, Polynomial.algebraMap_apply, Polynomial.coeff_C]`. Consider the case `add p q hp hq`. Simplify using `only [rowDiv, map_add, Polynomial.coeff_add] at *`. Conclude with `⟨by rw [hp.1, hq.1], by rw [hp.2, hq.2]⟩`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Consider the case `mul_X p v hp`. Take `⟨e, t⟩` from `v`. Simplify using `only [rowDiv, map_mul] at *`. Establish `h0 : (rowGen R a b (X (e, t) : MvPolynomial (Fin r × Fin n) R)).coeff 0 = X (e, t)`. Apply the tactic sequence `simp only [rowGen, aeval_X]; split_ifs <;> simp`.
+Treat this case separately. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `h1 : (rowGen R a b (X (e, t) : MvPolynomial (Fin r × Fin n) R)).coeff 1 = if b = e then X (a, t) else 0`. Simplify using `only [rowGen, aeval_X]`. Distinguish the cases in `h : e = b`. Simplify using `[h, Polynomial.coeff_C]`. Simplify using `[h, Ne.symm h, Polynomial.coeff_C]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `⟨?_, by rw [Polynomial.mul_coeff_zero, hp.2, h0]⟩` and prove the remaining obligations. Rewrite using `[rowE_mul, rowE_X, Polynomial.coeff_mul, Finset.Nat.antidiagonal_succ]`. Simplify using `[hp.1, hp.2, h0, h1, add_comm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem rowE_eq_rowDiv (R : Type) [CommRing R] (r n : ℕ) (a b : Fin r) (P : MvPolynomial (Fin r × Fin n) R) :
     rowE R r n a b P = rowDiv R a b 1 P ∧ rowDiv R a b 0 P = P := by
@@ -114,7 +114,7 @@ theorem rowE_eq_rowDiv (R : Type) [CommRing R] (r n : ℕ) (a b : Fin r) (P : Mv
     simp [hp.1, hp.2, h0, h1, add_comm]
 
 /- English proof (translation)
-Simplify using `only [rowE_apply, map_sum, map_mul, map_X, pderiv_map]`.
+Simplify using the standard rewrite rules.
 -/
 theorem map_rowE {R S : Type} [CommRing R] [CommRing S] (φ : R →+* S) (r n : ℕ) (a b : Fin r)
     (f : MvPolynomial (Fin r × Fin n) R) :
@@ -122,9 +122,9 @@ theorem map_rowE {R S : Type} [CommRing R] [CommRing S] (φ : R →+* S) (r n : 
   simp only [rowE_apply, map_sum, map_mul, map_X, pderiv_map]
 
 /- English proof (translation)
-Proceed by induction on `k generalizing a b f with`. Consider the case `zero`. Simplify using `only [pow_zero, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Consider the case `succ k ih`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Treat this case separately.
 
-Simplify using `only [pow_succ, Matrix.mul_apply, LinearMap.sum_apply, Module.End.mul_apply, map_sum, ih, map_rowE]`.
+Simplify using the standard rewrite rules.
 -/
 theorem map_rowE_pow {R S : Type} [CommRing R] [CommRing S] (φ : R →+* S) (r n k : ℕ) (a b : Fin r)
     (f : MvPolynomial (Fin r × Fin n) R) :
@@ -137,7 +137,7 @@ theorem map_rowE_pow {R S : Type} [CommRing R] [CommRing S] (φ : R →+* S) (r 
     simp only [pow_succ, Matrix.mul_apply, LinearMap.sum_apply, Module.End.mul_apply, map_sum, ih, map_rowE]
 
 /- English proof (translation)
-Simplify using `only [gel, Matrix.trace, Matrix.diag, LinearMap.sum_apply, map_sum, map_rowE_pow]`.
+Simplify using the standard rewrite rules.
 -/
 theorem map_gel {R S : Type} [CommRing R] [CommRing S] (φ : R →+* S) (r n k : ℕ)
     (f : MvPolynomial (Fin r × Fin n) R) :
@@ -145,7 +145,7 @@ theorem map_gel {R S : Type} [CommRing R] [CommRing S] (φ : R →+* S) (r n k :
   simp only [gel, Matrix.trace, Matrix.diag, LinearMap.sum_apply, map_sum, map_rowE_pow]
 
 /- English proof (translation)
-Introduce `R _ r n`. Conclude with `⟨glRel_rowE R r n, fun a b f => (rowE_eq_rowDiv R r n a b f).1, fun S _ φ k f => map_gel φ r n k f⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem rowOperators_main : ∀ (R : Type) [CommRing R] (r n : ℕ), GlRel (rowE R r n) ∧
     (∀ a b f, rowE R r n a b f = rowDiv R a b 1 f) ∧

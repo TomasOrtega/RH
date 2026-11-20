@@ -13,7 +13,7 @@ variable {k Ω : Type} [Field k] [Field Ω] [Algebra k Ω] (R : Subalgebra k Ω)
 private abbrev Lev : Type := {S : Subalgebra k Ω // R ≤ S ∧ S.FG}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun a b ↦ ⟨⟨a.1 ⊔ b.1, a.2.1.trans le_sup_left, a.2.2.sup b.2.2⟩, (le_sup_left : a.1 ≤ a.1 ⊔ b.1), (le_sup_right : b.1 ≤ a.1 ⊔ b.1)⟩⟩`.
+Supply the required witnesses or components.
 -/
 private theorem lev_directed : IsDirected (Lev R) (· ≤ ·) :=
   ⟨fun a b ↦ ⟨⟨a.1 ⊔ b.1, a.2.1.trans le_sup_left, a.2.2.sup b.2.2⟩,
@@ -44,7 +44,7 @@ private def ringsIsColimit (hR : R.FG) : IsColimit (ringsCocone R) := by
 
 variable {R} in
 /- English proof (translation)
-The claim follows from `pullback.lift_fst _ _ _`.
+A detailed English derivation is pending.
 -/
 private theorem lvl_fst {R1 R2 : Subalgebra k Ω} (h1 : R ≤ R1) (h : R ≤ R2) (h' : R1 ≤ R2)
     {D : Scheme.{0}} (q : D ⟶ Sp R) : lvl h1 h h' q ≫ pullback.fst q (incl h1) = pullback.fst q (incl h) :=
@@ -52,7 +52,7 @@ private theorem lvl_fst {R1 R2 : Subalgebra k Ω} (h1 : R ≤ R1) (h : R ≤ R2)
 
 variable {R} in
 /- English proof (translation)
-The claim follows from `pullback.lift_snd _ _ _`.
+A detailed English derivation is pending.
 -/
 private theorem lvl_snd {R1 R2 : Subalgebra k Ω} (h1 : R ≤ R1) (h : R ≤ R2) (h' : R1 ≤ R2)
     {D : Scheme.{0}} (q : D ⟶ Sp R) :
@@ -61,7 +61,7 @@ private theorem lvl_snd {R1 R2 : Subalgebra k Ω} (h1 : R ≤ R1) (h : R ≤ R2)
 
 variable {R} in
 /- English proof (translation)
-Use `IsPullback.of_right (h₁₂ := pullback.fst q (incl h1)) (v₁₃ := q) (h₂₂ := incl h1) ?_ (lvl_snd h1 h h' q) (IsPullback.of_hasPullback q (incl h1))` and prove the remaining obligations. Rewrite using `[lvl_fst, incl_comp h1 h h']`. Conclude with `IsPullback.of_hasPullback q (incl h)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem lvl_isPullback {R1 R2 : Subalgebra k Ω} (h1 : R ≤ R1) (h : R ≤ R2) (h' : R1 ≤ R2)
     {D : Scheme.{0}} (q : D ⟶ Sp R) :
@@ -128,11 +128,11 @@ private def stagesToConstantSpec : stages R q ⟶ (Functor.const _).obj (Sp R) w
 variable {R q} in
 
 /- English proof (translation)
-Establish `: Nonempty (Lev R)` using `⟨⟨R, le_rfl, hR⟩⟩`. Use `lev_directed R` as an intermediate fact. Establish `: IsFiltered (Lev R)` using `isFiltered_of_directed_le_nonempty _`. Establish `i1 : ∀ {s t : (Lev R)ᵒᵖ} (h : s ⟶ t), IsAffineHom ((stages R q).map h)` using `fun {s t} h ↦ MorphismProperty.of_isPullback (lvl_isPullback t.unop.2.1 s.unop.2.1 (leOfHom h.unop : t.unop.1 ≤ s.unop.1) q).flip inferInstance`. Establish `i2 : ∀ s : (Lev R)ᵒᵖ, CompactSpace ((stages R q).obj s)` using `fun s ↦ by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h : QuasiCompact (pullback.snd q (incl s.unop.2.1))` using `(fp_snd q (incl s.unop.2.1) hq).2.1`. Express the relevant statement in the definitionally equal form `CompactSpace ↥(pullback q (incl s.unop.2.1))`. Conclude with `QuasiCompact.compactSpace_of_compactSpace (pullback.snd q (incl s.unop.2.1))`. Establish `i3 : ∀ s : (Lev R)ᵒᵖ, QuasiSeparatedSpace ((stages R q).obj s)` using `fun s ↦ (quasiSeparated_iff_quasiSeparatedSpace (pullback.snd q (incl s.unop.2.1))).mp (fp_snd q (incl s.unop.2.1) hq).2.2`. Take `⟨s, u, h₁, h₂⟩` from `Scheme.exists_π_app_comp_eq_of_locallyOfFinitePresentation (stages R q) (stagesToConstantSpec R q) qZ (stagesCone hp.w) (stagesIsLimit hR hp) a (by`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `NatTrans.ext (funext fun s ↦ ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `bcLift s.unop.2.1 hp.w ≫ pullback.fst q (incl s.unop.2.1) ≫ q = a ≫ qZ`. Rewrite using `[ha]`. Conclude with `pullback.lift_fst_assoc _ _ _ _)`. Conclude with `⟨s.unop.1, s.unop.2.1, s.unop.2.2, u, h₁, h₂⟩`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem factor (hR : R.FG) (hq : FP q) {Y Z : Scheme.{0}} {g : Y ⟶ Sp Ω} {v : Y ⟶ D}
     (hp : IsPullback v g q (toR R)) (qZ : Z ⟶ Sp R) (hZ : LocallyOfFinitePresentation qZ)
@@ -164,11 +164,11 @@ private theorem factor (hR : R.FG) (hq : FP q) {Y Z : Scheme.{0}} {g : Y ⟶ Sp 
 end UpperTheory.Cb.PiLocalization₂
 
 /- English proof (translation)
-Introduce `k _ Ω _ _ X f hf U W hWU R hR DU DW qU qW vU vW hqU hqW hU hW`. Take `⟨R1, h1, hR1, u, hu, hu'⟩` from `UpperTheory.Cb.PiLocalization₂.factor hR hqW hW qU hqU.1 (X.homOfLE hWU ≫ vU) (by`. Rewrite using `[Category.assoc, hU.w, hW.w]`. Simplify using `only [Category.assoc, Scheme.homOfLE_ι_assoc])`. Use `⟨R1, h1, hR1, pullback.lift u (pullback.snd qW (incl h1)) ?_, pullback.lift_snd _ _ _, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hu', pullback.condition]`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, pullback.lift_fst, hu, Category.assoc]`. Unfold `bcLift`. Rewrite using `[pullback.lift_fst]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, pullback.lift_snd, Category.assoc]`. Unfold `bcLift`. Rewrite using `[pullback.lift_snd, pullback.lift_snd]`. Simplify using `only [Category.assoc, Scheme.homOfLE_ι_assoc]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem UpperTheory.Cb.pullback_isLimit_over_fg_subalgebras :
     LateralTheory.E.LeafInclPiecePf.LeafInclMap := by

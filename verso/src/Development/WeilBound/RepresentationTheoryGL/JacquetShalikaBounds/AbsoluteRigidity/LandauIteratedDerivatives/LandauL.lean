@@ -8,13 +8,13 @@ open Complex Filter Topology
 namespace PositivityTheory.RgJS.LandauNonnegativeDirichletSeries
 
 /- English proof (translation)
-Use `set δ := (σ - a) / 2 with hδ`. Establish `hδ0 : 0 < δ` using `by rw [hδ]; linarith`. Establish `h1` using `(h (σ - δ) (by rw [hδ]; linarith)).mul_left ((n.factorial : ℝ) / δ ^ n)`. Use `Summable.of_nonneg_of_le (fun j => ?_) (fun j => ?_) h1` and prove the remaining obligations. Use `hb j` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hμ j` as an intermediate fact. Check the signs of the components of the expression. Establish `h2` using `Real.pow_div_factorial_le_exp (μ j * δ) (mul_nonneg (hμ j) hδ0.le) n`. Establish `hf : (0:ℝ) < n.factorial` using `by positivity`. Establish `h3 : μ j ^ n ≤ (n.factorial : ℝ) / δ ^ n * Real.exp (μ j * δ)`.
+Check the signs of the components of the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[div_le_iff₀ hf, mul_pow]`. Rewrite using `[div_mul_eq_mul_div, le_div_iff₀ (by positivity)]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h4 : Real.exp (-(μ j) * (σ - δ)) = Real.exp (μ j * δ) * Real.exp (-(μ j) * σ)`. Rewrite using `[← Real.exp_add]`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h4]`. Establish `h5 : 0 ≤ b j * Real.exp (-(μ j) * σ)` using `mul_nonneg (hb j) (Real.exp_pos _).le`. Combine the equalities or inequalities in the displayed calculation.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem summable_pow {ι : Type} (b μ : ι → ℝ) (hb : ∀ j, 0 ≤ b j) (hμ : ∀ j, 0 ≤ μ j) (a : ℝ)
     (h : ∀ σ : ℝ, a < σ → Summable (fun j => b j * Real.exp (-(μ j) * σ))) (n : ℕ) (σ : ℝ) (hσ : a < σ) :
@@ -40,17 +40,17 @@ theorem summable_pow {ι : Type} (b μ : ι → ℝ) (hb : ∀ j, 0 ≤ b j) (h�
       _ = _ := by ring
 
 /- English proof (translation)
-Establish `hreal : ∀ σ : ℝ, a < σ → Summable (fun j => b j * Real.exp (-(μ j) * σ))`. Introduce `σ hσ`. Use `(h σ (by simpa using hσ)).summable` as an intermediate fact. Rewrite using `[← Complex.summable_ofReal]`. Use `this using 2` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `push_cast`. Both sides reduce to the same expression. Proceed by induction on `n generalizing s with`. Consider the case `zero => simpa using h s hs`. Consider the case `succ n ih => set σ := (a + s.re) / 2 with hσ`.
+Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Establish `hσ1 : a < σ` using `by rw [hσ]; linarith`. Establish `hσs : σ < s.re` using `by rw [hσ]; linarith`. Establish `hU : IsOpen {w : ℂ | σ < w.re}` using `isOpen_lt continuous_const Complex.continuous_re`. Establish `key` using `Complex.hasSum_deriv_of_summable_norm (F := fun j w => (b j : ℂ) * (-(μ j : ℂ)) ^ n * Complex.exp (-(μ j : ℂ) * w)) (U := {w : ℂ | σ < w.re}) (z := s) (summable_pow b μ hb hμ a hreal n σ hσ1) (fun j => by fun_prop) hU (fun j w hw => by`. Establish `hw' : σ < w.re` using `hw`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[norm_mul, norm_mul, norm_pow, norm_neg, Complex.norm_real, Complex.norm_real, Complex.norm_exp, Real.norm_of_nonneg (hb j), Real.norm_of_nonneg (hμ j)]`. Establish `h0 : 0 ≤ b j * μ j ^ n` using `mul_nonneg (hb j) (pow_nonneg (hμ j) n)`. Use `mul_le_mul_of_nonneg_left (Real.exp_le_exp.2 ?_) h0` and prove the remaining obligations. Use `hμ j` as an intermediate fact. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use the proof step `nlinarith) hσs`. Establish `hev : (fun w : ℂ => ∑' j, (b j : ℂ) * (-(μ j : ℂ)) ^ n * Complex.exp (-(μ j : ℂ) * w)) =ᶠ[nhds s] iteratedDeriv n F` using `by filter_upwards [hU.mem_nhds hσs] with w hw`. Establish `hw' : σ < w.re` using `hw`. Conclude with `(ih w (by linarith)).tsum_eq`. Rewrite `key` using `[hev.deriv_eq, ← iteratedDeriv_succ]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `(congrArg (fun f => HasSum f _) (funext fun j => ?_)).mp key` and prove the remaining obligations. Establish `: HasDerivAt (fun w : ℂ => (b j : ℂ) * (-(μ j : ℂ)) ^ n * Complex.exp (-(μ j : ℂ) * w)) ((b j : ℂ) * (-(μ j : ℂ)) ^ n * (Complex.exp (-(μ j : ℂ) * s) * (-(μ j : ℂ) * 1))) s` using `(((hasDerivAt_id s).const_mul (-(μ j : ℂ))).cexp).const_mul _`. Rewrite using `[this.deriv]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem hasSum_iteratedDeriv {ι : Type} (b μ : ι → ℝ) (F : ℂ → ℂ)
     (hb : ∀ j, 0 ≤ b j) (hμ : ∀ j, 0 ≤ μ j) (a : ℝ)
@@ -97,23 +97,21 @@ theorem hasSum_iteratedDeriv {ι : Type} (b μ : ι → ℝ) (F : ℂ → ℂ)
     rw [this.deriv]; ring
 
 /- English proof (translation)
-Establish `key : ∀ σ : ℝ, a < σ → (∃ᶠ z in 𝓝[≠] (σ : ℂ), (f - g) z = 0) → f =ᶠ[𝓝 (σ : ℂ)] g`. Introduce `σ hσ hfr`. Use `((hf σ hσ).sub (hg σ hσ)).frequently_zero_iff_eventually_zero.1 hfr` as an intermediate fact. Use `filter_upwards [this] with z hz`. Conclude with `sub_eq_zero.1 hz`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `fr : ∀ σ : ℝ, (∀ τ : ℝ, σ < τ → τ < σ + 1 → f τ = g τ) → ∃ᶠ z in 𝓝[≠] (σ : ℂ), (f - g) z = 0`. Introduce `σ hτ`. Establish `h1 : Tendsto (fun n : ℕ => 1 / ((n : ℝ) + 2)) atTop (𝓝 0)` using `tendsto_const_nhds.div_atTop (tendsto_atTop_add_const_right _ _ tendsto_natCast_atTop_atTop)`. Establish `h2 : Tendsto (fun n : ℕ => σ + 1 / ((n : ℝ) + 2)) atTop (𝓝 σ)`. Simplify using `using (tendsto_const_nhds (x := σ)).add h1`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `ht : Tendsto (fun n : ℕ => ((σ + 1 / ((n : ℝ) + 2) : ℝ) : ℂ)) atTop (𝓝[≠] (σ : ℂ))`. Use `tendsto_nhdsWithin_of_tendsto_nhds_of_eventually_within _ ((Complex.continuous_ofReal.tendsto σ).comp h2) (Eventually.of_forall fun n => ?_)` and prove the remaining obligations. Simplify using `only [Set.mem_compl_iff, Set.mem_singleton_iff]`. Introduce `h`. Establish `h3` using `Complex.ofReal_injective h`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `h4 : (0 : ℝ) < 1 / ((n : ℝ) + 2)` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Use `ht.frequently (Frequently.of_forall fun n => ?_)` and prove the remaining obligations. Simplify using `only [Pi.sub_apply, sub_eq_zero]`. Establish `h4 : (0 : ℝ) < 1 / ((n : ℝ) + 2)` using `by positivity`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h5 : 1 / ((n : ℝ) + 2) < 1`. Rewrite using `[div_lt_one (by positivity)]; linarith [(n.cast_nonneg : (0 : ℝ) ≤ n)]`. Conclude with `hτ _ (by linarith) (by linarith)`. Establish `good : ∀ τ : ℝ, max a b < τ → f =ᶠ[𝓝 (τ : ℂ)] g` using `fun τ hτ => key τ (lt_of_le_of_lt (le_max_left _ _) hτ) (fr τ fun t ht _ => he t (by linarith [le_max_right a b]))`. Introduce `σ hσ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hne`. Use `set B := {τ : ℝ | a < τ ∧ ¬ (f =ᶠ[𝓝 (τ : ℂ)] g)} with hB`. Establish `hBne : σ ∈ B` using `⟨hσ, hne⟩`. Establish `hBbdd : BddAbove B` using `⟨max a b, fun τ hτ => by`. Assume the negation of the conclusion as `h`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Use `push_neg at h`. Conclude with `hτ.2 (good τ h)⟩`. Use `set γ := sSup B with hγdef`. Establish `hγσ : σ ≤ γ` using `le_csSup hBbdd hBne`. Establish `hγa : a < γ` using `lt_of_lt_of_le hσ hγσ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `above : ∀ τ : ℝ, γ < τ → f =ᶠ[𝓝 (τ : ℂ)] g` using `fun τ hτ => by`. Assume the negation of the conclusion as `h`. Conclude with `absurd (le_csSup hBbdd ⟨by linarith, h⟩) (not_le.2 hτ)`. Establish `hγ : f =ᶠ[𝓝 (γ : ℂ)] g` using `key γ hγa (fr γ fun t ht _ => (above t ht).eq_of_nhds)`. Establish `h1 : ∀ᶠ z in 𝓝 (γ : ℂ), f =ᶠ[𝓝 z] g` using `Filter.Eventually.eventually_nhds hγ`.
-
-Establish `h2 : ∀ᶠ τ in 𝓝 γ, f =ᶠ[𝓝 ((τ : ℝ) : ℂ)] g` using `(Complex.continuous_ofReal.tendsto γ).eventually h1`. Take `⟨δ, hδ, hball⟩` from `Metric.eventually_nhds_iff.1 h2`. Take `⟨τ, hτB, hτ⟩` from `exists_lt_of_lt_csSup ⟨σ, hBne⟩ (show γ - δ < γ by linarith)`. Establish `hτγ : τ ≤ γ` using `le_csSup hBbdd hτB`. Apply the tactic sequence `exact hτB.2 (hball (by rw [Real.dist_eq, abs_lt]; constructor <;> linarith))`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem propagate (f g : ℂ → ℂ) (a b : ℝ) (hf : ∀ σ : ℝ, a < σ → AnalyticAt ℂ f σ)
     (hg : ∀ σ : ℝ, a < σ → AnalyticAt ℂ g σ) (he : ∀ σ : ℝ, b < σ → f σ = g σ) :
@@ -174,43 +172,39 @@ Simplify using the standard rewrite rules.
 theorem re_neg_mul (l : ℝ) (s : ℂ) : (-(l : ℂ) * s).re = -(l * s.re) := by simp
 
 /- English proof (translation)
-Establish `mono : ∀ σ τ : ℝ, σ ≤ τ → Summable (fun i => c i * Real.exp (-(l i * σ))) → Summable fun i => c i * Real.exp (-(l i * τ))` using `fun σ τ h hs => hs.of_nonneg_of_le (fun i => mul_nonneg (hc i) (Real.exp_pos _).le) (fun i => mul_le_mul_of_nonneg_left (Real.exp_le_exp.2 (by nlinarith [hl i])) (hc i))`. Introduce `σ hσ`. Assume the negation of the conclusion as `hns`. Use `set A := {τ : ℝ | σ₀ < τ ∧ Summable fun i => c i * Real.exp (-(l i * τ))} with hA`. Establish `hAne : (max σ₀ σ₁ + 1) ∈ A` using `⟨by linarith [le_max_left σ₀ σ₁], hS _ (by linarith [le_max_right σ₀ σ₁])⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hAbdd : BddBelow A` using `⟨σ₀, fun τ hτ => hτ.1.le⟩`. Use `set β := sInf A with hβdef`. Establish `hβσ : σ ≤ β` using `le_csInf ⟨_, hAne⟩ fun τ hτ => by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `hns (mono τ σ h.le hτ.2)`. Establish `hβ0 : σ₀ < β` using `lt_of_lt_of_le hσ hβσ`. Take `⟨r, hr, hFr⟩` from `(hF β hβ0).exists_ball_analyticOnNhd`. Use `set ε := min (r / 4) ((β - σ₀) / 2) with hεdef`. Establish `hε : 0 < ε` using `lt_min (by linarith) (by linarith)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hεr : ε ≤ r / 4` using `min_le_left _ _`. Establish `hεβ : ε ≤ (β - σ₀) / 2` using `min_le_right _ _`. Use `set s0 : ℝ := β + ε with hs0`. Take `⟨β', hβ'A, hβ's⟩` from `exists_lt_of_csInf_lt ⟨_, hAne⟩ (show β < s0 by linarith)`. Establish `hββ' : β ≤ β'` using `csInf_le hAbdd hβ'A`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set G : ℂ → ℂ := fun s => ∑' i, (c i : ℂ) * Complex.exp (-(l i : ℂ) * s) with hG`. Establish `hbd : ∀ i (s : ℂ), β' < s.re → ‖(c i : ℂ) * Complex.exp (-(l i : ℂ) * s)‖ ≤ c i * Real.exp (-(l i * β'))`. Introduce `i s hs`. Rewrite using `[norm_mul, Complex.norm_real, Complex.norm_exp, Real.norm_of_nonneg (hc i), re_neg_mul]`. Conclude with `mul_le_mul_of_nonneg_left (Real.exp_le_exp.2 (by nlinarith [hl i])) (hc i)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hGsum : ∀ s : ℂ, β' < s.re → HasSum (fun i => (c i : ℂ) * Complex.exp (-(l i : ℂ) * s)) (G s)` using `fun s hs => (Summable.of_norm (hβ'A.2.of_nonneg_of_le (fun i => norm_nonneg _) fun i => hbd i s hs)).hasSum`. Establish `hU : IsOpen {s : ℂ | β' < s.re}` using `isOpen_lt continuous_const Complex.continuous_re`. Establish `hGd : DifferentiableOn ℂ G {s : ℂ | β' < s.re}` using `differentiableOn_tsum_of_summable_norm hβ'A.2 (fun i => by fun_prop) hU (fun i w hw => hbd i w hw)`. Establish `hGa : ∀ τ : ℝ, β' < τ → AnalyticAt ℂ G τ` using `fun τ hτ => hGd.analyticAt (hU.mem_nhds (by simpa using hτ))`. Establish `hFG : ∀ τ : ℝ, σ₁ < τ → F τ = G τ`.
+Apply function extensionality and compare values at an arbitrary argument. Move the embeddings inside the algebraic operations. Put the polynomial expressions in normal form. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `τ hτ`. Rewrite using `[hE τ hτ, hG]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Use `push_cast`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Put the polynomial expressions in normal form. Establish `hev : F =ᶠ[𝓝 ((s0 : ℝ) : ℂ)] G` using `propagate F G β' σ₁ (fun τ hτ => hF τ (by linarith)) hGa hFG s0 hβ's`. Establish `hFd : DifferentiableOn ℂ F (Metric.ball ((s0 : ℝ) : ℂ) (3 * r / 4))`. Introduce `w hw`. Use `(hFr w ?_).differentiableAt.differentiableWithinAt` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `hw`, the goal using `[Metric.mem_ball]`. Establish `: dist w (β : ℂ) ≤ dist w ((s0 : ℝ) : ℂ) + dist ((s0 : ℝ) : ℂ) (β : ℂ)` using `dist_triangle _ _ _`. Establish `h2 : dist ((s0 : ℝ) : ℂ) (β : ℂ) = ε`. Rewrite using `[Complex.dist_eq, ← Complex.ofReal_sub, Complex.norm_real, Real.norm_eq_abs, hs0]`. Rewrite using `[show β + ε - β = ε by ring, abs_of_pos hε]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Use `set z : ℝ := β - ε with hz`. Establish `hzb : ((z : ℝ) : ℂ) ∈ Metric.ball ((s0 : ℝ) : ℂ) (3 * r / 4)`. Rewrite using `[Metric.mem_ball, Complex.dist_eq, ← Complex.ofReal_sub, Complex.norm_real, Real.norm_eq_abs, hz, hs0, show β - ε - (β + ε) = -(2 * ε) by ring, abs_neg, abs_of_pos (by linarith)]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hT` using `Complex.hasSum_re (Complex.hasSum_taylorSeries_on_ball hFd hzb)`. Establish `hder : ∀ n : ℕ, HasSum (fun i => (c i : ℂ) * (-(l i : ℂ)) ^ n * Complex.exp (-(l i : ℂ) * ((s0 : ℝ) : ℂ))) (iteratedDeriv n F ((s0 : ℝ) : ℂ))`. Introduce `n`. Rewrite using `[hev.iteratedDeriv_eq n]`. Conclude with `hasSum_iteratedDeriv c l G hc hl β' hGsum n _ (by simpa using hβ's)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Establish `hj : ∀ i, HasSum (fun n : ℕ => c i * Real.exp (-(l i * s0)) * ((2 * ε * l i) ^ n / n.factorial)) (c i * Real.exp (-(l i * z)))`. Introduce `i`. Establish `h1` using `(NormedSpace.expSeries_div_hasSum_exp (2 * ε * l i)).mul_left (c i * Real.exp (-(l i * s0)))`. Rewrite `h1` using `[← Real.exp_eq_exp_ℝ]`. Establish `e : c i * Real.exp (-(l i * z)) = c i * Real.exp (-(l i * s0)) * Real.exp (2 * ε * l i)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[mul_assoc, ← Real.exp_add]`. Use `congr 2`. Rewrite using `[hz, hs0]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h1`. Establish `hzA : Summable fun i => c i * Real.exp (-(l i * z))`. Use `summable_of_sum_le (fun i => mul_nonneg (hc i) (Real.exp_pos _).le) (c := (F z).re) (fun S => ?_)` and prove the remaining obligations. Use `hasSum_le (fun n => ?_) (hasSum_sum (fun i _ => hj i)) hT` and prove the remaining obligations. Establish `h2` using `Complex.hasSum_re ((hder n).mul_left ((n.factorial : ℂ)⁻¹ * (((z : ℝ) : ℂ) - ((s0 : ℝ) : ℂ)) ^ n))`.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact.
 
-Establish `e : ∀ i, ((n.factorial : ℂ)⁻¹ * (((z : ℝ) : ℂ) - ((s0 : ℝ) : ℂ)) ^ n * ((c i : ℂ) * (-(l i : ℂ)) ^ n * Complex.exp (-(l i : ℂ) * ((s0 : ℝ) : ℂ)))).re = c i * Real.exp (-(l i * s0)) * ((2 * ε * l i) ^ n / n.factorial)`. Introduce `i`. Rewrite using `[← Complex.ofReal_re (c i * Real.exp (-(l i * s0)) * ((2 * ε * l i) ^ n / n.factorial))]`. Use `congr 1`. Establish `hzs : ((z : ℝ) : ℂ) - ((s0 : ℝ) : ℂ) = ((-(2 * ε) : ℝ) : ℂ)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the hypotheses and the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite using `[← Complex.ofReal_sub, hz, hs0]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hzs]`. Use `push_cast`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `: ((-(2 * (ε : ℂ))) ^ n) * (-(l i : ℂ)) ^ n = (2 * (ε : ℂ) * (l i : ℂ)) ^ n`. Rewrite using `[← mul_pow]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[show Complex.exp (-(l i : ℂ) * (s0 : ℂ)) = Complex.exp (-((l i : ℂ) * (s0 : ℂ))) by ring_nf]`.
-
-Take the linear combination `(↑(n.factorial : ℕ) : ℂ)⁻¹ * (c i : ℂ) * Complex.exp (-((l i : ℂ) * (s0 : ℂ))) * this`. Simplify using `only [e] at h2`. Establish `h4` using `sum_le_hasSum S (fun i _ => by have := hc i; have := hl i; positivity) h2`. Establish `e2 : (((n.factorial : ℂ)⁻¹ • (((z : ℝ) : ℂ) - ((s0 : ℝ) : ℂ)) ^ n • iteratedDeriv n F ((s0 : ℝ) : ℂ))).re = ((n.factorial : ℂ)⁻¹ * (((z : ℝ) : ℂ) - ((s0 : ℝ) : ℂ)) ^ n * iteratedDeriv n F ((s0 : ℝ) : ℂ)).re`. Simplify using `only [smul_eq_mul, mul_assoc]`.
-
-Rewrite using `[e2]`. Conclude with `h4`. Establish `hzA' : z ∈ A` using `⟨by linarith, hzA⟩`. Use `csInf_le hAbdd hzA'` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem linL (I : Type) (c l : I → ℝ) (σ₀ σ₁ : ℝ) (F : ℂ → ℂ) (hc : ∀ i, 0 ≤ c i) (hl : ∀ i, 0 ≤ l i)
     (hF : ∀ σ : ℝ, σ₀ < σ → AnalyticAt ℂ F σ)
@@ -329,17 +323,15 @@ namespace PositivityTheory.RgJS
 open LandauNonnegativeDirichletSeries
 
 /- English proof (translation)
-Introduce `I c l σ₀ σ₁ F hc hl hF hS hE`. Use `set P := Σ n : ℕ, Fin n → I`. Use `set C : P → ℝ := fun p => (∏ k, c (p.2 k)) / (p.1.factorial : ℝ) with hC`. Use `set L : P → ℝ := fun p => ∑ k, l (p.2 k) with hL`. Establish `hC0 : ∀ p, 0 ≤ C p` using `fun p => div_nonneg (Finset.prod_nonneg fun k _ => hc _) (Nat.cast_nonneg _)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hL0 : ∀ p, 0 ≤ L p` using `fun p => Finset.sum_nonneg fun k _ => hl _`. Establish `hterm : ∀ σ : ℝ, ∀ p : P, (∏ k, (((c (p.2 k) * Real.exp (-(l (p.2 k) * σ)) : ℝ)) : ℂ)) / (p.1.factorial : ℂ) = ((C p * Real.exp (-(L p * σ)) : ℝ) : ℂ)`. Introduce `σ p`. Simplify using `only [hC, hL]`. Use `push_cast`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[Finset.prod_mul_distrib, ← Complex.exp_sum, Finset.sum_mul, Finset.sum_neg_distrib]`. Expand and normalize the polynomial expressions, which then agree. Establish `hexp : ∀ σ : ℝ, σ₁ < σ → HasSum (fun p : P => ((C p * Real.exp (-(L p * σ)) : ℝ) : ℂ)) ((Real.exp (∑' i, c i * Real.exp (-(l i * σ))) : ℝ) : ℂ)`. Introduce `σ hσ`. Establish `h1 : HasSum (fun i => ((c i * Real.exp (-(l i * σ)) : ℝ) : ℂ)) ((∑' i, c i * Real.exp (-(l i * σ)) : ℝ) : ℂ)` using `(Complex.hasSum_ofReal).2 (hS σ hσ).hasSum`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h2` using `GlobalTheory.hasSum_tuple_prod_exp _ _ h1`. Rewrite `h2` using `[← Complex.ofReal_exp]`. Simplify `h2` using `only [hterm σ]`. Establish `key` using `linL P C L σ₀ σ₁ F hC0 hL0 hF (fun σ hσ => (Complex.hasSum_ofReal.1 (hexp σ hσ)).summable) (fun σ hσ => by rw [hE σ hσ]; exact (hexp σ hσ).tsum_eq.symm)`. Introduce `σ hσ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hinj : Function.Injective (fun i : I => (⟨1, fun _ => i⟩ : P))`. Introduce `i j hij`. Use `eq_of_heq (Sigma.mk.inj hij).2` as an intermediate fact. Conclude with `congrFun this 0`. Use `(key σ hσ).comp_injective hinj` as an intermediate fact.
-
-Use `this.congr fun i => ?_` and prove the remaining obligations. Simplify using `[hC, hL]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem landauL : LandauL := by
   intro I c l σ₀ σ₁ F hc hl hF hS hE

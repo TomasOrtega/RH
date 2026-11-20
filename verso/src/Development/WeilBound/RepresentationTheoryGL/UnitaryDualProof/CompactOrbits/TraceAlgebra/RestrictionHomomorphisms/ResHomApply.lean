@@ -9,13 +9,11 @@ namespace PositivityTheory.RgUd.T.Alg.Iso2
 variable {k : Type} [Field k] [CharZero k]
 
 /- English proof (translation)
-Use `letI : Module K W := Module.compHom W σ.toRingHom`. Use `letI : Module K W' := Module.compHom W' σ'.toRingHom`. Use `haveI : IsScalarTower k K W := ⟨fun a c w => by show σ (a • c) w = a • σ c w`. Rewrite using `[map_smul]`. Use the proof step `rfl⟩`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `haveI : IsScalarTower k K W' := ⟨fun a c w => by show σ' (a • c) w = a • σ' c w`. Rewrite using `[map_smul]`. Use the proof step `rfl⟩`. Use `haveI : FiniteDimensional K W := Module.Finite.of_restrictScalars_finite k K W`. Use `haveI : FiniteDimensional K W' := Module.Finite.of_restrictScalars_finite k K W'`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hK : 0 < finrank k K` using `Module.finrank_pos`. Establish `h2 : finrank K W = finrank K W'`. Apply `Nat.eq_of_mul_eq_mul_left hK` to reduce the goal to its premises. Rewrite using `[Module.finrank_mul_finrank, Module.finrank_mul_finrank, h]`. Set `ψ : W ≃ₗ[K] W'` to `LinearEquiv.ofFinrankEq W W' h2`.
-
-Use `⟨ψ.restrictScalars k, fun c w => ?_⟩` and prove the remaining obligations. Conclude with `ψ.map_smul c w`.
+A detailed English derivation is pending.
 -/
 theorem iso_of_field {K W W' : Type} [Field K] [Algebra k K] [FiniteDimensional k K]
     [AddCommGroup W] [Module k W] [FiniteDimensional k W] [AddCommGroup W'] [Module k W'] [FiniteDimensional k W']
@@ -71,9 +69,9 @@ open Module
 variable {k : Type} [Field k] [CharZero k]
 
 /- English proof (translation)
-Take `⟨y, rfl⟩` from `hx`. Rewrite using `[← Module.End.mul_apply, ← map_mul, he J I]`. Distinguish the cases in `h : I = J`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[h, Ne.symm h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem proj_of_mem {n : ℕ} {R : Type} [CommRing R] [Algebra k R] (ρ : R →ₐ[k] Module.End k (Fin n → k))
     {ι : Type} [DecidableEq ι] (e : ι → R) (he : ∀ I J, e I * e J = if I = J then e I else 0) (I J : ι)
@@ -86,13 +84,11 @@ theorem proj_of_mem {n : ℕ} {R : Type} [CommRing R] [Algebra k R] (ρ : R →�
   · simp [h, Ne.symm h]
 
 /- English proof (translation)
-Use `letI : Field (R ⧸ m) := Ideal.Quotient.field m`. Use `haveI : FiniteDimensional k (R ⧸ m) := Module.Finite.of_surjective (Ideal.Quotient.mkₐ k m).toLinearMap (Ideal.Quotient.mkₐ_surjective k m)`. Establish `h0 : ∀ (σ : R →ₐ[k] Module.End k (Fin n → k)), ∀ a ∈ m, resHom σ e a = 0`. Introduce `σ a ha`. Use `LinearMap.ext fun x => Subtype.ext ?_` and prove the remaining obligations.
+Equip the data with the indicated structure. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy⟩` from `x.2`. Rewrite using `[resHom_apply, ← hy, ← Module.End.mul_apply, ← map_mul, hm a ha]`. Simplify using the standard rewrite rules. Establish `hI : ∀ σ : R →ₐ[k] Module.End k (Fin n → k), IsIdempotentElem (σ e)` using `fun σ => by show σ e * σ e = σ e`. Rewrite using `[← map_mul, he]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hdim : finrank k (LinearMap.range (ρ e)) = finrank k (LinearMap.range (ρ' e))`. Establish `h1` using `htr`. Rewrite `h1` using `[(LinearMap.IsIdempotentElem.isProj_range _ (hI ρ)).trace, (LinearMap.IsIdempotentElem.isProj_range _ (hI ρ')).trace]`. Conclude with `h1` after adjusting the coercions. Take `⟨φ, hφ⟩` from `iso_of_field (Ideal.Quotient.liftₐ m (resHom ρ e) (h0 ρ)) (Ideal.Quotient.liftₐ m (resHom ρ' e) (h0 ρ')) hdim`.
-
-Use `⟨φ, fun r x => ?_⟩` and prove the remaining obligations. Conclude with `hφ (Ideal.Quotient.mk m r) x`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem comp_lemma {n : ℕ} {R : Type} [CommRing R] [Algebra k R] [FiniteDimensional k R]
     (ρ ρ' : R →ₐ[k] Module.End k (Fin n → k)) (e : R) (he : e * e = e)
@@ -123,13 +119,13 @@ private theorem comp_lemma {n : ℕ} {R : Type} [CommRing R] [Algebra k R] [Fini
   exact hφ (Ideal.Quotient.mk m r) x
 
 /- English proof (translation)
-Establish `inner : ∀ i j, (((φ j).symm ((ρ' (e j)).rangeRestrict ((φ i ((ρ (e i)).rangeRestrict v) : LinearMap.range (ρ' (e i))) : Fin n → k)) : LinearMap.range (ρ (e j))) : Fin n → k) = if i = j then ρ (e i) v else 0`. Introduce `i j`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Establish `h1 : (ρ' (e i)).rangeRestrict ((φ i ((ρ (e i)).rangeRestrict v) : LinearMap.range (ρ' (e i))) : Fin n → k) = φ i ((ρ (e i)).rangeRestrict v)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use `proj_of_mem ρ' e he i i _ (φ i ((ρ (e i)).rangeRestrict v)).2` as an intermediate fact. Simplify using `using this`. Rewrite using `[h1, LinearEquiv.symm_apply_apply, if_pos rfl]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `h1 : (ρ' (e j)).rangeRestrict ((φ i ((ρ (e i)).rangeRestrict v) : LinearMap.range (ρ' (e i))) : Fin n → k) = 0`. Apply `Subtype.ext` to reduce the goal to its premises. Use `proj_of_mem ρ' e he i j _ (φ i ((ρ (e i)).rangeRestrict v)).2` as an intermediate fact. Simplify `this` using `[h]`. Rewrite using `[h1, map_zero, if_neg h]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Simplify using `only [LinearMap.sum_apply, LinearMap.comp_apply, map_sum, Submodule.coe_subtype, LinearEquiv.coe_coe]`. Simplify using `only [Submodule.coe_sum, inner]`. Simplify using the standard rewrite rules. Rewrite using `[← LinearMap.sum_apply, ← map_sum, hs, map_one]`.
+Both sides reduce to the same expression. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -167,27 +163,25 @@ private theorem mul_eq_mul_of_ratio_eq_one {n : ℕ} {R : Type} [CommRing R] [Al
   rfl
 
 /- English proof (translation)
-Unfold `IsoOfTrace`. Introduce `n R _ _ _ _ ρ ρ' htr`. Use `haveI : IsArtinianRing R := IsArtinianRing.of_finite k R`. Use `haveI : Fintype (MaximalSpectrum R) := Fintype.ofFinite _`. Set `E` to `IsArtinianRing.equivPi R`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `e : MaximalSpectrum R → R` to `fun m => E.symm (Pi.single m 1)`. Establish `hE : ∀ m, E (e m) = Pi.single m 1` using `fun m => E.apply_symm_apply _`. Establish `he : ∀ I J, e I * e J = if I = J then e I else 0`. Introduce `I J`. Apply `E.injective` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[map_mul, hE, hE]`. Distinguish the cases in `h : I = J`. Substitute `h` using the available equality. Rewrite using `[if_pos rfl, hE, ← Pi.single_mul, mul_one]`. Rewrite using `[if_neg h, map_zero]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `x`. Rewrite using `[Pi.mul_apply, Pi.zero_apply]`. Distinguish the cases in `hx : x = I`. Substitute `hx` using the available equality. Rewrite using `[Pi.single_eq_of_ne h, mul_zero]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Pi.single_eq_of_ne hx, zero_mul]`. Establish `hs : ∑ m, e m = 1`. Apply `E.injective` to reduce the goal to its premises. Rewrite using `[map_sum, map_one]`. Use function extensionality and compare the values at `x`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[hE, Finset.sum_apply, Pi.single_apply]`. Establish `hm : ∀ m : MaximalSpectrum R, ∀ a ∈ m.asIdeal, a * e m = 0`. Introduce `m a ha`. Apply `E.injective` to reduce the goal to its premises. Rewrite using `[map_mul, hE, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `x`. Rewrite using `[Pi.mul_apply, Pi.zero_apply]`. Distinguish the cases in `h : x = m`. Substitute `h` using the available equality. Establish `h0 : E a x = 0` using `Ideal.Quotient.eq_zero_iff_mem.2 ha`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h0, zero_mul]`. Rewrite using `[Pi.single_eq_of_ne h, mul_zero]`. Establish `hc : ∀ m : MaximalSpectrum R, ∃ φ : LinearMap.range (ρ (e m)) ≃ₗ[k] LinearMap.range (ρ' (e m)), ∀ r x, φ (resHom ρ (e m) r x) = resHom ρ' (e m) r (φ x)` using `fun m => by haveI := m.isMaximal`. Conclude with `comp_lemma ρ ρ' (e m) (by simpa using he m m) m.asIdeal (hm m) (htr _)`. Use `choose φ hφ using hc`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `Φ : (Fin n → k) →ₗ[k] (Fin n → k)` to `∑ i, (LinearMap.range (ρ' (e i))).subtype ∘ₗ (φ i).toLinearMap ∘ₗ (ρ (e i)).rangeRestrict`. Set `Ψ : (Fin n → k) →ₗ[k] (Fin n → k)` to `∑ i, (LinearMap.range (ρ (e i))).subtype ∘ₗ (φ i).symm.toLinearMap ∘ₗ (ρ' (e i)).rangeRestrict`. Establish `h1 : Ψ ∘ₗ Φ = LinearMap.id` using `LinearMap.ext fun v => mul_eq_mul_of_ratio_eq_one ρ ρ' e he hs φ v`. Establish `h2 : Φ ∘ₗ Ψ = LinearMap.id` using `LinearMap.ext fun v => mul_eq_mul_of_ratio_eq_one ρ' ρ e he hs (fun i => (φ i).symm) v`. Use `⟨LinearEquiv.ofLinear Φ Ψ h2 h1, fun r v => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Use `show Φ (ρ r v) = ρ' r (Φ v)`. Simplify using `only [Φ, LinearMap.sum_apply, LinearMap.comp_apply, map_sum, Submodule.coe_subtype, LinearEquiv.coe_coe]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `h3 : (ρ (e i)).rangeRestrict (ρ r v) = resHom ρ (e i) r ((ρ (e i)).rangeRestrict v)`. Apply `Subtype.ext` to reduce the goal to its premises.
-
-Rewrite using `[resHom_apply]`. Use `show ρ (e i) (ρ r v) = ρ r (ρ (e i) v)`. Rewrite using `[← Module.End.mul_apply, ← Module.End.mul_apply, ← map_mul, ← map_mul, mul_comm]`. Rewrite using `[h3, hφ, resHom_apply]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isoOfTrace : IsoOfTrace k := by
   unfold IsoOfTrace

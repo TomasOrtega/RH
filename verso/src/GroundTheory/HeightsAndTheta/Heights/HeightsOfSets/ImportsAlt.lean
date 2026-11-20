@@ -10,23 +10,21 @@ namespace GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.HeightsSet
 open MvPolynomial ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo
 
 /- English proof (translation)
-Introduce `K _ ι _ I A H hI hA hH hHa`. Use `set m : ℕ := ∑ k, (A.a k).natAbs`. Establish `hm : ∀ k, (A.a k).natAbs ≤ m` using `fun k ↦ Finset.single_le_sum (f := fun k ↦ (A.a k).natAbs) (fun _ _ ↦ Nat.zero_le _) (Finset.mem_univ k)`. Establish `hHk : ∀ k, H.a k = 1` using `fun k ↦ by rw [hHa]; rfl`. Use `set Ep := (powLine H m).tensor (invLine A)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set Em := (powLine H m).tensor A`. Establish `hPow` using `isSmoothHerm_powLine hH m`. Establish `hEp : IsSmoothHerm Ep` using `isSmoothHerm_tensor hPow (isSmoothHerm_invLine hA)`. Establish `hEm : IsSmoothHerm Em` using `isSmoothHerm_tensor hPow hA`. Use `set dp : K → ℕ := fun k ↦ ((m : ℤ) - A.a k).toNat`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Use `set dm : K → ℕ := fun k ↦ ((m : ℤ) + A.a k).toNat`. Establish `hdp : ∀ k, Ep.a k = dp k` using `fun k ↦ by`. Use `hm k` as an intermediate fact. Use `show (powLine H m).a k + -A.a k = (((m : ℤ) - A.a k).toNat : ℤ)`. Rewrite using `[powLine_a, hHk]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result.
 
-Use linear arithmetic over natural numbers and integers. Establish `hdm : ∀ k, Em.a k = dm k` using `fun k ↦ by`. Use `hm k` as an intermediate fact. Use `show (powLine H m).a k + A.a k = (((m : ℤ) + A.a k).toNat : ℤ)`. Rewrite using `[powLine_a, hHk]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Take `⟨Mp, hMp1, hMp⟩` from `exists_chartMon_bound hEp hdp`. Take `⟨Mm, hMm1, hMm⟩` from `exists_chartMon_bound hEm hdm`. Establish `hMp0 : 0 < Mp` using `by linarith`. Establish `hMm0 : 0 < Mm` using `by linarith`.
+Replace the relevant objects with their definitions. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set C := max (Real.log Mp) (Real.log Mm)`. Use `⟨m, C, fun W hW ↦ ?_⟩` and prove the remaining obligations. Establish `hC : 0 ≤ C` using `le_max_of_le_left (Real.log_nonneg hMp1)`. Unfold `height`. Break down `Nat.eq_zero_or_pos (degC W) with hdeg | hdeg` into its components or cases.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[hdeg, hC]`. Take `⟨c, hc⟩` from `exists_chartMon_notMem hW`. Establish `hp` using `inter_nonneg I hV hI hW (isSmoothHerm_tensor hEp (isSmoothHerm_constLine Mp hMp0)) (d := dp) (fun k ↦ by show Ep.a k + 0 = _; rw [add_zero, hdp k]) c (hc dp) (fun z hz ↦ by show _ ≤ Ep.h z * Mp; rw [mul_comm]; exact hMp c z hz.1)`. Establish `hn` using `inter_nonneg I hV hI hW (isSmoothHerm_tensor hEm (isSmoothHerm_constLine Mm hMm0)) (d := dm) (fun k ↦ by show Em.a k + 0 = _; rw [add_zero, hdm k]) c (hc dm) (fun z hz ↦ by show _ ≤ Em.h z * Mm; rw [mul_comm]; exact hMm c z hz.1)`. Rewrite `hp` using `[inter_tensor I hI hW hEp (isSmoothHerm_constLine Mp hMp0), inter_tensor I hI hW hPow (isSmoothHerm_invLine hA), inter_powLine I hI hW hH, inter_invLine I hI hW hA]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite `hn` using `[inter_tensor I hI hW hEm (isSmoothHerm_constLine Mm hMm0), inter_tensor I hI hW hPow hA, inter_powLine I hI hW hH]`. Establish `hcp` using `inter_constLine_le I hI hW hMp0 hMp1 hdeg`. Establish `hcn` using `inter_constLine_le I hI hW hMm0 hMm1 hdeg`. Establish `hD : (0 : ℝ) < degC W` using `by exact_mod_cast hdeg`. Establish `hCp : Real.log Mp * degC W ≤ C * degC W` using `mul_le_mul_of_nonneg_right (le_max_left _ _) hD.le`.
-
-Establish `hCn : Real.log Mm * degC W ≤ C * degC W` using `mul_le_mul_of_nonneg_right (le_max_right _ _) hD.le`. Rewrite using `[abs_div, abs_of_pos hD, div_le_iff₀ hD, add_mul, mul_assoc, div_mul_cancel₀ _ hD.ne', abs_le]`. Apply the tactic sequence `constructor <;> linarith`.
+A detailed English derivation is pending.
 -/
 theorem HeightComparison.proof (hV : CurveDivVertical.Statement) : HeightComparison.Statement := by
   intro K _ ι _ I A H hI hA hH hHa

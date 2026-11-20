@@ -17,7 +17,7 @@ private def lprod {ι : Type} : List (Ex ι) → Ex ι
   | a :: l => Ex.mul a (lprod l)
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => simp [lprod, Ex.ev]`. Consider the case `cons a l ih => simp [lprod, Ex.ev, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 private theorem ev_lprod {ι : Type} (x : ι → ℂ) (l : List (Ex ι)) :
     (lprod l).ev x = (l.map (Ex.ev x)).prod := by
@@ -26,9 +26,9 @@ private theorem ev_lprod {ι : Type} (x : ι → ℂ) (l : List (Ex ι)) :
   | cons a l ih => simp [lprod, Ex.ev, ih]
 
 /- English proof (translation)
-Establish `hd : x i - y i ≠ 0` using `sub_ne_zero.2 h`. Use `⟨Ex.smul (x i - y i)⁻¹ (Ex.add (Ex.gen i) (Ex.smul (-y i) Ex.one)), ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Ex.ev]`. Establish `: x i + -y i * 1 = x i - y i` using `by ring`. Rewrite using `[this]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `inv_mul_cancel₀ hd`. Simplify using `[Ex.ev]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem exists_aff {ι : Type} (x y : ι → ℂ) (i : ι) (h : x i ≠ y i) :
     ∃ e : Ex ι, e.ev x = 1 ∧ e.ev y = 0 := by
@@ -41,9 +41,7 @@ private theorem exists_aff {ι : Type} (x y : ι → ℂ) (i : ι) (h : x i ≠ 
   · simp [Ex.ev]
 
 /- English proof (translation)
-Establish `hex : ∃ j, j ≤ n ∧ satEig (qV E w) n A j ≠ satEig (qV E w) n A' j`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Conclude with `hne (eq_of_satEig_eq (qV_ne_zero w) h h' hc).symm`. Take `⟨j, hj, hj'⟩` from `hex`.
-
-Conclude with `exists_aff (fun j : Fin (n + 1) => satEig (qV E w) n A j) (fun j : Fin (n + 1) => satEig (qV E w) n A' j) ⟨j, Nat.lt_succ_of_le hj⟩ hj'`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem sep_one (n : ℕ) (w : Pl E) {A A' : Multiset ℂˣ} (h : A.card = n) (h' : A'.card = n)
     (hne : A' ≠ A) : ∃ e : Ex (Fin (n + 1)), ev1 n w e A = 1 ∧ ev1 n w e A' = 0 := by
@@ -56,11 +54,11 @@ private theorem sep_one (n : ℕ) (w : Pl E) {A A' : Multiset ℂˣ} (h : A.card
     (fun j : Fin (n + 1) => satEig (qV E w) n A' j) ⟨j, Nat.lt_succ_of_le hj⟩ hj'
 
 /- English proof (translation)
-Take `⟨-, hc, -, hs⟩` from `hP E`. Take `⟨w, ⟨hwZ, hcZ⟩, hsp, hB, hC, hne⟩` from `h`. Break down `(hs S hS w).1 with hw | hw` into its components or cases. Take `⟨e, h1, h0⟩` from `sep_one n w hB hC hne`. Use `⟨w, e, Ex.one, hw, hsp, hwZ, h1, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[ev1, Ex.ev]`. Rewrite using `[h0, zero_mul]`. Establish `hcc : cPl (cPl w) = w` using `(hc w).1`. Establish `hsp' : IsSplitAt (cPl w)` using `(hc (cPl w)).2.2 (by rw [hcc]; exact fun h => (hc w).2.1 hsp |>.elim h.symm)`. Take `⟨e, h1, h0⟩` from `sep_one n (cPl w) (A := inv (B w)) (A' := inv (C w)) (by simpa [inv] using hB) (by simpa [inv] using hC) (fun h => hne (Multiset.map_injective inv_injective h))`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨cPl w, Ex.one, e, hw, hsp', hcZ, by simp [ev1, Ex.ev], by rw [hcc]; exact h1, ?_⟩` and prove the remaining obligations. Rewrite using `[hcc, h0, mul_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem sep_at (hP : Places) (n : ℕ) (S : Set (Pl E)) (hS : IsSection S) (Z : Finset (Pl E))
     (B C : Pl E → Multiset ℂˣ)
@@ -88,9 +86,9 @@ private def comb {I : Type} [Fintype I] {n : ℕ} (t : I → Pl E) (e : I → Ex
   lprod ((Finset.univ : Finset I).toList.map fun j => if t j = w then e j else Ex.one)
 
 /- English proof (translation)
-Rewrite using `[← Finset.prod_map_toList]`. Simplify using `only [ev1, comb]`. Rewrite using `[ev_lprod, List.map_map]`. Use `congr 1`. Use `List.map_congr_left fun j _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Apply the tactic sequence `by_cases hj : t j = w <;> simp [hj, Ex.ev]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem evaluation_combined_test_function {I : Type} [Fintype I] {n : ℕ} (t : I → Pl E) (e : I → Ex (Fin (n + 1)))
     (w : Pl E) (X : Multiset ℂˣ) :
@@ -105,17 +103,15 @@ private theorem evaluation_combined_test_function {I : Type} [Fintype I] {n : �
 end UpperTheory.V.Z.Tf.GlobalTraceComparison.Asm
 
 /- English proof (translation)
-Introduce `hP E _ _ _ n S hS Z I _ B C h`. Use `haveI := Fintype.ofFinite I`. Use `choose t e₁ e₂ htS hts htZ hB₁ hB₂ hC using fun j => sep_at hP n S hS Z B (C j) (h j)`. Use `⟨Finset.univ.image t, comb t e₁, comb t e₂, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `w hw`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨j, -, rfl⟩` from `Finset.mem_image.1 hw`. Conclude with `⟨htS j, hts j⟩`. Use `Finset.disjoint_left.2 fun w hw hz => ?_` and prove the remaining obligations. Take `⟨j, -, rfl⟩` from `Finset.mem_image.1 hw`. Conclude with `htZ j hz`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `Finset.prod_eq_one fun w _ => ?_` and prove the remaining obligations. Rewrite using `[evaluation_combined_test_function, evaluation_combined_test_function]`. Rewrite using `[show ∀ a b : ℂ, a = 1 → b = 1 → a * b = 1 from fun a b ha hb => by rw [ha, hb, one_mul]]`. Use `Finset.prod_eq_one fun j _ => ?_ split_ifs with hj` and prove the remaining obligations. Substitute `hj` using the available equality.
+Reduce the conclusion to the remaining proof obligations. Substitute using the available equality. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Substitute using the available equality.
 
-Conclude with `hB₁ j`. Both sides reduce to the same expression. Use `Finset.prod_eq_one fun j _ => ?_ split_ifs with hj` and prove the remaining obligations. Substitute `hj` using the available equality. Conclude with `hB₂ j`.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Both sides reduce to the same expression. Introduce `j`. Use `Finset.prod_eq_zero (Finset.mem_image_of_mem t (Finset.mem_univ j)) ?_` and prove the remaining obligations. Rewrite using `[evaluation_combined_test_function, evaluation_combined_test_function]`. Break down `mul_eq_zero.1 (hC j) with h0 | h0` into its components or cases.
-
-Conclude with `mul_eq_zero.2 (Or.inl (Finset.prod_eq_zero (Finset.mem_univ j) (by rw [if_pos rfl]; exact h0)))`. Conclude with `mul_eq_zero.2 (Or.inr (Finset.prod_eq_zero (Finset.mem_univ j) (by rw [if_pos rfl]; exact h0)))`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Tf.GlobalTraceComparison.Asm.rSep :
     UpperTheory.V.Z.Tf.GlobalTraceComparison.Asm.RSep := by

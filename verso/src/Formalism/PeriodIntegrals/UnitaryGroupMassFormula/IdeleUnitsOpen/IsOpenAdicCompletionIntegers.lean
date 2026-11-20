@@ -8,7 +8,7 @@ namespace PI.IdeleUnitsOpenW
 variable (L : Type) [Field L] [NumberField L]
 
 /- English proof (translation)
-Establish `h : (v.adicCompletionIntegers L : Set (v.adicCompletion L)) = ((Valued.v : Valuation (v.adicCompletion L) _).integer : Set (v.adicCompletion L))`. Use extensionality with `x`. Simplify using `only [SetLike.mem_coe, HeightOneSpectrum.mem_adicCompletionIntegers, Valuation.mem_integer_iff]`. Rewrite using `[h]`. Conclude with `Valued.isOpen_integer _`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_adicCompletionIntegers (v : HeightOneSpectrum (𝓞 L)) :
     IsOpen (v.adicCompletionIntegers L : Set (v.adicCompletion L)) := by
@@ -21,7 +21,7 @@ theorem isOpen_adicCompletionIntegers (v : HeightOneSpectrum (𝓞 L)) :
   exact Valued.isOpen_integer _
 
 /- English proof (translation)
-The claim follows from `RestrictedProduct.isOpen_forall_mem (isOpen_adicCompletionIntegers L)`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_integralFinite :
     IsOpen {f : FiniteAdeleRing (𝓞 L) L | ∀ v, f v ∈ v.adicCompletionIntegers L} :=
@@ -31,7 +31,7 @@ def integralAdeles : Set (AdeleRing (𝓞 L) L) :=
   {x | ∀ v : HeightOneSpectrum (𝓞 L), Valued.v (x.2 v) ≤ 1}
 
 /- English proof (translation)
-Establish `h : integralAdeles L = Prod.snd ⁻¹' {f : FiniteAdeleRing (𝓞 L) L | ∀ v, f v ∈ v.adicCompletionIntegers L}`. Use extensionality with `x`. Conclude with `Iff.rfl`. Rewrite using `[h]`. Conclude with `(isOpen_integralFinite L).preimage continuous_snd`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Unfold both sides to obtain the same proposition, which implies itself. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_integralAdeles : IsOpen (integralAdeles L) := by
   have h : integralAdeles L = Prod.snd ⁻¹'
@@ -42,13 +42,13 @@ theorem isOpen_integralAdeles : IsOpen (integralAdeles L) := by
   exact (isOpen_integralFinite L).preimage continuous_snd
 
 /- English proof (translation)
-Use extensionality with `u`. Prove the components needed by the constructor for the conclusion. Introduce `hu`. Establish `hu' : ∀ v, Valued.v ((u : AdeleRing (𝓞 L) L).2 v) = 1` using `hu`. Use `⟨fun v => (hu' v).le, fun v => ?_⟩` and prove the remaining obligations.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e` using `congrArg Valued.v (comp_mul_inv L u v)`. Rewrite `e` using `[map_mul, hu' v, one_mul, map_one]`. Conclude with `e.le`. Introduce and unpack `⟨h1, h2⟩ show ∀ v, Valued.v ((u : AdeleRing (𝓞 L) L).2 v) = 1`. Introduce `v`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e` using `congrArg Valued.v (comp_mul_inv L u v)`. Rewrite `e` using `[map_mul, map_one]`. Establish `hle1 : Valued.v ((u : AdeleRing (𝓞 L) L).2 v) ≤ 1` using `h1 v`. Establish `hle2 : Valued.v (((u⁻¹ : Ideles L) : AdeleRing (𝓞 L) L).2 v) ≤ 1` using `h2 v`. Use `le_antisymm hle1 ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem unitIdeles_eq :
     (Formalism.L2.Host.CharEx.unitIdeles L : Set (Ideles L)) =
@@ -75,7 +75,7 @@ theorem unitIdeles_eq :
       _ = _ := mul_one _
 
 /- English proof (translation)
-Use `show IsOpen (Formalism.L2.Host.CharEx.unitIdeles L : Set (Ideles L))`. Rewrite using `[unitIdeles_eq]`. Conclude with `((isOpen_integralAdeles L).preimage Units.continuous_val).inter ((isOpen_integralAdeles L).preimage (Units.continuous_val.comp continuous_inv))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem openUnits : Formalism.L2.Host.CharEx.OpenUnits L := by
   show IsOpen (Formalism.L2.Host.CharEx.unitIdeles L : Set (Ideles L))

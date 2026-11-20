@@ -9,7 +9,7 @@ variable {ι : Type} [Fintype ι] [DecidableEq ι]
 
 omit [DecidableEq ι] in
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [tpow, Matrix.mul_apply, Matrix.of_apply]`. Rewrite using `[Finset.prod_univ_sum]`. Simplify using `[Finset.prod_mul_distrib]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma tpow_mul' (n : ℕ) (y z : Matrix ι ι ℂ) : tpow n (y * z) = tpow n y * tpow n z := by
   classical
@@ -19,7 +19,7 @@ lemma tpow_mul' (n : ℕ) (y z : Matrix ι ι ℂ) : tpow n (y * z) = tpow n y *
   simp [Finset.prod_mul_distrib]
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [tpow, Matrix.of_apply, Matrix.one_apply]`. Rewrite using `[Finset.prod_ite_zero]`. Simplify using `[funext_iff]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma tpow_one' (n : ℕ) : tpow n (1 : Matrix ι ι ℂ) = 1 := by
   ext a b
@@ -31,7 +31,7 @@ variable {m : ℕ} (d : Fin m → ℕ)
 
 omit [DecidableEq ι] in
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Simplify using `only [act, tpow_mul', ← Matrix.vecMul_vecMul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 lemma act_mul' (t : TIdx ι d → ℂ) (y z : Matrix ι ι ℂ) :
     act d t (y * z) = act d (act d t y) z := by
@@ -39,7 +39,7 @@ lemma act_mul' (t : TIdx ι d → ℂ) (y z : Matrix ι ι ℂ) :
   simp only [act, tpow_mul', ← Matrix.vecMul_vecMul]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Simplify using `[act, tpow_one']`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 lemma act_one' (t : TIdx ι d → ℂ) : act d t 1 = t := by
   funext k
@@ -47,7 +47,7 @@ lemma act_one' (t : TIdx ι d → ℂ) : act d t 1 = t := by
 
 omit [DecidableEq ι] in
 /- English proof (translation)
-Use `continuous_pi fun k => ?_` and prove the remaining obligations. Simplify using `only [act, Matrix.vecMul, dotProduct, tpow, Matrix.of_apply]`. Use `fun_prop`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma continuous_act_right (t : TIdx ι d → ℂ) : Continuous (act d t) := by
   refine continuous_pi fun k => ?_
@@ -56,7 +56,7 @@ lemma continuous_act_right (t : TIdx ι d → ℂ) : Continuous (act d t) := by
 
 omit [DecidableEq ι] in
 /- English proof (translation)
-Use `continuous_pi fun k => ?_` and prove the remaining obligations. Simplify using `only [act, Matrix.vecMul, dotProduct, tpow, Matrix.of_apply]`. Use `fun_prop`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma continuous_act_left (y : Matrix ι ι ℂ) : Continuous (fun t : TIdx ι d → ℂ => act d t y) := by
   refine continuous_pi fun k => ?_
@@ -67,9 +67,9 @@ def box (ι : Type) [Fintype ι] [DecidableEq ι] (N : ℝ) : Set (Matrix ι ι 
   {y | y.det = 1 ∧ ∀ i j, ‖y i j‖ ≤ N}
 
 /- English proof (translation)
-Establish `h1 : IsCompact (Set.univ.pi fun _ : ι => Set.univ.pi fun _ : ι => Metric.closedBall (0 : ℂ) N)` using `isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => isCompact_closedBall _ _`. Establish `h2 : IsClosed {y : Matrix ι ι ℂ | y.det = 1}` using `isClosed_eq (continuous_id.matrix_det) continuous_const`. Establish `h3` using `IsCompact.inter_left (X := Matrix ι ι ℂ) h1 h2`. Use `h3 using 1` and compare the differences between its conclusion and the goal. Use extensionality with `y`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components.
 
-Conclude with `⟨fun h => ⟨h.1, fun i _ j _ => mem_closedBall_zero_iff.2 (h.2 i j)⟩, fun h => ⟨h.1, fun i j => mem_closedBall_zero_iff.1 (h.2 i trivial j trivial)⟩⟩`.
+Supply the required witnesses or components.
 -/
 lemma isCompact_box (N : ℝ) : IsCompact (box ι N) := by
   have h1 : IsCompact (Set.univ.pi fun _ : ι => Set.univ.pi fun _ : ι => Metric.closedBall (0 : ℂ) N) :=
@@ -83,15 +83,15 @@ lemma isCompact_box (N : ℝ) : IsCompact (box ι N) := by
     fun h => ⟨h.1, fun i j => mem_closedBall_zero_iff.1 (h.2 i trivial j trivial)⟩⟩
 
 /- English proof (translation)
-Introduce `_ hy` and use `⟨hy.1, fun i j => (hy.2 i j).trans h⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 lemma box_mono {N M : ℝ} (h : N ≤ M) : box ι N ⊆ box ι M :=
   fun _ hy => ⟨hy.1, fun i j => (hy.2 i j).trans h⟩
 
 /- English proof (translation)
-Use `⟨∑ j, ∑ k, |N| * ‖g k j‖, fun a ha => ⟨by rw [Matrix.det_mul, ha.1, hg, one_mul], fun i j => ?_⟩⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_apply]`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun k _ => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul]`.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_le_mul_of_nonneg_right ((ha.2 i k).trans (le_abs_self N)) (norm_nonneg _)`. Use `_ ≤ _ := Finset.single_le_sum (f := fun j => ∑ k, |N| * ‖g k j‖) (fun j _ => Finset.sum_nonneg fun k _ => by positivity) (Finset.mem_univ j)`.
+A detailed English derivation is pending.
 -/
 lemma box_mul (N : ℝ) (g : Matrix ι ι ℂ) (hg : g.det = 1) : ∃ M : ℝ, ∀ a ∈ box ι N, a * g ∈ box ι M := by
   refine ⟨∑ j, ∑ k, |N| * ‖g k j‖, fun a ha => ⟨by rw [Matrix.det_mul, ha.1, hg, one_mul], fun i j => ?_⟩⟩
@@ -104,29 +104,29 @@ lemma box_mul (N : ℝ) (g : Matrix ι ι ℂ) (hg : g.det = 1) : ∃ M : ℝ, �
         (fun j _ => Finset.sum_nonneg fun k _ => by positivity) (Finset.mem_univ j)
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_adjugate, hy, one_pow]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma det_adj {y : Matrix ι ι ℂ} (hy : y.det = 1) : y.adjugate.det = 1 := by
   rw [Matrix.det_adjugate, hy, one_pow]
 
 /- English proof (translation)
-Rewrite using `[Matrix.adjugate_mul, hy, one_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma adj_mul {y : Matrix ι ι ℂ} (hy : y.det = 1) : y.adjugate * y = 1 := by
   rw [Matrix.adjugate_mul, hy, one_smul]
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_adjugate, hy, one_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma mul_adj {y : Matrix ι ι ℂ} (hy : y.det = 1) : y * y.adjugate = 1 := by
   rw [Matrix.mul_adjugate, hy, one_smul]
 
 /- English proof (translation)
-Use `haveI : CompleteSpace (orb d v) := hX.completeSpace_coe`. Use `haveI : Nonempty (orb d v) := ⟨⟨act d v 1, 1, Matrix.det_one, rfl⟩⟩`. Take `⟨n, x, hx⟩` from `nonempty_interior_of_iUnion_of_closed (X := orb d v) (f := fun n : ℕ => Subtype.val ⁻¹' (act d v '' box ι n)) (fun n => ((isCompact_box (n : ℝ)).image (continuous_act_right d v)).isClosed.preimage continuous_subtype_val) (by`. Use `Set.eq_univ_of_forall fun ⟨w, y, hy, hw⟩ => ?_` and prove the remaining obligations. Take `⟨M, hM⟩` from `box_mul (ι := ι) 1 y hy`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `h1 : (1 : Matrix ι ι ℂ) ∈ box ι 1` using `⟨Matrix.det_one, fun i j => by`. Apply the tactic sequence `rw [Matrix.one_apply]; split_ifs <;> simp⟩`. Use `hM 1 h1` as an intermediate fact. Rewrite `this` using `[one_mul]`. Conclude with `Set.mem_iUnion.2 ⟨⌈M⌉₊, y, box_mono (Nat.le_ceil M) this, hw.symm⟩)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite `hx` using `[mem_interior]`. Take `⟨t, hts, hto, hxt⟩` from `hx`. Take `⟨O, hO, rfl⟩` from `isOpen_induced_iff.1 hto`. Take `⟨x, y₀, hy₀, rfl⟩` from `x`. Conclude with `⟨n, O, y₀, hO, hy₀, hxt, fun w hw hwX => hts (a := ⟨w, hwX⟩) hw⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 lemma exists_interior (v : TIdx ι d → ℂ) (hX : IsClosed (orb d v)) :
     ∃ (n : ℝ) (O : Set (TIdx ι d → ℂ)) (y₀ : Matrix ι ι ℂ), IsOpen O ∧ y₀.det = 1 ∧ act d v y₀ ∈ O ∧
@@ -152,11 +152,11 @@ lemma exists_interior (v : TIdx ι d → ℂ) (hX : IsClosed (orb d v)) :
   exact ⟨n, O, y₀, hO, hy₀, hxt, fun w hw hwX => hts (a := ⟨w, hwX⟩) hw⟩
 
 /- English proof (translation)
-Take `⟨n, O, y₀, hO, hy₀, hmem, hsub⟩` from `exists_interior d v hX`. Take `⟨y, hy, rfl⟩` from `hw`. Take `⟨M, hM⟩` from `box_mul (ι := ι) n (y₀.adjugate * y) (by rw [Matrix.det_mul, det_adj hy₀, hy, one_mul])`. Use `⟨(fun t => act d t (y.adjugate * y₀)) ⁻¹' O, hO.preimage (continuous_act_left d _), ?_, M, ?_⟩` and prove the remaining obligations. Use `show act d (act d v y) (y.adjugate * y₀) ∈ O`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[← act_mul', ← mul_assoc, mul_adj hy, one_mul]` and apply the resulting hypothesis. Introduce and unpack `w ⟨hwO, z, hz, rfl⟩`. Take `⟨a, ha, hav⟩` from `hsub _ hwO ⟨z * (y.adjugate * y₀), by rw [Matrix.det_mul, Matrix.det_mul, det_adj hy, hy₀, hz]; simp, (act_mul' d v _ _).symm⟩`. Use `⟨_, hM a ha, ?_⟩` and prove the remaining obligations. Simplify using `only at hav`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[act_mul', hav, ← act_mul', mul_assoc, ← mul_assoc y₀, mul_adj hy₀, one_mul, adj_mul hy, act_one']`.
+A detailed English derivation is pending.
 -/
 lemma locally_box (v : TIdx ι d → ℂ) (hX : IsClosed (orb d v)) (w : TIdx ι d → ℂ) (hw : w ∈ orb d v) :
     ∃ O : Set (TIdx ι d → ℂ), IsOpen O ∧ w ∈ O ∧ ∃ N : ℝ, O ∩ orb d v ⊆ act d v '' box ι N := by
@@ -175,9 +175,9 @@ lemma locally_box (v : TIdx ι d → ℂ) (hX : IsClosed (orb d v)) (w : TIdx ι
     rw [act_mul', hav, ← act_mul', mul_assoc, ← mul_assoc y₀, mul_adj hy₀, one_mul, adj_mul hy, act_one']
 
 /- English proof (translation)
-Use `Metric.isCompact_of_isClosed_isBounded ?_ ?_` and prove the remaining obligations. Use `isClosed_le ?_ continuous_const` and prove the remaining obligations. Unfold `nsq`. Use `fun_prop`. Use `(Metric.isBounded_closedBall (x := (0 : κ → ℂ)) (r := Real.sqrt C)).subset fun w hw => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mem_closedBall_zero_iff, pi_norm_le_iff_of_nonneg (Real.sqrt_nonneg _)]`. Introduce `k`. Use `Real.le_sqrt_of_sq_le (le_trans ?_ hw)` and prove the remaining obligations. Conclude with `Finset.single_le_sum (f := fun k => ‖w k‖ ^ 2) (fun _ _ => by positivity) (Finset.mem_univ k)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 lemma isCompact_nsq {κ : Type} [Fintype κ] (C : ℝ) : IsCompact {w : κ → ℂ | nsq w ≤ C} := by
   refine Metric.isCompact_of_isClosed_isBounded ?_ ?_
@@ -195,13 +195,13 @@ end GlobalTheory.ClassFin.OrbitProper
 open GlobalTheory.ClassFin.OrbitProper in
 
 /- English proof (translation)
-Introduce `ι _ _ m d v hX C`. Establish `hK : IsCompact (orb d v ∩ {w | nsq w ≤ C})` using `(isCompact_nsq C).inter_left hX`. Establish `key : ∃ N : ℝ, orb d v ∩ {w | nsq w ≤ C} ⊆ act d v '' box ι N`. Use `hK.induction_on (p := fun s => ∃ N : ℝ, s ⊆ act d v '' box ι N) ⟨0, Set.empty_subset _⟩ (fun s t hst ⟨N, hN⟩ => ⟨N, hst.trans hN⟩) ?_ ?_` and prove the remaining obligations. Introduce and unpack `s t ⟨N, hN⟩ ⟨M, hM⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨max N M, Set.union_subset (hN.trans (Set.image_mono (box_mono (le_max_left _ _)))) (hM.trans (Set.image_mono (box_mono (le_max_right _ _))))⟩`. Introduce `w hw`. Take `⟨O, hO, hwO, N, hN⟩` from `locally_box d v hX w hw.1`. Use `⟨O ∩ orb d v, ?_, N, hN⟩` and prove the remaining obligations. Conclude with `mem_nhdsWithin.2 ⟨O, hO, hwO, fun x hx => ⟨hx.1, hx.2.1⟩⟩`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨N, hN⟩` from `key`. Use `⟨N, fun y hy hC => ?_⟩` and prove the remaining obligations. Take `⟨a, ha, hav⟩` from `hN (a := act d v y) ⟨⟨y, hy, rfl⟩, hC⟩`. Use `⟨a * y.adjugate, by rw [Matrix.det_mul, ha.1, det_adj hy, one_mul], ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[act_mul', hav, ← act_mul', mul_adj hy, act_one']`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_assoc, adj_mul hy, mul_one]`. Conclude with `ha.2`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.ClassFin.orbit_proper_of_isClosed : ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (m : ℕ) (d : Fin m → ℕ) (v : TIdx ι d → ℂ), IsClosed (orb d v) → ∀ C : ℝ, ∃ C' : ℝ, ∀ y : Matrix ι ι ℂ, y.det = 1 → nsq (act d v y) ≤ C → ∃ h : Matrix ι ι ℂ, h.det = 1 ∧ act d v h = v ∧ ∀ i j, ‖(h * y) i j‖ ≤ C' := by
   intro ι _ _ m d v hX C

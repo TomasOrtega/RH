@@ -13,7 +13,7 @@ open scoped Classical
 namespace GlobalTheory.ArchimedeanCompactL2
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n d X W M om χ₁ χ₂ _ _ hW k _ f f₁ hA`. Conclude with `GlobalTheory.ArchimedeanActsL2.acts_lintegral_eq F E σ n d X W M B.ψ χ₁ χ₂ om hW (1, k) f f₁ hA volume (GlobalTheory.WeilAdm.HaarSplit.volume_isAddHaar F (Fin n × Fin d))`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem kInf_lintegral_eq : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (om : Rep σ X W) (χ₁ χ₂ : Chr F E),

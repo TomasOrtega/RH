@@ -34,7 +34,7 @@ noncomputable section
 namespace GlobalTheory.Mem.R3.Rw.RowAt
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, one_pos, fun eps _ h0 _ _ _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun _ _ _ _ => ⟨0, fun _ _ => ⟨0, fun _ _ => let ⟨x₀, hx⟩ := h eps h0 ⟨x₀, fun _ _ _ _ hs hx' => ⟨x₀, hx', hs ▸ hx⟩⟩⟩⟩⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem ev_scale {p : ℝ → ℝ → Prop} (h : ∀ eps : ℝ, 0 < eps → ∃ x₀ : ℝ, p eps x₀) :
     Ev fun K => ∃ x₀ : ℝ, x₀ ≤ K.s.x ∧ p K.s.eps x₀ :=
@@ -45,13 +45,13 @@ theorem ev_scale {p : ℝ → ℝ → Prop} (h : ∀ eps : ℝ, 0 < eps → ∃ 
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Introduce `hG hC h1 h2 h3 h4 h5 h6 h7 hEF`. Take `⟨CF1, H1⟩` from `GlobalTheory.T.rowTest_at_realisation_of_hilbertModels hC h1 h2 h3 h4 h5 h6 h7`. Take `⟨CF2, H2⟩` from `GlobalTheory.T.testChoices_exist_largeCoeffField_adelicData hEF`. Establish `hCh` using `H2 (max CF1 CF2) (le_max_right _ _)`. Establish `e1` using `((evG_of_ev (ev_scale fun eps _ => H1 eps (max CF1 CF2) (le_max_left _ _))).inter GlobalTheory.T.eventually_stages_parameterSizeConditions).inter (evG_of_ev GlobalTheory.T.hidaSetting_of_sizeRows)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `s1 : Step KPx (fun _ _ _ _ => True) _` using `Step.of_evLgG (evLgG_of_evLg hCh)`. Use `s1.trans (Step.of_evG (e1.imp ?_))` and prove the remaining obligations. Introduce and unpack `K - - - - ⟨⟨⟨x₀, hx, hH⟩, hLed⟩, hSet⟩ B f T hO - - hch w - Z hX Wt z g1 - hEx -`. Take `⟨Z', g1', hη, hA⟩` from `LedRec.exists_bare hG (B := B) (C := w.C) Z f (6 * K.s.x ^ (-K.C.P.CF))`. Take `⟨L, hsc, hsz⟩` from `hLed (w.st Z') hO hη hA`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `s : SameGrp Z Z'` using `LedRec.sameGrp g1 g1'`. Use `(GlobalTheory.T.equalMultiplicities_rowTest_of_sameGroupTransfer B w.C Z Z' w.px w.I hX T Wt s z).2 ?_` and prove the remaining obligations. Establish `hEx'` using `DatCopy.copy_exAt Z' s hEx`. Generalize the expression as in `DatCopy.copy Z' s z = y at hEx' ⊢`. Establish `hS` using `hSet B f T w Z' hX Wt y hO g1' hEx' L hsz`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Conclude with `hH (w.st Z').toD7 L (by rw [hsc]) (by rw [hsc]; exact hx) _ _ _ _ _ _ y.R y.F hS (hch w Z' hX Wt y L hsc hS)`.
+A detailed English derivation is pending.
 -/
 theorem atDat_rowTest : GlobalTheory.Published.GreenCuspidal → GlobalTheory.Published.CuspRapidDecay → LinK → InjK → ConstK → SumOKK → Formula2K → SumRatK →
     RatioK → GlobalTheory.RowEx.ExField → StepW Pinned fun _ B f T w => ∀ (Z : w.Lt) (hX : B.fields.Ok) (Wt : Set B.places.Pl)

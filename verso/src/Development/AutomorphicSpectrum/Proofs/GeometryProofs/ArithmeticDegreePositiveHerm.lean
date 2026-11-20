@@ -15,11 +15,9 @@ attribute [-instance] GlobalTheory.CompHt.fintypePsi
 namespace GlobalTheory.CompanionTheory.Ar.Plug
 
 /- English proof (translation)
-Introduce `hRR hG II _ K _ ι _ Ω _ _ y D A _ hX hB hA hnef`. Take `⟨-, -, -, -, -, -, -, -, -, hPB, -⟩` from `hG`. Take `⟨-, ⟨-, hD, -⟩, -⟩` from `hPB`. Establish `hN : GroundTheory.Heights₂.Heights.HilbertSamuel.NefOnGenericDeg (mCoordIdeal y) A.a`. Introduce `W hW hle`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h` using `hnef W hW hle`. Rewrite `h` using `[GlobalTheory.CompanionTheory.Ar.Cusp.NineEq.geomDeg_eq hD (d := 1) hW hA]`. Conclude with `h` after adjusting the coercions. Establish `e` using `GlobalTheory.CompanionTheory.Ar.Cusp.NineEq.geomDeg_eq hD hX hA`. Rewrite using `[e]`.
-
-Conclude with `hRR K ι Ω y D A.a hX hB hN`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nefCount : GlobalTheory.CompanionTheory.Ar.Pub.NefRR → Top.Given → ∀ II : IntersectionSystem, IsFullIntersectionSystem II → ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Ω : Type) [Field Ω] [CharZero Ω] (y : (Σ k, ι k) → Ω) (D : ℕ) (A : HermLine ι), 1 ≤ D → ReciprocityTheory.ChartRestriction.G.Geo.IsArithVar (mCoordIdeal y) (D + 1) → Birational y → IsSmoothHerm A → (∀ W, ReciprocityTheory.ChartRestriction.G.Geo.IsArithVar W 2 → mCoordIdeal y ≤ W → 0 ≤ geomDeg W A 1) → (∀ τ, FiniteDimensional ℚ (Submodule.span ℚ (chartLatNm y A.a τ : Set Ω))) ∧ Tendsto (fun τ : ℕ => (D.factorial : ℝ) * (Module.finrank ℚ (Submodule.span ℚ (chartLatNm y A.a τ : Set Ω)) : ℝ) / (τ : ℝ) ^ D) atTop (𝓝 (geomDeg (mCoordIdeal y) A D)) := by
   intro hRR hG II _ K _ ι _ Ω _ _ y D A _ hX hB hA hnef

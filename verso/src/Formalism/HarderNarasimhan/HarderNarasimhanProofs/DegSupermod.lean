@@ -13,13 +13,13 @@ variable {R V E : Type*} [Ring R] [AddCommGroup V] [Module R V] [NormedAddCommGr
     [InnerProductSpace ℝ E] (ρ : V →+ E)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem degSupermod_mem_zl (N : Submodule R V) (y : E) :
     y ∈ zl ρ N ↔ ∃ x ∈ N, ρ x = y := Iff.rfl
 
 /- English proof (translation)
-Introduce `y hy`. Take `⟨x, hx, rfl⟩` from `(degSupermod_mem_zl ρ A y).mp hy`. Conclude with `(degSupermod_mem_zl ρ B _).mpr ⟨x, h hx, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem degSupermod_zl_mono {A B : Submodule R V} (h : A ≤ B) : zl ρ A ≤ zl ρ B := by
   intro y hy
@@ -27,7 +27,7 @@ theorem degSupermod_zl_mono {A B : Submodule R V} (h : A ≤ B) : zl ρ A ≤ zl
   exact (degSupermod_mem_zl ρ B _).mpr ⟨x, h hx, rfl⟩
 
 /- English proof (translation)
-Simplify using `only [zl, Submodule.sup_toAddSubgroup, AddSubgroup.map_sup]`. Use `first`. Consider the case `exact SupHomClass.map_sup AddSubgroup.toIntSubmodule _ _`. Consider the case `(ext y; simp [Submodule.mem_sup, AddSubgroup.mem_sup])`.
+Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem degSupermod_zl_sup (A B : Submodule R V) : zl ρ (A ⊔ B) = zl ρ A ⊔ zl ρ B := by
   simp only [zl, Submodule.sup_toAddSubgroup, AddSubgroup.map_sup]
@@ -36,9 +36,9 @@ theorem degSupermod_zl_sup (A B : Submodule R V) : zl ρ (A ⊔ B) = zl ρ A ⊔
     | (ext y; simp [Submodule.mem_sup, AddSubgroup.mem_sup])
 
 /- English proof (translation)
-Use `le_antisymm (le_inf (degSupermod_zl_mono ρ inf_le_left) (degSupermod_zl_mono ρ inf_le_right)) ?_` and prove the remaining obligations. Introduce and unpack `y ⟨hyA, hyB⟩`. Take `⟨a, ha, rfl⟩` from `(degSupermod_mem_zl ρ A y).mp hyA`. Take `⟨b, hb, hba⟩` from `(degSupermod_mem_zl ρ B _).mp hyB`. Establish `hab : b = a` using `hinj (hB hb) (hA ha) hba`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Substitute `hab` using the available equality. Conclude with `(degSupermod_mem_zl ρ (A ⊓ B) _).mpr ⟨b, ⟨ha, hb⟩, rfl⟩`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem degSupermod_zl_inf {L A B : Submodule R V} (hinj : Set.InjOn ρ (L : Set V))
     (hA : A ≤ L) (hB : B ≤ L) : zl ρ (A ⊓ B) = zl ρ A ⊓ zl ρ B := by
@@ -56,7 +56,7 @@ end
 
 universe u v w in
 /- English proof (translation)
-Introduce `R V E _ _ _ _ _ _ ρ L A B hL hA hB`. Use `haveI := hL.2`. Establish `key` using `h E (zl ρ L) (zl ρ A) (zl ρ B) hL.2 (degSupermod_zl_mono ρ hA) (degSupermod_zl_mono ρ hB)`. Rewrite `key` using `[← degSupermod_zl_sup ρ A B, ← degSupermod_zl_inf ρ hL.1 hA hB]`. Conclude with `key`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem degSupermod_of (h : DegSupermodZ.{w}) : DegSupermod.{u, v, w} := by
   intro R V E _ _ _ _ _ _ ρ L A B hL hA hB
@@ -67,7 +67,7 @@ theorem degSupermod_of (h : DegSupermodZ.{w}) : DegSupermod.{u, v, w} := by
   exact key
 
 /- English proof (translation)
-The claim follows from `degSupermod_of degree_supermodular_integral`.
+A detailed English derivation is pending.
 -/
 theorem degree_supermodular : DegSupermod := degSupermod_of degree_supermodular_integral
 

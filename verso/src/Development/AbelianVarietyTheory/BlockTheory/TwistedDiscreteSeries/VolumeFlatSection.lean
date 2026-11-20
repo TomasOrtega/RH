@@ -24,17 +24,15 @@ def parahoric : Subgroup (GL (A ⊕ D) k) :=
 variable {k A D D'}
 
 /- English proof (translation)
-Establish `hl : ∀ x : A, GlobalTheory.SmGL.blk (GlobalTheory.SmGL.two (Equiv.refl (A ⊕ D))) (Sum.inl x) = false`. Introduce `x`. Establish `e : (Sum.inl x : A ⊕ D) = GlobalTheory.SmGL.two (Equiv.refl (A ⊕ D)) ⟨false, x⟩` using `by simp`. Rewrite using `[e, GlobalTheory.SmGL.blk_apply]`. Establish `hr : ∀ x : D, GlobalTheory.SmGL.blk (GlobalTheory.SmGL.two (Equiv.refl (A ⊕ D))) (Sum.inr x) = true`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `x`. Establish `e : (Sum.inr x : A ⊕ D) = GlobalTheory.SmGL.two (Equiv.refl (A ⊕ D)) ⟨true, x⟩` using `by simp`. Rewrite using `[e, GlobalTheory.SmGL.blk_apply]`. Establish `hval : ∀ z : 𝒪[k], IsLocalRing.residue 𝒪[k] z = 0 ↔ valuation k (z : k) < 1`. Introduce `z`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[IsLocalRing.residue_eq_zero_iff, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, Valuation.Integer.not_isUnit_iff_valuation_lt_one]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h, hh, rfl⟩`. Use `⟨⟨h, rfl⟩, fun i j => ?_⟩` and prove the remaining obligations. Rewrite `hh` using `[SetLike.mem_coe, Subgroup.mem_comap, GlobalTheory.SmGL.mem_parab]`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h0` using `hh (Sum.inr i) (Sum.inl j) (by rw [hl, hr]; decide)`. Simplify using `only [GeneralLinearGroup.map_apply, RingHom.mapMatrix_apply, Matrix.map_apply] at h0 ⊢`. Conclude with `(hval _).mp h0`. Introduce and unpack `⟨⟨h, rfl⟩, hv⟩`. Use `⟨h, ?_, rfl⟩` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[SetLike.mem_coe, Subgroup.mem_comap, GlobalTheory.SmGL.mem_parab]`. Introduce `i j hij`. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j <;> simp only [hl, hr, lt_self_iff_false] at hij`. Conclude with `absurd hij (by decide)`. Establish `h0` using `hv i j`.
-
-Simplify using `only [GeneralLinearGroup.map_apply, RingHom.mapMatrix_apply, Matrix.map_apply] at h0 ⊢`. Conclude with `(hval _).mpr h0`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_parahoric {g : GL (A ⊕ D) k} : g ∈ parahoric k A D ↔
     g ∈ KO k (A ⊕ D) ∧ ∀ i j, valuation k (g.1 (.inr i) (.inl j)) < 1 := by
@@ -80,7 +78,7 @@ def InSupp (x : Matrix (A ⊕ D) (A ⊕ D') k) : Prop :=
 omit [TopologicalSpace k] [IsNonarchimedeanLocalField k] [Fintype D] [DecidableEq D] [Fintype D']
   [DecidableEq D'] in
 /- English proof (translation)
-Introduce `h0`. Establish `h1` using `h.2.1`. Rewrite `h1` using `[h0, map_zero]`. Conclude with `zero_ne_one h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem InSupp.det_ne {x : Matrix (A ⊕ D) (A ⊕ D') k} (h : InSupp x) : x.toBlocks₁₁.det ≠ 0 := by
   intro h0
@@ -189,9 +187,9 @@ def ChainStep : Prop :=
     (m.real (DoubleCoset.doubleCoset c.out (J : Set _) (J : Set _)) : ℂ) * F s₀ c.out) (Zj * B f f)
 
 /- English proof (translation)
-Establish `h : InSupp (fromBlocks 1 0 0 0 : Matrix (A ⊕ D) (A ⊕ D') k)`. Use `⟨?_, by simp, fun i j => by simp⟩` and prove the remaining obligations. Introduce and unpack `(i | i) (j | j)`. Conclude with `one_int i j`. Apply the tactic sequence `all_goals exact zero_mem _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[datum, dif_pos h]`. Establish `: Units.mk0 _ h.det_ne = 1` using `by ext; simp`. Simplify using `[this]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 example {A D D' : Type} [Fintype A] [DecidableEq A] (ξ : kˣ →* ℂˣ) :
     datum ξ (fromBlocks 1 0 0 0 : Matrix (A ⊕ D) (A ⊕ D') k) = 1 := by
@@ -205,7 +203,7 @@ example {A D D' : Type} [Fintype A] [DecidableEq A] (ξ : kˣ →* ℂˣ) :
   simp [this]
 
 /- English proof (translation)
-Introduce `g _ d hd` and use `by have : GeneralLinearGroup.det g = d := by ext rw [hd, GeneralLinearGroup.val_det_apply, ← det_submatrix_equiv_self (Equiv.emptySum (Fin 0) D).symm] rfl simp [detRep, this]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example {D : Type} [Fintype D] [DecidableEq D] (ξ : kˣ →* ℂˣ) :
     (1 : ℂ) ∈ typeSpace (A := Fin 0) (detRep (Fin 0 ⊕ D) ξ) ξ := fun g _ d hd => by

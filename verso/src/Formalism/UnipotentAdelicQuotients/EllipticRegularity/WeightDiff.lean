@@ -12,11 +12,11 @@ namespace WD
 variable {d : ℕ}
 
 /- English proof (translation)
-Establish `hK0 : 0 < K` using `lt_of_lt_of_le one_pos hK`. Break down `le_or_gt 0 p with hp | hp` into its components or cases. Rewrite using `[abs_of_nonneg hp, ← Real.mul_rpow hK0.le hY.le]`. Conclude with `Real.rpow_le_rpow hX.le h1 hp`. Rewrite using `[abs_of_neg hp]`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : K⁻¹ * Y ≤ X`. Combine the equalities or inequalities in the displayed calculation. Establish `hKY : 0 < K⁻¹ * Y` using `mul_pos (inv_pos.2 hK0) hY`. Establish `h4 : X ^ p ≤ (K⁻¹ * Y) ^ p`. Conclude with `Real.rpow_le_rpow_of_nonpos hKY h3 hp.le`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Real.mul_rpow (inv_nonneg.2 hK0.le) hY.le, Real.inv_rpow hK0.le, ← Real.rpow_neg hK0.le]`.
+A detailed English derivation is pending.
 -/
 lemma pow_cmp {X Y K : ℝ} (p : ℝ) (hX : 0 < X) (hY : 0 < Y) (hK : 1 ≤ K)
     (h1 : X ≤ K * Y) (h2 : Y ≤ K * X) : X ^ p ≤ K ^ |p| * Y ^ p := by
@@ -36,9 +36,9 @@ lemma pow_cmp {X Y K : ℝ} (p : ℝ) (hX : 0 < X) (hY : 0 < Y) (hK : 1 ≤ K)
         rw [Real.mul_rpow (inv_nonneg.2 hK0.le) hY.le, Real.inv_rpow hK0.le, ← Real.rpow_neg hK0.le]
 
 /- English proof (translation)
-Establish `h1 : ‖x‖ ≤ ‖x - y‖ + ‖y‖`. Combine the equalities or inequalities in the displayed calculation. Establish `ha` using `norm_nonneg (x - y)`. Establish `hb` using `norm_nonneg y`. Establish `hx` using `norm_nonneg x`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc` using `sq_nonneg c`. Establish `hsq : ‖x‖ ^ 2 ≤ 2 * ‖x - y‖ ^ 2 + 2 * ‖y‖ ^ 2`. Use polynomial arithmetic with `[sq_nonneg (‖x - y‖ - ‖y‖), mul_le_mul h1 h1 hx (add_nonneg ha hb)]`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left hsq hc, mul_nonneg (mul_nonneg hc hc) (mul_nonneg (sq_nonneg ‖x - y‖) (sq_nonneg ‖y‖))]`.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Use the polynomial consequences of the given equalities and inequalities.
 -/
 lemma base (c : ℝ) (x y : E d) :
     1 + c ^ 2 * ‖x‖ ^ 2 ≤ 2 * (1 + c ^ 2 * ‖x - y‖ ^ 2) * (1 + c ^ 2 * ‖y‖ ^ 2) := by
@@ -55,9 +55,9 @@ lemma base (c : ℝ) (x y : E d) :
     mul_nonneg (mul_nonneg hc hc) (mul_nonneg (sq_nonneg ‖x - y‖) (sq_nonneg ‖y‖))]
 
 /- English proof (translation)
-Establish `h` using `base c x y`. Establish `ha` using `norm_nonneg (x - y)`. Establish `hv2 : ‖x - y‖ ^ 2 ≤ ‖v‖ ^ 2`. Use polynomial arithmetic with `[mul_le_mul hv hv ha (norm_nonneg v)]`. Establish `h3 : c ^ 2 * ‖x - y‖ ^ 2 ≤ ‖v‖ ^ 2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Use polynomial arithmetic with `[mul_nonneg (sub_nonneg.2 hc) (sq_nonneg ‖x - y‖)]`. Establish `hy : 0 ≤ 1 + c ^ 2 * ‖y‖ ^ 2` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Apply `mul_le_mul_of_nonneg_right _ hy` to reduce the goal to its premises. Combine the linear equalities and inequalities to obtain the conclusion.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 lemma cmp1 (c : ℝ) (hc : c ^ 2 ≤ 1) (x y v : E d) (hv : ‖x - y‖ ≤ ‖v‖) :
     1 + c ^ 2 * ‖x‖ ^ 2 ≤ (2 * (1 + ‖v‖ ^ 2)) * (1 + c ^ 2 * ‖y‖ ^ 2) := by
@@ -74,13 +74,13 @@ lemma cmp1 (c : ℝ) (hc : c ^ 2 ≤ 1) (x y v : E d) (hv : ‖x - y‖ ≤ ‖v
       linarith
 
 /- English proof (translation)
-Establish `hA1 : (1 : ℝ) ≤ 2 * (1 + ‖v‖ ^ 2)` using `by nlinarith [sq_nonneg ‖v‖]`. Establish `hA0 : (0 : ℝ) < 2 * (1 + ‖v‖ ^ 2)` using `by linarith`. Establish `hv' : ‖η - ζ‖ ≤ ‖v‖` using `by rw [norm_sub_rev]; exact hv`. Establish `hε2 : ε ^ 2 ≤ 1` using `by nlinarith`. Establish `hone : (1 : ℝ) ^ 2 ≤ 1` using `by norm_num`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `P1` using `cmp1 1 hone ζ η v hv`. Establish `P2` using `cmp1 1 hone η ζ v hv'`. Establish `Q1` using `cmp1 ε hε2 ζ η v hv`. Establish `Q2` using `cmp1 ε hε2 η ζ v hv'`. Simplify using `only [one_pow, one_mul] at P1 P2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hζ : (0 : ℝ) < 1 + ‖ζ‖ ^ 2` using `by positivity`. Establish `hη : (0 : ℝ) < 1 + ‖η‖ ^ 2` using `by positivity`. Establish `hζε : (0 : ℝ) < 1 + ε ^ 2 * ‖ζ‖ ^ 2` using `by positivity`. Establish `hηε : (0 : ℝ) < 1 + ε ^ 2 * ‖η‖ ^ 2` using `by positivity`. Establish `F1` using `pow_cmp (s / 2) hζ hη hA1 P1 P2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `F2` using `pow_cmp (-(M / 2)) hζε hηε hA1 Q1 Q2`. Rewrite `F2` using `[abs_neg, abs_of_nonneg (by linarith : (0 : ℝ) ≤ M / 2)]`. Unfold `ZetaZeros.D.EllReg.om`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation.
 -/
 lemma om_shift (s M ε : ℝ) (hM : 0 ≤ M) (hε0 : 0 ≤ ε) (hε1 : ε ≤ 1) (ζ η v : E d)
     (hv : ‖ζ - η‖ ≤ ‖v‖) :
@@ -109,7 +109,7 @@ lemma om_shift (s M ε : ℝ) (hM : 0 ≤ M) (hε0 : 0 ≤ ε) (hε1 : ε ≤ 1)
     _ = _ := by rw [Real.rpow_add hA0]; ring
 
 /- English proof (translation)
-The claim follows from `|t * (s * r⁻¹ - M * e * r * b⁻¹)| ≤ (|s| + M) * V := by subst hb have hb0 : 0 < 1 + e * g ^ 2 := add_pos_of_pos_of_nonneg one_pos (mul_nonneg he0 (sq_nonneg g)) have hgr : g ≤ r := by by_contra hcon have hlt := not_le.mp hcon nlinarith [mul_lt_mul'' hlt hlt hr0.le hr0.le] have hg …`.
+A detailed English derivation is pending.
 -/
 private theorem abs_mul_sub_le_of_sq_eq_one_add_sq (g t s M e r b V : ℝ) (hg : 0 ≤ g) (hV : 0 ≤ V) (ht : |t| ≤ g * V)
     (hM : 0 ≤ M) (he0 : 0 ≤ e) (he1 : e ≤ 1) (hr0 : 0 < r) (hr2 : r ^ 2 = 1 + g ^ 2)
@@ -156,7 +156,7 @@ private theorem abs_mul_sub_le_of_sq_eq_one_add_sq (g t s M e r b V : ℝ) (hg :
     _ = (|s| + M) * V := by ring
 
 /- English proof (translation)
-The claim follows from `|(2 * inner ℝ γ v) * (s / 2) * (1 + ‖γ‖ ^ 2) ^ (s / 2 - 1) * (1 + ε ^ 2 * ‖γ‖ ^ 2) ^ (-(M / 2)) + (1 + ‖γ‖ ^ 2) ^ (s / 2) * ((ε ^ 2 * (2 * inner ℝ γ v)) * (-(M / 2)) * (1 + ε ^ 2 * ‖γ‖ ^ 2) ^ (-(M / 2) - 1))| ≤ (|s| + M) * ‖v‖ * om (s - 1) M ε γ := by have ha : (0 : ℝ) < 1 + ‖γ‖ …`.
+A detailed English derivation is pending.
 -/
 lemma deriv_bound (s M ε : ℝ) (hM : 0 ≤ M) (hε0 : 0 ≤ ε) (hε1 : ε ≤ 1) (γ v : E d) :
     |(2 * inner ℝ γ v) * (s / 2) * (1 + ‖γ‖ ^ 2) ^ (s / 2 - 1) * (1 + ε ^ 2 * ‖γ‖ ^ 2) ^ (-(M / 2)) +
@@ -202,21 +202,19 @@ end WD
 
 open WD in
 /- English proof (translation)
-Introduce `d s M hM`. Establish `hN0 : 0 ≤ |(s - 1) / 2| + M / 2` using `add_nonneg (abs_nonneg _) (by linarith)`. Use `⟨(|s| + M) * 2 ^ (|(s - 1) / 2| + M / 2), 2 * (|(s - 1) / 2| + M / 2), mul_nonneg (add_nonneg (abs_nonneg s) hM) (Real.rpow_nonneg (by norm_num) _), by linarith, ?_⟩` and prove the remaining obligations. Introduce `ε hε0 hε1 ξ η`. Establish `hderiv : ∀ t : ℝ, HasDerivAt (fun t : ℝ => om s M ε (η + t • (ξ - η))) ((2 * inner ℝ (η + t • (ξ - η)) (ξ - η)) * (s / 2) * (1 + ‖η + t • (ξ - η)‖ ^ 2) ^ (s / 2 - 1) * (1 + ε ^ 2 * ‖η + t • (ξ - η)‖ ^ 2) ^ (-(M / 2)) + (1 + ‖η + t • (ξ - η)‖ ^ 2) ^ (s / 2) * ((ε ^ 2 * (2 * inner …`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `t`. Establish `hγ : HasDerivAt (fun t : ℝ => η + t • (ξ - η)) (ξ - η) t`. Use `((hasDerivAt_id' t).smul_const (ξ - η)).const_add η` as an intermediate fact. Rewrite `this` using `[one_smul]`. Then use the resulting hypothesis. Establish `h1 : HasDerivAt (fun t : ℝ => 1 + ‖η + t • (ξ - η)‖ ^ 2) (2 * inner ℝ (η + t • (ξ - η)) (ξ - η)) t` using `hγ.norm_sq.const_add 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `h2 : HasDerivAt (fun t : ℝ => 1 + ε ^ 2 * ‖η + t • (ξ - η)‖ ^ 2) (ε ^ 2 * (2 * inner ℝ (η + t • (ξ - η)) (ξ - η))) t` using `(hγ.norm_sq.const_mul (ε ^ 2)).const_add 1`. Establish `hp1 : (1 + ‖η + t • (ξ - η)‖ ^ 2) ≠ 0` using `by positivity`. Establish `hp2 : (1 + ε ^ 2 * ‖η + t • (ξ - η)‖ ^ 2) ≠ 0` using `by positivity`. Conclude with `(h1.rpow_const (Or.inl hp1)).mul (h2.rpow_const (Or.inl hp2))`. Take `⟨D, hD⟩ : ∃ D : ℝ → ℝ, ∀ t : ℝ, HasDerivAt (fun t : ℝ => om s M ε (η + t • (ξ - η))) (D t) t ∧ |D t| ≤ (|s| + M) * ‖ξ - η‖ * om (s - 1) M ε (η + t • (ξ - η))` from `⟨_, fun t => ⟨hderiv t, ZetaZeros.D.EllReg.WD.deriv_bound s M ε hM hε0 hε1 _ _⟩⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hW : ∀ t ∈ Set.Icc (0 : ℝ) 1, om (s - 1) M ε (η + t • (ξ - η)) ≤ (2 * (1 + ‖ξ - η‖ ^ 2)) ^ (|(s - 1) / 2| + M / 2) * om (s - 1) M ε η`. Introduce `t ht`. Apply `ZetaZeros.D.EllReg.WD.om_shift (s - 1) M ε hM hε0 hε1` to reduce the goal to its premises. Establish `e : η + t • (ξ - η) - η = t • (ξ - η)` using `by abel`. Rewrite using `[e, norm_smul, Real.norm_eq_abs, abs_of_nonneg ht.1]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `mul_le_of_le_one_left (norm_nonneg _) ht.2`. Establish `hcoef : 0 ≤ (|s| + M) * ‖ξ - η‖` using `mul_nonneg (add_nonneg (abs_nonneg s) hM) (norm_nonneg _)`. Establish `hbd : ∀ t ∈ Set.Ico (0 : ℝ) 1, ‖D t‖ ≤ (|s| + M) * ‖ξ - η‖ * ((2 * (1 + ‖ξ - η‖ ^ 2)) ^ (|(s - 1) / 2| + M / 2) * om (s - 1) M ε η)`. Introduce `t ht`. Rewrite using `[Real.norm_eq_abs]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(hD t).2.trans (mul_le_mul_of_nonneg_left (hW t (Set.Ico_subset_Icc_self ht)) hcoef)`. Establish `hmvt : ‖om s M ε (η + (1 : ℝ) • (ξ - η)) - om s M ε (η + (0 : ℝ) • (ξ - η))‖ ≤ (|s| + M) * ‖ξ - η‖ * ((2 * (1 + ‖ξ - η‖ ^ 2)) ^ (|(s - 1) / 2| + M / 2) * om (s - 1) M ε η) * (1 - 0)` using `norm_image_sub_le_of_norm_deriv_le_segment' (fun t _ => (hD t).1.hasDerivWithinAt) hbd 1 (Set.right_mem_Icc.2 zero_le_one)`. Establish `e1 : η + (1 : ℝ) • (ξ - η) = ξ` using `by rw [one_smul]; abel`. Establish `e0 : η + (0 : ℝ) • (ξ - η) = η` using `by rw [zero_smul, add_zero]`. Rewrite `hmvt` using `[e1, e0, Real.norm_eq_abs, sub_zero, mul_one]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hx` using `norm_nonneg (ξ - η)`. Establish `hA : (2 * (1 + ‖ξ - η‖ ^ 2)) ^ (|(s - 1) / 2| + M / 2) ≤ 2 ^ (|(s - 1) / 2| + M / 2) * (1 + ‖ξ - η‖) ^ (2 * (|(s - 1) / 2| + M / 2))`. Rewrite using `[Real.rpow_mul (by linarith : (0 : ℝ) ≤ 1 + ‖ξ - η‖), Real.rpow_two, ← Real.mul_rpow (by norm_num : (0 : ℝ) ≤ 2) (by positivity : (0 : ℝ) ≤ (1 + ‖ξ - η‖) ^ 2)]`. Conclude with `Real.rpow_le_rpow (by positivity) (by nlinarith) hN0`. Establish `hW0 : 0 ≤ om (s - 1) M ε η` using `by unfold om; positivity`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem sobolevWeightLipschitz : WeightDiff := by
   intro d s M hM

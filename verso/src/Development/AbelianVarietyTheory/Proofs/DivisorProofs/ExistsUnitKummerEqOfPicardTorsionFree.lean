@@ -13,7 +13,7 @@ noncomputable section
 namespace GlobalTheory.EtC.KumSurj
 
 /- English proof (translation)
-Unfold `unitSec`. Conclude with `map_add ((toSheafify Scheme.etaleTopology (Scheme.Γ ⋙ unitsF)).app (op U)).hom (ULift.up (Additive.ofMul u)) (ULift.up (Additive.ofMul v))`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem unitSec_mul' {U : Scheme.{0}} (u v : (Γ(U, ⊤))ˣ) : unitSec (u * v) = unitSec u + unitSec v := by
   unfold unitSec
@@ -21,14 +21,14 @@ theorem unitSec_mul' {U : Scheme.{0}} (u v : (Γ(U, ⊤))ˣ) : unitSec (u * v) =
     (ULift.up (Additive.ofMul u)) (ULift.up (Additive.ofMul v))
 
 /- English proof (translation)
-Take `⟨y, hy⟩` from `(GlobalTheory.EtC.GmSec.gm_sec_bijective U).2 b`. Conclude with `⟨Additive.toMul y.down, hy⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem unitSec_surj {U : Scheme.{0}} (b : Sec Gm U) : ∃ u : (Γ(U, ⊤))ˣ, unitSec u = b := by
   obtain ⟨y, hy⟩ := (GlobalTheory.EtC.GmSec.gm_sec_bijective U).2 b
   exact ⟨Additive.toMul y.down, hy⟩
 
 /- English proof (translation)
-Introduce `U ⟨x⟩`. Establish `h1 : IsUnit (q : Γ(Spec (CommRingCat.of A), ⊤))`. Simplify using `using hq.map (Scheme.ΓSpecIso (CommRingCat.of A)).inv.hom`. Simplify using `using h1.map (show U ⟶ Spec (CommRingCat.of A) from x).appTop.hom`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem inv_sp (q : ℕ) (A : Type) [CommRing A] (hq : IsUnit (q : A)) : Inv q (sp A) := by
   intro U ⟨x⟩
@@ -41,25 +41,23 @@ end GlobalTheory.EtC.KumSurj
 open GlobalTheory.EtC.KumSurj in
 
 /- English proof (translation)
-Introduce `q _ A _ hq hp x`. Take `⟨κ, -, bd, -, hex, ⟨s, hs⟩, -⟩` from `GlobalTheory.T.exists_kummer_boundary_etale_cohomology q`. Establish `hE : Inv q (sp A)` using `inv_sp q A hq`. Establish `hqX : IsUnit (q : Γ(Spec (CommRingCat.of A), ⊤))`. Simplify using `using hq.map (Scheme.ΓSpecIso (CommRingCat.of A)).inv.hom`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Take `⟨_, h2, h3⟩` from `hex (sp A) hE 0`. Take `⟨_, _, _, hpc, _⟩` from `GlobalTheory.T.hypercohomologyCoefficientMap_functorial_additive ℤ ((chains ℤ).obj (sp A)) (0 + 1)`. Take `⟨hpid, _⟩` from `GlobalTheory.T.hypercohomologyCoefficientMap_functorial_additive ℤ ((chains ℤ).obj (sp A)) (0 + 1)`. Use `set y := HK.post ℤ ((chains ℤ).obj (sp A)) κ (0 + 1) (restrH (Int.castRingHom (ZMod q)) (sp A) (tw q 1) (0 + 1) x) with hy`. Establish `hqy : (q : ℤ) • y = 0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(h3 y).2 ⟨x, rfl⟩` as an intermediate fact. Rewrite `this` using `[hpc, hpid]`. Conclude with `this`. Establish `hy0 : y = 0`. Take `⟨e⟩` from `GlobalTheory.T.etale_descent_picard_group A`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : (q : ℤ) • e y = 0` using `by rw [← map_zsmul, hqy, map_zero]`. Establish `h2' : (Additive.toMul (e y)) ^ q = 1`. Use `congrArg Additive.toMul h1` as an intermediate fact. Rewrite `this` using `[natCast_zsmul, toMul_nsmul]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `hp _ h2'` as an intermediate fact. Apply `e.injective` to reduce the goal to its premises. Rewrite using `[map_zero]`. Conclude with `congrArg Additive.ofMul this`. Take `⟨g, hg⟩` from `(h2 x).1 hy0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨-, hbij, hadd, -, -⟩` from `GlobalTheory.T.degreeZeroSectionClass_properties ℤ Gm (Spec (CommRingCat.of A))`. Take `⟨b, rfl⟩` from `hbij.2 g`. Take `⟨u, rfl⟩` from `unitSec_surj b`. Establish `hsu` using `hs _ u hqX`. Break down `Int.units_eq_one_or s with rfl | rfl` into its components or cases.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨u, by rw [← hg, hsu, one_smul]⟩`. Use `⟨u⁻¹, ?_⟩` and prove the remaining obligations. Establish `hsi` using `hs _ u⁻¹ hqX`. Establish `hsum : bd (sch.obj (Spec (CommRingCat.of A))) 0 (secClass Gm (unitSec u⁻¹)) + bd (sch.obj (Spec (CommRingCat.of A))) 0 (secClass Gm (unitSec u)) = 0`. Rewrite using `[← map_add, ← hadd, ← unitSec_mul', inv_mul_cancel]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h0 : unitSec (1 : (Γ(Spec (CommRingCat.of A), ⊤))ˣ) = 0`. Use `unitSec_mul' (1 : (Γ(Spec (CommRingCat.of A), ⊤))ˣ) 1` as an intermediate fact. Rewrite `this` using `[mul_one]`. Conclude with `(left_eq_add.1 this)`. Establish `h00 : secClass Gm (0 : Sec Gm (Spec (CommRingCat.of A))) = 0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `hadd 0 0` as an intermediate fact. Rewrite `this` using `[add_zero]`. Conclude with `left_eq_add.1 this`. Rewrite using `[h0, h00, map_zero]`. Rewrite `hsum` using `[hsi, hsu, Units.neg_smul, Units.neg_smul, one_smul, one_smul]`.
-
-Rewrite using `[← hg, hsu, Units.neg_smul, one_smul]`. Rewrite `hsum` using `[← neg_add]`. Conclude with `eq_neg_of_add_eq_zero_left (neg_eq_zero.1 hsum)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.EtC.kum_surjective : ∀ (q : ℕ) [NeZero q] (A : Type) [CommRing A], IsUnit (q : A) → (∀ c : CommRing.Pic A, c ^ q = 1 → c = 1) → ∀ x : Ht q (sp A) 1 1, ∃ u : (Γ(Spec (CommRingCat.of A), ⊤))ˣ, kum q u = x := by
   intro q _ A _ hq hp x

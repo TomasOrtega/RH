@@ -18,9 +18,9 @@ noncomputable section
 namespace GlobalTheory.PSer
 
 /- English proof (translation)
-Proceed by induction on `j generalizing a with`. Consider the case `zero => rfl`. Consider the case `succ j ih`. Rewrite using `[Function.iterate_succ_apply, Function.iterate_succ_apply]`. Establish `h1 : P.φB (T.eB.symm (algebraMap _ (Formalism.Per.Bcris l) a)) = T.eB.symm (algebraMap _ (Formalism.Per.Bcris l) (GlobalTheory.MemLoc.phiA l a))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `T.eB.injective` to reduce the goal to its premises. Rewrite using `[T.frob, RingEquiv.apply_symm_apply, RingEquiv.apply_symm_apply]`. Conclude with `GlobalTheory.CrisMaps.φB_phiA l a`. Rewrite using `[h1, ih]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iterate_phiB_eB_symm (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P) (T : LocTied l P AI)
     (j : ℕ) (a : Formalism.Per.Acris l) :
@@ -39,7 +39,7 @@ theorem iterate_phiB_eB_symm (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : Loc
     rw [h1, ih]
 
 /- English proof (translation)
-Proceed by induction on `j with`. Consider the case `zero => rfl`. Consider the case `succ j ih`. Rewrite using `[Function.iterate_succ_apply', Function.iterate_succ_apply', ih, map_mul, AlgHom.commutes]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem iterate_phiB_algebraMap_mul (l : ℕ) [Fact l.Prime] (P : LocPrime l) (c : ℚ_[l]) (j : ℕ)
     (x : P.R.B) : P.φB^[j] (algebraMap ℚ_[l] P.R.B c * x) = algebraMap ℚ_[l] P.R.B c * P.φB^[j] x := by
@@ -49,19 +49,19 @@ theorem iterate_phiB_algebraMap_mul (l : ℕ) [Fact l.Prime] (P : LocPrime l) (c
     rw [Function.iterate_succ_apply', Function.iterate_succ_apply', ih, map_mul, AlgHom.commutes]
 
 /- English proof (translation)
-Introduce `l _ P AI T`. Take `⟨S, θ, Θ, hS, hθ1, hθc, hΘn, hΘt, hΘ⟩` from `GlobalTheory.T.exists_theta_deRhamFiltration_acris l P AI T`. Use `⟨S, θ, hS, hθ1, hθc, ?_⟩` and prove the remaining obligations. Introduce `h r y hh hr hy`. Establish `hp : l.Prime` using `Fact.out`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hr0 : 0 ≤ r` using `(norm_nonneg _).trans (hy 0)`. Establish `hl0 : (l : ℚ_[l]) ≠ 0` using `Nat.cast_ne_zero.2 hp.ne_zero`. Establish `hlpos : 0 < ‖(l : ℂ_[l])‖` using `norm_pos_iff.2 (Nat.cast_ne_zero.2 hp.ne_zero)`. Take `⟨N, hN⟩` from `exists_pow_lt_of_lt_one hlpos hr`. Establish `hNle : N ≤ l ^ (h * N)` using `(Nat.lt_pow_self hp.one_lt).le.trans (Nat.pow_le_pow_right hp.pos (Nat.le_mul_of_pos_left N (by omega)))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `key : ∀ k, ‖sh (y k ^ l ^ (h * N))‖ ≤ ‖(l : ℂ_[l])‖`. Introduce `k`. Rewrite using `[(GlobalTheory.T.tiltUntiltToComplexPAdic_basic_laws l).2.2.2.1, norm_pow]`. Combine the equalities or inequalities in the displayed calculation. Take `⟨w, hwφ, hwΘ⟩` from `GlobalTheory.T.exists_acris_phi_pow_eigenvector_double_series l h (fun k => y k ^ l ^ (h * N)) hh key`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result.
 
-Use `set c : ℚ_[l] := ((l : ℚ_[l]) ^ N)⁻¹ with hcdef`. Use `set b' : P.R.B := T.eB.symm (algebraMap (Formalism.Per.Acris l) (Formalism.Per.Bcris l) w) with hb'`. Use `⟨algebraMap ℚ_[l] P.R.B c * b', ?_, ?_, ?_⟩` and prove the remaining obligations. Use `⟨N, w, ?_⟩` and prove the remaining obligations. Establish `hc : (l : P.R.B) ^ N * algebraMap ℚ_[l] P.R.B c = 1`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_natCast (algebraMap ℚ_[l] P.R.B), ← map_pow, ← map_mul, hcdef, mul_inv_cancel₀ (pow_ne_zero _ hl0), map_one]`. Rewrite using `[← mul_assoc, hc, one_mul, hb', RingEquiv.apply_symm_apply]`. Rewrite using `[iterate_phiB_algebraMap_mul, hb', iterate_phiB_eB_symm, hwφ, map_mul, map_natCast, map_mul, map_natCast]`. Expand and normalize the polynomial expressions, which then agree. Introduce `j`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hm1, e1⟩` from `hθc c`. Take `⟨hm2, e2⟩` from `hΘ ((GlobalTheory.MemLoc.phiA l)^[j] w)`. Establish `heq : ev P j (algebraMap ℚ_[l] P.R.B c * b') = algebraMap ℚ_[l] P.R.BdR c * P.ιB (T.eB.symm (algebraMap (Formalism.Per.Acris l) (Formalism.Per.Bcris l) ((GlobalTheory.MemLoc.phiA l)^[j] w)))`. Rewrite using `[ev, iterate_phiB_algebraMap_mul, hb', iterate_phiB_eB_symm, map_mul, AlgHom.commutes]`. Use `⟨heq ▸ S.mul_mem hm1 hm2, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hsub : (⟨ev P j (algebraMap ℚ_[l] P.R.B c * b'), heq ▸ S.mul_mem hm1 hm2⟩ : ↥S) = ⟨algebraMap ℚ_[l] P.R.BdR c, hm1⟩ * ⟨_, hm2⟩` using `Subtype.ext heq`. Rewrite using `[hsub, map_mul, e1, e2, hwΘ Θ hΘn hΘt j, (GlobalTheory.T.untiltFrobeniusDoubleSeries_hasSum_and_norm_bounds l h j r y (by omega) hr hy).2.2.2 N, hcdef, map_inv₀, map_pow, map_natCast, inv_mul_cancel_left₀ (pow_ne_zero _ (Nat.cast_ne_zero.2 hp.ne_zero))]`.
+A detailed English derivation is pending.
 -/
 theorem series_residues : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P) (T : LocTied l P AI),
     ∃ (S : Subring P.R.BdR) (θ : ↥S →+* ℂ_[l]), (∀ x, x ∈ S ↔ x ∈ Fil P 0) ∧

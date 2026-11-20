@@ -22,17 +22,15 @@ section Darboux
 open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels Filter Topology
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 /- English proof (translation)
-Assume the negation of the conclusion as `hall`. Use `push_neg at hall`. Apply `hne` to reduce the goal to its premises. Use `clear hne`. Use function extensionality and compare the values at `h`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hPair` using `(GlobalTheory.ThK.Check.isPair_of_isTriple hT).2`. Establish `hpres : ∀ x, ∀ Φ ∈ GlobalTheory.WeilM.schA F (Fin a' × Fin (a + a')), om' x Φ ∈ GlobalTheory.WeilM.schA F (Fin a' × Fin (a + a'))` using `hPair.weil.isUSplitting.pres`. Establish `hdense` using `GlobalTheory.T.polynomialFock_dense_archimedeanSchwartz F E σ B _ _ _ _ G.M' _ _ om' _ _ _ _ hPair`. Establish `hsch : ∀ Ψ ∈ G.M'.So B.ψ B.τ₁, Ψ ∈ GlobalTheory.WeilM.schA F (Fin a' × Fin (a + a'))`. Introduce `Ψ hΨ`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `(Submodule.span_le.2 ?_) hΨ` and prove the remaining obligations. Introduce and unpack `_ ⟨f, φ, hSB, hvac, -, rfl⟩`. Use `GlobalTheory.TensUniq.pure_mem_schA f φ hSB ?_` and prove the remaining obligations. Use `filter_upwards [hvac, hT.geo.hM'.std] with v h1 h2`. Rewrite using `[h1, h2]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Use `show G.M'.I om' Φ' h = 0`. Proceed by induction on `hΦ' using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨f, φ, hSB, hvac, hv₁, rfl⟩` from `hx`. Establish `hc` using `_root_.GlobalTheory.T.pure_theta_integral_continuous_orthogonal hP F E σ B a a' G X om om' hT hDec φ hSB hvac hv₁ h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hz : ∀ P ∈ (G.M'.Pol B.ψ B.emb : Set (SInf F (Fin a' × Fin (a + a')))), G.M'.I om' (pure P φ) h = 0` using `fun P hP' => congrFun (hall _ (Submodule.subset_span ⟨P, φ, hP', hSB, hvac, rfl⟩)) h`. Establish `hcl : IsClosed {f : SInf F (Fin a' × Fin (a + a')) | G.M'.I om' (pure f φ) h = 0}` using `isClosed_eq hc continuous_const`. Establish `hsub` using `hcl.closure_subset_iff.2 hz`. Rewrite `hsub` using `[hdense.closure_eq]`. Conclude with `hsub (Set.mem_univ f)`.
-
-Consider the case `zero => exact I_zero _ _ h`. Consider the case `add x y hx hy ihx ihy`. Rewrite using `[I_add' G.M' om' ((hDec.2 x hx).2.1 h) ((hDec.2 y hy).2.1 h) (fun g => ⟨hpres _ _ (hsch x hx), hpres _ _ (hsch y hy)⟩), ihx, ihy, add_zero]`. Consider the case `smul c x hx ihx => rw [I_smul', ihx, mul_zero]`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_algebraic_vector_definite_theta_ne (hP : _root_.GlobalTheory.FunPr.ThetaLocalInputs) {B : Base F E} {a a' : ℕ} {G : Geo σ a a'} {X : Chars F E}
     {om : Rep σ G.V G.W} {om' : Rep σ G.V' G.W} (hT : IsTriple B G X om om') (hDec : Decay B G om om')
@@ -75,11 +73,11 @@ end GlobalTheory.DefThetaNZ
 namespace GlobalTheory.DefThetaNZ
 open scoped Matrix
 /- English proof (translation)
-Introduce `hP hK hL D ψ θ _hψ hθ W W₁ X A A₁ B α β hT _hdef ν₁ 𝓕₁ hν₁ ωA ωB Pi rf rl p p' hM`. Take `⟨ν, 𝓕, hν⟩` from `GlobalTheory.Ker.HypModel.exists_haar_fundDom D W`. Take `⟨e, Bs, Γ, Xc, om, om', cA, cB, hO, hTD⟩` from `GlobalTheory.T.exists_placewise_seesaw_triple_over_hermitian D ψ θ hθ W W₁ X A A₁ B α β hT ν 𝓕 ν₁ 𝓕₁ hν hν₁ ωA ωB hM.weilA hM.weilB`. Take `⟨R, Rf, hR⟩` from `hL D.host.F D.host.E D.sp.cm.sig Bs W.rank W₁.rank Γ Xc om om' hTD`. Take `⟨hDec, hK'⟩` from `hK.1 D.host.F D.host.E D.sp.cm.sig Bs W.rank W₁.rank Γ Xc om om' hTD`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨⟨Φ', hΦ'So, hne⟩, -⟩, -⟩` from `hK' R Rf hR`. Take `⟨ΦD, hΦD, hneD⟩` from `_root_.GlobalTheory.DefThetaNZ.exists_algebraic_vector_definite_theta_ne hP hTD hDec hΦ'So hne`. Take `⟨Φ, hΦ, hDat⟩` from `hO.algB' ΦD hΦD`. Use `⟨Φ, hΦ, fun h0 => ?_⟩` and prove the remaining obligations. Take `⟨h', hh'⟩` from `Function.ne_iff.1 hneD`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨h, rfl⟩` from `GlobalTheory.T.unitaryToTransposeGramGroupMap_surjective D X e hO.JX h'`. Use `GlobalTheory.SquareAgree.thetaInt_eq_modelI D W₁ X _ _ _ Γ.M' (-1) hO.JW₁ ν₁ 𝓕₁ ωB om' (GlobalTheory.SquareAgree.kapX X e hO.JX) ΦD Φ hO.measW₁ hO.domW₁ (hO.theta_eq_B hDat) h` as an intermediate fact. Rewrite `this` using `[h0]`. Conclude with `hh' this.symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_algebraic_function_definite_theta_ne_zero : _root_.GlobalTheory.FunPr.ThetaLocalInputs → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching →
   ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsStdChar D ψ (-1) → IsInfFam θ →
@@ -122,7 +120,7 @@ open MeasureTheory
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.DefThetaNZ.exists_algebraic_function_definite_theta_ne_zero | exact _root_.GlobalTheory.DefThetaNZ.exists_algebraic_function_definite_theta_ne_zero | (intros; apply _root_.GlobalTheory.DefThetaNZ.exists_algebraic_function_definite_theta_ne_zero …`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.definite_theta_lift_ne_zero : _root_.GlobalTheory.FunPr.ThetaLocalInputs → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching →
   ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsStdChar D ψ (-1) → IsInfFam θ →

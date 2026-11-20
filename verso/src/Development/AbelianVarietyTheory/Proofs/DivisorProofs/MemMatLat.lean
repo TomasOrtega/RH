@@ -34,22 +34,22 @@ def SelfDual {n : ℕ} (σ : K →+* K) (M : Submodule O (Fin n → K)) : Prop :
 variable {O}
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_stdLat {n : ℕ} (v : Fin n → K) : v ∈ stdLat O n ↔ ∀ i, v i ∈ (algebraMap O K).range :=
   Iff.rfl
 
 /- English proof (translation)
-Simplify using `[matLat]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_matLat {n : ℕ} (g : Matrix (Fin n) (Fin n) K) (M : Submodule O (Fin n → K))
     (v : Fin n → K) : v ∈ matLat O g M ↔ ∃ u ∈ M, g *ᵥ u = v := by
   simp [matLat]
 
 /- English proof (translation)
-Use extensionality with `v`. Simplify using `only [mem_matLat]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu, rfl⟩`. Conclude with `⟨b *ᵥ u, ⟨u, hu, rfl⟩, by rw [Matrix.mulVec_mulVec]⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨_, ⟨u, hu, rfl⟩, rfl⟩`. Conclude with `⟨u, hu, by rw [Matrix.mulVec_mulVec]⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem matLat_mul {n : ℕ} (a b : Matrix (Fin n) (Fin n) K) (M : Submodule O (Fin n → K)) :
     matLat O (a * b) M = matLat O a (matLat O b M) := by
@@ -62,7 +62,7 @@ theorem matLat_mul {n : ℕ} (a b : Matrix (Fin n) (Fin n) K) (M : Submodule O (
     exact ⟨u, hu, by rw [Matrix.mulVec_mulVec]⟩
 
 /- English proof (translation)
-Use extensionality with `v`. Simplify using `[mem_matLat]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem matLat_one {n : ℕ} (M : Submodule O (Fin n → K)) : matLat O 1 M = M := by
   ext v

@@ -12,9 +12,9 @@ noncomputable section
 namespace GlobalTheory.CongIndex
 
 /- English proof (translation)
-Take `⟨F0, hF0⟩` from `hJ`. Take `⟨F1, hF1⟩` from `GlobalTheory.AlgFormsFin.exists_cover L n hM`. Use `⟨(F0 ×ˢ F1).image (fun p => p.1 * p.2), fun κ hκ => ?_⟩` and prove the remaining obligations. Take `⟨f0, hf0, hu⟩` from `hF0 κ hκ`. Take `⟨j, hj, κ', hκ', e⟩` from `hF1 _ hu`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨f0 * j, Finset.mem_image.2 ⟨(f0, j), Finset.mem_product.2 ⟨hf0, hj⟩, rfl⟩, ?_⟩` and prove the remaining obligations. Establish `h1 : (f0 * j)⁻¹ * κ = κ'`. Rewrite using `[mul_inv_rev, mul_assoc, e, ← mul_assoc, inv_mul_cancel, one_mul]`. Rewrite using `[h1]`. Conclude with `hκ'`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bounded_cover {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ} {J : Subgroup (GAf L n)}
     (hJ : IsBounded J) {M : ℕ} (hM : 0 < M) :
@@ -32,11 +32,11 @@ theorem bounded_cover {L : Type} [Field L] [NumberField L] [IsCMField L] {n : �
   exact hκ'
 
 /- English proof (translation)
-Introduce `L _ _ _ n J hJ h N hN`. Use `⟨GlobalTheory.CongConjugate.congConj L n h N hN, bounded_cover hJ hN, ?_⟩` and prove the remaining obligations. Take `⟨N', hN', hc⟩` from `GlobalTheory.CongConjugate.congConj L n h⁻¹ 1 one_pos`. Take `⟨F, hF⟩` from `bounded_cover hJ hN'`. Use `⟨F.image (fun f => h * f * h⁻¹), fun x hx => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨κ, hκ, rfl⟩` from `Subgroup.mem_map.1 hx`. Take `⟨f, hf, hcf⟩` from `hF κ hκ`. Use `⟨h * f * h⁻¹, Finset.mem_image_of_mem _ hf, ?_⟩` and prove the remaining obligations. Establish `hu` using `(hc _ hcf).1`. Establish `e : (h * f * h⁻¹)⁻¹ * (MulAut.conj h).toMonoidHom κ = h⁻¹⁻¹ * (f⁻¹ * κ) * h⁻¹`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [MulEquiv.coe_toMonoidHom, MulAut.conj_apply, mul_inv_rev, inv_inv, mul_assoc, inv_mul_cancel_left]`. Rewrite using `[e]`. Conclude with `hu`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_index_conj : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) (J : Subgroup (GAf L n)),
     IsBounded J → ∀ (h : GAf L n) (N : ℕ), 0 < N →

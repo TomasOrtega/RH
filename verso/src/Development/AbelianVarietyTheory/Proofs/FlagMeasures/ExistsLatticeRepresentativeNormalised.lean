@@ -16,17 +16,17 @@ section Gen
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {S : HSpace E} {r : ℕ} {T : E}
 
 /- English proof (translation)
-Simplify using `[orth, Submodule.mem_iInf]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_orth_iff (U : Submodule E S.V) (y : S.V) : y ∈ orth S U ↔ ∀ x ∈ U, S.hT x y = 0 := by
   simp [orth, Submodule.mem_iInf]
 
 /- English proof (translation)
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨a, rfl⟩` from `hx`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy => obtain ⟨b, rfl⟩ := hy`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately.
 
-Conclude with `F.fl.e_iso a b`. Consider the case `zero => simp`. Consider the case `add u v _ _ hu hv => simp [hu, hv]`. Consider the case `smul c u _ hu => simp [hu]`. Consider the case `zero => simp`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `add u v _ _ hu hv => simp [hu, hv]`. Consider the case `smul c u _ hu => simp [hu]`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem X_iso (F : LFlag S r T) {x y : S.V} (hx : x ∈ Xsp F) (hy : y ∈ Xsp F) : S.hT x y = 0 := by
   induction hx using Submodule.span_induction with
@@ -42,9 +42,9 @@ theorem X_iso (F : LFlag S r T) {x y : S.V} (hx : x ∈ Xsp F) (hy : y ∈ Xsp F
   | smul c u _ hu => simp [hu]
 
 /- English proof (translation)
-Rewrite using `[mem_orth_iff]`. Introduce `x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx => obtain ⟨a, rfl⟩ := hx`. Conclude with `F.fl.z_orth a`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `add u v _ _ hu hv => simp [hu, hv]`. Consider the case `smul c u _ hu => simp [hu]`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem z_mem_orth (F : LFlag S r T) : F.fl.z ∈ orth S (Xsp F) := by
   rw [mem_orth_iff]
@@ -56,15 +56,15 @@ theorem z_mem_orth (F : LFlag S r T) : F.fl.z ∈ orth S (Xsp F) := by
   | smul c u _ hu => simp [hu]
 
 /- English proof (translation)
-Introduce `y hy` and use `(mem_orth_iff _ _).2 fun x hx => X_iso F hx hy`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem X_le_orth (F : LFlag S r T) : Xsp F ≤ orth S (Xsp F) := fun y hy =>
   (mem_orth_iff _ _).2 fun x hx => X_iso F hx hy
 
 /- English proof (translation)
-Introduce and unpack `⟨o, ho⟩`. Establish `h1 : IsIntegral ℤ (algebraMap ℚ E (1 / 2))` using `by rw [← ho]; exact o.2`. Rewrite `h1` using `[isIntegral_algebraMap_iff (algebraMap ℚ E).injective]`. Take `⟨n, hn⟩` from `IsIntegrallyClosed.isIntegral_iff.mp h1`. Establish `h2 : ((2 * n : ℤ) : ℚ) = 1` using `by push_cast; rw [show (algebraMap ℤ ℚ n) = (n : ℚ) from rfl] at hn; rw [hn]; norm_num`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h3 : 2 * n = 1` using `by exact_mod_cast h2`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem half_not_int : ¬ ∃ o : 𝓞 E, (o : E) = algebraMap ℚ E (1 / 2) := by
   rintro ⟨o, ho⟩
@@ -86,9 +86,9 @@ section Gen
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {S : HSpace E} {r : ℕ} {T : E}
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.NonzeroIntegerSmulMem.exists_ne_zero_smul_mem`. Consider the case `exact _root_.GlobalTheory.NonzeroIntegerSmulMem.exists_ne_zero_smul_mem`. Consider the case `(apply _root_.GlobalTheory.NonzeroIntegerSmulMem.exists_ne_zero_smul_mem <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.NonzeroIntegerSmulMem.exists_ne_zero_smul_mem <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.NonzeroIntegerSmulMem.exists_ne_zero_smul_mem <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.NonzeroIntegerSmulMem.exists_ne_zero_smul_mem ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_smul_mem_lat (L : Submodule (𝓞 E) S.V) (hL : Submodule.IsLattice E L) (x : S.V) :
     ∃ r : 𝓞 E, r ≠ 0 ∧ r • x ∈ L := by
@@ -101,7 +101,7 @@ theorem exists_smul_mem_lat (L : Submodule (𝓞 E) S.V) (hL : Submodule.IsLatti
   | (intros; exact _root_.GlobalTheory.NonzeroIntegerSmulMem.exists_ne_zero_smul_mem ..)
 
 /- English proof (translation)
-Introduce `hz`. Apply `half_not_int (E := E)` to reduce the goal to its premises. Apply `hprim` to reduce the goal to its premises. Establish `hc : algebraMap ℚ E (1 / 2) • F.fl.z ∈ Xsp F` using `(Xsp F).smul_mem _ hz`. Conclude with `⟨Submodule.mem_sup_right hc, X_le_orth F hc⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem z_not_mem_X (Λ : Submodule (𝓞 E) S.V) (F : LFlag S r T)
     (hprim : ∀ c : E, c • F.fl.z ∈ Lsub Λ F → ∃ o : 𝓞 E, (o : E) = c) : F.fl.z ∉ Xsp F := by
@@ -112,29 +112,25 @@ theorem z_not_mem_X (Λ : Submodule (𝓞 E) S.V) (F : LFlag S r T)
   exact ⟨Submodule.mem_sup_right hc, X_le_orth F hc⟩
 
 /- English proof (translation)
-Establish `hzX` using `z_not_mem_X Λ F hprim`. Take `⟨φ, hφX, hφz⟩` from `LinearMap.exists_extend_of_notMem (0 : Xsp F →ₗ[E] E) hzX 1`. Establish `hφ0 : ∀ y ∈ Xsp F, φ y = 0` using `fun y hy => by simpa using congr($hφX ⟨y, hy⟩)`. Use `set U : Submodule E S.V := Xsp F ⊔ Submodule.span E {F.fl.z} with hUdef`. Use `set M0 : Submodule (𝓞 E) S.V := Λ ⊓ toO S U with hM0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hUo : U ≤ orth S (Xsp F)` using `sup_le (X_le_orth F) ((Submodule.span_singleton_le_iff_mem _ _).2 (z_mem_orth F))`. Establish `hprimM : IsPrimitiveSub M0 Λ`. Use `⟨inf_le_left, le_antisymm (le_inf inf_le_left fun x hx => Submodule.subset_span hx) ?_⟩` and prove the remaining obligations. Use `inf_le_inf_left _ ?_` and prove the remaining obligations. Introduce `x hx`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `(Submodule.span_le (p := U)).2 (fun y hy => hy.2) hx`. Establish `hint : ∀ x : M0, ∃ o : 𝓞 E, (o : E) = φ x`. Introduce and unpack `⟨x, hxΛ, hxU⟩`. Take `⟨y, hy, w, hw, rfl⟩` from `Submodule.mem_sup.1 (show x ∈ U from hxU)`. Take `⟨a, rfl⟩` from `Submodule.mem_span_singleton.1 hw`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hxo : y + a • F.fl.z ∈ orth S (Xsp F)` using `hUo hxU`. Take `⟨o, ho⟩` from `hprim a ⟨by`. Establish `h1 : y + a • F.fl.z ∈ Lrep Λ F` using `⟨hxΛ, hxo⟩`. Establish `h2 : -y ∈ toO S (Xsp F)` using `(Xsp F).neg_mem hy`. Use `Submodule.add_mem_sup h1 h2` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `using this, (orth S (Xsp F)).smul_mem a (z_mem_orth F)⟩`. Use `⟨o, ?_⟩` and prove the remaining obligations. Simplify using `[map_add, hφ0 y hy, hφz, ho]`. Use `choose ψ hψ using hint`. Set `ψ' : M0 →ₗ[𝓞 E] 𝓞 E` to `{ toFun := ψ map_add' := fun x y => by`.
+Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Apply `RingOfIntegers.ext` to reduce the goal to its premises. Simplify using `[hψ]`. Use the proof step `map_smul' := fun c x => by`. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Simplify using `only [hψ, RingHom.id_apply, smul_eq_mul, map_mul, Submodule.coe_smul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← algebraMap_smul E c (x : S.V), map_smul]`. Simplify using `[hψ] }`. Take `⟨w, hw⟩` from `GlobalTheory.LoopC.FunIdx.exists_dual_vec S M0 Λ hlat hprimM ψ'`. Establish `hwM : ∀ x (hx : x ∈ M0), S.hT w x = φ x` using `fun x hx => by`. Rewrite using `[← hw ⟨x, hx⟩]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hψ ⟨x, hx⟩`. Establish `hwΛ : (w : S.V) ∈ Λ`. Use `w.2.1` as an intermediate fact. Rewrite `this` using `[hU]`. Then use the resulting hypothesis. Use `⟨w, ⟨hwΛ, ?_⟩, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `show (w : S.V) ∈ orth S (Xsp F)`. Rewrite using `[mem_orth_iff]`. Introduce `x hx`. Take `⟨c, hc0, hcx⟩` from `exists_smul_mem_lat Λ hlat x`. Establish `hcX : c • x ∈ Xsp F`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← algebraMap_smul E c x]`. Conclude with `(Xsp F).smul_mem _ hx`. Establish `hm : c • x ∈ M0` using `⟨hcx, Submodule.mem_sup_left hcX⟩`. Establish `h1` using `hwM _ hm`. Rewrite `h1` using `[hφ0 _ hcX]`.
-
-Establish `h2 : S.hT w x = 0`. Rewrite `h1` using `[← algebraMap_smul E c x, map_smul, smul_eq_mul]`. Conclude with `(mul_eq_zero.1 h1).resolve_left (by simpa using hc0)`. Rewrite using `[← S.herm.eq, h2]`. Simplify using the standard rewrite rules.
-
-Rewrite using `[hwM _ ⟨hz, Submodule.mem_sup_right (Submodule.mem_span_singleton_self _)⟩, hφz]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_partner_rep (Λ : Submodule (𝓞 E) S.V) (F : LFlag S r T)
     (hlat : Submodule.IsLattice E Λ) (hU : Formalism.HermitianLatticesTheory.IsUnimodular S.hT Λ) (hz : F.fl.z ∈ Λ)
@@ -204,7 +200,7 @@ end GlobalTheory.RowPartner
 namespace GlobalTheory.RowPartner
 
 /- English proof (translation)
-Introduce `D T F0 Λ h`. Take `⟨_, ⟨hlat, hU, ⟨hz, _⟩, ⟨_, hprim⟩⟩, _⟩` from `h`. Conclude with `exists_partner_rep Λ (lf D F0) hlat hU hz hprim`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_partner_rowLat : ∀ (D : D7) (T : D.host.E) (F0 : FlagG (VS D) D.R.rS T) (Λ : LV D),
     IsRowLat D F0 Λ → ∃ σ ∈ Lrep Λ (lf D F0), (VS D).hT σ F0.z = 1 := by

@@ -15,39 +15,33 @@ end GlobalTheory.PairReadPf
 open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil GlobalTheory.ThetaGL GlobalTheory.PairReadPf in
 attribute [local instance] GlobalTheory.NPin.ThetaMod.acg GlobalTheory.NPin.ThetaMod.mod in
 /- English proof (translation)
-Introduce `hBZ hL D P J S hT hRU i w hw σ Q hPairs`. Take `⟨s, rfl⟩` from `exists_splitPlace_w D w hw`. Take `⟨j, hj⟩ : ∃ j : Fin D.R.m, j.1 + 1 = D.nd.j i` from `⟨⟨D.nd.j i - 1, by have := D.nd.j_range i; omega⟩, by have := D.nd.j_range i; simp only; omega⟩`. Take `⟨f, hf, F, hF, hne⟩` from `hPairs`. Establish `hFmem : (P.M.loc i).real F ∈ NG.AFall D.host.E D.R.nV (P.M.loc i).wt.ρ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: (P.M.loc i).real F ∈ LinearMap.range (P.M.loc i).real` using `LinearMap.mem_range_self _ _`. Rewrite `this` using `[(P.M.loc i).real_range]`. Conclude with `this.1`. Set `X` to `J.rowM i`. Set `Θ` to `J.th i j hj`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `Fp : ↥(NG.AFall D.host.E D.R.nV (P.M.loc i).wt.ρ)` to `⟨_, hFmem⟩`. Set `yp : ↥X.C` to `⟨X.φ f, X.φ_mem f⟩`. Establish `h0 : Θ.Λ Θ.φ₀ Fp yp ≠ 0`. Rewrite using `[← Θ.read F f Fp rfl]`. Introduce `h`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hne` to reduce the goal to its premises. Use `show inner ℂ F (LinearMap.adjoint (D.what₂.thetaP (D.nd.mu i) (D.nd.j i)) f) = 0`. Rewrite using `[LinearMap.adjoint_inner_right, ← inner_conj_symm, h, map_zero]`. Establish `hμc` using `hT.mu i s.w hw j hj`. Establish `hηc` using `hT.eta i s.w hw`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hloc` using `Θ.loc s _ _ hμc hηc`. Set `ℓ0 : Θ.Ω →+ ℂ` to `AddMonoidHom.mk' (fun φ => Θ.Λ φ Fp yp) (by intro a b; simp)`. Take `⟨ι, φ1, hφ1, hℓ1⟩` from `exists_ne_of_mem_iSup _ ℓ0 hloc h0`. Take `⟨hLin, φ2, ⟨Φ0, rfl⟩, hℓ2⟩` from `exists_ne_of_mem_iSup _ ℓ0 hφ1 hℓ1`. Take `⟨c, hc, hci, hιeq⟩` from `hLin`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hFiso : (Fp : GAf D.host.E D.R.nV → (P.M.loc i).wt.W) ∈ NG.isoTyp (P.M.loc i).wt.ρ (P.H.av.S i Q)`. Use `hF` as an intermediate fact. Rewrite `this` using `[P.H.av.typeV]`. Conclude with `this`. Establish `hspan` using `GlobalTheory.T.isotypicPart_spanned_by_splitPlace_localComponent D.host.E D.R.nV (P.M.loc i).wt (P.H.av.S i Q) (P.H.av.irr i Q) s _ (hT.rep i s hw Q) c hc hci`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Set `ℓF : ↥(NG.AFall D.host.E D.R.nV (P.M.loc i).wt.ρ) →+ ℂ` to `AddMonoidHom.mk' (fun F' => Θ.Λ (ι Φ0) F' yp) (by intro a b; simp)`. Take `⟨T1, F1, hF1, hℓF1⟩` from `exists_ne_of_mem_iSup_sub _ _ (fun T => iSup_le fun hT1 => by rintro _ ⟨v, rfl⟩; exact hT1.1 v) ℓF Fp (hspan hFiso) hℓ2`. Take `⟨hT1, F2, ⟨a0, ha0⟩, hℓF2⟩` from `exists_ne_of_mem_iSup_sub _ _ (fun hT1 => by rintro _ ⟨v, rfl⟩; exact hT1.1 v) ℓF F1 hF1 hℓF1`. Establish `hσne : D.what₂.isot (D.nd.j i) σ ≠ ⊥`. Introduce `hb`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Establish an intermediate fact.
 
-Rewrite `hf` using `[hb, Submodule.mem_bot]`. Substitute `hf` using the available equality. Conclude with `hne (by simp)`. Establish `hyI : (yp : X.A) ∈ Formalism.IndefR.principalLevelFrame.isotIn (D` using `D) X.ρ X.C (P.rep σ) := (X.isot σ f).1 hf`. Unfold `Formalism.IndefR.principalLevelFrame.isotIn at hyI`.
+Replace the relevant objects with their definitions. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Set `ℓy : ↥X.C →+ ℂ` to `(Θ.Λ (ι Φ0) F2).toAddMonoidHom`. Take `⟨Φe, y1, hy1, hℓy1⟩` from `exists_ne_of_mem_iSup_sub X.C _ (fun Φe => iSup_le fun h => h.2) ℓy yp hyI hℓF2`. Take `⟨hΦe, y2, ⟨f2, hf2⟩, hℓy2⟩` from `exists_ne_of_mem_iSup_sub X.C _ (fun h => h.2) ℓy y1 hy1 hℓy1`. Establish `hΦC : ∀ g : ↥(P.rep σ).S, Φe g ∈ X.C` using `fun g => hΦe.2 (LinearMap.mem_range_self _ _)`. Establish `hspan2` using `GlobalTheory.T.finiteType_spanned_by_splitPlace_localComponent D.host.E D.R.r (P.rep σ) s _ (hT.row i s hw σ hσne) c hc hci`.
+Establish an intermediate fact. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Set `ℓ2 : ↥(P.rep σ).S →+ ℂ` to `AddMonoidHom.mk' (fun g => Θ.Λ (ι Φ0) F2 ⟨Φe g, hΦC g⟩) (by`. Introduce `a b`. Establish `e : (⟨Φe (a + b), hΦC (a + b)⟩ : ↥X.C) = ⟨Φe a, hΦC a⟩ + ⟨Φe b, hΦC b⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show Θ.Λ (ι Φ0) F2 ⟨Φe (a + b), hΦC (a + b)⟩ = Θ.Λ (ι Φ0) F2 ⟨Φe a, hΦC a⟩ + Θ.Λ (ι Φ0) F2 ⟨Φe b, hΦC b⟩`. Rewrite using `[e, map_add])`. Establish `hℓ2f2 : ℓ2 f2 ≠ 0`. Establish `e : (⟨Φe f2, hΦC f2⟩ : ↥X.C) = y2` using `Subtype.ext hf2`. Use `show Θ.Λ (ι Φ0) F2 ⟨Φe f2, hΦC f2⟩ ≠ 0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `hℓy2`. Take `⟨T2, g1, hg1, hℓg1⟩` from `exists_ne_of_mem_iSup_sub _ _ (fun T => iSup_le fun hT2 => by rintro _ ⟨v, rfl⟩; exact hT2.1 v) ℓ2 f2 (hspan2 f2.2) hℓ2f2`. Take `⟨hT2, g2, ⟨c0, hc0⟩, hℓg2⟩` from `exists_ne_of_mem_iSup_sub _ _ (fun hT2 => by rintro _ ⟨v, rfl⟩; exact hT2.1 v) ℓ2 g1 hg1 hℓg1`. Set `T' : ((S i s.w hw).rep Q).V →ₗ[ℂ] ↥(NG.AFall D.host.E D.R.nV (P.M.loc i).wt.ρ)` to `T1.codRestrict _ hT1.1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `T'' : ((S i s.w hw).row σ).V →ₗ[ℂ] ↥X.C` to `(Φe ∘ₗ T2.codRestrict _ hT2.1).codRestrict X.C (fun v => hΦC _)`. Establish `hT'eq : ∀ x : GAf D.host.E D.R.nV, TrivOutside {s.v} x → ∀ a, ((T' (((S i s.w hw).rep Q).π (Matrix.GeneralLinearGroup.map c.toRingHom (s.loc D.R.nV x)) a) : ↥(NG.AFall D.host.E D.R.nV (P.M.loc i).wt.ρ)) : GAf D.host.E D.R.nV → (P.M.loc i).wt.W) = NG.rt D.host.E D.R.nV x (T' a : G …` using `fun x hx a => hT1.2 x hx a`. Establish `hT''eq : ∀ x : GAf D.host.E D.R.r, TrivOutside {s.v} x → ∀ a, ((T'' (((S i s.w hw).row σ).π (Matrix.GeneralLinearGroup.map c.toRingHom (s.loc D.R.r x)) a) : ↥X.C) : X.A) = X.ρ x (T'' a)`. Introduce `x hx a`. Establish `e : (⟨T2 (((S i s.w hw).row σ).π (Matrix.GeneralLinearGroup.map c.toRingHom (s.loc D.R.r x)) a), hT2.1 _⟩ : ↥(P.rep σ).S) = ⟨NG.rt D.host.E D.R.r x (T2 a), (P.rep σ).stable x _ (hT2.1 a)⟩` using `Subtype.ext (hT2.2 x hx a)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the equality to equality of the corresponding arguments.
 
-Use `show Φe ⟨_, _⟩ = X.ρ x (Φe ⟨T2 a, hT2.1 a⟩)`. Rewrite using `[e]`. Conclude with `hΦe.1 x ⟨T2 a, hT2.1 a⟩`. Set `b` to `((Θ.Λ ∘ₗ ι).compl₂ T').compr₂ (precompₛ T'')`. Establish `hb0 : b Φ0 a0 c0 ≠ 0`.
-
-Establish `e1 : T' a0 = F2` using `Subtype.ext ha0`. Establish `e2 : T'' c0 = ⟨Φe g2, hΦC g2⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show Φe ⟨T2 c0, hT2.1 c0⟩ = Φe g2`. Use `congr 1`.
-
-Conclude with `Subtype.ext hc0`. Use `show Θ.Λ (ι Φ0) (T' a0) (T'' c0) ≠ 0`. Rewrite using `[e1, e2]`. Conclude with `hℓg2`. Use `GlobalTheory.T.thetaPairing_of_invariant_trilinear_form _ D.R.r (D.R.r + D.R.t) _ _ (S i s.w hw).mu ((S i s.w hw).row σ).π (twist ((S i s.w hw).rep Q).π (detChar (Fin (D.R.r + D.R.t)) (S i s.w hw).eta)) ((hBZ _).1 (Fin D.R.r) _ _ ((S i s.w hw).row σ).smooth ((S i s.w hw).row σ).i …` and prove the remaining obligations.
-
-Introduce `g h Φ Φ' hΦ a c'`. Conclude with `GlobalTheory.T.thetaTrilinearForm_localGroup_invariant D P.M i P.rep X _ _ Θ s (S i s.w hw).mu (S i s.w hw).eta ι c hιeq _ _ ((S i s.w hw).rep Q).π ((S i s.w hw).row σ).π T' hT'eq T'' hT''eq g h Φ Φ' hΦ a c'`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.NPin.pairRead_of_join_alt : GlobalTheory.Published.BernsteinZelevinskyFiniteness → ∀ (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (D : D7) (P : _root_.GlobalTheory.NPin.CharacterChoiceData hL D), _root_.GlobalTheory.NPin.CharacterChoiceJoin P → ∀ S : Reading P.T, _root_.GlobalTheory.NPin.IsFaithfulReading P S → RowUnit S → PairRead S := by
   intro hBZ hL D P J S hT hRU i w hw σ Q hPairs

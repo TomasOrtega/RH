@@ -6,19 +6,19 @@ open scoped TensorProduct
 namespace GlobalTheory.CompanionTheory.BZRes
 
 /- English proof (translation)
-Take `⟨O, hO, hsec⟩` from `hL Set.univ Filter.univ_mem B₀ hB₁`. Establish `hemb : Topology.IsClosedEmbedding (Subtype.val : P → G)` using `hP.isClosedEmbedding_subtypeVal`. Establish `hC₁ : IsCompact ((Subtype.val : P → G) ⁻¹' B₀)` using `hemb.isCompact_preimage hB`. Use `hD.induction_on (p := fun T => ∃ C : Set P, IsCompact C ∧ ∀ g ∈ T, ∃ q ∈ Q, ∃ c ∈ C, g = q * x * c) ⟨∅, isCompact_empty, by simp⟩ ?_ ?_ ?_` and prove the remaining obligations. Introduce and unpack `S T hST ⟨C, hC, h⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨C, hC, fun g hg => h g (hST hg)⟩`. Introduce and unpack `S T ⟨C, hC, h⟩ ⟨C', hC', h'⟩`. Use `⟨C ∪ C', hC.union hC', ?_⟩` and prove the remaining obligations. Introduce and unpack `g (hg | hg)`. Take `⟨q, hq, c, hc, e⟩` from `h g hg`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨q, hq, c, Or.inl hc, e⟩`. Take `⟨q, hq, c, hc, e⟩` from `h' g hg`. Conclude with `⟨q, hq, c, Or.inr hc, e⟩`. Introduce `g₀ hg₀`. Take `⟨q₀, hq₀, p₀, hp₀, e₀⟩` from `hDc hg₀`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hcont : Continuous fun g : G => (q₀ * x)⁻¹ * g * p₀⁻¹` using `by fun_prop`. Establish `hval : (q₀ * x)⁻¹ * g₀ * p₀⁻¹ = 1`. Rewrite using `[e₀]`. Use `group`. Establish `hU : (fun g : G => (q₀ * x)⁻¹ * g * p₀⁻¹) ⁻¹' O ∈ 𝓝 g₀` using `hcont.continuousAt.preimage_mem_nhds (by rw [hval]; exact hO)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨D ∩ (fun g : G => (q₀ * x)⁻¹ * g * p₀⁻¹) ⁻¹' O, Filter.inter_mem self_mem_nhdsWithin (mem_nhdsWithin_of_mem_nhds hU), (fun c : P => c * (⟨p₀, hp₀⟩ : P)) '' ((Subtype.val : P → G) ⁻¹' B₀), hC₁.image (by fun_prop), ?_⟩` and prove the remaining obligations. Introduce and unpack `g ⟨hgD, hgU⟩`. Take `⟨q', hq', p', hp', e'⟩` from `hDc hgD`. Establish `hxu : x * ((q₀ * x)⁻¹ * g * p₀⁻¹) ∈ dcos Q P x`. Use `⟨q₀⁻¹ * q', Q.mul_mem (Q.inv_mem hq₀) hq', p' * p₀⁻¹, P.mul_mem hp' (P.inv_mem hp₀), ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e']`. Use `group`. Take `⟨s, hs, -, p₂, hp₂, hp₂B, e₂⟩` from `hsec _ hgU hxu`. Use `⟨q₀ * s, Q.mul_mem hq₀ hs, ⟨p₂, hp₂⟩ * ⟨p₀, hp₀⟩, ⟨⟨p₂, hp₂⟩, hp₂B, rfl⟩, ?_⟩` and prove the remaining obligations. Establish `e₃ : g = q₀ * (x * ((q₀ * x)⁻¹ * g * p₀⁻¹)) * p₀` using `by group`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[e₃, e₂]`. Simplify using `[mul_assoc]`.
+A detailed English derivation is pending.
 -/
 theorem dcos_compact_lift {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] {Q P : Subgroup G} {x : G}
     (hL : LocSec Q P x) (hP : IsClosed (P : Set G)) (B₀ : Set G) (hB : IsCompact B₀) (hB₁ : B₀ ∈ 𝓝 (1 : G))

@@ -7,9 +7,9 @@ set_option autoImplicit false
 namespace GlobalTheory.LatticeBasisClosedBall
 
 /- English proof (translation)
-Establish `hdim : Fintype.card (Fin (2 * g)) = Module.finrank ℝ (Fin g → ℂ)`. Rewrite using `[Module.finrank_pi_fintype]`. Simplify using `[Complex.finrank_real_complex, mul_comm]`. Establish `hspan : Submodule.span ℝ (Set.range lam) = ⊤` using `hli.span_eq_top_of_card_eq_finrank' hdim`. Establish `hw : w ∈ Submodule.span ℝ (Set.range lam)` using `hspan ▸ Submodule.mem_top`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(Submodule.mem_span_range_iff_exists_fun ℝ).1 hw`.
+A detailed English derivation is pending.
 -/
 theorem exists_real_coords {g : ℕ} (lam : Fin (2 * g) → Fin g → ℂ) (hli : LinearIndependent ℝ lam)
     (w : Fin g → ℂ) : ∃ c : Fin (2 * g) → ℝ, ∑ j, c j • lam j = w := by
@@ -21,13 +21,13 @@ theorem exists_real_coords {g : ℕ} (lam : Fin (2 * g) → Fin g → ℂ) (hli 
   exact (Submodule.mem_span_range_iff_exists_fun ℝ).1 hw
 
 /- English proof (translation)
-Introduce `g H lam R hli hmem hR hball`. Establish `hint : ∀ m : Fin (2 * g) → ℤ, ∑ j, m j • lam j ∈ H` using `fun m => H.sum_mem fun j _ => H.zsmul_mem (hmem j) (m j)`. Use `⟨hli, fun w => ⟨fun hw => ?_, ?_⟩⟩` and prove the remaining obligations. Take `⟨c, hc⟩` from `exists_real_coords lam hli w`. Establish `hsplit : w - ∑ j, ⌊c j⌋ • lam j = ∑ j, Int.fract (c j) • lam j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← hc, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Int.fract, sub_smul, Int.cast_smul_eq_zsmul]`. Establish `hH : w - ∑ j, ⌊c j⌋ • lam j ∈ H` using `H.sub_mem hw (hint _)`. Establish `hnorm : w - ∑ j, ⌊c j⌋ • lam j ∈ Metric.closedBall (0 : Fin g → ℂ) R`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[mem_closedBall_zero_iff, hsplit]`. Use `(norm_sum_le _ _).trans (le_trans (Finset.sum_le_sum fun j _ => ?_) hR)` and prove the remaining obligations. Rewrite using `[norm_smul, Real.norm_eq_abs, abs_of_nonneg (Int.fract_nonneg _)]`. Conclude with `mul_le_of_le_one_left (norm_nonneg _) (Int.fract_lt_one _).le`. Take `⟨m, hm⟩` from `hball _ hnorm hH`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun j => m j + ⌊c j⌋, ?_⟩` and prove the remaining obligations. Simplify using `only [add_smul, Finset.sum_add_distrib]`. Rewrite using `[← hm, sub_add_cancel]`. Introduce and unpack `⟨m, rfl⟩`. Conclude with `hint m`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem isLatBasis_of_closedBall : ∀ {g : ℕ} (H : AddSubgroup (Fin g → ℂ)) (lam : Fin (2 * g) → Fin g → ℂ)
     (R : ℝ), LinearIndependent ℝ lam → (∀ j : Fin (2 * g), lam j ∈ H) → ∑ j : Fin (2 * g), ‖lam j‖ ≤ R →

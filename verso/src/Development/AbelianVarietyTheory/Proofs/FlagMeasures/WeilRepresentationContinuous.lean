@@ -21,15 +21,13 @@ variable {D : D7} {θ : InfFam D} {σ : (D.what₂.Tau → ℂ) →+ Formalism.L
 variable {χS χT : (Formalism.L2.Theta.AE D)ˣ →* Circle} {om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)}
 
 /- English proof (translation)
-Take `⟨i1, i2, -⟩` from `GlobalTheory.AdelicMatrixLattice.lattice D T S`. Establish `hcont : Continuous fun z : WO S T × (GA D S × GA D T) => actO S T z.2.1⁻¹ z.2.2⁻¹ z.1`. Unfold `actO`. Simplify using `only [inv_inv]`. Conclude with `(((GlobalTheory.RealWeil.continuous_mt T).2.comp (continuous_snd.comp continuous_snd)).matrix_mul continuous_fst).matrix_mul ((GlobalTheory.RealWeil.continuous_mt S).1.comp (continuous_fst.comp continuous_snd))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hev : ∀ᶠ z in 𝓝 ((0 : WO S T), p₀), actO S T z.2.1⁻¹ z.2.2⁻¹ z.1 ∈ U`. Use `hcont.continuousAt.preimage_mem_nhds (hU.mem_nhds ?_)` and prove the remaining obligations. Use `show actO S T p₀.1⁻¹ p₀.2⁻¹ 0 ∈ U`. Unfold `actO`. Rewrite using `[Matrix.mul_zero, Matrix.zero_mul]`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `U.zero_mem`. Rewrite `hev` using `[nhds_prod_eq]`. Take `⟨pa, ha, pb, hb, hab⟩` from `eventually_prod_iff.1 hev`. Take `⟨K₀, h0, hsub, hK₀⟩` from `LocallyCompactSpace.local_compact_nhds (X := WA T S) 0 _ ha`. Use `⟨K₀, h0, hK₀, hb.mono fun p hp φ hφ hl u hu hinf => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Take `⟨g, h⟩` from `p`. Establish `hv : (actO S T g⁻¹ h⁻¹ u).map (infPart D) = 0`. Unfold `actO`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, hinf, Matrix.mul_zero, Matrix.zero_mul]`. Establish `e` using `hom.om_heis g h (actO S T g⁻¹ h⁻¹ u) φ hφ`.
-
-Rewrite `e` using `[hl _ (hab (hsub hu) hp) hv, actO_mul, mul_inv_cancel, mul_inv_cancel, actO_one]`. Conclude with `e.symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem level_near (hom : IsWeilDatumO ψ S T χS χT om) {U : AddSubgroup (WO S T)}
     (hU : IsOpen (U : Set (WO S T))) (p₀ : GA D S × GA D T) :
@@ -61,7 +59,7 @@ theorem level_near (hom : IsWeilDatumO ψ S T χS χT om) {U : AddSubgroup (WO S
   exact e.symm
 
 /- English proof (translation)
-Generalize the expression as in `hu : w - iotaW σ T S (piW θ T S w) = u`. Establish `hp : piW θ T S u = 0`. Rewrite using `[← hu, AddMonoidHom.map_sub, hc.pi_iota, sub_self]`. Use extensionality with `i j`. Conclude with `ThetaCont.infPart_eq_zero hc _ fun τ => congrFun (congrFun (congrFun hp τ) i) j`.
+Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem infPart_sub (hc : Chart θ σ) (w : WO S T) : (w - iotaW σ T S (piW θ T S w)).map (infPart D) = 0 := by
   generalize hu : w - iotaW σ T S (piW θ T S w) = u
@@ -71,7 +69,7 @@ theorem infPart_sub (hc : Chart θ σ) (w : WO S T) : (w - iotaW σ T S (piW θ 
   exact ThetaCont.infPart_eq_zero hc _ fun τ => congrFun (congrFun (congrFun hp τ) i) j
 
 /- English proof (translation)
-Use `continuous_pi fun τ => ?_` and prove the remaining obligations. Unfold `mov`. Simplify using `only [inv_inv]`. Conclude with `(((GlobalTheory.RealWeil.continuous_compAt hθ τ _ _).comp ((GlobalTheory.RealWeil.continuous_mt T).2.comp (continuous_snd.comp continuous_fst))).matrix_mul ((continuous_apply τ).comp continuous_snd)).matrix_mul ((GlobalTheory.RealWeil.continuous_compAt hθ τ _ _).comp ((GlobalTheo …`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuous_mov₂ (hθ : IsInfFam θ) :
     Continuous fun z : (GA D S × GA D T) × RW T S => mov θ z.1.1⁻¹ z.1.2⁻¹ z.2 := by
@@ -84,7 +82,7 @@ theorem continuous_mov₂ (hθ : IsInfFam θ) :
       (continuous_fst.comp continuous_fst)))
 
 /- English proof (translation)
-Establish `hc` using `continuous_mov₂ (S := S) (T := T) hθ`. Take `⟨κ, hκ⟩` from `hK.exists_bound_of_continuousOn (hc.comp (Continuous.prodMk_right p₀)).continuousOn`. Use `⟨max 1 (κ + 1), le_max_left _ _, hK.eventually_forall_of_forall_eventually fun z hz => ?_⟩` and prove the remaining obligations. Establish `: ∀ᶠ y in 𝓝 (p₀, z), ‖mov θ y.1.1⁻¹ y.1.2⁻¹ y.2‖ < κ + 1` using `hc.norm.continuousAt.eventually_lt continuousAt_const ((hκ z hz).trans_lt (lt_add_one κ))`. Conclude with `this.mono fun y hy => hy.le.trans (le_max_right _ _)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mov_bound (hθ : IsInfFam θ) (p₀ : GA D S × GA D T) {K : Set (RW T S)} (hK : IsCompact K) :
     ∃ ρ : ℝ, 1 ≤ ρ ∧ ∀ᶠ p in 𝓝 p₀, ∀ z ∈ K, ‖mov θ p.1⁻¹ p.2⁻¹ z‖ ≤ ρ := by
@@ -96,23 +94,21 @@ theorem mov_bound (hθ : IsInfFam θ) (p₀ : GA D S × GA D T) {K : Set (RW T S
   exact this.mono fun y hy => hy.le.trans (le_max_right _ _)
 
 /- English proof (translation)
-Establish `hψ` using `hom.std`. Establish `hθ` using `hc.inf`. Establish `b` using `Module.finBasis ℝ (RW T S)`. Generalize the expression as in `Module.finrank ℝ (RW T S) = N at b`. Take `⟨U, hU, hl⟩` from `hf.level`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result.
 
-Take `⟨K₀, h0, hK₀, hlev⟩` from `level_near hom hU p₀`. Take `⟨c, hc0, hcube⟩` from `cube_bound hom hc b h0 hK₀`. Take `⟨C₁, hC₁0, hC₁⟩` from `words_bound (dvL hc hψ S T) (fun w => (LinearMap.proj w).comp (thetaSub ψ S T).subtype) (fun m => theta_bounded hψ m.2) (1 + N) ⟨f, hf⟩`. Take `⟨ρ, hρ1, hρ⟩` from `mov_bound hθ p₀ ((isCompact_closedBall (0 : RW T S) 1).union (Set.finite_range b).isCompact)`. Use `⟨√(4 ^ N * (c * (C₁ * ρ ^ (1 + N)) ^ 2)), (hlev.and hρ).mono fun p hp z hz w => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨g, h⟩` from `p`. Take `⟨hlev, hρ⟩` from `hp`. Set `wd : List (RW T S) → thetaSub ψ S T` to `fun l => l.foldl (fun m z => dvL hc hψ S T z m) ⟨f, hf⟩`. Set `A : ℕ → Set (WO S T → ℂ)` to `fun p => {F | ∃ l : List (RW T S), l.length ≤ p ∧ (∀ u ∈ l, ‖u‖ ≤ ρ) ∧ F = om (g, h) (wd l).1}`. Establish `key` using `sobolev_iter N 1 (fun i r => iotaW σ T S (r • b i)) A (c * (C₁ * ρ ^ (1 + N)) ^ 2) w (fun i => (hc.continuous_iota T S).comp (continuous_id.smul continuous_const)) (fun p q hpq F ⟨l, h1, h2⟩ => ⟨l, h1.trans hpq, h2⟩) ?_ ?_ (dv θ σ S T z (om (g, h) f)) ⟨[mov θ g⁻¹ h⁻¹ z], le_rfl, …`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[List.mem_singleton.1 hu]`. Conclude with `hρ z (Or.inl (mem_closedBall_zero_iff.2 hz)), dv_om hom hc g h z hf⟩`. Conclude with `Real.le_sqrt_of_sq_le key`. Introduce and unpack `p _ ⟨l, h1, h2, rfl⟩`. Establish `hF` using `hom.om_pres (g, h) _ (wd l).2`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Use `⟨hF.cont, fun i => ⟨_, ⟨l ++ [mov θ g⁻¹ h⁻¹ (b i)], by simpa using h1, fun u hu => ?_, ?_⟩, sobolev_step hc hψ (b i) hF⟩⟩` and prove the remaining obligations. Break down `List.mem_append.1 hu with hu | hu` into its components or cases. Conclude with `h2 u hu`. Rewrite using `[List.mem_singleton.1 hu]`. Conclude with `hρ _ (Or.inr ⟨i, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Assume the hypotheses and unpack their components.
 
-Rewrite using `[dv_om hom hc g h (b i) (wd l).2]`. Simplify using `only [wd, List.foldl_append]`. Both sides reduce to the same expression. Introduce and unpack `_ ⟨l, h1, h2, rfl⟩`. Establish `hφ` using `(wd l).2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e` using `hom.om_heis g h (actO S T g⁻¹ h⁻¹ w) _ hφ`. Rewrite `e` using `[actO_mul, mul_inv_cancel, mul_inv_cancel, actO_one]`. Establish `hn : ∀ x, ‖om (g, h) (heisO ψ S T (actO S T g⁻¹ h⁻¹ w) (wd l).1) x‖ = ‖om (g, h) (wd l).1 (w + x)‖` using `fun x => by`. Rewrite using `[e, GlobalTheory.HeisOrtho.norm_heisO hψ.1, add_comm]`. Use `hcube (g, h) _ (GlobalTheory.ThetaClosed.isThetaFunO_heisO_all hψ hφ (actO S T g⁻¹ h⁻¹ w)) (fun x hx => by` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `e2` using `hlev _ hφ (fun u hu h0 => words_level hc hψ h0 l _ (hl u hu h0)) _ hx (infPart_sub hc x)`. Rewrite using `[hn, hn]`. Use `conv_rhs => rw [← e2, GlobalTheory.HeisOrtho.norm_heisO hψ.1, add_assoc, add_sub_cancel]) (C₁ * ρ ^ (1 + N)) (fun x => by`. Rewrite using `[GlobalTheory.HeisOrtho.norm_heisO hψ.1]`. Conclude with `hC₁ ρ hρ1 l h1 h2 _)`.
-
-Simplify `this` using `only [hn, zero_add]`.
+A detailed English derivation is pending.
 -/
 theorem deriv_bound (hom : IsWeilDatumO ψ S T χS χT om) (hc : Chart θ σ) {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f)
     (p₀ : GA D S × GA D T) :
@@ -166,11 +162,11 @@ theorem deriv_bound (hom : IsWeilDatumO ψ S T χS χT om) (hc : Chart θ σ) {f
     simpa only [hn, zero_add] using this
 
 /- English proof (translation)
-Establish `hz : ‖‖x‖⁻¹ • x‖ ≤ 1`. Rewrite using `[norm_smul, norm_inv, norm_norm]`. Conclude with `inv_mul_le_one_of_le₀ le_rfl (norm_nonneg _)`. Establish `hx : ‖x‖ • ‖x‖⁻¹ • x = x`. Break down `eq_or_ne x 0 with rfl | h` into its components or cases.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[smul_inv_smul₀ (norm_ne_zero_iff.2 h)]`. Take `⟨L, hL, e, e'⟩` from `exists_line hc hψ (‖x‖⁻¹ • x)`. Establish `h1` using `convex_univ.norm_image_sub_le_of_norm_hasDerivWithin_le (C := C) (fun s _ => (hasDerivAt_heisO hc.inf hψ hL hF w s).hasDerivWithinAt) (fun s _ => by`. Rewrite using `[GlobalTheory.HeisOrtho.norm_heisO hψ.1, ← e']`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Conclude with `hC _ hz _) (Set.mem_univ 0) (Set.mem_univ ‖x‖)`. Rewrite `h1` using `[L.map_zero, heisO_zero, e, hx, sub_zero, norm_norm]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem norm_heisO_sub_le (hc : Chart θ σ) (hψ : IsStdChar D ψ (-1)) {F : WO S T → ℂ} (hF : IsThetaFunO ψ S T F) {C : ℝ}
     (hC : ∀ z : RW T S, ‖z‖ ≤ 1 → ∀ w, ‖dv θ σ S T z F w‖ ≤ C) (x : RW T S) (w : WO S T) :
@@ -190,21 +186,21 @@ theorem norm_heisO_sub_le (hc : Chart θ σ) (hψ : IsStdChar D ψ (-1)) {F : WO
   rwa [L.map_zero, heisO_zero, e, hx, sub_zero, norm_norm] at h1
 
 /- English proof (translation)
-Establish `hψ` using `hom.std`. Take `⟨θ, hθ⟩` from `hψ.2.1`. Take `⟨σ, hc⟩` from `GlobalTheory.RealLineAt.exists_inverse_chart hθ`. Take `⟨i1, -⟩` from `GlobalTheory.AdelicMatrixLattice.lattice D T S`. Establish `: ContinuousSub (WA T S)` using `IsTopologicalAddGroup.to_continuousSub`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `continuous_iff_continuousAt.2 fun ⟨p₀, w₀⟩ => ?_` and prove the remaining obligations. Take `⟨U, hU, hl⟩` from `hf.level`. Take `⟨K₀, h0, -, hlev⟩` from `level_near hom hU p₀`. Take `⟨C, hC⟩` from `deriv_bound hom hc hf p₀`. Set `x : WA T S → RW T S` to `fun w => piW θ T S (w - w₀)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `u : WA T S → WA T S` to `fun w => (w - w₀) - iotaW σ T S (x w)`. Establish `hx : Continuous x` using `(continuous_pi' hθ T S).comp (continuous_id.sub continuous_const)`. Establish `hix : Continuous fun w => iotaW σ T S (x w)` using `(hc.continuous_iota T S).comp hx`. Establish `hu : Continuous u` using `(continuous_id.sub continuous_const).sub hix`. Establish `hx0 : x w₀ = 0` using `by simp only [x, sub_self, map_zero]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu0 : u w₀ = 0` using `by simp only [u, hx0, sub_self, map_zero]`. Set `c : WA T S → ℂ` to `fun w => ψ (-symplOH S T (w₀ + iotaW σ T S (x w)) (u w)) * ψ (-symplOH S T w₀ (iotaW σ T S (x w)))`. Establish `hcc : Continuous c` using `(hψ.1.1.comp (GlobalTheory.WeilVacMove.continuous_symplOH S T (continuous_const.add hix) hu).neg).mul (hψ.1.1.comp (GlobalTheory.WeilVacMove.continuous_symplOH S T continuous_const hix).neg)`. Establish `hc0 : c w₀ = 1`. Simplify using `only [c, hx0, hu0, map_zero, GlobalTheory.WeilVacMove.symplOH_zero_right, neg_zero, AddChar.map_zero_eq_one, mul_one]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `t1 : Tendsto (fun q : (GA D S × GA D T) × WO S T => heisO ψ S T (iotaW σ T S (x q.2)) (om q.1 f) w₀ - om q.1 f w₀) (𝓝 (p₀, w₀)) (𝓝 0)`. Use `squeeze_zero_norm' (a := fun q => C * ‖x q.2‖) ?_ ?_` and prove the remaining obligations. Conclude with `(continuous_fst.continuousAt.eventually hC).mono fun q hq => norm_heisO_sub_le hc hψ (hom.om_pres _ f hf) hq _ _`. Establish `h3 : Continuous fun q : (GA D S × GA D T) × WO S T => C * ‖x q.2‖` using `continuous_const.mul (hx.comp continuous_snd).norm`. Simplify `h3.tendsto (p₀, w₀)` using `only [hx0, norm_zero, mul_zero]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `t2` using `((hcc.comp continuous_snd).tendsto (p₀, w₀)).mul (t1.add (((hom.om_cont f hf w₀).comp continuous_fst).tendsto (p₀, w₀)))`. Simplify using `only [Function.comp_apply, hc0, one_mul, zero_add, sub_add_cancel] at t2`. Use `t2.congr' ?_` and prove the remaining obligations. Establish `ev : ∀ᶠ q : (GA D S × GA D T) × WO S T in 𝓝 (p₀, w₀), u q.2 ∈ K₀` using `(hu.comp continuous_snd).continuousAt.preimage_mem_nhds (by show K₀ ∈ 𝓝 (u w₀)`. Rewrite using `[hu0]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h0)`. Use `filter_upwards [ev, continuous_fst.continuousAt.eventually hlev] with q h1 h2`. Establish `e` using `congrFun (h2 f hf hl _ h1 (infPart_sub hc _)) (w₀ + iotaW σ T S (x q.2))`. Establish `e2 : w₀ + iotaW σ T S (x q.2) + u q.2 = q.2` using `by simp only [u]; abel`. Rewrite `e` using `[heisO, e2]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[heisO, ← e]`. Simplify using `only [c]`. Establish `n1 : ∀ a, ψ (-a) * ψ a = 1` using `fun a => by`. Rewrite using `[← AddChar.map_add_eq_mul, neg_add_cancel, AddChar.map_zero_eq_one]`. Take the linear combination `(om q.1 f q.2 * (ψ (-symplOH S T (w₀ + iotaW σ T S (x q.2)) (u q.2)) * ψ (symplOH S T (w₀ + iotaW σ T S (x q.2)) (u q.2)))) * n1 (symplOH S T w₀ (iotaW σ T S (x q.2))) + om q.1 f q.2 * n1 (symplOH S T (w₀ + iotaW σ T S (x q.2)) (u q.2))`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem continuous_om_oriented (hom : IsWeilDatumO ψ S T χS χT om) {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) :
     Continuous fun q : (GA D S × GA D T) × WO S T => om q.1 f q.2 := by
@@ -261,11 +257,9 @@ theorem continuous_om_oriented (hom : IsWeilDatumO ψ S T χS χT om) {f : WO S 
 open GlobalTheory.Mem.Th in
 
 /- English proof (translation)
-Establish `small : ∀ {V W : HSp D} {χ χ' : IdC D} {om : GA D V × GA D W →* Module.End ℂ (ThS ψ V W)}, admitted V W χ χ' → V.rank < W.rank → IsWeilOn ψ V W χ χ' om → ∀ Φ : ThS ψ V W, Continuous fun q : (GA D V × GA D W) × WA V W => (om q.1 Φ).1 q.2`. Introduce `V W χ χ' om ha hr hw Φ`. Take `⟨omO, hO, e⟩` from `GlobalTheory.Mem.WeilOriented.exists_isWeilDatumO D ψ hψ V W χ χ' om ha hr hw`. Establish `h` using `(continuous_om_oriented hO ((GlobalTheory.OrientedCoord.isThetaFunO_coord V W hr.le ψ _).2 (mem_ThS.1 Φ.2))).comp (continuous_fst.prodMk ((GlobalTheory.OrientedCoord.continuous_coord_symm V W).comp continuous_snd))`. Use `h.congr fun q => (congrFun (e q.1 Φ) _).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `congrArg (om q.1 Φ).1 ((GlobalTheory.OrientedCoord.coord V W).apply_symm_apply q.2)`. Break down `ha.1.lt_or_gt with hr | hr` into its components or cases. Conclude with `small ha hr hw Φ`. Take `⟨om', hw', e⟩` from `GlobalTheory.Mem.WeilSwap.exists_isWeilOn_swap D ψ hψ V W χ χ' om ha.1 hw`. Establish `h` using `(small ⟨ha.1.symm, ha.2.2.1, ha.2.1, ha.2.2.2.2, ha.2.2.2.1⟩ hr hw' (GlobalTheory.Mem.WeilSwap.trEquiv ψ ha.1 Φ)).comp ((continuous_swap.comp continuous_fst).prodMk (continuous_snd.matrix_transpose : Continuous fun q : (GA D V × GA D W) × WA V W => q.2.transpose))`.
-
-Conclude with `h.congr fun q => e q.1.1 q.1.2 Φ _ (fun _ => rfl) q.2`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_om_pair (hψ : IsStdChar D ψ (-1)) {V W : HSp D} {χ χ' : IdC D}
     {om : GA D V × GA D W →* Module.End ℂ (ThS ψ V W)} (ha : admitted V W χ χ') (hw : IsWeilOn ψ V W χ χ' om)
@@ -290,15 +284,15 @@ theorem continuous_om_pair (hψ : IsStdChar D ψ (-1)) {V W : HSp D} {χ χ' : I
 open GlobalTheory.Mem.Th in
 
 /- English proof (translation)
-Introduce `D X T Wl V W χ χ' hne h1 h2 Φ`. Establish `hc : ∀ χ, IsHC D (T.eChr χ)` using `fun χ => (Set.ext_iff.1 T.eChr_range _).1 ⟨χ, rfl⟩`. Establish `hm : ∀ Φ, Wl.evS V W Φ ∈ ThS Wl.ψ V W` using `fun Φ => mem_ThS.2 ((Set.ext_iff.1 (Wl.evS_range V W hne) _).1 ⟨Φ, rfl⟩)`. Set `E : X.Sch V W ≃ₗ[ℂ] ThS Wl.ψ V W` to `LinearEquiv.ofBijective ((Wl.evS V W).codRestrict _ hm) ⟨fun a b h => Wl.evS_inj V W (congrArg Subtype.val h), fun f => by`. Take `⟨a, ha⟩` from `(Set.ext_iff.1 (Wl.evS_range V W hne) f.1).2 (mem_ThS.1 f.2)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨a, Subtype.ext ha⟩⟩`. Establish `hE : ∀ f : ThS Wl.ψ V W, Wl.evS V W (E.symm f) = f.1` using `fun f => congrArg Subtype.val (E.apply_symm_apply f)`. Set `om : GA D V × GA D W →* Module.End ℂ (ThS Wl.ψ V W)` to `E.conjRingEquiv.toMonoidHom.comp (Wl.om V W χ χ')`. Establish `hom : ∀ p f, (om p f).1 = Wl.evS V W (Wl.om V W χ χ' p (E.symm f))` using `fun _ _ => rfl`. Establish `hw : IsWeilOn Wl.ψ V W (T.eChr χ) (T.eChr χ') om`.
+Supply the required witnesses or components. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨fun g h w₀ f f' e => ?_, fun γ hγ γ' hγ' f => ?_, fun f w => ?_, fun μ 𝓕 hμ h𝓕 p f => ?_, fun e he g h hg hh x y hx hy => ?_⟩` and prove the remaining obligations. Rewrite using `[hom, hom]`. Conclude with `Wl.om_heis V W χ χ' hne h1 h2 g h w₀ _ _ (by rw [hE, hE, e])`. Rewrite using `[hom, Wl.om_aut V W χ χ' hne h1 h2 γ hγ γ' hγ', hE]`. Conclude with `Wl.om_cont V W χ χ' hne h1 h2 _ w`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hom, Wl.om_unit V W χ χ' hne h1 h2 μ 𝓕 hμ h𝓕, hE]`. Take `⟨r, hr, k⟩` from `Wl.om_split V W χ χ' hne h1 h2 e he g h hg hh x y hx hy`. Use `⟨r, hr, fun ℓ hℓ f => ?_⟩` and prove the remaining obligations. Use `k (ℓ.comp E.toLinearMap) (fun u hu a a' e' => hℓ u hu (E a) (E a') e') (E.symm f)` as an intermediate fact. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.apply_symm_apply] at this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `this`. Use `continuous_om_pair Wl.ψ_std ⟨hne, hc χ, hc χ', h1, h2⟩ hw (E Φ)` as an intermediate fact. Simplify `this` using `only [hom, E.symm_apply_apply]`.
+A detailed English derivation is pending.
 -/
 theorem continuous_evS_om : ∀ (D : D7) (X : ThetaX D) (T : ThetaTied D X) (Wl : WeilTied D X T) (V W : HSp D) (χ χ' : X.Chr), V.rank ≠ W.rank → ResEta D (T.eChr χ) V.rank → ResEta D (T.eChr χ') W.rank → ∀ Φ : X.Sch V W, Continuous fun q : (GA D V × GA D W) × WA V W => Wl.evS V W (Wl.om V W χ χ' q.1 Φ) q.2 := by
   intro D X T Wl V W χ χ' hne h1 h2 Φ

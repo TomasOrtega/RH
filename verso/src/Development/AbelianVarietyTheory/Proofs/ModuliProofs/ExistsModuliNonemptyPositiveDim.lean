@@ -18,7 +18,7 @@ open scoped CategoryTheory.Obj TensorProduct
 namespace GlobalTheory.ModuliInhabitant
 
 /- English proof (translation)
-Establish `h1` using `IsTotallyComplex.finrank E`. Establish `h2 : 0 < Module.finrank ℚ E` using `Module.finrank_pos`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem half_finrank_pos (E : Type) [Field E] [NumberField E] [IsCMField E] :
     0 < Module.finrank ℚ E / 2 := by
@@ -27,9 +27,7 @@ theorem half_finrank_pos (E : Type) [Field E] [NumberField E] [IsCMField E] :
   omega
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Use `push Not at hne`. Establish `hc : Countable Λ` using `TopologicalSpace.separableSpace_iff_countable.1 inferInstance`. Establish `hinj : Function.Injective (fun c : ℂ => (⟨fun _ => c, hne _⟩ : Λ))` using `fun a b h => congrFun (congrArg Subtype.val h) ⟨0, hg⟩`. Establish `: Countable ℂ` using `hinj.countable`.
-
-Conclude with `not_countable_iff.2 (inferInstance : Uncountable ℝ) Complex.ofReal_injective.countable`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_not_mem_of_discrete {g : ℕ} (hg : 0 < g) (Λ : AddSubgroup (Fin g → ℂ))
     [DiscreteTopology Λ] : ∃ z, z ∉ Λ := by
@@ -42,11 +40,9 @@ theorem exists_not_mem_of_discrete {g : ℕ} (hg : 0 < g) (Λ : AddSubgroup (Fin
   exact not_countable_iff.2 (inferInstance : Uncountable ℝ) Complex.ofReal_injective.countable
 
 /- English proof (translation)
-Take `⟨Xo⟩` from `GlobalTheory.T.exists_moduli_scheme_polarized_abelian_level E H D l hr`. Take `⟨⟨g, ty, h⟩, h2, -⟩` from `GlobalTheory.PeriodExists.typeFn_period_exist E H D`. Establish `hg : 0 < g`. Rewrite using `[(h2 g ty h).1]`. Conclude with `Nat.mul_pos (half_finrank_pos E) hr`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨U⟩` from `GlobalTheory.closing_of_abelianSchemeLaws E H D l Xo (KA l).val.toRingHom g ty hr rfl h`. Set `i : Fin U.n` to `⟨0, U.n_pos⟩`. Take `⟨-, P, hP⟩` from `(GlobalTheory.PeriodExists.typeFn_period_exist E H (U.Di i)).2.1 g ty (by rw [(U.sig i).1, (U.sig i).2]; exact h)`. Use `haveI := hP.2.2.1`. Take `⟨z, hz⟩` from `exists_not_mem_of_discrete hg P.range`.
-
-Conclude with `⟨Xo, g, ty, hg, h, ⟨U⟩, U.u i P, U.over_σ i P hP, U.ex i P z, fun hx => hz ((U.ex_ker i P hP z).1 hx)⟩`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_unif_point (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H)
     (hr : 1 ≤ D.p + D.q) (l : Level H) :
@@ -67,9 +63,9 @@ theorem exists_unif_point (E : Type) [Field E] [NumberField E] [IsCMField E] (H 
   exact ⟨Xo, g, ty, hg, h, ⟨U⟩, U.u i P, U.over_σ i P hP, U.ex i P z, fun hx => hz ((U.ex_ker i P hP z).1 hx)⟩
 
 /- English proof (translation)
-Use `⟨fun E _ _ _ H D hr l => ?_, ?_⟩` and prove the remaining obligations. Take `⟨Xo, g, ty, -, -, -, y, hy⟩` from `exists_unif_point E H D hr l`. Conclude with `⟨Xo, y, hy⟩`. Take `⟨Xo, g, ty, hg, h, hU, y, -⟩` from `exists_unif_point _ GlobalTheory.HostModel.host (GlobalTheory.HostModel.hypDatum GlobalTheory.HostModel.host) (by simp) (GlobalTheory.HostModel.level GlobalTheory.HostModel.host 1 one_pos)`. Use `⟨_, inferInstance, inferInstance, inferInstance, GlobalTheory.HostModel.host, _, _, Xo, ?_, ⟨y.base (IsLocalRing.closedPoint ℂ)⟩, g, ty, hg, h, hU⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify `half_finrank_pos GlobalTheory.HostModel.E21` using `[Datum.dim]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem moduli_inhabited : (∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H), 1 ≤ D.p + D.q → ∀ l : Level H, ∃ (Xo : Moduli D l) (y : Sp ℂ ⟶ Xo.X), y ≫ Xo.s = spMap (KA l).val.toRingHom ∧ ∃ x : Over.mk y ⟶ Xo.univ.t.G, x ≠ 1) ∧ ∃ (E : Type) (_ : Field E) (_ : NumberField E) (_ : IsCMField E) (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l), 0 < D.dim ∧ Nonempty Xo.X ∧ ∃ (g : ℕ) (ty : Fin g → (E →+* ℂ)), 0 < g ∧ IsTypeFn H D.p D.q ty ∧ Nonempty (FamilyUnif Xo (KA l).val.toRingHom ty) := by
   refine ⟨fun E _ _ _ H D hr l => ?_, ?_⟩

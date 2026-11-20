@@ -7,9 +7,9 @@ open GlobalTheory.CuspRep GlobalTheory.UnitaryBC PositivityTheory.Rg.BcB Positiv
 namespace UpperTheory.V.Z.Tf.GaloisFromTraceFormula
 
 /- English proof (translation)
-Introduce `E _ _ _ hunr p _ S _ hsp _ n hn hn4 π hreg hd hsat`. Establish `hn1 : 1 ≤ n` using `le_trans one_le_two hn`. Break down `hRun E hunr n hn1 π hreg hd (fun w hw => hsat w fun h => hw (hsp w h)) with h | ⟨D₁, h1, h2, h3, h4⟩` into its components or cases. Conclude with `h`. Take `⟨D, r, t, s, hno⟩` from `preOf (partNorm absInf) csdSat Asm.places E n hn1 π hd D₁ h1 h2 h3 h4`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨D₀, hone, hr⟩` from `onePre E n hn1 π hreg (csdDisc E n hn1 π hd)`. Establish `hs` using `oneSat E n hn1 π D₀ hone`. Establish `ht : D₀.ThetaStable` using `(csdSat E n hn1 π hd).mono fun w ⟨B, a, b⟩ => ⟨B, (hs w B).1 a, fun u hu => (hs u _).1 (b u hu)⟩`. Take `⟨e, he⟩` from `Rig.locRigid_holds E n D D₀ r hr (galStep_le hW E hunr n hn4 D D₀ r hr t ht (s.mono fun w hw hx => (hw hx).imp fun B hB => ⟨hB.1, (hs w B).1 hB.2⟩))`. Conclude with `absurd (onlyOne cuspOrTwo notTwo oneSat E n hn1 π D D₀ e r hone he) hno`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem descWeak_of_galWeak (hW : GalWeak 4) (hRun : RunTh) : UpperTheory.V.Z.Desc.DescWeak := by
   intro E _ _ _ hunr p _ S _ hsp _ n hn hn4 π hreg hd hsat

@@ -10,11 +10,11 @@ namespace GlobalTheory.Dec.SchurTotal
 open Filter Topology
 
 /- English proof (translation)
-Introduce `v hv`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx => exact h x hx`. Consider the case `zero`. Establish `: f 0 = fun _ => 0` using `funext hf0`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Rewrite using `[this, hr0]`. Conclude with `⟨integrable_zero _ _ _, by simp⟩`. Consider the case `add x y _ _ hx hy`. Establish `: f (x + y) = fun g => f x g + f y g` using `funext (hfa x y)`. Rewrite using `[this, hra]`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨hx.1.add hy.1, by rw [integral_add hx.1 hy.1, hx.2, hy.2]⟩`. Consider the case `smul c x _ hx`. Establish `: f (c • x) = fun g => φ c * f x g` using `funext (hfs c x)`. Rewrite using `[this, hrs]`. Conclude with `⟨hx.1.const_mul _, by rw [integral_const_mul, hx.2]⟩`.
+Supply the required witnesses or components. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem span_ext {G H : Type} [MeasurableSpace G] (μ : Measure G) [AddCommGroup H] [Module ℂ H]
     (S : Set H) (f : H → G → ℂ) (r : H → ℂ) (φ : ℂ → ℂ)
@@ -47,35 +47,35 @@ def Rel (v w v' w' : H) : Prop :=
     ∫ g, ⟪w, σ g v⟫_ℂ * star ⟪w', σ g v'⟫_ℂ ∂μ = ⟪v', v⟫_ℂ * ⟪w, w'⟫_ℂ / (d : ℂ)
 
 /- English proof (translation)
-Establish `h1 : ∀ v ∈ S, ∀ w ∈ S, ∀ v' ∈ S, ∀ w' ∈ Submodule.span ℂ S, Rel μ σ d v w v' w'`. Introduce `v hv w hw v' hv'`. Use `span_ext μ S (fun w' g => ⟪w, σ g v⟫_ℂ * star ⟪w', σ g v'⟫_ℂ) (fun w' => ⟪v', v⟫_ℂ * ⟪w, w'⟫_ℂ / (d : ℂ)) (fun c => c) ?_ ?_ ?_ ?_ ?_ ?_ (h v hv w hw v' hv')` and prove the remaining obligations. Introduce `g`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Introduce `a b g`. Simplify using `only [inner_add_left, star_add]`. Expand and normalize the polynomial expressions, which then agree. Introduce `a b`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [inner_add_right]`. Expand and normalize the polynomial expressions, which then agree. Introduce `c a g`. Simplify using `only [inner_smul_left, star_mul', RCLike.star_def, Complex.conj_conj]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Introduce `c a`. Simplify using `only [inner_smul_right]`. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : ∀ v ∈ S, ∀ w ∈ S, ∀ w' ∈ Submodule.span ℂ S, ∀ v' ∈ Submodule.span ℂ S, Rel μ σ d v w v' w'`. Introduce `v hv w hw w' hw'`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `span_ext μ S (fun v' g => ⟪w, σ g v⟫_ℂ * star ⟪w', σ g v'⟫_ℂ) (fun v' => ⟪v', v⟫_ℂ * ⟪w, w'⟫_ℂ / (d : ℂ)) (fun c => star c) ?_ ?_ ?_ ?_ ?_ ?_ (fun v' hv' => h1 v hv w hw v' hv' w' hw')` and prove the remaining obligations. Introduce `g`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Introduce `a b g`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [map_add, inner_add_right, star_add]`. Expand and normalize the polynomial expressions, which then agree. Introduce `a b`. Simplify using `only [inner_add_left]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Introduce `c a g`. Simplify using `only [map_smul, inner_smul_right, star_mul']`. Expand and normalize the polynomial expressions, which then agree. Introduce `c a`. Simplify using `only [inner_smul_left, RCLike.star_def]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `h3 : ∀ v ∈ S, ∀ w' ∈ Submodule.span ℂ S, ∀ v' ∈ Submodule.span ℂ S, ∀ w ∈ Submodule.span ℂ S, Rel μ σ d v w v' w'`. Introduce `v hv w' hw' v' hv'`. Use `span_ext μ S (fun w g => ⟪w, σ g v⟫_ℂ * star ⟪w', σ g v'⟫_ℂ) (fun w => ⟪v', v⟫_ℂ * ⟪w, w'⟫_ℂ / (d : ℂ)) (fun c => star c) ?_ ?_ ?_ ?_ ?_ ?_ (fun w hw => h2 v hv w hw w' hw' v' hv')` and prove the remaining obligations. Introduce `g`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Introduce `a b g`. Simplify using `only [inner_add_left]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Introduce `a b`. Simplify using `only [inner_add_left]`. Expand and normalize the polynomial expressions, which then agree. Introduce `c a g`. Simplify using `only [inner_smul_left, RCLike.star_def]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Introduce `c a`. Simplify using `only [inner_smul_left, RCLike.star_def]`. Expand and normalize the polynomial expressions, which then agree. Introduce `v hv w hw v' hv' w' hw'`.
+Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `revert v`. Use `span_ext μ S (fun v g => ⟪w, σ g v⟫_ℂ * star ⟪w', σ g v'⟫_ℂ) (fun v => ⟪v', v⟫_ℂ * ⟪w, w'⟫_ℂ / (d : ℂ)) (fun c => c) ?_ ?_ ?_ ?_ ?_ ?_ (fun v hv => h3 v hv w' hw' v' hv' w hw)` and prove the remaining obligations. Introduce `g`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a b g`. Simplify using `only [map_add, inner_add_right]`. Expand and normalize the polynomial expressions, which then agree. Introduce `a b`. Simplify using `only [inner_add_right]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Introduce `c a g`. Simplify using `only [map_smul, inner_smul_right]`. Expand and normalize the polynomial expressions, which then agree. Introduce `c a`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [inner_smul_right]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem rel_span (S : Set H) (h : ∀ v ∈ S, ∀ w ∈ S, ∀ v' ∈ S, ∀ w' ∈ S, Rel μ σ d v w v' w') :
     ∀ v ∈ Submodule.span ℂ S, ∀ w ∈ Submodule.span ℂ S, ∀ v' ∈ Submodule.span ℂ S,
@@ -127,17 +127,17 @@ theorem rel_span (S : Set H) (h : ∀ v ∈ S, ∀ w ∈ S, ∀ v' ∈ S, ∀ w'
   · intro c a; simp only [inner_smul_right]; ring
 
 /- English proof (translation)
-Rewrite using `[RCLike.star_def, Complex.mul_conj, Complex.normSq_eq_norm_sq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mul_star_eq (z : ℂ) : z * star z = ((‖z‖ ^ 2 : ℝ) : ℂ) := by
   rw [RCLike.star_def, Complex.mul_conj, Complex.normSq_eq_norm_sq]
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `h`. Simplify using `only [mul_star_eq] at h1 h2`. Establish `h3 : Integrable (fun g => ‖⟪w, σ g v⟫_ℂ‖ ^ 2) μ`. Use `h1.re` as an intermediate fact. Simplify `this` using `only [RCLike.re_to_complex, Complex.ofReal_re]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[← ofReal_integral_eq_lintegral_ofReal h3 (ae_of_all _ fun g => by positivity)]`. Use `congr 1`. Rewrite `h2` using `[integral_complex_ofReal, inner_self_eq_norm_sq_to_K, inner_self_eq_norm_sq_to_K]`. Apply `Complex.ofReal_injective` to reduce the goal to its premises. Rewrite using `[h2]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Both sides reduce to the same expression.
+Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 -/
 theorem lint_of_rel (v w : H) (h : Rel μ σ d v w v w) :
     ∫⁻ g, ENNReal.ofReal (‖⟪w, σ g v⟫_ℂ‖ ^ 2) ∂μ = ENNReal.ofReal (‖v‖ ^ 2 * ‖w‖ ^ 2 / d) := by
@@ -153,11 +153,11 @@ theorem lint_of_rel (v w : H) (h : Rel μ σ d v w v w) :
   rw [h2]; push_cast; rfl
 
 /- English proof (translation)
-Take `⟨a, ha, hav⟩` from `mem_closure_iff_seq_limit.1 (hT v)`. Take `⟨b, hb, hbw⟩` from `mem_closure_iff_seq_limit.1 (hT w)`. Establish `h1` using `lintegral_liminf_le (μ := μ) (u := atTop) (f := fun (n : ℕ) g => ENNReal.ofReal (‖⟪b n, σ g (a n)⟫_ℂ‖ ^ 2)) (fun n => ((hm (a n) (b n)).norm.pow_const 2).ennreal_ofReal)`. Establish `h2 : ∀ g, liminf (fun n => ENNReal.ofReal (‖⟪b n, σ g (a n)⟫_ℂ‖ ^ 2)) atTop = ENNReal.ofReal (‖⟪w, σ g v⟫_ℂ‖ ^ 2)`. Introduce `g`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `Tendsto.liminf_eq` to reduce the goal to its premises. Conclude with `ENNReal.tendsto_ofReal ((hbw.inner (((σ g).continuous.tendsto v).comp hav)).norm.pow 2)`. Establish `h3 : liminf (fun n => ∫⁻ g, ENNReal.ofReal (‖⟪b n, σ g (a n)⟫_ℂ‖ ^ 2) ∂μ) atTop = ENNReal.ofReal (‖v‖ ^ 2 * ‖w‖ ^ 2 / d)`. Apply `Tendsto.liminf_eq` to reduce the goal to its premises. Simplify using `only [fun n => lint_of_rel μ σ d (a n) (b n) (h _ (ha n) _ (hb n))]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `ENNReal.tendsto_ofReal (((hav.norm.pow 2).mul (hbw.norm.pow 2)).div_const d)`. Simplify `h1` using `only [h2, h3]`.
+A detailed English derivation is pending.
 -/
 theorem lint_le (T : Set H) (hT : Dense T) (hm : ∀ v w : H, Measurable fun g => ⟪w, σ g v⟫_ℂ)
     (h : ∀ v ∈ T, ∀ w ∈ T, Rel μ σ d v w v w) (v w : H) :
@@ -181,7 +181,7 @@ theorem lint_le (T : Set H) (hT : Dense T) (hm : ∀ v w : H, Measurable fun g =
   simpa only [h2, h3] using h1
 
 /- English proof (translation)
-Rewrite using `[L2.inner_def]`. Apply `integral_congr_ae` to reduce the goal to its premises. Use `filter_upwards [hf.coeFn_toLp, hg.coeFn_toLp] with x h1 h2`. Rewrite using `[h1, h2]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem inner_toLp {f g : G → ℂ} (hf : MemLp f 2 μ) (hg : MemLp g 2 μ) :
     ⟪hg.toLp g, hf.toLp f⟫_ℂ = ∫ x, f x * star (g x) ∂μ := by
@@ -191,27 +191,23 @@ theorem inner_toLp {f g : G → ℂ} (hf : MemLp f 2 μ) (hg : MemLp g 2 μ) :
   rw [h1, h2]; simp
 
 /- English proof (translation)
-Establish `hle` using `lint_le μ σ d T hT hm (fun v hv w hw => h v hv w hw v hv w hw)`. Establish `hint : ∀ v w : H, Integrable (fun g => ‖⟪w, σ g v⟫_ℂ‖ ^ 2) μ`. Introduce `v w`. Use `⟨((hm v w).norm.pow_const 2).aestronglyMeasurable, ?_⟩` and prove the remaining obligations. Rewrite using `[hasFiniteIntegral_iff_ofReal (ae_of_all _ fun g => by positivity)]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hle v w).trans_lt ENNReal.ofReal_lt_top`. Establish `hL : ∀ v w : H, MemLp (fun g => ⟪w, σ g v⟫_ℂ) 2 μ` using `fun v w => (memLp_two_iff_integrable_sq_norm (hm v w).aestronglyMeasurable).2 (hint v w)`. Set `C : H → H → Lp ℂ 2 μ` to `fun v w => (hL v w).toLp _`. Establish `hC : ∀ v w, ‖C v w‖ ≤ ‖v‖ * ‖w‖ / √d`. Introduce `v w`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e1 : ((‖C v w‖ ^ 2 : ℝ) : ℂ) = ((∫ g, ‖⟪w, σ g v⟫_ℂ‖ ^ 2 ∂μ : ℝ) : ℂ)`. Use `inner_toLp μ (hL v w) (hL v w)` as an intermediate fact. Simplify using `only [mul_star_eq] at this`. Rewrite `this` using `[integral_complex_ofReal, inner_self_eq_norm_sq_to_K]`. Rewrite using `[← this]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Both sides reduce to the same expression. Establish `e2` using `Complex.ofReal_injective e1`. Establish `e3 : ∫ g, ‖⟪w, σ g v⟫_ℂ‖ ^ 2 ∂μ ≤ ‖v‖ ^ 2 * ‖w‖ ^ 2 / d`. Use `hle v w` as an intermediate fact.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[← ofReal_integral_eq_lintegral_ofReal (hint v w) (ae_of_all _ fun g => by positivity)]`. Conclude with `(ENNReal.ofReal_le_ofReal_iff (by positivity)).1 this`. Apply `le_of_sq_le_sq _ (by positivity)` to reduce the goal to its premises. Rewrite using `[e2, div_pow, mul_pow, Real.sq_sqrt hd.le]`. Conclude with `e3`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hsplit : ∀ v w v0 w0, C v w - C v0 w0 = C (v - v0) w + C v0 (w - w0)`. Introduce `v w v0 w0`. Simplify using `only [C]`. Rewrite using `[← MemLp.toLp_sub, ← MemLp.toLp_add]`. Apply `MemLp.toLp_congr` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Use `ae_of_all _ fun g => ?_` and prove the remaining obligations. Simplify using `only [Pi.sub_apply, Pi.add_apply, map_sub, inner_sub_left, inner_sub_right]`. Expand and normalize the polynomial expressions, which then agree. Establish `hcont : Continuous fun p : H × H => C p.1 p.2`. Rewrite using `[continuous_iff_continuousAt]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `p`. Rewrite using `[ContinuousAt, tendsto_iff_norm_sub_tendsto_zero]`. Establish `hc : Continuous fun q : H × H => ‖q.1 - p.1‖ * ‖q.2‖ / √d + ‖p.1‖ * ‖q.2 - p.2‖ / √d` using `by fun_prop`. Establish `ht` using `hc.tendsto p`. Simplify using `only [sub_self, norm_zero, zero_mul, mul_zero, zero_div, add_zero] at ht`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `squeeze_zero (fun _ => norm_nonneg _) (fun q => ?_) ht` and prove the remaining obligations. Rewrite using `[hsplit]`. Conclude with `(norm_add_le _ _).trans (add_le_add (hC _ _) (hC _ _))`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `(hL v w).integrable_mul (hL v' w').star`.
-
-Establish `key : ∀ x : (H × H) × (H × H), ⟪C x.2.1 x.2.2, C x.1.1 x.1.2⟫_ℂ = ⟪x.2.1, x.1.1⟫_ℂ * ⟪x.1.2, x.2.2⟫_ℂ / (d : ℂ)`. Establish `hD : Dense ((T ×ˢ T) ×ˢ (T ×ˢ T))` using `(hT.prod hT).prod (hT.prod hT)`. Use `Continuous.ext_on hD (f := fun x : (H × H) × (H × H) => ⟪C x.2.1 x.2.2, C x.1.1 x.1.2⟫_ℂ) (g := fun x => ⟪x.2.1, x.1.1⟫_ℂ * ⟪x.1.2, x.2.2⟫_ℂ / (d : ℂ)) ((hcont.comp continuous_snd).inner (hcont.comp continuous_fst)) (by fun_prop) (by` as an intermediate fact. Introduce and unpack `⟨⟨a, b⟩, ⟨a', b'⟩⟩ ⟨⟨ha, hb⟩, ⟨ha', hb'⟩⟩`. Conclude with `(inner_toLp μ (hL a b) (hL a' b')).trans (h a ha b hb a' ha' b' hb').2)`.
-
-Conclude with `congrFun this`. Conclude with `(inner_toLp μ (hL v w) (hL v' w')).symm.trans (key ((v, w), (v', w')))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem rel_dense (hd : 0 < d) (T : Set H) (hT : Dense T)
     (hm : ∀ v w : H, Measurable fun g => ⟪w, σ g v⟫_ℂ)
@@ -278,7 +274,7 @@ theorem rel_dense (hd : 0 < d) (T : Set H) (hT : Dense T)
 end GlobalTheory.Dec.SchurTotal
 
 /- English proof (translation)
-Introduce `G _ _ _ _ μ H _ _ σ d S hσ hd hS h`. Use `⟨hd, fun v w v' w' => ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.Dec.SchurTotal.rel_dense μ σ d hd _ hS (fun v w => (continuous_const.inner (hσ.2.2.2 v)).measurable) (GlobalTheory.Dec.SchurTotal.rel_span μ σ d S h) v w v' w'`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Dec.isFdegG_of_total : ∀ (G : Type) [Group G] [TopologicalSpace G] [MeasurableSpace G] [OpensMeasurableSpace G] (μ : Measure G) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] (σ : G → (H →L[ℂ] H)) (d : ℝ) (S : Set H), IsURep σ → 0 < d → Dense (Submodule.span ℂ S : Set H) → (∀ v ∈ S, ∀ w ∈ S, ∀ v' ∈ S, ∀ w' ∈ S, Integrable (fun g => ⟪w, σ g v⟫_ℂ * star ⟪w', σ g v'⟫_ℂ) μ ∧ ∫ g, ⟪w, σ g v⟫_ℂ * star ⟪w', σ g v'⟫_ℂ ∂μ = ⟪v', v⟫_ℂ * ⟪w, w'⟫_ℂ / (d : ℂ)) → IsFdegG μ σ d := by
   intro G _ _ _ _ μ H _ _ σ d S hσ hd hS h

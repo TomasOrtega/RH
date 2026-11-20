@@ -12,11 +12,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.ExtDiv
 
 /- English proof (translation)
-Use `g.q_flat` as an intermediate fact. Use `g.q_surj` as an intermediate fact. Establish `hpG : g.pG.left = g.q.left ≫ (fstG I e D.P.A).left` using `rfl`. Establish `gen : ∀ φ : (thickObj R I e G).left ⟶ D.P.A.left, φ = g.q.left ≫ (fstG I e D.P.A).left → ((φ.app W).hom f = 0 ↔ ((fstG I e D.P.A).left.app W).hom f = 0)`. Introduce and unpack `φ rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Express the relevant statement in the definitionally equal form `(g.q.left.app ((fstG I e D.P.A).left ⁻¹ᵁ W)).hom (((fstG I e D.P.A).left.app W).hom f) = 0 ↔ _`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Apply `GlobalTheory.FunDescent.app_injective g.q.left` to reduce the goal to its premises. Rewrite using `[h, map_zero]`.
+Express the relevant assertion in an equivalent form by its definition. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Rewrite using `[h, map_zero]`. Conclude with `gen _ hpG`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pG_app_eq_zero_iff {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D : DegPre R} {e : ℕ}
     {G : Over (Spec (CommRingCat.of R))} [GrpObj G] [IsCommMonObj G] (g : GtCoord I D e G)
@@ -41,9 +41,9 @@ theorem pG_app_eq_zero_iff {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D
   exact gen _ hpG
 
 /- English proof (translation)
-Introduce `V _ _ _ ϖ hϖ D A G _ _ U e k α f`. Establish `hflat : Flat D.toPre.P.A.hom`. Use `D.toPre.P.smoothDim.smooth` as an intermediate fact. Use `infer_instance`. Establish `hiff : (∀ j, ((U.gt e).pG.left.app _).hom (f.f j) = 0) ↔ ∀ j, ((fstG (maximalIdeal V) e D.toPre.P.A).left.app _).hom (f.f j) = 0` using `forall_congr' fun j => pG_app_eq_zero_iff (U.gt e) _ (f.f j)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hiff]`. Conclude with `GlobalTheory.ThickDiv.main V ϖ hϖ D.toPre.P.A _ f e`.
+A detailed English derivation is pending.
 -/
 theorem main : ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] (ϖ : V), Irreducible ϖ → ∀ (D : DegData V (maximalIdeal V)) (A : PolAV (Spec (CommRingCat.of (FractionRing V)))) (G : Over (Spec (CommRingCat.of V))) [GrpObj G] [IsCommMonObj G] (U : UnifPre (maximalIdeal V) D A G) (e k : ℕ) (α : D.toPre.X) (f : D.toPre.SecB k α), (∀ j, ((U.gt e).pG.left.app _).hom (f.f j) = 0) ↔ ∃ g : D.toPre.SecB k α, SecIsMul D.toPre.P.A.hom (ϖ ^ (e + 1)) f g := by
   intro V _ _ _ ϖ hϖ D A G _ _ U e k α f

@@ -5,7 +5,7 @@ open MeasureTheory IsDedekindDomain NumberField
 namespace GlobalTheory
 
 /- English proof (translation)
-The claim follows from `|Real.log (1 - y)⁻¹| ≤ 2 * |y| := by have h1 := le_abs_self y have h2 := neg_abs_le y have h0 := abs_nonneg y have hpos : 0 < 1 - y := by linarith rw [abs_le] constructor · rw [Real.log_inv] have := Real.log_le_sub_one_of_pos hpos linarith · have h3 := Real.log_le_sub_one_of_pos …`.
+A detailed English derivation is pending.
 -/
 theorem abs_log_inv_one_sub_le_two_mul_abs (y : ℝ) (hy : |y| ≤ 1 / 2) :
     |Real.log (1 - y)⁻¹| ≤ 2 * |y| := by
@@ -25,11 +25,11 @@ theorem abs_log_inv_one_sub_le_two_mul_abs (y : ℝ) (hy : |y| ≤ 1 / 2) :
     linarith
 
 /- English proof (translation)
-Introduce `ι y B hy hs hB`. Establish `hb : ∀ a, |Real.log (1 - y a)⁻¹| ≤ 2 * |y a|` using `fun a => abs_log_inv_one_sub_le_two_mul_abs _ (hy a)`. Establish `hs2 : Summable (fun a => 2 * |y a|)` using `hs.mul_left 2`. Establish `hsl : Summable (fun a => Real.log (1 - y a)⁻¹)` using `Summable.of_norm_bounded hs2 (fun a => by simpa only [Real.norm_eq_abs] using hb a)`. Establish `hp` using `hsl.hasSum.rexp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he : (Real.exp ∘ fun a => Real.log (1 - y a)⁻¹) = fun a => (1 - y a)⁻¹`. Use function extensionality and compare the values at `a`. Establish `h1` using `le_abs_self (y a)`. Establish `h2` using `hy a`. Conclude with `Real.exp_log (inv_pos.mpr (by linarith))`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hp` using `[he]`. Rewrite using `[hp.tprod_eq]`. Use `⟨Real.exp_pos _, Real.exp_le_exp.mpr ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem tprod_inv_one_sub_pos_and_le_exp :
     ∀ {ι : Type} (y : ι → ℝ) (B : ℝ), (∀ a, |y a| ≤ 1 / 2) → Summable (fun a => |y a|) →

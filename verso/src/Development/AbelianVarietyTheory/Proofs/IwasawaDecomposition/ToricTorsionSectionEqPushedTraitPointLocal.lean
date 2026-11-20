@@ -16,14 +16,14 @@ open scoped CategoryTheory.Obj
 namespace GlobalTheory.TorSecLocal
 
 /- English proof (translation)
-Rewrite using `[spMap, spMap, spMap, ← Spec.map_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem spMap_comp_ringHom {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B)
     (g : B →+* C) : spMap (g.comp f) = spMap g ≫ spMap f := by
   rw [spMap, spMap, spMap, ← Spec.map_comp]; rfl
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => rw [pow_zero, pow_zero, MonObj.one_comp]`. Consider the case `succ n ih => rw [pow_succ, pow_succ, MonObj.mul_comp, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem pow_comp_of_isMonHom {S : Scheme.{0}} {G G' Z : Over S} [MonObj G] [MonObj G'] (φ : G ⟶ G')
     [IsMonHom φ] (x : Z ⟶ G) (n : ℕ) : (x ^ n) ≫ φ = (x ≫ φ) ^ n := by
@@ -32,29 +32,27 @@ theorem pow_comp_of_isMonHom {S : Scheme.{0}} {G G' Z : Over S} [MonObj G] [MonO
   | succ n ih => rw [pow_succ, pow_succ, MonObj.mul_comp, ih]
 
 /- English proof (translation)
-Introduce `E _ _ _ H R _ _ _ t P k s hs1 hs2 hs3 X' _ ρ V _ _ ψ tV mV j _ t₀ m₀ h₀ m₀' hφ hpull U _ _ u hu hk τU τ h hτU hττ z hz`. Establish `hg : spMap (u.comp ψ) = (Over.mk (spMap u)).hom ≫ spMap ψ` using `spMap_comp_ringHom ψ u`. Take `⟨e, he⟩` from `GlobalTheory.LiePull.exists_pushEquiv mV.cart (Over.mk (spMap u)) (spMap (u.comp ψ)) hg`. Establish `hzk : z ^ k = 1`. Apply `(GlobalTheory.splitTorusPointsEquiv (Sp V) X' (Over.mk (spMap u))).injective` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[map_pow, map_one]`. Use `MonoidHom.ext fun m => ?_` and prove the remaining obligations. Rewrite using `[MonoidHom.pow_apply, MonoidHom.one_apply]`. Establish `e1` using `hz (Multiplicative.toAdd m)`. Simplify using `only [GlobalTheory.UU.chV, ofAdd_toAdd] at e1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[e1]`. Establish `e2 : τU m ^ k = 1` using `by rw [← MonoidHom.pow_apply, hτU, MonoidHom.one_apply]`. Simplify using `only [unitOn, ← map_pow, e2, map_one]`. Establish `hx : s U (u.comp ψ) τ h = e (z ≫ j)`. Use `GlobalTheory.T.smoothCommGroupScheme_eq_of_pow_eq_of_closedPoint (Sp R) t.G t.semi.smooth U (spMap (u.comp ψ)) k hk _ _ ?_ (ResidueField U) (residue U) inferInstance ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hs1, ← map_pow, ← pow_comp_of_isMonHom, hzk, MonObj.one_comp, map_one]`. Set `cU` to `residue U`. Set `τ₀ : Multiplicative P.D.toPre.X →* (ResidueField U)ˣ` to `(Units.map (cU : U →* ResidueField U)).comp τ`. Establish `h' : τ₀ ^ k = 1`. Use `MonoidHom.ext fun m => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[MonoidHom.pow_apply, MonoidHom.one_apply]`. Use `show Units.map _ (τ m) ^ k = 1`. Rewrite using `[← map_pow, ← MonoidHom.pow_apply, h, MonoidHom.one_apply, map_one]`. Establish `n1` using `hs2 U (ResidueField U) (u.comp ψ) (cU.comp (u.comp ψ)) cU τ h τ₀ h' rfl (fun χ => rfl)`. Set `w₁ : Multiplicative X' →* Γ(Sp (ResidueField U), ⊤)ˣ` to `(Units.map (Scheme.ΓSpecIso (CommRingCat.of (ResidueField U))).inv.hom.toMonoidHom).comp ((Units.map (cU : U →* ResidueField U)).comp τU)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `z₁ : Over.mk (spMap (ResidueField.map u)) ⟶ splitTorus (Sp (ResidueField V)) X'` to `(GlobalTheory.splitTorusPointsEquiv _ X' _).symm w₁`. Establish `hz₁ : ∀ χ, GlobalTheory.UU.chV z₁ χ = w₁ (Multiplicative.ofAdd χ)` using `fun χ => by`. Simplify using `only [GlobalTheory.UU.chV, z₁, MulEquiv.apply_symm_apply]`. Set `z₀` to `z₁ ≫ GlobalTheory.SplitTorus.torusMap _ ρ`. Establish `hz₀ : ∀ χ, GlobalTheory.UU.chV z₀ χ = unitOn (τ₀ (Multiplicative.ofAdd χ))` using `fun χ => by`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[GlobalTheory.UU.chV_val, GlobalTheory.SplitTorus.charUnit_val, ← GlobalTheory.SplitTorus.val_eq, GlobalTheory.SplitTorus.val_comp_torusMap, GlobalTheory.SplitTorus.val_eq, ← GlobalTheory.SplitTorus.charUnit_val, ← GlobalTheory.UU.chV_val, hz₁]`. Use `show _ = (unitOn ((Units.map (cU : U →* ResidueField U)) (τ (Multiplicative.ofAdd χ)))).val`. Rewrite using `[hττ]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hres : cU.comp u = (ResidueField.map u).comp (residue V)`. Use extensionality with `r`. Simplify using `[cU, ResidueField.map_residue]`. Establish `hcomp : cU.comp (u.comp ψ) = (ResidueField.map u).comp ((residue V).comp ψ)`. Rewrite using `[← RingHom.comp_assoc, hres, RingHom.comp_assoc]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `n2` using `hs3 (ResidueField V) (ResidueField U) ((residue V).comp ψ) h₀ (cU.comp (u.comp ψ)) (ResidueField.map u) t₀ m₀' τ₀ h' z₀ hcomp hz₀`. Establish `hzz : z₁.left ≫ GlobalTheory.SplitTorus.bcMap (spMap (residue V)) X' = spMap cU ≫ z.left`. Use `GlobalTheory.UU.splitTorus_left_hom_ext _ _ ?_ fun χ => ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, GlobalTheory.SplitTorus.bcMap_hom, ← Category.assoc, Over.w z₁, Category.assoc, Over.w z] show spMap (ResidueField.map u) ≫ spMap (residue V) = spMap cU ≫ spMap u`. Rewrite using `[← spMap_comp_ringHom, ← spMap_comp_ringHom, hres]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Scheme.Hom.comp_appTop, CommRingCat.hom_comp, RingHom.comp_apply, GlobalTheory.UU.bcMap_charUnit, Scheme.Hom.comp_appTop, CommRingCat.hom_comp, RingHom.comp_apply, ← GlobalTheory.UU.chV_val, ← GlobalTheory.UU.chV_val, hz₁, hz] show (Scheme.ΓSpecIso _).inv.hom (cU (τU _).val) = ( …`. Rewrite using `[← CommRingCat.comp_apply, ← Scheme.ΓSpecIso_inv_naturality]`. Both sides reduce to the same expression. Rewrite using `[he, ← n1, n2, hφ]`. Establish `hz₀t : z₀ ≫ GlobalTheory.TorusPart.PELUnif.torus P h₀ m₀' = z₁ ≫ GlobalTheory.TorusPart.pullTorus m₀.cart j`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hpull, Category.assoc]`. Rewrite using `[hz₀t, Over.comp_left, Category.assoc, ← Category.assoc (GlobalTheory.TorusPart.pullTorus m₀.cart j).left, GlobalTheory.TorusPart.pullTorus_left]`. Establish `k3` using `congrArg (· ≫ j.left ≫ mV.φ) hzz`. Simplify using `only [Category.assoc, Over.comp_left] at k3 ⊢`. Conclude with `k3`.
-
-Rewrite using `[hx, he]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toric_torsion_section_overLocal : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R]
     (t : SAB H (Sp R)) (P : PELUnif (maximalIdeal R) t) (k : ℕ)

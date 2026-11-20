@@ -26,13 +26,11 @@ noncomputable section
 namespace GlobalTheory.AmpMoments
 
 /- English proof (translation)
-Establish `e : ∀ b, (WithLp.toLp 2 ((t * x)⁻¹ *ᵥ fvec k r z b) : EuclideanSpace ℂ (Fin (2 * r + k + 1))) = s b • WithLp.toLp 2 (x⁻¹ *ᵥ fvec k r z b)` using `fun b => by`. Rewrite using `[Matrix.mul_inv_rev, ← Matrix.mulVec_mulVec, ht, Matrix.mulVec_smul, WithLp.toLp_smul]`. Unfold `lenA`. Simplify using `only [e]`. Use `set v : Fin (r + 1) → EuclideanSpace ℂ (Fin (2 * r + k + 1)) := fun b => WithLp.toLp 2 (x⁻¹ *ᵥ fvec k r z b)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hsp : Submodule.span ℂ ((fun b => s b • v b) '' {b | b < a}) = Submodule.span ℂ (v '' {b | b < a})`. Apply the tactic sequence `apply le_antisymm <;> refine Submodule.span_le.2 ?_ <;> rintro _ ⟨b, hb, rfl⟩`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨b, hb, rfl⟩)`. Use `Submodule.smul_mem (Submodule.span ℂ ((fun b => s b • v b) '' {b | b < a})) (s b)⁻¹ (Submodule.subset_span ⟨b, hb, rfl⟩)` as an intermediate fact. Simplify using `only [smul_smul, inv_mul_cancel₀ (hs b), one_smul] at this`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `this`. Rewrite using `[hsp, ← infDist_smul₀ (hs a)]`. Use `congr 1`. Use extensionality with `y`. Rewrite using `[Set.mem_smul_set_iff_inv_smul_mem₀ (hs a)]`.
-
-Conclude with `((Submodule.smul_mem_iff _ (inv_ne_zero (hs a)))).symm`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lenA_mul {k r : ℕ} (z : Fin (2 * r + k + 1) → ℂ) (t x : MatKR k r) (s : Fin (r + 1) → ℂ)
     (hs : ∀ a, s a ≠ 0) (ht : ∀ a, t⁻¹ *ᵥ fvec k r z a = s a • fvec k r z a) (a : Fin (r + 1)) :
@@ -57,7 +55,7 @@ theorem lenA_mul {k r : ℕ} (z : Fin (2 * r + k + 1) → ℂ) (t x : MatKR k r)
   exact ((Submodule.smul_mem_iff _ (inv_ne_zero (hs a)))).symm
 
 /- English proof (translation)
-Establish `hc : ∀ g : MatKR k r, Continuous fun x : Mt k r => (fun i j => (g * Matrix.of x) i j : Mt k r)` using `fun g => (continuous_const.matrix_mul continuous_id : Continuous fun x : MatKR k r => g * x)`. Set `e : Mt k r ≃ₜ Mt k r` to `{ toFun := fun x => fun i j => (t⁻¹ * Matrix.of x) i j invFun := fun x => fun i j => (t * Matrix.of x) i j left_inv := fun x => (Matrix.mul_nonsing_inv_cancel_left t (Matrix.of x) ht :) right_inv := fun x => (Matrix.nonsing_inv_mul_cancel_left t (Matrix.of x) ht :) continuous_toF …`. Use `lintegral_map_equiv (μ := ν) (fun x => F (e.symm x)) e.toMeasurableEquiv` as an intermediate fact. Use `Eq.trans ?_ this.symm` and prove the remaining obligations. Conclude with `lintegral_congr fun y => congrArg F (e.symm_apply_apply y).symm`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem lintegral_translate {k r : ℕ} (ν : Measure (Mt k r)) (t : MatKR k r) (ht : IsUnit t.det)
     (F : Mt k r → ℝ≥0∞) :
@@ -76,33 +74,31 @@ theorem lintegral_translate {k r : ℕ} (ν : Measure (Mt k r)) (t : MatKR k r) 
   exact lintegral_congr fun y => congrArg F (e.symm_apply_apply y).symm
 
 /- English proof (translation)
-Rewrite using `[← ENNReal.coe_pow, ← ENNReal.ofReal_coe_nnreal]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem sq_nnnorm {V : Type} [NormedAddCommGroup V] (v : V) : (‖v‖₊ : ℝ≥0∞) ^ 2 = ENNReal.ofReal (‖v‖ ^ 2) := by
   rw [← ENNReal.coe_pow, ← ENNReal.ofReal_coe_nnreal]; rfl
 
 /- English proof (translation)
-Substitute `hR` using the available equality. Establish `hν : n1 ν ≤ q0` using `le_trans (Nat.le_add_right _ _) h1`. Take `⟨hNum, hFam, hSide, hSF⟩` from `id hS`. Take `⟨⟨-, -, -, -, hOK⟩, hfam⟩` from `GlobalTheory.NumFam.num_fam k r lam u b bv ga h q0 hNum`. Take `⟨-, -, hgap, -⟩` from `hfam ν hν`.
+Substitute using the available equality. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hDS` using `hFam ν hν`. Take `⟨hBe, hpos, -⟩` from `hSF ν hν`. Take `⟨-, -, -, hsm, hTK, -, hKT, -⟩` from `GlobalTheory.rep_basic_of_isDS hH.1.2.2.1 k r _ _ (R ν) hDS`. Establish `hn : 0 < ‖v‖` using `norm_pos_iff.2 hv`. Use `set w : (R ν).H := ((‖v‖⁻¹ : ℝ) : ℂ) • v with hw`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hw1 : ‖w‖ = 1`. Rewrite using `[hw, norm_smul, Complex.norm_real, norm_inv, norm_norm]`. Conclude with `inv_mul_cancel₀ hn.ne'`. Establish `hvw : v = ((‖v‖ : ℝ) : ℂ) • w`. Rewrite using `[hw, smul_smul, ← Complex.ofReal_mul, mul_inv_cancel₀ hn.ne', Complex.ofReal_one, one_smul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hwl : PI.UpqRep.IsLowUnitH k r (PI.BesselPeriodGGP.eps48 k r) (fun a => lam a + (ν a : ℝ)) (R ν).σ w`. Take `⟨P, hP, hvP⟩` from `hlow`. Conclude with `⟨P, hP, hw1, Submodule.smul_mem _ _ hvP⟩`. Establish `hwK : (R ν).KFin w` using `PI.UnitaryGroupMassFormula.LowSmooth.isKFinHpk_of_lowUnit hwl`. Establish `hvK : (R ν).KFin v`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨S, hS1, hS2, hS3⟩` from `hwK`. Conclude with `⟨S, hS1, by rw [hvw]; exact S.smul_mem _ hS2, hS3⟩`. Establish `hws : w ∈ (R ν).sm` using `hTK _ (hKT _ hwK)`. Take `⟨v₁, hv₁, hl⟩` from `GlobalTheory.T.discrete_series_bessel_gap hH k r _ _ (h / 2) (R ν) Wp z π u μW μN μG νq B (l ν) v hDS hgap hOK hSide hB hvK h0 ht hBe`. Establish `hnz : NzOn (R ν) (l ν)` using `⟨v₁, hTK _ (hKT _ hv₁), hl⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨c, hc⟩` from `GlobalTheory.BesselLine.bessel_line hH k r _ _ (R ν) Wp z π u μW μN μG νq (l ν) B hDS hSide hBe.1 hnz hB`. Establish `hmass` using `((GlobalTheory.MomMass.mom_mass hH k r Wp lam u b bv ga h q0 z π μW μN μG νq R l dg hS ν hν).2 hnz).2 w hws`. Establish `hmom` using `GlobalTheory.T.mass_bound_low_types_sum hH k r Wp lam u b bv ga h q0 z π μW μN μG νq R l dg hS ν q h1 h2 w hwl a`. Take `⟨-, -, -, -, hW, hN, hG, hq⟩` from `hSide`. Take `⟨m0, m1⟩` from `Formalism.FourierDecayAlt.P.DDSmoothness.muSof_facts hW hN`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hae` using `Formalism.FourierDecayAlt.P.DDSmoothness.ae_UH_of_quot hG.2.2.1 m0 m1 hq`. Use `set K : ℝ := (‖v‖ * ‖c‖) ^ 2 / dg ν with hK`. Establish `hK0 : 0 ≤ K` using `by positivity`. Establish `hpt : ∀ᵐ x ∂νq, ‖B ((R ν).σ (Matrix.of x) v)‖ ^ 2 = K * (dg ν * ‖l ν ((R ν).σ (Matrix.of x) w)‖ ^ 2)` using `by filter_upwards [hae] with x hx`. Establish `hxs` using `hsm _ hx w hws`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `: B ((R ν).σ (Matrix.of x) v) = ((‖v‖ : ℝ) : ℂ) • c • l ν ((R ν).σ (Matrix.of x) w)` using `by conv_lhs => rw [hvw, map_smul]`. Rewrite using `[hB.2.1 _ _ hxs, hc _ hxs]`. Rewrite using `[this, norm_smul, norm_smul, Complex.norm_real, norm_norm, hK]`. Clear the denominators using the available nonvanishing facts. Establish `e1 : l2SG νq (fun g => B ((R ν).σ g v)) = ENNReal.ofReal K`.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hmass` using `[hw1, one_pow, ENNReal.ofReal_one]`. Rewrite using `[← mul_one (ENNReal.ofReal K), ← hmass, ← lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]`. Use `lintegral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hpt] with x hx`. Rewrite using `[sq_nnnorm, hx, one_mul, ENNReal.ofReal_mul hK0]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e1, mul_comm (ENNReal.ofReal _) (ENNReal.ofReal K)]`. Use `le_trans (le_of_eq ?_) (mul_le_mul_right hmom _)` and prove the remaining obligations. Rewrite using `[← lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]`. Use `lintegral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hpt] with x hx`.
-
-Establish `hl0 : 0 ≤ lenA k r z (Matrix.of x) a ^ (2 * q)` using `pow_nonneg Metric.infDist_nonneg _`. Rewrite using `[sq_nnnorm, hx, ← ENNReal.ofReal_mul hl0, ← ENNReal.ofReal_mul hK0]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem moment_of_bessel (hH : Hyps) {k r : ℕ} {Wp : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
     [CompleteSpace Wp] [FiniteDimensional ℂ Wp] {lam : Fin (2 * r + k + 1) → ℝ} {u : ℕ → ℝ} {b bv ga h : ℝ} {q0 : ℕ}
@@ -174,17 +170,15 @@ theorem moment_of_bessel (hH : Hyps) {k r : ℕ} {Wp : Type} [NormedAddCommGroup
   congr 1; ring
 
 /- English proof (translation)
-Establish `hc : ∀ g g' : MatKR k r, Continuous fun x : Mt k r => (fun i j => (g * Matrix.of x * g') i j : Mt k r)` using `fun g g' => ((continuous_const.matrix_mul continuous_id).matrix_mul continuous_const : Continuous fun x : MatKR k r => g * x * g')`. Establish `hl : ∀ g : MatKR k r, Measurable (lmulM g : Mt k r → Mt k r)` using `fun g => (show Continuous (lmulM g : Mt k r → Mt k r) from (continuous_const.matrix_mul continuous_id : Continuous fun x : MatKR k r => g * x)).measurable`. Establish `i1 : ∀ x : MatKR k r, t * (t⁻¹ * x * t) * t⁻¹ = x` using `fun x => by`. Rewrite using `[← Matrix.mul_assoc, Matrix.mul_nonsing_inv_cancel_left t x ht, Matrix.mul_nonsing_inv_cancel_right t x ht]`. Establish `i2 : ∀ x : MatKR k r, t⁻¹ * (t * x * t⁻¹) * t = x` using `fun x => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Matrix.mul_assoc, Matrix.nonsing_inv_mul_cancel_left t x ht, Matrix.nonsing_inv_mul_cancel_right t x ht]`. Set `e0 : Mt k r ≃ₜ Mt k r` to `{ toFun := fun x => fun i j => (t⁻¹ * Matrix.of x * t) i j invFun := fun x => fun i j => (t * Matrix.of x * t⁻¹) i j left_inv := fun x => (i1 (Matrix.of x) :) right_inv := fun x => (i2 (Matrix.of x) :) continuous_toFun := hc _ _ continuous_invFun := hc _ _ }`. Set `e` to `e0.toMeasurableEquiv`. Take `⟨h1, h2, h3, h4⟩ : PI.BesselPeriodGGP.IsHaarOn (Nset k r) (μ.map e)` from `h`. Use `⟨?_, fun h0 => h2 (by rw [h0, Measure.map_zero]), ?_, fun s hs => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← e.map_symm_map (μ := μ)]`. Conclude with `e.symm.sigmaFinite_map`. Rewrite `h3` using `[e.map_apply]`. Rewrite using `[← h3]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Use extensionality with `x`. Use `hN (t⁻¹ * Matrix.of x * t)` as an intermediate fact. Rewrite `this` using `[i1]`. Conclude with `not_congr this.symm`. Establish `hs' : t⁻¹ * s * t ∈ Nset k r` using `(hN _).2 (by rwa [i1])`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `e.map_measurableEquiv_injective` to reduce the goal to its premises. Use `show (μ.map (lmulM s)).map e = μ.map e`. Rewrite using `[← h4 _ hs', Measure.map_map e.measurable (hl _), Measure.map_map (hl _) e.measurable]`. Use `congr 1`. Use function extensionality and compare the values at `x`.
-
-Use `show t⁻¹ * (s * Matrix.of x) * t = t⁻¹ * s * t * (t⁻¹ * Matrix.of x * t)`. Simplify using `only [Matrix.mul_assoc, Matrix.mul_nonsing_inv_cancel_left t _ ht]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem haar_of_conj {k r : ℕ} {μ : Measure (Mt k r)} {t : MatKR k r} (ht : IsUnit t.det)
     (hN : ∀ n, n ∈ Nset k r ↔ t * n * t⁻¹ ∈ Nset k r)
@@ -229,19 +223,17 @@ theorem haar_of_conj {k r : ℕ} {μ : Measure (Mt k r)} {t : MatKR k r} (ht : I
     simp only [Matrix.mul_assoc, Matrix.mul_nonsing_inv_cancel_left t _ ht]
 
 /- English proof (translation)
-Establish `hb2 : 2 < b` using `lt_trans (by have := Real.exp_one_gt_d9; linarith) hb`. Establish `hb1 : 1 ≤ b` using `by linarith`. Establish `hb0 : 0 < b` using `by linarith`. Establish `hr : (0 : ℝ) ≤ r` using `Nat.cast_nonneg r`. Establish `hB : (2 : ℝ) ≤ max 2 Cu` using `le_max_left _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp` using `Real.pi_gt_three`. Establish `hg2 : 1 ≤ b ^ (2 * Cg)` using `hg.trans hgb`. Establish `hM : max (Real.pi / v / g) (Real.pi / v / g)⁻¹ ≤ b ^ (2 * Cg + 2)`. Rewrite using `[Real.rpow_add hb0, Real.rpow_two]`. Use `max_le ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: Real.pi / v / g ≤ Real.pi` using `(div_le_self (by positivity) hg).trans (div_le_self (by positivity) hv)`. Use `Real.pi_le_four` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Rewrite using `[div_div, inv_div, div_le_iff₀ (by positivity)]`. Establish `h1 : v * g ≤ b ^ 2 * b ^ (2 * Cg)` using `mul_le_mul (by nlinarith) hgb (by linarith) (by positivity)`.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: 0 ≤ b ^ (2 * Cg) * b ^ 2` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities. Establish `h1 : x ≤ b ^ ((2 * Cg + 2) * r)`. Rewrite using `[Real.rpow_mul_natCast hb0.le]`. Conclude with `hx.trans (pow_le_pow_left₀ (le_max_of_le_left (by positivity)) hM r)`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : max 1 T ≤ b ^ (|CT| * (2 * r + 2 : ℝ))` using `max_le (Real.one_le_rpow hb1 (by positivity)) (hT.trans (Real.rpow_le_rpow_of_exponent_le hb1 (mul_le_mul_of_nonneg_right (le_abs_self _) (by positivity))))`. Establish `h3 : x ^ 2 * Hsq r T (b ^ max 2 Cu) ≤ b ^ (2 * (2 * Cg + 2 + |CT| + 10 * max 2 Cu) * (2 * r + 2 : ℝ))`. Unfold `Hsq`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Real.rpow_add hb0, Real.rpow_add hb0, Real.rpow_mul_natCast hb0.le _ 2, Real.rpow_mul_natCast hb0.le (max 2 Cu)]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `_ ≤ _ := by`. Use `Real.rpow_le_rpow_of_exponent_le hb1 ?_` and prove the remaining obligations. Use `push_cast`. Use `abs_nonneg CT` as an intermediate fact. Use polynomial arithmetic with `[mul_nonneg this hr, mul_nonneg (by linarith : 0 ≤ Cg) hr, mul_nonneg (by linarith : 0 ≤ max 2 Cu) hr]`.
-
-Rewrite using `[pow_mul, ← mul_pow, Real.rpow_mul_natCast hb0.le]`. Conclude with `pow_le_pow_left₀ (by unfold Hsq; positivity) h3 q`.
+Move the embeddings inside the algebraic operations. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem size_bound {b v g T x Cg Cu CT : ℝ} {r q : ℕ} (hb : Real.exp 1 < b) (hv : 1 ≤ v) (hvb : 2 * v ≤ b)
     (hg : 1 ≤ g) (hgb : g ≤ b ^ (2 * Cg)) (hCg : 8 ≤ Cg) (hT : T ≤ b ^ (CT * (2 * r + 2 : ℝ))) (hx0 : 0 ≤ x)
@@ -290,11 +282,11 @@ theorem size_bound {b v g T x Cg Cu CT : ℝ} {r q : ℕ} (hb : Real.exp 1 < b) 
   exact pow_le_pow_left₀ (by unfold Hsq; positivity) h3 q
 
 /- English proof (translation)
-Establish `a1` using `abs_nonneg Cn`. Establish `a2` using `abs_nonneg Cq`. Establish `hN' : N ≤ m * k * m ^ 3`. Establish `: (N : ℝ) ≤ m * k * (m : ℝ) ^ 3` using `hN.trans (by gcongr; linarith [le_abs_self Cn])`. Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq' : q ≤ m * r ^ 3`. Establish `: (q : ℝ) ≤ m * (r : ℝ) ^ 3` using `hq.trans (by gcongr; linarith [le_abs_self Cq])`. Conclude with `this` after adjusting the coercions. Establish `h1 : (r + 1) * q ≤ m * k`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Establish `h2 : m ≤ m ^ 4` using `Nat.le_self_pow (by norm_num) m`. Prove the components needed by the constructor for the conclusion. Combine the equalities or inequalities in the displayed calculation. Establish `: m * k ≤ k * k` using `Nat.mul_le_mul_right _ (h2.trans hk)`. Use the polynomial consequences of the given equalities and inequalities.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem radius_bound {k r m N q : ℕ} {Cn Cq : ℝ} (hm : m = 2 * r + 2) (hk : m ^ 4 ≤ k) (hC : |Cn| + |Cq| ≤ m)
     (hN : (N : ℝ) ≤ Cn * k * (m : ℝ) ^ 3) (hq : (q : ℝ) ≤ Cq * (r : ℝ) ^ 3) :
@@ -322,9 +314,9 @@ theorem radius_bound {k r m N q : ℕ} {Cn Cq : ℝ} (hm : m = 2 * r + 2) (hk : 
     nlinarith
 
 /- English proof (translation)
-Establish `e : ∀ (w : List (MatKR k r)) (v : H), PI.UpqRep.dsigW (k` using `k) (r := r) σ w v = dsigW (k := k) (r := r) σ w v := by`. Introduce `w v`. Proceed by induction on `w with`. Consider the case `nil => rfl`. Consider the case `cons X w ih => show PI.UpqRep.dsig σ X (PI.UpqRep.dsigW σ w v) = dsig σ X (dsigW σ w v)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[ih]`. Both sides reduce to the same expression. Take `⟨h1, h2, h3, C, Ws, h4, h5⟩` from `h`. Conclude with `⟨h1, h2, h3, C, Ws, h4, fun v hv => by simp only [e]; exact h5 v hv⟩`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isBesselMapSm_of {k r : ℕ} {H Wp : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] {z : Fin (2 * r + k + 1) → ℂ} {ψ : MatKR k r → ℂ}

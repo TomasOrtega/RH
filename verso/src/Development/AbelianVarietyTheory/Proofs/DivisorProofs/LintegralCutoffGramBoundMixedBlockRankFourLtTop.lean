@@ -14,7 +14,7 @@ noncomputable section
 def pw (t : ℂ) : ℝ := (1 + ‖t‖ ^ 2) ^ (-(4 / 3 : ℝ))
 
 /- English proof (translation)
-Establish `h` using `integrable_rpow_neg_one_add_norm_sq (E := ℂ) (μ := volume) (r := 8 / 3) (by rw [Complex.finrank_real_complex]; norm_num)`. Use `h.lintegral_lt_top using 4` and compare the differences between its conclusion and the goal. Simplify using `only [pw]`. Evaluate the numerical expressions.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Evaluate the numerical expressions.
 -/
 theorem lintegral_pw_lt_top : ∫⁻ t : ℂ, ENNReal.ofReal (pw t) < ⊤ := by
   have h := integrable_rpow_neg_one_add_norm_sq (E := ℂ) (μ := volume) (r := 8 / 3)
@@ -23,9 +23,9 @@ theorem lintegral_pw_lt_top : ∫⁻ t : ℂ, ENNReal.ofReal (pw t) < ⊤ := by
   simp only [pw]; norm_num
 
 /- English proof (translation)
-Set `M : Matrix (Fin 3) (Fin 3) ℂ` to `blkW p0 w`. Use `show ∏ k : Fin 3, colGram M k.castSucc ^ (-2:ℤ) = (colGram M 1 ^ 2 * colGram M 2 ^ 2)⁻¹`. Rewrite using `[Fin.prod_univ_three]`. Establish `h0 : colGram M (Fin.castSucc 0) = 1` using `by simp [colGram, lminor]`. Rewrite using `[h0]`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [one_zpow, one_mul, zpow_neg, mul_inv, inv_one]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem gB_eq (w : Low 4 → ℂ) (p0 : ℕ) : gB p0 w =
     (colGram (blkW (r := 4) p0 w : Matrix (Fin 3) (Fin 3) ℂ) 1 ^ 2 * colGram (blkW (r := 4) p0 w : Matrix (Fin 3) (Fin 3) ℂ) 2 ^ 2)⁻¹ := by
@@ -38,31 +38,31 @@ theorem gB_eq (w : Low 4 → ℂ) (p0 : ℕ) : gB p0 w =
   rfl
 
 /- English proof (translation)
-Unfold `pw`. Check the signs of the components of the expression.
+Replace the relevant objects with their definitions. Check the signs of the components of the expression.
 -/
 theorem pw_nonneg (t : ℂ) : 0 ≤ pw t := by unfold pw; positivity
 
 /- English proof (translation)
-Unfold `pw`. Use `fun_prop`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem measurable_pw : Measurable fun t : ℂ => ENNReal.ofReal (pw t) := by
   unfold pw; fun_prop
 
 /- English proof (translation)
-Apply the tactic sequence `intro i; fin_cases i <;> simp [blkW, lowMat]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem blkW_diag (w : Low 4 → ℂ) (p0 : ℕ) : ∀ i, (blkW (r := 4) p0 w : Matrix (Fin 3) (Fin 3) ℂ) i i = 1 := by
   intro i; fin_cases i <;> simp [blkW, lowMat]
 
 /- English proof (translation)
-Apply the tactic sequence `intro i j h; fin_cases i <;> fin_cases j <;> simp_all [blkW, lowMat]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem blkW_upper (w : Low 4 → ℂ) (p0 : ℕ) :
     ∀ i j : Fin 3, i < j → (blkW (r := 4) p0 w : Matrix (Fin 3) (Fin 3) ℂ) i j = 0 := by
   intro i j h; fin_cases i <;> fin_cases j <;> simp_all [blkW, lowMat]
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `GlobalTheory.T.columnGramDeterminant_unitLower_three (blkW (r := 4) p0 w) (blkW_diag w p0) (blkW_upper w p0)`. Rewrite using `[gB_eq, h1, h2, ha, hb, hc]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem gB_eq_entries (p0 : ℕ) (pa pb pc : Low 4) (w : Low 4 → ℂ)
     (ha : (blkW (r := 4) p0 w : Matrix (Fin 3) (Fin 3) ℂ) 1 0 = w pa)
@@ -74,33 +74,31 @@ theorem gB_eq_entries (p0 : ℕ) (pa pb pc : Low 4) (w : Low 4 → ℂ)
   rw [gB_eq, h1, h2, ha, hb, hc]
 
 /- English proof (translation)
-Use `set S : Finset (Low 4) := {pa, pb, pc} with hS`. Set `f : Low 4 → ℂ → ℝ≥0∞` to `fun p x => if p ∈ S then ENNReal.ofReal (pw x) else (Metric.closedBall (0 : ℂ) 1).indicator 1 x`. Establish `hf : ∀ p, Measurable (f p)`. Introduce `p`. Distinguish the cases in `hp : p ∈ S`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify using `only [f, hp, if_true]`. Conclude with `measurable_pw`. Simplify using `only [f, hp, if_false]`. Conclude with `measurable_one.indicator measurableSet_closedBall`. Set `U : (Low 4 → ℂ) → ℝ≥0∞` to `fun w => ∏ p, f p (w p)`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hU : Measurable U` using `Finset.measurable_prod _ fun p _ => (hf p).comp (measurable_pi_apply p)`. Establish `hUfin : ∫⁻ w, U w < ⊤`. Use `GlobalTheory.RestrMeas.lintegral_fintype_prod_eq_prod (μ := fun _ : Low 4 => (volume : Measure ℂ)) (fun p => (hf p).aemeasurable)` as an intermediate fact. Rewrite using `[volume_pi, this]`. Use `ENNReal.prod_lt_top fun p _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hp : p ∈ S`. Simplify using `only [f, hp, if_true]`. Conclude with `lintegral_pw_lt_top`. Simplify using `only [f, hp, if_false]`. Rewrite using `[lintegral_indicator measurableSet_closedBall]`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `using (measure_closedBall_lt_top (μ := (volume : Measure ℂ)) (x := 0) (r := 1))`. Establish `hUeq : ∀ w : Low 4 → ℂ, (∀ p, p ∉ S → ‖w p‖ ≤ 1) → U w = ENNReal.ofReal (pw (w pa)) * ENNReal.ofReal (pw (w pb)) * ENNReal.ofReal (pw (w pc))`. Introduce `w hw`. Simplify using `only [U, f]`. Rewrite using `[Finset.prod_ite, Finset.prod_eq_one (s := Finset.univ.filter (fun p => p ∉ S)) ?_, mul_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Finset.filter_mem_eq_inter, Finset.univ_inter, hS, Finset.prod_insert, Finset.prod_insert, Finset.prod_singleton, mul_assoc]`. Simplify using `using hcb.symm`. Simplify using `[hab, hac]`. Introduce `p hp`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hp`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Simplify using `[Set.indicator, hw p hp]`. Establish `hpt : ∀ w, hB p0 w ≤ U w + U (Function.update w pb (w pb - w pa * w pc))`. Introduce `w`. Distinguish the cases in `hw : w ∈ {w : Low 4 → ℂ | ∀ p : Low 4, (p.1.2 : ℕ) < p0 → p0 ≤ (p.1.1 : ℕ) → ‖w p‖ ≤ 1}`. Establish `hw' : ∀ p, p ∉ S → ‖w p‖ ≤ 1` using `fun p hp => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h1 : p ≠ pa` using `fun h => hp (by simp [hS, h])`. Establish `h2 : p ≠ pb` using `fun h => hp (by simp [hS, h])`. Establish `h3 : p ≠ pc` using `fun h => hp (by simp [hS, h])`. Take `⟨k1, k2⟩` from `hmix p h1 h2 h3`. Conclude with `hw p k1 k2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hw'' : ∀ p, p ∉ S → ‖Function.update w pb (w pb - w pa * w pc) p‖ ≤ 1` using `fun p hp => by`. Establish `: p ≠ pb` using `fun h => hp (by simp [hS, h])`. Rewrite using `[Function.update_of_ne this]`. Conclude with `hw' p hp`. Rewrite using `[hUeq w hw', hUeq _ hw'']`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Simplify using `only [Function.update_self, Function.update_of_ne hab, Function.update_of_ne hcb]`. Establish `n1` using `pw_nonneg (w pa)`. Establish `n2` using `pw_nonneg (w pb)`. Establish `n3` using `pw_nonneg (w pc)`. Establish `n4` using `pw_nonneg (w pb - w pa * w pc)`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `hB`. Rewrite using `[Set.indicator_of_mem hw, ← ENNReal.ofReal_mul n1, ← ENNReal.ofReal_mul (by positivity), ← ENNReal.ofReal_mul n1, ← ENNReal.ofReal_mul (by positivity), ← ENNReal.ofReal_add (by positivity) (by positivity)]`. Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises. Rewrite using `[hg w]`. Establish `key` using `GlobalTheory.T.flagGram_density_inequality_complex (w pa) (w pb) (w pc)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Replace the relevant objects with their definitions.
 
-Establish `e : pw (w pb - w pa * w pc) = (1 + ‖w pa * w pc - w pb‖ ^ 2) ^ (-(4 / 3 : ℝ))`. Simplify using `only [pw, norm_sub_rev (w pb)]`. Rewrite using `[e]`. Simplify using `only [pw]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Unfold `hB`. Rewrite using `[Set.indicator_of_notMem hw]`. Conclude with `zero_le'`. Establish `hgm : Measurable fun w : Low 4 → ℂ => w pa * w pc` using `(measurable_pi_apply pa).mul (measurable_pi_apply pc)`. Establish `hgi : ∀ w v : Low 4 → ℂ, (∀ j, j ≠ pb → w j = v j) → w pa * w pc = v pa * v pc`.
-
-Introduce `w v h`. Rewrite using `[h pa hab, h pc hcb]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[GlobalTheory.T.lintegral_update_sub_shear' pb (fun w => w pa * w pc) hgm hgi U hU]`. Use `_ < ⊤ := ENNReal.add_lt_top.2 ⟨hUfin, hUfin⟩`.
+Chain the equalities or inequalities of the calculation. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lintegral_hB_lt_top_of_pos (p0 : ℕ) (pa pb pc : Low 4) (hab : pa ≠ pb) (hcb : pc ≠ pb)
     (hac : pa ≠ pc)
@@ -184,7 +182,7 @@ theorem lintegral_hB_lt_top_of_pos (p0 : ℕ) (pa pb pc : Low 4) (hab : pa ≠ p
     _ < ⊤ := ENNReal.add_lt_top.2 ⟨hUfin, hUfin⟩
 
 /- English proof (translation)
-Introduce and unpack `p0 (rfl | rfl)`. Conclude with `lintegral_hB_lt_top_of_pos 1 ⟨(2, 1), by decide⟩ ⟨(3, 1), by decide⟩ ⟨(3, 2), by decide⟩ (by decide) (by decide) (by decide) (fun w => gB_eq_entries 1 _ _ _ w rfl rfl rfl) (by decide)`. Conclude with `lintegral_hB_lt_top_of_pos 3 ⟨(1, 0), by decide⟩ ⟨(2, 0), by decide⟩ ⟨(2, 1), by decide⟩ (by decide) (by decide) (by decide) (fun w => gB_eq_entries 3 _ _ _ w rfl rfl rfl) (by decide)`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem lintegral_hB_four_lt_top : ∀ p0 : ℕ, (p0 = 1 ∨ p0 = 3) → ∫⁻ w : Low 4 → ℂ, hB p0 w < ⊤ := by
   rintro p0 (rfl | rfl)

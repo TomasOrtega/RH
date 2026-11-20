@@ -9,13 +9,13 @@ open scoped Formalism.Per
 namespace GlobalTheory.Pst.StLat
 
 /- English proof (translation)
-Introduce `l _ ϖ hϖ a`. Take `⟨_, _, -, -, hK, -⟩` from `GlobalTheory.AinfChecks.padicComplex l`. Establish `hk : RingHom.ker (Per.θ l) = Ideal.span {((l : ℕ) : Per.Ainf l) - Per.tm ϖ}` using `(hK ϖ hϖ).1`. Use `GlobalTheory.RingIface.acris0_le l (Sa ϖ) ?_ a.2` and prove the remaining obligations. Introduce `x hx n y hn`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hx2 : x ∈ Ideal.span {((l : ℕ) : Per.Ainf l) - Per.tm ϖ}` using `hk ▸ RingHom.mem_ker.2 hx`. Take `⟨c, rfl⟩` from `Ideal.mem_span_singleton'.1 hx2`. Take `⟨c', hc⟩` from `GlobalTheory.RingBasics.exists_pow_div_factorial l n`. Establish `hc' : ((n.factorial : ℕ) : Per.AinfP l) * algebraMap (Per.Ainf l) (Per.AinfP l) (Per.zA l c') = ((l : ℕ) : Per.AinfP l) ^ n`. Establish `h` using `congrArg ((algebraMap (Per.Ainf l) (Per.AinfP l)).comp (Per.zA l)) hc`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[map_mul, map_natCast, map_pow, map_natCast, RingHom.comp_apply]`. Then use the resulting hypothesis. Establish `hX : algebraMap (Per.Ainf l) (Per.AinfP l) (c * (((l : ℕ) : Per.Ainf l) - Per.tm ϖ)) = -algebraMap (Per.Ainf l) (Per.AinfP l) c * (((l : ℕ) : Per.AinfP l) * beta ϖ)`. Rewrite using `[l_mul_beta, map_mul, map_sub, map_natCast]`. Expand and normalize the polynomial expressions, which then agree. Establish `key : y = algebraMap (Per.Ainf l) (Per.AinfP l) (Per.zA l c') * (-algebraMap (Per.Ainf l) (Per.AinfP l) c) ^ n * beta ϖ ^ n`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Apply `(GlobalTheory.RingBasics.isUnit_nat l n.factorial n.factorial_ne_zero).mul_left_cancel` to reduce the goal to its premises. Rewrite using `[hn, hX, mul_pow, mul_pow, ← hc']`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key]`. Conclude with `mul_mem (mul_mem (Subalgebra.algebraMap_mem _ _) (pow_mem (neg_mem (Subalgebra.algebraMap_mem _ _)) _)) (pow_mem (Algebra.self_mem_adjoin_singleton _ _) _)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem acris0_le_sa : ∀ (l : ℕ) [Fact l.Prime] (ϖ : Per.Fl l), ϖ.untilt = ((l : ℕ) : Per.OC l) →
     ∀ a : Per.Acris0 l, (a : Per.AinfP l) ∈ Sa ϖ := by

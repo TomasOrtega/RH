@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.DlogRatioVolumeForm
 open GlobalTheory.PD GlobalTheory.CechDR KaehlerDifferential
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | (exact @GlobalTheory.exists_isRes) | (exact GlobalTheory.exists_isRes) | (intros; apply GlobalTheory.exists_isRes <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.exists_laurentConstantTermForm_functionField : ∀ (k : Type) [Field k] (F : Type) [Field F] [Algebra k F] (d : ℕ) (x : Fin (d + 1) → F), IsPd k x → ∃ ρ : F →ₗ[k] k, IsRes k x ρ := by
   first | (exact @GlobalTheory.exists_isRes) | (exact GlobalTheory.exists_isRes) | (intros; apply GlobalTheory.exists_isRes <;> assumption)

@@ -17,7 +17,7 @@ open GlobalTheory.ChainParts
 namespace GlobalTheory.ChainParts.PartVB
 
 /- English proof (translation)
-Use `⟨i ≫ inv g ≫ q', ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← Category.assoc, hi, Category.assoc, IsIso.hom_inv_id_assoc, h']`. Rewrite using `[Category.assoc, Category.assoc, ← hq, IsIso.inv_hom_id_assoc, h]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem isIso_of_retract {C : Type*} [Category C] {A A' X X' : C} (f : A' ⟶ A) (g : X' ⟶ X) [IsIso g]
     (i' : A' ⟶ X') (q' : X' ⟶ A') (i : A ⟶ X) (q : X ⟶ A) (h' : i' ≫ q' = 𝟙 _) (h : i ≫ q = 𝟙 _)
@@ -33,19 +33,19 @@ noncomputable def proj (M : AM B Λ) (h : eA M c a ≫ eA M c a = eA M c a) : M.
   kernel.lift (𝟙 M.V - eA M c a) (eA M c a) (by rw [Preadditive.comp_sub, Category.comp_id, h, sub_self])
 
 /- English proof (translation)
-The claim follows from `inferInstanceAs (Mono (kernel.ι (𝟙 M.V - eA M c a)))`.
+A detailed English derivation is pending.
 -/
 theorem mono_partι (M : AM B Λ) : Mono (partι c a M) :=
   inferInstanceAs (Mono (kernel.ι (𝟙 M.V - eA M c a)))
 
 /- English proof (translation)
-The claim follows from `kernel.lift_ι _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem proj_ι (M : AM B Λ) (h : eA M c a ≫ eA M c a = eA M c a) : proj c a M h ≫ partι c a M = eA M c a :=
   kernel.lift_ι _ _ _
 
 /- English proof (translation)
-Establish `h : partι c a M ≫ (𝟙 M.V - eA M c a) = 0` using `kernel.condition _`. Rewrite `h` using `[Preadditive.comp_sub, Category.comp_id, sub_eq_zero]`. Conclude with `h.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ι_eA (M : AM B Λ) : partι c a M ≫ eA M c a = partι c a M := by
   have h : partι c a M ≫ (𝟙 M.V - eA M c a) = 0 := kernel.condition _
@@ -53,20 +53,20 @@ theorem ι_eA (M : AM B Λ) : partι c a M ≫ eA M c a = partι c a M := by
   exact h.symm
 
 /- English proof (translation)
-Use `haveI := mono_partι c a M`. Rewrite using `[← cancel_mono (partι c a M), Category.assoc, proj_ι, ι_eA, Category.id_comp]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ι_proj (M : AM B Λ) (h : eA M c a ≫ eA M c a = eA M c a) : partι c a M ≫ proj c a M h = 𝟙 _ := by
   haveI := mono_partι c a M
   rw [← cancel_mono (partι c a M), Category.assoc, proj_ι, ι_eA, Category.id_comp]
 
 /- English proof (translation)
-The claim follows from `kernel.lift_ι _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem map_ι {M N : AM B Λ} (f : M ⟶ N) : (partF c a).map f ≫ partι c a N = partι c a M ≫ f.hom :=
   kernel.lift_ι _ _ _
 
 /- English proof (translation)
-Use `haveI := mono_partι c a N`. Rewrite using `[← cancel_mono (partι c a N), Category.assoc, Category.assoc, proj_ι, map_ι, ← Category.assoc, proj_ι, eA_comm]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem proj_map {M N : AM B Λ} (f : M ⟶ N) (hM : eA M c a ≫ eA M c a = eA M c a)
     (hN : eA N c a ≫ eA N c a = eA N c a) :
@@ -75,9 +75,9 @@ theorem proj_map {M N : AM B Λ} (f : M ⟶ N) (hM : eA M c a ≫ eA M c a = eA 
   rw [← cancel_mono (partι c a N), Category.assoc, Category.assoc, proj_ι, map_ι, ← Category.assoc, proj_ι, eA_comm]
 
 /- English proof (translation)
-Introduce `O _ _ _ B Λ _ n c a hidem P`. Establish `h` using `hidem _ P.add`. Establish `h'` using `hidem _ P.add'`. Establish `v` using `GlobalTheory.VB.isVB_of_retract B.X _ _ _ _ _ (ι_proj c a P.E h) P.vb`. Establish `v'` using `GlobalTheory.VB.isVB_of_retract B.X _ _ _ _ _ (ι_proj c a P.E' h') P.vb'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI := P.iso`. Establish `hi : IsIso (B.genRes.map ((partF c a).map P.ψ))` using `isIso_of_retract _ (B.genRes.map P.ψ.hom) (B.genRes.map (partι c a P.E')) (B.genRes.map (proj c a P.E' h')) (B.genRes.map (partι c a P.E)) (B.genRes.map (proj c a P.E h)) (by rw [← Functor.map_comp, ι_proj, CategoryTheory.Functor.map_id]) (by rw [← Functor.map_comp, ι_proj, Categ …`. Use `haveI : Nonempty B.gen.toScheme := ⟨⟨_, B.genericPoint_mem_gen⟩⟩`. Establish `e` using `((v'.pullback B.gen.ι).of_iso (asIso (B.genRes.map ((partF c a).map P.ψ)))).rank_unique (v.pullback B.gen.ι)`. Conclude with `⟨_, v, e ▸ v', hi⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem main : ∀ {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {B : Vert.Model O} {Λ : Type} [CommRing Λ] {n : ℕ} (c : Fin n → Γ(B.X, ⊤)) (a : Fin n → Λ) (hidem : ∀ M : AM B Λ, IsAdd M → eA M c a ≫ eA M c a = eA M c a) (P : EPres B Λ), ∃ r, GlobalTheory.VB.IsVB ((partF c a).obj P.E) r ∧ GlobalTheory.VB.IsVB ((partF c a).obj P.E') r ∧
       IsIso (B.genRes.map ((partF c a).map P.ψ)) := by

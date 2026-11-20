@@ -5,7 +5,7 @@ open Formalism.L2.DIV
 namespace GlobalTheory.IdemExpand
 
 /- English proof (translation)
-Simplify using `only [idemOf, chiIdem, MonoidAlgebra.coeff_sum, Finsupp.finsetSum_apply, MonoidAlgebra.coeff_single, Finsupp.single_apply]`. Use `Finset.sum_congr rfl fun χ _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_ite_eq' Finset.univ t]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem coeff_idemOf_eq {G : Type} [Group G] [Fintype G] (X : Finset (G → ℂ)) (t : G) :
     (idemOf X).coeff t = ∑ χ ∈ X, χ 1 / (Fintype.card G : ℂ) * χ t⁻¹ := by
@@ -17,9 +17,9 @@ theorem coeff_idemOf_eq {G : Type} [Group G] [Fintype G] (X : Finset (G → ℂ)
   simp
 
 /- English proof (translation)
-Establish `h : ∀ g, (x * y).coeff g = ∑ b, x.coeff (g * b⁻¹) * y.coeff b`. Introduce `g`. Rewrite using `[MonoidAlgebra.coeff_mul_apply_right, Finsupp.sum_fintype]`. Introduce `i`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [h, Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Use `Fintype.sum_equiv (Equiv.mulRight b⁻¹) _ _ fun g => ?_` and prove the remaining obligations. Simplify using `only [Equiv.coe_mulRight, inv_mul_cancel_right]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -37,19 +37,19 @@ theorem sum_coeff_mul {G : Type} [Group G] [Fintype G] (x y : MonoidAlgebra ℂ 
   ring
 
 /- English proof (translation)
-Introduce `G _ _ _ A e hone hcol hsc hee`. Establish `hn : (Fintype.card G : ℂ) ≠ 0` using `by exact_mod_cast Fintype.card_ne_zero`. Establish `h2 : ∀ ψ ∈ A, (∑ g, e.coeff g * ψ g) = 0 ∨ (∑ g, e.coeff g * ψ g) = ψ 1`. Introduce `ψ hψ`. Establish `h` using `sum_coeff_mul e e ψ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h` using `[hee]`. Establish `h' : ψ 1 * ∑ b, e.coeff b * ∑ a, e.coeff a * ψ (a * b) = (∑ g, e.coeff g * ψ g) * ∑ g, e.coeff g * ψ g`. Rewrite using `[Finset.mul_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[mul_left_comm, hsc ψ hψ b]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite `h'` using `[← h]`. Distinguish the cases in `h0 : (∑ g, e.coeff g * ψ g) = 0`. Conclude with `Or.inl h0`. Conclude with `Or.inr (mul_right_cancel₀ h0 h').symm`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Prove the first alternative. Prove the second alternative.
 
-Use `MonoidAlgebra.ext (Finsupp.ext fun t => ?_)` and prove the remaining obligations. Establish `h1 : (Fintype.card G : ℂ) * e.coeff t = ∑ ψ ∈ A, (∑ g, e.coeff g * ψ g) * ψ t⁻¹`. Establish `a1 : ∑ g, e.coeff g * ∑ ψ ∈ A, ψ 1 * ψ (g * t⁻¹) = (Fintype.card G : ℂ) * e.coeff t`. Simplify using `only [hcol, mul_inv_eq_one, mul_ite, mul_zero]`. Rewrite using `[Finset.sum_ite_eq' Finset.univ t]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[mul_comm]`. Rewrite using `[← a1, ← Finset.sum_congr rfl fun ψ hψ => hsc ψ hψ t⁻¹]`. Simplify using `only [Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun ψ _ => Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Expand and normalize the polynomial expressions, which then agree. Apply `mul_left_cancel₀ hn` to reduce the goal to its premises. Rewrite using `[h1, coeff_idemOf_eq, Finset.mul_sum, Finset.sum_filter]`. Use `Finset.sum_congr rfl fun ψ hψ => ?_` and prove the remaining obligations. Use `split_ifs with h`.
+Expand and normalize the polynomial expressions, which then agree. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h]`. Clear the denominators using the available nonvanishing facts. Break down `h2 ψ hψ with h0 | h0` into its components or cases. Rewrite using `[h0, zero_mul]`. Conclude with `absurd h0 h`.
+Clear the denominators using the available nonvanishing facts. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_idemOf_filter : ∀ {G : Type} [inst : Group G] [inst_1 : Fintype G] [inst_2 : DecidableEq G] (A : Finset (G → ℂ)) (e : MonoidAlgebra ℂ G), (∀ ψ ∈ A, ψ 1 ≠ 0) → (∀ g : G, ∑ ψ ∈ A, ψ 1 * ψ g = if g = 1 then (Fintype.card G : ℂ) else 0) → (∀ ψ ∈ A, ∀ x : G, ψ 1 * ∑ g, e.coeff g * ψ (g * x) = (∑ g, e.coeff g * ψ g) * ψ x) → e * e = e → e = idemOf (A.filter fun ψ => ∑ g, e.coeff g * ψ g = ψ 1) := by
   intro G _ _ _ A e hone hcol hsc hee

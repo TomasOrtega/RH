@@ -11,9 +11,9 @@ namespace GlobalTheory.HeckeSplitField
 open Module
 
 /- English proof (translation)
-Proceed by induction on `p using Polynomial.induction_on' with`. Consider the case `add p r hp hr => rw [Polynomial.map_add, map_add, hp, hr, map_add, LinearMap.baseChange_add]`. Consider the case `monomial k c`. Rewrite using `[Polynomial.map_monomial, aeval_monomial, aeval_monomial, ← LinearMap.baseChange_pow]`. Apply `TensorProduct.AlgebraTensorModule.curry_injective` to reduce the goal to its premises.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Use extensionality with `x`. Simplify using `[Module.algebraMap_end_apply, LinearMap.baseChange_tmul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem aeval_baseChange {L K M : Type} [Field L] [Field K] [Algebra L K] [AddCommGroup M] [Module L M]
     (f : Module.End L M) (p : L[X]) :
@@ -27,13 +27,13 @@ theorem aeval_baseChange {L K M : Type} [Field L] [Field K] [Algebra L K] [AddCo
     simp [Module.algebraMap_end_apply, LinearMap.baseChange_tmul]
 
 /- English proof (translation)
-Take `⟨hp0, s, hs, hd⟩` from `hp`. Take `⟨c, hcx⟩` from `hs x`. Establish `e : (op x).baseChange K = ∑ y ∈ s, algebraMap L K (c y) • (op y).baseChange K`. Rewrite using `[hcx]`. Express the relevant statement in the definitionally equal form `LinearMap.baseChangeHom L K M M (∑ y ∈ s, c y • op y) = _`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(c y • op y).baseChange K = _`. Rewrite using `[LinearMap.baseChange_smul, algebraMap_smul]`. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Formalism.L2.Col.hfs_iSup_maxGen_sum s (fun y => (op y).baseChange K) (fun y => algebraMap L K (c y)) (fun y _ z _ => ?_) (fun y hy => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ * _ = _ * _`. Rewrite using `[← LinearMap.baseChange_mul, ← LinearMap.baseChange_mul, (hc y z).eq]`. Apply `Formalism.L2.Col.hfs_iSup_maxGen_of_splits` to reduce the goal to its premises. Use `hsp.of_dvd (Polynomial.map_ne_zero hp0) (minpoly.dvd K _ ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[aeval_baseChange, hd y hy, LinearMap.baseChange_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem iSup_maxGen_baseChange {L K M I : Type} [Field L] [Field K] [Algebra L K] [AddCommGroup M] [Module L M]
     [FiniteDimensional L M] (op : I → Module.End L M) (hc : ∀ x y, Commute (op x) (op y)) {p : L[X]}
@@ -59,7 +59,7 @@ theorem iSup_maxGen_baseChange {L K M I : Type} [Field L] [Field K] [Algebra L K
     rw [aeval_baseChange, hd y hy, LinearMap.baseChange_zero]
 
 /- English proof (translation)
-Set `b` to `Module.Free.chooseBasis what₂.LL (what₂.MtL μ j)`. Use `haveI : Finite (Module.Free.ChooseBasisIndex what₂.LL (what₂.MtL μ j)) := ((what₂.jMt_basis μ j b).1).finite`. Conclude with `Module.Finite.of_basis b`.
+Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem finiteDimensional_mtL {R : Ranks} (what₂ : Rows.Data R) (μ : what₂.Tup) (j : ℕ) :
     FiniteDimensional what₂.LL (what₂.MtL μ j) := by
@@ -74,17 +74,15 @@ namespace GlobalTheory.HeckeSplitField
 open Module
 
 /- English proof (translation)
-Introduce `D M C hR E0 hcomm j w`. Use `haveI : FiniteDimensional D.what₂.LL (D.what₂.MtL (D.what₂.muTw w) j) := finiteDimensional_mtL D.what₂ _ j`. Set `op : HeightOneSpectrum (𝓞 D.host.E) × ℕ → Module.End D.what₂.LL (D.what₂.MtL (D.what₂.muTw w) j)` to `fun vk => hLC (mt0 M) C.Q hR j w vk.1 vk.2`. Take `⟨p, hp⟩` from `Formalism.L2.Col.hfs_exists_poly op`. Set `S : Set (PadicAlgCl (D.what₂.places.resChar w))` to `((p.map (E0.emb w)).roots.toFinset : Set _)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `haveI : Finite S := Finset.finite_toSet _`. Establish `hfin : FiniteDimensional ℚ_[D.what₂.places.resChar w] (IntermediateField.adjoin ℚ_[D.what₂.places.resChar w] S)` using `IntermediateField.finiteDimensional_adjoin fun x _ => Algebra.IsIntegral.isIntegral x`. Use `⟨⟨IntermediateField.adjoin ℚ_[D.what₂.places.resChar w] S, hfin⟩, ?_⟩` and prove the remaining obligations. Introduce `X hXE hF v k _`. Establish `hmap : (p.map (ecC X j w)).map (iqC X j w) = p.map (E0.emb w)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[Polynomial.map_map]`. Use `congr 1`. Use extensionality with `x`. Rewrite using `[RingHom.comp_apply, iqC_ec, hXE]`. Establish `hsp : (p.map (algebraMap D.what₂.LL (FractionRing (OcC X j w)))).Splits`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Use `Polynomial.Splits.of_splits_map (iqC X j w) ?_ fun a ha => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((p.map (ecC X j w)).map (iqC X j w)).Splits`. Rewrite using `[hmap]`. Conclude with `IsAlgClosed.splits _`. Express the relevant statement in the definitionally equal form `a ∈ ((p.map (ecC X j w)).map (iqC X j w)).roots at ha`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `ha` using `[hmap]`. Establish `haS : a ∈ S`. Simplify using `only [S, Finset.coe_sort_coe, Finset.mem_coe, Multiset.mem_toFinset]`. Conclude with `ha`. Conclude with `iqC_surj X j w a (hF (IntermediateField.subset_adjoin _ _ haS))`.
-
-Conclude with `iSup_maxGen_baseChange op (fun x y => hcomm j w x.1 x.2 y.1 y.2) hp hsp (v, k)`.
+A detailed English derivation is pending.
 -/
 theorem exists_finExt_split : ∀ (D : D7) (M : MtFam D) (C : NChoice D) (hR : HeckeLift0 (mt0 M) C.Q) (E0 : PlEmb D.what₂),
     (∀ j w v k v' k', Commute (hLC (mt0 M) C.Q hR j w v k) (hLC (mt0 M) C.Q hR j w v' k')) →

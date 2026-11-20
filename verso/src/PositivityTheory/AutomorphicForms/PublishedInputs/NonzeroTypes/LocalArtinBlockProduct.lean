@@ -13,9 +13,9 @@ namespace UpperTheory.NonzeroTypeTheory
 namespace LocalArtinBlockProduct
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation. Use `Finset.prod_congr rfl fun p _ => ?_` and prove the remaining obligations. Use `show f ((G.e.symm (G.e p)).1) = f p.1`. Rewrite using `[Equiv.symm_apply_apply]`. Use `_ = ∏ b, f b ^ G.d b := by`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Fintype.prod_sigma]`. Use `Finset.prod_congr rfl fun b _ => ?_` and prove the remaining obligations. Use `show ∏ _y : Fin (G.d b), f b = f b ^ G.d b`. Rewrite using `[Finset.prod_const, Finset.card_univ, Fintype.card_fin]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prod_blocks {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {n : ℕ}
     (G : Grp k n) {M : Type*} [CommMonoid M] (f : Fin G.s → M) :
@@ -36,7 +36,7 @@ variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAl
   {a : Weil h →* (w.adicCompletion E)ˣ}
 
 /- English proof (translation)
-Establish `h0` using `ha.ord_eq (ineIncl h t)`. Rewrite `h0` using `[deg_ineIncl, neg_zero]`. Conclude with `valuation_eq_one_iff.mp (ord_eq_zero_iff.mp h0)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_unit (ha : IsLocalArtin h a) (t : Ine (F := E) A) :
     ∃ u, unitIncl (w.adicCompletion E) u = a (ineIncl h t) := by
@@ -47,11 +47,11 @@ theorem exists_unit (ha : IsLocalArtin h a) (t : Ine (F := E) A) :
 end LocalArtinBlockProduct
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ A w h a ha n χ ho μ hμ G σ hG s`. Take `⟨u, hu⟩` from `LocalArtinBlockProduct.exists_unit ha s`. Establish `key : ∀ i, ((χ i (Subgroup.inclusion (Weil_le_Dec h) (ineIncl h s)) : ℂˣ) : ℂ) = ((G.chi (σ.symm i) (a (ineIncl h s)) : ℂˣ) : ℂ)`. Introduce `i`. Establish `e` using `DFunLike.congr_fun (hG (σ.symm i)) u`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [MonoidHom.comp_apply, Equiv.apply_symm_apply] at e`. Rewrite using `[hμ i, ← hu, e]`. Simplify using `only [xOf, WD.charPol_mk, WDRep.ofChars_ρ, charpoly_diagEnd, MonoidHom.comp_apply]`. Rewrite using `[Finset.prod_congr rfl fun i _ => by rw [key i]]`. Rewrite using `[Equiv.prod_comp σ.symm (fun j => X - C ((G.chi j (a (ineIncl h s)) : ℂˣ) : ℂ))]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `LocalArtinBlockProduct.prod_blocks G (fun b => X - C ((G.μ b (a (ineIncl h s)) : ℂˣ) : ℂ))`.
+A detailed English derivation is pending.
 -/
 theorem localArtinCharacterProduct_holds : LocalArtinCharacterProduct := by
   intro E Ω _ _ _ _ _ A w h a ha n χ ho μ hμ G σ hG s

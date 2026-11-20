@@ -15,7 +15,7 @@ open GlobalTheory GlobalTheory.Cartier GlobalTheory.TopForm GlobalTheory.CechPic
 namespace GlobalTheory.BirModel
 
 /- English proof (translation)
-Introduce `hP k _ _ X _ p n hp hdim`. Take `⟨Y, s, U, hY, hsm, hpr, hU, hiso⟩` from `GlobalTheory.WeakRes.weak_resolution hP k X p n hp hdim`. Establish `hdom : IsDominant s` using `GlobalTheory.T.isDominant_of_isIso_restrict' X Y s U hU hiso`. Conclude with `⟨Y, hY, s, hdom, hsm, hpr, GlobalTheory.T.functionFieldMap_bijective_of_isIso_restrict' X Y s U hU hiso⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_smooth_projective_model : GlobalTheory.Published.Principalisation → ∀ (k : Type) [Field k] [CharZero k]
     (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (n : ℕ), IsProjOver p → topologicalKrullDim X = n →

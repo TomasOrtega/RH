@@ -10,9 +10,9 @@ variable {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSp
 local notation "adj" => ContinuousLinearMap.adjoint
 
 /- English proof (translation)
-Use `Pairwise.countable_of_isOpen_disjoint (s := fun i => Metric.ball (v i) (1 / 2)) (fun i j hij => ?_) (fun _ => Metric.isOpen_ball) fun i => Metric.nonempty_ball.2 (by norm_num)` and prove the remaining obligations. Use `Metric.ball_disjoint_ball ?_` and prove the remaining obligations. Establish `h` using `@norm_sub_sq ℂ H _ _ _ (v i) (v j)`. Rewrite `h` using `[hv.1, hv.1, hv.2 hij]`. Simplify using `only [map_zero] at h`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[dist_eq_norm]`. Use polynomial arithmetic with `[norm_nonneg (v i - v j)]`.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 -/
 private theorem cnt [TopologicalSpace.SeparableSpace H] {ι : Type} {v : ι → H} (hv : Orthonormal ℂ v) : Countable ι := by
   refine Pairwise.countable_of_isOpen_disjoint (s := fun i => Metric.ball (v i) (1 / 2)) (fun i j hij => ?_)
@@ -25,19 +25,19 @@ private theorem cnt [TopologicalSpace.SeparableSpace H] {ι : Type} {v : ι → 
   nlinarith [norm_nonneg (v i - v j)]
 
 /- English proof (translation)
-The claim follows from `(ContinuousLinearMap.adjoint.continuous.comp hk).clm_apply continuous_const`.
+A detailed English derivation is pending.
 -/
 private theorem contAdj {k : ℝ → V →L[ℂ] H} (hk : Continuous k) (c : H) : Continuous fun y => adj (k y) c :=
   (ContinuousLinearMap.adjoint.continuous.comp hk).clm_apply continuous_const
 
 /- English proof (translation)
-The claim follows from `(contAdj hk c).norm.pow 2`.
+A detailed English derivation is pending.
 -/
 private theorem cSq {k : ℝ → V →L[ℂ] H} (hk : Continuous k) (c : H) : Continuous fun y => ‖adj (k y) c‖ ^ 2 :=
   (contAdj hk c).norm.pow 2
 
 /- English proof (translation)
-Rewrite using `[memLp_indicator_iff_restrict measurableSet_Ioc]`. Take `⟨C, hC⟩` from `isCompact_Icc.exists_bound_of_continuousOn (hg.continuousOn (s := Icc a b))`. Conclude with `MemLp.of_bound hg.aestronglyMeasurable C ((ae_restrict_iff' measurableSet_Ioc).2 (Eventually.of_forall fun x hx => hC x (Ioc_subset_Icc_self hx)))`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem memL (a b : ℝ) {g : ℝ → V} (hg : Continuous g) : MemLp ((Ioc a b).indicator g) 2 volume := by
   rw [memLp_indicator_iff_restrict measurableSet_Ioc]
@@ -46,11 +46,11 @@ private theorem memL (a b : ℝ) {g : ℝ → V} (hg : Continuous g) : MemLp ((I
     ((ae_restrict_iff' measurableSet_Ioc).2 (Eventually.of_forall fun x hx => hC x (Ioc_subset_Icc_self hx)))
 
 /- English proof (translation)
-Use `ext_inner_right ℂ fun h => ?_` and prove the remaining obligations. Take `⟨u, rfl⟩` from `J.surjective h`. Establish `hu : IntegrableOn (u : ℝ → V) (Ioc a b)` using `((Lp.memLp u).restrict _).integrable one_le_two`. Take `⟨C, hC⟩` from `isCompact_Icc.exists_bound_of_continuousOn (hk.continuousOn (s := Icc a b))`. Establish `hi : IntegrableOn (fun y => k y (u y)) (Ioc a b)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `(hu.norm.const_mul C).mono' ?_ ?_` and prove the remaining obligations. Conclude with `isBoundedBilinearMap_apply.continuous.comp_aestronglyMeasurable (hk.aestronglyMeasurable.prodMk hu.1)`. Conclude with `(ae_restrict_iff' measurableSet_Ioc).2 (Eventually.of_forall fun x hx => (k x).le_of_opNorm_le (hC x (Ioc_subset_Icc_self hx)) _)`. Rewrite using `[ContinuousLinearMap.adjoint_inner_left, hY, ← integral_inner hi, J.inner_map_map, L2.inner_def, ← integral_indicator measurableSet_Ioc]`. Use `integral_congr_ae ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `filter_upwards [(memL a b (contAdj hk c)).coeFn_toLp] with x hx`. Rewrite using `[hx]`. Apply the tactic sequence `by_cases h : x ∈ Ioc a b <;> simp [h, ContinuousLinearMap.adjoint_inner_left]`.
+A detailed English derivation is pending.
 -/
 private theorem adjEq (J : L V ≃ₗᵢ[ℂ] H) (a b : ℝ) {k : ℝ → V →L[ℂ] H} {Y : H →L[ℂ] H} (hk : Continuous k)
     (hY : ∀ u : L V, Y (J u) = ∫ y in Ioc a b, k y (u y)) (c : H) : adj Y c = J ((memL a b (contAdj hk c)).toLp _) := by
@@ -71,7 +71,7 @@ private theorem adjEq (J : L V ≃ₗᵢ[ℂ] H) (a b : ℝ) {k : ℝ → V →L
   by_cases h : x ∈ Ioc a b <;> simp [h, ContinuousLinearMap.adjoint_inner_left]
 
 /- English proof (translation)
-Rewrite using `[adjEq J a b hk hY, adjEq J a b hk' hY', J.inner_map_map, L2.inner_def, ← integral_indicator measurableSet_Ioc]`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [(memL a b (contAdj hk c)).coeFn_toLp, (memL a b (contAdj hk' c)).coeFn_toLp] with x hx hx'`. Rewrite using `[hx, hx']`. Apply the tactic sequence `by_cases h : x ∈ Ioc a b <;> simp [h]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 private theorem innEq (J : L V ≃ₗᵢ[ℂ] H) (a b : ℝ) {k k' : ℝ → V →L[ℂ] H} {Y Y' : H →L[ℂ] H} (hk : Continuous k) (hk' : Continuous k')
     (hY : ∀ u : L V, Y (J u) = ∫ y in Ioc a b, k y (u y)) (hY' : ∀ u : L V, Y' (J u) = ∫ y in Ioc a b, k' y (u y)) (c : H) :
@@ -83,9 +83,9 @@ private theorem innEq (J : L V ≃ₗᵢ[ℂ] H) (a b : ℝ) {k k' : ℝ → V �
   by_cases h : x ∈ Ioc a b <;> simp [h]
 
 /- English proof (translation)
-Establish `h` using `innEq J a b hk hk hY hY c`. Simplify using `only [inner_self_eq_norm_sq_to_K] at h`. Establish `e : ∀ x : ℝ, ((x : ℂ) ^ 2) = ((x ^ 2 : ℝ) : ℂ)` using `fun x => by push_cast; rfl`. Express the relevant statement in the definitionally equal form `((‖adj Y c‖ : ℝ) : ℂ) ^ 2 = ∫ y in Ioc a b, ((‖adj (k y) c‖ : ℝ) : ℂ) ^ 2 at h`. Simplify using `only [e] at h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Rewrite `h` using `[integral_complex_ofReal]`. Conclude with `h` after adjusting the coercions.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem normEq (J : L V ≃ₗᵢ[ℂ] H) (a b : ℝ) {k : ℝ → V →L[ℂ] H} {Y : H →L[ℂ] H} (hk : Continuous k)
     (hY : ∀ u : L V, Y (J u) = ∫ y in Ioc a b, k y (u y)) (c : H) : ‖adj Y c‖ ^ 2 = ∫ y in Ioc a b, ‖adj (k y) c‖ ^ 2 := by
@@ -98,9 +98,9 @@ private theorem normEq (J : L V ≃ₗᵢ[ℂ] H) (a b : ℝ) {k : ℝ → V →
   exact_mod_cast h
 
 /- English proof (translation)
-Establish `h` using `hasSum_sum (s := Finset.univ) fun i _ => c.hasSum_inner_mul_inner (A' (stdOrthonormalBasis ℂ V i)) (A (stdOrthonormalBasis ℂ V i))`. It suffices to establish `e : ∀ m, ⟪adj A (c m), adj A' (c m)⟫_ℂ = ∑ i, ⟪A' (stdOrthonormalBasis ℂ V i), c m⟫_ℂ * ⟪c m, A (stdOrthonormalBasis ℂ V i)⟫_ℂ by`. Simplify `h` using `only [e]`. Introduce `m`. Rewrite using `[← (stdOrthonormalBasis ℂ V).sum_inner_mul_inner]`.
+Establish an intermediate fact. Reduce the argument to an intermediate assertion. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun i _ => by`. Rewrite using `[ContinuousLinearMap.adjoint_inner_left, ContinuousLinearMap.adjoint_inner_right, mul_comm]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem ptSum {ι : Type} (c : HilbertBasis ι ℂ H) (A A' : V →L[ℂ] H) :
     HasSum (fun m => ⟪adj A (c m), adj A' (c m)⟫_ℂ) (∑ i, ⟪A' (stdOrthonormalBasis ℂ V i), A (stdOrthonormalBasis ℂ V i)⟫_ℂ) := by
@@ -113,7 +113,7 @@ private theorem ptSum {ι : Type} (c : HilbertBasis ι ℂ H) (A A' : V →L[ℂ
     rw [ContinuousLinearMap.adjoint_inner_left, ContinuousLinearMap.adjoint_inner_right, mul_comm]
 
 /- English proof (translation)
-Establish `h` using `(ptSum c A A).mapL Complex.reCLM`. Simplify `h` using `[inner_self_eq_norm_sq_to_K, ← Complex.ofReal_pow]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem ptSumR {ι : Type} (c : HilbertBasis ι ℂ H) (A : V →L[ℂ] H) :
     HasSum (fun m => ‖adj A (c m)‖ ^ 2) (∑ i, ‖A (stdOrthonormalBasis ℂ V i)‖ ^ 2) := by
@@ -121,9 +121,9 @@ private theorem ptSumR {ι : Type} (c : HilbertBasis ι ℂ H) (A : V →L[ℂ] 
   simpa [inner_self_eq_norm_sq_to_K, ← Complex.ofReal_pow] using h
 
 /- English proof (translation)
-Establish `ci : ∀ {f : ℝ → ℝ}, Continuous f → IntegrableOn f (Ioc a b)` using `fun hf => hf.integrableOn_Icc.mono_set Ioc_subset_Icc_self`. Use `summable_of_sum_le (c := ∫ y in Ioc a b, ∑ i, ‖k y (stdOrthonormalBasis ℂ V i)‖ ^ 2) (fun _ => sq_nonneg _) fun s => ?_` and prove the remaining obligations. Simplify using `only [normEq J a b hk hY]`. Rewrite using `[← integral_finset_sum _ fun m _ => ci (cSq hk _)]`. Use `integral_mono (integrable_finset_sum _ fun m _ => ci (cSq hk _)) (ci (continuous_finset_sum _ fun i _ => (hk.clm_apply continuous_const).norm.pow 2)) fun y => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `sum_le_hasSum s (fun _ _ => sq_nonneg _) (ptSumR c (k y))`.
+A detailed English derivation is pending.
 -/
 private theorem summ (J : L V ≃ₗᵢ[ℂ] H) (a b : ℝ) {k : ℝ → V →L[ℂ] H} {Y : H →L[ℂ] H} (hk : Continuous k)
     (hY : ∀ u : L V, Y (J u) = ∫ y in Ioc a b, k y (u y)) {ι : Type} (c : HilbertBasis ι ℂ H) :
@@ -137,7 +137,7 @@ private theorem summ (J : L V ≃ₗᵢ[ℂ] H) (a b : ℝ) {k : ℝ → V →L[
   exact sum_le_hasSum s (fun _ _ => sq_nonneg _) (ptSumR c (k y))
 
 /- English proof (translation)
-Rewrite using `[← isHilbertSchmidt_adjoint_iff, isHilbertSchmidt_iff (stdHilbertBasis ℂ H)]`. Establish `h` using `summ J a b hk hY (stdHilbertBasis ℂ H)`. Use `h.tsum_ofReal_lt_top` as an intermediate fact. Simplify `this` using `[ENNReal.ofReal_pow]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem isHS (J : L V ≃ₗᵢ[ℂ] H) (a b : ℝ) {k : ℝ → V →L[ℂ] H} {Y : H →L[ℂ] H} (hk : Continuous k)
     (hY : ∀ u : L V, Y (J u) = ∫ y in Ioc a b, k y (u y)) : IsHilbertSchmidt Y := by
@@ -147,15 +147,13 @@ private theorem isHS (J : L V ≃ₗᵢ[ℂ] H) (a b : ℝ) {k : ℝ → V →L[
   simpa [ENNReal.ofReal_pow] using this
 
 /- English proof (translation)
-Establish `h1` using `isHS J a b hk hY`. Establish `h2` using `(isHS J a b hk' hY').adjoint`. Set `c` to `stdHilbertBasis ℂ H`. Use `haveI : Fact ((2 : ENNReal) ≠ ⊤) := ⟨by simp⟩`. Use `haveI : ProperSpace V := FiniteDimensional.proper ℂ V`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : TopologicalSpace.SeparableSpace H := J.surjective.denseRange.separableSpace J.continuous`. Use `haveI := cnt c.orthonormal`. Establish `s1` using `(isTraceClass_comp h1 h2).hasSum_trace c`. Establish `ci : ∀ {f : ℝ → ℝ}, Continuous f → IntegrableOn f (Ioc a b)` using `fun hf => hf.integrableOn_Icc.mono_set Ioc_subset_Icc_self`. Establish `cg : ∀ m, Continuous fun y => ⟪adj (k y) (c m), adj (k' y) (c m)⟫_ℂ` using `fun m => (contAdj hk _).inner (contAdj hk' _)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `s2` using `hasSum_integral_of_summable_integral_norm (μ := volume.restrict (Ioc a b)) (F := fun m y => ⟪adj (k y) (c m), adj (k' y) (c m)⟫_ℂ) (fun m => (cg m).integrableOn_Icc.mono_set Ioc_subset_Icc_self) (by`. Use `Summable.of_nonneg_of_le (fun _ => integral_nonneg fun _ => norm_nonneg _) (fun m => ?_) ((summ J a b hk hY c).add (summ J a b hk' hY' c))` and prove the remaining obligations. Rewrite using `[normEq J a b hk hY, normEq J a b hk' hY', ← integral_add (ci (cSq hk _)) (ci (cSq hk' _))]`. Use `integral_mono (ci (cg m).norm) ((ci (cSq hk _)).add (ci (cSq hk' _))) fun y => ?_` and prove the remaining obligations. Use `(norm_inner_le_norm _ _).trans ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Use the polynomial consequences of the given equalities and inequalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `show _ ≤ ‖adj (k y) (c m)‖ ^ 2 + ‖adj (k' y) (c m)‖ ^ 2`. Use polynomial arithmetic with `[sq_nonneg (‖adj (k y) (c m)‖ - ‖adj (k' y) (c m)‖), norm_nonneg (adj (k y) (c m)), norm_nonneg (adj (k' y) (c m))])`. Simplify using `only [← innEq J a b hk hk' hY hY', (ptSum c _ _).tsum_eq] at s2`. Rewrite using `[trace_comp_comm_of_isHilbertSchmidt h2 h1]`. Use `s1.unique ?_` and prove the remaining obligations.
-
-Simplify `s2` using `only [ContinuousLinearMap.comp_apply, ContinuousLinearMap.adjoint_inner_left]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem trEq (J : L V ≃ₗᵢ[ℂ] H) (a b : ℝ) {k k' : ℝ → V →L[ℂ] H} {Y Y' : H →L[ℂ] H} (hk : Continuous k) (hk' : Continuous k')
     (hY : ∀ u : L V, Y (J u) = ∫ y in Ioc a b, k y (u y)) (hY' : ∀ u : L V, Y' (J u) = ∫ y in Ioc a b, k' y (u y)) :
@@ -187,11 +185,11 @@ private theorem trEq (J : L V ≃ₗᵢ[ℂ] H) (a b : ℝ) {k k' : ℝ → V �
 end
 
 /- English proof (translation)
-Introduce `H _ _ _ V _ _ _ _ J a b k k' Y Y' hab hk hk' hY hY'`. Establish `h1` using `isHS J a b hk hY`. Use `⟨h1, ?_, by rw [intervalIntegral.integral_of_le hab]; exact trEq J a b hk hk' hY hY'⟩` and prove the remaining obligations. Establish `s1` using `(isTraceClass_comp h1.adjoint h1).hasSum_trace (stdHilbertBasis ℂ H)`. Rewrite `s1` using `[trEq J a b hk hk hY hY]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `s2` using `Complex.hasSum_ofReal.2 (h1.hasSum_norm_sq (stdHilbertBasis ℂ H))`. Establish `e : ∀ x : H, ⟪x, x⟫_ℂ = ((‖x‖ ^ 2 : ℝ) : ℂ)` using `fun x => by rw [inner_self_eq_norm_sq_to_K]; push_cast; rfl`. Simplify using `only [ContinuousLinearMap.comp_apply, ContinuousLinearMap.adjoint_inner_right, e, ← Complex.ofReal_sum] at s1`. Rewrite `s1` using `[integral_complex_ofReal]`. Rewrite using `[intervalIntegral.integral_of_le hab]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `s2.unique s1` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.IntegralApplyAeEq.kp :
     ∀ {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] [FiniteDimensional ℂ V] [CompleteSpace V] (J : L V ≃ₗᵢ[ℂ] H) (a b : ℝ) (k k' : ℝ → V →L[ℂ] H) (Y Y' : H →L[ℂ] H), a ≤ b → Continuous k → Continuous k' →

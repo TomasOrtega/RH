@@ -3,13 +3,13 @@ import Formalism.PadicSubsetSums.StableGradedCounts.IRRCentralIdempotent
 namespace Formalism.IrreducibleCountingLemmas.GaloisIrreducibility
 
 /- English proof (translation)
-Introduce `G V W _ _ _ _ _ _ _ _ _ _ ρ σ hρ hσ hne`. Take `⟨μ, h1, h2⟩` from `centralIdem_mul ρ σ hσ`. Establish `hirrρ : ρ.IsIrreducible` using `isIrreducible_of ρ hρ`. Establish `hirrσ : σ.IsIrreducible` using `isIrreducible_of σ hσ`. Establish `hc0 : (Fintype.card G : ℂ) ≠ 0` using `by exact_mod_cast Fintype.card_ne_zero`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Invertible (Nat.card G : ℂ)` using `invertibleOfNonzero (by rw [Nat.card_eq_fintype_card]; exact hc0)`. Establish `hno : ¬ Nonempty (Representation.Equiv ρ σ)`. Introduce and unpack `⟨φ⟩`. Conclude with `hne ⟨φ.toLinearEquiv, fun g x => LinearMap.congr_fun (φ.isIntertwining' g) x⟩`. Establish `horth` using `Representation.char_orthonormal σ ρ`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `horth` using `[if_neg hno, Nat.card_eq_fintype_card]`. Establish `h3 : ∑ g, ρ.character g⁻¹ * σ.character g = 0`. Establish `e : ∑ g, ρ.character g⁻¹ * σ.character g = ∑ g, σ.character g * ρ.character g⁻¹` using `Finset.sum_congr rfl fun g _ => mul_comm _ _`. Rewrite using `[e]`. Simplify using `using horth`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[h3]`. Establish `hd : (Module.finrank ℂ W : ℂ) ≠ 0`. Conclude with `(Module.finrank_pos (R := ℂ) (M := W)).ne'` after adjusting the coercions. Establish `hμ : μ = 0` using `(mul_eq_zero.mp h1).resolve_right hd`. Rewrite using `[h2, hμ, mul_zero, zero_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem central_idempotents_orthogonal : CentralIdemOrthogonal := by
   intro G V W _ _ _ _ _ _ _ _ _ _ ρ σ hρ hσ hne

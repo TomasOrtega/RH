@@ -37,7 +37,7 @@ abbrev div1 : DivData K Unit :=
     HH_ge := le_refl _ }
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨zeroHLat_good K, fun _ => oneHLat_good K⟩`.
+Supply the required witnesses or components.
 -/
 theorem trivialDivisor_good : (div1 K).RR.Good ∧ ∀ u, ((div1 K).Nu u).Good :=
   ⟨zeroHLat_good K, fun _ => oneHLat_good K⟩
@@ -76,9 +76,9 @@ def gLevel1 (p : ℕ) : Level (emptyPlaces p) where
   χ := 1
 
 /- English proof (translation)
-Unfold `Places.HtupW Places.tenV`. Use `congr 1`. Use extensionality with `X`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨F, -, rfl⟩`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `Finset.prod_eq_one (fun v _ => v.elim0)`. Introduce `h`. Conclude with `⟨fun v => v.elim0, fun v => v.elim0, by`. Rewrite using `[Set.mem_singleton_iff.mp h]`. Conclude with `(Finset.prod_eq_one (fun v _ => v.elim0)).symm⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gHtupW (p : ℕ) (L : (emptyPlaces p).Tup) :
     (emptyPlaces p).HtupW L = Submodule.span ℤ_[3] {(1 : (emptyPlaces p).Xsp)} := by
@@ -93,11 +93,11 @@ theorem gHtupW (p : ℕ) (L : (emptyPlaces p).Tup) :
       rw [Set.mem_singleton_iff.mp h]; exact (Finset.prod_eq_one (fun v _ => v.elim0)).symm⟩
 
 /- English proof (translation)
-Establish `hlat : ∀ L : (emptyPlaces p).Tup, (emptyPlaces p).IsLatTup L` using `fun _ v => v.elim0`. Simplify using `only [Level.M, Level.funMod, Submodule.mem_inf, Submodule.mem_iInf, Submodule.mem_comap, LinearMap.mem_ker, LinearMap.proj_apply, gHtupW, Submodule.mem_span_singleton]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨h1, -⟩, -⟩`. Take `⟨c, hc⟩` from `h1 default (hlat _)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨c, funext fun L => by rw [Subsingleton.elim L default, hc]⟩`. Introduce and unpack `⟨c, rfl⟩`. Use `⟨⟨fun _ _ => ⟨c, rfl⟩, fun L h => absurd (hlat L) h⟩, fun γ L => ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.sub_apply, LinearMap.proj_apply, LinearMap.comp_apply, LinearMap.smul_apply]`. Establish `e : (((gLevel1 p).actX γ).restrictScalars ℤ_[3]) (c • (1 : (emptyPlaces p).Xsp)) = c • (1 : (emptyPlaces p).Xsp)` using `by show (emptyPlaces p).natAct _ _ = _`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[emptyPlaces_natAct]`. Both sides reduce to the same expression. Rewrite using `[e]`. Use `show c • (1 : (emptyPlaces p).Xsp) - ((1 : ℤ_[3]ˣ) : ℤ_[3]) • (c • (1 : (emptyPlaces p).Xsp)) = 0`. Rewrite using `[Units.val_one, one_smul, sub_self]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gLevel1_mem (p : ℕ) (F : (emptyPlaces p).Tup → (emptyPlaces p).Xsp) :
     F ∈ (gLevel1 p).M ↔ ∃ c : ℤ_[3], F = fun _ => c • (1 : (emptyPlaces p).Xsp) := by
@@ -129,13 +129,11 @@ def trivialLocalData (p : ℕ) : GAtP p where
   e := 0
 
 /- English proof (translation)
-Use `show Module.finrank ℤ_[3] (Submodule.pi Set.univ fun _ : Unit => (gLevel1 p).M : Submodule ℤ_[3] (Unit → (emptyPlaces p).Tup → (emptyPlaces p).Xsp)) = 1`. Set `f : ℤ_[3] →ₗ[ℤ_[3]] (Submodule.pi Set.univ fun _ : Unit => (gLevel1 p).M : Submodule ℤ_[3] (Unit → (emptyPlaces p).Tup → (emptyPlaces p).Xsp))` to `{ toFun := fun c => ⟨fun _ _ => c • 1, fun _ _ => (gLevel1_mem p _).mpr ⟨c, rfl⟩⟩ map_add' := fun a b => Subtype.ext (by funext _ _; exact add_smul a b _) map_smul' := fun a b => Subtype.ext (by funext _ _; exact mul_smul a b _) }`. Establish `hinj : Function.Injective f`. Introduce `a b h`. Establish `h1` using `congrFun (congrFun (congrArg Subtype.val h) ()) default`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `congrArg (MvPolynomial.coeff 0) h1`. Simplify using `only [f] at h2`. Express the relevant statement in the definitionally equal form `MvPolynomial.coeff 0 (a • (1 : (emptyPlaces p).Xsp)) = MvPolynomial.coeff 0 (b • (1 : (emptyPlaces p).Xsp)) at h2`. Rewrite `h2` using `[MvPolynomial.coeff_smul, MvPolynomial.coeff_smul, MvPolynomial.coeff_zero_one, Algebra.smul_def, Algebra.smul_def, mul_one, mul_one]`. Conclude with `IsFractionRing.injective ℤ_[3] ℚ_[3] h2`.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hsurj : Function.Surjective f`. Introduce and unpack `⟨F, hF⟩`. Take `⟨c, hc⟩` from `(gLevel1_mem p (F ())).mp (hF () (Set.mem_univ _))`. Conclude with `⟨c, Subtype.ext (funext fun _ => hc.symm)⟩`. Rewrite using `[← (LinearEquiv.ofBijective f ⟨hinj, hsurj⟩).finrank_eq]`.
-
-Conclude with `Module.finrank_self _`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trivialLocalData_rank (p : ℕ) : (trivialLocalData p).d = 1 := by
   show Module.finrank ℤ_[3] (Submodule.pi Set.univ fun _ : Unit => (gLevel1 p).M :

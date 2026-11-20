@@ -4,11 +4,9 @@ import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.IsDomainAndIsIn
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hPq : (⊥ : Ideal (Localization.AtPrime m)).comap (algebraMap S _) ≤ q`. Introduce `y hy`. Establish `hy0 : algebraMap S (Localization.AtPrime m) y = 0` using `hy`. Take `⟨s, hs⟩` from `(IsLocalization.map_eq_zero_iff m.primeCompl _ y).1 hy0`. Establish `hsy : (s : S) * y ∈ q`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hs]`. Conclude with `q.zero_mem`. Establish `hsq : (s : S) ∉ q` using `fun h => s.2 (hqm h)`. Conclude with `(hq.1.1.mem_or_mem hsy).resolve_left hsq`. Establish `hqP : q ≤ (⊥ : Ideal (Localization.AtPrime m)).comap (algebraMap S _)` using `hq.2 ⟨Ideal.comap_isPrime _ _, bot_le⟩ hPq`.
-
-Establish `hx0 : algebraMap S (Localization.AtPrime m) x = 0` using `hqP hx`. Conclude with `(IsLocalization.map_eq_zero_iff m.primeCompl _ x).1 hx0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_mul_eq_zero_of_mem_minimalPrimes_of_isDomain_atPrime {S : Type*} [CommRing S]
     {q : Ideal S} (hq : q ∈ minimalPrimes S) (m : Ideal S) [m.IsPrime] (hqm : q ≤ m)
@@ -29,21 +27,17 @@ theorem exists_mul_eq_zero_of_mem_minimalPrimes_of_isDomain_atPrime {S : Type*} 
   exact (IsLocalization.map_eq_zero_iff m.primeCompl _ x).1 hx0
 
 /- English proof (translation)
-Establish `: q.IsPrime` using `hq.1.1`. Use `IsIntegrallyClosed.of_localization_maximal (fun M _ _ => ?_)` and prove the remaining obligations. Set `m : Ideal S` to `M.comap (Ideal.Quotient.mk q)`. Establish `: m.IsPrime` using `Ideal.comap_isPrime _ _`. Establish `hqm : q ≤ m`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `x hx`. Use `show Ideal.Quotient.mk q x ∈ M`. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem.2 hx]`. Conclude with `M.zero_mem`. Take `⟨hdom, hic⟩` from `hS m`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hker : ∀ x ∈ q, algebraMap S (Localization.AtPrime m) x = 0`. Introduce `x hx`. Take `⟨s, hs⟩` from `exists_mul_eq_zero_of_mem_minimalPrimes_of_isDomain_atPrime hq m hqm hx`. Conclude with `(IsLocalization.map_eq_zero_iff m.primeCompl _ x).2 ⟨s, hs⟩`. Set `: Algebra (S ⧸ q) (Localization.AtPrime m)` to `(Ideal.Quotient.lift q (algebraMap S (Localization.AtPrime m)) hker).toAlgebra`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hmk : ∀ a : S, algebraMap (S ⧸ q) (Localization.AtPrime m) (Ideal.Quotient.mk q a) = algebraMap S (Localization.AtPrime m) a` using `fun a => Ideal.Quotient.lift_mk _ _ _`. Establish `: IsLocalization M.primeCompl (Localization.AtPrime m)`. Use `(isLocalization_iff _ _).2 ⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨y, hy⟩`. Take `⟨s, rfl⟩` from `Ideal.Quotient.mk_surjective y`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `show IsUnit (algebraMap (S ⧸ q) (Localization.AtPrime m) (Ideal.Quotient.mk q s))`. Rewrite using `[hmk]`. Conclude with `IsLocalization.map_units (Localization.AtPrime m) (⟨s, hy⟩ : m.primeCompl)`. Introduce `z`. Take `⟨⟨a, s⟩, h⟩` from `IsLocalization.surj m.primeCompl z`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨⟨Ideal.Quotient.mk q a, ⟨Ideal.Quotient.mk q s, s.2⟩⟩, ?_⟩` and prove the remaining obligations. Use `show z * algebraMap (S ⧸ q) _ (Ideal.Quotient.mk q s) = algebraMap (S ⧸ q) _ (Ideal.Quotient.mk q a)`. Rewrite using `[hmk, hmk]`. Conclude with `h`. Introduce `a b hab`.
-
-Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective a`. Take `⟨b, rfl⟩` from `Ideal.Quotient.mk_surjective b`. Rewrite `hab` using `[hmk, hmk]`. Take `⟨c, hc⟩` from `(IsLocalization.eq_iff_exists m.primeCompl _).1 hab`. Use `⟨⟨Ideal.Quotient.mk q c, c.2⟩, ?_⟩` and prove the remaining obligations.
-
-Use `show Ideal.Quotient.mk q c * Ideal.Quotient.mk q a = Ideal.Quotient.mk q c * Ideal.Quotient.mk q b`. Rewrite using `[← map_mul, ← map_mul, hc]`. Conclude with `hic.of_equiv (IsLocalization.algEquiv M.primeCompl (Localization.AtPrime M) (Localization.AtPrime m)).toRingEquiv.symm`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isIntegrallyClosed_quotient_of_mem_minimalPrimes {S : Type*} [CommRing S]
     (hS : ∀ (m : Ideal S) [m.IsPrime],
@@ -94,7 +88,7 @@ theorem isIntegrallyClosed_quotient_of_mem_minimalPrimes {S : Type*} [CommRing S
     (Localization.AtPrime m)).toRingEquiv.symm
 
 /- English proof (translation)
-Introduce `F S _ _ _ _ q hq`. Use `isIntegrallyClosed_quotient_of_mem_minimalPrimes (fun m _ => ?_) hq` and prove the remaining obligations. Conclude with `isDomain_and_isIntegrallyClosed_atPrime_of_smooth F m (Localization.AtPrime m)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isIntegrallyClosed_quotient_minimalPrime_of_smooth :
     ∀ (F S : Type) [Field F] [CommRing S] [Algebra F S] [Algebra.Smooth F S] (q : Ideal S),

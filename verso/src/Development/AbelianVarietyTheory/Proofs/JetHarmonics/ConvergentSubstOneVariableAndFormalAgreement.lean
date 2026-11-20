@@ -14,7 +14,7 @@ def unitExp : ℕ ≃ (Unit →₀ ℕ) where
 variable {K : Type} [NormedField K]
 
 /- English proof (translation)
-Use extensionality with `μ`. Express the relevant statement in the definitionally equal form `∑' n : ℕ, PowerSeries.coeff n f * MvPowerSeries.coeff μ (s ^ n) = ∑' ν : Unit →₀ ℕ, MvPowerSeries.coeff ν f * MvPowerSeries.coeff μ (∏ i : Unit, s ^ ν i)`. Rewrite using `[← unitExp.tsum_eq]`. Use `tsum_congr fun n => ?_` and prove the remaining obligations. Simplify using `[unitExp]`.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem powerSeriesConvergentSubstMv_eq_mv {τ : Type} (s : MvPowerSeries τ K) (f : PowerSeries K) :
     csub1 s f = csub (fun _ : Unit => s) f := by
@@ -26,7 +26,7 @@ theorem powerSeriesConvergentSubstMv_eq_mv {τ : Type} (s : MvPowerSeries τ K) 
   simp [unitExp]
 
 /- English proof (translation)
-Unfold `ev1 ev`. Rewrite using `[← unitExp.tsum_eq]`. Use `tsum_congr fun n => ?_` and prove the remaining obligations. Simplify using `[unitExp]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem powerSeriesEvalTsum_eq_mvPowerSeriesEvalTsum (f : PowerSeries K) (t : K) : ev1 f t = ev f (fun _ : Unit => t) := by
   unfold ev1 ev
@@ -35,9 +35,9 @@ theorem powerSeriesEvalTsum_eq_mvPowerSeriesEvalTsum (f : PowerSeries K) (t : K)
   simp [unitExp]
 
 /- English proof (translation)
-Unfold `PowerSeriesHasSumAt HS`. Rewrite using `[← unitExp.hasSum_iff]`. Establish `h : (fun ν : Unit →₀ ℕ => MvPowerSeries.coeff ν f * ∏ i : Unit, t ^ ν i) ∘ unitExp = fun n : ℕ => PowerSeries.coeff n f * t ^ n`. Use function extensionality and compare the values at `n`. Simplify using `[unitExp]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem powerSeriesHasSumAt_iff_mvPowerSeriesHasSumAt (f : PowerSeries K) (t a : K) : PowerSeriesHasSumAt f t a ↔ HS f (fun _ : Unit => t) a := by
   unfold PowerSeriesHasSumAt HS
@@ -49,9 +49,9 @@ theorem powerSeriesHasSumAt_iff_mvPowerSeriesHasSumAt (f : PowerSeries K) (t a :
   rw [h]
 
 /- English proof (translation)
-Establish `hC : ∀ ν : σ →₀ ℕ, (∏ i, (MvPowerSeries.C (x i) : MvPowerSeries τ K) ^ ν i) = MvPowerSeries.C (∏ i, x i ^ ν i)` using `fun ν => by simp [map_prod, map_pow]`. Use extensionality with `μ`. Express the relevant statement in the definitionally equal form `∑' ν : σ →₀ ℕ, MvPowerSeries.coeff ν S * MvPowerSeries.coeff μ (∏ i, (MvPowerSeries.C (x i) : MvPowerSeries τ K) ^ ν i) = _`. Simplify using `only [hC]`. Distinguish the cases in `h : μ = 0`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Substitute `h` using the available equality. Simplify using `only [MvPowerSeries.coeff_zero_C]`. Both sides reduce to the same expression. Simplify using `only [MvPowerSeries.coeff_C_of_ne_zero h, mul_zero, tsum_zero]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 -/
 theorem csub_C {σ τ : Type} [Fintype σ] (S : MvPowerSeries σ K) (x : σ → K) :
     csub (fun i => (MvPowerSeries.C (x i) : MvPowerSeries τ K)) S = MvPowerSeries.C (ev S x) := by
@@ -68,15 +68,15 @@ theorem csub_C {σ τ : Type} [Fintype σ] (S : MvPowerSeries σ K) (x : σ → 
   · simp only [MvPowerSeries.coeff_C_of_ne_zero h, mul_zero, tsum_zero]
 
 /- English proof (translation)
-Use extensionality with `m`. Establish `hc : ∀ p : PowerSeries K, MvPowerSeries.coeff (unitExp m) p = PowerSeries.coeff m p` using `fun p => by simp [unitExp]`. Express the relevant statement in the definitionally equal form `PowerSeries.coeff m (shift1 F y) = ∑' ν : Fin 2 →₀ ℕ, MvPowerSeries.coeff ν F * MvPowerSeries.coeff (unitExp m) (∏ i, (![PowerSeries.X, PowerSeries.C y] : Fin 2 → MvPowerSeries Unit K) i ^ ν i)`. Establish `hterm : ∀ ν : Fin 2 →₀ ℕ, MvPowerSeries.coeff ν F * MvPowerSeries.coeff (unitExp m) (∏ i, (![PowerSeries.X, PowerSeries.C y] : Fin 2 → MvPowerSeries Unit K) i ^ ν i) = MvPowerSeries.coeff ν F * (if m = ν 0 then y ^ ν 1 else 0)`. Introduce `ν`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hc, Fin.prod_univ_two]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one]`. Rewrite using `[← map_pow, mul_comm (PowerSeries.X ^ _), PowerSeries.coeff_C_mul_X_pow]`. Simplify using `only [hterm]`. Rewrite using `[shift1, PowerSeries.coeff_mk]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hinj : Function.Injective (fun b : ℕ => Finsupp.single (0 : Fin 2) m + Finsupp.single 1 b)`. Introduce `b b' h`. Establish `h1` using `congrArg (fun ν : Fin 2 →₀ ℕ => ν 1) h`. Simplify using `using h1`. Establish `hsupp : Function.support (fun ν : Fin 2 →₀ ℕ => MvPowerSeries.coeff ν F * (if m = ν 0 then y ^ ν 1 else 0)) ⊆ Set.range (fun b : ℕ => Finsupp.single (0 : Fin 2) m + Finsupp.single 1 b)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Introduce `ν hν`. Establish `h0 : m = ν 0`. Assume the negation of the conclusion as `h`. Conclude with `hν (by simp [h])`. Use `⟨ν 1, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Use extensionality with `i`. Apply the tactic sequence `fin_cases i <;> simp [h0]`. Use `Eq.trans ?_ (hinj.tsum_eq hsupp)` and prove the remaining obligations. Use `tsum_congr fun b => ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem shift1_eq_csub (F : MvPowerSeries (Fin 2) K) (y : K) :
     shift1 F y = csub (![PowerSeries.X, PowerSeries.C y] : Fin 2 → MvPowerSeries Unit K) F := by
@@ -115,9 +115,9 @@ theorem shift1_eq_csub (F : MvPowerSeries (Fin 2) K) (y : K) :
   simp
 
 /- English proof (translation)
-Establish `hs : MvPowerSeries.HasSubst a` using `MvPowerSeries.hasSubst_of_constantCoeff_zero ha`. Use extensionality with `μ`. Rewrite using `[MvPowerSeries.coeff_subst hs, ← tsum_eq_finsum (L := SummationFilter.unconditional (σ →₀ ℕ)) (MvPowerSeries.coeff_subst_finite hs S μ)]`. Express the relevant statement in the definitionally equal form `∑' ν : σ →₀ ℕ, MvPowerSeries.coeff ν S * MvPowerSeries.coeff μ (∏ i, a i ^ ν i) = _`. Use `tsum_congr fun ν => ?_` and prove the remaining obligations.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[smul_eq_mul, Finsupp.prod_fintype _ _ (fun i => pow_zero _)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem csub_eq_subst {σ τ : Type} [Fintype σ] (a : σ → MvPowerSeries τ K)
     (S : MvPowerSeries σ K) (ha : ∀ i, MvPowerSeries.constantCoeff (a i) = 0) :
@@ -131,7 +131,7 @@ theorem csub_eq_subst {σ τ : Type} [Fintype σ] (a : σ → MvPowerSeries τ K
   rw [smul_eq_mul, Finsupp.prod_fintype _ _ (fun i => pow_zero _)]
 
 /- English proof (translation)
-Rewrite using `[powerSeriesConvergentSubstMv_eq_mv, csub_eq_subst _ _ (fun _ => ha)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem powerSeriesConvergentSubstMv_eq_subst {τ : Type} (a : MvPowerSeries τ K) (f : PowerSeries K)
     (ha : MvPowerSeries.constantCoeff a = 0) : csub1 a f = f.subst a := by
@@ -139,7 +139,7 @@ theorem powerSeriesConvergentSubstMv_eq_subst {τ : Type} (a : MvPowerSeries τ 
   rfl
 
 /- English proof (translation)
-Introduce `K _`. Conclude with `⟨fun _ s f => powerSeriesConvergentSubstMv_eq_mv s f, fun f t => powerSeriesEvalTsum_eq_mvPowerSeriesEvalTsum f t, fun f t a => powerSeriesHasSumAt_iff_mvPowerSeriesHasSumAt f t a, fun _ _ _ S x => csub_C S x, fun F y => shift1_eq_csub F y, fun _ _ _ a S ha => csub_eq_subst a S h …`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem csub_bridge : ∀ (K : Type) [NormedField K], (∀ (τ : Type) (s : MvPowerSeries τ K) (f : PowerSeries K), csub1 s f = csub (fun _ : Unit => s) f) ∧ (∀ (f : PowerSeries K) (t : K), ev1 f t = ev f (fun _ : Unit => t)) ∧ (∀ (f : PowerSeries K) (t a : K), PowerSeriesHasSumAt f t a ↔ HS f (fun _ : Unit => t) a) ∧ (∀ (σ τ : Type) [Fintype σ] (S : MvPowerSeries σ K) (x : σ → K), csub (fun i => (MvPowerSeries.C (x i) : MvPowerSeries τ K)) S = MvPowerSeries.C (ev S x)) ∧ (∀ (F : MvPowerSeries (Fin 2) K) (y : K), shift1 F y = csub (![PowerSeries.X, PowerSeries.C y] : Fin 2 → MvPowerSeries Unit K) F) ∧ (∀ (σ τ : Type) [Fintype σ] (a : σ → MvPowerSeries τ K) (S : MvPowerSeries σ K), (∀ i, MvPowerSeries.constantCoeff (a i) = 0) → csub a S = MvPowerSeries.subst a S) ∧ (∀ (τ : Type) (a : MvPowerSeries τ K) (f : PowerSeries K), MvPowerSeries.constantCoeff a = 0 → csub1 a f = f.subst a) := by
   intro K _

@@ -12,14 +12,14 @@ open UpperTheory.Esk
 variable {F I Gf : Type} [Field F] [Group Gf] [Fintype I] (D : Dat F I Gf)
 
 /- English proof (translation)
-Take `⟨h, hh⟩` from `QuotientGroup.mk_out_eq_mul D.H x`. Conclude with `⟨h, h.2, hh⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem rep_mk (x : Gf) : ∃ h ∈ D.H, D.rep (show D.Om from (x : Gf ⧸ D.H)) = x * h := by
   obtain ⟨h, hh⟩ := QuotientGroup.mk_out_eq_mul D.H x
   exact ⟨h, h.2, hh⟩
 
 /- English proof (translation)
-Take `⟨h, hh, e⟩` from `rep_mk D x`. Simplify using `only [Dat.HtY, Dat.Ht]`. Rewrite using `[e, hA.lev s hs x h hh]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem htY_mk (hA : D.Ax) (s : Fin 2 → F) (hs : s ≠ 0) (z : D.Xs) (x : Gf) :
     D.HtY s ((x : Gf ⧸ D.H), z) = D.Ht s z x := by
@@ -28,7 +28,7 @@ theorem htY_mk (hA : D.Ax) (s : Fin 2 → F) (hs : s ≠ 0) (z : D.Xs) (x : Gf) 
   rw [e, hA.lev s hs x h hh]
 
 /- English proof (translation)
-Introduce `h`. Apply `hs` to reduce the goal to its premises. Use `congrArg (fun t => t ᵥ* (γ⁻¹ : GL (Fin 2) F).val) h` as an intermediate fact. Simplify using `only [Matrix.vecMul_vecMul, Matrix.zero_vecMul] at this`. Rewrite `this` using `[← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.vecMul_one]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem vecMul_ne {s : Fin 2 → F} (hs : s ≠ 0) (γ : GL (Fin 2) F) : s ᵥ* γ.val ≠ 0 := by
   intro h
@@ -38,13 +38,13 @@ theorem vecMul_ne {s : Fin 2 → F} (hs : s ≠ 0) (γ : GL (Fin 2) F) : s ᵥ* 
   rwa [← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.vecMul_one] at this
 
 /- English proof (translation)
-Rewrite using `[coe_smul, im_div]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem im_smul (g : GL (Fin 2) ℝ) (z : P) : (g • z).1.im = g.val.det * z.1.im / Complex.normSq (den g z.1) := by
   rw [coe_smul, im_div]
 
 /- English proof (translation)
-The claim follows from `|(g • z).1.im| / ‖(a : ℂ) * (g • z).1 + b‖ ^ 2 = |g.val.det| * (|z.1.im| / ‖((a * g 0 0 + b * g 1 0 : ℝ) : ℂ) * z.1 + ((a * g 0 1 + b * g 1 1 : ℝ) : ℂ)‖ ^ 2) := by have h0 := den_ne g z.2 have e : (a : ℂ) * (g • z).1 + b = (((a * g 0 0 + b * g 1 0 : ℝ) : ℂ) * z.1 + ((a * g 0 1 + …`.
+A detailed English derivation is pending.
 -/
 theorem fac (g : GL (Fin 2) ℝ) (z : P) (a b : ℝ) :
     |(g • z).1.im| / ‖(a : ℂ) * (g • z).1 + b‖ ^ 2 =
@@ -66,18 +66,18 @@ Both sides reduce to the same expression.
 theorem r_apply (v : I) (γ : GL (Fin 2) F) (i j : Fin 2) : (D.r v γ) i j = D.σ v (γ i j) := rfl
 
 /- English proof (translation)
-Rewrite using `[RingHom.map_det]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem r_det (v : I) (γ : GL (Fin 2) F) : (D.r v γ).val.det = D.σ v γ.val.det := by
   rw [RingHom.map_det]
   rfl
 
 /- English proof (translation)
-Establish `hr` using `hA.rat s hs γ x`. Simplify using `only [Dat.Ht, Dat.act]`. Rewrite using `[← hr]`. Establish `key : ∀ v, |((D.r v γ • z v : P)).1.im| / ‖(D.σ v (s 0) : ℂ) * (D.r v γ • z v).1 + (D.σ v (s 1) : ℂ)‖ ^ 2 = |D.σ v γ.val.det| * (|(z v).1.im| / ‖(D.σ v ((s ᵥ* γ.val) 0) : ℂ) * (z v).1 + (D.σ v ((s ᵥ* γ.val) 1) : ℂ)‖ ^ 2)`. Introduce `v`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e0 : D.σ v (s 0) * (D.r v γ) 0 0 + D.σ v (s 1) * (D.r v γ) 1 0 = D.σ v ((s ᵥ* γ.val) 0)`. Simplify using `[r_apply, Matrix.vecMul, dotProduct, Fin.sum_univ_two]`. Establish `e1 : D.σ v (s 0) * (D.r v γ) 0 1 + D.σ v (s 1) * (D.r v γ) 1 1 = D.σ v ((s ᵥ* γ.val) 1)`. Simplify using `[r_apply, Matrix.vecMul, dotProduct, Fin.sum_univ_two]`. Rewrite using `[fac, e0, e1, r_det]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.prod_congr rfl (fun v _ => key v), Finset.prod_mul_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem ht_act (hA : D.Ax) (s : Fin 2 → F) (hs : s ≠ 0) (γ : GL (Fin 2) F) (z : X I) (x : Gf) :
     D.Ht s (D.act γ z) (D.j γ * x) = D.Ht (s ᵥ* γ.val) z x := by
@@ -97,7 +97,7 @@ theorem ht_act (hA : D.Ax) (s : Fin 2 → F) (hs : s ≠ 0) (γ : GL (Fin 2) F) 
   ring
 
 /- English proof (translation)
-Take `⟨ω, z⟩` from `y`. Take `⟨x, rfl⟩ : ∃ x : Gf, (show D.Om from (x : Gf ⧸ D.H)) = ω` from `QuotientGroup.mk_surjective ω`. Use `show D.HtY s (((D.j γ * x : Gf) : Gf ⧸ D.H), D.act γ z) = D.HtY (s ᵥ* γ.val) ((x : Gf ⧸ D.H), z)`. Conclude with `(htY_mk D hA s hs _ _).trans ((ht_act D hA s hs γ z x).trans (htY_mk D hA _ (vecMul_ne hs γ) z x).symm)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem htY_smul (hA : D.Ax) (s : Fin 2 → F) (hs : s ≠ 0) (γ : GL (Fin 2) F) (y : D.Y) :
     D.HtY s ((γ : PG F) • y) = D.HtY (s ᵥ* γ.val) y := by
@@ -107,9 +107,9 @@ theorem htY_smul (hA : D.Ax) (s : Fin 2 → F) (hs : s ≠ 0) (γ : GL (Fin 2) F
   exact (htY_mk D hA s hs _ _).trans ((ht_act D hA s hs γ z x).trans (htY_mk D hA _ (vecMul_ne hs γ) z x).symm)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `y`. Simplify using `only [Dat.HtY, Dat.Ht]`. Rewrite using `[hA.smul s hs c hc]`. Establish `hσ : ∀ v, D.σ v c ≠ 0` using `fun v => (map_ne_zero (D.σ v)).2 hc`. Establish `key : ∀ v, |(y.2 v).1.im| / ‖(D.σ v ((c • s) 0) : ℂ) * (y.2 v).1 + (D.σ v ((c • s) 1) : ℂ)‖ ^ 2 = (|(y.2 v).1.im| / ‖(D.σ v (s 0) : ℂ) * (y.2 v).1 + (D.σ v (s 1) : ℂ)‖ ^ 2) / D.σ v c ^ 2`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `v`. Simplify using `only [Pi.smul_apply, smul_eq_mul, map_mul, Complex.ofReal_mul]`. Rewrite using `[show (D.σ v c : ℂ) * D.σ v (s 0) * (y.2 v).1 + D.σ v c * D.σ v (s 1) = D.σ v c * (D.σ v (s 0) * (y.2 v).1 + D.σ v (s 1)) by ring, norm_mul, Complex.norm_real, Real.norm_eq_abs, mul_pow, sq_abs, div_div, mul_comm (D.σ v c ^ 2)]`. Rewrite using `[Finset.prod_congr rfl (fun v _ => key v), Finset.prod_div_distrib]`. Establish `hp : ∏ v, D.σ v c ^ 2 ≠ 0` using `Finset.prod_ne_zero_iff.2 fun v _ => pow_ne_zero 2 (hσ v)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
 Clear the denominators using the available nonvanishing facts.
 -/
@@ -130,11 +130,9 @@ theorem htY_smulc (hA : D.Ax) (s : Fin 2 → F) (hs : s ≠ 0) (c : F) (hc : c �
   field_simp
 
 /- English proof (translation)
-Introduce `h`. Establish `h1` using `congrArg Complex.im h`. Establish `h2` using `congrArg Complex.re h`. Simplify using `only [Complex.add_im, Complex.mul_im, Complex.ofReal_re, Complex.ofReal_im, zero_mul, add_zero, Complex.zero_im, Complex.add_re, Complex.mul_re, sub_zero, Complex.zero_re] at h1 h2`. Establish `a0 : D.σ v (s 0) = 0` using `(mul_eq_zero.1 h1).resolve_right z.2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `h2` using `[a0, zero_mul, zero_add]`. Apply `hs` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Use `fin_cases i`. Conclude with `(map_eq_zero (D.σ v)).1 a0`.
-
-Conclude with `(map_eq_zero (D.σ v)).1 h2`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem lin_ne (s : Fin 2 → F) (hs : s ≠ 0) (v : I) (z : P) : (D.σ v (s 0) : ℂ) * z.1 + (D.σ v (s 1) : ℂ) ≠ 0 := by
   intro h
@@ -151,14 +149,14 @@ theorem lin_ne (s : Fin 2 → F) (hs : s ≠ 0) (v : I) (z : P) : (D.σ v (s 0) 
   · exact (map_eq_zero (D.σ v)).1 h2
 
 /- English proof (translation)
-The claim follows from `mul_pos (Finset.prod_pos fun v _ => div_pos (abs_pos.2 (y.2 v).2) (pow_pos (norm_pos_iff.2 (lin_ne D s hs v (y.2 v))) 2)) (hA.pos s hs _)`.
+A detailed English derivation is pending.
 -/
 theorem htY_pos (hA : D.Ax) (s : Fin 2 → F) (hs : s ≠ 0) (y : D.Y) : 0 < D.HtY s y :=
   mul_pos (Finset.prod_pos fun v _ => div_pos (abs_pos.2 (y.2 v).2)
     (pow_pos (norm_pos_iff.2 (lin_ne D s hs v (y.2 v))) 2)) (hA.pos s hs _)
 
 /- English proof (translation)
-The claim follows from `|z.1.im| / ‖(a : ℂ) * z.1 + b‖ ^ 2 * (|z.1.im| / ‖(a' : ℂ) * z.1 + b'‖ ^ 2) * (a * b' - b * a') ^ 2 ≤ 1 := by have key : |z.1.im| * |a * b' - b * a'| ≤ ‖(a : ℂ) * z.1 + b‖ * ‖(a' : ℂ) * z.1 + b'‖ := by have e : (((a : ℂ) * z.1 + b) * conj ((a' : ℂ) * z.1 + b')).im = (a * b' - b * …`.
+A detailed English derivation is pending.
 -/
 theorem loc (a b a' b' : ℝ) (z : P) (hw : (a : ℂ) * z.1 + b ≠ 0) (hw' : (a' : ℂ) * z.1 + b' ≠ 0) :
     |z.1.im| / ‖(a : ℂ) * z.1 + b‖ ^ 2 * (|z.1.im| / ‖(a' : ℂ) * z.1 + b'‖ ^ 2) * (a * b' - b * a') ^ 2 ≤ 1 := by
@@ -179,7 +177,7 @@ theorem loc (a b a' b' : ℝ) (z : P) (hw : (a : ℂ) * z.1 + b ≠ 0) (hw' : (a
     _ = _ := by ring
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl`. Simplify using `at hd`. Introduce and unpack `rfl`. Simplify using `at hd`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 -/
 theorem ne_of_det {s s' : Fin 2 → F} (hd : s 0 * s' 1 - s 1 * s' 0 ≠ 0) : s ≠ 0 ∧ s' ≠ 0 := by
   constructor
@@ -187,9 +185,9 @@ theorem ne_of_det {s s' : Fin 2 → F} (hd : s 0 * s' 1 - s 1 * s' 0 ≠ 0) : s 
   · rintro rfl; simp at hd
 
 /- English proof (translation)
-Take `⟨hs, hs'⟩` from `ne_of_det hd`. Establish `hx` using `hA.prod s s' hd (D.rep y.1)`. Simplify using `only [Dat.HtY, Dat.Ht]`. Establish `hl : ∀ v, |(y.2 v).1.im| / ‖(D.σ v (s 0) : ℂ) * (y.2 v).1 + (D.σ v (s 1) : ℂ)‖ ^ 2 * (|(y.2 v).1.im| / ‖(D.σ v (s' 0) : ℂ) * (y.2 v).1 + (D.σ v (s' 1) : ℂ)‖ ^ 2) * D.σ v (s 0 * s' 1 - s 1 * s' 0) ^ 2 ≤ 1`. Introduce `v`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[map_sub, map_mul, map_mul]`. Conclude with `loc _ _ _ _ _ (lin_ne D s hs v _) (lin_ne D s' hs' v _)`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem htY_prod (hA : D.Ax) (s s' : Fin 2 → F) (hd : s 0 * s' 1 - s 1 * s' 0 ≠ 0) (y : D.Y) :
     D.HtY s y * D.HtY s' y ≤ 1 := by
@@ -216,7 +214,7 @@ theorem htY_prod (hA : D.Ax) (s s' : Fin 2 → F) (hd : s 0 * s' 1 - s 1 * s' 0 
     _ ≤ 1 := Finset.prod_le_one (fun v _ => by positivity) (fun v _ => hl v)
 
 /- English proof (translation)
-Unfold `Dat.Ht`. Use `Measurable.mul_const (Finset.measurable_prod _ fun v _ => ?_) _` and prove the remaining obligations. Establish `hz : Measurable fun z : D.Xs => (z v).1` using `measurable_subtype_coe.comp (measurable_pi_apply (X := fun _ : I => P) v)`. Conclude with `(continuous_abs.measurable.comp (Complex.measurable_im.comp hz)).div (((measurable_const.mul hz).add measurable_const).norm.pow_const 2)`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem meas_ht (s : Fin 2 → F) (x : Gf) : Measurable fun z : D.Xs => D.Ht s z x := by
   unfold Dat.Ht
@@ -227,16 +225,16 @@ theorem meas_ht (s : Fin 2 → F) (x : Gf) : Measurable fun z : D.Xs => D.Ht s z
     (((measurable_const.mul hz).add measurable_const).norm.pow_const 2)
 
 /- English proof (translation)
-Use `hA.cO` as an intermediate fact. Conclude with `measurable_from_prod_countable_right fun ω => meas_ht D s (D.rep ω)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem meas_htY (hA : D.Ax) (s : Fin 2 → F) : Measurable (D.HtY s) := by
   have := hA.cO
   exact measurable_from_prod_countable_right fun ω => meas_ht D s (D.rep ω)
 
 /- English proof (translation)
-Use `hA.cF` as an intermediate fact. Establish `e : D.abelian₂ T = ⋂ s : Fin 2 → F, ⋂ (_ : s ≠ 0), {y | D.HtY s y ≤ T}`. Use extensionality with `y`. Simplify using `only [Dat.abelian₂, Set.mem_ofPred_eq, Set.mem_iInter]`. Rewrite using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `MeasurableSet.iInter fun s => MeasurableSet.iInter fun _ => measurableSet_le (meas_htY D hA s) measurable_const`.
+A detailed English derivation is pending.
 -/
 theorem meas_lam (hA : D.Ax) (T : ℝ) : MeasurableSet (D.abelian₂ T) := by
   have := hA.cF
@@ -247,9 +245,9 @@ theorem meas_lam (hA : D.Ax) (T : ℝ) : MeasurableSet (D.abelian₂ T) := by
   exact MeasurableSet.iInter fun s => MeasurableSet.iInter fun _ => measurableSet_le (meas_htY D hA s) measurable_const
 
 /- English proof (translation)
-Use `hA.cF` as an intermediate fact. Establish `e : D.LamF T γ = ⋂ s : Fin 2 → F, ⋂ (_ : s ≠ 0), ⋂ (_ : Fix s γ), {y | D.HtY s y ≤ T}`. Use extensionality with `y`. Simplify using `only [Dat.LamF, Set.mem_ofPred_eq, Set.mem_iInter]`. Rewrite using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `MeasurableSet.iInter fun s => MeasurableSet.iInter fun _ => MeasurableSet.iInter fun _ => measurableSet_le (meas_htY D hA s) measurable_const`.
+A detailed English derivation is pending.
 -/
 theorem meas_lamF (hA : D.Ax) (T : ℝ) (γ : PG F) : MeasurableSet (D.LamF T γ) := by
   have := hA.cF
@@ -261,7 +259,7 @@ theorem meas_lamF (hA : D.Ax) (T : ℝ) (γ : PG F) : MeasurableSet (D.LamF T γ
     measurableSet_le (meas_htY D hA s) measurable_const
 
 /- English proof (translation)
-Take `⟨d, rfl⟩` from `QuotientGroup.mk_surjective δ`. Simplify using `only [Dat.abelian₂, Set.mem_ofPred_eq] at h ⊢`. Introduce `s hs`. Rewrite using `[htY_smul D hA s hs d y]`. Conclude with `h _ (vecMul_ne hs d)`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lam_smul (hA : D.Ax) (T : ℝ) (δ : PG F) (y : D.Y) (h : y ∈ D.abelian₂ T) : δ • y ∈ D.abelian₂ T := by
   obtain ⟨d, rfl⟩ := QuotientGroup.mk_surjective δ
@@ -271,15 +269,15 @@ theorem lam_smul (hA : D.Ax) (T : ℝ) (δ : PG F) (y : D.Y) (h : y ∈ D.abelia
   exact h _ (vecMul_ne hs d)
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨ζ, hζ, e⟩ : ∃ ζ ∈ Subgroup.center (GL (Fin 2) F), (g : PG F).out = g * ζ := by`. Take `⟨h, hh⟩` from `QuotientGroup.mk_out_eq_mul (Subgroup.center (GL (Fin 2) F)) g`. Conclude with `⟨h, h.2, hh⟩`. Take `⟨h1, h2, h3⟩` from `center_entries hζ`. Establish `hl : ζ 0 0 ≠ 0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `h0`. Apply `ζ.det_ne_zero` to reduce the goal to its premises. Rewrite using `[Matrix.det_fin_two, h1, ← h3, h0]`. Expand and normalize the polynomial expressions, which then agree. Establish `hv : ∀ u : Fin 2 → F, u ᵥ* (ζ : Matrix (Fin 2) (Fin 2) F) = ζ 0 0 • u`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Introduce `u`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `fin_cases i <;> simp [Matrix.vecMul, dotProduct, Fin.sum_univ_two, h1, h2, h3, mul_comm]`. Unfold `Fix`. Rewrite using `[e, Units.val_mul, ← Matrix.vecMul_vecMul, hv]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, hc⟩`. Use `⟨(ζ 0 0)⁻¹ * c, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_smul, ← hc, smul_smul, inv_mul_cancel₀ hl, one_smul]`. Introduce and unpack `⟨c, hc⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨ζ 0 0 * c, by rw [hc, smul_smul]⟩`.
+Supply the required witnesses or components.
 -/
 theorem fix_mk (t : Fin 2 → F) (g : GL (Fin 2) F) : Fix t (g : PG F) ↔ ∃ c : F, t ᵥ* g.val = c • t := by
   obtain ⟨ζ, hζ, e⟩ : ∃ ζ ∈ Subgroup.center (GL (Fin 2) F), (g : PG F).out = g * ζ := by
@@ -305,7 +303,7 @@ theorem fix_mk (t : Fin 2 → F) (g : GL (Fin 2) F) : Fix t (g : PG F) ↔ ∃ c
     exact ⟨ζ 0 0 * c, by rw [hc, smul_smul]⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl`. Rewrite using `[Matrix.vecMul_vecMul, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.vecMul_one]`. Introduce and unpack `rfl`. Rewrite using `[Matrix.vecMul_vecMul, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.vecMul_one]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 -/
 theorem vm_inv (X Y : Fin 2 → F) (δ : GL (Fin 2) F) : X ᵥ* (δ⁻¹ : GL (Fin 2) F).val = Y ↔ X = Y ᵥ* δ.val := by
   constructor
@@ -315,7 +313,7 @@ theorem vm_inv (X Y : Fin 2 → F) (δ : GL (Fin 2) F) : X ᵥ* (δ⁻¹ : GL (F
     rw [Matrix.vecMul_vecMul, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.vecMul_one]
 
 /- English proof (translation)
-Rewrite using `[show ((δ : PG F) * γ * (δ : PG F)⁻¹) = ((δ * γ * δ⁻¹ : GL (Fin 2) F) : PG F) by`. Rewrite using `[QuotientGroup.mk_mul, QuotientGroup.mk_mul, QuotientGroup.mk_inv], fix_mk]`. Use `exists_congr fun c => ?_` and prove the remaining obligations. Rewrite using `[Units.val_mul, ← Matrix.vecMul_vecMul, vm_inv, Units.val_mul, ← Matrix.vecMul_vecMul, Matrix.smul_vecMul]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem fix_conj (s : Fin 2 → F) (γ δ : GL (Fin 2) F) :
     Fix s ((δ : PG F) * γ * (δ : PG F)⁻¹) ↔ ∃ c : F, (s ᵥ* δ.val) ᵥ* γ.val = c • (s ᵥ* δ.val) := by
@@ -325,9 +323,9 @@ theorem fix_conj (s : Fin 2 → F) (γ δ : GL (Fin 2) F) :
   rw [Units.val_mul, ← Matrix.vecMul_vecMul, vm_inv, Units.val_mul, ← Matrix.vecMul_vecMul, Matrix.smul_vecMul]
 
 /- English proof (translation)
-Take `⟨d, rfl⟩` from `QuotientGroup.mk_surjective δ`. Take `⟨g, rfl⟩` from `QuotientGroup.mk_surjective γ`. Simplify using `only [Dat.LamF, Set.mem_ofPred_eq] at h ⊢`. Introduce `s hs hf`. Rewrite using `[htY_smul D hA s hs d y]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h _ (vecMul_ne hs d) ((fix_mk _ g).2 ((fix_conj s g d).1 hf))`.
+A detailed English derivation is pending.
 -/
 theorem lamF_smul (hA : D.Ax) (T : ℝ) (γ δ : PG F) (y : D.Y) (h : y ∈ D.LamF T γ) :
     δ • y ∈ D.LamF T (δ * γ * δ⁻¹) := by
@@ -339,13 +337,13 @@ theorem lamF_smul (hA : D.Ax) (T : ℝ) (γ δ : PG F) (y : D.Y) (h : y ∈ D.La
   exact h _ (vecMul_ne hs d) ((fix_mk _ g).2 ((fix_conj s g d).1 hf))
 
 /- English proof (translation)
-Distinguish the cases in `a : s0 0 = 0`. Apply the tactic sequence `have b : s0 1 ≠ 0 := fun b => h0 (by funext i; fin_cases i <;> simp [a, b])`. Establish `hs0 : s 0 = 0`. Rewrite `hd` using `[a, zero_mul, zero_sub, neg_eq_zero]`. Conclude with `(mul_eq_zero.1 hd).resolve_left b`.
+Consider separately whether the proposition holds or fails. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨s 1 / s0 1, fun hc => hs ?_, ?_⟩` and prove the remaining obligations. Establish `: s 1 = 0` using `by rw [div_eq_zero_iff] at hc; exact hc.resolve_right b`. Apply the tactic sequence `funext i; fin_cases i <;> simp [hs0, this]`. Apply the tactic sequence `funext i; fin_cases i <;> simp [hs0, a, b]`. Use `⟨s 0 / s0 0, fun hc => hs ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e0 : s 0 = 0` using `by rw [div_eq_zero_iff] at hc; exact hc.resolve_right a`. Establish `e1 : s 1 = 0`. Rewrite `hd` using `[e0, mul_zero, sub_zero]`. Conclude with `(mul_eq_zero.1 hd).resolve_left a`. Apply the tactic sequence `funext i; fin_cases i <;> simp [e0, e1]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `i fin_cases i`. Simplify using `[a]`. Simplify using `only [Fin.mk_one, Fin.isValue, Pi.smul_apply, smul_eq_mul]`. Clear the denominators using the available nonvanishing facts. Take the linear combination `hd`.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem line {s0 s : Fin 2 → F} (h0 : s0 ≠ 0) (hs : s ≠ 0) (hd : s0 0 * s 1 - s0 1 * s 0 = 0) :
     ∃ c : F, c ≠ 0 ∧ s = c • s0 := by
@@ -372,11 +370,11 @@ theorem line {s0 s : Fin 2 → F} (h0 : s0 ≠ 0) (hs : s ≠ 0) (hd : s0 0 * s 
         linear_combination hd
 
 /- English proof (translation)
-Distinguish the cases in `h : ∃ s0 : Fin 2 → F, s0 ≠ 0 ∧ 1 < D.HtY s0 y`. Take `⟨s0, h0, h1⟩` from `h`. Use `⟨max 1 (D.HtY s0 y), fun T hT s hs => ?_⟩` and prove the remaining obligations. Distinguish the cases in `h2 : D.HtY s y ≤ 1`. Conclude with `h2.trans ((le_max_left _ _).trans hT)`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails.
 
-Use `push Not at h2`. Distinguish the cases in `hd : s0 0 * s 1 - s0 1 * s 0 = 0`. Take `⟨c, hc, rfl⟩` from `line h0 hs hd`. Rewrite using `[htY_smulc D hA s0 h0 c hc]`. Conclude with `(le_max_right _ _).trans hT`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. It suffices to derive a contradiction. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-It suffices to derive a contradiction. Use `htY_prod D hA s0 s hd y` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Use `push Not at h`. Conclude with `⟨1, fun T hT s hs => (h s hs).trans hT⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem bounded (hA : D.Ax) (y : D.Y) : ∃ T₀, ∀ T, T₀ ≤ T → y ∈ D.abelian₂ T := by
   by_cases h : ∃ s0 : Fin 2 → F, s0 ≠ 0 ∧ 1 < D.HtY s0 y
@@ -396,9 +394,9 @@ theorem bounded (hA : D.Ax) (y : D.Y) : ∃ T₀, ∀ T, T₀ ≤ T → y ∈ D.
     exact ⟨1, fun T hT s hs => (h s hs).trans hT⟩
 
 /- English proof (translation)
-Distinguish the cases in `h0 : s 0 = 0`. Apply the tactic sequence `have h1 : s 1 ≠ 0 := fun h1 => hs (by funext i; fin_cases i <;> simp [h0, h1])`. Use `⟨Matrix.GeneralLinearGroup.mkOfDetNeZero !![1, 0; s 0, s 1] (by simp [Matrix.det_fin_two_of, h1]), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Apply the tactic sequence `fin_cases i <;> simp [Matrix.vecMul, dotProduct, Fin.sum_univ_two]`.
+Consider separately whether the proposition holds or fails. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `⟨Matrix.GeneralLinearGroup.mkOfDetNeZero !![0, 1; s 0, s 1] (by simp [Matrix.det_fin_two_of, h0]), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Apply the tactic sequence `fin_cases i <;> simp [Matrix.vecMul, dotProduct, Fin.sum_univ_two]`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem row (s : Fin 2 → F) (hs : s ≠ 0) : ∃ γ : GL (Fin 2) F, ![0, 1] ᵥ* γ.val = s := by
   by_cases h0 : s 0 = 0
@@ -414,9 +412,9 @@ end UpperTheory.Esk.HeightsOnQuotientLemmas
 
 open UpperTheory.Esk.HeightsOnQuotientLemmas in
 /- English proof (translation)
-Introduce `_ F I Gf _ _ _ D hA`. Use `⟨fun s hs z x => htY_mk D hA s hs z x, fun s hs γ y => htY_smul D hA s hs γ y, fun s hs c hc => htY_smulc D hA s hs c hc, fun s hs y => htY_pos D hA s hs y, fun s s' hd y => htY_prod D hA s s' hd y, fun s => meas_htY D hA s, fun T => ⟨meas_lam D hA T, fun δ y => ⟨fun h => ?_, lam …` and prove the remaining obligations. Use `lam_smul D hA T δ⁻¹ _ h` as an intermediate fact. Rewrite `this` using `[inv_smul_smul]`. Then use the resulting hypothesis. Use `lamF_smul D hA T _ δ⁻¹ _ h` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite `this` using `[inv_smul_smul, show δ⁻¹ * (δ * γ * δ⁻¹) * δ⁻¹⁻¹ = γ by group]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem UpperTheory.Esk.heights_on_quotient_proof : UpperTheory.Esk.B1a → UpperTheory.Esk.E0d := by
   intro _ F I Gf _ _ _ D hA

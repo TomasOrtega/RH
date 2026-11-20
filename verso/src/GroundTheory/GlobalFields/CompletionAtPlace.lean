@@ -23,14 +23,14 @@ def adicCompletionMap : v.adicCompletion K →+* w.adicCompletion L :=
       (adicCompletion.equiv K v).toRingHom)
 
 /- English proof (translation)
-The claim follows from `(adicCompletion.continuous_ofCompletion L w).comp <| UniformSpace.Completion.continuous_map.comp (adicCompletion.continuous_toCompletion K v)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_adicCompletionMap : Continuous (adicCompletionMap v w) :=
   (adicCompletion.continuous_ofCompletion L w).comp <|
     UniformSpace.Completion.continuous_map.comp (adicCompletion.continuous_toCompletion K v)
 
 /- English proof (translation)
-Apply `adicCompletion.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `UniformSpace.Completion.mapRingHom _ (uniformContinuous_algebraMap_liesOver K L v w).continuous ((algebraMap K (WithVal (v.valuation K)) x : WithVal (v.valuation K)) : UniformSpace.Completion (WithVal (v.valuation K))) = _`. Rewrite using `[UniformSpace.Completion.mapRingHom_coe]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem adicCompletionMap_algebraMap (x : K) :
     adicCompletionMap v w (algebraMap K (v.adicCompletion K) x) =
@@ -78,7 +78,7 @@ variable {K L : Type*} [Field K] [NumberField K] [Field L] [NumberField L] [Alge
   [IsScalarTower K (v.adicCompletion K) (w.adicCompletion L)]
 
 /- English proof (translation)
-Establish `h` using `(denseRange_algebraMap (R := 𝓞 K) (K := K) v).equalizer (continuous_algebraMap (v.adicCompletion K) (w.adicCompletion L)) (continuous_adicCompletionMap v w) (funext fun x ↦ ?_)`. Conclude with `RingHom.ext (congrFun h)`. Simplify using `only [Function.comp_apply]`. Rewrite using `[adicCompletionMap_algebraMap, ← IsScalarTower.algebraMap_apply, IsScalarTower.algebraMap_apply K L (w.adicCompletion L)]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem algebraMap_adicCompletion_eq [w.asIdeal.LiesOver v.asIdeal] :
     algebraMap (v.adicCompletion K) (w.adicCompletion L) = adicCompletionMap v w := by
@@ -91,11 +91,11 @@ theorem algebraMap_adicCompletion_eq [w.asIdeal.LiesOver v.asIdeal] :
       IsScalarTower.algebraMap_apply K L (w.adicCompletion L)]
 
 /- English proof (translation)
-Establish `he : v.asIdeal.ramificationIdx' w.asIdeal ≠ 0` using `Ideal.IsDedekindDomain.ramificationIdx'_ne_zero_of_liesOver w.asIdeal v.ne_bot`. Break down `eq_or_ne x 0 with rfl | hx` into its components or cases. Simplify using `[he]`. Establish `hx' : Valued.v x ≠ 0` using `by simpa using hx`. Establish `hy : Valued.v (algebraMap (v.adicCompletion K) (w.adicCompletion L) x) ≠ 0`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using hx`. Establish `h1` using `Valued.locally_const hx'`. Establish `h2` using `(continuous_algebraMap (v.adicCompletion K) (w.adicCompletion L)).continuousAt.preimage_mem_nhds (Valued.locally_const hy)`. Take `⟨k, hk1, hk2⟩` from `(denseRange_algebraMap (R := 𝓞 K) (K := K) v).mem_nhds (Filter.inter_mem h1 h2)`. Simplify using `only [Set.mem_preimage, Set.mem_ofPred_eq] at hk1 hk2`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Rewrite using `[← hk1, ← hk2, ← IsScalarTower.algebraMap_apply, IsScalarTower.algebraMap_apply K L (w.adicCompletion L)]`. Use `erw [valuedAdicCompletion_eq_valuation' w, valuedAdicCompletion_eq_valuation' v]`. Conclude with `(valuation_liesOver L v w k).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valued_algebraMap_adicCompletion' [w.asIdeal.LiesOver v.asIdeal]
     (x : v.adicCompletion K) :
@@ -120,7 +120,7 @@ theorem valued_algebraMap_adicCompletion' [w.asIdeal.LiesOver v.asIdeal]
   exact (valuation_liesOver L v w k).symm
 
 /- English proof (translation)
-Rewrite using `[valued_algebraMap_adicCompletion', Ideal.ramificationIdx'_eq_ramificationIdx v.asIdeal w.asIdeal v.ne_bot]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem valued_algebraMap_adicCompletion [w.asIdeal.LiesOver v.asIdeal]
     (x : v.adicCompletion K) :
@@ -140,7 +140,7 @@ instance valuativeExtension_adicCompletion [w.asIdeal.LiesOver v.asIdeal] :
     exact pow_le_pow_iff_left₀ zero_le zero_le he
 
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 theorem finite_adicCompletion : Module.Finite (v.adicCompletion K) (w.adicCompletion L) :=
   inferInstance
@@ -155,11 +155,11 @@ variable {K L : Type*} [Field K] [NumberField K] [Field L] [NumberField L] [Alge
   (v : HeightOneSpectrum (𝓞 K)) (w : HeightOneSpectrum (𝓞 L)) [w.asIdeal.LiesOver v.asIdeal]
 
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 example : ValuativeExtension (v.adicCompletion K) (w.adicCompletion L) := inferInstance
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 example : Module.Finite (v.adicCompletion K) (w.adicCompletion L) := inferInstance
 

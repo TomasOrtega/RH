@@ -17,7 +17,7 @@ abbrev levelTransitionG {p q : GLevel K} (h : p ≤ q) :
   levelTransition K p.1 q.1 n
 
 /- English proof (translation)
-Use `haveI : Fact (p.1 ≤ q.1) := ⟨h⟩`. Conclude with `congrArg (fun φ => φ.hom y) (levelTransition_comp_levelInfl (K := K) (F := p.1) (E := q.1) n)`.
+A detailed English derivation is pending.
 -/
 theorem levelTransitionG_comp_levelInfl {p q : GLevel K} (h : p ≤ q) (y : cohomology (ideleRep K.1 p.1.1) n) :
     (levelInfl K q.1 n).hom ((levelTransitionG n h).hom y) = (levelInfl K p.1 n).hom y := by
@@ -25,7 +25,7 @@ theorem levelTransitionG_comp_levelInfl {p q : GLevel K} (h : p ≤ q) (y : coho
   exact congrArg (fun φ => φ.hom y) (levelTransition_comp_levelInfl (K := K) (F := p.1) (E := q.1) n)
 
 /- English proof (translation)
-Use `haveI : Fact (p.1 ≤ q.1) := ⟨h₁⟩`. Use `haveI : Fact (q.1 ≤ r.1) := ⟨h₂⟩`. Use `haveI : Fact (p.1 ≤ r.1) := ⟨h₁.trans h₂⟩`. Conclude with `congrArg (fun φ => φ.hom y) (levelTransition_comp_levelTransition (K := K) (F := p.1) (E := q.1) (M := r.1) n)`.
+A detailed English derivation is pending.
 -/
 theorem levelTransitionG_trans {p q r : GLevel K} (h₁ : p ≤ q) (h₂ : q ≤ r)
     (y : cohomology (ideleRep K.1 p.1.1) n) :
@@ -76,7 +76,7 @@ def levelSum (p : GLevel K) : cohomology (ideleRep K.1 p.1.1) n →+ ⨁ v : Pla
     (idelesCohomologyEquiv hn).symm.toAddMonoidHom
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `T.infl v p (D.e v p ((idelesCohomologyEquiv hn).symm y v)) = _`. Rewrite using `[idelesCohomologyEquiv_symm_apply]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem levelSum_apply (p : GLevel K) (y : cohomology (ideleRep K.1 p.1.1) n) (v : Place K.1) :
     levelSum D T hn p y v = T.infl v p (D.e v p ((cohomologyMap (placeProj v) n).hom y)) := by
@@ -84,7 +84,7 @@ theorem levelSum_apply (p : GLevel K) (y : cohomology (ideleRep K.1 p.1.1) n) (v
   rw [idelesCohomologyEquiv_symm_apply]
 
 /- English proof (translation)
-Use extensionality with `v`. Rewrite using `[levelSum_apply, levelSum_apply, D.compat, T.infl_compat]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem levelSum_levelTransition {p q : GLevel K} (h : p ≤ q) (y : cohomology (ideleRep K.1 p.1.1) n) :
     levelSum D T hn q ((levelTransitionG n h).hom y) = levelSum D T hn p y := by
@@ -92,9 +92,9 @@ theorem levelSum_levelTransition {p q : GLevel K} (h : p ≤ q) (y : cohomology 
   rw [levelSum_apply, levelSum_apply, D.compat, T.infl_compat]
 
 /- English proof (translation)
-Take `⟨r, hpr, hqr⟩` from `GLevel.exists_ge p q`. Establish `hz : (levelInfl K r.1 n).hom ((levelTransitionG n hpr).hom y - (levelTransitionG n hqr).hom y') = 0`. Rewrite using `[map_sub, levelTransitionG_comp_levelInfl, levelTransitionG_comp_levelInfl, h, sub_self]`. Take `⟨s, hrs, hs⟩` from `exists_levelTransition_eq_zero n r _ hz`. Establish `hs' : (levelTransitionG n hrs).hom ((levelTransitionG n hpr).hom y - (levelTransitionG n hqr).hom y') = 0` using `hs`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `hs'` using `[map_sub, sub_eq_zero]`. Rewrite using `[← levelSum_levelTransition D T hn hpr, ← levelSum_levelTransition D T hn hrs, hs', levelSum_levelTransition, levelSum_levelTransition]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem levelSum_eq_of_levelInfl_eq {p q : GLevel K} (y : cohomology (ideleRep K.1 p.1.1) n)
     (y' : cohomology (ideleRep K.1 q.1.1) n)
@@ -115,7 +115,7 @@ def pick (x : cohomology (limitRep K) n) : Σ p : GLevel K, cohomology (ideleRep
   ⟨(exists_levelInfl_eq n x).choose, (exists_levelInfl_eq n x).choose_spec.choose⟩
 
 /- English proof (translation)
-The claim follows from `(exists_levelInfl_eq n x).choose_spec.choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem levelInfl_pick (x : cohomology (limitRep K) n) :
     (levelInfl K (pick x).1.1 n).hom (pick x).2 = x :=
@@ -125,7 +125,7 @@ def limitCohomologyFun (x : cohomology (limitRep K) n) : ⨁ v : Place K.1, T.T 
   levelSum D T hn (pick x).1 (pick x).2
 
 /- English proof (translation)
-The claim follows from `levelSum_eq_of_levelInfl_eq D T hn (pick x).2 y ((levelInfl_pick x).trans h.symm)`.
+A detailed English derivation is pending.
 -/
 theorem limitCohomologyFun_eq (p : GLevel K) (y : cohomology (ideleRep K.1 p.1.1) n)
     (x : cohomology (limitRep K) n) (h : (levelInfl K p.1 n).hom y = x) :
@@ -134,9 +134,9 @@ theorem limitCohomologyFun_eq (p : GLevel K) (y : cohomology (ideleRep K.1 p.1.1
 
 set_option maxHeartbeats 4000000 in
 /- English proof (translation)
-Take `⟨p₁, y₁, rfl⟩` from `exists_levelInfl_eq n x₁`. Take `⟨p₂, y₂, rfl⟩` from `exists_levelInfl_eq n x₂`. Take `⟨r, h1r, h2r⟩` from `GLevel.exists_ge p₁ p₂`. Establish `hsum : (levelInfl K r.1 n).hom ((levelTransitionG n h1r).hom y₁ + (levelTransitionG n h2r).hom y₂) = (levelInfl K p₁.1 n).hom y₁ + (levelInfl K p₂.1 n).hom y₂`. Rewrite using `[map_add, levelTransitionG_comp_levelInfl, levelTransitionG_comp_levelInfl]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[limitCohomologyFun_eq D T hn p₁ y₁ _ rfl, limitCohomologyFun_eq D T hn p₂ y₂ _ rfl, limitCohomologyFun_eq D T hn r _ _ hsum, map_add, levelSum_levelTransition, levelSum_levelTransition]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem limitCohomologyFun_add (x₁ x₂ : cohomology (limitRep K) n) :
     limitCohomologyFun D T hn (x₁ + x₂) = limitCohomologyFun D T hn x₁ + limitCohomologyFun D T hn x₂ := by
@@ -153,14 +153,14 @@ def limitCohomologyHom : cohomology (limitRep K) n →+ ⨁ v : Place K.1, T.T v
   AddMonoidHom.mk' (limitCohomologyFun D T hn) (limitCohomologyFun_add D T hn)
 
 /- English proof (translation)
-The claim follows from `limitCohomologyFun_eq D T hn p y _ rfl`.
+A detailed English derivation is pending.
 -/
 theorem limitCohomologyHom_levelInfl (p : GLevel K) (y : cohomology (ideleRep K.1 p.1.1) n) :
     limitCohomologyHom D T hn ((levelInfl K p.1 n).hom y) = levelSum D T hn p y :=
   limitCohomologyFun_eq D T hn p y _ rfl
 
 /- English proof (translation)
-Apply `(idelesCohomologyEquiv hn).symm.injective` to reduce the goal to its premises. Rewrite using `[map_zero]`. Use extensionality with `v`. Rewrite using `[idelesCohomologyEquiv_symm_apply, h v]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem eq_zero_of_forall_placeProj {n : ℕ} (hn : 1 ≤ n) (p : GLevel K) (y : cohomology (ideleRep K.1 p.1.1) n)
     (h : ∀ v : Place K.1, (cohomologyMap (placeProj v) n).hom y = 0) : y = 0 := by
@@ -171,15 +171,13 @@ theorem eq_zero_of_forall_placeProj {n : ℕ} (hn : 1 ≤ n) (p : GLevel K) (y :
   rfl
 
 /- English proof (translation)
-Use `(injective_iff_map_eq_zero (limitCohomologyHom D T hn)).2 fun x hx => ?_` and prove the remaining obligations. Take `⟨p, y, rfl⟩` from `exists_levelInfl_eq n x`. Rewrite `hx` using `[limitCohomologyHom_levelInfl]`. Establish `hv : ∀ v, T.infl v p (D.e v p ((cohomologyMap (placeProj v) n).hom y)) = 0` using `fun v => by`. Use `congrArg (fun ζ : ⨁ v : Place K.1, T.T v => ζ v) hx` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[levelSum_apply]`. Conclude with `this`. Use `choose q hpq hq using fun v => T.exists_lt_eq_zero v p _ (hv v)`. Take `⟨r, hr⟩` from `Finset.exists_le (insert p (((idelesCohomologyEquiv hn).symm y).support.image q))`. Establish `hpr : p ≤ r` using `hr _ (Finset.mem_insert_self _ _)`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hzero : (levelTransitionG n hpr).hom y = 0`. Use `eq_zero_of_forall_placeProj hn r _ fun v => (D.e v r).injective ?_` and prove the remaining obligations. Rewrite using `[map_zero]`. Distinguish the cases in `hvS : v ∈ ((idelesCohomologyEquiv hn).symm y).support`. Establish `hqr : q v ≤ r` using `hr _ (Finset.mem_insert_of_mem (Finset.mem_image_of_mem _ hvS))`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← levelTransitionG_trans n (hpq v) hqr, D.compat, D.compat, hq v, map_zero]`. Establish `h0 : (cohomologyMap (placeProj v) n).hom y = 0`. Rewrite using `[← idelesCohomologyEquiv_symm_apply hn]`. Conclude with `DFinsupp.notMem_support_iff.1 hvS`. Rewrite using `[D.compat, h0, map_zero, map_zero]`.
-
-Rewrite using `[← levelTransitionG_comp_levelInfl n hpr, hzero, map_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem limitCohomologyHom_injective : Function.Injective (limitCohomologyHom D T hn) := by
   classical
@@ -206,13 +204,13 @@ theorem limitCohomologyHom_injective : Function.Injective (limitCohomologyHom D 
   rw [← levelTransitionG_comp_levelInfl n hpr, hzero, map_zero]
 
 /- English proof (translation)
-Introduce `ζ`. Use `choose p z hz using fun v => T.exists_infl v (ζ v)`. Take `⟨p₀⟩` from `(inferInstance : Nonempty (GLevel K))`. Take `⟨r, hr⟩` from `Finset.exists_le (insert p₀ (ζ.support.image p))`. Establish `hpr : ∀ v ∈ ζ.support, p v ≤ r` using `fun v hv => hr _ (Finset.mem_insert_of_mem (Finset.mem_image_of_mem _ hv))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `ξ : ⨁ v : Place K.1, cohomology (placeRep r.1.1 v) n` to `DFinsupp.mk ζ.support fun v => (D.e v.1 r).symm (D.lt v.1 (hpr v.1 v.2) (z v.1))`. Use `⟨(levelInfl K r.1 n).hom (idelesCohomologyEquiv hn ξ), ?_⟩` and prove the remaining obligations. Rewrite using `[limitCohomologyHom_levelInfl]`. Use extensionality with `v`. Rewrite using `[levelSum_apply, ← idelesCohomologyEquiv_symm_apply hn, AddEquiv.symm_apply_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hv : v ∈ ζ.support`. Establish `: ξ v = (D.e v r).symm (D.lt v (hpr v hv) (z v))`. Simplify using `only [ξ, DFinsupp.mk_apply, dif_pos hv]`. Rewrite using `[this, AddEquiv.apply_symm_apply, T.infl_compat, hz]`. Establish `: ξ v = 0`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [ξ, DFinsupp.mk_apply, dif_neg hv]`. Rewrite using `[this, map_zero, map_zero, DFinsupp.notMem_support_iff.1 hv]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem limitCohomologyHom_surjective : Function.Surjective (limitCohomologyHom D T hn) := by
   classical
@@ -241,7 +239,7 @@ def limitCohomologyEquiv : cohomology (limitRep K) n ≃+ ⨁ v : Place K.1, T.T
     ⟨limitCohomologyHom_injective D T hn, limitCohomologyHom_surjective D T hn⟩
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `limitCohomologyHom D T hn _ v = _`. Rewrite using `[limitCohomologyHom_levelInfl, levelSum_apply]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem limitCohomologyEquiv_levelInfl (p : GLevel K) (y : cohomology (ideleRep K.1 p.1.1) n)
     (v : Place K.1) :

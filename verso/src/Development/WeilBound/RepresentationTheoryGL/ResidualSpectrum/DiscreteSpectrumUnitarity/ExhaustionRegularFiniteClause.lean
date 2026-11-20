@@ -41,7 +41,7 @@ def DiscreteSpectrumReg (E : Type) [Field E] [NumberField E] [IsCMField E] : Pro
       ∀ τ m', HasInfCharGL V τ m' → ∃ m, P.HasInfChar τ m ∧ m' = spehInf d m
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨m, hV, Multiset.nodup_of_le hle hM, fun x hx y hy => hint x (Multiset.mem_of_le hle hx) y (Multiset.mem_of_le hle hy)⟩`.
+Supply the required witnesses or components.
 -/
 theorem regInt_of_le {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {N : ℕ} {V : Submodule ℂ (Sm E N)}
     {τ : E →+* ℂ} {m M : Multiset ℂ} (hV : HasInfCharGL V τ m) (hle : m ≤ M) (hM : M.Nodup)
@@ -49,9 +49,9 @@ theorem regInt_of_le {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {
   ⟨m, hV, Multiset.nodup_of_le hle hM, fun x hx y hy => hint x (Multiset.mem_of_le hle hx) y (Multiset.mem_of_le hle hy)⟩
 
 /- English proof (translation)
-Establish `key : ∀ z ∈ infOfWeight lam, ∃ k : ℤ, z = ((n : ℂ) - 1) / 2 + k` using `fun z hz => by`. Take `⟨k, -, rfl⟩` from `Multiset.mem_map.1 hz`. Conclude with `⟨lam.w k - (k : ℕ), by push_cast; ring⟩`. Introduce `x hx y hy`. Take `⟨k, rfl⟩` from `key x hx`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨l, rfl⟩` from `key y hy`. Conclude with `⟨k - l, by push_cast; ring⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem infOfWeight_int {n : ℕ} (lam : Formalism.BasicNotions.DomWeight n) :
     ∀ x ∈ infOfWeight lam, ∀ y ∈ infOfWeight lam, ∃ k : ℤ, x - y = k := by

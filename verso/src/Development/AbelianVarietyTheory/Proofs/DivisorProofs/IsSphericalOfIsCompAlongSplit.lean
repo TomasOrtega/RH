@@ -28,21 +28,19 @@ namespace GlobalTheory.SphBC
 open GlobalTheory.PRep GlobalTheory.DefU
 
 /- English proof (translation)
-Take `⟨e, he⟩` from `GlobalTheory.locU_equiv_GL E n w hw`. Establish `hp : Function.Surjective ((cLoc w).comp (locU n w).subtype)` using `fun g => ⟨e.symm g, (he _).symm.trans (e.apply_symm_apply g)⟩`. Take `⟨φ, hφ, hφ0, hφK⟩` from `hu`. Assume the negation of the conclusion as `hns`. Establish `hfix : ∀ v, (∀ k ∈ GlobalTheory.LFun.KGL w n, σ k v = v) → v = 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Introduce `v hv`. Assume the negation of the conclusion as `hv0`. Conclude with `hns ((Submodule.ne_bot_iff _).2 ⟨v, GlobalTheory.LGrp.mem_fixed.2 hv, hv0⟩)`. Take `⟨hσirr, f, hf0, hfm, hf⟩` from `hc`. Set `Ψ : AutSub E n` to `⟨π, hπ⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hirr : Representation.IsIrreducible (σ.comp ((cLoc w).comp (locU n w).subtype))`. Take `⟨h0, h1⟩` from `(GlobalTheory.CuspRep.isIrreducible_iff _).1 hσirr`. Use `(GlobalTheory.CuspRep.isIrreducible_iff _).2 ⟨h0, fun Y hY => h1 Y fun g v hv => ?_⟩` and prove the remaining obligations. Take `⟨x, rfl⟩` from `hp g`. Conclude with `hY x v hv`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `F : Representation.IntertwiningMap (σ.comp ((cLoc w).comp (locU n w).subtype)) (Ψ.rep.comp (locU n w).subtype)` to `⟨f.codRestrict _ hfm, fun x => LinearMap.ext fun v => Subtype.ext (hf x v)⟩`. Establish `hF0 : F ≠ 0` using `fun h => hf0 (LinearMap.ext fun v => by`. Use `congrArg Subtype.val (DFunLike.congr_fun h v)` as an intermediate fact. Conclude with `this)`. Take `⟨r, -, -, hr⟩` from `GlobalTheory.DefU.LocRet.exists_ret E n w`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `htop` using `(GlobalTheory.CuspRep.CompUniq.isotypic (UA E n) (locU n w) Ψ.V X X Ψ.rep (locU n w).subtype (σ.comp ((cLoc w).comp (locU n w).subtype)) (σ.comp ((cLoc w).comp (locU n w).subtype)) Ψ.isIrreducible_rep hirr hirr (fun g => ⟨r g, fun y => hr g y⟩) F hF0).1`. Set `fi : Representation.IntertwiningMap (σ.comp ((cLoc w).comp (locU n w).subtype)) (Ψ.rep.comp (locU n w).subtype) → X →ₗ[ℂ] (UA E n → ℂ)` to `fun i => π.subtype ∘ₗ i.toLinearMap`. Establish `hfi : ∀ i g u, fi i ((σ.comp ((cLoc w).comp (locU n w).subtype)) g u) = (RU E n).comp (locU n w).subtype g (fi i u)` using `fun i g u => congrArg Subtype.val (Representation.IntertwiningMap.isIntertwining _ _ i g u)`. Establish `hmem : φ ∈ ⨆ i, LinearMap.range (fi i)`. Establish `: φ ∈ (⨆ i : Representation.IntertwiningMap (σ.comp ((cLoc w).comp (locU n w).subtype)) (Ψ.rep.comp (locU n w).subtype), LinearMap.range i.toLinearMap).map π.subtype`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Simplify using the standard rewrite rules.
 
-Rewrite using `[htop]`. Conclude with `⟨⟨φ, hφ⟩, Submodule.mem_top, rfl⟩`. Simplify using `only [fi, LinearMap.range_comp]`. Rewrite `this` using `[Submodule.map_iSup]`. Then use the resulting hypothesis. Establish `key` using `GlobalTheory.InertHeckeEigen.mem_of_mem_iSup ((RU E n).comp (locU n w).subtype) (σ.comp ((cLoc w).comp (locU n w).subtype)) hirr fi hfi (((GlobalTheory.LFun.KGL w n).comap ((cLoc w).comp (locU n w).subtype) : Subgroup (locU n w)) : Set (locU n w)) ⊥ (fun i v hv => by`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hv' : v = 0` using `hfix v fun k hk => by`. Take `⟨x, rfl⟩` from `hp k`. Conclude with `hv x hk`. Rewrite using `[hv', map_zero]`. Conclude with `Submodule.zero_mem _)`.
-
-Use the proof step `(fun z hz _ _ => by rw [(Submodule.mem_bot ℂ).1 hz, map_zero]) φ (fun k hk => hφK k.1 k.2 hk) hmem`. Conclude with `hφ0 ((Submodule.mem_bot ℂ).1 key)`.
+A detailed English derivation is pending.
 -/
 theorem isSpherical_of_isCompAlong_split {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
     {π : Submodule ℂ (UA E n → ℂ)} (hπ : IsAutRepU π) {w : HeightOneSpectrum (𝓞 E)} (hw : IsSplitAt w)
@@ -98,13 +96,13 @@ theorem isSpherical_of_isCompAlong_split {E : Type} [Field E] [NumberField E] [I
   exact hφ0 ((Submodule.mem_bot ℂ).1 key)
 
 /- English proof (translation)
-Introduce `E _ _ _ hE n π hπ c a d h P ρ m σ hp hsh hsplit w hu i τ hτ`. It suffices to establish `hB : ∃ B, GlobalTheory.LFun.HasSatGL w (ρ i w).ρ B by`. Take `⟨B, hB⟩` from `hB`. Establish `h1` using `(GlobalTheory.BcSpehCompare.hasSat_iff (hp.loc i w) B).2 hB`. Conclude with `((GlobalTheory.BcSpehCompare.hasSat_iff hτ B).1 h1).1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the argument to an intermediate assertion. Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hw : IsSplitAt w`. Establish `hc` using `hsplit w hw`. Establish `hs : GlobalTheory.LGrp.IsSpherical (locProd h w (σ · w)) (GlobalTheory.LFun.KGL w n)` using `isSpherical_of_isCompAlong_split hπ hw _ hc hu`. Establish `hsm : GlobalTheory.PRep.IsSmooth (locProd h w (σ · w))` using `GlobalTheory.SmGL.isSmooth_parInd _ _`. Establish `hirr : (locProd h w (σ · w)).IsIrreducible` using `hc.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨T, hT⟩` from `GlobalTheory.SatInd.exists_hasSatGL_of_isIrreducible hsm hirr hs`. Take `⟨S, hS, -⟩` from `GlobalTheory.SatInd.satake_locProd_speh E w c n a d h (ρ · w) (σ · w) (fun i => (hp.pos i).2) (fun i => (hsh i w).2.2) T hT`. Conclude with `⟨S i, hS i⟩`. Take `⟨s, ϖ, q, α, h1, h2, h3⟩` from `GlobalTheory.BcSpehCompare.exists_hasSatAt hE hπ hw hu`. Take `⟨S, hS, -⟩` from `hp.inert w s ϖ q h1 h2 α h3`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨S i, hS i⟩`.
+A detailed English derivation is pending.
 -/
 theorem isSpherical_of_isUnramU : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E],
     (∀ w : HeightOneSpectrum (𝓞 E), Algebra.IsUnramifiedAt (𝓞 (maximalRealSubfield E)) w.asIdeal) →

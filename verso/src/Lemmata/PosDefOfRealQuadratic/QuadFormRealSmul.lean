@@ -5,7 +5,7 @@ universe u_1
 namespace Bl.PosDefOfRealQuadratic
 
 /- English proof (translation)
-Rewrite using `[Matrix.mulVec_smul, dotProduct_smul, star_smul, smul_dotProduct]`. Simplify using `only [smul_eq_mul, Complex.star_def, Complex.conj_ofReal]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 private lemma quadForm_real_smul {m : Nat} (M : Matrix (Fin m) (Fin m) ℂ) (v : Fin m → ℂ) (r : ℝ) :
     star ((r : ℂ) • v) ⬝ᵥ (Matrix.mulVec (M) ((r : ℂ) • v)) = ((r ^ 2 : ℝ) : ℂ) * (star v ⬝ᵥ (Matrix.mulVec (M) v)) := by
@@ -16,7 +16,7 @@ private lemma quadForm_real_smul {m : Nat} (M : Matrix (Fin m) (Fin m) ℂ) (v :
 
 open scoped ComplexOrder in
 /- English proof (translation)
-The claim follows from `(Complex.pos_iff.mp (h.dotProduct_mulVec_pos hy)).1`.
+A detailed English derivation is pending.
 -/
 private lemma re_quad_pos {m : Nat} {M : Matrix (Fin m) (Fin m) ℂ} (h : M.PosDef) {y : Fin m → ℂ}
     (hy : y ≠ 0) : 0 < (star y ⬝ᵥ (Matrix.mulVec M y)).re :=
@@ -24,7 +24,7 @@ private lemma re_quad_pos {m : Nat} {M : Matrix (Fin m) (Fin m) ℂ} (h : M.PosD
 
 open scoped ComplexOrder in
 /- English proof (translation)
-The claim follows from `Matrix.PosDef.of_dotProduct_mulVec_pos hH fun v hv => Complex.pos_iff.mpr ⟨h v hv, (hH.im_star_dotProduct_mulVec_self v).symm⟩`.
+A detailed English derivation is pending.
 -/
 private lemma posDef_of_re {m : Nat} {M : Matrix (Fin m) (Fin m) ℂ} (hH : M.IsHermitian)
     (h : ∀ v : Fin m → ℂ, v ≠ 0 → 0 < (star v ⬝ᵥ (Matrix.mulVec M v)).re) : M.PosDef :=
@@ -32,15 +32,13 @@ private lemma posDef_of_re {m : Nat} {M : Matrix (Fin m) (Fin m) ℂ} (hH : M.Is
     Complex.pos_iff.mpr ⟨h v hv, (hH.im_star_dotProduct_mulVec_self v).symm⟩
 
 /- English proof (translation)
-Introduce `X inst m A hA hH x0 h0`. Establish `hAc : Continuous A` using `continuous_pi fun i => continuous_pi fun j => hA i j`. Use `set K : Set (Fin m → ℂ) := Metric.sphere 0 1 with hK`. Establish `hKc : IsCompact K` using `isCompact_sphere 0 1`. Establish `hq : Continuous fun p : X × (Fin m → ℂ) => star p.2 ⬝ᵥ (Matrix.mulVec (A p.1) p.2)` using `(continuous_snd.star).dotProduct ((hAc.comp continuous_fst).matrix_mulVec continuous_snd)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : ∀ᶠ x in nhds x0, ∀ y ∈ K, 0 < (star y ⬝ᵥ (Matrix.mulVec (A x) y)).re`. Use `hKc.eventually_forall_of_forall_eventually fun y hy => ?_` and prove the remaining obligations. Establish `hy0 : y ≠ 0`. Introduce and unpack `rfl`. Simplify using `[hK] at hy`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hpos : 0 < (star y ⬝ᵥ (Matrix.mulVec (A x0) y)).re` using `re_quad_pos h0 hy0`. Establish `hev` using `(continuousAt_const (x := (x0, y))).eventually_lt ((Complex.continuous_re.comp hq).continuousAt (x := (x0, y))) hpos`. Use `filter_upwards [hev] with z hz using hz`. Use `filter_upwards [key] with x hx`. Use `posDef_of_re (hH x) fun v hv => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hn : 0 < ‖v‖` using `norm_pos_iff.mpr hv`. Establish `hw : ((‖v‖⁻¹ : ℝ) : ℂ) • v ∈ K`. Rewrite using `[hK, mem_sphere_zero_iff_norm, norm_smul, Complex.norm_real, norm_inv, norm_norm, inv_mul_cancel₀ hn.ne']`. Establish `h1` using `hx _ hw`. Rewrite `h1` using `[quadForm_real_smul, Complex.re_ofReal_mul]`.
-
-Conclude with `pos_of_mul_pos_right h1 (by positivity)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem goal1 :
   ∀ {X : Type u_1} [inst : TopologicalSpace.{u_1} X] {m : Nat} (A : X → Matrix.{0, 0, 0} (Fin m) (Fin m) Complex),

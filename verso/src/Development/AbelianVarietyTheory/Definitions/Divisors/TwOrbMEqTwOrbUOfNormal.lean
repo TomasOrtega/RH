@@ -14,9 +14,9 @@ section Generic
 variable {G : Type} [Group G]
 
 /- English proof (translation)
-Establish `key : ∀ S : Subgroup H, S = ⊤ → ((S.index : ℂ))⁻¹ * ∑ᶠ _q : H ⧸ S, c = c`. Introduce and unpack `S rfl`. Establish `hone : ∀ x : H ⧸ (⊤ : Subgroup H), x = 1` using `fun x => QuotientGroup.induction_on x fun a => (QuotientGroup.eq_one_iff a).2 (Subgroup.mem_top a)`. Rewrite using `[Subgroup.index_top, finsum_eq_single (fun _ => c) (1 : H ⧸ (⊤ : Subgroup H)) (fun x hx => absurd (hone x) hx)]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `htop : GlobalTheory.BCT.rStab (fun _ : H => c) = ⊤` using `(Subgroup.eq_top_iff' _).2 fun k => by`. Conclude with `fun x => rfl`. Conclude with `key _ htop`.
+Establish an intermediate fact. Fix the arbitrary inputs and assume any hypotheses. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem avg_const_fun {H : Type} [Group H] (c : ℂ) : GlobalTheory.BCT.avg (fun _ : H => c) = c := by
   have key : ∀ S : Subgroup H, S = ⊤ → ((S.index : ℂ))⁻¹ * ∑ᶠ _q : H ⧸ S, c = c := by
@@ -32,11 +32,11 @@ theorem avg_const_fun {H : Type} [Group H] (c : ℂ) : GlobalTheory.BCT.avg (fun
   exact key _ htop
 
 /- English proof (translation)
-Establish `hmem : ∀ g : G, g ∈ GlobalTheory.BCT.twCent θ δ` using `fun g => h ▸ Subgroup.mem_top g`. Set `q0` to `DoubleCoset.mk (GlobalTheory.BCT.twCent θ δ) K 1`. Establish `hall : ∀ q : DoubleCoset.Quotient (GlobalTheory.BCT.twCent θ δ : Set G) (K : Set G), q = q0`. Introduce `q`. Rewrite using `[← DoubleCoset.out_eq' _ _ q]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(DoubleCoset.eq _ _ _ _).2 ⟨(Quotient.out q)⁻¹, hmem _, 1, K.one_mem, by group⟩`. Use `⟨Quotient.out q0, fun w f => ?_⟩` and prove the remaining obligations. Unfold `GlobalTheory.LKLoc.orbSum`. Rewrite using `[finsum_eq_single _ q0 (fun q hq => absurd (hall q) hq)]`. Establish `hfix : ∀ g : G, g⁻¹ * δ * θ g = δ`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g`. Establish `hg' : g * δ = δ * θ g` using `hmem g`. Rewrite using `[mul_assoc, ← hg', inv_mul_cancel_left]`. Simplify using `only [hfix, avg_const_fun]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem orbSum_of_twCent_eq_top (θ : G →* G) (K : Subgroup G) (δ : G) (h : GlobalTheory.BCT.twCent θ δ = ⊤) :
     ∃ x : G, ∀ (w : G → ℝ) (f : G → ℂ), GlobalTheory.LKLoc.orbSum θ K δ w f = (w x : ℂ) * f δ := by
@@ -56,9 +56,9 @@ theorem orbSum_of_twCent_eq_top (θ : G →* G) (K : Subgroup G) (δ : G) (h : G
   simp only [hfix, avg_const_fun]
 
 /- English proof (translation)
-Use `show T ⊓ K.map (MulAut.conj x).toMonoidHom = T ⊓ K`. Use `congr 1`. Use extensionality with `y`. Simplify using `only [Subgroup.mem_map, MulEquiv.coe_toMonoidHom, MulAut.conj_apply]`. Prove the components needed by the constructor for the conclusion.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨k, hk, rfl⟩`. Conclude with `hK.conj_mem k hk x`. Introduce `hy`. Conclude with `⟨x⁻¹ * y * x, by simpa using hK.conj_mem y hy x⁻¹, by group⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem locPart_of_normal (T K : Subgroup G) [hK : K.Normal] (x : G) : GlobalTheory.LKLoc.locPart T K x = T ⊓ K := by
   show T ⊓ K.map (MulAut.conj x).toMonoidHom = T ⊓ K
@@ -72,7 +72,7 @@ theorem locPart_of_normal (T K : Subgroup G) [hK : K.Normal] (x : G) : GlobalThe
     exact ⟨x⁻¹ * y * x, by simpa using hK.conj_mem y hy x⁻¹, by group⟩
 
 /- English proof (translation)
-Unfold `GlobalTheory.LKLoc.volRat`. Rewrite using `[Subgroup.relIndex_self]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private lemma volRat_self' (V : Subgroup G) : GlobalTheory.LKLoc.volRat V V = 1 := by
   unfold GlobalTheory.LKLoc.volRat
@@ -80,9 +80,9 @@ private lemma volRat_self' (V : Subgroup G) : GlobalTheory.LKLoc.volRat V V = 1 
   simp
 
 /- English proof (translation)
-Unfold `GlobalTheory.LKLoc.twOrbM GlobalTheory.LKLoc.twOrbU`. Use `congr 1`. Use function extensionality and compare the values at `x`. Rewrite using `[locPart_of_normal]`. Unfold `GlobalTheory.LKLoc.maxWt`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Simplify using `only [locPart_of_normal, volRat_self', ciSup_const]`.
+Simplify using the standard rewrite rules.
 -/
 theorem twOrbM_eq_twOrbU_of_normal (θ : G →* G) (K : Subgroup G) [K.Normal] (δ : G) (f : G → ℂ) :
     GlobalTheory.LKLoc.twOrbM θ K δ f = GlobalTheory.LKLoc.twOrbU θ K δ (GlobalTheory.BCT.twCent θ δ ⊓ K) f := by
@@ -167,7 +167,7 @@ def TOHTU (m n r : ℕ) (Kw : Fin m → IntermediateField ℚ_[p] (PadicAlgCl p)
   GlobalTheory.LKLoc.twOrbU (sigHT p m n r Kw) (KHT p m n r Kw) δ U φ
 
 /- English proof (translation)
-Use `show Algebra.TensorProduct.map (AlgHom.id ℚ_[p] K) (frobQ p r) (a ⊗ₜ[ℚ_[p]] (1 : Qr p r)) = a ⊗ₜ[ℚ_[p]] (1 : Qr p r)`. Rewrite using `[Algebra.TensorProduct.map_tmul, map_one, AlgHom.id_apply]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sigKQ_apply_inclK (r : ℕ) (a : K) : sigKQ p K r (inclK p K r a) = inclK p K r a := by
   show Algebra.TensorProduct.map (AlgHom.id ℚ_[p] K) (frobQ p r) (a ⊗ₜ[ℚ_[p]] (1 : Qr p r)) =
@@ -175,7 +175,7 @@ theorem sigKQ_apply_inclK (r : ℕ) (a : K) : sigKQ p K r (inclK p K r a) = incl
   rw [Algebra.TensorProduct.map_tmul, map_one, AlgHom.id_apply]
 
 /- English proof (translation)
-Use `show Algebra.TensorProduct.map (AlgHom.id ℚ_[p] K) (frobQ p r) ((1 : K) ⊗ₜ[ℚ_[p]] b) = (1 : K) ⊗ₜ[ℚ_[p]] (frobQ p r b)`. Rewrite using `[Algebra.TensorProduct.map_tmul, map_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sigKQ_apply_inclQ (r : ℕ) (b : Qr p r) : sigKQ p K r (inclQ p K r b) = inclQ p K r (frobQ p r b) := by
   show Algebra.TensorProduct.map (AlgHom.id ℚ_[p] K) (frobQ p r) ((1 : K) ⊗ₜ[ℚ_[p]] b) =
@@ -183,11 +183,11 @@ theorem sigKQ_apply_inclQ (r : ℕ) (b : Qr p r) : sigKQ p K r (inclQ p K r b) =
   rw [Algebra.TensorProduct.map_tmul, map_one]
 
 /- English proof (translation)
-Establish `hK : FiniteDimensional ℚ_[p] (Q0 p)` using `by infer_instance`. Establish `hle : Q0 p ≤ Qr p 1` using `bot_le`. Establish `hdeg : degLK p (Q0 p) (Kn p (Q0 p) 1) = 1` using `degLK_Kn hK one_pos`. Rewrite `hdeg` using `[degLK_eq_finrank (h := hle)]`. Establish `hbot` using `IntermediateField.finrank_eq_one_iff.1 hdeg`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `AlgHom.ext fun x => Subtype.ext ?_` and prove the remaining obligations. Establish `hx : (x : PadicAlgCl p) ∈ Q0 p`. Establish `h1 : (x : PadicAlgCl p) ∈ IntermediateField.extendScalars hle`. Conclude with `x.2`. Rewrite `h1` using `[hbot]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy⟩` from `IntermediateField.mem_bot.1 h1`. Rewrite using `[← hy]`. Conclude with `y.2`. Conclude with `(frobK p (Q0 p)).commutes ⟨_, hx⟩`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frobQ_degree_one : frobQ p 1 = AlgHom.id ℚ_[p] (Qr p 1) := by
   have hK : FiniteDimensional ℚ_[p] (Q0 p) := by
@@ -207,9 +207,9 @@ theorem frobQ_degree_one : frobQ p 1 = AlgHom.id ℚ_[p] (Qr p 1) := by
   exact (frobK p (Q0 p)).commutes ⟨_, hx⟩
 
 /- English proof (translation)
-Establish `h1 : sigKQ p K 1 = AlgHom.id ℚ_[p] (KQ p K 1)`. Unfold `sigKQ`. Rewrite using `[frobQ_degree_one]`. Conclude with `Algebra.TensorProduct.map_id`. Use `MonoidHom.ext fun g => Matrix.GeneralLinearGroup.ext fun i j => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show sigKQ p K 1 ((g : Matrix (Fin n) (Fin n) (KQ p K 1)) i j) = (g : Matrix (Fin n) (Fin n) (KQ p K 1)) i j`. Rewrite using `[h1]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem sigRes_degree_one (n : ℕ) : sigRes p K n 1 = MonoidHom.id _ := by
   have h1 : sigKQ p K 1 = AlgHom.id ℚ_[p] (KQ p K 1) := by
@@ -222,7 +222,7 @@ theorem sigRes_degree_one (n : ℕ) : sigRes p K n 1 = MonoidHom.id _ := by
   rfl
 
 /- English proof (translation)
-Use `Matrix.GeneralLinearGroup.ext fun i j => ?_` and prove the remaining obligations. Use `fin_cases i`. Use `fin_cases j`. Simplify using `[Matrix.mul_apply, mul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma gl_fin_one_mul_comm {R : Type} [CommRing R] (a b : GL (Fin 1) R) : a * b = b * a := by
   refine Matrix.GeneralLinearGroup.ext fun i j => ?_
@@ -231,7 +231,7 @@ private lemma gl_fin_one_mul_comm {R : Type} [CommRing R] (a b : GL (Fin 1) R) :
   simp [Matrix.mul_apply, mul_comm]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun n hn g => by rw [gl_fin_one_mul_comm g n, mul_inv_cancel_right] exact hn⟩`.
+Supply the required witnesses or components.
 -/
 theorem normal_of_gl_one {R : Type} [CommRing R] (H : Subgroup (GL (Fin 1) R)) : H.Normal :=
   ⟨fun n hn g => by
@@ -239,7 +239,7 @@ theorem normal_of_gl_one {R : Type} [CommRing R] (H : Subgroup (GL (Fin 1) R)) :
     exact hn⟩
 
 /- English proof (translation)
-Establish `hc : ∀ a b : GHT p m 1 r Kw, a * b = b * a` using `fun a b => Prod.ext (gl_fin_one_mul_comm _ _) (funext fun i => gl_fin_one_mul_comm _ _)`. Establish `: (KHT p m 1 r Kw).Normal` using `⟨fun n hn g => by`. Rewrite using `[hc g n, mul_inv_cancel_right]`. Conclude with `hn⟩`. Conclude with `twOrbM_eq_twOrbU_of_normal (sigHT p m 1 r Kw) (KHT p m 1 r Kw) δ φ`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem TOHT_gl_one (m r : ℕ) (Kw : Fin m → IntermediateField ℚ_[p] (PadicAlgCl p)) (δ : GHT p m 1 r Kw)
     (φ : GHT p m 1 r Kw → ℂ) :
@@ -253,18 +253,18 @@ theorem TOHT_gl_one (m r : ℕ) (Kw : Fin m → IntermediateField ℚ_[p] (Padic
   exact twOrbM_eq_twOrbU_of_normal (sigHT p m 1 r Kw) (KHT p m 1 r Kw) δ φ
 
 /- English proof (translation)
-Simplify using `[nrmRes]`.
+Simplify using the standard rewrite rules.
 -/
 example (δ : GL (Fin 2) (KQ p K 1)) : nrmRes p K 2 1 δ = δ := by simp [nrmRes]
 
 /- English proof (translation)
-Simplify using `[nrmRes, List.range_succ]`.
+Simplify using the standard rewrite rules.
 -/
 example (δ : GL (Fin 2) (KQ p K 2)) : nrmRes p K 2 2 δ = δ * sigRes p K 2 2 δ := by
   simp [nrmRes, List.range_succ]
 
 /- English proof (translation)
-Unfold `KQ`. Use `infer_instance`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 example (r : ℕ) : Nontrivial (KQ p K r) := by unfold KQ; infer_instance
 

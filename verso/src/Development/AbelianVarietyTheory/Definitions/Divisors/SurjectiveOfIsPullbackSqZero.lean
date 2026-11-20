@@ -25,13 +25,13 @@ structure Sys (I : Ideal R) (π : R →+* R₀) (s₀ : X₀ ⟶ Sp R₀) : Type
   smooth : ∀ U, Algebra.Smooth R (F.obj U)
 
 /- English proof (translation)
-Rewrite using `[← Ideal.map_pow, hI, Ideal.zero_eq_bot, Ideal.map_bot, Ideal.zero_eq_bot]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem map_sq (hI : I ^ 2 = 0) (B : Type) [CommRing B] [Algebra R B] : I.map (algebraMap R B) ^ 2 = 0 := by
   rw [← Ideal.map_pow, hI, Ideal.zero_eq_bot, Ideal.map_bot, Ideal.zero_eq_bot]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(PrimeSpectrum.isHomeomorph_comap p (fun x ↦ ⟨1, one_pos, by simpa using hp x⟩) fun b hb ↦ ⟨2, by simpa [hJ] using Ideal.pow_mem_pow (hk b hb) 2⟩).surjective⟩`.
+Supply the required witnesses or components.
 -/
 theorem surjective_spMap_sqZero {B B₀ : Type} [CommRing B] [CommRing B₀] (p : B →+* B₀) (hp : Function.Surjective p)
     {J : Ideal B} (hJ : J ^ 2 = 0) (hk : ∀ b, p b = 0 → b ∈ J) : Surjective (spMap p) :=
@@ -39,7 +39,7 @@ theorem surjective_spMap_sqZero {B B₀ : Type} [CommRing B] [CommRing B₀] (p 
     ⟨2, by simpa [hJ] using Ideal.pow_mem_pow (hk b hb) 2⟩).surjective⟩
 
 /- English proof (translation)
-The claim follows from `MorphismProperty.of_isPullback (P := @Surjective) h.flip (surjective_spMap_sqZero π hπ hI fun _ hb ↦ hk ▸ RingHom.mem_ker.2 hb)`.
+A detailed English derivation is pending.
 -/
 theorem surjective_of_isPullback_sqZero (hI : I ^ 2 = 0) {π : R →+* R₀} (hπ : Function.Surjective π)
     (hk : RingHom.ker π = I) {s₀ : X₀ ⟶ Sp R₀} {X : Scheme.{0}} {s : X ⟶ Sp R} {i : X₀ ⟶ X}
@@ -117,9 +117,9 @@ structure Presents {X : Scheme.{0}} (s : X ⟶ Sp R) (i : X₀ ⟶ X) where
   cover : ∀ x : X, ∃ U, x ∈ Set.range (y U).base
 
 /- English proof (translation)
-Take `⟨x₀, rfl⟩` from `hi.surj x`. Take `⟨_, ⟨U, hU, rfl⟩, hx, -⟩` from `X₀.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ x₀) isOpen_univ`. Establish `hx' : x₀ ∈ Set.range hU.fromSpec` using `by rw [hU.range_fromSpec]; exact hx`. Take `⟨q, rfl⟩` from `hx'`. Use `⟨Opposite.op ⟨U, hU⟩, spMap (S.p (Opposite.op ⟨U, hU⟩)) q, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `congrArg (fun f : Sp (Sec s₀ U) ⟶ X ↦ f q) (red (Opposite.op ⟨U, hU⟩))` as an intermediate fact. Conclude with `this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cover_of_surjective {X : Scheme.{0}} {i : X₀ ⟶ X} (hi : Surjective i) (y : ∀ U : AffOp X₀, Sp (S.F.obj U) ⟶ X)
     (red : ∀ U, spMap (S.p U) ≫ y U = affPt s₀ U.unop ≫ i) (x : X) : ∃ U, x ∈ Set.range (y U).base := by
@@ -142,7 +142,7 @@ def Presents.ofSurjective {X : Scheme.{0}} {s : X ⟶ Sp R} {i : X₀ ⟶ X} (hi
 include hI in
 
 /- English proof (translation)
-The claim follows from `surjective_spMap_sqZero (S.p U) (S.surj U) (map_sq hI _) fun b hb ↦ (S.ker U b).1 hb`.
+A detailed English derivation is pending.
 -/
 theorem surjective_spMap_p (U : AffOp X₀) : Surjective (spMap (S.p U)) :=
   surjective_spMap_sqZero (S.p U) (S.surj U) (map_sq hI _) fun b hb ↦ (S.ker U b).1 hb
@@ -150,9 +150,9 @@ theorem surjective_spMap_p (U : AffOp X₀) : Surjective (spMap (S.p U)) :=
 include hI in
 
 /- English proof (translation)
-Use `⟨fun x ↦ ?_⟩` and prove the remaining obligations. Take `⟨U, q, rfl⟩` from `P.cover x`. Take `⟨q₀, rfl⟩` from `(S.surjective_spMap_p hI U).surj q`. Use `⟨affPt s₀ U.unop q₀, ?_⟩` and prove the remaining obligations. Use `congrArg (fun f : Sp (Sec s₀ U.unop.1) ⟶ X ↦ f q₀) (P.red U)` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify `this.symm` using `only [Scheme.Hom.comp_apply]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem Presents.surjective {X : Scheme.{0}} {s : X ⟶ Sp R} {i : X₀ ⟶ X} (P : S.Presents s i) : Surjective i := by
   refine ⟨fun x ↦ ?_⟩
@@ -178,7 +178,7 @@ structure IsTheta (I : Ideal R) {B B₀ B' : Type} [CommRing B] [Algebra R B] [C
   mem : ∀ w, θ w ∈ I.map (algebraMap R B')
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ _ ↦ by simp, fun _ ↦ by simp, fun _ ↦ by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem isTheta_zero (I : Ideal R) {B B₀ B' : Type} [CommRing B] [Algebra R B] [CommRing B₀] [Algebra R₀ B₀]
     [CommRing B'] [Algebra R B'] (p : B →+* B₀) (α : B →ₐ[R] B') : IsTheta (R₀ := R₀) I p α α 0 :=
@@ -192,7 +192,7 @@ def Sys.LocIso.IsDefect {S S' : Sys I π s₀} (Φ : S.LocIso S')
 def Sys.LocIso.refl (S : Sys I π s₀) : S.LocIso S := ⟨fun _ ↦ AlgEquiv.refl, fun _ _ ↦ rfl⟩
 
 /- English proof (translation)
-Establish `z : ∀ a ∈ I, π a = 0` using `fun a ha ↦ RingHom.mem_ker.1 (hk ▸ ha)`. Use `(isDPMorphism_iff _ _ _).2 ⟨Ideal.map_le_iff_le_comap.2 fun a ha ↦ z a ha, fun n hn a ha ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[z a ha, z _ ((divided₂ hI).dpow_mem hn ha), dpow_eval_zero _ hn]`. Use `w := Category.id_comp _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem redMor (hI : I ^ 2 = 0) (hk : RingHom.ker π = I) (s₀ : X₀ ⟶ Sp R₀) :
     IsMor (divided₂ hI) (s₀ ≫ spMap π) (dp0 R₀) s₀ π (𝟙 X₀) where
@@ -233,7 +233,7 @@ section Self
 variable {X : Scheme.{0}} (s : X ⟶ Sp R)
 
 /- English proof (translation)
-Use `haveI : IsOpenImmersion (affPt s U) := IsAffineOpen.isOpenImmersion_fromSpec U.2`. Establish `h : Smooth (affPt s U ≫ s)` using `inferInstance`. Rewrite `h` using `[affPt_w]`. Conclude with `RingHom.smooth_algebraMap.1 ((HasRingHomProperty.Spec_iff (P := @Smooth)).1 h)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smooth_sec_affine [Smooth s] (U : X.affineOpens) : Algebra.Smooth R (Sec s U.1) := by
   haveI : IsOpenImmersion (affPt s U) := IsAffineOpen.isOpenImmersion_fromSpec U.2
@@ -258,12 +258,12 @@ def Sys.selfPresents [Smooth s] : (Sys.self s).Presents s (𝟙 X) :=
       rw [Category.comp_id, Cris.spMap_id, Category.id_comp]
 
 /- English proof (translation)
-The claim follows from `fun _ _ _ ↦ isTheta_zero _ _ _`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example [Smooth s] : (Sys.LocIso.refl (Sys.self s)).IsDefect (fun _ _ _ ↦ 0) := fun _ _ _ ↦ isTheta_zero _ _ _
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun P ↦ hi (P.surjective _ (by simp))⟩`.
+Supply the required witnesses or components.
 -/
 example [Smooth s] {Y : Scheme.{0}} (t : Y ⟶ Sp R) (i : X ⟶ Y) (hi : ¬ Surjective i) :
     IsEmpty ((Sys.self s).Presents t i) :=

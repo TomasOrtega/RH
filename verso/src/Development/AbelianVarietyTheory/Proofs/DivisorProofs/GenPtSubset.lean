@@ -50,25 +50,25 @@ def divG (S : HSp D) {n : ℕ} (x : Matrix (Fin n) (Fin S.rank) (AE D)) : Matrix
   HMul.hMul x ((S.gram⁻¹).map (incA D))
 
 /- English proof (translation)
-Rewrite using `[divG, mulG_eq, Matrix.mul_assoc, mul_eq_one_comm.1 (GlobalTheory.RouteCoords.inv_mul_gram S), Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem divG_mulG (S : HSp D) {n : ℕ} (x : Matrix (Fin n) (Fin S.rank) (AE D)) : divG S (mulG S x) = x := by
   rw [divG, mulG_eq, Matrix.mul_assoc, mul_eq_one_comm.1 (GlobalTheory.RouteCoords.inv_mul_gram S), Matrix.mul_one]
 
 /- English proof (translation)
-Rewrite using `[divG, mulG_eq, Matrix.mul_assoc, GlobalTheory.RouteCoords.inv_mul_gram S, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mulG_divG (S : HSp D) {n : ℕ} (x : Matrix (Fin n) (Fin S.rank) (AE D)) : mulG S (divG S x) = x := by
   rw [divG, mulG_eq, Matrix.mul_assoc, GlobalTheory.RouteCoords.inv_mul_gram S, Matrix.mul_one]
 
 /- English proof (translation)
-The claim follows from `Matrix.add_mul _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem mulG_add (S : HSp D) {n : ℕ} (x y : Matrix (Fin n) (Fin S.rank) (AE D)) : mulG S (x + y) = mulG S x + mulG S y :=
   Matrix.add_mul _ _ _
 
 /- English proof (translation)
-The claim follows from `Matrix.smul_mul _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem mulG_smul (S : HSp D) {n : ℕ} (c : AF D.host.F) (x : Matrix (Fin n) (Fin S.rank) (AE D)) :
     mulG S (c • x) = c • mulG S x := Matrix.smul_mul _ _ _
@@ -77,7 +77,7 @@ def ofMaps (e : Num G i j) (x : HomV G i j × HomW G i j) : Pt G i j :=
   (fromCols (divG (negSp (spW G i j)) x.1)ᵀ ((divG (spV₁ G i j) (-x.2)).map (cA D))).submatrix id e.symm
 
 /- English proof (translation)
-Establish `h1 : (colV e (ofMaps e x))ᵀ = divG (negSp (spW G i j)) x.1` using `Matrix.ext fun a b => by`. Simplify using `only [colV, ofMaps, transpose_apply, submatrix_apply, id, Equiv.symm_apply_apply, fromCols_apply_inl]`. Conclude with `(congrArg (mulG (negSp (spW G i j))) h1).trans (mulG_divG _ _)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mapV_ofMaps (e : Num G i j) (x : HomV G i j × HomW G i j) : mapV e (ofMaps e x) = x.1 := by
   have h1 : (colV e (ofMaps e x))ᵀ = divG (negSp (spW G i j)) x.1 := Matrix.ext fun a b => by
@@ -85,7 +85,7 @@ theorem mapV_ofMaps (e : Num G i j) (x : HomV G i j × HomW G i j) : mapV e (ofM
   exact (congrArg (mulG (negSp (spW G i j))) h1).trans (mulG_divG _ _)
 
 /- English proof (translation)
-Establish `h2 : ((ofMaps e x).submatrix id fun k => e (.inr k)).map (cA D) = divG (spV₁ G i j) (-x.2)` using `Matrix.ext fun a b => by`. Simplify using `only [ofMaps, submatrix_apply, id, Equiv.symm_apply_apply, fromCols_apply_inr, map_apply, GlobalTheory.DualPairCheck.cA_cA]`. Conclude with `(congrArg (fun y => -mulG (spV₁ G i j) y) h2).trans ((congrArg Neg.neg (mulG_divG _ _)).trans (neg_neg _))`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mapW_ofMaps (e : Num G i j) (x : HomV G i j × HomW G i j) : mapW e (ofMaps e x) = x.2 := by
   have h2 : ((ofMaps e x).submatrix id fun k => e (.inr k)).map (cA D) = divG (spV₁ G i j) (-x.2) := Matrix.ext fun a b => by
@@ -94,9 +94,9 @@ theorem mapW_ofMaps (e : Num G i j) (x : HomV G i j × HomW G i j) : mapW e (ofM
   exact (congrArg (fun y => -mulG (spV₁ G i j) y) h2).trans ((congrArg Neg.neg (mulG_divG _ _)).trans (neg_neg _))
 
 /- English proof (translation)
-Establish `h1 : divG (negSp (spW G i j)) (mapV e u) = (colV e u)ᵀ` using `divG_mulG _ _`. Establish `h2 : divG (spV₁ G i j) (-mapW e u) = (u.submatrix id fun k => e (.inr k)).map (cA D)` using `(congrArg (divG (spV₁ G i j)) (neg_neg _)).trans (divG_mulG _ _)`. Use extensionality with `a b`. Take `⟨k | k, rfl⟩` from `e.surjective b`. Simplify using `only [ofMaps, submatrix_apply, id, Equiv.symm_apply_apply, fromCols_apply_inl, transpose_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Conclude with `congrFun (congrFun h1 k) a`. Simplify using `only [ofMaps, submatrix_apply, id, Equiv.symm_apply_apply, fromCols_apply_inr, map_apply]`. Conclude with `(congrArg (cA D) (congrFun (congrFun h2 a) k)).trans (GlobalTheory.DualPairCheck.cA_cA _)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ofMaps_maps (e : Num G i j) (u : Pt G i j) : ofMaps e (mapV e u, mapW e u) = u := by
   have h1 : divG (negSp (spW G i j)) (mapV e u) = (colV e u)ᵀ := divG_mulG _ _
@@ -110,13 +110,13 @@ theorem ofMaps_maps (e : Num G i j) (u : Pt G i j) : ofMaps e (mapV e u, mapW e 
     exact (congrArg (cA D) (congrFun (congrFun h2 a) k)).trans (GlobalTheory.DualPairCheck.cA_cA _)
 
 /- English proof (translation)
-The claim follows from `mulG_add (negSp (spW G i j)) (colV e u)ᵀ (colV e u')ᵀ`.
+A detailed English derivation is pending.
 -/
 theorem mapV_add (e : Num G i j) (u u' : Pt G i j) : mapV e (u + u') = mapV e u + mapV e u' :=
   mulG_add (negSp (spW G i j)) (colV e u)ᵀ (colV e u')ᵀ
 
 /- English proof (translation)
-Establish `h : ((u + u').submatrix id fun k => e (.inr k)).map (cA D) = (u.submatrix id fun k => e (.inr k)).map (cA D) + (u'.submatrix id fun k => e (.inr k)).map (cA D)` using `Matrix.ext fun a b => map_add (cA D) _ _`. Conclude with `(congrArg (fun y => -mulG (spV₁ G i j) y) h).trans ((congrArg Neg.neg (mulG_add _ _ _)).trans (neg_add _ _))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mapW_add (e : Num G i j) (u u' : Pt G i j) : mapW e (u + u') = mapW e u + mapW e u' := by
   have h : ((u + u').submatrix id fun k => e (.inr k)).map (cA D) =
@@ -125,13 +125,13 @@ theorem mapW_add (e : Num G i j) (u u' : Pt G i j) : mapW e (u + u') = mapW e u 
   exact (congrArg (fun y => -mulG (spV₁ G i j) y) h).trans ((congrArg Neg.neg (mulG_add _ _ _)).trans (neg_add _ _))
 
 /- English proof (translation)
-The claim follows from `mulG_smul (negSp (spW G i j)) c (colV e u)ᵀ`.
+A detailed English derivation is pending.
 -/
 theorem mapV_smul (e : Num G i j) (c : AF D.host.F) (u : Pt G i j) : mapV e (c • u) = c • mapV e u :=
   mulG_smul (negSp (spW G i j)) c (colV e u)ᵀ
 
 /- English proof (translation)
-Establish `h : ((c • u).submatrix id fun k => e (.inr k)).map (cA D) = c • (u.submatrix id fun k => e (.inr k)).map (cA D)` using `Matrix.ext fun a b => map_smul (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA D.sp.cm.sig) c _`. Conclude with `(congrArg (fun y => -mulG (spV₁ G i j) y) h).trans ((congrArg Neg.neg (mulG_smul _ _ _)).trans (smul_neg _ _).symm)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mapW_smul (e : Num G i j) (c : AF D.host.F) (u : Pt G i j) : mapW e (c • u) = c • mapW e u := by
   have h : ((c • u).submatrix id fun k => e (.inr k)).map (cA D) = c • (u.submatrix id fun k => e (.inr k)).map (cA D) :=
@@ -158,17 +158,15 @@ abbrev sympPt (Γ : GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.G
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Establish `hJW : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM D.host.F Γ.W.J = incA D D.host.xi0 • GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.blk e ((spV G i j).gram.map (incA D))ᵀ ((spV₁ G i j).gram.map (incA D))ᵀ`. Establish `k : GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.incM Γ.W.J = incA D D.host.xi0 • GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.blk e (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.incM (spV G i j).gramᵀ) (GlobalTheory.IndefiniteRowSideFull …`. Rewrite using `[hWW, skewGram, GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.incM_smul]`. Use `congr 1`. Conclude with `GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.blk_map _ _ _ (map_zero _)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Conclude with `k`. Establish `hJV : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM D.host.F Γ.V.J = (spW G i j).gram.map (incA D)`. Rewrite using `[hW, one_smul]`. Both sides reduce to the same expression. Establish `hN : (negSp (spW G i j)).gram.map (incA D) = -(spW G i j).gram.map (incA D)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[negSp_gram]`. Conclude with `Matrix.map_neg _ (map_neg _) _`. Establish `hA : hTens (R` using `AF D.host.F) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA D.sp.cm.sig) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM D.host.F Γ.V.J) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM D.host.F Γ.W.J) x x' = _ := GlobalTheory.RouteCoord …`. Establish `hB1 : hO _ _ (mapV e x) (mapV e x') = _` using `GlobalTheory.RouteCoords.orientedHermitianForm_quadSum_eq_trace (cA D : AE D → AE D) (((negSp (spW G i j)).gram⁻¹).map (incA D)) ((spV G i j).gram.map (incA D)) _ _`. Establish `hB2 : hO _ _ (mapW e x) (mapW e x') = _` using `GlobalTheory.RouteCoords.orientedHermitianForm_quadSum_eq_trace (cA D : AE D → AE D) (((spV₁ G i j).gram⁻¹).map (incA D)) ((spW G i j).gram.map (incA D)) _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `GlobalTheory.RouteCoords.trace_first (cA D) ((negSp (spW G i j)).gram.map (incA D)) (((negSp (spW G i j)).gram⁻¹).map (incA D)) ((spV G i j).gram.map (incA D)) (GlobalTheory.RouteCoords.gram_conj_transpose _) (GlobalTheory.RouteCoords.inv_mul_gram _) (colV e x) (colV e x')`. Establish `h2` using `GlobalTheory.RouteCoords.trace_second (cA D) GlobalTheory.DualPairCheck.cA_cA (incA D D.host.xi0) GlobalTheory.RouteCoords.adeleConj_incl_skewElement_eq_neg ((spW G i j).gram.map (incA D)) ((spV₁ G i j).gram.map (incA D)) (((spV₁ G i j).gram⁻¹).map (incA D)) (GlobalTheory.RouteCo …`. Rewrite `h2` using `[Matrix.neg_mul, Matrix.neg_mul, Matrix.neg_mul, trace_neg, mul_neg, map_neg, neg_eq_iff_eq_neg]`. Unfold `sympPt symp symplO`. Rewrite using `[hA, hB1, hB2]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `conv_rhs => arg 2`. Rewrite using `[← GlobalTheory.DualPairCheck.trace_cA]`. Rewrite using `[← map_add]`. Use `congr 1`. Use `erw [h2, h1]`.
-
-Rewrite using `[hN, hJW, hJV, Matrix.mul_smul, Matrix.smul_mul, Matrix.smul_mul, GlobalTheory.RouteCoords.mul_blk_mul_transpose, transpose_neg, Matrix.mul_neg, trace_smul, trace_neg, Matrix.add_mul, trace_add, submatrix_map, submatrix_map, smul_eq_mul]`. Unfold `colV`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem symp_eq (e : Num G i j) (Γ : GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.Geo G i j) (hW : Γ.V.J = (1 : D.host.E) • (spW G i j).gram)
     (hWW : Γ.W.J = skewGram (spV G i j) (spV₁ G i j) e) (x x' : Pt G i j) :
@@ -220,14 +218,14 @@ def heisPt (Γ : GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.Geo 
   ψ (⅟(2 : AF D.host.F) * sympPt Γ u u₀) * f (u + u₀)
 
 /- English proof (translation)
-Use `invOf_eq_right_inv ?_` and prove the remaining obligations. Rewrite using `[← map_ofNat (algebraMap D.host.F (AF D.host.F)) 2, ← map_mul, mul_one_div_cancel two_ne_zero, map_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem invOf_two : ⅟(2 : AF D.host.F) = algebraMap D.host.F (AF D.host.F) (1 / 2) := by
   refine invOf_eq_right_inv ?_
   rw [← map_ofNat (algebraMap D.host.F (AF D.host.F)) 2, ← map_mul, mul_one_div_cancel two_ne_zero, map_one]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `u`. Unfold `heisPt box heisO symplOH`. Rewrite using `[symp_eq e Γ hW hWW, mul_add, AddChar.map_add_eq_mul, mapV_add, mapW_add, invOf_two]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem heisPt_box (e : Num G i j) (Γ : GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.Geo G i j) (hW : Γ.V.J = (1 : D.host.E) • (spW G i j).gram)
     (hWW : Γ.W.J = skewGram (spV G i j) (spV₁ G i j) e) (ψ : AddChar (AF D.host.F) ℂ) (u₀ : Pt G i j)
@@ -242,9 +240,9 @@ abbrev thetaPt (Γ : GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.
     (u : Pt G i j) : ℂ := thetaSum D.host.F (Γ.M.co.rho ψ u Φ)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [Darboux.rho, schr, co.form, map_add, Prod.fst_add, Prod.snd_add, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[← mul_assoc, ← mul_assoc, ← AddChar.map_add_eq_mul, ← AddChar.map_add_eq_mul, add_assoc x]`. Use `congr 2`. Simplify using `only [add_dotProduct, dotProduct_add]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Take the linear combination `(-((co.e u).1 ⬝ᵥ (co.e u₀).2)) * invOf_two_add_invOf_two (R := R)`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem rho_rho {R W κ : Type} [CommRing R] [Invertible (2 : R)] [AddCommGroup W] [Module R W] {B : W → W → R} [Fintype κ]
     (co : Darboux B κ) (ψ : AddChar R ℂ) (u u₀ : W) (Φ : (κ → R) → ℂ) :
@@ -257,7 +255,7 @@ theorem rho_rho {R W κ : Type} [CommRing R] [Invertible (2 : R)] [AddCommGroup 
   linear_combination (-((co.e u).1 ⬝ᵥ (co.e u₀).2)) * invOf_two_add_invOf_two (R := R)
 
 /- English proof (translation)
-The claim follows from `funext fun u => (congrArg (thetaSum D.host.F) (rho_rho Γ.M.co ψ u u₀ Φ)).trans tsum_mul_left`.
+A detailed English derivation is pending.
 -/
 theorem thetaPt_rho (Γ : GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.Geo G i j) (ψ : AddChar (AF D.host.F) ℂ) (Φ : (Ix G i j → AF D.host.F) → ℂ)
     (u₀ : Pt G i j) : thetaPt Γ ψ (Γ.M.co.rho ψ u₀ Φ) = heisPt Γ ψ u₀ (thetaPt Γ ψ Φ) :=
@@ -288,7 +286,7 @@ def genPt (e : Num G i j) (v : Pl D.host.F) : Set (Pt G i j) :=
   {γ | (∃ γ' ∈ latPt e v, γ = 2 • γ') ∨ γ ∈ latPt e v ∧ ∃ ε, IsSplitIdem D ε ∧ γ ∈ mixHalf e ε}
 
 /- English proof (translation)
-Introduce and unpack `_ (⟨γ, h, rfl⟩ | h)`. Use `exacts [nsmul_mem h 2, h.1]`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem genPt_subset (e : Num G i j) (v : Pl D.host.F) : genPt e v ⊆ latPt e v := by
   rintro _ (⟨γ, h, rfl⟩ | h)

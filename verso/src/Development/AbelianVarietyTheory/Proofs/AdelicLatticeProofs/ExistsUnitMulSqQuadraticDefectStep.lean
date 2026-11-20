@@ -7,35 +7,31 @@ open scoped WithZero
 namespace GlobalTheory.QNorm
 
 /- English proof (translation)
-Introduce `K _ w δ π k hπ hres hδ h4 hk`. Break down `Nat.eq_zero_or_pos k with rfl | hkpos` into its components or cases. Establish `hδ0 : δ ≠ 0`. Introduce `h`. Rewrite `hδ` using `[h, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `zero_ne_one hδ`. Establish `hinv : w δ⁻¹ = 1` using `by rw [map_inv₀, hδ, inv_one]`. Take `⟨y, hy1, hy⟩` from `hres δ⁻¹ hinv.le`. Establish `hy2 : w (y ^ 2) = 1`. Establish `e : y ^ 2 = δ⁻¹ - (δ⁻¹ - y ^ 2)` using `by ring`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, Valuation.map_sub_eq_of_lt_left _ (by rwa [hinv]), hinv]`. Use `⟨y, le_antisymm hy1 (not_lt.mp fun hlt => ?_), ?_⟩` and prove the remaining obligations. Rewrite `hy2` using `[map_pow]`. Conclude with `(pow_lt_one₀ zero_le' hlt two_ne_zero).ne hy2`. Establish `e : δ * y ^ 2 - 1 = -(δ * (δ⁻¹ - y ^ 2))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[mul_sub, mul_inv_cancel₀ hδ0]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, Valuation.map_neg, map_mul, hδ, one_mul, hk]`. Simplify using `using hy`. Use `set t := π ^ k with ht`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set g := w (δ - 1) with hg`. Establish `hgpos : 0 < g` using `lt_of_le_of_lt zero_le' h4`. Establish `htt : w t * w t = g` using `by show w t * w t = g`. Rewrite using `[hk, ht, map_pow, hπ, ← pow_add, ← WithZero.exp_nsmul]`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[nsmul_eq_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hwt0 : w t ≠ 0` using `fun h => hgpos.ne (by simpa [h] using htt)`. Establish `hwtpos : 0 < w t` using `zero_lt_iff.mpr hwt0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `ht0 : t ≠ 0` using `fun h => hwt0 (by rw [h, map_zero])`. Establish `ht1 : w t < 1`. Rewrite using `[ht, map_pow, hπ]`. Use `pow_lt_one₀ zero_le' ?_ hkpos.ne'` and prove the remaining obligations. Rewrite using `[← WithZero.exp_zero, WithZero.exp_lt_exp]`.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Evaluate the numerical expressions. Establish `hg1 : g < 1`. Rewrite using `[← htt]`. Combine the equalities or inequalities in the displayed calculation. Establish `h2t : w 2 < w t`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `lt_of_not_ge fun h => ?_` and prove the remaining obligations. Establish `hle : g ≤ w 4`. Rewrite using `[← htt, show (4 : K) = 2 * 2 by norm_num, map_mul]`. Conclude with `mul_le_mul' h h`. Conclude with `absurd h4 (not_lt.mpr hle)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `set x := (δ - 1) * (t ^ 2)⁻¹ with hxdef`. Establish `hx : t ^ 2 * x = δ - 1`. Rewrite using `[hxdef, mul_comm, mul_assoc, inv_mul_cancel₀ (pow_ne_zero 2 ht0), mul_one]`. Establish `hwx : w (-x) = 1`. Rewrite using `[Valuation.map_neg, hxdef, map_mul, map_inv₀, map_pow, ← hg, ← htt, sq, mul_inv_cancel₀ (mul_ne_zero hwt0 hwt0)]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Take `⟨y, hy1, hy⟩` from `hres (-x) hwx.le`. Use `⟨1 + t * y, ?_, ?_⟩` and prove the remaining obligations. Apply `Valuation.map_one_add_of_lt` to reduce the goal to its premises. Rewrite using `[map_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `e : δ * (1 + t * y) ^ 2 - 1 = -(t ^ 2 * (-x - y ^ 2)) + 2 * t * y + (δ - 1) * (2 * t * y + t ^ 2 * y ^ 2)`. Take the linear combination `(-1 : K) * hx`. Rewrite using `[e]`. Establish `hA : w (-(t ^ 2 * (-x - y ^ 2))) < g`. Rewrite using `[Valuation.map_neg, map_mul, map_pow, sq, htt]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hB : w (2 * t * y) < g`. Rewrite using `[map_mul, map_mul, ← htt]`. Combine the equalities or inequalities in the displayed calculation. Establish `hC : w ((δ - 1) * (2 * t * y + t ^ 2 * y ^ 2)) < g`.
-
-Establish `hD : w (2 * t * y + t ^ 2 * y ^ 2) < 1`. Apply `Valuation.map_add_lt` to reduce the goal to its premises. Conclude with `hB.trans hg1`. Rewrite using `[map_mul, map_pow w t, map_pow w y, sq (w t), htt]`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[map_mul, ← hg]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `Valuation.map_add_lt _ (Valuation.map_add_lt _ hA hB) hC`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem exists_unit_mul_sq_sub_one_lt :
     ∀ (K : Type) [Field K] (w : Valuation K ℤᵐ⁰) (δ π : K) (k : ℕ), w π = WithZero.exp (-1) → (∀ x : K, w x ≤ 1 → ∃ y : K, w y ≤ 1 ∧ w (x - y ^ 2) < 1) → w δ = 1 → w 4 < w (δ - 1) → w (δ - 1) = WithZero.exp (-(2 * (k : ℤ))) → ∃ c : K, w c = 1 ∧ w (δ * c ^ 2 - 1) < w (δ - 1) := by

@@ -9,7 +9,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.Fam
 
 /- English proof (translation)
-Establish `h1 : a.x.R.C = Fr.at (w.st Z) f` using `eq_of_heq (R3.twArgs_lev K B f T w Z Wt L hT Gi Gl Kc Yd cX ex t a).1`. Establish `h2` using `a.x.pins.char.base.lev.mu0 j`. Establish `h3 : a.x.R.C.mu0 j = w.I.C.mu0 j` using `(congrArg (fun C => C.mu0 j) h1).trans (congrArg (fun g : Fr B.toPre => g.mu0 j) w.C_eq).symm`. Conclude with `h3 ▸ h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem twistedAdelicData_characters_eq_frame (K : Ctx) (B : GlobalTheory.Mem.Base) (f : Fr B.toPre) (T : TwDat B) (w : Bl.ColW B f T) (Z : w.Lt)
     (Wt : Set B.places.Pl) (L : SizeData₂ (w.st Z).toD7) (hT : GatTies (w.st Z).toD7) (Gi : G.Inst (w.st Z).toD7 L)
@@ -23,9 +23,9 @@ theorem twistedAdelicData_characters_eq_frame (K : Ctx) (B : GlobalTheory.Mem.Ba
   exact h3 ▸ h2
 
 /- English proof (translation)
-Introduce `hL p K q c b hw j`. Take `⟨x, a, ax, y, -⟩` from `hw`. Establish `hx : a.x = x` using `eq_of_heq ax`. Establish `h0` using `twistedAdelicData_characters_eq_frame _ _ _ _ q.w q.Z _ _ _ _ _ _ _ _ _ _ a j`. Establish `e : b.B.Q.Rl.mu0 = x.R.mu0` using `congrArg (fun k : Bl.RPk b.R b.S => k.B.Q.Rl.mu0) y.eq`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e' : a.x.R.mu0 = x.R.mu0` using `congrArg (fun z : R3.TwIn q.O.ex => z.R.mu0) hx`. Establish `e2 : (pk (packB b)).mu0 = a.x.R.mu0` using `e.trans e'.symm`. Rewrite using `[e2]`. Conclude with `h0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem level_character_matches_witness : ∀ {hL : GlobalTheory.Published.LocalLanglandsGL} {p : Bl.Prm hL} {K : Ctx} (q : Bl.WPt p.s K) {c : ℝ} (b : Bundle (q.w.D q.Z) q.O c), Bl.BWit q b → ∀ j : Fin q.B.R.m, Formalism.IndefR.Links.ChrEq ((pk (packB b)).mu0 ((j : ℕ) + 1)) (q.w.I.C.mu0 j) := by
   intro hL p K q c b hw j

@@ -10,17 +10,17 @@ open GlobalTheory.PD GlobalTheory.CechDR KaehlerDifferential
 namespace GlobalTheory.PD
 
 /- English proof (translation)
-Introduce `h`. Use `⟨h.exists_isTop, fun τ hτ y hy => ?_⟩` and prove the remaining obligations. Take `⟨b, hb⟩` from `h.exists_basis`. Use `set u : Fin d → K := fun j => (algebraMap F K (x j.succ / x 0))⁻¹`. Establish `hu : ∀ j, u j ≠ 0` using `fun j => inv_ne_zero ((map_ne_zero _).2 (div_ne_zero (h.pd.ne _) (h.pd.ne 0)))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp : (∏ j, u j) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun j _ => hu j`. Establish `hv : vol0 k K x = (∏ j, u j) • ExteriorAlgebra.ιMulti K d b`. Rewrite using `[← AlternatingMap.map_smul_univ]`. Simplify using `only [vol0, hb, u]`. Establish `key : ∀ c : K, c • vol0 k K x = τ (c • vol0 k K x) • vol0 k K x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `c`. Rewrite using `[map_smul, hτ.1, smul_eq_mul, mul_one]`. Rewrite `hy` using `[← ExteriorAlgebra.ιMulti_span_fixedDegree]`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem z hz`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨m, rfl⟩` from `hz`. Establish `e : ExteriorAlgebra.ιMulti K d m = (b.det m * (∏ j, u j)⁻¹) • vol0 k K x`. Rewrite using `[hv, smul_smul, mul_assoc, inv_mul_cancel₀ hp, mul_one]`. Rewrite using `[← sub_eq_zero, ← Module.forall_dual_apply_eq_zero_iff K]`. Introduce `φ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2` using `congrArg (fun g => g m) (AlternatingMap.eq_smul_basis_det b (φ.compAlternatingMap (ExteriorAlgebra.ιMulti K d)))`. Simplify using `only [LinearMap.compAlternatingMap_apply, AlternatingMap.smul_apply, smul_eq_mul] at h2`. Rewrite using `[map_sub, map_smul, h2, smul_eq_mul, mul_comm, sub_self]`. Rewrite using `[e]`. Conclude with `key _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `add a c _ _ ha hc => rw [map_add, add_smul, ← ha, ← hc]`. Consider the case `smul r a _ ha => rw [map_smul, smul_eq_mul, mul_smul, ← ha]`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem isTop_exists_and_eq (k : Type) [Field k] [CharZero k] (F K : Type) [Field F] [Field K] [Algebra k F]
     [Algebra k K] [Algebra F K] [IsScalarTower k F K] (d : ℕ) (x : Fin (d + 1) → F) :

@@ -25,7 +25,7 @@ open GlobalTheory.FinPl GlobalTheory.LatPair
 open scoped Pointwise
 
 /- English proof (translation)
-Simplify using `only [Matrix.mulVec, dotProduct]`. Conclude with `Ideal.sum_mem _ fun j _ => Ideal.mul_mem_left _ _ (hy j)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem supp_mulVec' {D : D7} {m n : ℕ} (X : Matrix (Fin m) (Fin n) (AE D)) {I : Ideal (AE D)} {y : Fin n → AE D}
     (hy : ∀ i, y i ∈ I) (i : Fin m) : (X *ᵥ y) i ∈ I := by
@@ -33,17 +33,17 @@ theorem supp_mulVec' {D : D7} {m n : ℕ} (X : Matrix (Fin m) (Fin n) (AE D)) {I
   exact Ideal.sum_mem _ fun j _ => Ideal.mul_mem_left _ _ (hy j)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `r`. Simplify using `[colMul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem colMul_zero' {D : D7} {m n : ℕ} (x : Mx D m n) (i : Fin n) : colMul x i 0 = 0 := by
   funext r; simp [colMul]
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.LevelUnfold.embX_smul_gluedS, Pair.smul_eq_iff P.hasVal_vec]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h1 : g • P.ker = P.ker`. Use `GlobalTheory.LevelUnfold.interX_gluedS (q := q) (le_refl 1) (g • P.ker) (g • P.vec)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[h, GlobalTheory.LevelUnfold.interX_gluedS (le_refl 1)]`. Conclude with `this.symm`. Use `⟨h1, ?_⟩` and prove the remaining obligations. Establish `h2` using `GlobalTheory.LevelUnfold.glue_mem_gluedS (q := q) (c := 1) (g • P.ker) (g • P.vec)`. Rewrite `h2` using `[h]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `(GlobalTheory.LevelUnfold.glue_mem_gluedS_iff (le_refl 1)).1 h2`. Introduce and unpack `⟨h1, h2⟩`. Rewrite using `[h1]`. Conclude with `GlobalTheory.LevelUnfold.gluedS_congr h2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem glued_stab_iff {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {n : Type} [Fintype n] [DecidableEq n] (q : Unif k) (P : Pair k n) (g : GL n k) :
@@ -64,13 +64,13 @@ theorem glued_stab_iff {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k
     exact GlobalTheory.LevelUnfold.gluedS_congr h2
 
 /- English proof (translation)
-Establish `e1 : ∀ y, o.pA *ᵥ (mt S (o.emb (κ, 1)) *ᵥ y) = mt A κ *ᵥ (o.pA *ᵥ y)` using `fun y => by`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mulVec_mulVec]`. Use `congr 1`. Conclude with `o.pA_emb κ 1`. Establish `e2 : ∀ y, o.pB *ᵥ (mt S (o.emb (κ, 1)) *ᵥ y) = o.pB *ᵥ y` using `fun y => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mulVec_mulVec, o.pB_emb]`. Simplify using `[Formalism.L2.Theta.mt]`. Prove the components needed by the constructor for the conclusion. Introduce `hM yA hyA`. Establish `hy : ∀ i, (o.jA *ᵥ yA) i ∈ idAt D (· = v)` using `supp_mulVec' _ hyA`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA1 : o.pA *ᵥ (o.jA *ᵥ yA) = yA` using `by rw [Matrix.mulVec_mulVec, o.pA_jA, Matrix.one_mulVec]`. Establish `hB1 : o.pB *ᵥ (o.jA *ᵥ yA) = 0` using `by rw [Matrix.mulVec_mulVec, o.pB_jA, Matrix.zero_mulVec]`. Use `hM _ hy` as an intermediate fact. Rewrite `this` using `[h, h, e1, e2, hA1, hB1]`. Simplify `this` using `only [zero_mem, and_true]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hA y hy`. Rewrite using `[h, h, e1, e2, ← hA _ (supp_mulVec' _ hy)]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem moves_emb_iff {D : D7} {S A B : HSp D} (o : OrthDec S A B) (M : GlobalTheory.FinPl.Lat S) (LA : GlobalTheory.FinPl.Lat A)
     (LB : GlobalTheory.FinPl.Lat B) (v : GlobalTheory.FinPl.Pl D) (h : GlobalTheory.FinPl.OrthAt o M LA LB v) (κ : GA D A) :
@@ -91,13 +91,13 @@ theorem moves_emb_iff {D : D7} {S A B : HSp D} (o : OrthDec S A B) (M : GlobalTh
     rw [h, h, e1, e2, ← hA _ (supp_mulVec' _ hy)]
 
 /- English proof (translation)
-Establish `eX : ∀ y, d.pX *ᵥ (mt S (d.emb0 g) *ᵥ y) = d.pX *ᵥ y` using `fun y => by`. Rewrite using `[Matrix.mulVec_mulVec, d.wittDecomp_projX_anisotropicEmbedding]`. Establish `eY : ∀ y, d.pY *ᵥ (mt S (d.emb0 g) *ᵥ y) = d.pY *ᵥ y` using `fun y => by`. Rewrite using `[Matrix.mulVec_mulVec, d.wittDecomp_projY_anisotropicEmbedding]`. Establish `e0 : ∀ y, d.p0 *ᵥ (mt S (d.emb0 g) *ᵥ y) = mt S₀ g *ᵥ (d.p0 *ᵥ y)` using `fun y => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Matrix.mulVec_mulVec, Matrix.mulVec_mulVec]`. Use `congr 1`. Conclude with `d.wittDecomp_projAnisotropic_anisotropicEmbedding g`. Prove the components needed by the constructor for the conclusion. Introduce `hM y₀ hy₀`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hy : ∀ i, (d.j0 *ᵥ y₀) i ∈ idAt D (· = v)` using `supp_mulVec' _ hy₀`. Establish `hX1 : d.pX *ᵥ (d.j0 *ᵥ y₀) = 0` using `by rw [Matrix.mulVec_mulVec, d.pX_j0, Matrix.zero_mulVec]`. Establish `hY1 : d.pY *ᵥ (d.j0 *ᵥ y₀) = 0` using `by rw [Matrix.mulVec_mulVec, d.pY_j0, Matrix.zero_mulVec]`. Establish `h01 : d.p0 *ᵥ (d.j0 *ᵥ y₀) = y₀` using `by rw [Matrix.mulVec_mulVec, d.p0_j0, Matrix.one_mulVec]`. Use `hM _ hy` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[h, h, eX, eY, e0, hX1, hY1, h01]`. Simplify `this` using `only [Pi.zero_apply, colMul_zero', zero_mem, true_and, implies_true]`. Introduce `hA y hy`. Rewrite using `[h, h, eX, eY, e0, ← hA _ (supp_mulVec' _ hy)]`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem carriesLattice_wittEmbedding_iff_core {D : D7} {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) (N : GlobalTheory.FinPl.Lat S) (M : GlobalTheory.FinPl.Lat S₀)
     (v : GlobalTheory.FinPl.Pl D) (h : GlobalTheory.FinPl.MonoAt d N M v) (g : GA D S₀) :
@@ -121,15 +121,13 @@ theorem carriesLattice_wittEmbedding_iff_core {D : D7} {S S₀ : HSp D} {ρ : �
     rw [h, h, eX, eY, e0, ← hA _ (supp_mulVec' _ hy)]
 
 /- English proof (translation)
-Establish `e1 : mt S κ * mt S κ⁻¹ = 1`. Rewrite using `[show mt S κ * mt S κ⁻¹ = mt S (κ * κ⁻¹) from rfl, mul_inv_cancel]`. Both sides reduce to the same expression. Establish `e2 : mt S κ⁻¹ * mt S κ = 1`. Rewrite using `[show mt S κ⁻¹ * mt S κ = mt S (κ⁻¹ * κ) from rfl, inv_mul_cancel]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hM : (mt S κ).map p.pr * (mt S κ⁻¹).map p.pr = 1`. Rewrite using `[← Matrix.map_mul, e1]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`. Establish `hM' : (mt S κ⁻¹).map p.pr * (mt S κ).map p.pr = 1`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Matrix.map_mul, e2]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`. Use `⟨⟨β.b' * (mt S κ).map p.pr * β.b, β.b' * (mt S κ⁻¹).map p.pr * β.b, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Use `_ = 1 := by rw [β.bb', Matrix.mul_one, hM, Matrix.mul_one, β.b'b]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = 1 := by rw [β.bb', Matrix.mul_one, hM', Matrix.mul_one, β.b'b]`. Use `show _ = β.b * (β.b' * (mt S κ).map p.pr * β.b) * β.b'`.
-
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[β.bb', Matrix.one_mul, Matrix.mul_one]`. Use `_ = _ := by simp only [Matrix.mul_assoc]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_gl_frame {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {p : GlobalTheory.FinPl.SplitPt D k} {S : HSp D} {n : Type} [Fintype n] [DecidableEq n] (β : GlobalTheory.FinPl.Frame p S n)
@@ -164,23 +162,21 @@ open GlobalTheory.LatPair GlobalTheory.FinPl in
 open scoped Pointwise in
 
 /- English proof (translation)
-Introduce `B X I l Z L hT Gi Gl Kc Yd cX ex W hW u a ha hat row col hc κ hκ`. Use `letI := a.fld`. Use `letI := a.val`. Use `letI := a.top`. Use `letI := a.loc`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure.
 
-Establish `h0 : 0 + 2 * (I.rec7 l Z).R.rS + 2 = (I.rec7 l Z).R.m`. Use `Formalism.BasicNotions.Ranks.rS_two (I.rec7 l Z).R` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hB` using `ha.bot.1 h0`. Establish `key : ∀ B' : BesLev (I.rec7 l Z) (I.rec7 l Z).R.rS, B' = (commOf (pk W) u a.g).B 0 _ h0 → HEq (embA B'.d B'.o) (embA ((commOf (pk W) u a.g).B 0 _ h0).d ((commOf (pk W) u a.g).B 0 _ h0).o)`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `_ rfl`. Both sides reduce to the same expression. Establish `hE` using `eq_of_heq (key a.d.B.lev hB)`. Establish `hE' : embA a.d.B.d a.d.B.o κ = ((commOf (pk W) u a.g).B 0 _ h0).d.emb0 (((commOf (pk W) u a.g).B 0 _ h0).o.emb (κ, 1))` using `DFunLike.congr_fun hE κ`. Rewrite using `[hE']`.
+Assume the hypotheses and unpack their components. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hm : 0 < (I.rec7 l Z).R.m` using `by omega`. Establish `hN : Submodule.IsLattice (I.rec7 l Z).host.E (a.v.N 0)` using `(ha.vis.sd 0 hm).1`. Establish `hL : Submodule.IsLattice (I.rec7 l Z).host.E (a.g.x 0).L` using `(ha.x 0 (Nat.zero_le _)).sd.1`. Rewrite using `[GlobalTheory.T.carriesLatticeCompletion_iff_forall_place _ _ _ hN, GlobalTheory.T.carriesLatticeCompletion_iff_forall_place _ _ _ hL]`. Establish `hA : ∀ v, Moves ((commOf (pk W) u a.g).V 0) (((commOf (pk W) u a.g).B 0 _ h0).d.emb0 (((commOf (pk W) u a.g).B 0 _ h0).o.emb (κ, 1))) (a.v.N 0) (a.v.N 0) (· = v) ↔ Moves ((commOf (pk W) u a.g).B 0 _ h0).V₀ (((commOf (pk W) u a.g).B 0 _ h0).o.emb (κ, 1)) (a.o.M 0 _ h0) (a.o.M 0 _ …` using `fun v => GlobalTheory.OffTrace.carriesLattice_wittEmbedding_iff_core _ _ _ v ((ha.shape.good v).bf 0 _ h0).monoV _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hoff : ∀ v, v ∉ a.v.tP → (Moves ((commOf (pk W) u a.g).V 0) (((commOf (pk W) u a.g).B 0 _ h0).d.emb0 (((commOf (pk W) u a.g).B 0 _ h0).o.emb (κ, 1))) (a.v.N 0) (a.v.N 0) (· = v) ↔ Moves ((I.rec7 l Z).sp.X 0) κ (a.g.x 0).L (a.g.x 0).L (· = v))`. Introduce `v hv`. Take `⟨LL, -, hO⟩` from `(ha.shape.split v hv).core 0 _ h0`. Conclude with `(hA v).trans (GlobalTheory.OffTrace.moves_emb_iff _ _ _ _ v hO κ)`. Establish `hcore : ∀ i (g : GL (Fin ((I.rec7 l Z).sp.X 0).rank) a.k), (mt ((I.rec7 l Z).sp.X 0) κ).map (a.o.p i).pr = (a.o.β 0 i).b * g.val * (a.o.β 0 i).b' → (Moves ((commOf (pk W) u a.g).V 0) (((commOf (pk W) u a.g).B 0 _ h0).d.emb0 (((commOf (pk W) u a.g).B 0 _ h0).o.emb (κ, 1))) (a.v.N …`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i g hg`. Establish `hgl` using `ha.shape.glued 0 _ h0 i`. Conclude with `(hA _).trans ((GlobalTheory.T.splitPlace_unitary_stabilizes_selfDual_lattice_iff (a.o.β₀ 0 _ h0 i) (a.o.M 0 _ h0) _ ((ha.shape.good (a.o.p i).v).bf 0 _ h0).sdV₀ hgl.lat _ _ (GlobalTheory.T.splitPlace_besselCore_matrix_eq_blockDiagonal_one _ _ _ hgl.sum κ g hg)).trans (GlobalTheor …`. Establish `hX : ∀ i (g : GL (Fin ((I.rec7 l Z).sp.X 0).rank) a.k), (mt ((I.rec7 l Z).sp.X 0) κ).map (a.o.p i).pr = (a.o.β 0 i).b * g.val * (a.o.β 0 i).b' → (Moves ((I.rec7 l Z).sp.X 0) κ (a.g.x 0).L (a.g.x 0).L (· = (a.o.p i).v) ↔ g • (a.o.Q 0 i).lat = (a.o.Q 0 i).lat)` using `fun i g hg => GlobalTheory.T.splitPlace_unitary_stabilizes_selfDual_lattice_iff (a.o.β 0 i) (a.g.x 0).L _ (ha.x 0 (Nat.zero_le _)).sd (ha.shape.pre.latT 0 (Nat.zero_le _) i) κ g hg`. Establish `hTg : ∀ i, (a.o.p i).v ∉ a.v.gP` using `fun i hg' => Finset.disjoint_left.1 ha.vis.disj hg' ((ha.shape.pre.tP _).2 ⟨i, rfl⟩)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨fun v hv => ?_, fun i g hg => (hcore i g hg).1 (h _ (hTg i))⟩` and prove the remaining obligations. Distinguish the cases in `hT : v ∈ a.v.tP`. Take `⟨i, rfl⟩` from `(ha.shape.pre.tP v).1 hT`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨g, hg⟩` from `GlobalTheory.OffTrace.exists_gl_frame (a.o.β 0 i) κ`. Establish `h1` using `(hcore i g hg).1 (h _ hv)`. Conclude with `(hX i g hg).2 (by rw [← Pair.smul_lat, h1])`. Conclude with `(hoff v hT).1 (h v hv)`. Introduce and unpack `⟨h1, h2⟩ v hv`.
-
-Distinguish the cases in `hT : v ∈ a.v.tP`. Take `⟨i, rfl⟩` from `(ha.shape.pre.tP v).1 hT`. Take `⟨g, hg⟩` from `GlobalTheory.OffTrace.exists_gl_frame (a.o.β 0 i) κ`. Conclude with `(hcore i g hg).2 (h2 i g hg)`. Conclude with `(hoff v hT).2 (h1 v hv)`.
+Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.OffTrace.embA_moves_off_level_iff : ∀ {B : GlobalTheory.Mem.Base} {X : GlobalTheory.Mem.PreX B.toPre} {I : TC B X} {l : I.Laws} {Z : TC.Later B (I.cols l)} {L : SizeData₂ (I.rec7 l Z)} {hT : GatTies (I.rec7 l Z)} {Gi : Formalism.MainNotions.G.Inst (I.rec7 l Z) L} {Gl : Formalism.MainNotions.G.LatInst (I.rec7 l Z)} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX (I.rec7 l Z)} {cX : ExtraC} {ex : Extra (I.rec7 l Z) L hT Gi Gl Kc Yd cX} (W : RealPack ex), AllTrue W → ∀ (u : B.Word) (a : GeoAll W u), a.Is → a.True → ∀ row col, (a.fam row col).c.Is → ∀ κ ∈ GfC ((I.rec7 l Z).sp.X 0), (GlobalTheory.FinPl.Moves (Yc (I.rec7 l Z) 0) (embA a.d.B.d a.d.B.o κ) (a.v.N 0) (a.v.N 0) (fun p => p ∉ a.v.gP) ↔ GlobalTheory.FinPl.Moves ((I.rec7 l Z).sp.X 0) κ (a.g.x 0).L (a.g.x 0).L (fun p => p ∉ a.v.gP) ∧ GlobalTheory.FamTrace.KeepsPairs a κ) := by
   intro B X I l Z L hT Gi Gl Kc Yd cX ex W hW u a ha hat row col hc κ hκ

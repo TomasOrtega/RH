@@ -7,7 +7,7 @@ open scoped Kronecker ComplexOrder TensorProduct
 namespace GlobalTheory.ClassFin.MinVec
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [tpow, Matrix.mul_apply, Matrix.of_apply]`. Rewrite using `[Finset.prod_univ_sum]`. Simplify using `only [Fintype.piFinset_univ, Finset.prod_mul_distrib]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem tpow_mul' {ι : Type} [Fintype ι] (d : ℕ) (x y : Matrix ι ι ℂ) :
     tpow d (x * y) = tpow d x * tpow d y := by
@@ -18,7 +18,7 @@ theorem tpow_mul' {ι : Type} [Fintype ι] (d : ℕ) (x y : Matrix ι ι ℂ) :
   simp only [Fintype.piFinset_univ, Finset.prod_mul_distrib]
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [tpow, Matrix.of_apply, Matrix.one_apply]`. Rewrite using `[Finset.prod_ite_zero]`. Simplify using `[funext_iff]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem tpow_one' {ι : Type} [Fintype ι] [DecidableEq ι] (d : ℕ) :
     tpow d (1 : Matrix ι ι ℂ) = 1 := by
@@ -28,7 +28,7 @@ theorem tpow_one' {ι : Type} [Fintype ι] [DecidableEq ι] (d : ℕ) :
   simp [funext_iff]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Simplify using `only [act]`. Rewrite using `[tpow_mul', ← Matrix.vecMul_vecMul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem act_mul' {ι : Type} [Fintype ι] [DecidableEq ι] {m : ℕ} (d : Fin m → ℕ) (v : TIdx ι d → ℂ)
     (x y : Matrix ι ι ℂ) : act d (act d v x) y = act d v (x * y) := by
@@ -37,7 +37,7 @@ theorem act_mul' {ι : Type} [Fintype ι] [DecidableEq ι] {m : ℕ} (d : Fin m 
   rw [tpow_mul', ← Matrix.vecMul_vecMul]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Simplify using `only [act]`. Rewrite using `[tpow_one', Matrix.vecMul_one]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem act_one' {ι : Type} [Fintype ι] [DecidableEq ι] {m : ℕ} (d : Fin m → ℕ) (v : TIdx ι d → ℂ) :
     act d v 1 = v := by
@@ -46,26 +46,24 @@ theorem act_one' {ι : Type} [Fintype ι] [DecidableEq ι] {m : ℕ} (d : Fin m 
   rw [tpow_one', Matrix.vecMul_one]
 
 /- English proof (translation)
-The claim follows from `Finset.single_le_sum (f := fun k => ‖v k‖ ^ 2) (fun _ _ => by positivity) (Finset.mem_univ k)`.
+A detailed English derivation is pending.
 -/
 theorem norm_sq_le_nsq {κ : Type} [Fintype κ] (v : κ → ℂ) (k : κ) : ‖v k‖ ^ 2 ≤ nsq v :=
   Finset.single_le_sum (f := fun k => ‖v k‖ ^ 2) (fun _ _ => by positivity) (Finset.mem_univ k)
 
 /- English proof (translation)
-Unfold `nsq`. Use `fun_prop`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_nsq {κ : Type} [Fintype κ] : Continuous (nsq : (κ → ℂ) → ℝ) := by
   unfold nsq
   fun_prop
 
 /- English proof (translation)
-Establish `hv : v ∈ orb d v` using `⟨1, det_one, (act_one' d v).symm⟩`. Use `set K : Set (TIdx ι d → ℂ) := orb d v ∩ {w | nsq w ≤ nsq v} with hK`. Establish `hKc : IsClosed K` using `hc.inter (isClosed_le continuous_nsq continuous_const)`. Establish `hKb : Bornology.IsBounded K`. Use `(Metric.isBounded_closedBall (x := (0 : TIdx ι d → ℂ)) (r := Real.sqrt (nsq v))).subset ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `w hw`. Rewrite using `[mem_closedBall_zero_iff, pi_norm_le_iff_of_nonneg (Real.sqrt_nonneg _)]`. Introduce `k`. Conclude with `Real.le_sqrt_of_sq_le ((norm_sq_le_nsq w k).trans hw.2)`. Establish `hcomp : IsCompact K` using `Metric.isCompact_of_isClosed_isBounded hKc hKb`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨w, hwK, hmin⟩` from `hcomp.exists_isMinOn ⟨v, hv, le_refl (nsq v)⟩ continuous_nsq.continuousOn`. Use `⟨w, hwK.1, ?_⟩` and prove the remaining obligations. Introduce and unpack `u ⟨y, hy, rfl⟩`. Take `⟨x, hx, hwx⟩` from `hwK.1`. Establish `hu : act d w y ∈ orb d v` using `⟨x * y, by rw [det_mul, hx, hy, one_mul], by rw [hwx, act_mul']⟩`.
-
-Distinguish the cases in `h : nsq (act d w y) ≤ nsq v`. Conclude with `hmin (show act d w y ∈ K from ⟨hu, h⟩)`. Conclude with `le_trans hwK.2 (le_of_lt (not_le.mp h))`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails. A detailed English derivation is pending.
 -/
 theorem exists_isMinVec_of_isClosed (ι : Type) [Fintype ι] [DecidableEq ι] (m : ℕ) (d : Fin m → ℕ)
     (v : TIdx ι d → ℂ) (hc : IsClosed (orb d v)) : ∃ w ∈ orb d v, IsMinVec d w := by

@@ -5,35 +5,33 @@ namespace GlobalTheory
 open scoped InnerProductSpace
 
 /- English proof (translation)
-Establish `hA : ∀ x : V, (⟪A (ContinuousLinearMap.adjoint A x), x⟫_ℂ).re = ‖ContinuousLinearMap.adjoint A x‖ ^ 2`. Introduce `x`. Rewrite using `[← ContinuousLinearMap.adjoint_inner_right]`. Conclude with `inner_self_eq_norm_sq (𝕜 := ℂ) _`. Establish `hB : ∀ x : V, (⟪B (ContinuousLinearMap.adjoint B x), x⟫_ℂ).re = ‖ContinuousLinearMap.adjoint B x‖ ^ 2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x`. Rewrite using `[← ContinuousLinearMap.adjoint_inner_right]`. Conclude with `inner_self_eq_norm_sq (𝕜 := ℂ) _`. Establish `hsm : ∀ (r : ℝ) (x : V), (⟪(r : ℂ) • x, x⟫_ℂ).re = r * ‖x‖ ^ 2`. Introduce `r x`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[inner_smul_left, Complex.conj_ofReal, Complex.re_ofReal_mul]`. Use `congr 1`. Conclude with `inner_self_eq_norm_sq (𝕜 := ℂ) _`. Set `X : V →ₗ[ℂ] V` to `(A ∘L ContinuousLinearMap.adjoint A + B ∘L ContinuousLinearMap.adjoint B : V →L[ℂ] V).toLinearMap`. Establish `hX : ∀ x, X x = A (ContinuousLinearMap.adjoint A x) + B (ContinuousLinearMap.adjoint B x)` using `fun x => rfl`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hsym : X.IsSymmetric`. Introduce `x y`. Rewrite using `[hX, hX, inner_add_left, inner_add_right]`. Rewrite using `[← ContinuousLinearMap.adjoint_inner_right A, ← ContinuousLinearMap.adjoint_inner_right B, ← ContinuousLinearMap.adjoint_inner_left A, ← ContinuousLinearMap.adjoint_inner_left B]`. Establish `hge : ∀ i, ∀ x ∈ S i, x ≠ 0 → c ≤ wp i + wm i`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `i x hx hx0`. Establish `hn : 0 < ‖x‖ ^ 2` using `pow_pos (norm_pos_iff.mpr hx0) 2`. Establish `h1` using `hA x`. Establish `h2` using `hB x`. Rewrite `h1` using `[(hw i x hx).1, hsm]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[(hw i x hx).2, hsm]`. Establish `p1 : 0 ≤ wp i`. Establish `: 0 ≤ wp i * ‖x‖ ^ 2` using `by rw [h1]; positivity`. Conclude with `nonneg_of_mul_nonneg_left this hn`. Establish `p2 : 0 ≤ wm i`.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: 0 ≤ wm i * ‖x‖ ^ 2` using `by rw [h2]; positivity`. Conclude with `nonneg_of_mul_nonneg_left this hn`. Apply the tactic sequence `rcases hc i with h | h <;> linarith`. Establish `hev : ∀ (μ : ℝ) (e : V), X e = (μ : ℂ) • e → e ≠ 0 → c ≤ μ`. Introduce `μ e he he0`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Assume the negation of the conclusion as `hlt`. Apply `he0` to reduce the goal to its premises. Establish `hmem : e ∈ (⨆ i, S i)ᗮ`. Rewrite using `[← Submodule.iInf_orthogonal, Submodule.mem_iInf]`. Introduce `i`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[Submodule.mem_orthogonal]`. Introduce `x hx`. Distinguish the cases in `hx0 : x = 0`. Simplify using `[hx0]`. Establish `hle` using `hge i x hx hx0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hXx : X x = ((wp i + wm i : ℝ) : ℂ) • x`. Rewrite using `[hX, (hw i x hx).1, (hw i x hx).2, ← add_smul]`. Use `push_cast`. Both sides reduce to the same expression. Establish `h` using `hsym x e`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite `h` using `[hXx, he, inner_smul_left, inner_smul_right, Complex.conj_ofReal]`. Establish `hne : ((wp i + wm i : ℝ) : ℂ) ≠ (μ : ℂ)`. Introduce `h'`. Use `Complex.ofReal_injective h'` as an intermediate fact. Apply `hlt` to reduce the goal to its premises.
+Combine the linear equalities and inequalities to obtain the conclusion. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Assume the negation of the conclusion as `h0`. Conclude with `hne (mul_right_cancel₀ h0 h)`. Rewrite `hmem` using `[hS, Submodule.top_orthogonal_eq_bot]`. Conclude with `(Submodule.mem_bot ℂ).mp hmem`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hn : Module.finrank ℂ V = Module.finrank ℂ V` using `rfl`. Use `set b := hsym.eigenvectorBasis hn with hb`. Establish `hμ : ∀ j, c ≤ hsym.eigenvalues hn j` using `fun j => hev _ (b j) (hsym.apply_eigenvectorBasis hn j) (b.orthonormal.ne_zero j)`. Rewrite using `[← hA, ← hB, ← Complex.add_re, ← inner_add_left, ← hX]`. Rewrite using `[← b.sum_inner_mul_inner (X v) v, Complex.re_sum, ← b.sum_sq_norm_inner_right v, Finset.mul_sum]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_le_sum fun j _ => ?_` and prove the remaining obligations. Establish `h1 : ⟪X v, b j⟫_ℂ = (hsym.eigenvalues hn j : ℂ) * ⟪v, b j⟫_ℂ`. Rewrite using `[hsym v (b j), hb, hsym.apply_eigenvectorBasis hn j, inner_smul_right]`. Both sides reduce to the same expression. Rewrite using `[h1, mul_assoc, Complex.re_ofReal_mul, ← inner_conj_symm v (b j), Complex.conj_mul']`.
-
-Establish `: ((‖⟪b j, v⟫_ℂ‖ : ℂ) ^ 2).re = ‖⟪b j, v⟫_ℂ‖ ^ 2`. Rewrite using `[← Complex.ofReal_pow, Complex.ofReal_re]`. Rewrite using `[this]`. Conclude with `mul_le_mul_of_nonneg_right (hμ j) (sq_nonneg _)`.
+A detailed English derivation is pending.
 -/
 theorem norm_sq_adjoint_add_ge_of_joint_eigenspaces (V : Type) [NormedAddCommGroup V] [InnerProductSpace ℂ V] [FiniteDimensional ℂ V] (Vp : Type) [NormedAddCommGroup Vp] [InnerProductSpace ℂ Vp] [FiniteDimensional ℂ Vp] (Vm : Type) [NormedAddCommGroup Vm] [InnerProductSpace ℂ Vm] [FiniteDimensional ℂ Vm] (ι : Type) (S : ι → Submodule ℂ V) (A : Vp →L[ℂ] V) (B : Vm →L[ℂ] V) (wp wm : ι → ℝ) (c : ℝ) (hS : (⨆ i, S i) = ⊤)
     (hw : ∀ i, ∀ v ∈ S i, A (ContinuousLinearMap.adjoint A v) = (wp i : ℂ) • v ∧ B (ContinuousLinearMap.adjoint B v) = (wm i : ℂ) • v)

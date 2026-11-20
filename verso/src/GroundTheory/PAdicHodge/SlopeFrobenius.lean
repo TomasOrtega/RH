@@ -15,9 +15,9 @@ variable {K : Type*} [NontriviallyNormedField K] [IsUltrametricDist K] [Complete
 namespace Laurent
 
 /- English proof (translation)
-Use `le_antisymm (gaussNorm_le fun n => ?_) ?_` and prove the remaining obligations. Distinguish the cases in `hn : n = k`. Substitute `hn` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hn]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Check the signs of the components of the expression. Simplify using `using (convergesAt_single k c ρ).le_gaussNorm k`.
+Check the signs of the components of the expression. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem gaussNorm_single' (k : ℤ) (c : K) {ρ : ℝ} (hρ : 0 < ρ) :
     gaussNorm (Pi.single k c) ρ = ‖c‖ * ρ ^ k := by
@@ -28,9 +28,9 @@ theorem gaussNorm_single' (k : ℤ) (c : K) {ρ : ℝ} (hρ : 0 < ρ) :
   · simpa using (convergesAt_single k c ρ).le_gaussNorm k
 
 /- English proof (translation)
-Distinguish the cases in `ha0 : a = 0`. Substitute `ha0` using the available equality. Simplify using `[zero_cmul, gaussNorm_zero]`. Distinguish the cases in `hb0 : b = 0`. Substitute `hb0` using the available equality.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `[cmul_zero, gaussNorm_zero]`. Conclude with `gaussNorm_cmul hρ ha hb ha0 hb0`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gaussNorm_cmul' {a b : ℤ → K} {ρ : ℝ} (hρ : 0 < ρ) (ha : ConvergesAt a ρ)
     (hb : ConvergesAt b ρ) : gaussNorm (cmul a b) ρ = gaussNorm a ρ * gaussNorm b ρ := by
@@ -41,7 +41,7 @@ theorem gaussNorm_cmul' {a b : ℤ → K} {ρ : ℝ} (hρ : 0 < ρ) (ha : Conver
   exact gaussNorm_cmul hρ ha hb ha0 hb0
 
 /- English proof (translation)
-Establish `ht : Tendsto Int.toNat atTop atTop` using `tendsto_atTop_atTop.2 fun b => ⟨b, fun n hn => by omega⟩`. Use `(tendsto_pow_atTop_nhds_zero_of_lt_one h0 h1).comp ht` as an intermediate fact. Use `this.congr' ?_` and prove the remaining obligations. Use `filter_upwards [eventually_ge_atTop (0 : ℤ)] with n hn`. Simplify using `[Function.comp, ← zpow_natCast, Int.toNat_of_nonneg hn]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tendsto_zpow_atTop_of_lt_one {t : ℝ} (h0 : 0 ≤ t) (h1 : t < 1) :
     Tendsto (fun n : ℤ => t ^ n) atTop (𝓝 0) := by
@@ -53,15 +53,13 @@ theorem tendsto_zpow_atTop_of_lt_one {t : ℝ} (h0 : 0 ≤ t) (h1 : t < 1) :
   simp [Function.comp, ← zpow_natCast, Int.toNat_of_nonneg hn]
 
 /- English proof (translation)
-Establish `hρ : 0 < ρ` using `h₁.trans h1`. Establish `hρ₂ : 0 < ρ₂` using `hρ.trans h2`. Unfold `ConvergesAt`. Rewrite using `[Int.cofinite_eq]`. Use `tendsto_sup.2 ⟨?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `ht : Tendsto (fun n : ℤ => (ρ₁ / ρ) ^ (-n)) atBot (𝓝 0)` using `(tendsto_zpow_atTop_of_lt_one (by positivity) ((div_lt_one hρ).2 h1)).comp tendsto_neg_atBot_atTop`. Use `ht.const_mul C₁` as an intermediate fact. Rewrite `this` using `[mul_zero]`. Use `squeeze_zero (fun n => by positivity) (fun n => ?_) this` and prove the remaining obligations. Establish `e : ρ ^ n = ρ₁ ^ n * (ρ₁ / ρ) ^ (-n)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[div_zpow, zpow_neg, zpow_neg, inv_div_inv, mul_div_cancel₀ _ (zpow_ne_zero _ h₁.ne')]`. Rewrite using `[e, ← mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_right (hC₁ n) (by positivity)`. Establish `ht` using `tendsto_zpow_atTop_of_lt_one (t := ρ / ρ₂) (by positivity) ((div_lt_one hρ₂).2 h2)`. Use `ht.const_mul C₂` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[mul_zero]`. Use `squeeze_zero (fun n => by positivity) (fun n => ?_) this` and prove the remaining obligations. Establish `e : ρ ^ n = ρ₂ ^ n * (ρ / ρ₂) ^ n`. Rewrite using `[div_zpow, mul_div_cancel₀ _ (zpow_ne_zero _ hρ₂.ne')]`. Rewrite using `[e, ← mul_assoc]`.
-
-Conclude with `mul_le_mul_of_nonneg_right (hC₂ n) (by positivity)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem convergesAt_of_bounded {a : ℤ → K} {ρ₁ ρ ρ₂ C₁ C₂ : ℝ} (h₁ : 0 < ρ₁) (h1 : ρ₁ < ρ)
     (h2 : ρ < ρ₂) (hC₁ : ∀ n, ‖a n‖ * ρ₁ ^ n ≤ C₁) (hC₂ : ∀ n, ‖a n‖ * ρ₂ ^ n ≤ C₂) :
@@ -97,62 +95,62 @@ namespace Robba
 variable {f g : Robba K} {ρ : ℝ}
 
 /- English proof (translation)
-The claim follows from `gaussNorm_cmul' hρ hf hg`.
+A detailed English derivation is pending.
 -/
 theorem gaussNorm_mul (hρ : 0 < ρ) (hf : ConvergesAt f.coeff ρ) (hg : ConvergesAt g.coeff ρ) :
     gaussNorm (f * g).coeff ρ = gaussNorm f.coeff ρ * gaussNorm g.coeff ρ :=
   gaussNorm_cmul' hρ hf hg
 
 /- English proof (translation)
-The claim follows from `hf.cmul hρ hg`.
+A detailed English derivation is pending.
 -/
 theorem convergesAt_mul (hρ : 0 < ρ) (hf : ConvergesAt f.coeff ρ) (hg : ConvergesAt g.coeff ρ) :
     ConvergesAt (f * g).coeff ρ := hf.cmul hρ hg
 
 /- English proof (translation)
-The claim follows from `gaussNorm_single' k c hρ`.
+A detailed English derivation is pending.
 -/
 theorem gaussNorm_single (k : ℤ) (c : K) (hρ : 0 < ρ) :
     gaussNorm (single k c).coeff ρ = ‖c‖ * ρ ^ k := gaussNorm_single' k c hρ
 
 /- English proof (translation)
-The claim follows from `convergesAt_single k c ρ`.
+A detailed English derivation is pending.
 -/
 theorem convergesAt_single' (k : ℤ) (c : K) (ρ : ℝ) : ConvergesAt (single k c).coeff ρ :=
   convergesAt_single k c ρ
 
 /- English proof (translation)
-The claim follows from `hf.add hρ hg`.
+A detailed English derivation is pending.
 -/
 theorem convergesAt_add (hρ : 0 < ρ) (hf : ConvergesAt f.coeff ρ) (hg : ConvergesAt g.coeff ρ) :
     ConvergesAt (f + g).coeff ρ := hf.add hρ hg
 
 /- English proof (translation)
-The claim follows from `hf.sub hρ hg`.
+A detailed English derivation is pending.
 -/
 theorem convergesAt_sub (hρ : 0 < ρ) (hf : ConvergesAt f.coeff ρ) (hg : ConvergesAt g.coeff ρ) :
     ConvergesAt (f - g).coeff ρ := hf.sub hρ hg
 
 /- English proof (translation)
-The claim follows from `hf.neg`.
+A detailed English derivation is pending.
 -/
 theorem convergesAt_neg (hf : ConvergesAt f.coeff ρ) : ConvergesAt (-f).coeff ρ := hf.neg
 
 /- English proof (translation)
-The claim follows from `gaussNorm_add_le hρ hf hg`.
+A detailed English derivation is pending.
 -/
 theorem gaussNorm_add_le' (hρ : 0 < ρ) (hf : ConvergesAt f.coeff ρ) (hg : ConvergesAt g.coeff ρ) :
     gaussNorm (f + g).coeff ρ ≤ max (gaussNorm f.coeff ρ) (gaussNorm g.coeff ρ) :=
   gaussNorm_add_le hρ hf hg
 
 /- English proof (translation)
-The claim follows from `gaussNorm_neg _ _`.
+A detailed English derivation is pending.
 -/
 theorem gaussNorm_neg' (f : Robba K) (ρ : ℝ) : gaussNorm (-f).coeff ρ = gaussNorm f.coeff ρ :=
   gaussNorm_neg _ _
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih => rw [pow_succ, ih, single_mul_single]; congr 1 <;> push_cast <;> ring`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem single_pow (k : ℤ) (n : ℕ) : (single k (1 : K)) ^ n = single (k * n) 1 := by
   induction n with
@@ -160,9 +158,9 @@ theorem single_pow (k : ℤ) (n : ℕ) : (single k (1 : K)) ^ n = single (k * n)
   | succ n ih => rw [pow_succ, ih, single_mul_single]; congr 1 <;> push_cast <;> ring
 
 /- English proof (translation)
-Take `⟨l, hl, hsub⟩` from `mem_nhdsLT_iff_exists_Ioo_subset.1 h`. Use `⟨(max l (1 / 2) + 1) / 2, by positivity, ?_, fun ρ h1 h2 => hsub ⟨?_, h2⟩⟩` and prove the remaining obligations. Establish `: max l (1 / 2) < 1` using `max_lt hl (by norm_num)`. Combine the linear equalities and inequalities to obtain the conclusion. Use `le_max_left l (1 / 2)` as an intermediate fact.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `: max l (1 / 2) < 1` using `max_lt hl (by norm_num)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem exists_Ico_of_eventually {P : ℝ → Prop} (h : ∀ᶠ ρ in 𝓝[<] (1 : ℝ), P ρ) :
     ∃ r, 0 < r ∧ r < 1 ∧ ∀ ρ, r ≤ ρ → ρ < 1 → P ρ := by
@@ -175,7 +173,7 @@ theorem exists_Ico_of_eventually {P : ℝ → Prop} (h : ∀ᶠ ρ in 𝓝[<] (1
     linarith
 
 /- English proof (translation)
-Take `⟨r, hr0, hr1, h⟩` from `exists_common f f`. Use `filter_upwards [Ioo_mem_nhdsLT hr1] with ρ hρ`. Conclude with `(h ρ hρ.1.le hρ.2).1`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem eventually_convergesAt (f : Robba K) : ∀ᶠ ρ in 𝓝[<] (1 : ℝ), ConvergesAt f.coeff ρ := by
   obtain ⟨r, hr0, hr1, h⟩ := exists_common f f
@@ -206,18 +204,18 @@ variable (F : FrobeniusLift K)
 def c : Robba K := F.u - Robba.single F.q 1
 
 /- English proof (translation)
-The claim follows from `(Robba.bounded K).sub_mem F.u_mem (Robba.single_mem_bounded _ _)`.
+A detailed English derivation is pending.
 -/
 theorem c_mem : F.c ∈ Robba.bounded K :=
   (Robba.bounded K).sub_mem F.u_mem (Robba.single_mem_bounded _ _)
 
 /- English proof (translation)
-The claim follows from `lt_trans zero_lt_one F.one_lt_q`.
+A detailed English derivation is pending.
 -/
 theorem q_pos : 0 < F.q := lt_trans zero_lt_one F.one_lt_q
 
 /- English proof (translation)
-Establish `h1` using `Robba.tendsto_gaussNorm_norm1 F.c_mem`. Establish `h2 : Tendsto (fun ρ : ℝ => ρ ^ F.q) (𝓝[<] 1) (𝓝 1)`. Use `((continuous_pow F.q).tendsto (1 : ℝ)).mono_left (nhdsWithin_le_nhds (s := Set.Iio 1))` as an intermediate fact. Simplify using `using this`. Conclude with `h1.eventually_lt h2 F.gaussNorm_u_sub_single_lt_one`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem eventually_gaussNorm_c_lt :
     ∀ᶠ ρ in 𝓝[<] (1 : ℝ), gaussNorm F.c.coeff ρ < ρ ^ F.q := by
@@ -228,11 +226,11 @@ theorem eventually_gaussNorm_c_lt :
   exact h1.eventually_lt h2 F.gaussNorm_u_sub_single_lt_one
 
 /- English proof (translation)
-Take `⟨r, hr0, hr1, hr⟩` from `Robba.exists_Ico_of_eventually (F.eventually_gaussNorm_c_lt.and F.c.eventually_convergesAt)`. Establish `hT : IsUnit (Robba.single (F.q : ℤ) (1 : K))` using `Robba.isUnit_single _ one_ne_zero`. Establish `key : F.u = Robba.single (F.q : ℤ) 1 * (1 + Robba.single (-(F.q : ℤ)) 1 * F.c)`. Rewrite using `[mul_add, mul_one, ← mul_assoc, Robba.single_mul_single, add_neg_cancel, mul_one, Robba.single_zero_one, one_mul, c, add_sub_cancel]`. Rewrite using `[key]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `hT.mul (Robba.isUnit_one_add hr0 hr1 fun ρ h1 h2 => ?_)` and prove the remaining obligations. Establish `hρ : 0 < ρ` using `hr0.trans_le h1`. Take `⟨hlt, hconv⟩` from `hr ρ h1 h2`. Use `⟨Robba.convergesAt_mul hρ (Robba.convergesAt_single' _ _ _) hconv, ?_⟩` and prove the remaining obligations. Rewrite using `[Robba.gaussNorm_mul hρ (Robba.convergesAt_single' _ _ _) hconv, Robba.gaussNorm_single _ _ hρ, norm_one, one_mul, zpow_neg, zpow_natCast, inv_mul_lt_iff₀ (by positivity), mul_one]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hlt`.
+A detailed English derivation is pending.
 -/
 theorem isUnit_u : IsUnit F.u := by
   obtain ⟨r, hr0, hr1, hr⟩ := Robba.exists_Ico_of_eventually
@@ -258,7 +256,7 @@ Both sides reduce to the same expression.
 @[simp] theorem coe_uu : (F.uu : Robba K) = F.u := rfl
 
 /- English proof (translation)
-The claim follows from `Robba.exists_Ico_of_eventually (F.u.eventually_convergesAt.and ((((F.uu⁻¹ : (Robba K)ˣ) : Robba K).eventually_convergesAt).and F.eventually_gaussNorm_c_lt))`.
+A detailed English derivation is pending.
 -/
 theorem exists_radius : ∃ r₀, 0 < r₀ ∧ r₀ < 1 ∧ ∀ ρ, r₀ ≤ ρ → ρ < 1 →
     ConvergesAt F.u.coeff ρ ∧ ConvergesAt ((F.uu⁻¹ : (Robba K)ˣ) : Robba K).coeff ρ ∧
@@ -269,15 +267,15 @@ theorem exists_radius : ∃ r₀, 0 < r₀ ∧ r₀ < 1 ∧ ∀ ρ, r₀ ≤ ρ 
 def r₀ : ℝ := F.exists_radius.choose
 
 /- English proof (translation)
-The claim follows from `F.exists_radius.choose_spec.1`.
+A detailed English derivation is pending.
 -/
 theorem r₀_pos : 0 < F.r₀ := F.exists_radius.choose_spec.1
 /- English proof (translation)
-The claim follows from `F.exists_radius.choose_spec.2.1`.
+A detailed English derivation is pending.
 -/
 theorem r₀_lt_one : F.r₀ < 1 := F.exists_radius.choose_spec.2.1
 /- English proof (translation)
-The claim follows from `F.exists_radius.choose_spec.2.2 ρ h1 h2`.
+A detailed English derivation is pending.
 -/
 theorem r₀_spec {ρ : ℝ} (h1 : F.r₀ ≤ ρ) (h2 : ρ < 1) :
     ConvergesAt F.u.coeff ρ ∧ ConvergesAt ((F.uu⁻¹ : (Robba K)ˣ) : Robba K).coeff ρ ∧
@@ -287,18 +285,18 @@ theorem r₀_spec {ρ : ℝ} (h1 : F.r₀ ≤ ρ) (h2 : ρ < 1) :
 def U (n : ℤ) : ℤ → K := ((F.uu ^ n : (Robba K)ˣ) : Robba K).coeff
 
 /- English proof (translation)
-Simplify using `only [U, zpow_add, Units.val_mul, Robba.coeff_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem U_add (i k : ℤ) : F.U (i + k) = cmul (F.U i) (F.U k) := by
   simp only [U, zpow_add, Units.val_mul, Robba.coeff_mul]
 
 /- English proof (translation)
-Simplify using `[U]`.
+Simplify using the standard rewrite rules.
 -/
 theorem U_zero : F.U 0 = Pi.single 0 1 := by simp [U]
 
 /- English proof (translation)
-Simplify using `[U]`.
+Simplify using the standard rewrite rules.
 -/
 theorem U_one : F.U 1 = F.u.coeff := by simp [U]
 
@@ -307,7 +305,7 @@ def δ (ρ : ℝ) : ℝ := gaussNorm F.c.coeff ρ / ρ ^ F.q
 variable {F}
 
 /- English proof (translation)
-Establish `hρ : 0 < ρ` using `F.r₀_pos.trans_le h1`. Rewrite using `[δ, div_lt_one (by positivity)]`. Conclude with `(F.r₀_spec h1 h2).2.2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem δ_lt_one {ρ : ℝ} (h1 : F.r₀ ≤ ρ) (h2 : ρ < 1) : F.δ ρ < 1 := by
   have hρ : 0 < ρ := F.r₀_pos.trans_le h1
@@ -315,62 +313,60 @@ theorem δ_lt_one {ρ : ℝ} (h1 : F.r₀ ≤ ρ) (h2 : ρ < 1) : F.δ ρ < 1 :=
   exact (F.r₀_spec h1 h2).2.2
 
 /- English proof (translation)
-Unfold `δ`. Use `gaussNorm_nonneg (a := F.c.coeff) hρ` as an intermediate fact. Check the signs of the components of the expression.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Check the signs of the components of the expression.
 -/
 theorem δ_nonneg {ρ : ℝ} (hρ : 0 < ρ) : 0 ≤ F.δ ρ := by
   unfold δ; have := gaussNorm_nonneg (a := F.c.coeff) hρ; positivity
 
 /- English proof (translation)
-Establish `hρ : 0 < ρ` using `F.r₀_pos.trans_le h1`. Conclude with `(F.r₀_spec h1 h2).1.sub hρ (convergesAt_single _ _ _)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem convergesAt_c {ρ : ℝ} (h1 : F.r₀ ≤ ρ) (h2 : ρ < 1) : ConvergesAt F.c.coeff ρ := by
   have hρ : 0 < ρ := F.r₀_pos.trans_le h1
   exact (F.r₀_spec h1 h2).1.sub hρ (convergesAt_single _ _ _)
 
 /- English proof (translation)
-Rewrite using `[δ, div_mul_cancel₀ _ (by positivity)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem gaussNorm_c {ρ : ℝ} (hρ : 0 < ρ) : gaussNorm F.c.coeff ρ = F.δ ρ * ρ ^ F.q := by
   rw [δ, div_mul_cancel₀ _ (by positivity)]
 
 /- English proof (translation)
-Establish `hρ : 0 < ρ` using `F.r₀_pos.trans_le h1`. Take `⟨hu, hv, -⟩` from `F.r₀_spec h1 h2`. Establish `hc` using `convergesAt_c h1 h2`. Establish `hδ0` using `δ_nonneg (F := F) hρ`. Establish `hδ1` using `δ_lt_one h1 h2`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set v := ((F.uu⁻¹ : (Robba K)ˣ) : Robba K)`. Use `set T := Robba.single (F.q : ℤ) (1 : K)`. Use `set Ti := Robba.single (-(F.q : ℤ)) (1 : K)`. Establish `hTc : ConvergesAt T.coeff ρ` using `Robba.convergesAt_single' _ _ _`. Establish `hTic : ConvergesAt Ti.coeff ρ` using `Robba.convergesAt_single' _ _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hTn : gaussNorm T.coeff ρ = ρ ^ F.q`. Rewrite using `[Robba.gaussNorm_single _ _ hρ, norm_one, one_mul, zpow_natCast]`. Establish `hTin : gaussNorm Ti.coeff ρ = (ρ ^ F.q)⁻¹`. Rewrite using `[Robba.gaussNorm_single _ _ hρ, norm_one, one_mul, zpow_neg, zpow_natCast]`. Establish `huT : F.u = T + F.c` using `by rw [c]; abel`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hqpos : 0 < ρ ^ F.q` using `by positivity`. Establish `hun : gaussNorm F.u.coeff ρ ≤ ρ ^ F.q`. Use `Robba.gaussNorm_add_le' hρ hTc hc` as an intermediate fact. Rewrite `this` using `[← huT, hTn, gaussNorm_c hρ]`. Use `this.trans (max_le le_rfl ?_)` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the polynomial consequences of the given equalities and inequalities. Establish `hvid : v - Ti = -(Ti * F.c * v)`. Establish `huv : F.u * v = 1` using `by simp [v]`. Establish `hTT : Ti * T = 1`. Simplify using `only [Ti, T, Robba.single_mul_single, neg_add_cancel, mul_one, Robba.single_zero_one]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `: Ti * F.c * v = Ti * (F.u * v) - (Ti * T) * v` using `by rw [c]; ring`. Rewrite using `[this, huv, hTT]`. Expand and normalize the polynomial expressions, which then agree. Establish `hcv : ConvergesAt (Ti * F.c * v).coeff ρ` using `Robba.convergesAt_mul hρ (Robba.convergesAt_mul hρ hTic hc) hv`. Establish `hTcv : gaussNorm (Ti * F.c * v).coeff ρ = F.δ ρ * gaussNorm v.coeff ρ`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Rewrite using `[Robba.gaussNorm_mul hρ (Robba.convergesAt_mul hρ hTic hc) hv, Robba.gaussNorm_mul hρ hTic hc, hTin, gaussNorm_c hρ]`. Clear the denominators using the available nonvanishing facts. Establish `hvn : gaussNorm v.coeff ρ ≤ (ρ ^ F.q)⁻¹`. Establish `e : v = Ti + (v - Ti)` using `by abel`. Use `Robba.gaussNorm_add_le' hρ hTic (Robba.convergesAt_sub hρ hv hTic)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[← e, hvid, Robba.gaussNorm_neg', hTcv, hTin]`. Assume the negation of the conclusion as `hcon`. Rewrite `hcon` using `[not_le]`. Establish `hpos : 0 < gaussNorm v.coeff ρ` using `lt_trans (by positivity) hcon`. Break down `le_max_iff.1 this with h | h` into its components or cases.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Combine the linear equalities and inequalities to obtain the conclusion. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Use the polynomial consequences of the given equalities and inequalities. Establish `hvTn : gaussNorm (v - Ti).coeff ρ ≤ F.δ ρ * (ρ ^ F.q)⁻¹`. Rewrite using `[hvid, Robba.gaussNorm_neg', hTcv]`. Conclude with `mul_le_mul_of_nonneg_left hvn hδ0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcn : gaussNorm F.c.coeff ρ ≤ F.δ ρ * ρ ^ F.q` using `(gaussNorm_c hρ).le`. Set `e : ℤ → Robba K` to `fun n => Robba.single ((F.q : ℤ) * n) 1`. Establish `hec : ∀ n, ConvergesAt (e n).coeff ρ` using `fun n => Robba.convergesAt_single' _ _ _`. Establish `hen : ∀ n : ℤ, gaussNorm (e n).coeff ρ = (ρ ^ F.q) ^ n` using `fun n => by`. Rewrite using `[Robba.gaussNorm_single _ _ hρ, norm_one, one_mul, zpow_mul, zpow_natCast]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Set `w : ℤ → Robba K` to `fun n => ((F.uu ^ n : (Robba K)ˣ) : Robba K)`. Establish `step : ∀ (x y ex ey : Robba K) (A B : ℝ), 0 ≤ A → 0 ≤ B → ConvergesAt x.coeff ρ → ConvergesAt y.coeff ρ → ConvergesAt ex.coeff ρ → ConvergesAt ey.coeff ρ → gaussNorm ex.coeff ρ = A → gaussNorm ey.coeff ρ = B → gaussNorm (x - ex).coeff ρ ≤ F.δ ρ * A → gaussNorm (y - ey).coeff ρ ≤ …`. Introduce `x y ex ey A B hA hB hx hy hex hey hexn heyn hxe hye hyn`. Establish `id : x * y - ex * ey = (x - ex) * y + ex * (y - ey)` using `by ring`. Establish `s1` using `Robba.convergesAt_sub hρ hx hex`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `s2` using `Robba.convergesAt_sub hρ hy hey`. Establish `c1` using `Robba.convergesAt_mul hρ s1 hy`. Establish `c2` using `Robba.convergesAt_mul hρ hex s2`. Use `Robba.gaussNorm_add_le' hρ c1 c2` as an intermediate fact. Rewrite `this` using `[← id, Robba.gaussNorm_mul hρ s1 hy, Robba.gaussNorm_mul hρ hex s2, hexn]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Use `this.trans (max_le ?_ ?_)` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Establish `P : ∀ n : ℤ, ConvergesAt (w n).coeff ρ ∧ gaussNorm (w n - e n).coeff ρ ≤ F.δ ρ * (ρ ^ F.q) ^ n`. Introduce `n`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Proceed by induction on `n using Int.induction_on with`. Consider the case `zero`. Use `⟨by simpa [w] using convergesAt_single 0 (1 : K) ρ, ?_⟩` and prove the remaining obligations. Establish `: w 0 - e 0 = 0` using `by simp [w, e]`. Rewrite using `[this, Robba.coeff_zero, gaussNorm_zero]`.
+Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Check the signs of the components of the expression. Consider the case `succ i ih`. Establish `hw : w (i + 1) = w i * F.u` using `by simp [w, zpow_add_one]`. Establish `he : e (i + 1) = e i * T`. Simplify using `only [e, T, Robba.single_mul_single, mul_one]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Use `congr 1`. Apply the tactic sequence `try ring`. Use `⟨by rw [hw]; exact Robba.convergesAt_mul hρ ih.1 hu, ?_⟩` and prove the remaining obligations. Rewrite using `[hw, he, zpow_add_one₀ hqpos.ne']`. Conclude with `step _ _ _ _ _ _ (by positivity) hqpos.le ih.1 hu (hec i) hTc (hen i) hTn ih.2 (by rw [huT, add_sub_cancel_left]; exact hcn) hun`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Consider the case `pred i ih`. Establish `hw : w (-(i : ℤ) - 1) = w (-(i : ℤ)) * v`. Simplify using `[w, v, zpow_sub_one]`. Establish `he : e (-(i : ℤ) - 1) = e (-(i : ℤ)) * Ti`. Simplify using `only [e, Ti, Robba.single_mul_single, mul_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `congr 1`. Apply the tactic sequence `try ring`. Use `⟨by rw [hw]; exact Robba.convergesAt_mul hρ ih.1 hv, ?_⟩` and prove the remaining obligations. Rewrite using `[hw, he, zpow_sub_one₀ hqpos.ne']`. Conclude with `step _ _ _ _ _ _ (by positivity) (by positivity) ih.1 hv (hec _) hTic (hen _) hTin ih.2 hvTn hvn`.
-
-Use `⟨(P n).1, ?_⟩` and prove the remaining obligations. Use `(P n).2` as an intermediate fact. Simplify `this` using `[w, e, U]`.
+A detailed English derivation is pending.
 -/
 theorem U_spec {ρ : ℝ} (h1 : F.r₀ ≤ ρ) (h2 : ρ < 1) (n : ℤ) :
     ConvergesAt (F.U n) ρ ∧
@@ -482,15 +478,15 @@ theorem U_spec {ρ : ℝ} (h1 : F.r₀ ≤ ρ) (h2 : ρ < 1) (n : ℤ) :
   simpa [w, e, U] using this
 
 /- English proof (translation)
-The claim follows from `(U_spec h1 h2 n).1`.
+A detailed English derivation is pending.
 -/
 theorem convergesAt_U {ρ : ℝ} (h1 : F.r₀ ≤ ρ) (h2 : ρ < 1) (n : ℤ) : ConvergesAt (F.U n) ρ :=
   (U_spec h1 h2 n).1
 
 /- English proof (translation)
-Establish `hρ : 0 < ρ` using `F.r₀_pos.trans_le h1`. Establish `hs : ConvergesAt (Pi.single ((F.q : ℤ) * n) (1 : K)) ρ` using `convergesAt_single _ _ _`. Establish `e : F.U n = Pi.single ((F.q : ℤ) * n) 1 + (F.U n - Pi.single ((F.q : ℤ) * n) 1)` using `by abel`. Use `gaussNorm_add_le hρ hs ((convergesAt_U h1 h2 n).sub hρ hs)` as an intermediate fact. Rewrite `this` using `[← e, gaussNorm_single' _ _ hρ, norm_one, one_mul, zpow_mul, zpow_natCast]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `this.trans (max_le le_rfl ((U_spec h1 h2 n).2.trans ?_))` and prove the remaining obligations. Use `δ_lt_one h1 h2` as an intermediate fact. Establish `: 0 < (ρ ^ F.q) ^ n` using `by positivity`. Use polynomial arithmetic with `[δ_nonneg (F := F) hρ]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem gaussNorm_U_le {ρ : ℝ} (h1 : F.r₀ ≤ ρ) (h2 : ρ < 1) (n : ℤ) :
     gaussNorm (F.U n) ρ ≤ (ρ ^ F.q) ^ n := by
@@ -505,7 +501,7 @@ theorem gaussNorm_U_le {ρ : ℝ} (h1 : F.r₀ ≤ ρ) (h2 : ρ < 1) (n : ℤ) :
   nlinarith [δ_nonneg (F := F) hρ]
 
 /- English proof (translation)
-The claim follows from `((convergesAt_U h1 h2 n).le_gaussNorm m).trans (gaussNorm_U_le h1 h2 n)`.
+A detailed English derivation is pending.
 -/
 theorem norm_U_le {ρ : ℝ} (h1 : F.r₀ ≤ ρ) (h2 : ρ < 1) (n m : ℤ) :
     ‖F.U n m‖ * ρ ^ m ≤ (ρ ^ F.q) ^ n :=
@@ -518,7 +514,7 @@ namespace FrobeniusLift
 variable {F : FrobeniusLift K}
 
 /- English proof (translation)
-Use `tendsto_nhdsWithin_iff.2 ⟨?_, ?_⟩` and prove the remaining obligations. Use `((continuous_pow F.q).tendsto (1 : ℝ)).mono_left (nhdsWithin_le_nhds (s := Set.Iio 1))` as an intermediate fact. Simplify using `using this`. Use `filter_upwards [Ioo_mem_nhdsLT (show (0 : ℝ) < 1 by norm_num)] with ρ hρ`. Conclude with `pow_lt_one₀ hρ.1.le hρ.2 F.q_pos.ne'`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem tendsto_pow_q : Tendsto (fun ρ : ℝ => ρ ^ F.q) (𝓝[<] 1) (𝓝[<] 1) := by
   refine tendsto_nhdsWithin_iff.2 ⟨?_, ?_⟩
@@ -528,13 +524,13 @@ theorem tendsto_pow_q : Tendsto (fun ρ : ℝ => ρ ^ F.q) (𝓝[<] 1) (𝓝[<] 
     exact pow_lt_one₀ hρ.1.le hρ.2 F.q_pos.ne'
 
 /- English proof (translation)
-Use `filter_upwards [Ioo_mem_nhdsLT F.r₀_lt_one] with ρ hρ using hρ.1.le`.
+A detailed English derivation is pending.
 -/
 theorem eventually_r₀_le : ∀ᶠ ρ in 𝓝[<] (1 : ℝ), F.r₀ ≤ ρ := by
   filter_upwards [Ioo_mem_nhdsLT F.r₀_lt_one] with ρ hρ using hρ.1.le
 
 /- English proof (translation)
-The claim follows from `tendsto_pow_q.eventually f.eventually_convergesAt`.
+A detailed English derivation is pending.
 -/
 theorem eventually_convergesAt_pow (f : Robba K) :
     ∀ᶠ ρ in 𝓝[<] (1 : ℝ), ConvergesAt f.coeff (ρ ^ F.q) :=
@@ -547,7 +543,7 @@ def phiSeq (f : ℤ → K) (m : ℤ) : K := ∑' n, F.σ (f n) * F.U n m
 variable {ρ : ℝ}
 
 /- English proof (translation)
-Rewrite using `[norm_mul, F.norm_σ, mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left (norm_U_le h1 h2 n m) (norm_nonneg _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_phi_term_le (h1 : F.r₀ ≤ ρ) (h2 : ρ < 1) (f : ℤ → K) (n m : ℤ) :
     ‖F.σ (f n) * F.U n m‖ * ρ ^ m ≤ ‖f n‖ * (ρ ^ F.q) ^ n := by
@@ -555,9 +551,9 @@ theorem norm_phi_term_le (h1 : F.r₀ ≤ ρ) (h2 : ρ < 1) (f : ℤ → K) (n m
   exact mul_le_mul_of_nonneg_left (norm_U_le h1 h2 n m) (norm_nonneg _)
 
 /- English proof (translation)
-Establish `hρ : 0 < ρ` using `F.r₀_pos.trans_le h1`. Establish `hρm : 0 < ρ ^ m` using `zpow_pos hρ m`. Rewrite using `[tendsto_zero_iff_norm_tendsto_zero]`. Use `hf.div_const (ρ ^ m)` as an intermediate fact. Rewrite `this` using `[zero_div]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `squeeze_zero (fun _ => norm_nonneg _) (fun n => ?_) this` and prove the remaining obligations. Rewrite using `[le_div_iff₀ hρm]`. Conclude with `norm_phi_term_le h1 h2 f n m`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tendsto_phi_term (h1 : F.r₀ ≤ ρ) (h2 : ρ < 1) {f : ℤ → K}
     (hf : ConvergesAt f (ρ ^ F.q)) (m : ℤ) :
@@ -572,16 +568,16 @@ theorem tendsto_phi_term (h1 : F.r₀ ≤ ρ) (h2 : ρ < 1) {f : ℤ → K}
   exact norm_phi_term_le h1 h2 f n m
 
 /- English proof (translation)
-The claim follows from `NonarchimedeanAddGroup.summable_of_tendsto_cofinite_zero (tendsto_phi_term h1 h2 hf m)`.
+A detailed English derivation is pending.
 -/
 theorem summable_phi_term (h1 : F.r₀ ≤ ρ) (h2 : ρ < 1) {f : ℤ → K}
     (hf : ConvergesAt f (ρ ^ F.q)) (m : ℤ) : Summable (fun n => F.σ (f n) * F.U n m) :=
   NonarchimedeanAddGroup.summable_of_tendsto_cofinite_zero (tendsto_phi_term h1 h2 hf m)
 
 /- English proof (translation)
-Establish `hρ : 0 < ρ` using `F.r₀_pos.trans_le h1`. Establish `hρm : 0 < ρ ^ m` using `zpow_pos hρ m`. Rewrite using `[← le_div_iff₀ hρm]`. Use `IsUltrametricDist.norm_tsum_le_of_forall_le_of_nonneg (div_nonneg (gaussNorm_nonneg (by positivity)) hρm.le) fun n => ?_` and prove the remaining obligations. Rewrite using `[le_div_iff₀ hρm]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(norm_phi_term_le h1 h2 f n m).trans (hf.le_gaussNorm n)`.
+A detailed English derivation is pending.
 -/
 theorem phiSeq_weight_le (h1 : F.r₀ ≤ ρ) (h2 : ρ < 1) {f : ℤ → K}
     (hf : ConvergesAt f (ρ ^ F.q)) (m : ℤ) :
@@ -595,7 +591,7 @@ theorem phiSeq_weight_le (h1 : F.r₀ ≤ ρ) (h2 : ρ < 1) {f : ℤ → K}
   exact (norm_phi_term_le h1 h2 f n m).trans (hf.le_gaussNorm n)
 
 /- English proof (translation)
-The claim follows from `convergesAt_of_bounded (F.r₀_pos.trans_le h1) h12 h2 (phiSeq_weight_le h1 ((h12.trans h2).trans h2') hf1) (phiSeq_weight_le ((h1.trans h12.le).trans h2.le) h2' hf2)`.
+A detailed English derivation is pending.
 -/
 theorem phiSeq_convergesAt {ρ₁ ρ₂ : ℝ} (h1 : F.r₀ ≤ ρ₁) (h12 : ρ₁ < ρ) (h2 : ρ < ρ₂)
     (h2' : ρ₂ < 1) {f : ℤ → K} (hf1 : ConvergesAt f (ρ₁ ^ F.q))
@@ -605,16 +601,16 @@ theorem phiSeq_convergesAt {ρ₁ ρ₂ : ℝ} (h1 : F.r₀ ≤ ρ₁) (h12 : ρ
     (phiSeq_weight_le ((h1.trans h12.le).trans h2.le) h2' hf2)
 
 /- English proof (translation)
-The claim follows from `Robba.exists_Ico_of_eventually (eventually_r₀_le.and (eventually_convergesAt_pow f))`.
+A detailed English derivation is pending.
 -/
 theorem exists_radius_pow (f : Robba K) : ∃ s, 0 < s ∧ s < 1 ∧ ∀ ρ, s ≤ ρ → ρ < 1 →
     F.r₀ ≤ ρ ∧ ConvergesAt f.coeff (ρ ^ F.q) :=
   Robba.exists_Ico_of_eventually (eventually_r₀_le.and (eventually_convergesAt_pow f))
 
 /- English proof (translation)
-Take `⟨s, hs0, hs1, hs⟩` from `exists_radius_pow (F := F) f`. Use `⟨(s + 1) / 2, by linarith, fun ρ h1 h2 _ => ?_⟩` and prove the remaining obligations. Take `⟨hr, hc1⟩` from `hs s le_rfl hs1`. Establish `hρ2 : ρ < (ρ + 1) / 2` using `by linarith`. Establish `hρ21 : (ρ + 1) / 2 < 1` using `by linarith`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `phiSeq_convergesAt hr (by linarith) hρ2 hρ21 hc1 (hs _ (by linarith) hρ21).2`.
+A detailed English derivation is pending.
 -/
 theorem phiSeq_exists_convergesAt (f : Robba K) :
     ∃ r < 1, ∀ ρ, r ≤ ρ → ρ < 1 → 0 < ρ → ConvergesAt (F.phiSeq f.coeff) ρ := by
@@ -635,7 +631,7 @@ Both sides reduce to the same expression.
 @[simp] theorem coeff_phiFun (f : Robba K) : (F.phiFun f).coeff = F.phiSeq f.coeff := rfl
 
 /- English proof (translation)
-The claim follows from `Robba.exists_Ico_of_eventually (eventually_r₀_le.and ((eventually_convergesAt_pow f).and (eventually_convergesAt_pow g)))`.
+A detailed English derivation is pending.
 -/
 theorem exists_common_pow (f g : Robba K) : ∃ s, 0 < s ∧ s < 1 ∧ ∀ ρ, s ≤ ρ → ρ < 1 →
     F.r₀ ≤ ρ ∧ ConvergesAt f.coeff (ρ ^ F.q) ∧ ConvergesAt g.coeff (ρ ^ F.q) :=
@@ -643,7 +639,7 @@ theorem exists_common_pow (f g : Robba K) : ∃ s, 0 < s ∧ s < 1 ∧ ∀ ρ, s
     (eventually_r₀_le.and ((eventually_convergesAt_pow f).and (eventually_convergesAt_pow g)))
 
 /- English proof (translation)
-Use function extensionality and compare the values at `m`. Simplify using `only [phiSeq, Pi.add_apply, map_add, add_mul]`. Conclude with `(summable_phi_term h1 h2 hf m).tsum_add (summable_phi_term h1 h2 hg m)`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem phiSeq_add {f g : ℤ → K} (h1 : F.r₀ ≤ ρ) (h2 : ρ < 1) (hf : ConvergesAt f (ρ ^ F.q))
     (hg : ConvergesAt g (ρ ^ F.q)) : F.phiSeq (f + g) = F.phiSeq f + F.phiSeq g := by
@@ -652,7 +648,7 @@ theorem phiSeq_add {f g : ℤ → K} (h1 : F.r₀ ≤ ρ) (h2 : ρ < 1) (hf : Co
   exact (summable_phi_term h1 h2 hf m).tsum_add (summable_phi_term h1 h2 hg m)
 
 /- English proof (translation)
-Take `⟨s, -, hs1, hs⟩` from `exists_common_pow (F := F) f g`. Take `⟨h1, hf, hg⟩` from `hs s le_rfl hs1`. Conclude with `Robba.ext (phiSeq_add h1 hs1 hf hg)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem phiFun_add (f g : Robba K) : F.phiFun (f + g) = F.phiFun f + F.phiFun g := by
   obtain ⟨s, -, hs1, hs⟩ := exists_common_pow (F := F) f g
@@ -660,7 +656,7 @@ theorem phiFun_add (f g : Robba K) : F.phiFun (f + g) = F.phiFun f + F.phiFun g 
   exact Robba.ext (phiSeq_add h1 hs1 hf hg)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `m`. Simplify using `only [phiSeq, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[tsum_eq_single k fun n hn => by simp [hn]]`. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem phiSeq_single (k : ℤ) (c : K) : F.phiSeq (Pi.single k c) = F.σ c • F.U k := by
   funext m
@@ -669,20 +665,20 @@ theorem phiSeq_single (k : ℤ) (c : K) : F.phiSeq (Pi.single k c) = F.σ c • 
   simp
 
 /- English proof (translation)
-Use extensionality with `m`. Simplify using `[phiSeq_single, U_zero]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem phiFun_one : F.phiFun 1 = 1 := by
   ext m
   simp [phiSeq_single, U_zero]
 
 /- English proof (translation)
-The claim follows from `(AddMonoidHomClass.isometry_of_norm F.σ F.norm_σ).continuous`.
+A detailed English derivation is pending.
 -/
 theorem continuous_σ : Continuous F.σ :=
   (AddMonoidHomClass.isometry_of_norm F.σ F.norm_σ).continuous
 
 /- English proof (translation)
-Establish `hρ : 0 < ρ` using `F.r₀_pos.trans_le h1`. Use `norm_U_le h1 h2 n m` as an intermediate fact. Rewrite using `[zpow_neg, ← div_eq_mul_inv, le_div_iff₀ (zpow_pos hρ m)]`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_U_le' (h1 : F.r₀ ≤ ρ) (h2 : ρ < 1) (n m : ℤ) :
     ‖F.U n m‖ ≤ (ρ ^ F.q) ^ n * ρ ^ (-m) := by
@@ -692,13 +688,11 @@ theorem norm_U_le' (h1 : F.r₀ ≤ ρ) (h2 : ρ < 1) (n m : ℤ) :
   exact this
 
 /- English proof (translation)
-Establish `hρ₁ : 0 < ρ₁` using `F.r₀_pos.trans_le h1`. Establish `hρ₂ : 0 < ρ₂` using `hρ₁.trans h12`. Establish `h1' : F.r₀ ≤ ρ₂` using `h1.trans h12.le`. Establish `h2' : ρ₁ < 1` using `h12.trans h2`. Break down `le_total 0 j with hj | hj` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[abs_of_nonneg hj, div_zpow, show -(m - j) = -m + j by ring, zpow_add₀ hρ₁.ne', zpow_neg ρ₂ j]`. Clear the denominators using the available nonvanishing facts. Use `_ ≤ _ := by gcongr`. Conclude with `le_add_of_nonneg_left (by positivity)`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Conclude with `le_add_of_nonneg_right (by positivity)`. Conclude with `le_add_of_nonneg_right (by positivity)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[abs_of_nonpos hj, div_zpow, zpow_neg ρ₂ j, div_inv_eq_mul, show -(m - j) = -m + j by ring, zpow_add₀ hρ₂.ne']`. Expand and normalize the polynomial expressions, which then agree.
-
-Use `_ ≤ _ := by gcongr`. Conclude with `le_add_of_nonneg_right (by positivity)`. Conclude with `le_add_of_nonneg_left (by positivity)`. Conclude with `le_add_of_nonneg_left (by positivity)`.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem norm_U_mul_U_le {ρ₁ ρ₂ : ℝ} (h1 : F.r₀ ≤ ρ₁) (h12 : ρ₁ < ρ₂) (h2 : ρ₂ < 1) (i k j m : ℤ) :
     ‖F.U i j‖ * ‖F.U k (m - j)‖ ≤ ((ρ₁ ^ F.q) ^ i + (ρ₂ ^ F.q) ^ i) *
@@ -736,9 +730,9 @@ theorem norm_U_mul_U_le {ρ₁ ρ₂ : ℝ} (h1 : F.r₀ ≤ ρ₁) (h12 : ρ₁
           · exact le_add_of_nonneg_left (by positivity)
 
 /- English proof (translation)
-Rewrite using `[Int.cofinite_eq]`. Use `tendsto_sup.2 ⟨?_, ?_⟩` and prove the remaining obligations. Use `((tendsto_zpow_atTop_of_lt_one h0 h1).comp tendsto_neg_atBot_atTop).congr' ?_ filter_upwards [eventually_le_atBot (0 : ℤ)] with j hj` and prove the remaining obligations. Simplify using `[abs_of_nonpos hj]`. Use `(tendsto_zpow_atTop_of_lt_one h0 h1).congr' ?_ filter_upwards [eventually_ge_atTop (0 : ℤ)] with j hj` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[abs_of_nonneg hj]`.
+Simplify using the standard rewrite rules.
 -/
 theorem tendsto_pow_abs {t : ℝ} (h0 : 0 ≤ t) (h1 : t < 1) :
     Tendsto (fun j : ℤ => t ^ |j|) cofinite (𝓝 0) := by
@@ -752,29 +746,27 @@ theorem tendsto_pow_abs {t : ℝ} (h0 : 0 ≤ t) (h1 : t < 1) :
     simp [abs_of_nonneg hj]
 
 /- English proof (translation)
-Establish `hρ₁ : 0 < ρ₁` using `F.r₀_pos.trans_le h1`. Establish `hρ₂ : 0 < ρ₂` using `hρ₁.trans h12`. Establish `hq₁ : 0 < ρ₁ ^ F.q` using `by positivity`. Use function extensionality and compare the values at `m`. Use `set T3 : (ℤ × ℤ) × ℤ → K := fun p => (F.σ (f p.1.1) * F.σ (g p.1.2)) * (F.U p.1.1 p.2 * F.U p.1.2 (m - p.2)) with hT3def`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `hT3 : Summable T3`. Use `NonarchimedeanAddGroup.summable_of_tendsto_cofinite_zero ?_` and prove the remaining obligations. Rewrite using `[tendsto_zero_iff_norm_tendsto_zero]`. Establish `ha : Tendsto (fun i => ‖f i‖ * ((ρ₁ ^ F.q) ^ i + (ρ₂ ^ F.q) ^ i)) cofinite (𝓝 0)`. Simplify `(show Tendsto _ _ _ from hf1).add (show Tendsto _ _ _ from hf2)` using `[mul_add]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hb : Tendsto (fun i => ‖g i‖ * ((ρ₁ ^ F.q) ^ i + (ρ₂ ^ F.q) ^ i)) cofinite (𝓝 0)`. Simplify `(show Tendsto _ _ _ from hg1).add (show Tendsto _ _ _ from hg2)` using `[mul_add]`. Establish `hc : Tendsto (fun j : ℤ => (ρ₁ ^ (-m) + ρ₂ ^ (-m)) * (ρ₁ / ρ₂) ^ |j|) cofinite (𝓝 0)`. Simplify using `using (tendsto_pow_abs (by positivity) ((div_lt_one hρ₂).2 h12)).const_mul (ρ₁ ^ (-m) + ρ₂ ^ (-m))`. Use `squeeze_zero (fun _ => norm_nonneg _) (fun p => ?_) (tendsto_mul_cofinite_nhds_zero (tendsto_mul_cofinite_nhds_zero ha hb) hc)` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [T3, norm_mul, F.norm_σ]`. Use `norm_U_mul_U_le h1 h12 h2 p.1.1 p.1.2 p.2 m` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation. Establish `hL : F.phiSeq (cmul f g) m = ∑' p, T3 p`. Establish `hinner : ∀ n, F.σ (cmul f g n) * F.U n m = ∑' i, ∑' j, T3 ((i, n - i), j)`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `n`. Establish `hs : Summable fun i => f i * g (n - i)` using `hf1.summable_term hq₁ hg1 n`. Establish `e1 : F.σ (cmul f g n) = ∑' i, F.σ (f i) * F.σ (g (n - i))`. Use `(hs.hasSum.map F.σ continuous_σ).tsum_eq` as an intermediate fact. Simplify `this.symm` using `[cmul, Function.comp]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `e2 : ∀ i, F.U n m = ∑' j, F.U i j * F.U (n - i) (m - j)` using `fun i => by`. Use `F.U_add i (n - i)` as an intermediate fact. Rewrite `this` using `[add_sub_cancel]`. Rewrite using `[this]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, ← tsum_mul_right]`. Use `tsum_congr fun i => ?_` and prove the remaining obligations. Rewrite using `[e2 i, ← tsum_mul_left]`. Simplify using `only [phiSeq]`. Rewrite using `[tsum_congr hinner, hT3.tsum_prod]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `e : ℤ × ℤ ≃ ℤ × ℤ` to `{ toFun := fun p => (p.2, p.1 - p.2), invFun := fun p => (p.1 + p.2, p.1), left_inv := fun p => by simp, right_inv := fun p => by simp }`. Establish `hG : Summable fun p : ℤ × ℤ => ∑' j, T3 (p, j)` using `hT3.prod`. Use `set G : ℤ × ℤ → K := fun p => ∑' j, T3 (p, j)`. Establish `hGe : Summable fun x => G (e x)` using `(e.summable_iff (f := G)).2 hG`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hR : cmul (F.phiSeq f) (F.phiSeq g) m = ∑' p, T3 p`. Establish `hfib : ∀ j, Summable fun p : ℤ × ℤ => T3 (p, j)` using `fun j => hT3.comp_injective (i := fun p : ℤ × ℤ => (p, j)) fun a b h => (Prod.ext_iff.1 h).1`. Establish `hj : ∀ j, F.phiSeq f j * F.phiSeq g (m - j) = ∑' p : ℤ × ℤ, T3 (p, j)`. Introduce `j`. Simplify using `only [phiSeq]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← tsum_mul_right, (hfib j).tsum_prod]`. Use `tsum_congr fun i => ?_` and prove the remaining obligations. Rewrite using `[← tsum_mul_left]`. Use `tsum_congr fun k => ?_` and prove the remaining obligations. Simplify using `only [T3]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Express the relevant assertion in an equivalent form by its definition.
 
-Expand and normalize the polynomial expressions, which then agree. Express the relevant statement in the definitionally equal form `∑' j, F.phiSeq f j * F.phiSeq g (m - j) = _`. Rewrite using `[tsum_congr hj]`. Establish `hsw : Summable fun x : ℤ × (ℤ × ℤ) => T3 (x.2, x.1)` using `((Equiv.prodComm ℤ (ℤ × ℤ)).summable_iff (f := T3)).2 hT3`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[hL, hR]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem phiSeq_cmul {ρ₁ ρ₂ : ℝ} (h1 : F.r₀ ≤ ρ₁) (h12 : ρ₁ < ρ₂) (h2 : ρ₂ < 1) {f g : ℤ → K}
     (hf1 : ConvergesAt f (ρ₁ ^ F.q)) (hf2 : ConvergesAt f (ρ₂ ^ F.q))
@@ -854,7 +846,7 @@ theorem phiSeq_cmul {ρ₁ ρ₂ : ℝ} (h1 : F.r₀ ≤ ρ₁) (h12 : ρ₁ < �
   rw [hL, hR]
 
 /- English proof (translation)
-Take `⟨s, -, hs1, hs⟩` from `exists_common_pow (F := F) f g`. Take `⟨h1, hf1, hg1⟩` from `hs s le_rfl hs1`. Take `⟨-, hf2, hg2⟩` from `hs ((s + 1) / 2) (by linarith) (by linarith)`. Conclude with `Robba.ext (phiSeq_cmul h1 (by linarith) (by linarith) hf1 hf2 hg1 hg2)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem phiFun_mul (f g : Robba K) : F.phiFun (f * g) = F.phiFun f * F.phiFun g := by
   obtain ⟨s, -, hs1, hs⟩ := exists_common_pow (F := F) f g
@@ -863,7 +855,7 @@ theorem phiFun_mul (f g : Robba K) : F.phiFun (f * g) = F.phiFun f * F.phiFun g 
   exact Robba.ext (phiSeq_cmul h1 (by linarith) (by linarith) hf1 hf2 hg1 hg2)
 
 /- English proof (translation)
-Use extensionality with `m`. Simplify using `[phiSeq]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem phiFun_zero : F.phiFun 0 = 0 := by
   ext m
@@ -884,7 +876,7 @@ Both sides reduce to the same expression.
 theorem coeff_phi (f : Robba K) : (F.phi f).coeff = F.phiSeq f.coeff := rfl
 
 /- English proof (translation)
-Use extensionality with `m`. Rewrite using `[coeff_phi, Robba.coeff_single, phiSeq_single, Robba.coeff_single_mul]`. Simplify using `[U]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem phi_single (k : ℤ) (c : K) :
     F.phi (Robba.single k c) = Robba.single 0 (F.σ c) * ((F.uu ^ k : (Robba K)ˣ) : Robba K) := by
@@ -893,13 +885,13 @@ theorem phi_single (k : ℤ) (c : K) :
   simp [U]
 
 /- English proof (translation)
-Rewrite using `[phi_single, zpow_zero, Units.val_one, mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem phi_const (c : K) : F.phi (Robba.single 0 c) = Robba.single 0 (F.σ c) := by
   rw [phi_single, zpow_zero, Units.val_one, mul_one]
 
 /- English proof (translation)
-Rewrite using `[Robba.T, phi_single, zpow_one, map_one, Robba.single_zero_one, one_mul, coe_uu]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem phi_T : F.phi Robba.T = F.u := by
   rw [Robba.T, phi_single, zpow_one, map_one, Robba.single_zero_one, one_mul, coe_uu]
@@ -909,14 +901,14 @@ variable (F) in
 def spreadSeq (f : ℤ → K) (m : ℤ) : K := ∑' n, F.σ (f n) * (Pi.single ((F.q : ℤ) * n) (1 : K) : ℤ → K) m
 
 /- English proof (translation)
-Introduce `a b h` and use `by have : (F.q : ℤ) ≠ 0 := by exact_mod_cast F.q_pos.ne' exact mul_left_cancel₀ this h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem q_mul_injective : Function.Injective fun n : ℤ => (F.q : ℤ) * n := fun a b h => by
   have : (F.q : ℤ) ≠ 0 := by exact_mod_cast F.q_pos.ne'
   exact mul_left_cancel₀ this h
 
 /- English proof (translation)
-Unfold `spreadSeq`. Rewrite using `[tsum_eq_single n fun n' hn' => by`. Establish `: (F.q : ℤ) * n ≠ (F.q : ℤ) * n'` using `fun h => hn' (q_mul_injective h).symm`. Simplify using `[this]]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem spreadSeq_q_mul (f : ℤ → K) (n : ℤ) : F.spreadSeq f ((F.q : ℤ) * n) = F.σ (f n) := by
   unfold spreadSeq
@@ -926,7 +918,7 @@ theorem spreadSeq_q_mul (f : ℤ → K) (n : ℤ) : F.spreadSeq f ((F.q : ℤ) *
   simp
 
 /- English proof (translation)
-Unfold `spreadSeq`. Simplify using `[hm]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem spreadSeq_of_forall_ne (f : ℤ → K) {m : ℤ} (hm : ∀ n, m ≠ (F.q : ℤ) * n) :
     F.spreadSeq f m = 0 := by
@@ -934,13 +926,13 @@ theorem spreadSeq_of_forall_ne (f : ℤ → K) {m : ℤ} (hm : ∀ n, m ≠ (F.q
   simp [hm]
 
 /- English proof (translation)
-Establish `hρ : 0 < ρ` using `F.r₀_pos.trans_le h1`. Establish `hρm : 0 < ρ ^ m` using `zpow_pos hρ m`. Establish `hs2 : Summable fun n => F.σ (f n) * (Pi.single ((F.q : ℤ) * n) (1 : K) : ℤ → K) m`. Use `summable_of_hasFiniteSupport ((Set.finite_singleton (m / F.q)).subset fun n hn => ?_)` and prove the remaining obligations. Assume the negation of the conclusion as `hne`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Apply `hn` to reduce the goal to its premises. Establish `: m ≠ (F.q : ℤ) * n`. Introduce and unpack `rfl`. Apply `hne` to reduce the goal to its premises. Simplify using `[Int.mul_ediv_cancel_left _ (show (F.q : ℤ) ≠ 0 by exact_mod_cast F.q_pos.ne')]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Simplify using `[this]`. Unfold `phiSeq spreadSeq`. Rewrite using `[← (summable_phi_term h1 h2 hf m).tsum_sub hs2, ← le_div_iff₀ hρm]`. Use `IsUltrametricDist.norm_tsum_le_of_forall_le_of_nonneg (div_nonneg (mul_nonneg (δ_nonneg hρ) (gaussNorm_nonneg (by positivity))) hρm.le) fun n => ?_` and prove the remaining obligations. Rewrite using `[le_div_iff₀ hρm, ← mul_sub, norm_mul, F.norm_σ, mul_assoc]`.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hd` using `(U_spec h1 h2 n).2`. Establish `hdc : ConvergesAt (F.U n - Pi.single ((F.q : ℤ) * n) 1) ρ` using `(convergesAt_U h1 h2 n).sub hρ (convergesAt_single _ _ _)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem phiSeq_sub_spreadSeq_le (h1 : F.r₀ ≤ ρ) (h2 : ρ < 1) {f : ℤ → K}
     (hf : ConvergesAt f (ρ ^ F.q)) (m : ℤ) :
@@ -972,19 +964,17 @@ theorem phiSeq_sub_spreadSeq_le (h1 : F.r₀ ≤ ρ) (h2 : ρ < 1) {f : ℤ → 
         mul_le_mul_of_nonneg_left (hf.le_gaussNorm n) (δ_nonneg hρ)
 
 /- English proof (translation)
-Establish `hρ : 0 < ρ` using `F.r₀_pos.trans_le h1`. Establish `hρm : 0 < ρ ^ m` using `zpow_pos hρ m`. Use `set G := gaussNorm f (ρ ^ F.q)`. Establish `hG : 0 < G` using `gaussNorm_pos (by positivity) hf hf0`. Establish `hδ` using `δ_lt_one h1 h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsub` using `phiSeq_sub_spreadSeq_le h1 h2 hf m`. Establish `hsmall : ‖F.phiSeq f m - F.spreadSeq f m‖ * ρ ^ m < G` using `by nlinarith [δ_nonneg (F := F) hρ]`. Use `⟨⟨fun h => ?_, ?_⟩, phiSeq_weight_le h1 h2 hf m⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Use `push Not at hne`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `hm : ∃ n, m = (F.q : ℤ) * n`. Take `⟨n, rfl⟩` from `hm`. Establish `hlt : ‖f n‖ * (ρ ^ F.q) ^ n < G` using `lt_of_le_of_ne (hf.le_gaussNorm n) fun h' => hne n h' rfl`. Establish `e : (ρ ^ F.q) ^ n = ρ ^ ((F.q : ℤ) * n)` using `by rw [zpow_mul, zpow_natCast]`. Rewrite `hsmall` using `[spreadSeq_q_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: ‖F.phiSeq f ((F.q : ℤ) * n)‖ * ρ ^ ((F.q : ℤ) * n) < G`. Establish `h3` using `IsUltrametricDist.norm_add_le_max (F.phiSeq f ((F.q : ℤ) * n) - F.σ (f n)) (F.σ (f n))`. Rewrite `h3` using `[sub_add_cancel, F.norm_σ]`. Combine the equalities or inequalities in the displayed calculation. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `push Not at hm`. Rewrite `hsmall` using `[spreadSeq_of_forall_ne f hm, sub_zero]`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce and unpack `⟨n, hn, rfl⟩`. Establish `e : (ρ ^ F.q) ^ n = ρ ^ ((F.q : ℤ) * n)` using `by rw [zpow_mul, zpow_natCast]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hsmall` using `[spreadSeq_q_mul]`. Establish `hsn : ‖F.σ (f n)‖ * ρ ^ ((F.q : ℤ) * n) = G` using `by rw [F.norm_σ, ← e, hn]`. Establish `hlt : ‖F.phiSeq f ((F.q : ℤ) * n) - F.σ (f n)‖ < ‖F.σ (f n)‖`. Rewrite using `[← mul_lt_mul_iff_of_pos_right (zpow_pos hρ ((F.q : ℤ) * n)), hsn]`. Conclude with `hsmall`.
-
-Use `IsUltrametricDist.norm_add_eq_max_of_norm_ne_norm hlt.ne` as an intermediate fact. Rewrite `this` using `[sub_add_cancel, max_eq_right hlt.le]`. Rewrite using `[this, hsn]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem weight_phiSeq (h1 : F.r₀ ≤ ρ) (h2 : ρ < 1) {f : ℤ → K}
     (hf : ConvergesAt f (ρ ^ F.q)) (hf0 : f ≠ 0) (m : ℤ) :
@@ -1032,9 +1022,9 @@ theorem weight_phiSeq (h1 : F.r₀ ≤ ρ) (h2 : ρ < 1) {f : ℤ → K}
     rw [this, hsn]
 
 /- English proof (translation)
-Establish `hρ : 0 < ρ` using `F.r₀_pos.trans_le h1`. Distinguish the cases in `hf0 : f = 0`. Substitute `hf0` using the available equality. Establish `: F.phiSeq 0 = 0` using `by funext m; simp [phiSeq]`. Rewrite using `[this, gaussNorm_zero, gaussNorm_zero]`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `le_antisymm (gaussNorm_le (phiSeq_weight_le h1 h2 hf)) ?_` and prove the remaining obligations. Take `⟨n, hn⟩` from `hf.exists_eq_gaussNorm (by positivity) hf0`. Use `((weight_phiSeq h1 h2 hf hf0 ((F.q : ℤ) * n)).1).2 ⟨n, hn, rfl⟩` as an intermediate fact. Rewrite using `[← this]`. Conclude with `le_ciSup ⟨_, Set.forall_mem_range.2 (phiSeq_weight_le h1 h2 hf)⟩ _`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gaussNorm_phiSeq (h1 : F.r₀ ≤ ρ) (h2 : ρ < 1) {f : ℤ → K}
     (hf : ConvergesAt f (ρ ^ F.q)) : gaussNorm (F.phiSeq f) ρ = gaussNorm f (ρ ^ F.q) := by
@@ -1050,9 +1040,9 @@ theorem gaussNorm_phiSeq (h1 : F.r₀ ≤ ρ) (h2 : ρ < 1) {f : ℤ → K}
   exact le_ciSup ⟨_, Set.forall_mem_range.2 (phiSeq_weight_le h1 h2 hf)⟩ _
 
 /- English proof (translation)
-Use extensionality with `m`. Simplify using `only [domSet, Set.mem_ofPred_eq, Set.mem_image, gaussNorm_phiSeq h1 h2 hf]`. Rewrite using `[(weight_phiSeq h1 h2 hf hf0 m).1]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨n, hn, rfl⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨n, hn, rfl⟩`. Introduce and unpack `⟨n, hn, rfl⟩`. Conclude with `⟨n, hn, rfl⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem domSet_phiSeq (h1 : F.r₀ ≤ ρ) (h2 : ρ < 1) {f : ℤ → K}
     (hf : ConvergesAt f (ρ ^ F.q)) (hf0 : f ≠ 0) :
@@ -1065,7 +1055,7 @@ theorem domSet_phiSeq (h1 : F.r₀ ≤ ρ) (h2 : ρ < 1) {f : ℤ → K}
   · rintro ⟨n, hn, rfl⟩; exact ⟨n, hn, rfl⟩
 
 /- English proof (translation)
-Establish `hρ : 0 < ρ` using `F.r₀_pos.trans_le h1`. Introduce `h`. Use `gaussNorm_phiSeq h1 h2 hf` as an intermediate fact. Rewrite `this` using `[h, gaussNorm_zero]`. Conclude with `(gaussNorm_pos (by positivity) hf hf0).ne' this.symm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem phiSeq_ne_zero (h1 : F.r₀ ≤ ρ) (h2 : ρ < 1) {f : ℤ → K}
     (hf : ConvergesAt f (ρ ^ F.q)) (hf0 : f ≠ 0) : F.phiSeq f ≠ 0 := by
@@ -1076,11 +1066,11 @@ theorem phiSeq_ne_zero (h1 : F.r₀ ≤ ρ) (h2 : ρ < 1) {f : ℤ → K}
   exact (gaussNorm_pos (by positivity) hf hf0).ne' this.symm
 
 /- English proof (translation)
-Establish `hρ : 0 < ρ` using `F.r₀_pos.trans_le h1`. Establish `hρq : 0 < ρ ^ F.q` using `by positivity`. Establish `hφ0` using `phiSeq_ne_zero h1 h2 hf hf0`. Establish `hD` using `domSet_phiSeq h1 h2 hf hf0`. Establish `hq : (0 : ℤ) < F.q` using `by exact_mod_cast F.q_pos`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `le_antisymm (lowIndex_le hρ hφ hφ0 ?_) ?_` and prove the remaining obligations. Rewrite using `[hD]`. Conclude with `⟨_, lowIndex_mem hρq hf hf0, rfl⟩`. Establish `hm` using `lowIndex_mem hρ hφ hφ0`. Rewrite `hm` using `[hD]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨n, hn, he⟩` from `hm`. Rewrite using `[← he]`. Conclude with `mul_le_mul_of_nonneg_left (lowIndex_le hρq hf hf0 hn) hq.le`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lowIndex_phiSeq (h1 : F.r₀ ≤ ρ) (h2 : ρ < 1) {f : ℤ → K}
     (hf : ConvergesAt f (ρ ^ F.q)) (hφ : ConvergesAt (F.phiSeq f) ρ) (hf0 : f ≠ 0) :
@@ -1099,11 +1089,11 @@ theorem lowIndex_phiSeq (h1 : F.r₀ ≤ ρ) (h2 : ρ < 1) {f : ℤ → K}
     exact mul_le_mul_of_nonneg_left (lowIndex_le hρq hf hf0 hn) hq.le
 
 /- English proof (translation)
-Establish `hρ : 0 < ρ` using `F.r₀_pos.trans_le h1`. Establish `hρq : 0 < ρ ^ F.q` using `by positivity`. Establish `hφ0` using `phiSeq_ne_zero h1 h2 hf hf0`. Establish `hD` using `domSet_phiSeq h1 h2 hf hf0`. Establish `hq : (0 : ℤ) < F.q` using `by exact_mod_cast F.q_pos`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `le_antisymm ?_ (le_highIndex hρ hφ hφ0 ?_)` and prove the remaining obligations. Establish `hm` using `highIndex_mem hρ hφ hφ0`. Rewrite `hm` using `[hD]`. Take `⟨n, hn, he⟩` from `hm`. Rewrite using `[← he]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_le_mul_of_nonneg_left (le_highIndex hρq hf hf0 hn) hq.le`. Rewrite using `[hD]`. Conclude with `⟨_, highIndex_mem hρq hf hf0, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem highIndex_phiSeq (h1 : F.r₀ ≤ ρ) (h2 : ρ < 1) {f : ℤ → K}
     (hf : ConvergesAt f (ρ ^ F.q)) (hφ : ConvergesAt (F.phiSeq f) ρ) (hf0 : f ≠ 0) :
@@ -1122,7 +1112,7 @@ theorem highIndex_phiSeq (h1 : F.r₀ ≤ ρ) (h2 : ρ < 1) {f : ℤ → K}
   · rw [hD]; exact ⟨_, highIndex_mem hρq hf hf0, rfl⟩
 
 /- English proof (translation)
-The claim follows from `eventually_r₀_le.and ((eventually_mem_nhdsWithin (s := Set.Iio 1)).and ((eventually_convergesAt_pow f).and (F.phi f).eventually_convergesAt))`.
+A detailed English derivation is pending.
 -/
 theorem eventually_phi (f : Robba K) : ∀ᶠ ρ in 𝓝[<] (1 : ℝ), F.r₀ ≤ ρ ∧ ρ < 1 ∧
     ConvergesAt f.coeff (ρ ^ F.q) ∧ ConvergesAt (F.phi f).coeff ρ :=
@@ -1130,14 +1120,14 @@ theorem eventually_phi (f : Robba K) : ∀ᶠ ρ in 𝓝[<] (1 : ℝ), F.r₀ �
     ((eventually_convergesAt_pow f).and (F.phi f).eventually_convergesAt))
 
 /- English proof (translation)
-The claim follows from `(eventually_phi f).mono fun _ h => gaussNorm_phiSeq h.1 h.2.1 h.2.2.1`.
+A detailed English derivation is pending.
 -/
 theorem eventually_gaussNorm_phi (f : Robba K) :
     ∀ᶠ ρ in 𝓝[<] (1 : ℝ), gaussNorm (F.phi f).coeff ρ = gaussNorm f.coeff (ρ ^ F.q) :=
   (eventually_phi f).mono fun _ h => gaussNorm_phiSeq h.1 h.2.1 h.2.2.1
 
 /- English proof (translation)
-Establish `hf0 : f.coeff ≠ 0` using `fun h => hf (Robba.ext h)`. Conclude with `(eventually_phi f).mono fun _ h => ⟨lowIndex_phiSeq h.1 h.2.1 h.2.2.1 h.2.2.2 hf0, highIndex_phiSeq h.1 h.2.1 h.2.2.1 h.2.2.2 hf0⟩`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eventually_lowIndex_phi {f : Robba K} (hf : f ≠ 0) :
     ∀ᶠ ρ in 𝓝[<] (1 : ℝ), lowIndex (F.phi f).coeff ρ = (F.q : ℤ) * lowIndex f.coeff (ρ ^ F.q) ∧
@@ -1147,9 +1137,9 @@ theorem eventually_lowIndex_phi {f : Robba K} (hf : f ≠ 0) :
     ⟨lowIndex_phiSeq h.1 h.2.1 h.2.2.1 h.2.2.2 hf0, highIndex_phiSeq h.1 h.2.1 h.2.2.1 h.2.2.2 hf0⟩
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `f hf`. Assume the negation of the conclusion as `hne`. Establish `hf0 : f.coeff ≠ 0` using `fun h => hne (Robba.ext h)`. Take `⟨ρ, h⟩` from `(eventually_phi (F := F) f).exists`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `phiSeq_ne_zero h.1 h.2.1 h.2.2.1 hf0 (congrArg Robba.coeff hf)`.
+A detailed English derivation is pending.
 -/
 theorem phi_injective : Function.Injective F.phi := by
   rw [injective_iff_map_eq_zero]
@@ -1160,9 +1150,7 @@ theorem phi_injective : Function.Injective F.phi := by
   exact phiSeq_ne_zero h.1 h.2.1 h.2.2.1 hf0 (congrArg Robba.coeff hf)
 
 /- English proof (translation)
-Establish `hc : ContinuousAt (fun ρ : ℝ => (ρ ^ F.q) ^ n * ρ ^ (-m)) 1` using `((continuousAt_id.pow F.q).zpow₀ n (Or.inl (by simp))).mul (continuousAt_id.zpow₀ (-m) (Or.inl one_ne_zero))`. Establish `ht` using `hc.tendsto.mono_left (nhdsWithin_le_nhds (s := Set.Iio (1 : ℝ)))`. Simplify using `only [one_pow, one_zpow, mul_one] at ht`. Use `ge_of_tendsto ht ?_` and prove the remaining obligations. Use `filter_upwards [eventually_r₀_le (F := F), eventually_mem_nhdsWithin] with ρ h1 h2`.
-
-Conclude with `norm_U_le' h1 h2 n m`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem norm_U_le_one (n m : ℤ) : ‖F.U n m‖ ≤ 1 := by
   have hc : ContinuousAt (fun ρ : ℝ => (ρ ^ F.q) ^ n * ρ ^ (-m)) 1 :=
@@ -1175,7 +1163,7 @@ theorem norm_U_le_one (n m : ℤ) : ‖F.U n m‖ ≤ 1 := by
   exact norm_U_le' h1 h2 n m
 
 /- English proof (translation)
-Use `⟨Robba.norm1 f, Set.forall_mem_range.2 fun m => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `‖F.phiSeq f.coeff m‖ ≤ _`. Use `IsUltrametricDist.norm_tsum_le_of_forall_le_of_nonneg (Robba.gaussNorm_nonneg_alt f) fun n => ?_` and prove the remaining obligations. Rewrite using `[norm_mul, F.norm_σ]`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem phi_mem_bounded {f : Robba K} (hf : f ∈ Robba.bounded K) : F.phi f ∈ Robba.bounded K := by
   refine ⟨Robba.norm1 f, Set.forall_mem_range.2 fun m => ?_⟩
@@ -1188,7 +1176,7 @@ theorem phi_mem_bounded {f : Robba K} (hf : f ∈ Robba.bounded K) : F.phi f ∈
     _ = _ := mul_one _
 
 /- English proof (translation)
-Establish `h1` using `Robba.tendsto_gaussNorm_norm1 (phi_mem_bounded (F := F) hf)`. Establish `h2` using `(Robba.tendsto_gaussNorm_norm1 hf).comp (tendsto_pow_q (F := F))`. Conclude with `tendsto_nhds_unique h1 (h2.congr' ((eventually_gaussNorm_phi f).mono fun _ h => h.symm))`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem gaussNorm_phi {f : Robba K} (hf : f ∈ Robba.bounded K) :
     Robba.norm1 (F.phi f) = Robba.norm1 f := by

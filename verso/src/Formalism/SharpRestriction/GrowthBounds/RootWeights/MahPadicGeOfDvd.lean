@@ -14,19 +14,19 @@ Both sides reduce to the same expression.
 theorem mah_zero (f : ℕ → ℚ) : mah f 0 = f 0 := rfl
 
 /- English proof (translation)
-Simplify using `only [mah, Function.iterate_succ_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mah_succ (f : ℕ → ℚ) (j : ℕ) : mah f (j + 1) = mah (fwdDiff 1 f) j := by
   simp only [mah, Function.iterate_succ_apply]
 
 /- English proof (translation)
-Simplify using `only [mah, fwdDiff_iter_add, Pi.add_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mah_add (f g : ℕ → ℚ) (j : ℕ) : mah (f + g) j = mah f j + mah g j := by
   simp only [mah, fwdDiff_iter_add, Pi.add_apply]
 
 /- English proof (translation)
-Proceed by induction on `j with`. Consider the case `zero => rfl`. Consider the case `succ j ih => rw [mah_succ, fwdDiff_const]`. Conclude with `ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem mah_zero_fn (j : ℕ) : mah (fun _ => (0 : ℚ)) j = 0 := by
   induction j with
@@ -34,7 +34,7 @@ theorem mah_zero_fn (j : ℕ) : mah (fun _ => (0 : ℚ)) j = 0 := by
   | succ j ih => rw [mah_succ, fwdDiff_const]; exact ih
 
 /- English proof (translation)
-Consider the cases of `j with`. Consider the case `zero => rfl`. Consider the case `succ j => rw [mah_succ, fwdDiff_const, mah_zero_fn]`. Simplify using the standard rewrite rules.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 -/
 theorem mah_const (c : ℚ) (j : ℕ) : mah (fun _ => c) j = if j = 0 then c else 0 := by
   cases j with
@@ -42,7 +42,7 @@ theorem mah_const (c : ℚ) (j : ℕ) : mah (fun _ => c) j = if j = 0 then c els
   | succ j => rw [mah_succ, fwdDiff_const, mah_zero_fn]; simp
 
 /- English proof (translation)
-Establish `h` using `mah_add f (-f) j`. Rewrite `h` using `[add_neg_cancel]`. Establish `h0 : mah (0 : ℕ → ℚ) j = 0` using `mah_zero_fn j`. Rewrite `h` using `[h0]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem mah_neg (f : ℕ → ℚ) (j : ℕ) : mah (-f) j = - mah f j := by
   have h := mah_add f (-f) j
@@ -52,9 +52,9 @@ theorem mah_neg (f : ℕ → ℚ) (j : ℕ) : mah (-f) j = - mah f j := by
   linarith
 
 /- English proof (translation)
-Proceed by induction on `j generalizing f with`. Consider the case `zero => rfl`. Consider the case `succ j ih`. Rewrite using `[mah_succ, mah_succ, ← ih]`. Use `congr 1`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `n`. Simplify using `only [fwdDiff]`. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem mah_smul (a : ℚ) (f : ℕ → ℚ) (j : ℕ) : mah (fun n => a * f n) j = a * mah f j := by
   induction j generalizing f with
@@ -67,9 +67,9 @@ theorem mah_smul (a : ℚ) (f : ℕ → ℚ) (j : ℕ) : mah (fun n => a * f n) 
     ring
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using mah_zero_fn j`. Consider the case `insert a s ha ih`. Establish `: (fun n => ∑ l ∈ insert a s, F l n) = F a + fun n => ∑ l ∈ s, F l n`. Use extensionality with `n`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[Finset.sum_insert ha]`. Rewrite using `[this, mah_add, ih, Finset.sum_insert ha]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem mah_sum {ι : Type*} (s : Finset ι) (F : ι → ℕ → ℚ) (j : ℕ) :
     mah (fun n => ∑ l ∈ s, F l n) j = ∑ l ∈ s, mah (F l) j := by
@@ -82,13 +82,13 @@ theorem mah_sum {ι : Type*} (s : Finset ι) (F : ι → ℕ → ℚ) (j : ℕ) 
     rw [this, mah_add, ih, Finset.sum_insert ha]
 
 /- English proof (translation)
-Proceed by induction on `j generalizing l with`. Consider the case `zero`. Rewrite using `[mah_zero]`. Consider the cases of `l with`. Consider the case `zero => simp`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Consider the case `succ l => simp`. Consider the case `succ j ih`. Rewrite using `[mah_succ]`. Consider the cases of `l with`. Consider the case `zero`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Establish `: fwdDiff 1 (fun n : ℕ => (n.choose 0 : ℚ)) = fun _ => 0`. Use extensionality with `n`. Simplify using `[fwdDiff]`. Rewrite using `[this, mah_zero_fn]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Consider the case `succ l`. Establish `: fwdDiff 1 (fun n : ℕ => (n.choose (l + 1) : ℚ)) = fun n => (n.choose l : ℚ)`. Use extensionality with `n`. Simplify using `[fwdDiff, Nat.choose_succ_succ']`. Rewrite using `[this, ih]`.
+Treat this case separately. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -112,7 +112,7 @@ theorem mah_choose (l j : ℕ) : mah (fun n => (n.choose l : ℚ)) j = if j = l 
       rw [this, ih]; simp
 
 /- English proof (translation)
-Use extensionality with `n`. Simplify using `only [fwdDiff, Pi.mul_apply, Pi.add_apply]`. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem mah_leibniz (f g : ℕ → ℚ) :
     fwdDiff 1 (f * g) = fwdDiff 1 f * g + f * fwdDiff 1 g + fwdDiff 1 f * fwdDiff 1 g := by
@@ -121,7 +121,7 @@ theorem mah_leibniz (f g : ℕ → ℚ) :
   ring
 
 /- English proof (translation)
-Establish `h` using `shift_eq_sum_fwdDiff_iter (1 : ℕ) f m 0`. Simplify using `only [zero_add, smul_eq_mul, mul_one, nsmul_eq_mul] at h`. Rewrite using `[h]`. Conclude with `sum_congr rfl fun j _ => by rw [mah, mul_comm]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mah_newton (f : ℕ → ℚ) (m : ℕ) : f m = ∑ j ∈ range (m + 1), mah f j * (m.choose j : ℚ) := by
   have h := shift_eq_sum_fwdDiff_iter (1 : ℕ) f m 0
@@ -130,13 +130,13 @@ theorem mah_newton (f : ℕ → ℚ) (m : ℕ) : f m = ∑ j ∈ range (m + 1), 
   exact sum_congr rfl fun j _ => by rw [mah, mul_comm]
 
 /- English proof (translation)
-Introduce `j hj` and use `h j (hj.trans hK)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mah_decLe_mono {p : ℕ} {θ s : ℝ} {K K' : ℕ} {f : ℕ → ℚ} (h : DecLe p θ s K f) (hK : K' ≤ K) :
     DecLe p θ s K' f := fun j hj => h j (hj.trans hK)
 
 /- English proof (translation)
-Introduce `j hj`. Rewrite using `[← mah_succ]`. Use `padicGe_mono (h (j + 1) (by omega)) ?_` and prove the remaining obligations. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem mah_decLe_diff {p : ℕ} {θ s : ℝ} {K : ℕ} {f : ℕ → ℚ} (h : DecLe p θ s (K + 1) f) :
     DecLe p θ (s + θ) K (fwdDiff 1 f) := by
@@ -147,13 +147,13 @@ theorem mah_decLe_diff {p : ℕ} {θ s : ℝ} {K : ℕ} {f : ℕ → ℚ} (h : D
   linarith
 
 /- English proof (translation)
-Proceed by induction on `N with`. Consider the case `zero`. Introduce `s s' f g hf hg`. Establish `h1` using `hf 0 le_rfl`. Establish `h2` using `hg 0 le_rfl`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `padicGe_mul h1 h2`. Use `padicGe_mono h3 ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Consider the case `succ N ih`. Introduce `s s' f g hf hg`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[mah_succ, mah_leibniz, mah_add, mah_add]`. Establish `hf'` using `mah_decLe_diff hf`. Establish `hg'` using `mah_decLe_diff hg`. Establish `hf0` using `mah_decLe_mono hf (Nat.le_succ N)`. Establish `hg0` using `mah_decLe_mono hg (Nat.le_succ N)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `padicGe_add (padicGe_add ?_ ?_) ?_` and prove the remaining obligations. Conclude with `padicGe_mono (ih _ _ _ _ hf' hg0) (by push_cast; linarith)`. Conclude with `padicGe_mono (ih _ _ _ _ hf0 hg') (by push_cast; linarith)`. Conclude with `padicGe_mono (ih _ _ _ _ hf' hg') (by push_cast; linarith)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem mah_prodLe {p : ℕ} [Fact p.Prime] {θ : ℝ} (hθ : 0 ≤ θ) (N : ℕ) :
     ∀ (s s' : ℝ) (f g : ℕ → ℚ), DecLe p θ s N f → DecLe p θ s' N g →
@@ -179,14 +179,14 @@ theorem mah_prodLe {p : ℕ} [Fact p.Prime] {θ : ℝ} (hθ : 0 ≤ θ) (N : ℕ
     · exact padicGe_mono (ih _ _ _ _ hf' hg') (by push_cast; linarith)
 
 /- English proof (translation)
-Introduce `N` and use `mah_prodLe hθ N s s' f g (fun j _ => hf j) (fun j _ => hg j)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mah_dec_mul {p : ℕ} [Fact p.Prime] {θ s s' : ℝ} {f g : ℕ → ℚ} (hθ : 0 ≤ θ)
     (hf : Dec p θ s f) (hg : Dec p θ s' g) : Dec p θ (s + s') (f * g) :=
   fun N => mah_prodLe hθ N s s' f g (fun j _ => hf j) (fun j _ => hg j)
 
 /- English proof (translation)
-Introduce `θ s s' f g hθ hf hg`. Use `Fact.mk hp` as an intermediate fact. Conclude with `mah_dec_mul hθ hf hg`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem hMul_proved {p : ℕ} (hp : p.Prime) : HMul p := by
   intro θ s s' f g hθ hf hg
@@ -194,7 +194,7 @@ theorem hMul_proved {p : ℕ} (hp : p.Prime) : HMul p := by
   exact mah_dec_mul hθ hf hg
 
 /- English proof (translation)
-Introduce `j`. Use `padicGe_mono (h j) ?_` and prove the remaining obligations. Establish `: θ' * (j : ℝ) ≤ θ * j` using `mul_le_mul_of_nonneg_right h1 (by positivity)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem mah_dec_weaken {p : ℕ} {θ θ' s s' : ℝ} {f : ℕ → ℚ} (h : Dec p θ s f) (h1 : θ' ≤ θ) (h2 : s' ≤ s) :
     Dec p θ' s' f := by
@@ -204,15 +204,13 @@ theorem mah_dec_weaken {p : ℕ} {θ θ' s s' : ℝ} {f : ℕ → ℚ} (h : Dec 
   linarith
 
 /- English proof (translation)
-Establish `hD : fwdDiff 1 g = g * u`. Use extensionality with `n`. Simplify using `only [fwdDiff, Pi.mul_apply, hs]`. Expand and normalize the polynomial expressions, which then agree. Establish `key : ∀ N, DecLe p θ 0 N g`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Introduce `N`. Proceed by induction on `N with`. Consider the case `zero`. Introduce `j hj`. Take `rfl : j = 0` from `by omega`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[mah_zero, h0]`. Use `right`. Simplify using the standard rewrite rules. Consider the case `succ N ih`. Introduce `j hj`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `Nat.lt_or_ge j (N + 1) with h | h` into its components or cases. Conclude with `ih j (by omega)`. Take `rfl : j = N + 1` from `by omega`. Rewrite using `[mah_succ, hD]`. Conclude with `padicGe_mono (mah_prodLe hθ N 0 θ g u ih (fun j _ => hu j)) (by push_cast; linarith)`.
-
-Conclude with `fun j => key j j le_rfl`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem mah_running {p : ℕ} [Fact p.Prime] {θ : ℝ} (hθ : 0 ≤ θ) (g u : ℕ → ℚ) (h0 : g 0 = 1)
     (hs : ∀ n, g (n + 1) = g n * (1 + u n)) (hu : Dec p θ θ u) : Dec p θ 0 g := by
@@ -239,7 +237,7 @@ theorem mah_running {p : ℕ} [Fact p.Prime] {θ : ℝ} (hθ : 0 ≤ θ) (g u : 
   exact fun j => key j j le_rfl
 
 /- English proof (translation)
-Rewrite using `[mah_newton f n]`. Use `padicGe_sum _ _ fun j _ => padicGe_mul_nat (padicGe_mono (h j) ?_) _` and prove the remaining obligations. Establish `: 0 ≤ θ * (j : ℝ)` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem mah_val {p : ℕ} [Fact p.Prime] {θ s : ℝ} {f : ℕ → ℚ} (hθ : 0 ≤ θ) (h : Dec p θ s f) (n : ℕ) :
     PadicGe p (f n) s := by
@@ -249,9 +247,9 @@ theorem mah_val {p : ℕ} [Fact p.Prime] {θ s : ℝ} {f : ℕ → ℚ} (hθ : 0
   linarith
 
 /- English proof (translation)
-Proceed by induction on `N with`. Consider the case `zero => intro f h`. Conclude with `h 0`. Consider the case `succ N ih`. Introduce `f h`.
+Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mah_succ]`. Use `ih _ fun n => ?_` and prove the remaining obligations. Simplify using `only [fwdDiff, sub_eq_add_neg]`. Conclude with `padicGe_add (h _) (padicGe_neg (h _))`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mah_of_vals {p : ℕ} [Fact p.Prime] {r : ℝ} (N : ℕ) :
     ∀ f : ℕ → ℚ, (∀ n, PadicGe p (f n) r) → PadicGe p (mah f N) r := by
@@ -265,11 +263,11 @@ theorem mah_of_vals {p : ℕ} [Fact p.Prime] {r : ℝ} (N : ℕ) :
     exact padicGe_add (h _) (padicGe_neg (h _))
 
 /- English proof (translation)
-Distinguish the cases in `h0 : x = 0`. Simplify using `[h0]`. Break down `hx with hx | hx` into its components or cases. Conclude with `absurd hx h0`. Establish `hpos : (0 : ℤ) < padicValRat p x`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (0 : ℝ) < (padicValRat p x : ℝ)` using `lt_of_lt_of_le hθ hx`. Conclude with `this` after adjusting the coercions. Establish `hne : 1 + x ≠ 0`. Introduce `h`. Establish `hx1 : x = -1` using `by linarith`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hpos` using `[hx1, padicValRat.neg, padicValRat.one]`. Conclude with `lt_irrefl _ hpos`. Use `⟨hne, ?_⟩` and prove the remaining obligations. Use `padicValRat.add_eq_of_lt (p := p) hne one_ne_zero h0 (by rw [padicValRat.one]; exact hpos)` as an intermediate fact. Rewrite using `[this, padicValRat.one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mah_unit {p : ℕ} [Fact p.Prime] {x : ℚ} {θ : ℝ} (hθ : 0 < θ) (hx : PadicGe p x θ) :
     1 + x ≠ 0 ∧ padicValRat p (1 + x) = 0 := by
@@ -290,9 +288,9 @@ theorem mah_unit {p : ℕ} [Fact p.Prime] {x : ℚ} {θ : ℝ} (hθ : 0 < θ) (h
   rw [this, padicValRat.one]
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => right`. Simplify using the standard rewrite rules. Consider the case `succ m ih`. Rewrite using `[pow_succ]`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `padicGe_mono (padicGe_mul ih hx) (by push_cast; linarith)`.
+A detailed English derivation is pending.
 -/
 theorem mah_padicGe_pow {p : ℕ} [Fact p.Prime] {x : ℚ} {r : ℝ} (hx : PadicGe p x r) (m : ℕ) :
     PadicGe p (x ^ m) (m * r) := by
@@ -303,9 +301,9 @@ theorem mah_padicGe_pow {p : ℕ} [Fact p.Prime] {x : ℚ} {r : ℝ} (hx : Padic
     exact padicGe_mono (padicGe_mul ih hx) (by push_cast; linarith)
 
 /- English proof (translation)
-Introduce `j`. Rewrite using `[mah_const]`. Use `split_ifs with h`. Substitute `h` using the available equality. Simplify using `using hc`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Prove the first alternative.
 
-Conclude with `Or.inl rfl`.
+A detailed English derivation is pending.
 -/
 theorem mah_dec_const {p : ℕ} {θ s : ℝ} {c : ℚ} (hc : PadicGe p c s) : Dec p θ s (fun _ => c) := by
   intro j
@@ -315,21 +313,21 @@ theorem mah_dec_const {p : ℕ} {θ s : ℝ} {c : ℚ} (hc : PadicGe p c s) : De
   · exact Or.inl rfl
 
 /- English proof (translation)
-Introduce `j` and use `by rw [mah_add]; exact padicGe_add (hf j) (hg j)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mah_dec_add {p : ℕ} [Fact p.Prime] {θ s : ℝ} {f g : ℕ → ℚ} (hf : Dec p θ s f) (hg : Dec p θ s g) :
     Dec p θ s (f + g) := fun j => by rw [mah_add]; exact padicGe_add (hf j) (hg j)
 
 /- English proof (translation)
-Introduce `j` and use `by rw [mah_neg]; exact padicGe_neg (hf j)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mah_dec_neg {p : ℕ} {θ s : ℝ} {f : ℕ → ℚ} (hf : Dec p θ s f) : Dec p θ s (-f) :=
   fun j => by rw [mah_neg]; exact padicGe_neg (hf j)
 
 /- English proof (translation)
-Proceed by induction on `i with`. Consider the case `zero`. Rewrite using `[pow_zero]`. Use `mah_dec_const (c := 1) ?_` and prove the remaining obligations. Use `right`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Consider the case `succ i ih`. Rewrite using `[pow_succ]`. Conclude with `mah_dec_weaken (mah_dec_mul hθ ih hw) le_rfl (by push_cast; linarith)`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mah_dec_pow {p : ℕ} [Fact p.Prime] {θ : ℝ} (hθ : 0 ≤ θ) {w : ℕ → ℚ} (hw : Dec p θ θ w) (i : ℕ) :
     Dec p θ (i * θ) (w ^ i) := by
@@ -343,7 +341,7 @@ theorem mah_dec_pow {p : ℕ} [Fact p.Prime] {θ : ℝ} (hθ : 0 ≤ θ) {w : �
     exact mah_dec_weaken (mah_dec_mul hθ ih hw) le_rfl (by push_cast; linarith)
 
 /- English proof (translation)
-Introduce `j`. Rewrite using `[mah_sum]`. Conclude with `padicGe_sum _ _ fun i hi => h i hi j`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mah_dec_sum {p : ℕ} [Fact p.Prime] {θ s : ℝ} {ι : Type*} (t : Finset ι) (F : ι → ℕ → ℚ)
     (h : ∀ i ∈ t, Dec p θ s (F i)) : Dec p θ s (fun n => ∑ i ∈ t, F i n) := by
@@ -352,7 +350,7 @@ theorem mah_dec_sum {p : ℕ} [Fact p.Prime] {θ s : ℝ} {ι : Type*} (t : Fins
   exact padicGe_sum _ _ fun i hi => h i hi j
 
 /- English proof (translation)
-Establish `g` using `geom_sum_mul (-x) (N + 2)`. Rewrite `g` using `[sum_range_succ', pow_zero]`. Establish `hI : (1 + x)⁻¹ * (1 + x) = 1` using `inv_mul_cancel₀ hx`. Take the linear combination `(1 + x)⁻¹ * g + (∑ i ∈ range (N + 1), (-x) ^ (i + 1) + 1) * hI`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem mah_geom (x : ℚ) (hx : 1 + x ≠ 0) (N : ℕ) :
     (1 + x)⁻¹ - 1 = ∑ i ∈ range (N + 1), (-x) ^ (i + 1) + (-x) ^ (N + 2) * (1 + x)⁻¹ := by
@@ -362,15 +360,15 @@ theorem mah_geom (x : ℚ) (hx : 1 + x ≠ 0) (N : ℕ) :
   linear_combination (1 + x)⁻¹ * g + (∑ i ∈ range (N + 1), (-x) ^ (i + 1) + 1) * hI
 
 /- English proof (translation)
-Introduce `N`. Establish `hval : ∀ n, PadicGe p (u n) θ` using `mah_val hθ.le hu`. Establish `hdec : (fun n => (1 + u n)⁻¹ - 1) = (fun n => ∑ i ∈ range (N + 1), ((-u) ^ (i + 1)) n) + fun n => (-u n) ^ (N + 2) * (1 + u n)⁻¹`. Use extensionality with `n`. Simplify using `only [Pi.add_apply, Pi.pow_apply, Pi.neg_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Conclude with `mah_geom (u n) (mah_unit hθ (hval n)).1 N`. Rewrite using `[hdec, mah_add]`. Use `padicGe_add ?_ ?_` and prove the remaining obligations. Use `mah_dec_sum (range (N + 1)) (fun i => (-u) ^ (i + 1)) (fun i _ => ?_) N` and prove the remaining obligations. Use `mah_dec_weaken (mah_dec_pow hθ.le (mah_dec_neg hu) (i + 1)) le_rfl ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Establish `: 0 ≤ (i : ℝ) * θ` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Use `mah_of_vals N _ fun n => ?_` and prove the remaining obligations. Establish `h1` using `mah_padicGe_pow (padicGe_neg (hval n)) (N + 2)`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : PadicGe p ((1 + u n)⁻¹) 0` using `by right`. Rewrite using `[padicValRat.inv, (mah_unit hθ (hval n)).2]`. Simplify using the standard rewrite rules. Use `padicGe_mono (padicGe_mul h1 h2) ?_` and prove the remaining obligations. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem mah_inv {p : ℕ} [Fact p.Prime] {θ : ℝ} (hθ : 0 < θ) {u : ℕ → ℚ} (hu : Dec p θ θ u) :
     Dec p θ θ (fun n => (1 + u n)⁻¹ - 1) := by
@@ -399,9 +397,9 @@ theorem mah_inv {p : ℕ} [Fact p.Prime] {θ : ℝ} (hθ : 0 < θ) {u : ℕ → 
     linarith
 
 /- English proof (translation)
-Take `⟨b, rfl⟩` from `h`. Establish `h1 : PadicGe p ((p : ℚ) ^ l) l` using `by right`. Rewrite using `[padicValRat.pow, padicValRat.self (Fact.out : p.Prime).one_lt]`. Simplify using the standard rewrite rules. Use `padicGe_mul h1 (padicGe_int (p := p) b)` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `push_cast`. Simplify using `using this`.
+Move the embeddings inside the algebraic operations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mah_padicGe_of_dvd {p : ℕ} [Fact p.Prime] {a : ℤ} {l : ℕ} (h : (p : ℤ) ^ l ∣ a) :
     PadicGe p (a : ℚ) l := by
@@ -415,15 +413,15 @@ theorem mah_padicGe_of_dvd {p : ℕ} [Fact p.Prime] {a : ℤ} {l : ℕ} (h : (p 
   simpa using this
 
 /- English proof (translation)
-Take `⟨a, ha, hdiv⟩` from `h t rho hr`. Introduce `j`. Consider the cases of `j with`. Consider the case `zero => left`. Rewrite using `[mah_zero]`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[dUnit]`. Consider the case `succ j`. Establish `e1 : fwdDiff 1 (fun n => dUnit (p ^ (t + 1)) n rho - 1) = fwdDiff 1 (fun n => ∑ l ∈ range (rho + 1), (a l : ℚ) * (n.choose l : ℚ))`. Use extensionality with `n`. Simplify using `only [fwdDiff, ha]`.
+Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[mah_succ, e1, ← mah_succ, mah_sum]`. Use `padicGe_sum _ _ fun l _ => ?_` and prove the remaining obligations. Rewrite using `[mah_smul, mah_choose]`. Use `split_ifs with hl`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Substitute using the available equality.
 
-Substitute `hl` using the available equality. Rewrite using `[mul_one]`. Use `padicGe_mono (mah_padicGe_of_dvd (hdiv (j + 1))) ?_` and prove the remaining obligations. Use `push_cast`. Establish `: (0 : ℝ) ≤ j` using `by positivity`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Use `left`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mah_dU {p : ℕ} [Fact p.Prime] (h : HdU p) (t rho : ℕ) (hr : rho < p ^ (t + 1)) :
     Dec p (1 / 2) (1 / 2) (fun n => dUnit (p ^ (t + 1)) n rho - 1) := by
@@ -453,7 +451,7 @@ theorem mah_dU {p : ℕ} [Fact p.Prime] (h : HdU p) (t rho : ℕ) (hr : rho < p 
     · left; simp
 
 /- English proof (translation)
-Establish `: (fun n => 1 + u n) = (fun _ => (1 : ℚ)) + u` using `rfl`. Rewrite using `[this]`. Use `mah_dec_add (mah_dec_const ?_) (mah_dec_weaken hu le_rfl hs)` and prove the remaining obligations. Use `right`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mah_one_add {p : ℕ} [Fact p.Prime] {θ s : ℝ} {u : ℕ → ℚ} (hs : 0 ≤ s) (hu : Dec p θ s u) :
     Dec p θ 0 (fun n => 1 + u n) := by
@@ -463,14 +461,14 @@ theorem mah_one_add {p : ℕ} [Fact p.Prime] {θ s : ℝ} {u : ℕ → ℚ} (hs 
   right; simp
 
 /- English proof (translation)
-Simplify using `[cUnit]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mah_cUnit_zero (P : ℕ) : cUnit P 0 = 1 := by simp [cUnit]
 
 /- English proof (translation)
-Establish `h1 : cUnit P (n + 1) = _` using `Formalism.GrowthSums.blockFactorialQuotientProd P (n + 1) hP`. Establish `h2 : cUnit P n = _` using `Formalism.GrowthSums.blockFactorialQuotientProd P n hP`. Rewrite using `[h1, h2, prod_range_succ]`. Use `congr 1`. Establish `: Icc 1 (P - 1) = Ico 1 P`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Use extensionality with `y`. Simplify using `only [mem_Icc, mem_Ico]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[dUnit, this]`. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem mah_cUnit_succ (P n : ℕ) (hP : 1 ≤ P) :
     cUnit P (n + 1) = cUnit P n * (1 + (dUnit P n (P - 1) - 1)) := by
@@ -484,45 +482,45 @@ theorem mah_cUnit_succ (P n : ℕ) (hP : 1 ≤ P) :
   ring
 
 /- English proof (translation)
-Use function extensionality and compare the values at `m`. Simplify using `[unitFn]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem mah_unitFn_ff (p t rho : ℕ) :
     unitFn p ⟨t, rho, false, false⟩ = fun m => dUnit (p ^ (t + 1)) m rho := by
   funext m; simp [unitFn]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `m`. Simplify using `[unitFn]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem mah_unitFn_ft (p t rho : ℕ) :
     unitFn p ⟨t, rho, false, true⟩ = fun m => (dUnit (p ^ (t + 1)) m rho)⁻¹ := by
   funext m; simp [unitFn]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `m`. Simplify using `[unitFn]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem mah_unitFn_tf (p t rho : ℕ) :
     unitFn p ⟨t, rho, true, false⟩ = fun m => cUnit (p ^ (t + 1)) m := by
   funext m; simp [unitFn]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `m`. Simplify using `[unitFn]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem mah_unitFn_tt (p t rho : ℕ) :
     unitFn p ⟨t, rho, true, true⟩ = fun m => (cUnit (p ^ (t + 1)) m)⁻¹ := by
   funext m; simp [unitFn]
 
 /- English proof (translation)
-Use `Fact.mk hp` as an intermediate fact. Take `⟨t, rho, isC, inv⟩` from `u`. Simplify using `only at hu`. Establish `hP : 1 ≤ p ^ (t + 1)` using `Nat.one_le_pow _ _ hp.pos`. Establish `hd` using `mah_dU h t rho hu`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd'` using `mah_dU h t (p ^ (t + 1) - 1) (by omega)`. Establish `half : (0 : ℝ) < 1 / 2` using `by norm_num`. Apply the tactic sequence `cases isC <;> cases inv`. Rewrite using `[mah_unitFn_ff]`. Establish `e : (fun m => dUnit (p ^ (t + 1)) m rho) = fun n => 1 + (dUnit (p ^ (t + 1)) n rho - 1)`.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `n`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `mah_one_add half.le hd`. Rewrite using `[mah_unitFn_ft]`.
+Apply function extensionality and compare values at an arbitrary argument. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : (fun m => (dUnit (p ^ (t + 1)) m rho)⁻¹) = fun n => 1 + ((1 + (dUnit (p ^ (t + 1)) n rho - 1))⁻¹ - 1)`. Use function extensionality and compare the values at `n`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `mah_one_add half.le (mah_inv half hd)`.
+Apply function extensionality and compare values at an arbitrary argument. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mah_unitFn_tf]`. Conclude with `mah_running half.le (fun m => cUnit (p ^ (t + 1)) m) (fun n => dUnit (p ^ (t + 1)) n (p ^ (t + 1) - 1) - 1) (mah_cUnit_zero _) (fun n => mah_cUnit_succ _ n hP) hd'`. Rewrite using `[mah_unitFn_tt]`. Use `mah_running half.le (fun m => (cUnit (p ^ (t + 1)) m)⁻¹) (fun n => (1 + (dUnit (p ^ (t + 1)) n (p ^ (t + 1) - 1) - 1))⁻¹ - 1) ?_ (fun n => ?_) (mah_inv half hd')` and prove the remaining obligations. Simplify using `[mah_cUnit_zero]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[mah_cUnit_succ _ n hP, mul_inv]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem mah_unitFn_half {p : ℕ} (hp : p.Prime) (h : HdU p) (u : UnitFn) (hu : u.rho < p ^ (u.t + 1)) :
     Dec p (1 / 2) 0 (unitFn p u) := by
@@ -559,23 +557,23 @@ theorem mah_unitFn_half {p : ℕ} (hp : p.Prime) (h : HdU p) (u : UnitFn) (hu : 
       ring
 
 /- English proof (translation)
-Introduce `u hu` and use `mah_dec_weaken (mah_unitFn_half hp h u hu) (by norm_num) le_rfl`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem hDec_of {p : ℕ} (hp : p.Prime) (h : HdU p) : HDec p := fun u hu =>
   mah_dec_weaken (mah_unitFn_half hp h u hu) (by norm_num) le_rfl
 
 /- English proof (translation)
-Use `Fact.mk hp` as an intermediate fact. Introduce `u hu m`. Take `⟨t, rho, isC, inv⟩` from `u`. Simplify using `only at hu`. Establish `hP : 1 ≤ p ^ (t + 1)` using `Nat.one_le_pow _ _ hp.pos`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `half : (0 : ℝ) < 1 / 2` using `by norm_num`. Establish `hdv : ∀ rho', rho' < p ^ (t + 1) → ∀ n, dUnit (p ^ (t + 1)) n rho' ≠ 0 ∧ padicValRat p (dUnit (p ^ (t + 1)) n rho') = 0`. Introduce `rho' hr n`. Establish `h1` using `mah_unit half (mah_val half.le (mah_dU h t rho' hr) n)`. Simplify `h1` using `only [add_sub_cancel]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hcv : ∀ n, cUnit (p ^ (t + 1)) n ≠ 0 ∧ padicValRat p (cUnit (p ^ (t + 1)) n) = 0`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => rw [mah_cUnit_zero]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules.
 
-Consider the case `succ n ih`. Rewrite using `[mah_cUnit_succ _ _ hP, add_sub_cancel]`. Establish `hd` using `hdv (p ^ (t + 1) - 1) (by omega) n`. Conclude with `⟨mul_ne_zero ih.1 hd.1, by rw [padicValRat.mul ih.1 hd.1, ih.2, hd.2]; rfl⟩`. Apply the tactic sequence `cases isC <;> cases inv`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[mah_unitFn_ff]`. Conclude with `hdv rho hu m`. Rewrite using `[mah_unitFn_ft]`. Conclude with `⟨inv_ne_zero (hdv rho hu m).1, by simp only [padicValRat.inv, (hdv rho hu m).2]; rfl⟩`. Rewrite using `[mah_unitFn_tf]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hcv m`. Rewrite using `[mah_unitFn_tt]`. Conclude with `⟨inv_ne_zero (hcv m).1, by simp only [padicValRat.inv, (hcv m).2]; rfl⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem hUnit_of {p : ℕ} (hp : p.Prime) (h : HdU p) : HUnit p := by
   have := Fact.mk hp

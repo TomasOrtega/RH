@@ -25,11 +25,11 @@ def coeffIdeal (J : Ideal B) (τ : Type) : Ideal (MvPowerSeries τ B) where
     exact J.sum_mem fun x _ => J.mul_mem_left _ (hf _)
 
 /- English proof (translation)
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro α _`. Both sides reduce to the same expression. Consider the case `succ n ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Both sides reduce to the same expression. Treat this case separately.
 
-Introduce `α hα`. Rewrite using `[pow_succ, pow_succ, coeff_mul, coeff_mul]`. Use `Finset.sum_congr rfl fun x hx => ?_` and prove the remaining obligations. Rewrite `hx` using `[Finset.HasAntidiagonal.mem_antidiagonal]`. Establish `h1 : x.1 ≤ β` using `le_trans (by rw [← hx]; exact le_self_add) hα`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : x.2 ≤ β` using `le_trans (by rw [← hx]; exact le_add_self) hα`. Rewrite using `[ih _ h1, h _ h2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem coeff_pow_congr {f g : MvPowerSeries τ B} {β : τ →₀ ℕ}
     (h : ∀ α ≤ β, coeff α f = coeff α g) : ∀ n, ∀ α ≤ β, coeff α (f ^ n) = coeff α (g ^ n) := by
@@ -54,9 +54,9 @@ def HasPDiv (f : MvPowerSeries τ B) : Prop :=
 variable {p J}
 
 /- English proof (translation)
-Take `⟨ha, ya, hya, hpa⟩` from `ha`. Take `⟨hb, yb, hyb, hpb⟩` from `hb`. Take `⟨r, hr⟩` from `exists_add_pow_prime_eq hp a b`. Use `⟨(coeffIdeal J τ).add_mem ha hb, ya + yb + a * b * r, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(coeffIdeal J τ).add_mem ((coeffIdeal J τ).add_mem hya hyb) ((coeffIdeal J τ).mul_mem_right _ ((coeffIdeal J τ).mul_mem_right _ ha))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hr, hpa, hpb]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem hasPDiv_add (hp : p.Prime) {a b : MvPowerSeries τ B} (ha : HasPDiv p J a)
     (hb : HasPDiv p J b) : HasPDiv p J (a + b) := by
@@ -69,11 +69,9 @@ theorem hasPDiv_add (hp : p.Prime) {a b : MvPowerSeries τ B} (ha : HasPDiv p J 
   · rw [hr, hpa, hpb]; ring
 
 /- English proof (translation)
-Take `⟨y, hy, hcy⟩` from `hJ c hc`. Use `⟨fun γ => ?_, monomial (p • α) y, fun γ => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[coeff_monomial]`. Use `split_ifs`. Conclude with `hc`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `J.zero_mem`. Rewrite using `[coeff_monomial]`. Use `split_ifs`. Conclude with `hy`. Conclude with `J.zero_mem`.
-
-Rewrite using `[monomial_pow, hcy]`. Use extensionality with `γ`. Rewrite using `[coeff_monomial, ← map_natCast (C (σ := τ) (R := B)) p, coeff_C_mul, coeff_monomial]`. Apply the tactic sequence `split_ifs <;> simp`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem hasPDiv_monomial (hJ : ∀ x ∈ J, ∃ y ∈ J, x ^ p = p * y) (α : τ →₀ ℕ) {c : B}
     (hc : c ∈ J) : HasPDiv p J (monomial α c) := by
@@ -92,9 +90,9 @@ theorem hasPDiv_monomial (hJ : ∀ x ∈ J, ∃ y ∈ J, x ^ p = p * y) (α : τ
     split_ifs <;> simp
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Use `⟨by simpa using (coeffIdeal J τ).zero_mem, 0, (coeffIdeal J τ).zero_mem, ?_⟩` and prove the remaining obligations. Simplify using `[hp.ne_zero]`. Consider the case `insert a s ha ih`.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Treat this case separately.
 
-Rewrite using `[Finset.sum_insert ha]`. Conclude with `hasPDiv_add hp (hasPDiv_monomial hJ a (hc a)) ih`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasPDiv_sum (hp : p.Prime) (hJ : ∀ x ∈ J, ∃ y ∈ J, x ^ p = p * y)
     (c : (τ →₀ ℕ) → B) (hc : ∀ α, c α ∈ J) (s : Finset (τ →₀ ℕ)) :
@@ -109,13 +107,13 @@ theorem hasPDiv_sum (hp : p.Prime) (hJ : ∀ x ∈ J, ∃ y ∈ J, x ^ p = p * y
     exact hasPDiv_add hp (hasPDiv_monomial hJ a (hc a)) ih
 
 /- English proof (translation)
-Establish `key : ∀ β : τ →₀ ℕ, ∃ c ∈ J, coeff β (w ^ p) = p * c`. Introduce `β`. Use `set w' : MvPowerSeries τ B := ∑ α ∈ Finset.Iic β, monomial α (coeff α w) with hw'`. Establish `hagree : ∀ α ≤ β, coeff α w = coeff α w'`. Introduce `α hα`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hw', map_sum]`. Repeatedly rewrite using `[coeff_monomial]`. Rewrite using `[Finset.sum_ite_eq]`. Simplify using `[Finset.mem_Iic.mpr hα]`. Take `⟨_, y, hy, hpy⟩` from `hasPDiv_sum hp hJ (fun α => coeff α w) hw (Finset.Iic β)`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨coeff β y, hy β, ?_⟩` and prove the remaining obligations. Establish `hpy' : w' ^ p = (p : MvPowerSeries τ B) * y` using `hpy`. Rewrite using `[coeff_pow_congr hagree p β le_rfl, hpy', ← map_natCast (C (σ := τ) (R := B)) p, coeff_C_mul]`. Use `choose c hcJ hc using key`. Set `y : MvPowerSeries τ B` to `fun β => c β`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hy : ∀ β, coeff β y = c β` using `fun _ => rfl`. Use `⟨y, fun β => by rw [hy]; exact hcJ β, ?_⟩` and prove the remaining obligations. Use extensionality with `β`. Rewrite using `[hc, ← map_natCast (C (σ := τ) (R := B)) p, coeff_C_mul, hy]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_prime_eq (hp : p.Prime) (hJ : ∀ x ∈ J, ∃ y ∈ J, x ^ p = p * y)
     {w : MvPowerSeries τ B} (hw : w ∈ coeffIdeal J τ) :
@@ -143,15 +141,15 @@ theorem pow_prime_eq (hp : p.Prime) (hJ : ∀ x ∈ J, ∃ y ∈ J, x ^ p = p * 
   rw [hc, ← map_natCast (C (σ := τ) (R := B)) p, coeff_C_mul, hy]
 
 /- English proof (translation)
-Introduce `n`. Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Introduce `hn w hw`. Distinguish the cases in `hpn : p ∣ n`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Take `⟨m, rfl⟩` from `hpn`. Establish `hm : 0 < m` using `Nat.pos_of_ne_zero (by rintro rfl; simp at hn)`. Establish `hmn : m < p * m` using `by nlinarith [hp.two_le]`. Take `⟨z, hz, hwz⟩` from `pow_prime_eq hp hJ hw`. Take `⟨y, hy, hzy⟩` from `ih m hmn hm z hz`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨y, hy, ?_⟩` and prove the remaining obligations. Rewrite using `[Nat.factorization_factorial_mul hp, pow_mul, hwz, mul_pow, hzy]`. Expand and normalize the polynomial expressions, which then agree. Break down `Nat.lt_or_ge n 2 with h | h` into its components or cases. Establish `h1 : n = 1` using `by omega`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Substitute `h1` using the available equality. Conclude with `⟨w, hw, by simp⟩`. Take `⟨k, rfl⟩ : ∃ k, n = k + 1` from `⟨n - 1, by omega⟩`. Take `⟨y, hy, hwy⟩` from `ih k (by omega) (by omega) w hw`. Use `⟨w * y, (coeffIdeal J τ).mul_mem_left _ hy, ?_⟩` and prove the remaining obligations.
+Substitute using the available equality. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hv : (k + 1).factorial.factorization p = k.factorial.factorization p`. Rewrite using `[Nat.factorial_succ, Nat.factorization_mul (Nat.succ_ne_zero k) (Nat.factorial_ne_zero k), Finsupp.add_apply, Nat.factorization_eq_zero_of_not_dvd hpn, zero_add]`. Rewrite using `[hv, pow_succ, hwy]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem pow_eq_pow_factorization_mul (hp : p.Prime) (hJ : ∀ x ∈ J, ∃ y ∈ J, x ^ p = p * y) :
     ∀ n : ℕ, 0 < n → ∀ w ∈ coeffIdeal J τ, ∃ y ∈ coeffIdeal J τ,
@@ -185,13 +183,13 @@ theorem pow_eq_pow_factorization_mul (hp : p.Prime) (hJ : ∀ x ∈ J, ∃ y ∈
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Introduce `p hpf B O Q _ _ _ _ θ hF J hJ τ w hw n hn`. Establish `hp : p.Prime` using `hpf.out`. Take `⟨y, hy, hwy⟩` from `pow_eq_pow_factorization_mul hp hJ n hn w hw`. Take `⟨c, hc_def⟩ : ∃ c, c = ordCompl[p] n.factorial` from `⟨_, rfl⟩`. Establish `hcop : Nat.Coprime c p`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hc_def]`. Conclude with `(Nat.coprime_ordCompl hp (Nat.factorial_ne_zero n)).symm`. Take `⟨u, hu⟩` from `hF.unit_coprime c hcop`. Use `⟨C (↑u⁻¹ : B) * y, (coeffIdeal J τ).mul_mem_left _ hy, ?_⟩` and prove the remaining obligations. Establish `hnat : p ^ (n.factorial.factorization p) * c = n.factorial`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc_def]`. Conclude with `Nat.ordProj_mul_ordCompl_eq_self _ _`. Establish `hfac : (p : MvPowerSeries τ B) ^ (n.factorial.factorization p) * (c : MvPowerSeries τ B) = (n.factorial : MvPowerSeries τ B)`. Rewrite using `[← Nat.cast_pow, ← Nat.cast_mul, hnat]`. Establish `hcu : (c : MvPowerSeries τ B) * C (↑u⁻¹ : B) = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_natCast (C (σ := τ) (R := B)) c, ← hu, ← map_mul, Units.mul_inv, map_one]`. Rewrite using `[hwy, ← hfac]`. Take the linear combination `(-((p : MvPowerSeries τ B) ^ (n.factorial.factorization p) * y)) * hcu`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem pow_eq_factorial_mul : ∀ (p : ℕ) [Fact p.Prime] (B O Q : Type) [CommRing B] [CommRing Q]
     [CommRing O] [Algebra B Q] (θ : B →+* O), IsFrame p Q θ → ∀ J : Ideal B,

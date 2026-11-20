@@ -27,7 +27,7 @@ open PositivityTheory.Rg.Rsw.L
 variable {D : D7} {ρ p : ℕ}
 
 /- English proof (translation)
-Set `N : Matrix (Fin n) (Fin n) T` to `fun i j => ⟨M i j, h i j⟩`. Establish `e : M = T.subtype.mapMatrix N` using `by ext i j; rfl`. Rewrite using `[e, ← RingHom.map_det]`. Conclude with `(N.det).2`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_mem_subring {R : Type} [CommRing R] (T : Subring R) {n : ℕ} (M : Matrix (Fin n) (Fin n) R)
     (h : ∀ i j, M i j ∈ T) : M.det ∈ T := by
@@ -37,16 +37,16 @@ theorem det_mem_subring {R : Type} [CommRing R] (T : Subring R) {n : ℕ} (M : M
   exact (N.det).2
 
 /- English proof (translation)
-Rewrite using `[LFixW.evFin_apply, GlobalTheory.ThK.ConeEuler.eInf, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.realAd, LinearMap.inl_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem evFin_eInf (v : Pl D) : evFin D.host.F v (GlobalTheory.ThK.ConeEuler.eInf D.host.F) = 0 := by
   rw [LFixW.evFin_apply, GlobalTheory.ThK.ConeEuler.eInf, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.realAd, LinearMap.inl_apply]
   rfl
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Apply `LIdemEx.ae_ext` to reduce the goal to its premises. Introduce `w`. Rewrite using `[GlobalTheory.IdeleCyl.compInf_unitArch, hinf, Units.val_one, map_one]`. Introduce `v`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Express the relevant statement in the definitionally equal form `compFin D.host.F D.host.E v (GlobalTheory.ThK.ConeEuler.eInf D.host.F • (l : AE D) + (1 - GlobalTheory.ThK.ConeEuler.eInf D.host.F) • 1) = cv D v ((1 : (AE D)ˣ) : AE D)`. Rewrite using `[map_add, GlobalTheory.ThK.compFin_smul, GlobalTheory.ThK.compFin_smul, evFin_eInf, map_sub, map_one, evFin_eInf, sub_zero, zero_smul, zero_add, one_smul, Units.val_one]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem unitArch_eq_one (l : (AE D)ˣ) (hinf : ∀ w, compInf D.host.F D.host.E w (l : AE D) = 1) :
     GlobalTheory.ThK.ConeEuler.unitArch D.host.F D.host.E l = 1 := by
@@ -61,11 +61,11 @@ theorem unitArch_eq_one (l : (AE D)ˣ) (hinf : ∀ w, compInf D.host.F D.host.E 
       zero_smul, zero_add, one_smul, Units.val_one]
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `GlobalTheory.ThK.ConeEuler.eFin v • (l : AE D) + (1 - GlobalTheory.ThK.ConeEuler.eFin v) • 1 = ((1 : (AE D)ˣ) : AE D)`. Establish `h0 : compFin D.host.F D.host.E v ((l : AE D) - 1) = 0`. Rewrite using `[map_sub, map_one]`. Conclude with `sub_eq_zero.2 hat`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hk` using `GlobalTheory.InertLagUniq.liftV_one_smul_eq_zero (E := D.host.E) v _ h0`. Establish `e : GlobalTheory.ThK.ConeEuler.eFin v • (l : AE D) + (1 - GlobalTheory.ThK.ConeEuler.eFin v) • (1 : AE D) = 1 + GlobalTheory.ThK.ConeEuler.eFin v • ((l : AE D) - 1)`. Rewrite using `[sub_smul, one_smul, smul_sub]`. Normalize the expressions using the abelian group laws. Rewrite using `[e, Units.val_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `1 + GlobalTheory.LatVac.liftV v 1 • ((l : AE D) - 1) = 1`. Rewrite using `[hk, add_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unitAt_eq_one (l : (AE D)ˣ) (v : Pl D) (hat : cv D v (l : AE D) = 1) :
     GlobalTheory.ThK.ConeEuler.unitAt D.host.E v l = 1 := by
@@ -82,13 +82,13 @@ theorem unitAt_eq_one (l : (AE D)ˣ) (v : Pl D) (hat : cv D v (l : AE D) = 1) :
   rw [hk, add_zero]
 
 /- English proof (translation)
-Establish `key` using `(GlobalTheory.ThK.ConeEulerChr.chr_abs_eq_finprod χ hχ.1 l 1).2`. Establish `hfp : (∏ᶠ v : Pl D, (χ (GlobalTheory.ThK.ConeEuler.unitAt D.host.E v l) : ℂ) * ((absE D.host.F D.host.E (GlobalTheory.ThK.ConeEuler.unitAt D.host.E v l) : ℝ) : ℂ) ^ 1) = 1`. Rewrite using `[finprod_congr (g := fun _ => (1 : ℂ)) ?_, finprod_one]`. Introduce `v`. Distinguish the cases in `hv : v ∈ S`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[hAt v hv]`. Simplify using the standard rewrite rules. Establish `hm` using `hmem v hv`. Rewrite using `[(hS v hv).unr _ hm, GlobalTheory.ThK.absE_of_mem_unitsAt hm]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `key` using `[hfp, hA]`. Simplify using `only [map_one, Circle.coe_one, NNReal.coe_one, Complex.ofReal_one, mul_one, pow_one] at key`. Establish `habs : absE D.host.F D.host.E l = 1`. Establish `hn` using `congrArg norm key`. Rewrite `hn` using `[norm_mul, Circle.norm_coe, one_mul, Complex.norm_real, norm_one, Real.norm_of_nonneg (NNReal.coe_nonneg _)]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hn` after adjusting the coercions. Use `⟨?_, habs⟩` and prove the remaining obligations. Rewrite `key` using `[habs, NNReal.coe_one, Complex.ofReal_one, mul_one]`. Conclude with `Circle.coe_eq_one.1 key`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chr_abs_one {χ : (AE D)ˣ →* Circle} (hχ : IsHeckeChar D χ) {b₀ : HermE D ρ} {S : Finset (Pl D)}
     (hS : ∀ v ∉ S, GoodPl χ b₀ v) (l : (AE D)ˣ) (hA : GlobalTheory.ThK.ConeEuler.unitArch D.host.F D.host.E l = 1)
@@ -116,17 +116,15 @@ theorem chr_abs_one {χ : (AE D)ˣ →* Circle} (hχ : IsHeckeChar D χ) {b₀ :
   exact Circle.coe_eq_one.1 key
 
 /- English proof (translation)
-Establish `hv0 : ((Matrix.GeneralLinearGroup.det a : (AE D)ˣ) : AE D) = (a : Matrix (Fin p) (Fin p) (AE D)).det` using `Matrix.GeneralLinearGroup.val_det_apply a`. Establish `hv1 : (((Matrix.GeneralLinearGroup.det a)⁻¹ : (AE D)ˣ) : AE D) = ((a⁻¹ : GL (Fin p) (AE D)) : Matrix (Fin p) (Fin p) (AE D)).det`. Rewrite using `[← map_inv]`. Conclude with `Matrix.GeneralLinearGroup.val_det_apply _`. Establish `hinf : ∀ w, compInf D.host.F D.host.E w ((Matrix.GeneralLinearGroup.det a : (AE D)ˣ) : AE D) = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `w`. Rewrite using `[hv0, RingHom.map_det]`. Establish `e : (compInf D.host.F D.host.E w).mapMatrix (a : Matrix (Fin p) (Fin p) (AE D)) = 1`. Use extensionality with `i j`. Conclude with `h1 i j w`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e, Matrix.det_one]`. Establish `hat : ∀ v ∈ S, cv D v ((Matrix.GeneralLinearGroup.det a : (AE D)ˣ) : AE D) = 1`. Introduce `v hv`. Rewrite using `[hv0, RingHom.map_det]`. Establish `e : (cv D v).mapMatrix (a : Matrix (Fin p) (Fin p) (AE D)) = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `i j`. Conclude with `h2 i j v hv`. Rewrite using `[e, Matrix.det_one]`. Establish `hint : ∀ v ∉ S, cv D v ((Matrix.GeneralLinearGroup.det a : (AE D)ˣ) : AE D) ∈ intLoc D.host.F D.host.E v ∧ cv D v (((Matrix.GeneralLinearGroup.det a)⁻¹ : (AE D)ˣ) : AE D) ∈ intLoc D.host.F D.host.E v`. Introduce `v hv`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hv0, hv1, RingHom.map_det, RingHom.map_det]`. Conclude with `⟨det_mem_subring _ _ fun i j => (h3 i j v hv).1, det_mem_subring _ _ fun i j => (h3 i j v hv).2⟩`. Use `chr_abs_one hχ hS _ (unitArch_eq_one _ hinf) (fun v hv => unitAt_eq_one _ v (hat v hv)) fun v hv => ?_` and prove the remaining obligations. Use `GlobalTheory.ThK.mem_unitsAt.2 ⟨GlobalTheory.ThK.ConeEuler.unitAt_mem v _, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.ThK.ConeEuler.compFin_unitAt_self]`.
-
-Conclude with `(hint v hv).1`. Rewrite using `[← map_inv, GlobalTheory.ThK.ConeEuler.compFin_unitAt_self]`. Conclude with `(hint v hv).2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem levi_chr {χ : (AE D)ˣ →* Circle} (hχ : IsHeckeChar D χ) {b₀ : HermE D ρ} {S : Finset (Pl D)}
     (hS : ∀ v ∉ S, GoodPl χ b₀ v) (a : GL (Fin p) (AE D))

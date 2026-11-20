@@ -11,16 +11,16 @@ open CategoryTheory AlgebraicGeometry GlobalTheory.LogCris DividedPowers GlobalT
 namespace GlobalTheory.CompanionTheory.PDCrit
 
 /- English proof (translation)
-The claim follows from `Classical.choose_spec (FubiniStudyChowHeightFormula₂.Adr.exists_std B J δ (pq B))`.
+A detailed English derivation is pending.
 -/
 private theorem pq_isStd_eta {B : Type} [CommRing B] {J : Ideal B} (δ : DividedPowers J) :
     (pq B).IsStd δ (eta δ) :=
   Classical.choose_spec (FubiniStudyChowHeightFormula₂.Adr.exists_std B J δ (pq B))
 
 /- English proof (translation)
-Establish `hs` using `pq_isStd_eta δ`. Establish `h1 : (b.sum fun k c => algebraMap B (pq B).P c * (eta δ).dpow k ((pq B).e 1)) = Finsupp.linearCombination B (pq B).e b`. Rewrite using `[Finsupp.linearCombination_apply]`. Use `Finsupp.sum_congr fun k _ => ?_` and prove the remaining obligations. Rewrite using `[hs.var k, Algebra.smul_def]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, (pq B).e.repr_linearCombination]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem repr_sum {B : Type} [CommRing B] {J : Ideal B} (δ : DividedPowers J) (b : ℕ →₀ B) :
     (pq B).e.repr (b.sum fun k c => algebraMap B (pq B).P c * (eta δ).dpow k ((pq B).e 1)) = b := by
@@ -33,11 +33,11 @@ theorem repr_sum {B : Type} [CommRing B] {J : Ideal B} (δ : DividedPowers J) (b
   rw [h1, (pq B).e.repr_linearCombination]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hz k`. Take `⟨w, rfl⟩` from `Ideal.mem_span_singleton'.1 hz`. Rewrite using `[mul_comm, ← Algebra.smul_def, map_smul, Finsupp.smul_apply, smul_eq_mul]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self c)`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h choose d hd using fun k => Ideal.mem_span_singleton'.1 (h k)`. Rewrite using `[Ideal.mem_span_singleton']`. Use `⟨∑ k ∈ ((pq B).e.repr z).support, d k • (pq B).e k, ?_⟩` and prove the remaining obligations. Use `conv_rhs => rw [← (pq B).e.linearCombination_repr z]`. Rewrite using `[Finsupp.linearCombination_apply, Finsupp.sum, Finset.sum_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← hd k, mul_comm (d k • (pq B).e k), ← Algebra.smul_def, smul_smul, mul_comm c (d k)]`.
+A detailed English derivation is pending.
 -/
 theorem mem_span_iff {B : Type} [CommRing B] (c : B) (z : (pq B).P) :
     z ∈ Ideal.span {algebraMap B (pq B).P c} ↔ ∀ k, (pq B).e.repr z k ∈ Ideal.span {c} := by
@@ -56,22 +56,20 @@ theorem mem_span_iff {B : Type} [CommRing B] (c : B) (z : (pq B).P) :
     rw [← hd k, mul_comm (d k • (pq B).e k), ← Algebra.smul_def, smul_smul, mul_comm c (d k)]
 
 /- English proof (translation)
-Simplify using `[Finsupp.finsetSum_apply, Finsupp.single_apply]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem sum_finsupp_single_apply_eq_ite {B : Type} [CommRing B] (s : Finset ℕ) (a : ℕ → B) (k : ℕ) :
     (∑ i ∈ s, Finsupp.single i (a i)) k = if k ∈ s then a k else 0 := by
   simp [Finsupp.finsetSum_apply, Finsupp.single_apply]
 
 /- English proof (translation)
-Establish `hT` using `(GlobalTheory.T.divided_power_polynomial_filtration δ (pq B) (eta δ) (pq_isStd_eta δ)).2.2.2`. Prove the components needed by the constructor for the conclusion. Introduce `hz k`. Take `⟨a, ha, s, hs, rfl⟩` from `Submodule.mem_sup.1 hz`. Rewrite using `[map_add, Finsupp.add_apply]`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.add_mem_sup ((hT r a).1 ha k) ((mem_span_iff c s).1 hs k)`. Introduce `h choose a ha s hs hsum using fun k => Submodule.mem_sup.1 (h k)`. Establish `hF : (∑ i ∈ ((pq B).e.repr z).support, Finsupp.single i (a i)) + (∑ i ∈ ((pq B).e.repr z).support, Finsupp.single i (s i)) = (pq B).e.repr z`. Use extensionality with `k`. Rewrite using `[Finsupp.add_apply, sum_finsupp_single_apply_eq_ite, sum_finsupp_single_apply_eq_ite]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs with hk`. Conclude with `hsum k`. Rewrite using `[add_zero]`. Conclude with `(Finsupp.notMem_support_iff.1 hk).symm`. Establish `hz : z = (pq B).e.repr.symm (∑ i ∈ ((pq B).e.repr z).support, Finsupp.single i (a i)) + (pq B).e.repr.symm (∑ i ∈ ((pq B).e.repr z).support, Finsupp.single i (s i))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_add, hF, LinearEquiv.symm_apply_apply]`. Rewrite using `[hz]`. Use `Submodule.add_mem_sup ((hT r _).2 fun k => ?_) ((mem_span_iff c _).2 fun k => ?_)` and prove the remaining obligations. Rewrite using `[LinearEquiv.apply_symm_apply, sum_finsupp_single_apply_eq_ite] split_ifs`. Conclude with `ha k`.
-
-Conclude with `Submodule.zero_mem _`. Rewrite using `[LinearEquiv.apply_symm_apply, sum_finsupp_single_apply_eq_ite] split_ifs`. Conclude with `hs k`. Conclude with `Submodule.zero_mem _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_fil_sup_iff {B : Type} [CommRing B] {J : Ideal B} (δ : DividedPowers J) (r : ℕ) (c : B)
     (z : (pq B).P) :
@@ -108,9 +106,9 @@ theorem mem_fil_sup_iff {B : Type} [CommRing B] {J : Ideal B} (δ : DividedPower
       · exact Submodule.zero_mem _
 
 /- English proof (translation)
-Introduce `B _ J δ b r c`. Establish `hT` using `(GlobalTheory.T.divided_power_polynomial_filtration δ (pq B) (eta δ) (pq_isStd_eta δ)).2.2.2`. Establish `hr` using `repr_sum δ b`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hT, hr]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mem_fil_sup_iff, hr]`. Rewrite using `[mem_span_iff, hr]`. Rewrite using `[← LinearEquiv.map_eq_zero_iff (pq B).e.repr, hr]`. Simplify using `only [Finsupp.ext_iff, Finsupp.coe_zero, Pi.zero_apply]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem coeff_criteria : ∀ {B : Type} [CommRing B] {J : Ideal B} (δ : DividedPowers J) (b : ℕ →₀ B) (r : ℕ) (c : B), ((b.sum fun k c => algebraMap B (pq B).P c * (eta δ).dpow k ((pq B).e 1)) ∈ fil (eta δ) r ↔ ∀ k, b k ∈ fil δ (r - k)) ∧ ((b.sum fun k c => algebraMap B (pq B).P c * (eta δ).dpow k ((pq B).e 1)) ∈ fil (eta δ) r ⊔ Ideal.span {algebraMap B (pq B).P c} ↔ ∀ k, b k ∈ fil δ (r - k) ⊔ Ideal.span {c}) ∧ ((b.sum fun k c => algebraMap B (pq B).P c * (eta δ).dpow k ((pq B).e 1)) ∈ Ideal.span {algebraMap B (pq B).P c} ↔ ∀ k, b k ∈ Ideal.span {c}) ∧ ((b.sum fun k c => algebraMap B (pq B).P c * (eta δ).dpow k ((pq B).e 1)) = 0 ↔ ∀ k, b k = 0) := by
   intro B _ J δ b r c

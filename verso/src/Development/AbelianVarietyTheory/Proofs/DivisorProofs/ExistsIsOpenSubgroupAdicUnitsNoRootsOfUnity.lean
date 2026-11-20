@@ -16,11 +16,11 @@ namespace GlobalTheory.RootOpen
 open Classical in
 
 /- English proof (translation)
-Establish `hF : Finite (NumberField.Units.torsion E)` using `inferInstance`. Establish `hT : ((NumberField.Units.torsion E : Set (𝓞 E)ˣ)).Finite` using `Set.finite_coe_iff.1 hF`. Use `(hT.image (Units.map (algebraMap (𝓞 E) E).toMonoidHom)).subset ?_` and prove the remaining obligations. Introduce and unpack `t ⟨n, hn, ht⟩`. Establish `h1 : IsIntegral ℤ (t : E)` using `IsIntegral.of_pow hn (by rw [← Units.val_pow_eq_pow_val, ht]; exact isIntegral_one)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `h2 : IsIntegral ℤ ((t⁻¹ : Eˣ) : E)` using `IsIntegral.of_pow hn (by rw [← Units.val_pow_eq_pow_val, inv_pow, ht, inv_one]; exact isIntegral_one)`. Set `u : (𝓞 E)ˣ` to `⟨⟨t, h1⟩, ⟨(t⁻¹ : Eˣ), h2⟩, NumberField.RingOfIntegers.ext (show (t : E) * ((t⁻¹ : Eˣ) : E) = 1 by simp), NumberField.RingOfIntegers.ext (show ((t⁻¹ : Eˣ) : E) * (t : E) = 1 by simp)⟩`. Use `⟨u, ?_, ?_⟩` and prove the remaining obligations. Use `show u ∈ CommGroup.torsion (𝓞 E)ˣ`. Use `(CommGroup.mem_torsion _).2 (isOfFinOrder_iff_pow_eq_one.2 ⟨n, hn, ?_⟩)` and prove the remaining obligations.
+Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Use `ext`. Use `show ((t ^ n : Eˣ) : E) = 1`. Simplify using `[ht]`. Use `ext`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem finite_roots (E : Type) [Field E] [NumberField E] :
     {t : Eˣ | ∃ n : ℕ, 0 < n ∧ t ^ n = 1}.Finite := by
@@ -45,7 +45,7 @@ theorem finite_roots (E : Type) [Field E] [NumberField E] :
 variable {E : Type} [Field E] [NumberField E]
 
 /- English proof (translation)
-Use `Valuation.map_add_eq_of_lt_left (Valued.v) (x := (1 : w.adicCompletion E)) (y := z - 1) (by simpa using hz)` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem val_eq_one_of_lt (w : HeightOneSpectrum (𝓞 E)) {z : w.adicCompletion E} (hz : Valued.v (z - 1) < 1) :
     Valued.v z = 1 := by
@@ -83,7 +83,7 @@ def congOne (w : HeightOneSpectrum (𝓞 E)) (m : ℤ) (hm : m < 0) : Subgroup (
     exact hz'
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.Mem.UnitOpen.isOpen_val_le w m).preimage (Units.continuous_val.sub continuous_const)`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_congOne (w : HeightOneSpectrum (𝓞 E)) (m : ℤ) (hm : m < 0) :
     IsOpen (congOne w m hm : Set (w.adicCompletion E)ˣ) :=
@@ -94,11 +94,11 @@ end GlobalTheory.RootOpen
 namespace GlobalTheory.RootOpen
 
 /- English proof (translation)
-Introduce `E _ _ w`. Use `set S := {t : Eˣ | ∃ n : ℕ, 0 < n ∧ t ^ n = 1}`. Establish `hL : ((fun t : Eˣ => WithZero.log (Valued.v ((algebraMap E (w.adicCompletion E) (t : E)) - 1))) '' (S \ {1})).Finite` using `((finite_roots E).diff).image _`. Take `⟨b, hb⟩` from `hL.bddBelow`. Use `⟨congOne w (min b 0 - 1) (by omega), isOpen_congOne w _ _, fun t ht hV => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `h1`. Establish `hmem` using `hb ⟨t, ⟨ht, h1⟩, rfl⟩`. Establish `hne : Valued.v ((algebraMap E (w.adicCompletion E) (t : E)) - 1) ≠ 0`. Rewrite using `[Ne, map_eq_zero, sub_eq_zero, ← map_one (algebraMap E (w.adicCompletion E))]`. Introduce `e`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `h1 (Units.ext ((algebraMap E (w.adicCompletion E)).injective e))`. Establish `hV' : Valued.v ((algebraMap E (w.adicCompletion E) (t : E)) - 1) ≤ WithZero.exp (min b 0 - 1)` using `hV`. Rewrite `hV'` using `[← WithZero.exp_log hne, WithZero.exp_le_exp]`. Simplify using `only at hmem`. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem exists_open_subgroup_no_roots : ∀ (E : Type) [Field E] [NumberField E] (w : HeightOneSpectrum (𝓞 E)), ∃ V : Subgroup (w.adicCompletion E)ˣ,
     IsOpen (V : Set (w.adicCompletion E)ˣ) ∧ ∀ t : Eˣ, (∃ n : ℕ, 0 < n ∧ t ^ n = 1) →

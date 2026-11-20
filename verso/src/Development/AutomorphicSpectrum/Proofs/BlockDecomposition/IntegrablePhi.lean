@@ -15,21 +15,21 @@ def gk (k : ℕ) (σ Y : ℝ) : ℝ :=
   if 0 < Y then Y ^ ((k : ℝ) - 1 - σ) * Real.exp (-(2 * Real.pi * Y)) else 0
 
 /- English proof (translation)
-Unfold `phi`. Use `fun_prop`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem measurable_phi : Measurable phi := by
   unfold phi
   fun_prop
 
 /- English proof (translation)
-Unfold `phi`. Check the signs of the components of the expression.
+Replace the relevant objects with their definitions. Check the signs of the components of the expression.
 -/
 theorem phi_nonneg (x : ℝ) : 0 ≤ phi x := by
   unfold phi
   positivity
 
 /- English proof (translation)
-Unfold `phi`. Establish `h0` using `abs_nonneg x`. Apply `inv_le_one_of_one_le₀` to reduce the goal to its premises. Use the polynomial consequences of the given equalities and inequalities.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem phi_le_one (x : ℝ) : phi x ≤ 1 := by
   unfold phi
@@ -38,7 +38,7 @@ theorem phi_le_one (x : ℝ) : phi x ≤ 1 := by
   nlinarith
 
 /- English proof (translation)
-Establish `h` using `integrable_one_add_norm (E := ℝ) (μ := volume) (r := 2) (by simp)`. Use `h.congr (ae_of_all _ fun x => ?_)` and prove the remaining obligations. Simplify using `only [phi, Real.norm_eq_abs]`. Rewrite using `[Real.rpow_neg (by positivity)]`. Use `norm_cast`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Put the expressions in a common number system so they can be compared.
 -/
 theorem integrable_phi : Integrable phi := by
   have h := integrable_one_add_norm (E := ℝ) (μ := volume) (r := 2) (by simp)
@@ -48,7 +48,7 @@ theorem integrable_phi : Integrable phi := by
   norm_cast
 
 /- English proof (translation)
-Unfold `gk`. Use `Measurable.ite measurableSet_Ioi ?_ measurable_const` and prove the remaining obligations. Use `fun_prop`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem measurable_gk (k : ℕ) (σ : ℝ) : Measurable (gk k σ) := by
   unfold gk
@@ -56,7 +56,7 @@ theorem measurable_gk (k : ℕ) (σ : ℝ) : Measurable (gk k σ) := by
   fun_prop
 
 /- English proof (translation)
-Unfold `gk`. Use `split_ifs with h`. Check the signs of the components of the expression. Conclude with `le_rfl`.
+Replace the relevant objects with their definitions. Check the signs of the components of the expression. A detailed English derivation is pending.
 -/
 theorem gk_nonneg (k : ℕ) (σ Y : ℝ) : 0 ≤ gk k σ Y := by
   unfold gk
@@ -65,9 +65,9 @@ theorem gk_nonneg (k : ℕ) (σ Y : ℝ) : 0 ≤ gk k σ Y := by
   · exact le_rfl
 
 /- English proof (translation)
-Establish `hk' : (1 : ℝ) ≤ k` using `by exact_mod_cast hk`. Establish `hb` using `GlobalTheory.CompanionTheory.WmFE.integrableOn_rpow_exp (σ := (k : ℝ) - 1 - σ) (by linarith) (show 0 < 2 * Real.pi by positivity)`. Establish `hs : Function.support (gk k σ) ⊆ Ioi 0`. Introduce `x hx`. Assume the negation of the conclusion as `hn`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `hx (by simp [gk, show ¬ 0 < x from hn])`. Rewrite using `[← integrableOn_iff_integrable_of_support_subset hs]`. Use `IntegrableOn.congr_fun hb (fun x hx => ?_) measurableSet_Ioi` and prove the remaining obligations. Simplify using `[gk, mem_Ioi.1 hx]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem integrable_gk (k : ℕ) (hk : 1 ≤ k) (σ : ℝ) (hσ : σ < 1) : Integrable (gk k σ) := by
   have hk' : (1 : ℝ) ≤ k := by exact_mod_cast hk

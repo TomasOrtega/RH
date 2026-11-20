@@ -6,9 +6,9 @@ namespace Formalism.HermitianLattices.LocalLatticeBases
 open Finset Matrix
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hP`. Rewrite using `[Nat.card_eq_one_iff_unique]`. Conclude with `⟨⟨fun a b => Subtype.ext (((h a).1 a.2).1.trans ((h b).1 b.2).1.symm)⟩, ⟨⟨a0, (h a0).2 ⟨rfl, hP⟩⟩⟩⟩`. Introduce `hP`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: IsEmpty {a // C a}` using `⟨fun a => hP ((h a).1 a.2).2⟩`. Conclude with `Nat.card_of_isEmpty`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private lemma nat_card_subtype_single {α : Type*} (C : α → Prop) (a0 : α) (P : Prop)
     (h : ∀ a, C a ↔ (a = a0 ∧ P)) :
@@ -23,15 +23,15 @@ private lemma nat_card_subtype_single {α : Type*} (C : α → Prop) (a0 : α) (
     exact Nat.card_of_isEmpty
 
 /- English proof (translation)
-Establish `hq : (q : ℚ) ≠ 0` using `Nat.cast_ne_zero.2 (Fact.out : q.Prime).ne_zero`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨m, hm⟩`. Establish `h1 : (a : ℚ) - (w.val : ℚ) = q * m`. Rewrite using `[hm]`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Establish `h2 : a - (w.val : ℤ) = q * m` using `by exact_mod_cast h1`. Establish `h3 : ((a - (w.val : ℤ) : ℤ) : ZMod q) = ((q * m : ℤ) : ZMod q)` using `by rw [h2]`. Move the coercions through the operations in `at h3`. Simplify using `only [ZMod.natCast_val, ZMod.cast_id', id_eq, ZMod.natCast_self, zero_mul] at h3`.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules.
 
-Conclude with `(sub_eq_zero.1 h3).symm`. Introduce `hw`. Establish `h3 : ((a - (w.val : ℤ) : ℤ) : ZMod q) = 0`. Use `push_cast`. Simplify using `only [ZMod.natCast_val, ZMod.cast_id', id_eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hw, sub_self]`. Take `⟨m, hm⟩` from `(ZMod.intCast_zmod_eq_zero_iff_dvd _ q).1 h3`. Use `⟨m, ?_⟩` and prove the remaining obligations. Establish `h1 : (a : ℚ) - (w.val : ℚ) = q * m` using `by exact_mod_cast hm`. Rewrite using `[← sub_div, h1]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts.
+A detailed English derivation is pending.
 -/
 private lemma fraction_integer_iff_congruent (q : ℕ) [Fact q.Prime] (a : ℤ) (w : ZMod q) :
     ((a : ℚ) / q - ((w.val : ℕ) : ℚ) / q ∈ Set.range (Int.cast : ℤ → ℚ)) ↔ w = (a : ZMod q) := by
@@ -56,47 +56,41 @@ private lemma fraction_integer_iff_congruent (q : ℕ) [Fact q.Prime] (a : ℤ) 
     rw [← sub_div, h1]; field_simp
 
 /- English proof (translation)
-Introduce `q _ n n' fW x0 x _ e1 intMat rhs UKcond KUcond`. Establish `hq : (q : ℚ) ≠ 0` using `Nat.cast_ne_zero.2 (Fact.out : q.Prime).ne_zero`. Distinguish the cases in `hI : intMat`. Use `swap`. Establish `h1 : IsEmpty {xW // UKcond xW}` using `⟨fun a => hI a.2.2.1⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : IsEmpty {f // KUcond f}` using `⟨fun a => hI a.2.2.1⟩`. Use `⟨by rw [Nat.card_of_isEmpty, Nat.card_of_isEmpty], fun h => absurd h.1 hI, fun _ => Nat.card_of_isEmpty⟩` and prove the remaining obligations. Establish `hI'` using `hI`. Use `choose X hX using hI'`. Use `set y : Fin n' → ℤ := fun i => ∑ j, X i j * x0 j with hydef`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hmv : ∀ (v : Fin n → ℚ) (i : Fin n'), x.mulVec v i = ∑ j, (X i j : ℚ) * v j`. Introduce `v i`. Simplify using `only [Matrix.mulVec, dotProduct, hX]`. Establish `hy : ∀ i, x.mulVec (fun j => (x0 j : ℚ)) i = (y i : ℚ)`. Introduce `i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 
-Rewrite using `[hmv, hydef]`. Use `push_cast`. Both sides reduce to the same expression. Establish `he1 : ∀ i, x.mulVec e1 i = (y i : ℚ) / q`. Introduce `i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hmv, hydef]`. Use `push_cast`. Rewrite using `[Finset.sum_div]`. Conclude with `Finset.sum_congr rfl (fun j _ => by simp only [e1]; ring)`. Use `set Z : ℤ := ∑ i, fW i * y i with hZdef`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hrhs : rhs ↔ (Z : ZMod q) = 1`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, z, hz, hz1⟩`. Establish `: (Z : ℚ) = z`. Rewrite using `[← hz, hZdef]`.
+Move the embeddings inside the algebraic operations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `push_cast`. Conclude with `Finset.sum_congr rfl (fun i _ => by rw [hy])`. Establish `hZz : Z = z` using `by exact_mod_cast this`. Rewrite using `[hZz]`. Conclude with `hz1`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Use `⟨hI, Z, ?_, h⟩` and prove the remaining obligations. Rewrite using `[hZdef]`. Use `push_cast`. Conclude with `Finset.sum_congr rfl (fun i _ => by rw [hy])`.
+Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion.
 
-Establish `hKU : ∀ f, KUcond f ↔ (f = (fun j => ((∑ i, fW i * X i j : ℤ) : ZMod q)) ∧ (Z : ZMod q) = 1)`. Establish `key : ∑ j, ((∑ i, fW i * X i j : ℤ) : ZMod q) * (x0 j : ZMod q) = (Z : ZMod q)`. Rewrite using `[hZdef, hydef]`. Use `push_cast`. Simplify using `only [Finset.sum_mul, Finset.mul_sum]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl (fun i _ => Finset.sum_congr rfl (fun j _ => by ring))`. Introduce `f`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, _, h3⟩`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hf : f = (fun j => ((∑ i, fW i * X i j : ℤ) : ZMod q))`. Use function extensionality and compare the values at `j`. Take `⟨z, hz, hzf⟩` from `h3 j`. Establish `: ((∑ i, fW i * X i j : ℤ) : ℚ) = z`. Rewrite using `[← hz]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Conclude with `Finset.sum_congr rfl (fun i _ => by rw [hX])`. Establish `h' : (∑ i, fW i * X i j : ℤ) = z` using `by exact_mod_cast this`. Rewrite using `[h', hzf]`. Use `⟨hf, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[← key, ← h1, hf]`. Introduce and unpack `⟨hf, hP⟩`. Use `⟨?_, hI, fun j => ⟨∑ i, fW i * X i j, ?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[hf, key, hP]`. Use `push_cast`.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Conclude with `Finset.sum_congr rfl (fun i _ => by rw [hX])`. Rewrite using `[hf]`. Establish `hUK : ∀ xW, UKcond xW ↔ (xW = (fun i => (y i : ZMod q)) ∧ (Z : ZMod q) = 1)`. Establish `key : ∑ i, (fW i : ZMod q) * (y i : ZMod q) = (Z : ZMod q)`. Rewrite using `[hZdef]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Both sides reduce to the same expression. Introduce `xW`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, _, h3, _⟩`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hw : xW = (fun i => (y i : ZMod q))`. Use function extensionality and compare the values at `i`. Use `h3 i` as an intermediate fact. Rewrite `this` using `[he1]`. Conclude with `(fraction_integer_iff_congruent q (y i) (xW i)).1 this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `⟨hw, ?_⟩` and prove the remaining obligations. Rewrite using `[← key, ← h1, hw]`. Introduce and unpack `⟨hw, hP⟩`. Establish `h3 : ∀ i, (y i : ℚ) / q - ((xW i).val : ℚ) / q ∈ Set.range (Int.cast : ℤ → ℚ)` using `fun i => (fraction_integer_iff_congruent q (y i) (xW i)).2 (by rw [hw])`. Use `⟨?_, hI, fun i => by rw [he1]; exact h3 i, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hw, key, hP]`. Introduce `l c choose m hm using h3`. Use `⟨fun i => (∑ j, X i j * l j) + c * m i, c, fun i => ?_⟩` and prove the remaining obligations. Establish `hsplit : x.mulVec (fun j => (l j : ℚ) + c * e1 j) i = (∑ j, (X i j : ℚ) * l j) + c * x.mulVec e1 i`. Rewrite using `[hmv, hmv, Finset.mul_sum, ← Finset.sum_add_distrib]`.
-
-Conclude with `Finset.sum_congr rfl (fun j _ => by ring)`. Rewrite using `[hsplit, he1]`. Use `push_cast`. Rewrite using `[hm i]`. Expand and normalize the polynomial expressions, which then agree.
-
-Take `⟨a1, a0⟩` from `nat_card_subtype_single UKcond _ _ hUK`. Take `⟨b1, b0⟩` from `nat_card_subtype_single KUcond _ _ hKU`. Use `⟨?_, fun h => b1 (hrhs.1 h), fun h => b0 (fun hP => h (hrhs.2 hP))⟩` and prove the remaining obligations. Distinguish the cases in `hP : (Z : ZMod q) = 1`. Rewrite using `[a1 hP, b1 hP]`.
-
-Rewrite using `[a0 hP, b0 hP]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kernel_description : IndicatorKernelSum := by
   intro q _ n n' fW x0 x _ e1 intMat rhs UKcond KUcond
@@ -212,7 +206,7 @@ Both sides reduce to the same expression.
 private lemma dot_product_dual_apply (m : ℕ) (a b : Fin m → F) : dotProductDual m a b = a ⬝ᵥ b := rfl
 
 /- English proof (translation)
-Introduce `φ`. Use `⟨fun i => φ (Pi.single i 1), ?_⟩` and prove the remaining obligations. Use extensionality with `i`. Simplify using `[dot_product_dual_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private lemma dot_product_dual_surjective (m : ℕ) : Function.Surjective (dotProductDual (F := F) m) := by
   intro φ
@@ -225,20 +219,20 @@ private noncomputable def functionalWithScalar {n : ℕ} (fL : (Fin n → F) →
   fL.coprod (c • LinearMap.id)
 
 /- English proof (translation)
-Simplify using `[functionalWithScalar]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma functional_with_scalar_apply {n : ℕ} (fL : (Fin n → F) →ₗ[F] F) (c : F) (v : Fin n → F) (s : F) :
     functionalWithScalar fL c (v, s) = fL v + c * s := by
   simp [functionalWithScalar]
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Use `sup_le ?_ ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨l, hl, rfl⟩`. Establish `hl' : fL l = 0` using `hl`. Simplify using `[LinearMap.mem_ker, functional_with_scalar_apply, hl']`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[Submodule.span_singleton_le_iff_mem, LinearMap.mem_ker, functional_with_scalar_apply]`. Simplify using `[he]`. Introduce and unpack `⟨v, s⟩ h`. Rewrite `h` using `[LinearMap.mem_ker, functional_with_scalar_apply]`. Establish `h1 : ((v, s) : (Fin n → F) × F) = LinearMap.inl F (Fin n → F) F (v + (c * s) • e) + s • ((-c) • e, (1 : F))`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `ext`. Simplify using `[smul_smul]`. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite using `[h1]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Submodule.add_mem_sup (Submodule.mem_map_of_mem ?_) (Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self _))` and prove the remaining obligations. Simplify using `[LinearMap.mem_ker, he, h]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 private lemma level_set_eq_ker_functional {n : ℕ} (fL : (Fin n → F) →ₗ[F] F) (e : Fin n → F) (he : fL e = 1) (c : F) :
     Uc fL e c = LinearMap.ker (functionalWithScalar fL c) := by
@@ -262,15 +256,15 @@ private lemma level_set_eq_ker_functional {n : ℕ} (fL : (Fin n → F) →ₗ[F
     simp [LinearMap.mem_ker, he, h]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2, h3⟩`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce and unpack `⟨v, s⟩`. Establish `hd : ((v, s) : (Fin n → F) × F) = (v - fL v • e, 0) + fL v • (e, (0 : F)) + s • ((0 : Fin n → F), (1 : F))`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Apply the tactic sequence `ext <;> simp`. Establish `hk : v - fL v • e ∈ LinearMap.ker fL` using `by simp [LinearMap.mem_ker, he]`. Use `h1 _ hk` as an intermediate fact. Rewrite using `[functional_with_scalar_apply]`. Simplify using `only [LinearMap.comp_apply, LinearMap.dualMap_apply, dot_product_dual_apply]`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hd, map_add, map_add, map_smul, map_smul, dotProduct_add, dotProduct_add, dotProduct_smul, dotProduct_smul, this, h2, h3]`. Simplify using `[mul_comm]`. Introduce `h`. Establish `h' : ∀ v s, fW ⬝ᵥ x' (v, s) = fL v + c * s`. Introduce `v s`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← functional_with_scalar_apply, ← h]`. Both sides reduce to the same expression. Use `⟨fun l hl => ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `hl' : fL l = 0` using `hl`. Rewrite using `[h', hl']`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[h', he]`. Simplify using the standard rewrite rules. Rewrite using `[h']`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private lemma condition_iff_dual_eq_functional {n m : ℕ} (fL : (Fin n → F) →ₗ[F] F) (e : Fin n → F) (he : fL e = 1)
     (x' : ((Fin n → F) × F) →ₗ[F] (Fin m → F)) (c : F) (fW : Fin m → F) :
@@ -304,9 +298,9 @@ private lemma condition_iff_dual_eq_functional {n m : ℕ} (fL : (Fin n → F) �
 variable [Fintype F]
 
 /- English proof (translation)
-Take `⟨v0, rfl⟩` from `hw`. Rewrite using `[← Nat.card_eq_fintype_card, ← Module.natCard_eq_pow_finrank (K := F) (V := LinearMap.ker T)]`. Use `Nat.card_congr { toFun := fun v => ⟨v.1 - v0, by simp [LinearMap.mem_ker, v.2]⟩ invFun := fun u => ⟨u.1 + v0, by` and prove the remaining obligations. Establish `: T u.1 = 0` using `u.2`. Simplify using `[this]⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `left_inv := fun v => by simp`. Use `right_inv := fun u => by simp }`.
+A detailed English derivation is pending.
 -/
 private lemma card_fibre_linear_map {V W : Type} [AddCommGroup V] [Module F V] [AddCommGroup W] [Module F W]
     [Module.Finite F V] (T : V →ₗ[F] W) (w : W) (hw : w ∈ LinearMap.range T) :
@@ -322,7 +316,7 @@ private lemma card_fibre_linear_map {V W : Type} [AddCommGroup V] [Module F V] [
       right_inv := fun u => by simp }
 
 /- English proof (translation)
-Establish `h1` using `LinearMap.finrank_range_add_finrank_ker (x'.dualMap ∘ₗ dotProductDual (F := F) (n + g))`. Establish `h2` using `LinearMap.finrank_range_add_finrank_ker x'`. Rewrite `h1` using `[LinearMap.range_comp_of_range_eq_top _ (LinearMap.range_eq_top.2 (dot_product_dual_surjective _)), LinearMap.finrank_range_dualMap_eq_finrank_range]`. Simplify using `only [Module.finrank_prod, Module.finrank_fin_fun, Module.finrank_self] at h1 h2`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 private lemma finrank_ker_dual_composition {n g : ℕ} (hg : 1 ≤ g)
     (x' : ((Fin n → F) × F) →ₗ[F] (Fin (n + g) → F)) :
@@ -336,21 +330,21 @@ private lemma finrank_ker_dual_composition {n g : ℕ} (hg : 1 ≤ g)
   omega
 
 /- English proof (translation)
-Introduce `F _ _ n g hg fL e he x' c`. Establish `hq : (1 : ℤ) ≤ (Fintype.card F : ℤ)` using `by exact_mod_cast Fintype.card_pos`. Use `set T := x'.dualMap ∘ₗ dotProductDual (F := F) (n + g) with hT`. Establish `hcount : fjCount fL e x' c = Nat.card {fW : Fin (n + g) → F // T fW = functionalWithScalar fL c}`. Unfold `fjCount`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Conclude with `Nat.card_congr (Equiv.subtypeEquivRight (fun fW => condition_iff_dual_eq_functional fL e he x' c fW))`. Establish `hrange : LinearMap.range T = (LinearMap.ker x').dualAnnihilator`. Rewrite using `[hT, LinearMap.range_comp_of_range_eq_top _ (LinearMap.range_eq_top.2 (dot_product_dual_surjective _)), LinearMap.range_dualMap_eq_dualAnnihilator_ker]`. Rewrite using `[hcount, level_set_eq_ker_functional fL e he c]`. Distinguish the cases in `hle : LinearMap.ker x' ≤ LinearMap.ker (functionalWithScalar fL c)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hmem : functionalWithScalar fL c ∈ LinearMap.range T`. Rewrite using `[hrange, Submodule.mem_dualAnnihilator]`. Conclude with `fun w hw => hle hw`. Rewrite using `[card_fibre_linear_map T _ hmem, finrank_ker_dual_composition hg, inf_eq_right.2 hle]`. Take `⟨g', rfl⟩ : ∃ g', g = g' + 1` from `⟨g - 1, by omega⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[Nat.add_sub_cancel]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hemp : IsEmpty {fW : Fin (n + g) → F // T fW = functionalWithScalar fL c}`. Use `⟨fun ⟨fW, h⟩ => hle ?_⟩` and prove the remaining obligations.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `: functionalWithScalar fL c ∈ LinearMap.range T` using `⟨fW, h⟩`. Rewrite `this` using `[hrange, Submodule.mem_dualAnnihilator]`. Conclude with `fun w hw => this w hw`. Rewrite using `[Nat.card_of_isEmpty]`. Use `set R := (functionalWithScalar fL c).domRestrict (LinearMap.ker x') with hR`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hRne : R ≠ 0`. Introduce `h0`. Apply `hle` to reduce the goal to its premises. Introduce `w hw`. Use `LinearMap.congr_fun h0 ⟨w, hw⟩` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `this` using `[hR]`. Establish `hsurj : LinearMap.range R = ⊤` using `LinearMap.range_eq_top.2 (LinearMap.surjective hRne)`. Establish `h3` using `LinearMap.finrank_range_add_finrank_ker R`. Rewrite `h3` using `[hsurj, finrank_top, Module.finrank_self]`. Establish `h4 : Module.finrank F (LinearMap.ker R) = Module.finrank F (LinearMap.ker (functionalWithScalar fL c) ⊓ LinearMap.ker x' : Submodule F ((Fin n → F) × F))`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[hR, LinearMap.ker_domRestrict, ← Submodule.finrank_map_subtype_eq, Submodule.map_comap_subtype, inf_comm]`. Establish `h5 : g + Module.finrank F (LinearMap.ker (functionalWithScalar fL c) ⊓ LinearMap.ker x' : Submodule F ((Fin n → F) × F)) = g - 1 + Module.finrank F (LinearMap.ker x')`. Use linear arithmetic over natural numbers and integers. Rewrite using `[h5]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem point_count_formula : KernelDimensionCount := by
   intro F _ _ n g hg fL e he x' c
@@ -406,9 +400,9 @@ section FJ
 variable {F : Type} [Field F] [Fintype F]
 
 /- English proof (translation)
-Use `split_ifs with h`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Take `⟨a, ha⟩` from `AddChar.ne_one_iff.1 hψ`. Take `⟨y, hy⟩` from `LinearMap.surjective h a`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `eq_zero_of_mul_eq_self_left ha ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Fintype.sum_equiv (Equiv.addLeft y) _ _ (fun x => ?_)` and prove the remaining obligations. Simplify using `[hy, AddChar.map_add_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma sum_char_linear_functional {M : Type} [AddCommGroup M] [Module F M] [Fintype M]
     (ψ : AddChar F ℂ) (hψ : ψ ≠ 1) (L : M →ₗ[F] F) [Decidable (L = 0)] :
@@ -426,39 +420,37 @@ private lemma sum_char_linear_functional {M : Type} [AddCommGroup M] [Module F M
 end FJ
 
 /- English proof (translation)
-Introduce `F _ _ _ n g hg fL e he x' ψ hψ`. Use `set q : ℂ := (Fintype.card F : ℂ) with hqdef`. Establish `hq0 : q ≠ 0`. Rewrite using `[hqdef]`. Conclude with `Fintype.card_ne_zero` after adjusting the coercions.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `A : (Fin (n + g) → F) → Prop` to `fun fW => (∀ l ∈ LinearMap.ker fL, fW ⬝ᵥ x' (l, 0) = 0) ∧ fW ⬝ᵥ x' (e, 0) = 1`. Set `Lf : (Fin (n + g) → F) → ((Fin n → F) →ₗ[F] F)` to `fun fW => fL - (dotProductDual (n + g) fW) ∘ₗ x' ∘ₗ LinearMap.inl F (Fin n → F) F`. Establish `hLf : ∀ fW e', Lf fW e' = fL e' - fW ⬝ᵥ x' (e', 0)` using `fun fW e' => rfl`. Establish `hA : ∀ fW, Lf fW = 0 ↔ A fW`. Introduce `fW`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h' : ∀ e', fW ⬝ᵥ x' (e', 0) = fL e'` using `fun e' => by`. Use `LinearMap.congr_fun h e'` as an intermediate fact. Rewrite `this` using `[hLf]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `(sub_eq_zero.1 this).symm`. Conclude with `⟨fun l hl => by rw [h']; exact hl, by rw [h', he]⟩`. Introduce and unpack `⟨h1, h2⟩`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `v`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hk : v - fL v • e ∈ LinearMap.ker fL` using `by simp [LinearMap.mem_ker, he]`. Establish `h3` using `h1 _ hk`. Establish `hd : ((v, 0) : (Fin n → F) × F) = (v - fL v • e, 0) + fL v • (e, (0 : F))`. Apply the tactic sequence `ext <;> simp`. Rewrite using `[hLf, hd, map_add, map_smul, dotProduct_add, dotProduct_smul, h3, h2]`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `hL : ∑ c : F, ψ c * (fjCount fL e x' c : ℂ) = ∑ fW : Fin (n + g) → F, if A fW then ψ (fW ⬝ᵥ x' (0, 1)) else 0`. Establish `hc : ∀ c : F, (fjCount fL e x' c : ℂ) = ∑ fW : Fin (n + g) → F, if A fW ∧ fW ⬝ᵥ x' (0, 1) = c then (1 : ℂ) else 0`. Introduce `c`. Unfold `fjCount`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Rewrite using `[Nat.card_eq_fintype_card, Fintype.card_subtype, Finset.sum_boole]`. Use `congr 2`. Use extensionality with `fW`. Simplify using `[A, and_assoc]`. Simplify using `only [hc, Finset.mul_sum]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl (fun fW _ => ?_)` and prove the remaining obligations. Distinguish the cases in `h : A fW`. Simplify using `[h]`. Simplify using `[h]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hind : ∀ y : Fin (n + g) → F, ∑ fW : Fin (n + g) → F, ψ (fW ⬝ᵥ y) = if y = 0 then q ^ (n + g) else 0`. Introduce `y`. Use `sum_char_linear_functional ψ hψ ((dotProductDual (F := F) (n + g)).flip y)` as an intermediate fact. Establish `h0 : (dotProductDual (F` using `F) (n + g)).flip y = 0 ↔ y = 0 := by`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Introduce `h`. Use function extensionality and compare the values at `i`. Use `LinearMap.congr_fun h (Pi.single i 1)` as an intermediate fact. Simplify `this` using `[dot_product_dual_apply]`. Introduce and unpack `rfl`.
+Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Simplify using `only [LinearMap.flip_apply, dot_product_dual_apply, h0] at this`. Rewrite using `[this]`. Simplify using `[hqdef]`. Establish `hinner : ∀ fW : Fin (n + g) → F, ∑ e' : Fin n → F, ψ (Lf fW e') = if A fW then q ^ n else 0`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `fW`. Rewrite using `[sum_char_linear_functional ψ hψ (Lf fW)]`. Simplify using `[hA, hqdef]`. Apply `mul_left_cancel₀ (pow_ne_zero n hq0)` to reduce the goal to its premises. Rewrite using `[hL]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl (fun fW _ => ?_)` and prove the remaining obligations. Rewrite using `[hinner]`. Distinguish the cases in `h : A fW`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[h, mul_comm]`. Simplify using `[h]`. Use `_ = ∑ e' : Fin n → F, ψ (fL e') * ∑ fW : Fin (n + g) → F, ψ (fW ⬝ᵥ x' (-e', 1)) := by`. Simplify using `only [Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl (fun e' _ => Finset.sum_congr rfl (fun fW _ => ?_))` and prove the remaining obligations. Establish `hd : ((-e', 1) : (Fin n → F) × F) = (0, 1) - (e', 0)`. Apply the tactic sequence `ext <;> simp`. Rewrite using `[hLf, hd, LinearMap.map_sub x', dotProduct_sub, ← AddChar.map_add_eq_mul, ← AddChar.map_add_eq_mul]`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Use `_ = q ^ n * (q ^ g * ∑ e' : Fin n → F, ψ (fL e') * (if x' (-e', 1) = 0 then 1 else 0)) := by`. Simplify using `only [Finset.mul_sum]`. Use `Finset.sum_congr rfl (fun e' _ => ?_)` and prove the remaining obligations. Rewrite using `[← Finset.mul_sum, hind]`.
-
-Distinguish the cases in `h : x' (-e', 1) = 0`. Simplify using `[h, pow_add]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `[h]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fourier_jacobi_count : CharacterSumCancellation := by
   classical
@@ -562,38 +554,38 @@ section FFOnto
 variable {k : Type*} [Field k] [Fintype k] [DecidableEq k] {r : ℕ}
 
 /- English proof (translation)
-Simplify using `only [pair, Pi.smul_apply, smul_eq_mul, Finset.mul_sum, mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma pair_smul_left_hook_formula_torsion (a : k) (f x : Fin r → k) : pair (a • f) x = a * pair f x := by
   simp only [pair, Pi.smul_apply, smul_eq_mul, Finset.mul_sum, mul_assoc]
 
 /- English proof (translation)
-Simplify using `only [pair, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl (fun i _ => by ring)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma pair_smul_right' (a : k) (f x : Fin r → k) : pair f (a • x) = a * pair f x := by
   simp only [pair, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]
   exact Finset.sum_congr rfl (fun i _ => by ring)
 
 /- English proof (translation)
-Simplify using `only [pair, Pi.add_apply, add_mul, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma pair_add_left' (f g x : Fin r → k) : pair (f + g) x = pair f x + pair g x := by
   simp only [pair, Pi.add_apply, add_mul, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `only [pair, Pi.sub_apply, mul_sub, Finset.sum_sub_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma pairing_sub_right (f x y : Fin r → k) : pair f (x - y) = pair f x - pair f y := by
   simp only [pair, Pi.sub_apply, mul_sub, Finset.sum_sub_distrib]
 
 /- English proof (translation)
-Simplify using `[pair]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma pair_zero_right' (f : Fin r → k) : pair f (0 : Fin r → k) = 0 := by
   simp [pair]
 
 /- English proof (translation)
-Simplify using `[pair, Pi.single_apply]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma pairing_single_left (x : Fin r → k) (i : Fin r) (a : k) :
     pair (Pi.single i a) x = a * x i := by
@@ -612,7 +604,7 @@ private lemma unit_smul_equiv_apply (c : kˣ) (f : Fin r → k) :
     unitSmulEquiv c f = (c : k) • f := rfl
 
 /- English proof (translation)
-Use `eq_zero_of_mul_eq_self_left hb ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Conclude with `Fintype.sum_equiv (Equiv.addLeft y) _ _ (fun x => (h x).symm)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma sum_eq_zero_of_twisted_shift {G : Type*} [AddCommGroup G] [Fintype G] (F : G → ℂ) (y : G)
     (b : ℂ) (hb : b ≠ 1) (h : ∀ x, F (y + x) = b * F x) : ∑ x, F x = 0 := by
@@ -621,9 +613,9 @@ private lemma sum_eq_zero_of_twisted_shift {G : Type*} [AddCommGroup G] [Fintype
   exact Fintype.sum_equiv (Equiv.addLeft y) _ _ (fun x => (h x).symm)
 
 /- English proof (translation)
-Use `split_ifs with hh`. Substitute `hh` using the available equality. Simplify using `[pair_zero_right']`. Take `⟨i, hi'⟩` from `Function.ne_iff.1 hh`. Establish `hi : h i ≠ 0` using `hi'`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨x0, hx0⟩` from `AddChar.ne_one_iff.1 hψ`. Use `sum_eq_zero_of_twisted_shift (fun f => ψ (pair f h)) (Pi.single i (x0 * (h i)⁻¹)) (ψ x0) hx0 (fun f => ?_)` and prove the remaining obligations. Rewrite using `[pair_add_left', pairing_single_left, mul_assoc, inv_mul_cancel₀ hi, mul_one, AddChar.map_add_eq_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma sum_char_pairing_orthogonality (ψ : AddChar k ℂ) (hψ : ψ ≠ 1) (h : Fin r → k) :
     ∑ f, ψ (pair f h) = if h = 0 then (Fintype.card k : ℂ) ^ r else 0 := by
@@ -641,25 +633,25 @@ private lemma sum_char_pairing_orthogonality (ψ : AddChar k ℂ) (hψ : ψ ≠ 
 end FFOnto
 
 /- English proof (translation)
-Introduce `k _ _ _ r ψ hψ ψv hv`. Use `set v0 : (Fin r → k) → ℂ := fun x => if x = 0 then 0 else ψv x with hv0`. Establish `hq : (Fintype.card k : ℂ) ^ r ≠ 0` using `pow_ne_zero _ (Nat.cast_ne_zero.2 Fintype.card_ne_zero)`. Establish `hnm0 : ∀ y, ∑ c : kˣ, v0 (((c⁻¹ : kˣ) : k) • y) = 0`. Introduce `y`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hy : y = 0`. Simplify using `[hy, hv0]`. Use `hv y hy` as an intermediate fact. Simplify using `only [nmV, diaV] at this`. Rewrite using `[← this]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl (fun c _ => ?_)` and prove the remaining obligations. Simplify using `[hv0, hy]`. Set `φ : (Fin r → k) → ℂ` to `fun f => ((Fintype.card k : ℂ) ^ r)⁻¹ * ∑ x, ψ (-pair f x) * v0 x`. Establish `hnm : ∀ f, nmP φ f = 0`. Introduce `f`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [nmP, diaP, φ]`. Rewrite using `[← Finset.mul_sum]`. Establish `key : ∑ c : kˣ, ∑ x, ψ (-pair ((c : k) • f) x) * v0 x = 0`. Establish `step : ∀ c : kˣ, ∑ x, ψ (-pair ((c : k) • f) x) * v0 x = ∑ y, ψ (-pair f y) * v0 (((c⁻¹ : kˣ) : k) • y)`. Introduce `c`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `Fintype.sum_equiv (unitSmulEquiv c) _ _ (fun x => ?_)` and prove the remaining obligations. Simplify using `only [unit_smul_equiv_apply, pair_smul_left_hook_formula_torsion, pair_smul_right', smul_smul, Units.inv_mul, one_smul]`. Rewrite using `[Finset.sum_congr rfl (fun c _ => step c), Finset.sum_comm]`. Use `Finset.sum_eq_zero (fun y _ => ?_)` and prove the remaining obligations. Rewrite using `[← Finset.mul_sum, hnm0, mul_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key, mul_zero]`. Establish `hφ0 : φ 0 = 0`. Use `hnm 0` as an intermediate fact. Simplify using `only [nmP, diaP, smul_zero, Finset.sum_const, Finset.card_univ, nsmul_eq_mul] at this`. Conclude with `(mul_eq_zero.1 this).resolve_left (Nat.cast_ne_zero.2 Fintype.card_ne_zero)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨φ, fun f _ => hnm f, fun x hx => ?_⟩` and prove the remaining obligations. Establish `h1 : opFF ψ φ x = ∑ f, ψ (pair f x) * φ f`. Simplify using `only [opFF, Finset.sum_filter]`. Use `Finset.sum_congr rfl (fun f _ => ?_)` and prove the remaining obligations. Distinguish the cases in `hf : f = 0`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[hf, hφ0]`. Simplify using `[hf]`. Establish `h2 : ∑ f, ψ (pair f x) * φ f = ((Fintype.card k : ℂ) ^ r)⁻¹ * ∑ y, v0 y * ∑ f, ψ (pair f (x - y))`. Simplify using `only [φ, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl (fun y _ => Finset.sum_congr rfl (fun f _ => ?_))` and prove the remaining obligations. Rewrite using `[pairing_sub_right, sub_eq_add_neg, AddChar.map_add_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h1, h2]`. Simplify using `only [sum_char_pairing_orthogonality ψ hψ, sub_eq_zero, mul_ite, mul_zero]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_ite_eq]`. Simplify using `only [hv0, hx, Finset.mem_univ, if_true, if_false]`. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem fourier_transform_kernel_surjective : Formalism.HermitianLattices.LocalLatticeBases.FourierTransformKernelSurjective := by
   intro k _ _ _ r ψ hψ ψv hv

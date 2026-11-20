@@ -8,27 +8,27 @@ namespace GlobalTheory.HCEnum
 open GlobalTheory.SignedHC GlobalTheory.SignedHC.GridData
 
 /- English proof (translation)
-Introduce `G n lam ε mu ε' hk hm hn hl hmu`. Take `⟨k', hk'⟩` from `hk`. Take `⟨m', hm'⟩` from `hm`. Establish `hkR : (G.k : ℝ) = k' + k'` using `by rw [hk']; push_cast; ring`. Establish `hmR : (G.m : ℝ) = m' + m'` using `by rw [hm']; push_cast; ring`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnR : (n : ℝ) = (G.k : ℝ) + G.m - 1`. Establish `: ((n + 1 : ℕ) : ℝ) = ((G.k + G.m : ℕ) : ℝ)` using `by rw [hn]`. Move the coercions through the operations in `at this`. Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨⟨hl.1, fun a => ?_⟩, ⟨hmu.1, fun a => ?_⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨-, q, hq, hS⟩` from `hl`. Establish `hmem : (q a, ε a) ∈ G.parPi 0`. Rewrite using `[hS]`. Conclude with `Finset.mem_image_of_mem _ (Finset.mem_univ a)`. Rewrite `hmem` using `[parPi_zero, mem_lam]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hq a]`. Break down `hmem with ⟨i, -, he⟩ | ⟨hc, -⟩` into its components or cases. Establish `e : q a = G.a i` using `congrArg Prod.fst he`. Use `⟨G.v 2 + ((G.m : ℤ) + 1 - i) * G.ga + 1 - (k' + m'), ?_⟩` and prove the remaining obligations. Rewrite using `[e]`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [GridData.a]`. Use `push_cast`. Rewrite using `[hnR, hkR, hmR]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨i, -, -, hx⟩` from `mem_cloudHalf.1 hc`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Simplify using `only at hx`. Use `⟨G.v i - (k' + m'), ?_⟩` and prove the remaining obligations. Rewrite using `[hx]`. Simplify using `only [vHalf]`. Use `push_cast`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hnR, hkR, hmR]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨-, q, hq, hS⟩` from `hmu`. Establish `hmem : (q a, ε' a) ∈ G.parD0`. Rewrite using `[hS]`.
+Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Finset.mem_image_of_mem _ (Finset.mem_univ a)`. Rewrite `hmem` using `[mem_discrete_parameter_iff]`. Rewrite using `[hq a]`. Break down `hmem with ⟨hc, -⟩ | ⟨l, -, -, he⟩` into its components or cases. Take `⟨i, -, -, hx⟩` from `mem_cloud.1 hc`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only at hx`. Use `⟨G.v i - (k' + m' - 1), ?_⟩` and prove the remaining obligations. Rewrite using `[hx]`. Use `push_cast`. Rewrite using `[hnR, hkR, hmR]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `e : q a = -(G.b l : ℚ)` using `congrArg Prod.fst he`. Use `⟨-G.b l - (k' + m' - 1), ?_⟩` and prove the remaining obligations. Rewrite using `[e]`. Use `push_cast`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[hnR, hkR, hmR]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem isHCParam_parPi_zero_parD0 : ∀ {G : GlobalTheory.SignedHC.GridData} {n : ℕ} {lam : Fin (n + 1) → ℝ}
     {ε : Fin (n + 1) → Bool} {mu : Fin n → ℝ} {ε' : Fin n → Bool}, Even G.k → Even G.m → n + 1 = G.k + G.m →

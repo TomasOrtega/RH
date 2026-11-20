@@ -6,7 +6,7 @@ import Development.AbelianVarietyTheory.Definitions.LatticeFrames.AllPositions
 open MeasureTheory ValuativeRel Matrix GlobalTheory.SplitWeil GlobalTheory.RootEx GlobalTheory.StepData GlobalTheory.SymChain
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.LocFlat.flRow_eq_zero_of_not_mem_box` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FFlatMapRowEqZeroUnlessRowMemDualLattice.lean&line=31#L31)
 -/

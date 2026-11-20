@@ -17,11 +17,11 @@ open GlobalTheory.CuspRep.InfType GlobalTheory.CuspRep.AlgExpo
 namespace GlobalTheory.GalReal
 
 /- English proof (translation)
-Establish `h1 : ∀ t : (Cinf E)ˣ, pInf E (infId E t).val = t.val` using `fun t => by`. Express the relevant statement in the definitionally equal form `(infEq E).symm (1 - infEq E 1 + infEq E t.val) = _`. Simplify using the standard rewrite rules. Establish `h2 : ∀ t : (Cinf E)ˣ, pFin E (infId E t).val = 1` using `fun t => by`. Express the relevant statement in the definitionally equal form `(1 : Af E) - 0 + 0 = 1`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Simplify using the standard rewrite rules. Rewrite using `[GlobalTheory.GalOfCusp.ideleMap_ideleNorm, GlobalTheory.PolChar.ideleConj_eq, map_mul]`. Use `congr 1`. Use `Units.ext (ad_ext ?_ ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `pInf E (GlobalTheory.UnitaryBC.conjAd E (infId E u).val) = _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[GlobalTheory.ThetaPull.pInf_conjAd, h1, h1]`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `pFin E (GlobalTheory.UnitaryBC.conjAd E (infId E u).val) = _`. Rewrite using `[GlobalTheory.ThetaPull.pFin_conjAd, h2, h2, map_one]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem ideleMap_ideleNorm_infId (E : Type) [Field E] [NumberField E] [IsCMField E] (u : (Cinf E)ˣ) :
     GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.ideleMap (maximalRealSubfield E) E (ideleNorm E (infId E u)) =

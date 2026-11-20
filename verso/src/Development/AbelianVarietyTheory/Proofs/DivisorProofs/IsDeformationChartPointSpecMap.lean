@@ -19,7 +19,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.CechKS
 
 /- English proof (translation)
-Establish `h'` using `GlobalTheory.FlagMod.le_preimage_comp (spMap σ) h`. Rewrite using `[valR_eq_ev _ _ h', valR_eq_ev _ _ h, GlobalTheory.FlagMod.ev_spMap σ z U h h']`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem valR_spMap_comp {Z : Scheme.{0}} {S S' : Type} [CommRing S] [CommRing S'] (σ : S →+* S')
     (z : Sp S ⟶ Z) (U : Z.Opens) (h : ⊤ ≤ z ⁻¹ᵁ U) (f : Γ(Z, U)) :
@@ -29,13 +29,13 @@ theorem valR_spMap_comp {Z : Scheme.{0}} {S S' : Type} [CommRing S] [CommRing S'
   rfl
 
 /- English proof (translation)
-Introduce `p _`. Establish `hs : Function.Surjective (spMap (TrivSqZeroExt.fstHom B B B).toRingHom)`. Introduce `q`. Use `⟨spMap (algebraMap B (DualNumber B)) q, ?_⟩` and prove the remaining obligations. Use `PrimeSpectrum.ext (Ideal.ext fun c ↦ ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `algebraMap B (DualNumber B) c.fst ∈ q.asIdeal ↔ c ∈ q.asIdeal`. Establish `hn : c - algebraMap B (DualNumber B) c.fst ∈ q.asIdeal`. Use `q.isPrime.mem_of_pow_mem 2 ?_` and prove the remaining obligations. Establish `: (c - algebraMap B (DualNumber B) c.fst) ^ 2 = 0`. Apply the tactic sequence `ext <;> simp [pow_two, TrivSqZeroExt.algebraMap_eq_inl]`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[this]`. Conclude with `zero_mem _`. Conclude with `⟨fun hc ↦ by simpa using add_mem hn hc, fun hc ↦ by simpa using sub_mem hc hn⟩`. Take `⟨q, rfl⟩` from `hs p`. Use `h (Set.mem_univ q)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[← (isTransl_transl φ x hx v).red hv]`. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem top_le_transl {K : Type} [Field K] {A : Over (Sp K)} [GrpObj A] {B : Type} [CommRing B] (φ : K →+* B)
     (x : Sp B ⟶ A.left) (hx : x ≫ A.hom = spMap φ) {v : epsR K ⟶ A} (hv : IsTangent v) {U : A.left.Opens}
@@ -58,7 +58,7 @@ theorem top_le_transl {K : Type} [Field K] {A : Over (Sp K)} [GrpObj A] {B : Typ
   exact this
 
 /- English proof (translation)
-Establish `hx' : (spMap σ ≫ x) ≫ A.hom = spMap (σ.comp φ)`. Rewrite using `[Category.assoc, hx, Cris.spMap_comp]`. Conclude with `(isTransl_transl _ _ hx' v).unique ((isTransl_transl φ x hx v).map σ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem transl_spMap {K : Type} [Field K] {A : Over (Sp K)} [GrpObj A] {B B' : Type} [CommRing B] [CommRing B']
     (φ : K →+* B) (σ : B →+* B') (x : Sp B ⟶ A.left) (hx : x ≫ A.hom = spMap φ) (v : epsR K ⟶ A) :
@@ -68,7 +68,7 @@ theorem transl_spMap {K : Type} [Field K] {A : Over (Sp K)} [GrpObj A] {B B' : T
   exact (isTransl_transl _ _ hx' v).unique ((isTransl_transl φ x hx v).map σ)
 
 /- English proof (translation)
-The claim follows from `RingHom.ext fun k ↦ by simp [baseMap]`.
+A detailed English derivation is pending.
 -/
 theorem baseMap_eq {K : Type} [Field K] {B B' : Type} [CommRing B] [Algebra (DualNumber K) B] [CommRing B']
     [Algebra (DualNumber K) B'] (ρ : B →ₐ[DualNumber K] B') :
@@ -76,7 +76,7 @@ theorem baseMap_eq {K : Type} [Field K] {B B' : Type} [CommRing B] [Algebra (Dua
   RingHom.ext fun k ↦ by simp [baseMap]
 
 /- English proof (translation)
-Simplify using `[dualMap]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dualMap_snd {B B' : Type} [CommRing B] [CommRing B'] (σ : B →+* B') (c : DualNumber B) :
     (dualMap σ c).snd = σ c.snd := by
@@ -88,7 +88,7 @@ variable {K : Type} [Field K] {A : Over (Sp K)} [GrpObj A]
   {B B' : Type} [CommRing B] [Algebra (DualNumber K) B] [CommRing B'] [Algebra (DualNumber K) B']
 
 /- English proof (translation)
-Rewrite using `[dlogAt, dlogAt, baseMap_eq ρ, transl_spMap _ _ x hx v, valR_spMap_comp _ _ _ (top_le_transl _ x hx hv hxWo), valR_spMap_comp _ _ _ hxWo, dualMap_snd, map_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem dlogAt_spMap (ρ : B →ₐ[DualNumber K] B') {x : Sp B ⟶ A.left}
     (hx : x ≫ A.hom = spMap (baseMap K B)) {v : epsR K ⟶ A} (hv : IsTangent v) {Wo : A.left.Opens}
@@ -99,9 +99,9 @@ theorem dlogAt_spMap (ρ : B →ₐ[DualNumber K] B') {x : Sp B ⟶ A.left}
   rfl
 
 /- English proof (translation)
-Establish `hxm : ⊤ ≤ (x ≫ m) ⁻¹ᵁ Ω` using `hxΩ`. Establish `ht : ∀ a, ⊤ ≤ (transl (baseMap K B) x (u a) ≫ m) ⁻¹ᵁ Ω` using `fun a ↦ top_le_transl _ x hx (hut a) hxΩ`. Establish `hd : ∀ b, dlogAt (baseMap K B') (spMap (ρ : B →+* B') ≫ x) (u b) Wo g = ρ (dlogAt (baseMap K B) x (u b) Wo g)` using `fun b ↦ dlogAt_spMap ρ hx (hut b) g hxWo`. Establish `htr : ∀ a, transl (baseMap K B') (spMap (ρ : B →+* B') ≫ x) (u a) = spMap (dualMap (ρ : B →+* B')) ≫ transl (baseMap K B) x (u a)` using `fun a ↦ by`. Rewrite using `[baseMap_eq ρ]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `transl_spMap _ _ x hx (u a)`. Simplify using `only [chartVal, hd, htr, Category.assoc]`. Simplify using `only [valR_spMap_comp _ _ _ hxm, valR_spMap_comp _ _ _ (ht _), dualMap_snd, map_add, map_mul, map_sum]`. Simplify using `only [RingHom.coe_coe, AlgHom.commutes, baseMap_eq ρ, RingHom.comp_apply]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem chartVal_spMap {Z : Scheme.{0}} (m : A.left ⟶ Z) (Ω : Z.Opens) (δ : Γ(Z, Ω) → Γ(Z, Ω))
     {n : ℕ} (u : Fin n → (epsR K ⟶ A)) (θ : Matrix (Fin n) (Fin n) K) (Wo : A.left.Opens) (g : Γ(A.left, Wo)ˣ)
@@ -124,9 +124,9 @@ theorem chartVal_spMap {Z : Scheme.{0}} (m : A.left ⟶ Z) (Ω : Z.Opens) (δ : 
 end Map
 
 /- English proof (translation)
-Introduce `K _ A _ A' Z m m' Ω δ n u θ Wo g B _ _ x l hx hxΩ hxWo hut hl B' _ _ ρ`. Take `⟨h1, h2, h3⟩` from `hl`. Use `⟨?_, ?_, fun f ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, h1, ← Cris.spMap_comp, AlgHom.comp_algebraMap]`. Rewrite using `[Category.assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `GlobalTheory.FlagMod.le_preimage_comp _ h2`. Rewrite using `[Category.assoc, valR_spMap_comp _ _ _ h2, h3 f, chartVal_spMap m Ω δ u θ Wo g ρ hx hxΩ hxWo hut f]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem isChartPt_spMap : ∀ {K : Type} [Field K] {A : Over (Sp K)} [GrpObj A] {A' : Over (Sp (DualNumber K))} {Z : Scheme.{0}} {m : A.left ⟶ Z} {m' : A'.left ⟶ Z} {Ω : Z.Opens} {δ : Γ(Z, Ω) → Γ(Z, Ω)} {n : ℕ} {u : Fin n → (epsR K ⟶ A)} {θ : Matrix (Fin n) (Fin n) K} {Wo : A.left.Opens} {g : Γ(A.left, Wo)ˣ} {B : Type} [CommRing B] [Algebra (DualNumber K) B] {x : Sp B ⟶ A.left} {l : Sp B ⟶ A'.left} (hx : x ≫ A.hom = spMap (baseMap K B)) (hxΩ : ⊤ ≤ x ⁻¹ᵁ (m ⁻¹ᵁ Ω)) (hxWo : ⊤ ≤ x ⁻¹ᵁ Wo) (hut : ∀ a, IsTangent (u a)) (hl : IsChartPt A' m m' Ω δ u θ Wo g x l) (B' : Type) [CommRing B'] [Algebra (DualNumber K) B'] (ρ : B →ₐ[DualNumber K] B'), IsChartPt A' m m' Ω δ u θ Wo g (spMap (ρ : B →+* B') ≫ x) (spMap (ρ : B →+* B') ≫ l) := by
   intro K _ A _ A' Z m m' Ω δ n u θ Wo g B _ _ x l hx hxΩ hxWo hut hl B' _ _ ρ

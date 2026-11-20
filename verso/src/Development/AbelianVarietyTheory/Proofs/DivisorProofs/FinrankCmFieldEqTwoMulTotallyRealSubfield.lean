@@ -8,7 +8,7 @@ open GlobalTheory.IndefiniteRowSideFullHecke.ModerateGrowthSchwartz (schwartzA)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Establish `h` using `(GlobalTheory.AdelicU.isCMExt_host D).2.2.1`. Rewrite using `[← h]`. Conclude with `(Module.finrank_mul_finrank ℚ D.host.F D.host.E).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.cm_finrank_eq_two_mul (D : D7) :
     Module.finrank ℚ D.host.E = Module.finrank ℚ D.host.F * 2 := by

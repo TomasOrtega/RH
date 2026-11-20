@@ -27,15 +27,15 @@ noncomputable section
 namespace GlobalTheory.OrthOff
 
 /- English proof (translation)
-Introduce `D _ T L μ0 _ sc G W M _ e he S T' LS LT u hu y hy`. Establish `hx : FinPl.MxAt (fun p => ∃ PP ∈ G.pl.W0, p = HeightOneSpectrum.under (𝓞 D.host.F) PP) (y.map (cA D))` using `GlobalTheory.PlaceModelComb.mxAt_of_idemSum he (Or.inr fun i j => by`. Rewrite using `[Matrix.map_apply, ← map_mul, hy i j])`. Establish `hu'` using `GlobalTheory.FinPl.LatMem.latO_mxAt hu`. Establish `hoff : ∀ i j, u i j ∈ FinPl.idOff D (fun p => ∃ PP ∈ G.pl.W0, p = HeightOneSpectrum.under (𝓞 D.host.F) PP)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `i j`. Rewrite using `[FinPl.idOff, Ideal.mem_iInf]`. Introduce and unpack `⟨w, PP, hPP, rfl⟩`. Establish `hin : HeightOneSpectrum.under (𝓞 D.host.F) PP ∈ G.pl.S0`. Unfold `Places.W0 at hPP`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Take `⟨v, hv, rfl⟩` from `Finset.mem_image.1 hPP`. Rewrite using `[G.pl.under_w hv]`. Conclude with `hv`. Establish `h` using `hu' i j`. Rewrite `h` using `[FinPl.idAt, Ideal.mem_inf, Ideal.mem_iInf]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h.2 ⟨_, fun h' => h' hin⟩`. Establish `hh : hO S T' u y = 0`. Unfold `hO`. Use `Finset.sum_eq_zero fun a _ => Finset.sum_eq_zero fun b _ => Finset.sum_eq_zero fun c _ => Finset.sum_eq_zero fun d _ => ?_` and prove the remaining obligations. Establish `h0 : cA D (y c b) * u d a = 0` using `GlobalTheory.FinPl.FlatUnitPf.idAt_mul_idOff _ _ _ (hx c b) (hoff d a)`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Replace the relevant objects with their definitions.
 
-Combine the equalities or inequalities in the displayed calculation. Unfold `symplO`. Rewrite using `[hh, mul_zero, map_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem orthOff : All fun {D} _ _ _ {G} _ _ => ∀ e : AE D, IsIdemSum e G.pl.W0 → ∀ (S T : HSp D) (LS : Set (Fin S.rank → D.host.E)) (LT : Set (Fin T.rank → D.host.E)), ∀ u ∈ latO S T LS LT (fun v => v ∉ G.pl.S0), ∀ y : WO S T, IsHalf e y → symplO S T u y = 0 := by
   intro D _ T L μ0 _ sc G W M _ e he S T' LS LT u hu y hy

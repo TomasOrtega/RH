@@ -4,11 +4,11 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Schur
 open Finset MvPolynomial UpperTheory.Gal.Schur
 
 /- English proof (translation)
-Introduce `h R _ n g i`. Establish `key` using `h R n (fun a b => g a - g b) i`. Establish `h1 : ∀ k ∈ univ.erase i, (if k < i then g k - g i else g i - g k) = (if k < i then (-1 : R) else 1) * (g i - g k)`. Introduce `k _`. Apply the tactic sequence `split_ifs <;> ring`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `h2 : ∏ k ∈ univ.erase i, (if k < i then (-1 : R) else 1) = (-1) ^ (i : ℕ)`. Establish `hf : (univ.erase i).filter (· < i) = Finset.Iio i`. Use extensionality with `k`. Simplify using `only [mem_filter, mem_erase, mem_univ, and_true, mem_Iio]`. Conclude with `⟨fun hk => hk.2, fun hk => ⟨ne_of_lt hk, hk⟩⟩`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Rewrite using `[Finset.prod_ite, prod_const, prod_const_one, mul_one, hf, Fin.card_Iio]`. Unfold `vdm vdmAway`. Rewrite using `[key, Finset.prod_congr rfl h1, Finset.prod_mul_distrib, h2]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem UpperTheory.Gal.Schur.vdmSplit_of :
     PairSplit → VdmSplit := by

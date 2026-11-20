@@ -10,7 +10,7 @@ attribute [local instance] SplitExt.free SplitExt.finite MvPolynomial.gradedAlge
 namespace GlobalTheory.TorusTranslate
 
 /- English proof (translation)
-Substitute `e` using the available equality. Establish `: f.app U ≫ Y.presheaf.map (homOfLE h).op ≫ m.appLE W ⊤ hm = (m ≫ f).appLE U ⊤ hg`. Rewrite using `[Scheme.Hom.map_appLE, Scheme.Hom.comp_appLE]`. Conclude with `congrArg (fun φ => φ.hom u.val) this`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem appLE_res_pullU {X Y Z : Scheme.{0}} (m : Z ⟶ Y) (f : Y ⟶ X) (g : Z ⟶ X) (e : m ≫ f = g)
     (U : X.Opens) (W : Y.Opens) (h : W ≤ f ⁻¹ᵁ U) (hm : ⊤ ≤ m ⁻¹ᵁ W) (hg : ⊤ ≤ g ⁻¹ᵁ U)
@@ -22,7 +22,7 @@ theorem appLE_res_pullU {X Y Z : Scheme.{0}} (m : Z ⟶ Y) (f : Y ⟶ X) (g : Z 
   exact congrArg (fun φ => φ.hom u.val) this
 
 /- English proof (translation)
-Substitute `e` using the available equality. Rewrite using `[Scheme.Hom.comp_appLE]`. Both sides reduce to the same expression.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem appLE_app {X Y Z : Scheme.{0}} (m : Z ⟶ Y) (f : Y ⟶ X) (g : Z ⟶ X) (e : m ≫ f = g)
     (U : X.Opens) (hm : ⊤ ≤ m ⁻¹ᵁ (f ⁻¹ᵁ U)) (hg : ⊤ ≤ g ⁻¹ᵁ U)
@@ -33,7 +33,7 @@ theorem appLE_app {X Y Z : Scheme.{0}} (m : Z ⟶ Y) (f : Y ⟶ X) (g : Z ⟶ X)
   rfl
 
 /- English proof (translation)
-The claim follows from `congrArg (fun φ => φ.hom u.val) (Scheme.Hom.map_appLE m hm (homOfLE h).op)`.
+A detailed English derivation is pending.
 -/
 theorem appLE_res {Y Z : Scheme.{0}} (m : Z ⟶ Y) (U W : Y.Opens) (h : W ≤ U)
     (hm : ⊤ ≤ m ⁻¹ᵁ W) (hg : ⊤ ≤ m ⁻¹ᵁ U) (u : Γ(Y, U)ˣ) :
@@ -43,7 +43,7 @@ theorem appLE_res {Y Z : Scheme.{0}} (m : Z ⟶ Y) (U W : Y.Opens) (h : W ≤ U)
 variable {S : Scheme.{0}} {E : SplitExt S} {G : Over S} [GrpObj G] (D : E.GtDatum G) {Z : Over S}
 
 /- English proof (translation)
-Rewrite using `[Category.assoc, D.isKernel.w, ← Category.assoc, Hom.one_def]`. Use `congr 1`. Conclude with `toUnit_unique _ _`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem torus_comp_q (τ : Z ⟶ splitTorus S E.X) : (τ ≫ D.i) ≫ D.q = 1 := by
   rw [Category.assoc, D.isKernel.w, ← Category.assoc, Hom.one_def]
@@ -51,7 +51,7 @@ theorem torus_comp_q (τ : Z ⟶ splitTorus S E.X) : (τ ≫ D.i) ≫ D.q = 1 :=
   exact toUnit_unique _ _
 
 /- English proof (translation)
-Use `D.q_hom` as an intermediate fact. Rewrite using `[← Over.comp_left, ← Over.comp_left, MonObj.mul_comp, torus_comp_q, _root_.one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem translate_comp_q (τ : Z ⟶ splitTorus S E.X) (x : Z ⟶ G) :
     ((τ ≫ D.i) * x).left ≫ D.q.left = x.left ≫ D.q.left := by
@@ -59,7 +59,7 @@ theorem translate_comp_q (τ : Z ⟶ splitTorus S E.X) (x : Z ⟶ G) :
   rw [← Over.comp_left, ← Over.comp_left, MonObj.mul_comp, torus_comp_q, _root_.one_mul]
 
 /- English proof (translation)
-Rewrite `h`, the goal using `[← Scheme.Hom.comp_preimage]`. Rewrite using `[translate_comp_q]` and apply the resulting hypothesis.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem translate_le (τ : Z ⟶ splitTorus S E.X) (x : Z ⟶ G) (V : E.B.left.Opens)
     (h : ⊤ ≤ x.left ⁻¹ᵁ (D.q.left ⁻¹ᵁ V)) : ⊤ ≤ ((τ ≫ D.i) * x).left ⁻¹ᵁ (D.q.left ⁻¹ᵁ V) := by
@@ -67,13 +67,13 @@ theorem translate_le (τ : Z ⟶ splitTorus S E.X) (x : Z ⟶ G) (V : E.B.left.O
   rwa [translate_comp_q]
 
 /- English proof (translation)
-Set `m : Z ⟶ splitTorus S E.X ⊗ G` to `lift τ x`. Establish `e1 : m.left ≫ (fst (splitTorus S E.X) G).left = τ.left`. Rewrite using `[← Over.comp_left, lift_fst]`. Establish `e2 : m.left ≫ (snd (splitTorus S E.X) G).left = x.left`. Rewrite using `[← Over.comp_left, lift_snd]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e3 : m.left ≫ (lift (fst (splitTorus S E.X) G ≫ D.i) (snd (splitTorus S E.X) G) ≫ μ[G]).left = ((τ ≫ D.i) * x).left`. Rewrite using `[← Over.comp_left, Hom.mul_def, ← Category.assoc, comp_lift, lift_fst_assoc, lift_snd]`. Establish `hm : ⊤ ≤ m.left ⁻¹ᵁ ((snd (splitTorus S E.X) G).left ⁻¹ᵁ (D.q.left ⁻¹ᵁ E.chart j))`. Rewrite using `[← Scheme.Hom.comp_preimage, e2]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `key` using `congrArg (m.left.appLE _ ⊤ hm).hom (congrArg Units.val (D.equiv j k))`. Simplify using `only [Units.val_mul, map_mul] at key`. Rewrite `key` using `[appLE_res_pullU _ _ _ e3 _ _ _ hm h']`. Rewrite using `[key]`. Use `congr 1`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `(appLE_res_pullU _ _ _ e1 ⊤ _ _ hm le_top _).trans ?_` and prove the remaining obligations. Rewrite using `[Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE]`. Both sides reduce to the same expression. Conclude with `appLE_app _ _ _ e2 _ hm h _`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem translate_coord (τ : Z ⟶ splitTorus S E.X) (x : Z ⟶ G) (j : E.ChartIdx)
     (k : Module.Free.ChooseBasisIndex ℤ E.X)
@@ -101,17 +101,17 @@ theorem translate_coord (τ : Z ⟶ splitTorus S E.X) (x : Z ⟶ G) (j : E.Chart
   · exact appLE_app _ _ _ e2 _ hm h _
 
 /- English proof (translation)
-Establish `hsingle : (Equiv.ofBijective _ (D.coord j V hV hle)).symm s = AddMonoidAlgebra.single α (D.weight j V hV hle α s)`. Apply `AddMonoidAlgebra.ext` to reduce the goal to its premises. Use extensionality with `β`. Distinguish the cases in `hβ : β = α`. Substitute `hβ` using the available equality.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `[SplitExt.GtDatum.weight]`. Use `hs β hβ` as an intermediate fact. Rewrite `this` using `[SplitExt.GtDatum.weight]`. Rewrite using `[this]`. Simplify using `[Ne.symm hβ]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Generalize the expression as in `D.weight j V hV hle α s = w at hsingle`. Rewrite `hsingle` using `[Equiv.symm_apply_eq, Equiv.ofBijective_apply, AddMonoidAlgebra.liftNCRingHom_single]`. Set `c : E.X →ₗ[ℤ] Additive Γ(G.left, D.q.left ⁻¹ᵁ V)ˣ` to `E.basis.constr ℤ (fun k => Additive.ofMul (res (Scheme.Hom.preimage_mono D.q.left hle) (D.u j k)))`. Establish `hs' : s = (D.q.left.app V).hom w * (Additive.toMul (c α)).val` using `hsingle`. Set `f₁ : E.X →+ Additive Γ(Z.left, ⊤)ˣ` to `(Units.map (((τ ≫ D.i) * x).left.appLE _ ⊤ h').hom.toMonoidHom).toAdditive.comp c.toAddMonoidHom`.
+Replace the chosen expression with an arbitrary variable. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `f₂ : E.X →+ Additive Γ(Z.left, ⊤)ˣ` to `(Units.map (x.left.appLE _ ⊤ h).hom.toMonoidHom).toAdditive.comp c.toAddMonoidHom`. Set `f₀ : E.X →+ Additive Γ(Z.left, ⊤)ˣ` to `MonoidHom.toAdditiveRight (splitTorusPointsEquiv S E.X Z τ)`. Establish `hf : f₁.toIntLinearMap = (f₀ + f₂).toIntLinearMap`. Use `E.basis.ext fun k => ?_` and prove the remaining obligations. Apply `Additive.toMul.injective` to reduce the goal to its premises.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Units.ext` to reduce the goal to its premises. Establish `hc : c (E.basis k) = Additive.ofMul (res (Scheme.Hom.preimage_mono D.q.left hle) (D.u j k))` using `E.basis.constr_basis _ _ _`. Express the relevant statement in the definitionally equal form `(((τ ≫ D.i) * x).left.appLE _ ⊤ h').hom (Additive.toMul (c (E.basis k))).val = (splitTorusPointsEquiv S E.X Z τ (Multiplicative.ofAdd (E.basis k))).val * (x.left.appLE _ ⊤ h).hom (Additive.toMul (c (E.basis k))).val`. Establish `g : ⊤ ≤ x.left ⁻¹ᵁ (D.q.left ⁻¹ᵁ E.chart j)` using `h.trans (Scheme.Hom.preimage_mono _ (Scheme.Hom.preimage_mono _ hle))`. Rewrite using `[hc, toMul_ofMul, splitTorusPointsEquiv_val, appLE_res _ _ _ _ h' (translate_le D τ x _ g), appLE_res _ _ _ _ h g]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `translate_coord D τ x j k g _`. Establish `hα : (((τ ≫ D.i) * x).left.appLE _ ⊤ h').hom (Additive.toMul (c α)).val = (splitTorusPointsEquiv S E.X Z τ (Multiplicative.ofAdd α)).val * (x.left.appLE _ ⊤ h).hom (Additive.toMul (c α)).val` using `congrArg (fun z => (Additive.toMul z).val) (LinearMap.congr_fun hf α)`. Establish `g : ⊤ ≤ (x.left ≫ D.q.left) ⁻¹ᵁ V` using `h`. Rewrite using `[hs', map_mul, map_mul, hα, splitTorusPointsEquiv_val, appLE_app _ _ _ (translate_comp_q D τ x) V h' g, appLE_app _ _ _ rfl V h g]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem translate_pure (τ : Z ⟶ splitTorus S E.X) (x : Z ⟶ G) (j : E.ChartIdx)
     (V : E.B.left.Opens) (hV : IsAffineOpen V) (hle : V ≤ E.chart j) (α : E.X)
@@ -170,19 +170,17 @@ end GlobalTheory.TorusTranslate
 namespace GlobalTheory.TorusTranslate
 
 /- English proof (translation)
-Introduce `k _ Φ t`. Use `Φ.D.i_hom` as an intermediate fact. Set `κ : kˣ →* Γ((Out.baseOver (Sp k)).left, ⊤)ˣ` to `Units.map (Scheme.ΓSpecIso (CommRingCat.of k)).inv.hom.toMonoidHom`. Set `e` to `splitTorusPointsEquiv (Sp k) Φ.E.X (Out.baseOver (Sp k))`. Set `τ` to `e.symm (κ.comp t)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hτ : e τ = κ.comp t` using `e.apply_symm_apply _`. Use `⟨τ ≫ Φ.D.i, torus_comp_q Φ.D τ, fun n hn => ?_, fun d α φ hφ x l hx => ?_⟩` and prove the remaining obligations. Establish `: τ ^ n = 1`. Apply `e.injective` to reduce the goal to its premises. Rewrite using `[map_pow, map_one, hτ]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `MonoidHom.ext fun χ => ?_` and prove the remaining obligations. Use `DFunLike.congr_fun hn χ` as an intermediate fact. Rewrite `this` using `[MonoidHom.pow_apply, MonoidHom.one_apply]`. Rewrite using `[MonoidHom.pow_apply, MonoidHom.comp_apply, ← map_pow, this, map_one, MonoidHom.one_apply]`. Rewrite using `[← MonObj.pow_comp, this, MonObj.one_comp]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hx'` using `translate_le Φ.D τ x (Φ.N₀.U l) hx`. Use `⟨hx', ?_⟩` and prove the remaining obligations. Establish `key` using `translate_pure Φ.D τ x (Φ.ch l) (Φ.N₀.U l) (Φ.aff l) (Φ.le l) α (φ.f l) (fun β hβ => by`. Assume the negation of the conclusion as `hne`. Conclude with `hβ (hφ ⟨l, hne⟩)) hx hx'`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `key` using `[← splitTorusPointsEquiv_val]`. Establish `hv : (splitTorusPointsEquiv (Sp k) Φ.E.X (Out.baseOver (Sp k)) τ (Multiplicative.ofAdd α)).val = (Scheme.ΓSpecIso (CommRingCat.of k)).inv.hom (t (Multiplicative.ofAdd α) : k)`. Express the relevant statement in the definitionally equal form `(e τ _).val = _`. Rewrite using `[hτ]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `key` using `[hv]`. Establish `key2` using `congrArg (Scheme.ΓSpecIso (CommRingCat.of k)).hom.hom key`. Use `Eq.trans ?_ (Eq.trans key2 (Eq.trans ((map_mul _ _ _)) ?_))` and prove the remaining obligations. Conclude with `dif_pos hx'`. Use `congr 1`.
-
-Conclude with `Iso.inv_hom_id_apply _ _`. Use `symm`. Conclude with `dif_pos hx`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Use symmetry to reverse the relation. A detailed English derivation is pending.
 -/
 theorem exists_point_translate_pure : (∀ (k : Type) [Field k] (Φ : FibPre k) (t : Multiplicative Φ.E.X →* kˣ), ∃ a : Φ.Pt, a ≫ Φ.D.q = 1 ∧ (∀ n : ℕ, t ^ n = 1 → a ^ n = 1) ∧ ∀ (d : ℕ) (α : Φ.E.X) (φ : (Φ.H d).Sec), Φ.Pure α φ → ∀ (x : Φ.Pt) (l : Φ.N₀.ι), ⊤ ≤ x.left ⁻¹ᵁ (Φ.H d).U l → ⊤ ≤ (a * x).left ⁻¹ᵁ (Φ.H d).U l ∧ valF (a * x).left ((Φ.H d).U l) (φ.f l) = (t (Multiplicative.ofAdd α) : k) * valF x.left ((Φ.H d).U l) (φ.f l)) := by
   intro k _ Φ t

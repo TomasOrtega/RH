@@ -6,7 +6,7 @@ open scoped Classical
 namespace GlobalTheory.Shin
 
 /- English proof (translation)
-Introduce `F _ _ θ m l α hm hα`. Rewrite using `[((GlobalTheory.CuspGL.torus_minpoly F θ m hm α hα).2.2 l)]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[map_pow, ← pow_mul, mul_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem rootSum_minpoly_pow_eq_sum : ∀ (F : Type) [Field F] [Finite F] (θ : AlgebraicClosure F →* ℂ) (m l : ℕ)
     (α : AlgebraicClosure F), 0 < m → α ^ (Nat.card F ^ m - 1) = 1 →

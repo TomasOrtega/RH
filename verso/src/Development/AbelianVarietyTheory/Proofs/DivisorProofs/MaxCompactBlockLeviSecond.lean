@@ -21,7 +21,7 @@ open scoped ContDiff
 namespace GlobalTheory.CuspSmooth
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => simp`. Consider the case `cons a l ih => simp only [List.prod_cons, List.map_cons]`. Rewrite using `[← ih]`. Use `group`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_list_prod {G : Type} [Group G] (g : G) (l : List G) :
     g⁻¹ * l.prod * g = (l.map fun a => g⁻¹ * a * g).prod := by
@@ -30,17 +30,17 @@ theorem conj_list_prod {G : Type} [Group G] (g : G) (l : List G) :
   | cons a l ih => simp only [List.prod_cons, List.map_cons]; rw [← ih]; group
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ σ hcm n J hJ r Xf Yf hW K hK S l d h ι hι hd _ _ _ ψ hψ g₀ _ g`. Use `GlobalTheory.T.contDiffOn_invSet_of_smooth_along_prod_exp E d _ {X | ∃ v, ∀ i j, ∀ u, u ≠ v → X i j u = 0} ?_ ?_` and prove the remaining obligations. Rewrite using `[eq_top_iff]`. Introduce `X _`. Establish `e : X = ∑ v : InfinitePlace E, (Matrix.of fun i j => Pi.single v (X i j v))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use extensionality with `i j u`. Rewrite using `[Matrix.sum_apply, Finset.sum_apply]`. Simplify using `[Pi.single_apply]`. Rewrite using `[e]`. Conclude with `Submodule.sum_mem _ fun v _ => Submodule.subset_span ⟨v, fun i j u hu => by simp [Pi.single_apply, hu]⟩`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k X hX y hy choose v hv using hX`. Establish `hγ : ∀ i, IsRealLine σ J (fun t : ℝ => g₀⁻¹ * ι (GlobalTheory.CuspRep.infGL E d (GlobalTheory.CuspRep.expGLi d (t • X i))) * g₀)` using `fun i => GlobalTheory.EisCont.CentreFinite.isRealLine_conj hcm (GlobalTheory.T.isRealLine_blockEmbedding_exp_infinitePlace F E σ hcm n J hJ r Xf Yf hW l d h ι hι (v i) (X i) (hv i)) g₀`. Establish `hs` using `hψ.1.smooth k _ hγ (ι (g * GlobalTheory.CuspRep.infGL E d hy.unit) * g₀)`. Use `hs using 2 with t` and compare the differences between its conclusion and the goal. Use `set P : GL (Fin d) (GlobalTheory.CuspRep.Cinf E) := (List.ofFn fun i => GlobalTheory.CuspRep.expGLi d (t i • X i)).prod`.
+Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hP : (P : Matrix (Fin d) (Fin d) (GlobalTheory.CuspRep.Cinf E)) = (List.ofFn fun i => NormedSpace.exp (t i • X i)).prod`. Simplify using `only [P]`. Rewrite using `[← Units.coeHom_apply, map_list_prod, List.map_ofFn]`. Both sides reduce to the same expression. Establish `hU : GlobalTheory.CuspRep.toL (Matrix.of y * (List.ofFn fun i => NormedSpace.exp (t i • X i)).prod) = GlobalTheory.CuspRep.toL (hy.unit * P).val`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[Units.val_mul, hP]`. Use `congr 2`. Rewrite using `[hU, GlobalTheory.CuspRep.chart_val]`. Establish `e3 : (List.ofFn fun i => g₀⁻¹ * ι (GlobalTheory.CuspRep.infGL E d (GlobalTheory.CuspRep.expGLi d (t i • X i))) * g₀) = ((List.ofFn fun i => GlobalTheory.CuspRep.expGLi d (t i • X i)).map (ι.comp (GlobalTheory.CuspRep.infGL E d))).map (fun a => g₀⁻¹ * a * g₀)`. Simplify using `[List.map_ofFn, Function.comp_def]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[e3, ← conj_list_prod, ← map_list_prod]`. Simplify using `only [P, map_mul, MonoidHom.comp_apply, mul_assoc, mul_inv_cancel_left]`.
+A detailed English derivation is pending.
 -/
 theorem mem_Sm_blockEmb : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [IsTotallyComplex E] [Algebra F E]
     (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J →

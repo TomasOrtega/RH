@@ -20,7 +20,7 @@ noncomputable def zmodToQZ : ZMod n →+ QZ :=
       exact ⟨1, by rw [zsmul_eq_mul, Int.cast_natCast, mul_one_div, div_self hn', Int.cast_one]⟩⟩
 
 /- English proof (translation)
-Rewrite using `[zmodToQZ, ZMod.lift_coe, zmultiplesHom_apply, ← QZ.mk_zsmul, zsmul_eq_mul, mul_one_div]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem zmodToQZ_intCast (m : ℤ) : zmodToQZ n (m : ZMod n) = QZ.mk (m / n) := by
   rw [zmodToQZ, ZMod.lift_coe, zmultiplesHom_apply, ← QZ.mk_zsmul, zsmul_eq_mul, mul_one_div]
@@ -28,11 +28,11 @@ theorem zmodToQZ_intCast (m : ℤ) : zmodToQZ n (m : ZMod n) = QZ.mk (m / n) := 
 variable [NeZero n]
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `a ha`. Take `⟨m, rfl⟩` from `ZMod.intCast_surjective a`. Rewrite `ha` using `[zmodToQZ_intCast, QZ.mk_eq_zero_iff]`. Take `⟨z, hz⟩` from `ha`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hn : (n : ℚ) ≠ 0` using `by exact_mod_cast NeZero.ne n`. Rewrite using `[ZMod.intCast_zmod_eq_zero_iff_dvd]`. Use `⟨z, ?_⟩` and prove the remaining obligations. Establish `: (m : ℚ) = n * z`. Rewrite using `[hz]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Conclude with `this` after adjusting the coercions.
+Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem zmodToQZ_injective : Injective (zmodToQZ n) := by
   rw [injective_iff_map_eq_zero]
@@ -49,9 +49,9 @@ theorem zmodToQZ_injective : Injective (zmodToQZ n) := by
   exact_mod_cast this
 
 /- English proof (translation)
-Take `⟨q, rfl⟩` from `QZ.mk_surjective x`. Establish `h : QZ.mk ((n : ℤ) • q) = 0`. Rewrite using `[QZ.mk_zsmul, natCast_zsmul, hx]`. Take `⟨z, hz⟩` from `(QZ.mk_eq_zero_iff _).1 h`. Establish `hn : (n : ℚ) ≠ 0` using `by exact_mod_cast NeZero.ne n`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨(z : ZMod n), ?_⟩` and prove the remaining obligations. Rewrite using `[zmodToQZ_intCast, hz, zsmul_eq_mul]`. Use `congr 1`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 -/
 theorem exists_zmodToQZ_eq {x : QZ} (hx : n • x = 0) : ∃ a : ZMod n, zmodToQZ n a = x := by
   obtain ⟨q, rfl⟩ := QZ.mk_surjective x
@@ -79,7 +79,7 @@ noncomputable def zmodOfQZ (f : A →+ QZ) (hf : ∀ a, n • f a = 0) : A →+ 
       Classical.choose_spec (exists_zmodToQZ_eq (hf b))])
 
 /- English proof (translation)
-The claim follows from `Classical.choose_spec (exists_zmodToQZ_eq (hf a))`.
+A detailed English derivation is pending.
 -/
 theorem zmodToQZ_zmodOfQZ (f : A →+ QZ) (hf : ∀ a, n • f a = 0) (a : A) :
     zmodToQZ n (zmodOfQZ f hf a) = f a :=
@@ -88,9 +88,9 @@ theorem zmodToQZ_zmodOfQZ (f : A →+ QZ) (hf : ∀ a, n • f a = 0) (a : A) :
 end Lift
 
 /- English proof (translation)
-Take `⟨ψ₀, hψ₀⟩` from `QZ.exists_comp_eq_of_ker_le h ((zmodToQZ n).comp χ) fun b hb => by`. Rewrite `hb`, the goal using `[AddMonoidHom.mem_ker]`. Rewrite using `[AddMonoidHom.comp_apply, (AddMonoidHom.mem_ker).1 (hχ hb), map_zero]`. Establish `hψ₀' : ∀ c, n • ψ₀ c = 0` using `fun c => by rw [← map_nsmul, hC, map_zero]`. Use `⟨zmodOfQZ ψ₀ hψ₀', AddMonoidHom.ext fun b => zmodToQZ_injective ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[AddMonoidHom.comp_apply, zmodToQZ_zmodOfQZ]`. Conclude with `DFunLike.congr_fun hψ₀ b`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zmod_exists_comp_eq_of_ker_le {B C : Type*} [AddCommGroup B] [AddCommGroup C]
     (hC : ∀ c : C, n • c = 0) (h : B →+ C) (χ : B →+ ZMod n) (hχ : h.ker ≤ χ.ker) :
@@ -104,7 +104,7 @@ theorem zmod_exists_comp_eq_of_ker_le {B C : Type*} [AddCommGroup B] [AddCommGro
   exact DFunLike.congr_fun hψ₀ b
 
 /- English proof (translation)
-Take `⟨f, hf⟩` from `QZ.exists_apply_ne_zero ha`. Establish `hf' : ∀ x, n • f x = 0` using `fun x => by rw [← map_nsmul, hA, map_zero]`. Use `⟨zmodOfQZ f hf', fun h => hf ?_⟩` and prove the remaining obligations. Rewrite using `[← zmodToQZ_zmodOfQZ f hf' a, h, map_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem zmod_exists_apply_ne_zero {A : Type*} [AddCommGroup A] (hA : ∀ a : A, n • a = 0)
     {a : A} (ha : a ≠ 0) : ∃ χ : A →+ ZMod n, χ a ≠ 0 := by
@@ -114,7 +114,7 @@ theorem zmod_exists_apply_ne_zero {A : Type*} [AddCommGroup A] (hA : ∀ a : A, 
   rw [← zmodToQZ_zmodOfQZ f hf' a, h, map_zero]
 
 /- English proof (translation)
-Introduce `_ _ h` and use `AddMonoidHom.ext fun a => zmodToQZ_injective (DFunLike.congr_fun h a)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem comp_zmodToQZ_injective {A : Type*} [AddCommGroup A] :
     Injective fun χ : A →+ ZMod n => (zmodToQZ n).comp χ := fun _ _ h =>
@@ -125,20 +125,20 @@ instance finite_addMonoidHom_zmod {A : Type*} [AddCommGroup A] [Finite A] :
   Finite.of_injective _ comp_zmodToQZ_injective
 
 /- English proof (translation)
-The claim follows from `(Nat.card_le_card_of_injective _ comp_zmodToQZ_injective).trans QZ.card_hom_le`.
+A detailed English derivation is pending.
 -/
 theorem card_addMonoidHom_zmod_le {A : Type*} [AddCommGroup A] [Finite A] :
     Nat.card (A →+ ZMod n) ≤ Nat.card A :=
   (Nat.card_le_card_of_injective _ comp_zmodToQZ_injective).trans QZ.card_hom_le
 
 /- English proof (translation)
-Set `ψ : Y →+ (X →+ ZMod n)` to `{ toFun := fun y => t.comp (β.flip y) map_zero' := by ext; simp map_add' := fun y y' => by ext; simp }`. Set `φ : X →+ (Y →+ ZMod n)` to `{ toFun := fun x => t.comp (β x) map_zero' := by ext; simp map_add' := fun x x' => by ext; simp }`. Set `e : Y ≃+ (X →+ ZMod n)` to `AddEquiv.ofBijective ψ h`. Set `e' : (Y →+ ZMod n) ≃ ((X →+ ZMod n) →+ ZMod n)` to `{ toFun := fun f => f.comp e.symm.toAddMonoidHom invFun := fun g => g.comp e.toAddMonoidHom left_inv := fun f => by ext; simp right_inv := fun g => by ext; simp }`. Establish `: Finite (Y →+ ZMod n)` using `Finite.of_equiv _ e'.symm`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hinj : Injective φ`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Assume the negation of the conclusion as `hne`. Take `⟨χ, hχ⟩` from `zmod_exists_apply_ne_zero hX hne`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy⟩` from `h.2 χ`. Apply `hχ` to reduce the goal to its premises. Rewrite using `[← hy]`. Conclude with `DFunLike.congr_fun hx y`. Use `hinj.bijective_of_nat_card_le ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem bijective_of_bijective_flip {X Y Z : Type*} [AddCommGroup X] [AddCommGroup Y]
     [AddCommGroup Z] [Finite X] (hX : ∀ x : X, n • x = 0) (β : X →+ Y →+ Z) (t : Z →+ ZMod n)

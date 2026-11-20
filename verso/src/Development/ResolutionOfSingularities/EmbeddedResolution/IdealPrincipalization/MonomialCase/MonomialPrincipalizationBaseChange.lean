@@ -39,7 +39,7 @@ noncomputable abbrev MarkedIdealWithBoundary.pullbackWithBoundary (T : MarkedIde
   (T.pullbackOverField Y k' q g).withBoundary E'
 
 /- English proof (translation)
-Establish `hb : (⊤ : X.IdealSheafData).support = ⊥` using `(Scheme.IdealSheafData.support_eq_bot_iff _).mpr rfl`. Rewrite `h` using `[hb]`. Establish `h' : y ∈ ((⊥ : TopologicalSpace.Closeds ↥X) : Set ↥X)` using `h`. Rewrite `h'` using `[TopologicalSpace.Closeds.coe_bot]`. Simplify using `at h'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem false_of_mem_support_top {X : Scheme.{u}} (y : ↥X)
     (h : y ∈ (⊤ : X.IdealSheafData).support) : False := by
@@ -51,7 +51,7 @@ private theorem false_of_mem_support_top {X : Scheme.{u}} (y : ↥X)
   simp at h'
 
 /- English proof (translation)
-Establish `hmem : y ∈ (I.comap u).support` using `Scheme.IdealSheafData.mem_support_comap.mpr hz`. Rewrite `hmem` using `[htop]`. Conclude with `false_of_mem_support_top y hmem`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem false_of_mem_support_of_comap_eq_top {A B : Scheme.{u}} (u : B ⟶ A)
     (I : A.IdealSheafData) (htop : I.comap u = ⊤) (y : ↥B) (hz : u.base y ∈ I.support) : False := by
@@ -60,7 +60,7 @@ private theorem false_of_mem_support_of_comap_eq_top {A B : Scheme.{u}} (u : B �
   exact false_of_mem_support_top y hmem
 
 /- English proof (translation)
-The claim follows from `MorphismProperty.of_isPullback c.isPullback_lastMap.flip inferInstance`.
+A detailed English derivation is pending.
 -/
 private theorem flat_lastMap {X X' : Scheme.{u}} {φ : X' ⟶ X}
     [AlgebraicGeometry.Flat φ] {s' : SequenceOfBlowups X'} {s : SequenceOfBlowups X}
@@ -68,9 +68,9 @@ private theorem flat_lastMap {X X' : Scheme.{u}} {φ : X' ⟶ X}
   MorphismProperty.of_isPullback c.isPullback_lastMap.flip inferInstance
 
 /- English proof (translation)
-Establish `: AlgebraicGeometry.IsNoetherian X` using `hX`. Introduce `i`. Proceed by induction on `i with`. Consider the case `zero`. Introduce `_`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `isNoetherian_of_iso d.toBlowupSequenceData.isoZero.symm`. Consider the case `succ n ih`. Introduce `hn`. Establish `: AlgebraicGeometry.IsNoetherian (d.obj n)` using `ih (le_of_lt hn)`. Conclude with `isNoetherian_of_isBlowupAlongIdealSheaf (d.toBlowupSequenceData.isBlowup n hn)`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem isNoetherian_schemeAt_of_le_length {k : Type u} [Field k] {X : Scheme.{u}}
     {p : X ⟶ Spec (CommRingCat.of k)} {I : X.IdealSheafData} {m : ℕ} {E : List X.IdealSheafData}
@@ -88,24 +88,24 @@ private theorem isNoetherian_schemeAt_of_le_length {k : Type u} [Field k] {X : S
       exact isNoetherian_of_isBlowupAlongIdealSheaf (d.toBlowupSequenceData.isBlowup n hn)
 
 /- English proof (translation)
-The claim follows from `h.1`.
+A detailed English derivation is pending.
 -/
 private theorem centerAtLast_ne_top_of_isAdmissibleCenter {k : Type u} [Field k] {X : Scheme.{u}}
     {p : X ⟶ Spec (CommRingCat.of k)} {I : X.IdealSheafData} {m : ℕ} {E : List X.IdealSheafData}
     (s : MarkedBlowupSequenceData p I m E) (h : MarkedBlowupSequenceData.IsAdmissibleCenter s) : s.centerAtLast ≠ ⊤ := h.1
 
 /- English proof (translation)
-The claim follows from `emptyMarkedBlowupSequenceData_length _ _ _ _`.
+A detailed English derivation is pending.
 -/
 private theorem length_monomialIterateFromEmpty_zero (hinv : ComapIsoInvariance.{u}) (T : MarkedIdealWithBoundary.{u}) :
     (monomialIterateFromEmpty hinv T 0).length = 0 := emptyMarkedBlowupSequenceData_length _ _ _ _
 
 /- English proof (translation)
-Use `hflat` as an intermediate fact. Establish `hlt : (0 : ℕ) < t.length` using `by rw [ht]; omega`. Establish `hlt' : (0 : ℕ) < t'.length` using `by rw [ht']; omega`. Establish `hB : Blowup.IsBlowupAlongIdealSheaf (t.map 0) (t.center 0)` using `t.isBlowup 0 hlt`. Establish `hB' : Blowup.IsBlowupAlongIdealSheaf (t'.map 0) ((t.center 0).comap ψ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `t'.isBlowup 0 hlt'`. Rewrite `h` using `[hcen]`. Then use the resulting hypothesis. Take `⟨qq, -, hqq⟩` from `hB.exists_isPullback_of_flat ψ hB'`. Use `⟨SequenceOfBlowupsPullback.ofLengthOne φ t t' ht ht' qq ?_ ?_ hne⟩` and prove the remaining obligations. Rewrite using `[hψ]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hqq`. Rewrite using `[hψ]`. Conclude with `hcen`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem nonempty_sequenceOfBlowupsPullback_of_length_eq_one {A B : Scheme.{u}} (φ : B ⟶ A)
     (t : BlowupSequenceData A) (t' : BlowupSequenceData B) (ht : t.length = 1) (ht' : t'.length = 1)
@@ -128,13 +128,13 @@ private theorem nonempty_sequenceOfBlowupsPullback_of_length_eq_one {A B : Schem
     exact hcen
 
 /- English proof (translation)
-Use `hg` as an intermediate fact. Establish `: AlgebraicGeometry.Flat c.lastMap` using `flat_lastMap c`. Establish `hmiss : ∀ i : ℕ, i < (S.monomialBlowupStep hS).toBlowupSequenceData.length → ∀ z : ↥((S.monomialBlowupStep hS).toBlowupSequenceData.obj i), z ∈ ((S.monomialBlowupStep hS).toBlowupSequenceData.center i).support → ∀ y : ↥(S'.obj S'.length), c.lastMap.base y ≠ ((S.monomialBlowupStep …`. Introduce `i hi z hz y heq`. Establish `hlen : (S.monomialBlowupStep hS).toBlowupSequenceData.length = 1` using `MarkedBlowupSequenceData.monomialBlowupStep_length ..`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hi0 : i = 0` using `by omega`. Substitute `hi0` using the available equality. Establish `hzz : ((S.monomialBlowupStep hS).toBlowupSequenceData.projectionToBase 0).base z ∈ S.centerAtLast.support` using `hz`. Establish `hz2 : c.lastMap.base y ∈ S.centerAtLast.support`. Rewrite using `[heq]`.
+Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hzz`. Conclude with `false_of_mem_support_of_comap_eq_top c.lastMap S.centerAtLast htop y hz2`. Establish `hE0 : (emptyMarkedBlowupSequenceData (S'.proj S'.length ≫ p₂) (S'.ideal S'.length) m₂ (S'.boundary S'.length)).toBlowupSequenceData.length = 0` using `emptyMarkedBlowupSequenceData_length _ _ _ _`. Establish `e` using `SequenceOfBlowupsPullback.ofCentersMissImage c.lastMap (S.monomialBlowupStep hS).toBlowupSequenceData hmiss (emptyMarkedBlowupSequenceData (S'.proj S'.length ≫ p₂) (S'.ideal S'.length) m₂ (S'.boundary S'.length)).toBlowupSequenceData hE0`. Establish `c2` using `SequenceOfBlowupsPullback.concat S.toBlowupSequenceData (S.monomialBlowupStep hS).toBlowupSequenceData S'.toBlowupSequenceData (emptyMarkedBlowupSequenceData (S'.proj S'.length ≫ p₂) (S'.ideal S'.length) m₂ (S'.boundary S'.length)).toBlowupSequenceData c e`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨?_⟩` and prove the remaining obligations. Rewrite using `[MarkedBlowupSequenceData.blowupAtCenter_eq_append hinv S hS, MarkedBlowupSequenceData.append_toBlowupSequenceData]`. Conclude with `SequenceOfBlowupsPullback.ofConcatLengthZero g S'.toBlowupSequenceData (S.appendToBlowupSequenceData (S.monomialBlowupStep hS)).toSequenceOfBlowups (emptyMarkedBlowupSequenceData (S'.proj S'.length ≫ p₂) (S'.ideal S'.length) m₂ (S'.boundary S'.length)).toBlowupSequenceData hE0 c2`.
+A detailed English derivation is pending.
 -/
 private theorem nonempty_sequenceOfBlowupsPullback_blowupAtCenter_of_comap_eq_top {k₁ k₂ : Type u}
     [Field k₁] [Field k₂] {X₁ X₂ : Scheme.{u}}
@@ -180,9 +180,9 @@ private theorem nonempty_sequenceOfBlowupsPullback_blowupAtCenter_of_comap_eq_to
       (S'.boundary S'.length)).toBlowupSequenceData hE0 c2
 
 /- English proof (translation)
-Use `hg` as an intermediate fact. Establish `: AlgebraicGeometry.Flat c.lastMap` using `flat_lastMap c`. Establish `h1 : (S'.monomialBlowupStep hS').toBlowupSequenceData.isoZero.hom ≫ c.lastMap ≫ (S.monomialBlowupStep hS).toBlowupSequenceData.isoZero.inv = c.lastMap ≫ (S.monomialBlowupStep hS).toBlowupSequenceData.isoZero.inv` using `Category.id_comp _`. Establish `h2 : c.lastMap ≫ (S.monomialBlowupStep hS).toBlowupSequenceData.isoZero.inv = c.lastMap` using `Category.comp_id _`. Establish `hconj : (S'.monomialBlowupStep hS').toBlowupSequenceData.isoZero.hom ≫ c.lastMap ≫ (S.monomialBlowupStep hS).toBlowupSequenceData.isoZero.inv = c.lastMap` using `h1.trans h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨e⟩` from `nonempty_sequenceOfBlowupsPullback_of_length_eq_one c.lastMap (S.monomialBlowupStep hS).toBlowupSequenceData (S'.monomialBlowupStep hS').toBlowupSequenceData (MarkedBlowupSequenceData.monomialBlowupStep_length ..) (MarkedBlowupSequenceData.monomialBlowupStep_length ..) c.lastMap …`. Use `⟨?_⟩` and prove the remaining obligations. Rewrite using `[MarkedBlowupSequenceData.blowupAtCenter_eq_append hinv S hS, MarkedBlowupSequenceData.blowupAtCenter_eq_append hinv S' hS', MarkedBlowupSequenceData.append_toBlowupSequenceData, MarkedBlowupSequenceData.append_toBlowupSequenceData]`. Conclude with `SequenceOfBlowupsPullback.concat S.toBlowupSequenceData (S.monomialBlowupStep hS).toBlowupSequenceData S'.toBlowupSequenceData (S'.monomialBlowupStep hS').toBlowupSequenceData c e`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem nonempty_sequenceOfBlowupsPullback_blowupAtCenter {k₁ k₂ : Type u} [Field k₁] [Field k₂]
     {X₁ X₂ : Scheme.{u}}
@@ -218,17 +218,15 @@ private theorem nonempty_sequenceOfBlowupsPullback_blowupAtCenter {k₁ k₂ : T
     S'.toBlowupSequenceData (S'.monomialBlowupStep hS').toBlowupSequenceData c e
 
 /- English proof (translation)
-Use `hφ` as an intermediate fact. Substitute `hI'` using the available equality. Establish `htrip : (@MarkedIdealWithBoundary.mk k' instk' Yj qj (Tn.ideal.comap φ) Tn.mult E2).withBoundary (Tn.boundary.map fun D => D.comap φ) = Tn.pullbackOverField Yj k' qj φ` using `MarkedIdealWithBoundary.mk_eq_mk Yj Tn.mult rfl rfl rfl`. Establish `hTpb : MonomialCenter.IsLocallyMonomialTriple (Tn.pullbackOverField Yj k' qj φ)`. Rewrite using `[← htrip]`.
+Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `MonomialCenter.isLocallyMonomialTriple_withBoundary hGeom _ hTj _ hE2`. Establish `hP : MonomialCenter.IsComponentCompatiblePullback Tn Yj k' qj φ` using `MonomialCenter.IsComponentCompatiblePullback.of_flat hGeom Tn hTn.valid Yj k' qj φ hTpb.valid hordφ`. Establish `hmin : minIndexCard (Tn.pullbackOverField Yj k' qj φ).ideal (Tn.pullbackOverField Yj k' qj φ).mult (Tn.pullbackOverField Yj k' qj φ).boundary = minIndexCard (Tn.ideal.comap φ) Tn.mult E2` using `(MonomialCenter.minIndexCard_eq_of_sameNontrivialBoundary (Tn.ideal.comap φ) Tn.mult hE2).symm`. Establish `hcenpb : monomialCenter (Tn.pullbackOverField Yj k' qj φ).ideal (Tn.pullbackOverField Yj k' qj φ).mult (Tn.pullbackOverField Yj k' qj φ).boundary = monomialCenter (Tn.ideal.comap φ) Tn.mult E2` using `(MonomialCenter.monomialCenter_eq_of_sameNontrivialBoundary (Tn.ideal.comap φ) Tn.mult hE2).symm`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hne`. Establish `hne' : minIndexCard (Tn.pullbackOverField Yj k' qj φ).ideal (Tn.pullbackOverField Yj k' qj φ).mult (Tn.pullbackOverField Yj k' qj φ).boundary ≠ 0`. Rewrite using `[hmin]`. Conclude with `hne`. Conclude with `(MonomialCenter.minIndexCard_ne_zero_and_le_pullbackOverField hGeom Tn Yj k' qj φ hTn hTpb hP hne').1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Prove the first alternative.
 
-Introduce `h0`. Distinguish the cases in `hz : minIndexCard (Tn.pullbackOverField Yj k' qj φ).ideal (Tn.pullbackOverField Yj k' qj φ).mult (Tn.pullbackOverField Yj k' qj φ).boundary = 0`. Conclude with `Or.inl (MonomialCenter.comap_monomialCenter_eq_top hGeom Tn Yj k' qj φ hTn hTpb hP h0 (Or.inl hz))`. Establish `hle` using `(MonomialCenter.minIndexCard_pullbackOverField_eq_zero_or_centerInvariant_le hGeom Tn Yj k' qj φ hTn hTpb hP).resolve_left hz`. Rewrite `hle` using `[MonomialCenter.centerInvariant_le_iff]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Reduce the conclusion to the remaining proof obligations.
 
-Break down `hle with hlt | ⟨hm, hx, hs⟩` into its components or cases. Conclude with `Or.inl (MonomialCenter.comap_monomialCenter_eq_top hGeom Tn Yj k' qj φ hTn hTpb hP h0 (Or.inr hlt))`. Use `Or.inr ⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hmin]`. Conclude with `hz`.
-
-Rewrite using `[← hcenpb]`. Conclude with `MonomialCenter.monomialCenter_pullbackOverField_eq_comap hGeom Tn Yj k' qj φ hTn hTpb hP hm.symm hx.symm (MonomialCenter.lexMaxIndices_pullbackOverField_eq_image Tn Yj k' qj φ hs)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem minIndexCard_ne_zero_and_monomialCenter_comap_of_flat (hGeom : MonomialGeometryHypotheses.{u})
     (Tn : MarkedIdealWithBoundary.{u})
@@ -290,13 +288,13 @@ private theorem minIndexCard_ne_zero_and_monomialCenter_comap_of_flat (hGeom : M
             (MonomialCenter.lexMaxIndices_pullbackOverField_eq_image Tn Yj k' qj φ hs)
 
 /- English proof (translation)
-Establish `hfl1 : AlgebraicGeometry.Flat g` using `hg`. Establish `hfl2 : @AlgebraicGeometry.Flat (T.pullbackWithBoundary Y k' q g E').scheme T.scheme g` using `hg`. Establish `hflt : AlgebraicGeometry.Flat c.lastMap` using `flat_lastMap c`. Establish `hN : ∀ i : ℕ, i ≤ S.length → AlgebraicGeometry.IsNoetherian (S.obj i)` using `isNoetherian_schemeAt_of_le_length hT.valid.isNoetherian S`. Establish `hN' : ∀ i : ℕ, i ≤ S'.length → AlgebraicGeometry.IsNoetherian (S'.obj i)` using `isNoetherian_schemeAt_of_le_length hT'.valid.isNoetherian S'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hIdeal, hboundary⟩` from `SequenceOfBlowupsPullback.ideal_boundary_last_eq_comap_lastMap S S' c rfl hE hN hN'`. Establish `hsq : IsPullback c.lastMap (S'.proj S'.length) (S.proj S.length) g`. Rewrite using `[MarkedBlowupSequenceData.projectionToBase_eq_toSequenceOfBlowups S S.length, MarkedBlowupSequenceData.projectionToBase_eq_toSequenceOfBlowups S' S'.length]`. Conclude with `c.isPullback_lastMap`. Establish `hordφ : ∀ (A : (S.obj S.length).IdealSheafData) (y : ↥(S'.obj S'.length)), orderAt (A.comap c.lastMap) y = orderAt A (c.lastMap y)` using `fun A y => hord (S.obj S.length) (S.proj S.length) (S.proj S.length ≫ T.structMap) rfl (S.ideal S.length) (S.boundary S.length) hTn.valid (S'.obj S'.length) c.lastMap (S'.proj S'.length) hsq A y`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hminCard` using `minIndexCard_ne_zero_and_monomialCenter_comap_of_flat hGeom (tripleAtLastBlowup T S) (S'.obj S'.length) k' (S'.proj S'.length ≫ q) c.lastMap (flat_lastMap c) (S'.ideal S'.length) (S'.boundary S'.length) hTn hTj hIdeal hboundary hordφ`. Use `⟨fun hok' => hminCard.1 (minIndexCard_tripleAtLastBlowup_ne_zero_of_isAdmissibleCenter (T.pullbackWithBoundary Y k' q g E') S' hok'), ?_⟩` and prove the remaining obligations. Introduce `hok`. Establish `h0` using `minIndexCard_tripleAtLastBlowup_ne_zero_of_isAdmissibleCenter T S hok`. Break down `hminCard.2 h0 with hmiss | ⟨hne', hcenEq⟩` into its components or cases.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative.
 
-Conclude with `Or.inl (nonempty_sequenceOfBlowupsPullback_blowupAtCenter_of_comap_eq_top g hg hinv S S' hok c hmiss)`. Establish `hok' : MarkedBlowupSequenceData.IsAdmissibleCenter S'` using `isAdmissibleCenter_of_minIndexCard_tripleAtLastBlowup_ne_zero hGeom (T.pullbackWithBoundary Y k' q g E') S' hTj hne'`. Conclude with `Or.inr ⟨hok', nonempty_sequenceOfBlowupsPullback_blowupAtCenter g hg hinv S S' hok hok' c hcenEq⟩`.
+Establish an intermediate fact. Prove the second alternative. A detailed English derivation is pending.
 -/
 private theorem sequenceOfBlowupsPullback_blowupAtCenter_cases
     (hGeom : MonomialGeometryHypotheses.{u}) (hinv : ComapIsoInvariance.{u}) (T : MarkedIdealWithBoundary.{u})
@@ -364,15 +362,13 @@ private theorem sequenceOfBlowupsPullback_blowupAtCenter_cases
     exact Or.inr ⟨hok', nonempty_sequenceOfBlowupsPullback_blowupAtCenter g hg hinv S S' hok hok' c hcenEq⟩
 
 /- English proof (translation)
-Use `hg` as an intermediate fact. Proceed by induction on `n with`. Consider the case `zero`. Introduce `_`. Use `⟨0, fun j' hj' => absurd hj' (Nat.not_lt_zero j'), ⟨?_⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `SequenceOfBlowupsPullback.ofCentersMissImage g (monomialIterateFromEmpty hinv T 0).toBlowupSequenceData ?_ (monomialIterateFromEmpty hinv (T.pullbackWithBoundary Y k' q g E') 0).toBlowupSequenceData (length_monomialIterateFromEmpty_zero hinv (T.pullbackWithBoundary Y k' q g E'))` and prove the remaining obligations. Introduce `i hi`. Conclude with `absurd hi (by rw [length_monomialIterateFromEmpty_zero hinv T]; exact Nat.not_lt_zero i)`. Consider the case `succ n ih`. Introduce `hn`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hn' : n < monomialStallIndexOfTriple hinv T` using `lt_of_lt_of_le (Nat.lt_succ_self n) hn`. Take `⟨j, hjstep, hc⟩` from `ih (le_of_lt hn')`. Take `⟨c⟩` from `hc`. Establish `hok : MarkedBlowupSequenceData.IsAdmissibleCenter (monomialIterateFromEmpty hinv T n)` using `isAdmissibleCenter_of_lt_monomialStallIndex hinv T.structMap T.ideal T.mult T.boundary n hn'`. Break down `(sequenceOfBlowupsPullback_blowupAtCenter_cases hGeom hinv T Y k' q g hg E' hT hE hT' hord (monomialIterateFromEmpty hinv T n) (monomialIterateFromEmpty hinv (T.pullbackWithBoundary Y k' q g E') j) (isLocallyMonomialTriple_tripleAtLastBlowup_monomialIterate hGeom hinv T hT n) (is …` into its components or cases.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components.
 
-Conclude with `⟨j, hjstep, h⟩`. Use `⟨j + 1, ?_, h⟩` and prove the remaining obligations. Introduce `j' hj'`. Break down `lt_or_eq_of_le (Nat.lt_succ_iff.mp hj') with h1 | h1` into its components or cases. Conclude with `hjstep j' h1`.
-
-Rewrite using `[h1]`. Conclude with `hok'`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_sequenceOfBlowupsPullback_monomialIterateFromEmpty
     (hGeom : MonomialGeometryHypotheses.{u}) (hinv : ComapIsoInvariance.{u}) (T : MarkedIdealWithBoundary.{u})
@@ -427,9 +423,9 @@ private theorem exists_sequenceOfBlowupsPullback_monomialIterateFromEmpty
         exact hok'
 
 /- English proof (translation)
-Establish `hg : AlgebraicGeometry.Flat g` using `inferInstance`. Take `⟨j, hjstep, hc⟩` from `exists_sequenceOfBlowupsPullback_monomialIterateFromEmpty hGeom hinv T Y k' q g hg E' hT hE hT' hord (monomialStallIndexOfTriple hinv T) le_rfl`. Take `⟨c⟩` from `hc`. Establish `hstall : ¬ MarkedBlowupSequenceData.IsAdmissibleCenter (monomialIterateFromEmpty hinv (T.pullbackWithBoundary Y k' q g E') j)`. Introduce `hok'`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `(sequenceOfBlowupsPullback_blowupAtCenter_cases hGeom hinv T Y k' q g hg E' hT hE hT' hord (monomialIterateFromEmpty hinv T (monomialStallIndexOfTriple hinv T)) (monomialIterateFromEmpty hinv (T.pullbackWithBoundary Y k' q g E') j) (isLocallyMonomialTriple_tripleAtLastBlowup_mono …` and prove the remaining obligations. Conclude with `minIndexCard_monomialIterateFromEmpty_stallIndex_eq_zero hGeom hinv T hT`. Establish `hjeq : monomialStallIndex hinv (T.pullbackWithBoundary Y k' q g E').structMap (T.pullbackWithBoundary Y k' q g E').ideal (T.pullbackWithBoundary Y k' q g E').mult (T.pullbackWithBoundary Y k' q g E').boundary = j` using `monomialStallIndex_eq_of_isStationaryAt hinv (T.pullbackWithBoundary Y k' q g E').structMap (T.pullbackWithBoundary Y k' q g E').ideal (T.pullbackWithBoundary Y k' q g E').mult (T.pullbackWithBoundary Y k' q g E').boundary j ((MarkedBlowupSequenceData.isStationaryAt_iff_not_isAdm …`. Rewrite using `[monomialPrincipalization_apply, monomialPrincipalization_apply, monomialBlowupSeq_eq_monomialBlowupIterate, monomialBlowupSeq_eq_monomialBlowupIterate, hjeq]`. Conclude with `SequenceOfBlowupsPullback.isPullbackSequenceOfBlowups c`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem monomialPrincipalization_isPullbackBlowupSequence_of_flat
     (hGeom : MonomialGeometryHypotheses.{u}) (hinv : ComapIsoInvariance.{u}) (T : MarkedIdealWithBoundary.{u})
@@ -478,7 +474,7 @@ theorem monomialPrincipalization_isPullbackBlowupSequence_of_flat
   exact SequenceOfBlowupsPullback.isPullbackSequenceOfBlowups c
 
 /- English proof (translation)
-The claim follows from `MorphismProperty.of_isPullback hsq.flip inferInstance`.
+A detailed English derivation is pending.
 -/
 private theorem smooth_fst_of_isPullback {X Y B Q : Scheme.{u}} {hm : Y ⟶ X}
     [AlgebraicGeometry.Smooth hm] {b : B ⟶ X} {a : Q ⟶ B} {b' : Q ⟶ Y}
@@ -486,9 +482,9 @@ private theorem smooth_fst_of_isPullback {X Y B Q : Scheme.{u}} {hm : Y ⟶ X}
   MorphismProperty.of_isPullback hsq.flip inferInstance
 
 /- English proof (translation)
-Establish `: AlgebraicGeometry.Flat h` using `inferInstance`. Establish `hE2 : MarkedIdealWithBoundary.SameNontrivialBoundary E' (T.boundary.map fun D => D.comap h)` using `hE.symm`. Establish `hT2 : MonomialCenter.IsLocallyMonomialTriple (T.pullbackWithBoundary Y T.base q h E')` using `hT'`. Establish `hord : ∀ (B : Scheme.{u}) (b : B ⟶ T.scheme) (pB : B ⟶ Spec (CommRingCat.of T.base)), b ≫ T.structMap = pB → ∀ (IB : B.IdealSheafData) (EB : List B.IdealSheafData), (@MarkedIdealWithBoundary.mk T.base T.instField B pB IB T.mult EB).IsAdmissible → ∀ (Q : Scheme.{u}) (a : Q ⟶ B) (b …`. Introduce `B b pB hbp IB EB hvalid Q a b' hsq A z`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: CharZero T.base` using `hvalid.charZero`. Establish `: AlgebraicGeometry.Smooth pB` using `hvalid.smooth`. Establish `: AlgebraicGeometry.Smooth a` using `smooth_fst_of_isPullback hsq`. Conclude with `orderAt_comap T.base pB a A z`. Conclude with `monomialPrincipalization_isPullbackBlowupSequence_of_flat hGeom hinv T Y T.base q h E' hT hE2 hT2 hord`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem monomialPrincipalization_isPullbackBlowupSequence_of_smooth
     (hGeom : MonomialGeometryHypotheses.{u}) (hinv : ComapIsoInvariance.{u}) (T : MarkedIdealWithBoundary.{u})

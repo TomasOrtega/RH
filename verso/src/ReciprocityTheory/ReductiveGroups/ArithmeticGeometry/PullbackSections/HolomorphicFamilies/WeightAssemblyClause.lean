@@ -7,9 +7,9 @@ namespace ReciprocityTheory.ChartRestriction.G.PullbackSections.Pf
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.WeightAlgebra Formalism.L2.Pj
 
 /- English proof (translation)
-Proceed by induction on `x using EReal.rec with`. Consider the case `bot => simp at h`. Consider the case `coe y`. Establish `hy : -c ≤ y` using `EReal.coe_le_coe_iff.mp h`. Rewrite using `[← EReal.coe_add]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `EReal.coe_nonneg.mpr (by linarith)`. Consider the case `top => simp`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem nonneg_add_of_neg_le (c : ℝ) (x : EReal) (h : ((-c : ℝ) : EReal) ≤ x) : 0 ≤ (c : EReal) + x := by
   induction x using EReal.rec with
@@ -21,15 +21,15 @@ theorem nonneg_add_of_neg_le (c : ℝ) (x : EReal) (h : ((-c : ℝ) : EReal) ≤
   | top => simp
 
 /- English proof (translation)
-Introduce `g hg`. Proceed by induction on `hg using Submodule.span_induction with`. Consider the case `mem x hx => exact hc x hx`. Consider the case `zero => rw [hv.zero]`. Conclude with `le_top`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy => exact (le_min hx hy).trans (hv.add x y)`. Consider the case `smul a x _ hx`. Rewrite using `[← algebraMap_smul K a x]`. Distinguish the cases in `ha : (algebraMap (𝓞 K) K a) = 0`. Rewrite using `[ha, zero_smul, hv.zero]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `le_top`. Rewrite using `[hv.smul _ _ ha]`. Establish `h1 : (0 : EReal) ≤ (((vAdd la (algebraMap (𝓞 K) K a) : ℤ) : ℝ) : EReal)`. Establish `h0 : 0 ≤ vAdd la (algebraMap (𝓞 K) K a)`. Unfold `vAdd`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hle : la.valuation K (algebraMap (𝓞 K) K a) ≤ 1` using `la.valuation_le_one (K := K) a`. Establish `hne : la.valuation K (algebraMap (𝓞 K) K a) ≠ 0` using `by simpa using ha`. Take `⟨u, hu⟩` from `WithZero.ne_zero_iff_exists.mp hne`. Establish `hu1 : u ≤ 1` using `by rw [← hu] at hle; exact_mod_cast hle`. Rewrite using `[← hu, show ((u : WithZero (Multiplicative ℤ))) = WithZero.exp (Multiplicative.toAdd u) from rfl, WithZero.log_exp]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `h3 : Multiplicative.toAdd u ≤ 0` using `Multiplicative.toAdd_le.mpr hu1`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `h0` after adjusting the coercions. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem le_val_of_mem_span {K : Type} [Field K] [NumberField K] {R : Type} [CommRing R] [Algebra K R]
     [Algebra (𝓞 K) R] [IsScalarTower (𝓞 K) K R] {la : HeightOneSpectrum (𝓞 K)} {v : R → EReal} (hv : IsVal la v)
@@ -61,9 +61,9 @@ theorem le_val_of_mem_span {K : Type} [Field K] [NumberField K] {R : Type} [Comm
           _ ≤ _ := add_le_add h1 le_rfl
 
 /- English proof (translation)
-Unfold `WeightAlgebra.PJ.WWc`. Introduce `F hF`. Take `⟨G, hG, rfl⟩` from `Submodule.mem_map.mp hF`. Rewrite using `[X.Mlat_eq]`. Introduce `la y`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hsK : ((s : B.KO)) ≠ 0` using `by exact_mod_cast hs`. Simplify using `only [LinearMap.smul_apply, LinearMap.id_apply]`. Rewrite using `[← algebraMap_smul B.KO s G, map_smul, X.vAt_smul la y _ _ hsK]`. Conclude with `nonneg_add_of_neg_le _ _ (hb G hG la y)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem WWc_le_Mlat {D : D7} {B : WeightFamilies.Prov D} {P : ModuliIntegralCharts.Prov D} {j : ℕ} (X : WeightAlgebra.PJ D B P j) (s : 𝓞 B.KO)
     (hs : s ≠ 0) (w : WeightFamilies.Wt D j)

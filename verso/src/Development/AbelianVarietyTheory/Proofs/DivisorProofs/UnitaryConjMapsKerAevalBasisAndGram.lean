@@ -5,9 +5,9 @@ open Matrix Polynomial
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.ConjugateAlgebraLemmas.main`. Consider the case `exact _root_.GlobalTheory.ConjugateAlgebraLemmas.main`. Consider the case `(apply _root_.GlobalTheory.ConjugateAlgebraLemmas.main <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.ConjugateAlgebraLemmas.main <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.ConjugateAlgebraLemmas.main <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.ConjugateAlgebraLemmas.main ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem unitary_conj_ker_basis_gram {K : Type} [Field K] (σ : K →+* K) {n : ℕ} (γ g : GL (Fin n) K)
     (hg : ((g : Matrix (Fin n) (Fin n) K).map σ)ᵀ * (g : Matrix (Fin n) (Fin n) K) = 1)

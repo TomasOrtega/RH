@@ -18,7 +18,7 @@ noncomputable section
 namespace GlobalTheory.RealPar.CoverFactor
 
 /- English proof (translation)
-Introduce and unpack `(a | a)`. Simplify using `using h.1 a`. Simplify using `using h.2.1 a`.
+Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem signCompat_of_blockOrd {p q n : ℕ} {e : Ix p q ≃ Fin n} {ε : Fin n → Bool} (h : BlockOrd e ε) :
     SignCompat ε e := by
@@ -27,21 +27,19 @@ theorem signCompat_of_blockOrd {p q n : ℕ} {e : Ix p q ≃ Fin n} {ε : Fin n 
   · simpa using h.2.1 a
 
 /- English proof (translation)
-Introduce `p q n e ε T U σ h hF`. Establish `hφ : IsFormIso ε (plainMat e)` using `isFormIso_plainMat (signCompat_of_blockOrd h)`. Use `⟨⟨⟨?_, ?_⟩, ?_, ?_⟩, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `hF 1` as an intermediate fact. Rewrite `this` using `[map_one, map_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[this]`. Simplify using the standard rewrite rules. Introduce `a ha b hb`. Take `⟨x, rfl⟩` from `h.cov_surj T ha`. Take `⟨y, rfl⟩` from `h.cov_surj T hb`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `hF (x * y)` as an intermediate fact. Rewrite `this` using `[map_mul, map_mul, hF x, hF y]`. Rewrite using `[← ContinuousLinearMap.mul_def, this]`. Simplify using `[Matrix.submatrix_mul_equiv]`. Introduce `g hg v`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨x, rfl⟩` from `h.cov_surj T hg`. Rewrite using `[← hF x]`. Conclude with `U.isom x v`. Introduce `v`. Use `CoverURep.continuousOn_of_cover h T _ ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `U.cont v` using `only [← hF _]`. Introduce `hI S hS hst`. Use `hI.2 S hS fun x v hv => ?_` and prove the remaining obligations. Rewrite using `[hF x]`. Conclude with `hst _ (h.cov_mem T x) v hv`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `x`. Use `kFin_iff (s := RingHom.id ℂ) hφ (T := T) (π := U.π) (σ := σ) (LinearIsometryEquiv.refl ℂ U.H) (c := fun _ => 1) (fun _ => one_ne_zero) (fun g y => by rw [one_smul, hF g]; rfl) x` as an intermediate fact. Conclude with `this.symm`. Introduce `Y`. Conclude with `(hφ.mem_lie Y).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `Y hY t`. Rewrite using `[hF, T.expt_cov _ (KStabLie.smul_mem_upq hY t)]`. Conclude with `congrArg σ (hφ.exp Y t).symm`. Introduce `k hk`. Take `⟨x, hx⟩` from `hφ.surj T (mem_K_iff.1 hk).1`.
-
-Use `⟨x, (hφ.mem_K T x).1 (hx ▸ hk), ?_⟩` and prove the remaining obligations. Rewrite using `[hF x]`. Conclude with `congrArg σ hx`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dictionary : ∀ (p q n : ℕ) (e : Ix p q ≃ Fin n) (ε : Fin n → Bool) (T : GrpData p q) (U : URep T) (σ : Matrix (Fin n) (Fin n) ℂ → (U.H →L[ℂ] U.H)), BlockOrd e ε → Factors U e σ → IsURepOn (UJset ε) σ ∧ (IrrU U → IsIrredOn (UJset ε) σ) ∧ (∀ x, KFin T U.π x ↔ IsKFin ε σ x) ∧ (∀ Y, Y ∈ upq p q ↔ Formalism.REAL.inG ε (Matrix.reindex e e Y)) ∧ (∀ Y ∈ upq p q, ∀ t : ℝ, U.π (T.expt (t • Y)) = σ (NormedSpace.exp (t • Matrix.reindex e e Y))) ∧ ∀ k ∈ Formalism.REAL.Kset ε, ∃ x ∈ T.Kset, U.π x = σ k := by
   intro p q n e ε T U σ h hF

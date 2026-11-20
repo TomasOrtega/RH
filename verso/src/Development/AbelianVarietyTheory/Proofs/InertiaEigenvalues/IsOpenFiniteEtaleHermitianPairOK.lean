@@ -5,7 +5,7 @@ open GlobalTheory.JR Matrix MeasureTheory Filter Topology
 namespace GlobalTheory.JR.OKOpen
 
 /- English proof (translation)
-Establish `h : (fun M : Matrix (Fin n) (Fin n) K => M.charpoly.coeff i) = fun M => MvPolynomial.eval (fun ij : Fin n × Fin n => M ij.1 ij.2) ((Matrix.charpoly.univ K (Fin n)).coeff i)`. Use function extensionality and compare the values at `M`. Conclude with `(Matrix.charpoly.univ_coeff_eval₂Hom (Fin n) (RingHom.id K) (fun ij : Fin n × Fin n => M ij.1 ij.2) i).symm`. Rewrite using `[h]`. Conclude with `(MvPolynomial.continuous_eval _).comp (continuous_pi fun ij => (continuous_apply ij.2).comp (continuous_apply ij.1))`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem contCoeff {K : Type} [CommRing K] [TopologicalSpace K] [IsTopologicalRing K] (n i : ℕ) :
     Continuous fun M : Matrix (Fin n) (Fin n) K => M.charpoly.coeff i := by
@@ -19,11 +19,11 @@ private theorem contCoeff {K : Type} [CommRing K] [TopologicalSpace K] [IsTopolo
     (continuous_pi fun ij => (continuous_apply ij.2).comp (continuous_apply ij.1))
 
 /- English proof (translation)
-Set `b` to `Module.finBasis F A.K`. Establish `h : (fun z : A.K => (LinearMap.charpoly (Algebra.lmul F A.K z)).coeff i) = fun z => (LinearMap.toMatrix b b (Algebra.lmul F A.K z)).charpoly.coeff i`. Use function extensionality and compare the values at `z`. Rewrite using `[LinearMap.charpoly_toMatrix]`. Rewrite using `[h]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `(contCoeff _ i).comp ?_` and prove the remaining obligations. Use `continuous_pi fun r => continuous_pi fun s => ?_` and prove the remaining obligations. Establish `hl : (fun z : A.K => LinearMap.toMatrix b b (Algebra.lmul F A.K z) r s) = fun z => (b.coord r) (z * b s)`. Use function extensionality and compare the values at `z`. Simplify using `[LinearMap.toMatrix_apply]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[hl]`. Conclude with `IsModuleTopology.continuous_of_linearMap ((b.coord r).comp (LinearMap.mulRight F (b s)))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_coeff {F E : Type} [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E]
     [StarRing E] (A : Et F E) (i : ℕ) :
@@ -42,11 +42,11 @@ theorem continuous_coeff {F E : Type} [NontriviallyNormedField F] [NontriviallyN
   exact IsModuleTopology.continuous_of_linearMap ((b.coord r).comp (LinearMap.mulRight F (b s)))
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ hU A`. Use `haveI : IsUltrametricDist F := hU.ultraF`. Establish `hset : A.OK = ⋂ i : Fin (Module.finrank F A.K + 1), (fun z : A.K => (LinearMap.charpoly (Algebra.lmul F A.K z)).coeff i) ⁻¹' Metric.closedBall 0 1`. Use extensionality with `z`. Simplify using `only [Et.OK, Set.mem_setOf_eq, Set.mem_iInter, Set.mem_preimage, Metric.mem_closedBall, dist_zero_right]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h i`. Conclude with `h i`. Introduce `h i`. Distinguish the cases in `hi : i ≤ Module.finrank F A.K`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `h ⟨i, Nat.lt_succ_of_le hi⟩`. Rewrite using `[Polynomial.coeff_eq_zero_of_natDegree_lt (by rw [LinearMap.charpoly_natDegree]; omega)]`. Simplify using the standard rewrite rules. Rewrite using `[hset]`. Conclude with `isOpen_iInter_of_finite fun i => (IsUltrametricDist.isOpen_closedBall _ one_ne_zero).preimage (continuous_coeff A i)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_OK : ∀ (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E]
     [StarRing E] [Unram F E] (A : Et F E), IsOpen A.OK := by

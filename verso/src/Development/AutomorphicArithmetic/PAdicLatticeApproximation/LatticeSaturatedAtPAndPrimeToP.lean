@@ -5,13 +5,13 @@ open GlobalTheory GlobalTheory.PELU GlobalTheory.UPel.HT GlobalTheory.LKTrip Glo
 open scoped TensorProduct
 
 /- English proof (translation)
-Introduce `p hp D X`. Establish `hpp : p.Prime` using `hp.out`. Establish `h2 : ∀ w ∈ X.M, ∃ m : ℕ, 0 < m ∧ m.Coprime p ∧ m • w ∈ X.lat`. Introduce `w hw`. Take `⟨t, ht0, htc, ht⟩` from `DenEnd.exists_coprime_nsmul_mem D (X.r w)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨t, ht0, htc, nsmul_mem hw t, ?_⟩` and prove the remaining obligations. Rewrite using `[map_nsmul]`. Conclude with `ht`. Use `⟨?_, h2, ?_⟩` and prove the remaining obligations. Introduce `w hw`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨k, hk⟩` from `(UpperTheory.p_lattice_saturated_and_cofinite p D X.M X.hM).2 w`. Use `⟨k, hk, ?_⟩` and prove the remaining obligations. Rewrite using `[map_nsmul]`. Conclude with `nsmul_mem hw _`. Introduce `w`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨k, hk⟩` from `(UpperTheory.p_lattice_saturated_and_cofinite p D X.M X.hM).2 w`. Take `⟨t, ht0, -, ht⟩` from `h2 _ hk`. Use `⟨t * p ^ k, Nat.mul_ne_zero ht0.ne' (pow_ne_zero _ hpp.ne_zero), ?_⟩` and prove the remaining obligations. Rewrite using `[mul_smul]`. Conclude with `ht`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.lattice_saturated_at_p_and_prime_to_p :
     ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (X : UpperTheory.Gal.W2.Wit.Sys D), (∀ w : VQ D, X.r w ∈ LaHat D → ∃ k : ℕ, p ^ k • w ∈ X.lat) ∧ (∀ w ∈ X.M, ∃ m : ℕ, 0 < m ∧ m.Coprime p ∧ m • w ∈ X.lat) ∧ ∀ w : VQ D, ∃ m : ℕ, m ≠ 0 ∧ m • w ∈ X.lat := by

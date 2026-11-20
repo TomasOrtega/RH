@@ -9,7 +9,7 @@ section
 variable {M : Type} [NormedAddCommGroup M] [InnerProductSpace ℂ M] {n : ℕ}
 
 /- English proof (translation)
-Unfold `hhJ`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun c _ => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul, inner_self_eq_norm_sq_to_K]`. Apply the tactic sequence `split_ifs <;> simp`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma hhJ_self_norm_le_sum_sq (ε : Fin n → Bool) (x : Fin n → M) :
     ‖hhJ ε x x‖ ≤ ∑ c, ‖x c‖ ^ 2 := by
@@ -19,7 +19,7 @@ lemma hhJ_self_norm_le_sum_sq (ε : Fin n → Bool) (x : Fin n → M) :
   split_ifs <;> simp
 
 /- English proof (translation)
-Unfold `hhJ`. Rewrite using `[Complex.im_sum]`. Use `Finset.sum_eq_zero fun c _ => ?_` and prove the remaining obligations. Establish `h : (⟪x c, x c⟫_ℂ).im = 0` using `inner_self_im (𝕜 := ℂ) (x c)`. Apply the tactic sequence `split_ifs <;> simp [-inner_self_eq_norm_sq_to_K, h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma hhJ_self_im_eq_zero (ε : Fin n → Bool) (x : Fin n → M) :
     (hhJ ε x x).im = 0 := by
@@ -30,7 +30,7 @@ lemma hhJ_self_im_eq_zero (ε : Fin n → Bool) (x : Fin n → M) :
   split_ifs <;> simp [-inner_self_eq_norm_sq_to_K, h]
 
 /- English proof (translation)
-Unfold `hhJ`. Simplify using `only [Finset.sum_apply, sum_inner, inner_sum, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 lemma hhJ_finsum_finsum {ι : Type} (ε : Fin n → Bool) (y : ι → Fin n → M) (In : Finset ι) :
     hhJ ε (∑ s ∈ In, y s) (∑ s ∈ In, y s) = ∑ s ∈ In, ∑ t ∈ In, hhJ ε (y s) (y t) := by
@@ -43,13 +43,13 @@ lemma hhJ_finsum_finsum {ι : Type} (ε : Fin n → Bool) (y : ι → Fin n → 
 end
 
 /- English proof (translation)
-Introduce `M _ _ n ε y In Cc Cs Nn horth hpos hIn hout`. Rewrite using `[← Finset.sum_add_sum_compl In]`. Establish `h1 : hhJ ε (∑ s ∈ In, y s) (∑ s ∈ In, y s) = ∑ s ∈ In, hhJ ε (y s) (y s)`. Rewrite using `[hhJ_finsum_finsum]`. Use `Finset.sum_congr rfl fun s hs => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Finset.sum_eq_single_of_mem s hs fun t _ hts => horth s t (Ne.symm hts)`. Establish `h2 : ∑ s ∈ In, ‖hhJ ε (y s) (y s)‖ = (∑ s ∈ In, hhJ ε (y s) (y s)).re`. Rewrite using `[Complex.re_sum]`. Use `Finset.sum_congr rfl fun s hs => ?_` and prove the remaining obligations. Rewrite using `[← Complex.abs_re_eq_norm.mpr (hhJ_self_im_eq_zero ε (y s)), abs_of_nonneg (hpos s hs)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : ∑ s ∈ In, ‖hhJ ε (y s) (y s)‖ ≤ Cc ^ 2 * Nn`. Rewrite using `[h2, ← h1]`. Conclude with `(Complex.re_le_norm _).trans ((hhJ_self_norm_le_sum_sq ε _).trans hIn)`. Establish `h4 : ∑ s ∈ Inᶜ, ‖hhJ ε (y s) (y s)‖ ≤ (Inᶜ.card : ℝ) * (Cs ^ 2 * Nn)`. Rewrite using `[← nsmul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Use `Finset.sum_le_card_nsmul _ _ _ fun s hs => ?_` and prove the remaining obligations. Conclude with `(hhJ_self_norm_le_sum_sq ε _).trans (hout s (Finset.mem_compl.mp hs))`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem sum_norm_hhJ_self_le : ∀ (M : Type) [NormedAddCommGroup M] [InnerProductSpace ℂ M] (n : ℕ) (ε : Fin n → Bool) (y : Fin n → Fin n → M) (In : Finset (Fin n)) (Cc Cs Nn : ℝ), (∀ s t, s ≠ t → hhJ ε (y s) (y t) = 0) → (∀ s ∈ In, 0 ≤ (hhJ ε (y s) (y s)).re) → ∑ c, ‖(∑ s ∈ In, y s) c‖ ^ 2 ≤ Cc ^ 2 * Nn → (∀ s, s ∉ In → ∑ c, ‖y s c‖ ^ 2 ≤ Cs ^ 2 * Nn) → ∑ s, ‖hhJ ε (y s) (y s)‖ ≤ (Cc ^ 2 + (Inᶜ.card : ℝ) * Cs ^ 2) * Nn := by
   intro M _ _ n ε y In Cc Cs Nn horth hpos hIn hout

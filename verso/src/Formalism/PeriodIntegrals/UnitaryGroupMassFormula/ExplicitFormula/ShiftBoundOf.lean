@@ -9,35 +9,33 @@ namespace PI.EF
 open Complex DirichletCharacter
 
 /- English proof (translation)
-Introduce `N _ χ hχ u T T' hT hTu hTT' hT'T hg`. Establish `hN1 : (1 : ℝ) ≤ N` using `by exact_mod_cast Nat.one_le_iff_ne_zero.mpr (NeZero.ne N)`. Establish `hu2 : (2 : ℝ) ≤ u` using `hT.trans hTu`. Establish `hT'2 : (2 : ℝ) ≤ T'` using `hT.trans hTT'`. Establish `hT0 : (0 : ℝ) < T` using `by linarith`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlogNT : 0 < Real.log (N * T')` using `Real.log_pos (by nlinarith)`. Establish `hNO : NoOrdinate χ T'`. Introduce `ρ h1 h2 h3 heq`. Establish `h4` using `hg ρ h1 h2 h3`. Rewrite `h4` using `[heq, sub_self, abs_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h5 : 0 < 1 / (κ * Real.log (N * T'))` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hlogu : 0 < Real.log u` using `Real.log_pos (by linarith)`. Establish `hx1 : 1 < cLine u`. Unfold `cLine`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `one_div_pos.mpr hlogu` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨H, hH⟩` from `hRP N χ hχ (cLine u) T' hx1 (by linarith) hNO`. Establish `hCIe` using `hCI N χ hχ u T' H hu2 hT'2 hNO hH`. Establish `hSe` using `hS N χ hχ u T T' hT hTu hTT' hT'T hg`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hRe` using `hR N χ hχ (cLine u) T' H hx1 hT'2 hH`. Use `set R := rectInt (fun s => logDeriv (DirichletCharacter.LFunction χ) s * ((u : ℂ) ^ s / s)) (-1 / 2) (cLine u) (-T') T' with hRdef`. Use `set Z := ∑ᶠ ρ ∈ ZerosBelow χ T', (mult χ ρ : ℂ) / ρ with hZ`. Use `set c : ℂ := 2 * Real.pi * I with hc`. Establish `hc0 : c ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc]`. Conclude with `mul_ne_zero (mul_ne_zero two_ne_zero (Complex.ofReal_ne_zero.mpr Real.pi_ne_zero)) I_ne_zero`. Establish `hcn : ‖c‖ = 2 * Real.pi`. Rewrite using `[hc, norm_mul, norm_mul, Complex.norm_I, mul_one, Complex.norm_real, Real.norm_eq_abs, abs_of_pos Real.pi_pos]`. Evaluate the numerical expressions.
+Evaluate the numerical expressions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hA : vertInt χ u T' - del1 χ * u + zsum χ T' u = (R + c * vertInt χ u T') / c + (Z - H 0) - eps0 χ * (Real.log u : ℂ) - del1 χ`. Rewrite using `[hCIe]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hA]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `hE1 : ‖eps0 χ‖ ≤ 1`. Unfold `eps0`. Apply the tactic sequence `split_ifs <;> simp`. Establish `hD1 : ‖del1 χ‖ ≤ 1`. Unfold `del1`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Apply the tactic sequence `split_ifs <;> simp`. Establish `hS1 : 0 ≤ S1 χ`. Unfold `S1`. Conclude with `finsum_nonneg fun ρ => finsum_nonneg fun _ => by positivity`. Establish `hNu : Real.log u ≤ Real.log (N * u)` using `Real.log_le_log (by positivity) (by nlinarith)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `h2N : Real.log (2 * N) ≤ Real.log (N * u)` using `Real.log_le_log (by positivity) (by nlinarith)`. Establish `hL : 1 ≤ u * Real.log (N * u * T) ^ 2 / T`. Establish `h4 : (4 : ℝ) ≤ N * u * T`. Combine the equalities or inequalities in the displayed calculation. Establish `hl4 : 1 ≤ Real.log (N * u * T)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `h5 : Real.log 4 ≤ Real.log (N * u * T)` using `Real.log_le_log (by norm_num) h4`. Establish `h6 : 1 < Real.log 4`. Rewrite using `[show (4 : ℝ) = 2 ^ 2 by norm_num, Real.log_pow]`. Use `push_cast`. Combine the linear relations using `[Real.log_two_gt_d9]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hsq : 1 ≤ Real.log (N * u * T) ^ 2` using `by nlinarith`. Rewrite using `[le_div_iff₀ hT0]`. Use polynomial arithmetic with `[mul_le_mul hTu hsq (by norm_num) (by linarith)]`. Establish `hlogNu : 0 ≤ Real.log (N * u)` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hErr1 : 1 ≤ Err N u T` using `by unfold Err; linarith`. Establish `hErr2 : Real.log u ≤ Err N u T` using `by unfold Err; linarith`. Establish `hErr3 : Real.log (2 * N) ≤ Err N u T` using `by unfold Err; linarith`. Establish `hmain : ‖(R + c * vertInt χ u T') / c‖ ≤ Cs * Err N u T`. Rewrite using `[norm_div, hcn, div_le_iff₀ (by positivity)]`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `heps : ‖eps0 χ * (Real.log u : ℂ)‖ ≤ Real.log u`. Rewrite using `[norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_pos hlogu]`. Conclude with `mul_le_of_le_one_left hlogu.le hE1`. Combine the equalities or inequalities in the displayed calculation.
-
-Use `(norm_sub_le _ _).trans (add_le_add ((norm_sub_le _ _).trans (add_le_add (norm_add_le _ _) le_rfl)) le_rfl)` and prove the remaining obligations. Use `_ ≤ Cs * Err N u T + (Cr * Real.log (2 * N) + S1 χ) + Real.log u + 1 := by gcongr`. Use `_ ≤ (Cs + Cr + 3) * (Err N u T + S1 χ) := by`. Use polynomial arithmetic with `[mul_nonneg hCs hS1, mul_nonneg hCr hS1, mul_le_mul_of_nonneg_left hErr3 hCr]`.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem shiftBound_of {κ Cs Cr : ℝ} (hκ : 0 < κ) (hCs : 0 ≤ Cs) (hCr : 0 ≤ Cr) (hRP : RegularPart)
     (hCI : ContourIdentity) (hS : SidesBound κ Cs) (hR : RegAtZero Cr) :

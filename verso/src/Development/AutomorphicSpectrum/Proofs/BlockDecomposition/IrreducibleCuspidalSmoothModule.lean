@@ -16,19 +16,17 @@ namespace GlobalTheory.CompanionTheory.StableMod
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
 
 /- English proof (translation)
-Use `open GlobalTheory.CuspStab in`. Take `⟨hA, hC⟩` from `h`. Use `⟨⟨fun γ g => ?_, ?_, ?_, ?_, fun g => ?_⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `φ.1 (ratGL E a γ * g * finGL E a k) = φ.1 (g * finGL E a k)`. Rewrite using `[mul_assoc, hA.left]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : {k' | finRep E a k' (finRep E a k φ) = finRep E a k φ} = (fun k' => k⁻¹ * k' * k) ⁻¹' {k' | finRep E a k' φ = φ}`. Use extensionality with `k'`. Simplify using `only [Set.mem_setOf_eq, Set.mem_preimage, map_mul]`. Prove the components needed by the constructor for the conclusion. Introduce `e`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Module.End.mul_apply, Module.End.mul_apply, e, ← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]`. Introduce `e`. Use `congrArg (finRep E a k) e` as an intermediate fact. Rewrite `this` using `[Module.End.mul_apply, Module.End.mul_apply, ← Module.End.mul_apply (finRep E a k), ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`. Then use the resulting hypothesis. Express the relevant statement in the definitionally equal form `IsOpen {k' | finRep E a k' (finRep E a k φ) = finRep E a k φ}`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `hA.level.preimage ((continuous_const.mul continuous_id).mul continuous_const)`. Use `hA.kfin` as an intermediate fact. Use `Submodule.finiteDimensional_of_le (S₂ := (Submodule.span ℂ (Set.range fun c => cptRep E a c φ)).map (finRep E a k)) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨c, rfl⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨_, Submodule.subset_span ⟨c, rfl⟩, (LinearMap.congr_fun (fin_cpt_comm k c) φ)⟩`. Conclude with `zfin_of_comm _ (fun z hz => zalg_comm_fin k hz) hA.zfin`. Take `⟨C, N, h1⟩` from `hA.growth (g * finGL E a k)`. Use `⟨C, N, fun y => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `‖φ.1 (g * infGL E a y * finGL E a k)‖ ≤ _`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[mul_assoc, infGL_comm, ← mul_assoc]`. Conclude with `h1 y`. Introduce `r h0 h1 _ _ μ 𝓕 hμ hF g`. Express the relevant statement in the definitionally equal form `∫ x in 𝓕, φ.1 (unip x * g * finGL E a k) ∂μ = 0`. Repeatedly rewrite using `[mul_assoc]`.
-
-Conclude with `hC r h0 h1 μ 𝓕 hμ hF (g * finGL E a k)`.
+Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCuspForm_fin (k : GL (Fin a) (Af E)) {φ : Sm E a} (h : IsCuspForm φ) : IsCuspForm (finRep E a k φ) := by
   open GlobalTheory.CuspStab in
@@ -68,15 +66,13 @@ theorem isCuspForm_fin (k : GL (Fin a) (Af E)) {φ : Sm E a} (h : IsCuspForm φ)
     exact hC r h0 h1 μ 𝓕 hμ hF (g * finGL E a k)
 
 /- English proof (translation)
-Use `open GlobalTheory.CuspStab in`. Take `⟨hA, hC⟩` from `h`. Use `⟨⟨fun γ g => ?_, ?_, ?_, ?_, fun g => ?_⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `φ.1 (ratGL E a γ * g * infGL E a (Unitary.toUnits c)) = φ.1 (g * infGL E a (Unitary.toUnits c))`. Rewrite using `[mul_assoc, hA.left]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `level_of_le hA.level fun k hk => by`. Express the relevant statement in the definitionally equal form `finRep E a k (cptRep E a c φ) = cptRep E a c φ`. Rewrite using `[← Module.End.mul_apply, fin_cpt_comm, Module.End.mul_apply, hk]`. Use `hA.kfin` as an intermediate fact. Use `Submodule.finiteDimensional_of_le (S₂ := Submodule.span ℂ (Set.range fun c => cptRep E a c φ)) (Submodule.span_le.2 ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨c', rfl⟩`. Use `Submodule.subset_span ⟨c' * c, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = (cptRep E a c' * cptRep E a c) φ`. Rewrite using `[← map_mul]`. Conclude with `zfin_of_comm _ (fun z hz => GlobalTheory.T.mem_zalg_commute_compactRep E a c z hz) hA.zfin`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Take `⟨C, N, h1⟩` from `growth_mul (Unitary.toUnits c) (hA.growth g)`. Use `⟨C, N, fun y => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `‖φ.1 (g * infGL E a y * infGL E a (Unitary.toUnits c))‖ ≤ _`. Rewrite using `[mul_assoc, ← map_mul]`. Conclude with `h1 y`.
-
-Introduce `r h0 h1 _ _ μ 𝓕 hμ hF g`. Express the relevant statement in the definitionally equal form `∫ x in 𝓕, φ.1 (unip x * g * infGL E a (Unitary.toUnits c)) ∂μ = 0`. Repeatedly rewrite using `[mul_assoc]`. Conclude with `hC r h0 h1 μ 𝓕 hμ hF (g * infGL E a (Unitary.toUnits c))`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCuspForm_cpt (c : Kinf E a) {φ : Sm E a} (h : IsCuspForm φ) : IsCuspForm (cptRep E a c φ) := by
   open GlobalTheory.CuspStab in
@@ -106,9 +102,9 @@ theorem isCuspForm_cpt (c : Kinf E a) {φ : Sm E a} (h : IsCuspForm φ) : IsCusp
     exact hC r h0 h1 μ 𝓕 hμ hF (g * infGL E a (Unitary.toUnits c))
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `lieD X φ.1 (u * g) = lieD X φ.1 g`. Establish `e : chart φ.1 (u * g) = chart φ.1 g`. Use function extensionality and compare the values at `x`. Unfold `chart`. Use `split_ifs`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_assoc, hu]`. Both sides reduce to the same expression. Unfold `lieD`. Rewrite using `[e]`.
+Both sides reduce to the same expression. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lieD_left {φ : Sm E a} (X : Lie E a) {u : GA E a} (hu : ∀ g, φ.1 (u * g) = φ.1 g) (g : GA E a) :
     (lie E a X φ).1 (u * g) = (lie E a X φ).1 g := by
@@ -162,17 +158,15 @@ def formSpace (hH : IsSubrep (R (latticeGL E a) μ) H) : Submodule ℂ (Sm E a) 
 open GroundTheory.Automorphic in
 
 /- English proof (translation)
-Establish `hS : IsSubrep (R (latticeGL E a) μ) H` using `hi.1`. Use `⟨formSpace μ H hS, fun φ => Iff.rfl, ?_⟩` and prove the remaining obligations. Introduce and unpack `o φ ⟨h1, h2, h3, h4⟩`. Consider the cases of `o with`. Consider the case `fin k`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Use `⟨isCuspForm_fin k h1, fun t g => ?_, h3.mul_right (finGL E a k), ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `φ.1 (splitCentre E a t * g * finGL E a k) = φ.1 (g * finGL E a k)`. Rewrite using `[mul_assoc, h2]`. Conclude with `(right_translate_toL2 h3 _) ▸ hS.2 _ _ h4`. Consider the case `cpt k`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨isCuspForm_cpt k h1, fun t g => ?_, h3.mul_right (infGL E a (Unitary.toUnits k)), ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `φ.1 (splitCentre E a t * g * infGL E a (Unitary.toUnits k)) = φ.1 (g * infGL E a (Unitary.toUnits k))`. Rewrite using `[mul_assoc, h2]`. Conclude with `(right_translate_toL2 h3 _) ▸ hS.2 _ _ h4`. Consider the case `lie X`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Treat this case separately. Equip the data with the indicated structure. Extract witnesses or component facts from the available result.
 
-Use `letI : MeasurableSpace (AutomorphicForm.archGroup E a) := borel _`. Use `haveI : BorelSpace (AutomorphicForm.archGroup E a) := ⟨rfl⟩`. Take `⟨D, hD, hDc, hrep⟩` from `GlobalTheory.T.lie_derivative_convolution_kernel E a (Measure.haar : Measure (AutomorphicForm.archGroup E a)) φ h1.1 X`. Establish `hc : Continuous φ.1` using `ContAut.continuous_of_isOpen_stab E a φ h1.1.level`. Take `⟨h', hW⟩` from `GlobalTheory.T.l2_convolution_locally_compact_mem (latticeGL E a) μ (Measure.haar : Measure (AutomorphicForm.archGroup E a)) (AutomorphicForm.infEmb E a) AutomorphicForm.continuous_infEmb D hD hDc φ.1 (lie E a X φ).1 hc h3 hrep`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition.
 
-Use `⟨⟨⟨fun γ g => lieD_left X (h1.1.left γ) g, ?_, GlobalTheory.T.finiteDimensional_span_compact_orbit_lieDerivative E a X φ h1.1.kfin, GlobalTheory.CuspStab.zfin_of_comm _ (fun z hz => GlobalTheory.T.mem_zalg_commute_lie_action E a X z hz) h1.1.zfin, GlobalTheory.T.moderate_growth_c …` and prove the remaining obligations. Conclude with `GlobalTheory.CuspStab.level_of_le h1.1.level fun k hk => by`. Express the relevant statement in the definitionally equal form `finRep E a k (lie E a X φ) = lie E a X φ`. Express the relevant statement in the definitionally equal form `(rt E a (finGL E a k) * lie E a X) φ = _`. Rewrite using `[← lie_rt_fin, Module.End.mul_apply]`.
-
-Conclude with `congrArg (lie E a X) hk`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_stable (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (μ : Measure (GA E a))
     [μ.IsHaarMeasure] [μ.IsMulRightInvariant] (H : Submodule ℂ (L2 (latticeGL E a) μ)) (_ : H ≤ L2cusp μ)

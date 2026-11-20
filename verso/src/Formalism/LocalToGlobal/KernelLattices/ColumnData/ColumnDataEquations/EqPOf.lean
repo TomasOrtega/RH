@@ -13,7 +13,7 @@ open Formalism.MainNotions
 variable {D : Car} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ}
 
 /- English proof (translation)
-The claim follows from `reduction_of (detMul D) (detSmul D) (norm_one_unit_ideal D) (smulSD D) χ hχ hL h0 hSq hTL hTR (pullIop_of hL) hJ1 hJ2`.
+A detailed English derivation is pending.
 -/
 theorem eqP_of (B : Cd.Base D cc δ) (χ : TaylorLogMetric.IdE D → ℂ) (hχ : TaylorLogMetric.IsChi D χ) (hL : B.LatAll)
     (h0 : ∀ N N', Even N → Even N' → B.ThZeroMem N N')
@@ -21,7 +21,7 @@ theorem eqP_of (B : Cd.Base D cc δ) (χ : TaylorLogMetric.IdE D → ℂ) (hχ :
   reduction_of (detMul D) (detSmul D) (norm_one_unit_ideal D) (smulSD D) χ hχ hL h0 hSq hTL hTR (pullIop_of hL) hJ1 hJ2
 
 /- English proof (translation)
-The claim follows from `eqP_of B χ hχ (B.latAll hcc hδ hδ0) (fun N N' _ _ => B.thZeroMem hS N N') hSq hTL hTR hJ1 hJ2`.
+A detailed English derivation is pending.
 -/
 theorem eqP (B : Cd.Base D cc δ) (hcc : TaylorLogMetric.IsCurveIdeal D cc) (hδ : TaylorLogMetric.IsDiscriminantTwelfthRootOfIdealLattice D cc δ) (hδ0 : δ ≠ 0)
     (hS : B.StdOK) (χ : TaylorLogMetric.IdE D → ℂ) (hχ : TaylorLogMetric.IsChi D χ)

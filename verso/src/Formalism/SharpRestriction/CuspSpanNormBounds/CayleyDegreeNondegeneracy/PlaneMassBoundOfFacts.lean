@@ -25,9 +25,9 @@ def PlaneClassCount (K : Type) [Field K] [NumberField K] [StarRing K] : Prop :=
       (B₁ * B₂) ^ (4 * finrank ℚ K)
 
 /- English proof (translation)
-Use `hC V h L hs hL s hreps B₁ (B₁ * rootDiscriminant K) (fun M hM => (genus_orthonormal_integral_unimodular h hs L hL M (hreps.1 M hM)).1) fun M hM => ?_` and prove the remaining obligations. Establish `hg` using `hreps.1 M hM`. Take `⟨hint, huni⟩` from `genus_orthonormal_integral_unimodular h hs L hL M hg`. Take `⟨x, hx, hx0, hxB⟩` from `hA V h L hs hL M hg`. Take `⟨y, hy, hy0, hxy, hyB⟩` from `hB V h L hs hL M hg.1 hint huni x hx hx0`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨x, hx, y, hy, hx0, hy0, hxy, fun φ => ⟨hxB φ, (hyB φ).trans (mul_le_mul_of_nonneg_right (hxB φ) hrd)⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem card_class_reps_plane_le (K : Type) [Field K] [NumberField K] [StarRing K] (B₁ : ℝ)
     (hA : ShortVectorEveryPlace K B₁) (hB : SecondOrthogonalVector K) (hC : PlaneClassCount K) (hrd : 0 ≤ rootDiscriminant K)
@@ -54,17 +54,17 @@ open NumberField Module Formalism.BasicNotions Formalism.MainNotions Formalism.M
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Introduce `V _ _ _ _ h L hs ho`. Take `⟨-, -, h3, -, h5, -, -, -, -, -, h11, -, -, -, -, -, -, -, h19, -⟩` from `hH`. Establish `hm` using `D.R.two_le_m`. Establish `hf : 1 ≤ D.R.f` using `le_trans (Nat.one_le_pow _ _ (by omega)) h3`. Establish `hL1 : 1 ≤ large₂.sc.L`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `Scale.L`. Conclude with `Real.one_le_rpow large₂.sc.one_lt_alt.le large₂.sc.eps_pos.le`. Establish `hrd : 2 ≤ D.host.rdE`. Establish `e : 2 * D.host.v = D.host.rdE` using `by unfold Host.v; ring`. Rewrite using `[← e]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hlrd : Real.log D.host.rdE ≤ max 1 (1 / Cl) * large₂.sc.L`. Use `le_trans h11 ?_` and prove the remaining obligations. Rewrite using `[div_eq_mul_one_div, mul_comm]`. Conclude with `mul_le_mul_of_nonneg_right (le_max_right _ _) (by linarith)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hlf : Real.log (D.R.f : ℝ) ≤ (D.R.m : ℝ)`. Use `le_trans h5 ?_` and prove the remaining obligations. Rewrite using `[Real.sqrt_le_left (by positivity)]`. Establish `h1 : D.R.rS ≤ D.R.m` using `by unfold Ranks.rS; omega`. Establish `h2 : (D.R.rS : ℝ) ≤ (D.R.m : ℝ)` using `by exact_mod_cast h1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `h3 : (2 : ℝ) ≤ (D.R.m : ℝ)` using `by exact_mod_cast hm`. Use the polynomial consequences of the given equalities and inequalities. Establish `hrdE : rootDiscriminant D.host.E = D.host.rdE` using `rfl`. Establish `hnum` using `mass_pow_le_exp_rpow D.R.f D.R.m D.host.rdE large₂.sc.L B₁ C (max 1 (1 / Cl)) hf hm hrd hL1 (le_max_left _ _) hlf hlrd hB0 hB1 hC`. Establish `hb : large₂.sc.b = Real.exp large₂.sc.L` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hb]`. Use `mass_le_of_card_class_reps_le h L _ (by positivity) fun s hreps => ?_` and prove the remaining obligations. Establish `hc` using `card_class_reps_plane_le D.host.E B₁ hA hB hCt (by rw [hrdE]; linarith) V h L hs ho s hreps`. Rewrite `hc` using `[hrdE, Formalism.MainNotions.StandardLattice.finrank_host]`. Conclude with `hc.trans hnum`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem plane_mass_bound_of_facts (D : D7) (large₂ : SizeData₂ D) (C' Cl Cg cb Cu cT CT C B₁ : ℝ)
     (hA : ShortVectorEveryPlace D.host.E B₁) (hB : SecondOrthogonalVector D.host.E) (hCt : PlaneClassCount D.host.E)

@@ -20,7 +20,7 @@ section Exact
 variable {k G : Type u} [CommRing k] [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
 
 /- English proof (translation)
-The claim follows from `finite_of_exact (δ hS r (r + 1) rfl).hom.toAddMonoidHom (cohomologyMap S.f (r + 1)).hom.toAddMonoidHom ((ShortComplex.ShortExact.moduleCat_exact_iff_function_exact _).1 (cohomology_exact₁ hS r (r + 1) rfl))`.
+A detailed English derivation is pending.
 -/
 theorem finite_cohomology_X₁_succ {S : ShortComplex (Rep.{u} k G)} [IsDiscreteRep S.X₁]
     [IsDiscreteRep S.X₂] [IsDiscreteRep S.X₃] (hS : S.ShortExact) (r : ℕ)
@@ -38,7 +38,7 @@ section Coker
 variable {k G : Type u} [CommRing k] [Group G] {A B : Rep.{u} k G} (i : A ⟶ B)
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨a, rfl⟩`. Conclude with `⟨A.ρ g a, Rep.hom_comm_apply i g a⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem range_hom_le_comap (g : G) :
     LinearMap.range i.hom.toLinearMap ≤ (LinearMap.range i.hom.toLinearMap).comap (B.ρ g) := by
@@ -51,9 +51,9 @@ def cokerShortComplex : ShortComplex (Rep.{u} k G) :=
     exact (Submodule.Quotient.mk_eq_zero _).2 ⟨a, rfl⟩)
 
 /- English proof (translation)
-Rewrite using `[← ShortComplex.exact_map_iff_of_faithful _ (forget₂ (Rep.{u} k G) (ModuleCat.{u} k)), ShortComplex.moduleCat_exact_iff]`. Introduce `b hb`. Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk (p := LinearMap.range i.hom.toLinearMap) b = 0 at hb`. Take `⟨a, ha⟩` from `(Submodule.Quotient.mk_eq_zero _).1 hb`. Conclude with `⟨a, ha⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `mono_f := (Rep.mono_iff_injective _).2 hi`. Use `epi_g := (Rep.epi_iff_surjective _).2 (Submodule.mkQ_surjective _)`.
+A detailed English derivation is pending.
 -/
 theorem cokerShortComplex_shortExact (hi : Function.Injective i.hom) :
     (cokerShortComplex i).ShortExact where
@@ -102,7 +102,7 @@ section Devissage
 variable {k G : Type u} [CommRing k] [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
 
 /- English proof (translation)
-The claim follows from `Finite.of_equiv _ (H0Iso M).toLinearEquiv.toEquiv.symm`.
+A detailed English derivation is pending.
 -/
 theorem finite_cohomology_zero (M : Rep.{u} k G) [IsDiscreteRep M] [Finite M] :
     Finite (cohomology M 0) :=
@@ -111,13 +111,11 @@ theorem finite_cohomology_zero (M : Rep.{u} k G) [IsDiscreteRep M] [Finite M] :
 omit [IsTopologicalGroup G] in
 
 /- English proof (translation)
-Set `F : Subgroup (U : Subgroup G)` to `⨅ m : M, stabilizer M.ρ m`. Establish `hF : IsOpen (F : Set (U : Subgroup G))`. Rewrite using `[Subgroup.coe_iInf]`. Conclude with `isOpen_iInter_of_finite fun m => isOpen_stabilizer M m`. Establish `hFG : IsOpen ((F.map (U : Subgroup G).subtype : Subgroup G) : Set G)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Subgroup.coe_map]`. Conclude with `U.isOpen.isOpenMap_subtype_val _ hF`. Set `V : OpenSubgroup G` to `{ toSubgroup := F.map (U : Subgroup G).subtype ⊓ W₀ isOpen' := hFG.inter W₀.isOpen }`. Use `⟨V, fun x hx => ?_, fun x hx => hx.2, fun g m => ?_⟩` and prove the remaining obligations. Take `⟨y, -, rfl⟩` from `Subgroup.mem_map.1 hx.1`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `y.2`. Establish `hg : ((g : (U : Subgroup G)) : G) ∈ F.map (U : Subgroup G).subtype` using `(Subgroup.mem_subgroupOf.1 g.2).1`. Take `⟨y, hy, hyg⟩` from `Subgroup.mem_map.1 hg`. Establish `hyg' : y = (g : (U : Subgroup G))` using `Subtype.ext hyg`. Rewrite using `[← hyg']`.
-
-Conclude with `(mem_stabilizer _ _ _).1 (Subgroup.mem_iInf.1 hy m)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_openSubgroup_le_fixing (U W₀ : OpenSubgroup G) (M : Rep.{u} k (U : Subgroup G))
     [IsDiscreteRep M] [Finite M] :
@@ -144,21 +142,21 @@ theorem exists_openSubgroup_le_fixing (U W₀ : OpenSubgroup G) (M : Rep.{u} k (
     exact (mem_stabilizer _ _ _).1 (Subgroup.mem_iInf.1 hy m)
 
 /- English proof (translation)
-Introduce `r`. Proceed by induction on `r generalizing M with`. Consider the case `zero => exact fun _ => finite_cohomology_zero M`. Consider the case `succ r ih`. Introduce `hr`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨V, hVU, hVW, hfix⟩` from `exists_openSubgroup_le_fixing U W₀ M`. Set `V' : OpenSubgroup (U : Subgroup G)` to `{ toSubgroup := (V : Subgroup G).subgroupOf U isOpen' := V.isOpen.preimage continuous_subtype_val }`. Set `B : Rep.{u} (ULift.{u} ℤ) ((V : Subgroup G).subgroupOf U)` to `Rep.res ((V' : Subgroup (U : Subgroup G))).subtype M`. Set `i` to `coindUnit (V' : Subgroup (U : Subgroup G)) M`. Establish `hi : Function.Injective i.hom`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `a b hab`. Establish `h1` using `congrArg (fun f : Rep.coind (V' : Subgroup (U : Subgroup G)).subtype B => f.1 1) hab`. Simplify using `only [i] at h1`. Rewrite `h1` using `[coindUnit_hom_apply, coindUnit_hom_apply]`. Simplify using `using h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hS` using `cokerShortComplex_shortExact i hi`. Establish `: IsDiscreteRep B` using `isDiscreteRep_res_subtype M _`. Establish `: IsDiscreteRep (cokerShortComplex i).X₁` using `(inferInstance : IsDiscreteRep M)`. Establish `: CompactSpace (U : Subgroup G)` using `compactSpace_openSubgroup U`. Establish `hN2 : IsDiscreteRep (Rep.coind (V' : Subgroup (U : Subgroup G)).subtype (Rep.res (V' : Subgroup (U : Subgroup G)).subtype M))` using `@isDiscreteRep_coind (ULift.{u} ℤ) (U : Subgroup G) _ _ _ _ V' B (isDiscreteRep_res_subtype M _) _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsDiscreteRep (cokerShortComplex i).X₂` using `hN2`. Establish `: IsDiscreteRep (cokerShortComplex i).X₃` using `isDiscreteRep_quotient _ _ _`. Establish `: Finite B` using `inferInstanceAs (Finite M)`. Establish `: Finite (cokerShortComplex i).X₂` using `finite_coind (k := ULift.{u} ℤ) (G := (U : Subgroup G)) V' B`. Establish `: Finite (cokerShortComplex i).X₃` using `Finite.of_surjective (cokerShortComplex i).g.hom ((Rep.epi_iff_surjective _).1 hS.epi_g)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hNn : ∀ b : (cokerShortComplex i).X₂, n • b = 0`. Introduce `b`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `x`. Conclude with `hM (b.1 x)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `hQ : ∀ q : (cokerShortComplex i).X₃, n • q = 0`. Introduce `q`. Take `⟨b, rfl⟩` from `(Rep.epi_iff_surjective _).1 hS.epi_g q`. Rewrite using `[← map_nsmul, hNn b, map_zero]`. Establish `: Finite (cohomology (cokerShortComplex i).X₃ r)` using `ih _ hQ (by omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Finite (cohomology (cokerShortComplex i).X₂ (r + 1))`. Establish `: IsDiscreteRep (subgroupOfTransport hVU B)` using `isDiscreteRep_subgroupOfTransport hVU B`. Establish `: Finite (cohomology (subgroupOfTransport hVU B) (r + 1))` using `h V hVW (subgroupOfTransport hVU B) (fun g a => hfix _ a) (fun a => hM a) (r + 1) hr`. Conclude with `Finite.of_equiv _ (cohomologySubgroupOfIso hVU B (r + 1) ≪≫ (shapiroIso V' B (r + 1)).symm).toLinearEquiv.toEquiv`. Conclude with `finite_cohomology_X₁_succ hS r`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finite_cohomology_of_forall_trivial [CompactSpace G] (n R : ℕ) (W₀ : OpenSubgroup G)
     (h : ∀ V : OpenSubgroup G, V ≤ W₀ → ∀ (A : Rep.{u} (ULift.{u} ℤ) (V : Subgroup G))

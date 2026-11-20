@@ -15,29 +15,29 @@ set_option maxHeartbeats 400000 in
 set_option synthInstance.maxHeartbeats 200000 in
 
 /- English proof (translation)
-Introduce `F _ K _ _ ι _ P hP W hW hPW v _`. Use `hP.isPrime` as an intermediate fact. Use `hW.isPrime` as an intermediate fact. Introduce `p`. Establish `hne : ∀ g : MRing ι F, g ∉ W → algebraMap (MRing ι F ⧸ P) (FractionRing (MRing ι F ⧸ P)) (Ideal.Quotient.mk P g) ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `g hg`. Rewrite using `[Ne, IsFractionRing.to_map_eq_zero_iff, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `fun h' => hg (hPW h')`. Establish `h𝒲 : ∀ W' ∈ ({W} : Set (Ideal (MRing ι F))), W'.IsPrime`. Introduce `W' hW'`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Set.mem_singleton_iff.mp hW']`. Use `infer_instance`. Establish `step : ∀ D : Finset (K →₀ ℕ), ∃ (b : K → ℕ) (g : MRing ι F) (hn : (K →₀ ℕ) → MRing ι F), IsMultiHomog g b ∧ g ∉ W ∧ (∀ d, IsMultiHomog (hn d) b) ∧ (∀ d, d ∉ D → hn d = 0) ∧ ∀ d ∈ D, ((p.coeff d : degZeroLoc P {W}) : FractionRing (MRing ι F ⧸ P)) = algebraMap (MRing ι F ⧸ P) (Frac …`. Introduce `D`. Proceed by induction on `D using Finset.induction_on with`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `empty`. Use `⟨0, 1, fun _ => 0, isWeightedHomogeneous_one F _, fun h1 => ?_, fun _ => isWeightedHomogeneous_zero F _ _, fun _ _ => rfl, fun d hd => absurd hd (Finset.notMem_empty d)⟩` and prove the remaining obligations. Conclude with `Ideal.IsPrime.ne_top inferInstance ((Ideal.eq_top_iff_one W).mpr h1)`. Consider the case `insert d₀ D hd₀ ih`. Take `⟨b, g, hn, hg, hgW, hh, h0, hD⟩` from `ih`.
+Reduce the conclusion to the remaining proof obligations. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨b', f', g', hf', hg', -, hg'W, he⟩` from `hDZ F K ι P {W} h𝒲 _ (p.coeff d₀).2`. Establish `hg'W' : g' ∉ W` using `hg'W W rfl`. Use `⟨b + b', g * g', fun d => if d = d₀ then g * f' else hn d * g', IsWeightedHomogeneous.mul hg hg', fun hm => ?_, fun d => ?_, fun d hd => ?_, fun d hd => ?_⟩` and prove the remaining obligations. Conclude with `(Ideal.IsPrime.mem_or_mem inferInstance hm).elim hgW hg'W'`. Simplify using `only split_ifs`.
+Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions. Rewrite the indicated hypotheses using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `IsWeightedHomogeneous.mul hg hf'`. Conclude with `IsWeightedHomogeneous.mul (hh d) hg'`. Rewrite `hd`, `dsimp`, `only` using `[Finset.mem_insert, not_or]`. Rewrite using `[if_neg hd.1, h0 d hd.2, zero_mul]`. Break down `Finset.mem_insert.mp hd with rfl | hd` into its components or cases.
+Separate the alternatives or extract the components of the hypothesis. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only`. Rewrite using `[if_pos rfl, he]`. Simplify using `only [map_mul]`. Rewrite using `[mul_div_mul_left _ _ (hne g hgW)]`. Establish `hdd : d ≠ d₀` using `fun e => hd₀ (e ▸ hd) dsimp only`.
+Establish an intermediate fact. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg hdd, hD d hd]`. Simplify using `only [map_mul]`. Rewrite using `[mul_div_mul_right _ _ (hne g' hg'W')]`. Take `⟨b, g, hn, hg, hgW, hh, h0, hD⟩` from `step p.support`. Use `⟨b, g, hn, hg, hgW, hh, fun d => ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hd : d ∈ p.support`. Conclude with `hD d hd`. Rewrite using `[notMem_support_iff.mp hd, h0 d hd]`. Simplify using the standard rewrite rules. Establish `hφ : ∀ x : MvPolynomial K (degZeroLoc P {W}), ((coneVarMap P W hPW v x : coneLocal P W hPW) : FractionRing (MRing ι F ⧸ P)) = eval₂ (degZeroLoc P {W}).val.toRingHom (fun k => algebraMap (MRing ι F ⧸ P) (FractionRing (MRing ι F ⧸ P)) (Ideal.Quotient.mk P (X ⟨k, v k⟩))) x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Introduce `x`. Proceed by induction on `x using MvPolynomial.induction_on with`. Consider the case `C a`. Rewrite using `[coneVarMap, aeval_C, degZeroLoc.algebraMap_cone_coe, eval₂_C]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `add x y hx hy`. Rewrite using `[map_add (coneVarMap P W hPW v) x y, Subalgebra.coe_add, hx, hy, eval₂_add]`. Consider the case `mul_X x k hx`. Rewrite using `[map_mul, Subalgebra.coe_mul, hx, eval₂_mul, eval₂_X, coneVarMap, aeval_X]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hφ, eval₂_eq']`. Simplify using `only [map_sum, map_mul, map_prod, map_pow, Finset.sum_div]`. Use `Finset.sum_congr rfl fun d hd => ?_` and prove the remaining obligations. Rewrite using `[mul_div_right_comm, ← hD d hd]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem ConeVarNumerator.proof (hDZ : DegZeroLocQuot.Statement.{u}) :
     ConeVarNumerator.Statement.{u} := by

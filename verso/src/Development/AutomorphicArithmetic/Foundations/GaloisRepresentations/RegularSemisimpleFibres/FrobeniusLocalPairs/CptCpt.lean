@@ -15,9 +15,9 @@ namespace UpperTheory.Gal.InertialTypesAlt.L
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Rewrite using `[isOpen_iff_mem_nhds]`. Introduce `x hx`. Rewrite using `[IsValuativeTopology.mem_nhds_iff]`. Use `⟨c, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨z, hz, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Simplify using `only [Set.mem_setOf_eq] at hz hx ⊢`. Conclude with `le_trans (Valuation.map_add _ _ _) (max_le hx (le_of_lt hz))`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem isOpen_ball (c : (ValueGroupWithZero k)ˣ) :
     IsOpen {y : k | valuation k y ≤ (c : ValueGroupWithZero k)} := by
@@ -30,19 +30,19 @@ private theorem isOpen_ball (c : (ValueGroupWithZero k)ˣ) :
   exact le_trans (Valuation.map_add _ _ _) (max_le hx (le_of_lt hz))
 
 /- English proof (translation)
-Establish `hcont : ∀ i j : Fin n, Continuous (fun M : GL (Fin n) k => (M : Matrix (Fin n) (Fin n) k) i j)` using `fun i j => Units.continuous_val.matrix_elem i j`. Use `set S := ⋃ (i : Fin n) (j : Fin n), (fun M : GL (Fin n) k => (M : Matrix (Fin n) (Fin n) k) i j) '' closure (Subgroup.zpowers g : Set (GL (Fin n) k)) with hS`. Establish `hSc : IsCompact S` using `isCompact_iUnion (fun i => isCompact_iUnion (fun j => hg.image (hcont i j)))`. Choose the witnesses or unpack the hypotheses as in `⟨c, hc⟩ : ∃ c : (ValueGroupWithZero k)ˣ, S ⊆ {y | valuation k y ≤ (c : ValueGroupWithZero k)} := by`. Apply `hSc.elim_directed_cover (fun c : (ValueGroupWithZero k)ˣ => {y | valuation k y ≤ (c : ValueGroupWithZero k)})` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Conclude with `fun c => isOpen_ball c`. Introduce `y _`. Rewrite using `[Set.mem_iUnion]`. Distinguish the cases in `hy : valuation k y = 0`. Conclude with `⟨1, by simp [hy]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `⟨Units.mk0 _ hy, by simp only [Set.mem_setOf_eq, Units.val_mk0, le_refl]⟩`. Introduce `a b`. Break down `le_total (a : ValueGroupWithZero k) b with h | h` into its components or cases. Conclude with `⟨b, fun y (hy : valuation k y ≤ _) => (le_trans hy h : valuation k y ≤ _), fun y hy => hy⟩`. Conclude with `⟨a, fun y hy => hy, fun y (hy : valuation k y ≤ _) => (le_trans hy h : valuation k y ≤ _)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha⟩` from `ValuativeRel.valuation_surjective ((c⁻¹ : (ValueGroupWithZero k)ˣ) : ValueGroupWithZero k)`. Establish `ha0 : a ≠ 0`. Introduce `h`. Rewrite `ha` using `[h, map_zero]`. Conclude with `(Units.ne_zero _) ha.symm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `GlobalTheory.isIntegral_matrix_of_pow_bounded (g : Matrix (Fin n) (Fin n) k) a ha0` to reduce the goal to its premises. Introduce `m i j`. Establish `hmem : ((g ^ m : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) i j ∈ S`. Rewrite using `[hS, Set.mem_iUnion]`. Use `⟨i, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite using `[Set.mem_iUnion]`. Conclude with `⟨j, g ^ m, subset_closure (Subgroup.npow_mem_zpowers g m), rfl⟩`. Establish `hle : valuation k (((g : Matrix (Fin n) (Fin n) k) ^ m) i j) ≤ (c : ValueGroupWithZero k)`. Establish `h1` using `hc hmem`. Rewrite `h1` using `[Units.val_pow_eq_pow_val]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h1`. Use `⟨⟨a * ((g : Matrix (Fin n) (Fin n) k) ^ m) i j, ?_⟩, rfl⟩` and prove the remaining obligations. Use `show valuation k (a * ((g : Matrix (Fin n) (Fin n) k) ^ m) i j) ≤ 1`. Rewrite using `[map_mul, ha]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 private theorem isIntegral_of_cpt {n : ℕ} (g : GL (Fin n) k)
     (hg : IsCompact (closure (Subgroup.zpowers g : Set (GL (Fin n) k)))) :
@@ -88,7 +88,7 @@ private theorem isIntegral_of_cpt {n : ℕ} (g : GL (Fin n) k)
     _ = 1 := Units.inv_mul c
 
 /- English proof (translation)
-Establish `hI` using `Valuation.integer.integers (valuation k)`. Conclude with `GlobalTheory.LocBounded.bounded_of_isIntegral_general (valuation k) (fun y => y.2) (fun x hx => ⟨⟨x, hx⟩, rfl⟩) (fun x hx => hI.isIntegral_iff_v_le_one.mp hx) N hs`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem bounded_adjoin {n : ℕ} (N : Matrix (Fin n) (Fin n) k) (hs : N.charpoly.Separable) :
     ∃ c : ValueGroupWithZero k, ∀ g ∈ Algebra.adjoin k {N}, IsIntegral 𝒪[k] g →
@@ -98,9 +98,9 @@ private theorem bounded_adjoin {n : ℕ} (N : Matrix (Fin n) (Fin n) k) (hs : N.
     (fun x hx => hI.isIntegral_iff_v_le_one.mp hx) N hs
 
 /- English proof (translation)
-Establish `h : IsCompact (Set.univ.pi fun _ : Fin n => Set.univ.pi fun _ : Fin n => {x : k | valuation k x ≤ c})` using `isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => IsNonarchimedeanLocalField.isCompact_closedBall k c`. Establish `e : {M : Matrix (Fin n) (Fin n) k | ∀ i j, valuation k (M i j) ≤ c} = (Set.univ.pi fun _ : Fin n => Set.univ.pi fun _ : Fin n => {x : k | valuation k x ≤ c})`. Use extensionality with `M`. Conclude with `⟨fun hM i _ j _ => hM i j, fun hM i j => hM i trivial j trivial⟩`. Rewrite using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h`.
+A detailed English derivation is pending.
 -/
 private theorem isCompact_entries (n : ℕ) (c : ValueGroupWithZero k) :
     IsCompact {M : Matrix (Fin n) (Fin n) k | ∀ i j, valuation k (M i j) ≤ c} := by
@@ -117,9 +117,9 @@ private theorem isCompact_entries (n : ℕ) (c : ValueGroupWithZero k) :
 end UpperTheory.Gal.InertialTypesAlt.L
 
 /- English proof (translation)
-Use `letI : CommRing (Algebra.adjoin k {A}) := Algebra.adjoinCommRingOfComm k (by`. Introduce `a ha b hb`. Rewrite `ha`, `hb` using `[Set.mem_singleton_iff]`. Rewrite using `[ha, hb])`. Set `f : Algebra.adjoin k {A} →ₐ[𝒪[k]] Matrix (Fin n) (Fin n) k` to `(Algebra.adjoin k {A}).val.restrictScalars 𝒪[k]`.
+Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `hinj : Function.Injective f` using `Subtype.val_injective`. Establish `h1 : IsIntegral 𝒪[k] (⟨x, hx⟩ : Algebra.adjoin k {A})` using `(isIntegral_algHom_iff f hinj).mp hxi`. Establish `h2 : IsIntegral 𝒪[k] (⟨y, hy⟩ : Algebra.adjoin k {A})` using `(isIntegral_algHom_iff f hinj).mp hyi`. Conclude with `(isIntegral_algHom_iff f hinj).mpr (h1.mul h2)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem isIntegral_mul_of_mem_adjoin_singleton {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {n : ℕ} (A x y : Matrix (Fin n) (Fin n) k)
@@ -138,29 +138,23 @@ private theorem isIntegral_mul_of_mem_adjoin_singleton {k : Type} [Field k] [Val
 
 open UpperTheory.Gal.InertialTypesAlt.L in
 /- English proof (translation)
-Introduce `k _ _ _ _ n A T hA hT hcomm`. Take `⟨-, -, hT2, -, hprop⟩` from `UpperTheory.V.Z.Tf.Orb.gLTop_holds k n`. Use `haveI := hT2`. Take `⟨c, hc⟩` from `bounded_adjoin (A : Matrix (Fin n) (Fin n) k) hA`. Establish `hΩ` using `isCompact_entries (k := k) n c`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hC` using `hprop _ _ hΩ hΩ`. Set `K0 : Subgroup (GL (Fin n) k)` to `{ carrier := {g | (g : Matrix (Fin n) (Fin n) k) ∈ Algebra.adjoin k {(A : Matrix (Fin n) (Fin n) k)} ∧ IsIntegral 𝒪[k] (g : Matrix (Fin n) (Fin n) k) ∧ ((g⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) ∈ Algebra.adjoin k {(A : Matrix (Fin n) (Fin n) k)} ∧ IsIntegral 𝒪[k] ((g⁻¹ : …`. Introduce and unpack `g h ⟨hg1, hg2, hg3, hg4⟩ ⟨hh1, hh2, hh3, hh4⟩`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_mul]`.
+Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Subalgebra.mul_mem _ hg1 hh1`. Rewrite using `[Units.val_mul]`. Conclude with `isIntegral_mul_of_mem_adjoin_singleton _ _ _ hg1 hh1 hg2 hh2`. Rewrite using `[_root_.mul_inv_rev, Units.val_mul]`. Conclude with `Subalgebra.mul_mem _ hh3 hg3`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[_root_.mul_inv_rev, Units.val_mul]`. Conclude with `isIntegral_mul_of_mem_adjoin_singleton _ _ _ hh3 hg3 hh4 hg4`. Use the proof step `one_mem' := by`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Subalgebra.one_mem _`. Rewrite using `[Units.val_one]`. Conclude with `isIntegral_one`. Rewrite using `[inv_one, Units.val_one]`. Conclude with `Subalgebra.one_mem _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Rewrite using `[inv_one, Units.val_one]`. Conclude with `isIntegral_one`. Use the proof step `inv_mem' := by`. Introduce and unpack `g ⟨hg1, hg2, hg3, hg4⟩`. Use `⟨hg3, hg4, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[inv_inv]`. Conclude with `hg1`. Rewrite using `[inv_inv]`. Conclude with `hg2 }`. Establish `hsub : (K0 : Set (GL (Fin n) k)) ⊆ {g | (g : Matrix (Fin n) (Fin n) k) ∈ {M : Matrix (Fin n) (Fin n) k | ∀ i j, valuation k (M i j) ≤ c} ∧ ((g⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) ∈ {M : Matrix (Fin n) (Fin n) k | ∀ i j, valuation k (M i j) ≤ c}}`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Introduce and unpack `g ⟨hg1, hg2, hg3, hg4⟩`. Conclude with `⟨hc _ hg1 hg2, hc _ hg3 hg4⟩`. Establish `hK1 : IsCompact (K0.topologicalClosure : Set (GL (Fin n) k))`. Rewrite using `[Subgroup.topologicalClosure_coe]`. Conclude with `hC.of_isClosed_subset isClosed_closure (closure_minimal hsub hC.isClosed)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hgen : ∀ t ∈ T, IsCompact (closure (Subgroup.zpowers t : Set (GL (Fin n) k))) → t ∈ K0`. Introduce `t ht hcpt`. Establish `hcA : ∀ s ∈ T, (s : Matrix (Fin n) (Fin n) k) * A = A * s`. Introduce `s hs`. Rewrite using `[← Units.val_mul, ← Units.val_mul, (hcomm s hs).eq]`.
-
-Establish `hcpt' : IsCompact (closure (Subgroup.zpowers t⁻¹ : Set (GL (Fin n) k)))`. Rewrite using `[Subgroup.zpowers_inv]`. Conclude with `hcpt`. Conclude with `⟨GlobalTheory.Tw.CentralizerAdjoin.mem_adjoin_of_commute _ _ hA (hcA t ht), isIntegral_of_cpt t hcpt, GlobalTheory.Tw.CentralizerAdjoin.mem_adjoin_of_commute _ _ hA (hcA t⁻¹ (T.inv_mem ht)), isIntegral_of_cpt t⁻¹ hcpt'⟩`. Establish `hle : GlobalTheory.BCT.cptPart T ≤ T ⊓ K0.topologicalClosure`.
-
-Unfold `GlobalTheory.BCT.cptPart`. Rewrite using `[Subgroup.closure_le]`. Introduce and unpack `t ⟨ht, hcpt⟩`. Conclude with `⟨ht, Subgroup.le_topologicalClosure K0 (hgen t ht hcpt)⟩`. Establish `hge : T ⊓ K0.topologicalClosure ≤ GlobalTheory.BCT.cptPart T` using `GlobalTheory.LocFin.inf_le_cptPart T _ hK1`.
-
-Rewrite using `[le_antisymm hle hge, Subgroup.coe_inf]`. Conclude with `hK1.inter_left hT`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.InertialTypesAlt.L.cptCpt :
     UpperTheory.Gal.InertialTypesAlt.L.CptCpt := by

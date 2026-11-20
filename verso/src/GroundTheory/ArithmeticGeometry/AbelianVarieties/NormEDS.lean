@@ -7,13 +7,13 @@ section Step
 variable {R : Type*} [CommRing R] [IsDomain R]
 
 /- English proof (translation)
-The claim follows from `sub_eq_zero.mp ((mul_eq_zero.mp h).resolve_left hM)`.
+A detailed English derivation is pending.
 -/
 private theorem eq_of_mul_sub_eq_zero {M x y : R} (hM : M ≠ 0) (h : M * (x - y) = 0) : x = y :=
   sub_eq_zero.mp ((mul_eq_zero.mp h).resolve_left hM)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Use `eq_of_mul_sub_eq_zero (M := a1*a2^2*am1*b^4) (by simp [hb, ham1, ha1, ha2]) ?_` and prove the remaining obligations. Take the linear combination `(-a0*a1^3*a2^2*am1*am2*b^2*c + a0*a1*a2^3*am1^3*b^2*c + a1*a2^2*am1*b^3*c*e0) * hE0 + (a1*a2^2*am1*b^3*em2) * hE2 + (a0^2*a1^2*a2^2*a3*am1*b^2 - a1^2*a2^4*am1^2*b^2) * hEm2 + (-a1*a2^2*am1*b^6*om1) * hO1 + (-a0^3*a1*a2^3*am1*b^6 + a1^4*a2^2*am1^2*b^6) * hOm1 + (-a0^4*a1*a2^2*a3*a …`. Use `eq_of_mul_sub_eq_zero (M := a1*a2^17*am1*b^5*c^7) (by simp [hb, hc, ham1, ha1, ha2]) ?_` and prove the remaining obligations. Take the linear combination `(a0^2*a1^5*a2^17*am1*am2^2*b^4*c^8 - 2*a0^2*a1^3*a2^18*am1^3*am2*b^4*c^8 + a0^2*a1*a2^19*am1^5*b^4*c^8 - a0*a1^3*a2^17*am1*am2*b^5*c^8*e0 + a0*a1*a2^18*am1^3*b^5*c^8*e0 - a1*a2^17*am1*b^8*c^7*o1*om1 + a1*a2^17*am1*b^6*c^8*e0^2 - a1*a2^17*am1*b^4*c^7*d*o1*om1) * hE0 + (a1*a2^17*am …`.
+Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion.
 -/
 private theorem step_even (b c d am3 am2 am1 a0 a1 a2 a3 e0 e2 em2 o1 om1 : R)
     (hb : b ≠ 0) (hc : c ≠ 0) (ham1 : am1 ≠ 0) (ha1 : a1 ≠ 0) (ha2 : a2 ≠ 0)
@@ -35,7 +35,7 @@ private theorem step_even (b c d am3 am2 am1 a0 a1 a2 a3 e0 e2 em2 o1 om1 : R)
     linear_combination (a0^2*a1^5*a2^17*am1*am2^2*b^4*c^8 - 2*a0^2*a1^3*a2^18*am1^3*am2*b^4*c^8 + a0^2*a1*a2^19*am1^5*b^4*c^8 - a0*a1^3*a2^17*am1*am2*b^5*c^8*e0 + a0*a1*a2^18*am1^3*b^5*c^8*e0 - a1*a2^17*am1*b^8*c^7*o1*om1 + a1*a2^17*am1*b^6*c^8*e0^2 - a1*a2^17*am1*b^4*c^7*d*o1*om1) * hE0 + (a1*a2^17*am1*b^4*c^8*om1^2) * hE2 + (a1*a2^17*am1*b^4*c^8*o1^2) * hEm2 + (-a0^5*a1*a2^18*am1^2*am3*b^4*c^8 + a0^3*a1^2*a2^18*am1^2*am2^2*b^4*c^8 + a0^2*a1^4*a2^17*am1^3*am3*b^4*c^8 - a0^2*a1*a2^17*am1^2*am3*b^4*c^8*o1 + a0*a1^3*a2^17*am1*am2*b^8*c^7*om1 + a0*a1^3*a2^17*am1*am2*b^4*c^7*d*om1 - a0*a1*a2^18*am1^3*b^8*c^7*om1 - a0*a1*a2^18*am1^3*b^4*c^7*d*om1 - a1^5*a2^17*am1^3*am2^2*b^4*c^8 + a1^2*a2^17*am1^2*am2^2*b^4*c^8*o1) * hO1 + (-a0^5*a1^2*a2^17*a3*am1*am2*b^4*c^8 + a0^4*a1^3*a2^18*am1*am2*b^8*c^7 + a0^4*a1^3*a2^18*am1*am2*b^4*c^7*d - a0^4*a1*a2^19*am1^3*b^8*c^7 - a0^4*a1*a2^19*am1^3*b^4*c^7*d + a0^3*a1^2*a2^19*am1^2*am2*b^4*c^8 + a0^2*a1^3*a2^17*a3*am1^4*b^4*c^8 + a0^2*a1^2*a2^17*a3*am1*b^4*c^8*om1 - a0*a1^6*a2^17*am1^2*am2*b^8*c^7 - a0*a1^6*a2^17*am1^2*am2*b^4*c^7*d + a0*a1^4*a2^18*am1^4*b^8*c^7 + a0*a1^4*a2^18*am1^4*b^4*c^7*d - a1^3*a2^19*am1^5*b^4*c^8 - a1^2*a2^19*am1^2*b^4*c^8*om1) * hOm1 + (-a0^8*a2^19*am1^2*b^4*c^8 + 2*a0^5*a1^3*a2^18*am1^3*b^4*c^8 - a0^2*a1^6*a2^17*am1^4*b^4*c^8) * hSm1 + (-a0^11*a1^2*a2^16*b^6*c^9 + 2*a0^9*a1^3*a2^16*am1*b^8*c^8 + a0^9*a1^3*a2^16*am1*b^4*c^8*d + a0^9*a1^2*a2^17*am2*b^6*c^8 - a0^9*a2^18*am1^2*b^6*c^8 + a0^8*a1^5*a2^15*am1*b^6*c^9 - a0^8*a1^4*a2^16*am2*b^4*c^9 - a0^8*a1^2*a2^17*am1^2*b^4*c^9 - a0^7*a1^4*a2^16*am1^2*b^10*c^7 - a0^7*a1^4*a2^16*am1^2*b^6*c^7*d - a0^7*a1^3*a2^17*am1*am2*b^8*c^7 - a0^7*a1^3*a2^17*am1*am2*b^4*c^7*d + a0^7*a1*a2^18*am1^3*b^8*c^7 + a0^7*a1*a2^18*am1^3*b^4*c^7*d - 2*a0^6*a1^6*a2^15*am1^2*b^8*c^8 - a0^6*a1^6*a2^15*am1^2*b^4*c^8*d + a0^6*a1^3*a2^17*am1^3*b^6*c^8 + a0^5*a1^7*a2^15*am1*am2*b^4*c^9 + a0^5*a1^5*a2^16*am1^3*b^4*c^9 + a0^4*a1^7*a2^15*am1^3*b^10*c^7 + a0^4*a1^7*a2^15*am1^3*b^6*c^7*d + a0^4*a1^6*a2^16*am1^2*am2*b^8*c^7 + a0^4*a1^6*a2^16*am1^2*am2*b^4*c^7*d - a0^3*a1^8*a2^15*am1^2*am2*b^6*c^8 - a0^3*a1^7*a2^16*am1*am2^2*b^4*c^8 + a0^3*a1^5*a2^17*am1^3*am2*b^4*c^8 - 2*a0^3*a1^3*a2^18*am1^5*b^4*c^8 - a0*a1^7*a2^16*am1^5*b^8*c^7 - a0*a1^7*a2^16*am1^5*b^4*c^7*d + a1^8*a2^16*am1^4*am2*b^4*c^8 + a1^6*a2^17*am1^6*b^4*c^8) * hS0 + (a0^8*a1^2*a2^17*am2^2*b^4*c^8 - 2*a0^5*a1^3*a2^17*am1^3*am2*b^4*c^8 + a0^2*a1^4*a2^17*am1^6*b^4*c^8) * hS1 + (a0^10*a1^2*a2^16*b^4*c^9 - 2*a0^8*a1^3*a2^16*am1*b^6*c^8 + a0^8*a2^18*am1^2*b^4*c^8 - a0^7*a1^5*a2^15*am1*b^4*c^9 + a0^6*a1^4*a2^16*am1^2*b^8*c^7 - a0^6*a1*a2^18*am1^3*b^6*c^7 + 2*a0^5*a1^6*a2^15*am1^2*b^6*c^8 - a0^3*a1^7*a2^15*am1^3*b^8*c^7 + a0^3*a1*a2^19*am1^5*b^4*c^7 - a0^2*a1^6*a2^16*am1^4*b^4*c^8 + a1^7*a2^16*am1^5*b^6*c^7 - a1^4*a2^18*am1^6*b^4*c^7) * hI0
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Use `eq_of_mul_sub_eq_zero (M := a2*am1*b^2) (by simp [hb, ham1, ha2]) ?_` and prove the remaining obligations. Take the linear combination `(-a0^2*a1*a2*a3*am1*b^2 + a1*a2^3*am1^2*b^2) * hE0 + (-a2*am1*b^3*e0) * hE2 + (a0^3*a2^2*am1*b^2*c - a1^3*a2*am1^2*b^2*c + a2*am1*b^2*c*o1) * hO1 + (-a0*a2^4*am1*b^2 + a1^3*a2*a3*am1*b^2) * hOm1 + (a2*am1*b^2*om1) * hO3 + (a0^4*a2^3*am1*b^2 - a0*a1^3*a2^2*am1^2*b^2) * hS0 + (-a0^ …`. Use `eq_of_mul_sub_eq_zero (M := a2^14*am1^2*b^4*c^6) (by simp [hb, hc, ham1, ha2]) ?_` and prove the remaining obligations. Take the linear combination `(a0^2*a1^2*a2^17*am1^2*am2*b^2*c^7 - a0^2*a1*a2^14*a3*am1^2*b^6*c^6*o1 - a0^2*a1*a2^14*a3*am1^2*b^2*c^6*d*o1 - a0^2*a2^18*am1^4*b^2*c^7 - a0*a1^5*a2^14*a3*am1^2*am2*b^2*c^7 + a0*a1^3*a2^15*a3*am1^4*b^2*c^7 - a0*a2^17*am1^2*b^3*c^7*e0 + a1^3*a2^14*a3*am1^2*b^3*c^7*e0 + a1*a2^16*am …`.
+Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion.
 -/
 private theorem step_odd (b c d am2 am1 a0 a1 a2 a3 e0 e2 o1 om1 o3 : R)
     (hb : b ≠ 0) (hc : c ≠ 0) (ham1 : am1 ≠ 0) (ha2 : a2 ≠ 0)
@@ -69,19 +69,17 @@ section Induction
 variable {R : Type*} [CommRing R] [IsDomain R] (b c d : R)
 
 /- English proof (translation)
-Establish `sm1` using `hS (h - 1) le_rfl (by omega)`. Establish `s0` using `hS h (by omega) (by omega)`. Establish `s1` using `hS (h + 1) (by omega) le_rfl`. Simplify using `only [SomosAt, InvAt] at sm1 s0 s1 hI ⊢`. Rewrite `sm1` using `[show h - 1 + 2 = h + 1 by ring, show h - 1 - 2 = h - 3 by ring, show h - 1 + 1 = h by ring, show h - 1 - 1 = h - 2 by ring]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `s1` using `[show h + 1 + 2 = h + 3 by ring, show h + 1 - 2 = h - 1 by ring, show h + 1 + 1 = h + 2 by ring, show h + 1 - 1 = h by ring]`. Use `set w := normEDS b c d with hw`. Establish `hE0 : w (2 * h) * b = w (h - 1) ^ 2 * w h * w (h + 2) - w (h - 2) * w h * w (h + 1) ^ 2` using `normEDS_even b c d h`. Establish `hE2 : w (2 * h + 2) * b = w h ^ 2 * w (h + 1) * w (h + 3) - w (h - 1) * w (h + 1) * w (h + 2) ^ 2`. Use `normEDS_even b c d (h + 1)` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[show 2 * (h + 1) = 2 * h + 2 by ring, show h + 1 - 1 = h by ring, show h + 1 + 2 = h + 3 by ring, show h + 1 - 2 = h - 1 by ring, show h + 1 + 1 = h + 2 by ring]`. Then use the resulting hypothesis. Establish `hEm2 : w (2 * h - 2) * b = w (h - 2) ^ 2 * w (h - 1) * w (h + 1) - w (h - 3) * w (h - 1) * w h ^ 2`. Use `normEDS_even b c d (h - 1)` as an intermediate fact. Rewrite `this` using `[show 2 * (h - 1) = 2 * h - 2 by ring, show h - 1 - 1 = h - 2 by ring, show h - 1 + 2 = h + 1 by ring, show h - 1 - 2 = h - 3 by ring, show h - 1 + 1 = h by ring]`. Then use the resulting hypothesis. Establish `hO1 : w (2 * h + 1) = w (h + 2) * w h ^ 3 - w (h - 1) * w (h + 1) ^ 3` using `normEDS_odd b c d h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hOm1 : w (2 * h - 1) = w (h + 1) * w (h - 1) ^ 3 - w (h - 2) * w h ^ 3`. Use `normEDS_odd b c d (h - 1)` as an intermediate fact. Rewrite `this` using `[show 2 * (h - 1) + 1 = 2 * h - 1 by ring, show h - 1 + 2 = h + 1 by ring, show h - 1 - 1 = h - 2 by ring, show h - 1 + 1 = h by ring]`. Then use the resulting hypothesis. Establish `hO3 : w (2 * h + 3) = w (h + 3) * w (h + 1) ^ 3 - w h * w (h + 2) ^ 3`. Use `normEDS_odd b c d (h + 1)` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[show 2 * (h + 1) + 1 = 2 * h + 3 by ring, show h + 1 + 2 = h + 3 by ring, show h + 1 - 1 = h by ring, show h + 1 + 1 = h + 2 by ring]`. Then use the resulting hypothesis. Establish `ne1` using `hne (h - 1) le_rfl (by omega)`. Establish `ne2` using `hne (h + 1) (by omega) (by omega)`. Establish `ne3` using `hne (h + 2) (by omega) le_rfl`. Take `⟨e1, e2⟩` from `step_even b c d (w (h - 3)) (w (h - 2)) (w (h - 1)) (w h) (w (h + 1)) (w (h + 2)) (w (h + 3)) (w (2 * h)) (w (2 * h + 2)) (w (2 * h - 2)) (w (2 * h + 1)) (w (2 * h - 1)) hb hc ne1 ne2 ne3 hE0 hE2 hEm2 hO1 hOm1 (by linear_combination sm1) (by linear_combination s0) (by linear_comb …`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨o1, o2⟩` from `step_odd b c d (w (h - 2)) (w (h - 1)) (w h) (w (h + 1)) (w (h + 2)) (w (h + 3)) (w (2 * h)) (w (2 * h + 2)) (w (2 * h + 1)) (w (2 * h - 1)) (w (2 * h + 3)) hb hc ne1 ne3 hE0 hE2 hO1 hOm1 hO3 (by linear_combination s0) (by linear_combination s1) hI`. Use `⟨⟨e1, e2⟩, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[show 2 * h + 1 + 2 = 2 * h + 3 by ring, show 2 * h + 1 - 2 = 2 * h - 1 by ring, show 2 * h + 1 + 1 = 2 * h + 2 by ring, show 2 * h + 1 - 1 = 2 * h by ring]`. Conclude with `o1`. Rewrite using `[show 2 * h + 1 + 2 = 2 * h + 3 by ring, show 2 * h + 1 - 2 = 2 * h - 1 by ring, show 2 * h + 1 + 1 = 2 * h + 2 by ring, show 2 * h + 1 - 1 = 2 * h by ring]`.
-
-Conclude with `o2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem step_seq (hb : b ≠ 0) (hc : c ≠ 0) (h : ℤ)
     (hne : ∀ k, h - 1 ≤ k → k ≤ h + 2 → normEDS b c d k ≠ 0)
@@ -147,17 +145,17 @@ section Universal
 open MvPolynomial
 
 /- English proof (translation)
-Proceed by induction on `n using normEDSRec' with`. Consider the case `zero => simp [normEDS_zero]`. Consider the case `one => simp [normEDS_one]`. Consider the case `two => simp [normEDS_two]`. Consider the case `three => simp [normEDS_three]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `four => norm_num [normEDS_four]`. Consider the case `even m ih`. Establish `h` using `normEDS_even (2 : ℤ) 3 2 ((m : ℤ) + 3)`. Establish `e1` using `ih (m + 2) (by omega)`. Establish `e2` using `ih (m + 3) (by omega)`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e3` using `ih (m + 5) (by omega)`. Establish `e4` using `ih (m + 1) (by omega)`. Establish `e5` using `ih (m + 4) (by omega)`. Move the coercions through the operations in `at e1 e2 e3 e4 e5 ⊢`. Rewrite `h` using `[show (m : ℤ) + 3 - 1 = m + 2 by ring, show (m : ℤ) + 3 + 2 = m + 5 by ring, show (m : ℤ) + 3 - 2 = m + 1 by ring, show (m : ℤ) + 3 + 1 = m + 4 by ring, e1, e2, e3, e4, e5]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `key : normEDS (2 : ℤ) 3 2 (2 * ((m : ℤ) + 3)) * 2 = 2 * (2 * ((m : ℤ) + 3))`. Rewrite using `[h]`. Expand and normalize the polynomial expressions, which then agree. Combine the linear equalities and inequalities to obtain the conclusion. Consider the case `odd m ih`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Combine the linear equalities and inequalities to obtain the conclusion. Treat this case separately.
 
-Establish `h` using `normEDS_odd (2 : ℤ) 3 2 ((m : ℤ) + 2)`. Establish `e1` using `ih (m + 4) (by omega)`. Establish `e2` using `ih (m + 2) (by omega)`. Establish `e3` using `ih (m + 1) (by omega)`. Establish `e4` using `ih (m + 3) (by omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Move the coercions through the operations in `at e1 e2 e3 e4 ⊢`. Rewrite `h` using `[show (m : ℤ) + 2 + 2 = m + 4 by ring, show (m : ℤ) + 2 - 1 = m + 1 by ring, show (m : ℤ) + 2 + 1 = m + 3 by ring, e1, e2, e3, e4]`. Rewrite using `[h]`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem normEDS_two_three_two_nat (n : ℕ) : normEDS (2 : ℤ) 3 2 n = n := by
   induction n using normEDSRec' with
@@ -192,7 +190,7 @@ private theorem normEDS_two_three_two_nat (n : ℕ) : normEDS (2 : ℤ) 3 2 n = 
     rw [h]; ring
 
 /- English proof (translation)
-Break down `Int.eq_nat_or_neg n with ⟨k, rfl | rfl⟩` into its components or cases. Conclude with `normEDS_two_three_two_nat k`. Rewrite using `[normEDS_neg, normEDS_two_three_two_nat]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem normEDS_two_three_two (n : ℤ) : normEDS (2 : ℤ) 3 2 n = n := by
   rcases Int.eq_nat_or_neg n with ⟨k, rfl | rfl⟩
@@ -203,14 +201,14 @@ private noncomputable def uw (n : ℤ) : MvPolynomial (Fin 3) ℤ :=
   normEDS (X 0) (X 1) (X 2) n
 
 /- English proof (translation)
-Rewrite using `[uw, map_normEDS]`. Simplify using `using normEDS_two_three_two n`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem eval_uw (n : ℤ) : eval ![2, 3, 2] (uw n) = n := by
   rw [uw, map_normEDS]
   simpa using normEDS_two_three_two n
 
 /- English proof (translation)
-Introduce `h`. Use `eval_uw n` as an intermediate fact. Rewrite `this` using `[h, map_zero]`. Conclude with `hn this.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem uw_ne_zero {n : ℤ} (hn : n ≠ 0) : uw n ≠ 0 := by
   intro h
@@ -219,22 +217,22 @@ private theorem uw_ne_zero {n : ℤ} (hn : n ≠ 0) : uw n ≠ 0 := by
   exact hn this.symm
 
 /- English proof (translation)
-The claim follows from `X_ne_zero 0`.
+A detailed English derivation is pending.
 -/
 private theorem X0_ne_zero : (X 0 : MvPolynomial (Fin 3) ℤ) ≠ 0 := X_ne_zero 0
 /- English proof (translation)
-The claim follows from `X_ne_zero 1`.
+A detailed English derivation is pending.
 -/
 private theorem X1_ne_zero : (X 1 : MvPolynomial (Fin 3) ℤ) ≠ 0 := X_ne_zero 1
 
 /- English proof (translation)
-Establish `w0 : uw 0 = 0` using `normEDS_zero ..`. Establish `w1 : uw 1 = 1` using `normEDS_one ..`. Establish `w2 : uw 2 = X 0` using `normEDS_two ..`. Establish `w3 : uw 3 = X 1` using `normEDS_three ..`. Establish `w4 : uw 4 = X 2 * X 0` using `normEDS_four ..`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `wm1 : uw (-1) = -1` using `by rw [uw, normEDS_neg, ← uw, w1]`. Establish `wm2 : uw (-2) = -X 0` using `by rw [uw, normEDS_neg, ← uw, w2]`. Establish `w5 : uw 5 = X 2 * X 0 ^ 4 - X 1 ^ 3`. Establish `h5 : uw (2 * 2 + 1) = uw (2 + 2) * uw 2 ^ 3 - uw (2 - 1) * uw (2 + 1) ^ 3` using `normEDS_odd _ _ _ 2`. Evaluate the numerical expressions using `at h5`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Evaluate the numerical expressions.
 
-Rewrite using `[h5, w4, w2, w1, w3]`. Expand and normalize the polynomial expressions, which then agree. Establish `w6 : uw 6 = X 0 * X 1 * (X 2 * X 0 ^ 4 - X 1 ^ 3) - X 1 * X 2 ^ 2 * X 0`. Establish `h6 : uw (2 * 3) * X 0 = uw (3 - 1) ^ 2 * uw 3 * uw (3 + 2) - uw (3 - 2) * uw 3 * uw (3 + 1) ^ 2` using `normEDS_even _ _ _ 3`. Evaluate the numerical expressions using `at h6`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Evaluate the numerical expressions.
 
-Apply `mul_right_cancel₀ X0_ne_zero` to reduce the goal to its premises. Rewrite using `[h6, w2, w3, w5, w1, w4]`. Expand and normalize the polynomial expressions, which then agree. Apply the tactic sequence `interval_cases k <;> constructor <;> simp only [SomosAt, InvAt] <;> norm_num <;>`. Apply the tactic sequence `simp only [w0, w1, w2, w3, w4, w5, w6, wm1, wm2] <;> ring`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem uw_base (k : ℕ) (hk : k ≤ 4) :
     SomosAt uw (X 0) (X 1) k ∧ InvAt uw (X 0) (X 1) (X 2) k := by
@@ -261,11 +259,11 @@ private theorem uw_base (k : ℕ) (hk : k ≤ 4) :
     simp only [w0, w1, w2, w3, w4, w5, w6, wm1, wm2] <;> ring
 
 /- English proof (translation)
-Proceed by induction on `N using Nat.strong_induction_on with`. Consider the case `_ N ih`. Break down `le_or_gt N 4 with hN | hN` into its components or cases. Conclude with `uw_base N hN`. Take `⟨h, hh⟩ : ∃ h : ℕ, N = 2 * h ∨ N = 2 * h + 1` from `⟨N / 2, by omega⟩`.
+Proceed by induction. Treat this case separately. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `key` using `step_seq (X 0 : MvPolynomial (Fin 3) ℤ) (X 1) (X 2) X0_ne_zero X1_ne_zero (h : ℤ) (fun k hk1 hk2 => uw_ne_zero (by omega)) (fun k hk1 hk2 => by`. Use `(ih k.toNat (by omega)).1` as an intermediate fact. Rewrite using `[Int.toNat_of_nonneg (by omega)] at this)` and apply the resulting hypothesis. Use the proof step `(ih h (by omega)).2`. Break down `hh with rfl | rfl` into its components or cases.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Separate the alternatives or extract the components of the hypothesis. Move the embeddings inside the algebraic operations. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Conclude with `key.1`. Use `push_cast`. Conclude with `key.2`.
+A detailed English derivation is pending.
 -/
 private theorem uw_rel_nat (N : ℕ) :
     SomosAt uw (X 0) (X 1) N ∧ InvAt uw (X 0) (X 1) (X 2) N := by
@@ -285,9 +283,9 @@ private theorem uw_rel_nat (N : ℕ) :
   · push_cast; exact key.2
 
 /- English proof (translation)
-Break down `Int.eq_nat_or_neg n with ⟨k, rfl | rfl⟩` into its components or cases. Conclude with `uw_rel_nat k`. Take `⟨hs, hi⟩` from `uw_rel_nat k`. Simplify using `only [SomosAt, InvAt, uw] at hs hi ⊢`. Rewrite using `[show -(k : ℤ) + 2 = -((k : ℤ) - 2) by ring, show -(k : ℤ) - 2 = -((k : ℤ) + 2) by ring, show -(k : ℤ) + 1 = -((k : ℤ) - 1) by ring, show -(k : ℤ) - 1 = -((k : ℤ) + 1) by ring]`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [normEDS_neg]`. Prove the components needed by the constructor for the conclusion. Take the linear combination `hs`. Take the linear combination `-hi`.
+Prove the components needed by the constructor for the conclusion. Take a linear combination of the given relations to obtain the conclusion. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 private theorem uw_rel (n : ℤ) :
     SomosAt uw (X 0) (X 1) n ∧ InvAt uw (X 0) (X 1) (X 2) n := by
@@ -307,7 +305,7 @@ end Universal
 variable {R : Type*} [CommRing R] (b c d : R)
 
 /- English proof (translation)
-Establish `h` using `(uw_rel n).1`. Simplify using `only [SomosAt, uw] at h`. Use `congrArg (MvPolynomial.eval₂Hom (Int.castRingHom R) ![b, c, d]) h` as an intermediate fact. Simplify using `only [map_sub, map_mul, map_pow, map_normEDS] at this`. Simplify using `using this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem normEDS_somos (n : ℤ) :
     normEDS b c d (n + 2) * normEDS b c d (n - 2) =
@@ -319,7 +317,7 @@ theorem normEDS_somos (n : ℤ) :
   simpa using this
 
 /- English proof (translation)
-Establish `h` using `(uw_rel n).2`. Simplify using `only [InvAt, uw] at h`. Use `congrArg (MvPolynomial.eval₂Hom (Int.castRingHom R) ![b, c, d]) h` as an intermediate fact. Simplify using `only [map_sub, map_mul, map_pow, map_add, map_normEDS] at this`. Simplify using `using this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem normEDS_invariant (n : ℤ) :
     c * (normEDS b c d (n + 2) * normEDS b c d (n - 1) ^ 2 +

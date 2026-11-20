@@ -12,7 +12,7 @@ namespace GlobalTheory.CompanionTheory.OrbInv
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
 
 /- English proof (translation)
-Establish `h : ∀ g : GL (Fin n) E, (ratGL E n g).val = g.val.map (algebraMap E (Ad E))` using `fun _ => rfl`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[thetaR_val, ← map_inv, h, h, thetaR_val]`. Use extensionality with `i j`. Conclude with `conjAd_algebraMap _`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem thetaA_ratGL (g : GL (Fin n) E) : thetaA E n (ratGL E n g) = ratGL E n (thetaE E n g) := by
   have h : ∀ g : GL (Fin n) E, (ratGL E n g).val = g.val.map (algebraMap E (Ad E)) := fun _ => rfl
@@ -22,7 +22,7 @@ theorem thetaA_ratGL (g : GL (Fin n) E) : thetaA E n (ratGL E n g) = ratGL E n (
   exact conjAd_algebraMap _
 
 /- English proof (translation)
-Simplify using `only [twConj, map_mul, map_inv, thetaA_ratGL]`. Use `group`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem twConj_ratGL (g d : GL (Fin n) E) (x : GA E n) :
     twConj (thetaA E n) x (ratGL E n (twConj (thetaE E n) g d)) =
@@ -31,11 +31,11 @@ theorem twConj_ratGL (g d : GL (Fin n) E) (x : GA E n) :
   group
 
 /- English proof (translation)
-Simplify using `only [ratCent, Subgroup.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, hc, rfl⟩`. Establish `hc'` using `(mem_twCent _ _ _).1 hc`. Simplify using `only [twConj] at hc'`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `⟨g * c * g⁻¹, (mem_twCent _ _ _).2 ?_, by simp only [map_mul, map_inv]⟩` and prove the remaining obligations. Simplify using `only [map_mul, map_inv]`. Combine the equalities or inequalities in the displayed calculation. Introduce and unpack `⟨c, hc, h⟩`. Establish `hc'` using `(mem_twCent _ _ _).1 hc`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use `⟨g⁻¹ * c * g, (mem_twCent _ _ _).2 ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [twConj, map_mul, map_inv]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [map_mul, map_inv, h] group`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 -/
 theorem mem_ratCent_twConj (g d : GL (Fin n) E) (x : GA E n) :
     x ∈ ratCent (twConj (thetaE E n) g d) ↔ ratGL E n g * x * (ratGL E n g)⁻¹ ∈ ratCent d := by
@@ -62,7 +62,7 @@ theorem mem_ratCent_twConj (g d : GL (Fin n) E) (x : GA E n) :
       group
 
 /- English proof (translation)
-Take `⟨c, hc, rfl⟩` from `Subgroup.mem_map.1 hh`. Establish `hc'` using `(mem_twCent _ _ _).1 hc`. Use `twConj_mul_left _ _ ((mem_twCent _ _ _).2 ?_) x` and prove the remaining obligations. Rewrite using `[thetaA_ratGL, ← map_inv, ← map_mul, ← map_mul, hc']`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem twConj_ratCent (d : GL (Fin n) E) {h : GA E n} (hh : h ∈ ratCent d) (x : GA E n) :
     twConj (thetaA E n) (h * x) (ratGL E n d) = twConj (thetaA E n) x (ratGL E n d) := by
@@ -72,7 +72,7 @@ theorem twConj_ratCent (d : GL (Fin n) E) {h : GA E n} (hh : h ∈ ratCent d) (x
   rw [thetaA_ratGL, ← map_inv, ← map_mul, ← map_mul, hc']
 
 /- English proof (translation)
-The claim follows from `(Set.countable_range (ratGL E n)).mono (by rintro _ ⟨c, -, rfl⟩ exact ⟨c, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem countable_ratCent [Countable (GL (Fin n) E)] (d : GL (Fin n) E) :
     (ratCent d : Set (GA E n)).Countable :=
@@ -81,13 +81,11 @@ theorem countable_ratCent [Countable (GL (Fin n) E)] (d : GL (Fin n) E) :
     exact ⟨c, rfl⟩)
 
 /- English proof (translation)
-Introduce `hQ hT E _ _ _ a b _ _ _ _ μ₁ _ μ₂ _ φ d₁ g₁ d₂ g₂ hc`. Take `⟨⟨lc₁, sc₁, t₁⟩, -, -, cn₁, -, -⟩` from `hT E a`. Take `⟨⟨lc₂, sc₂, t₂⟩, -, -, cn₂, -, -⟩` from `hT E b`. Establish `hcnt : (((ratCent d₁).prod (ratCent d₂) : Subgroup (GA E a × GA E b)) : Set (GA E a × GA E b)).Countable`. Rewrite using `[Subgroup.coe_prod]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(countable_ratCent d₁).prod (countable_ratCent d₂)`. Establish `: Countable ((ratCent d₁).prod (ratCent d₂) : Subgroup (GA E a × GA E b))` using `hcnt.to_subtype`. Use `set F : GA E a × GA E b → ℂ := fun x => φ (twConj (thetaA E a) x.1 (ratGL E a d₁), twConj (thetaA E b) x.2 (ratGL E b d₂)) with hF`. Establish `key` using `hQ (GA E a × GA E b) (μ₁.prod μ₂) ((ratCent d₁).prod (ratCent d₂)) ((ratCent (twConj (thetaE E a) g₁ d₁)).prod (ratCent (twConj (thetaE E b) g₂ d₂))) F (ratGL E a g₁, ratGL E b g₂) hc.measurable (fun h hh x => by`. Simplify using `only [hF, Prod.fst_mul, Prod.snd_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[twConj_ratCent d₁ hh.1, twConj_ratCent d₂ hh.2])`. Use the proof step `(fun x => by`. Simplify using `only [Subgroup.mem_prod, Prod.fst_mul, Prod.snd_mul, Prod.fst_inv, Prod.snd_inv, mem_ratCent_twConj])`. Simplify using `only [hF, Prod.fst_mul, Prod.snd_mul] at key`. Simplify using `only [orbTerm2, twConj_ratGL]`.
-
-Conclude with `key`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem orbInvOf : OrbInvOf := by
   intro hQ hT E _ _ _ a b _ _ _ _ μ₁ _ μ₂ _ φ d₁ g₁ d₂ g₂ hc

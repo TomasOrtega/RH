@@ -75,14 +75,14 @@ def zP {P : LB (A ⊗ A).left} (hP : P.IsLB) {Q : LB (A ⊗ B).left} (hQ : Q.IsL
   (cls_surj (zCls A B hP hQ d mu)).choose
 
 /- English proof (translation)
-The claim follows from `(cls_surj (zCls A B hP hQ d mu)).choose_spec.choose`.
+A detailed English derivation is pending.
 -/
 theorem zarhinBundle_isLineBundle {P : LB (A ⊗ A).left} (hP : P.IsLB) {Q : LB (A ⊗ B).left} (hQ : Q.IsLB) (d : ℕ) (mu : B ⟶ A) :
     (zP A B hP hQ d mu).IsLB :=
   (cls_surj (zCls A B hP hQ d mu)).choose_spec.choose
 
 /- English proof (translation)
-The claim follows from `(cls_surj (zCls A B hP hQ d mu)).choose_spec.choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem cls_zP {P : LB (A ⊗ A).left} (hP : P.IsLB) {Q : LB (A ⊗ B).left} (hQ : Q.IsLB) (d : ℕ) (mu : B ⟶ A) :
     cls (zP A B hP hQ d mu) (zarhinBundle_isLineBundle A B hP hQ d mu) = zCls A B hP hQ d mu :=

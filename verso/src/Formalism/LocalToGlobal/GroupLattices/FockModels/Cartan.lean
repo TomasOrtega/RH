@@ -10,7 +10,7 @@ namespace Formalism.L2.G.Model
 open Formalism.MainNotions.G Formalism.GradedWeylDivisibility
 
 /- English proof (translation)
-Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `v`. Simplify using `[rowAct, Matrix.one_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem rowAct_one' (R : Type) [CommRing R] (k n : ℕ) : rowAct R (n := n) (1 : Matrix (Fin k) (Fin k) R) = AlgHom.id R _ := by
   apply MvPolynomial.algHom_ext
@@ -18,7 +18,7 @@ theorem rowAct_one' (R : Type) [CommRing R] (k n : ℕ) : rowAct R (n := n) (1 :
   simp [rowAct, Matrix.one_apply]
 
 /- English proof (translation)
-Establish `h` using `rowActMul K k n g g⁻¹`. Rewrite `h` using `[Matrix.nonsing_inv_mul g hg, rowAct_one']`. Conclude with `AlgHom.congr_fun h P`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rowAct_inv_right (K : Type) [Field K] (k n : ℕ) (g : Matrix (Fin k) (Fin k) K) (hg : IsUnit g.det)
     (P : MvPolynomial (Fin k × Fin n) K) : rowAct K g (rowAct K g⁻¹ P) = P := by
@@ -27,7 +27,7 @@ theorem rowAct_inv_right (K : Type) [Field K] (k n : ℕ) (g : Matrix (Fin k) (F
   exact AlgHom.congr_fun h P
 
 /- English proof (translation)
-Establish `h` using `rowActMul K k n g⁻¹ g`. Rewrite `h` using `[Matrix.mul_nonsing_inv g hg, rowAct_one']`. Conclude with `AlgHom.congr_fun h P`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rowAct_inv_left (K : Type) [Field K] (k n : ℕ) (g : Matrix (Fin k) (Fin k) K) (hg : IsUnit g.det)
     (P : MvPolynomial (Fin k × Fin n) K) : rowAct K g⁻¹ (rowAct K g P) = P := by
@@ -36,30 +36,30 @@ theorem rowAct_inv_left (K : Type) [Field K] (k n : ℕ) (g : Matrix (Fin k) (Fi
   exact AlgHom.congr_fun h P
 
 /- English proof (translation)
-Rewrite using `[smul_eq_C_mul, map_mul, map_C, ← smul_eq_C_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem map_smul' {O Kf σ : Type} [CommRing O] [Field Kf] [Algebra O Kf] (w : O) (f : MvPolynomial σ O) :
     map (algebraMap O Kf) (w • f) = algebraMap O Kf w • map (algebraMap O Kf) f := by
   rw [smul_eq_C_mul, map_mul, map_C, ← smul_eq_C_mul]
 
 /- English proof (translation)
-Introduce `O Kf _ _ _ _ _ _ w hw m lam mu Λ hΛ hl hm F hF G hG hX`. Take `⟨g, hg, rfl⟩` from `hΛ`. Take `⟨X, hX, hFG⟩` from `hX`. Establish `hinj : Function.Injective (algebraMap O Kf)` using `IsFractionRing.injective O Kf`. Establish `hI` using `LatticeSystems.la_indep hinj`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlm : Antitone (lam + mu)` using `hl.add hm`. Establish `eL` using `LatticeSystems.H0_eq_twisted_nabla hI m lam hl g hg`. Establish `eM` using `LatticeSystems.H0_eq_twisted_nabla hI m mu hm g hg`. Establish `eLM` using `LatticeSystems.H0_eq_twisted_nabla hI m (lam + mu) hlm g hg`. Rewrite `hF` using `[eL]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hG` using `[eM]`. Rewrite `hX` using `[eLM]`. Rewrite using `[eL, eM]`. Establish `hc : algebraMap O Kf w ≠ 0`. Introduce `h0`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hw.ne_zero (hinj (by rw [h0, map_zero]))`. Establish `hmap : ∀ f : MvPolynomial (Fin (m + 1) × Fin (m + 1)) O, (mapAlgHom (Algebra.ofId O Kf)).toLinearMap f = map (algebraMap O Kf) f` using `fun f => rfl`. Establish `hF'` using `(nablaLTwMem O Kf m lam g hg F).1 hF`. Establish `hG'` using `(nablaLTwMem O Kf m mu g hg G).1 hG`. Establish `hX'` using `(nablaLTwMem O Kf m (lam + mu) g hg X).1 hX`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨f, hf, hfe⟩` from `hF'`. Take `⟨f', hf', hfe'⟩` from `hG'`. Take `⟨x, hx, hxe⟩` from `hX'`. Rewrite `hfe`, `hfe'`, `hxe` using `[hmap]`. Establish `hprod : f * f' = C w * x`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `map_injective _ hinj` to reduce the goal to its premises. Rewrite using `[map_mul, hfe, hfe', ← smul_eq_C_mul, map_smul', hxe, smul_mul_smul_comm, ← map_mul, hFG, ← algebraMap_smul Kf w X, map_smul, smul_smul, smul_smul, Pi.add_apply, zpow_add₀ hg.ne_zero]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `hprime : Prime (C w : MvPolynomial (Fin (m + 1) × Fin (m + 1)) O)` using `(prime_C_iff _).2 hw.prime`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : ∀ (la : Fin (m + 1) → ℤ) (P : MvPolynomial (Fin (m + 1) × Fin (m + 1)) Kf) (q : MvPolynomial (Fin (m + 1) × Fin (m + 1)) O), q ∈ dualWeyl O (m + 1) (m + 1) (fun t => (la t - la (Fin.last m)).toNat) → map (algebraMap O Kf) q = g.det ^ (la (Fin.last m)) • rowAct Kf g P → C w …`. Introduce `la P q hq hqe hdvd`. Take `⟨q1, rfl⟩` from `hdvd`. Rewrite `hq`, `hqe` using `[← smul_eq_C_mul]`. Establish `hq1` using `dualWeylSat O _ _ _ w q1 hw.ne_zero hq`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(algebraMap O Kf w)⁻¹ • P, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[nablaLTwMem O Kf m la g hg]`. Use `⟨q1, hq1, ?_⟩` and prove the remaining obligations. Rewrite using `[hmap, map_smul, smul_comm, ← hqe, map_smul', smul_smul, inv_mul_cancel₀ hc, one_smul]`. Rewrite using `[← algebraMap_smul Kf w, smul_smul, mul_inv_cancel₀ hc, one_smul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `hprime.dvd_or_dvd ⟨x, hprod⟩ with h | h` into its components or cases. Conclude with `Or.inl (key lam F f hf hfe h)`. Conclude with `Or.inr (key mu G f' hf' hfe' h)`.
+Prove the first alternative. Prove the second alternative. A detailed English derivation is pending.
 -/
 theorem cartanDomain_proved : Formalism.MainNotions.flipOneThree.CartanDomain := by
   intro O Kf _ _ _ _ _ _ w hw m lam mu Λ hΛ hl hm F hF G hG hX
@@ -115,7 +115,7 @@ theorem cartanDomain_proved : Formalism.MainNotions.flipOneThree.CartanDomain :=
 def om (n s : ℕ) : Fin n → ℕ := fun t => if t.val < s then 1 else 0
 
 /- English proof (translation)
-Use function extensionality and compare the values at `t`. Simplify using `only [shapeDeg, om, Pi.add_apply, Finset.card_filter]`. Rewrite using `[Fin.sum_univ_castSucc]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem shapeDeg_succ {n K : ℕ} (sz : Fin (K + 1) → ℕ) :
     (shapeDeg sz : Fin n → ℕ) = shapeDeg (fun k : Fin K => sz k.castSucc) + om n (sz (Fin.last K)) := by
@@ -124,9 +124,9 @@ theorem shapeDeg_succ {n K : ℕ} (sz : Fin (K + 1) → ℕ) :
   rw [Fin.sum_univ_castSucc]
 
 /- English proof (translation)
-Introduce `a b hab`. Unfold `shapeDeg`. Apply `Finset.card_le_card` to reduce the goal to its premises. Introduce `k hk`. Rewrite `hk`, the goal using `[Finset.mem_filter]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `: a.val ≤ b.val` using `hab`. Conclude with `⟨hk.1, by omega⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem shapeDeg_antitone {n K : ℕ} (sz : Fin K → ℕ) : Antitone (shapeDeg sz : Fin n → ℕ) := by
   intro a b hab
@@ -138,9 +138,9 @@ theorem shapeDeg_antitone {n K : ℕ} (sz : Fin K → ℕ) : Antitone (shapeDeg 
   exact ⟨hk.1, by omega⟩
 
 /- English proof (translation)
-Establish `h` using `bidetMem R r n 1 (fun _ => s) (fun _ => hs) (fun _ => I)`. Establish `h1 : bideterminant R (fun _ : Fin 1 => s) (fun _ => hs) (fun _ => I) = initMinor R I hs`. Simplify using `[bideterminant]`. Establish `h2 : (shapeDeg (fun _ : Fin 1 => s) : Fin n → ℕ) = om n s`. Use function extensionality and compare the values at `t`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [shapeDeg, om, Finset.card_filter]`. Simplify using the standard rewrite rules. Rewrite `h` using `[h1, h2]`. Conclude with `h`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem initMinor_mem (R : Type) [CommRing R] {r n s : ℕ} (I : Fin s → Fin r) (hs : s ≤ n) :
     initMinor R I hs ∈ dualWeyl R r n (om n s) := by
@@ -158,9 +158,9 @@ def ProdSpan (R : Type) [CommRing R] (r n : ℕ) (ν ν' : Fin n → ℕ) : Subm
   Submodule.span R {X | ∃ f ∈ dualWeyl R r n ν, ∃ f' ∈ dualWeyl R r n ν', X = f * f'}
 
 /- English proof (translation)
-Establish `key : ProdSpan R r n ν ν' ≤ (ProdSpan R r n (ν + ω) ν').comap (LinearMap.mulRight R h)`. Unfold `ProdSpan`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨f, hf, f', hf', rfl⟩`. Apply `Submodule.subset_span` to reduce the goal to its premises.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result.
 
-Use `⟨f * h, dualWeyl_mul R r n ν ω hf hh, f', hf', ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.mulRight_apply]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `fun X hX => key hX`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem prodSpan_mul_left (R : Type) [CommRing R] (r n : ℕ) (ν ν' ω : Fin n → ℕ)
     (h : MvPolynomial (Fin r × Fin n) R) (hh : h ∈ dualWeyl R r n ω) :
@@ -176,9 +176,9 @@ theorem prodSpan_mul_left (R : Type) [CommRing R] (r n : ℕ) (ν ν' ω : Fin n
   exact fun X hX => key hX
 
 /- English proof (translation)
-Establish `key : ProdSpan R r n ν ν' ≤ (ProdSpan R r n ν (ν' + ω)).comap (LinearMap.mulRight R h)`. Unfold `ProdSpan`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨f, hf, f', hf', rfl⟩`. Apply `Submodule.subset_span` to reduce the goal to its premises.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result.
 
-Use `⟨f, hf, f' * h, dualWeyl_mul R r n ν' ω hf' hh, ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.mulRight_apply]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `fun X hX => key hX`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem prodSpan_mul_right (R : Type) [CommRing R] (r n : ℕ) (ν ν' ω : Fin n → ℕ)
     (h : MvPolynomial (Fin r × Fin n) R) (hh : h ∈ dualWeyl R r n ω) :
@@ -194,15 +194,15 @@ theorem prodSpan_mul_right (R : Type) [CommRing R] (r n : ℕ) (ν ν' ω : Fin 
   exact fun X hX => key hX
 
 /- English proof (translation)
-Establish `h3 : ∀ a : Fin n, a.val < s → ν ⟨s - 1, by omega⟩ ≤ ν a` using `fun a ha => hν (show a ≤ ⟨s - 1, by omega⟩ from by rw [Fin.le_def]; simp only; omega)`. Use `⟨fun t => ν t - om n s t, ?_, ?_⟩` and prove the remaining obligations. Introduce `a b hab`. Establish `hab' : a.val ≤ b.val` using `hab`. Establish `h4` using `hν hab`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [om]`. Apply the tactic sequence `by_cases ha : a.val < s <;> by_cases hb : b.val < s`. Simplify using `only [ha, hb, if_true]`. Use linear arithmetic over natural numbers and integers. Simplify using `only [ha, hb, if_true, if_false]`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules.
 
-Use `h2 b (by omega)` as an intermediate fact. Use `h3 a ha` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers. Simplify using `only [ha, hb, if_false]`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Use function extensionality and compare the values at `t`. Simplify using `only [Pi.add_apply, om]`. Distinguish the cases in `ht : t.val < s`. Simplify using `only [ht, if_true]`.
+Use linear arithmetic over natural numbers and integers. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Use `h3 t ht` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Simplify using `only [ht, if_false]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem sub_om {n s : ℕ} (hs0 : 0 < s) (hs : s ≤ n) (ν : Fin n → ℕ) (hν : Antitone ν)
     (h1 : 1 ≤ ν ⟨s - 1, by omega⟩) (h2 : ∀ b : Fin n, s ≤ b.val → ν b + 1 ≤ ν ⟨s - 1, by omega⟩) :
@@ -231,17 +231,15 @@ theorem sub_om {n s : ℕ} (hs0 : 0 < s) (hs : s ≤ n) (ν : Fin n → ℕ) (h�
     · simp only [ht, if_false]; omega
 
 /- English proof (translation)
-Distinguish the cases in `hs0 : s = 0`. Use `left`. Use `⟨ν, hν, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `t`. Simplify using `[om, hs0]`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hs1 : 0 < s` using `Nat.pos_of_ne_zero hs0`. Establish `e0` using `congrFun h ⟨s - 1, by omega⟩`. Simplify using `only [Pi.add_apply, om] at e0`. Rewrite `e0` using `[if_pos (by omega)]`. Distinguish the cases in `hsn : s < n`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `e1` using `congrFun h ⟨s, hsn⟩`. Simplify using `only [Pi.add_apply, om] at e1`. Rewrite `e1` using `[if_neg (by omega)]`. Establish `e2 : σ ⟨s, hsn⟩ ≤ σ ⟨s - 1, by omega⟩` using `hσ (by rw [Fin.le_def]; simp only; omega)`. Establish `e3 : ν ⟨s, hsn⟩ + 1 ≤ ν ⟨s - 1, by omega⟩ ∨ ν' ⟨s, hsn⟩ + 1 ≤ ν' ⟨s - 1, by omega⟩` using `by omega`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `e3 with e3 | e3` into its components or cases. Use `left`. Use `sub_om hs1 hs ν hν (by omega) fun b hb => ?_` and prove the remaining obligations. Establish `: ν b ≤ ν ⟨s, hsn⟩` using `hν (by rw [Fin.le_def]; exact hb)`. Use linear arithmetic over natural numbers and integers.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `right`. Use `sub_om hs1 hs ν' hν' (by omega) fun b hb => ?_` and prove the remaining obligations. Establish `: ν' b ≤ ν' ⟨s, hsn⟩` using `hν' (by rw [Fin.le_def]; exact hb)`. Use linear arithmetic over natural numbers and integers. Establish `e3 : 1 ≤ ν ⟨s - 1, by omega⟩ ∨ 1 ≤ ν' ⟨s - 1, by omega⟩` using `by omega`.
-
-Break down `e3 with e3 | e3` into its components or cases. Use `left`. Conclude with `sub_om hs1 hs ν hν e3 fun b hb => by have := b.isLt; omega`. Use `right`. Conclude with `sub_om hs1 hs ν' hν' e3 fun b hb => by have := b.isLt; omega`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem split_om {n s : ℕ} (hs : s ≤ n) (ν ν' σ : Fin n → ℕ) (hν : Antitone ν) (hν' : Antitone ν')
     (hσ : Antitone σ) (h : ν + ν' = σ + om n s) :
@@ -278,21 +276,21 @@ theorem split_om {n s : ℕ} (hs : s ≤ n) (ν ν' σ : Fin n → ℕ) (hν : A
       exact sub_om hs1 hs ν' hν' e3 fun b hb => by have := b.isLt; omega
 
 /- English proof (translation)
-Introduce `K`. Proceed by induction on `K with`. Consider the case `zero`. Introduce `sz hsz I ν ν' _ _ h`. Establish `h0 : ∀ t, ν t + ν' t = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `t`. Use `congrFun h t` as an intermediate fact. Simplify using `only [shapeDeg, Pi.add_apply] at this`. Rewrite using `[← this]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `e1 : ν = 0` using `funext fun t => by have := h0 t; simp only [Pi.zero_apply]; omega`. Establish `e2 : ν' = 0` using `funext fun t => by have := h0 t; simp only [Pi.zero_apply]; omega`. Substitute `e1 e2` using the available equality. Apply `Submodule.subset_span` to reduce the goal to its premises. Establish `h1` using `(dualWeylMul R r n 0 0 1 1).2`.
+Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Conclude with `⟨1, h1, 1, h1, by simp [bideterminant]⟩`. Consider the case `succ K ih`. Introduce `sz hsz I ν ν' hν hν' h`. Establish `hb : bideterminant R sz hsz I = bideterminant R (fun k : Fin K => sz k.castSucc) (fun k => hsz k.castSucc) (fun k => I k.castSucc) * initMinor R (I (Fin.last K)) (hsz (Fin.last K))`. Unfold `bideterminant`.
+Supply the required witnesses or components. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[Fin.prod_univ_castSucc]`. Rewrite `h` using `[shapeDeg_succ]`. Establish `hm` using `initMinor_mem R (I (Fin.last K)) (hsz (Fin.last K))`. Rewrite using `[hb]`. Break down `split_om (hsz (Fin.last K)) ν ν' _ hν hν' (shapeDeg_antitone _) h.symm with ⟨ν₁, h1, h2⟩ | ⟨ν₁, h1, h2⟩` into its components or cases.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[h2]`. Use `prodSpan_mul_left R r n ν₁ ν' _ _ hm _ (ih _ _ _ ν₁ ν' h1 hν' ?_)` and prove the remaining obligations. Rewrite `h` using `[h2]`. Use function extensionality and compare the values at `t`. Use `congrFun h t` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Simplify using `only [Pi.add_apply] at this ⊢`. Use linear arithmetic over natural numbers and integers. Rewrite using `[h2]`. Use `prodSpan_mul_right R r n ν ν₁ _ _ hm _ (ih _ _ _ ν ν₁ hν h1 ?_)` and prove the remaining obligations. Rewrite `h` using `[h2]`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Use function extensionality and compare the values at `t`. Use `congrFun h t` as an intermediate fact. Simplify using `only [Pi.add_apply] at this ⊢`. Use linear arithmetic over natural numbers and integers.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem bidet_mem_prod (R : Type) [CommRing R] (r n : ℕ) : ∀ (K : ℕ) (sz : Fin K → ℕ) (hsz : ∀ k, sz k ≤ n)
     (I : ∀ k, Fin (sz k) → Fin r) (ν ν' : Fin n → ℕ), Antitone ν → Antitone ν' → shapeDeg sz = ν + ν' →
@@ -339,9 +337,9 @@ theorem bidet_mem_prod (R : Type) [CommRing R] (r n : ℕ) : ∀ (K : ℕ) (sz :
       omega
 
 /- English proof (translation)
-Take `⟨b, hb, h2⟩` from `sSBasis R r n (ν + ν')`. Rewrite using `[← hb.2.1, Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Take `⟨-, -, K, sz, hsz, I, hshape, -, hbm⟩` from `h2 i`. Use `show b i ∈ ProdSpan R r n ν ν'`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hbm]`. Conclude with `bidet_mem_prod R r n K sz hsz I ν ν' hν hν' hshape`.
+A detailed English derivation is pending.
 -/
 theorem dualWeyl_le_prod (R : Type) [CommRing R] [IsDomain R] (r n : ℕ) (ν ν' : Fin n → ℕ) (hν : Antitone ν)
     (hν' : Antitone ν') : dualWeyl R r n (ν + ν') ≤ ProdSpan R r n ν ν' := by
@@ -354,7 +352,7 @@ theorem dualWeyl_le_prod (R : Type) [CommRing R] [IsDomain R] (r n : ℕ) (ν ν
   exact bidet_mem_prod R r n K sz hsz I ν ν' hν hν' hshape
 
 /- English proof (translation)
-Introduce `a b hab`. Use `h hab` as an intermediate fact. Use `show (lam b - lam (Fin.last m)).toNat ≤ (lam a - lam (Fin.last m)).toNat`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem toNat_antitone {m : ℕ} (lam : Fin (m + 1) → ℤ) (h : Antitone lam) :
     Antitone fun t => (lam t - lam (Fin.last m)).toNat := by
@@ -364,19 +362,19 @@ theorem toNat_antitone {m : ℕ} (lam : Fin (m + 1) → ℤ) (h : Antitone lam) 
   omega
 
 /- English proof (translation)
-Introduce `O Kf _ _ _ _ _ _ m lam mu Λ hΛ hl hm`. Apply `le_antisymm` to reduce the goal to its premises. Take `⟨g, hg, rfl⟩` from `hΛ`. Establish `hinj : Function.Injective (algebraMap O Kf)` using `IsFractionRing.injective O Kf`. Establish `hI` using `LatticeSystems.la_indep hinj`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlm : Antitone (lam + mu)` using `hl.add hm`. Rewrite using `[LatticeSystems.H0_eq_twisted_nabla hI m lam hl g hg, LatticeSystems.H0_eq_twisted_nabla hI m mu hm g hg, LatticeSystems.H0_eq_twisted_nabla hI m (lam + mu) hlm g hg]`. Use `set e : ℤ := lam (Fin.last m) with he`. Use `set e' : ℤ := mu (Fin.last m) with he'`. Set `T : MvPolynomial (Fin (m + 1) × Fin (m + 1)) O →ₗ[O] MvPolynomial (Fin (m + 1) × Fin (m + 1)) Kf` to `((LinearMap.lsmul Kf _ (g.det ^ (-(e + e')))).restrictScalars O) ∘ₗ ((rowAct Kf (n := m + 1) g⁻¹).toLinearMap.restrictScalars O) ∘ₗ (mapAlgHom (Algebra.ofId O Kf)).toLinearMap`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hT : ∀ x, T x = g.det ^ (-(e + e')) • rowAct Kf g⁻¹ (map (algebraMap O Kf) x)` using `fun x => rfl`. Introduce `X hX`. Take `⟨X0, hX0, rfl⟩` from `hX`. Rewrite `hX0` using `[toNat_add_last lam mu hl hm]`. Take `⟨x, hx, hxe⟩` from `hX0`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hxe' : map (algebraMap O Kf) x = rowAct Kf g X0` using `hxe`. Establish `hXT : (LinearMap.restrictScalars O ((LinearMap.lsmul Kf (MvPolynomial (Fin (m + 1) × Fin (m + 1)) Kf)) (g.det ^ (-(lam + mu) (Fin.last m))))) X0 = T x`. Rewrite using `[hT, hxe', rowAct_inv_left Kf _ _ g hg]`. Both sides reduce to the same expression. Rewrite using `[hXT]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx2` using `dualWeyl_le_prod O (m + 1) (m + 1) _ _ (toNat_antitone lam hl) (toNat_antitone mu hm) hx`. Establish `key : ProdSpan O (m + 1) (m + 1) (fun t => (lam t - lam (Fin.last m)).toNat) (fun t => (mu t - mu (Fin.last m)).toNat) ≤ (Submodule.span O {X | ∃ F ∈ nablaLTw O Kf m lam g, ∃ G ∈ nablaLTw O Kf m mu g, X = F * G}).comap T`. Unfold `ProdSpan`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨f, hf, f', hf', rfl⟩`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Apply `Submodule.subset_span` to reduce the goal to its premises. Use `⟨g.det ^ (-e) • rowAct Kf g⁻¹ (map (algebraMap O Kf) f), ?_, g.det ^ (-e') • rowAct Kf g⁻¹ (map (algebraMap O Kf) f'), ?_, ?_⟩` and prove the remaining obligations. Conclude with `⟨rowAct Kf g⁻¹ (map (algebraMap O Kf) f), ⟨f, hf, (rowAct_inv_right Kf _ _ g hg _).symm⟩, rfl⟩`. Conclude with `⟨rowAct Kf g⁻¹ (map (algebraMap O Kf) f'), ⟨f', hf', (rowAct_inv_right Kf _ _ g hg _).symm⟩, rfl⟩`. Rewrite using `[hT, map_mul, map_mul, smul_mul_smul_comm, neg_add, zpow_add₀ hg.ne_zero]`.
+Supply the required witnesses or components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `key hx2`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨F, hF, G, hG, rfl⟩`. Conclude with `mul_mem_riemannRochSpace_add O Kf m lam mu hl hm Λ hF hG`.
+A detailed English derivation is pending.
 -/
 theorem cartanOnto_proved : Formalism.MainNotions.flipOneThree.CartanOnto := by
   intro O Kf _ _ _ _ _ _ m lam mu Λ hΛ hl hm

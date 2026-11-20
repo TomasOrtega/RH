@@ -7,7 +7,7 @@ open scoped InnerProductSpace ENNReal ComplexOrder
 namespace GlobalTheory.CompanionTheory.HolPQ
 
 /- English proof (translation)
-The claim follows from `Formalism.REAL.volume_growth n ε`.
+A detailed English derivation is pending.
 -/
 theorem muG_hs_ball_le (n : ℕ) (ε : Fin n → Bool) :
     ∃ C : ℝ, ∀ R : ℝ, 1 ≤ R →
@@ -15,7 +15,7 @@ theorem muG_hs_ball_le (n : ℕ) (ε : Fin n → Bool) :
   Formalism.REAL.volume_growth n ε
 
 /- English proof (translation)
-Establish `hc : Continuous (coeMatrixAlt ε)` using `continuous_coeMatrix ε`. Unfold `hs`. Use `continuous_finset_sum _ fun i _ => continuous_finset_sum _ fun j _ => ?_` and prove the remaining obligations. Conclude with `(Continuous.matrix_elem hc i j).norm.pow 2`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_hs_umat {n : ℕ} (ε : Fin n → Bool) :
     Continuous fun g : UJ ε => hs (umat g) := by
@@ -25,31 +25,27 @@ theorem continuous_hs_umat {n : ℕ} (ε : Fin n → Bool) :
   exact (Continuous.matrix_elem hc i j).norm.pow 2
 
 /- English proof (translation)
-Use `set c : ℕ → ℝ := fun k => (4 : ℝ) ^ s * (((4 : ℝ) ^ k)⁻¹) ^ s with hc`. Establish `hc0 : ∀ k, 0 ≤ c k` using `fun k => by simp only [hc]; positivity`. Use `set A : ℕ → Set X := fun k => {x | h x ≤ (4 : ℝ) ^ k} with hA`. Establish `hAm : ∀ k, MeasurableSet (A k)` using `fun k => measurableSet_le hm measurable_const`. Establish `point : ∀ x, ENNReal.ofReal (((1 + h x)⁻¹) ^ s) ≤ ∑' k, (A k).indicator (fun _ => ENNReal.ofReal (c k)) x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `x`. Establish `hex : ∃ k : ℕ, h x ≤ (4 : ℝ) ^ k`. Take `⟨k, hk⟩` from `pow_unbounded_of_one_lt (h x) (by norm_num : (1 : ℝ) < 4)`. Conclude with `⟨k, hk.le⟩`. Use `set k := Nat.find hex with hk`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hxk : x ∈ A k` using `Nat.find_spec hex`. Use `le_trans ?_ (ENNReal.le_tsum k)` and prove the remaining obligations. Rewrite using `[Set.indicator_of_mem hxk]`. Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises. Establish `h4 : (4 : ℝ) ^ k ≤ 4 * (1 + h x)`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Break down `Nat.eq_zero_or_pos k with hk0 | hk0` into its components or cases. Rewrite using `[hk0]`. Use `h0 x` as an intermediate fact. Evaluate the numerical expressions. Combine the linear equalities and inequalities to obtain the conclusion.
+Evaluate the numerical expressions. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hmin : ¬ h x ≤ (4 : ℝ) ^ (k - 1)` using `Nat.find_min hex (by omega)`. Establish `e : (4 : ℝ) ^ k = 4 * 4 ^ (k - 1)`. Rewrite using `[← pow_succ']`. Use `congr 1`. Use linear arithmetic over natural numbers and integers.
+Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Rewrite using `[e]`. Use `push Not at hmin`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hpos : 0 < 1 + h x` using `by have := h0 x; linarith`. Establish `h5 : (1 + h x)⁻¹ ≤ 4 * ((4 : ℝ) ^ k)⁻¹`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[inv_le_comm₀ hpos (by positivity), mul_inv, inv_inv]`. Establish `: (0 : ℝ) < 4 ^ k` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities. Combine the equalities or inequalities in the displayed calculation. Use `set C' : ℝ := max C 0 with hC'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hterm : ∀ k, ENNReal.ofReal (c k) * μ (A k) ≤ ENNReal.ofReal ((4 : ℝ) ^ s * C' * ((4 : ℝ)⁻¹) ^ k)`. Introduce `k`. Establish `h1 : μ (A k) ≤ ENNReal.ofReal (C' * ((4 : ℝ) ^ k) ^ d)` using `(hC k).trans (ENNReal.ofReal_le_ofReal (by gcongr; exact le_max_left _ _))`. Combine the equalities or inequalities in the displayed calculation. Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hC0 : 0 ≤ C'` using `le_max_right _ _`. Establish `hq : (1 : ℝ) ≤ 4 ^ k` using `one_le_pow₀ (by norm_num)`. Establish `key : (((4 : ℝ) ^ k)⁻¹) ^ s * ((4 : ℝ) ^ k) ^ d ≤ ((4 : ℝ)⁻¹) ^ k`. Take `⟨t, rfl⟩` from `Nat.exists_eq_add_of_le hs'`. Establish `e : (((4 : ℝ) ^ k)⁻¹) ^ (d + 1 + t) * ((4 : ℝ) ^ k) ^ d = ((4 : ℝ) ^ k)⁻¹ * (((4 : ℝ) ^ k)⁻¹) ^ t`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: ((4 : ℝ) ^ k) ≠ 0` using `by positivity`. Rewrite using `[pow_add, pow_succ, inv_pow]`. Clear the denominators using the available nonvanishing facts. Establish `h7 : ((4 : ℝ)⁻¹) ^ k = ((4 : ℝ) ^ k)⁻¹` using `inv_pow _ _`. Establish `h8 : (((4 : ℝ) ^ k)⁻¹) ^ t ≤ 1` using `pow_le_one₀ (by positivity) (inv_le_one_of_one_le₀ hq)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `h6 : (0 : ℝ) < ((4 : ℝ) ^ k)⁻¹` using `by positivity`. Rewrite using `[e, h7]`. Conclude with `mul_le_of_le_one_right h6.le h8`. Simplify using `only [hc]`. Combine the equalities or inequalities in the displayed calculation.
-
-Establish `hsum : Summable fun k : ℕ => (4 : ℝ) ^ s * C' * ((4 : ℝ)⁻¹) ^ k` using `(summable_geometric_of_lt_one (by norm_num) (by norm_num)).mul_left _`. Combine the equalities or inequalities in the displayed calculation. Use `congr 1`. Use function extensionality and compare the values at `k`. Rewrite using `[lintegral_indicator (hAm k), setLIntegral_const]`.
-
-Use `_ ≤ ∑' k, ENNReal.ofReal ((4 : ℝ) ^ s * C' * ((4 : ℝ)⁻¹) ^ k) := ENNReal.tsum_le_tsum hterm`. Use `_ < ⊤ := hsum.tsum_ofReal_lt_top`.
+Chain the equalities or inequalities of the calculation. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lintegral_one_add_inv_pow_lt_top {X : Type*} [MeasurableSpace X] (μ : Measure X)
     (h : X → ℝ) (hm : Measurable h) (h0 : ∀ x, 0 ≤ h x) (d : ℕ) (C : ℝ)
@@ -134,11 +130,11 @@ theorem lintegral_one_add_inv_pow_lt_top {X : Type*} [MeasurableSpace X] (μ : M
     _ < ⊤ := hsum.tsum_ofReal_lt_top
 
 /- English proof (translation)
-Introduce `n ε`. Take `⟨C, hC⟩` from `muG_hs_ball_le n ε`. Use `⟨n ^ 2 + 1, fun s hs' => ?_⟩` and prove the remaining obligations. Use `lintegral_one_add_inv_pow_lt_top (muG ε) (fun g => hs (umat g)) (continuous_hs_umat ε).measurable (fun g => ?_) (n ^ 2) C (fun k => ?_) s hs'` and prove the remaining obligations. Conclude with `Finset.sum_nonneg fun i _ => Finset.sum_nonneg fun j _ => by positivity`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e : (4 : ℝ) ^ k = ((2 : ℝ) ^ k) ^ 2`. Rewrite using `[← pow_mul, mul_comm, pow_mul]`. Evaluate the numerical expressions. Establish `h1` using `hC ((2 : ℝ) ^ k) (one_le_pow₀ (by norm_num))`. Establish `e2 : ((2 : ℝ) ^ k) ^ (2 * n ^ 2) = ((4 : ℝ) ^ k) ^ n ^ 2`.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `pow_mul _ 2 (n ^ 2)`. Rewrite `h1` using `[e2, ← e]`. Conclude with `h1`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem one_add_hs_inv_pow_lintegral_lt_top : ∀ (n : ℕ) (ε : Fin n → Bool), ∃ s₀ : ℕ, ∀ s : ℕ, s₀ ≤ s →
     ∫⁻ g, ENNReal.ofReal (((1 + hs (umat g))⁻¹) ^ s) ∂(muG ε) < ⊤ := by

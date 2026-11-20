@@ -28,7 +28,7 @@ open scoped TensorProduct
 variable {D : D7}
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (Formalism.L2.SG.Pf.unitaryCongruence.sigA_inclE (instOf D) (a : D.host.E))`.
+A detailed English derivation is pending.
 -/
 theorem sigInt_oToS (a : 𝓞 D.host.E) :
     sigInt (instOf D) (oToS D.host.F D.host.E a) = oToS D.host.F D.host.E (GlobalTheory.IdemSupport.cO D a) :=
@@ -42,7 +42,7 @@ theorem conjRes_mk (PP : Pl D.host.E) (x : 𝓞 D.host.E) :
       Ideal.Quotient.mk (GlobalTheory.IdemSupport.cP PP).asIdeal (GlobalTheory.IdemSupport.cO D x) := rfl
 
 /- English proof (translation)
-Rewrite using `[sigInt_oToS, resS_oToS, conjRes_mk, GlobalTheory.IdemSupport.cO_cO]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_res_oToS (PP : Pl D.host.E) (a : 𝓞 D.host.E) :
     GlobalTheory.SeeConjChar.conjRes PP (resS D.host.F PP (sigInt (instOf D) (oToS D.host.F D.host.E a))) =
@@ -50,15 +50,13 @@ theorem conj_res_oToS (PP : Pl D.host.E) (a : 𝓞 D.host.E) :
   rw [sigInt_oToS, resS_oToS, conjRes_mk, GlobalTheory.IdemSupport.cO_cO]
 
 /- English proof (translation)
-Use `set f1 : Formalism.L2.Herm.intAf D.host.F D.host.E →+* kP (GlobalTheory.IdemSupport.cP PP) := (GlobalTheory.SeeConjChar.conjRes PP).toRingHom.comp ((resS D.host.F PP).comp (sigInt (instOf D))) with hf`. Establish `hf0 : ∀ x, f1 x = GlobalTheory.SeeConjChar.conjRes PP (resS D.host.F PP (sigInt (instOf D) x))` using `fun x => rfl`. Establish `hf1 : ∀ a, f1 (oToS D.host.F D.host.E a) = Ideal.Quotient.mk (GlobalTheory.IdemSupport.cP PP).asIdeal a` using `fun a => (hf0 _).trans (conj_res_oToS PP a)`. Establish `hker : idS D.host.F (GlobalTheory.IdemSupport.cP PP).asIdeal ≤ RingHom.ker f1`. Use `Ideal.map_le_iff_le_comap.2 fun c hc => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.mem_comap, RingHom.mem_ker, hf1]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 hc`. Take `⟨a, ha⟩` from `(cmpS_bij (F := D.host.F) (GlobalTheory.IdemSupport.cP PP).asIdeal (GlobalTheory.IdemSupport.cP PP).ne_bot).2 (Ideal.Quotient.mk _ s)`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective a`. Establish `e : Ideal.Quotient.mk (idS D.host.F (GlobalTheory.IdemSupport.cP PP).asIdeal) s = Ideal.Quotient.mk _ (oToS D.host.F D.host.E a)` using `ha.symm`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd : s - oToS D.host.F D.host.E a ∈ idS D.host.F (GlobalTheory.IdemSupport.cP PP).asIdeal` using `Ideal.Quotient.eq.1 e`. Establish `hker2 : idS D.host.F (GlobalTheory.IdemSupport.cP PP).asIdeal ≤ RingHom.ker (resS D.host.F (GlobalTheory.IdemSupport.cP PP))`. Use `Ideal.map_le_iff_le_comap.2 fun c hc => ?_` and prove the remaining obligations. Rewrite using `[Ideal.mem_comap, RingHom.mem_ker, resS_oToS]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 hc`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h2 : resS D.host.F (GlobalTheory.IdemSupport.cP PP) s = resS D.host.F (GlobalTheory.IdemSupport.cP PP) (oToS D.host.F D.host.E a)`. Use `hker2 hd` as an intermediate fact. Rewrite `this` using `[RingHom.mem_ker, map_sub, sub_eq_zero]`. Then use the resulting hypothesis. Establish `h1 : f1 s = f1 (oToS D.host.F D.host.E a)`. Use `hker hd` as an intermediate fact.
-
-Rewrite `this` using `[RingHom.mem_ker, map_sub, sub_eq_zero]`. Then use the resulting hypothesis. Conclude with `h2.trans ((resS_oToS _ a).trans ((hf1 a).symm.trans (h1.symm.trans (hf0 s))))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem resS_cP (PP : Pl D.host.E) (s : Formalism.L2.Herm.intAf D.host.F D.host.E) :
     resS D.host.F (GlobalTheory.IdemSupport.cP PP) s =
@@ -91,9 +89,9 @@ theorem resS_cP (PP : Pl D.host.E) (s : Formalism.L2.Herm.intAf D.host.F D.host.
   exact h2.trans ((resS_oToS _ a).trans ((hf1 a).symm.trans (h1.symm.trans (hf0 s))))
 
 /- English proof (translation)
-Establish `h1 : Multiplicative.ofAdd (1 : k) ≠ 1`. Introduce `h`. Conclude with `one_ne_zero (congrArg Multiplicative.toAdd h)`. Take `⟨φ, hφ⟩` from `CommGroup.exists_apply_ne_one_of_hasEnoughRootsOfUnity (Multiplicative k) ℂ h1`. Set `ψ : AddChar k ℂ` to `{ toFun := fun x => ((φ (Multiplicative.ofAdd x) : ℂˣ) : ℂ) map_zero_eq_one' := by simp map_add_eq_mul' := fun x y => by simp [ofAdd_add] }`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨ψ, fun h => hφ (Units.ext ?_)⟩` and prove the remaining obligations. Use `congrArg (fun χ : AddChar k ℂ => χ 1) h` as an intermediate fact. Simplify `this` using `[ψ]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_addChar_ne_one (k : Type) [Field k] [Finite k] : ∃ ψ : AddChar k ℂ, ψ ≠ 1 := by
   have h1 : Multiplicative.ofAdd (1 : k) ≠ 1 := by
@@ -109,9 +107,9 @@ theorem exists_addChar_ne_one (k : Type) [Field k] [Finite k] : ∃ ψ : AddChar
   simpa [ψ] using this
 
 /- English proof (translation)
-Introduce `h`. Apply `hψ` to reduce the goal to its premises. Use extensionality with `t`. Use `congrArg (fun χ : AddChar k' ℂ => χ (e.symm (a⁻¹ * t))) h` as an intermediate fact. Express the relevant statement in the definitionally equal form `ψ (a * e (e.symm (a⁻¹ * t))) = (1 : AddChar k' ℂ) (e.symm (a⁻¹ * t)) at this`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite `this` using `[RingEquiv.apply_symm_apply, ← mul_assoc, mul_inv_cancel₀ ha, one_mul, AddChar.one_apply]`. Rewrite using `[this, AddChar.one_apply]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem addChar_comp_ne_one {k k' : Type} [Field k] [Field k'] (ψ : AddChar k ℂ) (hψ : ψ ≠ 1) (a : k) (ha : a ≠ 0)
     (e : k' ≃+* k) : ψ.compAddMonoidHom ((AddMonoidHom.mulLeft a).comp e.toAddMonoidHom) ≠ 1 := by
@@ -124,7 +122,7 @@ theorem addChar_comp_ne_one {k k' : Type} [Field k] [Field k'] (ψ : AddChar k �
   rw [this, AddChar.one_apply]
 
 /- English proof (translation)
-Apply `HeightOneSpectrum.ext` to reduce the goal to its premises. Use extensionality with `x`. Rewrite using `[GlobalTheory.IdemSupport.mem_cP, GlobalTheory.IdemSupport.mem_cP, GlobalTheory.IdemSupport.cO_cO]`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem cP_cP (P : Pl D.host.E) : GlobalTheory.IdemSupport.cP (GlobalTheory.IdemSupport.cP P) = P := by
   apply HeightOneSpectrum.ext
@@ -132,13 +130,13 @@ theorem cP_cP (P : Pl D.host.E) : GlobalTheory.IdemSupport.cP (GlobalTheory.Idem
   rw [GlobalTheory.IdemSupport.mem_cP, GlobalTheory.IdemSupport.mem_cP, GlobalTheory.IdemSupport.cO_cO]
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (Formalism.L2.SG.Pf.unitaryCongruence.sigA_sigA (instOf D) s.1)`.
+A detailed English derivation is pending.
 -/
 theorem sigInt_sigInt (s : Formalism.L2.Herm.intAf D.host.F D.host.E) : sigInt (instOf D) (sigInt (instOf D) s) = s :=
   Subtype.ext (Formalism.L2.SG.Pf.unitaryCongruence.sigA_sigA (instOf D) s.1)
 
 /- English proof (translation)
-Rewrite using `[resS_cP (GlobalTheory.IdemSupport.cP PP) (sigInt (instOf D) s), sigInt_sigInt]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem conjRes_cP (PP : Pl D.host.E) (s : Formalism.L2.Herm.intAf D.host.F D.host.E) :
     GlobalTheory.SeeConjChar.conjRes (GlobalTheory.IdemSupport.cP PP) (resS D.host.F (GlobalTheory.IdemSupport.cP PP) s) =
@@ -148,21 +146,17 @@ theorem conjRes_cP (PP : Pl D.host.E) (s : Formalism.L2.Herm.intAf D.host.F D.ho
 open Classical in
 
 /- English proof (translation)
-Establish `hg : D.host.g 0 * D.host.g 1 ≠ 0` using `mul_ne_zero (D.host.g_prime 0).ne_zero (D.host.g_prime 1).ne_zero`. Establish `hN : ∀ s : Formalism.L2.Herm.intAf D.host.F D.host.E, (∀ PP ∈ Pg, resS D.host.F PP s = 0 ∧ resS D.host.F PP (sigInt (instOf D) s) = 0) → ZMod' (instOf D) (D.host.g 0 * D.host.g 1) s.1`. Introduce `s hs`. Use `GlobalTheory.T.integralAdele_congr_zero_of_residues_squarefree (instOf D) _ hg (GlobalTheory.T.typePrimes_product_not_mem_sq_place D) s fun Q hQ => ?_` and prove the remaining obligations. Take `⟨PP, hPP, rfl | rfl⟩` from `hcov Q hQ`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `(hs _ hPP).1`. Conclude with `(resS_cP PP s).trans (by rw [(hs _ hPP).2]; exact map_zero _)`. Use `choose ψ0 hψ0 using fun P : Pl D.host.E => exists_addChar_ne_one (kP P)`. Take `⟨a₁, a₂, ha, hχ⟩` from `GlobalTheory.T.character_residueFields_eq_prod_genericShift D.host.E (Formalism.L2.Herm.intAf D.host.F D.host.E) Pg (fun PP => resS D.host.F PP) (fun PP => (resS D.host.F PP).comp (sigInt (instOf D))) (fun s => psiEf (divN (instOf D) (D.host.g 0 * D.host.g 1) s.1)) ψ0 (fun PP _ = …`. Take `⟨t, ht, e⟩` from `hN s hs`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: divN (instOf D) (D.host.g 0 * D.host.g 1) s.1 = t` using `(congrArg _ e).trans (Formalism.L2.SG.Pf.unitaryCongruence.divN_gmul _ _ hg t)`. Use `show psiEf (divN (instOf D) (D.host.g 0 * D.host.g 1) s.1) = 1`. Rewrite using `[this, hint t ht])`. Use the proof step `(GlobalTheory.T.exists_integralAdele_prescribed_residues_and_conj D Pg hnc)`. Use the proof step `(GlobalTheory.T.residueSupport_single_place_to_conjugatePair_position D Pg hdiv hnc (fun s => psiEf (divN (instOf D) (D.host.g 0 * D.host.g 1) s.1) ≠ 1) fun Q hQ => GlobalTheory.T.exists_finiteAdditiveChar_ne_one_at_each_prime D psiEf hadd hint hrat Q hQ)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hout : ∀ PP ∈ Pg, GlobalTheory.IdemSupport.cP PP ∉ Pg` using `fun PP hPP h => hnc PP hPP _ h ((GlobalTheory.IdemSupport.isConjPl_iff _ _).2 rfl)`. Set `ψ : ∀ P : Pl D.host.E, AddChar (kP P) ℂ` to `fun P => if P ∈ Pg then (ψ0 P).compAddMonoidHom ((AddMonoidHom.mulLeft (a₁ P)).comp (RingEquiv.refl (kP P)).toAddMonoidHom) else if GlobalTheory.IdemSupport.cP P ∈ Pg then (ψ0 (GlobalTheory.IdemSupport.cP P)).compAddMonoidHom ((AddMonoidHom.mulLeft (a₂ (GlobalTheory.IdemSupport.c …`. Establish `hψ1 : ∀ PP ∈ Pg, ψ PP = (ψ0 PP).compAddMonoidHom ((AddMonoidHom.mulLeft (a₁ PP)).comp (RingEquiv.refl (kP PP)).toAddMonoidHom)` using `fun PP hPP => if_pos hPP`. Establish `hψ2 : ∀ PP ∈ Pg, ψ (GlobalTheory.IdemSupport.cP PP) = (ψ0 (GlobalTheory.IdemSupport.cP (GlobalTheory.IdemSupport.cP PP))).compAddMonoidHom ((AddMonoidHom.mulLeft (a₂ (GlobalTheory.IdemSupport.cP (GlobalTheory.IdemSupport.cP PP)))).comp (GlobalTheory.SeeConjChar.conjRes (GlobalThe …` using `fun PP hPP => by`. Establish `h2 : GlobalTheory.IdemSupport.cP (GlobalTheory.IdemSupport.cP PP) ∈ Pg` using `by rw [cP_cP]; exact hPP`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(if_neg (hout PP hPP)).trans (if_pos h2)`. Use `⟨ψ, fun PP hPP => ⟨?_, ?_⟩, fun s => ?_⟩` and prove the remaining obligations. Rewrite using `[hψ1 PP hPP]`. Conclude with `addChar_comp_ne_one _ (hψ0 PP) _ (ha PP hPP).1 _`. Rewrite using `[hψ2 PP hPP]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `addChar_comp_ne_one _ (hψ0 _) _ ?_ _` and prove the remaining obligations. Rewrite using `[cP_cP]`. Conclude with `(ha PP hPP).2`. Use `(hχ s).trans (Finset.prod_congr rfl fun PP hPP => ?_)` and prove the remaining obligations. Use `(AddChar.map_add_eq_mul (ψ0 PP) _ _).trans (congrArg₂ (· * ·) ?_ ?_)` and prove the remaining obligations.
-
-Rewrite using `[hψ1 PP hPP]`. Both sides reduce to the same expression. Rewrite using `[hψ2 PP hPP]`. Use `show _ = ψ0 (GlobalTheory.IdemSupport.cP (GlobalTheory.IdemSupport.cP PP)) (a₂ (GlobalTheory.IdemSupport.cP (GlobalTheory.IdemSupport.cP PP)) * GlobalTheory.SeeConjChar.conjRes (GlobalTheory.IdemSupport.cP PP) (resS D.host.F (GlobalTheory.IdemSupport.cP PP) s))`. Rewrite using `[conjRes_cP]`.
-
-Establish `key : ∀ Q : Pl D.host.E, Q = PP → ψ0 Q (a₂ Q * resS D.host.F Q (sigInt (instOf D) s)) = ψ0 PP (a₂ PP * resS D.host.F PP (sigInt (instOf D) s))`. Introduce and unpack `Q rfl`. Both sides reduce to the same expression. Conclude with `(key _ (cP_cP PP)).symm`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem core (psiEf : (instOf D).E ⊗[(instOf D).F] Formalism.MainNotions.S.Af (instOf D).F → ℂ)
     (hadd : ∀ x y, psiEf (x + y) = psiEf x * psiEf y)
@@ -238,9 +232,9 @@ theorem core (psiEf : (instOf D).E ⊗[(instOf D).F] Formalism.MainNotions.S.Af 
     exact (key _ (cP_cP PP)).symm
 
 /- English proof (translation)
-Introduce `D X h Pg hdiv hcov hnc`. Establish `key : ∀ (I : AutInst) (hI : I = instOf D) (g : ℕ) (_ : g = D.host.g 0 * D.host.g 1) (psiEf : I.E ⊗[I.F] Formalism.MainNotions.S.Af I.F → ℂ) (_ : ∀ x y, psiEf (x + y) = psiEf x * psiEf y) (_ : ∀ x ∈ IntAf I.F I.E, psiEf x = 1) (_ : ∀ x : I.E, psiEf (Formalism.UG.inclE (F` using `I.F) (Formalism.MainNotions.S.Af I.F) x) * psiEinf I x = 1), ∃ ψ : ∀ P : Pl D.host.E, AddChar (kP P) ℂ, (∀ PP ∈ Pg, ψ PP ≠ 1 ∧ ψ (GlobalTheory.IdemSupport.cP PP) ≠ 1) ∧ ∀ c ∈ Formalism.L2.Herm.intAf D.host.F D.host.E, psiEf (divN I g (cast (congrArg (fun I : AutInst => TensorProd …`. Introduce `I hI g hg psiEf hadd hint hrat`. Substitute `hI hg` using the available equality. Take `⟨ψ, hψ, hprod⟩` from `core psiEf hadd hint hrat Pg hdiv hcov hnc`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Extract witnesses or component facts from the available result.
 
-Use `⟨ψ, hψ, fun c hc => ?_⟩` and prove the remaining obligations. Establish `e1 : ∀ P : Pl D.host.E, GlobalTheory.SeeConjChar.resT P c = resS D.host.F P ⟨c, hc⟩` using `fun P => dif_pos hc`. Simplify using `only [e1, cast_eq]`. Conclude with `hprod ⟨c, hc⟩`. Conclude with `key X.B.I h X.B.g X.g_eq X.psiEf X.psiEf_add X.psiEf_int X.psiEf_rat`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem chiS_eq_prod : ∀ {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D) (Pg : Finset (Pl D.host.E)), (∀ PP ∈ Pg, ((D.host.g 0 * D.host.g 1 : ℕ) : 𝓞 D.host.E) ∈ PP.asIdeal) → (∀ Q : Pl D.host.E, ((D.host.g 0 * D.host.g 1 : ℕ) : 𝓞 D.host.E) ∈ Q.asIdeal → ∃ PP ∈ Pg, Q = PP ∨ Q = GlobalTheory.IdemSupport.cP PP) → (∀ PP ∈ Pg, ∀ PP' ∈ Pg, ¬ IsConjPl (D := D) PP PP') → ∃ ψ : ∀ P : Pl D.host.E, AddChar (kP P) ℂ, (∀ PP ∈ Pg, ψ PP ≠ 1 ∧ ψ (GlobalTheory.IdemSupport.cP PP) ≠ 1) ∧ ∀ c ∈ Formalism.L2.Herm.intAf D.host.F D.host.E, GlobalTheory.SeeConjChar.chiS X h c = ∏ PP ∈ Pg, ψ PP (GlobalTheory.SeeConjChar.resT PP c) * ψ (GlobalTheory.IdemSupport.cP PP) (GlobalTheory.SeeConjChar.resT (GlobalTheory.IdemSupport.cP PP) c) := by
   intro D X h Pg hdiv hcov hnc

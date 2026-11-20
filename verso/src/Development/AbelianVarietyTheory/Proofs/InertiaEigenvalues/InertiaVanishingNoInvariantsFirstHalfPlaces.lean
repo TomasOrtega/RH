@@ -16,13 +16,11 @@ open scoped Pointwise
 variable {D : Formalism.BasicNotions.D7} {N : NData D.R D.host D.what₂} {X : NTw D.R D.host D.what₂ D.LL0 N} (i : X.Tw) (s : X.Sig i)
 
 /- English proof (translation)
-Use `⟨fun x hx => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hn`. Establish `hm : x ∈ maximalIdeal (X.O0 i)` using `hn`. Establish `: CharZero (FractionRing (X.O0 i))` using `(X.emb0 i).charZero_iff (X.emb0 i).injective |>.1 inferInstance`. Establish `: CharZero (X.O0 i)` using `(algebraMap (X.O0 i) (FractionRing (X.O0 i))).charZero`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hl : ((X.l i : ℕ) : X.O0 i) ^ nu X i ≠ 0` using `pow_ne_zero _ (Nat.cast_ne_zero.2 (Fact.out : (X.l i).Prime).ne_zero)`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible (X.O0 i)`. Take `⟨n, u, hu⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hl hϖ`. Establish `h1 : ϖ ∣ x`. Rewrite `hm` using `[hϖ.maximalIdeal_eq, Ideal.mem_span_singleton]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h2 : ((X.l i : ℕ) : X.O0 i) ^ nu X i ∣ x ^ n`. Rewrite using `[hu, Units.mul_left_dvd]`. Conclude with `pow_dvd_pow_of_dvd h1 n`. Establish `h3` using `h (x ^ n * x) (Ideal.mul_mem_mul (Ideal.mem_span_singleton.2 h2) hm)`. Rewrite `h3` using `[← pow_succ, map_pow]`.
-
-Conclude with `(hx.pow _).ne_zero h3`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLocalHom_of_kills {A : Type} [CommRing A] [Nontrivial A] [Algebra (X.O0 i) A] (h : Kills i A) :
     IsLocalHom (algebraMap (X.O0 i) A) := by
@@ -45,17 +43,17 @@ theorem isLocalHom_of_kills {A : Type} [CommRing A] [Nontrivial A] [Algebra (X.O
   exact (hx.pow _).ne_zero h3
 
 /- English proof (translation)
-Take `⟨e, he, -, hu, -⟩` from `GlobalTheory.T.tameInertiaElement_acts_by_scalar D N X bkP i s z h.1 hz`. Establish `c0 : residue (X.O0 i) e ≠ 0` using `(residue_ne_zero_iff_isUnit _).2 e.isUnit`. Establish `c1 : residue (X.O0 i) e ≠ 1`. Rewrite `hu` using `[← residue_ne_zero_iff_isUnit, map_sub, map_one, sub_ne_zero]`. Conclude with `hu`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `key : ∀ τ : GE N, IsFrob (N.plOm.1 P) (normV P) τ → resT i s τ = residue (X.O0 i) e • 1`. Introduce `τ hτ`. Take `⟨g, hg⟩` from `hS τ hτ`. Establish `e1 : resT i s (g * τ * g⁻¹ * z⁻¹ * z) = residue (X.O0 i) e • 1`. Rewrite using `[map_mul, resT_apply, (hL.2.2.2.2 _ hg).1, one_mul, resT_apply, he]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use extensionality with `a b`. Apply the tactic sequence `by_cases hab : a = b <;> simp [Matrix.one_apply, hab]`. Establish `e2` using `conj_scalar _ e1 g⁻¹`. Rewrite `e2` using `[show g⁻¹ * (g * τ * g⁻¹ * z⁻¹ * z) * g⁻¹⁻¹ = τ by group]`. Then use the resulting hypothesis. Establish `hp` using `hA v hv`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp0` using `hA _ (over_refl P)`. Break down `hv with rfl | hv` into its components or cases. Conclude with `⟨_, c0, c1, key σ hσ⟩`. Establish `ε` using `eps_frob i hp.1 hp.2 hσ`. Take `⟨τ, g, hτ, rfl⟩` from `exists_frob_of_conj X hv hσ`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `ε0` using `eps_frob i hp0.1 hp0.2 hτ`. Rewrite `ε` using `[map_mul, map_mul, map_inv, mul_inv_cancel_comm]`. Use `⟨_, inv_ne_zero c0, inv_ne_one.2 c1, conj_scalar _ (scalar_of_dual i s ε c0 ?_) g⟩` and prove the remaining obligations. Take `⟨A, hA⟩` from `h.2.2.1`. Establish `e3 : ((((eps0 X i τ : (X.O0 i)ˣ) : X.O0 i) ^ D.R.t) • Tmat i s τ).map (residue (X.O0 i)) = residue (X.O0 i) e • 1`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← key τ hτ, resT_apply]`. Use extensionality with `a b`. Simplify using `[ε0]`. Rewrite using `[hA τ _ (cConj_apply X τ), Matrix.map_mul, Matrix.map_mul, e3, mul_smul_comm, mul_one, smul_mul_assoc, ← Matrix.map_mul, Units.mul_inv, Matrix.map_one _ (map_zero _) (map_one _)]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frob_scalar (bkP : BKPh X) (h : GalHyp bkP i s) {z : GE N} {L : Subgroup (GE N)} (hz : IsTameInertiaElementAtTwistPrime X i z)
     (hL : Small i s L z) {P : PlE D.host}
@@ -96,27 +94,27 @@ theorem frob_scalar (bkP : BKPh X) (h : GalHyp bkP i s) {z : GE N} {L : Subgroup
       ← Matrix.map_mul, Units.mul_inv, Matrix.map_one _ (map_zero _) (map_one _)]
 
 /- English proof (translation)
-Introduce `hT D N X bkP i s h hl2 M R n d A₀ L z P hM hz hL hP A _ _ _ _ κ ρ hK hκ hρ Y _ _ _ _ b`. Use `isLocalHom_of_kills i hK` as an intermediate fact. Establish `hA : ∀ v, Over (P (.inl b)) v → v ∉ X.S0 i ∧ (normV v : ResidueField (X.O0 i)) = 1` using `fun v hv => ⟨(hP.1.1 _ v hv).2.2.2.1, natCast_eq_one i (show 1 ≤ M by omega) (hP.1.1 _ v hv).2.2.2.2.2⟩`. Establish `fix0 : ∀ v, Over (P (.inl b)) v → ∀ σ : GE N, IsFrob (N.plOm.1 v) (normV v) σ → ∀ m, repOn ρ κ Y σ m = m → m = 0`. Introduce `v hv σ hσ m hm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨c, c0, c1, hc⟩` from `frob_scalar i s bkP h hz hL.1 hA (hP.2.1 b).2 hv hσ`. Choose the witnesses or unpack the hypotheses as in `⟨c', c1', hc'⟩ : ∃ c' : ResidueField (X.O0 i), c' ≠ 1 ∧ ((ρ σ : GL (Fin D.R.r) (X.O0 i)) : Matrix (Fin D.R.r) (Fin D.R.r) (X.O0 i)).map (residue _) = c' • 1 := by`. Break down `hρ with rfl | hρ` into its components or cases. Conclude with `⟨c, c1, by rw [Tgl_coe, ← resT_apply, hc]⟩`. Conclude with `⟨c⁻¹, inv_ne_one.2 c1, by rw [hρ, dual_of_scalar i s (eps_frob i (hA v hv).1 (hA v hv).2 hσ) c0 hc]⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `eq_zero_of_scalar Fact.out (l_mem i) ρ κ (hκ σ) c1' hc' (q := 1) Nat.cast_one m (by rw [one_smul]; exact hm)`. Establish `fix : ∀ v, Over (P (.inl b)) v → ∀ B : ValuationSubring N.Om, IsPlaceOver B v → ∀ σ : GE N, IsFrob B (normV v) σ → ∀ m, repOn ρ κ Y σ m = m → m = 0`. Introduce `v hv B hB σ hσ m hm`. Take `⟨g, hg⟩` from `exists_smul_eq_of_isPlaceOver (F := D.host.E) hB (N.plOm.2 v)`. Establish `h3` using `isFrob_smul hσ g`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h3` using `[hg]`. Establish `h4` using `fix0 v hv _ h3 (repOn ρ κ Y g m) (by`. Rewrite using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel_right, map_mul, Module.End.mul_apply, hm])`. Establish `h5` using `congrArg (repOn ρ κ Y g⁻¹) h4`. Rewrite `h5` using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, map_zero]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `van : ∀ v, Over (P (.inl b)) v → ∀ B : ValuationSubring N.Om, IsPlaceOver B v → (∀ τ ∈ Ine (F` using `D.host.E) B, κ τ = 1) → ∀ f : Z1 (repOn ρ κ Y), ∀ τ ∈ Ine (F := D.host.E) B, f.1 τ = 0 := by`. Introduce `v hv B hB hκB f`. Take `⟨γ, -, hγ⟩` from `GlobalTheory.TameRead.exists_gen_read hT.1 D.host.E N.Om (X.l i) B v hB (fun h => (hA v hv).1 (X.twistExcludedPlaces_contains_residueChar i h))`. Establish `h1 : ∀ m : Fin D.R.r → Y, (X.l i ^ (nu X i + 1)) • m = 0` using `fun m => by`. Use `hK ((X.l i : X.O0 i) ^ nu X i * (X.l i : X.O0 i)) (Ideal.mul_mem_mul (Ideal.mem_span_singleton_self _) (l_mem i))` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[map_mul, map_pow, map_natCast]`. Rewrite using `[← Nat.cast_smul_eq_nsmul A, Nat.cast_pow, pow_succ, this, zero_smul]`. Establish `h2 : normV v ≡ 1 [MOD X.l i ^ (nu X i + 1)]`. Establish `hq` using `(hP.1.1 _ v hv).2.2.2.2.2`. Establish `hd : X.l i ^ (nu X i + 1) ∣ 2 * X.l i ^ M` using `Dvd.dvd.mul_left (pow_dvd_pow _ hM) 2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h6 : normV v ≡ 1 [MOD 2 * X.l i ^ M]`. Rewrite using `[← hq]`. Conclude with `(Nat.mod_modEq _ _).symm`. Conclude with `h6.of_dvd hd`. Establish `h3 : ∀ σ ∈ Ine (F` using `D.host.E) B, ∀ m, repOn ρ κ Y σ m = m := by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Introduce `σ hσ m`. Establish `hσL` using `(hP.2.1 b).1 v hv B hB hσ`. Break down `hρ with rfl | hρ` into its components or cases. Rewrite using `[(GlobalTheory.T.twisted_representation_kills_small_subgroup D N X i s hl2 M L z hM hL A κ _ hK (isDual_dualRep i s) Y σ hσL).1, hκB σ hσ, Units.val_one, one_smul]`. Rewrite using `[(GlobalTheory.T.twisted_representation_kills_small_subgroup D N X i s hl2 M L z hM hL A κ _ hK hρ Y σ hσL).2.1, hκB σ hσ, Units.val_one, one_smul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨h4, h5⟩` from `hγ A _ (repOn ρ κ Y) (nu X i + 1) h1 h2 h3 f`. Take `⟨φ, hφ⟩` from `exists_isFrob (F := D.host.E) hB`. Conclude with `h4 (fix v hv B hB φ hφ _ (h5 φ hφ))`. Use `⟨fun v hv m hm => ?_, fun hanti hκI f τ hτ => ⟨van _ (over_refl _) _ (N.plOm.2 _) hκI f τ hτ, ?_⟩⟩` and prove the remaining obligations. Take `⟨σ, hσ⟩` from `exists_isFrob (N.plOm.2 v)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `fix0 v hv σ hσ m (hm σ hσ.1)`. Take `⟨v, hv⟩` from `exists_isConjPl (P (.inl b))`. Use `van v (Or.inr hv) _ (isPlaceOver_moveVal_cc X hv (N.plOm.2 _)) (fun σ hσ => ?_) f _ (cConj_mem_ine X hτ)` and prove the remaining obligations. Establish `h1` using `cConj_mem_ine X hσ`. Establish `e : moveVal X.cc (moveVal X.cc (N.plOm.1 (P (.inl b)))) = N.plOm.1 (P (.inl b))`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use extensionality with `y`. Rewrite using `[mem_moveVal, mem_moveVal, cc_symm, cc_symm, cc_cc]`. Rewrite `h1` using `[e]`. Establish `h2` using `hκI _ h1`. Rewrite `h2` using `[antiHom_cConj X hanti, inv_eq_one]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem firstHalf : TameLocal → ∀ (D : Formalism.BasicNotions.D7) (N : NData D.R D.host D.what₂) (X : NTw D.R D.host D.what₂ D.LL0 N) (bkP : BKPh X) (i : X.Tw) (s : X.Sig i), GalHyp bkP i s → 0 < nu X i → ∀ (M R n : ℕ) (d : PlE D.host → (GE N →* Multiplicative (ZMod (X.l i ^ M)))) (A₀ : Finset (PlE D.host)) (L : Subgroup (GE N)) (z : GE N) (P : Fin R ⊕ Fin n → PlE D.host), nu X i + 1 ≤ M → IsTameInertiaElementAtTwistPrime X i z → Small2 i s M L z → PiLocalization₂ i M d A₀ L z P → ∀ (A : Type) [CommRing A] [IsLocalRing A] [Finite A] [Algebra (X.O0 i) A] (κ : GE N →* Aˣ) (ρ : GE N →* GL (Fin D.R.r) (X.O0 i)), Kills i A → (∀ g, ∃ k : ℕ, κ g ^ (X.l i ^ k) = 1) → (ρ = Tgl i s ∨ IsDual i s ρ) → ∀ (Y : Type) [AddCommGroup Y] [Module A Y] [TopologicalSpace Y] [DiscreteTopology Y] (b : Fin R), (∀ v, Over (P (.inl b)) v → ∀ m, (∀ g ∈ DecV N v, repOn ρ κ Y g m = m) → m = 0) ∧ (AntiHom X.cc κ → (∀ τ ∈ Ine (F := D.host.E) (N.plOm.1 (P (.inl b))), κ τ = 1) → ∀ f : Z1 (repOn ρ κ Y), ∀ τ ∈ Ine (F := D.host.E) (N.plOm.1 (P (.inl b))), f.1 τ = 0 ∧ f.1 (cConj X τ) = 0) := by
   intro hT D N X bkP i s h hl2 M R n d A₀ L z P hM hz hL hP A _ _ _ _ κ ρ hK hκ hρ Y _ _ _ _ b

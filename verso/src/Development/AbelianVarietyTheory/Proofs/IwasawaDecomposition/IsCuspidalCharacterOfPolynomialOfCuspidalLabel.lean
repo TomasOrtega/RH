@@ -11,21 +11,19 @@ noncomputable section
 namespace GlobalTheory.SerCmp.LabConv
 
 /- English proof (translation)
-Introduce `g _ L t ht hζ htL d V P hd hcusp hlab`. Substitute `htL` using the available equality. Take `⟨hm, hi, hX, hdeg, hval⟩` from `hlab`. Rewrite `hdeg` using `[Fintype.card_fin]`. Establish `hPl : GlobalTheory.GLq.IsPrimeLab d P` using `⟨hm, hi, Formalism.L2.NT.coeff_zero_ne_of_monic_irr hm hi hX, hdeg⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `⟨hPl, hcusp, ?_⟩` and prove the remaining obligations. Introduce `x hx y hy z hz`. Establish `hd0 : 0 < d` using `hd`. Establish `hcpl : GlobalTheory.GLq.IsPrimeLab d (y : GlobalTheory.GLq.Mt g d).charpoly`. Use `⟨Matrix.charpoly_monic _, hy, ?_, by rw [Matrix.charpoly_natDegree_eq_dim, Fintype.card_fin]⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `h0`. Establish `hdet` using `Matrix.det_eq_sign_charpoly_coeff (y : GlobalTheory.GLq.Mt g d)`. Rewrite `hdet` using `[h0, mul_zero]`. Conclude with `(Matrix.isUnit_iff_isUnit_det _).1 (Units.isUnit y) |>.ne_zero hdet`. Establish `hz1 : z ^ (g ^ d - 1) = 1` using `GlobalTheory.GLq.LabelUnique.pow_sub_one_eq_one hcpl hz`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx1 : x ^ (g ^ d - 1) = 1` using `GlobalTheory.GLq.LabelUnique.pow_sub_one_eq_one hPl hx`. Establish `hprim : IsPrimitiveRoot (L.gen d) (g ^ d - 1)`. Rewrite using `[← L.gen_order d hd0]`. Conclude with `IsPrimitiveRoot.orderOf _`. Use `haveI : NeZero (g ^ d - 1) := ⟨by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `Nat.one_lt_pow hd0.ne' (Fact.out : g.Prime).one_lt` as an intermediate fact. Use the proof step `omega⟩`. Take `⟨m, -, hmz⟩` from `hprim.eq_pow_of_pow_eq_one hz1`. Establish `hax : aeval x P = 0` using `GlobalTheory.GLq.LabelUnique.aeval_eq_zero_of_mem hm.ne_zero hx`. Establish `haz : aeval z (y : GlobalTheory.GLq.Mt g d).charpoly = 0` using `GlobalTheory.GLq.LabelUnique.aeval_eq_zero_of_mem (Matrix.charpoly_monic _).ne_zero hz`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hmz' : (Formalism.L2.NT.convC L.teich ht L.gen hζ).gen (Fintype.card (Fin d)) ^ m = z`. Rewrite using `[Fintype.card_fin]`. Conclude with `hmz`. Establish `e` using `hval x hax y hy z haz m hmz'`. Simplify using `only [Fintype.card_fin, ZMod.card] at e`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `htx : L.teich x ^ (g ^ d - 1) = 1` using `by rw [← map_pow, hx1, map_one]`. Use `show LinearMap.trace ℂ V (V.ρ y) = _`. Rewrite using `[e]`. Use `congr 1`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[← hmz, ← pow_mul, GlobalTheory.GLq.LabelUnique.thetaOf_gen_pow L d hd0 x htx]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem isCuspOf_of_hasCuspLabel : ∀ (g : ℕ) [Fact g.Prime] (L : GlobalTheory.GLq.LabelDatum g) (t : Formalism.CyclotomicNorms.Fbar g →* ℂ) (ht : ∀ x y : Formalism.CyclotomicNorms.Fbar g, x ≠ 0 → y ≠ 0 → t x = t y → x = y) (hζ : Formalism.L2.NT.IsGenSys L.gen), t = L.teich → ∀ (d : ℕ) (V : FDRep ℂ (GL (Fin d) (ZMod g))) (P : (ZMod g)[X]), 1 ≤ d → GlobalTheory.GLq.IsCusp (fun x => V.character x) → Formalism.IrreducibleCountingLemmas.TYPES.HasCuspLabel (Formalism.L2.NT.convC t ht L.gen hζ) V P → GlobalTheory.GLq.IsCuspOf L P (fun x => V.character x) := by
   intro g _ L t ht hζ htL d V P hd hcusp hlab

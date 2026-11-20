@@ -22,7 +22,7 @@ def graphProj (A : Matrix (Fin e) (Fin n) ℂ) : Matrix (Fin e) (Fin (n + 1)) �
   Matrix.of fun i => Fin.snoc (α := fun _ => ℂ) (A i) 0
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[graphProj, Matrix.mulVec, dotProduct, Fin.sum_univ_castSucc, Fin.init]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem graphProj_mulVec (A : Matrix (Fin e) (Fin n) ℂ) (z : Fin (n + 1) → ℂ) :
     graphProj A *ᵥ z = A *ᵥ Fin.init z := by
@@ -30,22 +30,22 @@ theorem graphProj_mulVec (A : Matrix (Fin e) (Fin n) ℂ) (z : Fin (n + 1) → �
   simp [graphProj, Matrix.mulVec, dotProduct, Fin.sum_univ_castSucc, Fin.init]
 
 /- English proof (translation)
-Rewrite using `[graphProj_mulVec, graphPt_init]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem graphProj_mulVec_graphPt (A : Matrix (Fin e) (Fin n) ℂ) (p : MvPolynomial (Fin n) ℂ) (x : Fin n → ℂ) :
     graphProj A *ᵥ graphPt p x = A *ᵥ x := by
   rw [graphProj_mulVec, graphPt_init]
 
 /- English proof (translation)
-Introduce `x x' h` and use `by rw [← graphPt_init p x, ← graphPt_init p x', h]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem graphPt_injective (p : MvPolynomial (Fin n) ℂ) : Function.Injective (graphPt p) := fun x x' h => by
   rw [← graphPt_init p x, ← graphPt_init p x', h]
 
 /- English proof (translation)
-Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C a => simp`. Consider the case `add p q hp hq`. Simplify using `only [map_add]`. Conclude with `hp.add hq`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `mul_X p i hp`. Simplify using `only [map_mul, eval_X]`. Conclude with `hp.mul (differentiable_apply i)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem differentiable_eval (p : MvPolynomial (Fin n) ℂ) : Differentiable ℂ fun x : Fin n → ℂ => eval x p := by
   induction p using MvPolynomial.induction_on with
@@ -58,7 +58,7 @@ theorem differentiable_eval (p : MvPolynomial (Fin n) ℂ) : Differentiable ℂ 
     exact hp.mul (differentiable_apply i)
 
 /- English proof (translation)
-Use `differentiable_pi.2 fun i => ?_` and prove the remaining obligations. Use `Fin.lastCases ?_ (fun j => ?_) i` and prove the remaining obligations. Simplify `differentiable_eval p` using `[graphPt]`. Simplify `differentiable_apply (𝕜 := ℂ) j` using `[graphPt]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem differentiable_graphPt (p : MvPolynomial (Fin n) ℂ) : Differentiable ℂ (graphPt p) := by
   refine differentiable_pi.2 fun i => ?_
@@ -67,13 +67,13 @@ theorem differentiable_graphPt (p : MvPolynomial (Fin n) ℂ) : Differentiable �
   · simpa [graphPt] using differentiable_apply (𝕜 := ℂ) j
 
 /- English proof (translation)
-The claim follows from `differentiable_pi.2 fun i => differentiable_apply (Fin.castSucc i)`.
+A detailed English derivation is pending.
 -/
 theorem differentiable_init : Differentiable ℂ fun z : Fin (n + 1) → ℂ => Fin.init z :=
   differentiable_pi.2 fun i => differentiable_apply (Fin.castSucc i)
 
 /- English proof (translation)
-Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `i`. Simplify using `[pullback, linPoly, graphProj, Fin.sum_univ_castSucc, graphHom_X_castSucc, MvPolynomial.algebraMap_eq]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem graphHom_comp_pullback (A : Matrix (Fin e) (Fin n) ℂ) (p : MvPolynomial (Fin n) ℂ) :
     (graphHom p).comp (pullback (graphProj A)) = pullback A := by
@@ -82,9 +82,9 @@ theorem graphHom_comp_pullback (A : Matrix (Fin e) (Fin n) ℂ) (p : MvPolynomia
   simp [pullback, linPoly, graphProj, Fin.sum_univ_castSucc, graphHom_X_castSucc, MvPolynomial.algebraMap_eq]
 
 /- English proof (translation)
-Set `g : MvPolynomial (Fin (n + 1)) ℂ →+* MvPolynomial (Fin n) ℂ ⧸ J` to `(Ideal.Quotient.mk J).comp (graphHom p).toRingHom`. Establish `hg : Function.Surjective g` using `Ideal.Quotient.mk_surjective.comp (graphHom_surjective p)`. Establish `hker : RingHom.ker g = graphIdeal J p`. Rewrite using `[← RingHom.comap_ker, Ideal.mk_ker]`. Both sides reduce to the same expression.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Conclude with `⟨(Ideal.quotEquivOfEq hker.symm).trans (RingHom.quotientKerEquivOfSurjective hg), fun q => rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_quotEquiv (J : Ideal (MvPolynomial (Fin n) ℂ)) (p : MvPolynomial (Fin n) ℂ) :
     ∃ φ : (MvPolynomial (Fin (n + 1)) ℂ ⧸ graphIdeal J p) ≃+* (MvPolynomial (Fin n) ℂ ⧸ J),
@@ -98,9 +98,9 @@ theorem exists_quotEquiv (J : Ideal (MvPolynomial (Fin n) ℂ)) (p : MvPolynomia
   exact ⟨(Ideal.quotEquivOfEq hker.symm).trans (RingHom.quotientKerEquivOfSurjective hg), fun q => rfl⟩
 
 /- English proof (translation)
-Take `⟨φ, hφ⟩` from `exists_quotEquiv J p`. Establish `hcomp : ∀ q, φ (projHom (graphIdeal J p) (graphProj A) q) = projHom J A q`. Introduce `q`. Simplify using `only [projHom, AlgHom.comp_apply, Ideal.Quotient.mkₐ_eq_mk, hφ]`. Rewrite using `[← AlgHom.comp_apply, graphHom_comp_pullback]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `heq : (projHom (graphIdeal J p) (graphProj A)).toRingHom = (φ.symm : (MvPolynomial (Fin n) ℂ ⧸ J) →+* _).comp (projHom J A).toRingHom` using `RingHom.ext fun q => by simp [← hcomp]`. Use `⟨fun a b h => hA.injective (by rw [← hcomp, ← hcomp, h]), ?_⟩` and prove the remaining obligations. Rewrite using `[heq]`. Conclude with `(RingHom.Finite.of_surjective _ φ.symm.surjective).comp hA.finite`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isFiniteProjection_graphProj {J : Ideal (MvPolynomial (Fin n) ℂ)} {A : Matrix (Fin e) (Fin n) ℂ}
     (p : MvPolynomial (Fin n) ℂ) (hA : IsFiniteProjection J A) :
@@ -118,9 +118,9 @@ theorem isFiniteProjection_graphProj {J : Ideal (MvPolynomial (Fin n) ℂ)} {A :
   exact (RingHom.Finite.of_surjective _ φ.symm.surjective).comp hA.finite
 
 /- English proof (translation)
-Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hz, hzy⟩`. Use `⟨Fin.init z, ⟨init_mem_zeroSet p hz, ?_⟩, graphPt_init_of_mem_zeroSet p hz⟩` and prove the remaining obligations. Rewrite `hzy` using `[graphProj_mulVec]`. Then use the resulting hypothesis.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Introduce and unpack `⟨x, ⟨hx, hxy⟩, rfl⟩`. Conclude with `⟨graphPt_mem_zeroSet p hx, by rw [graphProj_mulVec_graphPt]; exact hxy⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem fibre_graphProj (J : Ideal (MvPolynomial (Fin n) ℂ)) (A : Matrix (Fin e) (Fin n) ℂ)
     (p : MvPolynomial (Fin n) ℂ) (y : Fin e → ℂ) :
@@ -134,9 +134,9 @@ theorem fibre_graphProj (J : Ideal (MvPolynomial (Fin n) ℂ)) (A : Matrix (Fin 
     exact ⟨graphPt_mem_zeroSet p hx, by rw [graphProj_mulVec_graphPt]; exact hxy⟩
 
 /- English proof (translation)
-Take `⟨U, hU, hxU, hsd, hsx, hsZ, V, hV, hsV⟩` from `hs`. Use `⟨U, hU, by rwa [graphProj_mulVec_graphPt], (differentiable_graphPt p).comp_differentiableOn hsd, by rw [graphProj_mulVec_graphPt, Function.comp_apply, hsx], fun y hy => ⟨?_, graphPt_mem_zeroSet p (hsZ y hy).2⟩, (fun z => Fin.init z) ⁻¹' V, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Function.comp_apply, graphProj_mulVec_graphPt, (hsZ y hy).1]`. Conclude with `differentiable_init.continuous.continuousAt.preimage_mem_nhds (by rwa [graphPt_init])`. Introduce and unpack `z ⟨hz, hzV⟩ hzU`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `hzU`, the goal using `[graphProj_mulVec]`. Establish `h` using `hsV (Fin.init z) ⟨init_mem_zeroSet p hz, hzV⟩ hzU`. Rewrite using `[Function.comp_apply, ← h, graphPt_init_of_mem_zeroSet p hz]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isSheetAt_graph {J : Ideal (MvPolynomial (Fin n) ℂ)} {A : Matrix (Fin e) (Fin n) ℂ}
     {p : MvPolynomial (Fin n) ℂ} {x : Fin n → ℂ} {s : (Fin e → ℂ) → Fin n → ℂ} (hs : IsSheetAt J A x s) :
@@ -153,9 +153,9 @@ theorem isSheetAt_graph {J : Ideal (MvPolynomial (Fin n) ℂ)} {A : Matrix (Fin 
     rw [Function.comp_apply, ← h, graphPt_init_of_mem_zeroSet p hz]
 
 /- English proof (translation)
-Take `⟨U, hU, hxU, hsd, hsx, hsZ, V, hV, hsV⟩` from `hs`. Rewrite `hxU`, `hsx` using `[graphProj_mulVec_graphPt]`. Use `⟨U, hU, hxU, differentiable_init.comp_differentiableOn hsd, by show Fin.init (s (A *ᵥ x)) = x; rw [hsx, graphPt_init], fun y hy => ⟨?_, init_mem_zeroSet p (hsZ y hy).2⟩, graphPt p ⁻¹' V, (differentiable_graphPt p).continuous.continuousAt.preimage_mem_nhds hV, ?_⟩` and prove the remaining obligations. Establish `h` using `(hsZ y hy).1`. Rewrite `h` using `[graphProj_mulVec]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Introduce and unpack `x' ⟨hx', hx'V⟩ hx'U`. Establish `h` using `hsV (graphPt p x') ⟨graphPt_mem_zeroSet p hx', hx'V⟩ (by rwa [graphProj_mulVec_graphPt])`. Rewrite `h` using `[graphProj_mulVec_graphPt]`. Use `show x' = Fin.init (s (A *ᵥ x'))`. Rewrite using `[← h, graphPt_init]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isSheetAt_init {J : Ideal (MvPolynomial (Fin n) ℂ)} {A : Matrix (Fin e) (Fin n) ℂ}
     {p : MvPolynomial (Fin n) ℂ} {x : Fin n → ℂ} {s : (Fin e → ℂ) → Fin (n + 1) → ℂ}
@@ -176,9 +176,9 @@ theorem isSheetAt_init {J : Ideal (MvPolynomial (Fin n) ℂ)} {A : Matrix (Fin e
     rw [← h, graphPt_init]
 
 /- English proof (translation)
-Take `⟨U, hU, hzU, hsd, hsz, hsZ, -⟩` from `hs`. Take `⟨U', hU', hzU', -, -, -, V, hV, htV⟩` from `ht`. Establish `hc : ContinuousAt s (B *ᵥ z)` using `(hsd.differentiableAt (hU.mem_nhds hzU)).continuousAt`. Establish `hV' : ∀ᶠ y in 𝓝 (B *ᵥ z), s y ∈ V` using `hc.preimage_mem_nhds (by rwa [hsz])`. Use `filter_upwards [hU.mem_nhds hzU, hU'.mem_nhds hzU', hV'] with y hy hy' hyV`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨hBy, hZy⟩` from `hsZ y hy`. Establish `h` using `htV (s y) ⟨hZy, hyV⟩ (by rwa [hBy])`. Rewrite `h` using `[hBy]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem sheet_eventuallyEq {m : ℕ} {K : Ideal (MvPolynomial (Fin m) ℂ)} {B : Matrix (Fin e) (Fin m) ℂ}
     {z : Fin m → ℂ} {s t : (Fin e → ℂ) → Fin m → ℂ} (hs : IsSheetAt K B z s) (ht : IsSheetAt K B z t) :
@@ -193,7 +193,7 @@ theorem sheet_eventuallyEq {m : ℕ} {K : Ideal (MvPolynomial (Fin m) ℂ)} {B :
   rwa [hBy] at h
 
 /- English proof (translation)
-Establish `hH : (fun k => ReciprocityTheory.AnForm.hessC (φ k ∘ s) y) = fun k => ReciprocityTheory.AnForm.hessC (φ k ∘ t) y`. Use function extensionality and compare the values at `fun k => ReciprocityTheory.AnForm.A.hessC_congr' (h.fun_comp (φ k))`. Unfold `ReciprocityTheory.AnForm.maDens`. Rewrite using `[hH]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem maDens_congr_sheet {m : ℕ} (φ : Fin e → (Fin m → ℂ) → ℝ) {s t : (Fin e → ℂ) → Fin m → ℂ}
     {y : Fin e → ℂ} (h : s =ᶠ[𝓝 y] t) :
@@ -204,11 +204,11 @@ theorem maDens_congr_sheet {m : ℕ} (φ : Fin e → (Fin m → ℂ) → ℝ) {s
   rw [hH]
 
 /- English proof (translation)
-Unfold `sheetSum`. Rewrite using `[fibre_graphProj, finsum_mem_image (graphPt_injective p).injOn]`. Use `finsum_mem_congr rfl fun x hx => ?_` and prove the remaining obligations. Establish `hiff : (∃ s, IsSheetAt (graphIdeal J p) (graphProj A) (graphPt p x) s) ↔ ∃ s, IsSheetAt J A x s` using `⟨fun ⟨_, h⟩ => ⟨_, isSheetAt_init h⟩, fun ⟨_, h⟩ => ⟨_, isSheetAt_graph h⟩⟩`. Distinguish the cases in `h : ∃ s, IsSheetAt J A x s`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[dif_pos (hiff.2 h), dif_pos h]`. Establish `hE` using `sheet_eventuallyEq (hiff.2 h).choose_spec (isSheetAt_graph (p := p) h.choose_spec)`. Rewrite `hE` using `[graphProj_mulVec_graphPt, hx.2]`. Simplify using `only`. Rewrite using `[maDens_congr_sheet Φ hE]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[dif_neg (mt hiff.1 h), dif_neg h]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem sheetSum_graphProj (J : Ideal (MvPolynomial (Fin n) ℂ)) (A : Matrix (Fin e) (Fin n) ℂ)
     (p : MvPolynomial (Fin n) ℂ) (G : ℝ → ℝ) (F : (Fin (n + 1) → ℂ) → ℝ) (Φ : Fin e → (Fin (n + 1) → ℂ) → ℝ)
@@ -232,7 +232,7 @@ theorem sheetSum_graphProj (J : Ideal (MvPolynomial (Fin n) ℂ)) (A : Matrix (F
   · rw [dif_neg (mt hiff.1 h), dif_neg h]
 
 /- English proof (translation)
-The claim follows from `funext fun y => sheetSum_graphProj J A p id F Φ y`.
+A detailed English derivation is pending.
 -/
 theorem chartDens_graphProj (J : Ideal (MvPolynomial (Fin n) ℂ)) (A : Matrix (Fin e) (Fin n) ℂ)
     (p : MvPolynomial (Fin n) ℂ) (F : (Fin (n + 1) → ℂ) → ℝ) (Φ : Fin e → (Fin (n + 1) → ℂ) → ℝ) :
@@ -241,7 +241,7 @@ theorem chartDens_graphProj (J : Ideal (MvPolynomial (Fin n) ℂ)) (A : Matrix (
   funext fun y => sheetSum_graphProj J A p id F Φ y
 
 /- English proof (translation)
-Use function extensionality and compare the values at `y`. Unfold `chartAbsDens sheetSum`. Use `finsum_congr fun x => finsum_congr fun hx => ?_` and prove the remaining obligations. Simplify using `only [h x hx.1]`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem chartAbsDens_congr_zeroSet {m : ℕ} {K : Ideal (MvPolynomial (Fin m) ℂ)} {B : Matrix (Fin e) (Fin m) ℂ}
     {f g : (Fin m → ℂ) → ℝ} (h : ∀ x ∈ zeroSet K, f x = g x) (φ : Fin e → (Fin m → ℂ) → ℝ) :
@@ -256,17 +256,15 @@ end VarIntGraph
 open VarIntGraph in
 
 /- English proof (translation)
-Introduce `n e J p F Φ hJ hF hΦ hint`. Establish `hG` using `graphIdeal_isPrime hJ p`. Establish `hex : (∃ B : Matrix (Fin e) (Fin (n + 1)) ℂ, IsFiniteProjection (graphIdeal J p) B) ↔ ∃ A : Matrix (Fin e) (Fin n) ℂ, IsFiniteProjection J A`. Use `⟨fun ⟨B, hB⟩ => ?_, fun ⟨A, hA⟩ => ⟨_, isFiniteProjection_graphProj p hA⟩⟩` and prove the remaining obligations. Establish `hd` using `VarIntAdd.ringKrullDim_of_isFiniteProjection hB`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `hd` using `[ringKrullDim_graphIdeal]`. Conclude with `ComplexSets.LinearNoetherNormalization.proof n e J hd`. Unfold `varInt`. Distinguish the cases in `hJA : ∃ A : Matrix (Fin e) (Fin n) ℂ, IsFiniteProjection J A`. Use `swap`.
+Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_neg (mt hex.1 hJA), dif_neg hJA]`. Rewrite using `[dif_pos (hex.2 hJA), dif_pos hJA, chartInt, chartInt, ← chartDens_graphProj]`. Establish `hA` using `isFiniteProjection_graphProj p hJA.choose_spec`. Establish `hB` using `(hex.2 hJA).choose_spec`. Take `⟨U, hU, hZU, hFU⟩` from `hF`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hFF : ∀ z ∈ zeroSet (graphIdeal J p), U.indicator F z = F z` using `fun z hz => Set.indicator_of_mem (hZU hz) F`. Establish `hFm : Measurable (U.indicator F)`. Rewrite using `[← Set.piecewise_eq_indicator]`. Conclude with `hFU.continuousOn.measurable_piecewise continuousOn_const hU.measurableSet`. Establish `hd` using `VarIntAdd.ringKrullDim_of_isFiniteProjection hB`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hi : Integrable (chartAbsDens (graphIdeal J p) (graphProj hJA.choose) (U.indicator F) Φ)`. Rewrite using `[chartAbsDens_congr_zeroSet hFF]`. Conclude with `hint _ hA`. Establish `h` using `(hI (n + 1) e (graphIdeal J p) _ _ (U.indicator F) Φ hG hd hA hB hFm hΦ hi).2`. Rewrite `h` using `[chartInt, chartInt, CutOffDominated.chartDens_congr_zeroSet hFF Φ, CutOffDominated.chartDens_congr_zeroSet hFF Φ]`.
-
-Conclude with `h.symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem VarIntGraphInt.proof (hI : IntegralIndep.Statement) : VarIntGraphInt.Statement := by
   classical

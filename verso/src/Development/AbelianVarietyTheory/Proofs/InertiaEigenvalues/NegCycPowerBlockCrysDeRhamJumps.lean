@@ -30,17 +30,17 @@ noncomputable def snocSplit (LL : Type) [Field LL] (t : ℕ) :
     ext <;> simp
 
 /- English proof (translation)
-Introduce `l _ P AI hT K LL t`. Proceed by induction on `t with`. Consider the case `zero`. Introduce `ρ _`. Use `⟨?_, ?_, fun τ a => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `IsCrys`. Rewrite using `[Module.finrank_zero_of_subsingleton, Module.finrank_zero_of_subsingleton (M := Fin 0 → ↥LL.1), mul_zero]`. Unfold `IsDR`. Rewrite using `[Module.finrank_zero_of_subsingleton, Module.finrank_zero_of_subsingleton (M := Fin 0 → ↥LL.1), mul_zero]`. Unfold `multV`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[Module.finrank_zero_of_subsingleton, Module.finrank_zero_of_subsingleton, if_neg (by omega)]`. Simplify using the standard rewrite rules. Consider the case `succ t ih`. Introduce `ρ hρ`. Take `⟨c1, d1, m1⟩` from `ih (negPowBlock (cycLL (P.PD K) ↥LL.1) t) (fun _ _ _ => rfl)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨c2, d2, m2⟩` from `GlobalTheory.T.cyc_zpow_crys_dR_jump_alt l P AI hT K LL (-(t : ℤ))`. Take `⟨hd, hc, hm⟩` from `GlobalTheory.T.directSum_deRham_crystalline_jumps_add l P AI hT K LL _ ρ _ (negPowBlock (cycLL (P.PD K) ↥LL.1) t) _ (charRep (cycLL (P.PD K) ↥LL.1 ^ (-(t : ℤ)))) (snocSplit ↥LL.1 t) (by`. Introduce `g v`. Use `Prod.ext (funext fun c => ?_) ?_` and prove the remaining obligations. Conclude with `hρ g v c.castSucc`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `(hρ g v (Fin.last t)).trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = (((cycLL (P.PD K) ↥LL.1 ^ (-(t : ℤ))) g : (↥LL.1)ˣ) : ↥LL.1) * v (Fin.last t)`. Rewrite using `[MonoidHom.zpow_apply, Fin.val_last, zpow_neg, zpow_natCast, inv_pow])`. Use `⟨hc.2 ⟨c1, c2⟩, hd.2 ⟨d1, d2⟩, fun τ a => ?_⟩` and prove the remaining obligations. Rewrite using `[hm, m1, m2]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Apply the tactic sequence `split_ifs <;> omega`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem negCycBlock_jumps : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P), LocTied l P AI → ∀ (K LL : FinExt l) (t : ℕ) (ρ : Representation ↥LL.1 ↥(GK K) (Fin t → ↥LL.1)), (∀ g v (c : Fin t), ρ g v c = (((cycLL (P.PD K) ↥LL.1 g)⁻¹ ^ (c : ℕ) : (↥LL.1)ˣ) : ↥LL.1) * v c) → IsCrys (P.PD K) ρ ∧ IsDR (P.PD K) ρ ∧ ∀ (τ : ↥K.1 →ₐ[ℚ_[l]] ↥LL.1) (a : ℤ), multV (P.PD K) ρ τ a = if 0 ≤ a ∧ a < (t : ℤ) then 1 else 0 := by
   intro l _ P AI hT K LL t

@@ -18,7 +18,7 @@ include v in
 open AdicLiesOver in
 
 /- English proof (translation)
-Use `isUnramified_adicCompletion v w he` as an intermediate fact. Establish `: FiniteDimensional (v.adicCompletion K) (w.adicCompletion L)` using `finite_adicCompletion v w`. Use `(isZero_groupCohomology_integerUnits (v.adicCompletion K) (w.adicCompletion L) hn).of_iso (groupCohomology.mapIso (decompositionMulEquiv v w) (integerUnitsAddEquiv w).toIntLinearEquiv (fun σ => LinearMap.ext fun x => integerUnitsAddEquiv_decomposition v w σ x) n)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem isZero_groupCohomology_decomposition_integerUnits
     (he : w.asIdeal.ramificationIdx (𝓞 K) = 1) {n : ℕ} (hn : 1 ≤ n) :
@@ -33,7 +33,7 @@ theorem isZero_groupCohomology_decomposition_integerUnits
 include v in
 
 /- English proof (translation)
-The claim follows from `(isZero_groupCohomology_decomposition_integerUnits v w he hn).of_iso (cohomologyIsoGroupCohomology _ n)`.
+A detailed English derivation is pending.
 -/
 theorem isZero_cohomology_decomposition_integerUnits
     (he : w.asIdeal.ramificationIdx (𝓞 K) = 1) {n : ℕ} (hn : 1 ≤ n) :

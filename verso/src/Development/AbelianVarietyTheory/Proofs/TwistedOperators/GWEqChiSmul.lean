@@ -15,19 +15,17 @@ noncomputable section
 namespace GlobalTheory.FormEigenW
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T A Ks _ _ _ R hLev hMod i σ P w hX g0`. Apply `(hMod.HW i σ).1` to reduce the goal to its premises. Establish `hg : (R.HW i σ).e (R.gW i σ (R.eG.symm g0.1) w) = postOn _ (actL (Wc D i) (R.βW i) (R.datWp i R.triv) (R.eG (R.eG.symm g0.1))) ((R.HW i σ).e w)` using `hMod.gW i σ (R.eG.symm g0.1) w`. Rewrite using `[hg, R.eG.apply_symm_apply, LinearMap.map_smul]`. Establish `hM : IsMultMap R.θ (R.MW i σ) (levS _ (R.βW i) (R.datWp i P)) (levChi _ (R.βW i) (R.datWp i P)) ((R.HW i σ).e w)` using `(GlobalTheory.MultMem.mem_mult_iff _ _ _ _ _ _ _ _).1 hX`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨κ', hκ'⟩` from `(GlobalTheory.StepLifts.lifts_exist R hLev i).2 g0.1`. Establish `hmem : κ' ∈ levG (Wc D i) (R.βW i) (R.datWp i P)` using `⟨hκ'.1, hκ'.2.1, by show rTup (R.βW i) (R.datWp i R.triv) (finE (Wc D i) κ') ∈ P.H`. Rewrite using `[hκ'.2.2]`. Conclude with `g0.2⟩`. Establish `hchi : levChi (Wc D i) (R.βW i) (R.datWp i P) κ' = ((P.chi g0 : ℂˣ) : ℂ)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr : rTup (R.βW i) (R.datWp i P) (finE (Wc D i) κ') = g0.1` using `hκ'.2.2`. Establish `h2 : ext1 (R.datWp i P).P.H (R.datWp i P).P.chi (rTup (R.βW i) (R.datWp i P) (finE (Wc D i) κ')) = P.chi g0`. Establish `hp : rTup (R.βW i) (R.datWp i P) (finE (Wc D i) κ') ∈ P.H` using `by rw [hr]; exact g0.2`. Establish `h3 : ext1 (R.datWp i P).P.H (R.datWp i P).P.chi (rTup (R.βW i) (R.datWp i P) (finE (Wc D i) κ')) = P.chi ⟨_, hp⟩` using `extendOne_of_mem _ hp`. Rewrite using `[h3]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Conclude with `congrArg _ (Subtype.ext hr)`. Unfold `levChi levFn`. Rewrite using `[h2]`. Establish `hs : (R.datWp i P).s = 0` using `rfl`. Establish `hQ : (R.datWp i P).Q = ∅` using `rfl`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hs, hQ]`. Simplify using the standard rewrite rules. Use extensionality with `v h`. Use `show actG0 (Wc D i) (R.βW i) (R.datWp i R.triv) g0.1 ((R.HW i σ).e w v) h = ((P.chi g0 : ℂˣ) : ℂ) * (R.HW i σ).e w v h`. Establish `hT : HasType (Wc D i) (R.βW i) (flag1L (R.datWp i R.triv)) ((R.HW i σ).e w v)`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `κ hκ h'`. Establish `hle` using `GlobalTheory.GoodProjLevel.mem_levi_flag_of_mem_parabolic (L := R.datWp i R.triv) P hκ`. Establish `h1 : (R.HW i σ).e w v (h' * κ) = levChi (Wc D i) (R.βW i) (R.datWp i P) κ * (R.HW i σ).e w v h'` using `hM.lev v κ hle.1 h'`. Rewrite using `[h1]`. Conclude with `congrArg (· * (R.HW i σ).e w v h') hle.2`.
-
-Establish `hA` using `level_action_spec hT ⟨κ', hκ'⟩ κ' hκ' h`. Rewrite using `[hA, GlobalTheory.ThetaShiftSmooth.levChi_flag_eq_one R i κ', inv_one, one_mul, hM.lev v κ' hmem h, hchi]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gW_eq_chi_smul : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks), R.toLevCh.Is A.μ0 → R.IsModels → ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ) (P : LevelP R.Pg D.R.r ℂ) (w : (R.HW i σ).H), (R.HW i σ).e w ∈ Mult R.θ (R.MW i σ) (levS _ (R.βW i) (R.datWp i P)) (levChi _ (R.βW i) (R.datWp i P)) → ∀ g0 : P.H, R.gW i σ (R.eG.symm g0.1) w = ((P.chi g0 : ℂˣ) : ℂ) • w := by
   intro D G _ _ Pl0 T A Ks _ _ _ R hLev hMod i σ P w hX g0

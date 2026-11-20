@@ -16,7 +16,7 @@ namespace GlobalTheory.DenomCris
 variable {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [Algebra ℤ_[l] O]
 
 /- English proof (translation)
-Take `⟨e, -, hne⟩` from `GlobalTheory.CrisLoc.exists_root_ne_one l`. Use `haveI : Nontrivial (Per.Fl l) := ⟨e, 1, hne⟩`. Rewrite using `[map_one]`. Conclude with `one_ne_zero`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cc_one : WittVector.constantCoeff (1 : Ainf l) ≠ 0 := by
   obtain ⟨e, -, hne⟩ := GlobalTheory.CrisLoc.exists_root_ne_one l
@@ -25,7 +25,7 @@ theorem cc_one : WittVector.constantCoeff (1 : Ainf l) ≠ 0 := by
   exact one_ne_zero
 
 /- English proof (translation)
-Rewrite using `[map_mul]`. Conclude with `mul_ne_zero hx hy`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cc_mul {x y : Ainf l} (hx : WittVector.constantCoeff x ≠ 0) (hy : WittVector.constantCoeff y ≠ 0) :
     WittVector.constantCoeff (x * y) ≠ 0 := by
@@ -33,7 +33,7 @@ theorem cc_mul {x y : Ainf l} (hx : WittVector.constantCoeff x ≠ 0) (hy : Witt
   exact mul_ne_zero hx hy
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => rw [pow_zero]`. Conclude with `cc_one`. Consider the case `succ n ih => rw [pow_succ]`. Conclude with `cc_mul ih hx`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem cc_pow {x : Ainf l} (hx : WittVector.constantCoeff x ≠ 0) (n : ℕ) :
     WittVector.constantCoeff (x ^ n) ≠ 0 := by
@@ -42,13 +42,13 @@ theorem cc_pow {x : Ainf l} (hx : WittVector.constantCoeff x ≠ 0) (n : ℕ) :
   | succ n ih => rw [pow_succ]; exact cc_mul ih hx
 
 /- English proof (translation)
-Proceed by induction on `r using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨1, cc_one, 0, by simp⟩`. Consider the case `tmul o y`. Take `⟨e, he, hne⟩` from `GlobalTheory.CrisLoc.exists_root_ne_one l`. Take `⟨n, a, ha⟩` from `GlobalTheory.CrisLoc.exists_mul_pow_eq l e he hne y`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨(Per.tm e - 1) ^ n, cc_pow (GlobalTheory.CrisLoc.constantCoeff_root_ne_zero l e hne) n, o ⊗ₜ a, ?_⟩` and prove the remaining obligations. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, one_mul]`. Express the relevant statement in the definitionally equal form `o ⊗ₜ[ℤ_[l]] (algebraMap (Per.Acris l) (Per.Bcris l) (algebraMap (Ainf l) (Per.Acris l) ((Per.tm e - 1) ^ n)) * y) = o ⊗ₜ[ℤ_[l]] algebraMap (Per.Acris l) (Per.Bcris l) a`. Rewrite using `[map_pow, map_pow, mul_comm, ha]`. Consider the case `add r₁ r₂ h₁ h₂`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Take `⟨s₁, hs₁, a₁, e₁⟩` from `h₁`. Take `⟨s₂, hs₂, a₂, e₂⟩` from `h₂`. Use `⟨s₁ * s₂, cc_mul hs₁ hs₂, ((1 : O) ⊗ₜ[ℤ_[l]] ainfToAcris l s₂) * a₁ + ((1 : O) ⊗ₜ[ℤ_[l]] ainfToAcris l s₁) * a₂, ?_⟩` and prove the remaining obligations. Establish `hc : ∀ s, toOB l O ((1 : O) ⊗ₜ[ℤ_[l]] ainfToAcris l s) = (1 : O) ⊗ₜ[ℤ_[l]] acrisToBcris l (ainfToAcris l s)` using `fun s => rfl`. Establish `hm : ((1 : O) ⊗ₜ[ℤ_[l]] acrisToBcris l (ainfToAcris l (s₁ * s₂)) : OB l O) = ((1 : O) ⊗ₜ[ℤ_[l]] acrisToBcris l (ainfToAcris l s₁)) * ((1 : O) ⊗ₜ[ℤ_[l]] acrisToBcris l (ainfToAcris l s₂))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[map_mul, map_mul, Algebra.TensorProduct.tmul_mul_tmul, one_mul]`. Rewrite using `[hm, map_add, map_mul (toOB l O), map_mul (toOB l O), hc, hc, ← e₁, ← e₂]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem exists_mul_eq_toOB (r : OB l O) : ∃ s : Ainf l, WittVector.constantCoeff s ≠ 0 ∧ ∃ a : OCr l O,
     ((1 : O) ⊗ₜ[ℤ_[l]] acrisToBcris l (ainfToAcris l s) : OB l O) * r = toOB l O a := by
@@ -77,13 +77,13 @@ theorem exists_mul_eq_toOB (r : OB l O) : ∃ s : Ainf l, WittVector.constantCoe
     ring
 
 /- English proof (translation)
-Introduce `l _ O K _ _ _ _ _ _ G _ _ T b`. Establish `hsm : ∀ (r : OCr l O) (z : TW (OCr l O) T), TWincl (toOB l O) T (r • z) = toOB l O r • TWincl (toOB l O) T z`. Introduce `r z`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `tmul x t => simp [TWincl, TensorProduct.smul_tmul', TensorProduct.map_tmul]`. Consider the case `add z₁ z₂ h₁ h₂ => rw [smul_add, map_add, h₁, h₂, map_add, smul_add]`. Establish `hc : ∀ s, toOB l O ((1 : O) ⊗ₜ[ℤ_[l]] ainfToAcris l s) = (1 : O) ⊗ₜ[ℤ_[l]] acrisToBcris l (ainfToAcris l s)` using `fun s => rfl`. Proceed by induction on `b using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨1, cc_one, 0, by simp⟩`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Consider the case `tmul r t`. Take `⟨s, hs, a, e⟩` from `exists_mul_eq_toOB r`. Conclude with `⟨s, hs, a ⊗ₜ t, by rw [TensorProduct.smul_tmul', smul_eq_mul, e]; rfl⟩`. Consider the case `add b₁ b₂ h₁ h₂`. Take `⟨s₁, hs₁, β₁, e₁⟩` from `h₁`.
+Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨s₂, hs₂, β₂, e₂⟩` from `h₂`. Use `⟨s₁ * s₂, cc_mul hs₁ hs₂, ((1 : O) ⊗ₜ[ℤ_[l]] ainfToAcris l s₂) • β₁ + ((1 : O) ⊗ₜ[ℤ_[l]] ainfToAcris l s₁) • β₂, ?_⟩` and prove the remaining obligations. Establish `hm : ((1 : O) ⊗ₜ[ℤ_[l]] acrisToBcris l (ainfToAcris l (s₁ * s₂)) : OB l O) = ((1 : O) ⊗ₜ[ℤ_[l]] acrisToBcris l (ainfToAcris l s₁)) * ((1 : O) ⊗ₜ[ℤ_[l]] acrisToBcris l (ainfToAcris l s₂))`. Rewrite using `[map_mul, map_mul, Algebra.TensorProduct.tmul_mul_tmul, one_mul]`. Rewrite using `[map_add, hsm, hsm, hc, hc, ← e₁, ← e₂, smul_smul, smul_smul, hm, smul_add, mul_comm (_ ⊗ₜ[ℤ_[l]] _)]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_smul_eq_TWincl : ∀ {l : ℕ} [Fact l.Prime] {O K : Type} [CommRing O] [Algebra ℤ_[l] O] [Field K] [Algebra ℚ_[l] K] [Algebra O K] [TopologicalSpace K] {G : Type} [Group G] [TopologicalSpace G] (T : LocLat G ℚ_[l] K O) (b : TW (OB l O) T), ∃ s : Ainf l, WittVector.constantCoeff s ≠ 0 ∧ ∃ β : TW (OCr l O) T, ((1 : O) ⊗ₜ[ℤ_[l]] acrisToBcris l (ainfToAcris l s) : OB l O) • b = TWincl (toOB l O) T β := by
   intro l _ O K _ _ _ _ _ _ G _ _ T b

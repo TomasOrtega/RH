@@ -11,21 +11,19 @@ open Formalism.NG Formalism.RepresentationBoundsCohomology.BR
 
 set_option maxHeartbeats 4000000 in
 /- English proof (translation)
-Introduce `O _ _ _ X X' T T' Z p q b ha hb d _ _ R' _ hc Tc _ _ _ _ G _ r χ E e₁ δ ι _ _ colIdx hinj D j e' Kc k0 hEE hee hpts π' ρπ hρπ t ht bl hbl ρk hsurj hblk _ _ _ _ hG hcard1 sE tE δO ℓ cB what₂ qs deg s vhE H0 Sha hEsum hk0 NNc cols eO vδ N h0 L _ _ _ tens v₁ κ HcG Hc F Vo VS Io IS ε …`. Establish `hlen : ∀ c : Fin (t + 1), c ≠ 0 → (fun w => Module.length O (LinearMap.ker (DistribSMul.toLinearMap O (blockRestrictedRepresentationType bl ρk c) (ζO w - 1)))) = fun w => IsDiscreteValuationRing.addVal O (ζO w - 1)`. Introduce `c hc0`. Use function extensionality and compare the values at `w`. Establish `h` using `KernelLengthBounds.length_ker_smul_pi (O := O) {a // bl a = c} (ζO w - 1)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Rewrite `h` using `[hcard1 c hc0, Nat.cast_one, one_mul]`. Conclude with `h`. Establish `h0b` using `bridgeRho O R' Tc G (blockRestrictedRepresentationType bl ρk 0) r χ E e₁ δ δO ι colIdx D j e' Kc k0 ℓ what₂ s L tens v₁ κ (HcG 0) (Hc 0) (F 0) Vo Io ε T₁ T₂ ρ₁ ρ₂ inc π γ lam Cs cls pr Fs Im hee hE0 hk0 (fun m => by rw [algebraMap_smul]; exact hδ0 m) hIn0`. Use `length_bound_via_splitting O X X' T T' Z p q b ha hb d R' hc Tc G r χ E e₁ δ ι colIdx hinj D j e' Kc k0 hEE hee hpts π' ρπ hρπ t ht bl hbl ρk hsurj hblk hG hcard1 sE tE δO ℓ cB what₂ qs (fun w => Module.length O (Fs w ⧸ (Im w).comap (Fs w).subtype)) deg (fun w => IsDiscreteValuat …` and prove the remaining obligations. Establish `h02` using `h0b.2`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `OutRho at h02`. Take `⟨F', Q', x1, x2, x3, x4⟩` from `h02`. Use `⟨F', Q', ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `x1`. Conclude with `x2`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `x3`. Conclude with `x4`. Introduce `c hc2`. Take `⟨a1, a2, a3, a4, a5, hIn⟩` from `hC c hc2`. Establish `hc0 : c ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `h`. Rewrite `hc2` using `[h]`. Simplify using `at hc2`. Establish `hout` using `bridgeChiC O R' Tc G (blockRestrictedRepresentationType bl ρk c) r χ E e₁ δ ι colIdx D j Kc k0 ℓ cB what₂ qs deg (cT c) (Sha ((c : ℕ) - 1)) (HcG c) (Hc c) (F c) Vo VS Io IS I γQ ζ ζO nQ a1 a2 hk0 hIn`. Rewrite `hout` using `[hlen c hc0]`.
+Replace the relevant objects with their definitions. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `OutChi at hout`. Conclude with `⟨a1, a2, a3, a4, a5, hout⟩`. Take `⟨a1, a2, a3, a4, a5, a6, a7, a8, hIn⟩` from `hOne`. Establish `hc0 : (⟨1, by omega⟩ : Fin (t + 1)) ≠ 0`. Introduce `h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions.
 
-Use `congrArg Fin.val h` as an intermediate fact. Simplify using `at this`. Establish `hout` using `bridgeChiOne O R' Tc G (blockRestrictedRepresentationType bl ρk ⟨1, by omega⟩) r χ E e₁ δ δO ι colIdx D j e' Kc k0 ℓ cB what₂ qs deg (cT _) vhE (HcG _) (Hc _) (F _) Vo VS Io IS I γQ ζ ζO nQ u a1 a2 a3 (fun m => by rw [algebraMap_smul]; exact a4 m) a5 a6 a7 a8 hIn`. Rewrite `hout` using `[hlen _ hc0]`. Unfold `OutChi at hout`.
-
-Conclude with `⟨a1, a2, a3, a4, hout.1, hout.2⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem top_length_bound_via_splitting :
   ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (X X' : Type)

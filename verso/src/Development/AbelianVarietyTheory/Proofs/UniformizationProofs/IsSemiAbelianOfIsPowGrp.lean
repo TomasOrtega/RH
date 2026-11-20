@@ -23,9 +23,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.SemiPow
 
 /- English proof (translation)
-Use `letI := E.addCommGroup`. Use `haveI := E.free`. Use `haveI := E.finite`. Use `letI := E.grpB`. Take `⟨pT, -⟩` from `GlobalTheory.exists_isPowGrp_splitTorus (Spec (CommRingCat.of K)) E.X (Fin j → E.X) j (AddEquiv.refl _)`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨q', hq, hq1, hq2, hq3, hq4, -⟩` from `GlobalTheory.PowMap.main _ G' G (powObj E.B j) E.B j p (powIsPowGrp E.B j) E.q`. Take `⟨i', hi, hi1, -⟩` from `GlobalTheory.PowMap.main _ _ _ G' G j pT p E.i`. Conclude with `⟨{ X := Fin j → E.X B := powObj E.B j isAbelian := (GlobalTheory.PowGrp.powers _ _ _ j (powIsPowGrp E.B j)).2.2.2.1 E.isAbelian q := q' q_hom := hq1 E.q_hom q_flat := hq2 E.q_flat q_surjective := hq3 E.q_surjective q_quasiCompact := hq4 E.q_quasiCompact i := i' i_hom := hi1 E.i_h …`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem nonempty_torusExtension {K : Type} [Field K] {G' G : Over (Spec (CommRingCat.of K))} [GrpObj G'] [GrpObj G]
     {j : ℕ} (p : IsPowGrp G' G j) (E : TorusExtension G) : Nonempty (TorusExtension G') := by
@@ -51,9 +51,9 @@ theorem nonempty_torusExtension {K : Type} [Field K] {G' G : Over (Spec (CommRin
              E.isKernel }⟩
 
 /- English proof (translation)
-Introduce `S G G' _ _ j p hG`. Take `⟨h1, h2, -, -, h5⟩` from `GlobalTheory.PowGrp.powers S G' G j p`. Establish `hq` using `GlobalTheory.PowGrp.quasiCompact_geomConnected_pow S G' G j p`. Use `⟨h5 hG, h1 hG.smooth, h2 hG.separated, hq.1 hG.quasiCompact, hq.2 hG.smooth hG.geomConnected, fun Ω _ _ f => ?_⟩` and prove the remaining obligations. Take `⟨p', -⟩` from `GlobalTheory.isPowGrp_baseChange S _ f G' G j p`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨E⟩` from `hG.fibres Ω f`. Conclude with `nonempty_torusExtension p' E`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isSemiAbelian_of_isPowGrp : ∀ (S : Scheme.{0}) (G G' : Over S) [GrpObj G] [GrpObj G'] (j : ℕ) (_ : IsPowGrp G' G j), IsSemiAbelian G → IsSemiAbelian G' := by
   intro S G G' _ _ j p hG

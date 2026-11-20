@@ -14,9 +14,9 @@ open GlobalTheory GlobalTheory.AbLaw
 namespace GlobalTheory.AbLaw
 
 /- English proof (translation)
-Take `⟨N, _, _, _, _, 𝒩, _, _, hN, hφ⟩` from `GlobalTheory.T.exists_finite_gradedModule_lineBundleSections R Y f H m s M hH hM hs`. Take `⟨t₀, ht₀⟩` from `GlobalTheory.cubeComplex_grCube_exactAt_of_finite (Fin (m + 1)) R N 𝒩 hN`. Use `⟨t₀, fun t ht => ?_⟩` and prove the remaining obligations. Take `⟨φ, hφ⟩` from `hφ t`. Use `isIso_cechComplexMap φ hφ` as an intermediate fact.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1` using `(cechComplex_exactAt_succ_iff_cube _ 0).2 (ht₀ t ht 2)`. Establish `h2` using `h1.of_iso (asIso (cechComplexMap φ))`. Conclude with `firstCohomologyVanishes_of_exact_secCube R Y f (tw M H t) (Fin (m + 1)) (fun i => nonzeroLocus (s i)) (isLB_tw hM hH t) hs.1 (fun i => (hs.2 i).1) ((cechComplex_exactAt_succ_iff _ 0).1 h2)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_h1Zero_tw_of_veryAmpleBy (R : Type) [CommRing R] (Y : Scheme.{0})
     (f : Y ⟶ Spec (CommRingCat.of R)) [IsNoetherianRing R] (H : LB Y) (m : ℕ)

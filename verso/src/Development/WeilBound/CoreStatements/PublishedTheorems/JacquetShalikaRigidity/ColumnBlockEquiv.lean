@@ -18,13 +18,11 @@ section Ring
 variable {R : Type} [CommRing R] {a : ℕ}
 
 /- English proof (translation)
-Rewrite using `[posM, Matrix.sum_apply]`. Use `split_ifs with hik`. Rewrite using `[Finset.sum_eq_single ⟨(i, k), hik.1, hik.2.ge, hik.2.le⟩]`. Simplify using the standard rewrite rules. Introduce `b _ hb`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.single_apply, if_neg]`. Introduce and unpack `⟨h1, h2⟩`. Conclude with `hb (Subtype.ext (Prod.ext h1 h2))`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Use `Finset.sum_eq_zero fun t _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.single_apply, if_neg]`. Introduce and unpack `⟨h1, h2⟩`. Apply `hik` to reduce the goal to its premises. Use `t.2` as an intermediate fact.
-
-Rewrite using `[← h1, ← h2]`. Use linear arithmetic over natural numbers and integers.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem pm_col (m : ℕ) (y : UnipotentBlockColumnIndex a m m → R) (i k : Fin a) :
     posM (Subtype.val : UnipotentBlockColumnIndex a m m → Fin a × Fin a) y i k =
@@ -48,9 +46,9 @@ theorem pm_col (m : ℕ) (y : UnipotentBlockColumnIndex a m m → R) (i k : Fin 
     omega
 
 /- English proof (translation)
-Simplify using `only [posM, Matrix.sum_mul, Matrix.sum_apply]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : (p s).1 = i`. Substitute `h` using the available equality. Simplify using `[Matrix.single_mul_apply_same]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Rewrite using `[if_neg h, Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.single_apply, if_neg (fun e => h e.1), zero_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem pm_mul_apply {ι : Type} [Fintype ι] (p : ι → Fin a × Fin a) (y : ι → R)
     (M : Matrix (Fin a) (Fin a) R) (i k : Fin a) :
@@ -65,9 +63,9 @@ theorem pm_mul_apply {ι : Type} [Fintype ι] (p : ι → Fin a × Fin a) (y : �
     rw [Matrix.single_apply, if_neg (fun e => h e.1), zero_mul]
 
 /- English proof (translation)
-Simplify using `only [posM, Matrix.mul_sum, Matrix.sum_apply]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : (p s).2 = k`. Substitute `h` using the available equality. Simplify using `[Matrix.mul_single_apply_same]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Rewrite using `[if_neg h, Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.single_apply, if_neg (fun e => h e.2), mul_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem mul_pm_apply {ι : Type} [Fintype ι] (p : ι → Fin a × Fin a) (y : ι → R)
     (M : Matrix (Fin a) (Fin a) R) (i k : Fin a) :
@@ -82,9 +80,9 @@ theorem mul_pm_apply {ι : Type} [Fintype ι] (p : ι → Fin a × Fin a) (y : �
     rw [Matrix.single_apply, if_neg (fun e => h e.2), mul_zero]
 
 /- English proof (translation)
-Use extensionality with `i k`. Establish `e` using `pm_mul_apply (Subtype.val : UnipotentBlockColumnIndex a m m → Fin a × Fin a) y 1 i k`. Rewrite `e` using `[Matrix.mul_one]`. Rewrite using `[e, pm_mul_apply]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hM s.1.2 k (by have := s.2; omega)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pm_mul_row (m : ℕ) (y : UnipotentBlockColumnIndex a m m → R) (M : Matrix (Fin a) (Fin a) R)
     (hM : ∀ j k : Fin a, (j : ℕ) = m → M j k = (1 : Matrix (Fin a) (Fin a) R) j k) :
@@ -97,13 +95,11 @@ theorem pm_mul_row (m : ℕ) (y : UnipotentBlockColumnIndex a m m → R) (M : Ma
   rw [hM s.1.2 k (by have := s.2; omega)]
 
 /- English proof (translation)
-Use extensionality with `i k`. Rewrite using `[mul_pm_apply, pm_col]`. Use `split_ifs with hc`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[if_pos (Fin.ext (by have := s.2; omega))]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_eq_zero fun s _ => ?_ split_ifs with hs` and prove the remaining obligations. Establish `h2` using `s.2`. Establish `hk : (k : ℕ) = m` using `by rw [← hs]; omega`. Establish `hi : m ≤ (i : ℕ)`. Assume the negation of the conclusion as `hh`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hc ⟨by omega, hk⟩`. Rewrite using `[hB i s.1.1 (Or.inl hi), Matrix.one_apply_ne, zero_mul]`. Introduce `e`. Rewrite `h2` using `[← e]`. Use linear arithmetic over natural numbers and integers.
-
-Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem mul_posM_blockColumn (m : ℕ) (y : UnipotentBlockColumnIndex a m m → R) (h : GL (Fin a) R) (hB : GlobalTheory m h) :
     h.val * posM (Subtype.val : UnipotentBlockColumnIndex a m m → Fin a × Fin a) y =
@@ -127,7 +123,7 @@ theorem mul_posM_blockColumn (m : ℕ) (y : UnipotentBlockColumnIndex a m m → 
     · rfl
 
 /- English proof (translation)
-Establish `e : h * blkU y = blkU (fun t : UnipotentBlockColumnIndex a m m => ∑ s, h.val t.1.1 s.1.1 * y s) * h`. Apply `Units.ext` to reduce the goal to its premises. Use `show h.val * (1 + posM Subtype.val y) = (1 + posM Subtype.val _) * h.val`. Rewrite using `[mul_add, add_mul, mul_one, one_mul, pm_mul_row m _ h.val (fun j k hj => hB j k (Or.inl hj.ge)), mul_posM_blockColumn m y h hB]`. Rewrite using `[e, mul_inv_cancel_right]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_blkU (m : ℕ) (h : GL (Fin a) R) (hB : GlobalTheory m h) (y : UnipotentBlockColumnIndex a m m → R) :
     h * blkU y * h⁻¹ = blkU (fun t : UnipotentBlockColumnIndex a m m => ∑ s, h.val t.1.1 s.1.1 * y s) := by
@@ -152,19 +148,19 @@ def colEquiv (k j : ℕ) (hj : j < k) : UnipotentBlockColumnIndex k j j ≃ Fin 
 end ColumnBlockEquiv
 
 /- English proof (translation)
-Introduce `hM hK E _ _ _ k j hj g hg F hF`. Establish `hK'` using `hK E k j hj.le`. Take `⟨ι, hι⟩` from `hK'.1 (Ad E)`. Establish `hK2` using `hK'.2 ι hι`. Take `⟨g', rfl⟩` from `hK2.2.2.1 g hg`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hDt : Dt (ι g') = Dt g'` using `hK2.2.2.2.1 g'`. Set `e : UnipotentBlockColumnIndex k j j ≃ Fin j` to `ColumnBlockEquiv.colEquiv k j hj`. Set `Φ` to `MeasurableEquiv.piCongrLeft (fun _ : Fin j => Ad E) e`. Establish `hΦ : MeasurePreserving Φ (vecMeasure E (UnipotentBlockColumnIndex k j j)) (vecMeasure E (Fin j))` using `measurePreserving_piCongrLeft (fun _ : Fin j => GroundTheory.Global.adeleMeasure E) e`. Establish `key : ∀ H : (UnipotentBlockColumnIndex k j j → Ad E) → ℝ≥0∞, ∫⁻ y, H y ∂vecMeasure E (UnipotentBlockColumnIndex k j j) = ∫⁻ v, H (Φ.symm v) ∂vecMeasure E (Fin j)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `H`. Establish `h1` using `hΦ.lintegral_comp_emb Φ.measurableEmbedding (fun v => H (Φ.symm v))`. Simplify using `only [MeasurableEquiv.symm_apply_apply] at h1`. Conclude with `h1`. Establish `hsymm : ∀ (v : Fin j → Ad E) (t : UnipotentBlockColumnIndex k j j), Φ.symm v t = v (e t)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `v t`. Both sides reduce to the same expression. Establish `hent : ∀ t s : UnipotentBlockColumnIndex k j j, (ι g').val t.1.1 s.1.1 = g'.val (e t) (e s)`. Introduce `t s`. Rewrite using `[hι g']`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `dif_pos ⟨t.2.1, s.2.1⟩`. Establish `hpt : ∀ v : Fin j → Ad E, ι g' * blkU (Φ.symm v) * (ι g')⁻¹ = blkU (fun t : UnipotentBlockColumnIndex k j j => (g'.val *ᵥ v) (e t))`. Introduce `v`. Rewrite using `[PositivityTheory.AdelicQuotientData.ColumnBlockEquiv.conj_blkU j (ι g') hg]`. Use `congrArg blkU (funext fun t => ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[show (g'.val *ᵥ v) (e t) = ∑ b, g'.val (e t) b * v b from rfl, ← e.sum_comp]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[hsymm, hent t s]`. Establish `hc : Continuous (fun v : Fin j → Ad E => (blkU (fun t : UnipotentBlockColumnIndex k j j => v (e t)) : GA E k))` using `(continuous_posU (isNil_blk k j j)).comp (continuous_pi fun t => continuous_apply (e t))`. Establish `hG : Measurable (fun v : Fin j → Ad E => F (blkU (fun t : UnipotentBlockColumnIndex k j j => v (e t))))` using `hF.comp hc.measurable`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hDt, key (fun x => F (blkU x))]`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem algebraic_modulus_one_of_finiteOrder_char : AdelicLinearChange → CornerEmbedding → ColumnConjugationMeasure := by
   intro hM hK E _ _ _ k j hj g hg F hF

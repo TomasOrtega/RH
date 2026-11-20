@@ -20,14 +20,14 @@ variable {ι : Type} [Fintype ι] [DecidableEq ι] {k : ι → Type} [∀ i, Fie
 def piM (h : ∀ i, Matrix n n (k i)) : Matrix n n (∀ i, k i) := Matrix.of fun a b i => h i a b
 
 /- English proof (translation)
-Use extensionality with `a b i`. Simplify using `[piM, Matrix.mul_apply, Finset.sum_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem piM_mul (x y : ∀ i, Matrix n n (k i)) : piM x * piM y = piM fun i => x i * y i := by
   ext a b i
   simp [piM, Matrix.mul_apply, Finset.sum_apply]
 
 /- English proof (translation)
-Use extensionality with `a b i`. Distinguish the cases in `h : a = b`. Substitute `h` using the available equality. Simplify using `[piM]`. Simplify using `[piM, Matrix.one_apply, h]`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem piM_one : piM (fun i => (1 : Matrix n n (k i))) = 1 := by
   ext a b i
@@ -43,7 +43,7 @@ def piGL : (∀ i, GL n (k i)) →* GL n (∀ i, k i) where
   map_mul' x y := Units.ext (by simp [piM_mul])
 
 /- English proof (translation)
-Introduce `g` and use `⟨fun i => Matrix.GeneralLinearGroup.map (Pi.evalRingHom k i) g, by apply Units.ext ext a b i rfl⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem piGL_surjective : Function.Surjective (piGL (k := k) (n := n)) := fun g =>
   ⟨fun i => Matrix.GeneralLinearGroup.map (Pi.evalRingHom k i) g, by
@@ -52,19 +52,19 @@ theorem piGL_surjective : Function.Surjective (piGL (k := k) (n := n)) := fun g 
     rfl⟩
 
 /- English proof (translation)
-Establish `hsingle : ∀ (i : ι) (h : GL n (k i)), Δ (piGL (Pi.mulSingle i h)) = 1` using `fun i h => by`. Set `Δi : GL n (k i) →* ℝ≥0` to `(Δ.comp piGL).comp (MonoidHom.mulSingle (fun i => GL n (k i)) i)`. Use `GlobalTheory.SplitFlip.hom_eq_one_of_center Δi (fun z hz => ?_) h` and prove the remaining obligations. Use `hc _ fun y => ?_` and prove the remaining obligations. Take `⟨w, rfl⟩` from `piGL_surjective y`.
+Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← map_mul, ← map_mul]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `using hz (w j)`. Simplify using `[Pi.mulSingle_eq_of_ne hj]`. Establish `key : ∀ (s : Finset ι) (x : ∀ i, GL n (k i)), (∀ i ∉ s, x i = 1) → Δ (piGL x) = 1`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`.
+Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `empty`. Introduce `x hx`. Rewrite using `[show x = 1 from funext fun i => hx i (by simp), map_one, map_one]`. Consider the case `insert a s ha ih`. Introduce `x hx`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e : x = Pi.mulSingle a (x a) * Function.update x a 1`. Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = a`. Substitute `hj` using the available equality. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[Pi.mulSingle_eq_of_ne hj, Function.update_of_ne hj]`. Rewrite using `[e, map_mul, map_mul, hsingle, one_mul]`. Use `ih _ fun i hi => ?_` and prove the remaining obligations. Distinguish the cases in `hj : i = a`. Substitute `hj` using the available equality.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Rewrite using `[Function.update_of_ne hj]`. Conclude with `hx i (by simp [hj, hi])`. Take `⟨x, rfl⟩` from `piGL_surjective g`. Conclude with `key Finset.univ x (by simp)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem hom_eq_one_pi (Δ : GL n (∀ i, k i) →* ℝ≥0) (hc : ∀ g, (∀ h, g * h = h * g) → Δ g = 1)
     (g : GL n (∀ i, k i)) : Δ g = 1 := by
@@ -111,9 +111,9 @@ section Reduced
 variable {n : Type} [Fintype n] [DecidableEq n]
 
 /- English proof (translation)
-Use `letI : Fintype (MaximalSpectrum B) := Fintype.ofFinite _`. Use `letI : ∀ I : MaximalSpectrum B, Field (B ⧸ I.asIdeal) := fun I => @Ideal.Quotient.field _ _ _ I.isMaximal`. Set `ψ : B ≃+* ∀ I : MaximalSpectrum B, B ⧸ I.asIdeal` to `(IsArtinianRing.equivPi B).toRingEquiv`. Set `Φ : GL n B ≃* GL n (∀ I : MaximalSpectrum B, B ⧸ I.asIdeal)` to `Units.mapEquiv (RingEquiv.mapMatrix ψ).toMulEquiv`. Establish `h` using `hom_eq_one_pi (Δ.comp Φ.symm.toMonoidHom) (fun z hz => hc _ fun y => ?_) (Φ g)`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Simplify using `using h`. Apply `Φ.injective` to reduce the goal to its premises. Simplify using `using hz (Φ y)`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem hom_eq_one_reduced {B : Type} [CommRing B] [IsArtinianRing B] [IsReduced B] (Δ : GL n B →* ℝ≥0)
     (hc : ∀ g, (∀ h, g * h = h * g) → Δ g = 1) (g : GL n B) : Δ g = 1 := by
@@ -134,9 +134,9 @@ end Reduced
 section Tens
 
 /- English proof (translation)
-Use `letI : Fintype (MaximalSpectrum R) := Fintype.ofFinite _`. Use `letI : ∀ I : MaximalSpectrum R, Field (R ⧸ I.asIdeal) := fun I => @Ideal.Quotient.field _ _ _ I.isMaximal`. Establish `hk : ∀ I : MaximalSpectrum R, IsReduced (E ⊗[F] (R ⧸ I.asIdeal))` using `fun I => by haveI : Algebra.FormallyUnramified F E := (Algebra.FormallyUnramified.iff_isSeparable F E).2 inferInstance haveI : Algebra.FormallyUnramified (R ⧸ I.asIdeal) ((R ⧸ I.asIdeal) ⊗[F] E) := Algebra.FormallyUnramified.base_change (R ⧸ I.asIdeal) haveI : Algebra.EssFiniteTy …`. Conclude with `isReduced_of_injective (Algebra.TensorProduct.comm F E (R ⧸ I.asIdeal)).toRingEquiv.toRingHom (Algebra.TensorProduct.comm F E (R ⧸ I.asIdeal)).injective`. Set `e₁ : R ≃ₐ[F] ∀ I : MaximalSpectrum R, R ⧸ I.asIdeal` to `(IsArtinianRing.equivPi R).restrictScalars F`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `e₂ : R ⊗[F] E ≃ₐ[F] E ⊗[F] (∀ I : MaximalSpectrum R, R ⧸ I.asIdeal)` to `(Algebra.TensorProduct.comm F R E).trans (Algebra.TensorProduct.congr AlgEquiv.refl e₁)`. Set `e₃` to `Algebra.TensorProduct.piRight F F E (fun I : MaximalSpectrum R => R ⧸ I.asIdeal)`. Conclude with `isReduced_of_injective (e₂.trans e₃).toRingEquiv.toRingHom (e₂.trans e₃).injective`.
+Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem isReduced_tensor {F E R : Type} [Field F] [Field E] [Algebra F E] [Module.Finite F E]
     [Algebra.IsSeparable F E] [CommRing R] [Algebra F R] [IsArtinianRing R] [IsReduced R] :
@@ -169,7 +169,7 @@ variable {A B : Type} [CommRing A] [CommRing B] {n : Type} [Fintype n] [Decidabl
 def cut (e : A) (X : Matrix n n A) : Matrix n n A := e • X + (1 - e) • 1
 
 /- English proof (translation)
-Establish `h0 : e * (1 - e) = 0` using `by rw [mul_sub, he, mul_one, sub_self]`. Establish `h1 : (1 - e) * (1 - e) = 1 - e` using `by rw [sub_mul, one_mul, h0, sub_zero]`. Simplify using `only [cut, add_mul, mul_add, Matrix.smul_mul, Matrix.mul_smul, smul_smul, Matrix.mul_one, Matrix.one_mul, he, h0, h1, mul_comm (1 - e) e, zero_smul, add_zero, zero_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem cut_mul {e : A} (he : e * e = e) (X Y : Matrix n n A) : cut e X * cut e Y = cut e (X * Y) := by
   have h0 : e * (1 - e) = 0 := by rw [mul_sub, he, mul_one, sub_self]
@@ -178,16 +178,16 @@ theorem cut_mul {e : A} (he : e * e = e) (X Y : Matrix n n A) : cut e X * cut e 
     he, h0, h1, mul_comm (1 - e) e, zero_smul, add_zero, zero_add]
 
 /- English proof (translation)
-Simplify using `only [cut, ← add_smul]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem cut_one (e : A) : cut e (1 : Matrix n n A) = 1 := by
   simp only [cut, ← add_smul]
   simp
 
 /- English proof (translation)
-Use extensionality with `i j`. Use `congrFun (congrFun h i) j` as an intermediate fact. Simplify using `only [Matrix.map_apply] at this`. Establish `h2` using `hk (X i j - Y i j) (by rw [map_sub, this, sub_self])`. Simplify using `only [Matrix.smul_apply, smul_eq_mul]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `h2` using `[mul_sub, sub_eq_zero]`. Conclude with `h2`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smul_eq_of_map_eq {π : A →+* B} {e : A} (hk : ∀ x, π x = 0 → e * x = 0) {X Y : Matrix n n A}
     (h : X.map π = Y.map π) : e • X = e • Y := by
@@ -227,23 +227,23 @@ section Split2
 variable {A B : Type} [CommRing A] [CommRing B] {n : Type} [Fintype n] [DecidableEq n]
 
 /- English proof (translation)
-Establish `he : e * e = e`. Use `hk (e - 1) (by rw [map_sub, h1, map_one, sub_self])` as an intermediate fact. Rewrite `this` using `[mul_sub, mul_one, sub_eq_zero]`. Conclude with `this`. Set `s : GL n B →* GL n A` to `secGL π hs e he hk`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `m : GL n A →* GL n B` to `Matrix.GeneralLinearGroup.map π`. Establish `hsv : ∀ h : GL n B, ∀ X : Matrix n n A, X.map π = h.val → (s h).val = cut e X` using `fun h X hX => by show cut e (h.val.map (Function.surjInv hs)) = cut e X`. Simplify using `only [cut]`. Rewrite using `[smul_eq_of_map_eq hk (X := h.val.map (Function.surjInv hs)) (Y := X)]`. Rewrite using `[hX]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use extensionality with `i j`. Conclude with `Function.surjInv_eq hs _`. Establish `hmv : ∀ y : GL n A, (y.val).map π = (m y).val` using `fun _ => rfl`. Establish `hcen : ∀ z, (∀ h, z * h = h * z) → ∀ y, s z * y = y * s z` using `fun z hz y => by`. Apply `Units.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨Z, hZ⟩ : ∃ Z : Matrix n n A, Z.map π = z.val` from `⟨z.val.map (Function.surjInv hs), by ext i j; exact Function.surjInv_eq hs _⟩`. Establish `hzy : (Z * y.val).map π = (y.val * Z).map π`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, hZ, hmv]`. Conclude with `congrArg Units.val (hz (m y))`. Rewrite using `[Units.val_mul, Units.val_mul, hsv z Z hZ]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [cut, add_mul, mul_add, Matrix.smul_mul, Matrix.mul_smul, Matrix.one_mul, Matrix.mul_one]`. Rewrite using `[smul_eq_of_map_eq hk hzy]`. Establish `hΔ` using `hB (χ.comp s) (fun z hz => hc _ (hcen z hz))`. Establish `e0 : e • (1 : Matrix n n A) + (1 - e) • (1 : Matrix n n A) = 1`. Rewrite using `[← add_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `e0' : e • (1 : Matrix n n A) = 1 - (1 - e) • 1` using `eq_sub_of_add_eq e0`. Establish `hgi : (g⁻¹.val * g.val) = 1` using `by simp`. Establish `v1 : (s (m g)⁻¹).val = cut e g⁻¹.val` using `hsv _ _ (by simp [m, hmv, ← map_inv])`. Establish `v2 : (s (m g)).val = cut e g.val` using `hsv _ _ (hmv g)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `⟨(s (m g))⁻¹ * g, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_mul, ← map_inv, v1]`. Simplify using `only [cut, add_mul, Matrix.smul_mul, Matrix.one_mul, hgi]`. Rewrite using `[smul_sub, e0']`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[_root_.mul_inv_rev, inv_inv, Units.val_mul, v2]`. Simplify using `only [cut, mul_add, Matrix.mul_smul, Matrix.mul_one, hgi]`. Rewrite using `[smul_sub, e0']`. Normalize the expressions using the abelian group laws. Rewrite using `[map_mul, map_inv]`.
+Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `hΔ (m g)` as an intermediate fact. Simplify using `only [MonoidHom.comp_apply] at this`. Rewrite using `[this]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_char_eq_cut (π : A →+* B) (hs : Function.Surjective π) (e : A) (h1 : π e = 1)
     (hk : ∀ x, π x = 0 → e * x = 0)
@@ -306,9 +306,9 @@ def congGL (C : NonUnitalSubring A) : Subgroup (GL n A) where
   inv_mem' := fun {a} ha => ⟨ha.2, by rw [inv_inv]; exact ha.1⟩
 
 /- English proof (translation)
-Establish `h1 : IsCompact {X : Matrix n n A | ∀ i j, X i j ∈ C}`. Use `isCompact_univ_pi fun _ : n => isCompact_univ_pi fun _ : n => hC` as an intermediate fact. Establish `e : {X : n → n → A | ∀ i j, X i j ∈ C} = Set.univ.pi fun _ : n => Set.univ.pi fun _ : n => (C : Set A)`. Use extensionality with `X`. Simplify using `[Set.mem_pi]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite `this` using `[← e]`. Conclude with `this`. Establish `h2 : IsCompact {X : Matrix n n A | ∀ i j, (X - 1) i j ∈ C}` using `(Homeomorph.subRight (1 : Matrix n n A)).isCompact_preimage.2 h1`. Establish `h3` using `(MulOpposite.opHomeomorph (M := Matrix n n A)).symm.isCompact_preimage.2 h2`. Conclude with `(Units.isClosedEmbedding_embedProduct (α := Matrix n n A)).isCompact_preimage (h2.prod h3)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isCompact_congGL [TopologicalSpace A] [IsTopologicalRing A] [T2Space A] (C : NonUnitalSubring A)
     (hC : IsCompact (C : Set A)) : IsCompact (congGL (n := n) C : Set (GL n A)) := by
@@ -329,11 +329,9 @@ end Split2
 section Adele
 
 /- English proof (translation)
-Use `⟨fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨m, hm⟩` from `hx`. Establish `h1 : x.1 = 0`. Establish `: (x.1) ^ m = 0` using `congrArg Prod.fst hm`. Establish `hr : IsReduced (Ainf F)` using `inferInstanceAs (IsReduced (∀ v : InfinitePlace F, v.Completion))`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `IsReduced.eq_zero _ ⟨m, this⟩`. Establish `h2 : x.2 = 0`. Use `FiniteAdeleRing.ext _ fun v => ?_` and prove the remaining obligations. Establish `: (x.2 ^ m) v = 0` using `congrArg (fun y : AF F => y.2 v) hm`. Conclude with `IsReduced.eq_zero _ ⟨m, this⟩`.
-
-Conclude with `Prod.ext h1 h2`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isReduced_adele (F : Type) [Field F] [NumberField F] : IsReduced (AF F) := by
   refine ⟨fun x hx => ?_⟩
@@ -349,9 +347,9 @@ theorem isReduced_adele (F : Type) [Field F] [NumberField F] : IsReduced (AF F) 
   exact Prod.ext h1 h2
 
 /- English proof (translation)
-Use `⟨fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨y, rfl⟩` from `hp x`. Take `⟨m, hm⟩` from `hx`. Establish `h2 : e * y ^ m = 0` using `hk _ (by rw [map_pow, hm])`. Establish `h3 : (e * y) ^ (m + 1) = 0`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[show (e * y) ^ (m + 1) = e ^ m * y * (e * y ^ m) by ring, h2, mul_zero]`. Establish `h4 : e * y = 0` using `IsReduced.eq_zero _ ⟨_, h3⟩`. Use `congrArg p h4` as an intermediate fact. Rewrite `this` using `[map_mul, h1, one_mul, map_zero]`. Then use the resulting hypothesis.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem isReduced_of_split {A R : Type} [CommRing A] [CommRing R] [IsReduced A] (p : A →+* R)
     (hp : Function.Surjective p) (e : A) (h1 : p e = 1) (hk : ∀ x, p x = 0 → e * x = 0) : IsReduced R := by
@@ -368,15 +366,13 @@ theorem isReduced_of_split {A R : Type} [CommRing A] [CommRing R] [IsReduced A] 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Use `choose a ha using fun k => exists_sum_tmul (x k)`. Take `⟨R, _, _, p, e, hR, hp, hpe, hker, hint⟩` from `exists_split_adele (κ := κ × _) fun q => a q.1 q.2`. Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Use `haveI : IsArtinianRing (R ⊗[F] E) := IsArtinianRing.of_finite R _`. Use `haveI : IsReduced (AF F) := isReduced_adele F`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `haveI : IsReduced R := isReduced_of_split p.toRingHom hp e hpe hker`. Use `haveI : Algebra.IsSeparable F E := inferInstance`. Use `⟨R ⊗[F] E, inferInstance, (Algebra.TensorProduct.map p (AlgHom.id F E)).toRingHom, e ⊗ₜ 1, inferInstance, isReduced_tensor, Algebra.TensorProduct.map_surjective _ _ hp Function.surjective_id, ?_, fun y hy => ?_, fun k => ?_⟩` and prove the remaining obligations. Simplify using `[hpe, Algebra.TensorProduct.one_def]`. Establish `hy' : y ∈ RingHom.ker (Algebra.TensorProduct.map p (AlgHom.id F E))` using `hy`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Treat this case separately.
 
-Rewrite `hy'` using `[Algebra.TensorProduct.rTensor_ker _ hp]`. Use `clear hy`. Proceed by induction on `hy' using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨z, hz, rfl⟩` from `hy`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[hker z hz]`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [mul_add, hx, hy, add_zero]`. Consider the case `smul a x _ hx => rw [smul_eq_mul, mul_left_comm, hx, mul_zero]`. Rewrite using `[ha k, Finset.mul_sum, Algebra.TensorProduct.one_def, ← TensorProduct.sub_tmul]`.
-
-Use `sum_mem fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, one_mul]`. Conclude with `hC _ (hint (k, i)) _`.
+A detailed English derivation is pending.
 -/
 theorem exists_split_reduced {κ : Type} [Finite κ]
     (C : NonUnitalSubring (AF F ⊗[F] E)) (hC : ∀ r ∈ intFin F, ∀ β : 𝓞 E, r ⊗ₜ[F] (β : E) ∈ C)
@@ -419,13 +415,11 @@ variable {A : Type} [CommRing A] [TopologicalSpace A] [IsTopologicalRing A] [T2S
   [SecondCountableTopology A] {r : ℕ} [LocallyCompactSpace (GL (Fin r) A)]
 
 /- English proof (translation)
-Use `haveI : SecondCountableTopology (Matrix (Fin r) (Fin r) A) := inferInstanceAs (SecondCountableTopology (Fin r → Fin r → A))`. Use `haveI : T2Space (Matrix (Fin r) (Fin r) A) := inferInstanceAs (T2Space (Fin r → Fin r → A))`. Use `haveI : SecondCountableTopology (Matrix (Fin r) (Fin r) A)ᵐᵒᵖ := (MulOpposite.opHomeomorph (M := Matrix (Fin r) (Fin r) A)).symm.secondCountableTopology`. Use `haveI : SecondCountableTopology (GL (Fin r) A) := (Units.isClosedEmbedding_embedProduct (α := Matrix (Fin r) (Fin r) A)).isEmbedding.secondCountableTopology`. Use `borelize (GL (Fin r) A)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Take `⟨B, _, π, e, hA, hR, hs, h1, hk, hint⟩` from `hsplit fun p => ((bif p.1 then a else a⁻¹).val - 1) p.2.1 p.2.2`. Set `χ : GL (Fin r) A →* ℝ≥0` to `Measure.modularCharacter`. Establish `hc : ∀ z, (∀ y, z * y = y * z) → χ z = 1` using `fun z hz => by`. Express the relevant statement in the definitionally equal form `Measure.modularCharacterFun z = 1`. Establish `e' : Measure.map (fun x : GL (Fin r) A => x * z) (Measure.haar : Measure (GL (Fin r) A)) = Measure.haar`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[show (fun x : GL (Fin r) A => x * z) = fun x => z * x from funext fun x => (hz x).symm, map_mul_left_eq_self]`. Rewrite using `[Measure.modularCharacterFun_eq_haarScalarFactor (Measure.haar : Measure (GL (Fin r) A)) z]`. Simplify using `only [e', Measure.haarScalarFactor_self]`. Take `⟨k, hkv, hki, hkg⟩` from `exists_char_eq_cut π hs e h1 hk (fun Δ hΔ g => hom_eq_one_reduced Δ hΔ g) χ hc a`. Establish `hkK : k ∈ congGL (n` using `Fin r) C := ⟨fun i j => by rw [hkv]; exact hint (true, i, j), fun i j => by rw [hki]; exact hint (false, i, j)⟩`.
-
-Conclude with `hkg.trans (modular_of_mem_compact _ (isCompact_congGL C hCc) hkK)`.
+A detailed English derivation is pending.
 -/
 theorem modularCharacterFun_GL_of_split (C : NonUnitalSubring A) (hCc : IsCompact (C : Set A))
     (hsplit : ∀ x : Bool × Fin r × Fin r → A, ∃ (B : Type) (_ : CommRing B) (π : A →+* B) (e : A),
@@ -464,9 +458,7 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.L2.Theta
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Introduce `D r _ a`. Use `haveI := GlobalTheory.AdelicUnitaryTop.t2Space_adeleRing_numberField D.host.F`. Use `haveI := GlobalTheory.AdelicUnitaryTop.secondCountable_adele D.host.F`. Take `⟨h⟩` from `GlobalTheory.AdelicUnitaryTop.nonempty_homeomorph (F := D.host.F) (E := D.host.E) (AF D.host.F)`. Use `haveI h2 : T2Space (AE D) := h.isEmbedding.t2Space`.
-
-Use `haveI h3 : SecondCountableTopology (AE D) := h.secondCountableTopology`. Take `⟨C, hCc, hC⟩` from `exists_compact_subring (F := D.host.F) (E := D.host.E) (intFin D.host.F) (isCompact_intFin D.host.F)`. Conclude with `modularCharacterFun_GL_of_split C hCc (fun x => exists_split_reduced C hC x) a`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem modularCharacterFun_GL_adele : ∀ (D : D7) (r : ℕ) [LocallyCompactSpace (GL (Fin r) (AE D))]
     (a : GL (Fin r) (AE D)), Measure.modularCharacterFun a = 1 := by

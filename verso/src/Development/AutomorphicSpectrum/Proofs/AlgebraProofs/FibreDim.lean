@@ -8,7 +8,7 @@ import GroundTheory.HeightsAndTheta.Heights.SemipositiveHeights.FibreDim
 namespace GlobalTheory.CompanionTheory.Ar.Giv
 
 /- English proof (translation)
-The claim follows from `GroundTheory.Heights₂.Heights.ForSecondHalf.FibreDim.proof`.
+A detailed English derivation is pending.
 -/
 theorem fibreDim : ReciprocityTheory.ChartRestriction.G.AI.I4.FibreDimStatement :=
   GroundTheory.Heights₂.Heights.ForSecondHalf.FibreDim.proof

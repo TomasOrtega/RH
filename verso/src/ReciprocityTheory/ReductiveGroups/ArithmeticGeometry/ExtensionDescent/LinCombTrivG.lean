@@ -23,7 +23,7 @@ instance geomConn_id (S : Scheme.{0}) : GeometricallyConnected (𝟙 S) := by
 def trivLB (X : Scheme.{0}) : LB X := ⟨PUnit, fun _ => ⊤, fun _ _ => 1⟩
 
 /- English proof (translation)
-Apply the tactic sequence `simp [trivLB] g_self := fun _ => map_one _ cocycle := fun _ _ _ => by erw [map_one]; (try erw [map_one]); (try erw [map_one]); exact _root_.one_mul _`.
+Simplify using the standard rewrite rules.
 -/
 theorem trivLB_isLB (X : Scheme.{0}) : (trivLB X).IsLB where
   cover := by simp [trivLB]
@@ -32,9 +32,9 @@ theorem trivLB_isLB (X : Scheme.{0}) : (trivLB X).IsLB where
     erw [map_one]; (try erw [map_one]); (try erw [map_one]); exact _root_.one_mul _
 
 /- English proof (translation)
-Establish `hg : ∀ a b, (trivLB X).g a b = 1` using `fun _ _ => rfl`. Apply `Finset.prod_eq_one` to reduce the goal to its premises. Introduce `k _`. Rewrite using `[hg, map_one]`. Use `first`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `exact (congrArg (· ^ ε k) (map_one _)).trans (one_zpow _)`. Consider the case `(erw [map_one, one_zpow])`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem linComb_triv_g {X Y : Scheme.{0}} {K : Type} [Fintype K] (φ : K → (Y ⟶ X)) (ε : K → ℤ)
     (j j' : (LB.LinComb (trivLB X) φ ε).ι) : (LB.LinComb (trivLB X) φ ε).g j j' = 1 := by
@@ -47,16 +47,16 @@ theorem linComb_triv_g {X Y : Scheme.{0}} {K : Type} [Fintype K] (φ : K → (Y 
     | (erw [map_one, one_zpow])
 
 /- English proof (translation)
-The claim follows from `linComb_triv_g _ _ j j'`.
+A detailed English derivation is pending.
 -/
 theorem powOver_triv_g {S : Scheme.{0}} (A : Over S) (U : S.Opens) (N : ℕ)
     (j j' : (powOver A (trivLB A.left) U N).ι) : (powOver A (trivLB A.left) U N).g j j' = 1 :=
   linComb_triv_g _ _ j j'
 
 /- English proof (translation)
-Substitute `hD` using the available equality. Establish `h1 : IsIso (homOfLE e)` using `⟨⟨homOfLE le_top, rfl, rfl⟩⟩`. Establish `h2 : IsIso (f.appLE ⊤ ⊤ e)` using `by first`. Consider the case `(rw [Scheme.Hom.appLE]; infer_instance)`. Consider the case `(show IsIso (f.app ⊤ ≫ X.presheaf.map (homOfLE e).op); infer_instance)`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
-Use `first`. Consider the case `exact (ConcreteCategory.bijective_of_isIso (f.appLE ⊤ ⊤ e)).2`. Consider the case `exact (asIso (f.appLE ⊤ ⊤ e)).commRingCatIsoToRingEquiv.surjective`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem surj_appLE {X Y : Scheme.{0}} (f : X ⟶ Y) [IsIso f] (D : X.Opens) (hD : D = ⊤)
     (e : D ≤ f ⁻¹ᵁ ⊤) : Function.Surjective (f.appLE ⊤ D e).hom := by

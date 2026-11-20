@@ -10,9 +10,9 @@ open MvPolynomial Finset
 noncomputable section
 
 /- English proof (translation)
-Unfold `completeSymmetric`. Distinguish the cases in `h0 : 0 ≤ d`. Rewrite using `[if_pos h0, h1 N k d.toNat hk hkN]`. Establish `hdiv : (k ∣ d.toNat) ↔ ((k : ℤ) ∣ d)`. Rewrite using `[← Int.natCast_dvd_natCast, Int.toNat_of_nonneg h0]`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hd : (k : ℤ) ∣ d`. Rewrite using `[if_pos (hdiv.mpr hd), if_pos ⟨h0, hd⟩]`. Rewrite using `[if_neg (fun h => hd (hdiv.mp h)), if_neg (fun h => hd h.2)]`. Rewrite using `[if_neg h0, map_zero, if_neg (fun h => h0 h.1)]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem SchSchurEvalMatrix.aeval_completeSymmetric (h1 : SchCompleteAtRootsOfUnity.Statement)
     (N k : ℕ) (hk : 1 ≤ k) (hkN : k ≤ N) (d : ℤ) :
@@ -29,9 +29,9 @@ theorem SchSchurEvalMatrix.aeval_completeSymmetric (h1 : SchCompleteAtRootsOfUni
   · rw [if_neg h0, map_zero, if_neg (fun h => h0 h.1)]
 
 /- English proof (translation)
-Introduce `N k r nu hk hkN`. Unfold `schur`. Rewrite using `[AlgHom.map_det]`. Use `congr 1`. Use extensionality with `i j`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Rewrite using `[AlgHom.mapMatrix_apply, Matrix.map_apply, Matrix.of_apply, SchSchurEvalMatrix.aeval_completeSymmetric h1 N k hk hkN]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem SchSchurEvalMatrix.proof (h1 : SchCompleteAtRootsOfUnity.Statement) :
     SchSchurEvalMatrix.Statement := by

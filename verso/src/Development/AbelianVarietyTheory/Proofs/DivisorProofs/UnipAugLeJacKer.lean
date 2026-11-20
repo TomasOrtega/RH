@@ -20,19 +20,19 @@ def jacKer (om : Rep σ X W) (H' : Plane E d d₁) (v : Pl F) : Submodule ℂ ((
   augAt om v ⊔ unipAug om H' v
 
 /- English proof (translation)
-The claim follows from `le_sup_left`.
+A detailed English derivation is pending.
 -/
 theorem augAt_le_jacKer (om : Rep σ X W) (H' : Plane E d d₁) (v : Pl F) : augAt om v ≤ jacKer om H' v :=
   le_sup_left
 
 /- English proof (translation)
-The claim follows from `le_sup_right`.
+A detailed English derivation is pending.
 -/
 theorem unipAug_le_jacKer (om : Rep σ X W) (H' : Plane E d d₁) (v : Pl F) : unipAug om H' v ≤ jacKer om H' v :=
   le_sup_right
 
 /- English proof (translation)
-Use `sup_le h₁ ?_` and prove the remaining obligations. Rewrite using `[unipAug, Submodule.span_le]`. Introduce and unpack `z ⟨u, hu, huv, φ₀, h0, φ₁, h1, hact, rfl⟩`. Simplify using `[LinearMap.mem_ker, map_sub, h₂ u hu huv φ₀ h0 φ₁ h1 hact]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 -/
 theorem jacKer_le_ker (om : Rep σ X W) (H' : Plane E d d₁) (v : Pl F)
     (ℓ : ((Fin n × Fin d → Fv F v) → ℂ) →ₗ[ℂ] ℂ) (h₁ : augAt om v ≤ LinearMap.ker ℓ)

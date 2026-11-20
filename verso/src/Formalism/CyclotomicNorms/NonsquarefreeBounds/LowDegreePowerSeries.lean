@@ -7,11 +7,11 @@ noncomputable section
 namespace Formalism.CyclotomicNorms
 
 /- English proof (translation)
-Establish `hU : (U : R) * ↑U⁻¹ = 1` using `U.mul_inv`. Establish `h1 : x ^ m * y = (-(p * D' * ↑U⁻¹)) * y`. Take the linear combination `(↑U⁻¹ : R) * hD - (x ^ m * y) * hU`. Establish `h2 : ∀ k : ℕ, x ^ (m * k) * y = (-(p * D' * ↑U⁻¹)) ^ k * y`. Introduce `k`.
+Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h2 n]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Establish `: (-(p * D' * ↑U⁻¹)) ^ n = (-(D' * ↑U⁻¹)) ^ n * p ^ n` using `by ring`. Rewrite using `[this, hp]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem low_key {R : Type*} [CommRing R] (x p D' y : R) (U : Rˣ) (m n : ℕ)
     (hp : p ^ n = 0) (hD : (x ^ m * U + p * D') * y = 0) : x ^ (m * n) * y = 0 := by
@@ -32,7 +32,7 @@ theorem low_key {R : Type*} [CommRing R] (x p D' y : R) (U : Rˣ) (m n : ℕ)
   simp
 
 /- English proof (translation)
-Take `⟨u, v, rfl⟩` from `Ideal.mem_span_pair.mp hf`. Rewrite using `[map_add, mul_comm u, coeff_C_mul, mul_comm v, coeff_X_pow_mul', if_neg (by omega), add_zero]`. Conclude with `dvd_mul_right a _`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem low_coeff_dvd {O : Type*} [CommRing O] (a : O) (M : ℕ) (f : PowerSeries O)
     (hf : f ∈ Ideal.span {PowerSeries.C a, (PowerSeries.X : PowerSeries O) ^ (M + 1)})
@@ -42,7 +42,7 @@ theorem low_coeff_dvd {O : Type*} [CommRing O] (a : O) (M : ℕ) (f : PowerSerie
   exact dvd_mul_right a _
 
 /- English proof (translation)
-Use `⟨mk fun k => (h k).choose, ?_⟩` and prove the remaining obligations. Use extensionality with `k`. Rewrite using `[coeff_C_mul, coeff_mk]`. Conclude with `(h k).choose_spec`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem low_divide {O : Type*} [CommRing O] (a : O) (f : PowerSeries O)
     (h : ∀ k, a ∣ coeff k f) : ∃ f', f = C a * f' := by
@@ -52,23 +52,19 @@ theorem low_divide {O : Type*} [CommRing O] (a : O) (f : PowerSeries O)
   exact (h k).choose_spec
 
 /- English proof (translation)
-Introduce `O _ _ _ ϖ n m₀ D g hϖ hord hg hmem`. Use `set Db := PowerSeries.map (IsLocalRing.residue O) D with hDb`. Establish `hne : Db ≠ 0`. Introduce `h`. Rewrite `hord` using `[h, order_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `absurd hord (by simp)`. Use `set m := Db.order.toNat with hm`. Establish `hmm : m ≤ m₀`. Use `coe_toNat_order hne` as an intermediate fact. Rewrite `hord` using `[← this]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hord` after adjusting the coercions. Use `set U : PowerSeries O := mk fun k => coeff (m + k) D with hU`. Establish `hUunit : IsUnit U`. Rewrite using `[isUnit_iff_constantCoeff, ← coeff_zero_eq_constantCoeff_apply, hU, coeff_mk, add_zero, ← IsLocalRing.residue_ne_zero_iff_isUnit]`. Use `coeff_order hne` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[hDb, coeff_map]`. Then use the resulting hypothesis. Establish `hdiv : ∀ k, ϖ ∣ coeff k (D - X ^ m * U)`. Introduce `k`. Rewrite using `[map_sub, coeff_X_pow_mul']`. Use `split_ifs with hk`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[hU, coeff_mk, Nat.add_sub_cancel' hk, sub_self]`. Conclude with `dvd_zero _`. Rewrite using `[sub_zero, ← Ideal.mem_span_singleton, ← (IsDiscreteValuationRing.irreducible_iff_uniformizer ϖ).mp hϖ, ← IsLocalRing.residue_eq_zero_iff, ← coeff_map]`. Conclude with `coeff_of_lt_order_toNat (φ := Db) k (by omega)`. Take `⟨D', hD'⟩` from `low_divide ϖ _ hdiv`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hDeq : D = X ^ m * U + C ϖ * D'` using `by rw [← hD']; ring`. Use `set I := Ideal.span {PowerSeries.C (ϖ ^ n), (PowerSeries.X : PowerSeries O) ^ (n * m₀ + 1)} with hI`. Set `q` to `Ideal.Quotient.mk I`. Establish `hp : (q (C ϖ)) ^ n = 0`. Rewrite using `[← map_pow, ← map_pow, Ideal.Quotient.eq_zero_iff_mem]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Ideal.subset_span (Set.mem_insert _ _)`. Establish `h0 : (q X ^ m * ↑((hUunit.map q).unit) + q (C ϖ) * q D') * q g = 0`. Establish `h` using `Ideal.Quotient.eq_zero_iff_mem.mpr hmem`. Rewrite `h` using `[hDeq]`. Simplify `h` using `[map_mul, map_add, map_pow]`.
-
-Establish `h3` using `low_key _ _ _ _ _ m n hp h0`. Rewrite `h3` using `[← map_pow, ← map_mul, Ideal.Quotient.eq_zero_iff_mem]`. Establish `hmn : m * n ≤ n * m₀`. Rewrite using `[mul_comm]`. Conclude with `Nat.mul_le_mul_left n hmm`.
-
-Use `low_coeff_dvd (ϖ ^ n) (n * m₀) _ h3 (m * n) hmn` as an intermediate fact. Rewrite `this` using `[coeff_X_pow_mul', if_pos le_rfl, Nat.sub_self, coeff_zero_eq_constantCoeff_apply]`. Conclude with `hg (Ideal.mem_span_singleton.mpr this)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem low_degree_power_series : LowPowerSeries := by
   intro O _ _ _ ϖ n m₀ D g hϖ hord hg hmem

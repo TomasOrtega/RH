@@ -21,12 +21,12 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 def lawChr (χ : Chr F E) (z : ℝ) (t : (AE F E)ˣ) : ℂ := (χ t : ℂ) * (((absE F E t : ℝ) ^ z : ℝ) : ℂ)
 
 /- English proof (translation)
-Simplify using `[lawChr]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lawChr_one (χ : Chr F E) (z : ℝ) : lawChr χ z 1 = 1 := by simp [lawChr]
 
 /- English proof (translation)
-Simplify using `only [lawChr, map_mul, Circle.coe_mul, NNReal.coe_mul]`. Rewrite using `[Real.mul_rpow (NNReal.coe_nonneg _) (NNReal.coe_nonneg _)]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem lawChr_mul (χ : Chr F E) (z : ℝ) (s t : (AE F E)ˣ) :
     lawChr χ z (s * t) = lawChr χ z s * lawChr χ z t := by
@@ -36,14 +36,14 @@ theorem lawChr_mul (χ : Chr F E) (z : ℝ) (s t : (AE F E)ˣ) :
   ring
 
 /- English proof (translation)
-Rewrite using `[lawChr, norm_mul, Circle.norm_coe, one_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (Real.rpow_nonneg (NNReal.coe_nonneg _) _)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_lawChr (χ : Chr F E) (z : ℝ) (t : (AE F E)ˣ) : ‖lawChr χ z t‖ = (absE F E t : ℝ) ^ z := by
   rw [lawChr, norm_mul, Circle.norm_coe, one_mul, Complex.norm_real, Real.norm_eq_abs,
     abs_of_nonneg (Real.rpow_nonneg (NNReal.coe_nonneg _) _)]
 
 /- English proof (translation)
-Introduce `e` and use `by have h := congrArg norm e rw [norm_lawChr, norm_lawChr] at h exact (Real.rpow_lt_rpow_of_exponent_lt ht hz).ne h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem lawChr_ne (α β : Chr F E) {z z' : ℝ} (hz : z < z') {t : (AE F E)ˣ} (ht : 1 < (absE F E t : ℝ)) :
     lawChr α z t ≠ lawChr β z' t := fun e => by
@@ -52,9 +52,9 @@ theorem lawChr_ne (α β : Chr F E) {z z' : ℝ} (hz : z < z') {t : (AE F E)ˣ} 
   exact (Real.rpow_lt_rpow_of_exponent_lt ht hz).ne h
 
 /- English proof (translation)
-Take `⟨t, ht⟩` from `hne`. Establish `h1` using `h 1`. Rewrite `h1` using `[hf, hg, mul_one, mul_one]`. Establish `hQ : Q = -P` using `by linear_combination h1`. Establish `h2` using `h t`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[hQ]`. Establish `h3 : P * (f t - g t) = 0` using `by linear_combination h2`. Establish `hP : P = 0` using `(mul_eq_zero.1 h3).resolve_right (sub_ne_zero.2 ht)`. Conclude with `⟨hP, by rw [hQ, hP, neg_zero]⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem indep {f g : (AE F E)ˣ → ℂ} (hf : f 1 = 1) (hg : g 1 = 1) (hne : ∃ t, f t ≠ g t) {P Q : ℂ}
     (h : ∀ t, P * f t + Q * g t = 0) : P = 0 ∧ Q = 0 := by
@@ -71,15 +71,15 @@ theorem indep {f g : (AE F E)ˣ → ℂ} (hf : f 1 = 1) (hg : g 1 = 1) (hne : �
 variable {d d₁ : ℕ} {W : Spc F E d} {W₁ : Spc F E d₁}
 
 /- English proof (translation)
-Apply the tactic sequence `refine ⟨?_, ?_, ?_⟩ <;> simp [mat]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem isLevi_one (H' : Plane E d d₁) : IsLevi (σ := σ) (W := W) (W₁ := W₁) H' 1 1 1 := by
   refine ⟨?_, ?_, ?_⟩ <;> simp [mat]
 
 /- English proof (translation)
-Establish `e : mat (m * m') = mat m * mat m'` using `rfl`. Establish `e1 : mat (1 : UA σ W₁.J) = 1` using `rfl`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[e, ← Matrix.mulVec_mulVec, h'.1, Matrix.mulVec_smul, h.1, smul_smul, Units.val_mul, mul_comm]`. Rewrite using `[e, ← Matrix.mulVec_mulVec, h'.2.1, Matrix.mulVec_smul, h.2.1, smul_smul, mul_inv_rev, Units.val_mul, map_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, Matrix.mul_assoc, h'.2.2, e1, Matrix.mul_one]`. Simplify `h.2.2` using `[e1]`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isLevi_mul {H' : Plane E d d₁} {t s : (AE F E)ˣ} {m m' : UA σ W.J}
     (h : IsLevi (W₁ := W₁) H' t 1 m) (h' : IsLevi (W₁ := W₁) H' s 1 m') :
@@ -93,17 +93,17 @@ theorem isLevi_mul {H' : Plane E d d₁} {t s : (AE F E)ˣ} {m m' : UA σ W.J}
     simpa [e1] using h.2.2
 
 /- English proof (translation)
-Distinguish the cases in `hP : ∃ (μ₀ : Measure (unip σ W H')) (𝓕₀ : Set (unip σ W H')), μ₀.IsHaarMeasure ∧ IsFundamentalDomain ((ratU σ W.J).subgroupOf (unip σ W H')) 𝓕₀ μ₀ ∧ μ₀ 𝓕₀ = 1`. Take `⟨μ₀, 𝓕₀, h1, h2, h3⟩` from `hP`. Establish `hc` using `huniq μ₀ 𝓕₀ h1 h2 h3`. Use `choose A B key using hexp μ₀ 𝓕₀ h1 h2 h3`. Establish `hsum : (fun h => ∫ u in 𝓕₀, f (u.1 * h) ∂μ₀) = A + B` using `funext fun h => by`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `key h 1 1 (isLevi_one H')` as an intermediate fact. Simplify using `only [one_mul, lawChr_one, mul_one] at this`. Simplify using `using this`. Take `⟨t₀, ht₀⟩` from `hbig`. Establish `hne : ∃ t, lawChr X.α ((a' : ℝ) / 2) t ≠ lawChr X.β ((a : ℝ) / 2) t`.
+Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨t₀, lawChr_ne _ _ ?_ ht₀⟩` and prove the remaining obligations. Establish `: (a' : ℝ) < a` using `by exact_mod_cast hlt`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `law : ∀ s m, IsLevi (W₁` using `W₁) H' s 1 m → ∀ h, A (m * h) = lawChr X.α ((a' : ℝ) / 2) s * A h ∧ B (m * h) = lawChr X.β ((a : ℝ) / 2) s * B h := by`. Introduce `s m hm h`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hind` using `indep (lawChr_one _ _) (lawChr_one _ _) hne (P := A (m * h) - lawChr X.α ((a' : ℝ) / 2) s * A h) (Q := B (m * h) - lawChr X.β ((a : ℝ) / 2) s * B h) (fun t => by`. Take `⟨mt, hmt⟩` from `hlevi t`. Establish `e1` using `key (m * h) t mt hmt`. Establish `e2` using `key h (t * s) (mt * m) (isLevi_mul hmt hm)`. Rewrite `e2` using `[show mt * m * h = mt * (m * h) from mul_assoc _ _ _]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e1` using `[e2, lawChr_mul, lawChr_mul]`. Take the linear combination `(-1 : ℂ) * e1)`. Conclude with `⟨sub_eq_zero.1 hind.1, sub_eq_zero.1 hind.2⟩`. Use `⟨A, B, ?_, fun s m hm h => (law s m hm h).1, fun s m hm h => (law s m hm h).2⟩` and prove the remaining obligations. Rewrite using `[← hsum]`.
+Take a linear combination of the given relations to obtain the conclusion. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `hc`. Conclude with `⟨0, 0, fun μ 𝓕 h1 h2 h3 => (hP ⟨μ, 𝓕, h1, h2, h3⟩).elim, fun _ _ _ _ => by simp, fun _ _ _ _ => by simp⟩`.
+A detailed English derivation is pending.
 -/
 theorem split2_of {a a' : ℕ} {W : Spc F E (a + a')} {d₁ : ℕ} {W₁ : Spc F E d₁} {H' : Plane E (a + a') d₁}
     {X : Chars F E} {f : UA σ W.J → ℂ}
@@ -152,15 +152,15 @@ theorem split2_of {a a' : ℕ} {W : Spc F E (a + a')} {d₁ : ℕ} {W₁ : Spc F
       fun _ _ _ _ => by simp⟩
 
 /- English proof (translation)
-Set `p : Fin N → Prop` to `fun i => ∀ t, χ i t = χ₁ t`. Use `⟨∑ i ∈ Finset.univ.filter p, c i 0, ∑ i ∈ Finset.univ.filter (fun i => ¬ p i), c i 0, fun t m hm => ?_⟩` and prove the remaining obligations. Rewrite using `[hexp t m hm]`. Establish `hk : ∀ i, ∑ k, c i k * χ i t * lg t ^ (k : ℕ) = c i 0 * χ i t` using `fun i => by`. Establish `hz : ∀ k : Fin K, c i k.succ = 0` using `fun k => by`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `h`. Use `(htyp i k.succ h).1` as an intermediate fact. Simplify using `at this`. Rewrite using `[Fin.sum_univ_succ]`. Simplify using `[hz]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [hk]`. Rewrite using `[← Finset.sum_filter_add_sum_filter_not Finset.univ p, Finset.sum_mul, Finset.sum_mul]`. Use `congr 1`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Rewrite using `[(Finset.mem_filter.1 hi).2 t]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Distinguish the cases in `h0 : c i 0 = 0`. Simplify using `[h0]`. Break down `(htyp i 0 h0).2 with h | h` into its components or cases. Conclude with `absurd h (Finset.mem_filter.1 hi).2`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h t]`.
+A detailed English derivation is pending.
 -/
 theorem two_of_fin {T M : Type} (L : T → M → Prop) (v : M → ℂ) (χ₁ χ₂ : T → ℂ) {N K : ℕ} (χ : Fin N → T → ℂ)
     (c : Fin N → Fin (K + 1) → ℂ) (lg : T → ℂ)
@@ -191,11 +191,11 @@ theorem two_of_fin {T M : Type} (L : T → M → Prop) (v : M → ℂ) (χ₁ χ
     · rw [h t]
 
 /- English proof (translation)
-Introduce `hKP F E _ _ _ _ _ σ B a a' G X om om' hT d₁ W₁ H' i₀ i₁ hA`. Establish `hlevi` using `GlobalTheory.T.exists_levi_element_adapted F E σ B a a' G X om om' hT d₁ W₁ H' i₀ i₁ hA`. Establish `hbig` using `GlobalTheory.T.exists_idele_abs_gt_one F E`. Establish `hu` using `GlobalTheory.T.constant_term_unipotent_integral F E σ B a a' G X om om' hT d₁ W₁ H' i₀ i₁ hA`. Establish `hr` using `GlobalTheory.T.theta_lift_left_invariant hKP F E σ B a a' G X om om' hT d₁ W₁ H' i₀ i₁ hA`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hf` using `GlobalTheory.T.constant_term_fundamental_domain hKP F E σ B a a' G X om om' hT d₁ W₁ H' i₀ i₁ hA`. Establish `ht` using `GlobalTheory.T.constant_term_haar_vanish hKP F E σ B a a' G X om om' hT d₁ W₁ H' i₀ i₁ hA`. Use `⟨fun Φ hΦ => split2_of hlevi hbig hT.geo.lt (fun μ₀ 𝓕₀ h1 h2 h3 => hu _ (hr.1 Φ hΦ) μ₀ 𝓕₀ h1 h2 h3) (fun μ 𝓕 h1 h2 h3 h => ?_), fun Φ hΦ => split2_of hlevi hbig hT.geo.lt (fun μ₀ 𝓕₀ h1 h2 h3 => hu _ (hr.2 Φ hΦ) μ₀ 𝓕₀ h1 h2 h3) (fun μ 𝓕 h1 h2 h3 h => ?_)⟩` and prove the remaining obligations. Take `⟨N, K, χ, c, hχ, he⟩` from `hf.1 Φ hΦ μ 𝓕 h1 h2 h3 h`. Conclude with `two_of_fin _ _ _ _ (fun i t => ((χ i t : ℂˣ) : ℂ)) c _ he (ht.1 Φ hΦ μ 𝓕 h1 h2 h3 h N K χ c hχ he)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨N, K, χ, c, hχ, he⟩` from `hf.2 Φ hΦ μ 𝓕 h1 h2 h3 h`. Conclude with `two_of_fin _ _ _ _ (fun i t => ((χ i t : ℂˣ) : ℂ)) c _ he (ht.2 Φ hΦ μ 𝓕 h1 h2 h3 h N K χ c hχ he)`.
+A detailed English derivation is pending.
 -/
 theorem splitEx_exists : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base F E) (a a' : ℕ) (G : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo σ a a') (X : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chars F E) (om : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ G.V G.W) (om' : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ G.V' G.W), GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsTriple B G X om om' → ∀ (d₁ : ℕ) (W₁ : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E d₁) (H' : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Plane E (a + a') d₁) (i₀ i₁ : ℕ), H'.IsAdapted σ B G.W W₁ i₀ i₁ → (∀ Φ ∈ GlobalTheory.ThK.PolData B G.M, ∃ fa fb, GlobalTheory.ThK.Split2 W₁ H' X (G.M.I om Φ) fa fb) ∧ ∀ Φ' ∈ GlobalTheory.ThK.PolData B G.M' ⊓ G.M'.So B.ψ B.τ₁, ∃ fa fb, GlobalTheory.ThK.Split2 W₁ H' X (G.M'.I om' Φ') fa fb := by
   intro hKP F E _ _ _ _ _ σ B a a' G X om om' hT d₁ W₁ H' i₀ i₁ hA

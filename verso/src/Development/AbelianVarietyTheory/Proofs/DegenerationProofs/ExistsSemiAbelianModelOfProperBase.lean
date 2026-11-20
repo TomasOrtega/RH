@@ -16,9 +16,9 @@ open GlobalTheory.SS
 namespace GlobalTheory.SS
 
 /- English proof (translation)
-Introduce `o W L _ _ _ _ _ _ _ β Z s x G _ A _ φ hs hx hG hA`. Establish `hE : ValuativeCriterion.Existence s` using `(UniversallyClosed.eq_valuativeCriterion ▸ (inferInstance : UniversallyClosed s) : (ValuativeCriterion.Existence ⊓ @QuasiCompact) s).1`. Establish `hw : x ≫ s = Spec.map (CommRingCat.ofHom (algebraMap W L)) ≫ spMap β`. Rewrite using `[hx, ← Spec.map_comp]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Take `⟨⟨y, hy, -⟩⟩` from `(hE { R := W, K := L, i₁ := x, i₂ := spMap β, commSq := ⟨hw⟩ }).exists_lift`. Establish `hy' : spMap (algebraMap W L) ≫ y = x` using `hy`. Take `⟨e, he, -⟩` from `grpPullback_iso (((isGrpPullback_pullback ((Over.pullback y).obj G) (spMap (algebraMap W L))).comp (isGrpPullback_pullback G y)).congr hy' rfl) hA`. Conclude with `⟨(Over.pullback y).obj G, inferInstance, e, IsSemiAbelian.pullback y G hG, he⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_semiAbelian_model_of_proper_base :
     ∀ (o W L : Type) [CommRing o] [CommRing W] [IsDomain W] [IsDiscreteValuationRing W] [Field L] [Algebra W L] [IsFractionRing W L] (β : o →+* W) (Z : Scheme.{0}) (s : Z ⟶ Sp o) (x : Sp L ⟶ Z) (G : Over Z) [GrpObj G] (A : Over (Sp L)) [GrpObj A] (φ : A.left ⟶ G.left), IsProper s → x ≫ s = spMap ((algebraMap W L).comp β) → IsSemiAbelian G → IsGrpPullback A G x φ → ∃ (G' : Over (Sp W)) (_ : GrpObj G') (e : (Over.pullback (spMap (algebraMap W L))).obj G' ≅ A), IsSemiAbelian G' ∧ IsMonHom e.hom := by

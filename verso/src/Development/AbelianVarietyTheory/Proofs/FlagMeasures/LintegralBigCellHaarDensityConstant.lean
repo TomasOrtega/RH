@@ -26,7 +26,7 @@ namespace GlobalTheory.CellDens
 variable {k r : ℕ}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.closed, h.one_mem, h.mul_mem, fun a ha => ⟨h.inv_mem a ha, Matrix.mul_nonsing_inv _ (h.unit a ha)⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem matGroup_of {U : Set (Mat k r)} (h : Formalism.FourierDecayAlt.B2.IsClosedSubgroup U) : PI.IsMatGroup U :=
   ⟨h.closed, h.one_mem, h.mul_mem, fun a ha => ⟨h.inv_mem a ha, Matrix.mul_nonsing_inv _ (h.unit a ha)⟩⟩
@@ -42,9 +42,9 @@ def umL (m : ℕ) : EuclideanSpace ℝ (Fin m × Fin m × Bool) ≃ₗ[ℝ] Matr
   right_inv X := by ext i j; apply Complex.ext <;> simp [unrealify, realifyFun]
 
 /- English proof (translation)
-Rewrite using `[EuclideanSpace.real_norm_sq_eq, Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Fintype.sum_bool, Complex.sq_norm, Complex.normSq_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [unrealify]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem norm_sq_um {m : ℕ} (x : EuclideanSpace ℝ (Fin m × Fin m × Bool)) :
     ‖x‖ ^ 2 = ∑ i, ∑ j, ‖unrealify x i j‖ ^ 2 := by
@@ -56,7 +56,7 @@ theorem norm_sq_um {m : ℕ} (x : EuclideanSpace ℝ (Fin m × Fin m × Bool)) :
   simp only [unrealify]; ring
 
 /- English proof (translation)
-Unfold `torD`. Rewrite using `[Matrix.diagonal_add]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `split_ifs <;> simp [add_comm]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem torD_add (x y : Fin r → ℂ) : torD k r (x + y) = torD k r x + torD k r y := by
   unfold torD
@@ -65,9 +65,9 @@ theorem torD_add (x y : Fin r → ℂ) : torD k r (x + y) = torD k r x + torD k 
   split_ifs <;> simp [add_comm]
 
 /- English proof (translation)
-Unfold `torD`. Rewrite using `[← Matrix.diagonal_smul]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `only [Pi.smul_apply]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem torD_smul (c : ℝ) (x : Fin r → ℂ) : torD k r (c • x) = c • torD k r x := by
   unfold torD
@@ -77,13 +77,13 @@ theorem torD_smul (c : ℝ) (x : Fin r → ℂ) : torD k r (c • x) = c • tor
   split_ifs <;> simp
 
 /- English proof (translation)
-The claim follows from `(umL m).map_add _ _`.
+A detailed English derivation is pending.
 -/
 theorem um_add {m : ℕ} {S : Set (Matrix (Fin m) (Fin m) ℂ)} (X Y : lieE S) : um (X + Y) = um X + um Y :=
   (umL m).map_add _ _
 
 /- English proof (translation)
-The claim follows from `(umL m).map_smul _ _`.
+A detailed English derivation is pending.
 -/
 theorem um_smul {m : ℕ} {S : Set (Matrix (Fin m) (Fin m) ℂ)} (c : ℝ) (X : lieE S) : um (c • X) = c • um X :=
   (umL m).map_smul _ _
@@ -106,12 +106,12 @@ def dL (k r : ℕ) : EE k r →ₗ[ℝ] lieE (GG k r) where
       smul_add, smul_neg]
 
 /- English proof (translation)
-The claim follows from `(umL _).apply_symm_apply _`.
+A detailed English derivation is pending.
 -/
 theorem um_dL (v : EE k r) : um (dL k r v) = dchart k r v := (umL _).apply_symm_apply _
 
 /- English proof (translation)
-Rewrite using `[← (GlobalTheory.T.bigCellChartDifferential_skew_and_frobenius k r v).2, ← um_dL]`. Conclude with `norm_sq_um _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_dL (v : EE k r) :
     ‖dL k r v‖ ^ 2 = ‖v.1.1‖ ^ 2 + ‖v.1.2‖ ^ 2 + 2 * (∑ a, ‖v.2.1 a‖ ^ 2) + ‖v.2.2‖ ^ 2 := by
@@ -119,13 +119,13 @@ theorem norm_dL (v : EE k r) :
   exact norm_sq_um _
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `v hv`. Establish `h` using `norm_dL v`. Rewrite `h` using `[hv, norm_zero]`.
+Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h0 : 0 ≤ ∑ a, ‖v.2.1 a‖ ^ 2` using `by positivity`. Establish `h1` using `sq_nonneg ‖v.1.1‖`. Establish `h2` using `sq_nonneg ‖v.1.2‖`. Establish `h3` using `sq_nonneg ‖v.2.2‖`. Establish `e1 : v.1.1 = 0` using `by rw [← norm_eq_zero, ← sq_eq_zero_iff]; nlinarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : v.1.2 = 0` using `by rw [← norm_eq_zero, ← sq_eq_zero_iff]; nlinarith`. Establish `e3 : v.2.2 = 0` using `by rw [← norm_eq_zero, ← sq_eq_zero_iff]; nlinarith`. Establish `e4 : ∑ a, ‖v.2.1 a‖ ^ 2 = 0` using `by nlinarith`. Rewrite `e4` using `[Finset.sum_eq_zero_iff_of_nonneg (fun _ _ => by positivity)]`. Establish `e5 : v.2.1 = 0` using `funext fun a => by simpa using e4 a (Finset.mem_univ _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Prod.ext (Prod.ext e1 e2) (Prod.ext e5 e3)`. Introduce `Z`. Take `⟨v, hv⟩` from `GlobalTheory.T.bigCellChartDifferential_surjective_skew k r (um Z) ((GlobalTheory.T.lieAlgebra_besselModel_middleUnitary_entries k r _).1.1 Z.2)`. Use `⟨v, Subtype.ext ((umL _).injective ?_)⟩` and prove the remaining obligations. Conclude with `(um_dL v).trans hv`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem dL_bij : Function.Bijective (dL k r) := by
   constructor
@@ -152,9 +152,7 @@ theorem dL_bij : Function.Bijective (dL k r) := by
 def dE (k r : ℕ) : EE k r ≃L[ℝ] lieE (GG k r) := (LinearEquiv.ofBijective (dL k r) dL_bij).toContinuousLinearEquiv
 
 /- English proof (translation)
-Establish `h : IsSigmaCompact (Metric.ball x ρ)`. Use `(Metric.isOpen_ball (x := x) (ε := ρ)).locallyCompactSpace` as an intermediate fact. Conclude with `isSigmaCompact_iff_sigmaCompactSpace.2 inferInstance`. Take `⟨K, hK, hU⟩` from `h.image_of_continuousOn hf`. Rewrite using `[← hU]`.
-
-Conclude with `MeasurableSet.iUnion fun n => (hK n).isClosed.measurableSet`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem meas_img {E F : Type} [MetricSpace E] [ProperSpace E] [TopologicalSpace F] [T2Space F] [MeasurableSpace F]
     [OpensMeasurableSpace F] {f : E → F} {x : E} {ρ : ℝ} (hf : ContinuousOn f (Metric.ball x ρ)) :
@@ -167,9 +165,9 @@ theorem meas_img {E F : Type} [MetricSpace E] [ProperSpace E] [TopologicalSpace 
   exact MeasurableSet.iUnion fun n => (hK n).isClosed.measurableSet
 
 /- English proof (translation)
-Establish `h1 : Continuous fun X : lieE S => um X` using `(umL m).toLinearMap.continuous_of_finiteDimensional.comp continuous_subtype_val`. Establish `h2 : Continuous (NormedSpace.exp : Matrix (Fin m) (Fin m) ℂ → Matrix (Fin m) (Fin m) ℂ)`. Set `: NormedRing (Matrix (Fin m) (Fin m) ℂ)` to `Matrix.linftyOpNormedRing`. Set `: NormedAlgebra ℚ (Matrix (Fin m) (Fin m) ℂ)` to `Matrix.linftyOpNormedAlgebra`. Establish `: CompleteSpace (Matrix (Fin m) (Fin m) ℂ)` using `FiniteDimensional.complete ℂ _`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `@NormedSpace.exp_continuous (Matrix (Fin m) (Fin m) ℂ) _ _ this`. Conclude with `h2.comp h1`.
+A detailed English derivation is pending.
 -/
 theorem continuous_expE {m : ℕ} (S : Set (Matrix (Fin m) (Fin m) ℂ)) :
     Continuous fun X : lieE S => NormedSpace.exp (um X) := by
@@ -183,23 +181,23 @@ theorem continuous_expE {m : ℕ} (S : Set (Matrix (Fin m) (Fin m) ℂ)) :
   exact h2.comp h1
 
 /- English proof (translation)
-The claim follows from `meas_img (F := Fin m → Fin m → ℂ) (continuous_expE S).continuousOn`.
+A detailed English derivation is pending.
 -/
 theorem meas_expSet {m : ℕ} (S : Set (Matrix (Fin m) (Fin m) ℂ)) (ρ : ℝ) :
     MeasurableSet (expSet S (Metric.ball 0 ρ)) :=
   meas_img (F := Fin m → Fin m → ℂ) (continuous_expE S).continuousOn
 
 /- English proof (translation)
-Establish `: j.val ≤ i.val` using `h`. Apply the tactic sequence `unfold lev; split_ifs <;> omega`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem lev_mono {i j : Fin (2 * r + k + 1)} (h : j ≤ i) : lev k r j ≤ lev k r i := by
   have : j.val ≤ i.val := h
   unfold lev; split_ifs <;> omega
 
 /- English proof (translation)
-Unfold `haarLie`. Rewrite using `[one_smul]`. Use `(Measure.map_apply (Continuous.measurable (γ := Mt k r) (continuous_expE (Nset k r))) (meas_expSet _ ρ)).trans ?_` and prove the remaining obligations. Use `congr 1`. Use `Set.preimage_image_eq _ fun X Y h => Subtype.ext ((umL _).injective ?_)` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `GlobalTheory.T.exp_injective_strictUpperTriangular _ _ _ (fun i j h => ((GlobalTheory.T.lieEntries_unipotentBesselN_characterization k r _).1.1 X.2).2 i j (lev_mono h)) (fun i j h => ((GlobalTheory.T.lieEntries_unipotentBesselN_characterization k r _).1.1 Y.2).2 i j (lev_mono h)) …`.
+A detailed English derivation is pending.
 -/
 theorem haarLie_expSet (ρ : ℝ) :
     haarLie (Nset k r) 1 (expSet (Nset k r) (Metric.ball 0 ρ)) = volume (Metric.ball (0 : lieE (Nset k r)) ρ) := by
@@ -213,29 +211,29 @@ theorem haarLie_expSet (ρ : ℝ) :
     (fun i j h => ((GlobalTheory.T.lieEntries_unipotentBesselN_characterization k r _).1.1 Y.2).2 i j (lev_mono h)) h
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.T.lieEntries_unipotentBesselN_characterization k r _).2 X.2`.
+A detailed English derivation is pending.
 -/
 theorem exp_N (X : lieE (Nset k r)) : NormedSpace.exp (um X) ∈ Nset k r := (GlobalTheory.T.lieEntries_unipotentBesselN_characterization k r _).2 X.2
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.T.lieAlgebra_besselModel_middleUnitary_entries k r _).2.2 X.2`.
+A detailed English derivation is pending.
 -/
 theorem exp_lieElementFrobeniusMatrix_mem_besselUWb (X : lieE (Formalism.FourierDecayAlt.B2.UWb k r)) : NormedSpace.exp (um X) ∈ Formalism.FourierDecayAlt.B2.UWb k r :=
   (GlobalTheory.T.lieAlgebra_besselModel_middleUnitary_entries k r _).2.2 X.2
 
 /- English proof (translation)
-The claim follows from `Formalism.QuantumDeterminants.bigCellMem k r x 1 hx (by simp)`.
+A detailed English derivation is pending.
 -/
 theorem bc_mem {x : Fin r → ℂ} (hx : ∀ a, x a ≠ 0) : bigCell k r x 1 ∈ GG k r :=
   Formalism.QuantumDeterminants.bigCellMem k r x 1 hx (by simp)
 
 /- English proof (translation)
-The claim follows from `bc_mem fun _ => one_ne_zero`.
+A detailed English derivation is pending.
 -/
 theorem wC_mem : wC k r ∈ GG k r := bc_mem fun _ => one_ne_zero
 
 /- English proof (translation)
-Introduce `h`. Establish `h1 : x a = -1` using `by linear_combination h`. Use `norm_le_pi_norm x a` as an intermediate fact. Rewrite `this` using `[h1]`. Simplify using `at this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -248,7 +246,7 @@ theorem one_add_ne {x : Fin r → ℂ} (hx : ‖x‖ < 1) (a : Fin r) : 1 + x a 
   linarith
 
 /- English proof (translation)
-Establish `hG` using `Formalism.FourierDecayAlt.P.unitary_group_closed k r`. Establish `hx : ‖v.2.1‖ < 1` using `lt_of_le_of_lt ((norm_fst_le _).trans (norm_snd_le _)) (mem_ball_zero_iff.1 hv)`. Unfold `chart`. Rewrite using `[Matrix.exp_neg]`. Conclude with `hG.mul_mem _ wC_mem _ (hG.mul_mem _ (hG.mul_mem _ (hG.mul_mem _ (hG.inv_mem _ (exp_N _).1) _ (bc_mem (one_add_ne hx))) _ (exp_lieElementFrobeniusMatrix_mem_besselUWb _).1) _ (exp_N _).1)`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chart_mem {v : EE k r} (hv : v ∈ Metric.ball (0 : EE k r) 1) : chart k r v ∈ GG k r := by
   have hG := Formalism.FourierDecayAlt.P.unitary_group_closed k r
@@ -261,23 +259,23 @@ theorem chart_mem {v : EE k r} (hv : v ∈ Metric.ball (0 : EE k r) 1) : chart k
 def UU (k r : ℕ) (ρ : ℝ) : Set (Mt k r) := (fun x => Matrix.of.symm (chart k r x)) '' Metric.ball 0 ρ
 
 /- English proof (translation)
-The claim follows from `meas_img (F := Mt k r) ((GlobalTheory.T.bigCellExponentialChart_strictDifferentiable_summary k r).2.1.mono (Metric.ball_subset_ball hρ))`.
+A detailed English derivation is pending.
 -/
 theorem meas_UU {ρ : ℝ} (hρ : ρ ≤ 1) : MeasurableSet (UU k r ρ) :=
   meas_img (F := Mt k r) ((GlobalTheory.T.bigCellExponentialChart_strictDifferentiable_summary k r).2.1.mono (Metric.ball_subset_ball hρ))
 
 /- English proof (translation)
-Establish `hw : IsUnit (wC k r).det` using `(Formalism.FourierDecayAlt.P.unitary_group_closed k r).unit _ wC_mem`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨v, hv, h⟩`. Establish `hv'` using `hv`. Rewrite `hv'` using `[← Prod.mk_zero_zero, ← ball_prod_same, ← Prod.mk_zero_zero, ← ball_prod_same, ← Prod.mk_zero_zero, ← ball_prod_same]`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨⟨h1, h2⟩, h3, h4⟩` from `hv'`. Establish `h' : chart k r v = wC k r * ((Matrix.of n)⁻¹ * bigCell k r x 1 * Matrix.of m * Matrix.of n')` using `h`. Unfold `chart at h'`. Rewrite `h'` using `[Matrix.exp_neg]`. Establish `h''` using `(Matrix.isUnit_iff_isUnit_det _).2 hw |>.mul_left_cancel h'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Take `⟨e1, e2, e3, e4⟩` from `GlobalTheory.T.besselBigCell_coordinates_unique k r _ _ (one_add_ne ((mem_ball_zero_iff.1 h3).trans_le hρ)) hx _ (exp_N _) _ hn _ (exp_N _) _ hn' _ (exp_lieElementFrobeniusMatrix_mem_besselUWb _) _ hm h''`. Use `⟨?_, ⟨⟨_, h1, e1⟩, ⟨_, h2, e4⟩⟩, ⟨_, h4, e3⟩⟩` and prove the remaining obligations. Rewrite using `[← e2, mem_ball_iff_norm]`. Establish `: ((fun a => 1 + v.2.1 a) - fun _ => 1 : Fin r → ℂ) = v.2.1` using `by funext a; simp`. Rewrite using `[this]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mem_ball_zero_iff.1 h3`. Introduce and unpack `⟨hx1, ⟨⟨X, h1, e1⟩, ⟨X', h2, e2⟩⟩, ⟨Y, h3, e3⟩⟩`. Use `⟨((X, X'), (x - fun _ => 1, Y)), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← Prod.mk_zero_zero, ← ball_prod_same, ← Prod.mk_zero_zero, ← ball_prod_same, ← Prod.mk_zero_zero, ← ball_prod_same]`. Conclude with `⟨⟨h1, h2⟩, mem_ball_zero_iff.2 (mem_ball_iff_norm.1 hx1), h3⟩`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `e1' : NormedSpace.exp (um X) = Matrix.of n` using `e1`. Establish `e2' : NormedSpace.exp (um X') = Matrix.of n'` using `e2`. Establish `e3' : NormedSpace.exp (um Y) = Matrix.of m` using `e3`. Use `show chart k r _ = wC k r * ((Matrix.of n)⁻¹ * bigCell k r x 1 * Matrix.of m * Matrix.of n')`. Unfold `chart`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Matrix.exp_neg]`. Simplify using `only [e1', e2', e3', Pi.sub_apply, add_sub_cancel]`.
+A detailed English derivation is pending.
 -/
 theorem mem_UU {ρ : ℝ} (hρ : ρ ≤ 1) {x : Fin r → ℂ} (hx : ∀ a, x a ≠ 0) {n n' m : Mt k r}
     (hn : Matrix.of n ∈ Nset k r) (hn' : Matrix.of n' ∈ Nset k r) (hm : Matrix.of m ∈ Formalism.FourierDecayAlt.B2.UWb k r) :
@@ -315,9 +313,9 @@ theorem mem_UU {ρ : ℝ} (hρ : ρ ≤ 1) {x : Fin r → ℂ} (hx : ∀ a, x a 
       simp only [e1', e2', e3', Pi.sub_apply, add_sub_cancel]
 
 /- English proof (translation)
-Introduce `h0`. Apply `h` to reduce the goal to its premises. Use `Finset.prod_eq_zero (Finset.mem_univ a) ?_` and prove the remaining obligations. Establish `: 2 * (Mdim k r a - 2) ≠ 0`. Use `a.isLt` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `Mdim`. Use linear arithmetic over natural numbers and integers. Rewrite using `[h0, norm_zero, zero_pow this]`.
+Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 -/
 theorem ne_zero_of_weight {x : Fin r → ℂ} (h : Formalism.FourierDecayAlt.B2.cWeight k r x ≠ 0) (a : Fin r) : x a ≠ 0 := by
   intro h0
@@ -329,21 +327,19 @@ theorem ne_zero_of_weight {x : Fin r → ℂ} (h : Formalism.FourierDecayAlt.B2.
   rw [h0, norm_zero, zero_pow this]
 
 /- English proof (translation)
-Use `hN.1` as an intermediate fact. Use `hb.1` as an intermediate fact. Establish `hl : Measurable (lmulM (wC k r) : Mt k r → Mt k r)` using `Continuous.measurable (α := Mt k r) (γ := Mt k r) ((continuous_const (y := wC k r)).matrix_mul (continuous_id (X := Mat k r)))`. Establish `hwm : Measurable fun x : Fin r → ℂ => ENNReal.ofReal (Formalism.FourierDecayAlt.B2.cWeight k r x)`. Use `ENNReal.measurable_ofReal.comp (Continuous.measurable ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `Formalism.FourierDecayAlt.B2.cWeight`. Use `fun_prop`. Establish `hU` using `hl (meas_UU (k := k) (r := r) hρ)`. Establish `h1` using `hC _ (measurable_one.indicator hU)`. Rewrite `h1` using `[lintegral_indicator_one hU, ← Measure.map_apply hl (meas_UU hρ), hG.2.2.2 _ wC_mem]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, ← Measure.prod_prod, ← Measure.prod_prod, ← lintegral_mul_const _ hwm, ← lintegral_indicator Metric.isOpen_ball.measurableSet]`. Use `congr 1`. Use `lintegral_congr fun x => ?_` and prove the remaining obligations. Distinguish the cases in `hw : Formalism.FourierDecayAlt.B2.cWeight k r x = 0`. Simplify using `[hw, Set.indicator]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hx` using `ne_zero_of_weight hw`. Establish `hae : ∀ᵐ p ∂((μN.prod μN).prod μb), (Matrix.of p.1.1 ∈ Nset k r ∧ Matrix.of p.1.2 ∈ Nset k r) ∧ Matrix.of p.2 ∈ Formalism.FourierDecayAlt.B2.UWb k r`. Establish `a1 : ∀ᵐ n ∂μN, Matrix.of n ∈ Nset k r` using `hN.2.2.1`. Establish `a2 : ∀ᵐ n ∂μb, Matrix.of n ∈ Formalism.FourierDecayAlt.B2.UWb k r` using `hb.2.2.1`. Conclude with `(Measure.quasiMeasurePreserving_fst.ae ((Measure.quasiMeasurePreserving_fst.ae a1).and (Measure.quasiMeasurePreserving_snd.ae a1))).and (Measure.quasiMeasurePreserving_snd.ae a2)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Establish `hS` using `((meas_expSet (Nset k r) ρ).prod (meas_expSet (Nset k r) ρ)).prod (meas_expSet (Formalism.FourierDecayAlt.B2.UWb k r) ρ)`. Distinguish the cases in `hx1 : x ∈ Metric.ball (fun _ => 1 : Fin r → ℂ) ρ`. Rewrite using `[Set.indicator_of_mem hx1, ← lintegral_indicator_one hS]`. Use `congr 1`. Use `lintegral_congr_ae (hae.mono fun p hp => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `mem_UU hρ hx hp.1.1 hp.1.2 hp.2` as an intermediate fact. Simplify using `only [hx1, true_and] at this`. Simplify using `only [Set.indicator_apply, Set.mem_preimage, Pi.one_apply]`. Conclude with `if_congr this rfl rfl`. Rewrite using `[Set.indicator_of_notMem hx1]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `mul_eq_zero_of_right _ ?_` and prove the remaining obligations. Rewrite using `[← lintegral_zero (μ := (μN.prod μN).prod μb)]`. Use `lintegral_congr_ae (hae.mono fun p hp => ?_)` and prove the remaining obligations. Use `mem_UU hρ hx hp.1.1 hp.1.2 hp.2` as an intermediate fact. Simplify using `only [hx1, false_and, iff_false] at this`.
-
-Conclude with `Set.indicator_of_notMem (s := lmulM (wC k r) ⁻¹' UU k r ρ) this _`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem meas_formula (μG μN μb : Measure (Mt k r)) (hG : IsHaarOn (GG k r) μG) (hN : IsHaarOn (Nset k r) μN)
     (hb : IsHaarOn (Formalism.FourierDecayAlt.B2.UWb k r) μb) (C : ℝ≥0∞)
@@ -399,7 +395,7 @@ theorem meas_formula (μG μN μb : Measure (Mt k r)) (hG : IsHaarOn (GG k r) μ
     exact Set.indicator_of_notMem (s := lmulM (wC k r) ⁻¹' UU k r ρ) this _
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.T.volume_image_of_sqrt_two_isometric_linearEquiv _ _ _ r (dE k r) norm_dL _ Metric.isOpen_ball.measurableSet, ← Prod.mk_zero_zero, ← ball_prod_same, ← Prod.mk_zero_zero, ← ball_prod_same, ← Prod.mk_zero_zero, ← ball_prod_same, Measure.volume_eq_prod, Measure.prod_pr …`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem vol_ball (ρ : ℝ) : volume (dE k r '' Metric.ball (0 : EE k r) ρ) =
     2 ^ r * (volume (Metric.ball (0 : lieE (Nset k r)) ρ) * volume (Metric.ball (0 : lieE (Nset k r)) ρ) *
@@ -410,7 +406,7 @@ theorem vol_ball (ρ : ℝ) : volume (dE k r '' Metric.ball (0 : EE k r) ρ) =
     Measure.prod_prod]
 
 /- English proof (translation)
-Establish `h : a * a ≠ 0` using `mul_ne_zero ha ha`. Establish `h' : a * a ≠ ⊤` using `ENNReal.mul_ne_top ha' ha'`. Rewrite using `[show C * (I * (a * a * m)) = (a * a) * (C * (I * m)) by ring, show d * (a * a * (b * c)) = (a * a) * (d * (b * c)) by ring, ENNReal.mul_div_mul_left _ _ h h', div_eq_mul_inv, ENNReal.mul_inv (Or.inr (ENNReal.mul_ne_top hb' hc')) (Or.inl hd'), ENNReal.mul_inv (Or.inr hc') (Or.inl …`. Simplify using `only [div_eq_mul_inv]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem mul_ringHom_units_ratio {C I a m b c d : ℝ≥0∞} (ha : a ≠ 0) (ha' : a ≠ ⊤) (hb' : b ≠ ⊤) (hc' : c ≠ ⊤) (hd' : d ≠ ⊤) :
     C * (I * (a * a * m)) / (d * (a * a * (b * c))) = C / d * (I / b * (m / c)) := by
@@ -423,15 +419,13 @@ theorem mul_ringHom_units_ratio {C I a m b c d : ℝ≥0∞} (ha : a ≠ 0) (ha'
   simp only [div_eq_mul_inv]; ring
 
 /- English proof (translation)
-Introduce `k r μG μb c cb hc hcb hG hdG hb hdb`. Establish `hN : IsHaarOn (Nset k r) (haarLie (Nset k r) 1)` using `GlobalTheory.T.haarLie_isHaarOn_unipotentRadical k r 1 one_pos ENNReal.one_lt_top`. Take `⟨C, -, hC⟩` from `Formalism.FourierDecayAlt.P.iterated_integration_formula k r μG (haarLie (Nset k r) 1) μb ((GlobalTheory.HaarNotions.isHaarOn_iff_groups k r μG).1.1 hG) ((GlobalTheory.HaarNotions.isHaarOn_iff_groups k r _).2.1.1 hN) ((GlobalTheory.HaarNotions.isHaarOn_iff (Formalism.FourierDecay …`. It suffices to establish `h : (C : ℝ≥0∞) = ENNReal.ofReal (c / cb * 2 ^ r) by rw [← h]; exact hC`. Establish `t1` using `GlobalTheory.T.tendsto_measure_image_ball_div_volume _ (GG k r) μG _ (matGroup_of (Formalism.FourierDecayAlt.P.unitary_group_closed k r)) hG hdG (EE k r) (chart k r) (dE k r) (GlobalTheory.T.bigCellExponentialChart_strictDifferentiable_summary k r).1 (Filter.mem_of_superset (Metr …`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the argument to an intermediate assertion. Establish an intermediate fact.
 
-Take `⟨D, h1, h2⟩` from `(GlobalTheory.T.bigCellExponentialChart_strictDifferentiable_summary k r).2.2 i j`. Conclude with `⟨D, h1, fun v => by rw [h2, ← um_dL]; rfl⟩)`. Establish `h2r : (2 : ℝ≥0∞) ^ r ≠ ⊤` using `ENNReal.pow_ne_top ENNReal.ofNat_ne_top`. Establish `h2r0 : (2 : ℝ≥0∞) ^ r ≠ 0` using `pow_ne_zero _ two_ne_zero`. Establish `hcb0 : ENNReal.ofReal cb ≠ 0` using `by simpa using hcb`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `t2` using `ENNReal.Tendsto.const_mul (a := (C : ℝ≥0∞) / 2 ^ r) (ENNReal.Tendsto.mul (GlobalTheory.T.tendsto_ball_mean_bigCellWeight k r) (Or.inl one_ne_zero) hdb (Or.inr ENNReal.one_ne_top)) (Or.inr (ENNReal.div_ne_top ENNReal.coe_ne_top h2r0))`. Establish `t3 : ENNReal.ofReal c = (C : ℝ≥0∞) / 2 ^ r * (1 * ENNReal.ofReal cb)`. Use `tendsto_nhds_unique (t1.congr' ?_) t2` and prove the remaining obligations. Use `filter_upwards [Ioc_mem_nhdsGT (one_pos (α := ℝ))] with ρ hρ`. Use `meas_formula μG _ μb hG hN hb C hC hρ.2` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `UU at this`. Rewrite using `[this, vol_ball, haarLie_expSet]`. Conclude with `mul_ringHom_units_ratio (Metric.measure_ball_pos _ _ hρ.1).ne' measure_ball_lt_top.ne measure_ball_lt_top.ne measure_ball_lt_top.ne h2r`. Rewrite using `[ENNReal.ofReal_mul (by positivity), ENNReal.ofReal_div_of_pos hcb, t3, one_mul, ENNReal.mul_div_cancel_right hcb0 ENNReal.ofReal_ne_top, ENNReal.ofReal_pow (by norm_num)]`. Simplify using `only [ENNReal.ofReal_ofNat]`.
-
-Rewrite using `[ENNReal.div_mul_cancel h2r0 h2r]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bigCell_integral : ∀ (k r : ℕ) (μG μb : Measure (Mt k r)) (c cb : ℝ), 0 < c → 0 < cb → IsHaarOn (GG k r) μG → HasDens (GG k r) μG (ENNReal.ofReal c) → IsHaarOn (Formalism.FourierDecayAlt.B2.UWb k r) μb → HasDens (Formalism.FourierDecayAlt.B2.UWb k r) μb (ENNReal.ofReal cb) → ∀ f : Mt k r → ℝ≥0∞, Measurable f → ∫⁻ g, f g ∂μG = ENNReal.ofReal (c / cb * 2 ^ r) * ∫⁻ x : Fin r → ℂ, ENNReal.ofReal (Formalism.FourierDecayAlt.B2.cWeight k r x) * ∫⁻ p : (Mt k r × Mt k r) × Mt k r, f ((Matrix.of p.1.1)⁻¹ * bigCell k r x 1 * Matrix.of p.2 * Matrix.of p.1.2) ∂(((haarLie (Nset k r) 1).prod (haarLie (Nset k r) 1)).prod μb) := by
   intro k r μG μb c cb hc hcb hG hdG hb hdb

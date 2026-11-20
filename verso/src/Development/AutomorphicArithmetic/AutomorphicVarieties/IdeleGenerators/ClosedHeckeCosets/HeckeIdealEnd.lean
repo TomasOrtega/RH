@@ -11,9 +11,9 @@ section Loc
 open GlobalTheory.LFun Formalism.UG
 
 /- English proof (translation)
-Establish `hfin : (MulAction.orbit K (a : G ⧸ K)).Finite` using `hf.subset fun c hc => by`. Rewrite using `[Set.mem_setOf_eq, h1 _ (by rwa [QuotientGroup.out_eq'])]; exact one_ne_zero`. Use `letI := hfin.fintype`. Rewrite using `[Hi.dc, finsum_eq_sum_of_fintype, LinearMap.sum_apply, ← finsum_eq_sum_of_fintype, finsum_set_coe_eq_finsum_mem (f := fun c : G ⧸ K => ρ c.out x), heckeVec]`. Use `finsum_congr fun c => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `hc : c ∈ MulAction.orbit K (a : G ⧸ K)`. Rewrite using `[h1 _ (by rwa [QuotientGroup.out_eq'])]; simp [hc]`. Rewrite using `[h2 _ (by rwa [QuotientGroup.out_eq'])]; simp [hc]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem hecke_eq_dc {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ G V) (K : Subgroup G)
     (a : G) (h : G → ℂ) (h1 : ∀ g : G, (g : G ⧸ K) ∈ MulAction.orbit K (a : G ⧸ K) → h g = 1)
@@ -33,7 +33,7 @@ private theorem hecke_eq_dc {G V : Type} [Group G] [AddCommGroup V] [Module ℂ 
 variable {F : Type} [Field F] [NumberField F] (w : HeightOneSpectrum (𝓞 F))
 
 /- English proof (translation)
-Use extensionality with `g`. Use `⟨fun ⟨k, _, e⟩ => ⟨k, e⟩, fun ⟨k, e⟩ => ⟨k, ?_, e⟩⟩` and prove the remaining obligations. Use `haveI : Subsingleton (w.adicCompletionIntegers F ⧸ IsLocalRing.maximalIdeal (w.adicCompletionIntegers F) ^ 0) := Ideal.Quotient.subsingleton_iff.2 (by simp)`. Conclude with `Subsingleton.elim _ _`.
+By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem iwahori_level_zero_eq : K1 w 0 = KGL w 2 := by
   ext g
@@ -43,11 +43,11 @@ private theorem iwahori_level_zero_eq : K1 w 0 = KGL w 2 := by
   exact Subsingleton.elim _ _
 
 /- English proof (translation)
-Use `hecke_eq_dc ρ _ a _ (fun g hg => ?_) (fun g hg => ?_) (Formalism.UG.P.finite_support_cosets (Final.GLintComm F w 2) (Tj_mem_hecke (unif_spec w) j).2) x` and prove the remaining obligations. Take `⟨k, hk⟩` from `hg`. Establish `h : ((k : GL (Fin 2) (w.adicCompletion F)) * a)⁻¹ * g ∈ KGL w 2` using `QuotientGroup.eq.1 hk`. Rewrite using `[Tj, Set.indicator_of_mem, Pi.one_apply]`. Use `⟨k, k.2, _, h, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← ha, ← Units.val_mul, ← Units.val_mul, mul_inv_cancel_left]`. Rewrite using `[Tj, Set.indicator_of_notMem]`. Introduce and unpack `⟨k, hk, k', hk', e⟩`. Use `hg ⟨⟨k, hk⟩, ?_⟩` and prove the remaining obligations. Rewrite `e` using `[← ha, ← Units.val_mul, ← Units.val_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Units.ext e]`. Conclude with `(QuotientGroup.mk_mul_of_mem (k * a) hk').symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem hecke_Tj {V : Type} [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ (GL (Fin 2) (w.adicCompletion F)) V)
     (j : ℕ) (a : GL (Fin 2) (w.adicCompletion F)) (ha : a.val = diagJ 2 (atFin w (unif w) : w.adicCompletion F) j) (x : V) :
@@ -67,13 +67,13 @@ private theorem hecke_Tj {V : Type} [AddCommGroup V] [Module ℂ V] (ρ : Repres
     exact (QuotientGroup.mk_mul_of_mem (k * a) hk').symm
 
 /- English proof (translation)
-Take `⟨α, β, rfl⟩` from `Multiset.card_eq_two.1 h.2.2.1`. Use `⟨α, β, rfl, ?_, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `rw [Uop, iwahori_level_zero_eq, ← hecke_Tj w ρ 1 _ (by ext i j; fin_cases i <;> fin_cases j <;> simp [aff, diagJ]), h.2.2.2 _ (unif_spec w) 1 (by norm_num)]`. Use `congr 1`. Rewrite using `[Complex.ofReal_cpow (by positivity)]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Establish `: qV F w = normV w` using `rfl`. Simplify using `[satEig, Multiset.esymm, Multiset.powersetCard_one, this]`. Evaluate the numerical expressions using `[add_comm]`. Establish `h2` using `h.2.2.2 _ (unif_spec w) 2 le_rfl set z := GeneralLinearGroup.scalar (Fin 2) (atFin w (unif w))`. Apply the tactic sequence `rw [hecke_Tj w ρ 2 z (by ext i j; fin_cases i <;> fin_cases j <;> simp [z, diagJ])] at h2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Evaluate the numerical expressions. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `ho : ∀ q ∈ MulAction.orbit (KGL w 2) (z : _ ⧸ KGL w 2), q = z`. Introduce and unpack `_ ⟨k, rfl⟩`. Express the relevant statement in the definitionally equal form `(((k : GL (Fin 2) (w.adicCompletion F)) * z : GL (Fin 2) (w.adicCompletion F)) : _ ⧸ KGL w 2) = _`. Rewrite using `[← GlobalTheory.CuspRep.scalar_comm]`. Conclude with `QuotientGroup.mk_mul_of_mem _ k.2`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[(Hi.dcSum ℂ _ V ρ _ _ z ((Set.finite_singleton _).subset ho)).1 {z} (fun y hy => by rw [Finset.mem_singleton.1 hy]; exact MulAction.mem_orbit_self _) (fun q hq => ⟨z, ⟨Finset.mem_singleton_self _, (ho q hq).symm⟩, fun y hy => Finset.mem_singleton.1 hy.1⟩) x (GlobalTheory.LGrp.me …`. Rewrite using `[h2]`. Simplify using `[satEig, Multiset.esymm, Multiset.powersetCard_cons, Multiset.powersetCard_one]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem sat_two {V : Type} [AddCommGroup V] [Module ℂ V] {ρ : Representation ℂ (GL (Fin 2) (w.adicCompletion F)) V}
     {x : V} {B : Multiset ℂˣ} (h : IsSatVecGL w ρ x B) : ∃ α β : ℂˣ, B = {α, β} ∧
@@ -104,11 +104,11 @@ private theorem sat_two {V : Type} [AddCommGroup V] [Module ℂ V] {ρ : Represe
     simp [satEig, Multiset.esymm, Multiset.powersetCard_cons, Multiset.powersetCard_one]
 
 /- English proof (translation)
-Establish `h4 : 1 ≤ ‖u‖`. Assume the negation of the conclusion as `h5`. Establish `h6` using `IsUltrametricDist.norm_add_le_max (u + v) (-(u + v - 1))`. Establish `h7` using `IsUltrametricDist.norm_add_le_max u v`. Rewrite `h6` using `[norm_neg, show u + v + -(u + v - 1) = 1 by ring, norm_one]`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h7` using `[max_eq_left h]`. Conclude with `absurd h6 (not_le.2 (max_lt (h7.trans_lt (not_le.1 h5)) h1))`. Establish `h5 : ‖v‖ < ‖q‖` using `lt_of_le_of_lt (by rw [norm_mul]; exact le_mul_of_one_le_left (norm_nonneg _) h4) h2`. Use `⟨?_, fun e => ?_⟩` and prove the remaining obligations. Establish `h6` using `IsUltrametricDist.norm_add_le_max (u + v - 1) (-v)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h6` using `[norm_neg, show u + v - 1 + -v = u - 1 by ring]`. Conclude with `h6.trans_lt (max_lt h1 (h5.trans_le h3))`. Rewrite `h5` using `[e, norm_mul]`. Conclude with `absurd (le_mul_of_one_le_right (norm_nonneg _) h4) (not_le.2 h5)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem root {K : Type} [NormedField K] [IsUltrametricDist K] {u v q : K} (h : ‖v‖ ≤ ‖u‖) (h1 : ‖u + v - 1‖ < 1)
     (h2 : ‖u * v‖ < ‖q‖) (h3 : ‖q‖ ≤ 1) : ‖u - 1‖ < 1 ∧ v ≠ q * u := by
@@ -128,17 +128,15 @@ private theorem root {K : Type} [NormedField K] [IsUltrametricDist K] {u v q : K
     exact absurd (le_mul_of_one_le_right (norm_nonneg _) h4) (not_le.2 h5)
 
 /- English proof (translation)
-Take `⟨x, hx, hx0⟩` from `(Submodule.ne_bot_iff _).1 hB.1`. Take `⟨α, β, rfl, h2, h3⟩` from `sat_two w (hB.2 x hx hx0)`. Use `set r : ℂ := (((normV w : ℝ) ^ (1 / 2 : ℝ) : ℝ) : ℂ) with hr`. Establish `h9 : algSat 2 (normV w) {α, β} = {r * α, r * β}`. Simplify using `only [algSat, hr, Multiset.insert_eq_cons, Multiset.map_cons, Multiset.map_singleton]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Evaluate the numerical expressions.
 
-Evaluate the numerical expressions. Establish `hrr : r * r = normV w`. Rewrite using `[hr, ← Complex.ofReal_mul, ← Real.rpow_add' (by positivity) (by norm_num)]`. Evaluate the numerical expressions. Rewrite `e` using `[h9]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h0` using `congrArg (eval 0) e`. Establish `h1` using `congrArg (eval 1) e`. Simplify using `only [Multiset.insert_eq_cons, Multiset.map_cons, Multiset.map_singleton, Multiset.prod_cons, Multiset.prod_singleton, eval_mul, eval_sub, eval_add, eval_pow, eval_X, eval_C] at h0 h1`. Establish `hs : r * α + r * β = a` using `by linear_combination h0 - h1`. Establish `hp : r * α * (r * β) = d` using `by linear_combination h0`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx' : x ∈ Hi.fixd (π.locRep w) (K1 w 0)`. Rewrite using `[iwahori_level_zero_eq]`. Conclude with `GlobalTheory.LGrp.mem_fixed.1 hx`. Establish `key : ∀ u v : ℂ, u + v = a → u * v = d → ‖ι.symm v‖ ≤ ‖ι.symm u‖ → ∃ lam, HasU w (π.locRep w) 1 lam ∧ ‖ι.symm lam - 1‖ < 1` using `fun u v e1 e2 h => by`. Take `⟨k1, k2⟩` from `root h (by rwa [← map_add, e1]) (by rwa [← map_mul, e2]) (IsUltrametricDist.norm_natCast_le_one _ _)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨u, pStab F w _ _ x u v hx0 hx' (by rw [h2, e1, ← hs, mul_add]) ?_ fun e => k2 (by rw [e, map_mul, map_natCast]), k1⟩` and prove the remaining obligations. Rewrite using `[h3, smul_smul, e2, ← hp, ← hrr, Units.val_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Break down `le_total ‖ι.symm (r * β)‖ ‖ι.symm (r * α)‖ with h | h` into its components or cases.
-
-Conclude with `key _ _ hs hp h`. Conclude with `key _ _ ((add_comm _ _).trans hs) ((mul_comm _ _).trans hp) h`.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem stab [IsTotallyReal F] {l : ℕ} [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (π : TR.CuspSub F 2) {B : Multiset ℂˣ} (hB : π.HasSat w B)
     {a d : ℂ} (e : ((algSat 2 (normV w) B).map fun b => X - C b).prod = X ^ 2 - C a * X + C d)
@@ -176,20 +174,20 @@ theorem stab [IsTotallyReal F] {l : ℕ} [Fact l.Prime] (ι : Qbar l ≃+* ℂ) 
 end Loc
 
 /- English proof (translation)
-Rewrite using `[Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem normV_eq (v : Pl ℚ) : normV v = Ideal.absNorm v.asIdeal := by
   rw [Ideal.absNorm_apply, Submodule.cardQuot_apply]; rfl
 
 /- English proof (translation)
-Establish `h1` using `Ideal.absNorm_dvd_absNorm_of_le ((Ideal.span_singleton_le_iff_mem I).2 h)`. Rewrite `h1` using `[Ideal.absNorm_span_natCast, RingOfIntegers.rank, Module.finrank_self, pow_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 private theorem dvd_of_mem {I : Ideal (𝓞 ℚ)} {n : ℕ} (h : (n : 𝓞 ℚ) ∈ I) : Ideal.absNorm I ∣ n := by
   have h1 := Ideal.absNorm_dvd_absNorm_of_le ((Ideal.span_singleton_le_iff_mem I).2 h)
   rwa [Ideal.absNorm_span_natCast, RingOfIntegers.rank, Module.finrank_self, pow_one] at h1
 
 /- English proof (translation)
-Rewrite using `[normV_eq]`. Use `⟨dvd_of_mem, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨c, rfl⟩`. Rewrite using `[Nat.cast_mul]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.absNorm_mem _)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_iff (v : Pl ℚ) (n : ℕ) : (n : 𝓞 ℚ) ∈ v.asIdeal ↔ normV v ∣ n := by
   rw [normV_eq]
@@ -199,9 +197,9 @@ theorem mem_iff (v : Pl ℚ) (n : ℕ) : (n : 𝓞 ℚ) ∈ v.asIdeal ↔ normV 
   exact Ideal.mul_mem_right _ _ (Ideal.absNorm_mem _)
 
 /- English proof (translation)
-Establish `h1 : 1 < normV v` using `NumberField.HeightOneSpectrum.one_lt_absNorm v`. Use `Nat.prime_def.2 ⟨h1, fun m hm => ?_⟩` and prove the remaining obligations. Take `⟨c, hc⟩` from `hm`. Establish `h2` using `(mem_iff v _).2 dvd_rfl`. Rewrite `h2` using `[hc, Nat.cast_mul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Break down `v.isPrime.mem_or_mem h2 with h | h` into its components or cases. Conclude with `Or.inr (Nat.dvd_antisymm ⟨c, hc⟩ ((mem_iff v _).1 h))`. Establish `h3` using `Nat.dvd_antisymm (Dvd.intro_left m hc.symm) ((mem_iff v _).1 h)`. Rewrite `hc` using `[h3]`. Conclude with `Or.inl (Nat.eq_of_mul_eq_mul_right (by omega) (hc.symm.trans (one_mul _).symm))`.
+Separate the alternatives or extract the components of the hypothesis. Prove the second alternative. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Prove the first alternative.
 -/
 theorem normV_prime (v : Pl ℚ) : (normV v).Prime := by
   have h1 : 1 < normV v := NumberField.HeightOneSpectrum.one_lt_absNorm v
@@ -216,13 +214,13 @@ theorem normV_prime (v : Pl ℚ) : (normV v).Prime := by
     exact Or.inl (Nat.eq_of_mul_eq_mul_right (by omega) (hc.symm.trans (one_mul _).symm))
 
 /- English proof (translation)
-Rewrite using `[mem_iff, Nat.prime_dvd_prime_iff_eq (normV_prime v) hl]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_iff_eq (v : Pl ℚ) {l : ℕ} (hl : l.Prime) : (l : 𝓞 ℚ) ∈ v.asIdeal ↔ normV v = l := by
   rw [mem_iff, Nat.prime_dvd_prime_iff_eq (normV_prime v) hl]
 
 /- English proof (translation)
-Introduce `v hv` and use `by have h := (normV_eq v).symm.trans ((mem_iff_eq v hl).1 hv) refine ⟨h, fun h2 => ?_⟩ have h3 := dvd_of_mem h2 rw [map_pow, h] at h3 have h4 := Nat.le_of_dvd hl.pos h3 have := hl.one_lt nlinarith`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem splitL {l : ℕ} (hl : l.Prime) : SplitL ℚ l := fun v hv => by
   have h := (normV_eq v).symm.trans ((mem_iff_eq v hl).1 hv)
@@ -234,7 +232,7 @@ theorem splitL {l : ℕ} (hl : l.Prime) : SplitL ℚ l := fun v hv => by
   nlinarith
 
 /- English proof (translation)
-Establish `h0 : Ideal.span {(a : 𝓞 ℚ)} ≠ 0` using `by simpa using h`. Conclude with `(Ideal.finite_factors h0).subset fun w hw => Ideal.dvd_span_singleton.2 ((mem_iff w a).2 hw)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem fin_dvd {a : ℕ} (h : a ≠ 0) : {w : Pl ℚ | normV w ∣ a}.Finite := by
   have h0 : Ideal.span {(a : 𝓞 ℚ)} ≠ 0 := by simpa using h

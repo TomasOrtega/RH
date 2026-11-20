@@ -25,14 +25,14 @@ noncomputable def sec {G : Over S} (s : 𝟙_ (Over S) ⟶ G) : 𝟙_ (Over T) �
   Functor.LaxMonoidal.ε (Over.pullback f) ≫ (Over.pullback f).map s
 
 /- English proof (translation)
-Simplify using `only [sec, Functor.map_comp, Category.assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sec_comp {G G' : Over S} (s : 𝟙_ (Over S) ⟶ G) (I : G ⟶ G') :
     sec f (s ≫ I) = sec f s ≫ (Over.pullback f).map I := by
   simp only [sec, Functor.map_comp, Category.assoc]
 
 /- English proof (translation)
-Simplify using `only [sec, ← MonObj.comp_pow]`. Use `congr 1`. Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih => rw [pow_succ, pow_succ, Functor.map_mul, ih]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem sec_pow {G : Over S} [GrpObj G] (s : 𝟙_ (Over S) ⟶ G) (n : ℕ) : sec f (s ^ n) = sec f s ^ n := by
   simp only [sec, ← MonObj.comp_pow]
@@ -42,7 +42,7 @@ theorem sec_pow {G : Over S} [GrpObj G] (s : 𝟙_ (Over S) ⟶ G) (n : ℕ) : s
   | succ n ih => rw [pow_succ, pow_succ, Functor.map_mul, ih]
 
 /- English proof (translation)
-Establish `hw` using `Over.w (Functor.LaxMonoidal.ε (Over.pullback f))`. Establish `hc` using `pullback.condition (f := (𝟙_ (Over S)).hom) (g := f)`. Simplify using `only [sec, Over.comp_left, Category.assoc, Over.pullback_map_left, pullback.lift_fst]`. Simplify using `at hw hc ⊢`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem sec_left {G : Over S} (s : 𝟙_ (Over S) ⟶ G) :
     (sec f s).left ≫ pullback.fst G.hom f = f ≫ s.left := by
@@ -52,9 +52,9 @@ theorem sec_left {G : Over S} (s : 𝟙_ (Over S) ⟶ G) :
   simp at hw hc ⊢
 
 /- English proof (translation)
-Use `ext1`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[sec_left, h]`. Establish `h1` using `Over.w (sec f s)`. Establish `h2` using `Over.w x`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Over.pullback_obj_hom] at h1 h2`. Rewrite using `[h1, h2]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sec_eq {G : Over S} (s : 𝟙_ (Over S) ⟶ G) (x : 𝟙_ (Over T) ⟶ (Over.pullback f).obj G)
     (h : f ≫ s.left = x.left ≫ pullback.fst G.hom f) : sec f s = x := by
@@ -67,7 +67,7 @@ theorem sec_eq {G : Over S} (s : 𝟙_ (Over S) ⟶ G) (x : 𝟙_ (Over T) ⟶ (
     rw [h1, h2]
 
 /- English proof (translation)
-Use `GlobalTheory.over_ext_of_schemeTheoreticallyDominant (Y := 𝟙_ (Over S)) f ?_` and prove the remaining obligations. Rewrite using `[← sec_left, ← sec_left, h]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem sec_injective [IsSchemeTheoreticallyDominant f] {G : Over S} [IsSeparated G.hom]
     {s t : 𝟙_ (Over S) ⟶ G} (h : sec f s = sec f t) : s = t := by
@@ -75,16 +75,16 @@ theorem sec_injective [IsSchemeTheoreticallyDominant f] {G : Over S} [IsSeparate
   rw [← sec_left, ← sec_left, h]
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4, h5⟩` from `h`. Apply the tactic sequence `refine ⟨inferInstance, ?_, ?_, ?_, ?_⟩ <;> (try simp only [Over.pullback_obj_hom]) <;> infer_instance`.
+Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem smConn_baseChange (G : Over S) [GrpObj G] (h : SmConn G) : SmConn ((Over.pullback f).obj G) := by
   obtain ⟨h1, h2, h3, h4, h5⟩ := h
   refine ⟨inferInstance, ?_, ?_, ?_, ?_⟩ <;> (try simp only [Over.pullback_obj_hom]) <;> infer_instance
 
 /- English proof (translation)
-Establish `hx : (x.left ≫ pullback.fst G.hom (spMap (IsLocalRing.residue R))) ≫ G.hom = Spec.map (CommRingCat.ofHom (IsLocalRing.residue R)) ≫ 𝟙 _`. Establish `hw` using `Over.w x`. Simplify using `only [Over.pullback_obj_hom] at hw`. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, hw]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨⟨y, hy⟩, hyx⟩` from `GlobalTheory.reducePoint_residue_surjective G.hom R (𝟙 _) ⟨_, hx⟩`. Use `⟨Over.homMk y (by simpa using hy), sec_eq _ _ _ ?_⟩` and prove the remaining obligations. Simplify `congrArg Subtype.val hyx` using `[GlobalTheory.reducePoint]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem sec_residue_surjective {R : Type} [CommRing R] [HenselianLocalRing R] (G : Over (Sp R)) [Smooth G.hom]
     (x : 𝟙_ _ ⟶ spFibre G) : ∃ s : 𝟙_ _ ⟶ G, sec (spMap (IsLocalRing.residue R)) s = x := by
@@ -99,11 +99,11 @@ theorem sec_residue_surjective {R : Type} [CommRing R] [HenselianLocalRing R] (G
   simpa [GlobalTheory.reducePoint] using congrArg Subtype.val hyx
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4, h5⟩` from `hG`. Establish `: MorphismProperty.IsStableUnderBaseChange (@SmoothOfRelativeDimension.{0} g)` using `smoothOfRelativeDimension_isStableUnderBaseChange g`. Establish `hG0 : SmoothOfRelativeDimension g G.hom`. Apply `GlobalTheory.GenericDim.smoothOfRelativeDimension_of_generic R G g` to reduce the goal to its premises. Unfold `ReciprocityTheory.ChartRestriction.G.Out.jK`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions.
 
-Take `⟨ψ, hψ⟩ : ∃ ψ : K →+* FractionRing R, ψ.comp (algebraMap R K) = algebraMap R (FractionRing R)` from `⟨_, (IsLocalization.algEquiv (nonZeroDivisors R) K (FractionRing R)).toAlgHom.comp_algebraMap⟩`. Establish `hK : SmoothOfRelativeDimension g (pullback.snd G.hom (Spec.map (CommRingCat.ofHom (algebraMap R K))))` using `h`. Rewrite using `[← hψ, CommRingCat.ofHom_comp, Spec.map_comp]`. Establish `key : pullback.snd G.hom (Spec.map (CommRingCat.ofHom ψ) ≫ Spec.map (CommRingCat.ofHom (algebraMap R K))) = (pullbackLeftPullbackSndIso G.hom _ _).inv ≫ pullback.snd (pullback.snd G.hom (Spec.map (CommRingCat.ofHom (algebraMap R K)))) (Spec.map (CommRingCat.ofHom ψ))`. Rewrite using `[Iso.eq_inv_comp, pullbackLeftPullbackSndIso_hom_snd]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key]`. Conclude with `(MorphismProperty.cancel_left_of_respectsIso (@SmoothOfRelativeDimension.{0} g) (hP := @MorphismProperty.IsStableUnderBaseChange.respectsIso _ _ _ (smoothOfRelativeDimension_isStableUnderBaseChange g)) _ _).mpr (MorphismProperty.IsStableUnderBaseChange.of_isPullback (self := smoo …`. Conclude with `MorphismProperty.IsStableUnderBaseChange.of_isPullback (self := smoothOfRelativeDimension_isStableUnderBaseChange g) (IsPullback.of_hasPullback _ _) hG0`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem relDim_spFibre {R K : Type} [CommRing R] [IsDomain R] [IsLocalRing R] [Field K] [Algebra R K]
     [IsFractionRing R K] (G : Over (Sp R)) [GrpObj G] (hG : SmConn G) (g : ℕ)
@@ -135,14 +135,14 @@ theorem relDim_spFibre {R K : Type} [CommRing R] [IsDomain R] [IsLocalRing R] [F
     (self := smoothOfRelativeDimension_isStableUnderBaseChange g) (IsPullback.of_hasPullback _ _) hG0
 
 /- English proof (translation)
-Rewrite using `[MonObj.pow_comp, Category.assoc, hri, MonObj.comp_pow, Category.comp_id, pow_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pow_comp_isogeny {Z A B : Over T} [GrpObj A] [GrpObj B] (i : A ⟶ B) (r : B ⟶ A) [IsMonHom i] {m : ℕ}
     (hri : r ≫ i = 𝟙 _ ^ m) (c : ℕ) (x : Z ⟶ B) : ((x ≫ r) ^ c) ≫ i = x ^ (m * c) := by
   rw [MonObj.pow_comp, Category.assoc, hri, MonObj.comp_pow, Category.comp_id, pow_mul]
 
 /- English proof (translation)
-Apply `sec_eq` to reduce the goal to its premises. Rewrite using `[h, Over.comp_left, Category.assoc]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem sec_eq_comp {G : Over S} {A : Over T} (e : (Over.pullback f).obj G ≅ A) (s : 𝟙_ (Over S) ⟶ G)
     (a : 𝟙_ (Over T) ⟶ A) (h : f ≫ s.left = a.left ≫ e.inv.left ≫ pullback.fst G.hom f) : sec f s = a ≫ e.inv := by
@@ -150,7 +150,7 @@ theorem sec_eq_comp {G : Over S} {A : Over T} (e : (Over.pullback f).obj G ≅ A
   rw [h, Over.comp_left, Category.assoc]
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `hext (sec f z ≫ r)`. Use `⟨s, sec_injective f ?_⟩` and prove the remaining obligations. Rewrite using `[sec_comp, sec_eq_comp f e s _ hs, hI, sec_pow, Category.assoc, e.inv_hom_id_assoc, pow_comp_isogeny i r hri]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_section {G G' : Over S} [GrpObj G] [GrpObj G'] [IsSchemeTheoreticallyDominant f] [IsSeparated G'.hom]
     {A : Over T} [GrpObj A] (e : (Over.pullback f).obj G ≅ A) (i : A ⟶ (Over.pullback f).obj G')
@@ -164,13 +164,13 @@ theorem exists_section {G G' : Over S} [GrpObj G] [GrpObj G'] [IsSchemeTheoretic
     pow_comp_isogeny i r hri]
 
 /- English proof (translation)
-Introduce `R K _ _ _ _ _ hSH A _ G' _ g m hA hP hG' hgA hgG' i r hi hr hm hri`. Take `⟨a1, a2, a3, a4, a5, a6⟩` from `id hG'`. Establish `hSG' : SmConn G'` using `⟨a1, a2, a3, a4, a5⟩`. Establish `: IsCommMonObj A` using `hA.1`. Take `⟨M, hMg, hM, he, c, hc, hext⟩` from `GlobalTheory.T.exists_neutral_group_model' R K hSH A hA hP`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨hdvr, hhens, hac, hfr⟩` from `hSH`. Use `⟨M.Y, hMg, M.e, hM, he, ?_⟩` and prove the remaining obligations. Take `⟨F, ⟨hF, hFe⟩, -⟩` from `GlobalTheory.T.existsUnique_hom_extension_smoothConn_semiAbelian_dvr R K M.Y G' hM hG' (M.e.hom ≫ i) inferInstance`. Establish `hgM : SmoothOfRelativeDimension g ((Over.pullback (spMap (algebraMap R K))).obj M.Y).hom`. Establish `: MorphismProperty.IsStableUnderBaseChange (@SmoothOfRelativeDimension.{0} g)` using `smoothOfRelativeDimension_isStableUnderBaseChange g`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Over.w M.e.hom]`. Conclude with `(MorphismProperty.cancel_left_of_respectsIso (@SmoothOfRelativeDimension.{0} g) (hP := @MorphismProperty.IsStableUnderBaseChange.respectsIso _ _ _ (smoothOfRelativeDimension_isStableUnderBaseChange g)) ((Over.forget _).mapIso M.e).hom A.hom).mpr hgA`. Use `GlobalTheory.T.torusExtension_of_surjective_of_dim_eq' (IsLocalRing.ResidueField R) (spFibre M.Y) (spFibre G') g (smConn_baseChange _ _ hM) (smConn_baseChange _ _ hSG') (relDim_spFibre M.Y hM g hgM) (relDim_spFibre G' hSG' g hgG') (a6 _ _) ((Over.pullback (spMap (IsLocalRing.resi …` and prove the remaining obligations. Introduce `y`. Take `⟨w, hw⟩` from `GlobalTheory.T.torusExtension_points_divisible' (IsLocalRing.ResidueField R) (spFibre G') (a6 _ _) (m * c) (by simpa using Nat.mul_le_mul hm hc) y`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨z, hz⟩` from `sec_residue_surjective G' w`. Establish `: IsSchemeTheoreticallyDominant (spMap (algebraMap R K))` using `GlobalTheory.schemeTheoreticallyDominant_fractionField R K`. Take `⟨s, hs⟩` from `exists_section (spMap (algebraMap R K)) M.e i r hri F hFe (fun a => hext a) z`. Use `⟨sec (spMap (IsLocalRing.residue R)) s, ?_⟩` and prove the remaining obligations. Rewrite using `[← sec_comp, hs, sec_pow, hz, hw]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem semiAbelian_reduction_of_isogeny : ∀ (R K : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [Field K] [Algebra R K], SH R K → ∀ (A : Over (Sp K)) [GrpObj A] (G' : Over (Sp R)) [GrpObj G'] (g m : ℕ), IsAbelianScheme A → GlobalTheory.AbLaw.IsProjBy A.hom → IsSemiAbelian G' → SmoothOfRelativeDimension g A.hom → SmoothOfRelativeDimension g ((Over.pullback (spMap (algebraMap R K))).obj G').hom → ∀ (i : A ⟶ (Over.pullback (spMap (algebraMap R K))).obj G') (r : (Over.pullback (spMap (algebraMap R K))).obj G' ⟶ A), IsMonHom i → IsMonHom r → 1 ≤ m → r ≫ i = 𝟙 _ ^ m → ∃ (G : Over (Sp R)) (_ : GrpObj G) (e : (Over.pullback (spMap (algebraMap R K))).obj G ≅ A), SmConn G ∧ IsMonHom e.hom ∧ Nonempty (TorusExtension (spFibre G)) := by
   intro R K _ _ _ _ _ hSH A _ G' _ g m hA hP hG' hgA hgG' i r hi hr hm hri

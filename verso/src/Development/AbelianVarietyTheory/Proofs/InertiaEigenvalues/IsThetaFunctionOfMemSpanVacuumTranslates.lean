@@ -28,11 +28,11 @@ open GlobalTheory.LevelSeries
 namespace GlobalTheory.LevelSeries
 
 /- English proof (translation)
-Introduce `D ψ θ V W χV χW om ΛV ΛW sW f₀ hP e M O f hf`. Establish `hψ : IsStdChar D ψ (-1)` using `hP.1.weil.std`. Establish `h0 : IsThetaFunO ψ V W f₀` using `GlobalTheory.OneMapRef.isThetaFunO_of_isVacO hP.2.2.2.2.2.2.2.2`. Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Take `⟨y, -, -, rfl⟩` from `hx`. Conclude with `GlobalTheory.AnisoMean.isTheta_heisO hψ h0 y`. Consider the case `zero => exact GlobalTheory.LocMod.LinSpace.isThetaFunO_zero ψ V W`. Consider the case `add x y _ _ hx hy => exact GlobalTheory.LocMod.LinSpace.isThetaFunO_add hx hy`. Consider the case `smul a x _ hx`.
+Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Subring.smul_def]`. Conclude with `GlobalTheory.LocMod.LinSpace.isThetaFunO_smul (a : ℂ) hx`.
+A detailed English derivation is pending.
 -/
 theorem isThetaFunO_of_mem_trSp : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (V W : HSp D) (χV χW : (AE D)ˣ →* Circle) (om : GA D V × GA D W →* Module.End ℂ (WO V W → ℂ)) (ΛV : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)) (ΛW : Submodule (𝓞 D.host.E) (Fin W.rank → D.host.E)) (sW : D.what₂.Tau → Matrix (Fin W.rank) (Fin W.rank) ℂ) (f₀ : WO V W → ℂ), VacPair ψ θ V W χV χW om ΛV ΛW sW f₀ → ∀ (e : AE D) (M : ℕ) (O : Subring ℂ), ∀ f ∈ trSp ψ V W ΛV ΛW f₀ e M O, IsThetaFunO ψ V W f := by
   intro D ψ θ V W χV χW om ΛV ΛW sW f₀ hP e M O f hf

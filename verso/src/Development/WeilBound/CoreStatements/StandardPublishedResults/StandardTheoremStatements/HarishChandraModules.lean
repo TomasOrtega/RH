@@ -7,13 +7,13 @@ import Development.WeilBound.CoreStatements.FiniteTypeHarishChandra.GreenCuspLab
 namespace PositivityTheory.Stage1.PM
 
 /- English proof (translation)
-The claim follows from `CompanionTheory.D.gk.HC.print_harishChandraModules`.
+A detailed English derivation is pending.
 -/
 theorem harishChandraModules : GlobalTheory.Published.HarishChandraModules :=
   CompanionTheory.D.gk.HC.print_harishChandraModules
 
 /- English proof (translation)
-The claim follows from `PositivityTheory.GreenCharacters.greenCuspidal`.
+A detailed English derivation is pending.
 -/
 theorem greenCuspidal : GlobalTheory.Published.GreenCuspidal :=
   PositivityTheory.GreenCharacters.greenCuspidal

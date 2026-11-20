@@ -7,13 +7,11 @@ open scoped ComplexConjugate
 namespace GlobalTheory.CompanionTheory.ThetaReal
 
 /- English proof (translation)
-Use `⟨?_, fun h => ?_⟩` and prove the remaining obligations. Unfold `thetaSum`. Rewrite using `[← RCLike.star_def, tsum_star]`. Both sides reduce to the same expression. Proceed by induction on `h using Submodule.span_induction with`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Proceed by induction.
 
-Consider the case `mem x hx`. Take `⟨f, g, hg, rfl⟩` from `hx`. Use `Submodule.subset_span ⟨SchwartzMap.postcompCLM (𝕜 := ℝ) (Complex.conjCLE : ℂ →L[ℝ] ℂ) f, star g, ⟨hg.1.comp star, hg.2.comp_left (g := star) (star_zero ℂ)⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `x`. Simplify using `[pureA]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Consider the case `zero => rw [star_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [star_add]`. Conclude with `add_mem hx hy`. Consider the case `smul a x _ hx => rw [star_smul]`.
-
-Conclude with `Submodule.smul_mem _ _ hx`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem thetaSum_star_and_schA_star (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ]
     (Φ : (κ → AdeleRing (𝓞 F) F) → ℂ) :

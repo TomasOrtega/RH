@@ -7,9 +7,9 @@ open Polynomial GlobalTheory.CuspGL
 namespace GlobalTheory.CuspGL
 
 /- English proof (translation)
-Set `e : V ≃ₗ[F] V` to `(Module.AEval'.of g).trans ((φ.restrictScalars F).trans (Module.AEval'.of g').symm)`. Establish `h : ∀ v, e (g v) = g' (e v)`. Introduce `v`. Establish `h1 : Module.AEval'.of g (g v) = (X : F[X]) • Module.AEval'.of g v` using `(Module.AEval'.X_smul_of g v).symm`. Simplify using `only [e, LinearEquiv.trans_apply, LinearEquiv.restrictScalars_apply, h1, map_smul]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `Module.AEval'.of_symm_X_smul g' _`. Use `⟨e, ?_⟩` and prove the remaining obligations. Use extensionality with `v`. Simplify using `[LinearEquiv.conj_apply, h]`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_conj_of_aeval'_equiv {F : Type} [Field F] {V : Type} [AddCommGroup V] [Module F V]
     (g g' : Module.End F V) (φ : Module.AEval' g ≃ₗ[F[X]] Module.AEval' g') :
@@ -27,11 +27,11 @@ theorem exists_conj_of_aeval'_equiv {F : Type} [Field F] {V : Type} [AddCommGrou
   simp [LinearEquiv.conj_apply, h]
 
 /- English proof (translation)
-Introduce `F _ V _ _ _ g g' f m hf hg hg' hk`. Take `⟨d, e, he, ⟨φ⟩, hd⟩` from `GlobalTheory.T.primary_endomorphism_cyclic_decomposition_finrank_ker F V g f m hf hg`. Take `⟨d', e', he', ⟨φ'⟩, hd'⟩` from `GlobalTheory.T.primary_endomorphism_cyclic_decomposition_finrank_ker F V g' f m hf hg'`. Establish `hpos : 0 < f.natDegree` using `hf.natDegree_pos`. Establish `hs : ∀ j : ℕ, ∑ i, min j (e i) = ∑ i, min j (e' i)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `j`. Use `hk j` as an intermediate fact. Rewrite `this` using `[hd j, hd' j]`. Conclude with `Nat.eq_of_mul_eq_mul_left hpos this`. Take `⟨σ, hσ⟩` from `GlobalTheory.T.exists_perm_of_sum_min_eq_positive_family d d' e e' he he' hs`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `rfl : e = fun i => e' (σ i)` from `funext fun i => (hσ i).symm`. Conclude with `exists_conj_of_aeval'_equiv g g' (φ.trans ((LinearEquiv.piCongrLeft F[X] (fun i => F[X] ⧸ Ideal.span {f ^ e' i}) σ).trans φ'.symm))`.
+A detailed English derivation is pending.
 -/
 theorem primary_conj_of_finrank_ker_eq : ∀ (F : Type) [Field F] (V : Type) [AddCommGroup V] [Module F V] [FiniteDimensional F V] (g g' : Module.End F V) (f : F[X]) (m : ℕ), Irreducible f → aeval g (f ^ m) = 0 → aeval g' (f ^ m) = 0 → (∀ j : ℕ, Module.finrank F (LinearMap.ker (aeval g (f ^ j))) = Module.finrank F (LinearMap.ker (aeval g' (f ^ j)))) → ∃ e : V ≃ₗ[F] V, e.conj g = g' := by
   intro F _ V _ _ _ g g' f m hf hg hg' hk

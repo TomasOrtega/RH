@@ -180,7 +180,7 @@ def HeckeForm (D : D7) : Prop :=
           ∫ g in openOff A LA Sf, wcoef om ν 𝓕 Φ₁ Φ₂ g * rcoef m u₁ u₂ g ∂m
 
 /- English proof (translation)
-Simplify using `[integrand, GlobalTheory.Doubling.npow]`.
+Simplify using the standard rewrite rules.
 -/
 theorem integrand_sZero {A B : HSp D} (om : WRep A B) (m : Measure (GA D A)) (ν : Measure (WO A B)) (𝓕 : Set (WO A B))
     (L : Lat A) (a : GL (Fin A.rank) (AE D)) (Φ₁ Φ₂ : WO A B → ℂ) (u₁ u₂ : GA D A → ℂ) (g : GA D A) :
@@ -188,7 +188,7 @@ theorem integrand_sZero {A B : HSp D} (om : WRep A B) (m : Measure (GA D A)) (ν
   simp [integrand, GlobalTheory.Doubling.npow]
 
 /- English proof (translation)
-Introduce `v _` and use `by rw [map_one]; exact one_mem _`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem one_mem_openOff (A : HSp D) (L : Lat A) (Sf : Finset (FinPl D)) : (1 : GA D A) ∈ openOff A L Sf :=
   fun v _ => by rw [map_one]; exact one_mem _

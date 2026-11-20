@@ -11,7 +11,7 @@ section
 variable {R : Type} [CommRing R] (I J : Cx R)
 
 /- English proof (translation)
-Simplify using `[Tens.res]`.
+Simplify using the standard rewrite rules.
 -/
 theorem tres_tmul {V U : Scheme.{0}} (g : V ⟶ U) (w : ℤ) (p : {p : ℤ × ℤ // p.1 + p.2 = w})
     (a : Sec (I.X p.1.1) U) (b : Sec (J.X p.1.2) U) :
@@ -73,7 +73,7 @@ def dT (U : Scheme.{0}) (w : ℤ) : Tens I J U w →ₗ[ULift.{1} R] Tens I J U 
       TensorProduct.map LinearMap.id ((J.d p.1.2 (p.1.2 + 1)).hom.app (op U)).hom)
 
 /- English proof (translation)
-Simplify using `[dT, lo, DirectSum.toModule_lof]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dT_tmul (U : Scheme.{0}) (s t w : ℤ) (h : s + t = w) (a : Sec (I.X s) U) (b : Sec (J.X t) U) :
     dT I J U w (lo I J ⟨(s, t), h⟩ (a ⊗ₜ b)) =
@@ -88,7 +88,7 @@ open Classical
 variable {R : Type} [CommRing R] (I J : Cx R)
 
 /- English proof (translation)
-Rewrite using `[LateralTheory.E.LeafTwPairExistsPf.map_map, HomologicalComplex.d_comp_d]`. Simplify using `[Sec.map]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem dd0 {K : Cx R} {U : Scheme.{0}} (s : ℤ) (a : Sec (K.X s) U) :
     Sec.map (K.d (s + 1) (s + 1 + 1)) (Sec.map (K.d s (s + 1)) a) = 0 := by
@@ -96,9 +96,9 @@ theorem dd0 {K : Cx R} {U : Scheme.{0}} (s : ℤ) (a : Sec (K.X s) U) :
   simp [Sec.map]
 
 /- English proof (translation)
-Apply `DirectSum.linearMap_ext` to reduce the goal to its premises. Introduce and unpack `⟨⟨s, t⟩, h⟩`. Apply `TensorProduct.ext'` to reduce the goal to its premises. Introduce `a b`. Simplify using `only [LinearMap.comp_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `erw [tres_tmul, dT_tmul, dT_tmul, map_add, map_zsmul, tres_tmul, tres_tmul, LateralTheory.E.LeafTwPairExistsPf.res_map, LateralTheory.E.LeafTwPairExistsPf.res_map]`.
+A detailed English derivation is pending.
 -/
 theorem dT_nat {V U : Scheme.{0}} (g : V ⟶ U) (w : ℤ) :
     dT I J V w ∘ₗ Tens.res g w = Tens.res g (w + 1) ∘ₗ dT I J U w := by
@@ -109,9 +109,9 @@ theorem dT_nat {V U : Scheme.{0}} (g : V ⟶ U) (w : ℤ) :
     LateralTheory.E.LeafTwPairExistsPf.res_map, LateralTheory.E.LeafTwPairExistsPf.res_map]
 
 /- English proof (translation)
-Apply `DirectSum.linearMap_ext` to reduce the goal to its premises. Introduce and unpack `⟨⟨s, t⟩, h⟩`. Apply `TensorProduct.ext'` to reduce the goal to its premises. Introduce `a b`. Simplify using `only [LinearMap.comp_apply, LinearMap.zero_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[dT_tmul, map_add, map_zsmul]`. Rewrite using `[dT_tmul (s := s + 1) (t := t) (w := w + 1)]`. Rewrite using `[dT_tmul (s := s) (t := t + 1) (w := w + 1)]`. Rewrite using `[dd0 (K := I), dd0 (K := J)]`. Simplify using `only [TensorProduct.zero_tmul, TensorProduct.tmul_zero, map_zero, zero_add, smul_zero, add_zero, Int.negOnePow_succ, Units.val_neg, neg_smul, neg_add_cancel]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem dT_dT (U : Scheme.{0}) (w : ℤ) : dT I J U (w + 1) ∘ₗ dT I J U w = 0 := by
   apply DirectSum.linearMap_ext; rintro ⟨⟨s, t⟩, h⟩
@@ -145,14 +145,14 @@ abbrev un (U : Scheme.{0}) (w : ℤ) : Tens I J U w →ₗ[ULift.{1} R] Sec ((TC
   ((toSheafify Scheme.etaleTopology.{0} (TP I J w)).app (op U)).hom
 
 /- English proof (translation)
-The claim follows from `(LinearMap.congr_fun (congrArg ModuleCat.Hom.hom ((toSheafify Scheme.etaleTopology.{0} (TP I J w)).naturality g.op)) x).symm`.
+A detailed English derivation is pending.
 -/
 theorem un_nat {V U : Scheme.{0}} (g : V ⟶ U) (w : ℤ) (x : Tens I J U w) :
     Sec.res g (un I J U w x) = un I J V w (Tens.res g w x) :=
   (LinearMap.congr_fun (congrArg ModuleCat.Hom.hom ((toSheafify Scheme.etaleTopology.{0} (TP I J w)).naturality g.op)) x).symm
 
 /- English proof (translation)
-Use `LinearMap.congr_fun (congrArg ModuleCat.Hom.hom (congrArg (fun f => f.app (op U)) (toSheafify_naturality Scheme.etaleTopology.{0} (dTP I J w)))) x` as an intermediate fact. Simplify using `only [TC, PC, Functor.mapHomologicalComplex_obj_d, CochainComplex.of_d] at this ⊢`. Conclude with `this.symm`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem un_d (U : Scheme.{0}) (w : ℤ) (x : Tens I J U w) :
     Sec.map ((TC I J).d w (w + 1)) (un I J U w x) = un I J U (w + 1) (dT I J U w x) := by
@@ -179,7 +179,7 @@ def tau : Pair I J (TC I J) where
     rw [un_d, dT_tmul, map_add, map_zsmul, Units.smul_def]
 
 /- English proof (translation)
-Apply `DirectSum.linearMap_ext` to reduce the goal to its premises. Introduce and unpack `⟨⟨s, t⟩, h⟩`. Apply `TensorProduct.ext'` to reduce the goal to its premises. Introduce `a b`. Simplify using `[Pair.lift, tau]`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem tau_lift (U : Scheme.{0}) (w : ℤ) : (tau I J).lift U w = un I J U w := by
   apply DirectSum.linearMap_ext; rintro ⟨⟨s, t⟩, h⟩
@@ -187,9 +187,9 @@ theorem tau_lift (U : Scheme.{0}) (w : ℤ) : (tau I J).lift U w = un I J U w :=
   simp [Pair.lift, tau]
 
 /- English proof (translation)
-Use `⟨fun U w y => ?_, fun U w x hx => ?_⟩` and prove the remaining obligations. Use `⟨_, Presheaf.imageSieve_mem Scheme.etaleTopology.{0} (toSheafify Scheme.etaleTopology.{0} (TP I J w)) (U := op U) y, fun V g ⟨t, ht⟩ => ⟨t, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[tau_lift]`. Conclude with `ht`. Rewrite `hx` using `[tau_lift]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨_, Presheaf.equalizerSieve_mem Scheme.etaleTopology.{0} (toSheafify Scheme.etaleTopology.{0} (TP I J w)) (X := op U) x 0 (by rw [map_zero]; exact hx), fun V g hg => ?_⟩` and prove the remaining obligations. Establish `: Tens.res g w x = Tens.res g w 0` using `hg`. Rewrite `this` using `[map_zero]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem tau_isTensor : (tau I J).IsTensor := by
   refine ⟨fun U w y => ?_, fun U w x hx => ?_⟩
@@ -208,7 +208,7 @@ end LateralTheory.E.LeafTwTensExPf
 namespace LateralTheory.E.LeafTwTensExPf
 
 /- English proof (translation)
-Introduce `q _ i j`. Conclude with `⟨_, tau _ _, tau_isTensor _ _⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem LeafTwTensEx_of : LateralTheory.E.LeafTwPairExistsPf.LeafTwTensEx := by
   intro q _ i j

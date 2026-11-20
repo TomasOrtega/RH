@@ -5,11 +5,11 @@ open IsLocalRing
 namespace GlobalTheory
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hnx`. Establish `h0 : (Ideal.Quotient.mk (Ideal.span {x}) n) ≠ 0`. Rewrite using `[Ne, Ideal.Quotient.eq_zero_iff_mem]` and apply the resulting hypothesis. Take `⟨P, hPa, hle⟩` from `exists_le_isAssociatedPrime_of_isNoetherianRing R (Ideal.Quotient.mk (Ideal.span {x}) n) h0`. Use `haveI : P.IsPrime := hPa.isPrime`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI := hP P hPa`. Establish `hz : algebraMap R (Localization.AtPrime P) n = 0` using `(hn.map (algebraMap R (Localization.AtPrime P))).eq_zero`. Take `⟨⟨s, hs⟩, hsn⟩` from `(IsLocalization.map_eq_zero_iff P.primeCompl _ n).1 hz`. Apply `hs` to reduce the goal to its premises. Apply `hle` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[Submodule.mem_colon_singleton, Submodule.mem_bot]`. Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk (Ideal.span {x}) s * Ideal.Quotient.mk (Ideal.span {x}) n = 0`. Rewrite using `[← map_mul, hsn, map_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_span_singleton_of_isNilpotent_of_associatedPrimes {R : Type} [CommRing R]
     [IsNoetherianRing R] (x : R)
@@ -33,15 +33,15 @@ theorem mem_span_singleton_of_isNilpotent_of_associatedPrimes {R : Type} [CommRi
   rw [← map_mul, hsn, map_zero]
 
 /- English proof (translation)
-Introduce `R _ _ x hx hj hP`. Use `⟨fun n hn => ?_⟩` and prove the remaining obligations. Establish `key : ∀ k : ℕ, ∀ m : R, IsNilpotent m → m ∈ Ideal.span {x} ^ k`. Introduce `k`. Proceed by induction on `k with`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero => intro m _`. Simplify using the standard rewrite rules. Consider the case `succ k ih`. Introduce `m hm`. Take `⟨m', rfl⟩` from `Ideal.mem_span_singleton'.1 (mem_span_singleton_of_isNilpotent_of_associatedPrimes x hP hm)`.
+Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hm' : IsNilpotent m'`. Take `⟨e, he⟩` from `hm`. Use `⟨e, ?_⟩` and prove the remaining obligations. Rewrite `he` using `[mul_pow]`. Conclude with `(mem_nonZeroDivisors_iff_right.1 (pow_mem hx e)) _ he`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pow_succ', mul_comm m' x]`. Conclude with `Ideal.mul_mem_mul (Ideal.mem_span_singleton_self x) (ih m' hm')`. Establish `hK` using `Ideal.iInf_pow_smul_eq_bot_of_le_jacobson (M := R) (Ideal.span {x}) ((Ideal.span_singleton_le_iff_mem _).2 hj)`. Establish `: n ∈ (⨅ i : ℕ, (Ideal.span {x}) ^ i • ⊤ : Submodule R R)`. Rewrite using `[Submodule.mem_iInf]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `i`. Simplify `key i n hn` using `[smul_eq_mul, Ideal.mul_top]`. Rewrite `this` using `[hK]`. Simplify using `using this`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem isReduced_of_nonZeroDivisor_mem_jacobson_of_associatedPrimes :
     ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (x : R), x ∈ nonZeroDivisors R →

@@ -8,7 +8,7 @@ open UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial UpperTheory.V.Z.Invariant
 open scoped ComplexConjugate Classical InnerProductSpace
 
 /- English proof (translation)
-Distinguish the cases in `hi : Integrable f ν`. Rewrite using `[← Q.integral_comp_comm hi]`. Conclude with `integral_congr_ae (Eventually.of_forall hf)`. Rewrite using `[integral_undef hi, map_zero]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma fixed_integral {α E : Type*} [MeasurableSpace α] [NormedAddCommGroup E] [NormedSpace ℂ E] [CompleteSpace E]
     (ν : Measure α) (Q : E →L[ℂ] E) (f : α → E) (hf : ∀ m, Q (f m) = f m) : Q (∫ m, f m ∂ν) = ∫ m, f m ∂ν := by
@@ -18,13 +18,11 @@ private lemma fixed_integral {α E : Type*} [MeasurableSpace α] [NormedAddCommG
   · rw [integral_undef hi, map_zero]
 
 /- English proof (translation)
-Set `ρ : Submodule ℂ H` to `{ carrier := {x | x ∈ τ ∧ ∀ g, P (π g x) = 0} add_mem' := fun {a b} ha hb => ⟨τ.add_mem ha.1 hb.1, fun g => by rw [map_add, map_add, ha.2 g, hb.2 g, add_zero]⟩ zero_mem' := ⟨τ.zero_mem, fun g => by rw [map_zero, map_zero]⟩ smul_mem' := fun c x hx => ⟨τ.smul_mem c hx.1, fun g => b …`. Establish `hmem : ∀ x, x ∈ ρ ↔ x ∈ τ ∧ ∀ g, P (π g x) = 0` using `fun x => Iff.rfl`. Establish `hclρ : IsClosed (ρ : Set H)`. Establish `he : (ρ : Set H) = (τ : Set H) ∩ ⋂ g, {x | P (π g x) = 0}`. Use extensionality with `x`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [SetLike.mem_coe, hmem, Set.mem_inter_iff, Set.mem_iInter, Set.mem_setOf_eq]`. Rewrite using `[he]`. Conclude with `hcl.inter (isClosed_iInter fun g => isClosed_eq (P.continuous.comp (π g).continuous) continuous_const)`. Establish `hinvρ : ∀ g, ∀ x ∈ ρ, π g x ∈ ρ` using `fun h x hx => (hmem _).2 ⟨hinv h x ((hmem x).1 hx).1, fun g => by`. Rewrite using `[← GroundTheory.Automorphic.UnitaryRep.map_mul_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `((hmem x).1 hx).2 _⟩`. Establish `hvρ : v ∈ ρ` using `(hmem v).2 ⟨hv, hall⟩`. Break down `hirr ρ (fun x hx => ((hmem x).1 hx).1) hclρ hinvρ with h | h` into its components or cases. Conclude with `absurd (by simpa [h] using hvρ) hv0`. Establish `hu' : u ∈ ρ` using `h ▸ hu`.
-
-Use `((hmem u).1 hu').2 1` as an intermediate fact. Rewrite `this` using `[GroundTheory.Automorphic.UnitaryRep.map_one_apply]`. Then use the resulting hypothesis.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 private lemma kills_irreducible {G H : Type*} [Group G] [TopologicalSpace G] [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     [CompleteSpace H] (π : GroundTheory.Automorphic.UnitaryRep G H) (τ : Submodule ℂ H) (hcl : IsClosed (τ : Set H))
@@ -54,17 +52,17 @@ private lemma kills_irreducible {G H : Type*} [Group G] [TopologicalSpace G] [No
     rwa [GroundTheory.Automorphic.UnitaryRep.map_one_apply] at this
 
 /- English proof (translation)
-Establish `hsw : ∀ i h, (∀ b, Commute h (gl i b)) → ∀ x, P i (π h x) = π h (P i x)` using `fun i h hc x => DFunLike.congr_fun (hPc i h hc).eq x`. Establish `key : ∀ i, ∀ v ∈ τ, v ≠ 0 → ∃ a, P i (π (gl i a) v) ≠ 0`. Introduce `i v hv hv0`. Assume the negation of the conclusion as `hno`. Use `push_neg at hno`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hall : ∀ g, P i (π g v) = 0`. Introduce `g`. Take `⟨a, h, rfl, hc⟩` from `hdec i g`. Rewrite using `[(hc a).eq.symm, GroundTheory.Automorphic.UnitaryRep.map_mul_apply, hsw i h hc, hno a, map_zero]`. Take `⟨u, hu, hu0⟩` from `hocc i`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Proceed by induction.
 
-Conclude with `hu0 (kills_irreducible π τ hcl hinv hirr (P i) v hv hv0 hall u hu)`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Take `⟨v, hv, hv0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hZ`. Conclude with `⟨v, hv, hv0, by simp⟩`.
+Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Consider the case `insert i s hi ih`. Take `⟨v, hvZ, hv0, hvs⟩` from `ih`. Take `⟨a, ha⟩` from `key i v (hZτ hvZ) hv0`. Use `⟨P i (π (gl i a) v), hPi _ _ (hgl _ _ _ hvZ), ha, ?_⟩` and prove the remaining obligations. Introduce `j hj`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Break down `Finset.mem_insert.1 hj with rfl | hj` into its components or cases. Conclude with `DFunLike.congr_fun (hPP j) _`. Establish `hne : i ≠ j` using `fun h => hi (h ▸ hj)`. Establish `hw : P j (π (gl i a) v) = π (gl i a) v`. Rewrite using `[hsw j _ (fun b => hcomm i j hne a b), hvs j hj]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hPint i]`. Use `fixed_integral ν (P j) _ fun m => ?_` and prove the remaining obligations. Take `⟨c, hc⟩` from `hun i m`. Rewrite using `[map_smul, hc, hsw j _ (fun b => hcomm i j hne c b), hw]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma occ_abs {G H A ι α : Type*} [Group G] [TopologicalSpace G] [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     [CompleteSpace H] [MeasurableSpace α] (π : GroundTheory.Automorphic.UnitaryRep G H) (ν : Measure α) (gl : ι → A → G)
@@ -109,9 +107,9 @@ private lemma occ_abs {G H A ι α : Type*} [Group G] [TopologicalSpace G] [Norm
       rw [map_smul, hc, hsw j _ (fun b => hcomm i j hne c b), hw]
 
 /- English proof (translation)
-Introduce `K _ _ _ ι _ C μ _ τ hτ Z s n q hZτ hZ hgl hPi hocc`. Take `⟨-, -, hun, -, -, hcomm, -, hdec, -⟩` from `coLaws K ι C`. Establish `hP' : ∀ i, ∃ P : LL μ →L[ℂ] LL μ, (∀ v, P v = C.Pi μ i (n i) (q i) v) ∧ P ∘L P = P ∧ ∀ h : G1 K 2, (∀ b, Commute h (C.gl i b)) → Commute P (rightRegularRep (Gam K 2) μ h)` using `fun i => by`. Take `⟨P, h₁, -, h₂, -, h₃, -⟩` from `(piLaws K ι C μ).1 i (n i) (q i)`. Conclude with `⟨P, h₁, h₂, h₃⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `choose P hPv hPP hPc using hP'`. Take `⟨v, hv, hv0, hvs⟩` from `occ_abs (rightRegularRep (Gam K 2) μ) μK C.gl C.un (fun i => T (n i) (q i)) P τ Z hτ.closed hτ.inv hτ.irr (fun i m => ⟨_, hun i m⟩) hcomm hdec hPP hPc (fun i v => hPv i v) hZτ hZ hgl (fun i v hv => by rw [hPv]; exact hPi _ _ _ _ hv) (fun i => by`. Take `⟨v, hv, h⟩` from `hocc i`. Conclude with `⟨v, hv, by rwa [hPv]⟩) s`. Conclude with `⟨v, hv, hv0, fun i hi => by rw [← hPv]; exact hvs i hi⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.EA.occ :
     ∀ (K : Type) [Field K] [NumberField K] [IsTotallyComplex K] (ι : Type) [Fintype ι] (C : Co K ι) (μ : Measure (G1 K 2)) [μ.IsHaarMeasure] (τ : Submodule ℂ (LL μ)), CuspIrr μ τ → ∀ (Z : Submodule ℂ (LL μ)) (s : Finset ι) (n : ι → ℕ) (q : ι → ℤ), Z ≤ τ → Z ≠ ⊥ → (∀ i a, ∀ v ∈ Z, rightRegularRep (Gam K 2) μ (C.gl i a) v ∈ Z) →

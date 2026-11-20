@@ -18,7 +18,7 @@ open GlobalTheory.ThK.Dbl.Euler (cut cut_mul cut_form cut_sub cut_eq cut_one mm 
 section Cut
 variable {S R k : Type} [CommRing S] [CommRing R] [Algebra S R] [Fintype k] [DecidableEq k]
 /- English proof (translation)
-Establish `h0 : b * a = 0` using `by rw [mul_comm]; exact hab`. Establish `h1 : (1 - b) * (1 - a) = 1 - (a + b)` using `by linear_combination hab`. Establish `h2 : b * (1 - a) = b` using `by linear_combination -hab`. Establish `h3 : (1 - b) * a = a` using `by linear_combination -hab`. Simplify using `only [cut, add_mul, mul_add, Matrix.smul_mul, Matrix.mul_smul, smul_add, smul_smul, h0, h1, h2, h3, zero_smul, add_zero, Matrix.one_mul, Matrix.mul_one, add_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
 Normalize the expressions using the abelian group laws.
 -/
@@ -32,11 +32,11 @@ private theorem cut_add_pk {a b : S} (ha : a * a = a) (hb : b * b = b) (hab : a 
     Matrix.one_mul, Matrix.mul_one, add_smul]
   abel
 /- English proof (translation)
-Simplify using `[cut]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem cut_zero_pk (A : Matrix k k R) : cut (0 : S) A = 1 := by simp [cut]
 /- English proof (translation)
-Simplify using `[cut]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem cut_self_pk (A : Matrix k k R) : cut (1 : S) A = A := by simp [cut]
 end Cut
@@ -51,22 +51,20 @@ Both sides reduce to the same expression.
 -/
 private theorem mat_pr_pk {e : AF F} (he : e * e = e) (g : UA σ X.J) : mat (pr_pk e he g) = cut e (mat g) := rfl
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => cut_eq.1 (congrArg mat h), fun h => Subtype.ext (Units.ext (cut_eq.2 h))⟩`.
+Supply the required witnesses or components.
 -/
 private theorem pr_eq_pk {e : AF F} {he : e * e = e} {g : UA σ X.J} : pr_pk e he g = g ↔ e • (mat g - 1) = mat g - 1 :=
   ⟨fun h => cut_eq.1 (congrArg mat h), fun h => Subtype.ext (Units.ext (cut_eq.2 h))⟩
 /- English proof (translation)
-Use `Subtype.ext (Units.ext (sub_eq_zero.1 ?_))` and prove the remaining obligations. Conclude with `(cut_sub (mat g)).trans h`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem pr_one_pk {e : AF F} {he : e * e = e} {g : UA σ X.J} (h : e • (mat g - 1) = 0) : pr_pk e he g = 1 := by
   refine Subtype.ext (Units.ext (sub_eq_zero.1 ?_))
   exact (cut_sub (mat g)).trans h
 /- English proof (translation)
-Establish `: ContinuousSMul (AF F) (AE F E)` using `IsModuleTopology.toContinuousSMul _ _`. Establish `: ContinuousAdd (AE F E)` using `IsModuleTopology.toContinuousAdd (AF F) _`. Establish `c1 : Continuous fun g : UA σ X.J => cut e (mat g)`. Use `cont_mat (σ := σ) (Y := X)` as an intermediate fact. Unfold `cut`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `continuous_matrix fun i j => ?_` and prove the remaining obligations. Use `this.matrix_elem i j` as an intermediate fact. Simplify using `only [Matrix.add_apply, Matrix.smul_apply]`. Use `fun_prop`. Establish `c2 : Continuous fun g : UA σ X.J => cut e (mat g⁻¹)` using `c1.comp continuous_inv`.
-
-Conclude with `Continuous.subtype_mk (Units.continuous_iff.2 ⟨c1, c2⟩) _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem cont_pr_pk {e : AF F} (he : e * e = e) : Continuous (pr_pk e he : UA σ X.J → UA σ X.J) := by
   have : ContinuousSMul (AF F) (AE F E) := IsModuleTopology.toContinuousSMul _ _
@@ -81,7 +79,7 @@ private theorem cont_pr_pk {e : AF F} (he : e * e = e) : Continuous (pr_pk e he 
   have c2 : Continuous fun g : UA σ X.J => cut e (mat g⁻¹) := c1.comp continuous_inv
   exact Continuous.subtype_mk (Units.continuous_iff.2 ⟨c1, c2⟩) _
 /- English proof (translation)
-Use `(Euler.lcsc_UA σ X.J).2.2` as an intermediate fact. Establish `e1 : {g : UA σ X.J | e • (mat g - 1) = mat g - 1} = {g | pr_pk e he g = g}` using `Set.ext fun _ => pr_eq_pk.symm`. Rewrite using `[e1]`. Conclude with `isClosed_eq (cont_pr_pk he) continuous_id`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem closed_fix_pk {e : AF F} (he : e * e = e) : IsClosed {g : UA σ X.J | e • (mat g - 1) = mat g - 1} := by
   have := (Euler.lcsc_UA σ X.J).2.2
@@ -89,14 +87,14 @@ private theorem closed_fix_pk {e : AF F} (he : e * e = e) : IsClosed {g : UA σ 
   rw [e1]
   exact isClosed_eq (cont_pr_pk he) continuous_id
 /- English proof (translation)
-The claim follows from `Euler.mul_idem (Euler.ev_ne h.symm)`.
+A detailed English derivation is pending.
 -/
 private theorem idem_mul_ne_pk {u v : Pl F} (h : u ≠ v) : (Euler.idem u : AF F) * Euler.idem v = 0 :=
   Euler.mul_idem (Euler.ev_ne h.symm)
 /- English proof (translation)
-Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty => rfl`. Consider the case `insert v T hv ih`. Rewrite using `[Finset.sum_insert hv]`. Express the relevant statement in the definitionally equal form `(0 : Ainf F) + _ = 0`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[ih, add_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem sum_fst_pk (T : Finset (Pl F)) : (∑ v ∈ T, (Euler.idem v : AF F)).1 = 0 := by
   classical
@@ -107,28 +105,28 @@ private theorem sum_fst_pk (T : Finset (Pl F)) : (∑ v ∈ T, (Euler.idem v : A
     change (0 : Ainf F) + _ = 0
     rw [ih, add_zero]
 /- English proof (translation)
-Rewrite using `[Finset.mul_sum, Finset.sum_eq_single v (fun u _ hu => idem_mul_ne_pk hu.symm) (fun h' => absurd h h'), Euler.idem_sq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem idem_mul_sum_pk {T : Finset (Pl F)} {v : Pl F} (h : v ∈ T) :
     (Euler.idem v : AF F) * ∑ u ∈ T, Euler.idem u = Euler.idem v := by
   classical
   rw [Finset.mul_sum, Finset.sum_eq_single v (fun u _ hu => idem_mul_ne_pk hu.symm) (fun h' => absurd h h'), Euler.idem_sq]
 /- English proof (translation)
-Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_eq_zero fun u hu => idem_mul_ne_pk fun e => h (e ▸ hu)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem idem_mul_sum_off_pk {T : Finset (Pl F)} {v : Pl F} (h : v ∉ T) :
     (Euler.idem v : AF F) * ∑ u ∈ T, Euler.idem u = 0 := by
   rw [Finset.mul_sum]
   exact Finset.sum_eq_zero fun u hu => idem_mul_ne_pk fun e => h (e ▸ hu)
 /- English proof (translation)
-Rewrite using `[Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun v hv => idem_mul_sum_pk hv`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem sum_sq_pk (T : Finset (Pl F)) :
     (∑ v ∈ T, (Euler.idem v : AF F)) * ∑ v ∈ T, (Euler.idem v : AF F) = ∑ v ∈ T, (Euler.idem v : AF F) := by
   rw [Finset.sum_mul]
   exact Finset.sum_congr rfl fun v hv => idem_mul_sum_pk hv
 /- English proof (translation)
-The claim follows from `Prod.ext (by change (realAd F 1).1 * (realAd F 1).1 = (realAd F 1).1 rw [PositivityTheory.ThKG.Loc.Bump.eps_fst, one_mul]) (by change (realAd F 1).2 * (realAd F 1).2 = (realAd F 1).2 rw [PositivityTheory.ThKG.Loc.Bump.eps_snd, zero_mul])`.
+A detailed English derivation is pending.
 -/
 private theorem eps_sq_pk : realAd F 1 * realAd F 1 = realAd F 1 :=
   Prod.ext (by
@@ -137,7 +135,7 @@ private theorem eps_sq_pk : realAd F 1 * realAd F 1 = realAd F 1 :=
     change (realAd F 1).2 * (realAd F 1).2 = (realAd F 1).2
     rw [PositivityTheory.ThKG.Loc.Bump.eps_snd, zero_mul])
 /- English proof (translation)
-The claim follows from `Prod.ext (by change (realAd F 1).1 * (∑ v ∈ T, (Euler.idem v : AF F)).1 = 0 rw [sum_fst_pk, mul_zero]) (by change (realAd F 1).2 * (∑ v ∈ T, (Euler.idem v : AF F)).2 = 0 rw [PositivityTheory.ThKG.Loc.Bump.eps_snd, zero_mul])`.
+A detailed English derivation is pending.
 -/
 private theorem eps_mul_sum_pk (T : Finset (Pl F)) : realAd F 1 * ∑ v ∈ T, (Euler.idem v : AF F) = 0 :=
   Prod.ext (by
@@ -146,11 +144,9 @@ private theorem eps_mul_sum_pk (T : Finset (Pl F)) : realAd F 1 * ∑ v ∈ T, (
     change (realAd F 1).2 * (∑ v ∈ T, (Euler.idem v : AF F)).2 = 0
     rw [PositivityTheory.ThKG.Loc.Bump.eps_snd, zero_mul])
 /- English proof (translation)
-Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty`. Establish `: pr_pk (∑ v ∈ (∅ : Finset (Pl F)), Euler.idem v) (sum_sq_pk ∅) g = 1` using `Subtype.ext (Units.ext (show cut _ (mat g) = 1 by rw [Finset.sum_empty]; exact cut_zero_pk _))`. Rewrite using `[this]`. Conclude with `one_mem _`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `insert v T hv ih`. Establish `: pr_pk (∑ u ∈ insert v T, Euler.idem u) (sum_sq_pk _) g = prj v g * pr_pk (∑ u ∈ T, Euler.idem u) (sum_sq_pk T) g` using `Subtype.ext (Units.ext (by`. Express the relevant statement in the definitionally equal form `cut _ (mat g) = cut (Euler.idem v) (mat g) * cut _ (mat g)`. Rewrite using `[cut_add_pk (Euler.idem_sq v) (sum_sq_pk T) (idem_mul_sum_off_pk hv), Finset.sum_insert hv]))`. Rewrite using `[this]`.
-
-Conclude with `mul_mem (h v (Finset.mem_insert_self _ _)) (ih fun u hu => h u (Finset.mem_insert_of_mem hu))`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem pr_sum_mem_pk (H : Subgroup (UA σ X.J)) (g : UA σ X.J) (T : Finset (Pl F)) (h : ∀ v ∈ T, prj v g ∈ H) :
     pr_pk (∑ v ∈ T, Euler.idem v) (sum_sq_pk T) g ∈ H := by
@@ -169,7 +165,7 @@ private theorem pr_sum_mem_pk (H : Subgroup (UA σ X.J)) (g : UA σ X.J) (T : Fi
     rw [this]
     exact mul_mem (h v (Finset.mem_insert_self _ _)) (ih fun u hu => h u (Finset.mem_insert_of_mem hu))
 /- English proof (translation)
-Use `⟨fun h => ?_, fun h => Subgroup.subset_closure (PositivityTheory.ThKG.Loc.Bump.at_iff.2 h)⟩` and prove the remaining obligations. Establish `: gInf σ X ≤ (pr_pk (σ` using `σ) (X := X) (realAd F 1) eps_sq_pk).eqLocus (MonoidHom.id _) := (Subgroup.closure_le _).2 fun g hg => pr_eq_pk.2 (PositivityTheory.ThKG.Loc.Bump.at_iff.1 hg)`. Conclude with `pr_eq_pk.1 (this h)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem mem_gInf_pk {g : UA σ X.J} : g ∈ gInf σ X ↔ realAd F 1 • (mat g - 1) = mat g - 1 := by
   refine ⟨fun h => ?_, fun h => Subgroup.subset_closure (PositivityTheory.ThKG.Loc.Bump.at_iff.2 h)⟩
@@ -177,9 +173,9 @@ private theorem mem_gInf_pk {g : UA σ X.J} : g ∈ gInf σ X ↔ realAd F 1 •
     (Subgroup.closure_le _).2 fun g hg => pr_eq_pk.2 (PositivityTheory.ThKG.Loc.Bump.at_iff.1 hg)
   exact pr_eq_pk.1 (this h)
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `: gAt σ X S ≤ (pr_pk (σ` using `σ) (X := X) (∑ v ∈ S, Euler.idem v) (sum_sq_pk S)).eqLocus (MonoidHom.id _) := iSup₂_le fun v hv g hg => pr_eq_pk.2 (by`. Establish `e : Euler.idem v • (mat g - 1) = mat g - 1` using `(pr_eq_pk (he := Euler.idem_sq v)).1 (Euler.mem_loc.1 hg)`. Rewrite using `[← e, smul_smul, mul_comm, idem_mul_sum_pk hv])`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `pr_eq_pk.1 (this h)`. Introduce `h`. Rewrite `h` using `[← pr_eq_pk (he := sum_sq_pk S)]`. Rewrite using `[← h]`. Conclude with `pr_sum_mem_pk _ g S fun v hv => (le_iSup₂_of_le v hv le_rfl : locGrp σ X v ≤ gAt σ X S) (Euler.prj_mem g)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mem_gAt_pk {S : Finset (Pl F)} {g : UA σ X.J} :
     g ∈ gAt σ X S ↔ (∑ v ∈ S, (Euler.idem v : AF F)) • (mat g - 1) = mat g - 1 := by
@@ -195,7 +191,7 @@ private theorem mem_gAt_pk {S : Finset (Pl F)} {g : UA σ X.J} :
     rw [← h]
     exact pr_sum_mem_pk _ g S fun v hv => (le_iSup₂_of_le v hv le_rfl : locGrp σ X v ≤ gAt σ X S) (Euler.prj_mem g)
 /- English proof (translation)
-The claim follows from `Matrix.ext fun i j => Bad.idem_off (by have := congrFun₂ h i j rw [Matrix.map_apply] at this simp [this, Matrix.one_apply, apply_ite (compFin F E v)])`.
+A detailed English derivation is pending.
 -/
 private theorem smul_off_pk {v : Pl F} {g : UA σ X.J} (h : OffAt v g) : Euler.idem v • (mat g - 1) = 0 :=
   Matrix.ext fun i j => Bad.idem_off (by
@@ -203,7 +199,7 @@ private theorem smul_off_pk {v : Pl F} {g : UA σ X.J} (h : OffAt v g) : Euler.i
     rw [Matrix.map_apply] at this
     simp [this, Matrix.one_apply, apply_ite (compFin F E v)])
 /- English proof (translation)
-The claim follows from `Matrix.ext fun i j => GlobalTheory.SWOpFin.tens_eq_zero_of_comp (fun v => PositivityTheory.ThKG.Loc.Bump.compFin_eps v _) fun w => by change compInf F E w (realAd F 1 • (mat g - 1) i j) = 0 rw [PositivityTheory.ThKG.Loc.Bump.compInf_eps] have := congrFun₂ (h w) i j rw [Matrix.map …`.
+A detailed English derivation is pending.
 -/
 private theorem eps_of_inf_pk {g : UA σ X.J} (h : ∀ w : InfinitePlace F, (mat g).map (compInf F E w) = 1) :
     realAd F 1 • (mat g - 1) = 0 :=
@@ -214,7 +210,7 @@ private theorem eps_of_inf_pk {g : UA σ X.J} (h : ∀ w : InfinitePlace F, (mat
     rw [Matrix.map_apply] at this
     simp [this, Matrix.one_apply, apply_ite (compInf F E w)]
 /- English proof (translation)
-Use extensionality with `i j`. Use `PositivityTheory.ThKG.Loc.Bump.compInf_eps (E := E) w ((mat g - 1) i j)` as an intermediate fact. Rewrite `this` using `[show realAd F 1 • (mat g - 1) i j = 0 from congrFun₂ h i j, map_zero, Matrix.sub_apply, map_sub]`. Rewrite using `[Matrix.map_apply, sub_eq_zero.1 this.symm]`. Simplify using `[Matrix.one_apply, apply_ite (compInf F E w)]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem inf_of_eps_pk {g : UA σ X.J} (h : realAd F 1 • (mat g - 1) = 0) (w : InfinitePlace F) :
     (mat g).map (compInf F E w) = 1 := by
@@ -224,19 +220,17 @@ private theorem inf_of_eps_pk {g : UA σ X.J} (h : realAd F 1 • (mat g - 1) = 
   rw [Matrix.map_apply, sub_eq_zero.1 this.symm]
   simp [Matrix.one_apply, apply_ite (compInf F E w)]
 /- English proof (translation)
-Use `set b := ∑ v ∈ S, (Euler.idem v : AF F) with hb`. Establish `key : (1 - realAd F 1 - b) * (1 - realAd F 1 - b) = 1 - realAd F 1 - b`. Establish `h1` using `eps_sq_pk (F := F)`. Establish `h2` using `sum_sq_pk S`. Establish `h3` using `eps_mul_sum_pk S`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2`, `h3` using `[← hb]`. Take the linear combination `h1 + h2 + 2 * h3`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `: gOff σ X S ≤ (pr_pk (σ` using `σ) (X := X) _ key).eqLocus (MonoidHom.id _) := (Subgroup.closure_le _).2 fun g ⟨h1, h2⟩ => pr_eq_pk.2 (by`.
+Take a linear combination of the given relations to obtain the conclusion. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1` using `eps_of_inf_pk h1`. Establish `e2 : b • (mat g - 1) = 0`. Rewrite using `[hb, Finset.sum_smul]`. Conclude with `Finset.sum_eq_zero fun v hv => smul_off_pk (h2 v hv)`. Rewrite using `[sub_smul, sub_smul, one_smul, e1, e2, sub_zero, sub_zero])`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `pr_eq_pk.1 (this h)`. Introduce `h`. Use `Subgroup.subset_closure ⟨inf_of_eps_pk ?_, fun v hv => ?_⟩` and prove the remaining obligations. Establish `h3` using `eps_mul_sum_pk (F := F) S`. Establish `h4` using `eps_sq_pk (F := F)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h3` using `[← hb]`. Rewrite using `[← h, smul_smul, show realAd F 1 * (1 - realAd F 1 - b) = 0 by linear_combination -h3 - h4, zero_smul]`. Use `Euler.off_of (pr_one_pk (he := Euler.idem_sq v) ?_)` and prove the remaining obligations. Establish `h3 : (Euler.idem v : AF F) * realAd F 1 = 0`. Use `Prod.ext ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `zero_mul _`. Conclude with `mul_zero _`. Establish `h4` using `idem_mul_sum_pk hv`. Establish `h5` using `Euler.idem_sq v`. Rewrite `h4` using `[← hb]`.
-
-Rewrite using `[← h, smul_smul, show (Euler.idem v : AF F) * (1 - realAd F 1 - b) = 0 by linear_combination -h3 - h4, zero_smul]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mem_gOff_pk {S : Finset (Pl F)} {g : UA σ X.J} :
     g ∈ gOff σ X S ↔ (1 - realAd F 1 - ∑ v ∈ S, (Euler.idem v : AF F)) • (mat g - 1) = mat g - 1 := by
@@ -273,13 +267,13 @@ private theorem mem_gOff_pk {S : Finset (Pl F)} {g : UA σ X.J} :
       rw [← hb] at h4
       rw [← h, smul_smul, show (Euler.idem v : AF F) * (1 - realAd F 1 - b) = 0 by linear_combination -h3 - h4, zero_smul]
 /- English proof (translation)
-The claim follows from `pr_one_pk (by rw [← hg, smul_smul, h, zero_smul])`.
+A detailed English derivation is pending.
 -/
 private theorem pr_one_of_pk {e f : AF F} {he : e * e = e} (h : e * f = 0) {g : UA σ X.J} (hg : f • (mat g - 1) = mat g - 1) :
     pr_pk e he g = 1 :=
   pr_one_pk (by rw [← hg, smul_smul, h, zero_smul])
 /- English proof (translation)
-Introduce `v` and use `by have e : (Euler.idem v : AF F) * realAd F 1 = 0 := Prod.ext (zero_mul _) (mul_zero _) have : prj v g = 1 := pr_one_of_pk (he := Euler.idem_sq v) e (mem_gInf_pk.1 h) refine Euler.int_prj.1 ?_ rw [this] exact one_mem (Euler.intGrp σ X v)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem inf_int_pk {g : UA σ X.J} (h : g ∈ gInf σ X) : IntAll g := fun v => by
   have e : (Euler.idem v : AF F) * realAd F 1 = 0 := Prod.ext (zero_mul _) (mul_zero _)
@@ -288,21 +282,19 @@ private theorem inf_int_pk {g : UA σ X.J} (h : g ∈ gInf σ X) : IntAll g := f
   rw [this]
   exact one_mem (Euler.intGrp σ X v)
 /- English proof (translation)
-Rewrite using `[mat_pr_pk, cut_sub, smul_smul, he]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem pr_fix_pk {e : AF F} (he : e * e = e) (g : UA σ X.J) :
     e • (mat (pr_pk e he g) - 1) = mat (pr_pk e he g) - 1 := by
   rw [mat_pr_pk, cut_sub, smul_smul, he]
 /- English proof (translation)
-Establish `hba : b * a = 0` using `by rw [mul_comm]; exact hab`. Establish `hca : c * a = 0` using `by rw [mul_comm]; exact hac`. Establish `hcb : c * b = 0` using `by rw [mul_comm]; exact hbc`. Establish `hd : (a + b) * (a + b) = a + b` using `by linear_combination ha + hb + 2 * hab`. Establish `hdc : (a + b) * c = 0` using `by linear_combination hac + hbc`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `φ : UA σ X.J ≃ₜ* P × Q × R` to `{ toFun := fun g => (⟨pr_pk a ha g, (hP _).2 (pr_fix_pk ha g)⟩, ⟨pr_pk b hb g, (hQ _).2 (pr_fix_pk hb g)⟩, ⟨pr_pk c hc g, (hR _).2 (pr_fix_pk hc g)⟩) invFun := fun x => x.1.1 * x.2.1.1 * x.2.2.1 left_inv := fun g => Subtype.ext (Units.ext (show cut a (mat g) * cut b (mat g) * cut …`. Rewrite using `[cut_add_pk ha hb hab, cut_add_pk hd hc hdc, hs, cut_self_pk]))`. Use `right_inv := fun x => by`. Take `⟨⟨p, hp⟩, ⟨q, hq⟩, ⟨r, hr⟩⟩` from `x`. Establish `p1` using `(hP p).1 hp`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `q1` using `(hQ q).1 hq`. Establish `r1` using `(hR r).1 hr`. Use `Prod.ext (Subtype.ext ?_) (Prod.ext (Subtype.ext ?_) (Subtype.ext ?_))` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `pr_pk a ha (p * q * r) = p`. Rewrite using `[map_mul, map_mul, pr_eq_pk.2 p1, pr_one_of_pk hab q1, pr_one_of_pk hac r1, mul_one, mul_one]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `pr_pk b hb (p * q * r) = q`. Rewrite using `[map_mul, map_mul, pr_eq_pk.2 q1, pr_one_of_pk hba p1, pr_one_of_pk hbc r1, mul_one, one_mul]`. Express the relevant statement in the definitionally equal form `pr_pk c hc (p * q * r) = r`. Rewrite using `[map_mul, map_mul, pr_eq_pk.2 r1, pr_one_of_pk hca p1, pr_one_of_pk hcb q1, one_mul, one_mul]`. Use the proof step `map_mul' := fun g h => Prod.ext (Subtype.ext (map_mul _ _ _)) (Prod.ext (Subtype.ext (map_mul _ _ _)) (Subtype.ext (map_mul _ _ _)))`.
-
-Use `continuous_toFun := ((cont_pr_pk ha).subtype_mk _).prodMk (((cont_pr_pk hb).subtype_mk _).prodMk ((cont_pr_pk hc).subtype_mk _))`. Use `continuous_invFun := ((continuous_subtype_val.comp continuous_fst).mul (continuous_subtype_val.comp (continuous_fst.comp continuous_snd))).mul (continuous_subtype_val.comp (continuous_snd.comp continuous_snd)) }`. Conclude with `⟨φ.symm, fun x => rfl⟩`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem prod_equiv_pk {P Q R : Subgroup (UA σ X.J)} {a b c : AF F} (ha : a * a = a) (hb : b * b = b) (hc : c * c = c)
     (hab : a * b = 0) (hac : a * c = 0) (hbc : b * c = 0) (hs : a + b + c = 1) (hP : ∀ g, g ∈ P ↔ a • (mat g - 1) = mat g - 1)
@@ -340,15 +332,13 @@ private theorem prod_equiv_pk {P Q R : Subgroup (UA σ X.J)} {a b c : AF F} (ha 
   exact ⟨φ.symm, fun x => rfl⟩
 end UpperTheory.TP
 /- English proof (translation)
-Introduce `_ F E _ _ _ _ _ σ B n X hB hX S`. Establish `h00 : min n 0 = 0` using `by simp`. Take `⟨K, -, -, hK, hKc, -, -⟩` from `_root_.PositivityTheory.ThKG.Tow.stabEx_k F E σ B n X n 0 hB hX`. Establish `eK : (K : Set (UA σ X.J)) = {g | IntAll g}` using `Set.ext fun g => _root_.GlobalTheory.ThK.Dbl.Bad.stab_iff_k hB hX h00 hK`. Establish `h1` using `eps_sq_pk (F := F)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `sum_sq_pk (F := F) S`. Establish `h3` using `eps_mul_sum_pk (F := F) S`. Establish `cI : IsClosed (gInf σ X : Set (UA σ X.J))`. Rewrite using `[show (gInf σ X : Set (UA σ X.J)) = {g | realAd F 1 • (mat g - 1) = mat g - 1} from Set.ext fun _ => mem_gInf_pk]`. Conclude with `closed_fix_pk h1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hc : (1 - realAd F 1 - ∑ v ∈ S, (Euler.idem v : AF F)) * (1 - realAd F 1 - ∑ v ∈ S, (Euler.idem v : AF F)) = 1 - realAd F 1 - ∑ v ∈ S, (Euler.idem v : AF F)` using `by linear_combination h1 + h2 + 2 * h3`. Use `⟨prod_equiv_pk h1 h2 hc h3 (by linear_combination -h3 - h1) (by linear_combination -h3 - h2) (by ring) (fun _ => mem_gInf_pk) (fun _ => mem_gAt_pk) (fun _ => mem_gOff_pk), (eK ▸ hKc).of_isClosed_subset cI fun g hg => inf_int_pk hg, ?_, ?_, eK ▸ hKc, ?_, fun g hg => inf_int_pk hg, …` and prove the remaining obligations. Rewrite using `[show (gAt σ X S : Set (UA σ X.J)) = {g | (∑ v ∈ S, (Euler.idem v : AF F)) • (mat g - 1) = mat g - 1} from Set.ext fun _ => mem_gAt_pk]`. Conclude with `closed_fix_pk h2`. Rewrite using `[show (gOff σ X S : Set (UA σ X.J)) = {g | (1 - realAd F 1 - ∑ v ∈ S, (Euler.idem v : AF F)) • (mat g - 1) = mat g - 1} from Set.ext fun _ => mem_gOff_pk]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `closed_fix_pk hc`. Rewrite using `[← eK]`. Conclude with `Subgroup.isOpen_of_mem_nhds K (g := 1) (by rw [eK]; exact Bad.int_nhds hX.lat)`. Use `⟨fun v => Euler.prj v b, fun v => Euler.prj_mem b, fun v _ => Euler.off_of ?_, fun H hH => ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_inv, Euler.mem_loc.1 (Euler.prj_mem b), inv_mul_cancel]`.
-
-Use `pr_sum_mem_pk H b S hH` as an intermediate fact. Rewrite `this` using `[pr_eq_pk.2 (mem_gAt_pk.1 hb)]`. Then use the resulting hypothesis. Conclude with `(Filter.eventually_cofinite.1 ((Euler.ae_mulVec hX.lat (mat g)).and (Euler.ae_mulVec hX.lat (mat g⁻¹)))).subset fun v hv h => hv fun z hz h3 => ⟨h.1 z hz h3, h.2 z hz h3⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem UpperTheory.TP.decomp_k :
     _root_.UpperTheory.TP.Tools_k → _root_.UpperTheory.TP.Decomp_k := by

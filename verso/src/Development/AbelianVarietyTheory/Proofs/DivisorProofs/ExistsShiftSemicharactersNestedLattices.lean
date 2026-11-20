@@ -32,11 +32,11 @@ theorem imForm_apply {g : ℕ} (Hm : Matrix (Fin g) (Fin g) ℂ) (y w : Fin g �
     imForm Hm y w = (hermForm Hm y w).im := rfl
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (imForm Hm)`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `z hz`. Assume the negation of the conclusion as `hz0`. Establish `h1 : imForm Hm z (Complex.I • z) = 0` using `by rw [hz]; rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `h2 : imForm Hm z (Complex.I • z) = -(hermForm Hm z z).re`. Rewrite using `[imForm_apply]`. Simplify using `[hermForm, star_smul, Matrix.mulVec_smul, dotProduct_smul, Matrix.mulVec_neg, dotProduct_neg, smul_eq_mul, Complex.mul_im]`. Use `hpos z hz0` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hdim : Module.finrank ℝ (Fin g → ℂ) = Module.finrank ℝ ((Fin g → ℂ) →ₗ[ℝ] ℝ)` using `(Subspace.dual_finrank_eq).symm`. Conclude with `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank hdim).mp hinj`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem imForm_surjective {g : ℕ} (Hm : Matrix (Fin g) (Fin g) ℂ)
     (hpos : ∀ z : Fin g → ℂ, z ≠ 0 → 0 < (hermForm Hm z z).re) :
@@ -61,27 +61,23 @@ end GlobalTheory.SemicharShift
 namespace GlobalTheory.SemicharShift
 
 /- English proof (translation)
-Use `haveI : IsZLattice ℝ Λ := ⟨hsp⟩`. Set `b` to `Module.Free.chooseBasis ℤ Λ`. Set `B` to `b.ofZLatticeBasis ℝ Λ`. Set `φ : (Fin g → ℂ) →ₗ[ℝ] ℝ` to `B.constr ℝ (fun j => Complex.arg (ρ (b j)) / (2 * Real.pi))`. Use `⟨φ, ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hφb : ∀ j, φ (b j : Fin g → ℂ) = Complex.arg (ρ (b j)) / (2 * Real.pi)`. Introduce `j`. Establish `: (b j : Fin g → ℂ) = B j` using `by simp [B, Module.Basis.ofZLatticeBasis_apply]`. Rewrite using `[this]`. Conclude with `B.constr_basis ℝ _ j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hne : ∀ l, ρ l ≠ 0` using `fun l h => by simpa [h] using hn l`. Establish `h0 : ρ 0 = 1`. Use `hmul 0 0` as an intermediate fact. Rewrite `this` using `[add_zero]`. Establish `h` using `hne 0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Introduce a local definition for the expression.
 
-Clear denominators, using `at this` for the nonvanishing conditions. Conclude with `this.symm`. Set `S : AddSubgroup Λ` to `{ carrier := {l | ρ l = Complex.exp (2 * Real.pi * Complex.I * (φ (l : Fin g → ℂ) : ℂ))} add_mem' := by`. Introduce `l m hl hm`. Simplify using `only [Set.mem_setOf_eq] at hl hm ⊢`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Rewrite using `[hmul, hl, hm, ← Complex.exp_add]`. Use `congr 1`. Simplify using `only [Submodule.coe_add, map_add]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Use the proof step `zero_mem' := by`. Simplify using `only [Set.mem_setOf_eq, ZeroMemClass.coe_zero, map_zero]`. Simplify using `[h0]`. Use the proof step `neg_mem' := by`. Introduce `l hl`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [Set.mem_setOf_eq] at hl ⊢`. Establish `h1 : ρ (-l) * ρ l = 1` using `by rw [← hmul, neg_add_cancel, h0]`. Establish `h2 : ρ (-l) = (ρ l)⁻¹` using `eq_inv_of_mul_eq_one_left h1`. Rewrite using `[h2, hl, ← Complex.exp_neg]`. Use `congr 1`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Submodule.coe_neg, map_neg]`. Use `push_cast`. Use `ring }`. Establish `htop : (⊤ : Submodule ℤ Λ) ≤ S.toIntSubmodule`. Rewrite using `[← b.span_eq, Submodule.span_le]`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `_ ⟨j, rfl⟩`. Use `show ρ (b j) = Complex.exp (2 * Real.pi * Complex.I * (φ (b j : Fin g → ℂ) : ℂ))`. Rewrite using `[hφb]`. Establish `hpi : (Real.pi : ℂ) ≠ 0` using `by exact_mod_cast Real.pi_ne_zero`. Establish `: 2 * (Real.pi : ℂ) * Complex.I * ((Complex.arg (ρ (b j)) / (2 * Real.pi) : ℝ) : ℂ) = (Complex.arg (ρ (b j)) : ℂ) * Complex.I` using `by push_cast; field_simp`.
-
-Rewrite using `[this]`. Establish `h` using `Complex.norm_mul_exp_arg_mul_I (ρ (b j))`. Rewrite `h` using `[hn, Complex.ofReal_one, _root_.one_mul]`. Conclude with `h.symm`. Introduce `l`.
-
-Conclude with `htop (Submodule.mem_top : l ∈ ⊤)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_linear_of_char {g : ℕ} (Λ : Submodule ℤ (Fin g → ℂ)) [DiscreteTopology Λ]
     (hsp : Submodule.span ℝ (Λ : Set (Fin g → ℂ)) = ⊤) (ρ : Λ → ℂ) (hn : ∀ l, ‖ρ l‖ = 1)
@@ -147,15 +143,15 @@ end GlobalTheory.SemicharShift
 namespace GlobalTheory.SemicharShift
 
 /- English proof (translation)
-Introduce `g Λ Λ₁ Hm χ χ₁ h hdisc hsp _hH hpos hχ hχ₁ hc hc₁`. Use `haveI := hdisc`. Establish `hne : ∀ l, χ₁ l ≠ 0` using `fun l e => by simpa [e] using hχ₁ l`. Establish `hne' : ∀ l, χ l ≠ 0` using `fun l e => by simpa [e] using hχ l`. Set `ρ : Λ → ℂ` to `fun l => χ l / χ₁ (Submodule.inclusion h l)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hn : ∀ l, ‖ρ l‖ = 1` using `fun l => by simp [ρ, norm_div, hχ, hχ₁]`. Establish `hmul : ∀ l m, ρ (l + m) = ρ l * ρ m`. Introduce `l m`. Simplify using `only [ρ]`. Rewrite using `[map_add, hc, hc₁]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Submodule.coe_inclusion]`. Establish `e1` using `hne (Submodule.inclusion h l)`. Establish `e2` using `hne (Submodule.inclusion h m)`. Establish `e3 : Complex.exp (Real.pi * Complex.I * (hermForm Hm l m).im) ≠ 0` using `Complex.exp_ne_zero _`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Extract witnesses or component facts from the available result.
 
-Take `⟨φ, hφ⟩` from `exists_linear_of_char Λ hsp ρ hn hmul`. Take `⟨a, ha⟩` from `imForm_surjective Hm hpos φ`. Use `⟨a, fun l => ?_⟩` and prove the remaining obligations. Establish `h1` using `hφ l`. Rewrite `h1` using `[← ha, imForm_apply]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h1]`. Simplify using `only [ρ]`. Clear denominators, using `[hne (Submodule.inclusion h l)]` for the nonvanishing conditions.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem exists_shift_of_semichar : ∀ (g : ℕ) (Λ Λ₁ : Submodule ℤ (Fin g → ℂ)) (Hm : Matrix (Fin g) (Fin g) ℂ) (χ : Λ → ℂ) (χ₁ : Λ₁ → ℂ)
     (h : Λ ≤ Λ₁), DiscreteTopology Λ → Submodule.span ℝ (Λ : Set (Fin g → ℂ)) = ⊤ → Hm.IsHermitian →

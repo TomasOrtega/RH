@@ -24,17 +24,15 @@ open NumberField IsDedekindDomain in
 open MeasureTheory in
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4, h5, K, hK, hcov⟩` from `_root_.GlobalTheory.AdelicMatrixLatticeF.lattice F E nS nT`. Use `haveI : BorelSpace (_root_.Formalism.IndefR.DatumF.WOF F E nS nT) := ⟨rfl⟩`. Take `⟨⟨μ, 𝓕, hμ, h𝓕, -⟩, hN⟩` from `_root_.GlobalTheory.meanSquare_addFundamentalDomain_of_cocompact _ (_root_.Formalism.IndefR.DatumF.ratLF F E nS nT) K hK hcov`. Establish `hper : ∀ γ ∈ _root_.Formalism.IndefR.DatumF.ratLF F E nS nT, ∀ w, ‖f (γ + w)‖ = ‖f w‖`. Introduce `γ hγ w`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h` using `_root_.GlobalTheory.ThetaSchurF.prod_periodic hψ hf hf hγ w`. Simplify using `only [← starRingEnd_apply, RCLike.mul_conj] at h`. Establish `h' : ‖f (γ + w)‖ ^ 2 = ‖f w‖ ^ 2` using `by exact_mod_cast h`. Conclude with `(pow_left_inj₀ (norm_nonneg _) (norm_nonneg _) two_ne_zero).1 h'`. Take `⟨N, hN⟩` from `hN f hf.cont hper`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨-, htop, hl, -⟩` from `hN μ 𝓕 hμ h𝓕`. Use `haveI : Countable (_root_.Formalism.IndefR.DatumF.ratLF F E nS nT) := (TopologicalSpace.separableSpace_iff_countable).1 inferInstance`. Use `⟨μ, 𝓕, hμ, h𝓕, ?_, ?_⟩` and prove the remaining obligations. Introduce `hz`. Establish `hall : ∫⁻ w, ‖f w‖ₑ ^ 2 ∂μ = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h𝓕.lintegral_eq_tsum']`. Use `ENNReal.tsum_eq_zero.2 fun γ => ?_` and prove the remaining obligations. Rewrite using `[← hz]`. Use `lintegral_congr fun w => ?_` and prove the remaining obligations. Rewrite using `[AddSubgroup.vadd_def, vadd_eq_add, ← ofReal_norm_eq_enorm, ← ofReal_norm_eq_enorm, hper _ (-γ).2 w]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcont : Continuous fun w => ‖f w‖ₑ ^ 2` using `(ENNReal.continuous_pow 2).comp (continuous_enorm.comp hf.cont)`. Establish `hae` using `(lintegral_eq_zero_iff hcont.measurable).1 hall`. Establish `heq` using `(Continuous.ae_eq_iff_eq μ hcont continuous_const).1 hae`. Establish `hfy` using `congrFun heq y`. Simplify using `[hy] at hfy`.
-
-Rewrite using `[hl]`. Conclude with `ENNReal.mul_ne_top htop (by simp)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.ThetaSchurUnitF.exists_fd_pos_fin {F E : Type} [Field F] [NumberField F]
     [Field E] [NumberField E] [Algebra F E]
@@ -80,15 +78,15 @@ theorem _root_.GlobalTheory.ThetaSchurUnitF.exists_fd_pos_fin {F E : Type} [Fiel
 end GlobalTheory.ThetaSchurUnitF
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B hB nS nT JS JT hJS hJT ξ₀ hξ hσξ A A' hA _ _ _ hiso hcomm`. Take `⟨c, hc⟩` from `GlobalTheory.T.schur_lemma_heisenberg_commuting_thetaOperator F E σ B hB nS nT JS JT hJS hJT ξ₀ hξ hσξ A hA hcomm hiso`. Establish `hψ : ∀ a, ‖B.ψ a‖ = 1` using `(GlobalTheory.StdCharWeilDatum.isStdCharF_of_isGood F E σ B hB).1.2.1`. Distinguish the cases in `h0 : ∃ f y, IsThetaFunOF σ JS JT ξ₀ B.ψ f ∧ f y ≠ 0`. Take `⟨f, y, hf, hy⟩` from `h0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Take `⟨μ, 𝓕, hμ, h𝓕, hI0, hIt⟩` from `GlobalTheory.ThetaSchurUnitF.exists_fd_pos_fin hψ hf hy`. Establish `h` using `hiso μ 𝓕 hμ h𝓕 f hf`. Rewrite `h` using `[hc f hf]`. Simplify using `only [Pi.smul_apply, smul_eq_mul, enorm_mul, mul_pow] at h`. Rewrite `h` using `[lintegral_const_mul' _ _ (ENNReal.pow_ne_top enorm_ne_top)]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1 : ‖c‖ₑ ^ 2 = 1`. Use `congrArg (· / ∫⁻ w in 𝓕, ‖f w‖ₑ ^ 2 ∂μ) h` as an intermediate fact. Rewrite `this` using `[ENNReal.mul_div_cancel_right hI0 hIt, ENNReal.div_self hI0 hIt]`. Then use the resulting hypothesis. Establish `h2 : (‖c‖₊ : ENNReal) ^ 2 = 1` using `by rwa [enorm_eq_nnnorm] at h1`. Establish `h3 : ‖c‖₊ ^ 2 = 1` using `by exact_mod_cast h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : ‖c‖ ^ 2 = 1`. Use `congrArg (fun t : NNReal => (t : ℝ)) h3` as an intermediate fact. Simplify using `using this`. Establish `hn : ‖c‖ = 1` using `(pow_eq_one_iff_of_nonneg (norm_nonneg c) two_ne_zero).1 h4`. Conclude with `⟨⟨c, mem_sphere_zero_iff_norm.2 hn⟩, fun g hg => hc g hg⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Supply the required witnesses or components.
 
-Use `push_neg at h0`. Use `⟨1, fun f hf => ?_⟩` and prove the remaining obligations. Establish `: f = 0` using `funext fun y => h0 f y hf`. Substitute `this` using the available equality. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Substitute using the available equality. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.ThetaSchurUnitF.main : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
     B.IsGood σ → ∀ (nS nT : ℕ) (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E),

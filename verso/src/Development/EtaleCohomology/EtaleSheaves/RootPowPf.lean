@@ -6,7 +6,7 @@ open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC Polynomia
 namespace LateralTheory.E.RootPowPf
 
 /- English proof (translation)
-Establish `h` using `ζ.2.2`. Rewrite using `[IsRoot.def, ← map_cyclotomic_int q A, Polynomial.eval_map]`. Rewrite `h` using `[aeval_def]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prim_eval {q : ℕ} {A : Type} [CommRing A] (ζ : Prim q A) : IsRoot (cyclotomic q A) ζ.1 := by
   have h := ζ.2.2
@@ -15,16 +15,16 @@ theorem prim_eval {q : ℕ} {A : Type} [CommRing A] (ζ : Prim q A) : IsRoot (cy
   exact h
 
 /- English proof (translation)
-Establish `h` using `(prim_eval ζ).dvd (cyclotomic.dvd_X_pow_sub_one q A)`. Simplify `h` using `[IsRoot.def, sub_eq_zero]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem prim_pow {q : ℕ} {A : Type} [CommRing A] (ζ : Prim q A) : ζ.1 ^ q = 1 := by
   have h := (prim_eval ζ).dvd (cyclotomic.dvd_X_pow_sub_one q A)
   simpa [IsRoot.def, sub_eq_zero] using h
 
 /- English proof (translation)
-Establish `: NeZero (q : K)` using `⟨ζ.2.1.ne_zero⟩`. Establish `: NeZero q` using `NeZero.of_neZero_natCast K`. Establish `hζ : IsPrimitiveRoot ζ.1 q` using `isRoot_cyclotomic_iff.1 (prim_eval ζ)`. Establish `hξ : IsPrimitiveRoot ξ.1 q` using `isRoot_cyclotomic_iff.1 (prim_eval ξ)`. Take `⟨i, hi, he⟩` from `hζ.eq_pow_of_pow_eq_one hξ.pow_eq_one`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hc : i.Coprime q` using `(hζ.pow_iff_coprime (NeZero.pos q) i).1 (he ▸ hξ)`. Use `⟨ZMod.unitOfCoprime i hc, ?_⟩` and prove the remaining obligations. Rewrite using `[ZMod.coe_unitOfCoprime, ZMod.val_natCast, Nat.mod_eq_of_lt hi, he]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem field_case {q : ℕ} {K : Type} [Field K] (ζ ξ : Prim q K) :
     ∃ a : (ZMod q)ˣ, ξ.1 = ζ.1 ^ (a : ZMod q).val := by
@@ -38,15 +38,13 @@ theorem field_case {q : ℕ} {K : Type} [Field K] (ζ ξ : Prim q K) :
   rw [ZMod.coe_unitOfCoprime, ZMod.val_natCast, Nat.mod_eq_of_lt hi, he]
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `field_case (ζ.map (IsLocalRing.residue O)) (ξ.map (IsLocalRing.residue O))`. Use `⟨a, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `IsLocalRing.residue O ξ.1 = (IsLocalRing.residue O ζ.1) ^ _ at ha`. Rewrite `ha` using `[← map_pow]`. Use `set η := ζ.1 ^ (a : ZMod q).val with hη`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hηq : η ^ q = 1` using `by rw [hη, ← pow_mul, mul_comm, pow_mul, prim_pow, one_pow]`. Establish `hq : q ≠ 0`. Introduce and unpack `rfl`. Use `ζ.2.1` as an intermediate fact. Simplify using `at this`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hηu : IsUnit η` using `IsUnit.of_pow_eq_one hηq hq`. Establish `hg` using `(Commute.all ξ.1 η).geom_sum₂_mul q`. Rewrite `hg` using `[prim_pow, hηq, sub_self]`. Establish `hu : IsUnit (∑ i ∈ Finset.range q, ξ.1 ^ i * η ^ (q - 1 - i))`. Rewrite using `[← IsLocalRing.residue_ne_zero_iff_isUnit]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_sum, map_mul, map_pow, ha]`. Rewrite using `[geom_sum₂_self]`. Establish `h1 : IsUnit ((q : O) * η ^ (q - 1))` using `ζ.2.1.mul (hηu.pow _)`. Establish `h2` using `(h1.map (IsLocalRing.residue O)).ne_zero`. Simplify using `using h2`.
-
-Conclude with `sub_eq_zero.1 (hu.mul_right_eq_zero.1 hg)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem local_case {q : ℕ} {O : Type} [CommRing O] [IsLocalRing O] (ζ ξ : Prim q O) :
     ∃ a : (ZMod q)ˣ, ξ.1 = ζ.1 ^ (a : ZMod q).val := by
@@ -82,11 +80,11 @@ def sv {q : ℕ} {Y : Scheme.{0}} (ζ ξ : Prim q Γ(Y, ⊤)) : Sieve Y where
     simp only [Scheme.Hom.comp_appTop, CommRingCat.hom_comp, RingHom.coe_comp, Function.comp_apply, ha, map_pow]
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `local_case (ζ.map (Y.presheaf.germ ⊤ y trivial).hom) (ξ.map (Y.presheaf.germ ⊤ y trivial).hom)`. Express the relevant statement in the definitionally equal form `(Y.presheaf.germ ⊤ y trivial).hom ξ.1 = (Y.presheaf.germ ⊤ y trivial).hom ζ.1 ^ _ at ha`. Rewrite `ha` using `[← map_pow]`. Take `⟨(U : Y.Opens), hU, i, i', he⟩` from `TopCat.Presheaf.germ_eq Y.presheaf (U := ⊤) (V := ⊤) y trivial trivial _ _ ha`. Use `⟨U, hU, a, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `U.ι.appTop.hom ξ.1 = U.ι.appTop.hom ζ.1 ^ _`. Rewrite using `[← map_pow]`. Establish `hf : U.ι.appTop = Y.presheaf.map i.op ≫ U.topIso.inv`. Rewrite using `[Scheme.Opens.ι_appTop, Scheme.Opens.topIso_inv]`. Conclude with `(Y.presheaf.map_comp _ _).symm ▸ rfl`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hi : i' = i` using `Subsingleton.elim _ _`. Substitute `hi` using the available equality. Rewrite using `[hf]`. Conclude with `congrArg U.topIso.inv.hom he`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nhd {q : ℕ} {Y : Scheme.{0}} (ζ ξ : Prim q Γ(Y, ⊤)) (y : Y) :
     ∃ U : Y.Opens, y ∈ U ∧ sv ζ ξ U.ι := by
@@ -106,7 +104,7 @@ theorem nhd {q : ℕ} {Y : Scheme.{0}} (ζ ξ : Prim q Γ(Y, ⊤)) (y : Y) :
   exact congrArg U.topIso.inv.hom he
 
 /- English proof (translation)
-Apply `Scheme.zariskiTopology_le_etaleTopology` to reduce the goal to its premises. Use `choose U hU hS using nhd ζ ξ`. Use `Scheme.mem_grothendieckTopology_iff.2 ⟨Scheme.Cover.mkOfCovers Y (fun y => (U y : Scheme)) (fun y => (U y).ι) (fun y => ⟨y, ⟨y, hU y⟩, rfl⟩) (fun y => inferInstance), ?_⟩` and prove the remaining obligations. Introduce and unpack `_ _ ⟨y⟩`. Conclude with `hS y`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem sv_mem {q : ℕ} {Y : Scheme.{0}} (ζ ξ : Prim q Γ(Y, ⊤)) : sv ζ ξ ∈ Scheme.etaleTopology Y := by
   apply Scheme.zariskiTopology_le_etaleTopology
@@ -117,9 +115,9 @@ theorem sv_mem {q : ℕ} {Y : Scheme.{0}} (ζ ξ : Prim q Γ(Y, ⊤)) : sv ζ ξ
   exact hS y
 
 /- English proof (translation)
-Introduce `q Y ζ s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact ⟨⊤, GrothendieckTopology.top_mem _ _, fun _ _ _ ξ h => absurd h (Finset.notMem_empty ξ)⟩`. Consider the case `insert ξ s _ ih`. Take `⟨S, hS, h⟩` from `ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Use `⟨S ⊓ sv ζ ξ, GrothendieckTopology.intersection_covering _ hS (sv_mem ζ ξ), ?_⟩` and prove the remaining obligations. Introduce and unpack `Z g ⟨h1, h2⟩ η hη`. Break down `Finset.mem_insert.1 hη with rfl | hη` into its components or cases. Conclude with `h2`. Conclude with `h g h1 η hη`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem RootPow_of : LateralTheory.E.MulPf.RootPow := by
   classical

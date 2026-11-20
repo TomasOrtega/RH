@@ -18,9 +18,9 @@ open GlobalTheory.HSShort GlobalTheory.HSChoice MvPolynomial
 namespace GlobalTheory.HSShort.SplitCoord
 
 /- English proof (translation)
-Unfold `spec`. Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C a => simp [MvPolynomial.algebraMap_eq, ← IsScalarTower.algebraMap_apply, MvPolynomial.algebraMap_apply]`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`. Consider the case `mul_X p i hp`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Simplify using `only [map_mul, hp, aeval_X]`. Use `congr 1`. Take `⟨a, b⟩` from `i`. Apply the tactic sequence `refine Fin.lastCases ?_ (fun a => ?_) a <;> simp [join]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem map_spec {F E K : Type} [CommRing F] [CommRing E] [CommRing K] [Algebra F E] [Algebra E K] [Algebra F K]
     [IsScalarTower F E K] {D N : ℕ} (s : Fin D → Fin N → E) (f : MvPolynomial (Fin (D + 1) × Fin N) F) :
@@ -36,7 +36,7 @@ theorem map_spec {F E K : Type} [CommRing F] [CommRing E] [CommRing K] [Algebra 
     refine Fin.lastCases ?_ (fun a => ?_) a <;> simp [join]
 
 /- English proof (translation)
-Simplify using `only [lin, map_sum, map_mul, map_X, map_C, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => by ring`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem map_lin_smul {E K : Type} [CommRing E] [CommRing K] (φ : E →+* K) {N : ℕ} (c : E) (y : Fin N → E) :
     map φ (lin (c • y)) = C (φ c) * lin fun j => φ (y j) := by
@@ -44,9 +44,9 @@ theorem map_lin_smul {E K : Type} [CommRing E] [CommRing K] (φ : E →+* K) {N 
   exact Finset.sum_congr rfl fun j _ => by ring
 
 /- English proof (translation)
-Take `⟨m, hm⟩` from `ne_zero_iff.1 hP`. Establish `e : φ (coeff m Q) = c * φ (coeff m P)`. Simplify `congrArg (coeff m) h` using `only [coeff_map, coeff_C_mul]`. Establish `e' : φ (coeff m Q / coeff m P) = c`. Rewrite using `[map_div₀, e, mul_div_cancel_right₀ _ ((map_ne_zero φ).2 hm)]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨coeff m Q / coeff m P, fun h0 => hc (by rw [← e', h0, map_zero]), map_injective φ φ.injective ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_C, e', h]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_eq_C_mul {E K σ : Type} [Field E] [Field K] (φ : E →+* K) {P Q : MvPolynomial σ E} (hP : P ≠ 0) {c : K}
     (hc : c ≠ 0) (h : map φ Q = C c * map φ P) : ∃ c₀ : E, c₀ ≠ 0 ∧ Q = C c₀ * P := by
@@ -59,7 +59,7 @@ theorem exists_eq_C_mul {E K σ : Type} [Field E] [Field K] (φ : E →+* K) {P 
   rw [map_mul, map_C, e', h]
 
 /- English proof (translation)
-Establish `hA : (∏ p, φ (a p)) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun p _ => (map_ne_zero _).2 (ha p)`. Use `exists_eq_C_mul φ (Finset.prod_ne_zero_iff.2 fun p _ => Check.lin_ne (hy p)) (div_ne_zero hc hA) ?_` and prove the remaining obligations. Rewrite using `[h, map_prod]`. Simplify using `only [ea, hz, map_lin_smul]`. Rewrite using `[Finset.prod_mul_distrib, ← map_prod C, ← mul_assoc, ← map_mul, div_mul_cancel₀ _ hA]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_eq_C_mul_prod {E K ι : Type} [Field E] [Field K] [Fintype ι] (φ : E →+* K) {N : ℕ}
     {Q : MvPolynomial (Fin 1 × Fin N) E} {y v : ι → Fin N → E} {z : ι → Fin N → K} {a : ι → E} (hy : ∀ p, y p ≠ 0)
@@ -72,11 +72,11 @@ theorem exists_eq_C_mul_prod {E K ι : Type} [Field E] [Field K] [Fintype ι] (�
   rw [Finset.prod_mul_distrib, ← map_prod C, ← mul_assoc, ← map_mul, div_mul_cancel₀ _ hA]
 
 /- English proof (translation)
-Introduce `F _ _ G E _ _ _ s hs δ f h hS`. Take `rfl` from `hS.card`. Take `⟨x, Co, hCo, -⟩` from `h.exists_coord hs`. Take `⟨c, hc, e⟩` from `hS.fac`. Use `choose a ha ea using fun p => G.exists_coords_baseChange E (x p).pt.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h₅ (p) : G.coords (LinSys.toBase (RatPt.geomPt G E s (x p))).1 = fun j => algebraMap E (AlgebraicClosure E) (G.coords ((x p).pt.1 ≫ G.bcFst E) j)`. Rewrite using `[← LinSys.coords_spMap_comp]`. Conclude with `congrArg G.coords ((congrArg (· ≫ G.bcFst E) (Category.assoc _ _ _)).trans (Category.assoc _ _ _))`. Establish `h₇ : ∏ᶠ z ∈ G.geomPts E (G.linSection E s), lin (G.coords (LinSys.toBase z : G.Pt (AlgebraicClosure E)).1) = ∏ p, lin (G.coords (LinSys.toBase (RatPt.geomPt G E s (x p)) : G.Pt (AlgebraicClosure E)).1)`. Use `(finprod_mem_congr h.geomPts_eq fun _ _ => rfl).trans ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[finprod_mem_range (RatPt.geomPt_injective hs), ← finprod_comp_equiv x, finprod_eq_prod_of_fintype]`. Take `⟨c₀, h₀, e₀⟩` from `exists_eq_C_mul_prod (N := G.N) (algebraMap E (AlgebraicClosure E)) (Q := spec s f) (y := Co.y) (fun p h0 => (G.baseChange E).geom.alg.bpf.coords_ne_zero _ ((hCo p).2.1.symm.trans h0)) ha (fun p => (hCo p).2.1.trans (ea p)) h₅ hc ((map_spec s f).trans (e.trans (congrArg (C c * ·) …`. Conclude with `⟨Co, c₀, h₀, e₀⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_coord_spec_eq : ∀ (F : Type) [Field F] [NumberField F] (G : Geo F) (E : Type) [Field E] [NumberField E] [Algebra F E] (s : Fin G.D → Fin G.N → E) (hs : (G.baseChange E).IsGood s) (δ : ℕ) (f : MvPolynomial (Fin (G.D + 1) × Fin G.N) F), Split G.toTuple E s → SimpleAt G.toTuple δ f E s → ∃ (Co : Coord (G.baseChange E) hs δ) (c : E), c ≠ 0 ∧ spec s f = C c * ∏ p, lin (Co.y p) := by
   intro F _ _ G E _ _ _ s hs δ f h hS

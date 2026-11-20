@@ -8,7 +8,7 @@ namespace GlobalTheory.CompanionTheory.HalfWeight
 open Finset
 
 /- English proof (translation)
-Unfold `ee`. Rewrite using `[← Complex.exp_add]`. Put the polynomial expressions in normal form.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form.
 -/
 lemma ee_add (x y : ℂ) : ee (x + y) = ee x * ee y := by
   unfold ee
@@ -16,7 +16,7 @@ lemma ee_add (x y : ℂ) : ee (x + y) = ee x * ee y := by
   ring_nf
 
 /- English proof (translation)
-Unfold `ee`. Rewrite using `[← Complex.exp_int_mul_two_pi_mul_I k]`. Put the polynomial expressions in normal form.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form.
 -/
 lemma ee_intCast (k : ℤ) : ee (k : ℂ) = 1 := by
   unfold ee
@@ -26,7 +26,7 @@ lemma ee_intCast (k : ℤ) : ee (k : ℂ) = 1 := by
 noncomputable def e1 (d : ℕ) (m : ℤ) : ℂ := ee ((m : ℂ) / d)
 
 /- English proof (translation)
-Unfold `e1`. Rewrite using `[← ee_add]`. Use `push_cast`. Put the polynomial expressions in normal form.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Put the polynomial expressions in normal form.
 -/
 lemma root_of_unity_character_add (d : ℕ) (m k : ℤ) : e1 d (m + k) = e1 d m * e1 d k := by
   unfold e1
@@ -35,9 +35,9 @@ lemma root_of_unity_character_add (d : ℕ) (m k : ℤ) : e1 d (m + k) = e1 d m 
   ring_nf
 
 /- English proof (translation)
-Establish `hd' : (d : ℂ) ≠ 0` using `by exact_mod_cast hd.ne'`. Rewrite using `[root_of_unity_character_add]`. Establish `: e1 d (d * k) = 1`. Unfold `e1`. Establish `: (((d : ℤ) * k : ℤ) : ℂ) / d = (k : ℂ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Use `push_cast`. Clear the denominators using the available nonvanishing facts. Rewrite using `[this, ee_intCast]`. Rewrite using `[this, mul_one]`.
+Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 lemma root_of_unity_character_periodic (d : ℕ) (hd : 0 < d) (m k : ℤ) : e1 d (m + d * k) = e1 d m := by
   have hd' : (d : ℂ) ≠ 0 := by exact_mod_cast hd.ne'
@@ -51,9 +51,9 @@ lemma root_of_unity_character_periodic (d : ℕ) (hd : 0 < d) (m k : ℤ) : e1 d
   rw [this, mul_one]
 
 /- English proof (translation)
-Establish `h : Function.Periodic f (d : ℤ)` using `hf`. Establish `h2` using `(h.int_mul (x / d)) (x % d)`. Rewrite using `[← h2]`. Use `congr 1`. Rewrite using `[Int.emod_def]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Int.cast_id]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma per_emod (f : ℤ → ℂ) (d : ℕ) (hf : ∀ x, f (x + d) = f x) (x : ℤ) : f (x % d) = f x := by
   have h : Function.Periodic f (d : ℤ) := hf
@@ -65,7 +65,7 @@ lemma per_emod (f : ℤ → ℂ) (d : ℕ) (hf : ∀ x, f (x + d) = f x) (x : �
   ring
 
 /- English proof (translation)
-Rewrite using `[ZMod.val_intCast]`. Conclude with `per_emod f d hf x`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma f_val (f : ℤ → ℂ) (d : ℕ) [NeZero d] (hf : ∀ x, f (x + d) = f x) (x : ℤ) :
     f (((x : ZMod d).val : ℕ) : ℤ) = f x := by
@@ -73,11 +73,11 @@ lemma f_val (f : ℤ → ℂ) (d : ℕ) [NeZero d] (hf : ∀ x, f (x + d) = f x)
   exact per_emod f d hf x
 
 /- English proof (translation)
-Use `symm`. Use `Finset.sum_nbij' (fun y => y.val) (fun x => (x : ZMod d)) ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `y _`. Simplify using `using ZMod.val_lt y`. Introduce `x _`.
+Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using the standard rewrite rules. Introduce `y _`. Simplify using the standard rewrite rules. Introduce `x hx`. Conclude with `ZMod.val_cast_of_lt (by simpa using hx)`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y _`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 lemma sum_range_zmod (d : ℕ) [NeZero d] (f : ℤ → ℂ) :
     ∑ x ∈ range d, f (x : ℤ) = ∑ y : ZMod d, f ((y.val : ℕ) : ℤ) := by
@@ -95,13 +95,13 @@ lemma sum_range_zmod (d : ℕ) [NeZero d] (f : ℤ → ℂ) :
     rfl
 
 /- English proof (translation)
-Use `haveI : NeZero d := ⟨hd.ne'⟩`. Establish `hU : IsUnit (u : ZMod d)`. Take `⟨p, q, hpq⟩` from `hu`. Establish `h1 : ((p * u + q * d : ℤ) : ZMod d) = 1` using `by rw [hpq]; simp`. Move the coercions through the operations in `at h1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules.
 
-Simplify using `only [ZMod.natCast_self, mul_zero, add_zero] at h1`. Conclude with `IsUnit.of_mul_eq_one _ (by rw [mul_comm]; exact h1)`. Rewrite using `[sum_range_zmod d (fun x => f (u * x + t)), sum_range_zmod d f]`. Set `e : ZMod d → ZMod d` to `fun y => (u : ZMod d) * y + (t : ZMod d)`. Establish `hinj : Function.Injective e`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `y z hyz`. Establish `: (u : ZMod d) * y = (u : ZMod d) * z` using `add_right_cancel hyz`. Conclude with `hU.mul_left_cancel this`. Establish `he : Function.Bijective e` using `Finite.injective_iff_bijective.1 hinj`. Rewrite using `[← he.sum_comp (fun y => f ((y.val : ℕ) : ℤ))]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Establish `h3 : e y = ((u * ((y.val : ℕ) : ℤ) + t : ℤ) : ZMod d)`. Simplify using `[e]`. Rewrite using `[h3, f_val f d hf]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma sum_affine (d : ℕ) (hd : 0 < d) (f : ℤ → ℂ) (hf : ∀ x, f (x + d) = f x) (u t : ℤ)
     (hu : IsCoprime u (d : ℤ)) :
@@ -127,17 +127,17 @@ lemma sum_affine (d : ℕ) (hd : 0 < d) (f : ℤ → ℂ) (hf : ∀ x, f (x + d)
   rw [h3, f_val f d hf]
 
 /- English proof (translation)
-Use `haveI : NeZero (M * d) := ⟨(Nat.mul_pos hM hd).ne'⟩`. Rewrite using `[sum_range_zmod (M * d) G, ← Finset.sum_product']`. Use `symm`. Set `i : ℕ × ℕ → ZMod (M * d)` to `fun p => ((d * p.1 + M * p.2 : ℕ) : ZMod (M * d))`. Establish `hinj : Set.InjOn i (range M ×ˢ range d : Finset (ℕ × ℕ))`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Use symmetry to reverse the relation. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨x1, x2⟩ hx ⟨y1, y2⟩ hy hxy`. Simplify using `only [coe_product, Set.mem_prod, mem_coe, mem_range] at hx hy`. Establish `hm : (d * x1 + M * x2) ≡ (d * y1 + M * y2) [MOD M * d]` using `(ZMod.natCast_eq_natCast_iff _ _ _).1 hxy`. Establish `h1 : (d * x1 + M * x2) ≡ (d * y1 + M * y2) [MOD M]` using `hm.of_mul_right d`. Establish `h2 : (d * x1 + M * x2) ≡ (d * y1 + M * y2) [MOD d]` using `hm.of_mul_left M`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1' : d * x1 ≡ d * y1 [MOD M]`. Simplify `h1` using `[Nat.ModEq]`. Establish `h2' : M * x2 ≡ M * y2 [MOD d]`. Simplify `h2` using `[Nat.ModEq]`. Establish `e1' : x1 ≡ y1 [MOD M]` using `Nat.ModEq.cancel_left_of_coprime h h1'`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2' : x2 ≡ y2 [MOD d]` using `Nat.ModEq.cancel_left_of_coprime h.symm h2'`. Establish `r1` using `Nat.ModEq.eq_of_lt_of_lt e1' hx.1 hy.1`. Establish `r2` using `Nat.ModEq.eq_of_lt_of_lt e2' hx.2 hy.2`. Simplify using `[r1, r2]`. Establish `hsurj : Set.SurjOn i (range M ×ˢ range d : Finset (ℕ × ℕ)) (univ : Finset (ZMod (M * d)))` using `Finset.surjOn_of_injOn_of_card_le i (fun _ _ => mem_coe.2 (mem_univ _)) hinj (by simp [ZMod.card])`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_bij (fun p _ => i p) (fun _ _ => mem_univ _) (fun p hp q hq hpq => hinj hp hq hpq) ?_ ?_` and prove the remaining obligations. Introduce `y _`. Take `⟨p, hp, hpy⟩` from `hsurj (mem_coe.2 (mem_univ y))`. Conclude with `⟨p, hp, hpy⟩`. Introduce `p _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `: i p = (((d : ℤ) * p.1 + M * p.2 : ℤ) : ZMod (M * d))`. Simplify using `[i]`. Rewrite using `[this, f_val G (M * d) hG]`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma sum_crt (M d : ℕ) (hM : 0 < M) (hd : 0 < d) (h : Nat.Coprime M d) (G : ℤ → ℂ)
     (hG : ∀ x, G (x + ((M * d : ℕ) : ℤ)) = G x) :
@@ -176,13 +176,13 @@ lemma sum_crt (M d : ℕ) (hM : 0 < M) (hd : 0 < d) (h : Nat.Coprime M d) (G : �
     rw [this, f_val G (M * d) hG]
 
 /- English proof (translation)
-Establish `hper : ∀ (A B : ℤ) (x : ℤ), e1 d (A * (x + d) ^ 2 + B * (x + d)) = e1 d (A * x ^ 2 + B * x)`. Introduce `A B x`. Rewrite using `[← root_of_unity_character_periodic d hd (A * x ^ 2 + B * x) (A * (2 * x + d) + B)]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `h1` using `sum_affine d hd (fun x => e1 d (b * (M : ℤ) ^ 2 * x ^ 2 + n * x)) (fun x => hper (b * (M : ℤ) ^ 2) n x) 1 (2 * c' * n) isCoprime_one_left`. Establish `h2` using `sum_affine d hd (fun x => e1 d (b * x ^ 2 + 0 * x)) (fun x => hper b 0 x) M 0 hcop`. Rewrite using `[← h1]`. Establish `h3 : ∀ x : ℕ, e1 d (b * (M : ℤ) ^ 2 * (1 * (x : ℤ) + 2 * c' * n) ^ 2 + n * (1 * (x : ℤ) + 2 * c' * n)) = e1 d (c' * n ^ 2) * e1 d (b * ((M : ℤ) * x + 0) ^ 2 + 0 * ((M : ℤ) * x + 0))`. Introduce `x`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← root_of_unity_character_add, ← root_of_unity_character_periodic d hd _ (-(a * (n * x + c' * n ^ 2)))]`. Use `congr 1`. Take the linear combination `(n * x + c' * n ^ 2) * (-hyp)`. Rewrite using `[Finset.sum_congr rfl fun x _ => h3 x, ← Finset.mul_sum, h2]`. Use `congr 1`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Unfold `GS e1`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma inner_sum (M d : ℕ) (hd : 0 < d) (a b c' n : ℤ) (hcop : IsCoprime (M : ℤ) (d : ℤ))
     (hyp : a * d - b * (4 * (M : ℤ) ^ 2 * c') = 1) :
@@ -213,27 +213,27 @@ lemma inner_sum (M d : ℕ) (hd : 0 < d) (a b c' n : ℤ) (hcop : IsCoprime (M :
   ring
 
 /- English proof (translation)
-Introduce `M d _ ψ a b c' n hd hyp`. Establish `hM : 0 < M` using `Nat.pos_of_ne_zero (NeZero.ne M)`. Establish `hcop : IsCoprime (M : ℤ) (d : ℤ)` using `⟨-(b * 4 * M * c'), a, by linear_combination hyp⟩`. Establish `hnc : Nat.Coprime M d` using `Nat.isCoprime_iff_coprime.1 hcop`. Set `G : ℤ → ℂ` to `fun x => ψ (x : ZMod M) * e1 d (b * x ^ 2) * e1 (M * d) (n * x)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hG : ∀ x, G (x + ((M * d : ℕ) : ℤ)) = G x`. Introduce `x`. Establish `h1 : (((x + ((M * d : ℕ) : ℤ) : ℤ)) : ZMod M) = (x : ZMod M)`. Simplify using the standard rewrite rules. Establish `h2 : e1 d (b * (x + ((M * d : ℕ) : ℤ)) ^ 2) = e1 d (b * x ^ 2)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← root_of_unity_character_periodic d hd (b * x ^ 2) (b * (2 * x * M + (M : ℤ) ^ 2 * d))]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `h3 : e1 (M * d) (n * (x + ((M * d : ℕ) : ℤ))) = e1 (M * d) (n * x)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[← root_of_unity_character_periodic (M * d) (Nat.mul_pos hM hd) (n * x) n]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [G]`. Rewrite using `[h1, h2, h3]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hL : ∑ x ∈ range (M * d), ψ (x : ZMod M) * ee (b * (x : ℂ) ^ 2 / d) * ee (n * x / ((M * d : ℕ) : ℂ)) = ∑ x ∈ range (M * d), G (x : ℤ)`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Simplify using `[G, e1]`. Establish `hsplit : ∀ x1 x2 : ℕ, G ((d : ℤ) * x1 + M * x2) = ψ (d : ZMod M) * (ψ (x1 : ZMod M) * ee (n * x1 / M)) * e1 d (b * (M : ℤ) ^ 2 * (x2 : ℤ) ^ 2 + n * x2)`. Introduce `x1 x2`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hd' : (d : ℂ) ≠ 0` using `by exact_mod_cast hd.ne'`. Establish `hM' : (M : ℂ) ≠ 0` using `by exact_mod_cast hM.ne'`. Establish `h1 : ((((d : ℤ) * x1 + M * x2 : ℤ)) : ZMod M) = (d : ZMod M) * (x1 : ZMod M)`. Simplify using the standard rewrite rules. Establish `h2 : e1 d (b * ((d : ℤ) * x1 + M * x2) ^ 2) = e1 d (b * (M : ℤ) ^ 2 * (x2 : ℤ) ^ 2)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← root_of_unity_character_periodic d hd (b * (M : ℤ) ^ 2 * (x2 : ℤ) ^ 2) (b * ((d : ℤ) * x1 ^ 2 + 2 * x1 * M * x2))]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `h3 : e1 (M * d) (n * ((d : ℤ) * x1 + M * x2)) = ee (n * x1 / M) * e1 d (n * x2)`. Unfold `e1`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[← ee_add]`. Use `congr 1`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Simplify using `only [G]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules.
 
-Rewrite using `[h1, h2, h3, root_of_unity_character_add, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hL, sum_crt M d hM hd hnc G hG]`. Simplify using `only [hsplit]`. Simplify using `only [← Finset.mul_sum]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[inner_sum M d hd a b c' n hcop hyp, ← Finset.sum_mul, ← Finset.mul_sum]`. Establish `hc : e1 d (c' * n ^ 2) = ee (c' * (n : ℂ) ^ 2 / d)`. Unfold `e1`. Use `push_cast`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 
-Rewrite using `[hc]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem finite_sum_splitting : T2 := by
   intro M d _ ψ a b c' n hd hyp

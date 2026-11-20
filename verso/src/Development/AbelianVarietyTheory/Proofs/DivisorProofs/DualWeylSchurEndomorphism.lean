@@ -11,7 +11,7 @@ noncomputable section
 namespace GlobalTheory.LeviCut
 
 /- English proof (translation)
-Simplify using `only [eV, dif_pos (And.intro a.isLt b.isLt)]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem eV_coe_fin (N : ℕ) (ν : Fin N → ℕ) (a b : Fin N) (x : dualWeyl ℚ N N ν) :
     ((eV N ν a b x : dualWeyl ℚ N N ν) : MvPolynomial (Fin N × Fin N) ℚ) =
@@ -20,29 +20,27 @@ theorem eV_coe_fin (N : ℕ) (ν : Fin N → ℕ) (a b : Fin N) (x : dualWeyl �
   rfl
 
 /- English proof (translation)
-Introduce `N ν hν S hS hfix`. Establish `hc : ∀ (a b : Fin N) (x : dualWeyl ℚ N N ν), eV N ν a b (S x) = S (eV N ν a b x)`. Introduce `a b x`. Establish `h` using `LinearMap.congr_fun (hS a a.isLt b b.isLt) x`. Simplify `h` using `only [Module.End.mul_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `set v : dualWeyl ℚ N N ν := ⟨hw ℚ le_rfl ν, hwMem ℚ N N le_rfl ν hν⟩ with hv`. Establish `hder : ∀ a b : Fin N, a < b → Formalism.CohomologicalDescent.LR.der N N a b ((S v : dualWeyl ℚ N N ν) : MvPolynomial (Fin N × Fin N) ℚ) = 0`. Introduce `a b hab`. Establish `h1 : eV N ν a b v = 0`. Apply `Subtype.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eV_coe_fin]`. Conclude with `Formalism.CohomologicalDescent.LR.der_hw_raise ν a b hab`. Rewrite using `[← eV_coe_fin, hc, h1, map_zero]`. Both sides reduce to the same expression. Establish `hkill : ∀ a b : Fin N, a < b → ∀ k : ℕ, 1 ≤ k → rowDiv ℚ a b k ((S v : dualWeyl ℚ N N ν) : MvPolynomial (Fin N × Fin N) ℚ) = 0`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `a b hab k hk`. Take `⟨k, rfl⟩ : ∃ m, k = m + 1` from `⟨k - 1, by omega⟩`. Rewrite using `[Formalism.CohomologicalDescent.LR.der_pow a b (ne_of_lt hab), pow_succ, Module.End.mul_apply]`. Establish `h2` using `hder a b hab`. Express the relevant statement in the definitionally equal form `(Formalism.CohomologicalDescent.LR.der N N a b : Module.End ℚ (MvPolynomial (Fin N × Fin N) ℚ)) _ = 0 at h2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[h2, map_zero, smul_zero]`. Take `⟨c, hcv⟩` from `hwLine ℚ N N le_rfl ν hν _ (S v).2 hkill`. Establish `hc1 : c = 1`. Rewrite `hfix` using `[hcv, Formalism.CohomologicalDescent.LR.fock_smul_right]`. Establish `hpos` using `Formalism.CohomologicalDescent.LR.hw_norm_pos ν`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `h3 : (c - 1) * fockQ (hw ℚ le_rfl ν) (hw ℚ le_rfl ν) = 0` using `by rw [sub_mul, hfix, one_mul, sub_self]`. Break down `mul_eq_zero.1 h3 with h | h` into its components or cases. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `absurd h (ne_of_gt hpos)`. Establish `hSv : S v = v`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hcv, hc1, one_smul]`. Use `set M : Submodule ℚ (MvPolynomial (Fin N × Fin N) ℚ) := (LinearMap.ker (S - 1)).map (dualWeyl ℚ N N ν).subtype with hM`. Establish `hmem : ∀ x : dualWeyl ℚ N N ν, S x = x → (x : MvPolynomial (Fin N × Fin N) ℚ) ∈ M`. Introduce `x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Use `⟨x, ?_, rfl⟩` and prove the remaining obligations. Simplify using `only [SetLike.mem_coe, LinearMap.mem_ker, LinearMap.sub_apply, Module.End.one_apply, hx, sub_self]`. Establish `hle : M ≤ dualWeyl ℚ N N ν`. Introduce and unpack `f ⟨x, _, rfl⟩`. Conclude with `x.2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Establish `hcl : RowDivClosed M`. Introduce `a b k`. Use `Formalism.CohomologicalDescent.LR.closed_of_der a b M ?_ k` and prove the remaining obligations. Introduce and unpack `f ⟨x, hx, rfl⟩`. Simplify using `only [SetLike.mem_coe, LinearMap.mem_ker, LinearMap.sub_apply, Module.End.one_apply, sub_eq_zero] at hx`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h4` using `hmem (eV N ν a b x) (by rw [← hc, hx])`. Rewrite `h4` using `[eV_coe_fin]`. Conclude with `h4`. Establish `hhw : hw ℚ le_rfl ν ∈ M` using `hmem v hSv`. Establish `heq` using `closedEqNabla N N le_rfl ν hν M hle hcl hhw`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality.
 
-Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `x`. Establish `hx : (x : MvPolynomial (Fin N × Fin N) ℚ) ∈ M` using `by rw [heq]; exact x.2`. Take `⟨y, hy, hyx⟩` from `hx`. Establish `hyx' : y = x` using `Subtype.ext hyx`.
-
-Substitute `hyx'` using the available equality. Simplify using `only [SetLike.mem_coe, LinearMap.mem_ker, LinearMap.sub_apply, Module.End.one_apply, sub_eq_zero] at hy`. Rewrite using `[Module.End.one_apply]`. Conclude with `hy`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nablaSchur : NablaSchur := by
   intro N ν hν S hS hfix

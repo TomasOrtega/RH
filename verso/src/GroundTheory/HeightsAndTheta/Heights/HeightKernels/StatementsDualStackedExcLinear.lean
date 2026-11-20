@@ -52,14 +52,14 @@ def LinPrimeBase.Statement : Prop :=
 namespace LinPrimeExample
 
 /- English proof (translation)
-Simplify using `[linPointMap, graphFirst]`.
+Simplify using the standard rewrite rules.
 -/
 theorem linPointMap_first {T : Type} [Fintype T] {k : Type} [Field k] {n : ℕ} (α : T → k) (M : T → Fin n → k)
     (t : T) : linPointMap α M (graphFirst t) = C (α t) * X none := by
   simp [linPointMap, graphFirst]
 
 /- English proof (translation)
-Simplify using `[linPointMap, graphSecond]`.
+Simplify using the standard rewrite rules.
 -/
 theorem linPointMap_second {T : Type} [Fintype T] {k : Type} [Field k] {n : ℕ} (α : T → k) (M : T → Fin n → k)
     (t : T) : linPointMap α M (graphSecond t) = ∑ j, C (M t j) * X (some j) := by
@@ -68,7 +68,7 @@ theorem linPointMap_second {T : Type} [Fintype T] {k : Type} [Field k] {n : ℕ}
 def idForms : Fin 2 → Fin 2 → ZMod 2 := fun t j => if t = j then 1 else 0
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[linPrime, RingHom.mem_ker, linPointMap, coe_eval₂Hom, eval₂_C, eq_intCast, ← map_intCast (C : ZMod 2 →+* MvPolynomial (Option (Fin 1)) (ZMod 2)), show ((2 : ℤ) : ZMod 2) = 0 by decide, map_zero]`. Rewrite using `[linPrime, RingHom.mem_ker, map_one]`. Conclude with `one_ne_zero`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem two_mem_not_one : (C 2 : MRing (stackedBlocks Unit)) ∈
       linPrime (fun _ : Unit => (1 : ZMod 2)) (fun (_ : Unit) (_ : Fin 1) => (1 : ZMod 2)) ∧

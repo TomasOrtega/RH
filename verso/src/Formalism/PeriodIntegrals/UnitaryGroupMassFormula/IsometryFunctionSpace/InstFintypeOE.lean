@@ -51,7 +51,7 @@ def wTh {T : Type} [Fintype T] {N N' : ℕ} (Θ : VC T N N' → ℂ) (α : Mono 
   (α.prod fun _ n => (n.factorial : ℂ)) * taylor Θ α
 
 /- English proof (translation)
-Rewrite using `[linW_apply, applyAt0]`. Use `Finset.sum_congr rfl (fun α _ => ?_)` and prove the remaining obligations. Rewrite using `[wTh, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem applyAt0_eq {T : Type} [Fintype T] {N N' : ℕ} (P : MvPolynomial (Idx T N N') ℂ)
     (Θ : VC T N N' → ℂ) : applyAt0 P Θ = linW (wTh Θ) P := by
@@ -60,7 +60,7 @@ theorem applyAt0_eq {T : Type} [Fintype T] {N N' : ℕ} (P : MvPolynomial (Idx T
   rw [wTh, mul_assoc]
 
 /- English proof (translation)
-Simplify using `only [minY, map_prod, RingHom.map_det]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem minY_map {Lt k k' : Type} [Fintype Lt] [CommRing k] [CommRing k'] (f : k →+* k')
     (N : ℕ) (nu : Lt → YoungDiagram) (J : ColChoice N nu) (y : Lt → Fin N → ℕ → k) :
@@ -73,7 +73,7 @@ def yfr {Lt T : Type} (tp : Lt → T) {N N' : ℕ} (s : T → ℂ) (x : Lt → F
   fun z a j => ∑ b : Fin N, C (s (tp z)) * X ((tp z, a, b) : Idx T N N') * C (x z b j)
 
 /- English proof (translation)
-Simplify using `only [Finset.prod_univ_sum, Fintype.piFinset_univ]`. Conclude with `Fintype.sum_equiv (Equiv.refl _) _ _ (fun _ => rfl)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem prod_sum_cc {Lt : Type} [Fintype Lt] [DecidableEq Lt] {R : Type} [CommRing R] (N : ℕ)
     (nu : Lt → YoungDiagram)
@@ -83,11 +83,11 @@ theorem prod_sum_cc {Lt : Type} [Fintype Lt] [DecidableEq Lt] {R : Type} [CommRi
   exact Fintype.sum_equiv (Equiv.refl _) _ _ (fun _ => rfl)
 
 /- English proof (translation)
-Establish `hR : ∀ J : ColChoice N nu, PIJ tp nu s I J * C (minY N nu J x) = ∏ z, ∏ c : Fin ((nu z).rowLen 0), (Matrix.of fun i k : Fin ((nu z).colLen c) => C (s (tp z)) * X ((tp z, I z c i, J z c k) : Idx T N N')).det * (Matrix.of fun i j : Fin ((nu z).colLen c) => (C (x z (J z c i) (j : ℕ) …`. Introduce `J`. Rewrite using `[minY_map]`. Simplify using `only [PIJ, minY, ← Finset.prod_mul_distrib]`. Establish `hL : minY N' nu I (yfr tp s x) = ∏ z, ∏ c : Fin ((nu z).rowLen 0), ∑ Jc : Fin ((nu z).colLen c) ↪o Fin N, (Matrix.of fun i k : Fin ((nu z).colLen c) => C (s (tp z)) * X ((tp z, I z c i, Jc k) : Idx T N N')).det * (Matrix.of fun i j : Fin ((nu z).colLen c) => (C (x z (Jc i) (j : ℕ …`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [minY]`. Use `Finset.prod_congr rfl (fun z _ => Finset.prod_congr rfl (fun c _ => ?_))` and prove the remaining obligations. Establish `hcb` using `det_mul_eq_sum_oe (Matrix.of fun (i : Fin ((nu z).colLen c)) (b : Fin N) => C (s (tp z)) * X ((tp z, I z c i, b) : Idx T N N')) (Matrix.of fun (b : Fin N) (j : Fin ((nu z).colLen c)) => (C (x z b (j : ℕ)) : MvPolynomial (Idx T N N') ℂ))`. Establish `hm : (Matrix.of fun i j : Fin ((nu z).colLen c) => yfr tp s x z (I z c i) (j : ℕ)) = (Matrix.of fun (i : Fin ((nu z).colLen c)) (b : Fin N) => C (s (tp z)) * X ((tp z, I z c i, b) : Idx T N N')) * (Matrix.of fun (b : Fin N) (j : Fin ((nu z).colLen c)) => (C (x z b (j : ℕ)) : MvPo …`. Use extensionality with `i j`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [Matrix.mul_apply, Matrix.of_apply, yfr]`. Rewrite using `[hm, hcb]`. Both sides reduce to the same expression. Rewrite using `[hL, prod_sum_cc]`. Conclude with `Finset.sum_congr rfl (fun J _ => hR J)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem key_id {Lt T : Type} [Fintype Lt] [DecidableEq Lt] (tp : Lt → T) {N N' : ℕ}
     (nu : Lt → YoungDiagram) (s : T → ℂ) (x : Lt → Fin N → ℕ → ℂ) (I : ColChoice N' nu) :
@@ -127,7 +127,7 @@ theorem key_id {Lt T : Type} [Fintype Lt] [DecidableEq Lt] (tp : Lt → T) {N N'
   exact Finset.sum_congr rfl (fun J _ => hR J)
 
 /- English proof (translation)
-Rewrite using `[AOp, finsum_eq_sum_of_fintype]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem AOp_eq {Lt T : Type} [Fintype Lt] [DecidableEq Lt] [Fintype T] (tp : Lt → T) {N N' : ℕ}
     (nu : Lt → YoungDiagram) (s : T → ℂ) (Θ : VC T N N' → ℂ) (φ : LaC N nu) (I : ColChoice N' nu) :
@@ -135,7 +135,7 @@ theorem AOp_eq {Lt T : Type} [Fintype Lt] [DecidableEq Lt] [Fintype T] (tp : Lt 
   rw [AOp, finsum_eq_sum_of_fintype]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `I`. Rewrite using `[AOp_eq, ← key_id, map_sum]`. Use `Finset.sum_congr rfl (fun J _ => ?_)` and prove the remaining obligations. Rewrite using `[applyAt0_eq, mul_comm (PIJ tp nu s I J), ← MvPolynomial.smul_eq_C_mul, map_smul, smul_eq_mul, mul_comm]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem AOp_hv {Lt T : Type} [Fintype Lt] [DecidableEq Lt] [Fintype T] (tp : Lt → T) {N N' : ℕ}
     (nu : Lt → YoungDiagram) (s : T → ℂ) (Θ : VC T N N' → ℂ) (x : Lt → Fin N → ℕ → ℂ) :
@@ -148,15 +148,15 @@ theorem AOp_hv {Lt T : Type} [Fintype Lt] [DecidableEq Lt] [Fintype T] (tp : Lt 
   rfl
 
 /- English proof (translation)
-Rewrite using `[← Subspace.dualAnnihilator_dualCoannihilator_eq (W := Vnu N nu), Submodule.mem_dualCoannihilator]`. Introduce `f hf`. Rewrite `hf` using `[Submodule.mem_dualAnnihilator]`. Rewrite using `[LinearMap.pi_apply_eq_sum_univ f]`. Use `set e : ColChoice N nu → ℂ := fun I => f (fun J => if I = J then 1 else 0) with he`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hQ : (∑ I : ColChoice N nu, e I • minY N nu I y) = 0`. Apply `MvPolynomial.funext` to reduce the goal to its premises. Introduce `p`. Establish `hv : hvC N nu (fun z a j => eval p (y z a j)) ∈ Vnu N nu` using `Submodule.subset_span ⟨_, rfl⟩`. Establish `h0` using `hf _ hv`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h0` using `[LinearMap.pi_apply_eq_sum_univ f]`. Rewrite using `[map_sum, map_zero, ← h0]`. Use `Finset.sum_congr rfl (fun I _ => ?_)` and prove the remaining obligations. Simplify using `only [MvPolynomial.smul_eval, smul_eq_mul]`. Rewrite using `[mul_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Conclude with `minY_map (eval p) N nu I y`. Use `congrArg L hQ` as an intermediate fact. Rewrite `this` using `[map_sum, map_zero]`. Use `Eq.trans (Finset.sum_congr rfl (fun I _ => ?_)) this` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [map_smul, smul_eq_mul, he]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem mem_Vnu_poly {Lt σ : Type} [Fintype Lt] [DecidableEq Lt] (N : ℕ) (nu : Lt → YoungDiagram)
     (L : MvPolynomial σ ℂ →ₗ[ℂ] ℂ) (y : Lt → Fin N → ℕ → MvPolynomial σ ℂ) :
@@ -200,9 +200,9 @@ def AOpLin {Lt T : Type} [Fintype Lt] [DecidableEq Lt] [Fintype T] (tp : Lt → 
     ring
 
 /- English proof (translation)
-Introduce `Lt T _ _ _ tp N N' nu s Θ φ hφ`. Establish `hle : Vnu N nu ≤ (Vnu N' nu).comap (AOpLin tp nu s Θ)`. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, rfl⟩`. Use `show AOp tp nu s Θ (hvC N nu x) ∈ Vnu N' nu`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[AOp_hv]`. Conclude with `mem_Vnu_poly N' nu _ _`. Conclude with `hle hφ`.
+A detailed English derivation is pending.
 -/
 theorem isoFunV_main : IsoFunV := by
   intro Lt T _ _ _ tp N N' nu s Θ φ hφ

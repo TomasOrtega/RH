@@ -15,19 +15,19 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 variable {d : SD σ}
 
 /- English proof (translation)
-The claim follows from `Matrix.map_mul`.
+A detailed English derivation is pending.
 -/
 theorem cw_mul' (w : InfinitePlace F) {p q r : Type} [Fintype q] (A : Matrix p q (AE F E)) (B : Matrix q r (AE F E)) :
     d.cw w (A * B) = d.cw w A * d.cw w B := Matrix.map_mul
 
 /- English proof (translation)
-The claim follows from `Matrix.map_add _ (map_add _) A B`.
+A detailed English derivation is pending.
 -/
 theorem cw_add' (w : InfinitePlace F) {p q : Type} (A B : Matrix p q (AE F E)) :
     d.cw w (A + B) = d.cw w A + d.cw w B := Matrix.map_add _ (map_add _) A B
 
 /- English proof (translation)
-The claim follows from `Matrix.map_one _ (map_zero _) (map_one _)`.
+A detailed English derivation is pending.
 -/
 theorem cw_one' (w : InfinitePlace F) : d.cw w (1 : Matrix (Fin d.n ⊕ Fin d.n) (Fin d.n ⊕ Fin d.n) (AE F E)) = 1 :=
   Matrix.map_one _ (map_zero _) (map_one _)
@@ -38,14 +38,14 @@ Both sides reduce to the same expression.
 theorem cw_transpose' (w : InfinitePlace F) {p q : Type} (A : Matrix p q (AE F E)) : d.cw w Aᵀ = (d.cw w A)ᵀ := rfl
 
 /- English proof (translation)
-Rewrite using `[incM, incM, ← Matrix.map_mul, Units.mul_inv, Matrix.map_one _ (map_zero _) (map_one _)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem incM_b_mul_inv (d : SD σ) : incM F (d.b : Matrix (Fin d.n ⊕ Fin d.n) (Fin d.n ⊕ Fin d.n) E) *
     incM F ((d.b⁻¹ : GL (Fin d.n ⊕ Fin d.n) E) : Matrix (Fin d.n ⊕ Fin d.n) (Fin d.n ⊕ Fin d.n) E) = 1 := by
   rw [incM, incM, ← Matrix.map_mul, Units.mul_inv, Matrix.map_one _ (map_zero _) (map_one _)]
 
 /- English proof (translation)
-Rewrite using `[incM, incM, ← Matrix.map_mul, Units.inv_mul, Matrix.map_one _ (map_zero _) (map_one _)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem incM_b_inv_mul (d : SD σ) :
     incM F ((d.b⁻¹ : GL (Fin d.n ⊕ Fin d.n) E) : Matrix (Fin d.n ⊕ Fin d.n) (Fin d.n ⊕ Fin d.n) E) *
@@ -53,7 +53,7 @@ theorem incM_b_inv_mul (d : SD σ) :
   rw [incM, incM, ← Matrix.map_mul, Units.inv_mul, Matrix.map_one _ (map_zero _) (map_one _)]
 
 /- English proof (translation)
-Establish `e : mat2 (x * y) = mat2 x * mat2 y` using `rfl`. Simplify using `only [inFrame, e, Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (incM F (d.b : Matrix (Fin d.n ⊕ Fin d.n) (Fin d.n ⊕ Fin d.n) E)), incM_b_mul_inv, Matrix.one_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem inFrame_mul' (x y : d.G) : inFrame d.b (x * y) = inFrame d.b x * inFrame d.b y := by
   have e : mat2 (x * y) = mat2 x * mat2 y := rfl
@@ -61,14 +61,14 @@ theorem inFrame_mul' (x y : d.G) : inFrame d.b (x * y) = inFrame d.b x * inFrame
   rw [← Matrix.mul_assoc (incM F (d.b : Matrix (Fin d.n ⊕ Fin d.n) (Fin d.n ⊕ Fin d.n) E)), incM_b_mul_inv, Matrix.one_mul]
 
 /- English proof (translation)
-Establish `e : mat2 (1 : d.G) = 1` using `rfl`. Simplify using `only [inFrame, e, Matrix.mul_one, incM_b_inv_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem inFrame_one' : inFrame d.b (1 : d.G) = 1 := by
   have e : mat2 (1 : d.G) = 1 := rfl
   simp only [inFrame, e, Matrix.mul_one, incM_b_inv_mul]
 
 /- English proof (translation)
-Simplify using `only [inFrame, Matrix.mul_assoc]`. Rewrite using `[incM_b_mul_inv, Matrix.mul_one, ← Matrix.mul_assoc, incM_b_mul_inv, Matrix.one_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem matrix_eq_frame_conj (x : d.G) : mat2 x = incM F (d.b : Matrix (Fin d.n ⊕ Fin d.n) (Fin d.n ⊕ Fin d.n) E) * inFrame d.b x *
     incM F ((d.b⁻¹ : GL (Fin d.n ⊕ Fin d.n) E) : Matrix (Fin d.n ⊕ Fin d.n) (Fin d.n ⊕ Fin d.n) E) := by
@@ -76,11 +76,11 @@ theorem matrix_eq_frame_conj (x : d.G) : mat2 x = incM F (d.b : Matrix (Fin d.n 
   rw [incM_b_mul_inv, Matrix.mul_one, ← Matrix.mul_assoc, incM_b_mul_inv, Matrix.one_mul]
 
 /- English proof (translation)
-Introduce `L`. Proceed by induction on `L with`. Consider the case `nil => intro _`. Simplify using `[inFrame_one', cw_one']`. Consider the case `cons a L ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Introduce `hL`. Rewrite `hL` using `[List.nodup_cons]`. Rewrite using `[List.map_cons, List.prod_cons, inFrame_mul', cw_mul', ih hL.2]`. Distinguish the cases in `h : w' = a`. Substitute `h` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `[hL.1]`. Rewrite using `[R.off_w a w' (f a) h, Matrix.one_mul]`. Simplify using `[h]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem cw_inFrame_prod' (R : RD d) (f : InfinitePlace F → GR d.n) (w' : InfinitePlace F) :
     ∀ L : List (InfinitePlace F), L.Nodup → d.cw w' (inFrame d.b ((L.map fun w => R.ι w (f w)).prod)) =
@@ -99,7 +99,7 @@ theorem cw_inFrame_prod' (R : RD d) (f : InfinitePlace F → GR d.n) (w' : Infin
       simp [h]
 
 /- English proof (translation)
-Rewrite using `[rot, cw_inFrame_prod' R (fun w => yrot d.n (R.sg w) t) w _ (Finset.nodup_toList _), if_pos (Finset.mem_toList.2 (Finset.mem_univ w)), R.at_w, mR_yrot]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem dZ_cw_rot' (R : RD d) (t : ℝ) (w : InfinitePlace F) :
     dZ d.n R.ζ * d.cw w (inFrame d.b (rot R t)) = yrotM d.n (R.sg w) t * dZ d.n R.ζ := by

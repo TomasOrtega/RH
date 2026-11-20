@@ -11,7 +11,7 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo
 variable {K : Type*} [Fintype K] {ι : K → Type*} [∀ k, Fintype (ι k)] {F : Type*} [Field F]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hW`. Conclude with `h (by simp [divCycle, Finsupp.ofSupportFinite_coe, hW])`.
+Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem mem_divSupp_of_divCycle_ne_zero {V W : Ideal (MRingOver F ι)} {f : MRingOver F ι}
     (h : divCycle V f W ≠ 0) : W ∈ divSupp V f := by
@@ -31,13 +31,13 @@ def mulQ (V : Ideal R) (f g : R) : (R ⧸ (V ⊔ Ideal.span {g})) →ₗ[R] (R �
     exact h (Ideal.mul_mem_mul (Ideal.mem_span_singleton_self f) hx)
 
 /- English proof (translation)
-Rewrite using `[← LinearMap.ker_eq_bot, eq_bot_iff]`. Introduce `x hx`. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Rewrite `hx` using `[LinearMap.mem_ker, mulQ, Submodule.mapQ_apply, Submodule.Quotient.mk_eq_zero]`. Rewrite using `[Submodule.mem_bot, Submodule.Quotient.mk_eq_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨v, hv, w, hw, hvw⟩` from `Submodule.mem_sup.mp hx`. Take `⟨c, rfl⟩` from `Ideal.mem_span_singleton'.mp hw`. Establish `h1 : f * (x - c * g) ∈ V`. Establish `: f * (x - c * g) = v`. Simplify using `only [LinearMap.mulLeft_apply] at hvw`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take the linear combination `-hvw`. Rewrite using `[this]`. Conclude with `hv`. Establish `h2 : x - c * g ∈ V` using `(hV.mem_or_mem h1).resolve_left hf`. Establish `: x = (x - c * g) + c * g` using `by ring`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `Ideal.add_mem _ (Ideal.mem_sup_left h2) (Ideal.mem_sup_right (Ideal.mul_mem_left _ _ (Ideal.mem_span_singleton_self g)))`.
+A detailed English derivation is pending.
 -/
 theorem mulQ_injective {V : Ideal R} (hV : V.IsPrime) {f : R} (hf : f ∉ V) (g : R) :
     Function.Injective (mulQ V f g) := by
@@ -60,22 +60,22 @@ theorem mulQ_injective {V : Ideal R} (hV : V.IsPrime) {f : R} (hf : f ∉ V) (g 
     (Ideal.mem_sup_right (Ideal.mul_mem_left _ _ (Ideal.mem_span_singleton_self g)))
 
 /- English proof (translation)
-The claim follows from `sup_le_sup_left (Ideal.span_singleton_le_span_singleton.mpr (dvd_mul_right f g)) V`.
+A detailed English derivation is pending.
 -/
 theorem sup_span_mul_le (V : Ideal R) (f g : R) :
     V ⊔ Ideal.span {f * g} ≤ V ⊔ Ideal.span {f} :=
   sup_le_sup_left (Ideal.span_singleton_le_span_singleton.mpr (dvd_mul_right f g)) V
 
 /- English proof (translation)
-Introduce `y`. Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Express the relevant statement in the definitionally equal form `(Submodule.Quotient.mk y : R ⧸ (V ⊔ Ideal.span {f})) = 0 ↔ _`. Rewrite using `[Submodule.Quotient.mk_eq_zero]`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce `hy`. Take `⟨v, hv, w, hw, hvw⟩` from `Submodule.mem_sup.mp hy`. Take `⟨c, rfl⟩` from `Ideal.mem_span_singleton'.mp hw`. Use `⟨Submodule.Quotient.mk c, ?_⟩` and prove the remaining obligations. Rewrite using `[mulQ, Submodule.mapQ_apply, Submodule.Quotient.eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [LinearMap.mulLeft_apply]`. Establish `: f * c - y = -v` using `by linear_combination hvw`. Rewrite using `[this]`. Conclude with `Submodule.neg_mem _ (Ideal.mem_sup_left hv)`. Introduce and unpack `⟨x, hx⟩`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Rewrite `hx` using `[mulQ, Submodule.mapQ_apply, LinearMap.mulLeft_apply, Submodule.Quotient.eq]`. Establish `h1` using `sup_span_mul_le V f g hx`. Establish `h2 : f * x ∈ V ⊔ Ideal.span {f}` using `Ideal.mem_sup_right (Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self f))`. Establish `e : y = f * x - (f * x - y)` using `by ring`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `Submodule.sub_mem _ h2 h1`.
+A detailed English derivation is pending.
 -/
 theorem mulQ_exact (V : Ideal R) (f g : R) :
     Function.Exact (mulQ V f g) (Submodule.factor (sup_span_mul_le V f g)) := by
@@ -104,7 +104,7 @@ theorem mulQ_exact (V : Ideal R) (f g : R) :
     exact Submodule.sub_mem _ h2 h1
 
 /- English proof (translation)
-The claim follows from `locLen_add _ _ (mulQ_injective hV hf g) (Submodule.factor_surjective _) (mulQ_exact V f g) p`.
+A detailed English derivation is pending.
 -/
 theorem locLen_mul {V : Ideal R} (hV : V.IsPrime) {f : R} (hf : f ∉ V) (g : R) (p : PrimeSpectrum R) :
     locLen (R ⧸ (V ⊔ Ideal.span {f * g})) p =
@@ -112,15 +112,15 @@ theorem locLen_mul {V : Ideal R} (hV : V.IsPrime) {f : R} (hf : f ∉ V) (g : R)
   locLen_add _ _ (mulQ_injective hV hf g) (Submodule.factor_surjective _) (mulQ_exact V f g) p
 
 /- English proof (translation)
-Use `hW.1.1` as an intermediate fact. Set `A` to `Localization.AtPrime W`. Establish `: IsNoetherianRing A` using `IsLocalization.isNoetherianRing W.primeCompl A inferInstance`. Establish `: Module.Finite A (LocalizedModule W.primeCompl (R ⧸ J))` using `Module.Finite.of_isLocalizedModule W.primeCompl (LocalizedModule.mkLinearMap W.primeCompl _)`. Unfold `locLen`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[length_ne_top_iff_support]`. Introduce `p hp`. Rewrite `hp` using `[Module.mem_support_iff_of_finite]`. Establish `hJ : J ≤ p.asIdeal.comap (algebraMap R A)`. Introduce `r hr`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hp (Module.mem_annihilator.mpr fun n => ?_)` and prove the remaining obligations. Proceed by induction on `n using LocalizedModule.induction_on with`. Consider the case `h m s`. Rewrite using `[algebraMap_smul, LocalizedModule.smul'_mk]`. Take `⟨m, rfl⟩` from `Submodule.Quotient.mk_surjective _ m`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← Submodule.Quotient.mk_smul, (Submodule.Quotient.mk_eq_zero _).mpr (show r • m ∈ J from J.mul_mem_right m hr), LocalizedModule.zero_mk]`. Establish `hle : p.asIdeal.comap (algebraMap R A) ≤ W`. Establish `hm : (IsLocalRing.maximalIdeal A).comap (algebraMap R A) = W` using `Localization.AtPrime.under_maximalIdeal`. Conclude with `(Ideal.comap_mono (IsLocalRing.le_maximalIdeal p.isPrime.ne_top)).trans hm.le`. Establish `heq : p.asIdeal.comap (algebraMap R A) = W` using `le_antisymm hle (hW.2 ⟨Ideal.comap_isPrime _ _, hJ⟩ hle)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: p.asIdeal = IsLocalRing.maximalIdeal A`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[this]`. Conclude with `IsLocalRing.maximalIdeal.isMaximal A`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locLen_ne_top [IsNoetherianRing R] {J W : Ideal R} (hW : W ∈ J.minimalPrimes) :
     locLen (R ⧸ J) ⟨W, hW.1.1⟩ ≠ ⊤ := by
@@ -159,7 +159,7 @@ theorem locLen_ne_top [IsNoetherianRing R] {J W : Ideal R} (hW : W ∈ J.minimal
 end DivMul
 
 /- English proof (translation)
-Simplify using `[multAt, hW, locLen]`.
+Simplify using the standard rewrite rules.
 -/
 theorem multAt_eq (J W : Ideal (MRingOver F ι)) (hW : W.IsPrime) :
     multAt J W = (locLen (MRingOver F ι ⧸ J) ⟨W, hW⟩).toNat := by
@@ -170,7 +170,7 @@ section DivMul2
 variable {R : Type*} [CommRing R]
 
 /- English proof (translation)
-Establish `e : Ideal.span {Ideal.Quotient.mk V f} = (Ideal.span {f}).map (Ideal.Quotient.mk V)`. Rewrite using `[Ideal.map_span, Set.image_singleton]`. Rewrite using `[e, Ideal.minimalPrimes_map_of_surjective Ideal.Quotient.mk_surjective, Ideal.mk_ker, sup_comm]`. Conclude with `⟨W, hW, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem map_mk_mem_minimalPrimes {V W : Ideal R} {f : R} (hW : W ∈ (V ⊔ Ideal.span {f}).minimalPrimes) :
     W.map (Ideal.Quotient.mk V) ∈ (Ideal.span {Ideal.Quotient.mk V f}).minimalPrimes := by
@@ -180,7 +180,7 @@ theorem map_mk_mem_minimalPrimes {V W : Ideal R} {f : R} (hW : W ∈ (V ⊔ Idea
   exact ⟨W, hW, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[Ideal.comap_map_of_surjective _ Ideal.Quotient.mk_surjective, ← RingHom.ker_eq_comap_bot, Ideal.mk_ker, sup_eq_left.mpr h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem comap_map_mk_of_le {V Q : Ideal R} (h : V ≤ Q) :
     (Q.map (Ideal.Quotient.mk V)).comap (Ideal.Quotient.mk V) = Q := by
@@ -188,15 +188,15 @@ theorem comap_map_mk_of_le {V Q : Ideal R} (h : V ≤ Q) :
     Ideal.mk_ker, sup_eq_left.mpr h]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Set `π` to `Ideal.Quotient.mk V`. Establish `hW'` using `map_mk_mem_minimalPrimes hW`. Establish `: (W.map π).IsPrime` using `hW'.1.1`. Establish `: (Ideal.span {π f}).IsPrincipal` using `⟨⟨_, rfl⟩⟩`.
+Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `Ideal.height_le_one_of_isPrincipal_of_mem_minimalPrimes _ _ hW'`. Establish `: (Q.map π).IsPrime` using `Ideal.map_isPrime_of_surjective Ideal.Quotient.mk_surjective (by rw [Ideal.mk_ker]; exact hVQ)`. Establish `hVW : V ≤ W` using `le_sup_left.trans hW.1.2`. Establish `hlt : Q.map π < W.map π`. Use `lt_of_le_of_ne (Ideal.map_mono hQW) fun e => hne ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← comap_map_mk_of_le hVQ, e, comap_map_mk_of_le hVW]`. Establish `hbot : (⊥ : Ideal (R ⧸ V)) < Q.map π`. Use `bot_lt_iff_ne_bot.mpr fun e => hgV ?_` and prove the remaining obligations. Establish `: π g ∈ Q.map π` using `Ideal.mem_map_of_mem _ hgQ`. Rewrite `this` using `[e, Ideal.mem_bot, Ideal.Quotient.eq_zero_iff_mem]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`. Establish `h2` using `Ideal.height_add_one_le_of_lt_of_isPrime hlt`. Establish `h3` using `Ideal.height_add_one_le_of_lt_of_isPrime hbot`. Establish `h4 : (2 : ℕ∞) ≤ (W.map π).height`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Use `h4.trans h1` as an intermediate fact. Evaluate the numerical expressions using `at this`.
+Evaluate the numerical expressions. A detailed English derivation is pending.
 -/
 theorem eq_of_le_of_mem_minimalPrimes [IsNoetherianRing R] {V W Q : Ideal R} (hV : V.IsPrime) {f g : R}
     (hW : W ∈ (V ⊔ Ideal.span {f}).minimalPrimes) (hQ : Q.IsPrime) (hVQ : V ≤ Q) (hgQ : g ∈ Q)
@@ -229,7 +229,7 @@ theorem eq_of_le_of_mem_minimalPrimes [IsNoetherianRing R] {V W Q : Ideal R} (hV
   norm_num at this
 
 /- English proof (translation)
-Use `⟨⟨⟨hW.1.1.1, (sup_span_mul_le V f g).trans hW.1.1.2⟩, fun Q hQ hQW => ?_⟩, hW.2⟩` and prove the remaining obligations. Establish `hfg : f * g ∈ Q` using `hQ.2 (Ideal.mem_sup_right (Ideal.mem_span_singleton_self _))`. Break down `hQ.1.mem_or_mem hfg with hf | hg` into its components or cases. Conclude with `hW.1.2 ⟨hQ.1, sup_le (le_sup_left.trans hQ.2) (Ideal.span_singleton_le_iff_mem _ |>.mpr hf)⟩ hQW`. Conclude with `(eq_of_le_of_mem_minimalPrimes hV hW.1 hQ.1 (le_sup_left.trans hQ.2) hg hgV hQW).ge`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem mem_divSupp_mul_left {V W : Ideal (MRingOver F ι)} (hV : V.IsPrime) {f g : MRingOver F ι}
     (hgV : g ∉ V) (hW : W ∈ divSupp V f) : W ∈ divSupp V (f * g) := by
@@ -241,7 +241,7 @@ theorem mem_divSupp_mul_left {V W : Ideal (MRingOver F ι)} (hV : V.IsPrime) {f 
   · exact (eq_of_le_of_mem_minimalPrimes hV hW.1 hQ.1 (le_sup_left.trans hQ.2) hg hgV hQW).ge
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨⟨hW.1.1.1, sup_le (le_sup_left.trans hW.1.1.2) (Ideal.span_singleton_le_iff_mem _ |>.mpr hf)⟩, fun Q hQ hQW => hW.1.2 ⟨hQ.1, (sup_span_mul_le V f g).trans hQ.2⟩ hQW⟩, hW.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_divSupp_of_mul {V W : Ideal (MRingOver F ι)} {f g : MRingOver F ι}
     (hW : W ∈ divSupp V (f * g)) (hf : f ∈ W) : W ∈ divSupp V f :=
@@ -249,14 +249,14 @@ theorem mem_divSupp_of_mul {V W : Ideal (MRingOver F ι)} {f g : MRingOver F ι}
     fun Q hQ hQW => hW.1.2 ⟨hQ.1, (sup_span_mul_le V f g).trans hQ.2⟩ hQW⟩, hW.2⟩
 
 /- English proof (translation)
-The claim follows from `hW.1.1.2 (Ideal.mem_sup_right (Ideal.mem_span_singleton_self _))`.
+A detailed English derivation is pending.
 -/
 theorem mem_of_mem_divSupp {V W : Ideal (MRingOver F ι)} {f : MRingOver F ι} (hW : W ∈ divSupp V f) :
     f ∈ W :=
   hW.1.1.2 (Ideal.mem_sup_right (Ideal.mem_span_singleton_self _))
 
 /- English proof (translation)
-Use `locLen_eq_zero_of_notMem p fun hp => hg ?_` and prove the remaining obligations. Rewrite `hp` using `[Module.support_eq_zeroLocus, Ideal.annihilator_quotient, PrimeSpectrum.mem_zeroLocus]`. Conclude with `hp (Ideal.mem_sup_right (Ideal.mem_span_singleton_self g))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locLen_quot_eq_zero {V : Ideal R} {g : R} (p : PrimeSpectrum R) (hg : g ∉ p.asIdeal) :
     locLen (R ⧸ (V ⊔ Ideal.span {g})) p = 0 := by
@@ -267,11 +267,11 @@ theorem locLen_quot_eq_zero {V : Ideal R} {g : R} (p : PrimeSpectrum R) (hg : g 
 end DivMul2
 
 /- English proof (translation)
-Use extensionality with `W`. Simplify using `only [Finsupp.add_apply, divCycle, Finsupp.ofSupportFinite_coe]`. Distinguish the cases in `h : W ∈ divSupp V (f * g)`. Establish `hWp` using `h.1.1.1`. Establish `h' : W ∈ divSupp V (g * f)` using `by rwa [mul_comm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key` using `locLen_mul hV hf g ⟨W, hWp⟩`. Establish `hfin` using `locLen_ne_top h.1`. Rewrite `hfin` using `[key]`. Rewrite using `[if_pos h, multAt_eq _ _ hWp, key]`. Apply the tactic sequence `by_cases hfW : f ∈ W <;> by_cases hgW : g ∈ W`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[if_pos (mem_divSupp_of_mul h hfW), if_pos (mem_divSupp_of_mul h' hgW), multAt_eq _ _ hWp, multAt_eq _ _ hWp, ENat.toNat_add (WithTop.add_ne_top.mp hfin).1 (WithTop.add_ne_top.mp hfin).2, add_comm]`. Rewrite using `[if_pos (mem_divSupp_of_mul h hfW), if_neg fun h2 => hgW (mem_of_mem_divSupp h2), multAt_eq _ _ hWp, locLen_quot_eq_zero _ hgW, zero_add, add_zero]`. Rewrite using `[if_neg fun h2 => hfW (mem_of_mem_divSupp h2), if_pos (mem_divSupp_of_mul h' hgW), multAt_eq _ _ hWp, locLen_quot_eq_zero (V := V) (g := f) _ hfW, add_zero, zero_add]`. Conclude with `absurd (hWp.mem_or_mem (mem_of_mem_divSupp h)) (by tauto)`. Rewrite using `[if_neg h, if_neg fun h2 => h (mem_divSupp_mul_left hV hg h2), if_neg fun h2 => h (by rw [mul_comm]; exact mem_divSupp_mul_left hV hf h2)]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem divCycle_mul {V : Ideal (MRingOver F ι)} (hV : V.IsPrime) {f g : MRingOver F ι}
     (hf : f ∉ V) (hg : g ∉ V) : divCycle V (f * g) = divCycle V f + divCycle V g := by
@@ -298,7 +298,7 @@ theorem divCycle_mul {V : Ideal (MRingOver F ι)} (hV : V.IsPrime) {f g : MRingO
       if_neg fun h2 => h (by rw [mul_comm]; exact mem_divSupp_mul_left hV hf h2)]
 
 /- English proof (translation)
-Simplify using `only [ratDiv, divCycle_mul hV hf hf', divCycle_mul hV hg hg', Finsupp.mapRange_add (hf := Nat.cast_zero) (fun a b => Nat.cast_add a b)]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem ratDiv_mul {V : Ideal (MRingOver F ι)} (hV : V.IsPrime) {f g f' g' : MRingOver F ι}
     (hf : f ∉ V) (hg : g ∉ V) (hf' : f' ∉ V) (hg' : g' ∉ V) :
@@ -308,9 +308,9 @@ theorem ratDiv_mul {V : Ideal (MRingOver F ι)} (hV : V.IsPrime) {f g f' g' : MR
   abel
 
 /- English proof (translation)
-Use extensionality with `W`. Establish `h : W ∉ divSupp V (1 : MRingOver F ι)`. Introduce and unpack `⟨hW, -⟩`. Rewrite `hW` using `[Ideal.span_singleton_one, sup_top_eq]`. Conclude with `hW.1.1.ne_top (top_le_iff.mp hW.1.2)`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[divCycle, Finsupp.ofSupportFinite_coe, h]`.
+A detailed English derivation is pending.
 -/
 theorem divCycle_one (V : Ideal (MRingOver F ι)) : divCycle V (1 : MRingOver F ι) = 0 := by
   classical
@@ -322,21 +322,21 @@ theorem divCycle_one (V : Ideal (MRingOver F ι)) : divCycle V (1 : MRingOver F 
   simp [divCycle, Finsupp.ofSupportFinite_coe, h]
 
 /- English proof (translation)
-Simplify using `[ratDiv, divCycle_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ratDiv_eq_sub (V : Ideal (MRingOver F ι)) (f g : MRingOver F ι) :
     ratDiv V f g = ratDiv V f 1 - ratDiv V g 1 := by
   simp [ratDiv, divCycle_one]
 
 /- English proof (translation)
-Simplify using `[ratDiv]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ratDiv_swap (V : Ideal (MRingOver F ι)) (f g : MRingOver F ι) :
     ratDiv V g f = -ratDiv V f g := by
   simp [ratDiv]
 
 /- English proof (translation)
-Rewrite using `[Finsupp.liftAddHom_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem cycEval_eq_liftAddHom (J : Ideal (MRingOver F ι) → ℤ) (D : Ideal (MRingOver F ι) →₀ ℤ) :
     cycEval J D = Finsupp.liftAddHom (fun W => AddMonoidHom.mulRight (J W)) D := by
@@ -344,34 +344,34 @@ theorem cycEval_eq_liftAddHom (J : Ideal (MRingOver F ι) → ℤ) (D : Ideal (M
   rfl
 
 /- English proof (translation)
-Simplify using `[cycEval]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cycEval_zero (J : Ideal (MRingOver F ι) → ℤ) : cycEval J 0 = 0 := by
   simp [cycEval]
 
 /- English proof (translation)
-Simplify using `only [cycEval_eq_liftAddHom, map_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cycEval_add (J : Ideal (MRingOver F ι) → ℤ) (D E : Ideal (MRingOver F ι) →₀ ℤ) :
     cycEval J (D + E) = cycEval J D + cycEval J E := by
   simp only [cycEval_eq_liftAddHom, map_add]
 
 /- English proof (translation)
-Simplify using `only [cycEval_eq_liftAddHom, map_sub]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cycEval_sub (J : Ideal (MRingOver F ι) → ℤ) (D E : Ideal (MRingOver F ι) →₀ ℤ) :
     cycEval J (D - E) = cycEval J D - cycEval J E := by
   simp only [cycEval_eq_liftAddHom, map_sub]
 
 /- English proof (translation)
-Simplify using `only [cycEval_eq_liftAddHom, map_neg]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cycEval_neg (J : Ideal (MRingOver F ι) → ℤ) (D : Ideal (MRingOver F ι) →₀ ℤ) :
     cycEval J (-D) = -cycEval J D := by
   simp only [cycEval_eq_liftAddHom, map_neg]
 
 /- English proof (translation)
-Unfold `cycEval`. Conclude with `Finsupp.sum_congr fun W hW => by rw [h W (Finsupp.mem_support_iff.mp hW)]`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem cycEval_congr {J J' : Ideal (MRingOver F ι) → ℤ} {D : Ideal (MRingOver F ι) →₀ ℤ}
     (h : ∀ W, D W ≠ 0 → J W = J' W) : cycEval J D = cycEval J' D := by
@@ -379,7 +379,7 @@ theorem cycEval_congr {J J' : Ideal (MRingOver F ι) → ℤ} {D : Ideal (MRingO
   exact Finsupp.sum_congr fun W hW => by rw [h W (Finsupp.mem_support_iff.mp hW)]
 
 /- English proof (translation)
-Unfold `cycEval`. Simplify using `only [mul_sub, Finsupp.sum_sub]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem cycEval_sub_fun (J J' : Ideal (MRingOver F ι) → ℤ) (D : Ideal (MRingOver F ι) →₀ ℤ) :
     cycEval (fun W => J W - J' W) D = cycEval J D - cycEval J' D := by
@@ -387,7 +387,7 @@ theorem cycEval_sub_fun (J J' : Ideal (MRingOver F ι) → ℤ) (D : Ideal (MRin
   simp only [mul_sub, Finsupp.sum_sub]
 
 /- English proof (translation)
-Rewrite using `[cycEval_eq_liftAddHom, map_finsuppSum]`. Unfold `cycEval`. Use `Finsupp.sum_congr fun W _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul, smul_eq_mul, ← cycEval_eq_liftAddHom]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem cycEval_sum_smul (J : Ideal (MRingOver F ι) → ℤ) (D : Ideal (MRingOver F ι) →₀ ℤ)
     (E : Ideal (MRingOver F ι) → Ideal (MRingOver F ι) →₀ ℤ) :
@@ -399,7 +399,7 @@ theorem cycEval_sum_smul (J : Ideal (MRingOver F ι) → ℤ) (D : Ideal (MRingO
   rfl
 
 /- English proof (translation)
-Establish `hu : ∀ k, IsUnit (Ideal.Quotient.mkₐ F (chartIdeal V j) (X ⟨k, i k⟩))` using `fun k => isUnit_mk_chartIdeal_X hV j _ (hi k)`. Establish `hv : ∀ k, IsUnit (Ideal.Quotient.mkₐ F (chartIdeal V i) (X ⟨k, j k⟩))` using `fun k => isUnit_mk_chartIdeal_X hV i _ (hj k)`. Set `e` to `AlgEquiv.ofAlgHom (chartSwap hV.1.2.1 i j hu) (chartSwap hV.1.2.1 j i hv) (chartSwap_comp hV.1.2.1 j i hv hu) (chartSwap_comp hV.1.2.1 i j hu hv)`. Conclude with `e.toLinearEquiv.finrank_eq`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem ptDeg_eq_of_isChart {V : Ideal (MRingOver F ι)} (hV : IsProjVarF V 0) {i j : ∀ k, ι k}
     (hi : IsChart V i) (hj : IsChart V j) : ptDeg V i = ptDeg V j := by
@@ -412,9 +412,9 @@ theorem ptDeg_eq_of_isChart {V : Ideal (MRingOver F ι)} (hV : IsProjVarF V 0) {
   exact e.toLinearEquiv.finrank_eq
 
 /- English proof (translation)
-Take `⟨⟨hVp, hVh, -⟩, hVdim⟩` from `hV`. Take `⟨hWmin, hWrel⟩` from `hW`. Establish `hWmh : IsMultiHomogIdeal W` using `cyc_isMultiHomogIdeal_of_mem_minimalPrimes hVh hf hWmin`. Establish `h1` using `cyc_dim_quot_minimal_add_one hfV hWmin (fun h => by`. Rewrite `h` using `[hVdim]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `ENat.natCast_ne_top _ (WithBot.coe_injective h))`. Rewrite `h1` using `[hVdim]`. Conclude with `⟨⟨hWmin.1.1, hWmh, hWrel⟩, cyc_withBot_eq_of_add_one (by rw [h1, show n + 1 + Fintype.card K = n + Fintype.card K + 1 by omega])⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isProjVarF_of_mem_divSupp {V W : Ideal (MRingOver F ι)} {n : ℕ} {f : MRingOver F ι}
     {α : K → ℕ} (hV : IsProjVarF V (n + 1)) (hf : IsMultiHomog f α) (hfV : f ∉ V)

@@ -16,7 +16,7 @@ def lrBasis : Module.Basis (Gam n d) K (Lr K n d) :=
   (Module.Basis.ofRepr (AddMonoidAlgebra.coeffLinearEquiv K)).reindex topEquiv
 
 /- English proof (translation)
-Rewrite using `[lrBasis, Module.Basis.reindex_apply, Module.Basis.coe_ofRepr]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem lrBasis_apply (g : Gam n d) : lrBasis (K := K) g = monL K g := by
   rw [lrBasis, Module.Basis.reindex_apply, Module.Basis.coe_ofRepr]
@@ -35,9 +35,9 @@ def setEquiv (a : ℕ) : {D : Finset (E n d) // D.card = a} ≃ Set.powersetCard
     simp
 
 /- English proof (translation)
-Use `⟨((bΩ.reindex finSumFinEquiv).exteriorPower a).reindex (setEquiv a).symm, fun D => ?_⟩` and prove the remaining obligations. Rewrite using `[Module.Basis.reindex_apply, exteriorPower.basis_apply]`. Simplify using `only [Equiv.symm_symm]`. Unfold `exteriorPower.ιMulti_family wedge`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `i`. Simplify using `only [Function.comp_apply, Module.Basis.reindex_apply, h]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem wedge_basis (bΩ : Module.Basis (E n d) (Lr K n d) Ω[Lr K n d⁄K]) (h : ∀ e, bΩ e = dl e) (a : ℕ) :
     ∃ c : Module.Basis {D : Finset (E n d) // D.card = a} (Lr K n d) (Om K (Lr K n d) a),
@@ -52,7 +52,7 @@ theorem wedge_basis (bΩ : Module.Basis (E n d) (Lr K n d) Ω[Lr K n d⁄K]) (h 
   rfl
 
 /- English proof (translation)
-Introduce `K _ n d a`. Take `⟨bΩ, h⟩` from `GlobalTheory.CompanionTheory.SurjectionOntoH4.OmBasis.exists_basis_dl (K := K) (n := n) (d := d)`. Take `⟨c, hc⟩` from `wedge_basis bΩ h a`. Use `⟨lrBasis.smulTower c, fun p => ?_⟩` and prove the remaining obligations. Rewrite using `[Module.Basis.smulTower_apply, lrBasis_apply, hc]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/

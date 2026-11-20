@@ -10,17 +10,17 @@ namespace GlobalTheory.EtC.Tr
 open GlobalTheory.EtC.CupSpec
 
 /- English proof (translation)
-Set `x : Presieve.FamilyOfElements (F.obj ⋙ forget _) T.arrows` to `fun V v hv => Sec.map (σ v hv) (freeGen R (yoneda.obj V) V (𝟙 V))`. Establish `hres : ∀ ⦃V W : Scheme.{0}⦄ (v : V ⟶ S) (hv : T v) (g : W ⟶ V), Sec.res g (Sec.map (σ v hv) (freeGen R (yoneda.obj V) V (𝟙 V))) = Sec.map (σ v hv) (freeGen R (yoneda.obj V) W g)`. Introduce `V W v hv g`. Rewrite using `[map_res, freeGen_res]`. Use `congr 2`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hcomp : ∀ ⦃V W : Scheme.{0}⦄ (v : V ⟶ S) (hv : T v) (g : W ⟶ V), Sec.map (σ (g ≫ v) (T.downward_closed hv g)) (freeGen R (yoneda.obj W) W (𝟙 W)) = Sec.map (σ v hv) (freeGen R (yoneda.obj V) W g)`. Introduce `V W v hv g`. Rewrite using `[← hσ v hv g]`. Express the relevant statement in the definitionally equal form `Sec.map (σ v hv) (Sec.map ((GlobalTheory.EtC.free R).map (yoneda.map g)) (freeGen R (yoneda.obj W) W (𝟙 W))) = _`. Rewrite using `[freeGen_map]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Establish `hx : x.SieveCompatible`. Introduce `V W v g hv`. Conclude with `(hcomp v hv g).trans (hres v hv g).symm`. Establish `hF : Presieve.IsSheaf Scheme.etaleTopology (F.obj ⋙ forget _)` using `(isSheaf_iff_isSheaf_of_type _ _).1 ((Presheaf.isSheaf_iff_isSheaf_forget _ _ (forget _)).1 F.cond)`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hs, -⟩` from `hF T hT x ((Presieve.compatible_iff_sieveCompatible x).2 hx)`. Take `⟨t, ht⟩` from `free_exists (R := R) (yoneda.obj S) F (fun U g => Sec.res g (show Sec F S from s)) (fun V U g h => by`. Express the relevant statement in the definitionally equal form `Sec.res g (Sec.res h _) = Sec.res (g ≫ h) _`. Simplify using `only [Sec.res, op_comp, Functor.map_comp, ModuleCat.hom_comp, LinearMap.comp_apply])`. Use `⟨t, fun V v hv => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `free_ext` to reduce the goal to its premises. Introduce `U w`. Express the relevant statement in the definitionally equal form `Sec.map t (Sec.map ((GlobalTheory.EtC.free R).map (yoneda.map v)) (freeGen R (yoneda.obj V) U w)) = _`. Rewrite using `[freeGen_map, ht, ← hres v hv w]`. Establish `hsv : Sec.res v (show Sec F S from s) = Sec.map (σ v hv) (freeGen R (yoneda.obj V) V (𝟙 V))` using `hs v hv`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hsv]`. Express the relevant statement in the definitionally equal form `Sec.res (w ≫ v) _ = Sec.res w (Sec.res v _)`. Simplify using `only [Sec.res, op_comp, Functor.map_comp, ModuleCat.hom_comp, LinearMap.comp_apply]`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem free_hom_glue_of_covering (R : Type) [CommRing R] {S : Scheme.{0}} (F : GlobalTheory.EtC.Shv R) (T : Sieve S)
     (hT : T ∈ Scheme.etaleTopology S)
@@ -70,7 +70,7 @@ theorem free_hom_glue_of_covering (R : Type) [CommRing R] {S : Scheme.{0}} (F : 
 end GlobalTheory.EtC.Tr
 
 /- English proof (translation)
-The claim follows from `@GlobalTheory.EtC.Tr.free_hom_glue_of_covering`.
+A detailed English derivation is pending.
 -/
 example : ∀ (R : Type) [CommRing R] {S : Scheme.{0}} (F : GlobalTheory.EtC.Shv R) (T : Sieve S), T ∈ Scheme.etaleTopology S → ∀ (σ : ∀ ⦃V : Scheme.{0}⦄ (v : V ⟶ S), T v → (GlobalTheory.EtC.Tr.freeSch R V ⟶ F)), (∀ ⦃V W : Scheme.{0}⦄ (v : V ⟶ S) (hv : T v) (g : W ⟶ V), (GlobalTheory.EtC.free R).map (yoneda.map g) ≫ σ v hv = σ (g ≫ v) (T.downward_closed hv g)) → ∃ t : GlobalTheory.EtC.Tr.freeSch R S ⟶ F, ∀ ⦃V : Scheme.{0}⦄ (v : V ⟶ S) (hv : T v), (GlobalTheory.EtC.free R).map (yoneda.map v) ≫ t = σ v hv :=
   @GlobalTheory.EtC.Tr.free_hom_glue_of_covering

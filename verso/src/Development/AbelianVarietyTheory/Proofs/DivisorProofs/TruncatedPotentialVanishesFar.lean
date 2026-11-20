@@ -12,7 +12,7 @@ open scoped ENNReal Classical
 namespace GlobalTheory.ChgZeroFar
 
 /- English proof (translation)
-Introduce `_ _ D O hO _ A T H h c u σ R hR x hxZ hr`. Use `((h.an c).phR R hR u σ x).trans (hO.chg_some_eq_zero c _ hR u (Or.inr ?_))` and prove the remaining obligations. Conclude with `hr.trans_eq ((h.an c).r σ x hxZ)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem phR_eq_zero : Hypotheses2 → HypothesesH → OnObj fun _ O _ T _ _ => ∀ c u σ (R : ℝ), 2 ≤ R → ∀ x, x ∉ (T.M c).Z σ → R ^ 3 ≤ (T.M c).r σ x → (T.F c).phR R u σ x = 0 := by
   intro _ _ D O hO _ A T H h c u σ R hR x hxZ hr

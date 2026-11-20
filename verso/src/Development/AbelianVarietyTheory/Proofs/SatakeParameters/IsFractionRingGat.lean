@@ -15,7 +15,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.Ggeo.FracLocal
 
 /- English proof (translation)
-Introduce `{_} Gl u w hg` and use `GlobalTheory.TwV.Lt.fracAt Gl u w hg`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isFractionRing_gat : ∀ {D : D7} (Gl : G.LatInst D) (u : D.what₂.Word) (w : D.what₂.places.Pl) (hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)), IsFractionRing (D.gat u w hg).O (D.gat u w hg).Kf :=
   fun {_} Gl u w hg => GlobalTheory.TwV.Lt.fracAt Gl u w hg

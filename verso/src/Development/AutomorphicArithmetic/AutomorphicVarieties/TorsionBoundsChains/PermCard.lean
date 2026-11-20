@@ -10,17 +10,15 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.TorsionBoundsChain
 open CategoryTheory UpperTheory.V.KH
 
 /- English proof (translation)
-Introduce `G _ s j A`. Establish `hempty : ∀ (A : ℕ) (X : Type) [MulAction G X] [IsEmpty X], 1 ≤ s → CardLe (groupHomology (permRep G X) (j + 1)) (s ^ (A * s ^ (j + 1)))`. Introduce `A X _ _ hs`. Take `⟨h1, h2⟩` from `permEmpty G X (j + 1)`. Conclude with `⟨h1, h2.trans (Nat.one_le_pow _ _ hs)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Proceed by induction on `A with`. Consider the case `zero`. Introduce `X _ hO _ hs`. Use `haveI : IsEmpty X := ⟨fun x => by`. Take `⟨hf, hc⟩` from `hO`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI : Nonempty (MulAction.orbitRel.Quotient G X) := ⟨Quotient.mk'' x⟩`. Use `Nat.card_pos (α := MulAction.orbitRel.Quotient G X)` as an intermediate fact. Use the proof step `omega⟩`. Conclude with `hempty 0 X hs`. Consider the case `succ A ih`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce `X _ hO hS hs`. Break down `isEmpty_or_nonempty X with hX | ⟨⟨x⟩⟩` into its components or cases. Conclude with `hempty _ X hs`. Take `⟨U, V, hUV, hne, htr, hSU, hSV, hOV⟩` from `orbStep G X A s x hO hS`. Take `⟨f, g, hf, hfg, hg⟩` from `permSplit G X U V hUV`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨⟨u, v, huv⟩, -⟩` from `les G _ _ _ f g hf hfg hg (j + 1)`. Establish `h1` using `permTrans G U s j hSU`. Establish `h2` using `ih V hOV hSV hs`. Establish `h3` using `cardStep _ _ _ u v _ _ huv h1 h2`. Establish `e : s ^ (s ^ (j + 1)) * s ^ (A * s ^ (j + 1)) = s ^ ((A + 1) * s ^ (j + 1))`.
-
-Rewrite using `[← pow_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h3` using `[e]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.KH.permCard :
     ∀ (G : Type) [Group G] (s j A : ℕ) (X : Type) [MulAction G X], OrbLe G X A → StabLe G X s →

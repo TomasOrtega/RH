@@ -4,21 +4,17 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 open Polynomial UpperTheory.V.Z.Sym.Wt
 
 /- English proof (translation)
-Use `haveI : FiniteDimensional ℂ (MH d n) := finMH K d n`. Set `W : Submodule ℂ (Module.Dual ℂ (MH d n))` to `{ carrier := {φ | Continuous fun t => φ (mRep d n (γ t) x)} add_mem' := by`. Introduce `a b ha hb`. Simplify using `only [Set.mem_setOf_eq, LinearMap.add_apply] at *`. Conclude with `ha.add hb`.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Use the proof step `zero_mem' := by`. Simplify using `only [Set.mem_setOf_eq, LinearMap.zero_apply]`. Conclude with `continuous_const`. Use the proof step `smul_mem' := by`. Introduce `c a ha`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Set.mem_setOf_eq, LinearMap.smul_apply, smul_eq_mul] at *`. Conclude with `continuous_const.mul ha }`. Establish `hev : ∀ y : K × Fin d → ℂ, (MvPolynomial.aeval y : MvPolynomial (K × Fin d) ℂ →ₐ[ℂ] ℂ).toLinearMap.comp (MH d n).subtype ∈ W`. Introduce `y`. Establish `hc : Continuous fun t => MvPolynomial.eval y ((mRep d n (γ t) x : MH d n) : MvPolynomial (K × Fin d) ℂ)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [eval_mRep]`. Use `(MvPolynomial.continuous_eval (x : MvPolynomial (K × Fin d) ℂ)).comp ?_` and prove the remaining obligations. Use `continuous_pi fun p => ?_` and prove the remaining obligations. Conclude with `continuous_finset_sum _ fun j _ => continuous_const.mul (hγ p.1 j p.2)`. Use `show Continuous fun t => (MvPolynomial.aeval y) ((mRep d n (γ t) x : MH d n) : MvPolynomial (K × Fin d) ℂ)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Use `hc using 2 with t` and compare the differences between its conclusion and the goal. Conclude with `DFunLike.congr_fun (MvPolynomial.coe_aeval_eq_eval y) _`. Establish `hb : W.dualCoannihilator = ⊥`. Rewrite using `[eq_bot_iff]`. Introduce `v hv`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hv` using `[Submodule.mem_dualCoannihilator]`. Rewrite using `[Submodule.mem_bot]`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `MvPolynomial.funext` to reduce the goal to its premises. Introduce `y`.
-
-Use `hv _ (hev y)` as an intermediate fact. Establish `e : (MvPolynomial.aeval y) (v : MvPolynomial (K × Fin d) ℂ) = MvPolynomial.eval y (v : MvPolynomial (K × Fin d) ℂ)` using `DFunLike.congr_fun (MvPolynomial.coe_aeval_eq_eval y) _`. Rewrite using `[Submodule.coe_zero, map_zero, ← e]`. Conclude with `this`. Establish `htop : W = ⊤`.
-
-Rewrite using `[← Subspace.dualCoannihilator_dualAnnihilator_eq (W := W), hb, Submodule.dualAnnihilator_bot]`. Establish `hf : f ∈ W` using `htop ▸ Submodule.mem_top`. Conclude with `hf`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem cont_m {K T : Type} [Fintype K] [TopologicalSpace T] {d : ℕ} (n : K → ℕ) (γ : T → K → GL (Fin d) ℂ)
     (hγ : ∀ k i j, Continuous fun t => (γ t k : Matrix (Fin d) (Fin d) ℂ) i j) (x : MH d n) (f : MH d n →ₗ[ℂ] ℂ) :
@@ -67,23 +63,19 @@ private theorem cont_m {K T : Type} [Fintype K] [TopologicalSpace T] {d : ℕ} (
   exact hf
 
 /- English proof (translation)
-Introduce `I _`. Establish `entc : ∀ (d : ℕ) (k : I) (i j : Fin d), Continuous fun g : I → GL (Fin d) ℂ => ((g k : GL (Fin d) ℂ) : Matrix (Fin d) (Fin d) ℂ) i j`. Introduce `d k i j`. Conclude with `((Units.continuous_val (M := Matrix (Fin d) (Fin d) ℂ)).comp (continuous_apply k)).matrix_elem i j`. Establish `entci : ∀ (d : ℕ) (k : I) (i j : Fin d), Continuous fun g : I → GL (Fin d) ℂ => (((g k)⁻¹ : GL (Fin d) ℂ) : Matrix (Fin d) (Fin d) ℂ) i j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `d k i j`. Conclude with `((Units.continuous_coe_inv (M := Matrix (Fin d) (Fin d) ℂ)).comp (continuous_apply k)).matrix_elem i j`. Use `⟨fun j x f => ?_, fun n e x f => ?_⟩` and prove the remaining obligations. Establish `hsplit : (fun g => f (repG I j g x)) = fun g => ∑ S, f (Pi.single S (repG I j g x S))`. Use function extensionality and compare the values at `g`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_sum, Finset.univ_sum_single]`. Rewrite using `[hsplit]`. Use `continuous_finset_sum _ fun S _ => ?_` and prove the remaining obligations. Establish `hent : ∀ (k : I × Bool) (i i' : Fin 3), Continuous fun g : I → GL (Fin 3) ℂ => ((dbl 3 g k : GL (Fin 3) ℂ) : Matrix (Fin 3) (Fin 3) ℂ) i i'`. Introduce `k i i'`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hfun : (fun g : I → GL (Fin 3) ℂ => ((dbl 3 g k : GL (Fin 3) ℂ) : Matrix (Fin 3) (Fin 3) ℂ) i i') = fun g => if k.2 = true then (((g k.1)⁻¹ : GL (Fin 3) ℂ) : Matrix (Fin 3) (Fin 3) ℂ) i' i else ((g k.1 : GL (Fin 3) ℂ) : Matrix (Fin 3) (Fin 3) ℂ) i i'`. Use function extensionality and compare the values at `g`. Simplify using `only [dbl, MonoidHom.coe_mk, OneHom.coe_mk]`. Apply the tactic sequence `split_ifs <;> rfl`. Rewrite using `[hfun]`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hk : k.2 = true`. Simplify using `only [hk, if_true]`. Conclude with `entci 3 k.1 i' i`. Simplify using `only [if_neg hk]`. Conclude with `entc 3 k.1 i i'`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `cont_m (fun k : I × Bool => dg j S k.1) (fun g : I → GL (Fin 3) ℂ => dbl 3 g) hent (x S) (f ∘ₗ LinearMap.single ℂ (fun S => ↥(Bi 3 (dg j S))) S)`. Establish `hdet : ∀ v : I, Continuous fun g : I → GL (Fin 2) ℂ => Matrix.GeneralLinearGroup.det (g v)`. Introduce `v`. Use `Units.continuous_iff.mpr ⟨?_, ?_⟩` and prove the remaining obligations. Use `show Continuous fun g : I → GL (Fin 2) ℂ => ((Matrix.GeneralLinearGroup.det (g v) : ℂˣ) : ℂ)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [Matrix.GeneralLinearGroup.val_det_apply]`. Conclude with `((Units.continuous_val (M := Matrix (Fin 2) (Fin 2) ℂ)).comp (continuous_apply v)).matrix_det`. Establish `h : ∀ g : I → GL (Fin 2) ℂ, (((Matrix.GeneralLinearGroup.det (g v))⁻¹ : ℂˣ) : ℂ) = (((g v)⁻¹ : GL (Fin 2) ℂ) : Matrix (Fin 2) (Fin 2) ℂ).det`. Introduce `g`. Rewrite using `[← map_inv, Matrix.GeneralLinearGroup.val_det_apply]`.
-
-Simplify using `only [h]`. Conclude with `((Units.continuous_coe_inv (M := Matrix (Fin 2) (Fin 2) ℂ)).comp (continuous_apply v)).matrix_det`. Establish `hd : Continuous fun g : I → GL (Fin 2) ℂ => detE 2 e g` using `by show Continuous fun g : I → GL (Fin 2) ℂ => ∏ v, Matrix.GeneralLinearGroup.det (g v) ^ e`. Conclude with `continuous_finset_prod _ fun v _ => (hdet v).zpow e`. Simplify using `only [repD_apply, LinearMap.smul_apply, map_smul, smul_eq_mul]`.
-
-Conclude with `(Units.continuous_val.comp hd).mul (cont_m (fun _ : I => n) (fun g : I → GL (Fin 2) ℂ => g) (fun k i j => entc 2 k i j) x f)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Sym.Wt.contRep :
     UpperTheory.V.Z.Sym.Wt.ContRep := by

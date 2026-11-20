@@ -8,9 +8,9 @@ namespace GlobalTheory.DoubledFlag
 open MeasureTheory NumberField Matrix Finset in
 
 /- English proof (translation)
-Rewrite using `[show 2 * a + 1 = (a + 1) + a by ring, Finset.sum_range_add, Finset.sum_range_succ, Fin.sum_univ_eq_sum_range (fun i => f i + f (2 * a - i)), Finset.sum_add_distrib, ← Finset.sum_range_reflect (fun x => f (a + 1 + x)) a]`. Establish `h : ∀ x ∈ range a, f (a + 1 + (a - 1 - x)) = f (2 * a - x)` using `fun x hx => by`. Rewrite `hx` using `[Finset.mem_range]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[Finset.sum_congr rfl h]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem _root_.GlobalTheory.DoubledFlag.sum_range_double {M : Type} [AddCommMonoid M] (a : ℕ) (f : ℕ → M) :
     ∑ s ∈ range (2 * a + 1), f s = ∑ i : Fin a, (f i + f (2 * a - i)) + f a := by
@@ -25,47 +25,45 @@ theorem _root_.GlobalTheory.DoubledFlag.sum_range_double {M : Type} [AddCommMono
 open MeasureTheory NumberField Matrix Finset in
 
 /- English proof (translation)
-Introduce `n a j D ν hj hD hD0 hν0 hν hna hsym`. Establish `hJ : ν a = ∑ i, j i`. Establish `h1 : ∀ m, m ≤ a → ν m = ∑ i ∈ range m, if h : i < a then j ⟨i, h⟩ else 0`. Introduce `m hm`. Proceed by induction on `m with`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero => simp [hν0]`. Consider the case `succ m ih`. Rewrite using `[Finset.sum_range_succ, ← ih (by omega), dif_pos (by omega)]`. Conclude with `hν ⟨m, by omega⟩`. Rewrite using `[h1 a le_rfl, ← Fin.sum_univ_eq_sum_range (fun i => if h : i < a then j ⟨i, h⟩ else 0)]`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `hmid : ν (a + 1) + ν a = n`. Establish `h` using `(hsym a le_rfl).2`. Rewrite `h` using `[show 2 * a + 1 - a = a + 1 by omega]`. Then use the resulting hypothesis. Establish `hlow : ∀ i : Fin a, (ν (i + 1) - ν i) * ν i = j i * ν i`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i`. Rewrite using `[hν i, Nat.add_sub_cancel_left]`. Establish `hhigh : ∀ i : Fin a, (ν (2 * a - i + 1) - ν (2 * a - i)) * ν (2 * a - i) + j i * ν (i + 1) = j i * n`. Introduce `i`. Establish `hi` using `i.isLt`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `(hsym i (by omega)).2`. Establish `h2` using `(hsym (i + 1) (by omega)).2`. Establish `h3` using `hν i`. Rewrite `h1` using `[show 2 * a + 1 - (i : ℕ) = 2 * a - i + 1 by omega]`. Rewrite `h2` using `[show 2 * a + 1 - ((i : ℕ) + 1) = 2 * a - i by omega]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[show ν (2 * a - i + 1) - ν (2 * a - i) = j i by omega, ← mul_add, h2]`. Establish `hsq : ν a * ν a = ∑ i, j i ^ 2 + 2 * ∑ i, ∑ k ∈ univ.filter (fun k => i < k), j i * j k`. Establish `hsplit : ∀ i k : Fin a, j i * j k = ((if i < k then j i * j k else 0) + (if k < i then j k * j i else 0)) + (if i = k then j i ^ 2 else 0)`. Introduce `i k`. Break down `lt_trichotomy i k with h | h | h` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Simplify using `[h, h.ne, not_lt.2 h.le]`. Substitute `h` using the available equality. Simplify using `[sq]`. Simplify using `[h, h.ne', not_lt.2 h.le]`. Expand and normalize the polynomial expressions, which then agree.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hJ, Finset.sum_mul_sum]`. Rewrite using `[Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun k _ => hsplit i k]`. Simplify using `only [Finset.sum_add_distrib, Finset.sum_ite_eq, Finset.sum_filter, Finset.mem_univ, if_true]`. Rewrite using `[Finset.sum_comm (f := fun i k => if k < i then j k * j i else 0)]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[_root_.GlobalTheory.DoubledFlag.sum_range_double]`. Establish `hF : ∑ i : Fin a, ((ν (i + 1) - ν i) * ν i + (ν (2 * a - i + 1) - ν (2 * a - i)) * ν (2 * a - i)) + ∑ i, j i ^ 2 = n * ν a`. Rewrite using `[← Finset.sum_add_distrib, hJ, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h` using `hhigh i`. Rewrite `h` using `[hν i]`. Rewrite using `[hlow i]`. Use the polynomial consequences of the given equalities and inequalities. Unfold `_root_.GlobalTheory.FlagMeas.dimN`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hJ]`. Take `⟨m, rfl⟩ : ∃ m, n = m + 2 * ν a` from `⟨n - 2 * ν a, by omega⟩`. Rewrite using `[show ν (a + 1) - ν a = m by omega, show m + 2 * ν a - 2 * ν a = m by omega]`. Use the polynomial consequences of the given equalities and inequalities. Take `⟨d, rfl⟩ : ∃ d : ℕ → ℝ, D = fun s => Real.exp (d s)` from `⟨fun s => Real.log (D s), funext fun s => (Real.exp_log (hD s)).symm⟩`.
+Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hd0 : d 0 = 0` using `by simpa using hD0`. Establish `hdsym : ∀ s, s ≤ a → d (2 * a + 1 - s) = d s` using `fun s hs => by`. Simplify using `using (hsym s hs).1`. Establish `hc : ∀ i : Fin a, (Real.exp (d (i + 1)) / Real.exp (d i)) ^ (-(1 : ℝ) / j i) = Real.exp ((d i - d (i + 1)) / j i)`. Introduce `i`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Real.exp_sub, ← Real.exp_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `htail : ∀ i : Fin a, ∑ k ∈ univ.filter (fun k => i < k), (j k : ℝ) = ν a - ν ((i : ℕ) + 1)`. Introduce `i`.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hi` using `i.isLt`. Establish `e : ∀ k : Fin a, (j k : ℝ) = ν ((k : ℕ) + 1) - ν k` using `fun k => by`. Rewrite using `[hν k]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Simplify using `only [e, Finset.sum_filter, Fin.lt_iff_val_lt_val]`. Rewrite using `[Fin.sum_univ_eq_sum_range (fun x => if (i : ℕ) < x then (ν (x + 1) : ℝ) - ν x else 0) a, ← Finset.sum_filter, show (range a).filter (fun x => (i : ℕ) < x) = Ico ((i : ℕ) + 1) a by`. Use extensionality with `x`. Simplify using `only [Finset.mem_filter, Finset.mem_range, Finset.mem_Ico]`. Use the proof step `omega,`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Use the proof step `Finset.sum_Ico_eq_sub _ (by omega), Finset.sum_range_sub (fun x => (ν x : ℝ)),`. Use the proof step `Finset.sum_range_sub (fun x => (ν x : ℝ))]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [hc]`. Unfold `_root_.GlobalTheory.Count.layerProd`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [id, ← Real.exp_nat_mul, ← Real.exp_sub, ← Real.exp_add, ← Real.exp_sum, ← Real.exp_neg, pow_one, mul_one]`. Rewrite using `[Real.exp_eq_exp, ← hJ, _root_.GlobalTheory.DoubledFlag.sum_range_double, eq_neg_iff_add_eq_zero, ← add_assoc, ← Finset.sum_add_distrib, ← Finset.sum_add_distrib, Finset.sum_congr (s₁ := (univ : Finset (Fin a))) rfl (g := fun i : Fin a => (2 * (ν ((i : ℕ) + 1) : ℝ) * d ((i : ℕ) + …`. Establish `hm : (ν (a + 1) : ℝ) = n - ν a` using `by rw [eq_sub_iff_add_eq]; exact_mod_cast hmid`. Establish `hda : d (a + 1) = d a` using `by rw [← hdsym a le_rfl]; congr 1; omega`. Rewrite using `[hm, hda, hν0, hd0]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Introduce `i _`. Establish `hi` using `i.isLt`. Establish `hji : (j i : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 (by have := hj i; omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `(hsym i (by omega)).2`. Establish `h2` using `(hsym (i + 1) (by omega)).2`. Rewrite `h1` using `[show 2 * a + 1 - (i : ℕ) = 2 * a - i + 1 by omega]`. Rewrite `h2` using `[show 2 * a + 1 - ((i : ℕ) + 1) = 2 * a - i by omega]`. Establish `e1 : (ν (2 * a - i + 1) : ℝ) = n - ν i` using `by rw [eq_sub_iff_add_eq]; exact_mod_cast h1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : (ν (2 * a - i) : ℝ) = n - ν ((i : ℕ) + 1)` using `by rw [eq_sub_iff_add_eq]; exact_mod_cast h2`. Establish `e3 : (ν ((i : ℕ) + 1) : ℝ) = ν i + j i` using `by exact_mod_cast hν i`. Establish `f1 : d (2 * a - i + 1) = d i` using `by rw [← hdsym i (by omega)]; congr 1; omega`. Establish `f2 : d (2 * a - i) = d ((i : ℕ) + 1)` using `by rw [← hdsym (i + 1) (by omega)]; congr 1; omega`. Rewrite using `[Finset.sum_congr rfl (g := fun k => 4 * (d i - d ((i : ℕ) + 1)) * (j k : ℝ)) fun k _ => by push_cast; field_simp; ring, ← Finset.mul_sum, htail i, e1, e2, f1, f2, e3]`.
-
-Move the coercions through the operations in `[Nat.cast_sub hna]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the hypotheses and the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.DoubledFlag.sum_eq_dimN_and_layerProd_eq : ∀ (n a : ℕ) (j : Fin a → ℕ) (D : ℕ → ℝ) (ν : ℕ → ℕ), (∀ i, 1 ≤ j i) → (∀ s, 0 < D s) → D 0 = 1 → ν 0 = 0 → (∀ i : Fin a, ν (i + 1) = ν i + j i) → 2 * ν a ≤ n → (∀ s, s ≤ a → D (2 * a + 1 - s) = D s ∧ ν (2 * a + 1 - s) + ν s = n) → ∑ s ∈ Finset.range (2 * a + 1), (ν (s + 1) - ν s) * ν s = _root_.GlobalTheory.FlagMeas.dimN n j ∧ _root_.GlobalTheory.Count.layerProd n 1 j (fun i : Fin a => (D (i + 1) / D i) ^ (-(1 : ℝ) / j i)) id = (∏ s ∈ Finset.range (2 * a + 1), D s ^ ν (s + 1) / D (s + 1) ^ ν s)⁻¹ := by
   intro n a j D ν hj hD hD0 hν0 hν hna hsym

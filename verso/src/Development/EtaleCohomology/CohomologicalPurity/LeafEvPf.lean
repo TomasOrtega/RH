@@ -9,7 +9,7 @@ section
 variable {R : Type} [CommRing R] {G : Shv R} {X : Scheme.{0}}
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation. Use `congrArg (fun φ => ModuleCat.Hom.hom φ (freeGen R (yoneda.obj X) X (𝟙 X))) (m.hom.naturality h.op)` as an intermediate fact. Conclude with `this`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ev_res' (m : (free R).obj (yoneda.obj X) ⟶ G) {V : Scheme.{0}} (h : V ⟶ X) :
     (m.hom.app (op V)).hom (freeGen R (yoneda.obj X) V h) = Sec.res h (ev m) := by
@@ -21,11 +21,11 @@ theorem ev_res' (m : (free R).obj (yoneda.obj X) ⟶ G) {V : Scheme.{0}} (h : V 
       exact this
 
 /- English proof (translation)
-Apply `((sheafificationAdjunction _ _).homEquiv _ G).injective` to reduce the goal to its premises. Unfold `ofSec`. Rewrite using `[Equiv.apply_symm_apply]`. Apply `NatTrans.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `V`.
+Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Apply `ModuleCat.free_hom_ext` to reduce the goal to its premises. Introduce `x`. Express the relevant statement in the definitionally equal form `(m.hom.app V).hom (freeGen R (yoneda.obj X) V.unop x.down) = _`. Rewrite using `[ev_res']`. Unfold `toG`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Use `symm`. Express the relevant statement in the definitionally equal form `ModuleCat.freeDesc _ (ModuleCat.freeMk x) = _`. Use `(ModuleCat.freeDesc_apply _ _).trans ?_` and prove the remaining obligations. Both sides reduce to the same expression.
+Use symmetry to reverse the relation. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression.
 -/
 theorem eq_ofSec (m : (free R).obj (yoneda.obj X) ⟶ G) : m = ofSec G (ev m) := by
   apply ((sheafificationAdjunction _ _).homEquiv _ G).injective
@@ -46,11 +46,11 @@ theorem eq_ofSec (m : (free R).obj (yoneda.obj X) ⟶ G) : m = ofSec G (ev m) :=
 end
 
 /- English proof (translation)
-Introduce `R _ G X`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `m m' h`. Rewrite using `[eq_ofSec m, eq_ofSec m', h]`. Introduce `m m'`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Both sides reduce to the same expression. Introduce `Y f m`. Express the relevant statement in the definitionally equal form `(m.hom.app (op Y)).hom ((((free R).map (yoneda.map f)).hom.app (op Y)).hom (freeGen R (yoneda.obj Y) Y (𝟙 Y))) = _`. Rewrite using `[freeGen_map]`. Simplify using `only [yoneda_map_app]`.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `ev_res' m f`.
+A detailed English derivation is pending.
 -/
 theorem LeafEv_of : LeafEv := by
   intro R _ G X

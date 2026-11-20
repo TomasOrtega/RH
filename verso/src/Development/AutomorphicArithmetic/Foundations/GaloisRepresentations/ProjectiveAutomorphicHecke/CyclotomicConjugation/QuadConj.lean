@@ -14,22 +14,20 @@ open scoped Classical
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.CMConjugationOfSqrtNeg.conj_alt_bis hd hx`.
+A detailed English derivation is pending.
 -/
 private theorem conj_alt_bis {d : ℕ} {x : E} (hd : 0 < d) (hx : x ^ 2 = -(d : E)) : conjE E x = -x :=
   _root_.UpperTheory.Reformulated.B.CMConjugationOfSqrtNeg.conj_alt_bis hd hx
 
 /- English proof (translation)
-The claim follows from `IsCMField.complexConj_apply_apply E a`.
+A detailed English derivation is pending.
 -/
 private theorem conj_conj' (a : E) : conjE E (conjE E a) = a := IsCMField.complexConj_apply_apply E a
 
 /- English proof (translation)
-Proceed by induction on `ha using IntermediateField.adjoin_induction with`. Consider the case `mem a h`. Rewrite using `[Set.mem_singleton_iff.1 h, conj_alt_bis hd hx]`. Conclude with `neg_mem (IntermediateField.mem_adjoin_simple_self ℚ x)`. Consider the case `algebraMap q`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact.
 
-Establish `: conjE E (algebraMap ℚ E q) = algebraMap ℚ E q` using `by simp`. Rewrite using `[this]`. Conclude with `IntermediateField.algebraMap_mem _ q`. Consider the case `add a b _ _ ha hb => rw [map_add]`. Conclude with `add_mem ha hb`.
-
-Consider the case `inv a _ ha => rw [map_inv₀]`. Conclude with `inv_mem ha`. Consider the case `mul a b _ _ ha hb => rw [map_mul]`. Conclude with `mul_mem ha hb`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem conj_mem {d : ℕ} {x : E} (hd : 0 < d) (hx : x ^ 2 = -(d : E)) (a : E)
     (ha : a ∈ IntermediateField.adjoin ℚ {x}) : conjE E a ∈ IntermediateField.adjoin ℚ {x} := by
@@ -65,13 +63,13 @@ private theorem cK_coe {d : ℕ} {x : E} (hd : 0 < d) (hx : x ^ 2 = -(d : E)) (a
     ((cK hd hx a : Kx x) : E) = conjE E a := rfl
 
 /- English proof (translation)
-Establish `hmem : x ∈ IntermediateField.adjoin ℚ {x}` using `IntermediateField.mem_adjoin_simple_self ℚ x`. Set `xk : Kx x` to `⟨x, hmem⟩`. Establish `hxk : xk ^ 2 = algebraMap ℚ (Kx x) (-(d : ℚ))` using `Subtype.ext (by`. Express the relevant statement in the definitionally equal form `x ^ 2 = algebraMap ℚ E (-(d : ℚ))`. Rewrite using `[hx]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `simp)`. Establish `hsq : (σ xk) ^ 2 = xk ^ 2` using `by rw [← map_pow, hxk, AlgEquiv.commutes]`. Establish `ext' : ∀ τ : Kx x ≃ₐ[ℚ] Kx x, σ xk = τ xk → σ = τ` using `fun τ h => by`. Establish `: (σ : Kx x →ₐ[ℚ] Kx x) = (τ : Kx x →ₐ[ℚ] Kx x)` using `IntermediateField.adjoin_algHom_ext ℚ (by`. Introduce `a ha`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `rfl : a = x` from `Set.mem_singleton_iff.1 ha`. Conclude with `h)`. Conclude with `AlgEquiv.coe_algHom_injective this`. Break down `sq_eq_sq_iff_eq_or_eq_neg.1 hsq with h | h` into its components or cases. Conclude with `Or.inl (ext' 1 h)`.
+Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `Or.inr (ext' _ (h.trans (Subtype.ext ?_)))` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `-x = conjE E x`. Rewrite using `[conj_alt_bis hd hx]`.
+A detailed English derivation is pending.
 -/
 private theorem aut_cases {d : ℕ} {x : E} (hd : 0 < d) (hx : x ^ 2 = -(d : E)) (σ : Kx x ≃ₐ[ℚ] Kx x) :
     σ = 1 ∨ σ = cK hd hx := by
@@ -94,9 +92,9 @@ private theorem aut_cases {d : ℕ} {x : E} (hd : 0 < d) (hx : x ^ 2 = -(d : E))
     rw [conj_alt_bis hd hx]
 
 /- English proof (translation)
-Introduce `h`. Establish `hmem : x ∈ IntermediateField.adjoin ℚ {x}` using `IntermediateField.mem_adjoin_simple_self ℚ x`. Establish `h1 : conjE E x = x` using `congrArg (fun σ : Kx x ≃ₐ[ℚ] Kx x => ((σ ⟨x, hmem⟩ : Kx x) : E)) h`. Rewrite `h1` using `[conj_alt_bis hd hx]`. Establish `h0 : x = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `: (2 : E) * x = 0` using `by linear_combination -h1`. Simplify using `using this`. Rewrite `hx` using `[h0]`. Establish `: (d : E) = 0` using `by simpa using hx.symm`. Conclude with `hd.ne' (by exact_mod_cast this)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem cK_ne {d : ℕ} {x : E} (hd : 0 < d) (hx : x ^ 2 = -(d : E)) : cK hd hx ≠ 1 := by
   intro h
@@ -111,11 +109,11 @@ private theorem cK_ne {d : ℕ} {x : E} (hd : 0 < d) (hx : x ^ 2 = -(d : E)) : c
   exact hd.ne' (by exact_mod_cast this)
 
 /- English proof (translation)
-Establish `hint : IsIntegral ℚ x` using `Algebra.IsIntegral.isIntegral x`. Establish `hmonic : (Polynomial.X ^ 2 + Polynomial.C (d : ℚ)).Monic` using `Polynomial.monic_X_pow_add_C _ (by norm_num)`. Establish `hdeg : (Polynomial.X ^ 2 + Polynomial.C (d : ℚ)).natDegree = 2` using `Polynomial.natDegree_X_pow_add_C`. Establish `hirr : Irreducible (Polynomial.X ^ 2 + Polynomial.C (d : ℚ))`. Use `Polynomial.irreducible_of_degree_le_three_of_not_isRoot (by rw [hdeg]; simp) fun q hq => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hd' : (0 : ℚ) < d` using `by exact_mod_cast hd`. Simplify using `only [Polynomial.IsRoot, Polynomial.eval_add, Polynomial.eval_pow, Polynomial.eval_X, Polynomial.eval_C] at hq`. Use polynomial arithmetic with `[sq_nonneg q]`. Establish `hmin : Polynomial.X ^ 2 + Polynomial.C (d : ℚ) = minpoly ℚ x` using `minpoly.eq_of_irreducible_of_monic hirr (by simp [hx]) hmonic`. Use `IntermediateField.adjoin.finrank hint` as an intermediate fact.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[← hmin, hdeg]`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem finrank_K {d : ℕ} {x : E} (hd : 0 < d) (hx : x ^ 2 = -(d : E)) :
     Module.finrank ℚ (Kx x) = 2 := by
@@ -134,7 +132,7 @@ private theorem finrank_K {d : ℕ} {x : E} (hd : 0 < d) (hx : x ^ 2 = -(d : E))
   exact this
 
 /- English proof (translation)
-Use extensionality with `σ`. Simplify using `using aut_cases hd hx σ`.
+By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem univ_eq {d : ℕ} {x : E} (hd : 0 < d) (hx : x ^ 2 = -(d : E)) :
     (Finset.univ : Finset (Kx x ≃ₐ[ℚ] Kx x)) = {1, cK hd hx} := by
@@ -142,14 +140,14 @@ private theorem univ_eq {d : ℕ} {x : E} (hd : 0 < d) (hx : x ^ 2 = -(d : E)) :
   simpa using aut_cases hd hx σ
 
 /- English proof (translation)
-Use `IsGalois.of_card_aut_eq_finrank ℚ (Kx x) ?_` and prove the remaining obligations. Rewrite using `[finrank_K hd hx, Nat.card_eq_fintype_card, ← Finset.card_univ, univ_eq hd hx, Finset.card_pair (cK_ne hd hx).symm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem isGalois_K {d : ℕ} {x : E} (hd : 0 < d) (hx : x ^ 2 = -(d : E)) : IsGalois ℚ (Kx x) := by
   refine IsGalois.of_card_aut_eq_finrank ℚ (Kx x) ?_
   rw [finrank_K hd hx, Nat.card_eq_fintype_card, ← Finset.card_univ, univ_eq hd hx, Finset.card_pair (cK_ne hd hx).symm]
 
 /- English proof (translation)
-Establish `h` using `(GroundTheory.Automorphic.AdelicGLn.denseRange_algebraMap_finiteAdeleRing ℚ).equalizer ((continuous_conjFin (conjE E)).comp continuous_finiteAdeleMap) (continuous_finiteAdeleMap (K := ℚ) (L := E)) (funext fun q => ?_)`. Conclude with `congrFun h a`. Simplify using `only [Function.comp_apply]`. Rewrite using `[finiteAdeleMap_algebraMap, conjFin_algebraMap]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem conjFin_rat (a : Af ℚ) : conjFin (conjE E) (finiteAdeleMap ℚ E a) = finiteAdeleMap ℚ E a := by
   have h := (GroundTheory.Automorphic.AdelicGLn.denseRange_algebraMap_finiteAdeleRing ℚ).equalizer
@@ -161,11 +159,11 @@ private theorem conjFin_rat (a : Af ℚ) : conjFin (conjE E) (finiteAdeleMap ℚ
     simp
 
 /- English proof (translation)
-Set `Φ : 𝔸[Kx x] →+* Af E` to `(finiteAdeleMap (Kx x) E).comp ((RingHom.snd _ _).comp (adeleRingEquiv ((cK hd hx : Kx x ≃ₐ[ℚ] Kx x) : Kx x ≃+* Kx x)).toRingHom)`. Set `Ψ : 𝔸[Kx x] →+* Af E` to `((conjFin (conjE E)).comp (finiteAdeleMap (Kx x) E)).comp (RingHom.snd _ _)`. Establish `h : Φ = Ψ`. Use `adeleRingHom_ext_rat (fun l => ?_) (fun a => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `finiteAdeleMap (Kx x) E ((adeleRingEquiv ((cK hd hx : Kx x ≃ₐ[ℚ] Kx x) : Kx x ≃+* Kx x) (algebraMap (Kx x) 𝔸[Kx x] l)).2) = conjFin (conjE E) (finiteAdeleMap (Kx x) E ((algebraMap (Kx x) 𝔸[Kx x] l).2))`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[adeleRingEquiv_algebraMap]`. Express the relevant statement in the definitionally equal form `finiteAdeleMap (Kx x) E (algebraMap (Kx x) (FiniteAdeleRing (𝓞 (Kx x)) (Kx x)) _) = conjFin (conjE E) (finiteAdeleMap (Kx x) E (algebraMap (Kx x) (FiniteAdeleRing (𝓞 (Kx x)) (Kx x)) l))`. Rewrite using `[finiteAdeleMap_algebraMap, finiteAdeleMap_algebraMap, conjFin_algebraMap]`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `finiteAdeleMap (Kx x) E ((adeleRingEquiv ((cK hd hx : Kx x ≃ₐ[ℚ] Kx x) : Kx x ≃+* Kx x) (adeleMap ℚ (Kx x) a)).2) = conjFin (conjE E) (finiteAdeleMap (Kx x) E ((adeleMap ℚ (Kx x) a).2))`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[adeleRingEquiv_adeleMap_rat]`. Express the relevant statement in the definitionally equal form `finiteAdeleMap (Kx x) E (finiteAdeleMap ℚ (Kx x) a.2) = conjFin (conjE E) (finiteAdeleMap (Kx x) E (finiteAdeleMap ℚ (Kx x) a.2))`. Rewrite using `[finiteAdeleMap_finiteAdeleMap, conjFin_rat]`. Conclude with `congrArg (· y) h`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem fin_conj {d : ℕ} {x : E} (hd : 0 < d) (hx : x ^ 2 = -(d : E)) (y : 𝔸[Kx x]) :
     finiteAdeleMap (Kx x) E ((cK hd hx • y).2) = conjFin (conjE E) (finiteAdeleMap (Kx x) E y.2) := by
@@ -190,11 +188,11 @@ private theorem fin_conj {d : ℕ} {x : E} (hd : 0 < d) (hx : x ^ 2 = -(d : E)) 
   exact congrArg (· y) h
 
 /- English proof (translation)
-Introduce `E _ _ _ d x hd hx z`. Use `haveI := isGalois_K hd hx`. Set `y : IdeleGroup (Kx x)` to `Units.map (MonoidHom.inr (InfiniteAdeleRing (Kx x)) (FiniteAdeleRing (𝓞 (Kx x)) (Kx x))) z`. Establish `h1` using `ideleEmbedding_ideleNorm (K := ℚ) y`. Establish `h2 : (∏ σ : Kx x ≃ₐ[ℚ] Kx x, σ • y) = y * cK hd hx • y`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[univ_eq hd hx, Finset.prod_pair (cK_ne hd hx).symm, one_smul]`. Rewrite `h1` using `[h2]`. Establish `h3` using `congrArg (fun u : IdeleGroup (Kx x) => ((u : 𝔸[Kx x]).2)) h1`. Establish `h4 : finiteAdeleMap ℚ (Kx x) ((fN ℚ (Kx x) z : (Af ℚ)ˣ) : Af ℚ) = (z : Af (Kx x)) * ((cK hd hx • (y : 𝔸[Kx x])).2)` using `h3`. Establish `h5` using `congrArg (finiteAdeleMap (Kx x) E) h4`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h5` using `[finiteAdeleMap_finiteAdeleMap, map_mul, fin_conj]`. Conclude with `h5.symm`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.CertificateRingHomMap.ZetaNonvanishing₂.quadConj :
     UpperTheory.Gal.CertificateRingHomMap.ZetaNonvanishing₂.QuadConj := by

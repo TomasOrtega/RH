@@ -15,23 +15,21 @@ noncomputable section
 namespace GlobalTheory.Obs
 
 /- English proof (translation)
-Introduce `R R₀ _ _ I hI π hπ hk B' B₀' _ _ _ _ p' hs' hp' hker' _ B₀ _ _ i r hri`. Take `⟨e, he, hpe⟩` from `GlobalTheory.T.exists_idempotent_lift_formallySmooth_squareZero R R₀ I hI π hπ hk B' B₀' p' hs' hp' hker' (i.comp r) (fun x ↦ by simp [hri])`. Establish `hmem : ∀ x ∈ I.map (algebraMap R B'), e.rangeRestrict x ∈ I.map (algebraMap R e.range)`. Introduce `x hx`. Establish `hle : I.map (algebraMap R B') ≤ (I.map (algebraMap R e.range)).comap (e.rangeRestrict : B' →+* e.range)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[Ideal.map_le_iff_le_comap, Ideal.comap_comap]`. Introduce `y hy`. Simplify using `only [Ideal.mem_comap, RingHom.coe_comp, Function.comp_apply, RingHom.coe_coe]`. Rewrite using `[AlgHom.commutes]`. Conclude with `Ideal.mem_map_of_mem _ hy`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hle hx`. Use `⟨e.range, inferInstance, inferInstance, ((r : B₀' →+* B₀).comp p').comp (e.range.val : e.range →+* B'), ?_, ?_, ?_, GlobalTheory.T.smooth_range_of_idempotent_algHom R B' e he⟩` and prove the remaining obligations. Introduce `c b show r (p' ((c • b : e.range) : B')) = π c • r (p' (b : B'))`. Rewrite using `[Subalgebra.coe_smul, hs' c (b : B'), map_smul]`. Introduce `y`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨b, hb⟩` from `hp' (i y)`. Use `⟨⟨e b, e.mem_range_self b⟩, ?_⟩` and prove the remaining obligations. Use `show r (p' (e b)) = y`. Rewrite using `[hpe, hb]`. Simplify using `[hri]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `b`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Express the relevant statement in the definitionally equal form `r (p' (b : B')) = 0 at h`. Take `⟨c, hc⟩` from `b.2`.
+Express the relevant assertion in an equivalent form by its definition. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `e c = (b : B') at hc`. Establish `hfix : e (b : B') = b` using `by rw [← hc, he]`. Establish `h0 : p' (b : B') = 0`. Rewrite using `[← hfix, hpe]`. Simplify using `[h]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hb : e.rangeRestrict (b : B') = b` using `Subtype.ext hfix`. Rewrite using `[← hb]`. Conclude with `hmem _ ((hker' _).mp h0)`. Introduce `h`. Establish `hle : I.map (algebraMap R e.range) ≤ RingHom.ker (((r : B₀' →+* B₀).comp p').comp (e.range.val : e.range →+* B'))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `x hx`. Simplify using `only [Ideal.mem_comap, RingHom.mem_ker, RingHom.coe_comp, Function.comp_apply, RingHom.coe_coe]`. Establish `hx0 : π x = 0` using `by rw [← RingHom.mem_ker, hk]; exact hx`. Use `show r (p' (algebraMap R B' x)) = 0`.
-
-Rewrite using `[hs'.map_algebraMap, hx0, map_zero, map_zero]`. Conclude with `hle h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem retractLift : ∀ (R R₀ : Type) [CommRing R] [CommRing R₀] (I : Ideal R) (hI : I ^ 2 = 0) (π : R →+* R₀) (hπ : Function.Surjective π) (hk : RingHom.ker π = I) (B' B₀' : Type) [CommRing B'] [Algebra R B'] [CommRing B₀'] [Algebra R₀ B₀'] (p' : B' →+* B₀') (hs' : SemiHom π p') (hp' : Function.Surjective p') (hker' : ∀ b, p' b = 0 ↔ b ∈ I.map (algebraMap R B')) [Algebra.Smooth R B'] (B₀ : Type) [CommRing B₀] [Algebra R₀ B₀] (i : B₀ →ₐ[R₀] B₀') (r : B₀' →ₐ[R₀] B₀), (∀ x, r (i x) = x) → ∃ (B : Type) (_ : CommRing B) (_ : Algebra R B) (p : B →+* B₀), SemiHom π p ∧ Function.Surjective p ∧ (∀ b, p b = 0 ↔ b ∈ I.map (algebraMap R B)) ∧ Algebra.Smooth R B := by
   intro R R₀ _ _ I hI π hπ hk B' B₀' _ _ _ _ p' hs' hp' hker' _ B₀ _ _ i r hri

@@ -1,7 +1,7 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `n P _ h b`. Conclude with `(Fin.lt_card_filter_univ_iff_apply_of_imp P (fun i j hij => h j i hij)).symm`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Re1.lower_iff :
     ∀ {n : ℕ} (P : Fin n → Prop) [inst : DecidablePred P],

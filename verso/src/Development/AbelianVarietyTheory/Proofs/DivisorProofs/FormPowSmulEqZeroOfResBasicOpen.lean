@@ -10,11 +10,9 @@ noncomputable section
 namespace GlobalTheory.CechDR
 
 /- English proof (translation)
-Set `A` to `(OAff s').obj (op W)`. Set `B` to `(OAff s').obj (op (⟨X'.basicOpen f, hU⟩ : X'.affineOpens))`. Set `ψ : A →ₐ[R'] B` to `mp (OAff s') (homOfLE hle).op`. Use `letI : Algebra A B := (ψ : A →+* B).toAlgebra`. Use `haveI : IsScalarTower R' A B := IsScalarTower.of_algebraMap_eq fun r ↦ (ψ.commutes r).symm`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Use `haveI : IsLocalization.Away (show A from f) B := W.2.isLocalization_basicOpen f`. Establish `e` using `(semiHom_mp (OAff s') (homOfLE hle).op).oneFormMap_eq_kaehlerDifferential_map (R := R') (B := A) (B' := B) (fun b ↦ rfl) ω`. Establish `h' : KaehlerDifferential.map R' R' A B ω = 0` using `e.symm.trans h`. Take `⟨⟨c, hc⟩, hc0⟩` from `(IsLocalizedModule.eq_zero_iff (Submonoid.powers (show A from f)) (f := KaehlerDifferential.map R' R' A B)).1 h'`. Take `⟨n, rfl⟩` from `hc`.
-
-Conclude with `⟨n, hc0⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem form_pow_smul_eq_zero_of_res_basicOpen {R' : Type} [CommRing R'] {X' : Scheme.{0}}
     (s' : X' ⟶ Sp R') (W : X'.affineOpens) (f : Γ(X', W.1)) (hU : IsAffineOpen (X'.basicOpen f))
@@ -37,15 +35,15 @@ theorem form_pow_smul_eq_zero_of_res_basicOpen {R' : Type} [CommRing R'] {X' : S
   exact ⟨n, hc0⟩
 
 /- English proof (translation)
-Introduce `R' _ X' s' C' _ G hcov T ω hω`. Take `⟨n, b, hspan, hb⟩` from `hcov T`. Set `A` to `(OAff s').obj T`. Set `J : Ideal A` to `(Submodule.span A {ω}).annihilator`. Establish `hpow : ∀ i, ∃ m : ℕ, b i ^ m ∈ J`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `i`. Establish `hU : IsAffineOpen (X'.basicOpen (show Γ(X', T.unop.1) from b i))` using `T.unop.2.basicOpen _`. Establish `hle : (⟨X'.basicOpen (show Γ(X', T.unop.1) from b i), hU⟩ : X'.affineOpens) ≤ T.unop` using `X'.basicOpen_le _`. Establish `hunit : IsUnit (mp (OAff s') (homOfLE hle).op (b i))` using `X'.toRingedSpace.isUnit_res_basicOpen (show Γ(X', T.unop.1) from b i)`. Take `⟨t, v, w, hvw⟩` from `hb i _ (homOfLE hle).op hunit`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h0 : p1 (OAff s') (homOfLE hle).op ω = 0`. Rewrite using `[← hvw, oneFormsMapOfFunctorMorphism_comp, hω t v, map_zero]`. Take `⟨m, hm⟩` from `form_pow_smul_eq_zero_of_res_basicOpen s' T.unop _ hU hle ω h0`. Conclude with `⟨m, (Submodule.mem_annihilator_span_singleton ω _).2 hm⟩`. Use `choose m hm using hpow`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hJ : J = ⊤`. Rewrite using `[eq_top_iff, ← Ideal.span_pow_eq_top _ hspan (∑ i, m i), Ideal.span_le]`. Introduce and unpack `_ ⟨_, ⟨i, rfl⟩, rfl⟩`. Establish `hmi : m i ≤ ∑ j, m j` using `Finset.single_le_sum (f := m) (fun _ _ ↦ Nat.zero_le _) (Finset.mem_univ i)`. Express the relevant statement in the definitionally equal form `b i ^ (∑ j, m j) ∈ J`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Nat.add_sub_cancel' hmi, pow_add]`. Conclude with `J.mul_mem_right _ (hm i)`. Establish `h1 : (1 : A) ∈ J` using `hJ ▸ Submodule.mem_top`. Simplify using `using (Submodule.mem_annihilator_span_singleton _ _).1 h1`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem form_eq_zero_of_basis_cover : ∀ {R' : Type} [CommRing R'] {X' : Scheme.{0}} (s' : X' ⟶ Sp R') {C' : Type} [Category.{0} C'], ∀ (G : C' ⥤ AffOp X'), (∀ T : AffOp X', ∃ (n : ℕ) (b : Fin n → (OAff s').obj T), Ideal.span (Set.range b) = ⊤ ∧ ∀ (i : Fin n) (S : AffOp X') (u : T ⟶ S), IsUnit (mp (OAff s') u (b i)) → ∃ (t : C') (v : T ⟶ G.obj t) (w : G.obj t ⟶ S), v ≫ w = u) → (∀ (T : AffOp X') (ω : Ω[(OAff s').obj T⁄R']), (∀ t (u : T ⟶ G.obj t), p1 (OAff s') u ω = 0) → ω = 0) := by
   intro R' _ X' s' C' _ G hcov T ω hω

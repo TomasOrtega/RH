@@ -9,24 +9,24 @@ namespace GlobalTheory.LocOm
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Simplify using `[nabs]`.
+Simplify using the standard rewrite rules.
 -/
 theorem nabs_inv_of_unit (x : kˣ) : nabs k x⁻¹ = (nabs k x)⁻¹ := by simp [nabs]
 
 /- English proof (translation)
-Unfold `nabs`. Conclude with `NNReal.coe_pos.mpr distribHaarChar_pos`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem nabs_pos_of_unit (x : kˣ) : 0 < nabs k x := by
   unfold nabs; exact NNReal.coe_pos.mpr distribHaarChar_pos
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [om, Pi.smul_apply, smul_eq_mul]`. Establish `hx : ((↑(hk⁻¹⁻¹) : Matrix Y Y k) * ((↑(hk⁻¹) : Matrix Y Y k) * x * (↑gk : Matrix Y' Y' k)) * (↑(gk⁻¹) : Matrix Y' Y' k)) = x`. Simplify using `only [inv_inv, ← Matrix.mul_assoc, Units.mul_inv, Matrix.one_mul]`. Rewrite using `[Matrix.mul_assoc, Units.mul_inv, Matrix.mul_one]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hx]`. Simplify using `only [map_inv, nabs_inv_of_unit, Units.val_inv_eq_inv_val, MonoidHom.mul_apply, MonoidHom.inv_apply, Units.val_mul]`. Establish `p1` using `nabs_pos_of_unit (Matrix.GeneralLinearGroup.det gk)`. Establish `p2` using `nabs_pos_of_unit (Matrix.GeneralLinearGroup.det hk)`. Rewrite using `[Real.inv_rpow p1.le, Real.inv_rpow p2.le]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Simplify using `only [neg_div]`. Establish `q1 : ((nabs k (Matrix.GeneralLinearGroup.det gk) ^ ((Fintype.card Y : ℝ) / 2) : ℝ) : ℂ) ≠ 0`. Conclude with `(Real.rpow_pos_of_pos p1 _).ne'` after adjusting the coercions. Establish `q2 : ((nabs k (Matrix.GeneralLinearGroup.det hk) ^ (-((Fintype.card Y' : ℝ) / 2)) : ℝ) : ℂ) ≠ 0`.
+Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(Real.rpow_pos_of_pos p2 _).ne'` after adjusting the coercions. Establish `u1` using `(μS (Matrix.GeneralLinearGroup.det gk)).ne_zero`. Establish `u2` using `(μS (Matrix.GeneralLinearGroup.det hk)).ne_zero`. Establish `u3` using `(μT (Matrix.GeneralLinearGroup.det gk)).ne_zero`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 -/
 theorem linearFormula_inv_cancel {Y Y' : Type} [Fintype Y] [DecidableEq Y] [Fintype Y'] [DecidableEq Y'] (μS μT : kˣ →* ℂˣ)
     (gk : GL Y' k) (hk : GL Y k) (Φ : Matrix Y Y' k → ℂ) :
@@ -55,7 +55,7 @@ theorem linearFormula_inv_cancel {Y Y' : Type} [Fintype Y] [DecidableEq Y] [Fint
   field_simp
 
 /- English proof (translation)
-Introduce `D k _ _ _ _ S T ω μS μT Y Y' _ _ _ _ Tm g gk h hk hL Φ Φ' hΦ'`. Establish `e : ω (g, h) (Tm Φ') = Tm Φ` using `hL Φ' Φ (by rw [hΦ', linearFormula_inv_cancel])`. Rewrite using `[← e, ← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, inv_mul_cancel, inv_mul_cancel]`. Express the relevant statement in the definitionally equal form `ω 1 (Tm Φ') = Tm Φ'`. Rewrite using `[map_one, Module.End.one_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem lawLoc_inv : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (S T : HSp D) (ω : Om S T) (μS μT : kˣ →* ℂˣ) (Y Y' : Type) [Fintype Y] [DecidableEq Y] [Fintype Y'] [DecidableEq Y']

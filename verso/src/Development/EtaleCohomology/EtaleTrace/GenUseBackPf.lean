@@ -7,9 +7,9 @@ attribute [local instance] MvPolynomial.gradedAlgebra
 namespace LateralTheory.EtaleTrace.Cov
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `a ha`. Take `⟨U, hxU, s, rfl⟩` from `X.presheaf.exists_germ_eq a`. Establish `: Nonempty U` using `⟨⟨x, hxU⟩⟩`. Rewrite `ha` using `[Scheme.algebraMap_germ_eq_germToFunctionField]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `Scheme.germToFunctionField_injective X U (ha.trans (map_zero _).symm)` as an intermediate fact. Rewrite using `[this, map_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 lemma gub_stalk_inj {X : Scheme.{0}} [IsIntegral X] (x : X) :
     Function.Injective (algebraMap (X.presheaf.stalk x) X.functionField) := by
@@ -22,9 +22,9 @@ lemma gub_stalk_inj {X : Scheme.{0}} [IsIntegral X] (x : X) :
   rw [this, map_zero]
 
 /- English proof (translation)
-Take `⟨hyU, hu⟩` from `(Scheme.mem_basicOpen'' _ _ _).mp hy`. Establish `hu2` using `hu.map (Proj.stalkIso' (homogeneousSubmodule (Fin (N + 1)) k) y)`. Use `erw [Proj.stalkIso'_germ] at hu2`. Rewrite `hu2` using `[← HomogeneousLocalization.isUnit_iff_isUnit_val]`. Use `erw [ProjectiveSpectrum.Proj.awayToSection_apply] at hu2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hu2` using `[HomogeneousLocalization.Away.val_mk, Localization.mk_eq_mk', IsLocalization.map_mk']`. Rewrite using `[Proj.mem_basicOpen]`. Establish `hp : y.asHomogeneousIdeal.toIdeal.IsPrime` using `y.isPrime`. Conclude with `(IsLocalization.AtPrime.isUnit_mk'_iff (hI := hp) _ _ _ _).mp hu2`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma gub_notMem {k : Type} [Field k] {N : ℕ} (h : MvPolynomial (Fin (N + 1)) k) {d : ℕ}
     (hh : h ∈ homogeneousSubmodule (Fin (N + 1)) k d) (n : ℕ) (f : MvPolynomial (Fin (N + 1)) k)
@@ -43,11 +43,11 @@ lemma gub_notMem {k : Type} [Field k] {N : ℕ} (h : MvPolynomial (Fin (N + 1)) 
   exact (IsLocalization.AtPrime.isUnit_mk'_iff (hI := hp) _ _ _ _).mp hu2
 
 /- English proof (translation)
-Establish `hcov : ⨆ i, Proj.basicOpen (homogeneousSubmodule (Fin (N + 1)) k) (MvPolynomial.X i) = ⊤`. Apply `Proj.iSup_basicOpen_eq_top'` to reduce the goal to its premises. Conclude with `fun i => ⟨1, (mem_homogeneousSubmodule _ _).mpr (isHomogeneous_X k i)⟩`. Rewrite using `[eq_top_iff]`. Introduce and unpack `a -`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Proceed by induction on `a using MvPolynomial.induction_on with`. Consider the case `C c`. Establish `: (C c : MvPolynomial (Fin (N + 1)) k) ∈ homogeneousSubmodule (Fin (N + 1)) k 0` using `(mem_homogeneousSubmodule _ _).mpr (isHomogeneous_C _ c)`. Conclude with `Subalgebra.algebraMap_mem _ (⟨_, this⟩ : homogeneousSubmodule (Fin (N + 1)) k 0)`. Consider the case `add a b ha hb => exact Subalgebra.add_mem _ ha hb`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
-Consider the case `mul_X a i ha => exact Subalgebra.mul_mem _ ha (Algebra.subset_adjoin ⟨i, rfl⟩)`. Establish `hm : y ∈ (⊤ : (Proj (homogeneousSubmodule (Fin (N + 1)) k)).Opens)` using `trivial`. Rewrite `hm` using `[← hcov, TopologicalSpace.Opens.mem_iSup]`. Conclude with `hm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma gub_cover {k : Type} [Field k] {N : ℕ} (y : Proj (homogeneousSubmodule (Fin (N + 1)) k)) :
     ∃ i, y ∈ Proj.basicOpen (homogeneousSubmodule (Fin (N + 1)) k) (MvPolynomial.X i) := by
@@ -68,15 +68,15 @@ lemma gub_cover {k : Type} [Field k] {N : ℕ} (y : Proj (homogeneousSubmodule (
   exact hm
 
 /- English proof (translation)
-Introduce `k _ X _ p N ι v hG n hn f hf x hne hloc`. Take `⟨i, hxi⟩` from `gub_cover (ι x)`. Establish `hXi : (MvPolynomial.X i : MvPolynomial (Fin (N + 1)) k) ∈ homogeneousSubmodule (Fin (N + 1)) k 1` using `(mem_homogeneousSubmodule _ _).mpr (isHomogeneous_X k i)`. Establish `hxU : x ∈ ι ⁻¹ᵁ Proj.basicOpen (homogeneousSubmodule (Fin (N + 1)) k) (MvPolynomial.X i)` using `hxi`. Establish `hη` using `genUse_generic_mem _ x hxU`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hvi : eval₂ (kHom p) v (MvPolynomial.X i) ≠ 0` using `((hG 1 one_pos _ hXi).1).mp hη`. Establish `hf' : f ∈ homogeneousSubmodule (Fin (N + 1)) k (n • 1)`. Rewrite using `[smul_eq_mul, mul_one]`. Conclude with `(mem_homogeneousSubmodule _ _).mpr hf`. Establish `key` using `(hG 1 one_pos _ hXi).2 n f hf' hη`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Nonempty (ι ⁻¹ᵁ Proj.basicOpen (homogeneousSubmodule (Fin (N + 1)) k) (MvPolynomial.X i))` using `⟨⟨x, hxU⟩⟩`. Establish `hγ : algebraMap _ X.functionField (X.presheaf.germ _ x hxU (ι.app _ (Proj.awayToSection _ (MvPolynomial.X i) (HomogeneousLocalization.Away.mk _ hXi n f hf')))) = eval₂ (kHom p) v f / eval₂ (kHom p) v (MvPolynomial.X i) ^ n`. Rewrite using `[Scheme.algebraMap_germ_eq_germToFunctionField, eq_div_iff (pow_ne_zero _ hvi)]`. Conclude with `key`. Establish `hg : ((MvPolynomial.X i : MvPolynomial (Fin (N + 1)) k) ^ n).IsHomogeneous n`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Simplify using `using (isHomogeneous_X k i).pow n`. Take `⟨δ, hδ⟩` from `hloc _ hg`. Establish `hu : IsUnit (X.presheaf.germ _ x hxU (ι.app _ (Proj.awayToSection _ (MvPolynomial.X i) (HomogeneousLocalization.Away.mk _ hXi n f hf'))))`. Use `isUnit_iff_exists_inv.mpr ⟨δ, gub_stalk_inj x ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_one, hγ, hδ, eval₂_pow]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 
-Establish `h1` using `pow_ne_zero n hvi`. Clear the denominators using the available nonvanishing facts. Establish `hmem` using `(Scheme.mem_basicOpen'' _ _ _).mpr ⟨hxU, hu⟩`. Rewrite `hmem` using `[← Scheme.preimage_basicOpen]`. Conclude with `gub_notMem _ hXi n f hf' _ hmem`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GenUseBack_of : GenUseBack := by
   intro k _ X _ p N ι v hG n hn f hf x hne hloc

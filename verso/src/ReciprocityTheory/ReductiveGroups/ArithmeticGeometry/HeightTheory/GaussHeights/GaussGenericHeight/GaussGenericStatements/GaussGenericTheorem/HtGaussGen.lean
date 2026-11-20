@@ -4,23 +4,21 @@ open NumberField
 
 open MvPolynomial ReciprocityTheory.ChartRestriction.G.T0 ReciprocityTheory.ChartRestriction.G.T0.GaussGen BlockPoly in
 /- English proof (translation)
-Unfold `ReciprocityTheory.ChartRestriction.G.T0.LeafSt.GeneratorMultiHomogeneous`. Introduce `hd h c p hp hgood`. Take `⟨w, hw⟩` from `hgood`. Distinguish the cases in `hpp : p.IsPrincipal`. Use `swap`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `h0 : d.gen p = 0`. Unfold `ReciprocityTheory.ChartRestriction.G.T0.Data.gen`. Rewrite using `[dif_neg hpp]`. Rewrite using `[h0]`. Unfold `ReciprocityTheory.MultiplicativeHeights.IsMultiHomogeneous`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s hs`. Simplify using `at hs`. Establish `hgen : d.gen p = Submodule.IsPrincipal.generator p`. Unfold `ReciprocityTheory.ChartRestriction.G.T0.Data.gen`. Rewrite using `[dif_pos hpp]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `key : ∀ σ : KTp K d.D d.N ≃ₐ[K] KTp K d.D d.N, p.comap σ = p → Submodule.IsPrincipal.generator p ∣ σ (Submodule.IsPrincipal.generator p)`. Introduce `σ hσ`. Establish `h1 : Submodule.IsPrincipal.generator p ∈ p.comap σ`. Rewrite using `[hσ]`. Conclude with `Submodule.IsPrincipal.generator_mem p`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨r, hr⟩` from `(Submodule.IsPrincipal.mem_iff_eq_smul_generator p).mp (Ideal.mem_comap.mp h1)`. Conclude with `⟨r, by rw [hr, smul_eq_mul, mul_comm]⟩`. Establish `h2K : (2 : K) ≠ 0` using `two_ne_zero`. Establish `h2 : (2 : Ω c) ≠ 0`. Introduce `h0`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `h2K` to reduce the goal to its premises. Apply `(algebraMap K (Ω c)).injective` to reduce the goal to its premises. Rewrite using `[map_ofNat, map_zero]`. Conclude with `h0`. Establish `hsc : ∀ b, Submodule.IsPrincipal.generator p ∣ BlockPoly.diag (BlockPoly.cb b (2 : K)) (Submodule.IsPrincipal.generator p)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `b`. Conclude with `key (BlockPoly.diagEquiv (BlockPoly.cb_ne_zero h2K b)) (ReciprocityTheory.ChartRestriction.G.T0.GaussGen.comap_eq 𝒜 d hx1 hx2 hd h c p hp w hw _ (BlockPoly.diagEquiv (ReciprocityTheory.ChartRestriction.G.T0.GaussGen.cS_ne_zero h2 b)) (fun t => ReciprocityTheory.ChartRestriction.G …`. Establish `hsw : ∀ e : Equiv.Perm (Fin (d.D + 1)), e 0 = 0 → Submodule.IsPrincipal.generator p ∣ MvPolynomial.rename (BlockPoly.eT e) (Submodule.IsPrincipal.generator p)`. Introduce `e he`. Conclude with `key (MvPolynomial.renameEquiv K (BlockPoly.eT e)) (ReciprocityTheory.ChartRestriction.G.T0.GaussGen.comap_eq 𝒜 d hx1 hx2 hd h c p hp w hw _ (MvPolynomial.renameEquiv (Ω c) (ReciprocityTheory.ChartRestriction.G.T0.GaussGen.eS e)) (fun t => ReciprocityTheory.ChartRestriction.G.T0.G …`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `htr : ∀ a : Fin (d.N + 1) → K, Submodule.IsPrincipal.generator p ∣ BlockPoly.transl a (Submodule.IsPrincipal.generator p)`. Introduce `a`. Conclude with `key (BlockPoly.translEquiv a) (ReciprocityTheory.ChartRestriction.G.T0.GaussGen.comap_eq 𝒜 d hx1 hx2 hd h c p hp w hw _ (ReciprocityTheory.ChartRestriction.G.T0.GaussGen.translSEquiv (d.jc c) (fun j => algebraMap K (Ω c) (a j))) (fun t => ReciprocityTheory.ChartRestriction.G.T0.G …`. Rewrite using `[hgen]`. Unfold `ReciprocityTheory.MultiplicativeHeights.IsMultiHomogeneous`.
-
-Introduce `s hs b`. Conclude with `BlockPoly.multiHom_of_dvd hsc hsw htr s hs b`.
+A detailed English derivation is pending.
 -/
 theorem HtGaussGen {K : Type} [Field K] [NumberField K] {ι : Type} [Fintype ι] {Ω : ι → Type}
     [∀ c, Field (Ω c)] [∀ c, Algebra K (Ω c)] {WT : Type} [AddCommGroup WT] {A : ι → Type}

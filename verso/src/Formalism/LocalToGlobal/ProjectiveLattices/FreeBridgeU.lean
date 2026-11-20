@@ -18,7 +18,7 @@ open NumberField IsDedekindDomain ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open Formalism.L2.Pj (Rul)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => ⟨h.1, h.2, h.3, h.4⟩, fun h => ⟨h.1, h.2, h.3, h.4⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem isNormOn_iff {K : Type} [Field K] {R : Type} [CommRing R] [Algebra K R] (C : Submodule K R)
     (σ : K →+* ℂ) (N : R → ℝ) : PjFree.IsNormOn C σ N ↔ Formalism.L2.Pj.IsNormOn C σ N :=
@@ -63,14 +63,14 @@ theorem valSet_alg_eq (la : HeightOneSpectrum (𝓞 c.F)) :
     PjFree.valSet Xo c (PjFree.algCls Xo c) la = Formalism.L2.Pj.valSet Xo c (Formalism.L2.Pj.algCls Xo c) la := rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h a n f hf hx q => h a n f hf hx (QPt.ofPj q), fun h a n f hf hx q => h a n f hf hx q.toPj⟩`.
+Supply the required witnesses or components.
 -/
 theorem regR1Q_iff_free (C : ((E →+* ℂ) × ℕ → ℕ) → ℕ → Submodule c.F (Rul Xo c)) :
     PjFree.RegularityR1Quotient Xo c C ↔ Formalism.L2.Pj.RegularityR1Quotient Xo c C :=
   ⟨fun h a n f hf hx q => h a n f hf hx (QPt.ofPj q), fun h a n f hf hx q => h a n f hf hx q.toPj⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h aL nL aE nE k ws et c' hc hw he hx q => h aL nL aE nE k ws et c' hc hw he hx (QPt.ofPj q), fun h aL nL aE nE k ws et c' hc hw he hx q => h aL nL aE nE k ws et c' hc hw he hx q.toPj⟩`.
+Supply the required witnesses or components.
 -/
 theorem regR2Q_iff_free (C : ((E →+* ℂ) × ℕ → ℕ) → ℕ → Submodule c.F (Rul Xo c)) :
     PjFree.RegularityR2Quotient Xo c C ↔ Formalism.L2.Pj.RegularityR2Quotient Xo c C :=
@@ -78,12 +78,12 @@ theorem regR2Q_iff_free (C : ((E →+* ℂ) × ℕ → ℕ) → ℕ → Submodul
    fun h aL nL aE nE k ws et c' hc hw he hx q => h aL nL aE nE k ws et c' hc hw he hx q.toPj⟩
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem intAll_iff : PjFree.IntAll Xo c ↔ Formalism.L2.Pj.IntAll Xo c := Iff.rfl
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem nabUniq_iff : PjFree.NabUniq Xo c ↔ Formalism.L2.Pj.NabUniq Xo c := Iff.rfl
 

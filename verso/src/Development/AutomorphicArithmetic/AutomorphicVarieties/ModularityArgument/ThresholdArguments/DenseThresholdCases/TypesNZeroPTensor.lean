@@ -20,17 +20,15 @@ end UpperTheory.TNZ.Grp.Tensor₂
 namespace UpperTheory.TNZ.Grp
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 /- English proof (translation)
-Introduce `hN X _ _ σ hs hirr hη`. Take `⟨y, hy0, hy⟩` from `hη`. Take `⟨s, ⟨E⟩⟩` from `GlobalTheory.LeviFactor.exists_equiv_piTensor_levi hN.loc.bz k (Fin G.s) (fun a => Fin (G.d a)) { V := X, ρ := σ, smooth := hs, irr := hirr }`. Use `⟨fun a => (s a).V, fun a => inferInstance, fun a => inferInstance, fun a => (s a).ρ, fun a => (s a).smooth, fun a => (s a).irr, fun a => ?_, ⟨E⟩⟩` and prove the remaining obligations. Establish `hE : ∀ m, E (σ m y) = piTensor (fun b => (s b).ρ) m (E y)` using `fun m => LinearMap.congr_fun (E.toIntertwiningMap.isIntertwining' m) y`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hEy : E y ≠ 0` using `(map_ne_zero_iff E (EquivLike.injective E)).2 hy0`. Establish `hK : ∀ g ∈ (KO k (Fin (G.d a)) : Set (GL (Fin (G.d a)) k)), piTensor (fun b => (s b).ρ) (Pi.mulSingle a g) (E y) = ((G.μ a (GeneralLinearGroup.det g) : ℂˣ) : ℂ) • E y`. Introduce `g hg`. Establish `hm : (Pi.mulSingle a g : Levi k fun b : Fin G.s => Fin (G.d b)) ∈ leviK k (m` using `fun b : Fin G.s => Fin (G.d b)) := by`. Rewrite using `[leviK, Subgroup.mem_pi]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `b _`. Distinguish the cases in `hb : b = a`. Substitute `hb` using the available equality. Rewrite using `[Pi.mulSingle_eq_same]`. Conclude with `hg`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Pi.mulSingle_eq_of_ne hb]`. Conclude with `one_mem _`. Rewrite using `[← hE, hy _ hm, map_smul]`. Use `congr 1`. Rewrite using `[eta, Finset.prod_eq_single a]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Pi.mulSingle_eq_same]`. Introduce `b _ hb`. Rewrite using `[Pi.mulSingle_eq_of_ne hb, map_one, map_one, Units.val_one]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ a) h`.
-
-Conclude with `Tensor₂.exists_factor_vec (fun b => (s b).ρ) a (E y) hEy _ _ hK`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem step_tensor_alt {n : ℕ} (G : Grp k n) : G.Step_tensor_alt := by
   intro hN X _ _ σ hs hirr hη

@@ -22,16 +22,16 @@ def PolMatchOn (B : Base F E) (G : Geo σ a a') (X : Chars F E) (R : RealMaps F 
       ∑ j, R.p' (f' j) ⊗ₜ[ℂ] (PiTensorProduct.tprod ℂ fun v : T => Rf.p' v (φ' j v))
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem polMatch_iff (B : Base F E) (G : Geo σ a a') (X : Chars F E) (R : RealMaps F a a') (Rf : FinMaps F a a')
     (Φ : (Fin a × Fin (a + a') → AF F) → ℂ) (Φ' : (Fin a' × Fin (a + a') → AF F) → ℂ) :
     PolMatch B G X R Rf Φ Φ' ↔ ∃ T : Finset (Pl F), X.T ⊆ T ∧ PolMatchOn B G X R Rf T Φ Φ' := Iff.rfl
 
 /- English proof (translation)
-Establish `e : ∀ g, theta om' (∑ j ∈ s, Ψ j) g h = ∑ j ∈ s, theta om' (Ψ j) g h`. Introduce `g`. Simplify using `only [theta, map_sum]`. Establish `hm : ∀ j ∈ s, om' (g, h) (Ψ j) ∈ schA F (Fin a' × Fin (a + a'))` using `fun j hj => hT.weil'.isUSplitting.pres _ _ (hΨ j hj)`. Proceed by induction on `s using Finset.induction_on with`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Proceed by induction.
 
-Consider the case `empty => simp [thetaSum]`. Consider the case `insert k s hk ih`. Rewrite using `[Finset.sum_insert hk, Finset.sum_insert hk, thetaSum_add F (hm k (Finset.mem_insert_self _ _)) (Submodule.sum_mem _ fun j hj => hm j (Finset.mem_insert_of_mem hj)), ih (fun j hj => hΨ j (Finset.mem_insert_of_mem hj)) (fun j hj => hc j (Finset.mem_insert_of_mem hj)) (fun j hj => …`. Simplify using `only [Model.I, e]`. Conclude with `integral_finset_sum s fun j hj => hc j hj h`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem I'_sum {B : Base F E} {G : Geo σ a a'} {X : Chars F E} {om : Rep σ G.V G.W} {om' : Rep σ G.V' G.W}
     (hT : IsTriple B G X om om') {ι : Type} (s : Finset ι) (Ψ : ι → (Fin a' × Fin (a + a') → AF F) → ℂ)

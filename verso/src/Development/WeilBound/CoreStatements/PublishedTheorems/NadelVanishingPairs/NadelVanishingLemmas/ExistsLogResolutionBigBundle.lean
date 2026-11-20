@@ -18,7 +18,7 @@ open GlobalTheory GlobalTheory.Cartier GlobalTheory.TopForm GlobalTheory.CechPic
 namespace GlobalTheory.LogResBig
 
 /- English proof (translation)
-The claim follows from `| 0 => by rw [zero_smul, CartierDiv.supp_eq_bot_iff.2 rfl] exact bot_le | c + 1 => by rw [succ_nsmul] exact (CartierDiv.supp_add_le _ _).trans (sup_le (supp_nsmul_le D c) le_rfl)`.
+A detailed English derivation is pending.
 -/
 theorem supp_nsmul_le {Y : Scheme.{0}} [IsIntegral Y] (D : CartierDiv Y) : ∀ c : ℕ, (c • D).supp ≤ D.supp
   | 0 => by
@@ -29,7 +29,7 @@ theorem supp_nsmul_le {Y : Scheme.{0}} [IsIntegral Y] (D : CartierDiv Y) : ∀ c
     exact (CartierDiv.supp_add_le _ _).trans (sup_le (supp_nsmul_le D c) le_rfl)
 
 /- English proof (translation)
-The claim follows from `| 0 => by rw [zero_smul] exact CartierDiv.eff_zero | c + 1 => by rw [succ_nsmul] exact (eff_nsmul hD c).add hD`.
+A detailed English derivation is pending.
 -/
 theorem eff_nsmul {Y : Scheme.{0}} [IsIntegral Y] {D : CartierDiv Y} (hD : D.Eff) : ∀ c : ℕ, (c • D).Eff
   | 0 => by
@@ -40,23 +40,19 @@ theorem eff_nsmul {Y : Scheme.{0}} [IsIntegral Y] {D : CartierDiv Y} (hD : D.Eff
     exact (eff_nsmul hD c).add hD
 
 /- English proof (translation)
-Introduce `hP k _ _ X _ p n hp hdim η m G hη Z hZ M hM hbig`. Take `⟨Y₀, _, s₀, _, hsm, hpr, hbir⟩` from `GlobalTheory.T.exists_smooth_projective_birational_model hP k X p n hp hdim`. Establish `hdim₀ : topologicalKrullDim Y₀ = topologicalKrullDim X`. Rewrite using `[hdim]`. Conclude with `GlobalTheory.HSCore.VanishNumberField.topologicalKrullDim_eq_of_smooth (s₀ ≫ p) n hsm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hbig₀` using `GlobalTheory.PullBig.isBig_pull k Y₀ X p s₀ hp hpr hdim₀ s₀.denseRange M hbig`. Take `⟨A, hA⟩` from `GlobalTheory.exists_isAmpleLB_of_isProjOver hpr`. Take `⟨a₀, D₀, ha₀, hD₀, e₀⟩` from `GlobalTheory.T.big_line_bundle_kodaira_of_isProjOver k Y₀ (s₀ ≫ p) hpr (M.pull s₀) A hbig₀ hA`. Set `Zp : Closeds Y₀` to `⟨s₀ ⁻¹' (Z : Set X), Z.isClosed.preimage s₀.continuous⟩`. Establish `hZ' : Zp ⊔ D₀.supp ≠ ⊤`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `htop`. Establish `hg : genericPoint Y₀ ∈ ((Zp ⊔ D₀.supp : Closeds Y₀) : Set Y₀)`. Rewrite using `[htop]`. Discharge the goal by the elementary cases of `trivial`. Rewrite `hg` using `[Closeds.coe_sup]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `hg with hg | hg` into its components or cases. Apply `hZ` to reduce the goal to its premises. Establish `hall : Set.univ ⊆ (Zp : Set Y₀)` using `((genericPoint_spec Y₀).mem_closed_set_iff Zp.isClosed).1 hg`. Establish `hrange : Set.range s₀ ⊆ (Z : Set X)`. Introduce and unpack `_ ⟨y, rfl⟩`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Conclude with `hall (Set.mem_univ y)`. Establish `hcl : closure (Set.range s₀) ⊆ (Z : Set X)` using `closure_minimal hrange Z.isClosed`. Rewrite `hcl` using `[s₀.denseRange.closure_range]`. Conclude with `Closeds.ext (Set.eq_univ_of_univ_subset hcl)`. Conclude with `CartierDiv.genericPoint_notMem_supp D₀ hg`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨Y, _, t, _, K, B, hres, hB, c, E, A₁, hA₁, hc, hE, hEB, e₁⟩` from `GlobalTheory.T.exists_embedded_resolution hP k X p n η m G hη Y₀ s₀ hsm hpr hbir (Zp ⊔ D₀.supp) hZ' A hA`. Establish `hmem : ∀ y : Y, t y ∈ Zp ∨ t y ∈ D₀.supp → y ∈ B` using `fun y h => by`. Apply `hB y` to reduce the goal to its premises. Use `show t y ∈ ((Zp ⊔ D₀.supp : Closeds Y₀) : Set Y₀)`. Rewrite using `[Closeds.coe_sup]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `h`. Use `⟨Y, inferInstance, t ≫ s₀, inferInstance, K, B, hres, ?_, c * a₀, E + c • pullCart t D₀, A₁, hA₁, Nat.mul_pos hc ha₀, hE.add (eff_nsmul ((GlobalTheory.T.cartierDivisorPullback_support_and_effective Y₀ Y t D₀).2 hD₀) c), ?_, ?_⟩` and prove the remaining obligations. Introduce `y hy`. Use `hmem y (Or.inl ?_)` and prove the remaining obligations. Use `show s₀ (t y) ∈ (Z : Set X)`.
-
-Simplify using `using hy`. Use `(CartierDiv.supp_add_le _ _).trans (sup_le hEB ((supp_nsmul_le _ c).trans ?_))` and prove the remaining obligations. Introduce `y hy`. Conclude with `hmem y (Or.inr ((GlobalTheory.T.cartierDivisorPullback_support_and_effective Y₀ Y t D₀).1 y hy))`. Establish `e₀' : a₀ • CechPic.pull s₀ (cls M hM) = cls A hA.isLB + toPic D₀` using `e₀`.
-
-Rewrite using `[map_add, map_nsmul, toPic_pullCart, GlobalTheory.CechPic.pull_comp, mul_smul, ← map_nsmul (CechPic.pull t) a₀, e₀', map_add, smul_add, e₁, add_assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_logRes_smul_eq_ample_add_eff :
     GlobalTheory.Published.Principalisation → ∀ (k : Type) [Field k] [CharZero k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (n : ℕ), IsProjOver p → topologicalKrullDim X = n → ∀ (η : RatForms p n) (m : ℕ) (G : CartierDiv X), η ≠ 0 → ∀ Z : Closeds X, Z ≠ ⊤ → ∀ (M : LB X) (hM : M.IsLB), (letI := algebraΓOfHom p; IsBig k M) → ∃ (Y : Scheme.{0}) (_ : IsIntegral Y) (s : Y ⟶ X) (_ : IsDominant s) (K : CartierDiv Y) (B : Closeds Y), IsLogRes p n η m G s K B ∧ (∀ y, s y ∈ Z → y ∈ B) ∧ ∃ (a : ℕ) (Fd : CartierDiv Y) (A : LB Y) (hA : IsAmpleLB A), 0 < a ∧ Fd.Eff ∧ Fd.supp ≤ B ∧ a • CechPic.pull s (cls M hM) = cls A hA.isLB + toPic Fd := by

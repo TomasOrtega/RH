@@ -19,9 +19,9 @@ private def HasDen (D : Datum p) (z : AfP p ⊗[ℚ] VQ D) : Prop :=
   ∃ c : ℕ, 0 < c ∧ c.Coprime p ∧ c • z ∈ LaHat D
 
 /- English proof (translation)
-Take `⟨c, hc0, hcp, hc⟩` from `hu`. Take `⟨d, hd0, hdp, hd⟩` from `hw`. Use `⟨c * d, Nat.mul_pos hc0 hd0, Nat.Coprime.mul hcp hdp, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add]`. Use `AddSubgroup.add_mem _ ?_ ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mul_comm, mul_smul]`. Conclude with `AddSubgroup.nsmul_mem _ hc d`. Rewrite using `[mul_smul]`. Conclude with `AddSubgroup.nsmul_mem _ hd c`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem HasDen.add {D : Datum p} {u w : AfP p ⊗[ℚ] VQ D} (hu : HasDen D u) (hw : HasDen D w) :
     HasDen D (u + w) := by
@@ -36,13 +36,13 @@ private theorem HasDen.add {D : Datum p} {u w : AfP p ⊗[ℚ] VQ D} (hu : HasDe
     exact AddSubgroup.nsmul_mem _ hd c
 
 /- English proof (translation)
-Conclude with `⟨1, Nat.one_pos, Nat.coprime_one_left p, by simp [AddSubgroup.zero_mem]⟩`.
+Supply the required witnesses or components.
 -/
 private theorem hasDen_zero (D : Datum p) : HasDen D 0 := by
   exact ⟨1, Nat.one_pos, Nat.coprime_one_left p, by simp [AddSubgroup.zero_mem]⟩
 
 /- English proof (translation)
-Take `⟨j, hj0, hjp, hj⟩` from `GlobalTheory.T.exists_coprime_nat_mul_finiteAdeleAwayP_integral p a`. Use `⟨j, hj0, hjp, ?_⟩` and prove the remaining obligations. Rewrite using `[TensorProduct.smul_tmul', nsmul_eq_mul]`. Unfold `LaHat`. Conclude with `AddSubgroup.subset_closure ⟨_, x, hj, rfl⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private theorem hasDen_gen (D : Datum p) (a : AfP p) (x : D.La) :
     HasDen D (a ⊗ₜ[ℚ] ((1 : ℚ) ⊗ₜ[ℤ] x : VQ D)) := by
@@ -53,9 +53,9 @@ private theorem hasDen_gen (D : Datum p) (a : AfP p) (x : D.La) :
   exact AddSubgroup.subset_closure ⟨_, x, hj, rfl⟩
 
 /- English proof (translation)
-Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simpa using hasDen_zero D`. Consider the case `tmul q x`. Establish `e : (q ⊗ₜ[ℤ] x : VQ D) = q • ((1 : ℚ) ⊗ₜ[ℤ] x : VQ D)`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, mul_one]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, TensorProduct.tmul_smul, TensorProduct.smul_tmul']`. Conclude with `hasDen_gen D (q • a) x`. Consider the case `add s t hs ht`. Rewrite using `[TensorProduct.tmul_add]`. Conclude with `hs.add ht`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem hasDen_tmul (D : Datum p) (a : AfP p) (t : VQ D) : HasDen D (a ⊗ₜ[ℚ] t) := by
   induction t using TensorProduct.induction_on with
@@ -70,7 +70,7 @@ private theorem hasDen_tmul (D : Datum p) (a : AfP p) (t : VQ D) : HasDen D (a �
     exact hs.add ht
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => exact hasDen_zero D`. Consider the case `tmul a t => exact hasDen_tmul D a t`. Consider the case `add s t hs ht => exact hs.add ht`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 private theorem hasDen (D : Datum p) (z : AfP p ⊗[ℚ] VQ D) : HasDen D z := by
   induction z using TensorProduct.induction_on with
@@ -85,19 +85,17 @@ end UpperTheory.Gal.W2.Seed.TensorDenominatorBound
 
 open UpperTheory.Gal.W2.Seed.TensorDenominatorBound in
 /- English proof (translation)
-Introduce `p _ D G L h`. Use `haveI := D.finLa`. Take `⟨s, hs⟩` from `Module.Finite.fg_top (R := ℤ) (M := D.La)`. Use `choose c hc0 hcp hcm using fun x : D.La => hasDen D (L.actG h (inAfH D x))`. Use `⟨∏ x ∈ s, c x, Finset.prod_pos fun x _ => hc0 x, Nat.Coprime.prod_left fun x _ => hcp x, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hgen : ∀ x : D.La, (∏ y ∈ s, c y) • L.actG h (inAfH D x) ∈ LaHat D`. Introduce `x`. Establish `hx : x ∈ Submodule.span ℤ (s : Set D.La)` using `by rw [hs]; trivial`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[← Finset.mul_prod_erase s c hy, mul_comm, mul_smul]`. Conclude with `AddSubgroup.nsmul_mem _ (hcm y) _`. Consider the case `zero => simp [AddSubgroup.zero_mem]`. Consider the case `add y z _ _ hy hz`. Rewrite using `[map_add, map_add, smul_add]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `AddSubgroup.add_mem _ hy hz`. Consider the case `smul n y _ hy`. Rewrite using `[map_zsmul, map_zsmul, smul_comm]`. Conclude with `AddSubgroup.zsmul_mem _ hy n`. Introduce `v hv`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Unfold `LaHat at hv`. Proceed by induction on `hv using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨a, x, ha, rfl⟩` from `hz`. Establish `e : a ⊗ₜ[ℚ] ((1 : ℚ) ⊗ₜ[ℤ] x : VQ D) = a • inAfH D x`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[inAfH, TensorProduct.smul_tmul']`. Rewrite using `[e, map_smul, smul_comm]`. Conclude with `GlobalTheory.W2.smul_mem_laHat ha (hgen x)`. Consider the case `zero => simp [AddSubgroup.zero_mem]`. Consider the case `add y z _ _ hy hz`.
-
-Rewrite using `[map_add, smul_add]`. Conclude with `AddSubgroup.add_mem _ hy hz`. Consider the case `neg y _ hy`. Rewrite using `[map_neg, smul_neg]`. Conclude with `AddSubgroup.neg_mem _ hy`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.W2.Seed.pDenom :
     Denom := by

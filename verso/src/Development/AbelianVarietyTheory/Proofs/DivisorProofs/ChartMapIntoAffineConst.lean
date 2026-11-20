@@ -11,15 +11,13 @@ namespace GlobalTheory
 open Polynomial in
 
 /- English proof (translation)
-Use `set L := Localization.Away (X : K[X])`. Use `set n := q.natDegree`. Use `letI : Invertible (algebraMap K[X] L X) := ⟨IsLocalization.Away.invSelf (X : K[X]), by rw [mul_comm]; exact IsLocalization.Away.mul_invSelf _, IsLocalization.Away.mul_invSelf _⟩`. Establish `hr : (q.reflect n).natDegree ≤ n` using `natDegree_reflect_le.trans (by simp [n])`. Establish `key` using `eval₂_reflect_mul_pow (algebraMap K L) (algebraMap K[X] L X) n (q.reflect n) hr`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `key` using `[reflect_reflect]`. Establish `hev : ∀ r : K[X], eval₂ (algebraMap K L) (algebraMap K[X] L X) r = algebraMap K[X] L r` using `fun r => eval₂_algebraMap_X r (IsScalarTower.toAlgHom K K[X] L)`. Establish `h2 : algebraMap K[X] L (p * X ^ n) = algebraMap K[X] L (q.reflect n)`. Rewrite using `[map_mul, map_pow, h, aeval_def, ← hev (q.reflect n)]`. Conclude with `key`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinj : Function.Injective (algebraMap K[X] L)` using `IsLocalization.injective L (Submonoid.powers_le.2 X_mem_nonzeroDivisors)`. Establish `h3` using `hinj h2`. Establish `hdeg : (p * X ^ n).natDegree ≤ n` using `h3 ▸ hr`. Establish `hp0 : p.natDegree = 0`. Distinguish the cases in `hp : p = 0`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[hp]`. Establish `hc : (p * X ^ n).coeff (p.natDegree + n) ≠ 0`. Rewrite using `[coeff_mul_X_pow]`. Conclude with `mt leadingCoeff_eq_zero.mp hp`. Use `le_natDegree_of_ne_zero hc` as an intermediate fact.
-
-Use linear arithmetic over natural numbers and integers. Rewrite using `[← coeff_zero_eq_eval_zero]`. Conclude with `eq_C_of_natDegree_eq_zero hp0`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem poly_eq_C_of_eq_aeval_invSelf {K : Type} [CommRing K] (p q : K[X])
     (h : algebraMap K[X] (Localization.Away (X : K[X])) p =
@@ -57,15 +55,15 @@ end GlobalTheory
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `haveI := hW.isOpenImmersion_fromSpec`. Establish `r₀ : Set.range g₀.base ⊆ Set.range hW.fromSpec.base`. Rewrite using `[hW.range_fromSpec]`. Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `h₀ x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `r₁ : Set.range g₁.base ⊆ Set.range hW.fromSpec.base`. Rewrite using `[hW.range_fromSpec]`. Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `h₁ x`. Take `⟨φ₀, hφ₀⟩` from `Spec.map_surjective (IsOpenImmersion.lift hW.fromSpec g₀ r₀)`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨φ₁, hφ₁⟩` from `Spec.map_surjective (IsOpenImmersion.lift hW.fromSpec g₁ r₁)`. Establish `e₀ : Spec.map φ₀ ≫ hW.fromSpec = g₀` using `by rw [hφ₀]; exact IsOpenImmersion.lift_fac _ _ _`. Establish `e₁ : Spec.map φ₁ ≫ hW.fromSpec = g₁` using `by rw [hφ₁]; exact IsOpenImmersion.lift_fac _ _ _`. Rewrite `h` using `[← e₀, ← e₁]`. Simplify using `only [spMap, ← Category.assoc, ← Spec.map_comp, cancel_mono] at h`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h` using `[Spec.map_inj]`. Establish `key : ∀ a, φ₀ a = Polynomial.C ((φ₀ a).eval 0)` using `fun a => poly_eq_C_of_eq_aeval_invSelf (φ₀ a) (φ₁ a) (congrArg (fun f => f.hom a) h)`. Rewrite using `[← e₀]`. Simplify using `only [spMap, ← Category.assoc, ← Spec.map_comp]`. Use `congr 2`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `CommRingCat.hom_ext` to reduce the goal to its premises. Apply `RingHom.ext` to reduce the goal to its premises. Introduce `a`. Conclude with `key a`.
+A detailed English derivation is pending.
 -/
 theorem chart_map_into_affine_const (K : Type) [CommRing K] (Y : Scheme.{0}) (W : Y.Opens)
     (hW : IsAffineOpen W) (g₀ g₁ : Sp (Polynomial K) ⟶ Y) (h₀ : ∀ x, g₀ x ∈ W) (h₁ : ∀ x, g₁ x ∈ W)

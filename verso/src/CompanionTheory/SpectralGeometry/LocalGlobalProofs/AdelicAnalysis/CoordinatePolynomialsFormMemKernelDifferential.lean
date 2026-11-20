@@ -6,7 +6,7 @@ open scoped ENNReal NNReal
 namespace GlobalTheory.CompanionTheory.SW.SemilocalColumn
 
 /- English proof (translation)
-Establish `hcop : Pairwise (Function.onFun IsCoprime fun M : MaximalSpectrum A => M.asIdeal)`. Introduce `M N hMN`. Conclude with `Ideal.isCoprime_iff_sup_eq.mpr (M.isMaximal.coprime_of_ne N.isMaximal fun h => hMN (MaximalSpectrum.ext h))`. Take `⟨a, ha⟩` from `Ideal.pi_quotient_surjective hcop fun M => Ideal.Quotient.mk M.asIdeal (y M)`. Conclude with `⟨a, fun M => Ideal.Quotient.eq.mp (ha M)⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private lemma exists_sub_iota_mem_of_sub_involution_mem (A : Type) [CommRing A] [Finite (MaximalSpectrum A)]
     (y : MaximalSpectrum A → A) : ∃ a : A, ∀ M : MaximalSpectrum A, a - y M ∈ M.asIdeal := by
@@ -18,19 +18,17 @@ private lemma exists_sub_iota_mem_of_sub_involution_mem (A : Type) [CommRing A] 
   exact ⟨a, fun M => Ideal.Quotient.eq.mp (ha M)⟩
 
 /- English proof (translation)
-Establish `hnot : ∀ M : MaximalSpectrum A, x 0 ∈ M.asIdeal → ∃ k : Fin m, x k.succ ∉ M.asIdeal`. Introduce `M h0`. Assume the negation of the conclusion as `hall`. Simplify using `only [not_exists, not_not] at hall`. Take `⟨c, hc⟩` from `hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Establish `hmem : ∀ i, x i ∈ M.asIdeal` using `fun i => Fin.cases h0 hall i`. Apply `M.isMaximal.ne_top` to reduce the goal to its premises. Rewrite using `[Ideal.eq_top_iff_one, ← hc]`. Conclude with `Ideal.sum_mem _ fun i _ => Ideal.mul_mem_left _ _ (hmem i)`. Use `choose kM hkM using hnot`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Set `y : Fin m → MaximalSpectrum A → A` to `fun k M => if h : x 0 ∈ M.asIdeal then (if kM M h = k then 1 else 0) else 0`. Use `choose a ha using fun k => exists_sub_iota_mem_of_sub_involution_mem A (y k)`. Use `⟨a, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hu`. Take `⟨N, hN, hle⟩` from `Ideal.exists_le_maximal _ (Ideal.span_singleton_eq_top.not.mpr hu)`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Set `M : MaximalSpectrum A` to `⟨N, hN⟩`. Establish `huM : x 0 + ∑ k, a k * x k.succ ∈ M.asIdeal` using `hle (Ideal.mem_span_singleton_self _)`. Distinguish the cases in `h0 : x 0 ∈ M.asIdeal`. Establish `hy : ∑ k, y k M * x k.succ = x (kM M h0).succ`. Simplify using `only [y, dif_pos h0, ite_mul, one_mul, zero_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[Finset.sum_ite_eq]`. Establish `hin : x 0 + ∑ k, (a k - y k M) * x k.succ ∈ M.asIdeal` using `M.asIdeal.add_mem h0 (Ideal.sum_mem _ fun k _ => Ideal.mul_mem_right _ _ (ha k M))`. Establish `e : x (kM M h0).succ = (x 0 + ∑ k, a k * x k.succ) - (x 0 + ∑ k, (a k - y k M) * x k.succ)`. Rewrite using `[← hy]`. Simplify using `only [sub_mul, Finset.sum_sub_distrib]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Conclude with `hkM M h0 (e ▸ M.asIdeal.sub_mem huM hin)`. Apply `h0` to reduce the goal to its premises. Establish `hs : ∑ k, a k * x k.succ ∈ M.asIdeal`. Use `Ideal.sum_mem _ fun k _ => Ideal.mul_mem_right _ _ ?_` and prove the remaining obligations.
-
-Simplify `ha k M` using `[y, h0]`. Simplify using `using M.asIdeal.sub_mem huM hs`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_isUnit_add (A : Type) [CommRing A] [Finite (MaximalSpectrum A)] (m : ℕ)
     (x : Fin (m + 1) → A) (hx : ∃ c : Fin (m + 1) → A, ∑ i, c i * x i = 1) :
@@ -73,21 +71,19 @@ theorem exists_isUnit_add (A : Type) [CommRing A] [Finite (MaximalSpectrum A)] (
     simpa using M.asIdeal.sub_mem huM hs
 
 /- English proof (translation)
-Introduce `A _ _ m x hx`. Take `⟨a, ha⟩` from `exists_isUnit_add A m x hx`. Use `set u := x 0 + ∑ k, a k * x k.succ with hu`. Set `b : Fin (m + 1) → A` to `Fin.cons 0 a`. Set `E : Matrix (Fin (m + 1)) (Fin (m + 1)) A` to `Matrix.of fun i j => if i = j then 1 else if i = 0 then -b j else 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `D : Matrix (Fin (m + 1)) (Fin (m + 1)) A` to `Matrix.of fun i j => if j = 0 then (if i = 0 then u else x i) else if i = j then 1 else 0`. Establish `hE : E.det = 1`. Rewrite using `[Matrix.det_of_isUpperTriangular]`. Conclude with `Finset.prod_eq_one fun i _ => by simp [E]`. Introduce `i j hij`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hji : j < i` using `hij`. Establish `hi : i ≠ 0`. Introduce and unpack `rfl`. Conclude with `Fin.not_lt_zero _ hji`. Simplify using `[E, hji.ne', hi]`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hD : D.det = u`. Rewrite using `[Matrix.det_of_isLowerTriangular]`. Rewrite using `[Fin.prod_univ_succ]`. Simplify using `[D, Fin.succ_ne_zero]`. Introduce `i j hij`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hij' : i < j` using `hij`. Establish `hj : j ≠ 0`. Introduce and unpack `rfl`. Conclude with `Fin.not_lt_zero _ hij'`. Simplify using `[D, hj, hij'.ne]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Use `⟨E * D, ?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.det_mul, hE, hD, one_mul]`. Conclude with `ha`. Rewrite using `[Matrix.mul_apply]`. Distinguish the cases in `hi : i = 0`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Substitute `hi` using the available equality. Rewrite using `[Fin.sum_univ_succ]`. Simplify using `[E, D, b, (Fin.succ_ne_zero _).symm, hu, Finset.sum_neg_distrib]`. Rewrite using `[Finset.sum_eq_single i]`. Simplify using `[E, D, hi]`.
-
-Introduce `j _ hji`. Simplify using `[E, D, Ne.symm hji, hi]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_invertible_first_column :
     ∀ (A : Type) [CommRing A] [Finite (MaximalSpectrum A)] (m : ℕ) (x : Fin (m + 1) → A),

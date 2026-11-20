@@ -17,14 +17,14 @@ open PositivityTheory.Rg.Sw PositivityTheory.Rg.Sw.LVs.HolB PositivityTheory.Rg.
 variable {n : ℕ}
 
 /- English proof (translation)
-The claim follows from `WithTop.coe_le_coe.mpr le_top`.
+A detailed English derivation is pending.
 -/
 theorem two_le_infty : ((2 : ℕ) : WithTop ℕ∞) ≤ ∞ := WithTop.coe_le_coe.mpr le_top
 
 /- English proof (translation)
-Introduce `h`. Establish `hJ : (JJ n).det ≠ 0`. Introduce `hJ`. Use `congrArg Matrix.det (JJ_sq (n := n))` as an intermediate fact. Rewrite `this` using `[det_mul, hJ, mul_zero, det_neg, det_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `at this`. Use `congrArg Matrix.det hy` as an intermediate fact. Rewrite `this` using `[det_mul, det_mul, h, mul_zero]`. Conclude with `hJ this.symm`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_ne_zero_of_inG {y : M2 n} (hy : InG y) : y.det ≠ 0 := by
   intro h
@@ -38,29 +38,27 @@ theorem det_ne_zero_of_inG {y : M2 n} (hy : InG y) : y.det ≠ 0 := by
   exact hJ this.symm
 
 /- English proof (translation)
-Establish `hdiff : ∀ g, InG g → DifferentiableAt ℂ H g` using `fun g hg => (hH.contDiffAt (hΩ.mem_nhds (hG hg))).differentiableAt (by simp)`. Establish `hlow : ∀ g, InG g → ∀ c : Matrix (Fin n) (Fin n) ℂ, cᴴ = c → fderiv ℂ H g (g * fromBlocks 0 0 c 0) = 0`. Introduce `g hg c hc`. Use `fderiv_line (hdiff g hg) (fun t => ?_)` and prove the remaining obligations. Rewrite using `[lower_line, h0 _ (inG_mul hg (inG_lower (herm_real_smul hc t))), h0 g hg]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hup : ∀ g, InG g → ∀ b : Matrix (Fin n) (Fin n) ℂ, bᴴ = b → fderiv ℂ H g (g * fromBlocks 0 b 0 0) = 0`. Introduce `g hg b hb`. Use `fderiv_line (hdiff g hg) (fun t => ?_)` and prove the remaining obligations. Rewrite using `[upper_line, h0 _ (inG_mul hg (inG_upper (herm_real_smul hb t))), h0 g hg]`. Establish `hone : fderiv ℂ H y (y * 1) = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[mul_one]`. Use `HolD.scalar_dir (hdiff y hy) (fun t => h0 _ ?_)` and prove the remaining obligations. Establish `e : Complex.exp (↑t * Complex.I) • y = y * (Complex.exp (↑t * Complex.I) • (1 : M2 n))`. Rewrite using `[mul_smul_comm, mul_one]`. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `inG_mul hy (inG_scalar ?_)` and prove the remaining obligations. Rewrite using `[Complex.star_def, Complex.conj_mul', Complex.norm_exp_ofReal_mul_I]`. Simplify using the standard rewrite rules. Establish `hCy : ContDiffAt ℂ ∞ H y` using `hH.contDiffAt (hΩ.mem_nhds (hG hy))`. Establish `hsymm : IsSymmSndFDerivAt ℂ H y` using `hCy.isSymmSndFDerivAt (by simpa [minSmoothness_of_isRCLikeNormedField] using two_le_infty)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hD : DifferentiableAt ℂ (fderiv ℂ H) y` using `(hCy.fderiv_right (m := 1) (by simpa [one_add_one_eq_two] using two_le_infty)).differentiableAt one_ne_zero`. Establish `hcomm : ∀ b c : Matrix (Fin n) (Fin n) ℂ, bᴴ = b → cᴴ = c → fderiv ℂ H y (y * fromBlocks (-(b * c)) 0 0 (c * b)) = 0`. Introduce `b c hb hc`. Use `set U : M2 n := fromBlocks 0 b 0 0 with hU`. Use `set L : M2 n := fromBlocks 0 0 c 0 with hL`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `mL : M2 n →L[ℂ] M2 n` to `LinearMap.toContinuousLinearMap (LinearMap.mulRight ℂ L)`. Set `mU : M2 n →L[ℂ] M2 n` to `LinearMap.toContinuousLinearMap (LinearMap.mulRight ℂ U)`. Establish `e1` using `HolD.line2 (H := H) (y := y) (w := y * U) (m := mL) hD (fun t => by`. Establish `hg` using `inG_mul hy (inG_upper (herm_real_smul hb t))`. Use `show fderiv ℂ H _ ((y + (t : ℂ) • (y * U)) * L) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[upper_line]`. Conclude with `hlow _ hg c hc)`. Establish `e2` using `HolD.line2 (H := H) (y := y) (w := y * L) (m := mU) hD (fun t => by`. Establish `hg` using `inG_mul hy (inG_lower (herm_real_smul hc t))`. Use `show fderiv ℂ H _ ((y + (t : ℂ) • (y * L)) * U) = 0`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[lower_line]`. Conclude with `hup _ hg b hb)`. Express the relevant statement in the definitionally equal form `fderiv ℂ (fderiv ℂ H) y (y * U) (y * L) + fderiv ℂ H y (y * U * L) = 0 at e1`. Express the relevant statement in the definitionally equal form `fderiv ℂ (fderiv ℂ H) y (y * L) (y * U) + fderiv ℂ H y (y * L * U) = 0 at e2`. Establish `key : fromBlocks (-(b * c)) 0 0 (c * b) = L * U - U * L`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [hU, hL, Matrix.fromBlocks_multiply]`. Rewrite using `[sub_eq_add_neg, Matrix.fromBlocks_neg, Matrix.fromBlocks_add]`. Simplify using the standard rewrite rules. Rewrite using `[key, mul_sub, ← mul_assoc, ← mul_assoc, map_sub]`. Establish `a1` using `eq_neg_of_add_eq_zero_right e1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a2` using `eq_neg_of_add_eq_zero_right e2`. Establish `hs : fderiv ℂ (fderiv ℂ H) y (y * L) (y * U) = fderiv ℂ (fderiv ℂ H) y (y * U) (y * L)` using `hsymm _ _`. Rewrite using `[sub_eq_zero]`. Conclude with `a2.trans ((congrArg Neg.neg hs).trans a1.symm)`. Set `W : Submodule ℂ (M2 n)` to `LinearMap.ker ((fderiv ℂ H y : M2 n →ₗ[ℂ] V) ∘ₗ LinearMap.mulLeft ℂ y)`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hW : W = ⊤` using `span_top W (fun b hb => LinearMap.mem_ker.mpr (hup y hy b hb)) (fun c hc => LinearMap.mem_ker.mpr (hlow y hy c hc)) (fun b c hb hc => LinearMap.mem_ker.mpr (hcomm b c hb hc)) (LinearMap.mem_ker.mpr hone)`. Establish `hdet : IsUnit y.det` using `isUnit_iff_ne_zero.mpr (det_ne_zero_of_inG hy)`. Use extensionality with `u`. Establish `hu : y⁻¹ * u ∈ W` using `hW ▸ Submodule.mem_top`. Establish `e` using `LinearMap.mem_ker.mp hu`.
-
-Simplify using `only [LinearMap.coe_comp, Function.comp_apply, LinearMap.mulLeft_apply, ContinuousLinearMap.coe_coe, Matrix.mul_nonsing_inv_cancel_left _ _ hdet] at e`. Simplify using `using e`.
+A detailed English derivation is pending.
 -/
 theorem fderiv_eq_zero_of_vanish {V : Type*} [NormedAddCommGroup V] [NormedSpace ℂ V] [CompleteSpace V]
     {Ω : Set (M2 n)} (hΩ : IsOpen Ω) (hG : GSet n ⊆ Ω) {H : M2 n → V} (hH : ContDiffOn ℂ ∞ H Ω)
@@ -137,18 +135,16 @@ theorem fderiv_eq_zero_of_vanish {V : Type*} [NormedAddCommGroup V] [NormedSpace
   simpa using e
 
 /- English proof (translation)
-The claim follows from `WithTop.coe_lt_coe.mpr (ENat.natCast_lt_top N)`.
+A detailed English derivation is pending.
 -/
 theorem nat_lt_infty (N : ℕ) : ((N : ℕ) : WithTop ℕ∞) < ∞ := WithTop.coe_lt_coe.mpr (ENat.natCast_lt_top N)
 
 /- English proof (translation)
-Proceed by induction on `N with`. Consider the case `zero`. Introduce `V _ _ _ H _ h0 g hg`. Use extensionality with `v`. Simplify using `[h0 g hg]`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Consider the case `succ N ih`. Introduce `V _ _ _ H hH h0 g hg`. Establish `hH'` using `(contDiffOn_infty_iff_fderiv_of_isOpen hΩ).mp hH`. Use `letI : NormedAddCommGroup (M2 n →L[ℂ] V) := ContinuousLinearMap.toNormedAddCommGroup`. Use `letI : NormedSpace ℂ (M2 n →L[ℂ] V) := ContinuousLinearMap.toNormedSpace`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Equip the data with the indicated structure. Equip the data with the indicated structure.
 
-Use `haveI : SequentialSpace (M2 n) := inferInstanceAs (SequentialSpace ((Fin n ⊕ Fin n) → (Fin n ⊕ Fin n) → ℂ))`. Use `haveI : @CompleteSpace (M2 n →L[ℂ] V) PseudoMetricSpace.toUniformSpace := ContinuousLinearMap.instCompleteSpace`. Establish `e : iteratedFDeriv ℂ N (fun y => fderiv ℂ H y) g = 0` using `ih (fun y => fderiv ℂ H y) hH'.2 (fun g' hg' => fderiv_eq_zero_of_vanish hΩ hG hH h0 hg') g hg`. Rewrite using `[iteratedFDeriv_succ_eq_comp_right, Function.comp_apply]`. Establish `e'` using `congrArg (continuousMultilinearCurryRightEquiv' ℂ N (M2 n) V).symm e`.
-
-Conclude with `e'.trans (map_zero _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem iteratedFDeriv_eq_zero_of_eq_zero_on_inG {n : ℕ} {Ω : Set (M2 n)} (hΩ : IsOpen Ω) (hG : GSet n ⊆ Ω) (N : ℕ) :
     ∀ {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] [CompleteSpace V] (H : M2 n → V),
@@ -174,24 +170,24 @@ private theorem iteratedFDeriv_eq_zero_of_eq_zero_on_inG {n : ℕ} {Ω : Set (M2
     exact e'.trans (map_zero _)
 
 /- English proof (translation)
-Introduce `n Ω F hΩ hG hF h0 N g hg`. Conclude with `iteratedFDeriv_eq_zero_of_eq_zero_on_inG hΩ hG N F hF (fun g hg => h0 g hg) g hg`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem holZero : HolZero := by
   intro n Ω F hΩ hG hF h0 N g hg
   exact iteratedFDeriv_eq_zero_of_eq_zero_on_inG hΩ hG N F hF (fun g hg => h0 g hg) g hg
 
 /- English proof (translation)
-Establish `hFd : ∀ k, ∀ x ∈ Ω, ContDiffAt ℂ ∞ (F k) x` using `fun k x hx => (hF k).contDiffAt (hΩ.mem_nhds hx)`. Establish `hA : ∀ N : ℕ, ∀ x ∈ Ω, HasFDerivAt (fun x => ∫ k, iteratedFDeriv ℂ N (F k) x ∂μ) (∫ k, fderiv ℂ (iteratedFDeriv ℂ N (F k)) x ∂μ) x`. Introduce `N x hx`. Use `HolA.hasFDerivAt_int hΩ (hcont N) ?_ ?_ hx` and prove the remaining obligations. Establish `e : (fun y : Kg × E => fderiv ℂ (iteratedFDeriv ℂ N (F y.1)) y.2) = fun y => continuousMultilinearCurryLeftEquiv ℂ (fun _ : Fin (N + 1) => E) ℂ (iteratedFDeriv ℂ (N + 1) (F y.1) y.2)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `y`. Rewrite using `[fderiv_iteratedFDeriv]`. Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `(continuousMultilinearCurryLeftEquiv ℂ (fun _ : Fin (N + 1) => E) ℂ).continuous.comp_continuousOn (hcont (N + 1))`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k x hx`. Conclude with `((hFd k x hx).differentiableAt_iteratedFDeriv (by simpa using nat_lt_infty N)).hasFDerivAt`. Establish `hB : ∀ N : ℕ, ∀ x ∈ Ω, iteratedFDeriv ℂ N (fun x => ∫ k, F k x ∂μ) x = ∫ k, iteratedFDeriv ℂ N (F k) x ∂μ`. Introduce `N`. Proceed by induction on `N with`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `zero`. Introduce `x _`. Simplify using `only [iteratedFDeriv_zero_eq_comp, Function.comp_apply]`. Conclude with `((continuousMultilinearCurryFin0 ℂ E ℂ).symm.toContinuousLinearEquiv.integral_comp_comm _).symm`. Consider the case `succ N ih`.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `x hx`. Establish `hev : iteratedFDeriv ℂ N (fun x => ∫ k, F k x ∂μ) =ᶠ[𝓝 x] fun x => ∫ k, iteratedFDeriv ℂ N (F k) x ∂μ` using `Filter.eventually_of_mem (hΩ.mem_nhds hx) ih`. Rewrite using `[iteratedFDeriv_succ_eq_comp_left, Function.comp_apply, hev.fderiv_eq, (hA N x hx).fderiv]`. Conclude with `((continuousMultilinearCurryLeftEquiv ℂ (fun _ : Fin (N + 1) => E) ℂ).symm.toContinuousLinearEquiv.integral_comp_comm (fun k => fderiv ℂ (iteratedFDeriv ℂ N (F k)) x)).symm`. Establish `hD : ∀ m : ℕ, DifferentiableOn ℂ (fun x => iteratedFDerivWithin ℂ m (fun x => ∫ k, F k x ∂μ) Ω x) Ω` using `fun m x hx => ((hA m x hx).differentiableAt.differentiableWithinAt).congr (fun y hy => (iteratedFDerivWithin_of_isOpen m hΩ hy).trans (hB m y hy)) ((iteratedFDerivWithin_of_isOpen m hΩ hx).trans (hB m x hx))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨contDiffOn_of_continuousOn_differentiableOn (n := ⊤) (fun m _ => (hD m).continuousOn) (fun m _ => hD m), ?_⟩` and prove the remaining obligations. Introduce `N x v hx`. Rewrite using `[hB N x hx]`. Establish `hint : Integrable (fun k => iteratedFDeriv ℂ N (F k) x) μ` using `HolA.integrable_of_cont ((hcont N).comp_continuous (continuous_id.prodMk continuous_const) (fun k => ⟨mem_univ _, hx⟩))`. Conclude with `((ContinuousMultilinearMap.apply ℂ (fun _ : Fin N => E) ℂ v).integral_comp_comm hint).symm`.
+A detailed English derivation is pending.
 -/
 private theorem contDiffOn_integral_and_iteratedFDeriv_integral {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] [FiniteDimensional ℂ E]
     {Kg : Type} [TopologicalSpace Kg] [CompactSpace Kg] [MeasurableSpace Kg] [BorelSpace Kg]
@@ -247,7 +243,7 @@ private theorem contDiffOn_integral_and_iteratedFDeriv_integral {E : Type} [Norm
   exact ((ContinuousMultilinearMap.apply ℂ (fun _ : Fin N => E) ℂ v).integral_comp_comm hint).symm
 
 /- English proof (translation)
-Introduce `n Kg _ _ _ _ μ _ Ω F hΩ hcont hF`. Conclude with `contDiffOn_integral_and_iteratedFDeriv_integral μ F hΩ hcont hF`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem holInt : HolInt := by
   intro n Kg _ _ _ _ μ _ Ω F hΩ hcont hF

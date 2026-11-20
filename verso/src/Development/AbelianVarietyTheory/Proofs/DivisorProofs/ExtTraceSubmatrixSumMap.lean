@@ -16,25 +16,25 @@ variable {m l m' l' : Type} [Fintype m] [Fintype l] [Fintype m'] [Fintype l'] [D
   [DecidableEq l] [DecidableEq m'] [DecidableEq l']
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[mdbar]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem mdbar_submatrix {a b a' b' : Type} (A : E → Matrix a b ℂ) (e : a' → a) (f : b' → b) (z η : E) :
     mdbar (fun x => (A x).submatrix e f) z η = (mdbar A z η).submatrix e f := by
   ext i j; simp [mdbar]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[subGram, toBlocks₁₁]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem subGram_submatrix (e : m' ≃ m) (f : l' ≃ l) (H : Matrix (m ⊕ l) (m ⊕ l) ℂ) :
     subGram (H.submatrix (Sum.map e f) (Sum.map e f)) = (subGram H).submatrix e e := by
   ext i j; simp [subGram, toBlocks₁₁]
 
 /- English proof (translation)
-Establish `h11 : (H.submatrix (Sum.map e f) (Sum.map e f)).toBlocks₁₁ = H.toBlocks₁₁.submatrix e e`. Use extensionality with `i j`. Simplify using `[toBlocks₁₁]`. Establish `h12 : (H.submatrix (Sum.map e f) (Sum.map e f)).toBlocks₁₂ = H.toBlocks₁₂.submatrix e f`. Use extensionality with `i j`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[toBlocks₁₂]`. Establish `h21 : (H.submatrix (Sum.map e f) (Sum.map e f)).toBlocks₂₁ = H.toBlocks₂₁.submatrix f e`. Use extensionality with `i j`. Simplify using `[toBlocks₂₁]`. Establish `h22 : (H.submatrix (Sum.map e f) (Sum.map e f)).toBlocks₂₂ = H.toBlocks₂₂.submatrix f f`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use extensionality with `i j`. Simplify using `[toBlocks₂₂]`. Rewrite using `[quotGram, quotGram, h11, h12, h21, h22, inv_submatrix_equiv, submatrix_mul_equiv, submatrix_mul_equiv]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem quotGram_submatrix (e : m' ≃ m) (f : l' ≃ l) (H : Matrix (m ⊕ l) (m ⊕ l) ℂ) :
     quotGram (H.submatrix (Sum.map e f) (Sum.map e f)) = (quotGram H).submatrix f f := by
@@ -50,9 +50,9 @@ theorem quotGram_submatrix (e : m' ≃ m) (f : l' ≃ l) (H : Matrix (m ⊕ l) (
     submatrix_mul_equiv]; rfl
 
 /- English proof (translation)
-Establish `h11 : (H.submatrix (Sum.map e f) (Sum.map e f)).toBlocks₁₁ = H.toBlocks₁₁.submatrix e e`. Use extensionality with `i j`. Simplify using `[toBlocks₁₁]`. Establish `h21 : (H.submatrix (Sum.map e f) (Sum.map e f)).toBlocks₂₁ = H.toBlocks₂₁.submatrix f e`. Use extensionality with `i j`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[toBlocks₂₁]`. Rewrite using `[orthCoeff, orthCoeff, h11, h21, transpose_submatrix, transpose_submatrix, inv_submatrix_equiv, submatrix_mul_equiv]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem orthCoeff_submatrix (e : m' ≃ m) (f : l' ≃ l) (H : Matrix (m ⊕ l) (m ⊕ l) ℂ) :
     orthCoeff (H.submatrix (Sum.map e f) (Sum.map e f)) = (orthCoeff H).submatrix e f := by
@@ -64,7 +64,7 @@ theorem orthCoeff_submatrix (e : m' ≃ m) (f : l' ≃ l) (H : Matrix (m ⊕ l) 
     submatrix_mul_equiv]
 
 /- English proof (translation)
-Rewrite using `[adj, adj, transpose_submatrix, transpose_submatrix, conjTranspose_submatrix, inv_submatrix_equiv, submatrix_mul_equiv, submatrix_mul_equiv]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem adj_submatrix {a b a' b' : Type} [Fintype a] [Fintype b] [Fintype a'] [Fintype b']
     [DecidableEq a] [DecidableEq a'] (e : a' ≃ a) (f : b' ≃ b)
@@ -74,7 +74,7 @@ theorem adj_submatrix {a b a' b' : Type} [Fintype a] [Fintype b] [Fintype a'] [F
     inv_submatrix_equiv, submatrix_mul_equiv, submatrix_mul_equiv]
 
 /- English proof (translation)
-Rewrite using `[extForm_eq_neg_mdbar, extForm_eq_neg_mdbar]`. Repeatedly rewrite using `[orthCoeff_submatrix]`. Rewrite using `[mdbar_submatrix]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem extForm_submatrix (e : m' ≃ m) (f : l' ≃ l) (K : E → Matrix (m ⊕ l) (m ⊕ l) ℂ) (z η : E) :
     extForm (fun x => (K x).submatrix (Sum.map e f) (Sum.map e f)) z η =
@@ -84,7 +84,7 @@ theorem extForm_submatrix (e : m' ≃ m) (f : l' ≃ l) (K : E → Matrix (m ⊕
   rw [mdbar_submatrix]; rfl
 
 /- English proof (translation)
-Rewrite using `[extFormAdj, extFormAdj, extForm_submatrix, quotGram_submatrix, subGram_submatrix, adj_submatrix]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem extFormAdj_submatrix (e : m' ≃ m) (f : l' ≃ l) (K : E → Matrix (m ⊕ l) (m ⊕ l) ℂ) (z ξ : E) :
     extFormAdj (fun x => (K x).submatrix (Sum.map e f) (Sum.map e f)) z ξ =
@@ -96,9 +96,9 @@ end GlobalTheory.HermFrame.Renumber
 open Matrix in
 
 /- English proof (translation)
-Introduce `E _ _ _ _ m l m' l' _ _ _ _ _ _ _ _ e f K z`. Use function extensionality and compare the values at `ξ η`. Rewrite using `[extTrace, extTrace, Renumber.extFormAdj_submatrix, Renumber.extForm_submatrix, submatrix_mul_equiv]`. Use `congr 1`. Simplify using `only [Matrix.trace, Matrix.diag_apply, Matrix.submatrix_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Conclude with `Equiv.sum_comp f (fun i => (extFormAdj K z ξ * extForm K z η) i i)`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.HermFrame.extTrace_submatrix_sumMap : ∀ (E : Type) [NormedAddCommGroup E] [NormedSpace ℂ E] [NormedSpace ℝ E] [IsScalarTower ℝ ℂ E] (m l m' l' : Type) [Fintype m] [Fintype l] [Fintype m'] [Fintype l'] [DecidableEq m] [DecidableEq l] [DecidableEq m'] [DecidableEq l'] (e : m' ≃ m) (f : l' ≃ l) (K : E → Matrix (m ⊕ l) (m ⊕ l) ℂ) (z : E), extTrace (fun x => (K x).submatrix (Sum.map e f) (Sum.map e f)) z = extTrace K z := by
   intro E _ _ _ _ m l m' l' _ _ _ _ _ _ _ _ e f K z

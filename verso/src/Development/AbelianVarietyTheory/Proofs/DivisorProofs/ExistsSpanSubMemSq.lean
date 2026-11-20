@@ -5,17 +5,15 @@ namespace GlobalTheory.PowerIdealSurjectivity
 variable {O A : Type} [CommRing O] [CommRing A] [Algebra O A]
 
 /- English proof (translation)
-Set `J : Submodule O A` to `(RingHom.ker ε ^ 2).restrictScalars O`. Set `D : A →ₗ[O] A ⧸ J` to `J.mkQ ∘ₗ (LinearMap.id - (Algebra.linearMap O A) ∘ₗ ε.toLinearMap)`. Establish `hDa : ∀ a, D a = Submodule.Quotient.mk (a - algebraMap O A (ε a))` using `fun a => rfl`. Establish `hmemI : ∀ a, a - algebraMap O A (ε a) ∈ RingHom.ker ε` using `fun a => RingHom.mem_ker.mpr (show ε (a - algebraMap O A (ε a)) = 0 by simp)`. Establish `hD : ∀ a b : A, D (a * b) = ε a • D b + ε b • D a`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `a b`. Rewrite using `[hDa, hDa, hDa, ← Submodule.Quotient.mk_smul, ← Submodule.Quotient.mk_smul, ← Submodule.Quotient.mk_add, Submodule.Quotient.eq, Submodule.restrictScalars_mem]`. Establish `key : a * b - algebraMap O A (ε (a * b)) - (ε a • (b - algebraMap O A (ε b)) + ε b • (a - algebraMap O A (ε a))) = (a - algebraMap O A (ε a)) * (b - algebraMap O A (ε b))`. Rewrite using `[map_mul, Algebra.smul_def, Algebra.smul_def, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[key, pow_two]`. Conclude with `Ideal.mul_mem_mul (hmemI a) (hmemI b)`. Establish `hdc : GlobalTheory.AugCot.d ε c ∈ Submodule.span O (Set.range fun i => GlobalTheory.AugCot.d ε (x i))`. Rewrite using `[hs]`. Conclude with `Submodule.mem_top`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨r, hr⟩` from `(Submodule.mem_span_range_iff_exists_fun O).mp hdc`. Establish `hε0 : ε (∑ i, r i • x i) = 0` using `by simp [map_sum, hx]`. Use `⟨∑ i, r i • x i, Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩), RingHom.mem_ker.mpr hε0, ?_⟩` and prove the remaining obligations. Establish `hdm : GlobalTheory.AugCot.d ε (∑ i, r i • x i) = GlobalTheory.AugCot.d ε c`. Rewrite using `[← hr, map_sum]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [map_smul]`. Establish `h` using `congrArg (GlobalTheory.AugCot.lift ε D hD) hdm`. Rewrite `h` using `[GlobalTheory.AugCot.lift_d, GlobalTheory.AugCot.lift_d, hDa, hDa, Submodule.Quotient.eq, Submodule.restrictScalars_mem]`. Establish `hεc : ε c = 0` using `RingHom.mem_ker.mp hc`. Rewrite `h` using `[hε0, hεc, map_zero, sub_zero, sub_zero]`.
-
-Rewrite using `[← neg_sub]`. Conclude with `(RingHom.ker ε ^ 2).neg_mem h`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma exists_span_sub_mem_sq (ε : A →ₐ[O] O) {d : ℕ} (x : Fin d → A) (hx : ∀ i, ε (x i) = 0)
     (hs : Submodule.span O (Set.range fun i ↦ GlobalTheory.AugCot.d ε (x i)) = ⊤) {c : A}
@@ -59,23 +57,21 @@ lemma exists_span_sub_mem_sq (ε : A →ₐ[O] O) {d : ℕ} (x : Fin d → A) (h
   exact (RingHom.ker ε ^ 2).neg_mem h
 
 /- English proof (translation)
-Establish `step : ∀ k : ℕ, ∀ c ∈ I ^ (k + 1), ∃ m ∈ B, m ∈ I ^ (k + 1) ∧ c - m ∈ I ^ (k + 2)`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `c hc`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hc` using `[zero_add, pow_one]`. Take `⟨m, hmB, hmI, hcm⟩` from `h1 c hc`. Conclude with `⟨m, hmB, by rwa [zero_add, pow_one], hcm⟩`. Consider the case `succ k ih`. Introduce `c hc`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hc' : c ∈ I ^ (k + 1) * I` using `by rw [← pow_succ]; exact hc`. Use `Submodule.mul_induction_on (C := fun c => ∃ m ∈ B, m ∈ I ^ (k + 1 + 1) ∧ c - m ∈ I ^ (k + 1 + 2)) hc' ?_ ?_` and prove the remaining obligations. Introduce `y hy z hz`. Take `⟨my, hmyB, hmyI, hy'⟩` from `ih y hy`. Take `⟨mz, hmzB, hmzI, hz'⟩` from `h1 z hz`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨my * mz, B.mul_mem hmyB hmzB, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_succ]`. Conclude with `Ideal.mul_mem_mul hmyI hmzI`. Establish `e : y * z - my * mz = y * (z - mz) + (y - my) * mz` using `by ring`. Rewrite using `[e]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Ideal.add_mem _ ?_ ?_` and prove the remaining obligations. Use `Ideal.mul_mem_mul hy hz'` as an intermediate fact. Rewrite `this` using `[← pow_add]`. Then use the resulting hypothesis. Use `Ideal.mul_mem_mul hy' hmzI` as an intermediate fact. Rewrite `this` using `[← pow_succ]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `y z ⟨my, hmyB, hmyI, hy'⟩ ⟨mz, hmzB, hmzI, hz'⟩`. Use `⟨my + mz, B.add_mem hmyB hmzB, Ideal.add_mem _ hmyI hmzI, ?_⟩` and prove the remaining obligations. Establish `e : y + z - (my + mz) = (y - my) + (z - mz)` using `by ring`. Rewrite using `[e]`. Conclude with `Ideal.add_mem _ hy' hz'`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `n with`. Consider the case `zero`. Take `⟨b, hb, hab⟩` from `h0 a`. Conclude with `⟨b, hb, by rwa [zero_add, pow_one]⟩`. Consider the case `succ n ih`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb, hab⟩` from `ih`. Take `⟨m, hmB, -, hm⟩` from `step n (a - b) hab`. Use `⟨b + m, B.add_mem hb hmB, ?_⟩` and prove the remaining obligations. Establish `e : a - (b + m) = a - b - m` using `by ring`. Rewrite using `[e]`.
-
-Conclude with `hm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma exists_sub_mem_pow (B : Subalgebra O A) (I : Ideal A)
     (h0 : ∀ a, ∃ b ∈ B, a - b ∈ I) (h1 : ∀ c ∈ I, ∃ m ∈ B, m ∈ I ∧ c - m ∈ I ^ 2) (n : ℕ) (a : A) :
@@ -125,29 +121,27 @@ lemma exists_sub_mem_pow (B : Subalgebra O A) (I : Ideal A)
     exact hm
 
 /- English proof (translation)
-Set `B : Subalgebra O A` to `Algebra.adjoin O (Set.range x)`. Establish `h0 : ∀ a, ∃ b ∈ B, a - b ∈ RingHom.ker ε` using `fun a => ⟨algebraMap O A (ε a), B.algebraMap_mem _, RingHom.mem_ker.mpr (show ε (a - algebraMap O A (ε a)) = 0 by simp)⟩`. Establish `h1 : ∀ c ∈ RingHom.ker ε, ∃ m ∈ B, m ∈ RingHom.ker ε ∧ c - m ∈ RingHom.ker ε ^ 2`. Introduce `c hc`. Take `⟨m, hm, hmI, hcm⟩` from `exists_span_sub_mem_sq ε x hx hs hc`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨m, Algebra.span_le_adjoin O _ hm, hmI, hcm⟩`. Set `φ : A →ₗ[O] A` to `LinearMap.id - (Algebra.linearMap O A) ∘ₗ ε.toLinearMap`. Establish `hφ : ∀ a, φ a = a - algebraMap O A (ε a)` using `fun a => rfl`. Establish `hfg : (RingHom.ker ε).FG`. Apply `Submodule.FG.of_restrictScalars O` to reduce the goal to its premises.
+Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `heq : (RingHom.ker ε).restrictScalars O = LinearMap.range φ`. Use extensionality with `c`. Rewrite using `[Submodule.restrictScalars_mem, LinearMap.mem_range]`. Prove the components needed by the constructor for the conclusion. Introduce `hc`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨c, ?_⟩` and prove the remaining obligations. Rewrite using `[hφ, show ε c = 0 from RingHom.mem_ker.mp hc, map_zero, sub_zero]`. Introduce and unpack `⟨a, rfl⟩`. Rewrite using `[hφ]`. Conclude with `RingHom.mem_ker.mpr (show ε (a - algebraMap O A (ε a)) = 0 by simp)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[heq, ← Submodule.map_top]`. Conclude with `(Module.Finite.fg_top (R := O) (M := A)).map φ`. Establish `hker_ne : RingHom.ker ε ≠ ⊤` using `RingHom.ker_ne_top ε`. Establish `hle_span : RingHom.ker ε ≤ Ideal.span (Set.range x)`. Use `Submodule.le_of_le_smul_of_le_jacobson_bot (I := RingHom.ker ε) hfg ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[IsLocalRing.jacobson_eq_maximalIdeal ⊥ bot_ne_top]`. Conclude with `IsLocalRing.le_maximalIdeal hker_ne`. Introduce `c hc`. Take `⟨m, hm, -, hcm⟩` from `exists_span_sub_mem_sq ε x hx hs hc`. Establish `hm' : m ∈ Ideal.span (Set.range x)` using `Submodule.span_le_restrictScalars O A _ hm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hcm` using `[pow_two, ← smul_eq_mul]`. Rewrite using `[show c = m + (c - m) by ring]`. Conclude with `Submodule.add_mem_sup hm' hcm`. Establish `hrad : Ideal.span (Set.range x) ≤ (Ideal.span {algebraMap O A q}).radical`. Rewrite using `[Ideal.span_le]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨i, rfl⟩`. Take `⟨N, hNi⟩` from `hN i`. Conclude with `⟨N, Ideal.mem_span_singleton.mpr hNi⟩`. Establish `hfgx : (Ideal.span (Set.range x)).FG` using `⟨Finset.univ.image x, by rw [Finset.coe_image, Finset.coe_univ, Set.image_univ]⟩`. Take `⟨K, hK⟩` from `Ideal.exists_pow_le_of_le_radical_of_fg hrad hfgx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `htop : (⊤ : Submodule O A) ≤ Subalgebra.toSubmodule B`. Use `Submodule.le_of_le_smul_of_le_jacobson_bot (I := IsLocalRing.maximalIdeal O) Module.Finite.fg_top ?_ ?_` and prove the remaining obligations. Rewrite using `[IsLocalRing.jacobson_eq_maximalIdeal ⊥ bot_ne_top]`. Introduce `a _`. Take `⟨b, hb, hab⟩` from `exists_sub_mem_pow B (RingHom.ker ε) h0 h1 K a`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : a - b ∈ Ideal.span (Set.range x) ^ K` using `Ideal.pow_right_mono hle_span K (Ideal.pow_le_pow_right (Nat.le_succ K) hab)`. Take `⟨y, hy⟩` from `Ideal.mem_span_singleton'.mp (hK h2)`. Establish `h3 : a - b ∈ IsLocalRing.maximalIdeal O • (⊤ : Submodule O A)`. Rewrite using `[← hy, mul_comm, ← Algebra.smul_def]`. Conclude with `Submodule.smul_mem_smul hq Submodule.mem_top`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[show a = b + (a - b) by ring]`. Conclude with `Submodule.add_mem_sup hb h3`. Introduce `a`. Establish `ha : a ∈ B` using `htop Submodule.mem_top`. Rewrite `ha` using `[show B = (MvPolynomial.aeval x).range from Algebra.adjoin_range_eq_range_aeval O x]`.
-
-Take `⟨p, hp⟩` from `ha`. Conclude with `⟨p, hp⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem aeval_surjective (O A : Type) [CommRing O] [IsLocalRing O] [CommRing A] [Algebra O A]
     [Module.Finite O A] [IsLocalRing A] (q : O) (hq : q ∈ IsLocalRing.maximalIdeal O)

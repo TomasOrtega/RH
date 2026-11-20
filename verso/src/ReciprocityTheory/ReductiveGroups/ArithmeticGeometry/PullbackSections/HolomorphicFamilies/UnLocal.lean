@@ -8,11 +8,11 @@ namespace ReciprocityTheory.ChartRestriction.G.PullbackSections
 open AlgebraicGeometry CategoryTheory NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.TB.ValAt
 
 /- English proof (translation)
-Unfold `valAt'`. Rewrite using `[dif_pos (by simp)]`. Unfold `valAt`. Establish `h1 : (spMap ψ).appLE ⊤ ⊤ (by simp) = (spMap ψ).appTop`. Rewrite using `[Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `first`. Consider the case `rfl`. Consider the case `simp`. Rewrite using `[h1]`. Establish `h2` using `congrArg (fun f => (CommRingCat.Hom.hom f) ((Scheme.ΓSpecIso (CommRingCat.of A)).inv a)) (Scheme.ΓSpecIso_naturality (CommRingCat.ofHom ψ))`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply, CommRingCat.hom_ofHom] at h2`. Use `h2.trans ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem valAt'_spMap {A : Type} [CommRing A] (ψ : A →+* ℂ) (a : A) :
     valAt' (spMap ψ) ⊤ ((Scheme.ΓSpecIso (CommRingCat.of A)).inv a) = ψ a := by
@@ -32,11 +32,9 @@ theorem valAt'_spMap {A : Type} [CommRing A] (ψ : A →+* ℂ) (a : A) :
   simp
 
 /- English proof (translation)
-Establish `h0` using `valAt'_spMap ψ a`. Unfold `valAt' at h0`. Rewrite `h0` using `[dif_pos (by simp)]`. Unfold `valAt at h0`. Establish `h1 : (spMap ψ).appLE ⊤ ⊤ (by simp) = (spMap ψ).appTop`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Rewrite using `[Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE]`. Use `first`. Consider the case `rfl`. Consider the case `simp`. Rewrite `h0` using `[h1]`.
-
-Conclude with `h0`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma app_lemma_0 {A : Type} [CommRing A] (ψ : A →+* ℂ) (a : A) :
     (Scheme.ΓSpecIso (CommRingCat.of ℂ)).hom ((spMap ψ).appTop ((Scheme.ΓSpecIso (CommRingCat.of A)).inv a)) = ψ a := by
@@ -53,7 +51,7 @@ private lemma app_lemma_0 {A : Type} [CommRing A] (ψ : A →+* ℂ) (a : A) :
   exact h0
 
 /- English proof (translation)
-Unfold `valAt'`. Rewrite using `[dif_pos e]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private lemma vEq_lemma {A : Type} [CommRing A] (ψ : A →+* ℂ) {V : (Sp A).Opens}
     (e : ⊤ ≤ spMap ψ ⁻¹ᵁ V) (s : Γ(Sp A, V)) :
@@ -63,7 +61,7 @@ private lemma vEq_lemma {A : Type} [CommRing A] (ψ : A →+* ℂ) {V : (Sp A).O
   rfl
 
 /- English proof (translation)
-Use `first`. Consider the case `exact fun x hx => hVW hx`. Consider the case `exact (Opens.map (spMap ψ).base).monotone hVW`. Consider the case `exact Scheme.Hom.preimage_mono _ hVW`. Consider the case `(intro x hx; exact hVW hx)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private lemma preMono_lemma_8 {A : Type} [CommRing A] (ψ : A →+* ℂ) {V W : (Sp A).Opens} (hVW : V ≤ W) :
     spMap ψ ⁻¹ᵁ V ≤ spMap ψ ⁻¹ᵁ W := by
@@ -74,7 +72,7 @@ private lemma preMono_lemma_8 {A : Type} [CommRing A] (ψ : A →+* ℂ) {V W : 
     | (intro x hx; exact hVW hx)
 
 /- English proof (translation)
-Rewrite using `[vEq_lemma ψ e, vEq_lemma ψ (e.trans (preMono_lemma_8 ψ hVW))]`. Establish `key` using `congrArg (fun g => (CommRingCat.Hom.hom g) s) ((spMap ψ).map_appLE e (homOfLE hVW).op)`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply] at key`. Conclude with `congrArg (fun t => (Scheme.ΓSpecIso (CommRingCat.of ℂ)).hom t) key`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma vRes_lemma_2 {A : Type} [CommRing A] (ψ : A →+* ℂ) {V W : (Sp A).Opens} (hVW : V ≤ W)
     (e : ⊤ ≤ spMap ψ ⁻¹ᵁ V) (s : Γ(Sp A, W)) :
@@ -85,7 +83,7 @@ private lemma vRes_lemma_2 {A : Type} [CommRing A] (ψ : A →+* ℂ) {V W : (Sp
   exact congrArg (fun t => (Scheme.ΓSpecIso (CommRingCat.of ℂ)).hom t) key
 
 /- English proof (translation)
-Simplify using `only [vEq_lemma ψ e, map_mul]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma vMul_lemma_6 {A : Type} [CommRing A] (ψ : A →+* ℂ) {V : (Sp A).Opens}
     (e : ⊤ ≤ spMap ψ ⁻¹ᵁ V) (s t : Γ(Sp A, V)) :
@@ -93,7 +91,7 @@ private lemma vMul_lemma_6 {A : Type} [CommRing A] (ψ : A →+* ℂ) {V : (Sp A
   simp only [vEq_lemma ψ e, map_mul]
 
 /- English proof (translation)
-Simplify using `only [vEq_lemma ψ e, map_pow]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma vPow_lemma_7 {A : Type} [CommRing A] (ψ : A →+* ℂ) {V : (Sp A).Opens}
     (e : ⊤ ≤ spMap ψ ⁻¹ᵁ V) (s : Γ(Sp A, V)) (n : ℕ) :
@@ -101,11 +99,11 @@ private lemma vPow_lemma_7 {A : Type} [CommRing A] (ψ : A →+* ℂ) {V : (Sp A
   simp only [vEq_lemma ψ e, map_pow]
 
 /- English proof (translation)
-Establish `hc` using `app_lemma_0 ψ g`. Establish `hu : IsUnit ((spMap ψ).appTop ((Scheme.ΓSpecIso (CommRingCat.of A)).inv g))`. Establish `h0 : IsUnit ((Scheme.ΓSpecIso (CommRingCat.of ℂ)).hom ((spMap ψ).appTop ((Scheme.ΓSpecIso (CommRingCat.of A)).inv g)))`. Rewrite using `[hc]`. Conclude with `hg.isUnit`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `h0.map (Scheme.ΓSpecIso (CommRingCat.of ℂ)).inv.hom`. Simplify using `using h1`. Establish `hb` using `(Sp ℂ).basicOpen_of_isUnit hu`. Rewrite using `[Scheme.preimage_basicOpen]`. Use `first`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Consider the case `exact hb.symm.le`. Consider the case `exact le_of_eq hb.symm`. Consider the case `(rw [← Scheme.Hom.appTop, hb])`. Consider the case `simp [Scheme.Hom.appTop, hb]`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private lemma topLe_lemma_3 {A : Type} [CommRing A] (ψ : A →+* ℂ) (g : A) (hg : ψ g ≠ 0) :
     ⊤ ≤ spMap ψ ⁻¹ᵁ (Sp A).basicOpen ((Scheme.ΓSpecIso (CommRingCat.of A)).inv g) := by
@@ -126,17 +124,15 @@ private lemma topLe_lemma_3 {A : Type} [CommRing A] (ψ : A →+* ℂ) (g : A) (
     | simp [Scheme.Hom.appTop, hb]
 
 /- English proof (translation)
-Take `⟨pt⟩ : Nonempty (Sp ℂ)` from `by first`. Consider the case `infer_instance`. Consider the case `exact ⟨(⟨⊥, Ideal.bot_prime⟩ : PrimeSpectrum ℂ)⟩`. Apply the tactic sequence `have hpt : pt ∈ spMap ψ ⁻¹ᵁ U := e (show pt ∈ (⊤ : (Sp ℂ).Opens) by first | trivial | simp)`. Apply the tactic sequence `obtain ⟨g', hD, hxD⟩ := (isAffineOpen_top (Sp A)).exists_basicOpen_le ⟨(spMap ψ).base pt, hpt⟩ (by first | trivial | simp)`.
+Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨g, rfl⟩ : ∃ g : A, (Scheme.ΓSpecIso (CommRingCat.of A)).inv g = g'` from `⟨(Scheme.ΓSpecIso (CommRingCat.of A)).hom g', by simp⟩`. Use `⟨g, ?_, hD⟩` and prove the remaining obligations. Introduce `hg`. Establish `hc` using `app_lemma_0 ψ g`. Rewrite `hc` using `[hg]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hc0 : (spMap ψ).appTop ((Scheme.ΓSpecIso (CommRingCat.of A)).inv g) = 0`. Establish `h3` using `congrArg (Scheme.ΓSpecIso (CommRingCat.of ℂ)).inv.hom hc`. Simplify using `using h3`. Establish `hpt' : pt ∈ spMap ψ ⁻¹ᵁ (Sp A).basicOpen ((Scheme.ΓSpecIso (CommRingCat.of A)).inv g)` using `hxD`. Rewrite `hpt'` using `[Scheme.preimage_basicOpen]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `first`. Consider the case `rw [hc0] at hpt'`. Consider the case `erw [hc0] at hpt'`. Consider the case `rw [← Scheme.Hom.appTop, hc0] at hpt'`. Use `first`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(rw [Scheme.basicOpen_zero] at hpt'; simp at hpt')`. Consider the case `(erw [Scheme.basicOpen_zero] at hpt'; simp at hpt')`. Consider the case `(simp at hpt'; done)`. Consider the case `exact absurd hpt' (by simp [Scheme.basicOpen_zero])`. Consider the case `(rw [Scheme.mem_basicOpen] at hpt'; simp at hpt')`.
-
-Consider the case `(erw [Scheme.mem_basicOpen] at hpt'; simp at hpt')`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private lemma local_lemma_4 {A : Type} [CommRing A] (ψ : A →+* ℂ) {U : (Sp A).Opens}
     (e : ⊤ ≤ spMap ψ ⁻¹ᵁ U) : ∃ g : A, ψ g ≠ 0 ∧
@@ -172,9 +168,9 @@ private lemma local_lemma_4 {A : Type} [CommRing A] (ψ : A →+* ℂ) {U : (Sp 
     | (erw [Scheme.mem_basicOpen] at hpt'; simp at hpt')
 
 /- English proof (translation)
-Establish `h0` using `vRes_lemma_2 ψ (le_top : (Sp A).basicOpen g' ≤ ⊤) e x`. Establish `h2` using `valAt'_spMap ψ ((Scheme.ΓSpecIso (CommRingCat.of A)).hom x)`. Establish `hx : (Scheme.ΓSpecIso (CommRingCat.of A)).inv ((Scheme.ΓSpecIso (CommRingCat.of A)).hom x) = x`. Simplify using the standard rewrite rules. Rewrite `h2` using `[hx]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h0.trans h2`.
+A detailed English derivation is pending.
 -/
 private lemma alg_lemma_5 {A : Type} [CommRing A] (ψ : A →+* ℂ) (g' : Γ(Sp A, ⊤))
     (e : ⊤ ≤ spMap ψ ⁻¹ᵁ (Sp A).basicOpen g') (x : Γ(Sp A, ⊤)) :
@@ -188,21 +184,19 @@ private lemma alg_lemma_5 {A : Type} [CommRing A] (ψ : A →+* ℂ) (g' : Γ(Sp
   exact h0.trans h2
 
 /- English proof (translation)
-Unfold `IsHolTo`. Introduce `U f`. Establish `nbhd : ∀ b0 ∈ {b | b ∈ B ∧ ⊤ ≤ spMap (Ψ b) ⁻¹ᵁ U}, ∃ g : A, Ψ b0 g ≠ 0 ∧ (Sp A).basicOpen ((Scheme.ΓSpecIso (CommRingCat.of A)).inv g) ≤ U` using `fun b0 hb0 => local_lemma_4 (Ψ b0) hb0.2`. Establish `hopen : ∀ g : A, IsOpen (B ∩ (fun b => Ψ b g) ⁻¹' {0}ᶜ)` using `fun g => ((h g).continuousOn).isOpen_inter_preimage hB isOpen_compl_singleton`. Establish `hsub : ∀ g : A, (Sp A).basicOpen ((Scheme.ΓSpecIso (CommRingCat.of A)).inv g) ≤ U → B ∩ (fun b => Ψ b g) ⁻¹' {0}ᶜ ⊆ {b | b ∈ B ∧ ⊤ ≤ spMap (Ψ b) ⁻¹ᵁ U}`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `g hD b hb`. Conclude with `⟨hb.1, (topLe_lemma_3 (Ψ b) g hb.2).trans (preMono_lemma_8 (Ψ b) hD)⟩`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[isOpen_iff_forall_mem_open]`. Introduce `b0 hb0`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨g, hg, hD⟩` from `nbhd b0 hb0`. Conclude with `⟨_, hsub g hD, hopen g, hb0.1, hg⟩`. Apply `differentiableOn_of_locally_differentiableOn` to reduce the goal to its premises. Introduce `b0 hb0`. Take `⟨g, hg, hD⟩` from `nbhd b0 hb0`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨_, hopen g, ⟨hb0.1, hg⟩, ?_⟩` and prove the remaining obligations. Use `haveI := (isAffineOpen_top (Sp A)).isLocalization_basicOpen ((Scheme.ΓSpecIso (CommRingCat.of A)).inv g)`. Take `⟨⟨h', m⟩, hm⟩` from `IsLocalization.surj (Submonoid.powers ((Scheme.ΓSpecIso (CommRingCat.of A)).inv g)) ((Sp A).presheaf.map (homOfLE hD).op f)`. Simplify using `only at hm`. Take `⟨n, hn⟩ : ∃ n : ℕ, (Scheme.ΓSpecIso (CommRingCat.of A)).inv g ^ n = (m : Γ(Sp A, ⊤))` from `by first`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Extract witnesses or component facts from the available result. Treat this case separately.
 
-Consider the case `exact (Submonoid.mem_powers_iff _ _).mp m.2`. Consider the case `exact m.2`. Consider the case `simpa using m.2`. Consider the case `(obtain ⟨k, hk⟩ := m.2; exact ⟨k, hk⟩)`. Establish `key : ∀ b ∈ {b | b ∈ B ∧ ⊤ ≤ spMap (Ψ b) ⁻¹ᵁ U} ∩ (B ∩ (fun b => Ψ b g) ⁻¹' {0}ᶜ), valAt' (spMap (Ψ b)) U f = Ψ b ((Scheme.ΓSpecIso (CommRingCat.of A)).hom h') * (Ψ b g ^ n)⁻¹`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `b hb`. Establish `hgb : Ψ b g ≠ 0` using `hb.2.2`. Establish `eD` using `topLe_lemma_3 (Ψ b) g hgb`. Rewrite using `[← div_eq_mul_inv, eq_div_iff (pow_ne_zero _ hgb), ← vRes_lemma_2 (Ψ b) hD eD f]`. Establish `hm'` using `congrArg (valAt' (spMap (Ψ b)) _) hm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hm'` using `[vMul_lemma_6 (Ψ b) eD, ← hn, map_pow, vPow_lemma_7 (Ψ b) eD, alg_lemma_5 (Ψ b) _ eD, alg_lemma_5 (Ψ b) _ eD]`. Establish `hg' : (Scheme.ΓSpecIso (CommRingCat.of A)).hom ((Scheme.ΓSpecIso (CommRingCat.of A)).inv g) = g`. Simplify using the standard rewrite rules. Rewrite `hm'` using `[hg']`. Conclude with `hm'`.
-
-Use `DifferentiableOn.congr ?_ key` and prove the remaining obligations. Conclude with `((((h _).mono Set.inter_subset_left).mul ((((h g).mono Set.inter_subset_left).pow n).inv (fun b (hb : b ∈ B ∩ (fun b => Ψ b g) ⁻¹' {0}ᶜ) => pow_ne_zero n hb.2))).mono Set.inter_subset_right)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isHolTo_spMap {A : Type} [CommRing A] {m : ℕ} {B : Set (Fin m → ℂ)} (hB : IsOpen B) {Ψ : (Fin m → ℂ) → (A →+* ℂ)}
     (h : ∀ a, DifferentiableOn ℂ (fun b => Ψ b a) B) : IsHolTo B fun b => spMap (Ψ b) := by

@@ -8,7 +8,7 @@ open CategoryTheory AlgebraicGeometry TensorProduct GlobalTheory.LogCris Divided
 namespace GlobalTheory.CompanionTheory.LecShift
 
 /- English proof (translation)
-Introduce `O A _ _ _ I γ X q l s 𝒱 i a ha r T x hx`. Establish `hx' : (show T.obj.B from x) ∈ pdP T.obj.δ (r - i).toNat` using `hx`. Establish `h1 : T.obj.i a ∈ pdP T.obj.δ i` using `dividedPowerFiltration_map T.obj.compat i ha`. Establish `h2` using `GlobalTheory.CompanionTheory.DPFil.dividedPowerFiltration_mul_le T.obj.δ i (r - i).toNat (Ideal.mul_mem_mul h1 hx')`. Conclude with `T.obj.pdPow_anti (show r.toNat ≤ i + (r - i).toNat by omega) h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem leC_shift : ∀ {O A : Type} [CommRing O] [CommRing A] [Algebra O A] {I : Ideal A} (γ : DividedPowers I) {X : Scheme.{0}}
     (q : X ⟶ Spec (CommRingCat.of O)) (l s : ℕ) (𝒱 : Set X.Opens) (i : ℕ) (a : A), a ∈ pdP γ i → ∀ r : ℤ,

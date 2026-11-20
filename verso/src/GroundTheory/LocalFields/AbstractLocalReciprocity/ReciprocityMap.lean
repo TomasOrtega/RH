@@ -17,15 +17,15 @@ include hLK in
 omit [TotallyDisconnectedSpace G] [((L : Subgroup G).subgroupOf K).Normal] in
 
 /- English proof (translation)
-Take `⟨w, hw⟩` from `mem_multiples.1 (toAdd_deg_mem_multiples (D := D) K hτ)`. Use `set f' := relInertiaDegree D.deg K L with hf'def`. Establish `hf' : 0 < f'` using `Nat.pos_of_ne_zero (D.relInertiaDegree_ne_zero hLK)`. Use `set F : ℕ+ := ⟨f', hf'⟩ with hFdef`. Use `set m : ℕ := (proj F w).val + f' with hmdef`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm : 0 < m` using `by omega`. Establish `hmw : (m : ℤ̂) - w ∈ multiples f'`. Use `(proj_eq_zero_iff (n := F) (x := (m : ℤ̂) - w)).1 (by` as an intermediate fact. Rewrite using `[map_sub, map_natCast, hmdef, Nat.cast_add, ZMod.natCast_zmod_val]`. Establish `: ((f' : ℕ) : ZMod F) = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[hFdef]`. Conclude with `ZMod.natCast_self f'`. Rewrite using `[this, add_zero, sub_self])`. Simplify `this` using `[hFdef]`. Take `⟨z, hz⟩` from `mem_multiples.1 hmw`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hfL` using `inertiaDegree_eq_mul D.surjective_deg (K := (K : Subgroup G)) (L := (L : Subgroup G)) hLK`. Take `⟨ρ, hρL, hρ⟩` from `(D.mem_map_deg_iff L).2 ⟨Multiplicative.ofAdd z, rfl⟩`. Use `⟨⟨τ * ρ, K.mul_mem hτ (hLK hρL), m, hm, ?_⟩, by simpa using hρL⟩` and prove the remaining obligations. Apply `Multiplicative.toAdd.injective` to reduce the goal to its premises. Rewrite using `[map_mul, toAdd_mul, hρ, toAdd_pow, toAdd_ofAdd, toAdd_ofAdd, hw, hfL]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `hz' : (f' : ℤ̂) * z = m - w` using `by rw [← nsmul_eq_mul, ← hz]`. Simplify using `only [nsmul_eq_mul]`. Use `push_cast`. Take the linear combination `(inertiaDegree D.deg K : ℤ̂) * hz'`.
+A detailed English derivation is pending.
 -/
 theorem exists_frobeniusLift {τ : G} (hτ : τ ∈ (K : Subgroup G)) :
     ∃ s : D.FrobeniusLift K, τ⁻¹ * s.elt ∈ (L : Subgroup G) := by
@@ -55,7 +55,7 @@ theorem exists_frobeniusLift {τ : G} (hτ : τ ∈ (K : Subgroup G)) :
   linear_combination (inertiaDegree D.deg K : ℤ̂) * hz'
 
 /- English proof (translation)
-Establish `hle : s.field L hLK ≤ L` using `fun x hx => frobeniusClosure_le L.isClosed hs inf_le_left hx`. Unfold `recFrob primeNorm`. Rewrite using `[QuotientGroup.eq_one_iff]`. Conclude with `⟨norm A (L : Subgroup G) ((s.field L hLK : OpenSubgroup G) : Subgroup G) _, norm_norm (fun x hx => hle hx) (fun x hx => hLK hx) _⟩`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem recFrob_eq_one_of_mem (s : D.FrobeniusLift K) (hs : s.elt ∈ (L : Subgroup G)) :
     D.recFrob L hLK s = 1 := by
@@ -66,11 +66,11 @@ theorem recFrob_eq_one_of_mem (s : D.FrobeniusLift K) (hs : s.elt ∈ (L : Subgr
     norm_norm (fun x hx => hle hx) (fun x hx => hLK hx) _⟩
 
 /- English proof (translation)
-Apply `OpenSubgroup.toSubgroup_injective` to reduce the goal to its premises. Use `show frobeniusClosure D.deg L s.elt = frobeniusClosure D.deg L t.elt`. Unfold `frobeniusClosure`. Use `congr 1`. Apply `le_antisymm` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Use `sup_le (Subgroup.zpowers_le.2 ?_) le_sup_right` and prove the remaining obligations. Establish `: s.elt = t.elt * (s.elt⁻¹ * t.elt)⁻¹` using `by group`. Rewrite using `[this]`. Conclude with `Subgroup.mul_mem _ (Subgroup.mem_sup_left (Subgroup.mem_zpowers _)) (Subgroup.mem_sup_right (Subgroup.inv_mem _ h))`. Use `sup_le (Subgroup.zpowers_le.2 ?_) le_sup_right` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: t.elt = s.elt * (s.elt⁻¹ * t.elt)` using `by group`. Rewrite using `[this]`. Conclude with `Subgroup.mul_mem _ (Subgroup.mem_sup_left (Subgroup.mem_zpowers _)) (Subgroup.mem_sup_right h)`.
+A detailed English derivation is pending.
 -/
 theorem field_eq_of_mem (s t : D.FrobeniusLift K)
     (h : s.elt⁻¹ * t.elt ∈ (L : Subgroup G) ⊓ D.deg.ker) : s.field L hLK = t.field L hLK := by
@@ -91,11 +91,11 @@ theorem field_eq_of_mem (s t : D.FrobeniusLift K)
       (Subgroup.mem_sup_right h)
 
 /- English proof (translation)
-Break down `Nat.eq_or_lt_of_le hle with heq | hlt` into its components or cases. Establish `hker : s.elt⁻¹ * t.elt ∈ D.deg.ker`. Rewrite using `[MonoidHom.mem_ker, map_mul, map_inv, s.deg_eq, t.deg_eq, heq, inv_mul_cancel]`. Unfold `recFrob`. Rewrite using `[field_eq_of_mem hLK s t ⟨h, hker⟩]`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Set `ρ : D.FrobeniusLift K` to `{ elt := s.elt⁻¹ * t.elt mem := K.mul_mem (K.inv_mem s.mem) t.mem deg := t.deg - s.deg deg_pos := by omega deg_eq := by`. Apply `Multiplicative.toAdd.injective` to reduce the goal to its premises. Rewrite using `[map_mul, map_inv, toAdd_mul, toAdd_inv, s.deg_eq, t.deg_eq, toAdd_ofAdd, toAdd_ofAdd, toAdd_ofAdd]`. Move the coercions through the operations in `[Nat.cast_sub hlt.le]`. Use `ring }`.
+Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hρ : D.recFrob L hLK ρ = 1` using `recFrob_eq_one_of_mem hLK ρ h`. Rewrite using `[recFrob_congr hLK (s := t) (t := s.mul ρ) (by simp [FrobeniusLift.mul, ρ]), recFrob_mul hLK hax, hρ, mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem recFrob_eq_of_mem_of_le (hax : ClassFieldAxiom G A) [IsDiscreteModule G A]
     (s t : D.FrobeniusLift K) (h : s.elt⁻¹ * t.elt ∈ (L : Subgroup G)) (hle : s.deg ≤ t.deg) :
@@ -121,7 +121,7 @@ theorem recFrob_eq_of_mem_of_le (hax : ClassFieldAxiom G A) [IsDiscreteModule G 
       recFrob_mul hLK hax, hρ, mul_one]
 
 /- English proof (translation)
-Break down `le_total s.deg t.deg with hle | hle` into its components or cases. Conclude with `recFrob_eq_of_mem_of_le hLK hax s t h hle`. Use `(recFrob_eq_of_mem_of_le hLK hax t s ?_ hle).symm` and prove the remaining obligations. Use `L.inv_mem h` as an intermediate fact. Simplify using `using this`.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem recFrob_eq_of_mem (hax : ClassFieldAxiom G A) [IsDiscreteModule G A]
     (s t : D.FrobeniusLift K) (h : s.elt⁻¹ * t.elt ∈ (L : Subgroup G)) :
@@ -139,7 +139,7 @@ noncomputable def liftOf (τ : (K : Subgroup G)) : D.FrobeniusLift K :=
 
 omit [TotallyDisconnectedSpace G] [((L : Subgroup G).subgroupOf K).Normal] in
 /- English proof (translation)
-The claim follows from `(exists_frobeniusLift hLK τ.2).choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem liftOf_spec (τ : (K : Subgroup G)) : (τ : G)⁻¹ * (liftOf (D := D) hLK τ).elt ∈ (L : Subgroup G) :=
   (exists_frobeniusLift hLK τ.2).choose_spec
@@ -147,7 +147,7 @@ theorem liftOf_spec (τ : (K : Subgroup G)) : (τ : G)⁻¹ * (liftOf (D := D) h
 omit [TotallyDisconnectedSpace G] [((L : Subgroup G).subgroupOf K).Normal] in
 
 /- English proof (translation)
-Rewrite using `[eq_comm, QuotientGroup.eq, Subgroup.mem_subgroupOf]`. Simplify using `using liftOf_spec hLK τ`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mk_liftOf (τ : (K : Subgroup G)) :
     ((⟨(liftOf (D := D) hLK τ).elt, (liftOf (D := D) hLK τ).mem⟩ : (K : Subgroup G)) :
@@ -192,7 +192,7 @@ noncomputable def reciprocity :
     simpa using this
 
 /- English proof (translation)
-Use `show D.recHom hLK hax ⟨s.elt, s.mem⟩ = _`. Rewrite using `[recHom_apply]`. Apply `recFrob_eq_of_mem hLK hax` to reduce the goal to its premises. Use `L.inv_mem (liftOf_spec (D := D) hLK ⟨s.elt, s.mem⟩)` as an intermediate fact. Simplify using `using this`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem reciprocity_mk (s : D.FrobeniusLift K) :
     D.reciprocity hLK hax ((⟨s.elt, s.mem⟩ : (K : Subgroup G)) :
@@ -204,7 +204,7 @@ theorem reciprocity_mk (s : D.FrobeniusLift K) :
   simpa using this
 
 /- English proof (translation)
-Rewrite using `[reciprocity_mk, D.mk_norm_eq_recFrob hLK hax s hπ]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem reciprocity_mk_eq_norm (s : D.FrobeniusLift K)
     {π : fixedModule A ((s.field L hLK : OpenSubgroup G) : Subgroup G)}
@@ -220,7 +220,7 @@ include hLK in
 omit [IsDiscreteModule G A] [TotallyDisconnectedSpace G] [((L : Subgroup G).subgroupOf K).Normal] in
 
 /- English proof (translation)
-Proceed by induction on `q using QuotientGroup.induction_on with`. Consider the case `H τ => exact ⟨liftOf hLK τ, mk_liftOf hLK τ⟩`.
+Proceed by induction. Treat this case separately.
 -/
 theorem exists_frobeniusLift_mk (q : (K : Subgroup G) ⧸ (L : Subgroup G).subgroupOf K) :
     ∃ s : D.FrobeniusLift K,

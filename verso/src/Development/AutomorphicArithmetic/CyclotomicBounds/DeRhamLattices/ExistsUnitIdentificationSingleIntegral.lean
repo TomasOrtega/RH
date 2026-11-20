@@ -7,17 +7,15 @@ set_option maxHeartbeats 2000000
 set_option synthInstance.maxHeartbeats 400000
 
 /- English proof (translation)
-Take `⟨⟨ε, hε⟩, hεall⟩` from `GlobalTheory.T.teichmullerSubOneAinf_properties_compatibleRoots l`. Use `set δ : OCb l := (frobeniusEquiv (OCb l) l).symm ε with hδdef`. Establish `hδ : δ ^ l = ε` using `frobeniusEquiv_symm_pow_p (OCb l) l ε`. Take `⟨-, -, hθ, -⟩` from `hεall ε δ hε hδ`. Take `⟨α, β, hα, hβ⟩` from `P.exists_exponents`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hK1, hK2, -, -⟩` from `GlobalTheory.T.breuilKisin_lattice_exponents_ainf_comparison l a e O K t ϖ ι P T I α β hα hβ ε δ hε hδ`. Use `set ν : OA l O := (1 : O) ⊗ₜ[ℤ_[l]] muOf δ with hν`. Establish `hpow : ∀ k : ℕ, (1 : O) ⊗ₜ[ℤ_[l]] (muOf δ ^ k) = ν ^ k` using `fun k => by`. Rewrite using `[hν, Algebra.TensorProduct.tmul_pow, one_pow]`. Simplify using `only [hpow] at hK1 hK2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu : IsUnit (toOD l O ν)`. Establish `h1 : IsUnit (ainfToBdRp l (muOf δ))` using `(GlobalTheory.MemLoc.thetaD_props l).2.2.1 _ (by`. Express the relevant statement in the definitionally equal form `Per.θD l (GlobalTheory.MemLoc.aDp l (muOf δ)) ≠ 0`. Rewrite using `[(GlobalTheory.MemLoc.thetaD_props l).2.2.2.1]`. Introduce `h`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `hθ (Subtype.ext h))`. Establish `h2 : toOD l O ν = (Algebra.TensorProduct.includeRight : Per.BdRp l →ₐ[ℤ_[l]] OD l O) (ainfToBdRp l (muOf δ))`. Simplify using `[hν, toOD]`. Rewrite using `[h2]`. Conclude with `h1.map _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `choose z hz using fun i => hK2 (inclV l O ι (Pi.single i 1)) ⟨_, rfl⟩`. Use `⟨ν ^ α, ?_, fun i => ⟨z i, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[map_pow]`. Conclude with `hu.pow α`. Establish `hc : inclV l O ι (Pi.single i (ν ^ α)) = inclO l O (ν ^ α) • inclV l O ι (Pi.single i 1)`.
-
-Rewrite using `[← GlobalTheory.DeRhamIdent.inclV_smul]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Simplify using `[Pi.single_apply]`. Rewrite using `[hc, hz i]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.KN.tame_identification_unit (l : ℕ) [Fact l.Prime] (a e : ℕ) [NeZero a] [NeZero e] (O K : Type) [CommRing O] [Algebra ℤ_[l] O] [Module.Free ℤ_[l] O] [Module.Finite ℤ_[l] O] [NormedField K] [IsUltrametricDist K] [Algebra O K] [IsUnitBall O K] [NormedAlgebra ℚ_[l] K] [TameDescentExponentData K l e a] (t : Wq l a →ₐ[ℤ_[l]] O) (ϖ : PiSys l e) (ι : Type) [Fintype ι] [DecidableEq ι] (P : PhiMod O K l e a ι) (T : LocLat (Gl l) ℚ_[l] K O) (I : Ident t ϖ P T) :
     ∃ u : OA l O, IsUnit (toOD l O u) ∧ ∀ i : ι, ∃ z : TW (OA l O) T,
@@ -55,7 +53,7 @@ private theorem UpperTheory.KN.tame_identification_unit (l : ℕ) [Fact l.Prime]
     rw [hc, hz i]
 
 /- English proof (translation)
-Introduce `l _ a e _ _ ϖ LL _ _ ι _ _ P T I`. Conclude with `UpperTheory.KN.tame_identification_unit l a e ↥(OL LL) ↥LL.1 (thetaW a LL) ϖ ι P T I`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem _root_.UpperTheory.KN.exists_unit_identification_single_integral :
     ∀ (l : ℕ) [Fact l.Prime] (a e : ℕ) [NeZero a] [NeZero e] (ϖ : PiSys l e) (LL : FinExt l) [HasUnr a LL] [TameDescentExponentData ↥LL.1 l e a] (ι : Type) [Fintype ι] [DecidableEq ι] (P : PhiMod ↥(OL LL) ↥LL.1 l e a ι) (T : QLat LL) (I : Ident (thetaW a LL) ϖ P T), ∃ u : OA l ↥(OL LL), IsUnit (toOD l ↥(OL LL) u) ∧ ∀ i : ι, ∃ z : TW (OA l ↥(OL LL)) T, I.j (inclV l ↥(OL LL) ι (Pi.single i u)) = TWincl (inclO l ↥(OL LL)) T z := by

@@ -4,9 +4,7 @@ open NumberField IsDedekindDomain Matrix GlobalTheory.UPel.HT GlobalTheory.LKTri
 open scoped TensorProduct
 
 /- English proof (translation)
-Break down `InfinitePlace.mk_eq_iff.mp h with h | h` into its components or cases. Rewrite using `[h]`. Conclude with `A.c_neg`. Establish `h1` using `A.c_neg`. Rewrite `h1` using `[← h, ComplexEmbedding.conjugate_coe_eq, Complex.conj_re]`.
-
-Conclude with `h1`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma c_re_neg {E : Type} [Field E] [NumberField E] [IsCMField E] (A : Arith E) (τ : E →+* ℂ)
     (h : InfinitePlace.mk τ = InfinitePlace.mk A.τ₀) : (τ (A.c : E)).re < 0 := by
@@ -17,7 +15,7 @@ private lemma c_re_neg {E : Type} [Field E] [NumberField E] [IsCMField E] (A : A
     exact h1
 
 /- English proof (translation)
-Use `A.c_ne` as an intermediate fact. Unfold `Arith.dg`. Apply the tactic sequence `split_ifs <;> simp [this]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private lemma dg_ne {E : Type} [Field E] [NumberField E] [IsCMField E] (A : Arith E) (n : ℕ) (i : Fin n) :
     ((A.dg n i : 𝓞 E) : E) ≠ 0 := by
@@ -26,7 +24,7 @@ private lemma dg_ne {E : Type} [Field E] [NumberField E] [IsCMField E] (A : Arit
   split_ifs <;> simp [this]
 
 /- English proof (translation)
-Establish `h : A.bar (A.dg n i) = A.dg n i`. Unfold `Arith.dg`. Apply the tactic sequence `split_ifs <;> simp [A.c_real]`. Conclude with `(A.bar_eq _).symm.trans (congrArg _ h)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 private lemma dg_cj {E : Type} [Field E] [NumberField E] [IsCMField E] (A : Arith E) (n : ℕ) (i : Fin n) :
     cj E ((A.dg n i : 𝓞 E) : E) = ((A.dg n i : 𝓞 E) : E) := by
@@ -36,7 +34,7 @@ private lemma dg_cj {E : Type} [Field E] [NumberField E] [IsCMField E] (A : Arit
   exact (A.bar_eq _).symm.trans (congrArg _ h)
 
 /- English proof (translation)
-Establish `h : A.bar (A.hd n i) = A.hd n i`. Unfold `Arith.hd Arith.dg`. Apply the tactic sequence `split_ifs <;> simp [A.c_real]`. Conclude with `(A.bar_eq _).symm.trans (congrArg _ h)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 private lemma hd_cj {E : Type} [Field E] [NumberField E] [IsCMField E] (A : Arith E) (n : ℕ) (i : Fin n) :
     cj E ((A.hd n i : 𝓞 E) : E) = ((A.hd n i : 𝓞 E) : E) := by
@@ -46,16 +44,16 @@ private lemma hd_cj {E : Type} [Field E] [NumberField E] [IsCMField E] (A : Arit
   exact (A.bar_eq _).symm.trans (congrArg _ h)
 
 /- English proof (translation)
-Simplify using `[Arith.hd]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma hd_eq {E : Type} [Field E] [NumberField E] [IsCMField E] (A : Arith E) (n : ℕ) (i : Fin n) :
     ((A.hd n i : 𝓞 E) : E) = -(A.c : E) * ((A.dg n i : 𝓞 E) : E) := by
   simp [Arith.hd]
 
 /- English proof (translation)
-Simplify using `only [dotProduct, Matrix.mulVec_diagonal, Pi.star_apply, Complex.re_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `h : star (x i) * (a * x i) = a * ((Complex.normSq (x i) : ℝ) : ℂ)`. Rewrite using `[Complex.normSq_eq_conj_mul_self]`. Simplify using `only [Complex.star_def]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h, Complex.re_mul_ofReal]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 -/
 private lemma re_form {n : ℕ} (a : ℂ) (x : Fin n → ℂ) :
     (star x ⬝ᵥ ((Matrix.diagonal fun _ => a) *ᵥ x)).re = a.re * ∑ i, Complex.normSq (x i) := by
@@ -68,7 +66,7 @@ private lemma re_form {n : ℕ} (a : ℂ) (x : Fin n → ℂ) :
   rw [h, Complex.re_mul_ofReal]
 
 /- English proof (translation)
-Take `⟨i, hi⟩` from `Function.ne_iff.mp hx`. Conclude with `Finset.sum_pos' (fun j _ => Complex.normSq_nonneg _) ⟨i, Finset.mem_univ _, Complex.normSq_pos.mpr hi⟩`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private lemma sum_pos' {n : ℕ} {x : Fin n → ℂ} (hx : x ≠ 0) : 0 < ∑ i, Complex.normSq (x i) := by
   obtain ⟨i, hi⟩ := Function.ne_iff.mp hx
@@ -76,7 +74,7 @@ private lemma sum_pos' {n : ℕ} {x : Fin n → ℂ} (hx : x ≠ 0) : 0 < ∑ i,
     ⟨i, Finset.mem_univ _, Complex.normSq_pos.mpr hi⟩
 
 /- English proof (translation)
-Unfold `Arith.H`. Rewrite using `[Matrix.diagonal_map (map_zero _), Matrix.diagonal_map (map_zero _), Matrix.diagonal_transpose, Matrix.diagonal_mul_diagonal]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Rewrite using `[hd_eq, map_mul, map_neg, map_inv₀, mul_assoc, mul_inv_cancel₀ ((map_ne_zero e).2 (dg_ne A n i)), mul_one]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 private lemma form_eq {E : Type} [Field E] [NumberField E] [IsCMField E] (A : Arith E) (n : ℕ) (e : E →+* ℂ) :
     ((A.H n).map e)ᵀ * (Matrix.diagonal fun i => ((A.dg n i : 𝓞 E) : E)⁻¹).map e =
@@ -89,13 +87,13 @@ private lemma form_eq {E : Type} [Field E] [NumberField E] [IsCMField E] (A : Ar
   rw [hd_eq, map_mul, map_neg, map_inv₀, mul_assoc, mul_inv_cancel₀ ((map_ne_zero e).2 (dg_ne A n i)), mul_one]
 
 /- English proof (translation)
-Establish `hH : (A.H n).map (cj E) = A.H n`. Unfold `Arith.H`. Rewrite using `[Matrix.diagonal_map (map_zero _)]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `hd_cj A n i`. Establish `hD : (Matrix.diagonal fun i => ((A.dg n i : 𝓞 E) : E)).map (cj E) = Matrix.diagonal fun i => ((A.dg n i : 𝓞 E) : E)`. Rewrite using `[Matrix.diagonal_map (map_zero _)]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Conclude with `dg_cj A n i`. Establish `hu : IsUnit (A.H n).det` using `(A.det_ne n).isUnit`. Establish `hc : (Matrix.diagonal fun i => ((A.dg n i : 𝓞 E) : E)) * A.H n = A.H n * Matrix.diagonal fun i => ((A.dg n i : 𝓞 E) : E)`. Unfold `Arith.H`. Rewrite using `[Matrix.diagonal_mul_diagonal, Matrix.diagonal_mul_diagonal]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `congr 1`. Use function extensionality and compare the values at `i`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hH, hD, Matrix.diagonal_transpose, Matrix.mul_assoc, hc, Matrix.nonsing_inv_mul_cancel_left _ _ hu]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma sym_eq {E : Type} [Field E] [NumberField E] [IsCMField E] (A : Arith E) (n : ℕ) :
     ((A.H n).map (cj E))⁻¹ * ((Matrix.diagonal fun i => ((A.dg n i : 𝓞 E) : E)).map (cj E))ᵀ * (A.H n).map (cj E) =
@@ -123,17 +121,15 @@ private lemma sym_eq {E : Type} [Field E] [NumberField E] [IsCMField E] (A : Ari
   rw [hH, hD, Matrix.diagonal_transpose, Matrix.mul_assoc, hc, Matrix.nonsing_inv_mul_cancel_left _ _ hu]
 
 /- English proof (translation)
-Introduce `_ E _ _ _ A n p _ S`. Establish `h1 : (Matrix.diagonal fun i => ((A.dg n i : 𝓞 E) : E)) * (Matrix.diagonal fun i => ((A.dg n i : 𝓞 E) : E)⁻¹) = 1`. Rewrite using `[Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `mul_inv_cancel₀ (dg_ne A n i)`. Establish `h2 : (Matrix.diagonal fun i => ((A.dg n i : 𝓞 E) : E)⁻¹) * (Matrix.diagonal fun i => ((A.dg n i : 𝓞 E) : E)) = 1`. Rewrite using `[Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Introduce a local definition for the expression.
 
-Conclude with `inv_mul_cancel₀ (dg_ne A n i)`. Set `β : S.G.Cˣ` to `(⟨Matrix.diagonal fun i => ((A.dg n i : 𝓞 E) : E), Matrix.diagonal fun i => ((A.dg n i : 𝓞 E) : E)⁻¹, h1, h2⟩ : (Matrix (Fin n) (Fin n) E)ˣ)`. Use `⟨β, rfl, sym_eq A n, ?_⟩` and prove the remaining obligations. Introduce `v x hx`. Establish `hs : sigPosH (S.G.gram_herm v) = sigPos (A.herm n) v.embedding` using `rfl`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hf : S.G.gram v * S.G.psi v ((β⁻¹ : S.G.Cˣ) : S.G.C) = Matrix.diagonal fun _ => -v.embedding (A.c : E)` using `form_eq A n v.embedding`. Establish `hP` using `sum_pos' hx`. Rewrite using `[hf, re_form, hs, Complex.neg_re]`. Distinguish the cases in `hm : InfinitePlace.mk v.embedding = InfinitePlace.mk A.τ₀`. Establish `hc` using `c_re_neg A v.embedding hm`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 
-Establish `h1'` using `((S.sig v.embedding).1 hm).1`. Conclude with `⟨fun _ => mul_pos (neg_pos.2 hc) hP, fun h => absurd h1' h⟩`. Establish `hc` using `A.c_pos v.embedding hm`. Establish `h0` using `((S.sig v.embedding).2 hm).1`. Use `⟨fun h => ?_, fun _ => mul_neg_of_neg_of_pos (neg_neg_of_pos hc) hP⟩` and prove the remaining obligations.
-
-Rewrite `h` using `[h0]`. Conclude with `absurd h (by norm_num)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.G1.pStdForm :
     HdSign → StdForm := by

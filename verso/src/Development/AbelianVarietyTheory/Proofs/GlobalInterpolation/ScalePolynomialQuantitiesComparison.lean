@@ -7,31 +7,27 @@ open Formalism.BasicNotions Formalism.MainNotions
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `eps c κ heps hκ`. Take `⟨x1, h1⟩` from `_root_.GlobalTheory.log_add_rpow_mul_log_pow_le_rpow 0 (eps / 8) c 0 1 0 le_rfl (by positivity) one_pos`. Take `⟨x2, h2⟩` from `_root_.GlobalTheory.log_add_rpow_mul_log_pow_le_rpow 0 (eps / 3) c 0 κ 0 le_rfl (by positivity) hκ`. Take `⟨x3, h3⟩` from `_root_.GlobalTheory.log_add_rpow_mul_log_pow_le_rpow (eps / 3) eps (c + 3) 1 κ 0 (by positivity) (by linarith) hκ`. Take `⟨x4, h4⟩` from `_root_.GlobalTheory.log_add_rpow_mul_log_pow_le_rpow 0 (eps / 3) (c + 1) 0 1 0 le_rfl (by positivity) one_pos`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨x5, h5⟩` from `_root_.GlobalTheory.log_add_rpow_mul_log_pow_le_rpow (eps / 5) (eps / 3) |c| |c| κ 2 (by positivity) (by linarith) hκ`. Use `⟨max (max (max x1 x2) (max x3 x4)) x5, ?_⟩` and prove the remaining obligations. Introduce `s hs hx`. Substitute `hs` using the available equality. Establish `ht : 1 < s.x` using `s.one_lt_alt`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `ht0 : 0 < s.x` using `by linarith`. Establish `hlog : 0 ≤ Real.log s.x` using `Real.log_nonneg ht.le`. Establish `g1` using `h1 s.x (le_trans (by simp) hx)`. Establish `g2` using `h2 s.x (le_trans (by simp) hx)`. Establish `g3` using `h3 s.x (le_trans (by simp) hx)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `g4` using `h4 s.x (le_trans (by simp) hx)`. Establish `g5` using `h5 s.x (le_trans (by simp) hx)`. Simplify using `only [Real.rpow_zero, pow_zero, mul_one, zero_mul, add_zero, one_mul] at g1 g2 g3 g4`. Establish `hxc : s.x ^ c = Real.exp (Real.log s.x * c)` using `Real.rpow_def_of_pos ht0 c`. Establish `hX' : s.X' = Real.exp (s.x ^ (s.eps / 3))` using `by unfold _root_.Formalism.BasicNotions.Scale.X'; rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb : s.b = Real.exp (s.x ^ s.eps)` using `by unfold _root_.Formalism.BasicNotions.Scale.b _root_.Formalism.BasicNotions.Scale.L; rfl`. Establish `hb'def : s.b' = s.x * s.b / s.X'` using `by unfold _root_.Formalism.BasicNotions.Scale.b' _root_.Formalism.BasicNotions.Scale.a; rfl`. Establish `hb' : s.b' = Real.exp (Real.log s.x + s.x ^ s.eps - s.x ^ (s.eps / 3))`. Rewrite using `[hb'def, hb, hX', Real.exp_sub, Real.exp_add, Real.exp_log ht0]`. Establish `hw : ∀ n : ℕ, s.w'' n = s.b' / (s.x * n)` using `fun n => by unfold _root_.Formalism.BasicNotions.Scale.w''; rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hX'' : ∀ n : ℕ, s.X'' n = s.x * s.b / s.w'' n` using `fun n => by`. Unfold `_root_.Formalism.BasicNotions.Scale.X'' _root_.Formalism.BasicNotions.Scale.a`. Both sides reduce to the same expression. Use `⟨?_, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hxc]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Real.exp_le_exp.2 (by linarith)`. Rewrite using `[hxc, hX', ← Real.exp_mul]`. Conclude with `Real.exp_le_exp.2 (by linarith)`. Rewrite using `[hxc, hX', hb, ← Real.exp_mul, ← Real.exp_add]`. Conclude with `Real.exp_le_exp.2 (by nlinarith)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hb', hxc, hb, ← Real.exp_add]`. Conclude with `Real.exp_le_exp.2 (by nlinarith)`. Rewrite using `[hb, ← Real.exp_mul, hxc, ← Real.exp_add, hb']`. Conclude with `Real.exp_le_exp.2 (by nlinarith)`. Introduce `n hn hnx`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Establish `hn' : (1 : ℝ) ≤ n` using `by exact_mod_cast hn`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hw, le_div_iff₀ (by positivity), hb, ← Real.exp_mul, hxc]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Real.rpow_def_of_pos ht0 3, Real.exp_add, Real.exp_add, Real.exp_add, Real.exp_log ht0]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `_ ≤ s.b' := by`. Rewrite using `[hb']`. Conclude with `Real.exp_le_exp.2 (by nlinarith)`. Rewrite using `[hw]`. Establish `hpos : 0 ≤ s.b'` using `by rw [hb']; positivity`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `div_le_self hpos (one_le_mul_of_one_le_of_one_le ht.le hn')`. Establish `hn0 : (n : ℝ) ≠ 0` using `by positivity`. Establish `hbne : s.b ≠ 0` using `by rw [hb]; positivity`. Establish `hX'ne : s.X' ≠ 0` using `by rw [hX']; positivity`. Rewrite using `[hX'', hw, hb'def]`.
-
-Clear the denominators using the available nonvanishing facts. Establish `hY : 0 ≤ s.x ^ (s.eps / 5) * Real.log s.x ^ 2` using `by positivity`. Establish `hA : c * (s.x ^ (s.eps / 5) * Real.log s.x ^ 2) ≤ |c| * (s.x ^ (s.eps / 5) * Real.log s.x ^ 2)` using `mul_le_mul_of_nonneg_right (le_abs_self c) hY`. Establish `hB : c * Real.log s.x ≤ |c| * Real.log s.x` using `mul_le_mul_of_nonneg_right (le_abs_self c) hlog`. Establish `habs : 0 ≤ |c|` using `abs_nonneg c`.
-
-Rewrite using `[hxc, hX', ← Real.exp_mul, ← Real.exp_add]`. Conclude with `Real.exp_le_exp.2 (by nlinarith)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.scale_poly_comparison : ∀ eps c κ : ℝ, 0 < eps → 0 < κ → ∃ x0 : ℝ, ∀ s : _root_.Formalism.BasicNotions.Scale, s.eps = eps → x0 ≤ s.x → s.x ^ c ≤ Real.exp (s.x ^ (s.eps / 8)) ∧ s.x ^ c ≤ s.X' ^ κ ∧ s.x ^ c * s.X' ≤ s.b ^ κ ∧ s.b' * s.x ^ c ≤ s.b ∧ s.b ^ (1 - κ) * s.x ^ c ≤ s.b' ∧ (∀ n : ℕ, 1 ≤ n → (n : ℝ) ≤ s.x ^ (3 : ℝ) → s.b ^ (1 - κ) * s.x ^ c ≤ s.w'' n ∧ s.w'' n ≤ s.b' ∧ s.X'' n = s.x * n * s.X') ∧ Real.exp (c * s.x ^ (s.eps / 5) * Real.log s.x ^ 2) * s.x ^ c ≤ s.X' ^ κ := by
   intro eps c κ heps hκ

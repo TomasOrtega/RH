@@ -7,19 +7,19 @@ noncomputable section
 namespace NFOne
 
 /- English proof (translation)
-Establish `hp'` using `p.isLt`. Establish `hq'` using `q.isLt`. Rewrite using `[herm_eq]`. Establish `pt : ∀ i : Fin (2 * r + k + 1), star (V (sg k r p).val i) * (Hpk k r *ᵥ V (sg k r q).val) i = (if i = sg k r q then star (V (sg k r p).val (sg k r q)) else 0) + (if i = p then V (sg k r q).val (sg k r p) else 0) + (if r ≤ i.val ∧ i.val ≤ r + k then dW k r i * star (V (sg k r p).v …`. Introduce `i`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hi` using `i.isLt`. Rewrite using `[Hpk_mulVec]`. Distinguish the cases in `h1 : i.val < r`. Rewrite using `[if_neg (show ¬ (r ≤ i.val ∧ i.val ≤ r + k) by omega), if_neg (show ¬ (i = p) from fun h => by rw [h] at h1; omega), if_neg (show ¬ (r ≤ i.val ∧ i.val ≤ r + k) by omega), add_zero, add_zero]`. Rewrite using `[Vs _ hb (sg k r i) (by simp only [sg_val]; omega)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h2 : i = sg k r q`. Rewrite using `[if_pos (show (sg k r (sg k r i)).val = (sg k r q).val by rw [h2, sg_sg]), if_pos h2, mul_one, h2]`. Rewrite using `[if_neg (show ¬ ((sg k r (sg k r i)).val = (sg k r q).val) by`. Introduce `h`. Apply `h2` to reduce the goal to its premises.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use `ext`. Simplify using `only [sg_val] at h ⊢`. Use the proof step `omega), if_neg h2, mul_zero]`. Distinguish the cases in `h3 : i.val ≤ r + k`. Rewrite using `[if_pos (show r ≤ i.val ∧ i.val ≤ r + k from ⟨by omega, h3⟩), if_neg (show ¬ (i = sg k r q) from fun h => by rw [h] at h1; simp only [sg_val] at h1; omega), if_neg (show ¬ (i = p) from fun h => by rw [h] at h3; omega), if_pos (show r ≤ i.val ∧ i.val ≤ r + k from ⟨by omega, h3⟩)]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_neg (show ¬ (r ≤ i.val ∧ i.val ≤ r + k) by omega), if_neg (show ¬ (r ≤ i.val ∧ i.val ≤ r + k) by omega), if_neg (show ¬ (i = sg k r q) from fun h => by rw [h] at h3; simp only [sg_val] at h3; omega), zero_add, add_zero]`. Rewrite using `[Vs _ hc i (by omega)]`. Distinguish the cases in `h2 : i = p`. Rewrite using `[if_pos (show (sg k r i).val = (sg k r p).val by rw [h2]), if_pos h2, h2]; simp`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg (show ¬ ((sg k r i).val = (sg k r p).val) by`. Introduce `h`. Apply `h2` to reduce the goal to its premises. Use `ext`. Simplify using `only [sg_val] at h`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use the proof step `omega), if_neg h2]`. Simplify using the standard rewrite rules. Rewrite using `[Finset.sum_congr rfl (fun i _ => pt i), Finset.sum_add_distrib, Finset.sum_add_distrib]`. Simplify using `only [Finset.sum_ite_eq', Finset.mem_univ, if_true]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem K_iso (k r j : ℕ) (V : ℕ → Fin (2 * r + k + 1) → ℂ)
     (Vs : ∀ b, b < j → ∀ q : Fin (2 * r + k + 1), r + k < q.val →
@@ -70,31 +70,31 @@ theorem K_iso (k r j : ℕ) (V : ℕ → Fin (2 * r + k + 1) → ℂ)
   simp only [Finset.sum_ite_eq', Finset.mem_univ, if_true]
 
 /- English proof (translation)
-Establish `hp2` using `p.isLt`. Establish `hq2` using `q.isLt`. Rewrite using `[PH_apply, HP_apply, PHP_apply]`. Establish `hC : ¬ (r + k < p.val ∧ r + k < q.val) → ∑ i, (if r ≤ i.val ∧ i.val ≤ r + k then dW k r i * star (Pm k r j V i p) * Pm k r j V i q else 0) = 0`. Introduce `hpq`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Use `split_ifs with hi`. Distinguish the cases in `hp : r + k < p.val`. Rewrite using `[P_rowWS_colW k r j V i q hi.1 (by omega), mul_zero]`. Rewrite using `[P_rowWS_colW k r j V i p hi.1 (by omega), star_zero, mul_zero, zero_mul]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Distinguish the cases in `hpX : p.val < r`. Establish `hpW : ¬ (r ≤ p.val ∧ p.val ≤ r + k)` using `by omega`. Establish `hA : ∀ x : Fin (2 * r + k + 1), Pm k r j V x p = 0` using `fun x => P_colX k r j V x p hpX`. Establish `hB : Pm k r j V (sg k r p) q = 0` using `P_rowS k r j V (sg k r p) q (by rw [sg_val]; omega)`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg hpW, hB, hC (by omega), hA, hA]`. Simplify using the standard rewrite rules. Distinguish the cases in `hpW : r ≤ p.val ∧ p.val ≤ r + k`. Rewrite using `[if_pos hpW, hC (by omega), add_zero]`. Distinguish the cases in `hqX : q.val < r`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `hqW : ¬ (r ≤ q.val ∧ q.val ≤ r + k)` using `by omega`. Rewrite using `[if_neg hqW, P_rowS k r j V (sg k r q) p (by rw [sg_val]; omega), P_colX k r j V p q hqX]`. Simplify using the standard rewrite rules. Distinguish the cases in `hqW : r ≤ q.val ∧ q.val ≤ r + k`. Rewrite using `[if_pos hqW, P_rowWS_colW k r j V q p hqW.1 hpW.2, P_rowWS_colW k r j V p q hpW.1 hqW.2]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `hqS : r + k < q.val` using `by omega`. Rewrite using `[if_neg hqW, P_XW k r j V (sg k r q) p (by rw [sg_val]; omega) hpW.1 hpW.2, P_WS k r j V p q hpW.1 hpW.2 hqS, star_neg, star_mul', star_star, star_dW]`. Expand and normalize the polynomial expressions, which then agree. Establish `hpS : r + k < p.val` using `by omega`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg hpW]`. Distinguish the cases in `hqX : q.val < r`. Establish `hqW : ¬ (r ≤ q.val ∧ q.val ≤ r + k)` using `by omega`. Rewrite using `[if_neg hqW, P_rowS k r j V (sg k r q) p (by rw [sg_val]; omega), P_colX k r j V (sg k r p) q hqX, hC (by omega)]`. Simplify using the standard rewrite rules.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hqW : r ≤ q.val ∧ q.val ≤ r + k`. Rewrite using `[if_pos hqW, P_WS k r j V q p hqW.1 hqW.2 hpS, P_XW k r j V (sg k r p) q (by rw [sg_val]; omega) hqW.1 hqW.2, hC (by omega)]`. Expand and normalize the polynomial expressions, which then agree. Establish `hqS : r + k < q.val` using `by omega`. Rewrite using `[if_neg hqW]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hC' : ∑ i, (if r ≤ i.val ∧ i.val ≤ r + k then dW k r i * star (Pm k r j V i p) * Pm k r j V i q else 0) = ∑ i, (if r ≤ i.val ∧ i.val ≤ r + k then dW k r i * star (V (sg k r p).val i) * V (sg k r q).val i else 0)`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `split_ifs with hi`. Rewrite using `[P_WS k r j V i p hi.1 hi.2 hpS, P_WS k r j V i q hi.1 hi.2 hqS]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[hC', P_XS k r j V (sg k r q) p (by rw [sg_val]; omega) hpS, P_XS k r j V (sg k r p) q (by rw [sg_val]; omega) hqS]`. Distinguish the cases in `hbp : (sg k r p).val < j`. Distinguish the cases in `hbq : (sg k r q).val < j`. Rewrite using `[if_pos hbp, if_pos hbq]`. Establish `hK` using `K_iso k r j V Vs p q hpS hqS hbq hbp`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hK` using `[Viso _ _ hbq hbp]`. Conclude with `hK.symm`. Establish `h0` using `V0 _ (Nat.le_of_not_lt hbq)`. Rewrite using `[if_pos hbp, if_neg hbq, h0]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Establish `h0` using `V0 _ (Nat.le_of_not_lt hbp)`. Rewrite using `[if_neg hbp, h0]`. Distinguish the cases in `hbq : (sg k r q).val < j`. Rewrite using `[if_pos hbq]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h0'` using `V0 _ (Nat.le_of_not_lt hbq)`. Rewrite using `[if_neg hbq, h0']`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem E_zero (k r j : ℕ) (V : ℕ → Fin (2 * r + k + 1) → ℂ)
     (V0 : ∀ c, j ≤ c → V c = 0)
@@ -178,9 +178,9 @@ theorem E_zero (k r j : ℕ) (V : ℕ → Fin (2 * r + k + 1) → ℂ)
               simp
 
 /- English proof (translation)
-Establish `hE : (Pm k r j V)ᴴ * Hpk k r + Hpk k r * Pm k r j V + (Pm k r j V)ᴴ * (Hpk k r * Pm k r j V) = 0`. Use extensionality with `p q`. Simplify using `only [Matrix.add_apply, Matrix.zero_apply]`. Conclude with `E_zero k r j V V0 Vs Viso p q`. Rewrite using `[Matrix.conjTranspose_add, Matrix.conjTranspose_one]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.add_mul, Matrix.mul_add, Matrix.one_mul, Matrix.mul_one, Matrix.mul_assoc]`. Normalize the expressions using the abelian group laws. Use `_ = Hpk k r := by rw [hE, add_zero]`.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem unitary_P (k r j : ℕ) (V : ℕ → Fin (2 * r + k + 1) → ℂ)
     (V0 : ∀ c, j ≤ c → V c = 0)

@@ -5,17 +5,17 @@ namespace Formalism.InvariantFactorPaths.L4
 open Finset
 
 /- English proof (translation)
-Introduce `s ka β c h1 h2`. Establish `key : ∀ a, a < s → ka a + ∑ a' ∈ range (a + 1), (β a' : ℤ) ≤ c`. Introduce `a`. Proceed by induction on `a with`. Consider the case `zero`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `ha`. Simplify using `using h2 ha`. Consider the case `succ a ih`. Introduce `ha`. Establish `h3` using `h1 a ha`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h4` using `ih (by omega)`. Rewrite using `[Finset.sum_range_succ]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `clear h2`. Proceed by induction on `s with`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `succ s ihs`. Establish `IH` using `ihs (fun i hi => h1 i (by omega)) (fun a ha => key a (by omega))`. Establish `hk` using `key s (by omega)`. Rewrite `hk` using `[Finset.sum_range_succ]`.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hinner : ∑ a ∈ range s, ((β a : ℤ) + 1) * (β s : ℤ) = (∑ a ∈ range s, (β a : ℤ) + s) * β s`. Rewrite using `[← Finset.sum_mul, Finset.sum_add_distrib]`. Simplify using the standard rewrite rules. Simplify using `only [Finset.sum_range_succ, hinner]`. Establish `hb : (0 : ℤ) ≤ β s` using `Nat.cast_nonneg _`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs : (0 : ℤ) ≤ s` using `Nat.cast_nonneg _`. Use polynomial arithmetic with `[mul_nonneg hb (sub_nonneg.mpr hk), mul_nonneg hb hs]`.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem eArith_ge : ∀ (s : ℕ) (ka : ℕ → ℤ) (β : ℕ → ℕ) (c : ℤ),
     (∀ i, i + 1 < s → ka (i + 1) + β (i + 1) ≤ ka i) → (0 < s → ka 0 + β 0 ≤ c) →
@@ -51,7 +51,7 @@ theorem eArith_ge : ∀ (s : ℕ) (ka : ℕ → ℤ) (β : ℕ → ℕ) (c : ℤ
     nlinarith [mul_nonneg hb (sub_nonneg.mpr hk), mul_nonneg hb hs]
 
 /- English proof (translation)
-Introduce `s ka β c h1 h2 h3`. Establish `h4` using `eArith_ge s ka β c h1 h2`. Establish `h5 : (1 : ℤ) ≤ ∑ a ∈ range s, (β a : ℤ)` using `by exact_mod_cast h3`. Combine the linear equalities and inequalities to obtain the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem exponent_arithmetic_holds : EArith := by
   intro s ka β c h1 h2 h3

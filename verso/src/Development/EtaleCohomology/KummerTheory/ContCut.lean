@@ -35,7 +35,7 @@ def Hf {R : Type} [CommRing R] (F : Shv R) (n : ℤ) : Scheme.{0}ᵒᵖ ⥤ AddC
     rw [Functor.map_comp, pull_comp])
 
 /- English proof (translation)
-Apply the tactic sequence `apply pullback.hom_ext <;> simp [bcMap, pullback.map, pullback.lift_fst, pullback.lift_snd, pullback.lift_snd_assoc]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem bcMap_comp {X : Scheme.{0}} {R A B C : CommRingCat.{0}} (p : X ⟶ Spec R) (f : R ⟶ A) (g : R ⟶ B) (k : R ⟶ C)
     (h : A ⟶ B) (h' : B ⟶ C) (e : f ≫ h = g) (e' : g ≫ h' = k) (e'' : f ≫ h ≫ h' = k) :
@@ -53,7 +53,7 @@ def bcHom {U X : Scheme.{0}} {R A : CommRingCat.{0}} (f : U ⟶ X) (p : X ⟶ Sp
   pullback.map _ _ _ _ f (𝟙 _) (𝟙 _) (by rw [Category.comp_id, e]) (by simp)
 
 /- English proof (translation)
-Apply the tactic sequence `apply pullback.hom_ext <;> simp [bcMap, bcHom, pullback.map, pullback.lift_fst, pullback.lift_snd, pullback.lift_snd_assoc, pullback.lift_fst_assoc]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem bcHom_bcMap {U X : Scheme.{0}} {R A B : CommRingCat.{0}} (f : U ⟶ X) (p : X ⟶ Spec R) (r : U ⟶ Spec R)
     (e : f ≫ p = r) (s : R ⟶ A) (t : R ⟶ B) (h : A ⟶ B) (e' : s ≫ h = t) :
@@ -120,9 +120,9 @@ def Aff : Prop := B1 → ∀ (q : ℕ) {X : Scheme.{0}} [IsAffine X] {R : CommRi
     IsColimit ((Under.forget R).mapCocone c) → ∀ n i : ℤ, Lim (bc p ⋙ Hf (tw q i) n) c
 
 /- English proof (translation)
-Introduce `_ b1 q _ X R p _ _ hq J _ _ D c hc u hu v hv n i`. Set `D' : J ⥤ Under R` to `{ obj := fun j => Under.mk (u j) map := fun f => Under.homMk (D.map f) (hu f) map_id := fun j => by ext1; exact D.map_id j map_comp := fun f g => by ext1; exact D.map_comp f g }`. Set `c' : Cocone D'` to `{ pt := Under.mk v ι := { app := fun j => Under.homMk (c.ι.app j) (hv j) naturality := fun j k f => by ext1; exact c.ι.naturality f } }`. Establish `hc' : IsColimit ((Under.forget R).mapCocone c')` using `hc`. Establish `key : ∀ n, Lim (bc p ⋙ Hf (tw q i) n) c'`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hI R (fun X p => ∀ n, Lim (bc p ⋙ Hf (tw q i) n) c') (fun X _ p n => hA b1 q p hq c' hc' n i) ?_ X p` and prove the remaining obligations. Introduce `W U V X a b f g p h hU hV hW`. Establish `eb : b ≫ g ≫ p = a ≫ f ≫ p` using `by rw [← Category.assoc, ← h.2.2.1.w, Category.assoc]`. Conclude with `h5 _ _ _ _ (hM _ (tw q i) _ _ _ _ (bcNat f p _ rfl) (bcNat g p _ rfl) (bcNat a _ _ rfl) (bcNat b _ _ eb) fun k => hB k.hom a b f g p _ _ _ rfl eb rfl rfl h) c' hU hV hW`. Conclude with `key n`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem goal_of (h5 : Five) (hI : Ind) (hB : BC) (hM : MVnat) (hA : Aff) : Cont := by
   intro _ b1 q _ X R p _ _ hq J _ _ D c hc u hu v hv n i

@@ -22,13 +22,11 @@ def typesIn (ε : Fin n → Bool) {H : Type} [NormedAddCommGroup H] [InnerProduc
   ⨆ μ : A, (sSup {S : Submodule ℂ H | S ≤ ⊤ ∧ Formalism.MainNotions.S.IsKTypeOf ε σ μ S} : Submodule ℂ H)
 
 /- English proof (translation)
-Introduce `g hg v hv`. Unfold `typesIn at hv ⊢`. Use `Submodule.iSup_induction _ (motive := fun v => σ g v ∈ _) hv (fun μ y hy => ?_) (by simp) ?_` and prove the remaining obligations. Rewrite `hy` using `[sSup_eq_iSup]`. Use `Submodule.iSup_induction _ (motive := fun z => σ g z ∈ _) hy (fun S w hw => ?_) (by simp) ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.iSup_induction _ (motive := fun w => σ g w ∈ _) hw (fun hS u hu => ?_) (by simp) ?_` and prove the remaining obligations. Conclude with `Submodule.mem_iSup_of_mem μ (Submodule.mem_sSup_of_mem hS (hS.2.2.1 g hg u hu))`. Introduce `a b ha hb`. Rewrite using `[map_add]`. Conclude with `add_mem ha hb`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `a b ha hb`. Rewrite using `[map_add]`. Conclude with `add_mem ha hb`. Introduce `a b ha hb`. Rewrite using `[map_add]`.
-
-Conclude with `add_mem ha hb`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem typesIn_kStable (ε : Fin n → Bool) {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     (σ : GlobalTheory.PsCo.Pc1.Mat n → (H →L[ℂ] H)) (A : Set (Fin n → ℝ)) : Formalism.MainNotions.S.IsKStableOn ε σ (typesIn ε σ A) := by
@@ -44,9 +42,7 @@ theorem typesIn_kStable (ε : Fin n → Bool) {H : Type} [NormedAddCommGroup H] 
   · intro a b ha hb; rw [map_add]; exact add_mem ha hb
 
 /- English proof (translation)
-Establish `hσ' : Formalism.MainNotions.S.IsURepOn (Formalism.MainNotions.S.UJset ε) σ`. Rewrite using `[mir_isURepOn_iff, mir_UJset_eq]`. Conclude with `hσ`. Establish `hadm` using `GlobalTheory.PsCo.TrAdm.isAdmissibleSub_top n ε H σ hσ' hirr`. Use `haveI : Finite A := hA.to_subtype`.
-
-Establish `: ∀ μ : A, FiniteDimensional ℂ (sSup {S : Submodule ℂ H | S ≤ ⊤ ∧ Formalism.MainNotions.S.IsKTypeOf ε σ μ S} : Submodule ℂ H)` using `fun μ => hadm μ`. Conclude with `Submodule.finiteDimensional_iSup _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem typesIn_fd (ε : Fin n → Bool) {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
     (σ : GlobalTheory.PsCo.Pc1.Mat n → (H →L[ℂ] H)) (hσ : IsURepOn (UJset ε) σ)
@@ -62,15 +58,13 @@ theorem typesIn_fd (ε : Fin n → Bool) {H : Type} [NormedAddCommGroup H] [Inne
   exact Submodule.finiteDimensional_iSup _
 
 /- English proof (translation)
-Introduce `hST hPA n ε H _ _ _ σ hσ hirr d`. Take `⟨A, hAf, hA⟩` from `hPA n ε d`. Use `set M := typesIn ε σ A with hMdef`. Establish `hMf : FiniteDimensional ℂ M` using `typesIn_fd ε σ hσ hirr hAf`. Establish `hMK : Formalism.MainNotions.S.IsKStableOn ε σ M` using `typesIn_kStable ε σ A`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hσ' : Formalism.MainNotions.S.IsURepOn (Formalism.MainNotions.S.UJset ε) σ`. Rewrite using `[mir_isURepOn_iff, mir_UJset_eq]`. Conclude with `hσ`. Establish `hMD : M ≤ smD ε σ` using `fun v hv => CompanionTheory.D.gk.HC.mem_smD_of_isKFin hσ' hirr ⟨M, hMf, hv, hMK⟩`. Use `⟨M.comap (smD ε σ).subtype, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Module.Finite.of_injective ((smD ε σ).subtype.restrict (p := M.comap (smD ε σ).subtype) (q := M) fun x hx => hx) (fun x y h => Subtype.ext (Subtype.ext (by simpa using congrArg Subtype.val h)))`. Introduce `k hk x hx show σ k (x : H) ∈ M`. Conclude with `hMK k (by rw [mir_Kset_eq]; exact hk) x hx`. Introduce `P hP u`. Rewrite using `[Submodule.map_comap_subtype, inf_eq_right.2 hMD]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨S, hSf, hSK, hSP, hSA⟩` from `hA H σ hσ u`. Use `(hST n ε H σ hσ S hSf hSK).trans (sSup_le fun S' hS' => ?_) (hSP P hP)` and prove the remaining obligations. Take `⟨hS'S, μ, hμ⟩` from `hS'`. Take `⟨v, hv, hv0, hvw⟩` from `hμ.2.2.2.1`. Establish `hμA : μ ∈ A` using `hSA μ v (hS'S hv) hv0 hvw`.
-
-Conclude with `le_iSup_of_le (⟨μ, hμA⟩ : A) (le_sSup ⟨le_top, hμ⟩)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem irrepAveragesFinDimSmooth_of_kTypes_and_polyAverages : SumTypes → PolyAvg → RangeFD := by
   intro hST hPA n ε H _ _ _ σ hσ hirr d
@@ -104,7 +98,7 @@ namespace GlobalTheory.PsCo.PcEF
 open GlobalTheory.PsCo.PcEG
 
 /- English proof (translation)
-The claim follows from `irrepAveragesFinDimSmooth_of_kTypes_and_polyAverages @GlobalTheory.PsCo.PcEF.finDimStable_isSumOfKTypes @GlobalTheory.PsCo.PcEF.polyAverages_finiteWeightStableSubspace`.
+A detailed English derivation is pending.
 -/
 theorem rangeFD_closed : RangeFD := irrepAveragesFinDimSmooth_of_kTypes_and_polyAverages @GlobalTheory.PsCo.PcEF.finDimStable_isSumOfKTypes @GlobalTheory.PsCo.PcEF.polyAverages_finiteWeightStableSubspace
 

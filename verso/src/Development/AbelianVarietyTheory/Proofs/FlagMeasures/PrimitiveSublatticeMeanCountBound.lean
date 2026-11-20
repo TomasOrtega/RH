@@ -18,25 +18,19 @@ open scoped ENNReal Classical
 namespace GlobalTheory.Mass.PrimMean
 
 /- English proof (translation)
-Use `set X : Set (A × B) := {p | p.1 ∈ Y ∧ p.2 ∈ P p.1} with hX`. Establish `hXs : Stable G X` using `fun g p hp => ⟨hY g _ hp.1, (hP g _ _).2 hp.2⟩`. Establish `h1` using `GlobalTheory.Mass.orbMass_eq_orbSum_fibre G (A × B) A X Y Prod.fst (fun _ _ => rfl) hXs hY (fun p hp => hp.1) hfin`. Establish `h2 : orbSum G Y (fun a => (((P a).encard : ℕ∞) : ℝ≥0∞)) ≤ orbMass G X`. Rewrite using `[h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(GlobalTheory.T.orbitWeightedStabilizerSum_mono_subadditive G A).1 Y Y _ _ subset_rfl fun a ha => ?_` and prove the remaining obligations. Establish `: (P a).encard ≤ (X ∩ Prod.fst ⁻¹' {a}).encard` using `Set.encard_le_encard_of_injOn (f := fun b => (a, b)) (fun b hb => ⟨⟨ha, hb⟩, rfl⟩) (fun b _ b' _ e => (Prod.ext_iff.1 e).2)`. Conclude with `this` after adjusting the coercions. Use `h2.trans ?_` and prove the remaining obligations. Establish `h3` using `(GlobalTheory.T.orbitWeightedStabilizerSum_mono_subadditive G (A × B)).2.2.1 B s X (fun b₀ => {p | p ∈ X ∧ ∃ g : G, g • b₀ = p.2}) (fun _ => 1) (by`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `p hp`. Take `⟨b₀, hb₀, g, hg⟩` from `hs _ hp.1 _ hp.2`. Simplify using `only [Set.mem_iUnion]`. Conclude with `⟨b₀, hb₀, hp, g, hg⟩)`. Use `h3.trans (Finset.sum_le_sum fun b₀ _ => le_of_eq ?_)` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hS : Stable (MulAction.stabilizer G b₀) {p : A × B | p ∈ X ∧ p.2 = b₀}`. Introduce and unpack `g p ⟨hp, e⟩`. Use `⟨hXs g p hp, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(g : G) • p.2 = b₀`. Rewrite using `[e]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `g.2`. Establish `h4` using `GlobalTheory.T.orbitWeightedStabilizerSum_restrict_slice G (A × B) (MulAction.stabilizer G b₀) {p | p ∈ X ∧ ∃ g : G, g • b₀ = p.2} {p | p ∈ X ∧ p.2 = b₀} (fun _ => 1) (fun p hp => ⟨hp.1, 1, by rw [one_smul, hp.2]⟩) (by`. Introduce and unpack `g p ⟨hp, g', e⟩`. Use `⟨hXs g p hp, g * g', ?_⟩` and prove the remaining obligations. Rewrite using `[mul_smul, e]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Use the proof step `rfl)`. Use `hS (fun _ _ => rfl)`. Use the proof step `(by`. Introduce and unpack `p ⟨hp, g, e⟩`. Use `⟨g⁻¹, hXs _ p hp, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `g⁻¹ • p.2 = b₀`. Rewrite using `[← e, inv_smul_smul])`. Use the proof step `(by`. Introduce and unpack `g p ⟨_, e⟩ ⟨_, e'⟩`. Express the relevant statement in the definitionally equal form `g • p.2 = b₀ at e'`.
-
-Rewrite `e'` using `[e]`. Conclude with `e')`. Rewrite using `[← h4]`. Conclude with `GlobalTheory.T.orbitWeightedStabilizerSum_transport_equivariant (MulAction.stabilizer G b₀) (MulAction.stabilizer G b₀) (A × B) A (MulEquiv.refl _) Prod.fst {p | p ∈ X ∧ p.2 = b₀} {a | a ∈ Y ∧ b₀ ∈ P a} (fun _ => 1) hS (by`. Introduce and unpack `g a ⟨ha, hb⟩`.
-
-Use `⟨hY g a ha, ?_⟩` and prove the remaining obligations. Use `(hP g a b₀).2 hb` as an intermediate fact. Rewrite `this` using `[g.2]`. Conclude with `this)`. Use the proof step `⟨fun p hp => ⟨hp.1.1, hp.2 ▸ hp.1.2⟩, fun p hp q hq e => Prod.ext e (hp.2.trans hq.2.symm), fun a ha => ⟨(a, b₀), ⟨ha, rfl⟩, rfl⟩⟩`.
-
-Use the proof step `(fun _ _ _ => rfl) (fun _ _ => rfl)`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem orbSum_encard_le (G A B : Type) [Group G] [MulAction G A] [MulAction G B] (Y : Set A) (P : A → Set B)
     (hP : ∀ (g : G) a b, g • b ∈ P (g • a) ↔ b ∈ P a) (hY : Stable G Y)
@@ -108,7 +102,7 @@ variable {K V : Type} [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [M
   [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V]
 
 /- English proof (translation)
-Unfold `mass`. Use `split_ifs`. Check the signs of the components of the expression. Conclude with `le_rfl`.
+Replace the relevant objects with their definitions. Check the signs of the components of the expression. A detailed English derivation is pending.
 -/
 theorem mass_nonneg (h : V →ₗ⋆[K] V →ₗ[K] K) (L : Submodule (𝓞 K) V) : 0 ≤ mass h L := by
   unfold mass
@@ -117,9 +111,9 @@ theorem mass_nonneg (h : V →ₗ⋆[K] V →ₗ[K] K) (L : Submodule (𝓞 K) V
   · exact le_rfl
 
 /- English proof (translation)
-Use `⟨⟨?_, ?_⟩, fun x hx y hy => hL.2 x hx y hy⟩` and prove the remaining obligations. Apply `Submodule.fg_of_fg_map_injective (U.subtype.restrictScalars (𝓞 K)) U.injective_subtype` to reduce the goal to its premises. Conclude with `hL.1.fg.of_le (Submodule.map_comap_le _ _)`. Use `eq_top_iff.mpr fun x _ => ?_` and prove the remaining obligations. Establish `hx : (x : V) ∈ Submodule.span K (L : Set V)` using `by rw [hL.1.span_eq_top]; trivial`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨a, hax⟩` from `multiple_mem_span_of_mem_localization_span (nonZeroDivisors (𝓞 K)) K _ _ hx`. Rewrite `hax` using `[Submodule.span_eq]`. Establish `ha' : algebraMap (𝓞 K) K a ≠ 0` using `by simpa using nonZeroDivisors.coe_ne_zero a`. Rewrite using `[← Submodule.smul_mem_iff _ ha', algebraMap_smul]`. Conclude with `Submodule.subset_span hax`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isIntLat_latIn (h : V →ₗ⋆[K] V →ₗ[K] K) {L : Submodule (𝓞 K) V} (hL : IsIntLat h L)
     (U : Submodule K V) : IsIntLat (hRes h U) (latIn U L) := by
@@ -137,15 +131,15 @@ theorem isIntLat_latIn (h : V →ₗ⋆[K] V →ₗ[K] K) {L : Submodule (𝓞 K
 end
 
 /- English proof (translation)
-Establish `n0 : 0 < n` using `by linarith`. Establish `X0 : 0 < X` using `by linarith`. Establish `e1 : n ^ ((j + l) / 2) = n ^ (j / 2) * n ^ (l / 2)`. Rewrite using `[← Real.rpow_add n0]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `b1 : c ≤ X ^ (1 + l)` using `hc.trans (Real.rpow_le_rpow n0.le hX (by linarith))`. Establish `b2 : n ^ (l / 2) ≤ X ^ (l / 2)` using `Real.rpow_le_rpow n0.le hX (by linarith)`. Establish `b3 : (n * X) ^ (2 * m + 1) ≤ X ^ (4 * s + 2)`. Establish `: (n * X) ^ (2 * m + 1) ≤ (X * X) ^ (2 * m + 1)` using `by gcongr`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `this.trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[← hm, ← sq, ← pow_mul, ← Real.rpow_natCast]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `e2 : X ^ ((9 * s + 8 + 4 * l) / 2) = X ^ (1 + l) * (X ^ (l / 2) * (X * X ^ ((s + l) / 2)) * X ^ (4 * s + 2))`. Establish `: X * X ^ ((s + l) / 2) = X ^ (1 + (s + l) / 2)` using `by rw [Real.rpow_add X0, Real.rpow_one]`. Rewrite using `[this, ← Real.rpow_add X0, ← Real.rpow_add X0, ← Real.rpow_add X0]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[e1, e2]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem exponents (n X j s l c : ℝ) (m : ℕ) (hm : (m : ℝ) = s) (hn : 1 ≤ n) (hX : n ≤ X) (hl : 0 ≤ l)
     (hc : c ≤ n ^ (1 + l)) :
@@ -177,29 +171,27 @@ theorem exponents (n X j s l c : ℝ) (m : ℕ) (hm : (m : ℝ) = s) (hn : 1 ≤
     _ = _ := by ring
 
 /- English proof (translation)
-Introduce `hM K V _ _ _ _ _ _ _ _ h hK hs hp hLand j s hj hs1 hjs V₁ _ _ _ _ _ h₁ I₁ hs₁ hI₁ V₂ _ _ _ _ _ h₂ I₂ hs₂ hI₂ n N₀ hn hN 𝒢 hst h𝒢`. Take `⟨S, hcard, hdim, hcov⟩` from `GlobalTheory.T.few_orbits_subspaces_hermitian_lattice_discriminant K V h hK hs hp hLand j n hn`. Establish `hnd : h.Nondegenerate`. Take `⟨τ⟩ : Nonempty (K →+* ℂ)` from `inferInstance`. Use `⟨fun x hx => ?_, fun x hx => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Assume the negation of the conclusion as `hne`. Use `hp τ x hne` as an intermediate fact. Simplify using `[hx x] at this`. Assume the negation of the conclusion as `hne`. Use `hp τ x hne` as an intermediate fact.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Simplify using `[hx x] at this`. Use `set l : ℝ := Real.logb 2 (Module.finrank ℚ K) with hl`. Establish `l0 : 0 ≤ l` using `Real.logb_nonneg one_lt_two (by exact_mod_cast Module.finrank_pos)`. Establish `m1` using `mass_nonneg h₁ I₁`. Establish `m2` using `mass_nonneg h₂ I₂`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `orbSum_encard_le (isom h) (Submodule (𝓞 K) V) (Submodule K V) 𝒢 (fun L => primSp h L j n) (fun g L U => (GlobalTheory.T.primitive_sublattices_move_with_isometries K V h hK hs hnd g L U j n).1) hst (fun L hL => (GlobalTheory.T.hermitianGenusMass_eq_orbitStabilizerMass K V h hK hs …`. Use `h1.trans ?_` and prove the remaining obligations. Use `set X : ℝ := (n : ℝ) * N₀ with hX`. Establish `n1 : (1 : ℝ) ≤ n` using `by exact_mod_cast hn`. Establish `N1 : (1 : ℝ) ≤ N₀` using `by exact_mod_cast hN`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnX : (n : ℝ) ≤ X` using `le_mul_of_one_le_right (by positivity) N1`. Establish `X0 : 0 ≤ X` using `by positivity`. Use `set C : ℝ := (mass h₁ I₁ * (n : ℝ) ^ (((j : ℝ) + l) / 2)) * (X * (mass h₂ I₂ * X ^ (((s : ℝ) + l) / 2))) * ((n : ℝ) * X) ^ (2 * s + 1) with hC`. Establish `C0 : 0 ≤ C` using `by positivity`. Establish `h2 : ∀ U ∈ S, orbMass (MulAction.stabilizer (isom h) U) {L | L ∈ 𝒢 ∧ U ∈ primSp h L j n} ≤ ENNReal.ofReal C`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Introduce `U hU`. Establish `dU` using `hdim U hU`. Take `⟨hc, sU, pU, -⟩` from `(GlobalTheory.T.witt_extension_totally_definite_hermitian K V h hK hs hp).2 U`. Take `⟨-, sW, pW, -⟩` from `(GlobalTheory.T.witt_extension_totally_definite_hermitian K V h hK hs hp).2 (perp h U)`. Establish `dW : Module.finrank K (perp h U) = s`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Use `Submodule.finrank_add_eq_of_isCompl hc` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `a1` using `(GlobalTheory.T.orbitWeightedStabilizerSum_mono_subadditive (MulAction.stabilizer (isom h) U) (Submodule (𝓞 K) V)).1 {L | L ∈ 𝒢 ∧ U ∈ primSp h L j n} {L : Submodule (𝓞 K) V | IsIntLat h L ∧ discN h L = N₀ ∧ (∃ t : Finset V, t.card ≤ 1 ∧ dual h L = L ⊔ Submodule.span (𝓞 K) (t : Se …`. Use `a1.trans ((GlobalTheory.T.orbitStabilizerMass_subspace_cyclicDiscriminant_le K V h hK hs hp U n N₀).trans ?_)` and prove the remaining obligations. Establish `a2` using `GlobalTheory.T.mass_integralLattices_discriminantOrder_le hM K U (hRes h U) hK sU pU (dU ▸ hj) V₁ h₁ hs₁ I₁ (dU ▸ hI₁) n hn`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `a2` using `[dU]`. Establish `a3 : ∑ n' ∈ Finset.Icc 1 (n * N₀), orbMass (isom (hRes h (perp h U))) (latsDisc (R` using `𝓞 K) (hRes h (perp h U)) n') ≤ ENNReal.ofReal (X * (mass h₂ I₂ * X ^ (((s : ℝ) + l) / 2))) := by`. Use `(Finset.sum_le_card_nsmul _ _ (ENNReal.ofReal (mass h₂ I₂ * X ^ (((s : ℝ) + l) / 2))) fun n' hn' => ?_).trans (le_of_eq ?_)` and prove the remaining obligations. Take `⟨b1, b2⟩` from `Finset.mem_Icc.1 hn'`. Establish `a` using `GlobalTheory.T.mass_integralLattices_discriminantOrder_le hM K (perp h U) (hRes h (perp h U)) hK sW pW (dW ▸ hs1) V₂ h₂ hs₂ I₂ (dW ▸ hI₂) n' b1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `a` using `[dW]`. Use `a.trans (ENNReal.ofReal_le_ofReal ?_)` and prove the remaining obligations. Establish `b3 : (n' : ℝ) ≤ X` using `by rw [hX]; exact_mod_cast b2`. Use `gcongr`. Rewrite using `[ENNReal.ofReal_mul X0, nsmul_eq_mul, Nat.card_Icc, Nat.add_sub_cancel, hX, ← Nat.cast_mul, ENNReal.ofReal_natCast]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[hC, ENNReal.ofReal_mul (by positivity), ENNReal.ofReal_mul (by positivity), dW]`. Use `mul_le_mul' (mul_le_mul' a2 a3) (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[← ENNReal.ofReal_natCast, hX]`. Use `push_cast`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `(Finset.sum_le_card_nsmul _ _ _ h2).trans ?_` and prove the remaining obligations. Rewrite using `[nsmul_eq_mul, ← ENNReal.ofReal_natCast, ← ENNReal.ofReal_mul (by positivity)]`. Use `ENNReal.ofReal_le_ofReal ?_` and prove the remaining obligations. Establish `key` using `exponents n X j s l S.card s rfl n1 hnX l0 hcard`. Use `mul_le_mul_of_nonneg_left key (mul_nonneg m1 m2)` as an intermediate fact.
-
-Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem main : MaxMass → ∀ (K V : Type) [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [Module K V] [FiniteDimensional K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] (h : V →ₗ⋆[K] V →ₗ[K] K), IsCMUnram K → h.IsSymm → PD h → (∀ (W : Type) [AddCommGroup W] [Module K W] [FiniteDimensional K W] [Module (𝓞 K) W] [IsScalarTower (𝓞 K) K W] (k : W →ₗ⋆[K] W →ₗ[K] K), k.IsSymm → PD k → (∃ L : Submodule (𝓞 K) W, Submodule.IsLattice K L ∧ IsUnimodular k L) → ∃ I : Submodule (𝓞 K) W, IsOrthoLattice k I (Module.finrank K W)) → ∀ (j s : ℕ), 1 ≤ j → 1 ≤ s → j + s = Module.finrank K V → ∀ (V₁ : Type) [AddCommGroup V₁] [Module K V₁] [FiniteDimensional K V₁] [Module (𝓞 K) V₁] [IsScalarTower (𝓞 K) K V₁] (h₁ : V₁ →ₗ⋆[K] V₁ →ₗ[K] K) (I₁ : Submodule (𝓞 K) V₁), h₁.IsSymm → IsOrthoLattice h₁ I₁ j → ∀ (V₂ : Type) [AddCommGroup V₂] [Module K V₂] [FiniteDimensional K V₂] [Module (𝓞 K) V₂] [IsScalarTower (𝓞 K) K V₂] (h₂ : V₂ →ₗ⋆[K] V₂ →ₗ[K] K) (I₂ : Submodule (𝓞 K) V₂), h₂.IsSymm → IsOrthoLattice h₂ I₂ s → ∀ (n N₀ : ℕ), 1 ≤ n → 1 ≤ N₀ → ∀ 𝒢 : Set (Submodule (𝓞 K) V), Stable (isom h) 𝒢 → (∀ L ∈ 𝒢, IsIntLat h L ∧ discN h L = N₀ ∧ (∃ t : Finset V, t.card ≤ 1 ∧ dual h L = L ⊔ Submodule.span (𝓞 K) (t : Set V))) → orbSum (isom h) 𝒢 (fun L => (((primSp h L j n).encard : ℕ∞) : ℝ≥0∞)) ≤ ENNReal.ofReal (mass h₁ I₁ * mass h₂ I₂ * (n : ℝ) ^ ((j : ℝ) / 2) * ((n : ℝ) * N₀) ^ ((9 * (s : ℝ) + 8 + 4 * Real.logb 2 (Module.finrank ℚ K)) / 2)) := by
   intro hM K V _ _ _ _ _ _ _ _ h hK hs hp hLand j s hj hs1 hjs V₁ _ _ _ _ _ h₁ I₁ hs₁ hI₁ V₂ _ _ _ _ _ h₂ I₂ hs₂ hI₂

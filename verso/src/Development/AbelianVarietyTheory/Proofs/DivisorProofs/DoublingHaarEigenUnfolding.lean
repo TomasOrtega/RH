@@ -20,7 +20,7 @@ noncomputable section
 namespace GlobalTheory.ConeComm
 
 /- English proof (translation)
-Introduce `hKP F E _ _ _ _ _ σ B b a' G G₁ H H' hC e he K μK μ hK hμK hμ X om om' om₁ om₁' hT hT₁ Ψ hΨ φ hφ μY hμY`. Conclude with `GlobalTheory.T.haar_stabilizer_eval_config_first hKP F E σ B b a' G G₁ H H' hC e he K μK μ hK hμK hμ X om om' om₁ om₁' hT hT₁ Ψ hΨ φ hφ μY hμY (GlobalTheory.T.configuration_stabiliser_integral hKP F E σ B b a' G G₁ H H' hC e he K μK μ hK hμK hμ X om om' om₁ om₁' hT hT₁ Ψ hΨ φ hφ …`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem pair_cone : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (b a' : ℕ) (G : Geo σ (b + 2) a') (G₁ : Geo σ b a')
     (H : Plane E (b + 2) b) (H' : Plane E (b + 2 + a') (b + a')), CfgA B G G₁ H H' →
@@ -36,25 +36,25 @@ theorem pair_cone : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberFi
     (GlobalTheory.T.configuration_stabiliser_integral hKP F E σ B b a' G G₁ H H' hC e he K μK μ hK hμK hμ X om om' om₁ om₁' hT hT₁ Ψ hΨ φ hφ μY hμY)
 
 /- English proof (translation)
-Introduce `hKP F E _ _ _ _ _ σ B b a' G G₁ H H' hC e he K μK μ hK hμK hμ X om om' om₁ om₁' hT hT₁ h₁ Ψ hΨ`. Take `⟨m, hm⟩` from `GlobalTheory.LeviUnitary.exists_isLevi hT.base hT.geo.hW hT₁.geo.hW hC.hH' h₁`. Establish `hS` using `IsUWeilPair.isUSplitting hT.weil`. Establish `hS₁` using `IsUWeilPair.isUSplitting hT₁.weil`. Establish `hΨ' : om (1, m) Ψ ∈ schA F (Fin (b + 2) × Fin (b + 2 + a'))` using `hS.pres _ _ hΨ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hX : ∀ (k : K) l, G.M.co.rho B.ψ (shiftA H H' l) (om (k.1, 1) Ψ) ∈ schA F (Fin (b + 2) × Fin (b + 2 + a'))` using `fun k l => GlobalTheory.HeisSchA.rho_mem_schA _ _ hT.base.std _ _ (hS.pres _ _ hΨ)`. Establish `key : ∀ (k : K) l, om₁ (1, h₁) (e (G.M.co.rho B.ψ (shiftA H H' l) (om (k.1, 1) Ψ))) = e (G.M.co.rho B.ψ (shiftA H H' l) (om (k.1, 1) (om (1, m) Ψ)))`. Introduce `k l`. Establish `h1` using `GlobalTheory.ThK.evLaw_isoA hKP F E σ B b a' G G₁ H H' hC e he X om om' om₁ om₁' hT hT₁ 1 h₁ m hm _ (hX k l)`. Simplify using `at h1`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← h1, hS.impl (1, m) _ _ (hS.pres _ _ hΨ)]`. Establish `hact : actAB (cA σ) ((1 : UA σ G.V.J), m) (shiftA H H' l) = shiftA H H' l`. Establish `hy` using `hm.2.1`. Simplify using `only [inv_one, Units.val_one, map_one, one_smul] at hy`. Unfold `actAB shiftA`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Simplify using `only [Prod.fst, Prod.snd, OneMemClass.coe_one, Units.val_one, Matrix.one_mul, Matrix.smul_mul]`. Use `congr 1`. Use extensionality with `i j`. Simplify using `only [Matrix.vecMulVec, Matrix.mul_apply, Matrix.of_apply, Matrix.transpose_apply]`. Repeatedly rewrite using `[mul_assoc]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities.
 
-Rewrite using `[← Finset.mul_sum]`. Use `congr 1`. Use `congrFun hy j` as an intermediate fact. Simplify using `only [Matrix.mulVec, dotProduct] at this`. Rewrite using `[← this]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun x _ => mul_comm _ _`. Establish `hcomm : om (1, m) (om (k.1, 1) Ψ) = om (k.1, 1) (om (1, m) Ψ)`. Rewrite using `[← Module.End.mul_apply, ← map_mul, ← Module.End.mul_apply, ← map_mul]`. Use `congr 2`. Apply the tactic sequence `ext <;> simp`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hact, hcomm]`. Establish `hR : (fun y => ∫ k : K, ∫ l, om₁ (1, h₁) (e (G.M.co.rho B.ψ (shiftA H H' l) (om (k.1, 1) Ψ))) y * (X.ν l : ℂ) * ((absE F E l : ℝ) : ℂ) ^ ((b + 2 - a') / 2) ∂μ ∂μK) = cone B G.M om e K μK μ (shiftA H H') X.ν ((b + 2 - a') / 2) (om (1, m) Ψ)`. Use function extensionality and compare the values at `y`. Simplify using `only [key]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hR]`. Establish `hc` using `GlobalTheory.T.configuration_stabiliser_measure hKP F E σ B b a' G G₁ H H' hC e he K μK μ hK hμK hμ X om om' om₁ om₁' hT hT₁ Ψ hΨ`. Establish `hc'` using `GlobalTheory.T.configuration_stabiliser_measure hKP F E σ B b a' G G₁ H H' hC e he K μK μ hK hμK hμ X om om' om₁ om₁' hT hT₁ _ hΨ'`. Establish `hU : ∀ μY : @Measure (Fin b × Fin (b + a') → AF F) (borel _), @Measure.IsAddHaarMeasure _ _ _ (borel _) μY → ∀ φ ∈ schA F (Fin b × Fin (b + a')), ∫⁻ x, ‖om₁ (1, h₁) φ x‖ₑ ^ 2 ∂μY = ∫⁻ x, ‖φ x‖ₑ ^ 2 ∂μY` using `fun μY hμY φ hφ => hS₁.unit μY hμY (1, h₁) φ hφ`. Establish `hP` using `GlobalTheory.T.unitary_preserves_inner_product F _ (om₁ (1, h₁)) (fun φ hφ => hS₁.pres _ φ hφ) hU`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `GlobalTheory.T.schwartz_eq_of_integrals_eq F _ _ (hS₁.pres _ _ hc) _ hc' fun μY hμY ψ hψ => ?_` and prove the remaining obligations. Establish `hφ : om₁ (1, h₁⁻¹) ψ ∈ schA F (Fin b × Fin (b + a'))` using `hS₁.pres _ _ hψ`. Establish `hψφ : om₁ (1, h₁) (om₁ (1, h₁⁻¹) ψ) = ψ`. Rewrite using `[← Module.End.mul_apply, ← map_mul, show ((1 : UA σ G₁.V.J), h₁) * (1, h₁⁻¹) = 1 from Prod.ext (mul_one _) (mul_inv_cancel h₁), map_one, Module.End.one_apply]`. Rewrite using `[← hψφ, hP μY hμY _ hc _ hφ, pair_cone hKP F E σ B b a' G G₁ H H' hC e he K μK μ hK hμK hμ X om om' om₁ om₁' hT hT₁ Ψ hΨ _ hφ μY hμY, pair_cone hKP F E σ B b a' G G₁ H H' hC e he K μK μ hK hμK hμ X om om' om₁ om₁' hT hT₁ _ hΨ' _ (hS₁.pres _ _ hφ) μY hμY]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `integral_congr_ae (Filter.Eventually.of_forall fun k => ?_)` and prove the remaining obligations. Use `integral_congr_ae (Filter.Eventually.of_forall fun l => ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[← key k l, hP μY hμY _ (he.maps _ (hX k l)) _ hφ]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cone_comm : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (b a' : ℕ) (G : Geo σ (b + 2) a') (G₁ : Geo σ b a')
     (H : Plane E (b + 2) b) (H' : Plane E (b + 2 + a') (b + a')), CfgA B G G₁ H H' →

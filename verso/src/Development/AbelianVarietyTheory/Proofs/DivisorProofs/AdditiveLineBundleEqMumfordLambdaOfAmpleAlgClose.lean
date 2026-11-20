@@ -20,33 +20,31 @@ namespace GlobalTheory.AddLineField
 open GlobalTheory.PrimitiveOverField in
 
 /- English proof (translation)
-Introduce `K _ _ A _ hA L hL hamp N hN`. Use `hA.comm` as an intermediate fact. Use `hA.smooth` as an intermediate fact. Use `hA.proper` as an intermediate fact. Establish `hpr : IsProjBy A.hom`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨_, _, m, s, hH, hv⟩` from `veryAmpleBy_of_relAmple hL hamp (𝟙 A.left) (Category.id_comp _) (pull_isLB hL (𝟙 A.left)) (GlobalTheory.lbIso_self (pull_isLB hL _))`. Conclude with `⟨_, hH, m, s, hv⟩`. Establish `hproj : ∀ (R : Type) [CommRing R] (u : Spec (CommRingCat.of R) ⟶ Spec (CommRingCat.of K)) (X : Scheme.{0}) (π : X ⟶ A.left) (f : X ⟶ Spec (CommRingCat.of R)), IsPullback π f A.hom u → IsProjBy f` using `fun R _ u X π f h => GlobalTheory.StabFlat.isProjBy_baseChange hpr h`. Establish `hΘ : ∃ t : LB.Gen (Theta A L), t.IsGen` using `GlobalTheory.exists_gen_theta_of_isProjBy K A hA hpr L hL`. Take `⟨S, hS, hSK⟩` from `GlobalTheory.T.kernelOfLineBundle_rationalPoints_finite_closed K A hA L hL hamp`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Set `O : LB A.left` to `ev N (𝟙 A) (toUnit A)`. Establish `hO : O.IsLB` using `pull_isLB hN.isLB _`. Establish `hLam : (abelian₂ A L).IsLB` using `LB.isLB_linComb hL _ _`. Establish `pO : ∀ {Y : Over (Sp K)} (u : Y ⟶ A), CechPic.pull u.left (cls O hO) = evc hN.isLB u (toUnit Y)`. Introduce `Y u`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[cls_ev hN.isLB, pull_evc, Category.comp_id, comp_toUnit]`. Establish `lamO : lam (cls O hO) (fst A A) (snd A A) = 0`. Establish `e` using `(isAdditive_iff hN.isLB).1 hN.add (A ⊗ A) (fst A A) (snd A A) (toUnit _)`. Establish `e1` using `hN.add.evc_one hN.isLB (toUnit (A ⊗ A))`. Simplify using `only [lam, pO, e, e1]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Normalize the expressions using the abelian group laws. Establish `key : ∀ x : 𝟙_ (Over (Sp K)) ⟶ A, cls O hO = lam (cls L hL) (toUnit A ≫ x) (𝟙 A) → Same A N (abelian₂ A L) (𝟙 _) x`. Introduce `x hx`. Rewrite using `[same_iff hN.isLB hLam]`. Establish `e1 : evc hN.isLB (fst A (𝟙_ (Over (Sp K)))) (snd A _ ≫ 𝟙 _) = CechPic.pull (fst A (𝟙_ (Over (Sp K)))).left (cls O hO)`.
+Normalize the expressions using the abelian group laws. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[pO, Category.comp_id, toUnit_unique (toUnit _) (snd A _)]`. Establish `e2 : evc hLam (fst A (𝟙_ (Over (Sp K)))) (snd A _ ≫ x) = CechPic.pull (fst A (𝟙_ (Over (Sp K)))).left (lam (cls L hL) (toUnit A ≫ x) (𝟙 A))`. Establish `cL : cls (abelian₂ A L) hLam = lam (cls L hL) (fst A A) (snd A A)` using `cls_cube_two hL _ _ hLam`. Rewrite using `[evc, cL, pull_lam, pull_lam, lift_fst, lift_snd, Category.comp_id, ← Category.assoc, toUnit_unique (fst A _ ≫ toUnit A) (snd A _), lam_comm]`. Rewrite using `[e1, e2, hx]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Assume the negation of the conclusion as `hno`. Establish `hno' : ∀ x : 𝟙_ (Over (Sp K)) ⟶ A, cls O hO ≠ lam (cls L hL) (toUnit A ≫ x) (𝟙 A)` using `fun x e => hno ⟨x, key x e⟩`. Take `⟨F, hF, eF⟩` from `cls_surj (lam (cls L hL) (fst A A) (snd A A) - CechPic.pull (snd A A).left (cls O hO))`. Establish `hpq : IsPullback (fst A A).left (snd A A).left A.hom A.hom` using `IsPullback.of_hasPullback _ _`. Establish `cst_left : ∀ x : 𝟙_ _ ⟶ A, (toUnit A ≫ x).left = A.hom ≫ x.left` using `fun x => congrArg (· ≫ x.left) ((Category.comp_id _).symm.trans (Over.w (toUnit A)))`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `s₁ : ∀ x : 𝟙_ _ ⟶ A, cls _ (pull_isLB hF (lift (toUnit A ≫ x) (𝟙 A)).left) = lam (cls L hL) (toUnit A ≫ x) (𝟙 A) - cls O hO` using `fun x => by`. Rewrite using `[cls_pull hF, eF, map_sub, pull_lam, ← pull_comp, ← Over.comp_left, lift_fst, lift_snd, Over.id_left, pull_id]`. Establish `s₂ : ∀ x : 𝟙_ _ ⟶ A, cls _ (pull_isLB hF (lift (𝟙 A) (toUnit A ≫ x)).left) = lam (cls L hL) (toUnit A ≫ x) (𝟙 A)` using `fun x => by`. Rewrite using `[cls_pull hF, eF, map_sub, pull_lam, ← pull_comp, ← Over.comp_left, lift_fst, lift_snd, pull_const, sub_zero, lam_comm]`. Establish `total : Ac ((fst A A).left ≫ A.hom) F`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `(GlobalTheory.T.lineBundle_product_acyclic_of_affine_base_acyclic K _ _ _ _ _ _ _ hpq inferInstance inferInstance inferInstance inferInstance F hF).1 fun R _ t Y π f h ht => ac_of_slices hproj hpq h hF fun x hx _ => ?_` and prove the remaining obligations. Set `x' : 𝟙_ _ ⟶ A` to `Over.homMk x hx`. Use `⟨(lift (toUnit A ≫ x') (𝟙 A)).left, ?_, ?_, ac_of_primitive hA hpr (pull_isLB hF _) ?_ ?_⟩` and prove the remaining obligations. Conclude with `(congrArg CommaMorphism.left (lift_fst (toUnit A ≫ x') (𝟙 A))).trans (cst_left x')`. Conclude with `congrArg CommaMorphism.left (lift_snd (toUnit A ≫ x') (𝟙 A))`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[s₁, lam_sub, lam_lam hL hΘ, lamO, sub_zero]`. Rewrite using `[s₁, sub_ne_zero]`. Conclude with `fun e => hno' x' e.symm`. Rewrite `total` using `[hpq.w]`. Set `o : Spec (CommRingCat.of K) ⟶ A.left` to `η[A].left`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ho : o ≫ A.hom = 𝟙 _` using `Over.w η[A]`. Establish `all` using `GlobalTheory.T.lineBundle_product_acyclic_over_affine_finite_closed K _ _ _ _ _ _ _ hpq.flip inferInstance inferInstance inferInstance inferInstance F hF S hS (fun R _ t Y π f h ht hne => ac_of_slices hproj hpq.flip h hF fun x hx hr => by`. Set `x' : 𝟙_ _ ⟶ A` to `Over.homMk x hx`. Use `⟨(lift (𝟙 A) (toUnit A ≫ x')).left, ?_, ?_, ac_of_primitive hA hpr (pull_isLB hF _) ?_ ?_⟩` and prove the remaining obligations. Conclude with `(congrArg CommaMorphism.left (lift_snd (𝟙 A) (toUnit A ≫ x'))).trans (cst_left x')`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `congrArg CommaMorphism.left (lift_fst (𝟙 A) (toUnit A ≫ x'))`. Rewrite using `[s₂, lam_lam hL hΘ]`. Rewrite using `[s₂]`. Introduce `e`. Establish `hm` using `hSK x' e`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨y, hy⟩` from `hr (IsLocalRing.closedPoint K)`. Conclude with `hne y (by rw [hy]; exact hm)) total`. Establish `hs` using `ac_slice hproj hpq.flip hF all o ho (lift (𝟙 A) (toUnit A ≫ η[A])).left ((congrArg CommaMorphism.left (lift_snd (𝟙 A) (toUnit A ≫ η[A]))).trans (cst_left η[A])) (congrArg CommaMorphism.left (lift_fst (𝟙 A) (toUnit A ≫ η[A])))`. Establish `: CompactSpace A.left` using `QuasiCompact.compactSpace_of_compactSpace A.hom`. Establish `: Nonempty A.left` using `⟨o (IsLocalRing.closedPoint K)⟩`.
-
-Conclude with `not_ac_of_cls_eq_zero _ (pull_isLB hF _) ((s₂ _).trans (lam_one_left _ _)) hs`.
+A detailed English derivation is pending.
 -/
 theorem additive_eq_lam_of_ample : ∀ (K : Type) [Field K] [IsAlgClosed K] (A : Over (Sp K)) [GrpObj A], IsAbelianScheme A → ∀ L : LB A.left, L.IsLB → Out.RelAmple A L → ∀ N : LB (A ⊗ 𝟙_ (Over (Sp K))).left, Fam A N → ∃ a : 𝟙_ (Over (Sp K)) ⟶ A, Same A N (abelian₂ A L) (𝟙 _) a := by
   intro K _ _ A _ hA L hL hamp N hN

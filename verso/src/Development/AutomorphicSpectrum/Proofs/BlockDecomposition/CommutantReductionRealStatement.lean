@@ -4,7 +4,7 @@ import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.Archim
 open PositivityTheory.RgBcC PositivityTheory.RgBcC.Real PositivityTheory.RgBcC.RealD
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.BlockCapelliWords.commutant_block_capelli_words | exact GlobalTheory.CompanionTheory.BlockCapelliWords.commutant_block_capelli_words | (intros; apply GlobalTheory.CompanionTheory.BlockCapelliWords.commutant_block_capelli_words <;> assum …`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.commutant_reduction_real : PositivityTheory.RgBcC.RealD.LeviCommutantWordReduction := by
   first | exact @GlobalTheory.CompanionTheory.BlockCapelliWords.commutant_block_capelli_words | exact GlobalTheory.CompanionTheory.BlockCapelliWords.commutant_block_capelli_words | (intros; apply GlobalTheory.CompanionTheory.BlockCapelliWords.commutant_block_capelli_words <;> assumption)

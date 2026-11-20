@@ -5,15 +5,13 @@ open TensorProduct IsLocalRing Matrix ReciprocityTheory.PGsh ReciprocityTheory.P
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `⟨∑ m ∈ G₁.support.filter (fun m => ∀ i, m i < N), MvPolynomial.monomial m (MvPolynomial.coeff m G₁), ?_, ?_⟩` and prove the remaining obligations. Introduce `m`. Rewrite using `[MvPolynomial.coeff_sum]`. Simplify using `only [MvPolynomial.coeff_monomial]`. Rewrite using `[Finset.sum_ite_eq']`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h : ∀ i, m i < N`. Distinguish the cases in `h0 : MvPolynomial.coeff m G₁ = 0`. Simplify using `[h0]`. Simplify using `[h, h0]`. Rewrite using `[if_neg h, if_neg]`.
+Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `hm`. Conclude with `h (Finset.mem_filter.1 hm).2`. Introduce `S _ _ a ha conv_rhs => rw [G₁.as_sum]`. Rewrite using `[map_sum, map_sum, Finset.sum_filter]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression.
 
-Use `split_ifs with h`. Both sides reduce to the same expression. Use `push Not at h`. Take `⟨i, hi⟩` from `h`. Establish `hz : ∏ j, a j ^ m j = 0` using `Finset.prod_eq_zero (f := fun j => a j ^ m j) (Finset.mem_univ i) (pow_eq_zero_of_le hi (ha i))`.
-
-Rewrite using `[MvPolynomial.aeval_monomial, Finsupp.prod_fintype _ _ (by simp), hz, mul_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma pSerOf_trunc {R₀ : Type} [CommRing R₀] {g : ℕ} (N : ℕ) (G₁ : MvPolynomial (Fin g) R₀) :
     ∃ G : MvPolynomial (Fin g) R₀,
@@ -48,37 +46,33 @@ private lemma pSerOf_trunc {R₀ : Type} [CommRing R₀] {g : ℕ} (N : ℕ) (G�
       rw [MvPolynomial.aeval_monomial, Finsupp.prod_fintype _ _ (by simp), hz, mul_zero]
 
 /- English proof (translation)
-Introduce `hev hinv hcoef R₀ _ p _ g B K ch N`. Establish `hnil : ∀ (S : Type) [CommRing S] [Algebra R₀ S] (a b : Fin g → S), (∀ i, IsNilpotent (a i)) → (∀ i, IsNilpotent (b i)) → ∀ k, IsNilpotent (fAdd ch.F a b k)`. Introduce `S _ _ a b ha hb k`. Establish `h0 : algebraMap R₀ S (MvPowerSeries.coeff 0 (ch.F k)) = 0`. Apply the tactic sequence `have h1 := ((hev (ch.F k) S (Sum.elim (0 : Fin g → S) (0 : Fin g → S))).2 (by rintro (i | i) <;> simp)).2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `h2 : nEval (ch.F k) (Sum.elim (0 : Fin g → S) (0 : Fin g → S)) = 0` using `congrFun (ch.F_unit S 0 (by simp)) k`. Establish `h3 : Ideal.span (Set.range (Sum.elim (0 : Fin g → S) (0 : Fin g → S))) = ⊥`. Rewrite using `[Ideal.span_eq_bot]`. Apply the tactic sequence `rintro _ ⟨i | i, rfl⟩ <;> simp`. Rewrite `h1` using `[h2, h3, Ideal.mem_bot, zero_sub, neg_eq_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h1`. Establish `h1` using `((hev (ch.F k) S (Sum.elim a b)).2 (by rintro (i | i); exacts [ha i, hb i])).2`. Rewrite `h1` using `[h0, sub_zero]`. Establish `h2 : Ideal.span (Set.range (Sum.elim a b)) ≤ nilradical S`. Rewrite using `[Ideal.span_le]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨i | i, rfl⟩`. Use `exacts [mem_nilradical.2 (ha i), mem_nilradical.2 (hb i)]`. Conclude with `mem_nilradical.1 (h2 h1)`. Establish `hnil' : ∀ (S : Type) [CommRing S] [Algebra R₀ S] (a : Fin g → S), (∀ i, IsNilpotent (a i)) → ∀ n k, IsNilpotent (nsmulF ch.F a n k)`. Introduce `S _ _ a ha n`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules.
 
-Proceed by induction on `n with`. Consider the case `zero => intro k`. Simplify using `[nsmulF]`. Consider the case `succ n ih => exact hnil S _ _ ih ha`. Establish `hnat : ∀ (S : Type) [CommRing S] [Algebra R₀ S] (S' : Type) [CommRing S'] [Algebra R₀ S'] (φ : S →ₐ[R₀] S') (a : Fin g → S), (∀ i, IsNilpotent (a i)) → ∀ n k, φ (nsmulF ch.F a n k) = nsmulF ch.F (fun i => φ (a i)) n k`.
+Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `S _ _ S' _ _ φ a ha n`. Proceed by induction on `n with`. Consider the case `zero => intro k`. Simplify using `[nsmulF]`. Consider the case `succ n ih`.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Introduce `k`. Establish `h1` using `((hev (ch.F k) S (Sum.elim (nsmulF ch.F a n) a)).2 (by rintro (i | i); exacts [hnil' S a ha n i, ha i])).1 S' φ`. Express the relevant statement in the definitionally equal form `φ (nEval (ch.F k) (Sum.elim (nsmulF ch.F a n) a)) = nEval (ch.F k) (Sum.elim (nsmulF ch.F (fun i => φ (a i)) n) (fun i => φ (a i)))`. Rewrite using `[h1]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Both sides reduce to the same expression.
 
-Use function extensionality and compare the values at `i`. Break down `i with i | i` into its components or cases. Conclude with `ih i`. Both sides reduce to the same expression. Set `I : Ideal (MvPolynomial (Fin g) R₀)` to `Ideal.span (Set.range fun j : Fin g => (MvPolynomial.X j : MvPolynomial (Fin g) R₀) ^ (N + 1))`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Set `x : Fin g → MvPolynomial (Fin g) R₀ ⧸ I` to `fun j => Ideal.Quotient.mk I (MvPolynomial.X j)`. Establish `hx : ∀ j, IsNilpotent (x j)` using `fun j => ⟨N + 1, by`. Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk I (MvPolynomial.X j) ^ (N + 1) = 0`. Rewrite using `[← map_pow, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `Ideal.subset_span ⟨j, rfl⟩⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `choose G₁ hG₁ using fun k => Ideal.Quotient.mk_surjective (nsmulF ch.F x p k)`. Establish `huniv : ∀ (S : Type) [CommRing S] [Algebra R₀ S] (a : Fin g → S), (∀ i, a i ^ (N + 1) = 0) → ∀ k, nsmulF ch.F a p k = MvPolynomial.aeval a (G₁ k)`. Introduce `S _ _ a ha k`. Set `φ : (MvPolynomial (Fin g) R₀ ⧸ I) →ₐ[R₀] S` to `Ideal.Quotient.liftₐ I (MvPolynomial.aeval a) (by`. Introduce `f hf`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: I ≤ RingHom.ker (MvPolynomial.aeval a : MvPolynomial (Fin g) R₀ →ₐ[R₀] S)`. Rewrite using `[Ideal.span_le]`. Introduce and unpack `_ ⟨j, rfl⟩`. Simplify using `[RingHom.mem_ker, ha j]`. Conclude with `this hf)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hφ : ∀ f, φ (Ideal.Quotient.mk I f) = MvPolynomial.aeval a f` using `fun f => rfl`. Establish `h1` using `hnat _ S φ x hx p k`. Establish `h2 : (fun i => φ (x i)) = a`. Use function extensionality and compare the values at `i`. Express the relevant statement in the definitionally equal form `φ (Ideal.Quotient.mk I _) = _`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hφ, MvPolynomial.aeval_X]`. Rewrite `h1` using `[h2, ← hG₁ k, hφ]`. Conclude with `h1.symm`. Use `choose G hG hGe using fun k => pSerOf_trunc N (G₁ k)`. Use `⟨G, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k m hm`. Rewrite using `[hG]`. Use `split_ifs with h`. Use `hcoef p g N (G₁ k) ?_ m h hm` and prove the remaining obligations. Introduce `S _ _ hp a e ha he`.
-
-Establish `h1 : ∀ i, (a + e) i ^ (N + 1) = 0` using `fun i => (Commute.all (a i) (e i)).add_pow_eq_zero_of_add_le_succ_of_pow_eq_zero (ha i) (show e i ^ 2 = 0 by rw [sq, he]) (by omega)`. Establish `h2 : ∀ i, a i ^ (N + 1) = 0` using `fun i => by rw [pow_succ, ha i, zero_mul]`. Rewrite using `[← huniv S _ h1, ← huniv S _ h2, hinv ch p S hp a e (fun i => ⟨N, ha i⟩) he]`. Conclude with `⟨0, by simp⟩`. Introduce `S _ _ a ha`.
-
-Use function extensionality and compare the values at `k`. Rewrite using `[hGe k S a ha]`. Conclude with `huniv S a (fun i => by rw [pow_succ, ha i, zero_mul]) k`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pSerFrob_of_invariance :
   (∀ {R₀ : Type} [CommRing R₀] {ι : Type} [Fintype ι] [DecidableEq ι] (f : MvPowerSeries ι R₀) (S : Type) [CommRing S] [Algebra R₀ S] (a : ι → S),

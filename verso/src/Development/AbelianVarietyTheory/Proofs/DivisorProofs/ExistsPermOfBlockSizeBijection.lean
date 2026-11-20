@@ -6,19 +6,17 @@ open Formalism.L2.DIV GlobalTheory.FinGL GlobalTheory.Parabolic GlobalTheory.Ind
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `r b b' R h1 h2 h3`. Establish `h1' : ∀ i : Fin r, ∃ c', c' ∈ Set.range b' ∧ R (b i) c'` using `fun i => (h1 (b i) ⟨i, rfl⟩).exists`. Use `choose f hf1 hf2 using h1'`. Establish `hiff : ∀ i c c', c ∈ Set.range b → c' ∈ Set.range b' → R c c' → (f i = c' ↔ b i = c)`. Introduce `i c c' hc hc' hR`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `(h2 c' hc').unique ⟨⟨i, rfl⟩, h ▸ hf2 i⟩ ⟨hc, hR⟩`. Introduce `h`. Substitute `h` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(h1 (b i) hc).unique ⟨hf1 i, hf2 i⟩ ⟨hc', hR⟩`. Establish `hcard : ∀ c' : ℕ, Fintype.card {i // f i = c'} = Fintype.card {i // b' i = c'}`. Introduce `c'`. Rewrite using `[Fintype.card_subtype, Fintype.card_subtype]`. Distinguish the cases in `hc' : c' ∈ Set.range b'`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Take `⟨c, hc, hR⟩` from `(h2 c' hc').exists`. Establish `h` using `h3 c hc c' hc' hR`. Unfold `block at h`. Rewrite using `[← h]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `i`. Simplify using `[hiff i c c' hc hc' hR]`. Rewrite using `[Finset.filter_eq_empty_iff.2, Finset.filter_eq_empty_iff.2]`. Introduce `i _ h`. Conclude with `hc' ⟨i, h⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `i _ h`. Conclude with `hc' (h ▸ hf1 i)`. Set `e : ∀ c' : ℕ, {i // f i = c'} ≃ {i // b' i = c'}` to `fun c' => Fintype.equivOfCardEq (hcard c')`. Establish `hw : ∀ i, b' (Equiv.ofFiberEquiv e i) = f i` using `fun i => Equiv.ofFiberEquiv_map e i`. Use `⟨Equiv.ofFiberEquiv e, fun i => ?_, fun i j => ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[hw]`. Conclude with `hf2 i`. Rewrite using `[hw, hw]`. Conclude with `(hiff i (b j) (f j) ⟨j, rfl⟩ (hf1 j) (hf2 j)).symm`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_perm_of_block_bijection : ∀ (r : ℕ) (b b' : Fin r → ℕ) (R : ℕ → ℕ → Prop), (∀ c ∈ Set.range b, ∃! c', c' ∈ Set.range b' ∧ R c c') → (∀ c' ∈ Set.range b', ∃! c, c ∈ Set.range b ∧ R c c') → (∀ c ∈ Set.range b, ∀ c' ∈ Set.range b', R c c' → (block b c).card = (block b' c').card) → ∃ w : Equiv.Perm (Fin r), (∀ i, R (b i) (b' (w i))) ∧ ∀ i j : Fin r, b i = b j ↔ b' (w i) = b' (w j) := by
   classical

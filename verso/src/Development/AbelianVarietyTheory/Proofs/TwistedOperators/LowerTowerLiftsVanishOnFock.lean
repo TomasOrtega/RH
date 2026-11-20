@@ -17,9 +17,9 @@ open scoped TensorProduct InnerProductSpace
 open GlobalTheory.IndefiniteRowSideFullHecke.BarMatrix GlobalTheory.Chain.RealIt.LocalFromCover
 
 /- English proof (translation)
-Substitute `h1 h2` using the available equality. Use `⟨List.nodup_iff_injective_get.2 fun i j hij => ?_, List.nodup_iff_injective_get.2 fun i j hij => ?_⟩` and prove the remaining obligations. Use `@h.1 (.inl i) (.inl j) (by simpa [ofBlocks, List.getD_eq_getElem] using hij)` as an intermediate fact. Simplify using `using this`. Use `@h.1 (.inr i) (.inr j) (by simpa [ofBlocks, List.getD_eq_getElem] using hij)` as an intermediate fact.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem nodup_of_isParam {p q : ℕ} {l₁ l₂ : List ℚ} (h1 : l₁.length = p) (h2 : l₂.length = q)
     (h : IsParam (ofBlocks l₁ l₂ : Ix p q → ℚ)) : l₁.Nodup ∧ l₂.Nodup := by
@@ -31,17 +31,17 @@ theorem nodup_of_isParam {p q : ℕ} {l₁ l₂ : List ℚ} (h1 : l₁.length = 
     simpa using this
 
 /- English proof (translation)
-Introduce `X p q r s lam' hadm hlow i hi hip hiq D V W S' M' τ ε e e' m' aS U' a' b he he' hm' h₂ ha hb`. Take `⟨κ, hκ⟩` from `GlobalTheory.T.exists_fockPolynomialIso_unitaryPair _ _ _ _ _ _ ε (M'.ε τ) e e' he he'`. Establish `hmC' : (m' : ℂ) = 2 * (aS : ℂ)` using `by exact_mod_cast hm'`. Establish `hmem : ∀ v, U'.symm ((X.ds r s lam').ι v) ∈ kFin M' τ` using `fun v => (h₂.kfin _).2 ⟨v, (U'.apply_symm_apply _).symm⟩`. Set `j : (X.ds r s lam').HK.V →ₛₗ[starRingEnd ℂ] kFin M' τ` to `{ toFun := fun v => ⟨U'.symm ((X.ds r s lam').ι v), hmem v⟩ map_add' := fun v w => Subtype.ext (by simp) map_smul' := fun c v => Subtype.ext (by simp [LinearIsometryEquiv.map_smulₛₗ]) }`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hj : ∀ v, U' (j v : M'.H τ) = (X.ds r s lam').ι v` using `fun v => U'.apply_symm_apply _`. Establish `hsurj : Function.Surjective j` using `fun y => by`. Take `⟨v, hv⟩` from `(h₂.kfin y).1 y.2`. Conclude with `⟨v, Subtype.ext (U'.injective (by rw [hj, hv]))⟩`. Set `B' : Pol _ _ _ _ →ₗ[ℂ] (X.ds r s lam').HK.V →ₛₗ[starRingEnd ℂ] ℂ` to `{ toFun := fun P => (b (κ.symm P)).comp j map_add' := fun P Q => by ext v; simp map_smul' := fun c P => by ext v; simp }`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Establish `hB' : ∀ P v, B' (κ P) v = b P (j v)` using `fun P v => by simp [B']`. Establish `h0 : B' = 0` using `GlobalTheory.T.no_invariant_pairing_smaller_fock_discreteSeries X p q r s lam' hadm hlow i hi hip hiq B' (fun Y hY P y => by`. Take `⟨P, rfl⟩` from `κ.surjective P`. Establish `hY' : toFrame M' τ (plainMat e' Y) ∈ lieAt W τ` using `h₂.lie ▸ ⟨Y, hY, rfl⟩`. Establish `h4 : (plainMat e' Y).trace = Y.trace` using `trace_reindex' e' Y`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h6 : a' (toFrame M' τ (plainMat e' Y)) (j y) = j ((X.ds r s lam').HK.act Y y) - ((aS : ℂ) * Y.trace) • j y`. Establish `h7 : a' (toFrame M' τ (plainMat e' Y)) (j y) = j ((X.ds r s lam').HK.act Y y + ((m' : ℂ) / 2 * Y.trace) • y)`. Use `Subtype.ext (U'.injective ?_)` and prove the remaining obligations. Rewrite using `[hj, ← h₂.der Y hY y _ (hj y), dRep, (ha.der _ hY' (j y)).deriv]`. Rewrite using `[h7, map_add, LinearMap.map_smulₛₗ, map_mul, map_div₀, map_intCast, map_ofNat, trace_conj hY, hmC', sub_eq_add_neg, ← neg_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Expand and normalize the polynomial expressions, which then agree. Establish `h` using `hb _ hY' P (j y)`. Rewrite `h` using `[h6, fr_toFrame, trace_toFrame, h4]`. Rewrite using `[← hκ.2, hB', hB', ← h]`.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[plainMat])`. Use `LinearMap.ext fun P => LinearMap.ext fun z => ?_` and prove the remaining obligations. Take `⟨v, rfl⟩` from `hsurj z`. Rewrite using `[← hB', h0]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem pairing_eq_zero : ∀ (X : ProvA) (p q r s : ℕ) (lam' : Ix r s → ℚ), Formalism.MainNotions.SchurIrreducible.AdmGK (X.ds r s lam').HK →
     GlobalTheory.PairLift.NoLow X p q lam' → ∀ i : ℕ, 1 ≤ i → i ≤ p → i ≤ q →
@@ -107,41 +107,39 @@ open scoped TensorProduct InnerProductSpace
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D X hIn`. Establish `hTB` using `hIn.bridge.2`. Introduce `S S' aS aT hP i V' W M' θ ψ hθ hi hs ω' hω ν 𝓕 hν h𝓕 F hF v A f₀ hf P`. Take `⟨χS, χT, hW, hexp⟩` from `hω`. Distinguish the cases in `f0 : f₀ = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Substitute `f0` using the available equality. Use function extensionality and compare the values at `g`. Simplify using `[Lift.liftInt, thetaKO, ptF_zero]`. Establish `tgt : ∀ τ, ∃ a' : Matrix (Fin W.rank) (Fin W.rank) ℂ → Module.End ℂ (kFin M' τ), kFin M' τ ≤ M'.sm τ ∧ IsKAct M' τ a'` using `fun τ => by`. Take `⟨p, q, r, s, l₁, l₂, l₁', l₂', -, -, h3, h4, hR, -, e2⟩` from `hP τ`.
+Substitute using the available equality. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨e', he'⟩, m', hm', hU'⟩` from `hTB X W S' M' τ r s l₁' l₂' (aS τ) ⟨hR.pos', h3, h4, hR.par', hIn.chosen _ _ _ hR.par', e2⟩`. Take `⟨U', hU'⟩` from `hU' e' he'`. Take `⟨hsm, a', ha'⟩` from `GlobalTheory.Chain.IoLift.kFin_smooth_isKAct D W _ M' τ _ _ _ _ _ _ _ hU'`. Conclude with `⟨a', hsm, ha'⟩`. Use `choose a' hsm ha' using tgt`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `h' : KSm M'` using `hsm`. Establish `hMF : IsMultMap θ M' ∅ 1 (PiTensorProduct.lift.symm F)` using `(GlobalTheory.MultMem.mem_mult_iff _ _ _ _ _ _ _ _).1 ((mem_multT _ _ _ _ _).1 hF)`. Establish `hM : ∀ F' : MultT θ M' ∅ 1, IsMultMap θ M' ∅ 1 (PiTensorProduct.lift.symm (F' : SmT M' →ₗ[ℂ] (GA D W → ℂ)))` using `fun F' => (GlobalTheory.MultMem.mem_mult_iff _ _ _ _ _ _ _ _).1 ((mem_multT _ _ _ _ _).1 F'.2)`. Set `pt : PolF D W.rank V'.rank →ₗ[ℂ] (WO V' W → ℂ)` to `pureTensorO ψ θ V' W A.cart (Fr.ofModel M').cart A.onb (Fr.ofModel M').onb f₀`. Establish `hp : ptF ψ θ A (Fr.ofModel M') f₀ = pt` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpt : ∀ φ, IsThetaFunO ψ V' W (pt φ)` using `fun φ => GlobalTheory.Chain.InnerSteps.theta_pureTensorO hW.std hθ _ _ _ _ hf.1 φ`. Establish `L` using `hIn.laws V' W θ ψ χS χT ω' hθ hW ν 𝓕 hν h𝓕`. Establish `hint : ∀ F' : MultT θ M' ∅ 1, ∀ φ x g, IntegrableOn (fun h => thetaKO ω' g h (pt φ) * (F' : SmT M' →ₗ[ℂ] (GA D W → ℂ)) x h) 𝓕 ν` using `fun F' φ x g => by`. Proceed by induction on `x using PiTensorProduct.induction_on with`. Consider the case `smul_tprod r w`.
+Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately. Establish an intermediate fact.
 
-Use `(L.integ _ _ (hpt φ) ⟨(hM F').aut w, (hM F').cusp w⟩ g 1).const_mul r` as an intermediate fact. Use `this.congr (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[map_smul, Pi.smul_apply, smul_eq_mul, mul_left_comm, rTr, mul_one]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Consider the case `add x y hx hy => simp only [map_add, Pi.add_apply, mul_add]`. Conclude with `hx.add hy`. Take `⟨B, hB⟩` from `exists_trilinear ν 𝓕 (fun g h => LinearMap.proj 0 ∘ₗ ω' (g, h)) pt (MultT θ M' ∅ 1) hint`. Set `G : PolF D W.rank V'.rank →ₗ[ℂ] SmT M' →ₗ[ℂ] (GA D V' → ℂ)` to `B.compr₂ (LinearMap.applyₗ (⟨F, hF⟩ : MultT θ M' ∅ 1))`. Establish `hG : ∀ φ x, G φ x = GlobalTheory.IndefiniteRowSideFullHecke.RapidDecayLift.lift ω' ν 𝓕 (pt φ) (F x)` using `fun φ x => hB φ x ⟨F, hF⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcl : ∀ w : M'.Vec, IsAutFunSm θ W (F (PiTensorProduct.tprod ℂ w)) ∧ IsCuspFun W (F (PiTensorProduct.tprod ℂ w))` using `fun w => ⟨hMF.aut w, hMF.cusp w⟩`. Establish `hT : ∀ τ, ∀ Y ∈ lieAt W τ, ∀ φ z, HasDerivAt (fun t : ℝ => ω' (1, oneP θ W τ Y t) (pt φ) z) (pt (fockT τ (A.ε τ) (M'.ε τ) (M'.fr τ * Y * (M'.fr τ)⁻¹) φ + ((aS τ : ℂ) * Y.trace) • φ) z) 0` using `fun τ Y hY φ z => (hIn.lie V' W A (Fr.ofModel M') θ ψ χS χT ω' f₀ τ (aS τ) (aT τ) hθ hW (hexp τ).1 (hexp τ).2 hf).2 Y hY φ z`. Establish `hBt : ∀ τ, ∀ Y ∈ lieAt W τ, ∀ φ (w : M'.Vec) (u : M'.sm τ), (u : M'.H τ) = dRep (M'.rep τ) Y (w τ) → G (fockT τ (A.ε τ) (M'.ε τ) (M'.fr τ * Y * (M'.fr τ)⁻¹) φ + ((aS τ : ℂ) * Y.trace) • φ) (PiTensorProduct.tprod ℂ w) + G φ (PiTensorProduct.tprod ℂ (Function.update w τ u)) = 0`. Introduce `τ Y hY φ w u hu`. Establish `e1` using `GlobalTheory.MultGelf.rder_apply hMF τ w hY (w τ) u hu`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite `e1` using `[Function.update_eq_self]`. Establish `e2 : GlobalTheory.IndefiniteRowSideFullHecke.RapidDecayLift.dOmT θ ω' τ Y (pt φ) = pt (fockT τ (A.ε τ) (M'.ε τ) (M'.fr τ * Y * (M'.fr τ)⁻¹) φ + ((aS τ : ℂ) * Y.trace) • φ)`. Use function extensionality and compare the values at `fun z => (hT τ Y hY φ z).deriv`. Use function extensionality and compare the values at `g`. Use `L.derT_add (hpt φ) (hcl w) τ hY g` as an intermediate fact.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[e2, add_comm]`. Rewrite using `[Pi.add_apply, hG, hG]`. Conclude with `(congrArg (fun A => _ + GlobalTheory.IndefiniteRowSideFullHecke.RapidDecayLift.lift ω' ν 𝓕 (pt φ) A g) e1).symm.trans this`. Establish `hav` using `mem_span_of_average G h' fun τ φ w => by`. Take `⟨n, φs, c, hc, hφ⟩` from `frame_fock_orbit D V' W _ A M' θ ψ ω' f₀ τ (aS τ) (aT τ) hθ (hIn.cpt V' W A (Fr.ofModel M') θ ψ χS χT ω' f₀ τ _ _ hθ hW (hexp τ).1 (hexp τ).2 hf f0) φ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `hk` using `GlobalTheory.Chain.IoLift.kMean_mem_kFin_of_coefFam D W _ M' τ n c hc (w τ)`. Use `⟨n, φs, fun i => ⟨_, h' τ (hk i)⟩, hk, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `g`. Simplify using `only [hG, Finset.sum_apply]`. Conclude with `GlobalTheory.Chain.IoLift.AvgLift.liftInt_eq_sum_average D V' W _ M' θ ψ χS χT ω' ν 𝓕 hθ hW hν h𝓕 τ n c _ _ _ _ hc.1 (hpt φ) hφ (hcl w).1.toIsAutFun (fun i x => apply_kMean hMF τ (hc.1 i) w _ rfl x) g (hint ⟨F, hF⟩ _ _ g) fun i => hint ⟨F, hF⟩ _ _ g`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨τ₀⟩ : Nonempty D.what₂.Tau` from `⟨D.eTau.symm 1⟩`. Take `⟨p, q, r, s, l₁, l₂, l₁', l₂', h1, h2, h3, h4, hR, e1, e2⟩` from `hP τ₀`. Take `⟨p', q', hp', hq', hsig⟩` from `hs τ₀`. Take `⟨hn1, hn2⟩` from `nodup_of_isParam h1 h2 hR.par`. Establish `hcard` using `signCard_signed l₁ l₂ (aT τ₀) hn1 hn2`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite `hp'` using `[e1, GlobalTheory.IndefiniteRowSideFullHecke.LoweredSignatureVanishing.signCard_dualPar, hcard.1, h1]`. Rewrite `hq'` using `[e1, GlobalTheory.IndefiniteRowSideFullHecke.LoweredSignatureVanishing.signCard_dualPar, hcard.2, h2]`. Take `rfl : p' = p - i` from `by omega`. Take `rfl : q' = q - i` from `by omega`. Take `⟨e, he⟩` from `(GlobalTheory.FrameExists.frame_exists_signCompat D V').2 A τ₀ _ _ hsig`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨⟨e', he'⟩, m', hm', hU'⟩` from `hTB X W S' M' τ₀ r s l₁' l₂' (aS τ₀) ⟨hR.pos', h3, h4, hR.par', hIn.chosen _ _ _ hR.par', e2⟩`. Take `⟨U', hU'⟩` from `hU' e' he'`. Establish `hadm : Formalism.MainNotions.SchurIrreducible.AdmGK (X.ds r s (ofBlocks l₁' l₂')).HK` using `(((hIn.hc.admQ5_of_harishChandraModules X _ _ hR.pos').1 (X.ds r s (ofBlocks l₁' l₂')).U ⟨(X.ds _ _ _).nontriv, (X.ds _ _ _).irred⟩).2.2 _ (X.ds _ _ _).ι ⟨(X.ds _ _ _).ι_inj, (X.ds _ _ _).ι_range, (X.ds _ _ _).der⟩).1`. Establish `kvan : ∀ φ (y : KT M'), G φ (inclK h' y) = 0`. Establish `hz` using `span_multi (G.compl₂ (inclK h')) fun p y => by`.
+Apply function extensionality and compare values at an arbitrary argument. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `g`. Set `b` to `slice (multi ((G.compl₂ (inclK h')).compr₂ (LinearMap.proj g))) τ₀ p y`. Establish `hb0` using `pairing_eq_zero X _ _ r s (ofBlocks l₁' l₂') hadm hR.low i hi (by omega) (by omega) D V' W _ M' τ₀ (A.ε τ₀) e e' m' (aS τ₀) U' (a' τ₀) b he he' hm' hU' (ha' τ₀) (fun Y hY Q z => by`. Simplify using `only [b, slice_apply, multi_apply, LinearMap.compr₂_apply, LinearMap.compl₂_apply, LinearMap.proj_apply]`. Establish `eq1 : glue (Function.update p τ₀ (locT (A.ε τ₀) (M'.ε τ₀) (M'.fr τ₀ * Y * (M'.fr τ₀)⁻¹) Q + ((aS τ₀ : ℂ) * Y.trace) • Q)) = fockT τ₀ (A.ε τ₀) (M'.ε τ₀) (M'.fr τ₀ * Y * (M'.fr τ₀)⁻¹) (glue (Function.update p τ₀ Q)) + ((aS τ₀ : ℂ) * Y.trace) • glue (Function.update p τ₀ Q)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[((GlobalTheory.T.gluing_law_holds D V'.rank W.rank).2 τ₀ _ _ _).2, Function.update_idem, Function.update_self]`. Simplify using `only [← glueM_apply, MultilinearMap.map_update_add, MultilinearMap.map_update_smul]`. Establish `eq2 : Function.update y τ₀ (a' τ₀ Y z) = Function.update (Function.update y τ₀ z) τ₀ (a' τ₀ Y (Function.update y τ₀ z τ₀))`. Rewrite using `[Function.update_idem, Function.update_self]`. Rewrite using `[eq1, eq2, inclK_tprod h' (Function.update y τ₀ z), inclK_update h' (Function.update y τ₀ z) τ₀]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact.
 
-Use `congrFun (hBt τ₀ Y hY _ _ _ ?_) g` and prove the remaining obligations. Conclude with `((ha' τ₀).der Y hY _).deriv.symm)`. Use `LinearMap.congr_fun₂ hb0 (p τ₀) (y τ₀)` as an intermediate fact. Simplify `this` using `[b, slice_apply, multi_apply, Function.update_eq_self]`. Conclude with `fun φ y => LinearMap.congr_fun₂ hz φ y`.
-
-Establish `h0 : G P v ∈ (⊥ : Submodule ℂ (GA D V' → ℂ))` using `Submodule.span_le.2 (by rintro _ ⟨φ, y, rfl⟩; simp [kvan φ y]) (hav P v)`. Rewrite `h0` using `[Submodule.mem_bot, hG]`. Rewrite using `[hp]`. Conclude with `h0`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lowFock : ∀ (D : D7) (X : ProvA), GlobalTheory.PairLift.Inputs D X → GlobalTheory.PairLift.LowFock D X := by
   classical

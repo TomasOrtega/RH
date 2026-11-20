@@ -18,9 +18,9 @@ namespace GlobalTheory.BCT
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
 
 /- English proof (translation)
-Take `⟨p, hp, -, f, hf0, hfπ, hfe⟩` from `h`. Set `g : σ'.V →ₗ[ℂ] σ.V` to `e.symm.toLinearEquiv.toLinearMap`. Establish `hg : ∀ x v, g (σ'.ρ x v) = σ.ρ x (g v)` using `fun x v => LinearMap.congr_fun (e.symm.isIntertwining' x) v`. Use `⟨p, hp, σ'.irred, f ∘ₗ g, ?_, fun v => hfπ _, fun x v => ?_⟩` and prove the remaining obligations. Introduce `h0`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hf0` to reduce the goal to its premises. Use `LinearMap.ext fun v => ?_` and prove the remaining obligations. Use `LinearMap.congr_fun h0 (e.toLinearEquiv v)` as an intermediate fact. Simplify `this` using `[g]`. Simplify using `only [LinearMap.comp_apply, hg, hfe]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 -/
 theorem isCompU_of_equiv {π : Submodule ℂ (UA E n → ℂ)} {w : Pl E} {σ σ' : SmIrr (UL n w)}
     (h : IsCompU π w σ) (e : σ.ρ.Equiv σ'.ρ) : IsCompU π w σ' := by
@@ -37,13 +37,13 @@ theorem isCompU_of_equiv {π : Submodule ℂ (UA E n → ℂ)} {w : Pl E} {σ σ
   · simp only [LinearMap.comp_apply, hg, hfe]
 
 /- English proof (translation)
-Take `⟨φ, hφ, hφ0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot h`. Use `⟨φ, (Submodule.mem_inf.1 hφ).1, hφ0, fun w hw x hx hk => ?_⟩` and prove the remaining obligations. Take `⟨k, hk, hkx⟩` from `hk`. Establish `hxf : x ∈ finU E n` using `hx.1`. Establish `hmem : (⟨x, hxf⟩ : finU E n) ∈ globLev S K'`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [globLev, Subgroup.mem_iInf, Subgroup.mem_comap, Subgroup.mem_map]`. Introduce `w' hw'`. Distinguish the cases in `hww : w' = w`. Substitute `hww` using the available equality. Conclude with `⟨k, hk, hkx⟩`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Supply the required witnesses or components.
 
-Establish `hu : w'.under (𝓞 (maximalRealSubfield E)) ≠ w.under (𝓞 (maximalRealSubfield E))`. Introduce `he`. Conclude with `hww ((hS w).unique ⟨hw', he⟩ ⟨hw, rfl⟩)`. Establish `hker : x ∈ (cLoc w').ker` using `Subgroup.mem_iInf.1 (Subgroup.mem_iInf.1 (Subgroup.mem_inf.1 hx).2 w') hu`. Use `⟨1, one_mem _, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using (MonoidHom.mem_ker.1 hker).symm`. Use `(Submodule.mem_inf.1 hφ).2 ⟨_, hmem⟩` as an intermediate fact. Simplify `this` using `[fixed, eig, RF]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem hasLevel_of_fixed {S : Set (Pl E)} (hS : IsSection S) {π : Submodule ℂ (UA E n → ℂ)}
     {K' : ∀ w : Pl E, Subgroup (UL n w)} (h : π ⊓ fixed (RF E n) (globLev S K') ≠ ⊥) : HasLevel S π K' := by
@@ -68,7 +68,7 @@ theorem hasLevel_of_fixed {S : Set (Pl E)} (hS : IsSection S) {π : Submodule �
   simpa [fixed, eig, RF] using this
 
 /- English proof (translation)
-Unfold `dimW`. Rewrite using `[Finset.prod_ne_zero_iff]`. Introduce `v _`. Rewrite using `[map_one, LinearMap.trace_one]`. Conclude with `Module.finrank_pos.ne'` after adjusting the coercions.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dimW_ne_zero (lam : InfinitePlace E → DomWeight n) : dimW lam ≠ 0 := by
   unfold dimW

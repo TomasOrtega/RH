@@ -12,7 +12,7 @@ open Formalism.InvariantFactorPaths.G7 (lgF at1 Simeq cob UnrOK IsLawOfLog)
 open Formalism.L2.Th1.CM (MaximalUnramifiedExtension)
 
 /- English proof (translation)
-Introduce `l _ _ g2 g3 ε hg2 hg3 hε hth σ hσ F hF s2 hN`. Take `⟨a1, a2, -⟩` from `FAux.ffs l first_level_on_curve g2 g3 ε hg2 hg3 hε hth σ hσ F hF s2 hN`. Conclude with `thmAEntryOfF l (MaximalUnramifiedExtension l) σ hσ (MaximalUnramifiedExtension l).subtype (FAux.norm_coe l) F hF _ a1 a2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem theorem_a_entry_all : ThmAEntryAll := by
   intro l _ _ g2 g3 ε hg2 hg3 hε hth σ hσ F hF s2 hN
@@ -20,7 +20,7 @@ theorem theorem_a_entry_all : ThmAEntryAll := by
   exact thmAEntryOfF l (MaximalUnramifiedExtension l) σ hσ (MaximalUnramifiedExtension l).subtype (FAux.norm_coe l) F hF _ a1 a2
 
 /- English proof (translation)
-Introduce `l _ _ g2 g3 ε hg2 hg3 hε hth σ hσ F hF s2 hN`. Take `⟨a1, a2, -⟩` from `FAux.ffs l first_level_on_curve g2 g3 ε hg2 hg3 hε hth σ hσ F hF s2 hN`. Conclude with `thmAGaussOfF l (MaximalUnramifiedExtension l) σ hσ (MaximalUnramifiedExtension l).subtype (FAux.norm_coe l) F hF _ a1 a2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem theorem_a_gauss_all : ThmAGaussAll := by
   intro l _ _ g2 g3 ε hg2 hg3 hε hth σ hσ F hF s2 hN
@@ -28,7 +28,7 @@ theorem theorem_a_gauss_all : ThmAGaussAll := by
   exact thmAGaussOfF l (MaximalUnramifiedExtension l) σ hσ (MaximalUnramifiedExtension l).subtype (FAux.norm_coe l) F hF _ a1 a2
 
 /- English proof (translation)
-Introduce `l _ _ g2 g3 ε hg2 hg3 hε hth σ hσ F hF s2 hN`. Take `⟨a1, a2, a3⟩` from `FAux.ffs l first_level_on_curve g2 g3 ε hg2 hg3 hε hth σ hσ F hF s2 hN`. Conclude with `oneLetterGaussOfF l (MaximalUnramifiedExtension l) σ hσ (MaximalUnramifiedExtension l).subtype (FAux.norm_coe l) F hF _ a1 a2 (FAux.exists_root2 l) _ a3`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem one_letter_gauss_all : OneLetterGaussAll := by
   intro l _ _ g2 g3 ε hg2 hg3 hε hth σ hσ F hF s2 hN
@@ -37,7 +37,7 @@ theorem one_letter_gauss_all : OneLetterGaussAll := by
     (FAux.exists_root2 l) _ a3
 
 /- English proof (translation)
-Introduce `l _ _ g2 g3 ε hg2 hg3 hε hth σ hσ F hF s2 hN ν r0 r1 _ om oms`. Take `⟨a1, a2, -⟩` from `FAux.ffs l first_level_on_curve g2 g3 ε hg2 hg3 hε hth σ hσ F hF s2 hN`. Establish `: CompleteSpace (MaximalUnramifiedExtension l)` using `kurComplete l`. Conclude with `kernelOfF l (MaximalUnramifiedExtension l) σ hσ (FAux.exists_root2 l) F hF _ a1 a2 ℂ_[l] (MaximalUnramifiedExtension l).subtype ν r0 r1 (FAux.norm_coe l) (FAux.exists_pi l) om oms`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem kernel_all : KernelAll := by
   intro l _ _ g2 g3 ε hg2 hg3 hε hth σ hσ F hF s2 hN ν r0 r1 _ om oms
@@ -47,9 +47,9 @@ theorem kernel_all : KernelAll := by
     (FAux.norm_coe l) (FAux.exists_pi l) om oms
 
 /- English proof (translation)
-Introduce `h2 h3 h4' dK L hsq h4 hcm l _ h5 hd hin ι`. Take `⟨g2, g3, ε, hg, hε, hth⟩` from `FAux.model l h2 h3 dK L hsq h4 hcm h5 hd hin ι`. Take `⟨s2, hs2, hc2, hN⟩` from `hNR h4' dK L hsq h4 hcm l h5 hd hin ι g2 g3 ε hg hε hth`. Use `⟨g2, g3, ε, s2, hg, hε, hth, hs2, hc2, ?_⟩` and prove the remaining obligations. Introduce `σ hσ F hF`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `theorem_a_entry_all l h5 g2 g3 ε hg.2.2.1 hg.2.2.2.1 hε hth σ hσ F hF s2 (hN σ hσ)`.
+A detailed English derivation is pending.
 -/
 theorem ThmAEntryFinal_of' (hNR : Formalism.L2.Th1.CM.CM4 → NRCM) : ThmAEntryFinal := by
   intro h2 h3 h4' dK L hsq h4 hcm l _ h5 hd hin ι
@@ -60,9 +60,9 @@ theorem ThmAEntryFinal_of' (hNR : Formalism.L2.Th1.CM.CM4 → NRCM) : ThmAEntryF
   exact theorem_a_entry_all l h5 g2 g3 ε hg.2.2.1 hg.2.2.2.1 hε hth σ hσ F hF s2 (hN σ hσ)
 
 /- English proof (translation)
-Introduce `h2 h3 h4' dK L hsq h4 hcm l _ h5 hd hin ι`. Take `⟨g2, g3, ε, hg, hε, hth⟩` from `FAux.model l h2 h3 dK L hsq h4 hcm h5 hd hin ι`. Take `⟨s2, hs2, hc2, hN⟩` from `hNR h4' dK L hsq h4 hcm l h5 hd hin ι g2 g3 ε hg hε hth`. Use `⟨g2, g3, ε, s2, hg, hε, hth, hs2, hc2, ?_⟩` and prove the remaining obligations. Introduce `σ hσ F hF`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `theorem_a_gauss_all l h5 g2 g3 ε hg.2.2.1 hg.2.2.2.1 hε hth σ hσ F hF s2 (hN σ hσ)`.
+A detailed English derivation is pending.
 -/
 theorem ThmAGaussFinal_of' (hNR : Formalism.L2.Th1.CM.CM4 → NRCM) : ThmAGaussFinal := by
   intro h2 h3 h4' dK L hsq h4 hcm l _ h5 hd hin ι
@@ -73,9 +73,9 @@ theorem ThmAGaussFinal_of' (hNR : Formalism.L2.Th1.CM.CM4 → NRCM) : ThmAGaussF
   exact theorem_a_gauss_all l h5 g2 g3 ε hg.2.2.1 hg.2.2.2.1 hε hth σ hσ F hF s2 (hN σ hσ)
 
 /- English proof (translation)
-Introduce `h2 h3 h4' dK L hsq h4 hcm l _ h5 hd hin ι`. Take `⟨g2, g3, ε, hg, hε, hth⟩` from `FAux.model l h2 h3 dK L hsq h4 hcm h5 hd hin ι`. Take `⟨s2, hs2, hc2, hN⟩` from `hNR h4' dK L hsq h4 hcm l h5 hd hin ι g2 g3 ε hg hε hth`. Use `⟨g2, g3, ε, s2, hg, hε, hth, hs2, hc2, ?_⟩` and prove the remaining obligations. Introduce `σ hσ F hF`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `one_letter_gauss_all l h5 g2 g3 ε hg.2.2.1 hg.2.2.2.1 hε hth σ hσ F hF s2 (hN σ hσ)`.
+A detailed English derivation is pending.
 -/
 theorem OneLetterGaussFinal_of' (hNR : Formalism.L2.Th1.CM.CM4 → NRCM) : OneLetterGaussFinal := by
   intro h2 h3 h4' dK L hsq h4 hcm l _ h5 hd hin ι
@@ -86,9 +86,9 @@ theorem OneLetterGaussFinal_of' (hNR : Formalism.L2.Th1.CM.CM4 → NRCM) : OneLe
   exact one_letter_gauss_all l h5 g2 g3 ε hg.2.2.1 hg.2.2.2.1 hε hth σ hσ F hF s2 (hN σ hσ)
 
 /- English proof (translation)
-Introduce `h2 h3 h4' dK L hsq h4 hcm l _ h5 hd hin ι`. Take `⟨g2, g3, ε, hg, hε, hth⟩` from `FAux.model l h2 h3 dK L hsq h4 hcm h5 hd hin ι`. Take `⟨s2, hs2, hc2, hN⟩` from `hNR h4' dK L hsq h4 hcm l h5 hd hin ι g2 g3 ε hg hε hth`. Use `⟨g2, g3, ε, s2, hg, hε, hth, hs2, hc2, ?_⟩` and prove the remaining obligations. Introduce `σ hσ F hF`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `kernel_all l h5 g2 g3 ε hg.2.2.1 hg.2.2.2.1 hε hth σ hσ F hF s2 (hN σ hσ)`.
+A detailed English derivation is pending.
 -/
 theorem KernelFinal_of' (hNR : Formalism.L2.Th1.CM.CM4 → NRCM) : KernelFinal := by
   intro h2 h3 h4' dK L hsq h4 hcm l _ h5 hd hin ι

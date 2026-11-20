@@ -21,11 +21,11 @@ noncomputable section
 namespace GlobalTheory.Mum.TensTor
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero`. Establish `h0` using `GlobalTheory.T.tensorTorusValueCorrespondence_period F N N' W φ e wv h 0`. Establish `e0 : ∀ j, e 0 j = 0` using `fun j => by`. Use `h.2.2.1 0 0 j` as an intermediate fact.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[add_zero]`. Conclude with `(add_eq_left.1 this.symm)`. Simplify using `only [e0, NumD.io_zero] at h0`. Rewrite using `[pow_zero, pow_zero]`. Conclude with `h0`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `succ k ih`. Rewrite using `[pow_succ, pow_succ]`. Conclude with `GlobalTheory.T.tensorTorusValueCorrespondence_mul F N N' W φ e wv h _ _ _ _ ih hv`.
+A detailed English derivation is pending.
 -/
 theorem gtRelV_pow {F : Type} [Field F] {N N' : NumD F} {r : ℕ} {W : Matrix (Fin r) (Fin r) ℤ}
     {φ : N'.A → Fin r → N.A} {e : N'.X → Fin r → N.X} {wv : N'.A → F} (h : TensFacts W φ e wv)
@@ -46,13 +46,13 @@ theorem gtRelV_pow {F : Type} [Field F] {N N' : NumD F} {r : ℕ} {W : Matrix (F
     exact GlobalTheory.T.tensorTorusValueCorrespondence_mul F N N' W φ e wv h _ _ _ _ ih hv
 
 /- English proof (translation)
-Introduce `R _ _ _ hR D D' r W T F _ _ _ N N' ν ν' k ps`. Establish `B` using `GlobalTheory.Ex.GtValues.points_correspond R D.toPre D.psi_even D.tau_bimult F N ν`. Establish `B'` using `GlobalTheory.Ex.GtValues.points_correspond R D'.toPre D'.psi_even D'.tau_bimult F N' ν'`. Establish `hT` using `GlobalTheory.T.tensorData_values_facts R hR D D' W T F N N' ν ν'`. Use `choose qs hqs using fun i => ((B.2.2.2.2 k).1 (ps i)).exists`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨v', hv'⟩` from `GlobalTheory.T.exists_tensorTorusPoint_of_componentTuple F N N' W (cmp T ν ν') (chi T ν ν') (wv T ν ν') hT fun j => (qs j).1.2`. Take `⟨y', hy'⟩` from `hT.2.2.2.1.2 fun i => (qs i).1.1.toAdd`. Establish `hk : v' ^ k = N'.io y'`. Use `GlobalTheory.T.tensorTorusValueCorrespondence_unique_point F N N' W (cmp T ν ν') (chi T ν ν') (wv T ν ν') hT _ _ (fun j => N.io (chi T ν ν' y' j)) ?_ (GlobalTheory.T.tensorTorusValueCorrespondence_period F N N' W (cmp T ν ν') (chi T ν ν') (wv T ν ν') hT y')` and prove the remaining obligations. Establish `hp` using `gtRelV_pow hT hv' k`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : ((fun j => (qs j).1.2) ^ k : Fin r → N.Gt) = fun j => N.io (chi T ν ν' y' j)`. Use function extensionality and compare the values at `j`. Rewrite using `[Pi.pow_apply, hy']`. Conclude with `(qs j).2`. Rewrite `hp` using `[e]`. Then use the resulting hypothesis.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Set `q' : N'.QT k` to `⟨(Multiplicative.ofAdd y', v'), hk⟩`. Take `⟨p', hp'⟩` from `(B'.2.2.2.2 k).2.1 q'`. Conclude with `⟨p', q', qs, hp', hqs, fun i => congrFun hy' i, hv'⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_ptRel : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (D D' : DegData R (maximalIdeal R)) {r : ℕ} (W : Matrix (Fin r) (Fin r) ℤ) (T : Tens D.toPre D'.toPre W) (F : Type) [Field F] [IsAlgClosed F] [Algebra (FractionRing R) F] (N N' : NumD F) (ν : NumOf D.toPre F N) (ν' : NumOf D'.toPre F N') (k : ℕ) (ps : Fin r → QkPt D.toPre F k), ∃ p' : QkPt D'.toPre F k, PtRel T ν ν' p' ps := by
   intro R _ _ _ hR D D' r W T F _ _ _ N N' ν ν' k ps

@@ -13,9 +13,9 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c R _ _ _ hR C hr`. Take `⟨Z, hZ, hrk, tK, m1, m2, hI⟩` from `GlobalTheory.T.exists_isotropic_saturated_weight_filtration Xo c R hR C hr`. Take `⟨D', f, hf, hp, hq⟩` from `GlobalTheory.T.exists_lower_datum_of_isotropic_saturated Dw Z hZ`. Apply the tactic sequence `obtain ⟨o', φB, h1, h2, h3, h4⟩ := GlobalTheory.T.exists_lowerObject_abelianPart_tateIsometry Xo c R hR C Z D' f hZ hf hrk hp hq tK m1 m2 hI`. Use `⟨Z, D', f, o', φB, hZ, hrk, hf, hrk ▸ hp, hrk ▸ hq, h1, h2, h3, tK, m1, m2, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `F _ _ _`. Take `⟨I, hI1, hI2⟩` from `hI F`. Take `⟨I', hI'⟩` from `h4 F I hI1 hI2`. Conclude with `⟨I, I', hI1, hI2, hI'⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem GlobalTheory.LowDat.exists_lower : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H}
   {l : Level H} (Xo : Moduli Dw l) (c : Coeff l) (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R],

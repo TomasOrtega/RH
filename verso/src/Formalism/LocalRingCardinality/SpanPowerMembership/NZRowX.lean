@@ -12,11 +12,11 @@ section Gen
 variable (D : D7)
 
 /- English proof (translation)
-Introduce `u`. Establish `hI : DV.Iu D L u = 1`. Unfold `DV.Iu`. Rewrite using `[hs, Finset.prod_empty]`. Rewrite using `[hI, ← hN u]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Apply `le_antisymm` to reduce the goal to its premises. Introduce `y hy`. Conclude with `Submodule.subset_span ⟨1, FractionalIdeal.one_mem_one _, y, hy, (one_smul _ _).symm⟩`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `x ⟨a, ha, y, hy, rfl⟩`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨r, rfl⟩` from `(FractionalIdeal.mem_one_iff _).mp ha`. Rewrite using `[algebraMap_smul]`. Conclude with `Submodule.smul_mem _ _ hy`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nprime_of (L : SizeData₂ D) (hs : L.supp = ∅) (hN : ∀ u, L.NuLat u = (D.div.Nu u).L) : DV.NprimeDef D L := by
   intro u
@@ -34,7 +34,7 @@ theorem nprime_of (L : SizeData₂ D) (hs : L.supp = ∅) (hN : ∀ u, L.NuLat u
     exact Submodule.smul_mem _ _ hy
 
 /- English proof (translation)
-Unfold `DV.lenLoc`. Establish `: Subsingleton (↥A ⧸ A.comap A.subtype)`. Rewrite using `[Submodule.comap_subtype_self]`. Conclude with `not_nontrivial_iff_subsingleton.mp fun hnt => Submodule.Quotient.nontrivial_iff.mp hnt rfl`. Rewrite using `[Module.length_eq_zero]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lenLoc_self {V : Type} [AddCommGroup V] [Module (𝓞 D.what₂.LL) V] (w : HeightOneSpectrum (𝓞 D.what₂.LL))
     (A : Submodule (𝓞 D.what₂.LL) V) : DV.lenLoc w A A = 0 := by
@@ -45,16 +45,16 @@ theorem lenLoc_self {V : Type} [AddCommGroup V] [Module (𝓞 D.what₂.LL) V] (
   rw [Module.length_eq_zero]
 
 /- English proof (translation)
-Introduce `x hx` and use `⟨1, fun h => w.isPrime.ne_top ((Ideal.eq_top_iff_one _).mpr h), by rw [pow_zero, Ideal.one_eq_top, Submodule.top_smul, one_smul]; exact hx⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem locLe_self (w : HeightOneSpectrum (𝓞 D.what₂.LL)) {V : Type} [AddCommGroup V] [Module (𝓞 D.what₂.LL) V]
     (A : Submodule (𝓞 D.what₂.LL) V) : DV.LocLe w 0 A A := fun x hx =>
   ⟨1, fun h => w.isPrime.ne_top ((Ideal.eq_top_iff_one _).mpr h), by rw [pow_zero, Ideal.one_eq_top, Submodule.top_smul, one_smul]; exact hx⟩
 
 /- English proof (translation)
-Use `⟨fun u w _ => ?_, fun u w _ _ => ?_, fun u w l hl => ?_⟩` and prove the remaining obligations. Rewrite using `[hN]`. Conclude with `locLe_self D _ _`. Rewrite using `[hN]`. Conclude with `⟨locLe_self D _ _, locLe_self D _ _⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hl` using `[hN, lenLoc_self]`. Rewrite using `[hlen]`. Establish `: l = 0` using `by exact_mod_cast hl.symm`. Simplify using `[this]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem nuDef_of (L : SizeData₂ D) (hN : ∀ u, L.NuLat u = DV.MramL D u) (hlen : ∀ u w, L.lenMN u w = 0) : DV.NuDef D L := by
   refine ⟨fun u w _ => ?_, fun u w _ _ => ?_, fun u w l hl => ?_⟩
@@ -114,7 +114,7 @@ variable (Lb : Lbl H) (hT2 : ∀ u, T u ≠ 2) (per : ∀ u : W, Bool → FK ((K
 local notation "DR" => (hostLevelRecord H u0 hcW hv0 hb0 he0 hf0 hl0 Del hDel hgap lt hlt hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw d Dall d0 hd FT ft ft0 Lb hT2 per NuL gat hgat)
 
 /- English proof (translation)
-Use `show (stdHLat H.E ((K u).cls 0)).L.comap ((LinearMap.id : ((K u).cls 0 → H.E) →ₗ[H.E] _).restrictScalars _) = NuL u`. Rewrite using `[hN u]`. Use extensionality with `x`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem row_mramL (hN : ∀ u, NuL u = (stdHLat H.E ((K u).cls 0)).L) (u : W) : DV.MramL DR u = ((DR).div.Nu u).L := by
   show (stdHLat H.E ((K u).cls 0)).L.comap ((LinearMap.id : ((K u).cls 0 → H.E) →ₗ[H.E] _).restrictScalars _) = NuL u
@@ -125,13 +125,13 @@ theorem row_mramL (hN : ∀ u, NuL u = (stdHLat H.E ((K u).cls 0)).L) (u : W) : 
 def levelRecordParameters (L : SizeData₂ DR) : SizeData₂ DR := withNu L (fun u => ((DR).div.Nu u).L) (fun _ _ => 0)
 
 /- English proof (translation)
-The claim follows from `nprime_of DR _ hs fun _ => rfl`.
+A detailed English derivation is pending.
 -/
 theorem row_nprime (L : SizeData₂ DR) (hs : L.supp = ∅) : DV.NprimeDef DR (levelRecordParameters H u0 hcW hv0 hb0 he0 hf0 hl0 Del hDel hgap lt hlt hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw d Dall d0 hd FT ft ft0 Lb hT2 per NuL gat hgat L) :=
   nprime_of DR _ hs fun _ => rfl
 
 /- English proof (translation)
-The claim follows from `nuDef_of DR _ (fun u => (row_mramL H u0 hcW hv0 hb0 he0 hf0 hl0 Del hDel hgap lt hlt hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw d Dall d0 hd FT ft ft0 Lb hT2 per NuL gat hgat hN u).symm) fun _ _ => …`.
+A detailed English derivation is pending.
 -/
 theorem row_nuDef (hN : ∀ u, NuL u = (stdHLat H.E ((K u).cls 0)).L) (L : SizeData₂ DR) : DV.NuDef DR (levelRecordParameters H u0 hcW hv0 hb0 he0 hf0 hl0 Del hDel hgap lt hlt hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw d Dall d0 hd FT ft ft0 Lb hT2 per NuL gat hgat L) :=
   nuDef_of DR _ (fun u => (row_mramL H u0 hcW hv0 hb0 he0 hf0 hl0 Del hDel hgap lt hlt hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw d Dall d0 hd FT ft ft0 Lb hT2 per NuL gat hgat hN u).symm) fun _ _ => rfl

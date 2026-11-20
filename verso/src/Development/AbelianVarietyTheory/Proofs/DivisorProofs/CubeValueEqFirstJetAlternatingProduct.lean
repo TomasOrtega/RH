@@ -16,15 +16,15 @@ noncomputable section
 namespace GlobalTheory.MBLow.Cl.CubeJet
 
 /- English proof (translation)
-Introduce `R _ _ D _ N g ν d G hprod W gm h0 hD χ χ' x y hx hy`. Take `⟨U, f, hv, hU0, hUz⟩` from `GlobalTheory.T.cubeValue_constPoints_tangent_eq_dualFibreValue ν d gm h0 χ χ' x y hx hy`. Rewrite using `[hv, hD U f hU0]`. Establish `hO : IsOpen {z | ⊤ ≤ ptB ν d z ⁻¹ᵁ U}` using `(G.hol U f).1`. Establish `hFeq : (fun z => valF (ptB ν d z) U f) =ᶠ[nhds 0] fun z => ∏ I : thK.{0}, G.frG (ν.J (ν.eA (d.ex (∑ i ∈ I.down, ![x, y, 0] i))).left) (∑ i ∈ I.down, ![x, y, z] i) ^ thε I` using `by filter_upwards [hO.mem_nhds hU0] with z hz`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hI, hval⟩` from `hUz z hz`. Rewrite using `[hval]`. Conclude with `hprod x y z _ hI`. Establish `hopen : ∀ i, IsOpen {z | ⊤ ≤ (ν.eA (d.ex z)).left ⁻¹ᵁ D.P.L.U i}` using `fun i => by`. Establish `e : ∀ z, (ν.eA (d.ex z)).left = ptB ν d z ≫ (DegPre.prB D ℂ).left` using `fun z => by`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ptB, DegPre.prB, ← Over.comp_left, lift_snd]`. Use `(G.hol ((DegPre.prB D ℂ).left ⁻¹ᵁ D.P.L.U i) 0).1` as an intermediate fact. Simplify `this` using `only [e, Scheme.Hom.comp_preimage]`. Establish `hd : ∀ I : thK.{0}, DifferentiableAt ℂ (G.frG (ν.J (ν.eA (d.ex (∑ i ∈ I.down, ![x, y, 0] i))).left)) (∑ i ∈ I.down, ![x, y, 0] i)` using `fun I => (G.fr_hol _).differentiableAt ((hopen _).mem_nhds (ν.good _))`. Establish `hn : ∀ I : thK.{0}, G.frG (ν.J (ν.eA (d.ex (∑ i ∈ I.down, ![x, y, 0] i))).left) (∑ i ∈ I.down, ![x, y, 0] i) ≠ 0` using `fun I => by`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← G.fr_eq]`. Conclude with `mul_ne_zero (Units.ne_zero _) (GlobalTheory.Ex.Arch.AbVal.rg_ne_zero ν)`. Establish `hpair : ∀ I : thK.{0}, 2 ∉ I.down → G.frG (ν.J (ν.eA (d.ex (∑ i ∈ (insert 2 I.down), ![x, y, 0] i))).left) = G.frG (ν.J (ν.eA (d.ex (∑ i ∈ I.down, ![x, y, 0] i))).left)` using `fun I h2 => by`. Rewrite using `[Finset.sum_insert h2]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨h1, h2⟩` from `GlobalTheory.T.alternatingCubeProduct_value_fderiv_at_zero x y W (fun I : thK.{0} => G.frG (ν.J (ν.eA (d.ex (∑ i ∈ I.down, ![x, y, 0] i))).left)) _ hFeq hd hn hpair`. Rewrite using `[h1, h2]`. Simplify using `[Finset.sum_insert]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cube_jet : ∀ {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} [Algebra (FractionRing R) ℂ] {N : NumD ℂ} {g : ℕ}
     (ν : NumOf D ℂ N) (d : AB N.toNumB g) (G : Geo ν d),

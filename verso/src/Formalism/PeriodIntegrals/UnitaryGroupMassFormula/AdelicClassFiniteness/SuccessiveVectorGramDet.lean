@@ -13,14 +13,14 @@ section GD
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {m : ℕ} (J : Matrix (Fin m) (Fin m) E)
 
 /- English proof (translation)
-Use extensionality with `i`. Simplify using `[Rat.smul_def]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem gd_qsmul (q : ℚ) (x : Fin m → E) : q • x = ((q : E)) • x := by
   ext i
   simp [Rat.smul_def]
 
 /- English proof (translation)
-Use `first`. Consider the case `exact star_ratCast q`. Consider the case `simpa [starRingEnd_apply] using map_ratCast (starRingEnd E) q`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem gd_star_rat (q : ℚ) : star ((q : E)) = (q : E) := by
   first
@@ -41,7 +41,7 @@ def gdRight (x : Fin m → E) : (Fin m → E) →ₗ[ℚ] ℚ where
     rw [gd_qsmul, hform_smul_right', RingHom.id_apply, smul_eq_mul, ← Rat.smul_def, map_smul, smul_eq_mul]
 
 /- English proof (translation)
-Rewrite using `[gd_qsmul, Rat.cast_intCast]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem gd_int_smul (c : ℤ) (x : Fin m → E) : ((c : E)) • x = ((c : ℚ)) • x := by
   rw [gd_qsmul, Rat.cast_intCast]
@@ -49,71 +49,63 @@ theorem gd_int_smul (c : ℤ) (x : Fin m → E) : ((c : E)) • x = ((c : ℚ)) 
 end GD
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ cm m d δ hd hδ hcod p hp e hli he hspan`. Simplify using `only [Lat, Set.mem_setOf_eq] at hp`. Take `⟨hJh, hJdet, -, -, hMint, hMdual⟩` from `hp`. Use `set J := p.1 with hJdef`. Use `set M := p.2 with hMdef`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hO : ∀ b : E, b ∈ (algebraMap (𝓞 E) E).range → star b ∈ (algebraMap (𝓞 E) E).range`. Introduce `b hb`. Take `⟨β, rfl⟩` from `RingHom.mem_range.mp hb`. Establish `hint : IsIntegral ℤ (starRingEnd E (algebraMap (𝓞 E) E β))` using `IsIntegral.map (starRingEnd E).toIntAlgHom β.isIntegral_coe`. Conclude with `RingHom.mem_range.mpr ((IsIntegralClosure.isIntegral_iff (A := 𝓞 E)).mp hint)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `F1 : ∀ x y : Fin m → E, hform (starRingEnd E) J x y = (fun i => starRingEnd E (x i)) ⬝ᵥ (J *ᵥ y)`. Introduce `x y`. Simplify using `only [hform, dotProduct, Matrix.mulVec, Finset.mul_sum, mul_assoc]`. Establish `hsingle : ∀ (i : Fin m) (v : Fin m → E), hform (starRingEnd E) J (Pi.single i 1) v = (J *ᵥ v) i`. Introduce `i v`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[F1]`. Establish `hs : (fun a => starRingEnd E ((Pi.single i (1 : E) : Fin m → E) a)) = Pi.single i 1`. Use function extensionality and compare the values at `a`. Distinguish the cases in `h : a = i`. Substitute `h` using the available equality.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, h]`. Rewrite using `[hs]`. Use `first`. Consider the case `rw [single_dotProduct, one_mul]`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Consider the case `simp [dotProduct, Pi.single_apply]`. Establish `hnd : ∀ y : Fin m → E, (∀ x, hform (starRingEnd E) J x y = 0) → y = 0`. Introduce `y hy`. Establish `hJy : J *ᵥ y = 0`. Use function extensionality and compare the values at `i`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hsingle, Pi.zero_apply]`. Conclude with `hy _`. Establish `h6 : y = J⁻¹ *ᵥ (J *ᵥ y)`. Rewrite using `[Matrix.mulVec_mulVec y J⁻¹ J, Matrix.nonsing_inv_mul _ (isUnit_iff_ne_zero.mpr hJdet), Matrix.one_mulVec]`. Rewrite using `[h6, hJy, Matrix.mulVec_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `htr : ∀ z : E, (∀ b : E, Algebra.trace ℚ E (b * z) = 0) → z = 0`. Introduce `z hz`. Assume the negation of the conclusion as `hne`. Establish `h1` using `hz z⁻¹`. Rewrite `h1` using `[inv_mul_cancel₀ hne, ← map_one (algebraMap ℚ E), Algebra.trace_algebraMap, nsmul_eq_mul, mul_one, Nat.cast_eq_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Module.finrank_pos (R := ℚ) (M := E)).ne' h1`. Establish `hRt : ∀ x y, gdRight J x y = Algebra.trace ℚ E (hform (starRingEnd E) J x y)` using `fun x y => rfl`. Establish `hLt : ∀ x y, gdLeft J y x = Algebra.trace ℚ E (hform (starRingEnd E) J x y)` using `fun x y => rfl`. Establish `Br : ∀ (x : Fin m → E) (q : Fin (m * Module.finrank ℚ E) → ℚ), Algebra.trace ℚ E (hform (starRingEnd E) J x (∑ k, q k • e k)) = ∑ k, q k * Algebra.trace ℚ E (hform (starRingEnd E) J x (e k))`. Introduce `x q`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hRt, map_sum]`. Simplify using `only [map_smul, smul_eq_mul]`. Simplify using `only [hRt]`. Establish `Bl : ∀ (y : Fin m → E) (q : Fin (m * Module.finrank ℚ E) → ℚ), Algebra.trace ℚ E (hform (starRingEnd E) J (∑ k, q k • e k) y) = ∑ k, q k * Algebra.trace ℚ E (hform (starRingEnd E) J (e k) y)`. Introduce `y q`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[← hLt, map_sum]`. Simplify using `only [map_smul, smul_eq_mul]`. Simplify using `only [hLt]`. Establish `hGe : ∀ i j, gramTr J e i j = Algebra.trace ℚ E (hform (starRingEnd E) J (e i) (e j))` using `fun i j => rfl`. Establish `hdetG : (gramTr J e).det ≠ 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Break down `isEmpty_or_nonempty (Fin (m * Module.finrank ℚ E)) with hE | hE` into its components or cases. Rewrite using `[Matrix.det_isEmpty]`. Conclude with `one_ne_zero`. Establish `hcard : Fintype.card (Fin (m * Module.finrank ℚ E)) = Module.finrank ℚ (Fin m → E)`. Rewrite using `[Fintype.card_fin]`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Use `first`. Consider the case `simp [Module.finrank_pi_fintype]`. Consider the case `rw [Module.finrank_pi_fintype]`. Simplify using the standard rewrite rules. Set `bs` to `basisOfLinearIndependentOfCardEqFinrank hli hcard`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hbs : ∀ i, bs i = e i` using `fun i => by simp [bs]`. Rewrite using `[Ne, ← Matrix.exists_mulVec_eq_zero_iff]`. Introduce and unpack `⟨v, hv0, hv⟩`. Establish `hy : ∑ j, v j • e j = 0`. Apply `hnd` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `x`. Apply `htr` to reduce the goal to its premises. Introduce `b`. Establish `e1 : b * hform (starRingEnd E) J x (∑ j, v j • e j) = hform (starRingEnd E) J (star b • x) (∑ j, v j • e j)`. Rewrite using `[hform_smul_left', star_star]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[e1]`. Establish `hf : gdLeft J (∑ j, v j • e j) = 0`. Use `bs.ext fun i => ?_` and prove the remaining obligations. Rewrite using `[hbs, LinearMap.zero_apply, hLt, Br]`. Establish `h2` using `congrFun hv i`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h2` using `[Pi.zero_apply]`. Use `Eq.trans ?_ h2` and prove the remaining obligations. Simplify using `only [Matrix.mulVec, dotProduct]`. Conclude with `Finset.sum_congr rfl fun k _ => by rw [hGe, mul_comm]`. Establish `h3` using `LinearMap.congr_fun hf (star b • x)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h3` using `[LinearMap.zero_apply, hLt]`. Conclude with `h3`. Apply `hv0` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Conclude with `(Fintype.linearIndependent_iff.mp hli) v hy i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨hdetG, ?_⟩` and prove the remaining obligations. Use `set Gi := (gramTr J e)⁻¹ with hGi`. Establish `hGGi : gramTr J e * Gi = 1` using `Matrix.mul_nonsing_inv _ (isUnit_iff_ne_zero.mpr hdetG)`. Take `⟨w, hw⟩ : ∃ w : Fin (m * Module.finrank ℚ E) → Fin m → E, ∀ j, w j = ∑ k, Gi k j • e k` from `⟨_, fun j => rfl⟩`. Establish `hBw : ∀ i j, Algebra.trace ℚ E (hform (starRingEnd E) J (e i) (w j)) = (1 : Matrix (Fin (m * Module.finrank ℚ E)) (Fin (m * Module.finrank ℚ E)) ℚ) i j`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i j`. Rewrite using `[hw, Br, ← hGGi, Matrix.mul_apply]`. Conclude with `Finset.sum_congr rfl fun k _ => by rw [hGe, mul_comm]`. Establish `hint : ∀ x ∈ M, ∀ j, Algebra.trace ℚ E (hform (starRingEnd E) J x (w j)) ∈ (algebraMap ℤ ℚ).range`. Introduce `x hx j`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨c, rfl⟩` from `hspan x hx`. Establish `e2 : ∑ i, ((c i : ℤ) : E) • e i = ∑ i, ((c i : ℚ)) • e i` using `Finset.sum_congr rfl fun i _ => gd_int_smul _ _`. Rewrite using `[e2, Bl]`. Simplify using `only [hBw, Matrix.one_apply]`. Use `RingHom.mem_range.mpr ⟨c j, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `hdual : ∀ j, (d : E) • ((δ : E) • w j) ∈ M`. Introduce `j`. Apply `hMdual` to reduce the goal to its premises. Introduce `x hx`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hform_smul_right']`. Apply `hcod` to reduce the goal to its premises. Introduce `a`. Establish `hsa : star (algebraMap (𝓞 E) E a) • x ∈ M`. Take `⟨a', ha'⟩` from `RingHom.mem_range.mp (hO _ (RingHom.mem_range.mpr ⟨a, rfl⟩))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← ha', algebraMap_smul]`. Conclude with `M.smul_mem a' hx`. Establish `e3 : algebraMap (𝓞 E) E a * hform (starRingEnd E) J x (w j) = hform (starRingEnd E) J (star (algebraMap (𝓞 E) E a) • x) (w j)`. Rewrite using `[hform_smul_left', star_star]`. Rewrite using `[e3]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hint _ hsa j`. Establish `hn : ∀ (n : ℕ) (v : Fin m → E), (n : E) • v = (n : ℚ) • v` using `fun n v => by`. Rewrite using `[gd_qsmul, Rat.cast_natCast]`. Establish `hC : ∀ j, ∃ C : Fin (m * Module.finrank ℚ E) → ℤ, ∀ k, (C k : ℚ) = (d : ℚ) * (δ : ℚ) * Gi k j`. Introduce `j`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression. Establish an intermediate fact.
 
-Take `⟨C, hCe⟩` from `hspan _ (hdual j)`. Use `⟨C, ?_⟩` and prove the remaining obligations. Establish `e4 : (d : E) • ((δ : E) • w j) = ∑ k, ((d : ℚ) * (δ : ℚ) * Gi k j) • e k`. Rewrite using `[hn, hn, hw, Finset.smul_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[smul_smul, smul_smul, mul_assoc]`. Establish `e5 : ∑ k, ((C k : ℚ) - (d : ℚ) * (δ : ℚ) * Gi k j) • e k = 0`. Simplify using `only [sub_smul, Finset.sum_sub_distrib]`. Rewrite using `[sub_eq_zero, ← e4, hCe]`. Conclude with `Finset.sum_congr rfl fun k _ => (gd_int_smul _ _).symm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `k`. Conclude with `sub_eq_zero.mp ((Fintype.linearIndependent_iff.mp hli) _ e5 k)`. Use `choose C hCj using hC`. Use `set C' : Matrix (Fin (m * Module.finrank ℚ E)) (Fin (m * Module.finrank ℚ E)) ℤ := Matrix.of fun k j => C j k with hC'`. Establish `hdq : (0 : ℚ) < (d : ℚ) * (δ : ℚ)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h1 : (0 : ℚ) < d` using `Nat.cast_pos.mpr hd`. Establish `h2 : (0 : ℚ) < δ` using `Nat.cast_pos.mpr hδ`. Check the signs of the components of the expression. Establish `hCm : C'.map (Int.cast : ℤ → ℚ) = ((d : ℚ) * (δ : ℚ)) • Gi`. Use extensionality with `k j`.
-
-Simplify using `[hC', hCj]`. Establish `hdetC : ((C'.det : ℤ) : ℚ) = ((d : ℚ) * (δ : ℚ)) ^ (m * Module.finrank ℚ E) * ((gramTr J e).det)⁻¹`. Establish `h1 : ((C'.det : ℤ) : ℚ) = (C'.map (Int.cast : ℤ → ℚ)).det` using `(Int.castRingHom ℚ).map_det C'`. Rewrite using `[h1, hCm, Matrix.det_smul, Fintype.card_fin, hGi, Matrix.det_nonsing_inv, Ring.inverse_eq_inv']`. Establish `hCne : C'.det ≠ 0`.
-
-Introduce `h0`. Rewrite `hdetC` using `[h0, Int.cast_zero]`. Conclude with `mul_ne_zero (pow_ne_zero _ hdq.ne') (inv_ne_zero hdetG) hdetC.symm`. Establish `h1 : (1 : ℚ) ≤ |((C'.det : ℤ) : ℚ)|` using `by exact_mod_cast Int.one_le_abs hCne`. Establish `hpos : 0 < |(gramTr J e).det|` using `abs_pos.mpr hdetG`.
-
-Use `set X := ((d : ℚ) * (δ : ℚ)) ^ (m * Module.finrank ℚ E) with hX`. Establish `hXpos : 0 < X` using `pow_pos hdq _`. Rewrite `h1` using `[hdetC, abs_mul, abs_inv, abs_of_pos hXpos]`. Establish `key : |(gramTr J e).det| ≤ X`. Establish `h2` using `mul_le_mul_of_nonneg_left h1 hpos.le`.
-
-Rewrite `h2` using `[mul_one, mul_comm X, ← mul_assoc, mul_inv_cancel₀ hpos.ne', one_mul]`. Then use the resulting hypothesis. Rewrite `key` using `[hX]`. Use `push_cast`. Conclude with `key`.
+Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem successive_vector_gram_det : SvGramDet := by
   classical

@@ -8,7 +8,7 @@ open scoped InnerProductSpace
 namespace GlobalTheory.CompanionTheory.DS
 
 /- English proof (translation)
-Introduce `n ε lam H H' _ _ _ _ σ σ' a b c` and use `CompanionTheory.D.LK.discrete_series_unique_of n ε lam H' H σ' σ a c b`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem dsUnique : GlobalTheory.CompanionTheory.DS.DSUnique :=
   fun n ε lam H H' _ _ _ _ σ σ' a b c =>

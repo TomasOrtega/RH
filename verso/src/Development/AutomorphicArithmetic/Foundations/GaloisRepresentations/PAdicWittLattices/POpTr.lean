@@ -5,13 +5,13 @@ open UpperTheory.Gal.Int.Geo (FEt Cover gen piece IsHEig)
 universe u v
 
 /- English proof (translation)
-Introduce `B R _ T hT Z Y Z' p q p' s t hs ht tr htr A`. Establish `key : ∀ (W : Scheme) (c : W ⟶ Z) (J : Type) [Fintype J] (σ : J → (W ⟶ Y)) (hσ : ∀ j, σ j ≫ q = c ≫ p), Splits s c σ → ∀ x, T.pull c rfl ((tr ∘ₗ T.pull t ht) x) = ∑ j, T.pull (σ j ≫ t) (by rw [Category.assoc, ht]; exact hσ j) x`. Introduce `W c J _ σ hσ hspl x`. Rewrite using `[LinearMap.comp_apply, htr W (c ≫ p) c rfl J σ hσ hspl]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(T.pull_comp (σ j) t (hσ j) ht _ x).symm`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨W, c, G, _, _, a, J, _, σ, h, hgal, hspl, hA⟩`. Establish `hσ : ∀ j, σ j ≫ q = c ≫ p` using `fun j => by`. Rewrite using `[← ht, ← Category.assoc]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `h j`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `x`. Apply `hT.inj p (c ≫ p) c rfl G a hgal` to reduce the goal to its premises. Rewrite using `[hA x, key W c J σ hσ hspl x]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `⟨W, c, G, _, _, a, J, _, σ, hgal, hspl⟩ rfl`. Establish `hσ : ∀ j, σ j ≫ q = c ≫ p` using `fun j => by`. Rewrite using `[← hs, ← Category.assoc, hspl.1 j]`. Use `⟨W, c, G, inferInstance, inferInstance, a, J, inferInstance, σ, fun j => by rw [Category.assoc, ht]; exact hσ j, hgal, hspl, fun x => ?_⟩` and prove the remaining obligations. Conclude with `key W c J σ hσ hspl x`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.G3.pOpTr :
     OpTr.{u} := by

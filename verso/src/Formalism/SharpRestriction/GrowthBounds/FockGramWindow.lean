@@ -10,9 +10,9 @@ namespace Formalism.MainNotions.G.GramWindowAlt
 open Formalism.MainNotions.G Formalism.MainNotions.flipOneThree Formalism.MainNotions.G.CountingStatementReduction Formalism.MainNotions.G.SymmetricFormBlocks
 
 /- English proof (translation)
-Introduce `Cc _`. Use `⟨1, one_pos, fun C0 _ => ⟨1, one_pos, fun CE1 CE2 h1 h2 => ⟨2, two_pos, fun CYb Cde Ck CD Cb a1 _ _ a4 a5 => ?_⟩⟩⟩` and prove the remaining obligations. Introduce `Ckap Cs CM hCM X _ hH`. Establish `hS : SegFacts C0 CE1 CE2 X` using `segFacts a1 (by linarith) (by linarith) (by linarith) (by linarith) hH`. Establish `hpk : X.L.k ^ 2 * X.L.Y ^ 2 ≤ (X.L.p : ℝ)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨h0, -⟩` from `hH`. Take `⟨-, hpk, -⟩` from `h0`. Conclude with `hpk`. Conclude with `restWin_of_lvl (by linarith) (by linarith) (by linarith) hH CM winLvl (restWinNum_proved hS hpk CM hCM) (a_mem_win hS)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem restWinE_proved (D : Formalism.BasicNotions.D7) : RestWinE D := by
   intro Cc _
@@ -27,7 +27,7 @@ theorem restWinE_proved (D : Formalism.BasicNotions.D7) : RestWinE D := by
     (a_mem_win hS)
 
 /- English proof (translation)
-The claim follows from `closed_of_minimal_vector D PI.exists_minimalNormVector diagonal_rank_bound (restWinE_proved D)`.
+A detailed English derivation is pending.
 -/
 theorem theorem_A_closed_form_holds (D : Formalism.BasicNotions.D7) : Formalism.MainNotions.flipOneThree.IntegralityFromMetricForLargeConstants D :=
   closed_of_minimal_vector D PI.exists_minimalNormVector diagonal_rank_bound (restWinE_proved D)

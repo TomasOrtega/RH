@@ -43,7 +43,7 @@ open NumberField IsDedekindDomain Neutral.B1 Formalism.L2.Host Formalism.Conjuga
 namespace UpperTheory.V.Z.Bc
 
 /- English proof (translation)
-Break down `h with ⟨_, π, rfl, -⟩ | ⟨_, π, rfl, -⟩` into its components or cases. Conclude with `fun _ _ _ h h' => h.unique h'`. Conclude with `fun _ _ _ h h' => h.unique h'`.
+Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem cusp_unique {F : Type} [Field F] [NumberField F] {n : ℕ} {sat : HeightOneSpectrum (𝓞 F) → Multiset ℂˣ → Prop}
     {inf : (F →+* ℂ) → Multiset ℂ → Prop} (h : IsCusp n sat inf) : ∀ v B B', sat v B → sat v B' → B = B' := by
@@ -52,7 +52,7 @@ private theorem cusp_unique {F : Type} [Field F] [NumberField F] {n : ℕ} {sat 
   · exact fun _ _ _ h h' => h.unique h'
 
 /- English proof (translation)
-Take `⟨v⟩ : Nonempty (InfinitePlace F)` from `inferInstance`. Conclude with `(InfinitePlace.not_isReal_iff_isComplex.2 (h'.isComplex v)) (h.isReal v)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem not_both (F : Type) [Field F] [NumberField F] (h : IsTotallyReal F) (h' : IsTotallyComplex F) : False := by
   obtain ⟨v⟩ : Nonempty (InfinitePlace F) := inferInstance

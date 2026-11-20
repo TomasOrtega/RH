@@ -2,21 +2,21 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra
 open IsLocalRing MvPowerSeries UpperTheory.V.Alg
 
 /- English proof (translation)
-Introduce `k Γ M _ _ _ _ _ F ρ hρ hN x hx`. Unfold `Frame.framedTwoCoboundaries at hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨h, y, e, h1, h2, h3, h4, h5⟩` from `hx`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Use `⟨fun s => h s - (ρ s (y F.v0) - y F.v0), fun v => y v - y F.v0, h1.sub ((hρ _).sub (IsLocallyConstant.const _)), sub_self _, ?_, fun v s => ?_, fun q n hn => ?_⟩` and prove the remaining obligations. Rewrite using `[h3]`. Use function extensionality and compare the values at `p`. Simplify using `only [dOne, map_sub, map_mul, Module.End.mul_apply]`. Normalize the expressions using the abelian group laws.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Rewrite using `[h4]`. Simplify using `only [map_sub]`. Normalize the expressions using the abelian group laws. Rewrite using `[h5, (h2 q).2.2 n hn]`. Simplify using `only [hN q n hn, sub_self]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Consider the case `zero`. Use `⟨0, 0, IsLocallyConstant.const 0, rfl, ?_, by simp, by simp⟩` and prove the remaining obligations. Use function extensionality and compare the values at `p`. Simplify using `[dOne]`. Consider the case `add x x' _ _ ih ih'`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Treat this case separately.
 
-Take `⟨h, y, a1, a2, a3, a4, a5⟩` from `ih`. Take `⟨h', y', b1, b2, b3, b4, b5⟩` from `ih'`. Use `⟨h + h', y + y', a1.add b1, by simp [a2, b2], ?_, fun v s => ?_, fun q n hn => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `p`. Simplify using `only [Prod.fst_add, Pi.add_apply, a3, b3, dOne, map_add]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Normalize the expressions using the abelian group laws. Simplify using `only [Prod.fst_add, Prod.snd_add, Pi.add_apply, a4, b4, map_add]`. Normalize the expressions using the abelian group laws. Simplify using `only [Prod.snd_add, Pi.add_apply, a5 q n hn, b5 q n hn]`. Consider the case `smul c x _ ih`.
+Normalize the expressions using the abelian group laws. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Simplify using the standard rewrite rules. Treat this case separately.
 
-Take `⟨h, y, a1, a2, a3, a4, a5⟩` from `ih`. Use `⟨c • h, c • y, a1.comp (c • ·), by simp [a2], ?_, fun v s => ?_, fun q n hn => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `p`. Simplify using `[a3, dOne, smul_sub]`. Simplify using `[a4, smul_sub]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[a5 q n hn]`.
+Simplify using the standard rewrite rules.
 -/
 theorem UpperTheory.V.Alg.cocycle_normal_form :
     ∀ (k Γ M : Type) [CommRing k] [Group Γ] [TopologicalSpace Γ] [AddCommGroup M] [Module k M] (F : Frame Γ) (ρ : Representation k Γ M), (∀ m : M, IsLocallyConstant fun s => ρ s m) → (∀ q, ∀ n ∈ F.N q, ∀ m, ρ (F.ψ q n) m = m) →

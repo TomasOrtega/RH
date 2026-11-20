@@ -3,13 +3,13 @@ import Mathlib
 namespace Bl.FirstLemmaK
 
 /- English proof (translation)
-Introduce `α S hS f hf`. Break down `S.eq_empty_or_nonempty with h | hne` into its components or cases. Use `⟨1, one_pos, le_rfl, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Rewrite `hx` using `[h]`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `absurd hx (Set.notMem_empty x)`. Take `⟨a, ha, hmin⟩` from `Set.exists_min_image S f hS hne`. Establish `hfa : 0 < f a` using `hf a ha`. Use `⟨min (f a) 1 / 2, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `: 0 < min (f a) 1` using `lt_min hfa one_pos`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `: min (f a) 1 ≤ 1` using `min_le_right _ _`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `x hx`. Establish `h1 : min (f a) 1 ≤ f a` using `min_le_left _ _`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : f a ≤ f x` using `hmin x hx`. Establish `: 0 < min (f a) 1` using `lt_min hfa one_pos`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem goal1 :
   ∀ {α : Type} {S : Set.{0} α},

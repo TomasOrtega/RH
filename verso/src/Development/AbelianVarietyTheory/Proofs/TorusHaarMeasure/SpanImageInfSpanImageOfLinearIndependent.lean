@@ -7,9 +7,9 @@ open scoped ComplexOrder ENNReal Matrix
 namespace GlobalTheory
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `x ⟨hs, ht⟩`. Take `⟨l, hl, hlx⟩` from `(Finsupp.mem_span_image_iff_linearCombination R).1 hs`. Take `⟨m, hm, hmx⟩` from `(Finsupp.mem_span_image_iff_linearCombination R).1 ht`. Establish `hlm : l = m` using `hw (hlx.trans hmx.symm)`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Substitute `hlm` using the available equality. Use `(Finsupp.mem_span_image_iff_linearCombination R).2 ⟨l, ?_, hlx⟩` and prove the remaining obligations. Rewrite `hl`, `hm`, the goal using `[Finsupp.mem_supported]`. Conclude with `Set.subset_inter hl hm`. Conclude with `le_inf (Submodule.span_mono (Set.image_mono Set.inter_subset_left)) (Submodule.span_mono (Set.image_mono Set.inter_subset_right))`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_image_inf_span_image_of_linearIndependent {R V ι : Type} [CommRing R]
     [AddCommGroup V] [Module R V] {w : ι → V} (hw : LinearIndependent R w) (s t : Set ι) :
@@ -27,9 +27,9 @@ theorem span_image_inf_span_image_of_linearIndependent {R V ι : Type} [CommRing
       (Submodule.span_mono (Set.image_mono Set.inter_subset_right))
 
 /- English proof (translation)
-Introduce `R V α β γ _ _ _ w hw`. Prove the components needed by the constructor for the conclusion. Rewrite using `[Set.range_comp, Set.range_comp, Set.range_comp, span_image_inf_span_image_of_linearIndependent hw]`. Use `congr 2`. Use extensionality with `x`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Apply the tactic sequence `rcases x with a | b | c <;> simp`. Rewrite using `[← Submodule.span_union, Set.range_comp, Set.range_comp, ← Set.image_union, show (Set.range (Sum.map id Sum.inl : α ⊕ β → α ⊕ β ⊕ γ) ∪ Set.range (Sum.map id Sum.inr : α ⊕ γ → α ⊕ β ⊕ γ)) = Set.univ from by`. Use extensionality with `x`. Apply the tactic sequence `rcases x with a | b | c <;> simp, Set.image_univ]`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem span_inf_sup_overlapping_parts :
     ∀ (R V α β γ : Type) [CommRing R] [AddCommGroup V] [Module R V] (w : α ⊕ β ⊕ γ → V),

@@ -10,9 +10,9 @@ open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.Weakl
 namespace GlobalTheory
 
 /- English proof (translation)
-Rewrite using `[Ideal.smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow, Ideal.mem_span_singleton']`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, rfl⟩`. Conclude with `⟨a, mul_comm _ _⟩`. Introduce and unpack `⟨b, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨b, mul_comm _ _⟩`.
+Supply the required witnesses or components.
 -/
 theorem adicSpan_smul_top_mem_iff {O : Type} [CommRing O] (ϖ : O) (n : ℕ) (x : O) :
     x ∈ (Ideal.span {ϖ}) ^ n • (⊤ : Submodule O O) ↔ ∃ b : O, x = ϖ ^ n * b := by
@@ -22,13 +22,13 @@ theorem adicSpan_smul_top_mem_iff {O : Type} [CommRing O] (ϖ : O) (n : ℕ) (x 
   · rintro ⟨b, rfl⟩; exact ⟨b, mul_comm _ _⟩
 
 /- English proof (translation)
-Use `⟨fun x => ?_, fun a ha => ?_⟩` and prove the remaining obligations. Take `⟨L, hL⟩` from `IsPrecomplete.prec' (I := Ideal.span {ϖ}) (M := O) (fun n => ∑ j ∈ Finset.range n, ϖ ^ j * x j) (by`. Introduce `m n hmn`. Rewrite using `[SModEq.sub_mem, adicSpan_smul_top_mem_iff]`. Use `⟨-∑ j ∈ Finset.Ico m n, ϖ ^ (j - m) * x j, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Finset.sum_range_add_sum_Ico _ hmn, mul_neg, Finset.mul_sum]`. Establish `: ∑ j ∈ Finset.Ico m n, ϖ ^ m * (ϖ ^ (j - m) * x j) = ∑ j ∈ Finset.Ico m n, ϖ ^ j * x j`. Use `Finset.sum_congr rfl fun j hj => ?_` and prove the remaining obligations. Rewrite using `[← mul_assoc, ← pow_add, Nat.add_sub_cancel' (Finset.mem_Ico.mp hj).1]`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `ring)`. Use `⟨L, fun n => ?_⟩` and prove the remaining obligations. Establish `h1` using `(SModEq.sub_mem.mp (hL n))`. Rewrite `h1` using `[adicSpan_smul_top_mem_iff]`. Take `⟨b, hb⟩` from `h1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨-b, by rw [mul_neg, ← hb]; ring⟩`. Use `IsHausdorff.haus' (I := Ideal.span {ϖ}) a fun n => ?_` and prove the remaining obligations. Rewrite using `[SModEq.zero, adicSpan_smul_top_mem_iff]`. Conclude with `ha n`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adicComplete_explicit_sums {O : Type} [CommRing O] (ϖ : O)
     [h : IsAdicComplete (Ideal.span {ϖ}) O] :
@@ -56,7 +56,7 @@ theorem adicComplete_explicit_sums {O : Type} [CommRing O] (ϖ : O)
     exact ha n
 
 /- English proof (translation)
-Introduce `l _ LL _ _ _ O _ _ hG`. Establish `hc` using `(GlobalTheory.T.coefficient_ring_integers_compact_adic_properties l LL O hG).2.2.2`. Conclude with `adicComplete_explicit_sums (h := hc) ((l : ℕ) : O)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem goodO_coeff_explicit_sums : ∀ (l : ℕ) [Fact l.Prime] (LL : Type) [Field LL] [Algebra ℚ_[l] LL]
     [TopologicalSpace LL] (O : Type) [CommRing O] [Algebra O LL], GoodO (Qp := ℚ_[l]) LL O →

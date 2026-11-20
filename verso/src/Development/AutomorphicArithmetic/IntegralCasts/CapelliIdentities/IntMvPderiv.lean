@@ -10,9 +10,9 @@ noncomputable def UpperTheory.Reformulated.B.Gwb7.IntegralMv.{u_1} :
       ∀ (n : σ →₀ ℕ), UpperTheory.Reformulated.B.Gwb7.IsIntP ((MvPowerSeries.coeff n : MvPowerSeries σ ℂ_[p] → ℂ_[p]) F)
 
 /- English proof (translation)
-Introduce `p _ σ F i hF n`. Establish `h1 : ‖MvPowerSeries.coeff (n + Finsupp.single i 1) F‖ ≤ 1` using `hF _`. Establish `h2 : ‖((n i : ℕ) : ℂ_[p]) + 1‖ ≤ 1`. Establish `h` using `IsUltrametricDist.norm_natCast_le_one ℂ_[p] (n i + 1)`. Rewrite `h` using `[Nat.cast_add, Nat.cast_one]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Express the relevant statement in the definitionally equal form `‖MvPowerSeries.coeff n (MvPowerSeries.pderiv ℂ_[p] i F)‖ ≤ 1`. Rewrite using `[MvPowerSeries.coeff_pderiv, norm_mul]`. Conclude with `mul_le_one₀ h1 (norm_nonneg _) h2`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Gwb7.intMv_pderiv.{u_1} :
     ∀ {p : ℕ} [inst : Fact (Nat.Prime p)] {σ : Type u_1} {F : MvPowerSeries σ ℂ_[p]} (i : σ),

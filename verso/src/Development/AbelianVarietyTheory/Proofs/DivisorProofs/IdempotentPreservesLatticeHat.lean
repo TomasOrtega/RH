@@ -13,7 +13,7 @@ open GlobalTheory.CuspMult
 namespace GlobalTheory.LatLoc
 
 /- English proof (translation)
-Establish `h1` using `H₁.smul_mem u (h _ hz)`. Use `h1 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `a`. Use `show ε * z a = (u : R) * ((N : R) * (ε * z a))`. Rewrite using `[← mul_assoc, hu, ← mul_assoc, hε]`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem loc_transfer {R : Type} [CommRing R] {n : ℕ} {S : Subring R} (H₀ H₁ : Submodule S (Fin n → R)) (N : ℕ)
     (u : S) (ε : R) (hu : (u : R) * N = ε) (hε : ε * ε = ε) (h : ∀ y ∈ H₀, (N : R) • y ∈ H₁) (z : Fin n → R)
@@ -27,19 +27,19 @@ theorem loc_transfer {R : Type} [CommRing R] {n : ℕ} {S : Subring R} (H₀ H�
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Introduce `D V β Λ N PP e hB hN he y`. Take `⟨hfr, -, -, h01, h10⟩` from `hB`. Establish `hee : e * e = e` using `he.1.1`. Establish `key : ∀ z, z ∈ Formalism.L2.NTheta.LamHat V ↔ (fun i => swapAE D (z i)) ∈ Formalism.L2.Herm.hatL (F` using `D.host.F) (GlobalTheory.LevSplit.L0sub V) := fun z => GlobalTheory.LevSplit.latHat_iff (GlobalTheory.LevSplit.L0sub V) z`. Establish `hint : ∀ x : 𝓞 D.host.E, x ∉ PP.asIdeal → ∃ u : Formalism.L2.Herm.intAf D.host.F D.host.E, (u : EAf D) * GlobalTheory.LevSplit.finSw D (incA D (x : D.host.E)) = GlobalTheory.LevSplit.finSw D e`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `x hx`. Establish `x0 : x ≠ 0` using `fun h0 => hx (h0 ▸ PP.asIdeal.zero_mem)`. Establish `hm` using `GlobalTheory.LevSplit.swapAE_int (not_not.1 fun hn => hx ((he.2 x x0).2 hn))`. Use `⟨⟨_, hm⟩, ?_⟩` and prove the remaining obligations. Use `show GlobalTheory.LevSplit.finSw D (e * incA D ((x : D.host.E)⁻¹)) * _ = _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: (x : D.host.E) ≠ 0` using `by simpa using x0`. Rewrite using `[← map_mul, mul_assoc, ← map_mul, inv_mul_cancel₀ this, map_one, mul_one]`. Take `⟨u, hu⟩` from `hint N hN`. Establish `hu' : (u : EAf D) * (N : EAf D) = GlobalTheory.LevSplit.finSw D e`. Rewrite using `[← hu]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Take `⟨φ, hφ⟩` from `hint 1 (fun h => PP.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h))`. Establish `hφ' : (φ : EAf D) = GlobalTheory.LevSplit.finSw D e`. Rewrite using `[← hφ]`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hε : GlobalTheory.LevSplit.finSw D e * GlobalTheory.LevSplit.finSw D e = GlobalTheory.LevSplit.finSw D e`. Rewrite using `[← map_mul, hee]`. Establish `hsw : (fun a => swapAE D (finPart D e * y a)) = fun a => GlobalTheory.LevSplit.finSw D e * swapAE D (y a)`. Use function extensionality and compare the values at `fun a => map_mul _ _ _`. Establish `a01` using `GlobalTheory.LevSplit.hatL_smul (F := D.host.F) (GlobalTheory.LevSplit.L0sub V) Λ N h01`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a10` using `GlobalTheory.LevSplit.hatL_smul (F := D.host.F) Λ (GlobalTheory.LevSplit.L0sub V) N h10`. Prove the components needed by the constructor for the conclusion. Introduce `hy`. Use `(key _).2 ?_` and prove the remaining obligations. Rewrite using `[hsw, ← hφ']`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Submodule.smul_mem _ φ ((key y).1 hy)`. Use `(key _).trans (Iff.trans ?_ (hfr _))` and prove the remaining obligations. Rewrite using `[hsw]`. Conclude with `⟨loc_transfer _ _ N u _ hu' hε a01 _, loc_transfer _ _ N u _ hu' hε a10 _⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem lamHat_loc : ∀ {D : D7} (V : HSp D) (β : GL (Fin V.rank) (EAf D)) (Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)) (N : ℕ) (PP : Pl D.host.E) (e : Formalism.L2.Theta.AE D), IsBaseFrame V β Λ N → ((N : ℕ) : 𝓞 D.host.E) ∉ PP.asIdeal → Formalism.L2.NTheta.IsIdemAt e PP → ∀ y : Fin V.rank → Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E, (y ∈ Formalism.L2.NTheta.LamHat V → (fun a => finPart D e * y a) ∈ Formalism.L2.NTheta.LamHat V) ∧ ((fun a => finPart D e * y a) ∈ Formalism.L2.NTheta.LamHat V ↔ ∀ i, (β⁻¹).val.mulVec (fun a => swapAE D (finPart D e * y a)) i ∈ Formalism.L2.Herm.intAf D.host.F D.host.E) := by
   intro D V β Λ N PP e hB hN he y

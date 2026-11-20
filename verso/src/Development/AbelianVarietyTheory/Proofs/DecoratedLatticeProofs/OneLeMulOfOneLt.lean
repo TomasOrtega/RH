@@ -17,9 +17,9 @@ namespace GlobalTheory.IdemSumLoc
 variable {D : D7}
 
 /- English proof (translation)
-Unfold `intAE GlobalTheory.AdLat.hat1`. Use `congr 1`. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, x, rfl⟩`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨a, ha, _, ⟨x, rfl⟩, rfl⟩`. Introduce and unpack `⟨a, ha, _, ⟨x, rfl⟩, rfl⟩`. Conclude with `⟨a, ha, x, rfl⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem intAE_eq_hat :
     intAE D = GlobalTheory.AdLat.hat1 D.host.F (Set.range (algebraMap (𝓞 D.host.E) D.host.E)) := by
@@ -33,7 +33,7 @@ theorem intAE_eq_hat :
     exact ⟨a, ha, x, rfl⟩
 
 /- English proof (translation)
-Rewrite `hx`, `hy`, the goal using `[intAE_eq_hat]`. Conclude with `GlobalTheory.AdIdem.mul_mem_hat _ _ hx hy`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_mem {x y : Af D.host.F ⊗[D.host.F] D.host.E} (hx : x ∈ intAE D) (hy : y ∈ intAE D) :
     x * y ∈ intAE D := by
@@ -41,7 +41,7 @@ theorem mul_mem {x y : Af D.host.F ⊗[D.host.F] D.host.E} (hx : x ∈ intAE D) 
   exact GlobalTheory.AdIdem.mul_mem_hat _ _ hx hy
 
 /- English proof (translation)
-Establish `h1 : ∀ i ∈ S, es i * es i = es i` using `fun i hi => (hes i hi).1.1`. Establish `hcross : ∀ i ∈ S, ∀ j ∈ S, es i * cA D (es j) = 0` using `GlobalTheory.PlaceDatum.cross_eq_zero (R := AE D) GlobalTheory.PlaceDatum.isUnit_natCast (cA D) es S h1 hc`. Rewrite using `[Finset.mul_sum, Finset.sum_eq_single P (fun Q hQ hQP => GlobalTheory.PlaceDatum.idemAt_mul (hes P hP) (hes Q hQ) (hcross P hP Q hQ) (hcross Q hQ P hP) hQP) (fun h => absurd hP h), h1 P hP]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem idem_mul_sum {es : Formalism.L2.DIV.Pl D.host.E → AE D} {S : Finset (Formalism.L2.DIV.Pl D.host.E)}
     (hes : ∀ Q ∈ S, Formalism.L2.NTheta.IsIdemAt (es Q) Q) (hc : (∑ Q ∈ S, es Q) * cA D (∑ Q ∈ S, es Q) = 0)

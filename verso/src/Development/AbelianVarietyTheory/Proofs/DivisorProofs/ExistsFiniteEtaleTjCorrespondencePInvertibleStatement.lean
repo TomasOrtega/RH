@@ -4,7 +4,7 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsTjCorrDiagMod
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.UPel.HT GlobalTheory.UPel.HT.Hecke GlobalTheory.UPel.HT.ES
 /- English proof (citation)
-Apply `GlobalTheory.UPel.HT.ES.exists_tjCorr_finiteEtale` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsFiniteEtaleTjCorrespondencePInvertible.lean&line=16#L16)
 -/

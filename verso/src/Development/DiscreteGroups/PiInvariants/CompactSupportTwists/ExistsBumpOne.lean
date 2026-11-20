@@ -16,7 +16,7 @@ def aS (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) (s : ℝ) : 
 
 open GlobalTheory.CuspRep.CuspidalL2GL in
 /- English proof (translation)
-The claim follows from `Prod.ext (splitCentre_add s t) (mul_one _).symm`.
+A detailed English derivation is pending.
 -/
 theorem aS_add (s t : ℝ) : aS E n (s + t) = aS E n s * aS E n t :=
   Prod.ext (splitCentre_add s t) (mul_one _).symm
@@ -52,7 +52,7 @@ def TwTrK : Prop := ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : 
       (ldet (aS E n 1) : ℂ) * ∫ x, w (ldet x) * (∫ s : ℝ, G2 D k₁ k₂ Uπ (x * aS E n s) x) ∂D.ν = t
 
 /- English proof (translation)
-Set `f : ContDiffBump (0 : ℝ)` to `⟨1, 2, one_pos, one_lt_two⟩`. Use `⟨fun s => ((f.normed volume s : ℝ) : ℂ), Complex.continuous_ofReal.comp f.continuous_normed, f.hasCompactSupport_normed.comp_left Complex.ofReal_zero, ?_⟩` and prove the remaining obligations. Rewrite using `[integral_complex_ofReal, f.integral_normed]`. Simplify using the standard rewrite rules.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem exists_bump_one : ∃ w : ℝ → ℂ, Continuous w ∧ HasCompactSupport w ∧ ∫ s : ℝ, w s = 1 := by
   let f : ContDiffBump (0 : ℝ) := ⟨1, 2, one_pos, one_lt_two⟩
@@ -62,17 +62,15 @@ theorem exists_bump_one : ∃ w : ℝ → ℂ, Continuous w ∧ HasCompactSuppor
   simp
 
 /- English proof (translation)
-Introduce `E _ _ _ n hn D π hπ ι _ Φ₁ Φ₂ T₁ T₂ M k₁ k₂ a1 a2 hfin b1 b2 hv U Uπ Φ t c1 c2 hpi ht`. Take `⟨hL, hG⟩` from `hK E n hn D π hπ ι Φ₁ Φ₂ T₁ T₂ M k₁ k₂ a1 a2 hfin b1 b2 hv U Uπ Φ c1 c2 hpi`. Take `⟨hint, htr⟩` from `hT E n hn D π hπ ι Φ₁ Φ₂ T₁ T₂ M k₁ k₂ a1 a2 hfin b1 b2 hv U Uπ Φ t c1 c2 hpi ht`. Use `⟨hint, ?_⟩` and prove the remaining obligations. Take `⟨w, wc, ws, w1⟩` from `exists_bump_one`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hc : Continuous (lInt0 D k₁ k₂ Uπ)`. Unfold `lInt0`. Conclude with `continuous_finset_sum _ fun i _ => ((hv.cont i).1).inner (Uπ.continuous.comp (hv.cont i).2)`. Establish `e` using `(hA E n hn D _ hL hc hint w wc ws w1).2`. Establish `hs : ∀ x, ∫ s : ℝ, lInt0 D k₁ k₂ Uπ (x * aS E n s) = (1 / 2 : ℂ) * ∫ s : ℝ, G2 D k₁ k₂ Uπ (x * aS E n s) x`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x`. Establish `h1 : ∀ s, lInt0 D k₁ k₂ Uπ (x * aS E n s) = G2 D k₁ k₂ Uπ (x * aS E n (2 * s)) x`. Introduce `s`. Establish `h` using `hG (-s) (x * aS E n (2 * s)) x`. Rewrite `h` using `[mul_assoc, ← aS_add, neg_neg, show 2 * s + -s = s by ring]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Conclude with `h`. Repeatedly rewrite using `[h1]`. Rewrite using `[Measure.integral_comp_mul_left (fun s => G2 D k₁ k₂ Uπ (x * aS E n s) x) 2, abs_of_pos (by norm_num : (0 : ℝ) < 2⁻¹), Complex.real_smul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the hypotheses and the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Rewrite using `[e]`. Repeatedly rewrite using `[hs]`. Establish `h3 : ∀ x, w (ldet x) * ((1 / 2 : ℂ) * ∫ s : ℝ, G2 D k₁ k₂ Uπ (x * aS E n s) x) = (1 / 2 : ℂ) * (w (ldet x) * ∫ s : ℝ, G2 D k₁ k₂ Uπ (x * aS E n s) x)` using `fun x => by ring`. Repeatedly rewrite using `[h3, integral_const_mul]`. Rewrite using `[← htr w wc ws w1]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem uncutHalf_of (hA : AvgInt) (hK : KerEquiv) (hT : TwTrK) : UncutHalf := by
   intro E _ _ _ n hn D π hπ ι _ Φ₁ Φ₂ T₁ T₂ M k₁ k₂ a1 a2 hfin b1 b2 hv U Uπ Φ t c1 c2 hpi ht

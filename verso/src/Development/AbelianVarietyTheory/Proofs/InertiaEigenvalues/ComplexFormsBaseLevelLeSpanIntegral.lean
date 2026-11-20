@@ -17,7 +17,7 @@ namespace GlobalTheory.BaseSpan
 variable {D : D7} {S T : HSp D}
 
 /- English proof (translation)
-Take `⟨e, -⟩` from `hB.sigOK (tauE D τ)`. Rewrite `e` using `[← hB.sig τ]`. Use `Fintype.card_congr e` as an intermediate fact. Simplify using `only [Fintype.card_fin, Fintype.card_sum] at this`. Use linear arithmetic over natural numbers and integers.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem pq_le {B : Base S T} (hB : B.Good) (τ : D.what₂.Tau) : B.w.p τ + B.w.q τ ≤ T.rank := by
   obtain ⟨e, -⟩ := hB.sigOK (tauE D τ)
@@ -27,7 +27,7 @@ theorem pq_le {B : Base S T} (hB : B.Good) (τ : D.what₂.Tau) : B.w.p τ + B.w
   omega
 
 /- English proof (translation)
-The claim follows from `hspan ▸ Submodule.subset_span hP`.
+A detailed English derivation is pending.
 -/
 theorem coefLat_le_valSpace {B : Base S T} {K : Type} [Field K] [NumberField K] {σ : K →+* ℂ}
     {emb : D.what₂.Tau → (D.host.E →+* K)} {O : Subring ℂ} {y : Bridge.Gf S}
@@ -36,11 +36,11 @@ theorem coefLat_le_valSpace {B : Base S T} {K : Type} [Field K] [NumberField K] 
   hspan ▸ Submodule.subset_span hP
 
 /- English proof (translation)
-Use `(Base.mem_mtLat B σ emb O).2 ⟨Submodule.mem_inf.2 ⟨?_, GlobalTheory.LawTrace.mem_lawForms_tr hf P⟩, fun x => ?_⟩` and prove the remaining obligations. Use `Submodule.mem_pi.2 fun x _ => GlobalTheory.LawTrace.tr_mem hf P x B.valSpace fun γ h => ?_` and prove the remaining obligations. Unfold `GlobalTheory.LawTrace.term`. Rewrite using `[dif_pos h]`. Conclude with `Submodule.smul_mem _ _ (Base.act_mem_valSpace _ (coefLat_le_valSpace hspan hP))`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `GlobalTheory.LawTrace.tr_mem hf P x (B.coefLat σ emb O x) fun γ h => ?_` and prove the remaining obligations. Unfold `GlobalTheory.LawTrace.term`. Rewrite using `[dif_pos h]`. Establish `hx : x = Bridge.ratF S γ * y * ((⟨_, h⟩ : B.levJ ψ) : Bridge.Gf S)`. Express the relevant statement in the definitionally equal form `x = Bridge.ratF S γ * y * ((Bridge.ratF S γ * y)⁻¹ * x)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Use `group`. Establish `h1` using `Base.act_mem_coefLat hB.frame hc γ y _ (Base.mem_St_of_mem_levJ (B := B) h) hP`. Rewrite `h1` using `[← hx]`. Establish `h2` using `Submodule.smul_mem (B.coefLat σ emb O x) (⟨_, hlam ⟨_, h⟩⟩ : O) h1`. Conclude with `h2`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem tr_mem_mtLat {B : Base S T} (hB : B.Good) {K : Type} [Field K] [NumberField K] {σ : K →+* ℂ}
     {emb : D.what₂.Tau → (D.host.E →+* K)} {O : Subring ℂ} (hc : IsCoefRing σ emb O) {ψ : Twist D Circle}
@@ -70,11 +70,11 @@ end GlobalTheory.BaseSpan
 namespace GlobalTheory.BaseSpan
 
 /- English proof (translation)
-Establish `hc : (ρ.tw i b 0 ∅ 1).chi = 1` using `charOf_one _ _`. Establish `hq : (ρ.tw i b 0 ∅ 1).Q = ∅` using `half_empty _`. Use `⟨⟨?_, fun x => ?_, fun a => ?_, ?_, fun x _ _ _ _ => ?_, fun PP h => ?_⟩, hq⟩` and prove the remaining obligations. Rewrite using `[hc, MonoidHom.ker_one, Subgroup.coe_top]`. Conclude with `isOpen_univ`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc]`. Both sides reduce to the same expression. Rewrite using `[hc]`. Both sides reduce to the same expression. Rewrite using `[hq]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `splitSet_empty`. Rewrite using `[hc]`. Both sides reduce to the same expression. Rewrite `h` using `[hq]`. Conclude with `absurd h (Finset.notMem_empty _)`.
+Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tw_one_good {D : D7} {ρ : Setup D.ntw} (i : D.ntw.Tw) (b : Bool) :
     (ρ.tw i b 0 ∅ 1).Good ∧ (ρ.tw i b 0 ∅ 1).Q = ∅ := by
@@ -89,17 +89,15 @@ theorem tw_one_good {D : D7} {ρ : Setup D.ntw} (i : D.ntw.Tw) (b : Bool) :
   · rw [hq] at h; exact absurd h (Finset.notMem_empty _)
 
 /- English proof (translation)
-Introduce `D X E Y i j b F hF`. Establish `hρ : Y.Z.ρ.Good` using `Y.Z.good`. Establish `hB : (Y.Z.ρ.B i j b).Good` using `hρ.base i j b`. Take `⟨hψ, hψQ⟩` from `tw_one_good (ρ := Y.Z.ρ) i b`. Establish `hcls` using `hρ.classes i j b (Y.Z.ρ.tw i b 0 ∅ 1) hψ (by rw [hψQ]; exact Base.admissible_empty_of_good hB)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hlam : ∀ k, (((Y.Z.ρ.B i j b).levLam (Y.Z.ρ.tw i b 0 ∅ 1) k : ℂˣ) : ℂ) ∈ (Y.Z.ρ.eOk i b 0).range` using `fun k => GlobalTheory.T.baseLevelCharacter_mem_coefficientRing D X E Y i j b k`. Establish `hL` using `(Submodule.mem_inf.1 hF).2`. Rewrite using `[GlobalTheory.LawTrace.eq_sum_tr hcls.reps hcls.stab hL]`. Use `Submodule.sum_mem _ fun c _ => Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Establish `hspan : Submodule.span ℂ ((Y.Z.ρ.B i j b).coefLat (embLL0 D) (labLL0 D) (Y.Z.ρ.eOk i b 0).range (finPt (Vc D j) (Y.Z.ρ.rep i j b _ c)) : Set (PolF D (Wc D j).rank (Vc D j).rank)) = (Y.Z.ρ.B i j b).valSpace` using `(GlobalTheory.ExportSeries.HarmLattice.harmLat_fg_span D (Wc D j).rank (Vc D j).rank (Y.Z.ρ.B i j b).w (Y.Z.ρ.B i j b).F.BS _ (embLL0 D) (labLL0 D) _ _ hB.wt (pq_le hB) (hρ.isCoefRing_k i b 0) (GlobalTheory.LatFull.latAt_isLattice D Y.Z.ρ hρ i j b _)).2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hFy : F (finPt (Vc D j) (Y.Z.ρ.rep i j b _ c)) ∈ Submodule.span ℂ ((Y.Z.ρ.B i j b).coefLat (embLL0 D) (labLL0 D) (Y.Z.ρ.eOk i b 0).range (finPt (Vc D j) (Y.Z.ρ.rep i j b _ c)) : Set (PolF D (Wc D j).rank (Vc D j).rank))`. Rewrite using `[hspan]`. Conclude with `(Submodule.mem_pi.1 (Submodule.mem_inf.1 hF).1) _ trivial`. Generalize the expression as in `F (finPt (Vc D j) (Y.Z.ρ.rep i j b _ c)) = v at hFy ⊢`. Proceed by induction on `hFy using Submodule.span_induction with`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Proceed by induction. Treat this case separately.
 
-Consider the case `mem P hP`. Conclude with `Submodule.subset_span (tr_mem_mtLat hB (hρ.isCoefRing_k i b 0) hlam (hcls.stab c) hspan hP)`. Consider the case `zero`. Rewrite using `[GlobalTheory.LawTrace.tr_zero]`. Conclude with `Submodule.zero_mem _`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `add P Q _ _ hP hQ`. Rewrite using `[GlobalTheory.LawTrace.tr_add (hcls.stab c)]`. Conclude with `Submodule.add_mem _ hP hQ`. Consider the case `smul a P _ hP`. Rewrite using `[GlobalTheory.LawTrace.tr_smul]`.
-
-Conclude with `Submodule.smul_mem _ _ hP`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem formsC_le_span_mt : ∀ (D : D7) (X : RealSide D) (E : IntegralHeckeForms.XD D) (Y : SerSide X E) (i : D.ntw.Tw) (j : Fin D.R.m) (b : Bool),
     ∀ F ∈ (Y.Z.ρ.B i j b).formsC (Y.Z.ρ.tw i b 0 ∅ 1),

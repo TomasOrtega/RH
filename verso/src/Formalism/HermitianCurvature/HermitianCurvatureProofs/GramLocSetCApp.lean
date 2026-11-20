@@ -20,19 +20,19 @@ def PStdC : Prop :=
         p.form j hj w (KB.waveG (p.T.bs j) s w (KB.slv p.T F j hj w h hh.2)) (KB.slv p.T F j hj w h' hh'.2)
 
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.PBO.pStdCpt_of_heads hP hRH hHT`.
+A detailed English derivation is pending.
 -/
 theorem pStdC_of (hP : P5.ThmPActualCpt) (hRH : KB.RadHead) (hHT : KB.HeadTop) : PStdC :=
   Formalism.FourierDecayAlt.P.PBO.pStdCpt_of_heads hP hRH hHT
 
 /- English proof (translation)
-Establish `hM : 1 ≤ max 1 lam⁻¹` using `le_max_left _ _`. Establish `hle : 1 + x ≤ max 1 lam⁻¹ * (1 + lam * x)`. Break down `le_or_gt 1 lam with h1 | h1` into its components or cases. Establish `e1 : x ≤ lam * x` using `le_mul_of_one_le_left hx h1`. Establish `e2 : 1 + lam * x ≤ max 1 lam⁻¹ * (1 + lam * x)` using `le_mul_of_one_le_left (by positivity) hM`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hi : lam⁻¹ ≤ max 1 lam⁻¹` using `le_max_right _ _`. Establish `e : lam⁻¹ * (1 + lam * x) = lam⁻¹ + x` using `by field_simp`. Establish `h2 : 1 ≤ lam⁻¹` using `by rw [le_inv_comm₀ one_pos hlam]; simpa using h1.le`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right hi (by positivity : (0 : ℝ) ≤ 1 + lam * x)]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `h1 : 0 < 1 + x` using `by linarith`. Establish `h2 : 0 < 1 + lam * x` using `by positivity`. Establish `hc : (1 + x) ^ 3 ≤ (max 1 lam⁻¹) ^ 3 * (1 + lam * x) ^ 3`. Rewrite using `[← mul_pow]`. Conclude with `pow_le_pow_left₀ h1.le hle 3`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← div_eq_mul_inv, le_div_iff₀ (by positivity)]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem decay_scale (lam x : ℝ) (hlam : 0 < lam) (hx : 0 ≤ x) :
     ((1 + lam * x) ^ 3)⁻¹ ≤ (max 1 lam⁻¹) ^ 3 * ((1 + x) ^ 3)⁻¹ := by
@@ -65,37 +65,35 @@ def Kg (S : C.HidaSetting E Wp Wq) (j : ℕ) (h h' : C.LPt) : ℝ :=
   √(nnS S h) * √(nnS S h') * (1 / (bS S h * bS S h' * ΓS S (j + 1))) * rhoS S j
 
 /- English proof (translation)
-Establish `hgpos` using `g_pos_of_built hB`. Establish `hTT` using `(pdG_of_built hB v).2`. Establish `hrd` using `rd_pos' E`. Establish `hfr : ∀ b s, 0 < S.fr b s` using `fun b s => Real.rpow_pos_of_pos hrd _`. Use `set lam := lamS S j with hlam`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlam_pos : 0 < lam` using `lamS_pos S hgpos j`. Use `set xw : ℂ → ℝ := fun c => C.nAux S.G.k S.G.r (Complex.normSq c - S.T * S.T') S.fr (j + 1) [(1, c)] with hxw`. Establish `hn_nonneg : ∀ H, D.ptSize H = j → 0 ≤ nnS S H` using `fun H hH => lpt_value_nonneg_of_pos_of_size_le _ _ _ _ hfr H 1 le_rfl (by omega)`. Establish `hsq : √(nnS S (h ++ [(1, c)])) * √(nnS S (h' ++ [(1, c)])) = √(nnS S h) * √(nnS S h') * (√(xw c) * √(xw c))`. Rewrite using `[nnS_app S j hj h c hsz, nnS_app S j hj h' c hsz', Real.sqrt_mul (hn_nonneg h hsz), Real.sqrt_mul (hn_nonneg h' hsz')]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Use `set RRs : ℕ → C.LPt → C.LPt → ℂ := fun i P Q => (p v).RR (F v ε) i w P Q with hRRs`. Use `set Mj : ℤ := C.Mlev S.G.k S.G.r (j + 1) with hMj`. Establish `hW : ∀ (H H' : C.LPt), D.ptSize H = j → ((√(xw c) * √(xw c) : ℝ) : ℂ) * RRs (j + 1) (H ++ [(1, (lam : ℂ) * c)]) (H' ++ [(1, (lam : ℂ) * c)]) = ((rhoS S j * KB.levW (D.parOf S v) (j + 1) ((lam : ℂ) * c) : ℝ) : ℂ) * RRs (j + 1) (H ++ [(1, (lam : ℂ) * c)]) (H' ++ [(1, (lam : ℂ) * c) …`. Introduce `H H' hH`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hjt : j = S.G.r`. Establish `hnu : S6.nuBlock (S.G.r : ℤ) ((j + 1 : ℕ) : ℤ) ((1 : ℕ) : ℤ) = 0`. Unfold `S6.nuBlock`. Rewrite using `[hjt]`. Use `push_cast`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hlam1 : lam = 1` using `by rw [hlam, lamS, hnu, zpow_zero]`. Establish `hfr1 : S.fr (j + 1) 1 = 1`. Unfold `C.HidaSetting.fr`. Establish `: ((S6.nuBlock (S.G.r : ℤ) (Nat.cast (j + 1)) (Nat.cast 1) : ℤ) : ℝ) = 0`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Unfold `S6.nuBlock`. Rewrite using `[hjt]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `hρ1 : rhoS S j = 1` using `by rw [rhoS, ← hlam, hlam1, hfr1]; simp`. Establish `hx : xw c = (Complex.normSq c - S.T * S.T') ^ (S.G.k - 1)`. Simplify using `only [hxw, C.nAux]`. Apply the tactic sequence `rw [if_pos (by constructor <;> first | trivial | omega), mul_one]`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hlev : KB.levW (D.parOf S v) (j + 1) ((lam : ℂ) * c) = B2.zWeight S.G.k S.T S.T' c`. Rewrite using `[hlam1, Complex.ofReal_one, one_mul]`. Unfold `KB.levW`. Rewrite using `[if_pos (by simp [hjt])]`. Rewrite using `[hρ1, hlev, one_mul, hx]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hc2 : S.T * S.T' ≤ Complex.normSq c`. Rewrite using `[Real.mul_self_sqrt (pow_nonneg (by linarith) _)]`. Unfold `B2.zWeight`. Rewrite using `[if_pos hc2]`. Establish `h0 : RRs (j + 1) (H ++ [(1, (lam : ℂ) * c)]) (H' ++ [(1, (lam : ℂ) * c)]) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `rrTop_zero (D.parOf S v) (p v).l0 (p v).T (p v).ν' (p v).m₀ (p v).Θ (p v).TP (M.sgn (D.parOf S v) (p v).l0) (F v ε) w H (H' ++ [(1, (lam : ℂ) * c)]) ((lam : ℂ) * c) (by rw [hH, hjt]) (by` as an intermediate fact. Rewrite using `[hlam1, Complex.ofReal_one, one_mul]`. Rewrite using `[hTT]`. Use the proof step `linarith)`. Simplify using `only [hRRs]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show j + 1 = (D.parOf S v).r + 1 by rw [hjt]]`. Conclude with `this`. Rewrite using `[h0, mul_zero, mul_zero]`. Establish `hx : xw c = (S.fr (j + 1) 1 * ‖c‖) ^ (2 * (Mj - 2))`. Simplify using `only [hxw, C.nAux]`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg (by omega), mul_one, hMj]`. Use `congr 1`. Simplify using `only [Nat.add_sub_cancel, Nat.cast_one]`. Expand and normalize the polynomial expressions, which then agree. Establish `hxpos : 0 < xw c` using `by rw [hx]; exact zpow_pos (mul_pos (hfr _ _) (norm_pos_iff.2 hc)) _`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Real.mul_self_sqrt hxpos.le]`. Use `congr 2`. Rewrite using `[hx, rhoS, ← hlam, ← hMj]`. Unfold `KB.levW`. Rewrite using `[if_neg (by show ¬ (j + 1 = S.G.r + 1); omega)]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Establish `hnorm : ‖(lam : ℂ) * c‖ = lam * ‖c‖`. Rewrite using `[norm_mul, Complex.norm_real, Real.norm_of_nonneg hlam_pos.le]`. Rewrite using `[hnorm, ← mul_zpow]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[gramLoc_setC hB, stdS_app S j h c hsz, stdS_app S j h' c hsz']`. Establish `hWc` using `hW (stdS S h) (stdS S h') (by rw [stdS_size]; exact hsz)`. Establish `hb1 : bS S (h ++ [(1, c)]) = bS S h` using `bSt_append_one _ _ _`. Establish `hb2 : bS S (h' ++ [(1, c)]) = bS S h'` using `bSt_append_one _ _ _`. Rewrite using `[hb1, hb2, hsq]`.
-
-Simplify using `only [hRRs] at hWc`. Unfold `Kg`. Move the coercions through the operations in `at hWc ⊢`. Take the linear combination `((√(nnS S h) : ℂ) * (√(nnS S h') : ℂ) * (1 / ((bS S h : ℂ) * (bS S h' : ℂ) * (ΓS S (j + 1) : ℂ)))) * hWc`.
+Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem gramLoc_setC_app {Cb Cc : ℝ} {S : C.HidaSetting E Wp Wq} {p : ∀ v, KB.Pl (D.parOf S v) (Wp (S.pl v)) (Wq (S.pl v))}
     {f : ∀ v : Fin S.f, B.Mat S.G.k S.G.r → (Wq (S.pl v) →L[ℂ] Wp (S.pl v))} {χ : ℝ → ℝ} {A₀ : ℝ}
@@ -189,13 +187,13 @@ theorem gramLoc_setC_app {Cb Cc : ℝ} {S : C.HidaSetting E Wp Wq} {p : ∀ v, K
     (1 / ((bS S h : ℂ) * (bS S h' : ℂ) * (ΓS S (j + 1) : ℂ)))) * hWc
 
 /- English proof (translation)
-Establish `hgpos` using `g_pos_of_built hB`. Establish `hB'` using `hB`. Take `⟨-, -, -, -, -, -, -, -, -, -, -, -, -, -, -, hv⟩` from `hB'`. Take `⟨hl0, hInD, -, -, -⟩` from `hv v`. Establish `hH : D.IsLocPt (stdS S h) j` using `(isLocPt_toStd_iff _ _ hgpos h 1 j).2 hh`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hH' : D.IsLocPt (stdS S h') j` using `(isLocPt_toStd_iff _ _ hgpos h' 1 j).2 hh'`. Take `⟨φ, -, -, hφ, hφint⟩` from `hPS (Wp (S.pl v)) (Wq (S.pl v)) (D.parOf S v) (p v) (F v ε) j hj w (stdS S h) (stdS S h') hH hH' Cb (by rw [hl0]; exact hInD) hF (by rw [hl0]; exact hw)`. Establish `hlam_pos` using `lamS_pos S hgpos j`. Take `⟨g, hgdef⟩ : ∃ g : ℂ → ℂ, g = fun c' => P5.fsv (sW S j l) c' * φ c'` from `⟨_, rfl⟩`. Establish `hae : (fun c : ℂ => (setC S p F).gramLoc v ε (j + 1) w (h ++ [(1, c)]) (h' ++ [(1, c)]) * KB.psiL S l c) =ᵐ[volume] fun c => ((Kg S j h h' : ℝ) : ℂ) * g (lamS S j • c)` using `by filter_upwards [ae_ne_zero_complex] with c hc`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hlc : (lamS S j : ℂ) * c ≠ 0` using `mul_ne_zero (by exact_mod_cast hlam_pos.ne') hc`. Simplify using `only [hgdef, Complex.real_smul]`. Rewrite using `[gramLoc_setC_app hB F v ε j hj w h h' hh.2 hh'.2 c hc, hφ _ hlc, psiL_eq_fsv S hgpos j l c]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[integral_congr_ae hae, integral_const_mul, Measure.integral_comp_smul, Complex.finrank_real_complex, Complex.real_smul, hgdef]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only`. Rewrite using `[hφint (sW S j l)]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem int_gramLoc_setC (hPS : PStdC) {Cb Cc : ℝ} {S : C.HidaSetting E Wp Wq}
     {p : ∀ v, KB.Pl (D.parOf S v) (Wp (S.pl v)) (Wq (S.pl v))}

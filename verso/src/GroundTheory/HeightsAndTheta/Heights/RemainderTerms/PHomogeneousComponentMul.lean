@@ -9,11 +9,11 @@ open MvPolynomial Finset
 noncomputable section
 
 /- English proof (translation)
-Introduce `σ R _ p a m d hp`. Establish `hterm : ∀ i, homogeneousComponent d (p * homogeneousComponent i a) = if d = m + i then p * homogeneousComponent i a else 0` using `fun i => homogeneousComponent_of_mem ((mem_homogeneousSubmodule _ _).mpr (hp.mul (homogeneousComponent_isHomogeneous i a)))`. Use `conv_lhs => rw [← sum_homogeneousComponent a, Finset.mul_sum, map_sum]`. Repeatedly rewrite using `[hterm]`. Use `split_ifs with hmd`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hcongr : ∀ i ∈ range (a.totalDegree + 1), (if d = m + i then p * homogeneousComponent i a else 0) = if d - m = i then p * homogeneousComponent i a else 0`. Introduce `i _`. Use `congr 1`. Conclude with `propext ⟨fun h => by omega, fun h => by omega⟩`. Rewrite using `[Finset.sum_congr rfl hcongr, Finset.sum_ite_eq]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs with hmem`. Both sides reduce to the same expression. Rewrite `hmem` using `[Finset.mem_range, not_lt]`. Rewrite using `[homogeneousComponent_eq_zero (d - m) a (by omega), mul_zero]`. Conclude with `Finset.sum_eq_zero fun i _ => if_neg (by omega)`.
+A detailed English derivation is pending.
 -/
 theorem HomogeneousComponentMul.proof : HomogeneousComponentMul.Statement := by
   intro σ R _ p a m d hp

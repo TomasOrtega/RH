@@ -8,21 +8,21 @@ open scoped Classical
 namespace GlobalTheory.OrbDesc
 
 /- English proof (translation)
-Introduce `p hp n hn`. Take `⟨x, rfl⟩` from `hn`. Establish `hre : ∀ M N : Matrix ι ι K, Matrix.reindex e e (M * N) = Matrix.reindex e e M * Matrix.reindex e e N`. Introduce `M N`. Simplify using `[Matrix.reindex_apply, Matrix.submatrix_mul_equiv]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `h21 : ∀ g ∈ blockPar (K` using `K) e, (Matrix.reindex e e (g : Matrix ι ι K)).toBlocks₂₁ = 0 := by`. Introduce `g hg`. Use extensionality with `i j`. Simplify using `only [Matrix.toBlocks₂₁, Matrix.reindex_apply, Matrix.submatrix_apply, Matrix.of_apply, Matrix.zero_apply]`. Apply `hg` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `[side]`. Use `set P : Matrix (Fin a ⊕ Fin b) (Fin a ⊕ Fin b) K := Matrix.reindex e e (p : Matrix ι ι K) with hP`. Use `set Q : Matrix (Fin a ⊕ Fin b) (Fin a ⊕ Fin b) K := Matrix.reindex e e ((p⁻¹ : GL ι K) : Matrix ι ι K) with hQ`. Establish `hP21 : P.toBlocks₂₁ = 0` using `h21 p hp`. Establish `hQ21 : Q.toBlocks₂₁ = 0` using `h21 _ (Subgroup.inv_mem _ hp)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hPQ : P * Q = 1`. Rewrite using `[hP, hQ, ← hre, ← Units.val_mul, mul_inv_cancel, Units.val_one]`. Simplify using the standard rewrite rules. Use `⟨Multiplicative.ofAdd (fun i j => (P.toBlocks₁₁ * Matrix.of x.toAdd * Q.toBlocks₂₂) i j), ?_⟩` and prove the remaining obligations. Apply `Units.ext` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `(Matrix.reindex e e).injective` to reduce the goal to its premises. Use `show Matrix.reindex e e (uMat e _) = Matrix.reindex e e ((p : Matrix ι ι K) * uMat e x.toAdd * ((p⁻¹ : GL ι K) : Matrix ι ι K))`. Rewrite using `[hre, hre, ← hP, ← hQ]`. Establish `hU : ∀ Y : Fin a → Fin b → K, Matrix.reindex e e (uMat e Y) = Matrix.fromBlocks 1 (Matrix.of Y) 0 1`. Introduce `Y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Simplify using `[uMat]`. Rewrite using `[hU, hU]`. Rewrite `hPQ`, the goal using `[← Matrix.fromBlocks_toBlocks P, ← Matrix.fromBlocks_toBlocks Q]`. Rewrite `hPQ`, the goal using `[hP21, hQ21]`. Rewrite `hPQ` using `[Matrix.fromBlocks_multiply, ← Matrix.fromBlocks_one, Matrix.fromBlocks_inj]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Take `⟨h11, h12, -, h22⟩` from `hPQ`. Simplify using `only [Matrix.fromBlocks_multiply, Matrix.zero_mul, Matrix.mul_zero, Matrix.mul_one, Matrix.one_mul, add_zero, zero_add] at h11 h12 h22 ⊢`. Rewrite using `[h11, h22]`. Use `congr 1`. Establish `key : P.toBlocks₁₁ * Q.toBlocks₁₂ + (P.toBlocks₁₁ * Matrix.of x.toAdd + P.toBlocks₁₂) * Q.toBlocks₂₂ = P.toBlocks₁₁ * Matrix.of x.toAdd * Q.toBlocks₂₂`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Rewrite using `[Matrix.add_mul, ← add_assoc, add_comm (P.toBlocks₁₁ * Q.toBlocks₁₂), add_assoc, h12, add_zero]`. Rewrite using `[key]`. Use extensionality with `i j`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem blockUni_conj_mem (K : Type) [Field K] (ι : Type) [Fintype ι] [DecidableEq ι] (a b : ℕ)
     (e : ι ≃ Fin a ⊕ Fin b) :

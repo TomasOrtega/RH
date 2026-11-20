@@ -6,7 +6,7 @@ open scoped ComplexOrder
 namespace GlobalTheory.FockDetDer
 
 /- English proof (translation)
-Simplify using `[Matrix.trace, Fintype.sum_sum_type]`.
+Simplify using the standard rewrite rules.
 -/
 theorem trace_fromBlocks_diag {m n : Type} [Fintype m] [Fintype n]
     (X : Matrix m m ℂ) (Y : Matrix n n ℂ) :
@@ -14,19 +14,17 @@ theorem trace_fromBlocks_diag {m n : Type} [Fintype m] [Fintype n]
   simp [Matrix.trace, Fintype.sum_sum_type]
 
 /- English proof (translation)
-Establish `hTS : (fromBlocks 0 B Bᵀ 0 : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ) * (fromBlocks 0 Cᵀ C 0 : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ) = fromBlocks (B * C) 0 0 (C * B)ᵀ`. Rewrite using `[fromBlocks_multiply]`. Simplify using the standard rewrite rules. Establish `h1 : (1 : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ) - c • fromBlocks (B * C) 0 0 (C * B)ᵀ = fromBlocks (1 - c • (B * C)) 0 0 (1 - c • (C * B))ᵀ`. Rewrite using `[← fromBlocks_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `ext (i | i) (j | j) <;> simp [Matrix.one_apply, eq_comm]`. Establish `hd : (1 - c • (B * C)).det = (1 - c • (C * B)).det`. Rewrite using `[← Matrix.smul_mul, det_one_sub_mul_comm, Matrix.mul_smul]`. Establish `h' : IsUnit (1 - c • (B * C)).det` using `hd ▸ h`. Rewrite using `[hTS, h1]`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[det_fromBlocks_zero₂₁, det_transpose]`. Conclude with `h'.mul h`. Establish `hinv : (fromBlocks (1 - c • (B * C)) 0 0 (1 - c • (C * B))ᵀ)⁻¹ = fromBlocks (1 - c • (B * C))⁻¹ 0 0 ((1 - c • (C * B))⁻¹)ᵀ`. Apply `Matrix.inv_eq_left_inv` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[fromBlocks_multiply, ← transpose_mul, nonsing_inv_mul _ h', mul_nonsing_inv _ h]`. Simplify using the standard rewrite rules. Establish `hMB : (1 - c • (B * C))⁻¹ * B = B * (1 - c • (C * B))⁻¹`. Establish `e : B * (1 - c • (C * B)) = (1 - c • (B * C)) * B`. Simplify using `[Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_nonsing_inv _ h, Matrix.mul_one]`. Use `_ = (1 - c • (B * C))⁻¹ * (B * (1 - c • (C * B))) * (1 - c • (C * B))⁻¹ := by`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = B * (1 - c • (C * B))⁻¹ := by`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[e, ← Matrix.mul_assoc, nonsing_inv_mul _ h', Matrix.one_mul]`. Rewrite using `[hinv, fromBlocks_multiply]`. Simplify using `only [Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add]`. Rewrite using `[trace_fromBlocks_diag, ← transpose_mul, trace_transpose, two_mul]`. Use `congr 1`.
-
-Rewrite using `[trace_mul_comm (B * C), ← Matrix.mul_assoc, hMB, Matrix.mul_assoc, trace_mul_comm B, Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem symmetric_block_trace_inverse_eq_two_mul {P Q : ℕ} (C : Matrix (Fin Q) (Fin P) ℂ) (B : Matrix (Fin P) (Fin Q) ℂ) (c : ℂ)
     (h : IsUnit (1 - c • (C * B)).det) :
@@ -75,13 +73,13 @@ theorem symmetric_block_trace_inverse_eq_two_mul {P Q : ℕ} (C : Matrix (Fin Q)
       Matrix.mul_assoc]
 
 /- English proof (translation)
-Introduce `P Q A B t h S T`. Take `⟨h1, h2⟩` from `symmetric_block_trace_inverse_eq_two_mul Aᴴ B ((t : ℂ) ^ 2) h`. Use `⟨h1, ?_⟩` and prove the remaining obligations. Establish `hsq : HasDerivAt (fun s : ℝ => (s : ℂ) ^ 2) (2 * (t : ℂ)) t`. Use `(hasDerivAt_pow 2 (t : ℂ)).comp_ofReal` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using this`. Establish `hd` using `ReciprocityTheory.GeometryOfNumbersTheory.hasDerivAt_det (fun s : ℝ => 1 - ((s : ℂ) ^ 2) • (Aᴴ * B)) (-((2 * (t : ℂ)) • (Aᴴ * B))) t (fun i j => by`. Use `(hsq.mul_const ((Aᴴ * B) i j)).const_sub ((1 : Matrix (Fin Q) (Fin Q) ℂ) i j)` as an intermediate fact. Simplify using `using this)`. Use `hd.congr_deriv ?_` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hne` using `h.ne_zero`. Establish `hadj : (1 - ((t : ℂ) ^ 2) • (Aᴴ * B)).adjugate = (1 - ((t : ℂ) ^ 2) • (Aᴴ * B)).det • (1 - ((t : ℂ) ^ 2) • (Aᴴ * B))⁻¹`. Rewrite using `[Matrix.inv_def, Ring.inverse_eq_inv', smul_smul, mul_inv_cancel₀ hne, one_smul]`. Simplify using `only [S, T]`. Rewrite using `[h2, hadj, Matrix.smul_mul, Matrix.mul_neg, Matrix.mul_smul, trace_smul, trace_neg, trace_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hasDerivAt_det_one_sub_sq : ∀ (P Q : ℕ) (A B : Matrix (Fin P) (Fin Q) ℂ) (t : ℝ), IsUnit (1 - ((t : ℂ) ^ 2) • (Aᴴ * B)).det → let S : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ := fromBlocks 0 Aᴴᵀ Aᴴ 0; let T : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ := fromBlocks 0 B Bᵀ 0; IsUnit (1 - ((t : ℂ) ^ 2) • (T * S)).det ∧ HasDerivAt (fun s : ℝ => (1 - ((s : ℂ) ^ 2) • (Aᴴ * B)).det) (-((t : ℂ) * (T * S * (1 - ((t : ℂ) ^ 2) • (T * S))⁻¹).trace) * (1 - ((t : ℂ) ^ 2) • (Aᴴ * B)).det) t := by
   intro P Q A B t h S T

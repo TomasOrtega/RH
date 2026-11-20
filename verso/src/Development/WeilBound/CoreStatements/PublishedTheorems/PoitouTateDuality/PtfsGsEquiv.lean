@@ -10,17 +10,15 @@ open NumberField IsDedekindDomain CategoryTheory GroundTheory.ProfCoh Reciprocit
 namespace PositivityTheory.Lit1.PTN
 
 /- English proof (translation)
-Establish `: IsGalois K (AlgebraicClosure ℚ)` using `IsAlgClosure.isGalois K (AlgebraicClosure ℚ)`. Set `E` to `maxUnramifiedOutside K (AlgebraicClosure ℚ) S`. Set `φ : G K (AlgebraicClosure ℚ) →* Gal(E/K)` to `AlgEquiv.restrictNormalHom E`. Establish `hφs : Function.Surjective φ` using `AlgEquiv.restrictNormalHom_surjective (AlgebraicClosure ℚ)`. Establish `hker : φ.ker = NS (AlgebraicClosure ℚ) S`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[GlobalTheory.CompanionTheory.Hypotheses₂.NS_eq_fixingSubgroup K (AlgebraicClosure ℚ) S]`. Use extensionality with `σ`. Rewrite using `[MonoidHom.mem_ker, IntermediateField.mem_fixingSubgroup_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h x hx`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `AlgEquiv.restrictNormal_commutes σ E (⟨x, hx⟩ : E)`. Establish `h2 : σ.restrictNormal E = 1` using `h`. Rewrite `h1` using `[h2]`. Conclude with `h1.symm`. Introduce `h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `AlgEquiv.ext` to reduce the goal to its premises. Introduce `x`. Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `(AlgEquiv.restrictNormal_commutes σ E x).trans (h x.1 x.2)`. Establish `hφc : Continuous φ` using `InfiniteGalois.restrictNormalHom_continuous E`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `q : GS (AlgebraicClosure ℚ) S ≃* Gal(E/K)` to `(QuotientGroup.quotientMulEquivOfEq hker.symm).trans (QuotientGroup.quotientKerEquivOfSurjective φ hφs)`. Establish `hq : Continuous q` using `continuous_coinduced_dom.2 hφc`. Establish `: CompactSpace (G K (AlgebraicClosure ℚ))` using `inferInstance`. Establish `: CompactSpace (GS (AlgebraicClosure ℚ) S)` using `Quotient.compactSpace`. Use `⟨{ q with continuous_toFun := hq continuous_invFun := Continuous.continuous_symm_of_equiv_compact_to_t2 (f := q.toEquiv) hq }, fun σ y => ?_⟩` and prove the remaining obligations.
-
-Conclude with `AlgEquiv.restrictNormal_commutes σ E y`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem gsEquiv_toGS' (K : IntermediateField ℚ (AlgebraicClosure ℚ)) [NumberField K]
     [IsAlgClosure K (AlgebraicClosure ℚ)] (S : Set (HeightOneSpectrum (𝓞 K))) :

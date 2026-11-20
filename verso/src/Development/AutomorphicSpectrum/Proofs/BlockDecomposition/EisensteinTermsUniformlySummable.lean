@@ -21,19 +21,17 @@ open GlobalTheory.CompanionTheory.ZUnf GlobalTheory.Eis
 namespace GlobalTheory.CompanionTheory.ZUnf
 
 /- English proof (translation)
-Introduce `D n χ s f hχ hc hl hs`. Use `haveI := t2Space_adeleRing' (F := D.host.F)`. Use `⟨fun γ hγ g => ?_, fun q hq a ha h1 g => ?_, fun C hC => ?_⟩` and prove the remaining obligations. Take `⟨hp, hr⟩` from `Subgroup.mem_inf.1 hγ`. Take `⟨a, ha⟩` from `exists_blkA hp`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨u, hu⟩` from `det_rat hr a ha`. Establish `h1 : absA D (Matrix.GeneralLinearGroup.det a) = 1`. Rewrite using `[hu]`. Conclude with `absE_inclR u`. Establish `h2 : χ (Matrix.GeneralLinearGroup.det a) = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hu]`. Conclude with `hχ.2 u`. Rewrite using `[hl γ hp a ha g, h1, h2]`. Simplify using `[npow]`. Rewrite using `[hl q hq a ha g, h1]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[npow]`. Establish `hlaw : IndLaw (GlobalTheory.StdUnn.PolesModel.modP (D` using `D) (n := n)) (χ.comp GlobalTheory.StdUnn.PolesModel.detP) (s + (n : ℂ) / 2) f := fun p g => hl p p.2 (GlobalTheory.StdUnn.HeightExists.leviBlock (D := D) (n := n) p) rfl g`. Establish `h1 : Continuous (iwAbs (PolesModel.modP (D` using `D) (n := n)) (K D n)) := PolesModel.isIwasawa.continuous_iwAbs GlobalTheory.StdUnn.Model.isClosed_P PolesModel.continuous_modP GlobalTheory.StdUnn.Model.isCompact_K`. Establish `h2 : Continuous fun g => Real.log (iwAbs (PolesModel.modP (D` using `D) (n := n)) (K D n) g) := (NNReal.continuous_coe.comp h1).log fun g => (NNReal.coe_pos.2 (iwAbs_pos _ _ g)).ne'`. Establish `hcf : Continuous fun x : ℂ × G D n => flatSec (PolesModel.modP (D` using `D) (n := n)) (K D n) f s x.1 x.2 := by`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only [flatSec, npow_eq_exp (iwAbs_pos _ _ _)]`. Conclude with `(hc.comp continuous_snd).mul (((Complex.continuous_ofReal.comp (h2.comp continuous_snd)).mul (continuous_fst.sub continuous_const)).cexp)`. Take `⟨u, hu, hb⟩` from `exists_majorant (Φ := fun z => flatSec (PolesModel.modP (D := D) (n := n)) (K D n) f s z) (χ := χ.comp PolesModel.detP) (ρ := (n : ℝ) / 2) (σ := (n : ℝ) / 2) PolesModel.isIwasawa GlobalTheory.StdUnn.Model.isCompact_K hcf.continuousOn (fun z _ => by`. Use `(PolesModel.isIwasawa (D := D) (n := n)).indLaw_flatSec hlaw z` as an intermediate fact. Use `push_cast`.
+Move the embeddings inside the algebraic operations. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `this) PolesModel.summable_spherical (S := {s}) isCompact_singleton (Set.singleton_subset_iff.2 hs) hC`. Establish `e : flatSec (PolesModel.modP (D` using `D) (n := n)) (K D n) f s s = f := funext fun x => by`. Simplify using `[flatSec, npow_eq_exp (iwAbs_pos _ _ _)]`. Use `⟨u, hu, fun q g hg => ?_⟩` and prove the remaining obligations. Use `hb q s rfl g hg` as an intermediate fact.
-
-Rewrite `this` using `[e]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem law_facts : ∀ {D : D7} {n : ℕ} {χ : (AE D)ˣ →* Circle} {s : ℂ} {f : G D n → ℂ}, IsHeckeChar D χ → Continuous f → IsLaw χ s f → (n : ℝ) / 2 < s.re →
     LeftInv (P D n ⊓ GF D n) f ∧

@@ -7,17 +7,15 @@ open NumberField
 namespace PI.SRW
 
 /- English proof (translation)
-Introduce `E V _ _ _ _ _ _ Λ N hNΛ hfg hsat`. Set `N' : Submodule (𝓞 E) Λ` to `N.comap Λ.subtype`. Establish `: Module.Finite (𝓞 E) Λ` using `Module.Finite.iff_fg.mpr hfg`. Use `haveI : Module.Finite (𝓞 E) (Λ ⧸ N') := inferInstance`. Use `haveI : NoZeroSMulDivisors (𝓞 E) (Λ ⧸ N') := by`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Use `⟨fun {o q} hq => ?_⟩` and prove the remaining obligations. Distinguish the cases in `ho : o = 0`. Conclude with `Or.inl ho`. Use `right`. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective N' q`.
+Prove the first alternative. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `hq` using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`. Rewrite using `[Submodule.Quotient.mk_eq_zero]`. Conclude with `hsat o x ho x.2 hq`. Use `haveI : Module.Projective (𝓞 E) (Λ ⧸ N') := PI.FGTFG.projective_reduction (𝓞 E) (Λ ⧸ N')`. Take `⟨s, hs⟩` from `Module.projective_lifting_property N'.mkQ LinearMap.id (Submodule.mkQ_surjective N')`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `ρ' : Λ →ₗ[𝓞 E] Λ` to `LinearMap.id - s.comp N'.mkQ`. Establish `hρ' : ∀ x : Λ, ρ' x ∈ N'`. Introduce `x`. Establish `h1 : N'.mkQ (ρ' x) = 0`. Establish `h2` using `LinearMap.congr_fun hs (N'.mkQ x)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [LinearMap.comp_apply, LinearMap.id_apply] at h2`. Use `show N'.mkQ (x - s (N'.mkQ x)) = 0`. Rewrite using `[map_sub, h2, sub_self]`. Simplify `h1` using `[Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Use `⟨Λ.subtype.comp ρ', fun x => hρ' x, fun x hx => ?_⟩` and prove the remaining obligations.
-
-Establish `hx' : x ∈ N'` using `hx`. Establish `h0 : N'.mkQ x = 0` using `by simpa [Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero] using hx'`. Simplify using `[ρ', h0]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem retraction_reduction : RetrStep := by
   intro E V _ _ _ _ _ _ Λ N hNΛ hfg hsat

@@ -37,15 +37,15 @@ end Parts
 variable {D : D7} {u : D.what₂.Word}
 
 /- English proof (translation)
-Introduce `w hw hs v hb` and use `⟨(weight_lattice_inclusions D u Tt w hw hs v).2 hb, hL w hw hs v hb⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem second_branch_incl_length_of_second (Tt : Formalism.L2.Forms.FormsTied D u) (hL : SeenPlaceLatticeLengthFormula D u) : SecondBranchInclusionLength D u :=
   fun w hw hs v hb => ⟨(weight_lattice_inclusions D u Tt w hw hs v).2 hb, hL w hw hs v hb⟩
 
 /- English proof (translation)
-Introduce `w hw hs v`. Establish `hR : Rat0 D u` using `rational_level_zero_of_integral w hw hs h4`. Take `⟨hUB, hDS⟩` from `h4 w hw hs v`. Establish `ram` using `h9 v`. Take `⟨hI1, hI2⟩` from `weight_lattice_inclusions D u Tt w hw hs v`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨hL1, hL2⟩` from `hL w hw hs v`. Conclude with `⟨fun hd => ⟨hI1 hd, hL1 hd, LemmaC_one hR w hw v (hI1 hd) hUB hDS ram⟩, fun hb => ⟨hI2 hb, hL2 hb, LemmaC_two hR w hw v _ hb (hI2 hb) hUB hDS ram⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem lattice_length_of_formulas (Tt : Formalism.L2.Forms.FormsTied D u) (h4 : HeckeIntegralLevelZero D u) (h9 : HeckeRamifiedLevelZero D u) (hL : BranchLatticeLengths D u) :
     LatticeInclusionLength D u := by
@@ -59,12 +59,12 @@ theorem lattice_length_of_formulas (Tt : Formalism.L2.Forms.FormsTied D u) (h4 :
     fun hb => ⟨hI2 hb, hL2 hb, LemmaC_two hR w hw v _ hb (hI2 hb) hUB hDS ram⟩⟩
 
 /- English proof (translation)
-The claim follows from `second_branch_incl_length_of_second Tt fun w hw hs v hb => (hL w hw hs v).2 hb`.
+A detailed English derivation is pending.
 -/
 theorem second_branch_incl_length_of_lengths (Tt : Formalism.L2.Forms.FormsTied D u) (hL : BranchLatticeLengths D u) : SecondBranchInclusionLength D u := second_branch_incl_length_of_second Tt fun w hw hs v hb => (hL w hw hs v).2 hb
 
 /- English proof (translation)
-The claim follows from `ramified_lattice_of_length fun D u hF hS hA => by obtain ⟨h4, h9, hL⟩ := h D u hF hS hA obtain ⟨Tf, -⟩ := hF exact lattice_length_of_formulas Tf h4 h9 hL`.
+A detailed English derivation is pending.
 -/
 theorem ramified_lattice_family_of_clauses
     (h : ∀ (D : D7) (u : D.what₂.Word), FormsCompatible D u → HidaSetting D u → admS D u →
@@ -75,7 +75,7 @@ theorem ramified_lattice_family_of_clauses
     exact lattice_length_of_formulas Tf h4 h9 hL
 
 /- English proof (translation)
-Use `congruence_no_kernel_family_minimal fun D u hF hS hA => ?_` and prove the remaining obligations. Take `⟨h4, h9, hL⟩` from `h D u hF hS hA`. Take `⟨T, _⟩` from `hF`. Conclude with `⟨h4, h9, second_branch_incl_length_of_lengths T hL⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem congruence_no_kernel_of_lengths
     (h : ∀ (D : D7) (u : D.what₂.Word), FormsCompatible D u → HidaSetting D u → admS D u →

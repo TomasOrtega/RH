@@ -25,13 +25,13 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
 variable {Xo : Moduli Dw l}
 
 /- English proof (translation)
-Set `A : Fin m → (tEps x ⟶ Xo.univ.t.G)` to `fun j => Over.homMk (v j) (hv j).1.1`. Set `B : Fin m → (tEps x' ⟶ Xo.univ.t.G)` to `fun j => Over.homMk (v' j) (hv j).2.1.1`. Set `W : tEps x ⟶ Xo.univ.t.G` to `Over.homMk w htw.1`. Set `W' : tEps x' ⟶ Xo.univ.t.G` to `Over.homMk w' htw'.1`. Establish `hAB : ∀ j, scaleAt x' (p : Ω) ≫ B j = tanMap hψ (A j)` using `fun j => by`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨-, -, a, ha, e⟩` from `hv j`. Establish `: a = A j` using `Over.OverMorphism.ext ha`. Substitute `this` using the available equality. Conclude with `Over.OverMorphism.ext e`. Establish `hW : (List.ofFn fun i => scaleAt x (cf i) ≫ A i).prod = W` using `(isCombAt_iff A cf W).1 hw`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hW' : (List.ofFn fun i => scaleAt x' (cf i) ≫ B i).prod = W'` using `(isCombAt_iff B cf W').1 hw'`. Set `Lc : (tEps x' ⟶ Xo.univ.t.G) →* (tEps x' ⟶ Xo.univ.t.G)` to `MonoidHom.mk' (fun b => scaleAt x' (p : Ω) ≫ b) fun b b' => MonObj.comp_mul _ _ _`. Establish `key : scaleAt x' (p : Ω) ≫ W' = tanMap hψ W`. Establish `e1 : scaleAt x' (p : Ω) ≫ W' = Lc W'` using `rfl`. Rewrite using `[e1, ← hW, ← hW', map_list_prod, map_list_prod, List.map_ofFn, List.map_ofFn]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `congrArg (fun f => (List.ofFn f).prod) (funext fun i => ?_)` and prove the remaining obligations. Simplify using `only [Function.comp_apply, Lc, MonoidHom.mk'_apply]`. Rewrite using `[tanMap_scale, ← hAB, ← Category.assoc, ← Category.assoc, scaleAt_comm]`. Conclude with `⟨htw, htw', W, rfl, congrArg (·.left) key⟩`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isLieImg_comb {Ω : Type} [Field Ω] {x x' : Sp Ω ⟶ Xo.X} {ψ : Gx x ⟶ Gx x'} (hψ : IsLinHom ψ) {p m : ℕ}
     {v v' : Fin m → (Sp (DualNumber Ω) ⟶ Xo.univ.t.G.left)} (hv : ∀ j, IsLieImg p ψ (v j) (v' j))
@@ -59,22 +59,22 @@ theorem isLieImg_comb {Ω : Type} [Field Ω] {x x' : Sp Ω ⟶ Xo.X} {ψ : Gx x 
   exact ⟨htw, htw', W, rfl, congrArg (·.left) key⟩
 
 /- English proof (translation)
-Simplify using `only [scal, ReciprocityTheory.ChartRestriction.G.Out.liftFun, map_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem scal_mul'' {S : Type} [CommRing S] (x : Sp S ⟶ Xo.X) (a b : S) (i : (PPx x).ι) :
     scal x (a * b) i = scal x a i * scal x b i := by
   simp only [scal, ReciprocityTheory.ChartRestriction.G.Out.liftFun, map_mul]
 
 /- English proof (translation)
-Simplify using `only [scal, ReciprocityTheory.ChartRestriction.G.Out.liftFun, map_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem scal_one'' {S : Type} [CommRing S] (x : Sp S ⟶ Xo.X) (i : (PPx x).ι) : scal x (1 : S) i = 1 := by
   simp only [scal, ReciprocityTheory.ChartRestriction.G.Out.liftFun, map_one]
 
 /- English proof (translation)
-Take `⟨pm, h₁, h₂, h₃⟩` from `h`. Establish `e0 : spMap (RingHom.id Ω) = 𝟙 (Sp Ω)` using `by simp [spMap]`. Take `rfl : pm = 𝟙 _` from `gx_ext (h₂.trans (by rw [e0]; simp)) (h₁.trans (Category.id_comp _).symm)`. Introduce `i`. Establish `e : Scheme.Hom.appLE (𝟙 (Gx x)) ((PPx x).U i) ((PPx x).U i) le_rfl = 𝟙 _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [Scheme.Hom.appLE, Scheme.Hom.id_app]`. Conclude with `(Category.id_comp _).trans (CategoryTheory.Functor.map_id _ _)`. Use `h₃ i le_rfl` as an intermediate fact. Rewrite `this` using `[e]`. Conclude with `this.symm`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem secBC_self {Ω : Type} [CommRing Ω] {x : Sp Ω ⟶ Xo.X} {a : Ω} {s s' : LB.Sec (PPx x)}
     (h : GlobalTheory.Frames.SecBC (RingHom.id Ω) a x x s s') : ∀ i, s'.f i = scal x a i * s.f i := by
@@ -93,25 +93,23 @@ theorem secBC_self {Ω : Type} [CommRing Ω] {x : Sp Ω ⟶ Xo.X} {a : Ω} {s s'
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c P p i hP Ω _ _ _ t w z hb C z' hz`. Establish `hsp : IsSplitOff l P p` using `hP`. Take `⟨g, hg0, hgd, hgc⟩` from `(GlobalTheory.Frames.frBor_iff_frChg w z t).1 hb`. Establish `hdet : ∀ τ, IsUnit (g τ).det` using `fun τ => GlobalTheory.Frames.lowerTri_isUnit_det _ (hg0 τ) fun j => by rw [hgd]; exact Units.isUnit _`. Establish `hdet' : ∀ τ, IsUnit ((g τ)⁻¹).det` using `fun τ => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Matrix.det_nonsing_inv]`. Conclude with `(hdet τ).ringInverse`. Take `⟨w', hw', -⟩` from `GlobalTheory.Frames.existsUnique_frChg E H Dw l Xo c Ω z' (fun τ => (g τ)⁻¹) (t none)⁻¹ hdet'`. Establish `hdiag : ∀ τ j, (g τ)⁻¹ j j = ((t⁻¹ (some ⟨τ, j⟩) : Ωˣ) : Ω)` using `fun τ j => by`. Establish `e` using `GlobalTheory.Frames.lowerTri_mul_diag ((g τ)⁻¹) (g τ) (GlobalTheory.Frames.lowerTri_inv _ (hg0 τ) (hdet τ)) (hg0 τ) j`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e` using `[Matrix.nonsing_inv_mul _ (hdet τ), Matrix.one_apply_eq, hgd]`. Rewrite using `[Pi.inv_apply, Units.val_inv_eq_inv_val]`. Conclude with `eq_inv_of_mul_eq_one_left e.symm`. Establish `hb' : FrBor t⁻¹ z' w'` using `(GlobalTheory.Frames.frBor_iff_frChg z' w' t⁻¹).2 ⟨fun τ => (g τ)⁻¹, fun τ => GlobalTheory.Frames.lowerTri_inv _ (hg0 τ) (hdet τ), hdiag, hw'⟩`. Establish `hbw : FrBor t w' z'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Simplify using `using (GlobalTheory.Frames.frBor_calculus E H Dw l Xo c Ω z' w' w').2.2.2 t⁻¹ hb'`. Take `⟨ψ, hiso, hlie, hth⟩` from `(hkPt_iff hsp _ z C.1 z').1 hz`. Take `⟨hx, hc, hs⟩` from `hgc`. Take `⟨hx', hc', hs'⟩` from `hw'`. Take `⟨zx, zo, zu, ztan, zeig, zbas, zs, zgen⟩` from `z`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Substitute using the available equality.
 
-Simplify using `only at hx`. Substitute `hx` using the available equality. Take `⟨zx', zo', zu', ztan', zeig', zbas', zs', zgen'⟩` from `z'`. Simplify using `only at hx'`. Substitute `hx'` using the available equality.
+Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨C, w', (hkPt_iff hsp _ w C.1 w').2 ⟨ψ, hiso, fun τ j => ?_, ?_⟩, hbw⟩` and prove the remaining obligations. Establish `hcomb : IsCombAt w.x (zu τ) ((g τ)⁻¹ j) (w.u τ j)`. Take `⟨a, ha, -⟩` from `zbas τ (w.u τ j) (w.tan τ j) (w.eig τ j)`. Establish `h1` using `GlobalTheory.TangentLinear.isCombAt_mulVec E H Dw l Xo Ω w.x (w.u τ) (w.tan τ) (zu τ) (g τ).transpose a (w.u τ j) (fun k => hc τ k) ha`. Establish `h2` using `Formalism.L2.PjFree.isCombAt_single (w.tan τ) j`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : (g τ).transpose.mulVec a = Pi.single j 1` using `(w.basis τ (w.u τ j) (w.tan τ j) (w.eig τ j)).unique h1 h2`. Establish `ea : a = (g τ)⁻¹ j`. Establish `e2` using `congrArg ((g τ).transpose⁻¹.mulVec) e`. Rewrite `e2` using `[Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ (by rw [Matrix.det_transpose]; exact hdet τ), Matrix.one_mulVec, Matrix.mulVec_single_one]`. Rewrite using `[e2, ← Matrix.transpose_nonsing_inv]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Both sides reduce to the same expression.
 
-Use extensionality with `k`. Both sides reduce to the same expression. Conclude with `ea ▸ ha`. Conclude with `isLieImg_comb hiso.2.1 (fun k => hlie τ k) ((g τ)⁻¹ j) (w.tan τ j) (w'.tan τ j) hcomb (hc' τ j)`. Establish `hth' : GlobalTheory.ThetaTrace.IsThetaTrace Xo.univ.t.G Xo.univ.t.PP ψ p zs zs'`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `hth` as an intermediate fact. Simplify using `only [GlobalTheory.ThetaTrace.hkTr, Equiv.apply_symm_apply] at this`. Conclude with `this`. Use `show GlobalTheory.ThetaTrace.IsThetaTrace Xo.univ.t.G Xo.univ.t.PP (conj w.x w'.x ((conj w.x w'.x).symm ψ)) p w.s w'.s`. Rewrite using `[Equiv.apply_symm_apply]`.
-
-Establish `hs₁` using `secBC_self hs`. Establish `hs₂` using `secBC_self hs'`. Use `GlobalTheory.ThetaTrace.IsThetaTrace.smul hth' (toΓ Ω (((t none)⁻¹ : Ωˣ) : Ω)) (fun k => ?_) (fun k => hs₂ k)` and prove the remaining obligations. Use `show w.s.f k = scal w.x (((t none)⁻¹ : Ωˣ) : Ω) k * zs.f k`. Rewrite using `[hs₁ k, ← _root_.mul_assoc, ← scal_mul'', Units.inv_mul, scal_one'', _root_.one_mul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hkRelFr_frBor : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (P : Ideal (𝓞 E)) (p i : ℕ), GlobalTheory.IndefiniteRowSideFullHecke.UnusedSlot39.IsHeckePrime H l P p → ∀ (Ω : Type) [Field Ω] [IsAlgClosed Ω] [Algebra c.F Ω] (t : Ix Dw → Ωˣ) (w z : FrPt Xo c Ω), FrBor t w z → ∀ (C : hkKer (Xo := Xo) P p i Ω z) (z' : FrPt Xo c Ω), hkRelFr P p i (GlobalTheory.ThetaTrace.hkTr Xo c p) Ω z C z' → ∃ (C₀ : hkKer (Xo := Xo) P p i Ω w) (w' : FrPt Xo c Ω), hkRelFr P p i (GlobalTheory.ThetaTrace.hkTr Xo c p) Ω w C₀ w' ∧ FrBor t w' z' := by
   intro E _ _ _ H Dw l Xo c P p i hP Ω _ _ _ t w z hb C z' hz

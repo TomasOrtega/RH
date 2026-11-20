@@ -23,7 +23,7 @@ section SlopeTestRemainingChoices
 variable {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {B : Vert.Model O} {Λ : Type} [CommRing Λ]
 
 /- English proof (translation)
-Introduce `a b` and use `by have : Epi f.hom := inferInstanceAs (Epi ((Action.forget B.X.Modules Λ).map f)) have k : ∀ c, (M.ρ c : M.V ⟶ M.V) ≫ f.hom = f.hom ≫ (N.ρ c : N.V ⟶ N.V) := fun c => f.comm c rw [← cancel_epi f.hom, Preadditive.comp_add, ← k, ← k, ← k, h, Preadditive.add_comp]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isAdd_of_epi {M N : AM B Λ} (f : M ⟶ N) [Epi f] (h : IsAdd M) : IsAdd N := fun a b => by
   have : Epi f.hom := inferInstanceAs (Epi ((Action.forget B.X.Modules Λ).map f))
@@ -31,20 +31,20 @@ theorem isAdd_of_epi {M N : AM B Λ} (f : M ⟶ N) [Epi f] (h : IsAdd M) : IsAdd
   rw [← cancel_epi f.hom, Preadditive.comp_add, ← k, ← k, ← k, h, Preadditive.add_comp]
 
 /- English proof (translation)
-The claim follows from `isAdd_of_epi (N := cokernel E.ψ) (cokernel.π E.ψ) E.add`.
+A detailed English derivation is pending.
 -/
 theorem isAdd_mod (E : EPres B Λ) : IsAdd E.mod :=
   isAdd_of_epi (N := cokernel E.ψ) (cokernel.π E.ψ) E.add
 
 /- English proof (translation)
-Unfold `Kills at h ⊢`. Rewrite using `[← cancel_mono e.hom, smulHom_comp, h, comp_zero, zero_comp]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem kills_of_iso {g : Γ(B.X, ⊤)} {F G : B.X.Modules} (e : F ≅ G) (h : Kills g G) : Kills g F := by
   unfold Kills at h ⊢
   rw [← cancel_mono e.hom, smulHom_comp, h, comp_zero, zero_comp]
 
 /- English proof (translation)
-Unfold `Kills at h ⊢`. Rewrite using `[smulHom_mul, h, comp_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem kills_mul {g : Γ(B.X, ⊤)} (c : Γ(B.X, ⊤)) {F : B.X.Modules} (h : Kills g F) : Kills (g * c) F := by
   unfold Kills at h ⊢
@@ -53,7 +53,7 @@ theorem kills_mul {g : Γ(B.X, ⊤)} (c : Γ(B.X, ⊤)) {F : B.X.Modules} (h : K
 variable (p : ℕ) [Fact p.Prime]
 
 /- English proof (translation)
-Introduce `a b` and use `by haveI := Examples₂.additive_frobFun p h change (frobFun p h).map (M.ρ (a + b) : M.V ⟶ M.V) = (frobFun p h).map (M.ρ a : M.V ⟶ M.V) + (frobFun p h).map (M.ρ b : M.V ⟶ M.V) rw [hM, Functor.map_add]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isAdd_frobA (h : (p : Γ((fibI p B).subscheme, ⊤)) = 0) {M : AM B Λ} (hM : IsAdd M) :
     IsAdd (frobA p h M) := fun a b => by
@@ -63,14 +63,14 @@ theorem isAdd_frobA (h : (p : Γ((fibI p B).subscheme, ⊤)) = 0) {M : AM B Λ} 
   rw [hM, Functor.map_add]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h, ⟨e' ≪≫ (frobFun p h).mapIso e.symm⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem isFrob_of_iso (h : (p : Γ((fibI p B).subscheme, ⊤)) = 0) {F G F' : B.X.Modules} (e : F ≅ G)
     (e' : F' ≅ (frobFun p h).obj G) : IsFrob p F F' :=
   ⟨h, ⟨e' ≪≫ (frobFun p h).mapIso e.symm⟩⟩
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `h`. Establish `h1 : γ ^ p ^ i ∣ γ ^ p ^ (n + 1)` using `pow_dvd_pow _ (Nat.pow_le_pow_right (Fact.out : p.Prime).pos hi)`. Establish `h2 : γ ^ p ^ (n + 1) ∣ (p : Γ(B.X, ⊤))` using `⟨↑u⁻¹, by rw [hu, mul_comm (u : Γ(B.X, ⊤)), mul_assoc, Units.mul_inv, mul_one]⟩`. Take `⟨c, hc⟩` from `h1.trans h2`. Conclude with `⟨c, hc.symm⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem dvd_of_root {γ : Γ(B.X, ⊤)} {n : ℕ} (h : IsRootOfP p γ (p ^ (n + 1))) {i : ℕ} (hi : i ≤ n + 1) :
     ∃ c : Γ(B.X, ⊤), γ ^ p ^ i * c = (p : Γ(B.X, ⊤)) := by
@@ -82,9 +82,9 @@ theorem dvd_of_root {γ : Γ(B.X, ⊤)} {n : ℕ} (h : IsRootOfP p γ (p ^ (n + 
   exact ⟨c, hc.symm⟩
 
 /- English proof (translation)
-Proceed by induction on `i with`. Consider the case `zero => simpa using hF`. Consider the case `succ i ih`. Take `⟨c, hc⟩` from `dvd_of_root p hγ hi`. Rewrite `hc` using `[pow_succ, pow_mul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Function.iterate_succ_apply', pow_succ, pow_mul]`. Conclude with `LocFreeQuot.of_isFrob p (ih (by omega)) hc (isFrob_of_iso p h (Iso.refl _) (Iso.refl _))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locFree_iter (h : (p : Γ((fibI p B).subscheme, ⊤)) = 0) {γ : Γ(B.X, ⊤)} {n : ℕ}
     (hγ : IsRootOfP p γ (p ^ (n + 1))) {F : B.X.Modules} (hF : LocFreeMod γ F) (i : ℕ) (hi : i ≤ n + 1) :
@@ -98,9 +98,9 @@ theorem locFree_iter (h : (p : Γ((fibI p B).subscheme, ⊤)) = 0) {γ : Γ(B.X,
     exact LocFreeQuot.of_isFrob p (ih (by omega)) hc (isFrob_of_iso p h (Iso.refl _) (Iso.refl _))
 
 /- English proof (translation)
-Proceed by induction on `i with`. Consider the case `zero => exact ⟨hM, ⟨Iso.refl _⟩⟩`. Consider the case `succ i ih`. Take `⟨h1, ⟨e⟩⟩` from `ih`. Rewrite using `[Function.iterate_succ_apply', Function.iterate_succ_apply', Function.iterate_succ_apply']`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨e'⟩` from `hfrob (φ^[i] τ) _ h1`. Conclude with `⟨isAdd_frobA p h h1, ⟨e' ≪≫ (frobFun p h).mapIso e⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem part_iter (h : (p : Γ((fibI p B).subscheme, ⊤)) = 0) {ι : Type} (φ : ι → ι) (P : ι → (AM B Λ ⥤ B.X.Modules))
     (hfrob : ∀ τ (M : AM B Λ), IsAdd M →
@@ -116,7 +116,7 @@ theorem part_iter (h : (p : Γ((fibI p B).subscheme, ⊤)) = 0) {ι : Type} (φ 
     exact ⟨isAdd_frobA p h h1, ⟨e' ≪≫ (frobFun p h).mapIso e⟩⟩
 
 /- English proof (translation)
-Take `⟨S, hS, ⟨e₁⟩, ⟨e₂⟩, ⟨e₃⟩⟩` from `h`. Conclude with `⟨S.map P, hex S hS (isAdd_of_epi e₁.inv a₁) (isAdd_of_epi e₂.inv a₂) (isAdd_of_epi e₃.inv a₃), ⟨P.mapIso e₁ ≪≫ k₁.some⟩, ⟨P.mapIso e₂ ≪≫ k₂.some⟩, ⟨P.mapIso e₃ ≪≫ k₃.some⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isExt_map (P : AM B Λ ⥤ B.X.Modules) [P.PreservesZeroMorphisms]
     (hex : ∀ (S : ShortComplex (AM B Λ)), S.ShortExact → IsAdd S.X₁ → IsAdd S.X₂ → IsAdd S.X₃ → (S.map P).ShortExact)
@@ -130,21 +130,19 @@ theorem isExt_map (P : AM B Λ ⥤ B.X.Modules) [P.PreservesZeroMorphisms]
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Introduce `O _ _ _ p _ _ _ B Λ _ o Q ι φ P _ hlin hex hcok hvb hfrob hret hdiv`. Use `choose r vb vb' iso using hvb`. Set `pt : ι → EPres B Λ → Pres B` to `fun τ E => ⟨r τ E, (P τ).obj E.E, (P τ).obj E.E', vb τ E, vb' τ E, (P τ).map E.ψ, iso τ E⟩`. Establish `hpt : ∀ τ E, Nonempty ((P τ).obj E.mod ≅ (pt τ E).mod)` using `fun τ E => hcok τ E.ψ E.add' E.add`. Establish `hfree : ∀ n < o, ∀ i ≤ n + 1, ∀ τ, LocFreeMod (Q.γ n ^ p ^ i) ((frobFun p Q.hp).obj^[i] ((P τ).obj (Q.l n).mod))` using `fun n hn i hi τ => by`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨a, b, hab⟩` from `hret τ _ (isAdd_mod (Q.l n))`. Conclude with `locFree_iter p Q.hp (Q.γ_root n hn) (LocFreeQuot.of_retract (Q.l_free n hn) a b hab) i hi`. Establish `hl : ∀ (n i : ℕ) (τ : ι), ∃ R : Pres B, n < o → i ≤ n + 1 → Nonempty (R.mod ≅ (frobFun p Q.hp).obj^[i] ((P τ).obj (Q.l n).mod))` using `fun n i τ => by`. Distinguish the cases in `h : n < o ∧ i ≤ n + 1`. Take `⟨-, R, hR⟩` from `(LocFreeQuot.main O p B _ _ (hfree n h.1 i h.2 τ)).1 (dvd_of_root p (Q.γ_root n h.1) h.2)`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `⟨R, fun _ _ => hR⟩`. Conclude with `⟨pt τ (Q.l n), fun a b => (h ⟨a, b⟩).elim⟩`. Use `choose l hl using hl`. Use `⟨{ π := Q.π, g := Q.g, π_root := Q.π_root, g_root := Q.g_root, lw := fun τ => pt τ Q.lw, wl := fun τ => (P τ).map Q.wl, lw_wl := fun τ => ?_, oo := fun τ => pt τ Q.oo, q := fun n τ => pt τ (Q.q n), l := l, c3 := fun τ => isExt_map (P τ) (hex τ) Q.c3 (isAdd_of_epi (cokernel.π _) Q …` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(P τ).map Q.lw.ψ ≫ (P τ).map Q.wl = smulHom ((P τ).obj Q.lw.E') Q.π`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← Functor.map_comp, Q.lw_wl, hlin τ _ _ Q.lw.add']`. Take `⟨e⟩` from `hl n i τ hn (by omega)`. Take `⟨e'⟩` from `hl n (i + 1) τ hn (by omega)`. Rewrite `e'` using `[Function.iterate_succ_apply']`. Use `⟨kills_of_iso e ?_, isFrob_of_iso p Q.hp e e'⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨c, hc⟩` from `hdiv n hn`. Take `⟨d, hd⟩ : Q.γ n ^ p ^ i ∣ Q.g` from `(pow_dvd_pow _ (Nat.pow_le_pow_right (Fact.out : p.Prime).pos hi)).trans ⟨c, hc⟩`. Rewrite using `[hd]`. Conclude with `kills_mul d (LocFreeQuot.smulHom_eq_zero (hfree n hn i (by omega) τ))`. Take `⟨e⟩` from `hl n (n + 1) τ hn le_rfl`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨-, ⟨e₁⟩⟩` from `part_iter p Q.hp φ P hfrob (isAdd_mod (Q.l n)) τ (n + 1)`. Take `⟨e₂⟩` from `Q.l_last n hn`. Take `⟨e₃⟩` from `hcok (φ^[n + 1] τ) (smulA Q.lw.E' (p : Γ(B.X, ⊤))) Q.lw.add' Q.lw.add'`. Conclude with `⟨e ≪≫ e₁.symm ≪≫ (P _).mapIso e₂ ≪≫ e₃ ≪≫ cokernelIsoOfEq (hlin _ _ _ Q.lw.add')⟩`. Take `⟨e⟩` from `hpt τ (Q.q (n + 1))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨e'⟩` from `hpt (φ τ) (Q.q n)`. Take `⟨e₁⟩` from `Q.q_frob n hn`. Take `⟨e₂⟩` from `hfrob τ _ (isAdd_mod (Q.q (n + 1)))`. Use `⟨kills_of_iso e.symm ?_, isFrob_of_iso p Q.hp e.symm (e'.symm ≪≫ (P _).mapIso e₁ ≪≫ e₂)⟩` and prove the remaining obligations. Establish `h0 : smulA (Q.q (n + 1)).mod Q.g = 0` using `Action.Hom.ext (Q.q_kill n hn)`.
-
-Unfold `Kills`. Rewrite using `[← hlin τ _ _ (isAdd_mod _), h0, Functor.map_zero]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (p : ℕ) [Fact p.Prime] [CharZero O] [CharP (ResidueField O) p] {B : Vert.Model O} {Λ : Type} [CommRing Λ] {o : ℕ} (Q : EqChain p B Λ o) {ι : Type} (φ : ι → ι) (P : ι → (AM B Λ ⥤ B.X.Modules)) [∀ τ, (P τ).PreservesZeroMorphisms] (hlin : ∀ τ (M : AM B Λ) (g : Γ(B.X, ⊤)), IsAdd M → (P τ).map (smulA M g) = smulHom ((P τ).obj M) g) (hex : ∀ τ (S : ShortComplex (AM B Λ)), S.ShortExact → IsAdd S.X₁ → IsAdd S.X₂ → IsAdd S.X₃ → (S.map (P τ)).ShortExact) (hcok : ∀ τ {M N : AM B Λ} (f : M ⟶ N), IsAdd M → IsAdd N → Nonempty ((P τ).obj (cokernel f) ≅ cokernel ((P τ).map f))) (hvb : ∀ τ (E : EPres B Λ), ∃ r, GlobalTheory.VB.IsVB ((P τ).obj E.E) r ∧ GlobalTheory.VB.IsVB ((P τ).obj E.E') r ∧ IsIso (B.genRes.map ((P τ).map E.ψ))) (hfrob : ∀ τ (M : AM B Λ), IsAdd M → Nonempty ((P (φ τ)).obj (frobA p Q.hp M) ≅ (frobFun p Q.hp).obj ((P τ).obj M))) (hret : ∀ τ (M : AM B Λ), IsAdd M → ∃ (i : (P τ).obj M ⟶ M.V) (q : M.V ⟶ (P τ).obj M), i ≫ q = 𝟙 _) (hdiv : ∀ n < o, ∃ c : Γ(B.X, ⊤), Q.g = Q.γ n ^ p ^ n * c), ∃ Ch : Chain p B φ o, Ch.π = Q.π ∧ Ch.g = Q.g ∧ ∀ τ,
       (∃ r vb vb' iso, Ch.lw τ = ⟨r, (P τ).obj Q.lw.E, (P τ).obj Q.lw.E', vb, vb', (P τ).map Q.lw.ψ, iso⟩) ∧

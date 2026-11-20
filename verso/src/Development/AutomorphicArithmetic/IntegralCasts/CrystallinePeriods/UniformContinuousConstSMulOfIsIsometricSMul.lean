@@ -26,17 +26,17 @@ variable {C : Type u} [NormedField C] (O : ValuationSubring C) [IsUnitBall O]
 
 variable {O} in
 /- English proof (translation)
-The claim follows from `(mem_iff x.1).1 x.2`.
+A detailed English derivation is pending.
 -/
 theorem norm_le_one (x : O) : ‖(x : C)‖ ≤ 1 := (mem_iff x.1).1 x.2
 
 variable {O} in
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, rfl⟩`. Use `push_cast`. Rewrite using `[norm_mul]`. Conclude with `mul_le_of_le_one_right (norm_nonneg _) (norm_le_one c)`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Distinguish the cases in `hx : (x : C) = 0`. Rewrite `h` using `[hx, norm_zero, norm_le_zero_iff]`. Rewrite using `[show y = 0 from Subtype.ext h]`. Conclude with `dvd_zero _`.
+Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨⟨(y : C) / x, (mem_iff _).2 ?_⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[norm_div]`. Conclude with `div_le_one_of_le₀ h (norm_nonneg _)`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem dvd_iff_norm_le (x y : O) : x ∣ y ↔ ‖(y : C)‖ ≤ ‖(x : C)‖ := by
   constructor
@@ -55,7 +55,7 @@ theorem dvd_iff_norm_le (x y : O) : x ∣ y ↔ ‖(y : C)‖ ≤ ‖(x : C)‖ 
 
 variable {O} in
 /- English proof (translation)
-Rewrite using `[isUnit_iff_dvd_one, dvd_iff_norm_le]`. Use `push_cast`. Rewrite using `[norm_one]`. Conclude with `⟨fun h => le_antisymm (norm_le_one x) h, fun h => h.ge⟩`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem isUnit_iff_norm_eq_one (x : O) : IsUnit x ↔ ‖(x : C)‖ = 1 := by
   rw [isUnit_iff_dvd_one, dvd_iff_norm_le]
@@ -66,7 +66,7 @@ theorem isUnit_iff_norm_eq_one (x : O) : IsUnit x ↔ ‖(x : C)‖ = 1 := by
 variable (p : ℕ)
 
 /- English proof (translation)
-Rewrite using `[smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow, Ideal.mem_span_singleton, dvd_iff_norm_le]`. Use `push_cast`. Rewrite using `[norm_pow]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_span_pow_iff (n : ℕ) (x : O) :
     x ∈ (span {(p : O)} ^ n • ⊤ : Submodule O O) ↔ ‖(x : C)‖ ≤ ‖(p : C)‖ ^ n := by
@@ -127,7 +127,7 @@ instance [IsAlgClosed C] : IsAlgClosed (FractionRing O) :=
   IsAlgClosed.of_ringEquiv C _ (FractionRing.algEquiv O C).symm.toRingEquiv
 
 /- English proof (translation)
-The claim follows from `(awayEquiv O p).commutes x`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem awayEquiv_algebraMap [CharZero C] [NeZero p] (x : O) :
     awayEquiv O p (algebraMap O _ x) = (x : C) := (awayEquiv O p).commutes x
@@ -135,7 +135,7 @@ The claim follows from `(awayEquiv O p).commutes x`.
 omit hp in
 
 /- English proof (translation)
-Take `⟨y, hy⟩` from `IsAlgClosed.exists_pow_nat_eq (x : C) hn`. Use `⟨⟨y, (mem_iff y).2 ?_⟩, Subtype.ext hy⟩` and prove the remaining obligations. Rewrite using `[← pow_le_one_iff_of_nonneg (norm_nonneg y) hn.ne', ← norm_pow, hy]`. Conclude with `norm_le_one x`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_pow_eq [IsAlgClosed C] (x : O) {n : ℕ} (hn : 0 < n) : ∃ y : O, y ^ n = x := by
   obtain ⟨y, hy⟩ := IsAlgClosed.exists_pow_nat_eq (x : C) hn
@@ -144,7 +144,7 @@ theorem exists_pow_eq [IsAlgClosed C] (x : O) {n : ℕ} (hn : 0 < n) : ∃ y : O
   exact norm_le_one x
 
 /- English proof (translation)
-Introduce `x`. Take `⟨x, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Take `⟨y, rfl⟩` from `exists_pow_eq O x (Fact.out : p.Prime).pos`. Conclude with `⟨Ideal.Quotient.mk _ y, by rw [frobenius_def, map_pow]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem frobenius_surjective [IsAlgClosed C] [Fact p.Prime] :
     Function.Surjective (frobenius (ModP O p) p) := by
@@ -175,7 +175,7 @@ variable (G : Type v) [Monoid G] [MulSemiringAction G C] [IsIsometricSMul G C]
 
 omit hp in
 /- English proof (translation)
-Simplify using `using (isometry_smul C g).dist_eq x 0`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem norm_smul_eq (g : G) (x : C) : ‖g • x‖ = ‖x‖ := by
   simpa using (isometry_smul C g).dist_eq x 0
@@ -254,7 +254,7 @@ instance (K : Type*) [Field K] [Algebra ℚ_[p] K] [Algebra K (PadicAlgCl p)]
     exact (spectralNorm_eq_of_equiv (g.restrictScalars ℚ_[p]) (x - y)).symm⟩
 
 /- English proof (translation)
-The claim follows from `(UniformSpace.Completion.coe_smul g x).symm`.
+A detailed English derivation is pending.
 -/
 theorem padicComplex_smul_coe {K : Type*} [Field K] [Algebra ℚ_[p] K] [Algebra K (PadicAlgCl p)]
     [IsScalarTower ℚ_[p] K (PadicAlgCl p)] (g : PadicAlgCl p ≃ₐ[K] PadicAlgCl p)
@@ -273,36 +273,36 @@ Both sides reduce to the same expression.
     (padicIntToComplexInt p x : ℂ_[p]) = algebraMap ℚ_[p] ℂ_[p] x := rfl
 
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 example : Fact ¬IsUnit (p : PadicComplexInt p) := inferInstance
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 example : IsAdicComplete (span {(p : PadicComplexInt p)}) (PadicComplexInt p) := inferInstance
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 example : IsDomain (PadicComplexInt p) := inferInstance
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 example : ValuationRing (PadicComplexInt p) := inferInstance
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 example : CharZero (PadicComplexInt p) := inferInstance
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 example : IsAlgClosed (FractionRing (PadicComplexInt p)) := inferInstance
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 example : MulSemiringAction (PadicAlgCl p ≃ₐ[ℚ_[p]] PadicAlgCl p) (PadicComplexInt p) :=
   inferInstance
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 example (K : IntermediateField ℚ_[p] (PadicAlgCl p)) :
     MulSemiringAction (PadicAlgCl p ≃ₐ[K] PadicAlgCl p) (PadicComplexInt p) := inferInstance
@@ -380,13 +380,13 @@ Both sides reduce to the same expression.
     (OCK.ofInteger K x : CK K) = algebraMap K (CK K) x := rfl
 
 /- English proof (translation)
-The claim follows from `(UniformSpace.Completion.coe_smul g x).symm`.
+A detailed English derivation is pending.
 -/
 theorem CK.smul_coe (g : GalK K) (x : AlgCl K) : g • (x : CK K) = (g x : AlgCl K) :=
   (UniformSpace.Completion.coe_smul g x).symm
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `g • ((algebraMap K (AlgCl K) x : AlgCl K) : CK K) = (algebraMap K (AlgCl K) x : AlgCl K)`. Rewrite using `[CK.smul_coe, AlgEquiv.commutes]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem CK.smul_algebraMap (g : GalK K) (x : K) :
     g • algebraMap K (CK K) x = algebraMap K (CK K) x := by
@@ -394,34 +394,34 @@ theorem CK.smul_algebraMap (g : GalK K) (x : K) :
   rw [CK.smul_coe, AlgEquiv.commutes]
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (CK.smul_algebraMap K g x)`.
+A detailed English derivation is pending.
 -/
 theorem OCK.smul_ofInteger (g : GalK K) (x : unitBall K) :
     g • OCK.ofInteger K x = OCK.ofInteger K x := Subtype.ext (CK.smul_algebraMap K g x)
 
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 example (p : ℕ) [Fact (‖(p : K)‖ < 1)] : Fact ¬IsUnit (p : OCK K) := inferInstance
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 example (p : ℕ) [Fact (‖(p : K)‖ < 1)] : IsAdicComplete (span {(p : OCK K)}) (OCK K) :=
   inferInstance
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 example [CharZero K] : CharZero (OCK K) := inferInstance
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 example [CharZero K] : IsAlgClosed (FractionRing (OCK K)) := inferInstance
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 example : ValuationRing (OCK K) := inferInstance
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 example : MulSemiringAction (GalK K) (OCK K) := inferInstance
 

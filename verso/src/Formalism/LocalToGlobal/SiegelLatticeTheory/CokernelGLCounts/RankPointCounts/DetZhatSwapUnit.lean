@@ -16,14 +16,14 @@ variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableS
 variable {M : Model F E} {V : Type} [AddCommGroup V] [Module E V] (H : HermSp M V) {r : ℕ}
 
 /- English proof (translation)
-Rewrite using `[Set.Sum.elim_range, Set.Sum.elim_range, Set.union_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem U_swap (f f' : Fin (r + 1) → V) :
     Submodule.span E (Set.range (Sum.elim f' f)) = Submodule.span E (Set.range (Sum.elim f f')) := by
   rw [Set.Sum.elim_range, Set.Sum.elim_range, Set.union_comm]
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [HermSp.Zhat, Matrix.transpose_apply, RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.of_apply]`. Conclude with `H.h_herm _ _`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Zhat_swap (f f' : Fin (r + 1) → V) :
     H.Zhat f' f = ((M.L.cj.toRingEquiv.toRingHom).mapMatrix (H.Zhat f f'))ᵀ := by
@@ -32,7 +32,7 @@ theorem Zhat_swap (f f' : Fin (r + 1) → V) :
   exact H.h_herm _ _
 
 /- English proof (translation)
-Unfold `HermSp.om' HermSp.om`. Rewrite using `[Zhat_swap, ← Matrix.adjugate_transpose, ← RingHom.map_adjugate]`. Simplify using `only [Matrix.transpose_apply, RingHom.mapMatrix_apply, Matrix.map_apply]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem om'_swap (f f' : Fin (r + 1) → V) : H.om' f' f = H.om f f' := by
   unfold HermSp.om' HermSp.om
@@ -41,7 +41,7 @@ theorem om'_swap (f f' : Fin (r + 1) → V) : H.om' f' f = H.om f f' := by
   rfl
 
 /- English proof (translation)
-Rewrite using `[Zhat_swap, Matrix.det_transpose, ← RingHom.map_det]`. Conclude with `h.map _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_Zhat_swap_unit (f f' : Fin (r + 1) → V) (h : IsUnit (H.Zhat f f').det) :
     IsUnit (H.Zhat f' f).det := by
@@ -49,13 +49,13 @@ theorem det_Zhat_swap_unit (f f' : Fin (r + 1) → V) (h : IsUnit (H.Zhat f f').
   exact h.map _
 
 /- English proof (translation)
-Introduce `u hu hup`. Take `⟨x, hx, β, γ, hxe⟩` from `decomp_U_perpX H hF₁ hZ₁ hu hup`. Set `zP₁ : ↥(H.perp (H.X g₁))` to `⟨g₁ (Fin.last r), z_mem_perpX H hF₁⟩`. Set `oP₁ : ↥(H.perp (H.X g₁))` to `⟨H.om' g₁ g₁', om'_mem_perpX H _ _⟩`. Set `zP₂ : ↥(H.perp (H.X g₂))` to `⟨g₂ (Fin.last r), z_mem_perpX H hF₂⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `oP₂ : ↥(H.perp (H.X g₂))` to `⟨H.om' g₂ g₂', om'_mem_perpX H _ _⟩`. Establish `h1 : H.mkW g₁ ⟨u, hup⟩ = H.mkW g₁ (β • zP₁ + γ • oP₁)`. Apply `mkW_eq_of_sub_mem` to reduce the goal to its premises. Use `show u - (β • g₁ (Fin.last r) + γ • H.om' g₁ g₁') ∈ H.X g₁`. Rewrite using `[hxe]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `hx using 1` and compare the differences between its conclusion and the goal. Normalize the expressions using the abelian group laws. Use `⟨((β • zP₂ + (γ * κ) • oP₂ : ↥(H.perp (H.X g₂))) : V), ?_, (β • zP₂ + (γ * κ) • oP₂).2, ?_⟩` and prove the remaining obligations. Conclude with `Submodule.add_mem _ (Submodule.smul_mem _ _ (Submodule.subset_span ⟨Sum.inl (Fin.last r), rfl⟩)) (Submodule.smul_mem _ _ (om'_mem_U H g₂ g₂'))`. Rewrite using `[h1]`.
+Normalize the expressions using the abelian group laws. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_add, map_smul]`. Rewrite using `[show χ (H.mkW g₁ zP₁) = H.mkW g₂ zP₂ from hz, show χ (H.mkW g₁ oP₁) = κ • H.mkW g₂ oP₂ from ho, smul_smul]`. Use `show _ = H.mkW g₂ (β • zP₂ + (γ * κ) • oP₂)`. Rewrite using `[map_add, map_smul, map_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cond_second_of_iso (g₁ g₁' g₂ g₂' : Fin (r + 1) → V) (T₁ T₂ : F) (hF₁ : Formalism.MainNotions.ThinScalesBound.FrameK H g₁ T₁)
     (hF₂ : Formalism.MainNotions.ThinScalesBound.FrameK H g₂ T₂) (hZ₁ : IsUnit (H.Zhat g₁ g₁').det) (χ : H.Wb g₁ ≃ₗ[E] H.Wb g₂) (κ : E)

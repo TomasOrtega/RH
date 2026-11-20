@@ -1,11 +1,11 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `O LL V _ _ _ _ _ _ _ _ _ _ Λ A hΛ c hc`. Use `haveI : IsNoetherian O Λ := isNoetherian_of_fg_of_noetherian Λ hΛ`. Set `f : ℕ →o Submodule O Λ` to `⟨fun n => (A.comap ((c ^ n) • LinearMap.id : V →ₗ[O] V)).comap Λ.subtype, by`. Introduce `m n hmn x hx`. Simplify using `only [Submodule.mem_comap, Submodule.subtype_apply, LinearMap.smul_apply, LinearMap.id_apply] at hx ⊢`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨k, rfl⟩` from `Nat.exists_eq_add_of_le hmn`. Rewrite using `[pow_add, mul_comm, mul_smul]`. Conclude with `A.smul_mem _ hx⟩`. Take `⟨N, hN⟩` from `(monotone_stabilizes_iff_noetherian.mpr inferInstance) f`. Use `⟨c ^ (N + 1), pow_ne_zero _ hc, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `u hu hμ`. Establish `h1 : (⟨u, hu⟩ : Λ) ∈ f (N + 1)` using `hμ`. Rewrite `h1` using `[← hN (N + 1) (Nat.le_succ N)]`. Establish `h2 : c ^ N • u ∈ A` using `h1`. Conclude with `⟨c ^ N • u, h2, by rw [pow_succ, mul_comm, mul_smul]⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem _root_.UpperTheory.KN.admissible_lattices_commensurable :
     ∀ {O LL V : Type} [CommRing O] [IsDomain O] [IsNoetherianRing O] [Field LL] [Algebra O LL] [IsFractionRing O LL]

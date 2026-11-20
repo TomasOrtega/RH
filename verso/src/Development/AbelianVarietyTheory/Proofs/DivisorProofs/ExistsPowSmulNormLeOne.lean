@@ -10,17 +10,15 @@ open scoped TensorProduct
 namespace GlobalTheory.LKRes
 
 /- English proof (translation)
-Use `haveI : ContinuousAdd V := IsModuleTopology.toContinuousAdd ℚ_[p] V`. Set `b` to `Module.finBasis ℚ_[p] V`. Use `choose N hN' using fun i => hN (b i)`. Use `set M := ∑ i, N i with hMdef`. Establish `hp1 : ‖(p : ℚ_[p])‖ ≤ 1` using `Padic.norm_p_lt_one.le`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hp0 : (p : ℚ_[p]) ≠ 0` using `Nat.cast_ne_zero.2 (Fact.out : p.Prime).ne_zero`. Establish `hb : ∀ i, (p : ℚ_[p]) ^ M • b i ∈ A`. Introduce `i`. Establish `hle : N i ≤ M` using `Finset.single_le_sum (fun j _ => Nat.zero_le (N j)) (Finset.mem_univ i)`. Rewrite using `[← Nat.sub_add_cancel hle, pow_add, mul_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `hA _ (by rw [norm_pow]; exact pow_le_one₀ (norm_nonneg _) hp1) _ (hN' i)`. Establish `hpos : 0 < ‖(p : ℚ_[p]) ^ M‖` using `norm_pos_iff.2 (pow_ne_zero _ hp0)`. Set `U : Set V` to `⋂ i, (fun v => b.coord i v) ⁻¹' Metric.closedBall 0 ‖(p : ℚ_[p]) ^ M‖`. Establish `hU : IsOpen U`. Use `isOpen_iInter_of_finite fun i => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(IsUltrametricDist.isOpen_closedBall _ hpos.ne').preimage (IsModuleTopology.continuous_of_linearMap (b.coord i))`. Establish `hUA : U ⊆ A`. Introduce `v hv`. Simplify using `only [U, Set.mem_iInter, Set.mem_preimage, Metric.mem_closedBall, dist_zero_right] at hv`. Rewrite using `[← b.sum_repr v]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `A.sum_mem fun i _ => ?_` and prove the remaining obligations. Establish `: b.repr v i • b i = (b.repr v i / (p : ℚ_[p]) ^ M) • ((p : ℚ_[p]) ^ M • b i)`. Rewrite using `[smul_smul, div_mul_cancel₀ _ (pow_ne_zero _ hp0)]`. Rewrite using `[this]`. Use `hA _ ?_ _ (hb i)` and prove the remaining obligations.
-
-Rewrite using `[norm_div, div_le_one hpos]`. Conclude with `hv i`. Establish `h0 : (0 : V) ∈ U`. Simplify using `[U, hpos.le]`. Conclude with `AddSubgroup.isOpen_of_mem_nhds A (Filter.mem_of_superset (hU.mem_nhds h0) hUA)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isOpen_of_padicLattice {p : ℕ} [Fact p.Prime] {V : Type*} [AddCommGroup V] [Module ℚ_[p] V]
     [FiniteDimensional ℚ_[p] V] [TopologicalSpace V] [IsModuleTopology ℚ_[p] V]
@@ -65,9 +63,9 @@ namespace GlobalTheory.LKRes
 variable (p : ℕ) [Fact p.Prime] (K : IntermediateField ℚ_[p] (PadicAlgCl p))
 
 /- English proof (translation)
-Distinguish the cases in `hz : z = 0`. Conclude with `⟨0, by simp [hz]⟩`. Establish `hz' : 0 < ‖z‖` using `norm_pos_iff.2 hz`. Take `⟨N, hN⟩` from `exists_pow_lt_of_lt_one (inv_pos.2 hz') (Padic.norm_p_lt_one (p := p))`. Use `⟨N, ?_⟩` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Algebra.smul_def, norm_mul, map_pow, norm_pow, PadicAlgCl.norm_extends]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem exists_pow_smul_norm_le_one (z : PadicAlgCl p) : ∃ N : ℕ, ‖(p : ℚ_[p]) ^ N • z‖ ≤ 1 := by
   by_cases hz : z = 0
@@ -80,7 +78,7 @@ theorem exists_pow_smul_norm_le_one (z : PadicAlgCl p) : ∃ N : ℕ, ‖(p : �
     _ = 1 := inv_mul_cancel₀ hz'.ne'
 
 /- English proof (translation)
-Establish `hK : algebraMap ℚ_[p] K c ∈ GlobalTheory.LKLoc.intK p K` using `by show algebraMap K (PadicAlgCl p) (algebraMap ℚ_[p] K c) ∈ Obar p`. Rewrite using `[← IsScalarTower.algebraMap_apply, mem_Obar_iff]`. Conclude with `(PadicAlgCl.norm_extends (p := p) c).le.trans hc`. Conclude with `Subring.subset_closure (Or.inl ⟨⟨_, hK⟩, rfl⟩)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem algebraMap_mem_intKQ (r : ℕ) (c : ℚ_[p]) (hc : ‖c‖ ≤ 1) :
     algebraMap ℚ_[p] (KQ p K r) c ∈ intKQ p K r := by
@@ -91,7 +89,7 @@ theorem algebraMap_mem_intKQ (r : ℕ) (c : ℚ_[p]) (hc : ‖c‖ ≤ 1) :
   exact Subring.subset_closure (Or.inl ⟨⟨_, hK⟩, rfl⟩)
 
 /- English proof (translation)
-Rewrite using `[Algebra.smul_def]`. Conclude with `mul_mem (algebraMap_mem_intKQ p K r c hc) hv`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smul_mem_intKQ (r : ℕ) (c : ℚ_[p]) (hc : ‖c‖ ≤ 1) (v : KQ p K r) (hv : v ∈ intKQ p K r) :
     c • v ∈ intKQ p K r := by
@@ -99,17 +97,15 @@ theorem smul_mem_intKQ (r : ℕ) (c : ℚ_[p]) (hc : ‖c‖ ≤ 1) (v : KQ p K 
   exact mul_mem (algebraMap_mem_intKQ p K r c hc) hv
 
 /- English proof (translation)
-Establish `hp1 : ∀ k : ℕ, ‖(p : ℚ_[p]) ^ k‖ ≤ 1` using `fun k => by`. Rewrite using `[norm_pow]`. Conclude with `pow_le_one₀ (norm_nonneg _) Padic.norm_p_lt_one.le`. Proceed by induction on `(v : K ⊗[ℚ_[p]] Qr p r) using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, by show (p : ℚ_[p]) ^ 0 • (0 : KQ p K r) ∈ intKQ p K r; rw [smul_zero]; exact zero_mem _⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `tmul x y`. Take `⟨N₁, h₁⟩` from `exists_pow_smul_norm_le_one p (x : PadicAlgCl p)`. Take `⟨N₂, h₂⟩` from `exists_pow_smul_norm_le_one p (y : PadicAlgCl p)`. Establish `hx : (p : ℚ_[p]) ^ N₁ • x ∈ GlobalTheory.LKLoc.intK p K` using `by show (((p : ℚ_[p]) ^ N₁ • x : K) : PadicAlgCl p) ∈ Obar p`. Rewrite using `[IntermediateField.coe_smul, mem_Obar_iff]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h₁`. Establish `hy : (p : ℚ_[p]) ^ N₂ • y ∈ GlobalTheory.LKLoc.intR p (Q0 p) r` using `by show (((p : ℚ_[p]) ^ N₂ • y : Qr p r) : PadicAlgCl p) ∈ Obar p`. Rewrite using `[IntermediateField.coe_smul, mem_Obar_iff]`. Conclude with `h₂`. Use `⟨N₁ + N₂, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `key : ((p : ℚ_[p]) ^ (N₁ + N₂) • (x ⊗ₜ[ℚ_[p]] y) : K ⊗[ℚ_[p]] Qr p r) = (((p : ℚ_[p]) ^ N₁ • x) ⊗ₜ[ℚ_[p]] (1 : Qr p r)) * ((1 : K) ⊗ₜ[ℚ_[p]] ((p : ℚ_[p]) ^ N₂ • y))`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul, TensorProduct.smul_tmul_smul, pow_add]`. Establish `e : (p : ℚ_[p]) ^ (N₁ + N₂) • (x ⊗ₜ[ℚ_[p]] y : KQ p K r) = inclK p K r ((p : ℚ_[p]) ^ N₁ • x) * inclQ p K r ((p : ℚ_[p]) ^ N₂ • y)` using `key`. Use `show (p : ℚ_[p]) ^ (N₁ + N₂) • (x ⊗ₜ[ℚ_[p]] y : KQ p K r) ∈ intKQ p K r`. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `mul_mem (Subring.subset_closure (Or.inl ⟨⟨_, hx⟩, rfl⟩)) (Subring.subset_closure (Or.inr ⟨⟨_, hy⟩, rfl⟩))`. Consider the case `add a b ha hb`. Take `⟨N₁, h₁⟩` from `ha`. Take `⟨N₂, h₂⟩` from `hb`. Use `⟨N₁ + N₂, ?_⟩` and prove the remaining obligations.
-
-Establish `e : (p : ℚ_[p]) ^ (N₁ + N₂) • (a + b) = (p : ℚ_[p]) ^ N₂ • ((p : ℚ_[p]) ^ N₁ • a) + (p : ℚ_[p]) ^ N₁ • ((p : ℚ_[p]) ^ N₂ • b)`. Rewrite using `[smul_add, smul_smul, smul_smul, ← pow_add, ← pow_add, Nat.add_comm N₂ N₁]`. Use `show (p : ℚ_[p]) ^ (N₁ + N₂) • (a + b : KQ p K r) ∈ intKQ p K r`. Rewrite using `[e]`. Conclude with `add_mem (smul_mem_intKQ p K r _ (hp1 _) _ h₁) (smul_mem_intKQ p K r _ (hp1 _) _ h₂)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_pow_smul_mem_intKQ (r : ℕ) (v : KQ p K r) :
     ∃ N : ℕ, (p : ℚ_[p]) ^ N • v ∈ intKQ p K r := by
@@ -154,7 +150,7 @@ namespace GlobalTheory.LKRes
 variable (p : ℕ) [Fact p.Prime] (K : IntermediateField ℚ_[p] (PadicAlgCl p))
 
 /- English proof (translation)
-Use `haveI : FiniteDimensional ℚ_[p] (Qr p r) := finiteDimensional_Kn p (Q0 p) inferInstance hr`. Use `haveI : FiniteDimensional ℚ_[p] (KQ p K r) := inferInstanceAs (Module.Finite ℚ_[p] (K ⊗[ℚ_[p]] Qr p r))`. Use `haveI : IsModuleTopology ℚ_[p] (KQ p K r) := ⟨rfl⟩`. Conclude with `isOpen_of_padicLattice (intKQ p K r).toAddSubgroup (fun c hc v hv => smul_mem_intKQ p K r c hc v hv) (exists_pow_smul_mem_intKQ p K r)`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_intKQ (hK : FiniteDimensional ℚ_[p] K) (r : ℕ) (hr : 0 < r) :
     IsOpen (intKQ p K r : Set (KQ p K r)) := by
@@ -166,13 +162,13 @@ theorem isOpen_intKQ (hK : FiniteDimensional ℚ_[p] K) (r : ℕ) (hr : 0 < r) :
     (fun c hc v hv => smul_mem_intKQ p K r c hc v hv) (exists_pow_smul_mem_intKQ p K r)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h, rfl⟩ i j`. Conclude with `⟨((h : Matrix (Fin n) (Fin n) (intKQ p K r)) i j).2, (((h⁻¹ : GL (Fin n) (intKQ p K r)) : Matrix (Fin n) (Fin n) (intKQ p K r)) i j).2⟩`. Introduce `H`. Set `A : Matrix (Fin n) (Fin n) (intKQ p K r)` to `Matrix.of fun i j => ⟨_, (H i j).1⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Set `B : Matrix (Fin n) (Fin n) (intKQ p K r)` to `Matrix.of fun i j => ⟨_, (H i j).2⟩`. Establish `hA : A.map (intKQ p K r).subtype = (g : Matrix (Fin n) (Fin n) (KQ p K r))` using `by ext i j; rfl`. Establish `hB : B.map (intKQ p K r).subtype = ((g⁻¹ : GL (Fin n) (KQ p K r)) : Matrix (Fin n) (Fin n) (KQ p K r))` using `by ext i j; rfl`. Establish `hinj : Function.Injective fun M : Matrix (Fin n) (Fin n) (intKQ p K r) => M.map (intKQ p K r).subtype` using `Matrix.map_injective Subtype.val_injective`. Establish `h1 : A * B = 1` using `hinj (by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only`. Rewrite using `[Matrix.map_mul, Matrix.map_one _ (map_zero _) (map_one _), hA, hB]`. Conclude with `Units.mul_inv g)`. Establish `h2 : B * A = 1` using `hinj (by`. Simplify using `only`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.map_mul, Matrix.map_one _ (map_zero _) (map_one _), hA, hB]`. Conclude with `Units.inv_mul g)`. Conclude with `⟨⟨A, B, h1, h2⟩, Units.ext hA⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_Kres_iff (n r : ℕ) (g : GL (Fin n) (KQ p K r)) :
     g ∈ Kres p K n r ↔ ∀ i j, (g : Matrix (Fin n) (Fin n) (KQ p K r)) i j ∈ intKQ p K r ∧
@@ -200,9 +196,9 @@ theorem mem_Kres_iff (n r : ℕ) (g : GL (Fin n) (KQ p K r)) :
     exact ⟨⟨A, B, h1, h2⟩, Units.ext hA⟩
 
 /- English proof (translation)
-Introduce `p _ K hK n r hr`. Establish `hS` using `isOpen_intKQ p K hK r hr`. Establish `e : (Kres p K n r : Set (GL (Fin n) (KQ p K r))) = ⋂ i, ⋂ j, ((fun g : GL (Fin n) (KQ p K r) => (g : Matrix (Fin n) (Fin n) (KQ p K r)) i j) ⁻¹' (intKQ p K r : Set _) ∩ (fun g : GL (Fin n) (KQ p K r) => ((g⁻¹ : GL (Fin n) (KQ p K r)) : Matrix (Fin n) (Fin n) (KQ p K r)) i j) ⁻¹' …`. Use extensionality with `g`. Simplify using `only [SetLike.mem_coe, Set.mem_iInter, Set.mem_inter_iff, Set.mem_preimage]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Conclude with `mem_Kres_iff p K n r g`. Rewrite using `[e]`. Use `isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun j => ?_` and prove the remaining obligations. Conclude with `(hS.preimage (Units.continuous_val.matrix_elem i j)).inter (hS.preimage (Units.continuous_coe_inv.matrix_elem i j))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isOpen_Kres : ∀ (p : ℕ) [Fact p.Prime] (K : IntermediateField ℚ_[p] (PadicAlgCl p)),
     FiniteDimensional ℚ_[p] K → ∀ (n r : ℕ), 0 < r → IsOpen (Kres p K n r : Set (GL (Fin n) (KQ p K r))) := by

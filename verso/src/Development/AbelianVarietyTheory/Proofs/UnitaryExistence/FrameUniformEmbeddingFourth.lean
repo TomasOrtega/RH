@@ -25,7 +25,7 @@ open GlobalTheory.RecDict
 namespace GlobalTheory.MarkDict
 
 /- English proof (translation)
-Rewrite `h` using `[Matrix.mul_neg, Matrix.neg_mul, neg_inj]`. Establish `h'` using `congrArg (fun x => Matrix.reindex e.symm e.symm x.transpose) h`. Simplify using `only [Matrix.transpose_mul, Matrix.transpose_transpose, Matrix.reindex_apply, Equiv.symm_symm, ← Matrix.submatrix_mul_equiv _ _ _ e _, Matrix.submatrix_submatrix, Equiv.symm_comp_self, Matrix.submatrix_id_id] at h'`. Rewrite using `[Matrix.mul_assoc]`. Conclude with `h'`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unitary_of_reindex {m n : ℕ} (e : Fin m ≃ Fin n) (J : Matrix (Fin m) (Fin m) ℂ)
     (u : Matrix (Fin n) (Fin n) ℂ)
@@ -41,7 +41,7 @@ theorem unitary_of_reindex {m n : ℕ} (e : Fin m ≃ Fin n) (J : Matrix (Fin m)
   exact h'
 
 /- English proof (translation)
-The claim follows from `((GlobalTheory.UnitFrames.unit_frame_eq_orthonormal_mul_triangular E r X.p0 X.Ψ X.Gm X.Gm_herm).2.1 (fun τ : X.Ψ => (x₀ τ.1 : Fin r → Fin r → ℂ)) (fun τ => h τ.1 τ.2)).1`.
+A detailed English derivation is pending.
 -/
 theorem orth_mem_dom {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : Data E r)
     (x₀ : (E →+* ℂ) → Matrix (Fin r) (Fin r) ℂ) (h : IsOrthogonalFrame X x₀) :
@@ -50,18 +50,18 @@ theorem orth_mem_dom {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ
     (fun τ : X.Ψ => (x₀ τ.1 : Fin r → Fin r → ℂ)) (fun τ => h τ.1 τ.2)).1
 
 /- English proof (translation)
-Simplify using `only [archM, map_mul, Units.val_mul, Matrix.map_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem archM_mul {D : D7} (V : HSp D) (θ : Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ) (a b : GA D V) :
     archM V θ (a * b) = archM V θ a * archM V θ b := by
   simp only [archM, map_mul, Units.val_mul, Matrix.map_mul]
 
 /- English proof (translation)
-Take `⟨γ, hγ, h1, h2, h3⟩` from `hp`. Establish `hf : finHom V (γ * (h * h')) = finHom V (γ * h)`. Rewrite using `[← mul_assoc, map_mul (finHom V) (γ * h), (show finHom V h' = 1 from hh'), mul_one]`. Establish `hg : gLat V (γ * (h * h')) = gLat V (γ * h)` using `by unfold gLat; rw [hf]`. Establish `hl : latG V (γ * (h * h')) = latG V (γ * h)` using `by unfold latG; rw [hg]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hl' : latGHat V (γ * (h * h')) = latGHat V (γ * h)` using `by unfold latGHat; rw [hg]`. Use `⟨γ, hγ, ?_, ?_, fun τ => ?_⟩` and prove the remaining obligations. Rewrite using `[hl]`. Conclude with `h1`. Rewrite using `[hl', hf]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h2`. Establish `hd : IsUnit (x₀ τ.1).det` using `isUnit_iff_ne_zero.2 (orth_mem_dom (M.X p.1) x₀ (hx p.1) τ).1 show mat p.2 τ * ((x₀ τ.1)⁻¹ * Matrix.reindex (finCongr hr) (finCongr hr) (archM V (th p.1 τ) h') * x₀ τ.1) = _`. Rewrite using `[h3 τ, ← mul_assoc γ, archM_mul V _ (γ * h) h']`. Simplify using `only [Matrix.reindex_apply, ← Matrix.submatrix_mul_equiv _ _ _ (finCongr hr).symm _, Matrix.mul_assoc, Matrix.mul_nonsing_inv_cancel_left _ _ hd]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem markSpec_mul_inf {D : D7} {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E} {Dw : Datum H} {l : Level H}
     {Xo : Moduli Dw l} {σ' : KA l →+* ℂ} {g : ℕ} {ty : Fin g → (D.host.E →+* ℂ)} {F : FamilyUnif Xo σ' ty} {r : ℕ}
@@ -90,21 +90,17 @@ theorem markSpec_mul_inf {D : D7} {H : ReciprocityTheory.ChartRestriction.G.Geo.
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `hT hL D Q hQ j hj σ' g ty F h1 h2 M io th x₀ hrec Kf hK dict hd hpref`. Establish `s1` using `GlobalTheory.T.frame_uniform_embedding_second hT hL D Q hQ j hj σ' g ty F h1 h2 M io th x₀ hrec Kf hK`. Establish `s2` using `GlobalTheory.T.frame_uniform_embedding_third D Q hQ j hj σ' g ty F h1 h2 M io th x₀ hrec Kf hK`. Establish `sc` using `GlobalTheory.RecDict.component_attained_at_base_frame D Q hQ j hj σ' g ty F h1 h2 M io th x₀ hrec`. Establish `su` using `GlobalTheory.MarkUnit.mark_frame_unit D Q hQ j hj σ' g ty F h1 h2 M io th x₀ hrec`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨-, hW, -, -, hth, hx⟩` from `hrec`. Establish `s0 : ∀ h p, MarkSpec M (D.sp.W j) (D.sp.W_rank j hj.1 hj.2) io th x₀ h p → ∃ γ' ∈ (M.X p.1).Γ, dict h = ⟨p.1, lact γ' p.2⟩` using `fun h p hp => s1 h 1 1 p (dict h) (one_mem _) (one_mem _) hp (by rw [one_mul, mul_one]; exact hd h)`. Use `⟨fun γ hγ h => ?_, fun k hk h => ?_, ⟨fun c (τ : (M.X c).Ψ) => (x₀ τ.1 : Fin D.R.r → Fin D.R.r → ℂ), fun c => ⟨?_, ?_⟩, fun h h' hh' => ?_⟩, fun h => (su h _ (hd h)).1, fun c x hxd => ?_, ?_⟩` and prove the remaining obligations. Conclude with `s1 h γ 1 _ _ hγ (one_mem _) (hd h) (by rw [mul_one]; exact hd _)`. Conclude with `s1 h 1 k _ _ (one_mem _) hk (hd h) (by rw [one_mul]; exact hd _)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `orth_mem_dom _ x₀ (hx c)`. Take `⟨h, -, p, rfl, hp0, hp⟩` from `sc c`. Establish `e` using `hpref h ⟨p, hp, hp0⟩`. Take `⟨γ', -, e'⟩` from `s0 h p hp`. Use `⟨h, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite `e`, the goal using `[e']`. Conclude with `congrArg (Sigma.mk p.1) (funext fun τ => e τ)`. Conclude with `s0 _ _ (markSpec_mul_inf M _ _ io th x₀ hx h h' hh' _ (hd h))`. Take `⟨h, -, p, rfl, hp0, hp⟩` from `sc c`. Take `⟨a1, a2⟩` from `GlobalTheory.UnitFrames.frame_mul_triangular_orthonormal D.host.E D.R.r (M.X p.1).p0 (M.X p.1).Ψ (M.X p.1).Gm (M.X p.1).Gm_herm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Take `⟨x₁, b, hb, hx₁, rfl⟩` from `a1 x hxd`. Use `choose u hu hux using fun τ : (M.X p.1).Ψ => a2 τ.1 (x₀ τ.1) (mat (rmul x b) τ) (hx p.1 τ.1 τ.2) ((hx₁ τ).trans (hx p.1 τ.1 τ.2).symm)`. Establish `hG : ∀ τ : D.host.E →+* ℂ, (M.X p.1).Gm.map τ = -(Matrix.reindex (finCongr (D.sp.W_rank j hj.1 hj.2)) (finCongr (D.sp.W_rank j hj.1 hj.2)) ((D.sp.W j).gram.map τ)).transpose`. Introduce `τ`. Rewrite using `[(hW p.1).1]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use extensionality with `a b`. Simplify using the standard rewrite rules. Take `⟨h', hh', hu'⟩` from `((GlobalTheory.UnitaryGlue.adelic_glue D (D.sp.W j)).2 (M.X p.1).Ψ (th p.1) (M.X p.1).cmType (hth p.1)).2.2.2 (fun τ => Matrix.reindex (finCongr (D.sp.W_rank j hj.1 hj.2)).symm (finCongr (D.sp.W_rank j hj.1 hj.2)).symm (u τ)) (fun τ => unitary_of_reindex _ _ _ (by rw [← hG]; exac …`. Take `⟨γ', hγ', e'⟩` from `s0 _ _ (markSpec_mul_inf M _ _ io th x₀ hx h h' hh' _ hp)`. Use `⟨h * h', γ', hγ', b, hb, e'.trans (congrArg (Sigma.mk p.1) (funext fun τ => ?_))⟩` and prove the remaining obligations.
-
-Establish `hdet : IsUnit (x₀ τ.1).det` using `isUnit_iff_ne_zero.2 (orth_mem_dom (M.X p.1) x₀ (hx p.1) τ).1`. Use `show (γ' : Matrix _ _ D.host.E).map τ.1 * (mat p.2 τ * ((x₀ τ.1)⁻¹ * Matrix.reindex (finCongr (D.sp.W_rank j hj.1 hj.2)) (finCongr (D.sp.W_rank j hj.1 hj.2)) (archM (D.sp.W j) (th p.1 τ) h') * x₀ τ.1)) = ((γ' : Matrix _ _ D.host.E).map τ.1 * mat x τ) * mat b τ`. Establish `hxb : mat x τ * mat b τ = u τ * x₀ τ.1` using `hux τ`. Rewrite using `[hp0 τ, hu' τ, ← Matrix.reindex_symm, Equiv.apply_symm_apply, Matrix.mul_assoc _ (mat x τ), hxb, Matrix.mul_assoc, Matrix.mul_nonsing_inv_cancel_left _ _ hdet]`. Introduce and unpack `h h' ⟨γ', hγ', e⟩`.
-
-Conclude with `s2 h h' (dict h) γ' hγ' (hd h) (by rw [← e]; exact hd h')`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem dictIsUnif_of_markSpec : ThetaUnifAV → Out.Laws → ∀ (D : D7) (Q : Par D), Q.Pins → ∀ (j : ℕ) (hj : InR D j) (σ' : KA Q.l →+* ℂ) (g : ℕ) (ty : Fin g → (D.host.E →+* ℂ)) (F : FamilyUnif (Q.Xo j) σ' ty), σ' (baseKA Q.l).ρ = Q.H.rt0 → IsTypeFn Q.H (Q.Dw j).p (Q.Dw j).q ty → ∀ (M : GlobalTheory.FrameUnif.ModelsOf F D.R.r) (io : (Q.Dw j).La →ₗ[𝓞 D.host.E] (Fin (D.sp.W j).rank → D.host.E)) (th : ∀ k, (M.X k).Ψ → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)) (x₀ : (D.host.E →+* ℂ) → Matrix (Fin D.R.r) (Fin D.R.r) ℂ), RecOK M (D.sp.W j) (D.sp.W_rank j hj.1 hj.2) io th x₀ → ∀ Kf : Subgroup (GA D (D.sp.W j)), IsLevelK (D.sp.W j) (D.host.g 0 * D.host.g 1) Kf → ∀ dict : GA D (D.sp.W j) → Σ k, Frame (M.X k).Ψ D.R.r, (∀ h, MarkSpec M (D.sp.W j) (D.sp.W_rank j hj.1 hj.2) io th x₀ h (dict h)) → (∀ h, (∃ p, MarkSpec M (D.sp.W j) (D.sp.W_rank j hj.1 hj.2) io th x₀ h p ∧ ∀ τ : (M.X p.1).Ψ, mat p.2 τ = x₀ τ.1) → ∀ τ : (M.X (dict h).1).Ψ, mat (dict h).2 τ = x₀ τ.1) → DictIsUnif (D.sp.W j) dict Kf th (D.sp.W_rank j hj.1 hj.2) := by
   intro hT hL D Q hQ j hj σ' g ty F h1 h2 M io th x₀ hrec Kf hK dict hd hpref

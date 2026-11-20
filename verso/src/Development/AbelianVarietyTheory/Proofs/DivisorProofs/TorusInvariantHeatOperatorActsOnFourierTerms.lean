@@ -25,11 +25,11 @@ noncomputable section
 namespace GlobalTheory.Heat
 
 /- English proof (translation)
-Introduce `R _ _ _ _ _ _ Dd O _ _ _ oa Y n v dd hv D h hb k α σ`. Take `⟨τ, hτ⟩` from `GlobalTheory.RayEv.exists_sec_fourierTerm R Dd.toPre O oa Y k α σ`. Take `⟨τ', hτ'⟩` from `GlobalTheory.T.exists_heatOperator_glued_pullbackBundlePower Y.H Y.q.left Dd.toPre.P.L Dd.toPre.P.isLB dd (fun a => (hv a).1) (⇑D) h k τ`. Establish `hE : ∀ a (β : Dd.toPre.X) (V : Y.H.left.Opens) f, IsWt Y β V f → IsWt Y β V (dd a V f)` using `fun a => GlobalTheory.T.isRaynaudTorusWeightFunction_invariantField Y (v a) (dd a) (hv a)`. Use `choose V hV using fun i => (hb i).1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hle : ∀ i, h.W i ≤ LB.wchart Dd.toPre.P.L (fun _ : Fin 1 => Y.q.left) (fun _ => h.j i)` using `fun i x hx => Set.mem_iInter.2 fun _ => h.le i hx`. Establish `hw : ∀ i, IsWt Y α (h.W i) (rsT (τ'.f fun _ => h.j i) (h.W i))`. Introduce `i`. Rewrite using `[hτ' i]`. Conclude with `GlobalTheory.T.torusInvariant_heatOperator_preserves_weight Y dd _ h hE hb i k α _ (GlobalTheory.T.raynaudFourierTerm_chartFunctions_isWeight Y k α σ τ hτ _ _ (hle i))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨σ', hσ'⟩` from `GlobalTheory.T.isRaynaudFourierTerm_of_isWeight Y k α τ' h.J V (fun i _ => h.j i) (by simp only [← hV]; exact h.cover) (fun i => by rw [← hV i]; exact hle i) (fun i => by rw [← hV i]; exact hw i)`. Conclude with `⟨σ', τ, τ', hτ, hσ', hτ'⟩`.
+A detailed English derivation is pending.
 -/
 theorem heat_acts_on_terms : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [IsNoetherianRing R] [IsAdicComplete (maximalIdeal R) R] [Algebra ℚ R] (Dd : DegData R (maximalIdeal R)) (O : Type) [CommRing O] [StarRing O] [Module O Dd.toPre.X] (oa : Dd.toPre.OAct O) (Y : Ray oa) (n : ℕ) (v : Module.Basis (Fin n) R (TanM (𝟙 (Sp R)) Y.H)) (dd : Fin n → Fld Y.H.left), (∀ a, IsInv Y.H (v a) (dd a)) → ∀ (D : Derivation ℤ R R) (h : Heat Y.H Y.q.left Dd.toPre.P.L dd ⇑D), IsBasic Y h → ∀ (k : ℕ) (α : Dd.toPre.X) (σ : Dd.toPre.SecB k α), ∃ σ', TActs Y h k α σ σ' := by
   intro R _ _ _ _ _ _ Dd O _ _ _ oa Y n v dd hv D h hb k α σ

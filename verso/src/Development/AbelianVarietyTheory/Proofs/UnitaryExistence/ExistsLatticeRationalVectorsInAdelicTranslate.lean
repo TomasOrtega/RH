@@ -10,19 +10,19 @@ namespace GlobalTheory.AdLat.Translate
 variable {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] {n : ℕ}
 
 /- English proof (translation)
-Use extensionality with `i`. Simplify using `[fv, TensorProduct.tmul_add]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 lemma fv_add (x y : Fin n → E) : fv F (x + y) = fv F x + fv F y := by
   ext i; simp [fv, TensorProduct.tmul_add]
 
 /- English proof (translation)
-Use extensionality with `i`. Simplify using `[fv]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 lemma fv_zero : fv F (0 : Fin n → E) = 0 := by
   ext i; simp [fv]
 
 /- English proof (translation)
-Proceed by induction on `d with`. Consider the case `zero => simp [fv_zero]`. Consider the case `succ k ih => rw [succ_nsmul, succ_nsmul, fv_add, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 lemma fv_nsmul (d : ℕ) (x : Fin n → E) : fv F (d • x) = d • fv F x := by
   induction d with
@@ -30,31 +30,29 @@ lemma fv_nsmul (d : ℕ) (x : Fin n → E) : fv F (d • x) = d • fv F x := by
   | succ k ih => rw [succ_nsmul, succ_nsmul, fv_add, ih]
 
 /- English proof (translation)
-Use extensionality with `i`. Simplify using `[fv]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 lemma fv_smul (b : E) (x : Fin n → E) :
     fv F (b • x) = ((1 : FiniteAdeleRing (𝓞 F) F) ⊗ₜ[F] b : RA F E) • fv F x := by
   ext i; simp [fv]
 
 /- English proof (translation)
-Use extensionality with `i`. Simplify using `[fv]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 lemma gen_eq (a : FiniteAdeleRing (𝓞 F) F) (x : Fin n → E) :
     (fun i => (a ⊗ₜ[F] x i : RA F E)) = (a ⊗ₜ[F] (1 : E) : RA F E) • fv F x := by
   ext i; simp [fv]
 
 /- English proof (translation)
-The claim follows from `AddSubgroup.subset_closure ⟨1, fun v => one_mem _, x, hx, rfl⟩`.
+A detailed English derivation is pending.
 -/
 lemma fv_mem_hat {S : Set (Fin n → E)} {x : Fin n → E} (hx : x ∈ S) : fv F x ∈ hat F S :=
   AddSubgroup.subset_closure ⟨1, fun v => one_mem _, x, hx, rfl⟩
 
 /- English proof (translation)
-Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨a', ha', x, hx, rfl⟩` from `hz`. Use `AddSubgroup.subset_closure ⟨a * a', fun v => mul_mem (ha v) (ha' v), x, hx, ?_⟩` and prove the remaining obligations. Use extensionality with `i`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Simplify using the standard rewrite rules. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [smul_add]`. Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [smul_neg]`.
-
-Conclude with `neg_mem hx`.
+Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 lemma hat_smul_int {S : Set (Fin n → E)} {a : FiniteAdeleRing (𝓞 F) F}
     (ha : ∀ v, a v ∈ v.adicCompletionIntegers F) {z : Fin n → RA F E} (hz : z ∈ hat F S) :
@@ -69,11 +67,9 @@ lemma hat_smul_int {S : Set (Fin n → E)} {a : FiniteAdeleRing (𝓞 F) F}
   | neg x _ hx => rw [smul_neg]; exact neg_mem hx
 
 /- English proof (translation)
-Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨a', ha', x, hx, rfl⟩` from `hz`. Use `AddSubgroup.subset_closure ⟨a', ha', b • x, L.smul_mem b hx, ?_⟩` and prove the remaining obligations. Use extensionality with `i`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Simplify using `[Algebra.smul_def]`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [smul_add]`. Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [smul_neg]`.
-
-Conclude with `neg_mem hx`.
+Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 lemma hat_smul_ring (L : Submodule (𝓞 E) (Fin n → E)) (b : 𝓞 E) {z : Fin n → RA F E}
     (hz : z ∈ hat F (L : Set (Fin n → E))) :
@@ -105,15 +101,15 @@ def pre (M : Matrix (Fin n) (Fin n) (RA F E)) (L : Submodule (𝓞 E) (Fin n →
     exact hat_smul_ring L b hx
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 lemma mem_pre {M : Matrix (Fin n) (Fin n) (RA F E)} {L : Submodule (𝓞 E) (Fin n → E)} {v : Fin n → E} :
     v ∈ pre M L ↔ M.mulVec (fv F v) ∈ hat F (L : Set (Fin n → E)) := Iff.rfl
 
 /- English proof (translation)
-Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨a', ha', x, hx, rfl⟩` from `hz`. Rewrite using `[gen_eq, Matrix.mulVec_smul]`. Conclude with `hat_smul_int ha' (hS hx)`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [Matrix.mulVec_add]`. Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [Matrix.mulVec_neg]`. Conclude with `neg_mem hx`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 lemma mulVec_mem_hat {M : Matrix (Fin n) (Fin n) (RA F E)} {L : Submodule (𝓞 E) (Fin n → E)}
     {S : Set (Fin n → E)} (hS : S ⊆ pre M L) {z : Fin n → RA F E} (hz : z ∈ hat F S) :
@@ -128,11 +124,9 @@ lemma mulVec_mem_hat {M : Matrix (Fin n) (Fin n) (RA F E)} {L : Submodule (𝓞 
   | neg x _ hx => rw [Matrix.mulVec_neg]; exact neg_mem hx
 
 /- English proof (translation)
-Use `choose f hf0 hf using h`. Take `⟨s, hs⟩` from `hL`. Use `⟨∏ x ∈ s, f (M.mulVec (fv F x)), Finset.prod_pos fun _ _ => hf0 _, fun z hz => ?_⟩` and prove the remaining obligations. Rewrite using `[← Matrix.smul_mulVec]`. Use `mulVec_mem_hat ?_ hz` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: L ≤ pre ((∏ x ∈ s, f (M.mulVec (fv F x))) • M) L` using `by conv_lhs => rw [← hs]`. Rewrite using `[Submodule.span_le]`. Introduce `x hx`. Take `⟨k, hk⟩` from `Finset.dvd_prod_of_mem (fun x => f (M.mulVec (fv F x))) (Finset.mem_coe.1 hx)`. Rewrite using `[SetLike.mem_coe, mem_pre, Matrix.smul_mulVec, hk, mul_comm, mul_smul]`.
-
-Conclude with `nsmul_mem (hf _) _`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma exists_bound (M : Matrix (Fin n) (Fin n) (RA F E)) {L : Submodule (𝓞 E) (Fin n → E)} (hL : L.FG)
     (h : ∀ z : Fin n → RA F E, ∃ d : ℕ, 0 < d ∧ d • z ∈ hat F (L : Set (Fin n → E))) :
@@ -153,9 +147,9 @@ lemma exists_bound (M : Matrix (Fin n) (Fin n) (RA F E)) {L : Submodule (𝓞 E)
   exact this
 
 /- English proof (translation)
-Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨a', ha', x, hx, rfl⟩` from `hz`. Rewrite using `[gen_eq, smul_comm, ← fv_nsmul]`. Conclude with `hat_smul_int ha' (fv_mem_hat (h x hx))`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [smul_add]`. Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [smul_neg]`. Conclude with `neg_mem hx`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 lemma nsmul_mem_hat {S S' : Set (Fin n → E)} {d : ℕ} (h : ∀ x ∈ S, d • x ∈ S') {z : Fin n → RA F E}
     (hz : z ∈ hat F S) : d • z ∈ hat F S' := by
@@ -169,7 +163,7 @@ lemma nsmul_mem_hat {S S' : Set (Fin n → E)} {d : ℕ} (h : ∀ x ∈ S, d •
   | neg x _ hx => rw [smul_neg]; exact neg_mem hx
 
 /- English proof (translation)
-Rewrite `h` using `[← Nat.cast_smul_eq_nsmul F, ← Nat.cast_smul_eq_nsmul F]`. Establish `hd' : (d : F) ≠ 0` using `by exact_mod_cast hd.ne'`. Use `congrArg (fun z => (d : F)⁻¹ • z) h` as an intermediate fact. Simplify `this` using `[smul_smul, inv_mul_cancel₀ hd']`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma nsmul_cancel {d : ℕ} (hd : 0 < d) {x y : Fin n → RA F E} (h : d • x = d • y) : x = y := by
   rw [← Nat.cast_smul_eq_nsmul F, ← Nat.cast_smul_eq_nsmul F] at h
@@ -182,33 +176,29 @@ end GlobalTheory.AdLat.Translate
 open GlobalTheory.AdLat.Translate in
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ n L g hL hspan`. Take `⟨h1, h2, -, h4⟩` from `GlobalTheory.AdLat.hat_rational_points_and_approx F E n L hL hspan`. Use `set G : Matrix (Fin n) (Fin n) (RA F E) := (g : Matrix (Fin n) (Fin n) (RA F E)) with hG`. Use `set H : Matrix (Fin n) (Fin n) (RA F E) := ((g⁻¹ : GL (Fin n) (RA F E)) : Matrix (Fin n) (Fin n) (RA F E)) with hH`. Establish `hGH : ∀ z, G.mulVec (H.mulVec z) = z`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `z`. Rewrite using `[Matrix.mulVec_mulVec, hG, hH, Units.mul_inv, Matrix.one_mulVec]`. Establish `hHG : ∀ z, H.mulVec (G.mulVec z) = z`. Introduce `z`. Rewrite using `[Matrix.mulVec_mulVec, hG, hH, Units.inv_mul, Matrix.one_mulVec]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `him : ∀ z, z ∈ G.mulVec '' (hat F (L : Set (Fin n → E)) : Set (Fin n → RA F E)) ↔ H.mulVec z ∈ hat F (L : Set (Fin n → E))`. Introduce `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu, rfl⟩`. Rewrite using `[hHG]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Conclude with `hu`. Introduce `h`. Conclude with `⟨_, h, hGH z⟩`. Take `⟨d, hd, hdG⟩` from `exists_bound G hL h4`. Take `⟨e, he, heH⟩` from `exists_bound H hL h4`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd' : (d : E) ≠ 0` using `by exact_mod_cast hd.ne'`. Establish `he' : (e : E) ≠ 0` using `by exact_mod_cast he.ne'`. Establish `hlow : ∀ x ∈ L, e • x ∈ pre H L`. Introduce `x hx`. Rewrite using `[mem_pre, fv_nsmul, Matrix.mulVec_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `heH _ (fv_mem_hat hx)`. Establish `hup : ∀ x ∈ pre H L, d • x ∈ L`. Introduce `x hx`. Rewrite using `[← h1, fv_nsmul, ← hGH (fv F x)]`. Conclude with `hdG _ hx`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `⟨pre H L, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `v`. Conclude with `(him _).symm`. Establish `hinj : Function.Injective (d • (LinearMap.id : (Fin n → E) →ₗ[𝓞 E] (Fin n → E)))`. Introduce `x y hxy`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Simplify using `only [LinearMap.smul_apply, LinearMap.id_apply] at hxy`. Rewrite `hxy` using `[← Nat.cast_smul_eq_nsmul E, ← Nat.cast_smul_eq_nsmul E]`. Conclude with `smul_right_injective _ hd' hxy`. Use `Submodule.fg_of_fg_map_injective _ hinj ?_` and prove the remaining obligations. Establish `hle : (pre H L).map (d • (LinearMap.id : (Fin n → E) →ₗ[𝓞 E] (Fin n → E))) ≤ L`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `hup x hx`. Establish `: IsNoetherian (𝓞 E) L` using `isNoetherian_of_fg_of_noetherian _ hL`. Conclude with `(isNoetherian_submodule.1 this) _ hle`. Rewrite using `[eq_top_iff, ← hspan, Submodule.span_le]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Establish `hx' : x = (e : E)⁻¹ • (e • x)`. Rewrite using `[← Nat.cast_smul_eq_nsmul E, smul_smul, inv_mul_cancel₀ he', one_smul]`. Rewrite using `[hx']`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span (hlow x hx))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `z`. Rewrite using `[him]`. Prove the components needed by the constructor for the conclusion. Introduce `hz`. Conclude with `mulVec_mem_hat subset_rfl hz`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `hz`. Establish `hdz : d • z ∈ hat F (L : Set (Fin n → E))`. Rewrite using `[← hGH z]`. Conclude with `hdG _ hz`. Take `⟨x, -, w, hw, hxw⟩` from `h2 (d * e) (Nat.mul_pos hd he) _ hdz`.
-
-Establish `hx' : x = d • ((d : E)⁻¹ • x)`. Rewrite using `[← Nat.cast_smul_eq_nsmul E, smul_smul, mul_inv_cancel₀ hd', one_smul]`. Establish `hz' : z = fv F ((d : E)⁻¹ • x) + e • w`. Apply `nsmul_cancel hd` to reduce the goal to its premises. Rewrite using `[smul_add, ← fv_nsmul, ← hx', smul_smul, hxw]`.
-
-Establish `hy : (d : E)⁻¹ • x ∈ pre H L`. Rewrite using `[mem_pre, eq_sub_of_add_eq hz'.symm, Matrix.mulVec_sub, Matrix.mulVec_smul]`. Conclude with `sub_mem hz (heH _ hw)`. Rewrite using `[hz']`. Conclude with `add_mem (fv_mem_hat hy) (nsmul_mem_hat hlow hw)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.AdLat.exists_lattice_latOf : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (n : ℕ) (L : Submodule (𝓞 E) (Fin n → E)) (g : GL (Fin n) (RA F E)), L.FG → Submodule.span E (L : Set (Fin n → E)) = ⊤ → ∃ Λ : Submodule (𝓞 E) (Fin n → E), (Λ : Set (Fin n → E)) = latOf F (g : Matrix (Fin n) (Fin n) (RA F E)) L ∧ Λ.FG ∧ Submodule.span E (Λ : Set (Fin n → E)) = ⊤ ∧ (hat F (Λ : Set (Fin n → E)) : Set (Fin n → RA F E)) = (g : Matrix (Fin n) (Fin n) (RA F E)).mulVec '' (hat F (L : Set (Fin n → E))) := by
   intro F E _ _ _ _ _ n L g hL hspan

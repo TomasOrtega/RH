@@ -5,11 +5,11 @@ import Formalism.LocalToGlobal.TorsionIntegrality.TorsionTranslationPowers.Nonsi
 namespace Formalism.L2.Th1.E
 
 /- English proof (translation)
-The claim follows from `shift_unit'`.
+A detailed English derivation is pending.
 -/
 theorem shiftUnit : ShiftUnit := shift_unit'
 /- English proof (translation)
-The claim follows from `shifted_points_integral`.
+A detailed English derivation is pending.
 -/
 theorem shiftPtsInt : ShiftPtsInt := shifted_points_integral
 

@@ -16,7 +16,7 @@ def polarizationOperator (K : Type) [Field K] {σ : Type} (v w : σ) : Module.En
   (LinearMap.mulLeft K (X v)) ∘ₗ (pderiv w).toLinearMap
 
 /- English proof (translation)
-Use `show X v * pderiv w (monomial m c) = _`. Rewrite using `[pderiv_monomial, X, monomial_mul, one_mul, add_comm (Finsupp.single v 1)]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem polarization_monomial (v w : σ) (m : σ →₀ ℕ) (c : K) :
     polarizationOperator K v w (monomial m c) = monomial (m - Finsupp.single w 1 + Finsupp.single v 1) (c * (m w : K)) := by
@@ -24,13 +24,13 @@ theorem polarization_monomial (v w : σ) (m : σ →₀ ℕ) (c : K) :
   rw [pderiv_monomial, X, monomial_mul, one_mul, add_comm (Finsupp.single v 1)]
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Rewrite using `[pow_succ', Module.End.mul_apply, ih, polarization_monomial]`. Establish `hw : (m - Finsupp.single w k + Finsupp.single v k : σ →₀ ℕ) w = m w - k`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `[Finsupp.single_apply, hvw]`. Establish `hexp : (m - Finsupp.single w k + Finsupp.single v k - Finsupp.single w 1 + Finsupp.single v 1 : σ →₀ ℕ) = m - Finsupp.single w (k + 1) + Finsupp.single v (k + 1)`. Use extensionality with `x`. Distinguish the cases in `hx : x = w`. Rewrite using `[hx]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Finsupp.single_apply, hvw]`. Use linear arithmetic over natural numbers and integers. Distinguish the cases in `hy : x = v`. Rewrite using `[hy]`. Simplify using `[Finsupp.single_apply, hvw, Ne.symm hvw]`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Simplify using `[Finsupp.single_apply, Ne.symm hx, Ne.symm hy]`. Rewrite using `[hexp, hw, Nat.descFactorial_succ, Nat.cast_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem polarization_pow_monomial (v w : σ) (hvw : v ≠ w) (k : ℕ) (m : σ →₀ ℕ) (c : K) :
     (polarizationOperator K v w ^ k) (monomial m c) =
@@ -58,7 +58,7 @@ theorem polarization_pow_monomial (v w : σ) (hvw : v ≠ w) (k : ℕ) (m : σ �
     ring
 
 /- English proof (translation)
-Rewrite using `[polarization_pow_monomial v w hvw, MvPolynomial.smul_monomial, Nat.descFactorial_eq_factorial_mul_choose, Nat.cast_mul]`. Use `congr 1`. Establish `: (k.factorial : K) ≠ 0` using `Nat.cast_ne_zero.mpr (Nat.factorial_ne_zero k)`. Rewrite using `[smul_eq_mul]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 -/
 theorem polarization_divided_power_monomial [CharZero K] (v w : σ) (hvw : v ≠ w) (k : ℕ) (m : σ →₀ ℕ) (c : K) :
     ((k.factorial : K)⁻¹) • (polarizationOperator K v w ^ k) (monomial m c) =
@@ -71,13 +71,13 @@ theorem polarization_divided_power_monomial [CharZero K] (v w : σ) (hvw : v ≠
   field_simp
 
 /- English proof (translation)
-Use `show polarizationOperator K v w * polarizationOperator K v' w' = polarizationOperator K v' w' * polarizationOperator K v w`. Use `LinearMap.ext fun f => ?_` and prove the remaining obligations. Proceed by induction on `f using MvPolynomial.induction_on' with`. Consider the case `monomial m c`. Rewrite using `[Module.End.mul_apply, Module.End.mul_apply, polarization_monomial, polarization_monomial, polarization_monomial, polarization_monomial]`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e1 : (m - Finsupp.single w' 1 + Finsupp.single v' 1 : σ →₀ ℕ) w = m w`. Simplify using `[Finsupp.single_apply, h1, h2, Ne.symm h1, Ne.symm h2]`. Establish `e2 : (m - Finsupp.single w 1 + Finsupp.single v 1 : σ →₀ ℕ) w' = m w'`. Simplify using `[Finsupp.single_apply, h3, Ne.symm h2, Ne.symm h3, h2]`. Establish `hexp : (m - Finsupp.single w' 1 + Finsupp.single v' 1 - Finsupp.single w 1 + Finsupp.single v 1 : σ →₀ ℕ) = m - Finsupp.single w 1 + Finsupp.single v 1 - Finsupp.single w' 1 + Finsupp.single v' 1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `x`. Simplify using `only [Finsupp.add_apply, Finsupp.tsub_apply, Finsupp.single_apply]`. Apply the tactic sequence `by_cases a1 : w = x <;> by_cases a2 : w' = x <;> by_cases a3 : v = x <;>`. Apply the tactic sequence `by_cases a4 : v' = x <;> (try subst_vars) <;> (try simp_all) <;> omega`. Rewrite using `[e1, e2, hexp]`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Consider the case `add p q hp hq`. Rewrite using `[map_add, map_add, hp, hq]`.
+Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem polarization_commute (v w v' w' : σ) (h1 : w ≠ v') (h2 : w ≠ w') (h3 : w' ≠ v) :
     Commute (polarizationOperator K v w) (polarizationOperator K v' w') := by
@@ -111,7 +111,7 @@ section fact
 variable {σ : Type}
 
 /- English proof (translation)
-Establish `hd : Disjoint (m.erase v).support (Finsupp.single v j).support` using `Finset.disjoint_of_subset_right Finsupp.support_single_subset (Finset.disjoint_singleton_right.mpr (by simp))`. Unfold `expFact`. Rewrite using `[Finsupp.prod_add_index_of_disjoint hd, Finsupp.prod_single_index (by simp)]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem exponent_factorial_erase_single (m : σ →₀ ℕ) (v : σ) (j : ℕ) :
     expFact (m.erase v + Finsupp.single v j) = expFact (m.erase v) * j.factorial := by
@@ -122,9 +122,9 @@ theorem exponent_factorial_erase_single (m : σ →₀ ℕ) (v : σ) (j : ℕ) :
   rw [Finsupp.prod_add_index_of_disjoint hd, Finsupp.prod_single_index (by simp)]
 
 /- English proof (translation)
-Establish `h1 : m + Finsupp.single v k = m.erase v + Finsupp.single v (m v + k)`. Use extensionality with `x`. Distinguish the cases in `hx : x = v`. Substitute `hx` using the available equality. Simplify using the standard rewrite rules.
+Establish an intermediate fact. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[Finsupp.erase_ne hx, Finsupp.single_apply, Ne.symm hx]`. Establish `h2 : expFact m = expFact (m.erase v) * (m v).factorial` using `by conv_lhs => rw [← Finsupp.erase_add_single v m]`. Conclude with `exponent_factorial_erase_single m v (m v)`. Rewrite using `[h1, exponent_factorial_erase_single, h2]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exponent_factorial_add_single (m : σ →₀ ℕ) (v : σ) (k : ℕ) :
     expFact (m + Finsupp.single v k) * (m v).factorial = expFact m * (m v + k).factorial := by
@@ -141,26 +141,26 @@ theorem exponent_factorial_add_single (m : σ →₀ ℕ) (v : σ) (k : ℕ) :
   ring
 
 /- English proof (translation)
-Unfold `expFact Finsupp.prod`. Conclude with `Finset.prod_ne_zero_iff.mpr fun _ _ => Nat.factorial_ne_zero _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem exponent_factorial_ne_zero_of (m : σ →₀ ℕ) : expFact m ≠ 0 := by
   unfold expFact Finsupp.prod
   exact Finset.prod_ne_zero_iff.mpr fun _ _ => Nat.factorial_ne_zero _
 
 /- English proof (translation)
-Establish `hC : (m w).choose k ≠ 0` using `(Nat.choose_pos hk).ne'`. Use `set a := m - Finsupp.single w k with ha`. Establish `haw : a w = m w - k` using `by simp [ha]`. Establish `hav : a v = m v` using `by simp [ha, Finsupp.single_apply, Ne.symm hvw]`. Establish `hm : a + Finsupp.single w k = m`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `x`. Distinguish the cases in `hx : x = w`. Substitute `hx` using the available equality. Simplify using `[ha]`. Use linear arithmetic over natural numbers and integers.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules.
 
-Simplify using `[ha, Finsupp.single_apply, Ne.symm hx]`. Establish `e1` using `exponent_factorial_add_single a w k`. Rewrite `e1` using `[hm, haw, Nat.sub_add_cancel hk]`. Establish `e2` using `exponent_factorial_add_single a v k`. Rewrite `e2` using `[hav]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `f1 : expFact m = expFact a * (m w).choose k * k.factorial`. Use `Nat.choose_mul_factorial_mul_factorial hk` as an intermediate fact. Apply `Nat.eq_of_mul_eq_mul_right (Nat.factorial_pos (m w - k))` to reduce the goal to its premises. Rewrite using `[e1, ← this]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `f2 : expFact (a + Finsupp.single v k) = expFact a * (m v + k).choose k * k.factorial`. Use `Nat.choose_mul_factorial_mul_factorial (Nat.le_add_left k (m v))` as an intermediate fact. Rewrite `this` using `[Nat.add_sub_cancel]`. Apply `Nat.eq_of_mul_eq_mul_right (Nat.factorial_pos (m v))` to reduce the goal to its premises. Rewrite using `[e2, ← this]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hdvd : expFact m ∣ (m w).choose k ^ 2 * expFact (a + Finsupp.single v k)`. Rewrite using `[f1, f2]`. Conclude with `⟨(m w).choose k * (m v + k).choose k, by ring⟩`. Establish `hne : (m w).choose k ^ 2 * expFact (a + Finsupp.single v k) ≠ 0` using `mul_ne_zero (pow_ne_zero _ hC) (exponent_factorial_ne_zero_of _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hle` using `(padicValNat_dvd_iff_le (p := p) hne).mp ((pow_padicValNat_dvd (p := p)).trans hdvd)`. Rewrite `hle` using `[padicValNat.mul (pow_ne_zero _ hC) (exponent_factorial_ne_zero_of _), padicValNat.pow]`. Conclude with `hle`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem padic_exponent_factorial_bound (p : ℕ) [Fact p.Prime] (m : σ →₀ ℕ) (v w : σ) (hvw : v ≠ w) (k : ℕ) (hk : k ≤ m w) :
     padicValNat p (expFact m) ≤ 2 * padicValNat p ((m w).choose k) +

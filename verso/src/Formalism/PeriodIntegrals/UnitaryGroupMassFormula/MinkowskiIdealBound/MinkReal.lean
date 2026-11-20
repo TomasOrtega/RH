@@ -11,7 +11,7 @@ namespace PIW.MinkowskiIdealBound.MinkR
 open scoped Classical
 
 /- English proof (translation)
-Rewrite using `[Algebra.norm_apply, Algebra.norm_apply, Algebra.norm_apply, ← LinearMap.det_prodMap]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem algNorm_prod {A B : Type*} [CommRing A] [CommRing B] [Algebra ℝ A] [Algebra ℝ B]
     [Module.Free ℝ A] [Module.Finite ℝ A] [Module.Free ℝ B] [Module.Finite ℝ B] (x : A × B) :
@@ -20,7 +20,7 @@ theorem algNorm_prod {A B : Type*} [CommRing A] [CommRing B] [Algebra ℝ A] [Al
   congr 1
 
 /- English proof (translation)
-Repeatedly rewrite using `[Algebra.norm_apply]`. Rewrite using `[← LinearMap.det_pi]`. Use `congr 1`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem algNorm_pi {ι : Type*} [Fintype ι] [DecidableEq ι] {A : Type*} [CommRing A] [Algebra ℝ A]
     [Module.Free ℝ A] [Module.Finite ℝ A] (x : ι → A) :
@@ -30,7 +30,7 @@ theorem algNorm_pi {ι : Type*} [Fintype ι] [DecidableEq ι] {A : Type*} [CommR
   congr 1
 
 /- English proof (translation)
-Rewrite using `[Algebra.norm_self]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem algNorm_real (r : ℝ) : Algebra.norm ℝ r = r := by
   rw [Algebra.norm_self]
@@ -39,9 +39,9 @@ theorem algNorm_real (r : ℝ) : Algebra.norm ℝ r = r := by
 variable {F : Type} [Field F] [NumberField F]
 
 /- English proof (translation)
-Rewrite using `[algNorm_prod, algNorm_pi, algNorm_pi, mixedEmbedding.norm_apply, prod_eq_prod_mul_prod]`. Simplify using `only [algNorm_real, Algebra.norm_complex_apply, abs_mul, Finset.abs_prod]`. Use `congr 1`. Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[mult_isReal w, pow_one, normAtPlace_apply_of_isReal w.2, Real.norm_eq_abs]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[mult_isComplex w, normAtPlace_apply_of_isComplex w.2, Complex.sq_norm, abs_of_nonneg (Complex.normSq_nonneg _)]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem abs_algNorm (x : mixedSpace F) : |Algebra.norm ℝ x| = mixedEmbedding.norm x := by
   rw [algNorm_prod, algNorm_pi, algNorm_pi, mixedEmbedding.norm_apply, prod_eq_prod_mul_prod]
@@ -54,9 +54,7 @@ theorem abs_algNorm (x : mixedSpace F) : |Algebra.norm ℝ x| = mixedEmbedding.n
       abs_of_nonneg (Complex.normSq_nonneg _)]
 
 /- English proof (translation)
-Distinguish the cases in `hw : w.IsReal`. Rewrite using `[normAtPlace_apply_of_isReal hw, InfiniteAdeleRing.ringEquiv_mixedSpace_apply]`. Conclude with `(InfinitePlace.Completion.isometry_extensionEmbeddingOfIsReal hw).norm_map_of_map_zero (map_zero _) _`. Establish `hc : w.IsComplex` using `not_isReal_iff_isComplex.mp hw`. Rewrite using `[normAtPlace_apply_of_isComplex hc, InfiniteAdeleRing.ringEquiv_mixedSpace_apply]`.
-
-Conclude with `(InfinitePlace.Completion.isometry_extensionEmbedding w).norm_map_of_map_zero (map_zero _) _`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem normAtPlace_ringEquiv (y : InfiniteAdeleRing F) (w : InfinitePlace F) :
     normAtPlace w (InfiniteAdeleRing.ringEquiv_mixedSpace F y) = ‖y w‖ := by
@@ -70,7 +68,7 @@ theorem normAtPlace_ringEquiv (y : InfiniteAdeleRing F) (w : InfinitePlace F) :
       (map_zero _) _
 
 /- English proof (translation)
-Rewrite using `[mixedEmbedding.norm_apply, InfiniteAdeleRing.norm_def]`. Conclude with `Finset.prod_congr rfl fun w _ => by rw [normAtPlace_ringEquiv]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_ringEquiv (y : InfiniteAdeleRing F) :
     mixedEmbedding.norm (InfiniteAdeleRing.ringEquiv_mixedSpace F y) = ‖y‖ := by

@@ -14,11 +14,9 @@ namespace GlobalTheory.H1fGeneration
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `l _ P AI hT K LL _ T _ hG hC hcont`. Establish `hO` using `(GlobalTheory.LocalIntegers.good_integers l LL).1`. Establish `hDR` using `(GlobalTheory.Per.CrisDR.isDR_of_isCrys l P AI hT K LL T.V T.ρ hC).1`. Take `⟨s, hs, hcard⟩` from `GlobalTheory.T.h1fT_span_card_bound l P AI hT K (↥LL.1) (↥(OL LL)) hO T hDR`. Establish `hBK` using `GlobalTheory.T.blochKatoDimensionFormula_concretePeriodRings l P AI hT K LL hG.1 T.V T.ρ hcont hC`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨s, hs, ?_⟩` and prove the remaining obligations. Establish `h0 : (0 : ℤ) ≤ (finrank ↥LL.1 ↥(H0V T.ρ) : ℤ)` using `by positivity`. Establish `hc : ((s.card + finrank ↥LL.1 ↥(H0V T.ρ) : ℕ) : ℤ) ≤ ((finrank ↥LL.1 (FiniteCohomology (P.PD K) T.ρ) + finrank ↥LL.1 T.V : ℕ) : ℤ)`. Conclude with `hcard` after adjusting the coercions. Move the coercions through the operations in `at hc`.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem h1fGen_tied : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P), LocTied l P AI → ∀ (K LL : FinExt l) [Fintype (↥K.1 →ₐ[ℚ_[l]] ↥LL.1)] (T : LocLat ↥(GK K) ℚ_[l] ↥LL.1 ↥(OL LL)) [IsTopologicalAddGroup T.V], FiniteCohomologyGeneratorsBound (P.PD K) T.L := by
   intro l _ P AI hT K LL _ T _ hG hC hcont

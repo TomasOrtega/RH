@@ -7,13 +7,13 @@ variable {O R K : Type*} [CommRing O] [CommRing R] [CommRing K] [Algebra O R] [A
 def Sep (Y : Set (R →ₐ[O] K)) : Prop := ∀ f : R, (∀ y ∈ Y, y f = 0) → f = 0
 
 /- English proof (translation)
-Introduce `f hf` and use `h f fun y hy => hf y (hle hy)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Sep.mono {Y Y' : Set (R →ₐ[O] K)} (h : Sep Y) (hle : Y ⊆ Y') : Sep Y' :=
   fun f hf => h f fun y hy => hf y (hle hy)
 
 /- English proof (translation)
-The claim follows from `sub_eq_zero.1 (h _ fun y hy => by rw [map_sub, hab y hy, sub_self])`.
+A detailed English derivation is pending.
 -/
 theorem Sep.ext {Y : Set (R →ₐ[O] K)} (h : Sep Y) {a b : R} (hab : ∀ y ∈ Y, y a = y b) : a = b :=
   sub_eq_zero.1 (h _ fun y hy => by rw [map_sub, hab y hy, sub_self])

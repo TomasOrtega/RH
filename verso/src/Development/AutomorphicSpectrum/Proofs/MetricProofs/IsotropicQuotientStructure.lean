@@ -21,9 +21,9 @@ section
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {g : ℕ} {Λ : Type} [AddCommGroup Λ] [Module (𝓞 E) Λ]
 
 /- English proof (translation)
-Introduce `s hs`. Proceed by induction on `hs using Submodule.span_induction with`. Consider the case `mem x hx => exact h x hx`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => simp [star_add, mulVec_add, dotProduct_add, hx, hy]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `smul a x _ hx => simp [star_smul, mulVec_smul, dotProduct_smul, hx]`.
+Treat this case separately.
 -/
 theorem orth_of_set {m : ℕ} {T : Set (Fin m → ℂ)} {H : Matrix (Fin m) (Fin m) ℂ} {z : Fin m → ℂ}
     (h : ∀ t ∈ T, z ⬝ᵥ H *ᵥ star t = 0) : ∀ s ∈ Submodule.span ℂ T, z ⬝ᵥ H *ᵥ star s = 0 := by
@@ -35,13 +35,13 @@ theorem orth_of_set {m : ℕ} {T : Set (Fin m → ℂ)} {H : Matrix (Fin m) (Fin
   | smul a x _ hx => simp [star_smul, mulVec_smul, dotProduct_smul, hx]
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨v, hv, rfl⟩`. Establish `hv'` using `(hI v).1 hv`. Use `show R.P v ∈ Submodule.span ℂ (Set.range fun i => R.P (e i))`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Proceed by induction.
 
-Proceed by induction on `hv' using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨i, rfl⟩` from `hx`. Conclude with `Submodule.subset_span ⟨i, rfl⟩`. Consider the case `zero => simp`.
+Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `add x y hx' hy' hx hy`. Rewrite using `[map_add]`. Conclude with `Submodule.add_mem _ (hx ((hI x).2 hx')) (hy ((hI y).2 hy'))`. Consider the case `smul a x hx' hx`. Rewrite using `[map_zsmul]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `Submodule.smul_of_tower_mem _ a (hx ((hI x).2 hx'))`. Use `Submodule.span_mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `⟨e i, (hI _).2 (Submodule.subset_span ⟨i, rfl⟩), rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem span_period (R : RiemLat E g Λ) {I : Submodule (𝓞 E) Λ} {k : ℕ} {e : Fin k → Λ}
     (hI : ∀ v, v ∈ I ↔ v ∈ Submodule.span ℤ (Set.range e)) :
@@ -67,17 +67,15 @@ theorem span_period (R : RiemLat E g Λ) {I : Submodule (𝓞 E) Λ} {k : ℕ} {
     exact ⟨e i, (hI _).2 (Submodule.subset_span ⟨i, rfl⟩), rfl⟩
 
 /- English proof (translation)
-Establish `heI : ∀ i, e i ∈ I` using `fun i => (hI _).2 (Submodule.subset_span ⟨i, rfl⟩)`. Establish `hui : ∀ i j, (R.P (e i) ⬝ᵥ R.Hm *ᵥ star (R.P (e j))).im = 0` using `fun i j => by`. Rewrite using `[R.im, hiso _ (heI i) _ (heI j)]`. Simplify using the standard rewrite rules. Take `⟨c, hc⟩` from `GlobalTheory.T.exists_real_orthogonal_projection_of_real_gram g k R.Hm R.pos _ hLI (GlobalTheory.T.exists_hermitian_orthogonal_projection g k R.Hm R.pos _ hLI) hui (R.P y) (fun j => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Rewrite using `[R.im, hy _ (heI j)]`. Use the proof step `simp)`. Use `set s : Fin g → ℂ := ∑ i, (c i : ℂ) • R.P (e i) with hs`. Establish `hsk : q s = 0`. Establish `: s ∈ LinearMap.ker q`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hk, span_period R hI]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Conclude with `this`. Establish `hqy : q (R.P y - s) = q (R.P y)` using `by rw [map_sub, hsk, sub_zero]`. Establish `horth : ∀ v ∈ I, R.ip (R.P v) (R.P y - s) = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `v hv`. Establish `hv' : R.P v ∈ Submodule.span ℂ (Set.range fun i => R.P (e i))`. Rewrite using `[← span_period R hI]`. Conclude with `Submodule.subset_span ⟨v, hv, rfl⟩`. Use `orth_of_set (T := Set.range fun i => R.P (e i)) ?_ _ hv'` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Introduce and unpack `_ ⟨j, rfl⟩`. Conclude with `hc j`. Rewrite using `[← hqy, hm _ _ horth]`. Establish `hxs : (R.P x ⬝ᵥ R.Hm *ᵥ star s).im = 0`. Simplify using `only [hs, star_sum, star_smul, mulVec_sum, mulVec_smul, dotProduct_sum, dotProduct_smul, smul_eq_mul, Complex.im_sum, Complex.star_def, Complex.conj_ofReal, Complex.im_ofReal_mul, R.im, hx _ (heI _)]`.
-
-Simplify using the standard rewrite rules. Rewrite using `[star_sub, mulVec_sub, dotProduct_sub, Complex.sub_im, hxs, sub_zero, R.im]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem im_quot (R : RiemLat E g Λ) {I : Submodule (𝓞 E) Λ} {k : ℕ} {e : Fin k → Λ}
     (hI : ∀ v, v ∈ I ↔ v ∈ Submodule.span ℤ (Set.range e)) (hiso : IsIsoSub R.form I)
@@ -114,7 +112,7 @@ theorem im_quot (R : RiemLat E g Λ) {I : Submodule (𝓞 E) Λ} {k : ℕ} {e : 
   rw [star_sub, mulVec_sub, dotProduct_sub, Complex.sub_im, hxs, sub_zero, R.im]
 
 /- English proof (translation)
-Establish `heI : ∀ i, b (f i) ∈ I` using `fun i => (hI _).2 (Submodule.subset_span ⟨i, rfl⟩)`. Use `GlobalTheory.T.linearIndependent_complex_of_real_hermitian g k R.Hm R.pos _ ((GlobalTheory.T.linearIndependent_real_periods_basis E g Λ R n b).comp f hf) fun i j => ?_` and prove the remaining obligations. Rewrite using `[R.im, hiso _ (heI i) _ (heI j)]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem period_facts (R : RiemLat E g Λ) {I : Submodule (𝓞 E) Λ} {k n : ℕ} (b : Module.Basis (Fin n) ℤ Λ)
     (f : Fin k → Fin n) (hf : Function.Injective f)
@@ -125,9 +123,9 @@ theorem period_facts (R : RiemLat E g Λ) {I : Submodule (𝓞 E) Λ} {k n : ℕ
   rw [R.im, hiso _ (heI i) _ (heI j)]; simp
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `GlobalTheory.T.exists_hermitian_orthogonal_projection g k R.Hm R.pos _ hLI z`. Rewrite using `[span_period R hI]`. Use `⟨∑ i, c i • R.P (e i), Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ (c i) (Submodule.subset_span ⟨i, rfl⟩), ?_⟩` and prove the remaining obligations. Use `orth_of_set ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨j, rfl⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `hc j`.
+A detailed English derivation is pending.
 -/
 theorem exists_orth (R : RiemLat E g Λ) {I : Submodule (𝓞 E) Λ} {k : ℕ} {e : Fin k → Λ}
     (hI : ∀ v, v ∈ I ↔ v ∈ Submodule.span ℤ (Set.range e))
@@ -141,11 +139,11 @@ theorem exists_orth (R : RiemLat E g Λ) {I : Submodule (𝓞 E) Λ} {k : ℕ} {
   exact hc j
 
 /- English proof (translation)
-Establish `heI : ∀ i, b (f i) ∈ I` using `fun i => (hI _).2 (Submodule.subset_span ⟨i, rfl⟩)`. Establish `hLI` using `period_facts R b f hf hI hiso`. Take `⟨c, hc⟩` from `GlobalTheory.T.exists_real_orthogonal_projection_of_real_gram g k R.Hm R.pos _ hLI (GlobalTheory.T.exists_hermitian_orthogonal_projection g k R.Hm R.pos _ hLI) (fun i j => by`. Rewrite using `[R.im, hiso _ (heI i) _ (heI j)]; simp) (R.P x) (fun j => by rw [R.im, hx _ (heI j)]; simp)`. Rewrite `hs` using `[span_period R hI]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `set s : Fin g → ℂ := ∑ i, (c i : ℂ) • R.P (b (f i)) with hsdef`. Establish `hsm : s ∈ Submodule.span ℂ (Set.range fun i => R.P (b (f i)))` using `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Establish `hw : R.P x - s = 0`. Assume the negation of the conclusion as `hne`. Establish `h0 : (R.P x - s) ⬝ᵥ R.Hm *ᵥ star (R.P x - s) = 0` using `orth_of_set (by rintro _ ⟨j, rfl⟩; exact hc j) _ (Submodule.sub_mem _ hs hsm)`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `R.pos _ hne` as an intermediate fact. Rewrite `this` using `[h0]`. Simplify using `at this`. Conclude with `(hI x).2 (GlobalTheory.T.mem_span_of_real_combination_periods g k n Λ R.P b f (GlobalTheory.T.linearIndependent_real_periods_basis E g Λ R n b) hf x c (sub_eq_zero.1 hw))`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_of_mem_span (R : RiemLat E g Λ) {I : Submodule (𝓞 E) Λ} {k n : ℕ} (b : Module.Basis (Fin n) ℤ Λ)
     (f : Fin k → Fin n) (hf : Function.Injective f)
@@ -171,47 +169,41 @@ theorem mem_of_mem_span (R : RiemLat E g Λ) {I : Submodule (𝓞 E) Λ} {k n : 
 end
 
 /- English proof (translation)
-Introduce `E _ _ _ g Λ _ _ R₀ I hsat hiso`. Use `haveI := R₀.free`. Use `haveI := R₀.fin`. Take `⟨g', Λ', i1, i2, R₀', q₀, hq₀s, hq₀k, hq₀B, hq₀r, hq₀m⟩` from `GlobalTheory.T.quotient_lattice_by_isotropic_submodule E g Λ Unit R₀ I hsat hiso`. Take `⟨k, n, b, f, hf, hN⟩` from `GlobalTheory.T.exists_basis_subset_of_saturated_submodule Λ (AddSubgroup.toIntSubmodule I.toAddSubgroup) (fun v m hm h => hsat v m hm h)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hI : ∀ v, v ∈ I ↔ v ∈ Submodule.span ℤ (Set.range fun i => b (f i))` using `fun v => by`. Rewrite using `[hN]`. Both sides reduce to the same expression. Establish `hLI₀` using `period_facts R₀ b f hf hI hiso`. Set `D : AddSubgroup Λ` to `{ carrier := {x | ∀ y ∈ I, R₀.form x y = 0} add_mem' := fun {a c} ha hc y hy => by simp [ha y hy, hc y hy] zero_mem' := fun y _ => by simp neg_mem' := fun {a} ha y hy => by simp [ha y hy] }`.
+Both sides reduce to the same expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hDmem : ∀ x, x ∈ D ↔ ∀ y ∈ I, R₀.form x y = 0` using `fun x => Iff.rfl`. Establish `hDsmul : ∀ (a : 𝓞 E), ∀ x ∈ D, a • x ∈ D`. Introduce `a x hx y hy`. Rewrite using `[R₀.adj a (IsCMField.ringOfIntegersComplexConj E a) (by simp [IsCMField.coe_ringOfIntegersComplexConj])]`. Conclude with `hx _ (I.smul_mem _ hy)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hex : ∀ x ∈ D, ∃ x', R₀'.P x' = q₀ (R₀.P x)`. Introduce `x hx`. Establish `: q₀ (R₀.P x) ∈ Set.range R₀'.P`. Rewrite using `[hq₀r]`. Conclude with `⟨_, ⟨x, hx, rfl⟩, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `this`. Set `π : Λ → Λ'` to `fun x => if h : x ∈ D then (hex x h).choose else 0`. Establish `hπ : ∀ x ∈ D, R₀'.P (π x) = q₀ (R₀.P x)`. Introduce `x h`. Simplify using `only [π, dif_pos h]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `(hex x h).choose_spec`. Establish `hinj : Function.Injective R₀'.P` using `(GlobalTheory.T.riemann_lattice_eigen_projection E g' Λ' Unit R₀').1`. Establish `hπs : ∀ x', ∃ x ∈ D, π x = x'`. Introduce `x'`. Establish `: R₀'.P x' ∈ Set.range R₀'.P` using `⟨x', rfl⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `this` using `[hq₀r]`. Take `⟨_, ⟨x, hx, rfl⟩, h⟩` from `this`. Conclude with `⟨x, hx, hinj ((hπ x hx).trans h)⟩`. Establish `hπadd : ∀ x ∈ D, ∀ y ∈ D, π (x + y) = π x + π y`. Introduce `x hx y hy`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Apply `hinj` to reduce the goal to its premises. Rewrite using `[hπ _ (D.add_mem hx hy), map_add, map_add, map_add, hπ x hx, hπ y hy]`. Establish `hπsmul : ∀ (a : 𝓞 E), ∀ x ∈ D, a • x ∈ D ∧ π (a • x) = a • π x`. Introduce `a x hx`. Use `⟨hDsmul a x hx, hinj ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hπ _ (hDsmul a x hx), R₀'.act, hπ x hx, R₀.act, hq₀B]`. Establish `hπI : ∀ x ∈ D, π x = 0 → x ∈ I`. Introduce `x hx h0`. Establish `h1 : q₀ (R₀.P x) = 0` using `by rw [← hπ x hx, h0, map_zero]`. Establish `h2 : R₀.P x ∈ LinearMap.ker q₀` using `h1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[hq₀k]`. Conclude with `mem_of_mem_span R₀ b f hf hI hiso hx h2`. Establish `hπform : ∀ x ∈ D, ∀ y ∈ D, R₀'.form (π x) (π y) = R₀.form x y`. Introduce `x hx y hy`. Establish `h` using `im_quot R₀ hI hiso hLI₀ q₀ hq₀k R₀'.Hm (fun a c ha => hq₀m a c ha) hx hy`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Rewrite `h` using `[← hπ x hx, ← hπ y hy, R₀'.im]`. Conclude with `h` after adjusting the coercions. Establish `hk : k + g' = g`. Establish `h1` using `LinearMap.finrank_range_add_finrank_ker q₀`. Rewrite `h1` using `[LinearMap.range_eq_top.2 hq₀s, hq₀k, span_period R₀ hI, finrank_span_eq_card hLI₀]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Simplify using `at h1`. Use linear arithmetic over natural numbers and integers. Use `⟨g', k, Λ', i1, i2, fun i => b (f i), R₀'.form, π, hk, hπs, fun R hR => ?_⟩` and prove the remaining obligations. Establish `hiso' : IsIsoSub R.form I` using `hR ▸ hiso`. Establish `hLI` using `period_facts R b f hf hI hiso'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hLI, span_period R hI, fun q hqs hqk => ?_⟩` and prove the remaining obligations. Take `⟨Hm', hherm, hpos, hmet⟩` from `GlobalTheory.T.exists_posDef_form_on_quotient g g' R.Hm R.herm R.pos _ q hqs hqk (exists_orth R hI hLI)`. Establish `hD' : ∀ x, (∀ y ∈ I, R.form x y = 0) → x ∈ D` using `fun x h => by rw [hDmem, ← hR]; exact h`. Establish `hDR : ∀ x ∈ D, ∀ y ∈ I, R.form x y = 0` using `fun x h => by rw [hR]; exact h`. Establish `hmet' : ∀ a c, (∀ v ∈ I, R.ip (R.P v) a = 0) → q c ⬝ᵥ Hm' *ᵥ star (q a) = c ⬝ᵥ R.Hm *ᵥ star a`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `a c ha`. Use `hmet a c (orth_of_set ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨v, hv, rfl⟩`. Conclude with `ha v hv`. Establish `hqB : ∀ (a : 𝓞 E) z, q z = 0 → q (R.B a z) = 0`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Introduce `a z hz`. Establish `hz' : z ∈ Submodule.span ℂ (R.P '' I)` using `by rw [← hqk]; exact hz`. Use `clear hz`. Establish `: R.B a z ∈ Submodule.span ℂ (R.P '' I)`. Proceed by induction on `hz' using Submodule.span_induction with`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Consider the case `mem w hw`. Take `⟨v, hv, rfl⟩` from `hw`. Rewrite using `[← R.act]`. Conclude with `Submodule.subset_span ⟨_, I.smul_mem _ hv, rfl⟩`. Consider the case `zero => simp`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Consider the case `add w w' _ _ h h'`. Rewrite using `[map_add]`. Conclude with `Submodule.add_mem _ h h'`. Consider the case `smul c w _ h`. Rewrite using `[map_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Submodule.smul_mem _ c h`. Rewrite `this` using `[← hqk]`. Conclude with `this`. Establish `hker : ∀ x ∈ D, π x = 0 → q (R.P x) = 0`. Introduce `x hx h0`.
-
-Establish `: R.P x ∈ LinearMap.ker q`. Rewrite using `[hqk]`. Conclude with `Submodule.subset_span ⟨x, hπI x hx h0, rfl⟩`. Conclude with `this`. Establish `him : ∀ x ∈ D, ∀ y ∈ D, (q (R.P x) ⬝ᵥ Hm' *ᵥ star (q (R.P y))).im = R₀'.form (π x) (π y)`.
-
-Introduce `x hx y hy`. Rewrite using `[im_quot R hI hiso' hLI q hqk Hm' hmet' (hDR x hx) (hDR y hy), hπform x hx y hy, hR]`. Take `⟨B', hB'⟩` from `GlobalTheory.T.exists_descended_ringHom_on_quotient (𝓞 E) g g' R.B q hqs hqB`. Take `⟨R', h1, h2, h3⟩` from `GlobalTheory.T.riemannLattice_quotient_compat E g g' Λ Λ' R R₀' D π q Hm' B' hπs hπadd hπsmul hker hB' hherm hpos him`. Use `⟨R', h1, fun x hx => h3 x (hD' x hx), fun x y hx => ?_⟩` and prove the remaining obligations.
-
-Use `show q y ⬝ᵥ R'.Hm *ᵥ star (q x) = y ⬝ᵥ R.Hm *ᵥ star x`. Rewrite using `[h2]`. Conclude with `hmet' x y hx`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_univ_quot : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (g : ℕ) (Λ : Type) [AddCommGroup Λ] [Module (𝓞 E) Λ] (R₀ : RiemLat E g Λ) (I : Submodule (𝓞 E) Λ), IsSaturated I → IsIsoSub R₀.form I → ∃ (g' k : ℕ) (Λ' : Type) (_ : AddCommGroup Λ') (_ : Module (𝓞 E) Λ') (e : Fin k → Λ) (form' : Λ' →ₗ[ℤ] Λ' →ₗ[ℤ] ℤ) (π : Λ → Λ'), k + g' = g ∧ (∀ x', ∃ x, (∀ y ∈ I, R₀.form x y = 0) ∧ π x = x') ∧ ∀ R : RiemLat E g Λ, R.form = R₀.form → LinearIndependent ℂ (fun i => R.P (e i)) ∧ Submodule.span ℂ (R.P '' I) = Submodule.span ℂ (Set.range fun i => R.P (e i)) ∧ ∀ q : (Fin g → ℂ) →ₗ[ℂ] (Fin g' → ℂ), Function.Surjective q → LinearMap.ker q = Submodule.span ℂ (R.P '' I) → ∃ R' : RiemLat E g' Λ', R'.form = form' ∧ (∀ x, (∀ y ∈ I, R.form x y = 0) → R'.P (π x) = q (R.P x)) ∧ ∀ x y, (∀ v ∈ I, R.ip (R.P v) x = 0) → R'.ip (q x) (q y) = R.ip x y := by
   intro E _ _ _ g Λ _ _ R₀ I hsat hiso

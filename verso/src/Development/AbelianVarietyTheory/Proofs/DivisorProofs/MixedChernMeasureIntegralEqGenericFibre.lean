@@ -29,7 +29,7 @@ noncomputable section
 namespace GlobalTheory.MixGen
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.T.mixedChernFormDensity_change_of_chart k X p σ D L c c' y hy hy', ← ENNReal.ofReal_mul (by positivity)]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem ofReal_dens_trans {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} {σ : k →+* ℂ} {D : ℕ}
     (L : Fin D → MLine p σ) (ε : ℤˣ) (c c' : AlgChart p σ D) (y : CxPts p σ) (hy : y ∈ c.e.source)
@@ -41,19 +41,15 @@ theorem ofReal_dens_trans {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp
   ring
 
 /- English proof (translation)
-Establish `hm : IsHomeomorph (bcPt hp.w τ)` using `GlobalTheory.T.complexPointsOverRingHom_isHomeomorph_baseChange k K (algebraMap k K) X G p q j hp τ`. Take `⟨_, hT2, hSC⟩` from `(IsArithVar.finite_emb_and_topology hX).2 (τ.comp (algebraMap k K))`. Set `h` to `hm.homeomorph (bcPt hp.w τ)`. Use `haveI : T2Space (CxPts q τ) := h.isEmbedding.t2Space`. Use `haveI : SecondCountableTopology (CxPts q τ) := h.isEmbedding.secondCountableTopology`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hGi, _, _, _, hgen, _⟩` from `GlobalTheory.Mix.genericFibre_facts k K X G p q j hp D hX`. Take `⟨U, hU, hηU, t, ht⟩` from `GenericCoords.exists_affine_etale_coords hX`. Establish `hZ : IsClosed ((U : Set X)ᶜ)` using `U.isOpen.isClosed_compl`. Establish `hgZ : genericPoint X ∉ (U : Set X)ᶜ` using `fun h => h hηU`. Establish `hTc : IsClosed {y : CxPts p (τ.comp (algebraMap k K)) | y.1 (IsLocalRing.closedPoint ℂ) ∈ (U : Set X)ᶜ}`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `e : {y : CxPts p (τ.comp (algebraMap k K)) | y.1 (IsLocalRing.closedPoint ℂ) ∈ (U : Set X)ᶜ} = (ptsIn p (τ.comp (algebraMap k K)) U)ᶜ`. Use extensionality with `y`. Simplify using `[mem_ptsIn]`. Rewrite using `[e]`. Conclude with `(isOpen_ptsIn _).isClosed_compl`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hZG : IsClosed (j ⁻¹' (U : Set X)ᶜ)` using `hZ.preimage j.continuous`. Establish `hgZG : genericPoint G ∉ j ⁻¹' (U : Set X)ᶜ`. Simplify using `only [Set.mem_preimage]`. Rewrite using `[hgen]`. Conclude with `hgZ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `key` using `GlueCoverNull.map_glueMeas_of_cover D (CxPts p (τ.comp (algebraMap k K))) (CxPts q τ) (AlgChart p (τ.comp (algebraMap k K)) D) (AlgChart q τ D) (fun c => c.e) (fun c y => ENNReal.ofReal ((ε : ℤ) * dens L c y)) (fun c => c.e) (fun c y => ENNReal.ofReal ((ε : ℤ) * dens (fun i => (L …`. Take `⟨w0, hw0⟩` from `hm.surjective x`. Conclude with `Set.encard_eq_one.2 ⟨w0, Set.ext fun w => ⟨fun hw => hm.injective (hw.trans hw0.symm), fun hw => hw ▸ hw0⟩⟩)`. Use the proof step `(fun z hz => by`. Establish `hmem : bcPt hp.w τ z ∈ ptsIn p (τ.comp (algebraMap k K)) U`.
-
-Simplify `hz` using `[mem_ptsIn]`. Take `⟨c, hc, -⟩` from `AlgChart.exists_of_etale hU t ht hmem`. Take `⟨c', hz', hc'⟩` from `GlobalTheory.Mix.exists_chart_dens_bc k K (algebraMap k K) X G p q j hp τ D c z hc`. Conclude with `⟨c, c', hz', hc, fun w hw _ => ⟨(hc' w hw).2.1, by simp only [(hc' w hw).2.2 L]⟩⟩)`. Rewrite `key` using `[Nat.cast_one, one_smul]`.
-
-Conclude with `key`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_part {k K : Type} [CommRing k] [Field K] [Algebra k K] [IsFractionRing k K] {X G : Scheme.{0}}
     [IsIntegral X] {p : X ⟶ Sp k} {q : G ⟶ Sp K} {j : G ⟶ X}
@@ -104,9 +100,9 @@ theorem map_part {k K : Type} [CommRing k] [Field K] [Algebra k K] [IsFractionRi
   exact key
 
 /- English proof (translation)
-Introduce `k K _ _ _ _ X G _ p q j hp τ D hX L`. Establish `hmap` using `map_part hp τ hX L`. Establish `hm : IsHomeomorph (bcPt hp.w τ)` using `GlobalTheory.T.complexPointsOverRingHom_isHomeomorph_baseChange k K (algebraMap k K) X G p q j hp τ`. Establish `he : MeasurableEmbedding (bcPt hp.w τ)` using `(hm.homeomorph (bcPt hp.w τ)).measurableEmbedding`. Use `⟨hmap, fun f => ⟨?_, ?_⟩⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Intg]`. Rewrite using `[← hmap 1, ← hmap (-1), he.integrable_map_iff, he.integrable_map_iff]`. Both sides reduce to the same expression. Simplify using `only [Mix.int]`. Rewrite using `[← hmap 1, ← hmap (-1), he.integral_map, he.integral_map]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem part_int_generic : ∀ (k K : Type) [CommRing k] [Field K] [Algebra k K] [IsFractionRing k K] (X G : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (q : G ⟶ Sp K) (j : G ⟶ X) (hp : IsPullback j q p (spMap (algebraMap k K))) (τ : K →+* ℂ) (D : ℕ), IsArithVar p D → ∀ (L : Fin D → MLine p (τ.comp (algebraMap k K))), (∀ ε : ℤˣ, Measure.map (bcPt hp.w τ) (part (fun i => (L i).bc hp.w τ) ε) = part L ε) ∧ ∀ f : CxPts p (τ.comp (algebraMap k K)) → ℝ, (Intg (fun i => (L i).bc hp.w τ) (fun y => f (bcPt hp.w τ y)) ↔ Intg L f) ∧ Mix.int (fun i => (L i).bc hp.w τ) (fun y => f (bcPt hp.w τ y)) = Mix.int L f := by
   intro k K _ _ _ _ X G _ p q j hp τ D hX L

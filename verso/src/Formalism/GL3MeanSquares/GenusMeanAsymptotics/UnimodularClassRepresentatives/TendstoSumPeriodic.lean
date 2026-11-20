@@ -10,17 +10,15 @@ namespace Formalism.HermitianLattices.Ext.L3.BoxSum
 variable {K F : Type} [Field K] [NumberField K] [StarRing K] [Field F] [NumberField F] [Algebra F K]
 
 /- English proof (translation)
-The claim follows from `Ideal.finiteQuotientOfFreeOfNeBot I hI`.
+A detailed English derivation is pending.
 -/
 theorem finite_quot {I : Ideal (𝓞 F)} (hI : I ≠ ⊥) : Finite (𝓞 F ⧸ I) :=
   Ideal.finiteQuotientOfFreeOfNeBot I hI
 
 /- English proof (translation)
-Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective c`. Establish `h1 : (1 : 𝓞 F) ∈ b ⊔ 𝔞` using `by rw [hco]; exact Submodule.mem_top`. Take `⟨u, hu, v, hv, huv⟩` from `Submodule.mem_sup.mp h1`. Use `⟨x₀ * v + y * u, ?_, ?_⟩` and prove the remaining obligations. Establish `e : x₀ * v + y * u - x₀ = (y - x₀) * u` using `by linear_combination x₀ * huv`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `b.mul_mem_left _ hu`. Rewrite using `[Ideal.Quotient.eq]`. Establish `e : x₀ * v + y * u - y = (x₀ - y) * v` using `by linear_combination y * huv`. Rewrite using `[e]`.
-
-Conclude with `𝔞.mul_mem_left _ hv`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_crt {b 𝔞 : Ideal (𝓞 F)} (hco : b ⊔ 𝔞 = ⊤) (x₀ : 𝓞 F) (c : 𝓞 F ⧸ 𝔞) :
     ∃ x : 𝓞 F, x - x₀ ∈ b ∧ Ideal.Quotient.mk 𝔞 x = c := by
@@ -37,17 +35,17 @@ theorem exists_crt {b 𝔞 : Ideal (𝓞 F)} (hco : b ⊔ 𝔞 = ⊤) (x₀ : �
     exact 𝔞.mul_mem_left _ hv
 
 /- English proof (translation)
-Use `set S := {n : 𝓞 F | n ∈ boxSet K F T ∧ n - x₀ ∈ b} with hSdef`. Establish `hS : S.Finite` using `finite_box_inter hK hF T {n | n - x₀ ∈ b}`. Establish `hT : ∀ c, {n : 𝓞 F | n ∈ boxSet K F T ∧ n - x c ∈ b * 𝔞} = {n | n ∈ S ∧ Ideal.Quotient.mk 𝔞 n = c}`. Introduce `c`. Use extensionality with `n`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [Set.mem_setOf_eq, hSdef]`. Rewrite using `[Ideal.mul_eq_inf_of_coprime hco, Ideal.mem_inf]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hn, h1, h2⟩`. Use `⟨⟨hn, ?_⟩, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `b.add_mem h1 (hx c).1` as an intermediate fact. Rewrite `this` using `[sub_add_sub_cancel]`. Then use the resulting hypothesis. Rewrite using `[← (hx c).2]`. Conclude with `Ideal.Quotient.eq.mpr h2`. Introduce and unpack `⟨⟨hn, h1⟩, h2⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨hn, ?_, ?_⟩` and prove the remaining obligations. Use `b.sub_mem h1 (hx c).1` as an intermediate fact. Rewrite `this` using `[sub_sub_sub_cancel_right]`. Then use the resulting hypothesis. Rewrite `h2` using `[← (hx c).2]`. Conclude with `Ideal.Quotient.eq.mp h2`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hSc : ∀ c, ({n | n ∈ S ∧ Ideal.Quotient.mk 𝔞 n = c} : Set (𝓞 F)).Finite` using `fun c => hS.subset fun n hn => hn.1`. Rewrite using `[finsum_mem_eq_finite_toFinset_sum _ hS, ← Finset.sum_fiberwise hS.toFinset (Ideal.Quotient.mk 𝔞)]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[hT c, finsum_mem_eq_finite_toFinset_sum _ (hSc c), Finset.mul_sum]`. Establish `e : (hSc c).toFinset = hS.toFinset.filter (fun n => Ideal.Quotient.mk 𝔞 n = c)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `n`. Simplify using the standard rewrite rules. Rewrite using `[e]`. Use `Finset.sum_congr rfl fun n hn => ?_` and prove the remaining obligations. Rewrite using `[(Finset.mem_filter.mp hn).2, mul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_split (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F) (T : ℝ) {b 𝔞 : Ideal (𝓞 F)}
     [Fintype (𝓞 F ⧸ 𝔞)] (hco : b ⊔ 𝔞 = ⊤) (x₀ : 𝓞 F) (g : 𝓞 F → ℝ) (φ : 𝓞 F ⧸ 𝔞 → ℝ)
@@ -87,23 +85,21 @@ theorem sum_split (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsF
   rw [(Finset.mem_filter.mp hn).2, mul_comm]
 
 /- English proof (translation)
-Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty`. Introduce `b hb _ x₀`. Use `tendsto_sum_coset hK hF hm hb x₀` as an intermediate fact. Simplify using `only [Finset.prod_empty, mul_one]`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `this`. Consider the case `insert 𝔮 S' h𝔮S ih`. Introduce `b hb hcop x₀`. Establish `h𝔮0 : 𝔮.1 ≠ ⊥` using `Ring.ne_bot_of_isMaximal_of_not_isField 𝔮.2 (RingOfIntegers.not_isField F)`. Establish `h𝔞0 : 𝔮.1 ^ k ≠ ⊥`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : 𝔮.1 ≠ 0` using `by simpa only [Ideal.zero_eq_bot] using h𝔮0`. Simplify `pow_ne_zero k h0` using `only [Ideal.zero_eq_bot]`. Use `haveI : Fintype (𝓞 F ⧸ 𝔮.1 ^ k) := @Fintype.ofFinite _ (finite_quot h𝔞0)`. Establish `hco : b ⊔ 𝔮.1 ^ k = ⊤`. Establish `h1 : IsCoprime b 𝔮.1` using `Ideal.isCoprime_iff_sup_eq.mpr (hcop 𝔮 (Finset.mem_insert_self _ _))`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Ideal.isCoprime_iff_sup_eq.mp h1.pow_right`. Use `choose x hx using fun c => exists_crt hco x₀ c`. Establish `hb' : b * 𝔮.1 ^ k ≠ ⊥`. Establish `h0 : b ≠ 0` using `by simpa only [Ideal.zero_eq_bot] using hb`. Establish `h1 : 𝔮.1 ^ k ≠ 0` using `by simpa only [Ideal.zero_eq_bot] using h𝔞0`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify `mul_ne_zero h0 h1` using `only [Ideal.zero_eq_bot]`. Establish `hcop' : ∀ 𝔭 ∈ S', b * 𝔮.1 ^ k ⊔ 𝔭.1 = ⊤`. Introduce `𝔭 h𝔭`. Establish `h1 : IsCoprime b 𝔭.1` using `Ideal.isCoprime_iff_sup_eq.mpr (hcop 𝔭 (Finset.mem_insert_of_mem h𝔭))`. Establish `hne : 𝔮.1 ≠ 𝔭.1` using `fun e => h𝔮S ((Subtype.ext e : 𝔮 = 𝔭) ▸ h𝔭)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : IsCoprime 𝔮.1 𝔭.1` using `Ideal.isCoprime_iff_sup_eq.mpr (Ideal.IsMaximal.coprime_of_ne 𝔮.2 𝔭.2 hne)`. Establish `h3 : IsCoprime (𝔮.1 ^ k) 𝔭.1` using `h2.pow_left`. Conclude with `Ideal.isCoprime_iff_sup_eq.mp (h1.mul_left h3)`. Establish `hlim` using `fun c => ih (b * 𝔮.1 ^ k) hb' hcop' (x c)`. Establish `hsplit : ∀ j : ℕ, ∑ᶠ n ∈ {n : 𝓞 F | n ∈ boxSet K F ((j : ℝ) ^ 2) ∧ n - x₀ ∈ b}, (Ideal.absNorm (Ideal.span {n}) : ℝ) ^ (m - 1) * ∏ 𝔭 ∈ insert 𝔮 S', φ 𝔭 (Ideal.Quotient.mk (𝔭.1 ^ k) n) = ∑ c, φ 𝔮 c * ∑ᶠ n ∈ {n : 𝓞 F | n ∈ boxSet K F ((j : ℝ) ^ 2) ∧ n - x c ∈ b * 𝔮.1 ^ k}, (Ideal.a …`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Introduce `j`. Rewrite using `[← sum_split hK hF _ hco x₀ (fun n => (Ideal.absNorm (Ideal.span {n}) : ℝ) ^ (m - 1) * ∏ 𝔭 ∈ S', φ 𝔭 (Ideal.Quotient.mk (𝔭.1 ^ k) n)) (φ 𝔮) x hx]`. Use `finsum_mem_congr rfl fun n _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_insert h𝔮S]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hT` using `tendsto_finset_sum (Finset.univ : Finset (𝓞 F ⧸ 𝔮.1 ^ k)) fun c _ => (hlim c).const_mul (φ 𝔮 c)`. Use `hT using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `j`. Rewrite using `[hsplit j, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun c _ => by ring`.
-
-Use `congr 1`. Rewrite using `[Finset.prod_insert h𝔮S, finsum_eq_sum_of_fintype]`. Simplify using `only [map_mul, map_pow, Nat.cast_mul, Nat.cast_pow, zpow_neg, zpow_natCast, Finset.mul_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem tendsto_sum_periodic (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F) {m : ℕ} (hm : 1 ≤ m)
     (k : ℕ) (φ : ∀ 𝔭 : {𝔭 : Ideal (𝓞 F) // 𝔭.IsMaximal}, (𝓞 F ⧸ 𝔭.1 ^ k) → ℝ)

@@ -33,7 +33,7 @@ def centralCuspForms : Submodule ℂ (cuspForms K n) where
 variable {K n}
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_centralCuspForms {φ : cuspForms K n} :
     φ ∈ centralCuspForms K n ↔ ∀ (s : {r : ℝ // 0 < r}) (x : AdelicGLn.AdelicGL K n),
@@ -42,7 +42,7 @@ theorem mem_centralCuspForms {φ : cuspForms K n} :
   Iff.rfl
 
 /- English proof (translation)
-Rewrite using `[← Reduction.centralSection_mul_comm]`. Conclude with `hφ s x`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem apply_mul_centralSection_of_mem {φ : cuspForms K n} (hφ : φ ∈ centralCuspForms K n)
     (x : AdelicGLn.AdelicGL K n) (s : {r : ℝ // 0 < r}) :
@@ -52,9 +52,9 @@ theorem apply_mul_centralSection_of_mem {φ : cuspForms K n} (hφ : φ ∈ centr
   exact hφ s x
 
 /- English proof (translation)
-Introduce `s x`. Rewrite using `[coe_uActionCusp, coe_uAction]`. Unfold `uActFun`. Establish `e : sliceL (Reduction.centralSection K n s * x) ⟨(φ : AdelicGLn.AdelicGL K n → ℂ), φ.2.1.isSmooth.1⟩ = sliceL x ⟨(φ : AdelicGLn.AdelicGL K n → ℂ), φ.2.1.isSmooth.1⟩` using `Subtype.ext (funext fun y => by show (φ : AdelicGLn.AdelicGL K n → ℂ) (Reduction.centralSection K n s * x * infEmb K n y) = (φ : AdelicGLn.AdelicGL K n → ℂ) (x * infEmb K n y)`. Rewrite using `[mul_assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hφ s _)`. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem uActionCusp_mem_centralCuspForms (u : UEnv K n) {φ : cuspForms K n}
     (hφ : φ ∈ centralCuspForms K n) : uActionCusp K n u φ ∈ centralCuspForms K n := by
@@ -71,14 +71,14 @@ theorem uActionCusp_mem_centralCuspForms (u : UEnv K n) {φ : cuspForms K n}
   rw [e]
 
 /- English proof (translation)
-The claim follows from `uActionCusp_mem_centralCuspForms _ hφ`.
+A detailed English derivation is pending.
 -/
 theorem ρ_mem_centralCuspForms (X : (isExpLieAlgebra K n).lieSubalgebra) {φ : cuspForms K n}
     (hφ : φ ∈ centralCuspForms K n) : (gkModuleCusp K n).ρ X φ ∈ centralCuspForms K n :=
   uActionCusp_mem_centralCuspForms _ hφ
 
 /- English proof (translation)
-Introduce `s x`. Use `show (φ : AdelicGLn.AdelicGL K n → ℂ) (Reduction.centralSection K n s * x * infEmb K n k) = (φ : AdelicGLn.AdelicGL K n → ℂ) (x * infEmb K n k)`. Rewrite using `[mul_assoc]`. Conclude with `hφ s _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem σ_mem_centralCuspForms (k : archCompact K n) {φ : cuspForms K n}
     (hφ : φ ∈ centralCuspForms K n) : (gkModuleCusp K n).σ k φ ∈ centralCuspForms K n := by
@@ -89,7 +89,7 @@ theorem σ_mem_centralCuspForms (k : archCompact K n) {φ : cuspForms K n}
   exact hφ s _
 
 /- English proof (translation)
-Introduce `s x`. Use `show (φ : AdelicGLn.AdelicGL K n → ℂ) (Reduction.centralSection K n s * x * finEmb K n h) = (φ : AdelicGLn.AdelicGL K n → ℂ) (x * finEmb K n h)`. Rewrite using `[mul_assoc]`. Conclude with `hφ s _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finRepCusp_mem_centralCuspForms (h : AdelicGLn.FiniteAdelicGL K n) {φ : cuspForms K n}
     (hφ : φ ∈ centralCuspForms K n) : finRepCusp K n h φ ∈ centralCuspForms K n := by
@@ -106,7 +106,7 @@ abbrev centralCusp : AdelicGKModule K n (centralCuspForms K n) :=
     (fun k _ hφ => σ_mem_centralCuspForms k hφ) (fun h _ hφ => finRepCusp_mem_centralCuspForms h hφ)
 
 /- English proof (translation)
-Take `⟨C, hC⟩` from `exists_norm_le_of_mem_cuspForms φ.2`. Use `⟨C, fun x => ?_⟩` and prove the remaining obligations. Take `⟨s, y, hy, rfl⟩` from `exists_centralSection_mul_mem_normOneGL x`. Rewrite using `[hφ s y]`. Conclude with `hC y hy`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_norm_le_of_mem_centralCuspForms {φ : cuspForms K n} (hφ : φ ∈ centralCuspForms K n) :
     ∃ C : ℝ, ∀ x, ‖(φ : AdelicGLn.AdelicGL K n → ℂ) x‖ ≤ C := by
@@ -128,7 +128,7 @@ theorem coe_toOne (g : AdelicGLn.AdelicGL K n) :
       g * (Reduction.centralSection K n (Reduction.detModule K n g))⁻¹ := rfl
 
 /- English proof (translation)
-Rewrite using `[coe_toOne, ← map_inv, ← mul_assoc]`. Conclude with `apply_mul_centralSection_of_mem hφ _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem apply_mul_toOne {φ : cuspForms K n} (hφ : φ ∈ centralCuspForms K n)
     (x g : AdelicGLn.AdelicGL K n) :
@@ -140,7 +140,7 @@ theorem apply_mul_toOne {φ : cuspForms K n} (hφ : φ ∈ centralCuspForms K n)
 variable (μ : Measure (Reduction.normOneGL K n)) [μ.IsHaarMeasure]
 
 /- English proof (translation)
-The claim follows from `cuspToL2_rightTranslate μ (toOne g) φ ψ (by rw [hψ] funext x exact (apply_mul_toOne hφ x g).symm)`.
+A detailed English derivation is pending.
 -/
 theorem cuspFormLp_rightTranslate_eq_rep {φ ψ : cuspForms K n} (hφ : φ ∈ centralCuspForms K n)
     (g : AdelicGLn.AdelicGL K n)
@@ -152,7 +152,7 @@ theorem cuspFormLp_rightTranslate_eq_rep {φ ψ : cuspForms K n} (hφ : φ ∈ c
     exact (apply_mul_toOne hφ x g).symm)
 
 /- English proof (translation)
-Establish `e1` using `cuspFormLp_rightTranslate_eq_rep μ hφ (finEmb K n h) (ψ := finRepCusp K n h φ) rfl`. Establish `e2` using `cuspFormLp_rightTranslate_eq_rep μ hψ (finEmb K n h) (ψ := finRepCusp K n h ψ) rfl`. Conclude with `(congrArg₂ (inner ℂ) e1 e2).trans (UnitaryRep.inner_map_map (cuspRep μ) _ _ _)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem petersson_inner_finiteAdelic_invariant (h : AdelicGLn.FiniteAdelicGL K n) {φ ψ : cuspForms K n}
     (hφ : φ ∈ centralCuspForms K n) (hψ : ψ ∈ centralCuspForms K n) :
@@ -163,7 +163,7 @@ theorem petersson_inner_finiteAdelic_invariant (h : AdelicGLn.FiniteAdelicGL K n
   exact (congrArg₂ (inner ℂ) e1 e2).trans (UnitaryRep.inner_map_map (cuspRep μ) _ _ _)
 
 /- English proof (translation)
-Establish `e1` using `cuspFormLp_rightTranslate_eq_rep μ hφ (infEmb K n k) (ψ := (gkModuleCusp K n).σ k φ) rfl`. Establish `e2` using `cuspFormLp_rightTranslate_eq_rep μ hψ (infEmb K n k) (ψ := (gkModuleCusp K n).σ k ψ) rfl`. Conclude with `(congrArg₂ (inner ℂ) e1 e2).trans (UnitaryRep.inner_map_map (cuspRep μ) _ _ _)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem petersson_inner_maximalCompact_invariant (k : archCompact K n) {φ ψ : cuspForms K n}
     (hφ : φ ∈ centralCuspForms K n) (hψ : ψ ∈ centralCuspForms K n) :
@@ -174,7 +174,7 @@ theorem petersson_inner_maximalCompact_invariant (k : archCompact K n) {φ ψ : 
   exact (congrArg₂ (inner ℂ) e1 e2).trans (UnitaryRep.inner_map_map (cuspRep μ) _ _ _)
 
 /- English proof (translation)
-Establish `h0 : cuspToL2 μ φ = 0` using `inner_self_eq_zero.1 h`. Conclude with `injOn_cuspToL2 μ (hφ : _) (fun s x => rfl) (h0.trans (map_zero (cuspToL2 μ)).symm)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_petersson_inner_self_eq_zero {φ : cuspForms K n} (hφ : φ ∈ centralCuspForms K n)
     (h : inner ℂ (cuspToL2 μ φ) (cuspToL2 μ φ) = 0) : φ = 0 := by
@@ -184,7 +184,7 @@ theorem eq_zero_of_petersson_inner_self_eq_zero {φ : cuspForms K n} (hφ : φ �
 local notation "Γ₁" => Reduction.rationalGLOne K n
 
 /- English proof (translation)
-Rewrite using `[Submodule.coe_inner, MeasureTheory.L2.inner_def]`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [coeFn_cuspToL2 μ φ, coeFn_cuspToL2 μ ψ] with q h1 h2`. Rewrite using `[h1, h2, RCLike.inner_apply']`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem petersson_inner_eq_integral_quotient (φ ψ : cuspForms K n) :
     inner ℂ (cuspToL2 μ φ) (cuspToL2 μ ψ) =
@@ -209,7 +209,7 @@ theorem quotTr_mk (φ : cuspForms K n) (g : AdelicGLn.AdelicGL K n) (y : Reducti
     quotTr φ g (mk Γ₁ y) = (φ : AdelicGLn.AdelicGL K n → ℂ) ((y : AdelicGLn.AdelicGL K n) * g) := rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `q`. Take `⟨y, rfl⟩` from `mk_surjective Γ₁ q`. Rewrite using `[quotTr_mk, cuspQuot_mk, mul_one]`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem quotTr_one (φ : cuspForms K n) : quotTr φ 1 = cuspQuot φ.2.1.isLeftInvariant := by
   funext q
@@ -217,13 +217,13 @@ theorem quotTr_one (φ : cuspForms K n) : quotTr φ 1 = cuspQuot φ.2.1.isLeftIn
   rw [quotTr_mk, cuspQuot_mk, mul_one]
 
 /- English proof (translation)
-The claim follows from `continuous_cuspQuot _ (φ.2.1.continuous.comp (continuous_id.mul continuous_const))`.
+A detailed English derivation is pending.
 -/
 theorem continuous_quotTr (φ : cuspForms K n) (g : AdelicGLn.AdelicGL K n) : Continuous (quotTr φ g) :=
   continuous_cuspQuot _ (φ.2.1.continuous.comp (continuous_id.mul continuous_const))
 
 /- English proof (translation)
-Use function extensionality and compare the values at `q`. Take `⟨y, rfl⟩` from `mk_surjective Γ₁ q`. Rewrite using `[Function.comp_apply, rightMul_mk, quotTr_mk, quotTr_mk, Subgroup.coe_mul, mul_one, apply_mul_toOne hφ]`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem quotTr_eq_comp {φ : cuspForms K n} (hφ : φ ∈ centralCuspForms K n) (g : AdelicGLn.AdelicGL K n) :
     quotTr φ g = quotTr φ 1 ∘ rightMul Γ₁ (toOne g) := by
@@ -233,13 +233,13 @@ theorem quotTr_eq_comp {φ : cuspForms K n} (hφ : φ ∈ centralCuspForms K n) 
     apply_mul_toOne hφ]
 
 /- English proof (translation)
-Use `set X' := (isExpLieAlgebra K n).ofLie X with hX`. Use `set f : ℝ → ℂ := fun t => (φ : AdelicGLn.AdelicGL K n → ℂ) (g * infEmb K n ((isExpLieAlgebra K n).expG (t • X'))) with hf`. Establish `hsm : IsArchSmooth (φ : AdelicGLn.AdelicGL K n → ℂ)` using `φ.2.1.isSmooth.1`. Use `set g' := g * infEmb K n ((isExpLieAlgebra K n).expG (t • X')) with hg'`. Establish `h1` using `(isExpLieAlgebra K n).hasDerivAt_rightDeriv (hsm g') X' 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hval : (isExpLieAlgebra K n).rightDeriv X' (archSlice (φ : AdelicGLn.AdelicGL K n → ℂ) g') 1 = ((gkModuleCusp K n).ρ X φ : AdelicGLn.AdelicGL K n → ℂ) g'` using `(uAction_ι_apply X ⟨φ, hsm⟩ g').symm`. Rewrite `h1` using `[hval]`. Establish `h2 : (fun u : ℝ => archSlice (φ : AdelicGLn.AdelicGL K n → ℂ) g' (1 * (isExpLieAlgebra K n).expG (u • X'))) = fun u => f (t + u)`. Use function extensionality and compare the values at `u`. Simplify using `only [archSlice_apply, one_mul, hf, hg', mul_assoc, ← map_mul, ← (isExpLieAlgebra K n).expG_add_smul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h1` using `[h2]`. Establish `h1' : HasDerivAt (fun u => f (t + u)) (((gkModuleCusp K n).ρ X φ : AdelicGLn.AdelicGL K n → ℂ) g') (t - t)`. Rewrite using `[sub_self]`. Conclude with `h1`. Establish `h3` using `h1'.comp_sub_const t t`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e : (fun x => f (t + (x - t))) = f`. Use function extensionality and compare the values at `x`. Simplify using `only [add_sub_cancel]`. Rewrite `h3` using `[e]`. Conclude with `h3`.
+A detailed English derivation is pending.
 -/
 theorem hasDerivAt_apply_mul_expG (φ : cuspForms K n) (X : (isExpLieAlgebra K n).lieSubalgebra)
     (g : AdelicGLn.AdelicGL K n) (t : ℝ) :
@@ -277,25 +277,23 @@ def expPath (X : (isExpLieAlgebra K n).lieSubalgebra) (t : ℝ) : AdelicGLn.Adel
   infEmb K n ((isExpLieAlgebra K n).expG (t • (isExpLieAlgebra K n).ofLie X))
 
 /- English proof (translation)
-Simplify using `[expPath]`.
+Simplify using the standard rewrite rules.
 -/
 theorem expPath_zero (X : (isExpLieAlgebra K n).lieSubalgebra) : expPath X 0 = 1 := by
   simp [expPath]
 
 /- English proof (translation)
-Use `Reduction.isFiniteMeasure_quotientMeasure (K := K) (n := n) μ` as an intermediate fact. Establish `hXφ` using `ρ_mem_centralCuspForms X hφ`. Establish `hXψ` using `ρ_mem_centralCuspForms X hψ`. Take `⟨C₁, hC₁⟩` from `exists_norm_le_of_mem_centralCuspForms hφ`. Take `⟨C₂, hC₂⟩` from `exists_norm_le_of_mem_centralCuspForms hψ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨C₃, hC₃⟩` from `exists_norm_le_of_mem_centralCuspForms hXφ`. Take `⟨C₄, hC₄⟩` from `exists_norm_le_of_mem_centralCuspForms hXψ`. Establish `hb : ∀ (χ : cuspForms K n) (C : ℝ), (∀ x, ‖(χ : AdelicGLn.AdelicGL K n → ℂ) x‖ ≤ C) → ∀ g q, ‖quotTr χ g q‖ ≤ C`. Introduce `χ C hC g q`. Take `⟨y, rfl⟩` from `mk_surjective Γ₁ q`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[quotTr_mk]`. Conclude with `hC _`. Establish `hbm : ∀ (χ χ' : cuspForms K n) (C C' : ℝ), (∀ x, ‖(χ : AdelicGLn.AdelicGL K n → ℂ) x‖ ≤ C) → (∀ x, ‖(χ' : AdelicGLn.AdelicGL K n → ℂ) x‖ ≤ C') → ∀ g q, ‖starRingEnd ℂ (quotTr χ g q) * quotTr χ' g q‖ ≤ C * C'`. Introduce `χ χ' C C' hC hC' g q`. Rewrite using `[norm_mul, RCLike.norm_conj]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `mul_le_mul (hb χ C hC g q) (hb χ' C' hC' g q) (norm_nonneg _) ((norm_nonneg _).trans (hb χ C hC g q))`. Establish `hcm : ∀ (χ χ' : cuspForms K n) g, Continuous fun q => starRingEnd ℂ (quotTr χ g q) * quotTr χ' g q` using `fun χ χ' g => (continuous_star.comp (continuous_quotTr χ g)).mul (continuous_quotTr χ' g)`. Establish `key` using `hasDerivAt_integral_of_dominated_loc_of_deriv_le (μ := quotientMeasure Γ₁ μ) (F := fun t q => starRingEnd ℂ (quotTr φ (expPath X t) q) * quotTr ψ (expPath X t) q) (F' := fun t q => starRingEnd ℂ (quotTr ((gkModuleCusp K n).ρ X φ) (expPath X t) q) * quotTr ψ (expPath X t) q + star …`. Take `⟨y, rfl⟩` from `mk_surjective Γ₁ q`. Simplify using `only [quotTr_mk, expPath]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `d1` using `(hasDerivAt_apply_mul_expG φ X (y : AdelicGLn.AdelicGL K n) t).star`. Establish `d2` using `hasDerivAt_apply_mul_expG ψ X (y : AdelicGLn.AdelicGL K n) t`. Simplify using `only [← starRingEnd_apply] at d1`. Conclude with `d1.mul d2)`. Establish `hconst : (fun t => ∫ q, starRingEnd ℂ (quotTr φ (expPath X t) q) * quotTr ψ (expPath X t) q ∂(quotientMeasure Γ₁ μ)) = fun _ => ∫ q, starRingEnd ℂ (quotTr φ 1 q) * quotTr ψ 1 q ∂(quotientMeasure Γ₁ μ)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Use function extensionality and compare the values at `t`. Rewrite using `[quotTr_eq_comp hφ, quotTr_eq_comp hψ]`. Conclude with `(measurePreserving_rightMul μ (toOne (expPath X t))).integral_comp (rightMulHomeomorph Γ₁ (toOne (expPath X t))).measurableEmbedding (fun q => starRingEnd ℂ (quotTr φ 1 q) * quotTr ψ 1 q)`. Rewrite `key` using `[hconst]`. Establish `h0` using `key.2.unique (hasDerivAt_const (0 : ℝ) _)`.
-
-Simplify `h0` using `only [expPath_zero]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem integral_ρ_add_eq_zero (X : (isExpLieAlgebra K n).lieSubalgebra) {φ ψ : cuspForms K n}
     (hφ : φ ∈ centralCuspForms K n) (hψ : ψ ∈ centralCuspForms K n) :
@@ -357,13 +355,11 @@ theorem integral_ρ_add_eq_zero (X : (isExpLieAlgebra K n).lieSubalgebra) {φ ψ
   simpa only [expPath_zero] using h0
 
 /- English proof (translation)
-Use `Reduction.isFiniteMeasure_quotientMeasure (K := K) (n := n) μ` as an intermediate fact. Establish `hI : ∀ χ χ' : cuspForms K n, Integrable (fun q => starRingEnd ℂ (cuspQuot χ.2.1.isLeftInvariant q) * cuspQuot χ'.2.1.isLeftInvariant q) (quotientMeasure Γ₁ μ)`. Introduce `χ χ'`. Take `⟨C, hC⟩` from `exists_norm_le_of_mem_cuspForms χ.2`. Take `⟨C', hC'⟩` from `exists_norm_le_of_mem_cuspForms χ'.2`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `Integrable.of_bound (((continuous_star.comp (continuous_cuspQuot _ χ.2.1.continuous)).mul (continuous_cuspQuot _ χ'.2.1.continuous)).aestronglyMeasurable) (C * C') (Eventually.of_forall fun q => ?_)` and prove the remaining obligations. Take `⟨y, rfl⟩` from `mk_surjective Γ₁ q`. Rewrite using `[norm_mul, RCLike.norm_conj, cuspQuot_mk, cuspQuot_mk]`. Conclude with `mul_le_mul (hC y y.2) (hC' y y.2) (norm_nonneg _) ((norm_nonneg _).trans (hC y y.2))`. Establish `e1` using `petersson_inner_eq_integral_quotient μ ((gkModuleCusp K n).ρ X φ) ψ`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2` using `petersson_inner_eq_integral_quotient μ φ ((gkModuleCusp K n).ρ X ψ)`. Use `(congrArg₂ (· + ·) e1 e2).trans ?_` and prove the remaining obligations. Rewrite using `[← integral_add (hI _ _) (hI _ _)]`. Establish `h` using `integral_ρ_add_eq_zero μ X hφ hψ`. Simplify using `only [quotTr_one] at h`.
-
-Conclude with `h`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem petersson_inner_lieAlgebra_skewAdjoint (X : (isExpLieAlgebra K n).lieSubalgebra) {φ ψ : cuspForms K n}
     (hφ : φ ∈ centralCuspForms K n) (hψ : ψ ∈ centralCuspForms K n) :

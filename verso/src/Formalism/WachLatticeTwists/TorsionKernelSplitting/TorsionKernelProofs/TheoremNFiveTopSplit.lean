@@ -13,9 +13,9 @@ namespace Formalism.RepresentationBoundsCohomology.JS
 open Formalism.NG Formalism.RepresentationBoundsCohomology.BR
 
 /- English proof (translation)
-Introduce `O _ _ _ Cs _ _ Fs Im rr _ ℓ e c J hfin hlift hH0 hrk`. Establish `hcol` using `Formalism.RepresentationBoundsCohomology.rowColength O Fs (Im.comap Fs.subtype) ℓ e (fun x => by`. Rewrite using `[Submodule.mem_comap]`. Conclude with `hlift x.1 x.2)`. Take `⟨H, hHk, hHt⟩` from `hH0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `htor` using `Formalism.RepresentationBoundsCohomology.submoduleLengthBound_statement O rr H ℓ c hHk`. Use `hcol.trans ?_` and prove the remaining obligations. Establish `hrk' : (Module.finrank O Fs : ℕ∞) ≤ (J : ℕ∞)` using `by exact_mod_cast hrk`. Use `gcongr`. Conclude with `hHt.trans htor`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem rowCost : StatRowCost := by
   intro O _ _ _ Cs _ _ Fs Im rr _ ℓ e c J hfin hlift hH0 hrk
@@ -31,11 +31,11 @@ theorem rowCost : StatRowCost := by
   exact hHt.trans htor
 
 /- English proof (translation)
-Introduce `v what₂ cols conj lenRow a x c h y₁ y₂ j J R hk hrows hj hL`. Use `hk.trans ?_` and prove the remaining obligations. Establish `h1 : ∑ w ∈ what₂, lenRow w ≤ ∑ w ∈ cols, lenRow (conj w)`. Rewrite using `[hrows]`. Conclude with `Finset.sum_image_le_of_nonneg (fun _ _ => bot_le)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : ∑ w ∈ what₂, lenRow w + ∑ w ∈ cols, (a w + (j w : ℕ∞) * x w + c w + h w) ≤ ∑ w ∈ cols, (a w + (J w : ℕ∞) * x w + c w + h w + y₁ w + y₂ w)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[add_comm, ← Finset.sum_add_distrib]`. Use `_ ≤ ∑ w ∈ cols, (a w + (J w : ℕ∞) * x w + c w + h w + y₁ w + y₂ w) := by`. Use `Finset.sum_le_sum fun w hw => ?_` and prove the remaining obligations.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[add_assoc (a w + (J w : ℕ∞) * x w + c w + h w)]`. Establish `hjw : (j w : ℕ∞) ≤ (J w : ℕ∞)` using `by exact_mod_cast hj w hw`. Establish `hLw` using `hL w hw`. Use `gcongr`. Use `gcongr`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem splitFold : StatSplitFold := by
   intro v what₂ cols conj lenRow a x c h y₁ y₂ j J R hk hrows hj hL

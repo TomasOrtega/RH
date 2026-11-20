@@ -16,11 +16,11 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F} {Z : Model Xo c β}
 
 /- English proof (translation)
-Take `⟨y, ψ, φ₁, f₀, t, t', hp, h1, h2⟩` from `hc`. Use `⟨y, ν.comp ψ, φ₁, f₀, t, fun τ i => Units.map (ν : K →* K') (t' τ i), ?_, h1, ?_, ?_, fun τ i => ?_⟩` and prove the remaining obligations. Rewrite using `[hp, ← Category.assoc, ← ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap_comp]`. Rewrite using `[hx, h2.1, ← Category.assoc, ← ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap_comp]`. Rewrite using `[hχ, h2.2.1]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Take `⟨cf, hc1, hc2, hc3⟩` from `h2.2.2 τ i`. Use `⟨fun k => ν (cf k), by show ν (cf i) = _; rw [hc1]; rfl, fun k hk => by show ν (cf k) = 0; rw [hc2 k hk, map_zero], ?_⟩` and prove the remaining obligations. Establish `h` using `GlobalTheory.GradedPieces.comb_map ν hx.symm hc3`. Rewrite using `[hg τ i]`.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify `h` using `only [GlobalTheory.GradedPieces.dual_comp]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem carries_map {F : Type} [Field F] {e : F ≃+* c.F} (C : FlagCpt Z e) {K K' : Type} [Field K] [Field K']
     (ν : K →+* K') {χ : c.F →+* K} {x : Sp K ⟶ Z.X} {p : Sp K ⟶ C.Y.X} {f : EigFrame Z χ x} {χ' : c.F →+* K'}
@@ -45,9 +45,9 @@ namespace GlobalTheory
 open GlobalTheory.GalCarryBC in
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c O _ β Z T F _ e C C' K K' _ _ ν p p' h`. Take `⟨hp, χ, f, f', hs, hpush, hc, hc'⟩` from `h`. Take `⟨g, hg⟩` from `f.exists_isMap ν (φ' := ν.comp χ) (x' := (spMap ν ≫ p) ≫ C.π ≫ genι Z) rfl (Category.assoc _ _ _)`. Take `⟨g', hg'⟩` from `f'.exists_isMap ν (φ' := ν.comp χ) (x' := (spMap ν ≫ p') ≫ C'.π ≫ genι Z) rfl (Category.assoc _ _ _)`. Use `⟨by simp only [Category.assoc, hp], ν.comp χ, g, g', ?_, hpush.map hg hg' rfl ?_, carries_map C ν hc hg rfl (Category.assoc _ _ _), carries_map C' ν hc' hg' rfl (Category.assoc _ _ _)⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Category.assoc, hs, ← ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap_comp]`. Rewrite using `[Category.assoc, hpush.2.1]`. Simplify using `only [Category.assoc]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem ptRel_map : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c β) (T : Tw Z) (F : Type) [Field F] (e : F ≃+* c.F) (C C' : FlagCpt Z e) (K K' : Type) [Field K] [Field K'] (ν : K →+* K') (p : Sp K ⟶ C.Y.X) (p' : Sp K ⟶ C'.Y.X), T.PtRel C C' p p' → T.PtRel C C' (spMap ν ≫ p) (spMap ν ≫ p') := by
   intro E _ _ _ H Dw l Xo c O _ β Z T F _ e C C' K K' _ _ ν p p' h

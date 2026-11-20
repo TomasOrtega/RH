@@ -8,29 +8,25 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Bern
 open Finset UpperTheory.V.Bern
 
 /- English proof (translation)
-Introduce `N _ χ k hk hpar`. Use `haveI : NeZero χ.conductor := ⟨χ.conductor_ne_zero⟩`. Establish `hprim` using `χ.primitiveCharacter_isPrimitive`. Establish `hpar' : χ.primitiveCharacter (-1) = (-1) ^ k` using `by rw [(b_parity k χ).2, hpar]`. Establish `hne1 : χ.primitiveCharacter⁻¹ ≠ 1 ∨ (k : ℂ) ≠ 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `Nat.lt_or_ge 1 k with h | h` into its components or cases. Use `right`. Conclude with `(ne_of_gt h)` after adjusting the coercions. Use `left`. Establish `hk1 : k = 1` using `le_antisymm h hk`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions.
 
-Introduce `h1`. Establish `h1' : χ.primitiveCharacter = 1` using `inv_eq_one.mp h1`. Rewrite `hpar'` using `[h1', MulChar.one_apply isUnit_one.neg, hk1, pow_one]`. Evaluate the numerical expressions using `at hpar'`. Establish `hL` using `b_fe χ.primitiveCharacter k hprim hk hpar'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hLne : DirichletCharacter.LFunction χ.primitiveCharacter⁻¹ (k : ℂ) ≠ 0` using `DirichletCharacter.LFunction_ne_zero_of_one_le_re _ hne1 (by simp; exact_mod_cast hk)`. Establish `hB : Bprim k χ ≠ 0`. Introduce `h0`. Establish `hl` using `(b_lprim χ.primitiveCharacter k hk).1`. Establish `hg : genB k ⇑χ.primitiveCharacter = 0` using `h0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hl` using `[hg, neg_zero, zero_div]`. Rewrite `hL` using `[hl, norm_zero]`. Establish `hc : (0 : ℝ) < (χ.conductor : ℝ)`. Conclude with `Nat.pos_of_ne_zero χ.conductor_ne_zero` after adjusting the coercions. Establish `hpos : (0 : ℝ) < 2 * ((k - 1).factorial : ℝ) * (χ.conductor : ℝ) ^ ((k : ℝ) - 1 / 2) / (2 * Real.pi) ^ k * ‖DirichletCharacter.LFunction χ.primitiveCharacter⁻¹ (k : ℂ)‖`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Check the signs of the components of the expression. Check the signs of the components of the expression.
 
-Apply `mul_pos` to reduce the goal to its premises. Apply `div_pos` to reduce the goal to its premises. Apply `mul_pos` to reduce the goal to its premises. Check the signs of the components of the expression. Conclude with `Real.rpow_pos_of_pos hc _`.
+Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Check the signs of the components of the expression. Conclude with `norm_pos_iff.mpr hLne`. Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨hB, fun hk2 => ?_⟩` and prove the remaining obligations. Rewrite using `[b_primlevel k χ (Nat.pos_of_ne_zero (NeZero.ne N)) hk]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Use `mul_ne_zero hB ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_ne_zero_iff]`. Introduce `p hp h0`. Establish `hpp : p.Prime` using `Nat.prime_of_mem_primeFactors hp`. Establish `heq : primVal χ p * (p : ℂ) ^ (k - 1) = 1` using `by linear_combination -h0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hv : ‖primVal χ p‖ = 0 ∨ ‖primVal χ p‖ = 1`. Distinguish the cases in `hu : IsUnit (p : ZMod χ.conductor)`. Use `right`. Use `χ.primitiveCharacter.unit_norm_eq_one hu.unit` as an intermediate fact. Rewrite `this` using `[IsUnit.unit_spec]`. Then use the resulting hypothesis.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Use `left`. Simplify using `[primVal, MulChar.map_nonunit _ hu]`. Establish `hn` using `congrArg norm heq`. Rewrite `hn` using `[norm_mul, norm_pow, Complex.norm_natCast, norm_one]`. Break down `hv with h | h` into its components or cases.
-
-Rewrite `hn` using `[h, zero_mul]`. Conclude with `zero_ne_one hn`. Rewrite `hn` using `[h, one_mul]`. Establish `hn' : p ^ (k - 1) = 1` using `by exact_mod_cast hn`. Break down `Nat.pow_eq_one.mp hn' with h1 | h1` into its components or cases.
-
-Conclude with `hpp.one_lt.ne' h1`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Bern.b_nzC :
     ∀ {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N) (k : ℕ), 1 ≤ k → χ (-1) = (-1) ^ k → Bprim k χ ≠ 0 ∧ (2 ≤ k → genB k χ ≠ 0) := by

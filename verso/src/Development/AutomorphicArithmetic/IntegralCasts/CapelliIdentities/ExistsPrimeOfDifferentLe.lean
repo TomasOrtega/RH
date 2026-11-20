@@ -6,11 +6,11 @@ import Formalism.SharpRestriction.RamificationFrobenius.TotientGaloisClasses.Con
 attribute [local instance] Subfield.toField._proof_1 SubfieldClass.toField._proof_12 SubringClass.toRing._proof_8
 
 /- English proof (translation)
-Introduce `R H v h`. Establish `h1` using `h (Ideal.absNorm_mem _)`. Rewrite `h1` using `[NumberField.absNorm_differentIdeal H.F]`. Establish `h0 : (NumberField.discr H.F).natAbs ≠ 0` using `Int.natAbs_ne_zero.2 (NumberField.discr_ne_zero H.F)`. Rewrite `h1` using `[← Nat.prod_primeFactorsList h0, Nat.cast_list_prod, ← Multiset.prod_coe]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨x, hx, hxv⟩` from `(v.isPrime.multiset_prod_mem_iff_exists_mem _).1 h1`. Take `⟨p, hp, rfl⟩` from `List.mem_map.1 (Multiset.mem_coe.1 hx)`. Establish `hpp` using `Nat.prime_of_mem_primeFactorsList hp`. Use `⟨p, hpp, H.der.discr_primes.1 p hpp ?_, hxv⟩` and prove the remaining obligations. Rewrite using `[H.der.discr_sq]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Int.natCast_dvd.2 (Nat.dvd_of_mem_primeFactorsList hp)).trans (dvd_pow_self _ two_ne_zero)`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Qj12.exists_prime_of_different_le :
     ∀ {R : Formalism.BasicNotions.Ranks} (H : Formalism.BasicNotions.Host R)

@@ -37,13 +37,13 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 end Main
 open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels in
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B hB nS nT JS JT _ _ ξ₀ _ _ hstd N e he hrat Φ hΦ`. Establish `hR : IsTotallyReal F` using `hB.cm.1`. Establish `hψ : IsCharAF F B.ψ` using `hstd.1`. Take `⟨hc, -, hfin, hinf⟩` from `coordF nT nS N e`. Establish `hcont : ∀ Φ ∈ GlobalTheory.WeilM.schA F (Fin N), Continuous (thV B.ψ Φ)` using `fun Φ hΦ => GlobalTheory.T.continuous_adelicThetaTransformSymplectic_of_decay F N B.ψ hR hψ Φ (GlobalTheory.T.adelicRapidDecay_of_mem_adelicSchwartzSpace F N Φ hΦ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨fun γ w => ?_, ?_, (hcont Φ hΦ).comp hc, ?_⟩` and prove the remaining obligations. Take `⟨y, z, h⟩` from `hrat γ`. Simplify using `only [Function.comp_apply, map_add, symplOHF_eq he, h]`. Conclude with `quasiV_thV B.ψ hψ.2.2.1 Φ y z (e w)`. Take `⟨U, hUo, hU⟩` from `GlobalTheory.T.adelicSchwartz_fixed_by_schroedinger_open_finite_subgroup F N B.ψ hR hψ Φ hΦ`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨U.comap e.toLinearMap.toAddMonoidHom, hUo.preimage hc, fun u hu h0 => ?_⟩` and prove the remaining obligations. Rewrite using `[heisOF_comp he, ← thV_schr, hU (e u) hu ((hinf u).1 h0).1 ((hinf u).1 h0).2]`. Introduce `k L hL hL0 w`. Establish `h` using `contDiff_of_heisV_closed B.ψ hψ.1 {g | ∃ Φ ∈ GlobalTheory.WeilM.schA F (Fin N), g = thV B.ψ Φ} (by rintro _ ⟨Φ, hΦ, rfl⟩; exact hcont Φ hΦ) (by`. Introduce and unpack `_ ⟨Φ, hΦ, rfl⟩ M hM`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨Φ', hΦ', hd⟩` from `GlobalTheory.T.hasDerivAt_heisenbergOperator_thetaTransform_realLine F N B.ψ hR hψ Φ hΦ M hM`. Conclude with `⟨_, ⟨Φ', hΦ', rfl⟩, hd⟩)`. Use `_ ⟨Φ, hΦ, rfl⟩ k (e.toLinearMap.toAddMonoidHom.comp L) (hc.comp hL) (fun t => (hfin _).1 (hL0 t)) (e w)`. Simplify `h` using `[Function.comp_def]`.
+Supply the required witnesses or components. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem isThetaFunOF_thV_k : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
     _root_.UpperTheory.TP.W.GoodK σ B → ∀ (nS nT : ℕ) (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E),

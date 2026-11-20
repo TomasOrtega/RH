@@ -18,9 +18,9 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 variable {G V : Type} [Group G] [TopologicalSpace G] [AddCommGroup V] [Module ℂ V]
 
 /- English proof (translation)
-Introduce `y`. Establish `e : {g : G | S.toRepresentation g y = y} = {g : G | ρ g (y : V) = y}`. Use extensionality with `g`. Simplify using `only [Set.mem_ofPred_eq]`. Conclude with `⟨fun h => congrArg Subtype.val h, fun h => Subtype.ext h⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Rewrite using `[e]`. Conclude with `hρ (y : V)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isSmooth_sub {ρ : Representation ℂ G V} (hρ : IsSmooth ρ) (S : Subrepresentation ρ) :
     IsSmooth S.toRepresentation := by
@@ -33,7 +33,7 @@ theorem isSmooth_sub {ρ : Representation ℂ G V} (hρ : IsSmooth ρ) (S : Subr
   exact hρ (y : V)
 
 /- English proof (translation)
-Use `hi` as an intermediate fact. Conclude with `(Representation.IsIrreducible.injective_or_eq_zero f).resolve_right hf`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem injective_of_irred {W : Type} [AddCommGroup W] [Module ℂ W] {ρ : Representation ℂ G V}
     {σ : Representation ℂ G W} (hi : ρ.IsIrreducible) (f : ρ.IntertwiningMap σ) (hf : f ≠ 0) :
@@ -42,14 +42,14 @@ theorem injective_of_irred {W : Type} [AddCommGroup W] [Module ℂ W] {ρ : Repr
   exact (Representation.IsIrreducible.injective_or_eq_zero f).resolve_right hf
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.LGrp.mem_fixed.2 fun g hg => congrArg Subtype.val (GlobalTheory.LGrp.mem_fixed.1 hs g hg)`.
+A detailed English derivation is pending.
 -/
 theorem coe_mem_fixed {ρ : Representation ℂ G V} (S : Subrepresentation ρ) {K : Subgroup G}
     {s : S.toSubmodule} (hs : s ∈ fixed S.toRepresentation K) : s.1 ∈ fixed ρ K :=
   GlobalTheory.LGrp.mem_fixed.2 fun g hg => congrArg Subtype.val (GlobalTheory.LGrp.mem_fixed.1 hs g hg)
 
 /- English proof (translation)
-The claim follows from `Representation.IntertwiningMap.isIntertwining _ _ f g y`.
+A detailed English derivation is pending.
 -/
 theorem hI {W : Type} [AddCommGroup W] [Module ℂ W] {ρ : Representation ℂ G V} {σ : Representation ℂ G W}
     (f : ρ.IntertwiningMap σ) (g : G) (y : V) : f (ρ g y) = σ g (f y) :=
@@ -57,19 +57,17 @@ theorem hI {W : Type} [AddCommGroup W] [Module ℂ W] {ρ : Representation ℂ G
 
 set_option maxHeartbeats 4000000 in
 /- English proof (translation)
-Introduce `E _ _ w c n N h σ P ξ hq hsph ⟨f, hf⟩`. Establish `hKO : ∀ m, KGL w m = KO (w.adicCompletion E) (Fin m)` using `fun m => (SphCompletion.KO_completion w m).symm`. Establish `hc : IsCompact (KO (w.adicCompletion E) (Fin n) : Set (GL (Fin n) (w.adicCompletion E)))` using `GlobalTheory.SplitFlip.isCompact_KO`. Take `⟨x, hx, hx0⟩` from `(Submodule.ne_bot_iff _).1 hsph`. Establish `hfi` using `injective_of_irred P.irred f hf`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hy : f x ∈ fixed (iP (k` using `w.adicCompletion E) ξ) (KO _ (Fin n)) := GlobalTheory.LGrp.mem_fixed.2 fun g hg => by rw [← hI f, GlobalTheory.LGrp.mem_fixed.1 hx g hg]`. Establish `hy0 : f x ≠ 0` using `fun e => hx0 (hfi (e.trans (map_zero f).symm))`. Establish `hφ : Formalism.UG.IsSpherical E w (fun i => (ξ i : ℂ)) (f x).1.1` using `(SphCompletion.isSpherical_iff E w n ξ _).2 ⟨f x, hy, rfl⟩`. Establish `hφ0 : (f x).1.1 ≠ 0` using `fun e => hy0 (Subtype.ext (Subtype.ext e))`. Establish `hsatφ` using `isSatVecGL_of_isSpherical (w := w) hφ hφ0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsatY : IsSatVecGL w (iP (k` using `w.adicCompletion E) ξ) (f x) (Finset.univ.val.map ξ) := IsSatVecGL.of_map (ρ' := rightReg ℂ _ ℂ) ((Submodule.subtype _).comp (Submodule.subtype _)) (fun _ _ => rfl) (fun u v e => Subtype.ext (Subtype.ext e)) hsatφ`. Establish `hsatX : IsSatVecGL w P.ρ x (Finset.univ.val.map ξ)` using `IsSatVecGL.of_map f.toLinearMap (fun g y => hI f g y) hfi hsatY`. Take `⟨S, q, hqs⟩` from `hq`. Take `⟨s0, hs0⟩` from `hqs x`. Establish `hSs : IsSmooth S.toRepresentation` using `isSmooth_sub (isSmooth_parInd _ _) S`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set s := GlobalTheory.LocGL.idem hSs hc s0 with hsdef`. Establish `hqs' : q s = x`. Rewrite using `[hsdef, GlobalTheory.LocGL.map_idem hSs P.smooth hc q s0, hs0, GlobalTheory.LocGL.idem_of_mem P.smooth hc hx]`. Establish `hsfix : s ∈ fixed S.toRepresentation (KO _ (Fin n))` using `GlobalTheory.LocGL.idem_mem hSs hc s0`. Establish `htfix : s.1 ∈ fixed (locProd h w σ) (KGL w n)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hKO]`. Conclude with `coe_mem_fixed S hsfix`. Establish `ht0 : s.1 ≠ 0` using `fun e => hx0 (by rw [← hqs', show s = 0 from Subtype.ext e, map_zero])`. Take `⟨B, hB, hsat⟩` from `GlobalTheory.SatInd.exists_sat_multiProd h (fun i => (σ i).smooth) (fun i => (σ i).irred) htfix ht0`. Establish `hsatS : IsSatVecGL w S.toRepresentation s (∑ i, B i)` using `IsSatVecGL.of_map (S.toSubmodule.subtype) (fun _ _ => rfl) Subtype.val_injective hsat`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsatX' : IsSatVecGL w P.ρ x (∑ i, B i)`. Use `hsatS.map q.toLinearMap (fun g y => hI q g y) (by show q s ≠ 0` as an intermediate fact. Rewrite using `[hqs']`. Conclude with `hx0)`. Rewrite `this` using `[show q.toLinearMap s = x from hqs']`. Then use the resulting hypothesis.
-
-Conclude with `⟨fun i => (hB i).1, B, hB, hsatX'.unique hsatX⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem satLink : SatLink := by
   intro E _ _ w c n N h σ P ξ hq hsph ⟨f, hf⟩

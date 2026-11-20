@@ -8,9 +8,9 @@ open MvPolynomial
 namespace PositivityTheory.Rg.Sw.FFTSteps
 
 /- English proof (translation)
-Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C a => simp [sub]`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`. Consider the case `mul_X p v hp`. Simplify using `only [map_mul, sub, aeval_X, eval_X]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Apply the tactic sequence `rcases v with x | y <;> simp [map_sum]`.
+Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem stable_eval_sub {ι A B : Type} [Fintype ι] (g h : Matrix ι ι ℂ) (z : (ι × A) ⊕ (ι × B) → ℂ) (p : PV ι A B) :
     eval z (sub g h p) = eval (Sum.elim (fun x : ι × A => ∑ j, g x.1 j * z (Sum.inl (j, x.2)))
@@ -24,31 +24,27 @@ theorem stable_eval_sub {ι A B : Type} [Fintype ι] (g h : Matrix ι ι ℂ) (z
     rcases v with x | y <;> simp [map_sum]
 
 /- English proof (translation)
-Introduce `ι A B _ _ _ _ hA hB p hp`. Use `set n := Fintype.card ι`. Set `eι : ι ≃ Fin n` to `Fintype.equivFin ι`. Set `eA : A ↪ Fin n` to `(Fintype.equivFin A).toEmbedding.trans (Fin.castLEEmb hA)`. Set `eB : B ↪ Fin n` to `(Fintype.equivFin B).toEmbedding.trans (Fin.castLEEmb hB)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `f : (ι × A) ⊕ (ι × B) → Unit × Bool × Fin n × Fin n` to `Sum.elim (fun x => ((), true, eι x.1, eA x.2)) (fun y => ((), false, eι y.1, eB y.2))`. Use `set q : MvPolynomial (Unit × Bool × Fin n × Fin n) ℂ := rename f p with hq`. Establish `hinv : ∀ u : Unit → Matrix (Fin n) (Fin n) ℂ, (∀ t, u t ∈ Matrix.unitaryGroup (Fin n) ℂ) → ∀ z : Unit × Bool × Fin n × Fin n → ℂ, eval (fun v => ∑ l, (if v.2.1 then u v.1 v.2.2.1 l else (starRingEnd ℂ) (u v.1 v.2.2.1 l)) * z (v.1, v.2.1, l, v.2.2.2)) q = eval z q`. Introduce `u hu z`. Set `u' : Matrix ι ι ℂ` to `(u ()).submatrix eι eι`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hu' : u' ∈ Matrix.unitaryGroup ι ℂ`. Rewrite using `[Matrix.mem_unitaryGroup_iff]`. Establish `h1` using `Matrix.mem_unitaryGroup_iff.1 (hu ())`. Simplify using `only [u', Matrix.star_eq_conjTranspose, Matrix.conjTranspose_submatrix]`. Rewrite using `[Matrix.submatrix_mul_equiv, ← Matrix.star_eq_conjTranspose, h1, Matrix.submatrix_one_equiv]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hq, eval_rename, eval_rename]`. Use `congrArg (eval (z ∘ f)) (hp u' hu')` as an intermediate fact. Rewrite `this` using `[stable_eval_sub]`. Rewrite using `[← this]`. Use `congrArg (fun w => eval w p) ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis.
 
-Use function extensionality and compare the values at `v`. Break down `v with ⟨i, a⟩ | ⟨i, b⟩` into its components or cases. Simplify using `only [Function.comp, f, Sum.elim_inl, if_true, u', Matrix.submatrix_apply]`. Conclude with `(Equiv.sum_comp eι (fun l => u () (eι i) l * z ((), true, l, eA a))).symm`. Simplify using `only [Function.comp, f, Sum.elim_inr, Bool.false_eq_true, if_false, u', Matrix.submatrix_apply, Matrix.map_apply]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `(Equiv.sum_comp eι (fun l => (starRingEnd ℂ) (u () (eι i) l) * z ((), false, l, eB b))).symm`. Take `⟨s, hs⟩` from `GlobalTheory.invariant_polynomial_eq_aeval_pairings Unit n n le_rfl q hinv`. Set `ψF : Unit × Bool × Fin n × Fin n → PV ι A B` to `fun v => if v.2.1 then (if h : ∃ a, eA a = v.2.2.2 then X (Sum.inl (eι.symm v.2.2.1, h.choose)) else 0) else (if h : ∃ b, eB b = v.2.2.2 then X (Sum.inr (eι.symm v.2.2.1, h.choose)) else 0)`. Establish `hψf : ∀ w, ψF (f w) = X w`. Introduce and unpack `(⟨i, a⟩ | ⟨i, b⟩)`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h : ∃ a', eA a' = eA a` using `⟨a, rfl⟩`. Simplify using `only [f, Sum.elim_inl, ψF, if_true, dif_pos h, Equiv.symm_apply_apply]`. Rewrite using `[eA.injective h.choose_spec]`. Establish `h : ∃ b', eB b' = eB b` using `⟨b, rfl⟩`. Simplify using `only [f, Sum.elim_inr, ψF, Bool.false_eq_true, if_false, dif_pos h, Equiv.symm_apply_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[eB.injective h.choose_spec]`. Establish `hp' : p = aeval ψF q`. Rewrite using `[hq, aeval_rename]`. Establish `: (ψF ∘ f) = X` using `funext hψf`. Rewrite using `[this, aeval_X_left_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Establish `hgen : ∀ v : Unit × Fin n × Fin n, aeval ψF (∑ k, (X (v.1, false, k, v.2.1) * X (v.1, true, k, v.2.2) : MvPolynomial (Unit × Bool × Fin n × Fin n) ℂ)) ∈ pairAlg ι A B`. Introduce and unpack `⟨t, a', b'⟩`. Simplify using `only [map_sum, map_mul, aeval_X, ψF, Bool.false_eq_true, if_false, if_true]`. Distinguish the cases in `hb : ∃ b, eB b = a'`. Distinguish the cases in `ha : ∃ a, eA a = b'`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [dif_pos hb, dif_pos ha]`. Establish `: (∑ k : Fin n, (X (Sum.inr (eι.symm k, hb.choose)) : PV ι A B) * X (Sum.inl (eι.symm k, ha.choose))) = ∑ i, (X (Sum.inl (i, ha.choose)) : PV ι A B) * X (Sum.inr (i, hb.choose))`. Rewrite using `[← Equiv.sum_comp eι]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Equiv.symm_apply_apply, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `Algebra.subset_adjoin ⟨(ha.choose, hb.choose), rfl⟩`. Simplify using `only [dif_neg ha, mul_zero, Finset.sum_const_zero]`. Conclude with `Subalgebra.zero_mem _`. Simplify using `only [dif_neg hb, zero_mul, Finset.sum_const_zero]`.
-
-Conclude with `Subalgebra.zero_mem _`. Rewrite using `[hp', hs, ← AlgHom.comp_apply, comp_aeval]`. Use `clear hs hp'`. Proceed by induction on `s using MvPolynomial.induction_on with`. Consider the case `C a => simp only [aeval_C]`.
-
-Conclude with `Subalgebra.algebraMap_mem _ a`. Consider the case `add x y hx hy => rw [map_add]`. Conclude with `Subalgebra.add_mem _ hx hy`. Consider the case `mul_X x v hx => rw [map_mul, aeval_X]`. Conclude with `Subalgebra.mul_mem _ hx (hgen v)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem stable : Stable := by
   intro ι A B _ _ _ _ hA hB p hp

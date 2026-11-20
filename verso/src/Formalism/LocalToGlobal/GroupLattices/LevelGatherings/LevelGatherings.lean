@@ -12,7 +12,7 @@ namespace Formalism.L2.G
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Use `R.m_add_three_le_k` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem k_pred (R : Ranks) : R.k - 1 + 1 = R.k := by
   have := R.m_add_three_le_k
@@ -22,7 +22,7 @@ def lamRec (D : D7) (u : D.what₂.Word) (g : D.R.Psi) : Fin (D.R.k - 1 + 1) →
   fun i => ((D.fm u).lam 0 (D.eTau.symm g)).w ⟨i.1, by have h1 := k_pred D.R; have h2 := i.2; simp only [Ranks.N]; omega⟩
 
 /- English proof (translation)
-Introduce `i j hij`. Conclude with `((D.fm u).lam 0 (D.eTau.symm g)).anti (Fin.mk_le_mk.mpr hij)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem lamRec_anti (D : D7) (u : D.what₂.Word) (g : D.R.Psi) : Antitone (lamRec D u g) := by
   intro i j hij
@@ -49,12 +49,12 @@ variable (D : D7) (u : D.what₂.Word) (h : D.R.MA)
     (y : compL L p → UPts D.sp.cm.sig D.sp.gram0 (Formalism.L2.Herm.Af D.host.F)) (e : ℕ)
 
 /- English proof (translation)
-The claim follows from `k_pred D.R`.
+A detailed English derivation is pending.
 -/
 theorem gatRec_k : (gatRec D u h hS r L I ψ y e).P.m + 1 = D.R.k := k_pred D.R
 
 /- English proof (translation)
-The claim follows from `orderOf_zPsi D.R.toFrame h`.
+A detailed English derivation is pending.
 -/
 theorem gatRec_n (v : Fin (gatRec D u h hS r L I ψ y e).P.nV) : (gatRec D u h hS r L I ψ y e).P.n' v = orderOf h := orderOf_zPsi D.R.toFrame h
 
@@ -62,7 +62,7 @@ def gatRec_pos : (Σ v : Fin (gatRec D u h hS r L I ψ y e).P.nV, Fin ((gatRec D
   (posG (zPsi D.R.toFrame h)).trans D.eTau.symm
 
 /- English proof (translation)
-Establish `hs` using `posG_step (zPsi D.R.toFrame h) v s`. Simplify using `only [gatRec_pos, Equiv.trans_apply, Equiv.apply_symm_apply]`. Rewrite using `[hs, Subgroup.coe_mul, zPsi_eq, mul_assoc]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem gatRec_step (v : Fin (gatRec D u h hS r L I ψ y e).P.nV) (s : Fin ((gatRec D u h hS r L I ψ y e).P.n' v)) :
     ((D.eTau (gatRec_pos D u h hS r L I ψ y e ⟨v, posAdd s 1⟩) : D.R.Psi) : D.R.GG) =

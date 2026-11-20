@@ -14,9 +14,9 @@ open GlobalTheory.Discrepancy GlobalTheory.QCoh
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `: IsClosedImmersion z` using `isClosedImmersion_of_comp_eq_id q z hz`. Establish `hc : IsClosed (Set.range z.base)` using `z.isClosedEmbedding.isClosed_range`. Use `hc using 1` and compare the differences between its conclusion and the goal. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `rfl`. Conclude with `⟨_, rfl⟩`. Introduce and unpack `⟨y, rfl⟩`. Rewrite using `[Set.mem_singleton_iff, Subsingleton.elim y (IsLocalRing.closedPoint K)]`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 -/
 theorem secClosed_closedPoint (K : Type) [Field K] (X : Scheme.{0}) (q : X ⟶ Sp K) (z : Sp K ⟶ X)
     (_hq : IsProjOver q) (hz : z ≫ q = 𝟙 _) :

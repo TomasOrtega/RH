@@ -3,7 +3,7 @@ import Mathlib
 namespace Bl.FirstBlockLemmaD
 
 /- English proof (translation)
-Introduce `p inst x y`. Establish `h` using `IsUltrametricDist.norm_add_le_max x (-y)`. Rewrite `h` using `[norm_neg, ← sub_eq_add_neg]`. Conclude with `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem goal1 :
   ∀ {p : Nat} [inst : Fact (Nat.Prime p)] (x y : PadicAlgCl p),

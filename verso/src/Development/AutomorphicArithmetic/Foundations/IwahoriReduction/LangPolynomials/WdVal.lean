@@ -3,27 +3,23 @@ import Development.AutomorphicArithmetic.Foundations.IwahoriReduction.LangPolyno
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.MainNotions.N GlobalTheory.GalOfCusp UpperTheory.V UpperTheory.V.Af UpperTheory.V.HV GlobalTheory.Ord2 GlobalTheory.KZ GlobalTheory.Col UpperTheory.Kd.C7
 
 /- English proof (translation)
-Establish `hlpos : 0 < l` using `hl.out.pos`. Use `set fZ := (Polynomial.cyclotomic (l ^ (n + 1)) ℤ).comp (Polynomial.X + Polynomial.C 1) with hfZ`. Use `set g := (Polynomial.cyclotomic (l ^ (n + 1)) R).comp (Polynomial.X + Polynomial.C 1) with hg`. Establish `hgZ : g = fZ.map (Int.castRingHom R)`. Rewrite using `[hg, hfZ, Polynomial.map_comp, Polynomial.map_cyclotomic]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `hE : fZ.IsEisensteinAt (Submodule.span ℤ {(l : ℤ)})`. Rewrite using `[hfZ, Polynomial.C_1]`. Conclude with `cyclotomic_prime_pow_comp_X_add_one_isEisensteinAt l n`. Establish `hq : (Polynomial.X + Polynomial.C (1 : R)).natDegree ≠ 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Polynomial.natDegree_X_add_C]`. Conclude with `one_ne_zero`. Establish `hqZ : (Polynomial.X + Polynomial.C (1 : ℤ)).natDegree ≠ 0`. Rewrite using `[Polynomial.natDegree_X_add_C]`. Conclude with `one_ne_zero`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hmon : g.Monic` using `(Polynomial.cyclotomic.monic _ R).comp (Polynomial.monic_X_add_C 1) hq`. Establish `hmonZ : fZ.Monic` using `(Polynomial.cyclotomic.monic _ ℤ).comp (Polynomial.monic_X_add_C 1) hqZ`. Establish `hdeg : g.natDegree = fZ.natDegree`. Rewrite using `[hgZ, hmonZ.natDegree_map]`. Establish `hP : (Ideal.span {(l : R)}).IsPrime` using `(Ideal.span_singleton_prime hp.ne_zero).2 hp`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hgpos : 0 < g.natDegree`. Rewrite using `[hg, Polynomial.natDegree_comp, Polynomial.natDegree_cyclotomic, Polynomial.natDegree_X_add_C, mul_one]`. Conclude with `Nat.totient_pos.2 (pow_pos hlpos _)`. Establish `hirr : Irreducible g`. Apply `Polynomial.irreducible_of_eisenstein_criterion hP` to reduce the goal to its premises.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hmon.leadingCoeff]`. Conclude with `fun h => hP.ne_top ((Ideal.eq_top_iff_one _).2 h)`. Introduce `k hk`. Establish `hk' : k < fZ.natDegree`. Rewrite using `[← hdeg]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Polynomial.coe_lt_degree.mp hk`. Establish `hmem` using `hE.mem hk'`. Rewrite `hmem` using `[Ideal.submodule_span_eq, Ideal.mem_span_singleton]`. Rewrite using `[hgZ, Polynomial.coeff_map, Ideal.mem_span_singleton]`. Use `map_dvd (Int.castRingHom R) hmem` as an intermediate fact.
+Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Simplify using `using this`. Conclude with `Polynomial.natDegree_pos_iff_degree_pos.mp hgpos`. Rewrite using `[Polynomial.coeff_zero_eq_eval_zero, hg, Polynomial.eval_comp, Polynomial.eval_add, Polynomial.eval_X, Polynomial.eval_C, zero_add, Polynomial.eval_one_cyclotomic_prime_pow, Ideal.span_singleton_pow, Ideal.mem_span_singleton]`. Introduce and unpack `⟨a, ha⟩`. Apply `hp.not_unit` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1 : (l : R) * 1 = (l : R) * ((l : R) * a)`. Rewrite using `[mul_one]`. Combine the equalities or inequalities in the displayed calculation. Establish `h2` using `mul_left_cancel₀ hp.ne_zero h1`. Conclude with `isUnit_iff_exists_inv.2 ⟨a, h2.symm⟩`.
-
-Conclude with `hmon.isPrimitive`. Establish `ht : (Polynomial.taylorEquiv (1 : R)) (Polynomial.cyclotomic (l ^ (n + 1)) R) = g`. Rewrite using `[hg, ← Polynomial.taylor_apply]`. Both sides reduce to the same expression. Rewrite `hirr` using `[← ht]`.
-
-Conclude with `(MulEquiv.irreducible_iff _).1 hirr`.
+A detailed English derivation is pending.
 -/
 private theorem wd_irr (R : Type) [CommRing R] [IsDomain R] (l : ℕ) [hl : Fact l.Prime] (hp : Prime (l : R)) (n : ℕ) :
     Irreducible (Polynomial.cyclotomic (l ^ (n + 1)) R) := by
@@ -85,17 +81,17 @@ private theorem wd_irr (R : Type) [CommRing R] [IsDomain R] (l : ℕ) [hl : Fact
   exact (MulEquiv.irreducible_iff _).1 hirr
 
 /- English proof (translation)
-Use `{ cond' := ?_ }` and prove the remaining obligations. Introduce `a b`. Establish `ha : (a : Ω) ∈ A ∧ ∀ s ∈ Ine A, s (a : Ω) = a` using `a.2`. Establish `hb : (b : Ω) ∈ A ∧ ∀ s ∈ Ine A, s (b : Ω) = b` using `b.2`. Distinguish the cases in `ha0 : (a : Ω) = 0`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Use `⟨0, Or.inr ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[ha0]`. Distinguish the cases in `hb0 : (b : Ω) = 0`. Use `⟨0, Or.inl ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[hb0]`. Break down `A.mem_or_inv_mem ((b : Ω) / a) with h | h` into its components or cases. Establish `hc : (b : Ω) / a ∈ R0 A`. Use `⟨h, fun s hs => ?_⟩` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_div₀, ha.2 s hs, hb.2 s hs]`. Use `⟨⟨_, hc⟩, Or.inl ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[mul_div_cancel₀ _ ha0]`. Rewrite `h` using `[inv_div]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hc : (a : Ω) / b ∈ R0 A`. Use `⟨h, fun s hs => ?_⟩` and prove the remaining obligations. Rewrite using `[map_div₀, ha.2 s hs, hb.2 s hs]`. Use `⟨⟨_, hc⟩, Or.inr ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `[mul_div_cancel₀ _ hb0]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem wd_val {Ω : Type} [Field Ω] [Algebra ℚ Ω] (A : ValuationSubring Ω) : ValuationRing (R0 A) := by
   refine { cond' := ?_ }
@@ -126,17 +122,15 @@ private theorem wd_val {Ω : Type} [Field Ω] [Algebra ℚ Ω] (A : ValuationSub
     simp [mul_div_cancel₀ _ hb0]
 
 /- English proof (translation)
-Establish `hN : l ^ m ≠ 0` using `pow_ne_zero _ hl.out.ne_zero`. Establish `hvz : A.valuation z = 1`. Establish `h1 : A.valuation z ^ (l ^ m) = 1`. Rewrite using `[← map_pow, hz, map_one]`. Break down `lt_trichotomy (A.valuation z) 1 with h2 | h2 | h2` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `absurd h1 (ne_of_lt (pow_lt_one₀ zero_le' h2 hN))`. Conclude with `h2`. Conclude with `absurd h1 (ne_of_gt (one_lt_pow₀ h2 hN))`. Establish `hzA : z ∈ A` using `(A.valuation_le_one_iff z).1 hvz.le`. Use `⟨hzA, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `zA : A` to `⟨z, hzA⟩`. Establish `hlmax : (l : A) ∈ IsLocalRing.maximalIdeal A`. Rewrite using `[A.valuation_lt_one_iff]`. Simplify using `using h`. Use `haveI : CharP (IsLocalRing.ResidueField A) l := by`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite using `[CharP.charP_iff_prime_eq_zero hl.out]`. Use `(IsLocalRing.residue_eq_zero_iff _).2 hlmax` as an intermediate fact. Simplify using `using this`. Establish `hzN : zA ^ (l ^ m) = 1` using `Subtype.ext (by simpa using hz)`. Establish `hres : (IsLocalRing.residue A zA - 1) ^ (l ^ m) = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sub_pow_char_pow, one_pow, ← map_pow, hzN, map_one, sub_self]`. Establish `h0` using `(pow_eq_zero_iff hN).1 hres`. Establish `hmem : zA - 1 ∈ IsLocalRing.maximalIdeal A`. Rewrite using `[← IsLocalRing.residue_eq_zero_iff, map_sub, map_one]`. Conclude with `h0`.
-
-Use `(A.valuation_lt_one_iff (zA - 1)).1 hmem` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem wd_res {Ω : Type} [Field Ω] (A : ValuationSubring Ω) (l : ℕ) [hl : Fact l.Prime]
     (h : A.valuation (l : Ω) < 1) (m : ℕ) (z : Ω) (hz : z ^ l ^ m = 1) :
@@ -170,17 +164,17 @@ private theorem wd_res {Ω : Type} [Field Ω] (A : ValuationSubring Ω) (l : ℕ
   simpa using this
 
 /- English proof (translation)
-Establish `hl0 : (l : R0 A) ≠ 0`. Introduce `h0`. Establish `h1 : ((l : R0 A) : Ω) = 0`. Rewrite using `[h0]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Move the coercions through the operations in `at h1`. Rewrite `h1` using `[← map_natCast (algebraMap ℚ Ω)]`. Establish `h2` using `(map_eq_zero_iff _ (algebraMap ℚ Ω).injective).1 h1`. Conclude with `(Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero) h2`. Use `⟨hl0, ?_, ?_⟩` and prove the remaining obligations.
+Move the embeddings inside the algebraic operations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hu`. Take `⟨w, hw⟩` from `hu.exists_right_inv`. Establish `hw' : (l : Ω) * (w : Ω) = 1`. Use `congrArg Subtype.val hw` as an intermediate fact. Simplify using `using this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `h2 : A.valuation (l : Ω) * A.valuation (w : Ω) < 1` using `(mul_le_of_le_one_right' ((A.valuation_le_one_iff _).2 w.2.1)).trans_lt hval`. Rewrite `h2` using `[← map_mul, hw', map_one]`. Conclude with `lt_irrefl 1 h2`. Introduce `a b hab`. Establish `hab' : (l : Φ.R) ∣ Φ.i0 a * Φ.i0 b`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `map_dvd Φ.i0 hab` as an intermediate fact. Simplify `this` using `[map_mul]`. Establish `hback : ∀ c : R0 A, (l : Φ.R) ∣ Φ.i0 c → (l : R0 A) ∣ c`. Introduce `c hc`. Use `Φ.sep c 1 (by rw [pow_one]; exact Ideal.mem_span_singleton.2 hc)` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite `this` using `[pow_one]`. Conclude with `Ideal.mem_span_singleton.1 this`. Break down `Φ.fl.prime.2.2 _ _ hab' with h | h` into its components or cases. Conclude with `Or.inl (hback a h)`. Conclude with `Or.inr (hback b h)`.
+Prove the first alternative. Prove the second alternative. A detailed English derivation is pending.
 -/
 private theorem prime_natCast_r0_of_valuation_lt_one {Ω : Type} [Field Ω] [Algebra ℚ Ω] (l : ℕ) [Fact l.Prime]
     (A : ValuationSubring Ω) (j : Ω →+* Qbar l) (Φ : Fr l A j) (hval : A.valuation (l : Ω) < 1) :
@@ -218,33 +212,31 @@ private theorem prime_natCast_r0_of_valuation_lt_one {Ω : Type} [Field Ω] [Alg
     · exact Or.inr (hback b h)
 
 /- English proof (translation)
-Introduce `l _ _ Ω _ _ _ A hA j Φ ζ hζ m hm P`. Take `⟨v, hv, hlv⟩` from `hA`. Establish `hval : A.valuation (l : Ω) < 1`. Use `(hv (l : 𝓞 ℚ)).2 hlv` as an intermediate fact. Simplify using `using this`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `haveI := wd_val A`. Establish `hroot : ∀ i : ℕ, (ζ m ^ i) ^ l ^ m = 1`. Introduce `i`. Rewrite using `[← pow_mul, mul_comm, pow_mul, (hζ m).1.pow_eq_one, one_pow]`. Establish `hdiff : pv P (ζ m) - ((P.eval 1 : R0 A) : Ω) = ∑ i ∈ Finset.range (P.natDegree + 1), ((P.coeff i : R0 A) : Ω) * (ζ m ^ i - 1)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pv, Polynomial.eval₂_eq_sum_range, Polynomial.eval_eq_sum_range]`. Use `push_cast`. Rewrite using `[← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `[mul_sub]`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hcc : PowerSeries.constantCoeff (Φ.ser P) = Φ.i0 (P.eval 1)`. Unfold `Fr.ser`. Rewrite using `[Polynomial.hom_eval₂]`. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hP`. Take `⟨k, rfl⟩ : ∃ k, m = k + 1` from `⟨m - 1, by omega⟩`. Establish `hirr` using `wd_irr (R0 A) l (prime_natCast_r0_of_valuation_lt_one l A j Φ hval) k`. Use `letI := IsBezout.toGCDDomain (R0 A)`. Establish `hcycroot : Polynomial.aeval (ζ (k + 1)) (Polynomial.cyclotomic (l ^ (k + 1)) (R0 A)) = 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Polynomial.aeval_def, Polynomial.eval₂_eq_eval_map, Polynomial.map_cyclotomic]`. Conclude with `(hζ (k + 1)).1.isRoot_cyclotomic (pow_pos (Fact.out : l.Prime).pos _)`. Establish `hint : IsIntegral (R0 A) (ζ (k + 1))` using `⟨_, Polynomial.cyclotomic.monic _ _, hcycroot⟩`. Establish `hdvdP : minpoly (R0 A) (ζ (k + 1)) ∣ P` using `minpoly.isIntegrallyClosed_dvd hint hP`. Establish `hdvdC : minpoly (R0 A) (ζ (k + 1)) ∣ Polynomial.cyclotomic (l ^ (k + 1)) (R0 A)` using `minpoly.isIntegrallyClosed_dvd hint hcycroot`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨q, hq⟩` from `hdvdC`. Establish `hqu : IsUnit q` using `(hirr.isUnit_or_isUnit hq).resolve_left (minpoly.not_isUnit _ _)`. Establish `hCP : Polynomial.cyclotomic (l ^ (k + 1)) (R0 A) ∣ P`. Use `dvd_trans ?_ hdvdP` and prove the remaining obligations. Rewrite using `[hq]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions.
 
-Conclude with `hqu.mul_right_dvd.2 dvd_rfl`. Take `⟨Q, hQ⟩` from `hCP`. Unfold `Fr.ser`. Rewrite using `[hQ, Polynomial.map_mul, Polynomial.eval₂_mul, Polynomial.map_cyclotomic, map_mul]`. Establish `hc : Polynomial.eval₂ PowerSeries.C (1 + PowerSeries.X) (Polynomial.cyclotomic (l ^ (k + 1)) Φ.R) = cyc Φ.R l (k + 1)` using `rfl`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc, ev_cyc_self, zero_mul]`. Introduce and unpack `⟨hA1, hne, hinv⟩`. Rewrite using `[PowerSeries.isUnit_iff_constantCoeff, hcc]`. Apply `Φ.unit` to reduce the goal to its premises. Introduce `hmem`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hy : P.eval 1 ∈ Ideal.span {(l : R0 A)}`. Use `Φ.sep (P.eval 1) 1 (by rw [pow_one]; exact hmem)` as an intermediate fact. Rewrite `this` using `[pow_one]`. Then use the resulting hypothesis. Take `⟨a, ha⟩` from `Ideal.mem_span_singleton'.1 hy`. Establish `hvy : A.valuation ((P.eval 1 : R0 A) : Ω) < 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← ha]`. Use `push_cast`. Rewrite using `[map_mul]`. Conclude with `(mul_le_of_le_one_left' ((A.valuation_le_one_iff _).2 a.2.1)).trans_lt hval`. Establish `hvd : A.valuation (pv P (ζ m) - ((P.eval 1 : R0 A) : Ω)) < 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hdiff]`. Apply `Valuation.map_sum_lt _ one_ne_zero` to reduce the goal to its premises. Introduce `i _`. Rewrite using `[map_mul]`. Use `(mul_le_of_le_one_left' ((A.valuation_le_one_iff _).2 (P.coeff i).2.1)).trans_lt ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Conclude with `(wd_res A l hval m _ (hroot i)).2`. Establish `hvp : A.valuation (pv P (ζ m)) < 1`. Use `Valuation.map_add_lt _ hvd hvy` as an intermediate fact. Simplify using `using this`. Establish `h1 : A.valuation (pv P (ζ m)) * A.valuation (pv P (ζ m))⁻¹ = 1`.
-
-Rewrite using `[← map_mul, mul_inv_cancel₀ hne, map_one]`. Establish `h2 : A.valuation (pv P (ζ m)) * A.valuation (pv P (ζ m))⁻¹ < 1` using `(mul_le_of_le_one_right' ((A.valuation_le_one_iff _).2 hinv)).trans_lt hvp`. Rewrite `h2` using `[h1]`. Conclude with `lt_irrefl 1 h2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Kd.C7.pWD :
     UpperTheory.Kd.C7.SWD := by

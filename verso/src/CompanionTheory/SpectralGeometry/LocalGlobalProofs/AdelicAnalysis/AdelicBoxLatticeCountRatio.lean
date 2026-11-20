@@ -37,7 +37,7 @@ def coord (hF : IsTotallyReal F) {d M : ℕ} (b : Module.Basis (Fin d) F E) :
     exact map_add _ _ _)
 
 /- English proof (translation)
-Rewrite using `[PiLp.norm_eq_of_L1]`. Simplify using `only [sizeTup, sizeInf, Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations. Conclude with `(InfinitePlace.Completion.isometry_extensionEmbeddingOfIsReal (IsTotallyReal.isReal v)).norm_map_of_map_zero (map_zero _) _`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem norm_coord (hF : IsTotallyReal F) {d M : ℕ} (b : Module.Basis (Fin d) F E)
     (X : Fin 1 → Fin M → AF F ⊗[F] E) : ‖coord hF b X‖ = sizeTup b (projInf X) := by
@@ -49,9 +49,9 @@ theorem norm_coord (hF : IsTotallyReal F) {d M : ℕ} (b : Module.Basis (Fin d) 
     (map_zero _) _
 
 /- English proof (translation)
-Establish `h : Fintype.card (InfinitePlace F) = Module.finrank ℚ F`. Establish `h1` using `InfinitePlace.card_add_two_mul_card_eq_rank F`. Establish `h2` using `InfinitePlace.card_eq_nrRealPlaces_add_nrComplexPlaces F`. Simplify using `only [IsTotallyReal.nrComplexPlaces_eq_zero] at h1 h2`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[(WithLp.linearEquiv 1 ℝ _).finrank_eq, Module.finrank_fintype_fun_eq_card]`. Simplify using `only [Fintype.card_prod, Fintype.card_fin, h]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem finrank_coord (hF : IsTotallyReal F) (d M : ℕ) :
     Module.finrank ℝ (PiLp 1 (fun _ : Fin 1 × Fin M × Fin d × InfinitePlace F => ℝ)) =
@@ -66,15 +66,15 @@ theorem finrank_coord (hF : IsTotallyReal F) (d M : ℕ) :
   ring
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hσ d b M Λ _ e N r R hr hrR`. Take `⟨hF, -, h2, -⟩` from `hσ`. Establish `hd : d = 2`. Rewrite using `[← h2, Module.finrank_eq_card_basis b, Fintype.card_fin]`. Substitute `hd` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Substitute using the available equality.
 
-Establish `key` using `GlobalTheory.T.lattice_ball_count_ratio_bound (PiLp 1 (fun _ : Fin 1 × Fin M × Fin 2 × InfinitePlace F => ℝ)) (intSub b e N) ((coord hF b).comp (e.comp (intSub b e N).subtype)) r R hr hrR`. Rewrite `key` using `[finrank_coord hF 2 M]`. Establish `conv : ∀ t : ℝ, ∑' l : Λ, (Set.indicator (box b N t) (fun _ => (1 : ℝ≥0∞))) (e l) = ∑' l : intSub b e N, Set.indicator {l : intSub b e N | ‖((coord hF b).comp (e.comp (intSub b e N).subtype)) l‖ ≤ t} (fun _ => (1 : ℝ≥0∞)) l`. Introduce `t`. Establish `h` using `tsum_subtype ((intSub b e N : AddSubgroup Λ) : Set Λ) (fun l => Set.indicator {l : Λ | sizeTup b (projInf (e l)) ≤ t} (fun _ => (1 : ℝ≥0∞)) l)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `Eq.trans ?_ (Eq.trans h.symm ?_)` and prove the remaining obligations. Use `tsum_congr fun l => ?_` and prove the remaining obligations. Establish `hb : e l ∈ box b N t ↔ l ∈ ((intSub b e N : AddSubgroup Λ) : Set Λ) ∧ l ∈ {l : Λ | sizeTup b (projInf (e l)) ≤ t}` using `Iff.rfl`. Distinguish the cases in `hm : e l ∈ box b N t`. Rewrite using `[Set.indicator_of_mem hm, Set.indicator_of_mem (hb.1 hm).1, Set.indicator_of_mem (hb.1 hm).2]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Set.indicator_of_notMem hm]`. Distinguish the cases in `h1 : l ∈ ((intSub b e N : AddSubgroup Λ) : Set Λ)`. Rewrite using `[Set.indicator_of_mem h1, Set.indicator_of_notMem fun h => hm (hb.2 ⟨h1, h⟩)]`. Rewrite using `[Set.indicator_of_notMem h1]`. Use `tsum_congr fun l => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[Set.indicator, norm_coord]`. Rewrite using `[conv R, conv r]`. Conclude with `key`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem box_packing : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (d : ℕ) (b : Module.Basis (Fin d) F E) (M : ℕ), ∀ (Λ : Type) [AddCommGroup Λ] (e : Λ →+ (Fin 1 → Fin M → AF F ⊗[F] E)) (N : ℕ) (r R : ℝ), 0 < r → r ≤ R → ∑' l : Λ, (Set.indicator (box b N R) (fun _ => (1 : ℝ≥0∞))) (e l) ≤ ENNReal.ofReal ((5 * R / r) ^ (2 * Module.finrank ℚ F * M)) * ∑' l : Λ, (Set.indicator (box b N r) (fun _ => (1 : ℝ≥0∞))) (e l) := by
   intro F E _ _ _ _ _ σ hσ d b M Λ _ e N r R hr hrR

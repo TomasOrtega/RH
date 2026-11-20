@@ -12,14 +12,14 @@ variable {O Kf V : Type*} [CommRing O] [Field Kf] [Algebra O Kf] [AddCommGroup V
   [IsScalarTower O Kf V]
 
 /- English proof (translation)
-Unfold `scale`. Conclude with `Submodule.mem_map`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem mem_scale {c : Kf} {M : Submodule O V} {x : V} : x ∈ scale c M ↔ ∃ y ∈ M, c • y = x := by
   unfold scale
   exact Submodule.mem_map
 
 /- English proof (translation)
-Use extensionality with `x`. Rewrite using `[mem_scale]`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem scale_one (M : Submodule O V) : scale (1 : Kf) M = M := by
   ext x
@@ -33,7 +33,7 @@ section Val
 variable {p : ℕ} [Fact p.Prime] (X : Sys p)
 
 /- English proof (translation)
-Conclude with `(X.G.P.setting v).frac_O`.
+A detailed English derivation is pending.
 -/
 theorem frac_of_place (v : X.Pl) : IsFractionRing X.G.O X.G.Kf := by
   exact (X.G.P.setting v).frac_O
@@ -41,7 +41,7 @@ theorem frac_of_place (v : X.Pl) : IsFractionRing X.G.O X.G.Kf := by
 abbrev piK : X.G.Kf := algebraMap X.G.O X.G.Kf X.vp
 
 /- English proof (translation)
-Use `haveI := hfr`. Introduce `h`. Conclude with `X.unif.ne_zero (IsFractionRing.injective X.G.O X.G.Kf (h.trans (map_zero _).symm))`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem piK_ne (hfr : IsFractionRing X.G.O X.G.Kf) : piK X ≠ 0 := by
   haveI := hfr
@@ -54,16 +54,16 @@ Both sides reduce to the same expression.
 theorem vsc_def (g : ℝ) : X.vsc g = piK X ^ (⌈g * (X.eO : ℝ)⌉) := rfl
 
 /- English proof (translation)
-Unfold `Sys.intK`. Conclude with `LinearMap.mem_range`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem mem_intK {x : X.G.Kf} : x ∈ X.intK ↔ ∃ a : X.G.O, algebraMap X.G.O X.G.Kf a = x := by
   unfold Sys.intK
   exact LinearMap.mem_range
 
 /- English proof (translation)
-Unfold `Sys.vGeK`. Rewrite using `[mem_scale]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Take `⟨a, rfl⟩` from `(mem_intK X).1 hy`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨a, rfl⟩`. Introduce and unpack `⟨a, rfl⟩`. Conclude with `⟨_, (mem_intK X).2 ⟨a, rfl⟩, rfl⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem vGeK_iff {x : X.G.Kf} {g : ℝ} :
     X.vGeK x g ↔ ∃ a : X.G.O, X.vsc g * algebraMap X.G.O X.G.Kf a = x := by
@@ -77,9 +77,9 @@ theorem vGeK_iff {x : X.G.Kf} {g : ℝ} :
     exact ⟨_, (mem_intK X).2 ⟨a, rfl⟩, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[vGeK_iff]`. Establish `hc : ⌈g * (X.eO : ℝ)⌉ ≤ n` using `Int.ceil_le.mpr hn`. Take `⟨k, hk⟩` from `Int.eq_ofNat_of_zero_le (sub_nonneg.mpr hc)`. Use `⟨X.vp ^ k * a, ?_⟩` and prove the remaining obligations. Establish `hn' : n = ⌈g * (X.eO : ℝ)⌉ + k` using `by omega`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[hx, hn', zpow_add₀ (piK_ne X hfr), zpow_natCast, map_mul, map_pow, vsc_def, mul_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem vGeK_of_zpow (hfr : IsFractionRing X.G.O X.G.Kf) {x : X.G.Kf} {g : ℝ} {n : ℤ} (a : X.G.O)
     (hn : g * (X.eO : ℝ) ≤ n) (hx : x = piK X ^ n * algebraMap X.G.O X.G.Kf a) : X.vGeK x g := by
@@ -91,13 +91,13 @@ theorem vGeK_of_zpow (hfr : IsFractionRing X.G.O X.G.Kf) {x : X.G.Kf} {g : ℝ} 
   rw [hx, hn', zpow_add₀ (piK_ne X hfr), zpow_natCast, map_mul, map_pow, vsc_def, mul_assoc]
 
 /- English proof (translation)
-Conclude with `(vGeK_iff X).2 ⟨0, by simp⟩`.
+A detailed English derivation is pending.
 -/
 theorem vGeK_zero (g : ℝ) : X.vGeK 0 g := by
   exact (vGeK_iff X).2 ⟨0, by simp⟩
 
 /- English proof (translation)
-Take `⟨a, rfl⟩` from `(vGeK_iff X).1 hx`. Take `⟨b, rfl⟩` from `(vGeK_iff X).1 hy`. Conclude with `(vGeK_iff X).2 ⟨a + b, by rw [map_add, mul_add]⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem vGeK_add {x y : X.G.Kf} {g : ℝ} (hx : X.vGeK x g) (hy : X.vGeK y g) : X.vGeK (x + y) g := by
   obtain ⟨a, rfl⟩ := (vGeK_iff X).1 hx
@@ -105,7 +105,7 @@ theorem vGeK_add {x y : X.G.Kf} {g : ℝ} (hx : X.vGeK x g) (hy : X.vGeK y g) : 
   exact (vGeK_iff X).2 ⟨a + b, by rw [map_add, mul_add]⟩
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using vGeK_zero X g`. Consider the case `@insert i s hi ih`. Rewrite using `[Finset.sum_insert hi]`. Conclude with `vGeK_add X (h i (Finset.mem_insert.2 (Or.inl rfl))) (ih fun j hj => h j (Finset.mem_insert.2 (Or.inr hj)))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vGeK_sum {ι : Type*} (s : Finset ι) (f : ι → X.G.Kf) {g : ℝ} (h : ∀ i ∈ s, X.vGeK (f i) g) :
     X.vGeK (∑ i ∈ s, f i) g := by
@@ -117,13 +117,13 @@ theorem vGeK_sum {ι : Type*} (s : Finset ι) (f : ι → X.G.Kf) {g : ℝ} (h :
     exact vGeK_add X (h i (Finset.mem_insert.2 (Or.inl rfl))) (ih fun j hj => h j (Finset.mem_insert.2 (Or.inr hj)))
 
 /- English proof (translation)
-Conclude with `Int.ceil_mono (mul_le_mul_of_nonneg_right h (Nat.cast_nonneg _))`.
+A detailed English derivation is pending.
 -/
 theorem ceil_mono {g g' : ℝ} (h : g' ≤ g) : ⌈g' * (X.eO : ℝ)⌉ ≤ ⌈g * (X.eO : ℝ)⌉ := by
   exact Int.ceil_mono (mul_le_mul_of_nonneg_right h (Nat.cast_nonneg _))
 
 /- English proof (translation)
-Take `⟨a, rfl⟩` from `(vGeK_iff X).1 hx`. Use `vGeK_of_zpow X hfr (n := ⌈g * (X.eO : ℝ)⌉) a ?_ ?_` and prove the remaining obligations. Conclude with `le_trans (mul_le_mul_of_nonneg_right h (Nat.cast_nonneg _)) (Int.le_ceil _)`. Rewrite using `[vsc_def]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vGeK_mono (hfr : IsFractionRing X.G.O X.G.Kf) {x : X.G.Kf} {g g' : ℝ} (h : g' ≤ g)
     (hx : X.vGeK x g) : X.vGeK x g' := by
@@ -133,9 +133,9 @@ theorem vGeK_mono (hfr : IsFractionRing X.G.O X.G.Kf) {x : X.G.Kf} {g g' : ℝ} 
   · rw [vsc_def]
 
 /- English proof (translation)
-Take `⟨a, rfl⟩` from `(vGeK_iff X).1 hx`. Take `⟨b, rfl⟩` from `(vGeK_iff X).1 hy`. Use `vGeK_of_zpow X hfr (n := ⌈g * (X.eO : ℝ)⌉ + ⌈h * (X.eO : ℝ)⌉) (a * b) ?_ ?_` and prove the remaining obligations. Use `push_cast`. Rewrite using `[add_mul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Combine the linear relations using `[Int.le_ceil (g * (X.eO : ℝ)), Int.le_ceil (h * (X.eO : ℝ))]`. Rewrite using `[vsc_def, vsc_def, zpow_add₀ (piK_ne X hfr), map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem vGeK_mul (hfr : IsFractionRing X.G.O X.G.Kf) {x y : X.G.Kf} {g h : ℝ} (hx : X.vGeK x g)
     (hy : X.vGeK y h) : X.vGeK (x * y) (g + h) := by
@@ -149,22 +149,22 @@ theorem vGeK_mul (hfr : IsFractionRing X.G.O X.G.Kf) {x y : X.G.Kf} {g h : ℝ} 
     ring
 
 /- English proof (translation)
-Rewrite using `[vGeK_iff, mem_intK, vsc_def]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem vGeK_zero_iff {x : X.G.Kf} : X.vGeK x 0 ↔ x ∈ X.intK := by
   rw [vGeK_iff, mem_intK, vsc_def]
   simp
 
 /- English proof (translation)
-Conclude with `(vGeK_zero_iff X).2 ((mem_intK X).2 ⟨1, map_one _⟩)`.
+A detailed English derivation is pending.
 -/
 theorem vGeK_one : X.vGeK 1 0 := by
   exact (vGeK_zero_iff X).2 ((mem_intK X).2 ⟨1, map_one _⟩)
 
 /- English proof (translation)
-Proceed by induction on `s using Multiset.induction_on with`. Consider the case `empty => simpa using vGeK_one X`. Consider the case `@cons a s ih`. Rewrite using `[Multiset.map_cons, Multiset.prod_cons, Multiset.card_cons]`. Establish `h1` using `h a (Multiset.mem_cons.2 (Or.inl rfl))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `ih (fun i hi => h i (Multiset.mem_cons.2 (Or.inr hi)))`. Establish `e : ((Multiset.card s + 1 : ℕ) : ℝ) * μ = μ + (Multiset.card s : ℝ) * μ` using `by push_cast; ring`. Rewrite using `[e]`. Conclude with `vGeK_mul X hfr h1 h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vGeK_multiset_prod (hfr : IsFractionRing X.G.O X.G.Kf) {ι : Type*} (f : ι → X.G.Kf) (μ : ℝ)
     (s : Multiset ι) (h : ∀ i ∈ s, X.vGeK (f i) μ) : X.vGeK (s.map f).prod ((Multiset.card s : ℝ) * μ) := by
@@ -181,14 +181,14 @@ theorem vGeK_multiset_prod (hfr : IsFractionRing X.G.O X.G.Kf) {ι : Type*} (f :
 def Rep (x : X.G.Kf) (N : ℤ) : Prop := ∃ u : X.G.Oˣ, x = piK X ^ N * algebraMap X.G.O X.G.Kf (u : X.G.O)
 
 /- English proof (translation)
-Take `⟨u, rfl⟩` from `h`. Conclude with `mul_ne_zero (zpow_ne_zero _ (piK_ne X hfr)) (u.isUnit.map (algebraMap X.G.O X.G.Kf)).ne_zero`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem Rep.ne_zero (hfr : IsFractionRing X.G.O X.G.Kf) {x : X.G.Kf} {N : ℤ} (h : Rep X x N) : x ≠ 0 := by
   obtain ⟨u, rfl⟩ := h
   exact mul_ne_zero (zpow_ne_zero _ (piK_ne X hfr)) (u.isUnit.map (algebraMap X.G.O X.G.Kf)).ne_zero
 
 /- English proof (translation)
-Take `⟨u, rfl⟩` from `hx`. Take `⟨u', rfl⟩` from `hy`. Use `⟨u * u', ?_⟩` and prove the remaining obligations. Rewrite using `[zpow_add₀ (piK_ne X hfr), Units.val_mul, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem Rep.mul (hfr : IsFractionRing X.G.O X.G.Kf) {x y : X.G.Kf} {N N' : ℤ} (hx : Rep X x N) (hy : Rep X y N') :
     Rep X (x * y) (N + N') := by
@@ -199,7 +199,7 @@ theorem Rep.mul (hfr : IsFractionRing X.G.O X.G.Kf) {x y : X.G.Kf} {N N' : ℤ} 
   ring
 
 /- English proof (translation)
-Take `⟨u, rfl⟩` from `hx`. Use `⟨u⁻¹, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_inv, zpow_neg, map_units_inv]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem Rep.inv {x : X.G.Kf} {N : ℤ} (hx : Rep X x N) : Rep X x⁻¹ (-N) := by
   obtain ⟨u, rfl⟩ := hx
@@ -207,15 +207,15 @@ theorem Rep.inv {x : X.G.Kf} {N : ℤ} (hx : Rep X x N) : Rep X x⁻¹ (-N) := b
   rw [mul_inv, zpow_neg, map_units_inv]
 
 /- English proof (translation)
-Conclude with `⟨1, by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem Rep.one : Rep X 1 0 := by
   exact ⟨1, by simp⟩
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simpa using Rep.one X`. Consider the case `succ k ih`. Rewrite using `[pow_succ]`. Establish `e : ((k + 1 : ℕ) : ℤ) * N = (k : ℤ) * N + N` using `by push_cast; ring`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `Rep.mul X hfr ih hx`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Rep.pow (hfr : IsFractionRing X.G.O X.G.Kf) {x : X.G.Kf} {N : ℤ} (hx : Rep X x N) (k : ℕ) :
     Rep X (x ^ k) (k * N) := by
@@ -228,9 +228,9 @@ theorem Rep.pow (hfr : IsFractionRing X.G.O X.G.Kf) {x : X.G.Kf} {N : ℤ} (hx :
     exact Rep.mul X hfr ih hx
 
 /- English proof (translation)
-Break down `Int.eq_nat_or_neg k with ⟨n, rfl | rfl⟩` into its components or cases. Use `Rep.pow X hfr hx n` as an intermediate fact. Rewrite using `[zpow_natCast]` and apply the resulting hypothesis. Use `Rep.inv X (Rep.pow X hfr hx n)` as an intermediate fact. Rewrite using `[zpow_neg, zpow_natCast, neg_mul]`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem Rep.zpow (hfr : IsFractionRing X.G.O X.G.Kf) {x : X.G.Kf} {N : ℤ} (hx : Rep X x N) (k : ℤ) :
     Rep X (x ^ k) (k * N) := by
@@ -242,7 +242,7 @@ theorem Rep.zpow (hfr : IsFractionRing X.G.O X.G.Kf) {x : X.G.Kf} {N : ℤ} (hx 
     exact this
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `X.eO_spec`. Use `⟨u⁻¹, ?_⟩` and prove the remaining obligations. Use `show (p : X.G.Kf) = algebraMap X.G.O X.G.Kf X.vp ^ (X.eO : ℤ) * algebraMap X.G.O X.G.Kf (↑u⁻¹ : X.G.O)`. Rewrite using `[zpow_natCast, ← map_pow, ← map_mul, ← hu, mul_assoc, Units.mul_inv, mul_one, map_natCast]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Rep.ofP : Rep X (p : X.G.Kf) X.eO := by
   obtain ⟨u, hu⟩ := X.eO_spec
@@ -251,13 +251,13 @@ theorem Rep.ofP : Rep X (p : X.G.Kf) X.eO := by
   rw [zpow_natCast, ← map_pow, ← map_mul, ← hu, mul_assoc, Units.mul_inv, mul_one, map_natCast]
 
 /- English proof (translation)
-Use `haveI := hfr`. Take `⟨a, b, hb, rfl⟩` from `IsFractionRing.div_surjective (A := X.G.O) x`. Establish `hb0 : b ≠ 0` using `nonZeroDivisors.ne_zero hb`. Establish `ha0 : a ≠ 0`. Introduce and unpack `rfl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Simplify using `at hx`. Take `⟨m, u, rfl⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible ha0 X.unif`. Take `⟨n, u', rfl⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hb0 X.unif`. Use `⟨(m : ℤ) - n, u * u'⁻¹, ?_⟩` and prove the remaining obligations. Establish `hp : algebraMap X.G.O X.G.Kf X.vp ≠ 0` using `piK_ne X hfr`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu' : algebraMap X.G.O X.G.Kf (u' : X.G.O) ≠ 0` using `(u'.isUnit.map _).ne_zero`. Simplify using `only [piK]`. Rewrite using `[zpow_sub₀ hp, zpow_natCast, zpow_natCast, Units.val_mul]`. Simplify using `only [map_mul, map_pow, map_units_inv]`. Use `first`.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately.
 
-Consider the case `(field_simp; done)`. Consider the case `(field_simp; ring)`.
+A detailed English derivation is pending.
 -/
 theorem exists_rep (hfr : IsFractionRing X.G.O X.G.Kf) {x : X.G.Kf} (hx : x ≠ 0) : ∃ N, Rep X x N := by
   haveI := hfr
@@ -279,15 +279,13 @@ theorem exists_rep (hfr : IsFractionRing X.G.O X.G.Kf) {x : X.G.Kf} (hx : x ≠ 
     | (field_simp; ring)
 
 /- English proof (translation)
-Use `haveI := hfr`. Take `⟨u, rfl⟩` from `hx`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨a, ha⟩` from `(vGeK_iff X).1 h`.
+Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `ha` using `[vsc_def]`. Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`. Establish `hc : N < ⌈g * (X.eO : ℝ)⌉` using `Int.lt_ceil.mpr hlt`. Take `⟨k, hk⟩` from `Int.eq_ofNat_of_zero_le (sub_nonneg.mpr hc.le)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : ⌈g * (X.eO : ℝ)⌉ = N + k` using `by omega`. Establish `hk1 : k ≠ 0` using `by omega`. Rewrite `ha` using `[e, zpow_add₀ (piK_ne X hfr), zpow_natCast, mul_assoc]`. Establish `ha'` using `mul_left_cancel₀ (zpow_ne_zero N (piK_ne X hfr)) ha`. Establish `ha'' : algebraMap X.G.O X.G.Kf (X.vp ^ k * a) = algebraMap X.G.O X.G.Kf (u : X.G.O)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_mul, map_pow]`. Conclude with `ha'`. Establish `hO` using `IsFractionRing.injective X.G.O X.G.Kf ha''`. Apply `X.unif.not_isUnit` to reduce the goal to its premises. Establish `hU : IsUnit (X.vp ^ k * a)`.
-
-Rewrite using `[hO]`. Conclude with `u.isUnit`. Conclude with `isUnit_of_dvd_unit (dvd_mul_of_dvd_left (dvd_pow_self _ hk1) a) hU`. Introduce `h`. Conclude with `vGeK_of_zpow X hfr (u : X.G.O) h rfl`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem vGeK_iff_of_rep (hfr : IsFractionRing X.G.O X.G.Kf) {x : X.G.Kf} {N : ℤ} (hx : Rep X x N) (g : ℝ) :
     X.vGeK x g ↔ g * (X.eO : ℝ) ≤ N := by
@@ -318,15 +316,15 @@ theorem vGeK_iff_of_rep (hfr : IsFractionRing X.G.O X.G.Kf) {x : X.G.Kf} {N : �
     exact vGeK_of_zpow X hfr (u : X.G.O) h rfl
 
 /- English proof (translation)
-Unfold `Sys.vEqK`. Simplify using `only [vGeK_iff_of_rep X hfr hx, not_le]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Establish `he : 0 < X.eO`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `h0`. Establish `h00 : X.eO = 0` using `by omega`. Establish `h0' : (X.eO : ℝ) = 0` using `by exact_mod_cast h00`. Establish `h4` using `h2 (g + 1) (by linarith)`. Rewrite `h4`, `h1` using `[h0', mul_zero]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨he, le_antisymm h1 ?_⟩` and prove the remaining obligations. Establish `hepos : (0 : ℝ) < X.eO` using `by exact_mod_cast he`. Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`.
+Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `h5 : (N : ℝ) / X.eO * X.eO = N` using `by field_simp`. Combine the linear relations using `[h2 ((N : ℝ) / X.eO) (by rw [lt_div_iff₀ hepos]; exact hlt)]`. Introduce and unpack `⟨he, h⟩`. Establish `hepos : (0 : ℝ) < X.eO` using `by exact_mod_cast he`. Use `⟨h.le, fun g' hg' => ?_⟩` and prove the remaining obligations.
+Combine the linear equalities and inequalities to obtain the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h]`. Conclude with `mul_lt_mul_of_pos_right hg' hepos`.
+A detailed English derivation is pending.
 -/
 theorem vEqK_iff_of_rep (hfr : IsFractionRing X.G.O X.G.Kf) {x : X.G.Kf} {N : ℤ} (hx : Rep X x N) (g : ℝ) :
     X.vEqK x g ↔ 0 < X.eO ∧ g * (X.eO : ℝ) = N := by
@@ -354,7 +352,7 @@ theorem vEqK_iff_of_rep (hfr : IsFractionRing X.G.O X.G.Kf) {x : X.G.Kf} {N : �
     exact mul_lt_mul_of_pos_right hg' hepos
 
 /- English proof (translation)
-Introduce and unpack `rfl`. Establish `h'` using `h`. Unfold `Sys.vEqK at h'`. Conclude with `h'.2 (g + 1) (by linarith) (vGeK_zero X _)`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem vEqK.ne_zero {x : X.G.Kf} {g : ℝ} (h : X.vEqK x g) : x ≠ 0 := by
   rintro rfl
@@ -363,7 +361,7 @@ theorem vEqK.ne_zero {x : X.G.Kf} {g : ℝ} (h : X.vEqK x g) : x ≠ 0 := by
   exact h'.2 (g + 1) (by linarith) (vGeK_zero X _)
 
 /- English proof (translation)
-Take `⟨N, hN⟩` from `exists_rep X hfr (vEqK.ne_zero X h)`. Conclude with `⟨N, hN, (vEqK_iff_of_rep X hfr hN g).1 h⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem vEqK.rep (hfr : IsFractionRing X.G.O X.G.Kf) {x : X.G.Kf} {g : ℝ} (h : X.vEqK x g) :
     ∃ N : ℤ, Rep X x N ∧ 0 < X.eO ∧ g * (X.eO : ℝ) = N := by
@@ -371,9 +369,9 @@ theorem vEqK.rep (hfr : IsFractionRing X.G.O X.G.Kf) {x : X.G.Kf} {g : ℝ} (h :
   exact ⟨N, hN, (vEqK_iff_of_rep X hfr hN g).1 h⟩
 
 /- English proof (translation)
-Take `⟨N, hN, he, hg⟩` from `vEqK.rep X hfr hx`. Take `⟨N', hN', -, hh⟩` from `vEqK.rep X hfr hy`. Rewrite using `[vEqK_iff_of_rep X hfr (Rep.mul X hfr hN hN')]`. Use `⟨he, ?_⟩` and prove the remaining obligations. Use `push_cast`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[add_mul, hg, hh]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem vEqK_mul (hfr : IsFractionRing X.G.O X.G.Kf) {x y : X.G.Kf} {g h : ℝ} (hx : X.vEqK x g)
     (hy : X.vEqK y h) : X.vEqK (x * y) (g + h) := by
@@ -385,7 +383,7 @@ theorem vEqK_mul (hfr : IsFractionRing X.G.O X.G.Kf) {x y : X.G.Kf} {g h : ℝ} 
   rw [add_mul, hg, hh]
 
 /- English proof (translation)
-Take `⟨N, hN, he, hg⟩` from `vEqK.rep X hfr hx`. Rewrite using `[vEqK_iff_of_rep X hfr (Rep.inv X hN)]`. Use `⟨he, ?_⟩` and prove the remaining obligations. Use `push_cast`. Rewrite using `[neg_mul, hg]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 -/
 theorem vEqK_inv (hfr : IsFractionRing X.G.O X.G.Kf) {x : X.G.Kf} {g : ℝ} (hx : X.vEqK x g) :
     X.vEqK x⁻¹ (-g) := by
@@ -396,13 +394,13 @@ theorem vEqK_inv (hfr : IsFractionRing X.G.O X.G.Kf) {x : X.G.Kf} {g : ℝ} (hx 
   rw [neg_mul, hg]
 
 /- English proof (translation)
-Conclude with `(vEqK_iff_of_rep X hfr (Rep.one X) 0).2 ⟨he, by simp⟩`.
+A detailed English derivation is pending.
 -/
 theorem vEqK_one (hfr : IsFractionRing X.G.O X.G.Kf) (he : 0 < X.eO) : X.vEqK 1 0 := by
   exact (vEqK_iff_of_rep X hfr (Rep.one X) 0).2 ⟨he, by simp⟩
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using vEqK_one X hfr he`. Consider the case `@insert i s hi ih`. Rewrite using `[Finset.prod_insert hi, Finset.sum_insert hi]`. Conclude with `vEqK_mul X hfr (h i (Finset.mem_insert.2 (Or.inl rfl))) (ih fun j hj => h j (Finset.mem_insert.2 (Or.inr hj)))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vEqK_prod (hfr : IsFractionRing X.G.O X.G.Kf) (he : 0 < X.eO) {ι : Type*} (s : Finset ι)
     (f : ι → X.G.Kf) (g : ι → ℝ) (h : ∀ i ∈ s, X.vEqK (f i) (g i)) : X.vEqK (∏ i ∈ s, f i) (∑ i ∈ s, g i) := by
@@ -414,21 +412,21 @@ theorem vEqK_prod (hfr : IsFractionRing X.G.O X.G.Kf) (he : 0 < X.eO) {ι : Type
     exact vEqK_mul X hfr (h i (Finset.mem_insert.2 (Or.inl rfl))) (ih fun j hj => h j (Finset.mem_insert.2 (Or.inr hj)))
 
 /- English proof (translation)
-Simplify using `using vEqK_prod X hfr he s f (fun _ => 0) h`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem vEqK_prod_units (hfr : IsFractionRing X.G.O X.G.Kf) (he : 0 < X.eO) {ι : Type*} (s : Finset ι)
     (f : ι → X.G.Kf) (h : ∀ i ∈ s, X.vEqK (f i) 0) : X.vEqK (∏ i ∈ s, f i) 0 := by
   simpa using vEqK_prod X hfr he s f (fun _ => 0) h
 
 /- English proof (translation)
-Rewrite using `[vGeK_iff_of_rep X hfr (Rep.zpow X hfr (Rep.ofP X) k)]`. Conclude with `le_refl ((k : ℝ) * X.eO)` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vGeK_ppow (hfr : IsFractionRing X.G.O X.G.Kf) (k : ℤ) : X.vGeK ((p : X.G.Kf) ^ k) (k : ℝ) := by
   rw [vGeK_iff_of_rep X hfr (Rep.zpow X hfr (Rep.ofP X) k)]
   exact_mod_cast le_refl ((k : ℝ) * X.eO)
 
 /- English proof (translation)
-Use `(vEqK_iff_of_rep X hfr (Rep.zpow X hfr (Rep.ofP X) k) k).2 ⟨he, ?_⟩` and prove the remaining obligations. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem vEqK_ppow (hfr : IsFractionRing X.G.O X.G.Kf) (he : 0 < X.eO) (k : ℤ) :
     X.vEqK ((p : X.G.Kf) ^ k) (k : ℝ) := by
@@ -437,7 +435,7 @@ theorem vEqK_ppow (hfr : IsFractionRing X.G.O X.G.Kf) (he : 0 < X.eO) (k : ℤ) 
   ring
 
 /- English proof (translation)
-Take `⟨N, hN, he, hg⟩` from `vEqK.rep X hfr hx`. Rewrite using `[vEqK_iff_of_rep X hfr (Rep.zpow X hfr hN k)]`. Use `⟨he, ?_⟩` and prove the remaining obligations. Use `push_cast`. Rewrite using `[mul_assoc, hg]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 -/
 theorem vEqK_zpow (hfr : IsFractionRing X.G.O X.G.Kf) {x : X.G.Kf} {g : ℝ} (hx : X.vEqK x g) (k : ℤ) :
     X.vEqK (x ^ k) (k * g) := by
@@ -448,20 +446,20 @@ theorem vEqK_zpow (hfr : IsFractionRing X.G.O X.G.Kf) {x : X.G.Kf} {g : ℝ} (hx
   rw [mul_assoc, hg]
 
 /- English proof (translation)
-Unfold `Sys.vGe`. Conclude with `mem_scale`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem vGe_iff {j : ℕ} {F : X.Fm j} {g : ℝ} : X.vGe j F g ↔ ∃ F0 ∈ X.Int j, X.vsc g • F0 = F := by
   unfold Sys.vGe
   exact mem_scale
 
 /- English proof (translation)
-Conclude with `(vGe_iff X).2 ⟨0, (X.Int j).zero_mem, smul_zero _⟩`.
+A detailed English derivation is pending.
 -/
 theorem vGe_zero (j : ℕ) (g : ℝ) : X.vGe j 0 g := by
   exact (vGe_iff X).2 ⟨0, (X.Int j).zero_mem, smul_zero _⟩
 
 /- English proof (translation)
-Take `⟨F0, h0, rfl⟩` from `(vGe_iff X).1 h`. Take `⟨F1, h1, rfl⟩` from `(vGe_iff X).1 h'`. Conclude with `(vGe_iff X).2 ⟨F0 + F1, add_mem h0 h1, smul_add _ _ _⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem vGe_add {j : ℕ} {F F' : X.Fm j} {g : ℝ} (h : X.vGe j F g) (h' : X.vGe j F' g) : X.vGe j (F + F') g := by
   obtain ⟨F0, h0, rfl⟩ := (vGe_iff X).1 h
@@ -469,7 +467,7 @@ theorem vGe_add {j : ℕ} {F F' : X.Fm j} {g : ℝ} (h : X.vGe j F g) (h' : X.vG
   exact (vGe_iff X).2 ⟨F0 + F1, add_mem h0 h1, smul_add _ _ _⟩
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using vGe_zero X j g`. Consider the case `@insert i s hi ih`. Rewrite using `[Finset.sum_insert hi]`. Conclude with `vGe_add X (h i (Finset.mem_insert.2 (Or.inl rfl))) (ih fun k hk => h k (Finset.mem_insert.2 (Or.inr hk)))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vGe_sum {j : ℕ} {ι : Type*} (s : Finset ι) (f : ι → X.Fm j) {g : ℝ} (h : ∀ i ∈ s, X.vGe j (f i) g) :
     X.vGe j (∑ i ∈ s, f i) g := by
@@ -481,9 +479,9 @@ theorem vGe_sum {j : ℕ} {ι : Type*} (s : Finset ι) (f : ι → X.Fm j) {g : 
     exact vGe_add X (h i (Finset.mem_insert.2 (Or.inl rfl))) (ih fun k hk => h k (Finset.mem_insert.2 (Or.inr hk)))
 
 /- English proof (translation)
-Take `⟨F0, h0, rfl⟩` from `(vGe_iff X).1 hF`. Establish `hc : ⌈g' * (X.eO : ℝ)⌉ ≤ ⌈g * (X.eO : ℝ)⌉` using `ceil_mono X h`. Take `⟨k, hk⟩` from `Int.eq_ofNat_of_zero_le (sub_nonneg.mpr hc)`. Use `(vGe_iff X).2 ⟨X.vp ^ k • F0, (X.Int j).smul_mem _ h0, ?_⟩` and prove the remaining obligations. Establish `e : ⌈g * (X.eO : ℝ)⌉ = ⌈g' * (X.eO : ℝ)⌉ + k` using `by omega`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← algebraMap_smul X.G.Kf (X.vp ^ k) F0, smul_smul]`. Use `congr 1`. Rewrite using `[vsc_def, vsc_def, e, zpow_add₀ (piK_ne X hfr), zpow_natCast, map_pow]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 -/
 theorem vGe_mono (hfr : IsFractionRing X.G.O X.G.Kf) {j : ℕ} {F : X.Fm j} {g g' : ℝ} (h : g' ≤ g)
     (hF : X.vGe j F g) : X.vGe j F g' := by
@@ -497,20 +495,20 @@ theorem vGe_mono (hfr : IsFractionRing X.G.O X.G.Kf) {j : ℕ} {F : X.Fm j} {g g
   rw [vsc_def, vsc_def, e, zpow_add₀ (piK_ne X hfr), zpow_natCast, map_pow]
 
 /- English proof (translation)
-Rewrite using `[vGe_iff, vsc_def]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem vGe_zero_iff {j : ℕ} {F : X.Fm j} : X.vGe j F 0 ↔ F ∈ X.Int j := by
   rw [vGe_iff, vsc_def]
   simp
 
 /- English proof (translation)
-Take `⟨c, rfl⟩` from `(vGeK_iff X).1 ha`. Take `⟨F0, h0, rfl⟩` from `(vGe_iff X).1 hF`. Establish `hle : ⌈(g + h) * (X.eO : ℝ)⌉ ≤ ⌈g * (X.eO : ℝ)⌉ + ⌈h * (X.eO : ℝ)⌉`. Rewrite using `[Int.ceil_le]`. Use `push_cast`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[add_mul]`. Combine the linear relations using `[Int.le_ceil (g * (X.eO : ℝ)), Int.le_ceil (h * (X.eO : ℝ))]`. Take `⟨k, hk⟩` from `Int.eq_ofNat_of_zero_le (sub_nonneg.mpr hle)`. Use `(vGe_iff X).2 ⟨(X.vp ^ k * c) • F0, (X.Int j).smul_mem _ h0, ?_⟩` and prove the remaining obligations. Establish `e : ⌈g * (X.eO : ℝ)⌉ + ⌈h * (X.eO : ℝ)⌉ = ⌈(g + h) * (X.eO : ℝ)⌉ + k` using `by omega`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hz : piK X ^ ⌈g * (X.eO : ℝ)⌉ * piK X ^ ⌈h * (X.eO : ℝ)⌉ = piK X ^ ⌈(g + h) * (X.eO : ℝ)⌉ * algebraMap X.G.O X.G.Kf X.vp ^ k`. Rewrite using `[← zpow_add₀ (piK_ne X hfr), e, zpow_add₀ (piK_ne X hfr), zpow_natCast]`. Rewrite using `[← algebraMap_smul X.G.Kf (X.vp ^ k * c) F0, smul_smul, smul_smul]`. Use `congr 1`. Rewrite using `[vsc_def, vsc_def, vsc_def, map_mul, map_pow]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `(-(algebraMap X.G.O X.G.Kf c)) * hz`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem vGe_smul (hfr : IsFractionRing X.G.O X.G.Kf) {j : ℕ} {a : X.G.Kf} {F : X.Fm j} {g h : ℝ}
     (ha : X.vGeK a g) (hF : X.vGe j F h) : X.vGe j (a • F) (g + h) := by
@@ -540,7 +538,7 @@ variable {n' k1 : ℕ} {p t m c r : ℕ} {TT : Finset (Fin n')} {a b : Fin n' �
   {lam0 : Fin n' → Fin (k1 + 1) → ℤ} {w : ℕ → Fin n' → ℤ}
 
 /- English proof (translation)
-Unfold `lamI`. Rewrite using `[dif_pos ⟨h1, h2⟩]`. Establish `hs` using `(h.w_low s).2`. Establish `hd : lam0 s (Fin.last k1) ≤ lam0 s ⟨i - 1, by omega⟩` using `h.dom s (by change i - 1 ≤ k1; omega)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem lamI_ge (h : Std p n' k1 t m c r TT a b lam0 w) (s : Fin n') (i : ℕ) (h1 : 1 ≤ i) (h2 : i ≤ k1 + 1) :
     -w 1 s ≤ lamI lam0 s i := by
@@ -551,7 +549,7 @@ theorem lamI_ge (h : Std p n' k1 t m c r TT a b lam0 w) (s : Fin n') (i : ℕ) (
   linarith
 
 /- English proof (translation)
-Proceed by induction on `l', h2 using Nat.le_induction with`. Consider the case `base => exact le_refl _`. Consider the case `succ n hn ih`. Conclude with `le_trans (ih (by omega)) (h.w_mono s n (by omega) (by omega))`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem w_le (h : Std p n' k1 t m c r TT a b lam0 w) (s : Fin n') {l l' : ℕ} (h1 : 1 ≤ l) (h2 : l ≤ l')
     (h3 : l' ≤ m) : w l s ≤ w l' s := by
@@ -561,9 +559,9 @@ theorem w_le (h : Std p n' k1 t m c r TT a b lam0 w) (s : Fin n') {l l' : ℕ} (
     exact le_trans (ih (by omega)) (h.w_mono s n (by omega) (by omega))
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `zero => simp`. Consider the case `succ l ih`. Establish `hr` using `h.two_r`. Establish `ih'` using `ih (by omega)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : r - l = (r - (l + 1)) + 1` using `by omega`. Establish `hs` using `Finset.sum_Icc_succ_top (show 1 ≤ r - (l + 1) + 1 by omega) (fun i => lamI lam0 s i)`. Rewrite `hs` using `[← e]`. Establish `hb` using `lamI_ge h s (r - l) (by omega) (by omega)`. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -582,9 +580,9 @@ theorem D_ge (h : Std p n' k1 t m c r TT a b lam0 w) (s : Fin n') (l : ℕ) (hl 
     linarith
 
 /- English proof (translation)
-Establish `hr1` using `h.r_pos`. Establish `hr2` using `h.two_r`. Establish `hD` using `D_ge h s (r - 1) (by omega)`. Establish `e1 : r - (r - 1) = 1` using `by omega`. Rewrite `hD` using `[e1, Finset.Icc_self, Finset.sum_singleton]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Move the coercions through the operations in `[Nat.cast_sub hr1] at hD`. Establish `h2` using `lamI_ge h s 2 (by omega) (by omega)`. Establish `h1'` using `lamI_ge h s 1 (le_refl 1) (by omega)`. Unfold `al`. Apply the tactic sequence `split_ifs <;> linarith`.
+Move the embeddings inside the algebraic operations. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem D_ge_al (h : Std p n' k1 t m c r TT a b lam0 w) (s : Fin n') :
     al TT lam0 s ≤ ∑ i ∈ Icc 1 r, lamI lam0 s i + (r : ℤ) * w 1 s := by
@@ -608,7 +606,7 @@ def clExp (t r : ℕ) (lam0 : Fin n' → Fin (k1 + 1) → ℤ) (w : ℕ → Fin 
     ((n' / 2 : ℕ) : ℤ) * l * ((NN k1 t j : ℤ) - 2 * r + l) + (l : ℤ) * muZ t w j
 
 /- English proof (translation)
-Unfold `clExp muZ Nprime`. Rewrite using `[Finset.sum_add_distrib, Finset.sum_sub_distrib, ← Finset.mul_sum]`. Move the coercions through the operations in `[Nat.cast_sub hl]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem clExp_eq (j l : ℕ) (hl : l ≤ r) :
     clExp t r lam0 w j l =
@@ -621,9 +619,9 @@ theorem clExp_eq (j l : ℕ) (hl : l ≤ r) :
   ring
 
 /- English proof (translation)
-Establish `hr` using `h.two_r`. Establish `hr' : (2 * r : ℤ) ≤ k1 + 1` using `by exact_mod_cast hr`. Apply `mul_nonneg (mul_nonneg (by positivity) (by positivity))` to reduce the goal to its premises. Unfold `NN`. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations.
 
-Use polynomial arithmetic with `[(by positivity : (0 : ℤ) ≤ (j : ℤ) * t), (by positivity : (0 : ℤ) ≤ (j : ℤ)), (by positivity : (0 : ℤ) ≤ (l : ℤ))]`.
+Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem tail_nonneg (h : Std p n' k1 t m c r TT a b lam0 w) (j l : ℕ) :
     0 ≤ ((n' / 2 : ℕ) : ℤ) * l * ((NN k1 t (j + 1) : ℤ) - 2 * r + l - t) := by
@@ -636,9 +634,9 @@ theorem tail_nonneg (h : Std p n' k1 t m c r TT a b lam0 w) (j l : ℕ) :
     (by positivity : (0 : ℤ) ≤ (l : ℤ))]
 
 /- English proof (translation)
-Rewrite using `[clExp_eq (j + 1) l hl]`. Apply `add_nonneg` to reduce the goal to its premises. Apply `Finset.sum_nonneg` to reduce the goal to its premises. Introduce `s _`. Use `D_ge h s l hl` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `tail_nonneg h j l`.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem clExp_nonneg (h : Std p n' k1 t m c r TT a b lam0 w) (j l : ℕ) (hl : l ≤ r) :
     0 ≤ clExp t r lam0 w (j + 1) l := by
@@ -651,13 +649,13 @@ theorem clExp_nonneg (h : Std p n' k1 t m c r TT a b lam0 w) (j l : ℕ) (hl : l
   · exact tail_nonneg h j l
 
 /- English proof (translation)
-Rewrite using `[clExp_eq (j + 1) r le_rfl]`. Establish `e1 : ∑ s ∈ TT.filter (fun s => ¬ IsOddPos s), al TT lam0 s = ∑ s ∈ univ.filter (fun s : Fin n' => ¬ IsOddPos s), al TT lam0 s`. Use `Finset.sum_subset (fun s hs => ?_) (fun s hs hs' => ?_)` and prove the remaining obligations. Rewrite `hs`, the goal using `[mem_filter]`. Conclude with `⟨mem_univ _, hs.2⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite `hs`, `hs'` using `[mem_filter]`. Unfold `al`. Rewrite using `[if_neg fun hT => hs' ⟨hT, hs.2⟩]`. Rewrite using `[e1]`. Establish `e2` using `tail_nonneg h j r`.
+Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e3 : ∑ s ∈ univ.filter (fun s : Fin n' => ¬ IsOddPos s), al TT lam0 s ≤ ∑ s ∈ univ.filter (fun s : Fin n' => ¬ IsOddPos s), (∑ i ∈ Icc 1 r, lamI lam0 s i - ∑ i ∈ Icc 1 (r - r), lamI lam0 s i + (r : ℤ) * w 1 s)`. Use `Finset.sum_le_sum fun s _ => ?_` and prove the remaining obligations. Use `D_ge_al h s` as an intermediate fact. Simplify using `only [Nat.sub_self]`. Establish `e0 : ∑ i ∈ Icc 1 0, lamI lam0 s i = 0` using `by simp`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[e0]`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem clExp_ge_al (h : Std p n' k1 t m c r TT a b lam0 w) (j : ℕ) :
     ∑ s ∈ TT.filter (fun s => ¬ IsOddPos s), al TT lam0 s ≤ clExp t r lam0 w (j + 1) r := by
@@ -684,7 +682,7 @@ theorem clExp_ge_al (h : Std p n' k1 t m c r TT a b lam0 w) (j : ℕ) :
   linarith
 
 /- English proof (translation)
-Unfold `muZ`. Establish `h1' : ∑ s ∈ univ.filter (fun s : Fin n' => ¬ IsOddPos s), w 1 s ≤ ∑ s ∈ univ.filter (fun s : Fin n' => ¬ IsOddPos s), w l s` using `Finset.sum_le_sum fun s _ => w_le h s (le_refl 1) h1 (by omega)`. Establish `h2' : ∑ s ∈ univ.filter (fun s : Fin n' => IsOddPos s), w l s ≤ ∑ s ∈ univ.filter (fun s : Fin n' => IsOddPos s), w j s` using `Finset.sum_le_sum fun s _ => w_le h s h1 h2 h3`. Establish `h4 : ((n' / 2 : ℕ) : ℤ) * i ≤ ((n' / 2 : ℕ) : ℤ) * t` using `mul_le_mul_of_nonneg_left (by exact_mod_cast hi) (by positivity)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem mu_le (h : Std p n' k1 t m c r TT a b lam0 w) {j l i : ℕ} (h1 : 1 ≤ l) (h2 : l ≤ j) (h3 : j ≤ m)
     (hi : i ≤ t) :
@@ -708,9 +706,9 @@ section Cii
 variable {p : ℕ} [Fact p.Prime] (X : Sys p)
 
 /- English proof (translation)
-Establish `hfr` using `frac_of_place X v`. Unfold `Sys.FF Sys.qh`. Establish `h1 : X.vGeK (m (x.1.val + 1)) (X.vm v (x.1.val + 1))` using `(hm _ (mem_Icc.2 ⟨by omega, by have := x.1.isLt; omega⟩)).1`. Establish `h2` using `vGeK_mul X hfr h1 (vGeK_ppow X hfr (((X.G.P.n' v / 2 : ℕ) : ℤ) * ((X.t : ℤ) - 2 * x.2.val)))`. Use `vGeK_mono X hfr ?_ h2` and prove the remaining obligations.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h3` using `mu_le (X.std v) (l := x.1.val + 1) (j := j) (i := x.2.val) (by omega) (by have := x.1.isLt; omega) hj (Nat.lt_succ_iff.1 x.2.isLt)`. Establish `h4 : ((muZ X.t (X.w v) j : ℤ) : ℝ) ≤ ((X.vm v (x.1.val + 1) + ((X.G.P.n' v / 2 : ℕ) : ℤ) * ((X.t : ℤ) - 2 * x.2.val) : ℤ) : ℝ)`. Conclude with `h3` after adjusting the coercions. Rewrite `h4` using `[Int.cast_add]`. Conclude with `h4`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vGeK_FF (v : X.Pl) (m : ℕ → X.G.Kf) (hm : ∀ l ∈ Icc 1 X.mm, X.vEqK (m l) (X.vm v l)) (j : ℕ)
     (hj : j ≤ X.mm) (x : Fin j × Fin (X.t + 1)) :
@@ -730,9 +728,9 @@ theorem vGeK_FF (v : X.Pl) (m : ℕ → X.G.Kf) (hm : ∀ l ∈ Icc 1 X.mm, X.vE
   exact h4
 
 /- English proof (translation)
-Establish `hfr` using `frac_of_place X v`. Rewrite using `[MvPolynomial.hsymm, map_sum]`. Use `vGeK_sum X _ _ fun s _ => ?_` and prove the remaining obligations. Rewrite using `[map_multiset_prod, Multiset.map_map]`. Establish `h1` using `vGeK_multiset_prod X hfr (fun x => X.FF v m j x) ((muZ X.t (X.w v) j : ℤ) : ℝ) s.1 (fun x _ => vGeK_FF X v m hm j hj x)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[s.2]`. Establish `e : Multiset.map (⇑(MvPolynomial.eval (X.FF v m j)) ∘ MvPolynomial.X) s.1 = Multiset.map (fun x => X.FF v m j x) s.1` using `Multiset.map_congr rfl fun x _ => by simp`. Rewrite using `[e]`. Conclude with `h1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vGeK_hsymm (v : X.Pl) (m : ℕ → X.G.Kf) (hm : ∀ l ∈ Icc 1 X.mm, X.vEqK (m l) (X.vm v l)) (j : ℕ)
     (hj : j ≤ X.mm) (l : ℕ) :
@@ -751,9 +749,9 @@ theorem vGeK_hsymm (v : X.Pl) (m : ℕ → X.G.Kf) (hm : ∀ l ∈ Icc 1 X.mm, X
   exact h1
 
 /- English proof (translation)
-Establish `hfr` using `frac_of_place X v`. Unfold `Sys.cl`. Establish `h` using `vGeK_mul X hfr (vGeK_mul X hfr (vGeK_ppow X hfr (Nprime (X.G.P.lam0 v) (X.w v) j X.G.P.r - Nprime (X.G.P.lam0 v) (X.w v) j (X.G.P.r - l))) (vGeK_ppow X hfr (((X.G.P.n' v / 2 : ℕ) : ℤ) * l * ((NN X.G.P.m X.t j : ℤ) - 2 * X.G.P.r + l)))) (vGeK_hsymm X v m hm j hj l)`. Use `vGeK_mono X hfr (le_of_eq ?_) h` and prove the remaining obligations. Unfold `clExp`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem vGeK_cl (v : X.Pl) (m : ℕ → X.G.Kf) (hm : ∀ l ∈ Icc 1 X.mm, X.vEqK (m l) (X.vm v l)) (j : ℕ)
     (hj : j ≤ X.mm) (l : ℕ) :
@@ -770,9 +768,9 @@ theorem vGeK_cl (v : X.Pl) (m : ℕ → X.G.Kf) (hm : ∀ l ∈ Icc 1 X.mm, X.vE
   ring
 
 /- English proof (translation)
-Establish `hfr` using `frac_of_place X v`. Prove the components needed by the constructor for the conclusion. Introduce `l hl`. Use `vGeK_mono X hfr ?_ (vGeK_cl X v m hm (j + 1) hj l)` and prove the remaining obligations. Conclude with `clExp_nonneg (X.std v) j l hl` after adjusting the coercions.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `vGeK_mono X hfr ?_ (vGeK_cl X v m hm (j + 1) hj X.G.P.r)` and prove the remaining obligations. Conclude with `clExp_ge_al (X.std v) j` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem Cii (v : X.Pl) (m : ℕ → X.G.Kf) (hm : ∀ l ∈ Icc 1 X.mm, X.vEqK (m l) (X.vm v l)) (j : ℕ)
     (hj : j < X.mm) :
@@ -787,9 +785,9 @@ theorem Cii (v : X.Pl) (m : ℕ → X.G.Kf) (hm : ∀ l ∈ Icc 1 X.mm, X.vEqK (
     exact_mod_cast clExp_ge_al (X.std v) j
 
 /- English proof (translation)
-Introduce `l hl`. Establish `hfr` using `frac_of_place X v`. Take `⟨_, _, he, _⟩` from `vEqK.rep X hfr (hm l hl)`. Unfold `mHat`. Establish `h1 : X.vEqK (∏ l' ∈ Icc 1 (l - 1), u l') 0` using `vEqK_prod_units X hfr he _ _ fun l' hl' => hu l' (by rw [mem_Icc] at hl hl' ⊢; omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `h2` using `vEqK_mul X hfr (hm l hl) (vEqK_inv X hfr h1)`. Simplify using `using h2`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem vEqK_mHat (v : X.Pl) (u m : ℕ → X.G.Kf) (hu : ∀ l ∈ Icc 1 X.mm, X.vEqK (u l) 0)
     (hm : ∀ l ∈ Icc 1 X.mm, X.vEqK (m l) (X.vm v l)) : ∀ l ∈ Icc 1 X.mm, X.vEqK (mHat u m l) (X.vm v l) := by
@@ -803,7 +801,7 @@ theorem vEqK_mHat (v : X.Pl) (u m : ℕ → X.G.Kf) (hu : ∀ l ∈ Icc 1 X.mm, 
   simpa using h2
 
 /- English proof (translation)
-Introduce `v`. Take `⟨u, m, hu, hm, H⟩` from `h v`. Conclude with `⟨u, mHat u m, hu, vEqK_mHat X v u m hu hm, fun j hj => (H j hj).2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem theorem_of_alternate_form (D : Formalism.BasicNotions.D7) (h : KernelCommutationUpToUnits D X) : Conclusion4 D X := by
   intro v
@@ -817,21 +815,21 @@ section Ciii
 variable {p : ℕ} [Fact p.Prime] (X : Sys p)
 
 /- English proof (translation)
-Conclude with `(vGeK_zero_iff X).2 ((mem_intK X).2 ⟨(-1) ^ l, by simp⟩)`.
+A detailed English derivation is pending.
 -/
 theorem vGeK_negOnePow (l : ℕ) : X.vGeK ((-1 : X.G.Kf) ^ l) 0 := by
   exact (vGeK_zero_iff X).2 ((mem_intK X).2 ⟨(-1) ^ l, by simp⟩)
 
 /- English proof (translation)
-Introduce `G hG`. Establish `hfr` using `frac_of_place X v`. Take `⟨_, _, he, _⟩` from `vEqK.rep X hfr (hu (j + 1) (mem_Icc.2 ⟨by omega, le_rfl⟩))`. Establish `hU : ∀ i : ℕ, X.vGeK ((∏ l ∈ Icc 1 (j + 1), u l) ^ (-(i : ℤ))) 0`. Introduce `i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : X.vEqK (∏ l ∈ Icc 1 (j + 1), u l) 0` using `vEqK_prod_units X hfr he _ _ hu`. Establish `h2` using `(vEqK_zpow X hfr h1 (-(i : ℤ))).1`. Simplify using `using h2`. Unfold `Sys.Zop`. Use `vGe_sum X _ _ fun l hl => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hl' : l ≤ X.G.P.r` using `Nat.lt_succ_iff.1 (mem_range.1 hl)`. Unfold `Sys.Ttu`. Break down `eq_or_lt_of_le hl' with rfl | hlt` into its components or cases. Establish `h0 : X.Tt v (X.G.P.r - X.G.P.r) (j + 1) (X.Kz j G) = X.Kz j G`. Unfold `Sys.Tt`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[if_pos (Nat.sub_self _)]`. Rewrite using `[h0]`. Establish `h` using `vGe_smul X hfr (vGeK_mul X hfr (vGeK_negOnePow X X.G.P.r) hcr) (vGe_smul X hfr (hU (X.G.P.r - X.G.P.r)) (hA G hG))`. Use `vGe_mono X hfr (le_of_eq ?_) h` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `h` using `vGe_smul X hfr (vGeK_mul X hfr (vGeK_negOnePow X l) (hc l hl')) (vGe_smul X hfr (hU (X.G.P.r - l)) (hB (X.G.P.r - l) (mem_Icc.2 ⟨by omega, Nat.sub_le _ _⟩) G hG))`. Use `vGe_mono X hfr (le_of_eq ?_) h` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem CiiiGen (v : X.Pl) (u mh : ℕ → X.G.Kf) (j : ℕ) (hu : ∀ l ∈ Icc 1 (j + 1), X.vEqK (u l) 0)
     (hc : ∀ l ≤ X.G.P.r, X.vGeK (X.cl v mh (j + 1) l) 0)
@@ -867,7 +865,7 @@ theorem CiiiGen (v : X.Pl) (u mh : ℕ → X.G.Kf) (j : ℕ) (hu : ∀ l ∈ Icc
     ring
 
 /- English proof (translation)
-Take `⟨hc, hcr⟩` from `Cii X v m hm j hj`. Use `CiiiGen X v u m j (fun l hl => hu l (by rw [mem_Icc] at hl ⊢; omega)) hc hcr _ (h3 v j hj).2 ?_` and prove the remaining obligations. Introduce `G hG`. Use `vGe_mono X (frac_of_place X v) (le_of_eq ?_) (h2b v j hj G hG)` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem Ciii (D : Formalism.BasicNotions.D7) (h3 : PointsLemma D X) (h2b : MassRatio₂ D X) (v : X.Pl) (u m : ℕ → X.G.Kf)
     (hu : ∀ l ∈ Icc 1 X.mm, X.vEqK (u l) 0) (hm : ∀ l ∈ Icc 1 X.mm, X.vEqK (m l) (X.vm v l)) (j : ℕ)
@@ -880,15 +878,13 @@ theorem Ciii (D : Formalism.BasicNotions.D7) (h3 : PointsLemma D X) (h2b : MassR
   ring
 
 /- English proof (translation)
-Break down `Nat.eq_zero_or_pos X.eO with h0 | h0` into its components or cases. It suffices to derive a contradiction. Establish `hS` using `X.G.P.setting v`. Establish `hpu : IsUnit (p : X.G.O)`. Use `X.eO_spec` as an intermediate fact.
+Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[h0, pow_zero]`. Conclude with `(associated_one_iff_isUnit).1 this`. Set `_ : Algebra (X.G.P.W v) X.G.O` to `(X.G.P.j v).toAlgebra`. Establish `: Algebra.IsIntegral (X.G.P.W v) X.G.O` using `⟨hS.finite.to_isIntegral⟩`. Establish `hmax : (Ideal.span {(p : X.G.P.W v)}).IsMaximal`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(IsDiscreteValuationRing.irreducible_iff_uniformizer _).1 hS.p_unif` as an intermediate fact. Rewrite using `[← this]`. Conclude with `IsLocalRing.maximalIdeal.isMaximal _`. Establish `hker : RingHom.ker (algebraMap (X.G.P.W v) X.G.O) ≤ Ideal.span {(p : X.G.P.W v)}`. Use `(IsDiscreteValuationRing.irreducible_iff_uniformizer _).1 hS.p_unif` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← this]`. Conclude with `IsLocalRing.le_maximalIdeal (RingHom.ker_ne_top _)`. Take `⟨Q, hQ, hQc⟩` from `Ideal.exists_ideal_over_maximal_of_isIntegral (S := X.G.O) (Ideal.span {(p : X.G.P.W v)}) hker`. Establish `hp : (p : X.G.P.W v) ∈ Q.comap (algebraMap (X.G.P.W v) X.G.O)`. Rewrite using `[hQc]`.
-
-Conclude with `Ideal.mem_span_singleton_self _`. Rewrite `hp` using `[Ideal.mem_comap, map_natCast]`. Conclude with `hQ.ne_top (Ideal.eq_top_of_isUnit_mem _ hp hpu)`. Conclude with `h0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eO_pos (v : X.Pl) : 0 < X.eO := by
   rcases Nat.eq_zero_or_pos X.eO with h0 | h0

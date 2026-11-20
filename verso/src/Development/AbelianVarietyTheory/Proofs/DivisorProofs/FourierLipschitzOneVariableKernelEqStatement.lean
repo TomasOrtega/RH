@@ -6,7 +6,7 @@ open NumberField nonZeroDivisors MeasureTheory GlobalTheory.LipschitzTR GlobalTh
 open scoped FourierTransform RealInnerProductSpace
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.LipschitzTR.fourier_phi1_eq_factorial_mul_zpow` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FFourierLipschitzOneVariableKernelEq.lean&line=84#L84)
 -/

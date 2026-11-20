@@ -14,9 +14,9 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 variable {k r : ℕ} {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
 
 /- English proof (translation)
-Rewrite using `[← dx_false]`. Establish `hc` using `Formalism.REAL.hasDerivAt_mul_exp_smul_zero g X`. Establish `hF0 : HasFDerivAt F F' (g * NormedSpace.exp (((0 : ℝ) : ℂ) • X))` using `by simpa using hF`. Establish `hcomp : HasDerivAt (fun t : ℝ => F (g * NormedSpace.exp ((t : ℂ) • X))) (F' (g * X)) 0` using `hF0.comp_hasDerivAt (0 : ℝ) hc`. Establish `hU0 : U ∈ nhds (g * NormedSpace.exp (((0 : ℝ) : ℂ) • X))` using `by simpa using hU.mem_nhds hgU`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hev : (fun t : ℝ => φ (g * NormedSpace.exp ((t : ℂ) • X))) =ᶠ[nhds 0] fun t => F (g * NormedSpace.exp ((t : ℂ) • X))` using `by filter_upwards [hc.continuousAt.preimage_mem_nhds hU0] with t ht`. Conclude with `hff _ ht (Formalism.FourierDecayAlt.P.B5.curve_mem hg hX t)`. Conclude with `(hcomp.congr_of_eventuallyEq hev).deriv`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem dx_repF {X : Mat k r} (hX : inLie k r X) {φ F : Mat k r → E} {F' : Mat k r →L[ℝ] E} {U : Set (Mat k r)}
     {g : Mat k r} (hU : IsOpen U) (hgU : g ∈ U) (hg : g ∈ GV k r) (hF : HasFDerivAt F F' g)
@@ -34,7 +34,7 @@ theorem dx_repF {X : Mat k r} (hX : inLie k r X) {φ F : Mat k r → E} {F' : Ma
   exact (hcomp.congr_of_eventuallyEq hev).deriv
 
 /- English proof (translation)
-Establish `h1 : RdV (Xa k r a b) φ g = F' (g * Xa k r a b)` using `dx_repF (Xa_lie a b) hU hgU hg hF hff`. Establish `h2 : RdV (Xb k r a b) φ g = F' (g * Xb k r a b)` using `dx_repF (Xb_lie a b) hU hgU hg hF hff`. Use `show RdV (Xa k r a b) φ g + Complex.I • RdV (Xb k r a b) φ g = F' (g * Xa k r a b) + Complex.I • F' (g * Xb k r a b)`. Rewrite using `[h1, h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem EH_psi {φ F : Mat k r → E} {F' : Mat k r →L[ℝ] E} {U : Set (Mat k r)}
     {g : Mat k r} (hU : IsOpen U) (hgU : g ∈ U) (hg : g ∈ GV k r) (hF : HasFDerivAt F F' g)
@@ -47,11 +47,11 @@ theorem EH_psi {φ F : Mat k r → E} {F' : Mat k r →L[ℝ] E} {U : Set (Mat k
   rw [h1, h2]
 
 /- English proof (translation)
-Establish `hu : IsUnit y.det` using `Formalism.QuantumDeterminants.WeylGroupFacts.isUnit_of_uh hy`. Establish `hy' : yᴴ * Hpk k r * y = Hpk k r` using `hy`. Establish `h1 : Hpk k r * y⁻¹ = yᴴ * Hpk k r`. Combine the equalities or inequalities in the displayed calculation. Establish `h2 : (y⁻¹)ᴴ * Hpk k r = Hpk k r * y`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Unfold `inLie at hX ⊢`. Establish `e1 : (y⁻¹ * X * y)ᴴ * Hpk k r = yᴴ * (Xᴴ * Hpk k r) * y`. Rewrite using `[Matrix.conjTranspose_mul, Matrix.conjTranspose_mul]`. Simplify using `only [Matrix.mul_assoc, h2]`.
+Chain the equalities or inequalities of the calculation. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `e2 : Hpk k r * (y⁻¹ * X * y) = yᴴ * (Hpk k r * X) * y`. Simplify using `only [← Matrix.mul_assoc]`. Rewrite using `[h1]`. Rewrite using `[e1, e2, ← Matrix.add_mul, ← Matrix.mul_add, hX, Matrix.mul_zero, Matrix.zero_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem inLie_conj_of_mem_GV' {y X : Mat k r} (hy : y ∈ GV k r) (hX : inLie k r X) :
     inLie k r (y⁻¹ * X * y) := by
@@ -74,9 +74,9 @@ private theorem inLie_conj_of_mem_GV' {y X : Mat k r} (hy : y ∈ GV k r) (hX : 
   rw [e1, e2, ← Matrix.add_mul, ← Matrix.mul_add, hX, Matrix.mul_zero, Matrix.zero_mul]
 
 /- English proof (translation)
-Rewrite using `[EHc_eq]`. Use `beta_reduce`. Rewrite using `[dx_repF (inLie_conj_of_mem_GV' hy (Xa_lie c d)) hU hgU hg hF hff, dx_repF (inLie_conj_of_mem_GV' hy (Xb_lie c d)) hU hgU hg hF hff]`. Establish `hZ : y⁻¹ * Matrix.single c d 1 * y = y⁻¹ * Xa k r c d * y + Complex.I • (y⁻¹ * Xb k r c d * y)` using `by conv_lhs => rw [← hp_decomp (Matrix.single c d 1)]`. Rewrite using `[Matrix.mul_add, Matrix.add_mul, Matrix.mul_smul, Matrix.smul_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Apply the tactic sequence `all_goals rfl`. Take `⟨h1, h2⟩` from `hp_of_parts (inLie_conj_of_mem_GV' hy (Xa_lie c d)) (inLie_conj_of_mem_GV' hy (Xb_lie c d))`. Unfold `Psi`. Rewrite using `[hZ, h1, h2]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem EHc_psi {y : Mat k r} (hy : y ∈ GV k r) {φ F : Mat k r → E} {F' : Mat k r →L[ℝ] E} {U : Set (Mat k r)}
     {g : Mat k r} (hU : IsOpen U) (hgU : g ∈ U) (hg : g ∈ GV k r) (hF : HasFDerivAt F F' g)
@@ -95,7 +95,7 @@ theorem EHc_psi {y : Mat k r} (hy : y ∈ GV k r) {φ F : Mat k r → E} {F' : M
   rw [hZ, h1, h2]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Matrix.mul_apply, Matrix.single_apply, Matrix.sum_apply, ite_and, mul_ite, ite_mul, Finset.sum_ite_eq, Finset.sum_ite_eq']`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem conj_single (P Q : Mat k r) (c d : Fin (2 * r + k + 1)) :
     P * Matrix.single c d 1 * Q = ∑ a, ∑ b, (P a c * Q d b) • Matrix.single a b 1 := by
@@ -104,11 +104,11 @@ theorem conj_single (P Q : Mat k r) (c d : Fin (2 * r + k + 1)) :
     Finset.sum_ite_eq, Finset.sum_ite_eq']
 
 /- English proof (translation)
-Establish `h1 : hpart1 (Hpk k r) (A + B) = hpart1 (Hpk k r) A + hpart1 (Hpk k r) B`. Simplify using `only [hpart1, Matrix.conjTranspose_add, mul_add, add_mul]`. Rewrite using `[← smul_add]`. Use `congr 1`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Normalize the expressions using the abelian group laws.
 
-Establish `h2 : hpart2 (Hpk k r) (A + B) = hpart2 (Hpk k r) A + hpart2 (Hpk k r) B`. Simplify using `only [hpart2, Matrix.conjTranspose_add, mul_add, add_mul]`. Rewrite using `[← smul_add]`. Use `congr 1`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Normalize the expressions using the abelian group laws.
 
-Simplify using `only [Psi, h1, h2, mul_add, map_add, smul_add]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 private theorem psi_add_hermitian_curvature (D : Mat k r →L[ℝ] E) (g A B : Mat k r) :
     Psi D g (A + B) = Psi D g A + Psi D g B := by
@@ -126,14 +126,14 @@ private theorem psi_add_hermitian_curvature (D : Mat k r →L[ℝ] E) (g A B : M
   abel
 
 /- English proof (translation)
-Conclude with `map_sum (AddMonoidHom.mk' (Psi D g) (psi_add_hermitian_curvature D g)) Z s`.
+A detailed English derivation is pending.
 -/
 theorem Psi_sum {ι : Type*} (s : Finset ι) (D : Mat k r →L[ℝ] E) (g : Mat k r) (Z : ι → Mat k r) :
     Psi D g (∑ i ∈ s, Z i) = ∑ i ∈ s, Psi D g (Z i) := by
   exact map_sum (AddMonoidHom.mk' (Psi D g) (psi_add_hermitian_curvature D g)) Z s
 
 /- English proof (translation)
-Take `⟨U, f', hU, hgU, hf', hff⟩` from `hφ g hg`. Apply the tactic sequence `have hd : DifferentiableAt ℝ f' g := (hf'.differentiableOn (by first | exact le_rfl | simp)).differentiableAt (hU.mem_nhds hgU)`. Conclude with `⟨U, f', hU, hgU, hd.hasFDerivAt, hff⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem rep1 {φ : Mat k r → E} (hφ : CkOn 1 (GV k r) φ) {g : Mat k r} (hg : g ∈ GV k r) :
     ∃ (U : Set (Mat k r)) (F : Mat k r → E), IsOpen U ∧ g ∈ U ∧ HasFDerivAt F (fderiv ℝ F g) g ∧
@@ -144,7 +144,7 @@ theorem rep1 {φ : Mat k r → E} (hφ : CkOn 1 (GV k r) φ) {g : Mat k r} (hg :
   exact ⟨U, f', hU, hgU, hd.hasFDerivAt, hff⟩
 
 /- English proof (translation)
-Introduce `a b m f hf`. Establish `h` using `EHc_ck (Formalism.QuantumDeterminants.WeylGroupFacts.uh_one (k := k) (r := r)) a b m f hf`. Rewrite `h` using `[EHc_one]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem EH_HC : HC (Q.EH (E := E) k r) := by
   intro a b m f hf
@@ -152,16 +152,16 @@ theorem EH_HC : HC (Q.EH (E := E) k r) := by
   rwa [EHc_one] at h
 
 /- English proof (translation)
-Introduce `a b f f₂ h`. Conclude with `EH_congr a b f f₂ h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem EH_HL : HL (Q.EH (E := E) k r) := by
   intro a b f f₂ h
   exact EH_congr a b f f₂ h
 
 /- English proof (translation)
-Introduce `a b f f₂ hf hf₂ g hg`. Take `⟨U, F, hU, hgU, hF, hff⟩` from `rep1 hf hg`. Take `⟨U₂, F₂, hU₂, hgU₂, hF₂, hff₂⟩` from `rep1 hf₂ hg`. Rewrite using `[EH_psi (φ := fun x => f x + f₂ x) (hU.inter hU₂) ⟨hgU, hgU₂⟩ hg (hF.add hF₂) (fun h hh hG => by simp only [hff h hh.1 hG, hff₂ h hh.2 hG, Pi.add_apply]) a b, EH_psi hU hgU hg hF hff a b, EH_psi hU₂ hgU₂ hg hF₂ hff₂ a b]`. Simplify using `only [Psi]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `show fderiv ℝ F g (g * hpart1 (Hpk k r) (Matrix.single a b 1)) + fderiv ℝ F₂ g (g * hpart1 (Hpk k r) (Matrix.single a b 1)) + Complex.I • (fderiv ℝ F g (g * hpart2 (Hpk k r) (Matrix.single a b 1)) + fderiv ℝ F₂ g (g * hpart2 (Hpk k r) (Matrix.single a b 1))) = _`. Rewrite using `[smul_add]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem EH_HA : HA (Q.EH (E := E) k r) := by
   intro a b f f₂ hf hf₂ g hg
@@ -179,9 +179,9 @@ theorem EH_HA : HA (Q.EH (E := E) k r) := by
   abel
 
 /- English proof (translation)
-Introduce `a b c f hf g hg`. Take `⟨U, F, hU, hgU, hF, hff⟩` from `rep1 hf hg`. Rewrite using `[EH_psi (φ := fun x => c • f x) hU hgU hg (hF.const_smul c) (fun h hh hG => by simp only [hff h hh hG, Pi.smul_apply]) a b, EH_psi hU hgU hg hF hff a b]`. Simplify using `only [Psi]`. Use `show c • fderiv ℝ F g (g * hpart1 (Hpk k r) (Matrix.single a b 1)) + Complex.I • c • fderiv ℝ F g (g * hpart2 (Hpk k r) (Matrix.single a b 1)) = _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[smul_add, smul_comm Complex.I c]`.
+A detailed English derivation is pending.
 -/
 theorem EH_HS : HS (Q.EH (E := E) k r) := by
   intro a b c f hf g hg
@@ -195,7 +195,7 @@ theorem EH_HS : HS (Q.EH (E := E) k r) := by
   rw [smul_add, smul_comm Complex.I c]
 
 /- English proof (translation)
-Introduce `a b f f₂ h g hg`. Rewrite using `[EHc_eq, EHc_eq]`. Use `beta_reduce`. Rewrite using `[Dx_congr (x := (false, y⁻¹ * Xa k r a b * y)) (inLie_conj_of_mem_GV' hy (Xa_lie a b)) h g hg, Dx_congr (x := (false, y⁻¹ * Xb k r a b * y)) (inLie_conj_of_mem_GV' hy (Xb_lie a b)) h g hg]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem EHc_HL {y : Mat k r} (hy : y ∈ GV k r) : HL (EHc (E := E) k r y) := by
   intro a b f f₂ h g hg
@@ -205,9 +205,9 @@ theorem EHc_HL {y : Mat k r} (hy : y ∈ GV k r) : HL (EHc (E := E) k r y) := by
     Dx_congr (x := (false, y⁻¹ * Xb k r a b * y)) (inLie_conj_of_mem_GV' hy (Xb_lie a b)) h g hg]
 
 /- English proof (translation)
-Introduce `g hg`. Take `⟨U, F, hU, hgU, hF, hff⟩` from `rep1 hφ hg`. Rewrite using `[EHc_psi hy hU hgU hg hF hff c d, conj_single, Psi_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Psi_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[Psi_smul, EH_psi hU hgU hg hF hff a b]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem EHc_change {y : Mat k r} (hy : y ∈ GV k r) (c d : Fin (2 * r + k + 1)) (φ : Mat k r → E)
     (hφ : CkOn 1 (GV k r) φ) : ∀ g ∈ GV k r,

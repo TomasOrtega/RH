@@ -12,7 +12,7 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 set_option synthInstance.maxHeartbeats 200000
 
 /- English proof (translation)
-Introduce `P l _ L Ω _ _ _ _ _ _ s n hn V Q c r ι Λ`. Take `⟨m, τ₀, hτ⟩` from `UpperTheory.V.Hi.typeEx P l L Ω s n hn V Q c r ι`. Take `⟨θ, hθ, hw⟩` from `UpperTheory.V.Hi.thetaEx P.litN l L Ω s n hn V Q c m τ₀ r Λ`. Take `⟨a, ha⟩` from `UpperTheory.V.Hi.resEx P.litN l L Ω s n hn V Q c m τ₀ r`. Conclude with `⟨⟨m, τ₀, hτ, θ, hθ, hw, a, ha⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem UpperTheory.V.Hi.hdEx :
     Af.HypothesesH → ∀ (l : ℕ) [Fact l.Prime] (L Ω : Type) [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] (s : HidaSetting l L Ω) (n : ℕ), 1 ≤ n →

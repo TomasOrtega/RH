@@ -15,7 +15,7 @@ section Tens
 variable {M : Type*} [AddCommGroup M] [Module ℂ M]
 
 /- English proof (translation)
-Simplify using `only [tensV, LinearMap.pi_apply, LinearMap.add_apply, LinearMap.comp_apply]`. Apply the tactic sequence `split_ifs <;> simp [prj]`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem tensV_apply' (E : Fin n → Fin n → Module.End ℂ M) (a b : Fin n) (f : Fin n → M) (c : Fin n) :
     tensV E a b f c = E a b (f c) + (if c = a then f b else 0) := by
@@ -23,7 +23,7 @@ theorem tensV_apply' (E : Fin n → Fin n → Module.End ℂ M) (a b : Fin n) (f
   split_ifs <;> simp [prj]
 
 /- English proof (translation)
-Simplify using `only [tensVd, LinearMap.pi_apply, LinearMap.sub_apply, LinearMap.comp_apply]`. Apply the tactic sequence `split_ifs <;> simp [prj]`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem tensVd_apply' (E : Fin n → Fin n → Module.End ℂ M) (a b : Fin n) (f : Fin n → M) (c : Fin n) :
     tensVd E a b f c = E a b (f c) - (if c = b then f a else 0) := by
@@ -31,14 +31,14 @@ theorem tensVd_apply' (E : Fin n → Fin n → Module.End ℂ M) (a b : Fin n) (
   split_ifs <;> simp [prj]
 
 /- English proof (translation)
-Simplify using `[eeV, prj, LinearMap.sum_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem eeV_apply' (E : Fin n → Fin n → Module.End ℂ M) (f : Fin n → M) (d : Fin n) :
     eeV E f d = ∑ c, E c d (f c) := by
   simp [eeV, prj, LinearMap.sum_apply]
 
 /- English proof (translation)
-Simplify using `[eeVd, prj, LinearMap.sum_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem eeVd_apply' (E : Fin n → Fin n → Module.End ℂ M) (f : Fin n → M) (d : Fin n) :
     eeVd E f d = -∑ c, E d c (f c) := by
@@ -48,14 +48,14 @@ def twT (ε : Fin n → Bool) : (Fin n → M) →ₗ[ℂ] (Fin n → M) :=
   LinearMap.pi fun c => sg ε (Fin.rev c) • prj (Fin.rev c)
 
 /- English proof (translation)
-Simplify using `[twT, prj]`.
+Simplify using the standard rewrite rules.
 -/
 theorem twT_apply (ε : Fin n → Bool) (f : Fin n → M) (c : Fin n) :
     twT ε f c = sg ε (Fin.rev c) • f (Fin.rev c) := by
   simp [twT, prj]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `c`. Use `congrFun h (Fin.rev c)` as an intermediate fact. Rewrite `this` using `[twT_apply, Fin.rev_rev]`. Conclude with `(smul_eq_zero.1 this).resolve_left (sg_ne ε c)`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem twT_eq_zero {ε : Fin n → Bool} {f : Fin n → M} (h : twT ε f = 0) : f = 0 := by
   funext c
@@ -64,9 +64,9 @@ theorem twT_eq_zero {ε : Fin n → Bool} {f : Fin n → M} (h : twT ε f = 0) :
   exact (smul_eq_zero.1 this).resolve_left (sg_ne ε c)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `c`. Rewrite using `[tensV_apply', twT_apply, twT_apply, twE_apply, twE_apply, map_smul (twT ε), Pi.smul_apply, twT_apply, tensVd_apply', map_smul]`. Simplify using `only [Fin.rev_inj]`. Distinguish the cases in `hc : c = a`. Substitute `hc` using the available equality.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `only [if_true]`. Apply the tactic sequence `unfold sg; split_ifs <;> module`. Simplify using `[hc]`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem twT_tens (ε : Fin n → Bool) (E : Fin n → Fin n → Module.End ℂ M) (a b : Fin n) (f : Fin n → M) :
     tensV (twE ε E) a b (twT ε f) = twT ε (twE ε (tensVd E) a b f) := by
@@ -81,9 +81,9 @@ theorem twT_tens (ε : Fin n → Bool) (E : Fin n → Fin n → Module.End ℂ M
   · simp [hc]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `d`. Rewrite using `[eeV_apply', twT_apply, eeVd_apply', smul_neg, Finset.smul_sum, ← sum_rev (fun c => sg ε (Fin.rev d) • E (Fin.rev d) c (f c)), ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[twT_apply, twE_apply, map_smul, smul_smul, ← neg_smul]`. Use `congr 1`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Take the linear combination `(-sg ε (Fin.rev d)) * sg_sq ε (Fin.rev c)`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem twT_ee (ε : Fin n → Bool) (E : Fin n → Fin n → Module.End ℂ M) (f : Fin n → M) :
     eeV (twE ε E) (twT ε f) = twT ε (eeVd E f) := by
@@ -96,14 +96,14 @@ theorem twT_ee (ε : Fin n → Bool) (E : Fin n → Fin n → Module.End ℂ M) 
   linear_combination (-sg ε (Fin.rev d)) * sg_sq ε (Fin.rev c)
 
 /- English proof (translation)
-Simplify using `[Xs, Submodule.mem_inf, Submodule.mem_pi, LinearMap.mem_ker, sub_eq_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_Xs {A : Module.End ℂ (Fin n → M)} {S : Submodule ℂ M} {θ : ℝ} {f : Fin n → M} :
     f ∈ Xs A S θ ↔ (∀ c, f c ∈ S) ∧ A f = ((θ : ℝ) : ℂ) • f := by
   simp [Xs, Submodule.mem_inf, Submodule.mem_pi, LinearMap.mem_ker, sub_eq_zero]
 
 /- English proof (translation)
-Rewrite `h`, the goal using `[mem_Xs]`. Use `⟨fun c => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[twT_apply]`. Conclude with `S.smul_mem _ (h.1 _)`. Rewrite using `[twT_ee, h.2, map_smul]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem xs_tw {ε : Fin n → Bool} {E : Fin n → Fin n → Module.End ℂ M} {S : Submodule ℂ M} {θ : ℝ}
     {f : Fin n → M} (h : f ∈ Xs (eeVd E) S θ) : twT ε f ∈ Xs (eeV (twE ε E)) S θ := by
@@ -113,7 +113,7 @@ theorem xs_tw {ε : Fin n → Bool} {E : Fin n → Fin n → Module.End ℂ M} {
   · rw [twT_ee, h.2, map_smul]
 
 /- English proof (translation)
-Establish `h'` using `khw_tw h`. Conclude with `⟨fun a => by rw [twT_tens, h'.1, map_smul], fun a b hab he => by`. Rewrite using `[twT_tens, h'.2 a b hab he, map_zero]⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 -/
 theorem khwT_tw {ε : Fin n → Bool} {E : Fin n → Fin n → Module.End ℂ M} {μ : Fin n → ℝ}
     {f : Fin n → M} (h : IsKHWVec ε (tensVd E) μ f) :
@@ -127,17 +127,17 @@ end Tens
 section Wt
 
 /- English proof (translation)
-Unfold `rhoN`. Simplify using `only [Function.comp_apply]`. Establish `h1 : (univ.filter fun b => a < b ∧ ε (Fin.rev b) ≠ ε (Fin.rev a)).card = (univ.filter fun b => b < Fin.rev a ∧ ε b ≠ ε (Fin.rev a)).card`. Use `Finset.card_nbij' Fin.rev Fin.rev ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `b hb`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Finset.coe_filter, Finset.mem_univ, true_and, Set.mem_ofPred_eq] at hb ⊢`. Conclude with `⟨Fin.rev_lt_rev.2 hb.1, hb.2⟩`. Introduce `b hb`. Simplify using `only [Finset.coe_filter, Finset.mem_univ, true_and, Set.mem_ofPred_eq] at hb ⊢`. Use `⟨?_, by simpa using hb.2⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `using Fin.rev_lt_rev.2 hb.1`. Introduce `b _`. Simplify using the standard rewrite rules. Introduce `b _`. Simplify using the standard rewrite rules.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `h2 : (univ.filter fun b => b < a ∧ ε (Fin.rev b) ≠ ε (Fin.rev a)).card = (univ.filter fun b => Fin.rev a < b ∧ ε b ≠ ε (Fin.rev a)).card`. Use `Finset.card_nbij' Fin.rev Fin.rev ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `b hb`. Simplify using `only [Finset.coe_filter, Finset.mem_univ, true_and, Set.mem_ofPred_eq] at hb ⊢`. Conclude with `⟨Fin.rev_lt_rev.2 hb.1, hb.2⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Introduce `b hb`. Simplify using `only [Finset.coe_filter, Finset.mem_univ, true_and, Set.mem_ofPred_eq] at hb ⊢`. Use `⟨?_, by simpa using hb.2⟩` and prove the remaining obligations. Simplify using `using Fin.rev_lt_rev.2 hb.1`. Introduce `b _`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using the standard rewrite rules. Introduce `b _`. Simplify using the standard rewrite rules. Rewrite using `[h1, h2]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem rhoN_tw (ε : Fin n → Bool) (a : Fin n) : rhoN (ε ∘ Fin.rev) a = -rhoN ε (Fin.rev a) := by
   unfold rhoN
@@ -165,17 +165,17 @@ theorem rhoN_tw (ε : Fin n → Bool) (a : Fin n) : rhoN (ε ∘ Fin.rev) a = -r
   rw [h1, h2]; ring
 
 /- English proof (translation)
-Unfold `rhoC`. Simplify using `only [Function.comp_apply]`. Establish `h1 : (univ.filter fun b => a < b ∧ ε (Fin.rev b) = ε (Fin.rev a)).card = (univ.filter fun b => b < Fin.rev a ∧ ε b = ε (Fin.rev a)).card`. Use `Finset.card_nbij' Fin.rev Fin.rev ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `b hb`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Finset.coe_filter, Finset.mem_univ, true_and, Set.mem_ofPred_eq] at hb ⊢`. Conclude with `⟨Fin.rev_lt_rev.2 hb.1, hb.2⟩`. Introduce `b hb`. Simplify using `only [Finset.coe_filter, Finset.mem_univ, true_and, Set.mem_ofPred_eq] at hb ⊢`. Use `⟨?_, by simpa using hb.2⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `using Fin.rev_lt_rev.2 hb.1`. Introduce `b _`. Simplify using the standard rewrite rules. Introduce `b _`. Simplify using the standard rewrite rules.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `h2 : (univ.filter fun b => b < a ∧ ε (Fin.rev b) = ε (Fin.rev a)).card = (univ.filter fun b => Fin.rev a < b ∧ ε b = ε (Fin.rev a)).card`. Use `Finset.card_nbij' Fin.rev Fin.rev ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `b hb`. Simplify using `only [Finset.coe_filter, Finset.mem_univ, true_and, Set.mem_ofPred_eq] at hb ⊢`. Conclude with `⟨Fin.rev_lt_rev.2 hb.1, hb.2⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Introduce `b hb`. Simplify using `only [Finset.coe_filter, Finset.mem_univ, true_and, Set.mem_ofPred_eq] at hb ⊢`. Use `⟨?_, by simpa using hb.2⟩` and prove the remaining obligations. Simplify using `using Fin.rev_lt_rev.2 hb.1`. Introduce `b _`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using the standard rewrite rules. Introduce `b _`. Simplify using the standard rewrite rules. Rewrite using `[h1, h2]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem rhoC_tw (ε : Fin n → Bool) (a : Fin n) : rhoC (ε ∘ Fin.rev) a = -rhoC ε (Fin.rev a) := by
   unfold rhoC
@@ -203,7 +203,7 @@ theorem rhoC_tw (ε : Fin n → Bool) (a : Fin n) : rhoC (ε ∘ Fin.rev) a = -r
   rw [h1, h2]; ring
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a`. Simplify using `only [lowK, Pi.add_apply, Pi.sub_apply, rhoN_tw, rhoC_tw]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem lowK_tw (ε : Fin n → Bool) (ν : Fin n → ℝ) :
     lowK (ε ∘ Fin.rev) (fun a => -ν (Fin.rev a)) = fun a => -lowK ε ν (Fin.rev a) := by
@@ -212,7 +212,7 @@ theorem lowK_tw (ε : Fin n → Bool) (ν : Fin n → ℝ) :
   ring
 
 /- English proof (translation)
-Unfold `casVal nsq dot`. Simplify using `only [neg_mul_neg]`. Rewrite using `[sum_rev (fun a => lam a * lam a)]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem casVal_tw (lam : Fin n → ℝ) : casVal (fun a => -lam (Fin.rev a)) = casVal lam := by
   unfold casVal nsq dot
@@ -220,25 +220,25 @@ theorem casVal_tw (lam : Fin n → ℝ) : casVal (fun a => -lam (Fin.rev a)) = c
   rw [sum_rev (fun a => lam a * lam a)]
 
 /- English proof (translation)
-Unfold `pOf`. Apply the tactic sequence `refine Finset.card_nbij' Fin.rev Fin.rev ?_ ?_ ?_ ?_ <;> intro b hb <;> simp_all`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem pOf_tw (ε : Fin n → Bool) : pOf (ε ∘ Fin.rev) = pOf ε := by
   unfold pOf
   refine Finset.card_nbij' Fin.rev Fin.rev ?_ ?_ ?_ ?_ <;> intro b hb <;> simp_all
 
 /- English proof (translation)
-Unfold `qOf`. Apply the tactic sequence `refine Finset.card_nbij' Fin.rev Fin.rev ?_ ?_ ?_ ?_ <;> intro b hb <;> simp_all`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem qOf_tw (ε : Fin n → Bool) : qOf (ε ∘ Fin.rev) = qOf ε := by
   unfold qOf
   refine Finset.card_nbij' Fin.rev Fin.rev ?_ ?_ ?_ ?_ <;> intro b hb <;> simp_all
 
 /- English proof (translation)
-Take `⟨h1, h2, h3⟩` from `hg`. Use `⟨fun a b hab => ?_, fun a b hab => ?_, ?_⟩` and prove the remaining obligations. Use `h1 (Fin.rev_lt_rev.2 hab)` as an intermediate fact. Simplify using `only`. Combine the linear equalities and inequalities to obtain the conclusion.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `h2 (Fin.rev a) (Fin.rev b) hab` as an intermediate fact. Rewrite `this` using `[abs_sub_comm]`. Simplify using `only`. Rewrite using `[neg_sub_neg]` and apply the resulting hypothesis. Establish `e : hNeed (ε ∘ Fin.rev) = hNeed ε` using `by unfold hNeed; rw [pOf_tw, qOf_tw]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `h3`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gapLap_tw {ε : Fin n → Bool} {lam : Fin n → ℝ} {h : ℝ} (hg : GapLap ε lam h) :
     GapLap (ε ∘ Fin.rev) (fun a => -lam (Fin.rev a)) h := by
@@ -253,7 +253,7 @@ theorem gapLap_tw {ε : Fin n → Bool} {lam : Fin n → ℝ} {h : ℝ} (hg : Ga
     rw [e]; exact h3
 
 /- English proof (translation)
-Establish `e : ∀ i j : Fin n, (j = Fin.rev i ↔ Fin.rev j = i)` using `fun i j => by`. Apply the tactic sequence `constructor <;> rintro rfl <;> simp`. Simplify using `only [root, Pi.sub_apply, Pi.single_apply, e]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem root_rev (a b x : Fin n) : root (Fin.rev b) (Fin.rev a) x = -root a b (Fin.rev x) := by
   have e : ∀ i j : Fin n, (j = Fin.rev i ↔ Fin.rev j = i) := fun i j => by
@@ -262,7 +262,7 @@ theorem root_rev (a b x : Fin n) : root (Fin.rev b) (Fin.rev a) x = -root a b (F
   ring
 
 /- English proof (translation)
-Simplify using `only [Finset.sum_apply]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cone_ev (k : Fin n → Fin n → ℕ) (y : Fin n) :
     (∑ a, ∑ b, if a < b then (k a b : ℝ) • root a b else 0) y =
@@ -272,11 +272,11 @@ theorem cone_ev (k : Fin n → Fin n → ℕ) (y : Fin n) :
   split_ifs <;> simp
 
 /- English proof (translation)
-Take `⟨m, hm⟩` from `h`. Use `⟨fun a b => m (Fin.rev b) (Fin.rev a), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `x`. Establish `hx` using `congrFun hm (Fin.rev x)`. Simplify using `only [Fin.rev_rev] at hx`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `hx` using `[cone_ev]`. Rewrite using `[cone_ev, show β x = -(-β x) by ring, hx, ← sum_rev, ← Finset.sum_neg_distrib]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[← sum_rev, ← Finset.sum_neg_distrib]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Simplify using `only [Fin.rev_rev, Fin.rev_lt_rev, root_rev]`. Apply the tactic sequence `split_ifs <;> ring`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cone_rev {β : Fin n → ℝ} (h : InRootCone (fun a => -β (Fin.rev a))) : InRootCone β := by
   obtain ⟨m, hm⟩ := h

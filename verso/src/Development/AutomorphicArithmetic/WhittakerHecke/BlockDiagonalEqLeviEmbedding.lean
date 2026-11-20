@@ -4,25 +4,25 @@ open MeasureTheory NumberField IsDedekindDomain GlobalTheory.CuspRep GlobalTheor
 open GroundTheory.Automorphic GroundTheory.Automorphic.Reduction GroundTheory.Automorphic.RightCosetSpace UpperTheory.ConvolutionTheory.BW
 
 /- English proof (translation)
-Introduce `R _ r s x y`. Establish `hs : GlobalTheory.SmGL.stdSum (rfl : r + s = r + s) = finSumFinEquiv`. Apply the tactic sequence `ext (x | x) <;> simp`. Establish `hne : ∀ (a : Fin r) (b : Fin s), Fin.castAdd s a ≠ Fin.natAdd r b` using `fun a b h => by`. Use `congrArg Fin.val h` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `a.isLt` as an intermediate fact. Simplify using `at *`. Use linear arithmetic over natural numbers and integers. Establish `h1 : (UpperTheory.V.Af.Fin.emb (UpperTheory.V.Af.Fin.e1 r s) x).val = Matrix.reindex finSumFinEquiv finSumFinEquiv (Matrix.fromBlocks x.val 0 0 1)`. Rewrite using `[UpperTheory.V.Af.Fin.coe_emb]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `a b`. Proceed by induction on `a using Fin.addCases with`. Consider the case `left a`. Proceed by induction on `b using Fin.addCases with`. Consider the case `left b`.
+By extensionality, compare the relevant components. Proceed by induction. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Use `UpperTheory.V.Af.Fin.matrixExtendByZero_apply (UpperTheory.V.Af.Fin.e1 r s) (x.val - 1) a b` as an intermediate fact. Simplify using `only [UpperTheory.V.Af.Fin.orderedCechToCatCochainsOne_apply_valueAtSubset] at this`. Simplify using `[this, Matrix.one_apply]`. Consider the case `right b`. Use `UpperTheory.V.Af.Fin.matrixExtendByZero_apply_of_outside_col (UpperTheory.V.Af.Fin.e1 r s) (x.val - 1) (Fin.castAdd s a) (j := Fin.natAdd r b) (fun k => (hne k b).symm)` as an intermediate fact.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact.
 
-Simplify using `[this, Matrix.one_apply, hne]`. Consider the case `right a`. Use `UpperTheory.V.Af.Fin.extendByZero_apply_eq_zero_of_row_not_mem (UpperTheory.V.Af.Fin.e1 r s) (x.val - 1) (i := Fin.natAdd r a) (fun k => (hne k a).symm) b` as an intermediate fact. Proceed by induction on `b using Fin.addCases with`. Consider the case `left b => simp [this, Matrix.one_apply, (hne _ _).symm]`.
+Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Consider the case `right b => simp [this, Matrix.one_apply]`. Establish `h2 : (UpperTheory.V.Af.Fin.emb (UpperTheory.V.Af.Fin.e2 r s) y).val = Matrix.reindex finSumFinEquiv finSumFinEquiv (Matrix.fromBlocks 1 0 0 y.val)`. Rewrite using `[UpperTheory.V.Af.Fin.coe_emb]`. Use extensionality with `a b`. Proceed by induction on `a using Fin.addCases with`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Proceed by induction.
 
-Consider the case `right a`. Proceed by induction on `b using Fin.addCases with`. Consider the case `right b`. Use `UpperTheory.V.Af.Fin.matrixExtendByZero_apply (UpperTheory.V.Af.Fin.e2 r s) (y.val - 1) a b` as an intermediate fact. Simplify using `only [UpperTheory.V.Af.Fin.alternatingToOrderedCechDegreeTwo_apply_valueAtSubset] at this`.
+Treat this case separately. Proceed by induction. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[this, Matrix.one_apply]`. Consider the case `left b`. Use `UpperTheory.V.Af.Fin.matrixExtendByZero_apply_of_outside_col (UpperTheory.V.Af.Fin.e2 r s) (y.val - 1) (Fin.natAdd r a) (j := Fin.castAdd s b) (fun k => hne b k)` as an intermediate fact. Simplify using `[this, Matrix.one_apply, (hne _ _).symm]`. Consider the case `left a`.
+Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Treat this case separately.
 
-Use `UpperTheory.V.Af.Fin.extendByZero_apply_eq_zero_of_row_not_mem (UpperTheory.V.Af.Fin.e2 r s) (y.val - 1) (i := Fin.castAdd s a) (fun k => hne a k) b` as an intermediate fact. Proceed by induction on `b using Fin.addCases with`. Consider the case `left b => simp [this, Matrix.one_apply]`. Consider the case `right b => simp [this, Matrix.one_apply, hne]`. Use `Units.ext ?_` and prove the remaining obligations.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[lev, GlobalTheory.SmGL.val_emb₂, hs, UpperTheory.V.Af.Fin.blk, Units.val_mul, h1, h2]`. Simplify using `only [Matrix.reindex_apply, Matrix.submatrix_mul_equiv, Matrix.fromBlocks_multiply, Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add, Matrix.mul_one, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem UpperTheory.blockDiagonal_eq_leviEmbedding :
     ∀ (R : Type) [CommRing R] (r s : ℕ) (x : GL (Fin r) R) (y : GL (Fin s) R), UpperTheory.V.Af.Fin.blk x y = lev R r s (x, y) := by

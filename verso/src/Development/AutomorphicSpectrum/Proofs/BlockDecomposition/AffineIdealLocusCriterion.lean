@@ -9,7 +9,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.CompanionTheory.TrivLoc.Glue
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Use `(h (A ⧸ J) (Ideal.Quotient.mk J)).2 (by rw [Ideal.mk_ker])` as an intermediate fact. Rewrite `this` using `[Ideal.mk_ker]`. Then use the resulting hypothesis. Use `(h (A ⧸ I) (Ideal.Quotient.mk I)).1 (by rw [Ideal.mk_ker])` as an intermediate fact. Rewrite `this` using `[Ideal.mk_ker]`. Then use the resulting hypothesis.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem ideal_eq_of_le_ker_iff {A : Type} [CommRing A] {I J : Ideal A}
     (h : ∀ (R : Type) [CommRing R] (g : A →+* R), I ≤ RingHom.ker g ↔ J ≤ RingHom.ker g) :
@@ -21,9 +21,9 @@ theorem ideal_eq_of_le_ker_iff {A : Type} [CommRing A] {I J : Ideal A}
     rwa [Ideal.mk_ker] at this
 
 /- English proof (translation)
-Use `TopCat.Presheaf.section_ext T.sheaf V s 0 fun x hx => ?_` and prove the remaining obligations. Take `⟨W, hW, hxW, hWV⟩` from `exists_isAffineOpen_mem_and_subset hx`. Establish `hz` using `h W hW hWV`. Establish `h1` using `TopCat.Presheaf.germ_res_apply T.presheaf (homOfLE hWV) x hxW s`. Use `h1.symm.trans ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `erw [hz, map_zero, map_zero]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_affine_restrict {T : Scheme.{0}} {V : T.Opens} (s : Γ(T, V))
     (h : ∀ (W : T.Opens) (_ : IsAffineOpen W) (e : W ≤ V),
@@ -37,21 +37,21 @@ theorem eq_zero_of_affine_restrict {T : Scheme.{0}} {V : T.Opens} (s : Γ(T, V))
   rfl
 
 /- English proof (translation)
-Use `choose J hJ using rep`. Establish `hJ' : ∀ (U : Y.Opens) (hU : IsAffineOpen U) (R : CommRingCat.{0}) (g : Γ(Y, U) ⟶ R), P (Spec R) (Spec.map g ≫ hU.fromSpec) ↔ J U hU ≤ RingHom.ker g.hom` using `fun U hU R g => hJ U hU R g.hom`. Set `I : Y.IdealSheafData` to `{ ideal := fun U => J U.1 U.2 map_ideal_basicOpen := by`. Introduce `U f`. Use `ideal_eq_of_le_ker_iff fun R _ g => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.map_le_iff_le_comap, RingHom.comap_ker]`. Use `(hJ U.1 U.2 R _).symm.trans (Iff.trans ?_ (hJ _ (Y.affineBasicOpen f).2 R g))` and prove the remaining obligations. Establish `e` using `U.2.map_fromSpec (Y.affineBasicOpen f).2 (homOfLE (Y.basicOpen_le f)).op`. Rewrite using `[← e, ← Category.assoc, ← Spec.map_comp]`. Use `rfl }`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `key : ∀ (T : Scheme.{0}) (t : T ⟶ Y), P T t ↔ I ≤ t.ker`. Introduce `T t`. Establish `hW : ∀ (U : Y.Opens) (hU : IsAffineOpen U) (W : T.Opens) (hW : IsAffineOpen W) (e : W ≤ t ⁻¹ᵁ U), P (Spec Γ(T, W)) (hW.fromSpec ≫ t) ↔ J U hU ≤ RingHom.ker (t.appLE U W e).hom`. Introduce `U hU W hW e`. Rewrite using `[← hJ' U hU, IsAffineOpen.SpecMap_appLE_fromSpec t hU hW e]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hP`. Use `Scheme.IdealSheafData.le_ofIdeals_iff.2 fun U a ha => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(t.app U.1).hom a = 0`. Use `eq_zero_of_affine_restrict _ fun W hWa e => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(hW U.1 U.2 W hWa e).1 (stab _ _ _ _ hP) ha`. Introduce `hI`. Use `loc T t fun x => ?_` and prove the remaining obligations. Take `⟨U, hU, hxU, -⟩` from `exists_isAffineOpen_mem_and_subset (U := (⊤ : Y.Opens)) (x := t x) trivial`. Take `⟨W, hWa, hxW, hWU⟩` from `exists_isAffineOpen_mem_and_subset (U := t ⁻¹ᵁ U) (x := x) hxU`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : W ≤ t ⁻¹ᵁ U` using `hWU`. Establish `hk : J U hU ≤ RingHom.ker (t.appLE U W e).hom` using `fun a ha => by`. Establish `h0 : (t.app U).hom a = 0` using `t.ideal_ker_le ⟨U, hU⟩ (hI ⟨U, hU⟩ ha)`. Express the relevant statement in the definitionally equal form `(T.presheaf.map (homOfLE e).op).hom ((t.app U).hom a) = 0`. Rewrite using `[h0, map_zero]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp` using `stab _ _ hWa.isoSpec.hom _ ((hW U hU W hWa e).2 hk)`. Establish `e2 : hWa.isoSpec.hom ≫ hWa.fromSpec = W.ι`. Rewrite using `[IsAffineOpen.fromSpec, Iso.hom_inv_id_assoc]`. Rewrite `hp` using `[← Category.assoc, e2]`. Conclude with `⟨W, hxW, hp⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components.
 
-Use `⟨I.subscheme, I.subschemeι, inferInstance, fun T t => (key T t).trans ⟨fun h => ?_, ?_⟩⟩` and prove the remaining obligations. Conclude with `⟨IsClosedImmersion.lift I.subschemeι t (by rwa [I.ker_subschemeι]), IsClosedImmersion.lift_fac _ _ _⟩`. Introduce and unpack `⟨z, rfl⟩`. Conclude with `I.ker_subschemeι.ge.trans (Scheme.Hom.le_ker_comp _ _)`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem exists_closed_subscheme (Y : Scheme.{0}) (P : ∀ T : Scheme.{0}, (T ⟶ Y) → Prop)
     (stab : ∀ (T T' : Scheme.{0}) (h : T' ⟶ T) (t : T ⟶ Y), P T t → P T' (h ≫ t))

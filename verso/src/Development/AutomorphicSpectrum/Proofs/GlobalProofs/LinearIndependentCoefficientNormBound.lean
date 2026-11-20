@@ -6,21 +6,19 @@ open scoped InnerProductSpace ContDiff
 namespace GlobalTheory.CompanionTheory.Hypotheses₂.HCA.Coord
 
 /- English proof (translation)
-Set `L : (Fin d → ℝ) →ₗ[ℝ] (Fin n → Fin n → ℂ)` to `{ toFun := fun r a c => ∑ i, r i • b i a c map_add' := fun r s => by`. Use function extensionality and compare the values at `a c`. Simplify using `only [Pi.add_apply, add_smul, Finset.sum_add_distrib]`. Use the proof step `map_smul' := fun t r => by`. Use function extensionality and compare the values at `a c`.
+Introduce a local definition for the expression. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `only [Pi.smul_apply, smul_eq_mul, RingHom.id_apply, Finset.smul_sum, mul_smul] }`. Establish `hL : ∀ r a c, L r a c = (∑ i, r i • b i) a c`. Introduce `r a c`. Simplify using `[L, Matrix.sum_apply, Matrix.smul_apply]`. Establish `hker : LinearMap.ker L = ⊥`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `LinearMap.ker_eq_bot'.mpr fun r hr => ?_` and prove the remaining obligations. Establish `hsum : ∑ i, r i • b i = 0`. Use extensionality with `a c`. Establish `h` using `congrFun (congrFun hr a) c`. Rewrite `h` using `[hL]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using h`. Use function extensionality and compare the values at `i`. Conclude with `Fintype.linearIndependent_iff.mp hli r hsum i`. Take `⟨K, -, hK⟩` from `L.exists_antilipschitzWith hker`. Use `⟨(d : ℝ) * K, by positivity, fun r => ?_⟩` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ‖r‖ ≤ K * ‖L r‖`. Establish `h` using `hK.le_mul_dist r 0`. Simplify `h` using `[dist_zero_right]`. Establish `hN : 0 ≤ GlobalTheory.CompanionTheory.Hypotheses₂.HCA.mnorm (∑ i, r i • b i)`. Unfold `GlobalTheory.CompanionTheory.Hypotheses₂.HCA.mnorm`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => norm_nonneg _`. Establish `h2 : ‖L r‖ ≤ GlobalTheory.CompanionTheory.Hypotheses₂.HCA.mnorm (∑ i, r i • b i)`. Use `(pi_norm_le_iff_of_nonneg hN).mpr fun a => ?_` and prove the remaining obligations. Use `(pi_norm_le_iff_of_nonneg hN).mpr fun c => ?_` and prove the remaining obligations. Rewrite using `[hL]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Unfold `GlobalTheory.CompanionTheory.Hypotheses₂.HCA.mnorm`. Combine the equalities or inequalities in the displayed calculation. Establish `h3 : ∑ i, |r i| ≤ d * ‖r‖`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Real.norm_eq_abs]`.
-
-Conclude with `norm_le_pi_norm r i`. Use `_ = d * ‖r‖ := by simp`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem sum_abs_coord_le_mnorm {n d : ℕ} (b : Fin d → Matrix (Fin n) (Fin n) ℂ)
     (hli : LinearIndependent ℝ b) :

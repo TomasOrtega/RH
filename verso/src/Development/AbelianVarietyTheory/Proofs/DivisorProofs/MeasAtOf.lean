@@ -26,13 +26,13 @@ def ExactAt : Prop :=
         (σ.comp (algebraMap p.T.Q.c.F D.what₂.LL)) f
 
 /- English proof (translation)
-Introduce `σ`. Use `⟨Real.sqrt (ratAt p i), Real.sqrt_pos.2 hr, ?_, fun f => h σ f⟩` and prove the remaining obligations. Rewrite using `[Real.log_sqrt hr.le]`. Establish `key : |Real.log (ratAt p i)| ≤ (K₁ + K₂) * unitE p`. Break down `le_or_gt 0 (unitE p) with hu0 | hu0` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Apply the tactic sequence `rw [abs_le]; constructor <;> nlinarith`. Establish `hs : K₁ + K₂ = 0` using `by nlinarith`. Establish `e1 : K₁ = 0` using `by linarith`. Establish `e2 : K₂ = 0` using `by linarith`. Substitute `e1 e2` using the available equality.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality.
 
-Establish `: Real.log (ratAt p i) = 0`. Apply the tactic sequence `apply le_antisymm <;> simp_all`. Rewrite using `[this, hs]`. Simplify using the standard rewrite rules. Rewrite using `[abs_div, abs_two]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `: |Real.log (ratAt p i)| / 2 ≤ (K₁ + K₂) * unitE p / 2` using `by linarith`. Combine the linear relations using `[this, show (K₁ + K₂) * unitE p / 2 = (K₁ + K₂) / 2 * unitE p by ring]`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem measAt_of (h : ExactAt p i) (hr : 0 < ratAt p i) {K₁ K₂ : ℝ} (h1 : 0 ≤ K₁) (h2 : 0 ≤ K₂)
     (hu : Real.log (ratAt p i) ≤ K₁ * unitE p) (hl : -(K₂ * unitE p) ≤ Real.log (ratAt p i)) :

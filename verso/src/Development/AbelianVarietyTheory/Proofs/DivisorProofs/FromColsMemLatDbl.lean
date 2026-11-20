@@ -17,13 +17,13 @@ def latDbl {n d : ℕ} (X : Spc F E n) (W : Spc F E d) (v : Pl F) : AddSubgroup 
   neg_mem' := fun {a} ha => ⟨neg_mem ha.1, neg_mem ha.2⟩
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_latDbl {n d : ℕ} (X : Spc F E n) (W : Spc F E d) (v : Pl F) (z : Matrix (Fin n) (Fin d ⊕ Fin d) (AE F E)) :
     z ∈ latDbl X W v ↔ z.toCols₁ ∈ latAtV X W v ∧ z.toCols₂ ∈ latAtV X W v := Iff.rfl
 
 /- English proof (translation)
-Rewrite using `[mem_latDbl, Matrix.toCols₁_fromCols, Matrix.toCols₂_fromCols]`. Conclude with `⟨h₁, h₂⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem fromCols_mem_latDbl {n d : ℕ} (X : Spc F E n) (W : Spc F E d) (v : Pl F) {γ₁ γ₂ : Matrix (Fin n) (Fin d) (AE F E)}
     (h₁ : γ₁ ∈ latAtV X W v) (h₂ : γ₂ ∈ latAtV X W v) : Matrix.fromCols γ₁ γ₂ ∈ latDbl X W v := by
@@ -31,9 +31,9 @@ theorem fromCols_mem_latDbl {n d : ℕ} (X : Spc F E n) (W : Spc F E d) (v : Pl 
   exact ⟨h₁, h₂⟩
 
 /- English proof (translation)
-Introduce `u hu`. Establish `h1` using `(GlobalTheory.LatVac.latAtV_at_stable X W v).1 _ hz.1 u hu`. Establish `h2` using `(GlobalTheory.LatVac.latAtV_at_stable X W v).1 _ hz.2 u hu`. Use extensionality with `i (j | j)`. Simplify using `using congrFun (congrFun h1 i) j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using congrFun (congrFun h2 i) j`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem at_of_mem_latDbl {n d : ℕ} (X : Spc F E n) (W : Spc F E d) (v : Pl F) {z : Matrix (Fin n) (Fin d ⊕ Fin d) (AE F E)}
     (hz : z ∈ latDbl X W v) : At (evFin F v) z := by

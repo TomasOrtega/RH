@@ -28,7 +28,7 @@ structure UFam (S : Set (Pl E)) (lam : InfinitePlace E → DomWeight n) (K' : �
 attribute [instance] UFam.ft
 
 /- English proof (translation)
-Take `⟨ι, _, π, σ, h1, h2, h3⟩` from `h E hE n hn S hS lam K' hK`. Conclude with `⟨⟨ι, π, σ, h1, h2, h3⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem uFam_of (h : USide) (hE : GlobalTheory.BCT.Unr E) (hn : 1 ≤ n) {S : Set (Pl E)} (hS : IsSection S)
     (lam : InfinitePlace E → DomWeight n) {K' : ∀ w : Pl E, Subgroup (UL n w)}
@@ -53,7 +53,7 @@ def LevelOff (S : Set (Pl E)) (B : Finset (Pl E)) (K' : ∀ w : Pl E, Subgroup (
   (↑B : Set (Pl E)) ⊆ S ∧ IsLevelFam (fun w : Pl E => MonoidHom.id (UL n w)) (KL n) K' ∧ ∀ w, w ∉ B → K' w = KL n w
 
 /- English proof (translation)
-Take `⟨-, h2, h3⟩` from `(F.comp i).2.2.2 w hw`. Establish `e` using `hB.2.2 w hwB`. Establish `ho` using `(hB.2.1.1 w).1`. Rewrite `h2`, `ho` using `[e]`. Conclude with `h1 E hE n w _ h2 (h3 _ ho)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sph_line (h1 : SphOne) (hE : GlobalTheory.BCT.Unr E) {S : Set (Pl E)} {lam : InfinitePlace E → DomWeight n}
     {K' : ∀ w : Pl E, Subgroup (UL n w)} (F : UFam S lam K') {B : Finset (Pl E)} (hB : LevelOff S B K') (i : F.ι)
@@ -65,7 +65,7 @@ theorem sph_line (h1 : SphOne) (hE : GlobalTheory.BCT.Unr E) {S : Set (Pl E)} {l
   exact h1 E hE n w _ h2 (h3 _ ho)
 
 /- English proof (translation)
-Take `⟨d, blk, u, a, b, c⟩` from `h2 E n S B hB.1 K' hB.2.1 (fun w _ hw => hB.2.2 w hw) F.ι F.σ (fun i w hw => ((F.comp i).2.2.2 w hw).2.2 _ (hB.2.1.1 w).1) (sph_line h1 hE F hB) g`. Conclude with `⟨⟨d, blk, u, a, b, c⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem uMod_of (h1 : SphOne) (h2 : SpecTrace) (hE : GlobalTheory.BCT.Unr E) {S : Set (Pl E)} {lam : InfinitePlace E → DomWeight n}
     {K' : ∀ w : Pl E, Subgroup (UL n w)} (F : UFam S lam K') {B : Finset (Pl E)} (hB : LevelOff S B K')
@@ -113,7 +113,7 @@ variable {S : Set (Pl E)} {lam : InfinitePlace E → DomWeight n} {K' : ∀ w : 
 def op (x : UGen E n) : EuclideanSpace ℂ (Fin R.d) →L[ℂ] EuclideanSpace ℂ (Fin R.d) := diagOp R.blk (x.p F)
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `((h _ _ R.blk _ _ 0).1.symm.trans (by rw [mul_comm])).trans (h _ _ R.blk _ _ 0).1`. Unfold `op`. Rewrite using `[(h _ _ R.blk (y.p F) 0 0).2.2.2]`. Conclude with `((h _ _ R.blk _ _ 0).1.symm.trans (by rw [mul_comm])).trans (h _ _ R.blk _ _ 0).1`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem op_comm (h : DiagAlg) (x y : UGen E n) : Commute (R.op x) (R.op y) ∧ Commute (R.op x) (star (R.op y)) := by
   refine ⟨?_, ?_⟩
@@ -123,7 +123,7 @@ theorem op_comm (h : DiagAlg) (x y : UGen E n) : Commute (R.op x) (R.op y) ∧ C
     exact ((h _ _ R.blk _ _ 0).1.symm.trans (by rw [mul_comm])).trans (h _ _ R.blk _ _ 0).1
 
 /- English proof (translation)
-Use `⟨R.comm _, ?_⟩` and prove the remaining obligations. Unfold `op`. Rewrite using `[(h _ _ R.blk (x.p F) 0 0).2.2.2]`. Conclude with `R.comm _`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem u_comm (h : DiagAlg) (x : UGen E n) : Commute R.u (R.op x) ∧ Commute R.u (star (R.op x)) := by
   refine ⟨R.comm _, ?_⟩
@@ -132,7 +132,7 @@ theorem u_comm (h : DiagAlg) (x : UGen E n) : Commute R.u (R.op x) ∧ Commute R
   exact R.comm _
 
 /- English proof (translation)
-Take `⟨v, h1, h2, h3⟩` from `R.eig i₀ hi`. Use `⟨v, h1, h2, fun x => ⟨h3 _, ?_⟩⟩` and prove the remaining obligations. Unfold `op`. Rewrite using `[(h _ _ R.blk (x.p F) 0 0).2.2.2, h3]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem exists_eigv (h : DiagAlg) (i₀ : F.ι) (hi : ∀ w ∈ B, ∃ y, y ≠ 0 ∧ locOp (F.σ i₀ w) (K' w) (g w) y = y) :
     ∃ v : EuclideanSpace ℂ (Fin R.d), v ≠ 0 ∧ R.u v = v ∧

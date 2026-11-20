@@ -7,17 +7,15 @@ namespace Formalism.WindowSums
 open Finset
 
 /- English proof (translation)
-Establish `hmaps : ∀ x ∈ (Finset.Ico a (a + L)).filter (fun x => r ∣ x), (x - a) / r ∈ Finset.Icc (0 : ℤ) ((L : ℤ) / r)`. Introduce `x hx`. Simplify using `only [Finset.mem_filter, Finset.mem_Ico] at hx`. Simplify using `only [Finset.mem_Icc]`. Conclude with `⟨Int.ediv_nonneg (by linarith) hr.le, Int.ediv_le_ediv hr (by linarith)⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Establish `hinj : Set.InjOn (fun x => (x - a) / r) ((Finset.Ico a (a + L)).filter (fun x => r ∣ x) : Set ℤ)`. Introduce `x hx y hy hxy`. Simplify using `only [Finset.coe_filter, Set.mem_setOf_eq] at hx hy`. Take `⟨k, rfl⟩` from `hx.2`. Take `⟨m, rfl⟩` from `hy.2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Simplify using `only at hxy`. Rewrite `hxy` using `[show r * k - a = -a + r * k by ring, show r * m - a = -a + r * m by ring, Int.add_mul_ediv_left _ _ hr.ne', Int.add_mul_ediv_left _ _ hr.ne']`. Establish `: k = m` using `by linarith`. Rewrite using `[this]`. Establish `hcard` using `Finset.card_le_card_of_injOn _ hmaps hinj`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hq0 : 0 ≤ (L : ℤ) / r` using `Int.ediv_nonneg (by positivity) hr.le`. Rewrite `hcard` using `[Int.card_Icc, sub_zero]`. Establish `hc : ((((Finset.Ico a (a + L)).filter (fun x => r ∣ x)).card : ℕ) : ℝ) ≤ (((L : ℤ) / r : ℤ) : ℝ) + 1`. Establish `h1 : ((((Finset.Ico a (a + L)).filter (fun x => r ∣ x)).card : ℕ) : ℤ) ≤ (L : ℤ) / r + 1`. Use `Int.toNat_of_nonneg (by linarith : (0 : ℤ) ≤ (L : ℤ) / r + 1)` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Conclude with `h1` after adjusting the coercions. Establish `hdiv : (((L : ℤ) / r : ℤ) : ℝ) ≤ (L : ℝ) / (r : ℝ)`. Rewrite using `[le_div_iff₀ (by exact_mod_cast hr)]`. Conclude with `Int.ediv_mul_le (L : ℤ) hr.ne'` after adjusting the coercions.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 lemma windowSum_count (a : ℤ) (L : ℕ) (r : ℤ) (hr : 0 < r) :
     ((((Finset.Ico a (a + L)).filter (fun x => r ∣ x)).card : ℕ) : ℝ) ≤ (L : ℝ) / (r : ℝ) + 1 := by
@@ -53,9 +51,9 @@ lemma windowSum_count (a : ℤ) (L : ℕ) (r : ℤ) (hr : 0 < r) :
   linarith
 
 /- English proof (translation)
-Establish `hx0 : x - 1 ≠ 0` using `by linarith`. Establish `hxp : x ≠ 0` using `by linarith`. Proceed by induction on `K with`. Consider the case `zero => simp`. Consider the case `succ K ih`.
+Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[Finset.sum_range_succ, ih]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem sum_range_one_div_pow_succ_eq (x : ℝ) (hx : 1 < x) (K : ℕ) :
     ∑ k ∈ Finset.range K, 1 / x ^ (k + 1) = (1 - 1 / x ^ K) / (x - 1) := by
@@ -69,27 +67,25 @@ private theorem sum_range_one_div_pow_succ_eq (x : ℝ) (hx : 1 < x) (K : ℕ) :
     ring
 
 /- English proof (translation)
-Introduce `ℓ _ a L D S hS h0 hD`. Establish `hℓ : ℓ.Prime` using `Fact.out`. Establish `hℓ1 : (1 : ℝ) < ℓ` using `by exact_mod_cast hℓ.one_lt`. Establish `hL0 : (0 : ℝ) ≤ (L : ℝ) / ((ℓ : ℝ) - 1)` using `div_nonneg (Nat.cast_nonneg _) (by linarith)`. Break down `Nat.eq_zero_or_pos D with rfl | hDpos` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hzero : ∑ i ∈ S, padicValInt ℓ i = 0` using `Finset.sum_eq_zero fun i hi => (h0 ((abs_nonpos_iff.1 (by exact_mod_cast hD i hi)) ▸ hi)).elim`. Rewrite using `[hzero]`. Simplify `hL0` using `[Real.logb_zero]`. Establish `hv : ∀ i ∈ S, padicValInt ℓ i = ((Finset.range (Nat.log ℓ D)).filter (fun k => (ℓ : ℤ) ^ (k + 1) ∣ i)).card`. Introduce `i hi`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hi0 : i ≠ 0` using `fun h => h0 (h ▸ hi)`. Establish `hvK : padicValInt ℓ i ≤ Nat.log ℓ D`. Establish `hdvd : (ℓ : ℤ) ^ padicValInt ℓ i ∣ i` using `(padicValInt_dvd_iff _ _).2 (Or.inr le_rfl)`. Establish `h1 : ℓ ^ padicValInt ℓ i ∣ i.natAbs`. Rewrite using `[← Int.natCast_dvd]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hdvd` after adjusting the coercions. Establish `h2` using `Nat.le_of_dvd (Int.natAbs_pos.2 hi0) h1`. Establish `h3 : i.natAbs ≤ D`. Establish `h4` using `hD i hi`. Rewrite `h4` using `[← Int.natCast_natAbs]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h4` after adjusting the coercions. Conclude with `Nat.le_log_of_pow_le hℓ.one_lt (h2.trans h3)`. Establish `hf : (Finset.range (Nat.log ℓ D)).filter (fun k => (ℓ : ℤ) ^ (k + 1) ∣ i) = Finset.range (padicValInt ℓ i)`. Use extensionality with `k`. Simplify using `only [Finset.mem_filter, Finset.mem_range, padicValInt_dvd_iff, hi0, false_or]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[hf, Finset.card_range]`. Establish `hcount : ∀ k, ((S.filter (fun i => (ℓ : ℤ) ^ (k + 1) ∣ i)).card : ℝ) ≤ (L : ℝ) / (ℓ : ℝ) ^ (k + 1) + 1`. Introduce `k`. Establish `h1` using `windowSum_count a L ((ℓ : ℤ) ^ (k + 1)) (pow_pos (by exact_mod_cast hℓ.pos) _)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Move the coercions through the operations in `at h1`. Use `le_trans ?_ h1` and prove the remaining obligations. Conclude with `Finset.card_le_card (Finset.filter_subset_filter _ hS)` after adjusting the coercions. Establish `hsum : ∑ i ∈ S, padicValInt ℓ i = ∑ k ∈ Finset.range (Nat.log ℓ D), (S.filter (fun i => (ℓ : ℤ) ^ (k + 1) ∣ i)).card`. Rewrite using `[Finset.sum_congr rfl hv]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [Finset.card_filter]`. Conclude with `Finset.sum_comm`. Establish `hlog : ((Nat.log ℓ D : ℕ) : ℝ) ≤ Real.logb ℓ D`. Rewrite using `[Real.le_logb_iff_rpow_le hℓ1 (by exact_mod_cast hDpos), Real.rpow_natCast]`. Conclude with `Nat.pow_log_le_self ℓ hDpos.ne'` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : (0 : ℝ) < (ℓ : ℝ) - 1` using `by linarith`. Establish `hy : 0 ≤ 1 / (ℓ : ℝ) ^ Nat.log ℓ D` using `by positivity`. Establish `hgeo : (L : ℝ) * ((1 - 1 / (ℓ : ℝ) ^ Nat.log ℓ D) / ((ℓ : ℝ) - 1)) ≤ (L : ℝ) / ((ℓ : ℝ) - 1)`. Rewrite using `[← mul_div_assoc, div_le_div_iff₀ h1 h1]`. Use polynomial arithmetic with `[Nat.cast_nonneg (α := ℝ) L, mul_nonneg (Nat.cast_nonneg (α := ℝ) L) hy]`.
+Move the embeddings inside the algebraic operations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hsum]`. Use `push_cast`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_add_distrib, Finset.mul_sum, Finset.sum_const, Finset.card_range, nsmul_eq_mul, mul_one]`. Use `congr 1`.
-
-Conclude with `Finset.sum_congr rfl fun k _ => by ring`. Use `_ ≤ (L : ℝ) / ((ℓ : ℝ) - 1) + Real.logb ℓ D := by`. Rewrite using `[sum_range_one_div_pow_succ_eq _ hℓ1]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem sum_padicValInt_le : WindowSum := by
   intro ℓ _ a L D S hS h0 hD

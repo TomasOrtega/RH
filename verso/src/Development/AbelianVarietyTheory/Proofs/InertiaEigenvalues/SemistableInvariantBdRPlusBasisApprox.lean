@@ -18,9 +18,9 @@ def texp {R : Type} [CommRing R] (q : ℚ →+* R) {d : ℕ} (N : Matrix (Fin d)
   ∑ i ∈ Finset.range d, (q ((i.factorial : ℚ)⁻¹) * x ^ i) • N ^ i
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `f.mapMatrix _ = ∑ i ∈ Finset.range d, f (a i) • (f.mapMatrix N) ^ i`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← map_pow]`. Use extensionality with `a b`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Simplify using `[RingHom.mapMatrix_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem map_sum_smul_pow {R R' : Type} [CommRing R] [CommRing R'] (f : R →+* R') {d : ℕ}
     (N : Matrix (Fin d) (Fin d) R) (a : ℕ → R) :
@@ -33,7 +33,7 @@ theorem map_sum_smul_pow {R R' : Type} [CommRing R] [CommRing R'] (f : R →+* R
   simp [RingHom.mapMatrix_apply]
 
 /- English proof (translation)
-Establish `e : q' = f.comp q` using `Subsingleton.elim _ _`. Unfold `texp`. Rewrite using `[map_sum_smul_pow, e]`. Simplify using `only [map_mul, map_pow, RingHom.comp_apply]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem texp_map {R R' : Type} [CommRing R] [CommRing R'] (q : ℚ →+* R) (q' : ℚ →+* R') (f : R →+* R') {d : ℕ}
     (N : Matrix (Fin d) (Fin d) R) (x : R) : (texp q N x).map f = texp q' (N.map f) (f x) := by
@@ -43,9 +43,9 @@ theorem texp_map {R R' : Type} [CommRing R] [CommRing R'] (q : ℚ →+* R) (q' 
   simp only [map_mul, map_pow, RingHom.comp_apply]
 
 /- English proof (translation)
-Use `letI : Algebra ℚ R := q.toAlgebra`. Establish `h : ∀ z : R, (z • N) ^ d = 0` using `fun z => by rw [smul_pow, hN, smul_zero]`. Establish `e : ∀ z : R, texp q N z = IsNilpotent.exp (z • N)` using `fun z => by`. Rewrite using `[IsNilpotent.exp_eq_sum (h z)]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[smul_pow, mul_smul]`. Conclude with `algebraMap_smul R ((i.factorial : ℚ)⁻¹) _`. Rewrite using `[e, e, e, add_smul, IsNilpotent.exp_add_of_commute _ ⟨d, h x⟩ ⟨d, h y⟩]`. Conclude with `((Commute.refl N).smul_left x).smul_right y`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem texp_add {R : Type} [CommRing R] (q : ℚ →+* R) {d : ℕ} (N : Matrix (Fin d) (Fin d) R) (hN : N ^ d = 0)
     (x y : R) : texp q N x * texp q N y = texp q N (x + y) := by
@@ -60,9 +60,9 @@ theorem texp_add {R : Type} [CommRing R] (q : ℚ →+* R) {d : ℕ} (N : Matrix
   exact ((Commute.refl N).smul_left x).smul_right y
 
 /- English proof (translation)
-Break down `Nat.eq_zero_or_pos d with rfl | hd` into its components or cases. Conclude with `Subsingleton.elim _ _`. Unfold `texp`. Rewrite using `[Finset.sum_eq_single 0]`. Simplify using the standard rewrite rules.
+Separate the alternatives or extract the components of the hypothesis. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i _ hi`. Simplify using `[zero_pow hi]`. Introduce `h`. Conclude with `absurd (Finset.mem_range.2 hd) h`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem texp_zero {R : Type} [CommRing R] (q : ℚ →+* R) {d : ℕ} (N : Matrix (Fin d) (Fin d) R) :
     texp q N 0 = 1 := by
@@ -77,7 +77,7 @@ theorem texp_zero {R : Type} [CommRing R] (q : ℚ →+* R) {d : ℕ} (N : Matri
     exact absurd (Finset.mem_range.2 hd) h
 
 /- English proof (translation)
-Unfold `texp`. Rewrite using `[← Finset.sum_sub_distrib, Matrix.sum_apply]`. Use `I.sum_mem fun n _ => ?_` and prove the remaining obligations. Rewrite using `[← sub_smul, Matrix.smul_apply, smul_eq_mul, ← mul_sub]`. Conclude with `I.mul_mem_right _ (I.mul_mem_left _ (Ideal.mem_of_dvd I (sub_dvd_pow_sub_pow x y n) h))`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem texp_sub_mem {R : Type} [CommRing R] (q : ℚ →+* R) {d : ℕ} (N : Matrix (Fin d) (Fin d) R) (I : Ideal R)
     {x y : R} (h : x - y ∈ I) (i j : Fin d) : (texp q N x - texp q N y) i j ∈ I := by
@@ -88,13 +88,13 @@ theorem texp_sub_mem {R : Type} [CommRing R] (q : ℚ →+* R) {d : ℕ} (N : Ma
   exact I.mul_mem_right _ (I.mul_mem_left _ (Ideal.mem_of_dvd I (sub_dvd_pow_sub_pow x y n) h))
 
 /- English proof (translation)
-Rewrite using `[map_sum_smul_pow]`. Unfold `texp`. Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Rewrite using `[smul_smul]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Establish `h1` using `congrArg f (ha i (Finset.mem_range.1 hi))`. Simplify using `only [map_mul, map_pow, map_natCast] at h1`. Establish `h2 : q ((i.factorial : ℚ)⁻¹) * q ((l : ℚ) ^ c)⁻¹ ^ i * ((i.factorial : R) * (l : R) ^ (c * i)) = 1`. Establish `hl' : (l : ℚ) ≠ 0` using `by exact_mod_cast hl`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hf : (i.factorial : ℚ) ≠ 0` using `by exact_mod_cast i.factorial_ne_zero`. Rewrite using `[← map_natCast q, ← map_natCast q l, ← map_pow, ← map_pow, ← map_mul, ← map_mul, ← map_mul, ← map_one q]`. Use `congr 1`. Rewrite using `[pow_mul, inv_pow]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[map_mul, map_pow, mul_pow, ← h1]`. Take the linear combination `(-(f (a i) * f x ^ i)) * h2`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem cleared_map {S R : Type} [CommRing S] [CommRing R] (q : ℚ →+* R) (f : S →+* R) {d : ℕ}
     (N : Matrix (Fin d) (Fin d) S) {l : ℕ} (hl : l ≠ 0) (c e : ℕ) (a : ℕ → S)
@@ -120,9 +120,9 @@ theorem cleared_map {S R : Type} [CommRing S] [CommRing R] (q : ℚ →+* R) (f 
   linear_combination (-(f (a i) * f x ^ i)) * h2
 
 /- English proof (translation)
-Take `⟨e, m, hm, hd⟩` from `Nat.exists_eq_pow_mul_and_not_dvd d.factorial_ne_zero l (Fact.out : l.Prime).ne_one`. Use `⟨e + c * d, fun i => ecoef l (e + c * d) c i, fun i hi => ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Establish `hl0 : (l : ℚ_[l]) ≠ 0` using `by exact_mod_cast (Fact.out : l.Prime).ne_zero`. Establish `hf0 : (i.factorial : ℚ_[l]) ≠ 0` using `by exact_mod_cast (Nat.factorial_ne_zero i)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `push_cast`. Rewrite using `[ecoef_val (ecoefQ_norm_le c hm hd hi)]`. Unfold `ecoefQ`. Clear the denominators using the available nonvanishing facts.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Clear the denominators using the available nonvanishing facts.
 -/
 theorem exists_cleared {l : ℕ} [Fact l.Prime] (c d : ℕ) :
     ∃ (e : ℕ) (a : ℕ → ℤ_[l]), ∀ i < d, ((i.factorial : ℤ_[l]) * (l : ℤ_[l]) ^ (c * i)) * a i = (l : ℤ_[l]) ^ e := by
@@ -137,15 +137,15 @@ theorem exists_cleared {l : ℕ} [Fact l.Prime] (c d : ℕ) :
   field_simp
 
 /- English proof (translation)
-Take `⟨e, a, ha⟩` from `exists_cleared (l := l) (k + k') d`. Establish `hl : l ≠ 0` using `(Fact.out : l.Prime).ne_zero`. Establish `ha' : ∀ i < d, ((i.factorial : S) * (l : S) ^ ((k + k') * i)) * z (a i) = (l : S) ^ e` using `fun i hi => by`. Simplify `congrArg z (ha i hi)` using `only [map_mul, map_pow, map_natCast]`. Use `⟨e, ∑ i ∈ Finset.range d, (z (a i) * (-s) ^ i) • N ^ i, ∑ i ∈ Finset.range d, (z (a i) * s ^ i) • N ^ i, ?_, fun i j => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hinj` using `IsFractionRing.injective S (FractionRing S)`. Apply `Matrix.map_injective hinj` to reduce the goal to its premises. Establish `hN' : (N.map (algebraMap S (FractionRing S))) ^ d = 0`. Express the relevant statement in the definitionally equal form `((algebraMap S (FractionRing S)).mapMatrix N) ^ d = 0`. Rewrite using `[← map_pow, hN, map_zero]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `Matrix.map _ _ = Matrix.map _ _`. Rewrite using `[Matrix.map_mul, cleared_map (algebraMap ℚ _) _ N hl _ _ _ ha', cleared_map (algebraMap ℚ _) _ N hl _ _ _ ha', Matrix.smul_mul, Matrix.mul_smul, texp_add _ _ hN', map_neg, mul_neg, neg_add_cancel, texp_zero, smul_smul, ← pow_add, two_mul]`. Use extensionality with `i j`. Apply the tactic sequence `by_cases hij : i = j <;> simp [hij, Matrix.one_apply]`. Rewrite using `[cleared_map q f N hl _ _ _ ha', ← smul_sub, Matrix.smul_apply, smul_eq_mul]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Use `I.mul_mem_left _ (texp_sub_mem q _ I ?_ i j)` and prove the remaining obligations. Establish `h2 : q ((l : ℚ) ^ k)⁻¹ = q ((l : ℚ) ^ (k + k'))⁻¹ * (l : R) ^ k'`. Establish `hl' : (l : ℚ) ≠ 0` using `by exact_mod_cast hl`. Rewrite using `[← map_natCast q l, ← map_pow, ← map_mul]`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `h3` using `I.mul_mem_left (-q ((l : ℚ) ^ (k + k'))⁻¹) h`. Use `h3 using 1` and compare the differences between its conclusion and the goal. Rewrite using `[h2, map_neg]`.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -185,29 +185,27 @@ theorem approx {l : ℕ} [Fact l.Prime] {S R : Type} [CommRing S] [IsDomain S] [
     ring
 
 /- English proof (translation)
-Introduce `l _ K bk P AI T C hF d ρ U k Mn c hMn hU lam hlam happ`. Take `⟨-, -, -, -, -, -, -, -, -, hD, hDp, -, -⟩` from `ActLaws.act_laws l`. Set `q : ℚ →+* Per.BdRp l` to `C.o.comp (algebraMap ℚ (Om l))`. Set `a : Per.BdRp l →+* Per.BdR l` to `algebraMap (Per.BdRp l) (Per.BdR l)`. Set `w : Wq l bk.a →+* Per.BdRp l` to `(aDp l).comp (wA l bk.a).toRingHom`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `⟨texp q (Mn.map w) (-(q ((l : ℚ) ^ k)⁻¹ * lam)), fun g => ?_, fun m => ?_⟩` and prove the remaining obligations. Establish `hN : ((Mn.map w).map a) ^ d = 0`. Express the relevant statement in the definitionally equal form `(a.mapMatrix (w.mapMatrix Mn)) ^ d = 0`. Rewrite using `[← map_pow, ← map_pow, hMn, map_zero, map_zero]`. Establish `hNσ : ((Mn.map w).map a).map (Per.σD (g : GQ l)) = (Mn.map w).map a`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `Per.σD (g : GQ l) (a (aDp l (wA l bk.a (Mn i j)))) = a (aDp l (wA l bk.a (Mn i j)))`. Rewrite using `[hD, hDp, bk.gal_w]`. Establish `hq : ∀ x : ℚ, Per.σD (g : GQ l) (a (q x)) = a (q x)` using `fun x => RingHom.congr_fun (Subsingleton.elim ((Per.σD (g : GQ l)).comp (a.comp q)) (a.comp q)) x`. Establish `hqB : ∀ x : ℚ, C.ι (C.qB (x : ℚ_[l])) = a (q x)` using `fun x => RingHom.congr_fun (Subsingleton.elim (C.ι.comp (C.qB.comp (Rat.castHom ℚ_[l]))) (a.comp q)) x`.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `congrArg (fun M => Matrix.map M C.ι) (hU g)`. Simplify using `only [Matrix.map_mul] at h1`. Rewrite `h1` using `[map_sum_smul_pow]`. Establish `e1 : ((ρ g).map (Per.zB l)).map C.ι = (ρ g).map (Per.zD l)`. Use extensionality with `i j`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Express the relevant statement in the definitionally equal form `C.ι (Per.zB l (ρ g i j)) = Per.zD l (ρ g i j)`. Rewrite using `[← T.zB, ← hF.ι, AlgHom.commutes, T.zD]`. Establish `e2 : (U.map (Per.σB (g : GQ l))).map C.ι = (U.map C.ι).map (Per.σD (g : GQ l))`. Use extensionality with `i j`. Conclude with `ULaws.iota_sigma C _ _`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `e3 : (Mn.map ((Per.aB l).comp (wA l bk.a).toRingHom)).map C.ι = (Mn.map w).map a`. Use extensionality with `i j`. Conclude with `ULaws.iota_aB C _`. Establish `e4 : ∑ i ∈ Finset.range d, C.ι (C.qB (((i.factorial : ℚ_[l]) * (l : ℚ_[l]) ^ (k * i))⁻¹) * (Per.zB l (c g) * C.tB) ^ i) • ((Mn.map w).map a) ^ i = texp (a.comp q) ((Mn.map w).map a) (a (q ((l : ℚ) ^ k)⁻¹) * a (aDp l (Per.zA l (c g)) * C.j C.t))`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+By extensionality, compare the relevant components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Use `congr 1`. Establish `e5 : (((i.factorial : ℚ_[l]) * (l : ℚ_[l]) ^ (k * i))⁻¹) = (((i.factorial : ℚ)⁻¹ * ((l : ℚ) ^ k)⁻¹ ^ i : ℚ) : ℚ_[l])`. Use `push_cast`. Rewrite using `[mul_inv, pow_mul, inv_pow]`. Establish `e6 : C.ι (Per.zB l (c g)) = a (aDp l (Per.zA l (c g)))`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[← ULaws.u_padicInt C, C.ι_u, ← C.o_sec.z]`. Both sides reduce to the same expression. Establish `e7 : C.ι C.tB = a (C.j C.t)` using `C.ι_j _`. Rewrite using `[map_mul C.ι, e5, hqB, map_pow C.ι, map_mul C.ι, e6, e7]`. Simplify using `only [map_mul, map_pow, RingHom.comp_apply, mul_pow]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite `h1` using `[e1, e2, e3, e4]`. Express the relevant statement in the definitionally equal form `_ * (U.map C.ι * Matrix.map _ a).map _ = U.map C.ι * Matrix.map _ a`. Rewrite using `[texp_map q (a.comp q) a, Matrix.map_mul, texp_map (a.comp q) (a.comp q), hNσ, ← Matrix.mul_assoc, h1, Matrix.mul_assoc, texp_add _ _ hN]`. Use `congr 2`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e8 : Per.σD (g : GQ l) (a lam) = a lam + a (aDp l (Per.zA l (c g)) * C.j C.t)` using `(hD _ lam).trans ((congrArg a (hlam g)).trans (map_add a _ _))`. Rewrite using `[map_neg a, map_mul a (q _), map_neg, map_mul (Per.σD (g : GQ l)), hq, e8]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨k', s, -, hs⟩` from `happ m haveI : CharZero bk.S := RingHom.charZero ((Per.θD l).comp ((aDp l).comp bk.ev))`. Establish `hN : (Mn.map (PowerSeries.C : Wq l bk.a →+* bk.S)) ^ d = 0`.
+Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `((PowerSeries.C : Wq l bk.a →+* bk.S).mapMatrix Mn) ^ d = 0`. Rewrite using `[← map_pow, hMn, map_zero]`. Establish `e1 : (Mn.map (PowerSeries.C : Wq l bk.a →+* bk.S)).map ((aDp l).comp bk.ev) = Mn.map w`. Use extensionality with `i j`. Conclude with `congrArg (aDp l) (bk.ev_C _)`.
-
-Use `approx ((PowerSeries.C : Wq l bk.a →+* bk.S).comp (algebraMap ℤ_[l] (Wq l bk.a))) q ((aDp l).comp bk.ev) _ hN (Per.FilP l m) k k' s lam hs` as an intermediate fact. Rewrite `this` using `[e1]`. Then use the resulting hypothesis.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem invariant_basis_approx : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (P : LocPrime l) (AI : LocAinf l P) (T : LocTied l P AI) (C : Core l), Fits T C → ∀ (d : ℕ) (ρ : ↥(GK K) → Matrix (Fin d) (Fin d) ℤ_[l]) (U : Matrix (Fin d) (Fin d) (Per.Bcris l)) (k : ℕ) (Mn : Matrix (Fin d) (Fin d) (Wq l bk.a)) (c : ↥(GK K) → ℤ_[l]), Mn ^ d = 0 → (∀ g : ↥(GK K), (ρ g).map (Per.zB l) * U.map (Per.σB (g : GQ l)) = U * ∑ i ∈ Finset.range d, (C.qB (((i.factorial : ℚ_[l]) * (l : ℚ_[l]) ^ (k * i))⁻¹) * (Per.zB l (c g) * C.tB) ^ i) • (Mn.map ((Per.aB l).comp (wA l bk.a).toRingHom)) ^ i) → ∀ lam : Per.BdRp l, (∀ g : ↥(GK K), Per.σDp (g : GQ l) lam = lam + aDp l (Per.zA l (c g)) * C.j C.t) → (∀ m : ℕ, ∃ (k : ℕ) (s : bk.S), bk.E ∣ s ∧ aDp l (bk.ev s) - (l : Per.BdRp l) ^ k * lam ∈ Per.FilP l m) → ∃ Λ₀ : Matrix (Fin d) (Fin d) (Per.BdRp l), (∀ g : ↥(GK K), (ρ g).map (Per.zD l) * (U.map C.ι * Λ₀.map (algebraMap (Per.BdRp l) (Per.BdR l))).map (Per.σD (g : GQ l)) = U.map C.ι * Λ₀.map (algebraMap (Per.BdRp l) (Per.BdR l))) ∧ ∀ m : ℕ, ∃ (k : ℕ) (Λ Λ' : Matrix (Fin d) (Fin d) (bk.S)), Λ * Λ' = (l : bk.S) ^ (2 * k) • (1 : Matrix (Fin d) (Fin d) (bk.S)) ∧ ∀ i j, (Λ.map ((aDp l).comp bk.ev) - (l : Per.BdRp l) ^ k • Λ₀) i j ∈ Per.FilP l m := by
   intro l _ K bk P AI T C hF d ρ U k Mn c hMn hU lam hlam happ

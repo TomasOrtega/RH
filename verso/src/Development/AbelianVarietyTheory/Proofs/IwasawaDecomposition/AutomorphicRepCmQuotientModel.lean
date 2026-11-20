@@ -20,7 +20,7 @@ Both sides reduce to the same expression.
     compE (L := L) (n := n) e f g = e (f g) := rfl
 
 /- English proof (translation)
-The claim follows from `LinearEquiv.ext fun _ => rfl`.
+A detailed English derivation is pending.
 -/
 theorem compE_symm (e : W ≃ₗ[ℂ] W') : compE (L := L) (n := n) e.symm = (compE e).symm :=
   LinearEquiv.ext fun _ => rfl
@@ -43,15 +43,15 @@ theorem conjRep_apply (e : W ≃ₗ[ℂ] W') (ρ : Representation ℂ (GQ L n) W
     conjRep e ρ γ x = e (ρ γ (e.symm x)) := rfl
 
 /- English proof (translation)
-Simplify using `[conjRep_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem conjRep_inter (e : W ≃ₗ[ℂ] W') (ρ : Representation ℂ (GQ L n) W) (γ : GQ L n) (x : W) :
     e (ρ γ x) = conjRep e ρ γ (e x) := by simp [conjRep_apply]
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨f, hf, rfl⟩`. Take `⟨h1, N, hN, h2⟩` from `hS.le hf`. Use `⟨fun γ g => ?_, N, hN, fun κ hκ g => ?_⟩` and prove the remaining obligations. Simplify using `[h1 γ g, he]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `[h2 κ hκ g]`. Introduce and unpack `h _ ⟨f, hf, rfl⟩`. Conclude with `⟨NG.rt L n h f, hS.stable h f hf, rfl⟩`.
+Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem isSubrep_map (e : W ≃ₗ[ℂ] W') {ρ : Representation ℂ (GQ L n) W} {ρ' : Representation ℂ (GQ L n) W'}
     (he : ∀ γ x, e (ρ γ x) = ρ' γ (e x)) {S : Submodule ℂ (GAf L n → W)} (hS : NG.IsSubrep ρ S) :
@@ -66,15 +66,15 @@ theorem isSubrep_map (e : W ≃ₗ[ℂ] W') {ρ : Representation ℂ (GQ L n) W}
     exact ⟨NG.rt L n h f, hS.stable h f hf, rfl⟩
 
 /- English proof (translation)
-Establish `he' : ∀ γ y, e.symm (ρ' γ y) = ρ γ (e.symm y)` using `fun γ y => by`. Apply `e.injective` to reduce the goal to its premises. Rewrite using `[he]`. Simplify using the standard rewrite rules. Take `⟨hsub, hne, hmin⟩` from `hS`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Use `⟨isSubrep_map e he hsub, ?_, fun S' hS' hle => ?_⟩` and prove the remaining obligations. Introduce `h0`. Apply `hne` to reduce the goal to its premises. Use `congrArg (Submodule.comap (compE (L := L) (n := n) e : (GAf L n → W) →ₗ[ℂ] (GAf L n → W'))) h0` as an intermediate fact. Rewrite `this` using `[Submodule.comap_map_eq_of_injective (compE (L := L) (n := n) e).injective, Submodule.comap_bot, LinearMap.ker_eq_bot.mpr (compE (L := L) (n := n) e).injective]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `set T := S'.comap (compE (L := L) (n := n) e : (GAf L n → W) →ₗ[ℂ] (GAf L n → W')) with hT`. Establish `hTm : T = S'.map (compE (L` using `L) (n := n) e.symm : (GAf L n → W') →ₗ[ℂ] (GAf L n → W)) := by`. Rewrite using `[compE_symm, Submodule.map_equiv_eq_comap_symm, LinearEquiv.symm_symm]`. Establish `hTs : NG.IsSubrep ρ T` using `hTm ▸ isSubrep_map e.symm he' hS'`. Establish `hTle : T ≤ S`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Submodule.comap_mono (f := (compE (L := L) (n := n) e : (GAf L n → W) →ₗ[ℂ] (GAf L n → W'))) hle` as an intermediate fact. Rewrite `this` using `[Submodule.comap_map_eq_of_injective (compE (L := L) (n := n) e).injective]`. Then use the resulting hypothesis. Establish `hS'eq : S' = T.map (compE (L` using `L) (n := n) e : (GAf L n → W) →ₗ[ℂ] (GAf L n → W')) := by`. Rewrite using `[hT, Submodule.map_comap_eq_of_surjective (compE (L := L) (n := n) e).surjective]`. Break down `hmin T hTs hTle with h | h` into its components or cases.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Use `left`. Rewrite using `[hS'eq, h, Submodule.map_bot]`. Use `right`. Rewrite using `[hS'eq, h]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isIrrRep_map (e : W ≃ₗ[ℂ] W') {ρ : Representation ℂ (GQ L n) W} {ρ' : Representation ℂ (GQ L n) W'}
     (he : ∀ γ x, e (ρ γ x) = ρ' γ (e x)) {S : Submodule ℂ (GAf L n → W)} (hS : NG.IsIrrRep ρ S) :
@@ -102,7 +102,7 @@ theorem isIrrRep_map (e : W ≃ₗ[ℂ] W') {ρ : Representation ℂ (GQ L n) W}
     · right; rw [hS'eq, h]
 
 /- English proof (translation)
-Use `⟨(compE e).submoduleMap S, fun h f f' hf => ?_⟩` and prove the remaining obligations. Simplify using `only [LinearEquiv.submoduleMap_apply]`. Rewrite using `[hf, rt_compE]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem isoRep_map (e : W ≃ₗ[ℂ] W') (S : Submodule ℂ (GAf L n → W)) :
     NG.IsoRep S (S.map (compE (L := L) (n := n) e : (GAf L n → W) →ₗ[ℂ] (GAf L n → W'))) := by
@@ -112,9 +112,9 @@ theorem isoRep_map (e : W ≃ₗ[ℂ] W') (S : Submodule ℂ (GAf L n → W)) :
 
 omit [Field L] [NumberField L] [IsCMField L] in
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.SubrepTopBot.main`. Consider the case `exact _root_.GlobalTheory.SubrepTopBot.main`. Consider the case `(apply _root_.GlobalTheory.SubrepTopBot.main <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.SubrepTopBot.main <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.SubrepTopBot.main <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.SubrepTopBot.main ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem irr_iff {G : Type} [Group G] {V : Type} [AddCommGroup V] [Module ℂ V]
     (ρ : Representation ℂ G V) :
@@ -129,11 +129,11 @@ theorem irr_iff {G : Type} [Group G] {V : Type} [AddCommGroup V] [Module ℂ V]
   | (intros; exact _root_.GlobalTheory.SubrepTopBot.main ..)
 
 /- English proof (translation)
-Rewrite `h`, the goal using `[irr_iff]`. Take `⟨hW, hmin⟩` from `h`. Use `⟨e.symm.surjective.nontrivial, fun U' hU' => ?_⟩` and prove the remaining obligations. Establish `hU : ∀ γ, ∀ x ∈ U'.comap (e : W →ₗ[ℂ] W'), ρ γ x ∈ U'.comap (e : W →ₗ[ℂ] W')`. Introduce `γ x hx`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Submodule.mem_comap, LinearEquiv.coe_coe] at hx ⊢`. Rewrite using `[conjRep_inter]`. Conclude with `hU' γ _ hx`. Establish `hback : U' = (U'.comap (e : W →ₗ[ℂ] W')).map (e : W →ₗ[ℂ] W')` using `(Submodule.map_comap_eq_of_surjective e.surjective U').symm`. Break down `hmin _ hU with h0 | h0` into its components or cases.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Use `left`. Rewrite using `[hback, h0, Submodule.map_bot]`. Use `right`. Rewrite using `[hback, h0, Submodule.map_top, LinearMap.range_eq_top.mpr e.surjective]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem irr_conj (e : W ≃ₗ[ℂ] W') {ρ : Representation ℂ (GQ L n) W} (h : ρ.IsIrreducible) :
     (conjRep e ρ).IsIrreducible := by
@@ -151,7 +151,7 @@ theorem irr_conj (e : W ≃ₗ[ℂ] W') {ρ : Representation ℂ (GQ L n) W} (h 
   · right; rw [hback, h0, Submodule.map_top, LinearMap.range_eq_top.mpr e.surjective]
 
 /- English proof (translation)
-Take `⟨-, ι, hι, hd, b, P, hP⟩` from `h`. Use `⟨inferInstance, ι, hι, hd, b.map e, P, fun γ γ₀ hγ => ?_⟩` and prove the remaining obligations. Rewrite using `[← hP γ γ₀ hγ]`. Use extensionality with `i j`. Simplify using `[LinearMap.toMatrix_apply, conjRep_apply]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem alg_conj (e : W ≃ₗ[ℂ] W') {ρ : Representation ℂ (GQ L n) W} (h : IsAlgWeight L n ρ)
     [FiniteDimensional ℂ W'] : IsAlgWeight L n (conjRep e ρ) := by
@@ -162,7 +162,7 @@ theorem alg_conj (e : W ≃ₗ[ℂ] W') {ρ : Representation ℂ (GQ L n) W} (h 
   simp [LinearMap.toMatrix_apply, conjRep_apply]
 
 /- English proof (translation)
-Use `haveI : FiniteDimensional ℂ π.W := π.alg.1`. Set `e : π.W ≃ₗ[ℂ] (Fin (Module.finrank ℂ π.W) → ℂ)` to `(Module.finBasis ℂ π.W).equivFun`. Set `m : GlobalTheory.AutQuot.AutRepM L n` to `{ d := Module.finrank ℂ π.W ρ := conjRep e π.ρ alg := alg_conj e π.alg irr := irr_conj e π.irr S := π.S.map (compE (L := L) (n := n) e : (GAf L n → π.W) →ₗ[ℂ] (GAf L n → _)) irrS := isIrrRep_map e (conjRep_inter e π.ρ) π.irrS }`. Conclude with `⟨m, ⟨e, conjRep_inter e π.ρ⟩, isoRep_map e π.S⟩`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_autRepM (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) (π : NG.AutRep L n) :
     ∃ m : GlobalTheory.AutQuot.AutRepM L n, π.Iso m.toAutRep := by

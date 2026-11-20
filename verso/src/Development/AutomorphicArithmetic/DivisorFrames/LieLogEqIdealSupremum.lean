@@ -9,7 +9,7 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SemiFibrationLieLat
 open CategoryTheory AlgebraicGeometry NumberField IsDedekindDomain ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Pj ReciprocityTheory.GeometryOfNumbersTheory GlobalTheory.Toroidal GlobalTheory.Cartier GlobalTheory.ProjVar GlobalTheory.TrueGeo GlobalTheory.CxPts GlobalTheory.Mean4O GlobalTheory.LieHt GlobalTheory.ShFam GlobalTheory.ShFam.Pad GlobalTheory.LieRead
 
 /- English proof (translation)
-Take `⟨τ, i⟩` from `x`. Take `⟨a, rfl⟩` from `(Fintype.equivFin (E →+* ℂ)).symm.surjective τ`. Unfold `letters`. Conclude with `List.mem_flatMap.2 ⟨a, List.mem_finRange _, List.mem_map.2 ⟨i, List.mem_finRange _, rfl⟩⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private theorem mem_letters'' {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     (Dw : Datum H) (x : Letter Dw) : x ∈ letters Dw := by
@@ -19,11 +19,9 @@ private theorem mem_letters'' {E : Type} [Field E] [NumberField E] [IsCMField E]
   exact List.mem_flatMap.2 ⟨a, List.mem_finRange _, List.mem_map.2 ⟨i, List.mem_finRange _, rfl⟩⟩
 
 /- English proof (translation)
-Unfold `letters`. Rewrite using `[List.nodup_flatMap]`. Use `⟨fun a _ => (List.nodup_finRange _).map fun i j h => ?_, ?_⟩` and prove the remaining obligations. Conclude with `eq_of_heq (Sigma.mk.inj_iff.1 h).2`. Use `(List.nodup_finRange _).imp ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a b hab`. Simplify using `only [Function.onFun]`. Introduce `x hx hy`. Take `⟨i, -, rfl⟩` from `List.mem_map.1 hx`. Take `⟨j, -, h⟩` from `List.mem_map.1 hy`.
-
-Conclude with `hab ((Fintype.equivFin (E →+* ℂ)).symm.injective (congrArg Sigma.fst h)).symm`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem nodup_letters'' {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     (Dw : Datum H) : (letters Dw).Nodup := by
@@ -40,21 +38,19 @@ private theorem nodup_letters'' {E : Type} [Field E] [NumberField E] [IsCMField 
     exact hab ((Fintype.equivFin (E →+* ℂ)).symm.injective (congrArg Sigma.fst h)).symm
 
 /- English proof (translation)
-Set `A : Matrix (Fin g) (Fin m) C` to `fun j a => (Pi.single (e a) 1 : Fin g → C) j`. Establish `hA : ∀ a, IsCombAtG t x U (fun j => A j a) (u a)` using `fun a => by`. Rewrite using `[hu]`. Conclude with `isCombAtG_single t x hU (e a)`. Establish `h1 : ∀ cf a, A.mulVec cf (e a) = cf a` using `fun cf a => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[A, Matrix.mulVec, dotProduct, Pi.single_apply, he.eq_iff]`. Establish `h2 : ∀ cf k, (∀ a, e a ≠ k) → A.mulVec cf k = 0` using `fun cf k hk => by`. Simplify using `[A, Matrix.mulVec, dotProduct, Pi.single_apply, fun a => (hk a).symm]`. Establish `hu' : ∀ a, IsTanAtG t x (u a)` using `fun a => hu a ▸ hU _`. Unfold `grNorm`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use extensionality with `r`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨cf, h0, hz, ⟨w, hw, hc⟩, rfl⟩`. Use `⟨A.mulVec cf, by rwa [h1], fun k hk => ?_, (hP _ w (tanLinG U hU u A cf w hA hc)).1 hw, by rw [h1]⟩` and prove the remaining obligations.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hk' : ∃ a, e a = k`. Take `⟨a, rfl⟩` from `hk'`. Rewrite using `[h1]`. Conclude with `hz a (lt_of_not_ge fun h => hk ((hS _).2 ⟨a, h, rfl⟩))`. Conclude with `h2 cf k fun a ha => hk' ⟨a, ha⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce and unpack `⟨c, h0, hz, hc, rfl⟩`. Take `⟨w, -, hw⟩` from `GlobalTheory.FlagEmb.exists_comb t hu' fun a => c (e a)`. Establish `e1 : A.mulVec (fun a => c (e a)) = c`. Use function extensionality and compare the values at `k`. Distinguish the cases in `hk' : ∃ a, e a = k`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨a, rfl⟩` from `hk'`. Rewrite using `[h1]`. Rewrite using `[h2 _ k fun a ha => hk' ⟨a, ha⟩, hz k]`. Introduce `hk`. Take `⟨a, -, ha⟩` from `(hS k).1 hk`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hk' ⟨a, ha⟩`. Establish `h3` using `tanLinG U hU u A _ w hA hw`. Rewrite `h3` using `[e1]`. Use `⟨fun a => c (e a), h0, fun a ha => hz _ fun hk => ?_, ⟨w, (hP c w h3).2 hc, hw⟩, rfl⟩` and prove the remaining obligations. Take `⟨b, hb, hb'⟩` from `(hS _).1 hk`.
-
-Rewrite `hb` using `[he hb']`. Conclude with `absurd ha (not_lt.2 hb)`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem grNorm_sub {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {X : Scheme.{0}} (t : SAB H X) {C : Type} [NontriviallyNormedField C] [IsUltrametricDist C] (x : Sp C ⟶ X)
@@ -103,19 +99,19 @@ private theorem grNorm_sub {E : Type} [Field E] [NumberField E] [IsCMField E] {H
     exact absurd ha (not_lt.2 hb)
 
 /- English proof (translation)
-Introduce `D O y K _ _ F ι hT p _ io τ i hi`. Establish `hg : F.P₀.g = (letters O.S.Dw).length`. Take `⟨_, _, _, -, -, -, -, hg, -⟩` from `hT`. Conclude with `hg`. Take `⟨q, hq, -, -, hex, hI⟩` from `UpperTheory.lie_lattice_generator D O K F τ i hi hg`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hlt : ∀ k : Fin F.P₀.g, (k : ℕ) < (letters O.S.Dw).length` using `fun k => hg ▸ k.2`. Set `l : Fin F.P₀.g → Letter O.S.Dw` to `fun k => (letters O.S.Dw)[(k : ℕ)]'(hlt k)`. Establish `hl : ∀ (k : Fin F.P₀.g) x, (letters O.S.Dw)[(k : ℕ)]? = some x ↔ l k = x` using `fun k x => by`. Rewrite using `[List.getElem?_eq_getElem (hlt k), Option.some_inj]`. Establish `linj : Function.Injective l` using `fun a b h => Fin.ext ((List.Nodup.getElem_inj_iff (nodup_letters'' O.S.Dw)).1 h)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsurj : ∀ x, ∃ k, l k = x` using `fun x => by`. Take `⟨n, hn, h⟩` from `List.getElem_of_mem (mem_letters'' O.S.Dw x)`. Conclude with `⟨⟨n, hg ▸ hn⟩, h⟩`. Use `choose pl hpl using hsurj`. Set `e : Fin (O.S.Dw.mult τ) → Fin F.P₀.g` to `fun a => pl ⟨τ, a⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he : Function.Injective e` using `fun a b h => by`. Use `(hpl ⟨τ, a⟩).symm.trans ((congrArg l h).trans (hpl ⟨τ, b⟩))` as an intermediate fact. Conclude with `eq_of_heq (Sigma.mk.inj_iff.1 this).2`. Establish `hqe : q = e ⟨i, hi⟩` using `linj (((hl _ _).1 hq).trans (hpl _).symm)`. Set `U : Fin F.P₀.g → (Sp (DualNumber ℂ_[p]) ⟶ O.s.T.Z.t.G.left)` to `fun k => spMap (dualMap io) ≫ y.u (l k).1 (l k).2`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hU : ∀ (k : Fin F.P₀.g) (x : Letter O.S.Dw), (letters O.S.Dw)[(k : ℕ)]? = some x → U k = spMap (dualMap io) ≫ y.u x.1 x.2` using `fun k x h => by`. Rewrite using `[← (hl k x).1 h]`. Establish `key` using `grNorm_sub O.s.T.Z.t (spMap io ≫ y.y ≫ genι O.s.T.Z) e he U (fun k => GlobalTheory.FactorDepth.isTanAtG_map _ io (y.tan _ _)) (fun a => spMap (dualMap io) ≫ y.u τ a) (fun a => (hU _ ⟨τ, a⟩ ((hl _ _).2 (hpl _))).symm) _ _ (UpperTheory.dual_number_tangent_coordinates D O y K F ι hT …`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨τ', a⟩, h1, h2, h3⟩ dsimp only at h1 h2`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Simplify by unfolding definitions. Substitute using the available equality. Supply the required witnesses or components.
 
-Substitute `h1` using the available equality. Conclude with `⟨a, Nat.lt_succ_iff.1 h2, linj ((hpl _).trans ((hl _ _).1 h3).symm)⟩`. Introduce and unpack `⟨a, ha, rfl⟩`. Conclude with `⟨⟨τ, a⟩, rfl, Nat.lt_succ_iff.2 ha, (hl _ _).2 (hpl _)⟩)`. Establish `h2` using `UpperTheory.padic_coordinate_infimum p K _ (io.comp ι) F.lieLat _ q (GlobalTheory.T.semi_fibration_lie_lattice_full K F).1.1 hex`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `key` using `[← hqe]`. Rewrite using `[hI, ← Real.log_inv]`. Unfold `FlagPt.lnLie`. Rewrite using `[dif_pos hi]`. Conclude with `congrArg Real.log (key.trans h2)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.lie_log_eq_ideal_supremum :
     ∀ (D : D7) (O : Setup D) (y : Pt O.s) (K : Type) [Field K] [NumberField K] (F : SemiFib K) (ι : K →+* Qb), FibTie O y F ι → ∀ (p : ℕ) [Fact p.Prime] (io : Qb →+* ℂ_[p]) (τ : D.host.E →+* ℂ) (i : ℕ), i < O.S.Dw.mult τ → y.lnLie io p false τ i = -Real.log (sSup ((fun b => ‖io (ι b)‖) '' (stepIdeal O F τ i : Set K))) := by

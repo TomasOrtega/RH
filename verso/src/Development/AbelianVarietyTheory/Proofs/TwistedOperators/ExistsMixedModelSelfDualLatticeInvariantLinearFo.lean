@@ -18,20 +18,18 @@ variable {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))]
 variable {ϖ : L} {σ : L →+* L} {q : ℕ} {δ : L} {ψ : AddChar L ℂ} {n n' : ℕ}
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_mixLat_iff {x : Matrix (Fin n') (Fin n) L} : x ∈ mixLat L n' n ↔ ∀ r c,
     (n' - n' / 2 ≤ r.1 ∨ n' / 2 ≤ r.1 ∧ c.1 < n / 2 → x r c = 0) ∧ (n' / 2 ≤ r.1 → c.1 < n - n / 2 → x r c ∈ intL L) :=
   Iff.rfl
 
 /- English proof (translation)
-Establish `hs : ∀ x ∈ intL L, σ x ∈ intL L` using `fun x hx => mem_intL.2 ((hv x).trans_le hx)`. Rewrite `ha`, `hb` using `[mem_mixLat_iff]`. Establish `hS : ∑ i, ∑ j, a i j * σ (b i.rev j.rev) ∈ intL L`. Use `sum_mem fun i _ => sum_mem fun j _ => ?_` and prove the remaining obligations. Establish `hai` using `ha i j`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hbi` using `hb i.rev j.rev`. Simplify using `only [Fin.val_rev] at hbi`. Use `i.isLt` as an intermediate fact. Use `j.isLt` as an intermediate fact. Distinguish the cases in `h1 : n' - n' / 2 ≤ i.1 ∨ n' / 2 ≤ i.1 ∧ j.1 < n / 2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[hai.1 h1, zero_mul]`. Conclude with `zero_mem _`. Distinguish the cases in `h2 : n' - n' / 2 ≤ n' - (i.1 + 1) ∨ n' / 2 ≤ n' - (i.1 + 1) ∧ n - (j.1 + 1) < n / 2`. Rewrite using `[hbi.1 h2, map_zero, mul_zero]`. Conclude with `zero_mem _`.
-
-Conclude with `mul_mem (hai.2 (by omega) (by omega)) (hs _ (hbi.2 (by omega) (by omega)))`. Establish `hi : δ * ∑ i, ∑ j, a i j * σ (b i.rev j.rev) ∈ intL L` using `mul_mem (mem_intL.2 hδ.le) hS`. Conclude with `hψ0 _ (add_mem hi (hs _ hi)) (by rw [map_add, hσ, add_comm])`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem pairing_mixLat (hσ : ∀ x, σ (σ x) = x) (hv : ∀ x, Valued.v (σ x) = Valued.v x) (hδ : Valued.v δ = 1)
     (hψ0 : ∀ a ∈ intL L, σ a = a → ψ a = 1) {a b : Matrix (Fin n') (Fin n) L} (ha : a ∈ mixLat L n' n)
@@ -54,9 +52,9 @@ theorem pairing_mixLat (hσ : ∀ x, σ (σ x) = x) (hv : ∀ x, Valued.v (σ x)
   exact hψ0 _ (add_mem hi (hs _ hi)) (by rw [map_add, hσ, add_comm])
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hc`. Use `hx ⟨fun r c => if n' - n' / 2 ≤ r.1 ∨ n' / 2 ≤ r.1 ∧ c.1 < n - n / 2 then 0 else x r c, fun r c => ⟨fun e => by dsimp only; rw [if_pos (by omega)], fun e e' => by dsimp only; rw [if_pos (by omega)]; exact zero_mem _⟩, fun r c => ?_⟩` and prove the remaining obligations. Use `show x r c - (if n' - n' / 2 ≤ r.1 ∨ n' / 2 ≤ r.1 ∧ c.1 < n - n / 2 then 0 else x r c) ∈ intL L`. Use `split_ifs with hb`. Rewrite using `[sub_zero]`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities.
 
-Assume the negation of the conclusion as `hi`. Conclude with `hc ⟨r, c, hi, hb⟩`. Rewrite using `[sub_self]`. Conclude with `zero_mem _`.
+A detailed English derivation is pending.
 -/
 theorem exists_bad_entry (x : Matrix (Fin n') (Fin n) L)
     (hx : ¬ ∃ a ∈ mixLat L n' n, x - a ∈ intMat L (Fin n') (Fin n)) :
@@ -76,15 +74,13 @@ variable {M : Type} [AddCommGroup M] [Module ℂ M]
 variable {ρ : Matrix (Fin n') (Fin n) L → Module.End ℂ M} {ω : GU σ n × GU σ n' →* Module.End ℂ M} {s : M}
 
 /- English proof (translation)
-Take `⟨u, hu, hne⟩` from `exists_pairing_single_ne h.1.unr h.v_two h.1.delta.1 h.1.psi_ne x hx`. Use `r.isLt` as an intermediate fact. Use `c.isLt` as an intermediate fact. Establish `hyA : Matrix.single r.rev c.rev u ∈ mixLat L n' n`. Introduce `r' c'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Matrix.single_apply]`. Use `split_ifs with he`. Take `⟨rfl, rfl⟩` from `he`. Simplify using `only [Fin.val_rev]`. Conclude with `⟨fun e => by omega, fun _ _ => hu⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `⟨fun _ => rfl, fun _ _ => zero_mem _⟩`. Establish `hyL : Matrix.single r.rev c.rev u ∈ intMat L (Fin n') (Fin n)`. Introduce `i j`. Rewrite using `[Matrix.single_apply]`. Use `split_ifs`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `exacts [hu, zero_mem _]`. Establish `e1` using `h.isHeis.comm x (Matrix.single r.rev c.rev u) s`. Rewrite `e1` using `[h.fixes _ hyL]`. Establish `e2` using `congrArg ℓ' e1`. Rewrite `e2` using `[map_smul, hℓ' _ hyA, smul_eq_mul]`.
-
-Establish `e3 : (pairing σ δ ψ x (Matrix.single r.rev c.rev u) - 1) * ℓ' (ρ x s) = 0` using `by linear_combination -e2`. Break down `mul_eq_zero.1 e3 with h' | h'` into its components or cases. Conclude with `absurd (sub_eq_zero.1 h') hne`. Conclude with `h'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem IsStd.form_eq_zero (h : IsStd ϖ σ q δ ψ ρ ω s) (ℓ' : M →ₗ[ℂ] ℂ)
     (hℓ' : ∀ a ∈ mixLat L n' n, ∀ v, ℓ' (ρ a v) = ℓ' v) (x : Matrix (Fin n') (Fin n) L) (r : Fin n') (c : Fin n)
@@ -117,19 +113,17 @@ theorem IsStd.form_eq_zero (h : IsStd ϖ σ q δ ψ ρ ω s) (ℓ' : M →ₗ[�
 end
 
 /- English proof (translation)
-Introduce `L _ _ ϖ σ q δ ψ n n' M _ _ ρ ω s h`. Take `⟨ℓ, h1, h2⟩` from `GlobalTheory.T.exists_heisenbergInvariant_linearForm_isotropic_vacuum h.isHeis (intMat L (Fin n') (Fin n)) h.selfDual s h.2.1 h.fixes h.2.2.2 (mixLat L n' n) fun a ha b hb => pairing_mixLat h.1.unr.1 h.1.unr.2.1 h.1.delta.1 h.1.psi_int ha hb`. Establish `hz : ∀ ℓ' : M →ₗ[ℂ] ℂ, (∀ a ∈ mixLat L n' n, ∀ v, ℓ' (ρ a v) = ℓ' v) → ∀ x, (¬ ∃ a ∈ mixLat L n' n, x - a ∈ intMat L (Fin n') (Fin n)) → ℓ' (ρ x s) = 0` using `fun ℓ' hℓ' x hx => by`. Apply the tactic sequence `obtain ⟨r, c, hr, hrc⟩ := exists_bad_entry x hx`. Conclude with `h.form_eq_zero ℓ' hℓ' x r c hr hrc`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨ℓ, h1, h2, hz ℓ h2, fun ℓ' hℓ' => ?_, fun z => ?_⟩` and prove the remaining obligations. Establish `key : ℓ' = ℓ' s • ℓ` using `LinearMap.ext_on_range h.2.2.2 fun x => ?_`. Conclude with `fun v => LinearMap.congr_fun key v`. Use `show ℓ' (ρ x s) = (ℓ' s • ℓ) (ρ x s)`. Distinguish the cases in `hx : ∃ a ∈ mixLat L n' n, x - a ∈ intMat L (Fin n') (Fin n)`.
+Establish an intermediate fact. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨a, ha, hxa⟩` from `hx`. Establish `e` using `h.isHeis.comp a (x - a) s`. Rewrite `e` using `[h.fixes _ hxa, show a + (x - a) = x by abel]`. Establish `hg` using `h.isHeis.ne_zero (half h.v_two • a) (x - a)`. Establish `hx' : ρ x s = (pairing σ δ ψ (half h.v_two • a) (x - a))⁻¹ • ρ a s`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, smul_smul, inv_mul_cancel₀ hg, one_smul]`. Rewrite using `[LinearMap.smul_apply, hx', map_smul, map_smul, hℓ' a ha, h2 a ha, h1, smul_eq_mul, smul_eq_mul, smul_eq_mul, mul_one, mul_comm]`. Rewrite using `[LinearMap.smul_apply, hz ℓ' hℓ' x hx, hz ℓ h2 x hx, smul_zero]`. Use `(n' / 2).le_refl split_ifs with hzi` as an intermediate fact. Establish `hm : embLow n' n z ∈ intMat L (Fin n') (Fin n)` using `fun r c => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `embLow`. Use `split_ifs`. Use `exacts [hzi _ _, zero_mem _]`. Rewrite using `[h.fixes _ hm, h1]`. Choose the witnesses or unpack the hypotheses as in `⟨i, j, hij⟩ : ∃ i j, z i j ∉ intL L := by`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Conclude with `hzi hc`. Establish `he : embLow n' n z (hi n' i) (hi n j) = z i j`. Simplify using `[embLow, hi]`.
-
-Use `h.form_eq_zero ℓ h2 _ (hi n' i) (hi n j) (by rwa [he]) (Or.inl ?_)` and prove the remaining obligations. Simplify using `only [hi]`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem exists_mixLat_form : ∀ (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))] (ϖ : L) (σ : L →+* L) (q : ℕ) (δ : L) (ψ : AddChar L ℂ) (n n' : ℕ) (M : Type) [AddCommGroup M] [Module ℂ M] (ρ : Matrix (Fin n') (Fin n) L → Module.End ℂ M) (ω : GU σ n × GU σ n' →* Module.End ℂ M) (s : M), IsStd ϖ σ q δ ψ ρ ω s → ∃ ℓ : M →ₗ[ℂ] ℂ, ℓ s = 1 ∧ (∀ a ∈ mixLat L n' n, ∀ v, ℓ (ρ a v) = ℓ v) ∧ (∀ x, (¬ ∃ a ∈ mixLat L n' n, x - a ∈ intMat L (Fin n') (Fin n)) → ℓ (ρ x s) = 0) ∧ (∀ ℓ' : M →ₗ[ℂ] ℂ, (∀ a ∈ mixLat L n' n, ∀ v, ℓ' (ρ a v) = ℓ' v) → ∀ v, ℓ' v = ℓ' s * ℓ v) ∧ ∀ (z : Matrix (Fin (n' / 2)) (Fin (n / 2)) L), ℓ (ρ (embLow n' n z) s) = if z ∈ intMat L (Fin (n' / 2)) (Fin (n / 2)) then 1 else 0 := by
   intro L _ _ ϖ σ q δ ψ n n' M _ _ ρ ω s h

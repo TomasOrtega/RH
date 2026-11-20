@@ -13,18 +13,18 @@ open Formalism.BasicNotions Formalism.L2.DIV GlobalTheory.IndefiniteRowSideFullH
 variable {ι : Type} [Fintype ι] {n n' : ℕ}
 
 /- English proof (translation)
-Take `⟨r, hr, h⟩` from `TensorPlaceNorm.fockS_self_nonneg f`. Rewrite using `[h, Complex.ofReal_re]`. Conclude with `hr`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fockS_re_nonneg {σ : Type} (f : MvPolynomial σ ℂ) : 0 ≤ (fockS f f).re := by
   obtain ⟨r, hr, h⟩ := TensorPlaceNorm.fockS_self_nonneg f
   rw [h, Complex.ofReal_re]; exact hr
 
 /- English proof (translation)
-Establish `: (fockS f f).re = ∑ m ∈ f.support, ‖f.coeff m‖ ^ 2 * (mfact m : ℝ)`. Establish `e : fockS f f = ((∑ m ∈ f.support, ‖f.coeff m‖ ^ 2 * (mfact m : ℝ) : ℝ) : ℂ)`. Unfold `fockS`. Use `push_cast`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Complex.conj_mul']`. Both sides reduce to the same expression. Rewrite using `[e, Complex.ofReal_re]`. Rewrite using `[this]`. Use `Finset.sum_pos (fun m hm => mul_pos (pow_pos (norm_pos_iff.mpr (mem_support_iff.mp hm)) 2) ?_) (support_nonempty.mpr hf)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Finset.prod_pos fun k _ => Nat.factorial_pos _` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem fockS_re_pos' {σ : Type} {f : MvPolynomial σ ℂ} (hf : f ≠ 0) : 0 < (fockS f f).re := by
   have : (fockS f f).re = ∑ m ∈ f.support, ‖f.coeff m‖ ^ 2 * (mfact m : ℝ) := by
@@ -41,7 +41,7 @@ theorem fockS_re_pos' {σ : Type} {f : MvPolynomial σ ℂ} (hf : f ≠ 0) : 0 <
   exact_mod_cast Finset.prod_pos fun k _ => Nat.factorial_pos _
 
 /- English proof (translation)
-Rewrite using `[fockS_eq_sum g f (f.support ∪ g.support) Finset.subset_union_right, fockS_eq_sum f g (f.support ∪ g.support) Finset.subset_union_left, map_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Simplify using `only [map_mul, map_natCast, Complex.star_def, Complex.conj_conj]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem fockS_conj_symm {σ : Type} (f g : MvPolynomial σ ℂ) : (starRingEnd ℂ) (fockS g f) = fockS f g := by
   classical
@@ -69,9 +69,9 @@ def fockCore (σ : Type) : InnerProductSpace.Core ℂ (MvPolynomial σ ℂ) wher
     simp at this
 
 /- English proof (translation)
-Set `B` to `LinearMap.toContinuousLinearMap A`. Use `⟨‖B‖ ^ 2, by positivity, fun f => ?_⟩` and prove the remaining obligations. Establish `h1 : (inner ℂ (A f) (A f)).re = ‖A f‖ ^ 2` using `inner_self_eq_norm_sq (𝕜 := ℂ) (A f)`. Establish `h2 : (inner ℂ f.1 f.1).re = ‖f.1‖ ^ 2` using `inner_self_eq_norm_sq (𝕜 := ℂ) f.1`. Establish `h3 : ‖A f‖ ≤ ‖B‖ * ‖f.1‖` using `B.le_opNorm f`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h1, h2, ← mul_pow]`. Conclude with `pow_le_pow_left₀ (norm_nonneg _) h3 2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_norm_bound {E F : Type} [NormedAddCommGroup E] [InnerProductSpace ℂ E] [NormedAddCommGroup F]
     [InnerProductSpace ℂ F] (S : Submodule ℂ E) [FiniteDimensional ℂ S] (A : S →ₗ[ℂ] F) :
@@ -85,7 +85,7 @@ theorem exists_norm_bound {E F : Type} [NormedAddCommGroup E] [InnerProductSpace
   exact pow_le_pow_left₀ (norm_nonneg _) h3 2
 
 /- English proof (translation)
-Conclude with `@exists_norm_bound _ _ (fockCore σ).toNormedAddCommGroup (InnerProductSpace.ofCore (fockCore σ).toCore) (fockCore σ').toNormedAddCommGroup (InnerProductSpace.ofCore (fockCore σ').toCore) S ‹_› A`.
+A detailed English derivation is pending.
 -/
 theorem exists_fock_bound {σ σ' : Type} (S : Submodule ℂ (MvPolynomial σ ℂ)) [FiniteDimensional ℂ S]
     (A : S →ₗ[ℂ] MvPolynomial σ' ℂ) :
@@ -94,7 +94,7 @@ theorem exists_fock_bound {σ σ' : Type} (S : Submodule ℂ (MvPolynomial σ �
     (fockCore σ').toNormedAddCommGroup (InnerProductSpace.ofCore (fockCore σ').toCore) S ‹_› A
 
 /- English proof (translation)
-Take `⟨b, ⟨-, hb, -⟩, -⟩` from `Formalism.GradedWeylDivisibility.sSBasis ℂ n n lam.natW`. Establish `: Finite (Formalism.GradedWeylDivisibility.ssIdx n n lam.natW)` using `(Formalism.GradedWeylDivisibility.sSIdxFinite n n _).to_subtype`. Unfold `nablaSq`. Rewrite using `[← hb]`. Conclude with `FiniteDimensional.span_of_finite ℂ (Set.finite_range b)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finiteDimensional_nablaSq (lam : DomWeight n) : FiniteDimensional ℂ (nablaSq ℂ n lam) := by
   obtain ⟨b, ⟨-, hb, -⟩, -⟩ := Formalism.GradedWeylDivisibility.sSBasis ℂ n n lam.natW
@@ -104,7 +104,7 @@ theorem finiteDimensional_nablaSq (lam : DomWeight n) : FiniteDimensional ℂ (n
   exact FiniteDimensional.span_of_finite ℂ (Set.finite_range b)
 
 /- English proof (translation)
-The claim follows from `fockS_re_pos' (Formalism.GradedWeylDivisibility.hwNe ℂ n n le_rfl lam.natW)`.
+A detailed English derivation is pending.
 -/
 theorem extremal_fock_pos (lam : DomWeight n) : 0 < (fockS (extremal ℂ n lam) (extremal ℂ n lam)).re :=
   fockS_re_pos' (Formalism.GradedWeylDivisibility.hwNe ℂ n n le_rfl lam.natW)

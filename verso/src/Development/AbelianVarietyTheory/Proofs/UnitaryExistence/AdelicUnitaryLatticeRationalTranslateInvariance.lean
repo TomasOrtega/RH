@@ -22,7 +22,7 @@ namespace GlobalTheory.Member.LatMove
 variable {D : D7} (V : HSp D)
 
 /- English proof (translation)
-Establish `h1` using `(GlobalTheory.T.adelicElementLattice_full_and_completion D V g).2.2.2.1`. Establish `h2` using `(GlobalTheory.T.adelicElementLattice_full_and_completion D V 1).2.2.2.2.1`. Rewrite using `[h2, ← SetLike.mem_coe, h1]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mem_hat_iff (g : GA D V) (w : Fin V.rank → Af D.host.F ⊗[D.host.F] D.host.E) :
     w ∈ latGHat V g ↔ ∃ z ∈ latGHat V 1, (finHom V g).1 *ᵥ z = w := by
@@ -32,7 +32,7 @@ theorem mem_hat_iff (g : GA D V) (w : Fin V.rank → Af D.host.F ⊗[D.host.F] D
   rfl
 
 /- English proof (translation)
-Establish `h0` using `(GlobalTheory.T.adelicElementLattice_full_and_completion D V g).2.2.1`. Establish `h1` using `(GlobalTheory.T.adelicElementLattice_full_and_completion D V g).2.2.2.1`. Rewrite using `[← SetLike.mem_coe, h0, ← SetLike.mem_coe, h1]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mem_lat_iff (g : GA D V) (v : Fin V.rank → D.host.E) :
     v ∈ latG V g ↔ finVec V v ∈ latGHat V g := by
@@ -42,21 +42,21 @@ theorem mem_lat_iff (g : GA D V) (v : Fin V.rank → D.host.E) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[map_mul, Units.val_mul, Matrix.mulVec_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem fin_mul (g h : GA D V) (z : Fin V.rank → Af D.host.F ⊗[D.host.F] D.host.E) :
     (finHom V (g * h)).1 *ᵥ z = (finHom V g).1 *ᵥ ((finHom V h).1 *ᵥ z) := by
   rw [map_mul, Units.val_mul, Matrix.mulVec_mulVec]
 
 /- English proof (translation)
-Rewrite using `[map_one, Units.val_one, Matrix.one_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem fin_one (z : Fin V.rank → Af D.host.F ⊗[D.host.F] D.host.E) :
     (finHom V 1).1 *ᵥ z = z := by
   rw [map_one, Units.val_one, Matrix.one_mulVec]
 
 /- English proof (translation)
-Take `⟨z, hz, rfl⟩` from `(mem_hat_iff V h w).1 hw`. Conclude with `(mem_hat_iff V _ _).2 ⟨z, hz, fin_mul V g h z⟩`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem move_mem (g h : GA D V) (w : Fin V.rank → Af D.host.F ⊗[D.host.F] D.host.E)
     (hw : w ∈ latGHat V h) : (finHom V g).1 *ᵥ w ∈ latGHat V (g * h) := by
@@ -64,7 +64,7 @@ theorem move_mem (g h : GA D V) (w : Fin V.rank → Af D.host.F ⊗[D.host.F] D.
   exact (mem_hat_iff V _ _).2 ⟨z, hz, fin_mul V g h z⟩
 
 /- English proof (translation)
-Use `⟨move_mem V g h w, fun hw => ?_⟩` and prove the remaining obligations. Use `move_mem V g⁻¹ _ _ hw` as an intermediate fact. Rewrite `this` using `[← fin_mul, inv_mul_cancel, fin_one, inv_mul_cancel_left]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem move_iff (g h : GA D V) (w : Fin V.rank → Af D.host.F ⊗[D.host.F] D.host.E) :
     w ∈ latGHat V h ↔ (finHom V g).1 *ᵥ w ∈ latGHat V (g * h) := by
@@ -73,14 +73,14 @@ theorem move_iff (g h : GA D V) (w : Fin V.rank → Af D.host.F ⊗[D.host.F] D.
   rwa [← fin_mul, inv_mul_cancel, fin_one, inv_mul_cancel_left] at this
 
 /- English proof (translation)
-Use extensionality with `v`. Rewrite using `[mem_lat_iff, mem_lat_iff, e]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem lat_eq_of_hat_eq {h h' : GA D V} (e : latGHat V h = latGHat V h') : latG V h = latG V h' := by
   ext v
   rw [mem_lat_iff, mem_lat_iff, e]
 
 /- English proof (translation)
-Introduce `z hz`. Take `⟨y, hy, e⟩` from `hk z hz`. Conclude with `⟨N • y, AddSubgroup.nsmul_mem _ hy N, by rw [one_nsmul, e]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem finCong_one {N : ℕ} {k : GA D V} (hk : FinCong V N k) : FinCong V 1 k := by
   intro z hz
@@ -88,11 +88,11 @@ theorem finCong_one {N : ℕ} {k : GA D V} (hk : FinCong V N k) : FinCong V 1 k 
   exact ⟨N • y, AddSubgroup.nsmul_mem _ hy N, by rw [one_nsmul, e]⟩
 
 /- English proof (translation)
-Establish `h1` using `(GlobalTheory.T.congruence_lattice_fractionalMultiple_agree D V k).1.2 (finCong_one V hk)`. Establish `h2 : ∀ z ∈ latGHat V 1, (finHom V k⁻¹).1 *ᵥ z ∈ latGHat V 1`. Establish `hh` using `(GlobalTheory.T.adelicElementLattice_full_and_completion D V 1).2.2.2.2.1`. Rewrite `h1`, the goal using `[hh]`. Rewrite using `[map_inv]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `GlobalTheory.AdLat.inv_mulVec_mem_hat D.host.F D.host.E V.rank (latG V 1) (finHom V k) (cF D) (GlobalTheory.T.adelicElementLattice_full_and_completion D V 1).1 (GlobalTheory.T.adelicElementLattice_full_and_completion D V 1).2.1 h1 (GlobalTheory.T.finitePart_preserves_form_det_nor …`. Use extensionality with `w`. Rewrite using `[mem_hat_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz, rfl⟩`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `h1 z hz`. Introduce `hw`. Conclude with `⟨_, h2 w hw, by rw [← fin_mul, mul_inv_cancel, fin_one]⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem hat_eq_of_finCong {N : ℕ} {k : GA D V} (hk : FinCong V N k) : latGHat V k = latGHat V 1 := by
   have h1 := (GlobalTheory.T.congruence_lattice_fractionalMultiple_agree D V k).1.2 (finCong_one V hk)
@@ -115,13 +115,13 @@ end GlobalTheory.Member.LatMove
 open GlobalTheory.Member.LatMove in
 
 /- English proof (translation)
-Introduce `D V`. Use `⟨fun γ γ' h hγ => ⟨fun v => ?_, fun w => move_iff V γ h w⟩, fun h h' e => ?_, fun N h k hk => ?_, fun h h' e => ?_⟩` and prove the remaining obligations. Rewrite using `[mem_lat_iff, mem_lat_iff, move_iff V γ h, ((GlobalTheory.T.rational_points_adelicUnitary_eq_unitary D V).2.2.2.2 γ γ' hγ).1 v]`. Establish `: latGHat V h = latGHat V h'`. Use extensionality with `w`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[mem_hat_iff V h, mem_hat_iff V h', e]`. Conclude with `⟨lat_eq_of_hat_eq V this, this⟩`. Establish `: latGHat V (h * k) = latGHat V h`. Use extensionality with `w`. Rewrite using `[move_iff V h⁻¹ (h * k), move_iff V h⁻¹ h, inv_mul_cancel_left, inv_mul_cancel, hat_eq_of_finCong V hk]`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Conclude with `⟨lat_eq_of_hat_eq V this, this⟩`. Establish `e' : latGHat V h = latGHat V h'`. Rewrite using `[(GlobalTheory.T.adelicElementLattice_full_and_completion D V h).2.2.2.2.1, (GlobalTheory.T.adelicElementLattice_full_and_completion D V h').2.2.2.2.1, e]`. Use `(GlobalTheory.T.congruence_lattice_fractionalMultiple_agree D V (h⁻¹ * h')).1.1 fun z hz => ?_` and prove the remaining obligations. Establish `h1` using `move_mem V h' 1 z hz`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h1` using `[mul_one, ← e']`. Establish `h2` using `move_mem V h⁻¹ h _ h1`. Rewrite `h2` using `[← fin_mul, inv_mul_cancel]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem GlobalTheory.Member.latG_move : ∀ (D : D7) (V : HSp D), (∀ γ γ' h, IsRat V γ γ' → (∀ v, v ∈ latG V h ↔ (γ' : Matrix (Fin V.rank) (Fin V.rank) D.host.E) *ᵥ v ∈ latG V (γ * h)) ∧ ∀ w, w ∈ latGHat V h ↔ (finHom V γ).1 *ᵥ w ∈ latGHat V (γ * h)) ∧ (∀ h h', finHom V h = finHom V h' → latG V h = latG V h' ∧ latGHat V h = latGHat V h') ∧ (∀ (N : ℕ) h k, FinCong V N k → latG V (h * k) = latG V h ∧ latGHat V (h * k) = latGHat V h) ∧ ∀ h h', latG V h = latG V h' → FinCong V 1 (h⁻¹ * h') := by
   intro D V

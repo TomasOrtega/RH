@@ -14,11 +14,11 @@ set_option autoImplicit false
 namespace GlobalTheory.SelfInterPoly
 
 /- English proof (translation)
-Use `⟨∑ S : Finset ι, Polynomial.C (f (S.piecewise (fun _ => b) (fun _ => a)) : ℝ) * Polynomial.X ^ S.card, fun m => ?_⟩` and prove the remaining obligations. Establish `e : (fun _ : ι => a + m • b) = (fun _ : ι => (m : ℤ) • b) + (fun _ : ι => a)`. Use function extensionality and compare the values at `i`. Simplify using `[add_comm]`. Rewrite using `[e, f.map_add_univ, Polynomial.eval_finsetSum, Int.cast_sum]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun S _ => ?_` and prove the remaining obligations. Establish `e₂ : S.piecewise (fun _ : ι => (m : ℤ) • b) (fun _ : ι => a) = S.piecewise (fun i => (fun _ : ι => (m : ℤ)) i • S.piecewise (fun _ => b) (fun _ => a) i) (S.piecewise (fun _ => b) (fun _ => a))`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `by_cases h : i ∈ S <;> simp [h]`. Rewrite using `[e₂, f.map_piecewise_smul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[mul_comm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem exists_polynomial_multilinear {A : Type*} {ι : Type} [AddCommGroup A] [Fintype ι]
     (f : MultilinearMap ℤ (fun _ : ι => A) ℤ) (a b : A) :
@@ -40,9 +40,9 @@ theorem exists_polynomial_multilinear {A : Type*} {ι : Type} [AddCommGroup A] [
   simp [mul_comm]
 
 /- English proof (translation)
-Introduce `Y L H hL hH`. Establish `hv` using `diffVanish_chiPic_of_isProjOver Y.algebraMap_Γ (structureModule Y.X) Y.isProjOver (d := Y.dim) (by rw [QCoh.suppDim_structureModule, Y.topologicalKrullDim_eq])`. Establish `key : ∀ (M : LB Y.X) (hM : M.IsLB), topSelfIntersection ℂ M Y.dim = hv.form fun _ => cls M hM` using `fun M hM => (interNum_eq_multiDiff ℂ _ fun _ => hM).trans (hv.form_apply _ 0).symm`. Take `⟨P, hP⟩` from `exists_polynomial_multilinear hv.form (cls L hL) (cls H hH)`. Use `⟨P, ?_, fun m => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h0` using `hP 0`. Rewrite `h0` using `[zero_nsmul, add_zero, Nat.cast_zero]`. Rewrite using `[key L hL, h0]`. Rewrite using `[key _ (isLB_tens hL (isLB_lbPow hH m)), cls_tens hL (isLB_lbPow hH m), cls_lbPow hH, hP]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_polynomial_topSelf : ∀ (Y : Var ℂ) (L H : LB Y.X), L.IsLB → H.IsLB → ∃ P : Polynomial ℝ, P.eval 0 = (topSelfIntersection ℂ L Y.dim : ℝ) ∧ ∀ m : ℕ, (topSelfIntersection ℂ (CechPic.tens L (lbPow H m)) Y.dim : ℝ) = P.eval (m : ℝ) := by
   intro Y L H hL hH

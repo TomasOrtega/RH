@@ -13,32 +13,32 @@ def cGE (eps : ℝ) : ℝ := (((2 + 8 * eps + 3) * 10 ^ (6 * rE eps + 1) + 1) + 
 def cNE (eps : ℝ) : ℝ := 18 * cGE eps + 2 * (2 + 8 * eps + 3) + 2
 
 /- English proof (translation)
-Unfold `cGE`. Check the signs of the components of the expression.
+Replace the relevant objects with their definitions. Check the signs of the components of the expression.
 -/
 theorem cGE_nonneg (eps : ℝ) (he : 0 < eps) : 0 ≤ cGE eps := by unfold cGE; positivity
 
 /- English proof (translation)
-Unfold `Scale.delta1`. Rewrite using `[Real.rpow_neg (sc_x_pos s).le, one_div, inv_inv]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem inv_delta1 (s : Scale) : 1 / s.delta1 = s.x ^ (s.eps / 8) := by
   unfold Scale.delta1
   rw [Real.rpow_neg (sc_x_pos s).le, one_div, inv_inv]
 
 /- English proof (translation)
-The claim follows from `Real.one_le_rpow s.one_lt_alt.le hy`.
+A detailed English derivation is pending.
 -/
 theorem one_le_xpow (s : Scale) (y : ℝ) (hy : 0 ≤ y) : 1 ≤ s.x ^ y := Real.one_le_rpow s.one_lt_alt.le hy
 
 /- English proof (translation)
-Establish `he` using `s.eps_pos`. Establish `hx0` using `sc_x_pos s`. Establish `lx1 : 1 ≤ Real.log s.x` using `(Real.le_log_iff_exp_le hx0).2 hx`. Establish `hy1 : 1 ≤ s.x ^ (s.eps / 8)` using `one_le_xpow s _ (by positivity)`. Establish `hU : ((goodU s.delta1 : ℕ) : ℝ) ≤ 2 * s.x ^ (s.eps / 8)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `goodU`. Rewrite using `[inv_delta1]`. Use `Nat.ceil_lt_add_one (le_trans zero_le_one hy1)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hM : ((orbitSmallMultiplicity (rG s) (hG s) s.x : ℕ) : ℝ) ≤ ((2 + 8 * s.eps + 3) * 10 ^ (6 * rE s.eps + 1) + 1) * Real.log s.x`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Unfold `orbitSmallMultiplicity hG`. Rewrite using `[rG_rE, zpow_neg, div_inv_eq_mul, zpow_natCast]`. Establish `h0 : 0 ≤ (2 + 8 * s.eps + 3) * Real.log s.x * 10 ^ (6 * rE s.eps + 1)` using `by positivity`. Use `Nat.ceil_lt_add_one h0` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Unfold `Gp goodG' goodEll`. Use `push_cast`. Rewrite `hM`, the goal using `[rG_rE]`. Unfold `cGE`. Establish `h5 : ((orbitSmallMultiplicity (rE s.eps) (hG s) s.x : ℕ) : ℝ) + 5 ≤ (((2 + 8 * s.eps + 3) * 10 ^ (6 * rE s.eps + 1) + 1) + 5) * Real.log s.x` using `by nlinarith`.
+Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Rewrite the hypotheses and the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `h6 : (6 * (rE s.eps : ℝ) + 1) * ((goodU s.delta1 : ℕ) : ℝ) ≤ (6 * (rE s.eps : ℝ) + 1) * (2 * s.x ^ (s.eps / 8))` using `mul_le_mul_of_nonneg_left hU (by positivity)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem Gp_le (s : Scale) (hx : Real.exp 1 ≤ s.x) :
     (Gp s : ℝ) ≤ cGE s.eps * Real.log s.x * s.x ^ (s.eps / 8) := by
@@ -72,21 +72,21 @@ theorem Gp_le (s : Scale) (hx : Real.exp 1 ≤ s.x) :
     _ = _ := by ring
 
 /- English proof (translation)
-Establish `he` using `s.eps_pos`. Establish `hx0` using `sc_x_pos s`. Establish `lx1 : 1 ≤ Real.log s.x` using `(Real.le_log_iff_exp_le hx0).2 hx`. Establish `hGp` using `Gp_le s hx`. Establish `hc` using `cGE_nonneg s.eps he`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd : s.x ^ (s.eps / 8) * s.delta1 = 1`. Unfold `Scale.delta1`. Rewrite using `[← Real.rpow_add hx0]`. Simplify using the standard rewrite rules. Establish `hd0` using `sc_delta1_pos s`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h1 : (Gp s : ℝ) * s.delta1 ≤ cGE s.eps * Real.log s.x`. Combine the equalities or inequalities in the displayed calculation. Establish `he3 : Real.exp 1 ≤ 3` using `by have := Real.exp_one_lt_d9; linarith`. Establish `h0 : 0 ≤ (Gp s : ℝ) * s.delta1` using `by positivity`. Establish `h2 : 6 * Real.exp 1 * (Gp s : ℝ) * s.delta1 ≤ 18 * cGE s.eps * Real.log s.x`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: 6 * Real.exp 1 * ((Gp s : ℝ) * s.delta1) ≤ 18 * ((Gp s : ℝ) * s.delta1)` using `mul_le_mul_of_nonneg_right (by linarith) h0`. Use the polynomial consequences of the given equalities and inequalities. Establish `h3 : (hG s + 3) * Real.logb 2 s.x ≤ 2 * (2 + 8 * s.eps + 3) * Real.log s.x`. Unfold `Formalism.MainNotions.G.hG Real.logb`. Establish `hl2 : (1 / 2 : ℝ) ≤ Real.log 2` using `by have := Real.log_two_gt_d9; linarith`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `: Real.log s.x / Real.log 2 ≤ 2 * Real.log s.x`. Rewrite using `[div_le_iff₀ (by linarith)]`. Use the polynomial consequences of the given equalities and inequalities. Establish `h4 : 0 ≤ 2 + 8 * s.eps + 3` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `hmax : max (6 * Real.exp 1 * (Gp s : ℝ) * s.delta1) ((hG s + 3) * Real.logb 2 s.x) ≤ (18 * cGE s.eps + 2 * (2 + 8 * s.eps + 3)) * Real.log s.x`. Establish `a1 : 0 ≤ 18 * cGE s.eps * Real.log s.x` using `by positivity`. Establish `a2 : 0 ≤ 2 * (2 + 8 * s.eps + 3) * Real.log s.x` using `by positivity`. Apply the tactic sequence `apply max_le <;> nlinarith`. Establish `hpos : 0 ≤ max (6 * Real.exp 1 * (Gp s : ℝ) * s.delta1) ((hG s + 3) * Real.logb 2 s.x)` using `le_max_of_le_left (by positivity)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `hceil` using `Nat.ceil_lt_add_one hpos`. Establish `hN : (N1 s : ℝ) = (⌈max (6 * Real.exp 1 * (Gp s : ℝ) * s.delta1) ((hG s + 3) * Real.logb 2 s.x)⌉₊ : ℝ) + 1`. Unfold `N1 orbitWindowCount Gp`. Use `push_cast`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 
-Rewrite using `[hN]`. Unfold `cNE`. Use the polynomial consequences of the given equalities and inequalities.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem first_count_le_log (s : Scale) (hx : Real.exp 1 ≤ s.x) : (N1 s : ℝ) ≤ cNE s.eps * Real.log s.x := by
   have he := s.eps_pos
@@ -133,13 +133,13 @@ theorem first_count_le_log (s : Scale) (hx : Real.exp 1 ≤ s.x) : (N1 s : ℝ) 
   nlinarith
 
 /- English proof (translation)
-Establish `hY0 : 0 ≤ Y` using `by linarith`. Establish `hY1 : 1 ≤ Y` using `by linarith`. Establish `hD' : DIf ≤ Y * Y * Y ^ 2 * (Y ^ 5 + Y ^ 3) * Y + 1` using `le_trans hD (by gcongr)`. Establish `h1 : Pr1 * G * (η + c + Nm) + kappaThresholdTwo * (Q * (8 * (DIf + 1) + kappaThresholdTwo * N * k * lb + 4 * N * c + 2 * n' * c) + k * Q + k * lb + c) + 2 * G * c + 40 * C31 * lx * (DI * v ^ 2 * (N1 ^ 5 + k ^ 3) * lb) + 3 ≤ Y * Y * (Y + Y + Y) + Y * (Y * (8 * ((Y * Y * Y ^ 2 * (Y …` using `by gcongr`. Establish `h2 : Y * Y * (Y + Y + Y) + Y * (Y * (8 * ((Y * Y * Y ^ 2 * (Y ^ 5 + Y ^ 3) * Y + 1) + 1) + Y * Y * Y * Y + 4 * Y * Y + 2 * Y * Y) + Y * Y + Y * Y + Y) + 2 * Y * Y + 40 * Y * Y * (Y * Y ^ 2 * (Y ^ 5 + Y ^ 3) * Y) + 3 = 8 * Y ^ 12 + 40 * Y ^ 11 + 8 * Y ^ 10 + 40 * Y ^ 9 + Y ^ 6 + 6 …` using `by ring`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `p : ∀ i : ℕ, i ≤ 12 → Y ^ i ≤ Y ^ 12` using `fun i hi => pow_le_pow_right₀ hY1 hi`. Establish `p11` using `p 11 (by norm_num)`. Establish `p10` using `p 10 (by norm_num)`. Establish `p9` using `p 9 (by norm_num)`. Establish `p6` using `p 6 (by norm_num)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `p4` using `p 4 (by norm_num)`. Establish `p3` using `p 3 (by norm_num)`. Establish `p2` using `p 2 (by norm_num)`. Establish `p0 : 1 ≤ Y ^ 12` using `one_le_pow₀ hY1`. Establish `p13 : 130 * Y ^ 12 ≤ Y ^ 13`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Combine the linear equalities and inequalities to obtain the conclusion.
+Chain the equalities or inequalities of the calculation. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem hboB_arith (Y Pr1 G η c Nm kappaThresholdTwo Q DIf N k lb n' C31 lx DI v N1 Np : ℝ) (hY : 130 ≤ Y)
     (a1 : 0 ≤ Pr1) (b1 : Pr1 ≤ Y) (a2 : 0 ≤ G) (b2 : G ≤ Y) (a3 : 0 ≤ η) (b3 : η ≤ Y) (a4 : 0 ≤ c) (b4 : c ≤ Y)
@@ -175,9 +175,9 @@ theorem hboB_arith (Y Pr1 G η c Nm kappaThresholdTwo Q DIf N k lb n' C31 lx DI 
   linarith
 
 /- English proof (translation)
-Establish `hY0 : 0 ≤ Y` using `by linarith`. Establish `hY1 : 1 ≤ Y` using `by linarith`. Establish `h1 : DII * (N1 ^ 3 + r ^ 5 + k ^ 2) * lb ≤ Y * (Y ^ 3 + Y ^ 5 + Y ^ 2) * Y` using `by gcongr`. Establish `h2 : Y * (Y ^ 3 + Y ^ 5 + Y ^ 2) * Y = Y ^ 5 + Y ^ 7 + Y ^ 4` using `by ring`. Establish `p5 : Y ^ 5 ≤ Y ^ 7` using `pow_le_pow_right₀ hY1 (by norm_num)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `p4 : Y ^ 4 ≤ Y ^ 7` using `pow_le_pow_right₀ hY1 (by norm_num)`. Establish `p8 : 130 * Y ^ 7 ≤ Y ^ 8`. Combine the equalities or inequalities in the displayed calculation. Establish `: 0 ≤ Y ^ 7` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem hDII_arith (Y DII N1 r k lb : ℝ) (hY : 130 ≤ Y) (a1 : 0 ≤ DII) (b1 : DII ≤ Y) (a2 : 0 ≤ N1) (b2 : N1 ≤ Y)
     (a3 : 0 ≤ r) (b3 : r ≤ Y) (a4 : 0 ≤ k) (b4 : k ≤ Y) (a5 : 0 ≤ lb) (b5 : lb ≤ Y) :
@@ -208,73 +208,69 @@ structure Facts (D : D7) (L : SizeData₂ D) (K : Consts) (C31 bo : ℝ) : Prop 
 
 set_option maxHeartbeats 8000000 in
 /- English proof (translation)
-Distinguish the cases in `he : 0 < eps ∧ eps < 1 / 52`. Use `swap`. Use `Filter.Eventually.of_forall fun x D L _ h2 => ?_` and prove the remaining obligations. Conclude with `absurd ⟨h2 ▸ L.sc.eps_pos, h2 ▸ L.sc.eps_lt⟩ he`. Take `⟨he0, he1⟩` from `he`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hτ : 0 < 23 * eps / 48` using `by positivity`. Establish `F1` using `ev_log 14 (23 * eps / 48) hτ`. Establish `F2` using `ev_const 130 (23 * eps / 48) hτ`. Establish `G1` using `ev_const K.Pr1 (23 * eps / 48) hτ`. Establish `G2` using `ev_const K.kappaThresholdTwo (23 * eps / 48) hτ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `G3` using `ev_const K.DI (23 * eps / 48) hτ`. Establish `G4` using `ev_const K.DII (23 * eps / 48) hτ`. Establish `G5` using `ev_const C31 (23 * eps / 48) hτ`. Establish `G6` using `ev_const (rE eps : ℝ) (23 * eps / 48) hτ`. Establish `F4` using `ev_log 1 eps he0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `F5` using `ev_pow 3 eps 1 (by linarith)`. Establish `F6` using `ev_pow 14 (23 * eps / 48) eps (by linarith)`. Establish `F7` using `ev_pow 4 (eps / 3) eps (by linarith)`. Establish `F8` using `ev_pow 13 (23 * eps / 48) (eps / 2) (by linarith)`. Establish `F9` using `ev_log C31 1 one_pos`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality.
 
-Establish `WorkedExample` using `ev_log (cNE eps) 1 one_pos`. Use `filter_upwards [F1, F2, G1, G2, G3, G4, G5, G6, F4, F5, F6, F7, F8, F9, WorkedExample, eventually_ge_atTop 40, eventually_ge_atTop (Real.exp 1)] with x f1 f2 g1 g2 g3 g4 g5 g6 f4 f5 f6 f7 f8 f9 f10 hx40 hxe D L hx heps hS P h5`. Substitute `hx` using the available equality. Substitute `heps` using the available equality. Take `⟨_, _, _, _, hDII0, _, _, hDI0, _, htI20, _, _, _, hPr10, _⟩` from `hK`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx0` using `sc_x_pos L.sc`. Establish `hx1` using `L.sc.one_lt_alt`. Establish `hlx0 : 0 ≤ Real.log L.sc.x` using `Real.log_nonneg hx1.le`. Establish `hk1` using `one_le_k D`. Establish `hk6` using `k_le_x_pow_six L hS`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hk0 : (0 : ℝ) < (D.R.k : ℝ)` using `by linarith`. Take `⟨_, hNmSc, hSc100⟩` from `Nm_le_Sc P`. Take `⟨hSN, -, -, -, -, -, -, -, -, -, -, -, -, hSEta, -, -, hSDel, -⟩` from `hS`. Unfold `Formalism.MainNotions.SizeN Formalism.MainNotions.szTh at hSN`. Unfold `Formalism.MainNotions.SizeEta at hSEta`.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Unfold `Formalism.MainNotions.SizeDel at hSDel`. Rewrite `f5`, `f9`, `f10` using `[Real.rpow_one]`. Establish `mono : ∀ u v : ℝ, u ≤ v → L.sc.x ^ u ≤ L.sc.x ^ v` using `fun u v h => Real.rpow_le_rpow_of_exponent_le hx1.le h`. Establish `nat3 : L.sc.x ^ (3 : ℝ) = L.sc.x ^ 3` using `by rw [show (3 : ℝ) = ((3 : ℕ) : ℝ) by norm_num, Real.rpow_natCast]`. Establish `nat6 : L.sc.x ^ (6 : ℝ) = L.sc.x ^ 6` using `by rw [show (6 : ℝ) = ((6 : ℕ) : ℝ) by norm_num, Real.rpow_natCast]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `natA2 : L.sc.x ^ (Scale.A / 2) = L.sc.x ^ 13`. Unfold `Scale.A; rw [show (26 / 2 : ℝ) = ((13 : ℕ) : ℝ) by norm_num, Real.rpow_natCast]`. Establish `hn3 : (D.R.n : ℝ) ≤ L.sc.x ^ 3` using `by rw [← nat3]; exact le_trans hSN.2 (mono _ _ (by linarith))`. Rewrite `hk6` using `[nat6]`. Establish `hxe1 : 1 ≤ L.sc.x ^ L.sc.eps` using `Real.one_le_rpow hx1.le he0.le`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb : L.sc.b = Real.exp (L.sc.x ^ L.sc.eps)` using `rfl`. Establish `ha : L.sc.a = L.sc.x * L.sc.b` using `rfl`. Establish `hY130 : 130 ≤ (Real.exp (L.sc.x ^ (23 * L.sc.eps / 48)))` using `f2`. Establish `hY0 : 0 < (Real.exp (L.sc.x ^ (23 * L.sc.eps / 48)))` using `Real.exp_pos _`. Establish `pY : ∀ q : ℝ, ∀ M : ℕ, q ≤ L.sc.x ^ M → M ≤ 14 → q ≤ (Real.exp (L.sc.x ^ (23 * L.sc.eps / 48)))`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `q M hq hM`. Use `le_trans hq ?_` and prove the remaining obligations. Rewrite using `[← Real.rpow_natCast]`. Apply `xpow_le_exp _ _ _ hx0` to reduce the goal to its premises. Establish `: (M : ℝ) ≤ 14` using `by exact_mod_cast hM`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Conclude with `le_trans (mul_le_mul_of_nonneg_right this hlx0) f1`. Establish `e_eta : L.etaSz ≤ (Real.exp (L.sc.x ^ (23 * L.sc.eps / 48)))`. Combine the equalities or inequalities in the displayed calculation. Establish `hT4 : L.sc.x ^ (L.sc.eps / 4) ≤ (L.sc.x ^ (23 * L.sc.eps / 48))` using `mono _ _ (by linarith)`. Establish `e_Del : (D.s.Del : ℝ) ≤ Real.exp ((L.sc.x ^ (23 * L.sc.eps / 48)) / 2)`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hDel0 : (0 : ℝ) ≤ (D.s.Del : ℝ)`. Establish `h` using `L.Sc_eq`. Assume the negation of the conclusion as `hneg`. Establish `: (D.R.k : ℝ) * (4 * (D.s.Del : ℝ)) ≤ 0` using `mul_nonpos_of_nonneg_of_nonpos hk0.le (by linarith)`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `h7 : L.sc.x * L.sc.x ^ 6 ≤ Real.exp ((L.sc.x ^ (23 * L.sc.eps / 48)) / 2)`. Establish `: L.sc.x * L.sc.x ^ 6 = L.sc.x ^ ((7 : ℕ) : ℝ)` using `by rw [Real.rpow_natCast]; ring`. Rewrite using `[this]`. Apply `xpow_le_exp _ _ _ hx0` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hcG0 : 0 ≤ cG L` using `by unfold cG; linarith`. Establish `e_c : cG L ≤ (Real.exp (L.sc.x ^ (23 * L.sc.eps / 48)))`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `e_Nm : Nm D ≤ (Real.exp (L.sc.x ^ (23 * L.sc.eps / 48)))`. Establish `: Nm D ≤ cG L` using `by unfold Nm cG; linarith`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hNm0 : 0 ≤ Nm D` using `by unfold Nm; exact Nat.cast_nonneg _`. Establish `e_n : (D.R.n : ℝ) ≤ (Real.exp (L.sc.x ^ (23 * L.sc.eps / 48)))` using `pY _ 3 hn3 (by norm_num)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e_k : (D.R.k : ℝ) ≤ (Real.exp (L.sc.x ^ (23 * L.sc.eps / 48)))` using `pY _ 6 hk6 (by norm_num)`. Establish `e_v : L.sc.x ^ (Scale.A / 2) ≤ (Real.exp (L.sc.x ^ (23 * L.sc.eps / 48)))` using `pY _ 13 (le_of_eq natA2) (by norm_num)`. Establish `hxY : L.sc.x ≤ (Real.exp (L.sc.x ^ (23 * L.sc.eps / 48)))` using `pY _ 1 (by rw [pow_one]) (by norm_num)`. Establish `e_lx : Real.log L.sc.x ≤ (Real.exp (L.sc.x ^ (23 * L.sc.eps / 48)))` using `by linarith`. Establish `hla : Real.log L.sc.a = Real.log L.sc.x + L.sc.x ^ L.sc.eps`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ha, hb, Real.log_mul hx0.ne' (Real.exp_pos _).ne', Real.log_exp]`. Establish `hla0 : 0 ≤ Real.log L.sc.a` using `by rw [hla]; positivity`. Establish `hlaX : 2 * Real.log L.sc.a ≤ L.sc.x ^ 2`. Rewrite using `[hla]`. Establish `: 2 * L.sc.x ≤ L.sc.x ^ 2` using `by rw [pow_two]; exact mul_le_mul_of_nonneg_right (by linarith) hx0.le`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `e_lb : ∀ p : ℕ, p.Prime → 0 ≤ Real.logb p L.sc.a ∧ Real.logb p L.sc.a ≤ (Real.exp (L.sc.x ^ (23 * L.sc.eps / 48)))`. Introduce `p hp`. Establish `hp2 : (2 : ℝ) ≤ p` using `by exact_mod_cast hp.two_le`. Establish `hl2 : (1 / 2 : ℝ) ≤ Real.log 2` using `by have := Real.log_two_gt_d9; linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hlp : (1 / 2 : ℝ) ≤ Real.log p` using `le_trans hl2 (Real.log_le_log (by norm_num) hp2)`. Unfold `Real.logb`. Use `⟨div_nonneg hla0 (by linarith), ?_⟩` and prove the remaining obligations. Use `pY _ 2 (le_trans ?_ hlaX) (by norm_num)` and prove the remaining obligations. Rewrite using `[div_le_iff₀ (by linarith)]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hd : 1 / L.sc.delta1 = L.sc.x ^ (L.sc.eps / 8)` using `inv_delta1 L.sc`. Establish `h8 : L.sc.x ^ (L.sc.eps / 8) ≤ L.sc.x`. Use `mono (L.sc.eps / 8) 1 (by linarith)` as an intermediate fact. Rewrite `this` using `[Real.rpow_one]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h80 : 0 ≤ L.sc.x ^ (L.sc.eps / 8)` using `Real.rpow_nonneg hx0.le _`. Establish `hG0 : 0 ≤ C31 * Real.log L.sc.x / L.sc.delta1` using `div_nonneg (mul_nonneg hC31.le hlx0) (sc_delta1_pos L.sc).le`. Establish `e_G : C31 * Real.log L.sc.x / L.sc.delta1 ≤ (Real.exp (L.sc.x ^ (23 * L.sc.eps / 48)))`. Use `pY _ 2 ?_ (by norm_num)` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `e_N1 : (N1 L.sc : ℝ) ≤ (Real.exp (L.sc.x ^ (23 * L.sc.eps / 48)))` using `le_trans (le_trans (first_count_le_log L.sc hxe) f10) hxY`. Establish `hd1 : L.sc.delta1 ≤ 1`. Unfold `Scale.delta1`. Conclude with `Real.rpow_le_one_of_one_le_of_nonpos hx1.le (by linarith)`. Establish `e_Q : ∀ p : ℕ, p.Prime → (p : ℝ) < L.sc.X' → Qp L.sc p ≤ (Real.exp (L.sc.x ^ (23 * L.sc.eps / 48)))`.
+Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation.
 
-Introduce `p hp hpX`. Combine the equalities or inequalities in the displayed calculation. Establish `e_Q0 : ∀ p : ℕ, p.Prime → (p : ℝ) < L.sc.p0 D.R.k → Qp L.sc p ≤ (Real.exp (L.sc.x ^ (23 * L.sc.eps / 48)))`. Introduce `p hp hpX`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hQ0 : ∀ p : ℕ, 0 ≤ Qp L.sc p` using `fun p => by unfold Qp; positivity`. Establish `e8 : (Real.exp (L.sc.x ^ (23 * L.sc.eps / 48))) ^ 8 ≤ L.sc.b'`. Establish `h2 : L.sc.b' = L.sc.x * Real.exp (L.sc.x ^ L.sc.eps - L.sc.x ^ (L.sc.eps / 3))`. Unfold `Scale.b' Scale.a Scale.b Scale.X' Scale.L`. Rewrite using `[Real.exp_sub]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h2, ← Real.exp_nat_mul]`. Combine the equalities or inequalities in the displayed calculation. Apply `Real.exp_le_exp.2` to reduce the goal to its premises. Use `push_cast`.
+Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Use `_ = 1 * Real.exp (L.sc.x ^ L.sc.eps - L.sc.x ^ (L.sc.eps / 3)) := by ring`. Use `_ ≤ _ := mul_le_mul_of_nonneg_right hx1.le (Real.exp_pos _).le`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `p hp hp0`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : (D.R.k : ℝ) * Qp L.sc p ≤ (Real.exp (L.sc.x ^ (23 * L.sc.eps / 48))) * (Real.exp (L.sc.x ^ (23 * L.sc.eps / 48)))` using `mul_le_mul e_k (e_Q0 p hp hp0) (hQ0 p) hY0.le`. Establish `h2 : (Real.exp (L.sc.x ^ (23 * L.sc.eps / 48))) * (Real.exp (L.sc.x ^ (23 * L.sc.eps / 48))) ≤ (Real.exp (L.sc.x ^ (23 * L.sc.eps / 48))) ^ 8`. Rewrite using `[← pow_two]; exact pow_le_pow_right₀ (by linarith) (by norm_num)`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `p hp`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[rG_rE]`. Conclude with `le_trans (hDII_arith (Real.exp (L.sc.x ^ (23 * L.sc.eps / 48))) K.DII _ _ _ _ hY130 hDII0 g4 (Nat.cast_nonneg _) e_N1 (Nat.cast_nonneg _) g6 hk0.le e_k (e_lb p hp).1 (e_lb p hp).2) e8`. Introduce `p hp _ hpX n' hn'`. Establish `hbo : L.sc.b ^ (L.sc.x ^ (-(L.sc.eps / 2))) = Real.exp (L.sc.x ^ (L.sc.eps / 2))`. Rewrite using `[hb, ← Real.exp_mul, ← Real.rpow_add hx0]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr 2`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hbo]`. Establish `hn'R : (n' : ℝ) ≤ (D.R.n : ℝ)` using `by exact_mod_cast hn'`. Establish `hNp0 : 0 ≤ NplusF L.sc n'`.
+Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `NplusF; exact mul_nonneg (by positivity) (sc_delta1_pos L.sc).le`. Establish `hNp : NplusF L.sc n' ≤ (Real.exp (L.sc.x ^ (23 * L.sc.eps / 48)))`. Use `pY _ 4 ?_ (by norm_num)` and prove the remaining obligations. Unfold `NplusF`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hval0 : 0 ≤ K.DI * NplusF L.sc n' * (L.sc.x ^ (Scale.A / 2)) ^ 2 * ((N1 L.sc : ℝ) ^ 5 + (D.R.k : ℝ) ^ 3) * Real.logb p L.sc.a` using `mul_nonneg (mul_nonneg (mul_nonneg (mul_nonneg hDI0 hNp0) (by positivity)) (by positivity)) (e_lb p hp).1`. Establish `hDIf : (DIf K L p n' : ℝ) ≤ K.DI * NplusF L.sc n' * (L.sc.x ^ (Scale.A / 2)) ^ 2 * ((N1 L.sc : ℝ) ^ 5 + (D.R.k : ℝ) ^ 3) * Real.logb p L.sc.a + 1`. Unfold `DIf`. Conclude with `(Nat.ceil_lt_add_one hval0).le`. Establish `h13 : (Real.exp (L.sc.x ^ (23 * L.sc.eps / 48))) ^ 13 ≤ Real.exp (L.sc.x ^ (L.sc.eps / 2))`.
-
-Rewrite using `[← Real.exp_nat_mul]`. Apply `Real.exp_le_exp.2` to reduce the goal to its premises. Use `push_cast`. Conclude with `f8`. Use `le_trans ?_ h13` and prove the remaining obligations.
-
-Unfold `c6f`. Conclude with `hboB_arith (Real.exp (L.sc.x ^ (23 * L.sc.eps / 48))) K.Pr1 _ L.etaSz (cG L) (Nm D) K.kappaThresholdTwo (Qp L.sc p) _ (NplusF L.sc n') (D.R.k : ℝ) _ (n' : ℝ) C31 _ K.DI _ (N1 L.sc : ℝ) (NplusF L.sc n') hY130 hPr10 g1 hG0 e_G L.etaSz_pos.le e_eta hcG0 e_c hNm0 e_Nm htI20 g2 (hQ0 p …`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem facts_ev (eps : ℝ) (K : Consts) (hK : K.Nonneg) (C31 : ℝ) (hC31 : 0 < C31) :
     ∀ᶠ x : ℝ in atTop, ∀ (D : D7) (L : SizeData₂ D), L.sc.x = x → L.sc.eps = eps → Formalism.MainNotions.SizesAt L →

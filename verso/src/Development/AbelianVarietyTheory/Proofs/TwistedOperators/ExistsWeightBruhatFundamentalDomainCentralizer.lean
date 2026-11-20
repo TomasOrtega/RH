@@ -6,27 +6,23 @@ open scoped ENNReal
 namespace GlobalTheory.WeightUnfold
 
 /- English proof (translation)
-Establish `hTcl : IsClosed ((cent γ : Subgroup H) : Set H)` using `Set.isClosed_centralizer _`. Establish `hc : ∀ a b : cent γ, a * b = b * a` using `fun a b => hcomm.is_comm.comm a b`. Use `haveI : LocallyCompactSpace (cent γ) := hTcl.isClosedEmbedding_subtypeVal.locallyCompactSpace`. Use `haveI : dt.IsMulRightInvariant := ⟨fun g => by`. Establish `: (fun x : cent γ => x * g) = (fun x => g * x)` using `funext fun x => hc x g`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[this]`. Conclude with `map_mul_left_eq_self dt g⟩`. Take `⟨β, hβm, hβ⟩` from `exists_bruhat (T := cent γ) hTcl dt`. Establish `hprod : Measurable fun p : H × cent γ => β (((p.2 : cent γ) : H) * p.1)` using `hβm.comp ((measurable_subtype_coe.comp measurable_snd).mul measurable_fst)`. Establish `hsec : ∀ x : H, Measurable fun t : cent γ => β ((t : H) * x)` using `fun x => hβm.comp (measurable_subtype_coe.mul_const x)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun y => ∫⁻ t in 𝓣, β ((t : H) * y) ∂dt, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `hprod.lintegral_prod_right'`. Introduce `y haveI : Countable Γ := by haveI : TopologicalSpace.SeparableSpace Γ := inferInstance`. Conclude with `TopologicalSpace.separableSpace_iff_countable.mp inferInstance`. Use `haveI : Countable (Γ.subgroupOf (cent γ)) := by`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `Function.Injective.countable (f := fun h : Γ.subgroupOf (cent γ) => (⟨((h : cent γ) : H), h.2⟩ : Γ)) ?_` and prove the remaining obligations. Introduce `a b hab`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `using congrArg Subtype.val hab`.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← hβ y, hfd.lintegral_eq_tsum'' (fun t : cent γ => β ((t : H) * y))]`. Use `tsum_congr fun h => lintegral_congr fun t => ?_` and prove the remaining obligations. Use `congr 1`. Establish `e : ((h • t : cent γ) : H) = ((h : cent γ) : H) * (t : H)` using `rfl`. Rewrite using `[e, ← mul_assoc, ← Subgroup.coe_mul, ← Subgroup.coe_mul, hc]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Introduce `ψ hψm hψ haveI : dt.IsMulLeftInvariant := inferInstance`. Establish `hq` using `isQuotMeasure_quotMeas (T := cent γ) dt μ hTcl`. Establish `hinner : ∀ t : cent γ, ∫⁻ y, β ((t : H) * y) * ψ y ∂μ = ∫⁻ y, β y * ψ y ∂μ`. Introduce `t`. Establish `: (fun y => β ((t : H) * y) * ψ y) = fun y => (fun z => β z * ψ z) ((t : H) * y)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `y`. Use `show _ = β _ * ψ _`. Rewrite using `[hψ (t : H) t.2 y]`. Rewrite using `[this]`. Conclude with `lintegral_mul_left_eq_self (fun z => β z * ψ z) (t : H)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hC : ∫⁻ y, β y * ψ y ∂μ = ∫⁻ q, descend (cent γ) ψ q ∂(quotMeas (cent γ) dt μ)`. Rewrite using `[hq (fun y => β y * ψ y) (hβm.mul hψm)]`. Use `lintegral_congr fun q => ?_` and prove the remaining obligations. Establish `: (fun t : cent γ => β ((t : H) * Quotient.out q) * ψ ((t : H) * Quotient.out q)) = fun t : cent γ => β ((t : H) * Quotient.out q) * ψ (Quotient.out q)`. Use function extensionality and compare the values at `t`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hψ (t : H) t.2]`. Rewrite using `[this, lintegral_mul_const _ (hsec _), hβ, one_mul]`. Both sides reduce to the same expression. Combine the equalities or inequalities in the displayed calculation. Use `lintegral_congr fun y => ?_` and prove the remaining obligations.
-
-Rewrite using `[lintegral_mul_const _ (hsec y)]`. Use `_ = ∫⁻ t in 𝓣, ∫⁻ y, β ((t : H) * y) * ψ y ∂μ ∂dt := by`. Use `lintegral_lintegral_swap ?_` and prove the remaining obligations. Conclude with `(hprod.mul (hψm.comp measurable_fst)).aemeasurable`. Use `_ = ∫⁻ t in 𝓣, ∫⁻ y, β y * ψ y ∂μ ∂dt := by`.
-
-Use `lintegral_congr fun t => hinner t` and prove the remaining obligations. Use `_ = dt 𝓣 * ∫⁻ q, descend (cent γ) ψ q ∂(quotMeas (cent γ) dt μ) := by`. Rewrite using `[lintegral_const, Measure.restrict_apply_univ, hC, mul_comm]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_weight (H : Type) [Group H] [TopologicalSpace H] [IsTopologicalGroup H] [SecondCountableTopology H] [LocallyCompactSpace H] [T2Space H] [MeasurableSpace H] [BorelSpace H] (Γ : Subgroup H) [DiscreteTopology Γ] (γ : H) (hcomm : IsMulCommutative (cent γ)) (μ : Measure H) [μ.IsHaarMeasure] (dt : Measure (cent γ)) [dt.IsHaarMeasure] (𝓣 : Set (cent γ)) (hfd : IsFundamentalDomain (Γ.subgroupOf (cent γ)) 𝓣 dt) :
     ∃ α : H → ℝ≥0∞, Measurable α ∧ (∀ y, ∑' h : Γ.subgroupOf (cent γ), α (((h : cent γ) : H) * y) = 1) ∧ ∀ ψ : H → ℝ≥0∞, Measurable ψ → LeftInv (cent γ) ψ → ∫⁻ y, α y * ψ y ∂μ = dt 𝓣 * ∫⁻ q, descend (cent γ) ψ q ∂(quotMeas (cent γ) dt μ) := by

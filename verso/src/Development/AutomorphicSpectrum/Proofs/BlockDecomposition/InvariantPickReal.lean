@@ -17,13 +17,11 @@ def toKP : FreeAlgebra ℂ (Bool × Fin n × Fin n) →ₐ[ℂ] FreeAlgebra ℂ 
     else (1 / 2 : ℂ) • (FreeAlgebra.ι ℂ (false, p.2) - FreeAlgebra.ι ℂ (true, p.2))
 
 /- English proof (translation)
-Establish `eK : ∀ a b, evKP E1 E2 (FreeAlgebra.ι ℂ (false, a, b)) = E1 a b + E2 a b` using `fun a b => by`. Simplify using `[evKP, kA]`. Establish `eP : ∀ a b, evKP E1 E2 (FreeAlgebra.ι ℂ (true, a, b)) = E1 a b - E2 a b` using `fun a b => by`. Simplify using `[evKP, pA]`. Establish `h : (evKP E1 E2).comp toKP = ev2 E1 E2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Apply `FreeAlgebra.hom_ext` to reduce the goal to its premises. Use function extensionality and compare the values at `⟨s, a, b⟩`. Use `show evKP E1 E2 (toKP (FreeAlgebra.ι ℂ (s, a, b))) = ev2 E1 E2 (FreeAlgebra.ι ℂ (s, a, b))`. Consider the cases of `s`. Establish `t : toKP (FreeAlgebra.ι ℂ (false, a, b)) = (1 / 2 : ℂ) • (FreeAlgebra.ι ℂ (false, a, b) - FreeAlgebra.ι ℂ (true, a, b))` using `by simp [toKP]`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Split into cases according to the possible forms of the given data. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : ev2 E1 E2 (FreeAlgebra.ι ℂ (false, a, b)) = E2 a b` using `by simp [ev2]`. Rewrite using `[t, e, map_smul, map_sub, eK, eP]`. Use `module`. Establish `t : toKP (FreeAlgebra.ι ℂ (true, a, b)) = (1 / 2 : ℂ) • (FreeAlgebra.ι ℂ (false, a, b) + FreeAlgebra.ι ℂ (true, a, b))` using `by simp [toKP]`. Establish `e : ev2 E1 E2 (FreeAlgebra.ι ℂ (true, a, b)) = E1 a b` using `by simp [ev2]`.
-
-Rewrite using `[t, e, map_smul, map_add, eK, eP]`. Use `module`. Conclude with `DFunLike.congr_fun h a`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evalCartan_toCartan {V : Type} [AddCommGroup V] [Module ℂ V] (E1 E2 : Fin n → Fin n → Module.End ℂ V)
     (a : FreeAlgebra ℂ (Bool × Fin n × Fin n)) : evKP E1 E2 (toKP a) = ev2 E1 E2 a := by
@@ -49,7 +47,7 @@ theorem evalCartan_toCartan {V : Type} [AddCommGroup V] [Module ℂ V] (E1 E2 : 
   exact DFunLike.congr_fun h a
 
 /- English proof (translation)
-Introduce `V _ _ E1 E2 hE c d`. Rewrite using `[evalCartan_toCartan]`. Conclude with `h V E1 E2 ⟨hE.1, hE.2.1, hE.2.2⟩ c d`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem invKP_toKP {a : FreeAlgebra ℂ (Bool × Fin n × Fin n)} (h : Inv2 a) : InvKP n (toKP a) := by
   intro V _ _ E1 E2 hE c d
@@ -57,7 +55,7 @@ theorem invKP_toKP {a : FreeAlgebra ℂ (Bool × Fin n × Fin n)} (h : Inv2 a) :
   exact h V E1 E2 ⟨hE.1, hE.2.1, hE.2.2⟩ c d
 
 /- English proof (translation)
-Introduce `n lam lev V _ _ E1 E2 hA μ v w hv hw hv0 hx`. Take `⟨a, ha, hav⟩` from `GlobalTheory.CompanionTheory.RealMult.Lift.liftInv n V E1 E2 ⟨hA.gl1, hA.gl2, hA.comm⟩ hA.unitK hA.locFin μ v w hv0 hv hw hx`. Conclude with `⟨toKP a, invKP_toKP ha, by rw [evalCartan_toCartan, hav]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem invPick : InvPick := by
   intro n lam lev V _ _ E1 E2 hA μ v w hv hw hv0 hx

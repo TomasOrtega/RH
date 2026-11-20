@@ -10,7 +10,7 @@ open GlobalTheory.Twist (resM)
 open scoped CategoryTheory.Obj RatFunc
 
 /- English proof (translation)
-Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem GlobalTheory.Nef.RatRigidField.spMap_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B)
     (g : B →+* C) : spMap (g.comp f) = spMap g ≫ spMap f := by
@@ -19,17 +19,17 @@ theorem GlobalTheory.Nef.RatRigidField.spMap_comp {A B C : Type} [CommRing A] [C
 namespace GlobalTheory.Nef
 
 /- English proof (translation)
-Take `⟨β, hβ⟩` from `h`. Establish `hinjP : Function.Injective ((algebraMap (PowerSeries Ω) (LaurentSeries Ω)).comp (PowerSeries.map φ))` using `(IsFractionRing.injective (PowerSeries Ω) (LaurentSeries Ω)).comp (PowerSeries.map_injective φ φ.injective)`. Establish `hinjR : Function.Injective ((algebraMap (Polynomial Ω) (RatFunc Ω)).comp (Polynomial.mapRingHom φ))` using `(IsFractionRing.injective (Polynomial Ω) (RatFunc Ω)).comp (Polynomial.map_injective φ φ.injective)`. Choose the witnesses or unpack the hypotheses as in `⟨ψ, hψ⟩ : ∃ ψ : LaurentSeries F →+* LaurentSeries Ω, ψ.comp (algebraMap (PowerSeries F) (LaurentSeries F)) = (algebraMap (PowerSeries Ω) (LaurentSeries Ω)).comp (PowerSeries.map φ) := by`. Use `⟨IsFractionRing.lift hinjP, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `ext1 x`. Rewrite using `[RingHom.comp_apply, IsFractionRing.lift_algebraMap]`. Choose the witnesses or unpack the hypotheses as in `⟨ρ, hρ0⟩ : ∃ ρ : RatFunc F →+* RatFunc Ω, ρ.comp (algebraMap (Polynomial F) (RatFunc F)) = (algebraMap (Polynomial Ω) (RatFunc Ω)).comp (Polynomial.mapRingHom φ) := by`. Use `⟨IsFractionRing.lift hinjR, RingHom.ext fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[RingHom.comp_apply, IsFractionRing.lift_algebraMap]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hpol : ((algebraMap (RatFunc Ω) (LaurentSeries Ω)).comp ρ).comp (algebraMap (Polynomial F) (RatFunc F)) = (ψ.comp (algebraMap (RatFunc F) (LaurentSeries F))).comp (algebraMap (Polynomial F) (RatFunc F))`. Use `RingHom.ext fun p => ?_` and prove the remaining obligations. Establish `h1 : ρ (algebraMap (Polynomial F) (RatFunc F) p) = algebraMap (Polynomial Ω) (RatFunc Ω) (p.map φ)`. Use `congrArg (fun f => f p) hρ0` as an intermediate fact. Simplify using `using this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `h2 : ψ (algebraMap (PowerSeries F) (LaurentSeries F) (p : PowerSeries F)) = algebraMap (PowerSeries Ω) (LaurentSeries Ω) (PowerSeries.map φ (p : PowerSeries F))` using `congrArg (fun f => f (p : PowerSeries F)) hψ`. Establish `h3 : PowerSeries.map φ (p : PowerSeries F) = ((p.map φ : Polynomial Ω) : PowerSeries Ω)`. Use extensionality with `n`. Simplify using `[Polynomial.coeff_map]`. Establish `hc : ∀ (K : Type) [Field K] (q : Polynomial K), algebraMap (RatFunc K) (LaurentSeries K) (algebraMap (Polynomial K) (RatFunc K) q) = algebraMap (PowerSeries K) (LaurentSeries K) (q : PowerSeries K)` using `fun K _ q => (RatFunc.coe_coe q).symm`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [RingHom.comp_apply]`. Rewrite using `[h1, hc, hc, h2, h3]`. Establish `hρ : (algebraMap (RatFunc Ω) (LaurentSeries Ω)).comp ρ = ψ.comp (algebraMap (RatFunc F) (LaurentSeries F))` using `IsLocalization.ringHom_ext (M := nonZeroDivisors (Polynomial F)) (S := RatFunc F) hpol`. Use `⟨spMap ρ ≫ β, ?_⟩` and prove the remaining obligations. Establish `e1 : spMap (algebraMap (RatFunc Ω) (LaurentSeries Ω)) ≫ spMap ρ = spMap ψ ≫ spMap (algebraMap (RatFunc F) (LaurentSeries F))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← RatRigidField.spMap_comp, ← RatRigidField.spMap_comp, hρ]`. Establish `e2 : spMap ψ ≫ spMap (algebraMap (PowerSeries F) (LaurentSeries F)) = spMap (algebraMap (PowerSeries Ω) (LaurentSeries Ω)) ≫ spMap (PowerSeries.map φ)`. Rewrite using `[← RatRigidField.spMap_comp, ← RatRigidField.spMap_comp, hψ]`. Rewrite using `[← Category.assoc, e1, Category.assoc, hβ, ← Category.assoc, e2, Category.assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isRatPath_map {F Ω : Type} [Field F] [Field Ω] (φ : F →+* Ω) {Y : Scheme.{0}}
     (ξ : Sp (PowerSeries F) ⟶ Y) (h : IsRatPath ξ) : IsRatPath (spMap (PowerSeries.map φ) ≫ ξ) := by
@@ -88,9 +88,9 @@ end GlobalTheory.Nef
 namespace GlobalTheory.Nef
 
 /- English proof (translation)
-Introduce `ξ hξ hr`. Establish `hp` using `((GlobalTheory.T.formalSquaringPaths_baseChange_and_hom).1 S G F Ω φ 2 1 b ξ hξ).1`. Rewrite `hp` using `[PowerSeries.rescale_one, RingHom.id_comp, map_ofNat]`. Establish `e` using `h _ hp (isRatPath_map φ ξ hr)`. Establish `hC : (PowerSeries.map φ).comp (PowerSeries.C (R` using `F)) = (PowerSeries.C (R := Ω)).comp φ := by ext1 x; simp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht : spMap (PowerSeries.map φ) ≫ triv G b = triv G (spMap φ ≫ b)`. Simplify using `only [triv]`. Rewrite using `[← Category.assoc, ← RatRigidField.spMap_comp, hC, RatRigidField.spMap_comp]`. Simplify using `only [Category.assoc]`. Conclude with `(GlobalTheory.T.spec_injectiveRingMap_cancellation).1 _ _ (PowerSeries.map φ) (PowerSeries.map_injective φ φ.injective) _ _ _ (e.trans ht.symm)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ratRigid_of_field_map (S : Scheme.{0}) (G : Over S) [GrpObj G] (F Ω : Type) [Field F] [Field Ω]
     (φ : F →+* Ω) (b : Sp F ⟶ S) (h : RatRigid G (spMap φ ≫ b)) : RatRigid G b := by

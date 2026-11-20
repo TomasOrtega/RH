@@ -15,11 +15,11 @@ open GlobalTheory.Mum
 namespace GlobalTheory.Mum
 
 /- English proof (translation)
-Take `⟨⟨s₁, φ₁⟩, e₁⟩` from `(Scheme.SpecToEquivOfField K T).symm.surjective a`. Take `⟨⟨s₂, φ₂⟩, e₂⟩` from `(Scheme.SpecToEquivOfField Ω T).symm.surjective b`. Simplify using `only [Scheme.SpecToEquivOfField_symm_apply] at e₁ e₂`. Establish `hs : s₁ = s₂`. Rewrite `e` using `[← e₁, ← e₂]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e` using `[Scheme.Hom.comp_apply, Scheme.Hom.comp_apply, Scheme.fromSpecResidueField_apply, Scheme.fromSpecResidueField_apply]`. Conclude with `e`. Substitute `hs` using the available equality. Take `⟨L, _, j₁, j₂, hj⟩` from `GlobalTheory.exists_common_field_extension (T.residueField s₁) K Ω φ₁.hom φ₂.hom`. Use `⟨L, inferInstance, j₁, j₂, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← e₁, ← e₂, ← Category.assoc, ← Category.assoc, ← Spec.map_comp, ← Spec.map_comp]`. Use `congr 2`. Use `ext1`. Conclude with `hj`.
+Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem exists_common_ext_of_apply_eq {T : Scheme.{0}} (K Ω : Type) [Field K] [Field Ω]
     (a : Sp K ⟶ T) (b : Sp Ω ⟶ T)
@@ -46,11 +46,11 @@ end GlobalTheory.Mum
 namespace GlobalTheory.Mum
 
 /- English proof (translation)
-Rewrite using `[UniversallyInjective.iff_diagonal, surjective_iff]`. Introduce `x`. Set `w` to `(Limits.pullback h h).fromSpecResidueField x`. Establish `e : w ≫ Limits.pullback.fst h h = w ≫ Limits.pullback.snd h h` using `H ((Limits.pullback h h).residueField x) _ _ (by`. Simplify using `only [Category.assoc, Limits.pullback.condition])`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e2 : (w ≫ Limits.pullback.fst h h) ≫ Limits.pullback.diagonal h = w`. Apply `Limits.pullback.hom_ext` to reduce the goal to its premises. Simplify using the standard rewrite rules. Simplify using `[e]`. Set `pt : Spec ((Limits.pullback h h).residueField x)` to `IsLocalRing.closedPoint _`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Use `⟨(w ≫ Limits.pullback.fst h h) pt, ?_⟩` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.comp_apply, e2, Scheme.fromSpecResidueField_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem universallyInjective_of_fieldPoints' {G P : Scheme.{0}} (h : G ⟶ P)
     (H : ∀ (K : Type) [Field K] (z z' : Sp K ⟶ G), z ≫ h = z' ≫ h → z = z') :
@@ -70,21 +70,21 @@ theorem universallyInjective_of_fieldPoints' {G P : Scheme.{0}} (h : G ⟶ P)
   rw [← Scheme.Hom.comp_apply, e2, Scheme.fromSpecResidueField_apply]
 
 /- English proof (translation)
-Introduce `T X Z p q h hh hp hq H`. Apply `GlobalTheory.T.isIso_of_etale_of_surjective_of_universallyInjective' X Z h` to reduce the goal to its premises. Establish `hloc : ∀ z : X, ∃ V : X.Opens, z ∈ V ∧ Etale (V.ι ≫ h)`. Introduce `z`. Take `⟨Ω, _, x, ⟨t, ht⟩, hiso⟩` from `H (p z)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hw, -⟩` from `Scheme.Pullback.exists_preimage_pullback (f := p) (g := x) z t ht.symm`. Establish `hE : Etale ((⊤ : (pullback p x).Opens).ι ≫ pullback.map p x q x h (𝟙 _) (𝟙 _) (by simp [hh]) (by simp))` using `inferInstance`. Take `⟨V, hV, hVe⟩` from `GlobalTheory.T.etale_near_point_of_etale_on_fibre_smooth T X Z p q h hh hp hq Ω x ⊤ w trivial hE`. Conclude with `⟨V, hw ▸ hV, hVe⟩`. Use `choose V hV hVe using hloc`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `: IsZariskiLocalAtSource @Etale` using `HasRingHomProperty.instIsZariskiLocalAtSource`. Use `IsZariskiLocalAtSource.of_iSup_eq_top (P := @Etale) V ?_ hVe` and prove the remaining obligations. Conclude with `top_unique fun z _ => TopologicalSpace.Opens.mem_iSup.2 ⟨z, hV z⟩`. Use `⟨fun y => ?_⟩` and prove the remaining obligations. Take `⟨Ω, _, x, ⟨t, ht⟩, hiso⟩` from `H (q y)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `⟨v, hv, -⟩` from `Scheme.Pullback.exists_preimage_pullback (f := q) (g := x) y t ht.symm`. Set `m` to `pullback.map p x q x h (𝟙 _) (𝟙 _) (by simp [hh]) (by simp)`. Use `⟨pullback.fst p x (inv m v), ?_⟩` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.comp_apply, ← pullback.lift_fst (f := q) (g := x) (pullback.fst p x ≫ h) (pullback.snd p x ≫ 𝟙 _) (by simp [hh, pullback.condition]), Scheme.Hom.comp_apply]`. Express the relevant statement in the definitionally equal form `pullback.fst q x (m (inv m v)) = y`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Scheme.Hom.comp_apply m, ← Scheme.Hom.comp_apply, IsIso.inv_hom_id_assoc]`. Conclude with `hv`. Use `universallyInjective_of_fieldPoints' h fun K _ z z' hz => ?_` and prove the remaining obligations. Set `u : Sp K` to `IsLocalRing.closedPoint K`. Take `⟨Ω, _, x, ⟨t, ht⟩, hiso⟩` from `H ((z ≫ p) u)`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨L, _, j₁, j₂, hj⟩` from `exists_common_ext_of_apply_eq K Ω (z ≫ p) x u t ht.symm`. Establish `hj' : spMap j₁ ≫ z' ≫ p = spMap j₂ ≫ x`. Rewrite using `[← hh, ← Category.assoc z', ← hz, Category.assoc, hh, hj]`. Set `m` to `pullback.map p x q x h (𝟙 _) (𝟙 _) (by simp [hh]) (by simp)`. Set `a` to `pullback.lift (f := p) (g := x) (spMap j₁ ≫ z) (spMap j₂) (by rw [Category.assoc, hj])`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Set `a'` to `pullback.lift (f := p) (g := x) (spMap j₁ ≫ z') (spMap j₂) (by rw [Category.assoc, hj'])`. Establish `haa : a ≫ m = a' ≫ m`. Apply `pullback.hom_ext` to reduce the goal to its premises. Simplify using `only [m, a, a', Category.assoc, pullback.lift_fst, pullback.lift_fst_assoc, hz]`. Simplify using `only [m, a, a', pullback.map, Category.assoc, pullback.lift_snd, pullback.lift_snd_assoc, Category.comp_id]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `haa' : a = a'` using `(cancel_mono m).1 haa`. Use `congrArg (· ≫ pullback.fst p x) haa'` as an intermediate fact. Simplify using `only [a, a', pullback.lift_fst] at this`. Conclude with `GlobalTheory.Mum.spMap_field_cancel K L j₁ X z z' this`.
+A detailed English derivation is pending.
 -/
 theorem isIso_of_isIso_fibres : ∀ (T X Z : Scheme.{0}) (p : X ⟶ T) (q : Z ⟶ T) (h : X ⟶ Z) (hh : h ≫ q = p), Smooth p → Smooth q → (∀ s : T, ∃ (Ω : Type) (_ : Field Ω) (x : Sp Ω ⟶ T), s ∈ Set.range x ∧ IsIso (pullback.map p x q x h (𝟙 _) (𝟙 _) (by simp [hh]) (by simp))) → IsIso h := by
   intro T X Z p q h hh hp hq H

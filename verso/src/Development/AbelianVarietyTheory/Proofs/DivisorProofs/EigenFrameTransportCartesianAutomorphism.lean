@@ -28,7 +28,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {X Y : Scheme.{0}} {t : SAB H Y} {p : X ⟶ Y} {G' : Over X} [GrpObj G'] {ψ : G'.left ⟶ t.G.left}
 
 /- English proof (translation)
-Rewrite using `[← Spec.map_comp]`. Use `congr 1`. Apply the tactic sequence `ext r <;> simp [epsMul]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem spMap_eps_alg {R : Type} [CommRing R] (a : R) :
     spMap (epsMul a) ≫ spMap (algebraMap R (DualNumber R)) = spMap (algebraMap R (DualNumber R)) := by
@@ -37,7 +37,7 @@ theorem spMap_eps_alg {R : Type} [CommRing R] (a : R) :
   ext r <;> simp [epsMul]
 
 /- English proof (translation)
-Rewrite using `[← Spec.map_comp, ← Spec.map_id]`. Conclude with `congrArg Spec.map (CommRingCat.hom_ext (RingHom.ext fun x => by simp [TrivSqZeroExt.algebraMap_eq_inl]))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem spMap_fst_alg {R : Type} [CommRing R] :
     spMap (TrivSqZeroExt.fstHom R R R).toRingHom ≫ spMap (algebraMap R (DualNumber R)) = 𝟙 (Sp R) := by
@@ -45,7 +45,7 @@ theorem spMap_fst_alg {R : Type} [CommRing R] :
   exact congrArg Spec.map (CommRingCat.hom_ext (RingHom.ext fun x => by simp [TrivSqZeroExt.algebraMap_eq_inl]))
 
 /- English proof (translation)
-The claim follows from `hg.hom_ext (hψ.hom_ext (by simpa using h₂) (by simp only [Category.assoc, hg.w, reassoc_of% h₁])) h₁`.
+A detailed English derivation is pending.
 -/
 theorem cancel_g_ψ (hψ : IsPullback ψ G'.hom t.G.hom p) {b : X ⟶ X} {g : G'.left ⟶ G'.left}
     (hg : IsPullback g G'.hom G'.hom b) {T : Scheme.{0}} {u₁ u₂ : T ⟶ G'.left}
@@ -55,7 +55,7 @@ theorem cancel_g_ψ (hψ : IsPullback ψ G'.hom t.G.hom p) {b : X ⟶ X} {g : G'
 variable {R : Type} [CommRing R]
 
 /- English proof (translation)
-Establish `h1` using `grpPull_one hgb (Over.mk q)`. Establish `h2` using `grpPull_one hG (Over.mk (q ≫ b))`. Rewrite using `[← Category.assoc, ← h1]`. Conclude with `h2.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem one_g_ψ (hG : IsGrpPullback G' t.G p ψ) {b : X ⟶ X} {g : G'.left ⟶ G'.left} (hgb : IsGrpPullback G' G' b g)
     (q : Sp R ⟶ X) : (1 : Over.mk q ⟶ G').left ≫ g ≫ ψ = (1 : Over.mk ((q ≫ b) ≫ p) ⟶ t.G).left := by
@@ -65,9 +65,9 @@ theorem one_g_ψ (hG : IsGrpPullback G' t.G p ψ) {b : X ⟶ X} {g : G'.left ⟶
   exact h2.symm
 
 /- English proof (translation)
-Take `⟨w, hw, hw'⟩` from `exists_lift hG.1 q hv.1`. Use `⟨trv_over hG.1 g hgb.1.w q hv.1, ?_⟩` and prove the remaining obligations. Rewrite using `[trv_eq hG.1 g q w hw hw']`. Establish `e : spMap (TrivSqZeroExt.fstHom R R R).toRingHom ≫ w = (1 : Over.mk q ⟶ G').left` using `hG.1.hom_ext (by rw [Category.assoc, hw, hv.2]; exact grpPull_one hG (Over.mk q)) (by rw [Category.assoc, hw', ← Category.assoc, spMap_fst_alg, Category.id_comp]`. Conclude with `(Over.w (1 : Over.mk q ⟶ G')).symm)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Category.assoc, e, one_g_ψ hG hgb q]`.
+A detailed English derivation is pending.
 -/
 theorem isTan_trv (hG : IsGrpPullback G' t.G p ψ) {b : X ⟶ X} {g : G'.left ⟶ G'.left} (hgb : IsGrpPullback G' G' b g)
     (q : Sp R ⟶ X) {v : Sp (DualNumber R) ⟶ t.G.left} (hv : IsTanAtG t (q ≫ p) v) :
@@ -82,7 +82,7 @@ theorem isTan_trv (hG : IsGrpPullback G' t.G p ψ) {b : X ⟶ X} {g : G'.left �
   rw [← Category.assoc, e, one_g_ψ hG hgb q]
 
 /- English proof (translation)
-Take `⟨w, hw, hw'⟩` from `exists_lift hψ q hv`. Establish `hwa : w ≫ (act'.act a).left = spMap (epsMul c) ≫ w` using `hψ.hom_ext (by rw [Category.assoc, hact, ← Category.assoc, hw, he, Category.assoc, hw]) (by rw [Category.assoc, Over.w, hw', Category.assoc, hw', ← Category.assoc, spMap_eps_alg])`. Rewrite using `[trv_eq hψ g q w hw hw']`. Simplify using `only [Category.assoc]`. Rewrite using `[← hact a, ← reassoc_of% (hgc a), reassoc_of% hwa]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem trv_eig (hψ : IsPullback ψ G'.hom t.G.hom p) {act' : OAct (𝓞 E) G'}
     (hact : ∀ a, (act'.act a).left ≫ ψ = ψ ≫ (t.act.act a).left) {g : G'.left ⟶ G'.left}
@@ -99,7 +99,7 @@ theorem trv_eig (hψ : IsPullback ψ G'.hom t.G.hom p) {act' : OAct (𝓞 E) G'}
   rw [← hact a, ← reassoc_of% (hgc a), reassoc_of% hwa]
 
 /- English proof (translation)
-Take `⟨w'', h1, h2⟩` from `exists_lift hψ (q ≫ b) hw'`. Use `⟨hg.lift w'' (spMap (algebraMap R (DualNumber R)) ≫ q) (by rw [h2, Category.assoc]), hg.lift_snd _ _ _, ?_⟩` and prove the remaining obligations. Rewrite using `[← Category.assoc, hg.lift_fst, h1]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_trv_eq (hψ : IsPullback ψ G'.hom t.G.hom p) {b : X ⟶ X} {g : G'.left ⟶ G'.left}
     (hg : IsPullback g G'.hom G'.hom b) (q : Sp R ⟶ X) {w' : Sp (DualNumber R) ⟶ t.G.left}
@@ -111,7 +111,7 @@ theorem exists_trv_eq (hψ : IsPullback ψ G'.hom t.G.hom p) {b : X ⟶ X} {g : 
   rw [← Category.assoc, hg.lift_fst, h1]
 
 /- English proof (translation)
-Take `⟨w₁, hw₁, hw₁'⟩` from `exists_lift hψ q h₁`. Take `⟨w₂, hw₂, hw₂'⟩` from `exists_lift hψ q h₂`. Rewrite `h` using `[trv_eq hψ g q w₁ hw₁ hw₁', trv_eq hψ g q w₂ hw₂ hw₂']`. Rewrite using `[← hw₁, ← hw₂, cancel_g_ψ hψ hg (hw₁'.trans hw₂'.symm) h]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem trv_injective (hψ : IsPullback ψ G'.hom t.G.hom p) {b : X ⟶ X} {g : G'.left ⟶ G'.left}
     (hg : IsPullback g G'.hom G'.hom b) (q : Sp R ⟶ X) {v₁ v₂ : Sp (DualNumber R) ⟶ t.G.left}
@@ -126,7 +126,7 @@ theorem trv_injective (hψ : IsPullback ψ G'.hom t.G.hom p) {b : X ⟶ X} {g : 
 end
 
 /- English proof (translation)
-Take `⟨u, hu, e⟩` from `h₁`. Take `⟨u', hu', e'⟩` from `h₂`. Establish `: u = u'` using `funext fun i => Over.OverMorphism.ext ((hu i).trans (hu' i).symm)`. Rewrite using `[← e, ← e', this]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem isCombAtG_unique {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {Y : Scheme.{0}} {t : SAB H Y} {R : Type} [CommRing R] {x0 : Sp R ⟶ Y} {m : ℕ}
@@ -140,15 +140,15 @@ theorem isCombAtG_unique {E : Type} [Field E] [NumberField E] [IsCMField E] {H :
 open GlobalTheory.LieMet ReciprocityTheory.ChartRestriction.G.PullbackSections in
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c O _ β Y X' p G' _ ψ act' b g hG hact hgb hgc R _ φR q x' hx' e`. Substitute `hx'` using the available equality. Establish `hv : ∀ τ i, e.v τ i ≫ Y.t.G.hom = spMap (algebraMap R (DualNumber R)) ≫ q ≫ p` using `fun τ i => (e.tan τ i).1`. Use `⟨{ v := fun τ i => GlobalTheory.EqvTrans.trv hG.1 g q (e.v τ i) tan := fun τ i => GlobalTheory.EqvTrans.isTan_trv hG hgb q (e.tan τ i) eig := fun τ i a => GlobalTheory.EqvTrans.trv_eig hG.1 hact hgc q (hv τ i) a _ (e.eig τ i a) basis := ?_ }, fun τ i => rfl⟩` and prove the remaining obligations. Introduce `τ w' hw' heig`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨w₀, hw₀, hw₀g⟩` from `GlobalTheory.EqvTrans.exists_trv_eq hG.1 hgb.1 q hw'.1`. Establish `htr : GlobalTheory.EqvTrans.trv hG.1 g q (w₀ ≫ ψ) = w'` using `(GlobalTheory.EqvTrans.trv_eq hG.1 g q w₀ rfl hw₀).trans hw₀g`. Establish `hone : spMap (TrivSqZeroExt.fstHom R R R).toRingHom ≫ w₀ = (1 : Over.mk q ⟶ G').left` using `GlobalTheory.EqvTrans.cancel_g_ψ hG.1 hgb.1 (by rw [Category.assoc, hw₀, ← Category.assoc, GlobalTheory.EqvTrans.spMap_fst_alg, Category.id_comp]`. Conclude with `(Over.w (1 : Over.mk q ⟶ G')).symm)`. Use the proof step `(by rw [Category.assoc, hw₀g, hw'.2, GlobalTheory.EqvTrans.one_g_ψ hG hgb q])`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hwt : IsTanAtG Y.t (q ≫ p) (w₀ ≫ ψ)` using `⟨by rw [Category.assoc, hG.1.w, ← Category.assoc, hw₀, Category.assoc], by rw [← Category.assoc, hone]; exact (grpPull_one hG (Over.mk q)).symm⟩`. Establish `hwe : ∀ a : 𝓞 E, (w₀ ≫ ψ) ≫ (Y.t.act.act a).left = spMap (epsMul (φR (embK c τ a))) ≫ (w₀ ≫ ψ)` using `fun a => by`. Establish `h0 : w₀ ≫ (act'.act a).left = spMap (epsMul (φR (embK c τ a))) ≫ w₀` using `GlobalTheory.EqvTrans.cancel_g_ψ hG.1 hgb.1 (by rw [Category.assoc, Over.w, hw₀, Category.assoc, hw₀, ← Category.assoc, GlobalTheory.EqvTrans.spMap_eps_alg]) (by rw [Category.assoc, reassoc_of% (hgc a), hact a, ← Category.assoc w₀, ← Category.assoc (w₀ ≫ g), Category.assoc w₀, hw …`. Rewrite using `[Category.assoc, ← hact a, ← Category.assoc, h0, Category.assoc]`. Take `⟨a, ha, huniq⟩` from `e.basis τ (w₀ ≫ ψ) hwt hwe`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨a, ?_, fun a' ha' => ?_⟩` and prove the remaining obligations. Establish `h` using `GlobalTheory.T.tangentTransport_equivariant_cartesian_preserves_comb Y.t p G' ψ b.hom g hG hgb q (e.v τ) a (w₀ ≫ ψ) (e.tan τ) hwt ha`. Rewrite `h` using `[htr]`. Then use the resulting hypothesis. Take `⟨u, hut, huc⟩ : ∃ u : Sp (DualNumber R) ⟶ Y.t.G.left, IsTanAtG Y.t (q ≫ p) u ∧ IsCombAtG Y.t (q ≫ p) (e.v τ) a' u` from `⟨(tv (∑ i, a' i • tanOf (e.tan τ i))).left, isTan_tv _, (isComb_iff (fun i => tanOf (e.tan τ i)) a' _).2 rfl⟩`. Establish `h1` using `GlobalTheory.T.tangentTransport_equivariant_cartesian_preserves_comb Y.t p G' ψ b.hom g hG hgb q (e.v τ) a' u (e.tan τ) hut huc`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : GlobalTheory.EqvTrans.trv hG.1 g q u = w'` using `GlobalTheory.EqvTrans.isCombAtG_unique h1 ha'`. Establish `h3 : u = w₀ ≫ ψ` using `GlobalTheory.EqvTrans.trv_injective hG.1 hgb.1 q hut.1 hwt.1 (h2.trans htr.symm)`. Conclude with `huniq a' (h3 ▸ huc)`.
+A detailed English derivation is pending.
 -/
 theorem trv_eigFrame : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F} (Y : Model Xo c β) {X' : Scheme.{0}} (p : X' ⟶ Y.X) (G' : Over X') [GrpObj G'] (ψ : G'.left ⟶ Y.t.G.left) (act' : OAct (𝓞 E) G') (b : X' ≅ X') (g : G'.left ⟶ G'.left) (hG : IsGrpPullback G' Y.t.G p ψ), (∀ a, (act'.act a).left ≫ ψ = ψ ≫ (Y.t.act.act a).left) → IsGrpPullback G' G' b.hom g → (∀ a, (act'.act a).left ≫ g = g ≫ (act'.act a).left) → ∀ {R : Type} [CommRing R] (φR : c.F →+* R) (q : Sp R ⟶ X') (x' : Sp R ⟶ Y.X), x' = (q ≫ b.hom) ≫ p → ∀ e : GlobalTheory.ShFam.EigFrame Y φR (q ≫ p), ∃ e' : GlobalTheory.ShFam.EigFrame Y φR x', ∀ τ i, e'.v τ i = GlobalTheory.EqvTrans.trv hG.1 g q (e.v τ i) := by
   intro E _ _ _ H Dw l Xo c O _ β Y X' p G' _ ψ act' b g hG hact hgb hgc R _ φR q x' hx' e

@@ -43,7 +43,7 @@ lemma rootEquiv_apply (ι : Type) (N j : ℕ) (h : j ≤ N) (x : ι × Fin N) :
     rootEquiv ι N j h x = rootIdx ι N j x := rfl
 
 /- English proof (translation)
-Apply the tactic sequence `unfold rootIdx; split_ifs with hx <;> simp [hx]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma rootIdx_fst_snd (ι : Type) (N j : ℕ) (x : ι × Fin N) :
     (rootIdx ι N j x).1.2 = decide ((x.2 : ℕ) < j) := by
@@ -55,7 +55,7 @@ namespace GlobalTheory.BcEigen
 open GlobalTheory.FlagPoly
 
 /- English proof (translation)
-Establish `hR : (∑ a, C (f a.2) * eSum (rkB ι N j) a : MvPolynomial (Σ a : ι × Bool, Fin (rkB ι N j a)) ℝ) = ∑ z : Σ a : ι × Bool, Fin (rkB ι N j a), C (f z.1.2) * X z`. Rewrite using `[Fintype.sum_sigma]`. Simplify using `only [eSum, Finset.mul_sum]`. Rewrite using `[hR, ← Equiv.sum_comp (rootEquiv ι N j h), Fintype.sum_prod_type]`. Simplify using `only [map_sum, map_mul, rename_C, rename_X, rootEquiv_apply, rootIdx_fst_snd]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma rename_rootIdx_lin (ι : Type) [Fintype ι] [DecidableEq ι] (N j : ℕ) (h : j ≤ N) (f : Bool → ℝ) :
     rename (rootIdx ι N j) (∑ τ, ∑ i : Fin N, C (f (decide ((i : ℕ) < j))) * X (τ, i) : Pol ι N) =
@@ -68,15 +68,15 @@ lemma rename_rootIdx_lin (ι : Type) [Fintype ι] [DecidableEq ι] (N j : ℕ) (
   simp only [map_sum, map_mul, rename_C, rename_X, rootEquiv_apply, rootIdx_fst_snd]
 
 /- English proof (translation)
-Introduce `ι _ _ N j h`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Unfold `sq2`. Rewrite using `[← Equiv.sum_comp (rootEquiv ι N j h), Fintype.sum_prod_type]`. Simplify using `only [pSum, map_sum, map_pow, rename_X, rootEquiv_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hA : (lamA ι N j : Pol ι N) = ∑ τ, ∑ i : Fin N, C (cond (decide ((i : ℕ) < j)) (-1 : ℝ) 1) * X (τ, i)`. Unfold `lamA pHigh pLow`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_filter, Finset.sum_filter, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `hi : (i : ℕ) < j`. Simplify using `[hi, not_le.mpr hi]`. Simplify using `[hi, not_lt.mp hi]`. Rewrite using `[hA, rename_rootIdx_lin ι N j h (fun b => cond b (-1 : ℝ) 1)]`. Both sides reduce to the same expression.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Introduce `al be`. Establish `hI : (invForm j (fun _ : ι => al) (fun _ => be) : Pol ι N) = ∑ τ, ∑ i : Fin N, C (cond (decide ((i : ℕ) < j)) al be) * X (τ, i)`. Unfold `invForm pHigh pLow`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_filter, Finset.sum_filter, Finset.mul_sum, Finset.mul_sum, ← Finset.sum_add_distrib]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Distinguish the cases in `hi : (i : ℕ) < j`. Simplify using `[hi, not_le.mpr hi]`. Simplify using `[hi, not_lt.mp hi]`. Rewrite using `[hI, rename_rootIdx_lin ι N j h (fun b => cond b al be)]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem relabel_sums : ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (N j : ℕ), j ≤ N →
     rename (rootIdx ι N j) (∑ τ, pSum τ 2 : Pol ι N) = sq2 (rkB ι N j) ∧

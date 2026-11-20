@@ -20,7 +20,7 @@ def TrueE (D : D7) : Prop :=
     D = I.rec7 l Z ∧ ∃ w : World I l Z, IdE w.S.X
 
 /- English proof (translation)
-The claim follows from `let ⟨B, X, I, l, Z, e, w, _⟩ := h; ⟨B, X, I, l, Z, e, ⟨w⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem TrueE.trueD {D : D7} (h : TrueE D) : TrueD D :=
   let ⟨B, X, I, l, Z, e, w, _⟩ := h; ⟨B, X, I, l, Z, e, ⟨w⟩⟩
@@ -28,7 +28,7 @@ theorem TrueE.trueD {D : D7} (h : TrueE D) : TrueD D :=
 open GlobalTheory.Mem GlobalTheory.Mem.Col2 in
 
 /- English proof (translation)
-Take `⟨B, X, I, l, Z, rfl, w, hw⟩` from `hD`. Conclude with `h B X I l Z w hw`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem TrueE.elim {Q : D7 → Prop}
     (h : ∀ (B : Base) (X : PreX B.toPre) (I : TC B X) (l : I.Laws) (Z : TC.Later B (I.cols l)) (w : World I l Z),
@@ -98,14 +98,14 @@ def RowsInh : Prop := InhG (AndE GapE LedE) ∧ InhG CodeE ∧ InhAbs GapE
 variable {E}
 
 /- English proof (translation)
-Introduce `Cg cb Cu cT CT h1 h2` and use `let ⟨C, a, b, hC, h⟩ := h Cg cb Cu cT CT h1 h2 ⟨C, a, b, hC, fun C' Cl ha hb D L u hD _ hH => h C' Cl ha hb D L u hD trivial hH⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Row.of_noE {Q : ∀ D : D7, D.what₂.Word → ℝ → ℝ → Prop} (h : Row TrivialRankCondition Q) : Row E Q := fun Cg cb Cu cT CT h1 h2 =>
   let ⟨C, a, b, hC, h⟩ := h Cg cb Cu cT CT h1 h2
   ⟨C, a, b, hC, fun C' Cl ha hb D L u hD _ hH => h C' Cl ha hb D L u hD trivial hH⟩
 
 /- English proof (translation)
-Introduce `Cg cb Cu cT CT h1 h2` and use `let ⟨C, a, b, hC, h⟩ := h Cg cb Cu cT CT h1 h2 let ⟨_, a', b', _, h'⟩ := h' Cg cb Cu cT CT h1 h2 ⟨C, max a a', max b b', hC, fun C' Cl ha hb D L u hD hE hH => ⟨h C' Cl (le_trans (le_max_left _ _) ha) (le_trans (le_max_left _ _) hb) D L u hD hE hH, h' C' Cl (le_trans (le_max_right …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Row.and {Q : ∀ D : D7, D.what₂.Word → ℝ → ℝ → Prop} {Q' : ∀ D : D7, D.what₂.Word → Prop} (h : Row E Q)
     (h' : Row E fun D u _ _ => Q' D u) : Row E fun D u L C => Q D u L C ∧ Q' D u := fun Cg cb Cu cT CT h1 h2 =>
@@ -116,7 +116,7 @@ theorem Row.and {Q : ∀ D : D7, D.what₂.Word → ℝ → ℝ → Prop} {Q' : 
       h' C' Cl (le_trans (le_max_right _ _) ha) (le_trans (le_max_right _ _) hb) D L u hD hE hH⟩⟩
 
 /- English proof (translation)
-Introduce `Cg cb Cu cT CT h1 h2` and use `let ⟨C, a, b, hC, h⟩ := Row.and (Q' := fun D _ => OntoTower D) h h' Cg cb Cu cT CT h1 h2 ⟨C, a, b, hC, fun C' Cl ha hb D L u hD hE hH => kerIncl_of_tower D u (h C' Cl ha hb D L u hD hE hH).1 (h C' Cl ha hb D L u hD hE hH).2⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem rowKer_of (h : RowMI E) (h' : RowOnto E) : RowKer E := fun Cg cb Cu cT CT h1 h2 =>
   let ⟨C, a, b, hC, h⟩ := Row.and (Q' := fun D _ => OntoTower D) h h' Cg cb Cu cT CT h1 h2
@@ -124,7 +124,7 @@ theorem rowKer_of (h : RowMI E) (h' : RowOnto E) : RowKer E := fun Cg cb Cu cT C
     kerIncl_of_tower D u (h C' Cl ha hb D L u hD hE hH).1 (h C' Cl ha hb D L u hD hE hH).2⟩
 
 /- English proof (translation)
-Introduce `Cg cb Cu cT CT h1 h2` and use `let ⟨C, a, b, _, h⟩ := h Cg cb Cu cT CT h1 h2 ⟨C, a, b, fun _ L C' Cl ha hb ⟨x₀, hF⟩ => ⟨x₀, fun x hx i => let ⟨h3, h4, h5, h6, h7⟩ := hF x hx i (D7.u₀ _) ⟨_, h C' Cl ha hb _ (L x) _ h3 h4 h5 h6 h7⟩⟩⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem rkFam_of (h : RKRowG E) : RKFam E := fun Cg cb Cu cT CT h1 h2 =>
   let ⟨C, a, b, _, h⟩ := h Cg cb Cu cT CT h1 h2
@@ -133,7 +133,7 @@ theorem rkFam_of (h : RKRowG E) : RKFam E := fun Cg cb Cu cT CT h1 h2 =>
     ⟨_, h C' Cl ha hb _ (L x) _ h3 h4 h5 h6 h7⟩⟩⟩
 
 /- English proof (translation)
-Introduce `Cg cb Cu cT CT h1 h2` and use `let ⟨C, a, b, hC, h⟩ := h Cg cb Cu cT CT h1 h2 ⟨C, a, b, hC, fun C' Cl ha hb D L u hD he hH => h C' Cl ha hb D L u hD (hE _ _ _ he) hH⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Row.of_imp {E' : D7 → ℝ → ℝ → Prop} (hE : ∀ D L C', E' D L C' → E D L C') {Q : ∀ D : D7, D.what₂.Word → ℝ → ℝ → Prop}
     (h : Row E Q) : Row E' Q := fun Cg cb Cu cT CT h1 h2 =>
@@ -141,7 +141,7 @@ theorem Row.of_imp {E' : D7 → ℝ → ℝ → Prop} (hE : ∀ D L C', E' D L C
   ⟨C, a, b, hC, fun C' Cl ha hb D L u hD he hH => h C' Cl ha hb D L u hD (hE _ _ _ he) hH⟩
 
 /- English proof (translation)
-Introduce `Cg cb Cu cT CT h1 h2` and use `let ⟨C, a, b, h⟩ := h Cg cb Cu cT CT h1 h2 ⟨C, a, b, fun F L C' Cl ha hb ⟨x₀, hF⟩ => h F L C' Cl ha hb ⟨x₀, fun x hx i u => let ⟨h3, h4, h5⟩ := hF x hx i u ⟨h3, hE _ _ _ h4, h5⟩⟩⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem RKFam.of_imp {E' : D7 → ℝ → ℝ → Prop} (hE : ∀ D L C', E' D L C' → E D L C') (h : RKFam E) : RKFam E' :=
   fun Cg cb Cu cT CT h1 h2 =>
@@ -151,7 +151,7 @@ theorem RKFam.of_imp {E' : D7 → ℝ → ℝ → Prop} (hE : ∀ D L C', E' D L
       ⟨h3, hE _ _ _ h4, h5⟩⟩⟩
 
 /- English proof (translation)
-The claim follows from `let ⟨Cg, cb, Cu, cT, CT, h1, h2, h⟩ := h ⟨Cg, cb, Cu, cT, CT, h1, h2, fun C a b => let ⟨C', Cl, L, D, ha, hb, hD, he, hH⟩ := h C a b ⟨C', Cl, L, D, ha, hb, hD, hE _ _ _ he, hH⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem Inh.of_imp {E' : D7 → ℝ → ℝ → Prop} (hE : ∀ D L C', E D L C' → E' D L C') {P : ∀ D : D7, D.what₂.Word → ℝ → ℝ → Prop}
     (h : Inh E P) : Inh E' P :=
@@ -161,7 +161,7 @@ theorem Inh.of_imp {E' : D7 → ℝ → ℝ → Prop} (hE : ∀ D L C', E D L C'
     ⟨C', Cl, L, D, ha, hb, hD, hE _ _ _ he, hH⟩⟩
 
 /- English proof (translation)
-The claim follows from `let ⟨Cg, cb, Cu, cT, CT, h1, h2, h⟩ := h let ⟨C, a, b, hC, h'⟩ := h' Cg cb Cu cT CT h1 h2 let ⟨C', Cl, L, D, ha, hb, hD, he, hH, hP⟩ := h C a b ⟨D, L, C, hD, hC, fun u => h' C' Cl ha hb D L u hD he hH (hP u)⟩`.
+A detailed English derivation is pending.
 -/
 theorem Inh.reach {P Q : ∀ D : D7, D.what₂.Word → ℝ → ℝ → Prop} (h : Inh E P) (h' : Row E fun D u L C => P D u L C → Q D u L C) :
     ∃ (D : D7) (L C : ℝ), TrueE D ∧ 1 ≤ C ∧ ∀ u, Q D u L C :=
@@ -171,7 +171,7 @@ theorem Inh.reach {P Q : ∀ D : D7, D.what₂.Word → ℝ → ℝ → Prop} (h
   ⟨D, L, C, hD, hC, fun u => h' C' Cl ha hb D L u hD he hH (hP u)⟩
 
 /- English proof (translation)
-Introduce `h'` and use `let ⟨D, _, _, _, _, h⟩ := h.reach (Q := fun _ _ _ _ => False) h' h D.u₀`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Inh.not_row_false {P : ∀ D : D7, D.what₂.Word → ℝ → ℝ → Prop} (h : Inh E P) :
     ¬ Row E fun D u L C => P D u L C → False := fun h' =>
@@ -179,7 +179,7 @@ theorem Inh.not_row_false {P : ∀ D : D7, D.what₂.Word → ℝ → ℝ → Pr
   h D.u₀
 
 /- English proof (translation)
-The claim follows from `let ⟨D, _, _, hD, _, h⟩ := Inh.reach (Q := fun D u _ _ => RK D u) h fun Cg cb Cu cT CT h1 h2 => let ⟨C, a, b, hC, h'⟩ := h' Cg cb Cu cT CT h1 h2 ⟨C, a, b, hC, fun C' Cl ha hb D L u hD he hH hP => h' C' Cl ha hb D L u hD he hH hP.1 hP.2⟩ ⟨D, hD, h⟩`.
+A detailed English derivation is pending.
 -/
 theorem InhG.rk (h : InhG E) (h' : RKRowG E) : ∃ D : D7, TrueE D ∧ ∀ u, RK D u :=
   let ⟨D, _, _, hD, _, h⟩ := Inh.reach (Q := fun D u _ _ => RK D u) h fun Cg cb Cu cT CT h1 h2 =>
@@ -188,13 +188,13 @@ theorem InhG.rk (h : InhG E) (h' : RKRowG E) : ∃ D : D7, TrueE D ∧ ∀ u, RK
   ⟨D, hD, h⟩
 
 /- English proof (translation)
-Use `⟨D.R.N D.R.m, ?_, fun τ i hi => ?_⟩` and prove the remaining obligations. Use `D.R.two_le_m` as an intermediate fact. Use `D.R.m_add_three_le_k` as an intermediate fact. Unfold `Ranks.rankX' Ranks.N Ranks.r`. Rewrite using `[Nat.mul_add]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Establish `h1` using `h D.u₀ τ i.1 hi`. Rewrite `h1` using `[D.hcW_b]`. Simplify using `only [Fin.eta] at h1`. Establish `h2 : (0 : ℝ) ≤ ((D.R.N D.R.m : ℕ) : ℝ) ^ 3` using `by positivity`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h3 : (0 : ℝ) ≤ D.R.t` using `by positivity`. Establish `key : (((D.R.t : ℚ) + 2 * ((D.R.N D.R.m : ℕ) : ℚ) ^ 3 + 1 : ℚ) : ℝ) ≤ (((D.hc τ).b ⟨i.1 + 1, hi⟩ - (D.hc τ).b i : ℚ) : ℝ)`. Use `le_trans ?_ h1` and prove the remaining obligations. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Conclude with `key` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem GapE.nodeGap {D : D7} {L C' : ℝ} (h : GapE D L C') : GlobalTheory.IndefiniteRowSideFullHecke.ThetaSourceAction.NodeGap D := by
   refine ⟨D.R.N D.R.m, ?_, fun τ i hi => ?_⟩
@@ -216,14 +216,14 @@ theorem GapE.nodeGap {D : D7} {L C' : ℝ} (h : GapE D L C') : GlobalTheory.Inde
     exact_mod_cast key
 
 /- English proof (translation)
-The claim follows from `P.nodeGap_ge_cubic_rank`.
+A detailed English derivation is pending.
 -/
 theorem GapE.of_params {D : D7} {large₂ : SizeData₂ D} (P : ParameterChoice' D large₂) (L C' : ℝ) : GapE D L C' := P.nodeGap_ge_cubic_rank
 
 /- English proof (translation)
-Take `⟨h1, -, h3, h4, -⟩` from `hH`. Establish `hm` using `D.R.two_le_m`. Establish `h16 : 2 ^ 4 ≤ D.R.m ^ 4` using `Nat.pow_le_pow_left hm 4`. Establish `hf : (1 : ℝ) ≤ D.R.f` using `by exact_mod_cast (by omega : 1 ≤ D.R.f)`. Establish `hm' : (1 : ℝ) ≤ (D.R.m : ℝ) ^ 5` using `one_le_pow₀ (by exact_mod_cast (by omega : 1 ≤ D.R.m))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨?_, by omega, by omega⟩` and prove the remaining obligations. Unfold `mfL`. Conclude with `one_le_mul_of_one_le_of_one_le (one_le_mul_of_one_le_of_one_le hm' hf) h1.le`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem one_le_mfL {D : D7} {L C' Cl Cg cb Cu cT CT : ℝ} (hH : Deg.HypL D L C' Cl Cg cb Cu cT CT) :
     1 ≤ mfL D L ∧ 16 ≤ D.R.k ∧ 1 ≤ D.R.f := by
@@ -237,9 +237,9 @@ theorem one_le_mfL {D : D7} {L C' Cl Cg cb Cu cT CT : ℝ} (hH : Deg.HypL D L C'
   exact one_le_mul_of_one_le_of_one_le (one_le_mul_of_one_le_of_one_le hm' hf) h1.le
 
 /- English proof (translation)
-Take `⟨large₂, hL, h8⟩` from `h`. Introduce `u`. Establish `hG` using `large₂.Gam_eq u`. Establish `hL0 : 0 ≤ L` using `hL ▸ Real.rpow_nonneg (zero_le_one.trans large₂.sc.one_lt_alt.le) _`. Rewrite `hG` using `[hL]`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hx : 0 ≤ mfL D L` using `by unfold mfL; positivity`. Establish `e : Real.log (D.mem u).A.GamP = large₂.CGam * mfL D L` using `by rw [hG]; unfold mfL; ring`. Rewrite using `[e]`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem LedE.gamLe {D : D7} {L C' : ℝ} (h : LedE D L C') : GamLe D L C' := by
   obtain ⟨large₂, hL, h8⟩ := h
@@ -253,7 +253,7 @@ theorem LedE.gamLe {D : D7} {L C' : ℝ} (h : LedE D L C') : GamLe D L C' := by
   nlinarith
 
 /- English proof (translation)
-Use `(h u).trans (le_trans (le_of_eq ?_) hH.2.1)` and prove the remaining obligations. Unfold `mfL`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem GamLe.le_k {D : D7} {L C' Cl Cg cb Cu cT CT : ℝ} (h : GamLe D L C') (hH : Deg.HypL D L C' Cl Cg cb Cu cT CT)
     (u : D.what₂.Word) : 8 * Real.log (D.mem u).A.GamP ≤ D.R.k := by
@@ -262,7 +262,7 @@ theorem GamLe.le_k {D : D7} {L C' Cl Cg cb Cu cT CT : ℝ} (h : GamLe D L C') (h
   ring
 
 /- English proof (translation)
-Establish `h1` using `h.le_k hH u`. Take `⟨-, hk, hf⟩` from `one_le_mfL hH`. Establish `hk' : (16 : ℝ) ≤ D.R.k` using `by exact_mod_cast hk`. Establish `hf' : (1 : ℝ) ≤ D.R.f` using `by exact_mod_cast hf`. Establish `a : (1 : ℝ) ≤ C * D.R.f * L` using `one_le_mul_of_one_le_of_one_le (one_le_mul_of_one_le_of_one_le hC hf') hH.1.le`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
 Use the polynomial consequences of the given equalities and inequalities.
 -/
@@ -276,45 +276,43 @@ theorem GamLe.log_lt {D : D7} {L C C' Cl Cg cb Cu cT CT : ℝ} (h : GamLe D L C'
   nlinarith
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _` and use `⟨1, 0, 0, le_rfl, fun _ _ _ _ _ _ u _ he hH _ h => absurd h (not_le.2 ((hE _ _ _ he).log_lt hH.2.2.1 le_rfl u))⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem RKRowAbs.of_gamLe (hE : ∀ D L C', E D L C' → GamLe D L C') : RKRowAbs E :=
   fun _ _ _ _ _ _ _ => ⟨1, 0, 0, le_rfl, fun _ _ _ _ _ _ u _ he hH _ h =>
     absurd h (not_le.2 ((hE _ _ _ he).log_lt hH.2.2.1 le_rfl u))⟩
 
 /- English proof (translation)
-Introduce `h` and use `Inh.not_row_false h fun _ _ _ _ _ _ _ => ⟨1, 0, 0, le_rfl, fun _ _ _ _ _ _ u _ he hH h => absurd h.2 (not_le.2 ((hE _ _ _ he).log_lt hH.2.2.1 le_rfl u))⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem not_inhAbs_of_gamLe (hE : ∀ D L C', E D L C' → GamLe D L C') : ¬ InhAbs E := fun h =>
   Inh.not_row_false h fun _ _ _ _ _ _ _ => ⟨1, 0, 0, le_rfl, fun _ _ _ _ _ _ u _ he hH h =>
     absurd h.2 (not_le.2 ((hE _ _ _ he).log_lt hH.2.2.1 le_rfl u))⟩
 
 /- English proof (translation)
-The claim follows from `RKRowAbs.of_gamLe fun _ _ _ => LedE.gamLe`.
+A detailed English derivation is pending.
 -/
 example : RKRowAbs LedE := RKRowAbs.of_gamLe fun _ _ _ => LedE.gamLe
 
 /- English proof (translation)
-The claim follows from `not_inhAbs_of_gamLe fun _ _ _ => LedE.gamLe`.
+A detailed English derivation is pending.
 -/
 example : ¬ InhAbs LedE := not_inhAbs_of_gamLe fun _ _ _ => LedE.gamLe
 
 /- English proof (translation)
-Take `⟨hx, hk, -⟩` from `one_le_mfL hH`. Establish `hG : 0 < (D.mem u).A.GamP` using `one_pos.trans (D.mem u).A.one_lt_gammaP`. Break down `le_or_gt C' 0 with h0 | h0` into its components or cases. Conclude with `le_trans (mul_nonpos_of_nonpos_of_nonneg h0 (by positivity)) (by positivity)`. Establish `hC : C' ≤ D.R.k`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: C' * mfL D L ≤ D.R.k` using `le_trans (le_of_eq (by unfold mfL; ring)) hH.2.1`. Use the polynomial consequences of the given equalities and inequalities. Establish `he : Real.exp (1 / 4) ≤ 4 / 3`. Establish `h1 : Real.exp (1 / 4) ^ 4 = Real.exp 1` using `by rw [← Real.exp_nat_mul]; norm_num`. Use `le_of_not_gt fun h2 => ?_` and prove the remaining obligations.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h3 : (4 / 3 : ℝ) ^ 4 ≤ Real.exp (1 / 4) ^ 4` using `pow_le_pow_left₀ (by norm_num) h2.le 4`. Use `Real.exp_one_lt_d9` as an intermediate fact. Evaluate the numerical expressions using `at h3`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h2 : (D.mem u).A.GamP ^ 2 ≤ (4 / 3 : ℝ) ^ D.R.k`.
+Establish an intermediate fact. Evaluate the numerical expressions. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[show (2 : ℝ) = ((2 : ℕ) : ℝ) by norm_num, Real.exp_nat_mul, Real.exp_log hG]`. Use `_ ≤ Real.exp ((D.R.k : ℝ) * (1 / 4)) := Real.exp_le_exp.2 (by have := h.le_k hH u; linarith)`. Use `_ = Real.exp (1 / 4) ^ D.R.k := Real.exp_nat_mul _ _`. Use `_ ≤ _ := pow_le_pow_left₀ (Real.exp_pos _).le he _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Establish `h3 : ∀ n : ℕ, 16 ≤ n → 8 * ((n : ℝ) * (4 / 3) ^ n) ≤ 2 ^ n`. Introduce `n hn`. Proceed by induction on `n, hn using Nat.le_induction with`. Consider the case `base => norm_num`. Consider the case `succ n hn ih`.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Establish `hn' : (16 : ℝ) ≤ n` using `by exact_mod_cast hn`. Establish `hp : (0 : ℝ) < (4 / 3) ^ n` using `by positivity`. Rewrite using `[pow_succ, pow_succ]`. Use `push_cast`. Use the polynomial consequences of the given equalities and inequalities.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Establish `h4` using `h3 _ hk`. Establish `h5 : (2 : ℝ) ^ D.R.k = 8 * 2 ^ (D.R.k - 3)`. Rewrite using `[show D.R.k = 3 + (D.R.k - 3) by omega, pow_add]`. Evaluate the numerical expressions. Establish `h6 : C' * (D.mem u).A.GamP ^ 2 ≤ D.R.k * (4 / 3 : ℝ) ^ D.R.k` using `mul_le_mul hC h2 (by positivity) (by positivity)`.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem GamLe.code_room {D : D7} {L C' Cl Cg cb Cu cT CT : ℝ} (h : GamLe D L C') (hH : Deg.HypL D L C' Cl Cg cb Cu cT CT)
     (u : D.what₂.Word) : C' * (D.mem u).A.GamP ^ 2 ≤ 2 ^ (D.R.k - 3) := by
@@ -356,7 +354,7 @@ theorem GamLe.code_room {D : D7} {L C' Cl Cg cb Cu cT CT : ℝ} (h : GamLe D L C
   linarith
 
 /- English proof (translation)
-Establish `h1` using `h.2.2.1 D.u₀`. Establish `h2` using `(D.mem D.u₀).A.one_lt_gammaP`. Establish `h3 : (1 : ℝ) < (Fintype.card D.what₂.Word : ℝ)` using `by nlinarith`. Conclude with `h3` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem CodeE.one_lt_card {D : D7} {L C' : ℝ} (h : CodeE D L C') (hC : 1 ≤ C') : 1 < Fintype.card D.what₂.Word := by
   have h1 := h.2.2.1 D.u₀
@@ -365,7 +363,7 @@ theorem CodeE.one_lt_card {D : D7} {L C' : ℝ} (h : CodeE D L C') (hC : 1 ≤ C
   exact_mod_cast h3
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Inh.of_imp (fun _ _ _ h => h.1) h.1, Inh.of_imp (fun _ _ _ _ => trivial) h.1, Inh.of_imp (fun _ _ _ h => h.2) h.1⟩`.
+Supply the required witnesses or components.
 -/
 theorem RowsInh.gap (h : RowsInh) : InhG GapE ∧ InhG TrivialRankCondition ∧ InhG LedE :=
   ⟨Inh.of_imp (fun _ _ _ h => h.1) h.1, Inh.of_imp (fun _ _ _ _ => trivial) h.1, Inh.of_imp (fun _ _ _ h => h.2) h.1⟩

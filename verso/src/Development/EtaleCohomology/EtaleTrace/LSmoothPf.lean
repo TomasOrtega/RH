@@ -22,7 +22,7 @@ noncomputable def polyPres (k : Type) [CommRing k] (N : ℕ) :
     exact isUnit_one
 
 /- English proof (translation)
-The claim follows from `(polyPres k N).isStandardSmoothOfRelativeDimension (by simp [Algebra.Presentation.dimension])`.
+A detailed English derivation is pending.
 -/
 theorem poly_ssmooth (k : Type) [CommRing k] (N : ℕ) :
     Algebra.IsStandardSmoothOfRelativeDimension N k (MvPolynomial (Fin N) k) :=
@@ -32,7 +32,7 @@ open CategoryTheory AlgebraicGeometry LateralTheory.EtaleTrace.LPdCut
 attribute [local instance] MvPolynomial.gradedAlgebra
 
 /- English proof (translation)
-Rewrite using `[HasRingHomProperty.Spec_iff (P := @SmoothOfRelativeDimension N)]`. Use `RingHom.locally_of RingHom.isStandardSmoothOfRelativeDimension_respectsIso _ ?_` and prove the remaining obligations. Conclude with `(RingHom.isStandardSmoothOfRelativeDimension_algebraMap (n := N) (R := k) (S := MvPolynomial (Fin N) k)).mpr (poly_ssmooth k N)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem spec_C_smooth (k : Type) [Field k] (N : ℕ) :
     SmoothOfRelativeDimension N (Spec.map (CommRingCat.ofHom (MvPolynomial.C : k →+* MvPolynomial (Fin N) k))) := by
@@ -42,11 +42,11 @@ theorem spec_C_smooth (k : Type) [Field k] (N : ℕ) :
     (poly_ssmooth k N)
 
 /- English proof (translation)
-Apply `Proj.iSup_basicOpen_eq_top'` to reduce the goal to its premises. Introduce `i`. Conclude with `⟨1, MvPolynomial.isHomogeneous_X k i⟩`. Rewrite using `[eq_top_iff]`. Introduce `p _hp`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `clear _hp`. Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C a`. Establish `ha : MvPolynomial.C a ∈ MvPolynomial.homogeneousSubmodule (Fin (N + 1)) k 0` using `MvPolynomial.isHomogeneous_C _ a`. Establish `: MvPolynomial.C a = algebraMap (MvPolynomial.homogeneousSubmodule (Fin (N + 1)) k 0) (MvPolynomial (Fin (N + 1)) k) ⟨_, ha⟩` using `rfl`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `Subalgebra.algebraMap_mem _ _`. Consider the case `add p q hp hq => exact Subalgebra.add_mem _ hp hq`. Consider the case `mul_X p i hp => exact Subalgebra.mul_mem _ hp (Algebra.subset_adjoin ⟨i, rfl⟩)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem Dp_cover (k : Type) [Field k] (N : ℕ) : ⨆ i, Dp k N i = ⊤ := by
   apply Proj.iSup_basicOpen_eq_top'
@@ -64,13 +64,11 @@ theorem Dp_cover (k : Type) [Field k] (N : ℕ) : ⨆ i, Dp k N i = ⊤ := by
     | mul_X p i hp => exact Subalgebra.mul_mem _ hp (Algebra.subset_adjoin ⟨i, rfl⟩)
 
 /- English proof (translation)
-Introduce `k _ N`. Use `choose j hj hc hr using fun i => hC k N i`. Set `𝒰 : (PN k N).OpenCover` to `Scheme.Cover.mkOfCovers (Fin (N + 1)) _ j (fun x => by`. Establish `hx : x ∈ (⊤ : (PN k N).Opens)` using `trivial`. Rewrite `hx` using `[← Dp_cover k N]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.mp hx`. Establish `: x ∈ Set.range (j i)` using `by rw [hr i]; exact hi`. Take `⟨y, hy⟩` from `this`. Conclude with `⟨i, y, hy⟩) hj`. Establish `hA : ∀ i, IsAffine (𝒰.X i)` using `fun i => by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `IsAffine (Spec (CommRingCat.of (MvPolynomial (Fin N) k)))`. Use `infer_instance`. Use `HasRingHomProperty.of_source_openCover (P := @SmoothOfRelativeDimension.{0} N) 𝒰 (fun i => ?_)` and prove the remaining obligations. Establish `h : SmoothOfRelativeDimension N (𝒰.f i ≫ PNto k N)`. Express the relevant statement in the definitionally equal form `SmoothOfRelativeDimension N (j i ≫ PNto k N)`.
-
-Rewrite using `[hc i]`. Conclude with `spec_C_smooth k N`. Conclude with `(HasRingHomProperty.iff_of_isAffine (P := @SmoothOfRelativeDimension.{0} N)).mp h`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem LSmooth_of (hC : LChart) : LSmooth := by
   intro k _ N

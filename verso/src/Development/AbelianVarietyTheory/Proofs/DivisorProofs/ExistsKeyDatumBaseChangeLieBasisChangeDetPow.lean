@@ -17,7 +17,7 @@ noncomputable section
 namespace GlobalTheory.KeyLieChg
 
 /- English proof (translation)
-Substitute `e` using the available equality. Conclude with `hv`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem isLieBasis_cast {R : Type} [CommRing R] {G : Over (Sp R)} [GrpObj G] {m n : ℕ} (e : m = n)
     {v : Fin n → (epsR R ⟶ G)} (hv : IsLieBasis v) : IsLieBasis (fun i : Fin m => v (i.cast e)) := by
@@ -25,7 +25,7 @@ theorem isLieBasis_cast {R : Type} [CommRing R] {G : Over (Sp R)} [GrpObj G] {m 
   exact hv
 
 /- English proof (translation)
-Substitute `e` using the available equality. Conclude with `(lieComb_baseChange R R' f G G' φ h m v (v' i) (M i) u (u' i) huv (hv i)).1 (hu'v' i)`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem lieComb_of_over {R R' : Type} [CommRing R] [CommRing R'] (f : R →+* R') {G : Over (Sp R)} [GrpObj G]
     {G' : Over (Sp R')} [GrpObj G'] {φ : G'.left ⟶ G.left} (h : IsGrpPullback G' G (spMap f) φ) {n m : ℕ}
@@ -38,18 +38,18 @@ theorem lieComb_of_over {R R' : Type} [CommRing R] [CommRing R'] (f : R →+* R'
   exact (lieComb_baseChange R R' f G G' φ h m v (v' i) (M i) u (u' i) huv (hv i)).1 (hu'v' i)
 
 /- English proof (translation)
-Simplify using `[Geo.Tor.constFn]`.
+Simplify using the standard rewrite rules.
 -/
 theorem constFn_one {R : Type} [CommRing R] {X : Scheme.{0}} (p : X ⟶ Sp R) (U : X.Opens) :
     Geo.Tor.constFn p U (1 : R) = 1 := by
   simp [Geo.Tor.constFn]
 
 /- English proof (translation)
-Introduce `κ hκ R _ y x f hxy v' hv' M hM`. Take `⟨φ, he, w, hg, F, hp, hw, hrig, hsec, hF, hε, hlie⟩` from `hxy`. Apply the tactic sequence `have hF' : F = Chart.dualMapR f := KeyCancel.dualNumber_ringHom_ext (fun b => (hF b).trans (by ext <;> simp [Chart.dualMapR, TrivSqZeroExt.algebraMap_eq_inl])) (hε.trans (by ext <;> simp [Chart.dualMapR]))`. Substitute `hF'` using the available equality. Use `haveI := y.P.isAb.comm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. Substitute using the available equality. Extract witnesses or component facts from the available result.
 
-Use `haveI := x.P.isAb.comm`. Take `⟨u, hu, huv⟩` from `exists_isLieBasis_baseChange R ℂ f y.P.A x.P.A φ hp y.P.isAb.smooth y.P.g v' hv'`. Establish `hb : IsLieBasis (fun i : Fin x.P.g => u (i.cast hg))` using `isLieBasis_cast hg hu`. Use `⟨⟨x.P, x.g_pos, x.rig, x.rig_gen, x.th, x.th_ne, fun i => u (i.cast hg), hb⟩, ⟨φ, he, w, hg, Chart.dualMapR f, hp, hw, hrig, hsec, hF, hε, fun i => huv (i.cast hg)⟩, ?_⟩` and prove the remaining obligations. Establish `hc` using `lieComb_of_over f hp hg M y.v v' x.v (fun i => u (i.cast hg)) hM hlie (fun i => huv (i.cast hg))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `k` using `hκ ℂ x.P x.g_pos x.rig x.rig_gen x.th x.th_ne x.v x.basis x.th x.th_ne (fun i => u (i.cast hg)) hb 1 (fun i j => f (M (i.cast hg) (j.cast hg))) (fun i => by rw [constFn_one, _root_.one_mul]) hc`. Establish `hd : (Matrix.of fun i j : Fin x.P.g => f (M (i.cast hg) (j.cast hg))).det = (M.map f).det` using `Matrix.det_submatrix_equiv_self (finCongr hg) (M.map f)`. Simplify using `only [Nat.mul_one, one_pow, _root_.one_mul] at k`. Rewrite using `[k]`. Conclude with `congrArg (· ^ 4 * (κ ℂ x : ℂ)) hd`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_keyPB_det : ∀ κ : Rule, Homog (fun _ => 1) κ → ∀ (R : Type) [CommRing R] (y : KeyIn R) (x : KeyIn ℂ) (f : R →+* ℂ), KeyPB x y f → ∀ (v' : Fin y.P.g → (epsR R ⟶ y.P.A)) (hv' : IsLieBasis v') (M : Matrix (Fin y.P.g) (Fin y.P.g) R), (∀ i, IsLieComb (M i) y.v (v' i)) → ∃ x' : KeyIn ℂ, KeyPB x' ⟨y.P, y.g_pos, y.rig, y.rig_gen, y.th, y.th_ne, v', hv'⟩ f ∧ (κ ℂ x' : ℂ) = (M.map f).det ^ 4 * κ ℂ x := by
   intro κ hκ R _ y x f hxy v' hv' M hM

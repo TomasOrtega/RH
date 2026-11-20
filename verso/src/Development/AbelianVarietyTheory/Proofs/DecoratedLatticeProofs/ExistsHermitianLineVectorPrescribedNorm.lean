@@ -21,9 +21,9 @@ abbrev signLine (D : D7) (p q : ℕ) : HSp D :=
   Examples₂.stdSpace (E := D.host.E) Examples₂.star_isIntegral (p + q) (fun i => decide (p ≤ (i : ℕ))) p q
 
 /- English proof (translation)
-Take `⟨i0, hi⟩ : ∃ i0 : Fin (p + q), (i0 : ℕ) = 0` from `⟨⟨0, by omega⟩, rfl⟩`. Establish `huniq : ∀ i : Fin (p + q), i = i0` using `fun i => Fin.ext (by omega)`. Use `show ∑ i : Fin (p + q), star c * ∑ j : Fin (p + q), (signLine D p q).gram i j * c = _`. Establish `hsum : ∀ f : Fin (p + q) → D.host.E, ∑ i, f i = f i0`. Introduce `f`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_eq_single i0 (fun b _ hb => absurd (huniq b) hb) (by simp)]`. Rewrite using `[hsum, hsum, Examples₂.stdSpace_gram_apply, if_pos rfl, hi]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem signLine_norm (D : D7) (c : D.host.E) (p q : ℕ) (h : p + q = 1) :
     star (fun _ : Fin (signLine D p q).rank => c) ⬝ᵥ (signLine D p q).gram *ᵥ (fun _ : Fin (signLine D p q).rank => c) =
@@ -38,13 +38,13 @@ theorem signLine_norm (D : D7) (c : D.host.E) (p q : ℕ) (h : p + q = 1) :
   ring
 
 /- English proof (translation)
-Establish `hcc : c * star c ≠ 0` using `mul_ne_zero hc (star_ne_zero.2 hc)`. Break down `Int.units_eq_one_or ε with rfl | rfl` into its components or cases. Establish `hn` using `signLine_norm D c 1 0 rfl`. Simplify using `only [Examples₂.sgn, zero_add, nonpos_iff_eq_zero, one_ne_zero, decide_false, Bool.false_eq_true, if_false, one_mul] at hn`. Use `⟨signLine D 1 0, fun _ => c, ⟨rfl, ?_⟩, GlobalTheory.Ker.Inhab.sigOK_std D 1 0, ?_, fun τ => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hn]`. Conclude with `hcc`. Rewrite using `[hn]`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `hn` using `signLine_norm D c 0 1 rfl`. Simplify using `only [Examples₂.sgn, le_refl, decide_true, if_true] at hn`. Use `⟨signLine D 0 1, fun _ => c, ⟨rfl, ?_⟩, GlobalTheory.Ker.Inhab.sigOK_std D 0 1, ?_, fun τ => ?_⟩` and prove the remaining obligations. Rewrite using `[hn, neg_one_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `neg_ne_zero.2 hcc`. Rewrite using `[hn]`. Simplify using the standard rewrite rules. Rewrite using `[if_neg (by decide)]; rfl`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_line_vec (D : D7) (c : D.host.E) (ε : ℤˣ) (hc : c ≠ 0) :
     ∃ (L : HSp D) (ζ : Fin L.rank → D.host.E), IsLineVec L ζ ∧ L.SigOK ∧

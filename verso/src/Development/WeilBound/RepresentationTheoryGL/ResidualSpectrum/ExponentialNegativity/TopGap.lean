@@ -5,7 +5,7 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SumHyperplanesC
 namespace PositivityTheory.Rg.Rs
 
 /- English proof (translation)
-The claim follows from `gap_of latOf_holds GlobalTheory.CompanionTheory.GapOpMain.gapOp`.
+A detailed English derivation is pending.
 -/
 theorem gap_holds : Gap := gap_of latOf_holds GlobalTheory.CompanionTheory.GapOpMain.gapOp
 

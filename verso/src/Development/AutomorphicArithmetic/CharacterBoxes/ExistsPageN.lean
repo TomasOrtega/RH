@@ -49,11 +49,11 @@ def VWinAt (ψ : PChar) (Ct : ℝ) : Prop :=
 def VWin : Prop := ∀ ψ : PChar, VWinAt ψ 401
 
 /- English proof (translation)
-Introduce `Ω _ _ _ ld`. Take `⟨h1, h2⟩` from `h Ω ld`. Use `⟨fun p _ e he1 he2 => h1 p e he1 (lt_of_lt_of_le he2 ht), fun S => ?_⟩` and prove the remaining obligations. Use `le_trans ?_ (le_trans (h2 S) hB)` and prove the remaining obligations. Apply `Finset.sum_le_sum` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `l _`. Apply `mul_le_mul_of_nonneg_left _ (Real.log_natCast_nonneg _)` to reduce the goal to its premises. Apply `Finset.sum_le_sum_of_subset_of_nonneg` to reduce the goal to its premises. Introduce `e he`. Simplify using `only [Finset.mem_Ico] at he ⊢`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Introduce `e _ _`. Check the signs of the components of the expression.
+Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Check the signs of the components of the expression.
 -/
 theorem VVle.mono {E : Type} [Field E] [NumberField E] {t t' : ℕ} {B B' : ℝ} (h : VVle E t B) (ht : t' ≤ t) (hB : B ≤ B') :
     VVle E t' B' := by
@@ -72,11 +72,11 @@ theorem VVle.mono {E : Type} [Field E] [NumberField E] {t t' : ℕ} {B B' : ℝ}
     positivity
 
 /- English proof (translation)
-Establish `: ∀ x : ℝ, ∃ e : ℕ, x ≥ 1 → PageN eps x e`. Introduce `x`. Distinguish the cases in `hx : x ≥ 1`. Establish `h1 : (1 : ℝ) ≤ x ^ (2 + 8 * eps)` using `Real.one_le_rpow hx (by linarith)`. Take `⟨n, a, b⟩` from `exists_nat_pow_near h1 (by norm_num : (1 : ℝ) < 2)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨n + 1, fun _ => ⟨b.le, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[pow_succ]`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `⟨0, fun h => absurd h hx⟩`. Use `choose e he using this`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `⟨e, he⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_pageN (eps : ℝ) (he : 0 < eps) : ∃ e : ℝ → ℕ, ∀ x ≥ (1 : ℝ), PageN eps x (e x) := by
   have : ∀ x : ℝ, ∃ e : ℕ, x ≥ 1 → PageN eps x e := by

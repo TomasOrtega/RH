@@ -10,9 +10,9 @@ open GlobalTheory.SeqCx Matrix UpperTheory.V.KL
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hu : Unimodular R (fun _ : Fin 1 => (1 : R))` using `Ideal.eq_top_of_isUnit_mem _ (Ideal.subset_span ⟨0, rfl⟩) isUnit_one`. Take `⟨t, ht⟩` from `h 0 le_rfl (fun _ => 1) hu`. Establish `h1 : (1 : R) ∈ Ideal.span (Set.range fun i : Fin 0 => (1 : R) + t i * 1)`. Rewrite using `[show Ideal.span (Set.range fun i : Fin 0 => (1 : R) + t i * 1) = ⊤ from ht]`. Conclude with `Submodule.mem_top`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[Set.range_eq_empty, Ideal.span_empty, Ideal.mem_bot]`. Conclude with `subsingleton_of_zero_eq_one h1.symm`.
+A detailed English derivation is pending.
 -/
 theorem subsingleton_of_stableRangeLe_zero (R : Type) [CommRing R] (h : StableRangeLe R 0) :
     Subsingleton R := by
@@ -26,9 +26,7 @@ theorem subsingleton_of_stableRangeLe_zero (R : Type) [CommRing R] (h : StableRa
   exact subsingleton_of_zero_eq_one h1.symm
 
 /- English proof (translation)
-Introduce `R _ s h m q hq`. Break down `Nat.eq_zero_or_pos s with rfl | hs` into its components or cases. Use `haveI := subsingleton_of_stableRangeLe_zero R h`. Establish `hall : ∀ l : List (Fin m → R), l ∈ uniSeq R m` using `fun l => ⟨fun _ => 0, fun _ _ => Subsingleton.elim _ _⟩`. Conclude with `GlobalTheory.T.seqChain_cycle_bounded_by_cone (Fin m → R) (uniSeq R m) (uniSeq R m) 0 (fun l _ => hall _) q`.
-
-Establish `hL` using `(GlobalTheory.SeqCx.linkExact_of_stableRangeLe R s h hs m).1`. Conclude with `GlobalTheory.T.exactAt_unimodularSeqs_of_link_nil_coordSubspace R m q (hL [] ⟨fun _ => 0, fun i _ => i.elim0⟩ q (by simpa using hq))`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem uniSeq_exactAt_of_stableRangeLe : ∀ (R : Type) [CommRing R] (s : ℕ), StableRangeLe R s →
     ∀ m q : ℕ, q + s ≤ m → ExactAt (uniSeq R m) q := by
@@ -46,7 +44,7 @@ end GlobalTheory
 section
 open GlobalTheory.SeqCx Matrix UpperTheory.V.KL
 /- English proof (translation)
-Use `first`. Consider the case `exact @GlobalTheory.uniSeq_exactAt_of_stableRangeLe`. Consider the case `exact @GlobalTheory.subsingleton_of_stableRangeLe_zero`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.T.exactAt_unimodularSeqs_of_add_stableRank_le : ∀ (R : Type) [CommRing R] (s : ℕ), StableRangeLe R s → ∀ m q : ℕ, q + s ≤ m → ExactAt (uniSeq R m) q := by
   first

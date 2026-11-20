@@ -35,13 +35,11 @@ variable {D : D7} (i : D.nd.Loc) (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV)
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Establish `hnot : colIdx i dc l ∉ rowsN i dc`. Introduce `h`. Take `⟨w, hw, hwe⟩` from `Finset.mem_image.mp h`. Establish `h1 : l.1 ∈ plSet i dc`. Unfold `plSet`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Conclude with `Finset.mem_union.mpr (Or.inl (Finset.mem_union.mpr (Or.inr l.2)))`. Establish `h2 : w ∈ plSet i dc`. Unfold `plSet`. Conclude with `Finset.mem_union.mpr (Or.inl (Finset.mem_union.mpr (Or.inl hw)))`. Establish `heq : w = l.1` using `idx_inj i dc h2 h1 hwe`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hwc : w ∈ dc.col`. Rewrite using `[heq]`. Conclude with `l.2`. Conclude with `Finset.disjoint_left.mp dc.disj hw hwc`. Simplify using `only [FS, QS.Fall, Fin.cases_zero]`.
-
-Unfold `FirstBlockLocalConditions`. Simplify using `only [KHf.Fρ, if_neg hnot]`.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem first_block_column_condition (l : Col i dc) :
     FS i r π dc g0 eB e₁ s Dd hD hc 0 (colIdx i dc l) =
@@ -70,9 +68,9 @@ set_option maxHeartbeats 4000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Establish `hA` using `tensor_lattice_facts Dd (D.nd.T i) (RepresentationBoundsCohomology.one_le_letterBlockLength D.R) hT hrk (epsU D.nd i)`. Take `⟨⟨h1, h2, h3, h4, h5, h6, h7, h8, h9, -⟩, -, -, -, -, -, -, hinc, -, hgam, -⟩` from `hA`. Establish `hOrb : ∀ l : Col i dc, KHf.OrbC i dc (KFin.ρV i dc Dd l)` using `fun l => KOrb.orbC_uRep i dc r π g0 eB e₁ s Dd hD hc (fun c v => KOrb.latM_alg i Dd (Dd.ρk 0) c v) (colIdx i dc l)`. Use `⟨h1, h2, ?_, ⟨h3, h4, h5, h6, h7, h8, h9, fun l => KFin.finRhoAt_of i dc Dd ρ π l (hOrb l) (hFf l) (hRk l)⟩, QS.inertia_triviality_clause i r ρ π Dd (QS.ev_of hD) hG4 hdec, hinc, fun g b => pi_equiv2 Dd.r Dd.χ (RepresentationBoundsCohomology.blk D.R) Dd.ρk (epsU D.nd i) Dd.e₁ _ g …` and prove the remaining obligations. Introduce `l z x hz`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[first_block_column_condition]`. Conclude with `KFin.clause3 i dc Dd ρ π l z x hz`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hRho_of
     (hG4 : TruncatedSeriesCountingIdentities.admG4 i r) (hdec : TruncatedSeriesCountingIdentities.SemisimpleDecomposition i r ρ π)

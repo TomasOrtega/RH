@@ -15,7 +15,7 @@ abbrev J (F : Type) [Field F] (κ : Type) [Fintype κ] [DecidableEq κ] : Matrix
 def Sp (g : Matrix (κ ⊕ κ) (κ ⊕ κ) F) : Prop := gᵀ * J F κ * g = J F κ
 
 /- English proof (translation)
-Rewrite using `[← Matrix.fromBlocks_one, Matrix.fromBlocks_neg]`. Simplify using `[J, Matrix.fromBlocks_multiply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem J_mul_J : J F κ * J F κ = -1 := by
   rw [← Matrix.fromBlocks_one, Matrix.fromBlocks_neg]
@@ -24,20 +24,20 @@ theorem J_mul_J : J F κ * J F κ = -1 := by
 def sInv (g : Matrix (κ ⊕ κ) (κ ⊕ κ) F) : Matrix (κ ⊕ κ) (κ ⊕ κ) F := -(J F κ * gᵀ * J F κ)
 
 /- English proof (translation)
-Establish `h : J F κ * gᵀ * J F κ * g = J F κ * (gᵀ * J F κ * g)` using `by simp only [Matrix.mul_assoc]`. Rewrite using `[sInv, Matrix.neg_mul, h, hg, J_mul_J, neg_neg]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem sInv_mul {g : Matrix (κ ⊕ κ) (κ ⊕ κ) F} (hg : Sp g) : sInv g * g = 1 := by
   have h : J F κ * gᵀ * J F κ * g = J F κ * (gᵀ * J F κ * g) := by simp only [Matrix.mul_assoc]
   rw [sInv, Matrix.neg_mul, h, hg, J_mul_J, neg_neg]
 
 /- English proof (translation)
-The claim follows from `mul_eq_one_comm.mp (sInv_mul hg)`.
+A detailed English derivation is pending.
 -/
 theorem mul_sInv {g : Matrix (κ ⊕ κ) (κ ⊕ κ) F} (hg : Sp g) : g * sInv g = 1 :=
   mul_eq_one_comm.mp (sInv_mul hg)
 
 /- English proof (translation)
-Unfold `Sp at *`. Rewrite using `[Matrix.transpose_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem Sp.mul {g h : Matrix (κ ⊕ κ) (κ ⊕ κ) F} (hg : Sp g) (hh : Sp h) : Sp (g * h) := by
   unfold Sp at *
@@ -46,7 +46,7 @@ theorem Sp.mul {g h : Matrix (κ ⊕ κ) (κ ⊕ κ) F} (hg : Sp g) (hh : Sp h) 
     _ = J F κ := by rw [hg]; exact hh
 
 /- English proof (translation)
-Unfold `Sp at *`. Combine the equalities or inequalities in the displayed calculation.
+Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation.
 -/
 theorem Sp.of_mul_eq_one {g s : Matrix (κ ⊕ κ) (κ ⊕ κ) F} (hg : Sp g) (h1 : g * s = 1) : Sp s := by
   unfold Sp at *
@@ -55,15 +55,15 @@ theorem Sp.of_mul_eq_one {g s : Matrix (κ ⊕ κ) (κ ⊕ κ) F} (hg : Sp g) (h
     _ = J F κ := by rw [h1]; simp
 
 /- English proof (translation)
-The claim follows from `Sp.of_mul_eq_one hg (mul_sInv hg)`.
+A detailed English derivation is pending.
 -/
 theorem Sp.sInv {g : Matrix (κ ⊕ κ) (κ ⊕ κ) F} (hg : Sp g) : Sp (sInv g) :=
   Sp.of_mul_eq_one hg (mul_sInv hg)
 
 /- English proof (translation)
-Break down `hg with (⟨A, hA, rfl⟩ | ⟨C, hC, rfl⟩) | hw` into its components or cases. Establish `h1 : Aᵀ * A⁻¹ᵀ = 1`. Rewrite using `[← Matrix.transpose_mul, Matrix.nonsing_inv_mul A hA, Matrix.transpose_one]`. Establish `h2 : A⁻¹ * A = 1` using `Matrix.nonsing_inv_mul A hA`. Simplify using `[Sp, J, Matrix.fromBlocks_transpose, Matrix.fromBlocks_multiply, h1, h2]`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[Sp, J, Matrix.fromBlocks_transpose, Matrix.fromBlocks_multiply, hC]`. Rewrite `hw` using `[Set.mem_singleton_iff]`. Substitute `hw` using the available equality. Simplify using `[Sp, J, Matrix.fromBlocks_transpose, Matrix.fromBlocks_multiply]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Simplify using the standard rewrite rules.
 -/
 theorem sp_of_mem_gens {g : Matrix (κ ⊕ κ) (κ ⊕ κ) F} (hg : g ∈ GlobalTheory.AdelicSvN.gens F κ) : Sp g := by
   rcases hg with (⟨A, hA, rfl⟩ | ⟨C, hC, rfl⟩) | hw
@@ -77,7 +77,7 @@ theorem sp_of_mem_gens {g : Matrix (κ ⊕ κ) (κ ⊕ κ) F} (hg : g ∈ Global
     simp [Sp, J, Matrix.fromBlocks_transpose, Matrix.fromBlocks_multiply]
 
 /- English proof (translation)
-Proceed by induction on `hg using Submonoid.closure_induction with`. Consider the case `mem x hx => exact sp_of_mem_gens hx`. Consider the case `one => simp [Sp]`. Consider the case `mul x y _ _ hx hy => exact hx.mul hy`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem sp_of_mem_closure {g : Matrix (κ ⊕ κ) (κ ⊕ κ) F}
     (hg : g ∈ Submonoid.closure (GlobalTheory.AdelicSvN.gens F κ)) : Sp g := by
@@ -87,9 +87,9 @@ theorem sp_of_mem_closure {g : Matrix (κ ⊕ κ) (κ ⊕ κ) F}
   | mul x y _ _ hx hy => exact hx.mul hy
 
 /- English proof (translation)
-Establish `e : (Matrix.fromBlocks a b c d)ᵀ * J F κ * Matrix.fromBlocks a b c d = Matrix.fromBlocks (aᵀ * c - cᵀ * a) (aᵀ * d - cᵀ * b) (bᵀ * c - dᵀ * a) (bᵀ * d - dᵀ * b)`. Simplify using `[J, Matrix.fromBlocks_transpose, Matrix.fromBlocks_multiply, sub_eq_add_neg, add_comm]`. Unfold `Sp at h`. Rewrite `h` using `[e]`. Take `⟨h1, h2, -, h4⟩` from `Matrix.fromBlocks_inj.mp h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨sub_eq_zero.mp h1, h2, sub_eq_zero.mp h4⟩`.
+Supply the required witnesses or components.
 -/
 private theorem full_of_depthZeroLabels_of_one_le_d {a b c d : Matrix κ κ F} (h : Sp (Matrix.fromBlocks a b c d)) :
     aᵀ * c = cᵀ * a ∧ aᵀ * d - cᵀ * b = 1 ∧ bᵀ * d = dᵀ * b := by
@@ -108,15 +108,15 @@ namespace GlobalTheory.SympGen
 variable {F : Type} [Field F] {κ : Type} [Fintype κ] [DecidableEq κ]
 
 /- English proof (translation)
-Take `⟨A, B, c, D, rfl⟩ : ∃ A B c D, k = Matrix.fromBlocks A B c D` from `⟨_, _, _, _, (Matrix.fromBlocks_toBlocks k).symm⟩`. Simplify using `only [Matrix.toBlocks_fromBlocks₁₂] at h12`. Substitute `h12` using the available equality. Take `⟨hc, hAD, -⟩` from `full_of_depthZeroLabels_of_one_le_d hk`. Simplify using `only [Matrix.transpose_zero, Matrix.mul_zero, sub_zero] at hAD`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Substitute using the available equality. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Establish `hdet : IsUnit A.det`. Use `congrArg Matrix.det hAD` as an intermediate fact. Rewrite `this` using `[Matrix.det_mul, Matrix.det_transpose, Matrix.det_one]`. Conclude with `IsUnit.of_mul_eq_one _ this`. Establish `hD : D = A⁻¹ᵀ`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.transpose_nonsing_inv]`. Conclude with `(Matrix.inv_eq_right_inv hAD).symm`. Substitute `hD` using the available equality. Establish `hAA : A⁻¹ᵀ * Aᵀ = 1`. Rewrite using `[← Matrix.transpose_mul, Matrix.mul_nonsing_inv A hdet, Matrix.transpose_one]`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hsym : (-(Aᵀ * c))ᵀ = -(Aᵀ * c)`. Rewrite using `[Matrix.transpose_neg, Matrix.transpose_mul, Matrix.transpose_transpose, hc]`. Establish `e : Matrix.fromBlocks A 0 c A⁻¹ᵀ = Matrix.fromBlocks A 0 0 A⁻¹ᵀ * Matrix.fromBlocks 1 0 (-(-(Aᵀ * c))) 1`. Simplify using `[Matrix.fromBlocks_multiply, ← Matrix.mul_assoc, hAA]`. Rewrite using `[e]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Prove the first alternative.
 
-Use `Submonoid.mul_mem _ (Submonoid.subset_closure ?_) (Submonoid.subset_closure ?_)` and prove the remaining obligations. Conclude with `Or.inl (Or.inl ⟨A, hdet, rfl⟩)`. Conclude with `Or.inl (Or.inr ⟨-(Aᵀ * c), hsym, rfl⟩)`.
+Prove the first alternative. A detailed English derivation is pending.
 -/
 theorem mem_closure_of_lower {k : Matrix (κ ⊕ κ) (κ ⊕ κ) F} (hk : Sp k) (h12 : k.toBlocks₁₂ = 0) :
     k ∈ Submonoid.closure (GlobalTheory.AdelicSvN.gens F κ) := by
@@ -155,31 +155,27 @@ def halves : (κ ⊕ κ → F) →ₗ[F] (κ → F) × (κ → F) :=
   LinearMap.prod (LinearMap.funLeft F F Sum.inl) (LinearMap.funLeft F F Sum.inr)
 
 /- English proof (translation)
-Introduce `n`. Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Introduce `d hn hbd hinj`. Distinguish the cases in `hd : LinearMap.ker d.mulVecLin = ⊥`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Use `⟨0, by simp, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.zero_mul, sub_zero, ← Matrix.isUnit_iff_isUnit_det]`. Conclude with `Matrix.mulVec_injective_iff_isUnit.mp (LinearMap.ker_eq_bot.mp hd)`. Take `⟨x, hxk, hx0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hd`. Establish `hdx : d *ᵥ x = 0` using `by simpa using hxk`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbx : b *ᵥ x ≠ 0` using `fun h0 => hx0 (hinj x h0 hdx)`. Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, (b *ᵥ x) i ≠ 0 := by`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Conclude with `hbx (funext hc)`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `key : ∀ y, (b *ᵥ x) ⬝ᵥ (d *ᵥ y) = 0`. Introduce `y`. Rewrite using `[Matrix.dotProduct_mulVec, ← Matrix.vecMul_transpose, Matrix.vecMul_vecMul, hbd, ← Matrix.vecMul_vecMul, Matrix.vecMul_transpose, hdx, Matrix.zero_vecMul, zero_dotProduct]`. Use `set E : Matrix κ κ F := Matrix.diagonal (Pi.single i 1) with hEdef`. Establish `hE : ∀ w : κ → F, E *ᵥ w = Pi.single i (w i)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Introduce `w`. Use function extensionality and compare the values at `j`. Rewrite using `[hEdef, Matrix.mulVec_diagonal]`. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, hj]`. Establish `hET : Eᵀ = E` using `by rw [hEdef, Matrix.diagonal_transpose]`. Use `set d' := d - E * b with hd'`. Establish `hd'v : ∀ y, d' *ᵥ y = d *ᵥ y - Pi.single i ((b *ᵥ y) i)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `y`. Rewrite using `[hd', Matrix.sub_mulVec, ← Matrix.mulVec_mulVec, hE]`. Establish `hbd' : bᵀ * d' = d'ᵀ * b`. Rewrite using `[hd', Matrix.transpose_sub, Matrix.transpose_mul, hET, Matrix.mul_sub, Matrix.sub_mul, hbd, Matrix.mul_assoc]`. Establish `hsub : ∀ y, d' *ᵥ y = 0 → d *ᵥ y = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `y hy`. Rewrite `hy` using `[hd'v, sub_eq_zero]`. Establish `h1` using `key y`. Rewrite `h1` using `[hy, dotProduct_single]`. Establish `h2 : (b *ᵥ y) i = 0`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Break down `mul_eq_zero.mp h1 with h | h` into its components or cases. Conclude with `absurd h hi`. Conclude with `h`. Rewrite using `[hy, h2, Pi.single_zero]`. Establish `hinj' : ∀ y, b *ᵥ y = 0 → d' *ᵥ y = 0 → y = 0` using `fun y hb hy => hinj y hb (hsub y hy)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hlt : LinearMap.ker d'.mulVecLin < LinearMap.ker d.mulVecLin`. Rewrite using `[SetLike.lt_iff_le_and_exists]`. Use `⟨fun y hy => ?_, x, hxk, fun hx' => ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.mem_ker, Matrix.mulVecLin_apply] at hy ⊢`. Conclude with `hsub y hy`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [LinearMap.mem_ker, Matrix.mulVecLin_apply] at hx'`. Rewrite `hx'` using `[hd'v, hdx, zero_sub, neg_eq_zero]`. Use `congrFun hx' i` as an intermediate fact. Simplify using `only [Pi.single_eq_same, Pi.zero_apply] at this`. Conclude with `hi this`.
-
-Establish `hlt'` using `Submodule.finrank_lt_finrank_of_lt hlt`. Rewrite `hlt'` using `[hn]`. Take `⟨C, hC, hu⟩` from `ih _ hlt' d' rfl hbd' hinj'`. Use `⟨C + E, by rw [Matrix.transpose_add, hC, hET], ?_⟩` and prove the remaining obligations. Establish `: d - (C + E) * b = d' - C * b`.
-
-Rewrite using `[hd', Matrix.add_mul]`. Normalize the expressions using the abelian group laws. Rewrite using `[this]`. Conclude with `hu`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_symm_isUnit_det_sub_mul_of_finrank_ker (b : Matrix κ κ F) :
     ∀ (n : ℕ) (d : Matrix κ κ F), Module.finrank F (LinearMap.ker d.mulVecLin) = n →
@@ -252,9 +248,9 @@ private theorem exists_symm_isUnit_det_sub_mul_of_finrank_ker (b : Matrix κ κ 
   exact hu
 
 /- English proof (translation)
-Establish `hw : (Matrix.fromBlocks 0 1 (-1) 0 : Matrix (κ ⊕ κ) (κ ⊕ κ) F) ∈ Submonoid.closure (GlobalTheory.AdelicSvN.gens F κ)` using `Submonoid.subset_closure (Or.inr rfl)`. Establish `hu : (Matrix.fromBlocks 1 0 (-T) 1 : Matrix (κ ⊕ κ) (κ ⊕ κ) F) ∈ Submonoid.closure (GlobalTheory.AdelicSvN.gens F κ)` using `Submonoid.subset_closure (Or.inl (Or.inr ⟨T, hT, rfl⟩))`. Establish `e : (Matrix.fromBlocks 1 T 0 1 : Matrix (κ ⊕ κ) (κ ⊕ κ) F) = Matrix.fromBlocks 0 1 (-1) 0 * Matrix.fromBlocks 1 0 (-T) 1 * (Matrix.fromBlocks 0 1 (-1) 0 * Matrix.fromBlocks 0 1 (-1) 0 * Matrix.fromBlocks 0 1 (-1) 0)`. Simplify using `[Matrix.fromBlocks_multiply]`. Rewrite using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submonoid.mul_mem _ (Submonoid.mul_mem _ hw hu) (Submonoid.mul_mem _ (Submonoid.mul_mem _ hw hw) hw)`.
+A detailed English derivation is pending.
 -/
 private theorem fromBlocks_one_symm_mem_closure_gens (T : Matrix κ κ F) (hT : Tᵀ = T) :
     Matrix.fromBlocks 1 T 0 1 ∈ Submonoid.closure (GlobalTheory.AdelicSvN.gens F κ) := by
@@ -273,23 +269,21 @@ private theorem fromBlocks_one_symm_mem_closure_gens (T : Matrix κ κ F) (hT : 
     (Submonoid.mul_mem _ (Submonoid.mul_mem _ hw hw) hw)
 
 /- English proof (translation)
-Take `⟨a, b, c, d, rfl⟩ : ∃ a b c d, g = Matrix.fromBlocks a b c d` from `⟨_, _, _, _, (Matrix.fromBlocks_toBlocks g).symm⟩`. Take `⟨-, -, hbd⟩` from `full_of_depthZeroLabels_of_one_le_d hg`. Establish `hinj : ∀ x, b *ᵥ x = 0 → d *ᵥ x = 0 → x = 0`. Introduce `x hb hd`. Establish `h1 : Matrix.fromBlocks a b c d *ᵥ (Sum.elim 0 x) = 0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[Matrix.fromBlocks_mulVec]`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `rcases i with i | i <;> simp [hb, hd]`. Establish `h2 : Sum.elim (0 : κ → F) x = 0`. Use `congrArg (fun v => sInv (Matrix.fromBlocks a b c d) *ᵥ v) h1` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `this` using `[Matrix.mulVec_mulVec, sInv_mul hg]`. Use function extensionality and compare the values at `i`. Conclude with `congrFun h2 (Sum.inr i)`. Take `⟨C, hC, hdu⟩` from `exists_symm_isUnit_det_sub_mul_of_finrank_ker b _ d rfl hbd hinj`. Use `set d' := d - C * b with hd'`.
+Simplify to obtain the desired conclusion from the available facts. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu : Sp (Matrix.fromBlocks 1 0 (-C) 1 : Matrix (κ ⊕ κ) (κ ⊕ κ) F)` using `sp_of_mem_gens (Or.inl (Or.inr ⟨C, hC, rfl⟩))`. Establish `e1 : Matrix.fromBlocks 1 0 (-C) 1 * Matrix.fromBlocks a b c d = Matrix.fromBlocks a b (c - C * a) d'`. Simplify using `[Matrix.fromBlocks_multiply, hd', sub_eq_add_neg, add_comm]`. Establish `hg1 : Sp (Matrix.fromBlocks a b (c - C * a) d')`. Rewrite using `[← e1]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `hu.mul hg`. Take `⟨-, -, hbd1⟩` from `full_of_depthZeroLabels_of_one_le_d hg1`. Establish `hdu' : IsUnit d'ᵀ.det` using `by rwa [Matrix.det_transpose]`. Use `set S := b * d'⁻¹ with hSdef`. Establish `hS : Sᵀ = S`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_assoc _ (bᵀ * d'), Matrix.mul_assoc bᵀ, Matrix.mul_nonsing_inv _ hdu, Matrix.mul_one]`. Use `_ = d'ᵀ⁻¹ * d'ᵀ * b * d'⁻¹ := by rw [hbd1]; simp only [Matrix.mul_assoc]`. Use `_ = S := by rw [Matrix.nonsing_inv_mul _ hdu', Matrix.one_mul]`. Establish `hSd : S * d' = b`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[hSdef, Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hdu, Matrix.mul_one]`. Use `set k := Matrix.fromBlocks 1 (-S) 0 1 * Matrix.fromBlocks a b (c - C * a) d' with hk`. Establish `hkSp : Sp k`. Establish `hn : Sp (Matrix.fromBlocks 1 (-S) 0 1 : Matrix (κ ⊕ κ) (κ ⊕ κ) F)` using `sp_of_mem_closure (fromBlocks_one_symm_mem_closure_gens (-S) (by rw [Matrix.transpose_neg, hS]))`. Conclude with `hn.mul hg1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hk12 : k.toBlocks₁₂ = 0`. Simplify using `[hk, Matrix.fromBlocks_multiply, Matrix.neg_mul, hSd]`. Establish `hkm` using `mem_closure_of_lower hkSp hk12`. Establish `e2 : Matrix.fromBlocks a b c d = Matrix.fromBlocks 1 0 (-(-C)) 1 * (Matrix.fromBlocks 1 S 0 1 * k)`. Rewrite using `[hk, ← Matrix.mul_assoc (Matrix.fromBlocks 1 S 0 1), ← e1]`.
-
-Simplify using `[Matrix.fromBlocks_multiply]`. Rewrite using `[e2]`. Use `Submonoid.mul_mem _ (Submonoid.subset_closure ?_) (Submonoid.mul_mem _ (fromBlocks_one_symm_mem_closure_gens S hS) hkm)` and prove the remaining obligations. Conclude with `Or.inl (Or.inr ⟨-C, by rw [Matrix.transpose_neg, hC], rfl⟩)`.
+Prove the first alternative. A detailed English derivation is pending.
 -/
 theorem main (g : Matrix (κ ⊕ κ) (κ ⊕ κ) F) (hg : Sp g) : g ∈ Submonoid.closure (GlobalTheory.AdelicSvN.gens F κ) := by
   obtain ⟨a, b, c, d, rfl⟩ : ∃ a b c d, g = Matrix.fromBlocks a b c d :=
@@ -346,7 +340,7 @@ theorem main (g : Matrix (κ ⊕ κ) (κ ⊕ κ) F) (hg : Sp g) : g ∈ Submonoi
 end GlobalTheory.SympGen
 
 /- English proof (translation)
-Introduce `F _ κ _ _ g hg`. Conclude with `GlobalTheory.SympGen.main g hg`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.sympGen : ∀ (F : Type) [Field F] (κ : Type) [Fintype κ] [DecidableEq κ] (g : Matrix (κ ⊕ κ) (κ ⊕ κ) F),
     gᵀ * Matrix.fromBlocks 0 1 (-1) 0 * g = Matrix.fromBlocks 0 1 (-1) 0 →

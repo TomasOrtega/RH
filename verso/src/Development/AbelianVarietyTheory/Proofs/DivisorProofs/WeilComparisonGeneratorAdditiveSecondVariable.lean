@@ -13,9 +13,9 @@ namespace GlobalTheory.Mum.Two.WeilCmp
 variable {S : Scheme.{0}} (P₀ P₁ P₂ : PolAV S)
 
 /- English proof (translation)
-Establish `c₂` using `prod_cube₂ (fst P₀.A P₀.A ≫ f₂) (snd P₀.A P₀.A ≫ g₂) (fun q => h ((lift a b).left ≫ q ≫ coprod.inr))`. Establish `c₁` using `prod_neg _ _ (prod_cube₂ (fst P₀.A P₀.A ≫ f₁) (snd P₀.A P₀.A ≫ g₁) (fun q => h ((lift a b).left ≫ q ≫ coprod.inl)))`. Establish `e : ∀ {Q : Over S} (q : P₀.A ⊗ P₀.A ⟶ Q) (t : Q.left ⟶ P₁.A.left ⨿ P₂.A.left), (lift a b).left ≫ q.left ≫ t = (lift a b ≫ q).left ≫ t` using `fun q t => by rw [Over.comp_left, Category.assoc]`. Rewrite using `[Fintype.prod_sum_type]`. Use `congrArg₂ (· * ·) (c₂.trans ?_) (c₁.trans ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [e, MonObj.comp_mul, lift_fst_assoc, lift_snd_assoc, MonObj.comp_one]`. Simplify using `only [e, MonObj.comp_mul, lift_fst_assoc, lift_snd_assoc, MonObj.comp_one]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem prod_cmp (f₁ g₁ : P₀.A ⟶ P₁.A) (f₂ g₂ : P₀.A ⟶ P₂.A) {T : Over S} (a b : T ⟶ P₀.A) {V : Type} [CommGroup V]
     (h : (T.left ⟶ P₁.A.left ⨿ P₂.A.left) → V) :
@@ -39,25 +39,23 @@ end GlobalTheory.Mum.Two.WeilCmp
 namespace GlobalTheory.Mum.Two.WeilCmp
 
 /- English proof (translation)
-Introduce `hG S P₀ P₁ P₂ _ _ f₁ g₁ f₂ g₂ _ _ _ _ r₁ hr₁ c₁ r₂ hr₂ c₂ u hu hn T z J hJ x y y'`. Set `p₀` to `x3 P₀.A 0`. Set `p₁` to `x3 P₀.A 1`. Set `p₂` to `x3 P₀.A 2`. Establish `hL` using `join_isLB P₁.isLB P₂.isLB`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `pl` using `isPart_inl P₁.L P₂.L`. Establish `pr` using `isPart_inr P₁.L P₂.L`. Establish `vp : ∀ {T' : Over S} (σ : T' ⟶ G3 P₀.A) {z : T'.left} {J}, Good (join P₁.L P₂.L) z J → ∀ a b : G3 P₀.A ⟶ P₀.A, val (LB.pullGen _ _ _ u (lift a b).left) σ.left z J = val u (lift (σ ≫ a) (σ ≫ b)).left z J` using `fun σ z J hJ a b => by rw [val_pull hJ, ← Over.comp_left, comp_lift]`. Set `U₁` to `LB.mulGen _ _ _ _ _ (LB.pullGen _ _ _ u (lift p₀ (p₁ * p₂)).left) (pl.gen (LB.pullGen P₁.L _ _ c₁.t (lift (p₀ ≫ f₁) (lift (p₁ ≫ g₁) (p₂ ≫ g₁))).left))`. Set `U₂` to `LB.mulGen _ _ _ _ _ (pr.gen (LB.pullGen P₂.L _ _ c₂.t (lift (p₀ ≫ f₂) (lift (p₁ ≫ g₂) (p₂ ≫ g₂))).left)) (LB.mulGen _ _ _ _ _ (LB.pullGen _ _ _ u (lift p₀ p₁).left) (LB.pullGen _ _ _ u (lift p₀ p₂).left))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hU₁ : U₁.IsGen` using `DVR.mulGen_isGen _ _ _ _ _ _ _ (DVR.pullGen_isGen _ _ _ _ hu _) (pl.gen_isGen (DVR.pullGen_isGen _ _ _ _ c₁.isGen _))`. Establish `hU₂ : U₂.IsGen` using `DVR.mulGen_isGen _ _ _ _ _ _ _ (pr.gen_isGen (DVR.pullGen_isGen _ _ _ _ c₂.isGen _)) (DVR.mulGen_isGen _ _ _ _ _ _ _ (DVR.pullGen_isGen _ _ _ _ hu _) (DVR.pullGen_isGen _ _ _ _ hu _))`. Establish `ev₁ : ∀ {T' : Over S} (σ : T' ⟶ G3 P₀.A) {z : T'.left} {J}, Good (join P₁.L P₂.L) z J → val U₁ σ.left z J = val u (lift (σ ≫ p₀) (σ ≫ (p₁ * p₂))).left z J * cubV c₁ z (rl J) (σ ≫ p₀ ≫ f₁) (σ ≫ p₁ ≫ g₁) (σ ≫ p₂ ≫ g₁)` using `fun σ z J hJ => (val_mul hJ _ _ _).trans (congrArg₂ (· * ·) (vp σ hJ _ _) ((pl.val_gen _ _ _ hJ).trans (val_cub c₁ σ (pl.good hJ) _ _ _)))`. Establish `ev₂ : ∀ {T' : Over S} (σ : T' ⟶ G3 P₀.A) {z : T'.left} {J}, Good (join P₁.L P₂.L) z J → val U₂ σ.left z J = cubV c₂ z (rr J) (σ ≫ p₀ ≫ f₂) (σ ≫ p₁ ≫ g₂) (σ ≫ p₂ ≫ g₂) * (val u (lift (σ ≫ p₀) (σ ≫ p₁)).left z J * val u (lift (σ ≫ p₀) (σ ≫ p₂)).left z J)` using `fun σ z J hJ => (val_mul hJ _ _ _).trans (congrArg₂ (· * ·) ((pr.val_gen _ _ _ hJ).trans (val_cub c₂ σ (pr.good hJ) _ _ _)) ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) (vp σ hJ _ _) (vp σ hJ _ _))))`. Set `e : 𝟙_ (Over S) ⟶ G3 P₀.A` to `lift 1 (lift 1 1)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `e₀ : e ≫ p₀ = 1` using `by simp [e, p₀, x3]`. Establish `e₁ : e ≫ p₁ = 1` using `by simp [e, p₁, x3]`. Establish `e₂ : e ≫ p₂ = 1` using `by simp [e, p₂, x3]`. Establish `o₁ : e ≫ (p₁ * p₂) = 1` using `(MonObj.comp_mul _ _ _).trans (by rw [e₁, e₂, _root_.mul_one])`. Establish `sj : Function.Surjective ((snd P₀.A (P₀.A ⊗ P₀.A)).left ≫ (snd P₀.A P₀.A).left ≫ P₀.A.hom).appTop.hom` using `surj_comp (surj_snd hG P₀.isAb _) (surj_comp (surj_snd hG P₀.isAb _) (hG _ _ P₀.isAb).2)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he : e.left ≫ (snd P₀.A (P₀.A ⊗ P₀.A)).left ≫ (snd P₀.A P₀.A).left ≫ P₀.A.hom = 𝟙 _`. Rewrite using `[Over.w, Over.w]`. Conclude with `Over.w e`. Establish `key` using `gen_unique' hL (u := U₁) (u' := U₂) (fun V _ k => ?_) _ e.left he sj hU₁ hU₂ (fun w I hI => ?_)`. Use `rotate_left`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `(prod_sum₂ (K := thK) (K' := KK ⊕ KK) (U := V) _ (prod_cub (p₀ ≫ f₂) (p₁ ≫ g₂) (p₂ ≫ g₂) fun q => k (q ≫ coprod.inr)) (prod_sum₂ (K := KK) (K' := KK) (U := V) _ (prod_cmp P₀ P₁ P₂ f₁ g₁ f₂ g₂ p₀ p₁ k) (prod_cmp P₀ P₁ P₂ f₁ g₁ f₂ g₂ p₀ p₂ k))).trans (Eq.trans ?_ (prod_sum₂ (K := K …` and prove the remaining obligations. Simplify using `only [MonObj.mul_comp, ← _root_.mul_assoc]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv]`. Normalize the expressions using the abelian group laws.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[ev₁ e hI, ev₂ e hI]`. Simplify using `only [← Category.assoc, e₀, e₁, e₂, o₁, MonObj.one_comp]`. Establish `C₁` using `isCub_cubV c₁ (pl.good hI)`. Establish `C₂` using `isCub_cubV c₂ (pr.good hI)`. Establish `v1 : val u (lift (1 : 𝟙_ (Over S) ⟶ P₀.A) 1).left w I = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `eL : lift (1 : 𝟙_ (Over S) ⟶ P₀.A) 1 = lift η[P₀.A] η[P₀.A]` using `by simp [Hom.one_def]`. Rewrite using `[eL]`. Conclude with `(congrArg (fun q => val u q w I) (Category.id_comp _).symm).trans (hn _ (𝟙 _) w I hI)`. Rewrite using `[v1, C₁.face, C₂.face]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `kk` using `(ev₁ _ hJ).symm.trans ((key _ (lift x (lift y y')).left z J hJ).trans (ev₂ _ hJ))`. Establish `r₀ : lift x (lift y y') ≫ p₀ = x` using `by simp [p₀, x3]`. Establish `r₁ : lift x (lift y y') ≫ p₁ = y` using `by simp [p₁, x3]`. Establish `r₂ : lift x (lift y y') ≫ p₂ = y'` using `by simp [p₂, x3]`. Establish `s₁ : lift x (lift y y') ≫ (p₁ * p₂) = y * y'` using `(MonObj.comp_mul _ _ _).trans (by rw [r₁, r₂])`.
-
-Rewrite `kk` using `[s₁]`. Simplify using `only [← Category.assoc, r₀, r₁, r₂] at kk`. Conclude with `kk`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem add_snd : GlobalFnsSt → ∀ (S : Scheme.{0}) (P₀ P₁ P₂ : PolAV S) [Nonempty P₁.A.left] [Nonempty P₂.A.left] (f₁ g₁ : P₀.A ⟶ P₁.A) (f₂ g₂ : P₀.A ⟶ P₂.A) [IsMonHom f₁] [IsMonHom g₁] [IsMonHom f₂] [IsMonHom g₂], ∀ (r₁ : LB.Gen (P₁.L.pull (eSec P₁.A))) (hr₁ : r₁.IsGen) (c₁ : CubicalStr P₁.A ⟨P₁.L, r₁, P₁.isLB, hr₁⟩) (r₂ : LB.Gen (P₂.L.pull (eSec P₂.A))) (hr₂ : r₂.IsGen) (c₂ : CubicalStr P₂.A ⟨P₂.L, r₂, P₂.isLB, hr₂⟩) (u : LB.Gen (CmpL P₀ P₁ P₂ f₁ g₁ f₂ g₂)), u.IsGen → (∀ (Z : Scheme.{0}) (r : Z ⟶ S) (z : Z) (J), Good (join P₁.L P₂.L) z J → val u (r ≫ zero2 P₀.A) z J = 1) → ∀ (T : Over S) (z : T.left) (J : (T.left ⟶ P₁.A.left ⨿ P₂.A.left) → (join P₁.L P₂.L).ι), Good (join P₁.L P₂.L) z J → ∀ (x y y' : T ⟶ P₀.A), val u (lift x (y * y')).left z J * cubV c₁ z (rl J) (x ≫ f₁) (y ≫ g₁) (y' ≫ g₁) = cubV c₂ z (rr J) (x ≫ f₂) (y ≫ g₂) (y' ≫ g₂) * (val u (lift x y).left z J * val u (lift x y').left z J) := by
   intro hG S P₀ P₁ P₂ _ _ f₁ g₁ f₂ g₂ _ _ _ _ r₁ hr₁ c₁ r₂ hr₂ c₂ u hu hn T z J hJ x y y'

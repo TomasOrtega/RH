@@ -29,7 +29,7 @@ def Rel (w : LB.Iso L₁ (L₀.pull φ)) (s : SecM A L₁ a T) (s₀ : SecM G L�
       (wVal w z J J' (r ≫ (snd T A).left) ^ a).val * ThetaAct.sv s r z J'
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `exists_secRel hp τ hτ hw hL₀ hL₁ (SecM.toSec G s₀)`. Conclude with `⟨SecM.ofSec A s, hs⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_rel (hw : w.IsGen) (hL₀ : L₀.IsLB) (hL₁ : L₁.IsLB) (s₀ : SecM G L₀ a T₀) :
     ∃ s, Rel hp τ hτ w s s₀ := by
@@ -37,7 +37,7 @@ theorem exists_rel (hw : w.IsGen) (hL₀ : L₀.IsLB) (hL₁ : L₁.IsLB) (s₀ 
   exact ⟨SecM.ofSec A s, hs⟩
 
 /- English proof (translation)
-Take `⟨s₀, hs⟩` from `exists_secRel_up hp τ hτ hw hL₀ hL₁ (SecM.toSec A s)`. Conclude with `⟨SecM.ofSec G s₀, hs⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_rel_up [IsIso τ] (hw : w.IsGen) (hL₀ : L₀.IsLB) (hL₁ : L₁.IsLB) (s : SecM A L₁ a T) :
     ∃ s₀, Rel hp τ hτ w s s₀ := by
@@ -47,7 +47,7 @@ theorem exists_rel_up [IsIso τ] (hw : w.IsGen) (hL₀ : L₀.IsLB) (hL₁ : L�
 variable {hp τ hτ}
 
 /- English proof (translation)
-The claim follows from `ThetaAct.sv_ext hL₁ fun y J' hJ' => by obtain ⟨J, hJ⟩ := exists_good' hL₀ y exact (Units.mul_right_inj _).1 ((h _ _ _ _ _ hJ hJ').symm.trans (h' _ _ _ _ _ hJ hJ'))`.
+A detailed English derivation is pending.
 -/
 theorem Rel.unique_down (hL₀ : L₀.IsLB) (hL₁ : L₁.IsLB) {s s' : SecM A L₁ a T} {s₀ : SecM G L₀ a T₀}
     (h : Rel hp τ hτ w s s₀) (h' : Rel hp τ hτ w s' s₀) : s = s' :=
@@ -56,7 +56,7 @@ theorem Rel.unique_down (hL₀ : L₀.IsLB) (hL₁ : L₁.IsLB) {s s' : SecM A L
     exact (Units.mul_right_inj _).1 ((h _ _ _ _ _ hJ hJ').symm.trans (h' _ _ _ _ _ hJ hJ'))
 
 /- English proof (translation)
-The claim follows from `ThetaAct.sv_ext hL₀ fun y J hJ => by obtain ⟨J', hJ'⟩ := exists_good' hL₁ y obtain ⟨χ, -, h₂⟩ := WeilPull.exists_psi_inv hp τ hτ have h₂' : χ ≫ psi hp τ hτ = 𝟙 _ := h₂ have q := (h _ χ y _ _ hJ hJ').trans (h' _ χ y _ _ hJ hJ').symm rwa [h₂'] at q`.
+A detailed English derivation is pending.
 -/
 theorem Rel.unique_up [IsIso τ] (hL₀ : L₀.IsLB) (hL₁ : L₁.IsLB) {s : SecM A L₁ a T} {s₀ s₀' : SecM G L₀ a T₀}
     (h : Rel hp τ hτ w s s₀) (h' : Rel hp τ hτ w s s₀') : s₀ = s₀' :=
@@ -68,7 +68,7 @@ theorem Rel.unique_up [IsIso τ] (hL₀ : L₀.IsLB) (hL₁ : L₁.IsLB) {s : Se
     rwa [h₂'] at q
 
 /- English proof (translation)
-Introduce `Z r z J J' hJ hJ'` and use `by rw [ThetaAct.sv_add _ _ _ _ hJ, ThetaAct.sv_add _ _ _ _ hJ', h _ _ _ _ _ hJ hJ', h' _ _ _ _ _ hJ hJ', mul_add]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Rel.add {s t : SecM A L₁ a T} {s₀ t₀ : SecM G L₀ a T₀}
     (h : Rel hp τ hτ w s s₀) (h' : Rel hp τ hτ w t t₀) : Rel hp τ hτ w (s + t) (s₀ + t₀) :=
@@ -76,7 +76,7 @@ theorem Rel.add {s t : SecM A L₁ a T} {s₀ t₀ : SecM G L₀ a T₀}
     rw [ThetaAct.sv_add _ _ _ _ hJ, ThetaAct.sv_add _ _ _ _ hJ', h _ _ _ _ _ hJ hJ', h' _ _ _ _ _ hJ hJ', mul_add]
 
 /- English proof (translation)
-Introduce `Z r z J J' hJ hJ'` and use `by rw [ThetaAct.sv_smul _ _ _ _ hJ, ThetaAct.sv_smul _ _ _ _ hJ', h _ _ _ _ _ hJ hJ', mul_left_comm, Category.assoc, psi_fst', ← Category.assoc] exact congrArg (fun x => _ * (x * _)) (gs_pull _ τ z ⊤ trivial c).symm`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Rel.smul {s : SecM A L₁ a T} {s₀ : SecM G L₀ a T₀} (c : Γ(T₀.left, ⊤))
     (h : Rel hp τ hτ w s s₀) : Rel hp τ hτ w (τ.appTop.hom c • s) (c • s₀) :=
@@ -86,7 +86,7 @@ theorem Rel.smul {s : SecM A L₁ a T} {s₀ : SecM G L₀ a T₀} (c : Γ(T₀.
     exact congrArg (fun x => _ * (x * _)) (gs_pull _ τ z ⊤ trivial c).symm
 
 /- English proof (translation)
-Introduce `Z r z J J' hJ hJ'` and use `by have e : psi hp σ hσ ≫ (u₀ ▷ G).left = (u ▷ A).left ≫ psi hp τ hτ := by refine psi_ext ?_ ?_ · rw [Category.assoc, ← Over.comp_left, whiskerRight_fst, Over.comp_left, ← Category.assoc, psi_fst', Category.assoc, Category.assoc, psi_fst', hu, ← Category.assoc (u ▷ A).left, ← Ove …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Rel.pull {s : SecM A L₁ a T} {s₀ : SecM G L₀ a T₀} (h : Rel hp τ hτ w s s₀)
     {T' : Over S'} {T₀' : Over S} (σ : T'.left ⟶ T₀'.left) (hσ : σ ≫ T₀'.hom = T'.hom ≫ f)
@@ -106,9 +106,9 @@ theorem Rel.pull {s : SecM A L₁ a T} {s₀ : SecM G L₀ a T₀} (h : Rel hp �
       (q.trans (congrArg _ (VVRank.sv_pullS A a u (SecM.toSec A s) _ z hJ').symm))
 
 /- English proof (translation)
-Establish `: IsIso (C` using `Scheme.{0}) (X := T.left) (Y := (Over.mk (T.hom ≫ f)).left) (𝟙 T.left) := IsIso.id _`. Use `choose D hD using exists_rel hp (T := T) (T₀ := Over.mk (T.hom ≫ f)) (𝟙 T.left) (Category.id_comp _) (a := a) hw hL₀ hL₁`. Set `l : SecM G L₀ a (Over.mk (T.hom ≫ f)) →ₗ[Γ(T.left, ⊤)] SecM A L₁ a T` to `{ toFun := D map_add' := fun x y => (hD _).unique_down hL₀ hL₁ ((hD x).add (hD y)) map_smul' := fun c x => (hD _).unique_down hL₀ hL₁ (Rel.smul (T₀ := Over.mk (T.hom ≫ f)) (τ := 𝟙 T.left) c (hD x)) }`. Use `⟨LinearEquiv.ofBijective l ⟨fun x y e => ?_, fun s => ?_⟩, hD⟩` and prove the remaining obligations. Establish `e' : D x = D y` using `e`.
+Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `(hD x).unique_up hL₀ hL₁ (e' ▸ hD y)`. Take `⟨s₀, hs⟩` from `exists_rel_up hp (T := T) (T₀ := Over.mk (T.hom ≫ f)) (𝟙 T.left) (Category.id_comp _) hw hL₀ hL₁ s`. Conclude with `⟨s₀, (hD s₀).unique_down hL₀ hL₁ hs⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_linearEquiv (hp : IsGrpPullback A G f φ) (hw : w.IsGen) (hL₀ : L₀.IsLB) (hL₁ : L₁.IsLB)
     (a : ℤ) (T : Over S') :
@@ -129,13 +129,11 @@ theorem exists_linearEquiv (hp : IsGrpPullback A G f φ) (hw : w.IsGen) (hL₀ :
     exact ⟨s₀, (hD s₀).unique_down hL₀ hL₁ hs⟩
 
 /- English proof (translation)
-Introduce `S S' f P P' φ hp hw n κ _ T₀ τ hτ b₀ hb₀`. Take `⟨w, hw⟩` from `hw`. Establish `hτ' : τ ≫ T₀.hom = (baseOver S').hom ≫ f` using `hτ.trans (Category.id_comp _).symm`. Use `choose b hb using fun i => exists_rel hp (T := baseOver S') τ hτ' hw P.isLB P'.isLB (b₀ i)`. Use `⟨b, fun T hT h => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hh : h.left = T.hom` using `(Category.comp_id _).symm.trans (Over.w h)`. Set `h₀ : Over.mk (T.hom ≫ f) ⟶ T₀` to `Over.homMk (T.hom ≫ τ) (by`. Express the relevant statement in the definitionally equal form `(T.hom ≫ τ) ≫ T₀.hom = T.hom ≫ f`. Rewrite using `[Category.assoc, hτ])`. Establish `: IsAffine (Over.mk (T.hom ≫ f)).left` using `hT`.
+Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `hb₀ _ h₀`. Take `⟨E, hE⟩` from `exists_linearEquiv hp hw P.isLB P'.isLB n T`. Use `⟨Module.Basis.map (R := Γ(T.left, ⊤)) c E, fun i => ?_⟩` and prove the remaining obligations. Use `(hE (c i)).unique_down P.isLB P'.isLB ?_` and prove the remaining obligations. Rewrite using `[hc]`.
-
-Conclude with `(hb i).pull _ _ h h₀ ((Category.id_comp _).trans (congrArg (· ≫ τ) hh.symm))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem univBasis_move : ∀ (S S' : Scheme.{0}) (f : S' ⟶ S) (P : PolAV S) (P' : PolAV S') (φ : P'.A.left ⟶ P.A.left), IsGrpPullback P'.A P.A f φ → LBIso P'.L (P.L.pull φ) → ∀ (n : ℤ) (κ : Type) [Fintype κ] (T₀ : Over S) (τ : S' ⟶ T₀.left), τ ≫ T₀.hom = f → ∀ b₀ : κ → SecM P.A P.L n T₀, UnivBasis P n b₀ → ∃ b : κ → SecM P'.A P'.L n (baseOver S'), UnivBasis P' n b := by
   intro S S' f P P' φ hp hw n κ _ T₀ τ hτ b₀ hb₀

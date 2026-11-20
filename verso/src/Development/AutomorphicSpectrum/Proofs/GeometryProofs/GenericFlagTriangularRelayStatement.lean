@@ -9,7 +9,7 @@ import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GenericFlagTriangul
 open scoped Matrix
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.CompanionTheory.Relay.generic_flag_triangular_relay` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FGeometryProofs%2FGenericFlagTriangularRelay.lean&line=10#L10)
 -/

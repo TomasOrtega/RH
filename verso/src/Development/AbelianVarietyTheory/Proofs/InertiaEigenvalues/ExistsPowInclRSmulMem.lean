@@ -15,9 +15,9 @@ noncomputable section
 namespace GlobalTheory.WeakClosed
 
 /- English proof (translation)
-Establish `hz : z = ∑ α, bO α ⊗ₜ[ℤ_[l]] TensorProduct.equivFinsuppOfBasisLeft bO z α` using `by conv_lhs => rw [← (TensorProduct.equivFinsuppOfBasisLeft bO).symm_apply_apply z]`. Rewrite using `[TensorProduct.equivFinsuppOfBasisLeft_symm_apply, Finsupp.sum_fintype _ _ (by simp)]`. Use `conv_lhs => rw [hz]`. Rewrite using `[Finset.mul_sum, map_sum, Finset.sum_smul]`. Use `Finset.sum_congr rfl fun α _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Algebra.TensorProduct.tmul_pow, Algebra.TensorProduct.tmul_mul_tmul, one_pow, one_mul, ← mul_smul, Algebra.TensorProduct.tmul_mul_tmul, one_mul, mul_one]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem inclR_pow_mul_smul_eq_sum {l : ℕ} [Fact l.Prime] {LL : FinExt l} {M : Type} [AddCommGroup M]
     [Module (RW LL) M] {ι : Type} [Fintype ι] [DecidableEq ι]
@@ -36,7 +36,7 @@ theorem inclR_pow_mul_smul_eq_sum {l : ℕ} [Fact l.Prime] {LL : FinExt l} {M : 
   rfl
 
 /- English proof (translation)
-Rewrite using `[map_sum, Finset.sum_apply]`. Conclude with `Finset.sum_congr rfl fun α _ => GlobalTheory.WeakTop.coords_one_tmul_smul b _ _ i`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coords_sum_one_tmul_smul {R O W T ι κ : Type} [CommRing R] [CommRing O] [Algebra R O] [CommRing W]
     [Algebra R W] [AddCommGroup T] [Module O T] [Module R T] [IsScalarTower R O T] [Fintype ι]
@@ -48,7 +48,7 @@ theorem coords_sum_one_tmul_smul {R O W T ι κ : Type} [CommRing R] [CommRing O
   exact Finset.sum_congr rfl fun α _ => GlobalTheory.WeakTop.coords_one_tmul_smul b _ _ i
 
 /- English proof (translation)
-The claim follows from `zlTower T; GlobalTheory.WeakTop.coords (WCb l) ↥(OL LL) b (inclR LL ((((1 : ↥(OL LL)) ⊗ₜ[ℤ_[l]] (WittVector.teichmuller l (AI.εroot s) - 1)) : RA LL) ^ k * z) • y) ∈ V := by letI := zlMod T haveI := zlTower T letI := cbValued l letI := wTop l haveI : IsTopologicalRing (WCb l) := …`.
+A detailed English derivation is pending.
 -/
 theorem exists_pow_wittCoords_inclR_smul_mem_nhds {l : ℕ} [Fact l.Prime] {P : LocPrime l} (AI : LocAinf l P) (s : ℕ)
     {K LL : FinExt l} {m : ℕ} (bO : Module.Basis (Fin m) ℤ_[l] ↥(OL LL)) {T : Lt K LL} {d : ℕ}
@@ -85,13 +85,11 @@ theorem exists_pow_wittCoords_inclR_smul_mem_nhds {l : ℕ} [Fact l.Prime] {P : 
   exact hIt fun α _ => Set.mem_iInter.1 (hk _) α
 
 /- English proof (translation)
-Introduce `l _ P AI s K LL T d b y`. Use `letI := zlMod T`. Use `haveI := zlTower T`. Use `letI := cbValued l`. Use `letI := wTop l`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `haveI : IsTopologicalRing (WCb l) := GlobalTheory.WeakTop.isTopologicalRing_witt`. Introduce `U hU`. Take `⟨-, -, -, -, hfree, hfin, -⟩` from `GlobalTheory.Per.integers_completeDVR l LL`. Establish `hU' : U ∈ Filter.comap (GlobalTheory.WeakTop.coords (WCb l) ↥(OL LL) b) (𝓝 (GlobalTheory.WeakTop.coords (WCb l) ↥(OL LL) b 0))`. Use `hU` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `this` using `[nhds_induced]`. Conclude with `this`. Take `⟨V, hV, hVU⟩` from `Filter.mem_comap.1 hU'`. Rewrite `hV` using `[map_zero]`. Take `⟨k, hk⟩` from `exists_pow_wittCoords_inclR_smul_mem_nhds AI s (Module.finBasis ℤ_[l] ↥(OL LL)) b y V hV`.
-
-Conclude with `⟨k, fun z => hVU (Set.mem_preimage.2 (hk z))⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_pow_inclR_smul_mem : ∀ {l : ℕ} [Fact l.Prime] {P : LocPrime l} (AI : LocAinf l P) (s : ℕ) {K LL : FinExt l} (T : Lt K LL) {d : ℕ} (b : LatB T d) (y : TW (RW LL) T), letI := twTop T b; ∀ U ∈ 𝓝 (0 : TW (RW LL) T), ∃ k : ℕ, ∀ z : RA LL, inclR LL ((((1 : ↥(OL LL)) ⊗ₜ[ℤ_[l]] (WittVector.teichmuller l (AI.εroot s) - 1)) : RA LL) ^ k * z) • y ∈ U := by
   intro l _ P AI s K LL T d b y

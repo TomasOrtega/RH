@@ -27,19 +27,19 @@ local notation "𝔍" => RingHom.ker (fontaineThetaInvertP (normInteger ℂ_[p])
 local notation "θ" => fontaineTheta (normInteger ℂ_[p]) p
 
 /- English proof (translation)
-Rewrite using `[← PadicComplex.coe_natCast, PadicComplex.norm_extends, ← map_natCast (algebraMap ℚ_[p] (PadicAlgCl p)) p, PadicAlgCl.norm_extends, Padic.norm_p]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_natCast_p : ‖(p : ℂ_[p])‖ = (p : ℝ)⁻¹ := by
   rw [← PadicComplex.coe_natCast, PadicComplex.norm_extends,
     ← map_natCast (algebraMap ℚ_[p] (PadicAlgCl p)) p, PadicAlgCl.norm_extends, Padic.norm_p]
 
 /- English proof (translation)
-The claim follows from `inv_pos.2 (Nat.cast_pos.2 hp.out.pos)`.
+A detailed English derivation is pending.
 -/
 theorem inv_p_pos : (0 : ℝ) < (p : ℝ)⁻¹ := inv_pos.2 (Nat.cast_pos.2 hp.out.pos)
 
 /- English proof (translation)
-The claim follows from `inv_lt_one_of_one_lt₀ (Nat.one_lt_cast.2 hp.out.one_lt)`.
+A detailed English derivation is pending.
 -/
 theorem inv_p_lt_one : (p : ℝ)⁻¹ < 1 := inv_lt_one_of_one_lt₀ (Nat.one_lt_cast.2 hp.out.one_lt)
 
@@ -48,7 +48,7 @@ variable (p) in
 def varpi : Cb p := algebraMap (Ob p) (Cb p) (pFlat p)
 
 /- English proof (translation)
-Rewrite using `[varpi, norm_algebraMap_preTilt, preTilt_norm_def, untilt_pFlat]`. Use `push_cast`. Conclude with `norm_natCast_p`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem norm_varpi : ‖varpi p‖ = (p : ℝ)⁻¹ := by
   rw [varpi, norm_algebraMap_preTilt, preTilt_norm_def, untilt_pFlat]
@@ -56,7 +56,7 @@ theorem norm_varpi : ‖varpi p‖ = (p : ℝ)⁻¹ := by
   exact norm_natCast_p
 
 /- English proof (translation)
-Introduce `h`. Use `norm_varpi (p := p)` as an intermediate fact. Rewrite `this` using `[h, norm_zero]`. Conclude with `inv_p_pos.ne this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem varpi_ne_zero : varpi p ≠ 0 := by
   intro h
@@ -65,7 +65,7 @@ theorem varpi_ne_zero : varpi p ≠ 0 := by
   exact inv_p_pos.ne this
 
 /- English proof (translation)
-Rewrite using `[norm_varpi]`. Conclude with `inv_p_lt_one`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_varpi_lt_one : ‖varpi p‖ < 1 := by
   rw [norm_varpi]; exact inv_p_lt_one
@@ -75,12 +75,12 @@ variable (p) in
 def xi : (𝓣).int := (𝓣).ptElt (norm_varpi_lt_one (p := p)).le
 
 /- English proof (translation)
-The claim follows from `(𝓣).isPrimOne_ptElt varpi_ne_zero norm_varpi_lt_one`.
+A detailed English derivation is pending.
 -/
 theorem isPrimOne_xi : (𝓣).IsPrimOne (xi p) := (𝓣).isPrimOne_ptElt varpi_ne_zero norm_varpi_lt_one
 
 /- English proof (translation)
-Rewrite using `[ptRad, coeff_zero, xi, coe_ptElt, map_sub, red_π, red_teich, zero_sub, norm_neg, norm_varpi]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ptRad_xi : (𝓣).ptRad (xi p) = (p : ℝ)⁻¹ := by
   rw [ptRad, coeff_zero, xi, coe_ptElt, map_sub, red_π, red_teich, zero_sub, norm_neg, norm_varpi]
@@ -90,32 +90,32 @@ variable (p) in
 def xiA : AInf ℂ_[p] p := (p : AInf ℂ_[p] p) - teichmuller p (pFlat p)
 
 /- English proof (translation)
-The claim follows from `IsPerfectoidField.ker_fontaineTheta_eq_span_p_sub_teichmuller untilt_pFlat`.
+A detailed English derivation is pending.
 -/
 theorem ker_theta_eq_span_xiA : RingHom.ker θ = Ideal.span {xiA p} :=
   IsPerfectoidField.ker_fontaineTheta_eq_span_p_sub_teichmuller untilt_pFlat
 
 /- English proof (translation)
-Rewrite using `[xiA, map_sub, map_natCast, incl_teichmuller, xi, coe_ptElt, teich_eq, teichLift_π]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem incl_xiA : incl ℂ_[p] p (xiA p) = ((xi p : (𝓣).int) : WC p) := by
   rw [xiA, map_sub, map_natCast, incl_teichmuller, xi, coe_ptElt, teich_eq, teichLift_π]
   rfl
 
 /- English proof (translation)
-The claim follows from `ker_fontaineThetaInvertP ker_theta_eq_span_xiA`.
+A detailed English derivation is pending.
 -/
 theorem ker_eq_span_xiA : 𝔍 = Ideal.span {algebraMap (AInf ℂ_[p] p) 𝔸 (xiA p)} :=
   ker_fontaineThetaInvertP ker_theta_eq_span_xiA
 
 /- English proof (translation)
-Rewrite using `[ker_eq_span_xiA, Ideal.span_singleton_pow]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ker_pow_eq_span (m : ℕ) : 𝔍 ^ m = Ideal.span {algebraMap (AInf ℂ_[p] p) 𝔸 (xiA p) ^ m} := by
   rw [ker_eq_span_xiA, Ideal.span_singleton_pow]
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => rw [pow_zero]`. Simplify using `using (TeichLift.convAll_π_pow (T := 𝓣) 0)`. Consider the case `succ k ih => rw [pow_succ]`. Conclude with `ih.mul hb`.
+Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem convAll_pow {b : (𝓣).B} (hb : (𝓣).ConvAll b) (k : ℕ) : (𝓣).ConvAll (b ^ k) := by
   induction k with
@@ -123,9 +123,9 @@ theorem convAll_pow {b : (𝓣).B} (hb : (𝓣).ConvAll b) (k : ℕ) : (𝓣).Co
   | succ k ih => rw [pow_succ]; exact ih.mul hb
 
 /- English proof (translation)
-Take `⟨N, y, hy⟩` from `IsLocalization.Away.surj (p : AInf ℂ_[p] p) a`. Use `⟨N, y, ?_⟩` and prove the remaining obligations. Establish `h` using `congrArg (toB ℂ_[p] p) hy`. Rewrite `h` using `[map_mul, map_pow, toB_algebraMap, toB_algebraMap]`. Establish `e : algebraMap (WC p) (𝓣).B (incl ℂ_[p] p (p : AInf ℂ_[p] p)) = algebraMap (WC p) (𝓣).B (𝓣).π`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_natCast (incl ℂ_[p] p)]`. Both sides reduce to the same expression. Rewrite using `[← h, mul_assoc, ← mul_pow, e, IsLocalization.Away.mul_invSelf, one_pow, mul_one]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem toB_eq_mul (a : 𝔸) : ∃ (N : ℕ) (y : AInf ℂ_[p] p), toB ℂ_[p] p a =
     algebraMap (WC p) (𝓣).B (incl ℂ_[p] p y) * IsLocalization.Away.invSelf (𝓣).π ^ N := by
@@ -139,7 +139,7 @@ theorem toB_eq_mul (a : 𝔸) : ∃ (N : ℕ) (y : AInf ℂ_[p] p), toB ℂ_[p] 
   rw [← h, mul_assoc, ← mul_pow, e, IsLocalization.Away.mul_invSelf, one_pow, mul_one]
 
 /- English proof (translation)
-Take `⟨N, y, hy⟩` from `toB_eq_mul a`. Rewrite using `[hy]`. Conclude with `(convAll_algebraMap_of_mem_int (incl_mem_int y)).mul (convAll_pow convAll_invSelf N)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem convAll_toB (a : 𝔸) : (𝓣).ConvAll (toB ℂ_[p] p a) := by
   obtain ⟨N, y, hy⟩ := toB_eq_mul a
@@ -170,13 +170,13 @@ theorem awayToExt_eq_ofAll (ρ : Set.Ioo (0 : ℝ) 1) (a : 𝔸) :
     awayToExt p ρ a = (𝓣).ofAll (toB ℂ_[p] p a) (convAll_toB a) ρ := rfl
 
 /- English proof (translation)
-Introduce `_ _ h` and use `toB_injective (congrArg Subtype.val ((𝓣).coe_injective_Econ h))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem awayToExt_injective (ρ : Set.Ioo (0 : ℝ) 1) : Function.Injective (awayToExt p ρ) :=
   fun _ _ h => toB_injective (congrArg Subtype.val ((𝓣).coe_injective_Econ h))
 
 /- English proof (translation)
-Rewrite using `[awayToExt_apply, res_coe]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem res_awayToExt {ρ0 ρ1 : Set.Ioo (0 : ℝ) 1} (h : (ρ1 : ℝ) ≤ ρ0) (a : 𝔸) :
     (𝓣).res h (awayToExt p ρ0 a) = awayToExt p ρ1 a := by
@@ -184,7 +184,7 @@ theorem res_awayToExt {ρ0 ρ1 : Set.Ioo (0 : ℝ) 1} (h : (ρ1 : ℝ) ≤ ρ0) 
   rfl
 
 /- English proof (translation)
-Rewrite using `[awayToExt_apply, ξExt]`. Use `congr 2`. Rewrite using `[toB_algebraMap, incl_xiA]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 -/
 theorem awayToExt_xiA (ρ : Set.Ioo (0 : ℝ) 1) :
     awayToExt p ρ (algebraMap (AInf ℂ_[p] p) 𝔸 (xiA p)) = (𝓣).ξExt (xi p) ρ := by
@@ -193,14 +193,14 @@ theorem awayToExt_xiA (ρ : Set.Ioo (0 : ℝ) 1) :
   rw [toB_algebraMap, incl_xiA]
 
 /- English proof (translation)
-Rewrite using `[← awayToExt_xiA, ← awayToExt_xiA, res_awayToExt]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem res_ξExt {ρ0 ρ1 : Set.Ioo (0 : ℝ) 1} (h : (ρ1 : ℝ) ≤ ρ0) :
     (𝓣).res h ((𝓣).ξExt (xi p) ρ0) = (𝓣).ξExt (xi p) ρ1 := by
   rw [← awayToExt_xiA, ← awayToExt_xiA, res_awayToExt]
 
 /- English proof (translation)
-Introduce `h`. Establish `h1` using `(𝓣).ptRad_le_extNorm_ξExt (ξ := xi p) (topRad ρ)`. Rewrite `h1` using `[h, extNorm_zero, ptRad_xi]`. Conclude with `absurd h1 (not_le.2 inv_p_pos)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ξExt_ne_zero (ρ : Set.Ioo (0 : ℝ) 1) : (𝓣).ξExt (xi p) ρ ≠ 0 := by
   intro h
@@ -209,7 +209,7 @@ theorem ξExt_ne_zero (ρ : Set.Ioo (0 : ℝ) 1) : (𝓣).ξExt (xi p) ρ ≠ 0 
   exact absurd h1 (not_le.2 inv_p_pos)
 
 /- English proof (translation)
-Introduce `_ _ h` and use `(𝓣).algebraMap_untiltFrac_injective isPrimOne_xi ((WithAbs.equiv ((𝓣).untiltAbs isPrimOne_xi)).symm.injective h)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem toUntiltField_injective : Function.Injective ((𝓣).toUntiltField (isPrimOne_xi (p := p))) :=
   fun _ _ h => (𝓣).algebraMap_untiltFrac_injective isPrimOne_xi
@@ -226,7 +226,7 @@ Both sides reduce to the same expression.
 theorem thetaXi_apply (a : 𝔸) : thetaXi p a = (𝓣).ptEvalB isPrimOne_xi (toB ℂ_[p] p a) := rfl
 
 /- English proof (translation)
-Rewrite using `[awayToExt_apply, ptEval_coe]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ptEval_awayToExt {ρ : Set.Ioo (0 : ℝ) 1} (hr : (𝓣).ptRad (xi p) ≤ ρ) (a : 𝔸) :
     (𝓣).ptEval isPrimOne_xi hr (awayToExt p ρ a) = thetaXi p a := by
@@ -234,7 +234,7 @@ theorem ptEval_awayToExt {ρ : Set.Ioo (0 : ℝ) 1} (hr : (𝓣).ptRad (xi p) �
   rfl
 
 /- English proof (translation)
-Rewrite using `[thetaXi_apply, toB_algebraMap, ptEvalB_algebraMap, ptE_int]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem thetaXi_algebraMap (y : AInf ℂ_[p] p) :
     thetaXi p (algebraMap _ 𝔸 y) = (𝓣).toUntiltField isPrimOne_xi
@@ -242,7 +242,7 @@ theorem thetaXi_algebraMap (y : AInf ℂ_[p] p) :
   rw [thetaXi_apply, toB_algebraMap, ptEvalB_algebraMap, ptE_int]
 
 /- English proof (translation)
-Rewrite using `[thetaXi_algebraMap, ptPi]`. Use `congr 2`. Conclude with `Subtype.ext (map_natCast (incl ℂ_[p] p) p)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem thetaXi_algebraMap_p :
     thetaXi p (algebraMap _ 𝔸 (p : AInf ℂ_[p] p)) = (𝓣).ptPi isPrimOne_xi := by
@@ -251,9 +251,9 @@ theorem thetaXi_algebraMap_p :
   exact Subtype.ext (map_natCast (incl ℂ_[p] p) p)
 
 /- English proof (translation)
-Rewrite using `[thetaXi_algebraMap, map_eq_zero_iff _ toUntiltField_injective, toUntilt_eq_zero_iff, Ideal.mem_span_singleton']`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨B, ⟨c, rfl⟩, hB⟩`. Use `⟨c, incl_injective ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, incl_xiA, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hB.symm`. Introduce and unpack `⟨c, rfl⟩`. Use `⟨incl ℂ_[p] p c, ⟨c, rfl⟩, ?_⟩` and prove the remaining obligations. Use `show incl ℂ_[p] p (c * xiA p) = _`. Rewrite using `[map_mul, incl_xiA, mul_comm]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem thetaXi_algebraMap_eq_zero_iff (y : AInf ℂ_[p] p) :
     thetaXi p (algebraMap _ 𝔸 y) = 0 ↔ y ∈ Ideal.span {xiA p} := by
@@ -270,9 +270,9 @@ theorem thetaXi_algebraMap_eq_zero_iff (y : AInf ℂ_[p] p) :
     rw [map_mul, incl_xiA, mul_comm]
 
 /- English proof (translation)
-Introduce `h`. Establish `h'` using `congrArg (fun x : normInteger ℂ_[p] => ‖(x : ℂ_[p])‖) h`. Simplify using `only [ZeroMemClass.coe_zero, norm_zero] at h'`. Move the coercions through the operations in `at h'`. Rewrite `h'` using `[norm_natCast_p]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `inv_p_pos.ne' h'`.
+A detailed English derivation is pending.
 -/
 theorem natCast_p_normInteger_ne_zero : ((p : normInteger ℂ_[p]) : normInteger ℂ_[p]) ≠ 0 := by
   intro h
@@ -283,7 +283,7 @@ theorem natCast_p_normInteger_ne_zero : ((p : normInteger ℂ_[p]) : normInteger
   exact inv_p_pos.ne' h'
 
 /- English proof (translation)
-Rewrite using `[fontaineThetaInvertP_algebraMap]`. Conclude with `map_eq_zero_iff _ (IsLocalization.injective (M := Submonoid.powers (p : normInteger ℂ_[p])) (Localization.Away (p : normInteger ℂ_[p])) (powers_le_nonZeroDivisors_of_noZeroDivisors natCast_p_normInteger_ne_zero))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fontaineThetaInvertP_algebraMap_eq_zero_iff (y : AInf ℂ_[p] p) :
     fontaineThetaInvertP (normInteger ℂ_[p]) p (algebraMap _ 𝔸 y) = 0 ↔ θ y = 0 := by
@@ -293,11 +293,11 @@ theorem fontaineThetaInvertP_algebraMap_eq_zero_iff (y : AInf ℂ_[p] p) :
       (powers_le_nonZeroDivisors_of_noZeroDivisors natCast_p_normInteger_ne_zero))
 
 /- English proof (translation)
-Take `⟨N, y, hy⟩` from `IsLocalization.Away.surj (p : AInf ℂ_[p] p) a`. Rewrite using `[RingHom.mem_ker]`. Establish `hP : thetaXi p (algebraMap _ 𝔸 (p : AInf ℂ_[p] p)) ≠ 0`. Rewrite using `[thetaXi_algebraMap_p]`. Conclude with `(𝓣).ptPi_ne_zero isPrimOne_xi`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : thetaXi p a = 0 ↔ thetaXi p (algebraMap _ 𝔸 y) = 0`. Rewrite using `[← hy, map_mul, map_pow, mul_eq_zero, or_iff_left (pow_ne_zero N hP)]`. Establish `hU : IsUnit (fontaineThetaInvertP (normInteger ℂ_[p]) p (algebraMap _ 𝔸 (p : AInf ℂ_[p] p)))`. Rewrite using `[fontaineThetaInvertP_algebraMap, map_natCast, ← map_natCast (algebraMap (normInteger ℂ_[p]) _)]`. Conclude with `IsLocalization.Away.algebraMap_isUnit _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : fontaineThetaInvertP (normInteger ℂ_[p]) p a = 0 ↔ fontaineThetaInvertP (normInteger ℂ_[p]) p (algebraMap _ 𝔸 y) = 0`. Rewrite using `[← hy, map_mul, map_pow, (hU.pow N).mul_left_eq_zero]`. Rewrite using `[h1, h2, thetaXi_algebraMap_eq_zero_iff, fontaineThetaInvertP_algebraMap_eq_zero_iff, ← RingHom.mem_ker, ker_theta_eq_span_xiA]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem thetaXi_eq_zero_iff (a : 𝔸) : thetaXi p a = 0 ↔ a ∈ 𝔍 := by
   obtain ⟨N, y, hy⟩ := IsLocalization.Away.surj (p : AInf ℂ_[p] p) a
@@ -316,21 +316,21 @@ theorem thetaXi_eq_zero_iff (a : 𝔸) : thetaXi p a = 0 ↔ a ∈ 𝔍 := by
     ← RingHom.mem_ker, ker_theta_eq_span_xiA]
 
 /- English proof (translation)
-The claim follows from `Ideal.ext fun a => (RingHom.mem_ker).trans (thetaXi_eq_zero_iff a)`.
+A detailed English derivation is pending.
 -/
 theorem ker_thetaXi : RingHom.ker (thetaXi p) = 𝔍 :=
   Ideal.ext fun a => (RingHom.mem_ker).trans (thetaXi_eq_zero_iff a)
 
 /- English proof (translation)
-Introduce `w`. Use `set π' := (𝓣).ptPi (isPrimOne_xi (p := p)) with hπ'`. Establish `hπn : ‖π'‖ = (p : ℝ)⁻¹` using `by rw [hπ', norm_ptPi]; exact ptRad_xi`. Establish `hπ0 : π' ≠ 0` using `(𝓣).ptPi_ne_zero isPrimOne_xi`. Take `⟨k, hk⟩` from `exists_pow_lt_of_lt_one (show (0 : ℝ) < (‖w‖ + 1)⁻¹ by positivity) (inv_p_lt_one (p := p))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hle : ‖w * π' ^ k‖ ≤ 1`. Rewrite using `[norm_mul, norm_pow, hπn]`. Establish `h1 : ‖w‖ * (p : ℝ)⁻¹ ^ k ≤ ‖w‖ * (‖w‖ + 1)⁻¹` using `mul_le_mul_of_nonneg_left hk.le (norm_nonneg w)`. Establish `h2 : ‖w‖ * (‖w‖ + 1)⁻¹ ≤ 1`. Rewrite using `[← div_eq_mul_inv, div_le_one (by positivity)]; linarith`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨q, hq⟩` from `(𝓣).exists_toUntiltField_eq isPrimOne_xi hle`. Take `⟨Y, rfl⟩` from `Ideal.Quotient.mk_surjective q`. Take `⟨y, hy⟩` from `Y.2`. Establish `hY : Y = ⟨incl ℂ_[p] p y, incl_mem_int y⟩` using `Subtype.ext hy.symm`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨algebraMap _ 𝔸 y * IsLocalization.Away.invSelf (p : AInf ℂ_[p] p) ^ k, ?_⟩` and prove the remaining obligations. Establish `h1 : thetaXi p (algebraMap _ 𝔸 y) = w * π' ^ k`. Rewrite using `[thetaXi_algebraMap, ← hY]`. Conclude with `hq`. Establish `h2 : thetaXi p (IsLocalization.Away.invSelf (p : AInf ℂ_[p] p)) = π'⁻¹`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `eq_inv_of_mul_eq_one_right ?_` and prove the remaining obligations. Rewrite using `[hπ', ← thetaXi_algebraMap_p, ← map_mul, IsLocalization.Away.mul_invSelf, map_one]`. Rewrite using `[map_mul, map_pow, h1, h2, mul_assoc, ← mul_pow, mul_inv_cancel₀ hπ0, one_pow, mul_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem thetaXi_surjective : Function.Surjective (thetaXi p) := by
   intro w
@@ -361,19 +361,19 @@ theorem thetaXi_surjective : Function.Surjective (thetaXi p) := by
 variable {ρ : Set.Ioo (0 : ℝ) 1}
 
 /- English proof (translation)
-Rewrite using `[ptRad_xi]`. Conclude with `hρ.le`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ptRad_xi_le (hρ : (p : ℝ)⁻¹ < ρ) : (𝓣).ptRad (xi p) ≤ ρ := by
   rw [ptRad_xi]; exact hρ.le
 
 /- English proof (translation)
-Rewrite using `[ptRad_xi]`. Conclude with `hρ`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ptRad_xi_lt (hρ : (p : ℝ)⁻¹ < ρ) : (𝓣).ptRad (xi p) < ρ := by
   rw [ptRad_xi]; exact hρ
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `thetaXi_surjective ((𝓣).ptEval isPrimOne_xi (ptRad_xi_le hρ) x)`. Use `⟨a, Ideal.mem_span_singleton'.2 ?_⟩` and prove the remaining obligations. Take `⟨y, hy⟩` from `((𝓣).ptEval_eq_zero_iff isPrimOne_xi (ptRad_xi_le hρ) (x - awayToExt p ρ a)).1 (by rw [map_sub, ptEval_awayToExt, ha, sub_self])`. Conclude with `⟨y, by rw [hy, mul_comm]⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_sub_awayToExt_mem_span (hρ : (p : ℝ)⁻¹ < ρ) (x : (𝓣).RobbaExt ρ) :
     ∃ a : 𝔸, x - awayToExt p ρ a ∈ Ideal.span {(𝓣).ξExt (xi p) ρ} := by
@@ -384,7 +384,7 @@ theorem exists_sub_awayToExt_mem_span (hρ : (p : ℝ)⁻¹ < ρ) (x : (𝓣).Ro
   exact ⟨y, by rw [hy, mul_comm]⟩
 
 /- English proof (translation)
-Rewrite using `[← thetaXi_eq_zero_iff, ← ptEval_awayToExt (ptRad_xi_le hρ), (𝓣).ptEval_eq_zero_iff isPrimOne_xi (ptRad_xi_le hρ), Ideal.mem_span_singleton']`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy⟩; exact ⟨y, by rw [← hy, mul_comm]⟩`. Introduce and unpack `⟨y, hy⟩; exact ⟨y, by rw [hy, mul_comm]⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components.
 -/
 theorem awayToExt_mem_span_iff (hρ : (p : ℝ)⁻¹ < ρ) (a : 𝔸) :
     awayToExt p ρ a ∈ Ideal.span {(𝓣).ξExt (xi p) ρ} ↔ a ∈ 𝔍 := by
@@ -395,15 +395,15 @@ theorem awayToExt_mem_span_iff (hρ : (p : ℝ)⁻¹ < ρ) (a : 𝔸) :
   · rintro ⟨y, hy⟩; exact ⟨y, by rw [hy, mul_comm]⟩
 
 /- English proof (translation)
-Use `set ξ := (𝓣).ξExt (xi p) ρ with hξdef`. Proceed by induction on `m generalizing a with`. Consider the case `zero => simp`. Consider the case `succ m ih`. Rewrite using `[Ideal.span_singleton_pow, ker_pow_eq_span, Ideal.mem_span_singleton', Ideal.mem_span_singleton']`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy⟩`. Establish `hm : awayToExt p ρ a ∈ Ideal.span {ξ} ^ m`. Rewrite using `[Ideal.span_singleton_pow, Ideal.mem_span_singleton']`. Conclude with `⟨y * ξ, by rw [← hy, pow_succ]; ring⟩`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hm'` using `(ih a).1 hm`. Rewrite `hm'` using `[ker_pow_eq_span, Ideal.mem_span_singleton']`. Take `⟨c, rfl⟩` from `hm'`. Establish `h2 : awayToExt p ρ c = y * ξ`. Rewrite `hy` using `[map_mul, map_pow, awayToExt_xiA, pow_succ]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `mul_right_cancel₀ (pow_ne_zero m (ξExt_ne_zero ρ))` to reduce the goal to its premises. Rewrite using `[← hy]`. Expand and normalize the polynomial expressions, which then agree. Establish `h3 : c ∈ 𝔍` using `(awayToExt_mem_span_iff hρ c).1 (Ideal.mem_span_singleton'.2 ⟨y, h2.symm⟩)`. Rewrite `h3` using `[ker_eq_span_xiA, Ideal.mem_span_singleton']`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨d, rfl⟩` from `h3`. Conclude with `⟨d, by ring⟩`. Introduce and unpack `⟨c, rfl⟩`. Conclude with `⟨awayToExt p ρ c, by rw [map_mul, map_pow, awayToExt_xiA]⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem awayToExt_mem_pow_iff (hρ : (p : ℝ)⁻¹ < ρ) (m : ℕ) (a : 𝔸) :
     awayToExt p ρ a ∈ Ideal.span {(𝓣).ξExt (xi p) ρ} ^ m ↔ a ∈ 𝔍 ^ m := by
@@ -433,11 +433,11 @@ theorem awayToExt_mem_pow_iff (hρ : (p : ℝ)⁻¹ < ρ) (m : ℕ) (a : 𝔸) :
       exact ⟨awayToExt p ρ c, by rw [map_mul, map_pow, awayToExt_xiA]⟩
 
 /- English proof (translation)
-Use `set ξ := (𝓣).ξExt (xi p) ρ with hξdef`. Proceed by induction on `m with`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `succ m ih`. Take `⟨a, ha⟩` from `ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `ha` using `[Ideal.span_singleton_pow, Ideal.mem_span_singleton']`. Take `⟨y, hy⟩` from `ha`. Take `⟨b, hb⟩` from `exists_sub_awayToExt_mem_span hρ y`. Take `⟨z, hz⟩` from `Ideal.mem_span_singleton'.1 hb`. Use `⟨a + b * algebraMap _ 𝔸 (xiA p) ^ m, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.span_singleton_pow, Ideal.mem_span_singleton']`. Use `⟨z, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, map_mul, map_pow, awayToExt_xiA, pow_succ]`. Take the linear combination `ξ ^ m * hz + hy`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_sub_awayToExt_mem_pow (hρ : (p : ℝ)⁻¹ < ρ) (m : ℕ) (x : (𝓣).RobbaExt ρ) :
     ∃ a : 𝔸, x - awayToExt p ρ a ∈ Ideal.span {(𝓣).ξExt (xi p) ρ} ^ m := by
@@ -457,9 +457,9 @@ theorem exists_sub_awayToExt_mem_pow (hρ : (p : ℝ)⁻¹ < ρ) (m : ℕ) (x : 
     linear_combination ξ ^ m * hz + hy
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `exists_sub_awayToExt_mem_pow hρ m x`. Use `⟨a, ?_⟩` and prove the remaining obligations. Use `set ξ := (𝓣).ξExt (xi p) ρ with hξdef`. Rewrite `ha`, the goal using `[Ideal.span_singleton_pow, Ideal.mem_span_singleton']`. Take `⟨y, hy⟩` from `ha`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨-y, by linear_combination -hy⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_awayToExt_sub_mem_pow (hρ : (p : ℝ)⁻¹ < ρ) (m : ℕ) (x : (𝓣).RobbaExt ρ) :
     ∃ a : 𝔸, awayToExt p ρ a - x ∈ Ideal.span {(𝓣).ξExt (xi p) ρ} ^ m := by
@@ -471,7 +471,7 @@ theorem exists_awayToExt_sub_mem_pow (hρ : (p : ℝ)⁻¹ < ρ) (m : ℕ) (x : 
   exact ⟨-y, by linear_combination -hy⟩
 
 /- English proof (translation)
-Rewrite using `[ker_pow_eq_span, Ideal.span_le, Set.singleton_subset_iff, SetLike.mem_coe, Ideal.mem_comap, map_pow, awayToExt_xiA, Ideal.span_singleton_pow]`. Conclude with `Ideal.mem_span_singleton_self _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ker_pow_le_comap (ρ : Set.Ioo (0 : ℝ) 1) (m : ℕ) :
     𝔍 ^ m ≤ (Ideal.span {(𝓣).ξExt (xi p) ρ} ^ m).comap (awayToExt p ρ) := by
@@ -486,14 +486,14 @@ def jetMap (ρ : Set.Ioo (0 : ℝ) 1) (m : ℕ) :
   Ideal.quotientMap _ (awayToExt p ρ) (ker_pow_le_comap ρ m)
 
 /- English proof (translation)
-The claim follows from `Ideal.quotientMap_mk`.
+A detailed English derivation is pending.
 -/
 theorem jetMap_mk (ρ : Set.Ioo (0 : ℝ) 1) (m : ℕ) (a : 𝔸) :
     jetMap p ρ m (Ideal.Quotient.mk _ a) = Ideal.Quotient.mk _ (awayToExt p ρ a) :=
   Ideal.quotientMap_mk
 
 /- English proof (translation)
-Rewrite using `[jetMap_mk]`. Conclude with `Ideal.Quotient.eq`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jetMap_mk_eq_mk_iff (ρ : Set.Ioo (0 : ℝ) 1) (m : ℕ) (a : 𝔸) (x : (𝓣).RobbaExt ρ) :
     jetMap p ρ m (Ideal.Quotient.mk _ a) = Ideal.Quotient.mk _ x ↔
@@ -502,9 +502,9 @@ theorem jetMap_mk_eq_mk_iff (ρ : Set.Ioo (0 : ℝ) 1) (m : ℕ) (a : 𝔸) (x :
   exact Ideal.Quotient.eq
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `q hq`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective q`. Rewrite `hq` using `[jetMap_mk, Ideal.Quotient.eq_zero_iff_mem, awayToExt_mem_pow_iff hρ]`.
+Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 hq`. Introduce `q`. Take `⟨x, rfl⟩` from `Ideal.Quotient.mk_surjective q`. Take `⟨a, ha⟩` from `exists_awayToExt_sub_mem_pow hρ m x`. Conclude with `⟨Ideal.Quotient.mk (𝔍 ^ m) a, (jetMap_mk_eq_mk_iff ρ m a x).2 ha⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem jetMap_bijective (hρ : (p : ℝ)⁻¹ < ρ) (m : ℕ) : Function.Bijective (jetMap p ρ m) := by
   constructor
@@ -530,7 +530,7 @@ def iotaQ (hρ : (p : ℝ)⁻¹ < ρ) (m : ℕ) : (𝓣).RobbaExt ρ →+* 𝔸 
   (jetEquiv p hρ m).symm.toRingHom.comp (Ideal.Quotient.mk _)
 
 /- English proof (translation)
-Establish `e : (jetEquiv p hρ m) (Ideal.Quotient.mk _ a) = Ideal.Quotient.mk _ (awayToExt p ρ a)` using `jetMap_mk ρ m a`. Use `show (jetEquiv p hρ m).symm (Ideal.Quotient.mk _ x) = _ ↔ _`. Rewrite using `[RingEquiv.symm_apply_eq, e]`. Conclude with `Ideal.Quotient.eq`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iotaQ_eq_mk_iff (hρ : (p : ℝ)⁻¹ < ρ) {m : ℕ} {x : (𝓣).RobbaExt ρ} {a : 𝔸} :
     iotaQ p hρ m x = Ideal.Quotient.mk _ a ↔
@@ -542,9 +542,9 @@ theorem iotaQ_eq_mk_iff (hρ : (p : ℝ)⁻¹ < ρ) {m : ℕ} {x : (𝓣).RobbaE
   exact Ideal.Quotient.eq
 
 /- English proof (translation)
-Use extensionality with `x`. Take `⟨a, ha⟩` from `Ideal.Quotient.mk_surjective (iotaQ p hρ n x)`. Rewrite using `[RingHom.comp_apply, ← ha]`. Simplify using `only [Ideal.Quotient.factorPow, Ideal.Quotient.factor_mk]`. Rewrite using `[eq_comm, iotaQ_eq_mk_iff]`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.pow_le_pow_right hle ((iotaQ_eq_mk_iff hρ).1 ha.symm)`.
+A detailed English derivation is pending.
 -/
 theorem iotaQ_compat (hρ : (p : ℝ)⁻¹ < ρ) {m n : ℕ} (hle : m ≤ n) :
     (Ideal.Quotient.factorPow 𝔍 hle).comp (iotaQ p hρ n) = iotaQ p hρ m := by
@@ -561,14 +561,14 @@ def iota (hρ : (p : ℝ)⁻¹ < ρ) : (𝓣).RobbaExt ρ →+* 𝔹 :=
   _root_.AdicCompletion.liftRingHom 𝔍 (iotaQ p hρ) fun hle => iotaQ_compat hρ hle
 
 /- English proof (translation)
-The claim follows from `_root_.AdicCompletion.evalₐ_liftRingHom _ _ _ m x`.
+A detailed English derivation is pending.
 -/
 theorem evalB_iota (hρ : (p : ℝ)⁻¹ < ρ) (m : ℕ) (x : (𝓣).RobbaExt ρ) :
     evalB ℂ_[p] p m (iota p hρ x) = iotaQ p hρ m x :=
   _root_.AdicCompletion.evalₐ_liftRingHom _ _ _ m x
 
 /- English proof (translation)
-Rewrite using `[evalB_iota, iotaQ_eq_mk_iff]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem evalB_iota_eq_mk_iff (hρ : (p : ℝ)⁻¹ < ρ) {m : ℕ} {x : (𝓣).RobbaExt ρ} {a : 𝔸} :
     evalB ℂ_[p] p m (iota p hρ x) = Ideal.Quotient.mk _ a ↔
@@ -576,7 +576,7 @@ theorem evalB_iota_eq_mk_iff (hρ : (p : ℝ)⁻¹ < ρ) {m : ℕ} {x : (𝓣).R
   rw [evalB_iota, iotaQ_eq_mk_iff]
 
 /- English proof (translation)
-Use `evalB_ext fun m => ?_` and prove the remaining obligations. Rewrite using `[evalB_toBDeRhamPlus, evalB_iota_eq_mk_iff, sub_self]`. Conclude with `zero_mem _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iota_awayToExt (hρ : (p : ℝ)⁻¹ < ρ) (a : 𝔸) :
     iota p hρ (awayToExt p ρ a) = toBDeRhamPlus (normInteger ℂ_[p]) p a := by
@@ -585,9 +585,9 @@ theorem iota_awayToExt (hρ : (p : ℝ)⁻¹ < ρ) (a : 𝔸) :
   exact zero_mem _
 
 /- English proof (translation)
-Use `evalB_ext fun m => ?_` and prove the remaining obligations. Take `⟨a, ha⟩` from `Ideal.Quotient.mk_surjective (evalB ℂ_[p] p m (iota p (hρ1.trans_le h) x))`. Rewrite using `[← ha, evalB_iota_eq_mk_iff]`. Establish `h2` using `(evalB_iota_eq_mk_iff (hρ1.trans_le h)).1 ha.symm`. Rewrite `h2`, the goal using `[Ideal.span_singleton_pow, Ideal.mem_span_singleton']`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Take `⟨y, hy⟩` from `h2`. Use `⟨(𝓣).res h y, ?_⟩` and prove the remaining obligations. Rewrite using `[← res_awayToExt h, ← map_sub, ← hy, map_mul, map_pow, res_ξExt]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem iota_res {ρ0 ρ1 : Set.Ioo (0 : ℝ) 1} (hρ1 : (p : ℝ)⁻¹ < ρ1) (h : (ρ1 : ℝ) ≤ ρ0)
     (x : (𝓣).RobbaExt ρ0) :
@@ -602,9 +602,9 @@ theorem iota_res {ρ0 ρ1 : Set.Ioo (0 : ℝ) 1} (hρ1 : (p : ℝ)⁻¹ < ρ1) (
   rw [← res_awayToExt h, ← map_sub, ← hy, map_mul, map_pow, res_ξExt]
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => simp`. Consider the case `succ m ih`. Establish `h0 : (𝓣).ξExt (xi p) ρ ^ m * y ≠ 0` using `mul_ne_zero (pow_ne_zero _ (ξExt_ne_zero ρ)) hy`. Rewrite using `[pow_succ', mul_assoc, (𝓣).mult_mul (ξExt_ne_zero ρ) h0 ⟨(𝓣).ptRad_pos' isPrimOne_xi, ptRad_xi_lt hρ⟩, ih, (𝓣).mult_ξExt isPrimOne_xi (ptRad_xi_lt hρ)]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem mult_ξExt_pow_mul (hρ : (p : ℝ)⁻¹ < ρ) (m : ℕ) {y : (𝓣).RobbaExt ρ} (hy : y ≠ 0) :
     (𝓣).mult ((𝓣).ξExt (xi p) ρ ^ m * y) ((𝓣).ptRad (xi p)) =
@@ -620,11 +620,11 @@ theorem mult_ξExt_pow_mul (hρ : (p : ℝ)⁻¹ < ρ) (m : ℕ) {y : (𝓣).Rob
     ring
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hx`. Use `set k := (𝓣).mult x ((𝓣).ptRad (xi p)) with hk`. Establish `hm` using `h (k.toNat + 1)`. Rewrite `hm` using `[Ideal.span_singleton_pow, Ideal.mem_span_singleton']`. Take `⟨y, hy⟩` from `hm`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hy0 : y ≠ 0`. Introduce and unpack `rfl`. Rewrite `hy` using `[zero_mul]`. Conclude with `hx hy.symm`. Establish `h1` using `mult_ξExt_pow_mul hρ (k.toNat + 1) hy0`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[mul_comm, hy, ← hk]`. Establish `hk0 : 0 ≤ k` using `(𝓣).mult_nonneg x _`. Establish `hy1` using `(𝓣).mult_nonneg y ((𝓣).ptRad (xi p))`. Move the coercions through the operations in `at h1`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_forall_mem_pow (hρ : (p : ℝ)⁻¹ < ρ) {x : (𝓣).RobbaExt ρ}
     (h : ∀ m : ℕ, x ∈ Ideal.span {(𝓣).ξExt (xi p) ρ} ^ m) : x = 0 := by
@@ -645,7 +645,7 @@ theorem eq_zero_of_forall_mem_pow (hρ : (p : ℝ)⁻¹ < ρ) {x : (𝓣).RobbaE
   omega
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Use `eq_zero_of_forall_mem_pow hρ fun m => ?_` and prove the remaining obligations. Establish `h` using `(evalB_iota_eq_mk_iff hρ (m := m) (x := x) (a := 0)).1 (by rw [hx, map_zero, map_zero])`. Rewrite `h` using `[map_zero, sub_zero]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem iota_injective (hρ : (p : ℝ)⁻¹ < ρ) : Function.Injective (iota p hρ) := by
   rw [injective_iff_map_eq_zero]
@@ -659,7 +659,7 @@ section Galois
 variable {K : IntermediateField ℚ_[p] (PadicAlgCl p)}
 
 /- English proof (translation)
-Establish `: (toB ℂ_[p] p).comp (galAway σ) = ((galIso σ).toB : (𝓣).B →+* (𝓣).B).comp (toB ℂ_[p] p)` using `IsLocalization.ringHom_ext (Submonoid.powers (p : AInf ℂ_[p] p)) (RingHom.ext fun y => by`. Simplify using `only [RingHom.comp_apply, RingEquiv.coe_toRingHom]`. Rewrite using `[galAway_algebraMap, toB_algebraMap, toB_algebraMap, TeichLift.TeichIso.toB_algebraMap, galIso_incl])`. Conclude with `RingHom.congr_fun this a`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toB_galAway (σ : Gal(PadicAlgCl p/K)) (a : 𝔸) :
     toB ℂ_[p] p (galAway σ a) = (galIso σ).toB (toB ℂ_[p] p a) := by
@@ -672,7 +672,7 @@ theorem toB_galAway (σ : Gal(PadicAlgCl p/K)) (a : 𝔸) :
   exact RingHom.congr_fun this a
 
 /- English proof (translation)
-Rewrite using `[awayToExt_apply, TeichLift.TeichIso.extMap_coe, awayToExt_apply]`. Use `congr 1`. Conclude with `Subtype.ext (toB_galAway σ a).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem extMap_awayToExt (σ : Gal(PadicAlgCl p/K)) (a : 𝔸) :
     (galIso σ).extMap ρ (awayToExt p ρ a) = awayToExt p ρ (galAway σ a) := by
@@ -681,7 +681,7 @@ theorem extMap_awayToExt (σ : Gal(PadicAlgCl p/K)) (a : 𝔸) :
   exact Subtype.ext (toB_galAway σ a).symm
 
 /- English proof (translation)
-Establish `h : σ • xiA p ∈ RingHom.ker θ` using `gal_smul_mem_ker_fontaineTheta σ (by rw [ker_theta_eq_span_xiA]; exact Ideal.mem_span_singleton_self _)`. Rewrite `h` using `[ker_theta_eq_span_xiA, Ideal.mem_span_singleton']`. Take `⟨c, hc⟩` from `h`. Rewrite using `[← awayToExt_xiA, extMap_awayToExt, galAway_algebraMap, ← hc, map_mul, map_mul, awayToExt_xiA]`. Conclude with `Ideal.mul_mem_left _ _ (Ideal.mem_span_singleton_self _)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem extMap_ξExt_mem (σ : Gal(PadicAlgCl p/K)) :
     (galIso σ).extMap ρ ((𝓣).ξExt (xi p) ρ) ∈ Ideal.span {(𝓣).ξExt (xi p) ρ} := by
@@ -693,7 +693,7 @@ theorem extMap_ξExt_mem (σ : Gal(PadicAlgCl p/K)) :
   exact Ideal.mul_mem_left _ _ (Ideal.mem_span_singleton_self _)
 
 /- English proof (translation)
-Rewrite `hx` using `[Ideal.span_singleton_pow, Ideal.mem_span_singleton']`. Take `⟨y, rfl⟩` from `hx`. Rewrite using `[map_mul, map_pow]`. Conclude with `Ideal.mul_mem_left _ _ (Ideal.pow_mem_pow (extMap_ξExt_mem σ) m)`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem extMap_mem_pow (σ : Gal(PadicAlgCl p/K)) {m : ℕ} {x : (𝓣).RobbaExt ρ}
     (hx : x ∈ Ideal.span {(𝓣).ξExt (xi p) ρ} ^ m) :
@@ -704,7 +704,7 @@ theorem extMap_mem_pow (σ : Gal(PadicAlgCl p/K)) {m : ℕ} {x : (𝓣).RobbaExt
   exact Ideal.mul_mem_left _ _ (Ideal.pow_mem_pow (extMap_ξExt_mem σ) m)
 
 /- English proof (translation)
-Use `evalB_ext fun m => ?_` and prove the remaining obligations. Take `⟨a, ha⟩` from `Ideal.Quotient.mk_surjective (evalB ℂ_[p] p m (iota p hρ x))`. Rewrite using `[gal_smul_bdR_def, evalB_galBdRHom, ← ha, galQuot_mk, evalB_iota_eq_mk_iff, ← extMap_awayToExt, ← map_sub]`. Conclude with `extMap_mem_pow σ ((evalB_iota_eq_mk_iff hρ).1 ha.symm)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iota_extMap (hρ : (p : ℝ)⁻¹ < ρ) (σ : Gal(PadicAlgCl p/K)) (x : (𝓣).RobbaExt ρ) :
     iota p hρ ((galIso σ).extMap ρ x) = σ • iota p hρ x := by
@@ -722,7 +722,7 @@ def thetaAway : 𝔸 →+* ℂ_[p] :=
   (awayEquiv (K := ℂ_[p]) p).toRingEquiv.toRingHom.comp (fontaineThetaInvertP (normInteger ℂ_[p]) p)
 
 /- English proof (translation)
-Simplify using `only [thetaAway, RingHom.comp_apply, fontaineThetaInvertP_algebraMap]`. Conclude with `(awayEquiv (K := ℂ_[p]) p).commutes (θ y)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem thetaAway_algebraMap (y : AInf ℂ_[p] p) :
     thetaAway p (algebraMap _ 𝔸 y) = ((θ y : normInteger ℂ_[p]) : ℂ_[p]) := by
@@ -730,14 +730,14 @@ theorem thetaAway_algebraMap (y : AInf ℂ_[p] p) :
   exact (awayEquiv (K := ℂ_[p]) p).commutes (θ y)
 
 /- English proof (translation)
-Simplify using `only [thetaBDeRhamPlusField, thetaAway, RingHom.comp_apply, thetaBDeRhamPlus_toBDeRhamPlus]`.
+Simplify using the standard rewrite rules.
 -/
 theorem thetaBDeRhamPlusField_toBDeRhamPlus (a : 𝔸) :
     thetaBDeRhamPlusField p (toBDeRhamPlus (normInteger ℂ_[p]) p a) = thetaAway p a := by
   simp only [thetaBDeRhamPlusField, thetaAway, RingHom.comp_apply, thetaBDeRhamPlus_toBDeRhamPlus]
 
 /- English proof (translation)
-Use extensionality with `a`. Simplify using `only [RingHom.mem_ker, thetaAway, RingHom.comp_apply]`. Conclude with `map_eq_zero_iff _ (awayEquiv (K := ℂ_[p]) p).injective`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ker_thetaAway : RingHom.ker (thetaAway p) = 𝔍 := by
   ext a
@@ -745,7 +745,7 @@ theorem ker_thetaAway : RingHom.ker (thetaAway p) = 𝔍 := by
   exact map_eq_zero_iff _ (awayEquiv (K := ℂ_[p]) p).injective
 
 /- English proof (translation)
-The claim follows from `(awayEquiv (K := ℂ_[p]) p).surjective.comp (surjective_fontaineThetaInvertP (normInteger ℂ_[p]) p (IsPerfectoidField.surjective_fontaineTheta (K := ℂ_[p]) p))`.
+A detailed English derivation is pending.
 -/
 theorem thetaAway_surjective : Function.Surjective (thetaAway p) :=
   (awayEquiv (K := ℂ_[p]) p).surjective.comp
@@ -760,7 +760,7 @@ def cXi : (𝓣).UntiltField (isPrimOne_xi (p := p)) ≃+* ℂ_[p] :=
     (RingHom.quotientKerEquivOfSurjective (thetaAway_surjective (p := p)))
 
 /- English proof (translation)
-Establish `h1 : (RingHom.quotientKerEquivOfSurjective (thetaXi_surjective (p` using `p))).symm (thetaXi p a) = Ideal.Quotient.mk _ a := by`. Rewrite using `[RingEquiv.symm_apply_eq]`. Both sides reduce to the same expression. Simplify using `only [cXi, RingEquiv.trans_apply, h1]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem cXi_thetaXi (a : 𝔸) : cXi p (thetaXi p a) = thetaAway p a := by
   have h1 : (RingHom.quotientKerEquivOfSurjective (thetaXi_surjective (p := p))).symm (thetaXi p a) =
@@ -770,7 +770,7 @@ theorem cXi_thetaXi (a : 𝔸) : cXi p (thetaXi p a) = thetaAway p a := by
   rfl
 
 /- English proof (translation)
-Rewrite using `[← thetaXi_algebraMap, cXi_thetaXi, thetaAway_algebraMap]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cXi_toUntiltField (y : AInf ℂ_[p] p) :
     cXi p ((𝓣).toUntiltField isPrimOne_xi ((𝓣).toUntilt (xi p) ⟨incl ℂ_[p] p y, incl_mem_int y⟩)) =
@@ -778,13 +778,13 @@ theorem cXi_toUntiltField (y : AInf ℂ_[p] p) :
   rw [← thetaXi_algebraMap, cXi_thetaXi, thetaAway_algebraMap]
 
 /- English proof (translation)
-Rewrite using `[← thetaXi_algebraMap_p, cXi_thetaXi, map_natCast, map_natCast]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cXi_ptPi : cXi p ((𝓣).ptPi isPrimOne_xi) = (p : ℂ_[p]) := by
   rw [← thetaXi_algebraMap_p, cXi_thetaXi, map_natCast, map_natCast]
 
 /- English proof (translation)
-Take `⟨y, hy⟩` from `Y.2`. Establish `hY : Y = ⟨incl ℂ_[p] p y, incl_mem_int y⟩` using `Subtype.ext hy.symm`. Rewrite using `[hY, cXi_toUntiltField]`. Conclude with `mem_normInteger.1 (θ y).2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_cXi_toUntilt_le_one (Y : (𝓣).int) :
     ‖cXi p ((𝓣).toUntiltField isPrimOne_xi ((𝓣).toUntilt (xi p) Y))‖ ≤ 1 := by
@@ -794,9 +794,9 @@ theorem norm_cXi_toUntilt_le_one (Y : (𝓣).int) :
   exact mem_normInteger.1 (θ y).2
 
 /- English proof (translation)
-Take `⟨v, huv⟩` from `hu.exists_right_inv`. Take `⟨U, rfl⟩` from `Ideal.Quotient.mk_surjective u`. Take `⟨V, rfl⟩` from `Ideal.Quotient.mk_surjective v`. Establish `h` using `congrArg (fun w => ‖cXi p ((𝓣).toUntiltField isPrimOne_xi w)‖) huv`. Simplify using `only [map_mul, map_one, norm_mul, norm_one] at h`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h1` using `norm_cXi_toUntilt_le_one (p := p) U`. Establish `h2` using `norm_cXi_toUntilt_le_one (p := p) V`. Use polynomial arithmetic with `[norm_nonneg (cXi p ((𝓣).toUntiltField isPrimOne_xi (Ideal.Quotient.mk _ U))), norm_nonneg (cXi p ((𝓣).toUntiltField isPrimOne_xi (Ideal.Quotient.mk _ V)))]`.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem norm_cXi_toUntilt_of_isUnit {u : (𝓣).Untilt (xi p)} (hu : IsUnit u) :
     ‖cXi p ((𝓣).toUntiltField isPrimOne_xi u)‖ = 1 := by
@@ -811,7 +811,7 @@ theorem norm_cXi_toUntilt_of_isUnit {u : (𝓣).Untilt (xi p)} (hu : IsUnit u) :
     norm_nonneg (cXi p ((𝓣).toUntiltField isPrimOne_xi (Ideal.Quotient.mk _ V)))]
 
 /- English proof (translation)
-Take `⟨z', rfl⟩` from `norm_le_one_iff_exists_algebraMap.1 hz`. Establish `e : (𝓣).teichInt hz = ⟨incl ℂ_[p] p (teichmuller p z'), incl_mem_int _⟩` using `Subtype.ext (by show (𝓣).teich (algebraMap (Ob p) (Cb p) z') = incl ℂ_[p] p (teichmuller p z')`. Rewrite using `[incl_teichmuller]`. Conclude with `teich_eq _)`. Rewrite using `[e, cXi_toUntiltField, fontaineTheta_teichmuller, norm_algebraMap_preTilt, preTilt_norm_def]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_cXi_toUntilt_teich {z : Cb p} (hz : ‖z‖ ≤ 1) :
     ‖cXi p ((𝓣).toUntiltField isPrimOne_xi ((𝓣).toUntilt (xi p) ((𝓣).teichInt hz)))‖ = ‖z‖ := by
@@ -823,7 +823,7 @@ theorem norm_cXi_toUntilt_teich {z : Cb p} (hz : ‖z‖ ≤ 1) :
   rw [e, cXi_toUntiltField, fontaineTheta_teichmuller, norm_algebraMap_preTilt, preTilt_norm_def]
 
 /- English proof (translation)
-Distinguish the cases in `hq : (𝓣).toUntilt (xi p) Y = 0`. Rewrite using `[hq, map_zero, map_zero, norm_zero, ((𝓣).untiltNorm_eq_zero_iff isPrimOne_xi).2 rfl]`. Take `⟨z, hz0, hz, u, hu, hqu⟩` from `(𝓣).exists_teich_mul_unit isPrimOne_xi hq`. Rewrite using `[(𝓣).untiltNorm_eq isPrimOne_xi hz0 hz hu hqu, hqu, map_mul, map_mul, norm_mul, norm_cXi_toUntilt_teich, norm_cXi_toUntilt_of_isUnit hu, mul_one]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_cXi_toUntilt (Y : (𝓣).int) :
     ‖cXi p ((𝓣).toUntiltField isPrimOne_xi ((𝓣).toUntilt (xi p) Y))‖ =
@@ -835,11 +835,11 @@ theorem norm_cXi_toUntilt (Y : (𝓣).int) :
     norm_cXi_toUntilt_teich, norm_cXi_toUntilt_of_isUnit hu, mul_one]
 
 /- English proof (translation)
-Take `⟨a, rfl⟩` from `thetaXi_surjective w`. Take `⟨N, y, hy⟩` from `IsLocalization.Away.surj (p : AInf ℂ_[p] p) a`. Establish `h1` using `congrArg (fun b => ‖cXi p (thetaXi p b)‖) hy`. Establish `h2` using `congrArg (fun b => ‖thetaXi p b‖) hy`. Simplify using `only [map_mul, map_pow, norm_mul, norm_pow, thetaXi_algebraMap_p, cXi_ptPi] at h1 h2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `h1` using `[thetaXi_algebraMap, norm_cXi_toUntilt]`. Rewrite `h2` using `[thetaXi_algebraMap, norm_toUntiltField]`. Establish `hπ : ‖(𝓣).ptPi (isPrimOne_xi (p` using `p))‖ = ‖(p : ℂ_[p])‖ := by`. Rewrite using `[norm_ptPi, norm_natCast_p]`. Conclude with `ptRad_xi`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[hπ]`. Establish `hp0 : ‖(p : ℂ_[p])‖ ^ N ≠ 0` using `pow_ne_zero _ (by rw [norm_natCast_p]; exact inv_p_pos.ne')`. Conclude with `mul_right_cancel₀ hp0 (h1.trans h2.symm)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem norm_cXi (w : (𝓣).UntiltField (isPrimOne_xi (p := p))) : ‖cXi p w‖ = ‖w‖ := by
   obtain ⟨a, rfl⟩ := thetaXi_surjective w
@@ -856,11 +856,11 @@ theorem norm_cXi (w : (𝓣).UntiltField (isPrimOne_xi (p := p))) : ‖cXi p w�
   exact mul_right_cancel₀ hp0 (h1.trans h2.symm)
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `Ideal.Quotient.mk_surjective (evalB ℂ_[p] p 1 (iota p hρ x))`. Establish `h1` using `(evalB_iota_eq_mk_iff hρ).1 ha.symm`. Rewrite `h1` using `[pow_one, Ideal.mem_span_singleton']`. Take `⟨y, hy⟩` from `h1`. Establish `h2 : (𝓣).ptEval isPrimOne_xi (ptRad_xi_le hρ) x = thetaXi p a`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← ptEval_awayToExt (ptRad_xi_le hρ), ← sub_eq_zero, ← map_sub, ← hy, map_mul, (𝓣).ptEval_ξExt isPrimOne_xi, mul_zero]`. Establish `h3 : thetaBDeRhamPlus (normInteger ℂ_[p]) p (iota p hρ x - toBDeRhamPlus (normInteger ℂ_[p]) p a) = 0` using `thetaBDeRhamPlus_eq_zero_of_evalB_one_eq_zero (by rw [map_sub, ← ha, evalB_toBDeRhamPlus, sub_self])`. Establish `h4 : thetaBDeRhamPlusField p (iota p hρ x - toBDeRhamPlus (normInteger ℂ_[p]) p a) = 0`. Simplify using `only [thetaBDeRhamPlusField, RingHom.comp_apply, h3, map_zero]`. Rewrite `h4` using `[map_sub, sub_eq_zero, thetaBDeRhamPlusField_toBDeRhamPlus]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[h4, h2, cXi_thetaXi]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem theta_iota (hρ : (p : ℝ)⁻¹ < ρ) (x : (𝓣).RobbaExt ρ) :
     thetaBDeRhamPlusField p (iota p hρ x) = cXi p ((𝓣).ptEval isPrimOne_xi (ptRad_xi_le hρ) x) := by
@@ -884,21 +884,21 @@ variable (p) in
 def inversePRadius (hρ : (p : ℝ)⁻¹ < ρ) : Set.Ioc (0 : ℝ) ρ := ⟨(p : ℝ)⁻¹, inv_p_pos, hρ.le⟩
 
 /- English proof (translation)
-The claim follows from `Subtype.ext ptRad_xi.symm`.
+A detailed English derivation is pending.
 -/
 theorem inverse_p_radius_eq_ptRadIoc (hρ : (p : ℝ)⁻¹ < ρ) :
     inversePRadius p hρ = (𝓣).ptRadIoc isPrimOne_xi (ptRad_xi_le hρ) :=
   Subtype.ext ptRad_xi.symm
 
 /- English proof (translation)
-Rewrite using `[map_natCast, map_natCast]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem awayToExt_natCast (ρ : Set.Ioo (0 : ℝ) 1) :
     awayToExt p ρ (algebraMap (AInf ℂ_[p] p) 𝔸 (p : AInf ℂ_[p] p)) = (p : (𝓣).RobbaExt ρ) := by
   rw [map_natCast, map_natCast]
 
 /- English proof (translation)
-Rewrite using `[awayToExt_apply, extNorm_coe]`. Use `show gaussNorm ((𝓣).coeffB (toB ℂ_[p] p (algebraMap _ 𝔸 y))) (p : ℝ)⁻¹ ≤ 1`. Rewrite using `[toB_algebraMap, coeffB_algebraMap]`. Conclude with `(𝓣).gaussNorm_le_one_of_mem_int (incl_mem_int y) inv_p_pos inv_p_lt_one.le`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem extNorm_awayToExt_algebraMap_le (hρ : (p : ℝ)⁻¹ < ρ) (y : AInf ℂ_[p] p) :
     (𝓣).extNorm ρ (inversePRadius p hρ) (awayToExt p ρ (algebraMap _ 𝔸 y)) ≤ 1 := by
@@ -908,7 +908,7 @@ theorem extNorm_awayToExt_algebraMap_le (hρ : (p : ℝ)⁻¹ < ρ) (y : AInf �
   exact (𝓣).gaussNorm_le_one_of_mem_int (incl_mem_int y) inv_p_pos inv_p_lt_one.le
 
 /- English proof (translation)
-Rewrite using `[← awayToExt_natCast, awayToExt_apply, extNorm_coe]`. Use `show gaussNorm ((𝓣).coeffB (toB ℂ_[p] p (algebraMap _ 𝔸 (p : AInf ℂ_[p] p)))) (p : ℝ)⁻¹ = _`. Rewrite using `[toB_algebraMap, coeffB_algebraMap, map_natCast (incl ℂ_[p] p)]`. Conclude with `(𝓣).gaussNorm_π inv_p_pos`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem extNorm_natCast_p (hρ : (p : ℝ)⁻¹ < ρ) :
     (𝓣).extNorm ρ (inversePRadius p hρ) (p : (𝓣).RobbaExt ρ) = (p : ℝ)⁻¹ := by
@@ -918,15 +918,15 @@ theorem extNorm_natCast_p (hρ : (p : ℝ)⁻¹ < ρ) :
   exact (𝓣).gaussNorm_π inv_p_pos
 
 /- English proof (translation)
-Establish `hv : ‖(𝓣).ptEval isPrimOne_xi (ptRad_xi_le hρ) w‖ ≤ 1`. Use `((𝓣).norm_ptEval_le isPrimOne_xi (ptRad_xi_le hρ) w).trans ?_` and prove the remaining obligations. Rewrite using `[← inverse_p_radius_eq_ptRadIoc]`. Conclude with `hw`. Take `⟨q, hq⟩` from `(𝓣).exists_toUntiltField_eq isPrimOne_xi hv`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨Y, rfl⟩` from `Ideal.Quotient.mk_surjective q`. Take `⟨l, hl⟩` from `Y.2`. Establish `hY : Y = ⟨incl ℂ_[p] p l, incl_mem_int l⟩` using `Subtype.ext hl.symm`. Establish `h0 : (𝓣).ptEval isPrimOne_xi (ptRad_xi_le hρ) (w - awayToExt p ρ (algebraMap _ 𝔸 l)) = 0`. Rewrite using `[map_sub, ptEval_awayToExt, thetaXi_algebraMap, ← hY]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `sub_eq_zero.2 hq.symm`. Take `⟨w', hw'⟩` from `((𝓣).ptEval_eq_zero_iff isPrimOne_xi (ptRad_xi_le hρ) _).1 h0`. Use `⟨l, w', by rw [← hw', add_sub_cancel], ?_⟩` and prove the remaining obligations. Establish `hN : (𝓣).extNorm ρ (inversePRadius p hρ) ((𝓣).ξExt (xi p) ρ * w') ≤ 1`. Rewrite using `[← hw', sub_eq_add_neg]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `((𝓣).extNorm_add_le _ _ _).trans (max_le hw ?_)` and prove the remaining obligations. Rewrite using `[(𝓣).extNorm_neg]`. Conclude with `extNorm_awayToExt_algebraMap_le hρ l`. Rewrite `hN` using `[(𝓣).extNorm_mul, (𝓣).extNorm_ξExt isPrimOne_xi]`. Rewrite using `[(𝓣).extNorm_mul, extNorm_natCast_p]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `e : max ((𝓣).ptRad (xi p)) ((inversePRadius p hρ : Set.Ioc (0 : ℝ) ρ) : ℝ) = (p : ℝ)⁻¹`. Rewrite using `[ptRad_xi]`. Conclude with `max_self _`. Rewrite `hN` using `[e]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem exists_lift_step (hρ : (p : ℝ)⁻¹ < ρ) {w : (𝓣).RobbaExt ρ}
     (hw : (𝓣).extNorm ρ (inversePRadius p hρ) w ≤ 1) :
@@ -957,13 +957,13 @@ theorem exists_lift_step (hρ : (p : ℝ)⁻¹ < ρ) {w : (𝓣).RobbaExt ρ}
   rwa [e] at hN
 
 /- English proof (translation)
-Use `set ξ := (𝓣).ξExt (xi p) ρ with hξdef`. Proceed by induction on `m with`. Consider the case `zero`. Introduce `w hw`. Take `⟨l, w', rfl, -⟩` from `exists_lift_step hρ hw`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨l, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_zero, one_mul, add_sub_cancel_left, zero_add, pow_one]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _)`. Consider the case `succ m ih`. Introduce `w hw`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨l, w', rfl, hw'⟩` from `exists_lift_step hρ hw`. Take `⟨y', hy'⟩` from `ih _ hw'`. Use `⟨(p : AInf ℂ_[p] p) ^ (m + 1) * l + xiA p * y', ?_⟩` and prove the remaining obligations. Establish `e : (p : (𝓣).RobbaExt ρ) ^ (m + 1) * (awayToExt p ρ (algebraMap _ 𝔸 l) + ξ * w') - awayToExt p ρ (algebraMap _ 𝔸 ((p : AInf ℂ_[p] p) ^ (m + 1) * l + xiA p * y')) = ξ * ((p : (𝓣).RobbaExt ρ) ^ m * ((p : (𝓣).RobbaExt ρ) * w') - awayToExt p ρ (algebraMap _ 𝔸 y'))`. Simplify using `only [map_add, map_mul, map_pow, map_natCast]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[awayToExt_xiA ρ]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, pow_succ' _ (m + 1)]`. Conclude with `Ideal.mul_mem_mul (Ideal.mem_span_singleton_self _) hy'`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_pow_mul_sub_mem (hρ : (p : ℝ)⁻¹ < ρ) (m : ℕ) :
     ∀ w : (𝓣).RobbaExt ρ, (𝓣).extNorm ρ (inversePRadius p hρ) w ≤ 1 →
@@ -994,9 +994,9 @@ theorem exists_pow_mul_sub_mem (hρ : (p : ℝ)⁻¹ < ρ) (m : ℕ) :
     exact Ideal.mul_mem_mul (Ideal.mem_span_singleton_self _) hy'
 
 /- English proof (translation)
-Take `⟨y, hy⟩` from `exists_pow_mul_sub_mem hρ m w hw`. Use `⟨y, ?_⟩` and prove the remaining obligations. Establish `e : (p : 𝔹) ^ m * iota p hρ w = iota p hρ ((p : (𝓣).RobbaExt ρ) ^ m * w)`. Rewrite using `[map_mul, map_pow, map_natCast]`. Rewrite using `[e, evalB_iota_eq_mk_iff]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hy`.
+A detailed English derivation is pending.
 -/
 theorem exists_evalB_pow_mul_iota_eq (hρ : (p : ℝ)⁻¹ < ρ) {w : (𝓣).RobbaExt ρ}
     (hw : (𝓣).extNorm ρ (inversePRadius p hρ) w ≤ 1) (m : ℕ) :
@@ -1010,7 +1010,7 @@ theorem exists_evalB_pow_mul_iota_eq (hρ : (p : ℝ)⁻¹ < ρ) {w : (𝓣).Rob
   exact hy
 
 /- English proof (translation)
-Take `⟨y, hy⟩` from `exists_evalB_pow_mul_iota_eq hρ hw m`. Rewrite `hy` using `[map_mul, map_pow, map_natCast]`. Rewrite using `[hy]`. Conclude with `⟨y, rfl⟩`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem pow_mul_evalB_iota_mem_latticeQ (hρ : (p : ℝ)⁻¹ < ρ) {w : (𝓣).RobbaExt ρ}
     (hw : (𝓣).extNorm ρ (inversePRadius p hρ) w ≤ 1) (m : ℕ) :
@@ -1031,7 +1031,7 @@ Both sides reduce to the same expression.
 theorem coe_pUnit : ((pUnit p : 𝔸ˣ) : 𝔸) = algebraMap _ 𝔸 (p : AInf ℂ_[p] p) := rfl
 
 /- English proof (translation)
-Rewrite using `[evalB_iota_eq_mk_iff, sub_self]`. Conclude with `zero_mem _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evalB_iota_awayToExt (hρ : (p : ℝ)⁻¹ < ρ) (m : ℕ) (a : 𝔸) :
     evalB ℂ_[p] p m (iota p hρ (awayToExt p ρ a)) = Ideal.Quotient.mk _ a := by
@@ -1039,13 +1039,13 @@ theorem evalB_iota_awayToExt (hρ : (p : ℝ)⁻¹ < ρ) (m : ℕ) (a : 𝔸) :
   exact zero_mem _
 
 /- English proof (translation)
-Establish `hpos : (0 : ℝ) < p` using `Nat.cast_pos.2 hp.out.pos`. Establish `hnat : ∀ n : ℕ, (𝓣).extNorm ρ (inversePRadius p hρ) (awayToExt p ρ ((pUnit p ^ n : 𝔸ˣ) : 𝔸)) = ((p : ℝ)⁻¹) ^ n`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => rw [pow_zero, Units.val_one, map_one, (𝓣).extNorm_one, pow_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `succ n ih`. Rewrite using `[pow_succ, Units.val_mul, map_mul, (𝓣).extNorm_mul, ih, coe_pUnit, awayToExt_natCast, extNorm_natCast_p, pow_succ]`. Establish `hinv : ∀ u : 𝔸ˣ, (𝓣).extNorm ρ (inversePRadius p hρ) (awayToExt p ρ ((u⁻¹ : 𝔸ˣ) : 𝔸)) * (𝓣).extNorm ρ (inversePRadius p hρ) (awayToExt p ρ (u : 𝔸)) = 1`. Introduce `u`. Rewrite using `[← (𝓣).extNorm_mul, ← map_mul, ← Units.val_mul, inv_mul_cancel, Units.val_one, map_one, (𝓣).extNorm_one]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Break down `k with n | n` into its components or cases. Rewrite using `[Int.ofNat_eq_natCast, zpow_natCast, hnat, zpow_neg, zpow_natCast, inv_pow]`. Rewrite using `[zpow_negSucc, Int.neg_negSucc, zpow_natCast]`. Establish `h` using `hinv (pUnit p ^ (n + 1))`. Rewrite `h` using `[hnat, inv_pow, mul_inv_eq_one₀ (pow_ne_zero _ hpos.ne')]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem extNorm_awayToExt_pUnit_zpow (hρ : (p : ℝ)⁻¹ < ρ) (k : ℤ) :
     (𝓣).extNorm ρ (inversePRadius p hρ) (awayToExt p ρ ((pUnit p ^ k : 𝔸ˣ) : 𝔸)) = (p : ℝ) ^ (-k) := by
@@ -1073,13 +1073,13 @@ theorem extNorm_awayToExt_pUnit_zpow (hρ : (p : ℝ)⁻¹ < ρ) (k : ℤ) :
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Establish `hpos : (0 : ℝ) < p` using `Nat.cast_pos.2 hp.out.pos`. Take `⟨w₀, hw₀⟩ : ∃ w₀, w₀ = awayToExt p ρ ((pUnit p ^ (-c) : 𝔸ˣ) : 𝔸) * w` from `⟨_, rfl⟩`. Establish `hw₀n : (𝓣).extNorm ρ (inversePRadius p hρ) w₀ ≤ 1`. Rewrite using `[hw₀, (𝓣).extNorm_mul, extNorm_awayToExt_pUnit_zpow, neg_neg]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Take `⟨y, hy⟩` from `exists_evalB_pow_mul_iota_eq hρ hw₀n m`. Use `⟨y, ?_⟩` and prove the remaining obligations. Establish `hw' : w = awayToExt p ρ ((pUnit p ^ c : 𝔸ˣ) : 𝔸) * w₀`. Rewrite using `[hw₀, ← mul_assoc, ← map_mul, ← Units.val_mul, ← zpow_add, add_neg_cancel, zpow_zero, Units.val_one, map_one, one_mul]`. Establish `hpm : (p : 𝔹) ^ m = toBDeRhamPlus (normInteger ℂ_[p]) p ((pUnit p ^ (m : ℤ) : 𝔸ˣ) : 𝔸)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[zpow_natCast, Units.val_pow_eq_pow_val, coe_pUnit]`. Simplify using `only [map_pow, map_natCast]`. Rewrite `hy` using `[hpm, map_mul, evalB_toBDeRhamPlus (m + 1) ((pUnit p ^ (m : ℤ) : 𝔸ˣ) : 𝔸)]`. Establish `e : ((pUnit p ^ (c - m) : 𝔸ˣ) : 𝔸) = ((pUnit p ^ c : 𝔸ˣ) : 𝔸) * ((pUnit p ^ (-(m : ℤ)) : 𝔸ˣ) : 𝔸)`. Rewrite using `[← Units.val_mul, ← zpow_add, sub_eq_add_neg]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hE : evalB ℂ_[p] p (m + 1) (iota p hρ w) = Ideal.Quotient.mk (𝔍 ^ (m + 1)) ((pUnit p ^ c : 𝔸ˣ) : 𝔸) * evalB ℂ_[p] p (m + 1) (iota p hρ w₀)`. Rewrite using `[hw', map_mul, map_mul, evalB_iota_awayToExt]`. Establish `hu : Ideal.Quotient.mk (𝔍 ^ (m + 1)) ((pUnit p ^ (-(m : ℤ)) : 𝔸ˣ) : 𝔸) * Ideal.Quotient.mk (𝔍 ^ (m + 1)) ((pUnit p ^ (m : ℤ) : 𝔸ˣ) : 𝔸) = 1`. Rewrite using `[← map_mul, zpow_neg, Units.inv_mul, map_one]`. Rewrite using `[e, map_mul, map_mul, ← hy, hE, ← mul_assoc, mul_assoc (Ideal.Quotient.mk (𝔍 ^ (m + 1)) ((pUnit p ^ c : 𝔸ˣ) : 𝔸)), hu, mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_evalB_iota_eq_zpow (hρ : (p : ℝ)⁻¹ < ρ) {w : (𝓣).RobbaExt ρ} {c : ℤ}
     (hw : (𝓣).extNorm ρ (inversePRadius p hρ) w ≤ (p : ℝ) ^ (-c)) (m : ℕ) :
@@ -1118,7 +1118,7 @@ def InDom (x : (𝓣).RobbaTilde) : Prop :=
   ∃ ρ : Set.Ioo (0 : ℝ) 1, (p : ℝ)⁻¹ < ρ ∧ ∃ y : (𝓣).RobbaExt ρ, (𝓣).ofRad ρ y = x
 
 /- English proof (translation)
-Take `⟨ρ1, h1, x1, rfl⟩` from `hx`. Take `⟨ρ2, h2, y2, rfl⟩` from `hy`. Set `ρ3 : Set.Ioo (0 : ℝ) 1` to `⟨min ρ1 ρ2, lt_min ρ1.2.1 ρ2.2.1, min_lt_of_left_lt ρ1.2.2⟩`. Conclude with `⟨ρ3, lt_min h1 h2, (𝓣).res (ρ1 := ρ3) (min_le_left _ _) x1, (𝓣).res (ρ1 := ρ3) (min_le_right _ _) y2, (𝓣).ofRad_res _ _, (𝓣).ofRad_res _ _⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Supply the required witnesses or components.
 -/
 theorem exists_common {x y : (𝓣).RobbaTilde} (hx : InDom x) (hy : InDom y) :
     ∃ (ρ : Set.Ioo (0 : ℝ) 1) (_ : (p : ℝ)⁻¹ < ρ) (x' y' : (𝓣).RobbaExt ρ),
@@ -1136,7 +1136,7 @@ def rhoMid : Set.Ioo (0 : ℝ) 1 :=
     by have := inv_p_lt_one (p := p); linarith⟩
 
 /- English proof (translation)
-Use `show (p : ℝ)⁻¹ < (1 + (p : ℝ)⁻¹) / 2`. Use `inv_p_lt_one (p := p)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem inv_p_lt_rhoMid : (p : ℝ)⁻¹ < rhoMid p := by
   show (p : ℝ)⁻¹ < (1 + (p : ℝ)⁻¹) / 2
@@ -1159,13 +1159,13 @@ def tildeDom : Subring (𝓣).RobbaTilde where
     exact ⟨ρ, hρ, -x', map_neg _ _⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨ρ, hρ, y, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem ofRad_mem_tildeDom (hρ : (p : ℝ)⁻¹ < ρ) (y : (𝓣).RobbaExt ρ) :
     (𝓣).ofRad ρ y ∈ tildeDom p := ⟨ρ, hρ, y, rfl⟩
 
 /- English proof (translation)
-Set `ρ3 : Set.Ioo (0 : ℝ) 1` to `⟨min ρ1 ρ2, lt_min ρ1.2.1 ρ2.2.1, min_lt_of_left_lt ρ1.2.2⟩`. Establish `h3 : (p : ℝ)⁻¹ < ρ3` using `lt_min h1 h2`. Establish `e : (𝓣).res (ρ1` using `ρ3) (min_le_left _ _) y1 = (𝓣).res (ρ1 := ρ3) (min_le_right _ _) y2 := (𝓣).ofRad_injective ρ3 (by rw [(𝓣).ofRad_res, (𝓣).ofRad_res, h])`. Rewrite using `[← iota_res h3 (min_le_left _ _), e, iota_res h3 (min_le_right _ _)]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem iota_eq_of_ofRad_eq {ρ1 ρ2 : Set.Ioo (0 : ℝ) 1} (h1 : (p : ℝ)⁻¹ < ρ1) (h2 : (p : ℝ)⁻¹ < ρ2)
     {y1 : (𝓣).RobbaExt ρ1} {y2 : (𝓣).RobbaExt ρ2} (h : (𝓣).ofRad ρ1 y1 = (𝓣).ofRad ρ2 y2) :
@@ -1183,7 +1183,7 @@ def iotaTildeFun (x : (𝓣).RobbaTilde) : 𝔹 :=
   if h : InDom x then iota p h.choose_spec.1 h.choose_spec.2.choose else 0
 
 /- English proof (translation)
-Establish `h : InDom ((𝓣).ofRad ρ y)` using `⟨ρ, hρ, y, rfl⟩`. Rewrite using `[iotaTildeFun, dif_pos h]`. Conclude with `iota_eq_of_ofRad_eq _ _ h.choose_spec.2.choose_spec`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iotaTildeFun_ofRad (hρ : (p : ℝ)⁻¹ < ρ) (y : (𝓣).RobbaExt ρ) :
     iotaTildeFun p ((𝓣).ofRad ρ y) = iota p hρ y := by
@@ -1192,21 +1192,21 @@ theorem iotaTildeFun_ofRad (hρ : (p : ℝ)⁻¹ < ρ) (y : (𝓣).RobbaExt ρ) 
   exact iota_eq_of_ofRad_eq _ _ h.choose_spec.2.choose_spec
 
 /- English proof (translation)
-Establish `e : (1 : (𝓣).RobbaTilde) = (𝓣).ofRad (rhoMid p) 1` using `(map_one _).symm`. Rewrite using `[e, iotaTildeFun_ofRad inv_p_lt_rhoMid, map_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem iotaTildeFun_one : iotaTildeFun p 1 = 1 := by
   have e : (1 : (𝓣).RobbaTilde) = (𝓣).ofRad (rhoMid p) 1 := (map_one _).symm
   rw [e, iotaTildeFun_ofRad inv_p_lt_rhoMid, map_one]
 
 /- English proof (translation)
-Establish `e : (0 : (𝓣).RobbaTilde) = (𝓣).ofRad (rhoMid p) 0` using `(map_zero _).symm`. Rewrite using `[e, iotaTildeFun_ofRad inv_p_lt_rhoMid, map_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem iotaTildeFun_zero : iotaTildeFun p 0 = 0 := by
   have e : (0 : (𝓣).RobbaTilde) = (𝓣).ofRad (rhoMid p) 0 := (map_zero _).symm
   rw [e, iotaTildeFun_ofRad inv_p_lt_rhoMid, map_zero]
 
 /- English proof (translation)
-Take `⟨ρ, hρ, x', y', rfl, rfl⟩` from `exists_common hx hy`. Rewrite using `[← map_mul, iotaTildeFun_ofRad hρ, iotaTildeFun_ofRad hρ, iotaTildeFun_ofRad hρ, map_mul]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem iotaTildeFun_mul {x y : (𝓣).RobbaTilde} (hx : x ∈ tildeDom p) (hy : y ∈ tildeDom p) :
     iotaTildeFun p (x * y) = iotaTildeFun p x * iotaTildeFun p y := by
@@ -1214,7 +1214,7 @@ theorem iotaTildeFun_mul {x y : (𝓣).RobbaTilde} (hx : x ∈ tildeDom p) (hy :
   rw [← map_mul, iotaTildeFun_ofRad hρ, iotaTildeFun_ofRad hρ, iotaTildeFun_ofRad hρ, map_mul]
 
 /- English proof (translation)
-Take `⟨ρ, hρ, x', y', rfl, rfl⟩` from `exists_common hx hy`. Rewrite using `[← map_add, iotaTildeFun_ofRad hρ, iotaTildeFun_ofRad hρ, iotaTildeFun_ofRad hρ, map_add]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem iotaTildeFun_add {x y : (𝓣).RobbaTilde} (hx : x ∈ tildeDom p) (hy : y ∈ tildeDom p) :
     iotaTildeFun p (x + y) = iotaTildeFun p x + iotaTildeFun p y := by
@@ -1236,16 +1236,16 @@ Both sides reduce to the same expression.
 theorem iotaTilde_apply (x : tildeDom p) : iotaTilde p x = iotaTildeFun p x := rfl
 
 /- English proof (translation)
-The claim follows from `iotaTildeFun_ofRad hρ y`.
+A detailed English derivation is pending.
 -/
 theorem iotaTilde_ofRad (hρ : (p : ℝ)⁻¹ < ρ) (y : (𝓣).RobbaExt ρ) :
     iotaTilde p ⟨(𝓣).ofRad ρ y, ofRad_mem_tildeDom hρ y⟩ = iota p hρ y :=
   iotaTildeFun_ofRad hρ y
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce and unpack `⟨x, ρ, hρ, y, rfl⟩ hx`. Rewrite `hx` using `[iotaTilde_ofRad hρ]`. Establish `hy : y = 0` using `iota_injective hρ (hx.trans (map_zero _).symm)`. Apply `Subtype.ext` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Use `show (𝓣).ofRad ρ y = 0`. Rewrite using `[hy, map_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iotaTilde_injective : Function.Injective (iotaTilde p) := by
   rw [injective_iff_map_eq_zero]
@@ -1257,7 +1257,7 @@ theorem iotaTilde_injective : Function.Injective (iotaTilde p) := by
   rw [hy, map_zero]
 
 /- English proof (translation)
-Use `show (τ : ℝ) ^ ((((p ^ (frob ℂ_[p] p).a : ℕ)) : ℝ)⁻¹) = _`. Rewrite using `[frob_a, pow_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rootRadius_coe (τ : Set.Ioo (0 : ℝ) 1) :
     ((frob ℂ_[p] p).rootRadius τ : ℝ) = (τ : ℝ) ^ ((p : ℝ)⁻¹) := by
@@ -1265,14 +1265,14 @@ theorem rootRadius_coe (τ : Set.Ioo (0 : ℝ) 1) :
   rw [frob_a, pow_one]
 
 /- English proof (translation)
-Rewrite using `[rootRadius_coe]`. Conclude with `Real.self_le_rpow_of_le_one τ.2.1.le τ.2.2.le inv_p_lt_one.le`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem le_rootRadius (τ : Set.Ioo (0 : ℝ) 1) : (τ : ℝ) ≤ (frob ℂ_[p] p).rootRadius τ := by
   rw [rootRadius_coe]
   exact Real.self_le_rpow_of_le_one τ.2.1.le τ.2.2.le inv_p_lt_one.le
 
 /- English proof (translation)
-Take `⟨ρ, hρ, y, rfl⟩` from `hx`. Rewrite using `[TeichLift.TeichFrob.tildeFrobSymm_ofRad]`. Conclude with `⟨_, hρ.trans_le (le_rootRadius ρ), _, rfl⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem tildeFrobSymm_mem_tildeDom {x : (𝓣).RobbaTilde} (hx : x ∈ tildeDom p) :
     (frob ℂ_[p] p).tildeFrobSymm x ∈ tildeDom p := by
@@ -1281,9 +1281,9 @@ theorem tildeFrobSymm_mem_tildeDom {x : (𝓣).RobbaTilde} (hx : x ∈ tildeDom 
   exact ⟨_, hρ.trans_le (le_rootRadius ρ), _, rfl⟩
 
 /- English proof (translation)
-Proceed by induction on `N with`. Consider the case `zero => intro τ y; exact ⟨τ, y, rfl, by rw [pow_zero, Real.rpow_one]⟩`. Consider the case `succ N ih`. Introduce `τ y`. Take `⟨τ', y', h1, h2⟩` from `ih _ ((frob ℂ_[p] p).extFrobSymm τ y)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨τ', y', ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Function.iterate_succ_apply, TeichLift.TeichFrob.tildeFrobSymm_ofRad, h1]`. Rewrite using `[h2, rootRadius_coe, ← Real.rpow_mul τ.2.1.le, pow_succ, mul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem iterate_tildeFrobSymm_ofRad (N : ℕ) : ∀ (τ : Set.Ioo (0 : ℝ) 1) (y : (𝓣).RobbaExt τ),
     ∃ (τ' : Set.Ioo (0 : ℝ) 1) (y' : (𝓣).RobbaExt τ'),
@@ -1299,9 +1299,9 @@ theorem iterate_tildeFrobSymm_ofRad (N : ℕ) : ∀ (τ : Set.Ioo (0 : ℝ) 1) (
     · rw [h2, rootRadius_coe, ← Real.rpow_mul τ.2.1.le, pow_succ, mul_comm]
 
 /- English proof (translation)
-Establish `hp1 : (1 : ℝ) < p` using `Nat.one_lt_cast.2 hp.out.one_lt`. Establish `hL : 0 < -Real.log τ` using `neg_pos.2 (Real.log_neg τ.2.1 τ.2.2)`. Establish `hlp : 0 < Real.log p` using `Real.log_pos hp1`. Take `⟨N, hN⟩` from `exists_pow_lt_of_lt_one (div_pos hlp hL) (inv_p_lt_one (p := p))`. Use `⟨N, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : (p : ℝ)⁻¹ = Real.exp (-Real.log p)`. Rewrite using `[Real.exp_neg, Real.exp_log (by positivity)]`. Rewrite `hN` using `[lt_div_iff₀ hL]`. Rewrite using `[Real.rpow_def_of_pos τ.2.1]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem exists_rpow_gt (τ : Set.Ioo (0 : ℝ) 1) : ∃ N : ℕ, (p : ℝ)⁻¹ < (τ : ℝ) ^ ((p : ℝ)⁻¹ ^ N) := by
   have hp1 : (1 : ℝ) < p := Nat.one_lt_cast.2 hp.out.one_lt
@@ -1317,11 +1317,11 @@ theorem exists_rpow_gt (τ : Set.Ioo (0 : ℝ) 1) : ∃ N : ℕ, (p : ℝ)⁻¹ 
     _ < Real.exp (Real.log τ * (p : ℝ)⁻¹ ^ N) := Real.exp_lt_exp.2 (by nlinarith)
 
 /- English proof (translation)
-Take `⟨τ, y, rfl⟩` from `(𝓣).exists_ofRad x`. Take `⟨N, hN⟩` from `exists_rpow_gt (p := p) τ`. Use `⟨N, fun n hn => ?_⟩` and prove the remaining obligations. Take `⟨k, rfl⟩` from `Nat.exists_eq_add_of_le hn`. Rewrite using `[add_comm, Function.iterate_add_apply]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨τ', y', h1, h2⟩` from `iterate_tildeFrobSymm_ofRad N τ y`. Rewrite using `[h1]`. Establish `hmem : (𝓣).ofRad τ' y' ∈ tildeDom p` using `⟨τ', by rw [h2]; exact hN, y', rfl⟩`. Use `clear h1 h2 hn`. Proceed by induction on `k with`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => exact hmem`. Consider the case `succ k ih => rw [Function.iterate_succ_apply']`. Conclude with `tildeFrobSymm_mem_tildeDom ih`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_iterate_tildeFrobSymm_mem (x : (𝓣).RobbaTilde) :
     ∃ N : ℕ, ∀ n : ℕ, N ≤ n → (frob ℂ_[p] p).tildeFrobSymm^[n] x ∈ tildeDom p := by
@@ -1343,21 +1343,21 @@ variable (p) in
 def phiNeg (n : ℕ) : (𝓣).RobbaTilde →+* (𝓣).RobbaTilde := (frob ℂ_[p] p).tildeFrobSymm ^ n
 
 /- English proof (translation)
-Rewrite using `[phiNeg, RingHom.coe_pow]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem phiNeg_apply (n : ℕ) (x : (𝓣).RobbaTilde) :
     phiNeg p n x = (frob ℂ_[p] p).tildeFrobSymm^[n] x := by
   rw [phiNeg, RingHom.coe_pow]
 
 /- English proof (translation)
-Rewrite using `[phiNeg_apply, phiNeg_apply, Function.iterate_succ_apply']`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem phiNeg_succ (n : ℕ) (x : (𝓣).RobbaTilde) :
     phiNeg p (n + 1) x = (frob ℂ_[p] p).tildeFrobSymm (phiNeg p n x) := by
   rw [phiNeg_apply, phiNeg_apply, Function.iterate_succ_apply']
 
 /- English proof (translation)
-Rewrite using `[phiNeg_apply, phiNeg_apply, Function.iterate_succ_apply, TeichLift.TeichFrob.tildeFrobSymm_tildeFrob]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem phiNeg_succ_tildeFrob (n : ℕ) (x : (𝓣).RobbaTilde) :
     phiNeg p (n + 1) ((frob ℂ_[p] p).tildeFrob x) = phiNeg p n x := by
@@ -1365,7 +1365,7 @@ theorem phiNeg_succ_tildeFrob (n : ℕ) (x : (𝓣).RobbaTilde) :
     TeichLift.TeichFrob.tildeFrobSymm_tildeFrob]
 
 /- English proof (translation)
-Take `⟨N, hN⟩` from `exists_iterate_tildeFrobSymm_mem (p := p) x`. Conclude with `⟨N, fun n hn => by rw [phiNeg_apply]; exact hN n hn⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_phiNeg_mem (x : (𝓣).RobbaTilde) :
     ∃ N : ℕ, ∀ n : ℕ, N ≤ n → phiNeg p n x ∈ tildeDom p := by
@@ -1387,14 +1387,14 @@ theorem iotaN_eq (n : ℕ) {x : (𝓣).RobbaTilde} (hx : phiNeg p n x ∈ tildeD
     iotaN p n x = iotaTilde p ⟨phiNeg p n x, hx⟩ := rfl
 
 /- English proof (translation)
-Rewrite using `[iotaN, h, iotaTildeFun_ofRad hρ]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem iotaN_of_eq_ofRad {n : ℕ} {x : (𝓣).RobbaTilde} (hρ : (p : ℝ)⁻¹ < ρ) {y : (𝓣).RobbaExt ρ}
     (h : phiNeg p n x = (𝓣).ofRad ρ y) : iotaN p n x = iota p hρ y := by
   rw [iotaN, h, iotaTildeFun_ofRad hρ]
 
 /- English proof (translation)
-Rewrite using `[thetaN, iotaN_of_eq_ofRad hρ h, theta_iota]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem thetaN_of_eq_ofRad {n : ℕ} {x : (𝓣).RobbaTilde} (hρ : (p : ℝ)⁻¹ < ρ) {y : (𝓣).RobbaExt ρ}
     (h : phiNeg p n x = (𝓣).ofRad ρ y) :
@@ -1402,42 +1402,42 @@ theorem thetaN_of_eq_ofRad {n : ℕ} {x : (𝓣).RobbaTilde} (hρ : (p : ℝ)⁻
   rw [thetaN, iotaN_of_eq_ofRad hρ h, theta_iota]
 
 /- English proof (translation)
-Rewrite using `[iotaN, iotaN, iotaN, map_add, iotaTildeFun_add hx hy]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem iotaN_add {n : ℕ} {x y : (𝓣).RobbaTilde} (hx : phiNeg p n x ∈ tildeDom p)
     (hy : phiNeg p n y ∈ tildeDom p) : iotaN p n (x + y) = iotaN p n x + iotaN p n y := by
   rw [iotaN, iotaN, iotaN, map_add, iotaTildeFun_add hx hy]
 
 /- English proof (translation)
-Rewrite using `[iotaN, iotaN, iotaN, map_mul, iotaTildeFun_mul hx hy]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem iotaN_mul {n : ℕ} {x y : (𝓣).RobbaTilde} (hx : phiNeg p n x ∈ tildeDom p)
     (hy : phiNeg p n y ∈ tildeDom p) : iotaN p n (x * y) = iotaN p n x * iotaN p n y := by
   rw [iotaN, iotaN, iotaN, map_mul, iotaTildeFun_mul hx hy]
 
 /- English proof (translation)
-Rewrite using `[thetaN, iotaN_add hx hy, map_add]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem thetaN_add {n : ℕ} {x y : (𝓣).RobbaTilde} (hx : phiNeg p n x ∈ tildeDom p)
     (hy : phiNeg p n y ∈ tildeDom p) : thetaN p n (x + y) = thetaN p n x + thetaN p n y := by
   rw [thetaN, iotaN_add hx hy, map_add]; rfl
 
 /- English proof (translation)
-Rewrite using `[thetaN, iotaN_mul hx hy, map_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem thetaN_mul {n : ℕ} {x y : (𝓣).RobbaTilde} (hx : phiNeg p n x ∈ tildeDom p)
     (hy : phiNeg p n y ∈ tildeDom p) : thetaN p n (x * y) = thetaN p n x * thetaN p n y := by
   rw [thetaN, iotaN_mul hx hy, map_mul]; rfl
 
 /- English proof (translation)
-Rewrite using `[iotaN, iotaN, phiNeg_succ_tildeFrob]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem iotaN_add_one_tildeFrob (n : ℕ) (x : (𝓣).RobbaTilde) :
     iotaN p (n + 1) ((frob ℂ_[p] p).tildeFrob x) = iotaN p n x := by
   rw [iotaN, iotaN, phiNeg_succ_tildeFrob]
 
 /- English proof (translation)
-Rewrite using `[thetaN, thetaN, iotaN_add_one_tildeFrob]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem thetaN_add_one_tildeFrob (n : ℕ) (x : (𝓣).RobbaTilde) :
     thetaN p (n + 1) ((frob ℂ_[p] p).tildeFrob x) = thetaN p n x := by
@@ -1448,7 +1448,7 @@ section GaloisN
 variable {K : IntermediateField ℚ_[p] (PadicAlgCl p)}
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (frob ℂ_[p] p).tildeFrob` using `Function.LeftInverse.injective (frob ℂ_[p] p).tildeFrobSymm_tildeFrob`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[← galIso_tildeMap_tildeFrob, TeichLift.TeichFrob.tildeFrob_tildeFrobSymm, TeichLift.TeichFrob.tildeFrob_tildeFrobSymm]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem galIso_tildeMap_tildeFrobSymm (σ : Gal(PadicAlgCl p/K)) (x : (𝓣).RobbaTilde) :
     (galIso σ).tildeMap ((frob ℂ_[p] p).tildeFrobSymm x) =
@@ -1460,7 +1460,7 @@ theorem galIso_tildeMap_tildeFrobSymm (σ : Gal(PadicAlgCl p/K)) (x : (𝓣).Rob
     TeichLift.TeichFrob.tildeFrob_tildeFrobSymm]
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => rw [phiNeg_apply, phiNeg_apply]`. Both sides reduce to the same expression. Consider the case `succ k ih => rw [phiNeg_succ, phiNeg_succ, galIso_tildeMap_tildeFrobSymm, ih]`.
+Proceed by induction. Treat this case separately. Both sides reduce to the same expression. Treat this case separately.
 -/
 theorem galIso_tildeMap_phiNeg (σ : Gal(PadicAlgCl p/K)) (n : ℕ) (x : (𝓣).RobbaTilde) :
     (galIso σ).tildeMap (phiNeg p n x) = phiNeg p n ((galIso σ).tildeMap x) := by
@@ -1469,7 +1469,7 @@ theorem galIso_tildeMap_phiNeg (σ : Gal(PadicAlgCl p/K)) (n : ℕ) (x : (𝓣).
   | succ k ih => rw [phiNeg_succ, phiNeg_succ, galIso_tildeMap_tildeFrobSymm, ih]
 
 /- English proof (translation)
-Take `⟨ρ, hρ, y, rfl⟩` from `hx`. Rewrite using `[TeichLift.TeichIso.tildeMap_ofRad]`. Conclude with `⟨ρ, hρ, _, rfl⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem tildeMap_mem_tildeDom (σ : Gal(PadicAlgCl p/K)) {x : (𝓣).RobbaTilde}
     (hx : x ∈ tildeDom p) : (galIso σ).tildeMap x ∈ tildeDom p := by
@@ -1478,7 +1478,7 @@ theorem tildeMap_mem_tildeDom (σ : Gal(PadicAlgCl p/K)) {x : (𝓣).RobbaTilde}
   exact ⟨ρ, hρ, _, rfl⟩
 
 /- English proof (translation)
-Take `⟨ρ, hρ, y, rfl⟩` from `hx`. Rewrite using `[TeichLift.TeichIso.tildeMap_ofRad, iotaTildeFun_ofRad hρ, iotaTildeFun_ofRad hρ, iota_extMap hρ]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem iotaTildeFun_tildeMap (σ : Gal(PadicAlgCl p/K)) {x : (𝓣).RobbaTilde}
     (hx : x ∈ tildeDom p) : iotaTildeFun p ((galIso σ).tildeMap x) = σ • iotaTildeFun p x := by
@@ -1487,7 +1487,7 @@ theorem iotaTildeFun_tildeMap (σ : Gal(PadicAlgCl p/K)) {x : (𝓣).RobbaTilde}
     iota_extMap hρ]
 
 /- English proof (translation)
-Rewrite using `[iotaN, ← galIso_tildeMap_phiNeg, iotaTildeFun_tildeMap σ hx]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem iotaN_tildeMap (σ : Gal(PadicAlgCl p/K)) {n : ℕ} {x : (𝓣).RobbaTilde}
     (hx : phiNeg p n x ∈ tildeDom p) :

@@ -5,7 +5,7 @@ import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.Archim
 open PositivityTheory.Rg.BcB PositivityTheory.Rg.BcB.F
 
 /- English proof (translation)
-The claim follows from `UpperTheory.V.Z.Mult.compOf (Desc.bcOut_of_N UpperTheory.BaseChangeIdentities.baseChangeN Rig.weightEx (Rig.rThetaN Rig.strSat)) hW`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Mult.compOf' (hW : UpperTheory.V.Z.Tf.GaloisFromTraceFormula.GalWeak 4) : UpperTheory.V.Z.Mult.CompOf :=
   UpperTheory.V.Z.Mult.compOf (Desc.bcOut_of_N UpperTheory.BaseChangeIdentities.baseChangeN Rig.weightEx (Rig.rThetaN Rig.strSat)) hW

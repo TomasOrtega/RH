@@ -88,22 +88,22 @@ def REndo : Prop := ∀ P : Pred, Spec P → EndoP P
 def RStable : Prop := PiFin → PiAdm → GrowthPiJ → CmbPi → ∀ P : Pred, Spec P → StableP P
 
 /- English proof (translation)
-The claim follows from `h`.
+A detailed English derivation is pending.
 -/
 theorem cuspReadP_inf (h : CuspReadI) : CuspReadP fun _ _ _ _ _ D m => D.Inf m := h
 
 /- English proof (translation)
-The claim follows from `h`.
+A detailed English derivation is pending.
 -/
 theorem endoG_of (h : EndoP fun _ _ _ _ _ D m => D.Inf m) : EndoBlockG := h
 
 /- English proof (translation)
-The claim follows from `h`.
+A detailed English derivation is pending.
 -/
 theorem stableG_of (h : StableP fun _ _ _ _ _ D m => D.Inf m) : StableBlockG := h
 
 /- English proof (translation)
-Introduce `E _ _ _ N K W bad m₀ X h1 h2 h3 h4 h5 h6`. Take `⟨J, hJ, D, C, a1, a2⟩` from `h E N K W bad m₀ X h1 h2 h3 h4 h5 h6`. Conclude with `⟨J, hJ, D, C, a1, fun _ => trivial, a2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem cuspReadP_true (h : CuspRead) : CuspReadP fun _ _ _ _ _ _ _ => True := by
   intro E _ _ _ N K W bad m₀ X h1 h2 h3 h4 h5 h6
@@ -111,7 +111,7 @@ theorem cuspReadP_true (h : CuspRead) : CuspReadP fun _ _ _ _ _ _ _ => True := b
   exact ⟨J, hJ, D, C, a1, fun _ => trivial, a2⟩
 
 /- English proof (translation)
-Introduce `E _ _ _ hE a b hab S hS l₁ l₂ Z hZ φ h1 h2`. Take `⟨J, hJ, D₁, D₂, B₁, B₂, a1, -, a3⟩` from `h E hE a b hab S hS l₁ l₂ Z hZ φ h1 h2`. Conclude with `⟨J, hJ, D₁, D₂, B₁, B₂, a1, fun T hT hd e₁ e₂ ρ hρ hv => a3 T (fun w hw => (hT w hw).1) hd e₁ e₂ ρ (fun w hw hn => absurd (hT w hw).2 hn) hρ hv⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem endo_of (P : Pred) (h : EndoP P) : EndoBlock := by
   intro E _ _ _ hE a b hab S hS l₁ l₂ Z hZ φ h1 h2
@@ -120,9 +120,9 @@ theorem endo_of (P : Pred) (h : EndoP P) : EndoBlock := by
     a3 T (fun w hw => (hT w hw).1) hd e₁ e₂ ρ (fun w hw hn => absurd (hT w hw).2 hn) hρ hv⟩
 
 /- English proof (translation)
-Introduce `E _ _ _ hE n hn π h1 h2`. Take `⟨l₁, hl⟩` from `h E hE n hn π h1 h2`. Use `⟨l₁, fun l₂ S hS Z hZ B τ hB hτ => ?_⟩` and prove the remaining obligations. Take `⟨c, hc, hφ⟩` from `hl l₂ S hS Z hZ B τ hB hτ`. Use `⟨c, hc, fun φ p1 p2 => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨J, hJ, D, B₁, a1, -, a3⟩` from `hφ φ p1 p2`. Conclude with `⟨J, hJ, D, B₁, a1, fun T hT hd e₁ e₂ ρ hρ hv => a3 T (fun w hw => (hT w hw).1) hd e₁ e₂ ρ (fun w hw hn => absurd (hT w hw).2 hn) hρ hv⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem stable_of (P : Pred) (h : StableP P) : StableBlock := by
   intro E _ _ _ hE n hn π h1 h2

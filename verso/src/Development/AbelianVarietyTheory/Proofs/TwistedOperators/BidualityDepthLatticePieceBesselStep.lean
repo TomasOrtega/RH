@@ -23,11 +23,11 @@ variable {D : D7}
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Unfold `latO`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[AddSubgroup.closure_le]`. Introduce and unpack `w ⟨α, hα, hP, a, ha, s, hs, t, ht, rfl⟩`. Rewrite using `[← neg_neg (Matrix.of _)]`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Use `neg_mem (AddSubgroup.subset_closure ⟨α, hα, hP, a, ha, s, hs, t, ht, ?_⟩)` and prove the remaining obligations. Use function extensionality and compare the values at `i j`. Simplify using `[negSp_gram, Finset.sum_neg_distrib, TensorProduct.tmul_neg]`. Rewrite using `[AddSubgroup.closure_le]`. Introduce and unpack `w ⟨α, hα, hP, a, ha, s, hs, t, ht, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[← neg_neg (Matrix.of _)]`. Use `neg_mem (AddSubgroup.subset_closure ⟨α, hα, hP, a, ha, s, hs, t, ht, ?_⟩)` and prove the remaining obligations. Use function extensionality and compare the values at `i j`. Simplify using `[negSp_gram, Finset.sum_neg_distrib, TensorProduct.tmul_neg]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem latO_negSp (S T : HSp D) (LS : Set (Fin S.rank → D.host.E)) (LT : Set (Fin T.rank → D.host.E))
     (P : HeightOneSpectrum (𝓞 D.host.F) → Prop) : latO (negSp S) T LS LT P = latO S T LS LT P := by
@@ -47,13 +47,13 @@ theorem latO_negSp (S T : HSp D) (LS : Set (Fin S.rank → D.host.E)) (LT : Set 
     simp [negSp_gram, Finset.sum_neg_distrib, TensorProduct.tmul_neg]
 
 /- English proof (translation)
-Rewrite `hu`, the goal using `[GlobalTheory.FinPl.LatMem.mem_latO_iff D _ _ _ _ hS hT]`. Use `⟨GlobalTheory.AscFinWit.mxAt_mul' (GlobalTheory.AscFinWit.mxAt_mul' hu.1 _) _, fun y hy => ?_⟩` and prove the remaining obligations. Establish `e : (show Matrix (Fin T.rank) (Fin S.rank) (AE D) from d.extY T (u * d.jY)) *ᵥ y = (show Matrix (Fin T.rank) (Fin S.rank) (AE D) from u) *ᵥ (d.jY *ᵥ (d.pY *ᵥ y))`. Simplify using `only [HypDec.extY_apply, Matrix.mulVec_mulVec, Matrix.mul_assoc]`. Rewrite using `[e]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `hu.2 _ ?_` and prove the remaining obligations. Rewrite `hy`, the goal using `[GlobalTheory.FinPlLoc.part_lat _ _ _ _ hS.1]`. Use `⟨fun i => ?_, fun v _ c hc => ?_⟩` and prove the remaining obligations. Simplify using `only [Matrix.mulVec, dotProduct]`. Conclude with `Ideal.sum_mem _ fun k _ => Ideal.mul_mem_left _ _ (Ideal.sum_mem _ fun l _ => Ideal.mul_mem_left _ _ (hy.1 l))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hs` using `((hm v) (c • y)).1 (hy.2 v trivial c hc)`. Establish `e1 : c • (d.jY *ᵥ (d.pY *ᵥ y)) = ∑ i, GlobalTheory.FinPl.colMul d.jY i ((d.pY *ᵥ (c • y)) i)`. Use function extensionality and compare the values at `k`. Simplify using `only [GlobalTheory.FinPl.colMul, Matrix.mulVec, dotProduct, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [Finset.sum_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun x _ => by ring`. Rewrite using `[e1]`. Conclude with `sum_mem fun i _ => hs.2.1 i`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem extY_jY_mem {S S₀ T : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) {LS : Lat S} {L₀ : Lat S₀} {LT : Lat T}
     (hS : IsSelfDualC S LS) (hT : IsSelfDualC T LT) (hm : ∀ v, MonoAt d LS L₀ v) {u : WO S T}
@@ -83,7 +83,7 @@ theorem extY_jY_mem {S S₀ T : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) {LS : L
     exact sum_mem fun i _ => hs.2.1 i
 
 /- English proof (translation)
-Use `(GlobalTheory.SelfDualAt.latO_ann_at D ψ hψ S T LS LT hS hT _ _ (GlobalTheory.AscFinWit.mxAt_mul' ha d.pX)).trans ?_` and prove the remaining obligations. Conclude with `⟨fun h _ ha' => h _ ha', fun h u hu => (congrArg ψ (GlobalTheory.AscFinWit.symplO_extX d T a u)).trans (h _ (extY_jY_mem d hS hT hm hu))⟩`.
+Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components.
 -/
 theorem dual_extX {S S₀ T : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) {LS : Lat S} {L₀ : Lat S₀} {LT : Lat T}
     {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) (hS : IsSelfDualC S LS) (hT : IsSelfDualC T LT)
@@ -96,7 +96,7 @@ theorem dual_extX {S S₀ T : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) {LS : Lat
     (congrArg ψ (GlobalTheory.AscFinWit.symplO_extX d T a u)).trans (h _ (extY_jY_mem d hS hT hm hu))⟩
 
 /- English proof (translation)
-Simplify `GlobalTheory.AscFinWit.mxAt_mul' h d.jY` using `only [HypDec.extY_apply, Matrix.mul_assoc, d.pY_jY, Matrix.mul_one]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mxAt_of_extY {S S₀ T : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) {a' : Mx D T.rank ρ}
     (h : MxAt (fun _ => True) (d.extY T a')) : MxAt (fun _ => True) a' := by
@@ -107,21 +107,19 @@ end GlobalTheory.AscFin.BidualLattice
 namespace GlobalTheory.AscFin.BidualLattice
 
 /- English proof (translation)
-Establish `hI` using `GlobalTheory.T.grid_lattices_compact_selfDual_splitting`. Unfold `OnStd at hI ⊢`. Use `delta All at hI ⊢`. Introduce `D hD T L μ0 hL sc G W M hM F hF ρ h a ha H`. Establish `hJ` using `hI D hD T L μ0 hL sc G W M hM F hF`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hi : 2 * ρ + 1 < D.R.m` using `by omega`. Establish `hψ : IsStdChar D W.ψ (-1)` using `W.ψ_std`. Establish `hSV : IsSelfDualC (G.V (.grid (2 * ρ + 2) 0)) (G.Λ (.grid (2 * ρ + 2) 0))` using `(G.isV (X := .grid (2 * ρ + 2) 0) ⟨h, Nat.zero_le _⟩ (fun j hj => by cases hj)).sd`. Establish `hSW : IsSelfDualC (G.V (.grid (2 * ρ + 1) 0)) (G.Λ (.grid (2 * ρ + 1) 0))` using `(GlobalTheory.CosetRow.selfDual_chi hL G (2 * ρ + 1) hi).2`. Establish `hbig : IsSelfDualC (G.V (.grid (2 * ρ + 1) 0)) (idLat (shiftId G) (G.Λ (.grid (2 * ρ + 1) 0)))` using `(hJ.1 (2 * ρ + 1) hi).2.2.2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmono : ∀ v, MonoAt (F.dB ρ h) (G.Λ (.grid (2 * ρ + 2) 0)) (lat0 F ρ h) v` using `fun v => ((hJ.2.1 ρ h).2.1 v).1`. Establish `hrowO : ∀ u ∈ latRow G (2 * ρ + 1), u ∈ latO (G.V (.grid (2 * ρ + 2) 0)) (G.V (.grid (2 * ρ + 1) 0)) (G.Λ (.grid (2 * ρ + 2) 0) : Set _) (G.Λ (.grid (2 * ρ + 1) 0) : Set _) (fun _ => True)` using `fun u hu => by`. Establish `h0` using `hu.1`. Rewrite `h0` using `[BidualLattice.latO_negSp]`. Then use the resulting hypothesis. Establish `hA2 : ∀ a', MxAt (fun _ => True) a' → (∀ b, (F.dB ρ h).extX _ b ∈ latRow G (2 * ρ + 1) → W.ψ (symplO _ _ ((F.dB ρ h).extX _ b) ((F.dB ρ h).extY _ a')) = 1) → W.ψ (symplO _ _ ((F.dB ρ h).extX _ a) ((F.dB ρ h).extY _ a')) = 1` using `fun a' h1 h2 => H a' (AddSubgroup.subset_closure ⟨h1, h2⟩)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hO : (F.dB ρ h).extX _ a ∈ latO (G.V (.grid (2 * ρ + 2) 0)) (G.V (.grid (2 * ρ + 1) 0)) (G.Λ (.grid (2 * ρ + 2) 0) : Set _) (G.Λ (.grid (2 * ρ + 1) 0) : Set _) (fun _ => True)`. Use `(BidualLattice.dual_extX (F.dB ρ h) hψ hSV hSW hmono ha).2 fun a' ha' => ?_` and prove the remaining obligations. Use `hA2 a' (BidualLattice.mxAt_of_extY _ (GlobalTheory.FinPl.LatMem.latO_mxAt ha')) fun b hb => ?_` and prove the remaining obligations. Establish `hb'` using `hrowO _ hb`. Conclude with `(GlobalTheory.SelfDualAt.latO_ann_at D W.ψ hψ _ _ _ _ hSV hSW _ _ (GlobalTheory.FinPl.LatMem.latO_mxAt hb')).1 hb' _ ha'`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨?_, fun e he => ?_⟩` and prove the remaining obligations. Conclude with `(BidualLattice.latO_negSp (G.V (.grid (2 * ρ + 2) 0)) _ _ _ _).ge hO`. Establish `hee : e * e = e` using `GlobalTheory.PlaceDatum.idemSum_mul_self he`. Establish `hsx : ∀ x : Mx D (G.V (.grid (2 * ρ + 1) 0)).rank ρ, (F.dB ρ h).extX _ (e • x) = e • (F.dB ρ h).extX _ x` using `fun x => by simp only [HypDec.extX_apply, Matrix.smul_mul]`. Establish `hsy : ∀ x : Mx D (G.V (.grid (2 * ρ + 1) 0)).rank ρ, (F.dB ρ h).extY _ (cA D e • x) = cA D e • (F.dB ρ h).extY _ x` using `fun x => by simp only [HypDec.extY_apply, Matrix.smul_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hea : MxAt (fun _ => True) (e • a)` using `fun i j => Ideal.mul_mem_left _ _ (ha i j)`. Establish `hB : (F.dB ρ h).extX _ (e • a) ∈ latBig G (2 * ρ + 1)`. Use `(BidualLattice.dual_extX (F.dB ρ h) hψ hSV hbig hmono hea).2 fun a' ha' => ?_` and prove the remaining obligations. Rewrite using `[hsx, GlobalTheory.SplitScalar.symplO_smul, ← hsy]`. Establish `ha'f` using `BidualLattice.mxAt_of_extY _ (GlobalTheory.FinPl.LatMem.latO_mxAt ha')`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `hA2 _ (fun i j => Ideal.mul_mem_left _ _ (ha'f i j)) fun b hb => ?_` and prove the remaining obligations. Rewrite using `[hsy, ← GlobalTheory.SplitScalar.symplO_smul]`. Establish `hb'` using `hin hL hD G (2 * ρ + 1) hi e he _ hb`. Conclude with `(GlobalTheory.SelfDualAt.latO_ann_at D W.ψ hψ _ _ _ _ hSV hbig _ _ (GlobalTheory.FinPl.LatMem.latO_mxAt hb')).1 hb' _ ha'`. Establish `h2` using `hout hL hD G (2 * ρ + 1) hi e he _ hB`.
-
-Rewrite `h2` using `[hsx, smul_smul, hee]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem bidual_main (hin : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {μ₀ : T}, L.Is μ₀ → OffQ D → ∀ (G : GridData L sc) (i : ℕ), i < D.R.m → ∀ e : AE D, IsIdemSum e G.pl.W0 → ∀ u ∈ latRow G i, e • u ∈ latBig G i) (hout : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {μ₀ : T}, L.Is μ₀ → OffQ D → ∀ (G : GridData L sc) (i : ℕ), i < D.R.m → ∀ e : AE D, IsIdemSum e G.pl.W0 → ∀ u ∈ latBig G i, e • u ∈ hatMx (G.modul • homLat (G.Λ (.grid (i + 1) 0)) (G.Λ (.grid i 0)))) : OnStd fun {D} _ _ {sc} {G} W F => ∀ ρ (h : 2 * ρ + 2 ≤ D.R.m), ∀ a, MxAt (fun _ => True) a → (∀ a' ∈ (pcBF W F ρ h).A₂, W.ψ (symplO _ _ ((F.dB ρ h).extX _ a) ((F.dB ρ h).extY _ a')) = 1) → a ∈ (pcBF W F ρ h).A₁ := by
   have hI := GlobalTheory.T.grid_lattices_compact_selfDual_splitting
@@ -172,7 +170,7 @@ theorem bidual_main (hin : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts}
     rwa [hsx, smul_smul, hee] at h2
 
 /- English proof (translation)
-The claim follows from `bidual_main GlobalTheory.T.depthLatticeGridRow_smul_mem_selfDualModulusShift GlobalTheory.T.selfDualModulusShift_half_mem_completedModulusHom`.
+A detailed English derivation is pending.
 -/
 theorem bidual_pcBF : OnStd fun {D} _ _ {sc} {G} W F => ∀ ρ (h : 2 * ρ + 2 ≤ D.R.m), ∀ a, MxAt (fun _ => True) a → (∀ a' ∈ (pcBF W F ρ h).A₂, W.ψ (symplO _ _ ((F.dB ρ h).extX _ a) ((F.dB ρ h).extY _ a')) = 1) → a ∈ (pcBF W F ρ h).A₁ :=
   bidual_main GlobalTheory.T.depthLatticeGridRow_smul_mem_selfDualModulusShift GlobalTheory.T.selfDualModulusShift_half_mem_completedModulusHom

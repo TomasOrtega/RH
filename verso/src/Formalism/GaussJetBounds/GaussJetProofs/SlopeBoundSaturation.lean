@@ -11,13 +11,13 @@ namespace Formalism.DworkPowerSeriesWeights
 open Formalism.GradedWeylDivisibility
 
 /- English proof (translation)
-Introduce `i`. Proceed by induction on `i using (wellFounded_gt (α := ι)).induction with`. Consider the case `_ i ih`. Establish `h1 : c i = (∑ j, c j * T i j) - ∑ j ∈ Finset.univ.erase i, c j * T i j`. Rewrite using `[← Finset.add_sum_erase _ _ (Finset.mem_univ i), hd]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h1, sub_eq_add_neg]`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le (hc i) ?_)` and prove the remaining obligations. Rewrite using `[norm_neg]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one ?_` and prove the remaining obligations.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `j hj`. Distinguish the cases in `hij : i ≤ j`. Establish `hlt : i < j` using `lt_of_le_of_ne hij (Finset.ne_of_mem_erase hj).symm`. Rewrite using `[norm_mul]`. Conclude with `mul_le_one₀ (ih j hlt) (norm_nonneg _) (hT i j)`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h0 i j hij]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma sat_tri_integral {K ι : Type} [NormedField K] [IsUltrametricDist K] [Fintype ι] [PartialOrder ι]
     (T : ι → ι → K) (hT : ∀ i j, ‖T i j‖ ≤ 1) (hd : ∀ i, T i i = 1) (h0 : ∀ i j, ¬ i ≤ j → T i j = 0)
@@ -40,9 +40,9 @@ lemma sat_tri_integral {K ι : Type} [NormedField K] [IsUltrametricDist K] [Fint
     · rw [h0 i j hij]; simp
 
 /- English proof (translation)
-Rewrite using `[Finsupp.finsetSum_apply, Finset.sum_eq_single s]`. Conclude with `Finsupp.mapDomain_apply (fun x y h => (he s s x y h).2) _ _`. Introduce `t _ hts`. Apply `Finsupp.mapDomain_of_notMem_range` to reduce the goal to its premises. Introduce and unpack `⟨w, hw⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hts (he t s w v hw).1`. Introduce `h`. Conclude with `absurd (Finset.mem_univ s) h`.
+A detailed English derivation is pending.
 -/
 lemma sat_glue_apply {S τ σ : Type} [Fintype S] [DecidableEq S] (e : S → τ → σ)
     (he : ∀ s t v w, e s v = e t w → s = t ∧ v = w) (m : S → τ →₀ ℕ) (s : S) (v : τ) :
@@ -56,7 +56,7 @@ lemma sat_glue_apply {S τ σ : Type} [Fintype S] [DecidableEq S] (e : S → τ 
   · intro h; exact absurd (Finset.mem_univ s) h
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert x s hx ih => rw [Finset.prod_insert hx, Finset.sum_insert hx, Finset.prod_insert hx, ih, monomial_mul]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 lemma sat_prod_monomial {R α σ : Type} [CommSemiring R] (s : Finset α) (a : α → σ →₀ ℕ) (c : α → R) :
     ∏ i ∈ s, monomial (a i) (c i) = monomial (∑ i ∈ s, a i) (∏ i ∈ s, c i) := by
@@ -66,17 +66,15 @@ lemma sat_prod_monomial {R α σ : Type} [CommSemiring R] (s : Finset α) (a : �
   | insert x s hx ih => rw [Finset.prod_insert hx, Finset.sum_insert hx, Finset.prod_insert hx, ih, monomial_mul]
 
 /- English proof (translation)
-Establish `h1 : ∀ s, rename (e s) (f s) = ∑ n ∈ (f s).support, monomial (n.mapDomain (e s)) (coeff n (f s))`. Introduce `s`. Use `conv_lhs => rw [← support_sum_monomial_coeff (f s)]`. Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun n _ => rename_monomial _ _ _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Repeatedly rewrite using `[h1]`. Rewrite using `[Finset.prod_univ_sum, coeff_sum]`. Repeatedly rewrite using `[sat_prod_monomial, coeff_monomial]`. Establish `hinj : ∀ N : S → τ →₀ ℕ, (∑ s, (N s).mapDomain (e s)) = (∑ s, (m s).mapDomain (e s)) ↔ N = m`. Introduce `N`.
+Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use function extensionality and compare the values at `s`. Use extensionality with `v`. Use `congrArg (fun x => x (e s v)) h` as an intermediate fact.
+Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components.
 
-Simplify `this` using `only [sat_glue_apply e he]`. Introduce and unpack `rfl`. Both sides reduce to the same expression. Repeatedly rewrite using `[hinj]`. Rewrite using `[Finset.sum_ite_eq']`.
+Both sides reduce to the same expression. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `split_ifs with hm`. Both sides reduce to the same expression. Rewrite `hm` using `[Fintype.mem_piFinset] at hm push Not`. Take `⟨s, hs⟩` from `hm`. Rewrite using `[eq_comm]`.
-
-Conclude with `Finset.prod_eq_zero (Finset.mem_univ s) (by simpa using hs)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma sat_coeff_prod_rename {R S τ σ : Type} [CommSemiring R] [Fintype S] [DecidableEq S] (e : S → τ → σ)
     (he : ∀ s t v w, e s v = e t w → s = t ∧ v = w) (f : S → MvPolynomial τ R) (m : S → τ →₀ ℕ) :
@@ -111,7 +109,7 @@ lemma sat_coeff_prod_rename {R S τ σ : Type} [CommSemiring R] [Fintype S] [Dec
     exact Finset.prod_eq_zero (Finset.mem_univ s) (by simpa using hs)
 
 /- English proof (translation)
-Distinguish the cases in `hj : j < n`. Conclude with `congrFun h ⟨j, hj⟩`. Rewrite using `[Finset.filter_false_of_mem (fun i _ => by have := hsz i; omega), Finset.filter_false_of_mem (fun c _ => by have := hp c; omega)]`. Both sides reduce to the same expression.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 lemma sat_card_gt {n k C : ℕ} (sz : Fin k → ℕ) (p : Fin C → ℕ) (hsz : ∀ i, sz i ≤ n) (hp : ∀ c, p c ≤ n)
     (h : (shapeDeg sz : Fin n → ℕ) = shapeDeg p) (j : ℕ) :
@@ -123,7 +121,7 @@ lemma sat_card_gt {n k C : ℕ} (sz : Fin k → ℕ) (p : Fin C → ℕ) (hsz : 
     rfl
 
 /- English proof (translation)
-Simplify using `only [Finset.card_filter]`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> omega`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma sat_card_split {k : ℕ} (sz : Fin k → ℕ) (j : ℕ) :
     (Finset.univ.filter fun i => sz i = j + 1).card + (Finset.univ.filter fun i => j + 1 < sz i).card =
@@ -134,7 +132,7 @@ lemma sat_card_split {k : ℕ} (sz : Fin k → ℕ) (j : ℕ) :
   split_ifs <;> omega
 
 /- English proof (translation)
-Rewrite using `[Fintype.card_subtype, Fintype.card_subtype]`. Establish `h1` using `sat_card_split sz j`. Establish `h2` using `sat_card_split p j`. Establish `h3` using `sat_card_gt sz p hsz hp h j`. Establish `h4` using `sat_card_gt sz p hsz hp h (j + 1)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -153,7 +151,7 @@ def satMinor (R : Type) [CommRing R] (r n : ℕ) (x : (j : ℕ) × (Fin j → Fi
   if h : x.1 ≤ n then initMinor R x.2 h else 1
 
 /- English proof (translation)
-Take `⟨j, I⟩` from `x`. Simplify using `only at hx`. Substitute `hx` using the available equality. Simplify using `[satMinor, initMinor]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Substitute using the available equality. Simplify using the standard rewrite rules.
 -/
 lemma satMinor_zero (R : Type) [CommRing R] (r n : ℕ) (x : (j : ℕ) × (Fin j → Fin r)) (hx : x.1 = 0) :
     satMinor R r n x = 1 := by
@@ -163,7 +161,7 @@ lemma satMinor_zero (R : Type) [CommRing R] (r n : ℕ) (x : (j : ℕ) × (Fin j
   simp [satMinor, initMinor]
 
 /- English proof (translation)
-Unfold `bideterminant`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `[satMinor, hsz i]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 lemma sat_bidet_eq (R : Type) [CommRing R] {r n k : ℕ} (sz : Fin k → ℕ) (hsz : ∀ i, sz i ≤ n)
     (I : ∀ i, Fin (sz i) → Fin r) : bideterminant R sz hsz I = ∏ i, satMinor R r n ⟨sz i, I i⟩ := by
@@ -172,14 +170,14 @@ lemma sat_bidet_eq (R : Type) [CommRing R] {r n k : ℕ} (sz : Fin k → ℕ) (h
   simp [satMinor, hsz i]
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 lemma sat_sigma_cast {r a b : ℕ} (h : a = b) (I : Fin b → Fin r) :
     (⟨a, fun i => I (Fin.cast h i)⟩ : (j : ℕ) × (Fin j → Fin r)) = ⟨b, I⟩ := by
   subst h; rfl
 
 /- English proof (translation)
-Rewrite using `[← Finset.prod_fiberwise_of_maps_to (s := Finset.univ) (t := Finset.range (n + 1)) (g := sz) (fun i _ => Finset.mem_range.mpr (Nat.lt_succ_of_le (hsz i))), Finset.prod_range_succ']`. Rewrite using `[Finset.prod_eq_one (s := Finset.univ.filter fun i => sz i = 0) (fun i hi => hG i (Finset.mem_filter.mp hi).2), mul_one]`. Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Conclude with `Finset.prod_subtype _ (fun i => by simp) _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 lemma sat_prod_fibers {A : Type} [CommMonoid A] {n k : ℕ} (sz : Fin k → ℕ) (hsz : ∀ i, sz i ≤ n) (G : Fin k → A)
     (hG : ∀ i, sz i = 0 → G i = 1) :
@@ -193,13 +191,13 @@ lemma sat_prod_fibers {A : Type} [CommMonoid A] {n k : ℕ} (sz : Fin k → ℕ)
   exact Finset.prod_subtype _ (fun i => by simp) _
 
 /- English proof (translation)
-Establish `e : ∀ j, {c // p c = j + 1} ≃ {i // sz i = j + 1}` using `fun j => Fintype.equivOfCardEq (sat_card_fiber sz p hsz hp h j)`. Establish `hk : ∀ c, p c ≠ 0 → p c = p c - 1 + 1` using `fun c hc => by omega`. Set `A : ∀ c, Fin (p c) → Fin r` to `fun c => if h0 : p c = 0 then fun i => (Fin.cast h0 i).elim0 else fun i => I (e (p c - 1) ⟨c, hk c h0⟩).1 (Fin.cast ((hk c h0).trans (e (p c - 1) ⟨c, hk c h0⟩).2.symm) i)`. Establish `hA : ∀ j (c : {c // p c = j + 1}), (⟨p c.1, A c.1⟩ : (j : ℕ) × (Fin j → Fin r)) = ⟨sz (e j c).1, I (e j c).1⟩`. Introduce and unpack `j ⟨c, hc⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `h0 : p c ≠ 0` using `by omega`. Establish `hj : p c - 1 = j` using `by omega`. Substitute `hj` using the available equality. Simplify using `only [A, dif_neg h0]`. Conclude with `sat_sigma_cast _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨A, ?_⟩` and prove the remaining obligations. Rewrite using `[sat_bidet_eq, sat_bidet_eq, sat_prod_fibers sz hsz _ (fun i hi => satMinor_zero R r n _ hi), sat_prod_fibers p hp _ (fun c hc => satMinor_zero R r n _ hc)]`. Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← Fintype.prod_equiv (e j) (fun c => satMinor R r n ⟨p c.1, A c.1⟩) (fun i => satMinor R r n ⟨sz i.1, I i.1⟩)]`. Introduce `c`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hA j c]`.
+A detailed English derivation is pending.
 -/
 lemma sat_bidet_reindex (R : Type) [CommRing R] {r n k C : ℕ} (sz : Fin k → ℕ) (hsz : ∀ i, sz i ≤ n)
     (p : Fin C → ℕ) (hp : ∀ c, p c ≤ n) (h : (shapeDeg sz : Fin n → ℕ) = shapeDeg p)
@@ -233,7 +231,7 @@ lemma sat_bidet_reindex (R : Type) [CommRing R] {r n k C : ℕ} (sz : Fin k → 
 def satEmb (d N0 : ℕ) (s : ZMod d) (v : Fin N0 × Fin N0) : ZMod d × Fin N0 × Fin N0 := (s, v.2, v.1)
 
 /- English proof (translation)
-Simplify using `only [satEmb, Prod.mk.injEq] at h`. Conclude with `⟨h.1, Prod.ext h.2.2 h.2.1⟩`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 lemma satEmb_inj (d N0 : ℕ) (s t : ZMod d) (v w : Fin N0 × Fin N0) (h : satEmb d N0 s v = satEmb d N0 t w) :
     s = t ∧ v = w := by
@@ -241,9 +239,9 @@ lemma satEmb_inj (d N0 : ℕ) (s t : ZMod d) (v w : Fin N0 × Fin N0) (h : satEm
   exact ⟨h.1, Prod.ext h.2.2 h.2.1⟩
 
 /- English proof (translation)
-Unfold `minorProd bideterminant initMinor`. Rewrite using `[map_prod]`. Use `Finset.prod_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[AlgHom.map_det, ← Matrix.det_transpose]`. Use `congr 1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `i j`. Simplify using `[satEmb, Matrix.transpose_apply, AlgHom.mapMatrix_apply, Matrix.map_apply]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 lemma sat_minorProd_eq (K : Type) [CommRing K] (d N0 C : ℕ) (s : ZMod d) (p : Fin C → ℕ) (hp : ∀ c, p c ≤ N0)
     (A : ∀ c, Fin (p c) → Fin N0) :
@@ -259,9 +257,9 @@ lemma sat_minorProd_eq (K : Type) [CommRing K] (d N0 C : ℕ) (s : ZMod d) (p : 
   rfl
 
 /- English proof (translation)
-Unfold `bideterminant initMinor`. Rewrite using `[map_prod]`. Use `Finset.prod_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[RingHom.map_det]`. Use `congr 1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `i j`. Simplify using `[RingHom.mapMatrix_apply, Matrix.map_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 lemma sat_map_bidet {R S : Type} [CommRing R] [CommRing S] (φ : R →+* S) {r n k : ℕ} (sz : Fin k → ℕ)
     (hsz : ∀ i, sz i ≤ n) (I : ∀ i, Fin (sz i) → Fin r) :
@@ -275,37 +273,33 @@ lemma sat_map_bidet {R S : Type} [CommRing R] [CommRing S] (φ : R →+* S) {r n
   simp [RingHom.mapMatrix_apply, Matrix.map_apply]
 
 /- English proof (translation)
-Introduce `K _ _ d N0 _ colN p hp P hP hint`. Establish `hb` using `fun s : ZMod d => sSBasis (unitBall K) N0 N0 (shapeDeg (p s))`. Use `choose b hb1 hb2 using hb`. Establish `: ∀ s : ZMod d, Fintype (ssIdx N0 N0 (shapeDeg (p s) : Fin N0 → ℕ))` using `fun s => (sSIdxFinite N0 N0 (shapeDeg (p s))).fintype`. Set `φ : unitBall K →+* K` to `(unitBall K).subtype`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `B : (∀ s : ZMod d, ssIdx N0 N0 (shapeDeg (p s) : Fin N0 → ℕ)) → MvPolynomial (ZMod d × Fin N0 × Fin N0) K` to `fun M => ∏ s, rename (satEmb d N0 s) (map φ (b s (M s)))`. Establish `hBx : ∀ M, B M ∈ xMinors (K` using `K) colN p hp := by`. Introduce `M`. Establish `h1 : ∀ s, ∃ A : ∀ c, Fin (p s c) → Fin N0, b s (M s) = bideterminant (unitBall K) (p s) (hp s) A`. Introduce `s`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨-, -, k, sz, hsz, I, hsh, -, hbI⟩` from `hb2 s (M s)`. Take `⟨A, hA⟩` from `sat_bidet_reindex (unitBall K) sz hsz (p s) (hp s) hsh I`. Conclude with `⟨A, hbI.trans hA⟩`. Use `choose A hA using h1`. Use `⟨A, Finset.prod_congr rfl fun s _ => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[sat_minorProd_eq, hA s, sat_map_bidet]`. Establish `hspan : ∀ Q ∈ xMinors (K` using `K) colN p hp, Q ∈ Submodule.span K (Set.range B) := by`. Introduce and unpack `Q ⟨A, rfl⟩`. Establish `h1 : ∀ s, ∃ a : ssIdx N0 N0 (shapeDeg (p s) : Fin N0 → ℕ) → unitBall K, ∑ m, a m • b s m = bideterminant (unitBall K) (p s) (hp s) (A s)`. Introduce `s`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `bidetMem (unitBall K) N0 N0 (colN s) (p s) (hp s) (A s)`. Rewrite `h2` using `[← (hb1 s).2.1]`. Conclude with `(Submodule.mem_span_range_iff_exists_fun _).mp h2`. Use `choose a ha using h1`. Establish `h3 : ∀ s, minorProd (fun (i a : Fin N0) => (X (s, i, a) : MvPolynomial (ZMod d × Fin N0 × Fin N0) K)) (p s) (hp s) (A s) = ∑ m, φ (a s m) • rename (satEmb d N0 s) (map φ (b s m))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `s`. Rewrite using `[sat_minorProd_eq, ← sat_map_bidet φ, ← ha s, map_sum, map_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[smul_eq_C_mul, map_mul, map_C, map_mul, rename_C, ← smul_eq_C_mul]`. Repeatedly rewrite using `[h3]`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Finset.prod_univ_sum]`. Use `Submodule.sum_mem _ fun M _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_smul]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨M, rfl⟩)`. Establish `hP' : P ∈ Submodule.span K (Set.range B)` using `Submodule.span_le.mpr hspan hP`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun _).mp hP'`. Set `f : (∀ s : ZMod d, ssIdx N0 N0 (shapeDeg (p s) : Fin N0 → ℕ)) → (ZMod d → (colLex N0 N0).syn)` to `fun M s => (colLex N0 N0).toSyn (M s).1`. Establish `hf : Function.Injective f`. Introduce `M M' h`. Use function extensionality and compare the values at `s`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `Subtype.ext ((colLex N0 N0).toSyn.injective (congrFun h s))`. Set `_ : PartialOrder (∀ s : ZMod d, ssIdx N0 N0 (shapeDeg (p s) : Fin N0 → ℕ))` to `PartialOrder.lift f hf`. Set `E : (∀ s : ZMod d, ssIdx N0 N0 (shapeDeg (p s) : Fin N0 → ℕ)) → (ZMod d × Fin N0 × Fin N0 →₀ ℕ)` to `fun M => ∑ s, ((M s).1).mapDomain (satEmb d N0 s)`. Establish `hT : ∀ M' M, coeff (E M') (B M) = ∏ s, φ (coeff (M' s).1 (b s (M s)))`. Introduce `M' M`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [E, B]`. Rewrite using `[sat_coeff_prod_rename (satEmb d N0) (satEmb_inj d N0)]`. Simplify using `only [coeff_map]`. Establish `hcint : ∀ M, ‖c M‖ ≤ 1`. Use `sat_tri_integral (fun M' M => coeff (E M') (B M)) ?_ ?_ ?_ c ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `M' M`. Rewrite using `[hT, norm_prod]`. Conclude with `Finset.prod_le_one (fun _ _ => norm_nonneg _) fun s _ => (coeff (M' s).1 (b s (M s))).2`. Introduce `M`. Rewrite using `[hT]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `Finset.prod_eq_one fun s _ => ?_` and prove the remaining obligations. Establish `h1` using `(hb2 s (M s)).2.1`. Rewrite `h1` using `[MonomialOrder.leadingCoeff, (hb2 s (M s)).1]`. Rewrite using `[h1, map_one]`. Introduce `M' M hle`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hT]`. Establish `h1 : ∃ s, ¬ f M' s ≤ f M s`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Conclude with `hle hcon`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨s, hs⟩` from `h1`. Use `Finset.prod_eq_zero (Finset.mem_univ s) ?_` and prove the remaining obligations. Rewrite using `[MonomialOrder.coeff_eq_zero_of_lt, map_zero]`. Rewrite using `[(hb2 s (M s)).1]`. Conclude with `not_le.mp hs`.
-
-Introduce `M'`. Establish `h1 : ∑ M, c M * coeff (E M') (B M) = coeff (E M') P`. Rewrite using `[← hc, coeff_sum]`. Conclude with `Finset.sum_congr rfl fun M _ => by rw [coeff_smul, smul_eq_mul]`. Rewrite using `[h1]`.
-
-Conclude with `hint _`. Rewrite using `[← hc]`. Use `Submodule.sum_mem _ fun M _ => ?_` and prove the remaining obligations. Conclude with `Submodule.smul_mem _ (⟨c M, hcint M⟩ : unitBall K) (Submodule.subset_span (hBx M))`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem slope_bound_saturation : ∀ (K : Type) [NormedField K] [IsUltrametricDist K] (d N0 : ℕ) [NeZero d]
     (colN : ZMod d → ℕ) (p : ∀ s, Fin (colN s) → ℕ) (hp : ∀ s c, p s c ≤ N0), SBSat K colN p hp := by

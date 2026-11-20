@@ -16,29 +16,29 @@ def cyclotomicLayer (n : ℕ) : IntermediateField ℚ_[p] (PadicAlgCl p) := K �
 def cyclotomicLimit : IntermediateField ℚ_[p] (PadicAlgCl p) := ⨆ n, cyclotomicLayer K n
 
 /- English proof (translation)
-Introduce `_ _ h` and use `sup_le_sup_left (cycl_mono h) K`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem cyclotomicLayer_mono : Monotone (cyclotomicLayer K) := fun _ _ h =>
   sup_le_sup_left (cycl_mono h) K
 
 /- English proof (translation)
-The claim follows from `le_sup_left`.
+A detailed English derivation is pending.
 -/
 theorem le_cyclotomicLayer (n : ℕ) : K ≤ cyclotomicLayer K n := le_sup_left
 
 /- English proof (translation)
-The claim follows from `le_sup_right`.
+A detailed English derivation is pending.
 -/
 theorem cycl_le_cyclotomicLayer (n : ℕ) : cycl p n ≤ cyclotomicLayer K n := le_sup_right
 
 /- English proof (translation)
-The claim follows from `le_iSup (cyclotomicLayer K) n`.
+A detailed English derivation is pending.
 -/
 theorem cyclotomicLayer_le_cyclotomicLimit (n : ℕ) : cyclotomicLayer K n ≤ cyclotomicLimit K :=
   le_iSup (cyclotomicLayer K) n
 
 /- English proof (translation)
-Rewrite using `[← SetLike.mem_coe, cyclotomicLimit, coe_iSup_of_directed (cyclotomicLayer_mono K).directed_le, Set.mem_iUnion]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mem_cyclotomicLimit {x : PadicAlgCl p} :
     x ∈ cyclotomicLimit K ↔ ∃ n, x ∈ cyclotomicLayer K n := by
@@ -47,7 +47,7 @@ theorem mem_cyclotomicLimit {x : PadicAlgCl p} :
   rfl
 
 /- English proof (translation)
-Rewrite using `[cyclotomicLayer, cyclotomicLayer, sup_assoc, sup_eq_right.2 (cycl_mono h)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cyclotomicLayer_sup_cycl {n m : ℕ} (h : n ≤ m) :
     cyclotomicLayer K n ⊔ cycl p m = cyclotomicLayer K m := by
@@ -65,16 +65,16 @@ instance finiteDimensional_cyclotomicLayer (n : ℕ) :
 def relDeg (n : ℕ) : ℕ := finrank (cycl p n) (extendScalars (cycl_le_cyclotomicLayer K n))
 
 /- English proof (translation)
-The claim follows from `finrank_eq_mul_finrank_extendScalars (cycl_le_cyclotomicLayer K n)`.
+A detailed English derivation is pending.
 -/
 theorem finrank_cyclotomicLayer (n : ℕ) :
     finrank ℚ_[p] (cyclotomicLayer K n) = finrank ℚ_[p] (cycl p n) * relDeg K n :=
   finrank_eq_mul_finrank_extendScalars (cycl_le_cyclotomicLayer K n)
 
 /- English proof (translation)
-Introduce `n m h`. Establish `c` using `finrank_sup_mul_le (k := cycl p n) (X := cyclotomicLayer K n) (Y := cycl p m) (cycl_le_cyclotomicLayer K n) (cycl_mono h)`. Rewrite `c` using `[cyclotomicLayer_sup_cycl K h, finrank_cyclotomicLayer, finrank_cyclotomicLayer]`. Establish `pn : 0 < finrank ℚ_[p] (cycl p n)` using `Module.finrank_pos`. Establish `pm : 0 < finrank ℚ_[p] (cycl p m)` using `Module.finrank_pos`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: finrank ℚ_[p] (cycl p m) * finrank ℚ_[p] (cycl p n) * relDeg K m ≤ finrank ℚ_[p] (cycl p m) * finrank ℚ_[p] (cycl p n) * relDeg K n`. Combine the equalities or inequalities in the displayed calculation. Conclude with `Nat.le_of_mul_le_mul_left this (Nat.mul_pos pm pn)`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem relDeg_antitone : Antitone (relDeg K) := by
   intro n m h
@@ -91,7 +91,7 @@ theorem relDeg_antitone : Antitone (relDeg K) := by
   exact Nat.le_of_mul_le_mul_left this (Nat.mul_pos pm pn)
 
 /- English proof (translation)
-Establish `hex : ∃ v, ∃ n, relDeg K n = v` using `⟨_, 0, rfl⟩`. Take `⟨n₀, hn₀⟩` from `Nat.find_spec hex`. Establish `hmin : ∀ m, relDeg K n₀ ≤ relDeg K m` using `fun m => hn₀ ▸ Nat.find_min' hex ⟨m, rfl⟩`. Use `⟨max n₀ 2, le_max_right _ _, fun m hm => le_antisymm (relDeg_antitone K hm) ?_⟩` and prove the remaining obligations. Conclude with `(relDeg_antitone K (le_max_left n₀ 2)).trans (hmin m)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_relDeg_stable : ∃ N, 2 ≤ N ∧ ∀ m, N ≤ m → relDeg K m = relDeg K N := by
   classical
@@ -104,18 +104,18 @@ theorem exists_relDeg_stable : ∃ N, 2 ≤ N ∧ ∀ m, N ≤ m → relDeg K m 
 def stableIndex : ℕ := Classical.choose (exists_relDeg_stable K)
 
 /- English proof (translation)
-The claim follows from `(Classical.choose_spec (exists_relDeg_stable K)).1`.
+A detailed English derivation is pending.
 -/
 theorem two_le_stableIndex : 2 ≤ stableIndex K := (Classical.choose_spec (exists_relDeg_stable K)).1
 
 /- English proof (translation)
-The claim follows from `(Classical.choose_spec (exists_relDeg_stable K)).2 m h`.
+A detailed English derivation is pending.
 -/
 theorem relDeg_eq_of_le {m : ℕ} (h : stableIndex K ≤ m) : relDeg K m = relDeg K (stableIndex K) :=
   (Classical.choose_spec (exists_relDeg_stable K)).2 m h
 
 /- English proof (translation)
-Rewrite using `[finrank_cyclotomicLayer, finrank_cyclotomicLayer, relDeg_eq_of_le K hn, relDeg_eq_of_le K (hn.trans hnm)]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem finrank_linearDisjoint {n m : ℕ} (hn : stableIndex K ≤ n) (hnm : n ≤ m) :
     finrank ℚ_[p] (cyclotomicLayer K m) * finrank ℚ_[p] (cycl p n) =
@@ -125,7 +125,7 @@ theorem finrank_linearDisjoint {n m : ℕ} (hn : stableIndex K ≤ n) (hnm : n �
   ring
 
 /- English proof (translation)
-Use `normTrace_eq_of_finrank_sup (cycl_le_cyclotomicLayer K n) (cycl_mono hnm) ?_ hz` and prove the remaining obligations. Rewrite using `[cyclotomicLayer_sup_cycl K hnm]`. Conclude with `finrank_linearDisjoint K hn hnm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem normTrace_cycl_eq_of_mem {n m : ℕ} (hn : stableIndex K ≤ n) (hnm : n ≤ m)
     {z : PadicAlgCl p} (hz : z ∈ cyclotomicLayer K n) :
@@ -135,7 +135,7 @@ theorem normTrace_cycl_eq_of_mem {n m : ℕ} (hn : stableIndex K ≤ n) (hnm : n
   exact finrank_linearDisjoint K hn hnm
 
 /- English proof (translation)
-Use `normTrace_eq_of_finrank_sup (cycl_mono hnm) (cycl_le_cyclotomicLayer K n) ?_ ha` and prove the remaining obligations. Rewrite using `[sup_comm, cyclotomicLayer_sup_cycl K hnm, finrank_linearDisjoint K hn hnm]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem normTrace_cyclotomicLayer_eq_of_mem {n m : ℕ} (hn : stableIndex K ≤ n) (hnm : n ≤ m)
     {a : PadicAlgCl p} (ha : a ∈ cycl p m) :
@@ -145,7 +145,7 @@ theorem normTrace_cyclotomicLayer_eq_of_mem {n m : ℕ} (hn : stableIndex K ≤ 
   ring
 
 /- English proof (translation)
-Apply `Module.finite_of_finrank_pos` to reduce the goal to its premises. Establish `hE : 0 < finrank ℚ_[p] E` using `Module.finrank_pos`. Rewrite `hE` using `[finrank_eq_mul_finrank_extendScalars h]`. Conclude with `Nat.pos_of_ne_zero fun h0 => by simp [h0] at hE`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finiteDimensional_extendScalars {k E : IntermediateField ℚ_[p] (PadicAlgCl p)} (h : k ≤ E)
     [FiniteDimensional ℚ_[p] E] : FiniteDimensional k (extendScalars h) := by
@@ -159,7 +159,7 @@ instance finiteDimensional_cyclotomicLayer_cycl (n : ℕ) :
   finiteDimensional_extendScalars _
 
 /- English proof (translation)
-The claim follows from `Module.finrank_pos`.
+A detailed English derivation is pending.
 -/
 theorem relDeg_pos (n : ℕ) : 0 < relDeg K n := Module.finrank_pos
 
@@ -177,23 +177,23 @@ def towerDualVec (i : Fin (relDeg K (stableIndex K))) : PadicAlgCl p :=
   (traceDualBasis K i : PadicAlgCl p)
 
 /- English proof (translation)
-The claim follows from `(traceBasis K i).2`.
+A detailed English derivation is pending.
 -/
 theorem towerVec_mem (i : Fin (relDeg K (stableIndex K))) :
     towerVec K i ∈ cyclotomicLayer K (stableIndex K) :=
   (traceBasis K i).2
 
 /- English proof (translation)
-The claim follows from `(traceDualBasis K i).2`.
+A detailed English derivation is pending.
 -/
 theorem towerDualVec_mem (i : Fin (relDeg K (stableIndex K))) :
     towerDualVec K i ∈ cyclotomicLayer K (stableIndex K) :=
   (traceDualBasis K i).2
 
 /- English proof (translation)
-Establish `e` using `normTraceF_eq_trace_div (cycl p (stableIndex K)) (Ω := PadicAlgCl p) (extendScalars (cycl_le_cyclotomicLayer K (stableIndex K))) (traceBasis K i * traceDualBasis K j)`. Establish `ht : Algebra.trace (cycl p (stableIndex K)) (extendScalars (cycl_le_cyclotomicLayer K (stableIndex K))) (traceBasis K i * traceDualBasis K j) = if i = j then 1 else 0`. Rewrite using `[mul_comm, ← Algebra.traceForm_apply, traceDualBasis, LinearMap.BilinForm.apply_dualBasis_left]`. Rewrite `e` using `[ht]`. Rewrite using `[normTrace]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `algebraMap _ _ (normTraceF _ (algebraMap (extendScalars (cycl_le_cyclotomicLayer K (stableIndex K))) (PadicAlgCl p) (traceBasis K i * traceDualBasis K j))) = _`. Rewrite using `[e]`. Apply the tactic sequence `split_ifs <;> simp [relDeg]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem normTrace_towerVec_mul (i j : Fin (relDeg K (stableIndex K))) :
     normTrace (cycl p (stableIndex K)) (towerVec K i * towerDualVec K j) =
@@ -215,16 +215,16 @@ def towerCoeff (m : ℕ) (y : PadicAlgCl p) (i : Fin (relDeg K (stableIndex K)))
   (relDeg K (stableIndex K) : PadicAlgCl p) * normTrace (cycl p m) (y * towerDualVec K i)
 
 /- English proof (translation)
-The claim follows from `mul_mem (IntermediateField.natCast_mem _ _) (normTrace_mem _ _)`.
+A detailed English derivation is pending.
 -/
 theorem towerCoeff_mem (m : ℕ) (y : PadicAlgCl p) (i : Fin (relDeg K (stableIndex K))) :
     towerCoeff K m y i ∈ cycl p m :=
   mul_mem (IntermediateField.natCast_mem _ _) (normTrace_mem _ _)
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_mul, normTrace_sum]`. Establish `: ∀ i ∈ (Finset.univ : Finset (Fin (relDeg K (stableIndex K)))), normTrace (cycl p m) (c i * towerVec K i * towerDualVec K j) = c i * (if i = j then ((relDeg K (stableIndex K) : PadicAlgCl p))⁻¹ else 0)`. Introduce `i _`. Rewrite using `[mul_assoc, normTrace_mul_of_mem _ (hc i), normTrace_cycl_eq_of_mem K le_rfl hm (mul_mem (towerVec_mem K i) (towerDualVec_mem K j)), normTrace_towerVec_mul]`. Rewrite using `[Finset.sum_congr rfl this]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[div_eq_mul_inv]`.
+Simplify using the standard rewrite rules.
 -/
 theorem normTrace_sum_towerVec_mul {m : ℕ} (hm : stableIndex K ≤ m)
     (c : Fin (relDeg K (stableIndex K)) → PadicAlgCl p) (hc : ∀ i, c i ∈ cycl p m)
@@ -243,19 +243,17 @@ theorem normTrace_sum_towerVec_mul {m : ℕ} (hm : stableIndex K ≤ m)
   simp [div_eq_mul_inv]
 
 /- English proof (translation)
-Use `set d := relDeg K (stableIndex K)`. Set `L` to `extendScalars (cycl_le_cyclotomicLayer K m)`. Establish `hv : ∀ i, towerVec K i ∈ L` using `fun i => cyclotomicLayer_mono K hm (towerVec_mem K i)`. Set `v : Fin d → L` to `fun i => ⟨towerVec K i, hv i⟩`. Establish `hd0 : (d : PadicAlgCl p) ≠ 0` using `Nat.cast_ne_zero.2 (relDeg_pos K _).ne'`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hli : LinearIndependent (cycl p m) v`. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg j`. Establish `h1 : (∑ i, (g i : PadicAlgCl p) * towerVec K i) = 0`. Use `congrArg (fun x : L => (x : PadicAlgCl p)) hg` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this` using `[v, Algebra.smul_def]`. Establish `h2` using `normTrace_sum_towerVec_mul K hm (fun i => (g i : PadicAlgCl p)) (fun i => (g i).2) j`. Rewrite `h2` using `[h1, zero_mul, normTrace_zero, eq_comm, div_eq_zero_iff]`. Conclude with `Subtype.ext (h2.resolve_right hd0)`. Establish `hcard : Fintype.card (Fin d) = finrank (cycl p m) L`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[Fintype.card_fin]`. Conclude with `(relDeg_eq_of_le K hm).symm`. Use `haveI : Nonempty (Fin d) := ⟨⟨0, relDeg_pos K _⟩⟩`. Set `B` to `basisOfLinearIndependentOfCardEqFinrank hli hcard`. Establish `hsum` using `B.sum_repr ⟨y, hy⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hyexp : y = ∑ i, ((B.repr ⟨y, hy⟩ i : cycl p m) : PadicAlgCl p) * towerVec K i`. Use `congrArg (fun x : L => (x : PadicAlgCl p)) hsum` as an intermediate fact. Simplify `this.symm` using `[B, v, Algebra.smul_def]`. Establish `hc : ∀ j, ((B.repr ⟨y, hy⟩ j : cycl p m) : PadicAlgCl p) = towerCoeff K m y j`. Introduce `j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Use `normTrace_sum_towerVec_mul K hm _ (fun i => (B.repr ⟨y, hy⟩ i).2) j` as an intermediate fact. Rewrite `this` using `[← hyexp]`. Rewrite using `[towerCoeff, this]`. Conclude with `(mul_div_cancel₀ _ hd0).symm`. Use `conv_lhs => rw [hyexp]`.
-
-Repeatedly rewrite using `[hc]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem eq_sum_towerCoeff {m : ℕ} (hm : stableIndex K ≤ m) {y : PadicAlgCl p}
     (hy : y ∈ cyclotomicLayer K m) : y = ∑ i, towerCoeff K m y i * towerVec K i := by
@@ -293,9 +291,9 @@ theorem eq_sum_towerCoeff {m : ℕ} (hm : stableIndex K ≤ m) {y : PadicAlgCl p
   rfl
 
 /- English proof (translation)
-Set `L` to `extendScalars (cycl_le_cyclotomicLayer K m)`. Establish `hw : y * towerDualVec K i ∈ L` using `mul_mem hy (cyclotomicLayer_mono K hm (towerDualVec_mem K i))`. Apply `norm_natCast_mul_normTrace_le` to reduce the goal to its premises. Establish `e` using `minpoly.algebraMap_eq (A := cycl p m) (algebraMap L (PadicAlgCl p)).injective (⟨y * towerDualVec K i, hw⟩ : L)`. Express the relevant statement in the definitionally equal form `(minpoly (cycl p m) (algebraMap L (PadicAlgCl p) ⟨_, hw⟩)).natDegree ∣ _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[e, ← relDeg_eq_of_le K hm]`. Conclude with `minpoly.degree_dvd (IsIntegral.of_finite _ _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_towerCoeff_le {m : ℕ} (hm : stableIndex K ≤ m) {y : PadicAlgCl p}
     (hy : y ∈ cyclotomicLayer K m) (i : Fin (relDeg K (stableIndex K))) :
@@ -311,11 +309,11 @@ theorem norm_towerCoeff_le {m : ℕ} (hm : stableIndex K ≤ m) {y : PadicAlgCl 
   exact minpoly.degree_dvd (IsIntegral.of_finite _ _)
 
 /- English proof (translation)
-Establish `hexp` using `eq_sum_towerCoeff K (hn.trans hnm) hy`. Establish `key : normTrace (cyclotomicLayer K n) y = ∑ i, towerVec K i * normTrace (cycl p n) (towerCoeff K m y i)` using `by conv_lhs => rw [hexp]`. Rewrite using `[normTrace_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm, normTrace_mul_of_mem _ (cyclotomicLayer_mono K hn (towerVec_mem K i)), normTrace_cyclotomicLayer_eq_of_mem K hn hnm (towerCoeff_mem K m y i)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key, Finset.mul_sum, Finset.sum_mul]`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul]`. Establish `h1` using `hF n m hn hnm _ (towerCoeff_mem K m y i)`. Establish `h2` using `norm_towerCoeff_le K (hn.trans hnm) hy i`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[norm_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem norm_normTrace_cyclotomicLayer_le {cF : ℝ} (hcF : 0 ≤ cF)
     (hF : ∀ n m : ℕ, stableIndex K ≤ n → n ≤ m → ∀ x ∈ cycl p m,
@@ -347,9 +345,9 @@ theorem norm_normTrace_cyclotomicLayer_le {cF : ℝ} (hcF : 0 ≤ cF)
 omit [FiniteDimensional ℚ_[p] K] in
 
 /- English proof (translation)
-Rewrite using `[cyclotomicLayer, IntermediateField.map_sup, cycl_map]`. Use `congr 1`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Express the relevant statement in the definitionally equal form `σ y ∈ K`. Rewrite using `[hσ y hy]`. Conclude with `hy`. Introduce `hx`. Conclude with `⟨x, hx, hσ x hx⟩`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem cyclotomicLayer_map (σ : PadicAlgCl p ≃ₐ[ℚ_[p]] PadicAlgCl p) (hσ : ∀ x ∈ K, σ x = x)
     (n : ℕ) :
@@ -367,7 +365,7 @@ theorem cyclotomicLayer_map (σ : PadicAlgCl p ≃ₐ[ℚ_[p]] PadicAlgCl p) (h�
 
 omit [FiniteDimensional ℚ_[p] K] in
 /- English proof (translation)
-Rewrite using `[← cyclotomicLayer_map K σ hσ n]`. Conclude with `⟨x, hx, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem map_mem_cyclotomicLayer (σ : PadicAlgCl p ≃ₐ[ℚ_[p]] PadicAlgCl p)
     (hσ : ∀ x ∈ K, σ x = x) {n : ℕ} {x : PadicAlgCl p} (hx : x ∈ cyclotomicLayer K n) :
@@ -377,7 +375,7 @@ theorem map_mem_cyclotomicLayer (σ : PadicAlgCl p ≃ₐ[ℚ_[p]] PadicAlgCl p)
 
 omit [FiniteDimensional ℚ_[p] K] in
 /- English proof (translation)
-Take `⟨n, hn⟩` from `(mem_cyclotomicLimit K).1 hx`. Conclude with `(mem_cyclotomicLimit K).2 ⟨n, map_mem_cyclotomicLayer K σ hσ hn⟩`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem map_mem_cyclotomicLimit (σ : PadicAlgCl p ≃ₐ[ℚ_[p]] PadicAlgCl p)
     (hσ : ∀ x ∈ K, σ x = x) {x : PadicAlgCl p} (hx : x ∈ cyclotomicLimit K) :
@@ -388,7 +386,7 @@ theorem map_mem_cyclotomicLimit (σ : PadicAlgCl p ≃ₐ[ℚ_[p]] PadicAlgCl p)
 omit [FiniteDimensional ℚ_[p] K] in
 
 /- English proof (translation)
-The claim follows from `normTrace_map_of_map_eq _ σ (cyclotomicLayer_map K σ hσ n) y`.
+A detailed English derivation is pending.
 -/
 theorem normTrace_cyclotomicLayer_map (σ : PadicAlgCl p ≃ₐ[ℚ_[p]] PadicAlgCl p)
     (hσ : ∀ x ∈ K, σ x = x) (n : ℕ) (y : PadicAlgCl p) :
@@ -398,7 +396,7 @@ theorem normTrace_cyclotomicLayer_map (σ : PadicAlgCl p ≃ₐ[ℚ_[p]] PadicAl
 omit [FiniteDimensional ℚ_[p] K] in
 
 /- English proof (translation)
-The claim follows from `normTrace_cyclotomicLayer_map K (σ.restrictScalars ℚ_[p]) (fun x hx => σ.commutes ⟨x, hx⟩) n y`.
+A detailed English derivation is pending.
 -/
 theorem normTrace_cyclotomicLayer_gal (σ : Gal(PadicAlgCl p/K)) (n : ℕ) (y : PadicAlgCl p) :
     normTrace (cyclotomicLayer K n) (σ y) = σ (normTrace (cyclotomicLayer K n) y) :=

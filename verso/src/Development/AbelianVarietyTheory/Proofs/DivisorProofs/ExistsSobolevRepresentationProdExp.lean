@@ -17,14 +17,14 @@ variable {𝔸 : Type} [NormedRing 𝔸] [NormedAlgebra ℝ 𝔸] [CompleteSpace
   {G : Subgroup 𝔸ˣ} {𝔤 : Submodule ℝ 𝔸} (h : IsExpLieAlgebra G 𝔤)
 
 /- English proof (translation)
-Simplify using `[IsExpLieAlgebra.prodExp, List.ofFn_succ, Fin.tail]`.
+Simplify using the standard rewrite rules.
 -/
 theorem prodExp_succ {d : ℕ} (X : Fin (d + 1) → 𝔤) (t : Fin (d + 1) → ℝ) :
     h.prodExp X t = h.expG (t 0 • X 0) * h.prodExp (Fin.tail X) (Fin.tail t) := by
   simp [IsExpLieAlgebra.prodExp, List.ofFn_succ, Fin.tail]
 
 /- English proof (translation)
-Establish `: h.prodExp X = fun t => (h.revProdExp X (-t))⁻¹`. Use function extensionality and compare the values at `t`. Rewrite using `[h.revProdExp_inv, neg_neg]`. Rewrite using `[this]`. Conclude with `((h.continuous_revProdExp X).comp continuous_neg).inv`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_prodExp' {d : ℕ} (X : Fin d → 𝔤) : Continuous (h.prodExp X) := by
   have : h.prodExp X = fun t => (h.revProdExp X (-t))⁻¹ := by
@@ -33,7 +33,7 @@ theorem continuous_prodExp' {d : ℕ} (X : Fin d → 𝔤) : Continuous (h.prodE
   exact ((h.continuous_revProdExp X).comp continuous_neg).inv
 
 /- English proof (translation)
-The claim follows from `| [] => hf | X :: l => h.isSmoothFun_rightDeriv (isSmoothFun_foldr hf l) X`.
+A detailed English derivation is pending.
 -/
 theorem isSmoothFun_foldr {f : G → ℂ} (hf : h.IsSmoothFun f) :
     ∀ l : List 𝔤, h.IsSmoothFun (l.foldr h.rightDeriv f)
@@ -41,16 +41,16 @@ theorem isSmoothFun_foldr {f : G → ℂ} (hf : h.IsSmoothFun f) :
   | X :: l => h.isSmoothFun_rightDeriv (isSmoothFun_foldr hf l) X
 
 /- English proof (translation)
-Use `letI := h.chartedSpace`. Conclude with `ContMDiff.continuous hf`.
+Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem continuous_of_isSmoothFun {f : G → ℂ} (hf : h.IsSmoothFun f) : Continuous f := by
   letI := h.chartedSpace
   exact ContMDiff.continuous hf
 
 /- English proof (translation)
-Establish `hint : Integrable (fun t : Fin (d + 1) → ℝ => a (t 0) * K (Fin.tail t) * F (x * h.prodExp X t))`. Use `Continuous.integrable_of_hasCompactSupport ?_ ?_` and prove the remaining obligations. Conclude with `((ha.comp (continuous_apply 0)).mul (hK.comp (continuous_pi fun j => continuous_apply j.succ))).mul (hF.comp (continuous_const.mul (continuous_prodExp' h X)))`. Conclude with `HasCompactSupport.mul_right (f := fun t : Fin (d + 1) → ℝ => a (t 0) * K (Fin.tail t)) ((isCompact_closedBall 0 ε).of_isClosed_subset (isClosed_tsupport _) (tsupport_cons_kernel hε has hKs))`. Rewrite using `[integral_fin_succ_cons hint]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `congr 1`. Use function extensionality and compare the values at `s`. Use `congr 1`. Use function extensionality and compare the values at `t'`. Simplify using `only [Fin.cons_zero, Fin.tail_cons, prodExp_succ h, mul_assoc]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem integral_cons {d : ℕ} (X : Fin (d + 1) → 𝔤) {ε : ℝ} (hε : 0 ≤ ε) {a : ℝ → ℂ}
     (ha : Continuous a) (has : tsupport a ⊆ Set.Icc (-ε) ε) {K : (Fin d → ℝ) → ℂ}
@@ -72,9 +72,9 @@ theorem integral_cons {d : ℕ} (X : Fin (d + 1) → 𝔤) {ε : ℝ} (hε : 0 �
   simp only [Fin.cons_zero, Fin.tail_cons, prodExp_succ h, mul_assoc]
 
 /- English proof (translation)
-Establish `hc : Continuous (fun p : ℝ × (Fin d → ℝ) => a p.1 * (K p.2 * F (x * h.expG (p.1 • X 0) * h.prodExp (Fin.tail X) p.2)))` using `(ha.comp continuous_fst).mul ((hK.comp continuous_snd).mul (hF.comp ((continuous_const.mul (h.continuous_expG.comp (continuous_fst.smul continuous_const))).mul ((continuous_prodExp' h (Fin.tail X)).comp continuous_snd))))`. Establish `hs : HasCompactSupport (fun p : ℝ × (Fin d → ℝ) => a p.1 * (K p.2 * F (x * h.expG (p.1 • X 0) * h.prodExp (Fin.tail X) p.2)))`. Use `HasCompactSupport.intro ((isCompact_Icc (a := -ε) (b := ε)).prod (isCompact_closedBall (0 : Fin d → ℝ) ε)) ?_` and prove the remaining obligations. Introduce `p hp`. Rewrite `hp` using `[Set.mem_prod, not_and_or]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Break down `hp with hp | hp` into its components or cases. Rewrite using `[image_eq_zero_of_notMem_tsupport (fun h' => hp (has h')), zero_mul]`. Rewrite using `[image_eq_zero_of_notMem_tsupport (fun h' => hp (hKs h')), zero_mul, mul_zero]`. Conclude with `(hc.integrable_of_hasCompactSupport hs).integral_prod_left`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integrable_integral_cons {d : ℕ} (X : Fin (d + 1) → 𝔤) {ε : ℝ} {a : ℝ → ℂ}
     (ha : Continuous a) (has : tsupport a ⊆ Set.Icc (-ε) ε) {K : (Fin d → ℝ) → ℂ}
@@ -99,9 +99,9 @@ theorem integrable_integral_cons {d : ℕ} (X : Fin (d + 1) → 𝔤) {ε : ℝ}
   exact (hc.integrable_of_hasCompactSupport hs).integral_prod_left
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_congr rfl fun i _ => integral_cons h X hε ha has (hK i) (hKs i) (hF i) x, ← integral_finsetSum _ fun i _ => integrable_integral_cons h X ha has (hK i) (hKs i) (hF i) x]`. Use `congr 1`. Use function extensionality and compare the values at `s`. Rewrite using `[hd, Finset.mul_sum]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `i`. Rewrite using `[← integral_const_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_integral_cons {d m : ℕ} (X : Fin (d + 1) → 𝔤) {ε : ℝ} (hε : 0 ≤ ε)
     {a : ℝ → ℂ} (ha : Continuous a) (has : tsupport a ⊆ Set.Icc (-ε) ε)
@@ -120,7 +120,7 @@ theorem sum_integral_cons {d m : ℕ} (X : Fin (d + 1) → 𝔤) {ε : ℝ} (hε
   rw [← integral_const_mul]
 
 /- English proof (translation)
-The claim follows from `| 0, X => by refine ⟨1, fun _ => [], fun _ _ => 1, fun _ => ⟨continuous_const, ?_⟩, fun f _ g => ?_⟩ · intro t _ rw [Subsingleton.elim t 0]; exact Metric.mem_closedBall_self hε.le · have hv : (volume : Measure (Fin 0 → ℝ)).real Set.univ = 1 := by simp [Measure.real, MeasureTheory …`.
+A detailed English derivation is pending.
 -/
 theorem exists_rep {ε : ℝ} (hε : 0 < ε) : ∀ (n : ℕ) (X : Fin n → 𝔤),
     ∃ (N : ℕ) (l : Fin N → List 𝔤) (κ : Fin N → (Fin n → ℝ) → ℂ),
@@ -159,7 +159,7 @@ theorem exists_rep {ε : ℝ} (hε : 0 < ε) : ∀ (n : ℕ) (X : Fin n → 𝔤
 end SobolevRep
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _ h _ hε n X` and use `SobolevRep.exists_rep h hε n X`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_sobolev_representation_prodExp :
     ∀ (𝔸 : Type) [NormedRing 𝔸] [NormedAlgebra ℝ 𝔸] [CompleteSpace 𝔸] [FiniteDimensional ℝ 𝔸]

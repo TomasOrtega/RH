@@ -12,7 +12,7 @@ open CompanionTheory.RgExh CompanionTheory.RgExh.Fin
 variable {n : ℕ}
 
 /- English proof (translation)
-Use `⟨fun a => ?_, fun a b hab he => ?_⟩` and prove the remaining obligations. Simplify using `using h.1 (s.symm a)`. Establish `h1 : (ε ∘ s) (s.symm a) = (ε ∘ s) (s.symm b)` using `by simpa using he`. Simplify using `using h.2 (s.symm a) (s.symm b) (GlobalTheory.DSId.PermK.mono_symm hs a b hab h1) h1`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem kHighest_of_perm {V : Type} [AddCommGroup V] [Module ℂ V] {ε : Fin n → Bool} {s : Equiv.Perm (Fin n)}
     (hs : ∀ a b, a < b → ε (s a) = ε (s b) → s a < s b) {E : Fin n → Fin n → Module.End ℂ V}
@@ -24,7 +24,7 @@ theorem kHighest_of_perm {V : Type} [AddCommGroup V] [Module ℂ V] {ε : Fin n 
     simpa using h.2 (s.symm a) (s.symm b) (GlobalTheory.DSId.PermK.mono_symm hs a b hab h1) h1
 
 /- English proof (translation)
-Use `⟨fun a => ?_, fun a b hab he => h.2 _ _ (hs a b hab he) he⟩` and prove the remaining obligations. Simplify using `using h.1 (s a)`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem kHighest_perm {V : Type} [AddCommGroup V] [Module ℂ V] {ε : Fin n → Bool} {s : Equiv.Perm (Fin n)}
     (hs : ∀ a b, a < b → ε (s a) = ε (s b) → s a < s b) {E : Fin n → Fin n → Module.End ℂ V}
@@ -34,13 +34,13 @@ theorem kHighest_perm {V : Type} [AddCommGroup V] [Module ℂ V] {ε : Fin n →
   simpa using h.1 (s a)
 
 /- English proof (translation)
-Introduce `n ε H _ _ σ D E hK s mu hSq hA`. Take `⟨-, hord, hmin, v, hv0, hv⟩` from `hA`. Take `⟨hT, -, -, hS, -⟩` from `GlobalTheory.DSId.PermK.permKType n ε s H σ hord`. Take `⟨h1, h2, h3, h4, h5⟩` from `hS.1 hSq`. Establish `e : ∀ f : Fin n → ℝ, (f ∘ s.symm) ∘ s = f` using `fun f => by funext a; simp`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨h1, h2, h3, h4, h5, ?_, ?_⟩` and prove the remaining obligations. Take `⟨T, hT'⟩` from `hK.ty _ v hv0 (kHighest_of_perm hord hv)`. Use `⟨T, ?_⟩` and prove the remaining obligations. Establish `h6` using `(hT _ T).1 hT'`. Rewrite `h6` using `[e]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Introduce `μ S hS'`. Establish `h6 : Formalism.MainNotions.S.IsKTypeOf ε σ (μ ∘ s.symm) S`. Use `(hT _ S).2 ?_` and prove the remaining obligations. Rewrite using `[e]` and apply the resulting hypothesis. Take `⟨w, hw0, -, hw⟩` from `hK.hw _ S h6`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Conclude with `hmin μ w hw0 (kHighest_perm hord hw)`.
+A detailed English derivation is pending.
 -/
 theorem dsOfData : DSOfData := by
   intro n ε H _ _ σ D E hK s mu hSq hA

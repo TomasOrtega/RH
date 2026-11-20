@@ -25,9 +25,9 @@ structure IsHerm {E : Type} [Field E] (σ : E →+* E) (G : Matrix (Fin n) (Fin 
   det_ne : G.det ≠ 0
 
 /- English proof (translation)
-Use `⟨⟨by simp, ⟨Complex.I, ?_⟩, ?_, by simp [Matrix.det_fin_two]⟩, ![1, 0], ?_, by simp [hf, Fin.sum_univ_two]⟩` and prove the remaining obligations. Introduce `h`. Use `congrArg Complex.im h` as an intermediate fact. Evaluate the numerical expressions using `at this`. Apply the tactic sequence `intro a b; fin_cases a <;> fin_cases b <;> simp`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Evaluate the numerical expressions. Apply the first step, then apply the next step to every resulting obligation.
 
-Introduce `h`. Simplify using `using congrFun h 0`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isHerm_hyperbolic : IsHerm (starRingEnd ℂ) !![0, 1; 1, 0] ∧
     ∃ z : Fin 2 → ℂ, z ≠ 0 ∧ hf (starRingEnd ℂ) !![0, 1; 1, 0] z z = 0 := by

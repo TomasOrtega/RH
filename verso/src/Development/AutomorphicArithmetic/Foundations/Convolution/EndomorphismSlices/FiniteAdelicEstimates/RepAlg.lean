@@ -21,19 +21,19 @@ namespace UpperTheory.Zero.ConvolutionTheory.EB
 attribute [local instance] borelG borelF borelA borelH
 
 /- English proof (translation)
-Introduce `E _ _ _ B χa χb`. Establish `hop` using `PositivityTheory.Rg.BcB.F.BlockFiniteConvolution.blkOp₀ E B`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `C ψ R h`. Conclude with `PositivityTheory.Rg.BcB.F.blkSum E B.a B.b B.D B.I C.J C.s C.c (fun j => (C.t j).Φ) (fun j => (C.t j).op) fun j hj => ⟨(hop _ _ (h j hj).1 (h j hj).1).1, (hop _ _ (h j hj).1 (h j hj).1).2.1⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `t ht`. Use `⟨⟨Unit, {()}, fun _ => 1, fun _ => t⟩, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `j _`. Conclude with `⟨ht, rfl, le_max_left _ _, le_max_right _ _⟩`. Simplify using `[Cmb.val]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[Cmb.op]`. Introduce and unpack `ψ v R R' U h ⟨C, hC, hv, hU⟩`. Conclude with `⟨C, fun j hj => ⟨(hC j hj).1, (hC j hj).2.1, (hC j hj).2.2.1.trans h, (hC j hj).2.2.2.trans h⟩, hv, hU⟩`. Introduce and unpack `ψ ψ' v v' R R' U U' ⟨C, hC, rfl, rfl⟩ ⟨C', hC', rfl, rfl⟩`. Use `⟨⟨C.J × C'.J, C.s ×ˢ C'.s, fun p => C.c p.1 * C'.c p.2, fun p => (C.t p.1).mul (C'.t p.2)⟩, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨j, j'⟩ hj`. Take `⟨h1, h2⟩` from `Finset.mem_product.1 hj`. Take `⟨o, e, hT, hr⟩` from `hC j h1`. Take `⟨o', e', hT', hr'⟩` from `hC' j' h2`. Use `⟨(hop _ _ o o').2.2.1, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `mulF B.ν (C.t j).ψ (C'.t j').ψ = _`. Rewrite using `[e, e']`. Express the relevant statement in the definitionally equal form `(C.t j).T + (C'.t j').T ≤ _`. Combine the linear relations using `[B.c_nonneg]`. Express the relevant statement in the definitionally equal form `(C.t j).r + (C'.t j').r + B.c ≤ _`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Combine the linear equalities and inequalities to obtain the conclusion. Express the relevant assertion in an equivalent form by its definition. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Simplify using `only [Cmb.val]`. Rewrite using `[Finset.sum_mul_sum, Finset.sum_product]`. Use `Finset.sum_congr rfl fun j hj => Finset.sum_congr rfl fun j' hj' => ?_` and prove the remaining obligations. Rewrite using `[(hop _ _ (hC j hj).1 (hC' j' hj').1).2.2.2.2.2.2.1 χa χb]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Simplify using `only [Cmb.op]`. Rewrite using `[Finset.sum_mul_sum, Finset.sum_product]`. Use `Finset.sum_congr rfl fun j hj => Finset.sum_congr rfl fun j' hj' => ?_` and prove the remaining obligations. Rewrite using `[(hop _ _ (hC j hj).1 (hC' j' hj').1).2.2.2.1, smul_mul_smul_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem repAlg : RepAlg := by
   intro E _ _ _ B χa χb

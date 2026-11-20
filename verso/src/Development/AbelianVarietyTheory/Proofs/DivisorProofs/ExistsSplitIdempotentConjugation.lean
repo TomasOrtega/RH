@@ -11,9 +11,9 @@ namespace GlobalTheory.CentAtP
 variable {p : ℕ} [Fact p.Prime]
 
 /- English proof (translation)
-Take `⟨v⟩ : Nonempty (InfinitePlace G.F)` from `inferInstance`. Take `⟨x, hx, him⟩` from `G.hKq.2 v.embedding`. Use `⟨x, hx, fun h => him ?_⟩` and prove the remaining obligations. Establish `h2` using `IsCMField.complexEmbedding_complexConj G.F v.embedding x`. Rewrite `h2` using `[h]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `congrArg Complex.im h2` as an intermediate fact. Simplify using `only [Complex.conj_im] at this`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem exists_conj_ne (G : HTGroup p) : ∃ x ∈ G.Kq, IsCMField.complexConj G.F x ≠ x := by
   obtain ⟨v⟩ : Nonempty (InfinitePlace G.F) := inferInstance

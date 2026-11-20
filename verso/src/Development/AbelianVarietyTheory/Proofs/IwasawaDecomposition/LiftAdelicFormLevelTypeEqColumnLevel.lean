@@ -23,20 +23,20 @@ namespace GlobalTheory.Mem.LevPres
 open Formalism.L2.DIV
 
 /- English proof (translation)
-The claim follows from `Units.ext (Matrix.ext fun _ _ => rfl)`.
+A detailed English derivation is pending.
 -/
 theorem castGL_rfl' {R : Type} [CommRing R] {m : ℕ} (x : GL (Fin m) R) : LiftBrg.castGL (rfl : m = m) x = x :=
   Units.ext (Matrix.ext fun _ _ => rfl)
 
 /- English proof (translation)
-Substitute `h` using the available equality. Rewrite using `[castGL_rfl', castGL_rfl']`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 -/
 theorem castGL_castGL_symm' {R : Type} [CommRing R] {m n : ℕ} (h : m = n) (y : GL (Fin n) R) :
     LiftBrg.castGL h (LiftBrg.castGL h.symm y) = y := by
   subst h; rw [castGL_rfl', castGL_rfl']
 
 /- English proof (translation)
-Substitute `h` using the available equality. Rewrite using `[castGL_rfl']`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 -/
 theorem castGL_St {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {m n : ℕ}
     (h : m = n) (x : GL (Fin m) (E ⊗[F] Formalism.L2.Herm.Af F)) :
@@ -44,7 +44,7 @@ theorem castGL_St {F E : Type} [Field F] [NumberField F] [Field E] [NumberField 
   subst h; rw [castGL_rfl']
 
 /- English proof (translation)
-Substitute `h` using the available equality. Rewrite using `[castGL_rfl', castGL_rfl']`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 -/
 theorem castGL_redFn {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {m n : ℕ}
     (h : m = n) (x : GL (Fin m) (E ⊗[F] Formalism.L2.Herm.Af F)) (PP : Pl E) :
@@ -52,35 +52,35 @@ theorem castGL_redFn {F E : Type} [Field F] [NumberField F] [Field E] [NumberFie
   subst h; rw [castGL_rfl', castGL_rfl']
 
 /- English proof (translation)
-Substitute `h` using the available equality. Rewrite using `[castGL_rfl']`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 -/
 theorem castGL_blkOf {κ : Type} [CommRing κ] {m n : ℕ} (h : m = n) (r t : ℕ) (g : GL (Fin m) κ) :
     LiftBrg.castGL h g ∈ blockTri (blkOf r t) ↔ g ∈ blockTri (blkOf r t) := by
   subst h; rw [castGL_rfl']
 
 /- English proof (translation)
-Substitute `h` using the available equality. Rewrite using `[castGL_rfl']`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 -/
 theorem generalLinearGroupCastOfEq_mem_twoBlockTri_iff {κ : Type} [CommRing κ] {m n : ℕ} (h : m = n) (r : ℕ) (g : GL (Fin m) κ) :
     LiftBrg.castGL h g ∈ blockTri (blk2 r) ↔ g ∈ blockTri (blk2 r) := by
   subst h; rw [castGL_rfl']
 
 /- English proof (translation)
-Substitute `h` using the available equality. Rewrite using `[castGL_rfl']`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 -/
 theorem generalLinearGroupCastOfEq_rowBlock_eq {κ : Type} [CommRing κ] {m n r : ℕ} (h : m = n) (hr : r ≤ n) (hr' : r ≤ m) (g : GL (Fin m) κ) :
     upperLeftBlock hr (LiftBrg.castGL h g) = upperLeftBlock hr' g := by
   subst h; rw [castGL_rfl']
 
 /- English proof (translation)
-Substitute `h` using the available equality. Rewrite using `[castGL_rfl']`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 -/
 theorem generalLinearGroupCastOfEq_diagBlock_eq {κ : Type} [CommRing κ] {m n : ℕ} (h : m = n) (r t : ℕ) (g : GL (Fin m) κ) :
     dBlk (blkOf r t) 1 (LiftBrg.castGL h g) = dBlk (blkOf r t) 1 g := by
   subst h; rw [castGL_rfl']
 
 /- English proof (translation)
-Substitute `h` using the available equality. Rewrite using `[castGL_rfl']`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 -/
 theorem generalLinearGroupCastOfEq_twoBlock_diagBlock_eq {κ : Type} [CommRing κ] {m n : ℕ} (h : m = n) (r : ℕ) (g : GL (Fin m) κ) :
     dBlk (blk2 r) 1 (LiftBrg.castGL h g) = dBlk (blk2 r) 1 g := by
@@ -92,7 +92,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarR
   (hc : Formalism.BasicNotions.CMData F E) (n : ℕ) [NeZero n] (SG : Finset (Pl E)) (H : Subgroup (Formalism.L2.Col.GLG E n SG))
 
 /- English proof (translation)
-Unfold `Formalism.L2.Col.J0`. Simplify using `only [Subgroup.mem_inf, Subgroup.mem_iInf]`. Prove the components needed by the constructor for the conclusion. Conclude with `fun h => h.1`. Conclude with `fun h => ⟨h, fun P hP => absurd hP (Finset.notMem_empty P)⟩`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem mem_J0_empty (x : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) :
     x ∈ Formalism.L2.Col.J0 hc n ∅ ↔ x ∈ Formalism.L2.Col.UAd hc n ∧ x ∈ St (1 : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) := by
@@ -103,7 +103,7 @@ theorem mem_J0_empty (x : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) :
   · exact fun h => ⟨h, fun P hP => absurd hP (Finset.notMem_empty P)⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨m, hm, rfl⟩`. Conclude with `⟨m.2, hm⟩`. Introduce and unpack `⟨hx, h⟩`. Conclude with `⟨⟨x, hx⟩, h, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem mem_colJ_iff (x : Formalism.L2.Col.UAd hc n) :
     x ∈ Bridge.colJ hc n ∅ SG H ↔
@@ -115,7 +115,7 @@ theorem mem_colJ_iff (x : Formalism.L2.Col.UAd hc n) :
     exact ⟨⟨x, hx⟩, h, rfl⟩
 
 /- English proof (translation)
-Unfold `redFn`. Rewrite using `[extendOne_of_mem _ (Formalism.L2.Col.congruence_subgroup_le_stabilizer hc n ∅ hx)]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem redG_apply' (x : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) (hx : x ∈ Formalism.L2.Col.J0 hc n ∅) (w : SG) :
     Formalism.L2.Col.redG hc n ∅ SG ⟨x, hx⟩ w = redFn 1 w.1 x := by
@@ -124,7 +124,7 @@ theorem redG_apply' (x : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) (hx : x �
   rfl
 
 /- English proof (translation)
-Use `show Formalism.L2.Col.redG hc n ∅ SG (m : Formalism.L2.Col.J0 hc n ∅) w = _`. Conclude with `redG_apply' hc n SG _ (m : Formalism.L2.Col.J0 hc n ∅).2 w`.
+A detailed English derivation is pending.
 -/
 theorem redH_apply' (m : Formalism.L2.Col.JH hc n ∅ SG H) (w : SG) :
     ((Formalism.L2.Col.redH hc n ∅ SG H m : H) : Formalism.L2.Col.GLG E n SG) w =
@@ -135,14 +135,14 @@ theorem redH_apply' (m : Formalism.L2.Col.JH hc n ∅ SG H) (w : SG) :
 end StdSide'
 
 /- English proof (translation)
-Substitute `e` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem lev_eq_of_eq {κ K : Type} [CommRing κ] [Field K] {n : ℕ} {l₁ l₂ : Formalism.L2.Col.Lev κ K n} (e : l₁ = l₂)
     (g : GL (Fin n) κ) (h₁ : g ∈ l₁.H) (h₂ : g ∈ l₂.H) : l₁.lam ⟨g, h₁⟩ = l₂.lam ⟨g, h₂⟩ := by
   subst e; rfl
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_levEnvJ {D : D7} (V : HSp D) (β : GL (Fin V.rank) (Formalism.IndefR.Lev.EAf D)) (L : LevDat D.host.E ℂ V.rank) (y : Bridge.Gf V) :
     y ∈ (levEnv V β L).J ↔ Formalism.UG.bc (swapAE D) (y : GL (Fin V.rank) _) ∈ lev D.sp.cm V.gram β (flag1L L) := Iff.rfl
@@ -155,9 +155,9 @@ theorem levEnv_chi {D : D7} (V : HSp D) (β : GL (Fin V.rank) (Formalism.IndefR.
     (levEnv V β L).χ ⟨y, hy⟩ = levFn β (flag1L L) (Formalism.UG.bc (swapAE D) (y : GL (Fin V.rank) _)) := rfl
 
 /- English proof (translation)
-Establish `h0 : ext1 (flag1L (L.datVt i t)).P.H (flag1L (L.datVt i t)).P.chi (rTup 1 (flag1L (L.datVt i t)) M) = 1` using `Formalism.IndefR.Lev.subgroupCharExtension_one_apply _ _`. Unfold `levFn`. Rewrite using `[h0, one_mul]`. Use `congr 1`. Use `Finset.prod_congr rfl fun PP _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Finset.prod_range_one _`.
+A detailed English derivation is pending.
 -/
 theorem levFn_datVt (X : Stages) {T : Type} (L : Formalism.IndefR.Links.LevCh X.toD7 T) (i : Fin X.toD7.R.m) (t : T)
     (M : GL (Fin (Vc X.toD7 i).rank) (LiftBrg.EA X)) :
@@ -173,7 +173,7 @@ theorem levFn_datVt (X : Stages) {T : Type} (L : Formalism.IndefR.Links.LevCh X.
   exact Finset.prod_range_one _
 
 /- English proof (translation)
-Establish `e' : h = 1` using `Subtype.ext e`. Rewrite using `[e', map_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem chr_eq_one {E K : Type} [Field E] [NumberField E] [Field K] {n : ℕ} {SG : Finset (HeightOneSpectrum (𝓞 E))}
     (Λ : Formalism.L2.Col.LevFam E K n SG) (h : Λ.grp) (e : h.1 = 1) : Λ.chr h = 1 := by
@@ -181,7 +181,7 @@ theorem chr_eq_one {E K : Type} [Field E] [NumberField E] [Field K] {n : ℕ} {S
   rw [e', map_one]
 
 /- English proof (translation)
-Substitute `hA hB` using the available equality. Rewrite using `[Finset.prod_coe_sort (Formalism.L2.Col.uSG A' B') φ, mul_inv, ← Finset.prod_inv_distrib, ← Finset.prod_inv_distrib, ← Finset.prod_congr rfl ha, ← Finset.prod_congr rfl hb]`. Use `(Finset.prod_union hd).symm` and compare the differences between its conclusion and the goal.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 -/
 theorem prod_glue {E : Type} [Field E] [NumberField E] (A' B' A B : Finset (HeightOneSpectrum (𝓞 E))) (hA : A' = A) (hB : B' = B)
     (hd : Disjoint A B) (a b φ : HeightOneSpectrum (𝓞 E) → ℂˣ) (ha : ∀ P ∈ A, φ P = (a P)⁻¹) (hb : ∀ P ∈ B, φ P = (b P)⁻¹) :
@@ -193,71 +193,61 @@ theorem prod_glue {E : Type} [Field E] [NumberField E] (A' B' A B : Finset (Heig
   convert (Finset.prod_union hd).symm
 
 /- English proof (translation)
-Introduce `X px I U L hI hV hL i t eG heG`. Establish `hβ : L.βV i = 1` using `hL.beta.1 i`. Establish `hPg : L.Pg = (X.B.primes px).vGs` using `hL.Pg`. Establish `hQ : L.Q t = Formalism.L2.Col.QE I.sel t.1` using `by rw [hL.Q t, ← tup_ixOf I t]`. Establish `hdisj` using `GlobalTheory.T.typePrimes_disjoint_twistChosenPrimes X px I U L hI hV hL t`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrk` using `LiftBrg.rkEq X i`. Establish `hnV : X.B.R.nV = X.B.R.r + X.B.R.t` using `rfl`. Establish `hM : ∀ x : Formalism.L2.Col.UAd X.toD7.sp.cm X.B.R.nV, Formalism.UG.bc (swapAE X.toD7) ((eG x : Bridge.Gf (Vc X.toD7 i)) : GL (Fin (Vc X.toD7 i).rank) _) = LiftBrg.castGL hrk (x : GL (Fin X.B.R.nV) (LiftBrg.EA X))`. Introduce `x`. Rewrite using `[← heG x]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(castGL_castGL_symm' _ _).symm`. Establish `hUA : ∀ y : Bridge.Gf (Vc X.toD7 i), Formalism.UG.bc (swapAE X.toD7) (y : GL (Fin (Vc X.toD7 i).rank) _) ∈ UA X.toD7.sp.cm (Vc X.toD7 i).gram`. Introduce and unpack `⟨_, g, rfl⟩`. Conclude with `GlobalTheory.LevSplit.finE_mem_UA _ g`. Establish `hHv : ∀ (w : LiftBrg.sgL X I U t) (hw : w.1 ∈ (X.B.primes px).vGs) (g : GL (Fin X.B.R.nV) (𝓞 X.B.fields.E ⧸ w.1.asIdeal)), g ∈ ((Formalism.L2.Col.mtTyKK I.Ch I.sel t.1 ((i : ℕ) + 1)).inv w).H ↔ g ∈ Formalism.L2.Col.HK X.B.R.nV _ X.B.R.r [X.B.R.t]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `w hw g`. Use `show g ∈ (Formalism.L2.Col.mtTyKK I.Ch I.sel t.1 ((i : ℕ) + 1) w).H ↔ _`. Establish `e : Formalism.L2.Col.mtTyKK I.Ch I.sel t.1 ((i : ℕ) + 1) w = Formalism.L2.Col.mtTyK I.Ch ((i : ℕ) + 1) ⟨w.1, hw⟩` using `Formalism.L2.Col.LevFam.glue_of_mem _ _ w hw`. Rewrite using `[e]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hHq : ∀ (w : LiftBrg.sgL X I U t) (hw : w.1 ∉ (X.B.primes px).vGs) (g : GL (Fin X.B.R.nV) (𝓞 X.B.fields.E ⧸ w.1.asIdeal)), g ∈ ((Formalism.L2.Col.mtTyKK I.Ch I.sel t.1 ((i : ℕ) + 1)).inv w).H ↔ g ∈ Formalism.L2.Col.blockUT X.B.R.nV _ X.B.R.r [X.B.R.t]`. Introduce `w hw g`. Use `show g ∈ (Formalism.L2.Col.mtTyKK I.Ch I.sel t.1 ((i : ℕ) + 1) w).H ↔ _`. Establish `e : Formalism.L2.Col.mtTyKK I.Ch I.sel t.1 ((i : ℕ) + 1) w = Formalism.L2.Col.mtTyQ X.B.R (t.1 : Formalism.L2.DIV.Chr X.B.fields.F X.B.fields.E X.B.fields.K) (Formalism.L2.Col.QE I.sel t.1) ⟨w.1, (Finset.mem_union.mp w.2).resolve_left hw⟩` using `Formalism.L2.Col.LevFam.glue_of_not _ _ w hw`. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `hmem : ∀ x : Formalism.L2.Col.UAd X.toD7.sp.cm X.B.R.nV, eG x ∈ (levEnv (Vc X.toD7 i) (L.βV i) (L.datVt i t)).J ↔ x ∈ Bridge.colJ X.toD7.sp.cm X.B.R.nV ∅ (LiftBrg.sgL X I U t) (Formalism.L2.Col.mtTyKK I.Ch I.sel t.1 ((i : ℕ) + 1)).inv.grp`. Introduce `x`. Establish `hx0` using `hUA (eG x)`. Rewrite `hx0` using `[hM x]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion.
 
-Establish `hcr : ∀ PP : Pl X.toD7.host.E, LiftBrg.castGL hrk (redFn (1 : GL (Fin X.B.R.nV) (LiftBrg.EA X)) PP (x : GL (Fin X.B.R.nV) (LiftBrg.EA X))) = redFn (1 : GL (Fin (Vc X.toD7 i).rank) (LiftBrg.EA X)) PP (LiftBrg.castGL hrk (x : GL (Fin X.B.R.nV) (LiftBrg.EA X)))` using `fun PP => (castGL_redFn hrk _ PP).symm`. Rewrite using `[mem_levEnvJ, hM x, hβ, mem_lev, mem_parLev, castGL_St]`. Use `Iff.trans ?_ (mem_colJ_iff X.toD7.sp.cm X.B.R.nV (LiftBrg.sgL X I U t) _ x).symm` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨-, hSt, hg, hq⟩, hr⟩`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hr' : rTup 1 (flag1L (L.datVt i t)) (LiftBrg.castGL hrk (x : GL (Fin X.B.R.nV) (LiftBrg.EA X))) = 1` using `Subgroup.mem_bot.1 hr`. Establish `hx : (x : GL (Fin X.B.R.nV) (LiftBrg.EA X)) ∈ Formalism.L2.Col.J0 X.toD7.sp.cm X.B.R.nV ∅` using `(mem_J0_empty _ _ _).2 ⟨x.2, hSt⟩`. Use `⟨hx, (Subgroup.mem_pi _).2 fun w _ => ?_⟩` and prove the remaining obligations. Use `show Formalism.L2.Col.redG X.toD7.sp.cm X.B.R.nV ∅ (LiftBrg.sgL X I U t) ⟨_, hx⟩ w ∈ ((Formalism.L2.Col.mtTyKK I.Ch I.sel t.1 ((i : ℕ) + 1)).inv w).H`. Rewrite using `[show Formalism.L2.Col.redG X.toD7.sp.cm X.B.R.nV ∅ (LiftBrg.sgL X I U t) ⟨_, hx⟩ w = redFn (1 : GL (Fin X.B.R.nV) (LiftBrg.EA X)) (w.1 : Pl X.toD7.host.E) (x : GL (Fin X.B.R.nV) (LiftBrg.EA X)) from redG_apply' _ _ _ _ hx w]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Distinguish the cases in `hw : w.1 ∈ (X.B.primes px).vGs`. Rewrite using `[hHv w hw]`. Establish `hPP : w.1 ∈ (flag1L (L.datVt i t)).Pg` using `by show w.1 ∈ L.Pg`. Rewrite using `[hPg]`. Conclude with `hw`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1 : LiftBrg.castGL hrk (redFn (1 : GL (Fin X.B.R.nV) (LiftBrg.EA X)) (w.1 : Pl X.toD7.host.E) (x : GL (Fin X.B.R.nV) (LiftBrg.EA X))) ∈ blockTri (blkOf X.B.R.r X.B.R.t)`. Use `hg w.1 hPP using 2` and compare the differences between its conclusion and the goal. Apply the tactic sequence `all_goals first | rfl | exact hcr _`. Rewrite `h1` using `[castGL_blkOf]`. Establish `h2` using `((GlobalTheory.T.mem_blockTri_blkOf_and_blk2_iff_mem_blockUT hnV _).1).1 h1`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `(GlobalTheory.T.upperLeftBlock_eq_one_iff_mem_HK hnV (Formalism.L2.Col.r_le_nV X.B.R) _ h2).1 ?_` and prove the remaining obligations. Establish `h3 : upperLeftBlock (flag1L (L.datVt i t)).hr (LiftBrg.castGL hrk (redFn (1 : GL (Fin X.B.R.nV) (LiftBrg.EA X)) (w.1 : Pl X.toD7.host.E) (x : GL (Fin X.B.R.nV) (LiftBrg.EA X)))) = 1`. Establish `h3' : upperLeftBlock (flag1L (L.datVt i t)).hr (redFn (1 : GL (Fin (Vc X.toD7 i).rank) (LiftBrg.EA X)) (w.1 : Pl X.toD7.host.E) (LiftBrg.castGL hrk (x : GL (Fin X.B.R.nV) (LiftBrg.EA X)))) = 1` using `congrFun hr' ⟨w.1, hPP⟩`. Use `h3' using 2` and compare the differences between its conclusion and the goal. Apply the tactic sequence `all_goals first | rfl | exact hcr _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h3` using `[generalLinearGroupCastOfEq_rowBlock_eq hrk (flag1L (L.datVt i t)).hr (Formalism.L2.Col.r_le_nV X.B.R)]`. Conclude with `h3`. Rewrite using `[hHq w hw]`. Establish `hq' : w.1 ∈ Formalism.L2.Col.QE I.sel t.1` using `(Finset.mem_union.mp w.2).resolve_left hw`. Establish `hPP : w.1 ∈ (flag1L (L.datVt i t)).Q` using `by show w.1 ∈ L.Q t`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hQ]`. Conclude with `hq'`. Establish `h1 : LiftBrg.castGL hrk (redFn (1 : GL (Fin X.B.R.nV) (LiftBrg.EA X)) (w.1 : Pl X.toD7.host.E) (x : GL (Fin X.B.R.nV) (LiftBrg.EA X))) ∈ blockTri (blk2 X.B.R.r)`. Use `hq w.1 hPP using 2` and compare the differences between its conclusion and the goal. Apply the tactic sequence `all_goals first | rfl | exact hcr _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[generalLinearGroupCastOfEq_mem_twoBlockTri_iff]`. Conclude with `((GlobalTheory.T.mem_blockTri_blkOf_and_blk2_iff_mem_blockUT hnV _).2).1 h1`. Introduce and unpack `⟨hx, hH⟩`. Establish `hSt` using `((mem_J0_empty _ _ _).1 hx).2`. Establish `hw' : ∀ w : LiftBrg.sgL X I U t, redFn (1 : GL (Fin X.B.R.nV) (LiftBrg.EA X)) (w.1 : Pl X.toD7.host.E) (x : GL (Fin X.B.R.nV) (LiftBrg.EA X)) ∈ ((Formalism.L2.Col.mtTyKK I.Ch I.sel t.1 ((i : ℕ) + 1)).inv w).H` using `fun w => by`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Rewrite using `[show redFn (1 : GL (Fin X.B.R.nV) (LiftBrg.EA X)) (w.1 : Pl X.toD7.host.E) (x : GL (Fin X.B.R.nV) (LiftBrg.EA X)) = Formalism.L2.Col.redG X.toD7.sp.cm X.B.R.nV ∅ (LiftBrg.sgL X I U t) ⟨_, hx⟩ w from (redG_apply' _ _ _ _ hx w).symm]`. Conclude with `(Subgroup.mem_pi _).1 hH w (Set.mem_univ _)`. Use `⟨⟨hx0, hSt, fun PP hPP => ?_, fun PP hPP => ?_⟩, ?_⟩` and prove the remaining obligations. Establish `hv : PP ∈ (X.B.primes px).vGs` using `by rw [← hPg]; exact hPP`. Establish `hk` using `(hHv ⟨PP, Finset.mem_union_left _ hv⟩ hv _).1 (hw' ⟨PP, Finset.mem_union_left _ hv⟩)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hcr, castGL_blkOf]`. Conclude with `((GlobalTheory.T.mem_blockTri_blkOf_and_blk2_iff_mem_blockUT hnV _).1).2 (Formalism.L2.Col.HK_le_blockUT _ _ _ _ hk)`. Establish `hq' : PP ∈ Formalism.L2.Col.QE I.sel t.1` using `by rw [← hQ]; exact hPP`. Establish `hb : redFn (1 : GL (Fin X.B.R.nV) (LiftBrg.EA X)) PP (x : GL (Fin X.B.R.nV) (LiftBrg.EA X)) ∈ Formalism.L2.Col.blockUT X.B.R.nV _ X.B.R.r [X.B.R.t]`. Distinguish the cases in `hv : PP ∈ (X.B.primes px).vGs`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Formalism.L2.Col.HK_le_blockUT _ _ _ _ ((hHv ⟨PP, Finset.mem_union_right _ hq'⟩ hv _).1 (hw' ⟨PP, Finset.mem_union_right _ hq'⟩))`. Conclude with `(hHq ⟨PP, Finset.mem_union_right _ hq'⟩ hv _).1 (hw' ⟨PP, Finset.mem_union_right _ hq'⟩)`. Rewrite using `[← hcr, generalLinearGroupCastOfEq_mem_twoBlockTri_iff]`. Conclude with `((GlobalTheory.T.mem_blockTri_blkOf_and_blk2_iff_mem_blockUT hnV _).2).2 hb`. Use `Subgroup.mem_bot.2 ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `PP`. Establish `hv : PP.1 ∈ (X.B.primes px).vGs` using `by rw [← hPg]; exact PP.2`. Establish `hk` using `(hHv ⟨PP.1, Finset.mem_union_left _ hv⟩ hv _).1 (hw' ⟨PP.1, Finset.mem_union_left _ hv⟩)`. Use `show upperLeftBlock (L.datVt i t).hr (redFn 1 PP.1 (LiftBrg.castGL hrk (x : GL (Fin X.B.R.nV) (LiftBrg.EA X)))) = 1`. Rewrite using `[← hcr, generalLinearGroupCastOfEq_rowBlock_eq hrk (L.datVt i t).hr (Formalism.L2.Col.r_le_nV X.B.R)]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(GlobalTheory.T.upperLeftBlock_eq_one_iff_mem_HK hnV _ _ (Formalism.L2.Col.HK_le_blockUT _ _ _ _ hk)).2 hk`. Establish `hJ : (levEnv (Vc X.toD7 i) (L.βV i) (L.datVt i t)).J = (Bridge.colJ X.toD7.sp.cm X.B.R.nV ∅ (LiftBrg.sgL X I U t) (Formalism.L2.Col.mtTyKK I.Ch I.sel t.1 ((i : ℕ) + 1)).inv.grp).map eG.toMonoidHom`. Use extensionality with `y`. Rewrite using `[Subgroup.mem_map]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `hy`. Use `⟨eG.symm y, (hmem _).1 (by rwa [eG.apply_symm_apply]), eG.apply_symm_apply y⟩` and prove the remaining obligations. Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `(hmem x).2 hx`. Use `⟨hJ, fun k hk => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Establish `hm1` using `Bridge.colJEquiv_symm_coe X.toD7.sp.cm X.B.R.nV ∅ (LiftBrg.sgL X I U t) (Formalism.L2.Col.mtTyKK I.Ch I.sel t.1 ((i : ℕ) + 1)).inv.grp k`. Establish `hxk : ((((Bridge.colJEquiv X.toD7.sp.cm X.B.R.nV ∅ (LiftBrg.sgL X I U t) (Formalism.L2.Col.mtTyKK I.Ch I.sel t.1 ((i : ℕ) + 1)).inv.grp).symm k : Formalism.L2.Col.JH _ _ _ _ _) : Formalism.L2.Col.J0 X.toD7.sp.cm X.B.R.nV ∅) : GL (Fin X.B.R.nV) (LiftBrg.EA X)) = ((k : Formalism.L2 …` using `congrArg Subtype.val hm1`. Establish `hredw : ∀ w : LiftBrg.sgL X I U t, ((Formalism.L2.Col.redH X.toD7.sp.cm X.B.R.nV ∅ (LiftBrg.sgL X I U t) _ ((Bridge.colJEquiv X.toD7.sp.cm X.B.R.nV ∅ (LiftBrg.sgL X I U t) (Formalism.L2.Col.mtTyKK I.Ch I.sel t.1 ((i : ℕ) + 1)).inv.grp).symm k) : _) : Formalism.L2.Col.GLG _ _ _) w …`. Introduce `w`. Conclude with `(redH_apply' _ _ _ _ _ w).trans (congrArg _ hxk)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hcrk : ∀ PP : Pl X.toD7.host.E, redFn (1 : GL (Fin (Vc X.toD7 i).rank) (LiftBrg.EA X)) PP (LiftBrg.castGL hrk ((k : Formalism.L2.Col.UAd X.toD7.sp.cm X.B.R.nV) : GL (Fin X.B.R.nV) (LiftBrg.EA X))) = LiftBrg.castGL hrk (redFn (1 : GL (Fin X.B.R.nV) (LiftBrg.EA X)) PP ((k : Formali …` using `fun PP => castGL_redFn hrk _ PP`. Establish `perw : ∀ (w : LiftBrg.sgL X I U t) (g : GL (Fin X.B.R.nV) (𝓞 X.B.fields.E ⧸ w.1.asIdeal)) (hg : g ∈ ((Formalism.L2.Col.mtTyKK I.Ch I.sel t.1 ((i : ℕ) + 1)).inv w).H), g = redFn (1 : GL (Fin X.B.R.nV) (LiftBrg.EA X)) (w.1 : Pl X.toD7.host.E) ((k : Formalism.L2.Col.UAd X.toD7.sp.cm …`. Introduce `w g hg hgw`. Distinguish the cases in `hv : (w.1 : Pl X.toD7.host.E) ∈ (X.B.primes px).vGs`. Rewrite using `[if_pos hv]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hg' : g ∈ Formalism.L2.Col.HK X.B.R.nV _ X.B.R.r [X.B.R.t]` using `(hHv w hv g).1 hg`. Establish `hb` using `Formalism.L2.Col.HK_le_blockUT _ _ _ _ hg'`. Establish `e : Formalism.L2.Col.mtTyKK I.Ch I.sel t.1 ((i : ℕ) + 1) w = Formalism.L2.Col.mtTyK I.Ch ((i : ℕ) + 1) ⟨w.1, hv⟩` using `Formalism.L2.Col.LevFam.glue_of_mem _ _ w hv`. Establish `l1 : ((Formalism.L2.Col.mtTyKK I.Ch I.sel t.1 ((i : ℕ) + 1)).inv w).lam ⟨g, hg⟩ = ((Formalism.L2.Col.mtTyK I.Ch ((i : ℕ) + 1) ⟨w.1, hv⟩).lam ⟨g, hg'⟩)⁻¹` using `by show ((Formalism.L2.Col.mtTyKK I.Ch I.sel t.1 ((i : ℕ) + 1) w).lam⁻¹) ⟨g, hg⟩ = _`. Rewrite using `[MonoidHom.inv_apply, lev_eq_of_eq e g hg hg']`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `l2 : (Formalism.L2.Col.mtTyK I.Ch ((i : ℕ) + 1) ⟨w.1, hv⟩).lam ⟨g, hg'⟩ = (Formalism.L2.Col.chiAt I.Ch ⟨w.1, hv⟩ (i : ℕ))⁻¹ (Formalism.L2.Col.blkDet X.B.R.nV _ (Formalism.L2.Col.coarse X.B.R.r [X.B.R.t]) 1 ⟨g, hb⟩)` using `by show Formalism.L2.Col.lamKV (Formalism.L2.Col.chiAt I.Ch ⟨w.1, hv⟩ ((i : ℕ) + 1 - 1)) X.B.R.nV X.B.R.r X.B.R.t ⟨g, hg'⟩ = _`. Rewrite using `[Nat.add_sub_cancel]`. Unfold `Formalism.L2.Col.lamKV Formalism.L2.Col.lamK`. Rewrite using `[MonoidHom.comp_apply, Formalism.L2.Col.detChar_apply]`. Simplify using `only [List.length_singleton, Finset.prod_range_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Both sides reduce to the same expression. Establish `d1 : dBlk (blkOf X.B.R.r X.B.R.t) 1 g = Formalism.L2.Col.blkDet X.B.R.nV _ (Formalism.L2.Col.coarse X.B.R.r [X.B.R.t]) 1 ⟨g, hb⟩` using `(GlobalTheory.T.dBlk_eq_blkDet_coarse hnV g hb).1`. Establish `d2 : dBlk (blkOf X.toD7.R.r X.toD7.R.t) 1 (redFn (1 : GL (Fin (Vc X.toD7 i).rank) (LiftBrg.EA X)) w.1 (LiftBrg.castGL hrk ((k : Formalism.L2.Col.UAd X.toD7.sp.cm X.B.R.nV) : GL (Fin X.B.R.nV) (LiftBrg.EA X)))) = dBlk (blkOf X.B.R.r X.B.R.t) 1 g` using `(congrArg _ (hcrk w.1)).trans ((generalLinearGroupCastOfEq_diagBlock_eq hrk _ _ _).trans (congrArg _ hgw.symm))`. Rewrite using `[l1, l2, MonoidHom.inv_apply, inv_inv]`. Use `(GlobalTheory.T.liftLevelCharacter_typePrime_eq_columnCharacter X px I U L hI hL i ⟨w.1, hv⟩ _).symm.trans ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `congrArg _ (d2.trans d1).symm`. Rewrite using `[if_neg hv]`. Establish `hq' : (w.1 : Pl X.toD7.host.E) ∈ Formalism.L2.Col.QE I.sel t.1` using `(Finset.mem_union.mp w.2).resolve_left hv`. Establish `hb : g ∈ Formalism.L2.Col.blockUT X.B.R.nV _ X.B.R.r [X.B.R.t]` using `(hHq w hv g).1 hg`. Establish `e : Formalism.L2.Col.mtTyKK I.Ch I.sel t.1 ((i : ℕ) + 1) w = Formalism.L2.Col.mtTyQ X.B.R (t.1 : Formalism.L2.DIV.Chr X.B.fields.F X.B.fields.E X.B.fields.K) (Formalism.L2.Col.QE I.sel t.1) ⟨w.1, hq'⟩` using `Formalism.L2.Col.LevFam.glue_of_not _ _ w hv`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `l1 : ((Formalism.L2.Col.mtTyKK I.Ch I.sel t.1 ((i : ℕ) + 1)).inv w).lam ⟨g, hg⟩ = ((Formalism.L2.Col.mtTyQ X.B.R (t.1 : Formalism.L2.DIV.Chr X.B.fields.F X.B.fields.E X.B.fields.K) (Formalism.L2.Col.QE I.sel t.1) ⟨w.1, hq'⟩).lam ⟨g, hb⟩)⁻¹` using `by show ((Formalism.L2.Col.mtTyKK I.Ch I.sel t.1 ((i : ℕ) + 1) w).lam⁻¹) ⟨g, hg⟩ = _`. Rewrite using `[MonoidHom.inv_apply, lev_eq_of_eq e g hg hb]`. Establish `l2 : (Formalism.L2.Col.mtTyQ X.B.R (t.1 : Formalism.L2.DIV.Chr X.B.fields.F X.B.fields.E X.B.fields.K) (Formalism.L2.Col.QE I.sel t.1) ⟨w.1, hq'⟩).lam ⟨g, hb⟩ = Formalism.L2.DIV.resChar (t.1 : Formalism.L2.DIV.Chr X.B.fields.F X.B.fields.E X.B.fields.K) w.1 (Formalism.L2.Col.blkD …` using `by show Formalism.L2.Col.lamQP (t.1 : Formalism.L2.DIV.Chr X.B.fields.F X.B.fields.E X.B.fields.K) w.1 X.B.R.nV X.B.R.r X.B.R.t ⟨g, hb⟩ = _`. Unfold `Formalism.L2.Col.lamQP Formalism.L2.Col.lamQ`. Rewrite using `[Formalism.L2.Col.detChar_apply]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [List.length_singleton, Finset.prod_range_one]`. Establish `d1 : dBlk (blk2 X.B.R.r) 1 g = Formalism.L2.Col.blkDet X.B.R.nV _ (Formalism.L2.Col.coarse X.B.R.r [X.B.R.t]) 1 ⟨g, hb⟩` using `(GlobalTheory.T.dBlk_eq_blkDet_coarse hnV g hb).2`. Establish `d2 : dBlk (blk2 X.toD7.R.r) 1 (redFn (1 : GL (Fin (Vc X.toD7 i).rank) (LiftBrg.EA X)) w.1 (LiftBrg.castGL hrk ((k : Formalism.L2.Col.UAd X.toD7.sp.cm X.B.R.nV) : GL (Fin X.B.R.nV) (LiftBrg.EA X)))) = dBlk (blk2 X.B.R.r) 1 g` using `(congrArg _ (hcrk w.1)).trans ((generalLinearGroupCastOfEq_twoBlock_diagBlock_eq hrk _ _).trans (congrArg _ hgw.symm))`. Rewrite using `[l1, l2]`. Use `(map_inv (Units.map X.toD7.what₂.embLL.toMonoidHom) _).trans ?_` and prove the remaining obligations.
-
-Use `congr 1`. Use `(GlobalTheory.T.liftResidueTwistCharacter_eq_resChar X px I U L hI hV hL t w.1 hq' _).symm.trans ?_` and prove the remaining obligations. Conclude with `congrArg _ (d2.trans d1).symm`. Take `⟨φ, hφ⟩ : ∃ φ : Pl X.toD7.host.E → ℂˣ, ∀ PP, φ PP = if PP ∈ (X.B.primes px).vGs then L.chi ((i : ℕ) + 1) PP (dBlk (blkOf X.toD7.R.r X.toD7.R.t) 1 (redFn (1 : GL (Fin (Vc X.toD7 i).rank) (LiftBrg.EA X)) PP (LiftBrg.castGL hrk ((k : Formalism.L2.Col.UAd X.toD7.sp.cm X.B.R.nV) : GL …` from `⟨_, fun _ => rfl⟩`. Establish `e1 : (levEnv (Vc X.toD7 i) (L.βV i) (L.datVt i t)).χ ⟨eG k, hk⟩ = levFn 1 (flag1L (L.datVt i t)) (LiftBrg.castGL hrk ((k : Formalism.L2.Col.UAd X.toD7.sp.cm X.B.R.nV) : GL (Fin X.B.R.nV) (LiftBrg.EA X)))`.
-
-Use `(levEnv_chi _ _ _ _ hk).trans ?_` and prove the remaining obligations. Rewrite using `[hM k, hβ]`. Establish `hch : (((levEnv (Vc X.toD7 i) (L.βV i) (L.datVt i t)).χ ⟨eG k, hk⟩)⁻¹ : ℂˣ) = Units.map X.toD7.what₂.embLL.toMonoidHom ((Formalism.L2.Col.mtTyKK I.Ch I.sel t.1 ((i : ℕ) + 1)).inv.chr (Formalism.L2.Col.redH X.toD7.sp.cm X.B.R.nV ∅ (LiftBrg.sgL X I U t) _ ((Bridge.colJEquiv X.toD7. …`. Use `(congrArg (·⁻¹) e1).trans ?_` and prove the remaining obligations. Use `Eq.trans ?_ (congrArg (Units.map X.toD7.what₂.embLL.toMonoidHom) (Formalism.L2.Col.LevFam.chr_apply (X := X.B.fields) (Formalism.L2.Col.mtTyKK I.Ch I.sel t.1 ((i : ℕ) + 1)).inv _).symm)` and prove the remaining obligations.
-
-Use `Eq.trans ?_ (map_prod _ _ _).symm` and prove the remaining obligations. Use `Eq.trans ?_ (Finset.prod_congr rfl fun w _ => ((perw w _ _ (hredw w)).trans (hφ w.1).symm).symm)` and prove the remaining obligations. Use `(congrArg (·⁻¹) (levFn_datVt X L i t _)).trans ?_` and prove the remaining obligations. Use `prod_glue (E := X.toD7.host.E) L.Pg (L.Q t) _ _ hPg hQ hdisj _ _ φ (fun PP hP => ?_) (fun PP hP => ?_)` and prove the remaining obligations. Conclude with `(hφ PP).trans ((if_pos hP).trans (inv_inv _).symm)`.
-
-Conclude with `(hφ PP).trans (if_neg (Finset.disjoint_right.1 hdisj hP))`. Use `⟨hch, fun hk1 => ?_⟩` and prove the remaining obligations. Establish `hred1` using `(Bridge.mem_principal_congruence_iff X.toD7.sp.cm X.B.R.nV ∅ (LiftBrg.sgL X I U t) (((Bridge.colJEquiv X.toD7.sp.cm X.B.R.nV ∅ (LiftBrg.sgL X I U t) (Formalism.L2.Col.mtTyKK I.Ch I.sel t.1 ((i : ℕ) + 1)).inv.grp).symm k : Formalism.L2.Col.JH _ _ _ _ _) : Formalism.L2.Col.J0 X.toD …`. Use `inv_eq_one.mp (hch.trans ?_)` and prove the remaining obligations. Use `(congrArg (Units.map X.toD7.what₂.embLL.toMonoidHom) (chr_eq_one (Formalism.L2.Col.mtTyKK I.Ch I.sel t.1 ((i : ℕ) + 1)).inv _ hred1)).trans ?_` and prove the remaining obligations.
-
-Conclude with `map_one _`.
+A detailed English derivation is pending.
 -/
 theorem lev_type_eq : ∀ (X : Stages) (px : PreX X.B.toPre) (I : Col2.ColIn X.B px) (U : Set I.ι)
     (L : Formalism.IndefR.Links.LevCh X.toD7 (TupU I U)), I.Ok → ValsIn I → LevOf X I U L →

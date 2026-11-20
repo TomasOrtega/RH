@@ -5,11 +5,11 @@ import Mathlib
     fun (E : Type) [Field E] [NumberField E] [NumberField.IsCMField E] ↦ (NumberField.IsCMField.complexConj E).toRingEquiv
 
 /- English proof (translation)
-Establish `hre : z.re * z.re - z.im * z.im = -r`. Simplify `congrArg Complex.re hz` using `[pow_two]`. Establish `him : z.re * z.im + z.im * z.re = 0`. Simplify `congrArg Complex.im hz` using `[pow_two]`. Establish `hprod : z.re * z.im = 0` using `by linarith`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `h0 : z.re = 0`. Break down `mul_eq_zero.mp hprod with h | h` into its components or cases. Conclude with `h`. Rewrite `hre` using `[h]`. Use polynomial arithmetic with `[mul_self_nonneg z.re]`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `apply Complex.ext <;> simp [h0]`.
+A detailed English derivation is pending.
 -/
 private theorem UpperTheory.Reformulated.B.CMConjugationOfSqrtNeg.conj_eq_neg_of_sq {z : ℂ} {r : ℝ} (hr : 0 < r)
     (hz : z ^ 2 = -(r : ℂ)) : starRingEnd ℂ z = -z := by
@@ -26,9 +26,9 @@ private theorem UpperTheory.Reformulated.B.CMConjugationOfSqrtNeg.conj_eq_neg_of
   apply Complex.ext <;> simp [h0]
 
 /- English proof (translation)
-Introduce `E _ _ _ d x hd hx`. Take `⟨φ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Apply `φ.injective` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `φ (NumberField.IsCMField.complexConj E x) = φ (-x)`. Rewrite using `[NumberField.IsCMField.complexEmbedding_complexConj, map_neg]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `UpperTheory.Reformulated.B.CMConjugationOfSqrtNeg.conj_eq_neg_of_sq (r := (d : ℝ)) (Nat.cast_pos.mpr hd) ?_` and prove the remaining obligations. Rewrite using `[← map_pow, hx, map_neg, map_natCast, Complex.ofReal_natCast]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.Reformulated.B.CMConjugationOfSqrtNeg.conj_alt_bis :
     ∀ {E : Type} [inst : Field E] [inst_1 : NumberField E] [inst_2 : NumberField.IsCMField E] {d : ℕ} {x : E},

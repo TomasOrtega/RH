@@ -8,9 +8,9 @@ namespace Formalism.InvariantFactorPaths.GelfandTsetlinBases.Top
 open Formalism.InvariantFactorPaths.GelfandTsetlinBases
 
 /- English proof (translation)
-Use `first`. Consider the case `exact stripsMem_proof`. Consider the case `exact P.stripsMem_proof`. Consider the case `exact strips_mem`. Consider the case `exact P.strips_mem`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact Formalism.InvariantFactorPaths.GelfandTsetlinBases.P.stripsMem_proof`. Consider the case `exact Formalism.InvariantFactorPaths.GelfandTsetlinBases.P.strips_mem`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem stripsMem : StripsMem := by
   first
@@ -21,9 +21,9 @@ theorem stripsMem : StripsMem := by
   | exact Formalism.InvariantFactorPaths.GelfandTsetlinBases.P.stripsMem_proof
   | exact Formalism.InvariantFactorPaths.GelfandTsetlinBases.P.strips_mem
 /- English proof (translation)
-Use `first`. Consider the case `exact gtPieri_proof`. Consider the case `exact P.gtPieri_proof`. Consider the case `exact gelfand_tsetlin_pieri`. Consider the case `exact P.gelfand_tsetlin_pieri`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact Formalism.InvariantFactorPaths.GelfandTsetlinBases.P.gtPieri_proof`. Consider the case `exact Formalism.InvariantFactorPaths.GelfandTsetlinBases.P.gelfand_tsetlin_pieri`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem gtPieri : GTPieri := by
   first
@@ -34,9 +34,9 @@ theorem gtPieri : GTPieri := by
   | exact Formalism.InvariantFactorPaths.GelfandTsetlinBases.P.gtPieri_proof
   | exact Formalism.InvariantFactorPaths.GelfandTsetlinBases.P.gelfand_tsetlin_pieri
 /- English proof (translation)
-Use `first`. Consider the case `exact stdCountGT_proof`. Consider the case `exact P.stdCountGT_proof`. Consider the case `exact standard_count_gt`. Consider the case `exact P.standard_count_gt`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact Formalism.InvariantFactorPaths.GelfandTsetlinBases.P.stdCountGT_proof`. Consider the case `exact Formalism.InvariantFactorPaths.GelfandTsetlinBases.P.standard_count_gt`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem stdCountGT : StdCountGT := by
   first
@@ -47,11 +47,11 @@ theorem stdCountGT : StdCountGT := by
   | exact Formalism.InvariantFactorPaths.GelfandTsetlinBases.P.stdCountGT_proof
   | exact Formalism.InvariantFactorPaths.GelfandTsetlinBases.P.standard_count_gt
 /- English proof (translation)
-The claim follows from `countCont_of stripsMem gtPieri stdCountGT`.
+A detailed English derivation is pending.
 -/
 theorem countCont : CountCont := countCont_of stripsMem gtPieri stdCountGT
 /- English proof (translation)
-The claim follows from `countPAll_of countCont`.
+A detailed English derivation is pending.
 -/
 theorem countPAll : CountPAll := countPAll_of countCont
 

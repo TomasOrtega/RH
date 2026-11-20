@@ -28,11 +28,11 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo T K _ _ _ _ _ _ x G G₂ t t₂ m₁ m₂ n₁ n₂`. Establish `tr : ∀ {S S' : Scheme.{0}} {s : SAB H S} {s' : SAB H S'} {f g : S' ⟶ S}, f = g → ∀ m : SABMap s' s f, ∃ m' : SABMap s' s g, m'.φ = m.φ`. Introduce `S S' s s' f g h m`. Substitute `h` using the available equality. Conclude with `⟨m, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Supply the required witnesses or components.
 
-Take `⟨m₁', hm₁⟩` from `tr (Category.id_comp x).symm m₁`. Take `⟨k, hk⟩` from `sabCancel pullCubCancel E H _ _ _ _ _ _ x (𝟙 _) n₁ m₁'`. Take `⟨c, hc⟩` from `sabComp pullCubComp E H _ _ _ _ _ _ _ (𝟙 _) n₂ k`. Take `⟨c', hc'⟩` from `tr (Category.id_comp _) c`. Take `⟨ψ, hψ, hφ, hact⟩` from `sab_group_iso_of_generic (existsUnique_hom_extension_semiAbelian_dvr (AbelianSubgroupFinite.finite_of_no_torsion abMulN_holds)) E H T K G G₂ t m₂ c'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨n, hn⟩` from `Exist.CubicalExtension.sabMap_of_iso_of_extendGen (cubical_extends_and_extendGen forall_geometricallyIntegral_of_smooth_of_geometricallyConnected GenExtend.existsUnique_gen_extend).2 E H T K G G₂ t m₂ c' ψ hψ hφ hact`. Conclude with `⟨k, n, by rw [← hk, hm₁], by rw [hn, hφ, hc', hc]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem sab_extensions_iso : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (T K : Type) [CommRing T] [IsDomain T] [IsDiscreteValuationRing T] [Field K] [Algebra T K] [IsFractionRing T K] (x : Sp K ⟶ Xo.X) (G G₂ : SAB H (Sp T)) (t t₂ : SAB H (Sp K)) (m₁ : SABMap t Xo.univ.t x) (m₂ : SABMap t G (spMap (algebraMap T K))) (n₁ : SABMap t₂ Xo.univ.t x) (n₂ : SABMap t₂ G₂ (spMap (algebraMap T K))), ∃ (k : SABMap t t₂ (𝟙 _)) (n : SABMap G G₂ (𝟙 _)), k.φ ≫ n₁.φ = m₁.φ ∧ m₂.φ ≫ n.φ = k.φ ≫ n₂.φ := by
   intro E _ _ _ H Dw l Xo T K _ _ _ _ _ _ x G G₂ t t₂ m₁ m₂ n₁ n₂

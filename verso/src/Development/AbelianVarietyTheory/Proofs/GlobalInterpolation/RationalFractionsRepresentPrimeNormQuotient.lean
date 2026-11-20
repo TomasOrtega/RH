@@ -17,17 +17,17 @@ open GlobalTheory.Proof.IntegralPowerExpansion
 variable {E : Type} [Field E] [NumberField E]
 
 /- English proof (translation)
-Simplify using `using IntAt.coe P (n : 𝓞 E)`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem intAt_int (P : HeightOneSpectrum (𝓞 E)) (n : ℤ) : IntAt P (n : E) := by
   simpa using IntAt.coe P (n : 𝓞 E)
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hn`. Establish `hpr : Prime (qOf P : ℤ)` using `Nat.prime_iff_prime_int.1 hP.1`. Take `⟨x, y, hxy⟩` from `(hpr.coprime_iff_not_dvd).2 hn`. Establish `hq` using `q_ne_zero hP`. Establish `h1 : IntAt P ((qOf P : E)⁻¹)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : (qOf P : E)⁻¹ = x + y * ((qOf P : E)⁻¹ * n)`. Use `congrArg (Int.cast : ℤ → E) hxy` as an intermediate fact. Move the coercions through the operations in `at this`. Clear the denominators using the available nonvanishing facts. Take the linear combination `-this`.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite using `[e]`. Conclude with `(intAt_int P x).add ((intAt_int P y).mul h)`. Rewrite `h1` using `[intAt_iff_val, map_inv₀, val_q hP, ← WithZero.exp_neg, ← WithZero.exp_zero, WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem q_dvd_of_intAt {P : HeightOneSpectrum (𝓞 E)} (hP : DegOneUnram P) {n : ℤ}
     (h : IntAt P ((qOf P : E)⁻¹ * n)) : (qOf P : ℤ) ∣ n := by
@@ -47,13 +47,13 @@ theorem q_dvd_of_intAt {P : HeightOneSpectrum (𝓞 E)} (hP : DegOneUnram P) {n 
   omega
 
 /- English proof (translation)
-Establish `hq` using `q_ne_zero hP`. Proceed by induction on `k generalizing n with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Establish `h1 : IntAt P ((qOf P : E)⁻¹ * n)`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `e : (qOf P : E)⁻¹ * n = (((qOf P : ℤ) ^ k : ℤ) : E) * (((qOf P : E) ^ (k + 1))⁻¹ * n)`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(intAt_int P _).mul h`. Take `⟨m, rfl⟩` from `q_dvd_of_intAt hP h1`. Establish `e : ((qOf P : E) ^ (k + 1))⁻¹ * (((qOf P : ℤ) * m : ℤ) : E) = ((qOf P : E) ^ k)⁻¹ * m`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite `h` using `[e]`. Rewrite using `[pow_succ']`. Conclude with `mul_dvd_mul_left _ (ih h)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem q_pow_dvd_of_intAt {P : HeightOneSpectrum (𝓞 E)} (hP : DegOneUnram P) (k : ℕ) {n : ℤ}
     (h : IntAt P (((qOf P : E) ^ k)⁻¹ * n)) : (qOf P : ℤ) ^ k ∣ n := by
@@ -78,23 +78,23 @@ theorem q_pow_dvd_of_intAt {P : HeightOneSpectrum (𝓞 E)} (hP : DegOneUnram P)
     exact mul_dvd_mul_left _ (ih h)
 
 /- English proof (translation)
-Introduce `E _ _ P hP A B`. Establish `hq` using `q_ne_zero hP`. Prove the components needed by the constructor for the conclusion. Introduce `a ha b hb h`. Unfold `LocE.valsQ at ha hb`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Take `⟨i, hi, rfl⟩` from `Finset.mem_image.1 ha`. Take `⟨j, hj, rfl⟩` from `Finset.mem_image.1 hb`. Rewrite `hi`, `hj` using `[Finset.mem_range]`. Establish `h1 : IntAt P (((qOf P : E) ^ (A + B))⁻¹ * (((i : ℤ) - j : ℤ) : E))`. Use `h using 1` and compare the differences between its conclusion and the goal.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `push_cast`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `h2` using `q_pow_dvd_of_intAt hP _ h1`. Establish `hi' : (i : ℤ) < (qOf P : ℤ) ^ (A + B)` using `by exact_mod_cast hi`.
+Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hj' : (j : ℤ) < (qOf P : ℤ) ^ (A + B)` using `by exact_mod_cast hj`. Apply the tactic sequence `have h3 : (i : ℤ) - j = 0 := Int.eq_zero_of_abs_lt_dvd h2 (by rw [abs_lt]; constructor <;> omega)`. Establish `h4 : i = j` using `by omega`. Rewrite using `[h4]`. Introduce `a ha`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨k, u, hu, e⟩` from `exists_int_add_q_pow_mul hP (A + B) ha`. Establish `hpos : (0 : ℤ) < (qOf P : ℤ) ^ (A + B)` using `by exact_mod_cast pow_pos hP.1.pos (A + B)`. Take `⟨i, hi⟩` from `Int.eq_ofNat_of_zero_le (Int.emod_nonneg k hpos.ne')`. Establish `hlt : i < qOf P ^ (A + B)`. Use `Int.emod_lt_of_pos k hpos` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[hi]`. Conclude with `this` after adjusting the coercions. Establish `hk : (k : E) = i + (qOf P : E) ^ (A + B) * ((k / (qOf P : ℤ) ^ (A + B) : ℤ) : E)`. Use `Int.emod_add_mul_ediv k ((qOf P : ℤ) ^ (A + B))` as an intermediate fact. Rewrite `this` using `[hi]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h5` using `congrArg (Int.cast : ℤ → E) this`. Rewrite `h5` using `[Int.cast_add, Int.cast_mul, Int.cast_pow, Int.cast_natCast, Int.cast_natCast]`. Conclude with `h5.symm`. Unfold `LocE.valsQ`. Use `⟨_, Finset.mem_image.2 ⟨i, Finset.mem_range.2 hlt, rfl⟩, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable.
 
-Establish `h6` using `(intAt_int P (k / (qOf P : ℤ) ^ (A + B))).add hu`. Generalize the expression as in `((k / (qOf P : ℤ) ^ (A + B) : ℤ) : E) = m at hk h6`. Establish `ea : a = ((qOf P : E) ^ A)⁻¹ * (i + (qOf P : E) ^ (A + B) * (m + u))`. Rewrite using `[eq_inv_mul_iff_mul_eq₀ (pow_ne_zero _ hq), e, hk]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities.
 
-Use `h6 using 1` and compare the differences between its conclusion and the goal. Rewrite using `[ea]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem valsQ_reps : ∀ (E : Type) [Field E] [NumberField E] (P : HeightOneSpectrum (𝓞 E)),
     GlobalTheory.IndefiniteRowSideFullHecke.SourceLatticeInvariance.DegOneUnram P → ∀ A B : ℕ,

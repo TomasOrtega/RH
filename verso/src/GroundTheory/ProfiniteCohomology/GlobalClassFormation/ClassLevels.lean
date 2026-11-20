@@ -19,7 +19,7 @@ section Level
 variable {F : FiniteSubfield} [Fact (K ≤ F)] [F.1.fixingSubgroup.Normal]
 
 /- English proof (translation)
-The claim follows from `IdeleClassLimit.smul_of_of_normal g c`.
+A detailed English derivation is pending.
 -/
 theorem classSmul_of_restrictHom (g : K.1.fixingSubgroup) (c : IdeleClassGroup F.1) :
     (g : ℚ̄ ≃ₐ[ℚ] ℚ̄) • IdeleClassLimit.of F c = IdeleClassLimit.of F (restrictHom (E := F) g • c) :=
@@ -53,7 +53,7 @@ variable {F E : FiniteSubfield} [Fact (K ≤ F)] [Fact (K ≤ E)] [Fact (F ≤ E
   [F.1.fixingSubgroup.Normal] [E.1.fixingSubgroup.Normal]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `ideleClassMap (Fact.out : F ≤ E) (ideleClassEquiv ((levelRestrict K F E τ : F.1 ≃ₐ[K.1] F.1) : F.1 ≃+* F.1) c) = ideleClassEquiv ((τ : E.1 ≃ₐ[K.1] E.1) : E.1 ≃+* E.1) (ideleClassMap (Fact.out : F ≤ E) c)`. Set `` to `algebraOfLE (Fact.out : F ≤ E)`. Conclude with `(ideleClassEquiv_ideleClassMap_of_comm ((levelRestrict K F E τ : F.1 ≃ₐ[K.1] F.1) : F.1 ≃+* F.1) (τ : E.1 ≃+* E.1) (fun y ↦ (coe_levelRestrict_apply τ y).symm) c).symm`.
+Express the relevant assertion in an equivalent form by its definition. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem ideleClassMap_smul (τ : E.1 ≃ₐ[K.1] E.1) (c : IdeleClassGroup F.1) :
     ideleClassMap (Fact.out : F ≤ E) (levelRestrict K F E τ • c) =
@@ -86,9 +86,9 @@ def classLevelTransition (n : ℕ) :
   cohomologyMapAlong (levelRestrict K F E) continuous_levelRestrict (classLevelMap K F E) n
 
 /- English proof (translation)
-Rewrite using `[← cochainsMapAlong_comp]`. Use extensionality with `m x : 3`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `g`. Express the relevant statement in the definitionally equal form `Additive.ofMul (IdeleClassLimit.of E (ideleClassMap (Fact.out : F ≤ E) ((x.1 fun i => levelRestrict K F E (restrictHom (E := E) (g i))).toMul))) = Additive.ofMul (IdeleClassLimit.of F ((x.1 fun i => restrictHom (E := F) (g i)).toMul))`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hfun : (fun i => levelRestrict K F E (restrictHom (E` using `E) (g i))) = fun i => restrictHom (E := F) (g i) := funext fun i => levelRestrict_restrictHom (g i)`. Use `(congrArg Additive.ofMul (IdeleClassLimit.of_ideleClassMap (Fact.out : F ≤ E) _)).trans ?_` and prove the remaining obligations. Rewrite using `[hfun]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem classLevelCochains_comp :
     cochainsMapAlong (levelRestrict K F E) continuous_levelRestrict (classLevelMap K F E) ≫
@@ -107,7 +107,7 @@ theorem classLevelCochains_comp :
   rw [hfun]
 
 /- English proof (translation)
-Rewrite using `[classLevelTransition, classLevelInfl, classLevelInfl]`. Unfold `cohomologyMapAlong`. Use `(HomologicalComplex.homologyMap_comp _ _ n).symm.trans ?_` and prove the remaining obligations. Rewrite using `[classLevelCochains_comp]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem classLevelTransition_comp_classLevelInfl (n : ℕ) :
     classLevelTransition K F E n ≫ classLevelInfl K E n = classLevelInfl K F n := by
@@ -130,7 +130,7 @@ abbrev classLevelCochainsMap {p q : GLevel K} (h : p ≤ q) :
   cochainsMapAlong (levelRestrict K p.1 q.1) continuous_levelRestrict (classLevelMap K p.1 q.1)
 
 /- English proof (translation)
-The claim follows from `haveI : Fact (p.1 ≤ q.1) := ⟨h⟩ classLevelCochains_comp`.
+A detailed English derivation is pending.
 -/
 theorem classLevelCochainsMap_comp_classLevelCochainsInfl {p q : GLevel K} (h : p ≤ q) :
     classLevelCochainsMap h ≫ classLevelCochainsInfl q = classLevelCochainsInfl p :=
@@ -138,11 +138,11 @@ theorem classLevelCochainsMap_comp_classLevelCochainsInfl {p q : GLevel K} (h : 
   classLevelCochains_comp
 
 /- English proof (translation)
-Introduce `y y' h`. Apply `(ModuleCat.mono_iff_injective ((cochainsComplexι (ideleClassRep K.1 p.1.1)).f m)).1 inferInstance` to reduce the goal to its premises. Use function extensionality and compare the values at `τ`. Set `σ : Fin m → K.1.fixingSubgroup` to `fun i => Function.surjInv (restrictHom_surjective (F := K) (E := p.1)) (τ i)`. Establish `hσ : (fun i => restrictHom (E` using `p.1) (σ i)) = τ :=`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `fun i => Function.surjInv_eq (restrictHom_surjective (F := K) (E := p.1)) (τ i)`. Establish `h1` using `congrFun (congrArg (fun c => ((cochainsComplexι (classLimitRep K)).f m).hom c) h) σ`. Simplify using `only at h1`. Express the relevant statement in the definitionally equal form `Additive.ofMul (IdeleClassLimit.of p.1 (((cochainsComplexι _).f m).hom y (fun i => restrictHom (E := p.1) (σ i))).toMul) = Additive.ofMul (IdeleClassLimit.of p.1 (((cochainsComplexι _).f m).hom y' (fun i => restrictHom (E := p.1) (σ i))).toMul) at h1`. Rewrite `h1` using `[hσ]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `congrArg Additive.ofMul (IdeleClassLimit.of_injective p.1 (congrArg Additive.toMul h1))`.
+A detailed English derivation is pending.
 -/
 theorem classLevelCochains_injective (p : GLevel K) (m : ℕ) :
     Function.Injective ((classLevelCochainsInfl p).f m).hom := by
@@ -163,21 +163,19 @@ theorem classLevelCochains_injective (p : GLevel K) (m : ℕ) :
   exact congrArg Additive.ofMul (IdeleClassLimit.of_injective p.1 (congrArg Additive.toMul h1))
 
 /- English proof (translation)
-Establish `hx : IsLocallyConstant (((cochainsComplexι (classLimitRep K)).f m).hom x : (Fin m → K.1.fixingSubgroup) → classLimitRep K)` using `(show locallyConstantCochains (classLimitRep K) m from x).2`. Use `set f := ((cochainsComplexι (classLimitRep K)).f m).hom x with hf`. Take `⟨U, hU⟩` from `exists_openNormalSubgroup_fin_of_isLocallyConstant hx`. Take `⟨t, ht, htU⟩` from `isOpen_induced_iff.1 U.isOpen`. Establish `h1t : (1 : ℚ̄ ≃ₐ[ℚ] ℚ̄) ∈ t`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (1 : K.1.fixingSubgroup) ∈ Subtype.val ⁻¹' t`. Rewrite using `[htU]`. Conclude with `U.one_mem`. Conclude with `this`. Take `⟨E₀, hE₀fin, hE₀⟩` from `(krullTopology_mem_nhds_one_iff ℚ ℚ̄ t).1 (ht.mem_nhds h1t)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hfin : (Set.range f).Finite` using `hx.range_finite`. Use `choose idx x' hx' using fun a : classLimitRep K => IdeleClassLimit.exists_of (Additive.toMul a)`. Use `choose lev hlev using fun E : FiniteSubfield => GLevel.exists_le (K := K) E`. Take `⟨p, hp⟩` from `Finset.exists_le ((hfin.toFinset.image fun a => lev (idx a)) ∪ {lev ⟨E₀, hE₀fin⟩})`. Establish `hpE₀ : E₀ ≤ p.1.1` using `(hlev ⟨E₀, hE₀fin⟩).trans (hp _ (Finset.mem_union_right _ (Finset.mem_singleton_self _)))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hker : ∀ g : K.1.fixingSubgroup, restrictHom (E` using `p.1) g = 1 → g ∈ U := by`. Introduce `g hg`. Establish `hg' : g ∈ p.1.1.fixingSubgroup.subgroupOf K.1.fixingSubgroup`. Rewrite using `[← ker_restrictHom, MonoidHom.mem_ker]`. Conclude with `hg`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `hg'` using `[Subgroup.mem_subgroupOf]`. Establish `: g ∈ Subtype.val ⁻¹' t` using `hE₀ (IntermediateField.fixingSubgroup_le hpE₀ hg')`. Rewrite `this` using `[htU]`. Conclude with `this`. Establish `hval : ∀ g, ∃ z : IdeleClassGroup p.1.1, IdeleClassLimit.of p.1 z = Additive.toMul (f g)`.
+Establish an intermediate fact. Supply the required witnesses or components. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `g`. Establish `hmem : f g ∈ hfin.toFinset` using `by simp`. Establish `hle : idx (f g) ≤ p.1` using `(hlev (idx (f g))).trans (hp _ (Finset.mem_union_left _ (Finset.mem_image_of_mem _ hmem)))`. Conclude with `⟨ideleClassMap hle (x' (f g)), by rw [IdeleClassLimit.of_ideleClassMap]; exact hx' _⟩`. Use `choose z hz using hval`.
+Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Set `lift : (Fin m → (p.1.1 ≃ₐ[K.1] p.1.1)) → Fin m → K.1.fixingSubgroup` to `fun τ i => Function.surjInv (restrictHom_surjective (F := K) (E := p.1)) (τ i)`. Use `⟨p, ⟨fun τ => Additive.ofMul (z (lift τ)), IsLocallyConstant.of_discrete _⟩, ?_⟩` and prove the remaining obligations. Apply `(ModuleCat.mono_iff_injective ((cochainsComplexι (classLimitRep K)).f m)).1 inferInstance` to reduce the goal to its premises. Use function extensionality and compare the values at `g`. Express the relevant statement in the definitionally equal form `Additive.ofMul (IdeleClassLimit.of p.1 (z (lift fun i => restrictHom (E := p.1) (g i)))) = f g`.
-
-Rewrite using `[hz]`. Use `hU _ _ fun i => hker _ ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_inv, Function.surjInv_eq (restrictHom_surjective (F := K) (E := p.1)), inv_mul_cancel]`.
+A detailed English derivation is pending.
 -/
 theorem exists_classLevelCochains_eq (m : ℕ) (x : (cochainsComplex (classLimitRep K)).X m) :
     ∃ (p : GLevel K) (y : (cochainsComplex (ideleClassRep K.1 p.1.1)).X m),
@@ -230,11 +228,11 @@ theorem exists_classLevelCochains_eq (m : ℕ) (x : (cochainsComplex (classLimit
     inv_mul_cancel]
 
 /- English proof (translation)
-Take `⟨z, rfl⟩` from `(ModuleCat.epi_iff_surjective ((cochainsComplex (classLimitRep K)).homologyπ n)).1 inferInstance x`. Take `⟨p, y₀, hy₀⟩` from `exists_classLevelCochains_eq n (((cochainsComplex (classLimitRep K)).iCycles n).hom z)`. Establish `hd : ((cochainsComplex (ideleClassRep K.1 p.1.1)).d n (n + 1)).hom y₀ = 0`. Apply `classLevelCochains_injective p (n + 1)` to reduce the goal to its premises. Rewrite using `[map_zero, hom_f_d_apply, hy₀]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `iCycles_d_apply _ n (n + 1) z`. Take `⟨w, hw⟩` from `exists_iCycles_eq_of_d_eq_zero _ n y₀ hd`. Use `⟨p, ((cochainsComplex (ideleClassRep K.1 p.1.1)).homologyπ n).hom w, ?_⟩` and prove the remaining obligations. Use `(homologyMap_homologyπ_apply (classLevelCochainsInfl p) n w).trans (congrArg _ ?_)` and prove the remaining obligations. Apply `(ModuleCat.mono_iff_injective ((cochainsComplex (classLimitRep K)).iCycles n)).1 inferInstance` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[iCycles_cyclesMap_apply, hw, hy₀]`.
+A detailed English derivation is pending.
 -/
 theorem exists_classLevelInfl_eq (n : ℕ) (x : cohomology (classLimitRep K) n) :
     ∃ (p : GLevel K) (y : cohomology (ideleClassRep K.1 p.1.1) n), (classLevelInfl K p.1 n).hom y = x := by
@@ -255,11 +253,11 @@ theorem exists_classLevelInfl_eq (n : ℕ) (x : cohomology (classLimitRep K) n) 
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Take `⟨w, hw⟩ : ∃ w, ((cochainsComplex (ideleClassRep K.1 p.1.1)).homologyπ n).hom w = y` from `(ModuleCat.epi_iff_surjective ((cochainsComplex (ideleClassRep K.1 p.1.1)).homologyπ n)).1 inferInstance y`. Substitute `hw` using the available equality. Establish `hy'` using `(homologyMap_homologyπ_apply (classLevelCochainsInfl p) n w).symm.trans hy`. Take `⟨u, hu⟩` from `(homologyπ_eq_zero_iff _ _).1 hy'`. Rewrite `hu` using `[iCycles_cyclesMap_apply]`.
+Extract witnesses or component facts from the available result. Substitute using the available equality. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨q, u', hu'⟩` from `exists_classLevelCochains_eq _ u`. Take `⟨r, hpr, hqr⟩` from `GLevel.exists_ge p q`. Use `⟨r, hpr, (homologyMap_homologyπ_apply (classLevelCochainsMap hpr) n w).trans ((homologyπ_eq_zero_iff _ _).2 ⟨((classLevelCochainsMap hqr).f _).hom u', ?_⟩)⟩` and prove the remaining obligations. Rewrite using `[iCycles_cyclesMap_apply]`. Apply `classLevelCochains_injective r n` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hom_f_d_apply]`. Establish `e1` using `congrArg (fun φ => (φ.f _).hom u') (classLevelCochainsMap_comp_classLevelCochainsInfl hqr)`. Establish `e2` using `congrArg (fun φ => (φ.f n).hom (((cochainsComplex (ideleClassRep K.1 p.1.1)).iCycles n).hom w)) (classLevelCochainsMap_comp_classLevelCochainsInfl hpr)`. Simplify using `only [HomologicalComplex.comp_f, ModuleCat.hom_comp, LinearMap.comp_apply] at e1 e2`. Rewrite using `[e1, e2, hu', hu]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_classLevelTransition_eq_zero (n : ℕ) (p : GLevel K)
     (y : cohomology (ideleClassRep K.1 p.1.1) n) (hy : (classLevelInfl K p.1 n).hom y = 0) :
@@ -291,9 +289,9 @@ end Colimit
 variable (K) in
 
 /- English proof (translation)
-Rewrite using `[ModuleCat.isZero_iff_subsingleton]`. Establish `hz : ∀ x : cohomology (classLimitRep K) 1, x = 0`. Introduce `x`. Take `⟨p, y, rfl⟩` from `exists_classLevelInfl_eq 1 x`. Establish `h0 : Limits.IsZero (cohomology (ideleClassRep K.1 p.1.1) 1)` using `isZero_groupCohomology_one_ideleClassRep.of_iso (cohomologyIsoGroupCohomology _ 1)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `h0` using `[ModuleCat.isZero_iff_subsingleton]`. Rewrite using `[Subsingleton.elim y 0, map_zero]`. Conclude with `⟨fun x y => by rw [hz x, hz y]⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem isZero_cohomology_one_classLimitRep : Limits.IsZero (cohomology (classLimitRep K) 1) := by
   rw [ModuleCat.isZero_iff_subsingleton]

@@ -17,7 +17,7 @@ namespace PositivityTheory.Rg.Sw.Glob.LocalIsometryAlt
 variable {D : D7}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `u`. Take `⟨x, hx1, hx2, hx3⟩` from `OG.exists_slice hθ τ x₀ (fr * Matrix.of u)`. Establish `h1` using `congrFun h x`. Rewrite `h1` using `[OG.tens_at τ hfr _ _ x (Matrix.of u) hx1, OG.tens_at τ hfr _ _ x (Matrix.of u) hx1, hΨ.1 x x₀ hx2 hx3]`. Conclude with `mul_right_cancel₀ hx₀ h1`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_of_tens {θ : InfFam D} (hθ : IsInfFam θ) {τ : D.what₂.Tau} {m n : ℕ} {fr : Matrix (Fin m) (Fin m) ℂ}
     (hfr : IsUnit fr.det) {Ψ : Mx D m n → ℂ} (hΨ : AwayCls θ τ fr Ψ) {x₀ : Mx D m n} (hx₀ : Ψ x₀ ≠ 0)
@@ -29,7 +29,7 @@ theorem eq_of_tens {θ : InfFam D} (hθ : IsInfFam θ) {τ : D.what₂.Tau} {m n
   exact mul_right_cancel₀ hx₀ h1
 
 /- English proof (translation)
-Repeatedly rewrite using `[norm_mul, mul_pow]`. Conclude with `integral_const_mul _ _`.
+Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem int_cmul {m n : ℕ} (k : ℂ) (h : (Fin m → Fin n → ℂ) → ℂ) :
     ∫ u, ‖k * h u‖ ^ 2 = ‖k‖ ^ 2 * ∫ u, ‖h u‖ ^ 2 := by
@@ -37,9 +37,9 @@ theorem int_cmul {m n : ℕ} (k : ℂ) (h : (Fin m → Fin n → ℂ) → ℂ) :
   exact integral_const_mul _ _
 
 /- English proof (translation)
-Take `⟨c1, hc1, h1⟩` from `PlanchH.haar_linR (m := m) (n := n) (R.trans FTD.Lc)`. Take `⟨c2, hc2, h2⟩` from `PlanchH.haar_linR (m := m) (n := n) FTD.Lc`. Use `⟨c1 / c2, div_pos hc1 hc2, fun F hF => ?_⟩` and prove the remaining obligations. Establish `hG : Continuous (fun w => F (FTD.Lc.symm w))` using `hF.comp FTD.Lc.symm.continuous`. Establish `e1` using `h1 _ hG`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2` using `h2 _ hG`. Simplify using `only [ContinuousLinearEquiv.trans_apply, ContinuousLinearEquiv.symm_apply_apply] at e1 e2`. Rewrite using `[e1, e2]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 -/
 theorem int_comp {m n : ℕ} (R : (Fin m → Fin n → ℂ) ≃L[ℝ] (Fin m → Fin n → ℂ)) :
     ∃ c : ℝ, 0 < c ∧ ∀ F : (Fin m → Fin n → ℂ) → ℝ, Continuous F → ∫ u, F (R u) = c * ∫ u, F u := by
@@ -54,7 +54,7 @@ theorem int_comp {m n : ℕ} (R : (Fin m → Fin n → ℂ) ≃L[ℝ] (Fin m →
   field_simp
 
 /- English proof (translation)
-Rewrite using `[Complex.norm_exp]`. Establish `hre : (Complex.I * (t : ℂ) * (b * gramX ε u).trace).re = 0`. Rewrite using `[← OpGenAH.trace_real ε b hb u]`. Simplify using the standard rewrite rules. Rewrite using `[hre, Real.exp_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_phase {m n : ℕ} (ε : Fin m → Bool) (t : ℝ) (b : Matrix (Fin n) (Fin n) ℂ) (hb : bᴴ = b)
     (u : Fin m → Fin n → ℂ) : ‖Complex.exp (Complex.I * (t : ℂ) * (b * gramX ε u).trace)‖ = 1 := by
@@ -69,47 +69,47 @@ end PositivityTheory.Rg.Sw.Glob.LocalIsometryAlt
 namespace PositivityTheory.Rg.Sw.Glob
 
 /- English proof (translation)
-Introduce `D n V ψ χ θ μ ω H l s ν τ ε fr ι hC L hL`. Establish `hfr : IsUnit fr.det` using `hC.hfr.1`. Take `⟨Ψ₀, x₀, hΨ₀, hx₀⟩` from `hZ D n V ψ χ θ μ ω H l s ν τ ε fr ι hC`. Establish `hl0 : tLoc l τ ≠ 0`. Unfold `tLoc`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Conclude with `mul_ne_zero (mul_ne_zero two_ne_zero Real.pi_ne_zero) (hN D ψ θ l hC.hψ hC.hθ hC.hl τ)`. Establish `huniq : ∀ y f (hf : IsSch f) g, (ω (ι y) ⟨tens θ τ fr f Ψ₀, hΨ₀.2 f hf⟩).1 = tens θ τ fr g Ψ₀ → L y f = g` using `fun y f hf g h => LocalIsometryAlt.eq_of_tens hC.hθ hfr hΨ₀ hx₀ ((hL.2 y Ψ₀ hΨ₀ f hf).symm.trans h)`. Establish `hmul : ∀ y₁ y₂ f, IsSch f → L (y₁ * y₂) f = L y₁ (L y₂ f)`. Introduce `y₁ y₂ f hf`. Apply `huniq _ f hf` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `e2 : ω (ι y₂) ⟨tens θ τ fr f Ψ₀, hΨ₀.2 f hf⟩ = ⟨tens θ τ fr (L y₂ f) Ψ₀, hΨ₀.2 _ (hL.1 y₂ f hf)⟩` using `Subtype.ext (hL.2 y₂ Ψ₀ hΨ₀ f hf)`. Rewrite using `[map_mul, map_mul, Module.End.mul_apply, e2, hL.2 y₁ Ψ₀ hΨ₀ _ (hL.1 y₂ f hf)]`. Set `Iso : GR n → Prop` to `fun y => ∃ κ : ℝ, 0 < κ ∧ ∀ f, IsSch f → ∫ u, ‖L y f u‖ ^ 2 = κ * ∫ u, ‖f u‖ ^ 2`. Establish `hIso_mul : ∀ y₁ y₂, Iso y₁ → Iso y₂ → Iso (y₁ * y₂)`. Introduce and unpack `y₁ y₂ ⟨κ₁, hκ₁, h₁⟩ ⟨κ₂, hκ₂, h₂⟩`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨κ₁ * κ₂, mul_pos hκ₁ hκ₂, fun f hf => ?_⟩` and prove the remaining obligations. Rewrite using `[hmul y₁ y₂ f hf, h₁ _ (hL.1 y₂ f hf), h₂ f hf, mul_assoc]`. Establish `hIso_n : ∀ y (b : Matrix (Fin n) (Fin n) ℂ), bᴴ = b → mR y = nU b → Iso y`. Introduce `y b hb hyb`. Use `⟨1, one_pos, fun f hf => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hLf : L y f = fun u => Complex.exp (Complex.I * (tLoc l τ : ℂ) * (b * gramX ε u).trace) * f u`. Apply `huniq y f hf` to reduce the goal to its premises. Use function extensionality and compare the values at `x`. Rewrite using `[hU D n V ψ χ θ μ ω H l s ν τ ε fr ι hC y b hb hyb]`. Simplify using `only [tens, mul_assoc]`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hLf, one_mul]`. Use `congr 1`. Use function extensionality and compare the values at `u`. Rewrite using `[norm_mul, LocalIsometryAlt.norm_phase ε _ b hb u, one_mul]`. Establish `hone : ∀ f (hf : IsSch f), L 1 f = f`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `f hf`. Apply `huniq 1 f hf` to reduce the goal to its premises. Rewrite using `[map_one, map_one, Module.End.one_apply]`. Establish `hzero : ∀ y, L y (fun _ => 0) = fun _ => 0`. Introduce `y`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h0 : IsSch (fun _ : Fin V.rank → Fin n → ℂ => (0 : ℂ))` using `⟨0, by ext u; simp⟩`. Apply `huniq y _ h0` to reduce the goal to its premises. Establish `: (⟨tens θ τ fr (fun _ => 0) Ψ₀, hΨ₀.2 _ h0⟩ : schwartzA θ V.rank n) = 0` using `Subtype.ext (funext fun x => by simp [tens])`. Rewrite using `[this, map_zero]`. Use function extensionality and compare the values at `x`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `[tens]`. Establish `hIso_m : ∀ y (a : Matrix (Fin n) (Fin n) ℂ), IsUnit a.det → mR y = mM a → Iso y`. Introduce `y a ha hya`. Take `⟨C, Am, hA1, hA2, hA3, hAf⟩` from `hLv D n V ψ χ θ μ ω H l s ν τ ε fr ι hC y a ha hya`. Establish `hLf : ∀ f, IsSch f → L y f = fun u => C * f (Matrix.of u * a)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `f hf`. Apply `huniq y f hf` to reduce the goal to its premises. Use function extensionality and compare the values at `x`. Rewrite using `[hAf]`. Establish `hx1 : compAt θ τ (HMul.hMul x Am : Mx D V.rank n) = compAt θ τ x * a`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.AdForm.RatMove.compAt_mul, hA1]`. Establish `hx2 : Ψ₀ (HMul.hMul x Am : Mx D V.rank n) = Ψ₀ x` using `hΨ₀.1 _ _ (fun τ' h => by rw [GlobalTheory.AdForm.RatMove.compAt_mul, hA2 τ' h, Matrix.mul_one]) (by rw [Matrix.map_mul, hA3, Matrix.mul_one])`. Establish `hm : (fr⁻¹ * (compAt θ τ x * a) : Matrix (Fin V.rank) (Fin n) ℂ) = (Matrix.of (fr⁻¹ * compAt θ τ x) : Matrix (Fin V.rank) (Fin n) ℂ) * a`. Rewrite using `[← Matrix.mul_assoc]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `e1 : f (fr⁻¹ * (compAt θ τ x * a)) = f (Matrix.of (fr⁻¹ * compAt θ τ x) * a)` using `congrArg f hm`. Express the relevant statement in the definitionally equal form `C * (f (fr⁻¹ * compAt θ τ (HMul.hMul x Am : Mx D V.rank n)) * Ψ₀ (HMul.hMul x Am : Mx D V.rank n)) = C * f (Matrix.of (fr⁻¹ * compAt θ τ x) * a) * Ψ₀ x`. Rewrite using `[hx1, hx2, e1, mul_assoc]`. Establish `hC0 : C ≠ 0`. Introduce `hC0`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨f0, hf0, hf00⟩` from `(hS V.rank n).2.2.2.2`. Establish `h1 : L y f0 = fun _ => 0`. Rewrite using `[hLf f0 hf0, hC0]`. Use function extensionality and compare the values at `u`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h2 : L (y⁻¹ * y) f0 = f0`. Rewrite using `[inv_mul_cancel]`. Conclude with `hone f0 hf0`. Rewrite `h2` using `[hmul y⁻¹ y f0 hf0, h1, hzero]`. Use `congrFun h2 0` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `this` using `[hf00]`. Conclude with `zero_ne_one this`. Take `⟨c, hc, hcomp⟩` from `LocalIsometryAlt.int_comp (OpGenAH.rmulEquiv (m := V.rank) a ha)`. Use `⟨‖C‖ ^ 2 * c, mul_pos (pow_pos (norm_pos_iff.2 hC0) 2) hc, fun f hf => ?_⟩` and prove the remaining obligations. Rewrite using `[hLf f hf, LocalIsometryAlt.int_cmul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Take `⟨S, rfl⟩` from `hf`. Establish `hcont : Continuous (fun u => ‖S u‖ ^ 2)` using `S.continuous.norm.pow 2`. Express the relevant statement in the definitionally equal form `‖C‖ ^ 2 * ∫ u, (fun u => ‖S u‖ ^ 2) (OpGenAH.rmulEquiv (m := V.rank) a ha u) = _`. Rewrite using `[hcomp _ hcont, mul_assoc]`. Establish `hIso_nb : ∀ y (c : Matrix (Fin n) (Fin n) ℂ), cᴴ = c → mR y = nbar c → Iso y`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `y c hc hyc`. Take `⟨κ, γ, hκ, hγ, hsch, hform⟩` from `GenOpsH.gen_nbar hU hW hS hF hC y c hc hyc`. Establish `hγ0` using `hγ ⟨Ψ₀, x₀, hΨ₀, hx₀⟩`. Take `⟨c1, hc1, hP1⟩` from `hP V.rank n ε (tLoc l τ) hl0`. Take `⟨c2, hc2, hP2⟩` from `hP V.rank n ε (-tLoc l τ) (neg_ne_zero.2 hl0)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hc' : (-c)ᴴ = -c` using `by rw [Matrix.conjTranspose_neg, hc]`. Use `⟨‖γ⁻¹‖ ^ 2 * ‖κ‖ ^ 2 * c1 * (‖κ⁻¹‖ ^ 2 * c2), ?_, fun f hf => ?_⟩` and prove the remaining obligations. Establish `h1 : 0 < ‖γ⁻¹‖` using `norm_pos_iff.2 (inv_ne_zero hγ0)`. Establish `h2 : 0 < ‖κ‖` using `norm_pos_iff.2 hκ`. Establish `h3 : 0 < ‖κ⁻¹‖` using `norm_pos_iff.2 (inv_ne_zero hκ)`.
+Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Check the signs of the components of the expression. Establish `hLf` using `huniq y f hf _ (hform Ψ₀ hΨ₀ f hf)`. Establish `hg : IsSch (fun v => Complex.exp (Complex.I * (tLoc l τ : ℂ) * ((-c) * gramX ε v).trace) * (κ⁻¹ * ftLoc ε (-tLoc l τ) f v))` using `(hS V.rank n).2.2.2.1 ε (tLoc l τ) (-c) _ hc' (hsch f hf).1`. Rewrite using `[hLf, LocalIsometryAlt.int_cmul, LocalIsometryAlt.int_cmul, hP1 _ hg]`. Establish `e2 : (∫ v, ‖Complex.exp (Complex.I * (tLoc l τ : ℂ) * ((-c) * gramX ε v).trace) * (κ⁻¹ * ftLoc ε (-tLoc l τ) f v)‖ ^ 2) = ∫ v, ‖κ⁻¹ * ftLoc ε (-tLoc l τ) f v‖ ^ 2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `v`. Rewrite using `[norm_mul, LocalIsometryAlt.norm_phase ε _ (-c) hc' v, one_mul]`. Rewrite using `[e2, LocalIsometryAlt.int_cmul, hP2 f hf]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `y`. Take `⟨y₁, y₂, y₃, y₄, rfl, ⟨t, ht⟩, ⟨c, hc, hc'⟩, ⟨a, ha, ha'⟩, ⟨b, hb, hb'⟩⟩` from `hD n y`. Establish `h1 : ((t : ℂ) • (1 : Matrix (Fin n) (Fin n) ℂ))ᴴ = (t : ℂ) • 1`. Rewrite using `[Matrix.conjTranspose_smul, Matrix.conjTranspose_one, Complex.star_def, Complex.conj_ofReal]`. Conclude with `hIso_mul _ _ (hIso_mul _ _ (hIso_mul _ _ (hIso_n y₁ _ h1 ht) (hIso_nb y₂ c hc hc')) (hIso_m y₃ a ha ha')) (hIso_n y₄ b hb hb')`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem local_isometry_of_hypotheses (hU : UnipTau) (hLv : LeviTau) (hW : WEx) (hS : SchOps) (hF : FTfact) (hD : Decomp) (hN : LNe)
     (hP : PlanchLoc) (hZ : AwayNZ) : LocalL2Isometry := by

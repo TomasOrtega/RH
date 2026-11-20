@@ -29,11 +29,9 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {a a' : ℕ} {B : Base F E} {G : Geo σ a a'} {X : Chars F E} {om : Rep σ G.V G.W} {om' : Rep σ G.V' G.W}
 
 /- English proof (translation)
-Establish `p1` using `pairV m.triple`. Establish `p2` using `pairV' m.triple`. Take `⟨ω, ρ, hω⟩` from `PositivityTheory.ThKH.Locrep.locRepEx F E σ _ _ B _ _ G.M om ⟨p1.base, ⟨_, _, p1.herm⟩, ⟨_, _, p1.skew⟩, p1.good, ⟨_, _, p1.weil⟩⟩ v`. Use `choose A' hA' hA'' using fun (i : UAt σ G.W (evFin F v)) (x : SB (Fin a' × Fin (a + a') → Fv F v)) => ex_fin p2 v i x x.2`. Establish `ac : ∀ (i : UAt σ G.W (evFin F v)) (x : SB (Fin a × Fin (a + a') → Fv F v)), Acts (evFin F v) (om (1, i.1)) x (ω (1, i.1) x)` using `fun i x => (hω.acts 1 (one_at _) i i.2 x x.2 _).2 rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `pr : ∀ (i : UAt σ G.W (evFin F v)) (x : SB (Fin a × Fin (a + a') → Fv F v)), ω (1, i.1) x ∈ SB _` using `fun i x => hω.pres 1 (one_at _) i i.2 x x.2`. Use `haveI := GlobalTheory.AdelicUnitaryTop.properSpace_adicCompletion F v`. Use `haveI : SecondCountableTopology (Fv F v) := inferInstance`. Conclude with `schur_match (SB _) (SB _) (Rf.p v) (Rf.p' v) (Rf₂.p v) (Rf₂.p' v) (m.fin.onto v) (m.fin.onto' v) o o' (fun x hx => (ker_of_eq ((hM F E σ B _ _ G X om om' m.triple v trivial).1 _ _ (maxFinP m v).1 x₁) x hx).1) (ker_of_eq ((hM F E σ B _ _ G X om om' m.triple v trivial).2 _ _ (maxFi …`. Rewrite using `[(hω.acts 1 (one_at _) h hh x hx y).1 e]`.
-
-Conclude with `hN ⟨h, hh⟩ ⟨x, hx⟩ hp)`. Use the proof step `(rank_SB _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cmp_finT (hM : MaxFinT) {R R₂ : RealMaps F a a'} {Rf Rf₂ : FinMaps F a a'} (m : IsMatched B G X om om' R Rf)
     (v : Pl F) (n₂ : Nontrivial (Rf₂.Pi v)) (o : (SB _).map (Rf₂.p v) = ⊤) (o' : (SB _).map (Rf₂.p' v) = ⊤)
@@ -66,25 +64,23 @@ theorem cmp_finT (hM : MaxFinT) {R R₂ : RealMaps F a a'} {Rf Rf₂ : FinMaps F
     (rank_SB _)
 
 /- English proof (translation)
-Introduce and unpack `F E _ _ _ _ _ σ B a a' G X om om' R Rf m V V' W R₂ Rf₂ m₂ ⟨c₂, hc₂, hc⟩`. Establish `p1` using `pairV m.triple`. Establish `p2` using `pairV' m.triple`. Take `⟨h, hh, hh'⟩` from `hJ F E σ B _ G.W W _ _ p1.base p1.skew m₂.triple.geo.hW`. Take `⟨g, hg, hg', hP⟩` from `hV F E σ B _ _ _ _ _ _ _ om _ _ _ _ p1 V W (reG G V V' W).M rfl (pairV m₂.triple) h hh hh'`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨g', hk, hk', hP'⟩` from `hV F E σ B _ _ _ _ _ _ _ om' _ _ _ _ p2 V' W (reG G V V' W).M' rfl (pairV' m₂.triple) h hh hh'`. Take `⟨T, hT, -⟩` from `hO F E σ B _ _ _ _ _ _ _ om _ _ _ _ p1 g hg h hh`. Take `⟨T', hT', -⟩` from `hO F E σ B _ _ _ _ _ _ _ om' _ _ _ _ p2 g' hk h hh`. Take `⟨e, c, c0, he, he'⟩` from `archimedean_matched_maps_compare hH hO hL hQ hC ⟨m₂.triple, real_trans hO hL hQ m.triple m₂.triple m.real ⟨hg, hg'⟩ ⟨hk, hk'⟩ ⟨hh, hh'⟩ hT hT' (hP T hT) (hP' T' hT'), m₂.fin⟩ m₂`. Use `choose ef cf cf0 hef hef' using fun v => cmp_finT (R₂ := R₂) hM m v (m₂.fin.nontriv v) (m₂.fin.onto v) (m₂.fin.onto' v) (maxFinP m₂ v).1 (maxFinP m₂ v).2 (m₂.fin.equiv v)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `cf1 : ∀ v ∉ X.T, cf v = 1` using `fun v hv => by`. Take `⟨s1, s2⟩` from `m₂.fin.sph v hv`. Establish `x1` using `hef v _ (p1.good.vac v).1`. Rewrite `x1` using `[(m.fin.sph v hv).1, hef' v _ (p2.good.vac v).1]`. Establish `x2 : cf v • Rf₂.p v (G.M.vac v) = (1 : ℂ) • Rf₂.p v (G.M.vac v)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[one_smul]`. Conclude with `(congrArg (cf v • ·) s1).trans x1`. Conclude with `smul_left_injective ℂ s2 x2`. Set `Λ : ℂ` to `c * ∏ v ∈ X.T, cf v`. Use `⟨c₂ * Λ, mul_ne_zero hc₂ (mul_ne_zero c0 (Finset.prod_ne_zero_iff.2 fun v _ => cf0 v)), ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `Φ Φ' hΦ' ⟨S, hS, k, k', f, φ, f', φ', h1, h2, rfl, rfl, eq⟩ x`. Use `choose u hu hu' using fun i => (show f i ∈ ((reG G V V' W).M.Pol B.ψ B.emb).map (T : _ →ₗ[ℂ] _) from hP T hT ▸ (h1 i).1)`. Use `choose u' hw hw' using fun i => (show f' i ∈ ((reG G V V' W).M'.Pol B.ψ B.emb).map (T' : _ →ₗ[ℂ] _) from hP' T' hT' ▸ (h2 i).1)`. Establish `e1` using `move_sum p1.good hT u φ (fun i => (h1 i).2.1) fun i => ev_of_off (h1 i).2.2`. Establish `e2` using `move_sum p2.good hT' u' φ' (fun i => (h2 i).2.1) fun i => ev_of_off (h2 i).2.2`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `fu : ∀ i, T (u i) = f i` using `hu'`. Establish `fu' : ∀ i, T' (u' i) = f' i` using `hw'`. Simplify using `only [fu] at e1`. Simplify using `only [fu'] at e2`. Establish `s1 : ∑ i, pure (u i) (φ i) ∈ schA F _` using `sum_mem fun i _ => GlobalTheory.TensUniq.pure_mem_schA _ _ (h1 i).2.1 ((good_std p1.good).congr (ev_of_off (h1 i).2.2))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `so : ∑ i, pure (u' i) (φ' i) ∈ G.M'.So B.ψ B.τ₁`. Use `(hK F E σ B a a' G X om om' R Rf m).2 (g', h)⁻¹ _ hΦ'` as an intermediate fact. Rewrite `this` using `[← e2, ← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]`. Then use the resulting hypothesis. Establish `e3 : Λ • ∑ i, pure (u' i) (φ' i) = ∑ i, pure (Λ • u' i) (φ' i)`. Rewrite using `[Finset.smul_sum]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Finset.sum_congr rfl fun i _ => funext fun y => (mul_assoc _ _ _).symm`. Establish `pm : PolMatch B (reG G V V' W) X R₂ Rf₂ (∑ i, pure (u i) (φ i)) (Λ • ∑ i, pure (u' i) (φ' i))`. Use `⟨S, hS, k, k', u, φ, fun i => Λ • u' i, φ', fun i => ⟨hu i, (h1 i).2⟩, fun i => ⟨Submodule.smul_mem _ _ (hw i), (h2 i).2⟩, rfl, e3, ?_⟩` and prove the remaining obligations. Use `congrArg (TensorProduct.map e (PiTensorProduct.map fun v : S => ef v)) eq` as an intermediate fact. Simplify using `only [map_sum, TensorProduct.map_tmul, PiTensorProduct.map_tprod] at this`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Eq.trans (Finset.sum_congr rfl fun i _ => ?_) (this.trans (Finset.sum_congr rfl fun j _ => ?_))` and prove the remaining obligations. Rewrite using `[← fu i, show e (R.p (T (u i))) = R₂.p (u i) from he _ (hu i)]`. Simplify using `only [hef _ _ ((h1 i).2.1 _)]`. Rewrite using `[← fu' j, show e (R.p' (T' (u' j))) = c • R₂.p' (u' j) from he' _ (hw j)]`. Simplify using `only [hef' _ _ ((h2 j).2.1 _)]`.
-
-Rewrite using `[MultilinearMap.map_smul_univ, TensorProduct.smul_tmul_smul, map_smul, TensorProduct.smul_tmul', Finset.prod_coe_sort S cf, ← Finset.prod_subset hS fun v _ hv => cf1 v hv]`. Use `hc _ _ (Submodule.smul_mem _ Λ (so_re V V' W so)) pm (x * h)` as an intermediate fact. Rewrite using `[← e1, ← e2, I_move hI p1 s1, I_move hI p2 (so_le p2.good _ so), mul_assoc, ← I_smul]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem polRe_of2T (hH : PositivityTheory.ThKR.JoinTri) (hM : MaxFinT) (hO : ArchOp) (hL : ArchLie) (hQ : ArchUniq) (hC : PolCount)
     (hJ : CartanConj) (hV : CartanMove) (hK : KCoinv) (hI : ILeft) : PolRe := by

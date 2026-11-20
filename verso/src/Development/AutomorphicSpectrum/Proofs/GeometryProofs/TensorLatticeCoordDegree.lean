@@ -18,27 +18,27 @@ section Sizes
 variable {L : Type} [Field L] [NumberField L] (v : FinitePlace L)
 
 /- English proof (translation)
-Rewrite using `[← FinitePlace.norm_embedding_eq]`. Conclude with `FinitePlace.norm_le_one L v.maximalIdeal a`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem size_int_le (a : 𝓞 L) : v (algebraMap (𝓞 L) L a) ≤ 1 := by
   rw [← FinitePlace.norm_embedding_eq]
   exact FinitePlace.norm_le_one L v.maximalIdeal a
 
 /- English proof (translation)
-Rewrite using `[← FinitePlace.norm_embedding_eq]`. Conclude with `FinitePlace.norm_eq_one_iff_notMem L v.maximalIdeal a`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem size_int_eq_one_iff (a : 𝓞 L) : v (algebraMap (𝓞 L) L a) = 1 ↔ a ∉ (primeOf v).asIdeal := by
   rw [← FinitePlace.norm_embedding_eq]
   exact FinitePlace.norm_eq_one_iff_notMem L v.maximalIdeal a
 
 /- English proof (translation)
-Establish `key : ∀ r : A, ∃ (a d : 𝓞 L), d ∉ (primeOf v).asIdeal ∧ r * algebraMap (𝓞 L) A d = algebraMap (𝓞 L) A a ∧ v (algebraMap A L r) = v (algebraMap (𝓞 L) L a)`. Introduce `r`. Take `⟨a, d, rfl⟩` from `IsLocalization.exists_mk'_eq (primeOf v).asIdeal.primeCompl r`. Establish `e` using `IsLocalization.mk'_spec A a d`. Use `⟨a, d, d.2, e, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e'` using `congrArg (fun t => v (algebraMap A L t)) e`. Simplify using `only [map_mul, ← IsScalarTower.algebraMap_apply] at e'`. Rewrite `e'` using `[(size_int_eq_one_iff v d).2 d.2, _root_.mul_one]`. Then use the resulting hypothesis. Use `⟨fun r => ?_, fun r hr => ?_⟩` and prove the remaining obligations. Take `⟨a, d, -, -, e⟩` from `key r`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[e]`. Conclude with `size_int_le v a`. Take `⟨a, d, -, e₁, e₂⟩` from `key r`. Establish `ha : a ∉ (primeOf v).asIdeal` using `(size_int_eq_one_iff v a).1 (e₂ ▸ hr)`. Establish `hu : IsUnit (algebraMap (𝓞 L) A a)` using `IsLocalization.map_units A (⟨a, ha⟩ : (primeOf v).asIdeal.primeCompl)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hu` using `[← e₁]`. Conclude with `isUnit_of_mul_isUnit_left hu`.
+A detailed English derivation is pending.
 -/
 theorem local_sizes (A : Type) [CommRing A] [Algebra (𝓞 L) A] [IsLocalization.AtPrime A (primeOf v).asIdeal]
     [Algebra A L] [IsScalarTower (𝓞 L) A L] :
@@ -70,7 +70,7 @@ section Centre
 variable {X : Scheme.{0}} {L : Type} [Field L] [NumberField L] (v : FinitePlace L) (z : Sp (𝓞 L) ⟶ X)
 
 /- English proof (translation)
-Establish `e : (spMap (algebraMap (𝓞 L) A)) (IsLocalRing.closedPoint A) = primeOf v`. Apply `PrimeSpectrum.ext` to reduce the goal to its premises. Conclude with `IsLocalization.AtPrime.comap_maximalIdeal A (primeOf v).asIdeal`. Conclude with `(Scheme.Hom.comp_apply _ _ _).trans (congrArg z e)`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem centre_local (A : Type) [CommRing A] [IsLocalRing A] [Algebra (𝓞 L) A]
     [IsLocalization.AtPrime A (primeOf v).asIdeal] :
@@ -87,11 +87,9 @@ section Det
 variable {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Sp Ω ⟶ X}
 
 /- English proof (translation)
-Establish `h1 : t ∈ Submodule.span R {g}` using `h ▸ Submodule.mem_span_singleton_self _`. Establish `h2 : g ∈ Submodule.span R {t}` using `h ▸ Submodule.mem_span_singleton_self _`. Take `⟨r₁, hr₁⟩` from `Submodule.mem_span_singleton.1 h1`. Take `⟨r₂, hr₂⟩` from `Submodule.mem_span_singleton.1 h2`. Establish `e₁ : (r₁ : Ω) * g = t` using `hr₁`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e₂ : (r₂ : Ω) * t = g` using `hr₂`. Prove the components needed by the constructor for the conclusion. Rewrite using `[← e₂, mul_div_cancel_right₀ _ ht]`. Conclude with `r₂.2`. Rewrite using `[← e₁, mul_div_cancel_right₀ _ hg]`.
-
-Conclude with `r₁.2`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem div_mem_of_span_eq (R : Subring Ω) {t g : Ω} (ht : t ≠ 0) (hg : g ≠ 0)
     (h : Submodule.span R {t} = Submodule.span R {g}) : g / t ∈ R ∧ t / g ∈ R := by
@@ -106,17 +104,15 @@ theorem div_mem_of_span_eq (R : Subring Ω) {t g : Ω} (ht : t ≠ 0) (hg : g �
   · rw [← e₁, mul_div_cancel_right₀ _ hg]; exact r₁.2
 
 /- English proof (translation)
-Use `⟨hdet, le_antisymm (Submodule.span_le.2 ?_) (Submodule.span_mono ?_)⟩` and prove the remaining obligations. Introduce and unpack `t ⟨b₂, T₂, hb₂, hT₂, rfl⟩`. Establish `hch : ∀ q, ∃ c : Fin r → regAt ξ p, b₂ q = ∑ i, (c i : Ω) • b i` using `fun q => by`. Establish `hm : b₂ q ∈ V p` using `by rw [hb₂.2]; exact Submodule.subset_span ⟨q, rfl⟩`. Rewrite `hm` using `[hb.2]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun _).1 hm`. Conclude with `⟨c, hc.symm⟩`. Use `choose c hc using hch`. Set `M : Matrix (Fin r) (Fin r) (regAt ξ p)` to `Matrix.of fun i q => c q i`. Establish `hM : T₂ = T * M.map (regAt ξ p).subtype`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `k' q`. Establish `e : ∑ k', T₂ k' q • s k' = ∑ k', (T * M.map (regAt ξ p).subtype) k' q • s k'`. Rewrite using `[← hT₂ q, hc q]`. Simplify using `only [hT, Finset.smul_sum, smul_smul, Matrix.mul_apply, Finset.sum_smul]`. Rewrite using `[Finset.sum_comm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `[M, _root_.mul_comm]`. Establish `e' : ∑ k', (T₂ k' q - (T * M.map (regAt ξ p).subtype) k' q) • s k' = 0`. Simplify using `only [sub_smul, Finset.sum_sub_distrib, e, sub_self]`. Conclude with `sub_eq_zero.1 (Fintype.linearIndependent_iff.1 hs _ e' k')`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Submodule.mem_span_singleton.2 ⟨M.det, ?_⟩` and prove the remaining obligations. Use `show (M.det : Ω) * T.det = T₂.det`. Establish `e : (M.det : Ω) = (M.map (regAt ξ p).subtype).det` using `RingHom.map_det (regAt ξ p).subtype M`. Rewrite using `[hM, Matrix.det_mul, e, _root_.mul_comm]`. Introduce and unpack `_ rfl`.
-
-Conclude with `⟨b, T, hb, hT, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem detLat_isGenAt {E : Type} [AddCommGroup E] [Module Ω E] (V : Lat ξ E) {r : ℕ} {s b : Fin r → E}
     {T : Matrix (Fin r) (Fin r) Ω} {p : Cpt ξ} (hs : LinearIndependent Ω s) (hb : V.IsFrameAt b p)
@@ -153,9 +149,9 @@ end Det
 section Core
 
 /- English proof (translation)
-Establish `hex : ∀ i j, ∃ s, genMap ξ ⟨centre z, h⟩ s = T' i j ∧ (Scheme.stalkClosedPointTo z).hom s = T i j` using `fun i j => by`. Take `⟨_, s, h1, h2⟩` from `hv i j`. Conclude with `⟨s, h1, h2⟩`. Use `choose S h1 h2 using hex`. Set `M : Matrix (Fin r) (Fin r) (X.presheaf.stalk (centre z))` to `Matrix.of S`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `e1 : T' = M.map (genMap ξ ⟨centre z, h⟩)` using `by ext i j; exact (h1 i j).symm`. Establish `e2 : T = M.map (Scheme.stalkClosedPointTo z).hom` using `by ext i j; exact (h2 i j).symm`. Conclude with `⟨h, M.det, by rw [e1]; exact RingHom.map_det _ _, by rw [e2]; exact RingHom.map_det _ _⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem valAt_det {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Sp Ω ⟶ X} {F : Type} [CommRing F] [IsLocalRing F]
     {z : Sp F ⟶ X} (h : genPt ξ ⤳ centre z) {r : ℕ} {T' : Matrix (Fin r) (Fin r) Ω} {T : Matrix (Fin r) (Fin r) F}
@@ -171,33 +167,29 @@ theorem valAt_det {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Sp Ω ⟶ X} {F 
   exact ⟨h, M.det, by rw [e1]; exact RingHom.map_det _ _, by rw [e2]; exact RingHom.map_det _ _⟩
 
 /- English proof (translation)
-Establish `hξ` using `hT.gen`. Establish `he₀ : e₀ ≠ 0` using `hdeg.1`. Take `⟨hA₁, hA₂⟩` from `local_sizes v A`. Use `set zL : Sp L ⟶ X := spMap (algebraMap (𝓞 L) L) ≫ z with hzLdef`. Use `set zA : Sp A ⟶ X := spMap (algebraMap (𝓞 L) A) ≫ z with hzA`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hzL : zL = spMap (algebraMap A L) ≫ zA`. Rewrite using `[hzLdef, hzA, ← Category.assoc, IsScalarTower.algebraMap_eq (𝓞 L) A L]`. Simplify using `only [spMap, CommRingCat.ofHom_comp, Spec.map_comp]`. Take `⟨ch, h, hcne, hmax, hin⟩` from `GlobalTheory.CompanionTheory.Ar.RootHt.bestChart_finite X Ω ξ K J y L w v A zA hall hT hA₁ hA₂ (hzL ▸ hC)`. Establish `hL : genPt ξ ⤳ centre zL` using `hall _`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hP : (⟨z (primeOf v), hall _⟩ : Cpt ξ) = ⟨centre zA, h⟩` using `Subtype.ext (centre_local v z A).symm`. Establish `hfr' : ∀ τ, (Vl τ).IsFrameAt (b' τ) ⟨centre zA, h⟩` using `fun τ => hP ▸ hfr τ`. Establish `hdv : ∀ τ, ValAt ξ zL (T' τ).det (T τ).det` using `fun τ => valAt_det hL (hval τ)`. Establish `hdet' : ∀ τ, (T' τ).det ≠ 0` using `fun τ h0 => hdet τ <| by`. Establish `h1` using `hdv τ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[h0]`. Conclude with `LieTangent.valAt_unique hξ h1 ⟨hL, 0, map_zero _, map_zero _⟩`. Establish `hgen : ∀ τ, (detLat (Vl τ) (s τ)).IsGenAt ⟨centre zA, h⟩ (T' τ).det` using `fun τ => detLat_isGenAt (Vl τ) (hs τ) (hfr' τ) (hb τ) (hdet' τ)`. Establish `htg` using `Flag.tens_gen (fun τ => detLat (Vl τ) (s τ)) (fun _ => -1) ⟨centre zA, h⟩ _ hgen`. Establish `hdg` using `hdeg.2 ⟨centre zA, h⟩ trivial ch hin`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hdg` using `[htg.2]`. Use `set D : Ω := ∏ τ, (T' τ).det with hD`. Establish `hD0 : D ≠ 0` using `Finset.prod_ne_zero_iff.2 fun τ _ => hdet' τ`. Establish `ht : (∏ τ, (T' τ).det ^ (-1 : ℤ)) = D⁻¹`. Simplify using `only [_root_.zpow_neg, zpow_one, hD, Finset.prod_inv_distrib]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy : ∀ k, y ⟨k, ch k⟩ ≠ 0` using `fun k => (hC.2 k (ch k) (isUnit_iff_ne_zero.2 (hcne k))).1`. Establish `hy₀ : ∀ k, y ⟨k, c₀ k⟩ ≠ 0` using `fun k => (hC.2 k (c₀ k) (isUnit_iff_ne_zero.2 (hw0 k))).1`. Use `set G : Ω := GlobalTheory.CompanionTheory.Ar.RootHt.gen y a e₀ ch with hG`. Establish `hG0 : G ≠ 0` using `mul_ne_zero (Finset.prod_ne_zero_iff.2 fun k _ => zpow_ne_zero _ (hy k)) he₀`. Establish `hsp : Submodule.span (regAt ξ ⟨centre zA, h⟩) {D⁻¹} = Submodule.span (regAt ξ ⟨centre zA, h⟩) {G}`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← ht]`. Conclude with `hdg`. Take `⟨hε, hε'⟩` from `div_mem_of_span_eq _ (inv_ne_zero hD0) hG0 hsp`. Take `⟨r, hr⟩` from `GlobalTheory.CompanionTheory.Ar.RootHt.FinLocal.val_of_mem h hε`. Take `⟨r', hr'⟩` from `GlobalTheory.CompanionTheory.Ar.RootHt.FinLocal.val_of_mem h hε'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrr : r * r' = 1`. Establish `h1` using `GlobalTheory.CompanionTheory.Ar.RootHt.FinLocal.val_mul hr hr'`. Establish `e : G / D⁻¹ * (D⁻¹ / G) = 1` using `by field_simp`. Rewrite `h1` using `[e]`. Conclude with `LieTangent.valAt_unique hξ h1 (GlobalTheory.CompanionTheory.Ar.RootHt.valAt_one h)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Establish `hvr : v (algebraMap A L r) = 1`. Establish `h1 : v (algebraMap A L r) * v (algebraMap A L r') = 1`. Rewrite using `[← map_mul, ← map_mul, hrr, map_one, map_one]`. Establish `h2` using `hA₁ r`. Establish `h3` using `hA₁ r'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use polynomial arithmetic with `[apply_nonneg v (algebraMap A L r), apply_nonneg v (algebraMap A L r')]`. Establish `hrL : ValAt ξ zL (G / D⁻¹) (algebraMap A L r)`. Rewrite using `[hzL]`. Conclude with `LieTangent.valAt_base hξ (algebraMap A L) hr`. Establish `hτ` using `GlobalTheory.CompanionTheory.Ar.RootHt.FinLocal.val_gen_ratio hC hL a he₀ ch c₀ hcne hw0`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hm₀ : chartMono y c₀ a ≠ 0` using `Finset.prod_ne_zero_iff.2 fun k _ => zpow_ne_zero _ (hy₀ k)`. Establish `hgen₀ : GlobalTheory.CompanionTheory.Ar.RootHt.gen y a e₀ c₀ = e₀ * chartMono y c₀ a` using `_root_.mul_comm _ _`. Establish `hid : G / D⁻¹ * (e₀ * chartMono y c₀ a)⁻¹ = D * (G / GlobalTheory.CompanionTheory.Ar.RootHt.gen y a e₀ c₀)`. Rewrite using `[hgen₀]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hl` using `GlobalTheory.CompanionTheory.Ar.RootHt.FinLocal.val_mul hrL hg`. Establish `hr₂` using `GlobalTheory.CompanionTheory.Ar.RootHt.FinLocal.val_mul (GlobalTheory.CompanionTheory.Ar.RootHt.valAt_prod hL Finset.univ _ _ hdv) hτ`. Rewrite `hl` using `[hid]`. Establish `hv` using `LieTangent.valAt_unique hξ hl hr₂`. Establish `hn` using `congrArg v hv`.
-
-Rewrite `hn` using `[map_mul, hvr, _root_.one_mul, map_mul, map_prod]`. Rewrite using `[hn]`. Use `congr 1`. Rewrite using `[map_prod]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations.
-
-Establish `hsup : (⨆ i, v (w ⟨k, i⟩)) = v (w ⟨k, ch k⟩)` using `le_antisymm (by haveI : Nonempty (J k) := ⟨ch k⟩; exact ciSup_le (hmax k)) (le_ciSup (f := fun i => v (w ⟨k, i⟩)) (Set.finite_range _).bddAbove (ch k))`. Rewrite using `[map_zpow₀, map_div₀, hsup]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem core (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Sp Ω ⟶ X) (K : Type) [Fintype K] (J : K → Type)
     [∀ k, Fintype (J k)] (y : (Σ k, J k) → Ω) (Ψ : Type) [Fintype Ψ] (Ei : Type) [AddCommGroup Ei] [Module Ω Ei]
@@ -296,9 +288,9 @@ theorem core (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Sp Ω ⟶ X) (K : Typ
 end Core
 
 /- English proof (translation)
-Introduce `X Ω _ ξ K _ J _ y Ψ _ Ei _ _ Vl m s a e₀ hall hT hs hdeg L _ _ w z c₀ g v b' T' T hC hw0 hg _ hfr hb hval hdet`. Establish `hu : ∀ d : (primeOf v).asIdeal.primeCompl, IsUnit (algebraMap (𝓞 L) L d)` using `fun d => by`. Use `isUnit_iff_ne_zero.2 fun h0 => d.2 ?_` and prove the remaining obligations. Establish `: (d : 𝓞 L) = 0` using `(FaithfulSMul.algebraMap_injective (𝓞 L) L) (by rw [h0, map_zero])`. Rewrite using `[this]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `zero_mem _`. Use `letI : Algebra (Localization.AtPrime (primeOf v).asIdeal) L := (IsLocalization.lift hu).toAlgebra`. Use `haveI : IsScalarTower (𝓞 L) (Localization.AtPrime (primeOf v).asIdeal) L := IsScalarTower.of_algebraMap_eq fun x => (IsLocalization.lift_eq hu x).symm`. Conclude with `core X Ω ξ K J y Ψ Ei Vl m s a e₀ hall hT hs hdeg L w z c₀ g v b' T' T hC hw0 hg hfr hb hval hdet (Localization.AtPrime (primeOf v).asIdeal)`.
+Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem det_frames_size : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Sp Ω ⟶ X) (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (y : (Σ k, J k) → Ω) (Ψ : Type) [Fintype Ψ] (Ei : Type) [AddCommGroup Ei] [Module Ω Ei] (Vl : Ψ → Lat ξ Ei) (m : ℕ) (s : Ψ → Fin m → Ei) (a : K → ℤ) (e₀ : Ω) (hall : ∀ q : X, genPt ξ ⤳ q), CoordTie ℤ ξ (fun c' : (k : K) → J k => ∏ k, y ⟨k, c' k⟩) → (∀ τ, LinearIndependent Ω (s τ)) → (Lat.tens (fun τ => detLat (Vl τ) (s τ)) (fun _ => -1)).IsDegOn Set.univ y a e₀ → ∀ (L : Type) [Field L] [NumberField L] (w : (Σ k, J k) → L) (z : Sp (𝓞 L) ⟶ X) (c₀ : (k : K) → J k) (g : L) (v : FinitePlace L) (b' : Ψ → Fin m → Ei) (T' : Ψ → Matrix (Fin m) (Fin m) Ω) (T : Ψ → Matrix (Fin m) (Fin m) L), CoordsAt ξ y (spMap (algebraMap (𝓞 L) L) ≫ z) w → (∀ k, w ⟨k, c₀ k⟩ ≠ 0) → ValAt ξ (spMap (algebraMap (𝓞 L) L) ≫ z) (e₀ * chartMono y c₀ a)⁻¹ g → g ≠ 0 → (∀ τ, (Vl τ).IsFrameAt (b' τ) ⟨z (primeOf v), hall _⟩) → (∀ τ k, b' τ k = ∑ k', T' τ k' k • s τ k') → (∀ τ i j, ValAt ξ (spMap (algebraMap (𝓞 L) L) ≫ z) (T' τ i j) (T τ i j)) → (∀ τ, (T τ).det ≠ 0) → (∏ τ, v (T τ).det) * GlobalTheory.CompanionTheory.Ar.RootHt.locRatio a w c₀ v = v g := by
   intro X Ω _ ξ K _ J _ y Ψ _ Ei _ _ Vl m s a e₀ hall hT hs hdeg L _ _ w z c₀ g v b' T' T hC hw0 hg _ hfr hb hval hdet

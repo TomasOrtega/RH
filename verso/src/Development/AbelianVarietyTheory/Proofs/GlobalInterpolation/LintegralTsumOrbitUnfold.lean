@@ -5,27 +5,23 @@ open scoped ENNReal
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `haveI : MeasurableConstSMul Γ G := ⟨fun γ => measurable_const_mul (γ : G)⟩`. Use `haveI : MeasurableConstSMul Γ' G' := ⟨fun γ => measurable_const_mul (γ : G')⟩`. Use `haveI : SMulInvariantMeasure Γ G μ := ⟨fun γ s _ => measure_preimage_mul μ (γ : G) s⟩`. Use `haveI : SMulInvariantMeasure Γ' G' μ' := ⟨fun γ s _ => measure_preimage_mul μ' (γ : G') s⟩`. Establish `hex : ∀ i, ∃ γ ∈ Γ, γ • x = c i` using `fun i => (hcr _).1 ⟨i, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `choose γ hγ hγx using hex`. Establish `hfix : ∀ g, φ g • x = x` using `fun g => by`. Establish `: φ g ∈ MulAction.stabilizer G x` using `hst ▸ ⟨g, rfl⟩`. Conclude with `this`. Set `f : X × Γ' → Γ` to `fun p => ⟨γ p.1 * φ p.2, Γ.mul_mem (hγ _) ((hΓ _).2 p.2.2)⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hf : Function.Bijective f`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨i, a⟩ ⟨j, b⟩ hab`. Establish `h1 : γ i * φ a = γ j * φ b` using `congrArg Subtype.val hab`. Establish `h2 : i = j`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `hc` to reduce the goal to its premises. Use `congrArg (· • x) h1` as an intermediate fact. Simplify `this` using `[mul_smul, hfix, hγx]`. Substitute `h2` using the available equality. Establish `h3 : a = b` using `Subtype.ext (hφi (mul_left_cancel h1))`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[h3]`. Introduce and unpack `⟨δ, hδ⟩`. Take `⟨i, hi⟩` from `(hcr (δ • x)).2 ⟨δ, hδ, rfl⟩`. Establish `h1 : (γ i)⁻¹ * δ ∈ φ.range`. Rewrite using `[hst, MulAction.mem_stabilizer_iff, mul_smul, ← hi, ← hγx, inv_smul_smul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨a, ha⟩` from `h1`. Establish `ha' : a ∈ Γ'` using `(hΓ a).1 (ha ▸ Γ.mul_mem (Γ.inv_mem (hγ i)) hδ)`. Use `⟨(i, ⟨a, ha'⟩), Subtype.ext ?_⟩` and prove the remaining obligations. Use `show γ i * φ a = δ`. Rewrite using `[ha, mul_inv_cancel_left]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Set `F : G → ℝ≥0∞` to `fun h => ∫⁻ g in 𝓕', u ((φ g)⁻¹ * h) ∂μ'`. Establish `hK : Measurable (fun p : G × G' => u ((φ p.2)⁻¹ * p.1))` using `hu.comp (((hφm.comp measurable_snd).inv).mul measurable_fst)`. Establish `hF : Measurable F` using `hK.lintegral_prod_right'`. Establish `step : ∀ h : G, ∑' i, Φ (h⁻¹ • c i) = ∑' δ : Γ, F (δ⁻¹ • h)`. Introduce `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← (Equiv.ofBijective f hf).tsum_eq, ENNReal.tsum_prod']`. Use `tsum_congr fun i => ?_` and prove the remaining obligations. Establish `h1 : h⁻¹ • c i = ((γ i)⁻¹ * h)⁻¹ • x`. Rewrite using `[mul_inv_rev, inv_inv, mul_smul, hγx]`. Rewrite using `[h1, hΦ, h𝓕'.lintegral_eq_tsum'']`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `tsum_congr fun a => ?_` and prove the remaining obligations. Use `lintegral_congr fun g => ?_` and prove the remaining obligations. Use `congr 1`. Use `show (φ ((a : G') * g))⁻¹ * ((γ i)⁻¹ * h) = (φ g)⁻¹ * ((γ i * φ a)⁻¹ * h)`. Simplify using `[mul_assoc]`.
-
-Repeatedly rewrite using `[step]`. Rewrite using `[lintegral_tsum (f := fun (δ : Γ) h => F (δ⁻¹ • h)) (fun δ => (hF.comp (measurable_const_smul δ⁻¹)).aemeasurable), ← h𝓕.lintegral_eq_tsum' F]`. Use `show ∫⁻ h, ∫⁻ g in 𝓕', u ((φ g)⁻¹ * h) ∂μ' ∂μ = _`. Rewrite using `[lintegral_lintegral_swap hK.aemeasurable]`. Repeatedly rewrite using `[lintegral_mul_left_eq_self u]`.
-
-Rewrite using `[setLIntegral_const, mul_comm]`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lintegral_tsum_orbit_unfold (G G' V X : Type) [Group G] [Group G'] [MeasurableSpace G]
     [MeasurableSpace G'] [MeasurableMul₂ G] [MeasurableInv G] [MeasurableMul G'] [MulAction G V]

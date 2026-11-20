@@ -8,11 +8,11 @@ namespace GlobalTheory.PolGen
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hD`. Establish `halg : IsAlgebraic ℤ D⁻¹` using `(IsFractionRing.isAlgebraic_iff ℤ ℚ F).2 (Algebra.IsAlgebraic.isAlgebraic _)`. Take `⟨m, hm, hint⟩` from `halg.exists_integral_multiple`. Establish `h1 : Algebra.trace ℚ F ((m • D⁻¹) * D) = 0` using `h ⟨m • D⁻¹, hint⟩`. Establish `e : (m • D⁻¹) * D = algebraMap ℚ F (m : ℚ)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[zsmul_eq_mul, mul_assoc, inv_mul_cancel₀ hD]`. Simplify using the standard rewrite rules. Rewrite `h1` using `[e, Algebra.trace_algebraMap, nsmul_eq_mul]`. Establish `h2 : (Module.finrank ℚ F : ℚ) ≠ 0` using `by exact_mod_cast Module.finrank_pos.ne'`. Establish `h3 : (m : ℚ) ≠ 0` using `by exact_mod_cast hm`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `mul_ne_zero h2 h3 h1`.
+A detailed English derivation is pending.
 -/
 theorem eq_zero_of_trace {F : Type} [Field F] [NumberField F] (D : F)
     (h : ∀ a : 𝓞 F, Algebra.trace ℚ F ((a : F) * D) = 0) : D = 0 := by
@@ -31,7 +31,7 @@ theorem eq_zero_of_trace {F : Type} [Field F] [NumberField F] (D : F)
 omit [IsCMField E] in
 
 /- English proof (translation)
-Rewrite using `[← Algebra.trace_trace (S := maximalRealSubfield E)]`. Use `congr 1`. Rewrite using `[← smul_eq_mul k, ← map_smul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem trace_coe_mul (k : maximalRealSubfield E) (w : E) :
     Algebra.trace ℚ E ((k : E) * w) =
@@ -42,49 +42,47 @@ theorem trace_coe_mul (k : maximalRealSubfield E) (w : E) :
   rfl
 
 /- English proof (translation)
-Introduce `E _ _ _ L 𝔠 mu c1 Q l c₀ h1 h2 h3 h4 h5 h6 h7`. Establish `hL : ∀ (a : OF E), ∀ x ∈ L, algebraMap (OF E) E a * x ∈ L` using `fun a x hx => by`. Rewrite using `[← Algebra.smul_def]`. Conclude with `L.smul_mem a hx`. Establish `hcoe : ∀ a : OF E, algebraMap (OF E) E a = ((a : maximalRealSubfield E) : E)` using `fun a => rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc0 : (𝔠 : FractionalIdeal (nonZeroDivisors (𝓞 (maximalRealSubfield E))) (maximalRealSubfield E)) ≠ 0` using `𝔠.ne_zero`. Establish `hd0 : dualLat 𝔠 ≠ 0` using `FractionalIdeal.dual_ne_zero ℤ ℚ hc0`. Establish `key : ∀ x ∈ L, ∀ x' ∈ L, Algebra.trace (maximalRealSubfield E) E (mu * x * IsCMField.complexConj E x') = 2 * c1 * Q x x'`. Introduce `x hx x' hx'`. Rewrite using `[← sub_eq_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `eq_zero_of_trace` to reduce the goal to its premises. Introduce `a`. Establish `h` using `h4 _ (hL a x hx) x' hx'`. Rewrite `h` using `[h3 a x hx x' hx']`. Establish `e : mu * (algebraMap (OF E) E a * x) * IsCMField.complexConj E x' = ((a : maximalRealSubfield E) : E) * (mu * x * IsCMField.complexConj E x')`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hcoe]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h` using `[e, trace_coe_mul]`. Establish `e2 : (a : maximalRealSubfield E) * (2 * c1 * Q x x') = c1 * (a * Q x x') + c1 * (a * Q x x')` using `by ring`. Rewrite using `[mul_sub, map_sub, h, e2, map_add]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `key2 : ∀ (k : maximalRealSubfield E), ∀ x ∈ L, ∀ x' ∈ L, Algebra.trace ℚ E ((k : E) * mu * x * IsCMField.complexConj E x') = Algebra.trace ℚ (maximalRealSubfield E) (k * (2 * c1 * Q x x'))`. Introduce `k x hx x' hx'`. Rewrite using `[← key x hx x' hx', ← trace_coe_mul]`. Use `congr 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `h2c : (2 * c1 : maximalRealSubfield E) ≠ 0` using `mul_ne_zero two_ne_zero h1`. Establish `hmu : mu ≠ 0`. Introduce and unpack `rfl`. Apply `hd0` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[FractionalIdeal.eq_zero_iff]`. Introduce `t ht`. Establish `h` using `h6 t ht`. Establish `hle : Submodule.span (𝓞 (maximalRealSubfield E)) {t | ∃ x ∈ L, ∃ x' ∈ L, t = Q x x'} ≤ ⊥`. Rewrite using `[Submodule.span_le]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨x, hx, x', hx', rfl⟩`. Use `key x hx x' hx'` as an intermediate fact. Rewrite `this` using `[zero_mul, zero_mul, map_zero]`. Conclude with `(mul_eq_zero.1 this.symm).resolve_left h2c`. Conclude with `hle h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hfix : ∀ k : maximalRealSubfield E, IsCMField.complexConj E (k : E) = k` using `fun k => (IsCMField.complexConj E).commutes k`. Use `⟨hmu, ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Use `show IsCMField.complexConj E _ = _`. Rewrite using `[map_mul, hfix, h2]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `x hx x' hx'`. Take `⟨n, hn⟩` from `(FractionalIdeal.mem_dual hc0).1 (h5 x hx x' hx') c₀ c₀.2`. Use `⟨n, ?_⟩` and prove the remaining obligations. Use `(key2 _ x hx x' hx').trans ?_` and prove the remaining obligations. Rewrite `hn` using `[Algebra.traceForm_apply]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `e : (c₀ : maximalRealSubfield E) / (2 * c1) * (2 * c1 * Q x x') = Q x x' * c₀`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e, ← hn]`. Simplify using the standard rewrite rules. Introduce and unpack `ν ⟨hν1, hν2⟩`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `hs : IsCMField.complexConj E (ν / mu) = ν / mu`. Establish `hν1' : IsCMField.complexConj E ν = -ν` using `hν1`. Rewrite using `[map_div₀, hν1', h2, neg_div_neg_eq]`. Set `s : maximalRealSubfield E` to `⟨ν / mu, (IsCMField.complexConj_eq_self_iff E _).1 hs⟩`. Establish `hνs : ν = (s : E) * mu` using `by show ν = ν / mu * mu`.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Clear the denominators using the available nonvanishing facts. Establish `hmem : 2 * c1 * s ∈ (𝔠 : FractionalIdeal (nonZeroDivisors (𝓞 (maximalRealSubfield E))) (maximalRealSubfield E))`. Rewrite using `[← FractionalIdeal.dual_dual ℤ ℚ (𝔠 : FractionalIdeal (nonZeroDivisors (𝓞 (maximalRealSubfield E))) (maximalRealSubfield E))]`. Use `(FractionalIdeal.mem_dual hd0).2 ?_` and prove the remaining obligations. Introduce `t ht`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Establish `h : ∀ a : OF E, Algebra.trace ℚ (maximalRealSubfield E) (2 * c1 * s * (a * t)) ∈ (algebraMap ℤ ℚ).range`. Establish `h` using `h6 t ht`. Use `clear ht`. Proceed by induction on `h using Submodule.span_induction with`. Consider the case `mem t ht`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨x, hx, x', hx', rfl⟩` from `ht`. Introduce `a`. Take `⟨n, hn⟩` from `hν2 _ (hL a x hx) x' hx'`. Use `⟨n, ?_⟩` and prove the remaining obligations. Rewrite `hn` using `[hνs]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h` using `(key2 s _ (hL a x hx) x' hx').symm.trans hn`. Rewrite `h` using `[h3 a x hx x' hx']`. Establish `e : 2 * c1 * s * (a * Q x x') = s * (2 * c1 * (a * Q x x'))` using `by ring`. Rewrite using `[e, h]`. Simplify using the standard rewrite rules.
+Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Consider the case `zero => intro a`. Simplify using the standard rewrite rules. Consider the case `add t u _ _ ht hu`. Introduce `a`. Rewrite using `[mul_add, mul_add, map_add]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `add_mem (ht a) (hu a)`. Consider the case `smul b t _ ht`. Introduce `a`. Establish `e : (a : maximalRealSubfield E) * b • t = ((a * b : OF E) : maximalRealSubfield E) * t`. Rewrite using `[Algebra.smul_def, ← mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Use `congr 1`. Rewrite using `[e]`. Conclude with `ht _`. Use `h 1` as an intermediate fact. Rewrite using `[Algebra.traceForm_apply]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify using `using this`. Take `⟨n, t, hn, hnt⟩` from `h7 ⟨2 * c1 * s, hmem⟩`. Use `⟨n, hn, t, ?_⟩` and prove the remaining obligations. Establish `e : (n : maximalRealSubfield E) * (2 * c1 * s) = (t : maximalRealSubfield E) * c₀`. Use `congrArg Subtype.val hnt` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify `this` using `[nsmul_eq_mul, Algebra.smul_def]`. Establish `e2 : (n : maximalRealSubfield E) * s = (t : maximalRealSubfield E) * (c₀ / (2 * c1))`. Rewrite using `[mul_div_assoc', ← e]`. Clear the denominators using the available nonvanishing facts. Establish `e3` using `congrArg (fun z : maximalRealSubfield E => (z : E)) e2`.
-
-Simplify using `only [Subfield.coe_mul, SubringClass.coe_natCast] at e3`. Rewrite using `[hcoe, hνs, ← mul_assoc, ← mul_assoc, e3]`.
+A detailed English derivation is pending.
 -/
 theorem genAt_polMod : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (L : Submodule (OF E) E) (𝔠 : FracId (maximalRealSubfield E))
     (mu : E) (c1 : maximalRealSubfield E) (Q : E → E → maximalRealSubfield E) (l : ℕ) (c₀ : 𝔠.elt), c1 ≠ 0 →

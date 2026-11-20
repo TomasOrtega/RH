@@ -31,14 +31,14 @@ def StdTie (D : D7) (O : Obj D) (t : KerEntTied O.ex) : Prop :=
     (⟨D, O, t⟩ : Σ (D : D7) (O : Obj D), KerEntTied O.ex) = ⟨I.rec7 l Z, O', t'⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨B, X, I, l, l0, Z, O, t, h, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem StdTie.intro {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} {I : TC B X} {l : I.Laws} {l0 : I.Law0 l} {Z : TC.Later B (I.cols l)}
     {O : Obj (I.rec7 l Z)} {t : KerEntTied O.ex} (h : StdAt I l l0 Z O t) : StdTie (I.rec7 l Z) O t :=
   ⟨B, X, I, l, l0, Z, O, t, h, rfl⟩
 
 /- English proof (translation)
-Take `⟨B, X, I, l, l0, Z, O', t', hs, e⟩` from `hD`. Consider the cases of `e`. Conclude with `h B X I l l0 Z _ _ hs`.
+Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. A detailed English derivation is pending.
 -/
 theorem StdTie.ind {R : ∀ (D : D7) (O : Obj D), KerEntTied O.ex → Prop}
     (h : ∀ (B : GlobalTheory.Mem.Base) (X : PreX B.toPre) (I : TC B X) (l : I.Laws) (l0 : I.Law0 l) (Z : TC.Later B (I.cols l))

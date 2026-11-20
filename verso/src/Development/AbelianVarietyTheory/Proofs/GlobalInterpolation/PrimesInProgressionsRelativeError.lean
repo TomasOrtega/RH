@@ -9,9 +9,9 @@ open scoped Classical
 namespace GlobalTheory.Lin
 
 /- English proof (translation)
-Establish `hu : IsUnit (b : ZMod M)` using `(ZMod.isUnit_iff_coprime b M).2 hb`. Establish `h1 : (χ ^ 2) (b : ZMod M) = 1` using `by rw [h]; exact MulChar.one_apply hu`. Rewrite `h1` using `[MulChar.pow_apply' χ (by norm_num), hθ]`. Establish `h2 : θ ^ 2 = 1` using `by exact_mod_cast h1`. Establish `h3 : (θ - 1) * (θ + 1) = 0` using `by linear_combination h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Break down `mul_eq_zero.1 h3 with h4 | h4` into its components or cases. Use `left`. Use linear arithmetic over natural numbers and integers. Use `right`. Use linear arithmetic over natural numbers and integers.
+Separate the alternatives or extract the components of the hypothesis. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem sign_of_sq_eq_one {M : ℕ} [NeZero M] (χ : DirichletCharacter ℂ M) (h : χ ^ 2 = 1) (b : ℕ)
     (hb : Nat.Coprime b M) (θ : ℤ) (hθ : χ (b : ZMod M) = (θ : ℂ)) : θ = 1 ∨ θ = -1 := by
@@ -25,17 +25,17 @@ theorem sign_of_sq_eq_one {M : ℕ} [NeZero M] (χ : DirichletCharacter ℂ M) (
   · right; omega
 
 /- English proof (translation)
-Take `⟨a, ha, hA⟩` from `GlobalTheory.T.exceptionalDirichletZero_unique_zeroFreeRegion`. Take `⟨a', ha', hA'⟩` from `GlobalTheory.T.chebyshevPsiProgression_relative_error`. Establish `hc₁ : 0 < min (1 / 8 : ℝ) (min a a')` using `lt_min (by norm_num) (lt_min ha ha')`. Take `⟨c, hc, hE⟩` from `hA _ hc₁ ((min_le_right _ _).trans (min_le_left _ _))`. Take `⟨c₂, c₃, C, h₂, h₃, hC, hP⟩` from `hA' _ hc₁ ((min_le_right _ _).trans (min_le_right _ _))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨c₂', c₃', C', h₂', h₃', hC', hQ⟩` from `GlobalTheory.T.primeCount_relative_error_of_psi_relative_error c₂ c₃ C c h₂ h₃ hC hc`. Use `⟨_, c₂', c₃', C', c, hc₁, min_le_left _ _, h₂', h₃', hC', hc, fun M _ hM => ?_⟩` and prove the remaining obligations. Take `⟨hU, hB, -⟩` from `hE M hM`. Use `⟨hU, fun χ β h => (hB χ β h).2.2.2.2, fun b θ β hb hD X hX => ?_⟩` and prove the remaining obligations. Establish `hM3 : (3 : ℝ) ≤ M` using `by exact_mod_cast hM`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hφ1 : (1 : ℝ) ≤ (M.totient : ℝ)`. Conclude with `Nat.totient_pos.2 (by omega)` after adjusting the coercions. Establish `hφ2 : (M.totient : ℝ) ≤ M` using `by exact_mod_cast Nat.totient_le M`. Establish `hθ : θ = 0 ∨ ((θ = 1 ∨ θ = -1) ∧ 7 / 8 ≤ β ∧ c / (M : ℝ) ^ 3 ≤ 1 - β)`. Break down `hD with h | ⟨χ, hχ, hb'⟩` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative.
 
-Conclude with `Or.inl h.1`. Take `⟨-, h78, -, -, hS⟩` from `hB χ β hχ`. Use `Or.inr ⟨sign_of_sq_eq_one χ hχ.1 b hb θ hb', h78, le_trans ?_ hS⟩` and prove the remaining obligations. Establish `hl : 0 < Real.log M` using `Real.log_pos (by linarith)`. Establish `hl2 : Real.log M ≤ M` using `(Real.log_le_sub_one_of_pos (by linarith)).trans (by linarith)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `div_le_div_of_nonneg_left hc.le (by positivity)` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Use `hQ M M.totient β θ (fun n => n ≡ b [MOD M]) hM3 hφ1 hφ2 hθ (fun u hu => by` as an intermediate fact. Use `hP M b θ β u hM hb hD hu` as an intermediate fact. Unfold `psiAP at this`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `this) X hX` and compare the differences between its conclusion and the goal. Use `this` and compare the differences between its conclusion and the goal.
+Apply an available result and prove the equalities needed to match it to the conclusion.
 -/
 theorem primesRel_holds : GlobalTheory.Lin.PrimesRel := by
   obtain ⟨a, ha, hA⟩ := GlobalTheory.T.exceptionalDirichletZero_unique_zeroFreeRegion

@@ -23,15 +23,13 @@ namespace GlobalTheory.OrthBcSum
 variable {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} {σ : k →+* ℂ}
 
 /- English proof (translation)
-Establish `hm` using `(ChartGlue.isOpen_over c.e (isOpen_ptsIn (U ⊓ a.U))).mem_nhds (ChartGlue.mem_over c.e hy (mem_ptsIn_inf.2 ⟨hU, ha⟩))`. Set `A : CxPts p σ → Matrix (Fin r ⊕ Fin s) (Fin r ⊕ Fin s) ℂ` to `fun z => Matrix.of fun i j => (a.mid hS).crd p σ (f j) z (finSumFinEquiv i)`. Establish `hA : MInfAt A y` using `fun i j => (a.mid hS).vInfAt_crd _ hU ha _`. Establish `hG (z : CxPts p σ) (hz : z ∈ ptsIn p σ U) (hz' : z ∈ ptsIn p σ a.U) : h.gram f z = chg (A z) (h.gram a.frame z)`. Rewrite using `[h.gram_eq (a.mid hS) hz' _ hz, h.gram_frame hS a hz']`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(chg_submatrix (Matrix.of fun i j => (a.mid hS).crd p σ (f j) z i) _ finSumFinEquiv id).symm`. Rewrite using `[extTrace_congr (K' := fun v => chg (A (c.e.symm v)) (h.gram a.frame (c.e.symm v))) (eventually_of_mem hm fun v hv => hG _ (mem_ptsIn_inf.1 hv.2).1 (mem_ptsIn_inf.1 hv.2).2)]`. Use `extTrace_chg (((H.gram _ ha).mContDiffAt c hy).of_le (by norm_cast)) (h.eventually_posDef hS a c hy ha) ((hA.mContDiffAt c hy).of_le (by norm_cast)) ?_ (fun η => Matrix.ext fun i j => ?_) (eventually_of_mem hm fun v hv => ?_)` and prove the remaining obligations. Rewrite using `[c.e.left_inv hy]`. Rewrite `hd` using `[hG y hU ha, det_chg]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Ne.isUnit fun e => hd ?_` and prove the remaining obligations. Simplify using `[e]`. Conclude with `congr($(dbar_eq_zero (c.differentiableAt_ev _ hy (mem_ptsIn_inf.2 ⟨hU, ha⟩))) η)`. Take `⟨hz, hz'⟩` from `mem_ptsIn_inf.1 hv.2`. Use extensionality with `i j`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition.
 
-Take `⟨t, e⟩` from `hf j`. Express the relevant statement in the definitionally equal form `(a.mid hS).crd p σ (f (.inl j)) _ (finSumFinEquiv (.inr i)) = 0`. Rewrite using `[← e, (a.mid hS).crd_app a.sub S.f _ hz hz']`. Simplify using `only [mulVec, dotProduct, of_apply]`. Use `Finset.sum_eq_zero fun b _ => mul_eq_zero_of_left ?_ _` and prove the remaining obligations.
-
-Conclude with `(a.crd_frame hS hz' (.inr i) (.inl b)).trans (by simp)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem bcForm_eq_of_family {S : ShortComplex X.Modules} {r s : ℕ} {h : Met p σ S.X₂ (r + s)} (hS : S.ShortExact)
     (H : h.IsCInf) (a : AdaptedChart S r s) {U : X.Opens} (f : Fin r ⊕ Fin s → Γ(S.X₂, U))
@@ -71,9 +69,9 @@ section Flag
 variable {E : X.Modules} {r : ℕ} (fl : Vert.Flag E r)
 
 /- English proof (translation)
-Proceed by induction on `j using Fin.induction with`. Consider the case `zero`. Take `rfl : i = 0` from `le_antisymm hij (Fin.zero_le _)`. Conclude with `⟨𝟙 _, Category.id_comp _⟩`. Consider the case `succ j ih`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Break down `hij.eq_or_lt with rfl | hlt` into its components or cases. Conclude with `⟨𝟙 _, Category.id_comp _⟩`. Take `⟨t, ht⟩` from `ih (Fin.le_castSucc_iff.2 hlt)`. Conclude with `⟨t ≫ fl.step j, by rw [Category.assoc, fl.step_ι, ht]⟩`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_incl {i j : Fin (r + 1)} (hij : i ≤ j) : ∃ t : fl.F i ⟶ fl.F j, t ≫ fl.ι j = fl.ι i := by
   induction j using Fin.induction with
@@ -87,7 +85,7 @@ theorem exists_incl {i j : Fin (r + 1)} (hij : i ≤ j) : ∃ t : fl.F i ⟶ fl.
       exact ⟨t ≫ fl.step j, by rw [Category.assoc, fl.step_ι, ht]⟩
 
 /- English proof (translation)
-Take `⟨t, ht⟩` from `exists_incl fl hij`. Conclude with `⟨t.app U s, congr(($ht).app U s)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_app_of_le {U : X.Opens} {i j : Fin (r + 1)} (hij : i ≤ j) (s : Γ(fl.F i, U)) :
     ∃ t : Γ(fl.F j, U), (fl.ι j).app U t = (fl.ι i).app U s := by
@@ -95,15 +93,13 @@ theorem exists_app_of_le {U : X.Opens} {i j : Fin (r + 1)} (hij : i ≤ j) (s : 
   exact ⟨t.app U s, congr(($ht).app U s)⟩
 
 /- English proof (translation)
-Proceed by induction on `n using Fin.induction with`. Consider the case `zero`. Take `⟨U, u, hx, hu⟩` from `fl.isVB 0 x`. Conclude with `⟨U, u, hx, hu, fun j => j.elim0⟩`. Consider the case `succ n ih`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Take `⟨U, u, hx, hu, hs⟩` from `ih`. Take `⟨a, ha⟩` from `VBExt.exists_adaptedChart (VMetric.stepSeq_shortExact fl n) (fl.isVB n.castSucc) (fl.isVB_gr n) x`. Establish `hf` using `VBExt.isFrame_sumElim (VMetric.stepSeq_shortExact fl n) (hu.res (inf_le_left (b := a.U))) (t := fun j => resM _ inf_le_right (a.t j)) (by`. Simplify using `only [app_resM]`. Conclude with `a.ht.res inf_le_right)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨U ⊓ a.U, _, ⟨hx, ha⟩, hf.comp_equiv (finSumFinEquiv (m := n) (n := 1)).symm, fun j m hm => ?_⟩` and prove the remaining obligations. Take `⟨j, rfl⟩` from `(finSumFinEquiv (m := n) (n := 1)).surjective j`. Simplify using `only [Function.comp_apply, Equiv.symm_apply_apply]`. Break down `j with j | j` into its components or cases. Take `⟨t, ht⟩` from `hs j m hm`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨resM _ inf_le_left t, ?_⟩` and prove the remaining obligations. Rewrite using `[app_resM, ht, ← app_resM]`. Conclude with `congr(($(fl.step_ι n)).app _ _).symm`. Use `exists_app_of_le fl ?_ _` and prove the remaining obligations. Take `rfl : j = 0` from `Subsingleton.elim _ _`.
-
-Conclude with `hm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_frame_step (x : X) (n : Fin (r + 1)) :
     ∃ (U : X.Opens) (u : Fin n → Γ(fl.F n, U)), x ∈ U ∧ IsFrame u ∧
@@ -133,7 +129,7 @@ theorem exists_frame_step (x : X) (n : Fin (r + 1)) :
       exact hm
 
 /- English proof (translation)
-Take `⟨U, u, hx, hu, hs⟩` from `exists_frame_step fl x (Fin.last r)`. Conclude with `⟨U, _, hx, hu.map_iso (fl.ι _), hs⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_frame (x : X) :
     ∃ (U : X.Opens) (u : Fin r → Γ(E, U)), x ∈ U ∧ IsFrame u ∧
@@ -142,7 +138,7 @@ theorem exists_frame (x : X) :
   exact ⟨U, _, hx, hu.map_iso (fl.ι _), hs⟩
 
 /- English proof (translation)
-Introduce and unpack `(a | a) (b | b) h`. Conclude with `congrArg _ (Fin.castLE_injective i.isLt.le h)`. Conclude with `absurd (congrArg Fin.val h) a.isLt.ne`. Conclude with `absurd (congrArg Fin.val h) b.isLt.ne'`. Conclude with `congrArg _ (Subsingleton.elim _ _)`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem emb_injective {m : ℕ} (i : Fin m) : Function.Injective (emb i) := by
   rintro (a | a) (b | b) h
@@ -152,11 +148,11 @@ theorem emb_injective {m : ℕ} (i : Fin m) : Function.Injective (emb i) := by
   · exact congrArg _ (Subsingleton.elim _ _)
 
 /- English proof (translation)
-Use `choose t ht using hu`. Set `f : Fin i ⊕ Fin 1 → Γ(fl.F i.succ, U)` to `Sum.elim (fun j => (fl.step i).app U (t (emb i (.inl j)) i.castSucc j.isLt)) fun j => t (emb i (.inr j)) i.succ (Nat.lt_succ_self _)`. Establish `hf (x) : (fl.ι i.succ).app U (f x) = u (emb i x)`. Break down `x with j | j` into its components or cases. Conclude with `Eq.trans congr(($(fl.step_ι i)).app U _) (ht _ _ _)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Conclude with `ht _ _ _`. Establish `hG (z) (hz : z ∈ ptsIn p σ U) : ((h.stepMet fl i).met σ).gram f z = ((h.met σ).gram u z).submatrix (emb i) (emb i)`. Use extensionality with `a b`. Use `((h.met σ).form_restrict (fl.isSubbundle i.succ) (fl.isVB i.succ) _ _ hz).trans ?_` and prove the remaining obligations. Rewrite using `[hf, hf]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hm` using `(ChartGlue.isOpen_over c.e (isOpen_ptsIn U)).mem_nhds (ChartGlue.mem_over c.e hy hU)`. Rewrite using `[bcMat, ← bcForm_eq_of_family (S := VMetric.stepSeq fl i) (r := i) (s := 1) (h := (h.stepMet fl i).met σ) (VMetric.stepSeq_shortExact fl i) (H.restrict (fl.isSubbundle i.succ) (fl.isVB i.succ) σ) _ f (fun j => ⟨_, rfl⟩) c hy hU (Met.exists_adapted (VMetric.stepSeq_shortExact fl i …`. Conclude with `congrArg formMat (extTrace_congr (eventually_of_mem hm fun v hv => hG _ hv.2))`.
+A detailed English derivation is pending.
 -/
 theorem bcMat_step {h : VMetric p E r} (H : h.IsCInf) (i : Fin r) {U : X.Opens} (u : Fin r → Γ(E, U))
     (hu : ∀ (j : Fin r) (m : Fin (r + 1)), (j : ℕ) < m → ∃ t : Γ(fl.F m, U), (fl.ι m).app U t = u j)
@@ -193,13 +189,13 @@ section Matrices
 variable {ι : Type} {r : ι → ℕ} {g : ℕ} (e : (Σ a, Fin (r a)) ≃ Fin g)
 
 /- English proof (translation)
-Set `φ : Fin i → Fin (e ⟨a, i⟩)` to `fun j => ⟨e ⟨a, emb i (.inl j)⟩, he a (show emb i (.inl j) < i from j.isLt)⟩`. Establish `hφ : Function.Injective φ` using `fun j j' h => Sum.inl_injective (emb_injective i ((he a).injective (Fin.ext (Fin.ext_iff.1 h :))))`. Set `ε : Fin i ⊕ ((Set.range φ)ᶜ : Set _) ≃ Fin (e ⟨a, i⟩)` to `(Equiv.sumCongr (Equiv.ofInjective φ hφ) (Equiv.refl _)).trans (Equiv.Set.sumCompl _)`. Establish `h₁ (x : Fin i ⊕ Fin 1) : emb (e ⟨a, i⟩) (Sum.map (fun j => ε (.inl j)) id x) = e ⟨a, emb i x⟩`. Apply the tactic sequence `rcases x with j | j <;> rfl`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `h₂ (b : ((Set.range φ)ᶜ : Set _)) : ∃ a' j, a' ≠ a ∧ emb (e ⟨a, i⟩) (.inl (ε (.inr b))) = e ⟨a', j⟩`. Take `⟨⟨a', j⟩, hj⟩` from `e.surjective (emb (e ⟨a, i⟩) (.inl b.1))`. Use `⟨a', j, ?_, hj.symm⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Establish `hlt : j < i` using `(he a').lt_iff_lt.1 (hj ▸ b.1.isLt : e ⟨a', j⟩ < e ⟨a', i⟩)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Conclude with `b.2 ⟨⟨j, hlt⟩, Fin.ext (Fin.ext_iff.1 hj :)⟩`. Use `(quotGram_extTrace_of_orthogonal_summand W _ _ _ _ ε).2 _ _ z (hK.mono fun v ⟨hp, hv⟩ => ⟨?_, ?_, ?_⟩)` and prove the remaining obligations. Use extensionality with `x x'`. Simplify using `only [submatrix_apply, h₁]`. Conclude with `(congrFun (congrFun hv ⟨a, _⟩) ⟨a, _⟩).trans (blockDiagonal'_apply_eq _ _ _ _)`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `x b`. Take `⟨a', j, ha, hb⟩` from `h₂ b`. Simplify using `only [submatrix_apply, h₁, hb]`. Conclude with `⟨(congrFun (congrFun hv ⟨a, _⟩) ⟨a', _⟩).trans (blockDiagonal'_apply_ne _ _ _ ha.symm), (congrFun (congrFun hv ⟨a', _⟩) ⟨a, _⟩).trans (blockDiagonal'_apply_ne _ _ _ ha)⟩`. Conclude with `(posDef_subGram (hp.submatrix (emb_injective _))).det_pos.ne'.isUnit`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem extTrace_block (he : ∀ a, StrictMono fun i : Fin (r a) => e ⟨a, i⟩) {W : Type} [NormedAddCommGroup W]
     [NormedSpace ℂ W] [NormedSpace ℝ W] [IsScalarTower ℝ ℂ W] (K : W → Matrix (Fin g) (Fin g) ℂ)
@@ -241,23 +237,21 @@ variable {ι : Type} {L : X.Modules} {g : ℕ} {hL : VMetric p L g} {E : ι → 
   {e : (Σ a, Fin (r a)) ≃ Fin g}
 
 /- English proof (translation)
-Use `choose V u₀ hV hu₀ hs₀ using fun a => exists_frame (fl a) (y.1 (IsLocalRing.closedPoint ℂ))`. Set `U : X.Opens` to `Finset.univ.inf V`. Establish `hle (a) : U ≤ V a` using `Finset.inf_le (Finset.mem_univ a)`. Establish `hU : y ∈ ptsIn p σ U`. Use `mem_ptsIn.2 ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `_ ∈ ((Finset.univ.inf V : X.Opens) : Set X)`. Rewrite using `[Opens.coe_finset_inf, Finset.inf_set_eq_iInter]`. Conclude with `Set.mem_iInter₂.2 fun a _ => hV a`. Set `u (a) (j : Fin (r a)) : Γ(E a, U)` to `resM _ (hle a) (u₀ a j)`. Establish `hu (a) : IsFrame (u a)` using `(hu₀ a).res (hle a)`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hs (a) (j : Fin (r a)) (m : Fin (r a + 1)) (hm : (j : ℕ) < m) : ∃ t : Γ((fl a).F m, U), ((fl a).ι m).app U t = u a j`. Take `⟨t, ht⟩` from `hs₀ a j m hm`. Conclude with `⟨resM _ (hle a) t, by rw [app_resM, ht]⟩`. Establish `hp (a) (z) (hz : z ∈ ptsIn p σ U) : (((h a).met σ).gram (u a) z).PosDef`. Use `((h a).met σ).posDef ⟨U, u a, hu a⟩ z hz using 1` and compare the differences between its conclusion and the goal.
+Supply the required witnesses or components. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Introduce a local definition for the expression.
 
-Use extensionality with `i j`. Conclude with `((h a).met σ).form_frame ⟨U, u a, hu a⟩ hz i j`. Set `b (n : Fin g) : Γ(L, U)` to `(T (e.symm n).1).app U (u _ (e.symm n).2)`. Establish `hb (z : Σ a, Fin (r a)) : b (e z) = (T z.1).app U (u _ z.2)` using `congrArg (fun z : Σ a, Fin (r a) => (T z.1).app U (u _ z.2)) (e.symm_apply_apply z)`. Establish `hG (z) (hz : z ∈ ptsIn p σ U) : ((hL.met σ).gram b z).submatrix e e = blockDiagonal' fun a => ((h a).met σ).gram (u a) z`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `⟨a, i⟩ ⟨a', j⟩`. Express the relevant statement in the definitionally equal form `(hL.met σ).form (b _) (b _) z = _`. Rewrite using `[hb, hb]`. Distinguish the cases in `ha : a = a'`. Substitute `ha` using the available equality.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[blockDiagonal'_apply_eq]`. Conclude with `hT.1 a σ U _ _ z hz`. Conclude with `(hT.2 a a' ha σ U _ _ z hz).trans (blockDiagonal'_apply_ne _ _ _ ha).symm`. Establish `hP (z) (hz : z ∈ ptsIn p σ U) : ((hL.met σ).gram b z).PosDef`. Use `(posDef_blockDiagonal' fun a => hp a z hz).submatrix e.symm.injective` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite `this` using `[← hG z hz, submatrix_submatrix, Equiv.self_comp_symm, submatrix_id_id]`. Then use the resulting hypothesis. Establish `hbs (n : Fin g) (m : Fin (g + 1)) (hm : (n : ℕ) < m) : ∃ t : Γ(w.F m, U), (w.ι m).app U t = b n`. Take `⟨z, rfl⟩` from `e.surjective n`. Take `⟨t, ht⟩` from `hs z.1 z.2 z.2.succ (Nat.lt_succ_self _)`. Take `⟨t', ht'⟩` from `hw.2 z`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take `⟨s, hs'⟩` from `exists_app_of_le w (show (e z).succ ≤ m from hm) (t'.app U t)`. Use `⟨s, hs'.trans ?_⟩` and prove the remaining obligations. Rewrite using `[hb, ← ht]`. Conclude with `congr(($ht').app U t)`. Establish `hm` using `(ChartGlue.isOpen_over c.e (isOpen_ptsIn U)).mem_nhds (ChartGlue.mem_over c.e hy hU)`.
-
-Simplify using `only [flagMat]`. Rewrite using `[← e.sum_comp, Fintype.sum_sigma]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[bcMat_step w HL _ b hbs c hy hU (hP y hU), bcMat_step (fl a) (H a) i (u a) (hs a) c hy hU (hp a y hU)]`. Conclude with `congrArg formMat (extTrace_block e hw.1 _ (fun a v => ((h a).met σ).gram (u a) (c.e.symm v)) _ (eventually_of_mem hm fun v hv => ⟨hP _ hv.2, hG _ hv.2⟩) a i)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem flagMat_eq_sum [Fintype ι] (HL : hL.IsCInf) (H : ∀ a, (h a).IsCInf) (hT : OrthEmb hL h T)
     (hw : Adapted T fl w e) {D : ℕ} (c : AlgChart p σ D) {y : CxPts p σ} (hy : y ∈ c.e.source) :
@@ -313,9 +307,9 @@ theorem flagMat_eq_sum [Fintype ι] (HL : hL.IsCInf) (H : ∀ a, (h a).IsCInf) (
     (eventually_of_mem hm fun v hv => ⟨hP _ hv.2, hG _ hv.2⟩) a i)
 
 /- English proof (translation)
-Use `hX.finite_emb` as an intermediate fact. Use `Fintype.ofFinite (k →+* ℂ)` as an intermediate fact. Simplify using `only [bcPair, finsum_eq_sum_of_fintype]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `key` using `FlagCmp.total_sum hX (hG σ) (fun _ => 1) fun a => FlagCmp.isDens_flagDens (H a) (fl a) N d σ`. Simplify using `only [one_mul] at key`. Use `(total_congr fun c y hy => ?_).trans key` and prove the remaining obligations. Rewrite using `[flagDens, flagMat_eq_sum HL H hT hw c hy, mix_sum]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem bcPair_eq_sum_of_genSmooth [Fintype ι] (HL : hL.IsCInf) (H : ∀ a, (h a).IsCInf) (hT : OrthEmb hL h T)
     (hw : Adapted T fl w e) {d : ℕ} (hX : IsArithVar p (d + 1)) (hG : GenSmooth p (d + 1)) (N : HermLB p) :
@@ -332,11 +326,11 @@ theorem bcPair_eq_sum_of_genSmooth [Fintype ι] (HL : hL.IsCInf) (H : ∀ a, (h 
   rfl
 
 /- English proof (translation)
-Establish `hc` using `m.isVB.mem_pick y`. Simplify using `only [m.form_eq _ hc _ _ hU] at h₀`. Rewrite using `[m.form_eq _ hc _ _ hy, Chart.crd_app _ ⟨U, f, hf⟩ u t hy hU, Chart.crd_app _ ⟨U, f', hf'⟩ u' t' hy hU]`. Generalize the expression as in `(Chart.crd p σ ⟨U, f, hf⟩ t y) = v`. Generalize the expression as in `(Chart.crd p σ ⟨U, f', hf'⟩ t' y) = v'`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Use `set A : Matrix (Fin g) (Fin s) ℂ := Matrix.of fun a b => (m.isVB.pick y).crd p σ (u.app U (f b)) y a`. Use `set B : Matrix (Fin g) (Fin s') ℂ := Matrix.of fun a b => (m.isVB.pick y).crd p σ (u'.app U (f' b)) y a`. Establish `hAB : Aᵀ * m.G (m.isVB.pick y) y * Bᴴᵀ = 0`. Use extensionality with `i j`. Use `Eq.trans ?_ (h₀ i j)` and prove the remaining obligations.
+Establish an intermediate fact. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[Matrix.mul_assoc]`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `HermFrame.form _ (A *ᵥ v) (B *ᵥ v') = 0`. Rewrite using `[HermFrame.form, star_mulVec, ← mulVec_transpose, mulVec_mulVec, dotProduct_comm, dotProduct_mulVec, ← mulVec_transpose, mulVec_mulVec, ← Matrix.mul_assoc, hAB]`. Simplify using the standard rewrite rules.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem form_app_eq_zero {F F' : X.Modules} {s s' : ℕ} (m : Met p σ L g) {u : F ⟶ L} {u' : F' ⟶ L} {U : X.Opens}
     {f : Fin s → Γ(F, U)} {f' : Fin s' → Γ(F', U)} (hf : IsFrame f) (hf' : IsFrame f') {y : CxPts p σ}
@@ -362,11 +356,11 @@ theorem form_app_eq_zero {F F' : X.Modules} {s s' : ℕ} (m : Met p σ L g) {u :
 variable {Y : Scheme.{0}} {q : Y ⟶ Sp k}
 
 /- English proof (translation)
-Use `⟨fun a σ V s t z hz => ?_, fun a b hab σ V s t z hz => ?_⟩` and prove the remaining obligations. Establish `hc` using `((h a).met σ).isVB.mem_pick (PtsOver.map π v _ z)`. Use `form_app_of_gram (Chart.pull _ ((h a).met σ).isVB π) hc ?_ s t hz` and prove the remaining obligations. Use `Eq.trans ?_ (((h a).met σ).pull_G π v _ hc).symm` and prove the remaining obligations. Use extensionality with `i j`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Rewrite using `[← ((h a).met σ).form_frame _ hc, ← hT.1 a σ _ _ _ _ hc, ← (hL.met σ).form_pull π v _ _ le_rfl hc, ← QCoh.pullback_map_app_pullbackSections, ← QCoh.pullback_map_app_pullbackSections]`. Both sides reduce to the same expression. Establish `hc` using `((h a).met σ).isVB.mem_pick (PtsOver.map π v _ z)`. Establish `hc'` using `((h b).met σ).isVB.mem_pick (PtsOver.map π v _ z)`. Establish `hU` using `mem_ptsIn_inf.2 ⟨hc, hc'⟩`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `c₁ : Chart (E a) (r a)` to `⟨_, _, (((h a).met σ).isVB.pick (PtsOver.map π v _ z)).isFrame.res (inf_le_left (b := (((h b).met σ).isVB.pick (PtsOver.map π v _ z)).U))⟩`. Set `c₂ : Chart (E b) (r b)` to `⟨_, _, (((h b).met σ).isVB.pick (PtsOver.map π v _ z)).isFrame.res (inf_le_right (a := (((h a).met σ).isVB.pick (PtsOver.map π v _ z)).U))⟩`. Use `form_app_eq_zero _ (c₁.pull ((h a).met σ).isVB π).isFrame (c₂.pull ((h b).met σ).isVB π).isFrame hU (fun i j => ?_) s t hz` and prove the remaining obligations. Rewrite using `[← hT.2 a b hab σ _ (c₁.e i) (c₂.e j) _ hU, ← (hL.met σ).form_pull π v _ _ le_rfl hU, ← QCoh.pullback_map_app_pullbackSections, ← QCoh.pullback_map_app_pullbackSections]`. Both sides reduce to the same expression.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem orthEmb_pull (hT : OrthEmb hL h T) (π : Y ⟶ X) (v : π ≫ p = q) :
     OrthEmb (hL.pull π v) (fun a => (h a).pull π v) fun a => (Scheme.Modules.pullback π).map (T a) := by
@@ -392,7 +386,7 @@ theorem orthEmb_pull (hT : OrthEmb hL h T) (π : Y ⟶ X) (v : π ≫ p = q) :
     rfl
 
 /- English proof (translation)
-Use `⟨hw.1, fun z => ?_⟩` and prove the remaining obligations. Take `⟨t, ht⟩` from `hw.2 z`. Conclude with `⟨(Scheme.Modules.pullback π).map t, ((Functor.map_comp _ _ _).symm.trans (congrArg _ ht)).trans (Functor.map_comp _ _ _)⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem adapted_pull (hw : Adapted T fl w e) (π : Y ⟶ X) :
     Adapted (fun a => (Scheme.Modules.pullback π).map (T a)) (fun a => (fl a).pull π) (w.pull π) e := by
@@ -402,7 +396,7 @@ theorem adapted_pull (hw : Adapted T fl w e) (π : Y ⟶ X) :
     (Functor.map_comp _ _ _)⟩
 
 /- English proof (translation)
-Take `⟨Z, ρ, _, hρ, hG⟩` from `GenSmoothCover.exists_isCov_genSmooth hP k X p (d + 1) hX`. Establish `key` using `bcPair_eq_sum_of_genSmooth (HL.pull ρ rfl) (fun a => (H a).pull ρ rfl) (orthEmb_pull hT ρ rfl) (adapted_pull hw ρ) hρ.1 hG (N.pull ρ rfl)`. Rewrite `key` using `[MixDensPull.bcPair_pull k X Z p d ρ hX hρ L g hL HL w N, Finset.sum_congr rfl fun a _ => MixDensPull.bcPair_pull k X Z p d ρ hX hρ (E a) (r a) (h a) (H a) (fl a) N, ← Finset.mul_sum]`. Conclude with `mul_left_cancel₀ (Nat.cast_ne_zero.2 hρ.2.2) key`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bcPair_eq_sum_of_isArithVar (hP : Published.Principalisation) [IsIntegral X] [Fintype ι] (HL : hL.IsCInf)
     (H : ∀ a, (h a).IsCInf) (hT : OrthEmb hL h T) (hw : Adapted T fl w e) {d : ℕ} (hX : IsArithVar p (d + 1))
@@ -417,7 +411,7 @@ theorem bcPair_eq_sum_of_isArithVar (hP : Published.Principalisation) [IsIntegra
 end Orth
 
 /- English proof (translation)
-Introduce `hP _ _ _ _ _ _ _ _ _ HL _ _ _ H _ _ _ _ hT hw _ _ _ τ v _ hY N` and use `bcPair_eq_sum_of_isArithVar hP (HL.pull τ v) (fun a => (H a).pull τ v) (orthEmb_pull hT τ v) (adapted_pull hw τ) hY N`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem bcPair_pull_eq_sum : Published.Principalisation → ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) (ι : Type) [Fintype ι] (L : X.Modules) (g : ℕ) (hL : VMetric p L g), hL.IsCInf → ∀ (E : ι → X.Modules) (r : ι → ℕ) (h : ∀ a, VMetric p (E a) (r a)), (∀ a, (h a).IsCInf) → ∀ (T : ∀ a, E a ⟶ L) (fl : ∀ a, Vert.Flag (E a) (r a)) (w : Vert.Flag L g) (e : (Σ a, Fin (r a)) ≃ Fin g), OrthEmb hL h T → Adapted T fl w e → ∀ (Y : Scheme.{0}) [IsIntegral Y] (q : Y ⟶ Sp k) (τ : Y ⟶ X) (v : τ ≫ p = q) (d : ℕ), IsArithVar q (d + 1) → ∀ N : HermLB q, bcPair (hL.pull τ v) (w.pull τ) N d = ∑ a, bcPair ((h a).pull τ v) ((fl a).pull τ) N d :=
   fun hP _ _ _ _ _ _ _ _ _ HL _ _ _ H _ _ _ _ hT hw _ _ _ τ v _ hY N =>

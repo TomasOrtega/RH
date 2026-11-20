@@ -16,25 +16,21 @@ namespace GlobalTheory.ExpandSummX
 open scoped Classical
 
 /- English proof (translation)
-Use `haveI := GlobalTheory.WeilM.discreteTopology_denomLattice E (Fin n) one_pos`. Use `set L := GlobalTheory.WeilM.denomLattice E (Fin n) 1 with hLdef`. Use `set r := Module.finrank ℤ L + 1 with hr`. Establish `hL` using `GlobalTheory.SchwartzMajorant.summable_one_add_norm_pow_inv L`. Use `⟨r, fun M h hM hsupp B hdec => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hB : 0 ≤ B` using `le_trans (by positivity) (hdec 0)`. Set `S : Set (Fin n → E)` to `{ξ | ∀ i, ∃ o : 𝓞 E, (M : E) * ξ i = o}`. Set `v : (Fin n → E) → (Fin n → mixedEmbedding.mixedSpace E)` to `fun ξ i => mixedEmbedding E ((M : E) * ξ i)`. Establish `hmem : ∀ ξ ∈ S, v ξ ∈ L`. Introduce `ξ hξ i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨o, ho⟩` from `hξ i`. Rewrite using `[Nat.cast_one, one_smul]`. Use `show mixedEmbedding E ((M : E) * ξ i) ∈ mixedEmbedding.integerLattice E`. Rewrite using `[ho]`. Conclude with `⟨o, rfl⟩`.
+Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `j : S → L` to `fun ξ => ⟨v ξ.1, hmem ξ.1 ξ.2⟩`. Establish `hMF : (M : E) ≠ 0` using `by exact_mod_cast (show M ≠ 0 by omega)`. Establish `hj : Function.Injective j` using `fun a b hab => Subtype.ext (funext fun i => mul_left_cancel₀ hMF (mixedEmbedding_injective E (congrFun (congrArg Subtype.val hab) i)))`. Set `G : (Fin n → E) → ℝ` to `S.indicator fun ξ => B * (M : ℝ) ^ r * ((1 + ‖v ξ‖) ^ r)⁻¹`. Establish `hGs : Summable G`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[← summable_subtype_iff_indicator]`. Conclude with `(hL.comp_injective hj).mul_left _`. Establish `hbound : ∀ ξ : Fin n → E, ‖h ξ‖ ≤ G ξ`. Introduce `ξ`. Distinguish the cases in `h0 : h ξ = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h0, norm_zero]`. Conclude with `Set.indicator_nonneg (fun ξ _ => by positivity) ξ`. Establish `hξ : ξ ∈ S` using `hsupp ξ h0`. Rewrite using `[show G ξ = B * (M : ℝ) ^ r * ((1 + ‖v ξ‖) ^ r)⁻¹ from Set.indicator_of_mem hξ _]`. Use `set s := ∑ i, ∑ w : InfinitePlace E, w (ξ i) with hs`.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs0 : 0 ≤ s` using `Finset.sum_nonneg fun i _ => Finset.sum_nonneg fun w _ => AbsoluteValue.nonneg _ _`. Establish `hv` using `GlobalTheory.RatPointSum.norm_mixedEmbedding_nat_mul_le M ξ`. Establish `hM1 : (1 : ℝ) ≤ M` using `by exact_mod_cast hM`. Establish `h1 : 1 + ‖v ξ‖ ≤ (M : ℝ) * (1 + s)` using `by show 1 + ‖(fun i => mixedEmbedding E ((M : E) * ξ i))‖ ≤ _`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hpos : 0 < (1 + s) ^ r` using `by positivity`. Establish `hvpos : 0 < (1 + ‖v ξ‖) ^ r` using `by positivity`. Establish `h2 : ‖h ξ‖ ≤ B / (1 + s) ^ r`. Rewrite using `[le_div_iff₀ hpos]`. Conclude with `hdec ξ`.
-
-Use `h2.trans ?_` and prove the remaining obligations. Rewrite using `[div_eq_mul_inv, mul_assoc]`. Use `mul_le_mul_of_nonneg_left ?_ hB` and prove the remaining obligations. Rewrite using `[← div_eq_mul_inv, le_div_iff₀ hvpos, inv_mul_eq_div, div_le_iff₀ hpos]`. Rewrite using `[← mul_pow]`.
-
-Conclude with `pow_le_pow_left₀ (by positivity) h1 r`. Conclude with `Summable.of_norm_bounded hGs hbound`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem summable_of_denom_decay' (E : Type) [Field E] [NumberField E] (n : ℕ) :
     ∃ K : ℕ, ∀ (N : ℕ) (h : (Fin n → E) → ℂ), 1 ≤ N → (∀ ξ, h ξ ≠ 0 → ∀ i, ∃ o : 𝓞 E, (N : E) * ξ i = o) →
@@ -89,13 +85,11 @@ theorem summable_of_denom_decay' (E : Type) [Field E] [NumberField E] (n : ℕ) 
   exact Summable.of_norm_bounded hGs hbound
 
 /- English proof (translation)
-Introduce `hKP F E _ _ _ _ _ σ B n d₁ X W₁ M₁ hM₁ n₁ X₁ H j₀ j₁ M₂ hH hM₂ e' he hB hXW φ hφ`. Take `⟨N, hN, hsupp⟩` from `GlobalTheory.T.eigen_relation_models_matrix_set hKP F E σ B n d₁ X W₁ M₁ hM₁ n₁ X₁ H j₀ j₁ M₂ hH hM₂ e' he hB hXW φ hφ`. Take `⟨K, hA⟩` from `summable_of_denom_decay' E d₁`. Take `⟨C, hC⟩` from `GlobalTheory.T.model_eigen_relation_second_form hKP F E σ B n d₁ X W₁ M₁ hM₁ n₁ X₁ H j₀ j₁ M₂ hH hM₂ e' he hB hXW φ hφ N K hN`. Establish `hz : ∀ w : Fin d₁ → E, thetaSum F (e' (M₁.co.rho B.ψ (Matrix.vecMulVec (incV F H.y) (incV F w)) φ)) ≠ 0 → ∀ i, ∃ o : 𝓞 E, (N : E) * w i = o`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `w h0`. Use `hsupp w fun h1 => h0 ?_` and prove the remaining obligations. Rewrite using `[h1]`. Simplify using `[thetaSum]`. Use `hA N _ hN hz (max C 0) fun w => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `hw : ∀ i, ∃ o : 𝓞 E, (N : E) * w i = o`. Conclude with `(hC w hw).trans (le_max_left _ _)`. Establish `h0 : thetaSum F (e' (M₁.co.rho B.ψ (Matrix.vecMulVec (incV F H.y) (incV F w)) φ)) = 0`. Assume the negation of the conclusion as `h`. Conclude with `hw (hz w h)`.
-
-Rewrite using `[h0, norm_zero, zero_mul]`. Conclude with `le_max_right _ _`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (n d₁ : ℕ) (X : Spc F E n) (W₁ : Spc F E d₁) (M₁ : Model σ X W₁), M₁.IsGood B.ψ →

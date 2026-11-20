@@ -10,43 +10,41 @@ open UpperTheory.V UpperTheory.V.Base UpperTheory.V.HV UpperTheory.V.Alg UpperTh
 open UpperTheory.V.Th.ReducibleThreeDim in
 
 /- English proof (translation)
-Introduce `hC hK hRig Ω _ _ _ K _ _ _ _ l _ c N _ e ψ D U g₁ hm S f₀ hf₀ ι hII hmod`. Establish `h` using `isPt_push D hm S f₀ hf₀`. Establish `hR` using `hRig D hm S f₀ hf₀ ι hII`. Generalize the expression as in `push f₀ S.r.hom = r at h hR hII hmod ⊢`. Take `⟨hcc, hηc, -, hlc, -, -, -, hCM, -⟩` from `dat_facts D`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result.
 
-Take `⟨h11, hdet, W, hext, hWc, -, hW, hWd⟩` from `typeII_facts hC D hm h hII`. Establish `hW' : ∀ g, (W g).val = wOf (r g)` using `hW`. Establish `hblk0 : ∀ g ∈ D.η.ker, IsBlockSL2Embedding (r g)`. Introduce `g hg`. Use `⟨(r g).mat 0 0, (r g).mat 0 2, (r g).mat 2 0, (r g).mat 2 2, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `hdet g hg` as an intermediate fact. Rewrite `this` using `[Matrix.det_fin_two]`. Conclude with `this`. Apply the tactic sequence `ext i j fin_cases i <;> fin_cases j <;> first`. Consider the case `rfl`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Treat this case separately. Treat this case separately.
 
-Consider the case `exact h11 g hg`. Consider the case `exact hII.1 g hg _ _ (by decide)`. Establish `hblk : ∀ g, IsBlockSL2Embedding (r g)`. Introduce `g`. Break down `Int.units_eq_one_or (D.η g) with hg | hg` into its components or cases.
+Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Conclude with `hblk0 g hg`. Establish `hk : D.η (g * D.cc⁻¹) = 1` using `by rw [map_mul, map_inv, hg, hηc, mul_inv_cancel]`. Establish `e1 : r g = r (g * D.cc⁻¹) * r D.cc` using `by rw [← map_mul, inv_mul_cancel_right]`. Establish `hr : (r (g * D.cc⁻¹)).right = 1` using `(h.mult _).trans hk`. Establish `e2 : (r g).mat = (r (g * D.cc⁻¹)).mat`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hrc` using `h.norm.atc`. Rewrite using `[e1]`. Simplify using `only [GG.mat] at hrc ⊢`. Rewrite using `[SemidirectProduct.mul_left, hr, sgnAct_one, Units.val_mul, hrc, Matrix.mul_one]`. Take `⟨a, b, c, d, h1, h2⟩` from `hblk0 _ hk`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Conclude with `⟨a, b, c, d, h1, e2.trans h2⟩`. Set `θ : G ℚ Ω →* (PadicAlgCl l)ˣ` to `(Units.map (Int.castRingHom (PadicAlgCl l)).toMonoidHom).comp D.η`. Establish `hθ0 : ∀ g, (θ g : PadicAlgCl l) = ((D.η g : ℤˣ) : ℤ)` using `fun g => rfl`. Establish `hθ : ∀ g, (θ g : PadicAlgCl l) = if (r g).right = 1 then 1 else -1`. Introduce `g`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[hθ0, h.mult g]`. Apply the tactic sequence `rcases Int.units_eq_one_or (D.η g) with hg | hg <;> simp [hg]`. Take `⟨hB1, hB2⟩` from `UpperTheory.V.Z.Kato.WeilSphericalRecords.kUse hK D (θ := θ) (UpperTheory.V.Z.Kato.used_of hC D hm h hII W hext hWc hW hWd ι (hmod W hext)) ι (hmod W hext)`. Use `haveI : IsAlgClosure K Ω := by haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ haveI : Algebra.IsAlgebraic ℚ Ω := IsAlgClosure.isAlgebraic`. Conclude with `⟨inferInstance, Algebra.IsAlgebraic.tower_top (K := ℚ) K⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hker : ∀ s : G K Ω, D.η (s.restrictScalars ℚ) = 1` using `fun s => by`. Establish `: galEmb ℚ K Ω s ∈ D.η.ker` using `D.η_ker ▸ galEmb_mem ℚ K Ω s`. Conclude with `this`. Establish `hrc : (r D.cc).right = -1` using `(h.mult _).trans hηc`. Establish `hWcc : (W D.cc).val = !![-1, 0; 0, 1]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hx' : (r D.cc).mat = !![1, 0, 0; 0, 1, 0; 0, 0, 1]`. Apply the tactic sequence `rw [h.norm.atc]; ext i j; fin_cases i <;> fin_cases j <;> simp`. Rewrite using `[hW', wOf_eq hx', if_neg (by rw [hrc]; decide), neg_zero]`. Establish `hA : Af.BlochKatoSelmerVanishes l (repA r hblk)`. Use `hR W hWc hext hWd (hmod W hext) θ hθ0 _ ⟨D.cc, Jgl _ 2, D.conj, fun s s' hs => ?_, fun s X => ?_, fun X => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `e1 : W (s'.restrictScalars ℚ) = W D.cc * W (s.restrictScalars ℚ) * W D.cc`. Rewrite using `[hs, inv_eq_of_mul_eq_one_right hcc, map_mul, map_mul]`. Establish `e2` using `hWd (s.restrictScalars ℚ)`. Express the relevant statement in the definitionally equal form `(W (s.restrictScalars ℚ)).valᵀ * Jmat _ 2 * (W (s'.restrictScalars ℚ)).val = (θ (s.restrictScalars ℚ) : PadicAlgCl l) • Jmat _ 2`. Rewrite using `[e1, hθ0, ← e2, Units.val_mul, Units.val_mul, hWcc]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `pair_eq _`. Conclude with `pA_ad_one (hblk _) ((h.mult _).trans (hker s)) _ (hW' _) X`. Conclude with `pA_ad_c h.norm.atc hrc X`. Introduce `γ hγ hbk`. Establish `eA : ∀ g X, pA (adRep r g X) = repA r hblk g (pA X)` using `fun g X => pA_ad (hblk g) X`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `eA' : ∀ g Y, sA (repA r hblk g Y) = adRep r g (sA Y)` using `fun g Y => ad_sA (hblk g) Y`. Establish `t1 : ∀ g v, Loc.colRep (Af.tw W 1) g v = ((if (r g).right = 1 then 1 else 1 : PadicAlgCl l) • wOf (r g)) *ᵥ v` using `fun g v => by`. Rewrite using `[← hW', ite_self]`. Conclude with `congrArg (· *ᵥ v) (Af.tw_val W 1 g)`. Establish `t2 : ∀ g v, Loc.colRep (Af.tw W θ) g v = ((if (r g).right = 1 then 1 else -1 : PadicAlgCl l) • wOf (r g)) *ᵥ v` using `fun g v => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hW', ← hθ]`. Conclude with `congrArg (· *ᵥ v) (Af.tw_val W θ g)`. Establish `eB1 : ∀ g X, pB 1 (adRep r g X) = Loc.colRep (Af.tw W 1) g (pB 1 X)` using `fun g X => by`. Rewrite using `[t1]; exact pB_ad (hblk g) 1 (by ring) X`. Establish `eB1' : ∀ g v, sB 1 (Loc.colRep (Af.tw W 1) g v) = adRep r g (sB 1 v)` using `fun g v => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[t1]; exact ad_sB (hblk g) 1 (by ring) v`. Establish `eB2 : ∀ g X, pB (-1) (adRep r g X) = Loc.colRep (Af.tw W θ) g (pB (-1) X)` using `fun g X => by`. Rewrite using `[t2]; exact pB_ad (hblk g) (-1) (by ring) X`. Establish `eB2' : ∀ g v, sB (-1) (Loc.colRep (Af.tw W θ) g v) = adRep r g (sB (-1) v)` using `fun g v => by`. Rewrite using `[t2]; exact ad_sB (hblk g) (-1) (by ring) v`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hblkz : ∀ g, IsBlockSL2Embedding (r0 D.η D.ΨQ g)` using `fun g => isBlock_reducible_three_dim _ _ g`. Establish `eC : ∀ g X, pC (adRep r g X) = adRep (r0 D.η D.ΨQ) g (pC X)` using `fun g X => by`. Use `(pC_ad (hblk g) X).trans (Eq.trans ?_ (ad_pC (hblkz g) X).symm)` and prove the remaining obligations. Rewrite using `[h.mult g, unitaryThreeReflection_right]`. Establish `eC' : ∀ g X, pC (adRep (r0 D.η D.ΨQ) g X) = adRep r g (pC X)` using `fun g X => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `(pC_ad (hblkz g) X).trans (Eq.trans ?_ (ad_pC (hblk g) X).symm)` and prove the remaining obligations. Rewrite using `[h.mult g, unitaryThreeReflection_right]`. Take `⟨zA, bA⟩` from `bk_map (adRep r) (repA r hblk) pA cont_pA eA hγ hbk`. Take `⟨z1, b1⟩` from `bk_map (adRep r) _ (pB 1) (cont_pB 1) eB1 hγ hbk`. Take `⟨z2, b2⟩` from `bk_map (adRep r) _ (pB (-1)) (cont_pB (-1)) eB2 hγ hbk`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Take `⟨zC, bC⟩` from `bk_map (adRep r) _ pC cont_pC eC hγ hbk`. Take `⟨xA, hxA⟩` from `(mem_coboundaries1 _ _).1 (hA _ zA bA)`. Take `⟨x1, hx1⟩` from `(mem_coboundaries1 _ _).1 (hB1 _ z1 b1)`. Take `⟨x2, hx2⟩` from `(mem_coboundaries1 _ _).1 (hB2 _ z2 b2)`. Take `⟨xC, hxC⟩` from `(mem_coboundaries1 _ _).1 (bloch_kato_nonpositive_weight hC D 0 le_rfl _ zC (fun g => pC_mem (γ g)) bC)`.
-
-Use `(mem_coboundaries1 _ _).2 ⟨sA xA + (2⁻¹ : PadicAlgCl l) • sB 1 x1 + (2⁻¹ : PadicAlgCl l) • sB (-1) x2 + pC xC, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[decomp (2⁻¹ : PadicAlgCl l) (by norm_num) (γ g), hxA g, hx1 g, hx2 g, hxC g]`. Simplify using `only [map_sub, map_add, map_smul, eA', eB1', eB2', eC', smul_sub]`. Normalize the expressions using the abelian group laws.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Kato.WeilSphericalRecords.typeII_of_blochKato_localPoint :
     U3.CohInp → Z.Kato.KatoTwo → Th.RigII → ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {K : Type} [Field K] [NumberField K] [IsCMField K] [Algebra K Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} {N : ℕ} [NeZero N] {e : ℕ} {ψ : DirichletCharacter c.O N} (D : Dat Ω K c e ψ) {U : D.ULoc} {g₁ : G ℚ Ω}, D.Marked g₁ → ∀ (S : D.Ring U g₁) (f : S.R →ₐ[c.O] PadicAlgCl l), IsLocPt f → ∀ ι : Qbar l ≃+* ℂ, TypeII D.η (push f S.r.hom) → (∀ W : G ℚ Ω →* GL (Fin 2) (PadicAlgCl l), D.IsExt (push f S.r.hom) W → D.IsModular ι W) → Af.BlochKatoSelmerVanishes l (adRep (push f S.r.hom)) := by
@@ -155,6 +153,6 @@ theorem UpperTheory.V.Z.Kato.WeilSphericalRecords.typeII_of_blochKato_localPoint
   abel
 
 /- English proof (translation)
-The claim follows from `@UpperTheory.V.Z.Kato.WeilSphericalRecords.typeII_of_blochKato_localPoint`.
+A detailed English derivation is pending.
 -/
 example : type_of% @UpperTheory.V.Z.J.typeII_of_blochKato_localPoint := @UpperTheory.V.Z.Kato.WeilSphericalRecords.typeII_of_blochKato_localPoint

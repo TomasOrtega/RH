@@ -40,11 +40,9 @@ Both sides reduce to the same expression.
 theorem val_smul (η : Γ) (γ : ConjSelf Γ) : val (η • γ) = η * val γ * η⁻¹ := rfl
 
 /- English proof (translation)
-Use extensionality with `η`. Rewrite using `[MulAction.mem_stabilizer_iff, Subgroup.mem_centralizer_singleton_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h'` using `congrArg val h`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h'` using `[val_smul]`. Combine the equalities or inequalities in the displayed calculation. Introduce `h show of (η * val γ * η⁻¹) = γ`. Rewrite using `[h]`. Use `show val γ * η * η⁻¹ = val γ`.
-
-Use `group`.
+Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stabilizer_eq_centralizer (γ : ConjSelf Γ) :
     MulAction.stabilizer Γ γ = Subgroup.centralizer {val γ} := by
@@ -69,7 +67,7 @@ open ConjSelf
 variable {Γ Y : Type} [Group Γ] [MulAction Γ Y]
 
 /- English proof (translation)
-Rewrite using `[← stabilizer_eq_centralizer]`. Use extensionality with `η`. Simplify using `only [MulAction.mem_stabilizer_iff, Subgroup.mem_inf, Prod.smul_def, Prod.ext_iff]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem stabilizer_pair (p : Y × ConjSelf Γ) :
     MulAction.stabilizer Γ p = MulAction.stabilizer Γ p.1 ⊓ Subgroup.centralizer {val p.2} := by
@@ -81,7 +79,7 @@ def pairTerm (F : Y → Γ → ℂ) (p : Y × ConjSelf Γ) : ℂ :=
   ((Nat.card (MulAction.stabilizer Γ p) : ℕ) : ℂ)⁻¹ * F p.1 (val p.2)
 
 /- English proof (translation)
-Unfold `pairTerm`. Rewrite using `[MulAction.stabilizer_smul_eq_stabilizer_map_conj, Subgroup.card_map_of_injective (MulAut.conj η).injective]`. Use `congr 1`. Conclude with `hF η p.1 (val p.2)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem pairTerm_smul (F : Y → Γ → ℂ) (hF : ∀ (η : Γ) (y : Y) (γ : Γ), F (η • y) (η * γ * η⁻¹) = F y γ)
     (η : Γ) (p : Y × ConjSelf Γ) : pairTerm F (η • p) = pairTerm F p := by
@@ -92,7 +90,7 @@ theorem pairTerm_smul (F : Y → Γ → ℂ) (hF : ∀ (η : Γ) (y : Y) (γ : �
   exact hF η p.1 (val p.2)
 
 /- English proof (translation)
-Take `⟨η, hη⟩` from `Quotient.exact (Quotient.out_eq (Quotient.mk (MulAction.orbitRel Γ (Y × ConjSelf Γ)) p))`. Rewrite using `[← hη]`. Conclude with `pairTerm_smul F hF η p`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pairTerm_out (F : Y → Γ → ℂ) (hF : ∀ (η : Γ) (y : Y) (γ : Γ), F (η • y) (η * γ * η⁻¹) = F y γ)
     (p : Y × ConjSelf Γ) :

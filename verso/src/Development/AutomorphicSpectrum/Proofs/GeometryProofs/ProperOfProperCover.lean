@@ -9,15 +9,13 @@ open CategoryTheory AlgebraicGeometry Limits
 namespace GlobalTheory.CompanionTheory.Ar.Approx
 
 /- English proof (translation)
-Establish `huc : UniversallyClosed p`. Prove the components needed by the constructor for the conclusion. Introduce `X' Y' i₁ i₂ f' hpb Z hZ`. Establish `hW : ∀ i, IsPullback (pullback.fst i₁ (π i) ≫ f') (pullback.snd i₁ (π i)) i₂ (π i ≫ p)` using `fun i => (IsPullback.of_hasPullback i₁ (π i)).paste_horiz hpb`. Establish `hc : ∀ i, IsClosedMap ⇑(pullback.fst i₁ (π i) ≫ f')` using `fun i => @UniversallyClosed.universally_isClosedMap _ _ _ (hprop i).toUniversallyClosed _ _ _ _ _ (hW i)`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : ⇑f' '' Z = ⋃ i, ⇑(pullback.fst i₁ (π i) ≫ f') '' (⇑(pullback.fst i₁ (π i)) ⁻¹' Z)`. Use extensionality with `y`. Simplify using `only [Set.mem_image, Set.mem_iUnion, Set.mem_preimage]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Take `⟨i, y', hy'⟩` from `hcov (i₁ x)`. Take `⟨w, hw, -⟩` from `Scheme.Pullback.exists_preimage_pullback x y' hy'.symm`. Use `⟨i, w, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hw]`. Conclude with `hx`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show f' (pullback.fst i₁ (π i) w) = f' x`. Rewrite using `[hw]`. Introduce and unpack `⟨i, w, hw, rfl⟩`. Conclude with `⟨pullback.fst i₁ (π i) w, hw, rfl⟩`. Use `isClosed_iUnion_of_finite fun i => hc i _ (hZ.preimage (pullback.fst i₁ (π i)).continuous) using 1` and compare the differences between its conclusion and the goal.
-
-Conclude with `@IsProper.mk _ _ _ hsep huc hft`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Apply an available result and prove the equalities needed to match it to the conclusion. A detailed English derivation is pending.
 -/
 theorem isProper_of_finite_cover (X S : Scheme.{0}) (p : X ⟶ S) (n : ℕ) (Y : Fin n → Scheme.{0})
     (π : ∀ i, Y i ⟶ X) (hsep : IsSeparated p) (hft : LocallyOfFiniteType p)

@@ -76,11 +76,9 @@ variable {G V V' Y : Type} [Group G] [AddCommGroup V] [Module ℂ V] [AddCommGro
   [AddCommGroup Y] [Module ℂ Y]
 
 /- English proof (translation)
-Introduce `μ μ'`. Establish `key : ∀ v : V, φ.symm (φ v) = v` using `fun v => φ.toLinearEquiv.symm_apply_apply v`. Break down `h (μ.comp φ.symm.toIntertwiningMap) (μ'.comp φ.symm.toIntertwiningMap) with h0 | ⟨c, hc⟩` into its components or cases. Use `left`. Use `LinearMap.ext fun v => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `LinearMap.congr_fun h0 (φ v)` as an intermediate fact. Simplify `this` using `[key]`. Use `right`. Use `⟨c, LinearMap.ext fun v => ?_⟩` and prove the remaining obligations. Use `LinearMap.congr_fun hc (φ v)` as an intermediate fact.
-
-Simplify `this` using `[key]`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem HomLeOne.of_equiv {ρ : Representation ℂ G V} {ρ' : Representation ℂ G V'} {τ : Representation ℂ G Y}
     (φ : ρ.Equiv ρ') (h : HomLeOne ρ' τ) : HomLeOne ρ τ := by
@@ -97,7 +95,7 @@ theorem HomLeOne.of_equiv {ρ : Representation ℂ G V} {ρ' : Representation �
     simpa [key] using this
 
 /- English proof (translation)
-Apply `φ.toLinearEquiv.injective` to reduce the goal to its premises. Establish `h1` using `Representation.IntertwiningMap.isIntertwining _ _ φ.toIntertwiningMap z x`. Rewrite using `[Representation.Equiv.toLinearEquiv_apply, h1, h, map_smul, Representation.Equiv.toLinearEquiv_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem smul_of_equiv {ρ : Representation ℂ G V} {ρ' : Representation ℂ G V'} (φ : ρ.Equiv ρ') {z : G} {c : ℂ}
     (h : ∀ y, ρ' z y = c • y) (x : V) : ρ z x = c • x := by
@@ -110,7 +108,7 @@ end General
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Simplify using `only [torusPt, Pi.mul_apply]`. Rewrite using `[Pi.mulSingle_eq_same, Pi.mulSingle_eq_of_ne (by decide : (0 : Fin 3) ≠ 2), mul_one]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem torusPt_zero (m : ℕ) (t₁ t₂ : kˣ) :
     torusPt k m t₁ t₂ 0 = Matrix.GeneralLinearGroup.scalar (Fin (blk3 m 0)) t₁ := by
@@ -118,14 +116,14 @@ theorem torusPt_zero (m : ℕ) (t₁ t₂ : kˣ) :
   rw [Pi.mulSingle_eq_same, Pi.mulSingle_eq_of_ne (by decide : (0 : Fin 3) ≠ 2), mul_one]
 
 /- English proof (translation)
-Simplify using `only [torusPt, Pi.mul_apply]`. Rewrite using `[Pi.mulSingle_eq_of_ne (by decide : (1 : Fin 3) ≠ 0), Pi.mulSingle_eq_of_ne (by decide : (1 : Fin 3) ≠ 2), mul_one]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem torusPt_one (m : ℕ) (t₁ t₂ : kˣ) : torusPt k m t₁ t₂ 1 = 1 := by
   simp only [torusPt, Pi.mul_apply]
   rw [Pi.mulSingle_eq_of_ne (by decide : (1 : Fin 3) ≠ 0), Pi.mulSingle_eq_of_ne (by decide : (1 : Fin 3) ≠ 2), mul_one]
 
 /- English proof (translation)
-Simplify using `only [torusPt, Pi.mul_apply]`. Rewrite using `[Pi.mulSingle_eq_same, Pi.mulSingle_eq_of_ne (by decide : (2 : Fin 3) ≠ 0), one_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem torusPt_two (m : ℕ) (t₁ t₂ : kˣ) :
     torusPt k m t₁ t₂ 2 = Matrix.GeneralLinearGroup.scalar (Fin (blk3 m 2)) t₂ := by
@@ -133,9 +131,9 @@ theorem torusPt_two (m : ℕ) (t₁ t₂ : kˣ) :
   rw [Pi.mulSingle_eq_same, Pi.mulSingle_eq_of_ne (by decide : (2 : Fin 3) ≠ 0), one_mul]
 
 /- English proof (translation)
-Rewrite using `[leviTgt_apply, torusPt_zero, torusPt_one, torusPt_two, Matrix.GeneralLinearGroup.det_scalar, Matrix.GeneralLinearGroup.det_scalar]`. Establish `h1 : σ₁ (1 : GL (Fin m) k) y = y` using `by rw [map_one]; rfl`. Apply the tactic sequence `have hc0 : Fintype.card (Fin (blk3 m 0)) = 1 := by convert Fintype.card_fin (blk3 m 0) using 1 <;> rfl`. Apply the tactic sequence `have hc2 : Fintype.card (Fin (blk3 m 2)) = 1 := by convert Fintype.card_fin (blk3 m 2) using 1 <;> rfl`. Rewrite using `[hc0, hc2, pow_one, pow_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg _ h1`.
+A detailed English derivation is pending.
 -/
 theorem leviTgt_torusPt {m : ℕ} {P₁ : Type} [AddCommGroup P₁] [Module ℂ P₁] (σ₁ : Representation ℂ (GL (Fin m) k) P₁)
     (ξ₁ ξ₂ : kˣ →* ℂˣ) (t₁ t₂ : kˣ) (y : P₁) :
@@ -149,7 +147,7 @@ theorem leviTgt_torusPt {m : ℕ} {P₁ : Type} [AddCommGroup P₁] [Module ℂ 
   exact congrArg _ h1
 
 /- English proof (translation)
-The claim follows from `isSmooth_comp (isSmooth_extTensor ((isSmooth_ofChar_iff (detChar (Fin a) α₀)).2 hα.detChar) ((isSmooth_ofChar_iff (detChar (Fin a') β₀)).2 hβ.detChar)) _ (show Continuous fun g : Levi k (Two (Fin a) (Fin a')) => (g false, g true) from (continuous_apply false).prodMk (continuous_a …`.
+A detailed English derivation is pending.
 -/
 theorem isSmooth_detPair (a a' : ℕ) {α₀ β₀ : kˣ →* ℂˣ} (hα : IsSmoothChar α₀) (hβ : IsSmoothChar β₀) :
     IsSmooth (detPair k a a' α₀ β₀) :=

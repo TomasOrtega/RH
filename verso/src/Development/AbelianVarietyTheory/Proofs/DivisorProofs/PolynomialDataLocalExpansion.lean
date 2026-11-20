@@ -15,25 +15,21 @@ namespace GlobalTheory.ThKGlobLoc
 open Classical in
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B a a' G X om om' hKP hT Φ hΦ`. Establish `hP` using `GlobalTheory.ThK.Inhab.pairV hT`. Establish `hG` using `hT.geo.hM`. Establish `hcond : a + a' + 2 * min (a - G.p) G.p < 2 * a ∨ min (a - G.p) G.p = 0` using `by left`. Establish `h1` using `hT.geo.eBig`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `hT.geo.lt`. Use linear arithmetic over natural numbers and integers. Establish `hlin` using `GlobalTheory.ThKLin.I_linear (GlobalTheory.T.weil_convergence_of_kernel hKP) F E σ B a (a + a') G.V G.W G.M X.β (X.β / X.α) om _ _ _ _ hP hcond`. Establish `hzero : ∀ h, G.M.I om 0 h = 0` using `fun h => by simp [Model.I, theta, GlobalTheory.WeilM.thetaSum]`. Set `I₀ : GlobalTheory.WeilM.schA F (Fin a × Fin (a + a')) →ₗ[ℂ] (UA σ G.W.J → ℂ)` to `{ toFun := fun Ψ => G.M.I om Ψ.1 map_add' := fun Ψ Ψ' => funext fun h => by`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `hlin h _ Ψ.2 _ Ψ'.2 1` as an intermediate fact. Rewrite `this` using `[one_smul, one_mul]`. Conclude with `this`. Use the proof step `map_smul' := fun c Ψ => funext fun h => by`. Use `hlin h _ Ψ.2 _ (Submodule.zero_mem _) c` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `this` using `[add_zero, hzero, add_zero]`. Conclude with `this }`. Take `⟨l, hl⟩` from `LinearMap.exists_extend I₀`. Establish `hl' : ∀ Ψ ∈ GlobalTheory.WeilM.schA F (Fin a × Fin (a + a')), l Ψ = G.M.I om Ψ` using `fun Ψ hΨ => LinearMap.congr_fun hl ⟨Ψ, hΨ⟩`. Take `⟨m, c, g, hg⟩` from `Submodule.mem_span_set'.1 hΦ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `choose f hf φ h1 h2 h3 using fun i => (g i).2`. Establish `hF : ∀ i, GlobalTheory.BigNZ.Fam G.M (φ i)` using `fun i => ⟨h1 i, h2 i⟩`. Use `choose r hr er using fun i => GlobalTheory.PureFactor.exists_rest_factor B.v₁ (f i) (φ i) ((hF i).std hG)`. Set `TL : Fin m → ((Fin a × Fin (a + a') → Fv F B.v₁) → ℂ) →ₗ[ℂ] ((Fin a × Fin (a + a') → AF F) → ℂ)` to `fun i => { toFun := fun χ => tens (evFin F B.v₁) χ (r i) map_add' := fun _ _ => funext fun _ => add_mul _ _ _ map_smul' := fun _ _ => funext fun _ => mul_assoc _ _ _ }`. Establish `hTL : ∀ i χ, TL i χ = GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (f i) (Function.update (φ i) B.v₁ χ)` using `fun i χ => er i χ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hmem : ∀ i, ∀ χ ∈ GlobalTheory.WeilM.SB (Fin a × Fin (a + a') → Fv F B.v₁), TL i χ ∈ GlobalTheory.WeilM.schA F (Fin a × Fin (a + a'))` using `fun i χ hχ => by`. Rewrite using `[hTL]`. Conclude with `((hF i).update _ hχ).mem hG _`. Establish `hact : ∀ i Op, ∀ χ ∈ GlobalTheory.WeilM.SB (Fin a × Fin (a + a') → Fv F B.v₁), ∀ χ₁, Acts (evFin F B.v₁) Op χ χ₁ → TL i χ₁ = Op (TL i χ)` using `fun i Op χ hχ χ₁ ha => by`. Rewrite using `[hTL, hTL, (hF i).acts hG (f i) hχ ha]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `⟨m, fun i => φ i B.v₁, fun i => c i • (l ∘ₗ TL i), fun i => h1 i _, fun i => ?_, ?_, ?_⟩` and prove the remaining obligations. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨u, -, χ, hχ, χ₁, hχ₁, ha, rfl⟩`. Establish `e : l (TL i χ₁) = l (TL i χ)`. Rewrite using `[hl' _ (hmem i χ₁ hχ₁), hl' _ (hmem i χ hχ), hact i _ χ hχ χ₁ ha]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `GlobalTheory.ThetaIntegralInv.integral_translate hKP.base hP u _ (hmem i χ hχ)`. Simplify using `only [SetLike.mem_coe, LinearMap.mem_ker, LinearMap.smul_apply, LinearMap.comp_apply, map_sub, e, sub_self]`. Introduce `i h _ χ hχ χ₁ hχ₁ ha y`. Simplify using `only [LinearMap.smul_apply, LinearMap.comp_apply, Pi.smul_apply]`. Rewrite using `[hl' _ (hmem i χ₁ hχ₁), hl' _ (hmem i χ hχ), hact i _ χ hχ χ₁ ha, GlobalTheory.BigNZ.I_om]`.
-
-Establish `hS : Φ ∈ GlobalTheory.WeilM.schA F (Fin a × Fin (a + a'))`. Rewrite using `[← hg]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (by rw [h3]; exact (hF i).mem hG _)`. Rewrite using `[← hl' _ hS, ← hg, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
-
-Simplify using `only [LinearMap.smul_apply, LinearMap.comp_apply, map_smul]`. Rewrite using `[hTL, Function.update_eq_self, h3]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_sum_local : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W),

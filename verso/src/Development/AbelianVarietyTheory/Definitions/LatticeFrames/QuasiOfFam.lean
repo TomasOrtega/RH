@@ -57,7 +57,7 @@ def unfF (vL : VolM D B.L.rank J.W₀.rank) (Y : GA D J.W₀ → WO J.W₀ B.L �
   G h * handFB s vL Y (flatFB s (s.om (1, h) Φ)) 1
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hY.quasi h, hY.cont.comp (Continuous.prodMk_right h)⟩`.
+Supply the required witnesses or components.
 -/
 theorem quasi_of_fam {S L : HSp D} {Y : GA D S → WO S L → ℂ} (hY : IsQuasiFam ψ S L Y) (h : GA D S) : Quasi ψ S L (Y h) :=
   ⟨hY.quasi h, hY.cont.comp (Continuous.prodMk_right h)⟩

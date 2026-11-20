@@ -15,9 +15,9 @@ noncomputable section
 namespace GlobalTheory.TateConvBasis
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `‖c.1 v‖ ≤ ‖InfiniteAdeleRing.ringEquiv_mixedSpace F c.1‖`. Rewrite using `[InfiniteAdeleRing.ringEquiv_mixedSpace_apply, Prod.norm_def]`. Break down `v.isReal_or_isComplex with hv | hv` into its components or cases. Use `le_trans ?_ (le_max_left _ _)` and prove the remaining obligations. Use `le_trans (le_of_eq ?_) (norm_le_pi_norm (fun (w : {w : InfinitePlace F // w.IsReal}) => InfinitePlace.Completion.extensionEmbeddingOfIsReal w.2 (c.1 w)) ⟨v, hv⟩)` and prove the remaining obligations.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `((InfinitePlace.Completion.isometry_extensionEmbeddingOfIsReal hv).norm_map_of_map_zero (map_zero _) _).symm`. Use `le_trans ?_ (le_max_right _ _)` and prove the remaining obligations. Use `le_trans (le_of_eq ?_) (norm_le_pi_norm (fun (w : {w : InfinitePlace F // w.IsComplex}) => InfinitePlace.Completion.extensionEmbedding w.1 (c.1 w)) ⟨v, hv⟩)` and prove the remaining obligations. Conclude with `((InfinitePlace.Completion.isometry_extensionEmbedding v).norm_map_of_map_zero (map_zero _) _).symm`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem norm_le_evI {F : Type} [Field F] [NumberField F] (c : AF F) (v : InfinitePlace F) :
     ‖evInf F v c‖ ≤ ‖evI F c‖ := by
@@ -34,9 +34,9 @@ theorem norm_le_evI {F : Type} [Field F] [NumberField F] (c : AF F) (v : Infinit
     exact ((InfinitePlace.Completion.isometry_extensionEmbedding v).norm_map_of_map_zero (map_zero _) _).symm
 
 /- English proof (translation)
-Establish `hlin : ∀ y, GlobalTheory.XTermMaj.crd F E y = (Algebra.TensorProduct.basis (AF F) (Module.finBasis F E)).equivFun y` using `fun _ => rfl`. Establish `h1 : ∀ i, (Algebra.TensorProduct.basis (AF F) (Module.finBasis F E)).equivFun ((1 : AF F) ⊗ₜ[F] b₀ i) j = algebraMap F (AF F) ((Module.finBasis F E).repr (b₀ i) j)`. Introduce `i`. Rewrite using `[Module.Basis.equivFun_apply, Algebra.TensorProduct.basis_repr_tmul]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `conv_lhs => rw [← (Algebra.TensorProduct.basis (AF F) b₀).sum_equivFun x, hlin]`. Rewrite using `[map_sum, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, Pi.smul_apply, smul_eq_mul, Algebra.TensorProduct.basis_apply, h1, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem crd_eq_sum {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {m : ℕ}
     (b₀ : Module.Basis (Fin m) F E) (x : AE F E) (j : Fin (Module.finrank F E)) :
@@ -59,31 +59,25 @@ end GlobalTheory.TateConvBasis
 namespace GlobalTheory.TateConvBasis
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ m b₀ g hg ⟨K, hK, hK0⟩ hdec μ hμ z hz`. Use `haveI := hμ`. Use `haveI : BorelSpace (AE F E)ˣ := ⟨rfl⟩`. Establish `hs : (1 : ℝ) < (z : ℝ)` using `by exact_mod_cast (show 1 < z by omega)`. Use `set P : Fin (Module.finrank F E) → Fin m → F := fun j i => (Module.finBasis F E).repr (b₀ i) j with hP`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set U : Set (Fin (Module.finrank F E) → Af F) := (fun c : Fin m → Af F => fun j => ∑ i, algebraMap F (Af F) (P j i) * c i) '' K with hUdef`. Establish `hU : IsCompact U` using `hK.image (continuous_pi fun j => continuous_finset_sum _ fun i _ => continuous_const.mul (continuous_apply i))`. Establish `hfin : ∀ x : AE F E, (fun i => ((Algebra.TensorProduct.basis (AF F) b₀).equivFun x i).2) ∈ K → (fun j => (GlobalTheory.XTermMaj.crd F E x j).2) ∈ U`. Introduce `x hx`. Use `⟨_, hx, funext fun j => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `_ = sndA F (GlobalTheory.XTermMaj.crd F E x j)`. Rewrite using `[crd_eq_sum b₀, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, AlgHom.commutes]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `set A : ℝ := ∑ j, ∑ v : InfinitePlace F, ∑ i, ‖evInf F v (algebraMap F (AF F) (P j i))‖ with hA`. Establish `hA0 : 0 ≤ A` using `by positivity`. Establish `hB : ∀ x : AE F E, ∑ j, ∑ v : InfinitePlace F, ‖(GlobalTheory.XTermMaj.crd F E x j).1 v‖ ≤ A * ‖fun i => evI F ((Algebra.TensorProduct.basis (AF F) b₀).equivFun x i)‖`. Introduce `x`. Establish `hT : ∀ i v, ‖evInf F v ((Algebra.TensorProduct.basis (AF F) b₀).equivFun x i)‖ ≤ ‖fun i => evI F ((Algebra.TensorProduct.basis (AF F) b₀).equivFun x i)‖` using `fun i v => (norm_le_evI _ v).trans (norm_le_pi_norm (fun i => evI F ((Algebra.TensorProduct.basis (AF F) b₀).equivFun x i)) i)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : ∀ j v, ‖(GlobalTheory.XTermMaj.crd F E x j).1 v‖ ≤ ∑ i, ‖evInf F v (algebraMap F (AF F) (P j i))‖ * ‖fun i => evI F ((Algebra.TensorProduct.basis (AF F) b₀).equivFun x i)‖`. Introduce `j v`. Express the relevant statement in the definitionally equal form `‖evInf F v (GlobalTheory.XTermMaj.crd F E x j)‖ ≤ _`. Rewrite using `[crd_eq_sum b₀, map_sum]`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun i _ => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[map_mul, norm_mul]`. Conclude with `mul_le_mul_of_nonneg_left (hT i v) (norm_nonneg _)`. Combine the equalities or inequalities in the displayed calculation. Take `⟨N, k, L, C₀, hk, hb⟩` from `GlobalTheory.TateConv.bound F E hs hU`. Take `⟨C, hC⟩` from `hdec N`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Establish `hC0 : 0 ≤ C` using `le_trans (by positivity) (hC 0)`. Establish `hpt : ∀ l : (AE F E)ˣ, ENNReal.ofReal (‖g l.1‖ * (absE F E l : ℝ) ^ z) ≤ ENNReal.ofReal (C * (1 + A) ^ N) * (GlobalTheory.XTermMaj.maj F E N U (l : AE F E) * ENNReal.ofReal ((absE F E l : ℝ) ^ (z : ℝ)))`. Introduce `l`. Rewrite using `[Real.rpow_natCast]`. Distinguish the cases in `hx : (fun i => ((Algebra.TensorProduct.basis (AF F) b₀).equivFun (l : AE F E) i).2) ∈ K`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[GlobalTheory.XTermMaj.maj, Set.indicator_of_mem (hfin _ hx), ← ENNReal.ofReal_mul (by positivity), ← ENNReal.ofReal_mul (by positivity)]`. Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises. Use `set S := ∑ i, ∑ v : InfinitePlace F, ‖(GlobalTheory.XTermMaj.crd F E (l : AE F E) i).1 v‖`. Use `set T := ‖fun i => evI F ((Algebra.TensorProduct.basis (AF F) b₀).equivFun (l : AE F E) i)‖`. Establish `hS0 : 0 ≤ S` using `by positivity`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Establish `hT0 : 0 ≤ T` using `norm_nonneg _`. Establish `hST : 1 + S ≤ (1 + A) * (1 + T)` using `by nlinarith [hB (l : AE F E)]`. Establish `hg1 : ‖g (l : AE F E)‖ * (1 + S) ^ N ≤ C * (1 + A) ^ N`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_pow]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `gcongr`. Use `_ = (‖g (l : AE F E)‖ * (1 + T) ^ N) * (1 + A) ^ N := by ring`. Use `_ ≤ C * (1 + A) ^ N := by gcongr; exact hC _`. Establish `hg2 : ‖g (l : AE F E)‖ ≤ C * (1 + A) ^ N * (1 + S) ^ (-(N : ℝ))`. Rewrite using `[Real.rpow_neg (by positivity), Real.rpow_natCast, ← div_eq_mul_inv, le_div_iff₀ (by positivity)]`.
-
-Conclude with `hg1`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hK0 _ hx, norm_zero, zero_mul, ENNReal.ofReal_zero]`. Conclude with `zero_le`. Establish `h2 : ∫⁻ l, GlobalTheory.XTermMaj.maj F E N U (l : AE F E) * ENNReal.ofReal ((absE F E l : ℝ) ^ (z : ℝ)) ∂μ < ⊤` using `(lintegral_mono hb).trans_lt (GlobalTheory.TateConv.lintegral_bound_lt_top F E μ hs hk L C₀)`.
-
-Establish `hlt : ∫⁻ l, ENNReal.ofReal (‖g l.1‖ * (absE F E l : ℝ) ^ z) ∂μ < ⊤`. Use `(lintegral_mono hpt).trans_lt ?_` and prove the remaining obligations. Rewrite using `[lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]`. Conclude with `ENNReal.mul_lt_top ENNReal.ofReal_lt_top h2`. Establish `hcont : Continuous (fun l : (AE F E)ˣ => ‖g l.1‖ * (absE F E l : ℝ) ^ z)` using `(continuous_norm.comp (hg.comp Units.continuous_val)).mul ((NNReal.continuous_coe.comp GlobalTheory.Doubling.continuous_absE).pow z)`.
-
-Use `⟨hcont.aestronglyMeasurable, ?_⟩` and prove the remaining obligations. Rewrite using `[hasFiniteIntegral_iff_ofReal (Eventually.of_forall fun l => by positivity)]`. Conclude with `hlt`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integrable_norm_mul_absE_pow : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (m : ℕ) (b₀ : Module.Basis (Fin m) F E) (g : AE F E → ℂ), Continuous g →
     (∃ K : Set (Fin m → FiniteAdeleRing (𝓞 F) F), IsCompact K ∧ ∀ a, (fun i => ((Algebra.TensorProduct.basis (AF F) b₀).equivFun a i).2) ∉ K → g a = 0) →

@@ -28,16 +28,16 @@ def phi (G : HTGroup p) (β Y : G.C) (β' : G.C) : G.C →ₗ[ℚ] G.C × G.C :=
     (LinearMap.mulLeft ℚ β ∘ₗ LinearMap.mulRight ℚ β' ∘ₗ shL G - LinearMap.id)
 
 /- English proof (translation)
-Simplify using `[phi, shL_apply, mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem phi_apply (G : HTGroup p) (β Y β' c : G.C) :
     phi G β Y β' c = (c * Y - Y * c, β * sh G c * β' - c) := by
   simp [phi, shL_apply, mul_assoc]
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp <;> rfl`. Consider the case `tmul k c`. Simplify using `only [LinearMap.lTensor_tmul, phi_apply, TensorProduct.prodRight_tmul, inC, starT_tmul, AlgHom.coe_toRingHom, RingHom.coe_coe, Algebra.TensorProduct.includeRight_apply, Algebra.TensorProduct.tmul_mul_tmul, one_mul, mul_one, TensorProduct.tmul_sub, sh]`. Consider the case `add x y hx hy`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Rewrite using `[map_add, map_add, hx, hy]`. Simplify using `only [map_add, MulOpposite.unop_add, mul_add, add_mul, Prod.mk_add_mk]`. Apply the tactic sequence `refine Prod.ext ?_ ?_ <;> dsimp only <;> abel`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem lTensor_phi (G : HTGroup p) (K : Type) [Field K] [Algebra ℚ K] (β Y β' : G.C)
     (x : K ⊗[ℚ] G.C) :

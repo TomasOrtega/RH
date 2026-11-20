@@ -13,9 +13,9 @@ variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Local
   [T2Space G] [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G]
 
 /- English proof (translation)
-Establish `: LocallyCompactSpace S` using `hS.isClosedEmbedding_subtypeVal.locallyCompactSpace`. Establish `: SecondCountableTopology S` using `TopologicalSpace.Subtype.secondCountableTopology _`. Take `⟨β, hβm, hβ1⟩` from `Formalism.L2.SG.Pf.Weil.QuotInt.exists_fib_eq_one hS μS.inv`. Use `⟨fun z => β z⁻¹, hβm.comp measurable_inv, fun x => ?_⟩` and prove the remaining obligations. Establish `h` using `hβ1 x⁻¹`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Unfold `Formalism.L2.SG.Pf.Weil.QuotInt.fib at h`. Rewrite `h` using `[Measure.inv, lintegral_map (f := fun s : S => β (x⁻¹ * s)) (hβm.comp ((measurable_const_mul _).comp measurable_subtype_coe)) measurable_inv]`. Simplify `h` using `[mul_inv_rev]`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma exists_bruhat (S : Subgroup G) (hS : IsClosed (S : Set G)) (μS : Measure S)
     [μS.IsMulRightInvariant] [IsFiniteMeasureOnCompacts μS] [IsOpenPosMeasure μS] [SFinite μS] :
@@ -31,7 +31,7 @@ lemma exists_bruhat (S : Subgroup G) (hS : IsClosed (S : Set G)) (μS : Measure 
   simpa [mul_inv_rev] using h
 
 /- English proof (translation)
-Establish `h` using `hν (fun x => b x * f x) (hbm.mul hf)`. Rewrite using `[h]`. Use `lintegral_congr fun x => ?_` and prove the remaining obligations. Repeatedly rewrite using `[hinv]`. Rewrite using `[lintegral_mul_const (f x) (show Measurable fun s : S => b ((s : G) * x) from hbm.comp (measurable_subtype_coe.mul_const x)), hb1, one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 lemma lintegral_eq_bruhat (S : Subgroup G) (μS : Measure S) (μ ν : Measure G) (b : G → ℝ≥0∞)
     (hbm : Measurable b) (hb1 : ∀ x : G, ∫⁻ s, b ((s : G) * x) ∂μS = 1)
@@ -50,7 +50,7 @@ end QuotIndepPf
 open QuotIndepPf in
 
 /- English proof (translation)
-Introduce `G _ _ _ _ _ _ _ _ S hS μS _ _ _ _ _ μ ν₁ ν₂ h₁ h₂ f hf hinv`. Take `⟨b, hbm, hb1⟩` from `exists_bruhat S hS μS`. Rewrite using `[lintegral_eq_bruhat S μS μ ν₁ b hbm hb1 h₁ f hf hinv, lintegral_eq_bruhat S μS μ ν₂ b hbm hb1 h₂ f hf hinv]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem quotIndep : QuotIndep := by
   intro G _ _ _ _ _ _ _ _ S hS μS _ _ _ _ _ μ ν₁ ν₂ h₁ h₂ f hf hinv

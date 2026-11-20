@@ -29,15 +29,13 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.TorusCount
 
 /- English proof (translation)
-Use `set c' : ℝ := min c 1 with hc'`. Establish `h0 : 0 < c'` using `lt_min hc one_pos`. Establish `h1 : c' ≤ 1` using `min_le_right _ _`. Establish `h2 : c' ≤ c` using `min_le_left _ _`. Establish `key : ∀ t ∈ cone r c, ∀ (m : ℕ) (i : Fin r), i.val + m + 1 = r → c' ^ (m + 1) ≤ t i`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `t ht m`. Proceed by induction on `m with`. Consider the case `zero`. Introduce `i hi`. Simplify using `using h2.trans (ht.2.2 i (by omega))`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Consider the case `succ m ih`. Introduce `i hi`. Establish `hj : i.val + 1 < r` using `by omega`. Establish `a1` using `ih ⟨i.val + 1, hj⟩ (by simp only; omega)`. Establish `a2` using `ht.2.1 i ⟨i.val + 1, hj⟩ rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a3 : 0 < t ⟨i.val + 1, hj⟩` using `ht.1 _`. Combine the equalities or inequalities in the displayed calculation. Use `⟨c' ^ r, by positivity, fun t ht i => ?_⟩` and prove the remaining obligations. Establish `hi` using `i.2`. Take `⟨m, hm⟩ : ∃ m, i.val + m + 1 = r` from `⟨r - i.val - 1, by omega⟩`.
-
-Conclude with `(pow_le_pow_of_le_one h0.le h1 (by omega)).trans (key t ht m i hm)`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_cone_lower (r : ℕ) {c : ℝ} (hc : 0 < c) :
     ∃ l : ℝ, 0 < l ∧ ∀ t ∈ cone r c, ∀ i, l ≤ t i := by
@@ -67,7 +65,7 @@ theorem exists_cone_lower (r : ℕ) {c : ℝ} (hc : 0 < c) :
   exact (pow_le_pow_of_le_one h0.le h1 (by omega)).trans (key t ht m i hm)
 
 /- English proof (translation)
-Rewrite using `[← Finset.mul_prod_erase _ _ (Finset.mem_univ i)]`. Conclude with `le_mul_of_one_le_right (by positivity) (Finset.one_le_prod fun v _ => le_max_right _ _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem le_prod_max {r : ℕ} (t : Fin r → ℝ) (i : Fin r) : max (t i) 1 ≤ ∏ k, max (t k) 1 := by
   rw [← Finset.mul_prod_erase _ _ (Finset.mem_univ i)]
@@ -77,15 +75,15 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {σ : E →ₐ[F] E} {n r : ℕ} {J : Matrix (Fin n) (Fin n) E}
 
 /- English proof (translation)
-Use `set Ax := Formalism.UG.cT (σ : E →+* E) X * J with hAx`. Use `set Ay := Formalism.UG.cT (σ : E →+* E) Y * J with hAy`. Establish `xx : Ax * X = 0` using `hW.xx`. Establish `xy : Ax * Y = 1` using `hW.xy`. Establish `yy : Ay * Y = 0` using `hW.yy`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `yx : Ay * X = 1`. Establish `e` using `congrArg (Formalism.UG.cT (σ : E →+* E)) hW.xy`. Establish `cc : ∀ Z : Matrix (Fin n) (Fin r) E, Formalism.UG.cT (σ : E →+* E) (Formalism.UG.cT (σ : E →+* E) Z) = Z` using `fun Z => Matrix.ext fun i j => sigma_sigma h _`. Establish `hJ' : Formalism.UG.cT (σ : E →+* E) J = J` using `Matrix.ext fun i j => hJ.1 i j`. Rewrite `e` using `[Formalism.UG.cT_mul, Formalism.UG.cT_mul, cc, hJ', Formalism.UG.cT_one, ← Matrix.mul_assoc]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `set P := 1 - X * Ay - Y * Ax with hP`. Establish `hxP : Ax * P = 0`. Simplify using `only [hP, Matrix.mul_sub, Matrix.mul_one, ← Matrix.mul_assoc, xx, xy, Matrix.zero_mul, Matrix.one_mul, sub_zero, sub_self]`. Establish `hyP : Ay * P = 0`. Simplify using `only [hP, Matrix.mul_sub, Matrix.mul_one, ← Matrix.mul_assoc, yx, yy, Matrix.zero_mul, Matrix.one_mul, sub_zero, sub_self]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `hMP : M * P.map τ = P.map τ`. Use extensionality with `i j`. Establish `e` using `hZ (fun a => P a j) (funext fun k => congrFun (congrFun hxP k) j) (funext fun k => congrFun (congrFun hyP k) j)`. Conclude with `congrFun e i`. Establish `h1 : (1 : Matrix (Fin n) (Fin n) ℂ) = X.map τ * Ay.map τ + Y.map τ * Ax.map τ + P.map τ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Chain the equalities or inequalities of the calculation.
 
-Establish `: (1 : Matrix (Fin n) (Fin n) E) = X * Ay + Y * Ax + P` using `by simp [hP]`. Establish `e` using `congrArg (fun A : Matrix (Fin n) (Fin n) E => A.map τ) this`. Simplify `e` using `[Matrix.map_add, Matrix.map_mul, Matrix.map_one]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h1, Matrix.mul_add, Matrix.mul_add, ← Matrix.mul_assoc, ← Matrix.mul_assoc, hX, hY, hMP]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_of_act (h : IsCMExt F E σ) (hJ : IsHermND σ J) {X Y : Matrix (Fin n) (Fin r) E}
     (hW : IsWittFrame σ J X Y) (τ : E →+* ℂ) (M : Matrix (Fin n) (Fin n) ℂ) (u v : Fin r → ℂ)
@@ -124,17 +122,15 @@ theorem eq_of_act (h : IsCMExt F E σ) (hJ : IsHermND σ J) {X Y : Matrix (Fin n
       rw [h1, Matrix.mul_add, Matrix.mul_add, ← Matrix.mul_assoc, ← Matrix.mul_assoc, hX, hY, hMP]
 
 /- English proof (translation)
-Use `set A := X.map τ`. Use `set A' := Y.map τ`. Use `set B := (Formalism.UG.cT (σ : E →+* E) Y * J).map τ`. Use `set B' := (Formalism.UG.cT (σ : E →+* E) X * J).map τ`. Use `set Q := (1 - X * (Formalism.UG.cT (σ : E →+* E) Y * J) - Y * (Formalism.UG.cT (σ : E →+* E) X * J)).map τ`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `f : Fin n → Fin n → ℝ` to `fun i j => ∑ k, ‖A i k‖ * ‖B k j‖ + ∑ k, ‖A' i k‖ * ‖B' k j‖ + ‖Q i j‖`. Establish `hf : ∀ i j, 0 ≤ f i j` using `fun i j => by positivity`. Use `⟨∑ i, ∑ j, f i j, Finset.sum_nonneg fun i _ => Finset.sum_nonneg fun j _ => hf i j, fun M u v S hS hu hv hX hY hZ i j => ?_⟩` and prove the remaining obligations. Establish `hd : ∀ (P : Matrix (Fin n) (Fin r) ℂ) (R : Matrix (Fin r) (Fin n) ℂ) (d : Fin r → ℂ), (∀ k, ‖d k‖ ≤ S) → ‖(P * diagonal d * R) i j‖ ≤ (∑ k, ‖P i k‖ * ‖R k j‖) * S` using `fun P R d hd => by`. Rewrite using `[Matrix.mul_apply, Finset.sum_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun k _ => ?_)` and prove the remaining obligations. Rewrite using `[Matrix.mul_diagonal, norm_mul, norm_mul]`. Use `hd k` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation. Establish `e` using `eq_of_act h hJ hW τ M u v hX hY hZ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ‖M i j‖ ≤ f i j * S`. Rewrite using `[e, Matrix.add_apply, Matrix.add_apply]`. Use `(norm_add₃_le).trans ?_` and prove the remaining obligations. Use `hd A B u hu` as an intermediate fact. Use `hd A' B' v hv` as an intermediate fact.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hq : ‖Q i j‖ ≤ ‖Q i j‖ * S` using `le_mul_of_one_le_right (norm_nonneg _) hS`. Simplify using `only [f, add_mul]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `h1.trans (mul_le_mul_of_nonneg_right ?_ (by linarith))` and prove the remaining obligations. Use `le_trans ?_ (Finset.single_le_sum (fun i _ => Finset.sum_nonneg fun j _ => hf i j) (Finset.mem_univ i))` and prove the remaining obligations.
-
-Conclude with `Finset.single_le_sum (fun j _ => hf i j) (Finset.mem_univ j)`.
+A detailed English derivation is pending.
 -/
 theorem exists_entry_bound (h : IsCMExt F E σ) (hJ : IsHermND σ J) {X Y : Matrix (Fin n) (Fin r) E}
     (hW : IsWittFrame σ J X Y) (τ : E →+* ℂ) :
@@ -173,21 +169,17 @@ theorem exists_entry_bound (h : IsCMExt F E σ) (hJ : IsHermND σ J) {X Y : Matr
   exact Finset.single_le_sum (fun j _ => hf i j) (Finset.mem_univ j)
 
 /- English proof (translation)
-Take `⟨c, hc, hb⟩` from `exists_entry_bound h hJ hW τ.1`. Use `⟨c, hc, fun t a S ht hS h1 h2 ha i j => ?_⟩` and prove the remaining obligations. Take `⟨hX, hY, hZ⟩` from `ha.2 w τ`. Use `set M := archMat σ J τ (projArch σ J w a) with hM`. Use `set M' := archMat σ J τ (projArch σ J w a⁻¹) with hM'`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hMM : M' * M = 1`. Rewrite using `[hM, hM', ← map_mul, ← map_mul, inv_mul_cancel, map_one, map_one]`. Establish `hn : ∀ k, ‖(t k : ℂ)‖ ≤ S` using `fun k => by`. Rewrite using `[Complex.norm_real, Real.norm_of_nonneg (ht k).le]`. Conclude with `h1 k`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hn' : ∀ k, ‖(t k : ℂ)⁻¹‖ ≤ S` using `fun k => by`. Rewrite using `[norm_inv, Complex.norm_real, Real.norm_of_nonneg (ht k).le]`. Conclude with `h2 k`. Establish `hD : diagonal (fun i => (t i : ℂ)) * diagonal (fun i => (t i : ℂ)⁻¹) = 1`. Rewrite using `[diagonal_mul_diagonal, ← diagonal_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Conclude with `congrArg _ (funext fun k => mul_inv_cancel₀ (by exact_mod_cast (ht k).ne'))`. Establish `hD' : diagonal (fun i => (t i : ℂ)⁻¹) * diagonal (fun i => (t i : ℂ)) = 1`. Rewrite using `[diagonal_mul_diagonal, ← diagonal_one]`. Conclude with `congrArg _ (funext fun k => inv_mul_cancel₀ (by exact_mod_cast (ht k).ne'))`. Establish `hX' : M' * X.map τ.1 = X.map τ.1 * diagonal (fun i => (t i : ℂ)⁻¹)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hD, Matrix.mul_one]`. Use `_ = (M' * M) * X.map τ.1 * diagonal (fun i => (t i : ℂ)⁻¹) := by`. Rewrite using `[Matrix.mul_assoc M', hX]`. Simplify using `only [Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `_ = _ := by rw [hMM, Matrix.one_mul]`. Establish `hY' : M' * Y.map τ.1 = Y.map τ.1 * diagonal (fun i => (t i : ℂ))`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hD', Matrix.mul_one]`. Use `_ = (M' * M) * Y.map τ.1 * diagonal (fun i => (t i : ℂ)) := by`.
-
-Rewrite using `[Matrix.mul_assoc M', hY]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = _ := by rw [hMM, Matrix.one_mul]`. Establish `hZ' : ∀ z : Fin n → E, (Formalism.UG.cT (σ : E →+* E) X * J) *ᵥ z = 0 → (Formalism.UG.cT (σ : E →+* E) Y * J) *ᵥ z = 0 → M' *ᵥ (fun i => τ.1 (z i)) = fun i => τ.1 (z i)` using `fun z z1 z2 => by conv_lhs => rw [← hZ z z1 z2]`. Rewrite using `[Matrix.mulVec_mulVec, hMM, Matrix.one_mulVec]`.
-
-Conclude with `⟨hb M _ _ S hS hn hn' hX hY hZ i j, hb M' _ _ S hS hn' hn hX' hY' hZ' i j⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_torus_bound (h : IsCMExt F E σ) (hJ : IsHermND σ J) {X Y : Matrix (Fin n) (Fin r) E}
     (hW : IsWittFrame σ J X Y) {w : InfinitePlace F} (τ : EmbOver E w) :
@@ -230,23 +222,19 @@ theorem exists_torus_bound (h : IsCMExt F E σ) (hJ : IsHermND σ J) {X Y : Matr
   exact ⟨hb M _ _ S hS hn hn' hX hY hZ i j, hb M' _ _ S hS hn' hn hX' hY' hZ' i j⟩
 
 /- English proof (translation)
-Introduce `D V r X Y hW c hc C hC`. Take `⟨hcm, hJ⟩` from `GlobalTheory.Mem.Vol.cmData_isCMExt_and_gram_isHermND D.host.F D.host.E D.sp.cm`. Set `θ : Formalism.IndefR.Datum.InfFam D` to `fun ρ => infProj (embOverOf D ρ)`. Establish `hθ : IsInfFam θ` using `isInfFam_infProj D`. Take `⟨N, hN⟩` from `GlobalTheory.RatCount.ncard_rational_le D θ V hθ C hC`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨C₀, hC₀⟩` from `hN 1`. Take `⟨l, hl, hlow⟩` from `exists_cone_lower r hc`. Use `choose cb hcb0 hcb using fun ρ => exists_torus_bound hcm (hJ V) hW (embOverOf D ρ)`. Use `set K : ℝ := ∑ ρ, ∑ _i : Fin V.rank, ∑ _j : Fin V.rank, (cb ρ + cb ρ) with hK`. Establish `hK0 : 0 ≤ K` using `Finset.sum_nonneg fun ρ _ => Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => add_nonneg (hcb0 ρ) (hcb0 ρ)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `set L : ℝ := max 1 l⁻¹ with hL`. Establish `hL1 : 1 ≤ L` using `le_max_left _ _`. Use `⟨N, |C₀| * (K * L) ^ N, fun t ht a ha => ?_⟩` and prove the remaining obligations. Use `set T : ℝ := ∏ i, max (t i) 1 with hT`. Establish `hT1 : 1 ≤ T` using `Finset.one_le_prod fun v _ => le_max_right _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hS1 : 1 ≤ L * T` using `one_le_mul_of_one_le_of_one_le hL1 hT1`. Establish `hs1 : ∀ k, t k ≤ L * T` using `fun k => ((le_max_left _ _).trans (le_prod_max t k)).trans (le_mul_of_one_le_left (by linarith) hL1)`. Establish `hs2 : ∀ k, (t k)⁻¹ ≤ L * T` using `fun k => ((inv_anti₀ hl (hlow t ht k)).trans (le_max_right _ _)).trans (le_mul_of_one_le_right (by linarith) hT1)`. Establish `hnorm : Formalism.L2.Theta.normInf θ V a ≤ K * (L * T)`. Unfold `Formalism.L2.Theta.normInf`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hK, Finset.sum_mul]`. Use `Finset.sum_le_sum fun ρ _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_le_sum fun j _ => ?_` and prove the remaining obligations. Establish `hb` using `hcb ρ t a (L * T) ht.1 hS1 hs1 hs2 ha i j`. Establish `e : ∀ g : GA D V, Formalism.MainNotions.StandardLattice.infMat D.sp.cm.sig V.gram (θ ρ) g = archMat D.sp.cm.sig V.gram (embOverOf D ρ) (projArch D.sp.cm.sig V.gram (placeOf D ρ) g)` using `fun g => infMat_infProj V.gram hcm (embOverOf D ρ) g`. Rewrite using `[e, e, add_mul]`. Conclude with `add_le_add hb.1 hb.2`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `h0` using `GlobalTheory.RatCount.normInf_nonneg θ V a`. Establish `hsub : rat V '' {δ : GF V | a⁻¹ * rat V δ * a ∈ C} ⊆ {γ : GA D V | γ ∈ GQ V ∧ ∃ o ∈ C, γ * a = 1 * a * o}`. Introduce and unpack `_ ⟨δ, hδ, rfl⟩`. Use `⟨?_, _, hδ, by group⟩` and prove the remaining obligations. Conclude with `(range_ratEmb D.sp.cm.sig V.gram).le ⟨δ, rfl⟩`.
-
-Take `⟨hf, hcard⟩` from `hC₀ a ha.1 a`. Establish `hinj : Function.Injective (rat V)` using `ratEmb_injective _ _`. Use `⟨Set.Finite.of_finite_image (hf.subset hsub) hinj.injOn, ?_⟩` and prove the remaining obligations. Rewrite using `[← Set.ncard_image_of_injective _ hinj]`. Combine the equalities or inequalities in the displayed calculation.
-
-Conclude with `Set.ncard_le_ncard hsub hf` after adjusting the coercions. Use `_ ≤ _ := by simpa using hcard`. Use `_ ≤ |C₀| * Formalism.L2.Theta.normInf θ V a ^ N := by gcongr; exact le_abs_self _`. Use `_ ≤ |C₀| * (K * (L * T)) ^ N := by gcongr`. Use `_ = _ := by rw [mul_assoc, mul_pow, mul_pow]; ring`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem torus_count : ∀ (D : D7) (V : HSp D) (r : ℕ) (X Y : Matrix (Fin V.rank) (Fin r) D.host.E),
     IsWittFrame D.sp.cm.sig V.gram X Y → ∀ c : ℝ, 0 < c → ∀ C : Set (GA D V), IsCompact C →

@@ -12,7 +12,7 @@ section Form
 variable {A : Type} [CommRing A] {N : ℕ} {τ : A →+* A} {H : Matrix (Fin N) (Fin N) A}
 
 /- English proof (translation)
-Establish `h : (τ ∘ (x + x')) = τ ∘ x + τ ∘ x'`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Rewrite using `[hform_eq_dot, hform_eq_dot, hform_eq_dot, h, add_dotProduct]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem hform_add_fst (x x' y : Fin N → A) :
     hform τ H (x + x') y = hform τ H x y + hform τ H x' y := by
@@ -22,14 +22,14 @@ theorem hform_add_fst (x x' y : Fin N → A) :
   rw [hform_eq_dot, hform_eq_dot, hform_eq_dot, h, add_dotProduct]
 
 /- English proof (translation)
-Rewrite using `[hform_eq_dot, hform_eq_dot, hform_eq_dot, Matrix.mulVec_add, dotProduct_add]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hform_add_snd (x y y' : Fin N → A) :
     hform τ H x (y + y') = hform τ H x y + hform τ H x y' := by
   rw [hform_eq_dot, hform_eq_dot, hform_eq_dot, Matrix.mulVec_add, dotProduct_add]
 
 /- English proof (translation)
-Establish `h : (τ ∘ (x - x')) = τ ∘ x - τ ∘ x'`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Rewrite using `[hform_eq_dot, hform_eq_dot, hform_eq_dot, h, sub_dotProduct]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem hform_sub_fst (x x' y : Fin N → A) :
     hform τ H (x - x') y = hform τ H x y - hform τ H x' y := by
@@ -39,14 +39,14 @@ theorem hform_sub_fst (x x' y : Fin N → A) :
   rw [hform_eq_dot, hform_eq_dot, hform_eq_dot, h, sub_dotProduct]
 
 /- English proof (translation)
-Rewrite using `[hform_eq_dot, hform_eq_dot, hform_eq_dot, Matrix.mulVec_sub, dotProduct_sub]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hform_sub_snd (x y y' : Fin N → A) :
     hform τ H x (y - y') = hform τ H x y - hform τ H x y' := by
   rw [hform_eq_dot, hform_eq_dot, hform_eq_dot, Matrix.mulVec_sub, dotProduct_sub]
 
 /- English proof (translation)
-Rewrite using `[hform_mulVec']`. Establish `hg' : cT τ (g : Matrix (Fin N) (Fin N) A) * H * (g : Matrix (Fin N) (Fin N) A) = H` using `hg`. Rewrite using `[hg']`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem hform_unitary {g : GL (Fin N) A} (hg : g ∈ UJ τ H) (x y : Fin N → A) :
     hform τ H ((g : Matrix (Fin N) (Fin N) A) *ᵥ x) ((g : Matrix (Fin N) (Fin N) A) *ᵥ y) =
@@ -56,7 +56,7 @@ theorem hform_unitary {g : GL (Fin N) A} (hg : g ∈ UJ τ H) (x y : Fin N → A
   rw [hg']
 
 /- English proof (translation)
-Establish `hfix : τ (hform τ H x x) = hform τ H x x` using `hform_conj_symm hτ hH x x`. Take `⟨ε, z, hε, hz⟩` from `hcar (hform τ H y x) (hform τ H x x) hβ hfix`. Conclude with `exists_unitary_carry A τ hτ N H hH x y ε hxy hβ hε ⟨⟨_, z, hz, (mul_comm z _).trans hz⟩, rfl⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem carry (hτ : ∀ y, τ (τ y) = y)
     (hcar : ∀ p β : A, IsUnit β → τ β = β → ∃ ε z : A, ε * τ ε = 1 ∧ (β - τ ε * p) * z = 1)
@@ -69,15 +69,15 @@ theorem carry (hτ : ∀ y, τ (τ y) = y)
   exact exists_unitary_carry A τ hτ N H hH x y ε hxy hβ hε ⟨⟨_, z, hz, (mul_comm z _).trans hz⟩, rfl⟩
 
 /- English proof (translation)
-Establish `hyw : hform τ H y (Hi *ᵥ (τ ∘ a)) = 1`. Rewrite using `[hform_eq_dot, Matrix.mulVec_mulVec, hHi, Matrix.one_mulVec]`. Establish `h : (τ ∘ y) ⬝ᵥ (τ ∘ a) = τ (∑ k, a k * y k)`. Simplify using `only [dotProduct, Function.comp_apply, map_sum, map_mul]`. Conclude with `Finset.sum_congr rfl (fun k _ => mul_comm _ _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h, hay, map_one]`. Establish `hwy : hform τ H (Hi *ᵥ (τ ∘ a)) y = 1`. Rewrite using `[← hform_conj_symm hτ hH y (Hi *ᵥ (τ ∘ a)), hyw, map_one]`. Establish `hww : τ (hform τ H (Hi *ᵥ (τ ∘ a)) (Hi *ᵥ (τ ∘ a))) = hform τ H (Hi *ᵥ (τ ∘ a)) (Hi *ᵥ (τ ∘ a))` using `hform_conj_symm hτ hH _ _`. Establish `ht2 : 2 * (↑h2.unit⁻¹ : A) = 1` using `h2.mul_val_inv`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hτt : τ (↑h2.unit⁻¹ : A) = ↑h2.unit⁻¹`. Establish `h1 : τ (↑h2.unit⁻¹ : A) * 2 = 1`. Establish `h` using `congrArg τ ht2`. Rewrite `h` using `[map_mul, map_one, map_ofNat]`. Rewrite using `[mul_comm]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Conclude with `h`. Combine the equalities or inequalities in the displayed calculation. Establish `hτc : τ ((↑h2.unit⁻¹ : A) * hform τ H (Hi *ᵥ (τ ∘ a)) (Hi *ᵥ (τ ∘ a))) = (↑h2.unit⁻¹ : A) * hform τ H (Hi *ᵥ (τ ∘ a)) (Hi *ᵥ (τ ∘ a))`. Rewrite using `[map_mul, hτt, hww]`. Use `⟨Hi *ᵥ (τ ∘ a) - ((↑h2.unit⁻¹ : A) * hform τ H (Hi *ᵥ (τ ∘ a)) (Hi *ᵥ (τ ∘ a))) • y, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite using `[hform_sub_left, hform_sub_right, hform_sub_right, hyy, hwy, hyw, hτc]`. Take the linear combination `(-1 : A) * hform τ H (Hi *ᵥ (τ ∘ a)) (Hi *ᵥ (τ ∘ a)) * ht2`. Rewrite using `[hform_sub_right, hyw, hyy, mul_zero, sub_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_hyperbolic_partner (hτ : ∀ y, τ (τ y) = y) (h2 : IsUnit (2 : A))
     {Hi : Matrix (Fin N) (Fin N) A} (hHi : H * Hi = 1) (hH : ∀ i j, τ (H j i) = H i j)
@@ -114,23 +114,23 @@ theorem exists_hyperbolic_partner (hτ : ∀ y, τ (τ y) = y) (h2 : IsUnit (2 :
 end Form
 
 /- English proof (translation)
-Introduce `A _ τ hτ h2 hcar N H Hi hHi hH e f y a hee hff hef hyy hay`. Take `⟨y₁, hy₁, hyy₁⟩` from `exists_hyperbolic_partner hτ h2 hHi hH y a hyy hay`. Establish `hfe : hform τ H f e = 1` using `by rw [← hform_conj_symm hτ hH e f, hef, map_one]`. Establish `hy₁y : hform τ H y₁ y = 1` using `by rw [← hform_conj_symm hτ hH y y₁, hyy₁, map_one]`. Establish `hx1 : hform τ H (e + f) (e + f) = 2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hform_add_fst, hform_add_snd, hform_add_snd, hee, hef, hfe, hff]`. Evaluate the numerical expressions. Establish `hy1 : hform τ H (y + y₁) (y + y₁) = 2`. Rewrite using `[hform_add_fst, hform_add_snd, hform_add_snd, hyy, hyy₁, hy₁y, hy₁]`. Evaluate the numerical expressions.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Take `⟨g₁, hg₁, hg₁x, -⟩` from `carry hτ hcar hH (e + f) (y + y₁) (by rw [hx1, hy1]) (by rw [hx1]; exact h2)`. Establish `hvv : hform τ H ((g₁ : Matrix (Fin N) (Fin N) A) *ᵥ (e - f)) ((g₁ : Matrix (Fin N) (Fin N) A) *ᵥ (e - f)) = -2`. Rewrite using `[hform_unitary hg₁, hform_sub_fst, hform_sub_snd, hform_sub_snd, hee, hef, hfe, hff]`. Expand and normalize the polynomial expressions, which then agree. Establish `hyy' : hform τ H (y - y₁) (y - y₁) = -2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[hform_sub_fst, hform_sub_snd, hform_sub_snd, hyy, hyy₁, hy₁y, hy₁]`. Expand and normalize the polynomial expressions, which then agree. Establish `h2' : IsUnit (-2 : A)` using `h2.neg`. Take `⟨g₂, hg₂, hg₂v, hfix⟩` from `carry hτ hcar hH ((g₁ : Matrix (Fin N) (Fin N) A) *ᵥ (e - f)) (y - y₁) (by rw [hvv, hyy']) (by rw [hvv]; exact h2')`. Establish `hperp1 : hform τ H ((g₁ : Matrix (Fin N) (Fin N) A) *ᵥ (e - f)) (y + y₁) = 0`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← hg₁x, hform_unitary hg₁, hform_sub_fst, hform_add_snd, hform_add_snd, hee, hef, hfe, hff]`. Expand and normalize the polynomial expressions, which then agree. Establish `hperp2 : hform τ H (y - y₁) (y + y₁) = 0`. Rewrite using `[hform_sub_fst, hform_add_snd, hform_add_snd, hyy, hyy₁, hy₁y, hy₁]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hfix'` using `hfix (y + y₁) hperp1 hperp2`. Use `⟨g₂ * g₁, mul_mem hg₂ hg₁, ?_⟩` and prove the remaining obligations. Establish `hsum : ((g₂ * g₁ : GL (Fin N) A) : Matrix (Fin N) (Fin N) A) *ᵥ (e + f) = y + y₁`. Rewrite using `[Units.val_mul, ← Matrix.mulVec_mulVec, hg₁x, hfix']`. Establish `hdiff : ((g₂ * g₁ : GL (Fin N) A) : Matrix (Fin N) (Fin N) A) *ᵥ (e - f) = y - y₁`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Units.val_mul, ← Matrix.mulVec_mulVec, hg₂v]`. Establish `key : (2 : A) • (((g₂ * g₁ : GL (Fin N) A) : Matrix (Fin N) (Fin N) A) *ᵥ e) = (2 : A) • y`. Establish `h : ((g₂ * g₁ : GL (Fin N) A) : Matrix (Fin N) (Fin N) A) *ᵥ ((e + f) + (e - f)) = (y + y₁) + (y - y₁)`. Rewrite using `[Matrix.mulVec_add, hsum, hdiff]`. Establish `he : (e + f) + (e - f) = (2 : A) • e`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[two_smul]`. Normalize the expressions using the abelian group laws. Establish `hy : (y + y₁) + (y - y₁) = (2 : A) • y`. Rewrite using `[two_smul]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Rewrite `h` using `[he, Matrix.mulVec_smul, hy]`. Conclude with `h`. Establish `h3` using `congrArg (fun z => (↑h2.unit⁻¹ : A) • z) key`. Simplify using `only [smul_smul, h2.val_inv_mul, one_smul] at h3`. Conclude with `h3`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_unitary_carry_primitive :
     ∀ (A : Type) [CommRing A] (τ : A →+* A), (∀ y, τ (τ y) = y) → IsUnit (2 : A) →

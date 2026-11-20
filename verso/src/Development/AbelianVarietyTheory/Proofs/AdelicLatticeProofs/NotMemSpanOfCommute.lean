@@ -13,19 +13,19 @@ namespace GlobalTheory.SplitScalar
 open scoped ComplexOrder
 
 /- English proof (translation)
-Establish `h1 : ∀ a ∈ G, ∀ B ∈ Submonoid.closure G, Commute a B`. Introduce `a ha B hB`. Proceed by induction on `hB using Submonoid.closure_induction with`. Consider the case `mem b hb => exact hc a ha b hb`. Consider the case `one => exact Commute.one_right _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `mul x y _ _ hx hy => exact hx.mul_right hy`. Establish `h2 : ∀ A ∈ Submonoid.closure G, ∀ B ∈ Submonoid.closure G, Commute A B`. Introduce `A hA B hB`. Proceed by induction on `hA using Submonoid.closure_induction with`. Consider the case `mem a ha => exact h1 a ha B hB`.
+Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `one => exact Commute.one_left _`. Consider the case `mul x y _ _ hx hy => exact hx.mul_left hy`. Establish `key : ∀ x ∈ Submodule.span ℂ s, ∃ B ∈ Submonoid.closure G, B x = 0`. Introduce `x hx`. Proceed by induction on `hx using Submodule.span_induction with`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `mem x hx`. Take `⟨g, hg, h⟩` from `hs x hx`. Conclude with `⟨g, Submonoid.subset_closure hg, h⟩`. Consider the case `zero => exact ⟨1, one_mem _, rfl⟩`. Consider the case `add x y _ _ hx hy`.
+Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Treat this case separately.
 
-Take `⟨A, hA, ha⟩` from `hx`. Take `⟨B, hB, hb⟩` from `hy`. Use `⟨A * B, mul_mem hA hB, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add]`. Use `nth_rewrite 1 [(h2 A hA B hB).eq]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Module.End.mul_apply, Module.End.mul_apply, ha, hb, map_zero, map_zero, add_zero]`. Consider the case `smul c x _ hx`. Take `⟨A, hA, ha⟩` from `hx`. Conclude with `⟨A, hA, by rw [map_smul, ha, smul_zero]⟩`. Introduce `h`.
+Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨B, hB, hb⟩` from `key f h`. Conclude with `hf B hB hb`.
+A detailed English derivation is pending.
 -/
 theorem notMem_span_of_commute {V : Type} [AddCommGroup V] [Module ℂ V] (G : Set (Module.End ℂ V))
     (hc : ∀ a ∈ G, ∀ b ∈ G, Commute a b) (s : Set V) (hs : ∀ x ∈ s, ∃ g ∈ G, g x = 0) (f : V)
@@ -66,61 +66,61 @@ theorem notMem_span_of_commute {V : Type} [AddCommGroup V] [Module ℂ V] (G : S
 variable {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D}
 
 /- English proof (translation)
-Rewrite using `[isHalf_iff, smul_smul, he]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem isHalf_smul {m n : ℕ} {e : AE D} (he : e * e = e) (u : Mx D m n) : IsHalf e (e • u) := by
   rw [isHalf_iff, smul_smul, he]
 
 /- English proof (translation)
-Rewrite `*` using `[isHalf_iff]`. Rewrite using `[smul_add, hu, hv]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem isHalf_add {m n : ℕ} {e : AE D} {u v : Mx D m n} (hu : IsHalf e u) (hv : IsHalf e v) : IsHalf e (u + v) := by
   rw [isHalf_iff] at *
   rw [smul_add, hu, hv]
 
 /- English proof (translation)
-Rewrite `*` using `[isHalf_iff]`. Rewrite using `[smul_sub, hu, hv]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem isHalf_sub {m n : ℕ} {e : AE D} {u v : Mx D m n} (hu : IsHalf e u) (hv : IsHalf e v) : IsHalf e (u - v) := by
   rw [isHalf_iff] at *
   rw [smul_sub, hu, hv]
 
 /- English proof (translation)
-Rewrite `*` using `[isHalf_iff]`. Rewrite using `[smul_comm, hu]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem isHalf_nsmul {m n : ℕ} {e : AE D} {u : Mx D m n} (hu : IsHalf e u) (k : ℕ) : IsHalf e (k • u) := by
   rw [isHalf_iff] at *
   rw [smul_comm, hu]
 
 /- English proof (translation)
-Rewrite using `[isHalf_iff, smul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem isHalf_zero {m n : ℕ} (e : AE D) : IsHalf e (0 : Mx D m n) := by
   rw [isHalf_iff, smul_zero]
 
 /- English proof (translation)
-The claim follows from `symplO_eq_zero S T (by rw [mul_comm, he.2.1]) hx hy`.
+A detailed English derivation is pending.
 -/
 theorem half_orth {e : AE D} (he : IsSplitIdem D e) {x y : WO S T} (hx : IsHalf e x) (hy : IsHalf e y) :
     symplO S T x y = 0 :=
   symplO_eq_zero S T (by rw [mul_comm, he.2.1]) hx hy
 
 /- English proof (translation)
-The claim follows from `LinearMap.ext fun f => heisO_add_of_orth ψ S T (half_orth he hx hy) f`.
+A detailed English derivation is pending.
 -/
 theorem heisL_add_half {e : AE D} (he : IsSplitIdem D e) {x y : WO S T} (hx : IsHalf e x) (hy : IsHalf e y) :
     heisL ψ S T (x + y) = heisL ψ S T x * heisL ψ S T y :=
   LinearMap.ext fun f => heisO_add_of_orth ψ S T (half_orth he hx hy) f
 
 /- English proof (translation)
-Rewrite using `[Commute, SemiconjBy, ← heisL_add_half he hx hy, ← heisL_add_half he hy hx, add_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem heisL_commute_half {e : AE D} (he : IsSplitIdem D e) {x y : WO S T} (hx : IsHalf e x) (hy : IsHalf e y) :
     Commute (heisL ψ S T x) (heisL ψ S T y) := by
   rw [Commute, SemiconjBy, ← heisL_add_half he hx hy, ← heisL_add_half he hy hx, add_comm]
 
 /- English proof (translation)
-Introduce `h'`. Apply `h` to reduce the goal to its premises. Establish `: ψ (symplO S T x y + symplO S T y x) = 1`. Rewrite using `[symplO_skew S T x y, add_neg_cancel, AddChar.map_zero_eq_one]`. Rewrite `this` using `[AddChar.map_add_eq_mul, h', mul_one]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem psi_skew_ne {x y : WO S T} (h : ψ (symplO S T x y) ≠ 1) : ψ (symplO S T y x) ≠ 1 := by
   intro h'
@@ -130,7 +130,7 @@ theorem psi_skew_ne {x y : WO S T} (h : ψ (symplO S T x y) ≠ 1) : ψ (symplO 
   rwa [AddChar.map_add_eq_mul, h', mul_one] at this
 
 /- English proof (translation)
-Rewrite `hyΛ` using `[hd y (half_fin he hy)]`. Use `push Not at hyΛ`. Take `⟨u, hu, h⟩` from `hyΛ`. Use `⟨cA D e • u, hst u hu, isHalf_smul (isSplitIdem_conj he).1 u, psi_skew_ne ?_⟩` and prove the remaining obligations. Rewrite using `[← symplO_smul, (isHalf_iff _ _).1 hy]` and apply the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_dual_half {Λ : AddSubgroup (WO S T)} {e : AE D} (he : IsSplitIdem D e)
     (hd : ∀ u : WO S T, u.map (infPart D) = 0 → (u ∈ Λ ↔ ∀ u' ∈ Λ, ψ (symplO S T u u') = 1))
@@ -143,21 +143,19 @@ theorem exists_dual_half {Λ : AddSubgroup (WO S T)} {e : AE D} (he : IsSplitIde
   rwa [← symplO_smul, (isHalf_iff _ _).1 hy]
 
 /- English proof (translation)
-Establish `he'` using `isSplitIdem_conj he`. Establish `h : f ∉ Submodule.span ℂ {x | ∃ y, IsHalf e y ∧ y ∉ Λ ∧ x = heisO ψ S T y f}`. Use `notMem_span_of_commute {g | ∃ l ∈ Λ, ∃ z : ℂ, IsHalf (cA D e) l ∧ z ≠ 1 ∧ g = heisL ψ S T l - z • 1} ?_ _ ?_ f ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨l, -, z, hl, -, rfl⟩ _ ⟨l', -, z', hl', -, rfl⟩`. Conclude with `((heisL_commute_half he' hl hl').sub_right ((Commute.one_right _).smul_right _)).sub_left ((Commute.one_left _).smul_left _)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨y, hy, hyΛ, rfl⟩`. Take `⟨l, hl, hl', hne⟩` from `exists_dual_half he hd hst hy hyΛ`. Use `⟨_, ⟨l, hl, _, hl', hne, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.sub_apply, heisL_apply, heisO_comm, hf.2 _ he' l hl hl']`. Conclude with `sub_self _`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: ∀ B ∈ Submonoid.closure {g | ∃ l ∈ Λ, ∃ z : ℂ, IsHalf (cA D e) l ∧ z ≠ 1 ∧ g = heisL ψ S T l - z • 1}, ∃ c : ℂ, c ≠ 0 ∧ B f = c • f`. Introduce `B hB`. Proceed by induction on `hB using Submonoid.closure_induction with`. Consider the case `mem b hb`. Take `⟨l, hl, z, hl', hz, rfl⟩` from `hb`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨1 - z, sub_ne_zero.2 hz.symm, ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.sub_apply, heisL_apply, hf.2 _ he' l hl hl', sub_smul, one_smul]`. Both sides reduce to the same expression. Consider the case `one => exact ⟨1, one_ne_zero, (one_smul _ _).symm⟩`. Consider the case `mul x y _ _ hx hy`.
+Both sides reduce to the same expression. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc, hx⟩` from `hx`. Take `⟨d, hd, hy⟩` from `hy`. Conclude with `⟨d * c, mul_ne_zero hd hc, by rw [Module.End.mul_apply, hy, map_smul, hx, smul_smul]⟩`. Introduce `B hB`. Take `⟨c, hc, h⟩` from `this B hB`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[h]`. Conclude with `smul_ne_zero hc hf0`. Take `⟨κ, hκ, hκ'⟩` from `Submodule.exists_dual_map_eq_bot_of_notMem h inferInstance`. Use `⟨(κ f)⁻¹ • κ, by rw [LinearMap.smul_apply, smul_eq_mul, inv_mul_cancel₀ hκ], fun y hy => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hyΛ : y ∈ Λ`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hf.2 e he y hyΛ hy, LinearMap.smul_apply, smul_eq_mul, inv_mul_cancel₀ hκ]`. Conclude with `zero_le_one`. Establish `: κ (heisO ψ S T y f) = 0`. Rewrite using `[← Submodule.mem_bot ℂ, ← hκ']`. Conclude with `Submodule.mem_map_of_mem (Submodule.subset_span ⟨y, hy, hyΛ, rfl⟩)`.
-
-Rewrite using `[LinearMap.smul_apply, this, smul_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_count_form {Λ : AddSubgroup (WO S T)} {e : AE D} (he : IsSplitIdem D e)
     (hd : ∀ u : WO S T, u.map (infPart D) = 0 → (u ∈ Λ ↔ ∀ u' ∈ Λ, ψ (symplO S T u u') = 1))
@@ -205,21 +203,19 @@ theorem exists_count_form {Λ : AddSubgroup (WO S T)} {e : AE D} (he : IsSplitId
     rw [LinearMap.smul_apply, this, smul_zero]
 
 /- English proof (translation)
-Take `⟨κ, hκ1, hκ⟩` from `exists_count_form he hd hst hf0 hf`. Establish `h : f ∉ Submodule.span ℂ {x | ∃ y φ, IsHalf e y ∧ IsThetaFunO ψ S T φ ∧ x = heisO ψ S T y φ - φ}`. Use `notMem_span_of_commute {g | ∃ (y : WO S T) (N : ℕ), IsHalf e y ∧ g = ∑ k ∈ Finset.range (N + 1), heisL ψ S T (k • y)} ?_ _ ?_ f ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨y, N, hy, rfl⟩ _ ⟨y', N', hy', rfl⟩`. Conclude with `Commute.sum_left _ _ _ fun k _ => Commute.sum_right _ _ _ fun k' _ => heisL_commute_half he (isHalf_nsmul hy k) (isHalf_nsmul hy' k')`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨y, φ, hy, hφ, rfl⟩`. Take `⟨U, hU, hUφ⟩` from `hφ.level`. Take `⟨N, hN, hNU⟩` from `exists_nsmul_mem U hU (half_fin he hy)`. Take `⟨N, rfl⟩` from `Nat.exists_eq_succ_of_ne_zero hN.ne'`. Use `⟨_, ⟨y, N, hy, rfl⟩, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e1 : ∀ k : ℕ, heisL ψ S T (k • y) (heisO ψ S T y φ - φ) = heisO ψ S T ((k + 1) • y) φ - heisO ψ S T (k • y) φ`. Introduce `k`. Rewrite using `[map_sub, succ_nsmul, heisO_add_of_orth ψ S T (half_orth he (isHalf_nsmul hy k) hy)]`. Both sides reduce to the same expression. Rewrite using `[LinearMap.sum_apply, Finset.sum_congr rfl fun k _ => e1 k, Finset.sum_range_sub (fun k => heisO ψ S T (k • y) φ), zero_smul, heisO_zero, hUφ _ hNU (half_fin he (isHalf_nsmul hy _)), sub_self]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: ∀ B ∈ Submonoid.closure {g | ∃ (y : WO S T) (N : ℕ), IsHalf e y ∧ g = ∑ k ∈ Finset.range (N + 1), heisL ψ S T (k • y)}, (∀ y, IsHalf e y → 0 ≤ κ (B (heisO ψ S T y f))) ∧ 0 < κ (B f)`. Introduce `B hB`. Proceed by induction on `hB using Submonoid.closure_induction_right with`. Consider the case `one => exact ⟨hκ, by rw [Module.End.one_apply, hκ1]; exact zero_lt_one⟩`. Consider the case `mul_right B _ g hg ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨y', N, hy', rfl⟩` from `hg`. Use `⟨fun y hy => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Module.End.mul_apply, LinearMap.sum_apply, map_sum, map_sum]`. Use `Finset.sum_nonneg fun k _ => ?_` and prove the remaining obligations. Rewrite using `[heisL_apply, ← heisO_add_of_orth ψ S T (half_orth he (isHalf_nsmul hy' k) hy)]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ih.1 _ (isHalf_add (isHalf_nsmul hy' k) hy)`. Rewrite using `[Module.End.mul_apply, LinearMap.sum_apply, map_sum, map_sum]`. Use `Finset.sum_pos' (fun k _ => ih.1 _ (isHalf_nsmul hy' k)) ⟨0, Finset.mem_range.2 N.succ_pos, ?_⟩` and prove the remaining obligations. Rewrite using `[heisL_apply, zero_smul, heisO_zero]`. Conclude with `ih.2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `B hB h0`. Use `(this B hB).2` as an intermediate fact. Rewrite `this` using `[h0, map_zero]`. Conclude with `lt_irrefl _ this`. Take `⟨ℓ, hℓ, hℓ'⟩` from `Submodule.exists_dual_map_eq_bot_of_notMem h inferInstance`.
-
-Use `⟨ℓ, hℓ, fun y hy φ hφ => ?_⟩` and prove the remaining obligations. Rewrite using `[← sub_eq_zero, ← map_sub, ← Submodule.mem_bot ℂ, ← hℓ']`. Conclude with `Submodule.mem_map_of_mem (Submodule.subset_span ⟨y, φ, hy, hφ, rfl⟩)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_invariant_form {Λ : AddSubgroup (WO S T)} {e : AE D} (he : IsSplitIdem D e)
     (hd : ∀ u : WO S T, u.map (infPart D) = 0 → (u ∈ Λ ↔ ∀ u' ∈ Λ, ψ (symplO S T u u') = 1))
@@ -274,13 +270,11 @@ theorem exists_invariant_form {Λ : AddSubgroup (WO S T)} {e : AE D} (he : IsSpl
   exact Submodule.mem_map_of_mem (Submodule.subset_span ⟨y, φ, hy, hφ, rfl⟩)
 
 /- English proof (translation)
-Establish `ex : ∀ u ∈ R, ∃! v, v ∈ R ∧ a + u - v ∈ Λ` using `fun u hu => hR' _ (add_mem ha (hR u hu).1) (isHalf_add hae (hR u hu).2)`. Use `choose σ hσ hσu using ex`. Rewrite using `[heisO_sum]`. Establish `hinj : ∀ u₁ h₁ u₂ h₂, σ u₁ h₁ = σ u₂ h₂ → u₁ = u₂`. Introduce `u₁ h₁ u₂ h₂ h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `(hR' u₁ (hR u₁ h₁).1 (hR u₁ h₁).2).unique ⟨h₁, by rw [sub_self]; exact zero_mem _⟩ ⟨h₂, ?_⟩` and prove the remaining obligations. Use `sub_mem (hσ u₁ h₁).2 (hσ u₂ h₂).2` as an intermediate fact. Rewrite `this` using `[h, sub_sub_sub_cancel_right, add_sub_add_left_eq_sub]`. Then use the resulting hypothesis. Use `Finset.sum_bij σ (fun u hu => (hσ u hu).1) hinj (fun v hv => ?_) fun u hu => ?_` and prove the remaining obligations. Take `⟨u, hu, h⟩` from `Finset.surj_on_of_inj_on_of_card_le σ (fun u hu => (hσ u hu).1) (fun u₁ u₂ h₁ h₂ => hinj u₁ h₁ u₂ h₂) le_rfl v hv`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨u, hu, h.symm⟩`. Establish `hv` using `hR _ (hσ u hu).1`. Establish `hd : IsHalf e (a + u - σ u hu)` using `isHalf_sub (isHalf_add hae (hR u hu).2) hv.2`. Rewrite using `[← heisO_add_of_orth ψ S T (half_orth he hae (hR u hu).2)]`. Use `conv_rhs => rw [← hG _ (hσ u hu).2 (sub_mem (add_mem ha (hR u hu).1) hv.1) hd]`.
-
-Rewrite using `[← heisO_add_of_orth ψ S T (half_orth he hv.2 hd), add_sub_cancel]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_reps_invariant {Λ Λ' : AddSubgroup (WO S T)} {e : AE D} (he : IsSplitIdem D e) {R : Finset (WO S T)}
     (hR : ∀ u ∈ R, u ∈ Λ' ∧ IsHalf e u) (hR' : ∀ u ∈ Λ', IsHalf e u → ∃! v, v ∈ R ∧ u - v ∈ Λ)
@@ -308,23 +302,21 @@ theorem sum_reps_invariant {Λ Λ' : AddSubgroup (WO S T)} {e : AE D} (he : IsSp
     rw [← heisO_add_of_orth ψ S T (half_orth he hv.2 hd), add_sub_cancel]
 
 /- English proof (translation)
-Establish `he'` using `isSplitIdem_conj he`. Establish `hF : (∑ u ∈ R, ∑ u' ∈ R', heisO ψ S T u (heisO ψ S T u' f)) = ∑ u ∈ R, heisO ψ S T u (∑ u' ∈ R', heisO ψ S T u' f)` using `Finset.sum_congr rfl fun u _ => (heisO_sum ψ S T u R' _).symm`. Rewrite using `[hF]`. Establish `pass : ∀ (Q : Finset (WO S T)) (G : WO S T → ℂ), (∀ u ∈ Q, u ∈ Λ') → ∀ d ∈ Λ', heisO ψ S T d G = G → heisO ψ S T d (∑ u ∈ Q, heisO ψ S T u G) = ∑ u ∈ Q, heisO ψ S T u G`. Introduce `Q G hQ d hdΛ hG`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[heisO_sum]`. Use `Finset.sum_congr rfl fun u hu => ?_` and prove the remaining obligations. Rewrite using `[heisO_comm, hd d hdΛ u (hQ u hu), one_smul, hG]`. Use `set G := ∑ u' ∈ R', heisO ψ S T u' f with hGdef`. Use `set F := ∑ u ∈ R, heisO ψ S T u G with hFdef`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA : ∀ a ∈ Λ', IsHalf e a → heisO ψ S T a F = F` using `fun a ha hae => sum_reps_invariant he hR hRu (fun d hdΛ hdΛ' hde => pass R' f (fun u hu => (hR' u hu).1) d hdΛ' (hf.2 e he d hdΛ hde)) ha hae`. Establish `hB : ∀ b ∈ Λ', IsHalf (cA D e) b → heisO ψ S T b F = F` using `fun b hb hbe => pass R G (fun u hu => (hR u hu).1) b hb (sum_reps_invariant he' hR' hRu' (fun d hdΛ _ hde => hf.2 _ he' d hdΛ hde) hb hbe)`. Establish `hC : ∀ d ∈ Λ', heisO ψ S T d f = f → heisO ψ S T d F = F` using `fun d hdΛ hdf => pass R G (fun u hu => (hR u hu).1) d hdΛ (pass R' f (fun u hu => (hR' u hu).1) d hdΛ hdf)`. Establish `hdec : ∀ u : WO S T, u = e • u + (cA D e • u + (1 - (e + cA D e)) • u)`. Introduce `u`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← add_smul, ← add_smul, ← add_assoc, add_sub_cancel, one_smul]`. Establish `hoff' : ∀ u ∈ Λ', (1 - (e + cA D e)) • u ∈ Λ'`. Introduce `u hu`. Rewrite using `[sub_smul, add_smul, one_smul]`. Conclude with `sub_mem hu (add_mem (hst u hu) (hst' u hu))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `key : ∀ u ∈ Λ', heisO ψ S T ((1 - (e + cA D e)) • u) f = f → ψ (symplOH S T (e • u) (cA D e • u + (1 - (e + cA D e)) • u)) = 1 → ψ (symplOH S T (cA D e • u) ((1 - (e + cA D e)) • u)) = 1 → heisO ψ S T u F = F`. Introduce `u hu h0 h1 h2`. Establish `e1` using `heisO_heisO ψ S T (cA D e • u) ((1 - (e + cA D e)) • u) F`. Rewrite `e1` using `[h2, one_smul, hC _ (hoff' u hu) h0, hB _ (hst' u hu) (isHalf_smul he'.1 u)]`. Establish `e2` using `heisO_heisO ψ S T (e • u) (cA D e • u + (1 - (e + cA D e)) • u) F`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `e2` using `[h1, one_smul, ← e1, hA _ (hst u hu) (isHalf_smul he.1 u), ← hdec u]`. Conclude with `e2.symm`. Establish `two : ∀ x ∈ Λ', ∀ y ∈ Λ', ψ (symplOH S T (2 • x) y) = 1`. Introduce `x hx y hy`. Rewrite using `[two_nsmul, symplOH_add_left, symplOH_add_self, hd x hx y hy]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun u hu => key _ (nsmul_mem hu 2) ?_ ?_ ?_, fun e₁ he₁ u hu hue => ?_⟩` and prove the remaining obligations. Rewrite using `[smul_comm]`. Conclude with `hf.1 _ (hoff u hu)`. Rewrite using `[smul_comm e]`. Conclude with `two _ (hst u hu) _ (add_mem (hst' _ (nsmul_mem hu 2)) (hoff' _ (nsmul_mem hu 2)))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[smul_comm (cA D e)]`. Conclude with `two _ (hst' u hu) _ (hoff' _ (nsmul_mem hu 2))`. Establish `hh : ∀ a : AE D, IsHalf e₁ (a • u)`. Introduce `a`. Rewrite using `[isHalf_iff, smul_comm, (isHalf_iff _ _).1 hue]`.
-
-Use `key u hu (hf.2 e₁ he₁ _ (hoff u hu) (hh _)) ?_ ?_` and prove the remaining obligations. Rewrite using `[symplOH, half_orth he₁ (hh _) (isHalf_add (hh _) (hh _)), mul_zero, AddChar.map_zero_eq_one]`. Rewrite using `[symplOH, half_orth he₁ (hh _) (hh _), mul_zero, AddChar.map_zero_eq_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLatVac_sum {Λ Λ' : AddSubgroup (WO S T)} {e : AE D} (he : IsSplitIdem D e)
     (hd : ∀ u ∈ Λ', ∀ u' ∈ Λ', ψ (symplO S T u u') = 1)

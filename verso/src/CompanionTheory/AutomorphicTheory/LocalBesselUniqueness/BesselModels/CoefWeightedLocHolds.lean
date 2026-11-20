@@ -15,22 +15,22 @@ open Formalism.BasicNotions Formalism.MainNotions.S Formalism.L2.SG.SplitPrimeNo
 namespace Formalism.L2.SG.Closed.BM
 
 /- English proof (translation)
-The claim follows from `ReciprocityTheory.ChartRestriction.DS.coefWeightedLoc`.
+A detailed English derivation is pending.
 -/
 theorem CoefWeightedLoc_holds : CoefWeightedLoc := ReciprocityTheory.ChartRestriction.DS.coefWeightedLoc
 
 /- English proof (translation)
-The claim follows from `Formalism.L2.SG.BesselDiscreteSeries.besselNVGap`.
+A detailed English derivation is pending.
 -/
 theorem BesselNVGap_holds : BesselNVGap := Formalism.L2.SG.BesselDiscreteSeries.besselNVGap
 
 /- English proof (translation)
-The claim follows from `scWlocExists Formalism.L2.SG.HCReprodM.hcReprodDSm`.
+A detailed English derivation is pending.
 -/
 theorem WlocExists_holds : WlocExists := scWlocExists Formalism.L2.SG.HCReprodM.hcReprodDSm
 
 /- English proof (translation)
-Establish `h` using `n_unimodular_local`. Introduce `k r ε e f wf z0 z c hF hc hz`. Conclude with `h k r ε e f wf z0 z c ⟨hF.ee, hF.ff, hF.ef, hF.ez, hF.fz, hF.zz, hF.ww, hF.ew, hF.fw, hF.zw⟩ hc hz`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem NUnimodLoc_holds : Formalism.L2.SG.Pf.WFL.NUnimodLoc := by
   have h := n_unimodular_local
@@ -38,7 +38,7 @@ theorem NUnimodLoc_holds : Formalism.L2.SG.Pf.WFL.NUnimodLoc := by
   exact h k r ε e f wf z0 z c ⟨hF.ee, hF.ff, hF.ef, hF.ez, hF.fz, hF.zz, hF.ww, hF.ew, hF.fw, hF.zw⟩ hc hz
 
 /- English proof (translation)
-The claim follows from `quotient_product_compact`.
+A detailed English derivation is pending.
 -/
 theorem QuotProdK_holds : Formalism.L2.SG.Pf.WFL.QuotProdK := quotient_product_compact
 

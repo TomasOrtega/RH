@@ -10,7 +10,7 @@ namespace GlobalTheory.DivGlue
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor (resG exists_chart)
 
 /- English proof (translation)
-Establish `h1 : ι.app U ≫ Y.presheaf.map (homOfLE h').op = ι.appLE U V h'`. Rewrite using `[Scheme.Hom.app_eq_appLE, Scheme.Hom.appLE_map]`. Establish `h2 : Z.presheaf.map (homOfLE e).op ≫ ι.app U' ≫ Y.presheaf.map (homOfLE h).op = ι.appLE U V h'`. Rewrite using `[Scheme.Hom.app_eq_appLE, Scheme.Hom.appLE_map, Scheme.Hom.map_appLE]`. Conclude with `(congrArg (fun f => f.hom x) h1).trans (congrArg (fun f => f.hom x) h2).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem resG_app {Y Z : Scheme.{0}} (ι : Y ⟶ Z) {U U' : Z.Opens} (e : U' ≤ U) {V : Y.Opens}
     (h : V ≤ ι ⁻¹ᵁ U') (h' : V ≤ ι ⁻¹ᵁ U) (x : Γ(Z, U)) :
@@ -23,17 +23,17 @@ theorem resG_app {Y Z : Scheme.{0}} (ι : Y ⟶ Z) {U U' : Z.Opens} (e : U' ≤ 
   exact (congrArg (fun f => f.hom x) h1).trans (congrArg (fun f => f.hom x) h2).symm
 
 /- English proof (translation)
-Introduce `Y Z ι D hD t ht M a ha`. Set `j : D.ι → (PUnit → D.ι)` to `fun i _ => i`. Set `W : D.ι → Y.Opens` to `fun i => (D.pull ι).U (j i)`. Establish `hW : ∀ i, W i ≤ ι ⁻¹ᵁ D.U i` using `fun i => LB.wchart_le D _ (j i) PUnit.unit`. Set `b : ∀ i, Γ(Y, W i)` to `fun i => resG Y (hW i) ((ι.app (D.U i)).hom (a i)) * ((t.s (j i) ^ M : Γ(Y, (D.pull ι).U (j i))ˣ) : Γ(Y, (D.pull ι).U (j i)))`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `cover : (⊤ : Y.Opens) ≤ iSup W` using `fun y _ => by`. Take `⟨i, hi⟩` from `exists_chart hD (ι y)`. Conclude with `Opens.mem_iSup.2 ⟨i, Set.mem_iInter.2 fun _ => hi⟩`. Take `⟨h, hh⟩` from `GlobalTheory.LB.exists_fun_of_cover W (fun _ => le_top) cover b (by`. Introduce `i i'`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hV : W i ⊓ W i' ≤ ι ⁻¹ᵁ (D.U i ⊓ D.U i')` using `fun y hy => ⟨hW i hy.1, hW i' hy.2⟩`. Establish `hA` using `congrArg (fun x => resG Y hV ((ι.app _).hom x)) (ha i i')`. Simplify using `only [map_mul, map_pow] at hA`. Simplify using `only [b, map_mul, GlobalTheory.LB.resG_resG]`. Rewrite using `[← GlobalTheory.LB.val_res, ← GlobalTheory.LB.val_res, map_pow, map_pow, ht (j i) (j i'), mul_pow, Units.val_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hG : (((D.pull ι).g (j i) (j i') : Γ(Y, W i ⊓ W i')ˣ) : Γ(Y, W i ⊓ W i')) = resG Y hV ((ι.app _).hom (D.g i i' : Γ(Z, D.U i ⊓ D.U i')))` using `by show ((∏ _k : PUnit, (res hV (pullU ι _ (D.g i i'))) ^ (1 : ℤ) : Γ(Y, W i ⊓ W i')ˣ) : Γ(Y, W i ⊓ W i')) = _`. Rewrite using `[Finset.univ_unique, Finset.prod_singleton, zpow_one]`. Both sides reduce to the same expression. Rewrite using `[Units.val_pow_eq_pow_val, hG, resG_app ι inf_le_left hV, resG_app ι inf_le_right hV, ← hA]`. Use the proof step `ring)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨h, fun i y hy => ?_⟩` and prove the remaining obligations. Establish `hyW : y ∈ W i` using `Set.mem_iInter.2 fun _ => hy`. Use `⟨Units.map (Y.presheaf.germ (W i) y hyW).hom.toMonoidHom (t.s (j i) ^ M), ?_⟩` and prove the remaining obligations. Rewrite using `[← Y.presheaf.germ_res_apply (homOfLE (le_top : W i ≤ ⊤)) y hyW h]`. Express the relevant statement in the definitionally equal form `(Y.presheaf.germ (W i) y hyW).hom (resG Y le_top h) = _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[hh i, map_mul]`. Use `congr 1`. Rewrite using `[Scheme.Hom.germ_stalkMap_apply]`. Conclude with `Y.presheaf.germ_res_apply (homOfLE (hW i)) y hyW _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem glue : ∀ (Y Z : Scheme.{0}) (ι : Y ⟶ Z) (D : LB Z), D.IsLB → ∀ t : (D.pull ι).Gen, t.IsGen →
   ∀ (M : ℕ) (a : ∀ i, Γ(Z, D.U i)),

@@ -10,61 +10,61 @@ namespace GlobalTheory.ResGlue
 variable {A : Type} [CommRing A]
 
 /- English proof (translation)
-Unfold `red`. Rewrite using `[dif_pos h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem red_mem {S : Subring A} {ϖ a : A} (h : a ∈ S) :
     red S ϖ a = Ideal.Quotient.mk (piIdeal S ϖ) ⟨a, h⟩ := by
   unfold red; rw [dif_pos h]
 
 /- English proof (translation)
-Rewrite using `[red_mem ha, red_mem hb, red_mem (add_mem ha hb), ← map_add]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem red_add' {S : Subring A} {ϖ a b : A} (ha : a ∈ S) (hb : b ∈ S) :
     red S ϖ (a + b) = red S ϖ a + red S ϖ b := by
   rw [red_mem ha, red_mem hb, red_mem (add_mem ha hb), ← map_add]; rfl
 
 /- English proof (translation)
-Rewrite using `[red_mem ha, red_mem hb, red_mem (mul_mem ha hb), ← map_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem red_mul' {S : Subring A} {ϖ a b : A} (ha : a ∈ S) (hb : b ∈ S) :
     red S ϖ (a * b) = red S ϖ a * red S ϖ b := by
   rw [red_mem ha, red_mem hb, red_mem (mul_mem ha hb), ← map_mul]; rfl
 
 /- English proof (translation)
-Rewrite using `[red_mem ha, red_mem hb, red_mem (sub_mem ha hb), ← map_sub]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem red_sub' {S : Subring A} {ϖ a b : A} (ha : a ∈ S) (hb : b ∈ S) :
     red S ϖ (a - b) = red S ϖ a - red S ϖ b := by
   rw [red_mem ha, red_mem hb, red_mem (sub_mem ha hb), ← map_sub]; rfl
 
 /- English proof (translation)
-Rewrite using `[red_mem ha, red_mem (neg_mem ha), ← map_neg]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem red_neg' {S : Subring A} {ϖ a : A} (ha : a ∈ S) :
     red S ϖ (-a) = -red S ϖ a := by
   rw [red_mem ha, red_mem (neg_mem ha), ← map_neg]; rfl
 
 /- English proof (translation)
-Rewrite using `[red_mem (one_mem S), ← map_one (Ideal.Quotient.mk (piIdeal S ϖ))]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem red_one' (S : Subring A) (ϖ : A) : red S ϖ 1 = 1 := by
   rw [red_mem (one_mem S), ← map_one (Ideal.Quotient.mk (piIdeal S ϖ))]; rfl
 
 /- English proof (translation)
-Rewrite using `[red_mem (zero_mem S), ← map_zero (Ideal.Quotient.mk (piIdeal S ϖ))]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem red_zero' (S : Subring A) (ϖ : A) : red S ϖ 0 = 0 := by
   rw [red_mem (zero_mem S), ← map_zero (Ideal.Quotient.mk (piIdeal S ϖ))]; rfl
 
 /- English proof (translation)
-Take `⟨⟨s, hs⟩, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Conclude with `⟨s, hs, (red_mem hs).symm⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem red_surj (S : Subring A) (ϖ : A) (x : Res S ϖ) : ∃ s ∈ S, x = red S ϖ s := by
   obtain ⟨⟨s, hs⟩, rfl⟩ := Ideal.Quotient.mk_surjective x
   exact ⟨s, hs, (red_mem hs).symm⟩
 
 /- English proof (translation)
-Rewrite using `[red_mem (mul_mem hϖ hs), Ideal.Quotient.eq_zero_iff_mem]`. Establish `e : (⟨ϖ * s, mul_mem hϖ hs⟩ : S) = ⟨ϖ, hϖ⟩ * ⟨s, hs⟩` using `rfl`. Rewrite using `[e]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.subset_span rfl)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem red_pi {S : Subring A} {ϖ s : A} (hϖ : ϖ ∈ S) (hs : s ∈ S) : red S ϖ (ϖ * s) = 0 := by
   rw [red_mem (mul_mem hϖ hs), Ideal.Quotient.eq_zero_iff_mem]
@@ -87,23 +87,21 @@ def fixRes (S : Subring A) (σ : A →+* A) (ϖ : A) : Subring (Res S ϖ) where
     exact ⟨-a, neg_mem ha, by rw [map_neg, hσa], (red_neg' ha).symm⟩
 
 /- English proof (translation)
-Introduce `A _ n _ _ S σ H ϖ q τ hG hF hτ`. Take `⟨hinv, hS, hϖS, hσϖ, hnzd, ⟨w₀, hw₀S, hw1, ⟨u, huS, hu⟩, hdec⟩, hloc, hcard⟩` from `hG`. Take `⟨hH, hherm, H₁, hH₁, hHH₁⟩` from `hF`. Use `⟨fixRes S σ ϖ, red S ϖ w₀, H₁.map (red S ϖ), ?_, ?_, ?_, ?_, ?_, hcard, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨a, ha, hσa, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Rewrite using `[hτ a ha, hσa]`. Rewrite using `[hτ w₀ hw₀S, ← red_add' hw₀S (hS w₀ hw₀S), hw1, red_one']`. Use `isUnit_iff_exists_inv.mpr ⟨red S ϖ u, ?_⟩` and prove the remaining obligations. Rewrite using `[hτ w₀ hw₀S, ← red_sub' hw₀S (hS w₀ hw₀S), ← red_mul' (sub_mem hw₀S (hS w₀ hw₀S)) huS, hu, red_one']`. Introduce `x`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨s, hs, rfl⟩` from `red_surj S ϖ x`. Take `⟨a, ha, b, hb, hσa, hσb, rfl⟩` from `hdec s hs`. Use `⟨red S ϖ a, ⟨a, ha, hσa, rfl⟩, red S ϖ b, ⟨b, hb, hσb, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[red_add' ha (mul_mem hb hw₀S), red_mul' hb hw₀S]`. Introduce and unpack `_ ⟨a, ha, hσa, rfl⟩ hne`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Establish `hnp : ¬ InPow S ϖ 1 a`. Introduce and unpack `⟨s, hs, rfl⟩`. Conclude with `hne (by rw [pow_one]; exact red_pi hϖS hs)`. Take `⟨b, hb, hab⟩` from `hloc a ha hσa hnp`. Establish `hσb : σ b = b`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : a * σ b = 1` using `by rw [← hσa, ← map_mul, hab, map_one]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `⟨red S ϖ b, ⟨b, hb, hσb, rfl⟩, by rw [← red_mul' ha hb, hab, red_one']⟩`. Use extensionality with `i j`. Establish `e` using `congrFun (congrFun hherm i) j`.
+Chain the equalities or inequalities of the calculation. Supply the required witnesses or components. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Formalism.UG.cT, Matrix.transpose_apply, Matrix.map_apply] at e ⊢`. Rewrite using `[hτ _ (hH j i), e]`. Set `HS : Matrix n n S` to `fun i j => ⟨H i j, hH i j⟩`. Set `HS₁ : Matrix n n S` to `fun i j => ⟨H₁ i j, hH₁ i j⟩`. Establish `hone : HS * HS₁ = 1`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : (HS * HS₁).map S.subtype = (1 : Matrix n n S).map S.subtype`. Rewrite using `[Matrix.map_mul, Matrix.map_one _ (map_zero _) (map_one _)]`. Conclude with `hHH₁`. Use extensionality with `i j`. Conclude with `congrFun (congrFun e i) j`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `e1 : H.map (red S ϖ) = HS.map (Ideal.Quotient.mk (piIdeal S ϖ))`. Use extensionality with `i j`. Conclude with `red_mem (hH i j)`. Establish `e2 : H₁.map (red S ϖ) = HS₁.map (Ideal.Quotient.mk (piIdeal S ϖ))`. Use extensionality with `i j`.
-
-Conclude with `red_mem (hH₁ i j)`. Rewrite using `[e1, e2, ← Matrix.map_mul, hone, Matrix.map_one _ (map_zero _) (map_one _)]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem resGlue : ∀ {A : Type} [CommRing A] {n : Type} [Fintype n] [DecidableEq n] (S : Subring A)
     (σ : A →+* A) (H : Matrix n n A) (ϖ : A) (q : ℕ) (τ : Res S ϖ →+* Res S ϖ),

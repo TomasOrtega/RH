@@ -27,9 +27,9 @@ namespace GlobalTheory.RayEv.Transport
 open GlobalTheory.TorusModel
 
 /- English proof (translation)
-Establish `: IsFinite (w₂.left ≫ H.hom)` using `by rw [Over.w]; infer_instance`. Establish `: IsFinite w₂.left` using `IsFinite.of_comp w₂.left H.hom`. Establish `hl : k₁.left ≫ w₁.left = k₂.left ≫ w₂.left` using `congrArg (·.left) h`. Use `⟨Over.mk (pullback.fst w₁.left w₂.left ≫ T₁.hom), inferInstanceAs (IsFinite (pullback.fst w₁.left w₂.left ≫ T₁.hom)), Over.homMk (pullback.fst _ _) rfl, Over.homMk (pullback.snd _ _) ?_, Over.homMk (pullback.lift k₁.left k₂.left hl) ?_, Over.OverMorphism.ext pullback.condition, O …` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `pullback.snd w₁.left w₂.left ≫ T₂.hom = pullback.fst w₁.left w₂.left ≫ T₁.hom`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[← Over.w w₂, ← Over.w w₁, pullback.condition_assoc]`. Express the relevant statement in the definitionally equal form `pullback.lift k₁.left k₂.left hl ≫ pullback.fst w₁.left w₂.left ≫ T₁.hom = Z.hom`. Rewrite using `[pullback.lift_fst_assoc, Over.w]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_refine {S : Scheme.{0}} {H T₁ T₂ Z : Over S} [IsSeparated H.hom] [IsFinite T₁.hom] [IsFinite T₂.hom]
     {w₁ : T₁ ⟶ H} {w₂ : T₂ ⟶ H} {k₁ : Z ⟶ T₁} {k₂ : Z ⟶ T₂} (h : k₁ ≫ w₁ = k₂ ≫ w₂) :
@@ -75,13 +75,13 @@ instance : IsSeparated Y.H.hom := (isSemiAbelian_of_isGt _ _ _ Y.isGt).separated
 instance : Smooth Y.H.hom := (isSemiAbelian_of_isGt _ _ _ Y.isGt).smooth
 
 /- English proof (translation)
-The claim follows from `h.pull k (Y.rep.1 _ _ k w)`.
+A detailed English derivation is pending.
 -/
 theorem pt_pull {T T' : Over (Sp R)} (k : T' ⟶ T) {w : T ⟶ Y.H} {w' : T ⟶ G} (h : IsPointOf U (Y.Φ T w) w') :
     IsPointOf U (Y.Φ T' (k ≫ w)) (k ≫ w') := h.pull k (Y.rep.1 _ _ k w)
 
 /- English proof (translation)
-The claim follows from `h.smul GlobalTheory.allSixLaws.1.globalFns hO c (Y.smul c T w)`.
+A detailed English derivation is pending.
 -/
 theorem pt_act {ιA : A.OAct O} {a : OAct O G} (hO : U.OLinear O oa ιA a.toRingAct) (c : O) {T : Over (Sp R)}
     {w : T ⟶ Y.H} {w' : T ⟶ G} (h : IsPointOf U (Y.Φ T w) w') :
@@ -89,7 +89,7 @@ theorem pt_act {ιA : A.OAct O} {a : OAct O G} (hO : U.OLinear O oa ιA a.toRing
   h.smul GlobalTheory.allSixLaws.1.globalFns hO c (Y.smul c T w)
 
 /- English proof (translation)
-Take `⟨T, hT, k, w, w', hw, rfl, rfl⟩` from `h`. Conclude with `⟨T, hT, r ≫ k, w, w', hw, Category.assoc _ _ _, Category.assoc _ _ _⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem Near.comp {Z Z' : Over (Sp R)} {x : Z ⟶ Y.H} {x' : Z ⟶ G} (h : Near U Y x x') (r : Z' ⟶ Z) :
     Near U Y (r ≫ x) (r ≫ x') := by
@@ -97,7 +97,7 @@ theorem Near.comp {Z Z' : Over (Sp R)} {x : Z ⟶ Y.H} {x' : Z ⟶ G} (h : Near 
   exact ⟨T, hT, r ≫ k, w, w', hw, Category.assoc _ _ _, Category.assoc _ _ _⟩
 
 /- English proof (translation)
-Take `⟨T, hT, k, w, w', hw, rfl, rfl⟩` from `h`. Conclude with `⟨T, hT, k, _, _, pt_act hO c hw, (Category.assoc _ _ _).symm, (Category.assoc _ _ _).symm⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem Near.act {ιA : A.OAct O} {a : OAct O G} (hO : U.OLinear O oa ιA a.toRingAct) (c : O) {Z : Over (Sp R)}
     {x : Z ⟶ Y.H} {x' : Z ⟶ G} (h : Near U Y x x') : Near U Y (x ≫ Y.act.act c) (x' ≫ a.act c) := by
@@ -105,7 +105,7 @@ theorem Near.act {ιA : A.OAct O} {a : OAct O G} (hO : U.OLinear O oa ιA a.toRi
   exact ⟨T, hT, k, _, _, pt_act hO c hw, (Category.assoc _ _ _).symm, (Category.assoc _ _ _).symm⟩
 
 /- English proof (translation)
-Introduce `e Z r y hy z JM JL hM hL` and use `(val_pull hM g p r).trans ((h e Z (r ≫ p) y (hy.trans (Category.assoc _ _ _).symm) z JM JL hM hL).trans (congrArg _ (val_pull hL g' p r).symm))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem FrRel.pull {T T' : Scheme.{0}} {x' : T ⟶ G.left} {b : T ⟶ D.toPre.P.A.left} {g' : Frame U.LG.L x'}
     {g : Frame D.toPre.P.L b} (h : FrRel U x' b g' g) (p : T' ⟶ T) :
@@ -116,19 +116,19 @@ theorem FrRel.pull {T T' : Scheme.{0}} {x' : T ⟶ G.left} {b : T ⟶ D.toPre.P.
 variable [IsNoetherianRing R] [hc : IsAdicComplete (maximalIdeal R) R]
 
 /- English proof (translation)
-The claim follows from `FiniteTorsLift.isAdicColimit_of_isFinite_noetherian hc T`.
+A detailed English derivation is pending.
 -/
 theorem adic (T : Over (Sp R)) [IsFinite T.hom] : IsAdicColimit (maximalIdeal R) T :=
   FiniteTorsLift.isAdicColimit_of_isFinite_noetherian hc T
 
 /- English proof (translation)
-The claim follows from `(existsUnique_point U (adic T) _).unique h h'`.
+A detailed English derivation is pending.
 -/
 theorem pt_unique {T : Over (Sp R)} [IsFinite T.hom] {w : T ⟶ Y.H} {w' w'' : T ⟶ G} (h : IsPointOf U (Y.Φ T w) w')
     (h' : IsPointOf U (Y.Φ T w) w'') : w' = w'' := (existsUnique_point U (adic T) _).unique h h'
 
 /- English proof (translation)
-Take `⟨T, hT, k, w, w', hw, e, rfl⟩` from `h`. Take `⟨T₂, hT₂, k₂, w₂, w₂', hw₂, e₂, rfl⟩` from `h'`. Take `⟨T₃, _, p₁, p₂, l, h₁, rfl, rfl⟩` from `exists_refine (e.trans e₂.symm)`. Rewrite using `[Category.assoc, Category.assoc, pt_unique (pt_pull p₁ hw) (h₁ ▸ pt_pull p₂ hw₂)]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem Near.unique {Z : Over (Sp R)} {x : Z ⟶ Y.H} {x' x'' : Z ⟶ G} (h : Near U Y x x') (h' : Near U Y x x'') :
     x' = x'' := by
@@ -161,7 +161,7 @@ end Loc
 
 omit [IsDomain R] [IsLocalRing R] [IsNoetherianRing R] hc in
 /- English proof (translation)
-Establish `h` using `congrArg (fun q => q.hom t) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom κ))`. Establish `h' : toΓ J (κ t) = (spMap κ).appTop.hom (toΓ W t)` using `h`. Rewrite using `[h']`. Conclude with `((gs_pull (𝟙 _) (spMap κ) y ⊤ trivial _).trans (by rw [Category.id_comp])).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gs_toΓ {W J : Type} [CommRing W] [CommRing J] (κ : W →+* J) (y : Sp J) (t : W) :
     gs (spMap κ) y ⊤ (toΓ W t) = gs (𝟙 (Sp J)) y ⊤ (toΓ J (κ t)) := by
@@ -171,19 +171,19 @@ theorem gs_toΓ {W J : Type} [CommRing W] [CommRing J] (κ : W →+* J) (y : Sp 
   exact ((gs_pull (𝟙 _) (spMap κ) y ⊤ trivial _).trans (by rw [Category.id_comp])).symm
 
 /- English proof (translation)
-Take `⟨W, _, _, _, _, l, w, w', c', c, u, hw, rfl, rfl, a', a, fr, v', v⟩` from `h`. Choose the witnesses or unpack the hypotheses as in `⟨κ, hκ⟩ : ∃ κ : W →+* Jet C ρ m, spMap κ = l.left := by`. Take `⟨κ, hκ⟩` from `Spec.map_surjective (show Spec (.of (Jet C ρ m)) ⟶ Spec (.of W) from l.left)`. Conclude with `⟨κ.hom, hκ⟩`. Establish `hκ' : ∀ r, κ (algebraMap R W r) = algebraMap C (Jet C ρ m) (f r)` using `fun r => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `h₁ : spMap κ ≫ spMap (algebraMap R W) = spMap (algebraMap C (Jet C ρ m)) ≫ spMap f` using `(congrArg (· ≫ spMap (algebraMap R W)) hκ).trans (Over.w l)`. Rewrite `h₁` using `[← Spec.map_comp, ← Spec.map_comp]`. Conclude with `congrArg (fun q => q.hom r) (Spec.map_injective h₁)`. Take `⟨s, t, hs, ht, hst⟩` from `GlobalTheory.T.frames_generating_at_point R _ D A G U W (algebraMap R W) _ w' hw _ (congrArg (·.left) (Y.Φ_b w)) c' c a' a fr k σ F hF`. Take `⟨u₀, hu₀⟩ : ∃ u₀ : Jet C ρ m, toΓ _ u₀ = (u⁻¹ ^ k).val` from `⟨(Scheme.ΓSpecIso (.of (Jet C ρ m))).hom.hom (u⁻¹ ^ k).val, Iso.hom_inv_id_apply _ _⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `key : ∀ (y : Sp (Jet C ρ m)) (a : W) (b : ((Sp (Jet C ρ m)).presheaf.stalk y)ˣ), gs (𝟙 _) y ⊤ (toΓ _ (u₀ * κ a)) * ((gm (𝟙 (Sp (Jet C ρ m))) y ⊤ u * b) ^ k).val = gs (spMap κ) y ⊤ (toΓ W a) * (b ^ k).val` using `fun y a b => by`. Rewrite using `[gs_toΓ, map_mul, gs_mul _ y ⊤ trivial, hu₀]`. Use `erw [gs_unit (𝟙 (Sp (Jet C ρ m))) y ⊤ trivial]`. Rewrite using `[map_pow, map_inv, mul_right_comm, ← Units.val_mul, ← mul_pow, inv_mul_cancel_left, mul_comm]`. Take `⟨h₁, h₂⟩` from `GlobalTheory.T.jet_evaluation_power_series C R _ (maximalIdeal R).fg_of_isNoetherianRing f hf hf' W ρ m κ hκ' _ s t hst u₀ g fun α => (ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (.of (Jet C ρ m))).inv).1 (fn_ext (V := ⊤) fun y _ => by`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨J, hJ⟩` from `UU.exists_good_pt D.toPre.P.isLB y`. Establish `e₁` using `hg α y J hJ`. Establish `e₂` using `ht α _ l.left y J hJ`. Establish `e₃` using `((isPull_iff _ _ _).1 (Y.rep.1 _ _ l w)).2 α y J hJ`. Establish `e₄` using `v _ (𝟙 _) y J hJ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `e₄` using `[Category.id_comp]`. Use `(val e (𝟙 _) y J ^ k).mul_left_inj.1 (e₁.symm.trans ?_)` and prove the remaining obligations. Rewrite using `[e₄]`. Use `Eq.trans ?_ (key y (t α) (val c l.left y J)).symm` and prove the remaining obligations. Rewrite using `[hκ]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Eq.trans (congrArg₂ (· * ·) ?_ (congrArg Units.val e₃)) e₂` and prove the remaining obligations. Rewrite using `[Category.assoc]`. Use the proof step `rfl)`. Use `⟨h₁, fun g₀ hg₀ y J hJ => ?_⟩` and prove the remaining obligations. Establish `e₄` using `v' _ (𝟙 _) y J hJ`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `e₄` using `[Category.id_comp]`. Rewrite using `[h₂ g₀ fun n _ => hg₀ n, e₄]`. Use `(hs _ l.left y J hJ).trans (Eq.trans ?_ (key y s _).symm)` and prove the remaining obligations. Rewrite using `[hκ]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Loc.germ {C : Type} [NontriviallyNormedField C] [IsUltrametricDist C] [CompleteSpace C] (f : R →+* C)
     (hf : ∀ r, ‖f r‖ ≤ 1) (hf' : ∀ r ∈ maximalIdeal R, ‖f r‖ < 1) {ρ : Type} [Fintype ρ] [DecidableEq ρ] {m : ℕ}

@@ -15,11 +15,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
   {Xo : Moduli Dw l} {c : Coeff l}
 
 /- English proof (translation)
-Use `letI := io.toAlgebra`. Establish `e1 : y₀.x ≫ Xo.s = spMap io ≫ spMap (IntermediateField.inclusion c.le).toRingHom`. Rewrite using `[y₀.x_over]`. Conclude with `spMap_comp _ _`. Take `⟨z, hz1, hz2⟩ : ∃ z : Sp T.Fr ⟶ pullback Xo.s (spMap (IntermediateField.inclusion c.le).toRingHom), z ≫ pullback.fst _ _ = y₀.x ∧ z ≫ pullback.snd _ _ = spMap io` from `⟨pullback.lift y₀.x (spMap io) e1, pullback.lift_fst _ _ _, pullback.lift_snd _ _ _⟩`.
+Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e3 : Out.jK T.V = spMap (algebraMap T.V T.Fr)` using `rfl`. Establish `e4 : Y.j = Y.jQ ≫ pullback.fst _ _` using `rfl`. Establish `hx : z ≫ Y.j ≫ Y.s = Out.jK T.V ≫ spMap b`. Rewrite using `[e4, e3, Category.assoc, pullback.condition, ← Category.assoc Y.jQ, Y.jQ_over, ← Category.assoc, hz2, ← spMap_comp, ← spMap_comp, hb]`. Take `⟨yt, hyt1, -⟩` from `extPt Y T b z hx`.
-
-Conclude with `hIF T io O β Y hPI yt z (by rw [← hyt1, e3]) hz2 y₀ hz1.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem intFr_of_model (hIF : IntFramesSt Xo c) (T : CDVR) (io : c.F →+* T.Fr) {O : Type} [CommRing O]
     {β : O →+* c.F} (Y : Model Xo c β) (hPI : PushInvertible Y.t.G Y.t.PP.L) (b : O →+* T.V)

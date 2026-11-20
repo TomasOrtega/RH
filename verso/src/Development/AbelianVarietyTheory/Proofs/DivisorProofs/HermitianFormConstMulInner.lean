@@ -7,9 +7,9 @@ open scoped SchwartzMap
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `⟨∫ x : EuclideanSpace ℝ (Fin n), Real.exp (-(2 * Real.pi) * ‖x‖ ^ 2), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[GaussianFourier.integral_rexp_neg_mul_sq_norm (by positivity)]`. Establish `: 0 < Real.pi / (2 * Real.pi)` using `by positivity`. Check the signs of the components of the expression. Rewrite using `[← integral_complex_ofReal]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Check the signs of the components of the expression. Rewrite the conclusion using the stated equalities.
 
-Use `integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Simplify using `only [GroundTheory.Global.gaussianSchwartz_apply, Complex.conj_ofReal]`. Rewrite using `[← Complex.ofReal_mul, ← Real.exp_add]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem gaussian_selfPairing_pos (n : ℕ) :
     ∃ r : ℝ, 0 < r ∧ (∫ x, GroundTheory.Global.gaussianSchwartz (EuclideanSpace ℝ (Fin n)) x *
@@ -26,13 +26,13 @@ theorem gaussian_selfPairing_pos (n : ℕ) :
     ring
 
 /- English proof (translation)
-Introduce `n B hherm hpos hid`. Use `set h₀ : Sch (Fin n) := GroundTheory.Global.gaussianSchwartz (EuclideanSpace ℝ (Fin n)) with hh₀`. Take `⟨r, hr, hs⟩` from `gaussian_selfPairing_pos n`. Establish `hb : B h₀ h₀ = ((B h₀ h₀).re : ℂ)`. Use `hherm h₀ h₀` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Complex.ext` to reduce the goal to its premises. Simplify using the standard rewrite rules. Establish `h2 : (B h₀ h₀).im = -(B h₀ h₀).im` using `by conv_lhs => rw [this]`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨(B h₀ h₀).re / r, div_nonneg (hpos h₀) hr.le, fun h h' => ?_⟩` and prove the remaining obligations. Establish `key` using `hid h₀ h' h₀ h`. Rewrite `key` using `[hs, hb]`. Establish `hr0 : (r : ℂ) ≠ 0` using `by exact_mod_cast hr.ne'`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Clear the denominators using the available nonvanishing facts. Take the linear combination `key`.
+Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem hermitian_form_eq_smul_l2 : ∀ (n : ℕ) (B : Sch (Fin n) → Sch (Fin n) → ℂ), (∀ h h', B h' h = starRingEnd ℂ (B h h')) →
     (∀ h, 0 ≤ (B h h).re) →

@@ -31,15 +31,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.PairLift
 
 /- English proof (translation)
-Establish `far : ∀ {t : ℕ} {al be ga de : List ℚ}, GlobalTheory.SignedHC.FarFrom aT (((t : ℚ) + 3) / 2) (signed (al ++ be) (ga ++ de) aT) → ¬ ∃ a, lamA al be ga de a = ((t : ℚ) + 1) / 2`. Introduce and unpack `t al be ga de hF ⟨a, ha⟩`. Establish `hm : (((t : ℚ) + 1) / 2, a.isLeft) ∈ GlobalTheory.SignedHC.ofIx (lamA al be ga de)` using `Finset.mem_image.2 ⟨a, Finset.mem_univ _, by rw [ha]⟩`. Rewrite `hm` using `[lamA, GlobalTheory.SignedHC.mem_ofIx_ofBlocks (by simp) (by simp)]`. Establish `: ∃ s, (((t : ℚ) + 1) / 2 + aT, s) ∈ signed (al ++ be) (ga ++ de) aT`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Break down `hm with ⟨h1, -⟩ | ⟨h1, -⟩` into its components or cases. Conclude with `⟨true, Finset.mem_union_left _ (List.mem_toFinset.2 (List.mem_map.2 ⟨_, h1, rfl⟩))⟩`. Conclude with `⟨false, Finset.mem_union_right _ (List.mem_toFinset.2 (List.mem_map.2 ⟨_, h1, rfl⟩))⟩`. Use `hF _ (GlobalTheory.SignedHC.mem_entries.2 this)` as an intermediate fact. Rewrite `this` using `[add_sub_cancel_right, abs_of_nonneg (by positivity)]`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hb : ∀ t, (block t).length = t` using `fun t => by simp [block]`. Take `⟨t, P, P', e, e', ⟨⟨al, be, ga, de, rfl, ⟨hd, rfl⟩ | ⟨hd, rfl⟩⟩, hF⟩ | ⟨al, be, ga, de, rfl, ⟨hd, rfl⟩ | ⟨hd, rfl⟩⟩⟩` from `h`. Use `all_goals`. Establish `ht` using `hd.1.1`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn` using `hd.1.2.1`. Take `⟨-, p1, p2, -⟩` from `GlobalTheory.T.lowest_kTypes_jointShape_block_unitary t al be ga de hd.1`. Take `⟨-, p3, -⟩` from `GlobalTheory.T.lowestKTypes_jointShape_block_in_unitaryS t al be ga de hd.1`. Conclude with `⟨_, _, _, _, _, _, _, _, by simp, by simp, by simp [hb]; omega, by simp, ⟨by omega, by omega, p1, p2, (h3.1 t al be ga de hd).2.1, (h3.1 t al be ga de hd).2.2, h5.1 t al be ga de hd (Or.inl (far hF))⟩, e, e'⟩`. Conclude with `⟨_, _, _, _, _, _, _, _, by simp, by simp, by simp, by simp [hb]; omega, ⟨by omega, by omega, p1, p3, (h3.2 t al be ga de hd).2.1, (h3.2 t al be ga de hd).2.2, h5.2 t al be ga de hd (Or.inl (far hF))⟩, e, e'⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `sw` using `GlobalTheory.T.realThetaRule_exchange_pair_members X _ _ _ _ (lamA al be ga de) (lamA' t al be ga de)`. Conclude with `⟨_, _, _, _, _, _, _, _, by simp [hb]; omega, by simp, by simp, by simp, ⟨by omega, by omega, p2, p1, sw.1 (h3.1 t al be ga de hd).1, sw.2.1 (h3.1 t al be ga de hd).2.2, sw.2.2 (h4.1 t al be ga de hd)⟩, e, e'⟩`. Establish `sw` using `GlobalTheory.T.realThetaRule_exchange_pair_members X _ _ _ _ (lamA al be ga de) (lamM' t al be ga de)`. Conclude with `⟨_, _, _, _, _, _, _, _, by simp, by simp [hb]; omega, by simp, by simp, ⟨by omega, by omega, p3, p1, sw.1 (h3.2 t al be ga de hd).1, sw.2.1 (h3.2 t al be ga de hd).2.2, sw.2.2 (h4.2 t al be ga de hd)⟩, e, e'⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem rulePar_of_pairPar {X : ProvA} (h3 : Formalism.MainNotions.SchurIrreducible.ArchimedeanRallisUpDownLine X) (h4 : Formalism.MainNotions.SchurIrreducible.ArchimedeanRallisFourth X) (h5 : Formalism.MainNotions.SchurIrreducible.ArchimedeanRallisFifth X)
     {S S' : SPar} {aS aT : ℚ} (h : PairPar S S' aS aT) : RulePar X S S' aS aT := by
@@ -81,19 +81,19 @@ theorem rulePar_of_pairPar {X : ProvA} (h3 : Formalism.MainNotions.SchurIrreduci
 def IdOrConj (σ : ℂ →+* ℂ) : Prop := σ = RingHom.id ℂ ∨ σ = starRingEnd ℂ
 
 /- English proof (translation)
-Apply the tactic sequence `rcases h with rfl | rfl <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem IdOrConj.invol {σ : ℂ →+* ℂ} (h : IdOrConj σ) (z : ℂ) : σ (σ z) = z := by
   rcases h with rfl | rfl <;> simp
 
 /- English proof (translation)
-Apply the tactic sequence `rcases h with rfl | rfl <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem IdOrConj.norm {σ : ℂ →+* ℂ} (h : IdOrConj σ) (z : ℂ) : ‖σ z‖ = ‖z‖ := by
   rcases h with rfl | rfl <;> simp
 
 /- English proof (translation)
-Break down `h with rfl | rfl` into its components or cases. Conclude with `hf`. Simplify using `using hf.star`.
+Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem IdOrConj.deriv {σ : ℂ →+* ℂ} (h : IdOrConj σ) {f : ℝ → ℂ} {a : ℂ} (hf : HasDerivAt (fun t => σ (f t)) (σ a) 0) :
     HasDerivAt f a 0 := by
@@ -102,7 +102,7 @@ theorem IdOrConj.deriv {σ : ℂ →+* ℂ} (h : IdOrConj σ) {f : ℝ → ℂ} 
   · simpa using hf.star
 
 /- English proof (translation)
-Break down `h with rfl | rfl` into its components or cases. Conclude with `⟨id, rfl⟩`. Conclude with `⟨fun hf => Complex.conjCLE.integrable_comp_iff.1 hf, integral_conj⟩`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem IdOrConj.integral {σ : ℂ →+* ℂ} (h : IdOrConj σ) {G : Type} [MeasurableSpace G] (μ : Measure G) (f : G → ℂ) :
     (Integrable (fun g => σ (f g)) μ → Integrable f μ) ∧ ∫ g, σ (f g) ∂μ = σ (∫ g, f g ∂μ) := by
@@ -119,11 +119,11 @@ variable {A B : HSp D} {SA SB SA₁ SB₁ : D.what₂.Tau → SPar} {MA : DSMode
   {κB : SmT MB₁ ≃+ SmT MB}
 
 /- English proof (translation)
-Introduce `F hF`. Take `⟨ν₁, a, b, c⟩` from `(GlobalTheory.T.signedUnitaryGroup_compat D θ hθ εA A).meas ν 𝓕 hν h𝓕`. Take `⟨F₁, hF₁, e₁⟩` from `hA.mult F hF`. Take `⟨F₂, hF₂, e₂⟩` from `H ν₁ _ a b F₁ hF₁`. Take `⟨F', hF', e'⟩` from `hB.mult' F₂ hF₂`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨F', hF', fun p v h => ?_⟩` and prove the remaining obligations. Take `⟨v, rfl⟩` from `κA.surjective v`. Take `⟨h, rfl⟩` from `(ofSgn εB B).surjective h`. Take `⟨i1, i2⟩` from `e₂ (j p) v h`. Simplify using `only [hK, e₁, ← map_mul] at i1 i2`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Take `⟨c1, c2⟩` from `c fun g => σ (K p (ofSgn εB B h) g * F (κA v) g)`. Take `⟨d1, d2⟩` from `hσ.integral (ν.restrict 𝓕) fun g => K p (ofSgn εB B h) g * F (κA v) g`. Use `⟨d1 (c1.1 i1), σ.injective ?_⟩` and prove the remaining obligations. Rewrite using `[← d2, ← c2, i2, e', hI]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem LiftsM.transport (hθ : IsInfFam θ) (hσ : IdOrConj σ) (hA : ModelTr σ εA θ MA₁ MA κA) (hB : ModelTr σ εB θ MB₁ MB κB)
     {P P₁ : Type} (j : P → P₁) {K : P → GA D B → GA D A → ℂ} {K₁ : P₁ → GA D (sgn εB B) → GA D (sgn εA A) → ℂ}
@@ -148,27 +148,25 @@ theorem LiftsM.transport (hθ : IsInfFam θ) (hσ : IdOrConj σ) (hA : ModelTr �
   rw [← d2, ← c2, i2, e', hI]
 
 /- English proof (translation)
-Establish `lA` using `GlobalTheory.T.signedUnitaryGroup_compat D θ hθ εA A`. Establish `lB` using `GlobalTheory.T.signedUnitaryGroup_compat D θ hθ εB B`. Establish `inj : ∀ {f f' : Z → ℂ}, ((fun y => ρ (f (α y))) = fun y => ρ (f' (α y))) → f = f'` using `fun {f f'} h => by`. Use function extensionality and compare the values at `z`. Take `⟨y, rfl⟩` from `hα z`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result.
 
-Conclude with `ρ.injective (congrFun h y)`. Use `⟨fun h0 => ?_, fun φ w => ?_, fun τ g hg φ φ' h v => ?_, fun τ Y hY φ φ' h v => ?_, fun τ g hg φ φ' v v' h h' => ?_, fun τ Y hY φ φ' v v' h h' => ?_⟩` and prove the remaining obligations. Take `⟨φ, hφ⟩` from `H.ne`. Use `hφ (LinearMap.ext fun v => ?_)` and prove the remaining obligations. Take `⟨v, rfl⟩` from `κA.surjective v`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hI, h0]`. Simplify using the standard rewrite rules. Take `⟨φ, rfl⟩` from `hj φ`. Take `⟨w', hw⟩` from `hB.ell w`. Take `⟨c, hc⟩` from `H.bdd φ w'`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨c, fun v => ?_⟩` and prove the remaining obligations. Take `⟨v', e1, e2⟩` from `hA.vec v`. Rewrite using `[hw, hσ.norm, hI, e1]`. Simplify `hc v'` using `only [e2]`. Take `⟨φ, rfl⟩` from `hj φ`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨φ', rfl⟩` from `hj φ'`. Rewrite `hg` using `[lB.grp]`. Rewrite `h` using `[hpt, hpt, hω, lB.atTau, map_one]`. Rewrite using `[hB.act τ g hg, hI, hI]`. Conclude with `H.eqK τ g hg φ φ' (inj h) _`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨φ, rfl⟩` from `hj φ`. Take `⟨φ', rfl⟩` from `hj φ'`. Rewrite `hY` using `[lB.lie]`. Rewrite using `[hB.der τ Y hY, hI, hI]`. Use `H.eqg τ Y hY φ φ' (fun z => ?_) _` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨y, rfl⟩` from `hα z`. Use `h y` as an intermediate fact. Simplify using `only [hpt, hω, oneP, lB.atTau, map_one] at this`. Conclude with `hρ.deriv this`. Take `⟨φ, rfl⟩` from `hj φ`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨φ', rfl⟩` from `hj φ'`. Rewrite `hg` using `[lA.grp]`. Rewrite `h` using `[hpt, hpt, hω, lA.atTau, map_one]`. Apply `κB.injective` to reduce the goal to its premises. Rewrite using `[hI, hI]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `H.invK τ g hg φ φ' _ _ (inj h) ((hA.act τ g hg _ _).1 h')`. Take `⟨φ, rfl⟩` from `hj φ`. Take `⟨φ', rfl⟩` from `hj φ'`. Rewrite `hY` using `[lA.lie]`. Apply `κB.injective` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[map_add, map_zero, hI, hI]`. Use `H.invg τ Y hY φ φ' _ _ (fun z => ?_) ((hA.der τ Y hY _ _).1 h')` and prove the remaining obligations. Take `⟨y, rfl⟩` from `hα z`. Use `h y` as an intermediate fact. Simplify using `only [hpt, hω, oneP, lA.atTau, map_one] at this`.
-
-Conclude with `hρ.deriv this`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem IsIntwF.transport (hθ : IsInfFam θ) (hσ : IdOrConj σ) (hA : ModelTr σ εA θ MA₁ MA κA)
     (hB : ModelTr σ εB θ MB₁ MB κB) {Z P : Type} {ω : GA D B × GA D A →* Module.End ℂ (Z → ℂ)} {pt : P → Z → ℂ}
@@ -234,7 +232,7 @@ theorem IsIntwF.transport (hθ : IsInfFam θ) (hσ : IdOrConj σ) (hA : ModelTr 
     exact hρ.deriv this
 
 /- English proof (translation)
-Establish `hs : ∀ (c : ℂ) x, κB.symm (σ c • x) = c • κB.symm x` using `fun c x => κB.injective (by rw [hB.smul, κB.apply_symm_apply, κB.apply_symm_apply])`. Conclude with `⟨LinearMap.mk₂ ℂ (fun p v => κB.symm (It p (κA v))) (fun p q v => by simp [h1]) (fun c p v => by simp only [h2, LinearMap.smul_apply, hs]) (fun p v w => by simp) (fun c p v => by simp only [hA.smul, map_smul, hs]), fun p v => κB.apply_symm_apply _⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_bilin (hσ : IdOrConj σ) (hA : ModelTr σ εA θ MA₁ MA κA) (hB : ModelTr σ εB θ MB₁ MB κB)
     {P₁ : Type} [AddCommGroup P₁] [Module ℂ P₁] (It : P₁ → SmT MA →ₗ[ℂ] SmT MB) (h1 : ∀ p q, It (p + q) = It p + It q)
@@ -249,7 +247,7 @@ theorem exists_bilin (hσ : IdOrConj σ) (hA : ModelTr σ εA θ MA₁ MA κA) (
 end Transport
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ _ => rfl, fun _ => rfl, fun _ _ _ _ _ => Iff.rfl, fun _ _ _ _ _ => Iff.rfl, fun w => ⟨w, fun _ => rfl⟩, fun v => ⟨v, rfl, fun _ => rfl⟩, fun F h => ⟨F, h, fun _ _ => rfl⟩, fun F h => ⟨F, h, fun _ _ => rfl⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem ModelTr.refl {V : HSp D} {S : D.what₂.Tau → SPar} (M : DSModel V S) :
     ModelTr (RingHom.id ℂ) false θ (V := V) (S₁ := S) M M (AddEquiv.refl _) :=
@@ -257,13 +255,13 @@ theorem ModelTr.refl {V : HSp D} {S : D.what₂.Tau → SPar} (M : DSModel V S) 
     fun v => ⟨v, rfl, fun _ => rfl⟩, fun F h => ⟨F, h, fun _ _ => rfl⟩, fun F h => ⟨F, h, fun _ _ => rfl⟩⟩
 
 /- English proof (translation)
-Take `⟨N, κ, h⟩` from `GlobalTheory.T.exists_negatedSpace_discreteSeriesModelTransport D θ hθ V S M`. Take `⟨M₁, κ', h'⟩` from `GlobalTheory.T.discrete_series_model_conjugate_transfer D θ hθ (sgn true V) _ N`. Establish `l` using `GlobalTheory.T.signedUnitaryGroup_compat D θ hθ true V`. Use `⟨M₁, κ'.trans κ, fun c x => ?_, fun τ => (h'.cart τ).trans (h.cart τ), fun τ g hg x y => ?_, fun τ Y hY x y => ?_, fun w => ?_, fun v => ?_, fun F hF => ?_, fun F hF => ?_⟩` and prove the remaining obligations. Conclude with `(congrArg κ (h'.smul c x)).trans (h.smul _ _)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `(h'.act τ g (by rwa [l.grp]) x y).trans (h.act τ g hg _ _)`. Conclude with `(h'.der τ Y (by rwa [l.lie]) x y).trans (h.der τ Y hY _ _)`. Take `⟨w', e'⟩` from `h'.ell w`. Take `⟨w'', e⟩` from `h.ell w'`. Conclude with `⟨w'', fun x => (e' x).trans (congrArg _ (e _))⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨v', e1, e2⟩` from `h'.vec v`. Take `⟨v'', e3, e4⟩` from `h.vec v'`. Conclude with `⟨v'', (congrArg κ e1).trans e3, fun τ => (e4 τ).trans (e2 τ)⟩`. Take `⟨F', a, b⟩` from `h.mult F hF`. Take `⟨F'', c, d⟩` from `h'.mult F' a`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨F'', c, fun x g => (d x g).trans (congrArg _ (b _ _))⟩`. Take `⟨F', a, b⟩` from `h'.mult' F hF`. Take `⟨F'', c, d⟩` from `h.mult' F' a`. Conclude with `⟨F'', c, fun x g => (b x g).trans (congrArg _ (d _ _))⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_conj_neg (hθ : IsInfFam θ) {V : HSp D} {S : D.what₂.Tau → SPar} (M : DSModel V S) :
     ∃ (M₁ : DSModel (sgn true V) fun τ => dualPar (GlobalTheory.SignedHC.flip (S τ))) (κ : SmT M₁ ≃+ SmT M),
@@ -290,9 +288,9 @@ theorem exists_conj_neg (hθ : IsInfFam θ) {V : HSp D} {S : D.what₂.Tau → S
     exact ⟨F'', c, fun x g => (b x g).trans (congrArg _ (d _ _))⟩
 
 /- English proof (translation)
-Take `⟨It₁, hI⟩` from `exists_bilin hσ hA hB (fun p => It (j.symm p)) h1 h2`. Establish `hI' : ∀ p v, κB (It₁ (j p) v) = It p (κA v)` using `fun p v => by rw [hI, j.symm_apply_apply]`. Establish `hv : IsVacVec ψ θ MB₁ MA₁ fun y => ρ (f₀ (α y))` using `⟨(hpt f₀ hf₀).1.1, fun h => h0 (funext fun z => by`. Take `⟨y, rfl⟩` from `hα z`. Conclude with `ρ.injective ((congrFun h y).trans (map_zero ρ).symm)), (hpt f₀ hf₀).1.2⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `LiftsM.transport hθ hσ hA hB j (fun p h g => ?_) hI' hν h𝓕 fun ν₁ 𝓕₁ a b => hP _ _ aS aT hR _ _ MB₁ MA₁ θ ψ hθ ω₁ hW _ It₁ hv (H.transport hθ hσ hA hB hρ hα hω j.surjective (hpt f₀ hf₀).2 hI') ν₁ 𝓕₁ a b _ (hpt f hf).1` and prove the remaining obligations. Rewrite using `[(hpt f hf).2, thetaKO, hω]`. Conclude with `hK _ _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lifts_of_tr {X : ProvA} (hP : PairLifts D X) (hθ : IsInfFam θ) {A B : HSp D} {SA SB SA₁ SB₁ : D.what₂.Tau → SPar}
     {MA : DSModel A SA} {MB : DSModel B SB} {εA εB : Bool} {MA₁ : DSModel (sgn εA A) SA₁} {MB₁ : DSModel (sgn εB B) SB₁}
@@ -325,7 +323,7 @@ theorem lifts_of_tr {X : ProvA} (hP : PairLifts D X) (hθ : IsInfFam θ) {A B : 
 variable {ψ : AddChar (AF D.host.F) ℂ} {ε : Bool} {S T : Node D}
 
 /- English proof (translation)
-Establish `: (frSgn ε (Fr.ofModel S.M)).cart = cartS ε S` using `funext fun τ => cart_frSgn ε _ τ`. Unfold `ptF fock`. Rewrite using `[this]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem fock_eq (f : WO S.V T.V → ℂ) (p : GlobalTheory.Grid.Pol S T) :
     ptF ψ θ (frSgn ε (Fr.ofModel S.M)) (Fr.ofModel T.M) f p = fock ψ θ ε S T f p := by
@@ -335,21 +333,21 @@ theorem fock_eq (f : WO S.V T.V → ℂ) (p : GlobalTheory.Grid.Pol S T) :
   rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.1, fun τ => by rw [hA, hB]; exact h.2 τ⟩`.
+Supply the required witnesses or components.
 -/
 theorem isVacF_congr {V W : HSp D} {A A' : Fr V} {B B' : Fr W} (hA : ∀ τ, A'.cart τ = A.cart τ)
     (hB : ∀ τ, B'.cart τ = B.cart τ) {f : WO V W → ℂ} (h : IsVacF ψ θ A B f) : IsVacF ψ θ A' B' f :=
   ⟨h.1, fun τ => by rw [hA, hB]; exact h.2 τ⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.1, fun τ => by rw [cart_frSgn]; exact h.2 τ⟩`.
+Supply the required witnesses or components.
 -/
 theorem isVacF_of_finVec {f : WO S.V T.V → ℂ} (h : IsFinVec ψ θ ε S T f) :
     IsVacF ψ θ (frSgn ε (Fr.ofModel S.M)) (Fr.ofModel T.M) f :=
   ⟨h.1, fun τ => by rw [cart_frSgn]; exact h.2 τ⟩
 
 /- English proof (translation)
-Introduce and unpack `rfl`. Take `⟨⟨p, hp⟩, h⟩` from `h.2.norm`. Use `h p hp` as an intermediate fact. Simplify using `[nrm2] at this`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem vac_ne {f : WO S.V T.V → ℂ} (h : IsVac ψ θ ε S T f) : f ≠ 0 := by
   rintro rfl
@@ -358,7 +356,7 @@ theorem vac_ne {f : WO S.V T.V → ℂ} (h : IsVac ψ θ ε S T f) : f ≠ 0 := 
   simp [nrm2] at this
 
 /- English proof (translation)
-Establish `cS : ∀ τ, (Fr.ofModel MS).cart τ = (frSgn ε (Fr.ofModel S.M)).cart τ` using `fun τ => (hS.cart τ).trans (cart_frSgn ε (Fr.ofModel S.M) τ).symm`. Establish `cT : ∀ τ, (Fr.ofModel MT).cart τ = (Fr.ofModel T.M).cart τ` using `hT.cart`. Take `⟨j, hj⟩` from `GlobalTheory.T.fockVector_frameChange_same_cartan D ψ θ hW.std hθ (sgn ε S.V) T.V _ _ _ _ cS cT`. Conclude with `lifts_of_tr hP hθ hσ hT hS hR (ω₁ := ω.toSgn ε) ⟨χS, χT, hW, he⟩ (pt := fun f p => fock ψ θ ε S T f p) (vac := IsFinVec ψ θ ε S T) (Or.inl rfl) (α := fun y => y) Function.surjective_id (fun _ _ _ => rfl) j.toEquiv (fun f hf => ⟨isVacF_congr cS cT (isVacF_of_finVec hf), fun p => ( …`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem lifts_toSource {X : ProvA} (hP : PairLifts D X) (hθ : IsInfFam θ) {σ : ℂ →+* ℂ} (hσ : IdOrConj σ)
     {S₁ T₁ : D.what₂.Tau → SPar} {MS : DSModel (sgn ε S.V) S₁} {MT : DSModel (sgn false T.V) T₁}
@@ -381,11 +379,11 @@ theorem lifts_toSource {X : ProvA} (hP : PairLifts D X) (hθ : IsInfFam θ) {σ 
     (fun p h g => (hσ.invol _).symm) hm.1 hm.2
 
 /- English proof (translation)
-Establish `cS : ∀ τ, (Fr.ofModel MS).cart τ = (frSgn ε (Fr.ofModel S.M)).cart τ` using `fun τ => (hS.cart τ).trans (cart_frSgn ε (Fr.ofModel S.M) τ).symm`. Establish `cT : ∀ τ, (Fr.ofModel MT).cart τ = (Fr.ofModel T.M).cart τ` using `hT.cart`. Establish `hs` using `ha.weil.std`. Establish `L` using `GlobalTheory.T.hermitianAdjoint_laws_standardCharacter D ψ hs (sgn ε S.V) T.V`. Take `⟨ω', hW', hω'⟩` from `GlobalTheory.T.exists_conj_weilDatum_exchangedPair D ψ _ _ _ _ _ ha.weil`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨j₀, hj₀, hj₀'⟩` from `GlobalTheory.T.fockVectors_conjAdjointPullback_bijection D ψ θ hs hθ (sgn ε S.V) T.V (frSgn ε (Fr.ofModel S.M)) (Fr.ofModel T.M)`. Take `⟨j, hj⟩` from `GlobalTheory.T.fockVector_frameChange_same_cartan D ψ θ hs hθ T.V (sgn ε S.V) _ _ _ _ cT cS`. Establish `z : adjO (sgn ε S.V) T.V 0 = 0`. Use `L.add 0 0` as an intermediate fact. Rewrite `this` using `[add_zero]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `left_eq_add.1 this`. Establish `hs₀ : ∀ (c : ℂ) x, j₀.symm (c • x) = starRingEnd ℂ c • j₀.symm x` using `fun c x => j₀.injective (by rw [hj₀, j₀.apply_symm_apply, j₀.apply_symm_apply, Complex.conj_conj])`. Establish `H` using `ha.intw`. Use `lifts_of_tr hP hθ (Or.inr rfl) hS hT hR (ω₁ := ω') ⟨χT, χS, hW', fun τ => (he τ).symm⟩ (ω := a.ω.swap) (pt := fun f p => fock ψ θ ε S T f p) (vac := IsFinVec ψ θ ε S T) (Or.inr rfl) (α := adjO (sgn ε S.V) T.V) (fun x => ⟨_, L.invol x⟩) (fun h g f => hω' g h f) (j₀.toEquiv.trans j …` and prove the remaining obligations. Conclude with `(hj _ (hj₀' f (isVacF_of_finVec hf)).1.1 _).trans (((hj₀' f (isVacF_of_finVec hf)).2 p).trans (congrArg _ (fock_eq f p)))`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem lifts_toTarget {X : ProvA} (hP : PairLifts D X) (hθ : IsInfFam θ)
     {S₁ T₁ : D.what₂.Tau → SPar} {MS : DSModel (sgn ε S.V) S₁} {MT : DSModel (sgn false T.V) T₁}
@@ -422,7 +420,7 @@ theorem lifts_toTarget {X : ProvA} (hP : PairLifts D X) (hθ : IsInfFam θ)
     (congrArg _ (fock_eq f p)))
 
 /- English proof (translation)
-Unfold `Lift.attChr att`. Use `split_ifs`. Rewrite using `[sub_eq_add_neg]`. Conclude with `StepVac.hasInfExp_mul h (StepVac.hasInfExp_inv hη)`. Conclude with `h`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasInfExp_att {χ η : (AE D)ˣ →* Circle} {τ : D.what₂.Tau} {c : ℚ} (h : HasInfExp D χ τ c)
     (hη : HasInfExp D η τ (1 / 2)) (n : ℕ) : HasInfExp D (Lift.attChr χ η n) τ (att c n) := by
@@ -433,7 +431,7 @@ theorem hasInfExp_att {χ η : (AE D)ˣ →* Circle} {τ : D.what₂.Tau} {c : �
   · exact h
 
 /- English proof (translation)
-Distinguish the cases in `hd : df`. Conclude with `⟨(h.1 hd).1.1, (h.1 hd).2⟩`. Conclude with `⟨(h.2 hd).1.1, (h.2 hd).2⟩`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem haar_of_is {N : Node D} {m : N.MeasDat} {df : Prop} {K : Subgroup (GL (Fin N.V.rank) (Lev.EAf D))}
     (h : m.Is df K) : m.ν.IsHaarMeasure ∧ IsFundamentalDomain (GQ N.V) m.fd m.ν := by
@@ -442,7 +440,7 @@ theorem haar_of_is {N : Node D} {m : N.MeasDat} {df : Prop} {K : Subgroup (GL (F
   · exact ⟨(h.2 hd).1.1, (h.2 hd).2⟩
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `hm`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem haar_cast {N N' : Node D} (h : N = N') {m : N.MeasDat}
     (hm : m.ν.IsHaarMeasure ∧ IsFundamentalDomain (GQ N.V) m.fd m.ν) :
@@ -457,9 +455,9 @@ variable {G₀ : Type} [Group G₀] [Fintype G₀] {Pl0 T : Type} {A : FamIn D.w
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks} {G : GridPre R}
 
 /- English proof (translation)
-Consider the cases of `i with`. Consider the case `succ i => exact (hG.spaces.vert i j hi hj).par`. Consider the case `zero`. Rewrite using `[parV_zero D hj]`. Use `show (row0 R j).S = _`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `hj.lt_or_eq with h | rfl` into its components or cases. Rewrite using `[← nodeY_eq_chainVertexAtRowZero_of_lt R h] show parB (Ptw D) (min j D.R.m) = _`. Rewrite using `[min_eq_left hj]`. Rewrite using `[← nodeX_eq_chainVertexAtRowZero_top R]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem par_vert (hG : G.Is) {i j : ℕ} (hi : i ≤ D.R.m) (hj : j ≤ D.R.m) : (G.V i j).S = parV D i j := by
   cases i with
@@ -474,7 +472,7 @@ theorem par_vert (hG : G.Is) {i j : ℕ} (hi : i ≤ D.R.m) (hj : j ≤ D.R.m) :
     · rw [← nodeX_eq_chainVertexAtRowZero_top R]
 
 /- English proof (translation)
-Consider the cases of `j with`. Consider the case `succ j => exact (hG.spaces.X j hj).par`. Consider the case `zero => exact (hG.spaces.P _ le_rfl).par.trans (parP_m D)`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 -/
 theorem par_Xp (hG : G.Is) {j : ℕ} (hj : j ≤ D.R.m) : (G.Xp j).S = parXp D j := by
   cases j with
@@ -482,13 +480,11 @@ theorem par_Xp (hG : G.Is) {j : ℕ} (hj : j ≤ D.R.m) : (G.Xp j).S = parXp D j
   | zero => exact (hG.spaces.P _ le_rfl).par.trans (parP_m D)
 
 /- English proof (translation)
-Consider the cases of `j with`. Consider the case `zero => rw [G.meas_zero]`. Conclude with `haar_of_is (hG.meas.col i hi)`. Consider the case `succ j`. Consider the cases of `i with`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Consider the case `succ i => exact haar_of_is (hG.meas.vert i j hi hj)`. Consider the case `zero => show (meas0 R t j).ν.IsHaarMeasure ∧ IsFundamentalDomain (GQ (row0 R (j + 1)).V) (meas0 R t j).fd (meas0 R t j).ν`. Unfold `meas0`. Use `split_ifs with h`. Use `haar_cast _ ?_` and prove the remaining obligations.
+Treat this case separately. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Supply the required witnesses or components.
 
-Distinguish the cases in `h' : j + 1 + 1 < D.R.m`. Conclude with `⟨(hR.measY t _ h').1.1, (hR.measY t _ h').2⟩`. Establish `e : j + 1 = D.R.m - 1` using `by omega`. Use `hR.measY' t` as an intermediate fact. Rewrite `this` using `[← e]`.
-
-Conclude with `⟨this.1.1, this.2⟩`. Conclude with `haar_cast _ ⟨(hR.measX t).1.1, (hR.measX t).2⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem haar_vert (hR : RowBase R) (hG : G.Is) (t : T) {i j : ℕ} (hi : i ≤ D.R.m) (hj : j ≤ D.R.m) :
     (G.meas t i j).ν.IsHaarMeasure ∧ IsFundamentalDomain (GQ (G.V i j).V) (G.meas t i j).fd (G.meas t i j).ν := by
@@ -511,7 +507,7 @@ theorem haar_vert (hR : RowBase R) (hG : G.Is) (t : T) {i j : ℕ} (hi : i ≤ D
       · exact haar_cast _ ⟨(hR.measX t).1.1, (hR.measX t).2⟩
 
 /- English proof (translation)
-Consider the cases of `j with`. Consider the case `zero => exact haar_of_is (hG.meas.P _ le_rfl)`. Consider the case `succ j => exact haar_of_is (hG.meas.X j hj)`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 -/
 theorem haar_Xp (hG : G.Is) {j : ℕ} (hj : j ≤ D.R.m) :
     (G.measX j).ν.IsHaarMeasure ∧ IsFundamentalDomain (GQ (G.Xp j).V) (G.measX j).fd (G.measX j).ν := by
@@ -520,14 +516,14 @@ theorem haar_Xp (hG : G.Is) {j : ℕ} (hj : j ≤ D.R.m) :
   | succ j => exact haar_of_is (hG.meas.X j hj)
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.HeckeInfExp.hasInfExp_of_chrEq D _ _ _ hR.lev.eta (StepVac.hasInfQ_tau (a := fun _ => 1 / 2) ⟨_, fun _ => by norm_num, R.toLevCh.C.isEta.inf⟩) τ`.
+A detailed English derivation is pending.
 -/
 theorem exp_eta (hR : RowBase R) (τ : D.what₂.Tau) : HasInfExp D R.eta τ (1 / 2) :=
   GlobalTheory.HeckeInfExp.hasInfExp_of_chrEq D _ _ _ hR.lev.eta
     (StepVac.hasInfQ_tau (a := fun _ => 1 / 2) ⟨_, fun _ => by norm_num, R.toLevCh.C.isEta.inf⟩) τ
 
 /- English proof (translation)
-Take `⟨n, hn, ho⟩` from `hR.lev.xi_fin t`. Use `StepVac.hasInfExp_mul (GlobalTheory.HeckeInfExp.hasInfExp_of_chrEq D _ _ _ (hR.lev.mu0 ⟨j, hj⟩) (StepVac.hasInfQ_tau (R.toLevCh.C.isMu0 ⟨j, hj⟩).inf) τ) (StepVac.hasInfExp_of_order hR.inf (hR.lev.xi t) hn ho τ)` as an intermediate fact. Rewrite `this` using `[add_zero, Formalism.L2.Host.eExp, Equiv.symm_apply_apply]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem exp_mu (hR : RowBase R) (t : T) {j : ℕ} (hj : j < D.R.m) (τ : D.what₂.Tau) :
     HasInfExp D (R.toLevCh.mu t (j + 1)) τ (-(D.hc τ).e ⟨j, hj⟩) := by
@@ -537,7 +533,7 @@ theorem exp_mu (hR : RowBase R) (t : T) {j : ℕ} (hj : j < D.R.m) (τ : D.what�
   rwa [add_zero, Formalism.L2.Host.eExp, Equiv.symm_apply_apply] at this
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.HeckeInfExp.hasInfExp_of_chrEq D _ _ _ (hG.chars.tie _ (by omega) (by omega)) (hG.chars.aux _ (by omega) (by omega)).inf τ`.
+A detailed English derivation is pending.
 -/
 theorem exp_chi (hG : G.Is) {i : ℕ} (hi : i < D.R.m) (τ : D.what₂.Tau) :
     HasInfExp D (G.chi (D.R.m - i)) τ (cen D τ (D.R.m - i)) :=
@@ -545,7 +541,7 @@ theorem exp_chi (hG : G.Is) {i : ℕ} (hi : i < D.R.m) (τ : D.what₂.Tau) :
     (hG.chars.aux _ (by omega) (by omega)).inf τ
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨by_contra fun h => H.ne (LinearMap.ext fun p => by_contra fun h' => h ⟨p, h'⟩), H.bdd, H.eqK, H.eqg, H.invK, H.invg⟩`.
+Supply the required witnesses or components.
 -/
 theorem isIntwF_of_isItW {V W : HSp D} {S S' : D.what₂.Tau → SPar} {M : DSModel V S} {M' : DSModel W S'} {ω : WRep V W}
     {pt : PolF D W.rank V.rank → WO V W → ℂ} {It : PolF D W.rank V.rank →ₗ[ℂ] SmT M' →ₗ[ℂ] SmT M}
@@ -553,13 +549,11 @@ theorem isIntwF_of_isItW {V W : HSp D} {S S' : D.what₂.Tau → SPar} {M : DSMo
   ⟨by_contra fun h => H.ne (LinearMap.ext fun p => by_contra fun h' => h ⟨p, h'⟩), H.bdd, H.eqK, H.eqg, H.invK, H.invg⟩
 
 /- English proof (translation)
-Establish `hθ` using `hR.inf`. Establish `rp` using `fun {S S' aS aT} => rulePar_of_pairPar (S := S) (S' := S') (aS := aS) (aT := aT) h3 h4 h5`. Use `⟨fun t i j hi hj f hf => ?_, fun t i j hi hj f hf => ?_, fun i hi f hf => ?_, fun i hi f hf => ?_, fun t j hj f hf => ?_⟩` and prove the remaining obligations. Take `⟨M₁, κ, h⟩` from `GlobalTheory.T.exists_negatedSpace_discreteSeriesModelTransport D _ hθ _ _ (G.V (i + 1) j).M`. Establish `a` using `hG.arrows.X i j hi hj`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `lifts_toSource hP hθ (Or.inl rfl) h (ModelTr.refl _) (fun τ => rp (by rw [par_vert hG hi hj, par_vert hG hi.le hj]; exact GlobalTheory.T.contragredientThetaParams_addBlockArrow D hS i j τ hi hj)) a.weil (fun τ => ⟨hasInfExp_att (exp_chi hG hi τ) (exp_eta hR τ) _, hasInfExp_att (e …`. Establish `a` using `hG.arrows.th t i j hi hj`. Conclude with `lifts_toSource hP hθ (Or.inl rfl) (ModelTr.refl _) (ModelTr.refl _) (fun τ => rp (by rw [par_vert hG hi hj.le, par_vert hG hi hj]; exact GlobalTheory.T.contragredientThetaParams_removeBlockArrow D hS i j τ hi hj)) a.weil (fun τ => ⟨hasInfExp_att (exp_mu hR t hj τ) (exp_eta hR τ) …`. Take `⟨M₁, κ, h⟩` from `exists_conj_neg hθ (G.P (i + 1)).M`. Take `⟨M₂, κ', h'⟩` from `GlobalTheory.T.discrete_series_model_conjugate_transfer D _ hθ _ _ (G.P i).M`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `a` using `hG.arrows.dn i hi`. Conclude with `lifts_toSource hP hθ (Or.inr rfl) h h' (fun τ => rp (by rw [(hG.spaces.P _ hi).par, (hG.spaces.P _ hi.le).par]; exact (GlobalTheory.T.contragredientThetaParams_columnArrows D hS i τ hi).1)) a.weil (fun τ => ⟨exp_chi hG hi τ, exp_chi hG hi τ⟩) a.vac (GlobalTheory.T.realThetaIntert …`. Take `⟨M₁, κ, h⟩` from `exists_conj_neg hθ (G.P (i + 1)).M`. Take `⟨M₂, κ', h'⟩` from `GlobalTheory.T.discrete_series_model_conjugate_transfer D _ hθ _ _ (G.P i).M`. Conclude with `lifts_toTarget hP hθ h h' (fun τ => rp (by rw [(hG.spaces.P _ hi).par, (hG.spaces.P _ hi.le).par]; exact (GlobalTheory.T.contragredientThetaParams_columnArrows D hS i τ hi).2)) (hG.arrows.dn i hi) (fun τ => ⟨exp_chi hG hi τ, exp_chi hG hi τ⟩) hf (haar_of_is (hG.meas.P _ hi))`.
-
-Take `⟨M₁, κ, h⟩` from `GlobalTheory.T.discrete_series_model_conjugate_transfer D _ hθ _ _ (G.Xp j).M`. Take `⟨M₂, κ', h'⟩` from `GlobalTheory.T.discrete_series_model_conjugate_transfer D _ hθ _ _ (G.Xp (j + 1)).M`. Conclude with `lifts_toTarget hP hθ h h' (fun τ => rp (by rw [par_Xp hG hj, par_Xp hG hj.le]; exact GlobalTheory.T.contragredientThetaParams_lastRowArrows D hS j τ hj)) (hG.arrows.col t j hj) (fun τ => ⟨exp_mu hR t hj τ, exp_mu hR t hj τ⟩) hf (haar_Xp hG hj.le)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem cuspAlong_of_pairLifts {X : ProvA} (h3 : Formalism.MainNotions.SchurIrreducible.ArchimedeanRallisUpDownLine X) (h4 : Formalism.MainNotions.SchurIrreducible.ArchimedeanRallisFourth X)
     (h5 : Formalism.MainNotions.SchurIrreducible.ArchimedeanRallisFifth X) (hP : PairLifts D X) (hS : Sizes D) (hR : RowBase R) (hG : G.Is) : CuspAlong G := by
@@ -600,7 +594,7 @@ theorem cuspAlong_of_pairLifts {X : ProvA} (h3 : Formalism.MainNotions.SchurIrre
 end Grid
 
 /- English proof (translation)
-Introduce `D hS G₀ _ _ Pl0 T A Ks _ _ _ R G hR hG`. Establish `I : Inputs D X` using `⟨hX, hH, hC, hB D, hV D, hL D, hK D, hD D, hP D, hT D, hE D⟩`. Conclude with `cuspAlong_of_pairLifts h3 h4 h5 (GlobalTheory.T.pairThetaLift_factors_through_intertwiner D X I (GlobalTheory.T.thetaLifts_cuspidal_of_lower_tower_lifts_vanish D X I (GlobalTheory.T.lowerTowerLiftsVanish_of_vanish_on_fock D X I (GlobalTheory.T.lowerTowerLifts_vanish_on_fock D X I …`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem liftsCuspidal (X : ProvA) (hX : GlobalTheory.Chain.RealIt.ChosenSeries X) (h3 : Formalism.MainNotions.SchurIrreducible.ArchimedeanRallisUpDownLine X)
     (h4 : Formalism.MainNotions.SchurIrreducible.ArchimedeanRallisFourth X) (h5 : Formalism.MainNotions.SchurIrreducible.ArchimedeanRallisFifth X) (hH : GlobalTheory.Published.HarishChandraModules)

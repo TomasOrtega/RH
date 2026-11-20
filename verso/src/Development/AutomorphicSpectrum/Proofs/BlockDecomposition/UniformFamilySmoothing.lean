@@ -13,9 +13,9 @@ open GroundTheory.Automorphic GroundTheory.Automorphic.Reduction GroundTheory.Au
 namespace GlobalTheory.CompanionTheory.Conc
 
 /- English proof (translation)
-Establish `hF : Continuous (Function.uncurry fun (x : AdelicGLn.AdelicGL K n) (y : archGroup K n) => (β y : ℂ) * f (x * infEmb K n y))`. Use `(Complex.continuous_ofReal.comp (hβ.cont.comp continuous_snd)).mul (hf.comp ?_)` and prove the remaining obligations. Conclude with `continuous_fst.mul (continuous_infEmb.comp continuous_snd)`. Establish `h` using `continuous_parametric_integral_of_continuous (μ := ν) hF hβ.cpt.isCompact`. Use `h.congr fun x => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `setIntegral_eq_integral_of_forall_compl_eq_zero fun y hy => ?_` and prove the remaining obligations. Establish `: β y = 0` using `image_eq_zero_of_notMem_tsupport hy`. Simplify using `[this]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuous_sm_uFam {K : Type} [Field K] [NumberField K] {n : ℕ}
     [MeasurableSpace (archGroup K n)] [BorelSpace (archGroup K n)] (ν : Measure (archGroup K n))
@@ -32,11 +32,11 @@ theorem continuous_sm_uFam {K : Type} [Field K] [NumberField K] {n : ℕ}
   simp [this]
 
 /- English proof (translation)
-Introduce `K _ _ n _ _ ν _ β ι f hβ hf`. Use `⟨fun i => continuous_sm_uFam ν hβ (hf.cont i), fun i γ x => ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [sm, mul_assoc]`. Use `integral_congr_ae (Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Simplify using `only`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[hf.left i γ (x * infEmb K n y)]`. Take `⟨U, hU, hlev⟩` from `hf.level`. Use `⟨U, hU, fun i g u => ?_⟩` and prove the remaining obligations. Simplify using `only [sm]`. Use `integral_congr_ae (Eventually.of_forall fun y => ?_)` and prove the remaining obligations.
+Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only`. Rewrite using `[mul_assoc g, ← infEmb_mul_finEmb_comm, ← mul_assoc, hlev i (g * infEmb K n y) u]`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem uFam_sm : ∀ (K : Type) [Field K] [NumberField K] (n : ℕ) [MeasurableSpace (archGroup K n)]
     [BorelSpace (archGroup K n)] (ν : Measure (archGroup K n)) [ν.IsHaarMeasure] (β : archGroup K n → ℝ)

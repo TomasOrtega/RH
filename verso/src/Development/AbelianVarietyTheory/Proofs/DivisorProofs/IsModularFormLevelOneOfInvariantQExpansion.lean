@@ -14,11 +14,9 @@ namespace GlobalTheory.QFam
 open scoped UpperHalfPlane MatrixGroups ModularForm Manifold BigOperators in
 
 /- English proof (translation)
-Introduce `N k f a hN hinv h`. Use `⟨{ toFun := f, slash_action_eq' := ?_, holo' := ?_, bdd_at_cusps' := ?_ }, fun _ => rfl⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨γ, rfl⟩`. Conclude with `(ModularForm.SL_slash f γ).symm.trans (hinv γ)`. Conclude with `h.mdifferentiable hN`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `c hc`. Rewrite `hc` using `[Subgroup.IsArithmetic.isCusp_iff_isCusp_SL2Z]`. Rewrite using `[OnePoint.isBoundedAt_iff_forall_SL2Z hc]`. Introduce `γ _`. Rewrite using `[hinv γ]`.
-
-Conclude with `(_root_.GlobalTheory.QFam.hasQ_mdifferentiable_and_isBoundedAtImInfty N f a hN h).2`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.QFam.isMF_of_invariant_of_hasQ : ∀ (N : ℕ) (k : ℤ) (f : ℍ → ℂ)
     (a : ℕ → ℂ), 0 < N →

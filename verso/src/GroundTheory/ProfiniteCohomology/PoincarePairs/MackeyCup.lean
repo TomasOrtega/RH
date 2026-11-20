@@ -61,9 +61,9 @@ variable {k G : Type u} [CommRing k] [Group G] [TopologicalSpace G] [IsTopologic
   [IsDiscreteRep N₂] [IsDiscreteRep N₃] (μ : N₁ ⊗ N₂ ⟶ N₃)
 
 /- English proof (translation)
-Apply `cochainOf_injective` to reduce the goal to its premises. Use function extensionality and compare the values at `σ`. Express the relevant statement in the definitionally equal form `((coindPairing (V : Subgroup G) μ).hom (cupCochain h (cochainOf _ x) (cochainOf _ z) (⇑(V : Subgroup G).subtype ∘ σ))).1 1 = μ.hom (cupCochain h (fun τ => (cochainOf _ x (⇑(V : Subgroup G).subtype ∘ τ)).1 1) (fun τ => (cochainOf _ z (⇑(V : Subgroup G).subtype ∘ τ)).1 1) σ)`. Rewrite using `[cupCochain_apply, cupCochain_apply, coindPairing_tmul_apply, partialProd_comp_monoidHom]`. Use `congr 2`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Express the relevant statement in the definitionally equal form `(cochainOf _ z _).1 (1 * (V : Subgroup G).subtype (Fin.partialProd σ ⟨r, by omega⟩)) = N₂.ρ (Fin.partialProd σ ⟨r, by omega⟩) ((cochainOf _ z _).1 1)`. Rewrite using `[one_mul, ← mul_one ((V : Subgroup G).subtype _), (cochainOf _ z _).2]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem shapiroCochains_cupPairingCochains {r s n : ℕ} (h : r + s = n)
     (x : (cochainsComplex (Rep.coind (V : Subgroup G).subtype N₁)).X r)
@@ -92,9 +92,9 @@ variable {k G H : Type u} [CommRing k] [Group G] [Group H] (V : Subgroup G)
   {N₁ N₂ N₃ : Rep.{u} k V} (μ : N₁ ⊗ N₂ ⟶ N₃)
 
 /- English proof (translation)
-Rewrite using `[cupCochain_apply, cupCochain_apply]`. Express the relevant statement in the definitionally equal form `μ.hom _ = μ.hom _`. Use `congr 2`. Rewrite using `[partialProd_comp_monoidHom]`. Express the relevant statement in the definitionally equal form `(E _).1 (x * ι ((mackeySubgroup V ι x).subtype (Fin.partialProd σ ⟨r, by omega⟩))) = N₂.ρ (mackeyConj V ι x (Fin.partialProd σ ⟨r, by omega⟩)) ((E _).1 x)`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[← (E _).2]`. Simplify using `[mul_assoc]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem coindPairing_cupCochain_apply (ι : H →* G) (x : G) {r s n : ℕ} (h : r + s = n)
     (F : (Fin r → H) → Rep.coind V.subtype N₁) (E : (Fin s → H) → Rep.coind V.subtype N₂)
@@ -129,7 +129,7 @@ variable {k G : Type u} [CommRing k] [Group G] [TopologicalSpace G] [IsTopologic
   (V : OpenSubgroup G) (φ : ∀ v, Hv v →ₜ* G)
 
 /- English proof (translation)
-Simplify using `only [mackeyLocalHomotopy, Homotopy.trans_hom, Homotopy.ofEq_hom, Pi.zero_apply, zero_add, add_zero]`. Simplify using `only [piLiftHomotopy, Homotopy.symm_hom, mackeyHomotopy, conjHomotopy, Homotopy.trans_hom, Homotopy.ofEq_hom, Pi.zero_apply, zero_add, Homotopy.compRightId_hom, Homotopy.equivSubZero, Equiv.coe_fn_symm_mk, Homotopy.nullHomotopy'_hom, ComplexShape.up_Rel, dite_true, ModuleCat.hom_ …`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem mackeyLocalHomotopy_hom_apply (N : Rep.{u} k (V : Subgroup G)) [IsDiscreteRep N] (m : ℕ)
     (a : (cochainsComplex (Rep.coind (V : Subgroup G).subtype N)).X (m + 1)) (p : MackeyIndex V φ) :
@@ -171,9 +171,9 @@ noncomputable abbrev mackeyLocalCup : LeibnizPairing
       ((Rep.resFunctor (mackeyFamily V φ p).toMonoidHom).map μ)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `p`. Apply `cochainOf_injective` to reduce the goal to its premises. Use function extensionality and compare the values at `σ`. Express the relevant statement in the definitionally equal form `(((Rep.resFunctor (φ p.1).toMonoidHom).map (coindPairing (V : Subgroup G) μ)).hom (cupCochain (G := Hv p.1) (A := Rep.res (φ p.1).toMonoidHom (Rep.coind (V : Subgroup G).subtype N₁)) (B := Rep.res (φ p.1).toMonoidHom (Rep.coind (V : Subgroup G).subtype N₂)) h (cochainOf (Rep.res …`. Simplify using `only [map_one, mul_one]`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Conclude with `coindPairing_cupCochain_apply (V : Subgroup G) μ (φ p.1).toMonoidHom p.2.out h _ _ σ`.
+A detailed English derivation is pending.
 -/
 theorem mackeyLocalMap_pi_cup {r s n : ℕ} (h : r + s = n)
     (y : (piComplex fun v => cochainsComplex
@@ -214,7 +214,7 @@ section PrismFun
 variable {k G H : Type u} [CommRing k] [Group G] [Group H]
 
 /- English proof (translation)
-Rewrite using `[cupCochain_apply, cupCochain_apply, partialProd_comp_monoidHom]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem cupCochain_comp_monoidHom (ι : H →* G) {A B : Rep.{u} k G} {r s n : ℕ} (h : r + s = n)
     (F : (Fin r → G) → A) (E : (Fin s → G) → B) (τ : Fin n → H) :
@@ -227,7 +227,7 @@ theorem cupCochain_comp_monoidHom (ι : H →* G) {A B : Rep.{u} k G} {r s n : �
 omit [Group H] in
 
 /- English proof (translation)
-Simplify using `only [conjHomotopyFun, map_sum, map_smul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hom_conjHomotopyFun {X Y : Rep.{u} k G} (P : X ⟶ Y) (g : G) (m : ℕ)
     (K : (Fin (m + 1) → G) → X) (γ : Fin m → G) :
@@ -237,7 +237,7 @@ theorem hom_conjHomotopyFun {X Y : Rep.{u} k G} (P : X ⟶ Y) (g : G) (m : ℕ)
 omit [Group H] in
 
 /- English proof (translation)
-Rewrite using `[cupCochain_apply, cupCochain_apply, neg_tmul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cupCochain_neg_left {A B : Rep.{u} k G} {r s n : ℕ} (h : r + s = n)
     (F : (Fin r → G) → A) (E : (Fin s → G) → B) (σ : Fin n → G) :
@@ -247,7 +247,7 @@ theorem cupCochain_neg_left {A B : Rep.{u} k G} {r s n : ℕ} (h : r + s = n)
 omit [Group H] in
 
 /- English proof (translation)
-Rewrite using `[cupCochain_apply, cupCochain_apply, map_neg, tmul_neg]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cupCochain_neg_right {A B : Rep.{u} k G} {r s n : ℕ} (h : r + s = n)
     (F : (Fin r → G) → A) (E : (Fin s → G) → B) (σ : Fin n → G) :
@@ -257,7 +257,7 @@ theorem cupCochain_neg_right {A B : Rep.{u} k G} {r s n : ℕ} (h : r + s = n)
 variable (V : Subgroup G) {N₁ N₂ N₃ : Rep.{u} k V} (μ : N₁ ⊗ N₂ ⟶ N₃)
 
 /- English proof (translation)
-Rewrite using `[cupCochain_comp_monoidHom]`. Conclude with `coindPairing_cupCochain_apply V μ ι x h (fun τ => F (⇑ι ∘ τ)) (fun τ => E (⇑ι ∘ τ)) σ`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coindPairing_cupCochain_comp_apply (ι : H →* G) (x : G) {r s n : ℕ} (h : r + s = n)
     (F : (Fin r → G) → Rep.coind V.subtype N₁) (E : (Fin s → G) → Rep.coind V.subtype N₂)
@@ -272,7 +272,7 @@ theorem coindPairing_cupCochain_comp_apply (ι : H →* G) (x : G) {r s n : ℕ}
   exact coindPairing_cupCochain_apply V μ ι x h (fun τ => F (⇑ι ∘ τ)) (fun τ => E (⇑ι ∘ τ)) σ
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(Z fun l => x⁻¹⁻¹ * ι (τ l) * x⁻¹).1 (x * x⁻¹) = _`. Rewrite using `[mul_inv_cancel, inv_inv]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem conjCochainFun_comp_apply (ι : H →* G) (x : G) {n : ℕ}
     (Z : (Fin n → G) → Rep.coind V.subtype N₂) (τ : Fin n → mackeySubgroup V ι x) :
@@ -283,9 +283,9 @@ theorem conjCochainFun_comp_apply (ι : H →* G) (x : G) {n : ℕ}
   rfl
 
 /- English proof (translation)
-Rewrite using `[← hom_conjHomotopyFun, conjHomotopyFun_cupCochain, cupCochain_neg_left, cupCochain_neg_right, map_neg, map_neg, smul_neg, ← neg_add]`. Use `congr 1`. Rewrite using `[Pi.add_apply, Pi.smul_apply, map_add, map_smul]`. Simplify using `only [Submodule.coe_add, Submodule.coe_smul, Pi.add_apply, Pi.smul_apply]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[coindPairing_cupCochain_comp_apply]`. Use `congr 2`. Use function extensionality and compare the values at `τ`. Conclude with `conjCochainFun_comp_apply V ι x Z τ`. Rewrite using `[coindPairing_cupCochain_comp_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem neg_conjHomotopyFun_coindPairing_apply (ι : H →* G) (x : G) {r s m : ℕ}
     (h : r + 1 + (s + 1) = m + 1) (A : (Fin (r + 1) → G) → Rep.coind V.subtype N₁)
@@ -318,7 +318,7 @@ theorem neg_conjHomotopyFun_coindPairing_apply (ι : H →* G) (x : G) {r s m : 
   · rw [coindPairing_cupCochain_comp_apply]
 
 /- English proof (translation)
-Rewrite using `[← hom_conjHomotopyFun, conjHomotopyFun_cupCochain_zero_left, cupCochain_neg_right, map_neg]`. Use `congr 1`. Conclude with `coindPairing_cupCochain_comp_apply V μ ι x _ _ _ σ`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem neg_conjHomotopyFun_coindPairing_apply_zero_left (ι : H →* G) (x : G) {s m : ℕ}
     (h : 0 + (s + 1) = m + 1) (A : (Fin 0 → G) → Rep.coind V.subtype N₁)
@@ -337,9 +337,9 @@ theorem neg_conjHomotopyFun_coindPairing_apply_zero_left (ι : H →* G) (x : G)
   exact coindPairing_cupCochain_comp_apply V μ ι x _ _ _ σ
 
 /- English proof (translation)
-Rewrite using `[← hom_conjHomotopyFun, conjHomotopyFun_cupCochain_zero_right, cupCochain_neg_left, map_neg]`. Use `congr 1`. Rewrite using `[coindPairing_cupCochain_comp_apply]`. Use `congr 2`. Use function extensionality and compare the values at `τ`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `conjCochainFun_comp_apply V ι x Z τ`.
+A detailed English derivation is pending.
 -/
 theorem neg_conjHomotopyFun_coindPairing_apply_zero_right (ι : H →* G) (x : G) {r m : ℕ}
     (h : r + 1 + 0 = m + 1) (A : (Fin (r + 1) → G) → Rep.coind V.subtype N₁)
@@ -370,7 +370,7 @@ variable {k G : Type u} [CommRing k] [Group G] [TopologicalSpace G] [IsTopologic
   (V : OpenSubgroup G) (φ : ∀ v, Hv v →ₜ* G)
 
 /- English proof (translation)
-The claim follows from `funext fun p => mackeyLocalHomotopy_hom_apply V φ N m a p`.
+A detailed English derivation is pending.
 -/
 theorem mackeyLocalHomotopy_hom_eq (N : Rep.{u} k (V : Subgroup G)) [IsDiscreteRep N] (m : ℕ)
     (a : (cochainsComplex (Rep.coind (V : Subgroup G).subtype N)).X (m + 1)) :
@@ -386,9 +386,9 @@ variable {N₁ N₂ N₃ : Rep.{u} k (V : Subgroup G)} [IsDiscreteRep N₁] [IsD
   [IsDiscreteRep N₃] (μ : N₁ ⊗ N₂ ⟶ N₃)
 
 /- English proof (translation)
-Rewrite using `[mackeyLocalHomotopy_hom_eq, mackeyLocalHomotopy_hom_eq, mackeyLocalHomotopy_hom_eq]`. Use function extensionality and compare the values at `p`. Apply `cochainOf_injective` to reduce the goal to its premises. Use function extensionality and compare the values at `σ`. Express the relevant statement in the definitionally equal form `-(conjHomotopyFun (Rep.coind (V : Subgroup G).subtype N₃) p.2.out⁻¹ m (fun γ => (coindPairing (V : Subgroup G) μ).hom (cupCochain h (cochainOf _ a) (cochainOf _ z) γ)) (⇑(φ p.1).toMonoidHom ∘ ⇑(mackeySubgroup (V : Subgroup G) (φ p.1).toMonoidHom p.2.out).subtype ∘ σ)).1 (p.2.out …`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition.
 
-Simplify using `only [map_one, mul_one]`. Conclude with `neg_conjHomotopyFun_coindPairing_apply (V : Subgroup G) μ (φ p.1).toMonoidHom p.2.out h (cochainOf _ a) (cochainOf _ z) σ`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mackeyLocalHomotopy_cup {r s m : ℕ} (h : r + 1 + (s + 1) = m + 1)
     (a : (cochainsComplex (Rep.coind (V : Subgroup G).subtype N₁)).X (r + 1))
@@ -444,9 +444,9 @@ theorem mackeyLocalHomotopy_cup {r s m : ℕ} (h : r + 1 + (s + 1) = m + 1)
     (cochainOf _ a) (cochainOf _ z) σ
 
 /- English proof (translation)
-Rewrite using `[mackeyLocalHomotopy_hom_eq, mackeyLocalHomotopy_hom_eq]`. Use function extensionality and compare the values at `p`. Apply `cochainOf_injective` to reduce the goal to its premises. Use function extensionality and compare the values at `σ`. Express the relevant statement in the definitionally equal form `-(conjHomotopyFun (Rep.coind (V : Subgroup G).subtype N₃) p.2.out⁻¹ m (fun γ => (coindPairing (V : Subgroup G) μ).hom (cupCochain h (cochainOf _ a) (cochainOf _ z) γ)) (⇑(φ p.1).toMonoidHom ∘ ⇑(mackeySubgroup (V : Subgroup G) (φ p.1).toMonoidHom p.2.out).subtype ∘ σ)).1 (p.2.out …`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition.
 
-Simplify using `only [map_one, mul_one]`. Conclude with `neg_conjHomotopyFun_coindPairing_apply_zero_left (V : Subgroup G) μ (φ p.1).toMonoidHom p.2.out h (cochainOf _ a) (cochainOf _ z) σ`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mackeyLocalHomotopy_cup_zero_left {s m : ℕ} (h : 0 + (s + 1) = m + 1)
     (a : (cochainsComplex (Rep.coind (V : Subgroup G).subtype N₁)).X 0)
@@ -486,9 +486,9 @@ theorem mackeyLocalHomotopy_cup_zero_left {s m : ℕ} (h : 0 + (s + 1) = m + 1)
     p.2.out h (cochainOf _ a) (cochainOf _ z) σ
 
 /- English proof (translation)
-Rewrite using `[mackeyLocalHomotopy_hom_eq, mackeyLocalHomotopy_hom_eq]`. Use function extensionality and compare the values at `p`. Apply `cochainOf_injective` to reduce the goal to its premises. Use function extensionality and compare the values at `σ`. Express the relevant statement in the definitionally equal form `-(conjHomotopyFun (Rep.coind (V : Subgroup G).subtype N₃) p.2.out⁻¹ m (fun γ => (coindPairing (V : Subgroup G) μ).hom (cupCochain h (cochainOf _ a) (cochainOf _ z) γ)) (⇑(φ p.1).toMonoidHom ∘ ⇑(mackeySubgroup (V : Subgroup G) (φ p.1).toMonoidHom p.2.out).subtype ∘ σ)).1 (p.2.out …`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition.
 
-Simplify using `only [map_one, mul_one]`. Conclude with `neg_conjHomotopyFun_coindPairing_apply_zero_right (V : Subgroup G) μ (φ p.1).toMonoidHom p.2.out h (cochainOf _ a) (cochainOf _ z) σ`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mackeyLocalHomotopy_cup_zero_right {r m : ℕ} (h : r + 1 + 0 = m + 1)
     (a : (cochainsComplex (Rep.coind (V : Subgroup G).subtype N₁)).X (r + 1))
@@ -525,7 +525,7 @@ theorem mackeyLocalHomotopy_cup_zero_right {r m : ℕ} (h : r + 1 + 0 = m + 1)
     p.2.out h (cochainOf _ a) (cochainOf _ z) σ
 
 /- English proof (translation)
-Establish `hc` using `fun {r s n : ℕ} (hh : r + s = n) (x₀ : (cochainsComplex (Rep.coind (V : Subgroup G).subtype N₁)).X r) (z₀ : (cochainsComplex (Rep.coind (V : Subgroup G).subtype N₂)).X s) => localRes_cupPairingCochains φ (coindPairing (V : Subgroup G) μ) (Aᵥ := fun v => Rep.res (φ v).toMonoidHom …`. Establish `hc'` using `fun {r s n : ℕ} (hh : r + s = n) (x₀ : (cochainsComplex N₁).X r) (z₀ : (cochainsComplex N₂).X s) => localRes_cupPairingCochains (mackeyFamily V φ) μ (Aᵥ := mackeyCoeff V φ N₁) (Bᵥ := mackeyCoeff V φ N₂) (Cᵥ := mackeyCoeff V φ N₃) (a := fun _ => 𝟙 _) (b := fun _ => 𝟙 _) (c := fun …`. Conclude with `mappingCoconeNat.homologyMap_mapOfHomotopy_coconeLeft (mackeyLocalHomotopy V φ N₁) (mackeyLocalHomotopy V φ N₃) (mackeyLocalHomotopy V φ N₂) (coindLocalCup V φ μ) (cupLeibniz (coindPairing (V : Subgroup G) μ)) (mackeyLocalCup V φ μ) (cupLeibniz μ) hc hc' (shapiroCochains_cupPairi …`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mackeyCompactCohomologyIso_compactCupRes {r s n : ℕ} (h : r + s = n)
     (y : compactCohomologyRes φ (Rep.coind (V : Subgroup G).subtype N₁) r)

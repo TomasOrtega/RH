@@ -13,31 +13,27 @@ open scoped IntermediateField BigOperators Topology
 namespace GlobalTheory.CMModel
 
 /- English proof (translation)
-Introduce `L α S hα hst hS hev z hz`. Establish `hper : ∀ z l, l ∈ L.lattice → L.derivWeierstrassP (z + l) = L.derivWeierstrassP z` using `fun z l hl => L.derivWeierstrassP_add_coe z ⟨l, hl⟩`. Take `⟨k1, k2⟩` from `GlobalTheory.T.prod_kernel_multiplier_translate_neg L α S L.derivWeierstrassP hS hst hper`. Establish `hdiff : ∀ w, w ∉ L.lattice → DifferentiableAt ℂ L.derivWeierstrassP w` using `fun w hw => (L.analyticOnNhd_derivWeierstrassP w hw).differentiableAt`. Establish `hcancel : ∀ w : ℂ, α * (w / α) = w` using `fun w => mul_div_cancel₀ w hα`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ∀ w, w ∉ L.lattice → w / α ∉ L.lattice` using `fun w hw h => by`. Use `hst _ h` as an intermediate fact. Rewrite `this` using `[hcancel]`. Conclude with `hw this`. Establish `h2 : ∀ w, w ∉ L.lattice → ∀ t ∈ S, w / α + t ∉ L.lattice` using `fun w hw t ht h => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `hst _ h`. Rewrite `h3` using `[mul_add, hcancel]`. Establish `h4` using `L.lattice.sub_mem h3 (hS.1 t ht).1`. Rewrite `h4` using `[add_sub_cancel_right]`. Conclude with `hw h4`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set c : ℂ := ∏ t ∈ S, L.derivWeierstrassP t with hc`. Establish `key` using `GlobalTheory.T.eq_zero_of_odd_elliptic_of_tendsto' L (fun w => L.derivWeierstrassP (w / α) * ∏ t ∈ S, L.derivWeierstrassP (w / α + t) - c * α ^ 3 * L.derivWeierstrassP w) ?_ ?_ ?_ ?_ (α * z) hz`. Establish `e : α * z / α = z` using `mul_div_cancel_left₀ z hα`. Simplify using `only [e] at key`. Conclude with `sub_eq_zero.mp key`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `w hw`. Establish `d0 : DifferentiableAt ℂ (fun w : ℂ => w / α) w` using `differentiableAt_id.div_const α`. Use `DifferentiableAt.sub (DifferentiableAt.mul ?_ ?_) ((hdiff w hw).const_mul _)` and prove the remaining obligations. Conclude with `DifferentiableAt.comp w (g := L.derivWeierstrassP) (hdiff _ (h1 w hw)) d0`. Use `DifferentiableAt.fun_finsetProd fun t ht => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `DifferentiableAt.comp w (g := L.derivWeierstrassP) (f := fun w : ℂ => w / α + t) (hdiff _ (h2 w hw t ht)) (d0.add_const t)`. Introduce `w l _ hl`. Use `k1 (w / α) (l / α) (by rw [hcancel]; exact hl)` as an intermediate fact. Simplify using `only [add_div, this, hper w l hl]`. Introduce `w _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `e1 : ∏ t ∈ S, L.derivWeierstrassP (-w / α + t) = ∏ t ∈ S, L.derivWeierstrassP (w / α + t)`. Rewrite using `[← k2 (w / α)]`. Establish `: ∀ t ∈ S, L.derivWeierstrassP (-w / α + t) = (-1) * L.derivWeierstrassP (w / α - t)`. Introduce `t _`. Rewrite using `[neg_one_mul, ← L.derivWeierstrassP_neg]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.prod_congr rfl this, Finset.prod_mul_distrib, Finset.prod_const, hev.neg_one_pow, one_mul]`. Simplify using `only [e1]`. Rewrite using `[neg_div, L.derivWeierstrassP_neg, L.derivWeierstrassP_neg]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `c0` using `GlobalTheory.T.tendsto_cube_mul_derivWeierstrassP_neg_two L`. Establish `tdiv : Filter.Tendsto (fun w : ℂ => w / α) (𝓝 0) (𝓝 0)`. Establish `: Continuous (fun w : ℂ => w / α)` using `continuous_id.div_const α`. Simplify using `using this.tendsto 0`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `tdiv' : Filter.Tendsto (fun w : ℂ => w / α) (𝓝[≠] 0) (𝓝[≠] 0)`. Use `tendsto_nhdsWithin_iff.mpr ⟨tdiv.mono_left nhdsWithin_le_nhds, ?_⟩` and prove the remaining obligations. Use `filter_upwards [self_mem_nhdsWithin] with w hw`. Conclude with `div_ne_zero hw hα`. Establish `t1` using `c0.comp tdiv'`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `t2 : Filter.Tendsto (fun w : ℂ => ∏ t ∈ S, L.derivWeierstrassP (w / α + t)) (𝓝[≠] 0) (𝓝 c)`. Use `tendsto_finsetProd S fun t ht => ?_` and prove the remaining obligations. Establish `ht'` using `(hdiff t (hS.1 t ht).2).continuousAt.tendsto`. Establish `: Filter.Tendsto (fun w : ℂ => w / α + t) (𝓝[≠] 0) (𝓝 t)`. Simplify using `using (tdiv.mono_left (nhdsWithin_le_nhds (s := {0}ᶜ))).add_const t`.
-
-Conclude with `ht'.comp this`. Establish `t3` using `((t1.const_mul (α ^ 3)).mul t2).sub (c0.const_mul (c * α ^ 3))`. Establish `e : α ^ 3 * (-2) * c - c * α ^ 3 * (-2) = 0` using `by ring`. Rewrite `t3` using `[e]`. Use `t3.congr fun w => ?_` and prove the remaining obligations.
-
-Simplify using `only [Function.comp]`. Clear the denominators using the available nonvanishing facts.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem derivWeierstrassP_mul_prod_translate_kernel :
     ∀ (L : PeriodPair) (α : ℂ) (S : Finset ℂ), α ≠ 0 → Formalism.L2.Th1.F.MulStable L α → IsKerReps L α S →

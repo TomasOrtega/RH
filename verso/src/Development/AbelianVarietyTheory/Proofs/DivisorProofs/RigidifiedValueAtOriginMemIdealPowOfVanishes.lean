@@ -15,7 +15,7 @@ noncomputable section
 namespace GlobalTheory.Mum.OrigVan
 
 /- English proof (translation)
-Rewrite using `[gs_eq r (t z) U h, gs_eq (t ≫ r) z U h]`. Conclude with `Scheme.Hom.germ_stalkMap_apply t (r ⁻¹ᵁ U) z h _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stalkMap_gs {X Y Z : Scheme.{0}} (t : Z ⟶ Y) (r : Y ⟶ X) (z : Z) (U : X.Opens) (h : r (t z) ∈ U)
     (a : Γ(X, U)) : (t.stalkMap z).hom (gs r (t z) U a) = gs (t ≫ r) z U a := by
@@ -23,7 +23,7 @@ theorem stalkMap_gs {X Y Z : Scheme.{0}} (t : Z ⟶ Y) (r : Y ⟶ X) (z : Z) (U 
   exact Scheme.Hom.germ_stalkMap_apply t (r ⁻¹ᵁ U) z h _
 
 /- English proof (translation)
-Establish `e` using `congrArg (fun q => q.hom v) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom φ))`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply, CommRingCat.hom_ofHom] at e`. Use `(Scheme.Hom.germ_stalkMap_apply (Spec.map (CommRingCat.ofHom φ)) ⊤ z trivial _).trans ?_` and prove the remaining obligations. Conclude with `congrArg ((Sp S).presheaf.germ ⊤ z trivial).hom e.symm`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem stalkMap_stalkOf {R S : Type} [CommRing R] [CommRing S] (φ : R →+* S) (z : Sp S) (v : R) :
     ((Spec.map (CommRingCat.ofHom φ)).stalkMap z).hom (stalkOf ((Spec.map (CommRingCat.ofHom φ)) z) v) =
@@ -34,9 +34,9 @@ theorem stalkMap_stalkOf {R S : Type} [CommRing R] [CommRing S] (φ : R →+* S)
   exact congrArg ((Sp S).presheaf.germ ⊤ z trivial).hom e.symm
 
 /- English proof (translation)
-Establish `h1 : (Scheme.ΓSpecIso (CommRingCat.of S)).inv.hom w = 0`. Apply `TopCat.Presheaf.section_ext (Sp S).sheaf ⊤` to reduce the goal to its premises. Introduce `x hx`. Conclude with `(h x).trans (map_zero _).symm`. Establish `h2` using `congrArg (Scheme.ΓSpecIso (CommRingCat.of S)).hom.hom h1`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using h2`.
+A detailed English derivation is pending.
 -/
 theorem eq_zero_of_stalkOf {S : Type} [CommRing S] (w : S) (h : ∀ z : Sp S, stalkOf z w = 0) : w = 0 := by
   have h1 : (Scheme.ΓSpecIso (CommRingCat.of S)).inv.hom w = 0 := by
@@ -52,15 +52,13 @@ namespace GlobalTheory.Mum
 open OrigVan
 
 /- English proof (translation)
-Introduce `R _ _ I D k α b v e hO hV`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem]`. Use `eq_zero_of_stalkOf _ fun z => ?_` and prove the remaining obligations. Use `choose J hJ using fun χ : Sp R ⟶ D.P.A.left => exists_chart D.P.isLB (χ (thick R I e z))`. Establish `hG : Good D.P.L (thick R I e z) J` using `hJ`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `congrArg ((thick R I e).stalkMap z).hom (hO (thick R I e z) J hG)`. Establish `hm` using `hG.mem (D.famφB α) (unitW D.P.A)`. Establish `hu : unitW D.P.A ≫ D.P.A.hom = 𝟙 _` using `Over.w (η[D.P.A])`. Set `s : Sp (R ⧸ I ^ (e + 1)) ⟶ pullback D.P.A.hom (thick R I e)` to `pullback.lift (thick R I e ≫ unitW D.P.A) (𝟙 _) (by rw [Category.assoc, hu, Category.comp_id, Category.id_comp])`. Establish `hs : s ≫ pullback.fst D.P.A.hom (thick R I e) = thick R I e ≫ unitW D.P.A` using `pullback.lift_fst _ _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm' : (s ≫ pullback.fst D.P.A.hom (thick R I e)) z ∈ LB.wchart D.P.L (D.famφB α) (fun k => J (unitW D.P.A ≫ D.famφB α k))`. Rewrite using `[hs]`. Conclude with `hm`. Establish `h0 : ((thick R I e).stalkMap z).hom (sval b (unitW D.P.A) (thick R I e z) J) = 0`. Use `(stalkMap_gs (thick R I e) (unitW D.P.A) z _ hm _).trans ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hs]`. Use `(gs_pull s _ z _ hm' _).symm.trans ?_` and prove the remaining obligations. Use `(congrArg (gs s z _) (hV _)).trans ?_` and prove the remaining obligations. Use `(gs_eq s z _ hm' _).trans ?_` and prove the remaining obligations. Rewrite using `[map_zero, map_zero]`.
-
-Rewrite `h1` using `[h0, map_mul, map_pow, stalkMap_stalkOf]`. Conclude with `(((Units.isUnit _).map _).pow k).mul_left_eq_zero.1 h1.symm`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem origVal_mem_of_vanMod : ∀ (R : Type) [CommRing R] [IsDomain R] (I : Ideal R) (D : DegPre R) (k : ℕ) (α : D.X)
     (b : D.SecB k α) (v : R) (e : ℕ), OrigVal D b v → VanMod I b e → v ∈ I ^ (e + 1) := by

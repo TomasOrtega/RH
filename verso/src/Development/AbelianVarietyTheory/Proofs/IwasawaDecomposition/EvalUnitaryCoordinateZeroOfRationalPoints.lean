@@ -13,9 +13,9 @@ open Matrix Formalism.L2.NG ReciprocityTheory.Aut Formalism.AUTREP NumberField G
 namespace GlobalTheory.UDense
 
 /- English proof (translation)
-Establish `h1 : A.adjugate.map f = (A.map f).adjugate`. Use `RingHom.map_adjugate f A` as an intermediate fact. Simplify `this` using `[RingHom.mapMatrix_apply]`. Establish `h2 : (A.map f).det = f A.det`. Use `RingHom.map_det f A` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `this.symm` using `[RingHom.mapMatrix_apply]`. Rewrite using `[Matrix.inv_def, Matrix.inv_def, Matrix.map_smul' _ _ _ (map_mul f), h1, h2, Ring.inverse_eq_inv', Ring.inverse_eq_inv', map_inv₀]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_inv_field_hom {K L : Type} [Field K] [Field L] (f : K →+* L) {n : ℕ} (A : Matrix (Fin n) (Fin n) K) :
     (A⁻¹).map f = (A.map f)⁻¹ := by
@@ -27,7 +27,7 @@ theorem map_inv_field_hom {K L : Type} [Field K] [Field L] (f : K →+* L) {n : 
     Ring.inverse_eq_inv', map_inv₀]
 
 /- English proof (translation)
-Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C a => simp`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`. Consider the case `mul_X p j hp => simp only [map_mul, hp, MvPolynomial.bind₁_X_right, MvPolynomial.eval_X, MvPolynomial.eval_C]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem eval_bind₁_scale {ι : Type} (r w : ι → ℂ) (f : MvPolynomial ι ℂ) :
     MvPolynomial.eval w
@@ -40,29 +40,27 @@ theorem eval_bind₁_scale {ι : Type} (r w : ι → ℂ) (f : MvPolynomial ι �
       MvPolynomial.eval_C]
 
 /- English proof (translation)
-Set `V : (L →+* ℂ) → Matrix (Fin n) (Fin n) (MvPolynomial ((L →+* ℂ) × Fin n × Fin n) ℂ)` to `fun σ => Matrix.of fun i j => MvPolynomial.X (σ, i, j)`. Set `P : (L →+* ℂ) × Fin n × Fin n → MvPolynomial ((L →+* ℂ) × Fin n × Fin n) ℂ` to `fun p => ((1 + V p.1) * (1 - V p.1).adjugate) p.2.1 p.2.2`. Set `D : (L →+* ℂ) × Fin n × Fin n → MvPolynomial ((L →+* ℂ) × Fin n × Fin n) ℂ` to `fun p => (1 - V p.1).det`. Take `⟨G, M, hGM⟩` from `GlobalTheory.T.mvPolynomial_clear_denominators_eval F P D`. Establish `evV : ∀ (y : (L →+* ℂ) → Matrix (Fin n) (Fin n) ℂ) σ, (V σ).map (MvPolynomial.eval (upt y)) = y σ`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `y σ`. Use extensionality with `i j`. Simplify using `[V, upt]`. Establish `evDet : ∀ (y : (L →+* ℂ) → Matrix (Fin n) (Fin n) ℂ) σ, MvPolynomial.eval (upt y) ((1 - V σ).det) = (1 - y σ).det`. Introduce `y σ`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[RingHom.map_det, RingHom.mapMatrix_apply, Matrix.map_sub _ (map_sub _), Matrix.map_one _ (map_zero _) (map_one _), evV]`. Establish `evP : ∀ (y : (L →+* ℂ) → Matrix (Fin n) (Fin n) ℂ), (∀ σ, (1 - y σ).det ≠ 0) → (fun p => MvPolynomial.eval (upt y) (P p) / MvPolynomial.eval (upt y) (D p)) = upt (fun σ => (1 + y σ) * (1 - y σ)⁻¹)`. Introduce `y hy`. Use function extensionality and compare the values at `p`. Establish `hm : ((1 + V p.1) * (1 - V p.1).adjugate).map (MvPolynomial.eval (upt y)) = (1 + y p.1) * (1 - y p.1).adjugate`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Rewrite using `[Matrix.map_mul, ← RingHom.mapMatrix_apply, ← RingHom.mapMatrix_apply, RingHom.map_adjugate, RingHom.mapMatrix_apply, RingHom.mapMatrix_apply, Matrix.map_sub _ (map_sub _), Matrix.map_add _ (map_add _), Matrix.map_one _ (map_zero _) (map_one _), evV]`. Establish `hP : MvPolynomial.eval (upt y) (P p) = ((1 + y p.1) * (1 - y p.1).adjugate) p.2.1 p.2.2`. Rewrite using `[← hm]`. Both sides reduce to the same expression. Rewrite using `[hP, show MvPolynomial.eval (upt y) (D p) = (1 - y p.1).det from evDet y p.1]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [upt, Matrix.inv_def, Matrix.mul_smul, Matrix.smul_apply, Ring.inverse_eq_inv', smul_eq_mul]`. Rewrite using `[div_eq_inv_mul]`. Set `Q` to `G * ∏ σ, (1 - V σ).det`. Establish `hQ : ∀ S : Matrix (Fin n) (Fin n) L, S + (S.map (IsCMField.complexConj L : L →+* L))ᵀ = 0 → MvPolynomial.eval (upt (ratPt S)) Q = 0`. Introduce `S hS`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hdS : ∀ σ : L →+* ℂ, (1 - ratPt S σ).det = σ (1 - S).det`. Introduce `σ`. Rewrite using `[RingHom.map_det, RingHom.mapMatrix_apply, Matrix.map_sub _ (map_sub _), Matrix.map_one _ (map_zero _) (map_one _)]`. Both sides reduce to the same expression. Simplify using `only [Q, map_mul, map_prod, evDet, hdS]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `h0 : (1 - S).det = 0`. Establish `σ0 : L →+* ℂ` using `Classical.arbitrary _`. Rewrite using `[Finset.prod_eq_zero (Finset.mem_univ σ0) (by rw [h0, map_zero]), mul_zero]`. Take `⟨γ₀, hγ, hγv⟩` from `GlobalTheory.T.cayleyTransform_mem_rational_unitaryGroup L n S hS h0`. Establish `hne : ∀ σ : L →+* ℂ, (1 - ratPt S σ).det ≠ 0` using `fun σ => by`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hdS]`. Conclude with `(map_ne_zero σ).2 h0`. Establish `hDy : ∀ p, MvPolynomial.eval (upt (ratPt S)) (D p) ≠ 0` using `fun p => by`. Rewrite using `[show MvPolynomial.eval (upt (ratPt S)) (D p) = _ from evDet _ p.1]`. Conclude with `hne p.1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨-, hG⟩` from `hGM _ hDy`. Rewrite using `[hG, evP _ hne]`. Establish `hc : (fun σ => (1 + ratPt S σ) * (1 - ratPt S σ)⁻¹) = ratPt (γ₀ : Matrix (Fin n) (Fin n) L)`. Use function extensionality and compare the values at `σ`. Rewrite using `[hγv]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [ratPt, Matrix.map_mul, map_inv_field_hom, Matrix.map_sub _ (map_sub _), Matrix.map_add _ (map_add _), Matrix.map_one _ (map_zero _) (map_one _)]`. Rewrite using `[hc, hF γ₀ hγ, mul_zero, zero_mul]`. Take `⟨Y, hYs, hYd, hYX⟩` from `GlobalTheory.T.unitary_family_eq_cayley_of_skew_family L n X hX hd`. Establish `hQY` using `GlobalTheory.T.mvPolynomial_eval_zero_of_vanishing_rational_skewHermitian L n Q hQ Y hYs`. Establish `hDY : ∀ p, MvPolynomial.eval (upt Y) (D p) ≠ 0` using `fun p => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[show MvPolynomial.eval (upt Y) (D p) = _ from evDet _ p.1]`. Conclude with `hYd p.1`. Take `⟨hM, hG⟩` from `hGM _ hDY`. Simplify using `only [Q, map_mul, map_prod, evDet] at hQY`. Establish `hprod : ∏ σ, (1 - Y σ).det ≠ 0` using `Finset.prod_ne_zero_iff.2 fun σ _ => hYd σ`.
-
-Establish `hG0 : MvPolynomial.eval (upt Y) G = 0` using `(mul_eq_zero.1 hQY).resolve_right hprod`. Rewrite `hG0` using `[hG, evP _ hYd, show (fun σ => (1 + Y σ) * (1 - Y σ)⁻¹) = X from funext hYX]`. Conclude with `(mul_eq_zero.1 hG0).resolve_left hM`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vanish_generic (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ)
     (F : MvPolynomial ((L →+* ℂ) × Fin n × Fin n) ℂ)
@@ -136,21 +134,21 @@ theorem vanish_generic (L : Type) [Field L] [NumberField L] [IsCMField L] (n : �
   exact (mul_eq_zero.1 hG0).resolve_left hM
 
 /- English proof (translation)
-Introduce `L _ _ _ n F hF X hX`. Take `⟨a, ha, hdet⟩` from `GlobalTheory.T.exists_normOne_cmField_det_one_add_ne_zero L n X`. Use `set c : L →+* L := (IsCMField.complexConj L : L →+* L) with hc`. Establish `hcc : ∀ x, c (c x) = x` using `complexConj_invol L`. Establish `ha' : c a * a = 1` using `by rw [mul_comm]; exact ha`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hca0 : c a ≠ 0` using `left_ne_zero_of_mul_eq_one ha'`. Establish `hemb : ∀ (σ : L →+* ℂ) x, ComplexEmbedding.conjugate σ x = σ (c x)` using `fun σ x => (IsCMField.complexEmbedding_complexConj L σ x).symm`. Set `F'` to `MvPolynomial.bind₁ (fun p : (L →+* ℂ) × Fin n × Fin n => MvPolynomial.C (p.1 (c a)) * MvPolynomial.X p) F`. Establish `hF'ev : ∀ z, MvPolynomial.eval z F' = MvPolynomial.eval (fun p => p.1 (c a) * z p) F` using `fun z => eval_bind₁_scale _ z F`. Establish `hF' : ∀ γ₀ : GL (Fin n) L, γ₀ ∈ GQ0 L n → MvPolynomial.eval (upt (ratPt (γ₀ : Matrix (Fin n) (Fin n) L))) F' = 0`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `γ₀ hγ`. Set `s : GL (Fin n) L` to `Units.map (algebraMap L (Matrix (Fin n) (Fin n) L) : L →* Matrix (Fin n) (Fin n) L) (Units.mk0 (c a) hca0)`. Establish `hs : (s : Matrix (Fin n) (Fin n) L) = Matrix.scalar (Fin n) (c a)` using `rfl`. Establish `hmem : s * γ₀ ∈ GQ0 L n`. Use `(GQ0 L n).mul_mem ?_ hγ` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show (s : Matrix (Fin n) (Fin n) L) * conjT c s = 1`. Rewrite using `[hs, conjT]`. Use extensionality with `i j`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[Matrix.scalar_apply, hcc, ha']`. Simplify using `[Matrix.scalar_apply, Matrix.one_apply, hij]`. Use `hF _ hmem` as an intermediate fact. Rewrite using `[hF'ev, ← this]`. Use `congrArg (fun z => MvPolynomial.eval z F) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `p`. Simplify using `[upt, ratPt, hs, Matrix.scalar_apply, Matrix.smul_eq_diagonal_mul]`. Set `X' : (L →+* ℂ) → Matrix (Fin n) (Fin n) ℂ` to `fun σ => σ a • X σ`. Establish `hX' : IsUPt X'`. Introduce `σ`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [X', Matrix.transpose_smul, Matrix.smul_mul, Matrix.mul_smul, smul_smul, hX σ, hemb, ← map_mul, ha, ha', map_one, one_smul]`. Establish `h` using `vanish_generic L n F' hF' X' hX' hdet`. Rewrite `h` using `[hF'ev]`. Rewrite using `[← h]`. Use `congrArg (fun z => MvPolynomial.eval z F) ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `p`. Simplify using `only [upt, X', Matrix.smul_apply, smul_eq_mul, ← mul_assoc, ← map_mul, ha', map_one, one_mul]`.
+A detailed English derivation is pending.
 -/
 theorem eval_eq_zero_of_rat : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ)
     (F : MvPolynomial ((L →+* ℂ) × Fin n × Fin n) ℂ),

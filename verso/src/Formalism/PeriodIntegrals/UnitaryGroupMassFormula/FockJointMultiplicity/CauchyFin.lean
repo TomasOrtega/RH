@@ -4,7 +4,7 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.FockJointMultiplicity.C
 namespace PI.FJM
 
 /- English proof (translation)
-The claim follows from `PI.FJMB.cauchyHW_of_shape PI.FJMX.minorProductDiagonal`.
+A detailed English derivation is pending.
 -/
 theorem cauchy_highest_weight : CauchyHW :=
   PI.FJMB.cauchyHW_of_shape PI.FJMX.minorProductDiagonal

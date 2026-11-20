@@ -61,7 +61,7 @@ section Split
 variable {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `p`. Rewrite using `[tupCrd_apply, tupCrd_apply]`. Conclude with `repr_map (fstA F) b (X p.1 p.2.1) p.2.2`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tupCrd_projInf {d : ℕ} (b : Module.Basis (Fin d) F E) {n M : ℕ}
     (X : Fin n → Fin M → AF F ⊗[F] E) :
@@ -71,7 +71,7 @@ theorem tupCrd_projInf {d : ℕ} (b : Module.Basis (Fin d) F E) {n M : ℕ}
   exact repr_map (fstA F) b (X p.1 p.2.1) p.2.2
 
 /- English proof (translation)
-Use function extensionality and compare the values at `p`. Rewrite using `[tupCrd_apply, tupCrd_apply]`. Conclude with `repr_map (sndA F) b (X p.1 p.2.1) p.2.2`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tupCrd_projFin {d : ℕ} (b : Module.Basis (Fin d) F E) {n M : ℕ}
     (X : Fin n → Fin M → AF F ⊗[F] E) :
@@ -96,25 +96,19 @@ def splitHomeo (F : Type) [Field F] [NumberField F] (ι : Type) :
 end Split
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hCM M n dx hdx`. Establish `h2` using `hCM.2.2.1`. Use `haveI : FiniteDimensional F E := Module.finite_of_finrank_pos (by omega)`. Set `b` to `Module.finBasis F E`. Take `⟨tA, -, sA, -, -, -, -, hBA, -, -⟩` from `GlobalTheory.T.tensor_locally_compact_ring F E σ hCM (AF F)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨tI, -, sI, -, -, -, -, hBI, -, -⟩` from `GlobalTheory.T.tensor_locally_compact_ring F E σ hCM (Ainf F)`. Take `⟨tF, -, sF, -, -, -, -, hBF, -, -⟩` from `GlobalTheory.T.tensor_locally_compact_ring F E σ hCM (Af F)`. Use `haveI := hBA n M`. Use `haveI := hBI n M`. Use `haveI := hBF n M`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `haveI : BorelSpace (AF F) := ⟨rfl⟩`. Use `haveI : BorelSpace (Ainf F) := ⟨rfl⟩`. Use `haveI : BorelSpace (Af F) := ⟨rfl⟩`. Set `ι` to `Fin n × Fin M × Fin (Module.finrank F E)`. Set `e` to `tupCrd (AF F) b n M`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Set `eI` to `tupCrd (Ainf F) b n M`. Set `eF` to `tupCrd (Af F) b n M`. Set `eA : (Fin n → Fin M → AF F ⊗[F] E) ≃+ (ι → AF F)` to `e`. Establish `hm : (dx.map e).IsAddHaarMeasure` using `AddEquiv.isAddHaarMeasure_map dx eA e.continuous e.symm.continuous`. Set `m₁ : Measure (ι → Ainf F)` to `Measure.addHaar`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations.
 
-Set `m₂ : Measure (ι → Af F)` to `Measure.addHaar`. Use `haveI : m₁.IsAddHaarMeasure := by dsimp only [m₁]; infer_instance`. Use `haveI : m₂.IsAddHaarMeasure := by dsimp only [m₂]; infer_instance`. Use `haveI : SFinite m₁ := by dsimp only [m₁]; infer_instance`. Use `haveI : SFinite m₂ := by dsimp only [m₂]; infer_instance`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨c, -, hcT, hc⟩` from `GlobalTheory.T.adele_haar_product_decomposition F ι (dx.map e) m₁ m₂ hm inferInstance inferInstance`. Set `S` to `splitHomeo F ι`. Set `H : (Fin n → Fin M → AF F ⊗[F] E) ≃ₜ (Fin n → Fin M → Ainf F ⊗[F] E) × (Fin n → Fin M → Af F ⊗[F] E)` to `e.toHomeomorph.trans (S.trans (eI.symm.toHomeomorph.prodCongr eF.symm.toHomeomorph))`. Establish `hH : (fun X : Fin n → Fin M → AF F ⊗[F] E => (projInf X, projFin X)) = H`. Use function extensionality and compare the values at `X`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use `show _ = eI.symm (fun i => (e X i).1)`. Rewrite using `[show (fun i => (e X i).1) = eI (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.projInf X) from (tupCrd_projInf b X).symm]`. Conclude with `(eI.symm_apply_apply _).symm`. Use `show _ = eF.symm (fun i => (e X i).2)`.
-
-Rewrite using `[show (fun i => (e X i).2) = eF (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.projFin X) from (tupCrd_projFin b X).symm]`. Conclude with `(eF.symm_apply_apply _).symm`. Establish `hc' : (dx.map e).map S = c • m₁.prod m₂` using `hc`. Establish `he : Measurable e` using `e.continuous.measurable`. Establish `hPI : Measurable eI.symm` using `eI.symm.continuous.measurable`.
-
-Establish `hPF : Measurable eF.symm` using `eF.symm.continuous.measurable`. Use `⟨m₁.map eI.symm, m₂.map eF.symm, c, ?_, ?_, inferInstance, inferInstance, hcT, ?_, ?_⟩` and prove the remaining obligations. Set `eIA : (ι → Ainf F) ≃+ (Fin n → Fin M → Ainf F ⊗[F] E)` to `eI.symm`. Conclude with `AddEquiv.isAddHaarMeasure_map m₁ eIA eI.symm.continuous eI.continuous`. Set `eFA : (ι → Af F) ≃+ (Fin n → Fin M → Af F ⊗[F] E)` to `eF.symm`.
-
-Conclude with `AddEquiv.isAddHaarMeasure_map m₂ eFA eF.symm.continuous eF.continuous`. Rewrite using `[hH]`. Conclude with `H.measurableEmbedding`. Rewrite using `[hH, Measure.map_prod_map m₁ m₂ hPI hPF, ← Measure.map_smul, ← hc', Measure.map_map (hPI.prodMap hPF) S.continuous.measurable, Measure.map_map ((hPI.prodMap hPF).comp S.continuous.measurable) he]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem map_tuple : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E),
   IsCMExt F E σ → ∀ (M n : ℕ) (dx : Measure (Fin n → Fin M → AF F ⊗[F] E)), dx.IsAddHaarMeasure →

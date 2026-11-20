@@ -5,7 +5,7 @@ open GroundTheory.Automorphic.CuspidalSpectrum GlobalTheory.IndefiniteRowSideFul
 open scoped InnerProductSpace
 
 /- English proof (translation)
-Establish `hc : V.topologicalClosure = V` using `hV.submodule_topologicalClosure_eq`. Establish `h : prj V v ∈ V.topologicalClosure` using `Submodule.starProjection_apply_mem _ v`. Rewrite `h` using `[hc]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 private theorem prj_mem_of_closed {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
     (V : Submodule ℂ H) (hV : IsClosed (V : Set H)) (v : H) : prj V v ∈ V := by
@@ -14,21 +14,21 @@ private theorem prj_mem_of_closed {H : Type} [NormedAddCommGroup H] [InnerProduc
   rwa [hc] at h
 
 /- English proof (translation)
-The claim follows from `Submodule.starProjection_eq_self_iff.2 (V.le_topologicalClosure hv)`.
+A detailed English derivation is pending.
 -/
 private theorem prj_eq_of_mem {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
     (V : Submodule ℂ H) {v : H} (hv : v ∈ V) : prj V v = v :=
   Submodule.starProjection_eq_self_iff.2 (V.le_topologicalClosure hv)
 
 /- English proof (translation)
-The claim follows from `(ContinuousLinearMap.isSelfAdjoint_iff'.1 (isSelfAdjoint_starProjection V.topologicalClosure))`.
+A detailed English derivation is pending.
 -/
 private theorem prj_adjoint {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
     (V : Submodule ℂ H) : ContinuousLinearMap.adjoint (prj V) = prj V :=
   (ContinuousLinearMap.isSelfAdjoint_iff'.1 (isSelfAdjoint_starProjection V.topologicalClosure))
 
 /- English proof (translation)
-Establish `hc : V.topologicalClosure = V` using `hV.submodule_topologicalClosure_eq`. Establish `hm : ∀ v, v ∈ V.topologicalClosure ↔ v ∈ V` using `fun v => by rw [hc]`. Use `Submodule.eq_starProjection_of_mem_of_inner_eq_zero ((hm _).2 (h1 _ (prj_mem_of_closed V hV v))) fun w hw => ?_` and prove the remaining obligations. Rewrite using `[← map_sub, ← ContinuousLinearMap.adjoint_inner_right]`. Conclude with `Submodule.starProjection_inner_eq_zero v _ ((hm _).2 (h2 w ((hm _).1 hw)))`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem prj_commute {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
     (V : Submodule ℂ H) (hV : IsClosed (V : Set H)) (T : H →L[ℂ] H) (h1 : ∀ v ∈ V, T v ∈ V)
@@ -41,7 +41,7 @@ private theorem prj_commute {H : Type} [NormedAddCommGroup H] [InnerProductSpace
   exact Submodule.starProjection_inner_eq_zero v _ ((hm _).2 (h2 w ((hm _).1 hw)))
 
 /- English proof (translation)
-The claim follows from `prj_commute _ (isClosed_fixU π U) T (fun v hv u hu => by rw [h1, mem_fixU.1 hv u hu]) (fun v hv u hu => by rw [h2, mem_fixU.1 hv u hu]) v`.
+A detailed English derivation is pending.
 -/
 private theorem prj_fix_commute {G H : Type} [Group G] [TopologicalSpace G] [NormedAddCommGroup H]
     [InnerProductSpace ℂ H] [CompleteSpace H] (π : UnitaryRep G H) (U : Subgroup G) (T : H →L[ℂ] H)
@@ -53,13 +53,11 @@ private theorem prj_fix_commute {G H : Type} [Group G] [TopologicalSpace G] [Nor
     (fun v hv u hu => by rw [h2, mem_fixU.1 hv u hu]) v
 
 /- English proof (translation)
-Introduce `G G' H _ _ _ _ _ _ _ π π' U U'`. Use `⟨prj_mem_of_closed _ (isClosed_fixU π U), fun v hv => prj_eq_of_mem _ hv, ?_, ?_⟩` and prove the remaining obligations. Introduce `D hD hinv v hv`. Establish `hc : D.topologicalClosure = D` using `hD.submodule_topologicalClosure_eq`. Establish `hcomm : ∀ g v, π g (prj D v) = prj D (π g v)` using `fun g v => by`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hi : π.IsInvariant D.topologicalClosure` using `by rw [hc]; exact hinv`. Conclude with `congrArg (fun T : H →L[ℂ] H => T v) ((UnitaryRep.isInvariant_iff_commute_starProjection D.topologicalClosure).1 hi g).eq`. Establish `h` using `prj_fix_commute π U (prj D) hcomm (fun g v => by rw [prj_adjoint]; exact hcomm g v) v`. Rewrite `h` using `[prj_eq_of_mem D hv]`. Rewrite using `[h]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `prj_mem_of_closed D hD _`. Introduce `hc`. Establish `h4 : ∀ h v, prj (fixU π U) (π' h v) = π' h (prj (fixU π U) v)` using `fun h v => prj_fix_commute π U (π' h) (fun g v => hc g h v) (fun g v => by rw [UnitaryRep.adjoint_map]; exact hc g h⁻¹ v) v`. Use `⟨h4, fun v => ?_⟩` and prove the remaining obligations. Establish `h4' : ∀ g v, prj (fixU π' U') (π g v) = π g (prj (fixU π' U') v)` using `fun g v => prj_fix_commute π' U' (π g) (fun h v => (hc g h v).symm) (fun h v => by rw [UnitaryRep.adjoint_map]; exact (hc g⁻¹ h v).symm) v`.
-
-Conclude with `prj_fix_commute π U (prj (fixU π' U')) (fun g v => (h4' g v).symm) (fun g v => by rw [prj_adjoint]; exact (h4' g v).symm) v`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.fixedProjection_invariant_and_commuting_reps :
     ∀ (G G' H : Type) [Group G] [TopologicalSpace G] [Group G'] [TopologicalSpace G'] [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] (π : UnitaryRep G H) (π' : UnitaryRep G' H) (U : Subgroup G) (U' : Subgroup G'), (∀ v, prj (fixU π U) v ∈ fixU π U) ∧ (∀ v ∈ fixU π U, prj (fixU π U) v = v) ∧ (∀ (D : Submodule ℂ H), IsClosed (D : Set H) → π.IsInvariant D → ∀ v ∈ D, prj (fixU π U) v ∈ D) ∧ ((∀ g h v, π g (π' h v) = π' h (π g v)) → (∀ h v, prj (fixU π U) (π' h v) = π' h (prj (fixU π U) v)) ∧ ∀ v, prj (fixU π U) (prj (fixU π' U') v) = prj (fixU π' U') (prj (fixU π U) v)) := by

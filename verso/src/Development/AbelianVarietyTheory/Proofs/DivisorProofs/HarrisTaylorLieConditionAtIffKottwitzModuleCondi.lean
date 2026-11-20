@@ -18,7 +18,7 @@ variable {p : ℕ} [Fact p.Prime] {D : Datum p} {S : Scheme.{0}}
   {A : Over S} [GrpObj A] [IsCommMonObj A] {R' : Type} [CommRing R'] (x : Sp R' ⟶ S)
 
 /- English proof (translation)
-Unfold `spMap`. Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem spMap_comp_spMap_lieAt {R₁ R₂ R₃ : Type} [CommRing R₁] [CommRing R₂] [CommRing R₃] (f : R₂ →+* R₃)
     (g : R₁ →+* R₂) : spMap f ≫ spMap g = spMap (f.comp g) := by
@@ -27,19 +27,17 @@ theorem spMap_comp_spMap_lieAt {R₁ R₂ R₃ : Type} [CommRing R₁] [CommRing
   rfl
 
 /- English proof (translation)
-Establish `e0 : epsMul (0 : R') = (algebraMap R' (DualNumber R')).comp (TrivSqZeroExt.fstHom R' R' R').toRingHom`. Apply the tactic sequence `ext r <;> simp [epsMul, TrivSqZeroExt.algebraMap_eq_inl]`. Establish `e1 : ((1 : epsPtR x ⟶ A).left) = spMap (algebraMap R' (DualNumber R')) ≫ (1 : Over.mk x ⟶ A).left`. Rewrite using `[Hom.one_def, Hom.one_def]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `e2 : spMap (TrivSqZeroExt.fstHom R' R' R').toRingHom ≫ spMap (algebraMap R' (DualNumber R')) = 𝟙 _`. Rewrite using `[spMap_comp_spMap_lieAt]`. Establish `: (TrivSqZeroExt.fstHom R' R' R').toRingHom.comp (algebraMap R' (DualNumber R')) = RingHom.id R'`. Use extensionality with `r`. Simplify using `[TrivSqZeroExt.algebraMap_eq_inl]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[this]`. Conclude with `Spec.map_id _`. Establish `t1 : spMap (TrivSqZeroExt.fstHom R' R' R').toRingHom ≫ v.left = (1 : Over.mk x ⟶ A).left ↔ smT x 0 v = 1`. Prove the components needed by the constructor for the conclusion. Introduce `hp`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[smT_left, e1, e0, ← spMap_comp_spMap_lieAt, Category.assoc, hp]`. Introduce `hp`. Use `congrArg (fun V => spMap (TrivSqZeroExt.fstHom R' R' R').toRingHom ≫ V.left) hp` as an intermediate fact. Rewrite `this` using `[e1, ← Category.assoc, e2, Category.id_comp, smT_left, e0, ← spMap_comp_spMap_lieAt, ← Category.assoc, ← Category.assoc, e2, Category.id_comp]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `this`. Establish `t2 : (v ≫ act.act (algebraMap (𝓞 D.F) D.O c)).left = spMap (epsScaleR r) ≫ v.left ↔ v ≫ (act.toF D).act c = smT x r v`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[smT_left]`. Conclude with `h`. Introduce `h`. Use `congrArg (fun V => V.left) h` as an intermediate fact. Rewrite `this` using `[smT_left]`.
-
-Conclude with `this`. Unfold `IsTanScal`. Rewrite using `[t1, t2]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tanScal_iff_lieAt (act : OActN D.O A) (c : 𝓞 D.F) (r : R') (v : epsPtR x ⟶ A) :
     IsTanScal act x (algebraMap (𝓞 D.F) D.O c) r v ↔
@@ -80,7 +78,7 @@ theorem tanScal_iff_lieAt (act : OActN D.O A) (c : 𝓞 D.F) (r : R') (v : epsPt
   rw [t1, t2]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [tv_zero]`. Consider the case `insert i s hi ih => rw [Finset.sum_insert hi, Finset.prod_insert hi, tv_add, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem tv_sum_lieAt {κ : Type} (s : Finset κ) (f : κ → TanM x A) : tv (∑ i ∈ s, f i) = ∏ i ∈ s, tv (f i) := by
   classical
@@ -89,9 +87,9 @@ theorem tv_sum_lieAt {κ : Type} (s : Finset κ) (f : κ → TanM x A) : tv (∑
   | insert i s hi ih => rw [Finset.sum_insert hi, Finset.prod_insert hi, tv_add, ih]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `congrArg tv h` as an intermediate fact. Rewrite `this` using `[tv_actR, tv_smul]`. Conclude with `this`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Apply `tanM_ext` to reduce the goal to its premises. Rewrite using `[tv_actR, tv_smul]`. Conclude with `h`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eig_iff_lieAt (act : OActN D.O A) (c : 𝓞 D.F) (r : R') (u : TanM x A) :
     ReciprocityTheory.ChartRestriction.G.PullbackSections.actR (x0 := x) (S := R') (act.toF D) c u = r • u ↔
@@ -109,15 +107,13 @@ theorem eig_iff_lieAt (act : OActN D.O A) (c : 𝓞 D.F) (r : R') (u : TanM x A)
 end
 
 /- English proof (translation)
-Introduce `p _ D R _ b S A _ _ act R' _ β x`. Prove the components needed by the constructor for the conclusion. Introduce `h v hv`. Establish `hv'` using `(eig_iff_lieAt x act D.ω (β b.ρ) v).1 hv`. Take `⟨w, hw, hsum⟩` from `h (tv v) ((tanScal_iff_lieAt x act D.ω (β b.ρ) (tv v)).2 ⟨tv_mem v, hv'⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h0 : ∀ i, smT x 0 (w i) = 1` using `fun i => ((tanScal_iff_lieAt x act 0 _ (w i)).1 (hw i 0)).1`. Use `⟨fun i => mkT (w i) (h0 i), fun i => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_eigSub]`. Introduce `c`. Conclude with `(eig_iff_lieAt x act c _ _).2 ((tanScal_iff_lieAt x act c _ (w i)).1 (hw i c)).2`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `tanM_ext` to reduce the goal to its premises. Rewrite using `[hsum, tv_sum_lieAt, List.prod_ofFn]`. Both sides reduce to the same expression. Introduce `h v hv`. Take `⟨h0, hω⟩` from `(tanScal_iff_lieAt x act D.ω (β b.ρ) v).1 hv`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hw, hsum⟩` from `h (mkT v h0) ((eig_iff_lieAt x act D.ω (β b.ρ) (mkT v h0)).2 hω)`. Use `⟨fun i => tv (w i), fun i c => ?_, ?_⟩` and prove the remaining obligations. Conclude with `(tanScal_iff_lieAt x act c _ (tv (w i))).2 ⟨tv_mem _, (eig_iff_lieAt x act c _ (w i)).1 ((mem_eigSub.1 (hw i)) c)⟩`. Use `congrArg tv hsum` as an intermediate fact. Rewrite `this` using `[tv_mkT, tv_sum_lieAt]`.
-
-Rewrite using `[List.prod_ofFn]`. Conclude with `this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lieAt_iff_lieMod : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [CommRing R] (b : Base D R) (S : Scheme.{0})
   (A : Over S) [GrpObj A] [IsCommMonObj A] (act : OActN D.O A) (R' : Type) [CommRing R'] (β : R →+* R')

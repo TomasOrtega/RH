@@ -2,21 +2,21 @@ import Mathlib
 open Algebra
 
 /- English proof (translation)
-Establish `hg : algebraMap A A' (algebraMap R A g) = algebraMap R A' g` using `(IsScalarTower.algebraMap_apply R A A' g).symm`. Establish `key : ∀ y ∈ Algebra.adjoin R' (algebraMap A A' '' T), ∃ k : ℕ, ∃ z ∈ Algebra.adjoin R T, algebraMap A A' z = algebraMap R A' g ^ k * y`. Introduce `y hy`. Proceed by induction on `hy using Algebra.adjoin_induction with`. Consider the case `mem x hx`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Take `⟨a, ha, rfl⟩` from `hx`. Conclude with `⟨0, a, Algebra.subset_adjoin ha, by simp⟩`. Consider the case `algebraMap r`. Take `⟨⟨r0, ⟨_, n, rfl⟩⟩, hr⟩` from `IsLocalization.surj (Submonoid.powers g) r`. Use `⟨n, algebraMap R A r0, Subalgebra.algebraMap_mem _ r0, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only at hr`. Rewrite using `[← IsScalarTower.algebraMap_apply R A A', IsScalarTower.algebraMap_apply R R' A', ← hr, map_mul, ← IsScalarTower.algebraMap_apply R R' A', map_pow, mul_comm]`. Consider the case `add x y _ _ hx hy`. Take `⟨k1, z1, hz1, e1⟩` from `hx`. Take `⟨k2, z2, hz2, e2⟩` from `hy`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨k1 + k2, algebraMap R A g ^ k2 * z1 + algebraMap R A g ^ k1 * z2, ?_, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `refine add_mem (mul_mem ?_ hz1) (mul_mem ?_ hz2) <;> (rw [← map_pow]; exact Subalgebra.algebraMap_mem _ _)`. Rewrite using `[map_add, map_mul, map_mul, map_pow, map_pow, hg, e1, e2]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `mul x y _ _ hx hy`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Treat this case separately.
 
-Take `⟨k1, z1, hz1, e1⟩` from `hx`. Take `⟨k2, z2, hz2, e2⟩` from `hy`. Use `⟨k1 + k2, z1 * z2, mul_mem hz1 hz2, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, e1, e2]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Take `⟨k, z, hz, e⟩` from `key _ hb`. Establish `h0 : algebraMap A A' (z - algebraMap R A g ^ k * b) = 0`. Rewrite using `[map_sub, map_mul, map_pow, hg, e, sub_self]`. Take `⟨⟨_, c, rfl⟩, hc⟩` from `(IsLocalization.map_eq_zero_iff (Submonoid.powers (algebraMap R A g)) A' _).1 h0`. Use `⟨c + k, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: algebraMap R A g ^ (c + k) * b = algebraMap R A g ^ c * z`. Simplify using `only at hc`. Rewrite `hc` using `[mul_sub, sub_eq_zero]`. Rewrite using `[hc, pow_add]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[this]`. Use `mul_mem ?_ hz` and prove the remaining obligations. Rewrite using `[← map_pow]`. Conclude with `Subalgebra.algebraMap_mem _ _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.adjoin_mem_of_away_localization {R A R' A' : Type} [CommRing R] [CommRing A] [CommRing R'] [CommRing A'] [Algebra R A] [Algebra R R'] [Algebra R' A'] [Algebra A A'] [Algebra R A'] [IsScalarTower R A A'] [IsScalarTower R R' A'] (g : R) [IsLocalization.Away g R'] [IsLocalization.Away (algebraMap R A g) A'] (T : Set A) (b : A)
     (hb : algebraMap A A' b ∈ Algebra.adjoin R' (algebraMap A A' '' T)) :
@@ -63,7 +63,7 @@ theorem GlobalTheory.adjoin_mem_of_away_localization {R A R' A' : Type} [CommRin
   rw [← map_pow]; exact Subalgebra.algebraMap_mem _ _
 
 /- English proof (translation)
-Introduce `R A R' A' _ _ _ _ _ _ _ _ _ _ _ g _ _ T b h`. Conclude with `GlobalTheory.adjoin_mem_of_away_localization g T b h`.
+Fix the arbitrary inputs and assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.adjoin_mem_of_away_localization' : ∀ {R A R' A' : Type} [CommRing R] [CommRing A] [CommRing R'] [CommRing A'] [Algebra R A] [Algebra R R'] [Algebra R' A'] [Algebra A A'] [Algebra R A'] [IsScalarTower R A A'] [IsScalarTower R R' A'] (g : R) [IsLocalization.Away g R'] [IsLocalization.Away (algebraMap R A g) A'], ∀ (T : Set A) (b : A), algebraMap A A' b ∈ Algebra.adjoin R' (algebraMap A A' '' T) → ∃ m : ℕ, algebraMap R A g ^ m * b ∈ Algebra.adjoin R T := by
   intros R A R' A' _ _ _ _ _ _ _ _ _ _ _ g _ _ T b h

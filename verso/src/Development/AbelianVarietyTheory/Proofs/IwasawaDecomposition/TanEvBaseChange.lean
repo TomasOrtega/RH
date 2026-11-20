@@ -18,9 +18,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {X : Scheme.{0}} (t : SAB H X) {k : Type} [CommRing k] {x : Sp k ⟶ X} {v : Sp (DualNumber k) ⟶ t.G.left}
 
 /- English proof (translation)
-Introduce `y hy`. Take `⟨s, rfl⟩` from `surjective_sec_epsZero y`. Establish `h₁ : s ∈ (sec (epsZero k) ≫ (specO k (DualNumber k)).hom) ⁻¹ᵁ T` using `hy`. Rewrite `h₁` using `[sec_hom]`. Establish `h₂ : s ∈ (x ≫ unitSec t.G) ⁻¹ᵁ W` using `hW (hT h₁)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h₂` using `[← epsZero_comp_of_isTanAtG t hv]`. Conclude with `h₂`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem preimage_le_of_isTanAtG (hv : IsTanAtG t x v) {V : X.Opens} {W : t.G.left.Opens}
     (hW : V ≤ unitSec t.G ⁻¹ᵁ W) {T : (Sp k).Opens} (hT : T ≤ x ⁻¹ᵁ V) :
@@ -34,7 +34,7 @@ theorem preimage_le_of_isTanAtG (hv : IsTanAtG t x v) {V : X.Opens} {W : t.G.lef
   exact h₂
 
 /- English proof (translation)
-Establish `hV : T ≤ sec (epsZero k) ⁻¹ᵁ (specO k (DualNumber k)).hom ⁻¹ᵁ T` using `(le_preimage_of_comp (sec_hom (epsZero k))).2 le_rfl`. Establish `c` using `baseMap_d (sec_hom (MonObj.one (X := t.G))) (sec_hom (epsZero k)) hv.1 (epsZero_comp_of_isTanAtG t hv) hW hT hV (preimage_le_of_isTanAtG t hv hW hT) f`. Use `(congrArg ((epsIso k).hom.app T) c).trans ?_` and prove the remaining obligations. Rewrite using `[e, map_add, d_base, zero_add, d_mul, d_base, smul_zero, add_zero, appLE_base (sec_hom _) _ _ le_rfl, GlobalTheory.LB.resG_self, d_resG, ← resM_d _ (le_preimage_top _ ⊤) le_top, Scheme.Modules.Hom.app_smul, app_resM, epsIso_d]`. Conclude with `(congrArg (b * ·) (map_one (resG (Sp k) (le_top : T ≤ ⊤)))).trans (_root_.mul_one b)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tanForm_dUnit (hv : IsTanAtG t x v) {V : X.Opens} {W : t.G.left.Opens}
     (hW : V ≤ unitSec t.G ⁻¹ᵁ W) {T : (Sp k).Opens} (hT : T ≤ x ⁻¹ᵁ V) (f : Γ(t.G.left, W))
@@ -57,7 +57,7 @@ theorem tanForm_dUnit (hv : IsTanAtG t x v) {V : X.Opens} {W : t.G.left.Opens}
 variable {k' : Type} [CommRing k'] (φ : k →+* k')
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `Spec.map _ ≫ Spec.map _ = Spec.map _ ≫ Spec.map _`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp]`. Use `congr 1`. Apply the tactic sequence `ext a <;> simp [Formalism.L2.Pj.dualMap, TrivSqZeroExt.algebraMap_eq_inl]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem spMap_dualMap_comp : spMap (Formalism.L2.Pj.dualMap φ) ≫ (specO k (DualNumber k)).hom =
     (specO k' (DualNumber k')).hom ≫ spMap φ := by
@@ -67,7 +67,7 @@ theorem spMap_dualMap_comp : spMap (Formalism.L2.Pj.dualMap φ) ≫ (specO k (Du
   ext a <;> simp [Formalism.L2.Pj.dualMap, TrivSqZeroExt.algebraMap_eq_inl]
 
 /- English proof (translation)
-Use `congr($(Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom (Formalism.L2.Pj.dualMap φ))) DualNumber.eps).symm.trans ?_` and prove the remaining obligations. Use `congrArg (Scheme.ΓSpecIso (.of (DualNumber k'))).inv.hom ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Formalism.L2.Pj.dualMap φ DualNumber.eps = _`. Apply the tactic sequence `ext <;> simp [Formalism.L2.Pj.dualMap]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem spMap_dualMap_epsFn :
     (spMap (Formalism.L2.Pj.dualMap φ)).appLE ⊤ ⊤ (le_preimage_top _ _) (epsFn k) = epsFn k' := by
@@ -78,17 +78,17 @@ theorem spMap_dualMap_epsFn :
   ext <;> simp [Formalism.L2.Pj.dualMap]
 
 /- English proof (translation)
-Use `t.semi` as an intermediate fact. Establish `key (y : (⊤ : (Sp k').Opens)) : ∃ T' : (Sp k').Opens, y.1 ∈ T' ∧ resG (Sp k') (le_top : T' ≤ ⊤) ((tanForm t hv').app ⊤ (pullbackSections _ (omega t.G) h' s) : Γ(Sp k', ⊤)) = resG (Sp k') (le_top : T' ≤ ⊤) ((spMap φ).appLE ⊤ ⊤ (le_preimage_top _ _) ((tanForm t hv).app ⊤ (pullbackS …`. Take `⟨U, W, hU, hle, c⟩` from `exists_isChart (sec_hom (MonObj.one (X := t.G))) (V := V) (x := x (spMap φ y.1)) (h trivial)`. Take `⟨T, hT, hyT, hTU⟩` from `QCoh.exists_affine_mem_le (U := x ⁻¹ᵁ U) (spMap φ y.1) hU`. Take `⟨f, hf⟩` from `c.d_surjective (sec_hom (MonObj.one (X := t.G))) (resM _ hle s)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hf' : dUnit t.G c.le f = resM (omega t.G) hle s` using `hf`. Establish `hTU' : spMap φ ⁻¹ᵁ T ≤ (spMap φ ≫ x) ⁻¹ᵁ U` using `(spMap φ).preimage_mono hTU`. Take `⟨⟨a, b⟩, e⟩` from `(bijective_add_mul_epsFn k T hT).2 (v.appLE W _ (preimage_le_of_isTanAtG t hv c.le hTU) f)`. Establish `e₁` using `tanForm_dUnit t hv c.le hTU f a b e.symm`. Establish `kk : (specO k' (DualNumber k')).hom ⁻¹ᵁ spMap φ ⁻¹ᵁ T ≤ spMap (Formalism.L2.Pj.dualMap φ) ⁻¹ᵁ (specO k (DualNumber k)).hom ⁻¹ᵁ T` using `(le_preimage_of_comp (spMap_dualMap_comp φ)).2 le_rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `kk' : (specO k' (DualNumber k')).hom ⁻¹ᵁ spMap φ ⁻¹ᵁ T ≤ ((specO k' (DualNumber k')).hom ≫ spMap φ) ⁻¹ᵁ T` using `le_rfl`. Establish `n (z : Γ(Sp k, T)) : (spMap (Formalism.L2.Pj.dualMap φ)).appLE _ _ kk ((specO k (DualNumber k)).hom.appLE T _ le_rfl z) = (specO k' (DualNumber k')).hom.appLE _ _ le_rfl ((spMap φ).appLE T _ le_rfl z)` using `(appLE_appLE (spMap_dualMap_comp φ) _ _ kk' z).trans (appLE_appLE rfl _ _ kk' z).symm`. Establish `n' : (spMap (Formalism.L2.Pj.dualMap φ)).appLE _ _ kk (resG _ le_top (epsFn k)) = resG _ le_top (epsFn k')` using `(appLE_resG _ _ _ _).trans ((resG_appLE _ le_top (le_preimage_top _ _) _).symm.trans (congrArg _ (spMap_dualMap_epsFn φ)))`. Establish `e₂` using `tanForm_dUnit t hv' c.le hTU' f ((spMap φ).appLE T _ le_rfl a) ((spMap φ).appLE T _ le_rfl b) (by`. Use `(appLE_appLE rfl (preimage_le_of_isTanAtG t hv c.le hTU) kk _ f).symm.trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(congrArg ((spMap (Formalism.L2.Pj.dualMap φ)).appLE _ _ kk) e.symm).trans ?_` and prove the remaining obligations. Use `(map_add _ _ _).trans ?_` and prove the remaining obligations. Conclude with `congrArg₂ (· + ·) (n a) ((map_mul _ _ _).trans (congrArg₂ (· * ·) (n b) n')))`. Rewrite `e₁`, `e₂` using `[hf', QCoh.pullbackSections_res]`. Use `⟨spMap φ ⁻¹ᵁ T, hyT, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `(app_resM (tanForm t hv') le_top _).symm.trans ?_` and prove the remaining obligations. Rewrite using `[QCoh.res_pullbackSections, e₂, ← e₁]`. Use `.trans ?_ ((appLE_resG (spMap φ) (le_top : T ≤ ⊤) le_rfl _).trans (resG_appLE (spMap φ) le_top (le_preimage_top _ _) _).symm)` and prove the remaining obligations. Use `congrArg _ ?_` and prove the remaining obligations. Use `.trans ?_ (app_resM (tanForm t hv) le_top _)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[QCoh.res_pullbackSections]`. Use `choose T hT hs using key`. Conclude with `LB.fun_ext_of_cover T (fun _ => le_top) (fun y hy => Opens.mem_iSup.2 ⟨⟨y, hy⟩, hT _⟩) hs`.
+A detailed English derivation is pending.
 -/
 theorem tanForm_baseChange {V : X.Opens} (h : ⊤ ≤ x ⁻¹ᵁ V) (hv : IsTanAtG t x v)
     (hv' : IsTanAtG t (spMap φ ≫ x) (spMap (Formalism.L2.Pj.dualMap φ) ≫ v)) (h' : ⊤ ≤ (spMap φ ≫ x) ⁻¹ᵁ V)
@@ -142,7 +142,7 @@ theorem tanForm_baseChange {V : X.Opens} (h : ⊤ ≤ x ⁻¹ᵁ V) (hv : IsTanA
   exact LB.fun_ext_of_cover T (fun _ => le_top) (fun y hy => Opens.mem_iSup.2 ⟨⟨y, hy⟩, hT _⟩) hs
 
 /- English proof (translation)
-Introduce `E _ _ _ H X t k _ x V h v hv k' _ φ hv' h' s`. Use `(congrArg (Scheme.ΓSpecIso (.of k')).hom (tanForm_baseChange t φ h hv hv' h' s)).trans ?_` and prove the remaining obligations. Use `(congrArg (Scheme.ΓSpecIso (.of k')).hom (appLE_top (spMap φ) _)).trans ?_` and prove the remaining obligations. Conclude with `congr($(Scheme.ΓSpecIso_naturality (CommRingCat.ofHom φ)) _)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem tanEv_baseChange : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (X : Scheme.{0}) (t : SAB H X) (k : Type) [CommRing k] (x : Sp k ⟶ X) (V : X.Opens) (h : ⊤ ≤ x ⁻¹ᵁ V), ∀ (v : Sp (DualNumber k) ⟶ t.G.left) (hv : IsTanAtG t x v) (k' : Type) [CommRing k'] (φ : k →+* k') (hv' : IsTanAtG t (spMap φ ≫ x) (spMap (Formalism.L2.Pj.dualMap φ) ≫ v)) (h' : ⊤ ≤ (spMap φ ≫ x) ⁻¹ᵁ V) (s : Γ(GlobalTheory.LieVB.omega t.G, V)), tanEv t hv' h' s = φ (tanEv t hv h s) := by
   intro E _ _ _ H X t k _ x V h v hv k' _ φ hv' h' s

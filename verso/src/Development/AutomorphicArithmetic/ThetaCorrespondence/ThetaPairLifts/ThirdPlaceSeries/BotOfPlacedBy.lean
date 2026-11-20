@@ -23,9 +23,9 @@ namespace GlobalTheory.LevZero
 variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts}
   {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX}
 /- English proof (translation)
-Establish `H` using `W.Q.charW.base.lev`. Set `M` to `(_root_.GlobalTheory.Fam.pk_z W).toLevCh`. Set `μ` to `W.P.A3.A.μ0`. Set `M' : LevCh D Unit` to `{ M with xiH := fun _ => M.xiH μ, xi := fun _ => M.xi μ, Q := fun _ => M.Q μ, xiR := fun _ => M.xiR μ }`. Take `⟨h1, h2, h3, h4, h5, h6, h7, h8, h9, h10, h11, h12, h13, h14, h15, h16, h17, h18, h19⟩` from `H`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Conclude with `GlobalTheory.SeeSaw.ComCols.isTypePlaces_of_levCh (L := M') ⟨h1, h2, fun _ => h3 _, fun _ _ _ => rfl, h5, fun _ => h6 _, fun _ => h7 _, fun _ => h8 _, h9, fun _ => h10 _, fun _ => h11 _, fun p hp => (h12 p hp).imp fun _ e _ => e _, fun _ => h13 _, h14, fun _ => h15 _, h16, h17, h …`.
+A detailed English derivation is pending.
 -/
 theorem pg_isTypePlaces_alt (W : _root_.GlobalTheory.MiS.RealPackAlt ex) : GlobalTheory.Core.Mi.IsTypePlaces (_root_.GlobalTheory.Fam.pk_z W).Pg := by
   have H := W.Q.charW.base.lev
@@ -38,18 +38,18 @@ theorem pg_isTypePlaces_alt (W : _root_.GlobalTheory.MiS.RealPackAlt ex) : Globa
     h16, h17, h18, h19⟩
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Establish `h` using `_root_.GlobalTheory.BaseChain.stage_y_is W hP 0 hm`. Conclude with `⟨h.rank, h.sigOK, h.sig, h.par, h.selfDual, h.frame, h.base, ⟨r_le_Y 0, fun _ => 1, rfl⟩, h.haar, h.fund⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem stZero_is_com_zero_of_pkHyp (W : _root_.GlobalTheory.MiS.RealPackAlt ex) (hP : _root_.GlobalTheory.Fam.PackageHypotheses W) (hm : 0 < D.R.m) : (_root_.GlobalTheory.LevZero.levelZeroState W).st.Is (_root_.GlobalTheory.BaseChain.com_z W) 0 := by
   have h := _root_.GlobalTheory.BaseChain.stage_y_is W hP 0 hm
   exact ⟨h.rank, h.sigOK, h.sig, h.par, h.selfDual, h.frame, h.base, ⟨r_le_Y 0, fun _ => 1, rfl⟩, h.haar, h.fund⟩
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Use `⟨_root_.GlobalTheory.BaseChain.com_is_alt W hP, rfl, _root_.GlobalTheory.LevZero.stZero_is_com_zero_of_pkHyp W hP hm, ?_, _root_.GlobalTheory.LevZero.pg_isTypePlaces_alt W, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `h` using `hv.b 0`. Rewrite `h` using `[ht.b 0]`. Conclude with `h`. Introduce `PP`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨i, rfl⟩` from `pl.surjective PP`. Conclude with `⟨(hR.idem i).1, (hR.idem i).2, fun a ha => hR.frame i 0 a ha⟩`. Introduce `g`. Use `(hR.lev g).1.trans ⟨fun h PP => ?_, fun h i => h (pl i)⟩` and prove the remaining obligations. Take `⟨i, rfl⟩` from `pl.surjective PP`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `h i`. Introduce `g x hx`. Establish `h` using `(hR.lev g.1).2 g.2 (fun i => x (pl i)) (fun i => hx (pl i))`. Conclude with `h.trans (Equiv.prod_comp pl (fun PP => (G PP).S.P.lam (x PP)))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem bot_stZero_of_gRead (W : _root_.GlobalTheory.MiS.RealPackAlt ex) (hP : _root_.GlobalTheory.Fam.PackageHypotheses W) (hm : 0 < D.R.m) {u : D.what₂.Word} (f : _root_.GlobalTheory.Fam.FamilyCharacter W u) (v : VCom f.c) (hv : v.Is)
     (ht : _root_.GlobalTheory.Fam.CommutingVectorTie f v) {n : ℕ} (G : (_root_.GlobalTheory.Fam.pk_z W).Pg → GLoc v) (pl : Fin n ≃ (_root_.GlobalTheory.Fam.pk_z W).Pg) (hR : _root_.GlobalTheory.Fam.LocalGroupReading f (fun i => G (pl i)) pl) :
@@ -70,7 +70,7 @@ theorem bot_stZero_of_gRead (W : _root_.GlobalTheory.MiS.RealPackAlt ex) (hP : _
     exact h.trans (Equiv.prod_comp pl (fun PP => (G PP).S.P.lam (x PP)))
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Introduce `D L hT Gi Gl Kc Yd cX ex W hP u f B k _ _ _ _ ι v o n G pl h`. Establish `hm : 0 < D.R.m` using `by have := D.R.two_le_m; omega`. Establish `e : (fun i => G (pl.symm (pl i))) = G` using `funext fun i => by rw [Equiv.symm_apply_apply]`. Establish `hR : _root_.GlobalTheory.Fam.LocalGroupReading f (fun i => G (pl.symm (pl i))) pl` using `by rw [e]; exact h.read`. Conclude with `_root_.GlobalTheory.LevZero.bot_stZero_of_gRead W hP hm f v h.vis h.tie (fun PP => G (pl.symm PP)) pl hR`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem bot_of_placedBy_alt : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX} (W : _root_.GlobalTheory.MiS.RealPackAlt ex), _root_.GlobalTheory.Fam.PackageHypotheses W → ∀ (u : D.what₂.Word) (f : _root_.GlobalTheory.Fam.FamilyCharacter W u) (B : SBes W.S.X W.Q.instEq u W.Q.Rl.ψ (D.sp.X 0)), ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (ι : Type) (v : VCom f.c) (o : TDat f.c k ι) (n : ℕ) (G : Fin n → GLoc v) (pl : Fin n ≃ (_root_.GlobalTheory.Fam.pk_z W).Pg), _root_.GlobalTheory.LevZero.PlacedByLocalGroups f B v o G pl → GlobalTheory.LevZero.Bot (c := f.c) (_root_.GlobalTheory.BaseChain.com_z W) (_root_.GlobalTheory.LevZero.levelZeroState W) (f.g.b 0) (fun PP => G (pl.symm PP)) := by
   intro D L hT Gi Gl Kc Yd cX ex W hP u f B k _ _ _ _ ι v o n G pl h

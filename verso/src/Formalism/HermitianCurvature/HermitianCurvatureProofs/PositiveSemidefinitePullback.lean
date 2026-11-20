@@ -12,7 +12,7 @@ noncomputable section
 open Classical
 
 /- English proof (translation)
-The claim follows from `@norm_sum_le _ _ (M.toSeminormedAddCommGroup hM) I x`.
+A detailed English derivation is pending.
 -/
 theorem sqrt_form_sum_le {n ι : Type} [Fintype n] (M : Matrix n n ℂ) (hM : M.PosSemidef)
     (I : Finset ι) (x : ι → n → ℂ) :
@@ -23,7 +23,7 @@ theorem sqrt_form_sum_le {n ι : Type} [Fintype n] (M : Matrix n n ℂ) (hM : M.
 def ind {α : Type} (Y A : Finset α) : Y → ℂ := fun p => if (p : α) ∈ A then 1 else 0
 
 /- English proof (translation)
-Establish `h` using `Finset.sum_coe_sort Y (fun q => g q * (if q ∈ A then (1 : ℂ) else 0))`. Simplify using `only [ind]`. Rewrite using `[h]`. Simplify using `only [mul_ite, mul_one, mul_zero, Finset.sum_ite_mem, Finset.inter_eq_right.mpr hA]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sum_mul_ind {α : Type} (Y A : Finset α) (hA : A ⊆ Y) (g : α → ℂ) :
     ∑ q : Y, g q * ind Y A q = ∑ q ∈ A, g q := by
@@ -33,7 +33,7 @@ theorem sum_mul_ind {α : Type} (Y A : Finset α) (hA : A ⊆ Y) (g : α → ℂ
   simp only [mul_ite, mul_one, mul_zero, Finset.sum_ite_mem, Finset.inter_eq_right.mpr hA]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `p`. Simplify using `only [Pi.star_apply, ind]`. Apply the tactic sequence `split_ifs <;> simp`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem star_ind {α : Type} (Y A : Finset α) : star (ind Y A) = ind Y A := by
   funext p
@@ -41,7 +41,7 @@ theorem star_ind {α : Type} (Y A : Finset α) : star (ind Y A) = ind Y A := by
   split_ifs <;> simp
 
 /- English proof (translation)
-Rewrite using `[star_ind]`. Simplify using `only [dotProduct, mulVec, of_apply]`. Establish `h1 : ∀ p : Y, ∑ q : Y, k p q * ind Y A q = ∑ q ∈ A, k p q` using `fun p => sum_mul_ind Y A hA (fun q => k p q)`. Simplify using `only [h1]`. Conclude with `sum_mul_ind Y A hA (fun p => ∑ q ∈ A, k p q)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem form_ind {α : Type} (Y A : Finset α) (hA : A ⊆ Y) (k : α → α → ℂ) :
     ((Matrix.of fun x y : Y => k x y) *ᵥ ind Y A) ⬝ᵥ star (ind Y A) = ∑ p ∈ A, ∑ q ∈ A, k p q := by
@@ -53,21 +53,21 @@ theorem form_ind {α : Type} (Y A : Finset α) (hA : A ⊆ Y) (k : α → α →
   exact sum_mul_ind Y A hA (fun p => ∑ q ∈ A, k p q)
 
 /- English proof (translation)
-The claim follows from `Matrix.PosSemidef.hadamard h₁ h₂`.
+A detailed English derivation is pending.
 -/
 theorem psd_mul {α : Type} {Y : Finset α} {k₁ k₂ : α → α → ℂ} (h₁ : PSDOn Y k₁) (h₂ : PSDOn Y k₂) :
     PSDOn Y (fun p q => k₁ p q * k₂ p q) :=
   Matrix.PosSemidef.hadamard h₁ h₂
 
 /- English proof (translation)
-The claim follows from `Matrix.PosSemidef.submatrix h (fun p : Y => (⟨g p, Finset.mem_image_of_mem g p.2⟩ : Y.image g))`.
+A detailed English derivation is pending.
 -/
 theorem psd_pull {α β : Type} {Y : Finset α} (g : α → β) {k : β → β → ℂ}
     (h : PSDOn (Y.image g) k) : PSDOn Y (fun p q => k (g p) (g q)) :=
   Matrix.PosSemidef.submatrix h (fun p : Y => (⟨g p, Finset.mem_image_of_mem g p.2⟩ : Y.image g))
 
 /- English proof (translation)
-Rewrite using `[← form_ind Y Y (Finset.Subset.refl Y) k, dotProduct_comm]`. Conclude with `Matrix.PosSemidef.re_dotProduct_nonneg h _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psd_sum_nonneg {α : Type} {Y : Finset α} {k : α → α → ℂ} (h : PSDOn Y k) :
     0 ≤ (∑ p ∈ Y, ∑ q ∈ Y, k p q).re := by
@@ -77,9 +77,9 @@ theorem psd_sum_nonneg {α : Type} {Y : Finset α} {k : α → α → ℂ} (h : 
 variable {E W : Type} [Field E]
 
 /- English proof (translation)
-Take `⟨hl, hb⟩` from `(T.isTower i p).1 hp`. Break down `List.eq_nil_or_concat p with rfl | ⟨h, b, rfl⟩` into its components or cases. Simplify using `[level] at hl`. Use linear arithmetic over natural numbers and integers. Use `⟨b.1, ?_, by simp⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : 1 ≤ b.1` using `by simpa using (hb h.length (by simp)).1`. Establish `h2 : level (h.concat b) = level h + b.1` using `by simp [level]`. Rewrite using `[Finset.mem_Icc]`. Conclude with `⟨h1, by omega⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem last_size (T : Tower E) {i : ℕ} (hi : 1 ≤ i) {p : Pt E} (hp : p ∈ T.X i) :
     ∃ s ∈ Icc 1 i, p.getLast?.map Prod.fst = some s := by
@@ -93,13 +93,11 @@ theorem last_size (T : Tower E) {i : ℕ} (hi : 1 ≤ i) {p : Pt E} (hp : p ∈ 
     exact ⟨h1, by omega⟩
 
 /- English proof (translation)
-Use function extensionality and compare the values at `p`. Take `⟨s, hs, hps⟩` from `last_size T hi p.2`. Rewrite using `[Finset.sum_apply, Finset.sum_eq_single s]`. Establish `hm : (p : Pt E) ∈ Xs T i s`. Simplify using `only [Xs, Finset.mem_filter]`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `⟨p.2, hps⟩`. Simplify using `[ind, hm]`. Introduce `s' _ hne`. Establish `: (p : Pt E) ∉ Xs T i s'`. Simplify using `only [Xs, Finset.mem_filter, not_and]`.
+Supply the required witnesses or components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce `_ h`. Rewrite `h` using `[hps]`. Conclude with `hne (Option.some.inj h).symm`. Simplify using `[ind, this]`. Introduce `h`.
-
-Conclude with `absurd hs h`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem sum_ind_Xs (T : Tower E) {i : ℕ} (hi : 1 ≤ i) :
     ∑ s ∈ Icc 1 i, ind (T.X i) (Xs T i s) = ind (T.X i) (T.X i) := by
@@ -120,7 +118,7 @@ theorem sum_ind_Xs (T : Tower E) {i : ℕ} (hi : 1 ≤ i) :
   · intro h; exact absurd hs h
 
 /- English proof (translation)
-Simplify using `only [Data.Nst, Complex.div_ofReal_re]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Nst_re (D : Data E W) (ε : ℝ) (i s : ℕ) (w : W) (Y : Finset (Pt E))
     (κ : Pt E → Pt E → ℂ) (t t' : E) :
@@ -129,7 +127,7 @@ theorem Nst_re (D : Data E W) (ε : ℝ) (i s : ℕ) (w : W) (Y : Finset (Pt E))
   simp only [Data.Nst, Complex.div_ofReal_re]
 
 /- English proof (translation)
-Rewrite using `[Nst_re]`. Use `div_nonneg ?_ (hW w).le` and prove the remaining obligations. Conclude with `psd_sum_nonneg (psd_mul hκ (psd_pull (fun h => join h s t) (hG ε hε i w _)))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem Nst_nonneg (D : Data E W) (hG : D.GramPSD) (hW : D.WordsPos) {ε : ℝ} (hε : 0 < ε)
     (i s : ℕ) (w : W) (Y : Finset (Pt E)) {κ : Pt E → Pt E → ℂ} (hκ : PSDOn Y κ) (t : E) :
@@ -139,7 +137,7 @@ theorem Nst_nonneg (D : Data E W) (hG : D.GramPSD) (hW : D.WordsPos) {ε : ℝ} 
   exact psd_sum_nonneg (psd_mul hκ (psd_pull (fun h => join h s t) (hG ε hε i w _)))
 
 /- English proof (translation)
-Establish `h` using `Nst_nonneg D hG hW hε i s w Y hκ t`. Establish `e : D.Nst ε i s w Y (fun h h' => κ₂ h h' - κ₁ h h') t t = D.Nst ε i s w Y κ₂ t t - D.Nst ε i s w Y κ₁ t t`. Simplify using `only [Data.Nst, sub_mul, Finset.sum_sub_distrib, sub_div]`. Rewrite `h` using `[e, Complex.sub_re]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem Nst_mono (D : Data E W) (hG : D.GramPSD) (hW : D.WordsPos) {ε : ℝ} (hε : 0 < ε)
     (i s : ℕ) (w : W) (Y : Finset (Pt E)) {κ₁ κ₂ : Pt E → Pt E → ℂ}
@@ -162,9 +160,9 @@ open Finset Matrix Formalism.FourierDecayAlt.TB Formalism.FourierDecayAlt.TB.Dat
 
 open Classical in
 /- English proof (translation)
-Introduce `E W _ D hG hK T ε hε i hi w`. Establish `hM : PSDOn (T.X i) (fun p q => D.Kr i p q * D.gram ε i w p q)` using `psd_mul (hK.1 i _) (hG ε hε i w _)`. Establish `h` using `sqrt_form_sum_le _ hM (Icc 1 i) (fun s => ind (T.X i) (Xs T i s))`. Establish `h2 : ∀ s, Xs T i s ⊆ T.X i` using `fun s => Finset.filter_subset _ _`. Rewrite `h` using `[sum_ind_Xs T hi, form_ind (T.X i) (T.X i) (Finset.Subset.refl _) (fun p q => D.Kr i p q * D.gram ε i w p q)]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [fun s => form_ind (T.X i) (Xs T i s) (h2 s) (fun p q => D.Kr i p q * D.gram ε i w p q)] at h`. Conclude with `h`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem splitByLastSize : Formalism.FourierDecayAlt.TB.SplitBySize := by
   intro E W _ D hG hK T ε hε i hi w
@@ -180,13 +178,13 @@ theorem splitByLastSize : Formalism.FourierDecayAlt.TB.SplitBySize := by
 
 open Classical in
 /- English proof (translation)
-Introduce `E W _ D hG hK hW hA T ε hε i s hs hsi hir w R hR`. Take `⟨_, hdom, hper, _⟩` from `hA i s hs hsi hir`. Establish `hY : ∀ h ∈ T.X (i - s), level h = i - s` using `fun h hh => ((T.isTower _ h).1 hh).1`. Establish `hnn : ∀ t₀ t : E, 0 ≤ (D.Nst ε i s w (T.X (i - s)) (D.Th i s t₀) t t).re` using `fun t₀ t => Nst_nonneg D hG hW hε i s w _ (hK.2 i s t₀ _) t`. Simplify using `only [Finset.sum_filter]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_comm]`. Unfold `Data.Dg`. Use `Finset.sum_le_sum fun t ht => ?_` and prove the remaining obligations. Establish `ht0 : t ≠ 0` using `fun h => T.zero_not_mem _ _ (h ▸ ht)`. Take `⟨t₀, ht₀, hmem⟩` from `hR t ht`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h1` using `Nst_mono D hG hW hε i s w (T.X (i - s)) (hdom t ht0 _ hY) t`. Rewrite `h1` using `[hper t t₀ hmem]`. Use `h1.trans ?_` and prove the remaining obligations. Establish `h2` using `Finset.single_le_sum (f := fun t₀ => if t - t₀ ∈ D.La (i - s + 1) s then (D.Nst ε i s w (T.X (i - s)) (D.Th i s t₀) t t).re else 0) (fun x _ => by split_ifs`. Conclude with `hnn x t`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `le_refl 0) ht₀`. Simplify `h2` using `only [if_pos hmem]`.
+A detailed English derivation is pending.
 -/
 theorem diagStep : Formalism.FourierDecayAlt.TB.DiagStep := by
   intro E W _ D hG hK hW hA T ε hε i s hs hsi hir w R hR

@@ -11,17 +11,15 @@ noncomputable section
 namespace GlobalTheory.QuadSymbol.SignCount
 
 /- English proof (translation)
-Take `⟨i₀⟩` from `‹Nonempty ι›`. Set `m : ι → ℤˣ` to `Pi.mulSingle i₀ (-1)`. Establish `hm : ∏ i, m i = -1` using `by simp [m, Finset.prod_pi_mulSingle']`. Establish `hmm : m * m = 1`. Use extensionality with `i`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Distinguish the cases in `h : i = i₀`. Substitute `h` using the available equality. Simplify using `[m]`. Simplify using `[m, Pi.mulSingle_eq_of_ne h]`. Establish `key : ∀ s : ι → ℤˣ, (c * ∏ i, (s * m) i = 1) ↔ ¬ (c * ∏ i, s i = 1)`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `s`. Simplify using `only [Pi.mul_apply, Finset.prod_mul_distrib, hm]`. Break down `Int.units_eq_one_or (c * ∏ i, s i) with h | h` into its components or cases. Rewrite using `[← mul_assoc, h]`. Evaluate the decidable proposition.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Evaluate the decidable proposition.
 
-Rewrite using `[← mul_assoc, h]`. Evaluate the decidable proposition. Set `e : {s : ι → ℤˣ // c * ∏ i, s i = 1} ≃ {s : ι → ℤˣ // ¬ (c * ∏ i, s i = 1)}` to `{ toFun := fun s => ⟨s.1 * m, fun h => (key s.1).1 h s.2⟩ invFun := fun s => ⟨s.1 * m, by`. Use `(key s.1).2 s.2` as an intermediate fact. Conclude with `this⟩`.
+Rewrite the conclusion using the stated equalities. Evaluate the decidable proposition. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `left_inv := fun s => Subtype.ext (by simp [mul_assoc, hmm])`. Use `right_inv := fun s => Subtype.ext (by simp [mul_assoc, hmm]) }`. Establish `htot` using `Fintype.card_subtype_compl (fun s : ι → ℤˣ => c * ∏ i, s i = 1)`. Rewrite using `[Nat.card_eq_fintype_card, mul_two]`. Use `nth_rewrite 2 [Fintype.card_congr e]`.
-
-Establish `hle` using `Fintype.card_subtype_le (fun s : ι → ℤˣ => c * ∏ i, s i = 1)`. Rewrite `*` using `[htot, Fintype.card_pi, Finset.prod_const, Fintype.card_units_int, Finset.card_univ]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem card_prod_eq_mul_two {ι : Type} [Fintype ι] [Nonempty ι] (c : ℤˣ) :
     Nat.card {s : ι → ℤˣ // c * ∏ i, s i = 1} * 2 = 2 ^ Fintype.card ι := by
@@ -59,15 +57,15 @@ end GlobalTheory.QuadSymbol.SignCount
 namespace GlobalTheory.QuadSymbol.SignCount
 
 /- English proof (translation)
-Take `⟨δ, b, -, h0, h1⟩` from `AlmostNorm.exists_basis_sq K L`. Establish `hneg : InfinitePlace.embedding_of_isReal hw δ < 0`. Assume the negation of the conclusion as `hc`. Take `⟨r, hr⟩` from `Real.isSquare_iff.2 (not_lt.1 hc)`. Set `τ : L →+* ℂ` to `ComplexEmbedding.lift L w.embedding`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hτ : ∀ x : K, τ (algebraMap K L x) = InfinitePlace.embedding_of_isReal hw x` using `fun x => by`. Rewrite using `[InfinitePlace.embedding_of_isReal_apply]`. Conclude with `ComplexEmbedding.lift_algebraMap_apply L w.embedding x`. Establish `h2 : τ (b 1) * τ (b 1) = (r : ℂ) * r` using `by rw [← map_mul, h1, hτ, hr]; push_cast; rfl`. Establish `h3 : starRingEnd ℂ (τ (b 1)) = τ (b 1)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `rcases mul_self_eq_mul_self_iff.1 h2 with h | h <;> rw [h] <;> simp`. Use `InfinitePlace.not_isReal_iff_isComplex.2 (hL.isComplex (InfinitePlace.mk τ)) (InfinitePlace.isReal_mk_iff.2 (ComplexEmbedding.isReal_iff.2 (RingHom.ext fun x => ?_)))` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `starRingEnd ℂ (τ x) = τ x`. Rewrite using `[← b.sum_repr x, Fin.sum_univ_two, h0, Algebra.smul_def, Algebra.smul_def]`. Simplify using `only [map_add, map_mul, map_one, hτ, h3, Complex.conj_ofReal]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mem_normGroup_iff_form b h0 h1]`. Introduce and unpack `⟨x, y, hxy⟩`. Set `f` to `InfinitePlace.Completion.ringEquivRealOfIsReal hw`. Establish `hf : f (algebraMap K w.Completion δ) = InfinitePlace.embedding_of_isReal hw δ` using `InfinitePlace.Completion.extensionEmbeddingOfIsReal_coe hw ((WithAbs.equiv _).symm δ)`. Use `congrArg f hxy` as an intermediate fact.
+Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Units.val_neg, Units.val_one, map_neg, map_one, map_sub, map_mul, map_pow, hf] at this`. Use polynomial arithmetic with `[sq_nonneg (f x), sq_nonneg (f y)]`.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem neg_one_not_mem_normGroup {K L : Type} [Field K] [NumberField K] [Field L] [NumberField L]
     [Algebra K L] [Algebra.IsQuadraticExtension K L] (hL : NumberField.IsTotallyComplex L)
@@ -106,7 +104,7 @@ def infSigns (K L : Type) [Field K] [NumberField K] [Field L] [Algebra K L] (t :
   fun w => eta K L w.Completion (infDiag K t w)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `w`. Use `eta_eq_of_div_mem ?_` and prove the remaining obligations. Use `toUnits_mem_normGroup (K := K) (L := L) w.Completion h` as an intermediate fact. Rewrite `this` using `[← div_eq_inv_mul, _root_.map_div]`. Conclude with `this`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem infSigns_eq_of_mem {K L : Type} [Field K] [NumberField K] [Field L] [Algebra K L]
     [FiniteDimensional K L] {t t' : Kˣ} (h : t⁻¹ * t' ∈ globalNorms K L) :
@@ -118,7 +116,7 @@ theorem infSigns_eq_of_mem {K L : Type} [Field K] [NumberField K] [Field L] [Alg
   exact this
 
 /- English proof (translation)
-The claim follows from `infSigns_eq_of_mem (QuotientGroup.eq.1 (QuotientGroup.out_eq' _).symm)`.
+A detailed English derivation is pending.
 -/
 theorem infSigns_out {K L : Type} [Field K] [NumberField K] [Field L] [Algebra K L]
     [FiniteDimensional K L] (t : Kˣ) :
@@ -126,23 +124,21 @@ theorem infSigns_out {K L : Type} [Field K] [NumberField K] [Field L] [Algebra K
   infSigns_eq_of_mem (QuotientGroup.eq.1 (QuotientGroup.out_eq' _).symm)
 
 /- English proof (translation)
-Introduce `K L _ _ _ _ _ _ hK hL x hx`. Establish `hfd : FiniteDimensional K L` using `Module.finite_of_finrank_eq_succ (Algebra.IsQuadraticExtension.finrank_eq_two K L)`. Take `⟨-, hnorm, hseq, -⟩` from `exactSequence K L`. Take `⟨-, hc2⟩` from `localCharacters K L`. Use `set c : ℤˣ := ∏ᶠ v : HeightOneSpectrum (𝓞 K), eta K L (v.adicCompletion K) (x v) with hc`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← card_prod_eq_mul_two c]`. Use `congr 1`. Establish `hprod : ∀ t : Kˣ, (∀ u, x u / finDiag K t u ∈ normGroup K L (u.adicCompletion K)) → c * ∏ w, infSigns K L t w = 1`. Introduce `t ht`. Use `(hseq x (infDiag K t) hx).1 ⟨t, fun u => ht u, fun w => by simp [one_mem]⟩` as an intermediate fact.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `this`. Use `Nat.card_congr (Equiv.ofBijective (fun q => ⟨infSigns K L (Quotient.out q.1), ?_⟩) ⟨?_, ?_⟩)` and prove the remaining obligations. Take `⟨t, hq, ht⟩` from `q.2`. Rewrite using `[hq, infSigns_out]`. Conclude with `hprod t ht`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `⟨q₁, t₁, rfl, h₁⟩ ⟨q₂, t₂, rfl, h₂⟩ he`. Establish `he' : infSigns K L t₁ = infSigns K L t₂`. Use `congrArg Subtype.val he` as an intermediate fact. Simplify `this` using `only [infSigns_out]`. Use `Subtype.ext (QuotientGroup.eq.2 ((hnorm (t₁⁻¹ * t₂)).1 ⟨fun u => ?_, fun w => ?_⟩))` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hm` using `div_mem (h₁ u) (h₂ u)`. Rewrite `hm` using `[div_div_div_cancel_left, finDiag, finDiag, ← _root_.map_div, div_eq_inv_mul]`. Then use the resulting hypothesis. Establish `hm` using `Converse.div_mem_normGroup (hc2 w) (congrFun he' w)`. Rewrite `hm` using `[infDiag, infDiag, ← _root_.map_div, div_eq_inv_mul]`. Then use the resulting hypothesis. Introduce and unpack `⟨s, hs⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `y : InfFam K` to `fun w => if s w = 1 then 1 else -1`. Establish `hy : ∀ w, eta K L w.Completion (y w) = s w`. Introduce `w`. Break down `Int.units_eq_one_or (s w) with h | h` into its components or cases. Simplify using `only [y, h, if_true]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Conclude with `eta_eq_one_iff.2 (one_mem _)`. Simplify using `only [y, h, show (-1 : ℤˣ) ≠ 1 by decide, if_false]`. Conclude with `eta_eq_neg_one_iff.2 (neg_one_not_mem_normGroup hL (hK.isReal w))`. Establish `hy1 : etaProd K L x y = 1`. Unfold `etaProd`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[Finset.prod_congr rfl fun w _ => hy w]`. Conclude with `hs`. Take `⟨t, ht1, ht2⟩` from `(hseq x y hx).2 hy1`. Use `⟨⟨QuotientGroup.mk t, t, rfl, fun u => ht1 u⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Simplify using `only [infSigns_out]`.
-
-Use function extensionality and compare the values at `w`. Rewrite using `[← hy w]`. Conclude with `(eta_eq_of_div_mem (ht2 w)).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_classes_mul_two : ∀ (K L : Type) [Field K] [NumberField K] [Field L] [NumberField L] [Algebra K L] [Algebra.IsQuadraticExtension K L], NumberField.IsTotallyReal K → NumberField.IsTotallyComplex L → ∀ x : GlobalTheory.QuadSymbol.FinFam K, GlobalTheory.QuadSymbol.AlmostNorm K L x → Nat.card {q : Kˣ ⧸ GlobalTheory.QuadSymbol.globalNorms K L // ∃ t : Kˣ, q = QuotientGroup.mk t ∧ ∀ u, x u / GlobalTheory.QuadSymbol.finDiag K t u ∈ GlobalTheory.QuadSymbol.normGroup K L (u.adicCompletion K)} * 2 = 2 ^ Fintype.card (InfinitePlace K) := by
   intro K L _ _ _ _ _ _ hK hL x hx

@@ -25,13 +25,11 @@ variable {p : ℕ} [Fact p.Prime] {D : GlobalTheory.UPel.HT.Datum p} {K : Type} 
     {act : D.O → Q → Q} {e : ℕ → Q → Q → Kˣ → Prop}
 
 /- English proof (translation)
-Take `⟨y, z, hyz⟩` from `hon v`. Establish `hmZ : ((k ^ 2 / c : ℕ) : ℤ) * c = (k : ℤ) ^ 2` using `by exact_mod_cast Nat.div_mul_cancel hck`. Establish `h1 : D.EF (h n x) (h n y) = (k : ℤ) * D.EF (h n x) v + n * D.EF (h n x) z`. Rewrite using `[hyz, map_add, map_nsmul, map_nsmul, nsmul_eq_mul, nsmul_eq_mul]`. Establish `h2` using `hsim x y`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h2` using `[h1]`. Establish `h3 : (k : ℤ) ^ 2 ∣ (k : ℤ) * (((k ^ 2 / c : ℕ) : ℤ) * D.EF (h n x) v)`. Establish `e1 : (k : ℤ) * (((k ^ 2 / c : ℕ) : ℤ) * D.EF (h n x) v) = ((k ^ 2 / c : ℕ) : ℤ) * ((k : ℤ) * D.EF (h n x) v + n * D.EF (h n x) z - c * u n * D.EF x y) - ((k ^ 2 / c : ℕ) : ℤ) * n * D.EF (h n x) z + (k : ℤ) ^ 2 * (u n * D.EF x y)`. Rewrite using `[← hmZ]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[e1]`. Use `dvd_add (dvd_sub (Dvd.dvd.mul_left (hkn.trans h2) _) ?_) (dvd_mul_right _ _)` and prove the remaining obligations. Conclude with `(hkn.trans (dvd_mul_left _ _)).mul_right _`. Establish `hkZ : (k : ℤ) ≠ 0` using `by exact_mod_cast hk0`. Rewrite `h3` using `[pow_two]`.
-
-Conclude with `(mul_dvd_mul_iff_left hkZ).1 h3`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dvd_pair (h : ℕ → D.La →+ D.La) (u : ℕ → ℤ) (c k n : ℕ) (hk0 : k ≠ 0) (hck : c ∣ k ^ 2)
     (hkn : (k : ℤ) ^ 2 ∣ n) (hsim : ∀ x y, (n : ℤ) ∣ D.EF (h n x) (h n y) - c * u n * D.EF x y)
@@ -65,23 +63,23 @@ variable {p : ℕ} [Fact p.Prime] {D : GlobalTheory.UPel.HT.Datum p} {K : Type} 
     {act : D.O → Q → Q} {e : ℕ → Q → Q → Kˣ → Prop}
 
 /- English proof (translation)
-Establish `hp : p.Prime` using `Fact.out`. Establish `hk0 : k ≠ 0`. Introduce and unpack `rfl`. Conclude with `hp.one_lt.ne' (Nat.coprime_zero_left _ |>.mp hk)`. Establish `hL : 0 < N * k` using `Nat.mul_pos hN (Nat.pos_of_ne_zero hk0)`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `gen : ∀ M j t : ℕ, 0 < M → k ∣ M → (N * k * M).Coprime p → 2 * j = M + t * (k * M) → ∃ (n : ℕ) (h' : Q), 0 < n ∧ n.Coprime p ∧ h' ^ 2 = I.ev (N * k) (N • h (N * k) x) ∧ (h' ^ (k ^ 2 / c)) ^ n = 1 ∧ ∀ z : Q, z ^ n = 1 → e n (h' ^ (k ^ 2 / c)) z 1`. Introduce `M j t hM hkM hcop hj`. Establish `hn' : 0 < N * k * M` using `Nat.mul_pos hL hM`. Take `⟨M', rfl⟩` from `hkM`. Establish `hkn : (k : ℤ) ^ 2 ∣ ((N * k * (k * M') : ℕ) : ℤ)` using `⟨N * M', by push_cast; ring⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨N * k * (k * M'), I.ev (N * k * (k * M')) (j • N • h (N * k * (k * M')) x), hn', hcop, ?_, ?_⟩` and prove the remaining obligations. Take `⟨z, hz⟩` from `(hcomp (N * k) (k * M') hL hM hcop).1 x`. Establish `e1 : 2 • j • N • h (N * k * (k * M')) x = (k * M') • (N • h (N * k * (k * M')) x) + (N * k * (k * M')) • (t • h (N * k * (k * M')) x)`. Simplify using `only [smul_smul, ← add_smul]`. Use `congr 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← ev_nsmul, e1, I.add, (I.ker _ hn' hcop _).2 ⟨_, rfl⟩, _root_.mul_one, ev_nsmul, I.tower (N * k) (k * M') hL hM hcop, hz, smul_add, I.add, smul_comm N (N * k) z, (I.ker _ hL (Nat.Coprime.coprime_dvd_left (Dvd.intro _ rfl) hcop) _).2 ⟨_, rfl⟩, _root_.mul_one]`. Rewrite using `[← ev_nsmul]`. Use `pair_one I _ hn' hcop _ (fun v => ?_)` and prove the remaining obligations. Take `⟨a, ha⟩` from `dvd_pair h u c k _ hk0 hck hkn ((hsim _ hn' hcop).2) (hon _ hn' hcop) x v`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e2 : 2 * D.EF ((k ^ 2 / c) • j • N • h (N * k * (k * M')) x) v = (2 * j : ℕ) * N * (((k ^ 2 / c : ℕ) : ℤ) * D.EF (h (N * k * (k * M')) x) v)`. Simplify using `only [map_nsmul, LinearMap.smul_apply, nsmul_eq_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e2, ha, hj]`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨(1 + t * k) * a, by push_cast; ring⟩`. Distinguish the cases in `hp2 : p = 2`. Substitute `hp2` using the available equality. Establish `hodd : k % 2 = 1`. Break down `Nat.mod_two_eq_zero_or_one k with h0 | h0` into its components or cases.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction.
 
-It suffices to derive a contradiction. Establish `h2 : 2 ∣ Nat.gcd k 2` using `Nat.dvd_gcd (Nat.dvd_of_mod_eq_zero h0) dvd_rfl`. Rewrite `h2` using `[hk]`. Use linear arithmetic over natural numbers and integers. Conclude with `h0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨r, hr⟩ : ∃ r, k = 2 * r + 1` from `⟨k / 2, by omega⟩`. Use `gen k (k * (r + 1)) 1 (Nat.pos_of_ne_zero hk0) dvd_rfl (Nat.Coprime.mul (Nat.Coprime.mul hNp hk) hk) ?_` and prove the remaining obligations. Rewrite using `[hr]`. Expand and normalize the polynomial expressions, which then agree. Establish `h2p : (2 : ℕ).Coprime p` using `(Nat.coprime_primes Nat.prime_two hp).2 (fun h0 => hp2 h0.symm)`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `gen (k * 2) k 0 (by positivity) (dvd_mul_right _ _) (Nat.Coprime.mul (Nat.Coprime.mul hNp hk) (Nat.Coprime.mul hk h2p)) ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem sqrt_hecke_point_weil_orthogonal (I : TateIsoO D K Q act e) (h : ℕ → D.La →+ D.La) (u : ℕ → ℤ)
     (c k N : ℕ) (hk : k.Coprime p) (hN : 0 < N) (hNp : N.Coprime p) (hck : c ∣ k ^ 2)
@@ -145,11 +143,11 @@ namespace GlobalTheory.UPel.HT.HeckeAd.KerPol
 open GlobalTheory.UPel.HT.Hecke GlobalTheory.UPel.HT.HeckeAd
 
 /- English proof (translation)
-Take `⟨x, rfl⟩` from `hg`. Take `⟨β, hβ⟩ : ∃ β : R →+* K, y ≫ s = spMap β` from `⟨(Spec.preimage (y ≫ s)).hom, by simp [spMap]⟩`. Take `⟨I, hI⟩` from `o.geom K y β hβ`. Take `⟨n, h', hn0, hnp, hsq, hpow, hW⟩` from `GlobalTheory.UPel.HT.HeckeRootA.sqrt_hecke_point_weil_orthogonal I h u c k N hk (by omega) hNp hck hcomp hsim hon x`. Establish `hnK : (n : K) ≠ 0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `(b.unit n hnp).map β` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Conclude with `this.ne_zero`. Establish `htr` using `GlobalTheory.HeckeFibre.transl_triv o.A o.ab _ (pull_isLB o.isLB _) (GlobalTheory.HeckeFibre.rigidified_diag o.A o.P o.isLB o.rig₁) K y n hnK (h' ^ (k ^ 2 / c)) hpow (fun z hz => by`. Establish `w` using `hW z hz`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : unitOn (1 : Kˣ) = 1` using `map_one _`. Rewrite `w` using `[e1]`. Conclude with `w)`. Conclude with `GlobalTheory.PicBilin.triv_pow_of_translDiff o.A o.ab o.P o.isLB o.rig₁ o.rig₂ o.symm (Over.mk y) (GlobalTheory.HeckeFibre.pic_field_eq_zero K) (o.eta (N • h (N * k) x)) h' (k ^ 2 / c) (by rw [hsq, hI]) htr`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fibre_triv (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [CommRing R] (b : Base D R)
     (h : ℕ → D.La →+ D.La) (u : ℕ → ℤ) (c k N : ℕ) (hk : k.Coprime p) (hN : 3 ≤ N) (hNp : N.Coprime p)
@@ -194,25 +192,23 @@ open ReciprocityTheory.DiscreteGroups.LocalClassField
 namespace GlobalTheory.UPel.HT.HeckeAd.KerPol
 
 /- English proof (translation)
-Introduce `p _ D R _ b h u c k N hc hk hN hNp hck hlin hcomp hsim hon S s o g hg`. Establish `hfib` using `fibre_triv p D R b h u c k N hk hN hNp hck hcomp hsim hon S s o g hg`. Establish `hP` using `o.isLB`. Establish `clsPow : ∀ {X : Scheme.{0}} {L : LB X} (hL : L.IsLB) (n : ℕ) (h' : (GlobalTheory.UPel.HT.Hecke.lbPow L n).IsLB), GlobalTheory.CechPic.cls (GlobalTheory.UPel.HT.Hecke.lbPow L n) h' = n • GlobalTheory.CechPic.cls L hL`. Introduce `X L hL n h'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `GlobalTheory.UPel.HT.Hecke.lbPow at h' ⊢`. Rewrite using `[GlobalTheory.CechPic.cls_linComb hL]`. Simplify using `[GlobalTheory.CechPic.pull_id]`. Establish `hQ : (GlobalTheory.UPel.HT.Hecke.lbPow o.P (k ^ 2 / c)).IsLB` using `LB.isLB_linComb hP _ _`. Establish `hadd` using `(GlobalTheory.AbDual.additive_of_cube GlobalTheory.CubeTop.cubeTheorem o.ab o.ab hP o.rig₁ o.rig₂).1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `evcCls : ∀ {M : LB (o.A ⊗ o.A).left} (hM : M.IsLB) {Y : Over S} (a t : Y ⟶ o.A), GlobalTheory.AbDual.evc hM a t = GlobalTheory.CechPic.pull (lift a t).left (GlobalTheory.CechPic.cls M hM)`. Introduce `M hM Y a t`. Rewrite using `[← GlobalTheory.AbDual.cls_ev hM a t (pull_isLB hM _), GlobalTheory.CechPic.cls_pull hM]`. Establish `evcQ : ∀ {Y : Over S} (a t : Y ⟶ o.A), GlobalTheory.AbDual.evc hQ a t = (k ^ 2 / c) • GlobalTheory.AbDual.evc hP a t`. Introduce `Y a t`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[evcCls hQ, evcCls hP, clsPow hP _ hQ, map_nsmul]`. Establish `hpow : ∀ (a : o.A ⟶ o.A) (n : ℕ), GlobalTheory.AbDual.evc hP (a ^ n) (𝟙 o.A) = n • GlobalTheory.AbDual.evc hP a (𝟙 o.A)`. Introduce `a n`. Proceed by induction on `n with`. Consider the case `zero => rw [pow_zero, zero_smul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Conclude with `GlobalTheory.AbDual.IsAdditive.evc_one hP hadd _`. Consider the case `succ n ih => rw [pow_succ, (GlobalTheory.AbDual.isAdditive_iff hP).1 hadd, ih, succ_nsmul]`. Use `set th : o.A ⟶ o.A := toUnit o.A ≫ g with hth`. Establish `hk1 : th ^ k = 1`. Rewrite using `[hth, ← MonObj.comp_pow, GlobalTheory.UPel.HT.HeckeAd.pow_eq_one_of_mem o (h (N * k)) g hg, MonObj.comp_one]`.
+Treat this case separately. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `htors : k • GlobalTheory.AbDual.evc hP th (𝟙 o.A) = 0`. Rewrite using `[← hpow, hk1]`. Conclude with `GlobalTheory.AbDual.IsAdditive.evc_one hP hadd _`. Establish `hQth : GlobalTheory.AbDual.evc hQ th (𝟙 o.A) = 0`. Establish `hM : (GlobalTheory.AbDual.ev (GlobalTheory.UPel.HT.Hecke.lbPow o.P (k ^ 2 / c)) th (𝟙 o.A)).IsLB` using `pull_isLB hQ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hunit : IsUnit ((k : Γ(S, ⊤)))`. Establish `hR` using `b.unit k hk`. Establish `e` using `hR.map ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom)`. Establish `e2` using `e.map (s.appTop.hom)`. Simplify using `using e2`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hrig : ∃ t : ((GlobalTheory.AbDual.ev (GlobalTheory.UPel.HT.Hecke.lbPow o.P (k ^ 2 / c)) th (𝟙 o.A)).pull (1 : 𝟙_ (Over S) ⟶ o.A).left).Gen, t.IsGen`. Rewrite using `[← GlobalTheory.CechPic.cls_eq_zero_iff (pull_isLB hM _), GlobalTheory.CechPic.cls_pull hM, GlobalTheory.AbDual.cls_ev hQ, GlobalTheory.AbDual.pull_evc, evcQ, Category.comp_id, GlobalTheory.AbDual.evc_one_right hP o.rig₂, smul_zero]`. Establish `hpowM : ∃ t : (GlobalTheory.UPel.HT.Hecke.lbPow (GlobalTheory.AbDual.ev (GlobalTheory.UPel.HT.Hecke.lbPow o.P (k ^ 2 / c)) th (𝟙 o.A)) k).Gen, t.IsGen`. Establish `hMk : (GlobalTheory.UPel.HT.Hecke.lbPow (GlobalTheory.AbDual.ev (GlobalTheory.UPel.HT.Hecke.lbPow o.P (k ^ 2 / c)) th (𝟙 o.A)) k).IsLB` using `LB.isLB_linComb hM _ _`. Use `(GlobalTheory.CechPic.cls_eq_zero_iff hMk).1 ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[clsPow hM k hMk, GlobalTheory.AbDual.cls_ev hQ, evcQ, smul_comm, htors, smul_zero]`. Take `⟨t, ht⟩` from `GlobalTheory.T.rigidified_lineBundle_trivial_of_torsion_geometricFibres S o.A o.ab _ hM hrig k hunit hpowM hfib`. Conclude with `(GlobalTheory.AbDual.triv_ev_iff hQ _ _).1 ⟨t, ht⟩`. Establish `hsw : GlobalTheory.CechPic.cls o.P hP = GlobalTheory.CechPic.cls (GlobalTheory.AbDual.swap o.P) (pull_isLB hP _)` using `(GlobalTheory.CechPic.cls_eq_iff _ _).2 o.symm`. Use `⟨(GlobalTheory.AbDual.triv_ev_iff hQ _ _).2 hQth, (GlobalTheory.AbDual.triv_ev_iff hQ _ _).2 ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[evcQ, evcCls hP, hsw, ← evcCls (pull_isLB hP _), GlobalTheory.AbDual.evc_swap hP, ← evcQ]`. Conclude with `hQth`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hecke_sections_triv : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [CommRing R] (b : Base D R) (h : ℕ → D.La →+ D.La) (u : ℕ → ℤ) (c k N : ℕ), c.Coprime p → k.Coprime p → 3 ≤ N → N.Coprime p → c ∣ k ^ 2 → (∀ n, 0 < n → n.Coprime p → ∀ (a : D.O) (x : D.La), ∃ z, h n (a • x) = a • h n x + n • z) → (∀ n m, 0 < n → 0 < m → (n * m).Coprime p → (∀ x, ∃ z, h (n * m) x = h n x + n • z) ∧ (n : ℤ) ∣ u (n * m) - u n) → (∀ n, 0 < n → n.Coprime p → IsCoprime (u n) (n : ℤ) ∧ ∀ x y, (n : ℤ) ∣ D.EF (h n x) (h n y) - c * u n * D.EF x y) → (∀ n, 0 < n → n.Coprime p → ∀ x, ∃ y z, h n y = k • x + n • z) → ∀ (S : Scheme.{0}) (s : S ⟶ Sp R) (o : Obj b (N * k) s), ∀ g ∈ GlobalTheory.UPel.HT.HeckeAd.heckeSubA o (h (N * k)) N, (∃ t : ((GlobalTheory.UPel.HT.Hecke.lbPow o.P (k ^ 2 / c)).pull (lift (toUnit o.A ≫ g) (𝟙 o.A)).left).Gen, t.IsGen) ∧ (∃ t : ((GlobalTheory.UPel.HT.Hecke.lbPow o.P (k ^ 2 / c)).pull (lift (𝟙 o.A) (toUnit o.A ≫ g)).left).Gen, t.IsGen) := by
   intro p _ D R _ b h u c k N hc hk hN hNp hck hlin hcomp hsim hon S s o g hg

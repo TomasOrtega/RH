@@ -21,13 +21,13 @@ variable (hF : R.Facts) (hC : C.Facts) (Fm : FMap G C I D β₁.pull) (hL : D.La
 
 include hL in
 /- English proof (translation)
-Take `⟨zh, hzh⟩` from `HX.cup_ex a hM (dX β a hM i (E.e a i x)) (dX β a hM j (E.e a j y))`. Establish `h1` using `HX.β_cup a hM _ _ _ hzh`. Rewrite `h1` using `[dX_spec, dX_spec]`. Establish `h2` using `hL.cup_smul a (R.t ^ dN β a hM i) (R.t ^ dN β a hM j) _ _ _ (E.cup a hM x y z hz)`. Establish `h3` using `hL.cup_uniq a _ _ _ _ h1 h2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4` using `HX.ψ_cup a hM _ _ _ hzh b b' f`. Rewrite `h4` using `[delta_key hF hC Fm hM h3 f]`. Simplify using `only [delta_key' hF hC Fm hM] at h4`. Establish `hu : IsUnit (iP C Fm.k (R.t ^ dN β a hM i * R.t ^ dN β a hM j))`. Rewrite using `[map_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(iP_unit hF hC _ _).mul (iP_unit hF hC _ _)`. Apply `hu.mul_left_cancel` to reduce the goal to its premises. Rewrite using `[h4, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun s' _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem plus_cup (HX : XLaws Y E β β₁ Fm) {M : Model l K} (hM : G M) (a : D.Ch M) {i j : ℕ} (x : M.T i) (y : M.T j)
     (z : M.T (i + j)) (hz : M.CupT x y z) {m m' : ℕ} (b : Module.Basis (Fin m) C.K₀ (I.D M i))
@@ -54,7 +54,7 @@ theorem plus_cup (HX : XLaws Y E β β₁ Fm) {M : Model l K} (hM : G M) (a : D.
 
 include hL in
 /- English proof (translation)
-Take `⟨x, hx⟩` from `HX.one_ex a hM`. Establish `h1` using `hL.one_uniq a _ _ (HX.β_one a hM x hx) (HX.e_one a hM v hv)`. Establish `h2` using `delta_key hF hC Fm hM (c := 1) (by rw [h1, one_smul]) f`. Rewrite `h2` using `[map_one, one_mul]`. Rewrite using `[← h2, HX.ψ_one a hM x y hx hy f]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem plus_one (HX : XLaws Y E β β₁ Fm) {M : Model l K} (hM : G M) (a : D.Ch M) (v : M.T 0) (y : I.D M 0)
     (hv : X.oneT M v) (hy : X.oneD M y) (f : Module.Dual C.K₀ (I.D M 0)) :
@@ -66,9 +66,9 @@ theorem plus_one (HX : XLaws Y E β β₁ Fm) {M : Model l K} (hM : G M) (a : D.
   rw [← h2, HX.ψ_one a hM x y hx hy f]
 
 /- English proof (translation)
-Take `⟨x, hx⟩` from `HX.first_chern_class_exists a hM L`. Establish `h1` using `HX.first_chern_class_unique a hM L _ _ (HX.beta_firstChern a hM L x hx) (HX.etale_firstChern a hM L v hv)`. Establish `h2` using `delta_key hF hC Fm hM h1 f`. Rewrite `h2` using `[HX.psi_firstChern a hM L x y hx hy f, iP_apply]`. Establish `e : R.φ^[Fm.k] R.t = (l : R.A) ^ Fm.k * R.t`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `using phiA_iterate_tA_of_prime hF Fm.k 1`. Rewrite using `[h2, e, map_mul, map_pow, map_natCast]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 -/
 theorem pairing_first_chern_value (HX : XLaws Y E β β₁ Fm) {M : Model l K} (hM : G M) (a : D.Ch M) (L : X.Ln M) (v : M.T 2)
     (y : I.D M 2) (hv : X.c1T L v) (hy : X.c1D L y) (f : Module.Dual C.K₀ (I.D M 2)) :
@@ -82,11 +82,9 @@ theorem pairing_first_chern_value (HX : XLaws Y E β β₁ Fm) {M : Model l K} (
   rw [h2, e, map_mul, map_pow, map_natCast]
 
 /- English proof (translation)
-Introduce `l _ K R G C I D X Y hF hC hE hL E β β₁ κ Fm HX`. Take `⟨P, -, hP⟩` from `pre' l K R G D hF hE hL E β κ`. Use `⟨crys hF hC Fm hL E hE (fun M n hM => cC_inj hF hC Fm hL E hE κ inj P hP M n hM), ?_⟩` and prove the remaining obligations. Use `⟨fun M hM i j x y z hz m m' b b' f => ?_, fun M hM v y hv hy f => ?_, fun M hM L v y hv hy f => ?_⟩` and prove the remaining obligations. Use `show cC hF hC Fm hL E M (i + j) (M.toV _ z) f = ∑ s, ∑ s', cC hF hC Fm hL E M i (M.toV _ x) (b.coord s) * cC hF hC Fm hL E M j (M.toV _ y) (b'.coord s') * C.k (f (X.cupD M i j (b s) (b' s')))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [cC_toV hF hC Fm hL E hM (a0 hL M hM)]`. Conclude with `plus_cup hF hC Fm hL E HX hM _ x y z hz b b' f`. Use `show cC hF hC Fm hL E M 0 (M.toV 0 v) f = C.k (f y)`. Rewrite using `[cC_toV hF hC Fm hL E hM (a0 hL M hM)]`. Conclude with `plus_one hF hC Fm hL E HX hM _ v y hv hy f`.
-
-Use `show (l : C.C) ^ Fm.k * C.c R.t * cC hF hC Fm hL E M 2 (M.toV 2 v) f = C.k (f y)`. Rewrite using `[cC_toV hF hC Fm hL E hM (a0 hL M hM)]`. Conclude with `pairing_first_chern_value hF hC Fm E HX hM _ L v y hv hy f`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem phiPlus : ProductClassComparison := by
   intro l _ K R G C I D X Y hF hC hE hL E β β₁ κ Fm HX

@@ -7,15 +7,15 @@ open scoped ContDiff Topology
 namespace GlobalTheory.NmUnfCol
 
 /- English proof (translation)
-Unfold `pFin`. Conclude with `continuous_snd`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_pFin (E : Type) [Field E] [NumberField E] : Continuous (pFin E) := by
   unfold pFin; exact continuous_snd
 
 /- English proof (translation)
-Establish `e : ((u⁻¹ * p)⁻¹ : GA E (a + 1)) = p⁻¹ * u` using `by group`. Rewrite using `[e, Units.val_mul, Matrix.mul_apply]`. Establish `hcol : ∀ j : Fin (a + 1), (u : Matrix (Fin (a + 1)) (Fin (a + 1)) (Ad E)) j 0 = if j = 0 then 1 else 0`. Introduce `j`. Distinguish the cases in `hj : j = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Substitute `hj` using the available equality. Simplify using `[hu.2 0]`. Rewrite using `[if_neg hj]`. Conclude with `hu.1 j 0 (Fin.pos_iff_ne_zero.2 hj)`. Simplify using `only [hcol, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem col_inv_mul {E : Type} [Field E] [NumberField E] {a : ℕ}
     (u p : GA E (a + 1)) (hu : u ∈ GlobalTheory.JSW.NA E (a + 1)) (l : Fin (a + 1)) :
@@ -31,11 +31,11 @@ theorem col_inv_mul {E : Type} [Field E] [NumberField E] {a : ℕ}
   simp only [hcol, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]
 
 /- English proof (translation)
-Introduce `E _ _ r b₁ ⟨C, hC, hsupp⟩`. Set `f : GA E (r + 1) → (Fin (r + 1) → Af E)` to `fun c l => pFin E (((c⁻¹ : GA E (r + 1)) : Matrix (Fin (r + 1)) (Fin (r + 1)) (Ad E)) l 0)`. Establish `hf : Continuous f`. Use `continuous_pi fun l => (continuous_pFin E).comp ?_` and prove the remaining obligations. Establish `h0 : Continuous (fun c : GA E (r + 1) => ((c⁻¹ : GA E (r + 1)) : Matrix (Fin (r + 1)) (Fin (r + 1)) (Ad E)))` using `Units.continuous_coe_inv`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `(continuous_apply 0).comp ((continuous_apply l).comp h0)`. Use `⟨f '' C, hC.image hf, fun p hp => ?_⟩` and prove the remaining obligations. Take `⟨u, hu, huC⟩` from `hsupp p hp`. Use `⟨u⁻¹ * p, huC, funext fun l => ?_⟩` and prove the remaining obligations. Simplify using `only [f]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[col_inv_mul u p hu l]`.
+A detailed English derivation is pending.
 -/
 theorem finite_first_col_inv_compact : ∀ (E : Type) [Field E] [NumberField E] (r : ℕ) (b₁ : GA E (r + 1) → ℂ), (∃ C : Set (GA E (r + 1)), IsCompact C ∧ ∀ p, b₁ p ≠ 0 → ∃ u ∈ GlobalTheory.JSW.NA E (r + 1), u⁻¹ * p ∈ C) → ∃ K : Set (Fin (r + 1) → Af E), IsCompact K ∧ ∀ p, b₁ p ≠ 0 → (fun l => pFin E (((p⁻¹ : GA E (r + 1)) : Matrix (Fin (r + 1)) (Fin (r + 1)) (Ad E)) l 0)) ∈ K := by
   intro E _ _ r b₁ ⟨C, hC, hsupp⟩

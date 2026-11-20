@@ -12,9 +12,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.CharOrderFin
 
 /- English proof (translation)
-Establish `h1 : (χ.1 : _ →* ℂˣ) ^ n = 1`. Use `congrArg Subtype.val h` as an intermediate fact. Simplify using `using this`. Establish `h2 : ∀ y, χ.1 y ^ n = 1` using `fun y => by`. Use `DFunLike.congr_fun h1 y` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `this` using `[MonoidHom.pow_apply]`. Conclude with `h2 _`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem locK_pow_eq_one {L : Type} [Field L] [NumberField L] {χ : HChar L} {n : ℕ}
     (h : χ.OrderDvd n) (P : HeightOneSpectrum (𝓞 L)) (k : Lˣ) : χ.locK P k ^ n = 1 := by
@@ -27,11 +27,11 @@ theorem locK_pow_eq_one {L : Type} [Field L] [NumberField L] {χ : HChar L} {n :
   exact h2 _
 
 /- English proof (translation)
-Introduce `D c χ hc n hn x hx`. Take `⟨ι, h1, h2, h3⟩` from `GlobalTheory.HostAdeleIso.exists_finiteAdele_equiv D`. Establish `h4` using `GlobalTheory.T.exists_finitePlaceIdempotent_baseChangeAdeles D ι h1 h2 h3`. Take `⟨N, hN, hprod⟩` from `GlobalTheory.CharLocProd.char_eq_prod_locK D ι h1 h2 h4 c χ hc`. Set `y : (FiniteAdeleRing (𝓞 D.host.E) D.host.E)ˣ` to `⟨ι (finPart D (x : AE D)), ι (finPart D ((x⁻¹ : (AE D)ˣ) : AE D)), by rw [← map_mul, ← map_mul, Units.mul_inv, map_one, map_one], by rw [← map_mul, ← map_mul, Units.inv_mul, map_one, map_one]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `⟨S, k, hS, hS'⟩` from `GlobalTheory.finiteIdele_exists_local_approx D.host.E N hN y`. Establish `h5` using `hprod x hx S k (fun P hP => ⟨(hS P hP).1, (hS P hP).2.1⟩) hS'`. Apply `Circle.ext` to reduce the goal to its premises. Establish `h6 : ((c x ^ n : Circle) : ℂ) = ((c x : Circle) : ℂ) ^ n` using `map_pow Circle.coeHom (c x) n`. Rewrite using `[h6, h5, ← Finset.prod_pow, Circle.coe_one]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_eq_one fun P _ => ?_` and prove the remaining obligations. Rewrite using `[← Units.val_pow_eq_pow_val, locK_pow_eq_one hn, Units.val_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem char_pow_eq_one_of_orderDvd : ∀ (D : D7) (c : (AE D)ˣ →* Circle) (χ : HChar D.host.E),
     ChrEq c χ → ∀ n : ℕ, χ.OrderDvd n → ∀ x : (AE D)ˣ, infPart D (x : AE D) = 1 → c x ^ n = 1 := by

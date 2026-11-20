@@ -11,7 +11,7 @@ variable {k : Type} [Field k] {Ω : Type} [Field Ω] [Algebra k Ω] {K : Type} [
   [∀ b, Fintype (ι'' b)]
 
 /- English proof (translation)
-Take `⟨i, hi⟩` from `h`. Introduce `h0`. Establish `h1 : O.valuation (y ⟨b, i⟩) ≤ Finset.univ.sup fun i => O.valuation (y ⟨b, i⟩)` using `Finset.le_sup (f := fun i => O.valuation (y ⟨b, i⟩)) (Finset.mem_univ i)`. Rewrite `h1` using `[h0]`. Conclude with `hi ((Valuation.zero_iff _).1 (le_antisymm h1 zero_le))`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vsup_ne_zero (O : ValuationSubring Ω) {y : (Σ b, ι b) → Ω} {b : K} (h : ∃ i, y ⟨b, i⟩ ≠ 0) :
     (Finset.univ.sup fun i => O.valuation (y ⟨b, i⟩)) ≠ 0 := by
@@ -23,19 +23,19 @@ theorem vsup_ne_zero (O : ValuationSubring Ω) {y : (Σ b, ι b) → Ω} {b : K}
   exact hi ((Valuation.zero_iff _).1 (le_antisymm h1 zero_le))
 
 /- English proof (translation)
-The claim follows from `Finset.prod_ne_zero_iff.2 fun b _ => zpow_ne_zero _ (vsup_ne_zero O (h b))`.
+A detailed English derivation is pending.
 -/
 theorem vdeg_ne_zero (O : ValuationSubring Ω) {y : (Σ b, ι b) → Ω} (h : ∀ b, ∃ i, y ⟨b, i⟩ ≠ 0) (a : K → ℤ) :
     vdeg O y a ≠ 0 :=
   Finset.prod_ne_zero_iff.2 fun b _ => zpow_ne_zero _ (vsup_ne_zero O (h b))
 
 /- English proof (translation)
-Simplify using `[vdeg]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem vdeg_zero (O : ValuationSubring Ω) (y : (Σ b, ι b) → Ω) : vdeg O y 0 = 1 := by simp [vdeg]
 
 /- English proof (translation)
-Unfold `vdeg`. Rewrite using `[← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_congr rfl fun b _ => zpow_add₀ (vsup_ne_zero O (h b)) _ _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vdeg_add (O : ValuationSubring Ω) {y : (Σ b, ι b) → Ω} (h : ∀ b, ∃ i, y ⟨b, i⟩ ≠ 0) (a a' : K → ℤ) :
     vdeg O y (a + a') = vdeg O y a * vdeg O y a' := by
@@ -44,7 +44,7 @@ theorem vdeg_add (O : ValuationSubring Ω) {y : (Σ b, ι b) → Ω} (h : ∀ b,
   exact Finset.prod_congr rfl fun b _ => zpow_add₀ (vsup_ne_zero O (h b)) _ _
 
 /- English proof (translation)
-Unfold `vdeg`. Rewrite using `[← Finset.prod_inv_distrib]`. Conclude with `Finset.prod_congr rfl fun b _ => zpow_neg _ _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vdeg_neg (O : ValuationSubring Ω) (y : (Σ b, ι b) → Ω) (a : K → ℤ) : vdeg O y (-a) = (vdeg O y a)⁻¹ := by
   unfold vdeg
@@ -52,14 +52,14 @@ theorem vdeg_neg (O : ValuationSubring Ω) (y : (Σ b, ι b) → Ω) (a : K → 
   exact Finset.prod_congr rfl fun b _ => zpow_neg _ _
 
 /- English proof (translation)
-Rewrite using `[sub_eq_add_neg, vdeg_add O h, vdeg_neg, div_eq_mul_inv]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem vdeg_sub (O : ValuationSubring Ω) {y : (Σ b, ι b) → Ω} (h : ∀ b, ∃ i, y ⟨b, i⟩ ≠ 0) (a a' : K → ℤ) :
     vdeg O y (a - a') = vdeg O y a / vdeg O y a' := by
   rw [sub_eq_add_neg, vdeg_add O h, vdeg_neg, div_eq_mul_inv]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert t s ht ih => rw [Finset.sum_insert ht, Finset.prod_insert ht, vdeg_add O h, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem vdeg_sum (O : ValuationSubring Ω) {y : (Σ b, ι b) → Ω} (h : ∀ b, ∃ i, y ⟨b, i⟩ ≠ 0) {T : Type} (s : Finset T)
     (a : T → K → ℤ) : vdeg O y (∑ t ∈ s, a t) = ∏ t ∈ s, vdeg O y (a t) := by
@@ -69,7 +69,7 @@ theorem vdeg_sum (O : ValuationSubring Ω) {y : (Σ b, ι b) → Ω} (h : ∀ b,
   | insert t s ht ih => rw [Finset.sum_insert ht, Finset.prod_insert ht, vdeg_add O h, ih]
 
 /- English proof (translation)
-Unfold `vdeg`. Rewrite using `[Fintype.prod_sum_type]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem vdeg_join (O : ValuationSubring Ω) (y : (Σ b, ι b) → Ω) (y' : (Σ b, ι' b) → Ω) (a : K → ℤ) (a' : K' → ℤ) :
     vdeg O (joinPt y y') (Sum.elim a a') = vdeg O y a * vdeg O y' a' := by
@@ -78,19 +78,19 @@ theorem vdeg_join (O : ValuationSubring Ω) (y : (Σ b, ι b) → Ω) (y' : (Σ 
   rfl
 
 /- English proof (translation)
-Rewrite using `[vdeg_join, vdeg_zero, mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem vdeg_join_inl (O : ValuationSubring Ω) (y : (Σ b, ι b) → Ω) (y' : (Σ b, ι' b) → Ω) (a : K → ℤ) :
     vdeg O (joinPt y y') (Sum.elim a 0) = vdeg O y a := by rw [vdeg_join, vdeg_zero, mul_one]
 
 /- English proof (translation)
-Rewrite using `[vdeg_join, vdeg_zero, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem vdeg_join_inr (O : ValuationSubring Ω) (y : (Σ b, ι b) → Ω) (y' : (Σ b, ι' b) → Ω) (a' : K' → ℤ) :
     vdeg O (joinPt y y') (Sum.elim 0 a') = vdeg O y' a' := by rw [vdeg_join, vdeg_zero, one_mul]
 
 /- English proof (translation)
-The claim follows from `| .inl b => h b | .inr b => h' b`.
+A detailed English derivation is pending.
 -/
 theorem joinPt_ne {y : (Σ b, ι b) → Ω} {y' : (Σ b, ι' b) → Ω} (h : ∀ b, ∃ i, y ⟨b, i⟩ ≠ 0) (h' : ∀ b, ∃ i, y' ⟨b, i⟩ ≠ 0) :
     ∀ b, ∃ i, joinPt y y' ⟨b, i⟩ ≠ 0
@@ -102,23 +102,23 @@ namespace ValEq
 variable {y : (Σ b, ι b) → Ω} {y' : (Σ b, ι' b) → Ω} {y'' : (Σ b, ι'' b) → Ω}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, one_ne_zero, fun O _ => by rw [h O, map_one, one_mul]⟩`.
+Supply the required witnesses or components.
 -/
 theorem of_eq {a : K → ℤ} {a' : K' → ℤ} (h : ∀ O : ValuationSubring Ω, vdeg O y a = vdeg O y' a') : ValEq k y a y' a' :=
   ⟨1, one_ne_zero, fun O _ => by rw [h O, map_one, one_mul]⟩
 
 /- English proof (translation)
-The claim follows from `of_eq fun _ => rfl`.
+A detailed English derivation is pending.
 -/
 theorem refl (y : (Σ b, ι b) → Ω) (a : K → ℤ) : ValEq k y a y a := of_eq fun _ => rfl
 
 /- English proof (translation)
-The claim follows from `of_eq fun _ => by simp`.
+A detailed English derivation is pending.
 -/
 theorem zero (y : (Σ b, ι b) → Ω) (y' : (Σ b, ι' b) → Ω) : ValEq k y 0 y' 0 := of_eq fun _ => by simp
 
 /- English proof (translation)
-Take `⟨ρ, h0, h⟩` from `h`. Use `⟨ρ⁻¹, inv_ne_zero h0, fun O hO => ?_⟩` and prove the remaining obligations. Rewrite using `[h O hO, ← mul_assoc, ← map_mul, inv_mul_cancel₀ h0, map_one, one_mul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem symm {a : K → ℤ} {a' : K' → ℤ} (h : ValEq k y a y' a') : ValEq k y' a' y a := by
   obtain ⟨ρ, h0, h⟩ := h
@@ -126,7 +126,7 @@ theorem symm {a : K → ℤ} {a' : K' → ℤ} (h : ValEq k y a y' a') : ValEq k
   rw [h O hO, ← mul_assoc, ← map_mul, inv_mul_cancel₀ h0, map_one, one_mul]
 
 /- English proof (translation)
-Take `⟨ρ, h0, h⟩` from `h`. Take `⟨ρ', h0', h'⟩` from `h'`. Conclude with `⟨ρ * ρ', mul_ne_zero h0 h0', fun O hO => by rw [h O hO, h' O hO, map_mul, mul_assoc]⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem trans {a : K → ℤ} {a' : K' → ℤ} {a'' : K'' → ℤ} (h : ValEq k y a y' a') (h' : ValEq k y' a' y'' a'') :
     ValEq k y a y'' a'' := by
@@ -135,7 +135,7 @@ theorem trans {a : K → ℤ} {a' : K' → ℤ} {a'' : K'' → ℤ} (h : ValEq k
   exact ⟨ρ * ρ', mul_ne_zero h0 h0', fun O hO => by rw [h O hO, h' O hO, map_mul, mul_assoc]⟩
 
 /- English proof (translation)
-Take `⟨ρ, h0, h⟩` from `h`. Take `⟨ρ', h0', h'⟩` from `h'`. Use `⟨ρ * ρ', mul_ne_zero h0 h0', fun O hO => ?_⟩` and prove the remaining obligations. Rewrite using `[vdeg_add O hy, vdeg_add O hy', h O hO, h' O hO, map_mul, mul_mul_mul_comm]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem add (hy : ∀ b, ∃ i, y ⟨b, i⟩ ≠ 0) (hy' : ∀ b, ∃ i, y' ⟨b, i⟩ ≠ 0) {a b : K → ℤ} {a' b' : K' → ℤ}
     (h : ValEq k y a y' a') (h' : ValEq k y b y' b') : ValEq k y (a + b) y' (a' + b') := by
@@ -145,14 +145,14 @@ theorem add (hy : ∀ b, ∃ i, y ⟨b, i⟩ ≠ 0) (hy' : ∀ b, ∃ i, y' ⟨b
   rw [vdeg_add O hy, vdeg_add O hy', h O hO, h' O hO, map_mul, mul_mul_mul_comm]
 
 /- English proof (translation)
-Take `⟨ρ, h0, h⟩` from `h`. Conclude with `⟨ρ⁻¹, inv_ne_zero h0, fun O hO => by rw [vdeg_neg, vdeg_neg, h O hO, map_inv₀, mul_inv]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem neg {a : K → ℤ} {a' : K' → ℤ} (h : ValEq k y a y' a') : ValEq k y (-a) y' (-a') := by
   obtain ⟨ρ, h0, h⟩ := h
   exact ⟨ρ⁻¹, inv_ne_zero h0, fun O hO => by rw [vdeg_neg, vdeg_neg, h O hO, map_inv₀, mul_inv]⟩
 
 /- English proof (translation)
-Rewrite using `[sub_eq_add_neg, sub_eq_add_neg]`. Conclude with `add hy hy' h h'.neg`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sub (hy : ∀ b, ∃ i, y ⟨b, i⟩ ≠ 0) (hy' : ∀ b, ∃ i, y' ⟨b, i⟩ ≠ 0) {a b : K → ℤ} {a' b' : K' → ℤ}
     (h : ValEq k y a y' a') (h' : ValEq k y b y' b') : ValEq k y (a - b) y' (a' - b') := by
@@ -160,7 +160,7 @@ theorem sub (hy : ∀ b, ∃ i, y ⟨b, i⟩ ≠ 0) (hy' : ∀ b, ∃ i, y' ⟨b
   exact add hy hy' h h'.neg
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using zero y y'`. Consider the case `insert t s ht ih`. Rewrite using `[Finset.sum_insert ht, Finset.sum_insert ht]`. Conclude with `add hy hy' (h t (Finset.mem_insert_self _ _)) (ih fun t' ht' => h t' (Finset.mem_insert_of_mem ht'))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum (hy : ∀ b, ∃ i, y ⟨b, i⟩ ≠ 0) (hy' : ∀ b, ∃ i, y' ⟨b, i⟩ ≠ 0) {T : Type} (s : Finset T) {a : T → K → ℤ}
     {a' : T → K' → ℤ} (h : ∀ t ∈ s, ValEq k y (a t) y' (a' t)) : ValEq k y (∑ t ∈ s, a t) y' (∑ t ∈ s, a' t) := by
@@ -172,13 +172,13 @@ theorem sum (hy : ∀ b, ∃ i, y ⟨b, i⟩ ≠ 0) (hy' : ∀ b, ∃ i, y' ⟨b
     exact add hy hy' (h t (Finset.mem_insert_self _ _)) (ih fun t' ht' => h t' (Finset.mem_insert_of_mem ht'))
 
 /- English proof (translation)
-The claim follows from `of_eq fun O => vdeg_join_inl O y y' a`.
+A detailed English derivation is pending.
 -/
 theorem join_inl (y : (Σ b, ι b) → Ω) (y' : (Σ b, ι' b) → Ω) (a : K → ℤ) : ValEq k (joinPt y y') (Sum.elim a 0) y a :=
   of_eq fun O => vdeg_join_inl O y y' a
 
 /- English proof (translation)
-The claim follows from `of_eq fun O => vdeg_join_inr O y y' a'`.
+A detailed English derivation is pending.
 -/
 theorem join_inr (y : (Σ b, ι b) → Ω) (y' : (Σ b, ι' b) → Ω) (a' : K' → ℤ) : ValEq k (joinPt y y') (Sum.elim 0 a') y' a' :=
   of_eq fun O => vdeg_join_inr O y y' a'

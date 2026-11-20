@@ -8,13 +8,13 @@ attribute [local instance] GlobalTheory.Mem.Col2.starE Formalism.BasicNotions.Ho
 namespace GlobalTheory.StepLevelShrink
 
 /- English proof (translation)
-Use `haveI : ContinuousMul H := inferInstanceAs (ContinuousMul H.toSubmonoid)`. Establish `hcl : IsClosed ((A.subgroupOf H : Subgroup H) : Set H)` using `Subgroup.isClosed_of_isOpen _ hA`. Establish `hU' : IsCompact (Subtype.val ⁻¹' (U : Set G) : Set H)`. Rewrite using `[Subtype.isCompact_iff]`. Use `hU using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components.
 
-Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Conclude with `hy`. Introduce `hx`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨⟨x, hUH hx⟩, hx, rfl⟩`. Establish `h2` using `hU'.inter_right hcl`. Rewrite `h2` using `[Subtype.isCompact_iff]`. Use `h2 using 1` and compare the differences between its conclusion and the goal. Use extensionality with `x`.
+Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hx`. Conclude with `⟨⟨x, hUH (hAU hx)⟩, ⟨hAU hx, hx⟩, rfl⟩`. Introduce and unpack `⟨y, ⟨_, hy⟩, rfl⟩`. Conclude with `hy`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem isCompact_of_isOpen_subgroupOf {G : Type} [Group G] [TopologicalSpace G] [ContinuousMul G]
     (H U A : Subgroup G) (hAU : A ≤ U) (hUH : U ≤ H) (hU : IsCompact (U : Set G))
@@ -45,37 +45,27 @@ end GlobalTheory.StepLevelShrink
 namespace GlobalTheory.StepLevelShrink
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ n J T f bad S Qv A ψ hAU hQT hloc hopen hψ`. Establish `hSU : ∀ y ∈ S.U, y ∈ UPts σ J (FiniteAdeleRing (𝓞 F) F) ∧ ∀ v, bc (prV (E` using `E) v) y ∈ S.Uloc v := fun y hy => (S.U_eq y).1 hy`. Set `L : StepLevel F E σ J T f (bad ∪ (Qv : Set (HeightOneSpectrum (𝓞 F))))` to `{ Lb := S.Lb Lb_fin := S.Lb_fin Lb_span := S.Lb_span Lb_int := S.Lb_int Lb_dual := S.Lb_dual Lb_index := S.Lb_index Uloc := fun v => if v ∈ Qv then A.map (bc (prV (E := E) v)) else S.Uloc v Uloc_le := by`. Introduce `v`. Distinguish the cases in `hq : v ∈ Qv`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[if_pos hq]`. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Conclude with `S.Uloc_le v ((hSU y (hAU hy)).2 v)`. Rewrite using `[if_neg hq]`. Conclude with `S.Uloc_le v`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Use `Uloc_lev := by`. Introduce `v`. Distinguish the cases in `hq : v ∈ Qv`. Rewrite using `[if_pos hq]`. Introduce and unpack `_ ⟨y, hy, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `S.Uloc_lev v ((hSU y (hAU hy)).2 v)`. Rewrite using `[if_neg hq]`. Conclude with `S.Uloc_lev v`. Use `Uloc_hyp := by`. Introduce `v hv hT`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hb : v ∉ bad` using `fun h => hv (Or.inl h)`. Establish `hq : v ∉ Qv` using `fun h => hv (Or.inr (Finset.mem_coe.2 h))`. Simplify using `only [if_neg hq]`. Conclude with `S.Uloc_hyp v hb hT`. Use `fM := S.fM`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Use `fM_acg := S.fM_acg`. Use `fM_mod := S.fM_mod`. Use `fT := S.fT`. Use `fT_ne := S.fT_ne`. Use `fT_T := S.fT_T`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use `fM_card := S.fM_card`. Use `fT_L := S.fT_L`. Use `UlocAlt := by`. Introduce `v h`. Establish `hq : v ∉ Qv` using `fun hq => hQT v hq h`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Simplify using `only [if_neg hq]`. Conclude with `S.UlocAlt v h`. Use `U := A`. Use `U_eq := by`. Introduce `x`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hx`. Use `⟨(hSU x (hAU hx)).1, fun v => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hq : v ∈ Qv`. Simplify using `only [if_pos hq]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨x, hx, rfl⟩`. Simplify using `only [if_neg hq]`. Conclude with `(hSU x (hAU hx)).2 v`. Introduce and unpack `⟨hP, hv⟩`. Establish `hxS : x ∈ S.U`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `(S.U_eq x).2 ⟨hP, fun v => ?_⟩` and prove the remaining obligations. Establish `h1` using `hv v`. Distinguish the cases in `hq : v ∈ Qv`. Simplify using `only [if_pos hq] at h1`. Take `⟨y, hy, hyx⟩` from `h1`.
-
-Rewrite using `[← hyx]`. Conclude with `(hSU y (hAU hy)).2 v`. Simplify using `only [if_neg hq] at h1`. Conclude with `h1`. Use `hloc x hxS fun v hq => ?_` and prove the remaining obligations.
-
-Establish `h1` using `hv v`. Simplify using `only [if_pos hq] at h1`. Take `⟨y, hy, hyx⟩` from `h1`. Conclude with `⟨y, hy, hyx.symm⟩`. Use `U_compact := by`.
-
-Use `letI := tensTopL (F := F) (E := E) (FiniteAdeleRing (𝓞 F) F)`. Use `haveI := Formalism.L2.Col.rlt_topRing (F := F) (E := E)`. Conclude with `isCompact_of_isOpen_subgroupOf (UPts σ J (FiniteAdeleRing (𝓞 F) F)) S.U A hAU (fun y hy => (hSU y hy).1) S.U_compact hopen`. Use `U_open := hopen`. Use `chi := (S.chi.comp (Subgroup.inclusion hAU)) * ψ`.
-
-Use `chi_triv := by`. Introduce `x hx`. Rewrite using `[MonoidHom.mul_apply, MonoidHom.comp_apply, S.chi_triv (Subgroup.inclusion hAU x) (fun v hv => hx v (Or.inl hv)), hψ x (fun v hv => hx v (Or.inr (Finset.mem_coe.2 hv))), one_mul] }`. Use `⟨L, rfl, rfl, fun v hv => by show (if v ∈ Qv then A.map (bc (prV (E := E) v)) else S.Uloc v) = S.Uloc v` and prove the remaining obligations. Conclude with `if_neg hv, ?_⟩`.
-
-Introduce `x x' x'' h1 h2`. Use `show S.chi (Subgroup.inclusion hAU x) * ψ x = S.chi x' * ψ x''`. Establish `e1 : Subgroup.inclusion hAU x = x'` using `Subtype.ext h1`. Establish `e2 : x = x''` using `Subtype.ext h2`. Rewrite using `[e1, e2]`.
+A detailed English derivation is pending.
 -/
 theorem exists_stepLevel_shrink : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ) (J : Matrix (Fin n) (Fin n) E) (T f : ℕ) (bad : Set (HeightOneSpectrum (𝓞 F))) (S : StepLevel F E σ J T f bad) (Qv : Finset (HeightOneSpectrum (𝓞 F))) (A : Subgroup (GL (Fin n) (AfE F E))) (ψ : A →* ℂˣ), A ≤ S.U → (∀ v ∈ Qv, (T : 𝓞 F) ∉ v.asIdeal) → (∀ x ∈ S.U, (∀ v ∈ Qv, ∃ x' ∈ A, bc (prV (E := E) v) x = bc (prV (E := E) v) x') → x ∈ A) → (letI := tensTopL (F := F) (E := E) (FiniteAdeleRing (𝓞 F) F); IsOpen {x : UPts σ J (FiniteAdeleRing (𝓞 F) F) | (x : GL _ _) ∈ A}) → (∀ x : A, (∀ v ∈ Qv, bc (prV (E := E) v) x.1 = 1) → ψ x = 1) → ∃ L : StepLevel F E σ J T f (bad ∪ (Qv : Set (HeightOneSpectrum (𝓞 F)))), L.Lb = S.Lb ∧ L.U = A ∧ (∀ v, v ∉ Qv → L.Uloc v = S.Uloc v) ∧ ∀ (x : L.U) (x' : S.U) (x'' : A), x.1 = x'.1 → x.1 = x''.1 → L.chi x = S.chi x' * ψ x'' := by
   intro F E _ _ _ _ _ σ n J T f bad S Qv A ψ hAU hQT hloc hopen hψ

@@ -8,13 +8,13 @@ open Formalism.BasicNotions Formalism.BasicNotions.Loc ReciprocityTheory.Gal Mod
 namespace GlobalTheory.CocycleDim
 
 /- English proof (translation)
-Set `f : S →ₗ[E] (Z ⧸ B.comap Z.subtype)` to `(B.comap Z.subtype).mkQ ∘ₗ Submodule.inclusion hSZ`. Establish `hr : LinearMap.range f = (S.comap Z.subtype).map (B.comap Z.subtype).mkQ`. Rewrite using `[LinearMap.range_comp, Submodule.range_inclusion]`. Establish `hk : LinearMap.ker f = B.comap S.subtype`. Use extensionality with `x`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[f]`. Establish `eB` using `Submodule.comapSubtypeEquivOfLe hBS`. Establish `hkf : Module.Finite E ↥(LinearMap.ker f)`. Rewrite using `[hk]`. Conclude with `Module.Finite.equiv eB.symm`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hrf : Module.Finite E ↥(LinearMap.range f)` using `by rw [hr]; exact hQ`. Establish `hS : Module.Finite E S`. Rewrite using `[Module.finite_def]`. Use `Submodule.fg_of_fg_map_of_fg_inf_ker f ?_ ?_` and prove the remaining obligations. Rewrite using `[Submodule.map_top]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Module.Finite.iff_fg.1 hrf`. Rewrite using `[top_inf_eq]`. Conclude with `Module.Finite.iff_fg.1 hkf`. Use `⟨hS, ?_⟩` and prove the remaining obligations. Rewrite using `[← LinearMap.finrank_range_add_finrank_ker f, hr, hk, eB.finrank_eq]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sandwich {E M : Type} [Field E] [AddCommGroup M] [Module E M] (B S Z : Submodule E M)
     (hBS : B ≤ S) (hSZ : S ≤ Z) [Module.Finite E B]
@@ -40,7 +40,7 @@ theorem sandwich {E M : Type} [Field E] [AddCommGroup M] [Module E M] (B S Z : S
   rw [← LinearMap.finrank_range_add_finrank_ker f, hr, hk, eB.finrank_eq]
 
 /- English proof (translation)
-Rewrite using `[Submodule.comap_subtype_self, Submodule.map_top, Submodule.range_mkQ]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem top_image {E M : Type} [Field E] [AddCommGroup M] [Module E M] (B Z : Submodule E M) :
     (Z.comap Z.subtype).map (B.comap Z.subtype).mkQ = ⊤ := by
@@ -50,15 +50,13 @@ end GlobalTheory.CocycleDim
 
 open GlobalTheory.CocycleDim in
 /- English proof (translation)
-Introduce `hP l _ G _ _ _ φ hφ E _ _ _ _ _ V _ _ _ _ _ _ _ _ _ ρ hρ hpos`. Use `haveI : FiniteDimensional E V := Module.Finite.of_restrictScalars_finite ℚ_[l] E V`. Take `⟨hH0, -, hfinf, hdimf⟩` from `posBasic hP φ hφ ρ hρ hpos`. Take `⟨hf1, -, e1, e2⟩` from `tateRat hP (v := l) (l := l) φ hφ ρ hρ`. Rewrite `e1` using `[if_pos rfl, hH0, finrank_bot, e2]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hBf : Module.Finite E ↥(B1 ρ)`. Unfold `B1`. Use `infer_instance`. Establish `hBS` using `(z1fMap (l := l) φ ρ ρ).1 hρ`. Establish `hSZ : finiteCocycles φ ρ ≤ Z1 ρ` using `fun c h => h.1`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨-, hSd⟩` from `sandwich _ _ _ hBS hSZ hfinf`. Use `replace hSd : finrank E ↥(finiteCocycles φ ρ) = finrank E ↥(finiteCohomology φ ρ) + finrank E ↥(B1 ρ) := hSd`. Establish `hQ : Module.Finite E ↥(((Z1 ρ).comap (Z1 ρ).subtype).map ((B1 ρ).comap (Z1 ρ).subtype).mkQ)`. Rewrite using `[top_image]`. Conclude with `Module.Finite.equiv (LinearEquiv.ofTop ⊤ rfl).symm`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Take `⟨hZ, hZd⟩` from `sandwich _ _ _ (coboundaries_le_cocycles ρ hρ) le_rfl hQ`. Rewrite `hZd` using `[top_image, finrank_top]`. Use `⟨hZ, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `finrank E ↥(Z1 ρ) = finrank E (H1 ρ) + finrank E ↥(B1 ρ) at hZd`. Rewrite using `[hZd, hSd, e1, hdimf]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.cocycleDim_positive : LocalPublishedTheorems → ∀ {l : ℕ} [Fact l.Prime] {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] (φ : G →* GQ l) (hφ : IsOpenEmbedding φ) {E : Type} [Field E] [Algebra ℚ_[l] E] [FiniteDimensional ℚ_[l] E] [Algebra ℤ_[l] E] [IsScalarTower ℤ_[l] ℚ_[l] E] {V : Type} [AddCommGroup V] [Module E V] [Module ℚ_[l] V] [IsScalarTower ℚ_[l] E V] [FiniteDimensional ℚ_[l] V] [TopologicalSpace V] [IsModuleTopology ℚ_[l] V] [IsTopologicalAddGroup V] [ContinuousConstSMul E V] (ρ : Representation E G V), ContAction ρ → Positive φ ρ → Module.Finite E ↥(Z1 ρ) ∧ finrank E ↥(Z1 ρ) = finrank E ↥(finiteCocycles φ ρ) + finrank E ↥(H0dual ((cycA l l E).comp φ) ρ) := by
   intro hP l _ G _ _ _ φ hφ E _ _ _ _ _ V _ _ _ _ _ _ _ _ _ ρ hρ hpos

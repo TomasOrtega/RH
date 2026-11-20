@@ -13,11 +13,11 @@ open GlobalTheory.CompanionTheory.GSCd.Transport
 namespace PositivityTheory.Lit1.GFVanish
 
 /- English proof (translation)
-Establish `: IsGalois F Ω` using `IsAlgClosure.isGalois F Ω`. Take `⟨K, ψ, e, he⟩` from `exists_embedded F Ω`. Use `⟨K, S.map (placeEquiv (RingOfIntegers.mapRingEquiv ψ)).toEmbedding, ?_, ⟨ψ⟩, nonempty_gal ψ e he ?_⟩` and prove the remaining obligations. Introduce `w hw`. Establish `hv : (placeEquiv (RingOfIntegers.mapRingEquiv ψ)).symm w ∈ S`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Apply `hS` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `RingOfIntegers.mapRingEquiv ψ (l : 𝓞 F) ∈ w.asIdeal`. Rewrite using `[map_natCast]`. Conclude with `hw`. Conclude with `Finset.mem_map.2 ⟨_, hv, (placeEquiv _).apply_symm_apply w⟩`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `v`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem exists_gs_transport_field (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω]
     [IsAlgClosure F Ω] (l : ℕ) (S : Finset (HeightOneSpectrum (𝓞 F))) (hS : ContainsAbove S l) :
@@ -41,9 +41,9 @@ theorem exists_gs_transport_field (F Ω : Type) [Field F] [NumberField F] [Field
     simp
 
 /- English proof (translation)
-Take `⟨K, S', hS', ⟨ψ⟩, ⟨e⟩⟩` from `exists_gs_transport_field F Ω l S hS`. Rewrite using `[GlobalTheory.T.cohomological_dimension_topological_iso _ _ l e]`. Use `cdp_galUnramifiedOutside_le_two K (S' : Set (HeightOneSpectrum (𝓞 K.1))) Fact.out (fun v hv => hS' v hv) (hK.imp id fun h => ?_)` and prove the remaining obligations. Establish `: IsTotallyComplex F` using `h`. Set `_ : Algebra F K.1` to `ψ.toRingHom.toAlgebra`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Conclude with `isTotallyComplex_of_algebra F K.1`.
+A detailed English derivation is pending.
 -/
 theorem cdp_gal_le_two_gen (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω]
     [IsAlgClosure F Ω] (l : ℕ) [Fact l.Prime] (S : Finset (HeightOneSpectrum (𝓞 F)))
@@ -58,9 +58,9 @@ theorem cdp_gal_le_two_gen (F Ω : Type) [Field F] [NumberField F] [Field Ω] [A
   exact isTotallyComplex_of_algebra F K.1
 
 /- English proof (translation)
-Establish `hp : l.Prime` using `Fact.out`. Establish `hcd` using `cdp_gal_le_two_gen F Ω l S hS hK`. Use `subsingleton_cohomology_of_cdp_le_two (n := l ^ r) (pow_ne_zero r hp.ne_zero) (fun q hq hqd => ?_) A hA hn` and prove the remaining obligations. Establish `hql : q = l` using `(Nat.prime_dvd_prime_iff_eq hq hp).1 (hq.dvd_of_dvd_pow hqd)`. Substitute `hql` using the available equality.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Substitute using the available equality.
 
-Conclude with `hcd`.
+A detailed English derivation is pending.
 -/
 theorem subsingleton_hn_gen (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω]
     [IsAlgClosure F Ω] (l : ℕ) [Fact l.Prime] (r : ℕ) (S : Finset (HeightOneSpectrum (𝓞 F)))
@@ -77,7 +77,7 @@ theorem subsingleton_hn_gen (F Ω : Type) [Field F] [NumberField F] [Field Ω] [
   exact hcd
 
 /- English proof (translation)
-Introduce `F Ω _ _ _ _ _ l _ r hK _ S hS M _ _ _ _ _ ρ hc n hn`. Take `⟨A, _, _, hA, -, -, hAn⟩` from `PositivityTheory.Lit1.GFTransport.cohDict S ρ hc`. Take `⟨en⟩` from `hAn n`. Establish `: Subsingleton (cohomology A n)` using `subsingleton_hn_gen F Ω l r S hS hK A hA n hn`. Conclude with `en.toEquiv.subsingleton`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem vanishAll : PositivityTheory.PoitouTateConclusion.VanishAll := by
   intro F Ω _ _ _ _ _ l _ r hK _ S hS M _ _ _ _ _ ρ hc n hn

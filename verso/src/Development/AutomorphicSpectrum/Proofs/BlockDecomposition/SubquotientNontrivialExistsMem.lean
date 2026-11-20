@@ -7,9 +7,7 @@ open GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.SmGL GlobalTheory.Loc
 namespace GlobalTheory.CompanionTheory.SubQuotNe
 
 /- English proof (translation)
-Introduce `M W X _ _ _ _ _ ρ σ S T hE hX`. Take `⟨e⟩` from `hE`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Establish `hle : S.toSubmodule ≤ T.toSubmodule` using `fun s hs => h s hs`.
-
-Use `haveI : Subsingleton (S.toSubmodule ⧸ T.toSubmodule.comap S.toSubmodule.subtype) := Submodule.Quotient.subsingleton_iff.mpr (Submodule.comap_subtype_eq_top.mpr hle)`. Conclude with `not_subsingleton X e.toLinearEquiv.symm.injective.subsingleton`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_mem_not_mem_of_subQuot_equiv :
     ∀ {M W X : Type} [Group M] [AddCommGroup W] [Module ℂ W] [AddCommGroup X] [Module ℂ X]

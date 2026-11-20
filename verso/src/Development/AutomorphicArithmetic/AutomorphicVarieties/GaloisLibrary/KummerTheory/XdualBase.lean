@@ -5,17 +5,17 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Selm
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.LDataCardLeFinrank UpperTheory.V.Base UpperTheory.V.Kum
 
 /- English proof (translation)
-Introduce `F Ω _ _ _ _ _ E _ _ _ _ _ _ N U R M _ _ _ hU`. Take `⟨hD, hI, hc, -⟩` from `toGalDict F Ω E U hU`. Take `⟨hE, -, -⟩` from `galEmbTop F E Ω`. Set `e : U.comap (galEmb F E Ω) ≃ U` to `{ toFun := fun u => ⟨galEmb F E Ω u.1, u.2⟩ invFun := fun u => ⟨toGal E hU u, u.2⟩ left_inv := fun u => rfl right_inv := fun u => rfl }`. Establish `hec : Continuous e` using `(hE.continuous.comp continuous_subtype_val).subtype_mk _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hes : Continuous e.symm` using `hc.subtype_mk _`. Establish `hm : ∀ a b, e (a * b) = e a * e b` using `fun a b => rfl`. Establish `hms : ∀ a b, e.symm (a * b) = e.symm a * e.symm b` using `fun a b => rfl`. Use `⟨⟨LinearEquiv.funCongrLeft R M e, fun φ u => rfl, ?_, fun σ T => ?_⟩, fun l _ => ?_⟩` and prove the remaining obligations. Use extensionality with `ψ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨φ, ⟨h1, h2, h3, h4⟩, rfl⟩`. Conclude with `⟨h1.comp_continuous hec, fun a b => h2 (e a) (e b), fun A u hu => h3 A (e u) ((hI A (e u)).1 hu), fun A hA u hu => h4 A hA (e u) ((hD A (e u)).1 hu)⟩`. Introduce and unpack `⟨h1, h2, h3, h4⟩`. Conclude with `⟨ψ ∘ e.symm, ⟨h1.comp_continuous hes, fun a b => h2 (e.symm a) (e.symm b), fun A u hu => h3 A (e.symm u) ((hI A u).2 hu), fun A hA u hu => h4 A hA (e.symm u) ((hD A u).2 hu)⟩, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Use extensionality with `ψ`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨φ, h, rfl⟩`. Conclude with `fun u u' huu => h (e u) (e u') huu`. Introduce `h`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨ψ ∘ e.symm, fun u u' huu => h (e.symm u) (e.symm u') huu, rfl⟩`. Establish `hz : ∀ g, cycZ F Ω l (galEmb F E Ω g) = cycZ E Ω l g` using `fun g => rfl`. Use `⟨?_, fun n => ?_⟩` and prove the remaining obligations. Use extensionality with `g`. Conclude with `⟨fun h => ⟨trivial, (hz g).symm.trans h.2⟩, fun h => ⟨galEmb_mem F E Ω g, (hz g).trans h.2⟩⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Supply the required witnesses or components.
 
-Use extensionality with `g`. Conclude with `⟨fun h => ⟨trivial, h.2⟩, fun h => ⟨galEmb_mem F E Ω g, h.2⟩⟩`.
+By extensionality, compare the relevant components. Supply the required witnesses or components.
 -/
 theorem UpperTheory.V.Kum.xdualBase :
     ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (E : Type) [Field E] [NumberField E] [Algebra F E] [Algebra E Ω] [IsScalarTower F E Ω] [IsAlgClosure E Ω] (N : ℕ) (U : Subgroup (G F Ω)) (R M : Type) [CommRing R] [AddCommGroup M] [Module R M], U ≤ galOf F E Ω →

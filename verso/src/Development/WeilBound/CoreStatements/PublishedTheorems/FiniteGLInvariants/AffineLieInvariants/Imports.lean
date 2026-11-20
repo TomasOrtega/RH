@@ -4,7 +4,7 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GenericFiniteBy
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ConstantTermFiniteOfSmallerStatement
 
 /- English proof (translation)
-The claim follows from `PositivityTheory.Affgl.TopEig.top (GlobalTheory.T.generic_finite_by_induction CuspFormAutomorphicBounds.cuspFin GlobalTheory.T.constant_term_finite_of_smaller)`.
+A detailed English derivation is pending.
 -/
 theorem CuspFormAutomorphicBounds.automorphicFormsFiniteGL : GlobalTheory.Published.AutomorphicFormsFiniteGL :=
   PositivityTheory.Affgl.TopEig.top (GlobalTheory.T.generic_finite_by_induction CuspFormAutomorphicBounds.cuspFin GlobalTheory.T.constant_term_finite_of_smaller)

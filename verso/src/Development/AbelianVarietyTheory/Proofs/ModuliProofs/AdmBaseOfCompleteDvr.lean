@@ -27,11 +27,11 @@ namespace GlobalTheory.UnifDvrCompare
 open GlobalTheory.UU GlobalTheory.LN GlobalTheory.IndefiniteRowSideFullHecke.UniformizationLinear
 
 /- English proof (translation)
-Take `⟨⟨y, f⟩, rfl⟩` from `(Scheme.SpecToEquivOfField F' X).symm.surjective x'`. Establish `e : (Scheme.SpecToEquivOfField F' X).symm ⟨y, f⟩ = Spec.map f ≫ X.fromSpecResidueField y` using `rfl`. Rewrite `h`, the goal using `[e]`. Establish `hf : ∀ a, f.hom a ∈ (algebraMap F F').range` using `fun a => by`. Use `IntermediateField.mem_bot.1 ((InfiniteGalois.mem_bot_iff_fixed _).2 fun σ => ?_)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `h σ` as an intermediate fact. Rewrite `this` using `[← Category.assoc, cancel_mono, ← Spec.map_comp]`. Conclude with `congrArg (fun q => q.hom a) (Spec.map_injective this)`. Use `choose g hg using hf`. Establish `inj` using `(algebraMap F F').injective`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Set `g' : X.residueField y →+* F` to `{ toFun := g map_one' := inj (by rw [hg, map_one, map_one]) map_mul' := fun a b => inj (by rw [hg, map_mul, map_mul, hg, hg]) map_zero' := inj (by rw [hg, map_zero, map_zero]) map_add' := fun a b => inj (by rw [hg, map_add, map_add, hg, hg]) }`. Use `⟨Spec.map (CommRingCat.ofHom g') ≫ X.fromSpecResidueField y, ?_⟩` and prove the remaining obligations. Rewrite using `[← Category.assoc, ← Spec.map_comp]`. Use `congr 2`. Conclude with `CommRingCat.hom_ext (RingHom.ext hg)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem exists_point_of_fixed {F F' : Type} [Field F] [Field F'] [Algebra F F'] [IsGalois F F'] {X : Scheme.{0}}
     (x' : Sp F' ⟶ X) (h : ∀ σ : Gal(F'/F), spMap (σ : F' →+* F') ≫ x' = x') :

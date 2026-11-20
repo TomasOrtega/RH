@@ -16,7 +16,7 @@ namespace GlobalTheory.AscFin.CondCut
 variable {D : D7}
 
 /- English proof (translation)
-Unfold `GlobalTheory.FinPl.idOff at ha ⊢`. Rewrite `ha`, the goal using `[Submodule.mem_iInf]`. Conclude with `fun w => ha ⟨w.1, h w.1 w.2⟩`.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem idOff_sub {P Q : GlobalTheory.FinPl.Pl D → Prop} (h : ∀ v, Q v → P v) {a : AE D} (ha : a ∈ idOff D P) : a ∈ idOff D Q := by
   unfold GlobalTheory.FinPl.idOff at ha ⊢
@@ -24,7 +24,7 @@ theorem idOff_sub {P Q : GlobalTheory.FinPl.Pl D → Prop} (h : ∀ v, Q v → P
   exact fun w => ha ⟨w.1, h w.1 w.2⟩
 
 /- English proof (translation)
-Unfold `GlobalTheory.FinPl.idAt at ha ⊢`. Take `⟨h0, hw⟩` from `Ideal.mem_inf.1 ha`. Use `Ideal.mem_inf.2 ⟨h0, ?_⟩` and prove the remaining obligations. Rewrite `hw`, the goal using `[Submodule.mem_iInf]`. Conclude with `fun w => hw ⟨w.1, fun hq => w.2 (h w.1 hq)⟩`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem idAt_sup {P Q : GlobalTheory.FinPl.Pl D → Prop} (h : ∀ v, Q v → P v) {a : AE D} (ha : a ∈ idAt D Q) : a ∈ idAt D P := by
   unfold GlobalTheory.FinPl.idAt at ha ⊢
@@ -34,11 +34,11 @@ theorem idAt_sup {P Q : GlobalTheory.FinPl.Pl D → Prop} (h : ∀ v, Q v → P 
   exact fun w => hw ⟨w.1, fun hq => w.2 (h w.1 hq)⟩
 
 /- English proof (translation)
-Establish `hb'` using `(GlobalTheory.FinPlLoc.mem_congGrp _ b).1 hb`. Establish `key : (mt W b - 1) ⬝ M = 0`. Use extensionality with `i j`. Rewrite using `[Matrix.mul_apply, Matrix.zero_apply]`. Use `Finset.sum_eq_zero fun l _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1` using `(GlobalTheory.FinPlLoc.mem_idOff_iff Q _).1 (hb' i l)`. Establish `h2` using `(GlobalTheory.FinPlLoc.mem_idAt_iff Q _).1 (hM l j)`. Rewrite using `[Matrix.sub_apply, ← h2]`. Combine the equalities or inequalities in the displayed calculation. Rewrite `key` using `[Matrix.sub_mul, Matrix.one_mul, sub_eq_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `key`.
+A detailed English derivation is pending.
 -/
 theorem mt_mul_of_grpOff {W : HSp D} {Q : GlobalTheory.FinPl.Pl D → Prop} {b : GA D W} (hb : b ∈ grpOff W Q) {k : ℕ}
     (M : Matrix (Fin W.rank) (Fin k) (AE D)) (hM : ∀ i j, M i j ∈ idAt D Q) : mt W b ⬝ M = M := by
@@ -57,7 +57,7 @@ theorem mt_mul_of_grpOff {W : HSp D} {Q : GlobalTheory.FinPl.Pl D → Prop} {b :
   exact key
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply]`. Conclude with `Ideal.sum_mem _ fun l _ => Ideal.mul_mem_left _ _ (hB l j)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_mem_idAt {Q : GlobalTheory.FinPl.Pl D → Prop} {m n k : ℕ} (A : Matrix (Fin m) (Fin n) (AE D))
     (B : Matrix (Fin n) (Fin k) (AE D)) (hB : ∀ i j, B i j ∈ idAt D Q) (i : Fin m) (j : Fin k) : (A ⬝ B) i j ∈ idAt D Q := by
@@ -69,17 +69,15 @@ end GlobalTheory.AscFin.CondCut
 open GlobalTheory.AscFin.CondCut in
 
 /- English proof (translation)
-Introduce `D V₀ W W₀ ρ σ dW p x y ψ P Q g₁ g₂ hQP _hg₁ hg₂ _hcomm H`. Establish `hg₂i : g₂⁻¹ ∈ grpOff W Q` using `inv_mem hg₂`. Establish `emt : ∀ {k : ℕ} (M : Matrix (Fin W.rank) (Fin k) (AE D)), mt W (g₁ * g₂)⁻¹ ⬝ M = mt W g₂⁻¹ ⬝ (mt W g₁⁻¹ ⬝ M)`. Introduce `k M`. Rewrite using `[_root_.mul_inv_rev]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Matrix.mul_assoc _ _ _`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Take `⟨u, a, ha, hoff⟩` from `H.pt`. Use `⟨u, a, ha, fun i j => ?_⟩` and prove the remaining obligations. Establish `h1` using `idOff_sub hQP (hoff i j)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : ((mt W g₂⁻¹ - 1) ⬝ (mt W g₁⁻¹ ⬝ (x ⬝ u.1.1))) i j ∈ idOff D Q`. Rewrite using `[Matrix.mul_apply]`. Conclude with `Ideal.sum_mem _ fun l _ => Ideal.mul_mem_right _ _ (by`. Rewrite using `[Matrix.sub_apply]`. Conclude with `(GlobalTheory.FinPlLoc.mem_congGrp _ _).1 hg₂i i l)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Establish `e : mt W g₁⁻¹ ⬝ (x ⬝ u.1.1) - x - a = (mt W (g₁ * g₂)⁻¹ ⬝ (x ⬝ u.1.1) - x - a) - (mt W g₂⁻¹ - 1) ⬝ (mt W g₁⁻¹ ⬝ (x ⬝ u.1.1))`. Rewrite using `[emt, Matrix.sub_mul, Matrix.one_mul]`. Normalize the expressions using the abelian group laws. Rewrite using `[e, Matrix.sub_apply]`. Conclude with `sub_mem h1 h2`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `N hN hlow hA`. Use `H.shift N (fun i j => idAt_sup hQP (hN i j)) hlow ?_` and prove the remaining obligations. Rewrite using `[emt, mt_mul_of_grpOff hg₂i _ (mul_mem_idAt _ _ (mul_mem_idAt _ _ hN))]`. Conclude with `hA`. Introduce `ξ hξ ξ' hξQ he`.
-
-Use `H.iso ξ hξ ξ' (fun i j => idAt_sup hQP (hξQ i j)) ?_` and prove the remaining obligations. Establish `hinc : ∀ i j, (dW.incX V₀ ξ) i j ∈ idAt D Q` using `mul_mem_idAt _ _ hξQ`. Use `show mt W g₁ ⬝ mt W g₂ ⬝ dW.incX V₀ ξ = _`. Rewrite using `[Matrix.mul_assoc, mt_mul_of_grpOff hg₂ _ hinc]`. Conclude with `he`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.AscFin.Cond.of_mul_grpOff : ∀ {D : D7} {V₀ W W₀ : HSp D} {ρ σ : ℕ} (dW : HypDec W W₀ σ) (p : Pieces V₀ W W₀ ρ σ) (x : Mx D W.rank ρ) (y : Mx D V₀.rank σ) (ψ : AddChar (AF D.host.F) ℂ) (P Q : GlobalTheory.FinPl.Pl D → Prop) (g₁ g₂ : GA D W), (∀ v, Q v → P v) → g₁ ∈ grpAt W Q → g₂ ∈ grpOff W Q → g₁ * g₂ = g₂ * g₁ → Cond dW p x y ψ P (g₁ * g₂) → Cond dW p x y ψ Q g₁ := by
   intro D V₀ W W₀ ρ σ dW p x y ψ P Q g₁ g₂ hQP _hg₁ hg₂ _hcomm H

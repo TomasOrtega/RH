@@ -18,13 +18,13 @@ namespace GlobalTheory.SqCompare
 open GlobalTheory.CoordCompare GlobalTheory.PrimNorm GlobalTheory.MulPull in
 
 /- English proof (translation)
-Establish `hc` using `fun p q s : Y ⟶ A => diff₃_ptCls (T := Y) hM hT p q s`. Establish `h` using `(hasGen_iff hM _ _).1 ⟨v, hv⟩`. Rewrite `h` using `[Fin.prod_univ_four]`. Use `(hasGen_iff hM _ _).2 ?_` and prove the remaining obligations. Rewrite using `[Fin.prod_univ_four]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `set m := ptCls M Y with hm`. Use `set α := toUnit Y ≫ a`. Use `set β := toUnit Y ≫ b`. Establish `cα : toUnit Y ≫ (a * a) = α * α` using `MonObj.comp_mul _ _ _`. Establish `cβ : toUnit Y ≫ (b * b) = β * β` using `MonObj.comp_mul _ _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `m (y * β) ^ (2 : ℤ) * m (y * α) ^ (-2 : ℤ) * m α ^ (2 : ℤ) * m β ^ (-2 : ℤ) = 1 at h`. Express the relevant statement in the definitionally equal form `m (y * (toUnit Y ≫ (b * b))) ^ (1 : ℤ) * m (y * (toUnit Y ≫ (a * a))) ^ (-1 : ℤ) * m (toUnit Y ≫ (a * a)) ^ (1 : ℤ) * m (toUnit Y ≫ (b * b)) ^ (-1 : ℤ) = 1`. Rewrite using `[cα, cβ]`. Establish `kα` using `diff₂_mul_right hc y α α`. Establish `kβ` using `diff₂_mul_right hc y β β`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Combine the equalities or inequalities in the displayed calculation. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [diff₂, ofMul_mul, ofMul_inv, ofMul_zpow]`. Normalize the expressions using the abelian group laws. Use `_ = 1 := by rw [← kα, ← kβ, h, mul_inv_cancel, mul_inv_cancel, inv_one, _root_.mul_one, _root_.mul_one]`.
+Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem sq_law {S : Scheme.{0}} {A : Over S} [GrpObj A] [IsCommMonObj A] {M : LB A.left} (hM : M.IsLB)
     (hT : ∃ t : LB.Gen (Theta A M), t.IsGen) {Y : Over S} (y : Y ⟶ A) (a b : 𝟙_ (Over S) ⟶ A)
@@ -57,19 +57,17 @@ theorem sq_law {S : Scheme.{0}} {A : Over S} [GrpObj A] [IsCommMonObj A] {M : LB
 open GlobalTheory.CoordCompare TorusCoord in
 
 /- English proof (translation)
-Take `⟨t, ht, W, hW⟩` from `GlobalTheory.T.exists_square_generator_through_squareIso D.P.isLB D'.P.isLB w hw (D'.Oφ g'.pG χ') Oinvε (g'.t χ') (g'.t_gen χ')`. Take `⟨u, hu, hu'⟩` from `exists_gen D.P.isLB (φ' := fun k => g.q.left ≫ diffφ (D.prBe I e) (D'.c χ' ≫ Φ) (D.c χ) k) (ε' := ![2, -2, 2, -2]) (fun U _ h => by`. Establish `e2` using `prod_diff (D.prBe I e) (D'.c χ' ≫ Φ) (D.c χ) ((Over.map (thick R I e)).map g.q) h`. Establish `e3 : ∏ k, h (g.q.left ≫ diffφ (D.prBe I e) (D'.c χ' ≫ Φ) (D.c χ) k) ^ (![2, -2, 2, -2] : Fin 4 → ℤ) k = (∏ k, h (((Over.map (thick R I e)).map g.q).left ≫ diffφ (D.prBe I e) (D'.c χ' ≫ Φ) (D.c χ) k) ^ (![1, -1, 1, -1] : Fin 4 → ℤ) k) ^ (2 : ℤ)`. Simplify using `only [Fin.prod_univ_four, mul_zpow, ← zpow_mul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Use `(Fintype.prod_sum_type _).trans (Eq.trans ?_ (e3.trans (congrArg (· ^ (2 : ℤ)) e2)).symm)` and prove the remaining obligations. Simplify using `only [Sum.elim_inl, Sum.elim_inr, Oφ_comp_hom, hp, Fintype.prod_sum_type]`. Simplify using `only [Fin.prod_univ_four]`. Set `T` to `(Over.map (thick R I e)).obj (thickObj R I e G)`.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Use `show h (g.pG * (toUnit T ≫ D'.c χ' ≫ Φ)).left ^ (2 * (-1 : ℤ)) * h (toUnit T ≫ D'.c χ' ≫ Φ).left ^ (2 * (1 : ℤ)) * h g.pG.left ^ (2 * (1 : ℤ)) * h (1 : T ⟶ D.P.A).left ^ (2 * (-1 : ℤ)) * ((h (g.pG * (toUnit T ≫ D.c χ)).left ^ (- -1 : ℤ) * h (toUnit T ≫ D.c χ).left ^ (-1 : ℤ) * h …`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv, ofMul_zpow]`. Use the proof step `abel)`. Use the proof step `(LB.mulGen D.P.L _ _ _ _ t (LB.mulGen D.P.L _ _ _ _ (LB.invGen D.P.L _ _ (g.t χ)) (LB.invGen D.P.L _ _ (g.t χ))))`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the proof step `(DVR.mulGen_isGen _ _ _ _ _ _ _ ht (DVR.mulGen_isGen _ _ _ _ _ _ _ (DVR.invGen_isGen _ _ _ _ (g.t_gen χ)) (DVR.invGen_isGen _ _ _ _ (g.t_gen χ))))`. Use `g.q_flat` as an intermediate fact. Use `g.q_surj` as an intermediate fact. Use `g.q_affine` as an intermediate fact. Take `⟨v, hv, -⟩` from `exists_gen_of_val_eq D.P.isLB _ _ g.q.left u hu (fun Z r r' z J hJ h => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Take `⟨J', hJ'⟩` from `TLinPf.idx_exists D'.P.L D'.P.isLB z`. Take `⟨h₁, h₂⟩` from `ratio_invariant g g' Φ hp χ χ' hker r r' z J J' hJ hJ' h`. Establish `hWeq : (fun k => r ≫ D'.Oφ g'.pG χ' k) = (fun k => r' ≫ D'.Oφ g'.pG χ' k)`. Use function extensionality and compare the values at `(Oφ_congr χ' g'.pG r r' h₁)`. Rewrite using `[hu' Z r z J hJ, hu' Z r' z J hJ, val_mul hJ, val_mul hJ, val_mul hJ, val_mul hJ, val_inv, val_inv, hW Z r z J J' hJ hJ', hW Z r' z J J' hJ hJ', hWeq]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Combine the equalities or inequalities in the displayed calculation. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv, ofMul_pow]`. Normalize the expressions using the abelian group laws. Use `_ = _ := by`.
-
-Rewrite using `[h₂]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv, ofMul_pow]`. Use the proof step `abel)`. Conclude with `⟨v, hv⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem sq_desc {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D D' : DegPre R} {e : ℕ}
     {G : Over (Spec (CommRingCat.of R))} [GrpObj G] [IsCommMonObj G] (g : GtCoord I D e G) (g' : GtCoord I D' e G)
@@ -137,15 +135,15 @@ end GlobalTheory.SqCompare
 open GlobalTheory.CoordCompare in
 
 /- English proof (translation)
-Introduce `R _ _ _ hR G _ _ hG D D' A A' U U' hL Φ w hw hΦ hpG xe hval x`. Take `⟨hN, -, hC, -⟩` from `hR`. Establish `hp' : ∀ e, (U'.gt e).pG ≫ Φ.hom = (U.gt e).pG` using `fun e => Over.OverMorphism.ext (hpG e)`. Establish `hmono : Mono Φ.hom.left` using `inferInstance`. Use `set a := D'.toPre.c x ≫ Φ.hom`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set b := D.toPre.c (xe x)`. Establish `desc : ∀ n, ∃ v : LB.Gen (LB.LinComb D.toPre.P.L (diffφ (D.toPre.prBe (maximalIdeal R) n) (a * a) (b * b)) ![1, -1, 1, -1]), v.IsGen` using `fun n => by`. Take `⟨v, hv⟩` from `GlobalTheory.SqCompare.sq_desc (U.gt n) (U'.gt n) Φ.hom (hp' n) w hw (xe x) x (fun Z r z J J' hJ hJ' h h' => hval n Z r z J J' hJ hJ' h h' x)`. Conclude with `GlobalTheory.SqCompare.sq_law D.toPre.P.isLB ⟨D.toPre.cub.t, D.toPre.cub.isGen⟩ _ _ _ v hv`. Establish `hab : a * a = b * b`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `D.toPre.P.isAb.smooth` as an intermediate fact. Use `D.toPre.P.isAb.geomConnected` as an intermediate fact. Use `D.toPre.P.isAb.proper` as an intermediate fact. Establish `h` using `(sec_eq_zero_and_hom_eq_of_thickenings R (maximalIdeal R) (IsAdicComplete.le_jacobson_bot _) D.toPre.P.A).2 D.toPre.P.A (toUnit _ ≫ (a * a)) (toUnit _ ≫ (b * b)) fun n => by`. Take `⟨v, hv⟩` from `desc n`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h₁` using `thick_eq _ _ v hv`. Establish `h₂ : (fstG (maximalIdeal R) n D.toPre.P.A).left ≫ (toUnit D.toPre.P.A).left = pullback.snd D.toPre.P.A.hom (thick R (maximalIdeal R) n) ≫ thick R (maximalIdeal R) n` using `pullback.condition`. Conclude with `(Category.assoc _ _ _).symm.trans ((congrArg (· ≫ _) h₂).trans ((Category.assoc _ _ _).trans ((congrArg (_ ≫ ·) h₁).trans ((Category.assoc _ _ _).symm.trans ((congrArg (· ≫ _) h₂.symm).trans (Category.assoc _ _ _))))))`. Simplify using `using congrArg (η[D.toPre.P.A] ≫ ·) h`. Establish `e1 : D'.toPre.c (2 • x) ≫ Φ.hom = a * a`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[two_nsmul, D'.toPre.c_add, padd, ← Hom.mul_def, MonObj.mul_comp]`. Establish `e2 : D.toPre.c (xe (2 • x)) = b * b`. Rewrite using `[map_nsmul, two_nsmul, D.toPre.c_add, padd, ← Hom.mul_def]`. Rewrite using `[e1, e2, hab]`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.SqCompare.c_two_comp : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], IsCN R → ∀ (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ (D D' : DegData R (maximalIdeal R)) (A A' : PolAV (Sp (FractionRing R))) (U : Unif (maximalIdeal R) D A G) (U' : Unif (maximalIdeal R) D' A' G), LBIso (LB.LinComb U'.LG.L (K := Fin 1) (fun _ => 𝟙 G.left) (fun _ => 2)) (LB.LinComb U.LG.L (K := Fin 1) (fun _ => 𝟙 G.left) (fun _ => 2)) → ∀ (Φ : D'.toPre.P.A ≅ D.toPre.P.A) (w : LB.Iso (LB.LinComb D'.toPre.P.L (K := Fin 1) (fun _ => 𝟙 D'.toPre.P.A.left) (fun _ => 2)) ((LB.LinComb D.toPre.P.L (K := Fin 1) (fun _ => 𝟙 D.toPre.P.A.left) (fun _ => 2)).pull Φ.hom.left)), w.IsGen → IsMonHom Φ.hom → (∀ e : ℕ, (U'.gt e).pG.left ≫ Φ.hom.left = (U.gt e).pG.left) → ∀ xe : D'.toPre.X ≃+ D.toPre.X, (∀ (e : ℕ) (Z : Scheme.{0}) (r : Z ⟶ (thickObj R (maximalIdeal R) e G).left) (z : Z) (J : (Z ⟶ D.toPre.P.A.left) → D.toPre.P.L.ι) (J' : (Z ⟶ D'.toPre.P.A.left) → D'.toPre.P.L.ι), Good D.toPre.P.L z J → Good D'.toPre.P.L z J' → r ≫ (U.gt e).pG.left = r ≫ (fstG (maximalIdeal R) e G).left ≫ G.hom ≫ eSec D.toPre.P.A → r ≫ (U'.gt e).pG.left = r ≫ (fstG (maximalIdeal R) e G).left ≫ G.hom ≫ eSec D'.toPre.P.A → ∀ x, val ((U.gt e).t (xe x)) r z J = val ((U'.gt e).t x) r z J') → ∀ x : D'.toPre.X, D'.toPre.c (2 • x) ≫ Φ.hom = D.toPre.c (xe (2 • x)) := by
   intro R _ _ _ hR G _ _ hG D D' A A' U U' hL Φ w hw hΦ hpG xe hval x

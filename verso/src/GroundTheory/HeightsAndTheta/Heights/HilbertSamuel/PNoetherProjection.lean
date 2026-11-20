@@ -7,13 +7,13 @@ namespace GroundTheory.Heights₂.Heights.HilbertSamuel
 open MvPolynomial
 
 /- English proof (translation)
-Introduce `σ _ P hP`. Establish `: Nontrivial (MvPolynomial σ ℚ ⧸ P)` using `Ideal.Quotient.nontrivial_iff.mpr hP`. Take `⟨s, g, hinj, hint⟩` from `exists_integral_inj_algHom_of_fg ℚ (MvPolynomial σ ℚ ⧸ P)`. Use `choose ℓ hℓ using fun j => Ideal.Quotient.mk_surjective (g (X j))`. Establish `hcomp : (Ideal.Quotient.mkₐ ℚ P).comp (aeval ℓ) = g`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `j`. Simplify using `[hℓ]`. Establish `hcompR : (Ideal.Quotient.mk P).comp (aeval ℓ).toRingHom = g.toRingHom`. Rewrite using `[← hcomp]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Use `⟨s, ℓ, ?_, ?_⟩` and prove the remaining obligations. Introduce `q hq`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[map_zero, ← hcomp, AlgHom.comp_apply, Ideal.Quotient.mkₐ_eq_mk, Ideal.Quotient.eq_zero_iff_mem.mpr hq]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `f`. Take `⟨p, hpm, hp⟩` from `hint (Ideal.Quotient.mk P f)`. Use `⟨p, hpm, ?_⟩` and prove the remaining obligations. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, Polynomial.hom_eval₂, hcompR]`. Conclude with `hp`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem NoetherProjection.proof : NoetherProjection.Statement := by
   intro σ _ P hP

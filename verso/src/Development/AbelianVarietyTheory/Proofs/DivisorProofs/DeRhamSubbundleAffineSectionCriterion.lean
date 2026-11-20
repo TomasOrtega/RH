@@ -21,11 +21,11 @@ noncomputable section
 namespace GlobalTheory.ConjSeq
 
 /- English proof (translation)
-Introduce `hP h2 p _ T _ A _ g hA hg H e he F hF C hC`. Take `⟨Ψ, hΨ⟩` from `GlobalTheory.T.frobenius_pullback_de_rham_map_exists h2 p A g hA hg H e he`. Establish `hzC : Ψ ≫ cokernel.π C.incl = 0` using `GlobalTheory.T.conjugate_filtration_de_rham_first p A g hA hg H e he C hC Ψ hΨ`. Set `Ψc : (GlobalTheory.VB.frobPull p (GlobalTheory.VB.natCast_eq_zero T p (ZMod p))).obj H ⟶ C.toMod` to `Abelian.monoLift C.incl Ψ hzC`. Establish `hΨc : Ψc ≫ C.incl = Ψ` using `Abelian.monoLift_comp _ _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hepi : Epi Ψc` using `GlobalTheory.T.conjugate_filtration_de_rham_second p A g hA hg H e he C hC Ψc (by rw [hΨc]; exact hΨ)`. Establish `hzF : (GlobalTheory.VB.frobPull p (GlobalTheory.VB.natCast_eq_zero T p (ZMod p))).map F.incl ≫ Ψ = 0` using `GlobalTheory.T.conjugate_filtration_hodge_sub_first hP h2 p A g hA hg H e he F hF Ψ hΨ`. Establish `hzF' : (GlobalTheory.VB.frobPull p (GlobalTheory.VB.natCast_eq_zero T p (ZMod p))).map F.incl ≫ Ψc = 0`. Rewrite using `[← cancel_mono C.incl, Category.assoc, hΨc, hzF, zero_comp]`. Set `π : (GlobalTheory.VB.frobPull p (GlobalTheory.VB.natCast_eq_zero T p (ZMod p))).obj (cokernel F.incl) ⟶ C.toMod` to `(PreservesCokernel.iso (GlobalTheory.VB.frobPull p (GlobalTheory.VB.natCast_eq_zero T p (ZMod p))) F.incl).hom ≫ cokernel.desc _ Ψc hzF'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `hfac : (GlobalTheory.VB.frobPull p (GlobalTheory.VB.natCast_eq_zero T p (ZMod p))).map (cokernel.π F.incl) ≫ π = Ψc`. Simplify using `only [π, ← Category.assoc, PreservesCokernel.π_iso_hom, cokernel.π_desc]`. Establish `: Epi π` using `epi_of_epi_fac hfac`. Establish `: IsIso π` using `GlobalTheory.T.isIso_of_epi_vector_bundle_same_rank π g ((GlobalTheory.T.hodge_filtration_sub_de_rham h2 p A g hA hg H e he F hF).frobPull p _) (GlobalTheory.T.conjugate_filtration_hodge_sub_second hP h2 p A g hA hg H e he C hC)`. Conclude with `⟨(asIso π).symm⟩`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem conj_iso_frobPull_quot : GlobalTheory.Published.ConjugateFiltration → GlobalTheory.CovTop.Hypotheses2 → ∀ (p : ℕ) [Fact p.Prime] {T : Scheme.{0}} [Algebra (ZMod p) Γ(T, ⊤)] (A : Over T) [GrpObj A]
     (g : ℕ), IsAbelianScheme A → SmoothOfRelativeDimension g A.hom → ∀ (H : T.Modules)

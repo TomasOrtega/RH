@@ -18,7 +18,7 @@ local notation "π" => (GLnLocal.uniformizer F : F)
 noncomputable local instance fintypeResidue'' : Fintype 𝓀[F] := Fintype.ofFinite _
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [AddChar.map_zero_eq_one]`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.prod_insert ha, AddChar.map_add_eq_mul, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem addChar_sum_eq_prod {ι : Type*} (ψ₀ : AddChar F ℂ) (s : Finset ι) (f : ι → F) :
     ψ₀ (∑ i ∈ s, f i) = ∏ i ∈ s, ψ₀ (f i) := by
@@ -28,7 +28,7 @@ theorem addChar_sum_eq_prod {ι : Type*} (ψ₀ : AddChar F ℂ) (s : Finset ι)
   | insert a s ha ih => rw [Finset.sum_insert ha, Finset.prod_insert ha, AddChar.map_add_eq_mul, ih]
 
 /- English proof (translation)
-Use `mem_of_bdd ?_` and prove the remaining obligations. Establish `h` using `(bdd_zpow (F := F) (-1)).mul (bdd_one_of_mem_maximalIdeal hy)`. Rewrite `h` using `[_root_.zpow_neg_one, neg_add_cancel]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem inv_mul_mem_of_mem_maximalIdeal {y : 𝒪[F]} (hy : y ∈ IsLocalRing.maximalIdeal 𝒪[F]) :
     π⁻¹ * (y : F) ∈ 𝒪[F] := by
@@ -58,11 +58,11 @@ def residueChar (ψ₀ : AddChar F ℂ) (hψ₀ : ∀ x ∈ 𝒪[F], ψ₀ x = 1
     rfl
 
 /- English proof (translation)
-Take `⟨y, hy, hψy⟩` from `hψ₁`. Introduce `h`. Establish `h1` using `congrArg (fun φ : AddChar 𝓀[F] ℂ => φ (IsLocalRing.residue 𝒪[F] ⟨π * y, hy⟩)) h`. Simplify using `only [AddChar.one_apply] at h1`. Establish `hm` using `residueLift_sub_mem (F := F) ⟨π * y, hy⟩`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h2` using `hψ₀ _ (inv_mul_mem_of_mem_maximalIdeal hm)`. Establish `hπ : π ≠ 0` using `uniformizer_ne_zero F`. Establish `: π⁻¹ * ((residueLift F (IsLocalRing.residue 𝒪[F] ⟨π * y, hy⟩) : 𝒪[F]) : F) = y + π⁻¹ * ((residueLift F (IsLocalRing.residue 𝒪[F] ⟨π * y, hy⟩) - ⟨π * y, hy⟩ : 𝒪[F]) : F)`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 
-Expand and normalize the polynomial expressions, which then agree. Express the relevant statement in the definitionally equal form `ψ₀ (π⁻¹ * ((residueLift F (IsLocalRing.residue 𝒪[F] ⟨π * y, hy⟩) : 𝒪[F]) : F)) = 1 at h1`. Rewrite `h1` using `[this, AddChar.map_add_eq_mul, h2, mul_one]`. Conclude with `hψy h1`.
+Expand and normalize the polynomial expressions, which then agree. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem residueChar_ne_one (ψ₀ : AddChar F ℂ) (hψ₀ : ∀ x ∈ 𝒪[F], ψ₀ x = 1)
     (hψ₁ : ∃ x : F, π * x ∈ 𝒪[F] ∧ ψ₀ x ≠ 1) : residueChar ψ₀ hψ₀ ≠ 1 := by
@@ -85,7 +85,7 @@ theorem residueChar_ne_one (ψ₀ : AddChar F ℂ) (hψ₀ : ∀ x ∈ 𝒪[F], 
 
 omit [TopologicalSpace F] [IsNonarchimedeanLocalField F] in
 /- English proof (translation)
-Use `Subring.sum_mem _ fun i _ => Subring.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Use `split_ifs with hij`. Conclude with `h i j hij`. Conclude with `Subring.zero_mem _`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem superdiagSum_mem {M : Matrix (Fin n) (Fin n) F}
     (h : ∀ i j : Fin n, (j : ℕ) = i + 1 → M i j ∈ 𝒪[F]) : Whittaker.superdiagSum M ∈ 𝒪[F] := by
@@ -95,7 +95,7 @@ theorem superdiagSum_mem {M : Matrix (Fin n) (Fin n) F}
   · exact Subring.zero_mem _
 
 /- English proof (translation)
-Use `hψ₀ _ (superdiagSum_mem fun i j hij => ?_)` and prove the remaining obligations. Rewrite using `[torusPow_mul_mul_neg_apply]`. Use `Subring.mul_mem _ (zpow_mem_of_nonneg ?_) (((mem_integralGL_iff F n).1 hk).1 i j)` and prove the remaining obligations. Use `hl (show i ≤ j from Fin.le_def.2 (by omega))` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem psiN_conj_eq_one {ψ₀ : AddChar F ℂ} (hψ₀ : ∀ x ∈ 𝒪[F], ψ₀ x = 1) {l : Fin n → ℤ}
     (hl : Antitone l) {k : GL (Fin n) F} (hk : k ∈ integralGL F n) :
@@ -107,7 +107,7 @@ theorem psiN_conj_eq_one {ψ₀ : AddChar F ℂ} (hψ₀ : ∀ x ∈ 𝒪[F], ψ
   linarith
 
 /- English proof (translation)
-Take `⟨u, hu, k, hk, h⟩` from `exists_eq_mul_torusPow_iwasawaExponent F n g`. Conclude with `⟨(u, k), hu, hk, h⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_iwasawa_decomp (g : GL (Fin n) F) :
     ∃ p : GL (Fin n) F × GL (Fin n) F, p.1 ∈ unipotent F n ∧ p.2 ∈ integralGL F n ∧
@@ -120,19 +120,19 @@ def iwasawaUnip (g : GL (Fin n) F) : GL (Fin n) F := (exists_iwasawa_decomp g).c
 def iwasawaInt (g : GL (Fin n) F) : GL (Fin n) F := (exists_iwasawa_decomp g).choose.2
 
 /- English proof (translation)
-The claim follows from `(exists_iwasawa_decomp g).choose_spec.1`.
+A detailed English derivation is pending.
 -/
 theorem iwasawaUnip_mem (g : GL (Fin n) F) : iwasawaUnip g ∈ unipotent F n :=
   (exists_iwasawa_decomp g).choose_spec.1
 
 /- English proof (translation)
-The claim follows from `(exists_iwasawa_decomp g).choose_spec.2.1`.
+A detailed English derivation is pending.
 -/
 theorem iwasawaInt_mem (g : GL (Fin n) F) : iwasawaInt g ∈ integralGL F n :=
   (exists_iwasawa_decomp g).choose_spec.2.1
 
 /- English proof (translation)
-The claim follows from `(exists_iwasawa_decomp g).choose_spec.2.2`.
+A detailed English derivation is pending.
 -/
 theorem eq_iwasawa (g : GL (Fin n) F) :
     g = iwasawaUnip g * torusPow F n (iwasawaExponent F n g) * iwasawaInt g :=
@@ -147,15 +147,13 @@ def sphericalWhittaker (g : GL (Fin n) F) : ℂ :=
   else 0
 
 /- English proof (translation)
-Establish `hexp : iwasawaExponent F n (u * torusPow F n l * k) = l` using `iwasawaExponent_eq F n hu hk`. Establish `hu'` using `iwasawaUnip_mem (u * torusPow F n l * k)`. Establish `hk'` using `iwasawaInt_mem (u * torusPow F n l * k)`. Establish `heq` using `eq_iwasawa (u * torusPow F n l * k)`. Use `set u' := iwasawaUnip (u * torusPow F n l * k)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set k' := iwasawaInt (u * torusPow F n l * k)`. Rewrite using `[sphericalWhittaker, hexp]`. Use `split_ifs with hl`. Use `swap`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `heq` using `[hexp]`. Establish `hv : u⁻¹ * u' = torusPow F n l * (k * k'⁻¹) * torusPow F n (-l)`. Rewrite using `[torusPow_neg]`. Use `congrArg (fun g => u⁻¹ * g * k'⁻¹ * (torusPow F n l)⁻¹) heq` as an intermediate fact. Rewrite `this` using `[show u⁻¹ * (u * torusPow F n l * k) * k'⁻¹ * (torusPow F n l)⁻¹ = torusPow F n l * (k * k'⁻¹) * (torusPow F n l)⁻¹ by group, show u⁻¹ * (u' * torusPow F n l * k') * k'⁻¹ * (torusPow F n l)⁻¹ = u⁻¹ * u' by group]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `this.symm`. Establish `h1 : Whittaker.psiN ψ₀ (u⁻¹ * u') = 1`. Rewrite using `[hv]`. Conclude with `psiN_conj_eq_one hψ₀ hl (mul_mem hk ((integralGL F n).inv_mem hk'))`. Establish `h2 : u' = u * (u⁻¹ * u')` using `by group`.
-
-Express the relevant statement in the definitionally equal form `Whittaker.psiN ψ₀ u' * halfModulus F l * evalAt z (schur l) = _`. Rewrite using `[h2, Whittaker.psiN_mul ψ₀ hu ((unipotent F n).mul_mem ((unipotent F n).inv_mem hu) hu'), h1, mul_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sphericalWhittaker_apply {ψ₀ : AddChar F ℂ} (hψ₀ : ∀ x ∈ 𝒪[F], ψ₀ x = 1)
     (z : Fin n → ℂˣ) {u k : GL (Fin n) F} (hu : u ∈ unipotent F n) (hk : k ∈ integralGL F n)
@@ -190,7 +188,7 @@ theorem sphericalWhittaker_apply {ψ₀ : AddChar F ℂ} (hψ₀ : ∀ x ∈ �
     mul_one]
 
 /- English proof (translation)
-Establish `hg` using `eq_iwasawa g`. Establish `hu` using `iwasawaUnip_mem g`. Establish `hk` using `iwasawaInt_mem g`. Rewrite using `[hg, show v * (iwasawaUnip g * torusPow F n (iwasawaExponent F n g) * iwasawaInt g) = (v * iwasawaUnip g) * torusPow F n (iwasawaExponent F n g) * iwasawaInt g by group, sphericalWhittaker_apply hψ₀ z ((unipotent F n).mul_mem hv hu) hk, sphericalWhittaker_apply hψ₀ z hu hk, Whitt …`. Apply the tactic sequence `split_ifs <;> ring`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sphericalWhittaker_mul_left {ψ₀ : AddChar F ℂ} (hψ₀ : ∀ x ∈ 𝒪[F], ψ₀ x = 1)
     (z : Fin n → ℂˣ) {v : GL (Fin n) F} (hv : v ∈ unipotent F n) (g : GL (Fin n) F) :
@@ -205,7 +203,7 @@ theorem sphericalWhittaker_mul_left {ψ₀ : AddChar F ℂ} (hψ₀ : ∀ x ∈ 
   split_ifs <;> ring
 
 /- English proof (translation)
-Establish `hg` using `eq_iwasawa g`. Establish `hu` using `iwasawaUnip_mem g`. Establish `hk` using `iwasawaInt_mem g`. Rewrite using `[hg, mul_assoc, sphericalWhittaker_apply hψ₀ z hu (mul_mem hk hk₀), sphericalWhittaker_apply hψ₀ z hu hk]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem sphericalWhittaker_mul_right {ψ₀ : AddChar F ℂ} (hψ₀ : ∀ x ∈ 𝒪[F], ψ₀ x = 1)
     (z : Fin n → ℂˣ) (g : GL (Fin n) F) {k₀ : GL (Fin n) F} (hk₀ : k₀ ∈ integralGL F n) :
@@ -217,7 +215,7 @@ theorem sphericalWhittaker_mul_right {ψ₀ : AddChar F ℂ} (hψ₀ : ∀ x ∈
     sphericalWhittaker_apply hψ₀ z hu hk]
 
 /- English proof (translation)
-Use `sphericalWhittaker_apply hψ₀ z (unipotent F n).one_mem (integralGL F n).one_mem l` as an intermediate fact. Rewrite `this` using `[one_mul, mul_one, Whittaker.psiN_one, one_mul]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sphericalWhittaker_torusPow {ψ₀ : AddChar F ℂ} (hψ₀ : ∀ x ∈ 𝒪[F], ψ₀ x = 1)
     (z : Fin n → ℂˣ) (l : Fin n → ℤ) :
@@ -228,7 +226,7 @@ theorem sphericalWhittaker_torusPow {ψ₀ : AddChar F ℂ} (hψ₀ : ∀ x ∈ 
   exact this
 
 /- English proof (translation)
-Use `sphericalWhittaker_torusPow hψ₀ z (0 : Fin n → ℤ)` as an intermediate fact. Rewrite `this` using `[torusPow_zero, if_pos (show Antitone (0 : Fin n → ℤ) from fun _ _ _ => le_rfl), halfModulus_zero, schur_zero, map_one, mul_one]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sphericalWhittaker_one {ψ₀ : AddChar F ℂ} (hψ₀ : ∀ x ∈ 𝒪[F], ψ₀ x = 1)
     (z : Fin n → ℂˣ) : sphericalWhittaker ψ₀ z (1 : GL (Fin n) F) = 1 := by
@@ -238,15 +236,13 @@ theorem sphericalWhittaker_one {ψ₀ : AddChar F ℂ} (hψ₀ : ∀ x ∈ 𝒪[
   exact this
 
 /- English proof (translation)
-Use `set T : Fin n × Fin n → F := fun q => if (q.2 : ℕ) = q.1 + 1 then π ^ (l q.1 - l q.2) * cMat S c q.1 q.2 else 0 with hT`. Establish `h1 : Whittaker.superdiagSum ((torusPow F n l * unipC S c * torusPow F n (-l) : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) = ∑ q : Fin n × Fin n, T q`. Rewrite using `[Whittaker.superdiagSum, ← Fintype.sum_prod_type']`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Simplify using `only [hT]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `split_ifs with h`. Rewrite using `[torusPow_mul_mul_neg_apply, coe_unipC, Matrix.add_apply, Matrix.one_apply_ne (fun h' => by rw [h'] at h; omega), zero_add]`. Both sides reduce to the same expression. Establish `h2 : ∑ q : Fin n × Fin n, T q = ∑ p : Pairs S, T p.1`. Rewrite using `[← Fintype.sum_subtype_add_sum_subtype (fun q : Fin n × Fin n => q.1 ∈ S ∧ q.2 ∉ S ∧ q.1 < q.2) T]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: ∑ q : {q : Fin n × Fin n // ¬(q.1 ∈ S ∧ q.2 ∉ S ∧ q.1 < q.2)}, T q = 0`. Use `Finset.sum_eq_zero fun q _ => ?_` and prove the remaining obligations. Simplify using `only [hT, cMat_apply_of_not c q.2, mul_zero, ite_self]`. Rewrite using `[this, add_zero]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Whittaker.psiN, h1, h2, addChar_sum_eq_prod]`. Use `Finset.prod_congr rfl fun p _ => ?_` and prove the remaining obligations. Simplify using `only [hT]`. Use `split_ifs with h`. Use `congr 2`.
-
-Conclude with `dif_pos p.2`. Conclude with `AddChar.map_zero_eq_one ψ₀`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem psiN_conj_unipC (ψ₀ : AddChar F ℂ) (l : Fin n → ℤ) (S : Finset (Fin n)) (c : Pairs S → 𝓀[F]) :
     Whittaker.psiN ψ₀ (torusPow F n l * unipC S c * torusPow F n (-l)) =
@@ -281,11 +277,9 @@ theorem psiN_conj_unipC (ψ₀ : AddChar F ℂ) (l : Fin n → ℤ) (S : Finset 
   · exact AddChar.map_zero_eq_one ψ₀
 
 /- English proof (translation)
-Use `set G : Pairs S → 𝓀[F] → ℂ := fun p x => if (p.1.2 : ℕ) = p.1.1 + 1 then ψ₀ (π ^ (l p.1.1 - l p.1.2) * ((residueLift F x : 𝒪[F]) : F)) else 1 with hG`. Establish `key` using `Finset.prod_univ_sum (fun _ : Pairs S => (Finset.univ : Finset 𝓀[F])) G`. Rewrite `key` using `[Fintype.piFinset_univ]`. Establish `hlt : i < j` using `Fin.lt_def.2 (by omega)`. Establish `hzero : ∑ c : Pairs S → 𝓀[F], ∏ p, G p (c p) = 0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← key]`. Use `Finset.prod_eq_zero (Finset.mem_univ (⟨(i, j), hi, hj, hlt⟩ : Pairs S)) ?_` and prove the remaining obligations. Simplify using `only [hG, if_pos hij]`. Rewrite using `[show l i - l j = -1 by omega, _root_.zpow_neg_one]`. Conclude with `AddChar.sum_eq_zero_of_ne_one (residueChar_ne_one ψ₀ hψ₀ hψ₁)`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem sum_psiN_conj_unipC_eq_zero {ψ₀ : AddChar F ℂ} (hψ₀ : ∀ x ∈ 𝒪[F], ψ₀ x = 1)
     (hψ₁ : ∃ x : F, π * x ∈ 𝒪[F] ∧ ψ₀ x ≠ 1) {l : Fin n → ℤ} {S : Finset (Fin n)} {i j : Fin n}
@@ -311,9 +305,9 @@ variable [MeasurableSpace (GL (Fin n) F)] [BorelSpace (GL (Fin n) F)]
   {μ : Measure (GL (Fin n) F)} [μ.IsHaarMeasure]
 
 /- English proof (translation)
-Use `integral_mul_left_eq_self (μ := μ) (fun y => (h : HeckeAlgebra μ) (k⁻¹ * y) * f y) k` as an intermediate fact. Simplify using `only [inv_mul_cancel_left] at this`. Rewrite using `[this]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Simplify using `only`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[HeckeAlgebraLevel.apply_mul_left _ _ h ((integralGL F n).inv_mem hk)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem integral_hecke_mul_left (h : SphericalHecke μ (F := F) (n := n)) (f : GL (Fin n) F → ℂ)
     {k : GL (Fin n) F} (hk : k ∈ integralGL F n) :
@@ -327,9 +321,9 @@ theorem integral_hecke_mul_left (h : SphericalHecke μ (F := F) (n := n)) (f : G
   rw [HeckeAlgebraLevel.apply_mul_left _ _ h ((integralGL F n).inv_mem hk)]
 
 /- English proof (translation)
-Rewrite using `[sphericalWhittaker_torusPow hψ₀]`. Use `split_ifs with h`. Both sides reduce to the same expression. Take `⟨i, j, hij, hlij, hiS, hjS⟩` from `exists_ascent hl h`. Establish `hasc : (l + lamS S) j = (l + lamS S) i + 1`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Pi.add_apply, lamS_apply, hiS, hjS, if_true, if_false, hlij]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[schur_eq_zero_of_ascent hij hasc, map_zero, mul_zero]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sphericalWhittaker_torusPow_add_lamS {ψ₀ : AddChar F ℂ} (hψ₀ : ∀ x ∈ 𝒪[F], ψ₀ x = 1)
     (z : Fin n → ℂˣ) {l : Fin n → ℤ} (hl : Antitone l) (S : Finset (Fin n)) :
@@ -345,21 +339,21 @@ theorem sphericalWhittaker_torusPow_add_lamS {ψ₀ : AddChar F ℂ} (hψ₀ : �
     rw [schur_eq_zero_of_ascent hij hasc, map_zero, mul_zero]
 
 /- English proof (translation)
-Rewrite using `[integral_minusculeHecke_mul (fun g k hk => sphericalWhittaker_mul_right hψ₀ z g hk), evalAt_satakeTransform_minusculeHecke z hr]`. Establish `hterm : ∀ S : Finset (Fin n), ∑ c : Pairs S → 𝓀[F], sphericalWhittaker ψ₀ z (torusPow F n l * gMat S c) = (∑ c : Pairs S → 𝓀[F], Whittaker.psiN ψ₀ (torusPow F n l * unipC S c * torusPow F n (-l))) * sphericalWhittaker ψ₀ z (torusPow F n (l + lamS S))`. Introduce `S`. Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hN : torusPow F n l * unipC S c * torusPow F n (-l) ∈ unipotent F n`. Rewrite using `[torusPow_neg, torusPow]`. Conclude with `diagGL_mul_mul_inv_mem_unipotent F n (unipC_mem_unipotent S c) _`. Rewrite using `[torusPow_mul_gMat, sphericalWhittaker_mul_left hψ₀ z hN]`. Simplify using `only [hterm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hl : Antitone l`. Establish `hone : ∀ S : Finset (Fin n), ∑ c : Pairs S → 𝓀[F], Whittaker.psiN ψ₀ (torusPow F n l * unipC S c * torusPow F n (-l)) = (kappa F S : ℂ)`. Introduce `S`. Rewrite using `[Finset.sum_congr rfl fun c _ => psiN_eq_one_of_mem hψ₀ (torusPow_conj_unipC_mem hl S c), Finset.sum_const, Finset.card_univ, nsmul_eq_mul, mul_one, kappa, Nat.card_eq_fintype_card]`. Simplify using `only [hone, sphericalWhittaker_torusPow_add_lamS hψ₀ z hl]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← halfModulus_mul_recursion schur (fun r l => esymmL_mul_schur r l) z hr l, sphericalWhittaker_torusPow hψ₀, if_pos hl]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[sphericalWhittaker_torusPow hψ₀, if_neg hl, mul_zero]`. Rewrite using `[Finset.sum_eq_zero, mul_zero]`. Introduce `S _`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hant : Antitone (l + lamS S)`. Take `⟨i, j, hij, hlt⟩` from `exists_lt_succ_of_not_antitone hl`. Establish `hle : (l + lamS S) j ≤ (l + lamS S) i` using `hant (Fin.le_def.2 (by omega))`. Simplify using `only [Pi.add_apply, lamS_apply] at hle`. Establish `hiS : i ∈ S`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `h`. Rewrite `hle` using `[if_neg h]`. Apply the tactic sequence `split_ifs at hle <;> omega`. Establish `hjS : j ∉ S`. Introduce `h`.
+Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hle` using `[if_pos h, if_pos hiS]`. Use linear arithmetic over natural numbers and integers. Establish `hlj : l j = l i + 1`. Rewrite `hle` using `[if_pos hiS, if_neg hjS]`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sum_psiN_conj_unipC_eq_zero hψ₀ hψ₁ hij hiS hjS hlj, zero_mul]`. Rewrite using `[sphericalWhittaker_torusPow hψ₀, if_neg hant, mul_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_minusculeHecke_mul_sphericalWhittaker_torusPow {ψ₀ : AddChar F ℂ}
     (hψ₀ : ∀ x ∈ 𝒪[F], ψ₀ x = 1) (hψ₁ : ∃ x : F, π * x ∈ 𝒪[F] ∧ ψ₀ x ≠ 1) (z : Fin n → ℂˣ)
@@ -412,13 +406,11 @@ theorem integral_minusculeHecke_mul_sphericalWhittaker_torusPow {ψ₀ : AddChar
     · rw [sphericalWhittaker_torusPow hψ₀, if_neg hant, mul_zero]
 
 /- English proof (translation)
-Establish `hg` using `eq_iwasawa g`. Use `set u := iwasawaUnip g`. Use `set e := iwasawaExponent F n g`. Use `set k := iwasawaInt g`. Establish `hu : u ∈ unipotent F n` using `iwasawaUnip_mem g`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hk : k ∈ integralGL F n` using `iwasawaInt_mem g`. Establish `h1 : ∀ x, sphericalWhittaker ψ₀ z (g * x) = Whittaker.psiN ψ₀ u * sphericalWhittaker ψ₀ z (torusPow F n e * (k * x))`. Introduce `x`. Rewrite using `[← sphericalWhittaker_mul_left hψ₀ z hu]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[hg]`. Use `group`. Simplify using `only [h1]`. Rewrite using `[show (fun x => (minusculeHecke μ r : HeckeAlgebra μ) x * (Whittaker.psiN ψ₀ u * sphericalWhittaker ψ₀ z (torusPow F n e * (k * x)))) = fun x => Whittaker.psiN ψ₀ u * ((minusculeHecke μ r : HeckeAlgebra μ) x * sphericalWhittaker ψ₀ z (torusPow F n e * (k * x))) by funext x; ring, …`. Use `conv_rhs => rw [hg, sphericalWhittaker_mul_right hψ₀ z _ hk, sphericalWhittaker_mul_left hψ₀ z hu]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem integral_minusculeHecke_mul_sphericalWhittaker {ψ₀ : AddChar F ℂ}
     (hψ₀ : ∀ x ∈ 𝒪[F], ψ₀ x = 1) (hψ₁ : ∃ x : F, π * x ∈ 𝒪[F] ∧ ψ₀ x ≠ 1) (z : Fin n → ℂˣ)

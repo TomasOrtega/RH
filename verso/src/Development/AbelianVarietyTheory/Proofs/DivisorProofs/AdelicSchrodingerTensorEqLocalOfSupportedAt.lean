@@ -22,7 +22,7 @@ namespace GlobalTheory.SchrLoc
 open GlobalTheory.VacAny
 
 /- English proof (translation)
-Establish `h1` using `hz (1 - GlobalTheory.EmbChart.atPlace v 1) (by rw [map_sub, map_one, GlobalTheory.EmbChart.evFin_atPlace, sub_self])`. Rewrite `h1` using `[smul_eq_mul, sub_mul, one_mul, sub_eq_zero]`. Use `conv_lhs => rw [h1]`. Rewrite using `[GlobalTheory.EmbChart.atPlace_mul_right, one_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_atPlace_of_at {F : Type} [Field F] [NumberField F] {v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F} {z : AF F}
     (hz : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.At (GlobalTheory.AdelicU.evFin F v) z) :
@@ -34,9 +34,9 @@ theorem eq_atPlace_of_at {F : Type} [Field F] [NumberField F] {v : GlobalTheory.
   rw [GlobalTheory.EmbChart.atPlace_mul_right, one_mul]
 
 /- English proof (translation)
-Introduce `F _ _ ψ v κ _ w h1 h2 φ r hr`. Use function extensionality and compare the values at `x`. Establish `hr' : r (x + w.1) = r x` using `hr x w.1 (at_pi h1)`. Establish `hz : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.At (GlobalTheory.AdelicU.evFin F v) (x ⬝ᵥ w.2 + ⅟(2 : AF F) * (w.1 ⬝ᵥ w.2))` using `at_add (at_sum _ fun i _ => at_mul_left _ (h2 i)) (at_mul_left _ (at_sum _ fun i _ => at_mul_left _ (h2 i)))`. Simplify using `only [GlobalTheory.WeilM.schr, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.tens]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[hr', eq_atPlace_of_at hz, ← psiV_apply]`. Simplify using `only [dotProduct, map_add, map_mul, map_sum, evFin_invOf_two, Pi.add_apply]`. Rewrite using `[show (fun i => GlobalTheory.AdelicU.evFin F v (x i) + GlobalTheory.AdelicU.evFin F v (w.1 i)) = (fun i => GlobalTheory.AdelicU.evFin F v (x i)) + (fun i => GlobalTheory.AdelicU.evFin F v (w.1 i)) from rfl]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem schr_tens_of_at : ∀ {F : Type} [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ) (v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F) {κ : Type} [Fintype κ]
     (w : (κ → AF F) × (κ → AF F)), (∀ i, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.At (GlobalTheory.AdelicU.evFin F v) (w.1 i)) →

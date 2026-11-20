@@ -15,11 +15,11 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.HoweAllPlaces
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hb`. Take `⟨x, hx, hx0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hb`. Choose the witnesses or unpack the hypotheses as in `⟨p, hp⟩ : ∃ p, x p ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `hx0 (funext h)`. Apply `hne` to reduce the goal to its premises. Use `le_antisymm hP fun y _ => ?_` and prove the remaining obligations. Establish `: y = (y p / x p) • x`. Use function extensionality and compare the values at `q`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Subsingleton.elim q p, Pi.smul_apply, smul_eq_mul, div_mul_cancel₀ _ hp]`. Rewrite using `[this]`. Conclude with `P.smul_mem _ hx`.
+A detailed English derivation is pending.
 -/
 theorem eq_bot_of_subsingleton {D : Type} [Subsingleton D] (S P : Submodule ℂ (D → ℂ)) (hP : P ≤ S) (hne : P ≠ S) :
     P = ⊥ := by
@@ -42,21 +42,21 @@ end GlobalTheory.HoweAllPlaces
 open GlobalTheory.HoweAllPlaces in
 
 /- English proof (translation)
-Introduce `hP hHD hMin F E _ _ _ _ _ σ hcm n d X W M ψ χX χW om hψ hX hXd hW hWd hrX hrW hhX hhW hweil v N N' hN hN'`. Establish `key : ThetaSub om v (N ⊔ N') → N ⊔ N' ≠ SB _ → N = N'`. Introduce `h1 h2`. Establish `a` using `hN.2 ⟨h1, h2⟩ le_sup_left`. Establish `b` using `hN'.2 ⟨h1, h2⟩ le_sup_right`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `le_antisymm (le_sup_left.trans b) (le_sup_right.trans a)`. Establish `hNS : N ≤ SB _` using `hN.1.1.2.1`. Establish `hNS' : N' ≤ SB _` using `hN'.1.1.2.1`. Break down `isEmpty_or_nonempty (E →ₐ[F] Fv F v) with hs | hs` into its components or cases. Conclude with `GlobalTheory.HoweNonsplit.unique_maximal hP hHD F E σ hcm n d X W M ψ χX χW om hψ hX hXd hW hWd hrX hrW hhX hhW hweil v hs N N' hN hN'`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality.
 
-Break down `Nat.eq_zero_or_pos n with hn | hn` into its components or cases. Substitute `hn` using the available equality. Rewrite using `[eq_bot_of_subsingleton _ N hNS hN.1.2, eq_bot_of_subsingleton _ N' hNS' hN'.1.2]`. Break down `Nat.eq_zero_or_pos d with hd | hd` into its components or cases. Substitute `hd` using the available equality.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[eq_bot_of_subsingleton _ N hNS hN.1.2, eq_bot_of_subsingleton _ N' hNS' hN'.1.2]`. Take `⟨χ, ι, hχ, hbij, htr⟩` from `GlobalTheory.SplitTransportPair.transport hP F E σ hcm n d X W M ψ χX χW om hψ hX hXd hW hWd hrX hrW hhX hhW hweil hn hd v hs`. Establish `hsN` using `(htr N hNS).1 hN.1.1`. Establish `hsN'` using `(htr N' hNS').1 hN'.1.1`. Establish `h1 : ThetaSub om v (N ⊔ N')` using `(htr _ (sup_le hNS hNS')).2 (by rw [Submodule.map_sup]; exact hsN.sup hsN')`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hSB : (SB (Fin n × Fin d → Fv F v)).map ι = GlobalTheory.SplitWeil.SB _`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `hbij.mapsTo hx`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce `hy`. Take `⟨x, hx, rfl⟩` from `hbij.surjOn hy`. Conclude with `⟨x, hx, rfl⟩`. Establish `hne : ∀ P : Submodule ℂ ((Fin n × Fin d → Fv F v) → ℂ), P ≤ SB _ → P ≠ SB _ → P.map ι ≠ GlobalTheory.SplitWeil.SB _`. Introduce `P hP1 hP2 he`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Apply `hP2` to reduce the goal to its premises. Use `le_antisymm hP1 fun x hx => ?_` and prove the remaining obligations. Establish `: ι x ∈ P.map ι` using `by rw [he, ← hSB]; exact Submodule.mem_map_of_mem hx`. Take `⟨y, hy, hyx⟩` from `this`. Rewrite `hy` using `[hbij.injOn (hP1 hy) hx hyx]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `key h1 fun he => ?_` and prove the remaining obligations. Apply `GlobalTheory.ThetaGLSub.SumProper.main hP hMin _ n d hn hd χ hχ _ _ hsN hsN' (hne N hNS hN.1.2) (hne N' hNS' hN'.1.2)` to reduce the goal to its premises. Rewrite using `[← Submodule.map_sup, he, hSB]`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.HoweAllPlaces.main : GlobalTheory.FunPr.Hypotheses₂ → GlobalTheory.Published.HoweDualityUnitary → GlobalTheory.Published.MinguezThetaGL → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ →
     ∀ (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (ψ : AddChar (AF F) ℂ) (χX χW : Chr F E) (om : Rep σ X W),

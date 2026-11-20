@@ -57,7 +57,7 @@ def cmp : (UnifPre.GF (R := R) (G := G) F).left ⟶ (TF (R := R) F ⊗ G).left :
     rw [← Category.assoc, h, Category.assoc, Category.assoc, pullback.condition])
 
 /- English proof (translation)
-The claim follows from `pullback.lift_snd _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem cmp_snd : cmp G F ≫ (snd (TF (R := R) F) G).left = UnifPre.gFK (R := R) (G := G) F :=
   pullback.lift_snd _ _ _
@@ -81,7 +81,7 @@ def normaliser (Dw : Datum H) (c : Coeff l) (a : (E →+* ℂ) × ℕ → ℕ) (
   ∏ τ : E →+* ℂ, embK c τ α ^ ∑ i : Fin (Dw.mult τ), a (τ, i)
 
 /- English proof (translation)
-Simplify using `[normaliser]`.
+Simplify using the standard rewrite rules.
 -/
 example (α : 𝓞 E) : normaliser Dw c 0 α = 1 := by simp [normaliser]
 

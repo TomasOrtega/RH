@@ -6,7 +6,7 @@ namespace ReciprocityTheory.ChartRestriction.G.I2
 open Metric
 
 /- English proof (translation)
-The claim follows from `| 0, x, x₀, _, hM => by have := hM x₀ (by simp) have hx : x = 0 := Subsingleton.elim _ _ simpa [iteratedFDeriv_zero_apply] using this | k + 1, x, x₀, hx, hM => by set e : V := x 0 with he set v : Fin k → V := Fin.tail x with hv set A := iteratedFDeriv ℂ k F with hA have hD : Diff …`.
+A detailed English derivation is pending.
 -/
 theorem ct_iter_cauchy {V : Type*} [NormedAddCommGroup V] [NormedSpace ℂ V]
     (F : V → ℂ) (hF : ∀ m : ℕ, ContDiff ℂ m F) (ρ M : ℝ) (hρ : 0 < ρ) :
@@ -62,11 +62,11 @@ namespace ReciprocityTheory.ChartRestriction.G.I2
 open Complex
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Use function extensionality and compare the values at `v`. Use extensionality with `x`. Simplify using `[iteratedFDeriv_zero_apply, ContinuousMultilinearMap.mkPiAlgebraFin_apply]`.
+Proceed by induction. Treat this case separately. Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Consider the case `succ n ih`. Use function extensionality and compare the values at `v`. Use extensionality with `x`. Rewrite using `[iteratedFDeriv_succ_apply_left, ih]`. Establish `hd : HasFDerivAt (fun w => cexp (ℓ w) • (ContinuousMultilinearMap.mkPiAlgebraFin ℂ n ℂ).compContinuousLinearMap (fun _ => ℓ)) ((cexp (ℓ v) • ℓ).smulRight ((ContinuousMultilinearMap.mkPiAlgebraFin ℂ n ℂ).compContinuousLinearMap (fun _ => ℓ))) v` using `(ℓ.hasFDerivAt.cexp).smul_const _`.
+Treat this case separately. Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hd.fderiv]`. Simplify using `[ContinuousMultilinearMap.mkPiAlgebraFin_apply, List.prod_ofFn, Fin.prod_univ_succ, Fin.tail]`. Apply the tactic sequence `all_goals ring`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ct_iter_cexp {V : Type*} [NormedAddCommGroup V] [NormedSpace ℂ V]
     (ℓ : V →L[ℂ] ℂ) (n : ℕ) :
@@ -92,7 +92,7 @@ theorem ct_iter_cexp {V : Type*} [NormedAddCommGroup V] [NormedSpace ℂ V]
     all_goals ring
 
 /- English proof (translation)
-Rewrite using `[ct_iter_cexp]`. Simplify using `[ContinuousMultilinearMap.mkPiAlgebraFin_apply, List.prod_ofFn]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem ct_iter_cexp_apply {V : Type*} [NormedAddCommGroup V] [NormedSpace ℂ V]
     (ℓ : V →L[ℂ] ℂ) (n : ℕ) (v : V) (x : Fin n → V) :
@@ -101,19 +101,19 @@ theorem ct_iter_cexp_apply {V : Type*} [NormedAddCommGroup V] [NormedSpace ℂ V
   simp [ContinuousMultilinearMap.mkPiAlgebraFin_apply, List.prod_ofFn]
 
 /- English proof (translation)
-Establish `hle : ∀ k : ℕ, ((k : ℕ∞) : WithTop ℕ∞) ≤ ((⊤ : ℕ∞) : WithTop ℕ∞)`. Introduce `k`. Use `first`. Consider the case `exact_mod_cast (le_top : (k : ℕ∞) ≤ ⊤)`. Consider the case `exact WithTop.coe_le_coe.2 le_top`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `hhC : ContDiff ℂ (⊤ : ℕ∞) (fun v => g v - 1)` using `hg.sub contDiff_const`. Establish `hz : ∀ k ≤ c, iteratedFDeriv ℂ k (fun v => g v - 1) 0 = 0`. Introduce `k hk`. Break down `Nat.eq_zero_or_pos k with rfl | hk0` into its components or cases. Use extensionality with `x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[iteratedFDeriv_zero_apply, h0]`. Establish `e : (fun v => g v - 1) = g - fun _ => (1 : ℂ)` using `rfl`. Rewrite using `[e]`. Use `first`. Consider the case `rw [iteratedFDeriv_sub_apply (hg.of_le (hle k)).contDiffAt contDiff_const.contDiffAt]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `rw [iteratedFDeriv_sub_apply (hg.of_le (hle k)) contDiff_const]`. Rewrite using `[hjet k hk0 hk, iteratedFDeriv_const_of_ne (by omega)]`. Simplify using the standard rewrite rules. Establish `hsplit : (fun v => f v * g v) = (fun v => f v) + (fun v => f v * (g v - 1))`. Use function extensionality and compare the values at `v`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [Pi.add_apply]`. Expand and normalize the polynomial expressions, which then agree. Establish `hfh : ContDiff ℂ (⊤ : ℕ∞) (fun v => f v * (g v - 1))` using `hf.mul hhC`. Rewrite using `[hsplit]`. Use `first`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `rw [iteratedFDeriv_add_apply (hf.of_le (hle c)).contDiffAt (hfh.of_le (hle c)).contDiffAt]`. Consider the case `rw [iteratedFDeriv_add_apply (hf.of_le (hle c)) (hfh.of_le (hle c))]`. Establish `hb` using `norm_iteratedFDeriv_mul_le hf hhC (0 : V) (n := c) (hle c)`. Establish `h0' : iteratedFDeriv ℂ c (fun v => f v * (g v - 1)) 0 = 0`. Rewrite using `[← norm_le_zero_iff]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `hb.trans (le_of_eq (Finset.sum_eq_zero fun i hi => ?_))` and prove the remaining obligations. Rewrite using `[hz (c - i) (Nat.sub_le _ _), norm_zero, mul_zero]`. Rewrite using `[h0', add_zero]`.
+A detailed English derivation is pending.
 -/
 theorem ct_iter_mul_jet_one {V : Type*} [NormedAddCommGroup V] [NormedSpace ℂ V]
     (f g : V → ℂ) (hf : ContDiff ℂ (⊤ : ℕ∞) f) (hg : ContDiff ℂ (⊤ : ℕ∞) g) (c : ℕ)
@@ -166,9 +166,9 @@ section
 variable {W : Type*} [NormedAddCommGroup W] [NormedSpace ℂ W]
 
 /- English proof (translation)
-Unfold `itD`. Establish `h : ContDiff ℂ (⊤ : ℕ∞) (iteratedFDeriv ℂ l.length f)`. Use `contDiff_infty.2 fun m => hf.iteratedFDeriv_right ?_` and prove the remaining obligations. Use `first`. Consider the case `exact_mod_cast (le_top : ((m + l.length : ℕ) : ℕ∞) ≤ ⊤)`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Treat this case separately. Treat this case separately.
 
-Consider the case `exact WithTop.coe_le_coe.2 le_top`. Consider the case `simp`. Conclude with `(ContinuousMultilinearMap.apply ℂ (fun _ : Fin l.length => W) ℂ _).contDiff.comp h`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem ct_itD_contDiff {f : W → ℂ} (hf : ContDiff ℂ (⊤ : ℕ∞) f) (l : List W) :
     ContDiff ℂ (⊤ : ℕ∞) (fun y => itD f l y) := by
@@ -182,9 +182,9 @@ theorem ct_itD_contDiff {f : W → ℂ} (hf : ContDiff ℂ (⊤ : ℕ∞) f) (l 
   exact (ContinuousMultilinearMap.apply ℂ (fun _ : Fin l.length => W) ℂ _).contDiff.comp h
 
 /- English proof (translation)
-Establish `hg` using `ct_itD_contDiff hf l`. Establish `h1` using `contDiff_infty_iff_fderiv.1 hg`. Establish `h2` using `(contDiff_infty_iff_fderiv.1 h1.2).1`. Rewrite using `[itD_cons hf]`. Establish `hc : (fun y => itD f (b :: l) y) = (ContinuousLinearMap.apply ℂ ℂ b) ∘ fderiv ℂ (fun y => itD f l y)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `y`. Conclude with `itD_cons hf b l y`. Rewrite using `[hc, fderiv_comp z (ContinuousLinearMap.differentiableAt _) (h2 z), ContinuousLinearMap.fderiv]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem ct_itD_cons_cons {f : W → ℂ} (hf : ContDiff ℂ (⊤ : ℕ∞) f) (a b : W) (l : List W) (z : W) :
     itD f (a :: b :: l) z = fderiv ℂ (fderiv ℂ (fun y => itD f l y)) z a b := by
@@ -200,13 +200,13 @@ theorem ct_itD_cons_cons {f : W → ℂ} (hf : ContDiff ℂ (⊤ : ℕ∞) f) (a
   rfl
 
 /- English proof (translation)
-Proceed by induction on `h with`. Consider the case `nil => rfl`. Consider the case `@cons x l₁ l₂ _ ih`. Use function extensionality and compare the values at `y`. Rewrite using `[itD_cons hf, itD_cons hf, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Consider the case `@swap x y l`. Use function extensionality and compare the values at `z`. Rewrite using `[ct_itD_cons_cons hf, ct_itD_cons_cons hf]`. Establish `hg` using `ct_itD_contDiff hf l`. Establish `hs : IsSymmSndFDerivAt ℂ (fun y => itD f l y) z`.
+Treat this case separately. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hg.contDiffAt.isSymmSndFDerivAt ?_` and prove the remaining obligations. Apply the tactic sequence `try simp only [minSmoothness_of_isRCLikeNormedField]`. Use `first`. Consider the case `exact WithTop.coe_le_coe.2 le_top`. Consider the case `exact (WithTop.coe_le_coe.2 (le_top : (2 : ℕ∞) ≤ ⊤))`.
+Reduce the conclusion to the remaining proof obligations. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact_mod_cast (le_top : (2 : ℕ∞) ≤ ⊤)`. Consider the case `norm_num`. Consider the case `decide`. Conclude with `hs y x`. Consider the case `@trans l₁ l₂ l₃ _ _ ih1 ih2 => rw [ih1, ih2]`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem ct_itD_perm {f : W → ℂ} (hf : ContDiff ℂ (⊤ : ℕ∞) f) {l₁ l₂ : List W} (h : l₁.Perm l₂) :
     (fun y => itD f l₁ y) = fun y => itD f l₂ y := by
@@ -234,9 +234,9 @@ theorem ct_itD_perm {f : W → ℂ} (hf : ContDiff ℂ (⊤ : ℕ∞) f) {l₁ l
 end
 
 /- English proof (translation)
-Establish `gen : ∀ (n₁ n₂ : ℕ) (h : n₁ = n₂) (v₁ : Fin n₁ → W) (v₂ : Fin n₂ → W), (∀ i, v₁ i = v₂ (i.cast h)) → iteratedFDeriv ℂ n₁ F x v₁ = iteratedFDeriv ℂ n₂ F x v₂`. Introduce `n₁ n₂ h v₁ v₂ hv`. Substitute `h` using the available equality. Conclude with `congrArg _ (funext fun i => hv i)`. Unfold `itD`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Use `gen _ _ (by simp) _ _ fun i => ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ct_iter_eq_itD_ofFn {W : Type*} [NormedAddCommGroup W] [NormedSpace ℂ W] (F : W → ℂ) (x : W)
     (j : ℕ) (w : Fin j → W) : iteratedFDeriv ℂ j F x w = itD F (List.ofFn w) x := by
@@ -250,9 +250,9 @@ theorem ct_iter_eq_itD_ofFn {W : Type*} [NormedAddCommGroup W] [NormedSpace ℂ 
   simp
 
 /- English proof (translation)
-Rewrite using `[ct_iter_eq_itD_ofFn, polyDeriv_monomial_one, pdTerm_eq_itD, Multiset.toFinsupp_toMultiset]`. Establish `hl : (List.ofFn fun k => EuclideanSpace.single (v k) (1 : ℂ)) = (List.ofFn v).map (fun i => EuclideanSpace.single i (1 : ℂ))`. Rewrite using `[List.map_ofFn]`. Both sides reduce to the same expression. Establish `hp : (List.ofFn fun k => EuclideanSpace.single (v k) (1 : ℂ)).Perm (((↑(List.ofFn v) : Multiset ι).toList).map fun i => EuclideanSpace.single i (1 : ℂ))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[hl]`. Conclude with `List.Perm.map _ (Multiset.coe_eq_coe.1 (Multiset.coe_toList _)).symm`. Conclude with `congrFun (ct_itD_perm hF hp) 0`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ct_iter_single_eq_polyDeriv {ι : Type} [Fintype ι] [DecidableEq ι] (F : EuclideanSpace ℂ ι → ℂ)
     (hF : ContDiff ℂ (⊤ : ℕ∞) F) (j : ℕ) (v : Fin j → ι) :
@@ -271,9 +271,9 @@ theorem ct_iter_single_eq_polyDeriv {ι : Type} [Fintype ι] [DecidableEq ι] (F
   exact congrFun (ct_itD_perm hF hp) 0
 
 /- English proof (translation)
-Establish `h` using `Finsupp.card_toMultiset (Multiset.toFinsupp (↑(List.ofFn v) : Multiset ι))`. Rewrite `h` using `[Multiset.toFinsupp_toMultiset, Multiset.coe_card, List.length_ofFn]`. Use `Eq.trans ?_ h.symm` and prove the remaining obligations. Use `first`. Consider the case `rfl`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Treat this case separately. Treat this case separately.
 
-Consider the case `simp [Finsupp.degree, Finsupp.sum]`. Consider the case `simp [Finsupp.degree_eq_sum, Finsupp.sum]`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem ct_degree_toFinsupp_ofFn {ι : Type} [DecidableEq ι] (j : ℕ) (v : Fin j → ι) :
     (Multiset.toFinsupp (↑(List.ofFn v) : Multiset ι)).degree = j := by
@@ -288,13 +288,13 @@ theorem ct_degree_toFinsupp_ofFn {ι : Type} [DecidableEq ι] (j : ℕ) (v : Fin
 open Classical in
 
 /- English proof (translation)
-Establish `hone : ContDiff ℂ (⊤ : ℕ∞) (fun w : EuclideanSpace ℂ ι => MvPolynomial.eval (fun i => w i) (1 : MvPolynomial ι ℂ))`. Simplify using `only [map_one]`. Conclude with `contDiff_const`. Establish `key : ∀ j (v : Fin j → ι), j ≤ c → iteratedFDeriv ℂ j β 0 (fun k => EuclideanSpace.single (v k) (1 : ℂ)) = iteratedFDeriv ℂ j (fun w : EuclideanSpace ℂ ι => MvPolynomial.eval (fun i => w i) (1 : MvPolynomial ι ℂ)) 0 (fun k => EuclideanSpace.single (v k) (1 : ℂ))`. Introduce `j v hj`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ct_iter_single_eq_polyDeriv β hβ j v, ct_iter_single_eq_polyDeriv _ hone j v]`. Conclude with `hjet _ (by rw [ct_degree_toFinsupp_ofFn]; exact hj)`. Use `⟨?_, fun j hj1 hjc => ?_⟩` and prove the remaining obligations. Establish `h` using `key 0 Fin.elim0 (Nat.zero_le _)`. Simplify `h` using `[iteratedFDeriv_zero_apply]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hz : ∀ v : Fin j → ι, iteratedFDeriv ℂ j β 0 (fun k => EuclideanSpace.single (v k) (1 : ℂ)) = 0`. Introduce `v`. Rewrite using `[key j v hjc]`. Simplify using `only [map_one]`. Rewrite using `[iteratedFDeriv_const_of_ne (by omega)]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the claim to the hypotheses of an applicable result.
 
-Both sides reduce to the same expression. Apply `ContinuousMultilinearMap.toMultilinearMap_injective` to reduce the goal to its premises. Use `Module.Basis.ext_multilinear (fun _ => (EuclideanSpace.basisFun ι ℂ).toBasis) ?_` and prove the remaining obligations. Introduce `v`. Simplify using `using hz v`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem ct_jet_one_iter {ι : Type} [Fintype ι] (β : EuclideanSpace ℂ ι → ℂ)
     (hβ : ContDiff ℂ (⊤ : ℕ∞) β) (c : ℕ)

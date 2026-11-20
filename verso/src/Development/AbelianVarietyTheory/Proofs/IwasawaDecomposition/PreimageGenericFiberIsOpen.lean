@@ -6,11 +6,9 @@ open AlgebraicGeometry CategoryTheory ReciprocityTheory.ChartRestriction.G.Geo.T
 namespace GlobalTheory.GenericFibreOpen
 
 /- English proof (translation)
-Establish `key : ∀ y : Sp K, ((spMap (algebraMap O K)).base y : PrimeSpectrum O).asIdeal = ⊥` using `fun y => by`. Express the relevant statement in the definitionally equal form `Ideal.comap (algebraMap O K) (y : PrimeSpectrum K).asIdeal = ⊥`. Rewrite using `[(Ideal.eq_bot_or_top (y : PrimeSpectrum K).asIdeal).resolve_right (y : PrimeSpectrum K).isPrime.ne_top]`. Conclude with `Ideal.comap_bot_of_injective _ (IsFractionRing.injective O K)`. Use extensionality with `x`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩`. Conclude with `key y`. Introduce `hx`. Use `⟨(show Sp K from (default : PrimeSpectrum K)), ?_⟩` and prove the remaining obligations.
-
-Apply `PrimeSpectrum.ext` to reduce the goal to its premises. Conclude with `(key _).trans hx.symm`.
+Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem range_spMap_algebraMap_eq (O K : Type) [CommRing O] [IsDomain O] [Field K] [Algebra O K]
     [IsFractionRing O K] :
@@ -33,17 +31,15 @@ end GlobalTheory.GenericFibreOpen
 open GlobalTheory.GenericFibreOpen in
 
 /- English proof (translation)
-Introduce `O K R _ _ _ _ _ _ _ g`. Rewrite using `[range_spMap_algebraMap_eq O K]`. Establish `hc : Continuous g.base` using `g.base.hom.continuous`. Use `set c : Sp R := (IsLocalRing.closedPoint R : PrimeSpectrum R)`. Establish `hle : ∀ x : Sp R, ((g.base x : Sp O) : PrimeSpectrum O).asIdeal ≤ ((g.base c : Sp O) : PrimeSpectrum O).asIdeal`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x`. Establish `hs : (x : PrimeSpectrum R) ⤳ IsLocalRing.closedPoint R` using `IsLocalRing.specializes_closedPoint _`. Conclude with `(PrimeSpectrum.le_iff_specializes _ _).2 (hs.map hc)`. Distinguish the cases in `hp : ((g.base c : Sp O) : PrimeSpectrum O).asIdeal = ⊥`. Establish `: (fun x : Sp R => g.base x) ⁻¹' {x : Sp O | (x : PrimeSpectrum O).asIdeal = ⊥} = Set.univ`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `x`. Simplify using `only [Set.mem_preimage, Set.mem_setOf_eq, Set.mem_univ, iff_true]`. Conclude with `le_bot_iff.1 (hp ▸ hle x)`. Conclude with `this ▸ isOpen_univ`. Take `⟨a, ha, ha0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hp`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hmax : ((g.base c : Sp O) : PrimeSpectrum O).asIdeal.IsMaximal` using `((g.base c : Sp O) : PrimeSpectrum O).isPrime.isMaximal hp`. Establish `: (fun x : Sp R => g.base x) ⁻¹' {x : Sp O | (x : PrimeSpectrum O).asIdeal = ⊥} = (fun x : Sp R => g.base x) ⁻¹' (PrimeSpectrum.basicOpen a : Set (PrimeSpectrum O))`. Use extensionality with `x`. Simplify using `only [Set.mem_preimage, Set.mem_setOf_eq]`. Prove the components needed by the constructor for the conclusion.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Introduce `h hx`. Rewrite `hx` using `[h, Ideal.mem_bot]`. Conclude with `ha0 hx`. Introduce `hx`. Assume the negation of the conclusion as `hne`.
-
-Establish `hq : ((g.base x : Sp O) : PrimeSpectrum O).asIdeal.IsMaximal` using `((g.base x : Sp O) : PrimeSpectrum O).isPrime.isMaximal hne`. Establish `heq` using `hq.eq_of_le hmax.ne_top (hle x)`. Conclude with `hx (heq ▸ ha)`. Rewrite using `[this]`. Conclude with `(PrimeSpectrum.basicOpen a).isOpen.preimage hc`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.GenericFibreOpen.isOpen_preimage_range_spMap_fraction :
     ∀ (O K R : Type) [CommRing O] [IsDedekindDomain O] [Field K] [Algebra O K] [IsFractionRing O K] [CommRing R]

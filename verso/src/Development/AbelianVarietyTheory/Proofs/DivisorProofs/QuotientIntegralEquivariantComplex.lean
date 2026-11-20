@@ -5,9 +5,9 @@ open scoped NNReal ENNReal
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `key : ∀ h : G → ℝ, (∀ (p : P) (g : G), h ((p : G) * g) = (δ p : ℝ) * h g) → (∀ g, AEMeasurable (fun x => h (a x * g)) μ) → ∫⁻ x, ENNReal.ofReal (h (a x * g)) ∂μ = ∫⁻ x, ENNReal.ofReal (h (a x)) ∂μ`. Introduce `h hh hm`. Conclude with `H (fun y => ENNReal.ofReal (h y)) (fun p y => by`. Simplify using `only [hh, ENNReal.ofReal_mul (NNReal.coe_nonneg _), ENNReal.ofReal_coe_nnreal])`. Use the proof step `(fun y => (hm y).ennreal_ofReal) g`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `key f heq (fun y => (hint y).aestronglyMeasurable.aemeasurable)`. Establish `h2` using `key (fun y => - f y) (fun p y => by simp [heq]) (fun y => (hint y).aestronglyMeasurable.aemeasurable.neg)`. Establish `hint1 : Integrable (fun x => f (a x)) μ` using `by simpa using hint 1`. Rewrite using `[integral_eq_lintegral_pos_part_sub_lintegral_neg_part (hint g), integral_eq_lintegral_pos_part_sub_lintegral_neg_part hint1]`. Rewrite using `[h1, h2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem product_bound_of_factor_bounds {G : Type} [Group G] (P : Subgroup G) {X : Type} [MeasurableSpace X] (μ : Measure X) (a : X → G) (δ : P → ℝ≥0)
     (H : ∀ Φ : G → ℝ≥0∞, (∀ (p : P) (g : G), Φ ((p : G) * g) = (δ p : ℝ≥0∞) * Φ g) →
@@ -31,13 +31,13 @@ theorem product_bound_of_factor_bounds {G : Type} [Group G] (P : Subgroup G) {X 
   rw [h1, h2]
 
 /- English proof (translation)
-Introduce `G _ P X _ μ a δ H Ψ hint heq g`. Establish `hint1 : Integrable (fun x => Ψ (a x)) μ` using `by simpa using hint 1`. Establish `hre` using `integral_re (hint g)`. Establish `hre1` using `integral_re hint1`. Establish `him` using `integral_im (hint g)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `him1` using `integral_im hint1`. Simplify using `only [RCLike.re_to_complex, RCLike.im_to_complex] at hre hre1 him him1`. Apply `Complex.ext` to reduce the goal to its premises. Rewrite using `[← hre, ← hre1]`. Use `product_bound_of_factor_bounds P μ a δ H (fun y => (Ψ y).re) (fun y => ?_) (fun p y => ?_) g` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `using (hint y).re`. Simplify using `[heq]`. Rewrite using `[← him, ← him1]`. Use `product_bound_of_factor_bounds P μ a δ H (fun y => (Ψ y).im) (fun y => ?_) (fun p y => ?_) g` and prove the remaining obligations. Simplify using `using (hint y).im`.
+Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `[heq]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lintegral_translation_identity_to_complex : ∀ (G : Type) [Group G] (P : Subgroup G) (X : Type) [MeasurableSpace X] (μ : Measure X) (a : X → G) (δ : P → ℝ≥0),
     (∀ Φ : G → ℝ≥0∞, (∀ (p : P) (g : G), Φ ((p : G) * g) = (δ p : ℝ≥0∞) * Φ g) →

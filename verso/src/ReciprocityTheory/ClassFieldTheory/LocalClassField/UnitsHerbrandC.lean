@@ -14,7 +14,7 @@ noncomputable def Phi : L ≃L[K] ((L ≃ₐ[K] L) → K) :=
 variable {K L}
 
 /- English proof (translation)
-Use `show (IsGalois.normalBasis K L).equivFun.symm c = _`. Rewrite using `[Module.Basis.equivFun_symm_apply]`. Conclude with `Finset.sum_congr rfl fun σ _ => by rw [IsGalois.normalBasis_apply]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Phi_symm_apply (c : (L ≃ₐ[K] L) → K) :
     (Phi K L).symm c = ∑ σ, c σ • σ (IsGalois.normalBasis K L 1) := by
@@ -23,9 +23,9 @@ theorem Phi_symm_apply (c : (L ≃ₐ[K] L) → K) :
   exact Finset.sum_congr rfl fun σ _ => by rw [IsGalois.normalBasis_apply]
 
 /- English proof (translation)
-Establish `: σ x = (Phi K L).symm (fun τ => Phi K L x (σ⁻¹ * τ))`. Rewrite using `[Phi_symm_apply]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Phi_symm_apply, map_sum]`. Conclude with `Finset.sum_congr rfl fun ρ _ => by rw [map_smul]; rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `_ = ∑ τ, Phi K L x (σ⁻¹ * τ) • τ (IsGalois.normalBasis K L 1) := Fintype.sum_equiv (Equiv.mulLeft σ) _ _ (fun ρ => by simp)`. Rewrite using `[this, ContinuousLinearEquiv.apply_symm_apply]`.
+A detailed English derivation is pending.
 -/
 theorem Phi_map (σ : L ≃ₐ[K] L) (x : L) (τ : L ≃ₐ[K] L) : Phi K L (σ x) τ = Phi K L x (σ⁻¹ * τ) := by
   have : σ x = (Phi K L).symm (fun τ => Phi K L x (σ⁻¹ * τ)) := by
@@ -39,7 +39,7 @@ theorem Phi_map (σ : L ≃ₐ[K] L) (x : L) (τ : L ≃ₐ[K] L) : Phi K L (σ 
   rw [this, ContinuousLinearEquiv.apply_symm_apply]
 
 /- English proof (translation)
-Rewrite using `[pi_norm_le_iff_of_nonneg (norm_nonneg _)]`. Introduce `τ`. Rewrite using `[Phi_map]`. Conclude with `norm_le_pi_norm _ _`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_Phi_map (σ : L ≃ₐ[K] L) (x : L) : ‖Phi K L (σ x)‖ ≤ ‖Phi K L x‖ := by
   rw [pi_norm_le_iff_of_nonneg (norm_nonneg _)]
@@ -55,11 +55,9 @@ noncomputable def proj1 : L →+ L where
   map_add' x y := by rw [map_add, Pi.add_apply, add_smul]
 
 /- English proof (translation)
-Rewrite using `[pi_norm_le_iff_of_nonneg (norm_nonneg _)]`. Introduce `τ`. Use `show ‖Phi K L (Phi K L x 1 • IsGalois.normalBasis K L 1) τ‖ ≤ _`. Rewrite using `[map_smul, Pi.smul_apply]`. Establish `: Phi K L (IsGalois.normalBasis K L 1) τ = if 1 = τ then 1 else 0` using `Module.Basis.equivFun_self _ _ _`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, smul_eq_mul]`. Use `split_ifs`. Rewrite using `[mul_one]`. Conclude with `norm_le_pi_norm _ _`. Rewrite using `[mul_zero, norm_zero]`.
-
-Conclude with `norm_nonneg _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_Phi_proj1 (x : L) : ‖Phi K L (proj1 K L x)‖ ≤ ‖Phi K L x‖ := by
   classical
@@ -75,7 +73,7 @@ theorem norm_Phi_proj1 (x : L) : ‖Phi K L (proj1 K L x)‖ ≤ ‖Phi K L x‖
   · rw [mul_zero, norm_zero]; exact norm_nonneg _
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Use `show σ (Phi K L (σ⁻¹ x) 1 • IsGalois.normalBasis K L 1) = _`. Rewrite using `[map_smul, Phi_map, inv_inv, mul_one]`. Use `_ = x := by rw [← Phi_symm_apply, ContinuousLinearEquiv.symm_apply_apply]`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_proj1 (x : L) : ∑ σ : L ≃ₐ[K] L, σ • proj1 K L (σ⁻¹ • x) = x := by
   calc ∑ σ : L ≃ₐ[K] L, σ • proj1 K L (σ⁻¹ • x)
@@ -86,22 +84,20 @@ theorem sum_proj1 (x : L) : ∑ σ : L ≃ₐ[K] L, σ • proj1 K L (σ⁻¹ �
     _ = x := by rw [← Phi_symm_apply, ContinuousLinearEquiv.symm_apply_apply]
 
 /- English proof (translation)
-Use `((Phi K L).symm : ((L ≃ₐ[K] L) → K) →L[K] L).le_opNorm (Phi K L x)` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem norm_le_Phi (x : L) : ‖x‖ ≤ ‖((Phi K L).symm : ((L ≃ₐ[K] L) → K) →L[K] L)‖ * ‖Phi K L x‖ := by
   have := ((Phi K L).symm : ((L ≃ₐ[K] L) → K) →L[K] L).le_opNorm (Phi K L x)
   simpa using this
 
 /- English proof (translation)
-The claim follows from `(Phi K L : L →L[K] ((L ≃ₐ[K] L) → K)).le_opNorm x`.
+A detailed English derivation is pending.
 -/
 theorem norm_Phi_le (x : L) : ‖Phi K L x‖ ≤ ‖(Phi K L : L →L[K] ((L ≃ₐ[K] L) → K))‖ * ‖x‖ :=
   (Phi K L : L →L[K] ((L ≃ₐ[K] L) → K)).le_opNorm x
 
 /- English proof (translation)
-Use `set A := ‖((Phi K L).symm : ((L ≃ₐ[K] L) → K) →L[K] L)‖`. Use `set B := ‖(Phi K L : L →L[K] ((L ≃ₐ[K] L) → K))‖`. Establish `hA : 0 ≤ A` using `norm_nonneg _`. Establish `hB : 0 ≤ B` using `norm_nonneg _`. Use `⟨A, B, B * A * A, hA, hB, by positivity, norm_le_Phi, norm_Phi_le, fun x y => ?_⟩` and prove the remaining obligations.
-
-Combine the equalities or inequalities in the displayed calculation. Conclude with `norm_le_Phi x`. Conclude with `norm_le_Phi y`. Use `_ = B * A * A * ‖Phi K L x‖ * ‖Phi K L y‖ := by ring`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem exists_consts : ∃ A B C : ℝ, 0 ≤ A ∧ 0 ≤ B ∧ 0 ≤ C ∧ (∀ x : L, ‖x‖ ≤ A * ‖Phi K L x‖) ∧
     (∀ x : L, ‖Phi K L x‖ ≤ B * ‖x‖) ∧ ∀ x y : L, ‖Phi K L (x * y)‖ ≤ C * ‖Phi K L x‖ * ‖Phi K L y‖ := by
@@ -132,7 +128,7 @@ def ball (t : ℝ) (ht : 0 ≤ t) : AddSubgroup L where
     rw [map_neg, norm_neg]; exact hx
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_ball {t : ℝ} {ht : 0 ≤ t} {x : L} : x ∈ ball K L t ht ↔ ‖Phi K L x‖ ≤ t := Iff.rfl
 

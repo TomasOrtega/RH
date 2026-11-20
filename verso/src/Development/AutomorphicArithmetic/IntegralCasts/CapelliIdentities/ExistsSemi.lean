@@ -1,29 +1,29 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `A K _ _ M _ _ _ _ C W _ _ _ ι sp hsp hli`. Set `f : K →+ M →+ W` to `{ toFun := fun k => { toFun := fun m => ι k • sp m map_zero' := by simp map_add' := by intro x y; simp [smul_add] } map_zero' := by ext m; simp map_add' := by intro x y; ext m; simp [add_smul] }`. Establish `hfa : ∀ (k : K) (m : M), f k m = ι k • sp m` using `fun _ _ => rfl`. Establish `hf : ∀ (r : A) (k : K) (m : M), f (r • k) m = f k (r • m)`. Introduce `r k m`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h` using `hsp r m`. Rewrite using `[hfa, hfa, h, Algebra.smul_def, map_mul, mul_smul, smul_comm]`. Set `Ψ : TensorProduct A K M →+ W` to `TensorProduct.liftAddHom f hf`. Establish `hΨ : ∀ (k : K) (m : M), Ψ (k ⊗ₜ[A] m) = ι k • sp m` using `fun k m => by`. Simplify using `only [Ψ, TensorProduct.liftAddHom_tmul, hfa]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hsemi : ∀ (k : K) (v : TensorProduct A K M), Ψ (k • v) = ι k • Ψ v`. Introduce `k v`. Proceed by induction on `v using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x m => rw [TensorProduct.smul_tmul', hΨ, hΨ, smul_eq_mul, map_mul, mul_smul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y hx hy => rw [smul_add, map_add, map_add, hx, hy, smul_add]`. Use `⟨Ψ, hΨ, hsemi, ?_, ?_⟩` and prove the remaining obligations. Use `(injective_iff_map_eq_zero Ψ).2 ?_` and prove the remaining obligations. Introduce `v hv`. Set `b` to `Module.Free.chooseBasis A M`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Set `bK` to `Algebra.TensorProduct.basis K b`. Establish `hsum : Ψ v = Finsupp.linearCombination C (fun i => sp (b i)) ((bK.repr v).mapRange ι (map_zero ι))`. Rewrite using `[Finsupp.linearCombination_apply, Finsupp.sum_mapRange_index (by simp)]`. Use `conv_lhs => rw [← bK.linearCombination_repr v]`. Rewrite using `[Finsupp.linearCombination_apply, Finsupp.sum, map_sum, Finsupp.sum]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl ?_` and prove the remaining obligations. Introduce `i _`. Rewrite using `[hsemi, Algebra.TensorProduct.basis_apply, hΨ, map_one, one_smul]`. Establish `hl` using `(linearIndependent_iff.1 (hli _ b)) _ (hsum.symm.trans hv)`. Establish `hr : bK.repr v = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `i`. Establish `h` using `DFunLike.congr_fun hl i`. Simplify using `using h`. Simplify using `using hr`. Introduce `w`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hw`. Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨m, rfl⟩` from `hx`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨1 ⊗ₜ[A] m, by rw [hΨ, map_one, one_smul]⟩`. Consider the case `zero => exact ⟨0, map_zero Ψ⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨a, rfl⟩` from `hx`. Take `⟨c, rfl⟩` from `hy`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨a + c, map_add Ψ a c⟩`. Consider the case `smul c x _ hx`. Take `⟨v, rfl⟩` from `hx`. Conclude with `⟨ι.symm c • v, by rw [hsemi, RingEquiv.apply_symm_apply]⟩`. Introduce and unpack `⟨v, rfl⟩`.
+Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Proceed by induction.
 
-Proceed by induction on `v using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul k m`. Rewrite using `[hΨ]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨m, rfl⟩)`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `add x y hx hy`. Rewrite using `[map_add]`. Conclude with `Submodule.add_mem _ hx hy`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Ra9.exists_semi :
     ∀ {A K : Type} [inst : CommRing A]

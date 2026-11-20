@@ -19,7 +19,7 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Pj Formalism.L2.D
 open GlobalTheory.BigTop GlobalTheory.BigOn GlobalTheory.OntoChain GlobalTheory.RealIndexBound GlobalTheory.OnTies
 namespace GlobalTheory.BigOn
 /- English proof (translation)
-Introduce `_ hT hS hB hE`. Establish `hP : _root_.GlobalTheory.BigOn.PageStatement` using `_root_.GlobalTheory.T.page_estimate_statement'`. Establish `hG : _root_.GlobalTheory.BigOn.GeometricStatement'` using `_root_.GlobalTheory.T.geoSt_of_pageSt' hP`. Conclude with `_root_.GlobalTheory.T.onto_x_of_all_estimates _root_.GlobalTheory.T.runs_estimate_statement' _root_.GlobalTheory.T.rational_estimate_statement' hG (_root_.GlobalTheory.T.rank_at_twisted_places_of_max_geo _root_.GlobalTheory.T.maximum_estimate_statement' hG _root_.GlobalTheory.T.b …`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ontoX_of_twist_shares_exp_alt : _root_.GlobalTheory.BigOn.ExportedStatement → _root_.GlobalTheory.BigOn.TwistStatement' → _root_.GlobalTheory.BigOn.ShareStatement → _root_.GlobalTheory.BigOn.BadPlacesStatement → _root_.GlobalTheory.BigOn.ExponentStatement → _root_.GlobalTheory.BigOn.SurjectiveOntoX := by
   intro _ hT hS hB hE

@@ -25,7 +25,7 @@ section Sign
 variable {R : Type*} [CommRing R]
 
 /- English proof (translation)
-Apply the tactic sequence `rcases h with rfl | rfl <;> rcases h' with rfl | rfl`. Conclude with `Or.inl rfl`. Conclude with `Or.inr (by ring)`. Conclude with `Or.inr (by ring)`. Conclude with `Or.inl (by ring)`.
+Apply the first step, then apply the next step to every resulting obligation. Prove the first alternative. Prove the second alternative. Prove the second alternative. Prove the first alternative.
 -/
 theorem Sg.mul {a b c d : R} (h : Sg a b) (h' : Sg c d) : Sg (a * c) (b * d) := by
   rcases h with rfl | rfl <;> rcases h' with rfl | rfl
@@ -35,7 +35,7 @@ theorem Sg.mul {a b c d : R} (h : Sg a b) (h' : Sg c d) : Sg (a * c) (b * d) := 
   · exact Or.inl (by ring)
 
 /- English proof (translation)
-Apply the tactic sequence `rcases h with rfl | rfl <;> rcases h' with rfl | rfl`. Conclude with `Or.inl rfl`. Conclude with `Or.inr rfl`. Conclude with `Or.inr rfl`. Conclude with `Or.inl (by ring)`.
+Apply the first step, then apply the next step to every resulting obligation. Prove the first alternative. Prove the second alternative. Prove the second alternative. Prove the first alternative.
 -/
 theorem Sg.trans {a b c : R} (h : Sg a b) (h' : Sg b c) : Sg a c := by
   rcases h with rfl | rfl <;> rcases h' with rfl | rfl
@@ -45,7 +45,7 @@ theorem Sg.trans {a b c : R} (h : Sg a b) (h' : Sg b c) : Sg a c := by
   · exact Or.inl (by ring)
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact Or.inl rfl`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.prod_insert ha, Finset.prod_insert ha]`. Conclude with `(h a (Finset.mem_insert_self _ _)).mul (ih fun i hi => h i (Finset.mem_insert_of_mem hi))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Sg.prod {ι : Type*} (s : Finset ι) (f g : ι → R) (h : ∀ i ∈ s, Sg (f i) (g i)) :
     Sg (∏ i ∈ s, f i) (∏ i ∈ s, g i) := by
@@ -60,15 +60,13 @@ theorem Sg.prod {ι : Type*} (s : Finset ι) (f g : ι → R) (h : ∀ i ∈ s, 
 def pairProd {m : ℕ} (v : Fin m → R) : R := ∏ a, ∏ b, if a < b then v b - v a else 1
 
 /- English proof (translation)
-Establish `h1 : GroundTheory.Heights₂.Heights.vandermonde v = ((Matrix.vandermonde v).submatrix id (Fin.revPerm : Equiv.Perm (Fin m))).det`. Unfold `GroundTheory.Heights₂.Heights.vandermonde`. Use `congr 1`. Use extensionality with `a b`. Simplify using `only [Matrix.of_apply, Matrix.submatrix_apply, id, Matrix.vandermonde_apply, Fin.revPerm_apply, Fin.val_rev]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Use `b.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `h2 : pairProd v = ∏ i, ∏ j ∈ Finset.Ioi i, (v j - v i)`. Unfold `pairProd`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.prod_filter]`. Use `Finset.prod_congr ?_ fun _ _ => rfl` and prove the remaining obligations. Use extensionality with `b`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[h1, Matrix.det_permute', Matrix.det_vandermonde, ← h2]`. Break down `Int.units_eq_one_or (Equiv.Perm.sign (Fin.revPerm : Equiv.Perm (Fin m))) with h | h` into its components or cases. Use `left`. Simplify using `[h]`. Use `right`.
-
-Simplify using `[h]`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem vandermonde_sg {m : ℕ} (v : Fin m → R) :
     Sg (GroundTheory.Heights₂.Heights.vandermonde v) (pairProd v) := by
@@ -95,9 +93,7 @@ theorem vandermonde_sg {m : ℕ} (v : Fin m → R) :
   · right; simp [h]
 
 /- English proof (translation)
-Use `Sg.prod _ _ _ fun a _ => Sg.prod _ _ _ fun b _ => ?_` and prove the remaining obligations. Use `split_ifs`. Use `right`. Expand and normalize the polynomial expressions, which then agree. Use `left`.
-
-Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem pairProd_neg {m : ℕ} (v : Fin m → R) : Sg (pairProd fun a => -v a) (pairProd v) := by
   refine Sg.prod _ _ _ fun a _ => Sg.prod _ _ _ fun b _ => ?_
@@ -106,19 +102,19 @@ theorem pairProd_neg {m : ℕ} (v : Fin m → R) : Sg (pairProd fun a => -v a) (
   · left; rfl
 
 /- English proof (translation)
-Rewrite using `[Finset.prod_filter, Fintype.prod_prod_type, Fin.prod_univ_add]`. Unfold `pairProd`. Use `congr 1`. Use `Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Fin.prod_univ_add]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : ∀ b : Fin k, ¬ ((Fin.castAdd k a) < (Fin.natAdd j b) ∧ (((Fin.castAdd k a : Fin (j + k)) : ℕ) < j ↔ ((Fin.natAdd j b : Fin (j + k)) : ℕ) < j))`. Introduce and unpack `b ⟨_, h⟩`. Establish `h' : j + (b : ℕ) < j` using `h.1 a.isLt`. Use linear arithmetic over natural numbers and integers. Rewrite using `[Finset.prod_eq_one (s := Finset.univ) (fun b _ => if_neg (h2 b)), mul_one]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_congr rfl fun b _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : a < b`. Rewrite using `[if_pos h, if_pos]`. Conclude with `⟨show (a : ℕ) < (b : ℕ) from h, iff_of_true a.isLt b.isLt⟩`. Rewrite using `[if_neg h, if_neg]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Introduce `h'`. Conclude with `h (show (a : ℕ) < (b : ℕ) from h'.1)`. Use `Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Fin.prod_univ_add]`. Establish `h2 : ∀ b : Fin j, ¬ ((Fin.natAdd j a) < (Fin.castAdd k b) ∧ (((Fin.natAdd j a : Fin (j + k)) : ℕ) < j ↔ ((Fin.castAdd k b : Fin (j + k)) : ℕ) < j))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `b ⟨_, h⟩`. Establish `h' : j + (a : ℕ) < j` using `h.2 b.isLt`. Use linear arithmetic over natural numbers and integers. Rewrite using `[Finset.prod_eq_one (s := Finset.univ) (fun b _ => if_neg (h2 b)), one_mul]`. Use `Finset.prod_congr rfl fun b _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h : a < b`. Rewrite using `[if_pos h, if_pos]`. Establish `hab : (a : ℕ) < (b : ℕ)` using `h`. Use `⟨show j + (a : ℕ) < j + (b : ℕ) by omega, ?_⟩` and prove the remaining obligations. Conclude with `iff_of_false (show ¬ j + (a : ℕ) < j by omega) (show ¬ j + (b : ℕ) < j by omega)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[if_neg h, if_neg]`. Introduce `h'`. Establish `hab : j + (a : ℕ) < j + (b : ℕ)` using `h'.1`. Conclude with `h (show (a : ℕ) < (b : ℕ) by omega)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem pair_split {j k : ℕ} (x : Fin (j + k) → R) :
     ∏ ab ∈ Finset.univ.filter (fun ab : Fin (j + k) × Fin (j + k) =>
@@ -165,7 +161,7 @@ theorem pair_split {j k : ℕ} (x : Fin (j + k) → R) :
 end Sign
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_filter, Fin.sum_univ_add]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sum_low {M : Type*} [AddCommMonoid M] {j k : ℕ} (g : Fin (j + k) → M) :
     ∑ i ∈ Finset.univ.filter (fun i : Fin (j + k) => (i : ℕ) < j), g i =
@@ -174,7 +170,7 @@ theorem sum_low {M : Type*} [AddCommMonoid M] {j k : ℕ} (g : Fin (j + k) → M
   simp
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_filter, Fin.sum_univ_add]`. Establish `h1 : ∀ a : Fin j, ¬ j ≤ ((Fin.castAdd k a : Fin (j + k)) : ℕ)` using `fun a => not_le.2 a.isLt`. Rewrite using `[Finset.sum_eq_zero (fun a _ => if_neg (h1 a)), zero_add]`. Conclude with `Finset.sum_congr rfl fun b _ => if_pos (show j ≤ j + (b : ℕ) by omega)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_high {M : Type*} [AddCommMonoid M] {j k : ℕ} (g : Fin (j + k) → M) :
     ∑ i ∈ Finset.univ.filter (fun i : Fin (j + k) => j ≤ (i : ℕ)), g i =
@@ -196,9 +192,9 @@ def degFlL (N : ℕ) : RP Ψ N →ₗ[ℝ] ℝ where
     ring
 
 /- English proof (translation)
-Rewrite using `[Finsupp.degree_eq_sum, Fintype.sum_prod_type]`. Establish `h : ∀ τ : Ψ, ∑ i : Fin N, (permExp (fun _ => 1) : (Ψ × Fin N) →₀ ℕ) (τ, i) = N * (N - 1) / 2`. Introduce `τ`. Simplify using `only [permExp, Finsupp.equivFunOnFinite_symm_apply_apply, Equiv.Perm.coe_one, id]`. Rewrite using `[Fin.sum_univ_eq_sum_range (fun i => N - 1 - i) N, Finset.sum_range_reflect (fun i => i) N, Finset.sum_range_id]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[h, dimFl]`.
+Simplify using the standard rewrite rules.
 -/
 theorem permExp_degree (N : ℕ) :
     (permExp (fun _ => 1) : (Ψ × Fin N) →₀ ℕ).degree = dimFl Ψ N := by
@@ -211,13 +207,13 @@ theorem permExp_degree (N : ℕ) :
   simp [h, dimFl]
 
 /- English proof (translation)
-Unfold `degFl`. Rewrite using `[Finset.sum_eq_single (fun _ => 1)]`. Simplify using the standard rewrite rules. Introduce `σ _ hσ`. Rewrite using `[coeff_monomial, if_neg, mul_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Apply `hσ` to reduce the goal to its premises. Use function extensionality and compare the values at `τ`. Use extensionality with `i`. Use `DFunLike.congr_fun h (τ, i)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Simplify using `only [permExp, Finsupp.equivFunOnFinite_symm_apply_apply, Equiv.Perm.coe_one, id] at this`. Establish `h1` using `i.isLt`. Establish `h2` using `(σ τ i).isLt`. Simplify using `only [Equiv.Perm.coe_one, id]`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem degFl_permExp (N : ℕ) :
     degFl (monomial (permExp (fun _ => 1) : (Ψ × Fin N) →₀ ℕ) (1 : ℝ)) = (-1) ^ dimFl Ψ N := by
@@ -253,9 +249,9 @@ def rli (e : Ψ ≃ Fin f) (j k : ℕ) : RestTerms.Roots f j k →ₐ[ℝ] RP Ψ
 
 omit [Fintype Ψ] [DecidableEq Ψ] in
 /- English proof (translation)
-Unfold `rli rl`. Rewrite using `[rename_rename]`. Establish `: ((fun x : Fin f × Fin (j + k) => (e.symm x.1, x.2)) ∘ fun x : Ψ × Fin (j + k) => (e x.1, x.2)) = id`. Use function extensionality and compare the values at `x`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[this, rename_id_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem rli_rl (e : Ψ ≃ Fin f) (F : RP Ψ (j + k)) : rli e j k (rl e j k F) = F := by
   unfold rli rl
@@ -268,7 +264,7 @@ theorem rli_rl (e : Ψ ≃ Fin f) (F : RP Ψ (j + k)) : rli e j k (rl e j k F) =
 
 omit [Fintype Ψ] [DecidableEq Ψ] in
 /- English proof (translation)
-Simplify using `[rl]`.
+Simplify using the standard rewrite rules.
 -/
 theorem rl_X (e : Ψ ≃ Fin f) (τ : Ψ) (i : Fin (j + k)) :
     rl e j k (X (τ, i)) = X (e τ, i) := by
@@ -276,7 +272,7 @@ theorem rl_X (e : Ψ ≃ Fin f) (τ : Ψ) (i : Fin (j + k)) :
 
 omit [Fintype Ψ] [DecidableEq Ψ] in
 /- English proof (translation)
-Simplify using `[rli]`.
+Simplify using the standard rewrite rules.
 -/
 theorem rli_X (e : Ψ ≃ Fin f) (τ : Fin f) (i : Fin (j + k)) :
     rli e j k (X (τ, i)) = X (e.symm τ, i) := by
@@ -292,23 +288,23 @@ theorem flagI_apply (e : Ψ ≃ Fin f) (G : RestTerms.Roots f j k) :
     flagI e j k G = degFl (rli e j k G) := rfl
 
 /- English proof (translation)
-Rewrite using `[flagI_apply, rli_rl]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem flagI_rl (e : Ψ ≃ Fin f) (F : RP Ψ (j + k)) : flagI e j k (rl e j k F) = degFl F := by
   rw [flagI_apply, rli_rl]
 
 omit [Fintype Ψ] [DecidableEq Ψ] in
 /- English proof (translation)
-Simplify using `only [RestTerms.psumAt, pk, map_sum, map_pow, rl_X]`.
+Simplify using the standard rewrite rules.
 -/
 theorem psumAt_eq (e : Ψ ≃ Fin f) (m : ℕ) (τ : Ψ) :
     RestTerms.psumAt f j k m (e τ) = rl e j k (pk τ m) := by
   simp only [RestTerms.psumAt, pk, map_sum, map_pow, rl_X]
 
 /- English proof (translation)
-Take `⟨t, rfl⟩` from `e.surjective τ`. Rewrite using `[flagI_apply, psumAt_eq, map_mul, rli_rl]`. Conclude with `GlobalTheory.T.flag_degree_power_sum_mul_zero Ψ (j + k) t m _ h1`. Use `ne_zero := by`. Substitute `hf` using the available equality.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨rl e j k (monomial (permExp fun _ => 1) 1), ?_, ?_⟩` and prove the remaining obligations. Establish `h` using `(isHomogeneous_monomial (R := ℝ) (1 : ℝ) (permExp_degree (Ψ := Ψ) (j + k))).rename_isHomogeneous (f := fun x : Ψ × Fin (j + k) => (e x.1, x.2))`. Conclude with `h`. Rewrite using `[flagI_rl, degFl_permExp]`. Conclude with `pow_ne_zero _ (by norm_num)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isFlag (e : Ψ ≃ Fin f) (hf : Fintype.card Ψ = f) : RestTerms.IsFlagIntegral f j k (flagI e j k) where
   kills m τ G h1 _ _ := by
@@ -330,9 +326,9 @@ def conv (e : Ψ ≃ Fin f) : Ψ ⊕ Ψ → Fin f × Bool
 
 omit [Fintype Ψ] [DecidableEq Ψ] in
 /- English proof (translation)
-Consider the cases of `s with`. Consider the case `inl t`. Simplify using `only [conv, RestTerms.lieClass, pLie, pkLow, sum_low, map_sum, map_pow, rl_X]`. Simplify using the standard rewrite rules. Consider the case `inr t`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Treat this case separately.
 
-Simplify using `only [conv, RestTerms.lieClass, pLie, sum_high, map_sum, map_pow, map_neg, rl_X, if_true]`. Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun b _ => (neg_pow _ m).symm`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lie_eq (e : Ψ ≃ Fin f) (m : ℕ) (s : Ψ ⊕ Ψ) :
     RestTerms.lieClass f j k m (conv e s) = rl e j k (pLie j m s) := by
@@ -346,9 +342,9 @@ theorem lie_eq (e : Ψ ≃ Fin f) (m : ℕ) (s : Ψ ⊕ Ψ) :
     exact Finset.sum_congr rfl fun b _ => (neg_pow _ m).symm
 
 /- English proof (translation)
-Unfold `RestTerms.muClass muSmall`. Rewrite using `[← Equiv.sum_comp e]`. Establish `hk : j + k - j = k` using `by omega`. Distinguish the cases in `h : k ≤ j`. Establish `hb : bot = true` using `by simp [hbot, h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Rewrite using `[if_pos (by rw [hk]; exact h), hb]`. Simplify using `only [RestTerms.smallPsum, if_true, sum_high, map_sum, rl_X, pow_one]`. Establish `hb : bot = false` using `by simp [hbot, h]`. Rewrite using `[if_neg (by rw [hk]; exact h), hb]`. Simplify using `only [RestTerms.smallPsum, pkLow, sum_low, map_neg, map_sum, rl_X, pow_one]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 Simplify using the standard rewrite rules.
 -/
@@ -367,13 +363,11 @@ theorem mu_eq (e : Ψ ≃ Fin f) (bot : Bool) (hbot : bot = decide (k ≤ j)) :
     simp
 
 /- English proof (translation)
-Unfold `RestTerms.fibClass fibClass`. Rewrite using `[← Equiv.prod_comp e, map_prod]`. Use `Sg.prod _ _ _ fun τ _ => ?_` and prove the remaining obligations. Establish `h : rl e j k (∏ ab ∈ Finset.univ.filter (fun ab : Fin (j + k) × Fin (j + k) => ab.1 < ab.2 ∧ ((ab.1 : ℕ) < j ↔ (ab.2 : ℕ) < j)), (X (τ, ab.2) - X (τ, ab.1))) = pairProd (fun a : Fin j => (X (e τ, Fin.castAdd k a) : RestTerms.Roots f j k)) * pairProd (fun b : Fin k => (X (e τ, Fin …`. Rewrite using `[map_prod, ← pair_split (fun i => (X (e τ, i) : RestTerms.Roots f j k))]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_congr rfl fun ab _ => ?_` and prove the remaining obligations. Rewrite using `[map_sub, rl_X, rl_X]`. Rewrite using `[h]`. Consider the cases of `bot with`. Consider the case `true`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Simplify using `only [if_true]`. Rewrite using `[mul_comm (pairProd _)]`. Conclude with `(vandermonde_sg _).mul (vandermonde_sg _)`. Consider the case `false`. Simplify using `only [Bool.false_eq_true, if_false]`.
-
-Conclude with `((vandermonde_sg _).trans (pairProd_neg _)).mul (vandermonde_sg _)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fib_sg (e : Ψ ≃ Fin f) (bot : Bool) :
     Sg (RestTerms.fibClass f j k bot) (rl e j k (fibClass j)) := by
@@ -404,7 +398,7 @@ namespace GlobalTheory.CompanionTheory.Ar.Top.TestRest
 variable {Ψ : Type} [Fintype Ψ] [DecidableEq Ψ] {j k : ℕ}
 
 /- English proof (translation)
-The claim follows from `|∑ p ∈ S, ∑ τ, ∑ m ∈ Finset.Icc 1 (j + k), restTerm j p (frob p τ) m (Q τ m)| ≤ 1.6 * (((dimX Ψ (j + k) j : ℝ) + 1) * testDeg Ψ (j + k) j) := by let e : Ψ ≃ Fin (Fintype.card Ψ) := Fintype.equivFin Ψ have hf1 : 1 ≤ Fintype.card Ψ := Fintype.card_pos let bot : Bool := decide (k ≤ …`.
+A detailed English derivation is pending.
 -/
 theorem finite_bound [Nonempty Ψ] (hj : 1 ≤ j) (hk : 1 ≤ k) (frob : ℕ → Ψ → ℕ → Ψ ⊕ Ψ) (B₀ : ℕ)
     (Q : Ψ → ℕ → RP Ψ (j + k)) (hB : 4 * Fintype.card Ψ * (j + k) ^ 2 ≤ B₀)
@@ -524,13 +518,11 @@ end GlobalTheory.CompanionTheory.Ar.Top.TestRest
 namespace GlobalTheory.CompanionTheory.Ar.Top
 
 /- English proof (translation)
-Introduce `Ψ _ _ N j bad frob B₀ Q hj hjN hB hQ`. Take `⟨k, rfl⟩ : ∃ k, N = j + k` from `⟨N - j, by omega⟩`. Establish `hk : 1 ≤ k` using `by omega`. Establish `hJ : 0 < testDeg Ψ (j + k) j` using `(GlobalTheory.T.test_polynomial_shift_total Ψ (j + k) j hj hjN).2.1`. Break down `isEmpty_or_nonempty Ψ with hΨ | hΨ` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using `only [Finset.univ_eq_empty, Finset.sum_empty, abs_zero]`. Conclude with `mul_nonneg (by norm_num) (mul_nonneg (by positivity) hJ.le)`. Establish `hlim : Tendsto (fun B : ℕ => ∑ τ, ∑ m ∈ Finset.Icc 1 (j + k), ∑ p ∈ (Finset.Ioc B₀ B).filter (fun p => p.Prime ∧ p ∉ bad), restTerm j p (frob p τ) m (Q τ m)) atTop (𝓝 (∑ τ, ∑ m ∈ Finset.Icc 1 (j + k), restSum j bad frob B₀ τ m (Q τ m)))` using `tendsto_finset_sum _ fun τ _ => tendsto_finset_sum _ fun m _ => (GlobalTheory.T.remainder_term_summable Ψ (j + k) j bad frob τ m (Q τ m)).2 B₀`. Use `le_of_tendsto hlim.abs (Eventually.of_forall fun B => ?_)` and prove the remaining obligations. Establish `h` using `TestRest.finite_bound hj hk frob B₀ Q hB hQ ((Finset.Ioc B₀ B).filter (fun p => p.Prime ∧ p ∉ bad)) (fun p hp => by`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hp` using `[Finset.mem_filter, Finset.mem_Ioc]`. Conclude with `⟨hp.2.1, hp.1.1⟩)`. Establish `h2 : ∑ p ∈ (Finset.Ioc B₀ B).filter (fun p => p.Prime ∧ p ∉ bad), ∑ τ, ∑ m ∈ Finset.Icc 1 (j + k), restTerm j p (frob p τ) m (Q τ m) = ∑ τ, ∑ m ∈ Finset.Icc 1 (j + k), ∑ p ∈ (Finset.Ioc B₀ B).filter (fun p => p.Prime ∧ p ∉ bad), restTerm j p (frob p τ) m (Q τ m)`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun τ _ => Finset.sum_comm`.
-
-Rewrite `h` using `[h2]`. Then use the resulting hypothesis.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem testRest_bound : ∀ (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N : ℕ) (j : ℕ) (bad : Finset ℕ) (frob : ℕ → Ψ → ℕ → Ψ ⊕ Ψ) (B₀ : ℕ) (Q : Ψ → ℕ → RP Ψ N), 1 ≤ j → j < N → 4 * Fintype.card Ψ * N ^ 2 ≤ B₀ → IsDecomp (testPoly j) Q → |∑ τ, ∑ k ∈ Finset.Icc 1 N, restSum j bad frob B₀ τ k (Q τ k)| ≤ 1.6 * (((dimX Ψ N j : ℝ) + 1) * testDeg Ψ N j) := by
   intro Ψ _ _ N j bad frob B₀ Q hj hjN hB hQ

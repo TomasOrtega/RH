@@ -3,17 +3,15 @@ open scoped NNReal ENNReal
 open MeasureTheory
 
 /- English proof (translation)
-Introduce `S _ _ _ _ _ _ _ _ Γ _ μS 𝓢 hH hF hfin`. Use `haveI : SMulInvariantMeasure Γ S μS := ⟨fun c s _ => by show μS ((fun x => (c : S) * x) ⁻¹' s) = μS s`. Conclude with `measure_preimage_mul μS (c : S) s⟩`. Establish `hpos : μS 𝓢 ≠ 0` using `hF.measure_ne_zero (NeZero.ne μS)`. Use `⟨fun g => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmap` using `Measure.map_right_mul_eq_modularCharacterFun_smul μS g`. Establish `hF' : IsFundamentalDomain Γ ((fun x => x * g) ⁻¹' 𝓢) μS`. Use `hF.preimage_of_equiv (e := id) ?_ Function.bijective_id ?_` and prove the remaining obligations. Conclude with `quasiMeasurePreserving_mul_right μS g`. Introduce `γ x show (γ : S) * x * g = (γ : S) * (x * g)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Conclude with `mul_assoc _ _ _`. Establish `heq : μS ((fun x => x * g) ⁻¹' 𝓢) = μS 𝓢` using `hF'.measure_eq hF`. Establish `h2 : (Measure.map (fun x => x * g) μS) 𝓢 = μS 𝓢`. Rewrite using `[show (fun x : S => x * g) = ⇑(MeasurableEquiv.mulRight g) from rfl, MeasurableEquiv.map_apply]`. Conclude with `heq`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h2` using `[hmap]`. Rewrite `h2` using `[Measure.smul_apply]`. Establish `hc : (Measure.modularCharacterFun g : ℝ≥0∞) = 1`. Establish `h3 : (Measure.modularCharacterFun g : ℝ≥0∞) * μS 𝓢 = 1 * μS 𝓢`. Rewrite using `[one_mul]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify `h2` using `[ENNReal.smul_def]`. Conclude with `(ENNReal.mul_left_inj hpos hfin).mp h3`. Rewrite `hmap` using `[show (fun x : S => x * g) = fun x => x * g from rfl]`. Rewrite using `[hmap]`. Establish `: Measure.modularCharacterFun g = 1` using `by exact_mod_cast hc`.
-
-Rewrite using `[this, one_smul]`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.unimodular_of_isFundamentalDomain_finite : ∀ (S : Type) [Group S] [TopologicalSpace S] [IsTopologicalGroup S] [LocallyCompactSpace S] [T2Space S] [SecondCountableTopology S] [MeasurableSpace S] [BorelSpace S] (Γ : Subgroup S) [Countable Γ] (μS : Measure S) (𝓢 : Set S), μS.IsHaarMeasure → IsFundamentalDomain Γ 𝓢 μS → μS 𝓢 ≠ ⊤ → μS.IsMulRightInvariant := by
   intro S _ _ _ _ _ _ _ _ Γ _ μS 𝓢 hH hF hfin

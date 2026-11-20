@@ -23,13 +23,13 @@ variable {σ : E →ₐ[F] E} {B : Base F E} {nS nT : ℕ} {JS : Matrix (Fin nS)
   {Om : GAF σ JS × GAF σ JT →* Module.End ℂ (thetaSubF σ JS JT ξ₀ B.ψ)}
 
 /- English proof (translation)
-Introduce `v` and use `by rw [map_one]; exact one_mem _`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem one_int : (1 : Af F) ∈ Formalism.MainNotions.StandardLattice.intAf F := fun v => by
   rw [map_one]; exact one_mem _
 
 /- English proof (translation)
-Set `τ : E →+* ℂ` to `(IsAlgClosed.lift (M := ℂ) (R := ℚ) (S := E)).toRingHom`. Apply `τ.injective` to reduce the goal to its premises. Rewrite using `[hB.cm.2.2.2 τ, hB.cm.2.2.2 τ, star_star]`.
+Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem sgsg (hB : B.IsGood σ) (x : E) : σ (σ x) = x := by
   let τ : E →+* ℂ := (IsAlgClosed.lift (M := ℂ) (R := ℚ) (S := E)).toRingHom
@@ -37,13 +37,13 @@ theorem sgsg (hB : B.IsGood σ) (x : E) : σ (σ x) = x := by
   rw [hB.cm.2.2.2 τ, hB.cm.2.2.2 τ, star_star]
 
 /- English proof (translation)
-The claim follows from `AddSubgroup.subset_closure ⟨1, one_int, y, hy, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem finRatF_mem_of {y : Matrix (Fin nT) (Fin nS) E} (hy : y ∈ Λ) : finRatF F y ∈ latF F E nS nT Λ :=
   AddSubgroup.subset_closure ⟨1, one_int, y, hy, rfl⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => (hR y).2 fun M' hM' => (gamQF_eq_one_iff' C y M').1 ((hA _).1 h _ (finRatF_mem_of hM')), finRatF_mem_of⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_iff (C : Ctx σ B JS JT ξ₀ θ ι) (hR : RatSD σ JS JT ξ₀ Λ)
     (hA : SelfDual (gamFF σ JS JT ξ₀ B.ψ) (latF F E nS nT Λ)) (y : Matrix (Fin nT) (Fin nS) E) :
@@ -52,19 +52,19 @@ theorem mem_iff (C : Ctx σ B JS JT ξ₀ θ ι) (hR : RatSD σ JS JT ξ₀ Λ)
     finRatF_mem_of⟩
 
 /- English proof (translation)
-Introduce `x` and use `(hR x).trans (forall₂_congr fun y _ => (gamQF_eq_one_iff' C x y).symm)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem sdQ (C : Ctx σ B JS JT ξ₀ θ ι) (hR : RatSD σ JS JT ξ₀ Λ) : SelfDual (gamQF σ JS JT ξ₀ B.ψ) Λ := fun x =>
   (hR x).trans (forall₂_congr fun y _ => (gamQF_eq_one_iff' C x y).symm)
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `hL`. Take `⟨y, hy0, hy⟩` from `exists_integral_multiples ℤ ℚ ((s ×ˢ (Finset.univ : Finset (Fin nT × Fin nS))).image fun p => p.1 p.2.1 p.2.2)`. Use `⟨(y : E), by exact_mod_cast hy0, fun x hx i j => ?_⟩` and prove the remaining obligations. Rewrite `hx` using `[← hs]`. Proceed by induction on `hx using Submodule.span_induction with`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction.
 
-Consider the case `mem x hx`. Use `hy (x i j) (Finset.mem_image.2 ⟨(x, (i, j)), by simpa using hx, rfl⟩)` as an intermediate fact. Simplify `this` using `[zsmul_eq_mul]`. Consider the case `zero => simpa using isIntegral_zero`. Consider the case `add x z _ _ hx hz`.
+Treat this case separately. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Treat this case separately.
 
-Establish `e : (y : E) * (x + z) i j = (y : E) * x i j + (y : E) * z i j` using `mul_add _ _ _`. Rewrite using `[e]`. Conclude with `hx.add hz`. Consider the case `smul c x _ hx`. Establish `: (y : E) * (c • x) i j = (c : E) * ((y : E) * x i j)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `(y : E) * ((c : E) * x i j) = _`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `c.isIntegral_coe.mul hx`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_denomM (hL : Λ.FG) : ∃ d : E, d ≠ 0 ∧ ∀ x ∈ Λ, ∀ i j, IsIntegral ℤ (d * x i j) := by
   obtain ⟨s, hs⟩ := hL
@@ -88,13 +88,13 @@ theorem exists_denomM (hL : Λ.FG) : ∃ d : E, d ≠ 0 ∧ ∀ x ∈ Λ, ∀ i 
     exact c.isIntegral_coe.mul hx
 
 /- English proof (translation)
-Establish `hcm` using `hB.cm`. Set `ρ : F →+* ℂ` to `φ.comp (algebraMap F E)`. Use `⟨InfinitePlace.mk ρ, ?_⟩` and prove the remaining obligations. Establish `hρ : ComplexEmbedding.IsReal ρ`. Use `hcm.1.isReal (InfinitePlace.mk ρ)` as an intermediate fact.
+Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[InfinitePlace.isReal_mk_iff]`. Then use the resulting hypothesis. Establish `he : (InfinitePlace.mk ρ).embedding = ρ`. Break down `InfinitePlace.embedding_mk_eq ρ with h | h` into its components or cases. Conclude with `h`. Rewrite using `[h]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hρ`. Establish `hτ : (tauB B (InfinitePlace.mk ρ)).comp (algebraMap F E) = ρ`. Conclude with `(B.emb (InfinitePlace.mk ρ)).2.trans he`. Take `⟨c, hc⟩` from `PI.OmLocU.Red.fix_range σ hcm (y := x * σ x) (by rw [map_mul, sgsg hB, mul_comm])`. Establish `key : ∀ τ : E →+* ℂ, τ.comp (algebraMap F E) = ρ → Complex.normSq (τ x) = ρ c` using `fun τ hτ => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← hτ, RingHom.comp_apply, hc, map_mul, hcm.2.2.2 τ]`. Conclude with `(Complex.mul_conj (τ x)).symm`. Establish `h2` using `(key φ rfl).trans (key _ hτ).symm`. Rewrite `h2` using `[Complex.ofReal_inj, Complex.normSq_eq_norm_sq, Complex.normSq_eq_norm_sq]`. Conclude with `(sq_eq_sq₀ (norm_nonneg _) (norm_nonneg _)).1 h2`.
+A detailed English derivation is pending.
 -/
 theorem norm_emb_eq (hB : B.IsGood σ) (φ : E →+* ℂ) (x : E) :
     ∃ v : InfinitePlace F, ‖φ x‖ = ‖tauB B v x‖ := by
@@ -119,9 +119,9 @@ theorem norm_emb_eq (hB : B.IsGood σ) (φ : E →+* ℂ) (x : E) :
   exact (sq_eq_sq₀ (norm_nonneg _) (norm_nonneg _)).1 h2
 
 /- English proof (translation)
-Take `⟨d, hd, hdi⟩` from `exists_denomM hG.fg`. Establish `hS` using `GlobalTheory.CompletedLatticeFinite.finite_of_denom d hd R`. Use `(Set.Finite.pi fun _ : Fin nT => Set.Finite.pi fun _ : Fin nS => hS).subset ?_` and prove the remaining obligations. Introduce and unpack `y ⟨hy, hR⟩ i - j -`. Use `⟨hdi y hy i j, fun φ => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨v, hv⟩` from `norm_emb_eq hB φ (y i j)`. Rewrite using `[hv]`. Conclude with `(norm_le_pi_norm (infRatF (tauB B) y) ((i, j), v)).trans hR`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finLat (hB : B.IsGood σ) (hG : GoodLat Λ) (R : ℝ) : {y | y ∈ Λ ∧ ‖infRatF (tauB B) y‖ ≤ R}.Finite := by
   obtain ⟨d, hd, hdi⟩ := exists_denomM hG.fg
@@ -134,7 +134,7 @@ theorem finLat (hB : B.IsGood σ) (hG : GoodLat Λ) (R : ℝ) : {y | y ∈ Λ �
   exact (norm_le_pi_norm (infRatF (tauB B) y) ((i, j), v)).trans hR
 
 /- English proof (translation)
-Establish `h : (N : E) ≠ 0` using `Nat.cast_ne_zero.2 hN.ne'`. Rewrite using `[← Nat.cast_smul_eq_nsmul (AEF F E), smul_smul, ← map_natCast (incAF F E) N, ← map_mul, mul_inv_cancel₀ h, map_one, one_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem nsmul_inv_smul' {M : Type} [AddCommGroup M] [Module (AEF F E) M] {N : ℕ} (hN : 0 < N) (x : M) :
     N • (incAF F E (N : E)⁻¹ • x) = x := by
@@ -143,11 +143,11 @@ theorem nsmul_inv_smul' {M : Type} [AddCommGroup M] [Module (AEF F E) M] {N : �
     one_smul]
 
 /- English proof (translation)
-Use `haveI := GlobalTheory.HeisThetaF.isTopologicalRing_AEF (F := F) (E := E)`. Set `U : AddSubgroup (WOF F E nS nT)` to `{ carrier := {u | ∃ z ∈ latOF F E nS nT Λ, finIdem F E • u = N • z} add_mem' := by`. Introduce and unpack `a b ⟨z, hz, ea⟩ ⟨z', hz', eb⟩`. Conclude with `⟨z + z', add_mem hz hz', by rw [smul_add, ea, eb, nsmul_add]⟩`. Use the proof step `zero_mem' := ⟨0, zero_mem _, by rw [smul_zero, smul_zero]⟩`.
+Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Use the proof step `neg_mem' := by`. Introduce and unpack `a ⟨z, hz, ea⟩`. Conclude with `⟨-z, neg_mem hz, by rw [smul_neg, ea, smul_neg]⟩ }`. Take `⟨V, hV, hV'⟩` from `lat_nhds (F := F) hG`. Establish `hc : Continuous fun u : WOF F E nS nT => incAF F E (N : E)⁻¹ • finIdem F E • u` using `(continuous_const_smul (incAF F E (N : E)⁻¹)).comp (continuous_const_smul (finIdem F E))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hm : (fun u : WOF F E nS nT => incAF F E (N : E)⁻¹ • finIdem F E • u) ⁻¹' V ∈ 𝓝 (0 : WOF F E nS nT)`. Use `hc.continuousAt.preimage_mem_nhds ?_` and prove the remaining obligations. Simplify using `using hV`. Use `⟨U, AddSubgroup.isOpen_of_mem_nhds U (Filter.mem_of_superset hm fun u hu => ?_), fun u ⟨z, hz, e⟩ => ⟨XFF.mk z (lat_fin hz), hz, e⟩⟩` and prove the remaining obligations. Conclude with `⟨_, hV' _ hu ((finSubF F E nS nT).smul_mem _ (finIdem_smul_fin u)), (nsmul_inv_smul' hN _).symm⟩`.
+Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem level (hG : GoodLat Λ) (N : ℕ) (hN : 0 < N) : ∃ U : AddSubgroup (WOF F E nS nT), IsOpen (U : Set (WOF F E nS nT)) ∧
     ∀ u ∈ U, ∃ l ∈ latF F E nS nT Λ, finIdem F E • u = ((N • l : XFF F E nS nT) : WOF F E nS nT) := by
@@ -172,7 +172,7 @@ theorem level (hG : GoodLat Λ) (N : ℕ) (hN : 0 < N) : ∃ U : AddSubgroup (WO
   exact ⟨_, hV' _ hu ((finSubF F E nS nT).smul_mem _ (finIdem_smul_fin u)), (nsmul_inv_smul' hN _).symm⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Rewrite using `[← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, mul_inv_cancel, mul_inv_cancel, Prod.mk_one_one, map_one, Module.End.one_apply]`. Rewrite using `[← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, inv_mul_cancel, inv_mul_cancel, Prod.mk_one_one, map_one, Module.End.one_apply]`.
+Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem inv_rho (g : GAF σ JS) (h : GAF σ JT) (x : XFF F E nS nT) :
     rhoFF σ JS JT (g, h) (rhoFF σ JS JT (g⁻¹, h⁻¹) x) = x ∧ rhoFF σ JS JT (g⁻¹, h⁻¹) (rhoFF σ JS JT (g, h) x) = x := by
@@ -183,14 +183,14 @@ theorem inv_rho (g : GAF σ JS) (h : GAF σ JT) (x : XFF F E nS nT) :
       Module.End.one_apply]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun ⟨y, hy, e⟩ => by rwa [← e, (inv_rho g h y).2], fun hx => ⟨_, hx, (inv_rho g h x).1⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_map_rho (A : Submodule (𝓞 E) (XFF F E nS nT)) (g : GAF σ JS) (h : GAF σ JT) (x : XFF F E nS nT) :
     x ∈ A.map (rhoFF σ JS JT (g, h)) ↔ rhoFF σ JS JT (g⁻¹, h⁻¹) x ∈ A :=
   ⟨fun ⟨y, hy, e⟩ => by rwa [← e, (inv_rho g h y).2], fun hx => ⟨_, hx, (inv_rho g h x).1⟩⟩
 
 /- English proof (translation)
-Establish `H` using `isHeis_opFF (sgsg C.good) C.hS C.hT C.hξ hc hw`. Establish `e : ∀ x y, gamQF σ JS JT ξ₀ B.ψ x y = gamFF σ JS JT ξ₀ B.ψ (finRatF F x) (finRatF F y)` using `fun _ _ => rfl`. Conclude with `⟨H.sg_sg, H.w_add, fun x y z => by rw [e, e, e, map_add, H.add_left], fun x y z => by rw [e, e, e, map_add, H.add_right], fun x => by rw [e, H.alt], fun r x y => by rw [e, e, map_smul, map_smul, H.adj], fun v => by rw [map_zero, H.zero], fun x y v => by rw [H.comp, e, map_smul, m …`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem isHeisQ (C : Ctx σ B JS JT ξ₀ θ ι) (hc : HeisClosedF σ JS JT ξ₀ B.ψ) (hw : w + sgOF σ w = 1) :
     IsHeis (sgOF σ) w (gamQF σ JS JT ξ₀ B.ψ) fun x => opFF hc w (finRatF F x) := by
@@ -202,15 +202,13 @@ theorem isHeisQ (C : Ctx σ B JS JT ξ₀ θ ι) (hc : HeisClosedF σ JS JT ξ�
     fun x y v => by rw [H.comp, e, map_smul, map_add]⟩
 
 /- English proof (translation)
-Establish `hmem` using `mem_iff C hR hO.sd`. Establish `hfin` using `hO.fin (g⁻¹, h⁻¹)`. Establish `hmov : ∀ u ∈ latF F E nS nT Λ, idx (latF F E nS nT Λ) ((latF F E nS nT Λ).map (rhoFF σ JS JT (g⁻¹, h⁻¹))) • u ∈ (latF F E nS nT Λ).map (rhoFF σ JS JT (g, h))` using `fun u hu => by`. Rewrite using `[mem_map_rho, map_nsmul]`. Conclude with `AddSubgroup.nsmul_relIndex_mem (latF F E nS nT Λ).toAddSubgroup (Submodule.mem_map_of_mem hu)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.FinWeil.idx, ← GlobalTheory.RatLattice.relIndex_comap_comap (finRatF F (E := E) (nS := nS) (nT := nT)).toAddMonoidHom]`. Use `congr 1`. Use extensionality with `x`. Conclude with `hmem x`. Use extensionality with `x show finRatF F x ∈ (latF F E nS nT Λ).map (rhoFF σ JS JT (g, h)) ↔ b * x * a ∈ Λ`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[mem_map_rho, rhoFF_finRatF ha hb, hmem]`. Introduce `z hz`. Establish `hN` using `Nat.pos_of_ne_zero hfin`. Take `⟨γ, hγ⟩` from `lat_approx hG _ (incAF F E ((idx (latF F E nS nT Λ) ((latF F E nS nT Λ).map (rhoFF σ JS JT (g⁻¹, h⁻¹))) : ℕ) : E)⁻¹ • z).fin`. Take `⟨u, hu, e⟩ : ∃ u ∈ latF F E nS nT Λ, z = finRatF F (idx (latF F E nS nT Λ) ((latF F E nS nT Λ).map (rhoFF σ JS JT (g⁻¹, h⁻¹))) • γ) + idx (latF F E nS nT Λ) ((latF F E nS nT Λ).map (rhoFF σ JS JT (g⁻¹, h⁻¹))) • u` from `⟨_, hγ, by rw [map_nsmul, ← nsmul_add, add_sub_cancel, nsmul_inv_smul' (F := F) (E := E) hN]⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨idx (latF F E nS nT Λ) ((latF F E nS nT Λ).map (rhoFF σ JS JT (g⁻¹, h⁻¹))) • γ, ?_, ?_⟩` and prove the remaining obligations. Use `show finRatF F _ ∈ (latF F E nS nT Λ).map (rhoFF σ JS JT (g, h))`. Rewrite using `[eq_sub_of_add_eq e.symm]`. Conclude with `sub_mem hz (hmov u hu)`. Use `show z - finRatF F _ ∈ latF F E nS nT Λ`.
-
-Rewrite using `[sub_eq_of_eq_add' e]`. Conclude with `nsmul_mem hu _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem idx_eq (C : Ctx σ B JS JT ξ₀ θ ι) (hG : GoodLat Λ) (hR : RatSD σ JS JT ξ₀ Λ)
     (hO : IsLatRepF σ JS JT ξ₀ B.ψ hc Λ w lam Om) {g : GAF σ JS} {h : GAF σ JT} {a b}
@@ -248,7 +246,7 @@ theorem idx_eq (C : Ctx σ B JS JT ξ₀ θ ι) (hG : GoodLat Λ) (hR : RatSD σ
 
 open GlobalTheory.RatAut in
 /- English proof (translation)
-The claim follows from `|Algebra.norm ℚ ((N : E) ^ M * (b ⊗ₖ aᵀ).det)| := by have sd := sdQ C hR obtain ⟨d, hd0, hdi⟩ := exists_denomM hG.fg have fg : Λ.toAddSubgroup.FG := GlobalTheory.RatLattice.fg_of_denom _ d hd0 hdi have full := hG.den rw [idx_eq C hG hR hO ha hb] rw [← det_sandw] at hΔ ⊢ rw [← det …`.
+A detailed English derivation is pending.
 -/
 theorem data (C : Ctx σ B JS JT ξ₀ θ ι) (hG : GoodLat Λ) (hR : RatSD σ JS JT ξ₀ Λ)
     (hO : IsLatRepF σ JS JT ξ₀ B.ψ hc Λ w lam Om) {g : GAF σ JS} {h : GAF σ JT} {a b}

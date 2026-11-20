@@ -23,11 +23,11 @@ variable {k : Type} [CommRing k] {Y : AlgebraicGeometry.Scheme.{0}} {p : Y ⟶ R
   {d : ℕ}
 
 /- English proof (translation)
-Set `L : (Fin d → ℂ) →ₗ[ℂ] (Fin d → ℂ)` to `(WithLp.linearEquiv 2 ℂ _).toLinearMap ∘ₗ (fderiv ℂ (c'.e ∘ c.e.symm) (c.e y)).toLinearMap ∘ₗ (WithLp.linearEquiv 2 ℂ _).symm.toLinearMap`. Establish `hL : Function.Injective (L.restrictScalars ℝ)` using `(injective_iff_map_eq_zero _).2 fun ξ h =>`. Assume the negation of the conclusion as `fun h0 => GlobalTheory.AlgChart.dtrans_ne_zero hy hy' h0 h`. Set `T` to `LinearEquiv.ofInjectiveEndo _ hL`. Establish `e : (fun ξ => ψ (E c y (t • ξ)) * GlobalTheory.ChernReg.cutoff (a c y ξ)) = (fun ξ => ψ (E c' y (t • ξ)) * GlobalTheory.ChernReg.cutoff (a c' y ξ)) ∘ T`.
+Introduce a local definition for the expression. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `fun ξ => congrArg₂ (· * ·) (congrArg ψ ((hE.trans c c' y hy hy' _).trans (congrArg _ (map_smul T t ξ)))) (congrArg GlobalTheory.ChernReg.cutoff (ha.trans hy hy' ξ))`. Establish `hT` using `T.isUnit_det'.ne_zero`. Establish `hm` using `Measure.map_linearMap_addHaar_eq_smul_addHaar (volume : Measure (Fin d → ℂ)) hT`. Establish `h2 : Integrable (fun ξ => ψ (E c' y (t • ξ)) * GlobalTheory.ChernReg.cutoff (a c' y ξ)) (Measure.map (T.toContinuousLinearEquiv.toHomeomorph.toMeasurableEquiv) volume)`. Establish `: (Measure.map (T.toContinuousLinearEquiv.toHomeomorph.toMeasurableEquiv) volume) = Measure.map (⇑(T : (Fin d → ℂ) →ₗ[ℝ] (Fin d → ℂ))) volume` using `rfl`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[this, hm]`. Conclude with `h.smul_measure ENNReal.ofReal_ne_top`. Rewrite using `[e]`. Conclude with `(integrable_map_equiv T.toContinuousLinearEquiv.toHomeomorph.toMeasurableEquiv _).1 h2`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integrable_rhoIn_chart {R : GlobalTheory.AnRead p σ d} {a : GlobalTheory.ShFam.ChartForm p σ d} {E : GlobalTheory.ChernReg.ChartMap p σ d}
     (ha : GlobalTheory.ShFam.IsKaehlerForm R a) (hE : GlobalTheory.ChernReg.IsExph a E) (ψ : GlobalTheory.CxPts p σ → ℝ)
@@ -56,35 +56,33 @@ theorem integrable_rhoIn_chart {R : GlobalTheory.AnRead p σ d} {a : GlobalTheor
   exact (integrable_map_equiv T.toContinuousLinearEquiv.toHomeomorph.toMeasurableEquiv _).1 h2
 
 /- English proof (translation)
-Introduce `hK k _ Y p σ d _ _ a E f ha hE hf hloc`. Take `⟨n, ch, K, C0, ρ0, hC0, hρ0, hKc, hcov, hball⟩` from `GlobalTheory.T.log_ball_finite_chart_cover f hloc`. Establish `hKj` using `fun j => hK k Y p σ d a E ha hE (ch j) (K j) (hKc j).1 (hKc j).2`. Use `choose Cj tj hCj htj hj using hKj`. Establish `hfpos : ∀ z, 0 < f z` using `fun z => (Real.exp_pos 1).trans_le (hf z)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hf1 : ∀ z, 1 ≤ f z` using `fun z => by linarith [Real.add_one_le_exp 1, hf z]`. Establish `hterm : ∀ i, 0 ≤ 1 / tj i + Cj i / ρ0` using `fun i => by have := hCj i; have := htj i; positivity`. Use `set S := ∑ i, (1 / tj i + Cj i / ρ0) with hS`. Establish `hS0 : 0 ≤ S` using `Finset.sum_nonneg fun i _ => hterm i`. Use `set A : Fin n → ℝ := fun i => Cj i ^ (2 * d + 1) * C0 * (2 + |Real.log (1 / Cj i)|) with hA`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hA0 : ∀ i, 0 ≤ A i` using `fun i => by have := hCj i; positivity`. Establish `hsA : 0 ≤ ∑ i, A i` using `Finset.sum_nonneg fun i _ => hA0 i`. Use `⟨1 + ∑ i, A i, 1 / (3 + S), by linarith, by positivity, ?_⟩` and prove the remaining obligations. Introduce `t ht htt c y hy`. Take `⟨j, hyj, hKy⟩` from `hcov y`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hinv : 3 + S ≤ 1 / t`. Rewrite using `[le_div_iff₀ ht]`. Rewrite `htt` using `[le_div_iff₀ (by positivity)]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hsj : 1 / tj j + Cj j / ρ0 ≤ S` using `Finset.single_le_sum (f := fun i => 1 / tj i + Cj i / ρ0) (fun i _ => hterm i) (Finset.mem_univ j)`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hCj0` using `hCj j`. Establish `htj0` using `htj j`. Establish `hq1 : 0 ≤ Cj j / ρ0` using `by positivity`. Establish `hq2 : 0 ≤ 1 / tj j` using `by positivity`. Establish `htj' : t ≤ tj j` using `(one_div_le_one_div htj0 ht).1 (by linarith)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hCt : Cj j * t ≤ ρ0`. Establish `h1 : Cj j / ρ0 ≤ 1 / t` using `by linarith`. Rewrite `h1` using `[div_le_div_iff₀ hρ0 ht]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hL1 : 1 ≤ Real.log (1 / t)`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Establish `h` using `Real.log_le_log (Real.exp_pos 1) (show Real.exp 1 ≤ 1 / t by linarith [Real.exp_one_lt_d9])`. Rewrite `h` using `[Real.log_exp]`. Then use the resulting hypothesis. Take `⟨-, -, hint⟩` from `hj j y hyj hKy t ht htj'`. Take `⟨hIf, hIbd⟩` from `hball j _ hKy (Cj j * t) (mul_pos hCj0 ht) hCt`. Establish `hIlog : IntegrableOn ((fun z => Real.log (f z)) ∘ (ch j).e.symm) (Metric.ball ((ch j).e y) (Cj j * t))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Integrable.mono' hIf (Real.measurable_log.comp_aemeasurable hIf.aemeasurable).aestronglyMeasurable (ae_of_all _ fun v => ?_)` and prove the remaining obligations. Simplify using `only [Function.comp_apply]`. Rewrite using `[Real.norm_of_nonneg (Real.log_nonneg (hf1 _))]`. Combine the linear relations using `[Real.log_le_sub_one_of_pos (hfpos ((ch j).e.symm v))]`. Take `⟨hIgf, hbdf⟩` from `hint f hIf`.
+Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨hIgl, -⟩` from `hint (fun z => Real.log (f z)) hIlog`. Use `⟨integrable_rhoIn_chart ha hE (fun z => Real.log (f z)) hy hyj t hIgl, ?_⟩` and prove the remaining obligations. Take `⟨hqc, hqh⟩` from `GlobalTheory.ChernReg.continuous_and_smul ha hyj`. Establish `hqp` using `ha.2 (ch j) y hyj`. Establish `hJ` using `GlobalTheory.T.jensen_log_mean_cutoff (a (ch j) y) (fun ξ => f (E (ch j) y (t • ξ))) hqc hqh hqp (fun ξ => hf1 _) hIgf hIgl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrho : GlobalTheory.ChernReg.rho a E f y t = GlobalTheory.ChernReg.mean (a (ch j) y) (fun ξ => f (E (ch j) y (t • ξ)))` using `GlobalTheory.ChernReg.rho_eq ha hE f hyj t`. Establish `hmean : Real.exp 1 ≤ GlobalTheory.ChernReg.mean (a (ch j) y) (fun ξ => f (E (ch j) y (t • ξ)))`. Establish `hm` using `GlobalTheory.ChernReg.mass_pos hqc hqh hqp`. Rewrite using `[GlobalTheory.ChernReg.mean, le_div_iff₀ hm, ← integral_const_mul]`. Conclude with `integral_mono ((GlobalTheory.ChernReg.integrable_cutoff hqc hqh hqp).const_mul _) hIgf fun ξ => mul_le_mul_of_nonneg_right (hf _) (GlobalTheory.ChernReg.cutoff_nonneg _)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `habs : ∫ v in Metric.ball ((ch j).e y) (Cj j * t), |f ((ch j).e.symm v)| = ∫ v in Metric.ball ((ch j).e y) (Cj j * t), f ((ch j).e.symm v)`. Use `congr 1`. Use function extensionality and compare the values at `v`. Conclude with `abs_of_pos (hfpos _)`. Establish `hsplit : Real.log (1 / (Cj j * t)) = Real.log (1 / Cj j) + Real.log (1 / t)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[← one_div_mul_one_div, Real.log_mul (by positivity) (by positivity)]`. Establish `key : ∀ X : ℝ, Cj j / t ^ (2 * d) * (C0 * (Cj j * t) ^ (2 * d) * X) = Cj j ^ (2 * d + 1) * C0 * X`. Introduce `X`. Rewrite using `[mul_pow]`. Clear the denominators using the available nonvanishing facts.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `h1 : GlobalTheory.ChernReg.rho a E f y t ≤ Cj j ^ (2 * d + 1) * C0 * (1 + Real.log (1 / Cj j) + Real.log (1 / t))`. Combine the equalities or inequalities in the displayed calculation. Establish `h2 : Cj j ^ (2 * d + 1) * C0 * (1 + Real.log (1 / Cj j) + Real.log (1 / t)) ≤ A j * Real.log (1 / t)`. Establish `hl` using `le_abs_self (Real.log (1 / Cj j))`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp` using `mul_nonneg (by positivity : (0 : ℝ) ≤ 1 + |Real.log (1 / Cj j)|) (sub_nonneg.2 hL1)`. Establish `hin : 1 + Real.log (1 / Cj j) + Real.log (1 / t) ≤ (2 + |Real.log (1 / Cj j)|) * Real.log (1 / t)` using `by nlinarith`. Combine the equalities or inequalities in the displayed calculation. Establish `h3 : A j * Real.log (1 / t) ≤ (1 + ∑ i, A i) * Real.log (1 / t)`. Use `Finset.single_le_sum (fun i _ => hA0 i) (Finset.mem_univ j)` as an intermediate fact.
-
-Conclude with `mul_le_mul_of_nonneg_right (by linarith) (by linarith)`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem rhoIn_log_le_log_log : GlobalTheory.HeightParts.KernelSt → ∀ {k : Type} [CommRing k] {Y : AlgebraicGeometry.Scheme.{0}}
     {p : Y ⟶ ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp k} {σ : k →+* ℂ} {d : ℕ} [SmoothOfRelativeDimension d p]

@@ -13,7 +13,7 @@ def sphereMap {n : ℕ} (U : EuclideanSpace ℂ (Fin n) ≃ₗᵢ[ℝ] Euclidean
            exact mem_sphere_zero_iff_norm.mp z.2⟩
 
 /- English proof (translation)
-The claim follows from `(U.continuous.comp continuous_subtype_val).subtype_mk _`.
+A detailed English derivation is pending.
 -/
 theorem continuous_sphereMap {n : ℕ}
     (U : EuclideanSpace ℂ (Fin n) ≃ₗᵢ[ℝ] EuclideanSpace ℂ (Fin n)) :
@@ -21,13 +21,13 @@ theorem continuous_sphereMap {n : ℕ}
   (U.continuous.comp continuous_subtype_val).subtype_mk _
 
 /- English proof (translation)
-Establish `hmeas` using `(continuous_sphereMap U).measurable`. Use extensionality with `s hs`. Rewrite using `[Measure.map_apply hmeas hs, Measure.toSphere_apply' _ (hmeas hs), Measure.toSphere_apply' _ hs]`. Use `congr 1`. Establish `hset : (Set.Ioo (0 : ℝ) 1 • ((↑) '' (sphereMap U ⁻¹' s) : Set (EuclideanSpace ℂ (Fin n)))) = U ⁻¹' (Set.Ioo (0 : ℝ) 1 • ((↑) '' s))`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Use extensionality with `x`. Simplify using `only [Set.mem_smul, Set.mem_image, Set.mem_preimage]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨r, hr, y, ⟨z, hz, rfl⟩, rfl⟩`. Conclude with `⟨r, hr, U z, ⟨sphereMap U z, hz, rfl⟩, (map_smul U r (z : EuclideanSpace ℂ (Fin n))).symm⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨r, hr, y, ⟨z, hz, rfl⟩, hxy⟩`. Use `⟨r, hr, U.symm z, ⟨sphereMap U.symm z, ?_, rfl⟩, ?_⟩` and prove the remaining obligations. Establish `: sphereMap U (sphereMap U.symm z) = z` using `Subtype.ext (by simp [sphereMap])`. Rewrite using `[this]`. Conclude with `hz`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_smul, hxy]`. Simplify using the standard rewrite rules. Rewrite using `[hset]`. Establish `hU : MeasurePreserving (U.toHomeomorph.toMeasurableEquiv) volume volume` using `U.measurePreserving`. Conclude with `hU.measure_preimage_equiv _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem toSphere_map_sphereMap {n : ℕ}
     (U : EuclideanSpace ℂ (Fin n) ≃ₗᵢ[ℝ] EuclideanSpace ℂ (Fin n)) :
@@ -56,7 +56,7 @@ theorem toSphere_map_sphereMap {n : ℕ}
   exact hU.measure_preimage_equiv _
 
 /- English proof (translation)
-Use `⟨(continuous_sphereMap U).measurable, ?_⟩` and prove the remaining obligations. Unfold `sphereProb ProbabilityTheory.cond`. Rewrite using `[Measure.restrict_univ, Measure.map_smul, toSphere_map_sphereMap]`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem measurePreserving_sphereMap {n : ℕ}
     (U : EuclideanSpace ℂ (Fin n) ≃ₗᵢ[ℝ] EuclideanSpace ℂ (Fin n)) :
@@ -70,20 +70,18 @@ def rotCL {n : ℕ} (u : EuclideanSpace ℂ (Fin n)) (t : ℂ) :
   (innerSL ℂ u).smulRight u + t • (ContinuousLinearMap.id ℂ _ - (innerSL ℂ u).smulRight u)
 
 /- English proof (translation)
-Simplify using `[rotCL]`.
+Simplify using the standard rewrite rules.
 -/
 theorem rotCL_apply {n : ℕ} (u : EuclideanSpace ℂ (Fin n)) (t : ℂ) (x : EuclideanSpace ℂ (Fin n)) :
     rotCL u t x = inner ℂ u x • u + t • (x - inner ℂ u x • u) := by
   simp [rotCL]
 
 /- English proof (translation)
-Establish `huu : inner ℂ u u = (1 : ℂ)`. Rewrite using `[inner_self_eq_norm_sq_to_K, hu]`. Simplify using the standard rewrite rules. Establish `horth : inner ℂ u (x - inner ℂ u x • u) = 0`. Rewrite using `[inner_sub_right, inner_smul_right, huu, mul_one, sub_self]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : inner ℂ (inner ℂ u x • u) (t • (x - inner ℂ u x • u)) = 0`. Rewrite using `[inner_smul_left, inner_smul_right, horth]`. Simplify using the standard rewrite rules. Establish `h2 : inner ℂ (inner ℂ u x • u) (x - inner ℂ u x • u) = 0`. Rewrite using `[inner_smul_left, horth]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `hx : x = inner ℂ u x • u + (x - inner ℂ u x • u)` using `by abel`. Establish `key : ‖rotCL u t x‖ * ‖rotCL u t x‖ = ‖x‖ * ‖x‖`. Rewrite using `[rotCL_apply, norm_add_sq_eq_norm_sq_add_norm_sq_of_inner_eq_zero _ _ h1, norm_smul t (x - inner ℂ u x • u), ht, one_mul]`. Use `conv_rhs => rw [hx, norm_add_sq_eq_norm_sq_add_norm_sq_of_inner_eq_zero _ _ h2]`.
-
-Conclude with `(mul_self_inj (norm_nonneg _) (norm_nonneg _)).mp key`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_rotCL {n : ℕ} {u : EuclideanSpace ℂ (Fin n)} {t : ℂ} (hu : ‖u‖ = 1) (ht : ‖t‖ = 1)
     (x : EuclideanSpace ℂ (Fin n)) : ‖rotCL u t x‖ = ‖x‖ := by
@@ -113,7 +111,7 @@ def rotS {n : ℕ} {u : EuclideanSpace ℂ (Fin n)} (hu : ‖u‖ = 1) (θ : ℝ
   sphereMap (rotIso hu (t := circleMap 0 1 θ) (by simp [norm_circleMap_zero]))
 
 /- English proof (translation)
-The claim follows from `rotCL_apply u _ _`.
+A detailed English derivation is pending.
 -/
 theorem coe_rotS {n : ℕ} {u : EuclideanSpace ℂ (Fin n)} (hu : ‖u‖ = 1) (θ : ℝ)
     (z : UnitSphereC n) :
@@ -123,16 +121,16 @@ theorem coe_rotS {n : ℕ} {u : EuclideanSpace ℂ (Fin n)} (hu : ‖u‖ = 1) (
   rotCL_apply u _ _
 
 /- English proof (translation)
-The claim follows from `measurePreserving_sphereMap _`.
+A detailed English derivation is pending.
 -/
 theorem measurePreserving_rotS {n : ℕ} {u : EuclideanSpace ℂ (Fin n)} (hu : ‖u‖ = 1) (θ : ℝ) :
     MeasurePreserving (rotS hu θ) (sphereProb n) (sphereProb n) :=
   measurePreserving_sphereMap _
 
 /- English proof (translation)
-Use `continuous_induced_rng.2 ?_` and prove the remaining obligations. Simplify using `only [Function.comp_def, coe_rotS]`. Establish `hc : Continuous fun p : ℝ × UnitSphereC n => (p.2 : EuclideanSpace ℂ (Fin n))` using `continuous_subtype_val.comp continuous_snd`. Establish `hθ : Continuous fun p : ℝ × UnitSphereC n => circleMap 0 1 p.1` using `(continuous_circleMap 0 1).comp continuous_fst`. Establish `hi : Continuous fun p : ℝ × UnitSphereC n => inner ℂ u (p.2 : EuclideanSpace ℂ (Fin n))` using `continuous_const.inner hc`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(hi.smul continuous_const).add (hθ.smul (hc.sub (hi.smul continuous_const)))`.
+A detailed English derivation is pending.
 -/
 theorem continuous_rotS {n : ℕ} {u : EuclideanSpace ℂ (Fin n)} (hu : ‖u‖ = 1) :
     Continuous (fun p : ℝ × UnitSphereC n => rotS hu p.1 p.2) := by
@@ -147,13 +145,13 @@ theorem continuous_rotS {n : ℕ} {u : EuclideanSpace ℂ (Fin n)} (hu : ‖u‖
   exact (hi.smul continuous_const).add (hθ.smul (hc.sub (hi.smul continuous_const)))
 
 /- English proof (translation)
-Use `set s : Set (UnitSphereC n) := {z | inner ℂ u (z : EuclideanSpace ℂ (Fin n)) = 0}`. Establish `hs : MeasurableSet s` using `(isClosed_eq (continuous_const.inner continuous_subtype_val) continuous_const).measurableSet`. Set `P : Submodule ℝ (EuclideanSpace ℂ (Fin n))` to `LinearMap.ker (((innerSL ℂ u : EuclideanSpace ℂ (Fin n) →L[ℂ] ℂ) : EuclideanSpace ℂ (Fin n) →ₗ[ℂ] ℂ).restrictScalars ℝ)`. Establish `hP : P ≠ ⊤`. Introduce `h`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hmem : u ∈ P` using `h ▸ Submodule.mem_top`. Simplify using `only [P, LinearMap.mem_ker, LinearMap.restrictScalars_apply, ContinuousLinearMap.coe_coe, innerSL_apply_apply] at hmem`. Conclude with `hu (inner_self_eq_zero.mp hmem)`. Establish `hsub : Set.Ioo (0 : ℝ) 1 • ((↑) '' s : Set (EuclideanSpace ℂ (Fin n))) ⊆ (P : Set (EuclideanSpace ℂ (Fin n)))`. Introduce and unpack `_ ⟨r, -, y, ⟨z, hz, rfl⟩, rfl⟩`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `show (((innerSL ℂ u : EuclideanSpace ℂ (Fin n) →L[ℂ] ℂ) : EuclideanSpace ℂ (Fin n) →ₗ[ℂ] ℂ).restrictScalars ℝ) (r • (z : EuclideanSpace ℂ (Fin n))) = 0`. Rewrite using `[map_smul]`. Simplify using `only [LinearMap.restrictScalars_apply, ContinuousLinearMap.coe_coe, innerSL_apply_apply]`. Rewrite using `[show inner ℂ u (z : EuclideanSpace ℂ (Fin n)) = 0 from hz, smul_zero]`. Establish `h0 : (volume : Measure (EuclideanSpace ℂ (Fin n))).toSphere s = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Measure.toSphere_apply' _ hs]`. Rewrite using `[measure_mono_null hsub (Measure.addHaar_submodule _ P hP), mul_zero]`. Simplify using `[sphereProb, ProbabilityTheory.cond, h0]`.
+A detailed English derivation is pending.
 -/
 theorem sphereProb_inner_eq_zero {n : ℕ} {u : EuclideanSpace ℂ (Fin n)} (hu : u ≠ 0) :
     sphereProb n {z | inner ℂ u (z : EuclideanSpace ℂ (Fin n)) = 0} = 0 := by

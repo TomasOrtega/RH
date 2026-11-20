@@ -17,25 +17,25 @@ variable {R R' : Type} [CommRing R] [CommRing R'] {X X' Y : Scheme.{0}}
 def pre {B : Type} [CommRing B] (y : Sp B ⟶ Sp R) : R →+* B := (Spec.preimage y).hom
 
 /- English proof (translation)
-The claim follows from `Spec.map_preimage y`.
+A detailed English derivation is pending.
 -/
 theorem spMap_pre {B : Type} [CommRing B] (y : Sp B ⟶ Sp R) : spMap (pre y) = y := Spec.map_preimage y
 
 /- English proof (translation)
-The claim follows from `congrArg CommRingCat.Hom.hom (Spec.preimage_map (CommRingCat.ofHom ρ))`.
+A detailed English derivation is pending.
 -/
 theorem pre_spMap {B : Type} [CommRing B] (ρ : R →+* B) : pre (spMap ρ) = ρ :=
   congrArg CommRingCat.Hom.hom (Spec.preimage_map (CommRingCat.ofHom ρ))
 
 /- English proof (translation)
-Use `conv_lhs => rw [← spMap_pre y, ← GlobalTheory.Cris.spMap_comp, pre_spMap]`.
+A detailed English derivation is pending.
 -/
 theorem pre_comp {B B' : Type} [CommRing B] [CommRing B'] (ρ : B →+* B') (y : Sp B ⟶ Sp R) :
     pre (spMap ρ ≫ y) = ρ.comp (pre y) := by
   conv_lhs => rw [← spMap_pre y, ← GlobalTheory.Cris.spMap_comp, pre_spMap]
 
 /- English proof (translation)
-The claim follows from `(valR_res y le_top (le_preimage_top y) _).trans ((valR_comp y t ⊤ _).symm.trans (preimage_apply (y ≫ t) r).symm)`.
+A detailed English derivation is pending.
 -/
 theorem valR_cst {B : Type} [CommRing B] (t : Y ⟶ Sp R) (y : Sp B ⟶ Y) (r : R) :
     valR y ⊤ (GlobalTheory.AbLaw.cst t ⊤ r) = pre (y ≫ t) r :=
@@ -65,7 +65,7 @@ def cv (z : Z1 (FP s)) {B B' : Type} [CommRing B] [CommRing B'] (ρ : B →+* B'
   z.1 _ _ (homOf s ρ x _ rfl)
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem cv_homOf (z : Z1 (FP s)) {B B' : Type} [CommRing B] [CommRing B'] (ρ : B →+* B') (x : Sp B ⟶ X)
     (x' : Sp B' ⟶ X) (h : spMap ρ ≫ x = x') : (z.1 _ _ (homOf s ρ x x' h) : B') = cv z ρ x := by
@@ -73,11 +73,11 @@ theorem cv_homOf (z : Z1 (FP s)) {B B' : Type} [CommRing B] [CommRing B'] (ρ : 
   rfl
 
 /- English proof (translation)
-Rewrite using `[← cv_homOf z _ _ _ φ.pt]`. Take `@⟨B, rB, aB, x, w⟩` from `P`. Take `@⟨B', rB', aB', x', w'⟩` from `Q`. Establish `e : aB = (pre (x ≫ s)).toAlgebra` using `Algebra.algebra_ext _ _ fun r ↦ by`. Express the relevant statement in the definitionally equal form `_ = pre (x ≫ s) r`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[w, pre_spMap]`. Establish `e' : aB' = (pre (x' ≫ s)).toAlgebra` using `Algebra.algebra_ext _ _ fun r ↦ by`. Express the relevant statement in the definitionally equal form `_ = pre (x' ≫ s) r`. Rewrite using `[w', pre_spMap]`. Substitute `e` using the available equality.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Substitute using the available equality.
 
-Substitute `e'` using the available equality. Conclude with `congrArg (z.1 _ _) (hom_ext fun _ ↦ rfl)`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem cv_eq (z : Z1 (FP s)) {P Q : Pt s} (φ : P ⟶ Q) :
     (z.1 P Q φ : Q.B) = cv z (φ.ρ : P.B →+* Q.B) P.x := by
@@ -98,7 +98,7 @@ section
 variable {B B' B'' : Type} [CommRing B] [CommRing B'] [CommRing B'']
 
 /- English proof (translation)
-The claim follows from `(cv_eq z (homOf s ρ x _ rfl ≫ homOf s τ (spMap ρ ≫ x) _ rfl)).symm.trans (Z1.comp z (homOf s ρ x _ rfl) (homOf s τ (spMap ρ ≫ x) _ rfl))`.
+A detailed English derivation is pending.
 -/
 theorem cv_comp (z : Z1 (FP s)) (ρ : B →+* B') (τ : B' →+* B'') (x : Sp B ⟶ X) :
     cv z (τ.comp ρ) x = τ (cv z ρ x) + cv z τ (spMap ρ ≫ x) :=
@@ -111,7 +111,7 @@ Both sides reduce to the same expression.
 theorem cv_add (z z' : Z1 (FP s)) (ρ : B →+* B') (x : Sp B ⟶ X) : cv (z + z') ρ x = cv z ρ x + cv z' ρ x := rfl
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `pre ((spMap ρ ≫ x) ≫ s) r * cv z ρ x = _`. Rewrite using `[Category.assoc, pre_comp]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem cv_smul (z : Z1 (FP s)) (r : R) (ρ : B →+* B') (x : Sp B ⟶ X) :
     cv (r • z) ρ x = ρ (pre (x ≫ s) r) * cv z ρ x := by
@@ -120,14 +120,14 @@ theorem cv_smul (z : Z1 (FP s)) (r : R) (ρ : B →+* B') (x : Sp B ⟶ X) :
   rfl
 
 /- English proof (translation)
-The claim follows from `cv_eq z (pushHom h (homOf s' ρ x _ rfl))`.
+A detailed English derivation is pending.
 -/
 theorem cv_pull {s' : X' ⟶ Sp R'} {σ : R →+* R'} {φ : X' ⟶ X} (h : φ ≫ s = s' ≫ spMap σ) (z : Z1 (FP s))
     (ρ : B →+* B') (x : Sp B ⟶ X') : cv ((pushC h).pullbackOneCocycle z) ρ x = cv z ρ (x ≫ φ) :=
   cv_eq z (pushHom h (homOf s' ρ x _ rfl))
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `H1.mk_eq_mk.1 h`. Use `⟨fun B _ x ↦ g (ptOf s x), fun B B' _ _ ρ x ↦ ?_⟩` and prove the remaining obligations. Establish `e : (g (ptOf s (spMap ρ ≫ x)) : B') - ρ (g (ptOf s x)) = cv z ρ x - cv z' ρ x` using `congrFun (congrFun (congrFun hg _) _) (homOf s ρ x _ rfl)`. Take the linear combination `-e`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem cv_of_mk_eq {z z' : Z1 (FP s)} (h : H1.mk _ z = H1.mk _ z') :
     ∃ g : ∀ (B : Type) [CommRing B], (Sp B ⟶ X) → B, ∀ (B B' : Type) [CommRing B] [CommRing B'] (ρ : B →+* B')
@@ -147,9 +147,9 @@ def gam (z : Z1 (FP s)) (U : X.affineOpens) (B : Type) [CommRing B] (x : Sp B �
     cv z (B := GlobalTheory.CechDR.Sec s U.1) (valMap x U.1 h).hom (GlobalTheory.CechDR.affPt s U) else 0
 
 /- English proof (translation)
-Establish `e : (valMap (spMap ρ ≫ x) U.1 (h.map ρ)).hom = ρ.comp (valMap x U.1 h).hom` using `RingHom.ext fun f ↦ by`. Rewrite using `[← valR_eq, valR_spMap_comp _ _ _ h, valR_eq _ _ h]`. Both sides reduce to the same expression. Establish `e' : spMap (R` using `GlobalTheory.CechDR.Sec s U.1) (valMap x U.1 h).hom ≫ GlobalTheory.CechDR.affPt s U = x := specMap_valMap_fromSpec U.2 x h`. Rewrite using `[gam, gam, dif_pos h, dif_pos (h.map ρ), e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(cv_comp z (B := GlobalTheory.CechDR.Sec s U.1) (valMap x U.1 h).hom ρ _).trans (by rw [e'])`.
+A detailed English derivation is pending.
 -/
 theorem gam_map (z : Z1 (FP s)) (U : X.affineOpens) {B B' : Type} [CommRing B] [CommRing B'] (ρ : B →+* B')
     {x : Sp B ⟶ X} (h : Inn x U.1) : gam z U B' (spMap ρ ≫ x) = ρ (gam z U B x) + cv z ρ x := by
@@ -162,9 +162,9 @@ theorem gam_map (z : Z1 (FP s)) (U : X.affineOpens) {B B' : Type} [CommRing B] [
   exact (cv_comp z (B := GlobalTheory.CechDR.Sec s U.1) (valMap x U.1 h).hom ρ _).trans (by rw [e'])
 
 /- English proof (translation)
-Establish `hc : ⨆ j, x ⁻¹ᵁ U j = ⊤` using `by rw [← Scheme.Hom.preimage_iSup, hU, Scheme.Hom.preimage_top]`. Establish `e` using `sec_ext_cover (fun j ↦ x ⁻¹ᵁ U j) hc ⊤ ((Scheme.ΓSpecIso (CommRingCat.of B)).inv.hom b) ((Scheme.ΓSpecIso (CommRingCat.of B)).inv.hom b') fun j C _ y _ hy ↦ by`. Rewrite using `[← preimage_apply, ← preimage_apply]`. Use `H j C (pre y) ?_` and prove the remaining obligations. Rewrite using `[spMap_pre]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hy`. Conclude with `(ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of B)).inv).1 e`.
+A detailed English derivation is pending.
 -/
 theorem eq_of_cover {J : Type} (U : J → X.Opens) (hU : ⨆ j, U j = ⊤) {B : Type} [CommRing B] (x : Sp B ⟶ X)
     (b b' : B) (H : ∀ (j : J) (C : Type) [CommRing C] (τ : B →+* C), Inn (spMap τ ≫ x) (U j) → τ b = τ b') :
@@ -179,21 +179,19 @@ theorem eq_of_cover {J : Type} (U : J → X.Opens) (hU : ⨆ j, U j = ⊤) {B : 
   exact (ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of B)).inv).1 e
 
 /- English proof (translation)
-Set `G₀ : ∀ (B : Type) [CommRing B], (Sp B ⟶ X) → B` to `fun B _ x ↦ if h : ∃ j, Inn x (U j) then G h.choose B x else 0`. Establish `hG : ∀ (j : J) (B : Type) [CommRing B] (x : Sp B ⟶ X), Inn x (U j) → G₀ B x = G j B x`. Introduce `j B _ x hx`. Establish `h : ∃ j, Inn x (U j)` using `⟨j, hx⟩`. Simplify using `only [G₀, dif_pos h]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `h1 _ _ B x h.choose_spec hx`. Establish `ex : ∀ (B : Type) [CommRing B] (x : Sp B ⟶ X), ∃ g : B, ∀ (j : J) (C : Type) [CommRing C] (τ : B →+* C), Inn (spMap τ ≫ x) (U j) → τ g = G j C (spMap τ ≫ x) - cv z τ x`. Introduce `B _ x`. Establish `hc : ⨆ j, x ⁻¹ᵁ U j = ⊤` using `by rw [← Scheme.Hom.preimage_iSup, hU, Scheme.Hom.preimage_top]`. Take `⟨f, hf⟩` from `exists_sec_cover (fun j ↦ x ⁻¹ᵁ U j) ⊤ (fun _ ↦ le_top) hc.ge (fun C _ y ↦ G₀ C (y ≫ x) - cv z (pre y) x) fun j C C' _ _ τ y hy ↦ by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hy' : Inn (y ≫ x) (U j)` using `hy`. Rewrite using `[Category.assoc, hG j _ _ hy', hG j _ _ (hy'.map τ), h2 j _ _ τ _ hy', pre_comp, cv_comp, spMap_pre, map_sub]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨(Scheme.ΓSpecIso (CommRingCat.of B)).hom.hom f, fun j C _ τ hτ ↦ ?_⟩` and prove the remaining obligations. Establish `a` using `hf j C (spMap τ) hτ`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `b` using `valR_specMap (CommRingCat.ofHom τ) ((Scheme.ΓSpecIso (CommRingCat.of B)).hom.hom f)`. Establish `c : (Scheme.ΓSpecIso (CommRingCat.of B)).inv.hom ((Scheme.ΓSpecIso (CommRingCat.of B)).hom.hom f) = f`. Rewrite using `[← CommRingCat.comp_apply, Iso.hom_inv_id]`. Both sides reduce to the same expression. Rewrite `b` using `[c]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `a` using `[pre_spMap, hG j _ _ hτ]`. Conclude with `b.symm.trans a.symm`. Use `choose g hg using ex`. Use `H1.mk_eq_zero.2 ⟨fun P ↦ g P.B P.x, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `P Q φ`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[cv_eq z φ]`. Express the relevant statement in the definitionally equal form `(g Q.B Q.x - φ.ρ (g P.B P.x) : Q.B) = _`. Use `eq_of_cover U hU Q.x _ _ fun j C _ τ hτ ↦ ?_` and prove the remaining obligations. Establish `e : spMap (τ.comp (φ.ρ : P.B →+* Q.B)) ≫ P.x = spMap τ ≫ Q.x`. Rewrite using `[GlobalTheory.Cris.spMap_comp, Category.assoc, φ.pt]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `a` using `hg Q.B Q.x j C τ hτ`. Establish `b` using `hg P.B P.x j C (τ.comp (φ.ρ : P.B →+* Q.B)) (e ▸ hτ)`. Rewrite `b` using `[e, cv_comp, φ.pt]`. Establish `b' : τ (φ.ρ (g P.B P.x)) = _` using `b`. Rewrite using `[map_sub, a, b']`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem mk_eq_zero_of_cover (z : Z1 (FP s)) {J : Type} (U : J → X.Opens) (hU : ⨆ j, U j = ⊤)
     (G : J → ∀ (B : Type) [CommRing B], (Sp B ⟶ X) → B)

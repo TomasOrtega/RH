@@ -9,11 +9,11 @@ open scoped TensorProduct
 universe u
 
 /- English proof (translation)
-Establish `sq : IsSquare (h₁.φ ≫ h₂.φ) (h₁.φ₂ ≫ h₂.φ₂)`. Prove the components needed by the constructor for the conclusion. Rewrite using `[Category.assoc, h₂.sq.1, ← Category.assoc, h₁.sq.1, Category.assoc]`. Rewrite using `[Category.assoc, h₂.sq.2, ← Category.assoc, h₁.sq.2, Category.assoc]`. Establish `act : ∀ c, (o₁.act.act c).left ≫ (h₁.φ ≫ h₂.φ) = (h₁.φ ≫ h₂.φ) ≫ (o₃.act.act c).left`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `c`. Rewrite using `[← Category.assoc, h₁.act, Category.assoc, h₂.act, Category.assoc]`. Establish `eta : ∀ y, (o₁.eta y).left ≫ (h₁.φ ≫ h₂.φ) = (f ≫ g) ≫ (o₃.eta y).left`. Introduce `y`. Rewrite using `[← Category.assoc, h₁.eta, Category.assoc, h₂.eta, Category.assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `H : LBIso (o₂.P.pull h₁.φ₂) ((o₃.P.pull h₂.φ₂).pull h₁.φ₂)` using `LBIso.chartPull (ReciprocityTheory.ChartRestriction.G.Geo.Tor.chartPullPull o₂.P h₁.φ₂ h₁.φ₂ rfl) (ReciprocityTheory.ChartRestriction.G.Geo.Tor.chartPullPull (o₃.P.pull h₂.φ₂) h₁.φ₂ h₁.φ₂ rfl) h₂.pol`. Establish `H' : LBIso (o₂.P.pull h₁.φ₂) (o₃.P.pull (h₁.φ₂ ≫ h₂.φ₂))` using `LBIso.chartPull (chartPullId _) (chartPullIn o₃.P (fun _ : PUnit => h₂.φ₂) (fun _ => 1) h₁.φ₂) H`. Establish `pol : LBIso o₁.P (o₃.P.pull (h₁.φ₂ ≫ h₂.φ₂))` using `LBIso.trans o₁.isLB (pull_isLB o₂.isLB _) (pull_isLB o₃.isLB _) h₁.pol H'`. Conclude with `⟨⟨h₁.φ ≫ h₂.φ, h₁.φ₂ ≫ h₂.φ₂, h₁.cart.comp h₂.cart, sq, act, pol, eta⟩, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 private theorem gObjMap_comp_φ {G₀ : GDatum} {R : Type} [CommRing R] [Algebra ℚ R] {b : GBase G₀ R} {N : ℕ}
     {S₁ S₂ S₃ : Scheme.{0}} {s₁ : S₁ ⟶ Sp R} {s₂ : S₂ ⟶ Sp R} {s₃ : S₃ ⟶ Sp R} {o₁ : GObj b N s₁}
@@ -39,7 +39,7 @@ private theorem gObjMap_comp_φ {G₀ : GDatum} {R : Type} [CommRing R] [Algebra
   exact ⟨⟨h₁.φ ≫ h₂.φ, h₁.φ₂ ≫ h₂.φ₂, h₁.cart.comp h₂.cart, sq, act, pol, eta⟩, rfl⟩
 
 /- English proof (translation)
-Substitute `e` using the available equality. Conclude with `⟨m, rfl⟩`.
+Substitute using the available equality. Supply the required witnesses or components.
 -/
 private theorem gObjMap_cast {G₀ : GDatum} {R : Type} [CommRing R] [Algebra ℚ R] {b : GBase G₀ R} {N : ℕ}
     {S₁ S₂ : Scheme.{0}} {s₁ : S₁ ⟶ Sp R} {s₂ : S₂ ⟶ Sp R} {o₁ : GObj b N s₁} {o₂ : GObj b N s₂}
@@ -48,15 +48,15 @@ private theorem gObjMap_cast {G₀ : GDatum} {R : Type} [CommRing R] [Algebra �
   exact ⟨m, rfl⟩
 
 /- English proof (translation)
-Introduce `hS hC hP hU hRg p _ D G L R _ _ gb N₁ N₂ N X₁ X₂ X h₁ h₂ g u π₁ Φ₁ π₂ Φ₂ w₁ w₂ i₁ i₂ a₁ a₂ hu he k _ _ s x y hx hy ox oy mx my θ hθ`. Take `⟨e₁, o₁, ψ₁, f₁, t₁, rfl⟩` from `w₁`. Take `⟨e₂, o₂, ψ₂, f₂, t₂, rfl⟩` from `w₂`. Take `⟨o₁x, ⟨n₁⟩⟩` from `UpperTheory.exists_levelObj_pullback_of_charZero s x hx o₁`. Take `⟨o₂y, ⟨n₂⟩⟩` from `UpperTheory.exists_levelObj_pullback_of_charZero s y hy o₂`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨ψ₁', t₁', c₁⟩` from `hP p D G L R gb X₁.X (Sp k) X₁.s s x hx _ _ X₁.univ o₁ ox o₁x mx n₁ ψ₁ h₁ t₁`. Take `⟨ψ₂', t₂', c₂⟩` from `hP p D G L R gb X₂.X (Sp k) X₂.s s y hy _ _ X₂.univ o₂ oy o₂y my n₂ ψ₂ h₂ t₂`. Establish `iu : Integ L u` using `UpperTheory.Gal.Int.Geo.integ_of_mem (UpperTheory.Gal.Int.Geo.KN_anti (one_dvd _) hu)`. Establish `au : AdmK L N N u` using `fun v hv => (L.KN N).mul_mem ((L.KN N).mul_mem hu hv) ((L.KN N).inv_mem hu)`. Establish `t₃` using `hC p D G L R gb (Sp k) s N₁ N₂ N ox oy o₂y θ ψ₂' g h₂ i₂ a₂ hθ t₂'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `t₄` using `hC p D G L R gb (Sp k) s N₁ N N ox o₂y o₂y (θ ≫ ψ₂') (𝟙 _) (h₂ * g) u iu au t₃ ((hS p D G L R gb (Sp k) s N).1 o₂y u hu)`. Rewrite `t₄` using `[← he]`. Take `⟨m, hm⟩` from `hU p D G L R gb k s N₁ N ox o₁x o₂y ψ₁' _ h₁ i₁ a₁ t₁' t₄`. Take `⟨A, hA⟩` from `gObjMap_comp_φ n₁ f₁`. Take `⟨B₀, hB₀⟩` from `gObjMap_comp_φ n₂ f₂`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨B, hB⟩` from `gObjMap_comp_φ m B₀`. Establish `hxs : (x ≫ π₁) ≫ X.s = s` using `by rw [Category.assoc, e₁, hx]`. Establish `hys : (𝟙 (Sp k) ≫ y ≫ π₂) ≫ X.s = s` using `by simp [Category.assoc, e₂, hy]`. Establish `hxy : x ≫ π₁ = 𝟙 (Sp k) ≫ y ≫ π₂` using `(X.rep (Sp k) s o₁x).unique ⟨hxs, ⟨A⟩⟩ ⟨hys, ⟨B⟩⟩`. Take `⟨B', hB'⟩` from `gObjMap_cast hxy.symm B`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hAB` using `hRg p D R gb X.X (Sp k) X.s s (x ≫ π₁) hxs N X.univ o₁x A B'`. Use `⟨by simpa using hxy, ?_⟩` and prove the remaining obligations. Rewrite `hAB` using `[hB', hB, hB₀, hA]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem UpperTheory.Gal.G3.pPtEq :
     TransSelf → TransComp → TransPull → TransUniqPt → Rigid → PtEq := by

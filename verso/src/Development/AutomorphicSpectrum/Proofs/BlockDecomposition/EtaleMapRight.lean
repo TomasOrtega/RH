@@ -21,9 +21,9 @@ section Lin
 variable {K : Type} [Field K]
 
 /- English proof (translation)
-Use `⟨(LinearEquiv.piCongrRight fun a => TensorProduct.congr (EA a).symm (EB a).symm) ≪≫ₗ E, fun a ω η => ?_⟩` and prove the remaining obligations. Rewrite using `[LinearEquiv.trans_apply]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Distinguish the cases in `h : i = a`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_eq_of_ne h]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem glue_abs {c : ℕ} {MA : Fin (c + 1) → Type u₁} {MB : Fin (c + 1) → Type u₂} {HA : Fin (c + 1) → Type u₃}
     {HB : Fin (c + 1) → Type u₄} {H : Type u₅} [∀ a, AddCommGroup (MA a)] [∀ a, Module K (MA a)]
@@ -43,9 +43,7 @@ theorem glue_abs {c : ℕ} {MA : Fin (c + 1) → Type u₁} {MB : Fin (c + 1) �
   · simp [Pi.single_eq_of_ne h]
 
 /- English proof (translation)
-Establish `h1 : ∀ x ∈ s, b₁ (f x) = b₂ (f x)`. Introduce `x hx`. Establish `: (b₁ (f x)).comp g = (b₂ (f x)).comp g` using `LinearMap.ext_on ht fun y hy => h x hx y hy`. Conclude with `LinearMap.cancel_right hg |>.1 this`. Establish `: b₁.comp f = b₂.comp f` using `LinearMap.ext_on hs fun x hx => h1 x hx`.
-
-Conclude with `LinearMap.cancel_right hf |>.1 this`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem bilin_ext {M N A B H : Type*} [AddCommGroup M] [Module K M] [AddCommGroup N] [Module K N]
     [AddCommGroup A] [Module K A] [AddCommGroup B] [Module K B] [AddCommGroup H] [Module K H]
@@ -65,9 +63,9 @@ section Om
 variable {K A B C : Type} [CommRing K] [CommRing A] [CommRing B] [CommRing C] [Algebra K A] [Algebra K B] [Algebra K C]
 
 /- English proof (translation)
-Establish `h : (omMap χ a).comp (omMap φ a) = omMap (χ.comp φ) a`. Use `LinearMap.ext_on (hL K A B a).1 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨g₀, g, rfl⟩`. Rewrite using `[LinearMap.comp_apply, ((hL K A B a).2 φ).1, ((hL K B C a).2 χ).1, ((hL K A C a).2 (χ.comp φ)).1]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Conclude with `LinearMap.congr_fun h ω`.
+A detailed English derivation is pending.
 -/
 theorem omMap_comp (hL : FormLaws) (φ : A →ₐ[K] B) (χ : B →ₐ[K] C) (a : ℕ) (ω : Om K A a) :
     omMap χ a (omMap φ a ω) = omMap (χ.comp φ) a ω := by
@@ -79,9 +77,9 @@ theorem omMap_comp (hL : FormLaws) (φ : A →ₐ[K] B) (χ : B →ₐ[K] C) (a 
   exact LinearMap.congr_fun h ω
 
 /- English proof (translation)
-Establish `h : omMap (AlgHom.id K A) a = LinearMap.id`. Use `LinearMap.ext_on (hL K A A a).1 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨g₀, g, rfl⟩`. Rewrite using `[((hL K A A a).2 _).1]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Conclude with `LinearMap.congr_fun h ω`.
+A detailed English derivation is pending.
 -/
 theorem omMap_id (hL : FormLaws) (a : ℕ) (ω : Om K A a) : omMap (AlgHom.id K A) a ω = ω := by
   have h : omMap (AlgHom.id K A) a = LinearMap.id := by
@@ -113,13 +111,13 @@ section Et
 variable {K : Type} [CommRing K]
 
 /- English proof (translation)
-Use `letI : Algebra S A := f.toRingHom.toAlgebra`. Use `haveI : IsScalarTower K S A := IsScalarTower.of_algHom f`. Establish `h0 : (algebraMap S A).Etale` using `hf`. Establish `h1` using `RingHom.IsStableUnderBaseChange.tensorProduct RingHom.Etale.isStableUnderBaseChange (TensorProduct K S T) h0`. Set `ε : TensorProduct S (TensorProduct K S T) A ≃ₐ[S] TensorProduct K A T` to `(Algebra.TensorProduct.comm S _ A).trans (Algebra.TensorProduct.cancelBaseChange K S S A T)`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h2 : ε.toAlgHom.toRingHom.Etale` using `RingHom.Etale.of_bijective ε.bijective`. Establish `h3` using `RingHom.Etale.stableUnderComposition _ _ h1 h2`. Use `h3 using 1` and compare the differences between its conclusion and the goal. Use `RingHom.ext fun z => ?_` and prove the remaining obligations. Proceed by induction on `z with`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul s t`. Express the relevant statement in the definitionally equal form `f s ⊗ₜ[K] t = Algebra.TensorProduct.cancelBaseChange K S S A T (Algebra.TensorProduct.comm S (TensorProduct K S T) A ((s ⊗ₜ[K] t) ⊗ₜ[S] (1 : A)))`. Rewrite using `[Algebra.TensorProduct.comm_tmul, Algebra.TensorProduct.cancelBaseChange_tmul, Algebra.smul_def, mul_one]`.
+Treat this case separately. Treat this case separately. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem etale_map_left {S A T : Type} [CommRing S] [CommRing A] [CommRing T] [Algebra K S] [Algebra K A] [Algebra K T]
     (f : S →ₐ[K] A) (hf : f.toRingHom.Etale) : (Algebra.TensorProduct.map f (AlgHom.id K T)).toRingHom.Etale := by
@@ -143,9 +141,9 @@ theorem etale_map_left {S A T : Type} [CommRing S] [CommRing A] [CommRing T] [Al
     rfl
 
 /- English proof (translation)
-Establish `h` using `etale_map_left (T := T) f hf`. Establish `c₁ : (Algebra.TensorProduct.comm K T S).toAlgHom.toRingHom.Etale` using `RingHom.Etale.of_bijective (Algebra.TensorProduct.comm K T S).bijective`. Establish `c₂ : (Algebra.TensorProduct.comm K A T).toAlgHom.toRingHom.Etale` using `RingHom.Etale.of_bijective (Algebra.TensorProduct.comm K A T).bijective`. Establish `h3` using `RingHom.Etale.stableUnderComposition _ _ (RingHom.Etale.stableUnderComposition _ _ c₁ h) c₂`. Use `h3 using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `RingHom.ext fun z => ?_` and prove the remaining obligations. Proceed by induction on `z with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul s t => simp`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem etale_map_right {S A T : Type} [CommRing S] [CommRing A] [CommRing T] [Algebra K S] [Algebra K A] [Algebra K T]
     (f : S →ₐ[K] A) (hf : f.toRingHom.Etale) : (Algebra.TensorProduct.map (AlgHom.id K T) f).toRingHom.Etale := by
@@ -176,9 +174,9 @@ section Et2
 variable {K : Type} [CommRing K]
 
 /- English proof (translation)
-Establish `s₁` using `etale_map_left (T := MvPolynomial (Fin d') K) (MvPolynomial.aeval (R := K) x) hx`. Establish `s₂` using `etale_map_right (T := A) (MvPolynomial.aeval (R := K) y) hy`. Establish `u : (polyEquiv (K` using `K) d d').toAlgHom.toRingHom.Etale := RingHom.Etale.of_bijective (polyEquiv (K := K) d d').bijective`. Establish `v : ψ.toAlgHom.toRingHom.Etale` using `RingHom.Etale.of_bijective ψ.bijective`. Establish `h` using `RingHom.Etale.stableUnderComposition _ _ (RingHom.Etale.stableUnderComposition _ _ (RingHom.Etale.stableUnderComposition _ _ u s₁) s₂) v`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `h using 1` and compare the differences between its conclusion and the goal. Use `MvPolynomial.ringHom_ext (fun r => ?_) (fun i => ?_)` and prove the remaining obligations. Simplify using `[polyEquiv]`. Apply the tactic sequence `refine Fin.addCases (fun j => ?_) (fun j => ?_) i <;> simp [polyEquiv, Fin.append_left, Fin.append_right]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem tensor_etale {A B C : Type} [CommRing A] [CommRing B] [CommRing C] [Algebra K A] [Algebra K B] [Algebra K C]
     (ψ : TensorProduct K A B ≃ₐ[K] C) {d d' : ℕ} (x : Fin d → A) (y : Fin d' → B)
@@ -229,13 +227,13 @@ theorem cupU_eq {Z : Scheme.{0}} (q : Z ⟶ Spec (CommRingCat.of K)) (U : Object
     (h : i + j = n) : cupU q U ha h = (pairU q U ha).cupC h := rfl
 
 /- English proof (translation)
-Substitute `hc` using the available equality. Take `⟨φ₁, f₁, n₁⟩` from `hN K X P q (p₁ ≫ q) p₁ rfl V W h₁ h`. Take `⟨φ₂, f₂, n₂⟩` from `hN K X' P q' (p₁ ≫ q) p₂ w V' W h₂ h'`. Establish `t₁ : φ₁ = secMap p₁ rfl V W h₁` using `AlgHom.ext f₁`. Establish `t₂ : φ₂ = secMap p₂ w V' W h₂` using `AlgHom.ext f₂`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← t₁, ← t₂]`. Establish `hx' : CH.d _ a ((morV p₁ rfl a h).pullC a x) = 0`. Rewrite using `[CH.Mor.d_pullC, hx, map_zero]`. Establish `hy' : CH.d _ a' ((morV p₂ w a' h').pullC a' y) = 0`. Rewrite using `[CH.Mor.d_pullC, hy, map_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `c₁ : (CH.cx _).cls _ hx' = e₁ (form K (φ₁ g₀) fun j => φ₁ (g j))`. Rewrite using `[← ((hL K _ _ a).2 φ₁).1, ← n₁ a eA e₁ iA i₁, ← ex]`. Conclude with `(CrystallineSemistableComparison.P.mapH_cls (morV p₁ rfl a h).hom a x hx hx').symm`. Establish `c₂ : (CH.cx _).cls _ hy' = e₂ (form K (φ₂ k₀) fun j => φ₂ (k j))`. Rewrite using `[← ((hL K _ _ a').2 φ₂).1, ← n₂ a' eB e₂ iB i₂, ← ey]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(CrystallineSemistableComparison.P.mapH_cls (morV p₂ w a' h').hom a' y hy hy').symm`. Establish `f₁' : IsForm (p₁ ≫ q) W (φ₁ g₀) (fun j => φ₁ (g j)) ((CH.cx _).cls _ hx')` using `c₁ ▸ i₁ _ _`. Establish `f₂' : IsForm (p₁ ≫ q) W (φ₂ k₀) (fun j => φ₂ (k j)) ((CH.cx _).cls _ hy')` using `c₂ ▸ i₂ _ _`. Take `⟨hz', f₃⟩` from `hC K P (p₁ ≫ q) W a a' _ _ _ _ _ _ hx' hy' f₁' f₂'`. Conclude with `((hU K P (p₁ ≫ q) W).2 (a + a') _ _).unique f₃ (i₃ _ _)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem gen (hU : FormUniq) (hN : OmNat) (hL : FormLaws) (hC : FormCup)
     (q : X ⟶ Spec (CommRingCat.of K)) (q' : X' ⟶ Spec (CommRingCat.of K)) (p₁ : P ⟶ X) (p₂ : P ⟶ X')
@@ -274,7 +272,7 @@ theorem gen (hU : FormUniq) (hN : OmNat) (hL : FormLaws) (hC : FormCup)
   exact ((hU K P (p₁ ≫ q) W).2 (a + a') _ _).unique f₃ (i₃ _ _)
 
 /- English proof (translation)
-Establish `hx₁ : CH.d _ a ((morV p₁ rfl a h).pullC a x) = 0` using `by rw [CH.Mor.d_pullC, hx, map_zero]`. Establish `hy₁ : CH.d _ a' ((morV p₂ w a' h').pullC a' y) = 0` using `by rw [CH.Mor.d_pullC, hy, map_zero]`. Take `⟨hz₀, ez⟩` from `CrystallineSemistableComparison.P.cup_cls (pairU (p₁ ≫ q) (inU (p₁ ≫ q) W) hc) hc _ _ hx₁ hy₁`. Rewrite using `[show (morV p₁ rfl a h).pull a ((CH.cx _).cls x hx) = (CH.cx _).cls _ hx₁ from CrystallineSemistableComparison.P.mapH_cls (morV p₁ rfl a h).hom a x hx hx₁, show (morV p₂ w a' h').pull a' ((CH.cx _).cls y hy) = (CH.cx _).cls _ hy₁ from CrystallineSemistableComparison.P.mapH_cls (m …`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem cup_pull_cls (q : X ⟶ Spec (CommRingCat.of K)) (q' : X' ⟶ Spec (CommRingCat.of K)) (p₁ : P ⟶ X) (p₂ : P ⟶ X')
     (w : p₂ ≫ q' = p₁ ≫ q) (V : X.Opens) (V' : X'.Opens) (W : P.Opens)
@@ -294,9 +292,9 @@ theorem cup_pull_cls (q : X ⟶ Spec (CommRingCat.of K)) (q' : X' ⟶ Spec (Comm
   rfl
 
 /- English proof (translation)
-Take `⟨x₀, hx₀, ex⟩` from `(CrystallineSemistableComparison.P.cls_surj (CH.cx ((inU q V).ι ⋙ G q a)) a).1 (eA (form K g₀ g))`. Take `⟨y₀, hy₀, ey⟩` from `(CrystallineSemistableComparison.P.cls_surj (CH.cx ((inU q' V').ι ⋙ G q' a')) a').1 (eB (form K k₀ k))`. Establish `hx₁ : CH.d _ a ((morV p₁ rfl a h).pullC a x₀) = 0` using `by rw [CH.Mor.d_pullC, hx₀, map_zero]`. Establish `hy₁ : CH.d _ a' ((morV p₂ w a' h').pullC a' y₀) = 0` using `by rw [CH.Mor.d_pullC, hy₀, map_zero]`. Take `⟨hz₀, -⟩` from `CrystallineSemistableComparison.P.cup_cls (pairU (p₁ ≫ q) (inU (p₁ ≫ q) W) hc) hc _ _ hx₁ hy₁`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[ex, ey, cup_pull_cls q q' p₁ p₂ w V V' W h h' hc x₀ y₀ hx₀ hy₀ hz₀]`. Conclude with `gen hU hN hL hC q q' p₁ p₂ w V V' W h₁ h₂ h h' hc eA eB e₁ e₂ e₃ iA iB i₁ i₂ i₃ g₀ g k₀ k x₀ y₀ hx₀ hy₀ ex.symm ey.symm hz₀`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gen2 (hU : FormUniq) (hN : OmNat) (hL : FormLaws) (hC : FormCup)
     (q : X ⟶ Spec (CommRingCat.of K)) (q' : X' ⟶ Spec (CommRingCat.of K)) (p₁ : P ⟶ X) (p₂ : P ⟶ X')
@@ -326,9 +324,7 @@ section Aff
 variable {K : Type} [Field K] {X X' P : Scheme.{0}}
 
 /- English proof (translation)
-Establish `H` using `GlobalTheory.isPullback_opens_inf hP V V' _ rfl`. Use `haveI : IsAffine (V : Scheme.{0}) := hV`. Use `haveI : IsAffine (V' : Scheme.{0}) := hV'`. Use `haveI : IsAffineHom (V'.ι ≫ q') := isAffineHom_of_isAffine _`. Use `haveI : IsAffineHom (Scheme.Hom.resLE p₁ V (p₁ ⁻¹ᵁ V ⊓ p₂ ⁻¹ᵁ V') inf_le_left) := MorphismProperty.of_isPullback (P := @IsAffineHom) H.flip inferInstance`.
-
-Conclude with `isAffine_of_isAffineHom (Scheme.Hom.resLE p₁ V (p₁ ⁻¹ᵁ V ⊓ p₂ ⁻¹ᵁ V') inf_le_left)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem prod_affine (q : X ⟶ Spec (CommRingCat.of K)) (q' : X' ⟶ Spec (CommRingCat.of K)) (p₁ : P ⟶ X) (p₂ : P ⟶ X')
     (hP : IsPullback p₁ p₂ q q') (V : X.Opens) (V' : X'.Opens) (hV : IsAffineOpen V) (hV' : IsAffineOpen V') :
@@ -342,11 +338,11 @@ theorem prod_affine (q : X ⟶ Spec (CommRingCat.of K)) (q' : X' ⟶ Spec (CommR
   exact isAffine_of_isAffineHom (Scheme.Hom.resLE p₁ V (p₁ ⁻¹ᵁ V ⊓ p₂ ⁻¹ᵁ V') inf_le_left)
 
 /- English proof (translation)
-Establish `hT` using `CommRingCat.isPushout_tensorProduct K A B`. Set `i` to `hT.isoIsPushout _ _ po`. Establish `e₁ : ∀ a : A, i.hom.hom (a ⊗ₜ 1) = φ₁ a` using `fun a => congrArg (fun f => f.hom a) (hT.inl_isoIsPushout_hom _ _ po)`. Establish `e₂ : ∀ b : B, i.hom.hom (1 ⊗ₜ b) = φ₂ b` using `fun b => congrArg (fun f => f.hom b) (hT.inr_isoIsPushout_hom _ _ po)`. Establish `h : ∀ z, Algebra.TensorProduct.productMap φ₁ φ₂ z = i.hom.hom z`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `z`. Proceed by induction on `z with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul a b`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Establish `: a ⊗ₜ[K] b = (a ⊗ₜ[K] (1 : B)) * ((1 : A) ⊗ₜ[K] b)` using `by simp`. Rewrite using `[this, map_mul, map_mul, e₁, e₂]`. Simplify using the standard rewrite rules. Establish `hb : Function.Bijective i.hom.hom` using `i.commRingCatIsoToRingEquiv.bijective`. Conclude with `(funext h : (Algebra.TensorProduct.productMap φ₁ φ₂ : _ → C) = i.hom.hom) ▸ hb`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem pushout_bij {K A B C : Type} [CommRing K] [CommRing A] [CommRing B] [CommRing C] [Algebra K A] [Algebra K B] [Algebra K C]
     (φ₁ : A →ₐ[K] C) (φ₂ : B →ₐ[K] C)
@@ -372,9 +368,9 @@ theorem pushout_bij {K A B C : Type} [CommRing K] [CommRing A] [CommRing B] [Com
   exact (funext h : (Algebra.TensorProduct.productMap φ₁ φ₂ : _ → C) = i.hom.hom) ▸ hb
 
 /- English proof (translation)
-Use `pushout_bij _ _ ?_` and prove the remaining obligations. Establish `po` using `(isIso_pushoutSection_iff hP (US := ⊤) (UT := V') (UX := V) (UY := p₁ ⁻¹ᵁ V ⊓ p₂ ⁻¹ᵁ V') le_top le_top rfl).1 (isIso_pushoutSection_of_isAffineOpen hP _ _ _ (isAffineOpen_top _) hV' hV)`. Use `po.of_iso (Scheme.ΓSpecIso _) (Iso.refl _) (Iso.refl _) (Iso.refl _) ?_ ?_ ?_ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ ≫ 𝟙 _ = _ ≫ ((Scheme.ΓSpecIso _).inv ≫ q.appLE ⊤ V le_top)`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Express the relevant statement in the definitionally equal form `_ ≫ 𝟙 _ = _ ≫ ((Scheme.ΓSpecIso _).inv ≫ q'.appLE ⊤ V' le_top)`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 
 Both sides reduce to the same expression.
 -/
@@ -399,11 +395,11 @@ end Aff
 
 section Ft
 /- English proof (translation)
-Rewrite using `[((hL K _ _ c).2 ψ.toAlgHom).1]`. Establish `e₀ : ψ.toAlgHom (g₀ ⊗ₜ k₀) = φ₁ g₀ * φ₂ k₀` using `hψ _ _`. Rewrite using `[e₀]`. Use `congr 1`. Use function extensionality and compare the values at `j`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [Function.comp_apply]`. Use `Fin.addCases (fun i => ?_) (fun i => ?_) (τ j)` and prove the remaining obligations. Rewrite using `[Fin.append_left, Fin.append_left]`. Express the relevant statement in the definitionally equal form `ψ _ = _`. Rewrite using `[hψ, map_one, mul_one]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Fin.append_right, Fin.append_right]`. Express the relevant statement in the definitionally equal form `ψ _ = _`. Rewrite using `[hψ, map_one, one_mul]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem form_tensor (hL : FormLaws) {K A B C : Type} [CommRing K] [CommRing A] [CommRing B] [CommRing C] [Algebra K A] [Algebra K B]
     [Algebra K C] (ψ : TensorProduct K A B ≃ₐ[K] C) (φ₁ : A →ₐ[K] C) (φ₂ : B →ₐ[K] C) (hψ : ∀ x y, ψ (x ⊗ₜ y) = φ₁ x * φ₂ y)
@@ -430,19 +426,17 @@ section Main
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Introduce `K _ _ X X' P q q' p₁ p₂ hP V V' d d' ⟨cV⟩ ⟨cV'⟩`. Establish `haff` using `prod_affine q q' p₁ p₂ hP V V' cV.affine cV'.affine`. Set `ψ` to `AlgEquiv.ofBijective _ (prod_bij q q' p₁ p₂ hP V V' cV.affine cV'.affine)`. Establish `cP : Coord (p₁ ≫ q) (p₁ ⁻¹ᵁ V ⊓ p₂ ⁻¹ᵁ V') (d + d')` using `⟨haff, _, tensor_etale ψ (A := Sec q V) (B := Sec q' V') (C := Sec (p₁ ≫ q) (p₁ ⁻¹ᵁ V ⊓ p₂ ⁻¹ᵁ V')) cV.t cV'.t cV.etale cV'.etale⟩`. Use `⟨⟨cP⟩, fun c h h' => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `choose eA iA bA using fun a => (hA K X q V d ⟨cV⟩ a).2`. Use `choose eB iB bB using fun a => (hA K X' q' V' d' ⟨cV'⟩ a).2`. Use `choose eP iP bP using fun a => (hA K P (p₁ ≫ q) _ _ ⟨cP⟩ a).2`. Take `⟨ek, hek⟩` from `hK K (Sec q V) (Sec q' V') c`. Take `⟨E, hE⟩ : ∃ E : (∀ a : Fin (c + 1), TensorProduct K (Om K (Sec q V) a) (Om K (Sec q' V') (c - a))) ≃ₗ[K] HV (p₁ ≫ q) (p₁ ⁻¹ᵁ V ⊓ p₂ ⁻¹ᵁ V') c c, ∀ m, E m = eP c (omMap ψ.toAlgHom c (ek m))` from `⟨ek ≪≫ₗ omEquiv hL ψ c ≪≫ₗ LinearEquiv.ofBijective (eP c) (bP c), fun m => rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨e, he⟩` from `glue_abs (K := K) (c := c) (fun a : Fin (c + 1) => LinearEquiv.ofBijective (eA a) (bA a)) (fun a => LinearEquiv.ofBijective (eB (c - a)) (bB (c - a))) E`. Use `⟨e, fun a hc x y hx hy hz => ?_⟩` and prove the remaining obligations. Take `⟨b, hb⟩` from `CrystallineSemistableComparison.P.cup_bilin (pairU (p₁ ≫ q) (inU (p₁ ≫ q) (p₁ ⁻¹ᵁ V ⊓ p₂ ⁻¹ᵁ V')) hc) hc`. Set `m₁ : HV q V a a →ₗ[K] HV (p₁ ≫ q) (p₁ ⁻¹ᵁ V ⊓ p₂ ⁻¹ᵁ V') a a` to `(morV p₁ rfl a h).pull a`. Set `m₂ : HV q' V' (c - a) (c - a) →ₗ[K] HV (p₁ ≫ q) (p₁ ⁻¹ᵁ V ⊓ p₂ ⁻¹ᵁ V') (c - a) (c - a)` to `(morV p₂ hP.w.symm (c - a) h').pull (c - a)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Establish `key : (TensorProduct.mk K _ _).compr₂ (e.toLinearMap ∘ₗ LinearMap.single K (fun i : Fin (c + 1) => TensorProduct K (HV q V i i) (HV q' V' (c - i) (c - i))) a) = b.compl₁₂ m₁ m₂`. Use `bilin_ext (eA a) (eB (c - a)) (bA a).2 (bB (c - a)).2 {ω | ∃ g₀ g, ω = form K g₀ g} {ω | ∃ g₀ g, ω = form K g₀ g} (hL K (Sec q V) (Sec q V) a).1 (hL K (Sec q' V') (Sec q' V') (c - a)).1 _ _ ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨g₀, g, rfl⟩ _ ⟨k₀, k, rfl⟩`. Establish `hg` using `gen2 hU hN hL hC q q' p₁ p₂ hP.w.symm V V' _ inf_le_left inf_le_right h h' hc (eA a) (eB (c - a)) (eP a) (eP (c - a)) (eP c) (iA a) (iB _) (iP a) (iP _) (iP c) g₀ g k₀ k`. Express the relevant statement in the definitionally equal form `e (Pi.single a (eA a (form K g₀ g) ⊗ₜ eB (c - a) (form K k₀ k))) = b (m₁ _) (m₂ _)`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hb]`. Use `Eq.trans ?_ hg.symm` and prove the remaining obligations. Use `(he a (form K g₀ g) (form K k₀ k)).trans ((hE _).trans ?_)` and prove the remaining obligations. Use `congrArg (eP c) ?_` and prove the remaining obligations. Use `(congrArg (omMap ψ.toAlgHom c) (hek a g₀ g k₀ k)).trans ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `form_tensor hL ψ _ _ (fun x y => rfl) _ g₀ g k₀ k`. Establish `key'` using `LinearMap.congr_fun (LinearMap.congr_fun key ((CH.cx _).cls x hx)) ((CH.cx _).cls y hy)`. Use `Eq.trans key' ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `b (m₁ _) (m₂ _) = _`. Rewrite using `[hb]`.
-
-Conclude with `cup_pull_cls q q' p₁ p₂ hP.w.symm V V' _ h h' hc x y hx hy hz`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kunAff (hU : FormUniq) (hS : SiteLaws) (hA : AffOm) (hN : OmNat) (hL : FormLaws) (hC : FormCup) (hK : OmKun) : KunAff := by
   intro K _ _ X X' P q q' p₁ p₂ hP V V' d d' ⟨cV⟩ ⟨cV'⟩
@@ -487,7 +481,7 @@ theorem kunAff (hU : FormUniq) (hS : SiteLaws) (hA : AffOm) (hN : OmNat) (hL : F
 end Main
 
 /- English proof (translation)
-Introduce `hU hS hA hN hL hC hK` and use `kunAff hU hS hA hN hL hC hK`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem kunAffOf : FormUniq → KunAffOf := fun hU hS hA hN hL hC hK => kunAff hU hS hA hN hL hC hK
 

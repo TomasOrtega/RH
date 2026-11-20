@@ -16,11 +16,11 @@ open PositivityTheory.RgBcC
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 /- English proof (translation)
-Establish `hs : Metric.ball (0 : ℝ) ε ∈ 𝓝 (0 : ℝ)` using `Metric.ball_mem_nhds _ hε`. Establish `hm : ∀ᶠ t in 𝓝 (0 : ℝ), AEStronglyMeasurable (F t) μ` using `eventually_of_mem hs fun t ht => (hc t ht).aestronglyMeasurable`. Establish `hint : Integrable (F 0) μ` using `(hc 0 (Metric.mem_ball_self hε)).integrable_of_hasCompactSupport (HasCompactSupport.intro hK hz)`. Establish `hbi : Integrable (K.indicator fun _ => C) μ` using `(integrable_indicator_iff hK.measurableSet).2 (integrableOn_const hK.measure_lt_top.ne)`. Establish `hbound : ∀ᵐ y ∂μ, ∀ t ∈ Metric.ball (0 : ℝ) ε, ‖F' t y‖ ≤ K.indicator (fun _ => C) y` using `ae_of_all _ fun y t ht => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Distinguish the cases in `hy : y ∈ K`. Simplify `hb t ht y hy` using `[hy]`. Simplify using `[hy, hz' t ht y hy]`. Establish `h1` using `(hasDerivAt_integral_of_dominated_loc_of_deriv_le hs hm hint hc'.aestronglyMeasurable hbound hbi (ae_of_all _ hd)).2`. Establish `h2 : HasDerivAt (fun t => ∫ y, F t y ∂μ) 0 0`.
+Consider separately whether the proposition holds or fails. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(hasDerivAt_const (0 : ℝ) (∫ y, F 0 y ∂μ)).congr_of_eventuallyEq ?_` and prove the remaining obligations. Conclude with `eventually_of_mem hs hconst`. Conclude with `h1.unique h2`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem integral_deriv_eq_zero {Γ V : Type*} [TopologicalSpace Γ] [SecondCountableTopology Γ] [T2Space Γ]
     [MeasurableSpace Γ] [BorelSpace Γ] {μ : Measure Γ} [IsFiniteMeasureOnCompacts μ]
@@ -53,7 +53,7 @@ theorem integral_deriv_eq_zero {Γ V : Type*} [TopologicalSpace Γ] [SecondCount
   exact h1.unique h2
 
 /- English proof (translation)
-Establish `h1 : ContDiffOn ℝ ∞ (fderiv ℝ f) U` using `hf.fderiv_of_isOpen hU (by simp)`. Conclude with `(h1.continuousOn.comp hA hm).clm_apply hB`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuousOn_fderiv_apply {E F P : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedAddCommGroup F]
     [NormedSpace ℝ F] [TopologicalSpace P] {U : Set E} (hU : IsOpen U) {f : E → F} (hf : ContDiffOn ℝ ∞ f U)
@@ -63,7 +63,7 @@ theorem continuousOn_fderiv_apply {E F P : Type*} [NormedAddCommGroup E] [Normed
   exact (h1.continuousOn.comp hA hm).clm_apply hB
 
 /- English proof (translation)
-Establish `h2 : HasDerivAt (fun s : ℝ => g + s • v) v t`. Simplify using `using ((hasDerivAt_id t).smul_const v).const_add g`. Conclude with `hf.hasFDerivAt.comp_hasDerivAt t h2`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_line {E F : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedAddCommGroup F]
     [NormedSpace ℝ F] {f : E → F} (g v : E) (t : ℝ) (hf : DifferentiableAt ℝ f (g + t • v)) :
@@ -77,24 +77,24 @@ variable {n : ℕ}
 def c (X : Mat n) (t : ℝ) : Mat n := 1 + t • X
 
 /- English proof (translation)
-The claim follows from `continuous_const.add (continuous_id.smul continuous_const)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_c (X : Mat n) : Continuous (c X) :=
   continuous_const.add (continuous_id.smul continuous_const)
 
 /- English proof (translation)
-Simplify using `[c]`.
+Simplify using the standard rewrite rules.
 -/
 theorem c_zero (X : Mat n) : c X 0 = 1 := by simp [c]
 
 /- English proof (translation)
-Simplify using `[c, mul_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mul_c (y X : Mat n) (t : ℝ) : y * c X t = y + t • (y * X) := by
   simp [c, mul_add]
 
 /- English proof (translation)
-Establish `h : IsOpen (c X ⁻¹' GLs n)` using `isOpen_GLs.preimage (continuous_c X)`. Establish `h0 : (0 : ℝ) ∈ c X ⁻¹' GLs n` using `by simp [c_zero, GLs]`. Take `⟨ε, hε, h'⟩` from `Metric.nhds_basis_closedBall.mem_iff.1 (h.mem_nhds h0)`. Conclude with `⟨ε, hε, h'⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_eps (X : Mat n) : ∃ ε > 0, ∀ t ∈ Metric.closedBall (0 : ℝ) ε, c X t ∈ GLs n := by
   have h : IsOpen (c X ⁻¹' GLs n) := isOpen_GLs.preimage (continuous_c X)
@@ -103,20 +103,20 @@ theorem exists_eps (X : Mat n) : ∃ ε > 0, ∀ t ∈ Metric.closedBall (0 : �
   exact ⟨ε, hε, h'⟩
 
 /- English proof (translation)
-The claim follows from `((Matrix.isUnit_iff_isUnit_det _).1 y.isUnit).ne_zero`.
+A detailed English derivation is pending.
 -/
 theorem val_mem_GLs (y : G n) : y.val ∈ GLs n :=
   ((Matrix.isUnit_iff_isUnit_det _).1 y.isUnit).ne_zero
 
 /- English proof (translation)
-Simplify using `only [GLs, Set.mem_setOf_eq, Matrix.det_mul] at *`. Conclude with `mul_ne_zero hx hy`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mul_mem_GLs' {x y : Mat n} (hx : x ∈ GLs n) (hy : y ∈ GLs n) : x * y ∈ GLs n := by
   simp only [GLs, Set.mem_setOf_eq, Matrix.det_mul] at *
   exact mul_ne_zero hx hy
 
 /- English proof (translation)
-Establish `h : x.det ≠ 0` using `hx`. Simplify using `[GLs, Matrix.det_nonsing_inv, h]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem inv_mem_GLs {x : Mat n} (hx : x ∈ GLs n) : x⁻¹ ∈ GLs n := by
   have h : x.det ≠ 0 := hx
@@ -130,7 +130,7 @@ Both sides reduce to the same expression.
 @[simp] theorem toG_val {x : Mat n} (hx : x ∈ GLs n) : (toG hx).val = x := rfl
 
 /- English proof (translation)
-Use `haveI : SecondCountableTopology (Mat n) := inferInstanceAs (SecondCountableTopology (Fin n → Fin n → ℂ))`. Use `haveI : SecondCountableTopology (Mat n)ᵐᵒᵖ := MulOpposite.opHomeomorph.symm.isEmbedding.secondCountableTopology`. Conclude with `Units.isEmbedding_embedProduct.secondCountableTopology`.
+A detailed English derivation is pending.
 -/
 theorem secondCountable_G : SecondCountableTopology (G n) := by
   haveI : SecondCountableTopology (Mat n) := inferInstanceAs (SecondCountableTopology (Fin n → Fin n → ℂ))
@@ -138,7 +138,7 @@ theorem secondCountable_G : SecondCountableTopology (G n) := by
   exact Units.isEmbedding_embedProduct.secondCountableTopology
 
 /- English proof (translation)
-Take `⟨hsub, hinv, -⟩` from `hL n`. Establish `hdet : IsUnit x.det` using `isUnit_iff_ne_zero.2 hx`. Establish `e : y.val = (y.val * x) * x⁻¹`. Rewrite using `[Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hdet, Matrix.mul_one]`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem lg_le_lg_mul (hL : LgFacts) (y : G n) {x : Mat n} (hx : x ∈ GLs n) : lg y.val ≤ lg (y.val * x) + lg x := by
   obtain ⟨hsub, hinv, -⟩ := hL n
@@ -150,7 +150,7 @@ theorem lg_le_lg_mul (hL : LgFacts) (y : G n) {x : Mat n} (hx : x ∈ GLs n) : l
     _ = lg (y.val * x) + lg x := by rw [hinv x hx]
 
 /- English proof (translation)
-Take `⟨-, -, -, hsm, -⟩` from `hL n`. Establish `ho : IsOpen (GLs n ∩ lg ⁻¹' Ioi R)` using `hsm.continuousOn.isOpen_inter_preimage isOpen_GLs isOpen_Ioi`. Establish `he : f =ᶠ[𝓝 x] fun _ => (0 : V)` using `eventually_of_mem (ho.mem_nhds ⟨hx, hlg⟩) fun y hy => hR y hy.1 hy.2`. Rewrite using `[he.fderiv_eq]`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem fderiv_eq_zero_far (hL : LgFacts) {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] {f : Mat n → V} {R : ℝ}
     (hR : ∀ y ∈ GLs n, R < lg y → f y = 0) {x : Mat n} (hx : x ∈ GLs n) (hlg : R < lg x) : fderiv ℝ f x = 0 := by
@@ -162,29 +162,23 @@ theorem fderiv_eq_zero_far (hL : LgFacts) {V : Type} [NormedAddCommGroup V] [Nor
   simp
 
 /- English proof (translation)
-Introduce `n _ _ μ _ V _ _ _ f hf hC X`. Take `⟨R, hR⟩` from `hC`. Take `⟨-, -, -, hsm, hcpt, -⟩` from `hL n`. Use `haveI := (hU n μ).1`. Use `haveI : SecondCountableTopology (G n) := secondCountable_G`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨ε, hε, hcε⟩` from `exists_eps X`. Establish `hball : ∀ t ∈ Metric.ball (0 : ℝ) ε, c X t ∈ GLs n` using `fun t ht => hcε t (Metric.ball_subset_closedBall ht)`. Establish `hmem : ∀ (y : G n), ∀ t ∈ Metric.closedBall (0 : ℝ) ε, y.val * c X t ∈ GLs n` using `fun y t ht => mul_mem_GLs' (val_mem_GLs y) (hcε t ht)`. Choose the witnesses or unpack the hypotheses as in `⟨C₀, hC₀⟩ : ∃ C₀, ∀ t ∈ Metric.closedBall (0 : ℝ) ε, lg (c X t) ≤ C₀ := by`. Establish `hcont : ContinuousOn (fun t => lg (c X t)) (Metric.closedBall (0 : ℝ) ε)` using `hsm.continuousOn.comp (continuous_c X).continuousOn hcε`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨C₀, hC₀⟩` from `(isCompact_closedBall (0 : ℝ) ε).bddAbove_image hcont`. Conclude with `⟨C₀, fun t ht => hC₀ (mem_image_of_mem _ ht)⟩`. Use `set K : Set (G n) := {y : G n | lg y.val ≤ R + C₀} with hKdef`. Establish `hK : IsCompact K` using `hcpt (R + C₀)`. Establish `hfar : ∀ (y : G n), y ∉ K → ∀ t ∈ Metric.closedBall (0 : ℝ) ε, R < lg (y.val * c X t)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `y hy t ht`. Establish `h1 : R + C₀ < lg y.val` using `not_le.1 hy`. Establish `h2` using `lg_le_lg_mul hL y (hcε t ht)`. Establish `h3` using `hC₀ t ht`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hvalc : Continuous fun y : G n => y.val` using `Units.continuous_val`. Choose the witnesses or unpack the hypotheses as in `⟨C, hCb⟩ : ∃ C, ∀ p ∈ K ×ˢ Metric.closedBall (0 : ℝ) ε, ‖fderiv ℝ f (p.1.val * c X p.2) (p.1.val * X)‖ ≤ C := by`. Establish `hcont : ContinuousOn (fun p : G n × ℝ => fderiv ℝ f (p.1.val * c X p.2) (p.1.val * X)) (K ×ˢ Metric.closedBall (0 : ℝ) ε)`. Use `continuousOn_fderiv_apply isOpen_GLs hf ?_ ?_ ?_` and prove the remaining obligations. Conclude with `((hvalc.comp continuous_fst).mul ((continuous_c X).comp continuous_snd)).continuousOn`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `((hvalc.comp continuous_fst).mul continuous_const).continuousOn`. Conclude with `fun p hp => hmem p.1 p.2 hp.2`. Conclude with `(hK.prod (isCompact_closedBall (0 : ℝ) ε)).exists_bound_of_continuousOn hcont`. Establish `key` using `integral_deriv_eq_zero (μ := μ) (F := fun t (y : G n) => f (y.val * c X t)) (F' := fun t (y : G n) => fderiv ℝ f (y.val * c X t) (y.val * X)) hK hε C ?_ ?_ ?_ ?_ ?_ ?_ ?_`. Simplify `key` using `[c_zero, Rd]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `t ht`. Conclude with `hf.continuousOn.comp_continuous (hvalc.mul continuous_const) fun y => hmem y t (Metric.ball_subset_closedBall ht)`. Use `continuousOn_univ.1 (continuousOn_fderiv_apply isOpen_GLs hf ?_ ?_ ?_)` and prove the remaining obligations. Conclude with `(hvalc.mul continuous_const).continuousOn`. Conclude with `(hvalc.mul continuous_const).continuousOn`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `fun y _ => hmem y 0 (Metric.mem_closedBall_self hε.le)`. Introduce `y t ht`. Establish `hd : DifferentiableAt ℝ f (y.val + t • (y.val * X))`. Rewrite using `[← mul_c]`. Conclude with `differentiableAt_of_smooth hf (hmem y t (Metric.ball_subset_closedBall ht))`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hasDerivAt_line (y.val) (y.val * X) t hd` as an intermediate fact. Establish `e1 : (fun s : ℝ => f (y.val * c X s)) = fun s : ℝ => f (y.val + s • (y.val * X))`. Use function extensionality and compare the values at `s`. Rewrite using `[mul_c]`. Use `show HasDerivAt (fun s : ℝ => f (y.val * c X s)) (fderiv ℝ f (y.val * c X t) (y.val * X)) t`.
-
-Rewrite using `[e1, mul_c]`. Conclude with `this`. Introduce `y hy`. Conclude with `hR _ (hmem y 0 (Metric.mem_closedBall_self hε.le)) (hfar y hy 0 (Metric.mem_closedBall_self hε.le))`. Introduce `t ht y hy`.
-
-Establish `ht'` using `Metric.ball_subset_closedBall ht`. Simplify using `only [fderiv_eq_zero_far hL hR (hmem y t ht') (hfar y hy t ht'), ContinuousLinearMap.zero_apply]`. Introduce `t ht y hy`. Conclude with `hCb (y, t) ⟨hy, Metric.ball_subset_closedBall ht⟩`. Introduce `t ht`.
-
-Establish `h0` using `integral_mul_right_eq_self (μ := μ) (fun y : G n => f y.val) (toG (hball t ht))`. Simplify `h0` using `[c_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem ibp_of (hL : LgFacts) (hU : Unimod) : IBP := by
   intro n _ _ μ _ V _ _ _ f hf hC X
@@ -253,7 +247,7 @@ theorem ibp_of (hL : LgFacts) (hU : Unimod) : IBP := by
 end GlobalTheory.CompanionTheory.RCalc.ByParts
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.RCalc.ByParts.ibp_of GlobalTheory.T.length_function_facts_hold GlobalTheory.T.general_linear_group_unimodular`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CompanionTheory.RCalc.ibp : GlobalTheory.CompanionTheory.RCalc.IBP :=
   GlobalTheory.CompanionTheory.RCalc.ByParts.ibp_of GlobalTheory.T.length_function_facts_hold GlobalTheory.T.general_linear_group_unimodular

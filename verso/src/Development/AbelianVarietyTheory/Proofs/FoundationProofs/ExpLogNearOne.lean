@@ -10,15 +10,15 @@ attribute [local instance] GlobalTheory.CompactDualExists.sumNormedAddCommGroup
   GlobalTheory.CompactDualExists.sumNormedSpace
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.CompactDualExists.sum_norm_def A).symm`.
+A detailed English derivation is pending.
 -/
 theorem l1_eq_norm {n : Type} [Fintype n] (A : Matrix n n ℂ) : l1 A = ‖A‖ :=
   (GlobalTheory.CompactDualExists.sum_norm_def A).symm
 
 /- English proof (translation)
-Establish `h` using `(GlobalTheory.CompactDualExists.exp_strict (n := n)).hasFDerivAt`. Establish `h2` using `h.isLittleO.def (c := 1 / 21) (by norm_num)`. Take `⟨r, hr, H⟩` from `Metric.eventually_nhds_iff_ball.1 h2`. Use `⟨r, hr, fun Y hY => ?_⟩` and prove the remaining obligations. Establish `h3` using `H Y (mem_ball_zero_iff.2 hY)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h3` using `[NormedSpace.exp_zero, sub_zero]`. Conclude with `h3`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_exp_approx (n : Type) [Fintype n] [DecidableEq n] :
     ∃ r : ℝ, 0 < r ∧ ∀ Y : Matrix n n ℂ, ‖Y‖ < r →
@@ -32,15 +32,15 @@ theorem exists_exp_approx (n : Type) [Fintype n] [DecidableEq n] :
   exact h3
 
 /- English proof (translation)
-Introduce `p q`. Take `⟨r, hr, H⟩` from `exists_exp_approx (Fin p ⊕ Fin q)`. Establish `hN` using `GlobalTheory.ExpBallNhds.exp_ballU_mem_nhds p q r hr`. Rewrite `hN` using `[GlobalTheory.UpqTopology.isInducing_mat.nhds_eq_comap, Filter.mem_comap]`. Take `⟨T, hT, hsub⟩` from `hN`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨ε, hε, hball⟩` from `Metric.mem_nhds_iff.1 hT`. Use `⟨min r ε, lt_min hr hε, fun Y hY => ?_, fun g hg => ?_⟩` and prove the remaining obligations. Rewrite `hY` using `[l1_eq_norm]`. Rewrite using `[l1_eq_norm, l1_eq_norm]`. Establish `h1` using `H Y (hY.trans_le (min_le_left _ _))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `norm_le_norm_add_norm_sub' (NormedSpace.exp Y - 1) Y`. Establish `h3` using `norm_nonneg Y`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite `hg` using `[l1_eq_norm]`. Establish `hg' : UpqT.mat g ∈ Metric.ball (UpqT.mat (1 : UpqT p q)) ε`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[mem_ball_iff_norm, mat_one]`. Conclude with `hg.trans_le (min_le_right _ _)`. Take `⟨X, hX, hgX⟩` from `hsub (show g ∈ UpqT.mat ⁻¹' T from hball hg')`. Use `⟨X, hgX, ?_⟩` and prove the remaining obligations. Establish `hX' : l1 (X : Mat p q) < r` using `hX`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hX'` using `[l1_eq_norm]`. Rewrite using `[l1_eq_norm, l1_eq_norm, hgX]`. Establish `h1` using `H X hX'`. Establish `h2` using `norm_le_norm_add_norm_sub (NormedSpace.exp (X : Mat p q) - 1) (X : Mat p q)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exp_log_near_one : ∀ (p q : ℕ), ∃ ρ : ℝ, 0 < ρ ∧ (∀ Y : Mat p q, l1 Y < ρ → l1 (NormedSpace.exp Y - 1) ≤ 21 / 20 * l1 Y) ∧ ∀ g : UpqT p q, l1 (UpqT.mat g - 1) < ρ → ∃ X : lieU p q, UpqT.mat g = NormedSpace.exp (X : Mat p q) ∧ l1 (X : Mat p q) ≤ 21 / 20 * l1 (UpqT.mat g - 1) := by
   intro p q

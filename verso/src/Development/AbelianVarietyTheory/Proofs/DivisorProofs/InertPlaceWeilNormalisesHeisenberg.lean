@@ -10,15 +10,15 @@ noncomputable section
 namespace GlobalTheory.InertBridge
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B a a' G X om om' hTr v w _ _ L _ _ ϖ σL q δ JS JT ψL κ ιS ιT hC ρ hρ ω hω g h x`. Take `⟨_, _, _, _, _, _, _, _, _, _, _, _, _, hEq, _, _, _, _⟩` from `hC`. Take `⟨R, hR0, hR⟩` from `GlobalTheory.RestWitness.exists_rest (F := F) (Fin a' × Fin (a + a')) v`. Establish `hS` using `GlobalTheory.WeilM.IsUWeilPair.isUSplitting hTr.weil'`. Establish `hωA : ∀ (m : SB (Fin a' × Fin (a + a') → Fv F v)), Acts (evFin F v) (om' (ιS g, ιT h)) (m : (Fin a' × Fin (a + a') → Fv F v) → ℂ) ((ω (g, h) m : SB (Fin a' × Fin (a + a') → Fv F v)) : (Fin a' × Fin (a + a') → Fv F v) → ℂ)` using `fun m => (hω g h m _ (ω (g, h) m).2).2 rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `LinearMap.ext fun m => ?_` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Use `set y := ((h : GL (Fin (a + a')) L) : Matrix (Fin (a + a')) (Fin (a + a')) L) * x * (((g : GL (Fin a') L)⁻¹ : GL (Fin a') L) : Matrix (Fin a') (Fin a') L) with hy`. Establish `e1 : om' (ιS g, ιT h) (G.M'.co.rho B.ψ (κ x) (tens (evFin F v) (m : (Fin a' × Fin (a + a') → Fv F v) → ℂ) R)) = tens (evFin F v) (((ω (g, h) (ρ x m)) : SB (Fin a' × Fin (a + a') → Fv F v)) : (Fin a' × Fin (a + a') → Fv F v) → ℂ) R`. Rewrite using `[hρ x m R (hR _ m.2), hωA (ρ x m) R (hR _ (ρ x m).2)]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e2 : om' (ιS g, ιT h) (G.M'.co.rho B.ψ (κ x) (tens (evFin F v) (m : (Fin a' × Fin (a + a') → Fv F v) → ℂ) R)) = tens (evFin F v) (((ρ y (ω (g, h) m)) : SB (Fin a' × Fin (a + a') → Fv F v)) : (Fin a' × Fin (a + a') → Fv F v) → ℂ) R`. Rewrite using `[hS.impl (ιS g, ιT h) (κ x) _ (hR _ m.2).2, hEq g h x, ← hy, hωA m R (hR _ m.2), hρ y (ω (g, h) m) R (hR _ (ω (g, h) m).2)]`. Establish `e` using `e1.symm.trans e2`. Use `show (((ω (g, h) (ρ x m)) : SB (Fin a' × Fin (a + a') → Fv F v)) : (Fin a' × Fin (a + a') → Fv F v) → ℂ) = (((ρ y (ω (g, h) m)) : SB (Fin a' × Fin (a + a') → Fv F v)) : (Fin a' × Fin (a + a') → Fv F v) → ℂ)`. Use function extensionality and compare the values at `yv`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set z : (Fin a' × Fin (a + a')) → AF F := fun i => GlobalTheory.LatVac.liftV v (yv i) with hz`. Establish `hza : At (evFin F v) z` using `GlobalTheory.VacAny.at_pi fun i => GlobalTheory.LatVac.at_liftV v _`. Establish `hrx : R (0 + z) = R 0` using `(hR _ m.2).1 0 z hza`. Establish `hyv : (fun i => evFin F v (((0 : (Fin a' × Fin (a + a')) → AF F) + z) i)) = yv`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [hz, Pi.add_apply, Pi.zero_apply, zero_add, GlobalTheory.LatVac.evFin_liftV]`. Establish `e'` using `congrFun e (0 + z)`. Simplify using `only [tens] at e'`. Rewrite `e'` using `[hrx, hyv]`. Conclude with `mul_right_cancel₀ hR0 e'`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem weil_normalises_heis : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' →

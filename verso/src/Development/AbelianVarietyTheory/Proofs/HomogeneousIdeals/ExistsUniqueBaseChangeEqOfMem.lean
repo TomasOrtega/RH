@@ -17,7 +17,7 @@ variable (A B N) in
 def act : B ⊗[A] N →ₗ[B] N := LinearMap.liftBaseChange B (LinearMap.id : N →ₗ[A] N)
 
 /- English proof (translation)
-Simplify using `[act]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem act_tmul (b : B) (n : N) : act A B N (b ⊗ₜ n) = b • n := by
   simp [act]
@@ -30,7 +30,7 @@ def invariants (θ : N →ₗ[B] B ⊗[A] N) : Submodule A N :=
   LinearMap.ker (θ.restrictScalars A - TensorProduct.mk A B N 1)
 
 /- English proof (translation)
-Simplify using `[invariants, sub_eq_zero]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem mem_invariants {θ : N →ₗ[B] B ⊗[A] N} {n : N} :
     n ∈ invariants θ ↔ θ n = 1 ⊗ₜ n := by
@@ -51,9 +51,9 @@ Both sides reduce to the same expression.
 variable (B) in
 
 /- English proof (translation)
-Apply the tactic sequence `constructor <;> intro x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul b m => simp [smul_tmul']`.
+Apply the first step, then apply the next step to every resulting obligation. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul b m => simp`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem isDescentDatum_canonical (M : Type*) [AddCommGroup M] [Module A M] :
     IsDescentDatum (canonical (A := A) B M) := by
@@ -72,14 +72,14 @@ variable (B) in
 def extend (P : Submodule A N) : B ⊗[A] P →ₗ[B] N := LinearMap.liftBaseChange B P.subtype
 
 /- English proof (translation)
-Simplify using `[extend]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem extend_tmul (P : Submodule A N) (b : B) (n : P) :
     extend B P (b ⊗ₜ n) = b • (n : N) := by
   simp [extend]
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul b m => simp`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem act_lTensor_subtype (P : Submodule A N) (x : B ⊗[A] P) :
     act A B N (P.subtype.lTensor B x) = extend B P x := by
@@ -89,7 +89,7 @@ theorem act_lTensor_subtype (P : Submodule A N) (x : B ⊗[A] P) :
   | tmul b m => simp
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul b m => simp [mem_invariants.1 m.2, smul_tmul']`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem apply_extend (θ : N →ₗ[B] B ⊗[A] N) (x : B ⊗[A] invariants θ) :
     θ (extend B _ x) = (invariants θ).subtype.lTensor B x := by
@@ -99,7 +99,7 @@ theorem apply_extend (θ : N →ₗ[B] B ⊗[A] N) (x : B ⊗[A] invariants θ) 
   | tmul b m => simp [mem_invariants.1 m.2, smul_tmul']
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul b m => simp [mem_invariants.1 m.2, smul_tmul']`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem apply_extend_eq_canonical (θ : N →ₗ[B] B ⊗[A] N) (x : B ⊗[A] invariants θ) :
     θ (extend B _ x) =
@@ -110,9 +110,9 @@ theorem apply_extend_eq_canonical (θ : N →ₗ[B] B ⊗[A] N) (x : B ⊗[A] in
   | tmul b m => simp [mem_invariants.1 m.2, smul_tmul']
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Apply `Module.Flat.lTensor_preserves_injective_linearMap (M := B) _ (invariants θ).injective_subtype` to reduce the goal to its premises. Rewrite using `[← apply_extend, hx, map_zero, map_zero]`.
+Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Introduce `n`. Establish `hex` using `Module.Flat.lTensor_exact B (LinearMap.exact_subtype_ker_map (θ.restrictScalars A - TensorProduct.mk A B N 1))`. Take `⟨x, hx⟩` from `(hex (θ n)).1 (by`. Rewrite using `[LinearMap.lTensor_sub, LinearMap.sub_apply, h.coassoc, sub_self])`. Conclude with `⟨x, (act_lTensor_subtype (invariants θ) x).symm.trans ((congrArg (act A B N) hx).trans (h.counit n))⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem IsDescentDatum.bijective_extend [Module.Flat A B] {θ : N →ₗ[B] B ⊗[A] N}
     (h : IsDescentDatum θ) : Function.Bijective (extend B (invariants θ)) := by
@@ -131,7 +131,7 @@ theorem IsDescentDatum.bijective_extend [Module.Flat A B] {θ : N →ₗ[B] B �
       ((congrArg (act A B N) hx).trans (h.counit n))⟩
 
 /- English proof (translation)
-The claim follows from `IsBaseChange.of_equiv (LinearEquiv.ofBijective _ h.bijective_extend) fun n => by simp`.
+A detailed English derivation is pending.
 -/
 theorem IsDescentDatum.isBaseChange [Module.Flat A B] {θ : N →ₗ[B] B ⊗[A] N}
     (h : IsDescentDatum θ) : IsBaseChange B (invariants θ).subtype :=
@@ -151,9 +151,9 @@ Both sides reduce to the same expression.
     (toInvariants (A := A) B M m : B ⊗[A] M) = 1 ⊗ₜ m := rfl
 
 /- English proof (translation)
-Rewrite using `[← Module.FaithfullyFlat.lTensor_bijective_iff_bijective A B, ← Function.Bijective.of_comp_iff' (isDescentDatum_canonical (A := A) B M).bijective_extend]`. Use `Function.bijective_id` and compare the differences between its conclusion and the goal. Use extensionality with `x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Proceed by induction. Treat this case separately.
 
-Consider the case `add x y hx hy => simp_all`. Consider the case `tmul b m => simp [smul_tmul']`.
+Treat this case separately. Treat this case separately.
 -/
 theorem bijective_toInvariants [Module.FaithfullyFlat A B] :
     Function.Bijective (toInvariants (A := A) B M) := by
@@ -177,7 +177,7 @@ Both sides reduce to the same expression.
       b ⊗ₜ[A] ((1 : B) ⊗ₜ[A] m) - (1 : B) ⊗ₜ[A] (b ⊗ₜ[A] m) := rfl
 
 /- English proof (translation)
-Use `⟨Module.FaithfullyFlat.tensorProduct_mk_injective M, fun x => ⟨fun hx => ?_, ?_⟩⟩` and prove the remaining obligations. Take `⟨m, hm⟩` from `(bijective_toInvariants (A := A) B M).2 ⟨x, hx⟩`. Conclude with `⟨m, congrArg Subtype.val hm⟩`. Introduce and unpack `⟨m, rfl⟩`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 -/
 theorem amitsur_exact [Module.FaithfullyFlat A B] :
     Function.Injective (TensorProduct.mk A B M 1) ∧
@@ -196,7 +196,7 @@ def IsCompatible (θ : N →ₗ[B] B ⊗[A] N) (θ' : N' →ₗ[B] B ⊗[A] N') 
   ∀ n, θ' (f n) = (f.restrictScalars A).lTensor B (θ n)
 
 /- English proof (translation)
-Rewrite `hn`, the goal using `[mem_invariants]`. Rewrite using `[hf n, hn]`. Simplify using the standard rewrite rules.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem IsCompatible.map_mem {θ : N →ₗ[B] B ⊗[A] N} {θ' : N' →ₗ[B] B ⊗[A] N'} {f : N →ₗ[B] N'}
     (hf : IsCompatible θ θ' f) {n : N} (hn : n ∈ invariants θ) : f n ∈ invariants θ' := by
@@ -209,7 +209,7 @@ variable {M M' : Type*} [AddCommGroup M] [Module A M] [AddCommGroup M'] [Module 
 variable (B) in
 
 /- English proof (translation)
-Introduce `x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul b m => simp`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem isCompatible_baseChange (g : M →ₗ[A] M') :
     IsCompatible (canonical B M) (canonical B M') (g.baseChange B) := by
@@ -220,9 +220,9 @@ theorem isCompatible_baseChange (g : M →ₗ[A] M') :
   | tmul b m => simp
 
 /- English proof (translation)
-Set `e` to `LinearEquiv.ofBijective _ (bijective_toInvariants (A := A) B M')`. Set `g : M →ₗ[A] M'` to `e.symm.toLinearMap ∘ₗ ((f.restrictScalars A) ∘ₗ TensorProduct.mk A B M 1).codRestrict _ hf`. Establish `hg : ∀ m, (1 : B) ⊗ₜ[A] g m = f (1 ⊗ₜ m)` using `fun m => congrArg Subtype.val (e.apply_symm_apply ⟨f (1 ⊗ₜ m), hf m⟩)`. Use `⟨g, ?_, fun g' hg' => ?_⟩` and prove the remaining obligations. Use extensionality with `m`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Simplify using `using hg m`. Use extensionality with `m`. Apply `Module.FaithfullyFlat.tensorProduct_mk_injective (A := A) (B := B) M'` to reduce the goal to its premises. Simplify using `only [TensorProduct.mk_apply, hg, ← hg', LinearMap.baseChange_tmul]`.
+Simplify to obtain the desired conclusion from the available facts. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 -/
 theorem existsUnique_baseChange_eq_of_mem [Module.FaithfullyFlat A B]
     (f : B ⊗[A] M →ₗ[B] B ⊗[A] M') (hf : ∀ m : M, f (1 ⊗ₜ m) ∈ invariants (canonical B M')) :
@@ -240,7 +240,7 @@ theorem existsUnique_baseChange_eq_of_mem [Module.FaithfullyFlat A B]
     simp only [TensorProduct.mk_apply, hg, ← hg', LinearMap.baseChange_tmul]
 
 /- English proof (translation)
-The claim follows from `existsUnique_baseChange_eq_of_mem f fun m => hf.map_mem (by simp)`.
+A detailed English derivation is pending.
 -/
 theorem IsCompatible.existsUnique_baseChange_eq [Module.FaithfullyFlat A B]
     {f : B ⊗[A] M →ₗ[B] B ⊗[A] M'} (hf : IsCompatible (canonical B M) (canonical B M') f) :
@@ -250,7 +250,7 @@ theorem IsCompatible.existsUnique_baseChange_eq [Module.FaithfullyFlat A B]
 variable (B) in
 
 /- English proof (translation)
-The claim follows from `Module.FaithfullyFlat.lTensor_bijective_iff_bijective A B g`.
+A detailed English derivation is pending.
 -/
 theorem bijective_baseChange_iff [Module.FaithfullyFlat A B] (g : M →ₗ[A] M') :
     Function.Bijective (g.baseChange B) ↔ Function.Bijective g :=
@@ -261,9 +261,9 @@ end Morphisms
 section Invertible
 
 /- English proof (translation)
-Establish `: Module.Finite A M` using `Descent.finite_of_isBaseChange hj`. Establish `: Module.Projective A M` using `Descent.projective_of_isBaseChange hj`. Set `e : B ⊗[A] (Module.Dual A M ⊗[A] M) ≃ₗ[B] B ⊗[A] A` to `AlgebraTensorModule.distribBaseChange A B _ _ ≪≫ₗ TensorProduct.congr (SymAlg.isBaseChange_dual hj).equiv hj.equiv ≪≫ₗ Module.Invertible.linearEquiv B N ≪≫ₗ (AlgebraTensorModule.rid A B B).symm`. Establish `he : (contractLeft A M).baseChange B = e.toLinearMap`. Use extensionality with `ξ m`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Apply `(AlgebraTensorModule.rid A B B).injective` to reduce the goal to its premises. Simplify using `[e, Module.Invertible.linearEquiv, hj.toDual_comp_apply, Algebra.algebraMap_eq_smul_one]`. Use `⟨(bijective_baseChange_iff B _).1 ?_⟩` and prove the remaining obligations. Rewrite using `[he]`. Conclude with `e.bijective`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem invertible_of_isBaseChange [Module.FaithfullyFlat A B] {M : Type*} [AddCommGroup M]
     [Module A M] {j : M →ₗ[A] N} (hj : IsBaseChange B j) [Module.Invertible B N] :
@@ -285,14 +285,14 @@ theorem invertible_of_isBaseChange [Module.FaithfullyFlat A B] {M : Type*} [AddC
 variable (B) in
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ => invertible_of_isBaseChange (TensorProduct.isBaseChange A M B), fun _ => inferInstance⟩`.
+Supply the required witnesses or components.
 -/
 theorem invertible_baseChange_iff [Module.FaithfullyFlat A B] (M : Type*) [AddCommGroup M]
     [Module A M] : Module.Invertible B (B ⊗[A] M) ↔ Module.Invertible A M :=
   ⟨fun _ => invertible_of_isBaseChange (TensorProduct.isBaseChange A M B), fun _ => inferInstance⟩
 
 /- English proof (translation)
-The claim follows from `invertible_of_isBaseChange h.isBaseChange`.
+A detailed English derivation is pending.
 -/
 theorem IsDescentDatum.invertible_invariants [Module.FaithfullyFlat A B]
     {θ : N →ₗ[B] B ⊗[A] N} (h : IsDescentDatum θ) [Module.Invertible B N] :
@@ -302,7 +302,7 @@ theorem IsDescentDatum.invertible_invariants [Module.FaithfullyFlat A B]
 variable (B) in
 
 /- English proof (translation)
-Rewrite using `[isUnit_iff_dvd_one, isUnit_iff_dvd_one, ← Descent.algebraMap_dvd_iff B a 1, map_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem isUnit_algebraMap_iff [Module.FaithfullyFlat A B] (a : A) :
     IsUnit (algebraMap A B a) ↔ IsUnit a := by
@@ -363,7 +363,7 @@ Both sides reduce to the same expression.
     gluingOfDatum θ (n ⊗ₜ b) = smulRight A b (θ n) := rfl
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul b m => simp`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem smulRight_one (x : B ⊗[A] N) : smulRight A (1 : B) x = x := by
   induction x using TensorProduct.induction_on with
@@ -372,7 +372,7 @@ theorem smulRight_one (x : B ⊗[A] N) : smulRight A (1 : B) x = x := by
   | tmul b m => simp
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul b m => simp [mul_smul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem smulRight_mul (b c : B) (x : B ⊗[A] N) :
     smulRight A (b * c) x = smulRight A b (smulRight A c x) := by
@@ -382,15 +382,15 @@ theorem smulRight_mul (b c : B) (x : B ⊗[A] N) :
   | tmul b m => simp [mul_smul]
 
 /- English proof (translation)
-Establish `hco : ∀ n, ((datumOfGluing φ).restrictScalars A).lTensor B (datumOfGluing φ n) = (TensorProduct.mk A B N 1).lTensor B (datumOfGluing φ n)`. Introduce `n`. Rewrite using `[datumOfGluing_apply, ← h.cocycle]`. Proceed by induction on `φ (n ⊗ₜ 1) using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately.
 
-Consider the case `add x y hx hy => simp only [map_add, hx, hy, add_tmul]`. Consider the case `tmul b m => simp`. Use `⟨fun n => ?_, hco⟩` and prove the remaining obligations. Establish `h1 : ∀ x : B ⊗[A] N, act A B _ (((datumOfGluing φ).restrictScalars A).lTensor B x) = datumOfGluing φ (act A B N x)`. Introduce `x`.
+Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul b m => simp [← smul_tmul']`. Establish `h2 : ∀ x : B ⊗[A] N, act A B _ ((TensorProduct.mk A B N 1).lTensor B x) = x`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Introduce `x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul b m => simp [smul_tmul']`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Establish `h3` using `congrArg (act A B _) (hco n)`. Rewrite `h3` using `[h1, h2]`. Establish `h4` using `congrArg (fun x => act A B N (TensorProduct.comm A N B x)) (h.bijective.1 h3)`. Simplify using `using h4`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem IsGluing.isDescentDatum {φ : N ⊗[A] B →ₗ[B] B ⊗[A] N} (h : IsGluing φ) :
     IsDescentDatum (datumOfGluing φ) := by
@@ -422,27 +422,27 @@ theorem IsGluing.isDescentDatum {φ : N ⊗[A] B →ₗ[B] B ⊗[A] N} (h : IsGl
   simpa using h4
 
 /- English proof (translation)
-Set `φ : N ⊗[A] B →ₗ[A] B ⊗[A] N` to `(gluingOfDatum θ).restrictScalars A`. Set `τ` to `TensorProduct.comm A B N`. Set `κ : B ⊗[A] (B ⊗[A] N) →ₗ[A] B ⊗[A] N` to `((act A B N).restrictScalars A).lTensor B ∘ₗ (TensorProduct.leftComm A B B N).toLinearMap`. Establish `hκ : ∀ (b : B) (x : B ⊗[A] N), κ (b ⊗ₜ x) = smulRight A b x`. Introduce `b x`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy, tmul_add]`. Consider the case `tmul b m => simp [κ]`. Establish `h1 : ∀ (b : B) (x : B ⊗[A] N), φ (τ (smulRight A b x)) = b • κ ((θ.restrictScalars A).lTensor B x)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Introduce `b x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy, smul_add]`. Consider the case `tmul c m => simp [hκ, φ, τ]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Establish `h2 : ∀ x : B ⊗[A] N, κ ((TensorProduct.mk A B N 1).lTensor B x) = 1 ⊗ₜ act A B N x`. Introduce `x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy, tmul_add]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `tmul c m => simp [hκ]`. Establish `h3 : ∀ x, τ (φ (τ (φ x))) = x`. Introduce `x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul n b`. Establish `: φ (n ⊗ₜ b) = smulRight A b (θ n)` using `rfl`. Rewrite using `[this, h1, h.coassoc, h2, h.counit]`. Simplify using `[τ, smul_tmul']`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `⟨⟨fun x y hxy => ?_, fun y => ⟨τ (φ (τ y)), ?_⟩⟩, fun n b c => ?_, fun n b c => ?_⟩` and prove the remaining obligations. Rewrite using `[← h3 x, ← h3 y]`. Conclude with `congrArg (fun z => τ (φ (τ z))) hxy`. Take `⟨y, rfl⟩` from `τ.symm.surjective y`. Establish `hτφ : Function.Bijective (fun x => τ (φ x))` using `Function.Involutive.bijective h3`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨z, rfl⟩` from `hτφ.2 y`. Simplify using `only [LinearEquiv.symm_apply_apply]`. Rewrite using `[h3]`. Both sides reduce to the same expression. Simplify using `[smulRight_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Set `ψ : B ⊗[A] N →ₗ[A] B ⊗[A] N` to `(b • smulRight A c : B ⊗[A] N →ₗ[B] B ⊗[A] N).restrictScalars A`. Establish `h4 : ∀ x : B ⊗[A] N, φ.lTensor B (TensorProduct.assoc A B N B (smulRight A b x ⊗ₜ c)) = ψ.lTensor B ((θ.restrictScalars A).lTensor B x)`. Introduce `x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y hx hy => simp only [map_add, hx, hy, add_tmul]`. Consider the case `tmul d m => simp [φ, ψ]`. Establish `h5 : ∀ x : B ⊗[A] N, ψ.lTensor B ((TensorProduct.mk A B N 1).lTensor B x) = (TensorProduct.mk A B N b).lTensor B (smulRight A c x)`. Introduce `x`. Proceed by induction on `x using TensorProduct.induction_on with`.
+Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul d m => simp [ψ, smul_tmul']`. Rewrite using `[gluingOfDatum_tmul, gluingOfDatum_tmul, ← h5, ← h.coassoc, ← h4]`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsDescentDatum.isGluing {θ : N →ₗ[B] B ⊗[A] N} (h : IsDescentDatum θ) :
     IsGluing (gluingOfDatum θ) := by

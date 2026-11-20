@@ -25,21 +25,21 @@ def sc {F : Type} [CommRing F] {Z : Scheme.{0}} (p : Z ⟶ Spec (CommRingCat.of 
   (Z.presheaf.germ ⊤ z trivial).hom.comp (p.appTop.hom.comp (Scheme.ΓSpecIso (CommRingCat.of F)).inv.hom)
 
 /- English proof (translation)
-Rewrite using `[gs_eq p z ⊤ trivial]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem gs_inv {F : Type} [CommRing F] {Z : Scheme.{0}} (p : Z ⟶ Spec (CommRingCat.of F)) (z : Z) (a : F) :
     gs p z ⊤ ((Scheme.ΓSpecIso (CommRingCat.of F)).inv.hom a) = sc p z a := by
   rw [gs_eq p z ⊤ trivial]; rfl
 
 /- English proof (translation)
-The claim follows from `(gs_pull r p z ⊤ trivial _).trans (gs_inv _ z a)`.
+A detailed English derivation is pending.
 -/
 theorem gs_scal {F : Type} [CommRing F] {Y Z : Scheme.{0}} (r : Z ⟶ Y) (p : Y ⟶ Spec (CommRingCat.of F)) (z : Z)
     (a : F) : gs r z ⊤ (scal p a) = sc (r ≫ p) z a :=
   (gs_pull r p z ⊤ trivial _).trans (gs_inv _ z a)
 
 /- English proof (translation)
-Establish `e` using `congrArg (fun q => q.hom a) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom φ))`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply, CommRingCat.hom_ofHom] at e`. Simplify using `only [sc, RingHom.comp_apply, Scheme.Hom.comp_appTop, CommRingCat.hom_comp, e]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem sc_map {F F' : Type} [CommRing F] [CommRing F'] (φ : F →+* F') {Z : Scheme.{0}}
     (p : Z ⟶ Spec (CommRingCat.of F')) (z : Z) (a : F) :
@@ -49,7 +49,7 @@ theorem sc_map {F F' : Type} [CommRing F] [CommRing F'] (φ : F →+* F') {Z : S
   simp only [sc, RingHom.comp_apply, Scheme.Hom.comp_appTop, CommRingCat.hom_comp, e]
 
 /- English proof (translation)
-Use `show Spec.map (CommRingCat.ofHom (algebraMap (FractionRing R) (FractionRing R))) = _`. Rewrite using `[Algebra.algebraMap_self, CommRingCat.ofHom_id, Spec.map_id]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jFK_self (R : Type) [CommRing R] [IsDomain R] :
     jFK (R := R) (FractionRing R) = 𝟙 (Spec (CommRingCat.of (FractionRing R))) := by
@@ -57,7 +57,7 @@ theorem jFK_self (R : Type) [CommRing R] [IsDomain R] :
   rw [Algebra.algebraMap_self, CommRingCat.ofHom_id, Spec.map_id]
 
 /- English proof (translation)
-Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[h i, Algebra.smul_def, map_mul, _root_.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem clear_sum {R S : Type} [CommRing R] [IsDomain R] [CommRing S] (χ : FractionRing R →+* S) {n : ℕ} (r : R)
     (a : Fin n → R) (c : Fin n → FractionRing R) (h : ∀ i, algebraMap R (FractionRing R) (a i) = r • c i)
@@ -68,25 +68,23 @@ theorem clear_sum {R S : Type} [CommRing R] [IsDomain R] [CommRing S] (χ : Frac
   rw [h i, Algebra.smul_def, map_mul, _root_.mul_assoc]
 
 /- English proof (translation)
-Introduce `R _ _ I D A G _ _ U U' hM k σ σ₀ t s hσ hK hE`. Take `⟨n, c, σs, fs, hT, hA, hB⟩` from `hE`. Take `⟨⟨r, hr⟩, ha⟩` from `IsLocalization.exist_integer_multiples_of_finite (nonZeroDivisors R) c`. Use `choose a ha using ha`. Take `⟨σ', f', hT', hσ', hf'⟩` from `ExpLin.expT_linear R I D.toPre A G U (𝟙_ _) k n (fun i => (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom (a i)) σs fs hT`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨-, e₁, -, e₂⟩` from `UnitSec.same_exists R D.toPre G U.P.L.L U.P.L.isLB k`. Take `⟨τ, hτ⟩` from `e₁ σ'`. Take `⟨f, hf⟩` from `e₂ f'`. Establish `hAt` using `fun τ' => expandsAt_of_expT R I D A G U U' hM k τ' τ σ' f f'`. Establish `hG : GeneratorPullback.SecScal U.P.L.L (fun _ : Fin 1 => pullback.fst G.hom (jK R)) (fun _ => (k : ℤ)) σ₀ (fun _ : Fin 1 => 𝟙 G.left) (fun _ => (k : ℤ)) τ (pullback.fst G.hom (jK R)) (scal (pullback.snd G.hom (jK R) ≫ jK R) r)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `BoxFamScalar.secScal_of_pointwise U.P.L.isLB fun y J hJ => ?_` and prove the remaining obligations. Take `⟨rG, hG₁, hG₂⟩` from `exists_lift_unit_tensor G (𝟙 _ ≫ pullback.fst G.hom (jK R))`. Use `choose JA hJA using fun ψ : pullback G.hom (jK R) ⟶ A.A.left => exists_chart A.isLB (ψ y)`. Establish `w : pullback.snd G.hom (jK R) ≫ (TFK (R` using `R) (FractionRing R)).hom = U.gen.hom.left ≫ A.A.hom := ((congrArg (pullback.snd G.hom (jK R) ≫ ·) (jFK_self R)).trans (Category.comp_id _)).trans (Over.w U.gen.hom).symm`. Take `⟨rA, hA₁, hA₂⟩ : ∃ rA : pullback G.hom (jK R) ⟶ (TFK (R` from `R) (FractionRing R) ⊗ A.A).left, rA ≫ (fst _ A.A).left = pullback.snd G.hom (jK R) ∧ rA ≫ (snd _ A.A).left = 𝟙 _ ≫ U.gen.hom.left := ⟨pullback.lift _ _ w, pullback.lift_fst _ _ w, (pullback.lift_snd _ _ w).trans (Category.id_comp _).symm⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e₃` using `(hK _ rA (𝟙 _) hA₂ y JA J hJA hJ).symm.trans (hA _ rA (𝟙 _) rG hA₂ hG₁ y JA J hJA hJ)`. Establish `e₄ : rG ≫ (fst _ G).left = pullback.snd G.hom (jK R) ≫ jK R` using `hG₂.trans ((congrArg (· ≫ G.hom) (Category.id_comp _)).trans pullback.condition)`. Use `((congrArg (fun q => sval τ q y J) hG₁).symm.trans (hτ _ rG y J hJ).symm).trans ((hσ' _ rG y J hJ).trans ?_)` and prove the remaining obligations. Use `Eq.trans ?_ (congrArg (_ * ·) e₃).symm` and prove the remaining obligations. Use `Eq.trans ?_ ((clear_sum (sc (pullback.snd G.hom (jK R)) y) r a c ha (fun i => sval (σs i) rG y J)).trans ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun i _ => congrArg (· * _) ?_` and prove the remaining obligations. Conclude with `(gs_inv _ y _).trans ((congrArg (fun q => sc q y (a i)) e₄).trans (sc_map _ _ y _))`. Use `congrArg₂ (· * ·) ?_ (Finset.sum_congr rfl fun i _ => congrArg (· * _) ?_)` and prove the remaining obligations. Rewrite using `[gs_scal, Category.id_comp, sc_map]`. Conclude with `((gs_scal _ _ y _).trans (congrArg (fun q => sc q y (c i)) hA₁)).symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hF : ∀ α : D.toPre.X, GeneratorPullback.SecScal D.toPre.P.L (DegPre.famφ D.toPre (FractionRing R) α) (DegPre.famε k) (s.s α) (D.toPre.famφB α) (DegPre.famε k) (f α) (DegPre.prB D.toPre (FractionRing R)).left (scal (DegPre.BF D.toPre (FractionRing R)).hom r)`. Introduce `α`. Use `BoxFamScalar.secScal_of_pointwise D.toPre.P.isLB fun y J hJ => ?_` and prove the remaining obligations. Take `⟨rB, hB₁, hB₂⟩` from `exists_lift_unit_tensor D.toPre.P.A (𝟙 _ ≫ (DegPre.prB D.toPre (FractionRing R)).left)`. Establish `e₃` using `hB α _ (𝟙 _) rB hB₁ y J hJ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e₅ : (DegPre.BF D.toPre (FractionRing R)).hom = (fst (TF (R` using `R) (FractionRing R)) D.toPre.P.A).left ≫ jK R := (Over.w (fst (TF (R := R) (FractionRing R)) D.toPre.P.A)).symm.trans (congrArg ((fst (TF (R := R) (FractionRing R)) D.toPre.P.A).left ≫ ·) ((congrArg (· ≫ jK R) (jFK_self R)).trans (Category.id_comp _)))`. Establish `e₄ : rB ≫ (fst _ D.toPre.P.A).left = (fst (TF (R` using `R) (FractionRing R)) D.toPre.P.A).left ≫ jK R := hB₂.trans ((congrArg (· ≫ D.toPre.P.A.hom) (Category.id_comp _)).trans ((Over.w (DegPre.prB D.toPre (FractionRing R))).trans e₅))`. Use `((congrArg (fun q => sval (f α) q y J) hB₁).symm.trans (hf α _ rB y J hJ).symm).trans ((hf' α _ rB y J hJ).trans ?_)` and prove the remaining obligations. Use `Eq.trans ?_ (congrArg (_ * ·) e₃).symm` and prove the remaining obligations. Use `Eq.trans ?_ ((clear_sum (sc (fst (TF (R := R) (FractionRing R)) D.toPre.P.A).left y) r a c ha (fun i => sval (fs i α) rB y J)).trans ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data.
 
-Use `Finset.sum_congr rfl fun i _ => congrArg (· * _) ?_` and prove the remaining obligations. Conclude with `(gs_inv _ y _).trans ((congrArg (fun q => sc q y (a i)) e₄).trans (sc_map _ _ y _))`. Use `congrArg₂ (· * ·) ?_ (Finset.sum_congr rfl fun i _ => congrArg (· * _) ?_)` and prove the remaining obligations. Conclude with `((gs_scal _ _ y _).trans ((congrArg (fun q => sc q y r) ((Category.id_comp _).trans e₅)).trans (sc_map _ _ y _))).symm`. Conclude with `((gs_scal _ _ y _).trans (congrArg (fun q => sc q y (c i)) (Category.id_comp _))).symm`.
+Establish an intermediate fact. Simplify by unfolding definitions. Substitute using the available equality. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨semi, gen, gen_hom, P, wA, wA_gen, gt, gt_q, gt_t, w, w_gen, w_vals, w_compat⟩` from `U`. Consider the cases of `P`. Establish `hL` using `hM.LG`. Simplify using `only at hL`. Substitute `hL` using the available equality.
-
-Take `rfl` from `eq_of_heq hσ`. Conclude with `⟨r, nonZeroDivisors.ne_zero hr, τ, f, hG, hF, hAt τ HEq.rfl hτ hf hT'⟩`.
+A detailed English derivation is pending.
 -/
 theorem expands_of_expF : ∀ (R : Type) [CommRing R] [IsDomain R] (I : Ideal R) (D : DegData R I) (A : PolAV (Spec (CommRingCat.of (FractionRing R)))) (G : Over (Spec (CommRingCat.of R))) [GrpObj G] [IsCommMonObj G] (U : PreU I D.toPre A G) (U' : UnifPre I D A G), Match U U' → ∀ (k : ℕ) (σ : U'.SecK k) (σ₀) (t) (s : Fam D.toPre (FractionRing R) k), HEq σ σ₀ → U.SameK (k := k) σ₀ t → U.ExpF (FractionRing R) k t s.s → U'.Expands k σ s := by
   intro R _ _ I D A G _ _ U U' hM k σ σ₀ t s hσ hK hE

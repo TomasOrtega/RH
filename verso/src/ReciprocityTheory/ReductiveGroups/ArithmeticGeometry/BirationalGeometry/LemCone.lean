@@ -11,7 +11,7 @@ section Coord
 variable (o : Type*) {Ω : Type*} [CommRing o] [CommRing Ω] [Algebra o Ω] {ι : Type*}
 
 /- English proof (translation)
-Unfold `coneMap`. Rewrite using `[aeval_monomial, aeval_monomial, Polynomial.algebraMap_apply, map_mul, mul_assoc]`. Use `congr 1`. Simplify using `only [Finsupp.prod, mul_pow, Finset.prod_mul_distrib, map_prod, Polynomial.C_pow, Finset.prod_pow_eq_pow_sum]`. Use `congr 1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 -/
 private theorem coneMap_monomial' (x : ι → Ω) (e : ι →₀ ℕ) (a : o) :
     coneMap o x (monomial e a) = Polynomial.C (aeval x (monomial e a)) * Polynomial.X ^ e.degree := by
@@ -23,9 +23,9 @@ private theorem coneMap_monomial' (x : ι → Ω) (e : ι →₀ ℕ) (a : o) :
   congr 1
 
 /- English proof (translation)
-Use `conv_lhs => rw [f.as_sum, map_sum]`. Rewrite using `[Polynomial.finset_sum_coeff]`. Simplify using `only [coneMap_monomial', Polynomial.coeff_C_mul_X_pow]`. Rewrite using `[homogeneousComponent_apply, map_sum, Finset.sum_filter]`. Use `Finset.sum_congr rfl fun e _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `eq_or_ne e.degree d with h | h` into its components or cases. Simplify using `[h]`. Rewrite using `[if_neg (Ne.symm h), if_neg h]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem coeff_coneMap_eq_aeval_homogeneousComponent (x : ι → Ω) (f : MvPolynomial ι o) (d : ℕ) :
     (coneMap o x f).coeff d = aeval x (homogeneousComponent d f) := by
@@ -40,7 +40,7 @@ private theorem coeff_coneMap_eq_aeval_homogeneousComponent (x : ι → Ω) (f :
   · rw [if_neg (Ne.symm h), if_neg h]
 
 /- English proof (translation)
-Use extensionality with `d`. Rewrite using `[coeff_coneMap_eq_aeval_homogeneousComponent, Polynomial.coeff_C_mul_X_pow, homogeneousComponent_of_mem ((mem_homogeneousSubmodule _ _).2 hf)]`. Break down `eq_or_ne d n with rfl | h` into its components or cases. Simplify using the standard rewrite rules. Rewrite using `[if_neg h, if_neg h, map_zero]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem coneMap_of_isHomogeneous (x : ι → Ω) {f : MvPolynomial ι o} {n : ℕ}
     (hf : f.IsHomogeneous n) :
@@ -53,21 +53,21 @@ theorem coneMap_of_isHomogeneous (x : ι → Ω) {f : MvPolynomial ι o} {n : �
   · rw [if_neg h, if_neg h, map_zero]
 
 /- English proof (translation)
-Rewrite using `[coordIdeal, RingHom.mem_ker, coneMap_of_isHomogeneous o x hf, h, map_zero, zero_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_coordIdeal_of_isHomogeneous (x : ι → Ω) {f : MvPolynomial ι o} {n : ℕ}
     (hf : f.IsHomogeneous n) (h : aeval x f = 0) : f ∈ coordIdeal o x := by
   rw [coordIdeal, RingHom.mem_ker, coneMap_of_isHomogeneous o x hf, h, map_zero, zero_mul]
 
 /- English proof (translation)
-Conclude with `coeff_coneMap_eq_aeval_homogeneousComponent o x f d`.
+A detailed English derivation is pending.
 -/
 theorem coeff_coneMap (x : ι → Ω) (f : MvPolynomial ι o) (d : ℕ) :
     (coneMap o x f).coeff d = aeval x (homogeneousComponent d f) := by
   exact coeff_coneMap_eq_aeval_homogeneousComponent o x f d
 
 /- English proof (translation)
-Introduce `f hf d`. Rewrite `hf`, the goal using `[coordIdeal, RingHom.mem_ker]`. Rewrite using `[coneMap_of_isHomogeneous o x (homogeneousComponent_isHomogeneous d f), ← coeff_coneMap, hf, Polynomial.coeff_zero, map_zero, zero_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem coordIdeal_isHomogIdeal (x : ι → Ω) : IsHomogIdeal o (coordIdeal o x) := by
   intro f hf d

@@ -8,7 +8,7 @@ noncomputable section
 namespace GlobalTheory.Proof.ThetaZeroNormGlobalInterpolation
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.ThetaNullNormSquares.normTheta0`.
+A detailed English derivation is pending.
 -/
 theorem normTheta0 : GlobalTheory.IndefiniteRowSideFullHecke.JacobiThetaHalfCharacteristic.NormTheta0 := GlobalTheory.ThetaNullNormSquares.normTheta0
 

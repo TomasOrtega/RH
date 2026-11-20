@@ -19,26 +19,26 @@ def intRing (V : VF C) : Subring C where
   neg_mem' := fun ha => VF.Ge.neg ha
 
 /- English proof (translation)
-The claim follows from `V.v.map_lt_add ha hb`.
+A detailed English derivation is pending.
 -/
 theorem mm_add {a b : C} (ha : V.MM a) (hb : V.MM b) : V.MM (a + b) :=
   V.v.map_lt_add ha hb
 
 /- English proof (translation)
-Unfold `VF.MM`. Rewrite using `[V.v.map_zero]`. Conclude with `WithTop.top_pos`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mm_zero : V.MM (0 : C) := by
   unfold VF.MM; rw [V.v.map_zero]; exact WithTop.top_pos
 
 /- English proof (translation)
-Use `lt_of_lt_of_le ?_ ha` and prove the remaining obligations. Conclude with `(zero_lt_one : (0 : ℝ) < 1)` after adjusting the coercions.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem mm_of_ge_one {a : C} (ha : V.Ge 1 a) : V.MM a := by
   refine lt_of_lt_of_le ?_ ha
   exact_mod_cast (zero_lt_one : (0 : ℝ) < 1)
 
 /- English proof (translation)
-Unfold `VF.MM at *`. Rewrite using `[V.v.map_pow]`. Conclude with `nsmul_pos ha hn`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mm_pow {a : C} (ha : V.MM a) {n : ℕ} (hn : n ≠ 0) : V.MM (a ^ n) := by
   unfold VF.MM at *
@@ -46,7 +46,7 @@ theorem mm_pow {a : C} (ha : V.MM a) {n : ℕ} (hn : n ≠ 0) : V.MM (a ^ n) := 
   exact nsmul_pos ha hn
 
 /- English proof (translation)
-Unfold `VF.Ge at *`. Rewrite `ha` using `[V.v.map_pow]`. Rewrite `ha`, the goal using `[WithTop.coe_zero]`. Assume the negation of the conclusion as `h`. Conclude with `absurd ha (not_le.mpr (nsmul_neg (not_le.mp h) hn))`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem ge_of_pow {a : C} {n : ℕ} (hn : n ≠ 0) (ha : V.Ge 0 (a ^ n)) : V.Ge 0 a := by
   unfold VF.Ge at *
@@ -56,9 +56,9 @@ theorem ge_of_pow {a : C} {n : ℕ} (hn : n ≠ 0) (ha : V.Ge 0 (a ^ n)) : V.Ge 
   exact absurd ha (not_le.mpr (nsmul_neg (not_le.mp h) hn))
 
 /- English proof (translation)
-Take `⟨r, hr⟩` from `exists_add_pow_prime_pow_eq V.l_prime (⟨a, ha⟩ : intRing V) (⟨b, hb⟩ : intRing V) e`. Establish `h` using `congrArg (Subtype.val) hr`. Move the coercions through the operations in `at h`. Rewrite using `[h, add_sub_cancel_left]`. Apply `mm_of_ge_one` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hr0 : V.Ge 0 (r : C)` using `r.2`. Use `first`. Consider the case `simpa using hr0.l_mul`. Consider the case `simpa [mul_assoc] using (ha.mul_int (hb.mul_int hr0)).l_mul`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem mm_add_pow (e : ℕ) {a b : C} (ha : V.Ge 0 a) (hb : V.Ge 0 b) :
     V.MM ((a + b) ^ (V.l ^ e) - (a ^ (V.l ^ e) + b ^ (V.l ^ e))) := by
@@ -74,9 +74,9 @@ theorem mm_add_pow (e : ℕ) {a b : C} (ha : V.Ge 0 a) (hb : V.Ge 0 b) :
     | simpa [mul_assoc] using (ha.mul_int (hb.mul_int hr0)).l_mul
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Rewrite using `[Finset.sum_empty, Finset.sum_empty, zero_pow (pow_ne_zero e V.l_prime.ne_zero), sub_zero]`. Conclude with `mm_zero`. Consider the case `insert a s ha ih`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha]`. Establish `hs : ∀ i ∈ s, V.Ge 0 (x i)` using `fun i hi => hx i (Finset.mem_insert_of_mem hi)`. Establish `h` using `mm_add (mm_add_pow e (hx a (Finset.mem_insert_self a s)) (VF.Ge.sum hs)) (ih hs)`. Use `h using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem mm_sum_pow (e : ℕ) {ι : Type} (s : Finset ι) (x : ι → C) (hx : ∀ i ∈ s, V.Ge 0 (x i)) :
     V.MM ((∑ i ∈ s, x i) ^ (V.l ^ e) - ∑ i ∈ s, x i ^ (V.l ^ e)) := by

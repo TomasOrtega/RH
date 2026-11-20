@@ -17,14 +17,14 @@ def IdemSumOrth (D : D7) : Prop :=
       ∀ PP ∈ P, ∀ PP' ∈ P, PP ≠ PP' → es PP * es PP' = 0 ∧ es PP * cA D (es PP') = 0
 
 /- English proof (translation)
-Take `⟨h1, h2, v, ε, hε, h3⟩` from `h`. Conclude with `⟨by rw [← map_mul, h1], by rw [cA_cA, mul_comm, h2], v, ε, hε, by rw [cA_cA, add_comm, h3]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isSplitIdem_cA {e : AE D} (h : IsSplitIdem D e) : IsSplitIdem D (cA D e) := by
   obtain ⟨h1, h2, v, ε, hε, h3⟩ := h
   exact ⟨by rw [← map_mul, h1], by rw [cA_cA, mul_comm, h2], v, ε, hε, by rw [cA_cA, add_comm, h3]⟩
 
 /- English proof (translation)
-Use `ψ.map_add_eq_mul a (-a)` as an intermediate fact. Rewrite `this` using `[add_neg_cancel, AddChar.map_zero_eq_one, h, one_mul]`. Conclude with `this.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psi_neg_one (ψ : AddChar (AF D.host.F) ℂ) {a : AF D.host.F} (h : ψ a = 1) : ψ (-a) = 1 := by
   have := ψ.map_add_eq_mul a (-a)
@@ -34,7 +34,7 @@ theorem psi_neg_one (ψ : AddChar (AF D.host.F) ℂ) {a : AF D.host.F} (h : ψ a
 variable (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D)
 
 /- English proof (translation)
-Establish `hz : ∀ i j c d, incA D (S.gram⁻¹ i j) * cA D (y c j) * incA D (T.gram c d) * x d i = 0`. Introduce `i j c d`. Rewrite using `[← hy c j, ← hx d i, map_mul]`. Take the linear combination `(incA D (S.gram⁻¹ i j) * cA D (y c j) * incA D (T.gram c d) * x d i) * hab`. Simplify using `[symplO, hO, hz]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules.
 -/
 theorem symplO_orth {a b : AE D} (hab : a * cA D b = 0) {x y : WO S T} (hx : IsHalf a x) (hy : IsHalf b y) :
     symplO S T x y = 0 := by
@@ -45,31 +45,31 @@ theorem symplO_orth {a b : AE D} (hab : a * cA D b = 0) {x y : WO S T} (hx : IsH
   simp [symplO, hO, hz]
 
 /- English proof (translation)
-The claim follows from `map_sum (AddMonoidHom.mk' (fun y => symplO S T x y) (fun y y' => symplO_add_right S T x y y')) y s`.
+A detailed English derivation is pending.
 -/
 theorem symplO_sum_right {ι : Type*} (x : WO S T) (s : Finset ι) (y : ι → WO S T) :
     symplO S T x (∑ i ∈ s, y i) = ∑ i ∈ s, symplO S T x (y i) :=
   map_sum (AddMonoidHom.mk' (fun y => symplO S T x y) (fun y y' => symplO_add_right S T x y y')) y s
 
 /- English proof (translation)
-Use function extensionality and compare the values at `w`. Simplify using `[heisO, symplOH, symplO_zero_right]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem heisO_zero (f : WO S T → ℂ) : heisO ψ S T 0 f = f := by
   funext w
   simp [heisO, symplOH, symplO_zero_right]
 
 /- English proof (translation)
-Establish `hhalf : ∀ i ∈ P, ∀ u : WO S T, IsHalf (es i) (u.map (fun a => es i * a))`. Introduce `i hi u k l`. Simplify using `only [Matrix.map_apply]`. Rewrite using `[← mul_assoc, hes i hi]`. Establish `key : ∀ s : Finset ι, s ⊆ P → ∀ u ∈ Λ, heisO ψ S T (∑ i ∈ s, u.map (fun a => es i * a)) f₀ = f₀`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `s`. Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Introduce `_ u _`. Rewrite using `[Finset.sum_empty, heisO_zero]`. Introduce `i s his ih hsub u hu`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hiP : i ∈ P` using `hsub (Finset.mem_insert_self _ _)`. Establish `hs' : s ⊆ P` using `fun x hx => hsub (Finset.mem_insert_of_mem hx)`. Rewrite using `[Finset.sum_insert his]`. Establish `hsym : symplOH S T (u.map (fun a => es i * a)) (∑ j ∈ s, u.map (fun a => es j * a)) = 0`. Rewrite using `[symplOH, symplO_sum_right, Finset.sum_eq_zero, mul_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `j hj`. Conclude with `symplO_orth S T (horth i hiP j (hs' hj) fun h => his (h ▸ hj)) (hhalf i hiP u) (hhalf j (hs' hj) u)`. Establish `h1` using `heisO_heisO ψ S T (u.map (fun a => es i * a)) (∑ j ∈ s, u.map (fun a => es j * a)) f₀`. Rewrite `h1` using `[hsym, AddChar.map_zero_eq_one, one_smul, ih hs' u hu, hvac i hiP _ (hΛ i hiP u hu) (hhalf i hiP u)]`. Conclude with `h1.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `u hu hue`. Establish `hdec : u = ∑ i ∈ P, u.map (fun a => es i * a)`. Use extensionality with `k l`. Rewrite using `[Matrix.sum_apply]`. Simplify using `only [Matrix.map_apply]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Finset.sum_mul, hue k l]`. Rewrite using `[hdec]`. Conclude with `key P subset_rfl u hu`.
+A detailed English derivation is pending.
 -/
 theorem vac_of_sum (Λ : AddSubgroup (WO S T)) (f₀ : WO S T → ℂ) {ι : Type*} (P : Finset ι) (es : ι → AE D)
     (hes : ∀ i ∈ P, es i * es i = es i)
@@ -110,19 +110,15 @@ theorem vac_of_sum (Λ : AddSubgroup (WO S T)) (f₀ : WO S T → ℂ) {ι : Typ
   exact key P subset_rfl u hu
 
 /- English proof (translation)
-Introduce `ψ hψ S T ΛS ΛT hS hT P e he f₀ hf₀ hlat`. Take `⟨hi, -, hP⟩` from `h ψ hψ S T ΛS ΛT hS hT`. Take `⟨hd2, hd3, hfin, hop⟩` from `hP P e he`. Take `⟨es, hes, hsum, horth⟩` from `hO P e he`. Establish `vacE : ∀ u ∈ latAll S T ΛS ΛT, IsHalf e u → heisO ψ S T u f₀ = f₀`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hsum]`. Conclude with `vac_of_sum ψ S T _ f₀ P es (fun i hi' => (hes i hi').1) (fun i hi' j hj hij => (horth i hi' j hj hij).2) (fun i hi' u hu => hi (es i) (hes i hi') u hu) (fun i hi' u hu hue => hlat.2 (es i) (hes i hi') u hu hue)`. Establish `vacC : ∀ u ∈ latAll S T ΛS ΛT, IsHalf (cA D e) u → heisO ψ S T u f₀ = f₀`. Rewrite using `[hsum, map_sum]`. Use `vac_of_sum ψ S T _ f₀ P (fun i => cA D (es i)) (fun i hi' => (isSplitIdem_cA (hes i hi')).1) (fun i hi' j hj hij => ?_) (fun i hi' u hu => hi _ (isSplitIdem_cA (hes i hi')) u hu) (fun i hi' u hu hue => hlat.2 _ (isSplitIdem_cA (hes i hi')) u hu hue)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_mul, (horth i hi' j hj hij).2, map_zero]`. Establish `hcc : cA D (cA D e) = e` using `cA_cA e`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Take `⟨Tm, hTm, -⟩` from `exists_placeModel ψ S T e he.2 (latAll S T ΛS ΛT) f₀ (fun x hx hxe y hy hye => (hd2 y hye).2 hy x hx hxe) (fun y hye h' => (hd2 y hye).1 h') (fun k hk => hfin k hk e (Or.inl rfl)) (fun k hk => hfin k hk (cA D e) (Or.inr rfl)) (fun x hx => hop e (Or.inl rfl) x hx) (fun y hy => hop …`. Conclude with `⟨Tm, hTm⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨Tm, hTm, -⟩` from `exists_placeModel ψ S T (cA D e) (cA_half_orth he.2) (latAll S T ΛS ΛT) f₀ (by`. Rewrite using `[hcc]`. Introduce `x hx hxe y hy hye`. Rewrite using `[symplO_swap S T y x]`. Conclude with `psi_neg_one ψ ((hd2 x hxe).2 hx y hy hye))`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use the proof step `(by`. Rewrite using `[hcc]`. Introduce `y hye h'`. Use `(hd3 y hye).1 fun y' hy' hy'e => ?_` and prove the remaining obligations. Use `psi_neg_one ψ (h' y' hy' hy'e)` as an intermediate fact.
-
-Rewrite using `[symplO_swap S T y y', neg_neg] at this)` and apply the resulting hypothesis. Use the proof step `(fun k hk => hfin k hk (cA D e) (Or.inr rfl))`. Use the proof step `(by rw [hcc]; exact fun k hk => hfin k hk e (Or.inl rfl))`. Use the proof step `(fun x hx => hop (cA D e) (Or.inr rfl) x hx)`. Use the proof step `(by rw [hcc]; exact fun y hy => hop e (Or.inl rfl) y hy)`.
-
-Use `vacC`. Use the proof step `(by rw [hcc]; exact vacE)`. Conclude with `⟨Tm, hTm⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem placeModelExistsSum_of (h : PlaceLatDual D) (hO : IdemSumOrth D) : PlaceModelExistsSum D := by
   intro ψ hψ S T ΛS ΛT hS hT P e he f₀ hf₀ hlat

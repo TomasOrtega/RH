@@ -11,13 +11,11 @@ section Field
 variable (G F B : Type*) [Group G] [Field F] [Field B] [Algebra F B] [MulSemiringAction G B]
 
 /- English proof (translation)
-Set `` to `IsFractionRing.mulSemiringAction G B (FractionRing B)`. Establish `hmap : ∀ (g : G) (b : B), g • algebraMap B (FractionRing B) b = algebraMap B (FractionRing B) (g • b)` using `fun g b => IsFractionRing.ringEquivOfRingEquiv_algebraMap _ b`. Establish `hinj` using `IsFractionRing.injective B (FractionRing B)`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨b, hb, rfl⟩ g`. Rewrite using `[hmap, hb g]`. Introduce `hy`. Take `⟨⟨a, s⟩, rfl⟩` from `IsLocalization.mk'_surjective (nonZeroDivisors B) y`. Establish `hs : (s : B) ≠ 0` using `nonZeroDivisors.ne_zero s.2`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e : IsLocalization.mk' (FractionRing B) a s = algebraMap B (FractionRing B) (a * (s : B)⁻¹)`. Rewrite using `[IsLocalization.mk'_eq_iff_eq_mul, ← map_mul, mul_assoc, inv_mul_cancel₀ hs, mul_one]`. Use `⟨a * (s : B)⁻¹, fun g => hinj ?_, e.symm⟩` and prove the remaining obligations. Rewrite using `[← hmap, ← e]`. Conclude with `hy g`.
-
-Use `isUnit_of_mem_span b hb _ := hb.isUnit`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isRegular_of_field : IsRegular G F B where
   image_fixedPoints := by
@@ -60,7 +58,7 @@ def DBK : Submodule K (B ⊗[F] V) where
 
 variable {G F K B ρ} in
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_DBK {x : B ⊗[F] V} : x ∈ DBK G F K B ρ ↔ ∀ g : G, baseChangeRep B ρ g x = x :=
   Iff.rfl
@@ -88,7 +86,7 @@ theorem coe_toInvariantRing (k : K) : (toInvariantRing G F K B k : B) = algebraM
 
 omit [Algebra F K] [IsScalarTower F K B] in
 /- English proof (translation)
-Use `⟨fun a b hab => (algebraMap K B).injective ?_, fun e => ?_⟩` and prove the remaining obligations. Simplify using `using congrArg Subtype.val hab`. Take `⟨k, hk⟩` from `hK e e.2`. Conclude with `⟨k, Subtype.ext hk⟩`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem toInvariantRing_bijective [Nontrivial B]
     (hK : ∀ b : B, (∀ g : G, g • b = b) → ∃ k : K, algebraMap K B k = b) :
@@ -99,9 +97,9 @@ theorem toInvariantRing_bijective [Nontrivial B]
     exact ⟨k, Subtype.ext hk⟩
 
 /- English proof (translation)
-Use extensionality with `b`. Prove the components needed by the constructor for the conclusion. Introduce `hb`. Take `⟨k, hk⟩` from `hK b hb`. Conclude with `⟨k, hk⟩`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce and unpack `⟨k, rfl⟩ g`. Conclude with `smul_algebraMap g k`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem invariantRing_eq_range
     (hK : ∀ b : B, (∀ g : G, g • b = b) → ∃ k : K, algebraMap K B k = b) :
@@ -115,9 +113,9 @@ theorem invariantRing_eq_range
     exact smul_algebraMap g k
 
 /- English proof (translation)
-Set `j : DBK G F K B ρ ≃+ DB B ρ` to `{ toFun := fun x => ⟨x, x.2⟩ invFun := fun x => ⟨x, x.2⟩ left_inv := fun _ => rfl right_inv := fun _ => rfl map_add' := fun _ _ => rfl }`. Use `rank_eq_of_equiv_equiv (toInvariantRing G F K B) j (toInvariantRing_bijective hK) ?_` and prove the remaining obligations. Introduce `k x`. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `k • (x : B ⊗[F] V) = ((toInvariantRing G F K B k : invariantRing G F B) : B) • (x : B ⊗[F] V)`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[coe_toInvariantRing, algebraMap_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem rank_DBK [Nontrivial B]
     (hK : ∀ b : B, (∀ g : G, g • b = b) → ∃ k : K, algebraMap K B k = b) :
@@ -136,7 +134,7 @@ theorem rank_DBK [Nontrivial B]
   rw [coe_toInvariantRing, algebraMap_smul]
 
 /- English proof (translation)
-Simplify using `only [Module.finrank, rank_DBK ρ hK]`.
+Simplify using the standard rewrite rules.
 -/
 theorem finrank_DBK [Nontrivial B]
     (hK : ∀ b : B, (∀ g : G, g • b = b) → ∃ k : K, algebraMap K B k = b) :
@@ -146,7 +144,7 @@ theorem finrank_DBK [Nontrivial B]
 variable [IsDomain B]
 
 /- English proof (translation)
-Set `` to `h.field`. Use `h.free ρ` as an intermediate fact. Use `h.finite ρ` as an intermediate fact. Establish `: Module.Free K (DBK G F K B ρ)` using `Module.Free.of_divisionRing K (DBK G F K B ρ)`. Conclude with `Module.rank_lt_aleph0_iff.1 (by rw [rank_DBK ρ hK]; exact Module.rank_lt_aleph0_iff.2 ‹_›)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem IsRegular.finiteDimensional_DBK (h : IsRegular G F B)
     (hK : ∀ b : B, (∀ g : G, g • b = b) → ∃ k : K, algebraMap K B k = b) [FiniteDimensional F V] :
@@ -158,7 +156,7 @@ theorem IsRegular.finiteDimensional_DBK (h : IsRegular G F B)
   exact Module.rank_lt_aleph0_iff.1 (by rw [rank_DBK ρ hK]; exact Module.rank_lt_aleph0_iff.2 ‹_›)
 
 /- English proof (translation)
-Rewrite using `[finrank_DBK ρ hK]`. Conclude with `h.finrank_le ρ`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsRegular.finrank_DBK_le (h : IsRegular G F B)
     (hK : ∀ b : B, (∀ g : G, g • b = b) → ∃ k : K, algebraMap K B k = b) [FiniteDimensional F V] :
@@ -167,7 +165,7 @@ theorem IsRegular.finrank_DBK_le (h : IsRegular G F B)
   exact h.finrank_le ρ
 
 /- English proof (translation)
-Rewrite using `[finrank_DBK ρ hK]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem isAdmissible_iff_finrank_DBK
     (hK : ∀ b : B, (∀ g : G, g • b = b) → ∃ k : K, algebraMap K B k = b) :

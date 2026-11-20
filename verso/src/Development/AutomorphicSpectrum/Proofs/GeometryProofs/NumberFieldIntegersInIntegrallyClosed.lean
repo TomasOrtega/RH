@@ -7,7 +7,7 @@ open CategoryTheory AlgebraicGeometry NumberField MvPolynomial GlobalTheory.Comp
 namespace GlobalTheory.CompanionTheory.Ar.IntEmb
 
 /- English proof (translation)
-Establish `hℤ : IsIntegral ℤ (σ (a : E))` using `IsIntegral.map_of_comp_eq (Int.castRingHom ℤ) σ (RingHom.ext_int _ _) (NumberField.RingOfIntegers.isIntegral_coe a)`. Establish `hA : IsIntegral A (σ (a : E))` using `IsIntegral.map_of_comp_eq (Int.castRingHom A) (RingHom.id Ω) (RingHom.ext_int _ _) hℤ`. Take `⟨y, hy⟩` from `(IsIntegrallyClosed.isIntegral_iff (R := A) (K := Ω)).mp hA`. Conclude with `⟨y, hy⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem ringOfIntegers_embedding_mem_range
     (A Ω : Type) [CommRing A] [IsDomain A] [Field Ω] [Algebra A Ω] [IsFractionRing A Ω]

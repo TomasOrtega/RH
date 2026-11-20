@@ -15,9 +15,9 @@ variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
   {w : ((Σ k, ι k) → ℂ) → ℝ}
 
 /- English proof (translation)
-Use `Filter.eventually_all.2 fun j => ?_` and prove the remaining obligations. Establish `hc : IsCompact (closure (S.B.mid j))` using `isClosed_closure.isCompact`. Establish `himg : IsCompact (S.B.chart j '' closure (S.B.mid j))` using `hc.image_of_continuousOn ((S.B.chart j).continuousOn.mono (S.B.closure_mid j))`. Establish `hsub : S.B.chart j '' closure (S.B.mid j) ⊆ (S.B.chart j).target`. Introduce and unpack `_ ⟨x, hx, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `(S.B.chart j).map_source (S.B.closure_mid j hx)`. Take `⟨δ, hδ, hδs⟩` from `himg.exists_cthickening_subset_open (S.B.chart j).open_target hsub`. Use `filter_upwards [Ioo_mem_nhdsGT hδ] with t ht x hx`. Conclude with `(closedBall_subset_cthickening (Set.mem_image_of_mem _ hx) t).trans ((cthickening_mono ht.2.le _).trans hδs)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem BoundedRegularisationSetting.eventually_closedBall_subset (S : BoundedRegularisationSetting M Xo a w) :
     ∀ᶠ t in 𝓝[>] (0 : ℝ), ∀ j, ∀ x ∈ closure (S.B.mid j),
@@ -35,7 +35,7 @@ theorem BoundedRegularisationSetting.eventually_closedBall_subset (S : BoundedRe
     ((cthickening_mono ht.2.le _).trans hδs)
 
 /- English proof (translation)
-Use `filter_upwards [self_mem_nhdsWithin, S.eventually_closedBall_subset, hS.compare] with t ht hball hcmp`. Establish `hε : 0 < S.e1 t` using `lt_of_lt_of_le ht (S.e1_ge t ht)`. Conclude with `GroundTheory.Heights₂.Heights.Regular.BoundedGlue.proof M.Xc d M.atlas S.B S.ρ S.η S.Cη t (S.e1 t) S.cutoff ht hε hball hcmp`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem BoundedRegularisationSetting.eventually_chartLevi (S : BoundedRegularisationSetting M Xo a w) (hS : S.IsTied) :
     ∀ᶠ t in 𝓝[>] (0 : ℝ), M.atlas.Smooth (S.bregWeight t) ∧

@@ -7,11 +7,11 @@ open scoped TensorProduct
 namespace GlobalTheory.KeyFourth
 
 /- English proof (translation)
-Establish `: NeZero n` using `⟨hn.ne'⟩`. Establish `h0` using `Complex.isPrimitiveRoot_exp n hn.ne'`. Establish `h1` using `h0.map_of_injective (algebraMap ℂ R).injective`. Establish `h2` using `h1.pow_sub_pow_eq_prod_sub_mul x y hn`. Rewrite `h2` using `[h, sub_self]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨ζ, hζ, hz⟩` from `Finset.prod_eq_zero_iff.1 h2.symm`. Rewrite `hζ` using `[Polynomial.mem_nthRootsFinset hn]`. Take `⟨i, -, hi⟩` from `h1.eq_pow_of_pow_eq_one hζ`. Use `⟨Complex.exp (2 * Real.pi * Complex.I / n) ^ i, ?_⟩` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, map_pow, hi]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `sub_eq_zero.1 hz`.
+A detailed English derivation is pending.
 -/
 theorem exists_eq_smul_of_pow_eq_pow {R : Type*} [CommRing R] [IsDomain R] [Algebra ℂ R]
     {n : ℕ} (hn : 0 < n) {x y : R} (h : x ^ n = y ^ n) : ∃ z : ℂ, x = z • y := by
@@ -28,31 +28,29 @@ theorem exists_eq_smul_of_pow_eq_pow {R : Type*} [CommRing R] [IsDomain R] [Alge
   exact sub_eq_zero.1 hz
 
 /- English proof (translation)
-Introduce `K _ _ A _ _ _ n w C u hn hC hu hw`. Take `⟨f, hf⟩` from `Module.Projective.exists_dual_eq_one K (one_ne_zero : (1 : ℂ) ≠ 0)`. Set `T : ℂ ⊗[K] A →ₗ[K] A` to `(TensorProduct.lid K A).toLinearMap ∘ₗ LinearMap.rTensor A f`. Establish `hT : ∀ (c : ℂ) (a : A), T (c ⊗ₜ a) = f c • a` using `fun c a => by simp [T]`. Establish `hne : ∀ (c : ℂ) (a : A), c ≠ 0 → a ≠ 0 → c ⊗ₜ[K] a ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `c a hc ha h`. Establish `h1 : (1 : ℂ) ⊗ₜ[K] a = 0`. Use `congrArg (fun t : ℂ ⊗[K] A => c⁻¹ • t) h` as an intermediate fact. Simplify `this` using `[TensorProduct.smul_tmul', hc]`. Establish `h2` using `hT 1 a`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite `h2` using `[h1, map_zero, hf, one_smul]`. Conclude with `ha h2.symm`. Establish `hw0 : w ≠ 0`. Introduce and unpack `rfl`. Rewrite `hw` using `[zero_pow hn.ne']`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hne C u hC hu hw.symm`. Establish `hst : ∀ σ : ℂ ≃ₐ[K] ℂ, ∀ x ∈ Submodule.span ℂ {w}, σ.toLinearMap.rTensor A x ∈ Submodule.span ℂ {w}`. Introduce `σ x hx`. Take `⟨c, rfl⟩` from `Submodule.mem_span_singleton.1 hx`. Set `S : ℂ ⊗[K] A →ₐ[K] ℂ ⊗[K] A` to `Algebra.TensorProduct.map σ.toAlgHom (AlgHom.id K A)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hS : ∀ t, σ.toLinearMap.rTensor A t = S t`. Introduce `t`. Proceed by induction on `t with`. Consider the case `zero => simp`. Consider the case `tmul b v => simp [S]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Take `⟨μ, hμ⟩` from `IsAlgClosed.exists_pow_nat_eq (σ C / C) hn`. Establish `h1 : (S w) ^ n = (μ • w) ^ n`. Rewrite using `[← map_pow, smul_pow, hw, hμ, TensorProduct.smul_tmul', smul_eq_mul, div_mul_cancel₀ _ hC]`. Simplify using `[S]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨z, hz⟩` from `exists_eq_smul_of_pow_eq_pow hn h1`. Establish `h2 : c • w = (c ⊗ₜ[K] (1 : A)) * w`. Rewrite using `[Algebra.smul_def]`. Both sides reduce to the same expression. Establish `h3 : S (c ⊗ₜ[K] (1 : A)) * S w = σ c • S w`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Algebra.smul_def]`. Simplify using `[S]`. Rewrite using `[hS, h2, map_mul, h3, hz, smul_smul, smul_smul]`. Conclude with `Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self w)`. Take `⟨N, hN, -⟩` from `(GlobalTheory.GaloisDescent.complex_stable_iff_exists_baseChange _).1 hst`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hN0 : N ≠ ⊥`. Introduce and unpack `rfl`. Rewrite `hN` using `[Submodule.baseChange_bot, eq_comm, Submodule.span_singleton_eq_bot]`. Conclude with `hw0 hN`. Take `⟨b, hbN, hb0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hN0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb : (1 : ℂ) ⊗ₜ[K] b ∈ Submodule.span ℂ {w}` using `hN ▸ Submodule.tmul_mem_baseChange_of_mem 1 hbN`. Take `⟨l, hl⟩` from `Submodule.mem_span_singleton.1 hb`. Establish `hpow : (1 : ℂ) ⊗ₜ[K] (b ^ n) = (l ^ n * C) ⊗ₜ[K] u`. Use `congrArg (· ^ n) hl` as an intermediate fact. Simplify using `only [smul_pow, hw, Algebra.TensorProduct.tmul_pow, one_pow, TensorProduct.smul_tmul', smul_eq_mul] at this`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this.symm`. Establish `hbn : b ^ n ≠ 0`. Introduce `h`. Establish `h1 : ((1 : ℂ) ⊗ₜ[K] b) ^ n = 0`. Rewrite using `[Algebra.TensorProduct.tmul_pow, h, TensorProduct.tmul_zero]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hne 1 b one_ne_zero hb0 (pow_eq_zero_iff hn.ne' |>.1 h1)`. Establish `h4` using `congrArg T hpow`. Rewrite `h4` using `[hT, hT, hf, one_smul]`. Establish `h5 : f (l ^ n * C) ≠ 0`. Introduce `h`.
-
-Rewrite `h4` using `[h, zero_smul]`. Conclude with `hbn h4`. Conclude with `⟨(f (l ^ n * C))⁻¹, b, inv_ne_zero h5, by rw [h4, smul_smul, inv_mul_cancel₀ h5, one_smul]⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_eq_smul_pow_of_pow_eq_tmul :
     ∀ (K : Type) [Field K] [Algebra K ℂ] (A : Type) [CommRing A] [Algebra K A]

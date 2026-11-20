@@ -11,7 +11,7 @@ open scoped NumberField.AdeleRing ValuativeRel
 namespace GlobalTheory.CompanionTheory.AdelicIntegral
 
 /- English proof (translation)
-Introduce `h`. Take `⟨S, hS⟩` from `GroundTheory.Automorphic.Reduction.exists_finite_forall_mem_integralGL (isCompact_singleton (x := h))`. Conclude with `⟨S, fun v hv => hS h rfl v hv⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_finset_finAt_mem_integralGL :
     ∀ h : Ad3.R.G2, ∃ S : Finset Ad3.Pl, ∀ v ∉ S,

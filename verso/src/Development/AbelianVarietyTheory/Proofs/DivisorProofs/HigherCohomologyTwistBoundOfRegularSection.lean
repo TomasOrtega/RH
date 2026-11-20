@@ -19,9 +19,9 @@ open GlobalTheory GlobalTheory.QCoh GlobalTheory.CechPic GlobalTheory.Twist
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `k _ _ X _ hX d L hL hE F _ hF p hp s hs i hi`. Establish `: AlgebraicGeometry.IsNoetherian X` using `isNoetherian_of_isProjOver hX`. Establish `hcut : suppDim (cut F (isLB_lbPow hL p) s) ≤ d` using `suppDim_cut_le F (isLB_lbPow hL p) s hF`. Take `⟨C, hC⟩` from `hE (cut F (isLB_lbPow hL p) s) hcut i hi`. Use `sum_bound_of_step_diff (fun m => hdim k (twist F (lbPow L m)) i) d p C hp fun m => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hcls : cls (lbPow L (m + p)) (isLB_lbPow hL (m + p)) = cls (lbPow L m) (isLB_lbPow hL m) + cls (lbPow L p) (isLB_lbPow hL p)`. Rewrite using `[cls_lbPow hL (m + p), cls_lbPow hL m, cls_lbPow hL p, add_smul]`. Establish `key` using `(GlobalTheory.T.sheafCohomologyDim_twist_cut_inequalities k X hX F (lbPow L p) (lbPow L (m + p)) (lbPow L m) (isLB_lbPow hL p) (isLB_lbPow hL (m + p)) (isLB_lbPow hL m) s hs hcls).1 i`. Establish `hb` using `hC (m + p)`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem hdim_twist_pow_le_of_regular_section : ∀ (k : Type) [Field k] [Infinite k] (X : Scheme.{0}) [Algebra k Γ(X, ⊤)], IsProjOver (strHom k X) → ∀ (d : ℕ) (L : LB X) (hL : L.IsLB), (∀ (E : X.Modules) [IsFiniteQC E], suppDim E ≤ (d : ℕ) → ∀ j, 0 < j → (∃ C : ℕ, ∀ m : ℕ, hdim k (twist E (lbPow L m)) j ≤ C * (d * (m + 1) ^ (d - 1)))) → ∀ (F : X.Modules) [IsFiniteQC F], suppDim F ≤ (d + 1 : ℕ) → ∀ p : ℕ, 1 ≤ p → ∀ s : (lbPow L p).Sec, Mono (cutHom F (isLB_lbPow hL p) s) → ∀ i, 0 < i → (∃ C : ℕ, ∀ m : ℕ, hdim k (twist F (lbPow L m)) i ≤ C * ((d + 1) * (m + 1) ^ d)) := by
   intro k _ _ X _ hX d L hL hE F _ hF p hp s hs i hi

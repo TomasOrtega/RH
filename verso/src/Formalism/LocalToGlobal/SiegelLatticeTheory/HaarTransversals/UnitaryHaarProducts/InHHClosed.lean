@@ -12,7 +12,7 @@ open Formalism.BasicNotions Formalism.MainNotions.S Formalism.L2.SG.HidaSetting 
 namespace Formalism.L2.SG.Pf
 
 /- English proof (translation)
-Introduce `D X Y u hKL hW`. Conclude with `foldOK_of_steps X u Y.hK hKL (foldReadyX_holds X) (hS D X u) (hN D X u) (hL D X u) (hP D X u) hW (sratFund_holds X u) (Formalism.L2.SG.Closed.MultPoly_holds X) (hU D X u Y.hK)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem foldOKC_holds_of (hS : ∀ (D : D7) (X : HidaSetting D) (u : D.what₂.Word), KsetSplit X u)
     (hN : ∀ (D : D7) (X : HidaSetting D) (u : D.what₂.Word), UnipotentConjugateInLevel X u)
@@ -25,7 +25,7 @@ theorem foldOKC_holds_of (hS : ∀ (D : D7) (X : HidaSetting D) (u : D.what₂.W
     (sratFund_holds X u) (Formalism.L2.SG.Closed.MultPoly_holds X) (hU D X u Y.hK)
 
 /- English proof (translation)
-Introduce `D X Y u hI hOK`. Establish `hR` using `foldReadyX_holds X`. Establish `hKL` using `Formalism.L2.SG.Closed.level_subgroup_properties X`. Conclude with `inHH_of X u Y.hK hR (@Formalism.L2.SG.Closed.fold_L2_first X.B.I.GA _ _ _ hR.1 hR.2.1 hR.2.2.1 _ hR.2.2.2.1 (X.B.I.muA X.B.μf) (@muA_isHaar' X.B.I X.B.μf X.B.sf X.B.haar)) (@Formalism.L2.SG.Closed.fold_L2_second X.B.I.GA _ _ _ hR.1 hR.2.1 hR.2.2.1 _ hR.2.2.2.1 (X.B.I.muA X.B.μf) …`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem inHHC_holds_of (hS : ∀ (D : D7) (X : HidaSetting D) (u : D.what₂.Word), KsetSplit X u)
     (hN : ∀ (D : D7) (X : HidaSetting D) (u : D.what₂.Word), UnipotentConjugateInLevel X u)
@@ -49,7 +49,7 @@ theorem inHHC_holds_of (hS : ∀ (D : D7) (X : HidaSetting D) (u : D.what₂.Wor
     hKL (level_subgroup_measurable X Y.hK hKL)
 
 /- English proof (translation)
-The claim follows from `inHHC_holds_of hS hN hL hP (fun _ X => fundBridge_holds X) (fun _ X u hK => pserMeas_holds X u hK) hRph (fun _ X => regular_fixes_invariant_L2 X) (fun _ X => idempotent_fixes_invariant_L2 X)`.
+A detailed English derivation is pending.
 -/
 theorem inHHC_holds_of' (hS : ∀ (D : D7) (X : HidaSetting D) (u : D.what₂.Word), KsetSplit X u)
     (hN : ∀ (D : D7) (X : HidaSetting D) (u : D.what₂.Word), UnipotentConjugateInLevel X u)
@@ -61,7 +61,7 @@ theorem inHHC_holds_of' (hS : ∀ (D : D7) (X : HidaSetting D) (u : D.what₂.Wo
     (fun _ X => regular_fixes_invariant_L2 X) (fun _ X => idempotent_fixes_invariant_L2 X)
 
 /- English proof (translation)
-The claim follows from `inHHC_holds_of' hS hN hL hP fun _ X u hK => pserRph_holds X u hK`.
+A detailed English derivation is pending.
 -/
 theorem inHHC_holds_of'' (hS : ∀ (D : D7) (X : HidaSetting D) (u : D.what₂.Word), KsetSplit X u)
     (hN : ∀ (D : D7) (X : HidaSetting D) (u : D.what₂.Word), UnipotentConjugateInLevel X u)
@@ -71,7 +71,7 @@ theorem inHHC_holds_of'' (hS : ∀ (D : D7) (X : HidaSetting D) (u : D.what₂.W
   inHHC_holds_of' hS hN hL hP fun _ X u hK => pserRph_holds X u hK
 
 /- English proof (translation)
-The claim follows from `inHHC_holds_of'' (fun _ X u => ksetSplit_holds X u) (fun _ X u => unipotent_in_level X u) (fun _ X u => ratLevi_holds X u) (fun _ X u => psiProd_holds X u)`.
+A detailed English derivation is pending.
 -/
 theorem inHHC_holds : Formalism.L2.SG.Full.InHHC :=
   inHHC_holds_of'' (fun _ X u => ksetSplit_holds X u) (fun _ X u => unipotent_in_level X u)

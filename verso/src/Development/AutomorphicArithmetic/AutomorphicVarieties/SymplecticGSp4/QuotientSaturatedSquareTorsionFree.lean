@@ -25,11 +25,11 @@ private theorem m1bLin_apply (φ : A →ₐ[O] MvPowerSeries τ (FractionRing O)
     powerSeriesCoefficientLinear φ i f = MvPowerSeries.coeff (Finsupp.single i 1) (φ f) := rfl
 
 /- English proof (translation)
-Establish `h2 : ∀ f ∈ RingHom.ker x ^ 2, powerSeriesCoefficientLinear φ i f = 0`. Introduce `f hf`. Rewrite `hf` using `[sq]`. Use `Submodule.mul_induction_on hf (fun a ha b hb => ?_) (fun a b ha hb => by rw [map_add, ha, hb, add_zero])` and prove the remaining obligations. Establish `ha' : MvPowerSeries.coeff 0 (φ a) = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[MvPowerSeries.coeff_zero_eq_constantCoeff_apply, h.const, show x a = 0 from ha, map_zero]`. Establish `hb' : MvPowerSeries.coeff 0 (φ b) = 0`. Rewrite using `[MvPowerSeries.coeff_zero_eq_constantCoeff_apply, h.const, show x b = 0 from hb, map_zero]`. Rewrite using `[m1bLin_apply, map_mul, MvPowerSeries.coeff_mul, Finsupp.antidiagonal_single]`. Simplify using `[Finset.Nat.antidiagonal_succ, ha', hb']`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce and unpack `f ⟨c, hc, hf⟩`. Use `h2 _ hf` as an intermediate fact. Rewrite `this` using `[map_smul]`. Conclude with `(smul_eq_zero.1 this).resolve_left hc`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem m1bLin_sat (h : IsChart 𝒜 x wt φ) (i : τ) : ∀ f ∈ satSq x, powerSeriesCoefficientLinear φ i f = 0 := by
   classical
@@ -49,18 +49,18 @@ private theorem m1bLin_sat (h : IsChart 𝒜 x wt φ) (i : τ) : ∀ f ∈ satSq
   exact (smul_eq_zero.1 this).resolve_left hc
 
 /- English proof (translation)
-The claim follows from `h.graded j f hf _ (by simpa [Finsupp.weight_single] using hij)`.
+A detailed English derivation is pending.
 -/
 private theorem m1bLin_wt (h : IsChart 𝒜 x wt φ) (i : τ) {j : X} (hij : wt i ≠ j)
     {f : A} (hf : f ∈ 𝒜 j) : powerSeriesCoefficientLinear φ i f = 0 :=
   h.graded j f hf _ (by simpa [Finsupp.weight_single] using hij)
 
 /- English proof (translation)
-Rewrite using `[Nat.card_eq_fintype_card]`. Set `ψ : cotLat x 𝒜 j →ₗ[O] ({i // wt i = j} → FractionRing O)` to `LinearMap.pi fun i => ((satSq x).liftQ (powerSeriesCoefficientLinear φ i.1) (m1bLin_sat h i.1)) ∘ₗ (cotLat x 𝒜 j).subtype`. Establish `hinj : Function.Injective ψ`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce and unpack `⟨_, f, hf, rfl⟩ h0`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use `(Submodule.Quotient.mk_eq_zero _).2 (h.inj f hf.2 fun i => ?_)` and prove the remaining obligations. Distinguish the cases in `hi : wt i = j`. Conclude with `congrFun h0 ⟨i, hi⟩`. Conclude with `m1bLin_wt h i hi hf.1`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h1` using `LinearMap.rank_le_of_injective ψ hinj`. Rewrite `h1` using `[← IsLocalization.rank_eq (FractionRing O) (nonZeroDivisors O) le_rfl (N := {i // wt i = j} → FractionRing O), rank_fun']`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 private theorem cotangent_rank_le_weight_count [Fintype τ] (h : IsChart 𝒜 x wt φ) (j : X) :
     Module.rank O (cotLat x 𝒜 j) ≤ (Nat.card {i // wt i = j} : ℕ) := by
@@ -81,7 +81,7 @@ private theorem cotangent_rank_le_weight_count [Fintype τ] (h : IsChart 𝒜 x 
     rank_fun'] at h1
 
 /- English proof (translation)
-Take `⟨f, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`. Rewrite `h` using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`. Take `⟨d, hd, h⟩` from `h`. Rewrite using `[Submodule.Quotient.mk_eq_zero]`. Conclude with `⟨d * c, mul_ne_zero hd hc, by rwa [mul_smul]⟩`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 private theorem quotient_saturated_square_torsion_free (q : A ⧸ satSq x) (c : O) (hc : c ≠ 0) (h : c • q = 0) : q = 0 := by
   obtain ⟨f, rfl⟩ := Submodule.Quotient.mk_surjective _ q
@@ -92,7 +92,7 @@ private theorem quotient_saturated_square_torsion_free (q : A ⧸ satSq x) (c : 
 
 omit [AddCommGroup X] in
 /- English proof (translation)
-Introduce `p hp`. Take `⟨c, hc, h⟩` from `rank_eq_zero_iff.1 h ⟨p, hp⟩`. Conclude with `⟨c, hc, by rw [show c • p = 0 from congrArg Subtype.val h]; exact zero_mem _⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem spans_cotangent_of_rank_zero (j : X) (h : Module.rank O (cotLat x 𝒜 j) = 0) {κ : Type} (F : κ → A) :
     SpansCot x 𝒜 j F := by
@@ -102,23 +102,23 @@ private theorem spans_cotangent_of_rank_zero (j : X) (h : Module.rank O (cotLat 
 
 omit [AddCommGroup X] in
 /- English proof (translation)
-Establish `hsat : satSq x ≤ (satSq x').comap ι.toLinearMap`. Introduce and unpack `a ⟨c, hc, ha⟩`. Use `⟨c, hc, ?_⟩` and prove the remaining obligations. Establish `hle : RingHom.ker x ^ 2 ≤ (RingHom.ker x' ^ 2).comap (ι : A →+* A')` using `le_trans (Ideal.pow_right_mono (fun y hy => by show x' (ι y) = 0`. Rewrite using `[hx]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hy) 2) (Ideal.le_comap_pow _ 2)`. Use `hle ha` as an intermediate fact. Rewrite `this` using `[Ideal.mem_comap, RingHom.coe_coe, map_smul]`. Conclude with `this`. Set `P : (A ⧸ satSq x) →ₗ[O] (A' ⧸ satSq x')` to `Submodule.mapQ _ _ ι.toLinearMap hsat`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hP : ∀ a, P ((satSq x).mkQ a) = (satSq x').mkQ (ι a)` using `fun a => rfl`. Establish `hPL : ∀ q ∈ cotLat x 𝒜 j, P q ∈ cotLat x' 𝒜' j'`. Introduce and unpack `_ ⟨f, ⟨hf, hf0⟩, rfl⟩`. Conclude with `⟨ι f, ⟨hmap f hf, (hx f).trans hf0⟩, rfl⟩`. Set `p : cotLat x 𝒜 j →ₗ[O] cotLat x' 𝒜' j'` to `P.restrict hPL`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hp : Function.Surjective p`. Introduce and unpack `⟨_, f', ⟨hf, hf0⟩, rfl⟩`. Take `⟨f, hf1, rfl⟩` from `hsurj f' hf`. Conclude with `⟨⟨_, f, ⟨hf1, (hx f).symm.trans hf0⟩, rfl⟩, rfl⟩`. Establish `hr` using `LinearMap.rank_eq_of_surjective hp`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hk : Module.rank O (LinearMap.ker p) = 0`. Rewrite `h1` using `[hr, h2]`. Assume the negation of the conclusion as `hne`. Establish `h3 : (n : Cardinal) + 1 ≤ n` using `le_trans (by gcongr; exact Cardinal.one_le_iff_ne_zero.2 hne) h1`. Normalize the coercions in `at h3`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Put the expressions in a common number system so they can be compared. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Establish `hinj : ∀ q ∈ cotLat x 𝒜 j, P q = 0 → q = 0` using `fun q hq h0 => by`. Take `⟨c, hc, h⟩` from `rank_eq_zero_iff.1 hk ⟨⟨q, hq⟩, Subtype.ext h0⟩`. Conclude with `quotient_saturated_square_torsion_free q c hc (congrArg (fun z => z.1.1) h)`. Establish `hsp : cotSpan x' (fun i => ι (F i)) = (cotSpan x F).map P`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[cotSpan, cotSpan, Submodule.map_span, ← Set.range_comp]`. Both sides reduce to the same expression. Establish `hle : cotSpan x F ≤ cotLat x 𝒜 j`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨i, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨F i, hF i, rfl⟩`. Introduce `q hq`. Take `⟨c, hc, h⟩` from `hs _ (hPL q hq)`. Rewrite `h` using `[hsp]`. Take `⟨s, hs, h⟩` from `h`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨c, hc, ?_⟩` and prove the remaining obligations. Use `hinj (c • q - s) (sub_mem (Submodule.smul_mem _ _ hq) (hle hs)) (by rw [map_sub, map_smul, h, sub_self])` as an intermediate fact. Rewrite using `[sub_eq_zero.1 this]`. Conclude with `hs`.
+A detailed English derivation is pending.
 -/
 private theorem spans_cotangent_transfer_equal_rank {A' X' : Type} [CommRing A'] [Algebra O A'] {𝒜' : X' → Submodule O A'}
     {x' : A' →ₐ[O] O} (ι : A →ₐ[O] A') (hx : ∀ a, x' (ι a) = x a) {j : X} {j' : X'}
@@ -175,7 +175,7 @@ private theorem spans_cotangent_transfer_equal_rank {A' X' : Type} [CommRing A']
 end
 
 /- English proof (translation)
-Take `⟨g, hg, rfl⟩` from `hf`. Use `hg 0 (by simpa using hj.symm)` as an intermediate fact. Conclude with `(W.origin_π h g).trans (by simpa using this)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem origin_nonzero_weight_eq_zero {O X R : Type} [CommRing O] [AddCommGroup X] [CommRing R] [Algebra O R] (W : WPres O X R)
     (h : W.HasOrigin) {j : X} (hj : j ≠ 0) {f : R} (hf : f ∈ W.part j) : W.origin h f = 0 := by
@@ -188,17 +188,17 @@ section
 variable {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} {D : Raw Ω c}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun i => origin_nonzero_weight_eq_zero _ _ (by decide) (M.hF i), fun i => origin_nonzero_weight_eq_zero _ _ (by decide) (M.hE i)⟩`.
+Supply the required witnesses or components.
 -/
 private theorem origin_generators_eq_zero (M : Model D) : (∀ i, M.W.origin M.org (M.F i) = 0) ∧ (∀ i, M.W.origin M.org (M.E i) = 0) :=
   ⟨fun i => origin_nonzero_weight_eq_zero _ _ (by decide) (M.hF i), fun i => origin_nonzero_weight_eq_zero _ _ (by decide) (M.hE i)⟩
 
 /- English proof (translation)
-Establish `hk : ∀ a ∈ RingHom.ker M.π, y a = 0`. Rewrite using `[M.ker]`. Introduce `a ha`. Establish `: Ideal.span (Set.range M.F ∪ Set.range M.E ∪ Set.range M.Z) ≤ RingHom.ker y`. Use `Ideal.span_le.2 ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ((⟨i, rfl⟩ | ⟨i, rfl⟩) | ⟨i, rfl⟩)`. Use `exacts [hF i, hE i, hZ i]`. Conclude with `this ha`. Use `⟨(Ideal.Quotient.liftₐ (RingHom.ker M.π) y hk).comp (Ideal.quotientKerAlgEquivOfSurjective M.surj).symm.toAlgHom, fun f => ?_⟩` and prove the remaining obligations. Establish `: (Ideal.quotientKerAlgEquivOfSurjective M.surj).symm (M.π f) = Ideal.Quotient.mk _ f`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[AlgEquiv.symm_apply_eq]`. Both sides reduce to the same expression. Simplify using `only [AlgHom.comp_apply, AlgEquiv.coe_algHom]`. Use `erw [this]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem factor_through_quotient_by_generators (M : Model D) {K : Type} [CommRing K] [Algebra c.O K] (y : M.R →ₐ[c.O] K)
     (hF : ∀ i, y (M.F i) = 0) (hE : ∀ i, y (M.E i) = 0) (hZ : ∀ i, y (M.Z i) = 0) :
@@ -220,15 +220,15 @@ private theorem factor_through_quotient_by_generators (M : Model D) {K : Type} [
   rfl
 
 /- English proof (translation)
-Use `haveI : IsCO c.O (DualNumber c.O) := co_sqz c.O c.O c.O fun _ => rfl`. Take `⟨y, hy⟩` from `(der_hom c.O M.R c.O c.O (M.W.origin M.org) δ).1 ⟨δ, hδ, rfl⟩`. Take `⟨y0, hy0⟩` from `(der_hom c.O M.R c.O c.O (M.W.origin M.org) (0 : M.R →ₗ[c.O] c.O)).1 ⟨0, zero_mem _, rfl⟩`. Take `⟨y', hy'⟩` from `factor_through_quotient_by_generators M (K := DualNumber c.O) y (fun i => TrivSqZeroExt.ext ((hy _).1.trans ((origin_generators_eq_zero M).1 i)) ((hy _).2.trans (hF i))) (fun i => TrivSqZeroExt.ext ((hy _).1.trans ((origin_generators_eq_zero M).2 i)) ((hy _).2.trans (hE i))) (fun …`. Take `⟨y0', hy0'⟩` from `factor_through_quotient_by_generators M (K := DualNumber c.O) y0 (fun i => TrivSqZeroExt.ext ((hy0 _).1.trans ((origin_generators_eq_zero M).1 i)) (hy0 _).2) (fun i => TrivSqZeroExt.ext ((hy0 _).1.trans ((origin_generators_eq_zero M).2 i)) (hy0 _).2) (fun i => TrivSqZeroExt.ext ( …`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `ht` using `tanGlob D hD hSo (mapRep (y' : M.S →+* DualNumber c.O) M.ru.hom) ⟨M.S, _, _, _, M.ru, y', M.pt, rfl⟩ (fun g i j => by`. Take `⟨f, -, hf⟩` from `M.hom g i j`. Use `show (y' (M.ru.hom g i j)).fst = _`. Rewrite using `[← M.at0 g i j f hf, ← hf, hy', (hy f).1]) w hw (fun g i j hij => by`. Take `⟨f, hf1, hf⟩` from `M.hom g i j`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `show (y' (M.ru.hom g i j)).snd = _`. Rewrite using `[← hf, hy', (hy f).2]`. Conclude with `hwt _ hij f hf1)`. Establish `he : y' = y0'`. Use `M.gen _ y' y0' (Lift.ext (MonoidHom.ext fun g => Matrix.ext fun i j => ?_))` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[Lift.map_hom, Lift.map_hom]`. Establish `h1 : (y' (M.ru.hom g i j)).snd = 0` using `ht g i j`. Take `⟨f, -, hf⟩` from `M.hom g i j`. Rewrite `h1`, the goal using `[← hf]`. Use `TrivSqZeroExt.ext ?_ ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. By extensionality, compare the relevant components.
 
-Rewrite using `[hy', hy0', (hy f).1, (hy0 f).1]`. Rewrite using `[h1, hy0', (hy0 f).2]`. Both sides reduce to the same expression. Use extensionality with `f`. Rewrite using `[← (hy f).2, ← hy', he, hy0', (hy0 f).2]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem derivation_zero_of_killing_generators (hD : D.Good) (hSo : SoV Ω l) (M : Model D) (w : ℤ × ℤ) (hw : w = -wPs ∨ w = 0)
     (δ : M.R →ₗ[c.O] c.O) (hδ : δ ∈ PtDer (M.W.origin M.org) c.O) (hwt : HasWt M.W.part w δ)
@@ -266,9 +266,9 @@ private theorem derivation_zero_of_killing_generators (hD : D.Good) (hSo : SoV �
   rw [← (hy f).2, ← hy', he, hy0', (hy0 f).2]
 
 /- English proof (translation)
-Use `haveI := c.dvr`. Use `spans_of_der c.O M.W.A (ℤ × ℤ) M.W.gr _ (fun i hi f hf => origin_nonzero_weight_eq_zero M.W M.org hi hf) w ?_ κ F hF fun δ hδ hwt h0 => ?_` and prove the remaining obligations. Rewrite using `[cot_fg]`. Conclude with `Submodule.fg_span (Set.finite_range _)`. Take `⟨δ', ⟨h1, rfl⟩, -⟩` from `(der_extend c.O M.R (ℤ × ℤ) M.W M.org c.O).1 δ hδ`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hwt' : HasWt M.W.part w δ'` using `fun i hi f hf => hwt i hi ⟨f, M.W.part_le_A hf⟩ hf`. Take `⟨a, b, e⟩` from `h δ' hwt' h0`. Rewrite using `[derivation_zero_of_killing_generators hD hSo M w hw δ' h1 hwt' a b e, LinearMap.zero_comp]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem spans_cotangent_of_derivation_test (hD : D.Good) (hSo : SoV Ω l) (M : Model D) (w : ℤ × ℤ) (hw : w = -wPs ∨ w = 0)
     {κ : Type} (F : κ → M.W.A) (hF : ∀ i, F i ∈ M.W.gr w ∧ M.W.originA M.org (F i) = 0)
@@ -286,9 +286,7 @@ private theorem spans_cotangent_of_derivation_test (hD : D.Good) (hSo : SoV Ω l
     rw [derivation_zero_of_killing_generators hD hSo M w hw δ' h1 hwt' a b e, LinearMap.zero_comp]
 
 /- English proof (translation)
-Take `⟨τ, _, wt, φ, hc, hn⟩` from `M.smooth`. Use `haveI : Module.Finite c.O (cotLat (M.W.originA M.org) M.W.gr w) := by`. Rewrite using `[Module.Finite.iff_fg, cot_fg]`. Conclude with `Submodule.fg_span (Set.finite_range _)`. Rewrite using `[← Module.finrank_eq_rank, ← hn w]`.
-
-Conclude with `congrArg _ (chart_rank c.O M.W.A (ℤ × ℤ) M.W.gr _ τ wt φ hc w)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem cotangent_rank_at_weight_eq_dims (M : Model D) (w : ℤ × ℤ) :
     Module.rank c.O (cotLat (M.W.originA M.org) M.W.gr w) = (tDims M.r M.r' M.m w : ℕ) := by
@@ -300,7 +298,7 @@ private theorem cotangent_rank_at_weight_eq_dims (M : Model D) (w : ℤ × ℤ) 
   exact congrArg _ (chart_rank c.O M.W.A (ℤ × ℤ) M.W.gr _ τ wt φ hc w)
 
 /- English proof (translation)
-Introduce `f hf`. Conclude with `(iSup_le fun n => le_iSup M.W.part (0, n) : (⨆ n, M.aPart n) ≤ ⨆ j, M.W.part j) hf`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem model_algebra_le_weight_algebra (M : Model D) : M.A ≤ M.W.A := by
   intro f hf
@@ -309,13 +307,13 @@ private theorem model_algebra_le_weight_algebra (M : Model D) : M.A ≤ M.W.A :=
 end
 
 /- English proof (translation)
-Introduce `Ω _ _ _ l _ c D hD M _ hSo`. Take `⟨τ, _, wt, φ, hc, hn⟩` from `aSmooth D hD M`. Establish `hsurj : ∀ n : ℤ, ∀ f' ∈ M.W.gr (0, n), ∃ f ∈ M.gr n, Subalgebra.inclusion (model_algebra_le_weight_algebra M) f = f'` using `fun n f' hf => ⟨⟨f', M.aPart_le (n := n) hf⟩, hf, rfl⟩`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Use `spans_cotangent_transfer_equal_rank (𝒜' := M.W.gr) (x' := M.W.originA M.org) (j' := -wPs) (Subalgebra.inclusion (model_algebra_le_weight_algebra M)) (fun _ => rfl) (fun f hf => hf) (hsurj (-1)) M.r ?_ ?_ _ (fun i => ⟨M.hF i, (origin_generators_eq_zero M).1 i⟩) ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `cotangent_rank_le_weight_count hc (-1)` as an intermediate fact. Rewrite `this` using `[hn]`. Then use the resulting hypothesis. Rewrite using `[cotangent_rank_at_weight_eq_dims]`. Both sides reduce to the same expression. Conclude with `spans_cotangent_of_derivation_test hD hSo M _ (Or.inl rfl) _ (fun i => ⟨M.hF i, (origin_generators_eq_zero M).1 i⟩) fun δ hw h0 => ⟨h0, fun i => hw _ (by decide) _ (M.hE i), fun i => hw _ (by decide) _ (M.hZ i).1⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `spans_cotangent_of_rank_zero _ ?_ _` and prove the remaining obligations. Use `cotangent_rank_le_weight_count hc (-2)` as an intermediate fact. Rewrite `this` using `[hn]`. Conclude with `le_antisymm this zero_le`. Use `spans_cotangent_transfer_equal_rank (𝒜' := M.W.gr) (x' := M.W.originA M.org) (j' := 0) (Subalgebra.inclusion (model_algebra_le_weight_algebra M)) (fun _ => rfl) (fun f hf => hf) (hsurj 0) M.m ?_ ?_ _ M.hZ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `cotangent_rank_le_weight_count hc 0` as an intermediate fact. Rewrite `this` using `[hn]`. Then use the resulting hypothesis. Rewrite using `[cotangent_rank_at_weight_eq_dims]`. Both sides reduce to the same expression. Conclude with `spans_cotangent_of_derivation_test hD hSo M _ (Or.inr rfl) _ M.hZ fun δ hw h0 => ⟨fun i => hw _ (by decide) _ (M.hF i), fun i => hw _ (by decide) _ (M.hE i), h0⟩`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.GradeZeroInterpolatingElement.m1b :
     ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} (D : Raw Ω c), D.Good → ∀ M : Model D, ∀ [GradedAlgebra M.gr], SoV Ω l → SpansCot M.x0 M.gr (-1) M.eqns.F ∧ SpansCot M.x0 M.gr (-2) M.eqns.G ∧ SpansCot M.x0 M.gr 0 M.eqns.Z := by

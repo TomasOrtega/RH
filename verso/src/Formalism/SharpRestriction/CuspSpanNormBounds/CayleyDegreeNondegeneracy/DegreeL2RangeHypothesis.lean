@@ -24,11 +24,11 @@ def DegreeL2RangeHypothesis (D : D7) (large₂ : SizeData₂ D) (C' Cl Cg cb Cu 
         MemLp (fun g : Formalism.REAL.UJ (epsSH D.R) => (frob (umat g) : ℂ) * coefOn σ v w g) 2 (Formalism.REAL.muG (epsSH D.R))
 
 /- English proof (translation)
-Use `⟨fun a b hab => ?_, fun a => ?_⟩` and prove the remaining obligations. Establish `h1` using `h.1 hab`. Establish `h2` using `hg a b (ne_of_lt hab)`. Rewrite `h2` using `[abs_of_pos (by linarith)]`. Apply the tactic sequence `have ha : (0 : ℝ) ≤ (Pi.single s (1 : ℝ) : Fin n → ℝ) a := by by_cases e : a = s <;> simp [Pi.single_apply, e]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `have hb : (Pi.single s (1 : ℝ) : Fin n → ℝ) b ≤ 1 := by by_cases e : b = s <;> simp [Pi.single_apply, e]`. Simplify using `only [Pi.add_apply]`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨m, hm⟩` from `h.2 a`. Distinguish the cases in `e : a = s`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Substitute `e` using the available equality. Conclude with `⟨m + 1, by simp only [Pi.add_apply, Pi.single_eq_same]; push_cast; linarith⟩`. Conclude with `⟨m, by simp only [Pi.add_apply, Pi.single_eq_of_ne e, add_zero]; exact hm⟩`.
+Substitute using the available equality. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem deg_hc_add_single {n : ℕ} {μ : Fin n → ℝ} (h : IsHCParam μ) (hg : AllGaps μ 2) (s : Fin n) :
     IsHCParam (μ + Pi.single s 1) := by
@@ -47,17 +47,15 @@ theorem deg_hc_add_single {n : ℕ} {μ : Fin n → ℝ} (h : IsHCParam μ) (hg 
     · exact ⟨m, by simp only [Pi.add_apply, Pi.single_eq_of_ne e, add_zero]; exact hm⟩
 
 /- English proof (translation)
-Establish `hf0` using `deg_fdeg_pos hμ`. Use `deg_ind_up hμ _ ?_ ?_` and prove the remaining obligations. Use `⟨H0, inferInstance, inferInstance, inferInstance, σ0, v0, hv0, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[deg_epsI_empty, add_zero]`. Conclude with `hDS0`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[deg_epsI_empty, add_zero, div_self hd0, div_self hf0.ne']`. Introduce `I a ha h1 h2 ih`. Take `⟨H, i1, i2, i3, σ, v, hv, hDS, hr⟩` from `ih`. Take `⟨X, hX⟩` from `h18 n ε (μ + epsI I) H σ h1 hDS (fun s => deg_hc_add_single h1 (hgap I) s)`. Establish `haS : a ∈ X.Sm` using `(hX a).2 h2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hDSa` using `(X.ds a haS).2`. Use `haveI : Nontrivial (X.Hs a) := hDSa.2.1`. Take `⟨vs, hvs⟩` from `exists_ne (0 : X.Hs a)`. Establish `h9` using `h90 n ε (μ + epsI I) H σ X h1 hDS (hL2 I h1 H σ hDS) a haS v vs hv hvs`. Rewrite `h9` using `[← Formalism.QuantumDeterminants.fdegRatio n (μ + epsI I) a h1.1.injective (deg_hc_diff h1) h2.1.injective]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp1` using `deg_fdeg_pos h1`. Establish `hp2` using `deg_fdeg_pos h2`. Establish `hne : fdegOf (Formalism.REAL.muG ε) σ v ≠ 0`. Introduce `h0`. Rewrite `hr` using `[h0, zero_div]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(div_pos hp1 hf0).ne hr`. Use `⟨X.Hs a, inferInstance, inferInstance, inferInstance, X.σs a, vs, hvs, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[deg_epsI_insert I a ha, ← add_assoc]`. Conclude with `hDSa`. Rewrite using `[deg_epsI_insert I a ha, ← add_assoc]`.
-
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h9, hr]`. Use `_ = fdegHC (μ + epsI I + Pi.single a 1) / fdegHC μ := by field_simp`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem deg_chain {n : ℕ} {ε : Fin n → Bool} (D : D7) (h18 : OnePlaceEstimates.adm18 D) (h90 : OnePlaceEstimates.FormalDegreeRatioAlt D) {μ : Fin n → ℝ}
     (hμ : IsHCParam μ) (hgap : ∀ I : Finset (Fin n), AllGaps (μ + epsI I) 2)
@@ -103,7 +101,7 @@ theorem deg_chain {n : ℕ} {ε : Fin n → Bool} (D : D7) (h18 : OnePlaceEstima
         _ = fdegHC (μ + epsI I + Pi.single a 1) / fdegHC μ := by field_simp
 
 /- English proof (translation)
-Take `⟨_, ⟨P', hP', hDS⟩, _, _, _, _, _, _, _, _, P, hP, hF⟩` from `hA`. Use `⟨P', hDS, fun v hv => ?_⟩` and prove the remaining obligations. Establish `h1` using `deg_isFdeg_cayley _ A.σ P P' hP hP'.1 hDS.2.2.1 A.deg hF`. Rewrite using `[deg_fdegOf_smul (D.s.cdScale _ (epsSH D.R)) (D.s.cdScale_pos _ _), deg_fdegOf _ _ A.deg v h1 hv]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem deg_datum (D : D7) {W : LocW D.R.k D.R.rS} {ν : Fin (2 * D.R.rS + D.R.k + 1) → ℝ} {A : LocS W}
     (hA : GoodS D ν A) : ∃ P : MatKR D.R.k D.R.rS, IsDS (epsSH D.R) ν (fun g => A.σ (P⁻¹ * g * P)) ∧

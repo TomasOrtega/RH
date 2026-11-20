@@ -15,14 +15,14 @@ section Norms
 variable {K : Type u} [NormedField K] [IsUltrametricDist K]
 
 /- English proof (translation)
-Apply the tactic sequence `first | exact GlobalTheory.NatCastUnitNorm.norm_natCast_eq_one_of_not_dvd .. | (apply GlobalTheory.NatCastUnitNorm.norm_natCast_eq_one_of_not_dvd <;> assumption) | (intros; apply GlobalTheory.NatCastUnitNorm.norm_natCast_eq_one_of_not_dvd <;> assumption) | (apply @GlobalTheory.Na …`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem norm_natCast_eq_one_of_not_dvd {l m : ℕ} (hl : l.Prime) (hlt : ‖(l : K)‖ < 1)
     (hm : ¬ l ∣ m) : ‖(m : K)‖ = 1 := by
   first | exact GlobalTheory.NatCastUnitNorm.norm_natCast_eq_one_of_not_dvd .. | (apply GlobalTheory.NatCastUnitNorm.norm_natCast_eq_one_of_not_dvd <;> assumption) | (intros; apply GlobalTheory.NatCastUnitNorm.norm_natCast_eq_one_of_not_dvd <;> assumption) | (apply @GlobalTheory.NatCastUnitNorm.norm_natCast_eq_one_of_not_dvd <;> assumption) | (intros; apply @GlobalTheory.NatCastUnitNorm.norm_natCast_eq_one_of_not_dvd <;> assumption) | (apply @GlobalTheory.NatCastUnitNorm.norm_natCast_eq_one_of_not_dvd <;> first | assumption | infer_instance) | exact @GlobalTheory.NatCastUnitNorm.norm_natCast_eq_one_of_not_dvd K ‹_› ‹_› l m hl hlt hm | exact @GlobalTheory.NatCastUnitNorm.norm_natCast_eq_one_of_not_dvd K ‹_› ‹_› l m hl hlt | exact @GlobalTheory.NatCastUnitNorm.norm_natCast_eq_one_of_not_dvd K ‹_› ‹_› l m hl | exact @GlobalTheory.NatCastUnitNorm.norm_natCast_eq_one_of_not_dvd K ‹_› ‹_› l m | exact @GlobalTheory.NatCastUnitNorm.norm_natCast_eq_one_of_not_dvd K ‹_› ‹_› l | exact @GlobalTheory.NatCastUnitNorm.norm_natCast_eq_one_of_not_dvd K ‹_› ‹_› | exact @GlobalTheory.NatCastUnitNorm.norm_natCast_eq_one_of_not_dvd K ‹_› | exact @GlobalTheory.NatCastUnitNorm.norm_natCast_eq_one_of_not_dvd K
 
 /- English proof (translation)
-Establish `hfac` using `Nat.ordProj_mul_ordCompl_eq_self n l`. Establish `hnd` using `Nat.not_dvd_ordCompl hl hn`. Rewrite `hfac`, `hnd` using `[Nat.factorization_def n hl]`. Use `conv_lhs => rw [← hfac]`. Rewrite using `[Nat.cast_mul, norm_mul, Nat.cast_pow, norm_pow, norm_natCast_eq_one_of_not_dvd hl hlt hnd, mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_natCast_eq_pow_padicValNat {l n : ℕ} (hl : l.Prime) (hlt : ‖(l : K)‖ < 1)
     (hn : n ≠ 0) : ‖(n : K)‖ = ‖(l : K)‖ ^ padicValNat l n := by
@@ -36,11 +36,11 @@ theorem norm_natCast_eq_pow_padicValNat {l n : ℕ} (hl : l.Prime) (hlt : ‖(l 
 end Norms
 
 /- English proof (translation)
-Introduce `K _ _ pi h0 ι r w1 w2 κ f g hf hg`. Introduce `n hn`. Rewrite using `[monoWtGe_iff, MvPowerSeries.coeff_mul]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (Real.rpow_nonneg h0.le _) fun x hx => ?_` and prove the remaining obligations. Rewrite `hx` using `[Finset.HasAntidiagonal.mem_antidiagonal]`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1 : x.1 ≤ κ` using `le_trans (hx ▸ le_self_add) hn`. Establish `h2 : x.2 ≤ κ` using `le_trans (hx ▸ le_add_self) hn`. Rewrite using `[norm_mul, ← hx, dot_add]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Real.rpow_add h0]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem multiplicative_weight_le : MulWtLe.{u, v} := by
   intro K _ _ pi h0 ι r w1 w2 κ f g hf hg
@@ -60,9 +60,9 @@ theorem multiplicative_weight_le : MulWtLe.{u, v} := by
         rw [← Real.rpow_add h0]; congr 1; ring
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero`. Introduce `n _`. Simplify using `using wtGe_one (K := K) h0 r n`. Consider the case `succ k ih`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Rewrite using `[pow_succ]`. Use `multiplicative_weight_le K pi h0 ι r _ _ κ _ _ ih hf` as an intermediate fact. Use `push_cast`. Rewrite using `[add_mul, one_mul]` and apply the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem wtGeLe_pow {K : Type u} [NormedField K] [IsUltrametricDist K] {ι : Type v} {pi : ℝ}
     (h0 : 0 < pi) {r : ι → ℝ} {wt : ℝ} {κ : ι →₀ ℕ} {f : MvPowerSeries ι K}
@@ -78,17 +78,17 @@ theorem wtGeLe_pow {K : Type u} [NormedField K] [IsUltrametricDist K] {ι : Type
     rwa [add_mul, one_mul]
 
 /- English proof (translation)
-Introduce `K _ _ _ l hl hlt ι r κ B hB0 hB`. Establish `hl1 : (1 : ℝ) < l` using `by exact_mod_cast hl.one_lt`. Establish `hpi0 : 0 < ‖(l : K)‖` using `norm_pos_iff.mpr (Nat.cast_ne_zero.mpr hl.ne_zero)`. Establish `hs : PowerSeries.HasSubst B` using `PowerSeries.HasSubst.of_constantCoeff_zero hB0`. Introduce `n hn`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[monoWtGe_iff]`. Unfold `mvExp`. Rewrite using `[PowerSeries.coeff_subst hs]`. Use `norm_finsum_le_of (Real.rpow_nonneg hpi0.le _) fun k => ?_` and prove the remaining obligations. Rewrite using `[PowerSeries.coeff_exp, smul_eq_mul, norm_mul]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hk` using `wtGeLe_pow hpi0 hB k n hn`. Rewrite `hk` using `[monoWtGe_iff]`. Establish `hfk : (k.factorial : ℕ) ≠ 0` using `Nat.factorial_ne_zero k`. Establish `hnorm : ‖(algebraMap ℚ K) (1 / (k.factorial : ℚ))‖ = ‖(l : K)‖ ^ (-(padicValNat l k.factorial : ℝ))`. Rewrite using `[map_div₀, map_one, map_natCast, norm_div, norm_one, norm_natCast_eq_pow_padicValNat hl hlt hfk, Real.rpow_neg hpi0.le, Real.rpow_natCast, one_div]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hnorm]`. Establish `hv : (padicValNat l k.factorial : ℝ) ≤ (k : ℝ) * (1 / ((l : ℝ) - 1))`. Break down `Nat.eq_zero_or_pos k with hk0 | hk0` into its components or cases. Substitute `hk0` using the available equality. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Use `(Formalism.IncomingBounds.padicValFactorialBounds l hl k hk0).2` as an intermediate fact. Establish `hl0 : (0 : ℝ) < (l : ℝ) - 1` using `by linarith`. Combine the equalities or inequalities in the displayed calculation. Apply `div_le_div_of_nonneg_right _ hl0.le` to reduce the goal to its premises. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `_ = (k : ℝ) * (1 / ((l : ℝ) - 1)) := by ring`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem exponential_weight_le : ExpWtLe.{u, v} := by
   intro K _ _ _ l hl hlt ι r κ B hB0 hB
@@ -131,21 +131,19 @@ theorem exponential_weight_le : ExpWtLe.{u, v} := by
         Real.rpow_le_rpow_of_exponent_ge hpi0 hlt.le (by linarith)
 
 /- English proof (translation)
-Introduce `K _ _ _ l hl hlt ι _ κ`. Establish `hl1 : (1 : ℝ) < l` using `by exact_mod_cast hl.one_lt`. Establish `hl0 : (0 : ℝ) < (l : ℝ) - 1` using `by linarith`. Establish `hpi0 : 0 < ‖(l : K)‖` using `norm_pos_iff.mpr (Nat.cast_ne_zero.mpr hl.ne_zero)`. Use `set L : ℝ := Real.logb l (κ.degree : ℝ) + 1 with hL`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL0 : 0 ≤ L`. Break down `Nat.eq_zero_or_pos κ.degree with h | h` into its components or cases. Rewrite using `[hL, h]`. Simplify using the standard rewrite rules. Establish `: 0 ≤ Real.logb l (κ.degree : ℝ)` using `Real.logb_nonneg hl1 (by exact_mod_cast h)`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hcoord : ∀ i ∈ κ.support, ‖(((κ i).factorial : ℕ) : K)‖ ≤ ‖(l : K)‖ ^ ((κ i : ℝ) / ((l : ℝ) - 1) - L)`. Introduce `i hi`. Establish `hki : 1 ≤ κ i` using `Nat.one_le_iff_ne_zero.mpr (Finsupp.mem_support_iff.mp hi)`. Establish `hb` using `(Formalism.IncomingBounds.padicValFactorialBounds l hl (κ i) hki).1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdeg : (κ i : ℝ) ≤ (κ.degree : ℝ)`. Establish `: κ i ≤ κ.degree`. Rewrite using `[Finsupp.degree_apply]`. Conclude with `Finset.single_le_sum (f := fun j => κ j) (fun j _ => Nat.zero_le _) hi`. Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hlog : Real.logb l (κ i : ℝ) ≤ Real.logb l (κ.degree : ℝ)` using `Real.logb_le_logb_of_le hl1 (by exact_mod_cast hki) hdeg`. Rewrite using `[norm_natCast_eq_pow_padicValNat hl hlt (Nat.factorial_ne_zero _), ← Real.rpow_natCast]`. Conclude with `Real.rpow_le_rpow_of_exponent_ge hpi0 hlt.le (by rw [hL]; linarith)`. Establish `hmf : ((mfact κ : ℕ) : K) = ∏ i ∈ κ.support, (((κ i).factorial : ℕ) : K)`. Rewrite using `[mfact, Finsupp.prod, Nat.cast_prod]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hmf, norm_prod]`. Combine the equalities or inequalities in the displayed calculation. Apply `Real.rpow_le_rpow_of_exponent_ge hpi0 hlt.le` to reduce the goal to its premises. Rewrite using `[Finset.sum_sub_distrib, Finset.sum_const, nsmul_eq_mul]`. Establish `hsum : ∑ i ∈ κ.support, (κ i : ℝ) / ((l : ℝ) - 1) = ∑ i, (κ i : ℝ) / ((l : ℝ) - 1)`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Apply `Finset.sum_subset (Finset.subset_univ _)` to reduce the goal to its premises. Introduce `i _ hi`. Rewrite using `[Finsupp.notMem_support_iff.mp hi]`. Simplify using the standard rewrite rules. Establish `hcard : (κ.support.card : ℝ) ≤ (Fintype.card ι : ℝ)`.
-
-Conclude with `Finset.card_le_univ _` after adjusting the coercions. Rewrite using `[hsum]`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem factorial_valuation_bound : FactVal.{u, v} := by
   intro K _ _ _ l hl hlt ι _ κ

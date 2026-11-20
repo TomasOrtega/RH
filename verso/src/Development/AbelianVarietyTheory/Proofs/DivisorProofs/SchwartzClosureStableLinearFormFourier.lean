@@ -4,9 +4,7 @@ open FourierTransform MeasureTheory Filter Topology
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `f hf`. Establish `h1 : Submodule.map (T : M →ₗ[ℂ] M) W ≤ W`. Introduce and unpack `_ ⟨g, hg, rfl⟩`. Conclude with `hT g hg`. Establish `h2` using `Submodule.topologicalClosure_map T W`.
-
-Conclude with `Submodule.topologicalClosure_mono h1 (h2 ⟨f, hf, rfl⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem topologicalClosure_stable_of_continuousLinearMap {M : Type} [TopologicalSpace M] [AddCommGroup M]
     [Module ℂ M] [ContinuousSMul ℂ M] [ContinuousAdd M] (W : Submodule ℂ M) (T : M →L[ℂ] M)
@@ -19,15 +17,13 @@ theorem topologicalClosure_stable_of_continuousLinearMap {M : Type} [Topological
   exact Submodule.topologicalClosure_mono h1 (h2 ⟨f, hf, rfl⟩)
 
 /- English proof (translation)
-Introduce `E _ _ _ _ _ W hmul hF`. Prove the components needed by the constructor for the conclusion. Introduce `ℓ f f₁ hf hf₁`. Establish `hg : Function.HasTemperateGrowth (fun x : E => ((ℓ x : ℝ) : ℂ))` using `(Complex.ofRealCLM.comp ℓ).hasTemperateGrowth`. Use `set T : SchwartzMap E ℂ →L[ℂ] SchwartzMap E ℂ := SchwartzMap.smulLeftCLM ℂ (fun x : E => ((ℓ x : ℝ) : ℂ)) with hTdef`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hTapp : ∀ g : SchwartzMap E ℂ, ∀ x, T g x = (ℓ x : ℂ) * g x`. Introduce `g x`. Rewrite using `[hTdef, SchwartzMap.smulLeftCLM_apply hg]`. Both sides reduce to the same expression. Establish `hTW : ∀ g ∈ W, T g ∈ W` using `fun g hg' => hmul ℓ g (T g) hg' (hTapp g)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hf₁T : f₁ = T f`. Use extensionality with `x`. Rewrite using `[hf₁ x, hTapp f x]`. Rewrite using `[hf₁T]`. Conclude with `topologicalClosure_stable_of_continuousLinearMap W T hTW f hf`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `f hf`. Establish `hTW : ∀ g ∈ W, SchwartzMap.fourierTransformCLM ℂ g ∈ W`. Introduce `g hg`. Rewrite using `[SchwartzMap.fourierTransformCLM_apply]`. Conclude with `hF g hg`.
-
-Use `topologicalClosure_stable_of_continuousLinearMap W (SchwartzMap.fourierTransformCLM ℂ) hTW f hf` as an intermediate fact. Rewrite `this` using `[SchwartzMap.fourierTransformCLM_apply]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem schwartz_closure_stable_linearForm_fourier :
     ∀ (E : Type) [NormedAddCommGroup E] [InnerProductSpace ℝ E] [FiniteDimensional ℝ E] [MeasurableSpace E] [BorelSpace E]

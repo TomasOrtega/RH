@@ -19,7 +19,7 @@ namespace GlobalTheory.CompanionTheory.MPDict.Inhab
 variable {m : ℕ} {n : Fin (m + 1) → ℕ}
 
 /- English proof (translation)
-Rewrite using `[← appLE_ratioOn (φ := prB n k) (W := W) (U := chart ℤ (n k) i ⊓ chart ℤ (n k) j) (i := i) (j := j) inf_le_left h]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem val_blockUnit {k : Fin (m + 1)} (i j : Bk n k) {W : (MP ℤ m n).Opens}
     (h : W ≤ prB n k ⁻¹ᵁ (chart ℤ (n k) i ⊓ chart ℤ (n k) j)) :
@@ -30,7 +30,7 @@ theorem val_blockUnit {k : Fin (m + 1)} (i j : Bk n k) {W : (MP ℤ m n).Opens}
   rfl
 
 /- English proof (translation)
-Use `Units.ext ?_` and prove the remaining obligations. Rewrite using `[val_blockUnit]`. Conclude with `(congrArg (resG _ e) (val_blockUnit i j h)).trans (resG_pullRatio e)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem res_blockUnit {k : Fin (m + 1)} (i j : Bk n k) {W V : (MP ℤ m n).Opens}
     (h : W ≤ prB n k ⁻¹ᵁ (chart ℤ (n k) i ⊓ chart ℤ (n k) j)) (e : V ≤ W) :
@@ -40,7 +40,7 @@ theorem res_blockUnit {k : Fin (m + 1)} (i j : Bk n k) {W V : (MP ℤ m n).Opens
   exact (congrArg (resG _ e) (val_blockUnit i j h)).trans (resG_pullRatio e)
 
 /- English proof (translation)
-Use `Units.ext ?_` and prove the remaining obligations. Rewrite using `[Units.val_mul, val_blockUnit, val_blockUnit, val_blockUnit]`. Conclude with `pullRatio_mul_pullRatio`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem blockUnit_mul {k : Fin (m + 1)} (i j l : Bk n k) {W : (MP ℤ m n).Opens}
     (h₁ : W ≤ prB n k ⁻¹ᵁ (chart ℤ (n k) i ⊓ chart ℤ (n k) j))
@@ -52,7 +52,7 @@ theorem blockUnit_mul {k : Fin (m + 1)} (i j l : Bk n k) {W : (MP ℤ m n).Opens
   exact pullRatio_mul_pullRatio
 
 /- English proof (translation)
-Establish `h' : ⊤ ≤ (x ≫ prB n k) ⁻¹ᵁ chart ℤ (n k) i` using `h`. Rewrite using `[valR, valR, dif_pos h, dif_pos h', pullRatio, ← Scheme.Hom.appLE_comp_appLE x (prB n k) (chart ℤ (n k) i) (blockChart n k i) ⊤ le_rfl h]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem valR_pullRatio (x : Sp ℂ ⟶ MP ℤ m n) {k : Fin (m + 1)} (i j : Bk n k)
     (h : ⊤ ≤ x ⁻¹ᵁ blockChart n k i) :
@@ -64,11 +64,11 @@ theorem valR_pullRatio (x : Sp ℂ ⟶ MP ℤ m n) {k : Fin (m + 1)} (i j : Bk n
   rfl
 
 /- English proof (translation)
-Establish `hi' : 0 < ‖w i‖` using `norm_pos_iff.2 hi`. Establish `hc' : 0 < ‖w c‖` using `norm_pos_iff.2 hc`. Establish `hS : ∑ a, ‖w a / w i‖ ^ 2 = (∑ a, ‖w a‖ ^ 2) / ‖w i‖ ^ 2`. Rewrite using `[Finset.sum_div]`. Conclude with `Finset.sum_congr rfl fun a _ => by rw [norm_div, div_pow]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hT : 0 < ∑ a, ‖w a‖ ^ 2` using `Finset.sum_pos' (fun _ _ => by positivity) ⟨i, Finset.mem_univ _, by positivity⟩`. Establish `hpos : 0 < ∑ a, ‖w a / w i‖ ^ 2` using `by rw [hS]; positivity`. Establish `hexp : Real.exp (Real.log (∑ a, ‖w a / w i‖ ^ 2) / 2) = √(∑ a, ‖w a / w i‖ ^ 2)`. Rewrite using `[Real.sqrt_eq_rpow, Real.rpow_def_of_pos hpos]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hexp, hS, Real.sqrt_div hT.le, Real.sqrt_sq hi'.le, norm_div, EuclideanSpace.norm_eq]`. Simplify using `only [PiLp.toLp_apply]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem norm_eq_fs {ι : Type} [Fintype ι] (w : ι → ℂ) (i c : ι) (hi : w i ≠ 0) (hc : w c ≠ 0) :
     ‖WithLp.toLp 2 w‖ =
@@ -90,7 +90,7 @@ theorem norm_eq_fs {ι : Type} [Fintype ι] (w : ι → ℂ) (i c : ι) (hi : w 
   field_simp
 
 /- English proof (translation)
-Use `(linComb_punit_g (O1 ℤ (n k)) (prB n k) 1 i j).trans ?_` and prove the remaining obligations. Rewrite using `[zpow_one]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem pullback_O1_transition_eq_blockUnit (k : Fin (m + 1)) (i j : PUnit → Fin (n k + 1))
     (h : ((O1 ℤ (n k)).pull (prB n k)).U i ⊓ ((O1 ℤ (n k)).pull (prB n k)).U j ≤
@@ -101,7 +101,7 @@ theorem pullback_O1_transition_eq_blockUnit (k : Fin (m + 1)) (i j : PUnit → F
   rfl
 
 /- English proof (translation)
-Use `(Finset.prod_eq_single k (fun b _ hb => ?_) (fun hk => (hk (Finset.mem_univ _)).elim)).trans ?_` and prove the remaining obligations. Rewrite using `[Pi.single_eq_of_ne hb, zpow_zero]`. Rewrite using `[Pi.single_eq_same, zpow_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem prod_blockUnit_single {W : (MP ℤ m n).Opens} (k : Fin (m + 1)) (c c' : ∀ k, Bk n k)
     (h : ∀ k', W ≤ prB n k' ⁻¹ᵁ (chart ℤ (n k') (c k') ⊓ chart ℤ (n k') (c' k'))) :
@@ -112,7 +112,7 @@ theorem prod_blockUnit_single {W : (MP ℤ m n).Opens} (k : Fin (m + 1)) (c c' :
   · rw [Pi.single_eq_same, zpow_one]
 
 /- English proof (translation)
-Rewrite using `[val_blockUnit, ← resG_pullRatio (hi := le_rfl) e, CxPts.ev_res _ hy]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ev_blockUnit {k : Fin (m + 1)} (i j : Bk n k) {W : (MP ℤ m n).Opens}
     (h : W ≤ prB n k ⁻¹ᵁ (chart ℤ (n k) i ⊓ chart ℤ (n k) j)) (e : W ≤ blockChart n k i)
@@ -122,7 +122,7 @@ theorem ev_blockUnit {k : Fin (m + 1)} (i j : Bk n k) {W : (MP ℤ m n).Opens}
   rw [val_blockUnit, ← resG_pullRatio (hi := le_rfl) e, CxPts.ev_res _ hy]
 
 /- English proof (translation)
-Use `(Finset.prod_eq_single k (fun b _ hb => ?_) (fun hk => (hk (Finset.mem_univ _)).elim)).trans ?_` and prove the remaining obligations. Rewrite using `[Pi.single_eq_of_ne hb, zpow_zero]`. Rewrite using `[Pi.single_eq_same, zpow_one]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ofMetrics_single_h (k : Fin (m + 1)) (z : (Σ k, Bk n k) → ℂ) :
     (Geo.HermLine.ofMetrics (fun k => Geo.fsMetric (Bk n k)) (Pi.single k 1)).h z =
@@ -133,7 +133,7 @@ theorem ofMetrics_single_h (k : Fin (m + 1)) (z : (Σ k, Bk n k) → ℂ) :
     rfl
 
 /- English proof (translation)
-Use `(Finset.prod_eq_single k (fun b _ hb => ?_) (fun hk => (hk (Finset.mem_univ _)).elim)).trans ?_` and prove the remaining obligations. Rewrite using `[Pi.single_eq_of_ne hb, zpow_zero]`. Rewrite using `[Pi.single_eq_same, zpow_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem prod_norm_single (k : Fin (m + 1)) (c : ∀ k, Bk n k) (z : (Σ k, Bk n k) → ℂ) :
     (∏ k', ‖z ⟨k', c k'⟩‖ ^ (Pi.single k (1 : ℤ) : Fin (m + 1) → ℤ) k') = ‖z ⟨k, c k⟩‖ := by
@@ -146,19 +146,17 @@ end GlobalTheory.CompanionTheory.MPDict.Inhab
 open GlobalTheory.CompanionTheory.MPDict.Inhab in
 
 /- English proof (translation)
-Introduce `m n k`. Establish `hU (i : PUnit → Fin (n k + 1)) : ((O1 ℤ (n k)).pull (prB n k)).U i ≤ blockChart n k (i PUnit.unit)` using `LB.wchart_le (O1 ℤ (n k)) (fun _ => prB n k) i PUnit.unit`. Use `⟨fun i c => blockUnit (c k) (i PUnit.unit) (le_inf (inf_le_right.trans (mchart_le c k)) (inf_le_left.trans (hU i))), ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i j c`. Express the relevant statement in the definitionally equal form `Semi.res _ _ = Semi.res _ (((O1 ℤ (n k)).pull (prB n k)).g i j) * Semi.res _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition.
 
-Use `beta_reduce`. Rewrite using `[pullback_O1_transition_eq_blockUnit k i j (fun x hx => ⟨hU i hx.1, hU j hx.2⟩)]`. Use `(res_blockUnit _ _ _ _).trans (Eq.trans ?_ (congrArg₂ (· * ·) (res_blockUnit _ _ _ _) (res_blockUnit _ _ _ _)).symm)` and prove the remaining obligations. Rewrite using `[mul_comm]`. Conclude with `(blockUnit_mul _ _ _ _ _ _).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `i c c' beta_reduce`. Use `(res_blockUnit _ _ _ _).trans (Eq.trans ?_ (congrArg₂ (· * ·) (res_blockUnit _ _ _ _) (prod_blockUnit_single k c c' _)).symm)` and prove the remaining obligations. Rewrite using `[mul_comm]`. Conclude with `(blockUnit_mul _ _ _ _ _ _).symm`. Introduce `i c y z hz hy`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy₁ : y ∈ ptsIn (mpStr ℤ m n) σ₀ (blockChart n k (i PUnit.unit))` using `ptsIn_mono (inf_le_left.trans (hU i)) hy`. Establish `hy₂ : y ∈ ptsIn (mpStr ℤ m n) σ₀ (blockChart n k (c k))` using `ptsIn_mono (inf_le_right.trans (mchart_le c k)) hy`. Establish `hi : z ⟨k, i PUnit.unit⟩ ≠ 0` using `((hz k _).1).1 hy₁`. Establish `hc : z ⟨k, c k⟩ ≠ 0` using `((hz k _).1).1 hy₂`. Establish `hφ : (((hermitianTwistingSheaf ℤ (n k)).pull (prB n k) (pr_toSpecBase ℤ m n k)).φ σ₀).φ i y = Real.log (∑ a, ‖z ⟨k, a⟩ / z ⟨k, i PUnit.unit⟩‖ ^ 2)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `(Weight.pull_φ (ProjAn.fsO1 ℤ σ₀ (n k)) (prB n k) (pr_toSpecBase ℤ m n k) i y).trans ?_` and prove the remaining obligations. Use `(Weight.fsBasis_φ _ _ _ _ _ _ _).trans (congrArg _ (Finset.sum_congr rfl fun a _ => ?_))` and prove the remaining obligations. Simplify using `only [Matrix.one_apply, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Use `congrArg (‖·‖ ^ 2) (Eq.trans ?_ ((hz k (i PUnit.unit)).2 a hy₁))` and prove the remaining obligations. Conclude with `(valR_pullRatio y.1 (i PUnit.unit) a hy₁).symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hev : CxPts.ev (mpStr ℤ m n) σ₀ (((hermitianTwistingSheaf ℤ (n k)).pull (prB n k) (pr_toSpecBase ℤ m n k)).B.U i ⊓ mchart c) (blockUnit (c k) (i PUnit.unit) (le_inf (inf_le_right.trans (mchart_le c k)) (inf_le_left.trans (hU i))) : Γ(MP ℤ m n, _)ˣ).val y = z ⟨k, i PUnit.unit⟩ / z …`. Conclude with `(ev_blockUnit _ _ _ (inf_le_right.trans (mchart_le c k)) hy).trans ((hz k (c k)).2 _ hy₂)`. Use `(ofMetrics_single_h k z).trans ?_` and prove the remaining obligations. Use `(norm_eq_fs (fun a => z ⟨k, a⟩) (i PUnit.unit) (c k) hi hc).trans ?_` and prove the remaining obligations. Rewrite using `[hφ]`.
-
-Use `congrArg₂ (· * ·) (congrArg₂ (· * ·) (prod_norm_single k c z).symm (congrArg _ hev.symm)) rfl` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CompanionTheory.MPDict.isHermRep_pullback_hermitian_O1 : ∀ (m : ℕ) (n : Fin (m + 1) → ℕ) (k : Fin (m + 1)), IsHermRep ((hermitianTwistingSheaf ℤ (n k)).pull (prB n k) (pr_toSpecBase ℤ m n k)) (Geo.HermLine.ofMetrics (fun k => Geo.fsMetric (Bk n k)) (Pi.single k 1)) := by
   intro m n k

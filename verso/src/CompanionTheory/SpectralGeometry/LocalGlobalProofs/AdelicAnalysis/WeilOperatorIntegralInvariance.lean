@@ -11,14 +11,14 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.SW.FstarPer
 
 /- English proof (translation)
-Introduce `v` and use `mul_mem (hx v) (hy v)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem oh_mul {F : Type} [Field F] [NumberField F] {x y : A F} (hx : x ∈ Oh F) (hy : y ∈ Oh F) :
     x * y ∈ Oh F :=
   fun v => mul_mem (hx v) (hy v)
 
 /- English proof (translation)
-Unfold `qf`. Conclude with `continuous_const.mul (continuous_id.dotProduct ((continuous_const (y := B)).matrix_mulVec continuous_id))`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_qf {F : Type} [Field F] [NumberField F] {ι : Type} [Fintype ι]
     (h : A F) (B : Matrix ι ι (A F)) : Continuous (qf h B) := by
@@ -26,15 +26,15 @@ theorem continuous_qf {F : Type} [Field F] [NumberField F] {ι : Type} [Fintype 
   exact continuous_const.mul (continuous_id.dotProduct ((continuous_const (y := B)).matrix_mulVec continuous_id))
 
 /- English proof (translation)
-Introduce `F _ _ _ _ lf _ _ ψ hψ ι _ _ M B ρ P _ φ hφ`. Establish `hK : IsCompact (qf (hf F) (Bf B) '' tsupport φ)` using `IsCompact.image hφ.2 (continuous_qf _ _)`. Take `⟨N, hN, hNK⟩` from `(GlobalTheory.T.mem_Oh_iff_and_nat_mul_properties F).2.2.2.2.2.2.2.2.1 _ hK`. Establish `htriv` using `((GlobalTheory.T.standard_adelic_character F).2 ψ hψ).2.1`. Establish `key : ∀ x ∈ Oh F, opU ψ (hf F) (Bf B) ((N : A F) * x) φ = φ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `x hx`. Use function extensionality and compare the values at `u`. Distinguish the cases in `hu : u ∈ tsupport φ`. Establish `h1` using `hNK _ (Set.mem_image_of_mem _ hu)`. Establish `h2 : (N : A F) * x * qf (hf F) (Bf B) u ∈ Oh F`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `oh_mul hx h1`. Establish `h4 : (N : A F) * x * qf (hf F) (Bf B) u = x * ((N : A F) * qf (hf F) (Bf B) u)`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h4]` and apply the resulting hypothesis. Simplify using `[opU, htriv _ h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Simplify using the standard rewrite rules.
 
-Establish `h0 : φ u = 0` using `image_eq_zero_of_notMem_tsupport hu`. Simplify using `[opU, h0]`. Use `⟨N, hN, fun x hx => ⟨key x hx, fun y => ?_⟩⟩` and prove the remaining obligations. Unfold `fstar`. Use `integral_congr_ae (Filter.Eventually.of_forall fun u => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h5` using `congrFun (key x hx) u`. Simplify using `only [opU] at h5 ⊢`. Rewrite using `[add_mul, AddChar.map_add_eq_mul, mul_assoc, h5]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem fstar_periodic : ∀ (F : Type) [Field F] [NumberField F] [MeasurableSpace (A F)] [BorelSpace (A F)] (lf : Measure (A F)), lf.IsAddHaarMeasure → lf (Oh F) = 1 → ∀ ψ : AddChar (A F) ℂ, IsStdChar F ψ → ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (M : ℕ) (B : Matrix ι ι F) (ρ : InfinitePlace F → (F →+* ℝ)) (P : InfinitePlace F → Matrix ι ι ℝ), QSetup M B ρ P → ∀ φ : (ι → A F) → ℂ, SB φ → ∃ N : ℕ, 0 < N ∧ ∀ x ∈ Oh F, opU ψ (hf F) (Bf B) ((N : A F) * x) φ = φ ∧ ∀ y : A F, fstar ψ (hf F) (Bf B) (muF B lf) φ (y + (N : A F) * x) = fstar ψ (hf F) (Bf B) (muF B lf) φ y := by
   intro F _ _ _ _ lf _ _ ψ hψ ι _ _ M B ρ P _ φ hφ

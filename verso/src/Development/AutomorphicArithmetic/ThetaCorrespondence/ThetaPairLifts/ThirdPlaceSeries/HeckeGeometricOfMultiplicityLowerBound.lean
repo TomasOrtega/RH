@@ -16,13 +16,11 @@ set_option synthInstance.maxHeartbeats 400000
 set_option maxHeartbeats 1600000
 namespace GlobalTheory.HeightCounting.HeckeLaw
 /- English proof (translation)
-Introduce `hP hS hL`. Establish `ev : ∀ {Q : Ctx → Prop}, Ev Q → StepW Start fun K _ _ _ _ => Q K` using `fun h => Step.of_evG ((evG_of_ev h).imp fun _ _ _ _ _ H _ _ _ _ _ _ _ _ _ => H)`. Use `((ev GlobalTheory.Mem.HostFrames.hostHyp_frames_ev).and (ev GlobalTheory.Mem.StdSize.vstd_size_ev)).trans (StepW.of_all fun K B f T w hO _ H => ?_)` and prove the remaining obligations. Introduce `P x l i b j`. Take `⟨hHo, -⟩` from `H.1 (w.st x.o.Z) hO`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨hStd, hSize⟩` from `H.2 (w.st x.o.Z) hO`. Establish `hfin : Finite (TupU w.I (usedOf w.I T P.Wt))`. Establish `hs : ({τ | τ = (Formalism.L2.DIV.mu0F (X` using `B.fields) (tuOf w.I (usedOf w.I T P.Wt))).1 ∨ τ ∈ tuOf w.I (usedOf w.I T P.Wt)} : Set _).Finite := (Set.finite_singleton _).union (tuOf w.I (usedOf w.I T P.Wt)).finite_toSet`. Conclude with `hs.to_subtype`. Set `X` to `GlobalTheory.TwInputs.RealSide.ofPins x.m.z.geo x.m.z.pins x.m.intersectionNumber_baseChange x.m.inGeo hfin hHo hStd hSize`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hC` using `X.char`. Establish `hSb : ∀ Q ∈ x.m.z.R.Sb, Q ∈ (Dof x).ntw.S0 i`. Introduce `Q hQ`. Establish `hA : x.m.z.R.Sb = x.m.z.R.Pg` using `x.m.z.pins.char.allPl`. Take `⟨k, hk⟩` from `l.b.ser.ex.good.Pg i j b Q (by rw [l.b.ser.ex.pin.Pg]; exact hA ▸ hQ)`.
-
-Conclude with `(Dof x).ntw.placesOver_subset_exceptional i k hk`. Conclude with `GlobalTheory.GeoTie.CuspLev.heckeGeo_of_levels l.b.YS x.m.z.geo.fw ((Dof x).nth.iC i) b j l.b.ser.ex (x.m.z.geo.fw.evaluates_of_lUnif x.m.intersectionNumber_baseChange.prim.unif) hC.lev hC.models.HW x.m.intersectionNumber_baseChange.prim.unif (l.rat.In.ks _ (Nat.le_add_left _ _) …`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem hecke_geometric_of_multiplicity_lower_bound_alt : _root_.GlobalTheory.HeightCounting.Up.PublishedInputsThirdLayerAlt → SerN → ∀ hL : _root_.UpperTheory.Zero.LLC.RecTExists, AllSt fun _ _ _ _ _ P x => ∀ (l : _root_.GlobalTheory.HeightCounting.Up.SecondIntermediateLevel hL x) (i : (Dof x).ntw.Tw) (b : Bool) (j : Fin (Dof x).R.m), GlobalTheory.GeoTie.HeckeGeo l.b.YS x.m.z.geo.fw ((Dof x).nth.iC i) b j := by
   intro hP hS hL
@@ -57,7 +55,7 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.HeightCounting.HeckeLaw.hecke_geometric_of_multiplicity_lower_bound_alt | exact _root_.GlobalTheory.HeightCounting.HeckeLaw.hecke_geometric_of_multiplicity_lower_bound_alt | (intros; apply _root_.GlobalTheory.HeightCounting.HeckeLaw.hecke_geomet …`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.heckeGeo_at_levelB1_states : _root_.GlobalTheory.HeightCounting.Up.PublishedInputsThirdLayerAlt → SerN → ∀ hL : _root_.UpperTheory.Zero.LLC.RecTExists, AllSt fun _ _ _ _ _ P x => ∀ (l : _root_.GlobalTheory.HeightCounting.Up.SecondIntermediateLevel hL x) (i : (Dof x).ntw.Tw) (b : Bool) (j : Fin (Dof x).R.m), GlobalTheory.GeoTie.HeckeGeo l.b.YS x.m.z.geo.fw ((Dof x).nth.iC i) b j := by
   first | exact @_root_.GlobalTheory.HeightCounting.HeckeLaw.hecke_geometric_of_multiplicity_lower_bound_alt | exact _root_.GlobalTheory.HeightCounting.HeckeLaw.hecke_geometric_of_multiplicity_lower_bound_alt | (intros; apply _root_.GlobalTheory.HeightCounting.HeckeLaw.hecke_geometric_of_multiplicity_lower_bound_alt <;> assumption)

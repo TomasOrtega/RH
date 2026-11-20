@@ -31,9 +31,9 @@ Both sides reduce to the same expression.
 variable [NumberField E] [NumberField E'] {A : ValuationSubring Ω}
 
 /- English proof (translation)
-Establish `h1 : σ • A = A` using `hσ`. Use `show resG E σ • A = A`. Use extensionality with `x`. Rewrite using `[ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem]`. Use `conv_rhs => rw [← h1]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem, ← map_inv]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem resG_mem_Dec {σ : G E' Ω} (hσ : σ ∈ Dec (F := E') A) : resG E σ ∈ Dec (F := E) A := by
   have h1 : σ • A = A := hσ
@@ -60,13 +60,13 @@ Both sides reduce to the same expression.
 variable {w : HeightOneSpectrum (𝓞 E)} {w' : HeightOneSpectrum (𝓞 E')}
 
 /- English proof (translation)
-Establish `hcomap : w.asIdeal = w'.asIdeal.comap (algebraMap (𝓞 E) (𝓞 E'))`. Use extensionality with `x`. Rewrite using `[Ideal.mem_comap, ← h x, ← h' (algebraMap (𝓞 E) (𝓞 E') x)]`. Establish `e : algebraMap E' Ω ((algebraMap (𝓞 E) (𝓞 E') x : 𝓞 E') : E') = algebraMap E Ω (x : E)`. Rewrite using `[IsScalarTower.algebraMap_apply E E' Ω]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[e]`. Use `w.isMaximal` as an intermediate fact. Use `w'.isMaximal` as an intermediate fact. Use `letI := Ideal.Quotient.field w.asIdeal`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure.
 
-Use `letI := Ideal.Quotient.field w'.asIdeal`. Establish `: Finite (𝓞 E ⧸ w.asIdeal)` using `w.asIdeal.finiteQuotientOfFreeOfNeBot w.ne_bot`. Establish `: Finite (𝓞 E' ⧸ w'.asIdeal)` using `w'.asIdeal.finiteQuotientOfFreeOfNeBot w'.ne_bot`. Use `letI := Fintype.ofFinite (𝓞 E ⧸ w.asIdeal)`. Use `letI := Fintype.ofFinite (𝓞 E' ⧸ w'.asIdeal)`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure. Equip the data with the indicated structure.
 
-Use `letI : Algebra (𝓞 E ⧸ w.asIdeal) (𝓞 E' ⧸ w'.asIdeal) := (Ideal.quotientMap w'.asIdeal (algebraMap (𝓞 E) (𝓞 E')) hcomap.le).toAlgebra`. Use `⟨Module.finrank (𝓞 E ⧸ w.asIdeal) (𝓞 E' ⧸ w'.asIdeal), ?_⟩` and prove the remaining obligations. Rewrite using `[normV, normV, Nat.card_eq_fintype_card, Nat.card_eq_fintype_card]`. Conclude with `Module.card_eq_pow_finrank`.
+Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_normV_pow (h : IsPlaceOver A w) (h' : IsPlaceOver A w') : ∃ f : ℕ, normV w' = normV w ^ f := by
   classical
@@ -94,13 +94,13 @@ theorem exists_normV_pow (h : IsPlaceOver A w) (h' : IsPlaceOver A w') : ∃ f :
 def resF (h : IsPlaceOver A w) (h' : IsPlaceOver A w') : ℕ := (exists_normV_pow h h').choose
 
 /- English proof (translation)
-The claim follows from `(exists_normV_pow h h').choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem normV_eq_pow_resF (h : IsPlaceOver A w) (h' : IsPlaceOver A w') : normV w' = normV w ^ resF h h' :=
   (exists_normV_pow h h').choose_spec
 
 /- English proof (translation)
-Use `⟨resG_mem_Dec hσ.1, fun x hx => ?_⟩` and prove the remaining obligations. Establish `h1` using `hσ.2 x hx`. Rewrite `h1` using `[hf, ← pow_mul, ← pow_mul]`. Conclude with `h1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem actsAs_resG {f : ℕ} (hf : normV w' = normV w ^ f) {σ : G E' Ω} {a b : ℕ}
     (hσ : ActsAs A (normV w') σ a b) : ActsAs A (normV w) (resG E σ) (f * a) (f * b) := by
@@ -112,7 +112,7 @@ theorem actsAs_resG {f : ℕ} (hf : normV w' = normV w ^ f) {σ : G E' Ω} {a b 
 variable (h : IsPlaceOver A w) (h' : IsPlaceOver A w')
 
 /- English proof (translation)
-Take `⟨a, b, hσ⟩` from `σ.2`. Conclude with `⟨_, _, actsAs_resG (normV_eq_pow_resF h h') hσ⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem resG_mem_Weil (σ : ↥(Weil h')) : resG E (σ : G E' Ω) ∈ Weil h := by
   obtain ⟨a, b, hσ⟩ := σ.2
@@ -131,7 +131,7 @@ Both sides reduce to the same expression.
 variable [IsAlgClosure E Ω] [IsAlgClosure E' Ω]
 
 /- English proof (translation)
-Take `⟨a, b, hσ⟩` from `σ.2`. Rewrite using `[deg_eq (σ := resW h h' σ) (actsAs_resG (normV_eq_pow_resF h h') hσ), deg_eq hσ]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem deg_resW (σ : ↥(Weil h')) : deg (resW h h' σ) = (resF h h' : ℤ) * deg σ := by
   obtain ⟨a, b, hσ⟩ := σ.2
@@ -139,7 +139,7 @@ theorem deg_resW (σ : ↥(Weil h')) : deg (resW h h' σ) = (resF h h' : ℤ) * 
   push_cast; ring
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨resG_mem_Dec hσ.1, fun x hx => hσ.2 x hx⟩`.
+Supply the required witnesses or components.
 -/
 theorem resG_mem_Ine {σ : G E' Ω} (hσ : σ ∈ Ine (F := E') A) : resG E σ ∈ Ine (F := E) A :=
   ⟨resG_mem_Dec hσ.1, fun x hx => hσ.2 x hx⟩
@@ -147,13 +147,13 @@ theorem resG_mem_Ine {σ : G E' Ω} (hσ : σ ∈ Ine (F := E') A) : resG E σ �
 omit [NumberField E] [NumberField E'] [IsAlgClosure E Ω] in
 
 /- English proof (translation)
-Use `continuous_of_continuousAt_one (resG E) ?_` and prove the remaining obligations. Introduce `s hs`. Rewrite `hs` using `[map_one]`. Rewrite using `[Filter.mem_map, krullTopology_mem_nhds_one_iff]`. Take `⟨L, hL, hLs⟩` from `(krullTopology_mem_nhds_one_iff E Ω s).mp hs`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Set `b` to `Module.finBasis E L`. Establish `: Algebra.IsAlgebraic E' Ω` using `IsAlgClosure.isAlgebraic`. Use `⟨IntermediateField.adjoin E' (Set.range fun i => (b i : Ω)), IntermediateField.finiteDimensional_adjoin fun x _ => Algebra.IsIntegral.isIntegral x, fun σ hσ => hLs ?_⟩` and prove the remaining obligations. Rewrite `hσ`, the goal using `[SetLike.mem_coe, IntermediateField.mem_fixingSubgroup_iff]`. Introduce `x hx`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hb : ∀ i, σ (b i : Ω) = b i` using `fun i => hσ _ (IntermediateField.subset_adjoin _ _ ⟨i, rfl⟩)`. Establish `hx'` using `congrArg (fun y : L => (y : Ω)) (b.sum_repr ⟨x, hx⟩)`. Simplify using `only [IntermediateField.coe_sum, IntermediateField.coe_smul] at hx'`. Rewrite using `[← hx']`. Use `show (resG E σ) _ = _`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, resG_apply, hb]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_resG : Continuous (resG E : G E' Ω →* G E Ω) := by
   refine continuous_of_continuousAt_one (resG E) ?_
@@ -177,7 +177,7 @@ theorem continuous_resG : Continuous (resG E : G E' Ω →* G E Ω) := by
   rw [map_smul, resG_apply, hb]
 
 /- English proof (translation)
-Establish `hc : Continuous fun σ : ↥(Ine (F` using `E') A) => (⟨resG E (σ : G E' Ω), resG_mem_Ine σ.2⟩ : ↥(Ine (F := E) A)) := (continuous_resG.comp continuous_subtype_val).subtype_mk _`. Conclude with `hφ.preimage hc`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem IsSmooth.resW {M : Type*} [Monoid M] {φ : ↥(Weil h) →* M} (hφ : IsSmooth φ) :
     IsSmooth (φ.comp (resW h h')) := by
@@ -202,7 +202,7 @@ def IsFSS (ρ : Representation ℂ ↥(Weil h) W) (N : End ℂ W) (a : WDRep h W
 variable (h) in
 
 /- English proof (translation)
-Take `⟨σ, hσ⟩` from `exists_isFrob h`. Use `⟨⟨σ, mem_Weil_of_isFrob h hσ⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[deg_eq (actsAs_one_iff.mpr hσ)]`. Evaluate the numerical expressions.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 theorem exists_deg_eq_one : ∃ φ : ↥(Weil h), deg φ = 1 := by
   obtain ⟨σ, hσ⟩ := exists_isFrob h
@@ -211,17 +211,15 @@ theorem exists_deg_eq_one : ∃ φ : ↥(Weil h), deg φ = 1 := by
   norm_num
 
 /- English proof (translation)
-Take `⟨u, -, hu, -, huρ, ha⟩` from `ha`. Take `⟨v, -, hv, -, hvρ, hb⟩` from `hb`. Take `⟨φ, hφ⟩` from `exists_deg_eq_one h`. Establish `ea` using `ha φ`. Establish `eb` using `hb φ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `ea`, `eb` using `[hφ, zpow_one]`. Establish `hsa : Commute (a.ρ φ) (u : End ℂ W)`. Establish `e2 : a.ρ φ = ρ φ * ((u⁻¹ : (End ℂ W)ˣ) : End ℂ W)` using `by rw [ea, mul_assoc, Units.mul_inv, mul_one]`. Rewrite using `[e2]`. Conclude with `(huρ φ).symm.mul_left (Commute.refl (u : End ℂ W)).units_inv_left`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hsb : Commute (b.ρ φ) (v : End ℂ W)`. Establish `e2 : b.ρ φ = ρ φ * ((v⁻¹ : (End ℂ W)ˣ) : End ℂ W)` using `by rw [eb, mul_assoc, Units.mul_inv, mul_one]`. Rewrite using `[e2]`. Conclude with `(hvρ φ).symm.mul_left (Commute.refl (v : End ℂ W)).units_inv_left`. Establish `hca : Commute (a.ρ φ) ((u : End ℂ W) - 1)` using `hsa.sub_right (Commute.one_right _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcb : Commute (b.ρ φ) ((v : End ℂ W) - 1)` using `hsb.sub_right (Commute.one_right _)`. Establish `hsum : a.ρ φ * ((u : End ℂ W) - 1) + a.ρ φ = b.ρ φ * ((v : End ℂ W) - 1) + b.ρ φ`. Rewrite using `[mul_sub, mul_one, sub_add_cancel, mul_sub, mul_one, sub_add_cancel, ← ea, ← eb]`. Establish `hs` using `(Module.End.isNilpotent_isSemisimple_unique (hca.isNilpotent_mul_left hu) (a.semisimple φ) (hcb.isNilpotent_mul_left hv) (b.semisimple φ) ((Commute.refl _).mul_left hca.symm) ((Commute.refl _).mul_left hcb.symm) hsum).2`. Establish `hinv : a.ρ φ⁻¹ * a.ρ φ = 1` using `by rw [← map_mul, inv_mul_cancel, map_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `huv : (u : End ℂ W) = v`. Combine the equalities or inequalities in the displayed calculation. Establish `huv' : u = v` using `Units.ext huv`. Use `MonoidHom.ext fun σ => ?_` and prove the remaining obligations. Establish `e1` using `(ha σ).symm.trans (hb σ)`.
-
-Rewrite `e1` using `[huv']`. Conclude with `(Units.mul_left_inj _).mp e1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsFSS.ρ_eq {ρ : Representation ℂ ↥(Weil h) W} {N : End ℂ W} {a b : WDRep h W}
     (ha : IsFSS ρ N a) (hb : IsFSS ρ N b) : a.ρ = b.ρ := by
@@ -258,7 +256,7 @@ theorem IsFSS.ρ_eq {ρ : Representation ℂ ↥(Weil h) W} {N : End ℂ W} {a b
   exact (Units.mul_left_inj _).mp e1
 
 /- English proof (translation)
-Establish `hρ` using `ha.ρ_eq hb`. Take `⟨_, hNa, -⟩` from `ha`. Take `⟨_, hNb, -⟩` from `hb`. Conclude with `⟨LinearEquiv.refl ℂ W, fun σ v => by rw [hρ]; rfl, fun v => by rw [hNa, hNb]; rfl⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem IsFSS.iso {ρ : Representation ℂ ↥(Weil h) W} {N : End ℂ W} {a b : WDRep h W}
     (ha : IsFSS ρ N a) (hb : IsFSS ρ N b) : a.Iso b := by
@@ -268,11 +266,11 @@ theorem IsFSS.iso {ρ : Representation ℂ ↥(Weil h) W} {N : End ℂ W} {a b :
   exact ⟨LinearEquiv.refl ℂ W, fun σ v => by rw [hρ]; rfl, fun v => by rw [hNa, hNb]; rfl⟩
 
 /- English proof (translation)
-Take `⟨u, hN0, hu, huN, huρ, hρa⟩` from `ha`. Set `c : End ℂ W ≃ₐ[ℂ] End ℂ W'` to `e.conjAlgEquiv ℂ`. Use `⟨Units.map (c : End ℂ W →* End ℂ W') u, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `show c a.N = N'`. Rewrite using `[hN0, hN]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `hu.map c` as an intermediate fact. Rewrite `this` using `[map_sub, map_one]`. Then use the resulting hypothesis. Rewrite using `[hN]`. Conclude with `huN.map c`. Introduce `σ`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hρ]`. Conclude with `(huρ σ).map c`. Introduce `σ`. Rewrite using `[hρ, hρa σ, map_mul, ← map_zpow]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem IsFSS.transport {ρ : Representation ℂ ↥(Weil h) W} {N : End ℂ W} {a : WDRep h W} (ha : IsFSS ρ N a)
     (e : W ≃ₗ[ℂ] W') {ρ' : Representation ℂ ↥(Weil h) W'} {N' : End ℂ W'}
@@ -327,7 +325,7 @@ Both sides reduce to the same expression.
 @[simp] theorem resRep_N (a : WDRep h V) : (resRep h h' a).N = a.N := rfl
 
 /- English proof (translation)
-Take `⟨e, h1, h2⟩` from `hab`. Conclude with `⟨e, fun σ v => h1 _ v, h2⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem iso_resRep {a : WDRep h V} {b : WDRep h V'} (hab : a.Iso b) : (resRep h h' a).Iso (resRep h h' b) := by
   obtain ⟨e, h1, h2⟩ := hab
@@ -337,7 +335,7 @@ def WD.res : WD h → WD h' :=
   Quotient.map (fun a => ⟨a.1, resRep h h' a.2⟩) (fun _ _ hab => iso_resRep h h' hab)
 
 /- English proof (translation)
-Use `show Quotient.mk _ (⟨_, resRep h h' (WD.std a).2⟩ : Σ n : ℕ, WDRep h' (Fin n → ℂ)) = _`. Rewrite using `[WD.quotientMk_eq]`. Conclude with `WD.sound (iso_resRep h h' (WD.iso_std a).symm)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem WD.res_mk (a : WDRep h V) : WD.res h h' (WD.mk a) = WD.mk (resRep h h' a) := by
   show Quotient.mk _ (⟨_, resRep h h' (WD.std a).2⟩ : Σ n : ℕ, WDRep h' (Fin n → ℂ)) = _
@@ -345,11 +343,9 @@ theorem WD.res_mk (a : WDRep h V) : WD.res h h' (WD.mk a) = WD.mk (resRep h h' a
   exact WD.sound (iso_resRep h h' (WD.iso_std a).symm)
 
 /- English proof (translation)
-Take `⟨u, hN0, hu, huN, huρ, hρa⟩` from `ha`. Use `⟨u ^ resF h h', hN0, ?_, ?_, fun σ => ?_, fun σ => ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_pow_eq_pow_val, ← geom_sum_mul]`. Use `Commute.isNilpotent_mul_left ?_ hu` and prove the remaining obligations. Conclude with `Commute.sum_left _ _ _ fun i _ => ((Commute.refl (u : End ℂ V)).sub_right (Commute.one_right _)).pow_left i`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Units.val_pow_eq_pow_val]`. Conclude with `huN.pow_left _`. Rewrite using `[Units.val_pow_eq_pow_val]`. Conclude with `(huρ _).pow_left _`. Use `show ρ (resW h h' σ) = a.ρ (resW h h' σ) * _`.
-
-Rewrite using `[hρa, deg_resW, ← zpow_natCast, ← zpow_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsFSS.res {ρ : Representation ℂ ↥(Weil h) V} {N : End ℂ V} {a : WDRep h V} (ha : IsFSS ρ N a) :
     IsFSS (ρ.comp (resW h h')) N (resRep h h' a) := by
@@ -414,13 +410,13 @@ end LetterMaps
 section Intertwine
 
 /- English proof (translation)
-Establish `hpow : ∀ (v : (End R M₁)ˣ) (v' : (End R M₂)ˣ), (∀ x, (v' : End R M₂) (T x) = T ((v : End R M₁) x)) → ∀ (k : ℕ) x, ((v' ^ k : (End R M₂)ˣ) : End R M₂) (T x) = T (((v ^ k : (End R M₁)ˣ) : End R M₁) x)`. Introduce `v v' hv k`. Proceed by induction on `k with`. Consider the case `zero => intro x`. Both sides reduce to the same expression.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Both sides reduce to the same expression.
 
-Consider the case `succ k ih`. Introduce `x`. Rewrite using `[pow_succ, pow_succ, Units.val_mul, Units.val_mul, End.mul_apply, End.mul_apply, hv, ih]`. Establish `hinv : ∀ x, ((u'⁻¹ : (End R M₂)ˣ) : End R M₂) (T x) = T (((u⁻¹ : (End R M₁)ˣ) : End R M₁) x)`. Introduce `x`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e1` using `hu (((u⁻¹ : (End R M₁)ˣ) : End R M₁) x)`. Rewrite `e1` using `[← End.mul_apply (u : End R M₁), Units.mul_inv, End.one_apply]`. Rewrite using `[← e1, ← End.mul_apply, Units.inv_mul, End.one_apply]`. Consider the cases of `n with`. Consider the case `ofNat k => rw [Int.ofNat_eq_natCast, zpow_natCast, zpow_natCast]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Conclude with `hpow u u' hu k x`. Consider the case `negSucc k => rw [zpow_negSucc, zpow_negSucc, ← inv_pow, ← inv_pow]`. Conclude with `hpow _ _ hinv (k + 1) x`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem zpow_intertwine {R M₁ M₂ : Type*} [CommSemiring R] [AddCommMonoid M₁] [Module R M₁] [AddCommMonoid M₂]
     [Module R M₂] (T : M₁ →ₗ[R] M₂) (u : (End R M₁)ˣ) (u' : (End R M₂)ˣ)
@@ -456,9 +452,9 @@ def IsResBridge (Bw : LocBridge l E Ω (Dec (F := E) A) O) (Bw' : LocBridge l E'
   ∀ g : ↥(Dec (F := E') A), ((Bw'.e g : ↥(GK Bw'.Kw)) : GQ l) = ((Bw.e (resDec E A g) : ↥(GK Bw.Kw)) : GQ l)
 
 /- English proof (translation)
-Introduce `x hx`. Rewrite using `[← InfiniteGalois.fixedField_fixingSubgroup Bw'.Kw.1]`. Introduce `g'`. Take `⟨d, hd⟩` from `Bw'.e.surjective ⟨g'.1, g'.2⟩`. Establish `e1 : (g'.1 : GQ l) = ((Bw.e (resDec E A d) : ↥(GK Bw.Kw)) : GQ l)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← hc d, hd]`. Use `show (g'.1 : GQ l) x = x`. Rewrite using `[e1]`. Conclude with `(Bw.e (resDec E A d)).2 ⟨x, hx⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsResBridge.Kw_le {Bw : LocBridge l E Ω (Dec (F := E) A) O} {Bw' : LocBridge l E' Ω (Dec (F := E') A) O'}
     (hc : IsResBridge Bw Bw') : Bw.Kw.1 ≤ Bw'.Kw.1 := by
@@ -485,11 +481,9 @@ variable {l : ℕ} [Fact l.Prime] (P : LocPrime l) (ι : Om l ≃+* ℂ)
   (Bw : LocBridge l E Ω (Dec (F := E) A) O) (h : IsPlaceOver A w) (hj : Induces Bw)
 
 /- English proof (translation)
-Establish `hρ : ∀ σ, wdRho P ι Bw h hj ρ₂ σ = e.conjAlgEquiv ℂ (wdRho P ι Bw h hj ρ₁ σ)` using `fun σ => by ext1 y`. Rewrite using `[LinearEquiv.conjAlgEquiv_apply]`. Use `show _ = e (wdRho P ι Bw h hj ρ₁ σ (e.symm y))`. Use `conv_lhs => rw [← e.apply_symm_apply y]`. Conclude with `(hΦρ σ _).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hN : wdN P ι ρ₂ = e.conjAlgEquiv ℂ (wdN P ι ρ₁)` using `by ext1 y`. Rewrite using `[LinearEquiv.conjAlgEquiv_apply]`. Use `show _ = e (wdN P ι ρ₁ (e.symm y))`. Use `conv_lhs => rw [← e.apply_symm_apply y]`. Conclude with `(hΦN _).symm`.
-
-Establish `h1 : IsFSS (wdRho P ι Bw h hj ρ₂) (wdN P ι ρ₂) (wdRep P ι Bw h hj ρ₂)` using `wdRep_spec P ι Bw h hj ρ₂`. Establish `h2 : IsFSS (wdRho P ι Bw h hj ρ₁) (wdN P ι ρ₁) (wdRep P ι Bw h hj ρ₁)` using `wdRep_spec P ι Bw h hj ρ₁`. Conclude with `((h1.iso (h2.transport e hρ hN)).trans (WDRep.iso_transport _ _).symm).symm`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem wdRep_iso_of_equiv {L₁ L₂ : FinExt l}
     {V₁ V₂ : Type} [AddCommGroup V₁] [Module ↥L₁.1 V₁] [Module ℚ_[l] V₁] [IsScalarTower ℚ_[l] ↥L₁.1 V₁]
@@ -517,13 +511,13 @@ theorem wdRep_iso_of_equiv {L₁ L₂ : FinExt l}
   exact ((h1.iso (h2.transport e hρ hN)).trans (WDRep.iso_transport _ _).symm).symm
 
 /- English proof (translation)
-Establish `hT : ∀ (a : ↥L₁.1) (x : ↥(Dpst P ρ₁)), dQ P hf (a • x) = s a • dQ P hf x` using `fun a x => Subtype.ext (tensQ_smul P s hfs a x.1)`. Use `letI := algC ι L₁`. Use `letI := algC ι L₂`. Take `⟨Φ, hΦmk, hΦρ, hΦN⟩ : ∃ Φ : WDSpace P ι ρ₁ →ₗ[ℂ] WDSpace P ι ρ₂, (∀ x, Φ (wdMk P ι ρ₁ x) = wdMk P ι ρ₂ (dQ P hf x)) ∧ (∀ σ y, Φ (wdRho P ι Bw h hj ρ₁ σ y) = wdRho P ι Bw h hj ρ₂ σ (Φ y)) ∧ (∀ y, Φ (wdN P ι ρ₁ y) = wdN P ι ρ₂ (Φ y))` from `⟨chg (mulD P ρ₁) (mulD P ρ₂) ℂ (urC ι) s (fun a => congrArg ι (hs a)) (dQ P hf) hT (dQ_mulD P hf), fun x => chg_mk _ _ _ _ _ _ _ _ _ x, fun σ y => chg_letterMap _ _ _ _ _ _ _ _ _ _ (weilD_mulD Bw h P ρ₁ hj σ) _ (weilD_mulD Bw h P ρ₂ hj σ) (dQ_weilD P Bw h hf σ) y, fun y => chg_le …`. Establish `hsurj : Function.Surjective Φ`.
+Establish an intermediate fact. Equip the data with the indicated structure. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← LinearMap.range_eq_top, eq_top_iff, ← span_wdMk P ι ρ₂, Submodule.span_le]`. Introduce and unpack `_ ⟨x, rfl⟩`. Establish `hx : x = ∑ j, b j • dQ P hf (dQ P (hπ j) x)`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul, coe_dQ]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Conclude with `(sum_tensQ P b π hsum x.1).symm`. Establish `hms` using `map_sum (AddMonoidHom.mk' (wdMk P ι ρ₂) (wdMk_add P ι ρ₂)) (fun j => b j • dQ P hf (dQ P (hπ j) x)) Finset.univ`. Simplify using `only [AddMonoidHom.mk'_apply] at hms`. Rewrite using `[hx, hms]`. Use `Submodule.sum_mem _ fun j _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[wdMk_smul]`. Conclude with `Submodule.smul_mem _ _ ⟨wdMk P ι ρ₁ (dQ P (hπ j) x), hΦmk _⟩`. Establish `hinj : Function.Injective Φ` using `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank hdim).mpr hsurj`. Conclude with `wdRep_iso_of_equiv P ι Bw h hj (LinearEquiv.ofBijective Φ ⟨hinj, hsurj⟩) hΦρ hΦN`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem wdRep_iso_of_coord {L₁ L₂ : FinExt l}
     {V₁ V₂ : Type} [AddCommGroup V₁] [Module ↥L₁.1 V₁] [Module ℚ_[l] V₁] [IsScalarTower ℚ_[l] ↥L₁.1 V₁]
@@ -569,9 +563,9 @@ theorem wdRep_iso_of_coord {L₁ L₂ : FinExt l}
   exact wdRep_iso_of_equiv P ι Bw h hj (LinearEquiv.ofBijective Φ ⟨hinj, hsurj⟩) hΦρ hΦN
 
 /- English proof (translation)
-Establish `hV₂` using `GlobalTheory.PstExt.isPst_enlarge P Bw hL r₁ hV₁`. Use `haveI := hV₁.finite`. Use `haveI := hV₂.finite`. Take `⟨n, b, π, hπ, hsum⟩` from `exists_decomp hL (m := m)`. Establish `hf : ∀ g v, incV hL m (Bw.repE L₁ r₁ g v) = Bw.repE L₂ (Formalism.MainNotions.N.mapRep (IntermediateField.inclusion hL).toRingHom r₁) g (incV hL m v)` using `fun g v => incV_mulVec hL _ v`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hπ' : ∀ (j : Fin n) (g : ↥(GK Bw.Kw)) (v : Fin m → ↥L₂.1), π j (Bw.repE L₂ (Formalism.MainNotions.N.mapRep (IntermediateField.inclusion hL).toRingHom r₁) g v) = Bw.repE L₁ r₁ g (π j v)` using `fun j g v => hπ j (r₁ (Bw.e.symm g) : Matrix (Fin m) (Fin m) ↥L₁.1) v`. Establish `hdim : finrank ℂ (WDSpace P ι (Bw.repE L₁ r₁)) = finrank ℂ (WDSpace P ι (Bw.repE L₂ (Formalism.MainNotions.N.mapRep (IntermediateField.inclusion hL).toRingHom r₁)))` using `(GlobalTheory.Pst.LetterDim.finrank_wdSpace l P ι Bw.Kw L₁ _ _ hV₁).trans ((Module.finrank_fin_fun _).trans ((Module.finrank_fin_fun _).symm.trans (GlobalTheory.Pst.LetterDim.finrank_wdSpace l P ι Bw.Kw L₂ _ _ hV₂).symm))`. Rewrite using `[wdPst_of_isPst ι Bw h hj hV₂, wdPst_of_isPst ι Bw h hj hV₁]`. Conclude with `(WD.sound (wdRep_iso_of_coord P ι Bw h hj (IntermediateField.inclusion hL).toRingHom (fun _ => rfl) hf (incV_smul hL) b π hπ' hsum hdim)).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wdPst_enlarge {m : ℕ} {L₁ L₂ : FinExt l} (hL : L₁.1 ≤ L₂.1)
     (r₁ : ↥(Dec (F := E) A) →* GL (Fin m) ↥L₁.1) (hV₁ : IsPst P (Bw.repE L₁ r₁)) :
@@ -647,7 +641,7 @@ Both sides reduce to the same expression.
       wdMk P ι ρ ((dpstRes P Bw Bw' hc ρ).symm x) := rfl
 
 /- English proof (translation)
-Use `wd_ext P ι (resTo ρ hc.Kw_le) fun x => ?_` and prove the remaining obligations. Rewrite using `[LinearEquiv.conjAlgEquiv_apply, LinearMap.comp_apply, LinearMap.comp_apply]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem wdN_res : wdN P ι (resTo ρ hc.Kw_le) = (wdRes P ι Bw Bw' hc ρ).conjAlgEquiv ℂ (wdN P ι ρ) := by
   refine wd_ext P ι (resTo ρ hc.Kw_le) fun x => ?_
@@ -657,7 +651,7 @@ theorem wdN_res : wdN P ι (resTo ρ hc.Kw_le) = (wdRes P ι Bw Bw' hc ρ).conjA
 include hc in
 
 /- English proof (translation)
-Establish `e : resDec E A (Subgroup.inclusion (Weil_le_Dec h') σ) = Subgroup.inclusion (Weil_le_Dec h) (resW h h' σ)`. Both sides reduce to the same expression. Use `show ((Bw'.e _ : ↥(GK Bw'.Kw)) : GQ l) = ((Bw.e _ : ↥(GK Bw.Kw)) : GQ l)`. Rewrite using `[hc, e]`.
+Establish an intermediate fact. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem weilToGK_res (σ : ↥(Weil h')) :
     ((weilToGK Bw' h' σ : ↥(GK Bw'.Kw)) : GQ l) = ((weilToGK Bw h (resW h h' σ) : ↥(GK Bw.Kw)) : GQ l) := by
@@ -669,7 +663,7 @@ theorem weilToGK_res (σ : ↥(Weil h')) :
 include hj in
 
 /- English proof (translation)
-Establish `hl : 1 < l` using `(Fact.out : l.Prime).one_lt`. Establish `e : resDeg l w' = resDeg l w * resF h h'`. Rewrite using `[resDeg, normV_eq_pow_resF h h', normV_eq_pow (hj.mem_placesOver h), ← pow_mul, Nat.log_pow hl]`. Rewrite using `[alpha, alpha, deg_resW, e]`. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -683,7 +677,7 @@ theorem alpha_resW (σ : ↥(Weil h')) : alpha l (resW h h' σ) = alpha l σ := 
 variable [FiniteDimensional ↥(MaximalUnramifiedExtension l) (DpstUr P ρ)] [FiniteDimensional ↥(MaximalUnramifiedExtension l) (DpstUr P (resTo ρ hc.Kw_le))]
 
 /- English proof (translation)
-The claim follows from `zpow_intertwine (dpstRes P Bw Bw' hc ρ).toLinearMap (phiU P ρ) (phiU P (resTo ρ hc.Kw_le)) (fun _ => Subtype.ext rfl) n x`.
+A detailed English derivation is pending.
 -/
 theorem phiU_zpow_res (n : ℤ) (x : ↥(Dpst P ρ)) :
     ((phiU P (resTo ρ hc.Kw_le) ^ n : (End ↥LL.1 ↥(Dpst P (resTo ρ hc.Kw_le)))ˣ) :
@@ -695,9 +689,9 @@ theorem phiU_zpow_res (n : ℤ) (x : ↥(Dpst P ρ)) :
 include hj in
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Establish `e2` using `congrArg Subtype.val (phiU_zpow_res P Bw Bw' hc ρ (-alpha l σ) x)`. Establish `e3` using `alpha_resW Bw h h' hj σ`. Establish `e : Subgroup.inclusion (GK_le hc.Kw_le) (weilToGK Bw' h' σ) = weilToGK Bw h (resW h h' σ)` using `Subtype.ext (weilToGK_res Bw Bw' h h' hc σ)`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[e2]`. Both sides reduce to the same expression. Use `_ = stRep P ρ (weilToGK Bw h (resW h h' σ)) ((((phiU P ρ ^ (-alpha l (resW h h' σ)) : (End ↥LL.1 ↥(Dpst P ρ))ˣ) : End ↥LL.1 ↥(Dpst P ρ)) x : ↥(Dpst P ρ)) : V ⊗[ℚ_[l]] Bst P) := by`. Rewrite using `[e, e3]`. Use `_ = _ := rfl`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem weilD_res (σ : ↥(Weil h')) (x : ↥(Dpst P ρ)) :
     weilD Bw' h' P (resTo ρ hc.Kw_le) σ (dpstRes P Bw Bw' hc ρ x) =
@@ -724,7 +718,7 @@ theorem weilD_res (σ : ↥(Weil h')) (x : ↥(Dpst P ρ)) :
     _ = _ := rfl
 
 /- English proof (translation)
-Use `wd_ext P ι (resTo ρ hc.Kw_le) fun x => ?_` and prove the remaining obligations. Simplify using `only [LinearEquiv.conjAlgEquiv_apply, LinearMap.comp_apply, LinearEquiv.coe_coe]`. Rewrite using `[wdRes_symm_mk, wdRho_mk, wdRho_mk, wdRes_mk, ← weilD_res P Bw Bw' h h' hj hc, LinearEquiv.apply_symm_apply]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem wdRho_res (σ : ↥(Weil h')) :
     wdRho P ι Bw' h' hj' (resTo ρ hc.Kw_le) σ =
@@ -737,9 +731,9 @@ theorem wdRho_res (σ : ↥(Weil h')) :
 end Res
 
 /- English proof (translation)
-Establish `hV' : IsPst P (resTo ρ hc.Kw_le)` using `(GlobalTheory.PstLaws.isPst_resTo_iff P ρ hc.Kw_le).mpr hV`. Use `haveI := hV.finite`. Use `haveI := hV'.finite`. Rewrite using `[wdPst_of_isPst ι Bw' h' hj' hV', wdPst_of_isPst ι Bw h hj hV, WD.res_mk]`. Use `WD.sound ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : IsFSS (wdRho P ι Bw' h' hj' (resTo ρ hc.Kw_le)) (wdN P ι (resTo ρ hc.Kw_le)) (wdRep P ι Bw' h' hj' (resTo ρ hc.Kw_le))` using `wdRep_spec P ι Bw' h' hj' (resTo ρ hc.Kw_le)`. Establish `h2 : IsFSS ((wdRho P ι Bw h hj ρ).comp (resW h h')) (wdN P ι ρ) (resRep h h' (wdRep P ι Bw h hj ρ))` using `IsFSS.res h h' (wdRep_spec P ι Bw h hj ρ)`. Establish `h3` using `h2.transport (wdRes P ι Bw Bw' hc ρ) (wdRho_res P ι Bw Bw' h h' hj hj' hc ρ) (wdN_res P ι Bw Bw' hc ρ)`. Conclude with `(h1.iso h3).trans (WDRep.iso_transport _ _).symm`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem wdPst_resTo (hc : IsResBridge Bw Bw') {LL : FinExt l} {V : Type} [AddCommGroup V] [Module ↥LL.1 V]
     [Module ℚ_[l] V] [IsScalarTower ℚ_[l] ↥LL.1 V] [FiniteDimensional ↥LL.1 V]
@@ -759,7 +753,7 @@ theorem wdPst_resTo (hc : IsResBridge Bw Bw') {LL : FinExt l} {V : Type} [AddCom
   exact (h1.iso h3).trans (WDRep.iso_transport _ _).symm
 
 /- English proof (translation)
-Establish `l₁ : LL₁.1 ≤ (supExt LL₁ LL₂).1` using `le_sup_left`. Establish `l₂ : LL₂.1 ≤ (supExt LL₁ LL₂).1` using `le_sup_right`. Establish `e` using `IsModel.unique Bw r (m₁.enlarge l₁) (m₂.enlarge l₂)`. Rewrite using `[← wdPst_enlarge P ι Bw h hj l₁ r₁ p₁, ← wdPst_enlarge P ι Bw h hj l₂ r₂ p₂, e]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem wdPst_model_eq {a : ℕ} {r : ↥(Dec (F := E) A) →* GL (Fin a) (Om l)} {LL₁ LL₂ : FinExt l}
     {r₁ : ↥(Dec (F := E) A) →* GL (Fin a) ↥LL₁.1} {r₂ : ↥(Dec (F := E) A) →* GL (Fin a) ↥LL₂.1}
@@ -773,15 +767,15 @@ theorem wdPst_model_eq {a : ℕ} {r : ↥(Dec (F := E) A) →* GL (Fin a) (Om l)
     ← wdPst_enlarge P ι Bw h hj l₂ r₂ p₂, e]
 
 /- English proof (translation)
-Take `⟨LL₁, r₁, hm₁, hp₁, e₁⟩` from `wdAt_of_isPstAt ι Bw h hj hr`. Establish `l₁ : LL₁.1 ≤ (supExt LL₁ Bw'.LL).1` using `le_sup_left`. Establish `l₂ : Bw'.LL.1 ≤ (supExt LL₁ Bw'.LL).1` using `le_sup_right`. Take `⟨r₃, hr₃⟩ : ∃ r₃, r₃ = Formalism.MainNotions.N.mapRep (IntermediateField.inclusion l₁).toRingHom r₁` from `⟨_, rfl⟩`. Establish `hm₃ : IsModel Bw r (supExt LL₁ Bw'.LL) r₃` using `hr₃ ▸ hm₁.enlarge l₁`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hp₃ : IsPst P (Bw.repE (supExt LL₁ Bw'.LL) r₃)` using `hr₃ ▸ GlobalTheory.PstExt.isPst_enlarge P Bw l₁ r₁ hp₁`. Establish `key : ∀ g' : ↥(GK Bw'.Kw), resDec E A (Bw'.e.symm g') = Bw.e.symm (Subgroup.inclusion (GK_le hc.Kw_le) g')`. Introduce `g'`. Apply `Bw.e.injective` to reduce the goal to its premises. Rewrite using `[MulEquiv.apply_symm_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[← hc (Bw'.e.symm g'), MulEquiv.apply_symm_apply]`. Both sides reduce to the same expression. Establish `heq : Bw'.repE (supExt LL₁ Bw'.LL) (r₃.comp (resDec E A)) = resTo (Bw.repE (supExt LL₁ Bw'.LL) r₃) hc.Kw_le`. Use `MonoidHom.ext fun g' => ?_` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [LocBridge.repE, resTo, MonoidHom.coe_comp, Function.comp_apply, MulEquiv.coe_toMonoidHom]`. Rewrite using `[key]`. Establish `hm' : IsModel Bw' (r.comp (resDec E A)) (supExt LL₁ Bw'.LL) (r₃.comp (resDec E A))` using `⟨l₂, by rw [← hm₃.2]; rfl⟩`. Establish `hp' : IsPst P (Bw'.repE (supExt LL₁ Bw'.LL) (r₃.comp (resDec E A)))`. Rewrite using `[heq]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(GlobalTheory.PstLaws.isPst_resTo_iff P _ hc.Kw_le).mpr hp₃`. Establish `hr' : IsPstAt P Bw' (r.comp (resDec E A))` using `⟨_, _, hm', hp'⟩`. Use `⟨hr', ?_⟩` and prove the remaining obligations. Take `⟨LL₄, r₄, hm₄, hp₄, e₄⟩` from `wdAt_of_isPstAt ι Bw' h' hj' hr'`. Rewrite using `[e₄, e₁, wdPst_model_eq P ι Bw' h' hj' hm₄ hm' hp₄ hp', heq, wdPst_resTo P ι Bw Bw' h h' hj hj' hc _ hp₃, hr₃, wdPst_enlarge P ι Bw h hj l₁ r₁ hp₁]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wdAt_res (hc : IsResBridge Bw Bw') {a : ℕ} (r : ↥(Dec (F := E) A) →* GL (Fin a) (Om l))
     (hr : IsPstAt P Bw r) :

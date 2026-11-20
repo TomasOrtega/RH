@@ -32,13 +32,13 @@ private theorem coe_circArgChar_eq_div_norm {G : Type} [Group G] (ν : G →* �
   rfl
 
 /- English proof (translation)
-Introduce `G _ ν x h`. Establish `hx0 : (ν x : ℂ) ≠ 0` using `(ν x).ne_zero`. Establish `hpos : 0 < ‖(ν x : ℂ)‖` using `norm_pos_iff.mpr hx0`. Establish `hn : ‖(ν x : ℂ)‖ = 1`. Assume the negation of the conclusion as `hne`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hlog : Real.log ‖(ν x : ℂ)‖ ≠ 0` using `Real.log_ne_zero_of_pos_of_ne_one hpos hne`. Establish `h2` using `h (circNormChar ν (Real.pi / Real.log ‖(ν x : ℂ)‖)) (fun g hg => by`. Simplify using `[circNormChar, hg])`. Establish `h3` using `congrArg (fun z : Circle => (z : ℂ)) h2`. Simplify using `only [circNormChar, MonoidHom.coe_mk, OneHom.coe_mk, Circle.coe_exp, div_mul_cancel₀ _ hlog, Circle.coe_one] at h3`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Evaluate the numerical expressions using `[Complex.exp_pi_mul_I] at h3`. Establish `h1` using `h (circArgChar ν) (fun g hg => by`. Apply `Circle.ext` to reduce the goal to its premises. Rewrite using `[coe_circArgChar_eq_div_norm, hg]`. Use the proof step `simp)`.
+Evaluate the numerical expressions. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h4` using `congrArg (fun z : Circle => (z : ℂ)) h1`. Simplify using `only [coe_circArgChar_eq_div_norm, Circle.coe_one, hn, Complex.ofReal_one, div_one] at h4`. Apply `Units.ext` to reduce the goal to its premises. Simplify using `using h4`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem complexChar_eq_one_of_forall_circleChar :
     ∀ {G : Type} [Group G] (ν : G →* ℂˣ) (x : G),

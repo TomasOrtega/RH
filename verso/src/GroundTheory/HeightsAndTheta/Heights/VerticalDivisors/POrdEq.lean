@@ -9,14 +9,14 @@ open MvPolynomial NumberField IsDedekindDomain
 noncomputable section
 
 /- English proof (translation)
-The claim follows from `(Ideal.finite_minimalPrimes_of_isNoetherianRing _ _).subset fun _ hW => hW.1`.
+A detailed English derivation is pending.
 -/
 theorem specComps_finite {K : Type*} [Field K] [NumberField K] {n : ℕ}
     (I : Ideal (MvPolynomial (Fin n) K)) (v : HeightOneSpectrum (𝓞 K)) : (specComps I v).Finite :=
   (Ideal.finite_minimalPrimes_of_isNoetherianRing _ _).subset fun _ hW => hW.1
 
 /- English proof (translation)
-The claim follows from `(Ideal.finite_minimalPrimes_of_isNoetherianRing _ _).subset fun _ hW => hW.1.1`.
+A detailed English derivation is pending.
 -/
 theorem vertComps_finite' {K : Type*} [Field K] [NumberField K] {n : ℕ}
     (I : Ideal (MvPolynomial (Fin n) K)) (u : Fin n → 𝓞 K) (v : HeightOneSpectrum (𝓞 K)) :
@@ -26,23 +26,21 @@ theorem vertComps_finite' {K : Type*} [Field K] [NumberField K] {n : ℕ}
 open Classical in
 
 /- English proof (translation)
-Introduce `K _ _ n e I g u v hI hf hu hprim`. Use `hdvr K e n v` as an intermediate fact. Use `set f := g.map (algebraMap (𝓞 K) K)`. Use `set ℓ := secLin (modelR e I v) (parY e n v) (fun j => algebraMap (𝓞 K) (ParDVR e n v) (u j))`. Take `⟨w, hw⟩` from `hni K n e I g u v hI hf hu hprim`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hw, Ring.ord_mul_of_isUnit_left w.isUnit]`. Establish `hfinB : Module.Finite (ParDVR e n v) (SecB e I v)` using `hfin K n e I f v hI hf`. Establish `htfB : Module.IsTorsionFree (ParDVR e n v) (SecB e I v)` using `Module.IsTorsionFree.of_smul_eq_zero fun r b h => by`. Distinguish the cases in `hr : r = 0`. Conclude with `Or.inl hr`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Prove the first alternative. Prove the second alternative. Establish an intermediate fact.
 
-Conclude with `Or.inr (htf K n e I v hI r b hr h)`. Establish `hfreeB : Module.Free (ParDVR e n v) (SecB e I v)` using `Module.free_of_finite_type_torsion_free'`. Establish `hℓ : Function.Injective fun b : SecB e I v => ℓ * b` using `hinj K n e I f u v hI hf hu`. Rewrite using `[hnl _ _ ℓ hℓ]`. Establish `hN0 : Algebra.norm (ParDVR e n v) ℓ ≠ 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Algebra.norm_apply, Ne, LinearMap.det_eq_zero_iff_ker_ne_bot, not_not, LinearMap.ker_eq_bot]`. Conclude with `hℓ`. Establish `hfinite : Module.length (ParDVR e n v) (SecB e I v ⧸ Ideal.span {ℓ}) ≠ ⊤`. Rewrite using `[← hnl _ _ ℓ hℓ]`. Conclude with `Ring.ord_ne_top (mem_nonZeroDivisors_of_ne_zero hN0)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hld _ _ ℓ hfinite]`. Take `⟨hmax1, hmax2⟩` from `hmax K n e I f v hI hf`. Use `choose W hW hWu using fun 𝔫 : MaximalSpectrum (SecB e I v) => hmax2 𝔫.asIdeal 𝔫.isMaximal`. Use `set G : Ideal (MvPolynomial (Fin n) (𝓞 K)) → ℕ∞ := fun W => (if linForm u ∈ W then (localMult (integralModel I ⊔ Ideal.span {linForm u}) W : ℕ∞) else 0) * (chowDegree (reduceMod v W) (e + 1) : ℕ∞) with hG`. Establish `hbij : Set.BijOn W Set.univ (specComps I v)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun 𝔫 _ => (hW 𝔫).1, fun 𝔫₁ _ 𝔫₂ _ h => ?_, fun W' hW' => ?_⟩` and prove the remaining obligations. Apply `MaximalSpectrum.ext` to reduce the goal to its premises. Rewrite using `[← (hW 𝔫₁).2, ← (hW 𝔫₂).2, h]`. Use `⟨⟨secIdealOf e I v W', hmax1 W' hW'⟩, Set.mem_univ _, ?_⟩` and prove the remaining obligations. Conclude with `(hWu _ W' ⟨hW', rfl⟩).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[← finsum_mem_univ, finsum_mem_eq_of_bijOn W hbij (g := G) fun 𝔫 _ => by`. Rewrite using `[hlen K n e I f u v hI hf hu 𝔫 (W 𝔫) (hW 𝔫).1 (hW 𝔫).2, ← (hW 𝔫).2, hres K n e I f v hI hf (W 𝔫) (hW 𝔫).1]]`. Establish `hs` using `specComps_finite I v`. Establish `hv` using `vertComps_finite' I u v`. Rewrite using `[finsum_mem_eq_finite_toFinset_sum _ hs, vertDeg, Nat.cast_finsum_mem hv, finsum_mem_eq_finite_toFinset_sum _ hv]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hset : hv.toFinset = hs.toFinset.filter fun W => linForm u ∈ W`. Use extensionality with `W`. Simplify using `[hvs K n e I f u v hI hf hu]`. Rewrite using `[hset, Finset.sum_filter]`. Use `Finset.sum_congr rfl fun W _ => ?_` and prove the remaining obligations.
-
-Simplify using `only [hG]`. Apply the tactic sequence `split_ifs <;> simp`.
+A detailed English derivation is pending.
 -/
 theorem OrdEq.proof (hni : NormIdentity.Statement) (hnl : NormLength.Statement)
     (hld : LengthDecomp.Statement) (hmax : SpecMax.Statement) (hlen : SpecLength.Statement)

@@ -10,15 +10,15 @@ open scoped InnerProductSpace ComplexOrder
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.S
 
 /- English proof (translation)
-Establish `h` using `congrFun (congrFun hg a) a`. Unfold `Formalism.REAL.Jm at h`. Rewrite `h` using `[Matrix.mul_apply]`. Simplify using `only [Matrix.mul_diagonal, Matrix.conjTranspose_apply, Matrix.diagonal_apply_eq] at h`. Set `s : Fin n → ℝ` to `fun j => if ε j then 1 else -1`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Establish `h' : ((∑ j, s j * ‖g j a‖ ^ 2 : ℝ) : ℂ) = ((s a : ℝ) : ℂ)`. Apply the tactic sequence `have e2 : ((s a : ℝ) : ℂ) = if ε a = true then 1 else -1 := by show (((if ε a then 1 else -1 : ℝ)) : ℂ) = _ split_ifs <;> simp`. Rewrite using `[e2, ← h]`. Use `push_cast`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `j _`. Rewrite using `[← Complex.conj_mul' (g j a)]`. Use `show (((if ε j then 1 else -1 : ℝ)) : ℂ) * _ = _`. Apply the tactic sequence `split_ifs <;> simp`. Establish `h'' : ∑ j, s j * ‖g j a‖ ^ 2 = s a` using `by exact_mod_cast h'`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `have hs1 : s a * s a = 1 := by show (if ε a then (1 : ℝ) else -1) * (if ε a then (1 : ℝ) else -1) = 1 split_ifs <;> norm_num`. Establish `hle : ∀ j, s a * s j ≤ 1`. Introduce `j`. Use `show (if ε a then (1 : ℝ) else -1) * (if ε j then (1 : ℝ) else -1) ≤ 1`. Apply the tactic sequence `split_ifs <;> norm_num`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Chain the equalities or inequalities of the calculation. Replace the relevant objects with their definitions.
 
-Combine the equalities or inequalities in the displayed calculation. Unfold `Formalism.REAL.hs`. Conclude with `Finset.sum_le_sum (fun i _ => Finset.single_le_sum (f := fun j => ‖g i j‖ ^ 2) (fun j _ => by positivity) (Finset.mem_univ a))`.
+A detailed English derivation is pending.
 -/
 theorem one_le_hilbert_schmidt_of_mem {n : ℕ} (ε : Fin n → Bool) (g : Matrix (Fin n) (Fin n) ℂ) (hg : Formalism.REAL.inUJ ε g) (a : Fin n) :
     1 ≤ Formalism.REAL.hs g := by
@@ -55,13 +55,11 @@ theorem one_le_hilbert_schmidt_of_mem {n : ℕ} (ε : Fin n → Bool) (g : Matri
           Finset.single_le_sum (f := fun j => ‖g i j‖ ^ 2) (fun j _ => by positivity) (Finset.mem_univ a))
 
 /- English proof (translation)
-Establish `a1 : P.conjTranspose * P = 1` using `Matrix.mem_unitaryGroup_iff'.1 hP.2`. Establish `a2 : P * P.conjTranspose = 1` using `Matrix.mem_unitaryGroup_iff.1 hP.2`. Establish `iP : P⁻¹ = P.conjTranspose` using `Matrix.inv_eq_left_inv a1`. Establish `gJ : g.conjTranspose * Formalism.REAL.Jm ε * g = Formalism.REAL.Jm ε` using `(Formalism.REAL.maximal_compact_facts _ ε).1 g hg`. Rewrite using `[iP]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Use `show (P.conjTranspose * g * P).conjTranspose * Formalism.QuantumDeterminants.Hpk k r * (P.conjTranspose * g * P) = Formalism.QuantumDeterminants.Hpk k r`. Rewrite using `[← hP.1.2]`. Simplify using `only [Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose]`. Combine the equalities or inequalities in the displayed calculation.
+Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mul_assoc]`. Use `_ = P.conjTranspose * Formalism.REAL.Jm ε * P := by`. Rewrite using `[a2, Matrix.one_mul, Matrix.mul_one, gJ, Matrix.mul_assoc]`. Establish `hs : P.conjTranspose ∈ Matrix.unitaryGroup (Fin (2 * r + k + 1)) ℂ`. Rewrite using `[← Matrix.star_eq_conjTranspose]`.
-
-Conclude with `Unitary.star_mem hP.2`. Conclude with `mul_mem (mul_mem hs hg.1) hP.2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem compact_to_unitary_hermitian (k r : ℕ) (ε : Fin (2 * r + k + 1) → Bool)
     (P g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) (hP : IsCayleyU k r ε P)

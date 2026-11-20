@@ -122,12 +122,12 @@ def DictF {eps : ℝ} (Fm : FamP eps) : Prop := ∃ x0 : ℝ, ∀ x ≥ x0, ∀ 
 def DictClosed (𝒞 : FamClass) : Prop := Closed 𝒞 fun Fm _ => DictF Fm
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 example (φ : D.host.E →+* ℂ) : φ ∈ typeU D true ↔ (starRingEnd ℂ).comp φ ∈ typeU D false := Iff.rfl
 
 /- English proof (translation)
-Introduce `_ _` and use `rfl`.
+Fix the arbitrary inputs and assume any hypotheses. Both sides reduce to the same expression.
 -/
 example (ρ : D.what₂.Tau) : Induces D (embOf D ρ) ρ := fun _ _ => rfl
 

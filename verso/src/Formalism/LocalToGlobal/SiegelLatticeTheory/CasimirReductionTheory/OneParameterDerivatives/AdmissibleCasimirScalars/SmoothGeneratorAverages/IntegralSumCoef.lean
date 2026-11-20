@@ -18,9 +18,9 @@ namespace CoefficientIntegrals
 variable {n : ℕ} {ε : Fin n → Bool} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
 
 /- English proof (translation)
-Establish `h1 : coefOn σ v v g = ⟪v, v⟫_ℂ + ⟪v, σ (umat g) v - v⟫_ℂ`. Simplify using `[coefOn, inner_sub_right]`. Establish `h2 : ‖⟪v, σ (umat g) v - v⟫_ℂ‖ ≤ 1 / 2`. Combine the equalities or inequalities in the displayed calculation. Establish `h4` using `(abs_le.1 ((Complex.abs_re_le_norm _).trans h2)).1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `h5 : (⟪v, v⟫_ℂ).re = 1`. Use `inner_self_eq_norm_sq (𝕜 := ℂ) v` as an intermediate fact. Rewrite `this` using `[hv]`. Simplify using `using this`. Rewrite using `[h1, Complex.add_re, h5]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -43,9 +43,9 @@ def sumCoef {ι : Type} [Fintype ι] (σ : Matrix (Fin n) (Fin n) ℂ → (H →
   ∑ i, coefOn σ (v i) (v i) g
 
 /- English proof (translation)
-Unfold `sumCoef`. Rewrite using `[Complex.re_sum]`. Establish `hi : ∀ i, (1 / 2 : ℝ) ≤ (coefOn σ (v i) (v i) g).re` using `fun i => re_coef_ge (hv.1 i) (hg _ (hW i))`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ _ := Finset.sum_le_sum fun i _ => hi i`.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem re_sumCoef_ge {ι : Type} [Fintype ι] {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} {W : Submodule ℂ H}
     {v : ι → H} (hv : Orthonormal ℂ v) (hW : ∀ i, v i ∈ W) {g : UJ ε}
@@ -61,15 +61,15 @@ theorem re_sumCoef_ge {ι : Type} [Fintype ι] {σ : Matrix (Fin n) (Fin n) ℂ 
     _ ≤ _ := Finset.sum_le_sum fun i _ => hi i
 
 /- English proof (translation)
-Establish `hexp : (fun g : UJ ε => sumCoef σ v g * star (sumCoef σ v g)) = fun g => ∑ i, ∑ j, coefOn σ (v i) (v i) g * star (coefOn σ (v j) (v j) g)`. Use function extensionality and compare the values at `g`. Unfold `sumCoef`. Rewrite using `[star_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.mul_sum]`. Establish `hint : ∀ i j, Integrable (fun g => coefOn σ (v i) (v i) g * star (coefOn σ (v j) (v j) g)) (muG ε)` using `fun i j => (hd.2 _ _ _ _).1`. Establish `hij : ∀ i j, ∫ g, coefOn σ (v i) (v i) g * star (coefOn σ (v j) (v j) g) ∂(muG ε) = if i = j then 1 / (d : ℂ) else 0`. Introduce `i j`. Rewrite using `[(hd.2 _ _ _ _).2, orthonormal_iff_ite.mp hv j i, orthonormal_iff_ite.mp hv i j]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h, Ne.symm h]`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hexp]`. Conclude with `integrable_finset_sum _ fun i _ => integrable_finset_sum _ fun j _ => hint i j`. Rewrite using `[hexp, integral_finset_sum _ fun i _ => integrable_finset_sum _ fun j _ => hint i j]`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `integral_finset_sum _ fun j _ => hint i j`. Use `_ = _ := by`. Simplify using `only [hij, Finset.sum_ite_eq, Finset.mem_univ, if_true, Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem integral_sumCoef {ι : Type} [Fintype ι] [DecidableEq ι] {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)}
     {d : ℝ} (hd : IsFdeg (muG ε) σ d) {v : ι → H} (hv : Orthonormal ℂ v) :
@@ -106,19 +106,19 @@ theorem integral_sumCoef {ι : Type} [Fintype ι] [DecidableEq ι] {σ : Matrix 
           ring
 
 /- English proof (translation)
-Use `set m := (Fintype.card ι : ℝ) with hmdef`. Take `⟨hint, hval⟩` from `integral_sumCoef hd hv`. Set `f : UJ ε → ℝ` to `fun g => (sumCoef σ v g * star (sumCoef σ v g)).re`. Establish `hfint : Integrable f (muG ε)` using `hint.re`. Establish `hfn : ∀ g, f g = Complex.normSq (sumCoef σ v g)` using `fun g => by`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[f, Complex.star_def, Complex.mul_conj]`. Establish `hf0 : ∀ g, 0 ≤ f g` using `fun g => by rw [hfn]; exact Complex.normSq_nonneg _`. Establish `hm0 : 0 ≤ m` using `by positivity`. Establish `hK' : ∀ g ∈ K, (m / 2) ^ 2 ≤ f g`. Introduce `g hg`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1` using `re_sumCoef_ge hv hW (hK g hg)`. Rewrite using `[hfn, Complex.normSq_apply]`. Use polynomial arithmetic with `[sq_nonneg (sumCoef σ v g).im]`. Establish `hset : (m / 2) ^ 2 * (muG ε).real K ≤ ∫ g in K, f g ∂(muG ε)`. Use `setIntegral_ge_of_const_le hKm hKf hK' hfint.integrableOn` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[smul_eq_mul, mul_comm]`. Then use the resulting hypothesis. Establish `hle : ∫ g in K, f g ∂(muG ε) ≤ ∫ g, f g ∂(muG ε)` using `setIntegral_le_integral hfint (Filter.Eventually.of_forall hf0)`. Establish `htot : ∫ g, f g ∂(muG ε) = m / d` using `by show ∫ g, (sumCoef σ v g * star (sumCoef σ v g)).re ∂(muG ε) = m / d`. Establish `hc : ((Fintype.card ι : ℂ) / (d : ℂ)) = ((m / d : ℝ) : ℂ)`. Rewrite using `[hmdef]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hr` using `integral_re hint`. Simplify using `only [RCLike.re_to_complex] at hr`. Rewrite using `[hr, hval, hc, Complex.ofReal_re]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hd0` using `hd.1`. Break down `eq_or_lt_of_le hm0 with h0 | hpos` into its components or cases. Rewrite using `[← h0]`. Conclude with `div_nonneg (by norm_num) (mul_pos hd0 hKpos).le`. Rewrite using `[le_div_iff₀ (mul_pos hd0 hKpos)]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA : (m / 2) ^ 2 * (muG ε).real K ≤ m / d` using `(hset.trans hle).trans_eq htot`. Establish `hB : (m / 2) ^ 2 * (muG ε).real K * d ≤ m`. Use `mul_le_mul_of_nonneg_right hA hd0.le` as an intermediate fact. Rewrite `this` using `[div_mul_cancel₀ _ hd0.ne']`. Then use the resulting hypothesis. Use polynomial arithmetic with `[hB, hpos, mul_pos hd0 hKpos]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem card_le {ι : Type} [Fintype ι] {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} {d : ℝ}
     (hd : IsFdeg (muG ε) σ d) {W : Submodule ℂ H} {K : Set (UJ ε)} (hKm : MeasurableSet K)
@@ -170,17 +170,17 @@ end CoefficientIntegrals
 
 open CoefficientIntegrals in
 /- English proof (translation)
-Introduce `n ε H _ _ _ σ _ d hd W U hU hUW`. Use `haveI : (muG ε).IsHaarMeasure := by unfold muG; infer_instance`. Take `⟨K, hKn, hKU, hKc⟩` from `local_compact_nhds hU`. Establish `hKm : MeasurableSet K` using `hKc.isClosed.measurableSet`. Establish `hKf : muG ε K ≠ ⊤` using `hKc.measure_lt_top.ne`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hKpos : 0 < (muG ε).real K` using `ENNReal.toReal_pos (Measure.measure_pos_of_mem_nhds (muG ε) hKn).ne' hKf`. Establish `hbound : ∀ (m : ℕ) (v : Fin m → H), Orthonormal ℂ v → (∀ i, v i ∈ W) → (m : ℝ) ≤ 4 / (d * (muG ε).real K)`. Introduce `m v hv hvW`. Simplify using `using card_le hd hKm hKf hKpos (fun g hg => hUW g (hKU hg)) hv hvW`. Assume the negation of the conclusion as `hfin`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Take `⟨m, hm⟩` from `exists_nat_gt (4 / (d * (muG ε).real K))`. Set `bW` to `Module.Basis.ofVectorSpace ℂ W`. Establish `hI : (Module.Basis.ofVectorSpaceIndex ℂ W).Infinite`. Introduce `hfinI`. Use `haveI : Finite (Module.Basis.ofVectorSpaceIndex ℂ W) := hfinI.to_subtype`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Conclude with `hfin (Module.Finite.of_basis bW)`. Take `⟨t, htsub, htcard⟩` from `hI.exists_subset_card_eq m`. Set `u : t → W` to `fun x => bW ⟨x.1, htsub x.2⟩`. Establish `hu : LinearIndependent ℂ u` using `bW.linearIndependent.comp _ (fun a b h => Subtype.ext (by simpa using congrArg Subtype.val h))`. Set `F : Submodule ℂ W` to `Submodule.span ℂ (Set.range u)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `haveI : FiniteDimensional ℂ F := FiniteDimensional.span_of_finite ℂ (Set.finite_range u)`. Establish `hF : Module.finrank ℂ F = m`. Rewrite using `[finrank_span_eq_card hu]`. Simplify using `[htcard]`. Set `ob` to `stdOrthonormalBasis ℂ F`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Set `v : Fin (Module.finrank ℂ F) → H` to `fun i => ((ob i : F) : W)`. Apply the tactic sequence `have hv : Orthonormal ℂ v := (ob.orthonormal.comp_linearIsometry F.subtypeₗᵢ).comp_linearIsometry W.subtypeₗᵢ`. Establish `h` using `hbound _ v hv (fun i => ((ob i : F) : W).2)`. Rewrite `h` using `[hF]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem c7 : FormalDegreeFiniteDim := by
   intro n ε H _ _ _ σ _ d hd W U hU hUW

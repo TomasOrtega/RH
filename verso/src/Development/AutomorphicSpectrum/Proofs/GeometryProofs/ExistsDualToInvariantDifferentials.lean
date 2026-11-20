@@ -13,26 +13,26 @@ open CategoryTheory Limits AlgebraicGeometry MonoidalCategory CartesianMonoidalC
 open GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.BT
 
 /- English proof (translation)
-Simplify using `[valAt]`.
+Simplify using the standard rewrite rules.
 -/
 theorem valAt_sub_one {B : Type} [CommRing B] {X : Scheme.{0}} (y : Spec (CommRingCat.of B) ⟶ X) (a : Γ(X, ⊤)) :
     valAt y ⊤ le_top (a - 1) = valAt y ⊤ le_top a - 1 := by
   simp [valAt]
 
 /- English proof (translation)
-Introduce `R _ _ _ _ T _ _ Γ S G _ _ x N i ht hsm L _ _ M`. Take `⟨θ, hsurj, hker, hpin⟩` from `Tan.omega_canon R T Γ S G x N i ht hsm L M`. Take `⟨j, hj, -⟩` from `GlobalTheory.T.existsUnique_btOrder_embedding R T Γ`. Establish `hex` using `fun e : L => (TanLift.tangent_mod_torsion R T Γ S G x N i ht L M e).exists`. Establish `hsec : ∀ f : Γ.btOrder ⊤, ∃ s, Γ.HasValues s (f : T → R)` using `fun f => ⟨j.appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of (Γ.btOrder ⊤))).inv.hom f), fun t => ValEmb.valAt_pull j (Γ.pt t).left _ (hj.pt t) f⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `pin : ∀ (f : augIdeal (Γ.btOrder ⊤)) (w : Module.Dual R L), θ w = (augIdeal (Γ.btOrder ⊤)).toCotangent f ↔ Γ.IsDerAtOne i M N (f.1.1 : T → R) w`. Introduce `f w`. Establish `h0 : (f.1.1 : T → R) 1 = 0` using `f.2`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨s, hs⟩` from `hsec f.1`. Use `⟨s, hs, fun e => ?_⟩` and prove the remaining obligations. Take `⟨v, a, b⟩` from `hex e`. Use `⟨v, a, b, ?_⟩` and prove the remaining obligations. Rewrite using `[(hpin f w s hs).1 h e v a b, h0]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Introduce and unpack `⟨s, hs, hv⟩`. Use `(hpin f w s hs).2 fun e v a b => ?_` and prove the remaining obligations. Take `⟨v', a', b', c'⟩` from `hv e`. Take `rfl` from `(TanLift.tangent_mod_torsion R T Γ S G x N i ht L M e).unique ⟨a, b⟩ ⟨a', b'⟩`.
+Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[c', h0]`. Simplify using the standard rewrite rules. Use `⟨θ, ⟨hsurj, pin⟩, hker, ?_⟩` and prove the remaining obligations. Introduce and unpack `χ w ⟨s, hs, hv⟩`. Establish `hχ : (fun t => ((χ t : Rˣ) : R)) ∈ Γ.btOrder ⊤` using `char_mem_hopfOrder R T _ (GlobalTheory.T.btOrder_isHopfOrder_noetherian R T Γ) χ`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite using `[OrderApi.dlogChar_of_mem _ χ hχ]`. Use `(pin _ w).2 ⟨s - 1, fun t => ?_, fun e => ?_⟩` and prove the remaining obligations. Rewrite using `[valAt_sub_one, hs t]`. Simplify using the standard rewrite rules. Take `⟨v, a, b, c⟩` from `hv e`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Use `⟨v, a, b, ?_⟩` and prove the remaining obligations. Rewrite using `[valAt_sub_one, c]`. Apply the tactic sequence `refine TrivSqZeroExt.ext ?_ ?_ <;> simp`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem omega_isDerAtOne : ∀ (R : Type) [CommRing R] [IsDomain R] [IsIntegrallyClosed R] [IsNoetherianRing R] (T : Type) [CommGroup T] [Finite T] (Γ : QFGroup R T) (S : Scheme.{0}) (G : Over S) [GrpObj G] [IsCommMonObj G] (x : Spec (CommRingCat.of R) ⟶ S) (N : ℕ) (i : Γ.G.left ⟶ G.left), Γ.IsTorsionAlong G x N i → Smooth G.hom → ∀ (L : Type) [AddCommGroup L] [Module R L] (M : LieModel G x L), ∃ θ : Module.Dual R L →ₗ[R] omega (Γ.btOrder ⊤), (Function.Surjective θ ∧ ∀ (f : augIdeal (Γ.btOrder ⊤)) (w : Module.Dual R L), θ w = (augIdeal (Γ.btOrder ⊤)).toCotangent f ↔ Γ.IsDerAtOne i M N (f.1.1 : T → R) w) ∧ (∀ w, θ w = 0 ↔ ∃ u, w = N • u) ∧ ∀ (χ : T →* Rˣ) (w : Module.Dual R L), Γ.IsHT i M N χ w → θ w = dlogChar (Γ.btOrder ⊤) χ := by
   intro R _ _ _ _ T _ _ Γ S G _ _ x N i ht hsm L _ _ M

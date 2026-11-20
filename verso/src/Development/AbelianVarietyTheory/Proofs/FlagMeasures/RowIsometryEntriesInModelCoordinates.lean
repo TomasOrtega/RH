@@ -12,7 +12,7 @@ end GlobalTheory.SnMass.VolN
 open NumberField IsDedekindDomain MeasureTheory Matrix in
 open scoped TensorProduct ENNReal nonZeroDivisors in
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [mul_apply, vecMulVec_apply, mulVec, vecMul, dotProduct, Finset.sum_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun p _ => Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 private lemma mul_vecMulVec_mul_flag_measures {n : Type} [Fintype n] (M N : Matrix n n ℂ) (u v : n → ℂ) :
     M * vecMulVec u v * N = vecMulVec (M *ᵥ u) (v ᵥ* N) := by
@@ -24,9 +24,9 @@ private lemma mul_vecMulVec_mul_flag_measures {n : Type} [Fintype n] (M N : Matr
 open NumberField IsDedekindDomain MeasureTheory Matrix in
 open scoped TensorProduct ENNReal nonZeroDivisors in
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Rewrite using `[single_one_vecMul]`. Express the relevant statement in the definitionally equal form `_root_.Formalism.QuantumDeterminants.Hpk k r (_root_.Formalism.QuantumDeterminants.eI k r a) j = (Pi.single (_root_.Formalism.QuantumDeterminants.esI k r a) (1 : ℂ) : _ → ℂ) j`. Unfold `_root_.Formalism.QuantumDeterminants.Hpk _root_.Formalism.QuantumDeterminants.eI _root_.Formalism.QuantumDeterminants.esI`. Simplify using `only [Pi.single_apply, Fin.ext_iff, Fin.val_mk]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Establish `ha` using `a.isLt`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega)`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private lemma single_vecMul_Hpk_eI (k r : ℕ) (a : Fin r) :
     Pi.single (_root_.Formalism.QuantumDeterminants.eI k r a) 1 ᵥ* _root_.Formalism.QuantumDeterminants.Hpk k r = Pi.single (_root_.Formalism.QuantumDeterminants.esI k r a) (1 : ℂ) := by
@@ -42,17 +42,17 @@ open NumberField IsDedekindDomain MeasureTheory Matrix in
 open scoped TensorProduct ENNReal nonZeroDivisors in
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ k r J Λ P f T A s hD a y t w i j`. Take `⟨hσ, -, hJ, -, -, -, -, hA, -, hAd⟩` from `hD`. Use `set x : Fin (2 * r + k + 1) → ℂ := fun l => w.embedding (P l a.castSucc) with hx_def`. Use `set v : Fin (2 * r + k + 1) → ℂ := fun l => w.embedding (y l) with hv_def`. Establish `hconj : ∀ z : E, w.embedding (σ z) = star (w.embedding z)` using `fun z => hσ.2.2.2 w.embedding z`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hiso : (A w)ᴴ * _root_.Formalism.QuantumDeterminants.Hpk k r * A w = J.map w.embedding` using `hA w`. Establish `hAx : A w *ᵥ x = (s a : ℂ) • _root_.Formalism.QuantumDeterminants.bvec (_root_.Formalism.QuantumDeterminants.eI k r a)` using `(hAd w a).1`. Establish `hdet : IsUnit (A w).det`. Establish `h1 : (J.map w.embedding).det ≠ 0`. Rewrite using `[show (J.map w.embedding).det = w.embedding J.det from (RingHom.map_det _ _).symm]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(map_ne_zero _).2 hJ.2`. Rewrite `h1` using `[← hiso, det_mul, det_mul]`. Conclude with `isUnit_iff_ne_zero.2 (right_ne_zero_of_mul h1)`. Establish `hinv : A w * (A w)⁻¹ = 1` using `mul_nonsing_inv _ hdet`. Establish `hrow : ∀ u : Fin (2 * r + k + 1) → ℂ, star u ᵥ* J.map w.embedding ᵥ* (A w)⁻¹ = star (A w *ᵥ u) ᵥ* _root_.Formalism.QuantumDeterminants.Hpk k r`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Introduce `u`. Rewrite using `[← hiso, vecMul_vecMul, Matrix.mul_assoc, hinv, Matrix.mul_one, ← vecMul_vecMul, ← star_mulVec]`. Establish `hmap : (_root_.GlobalTheory.SnMass.VolN.rowE (σ : E →+* E) J (fun l => P l a.castSucc) y t).map w.embedding = 1 + vecMulVec (v + w.embedding t • x) (star x ᵥ* J.map w.embedding) - vecMulVec x (star v ᵥ* J.map w.embedding)`. Use extensionality with `p q`. Simplify using `[_root_.GlobalTheory.SnMass.VolN.rowE, vecMulVec_apply, vecMul, dotProduct, map_sum, hconj, one_apply, x, v]`.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `_root_.GlobalTheory.SnMass.VolN.gM`. Rewrite using `[hmap, Matrix.mul_sub, Matrix.mul_add, Matrix.sub_mul, Matrix.add_mul, Matrix.mul_one, hinv, mul_vecMulVec_mul_flag_measures, mul_vecMulVec_mul_flag_measures, hrow, hrow, mulVec_add, mulVec_smul, hAx]`. Establish `hstar : star ((s a : ℂ) • _root_.Formalism.QuantumDeterminants.bvec (_root_.Formalism.QuantumDeterminants.eI k r a)) ᵥ* _root_.Formalism.QuantumDeterminants.Hpk k r = (s a : ℂ) • Pi.single (_root_.Formalism.QuantumDeterminants.esI k r a) 1`. Unfold `_root_.Formalism.QuantumDeterminants.bvec`. Rewrite using `[star_smul, ← Pi.single_star, star_one, smul_vecMul, single_vecMul_Hpk_eI, Complex.star_def, Complex.conj_ofReal]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hstar]`. Unfold `_root_.Formalism.QuantumDeterminants.herm _root_.Formalism.QuantumDeterminants.bvec`. Rewrite using `[dotProduct_mulVec, dotProduct_single_one]`. Simplify using `only [Matrix.add_apply, Matrix.sub_apply, vecMulVec_apply, Pi.add_apply, Pi.smul_apply, smul_eq_mul, Pi.single_apply, one_apply]`. Apply the tactic sequence `split_ifs <;> ring`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.SnMass.VolN.rowE_entries : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (k r : ℕ) (J : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) E) (Λ : Submodule (𝓞 E) (Fin (2 * r + k + 1) → E)) (P : Matrix (Fin (2 * r + k + 1)) (Fin (r + 1)) E) (f : Matrix (Fin (2 * r + k + 1)) (Fin r) E) (T : F) (A : InfinitePlace E → Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) (s : Fin r → ℝ), _root_.GlobalTheory.SnMass.VolN.IsVolData σ J Λ P f T A s → ∀ (a : Fin r) (y : Fin (2 * r + k + 1) → E) (t : E) (w : InfinitePlace E) (i j : Fin (2 * r + k + 1)), _root_.GlobalTheory.SnMass.VolN.gM A (_root_.GlobalTheory.SnMass.VolN.rowE (σ : E →+* E) J (fun i => P i a.castSucc) y t) w i j = (if i = j then 1 else 0) + (if j = _root_.Formalism.QuantumDeterminants.esI k r a then (s a : ℂ) * (((A w).mulVec fun l => w.embedding (y l)) i + (if i = _root_.Formalism.QuantumDeterminants.eI k r a then (s a : ℂ) * w.embedding t else 0)) else 0) - (if i = _root_.Formalism.QuantumDeterminants.eI k r a then (s a : ℂ) * _root_.Formalism.QuantumDeterminants.herm (_root_.Formalism.QuantumDeterminants.Hpk k r) (_root_.Formalism.QuantumDeterminants.bvec j) ((A w).mulVec fun l => w.embedding (y l)) else 0) := by
   intro F E _ _ _ _ _ σ k r J Λ P f T A s hD a y t w i j

@@ -6,7 +6,7 @@ noncomputable section
 namespace Formalism.MainNotions.ModuliIntegralCharts.H1
 
 /- English proof (translation)
-The claim follows from `LinEig.linEig_holds`.
+A detailed English derivation is pending.
 -/
 theorem linEigSt_holds : LinEigSt := LinEig.linEig_holds
 

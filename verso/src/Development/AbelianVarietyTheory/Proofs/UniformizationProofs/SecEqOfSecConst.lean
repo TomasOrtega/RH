@@ -22,31 +22,31 @@ section Const
 variable {X Y Y' : Scheme.{0}} {J J' J'' : Type} [Fintype J] [Fintype J'] [Fintype J'']
 
 /- English proof (translation)
-The claim follows from `map_one _`.
+A detailed English derivation is pending.
 -/
 theorem gv_one (V : Y.Opens) : gv 1 V = 1 := map_one _
 
 /- English proof (translation)
-Rewrite using `[hx, map_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem res_eq_one {U V : Y.Opens} (h : V ≤ U) {x : Γ(Y, U)ˣ} (hx : x = 1) : res h x = 1 := by
   rw [hx, map_one]
 
 /- English proof (translation)
-Rewrite using `[hx, map_one, map_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem res_pullU_eq_one (f : Y' ⟶ Y) {U : Y.Opens} {V : Y'.Opens} (h : V ≤ f ⁻¹ᵁ U) {x : Γ(Y, U)ˣ}
     (hx : x = 1) : res h (pullU f U x) = 1 := by
   rw [hx, map_one, map_one]
 
 /- English proof (translation)
-Rewrite using `[ha, hb, _root_.mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mul_eq_one_of {M : Type} [Monoid M] {a b : M} (ha : a = 1) (hb : b = 1) : a * b = 1 := by
   rw [ha, hb, _root_.mul_one]
 
 /- English proof (translation)
-Introduce `i j`. Simplify using `only [LB.div, linComb_triv_g, map_one, inv_one, _root_.mul_one]`. Conclude with `(res_eq_one _ rfl).trans (mul_eq_one_of rfl (res_eq_one _ rfl)).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem one_isGen_div {X' : Scheme.{0}} (φ : J → (Y ⟶ X)) (ε : J → ℤ) (φ' : J' → (Y ⟶ X')) (ε' : J' → ℤ) :
     (⟨fun _ => 1⟩ : LB.Gen (LB.div (LB.LinComb (trivLB X) φ ε) (LB.LinComb (trivLB X') φ' ε'))).IsGen := by
@@ -55,7 +55,7 @@ theorem one_isGen_div {X' : Scheme.{0}} (φ : J → (Y ⟶ X)) (ε : J → ℤ) 
   exact (res_eq_one _ rfl).trans (mul_eq_one_of rfl (res_eq_one _ rfl)).symm
 
 /- English proof (translation)
-Unfold `charUnit`. Use `res_pullU_eq_one _ _ ?_` and prove the remaining obligations. Rewrite using `[ofAdd_zero, map_one, map_one, map_one]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem charUnit_zero (S : Scheme.{0}) (M : Type) [AddCommGroup M] : charUnit S M 0 = 1 := by
   unfold charUnit
@@ -71,26 +71,26 @@ def cs (φ : J → (Y ⟶ X)) (ε : J → ℤ) (a : Γ(Y, ⊤)) : LB.Sec (LB.Lin
     rw [linComb_triv_g, Units.val_one, _root_.one_mul, DVR.SecOps.resTop_res, DVR.SecOps.resTop_res]
 
 /- English proof (translation)
-Introduce `_` and use `rfl`.
+Fix the arbitrary inputs and assume any hypotheses. Both sides reduce to the same expression.
 -/
 theorem cs_const (φ : J → (Y ⟶ X)) (ε : J → ℤ) (a : Γ(Y, ⊤)) : SecConst (cs φ ε a) a := fun _ => rfl
 
 /- English proof (translation)
-Rewrite using `[Subsingleton.elim (homOfLE h) (𝟙 U), op_id, CategoryTheory.Functor.map_id]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem map_self {U : Y.Opens} (h : U ≤ U) (x : Γ(Y, U)) : (Y.presheaf.map (homOfLE h).op).hom x = x := by
   rw [Subsingleton.elim (homOfLE h) (𝟙 U), op_id, CategoryTheory.Functor.map_id]
   rfl
 
 /- English proof (translation)
-Substitute `hV` using the available equality. Rewrite `h` using `[resTop, resTop, map_self, map_self]`. Then use the resulting hypothesis.
+Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem resTop_inj {V : Y.Opens} (hV : V = ⊤) {a b : Γ(Y, ⊤)} (h : resTop V a = resTop V b) : a = b := by
   subst hV
   rwa [resTop, resTop, map_self, map_self] at h
 
 /- English proof (translation)
-Use `⟨(Y.presheaf.map (homOfLE (wchart_triv φ (fun _ => PUnit.unit)).ge).op).hom (s.f (fun _ => PUnit.unit)), fun j => ?_⟩` and prove the remaining obligations. Take `rfl : j = fun _ => PUnit.unit` from `rfl`. Conclude with `((map_map _ _ _).trans (map_self _ _)).symm`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_secConst {φ : J → (Y ⟶ X)} {ε : J → ℤ} (s : LB.Sec (LB.LinComb (trivLB X) φ ε)) :
     ∃ a, SecConst s a := by
@@ -100,26 +100,26 @@ theorem exists_secConst {φ : J → (Y ⟶ X)} {ε : J → ℤ} (s : LB.Sec (LB.
   exact ((map_map _ _ _).trans (map_self _ _)).symm
 
 /- English proof (translation)
-The claim follows from `DVR.SecOps.sec_ext fun j => (hs j).trans (ht j).symm`.
+A detailed English derivation is pending.
 -/
 theorem sec_eq_of_secConst {L : LB Y} {s t : LB.Sec L} {a : Γ(Y, ⊤)} (hs : SecConst s a)
     (ht : SecConst t a) : s = t :=
   DVR.SecOps.sec_ext fun j => (hs j).trans (ht j).symm
 
 /- English proof (translation)
-The claim follows from `app_res' f a V`.
+A detailed English derivation is pending.
 -/
 theorem app_resTop (f : Y' ⟶ Y) (V : Y.Opens) (a : Γ(Y, ⊤)) :
     (f.app V).hom (resTop V a) = resTop (f ⁻¹ᵁ V) (f.appTop.hom a) := app_res' f a V
 
 /- English proof (translation)
-The claim follows from `map_mul _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem resTop_mul (V : Y.Opens) (a b : Γ(Y, ⊤)) : resTop V (a * b) = resTop V a * resTop V b :=
   map_mul _ _ _
 
 /- English proof (translation)
-Rewrite using `[hu, hx, map_one, Units.val_one, one_pow, _root_.one_mul, app_resTop, DVR.SecOps.resTop_res]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem unit_pow_mul_app (f : Y' ⟶ Y) {U : Y.Opens} {V W : Y'.Opens} (h : W ≤ V) (h' : W ≤ f ⁻¹ᵁ U)
     {u : Γ(Y', V)ˣ} (hu : u = 1) {x : Γ(Y, U)} {a : Γ(Y, ⊤)} (hx : x = resTop U a) (k : ℕ) :
@@ -128,7 +128,7 @@ theorem unit_pow_mul_app (f : Y' ⟶ Y) {U : Y.Opens} {V W : Y'.Opens} (h : W �
   rw [hu, hx, map_one, Units.val_one, one_pow, _root_.one_mul, app_resTop, DVR.SecOps.resTop_res]
 
 /- English proof (translation)
-Rewrite using `[hu, hx, map_one, Units.val_one, _root_.mul_one, app_resTop, DVR.SecOps.resTop_res]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem app_mul_unit (f : Y' ⟶ Y) {U : Y.Opens} {V W : Y'.Opens} (h : W ≤ V) (h' : W ≤ f ⁻¹ᵁ U)
     {u : Γ(Y', V)ˣ} (hu : u = 1) {x : Γ(Y, U)} {a : Γ(Y, ⊤)} (hx : x = resTop U a) :
@@ -137,9 +137,7 @@ theorem app_mul_unit (f : Y' ⟶ Y) {U : Y.Opens} {V W : Y'.Opens} (h : W ≤ V)
   rw [hu, hx, map_one, Units.val_one, _root_.mul_one, app_resTop, DVR.SecOps.resTop_res]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `H`. Use `H (fun _ => PUnit.unit) (fun _ => PUnit.unit) (fun _ _ _ => rfl)` as an intermediate fact. Use `erw [ha, hb, app_resTop, DVR.SecOps.resTop_res, DVR.SecOps.resTop_res, ← resTop_mul] at this`. Conclude with `resTop_inj (top_unique (le_inf (wchart_triv _ _).ge (wchart_triv _ _).ge)) this`.
-
-Introduce `H j₁ j₂ _ erw [ha, hb, app_resTop, DVR.SecOps.resTop_res, DVR.SecOps.resTop_res, ← resTop_mul, H]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem secScal_iff {φ₁ : J → (Y' ⟶ X)} {ε₁ : J → ℤ} {s₁ : LB.Sec (LB.LinComb (trivLB X) φ₁ ε₁)}
     {φ₂ : J' → (Y ⟶ X)} {ε₂ : J' → ℤ} {s₂ : LB.Sec (LB.LinComb (trivLB X) φ₂ ε₂)} {a : Γ(Y', ⊤)}
@@ -154,7 +152,7 @@ theorem secScal_iff {φ₁ : J → (Y' ⟶ X)} {ε₁ : J → ℤ} {s₁ : LB.Se
     erw [ha, hb, app_resTop, DVR.SecOps.resTop_res, DVR.SecOps.resTop_res, ← resTop_mul, H]
 
 /- English proof (translation)
-Introduce `j₁ j₂ j₃ _`. Use `erw [ha, hb, hu, app_resTop, DVR.SecOps.resTop_res, DVR.SecOps.resTop_res, H]`. Use `erw [gv_one, Units.val_one, map_one, _root_.mul_one]`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem secRel_of {φ₁ : J → (Y' ⟶ X)} {ε₁ : J → ℤ} {s₁ : LB.Sec (LB.LinComb (trivLB X) φ₁ ε₁)}
     {φ₂ : J' → (Y ⟶ X)} {ε₂ : J' → ℤ} {s₂ : LB.Sec (LB.LinComb (trivLB X) φ₂ ε₂)} {a : Γ(Y', ⊤)}
@@ -169,14 +167,14 @@ theorem secRel_of {φ₁ : J → (Y' ⟶ X)} {ε₁ : J → ℤ} {s₁ : LB.Sec 
 variable {A B : Type} [CommRing A] [CommRing B]
 
 /- English proof (translation)
-Simplify using `only [scal, Scheme.Hom.comp_appTop, CommRingCat.hom_comp, RingHom.comp_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem appTop_scal (f : Y' ⟶ Y) (p : Y ⟶ Spec (CommRingCat.of A)) (r : A) :
     f.appTop.hom (scal p r) = scal (f ≫ p) r := by
   simp only [scal, Scheme.Hom.comp_appTop, CommRingCat.hom_comp, RingHom.comp_apply]
 
 /- English proof (translation)
-Establish `nat` using `congrArg (fun g => g.hom r) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom φ))`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply, CommRingCat.hom_ofHom] at nat`. Rewrite using `[← appTop_scal, scal, scal, nat]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem scal_specMap (p : Y ⟶ Spec (CommRingCat.of B)) (φ : A →+* B) (r : A) :
     scal (p ≫ Spec.map (CommRingCat.ofHom φ)) r = scal p (φ r) := by
@@ -185,19 +183,19 @@ theorem scal_specMap (p : Y ⟶ Spec (CommRingCat.of B)) (φ : A →+* B) (r : A
   rw [← appTop_scal, scal, scal, nat]
 
 /- English proof (translation)
-Simplify using `only [scal, map_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem scal_mul (p : Y ⟶ Spec (CommRingCat.of A)) (r s : A) : scal p (r * s) = scal p r * scal p s := by
   simp only [scal, map_mul]
 
 /- English proof (translation)
-Simplify using `only [scal, map_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem scal_zero (p : Y ⟶ Spec (CommRingCat.of A)) : scal p 0 = 0 := by
   simp only [scal, map_zero]
 
 /- English proof (translation)
-The claim follows from `(ConcreteCategory.bijective_of_isIso (p.app ⊤)).comp (ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of A)).inv)`.
+A detailed English derivation is pending.
 -/
 theorem scal_bijective (p : Y ⟶ Spec (CommRingCat.of A)) [IsIso p] : Function.Bijective (scal p) :=
   (ConcreteCategory.bijective_of_isIso (p.app ⊤)).comp
@@ -245,7 +243,7 @@ def zeroGt (e : ℕ) : GtCoord I (zeroData R I).toPre e (𝟙_ (Over (Spec (Comm
       ((isConst_pullGen (cg_isConst _ _ 1) _).of_eq (map_one _))).of_eq (_root_.mul_one _))
 
 /- English proof (translation)
-The claim follows from `Category.id_comp _`.
+A detailed English derivation is pending.
 -/
 theorem zeroGt_pG (e : ℕ) :
     (zeroGt R I e).pG.left = pullback.fst (𝟙_ (Over (Spec (CommRingCat.of R)))).hom (thick R I e) :=
@@ -287,19 +285,17 @@ def zeroPre : UnifPre I (zeroData R I) (zeroPolAV (Spec (CommRingCat.of (Fractio
 variable {R I}
 
 /- English proof (translation)
-Set `p` to `pullback.fst (𝟙_ (Over (Spec (CommRingCat.of R)))).hom (thick R I e)`. Set `q` to `pullback.snd (𝟙_ (Over (Spec (CommRingCat.of R)))).hom (thick R I e)`. Use `haveI : IsIso q := (inferInstance : IsIso (pullback.snd (𝟙 _) (thick R I e)))`. Establish `hp : ∀ x : R, scal p x = scal q (Ideal.Quotient.mk _ x)` using `fun x => by`. Rewrite using `[← scal_specMap]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `congrArg (scal · x) ((Category.comp_id _).symm.trans pullback.condition)`. Establish `hG : ∀ x : R, (fstG I e (𝟙_ _)).left.appTop.hom (scal (𝟙 _) x) = scal p x` using `fun x => (appTop_scal _ _ _).trans (congrArg (scal · x) (Category.comp_id _))`. Establish `hB : ∀ x : R, ((zeroPre R I).gt e).pG.left.appTop.hom (scal (𝟙 _) x) = scal p x` using `fun x => (appTop_scal _ _ _).trans (congrArg (scal · x) ((Category.comp_id _).trans (zeroGt_pG R I e)))`. Rewrite using `[← Ideal.Quotient.eq, ← (scal_bijective q).1.eq_iff, ← hp, ← hp]`. Establish `hpre : ∀ {Y Y' : Scheme.{0}} (g : Y' ⟶ Y) {U : Y.Opens}, U = ⊤ → ⊤ ≤ g ⁻¹ᵁ U`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `_ _ g _ rfl`. Conclude with `le_rfl`. Establish `key : ∀ S p' j₁ jf jt, (zeroPre R I).expW e p' j₁ S jf jt = ⊤` using `fun S p' j₁ jf jt => top_unique (le_inf (le_inf (le_inf (wchart_triv _ _).ge (wchart_triv _ _).ge) (hpre _ (wchart_triv _ _))) (Finset.le_inf fun α _ => le_inf (hpre _ (wchart_triv _ _)) (wchart_triv _ _).ge))`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨S, h0, h⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `h (fun _ => PUnit.unit, fun _ => PUnit.unit) (fun _ => PUnit.unit) (fun _ _ => PUnit.unit) (fun _ _ => PUnit.unit) rfl (fun _ _ _ => @Subsingleton.elim PUnit _ _ _)`. Establish `h2` using `((unit_pow_mul_app _ _ _ rfl (ha _) k).symm.trans h1).trans (Finset.sum_congr rfl fun α _ => app_mul_unit _ _ _ (gv_one _) (hb _))`. Rewrite `h2` using `[hG, hB, Finset.sum_const, Finset.card_attach]`. Distinguish the cases in `hS : PUnit.unit ∈ S`. Take `rfl : S = {PUnit.unit}` from `Finset.eq_singleton_iff_unique_mem.2 ⟨hS, fun _ _ => rfl⟩`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `resTop_inj (key _ _ _ _ _) (h2.trans (one_nsmul _))`. Take `rfl : S = ∅` from `Finset.eq_empty_of_forall_notMem fun _ => hS`. Rewrite `h2` using `[Finset.card_empty, zero_smul]`. Establish `h3` using `((app_resTop _ _ _).symm.trans (congrArg _ (hb (fun _ => PUnit.unit)).symm)).trans (h0 PUnit.unit hS _)`. Rewrite `h3` using `[hB]`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(resTop_inj (key _ _ _ _ _) (h2.trans (map_zero _).symm)).trans (resTop_inj (top_unique (hpre _ (wchart_triv _ _))) (h3.trans (map_zero _).symm)).symm`. Introduce `H`. Use `⟨{PUnit.unit}, fun α hα => (hα (Finset.mem_singleton_self _)).elim, ?_⟩` and prove the remaining obligations. Introduce `p' j₁ jf jt _ _`. Use `(unit_pow_mul_app _ _ _ rfl (ha _) k).trans (Eq.trans ?_ (Finset.sum_congr rfl fun α _ => app_mul_unit _ _ _ (gv_one _) (hb _)).symm)` and prove the remaining obligations.
-
-Rewrite using `[hG, hB, Finset.sum_const, Finset.card_attach, H]`. Conclude with `(one_nsmul _).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem expandsAt_iff (e k : ℕ)
     {σ : LB.Sec (LB.LinComb (zeroPre R I).LG.L (K := Fin 1)
@@ -362,17 +358,15 @@ instance : IsIso (pBK (R := R) (I := I)) :=
   (inferInstance : IsIso (pullback.fst (TF (R := R) (FractionRing R)).hom (𝟙 _)))
 
 /- English proof (translation)
-Establish `e1 : ∀ a r : R, (pullback.fst (𝟙_ (Over (Spec (CommRingCat.of R)))).hom (jK R)).appTop.hom (scal (𝟙 _) a) = scal (pGK ≫ jK R) r * scal pGK x ↔ algebraMap R _ a = algebraMap R _ r * x` using `fun a r => by`. Rewrite using `[← (scal_bijective pGK).1.eq_iff, scal_mul, ← scal_specMap, ← scal_specMap]`. Conclude with `Eq.congr_left ((appTop_scal _ _ _).trans (congrArg (scal · a) pullback.condition))`. Establish `hB : ∀ a : R, scal (DegPre.BF (zeroData R I).toPre (FractionRing R)).hom a = scal pBK (algebraMap R (FractionRing R) a)` using `fun a => by`. Rewrite using `[← Over.w (fst (TF (R := R) (FractionRing R)) _)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(congrArg (scal · a) (Category.assoc _ _ _).symm).trans ((scal_specMap _ _ _).trans (scal_specMap _ _ _))`. Establish `e2 : ∀ a r : R, (DegPre.prB (zeroData R I).toPre (FractionRing R)).left.appTop.hom (scal (𝟙 _) a) = scal (DegPre.BF (zeroData R I).toPre (FractionRing R)).hom r * scal pBK y ↔ algebraMap R _ a = algebraMap R _ r * y` using `fun a r => by`. Rewrite using `[← (scal_bijective (pBK (I := I))).1.eq_iff, scal_mul, ← hB, ← hB]`. Conclude with `Eq.congr_left ((appTop_scal _ _ _).trans (congrArg (scal · a) (Over.w (DegPre.prB (zeroData R I).toPre (FractionRing R)))))`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `⟨r, hr, σ, f, h1, h2, h3⟩`. Take `⟨a', ha⟩` from `exists_secConst σ`. Take `⟨a, rfl⟩` from `(scal_bijective (𝟙 (Spec (CommRingCat.of R)))).2 a'`. Take `⟨b', hb⟩` from `exists_secConst (f PUnit.unit)`. Take `⟨b, rfl⟩` from `(scal_bijective (𝟙 (Spec (CommRingCat.of R)))).2 b'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hab : a = b`. Rewrite using `[← sub_eq_zero]`. Use `IsHausdorff.haus' (I := I) _ fun n => ?_` and prove the remaining obligations. Rewrite using `[SModEq.zero, smul_eq_mul, Ideal.mul_top]`. Conclude with `Ideal.pow_le_pow_right (Nat.le_succ n) ((expandsAt_iff n k ha hb).1 (h3 n))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Establish `hx` using `(e1 a r).1 ((secScal_iff hs ha _ _).1 h1)`. Establish `hy` using `(e2 b r).1 ((secScal_iff hF hb _ _).1 (h2 PUnit.unit))`. Conclude with `mul_left_cancel₀ ((map_ne_zero_iff _ (IsFractionRing.injective R (FractionRing R))).2 hr) (hx.symm.trans (hab ▸ hy))`. Introduce and unpack `rfl`. Take `⟨⟨a, r⟩, h⟩` from `IsLocalization.surj (nonZeroDivisors R) x`.
-
-Establish `h' : algebraMap R (FractionRing R) a = algebraMap R _ r * x` using `h.symm.trans (mul_comm _ _)`. Conclude with `⟨r, nonZeroDivisors.ne_zero r.2, cs _ _ (scal (𝟙 _) a), fun _ => cs _ _ (scal (𝟙 _) a), (secScal_iff hs (cs_const _ _ _) _ _).2 ((e1 a r).2 h'), fun _ => (secScal_iff hF (cs_const _ _ _) _ _).2 ((e2 a r).2 h'), fun e => (expandsAt_iff e k (cs_const _ _ _) (cs_const _ _ _)).2 (by …`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem expands_iff [IsHausdorff I R] (k : ℕ) {s : (zeroPre R I).SecK k}
     {F : Fam (zeroData R I).toPre (FractionRing R) k} {x y : FractionRing R}
@@ -440,15 +434,13 @@ def constFam (k : ℕ) (c : Γ((DegPre.BF (zeroData R I).toPre (FractionRing R))
     rfl
 
 /- English proof (translation)
-Establish `hS : ∀ s : (zeroPre R I).SecK k, ∃ x, SecConst s (scal pGK x)` using `fun s => by`. Take `⟨a, ha⟩` from `exists_secConst s`. Take `⟨x, rfl⟩` from `(scal_bijective (pGK (R := R))).2 a`. Conclude with `⟨x, ha⟩`. Establish `hF : ∀ F : Fam (zeroData R I).toPre (FractionRing R) k, ∃ y, SecConst (F.s PUnit.unit) (scal pBK y)` using `fun F => by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Take `⟨a, ha⟩` from `exists_secConst (F.s PUnit.unit)`. Take `⟨y, rfl⟩` from `(scal_bijective (pBK (R := R) (I := I))).2 a`. Conclude with `⟨y, ha⟩`. Prove the components needed by the constructor for the conclusion. Introduce `s`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨x, hx⟩` from `hS s`. Use `⟨constFam k (scal pBK x), (expands_iff k hx (cs_const _ _ _)).2 rfl, fun F h => ?_⟩` and prove the remaining obligations. Take `⟨y, hy⟩` from `hF F`. Take `rfl` from `(expands_iff k hx hy).1 h`. Conclude with `DVR.fam_ext fun _ j => hy j`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `F`. Take `⟨y, hy⟩` from `hF F`. Use `⟨cs _ _ (scal pGK y), (expands_iff k (cs_const _ _ _) hy).2 rfl, fun s h => ?_⟩` and prove the remaining obligations. Take `⟨x, hx⟩` from `hS s`. Take `rfl` from `(expands_iff k hx hy).1 h`.
-
-Conclude with `sec_eq_of_secConst hx (cs_const _ _ _)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem expBij [IsHausdorff I R] (k : ℕ) : (zeroPre R I).ExpBij k := by
   have hS : ∀ s : (zeroPre R I).SecK k, ∃ x, SecConst s (scal pGK x) := fun s => by

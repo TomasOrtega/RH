@@ -15,7 +15,7 @@ noncomputable section
 namespace GlobalTheory.KeyEven
 
 /- English proof (translation)
-Substitute `hw` using the available equality. Unfold `constFn`. Rewrite using `[← CommRingCat.comp_apply]`. Use `congr 2`. Conclude with `Scheme.Hom.appLE_comp_appLE _ _ _ _ _ _ _`.
+Substitute using the available equality. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem appLE_constFn {K : Type} [CommRing K] {X Y : Scheme.{0}} (p : X ⟶ Sp K) (q : Y ⟶ Sp K) (φ : X ⟶ Y)
     (hw : φ ≫ q = p) (V : Y.Opens) (W : X.Opens) (h : W ≤ φ ⁻¹ᵁ V) (a : K) :
@@ -27,7 +27,7 @@ theorem appLE_constFn {K : Type} [CommRing K] {X Y : Scheme.{0}} (p : X ⟶ Sp K
   exact Scheme.Hom.appLE_comp_appLE _ _ _ _ _ _ _
 
 /- English proof (translation)
-Unfold `constFn resG`. Rewrite using `[← CommRingCat.comp_apply]`. Use `congr 2`. Conclude with `Scheme.Hom.appLE_map _ _ _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem resG_constFn {K : Type} [CommRing K] {X : Scheme.{0}} (p : X ⟶ Sp K) {U V : X.Opens} (h : V ≤ U) (a : K) :
     resG X h (constFn p U a) = constFn p V a := by
@@ -37,9 +37,9 @@ theorem resG_constFn {K : Type} [CommRing K] {X : Scheme.{0}} (p : X ⟶ Sp K) {
   exact Scheme.Hom.appLE_map _ _ _
 
 /- English proof (translation)
-Take `⟨φ, he, ψ, F, h₁, h₂, h₃, h₄, h₅, h₆, h₇⟩` from `hK`. Establish `hw : φ ≫ G.hom = x.P.A.hom`. Rewrite using `[h₁.1.w, show spMap (RingHom.id K) = 𝟙 (Sp K) from Spec.map_id _, Category.comp_id]`. Use `⟨φ, he, ψ, F, h₁, h₂, h₃, fun j i h => ?_, h₅, h₆, h₇⟩` and prove the remaining obligations. Use `show (φ.appLE _ _ h).hom (σ'.f (j PUnit.unit)) = _ * resG _ inf_le_right (th.f i)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hσ, hth', map_mul, map_mul, h₄ j i h, appLE_constFn x.P.A.hom G.hom φ hw, resG_constFn, mul_left_comm]`.
+A detailed English derivation is pending.
 -/
 theorem keyOn_scale (K : Type) [Field K] (G : Over (Sp K)) [GrpObj G] [IsCommMonObj G] (L : RigLB G) (σ σ' : L.L.Sec)
     (x : KeyIn K) (y : Fin x.P.g → (epsR K ⟶ G)) (a : K) (th : x.P.L.Sec)

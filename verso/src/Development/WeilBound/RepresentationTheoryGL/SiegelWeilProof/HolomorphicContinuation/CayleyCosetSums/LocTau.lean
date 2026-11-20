@@ -7,7 +7,7 @@ import Development.WeilBound.RepresentationTheoryGL.SiegelWeilProof.HolomorphicC
 namespace PositivityTheory.Rg.Sw.HSt
 
 /- English proof (translation)
-The claim follows from `asmLT lt1 lt2 lt3 crux`.
+A detailed English derivation is pending.
 -/
 theorem locTau : LocTau := asmLT lt1 lt2 lt3 crux
 

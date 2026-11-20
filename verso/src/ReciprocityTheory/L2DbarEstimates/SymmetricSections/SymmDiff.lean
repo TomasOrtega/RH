@@ -8,13 +8,13 @@ open Filter Topology Asymptotics
 universe u
 
 /- English proof (translation)
-Introduce `n M _ z U u hcov hU hfinU hholo k w hw`. Establish `hloc : IsLocalHomeomorph z`. Rewrite using `[isLocalHomeomorph_iff_isLocalHomeomorphOn_univ]`. Use `hcov.isLocalHomeomorphOn` as an intermediate fact. Rewrite `this` using `[Set.preimage_eq_univ_iff.mpr (by rintro _ ⟨x, rfl⟩; exact hU x)]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Take `⟨W, d, s, hW, hwW, hcont, hzs, hvals⟩` from `sheets n M z U u hcov w hw (hfinU w hw)`. Establish `hWn : W ∈ 𝓝 w` using `hW.mem_nhds hwW`. Establish `hdiff : ∀ i, DifferentiableAt ℂ (fun v => u (s i v)) w` using `fun i => hsec n M z u hloc hholo (s i) w ((hcont i).continuousAt hWn) (Filter.eventually_of_mem hWn (hzs i))`. Establish `heq : (fun v => ∑ t ∈ (Finset.univ : Finset (Fin d)).powersetCard k, ∏ i ∈ t, u (s i v)) =ᶠ[𝓝 w] fiberSymm n z u k` using `by filter_upwards [hWn] with v hv`. Rewrite using `[fiberSymm, hvals v hv, Finset.esymm_map_val]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `DifferentiableAt.congr_of_eventuallyEq ?_ heq.symm` and prove the remaining obligations. Establish `hprod : ∀ t : Finset (Fin d), DifferentiableAt ℂ (fun v => ∏ i ∈ t, u (s i v)) w`. Introduce `t`. Proceed by induction on `t using Finset.induction_on with`. Consider the case `empty => simp`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `insert a t ha ih`. Simplify using `only [Finset.prod_insert ha]`. Conclude with `(hdiff a).mul ih`. Conclude with `DifferentiableAt.fun_sum fun t _ => hprod t`.
+Treat this case separately. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem symmDiff_of_holoSection (hsec : holoSectionStatement.{u}) : symmDiffStatement.{u} := by
   intro n M _ z U u hcov hU hfinU hholo k w hw

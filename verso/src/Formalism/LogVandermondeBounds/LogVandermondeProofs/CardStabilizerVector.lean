@@ -5,9 +5,9 @@ namespace Formalism.LogVandermondeBounds.StandardLattice
 open Finset
 
 /- English proof (translation)
-Break down `n with _ | k` into its components or cases. Simplify using the standard rewrite rules. Take `⟨m, hm⟩` from `Nat.even_mul_succ_self k`. Establish `h1 : (k + 1) * k = m + m` using `by rw [mul_comm]; exact hm`. Establish `h2 : (k + 1) * (k + 1 + 1) = m + m + 2 * (k + 1)` using `by rw [← h1]; ring`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : (k + 1) * (k + 1) = m + m + (k + 1)` using `by rw [← h1]; ring`. Rewrite using `[Nat.add_sub_cancel, h1, h2, h3]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 lemma half_add_half (n : ℕ) : n * (n - 1) / 2 + n * (n + 1) / 2 = n * n := by
   rcases n with _ | k
@@ -20,7 +20,7 @@ lemma half_add_half (n : ℕ) : n * (n - 1) / 2 + n * (n + 1) / 2 = n * n := by
     omega
 
 /- English proof (translation)
-Establish `h : q ^ n * q⁻¹ ^ (n - i) = q ^ i`. Rewrite using `[inv_pow, ← div_eq_mul_inv, div_eq_iff (pow_ne_zero _ hq), ← pow_add, Nat.add_sub_of_le hi]`. Rewrite using `[mul_sub, mul_one, h]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 lemma factor_eq (q : ℝ) (hq : q ≠ 0) (n i : ℕ) (hi : i ≤ n) :
     q ^ n - q ^ i = q ^ n * (1 - q⁻¹ ^ (n - i)) := by
@@ -29,13 +29,13 @@ lemma factor_eq (q : ℝ) (hq : q ≠ 0) (n i : ℕ) (hi : i ≤ n) :
   rw [mul_sub, mul_one, h]
 
 /- English proof (translation)
-Introduce `F _ _ _ n`. Establish `hpos : 0 < Fintype.card F` using `Fintype.card_pos`. Establish `hq0 : (Fintype.card F : ℝ) ≠ 0` using `by exact_mod_cast hpos.ne'`. Establish `hnat : Fintype.card (GL (Fin n) F) = ∏ i ∈ range n, (Fintype.card F ^ n - Fintype.card F ^ i)`. Rewrite using `[Finset.prod_range, Fintype.card_eq_nat_card (α := GL (Fin n) F)]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Matrix.card_GL_field n`. Establish `hreal : (Fintype.card (GL (Fin n) F) : ℝ) = ∏ i ∈ range n, ((Fintype.card F : ℝ) ^ n - (Fintype.card F : ℝ) ^ i)`. Rewrite using `[hnat, Nat.cast_prod]`. Use `Finset.prod_congr rfl (fun i hi => ?_)` and prove the remaining obligations. Rewrite using `[Nat.cast_sub (Nat.pow_le_pow_right hpos (mem_range.mp hi).le), Nat.cast_pow, Nat.cast_pow]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hreal, ← pow_add, half_add_half]`. Establish `hpow : (Fintype.card F : ℝ) ^ (n * n) = ∏ _i ∈ range n, (Fintype.card F : ℝ) ^ n`. Rewrite using `[prod_const, card_range, ← pow_mul]`. Establish `hrefl : ∏ j ∈ range n, ((Fintype.card F : ℝ) ^ n - (Fintype.card F : ℝ) ^ (n - 1 - j)) = ∏ j ∈ range n, ((Fintype.card F : ℝ) ^ n - (Fintype.card F : ℝ) ^ j)` using `prod_range_reflect (fun i => (Fintype.card F : ℝ) ^ n - (Fintype.card F : ℝ) ^ i) n`. Rewrite using `[hpow, ← prod_mul_distrib, ← hrefl]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `prod_congr rfl (fun i hi => ?_)` and prove the remaining obligations. Establish `hi'` using `mem_range.mp hi`. Rewrite using `[factor_eq _ hq0 n (n - 1 - i) (by omega), show n - (n - 1 - i) = i + 1 by omega]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cardGeneralLinear : CardGeneralLinear := by
   intro F _ _ _ n
@@ -82,9 +82,9 @@ def upperEquiv (F : Type) [Field F] (n : ℕ) :
     simp [p.2]
 
 /- English proof (translation)
-Rewrite using `[Nat.card_eq_fintype_card, Fintype.card_subtype, Finset.card_filter]`. Simplify using `only [Fintype.sum_prod_type]`. Rewrite using `[Finset.sum_comm]`. Establish `h : ∀ j : Fin n, (∑ i : Fin n, if i < j then 1 else 0) = (j : ℕ)`. Introduce `j`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← Finset.card_filter]`. Establish `hs : (univ.filter (fun i : Fin n => i < j)) = Finset.Iio j` using `by ext i; simp`. Rewrite using `[hs, Fin.card_Iio]`. Simplify using `only [h]`. Rewrite using `[Fin.sum_univ_eq_sum_range (fun i => i) n, Finset.sum_range_id]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 lemma card_lt_pairs (n : ℕ) : Nat.card {p : Fin n × Fin n // p.1 < p.2} = n * (n - 1) / 2 := by
   rw [Nat.card_eq_fintype_card, Fintype.card_subtype, Finset.card_filter]
@@ -99,7 +99,7 @@ lemma card_lt_pairs (n : ℕ) : Nat.card {p : Fin n × Fin n // p.1 < p.2} = n *
   rw [Fin.sum_univ_eq_sum_range (fun i => i) n, Finset.sum_range_id]
 
 /- English proof (translation)
-Introduce `F _ _ _ n`. Rewrite using `[Nat.card_congr (upperEquiv F n)]`. Rewrite using `[Nat.card_fun, card_lt_pairs, Nat.card_eq_fintype_card]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem cardUnitriangular : CardUnitriangular := by
   intro F _ _ _ n
@@ -126,7 +126,7 @@ instance rowAction (F : Type) [Field F] (n : ℕ) : MulAction (GL (Fin n) F) (Ro
     exact (Matrix.vecMul_vecMul (v : Fin n → F) _ _).symm
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Combine the equalities or inequalities in the displayed calculation. Introduce `h`. Combine the equalities or inequalities in the displayed calculation.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation.
 -/
 lemma vecMul_inv_eq_iff {F : Type} [Field F] {n : ℕ} (v : Fin n → F) (A : GL (Fin n) F) :
     Matrix.vecMul v ((A⁻¹ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) = v ↔
@@ -144,7 +144,7 @@ lemma vecMul_inv_eq_iff {F : Type} [Field F] {n : ℕ} (v : Fin n → F) (A : GL
       _ = v := by rw [Matrix.vecMul_vecMul, Units.mul_inv, Matrix.vecMul_one]
 
 /- English proof (translation)
-Rewrite using `[Matrix.vecMul_add, Matrix.vecMul_one]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Simplify using `[Matrix.vecMul, dotProduct, Matrix.vecMulVec_apply, Pi.single_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 private theorem vecMul_one_add_vecMulVec_single {F : Type} [Field F] {n : ℕ} (k : Fin n)
     (c z : Fin n → F) :
@@ -155,7 +155,7 @@ private theorem vecMul_one_add_vecMulVec_single {F : Type} [Field F] {n : ℕ} (
   simp [Matrix.vecMul, dotProduct, Matrix.vecMulVec_apply, Pi.single_apply]
 
 /- English proof (translation)
-Simplify using `[Matrix.vecMul, dotProduct, Pi.single_apply]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem single_one_vecMul_apply {F : Type} [Field F] {n : ℕ}
     (M : Matrix (Fin n) (Fin n) F) (i j : Fin n) :
@@ -163,11 +163,11 @@ private theorem single_one_vecMul_apply {F : Type} [Field F] {n : ℕ}
   simp [Matrix.vecMul, dotProduct, Pi.single_apply]
 
 /- English proof (translation)
-Establish `key : ∀ z : Fin n → F, Matrix.vecMul z ((1 + Matrix.vecMulVec (Pi.single k 1) ((x k)⁻¹ • (y - x))) * (1 + Matrix.vecMulVec (Pi.single k 1) ((y k)⁻¹ • (x - y)))) = z`. Introduce `z`. Rewrite using `[← Matrix.vecMul_vecMul, vecMul_one_add_vecMulVec_single, vecMul_one_add_vecMulVec_single]`. Use function extensionality and compare the values at `j`. Simplify using `only [Pi.add_apply, Pi.smul_apply, Pi.sub_apply, smul_eq_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Use extensionality with `i j`. Establish `h1` using `congrFun (key (Pi.single i 1)) j`. Rewrite `h1` using `[single_one_vecMul_apply]`.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[h1]`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h, Ne.symm h]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private theorem one_add_vecMulVec_single_mul_inverse_eq_one {F : Type} [Field F] {n : ℕ} (k : Fin n)
     (x y : Fin n → F) (hx : x k ≠ 0) (hy : y k ≠ 0) :
@@ -192,9 +192,9 @@ private theorem one_add_vecMulVec_single_mul_inverse_eq_one {F : Type} [Field F]
   · simp [h, Ne.symm h]
 
 /- English proof (translation)
-Use `⟨(⟨1 + Matrix.vecMulVec (Pi.single k 1) ((x k)⁻¹ • (y - x)), 1 + Matrix.vecMulVec (Pi.single k 1) ((y k)⁻¹ • (x - y)), one_add_vecMulVec_single_mul_inverse_eq_one k x y hx hy, one_add_vecMulVec_single_mul_inverse_eq_one k y x hy hx⟩ : (Matrix (Fin n) (Fin n) F)ˣ), ?_⟩` and prove the remaining obligations. Use `show Matrix.vecMul x (1 + Matrix.vecMulVec (Pi.single k 1) ((x k)⁻¹ • (y - x))) = y`. Rewrite using `[vecMul_one_add_vecMulVec_single]`. Use function extensionality and compare the values at `j`. Simplify using `only [Pi.add_apply, Pi.smul_apply, Pi.sub_apply, smul_eq_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_inv_cancel_left₀ hx]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private theorem exists_GL_vecMul_eq_of_ne_zero_at {F : Type} [Field F] {n : ℕ} (k : Fin n)
     (x y : Fin n → F) (hx : x k ≠ 0) (hy : y k ≠ 0) :
@@ -211,9 +211,9 @@ private theorem exists_GL_vecMul_eq_of_ne_zero_at {F : Type} [Field F] {n : ℕ}
   ring
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨k, hk⟩ : ∃ k, v k ≠ 0 := by`. Assume the negation of the conclusion as `h`. Conclude with `hv (funext fun i => not_not.mp fun hi => h ⟨i, hi⟩)`. Choose the witnesses or unpack the hypotheses as in `⟨l, hl⟩ : ∃ l, w l ≠ 0 := by`. Assume the negation of the conclusion as `h`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Conclude with `hw (funext fun i => not_not.mp fun hi => h ⟨i, hi⟩)`. Take `⟨A, hA⟩` from `exists_GL_vecMul_eq_of_ne_zero_at k v (fun _ : Fin n => (1 : F)) hk one_ne_zero`. Take `⟨B, hB⟩` from `exists_GL_vecMul_eq_of_ne_zero_at l (fun _ : Fin n => (1 : F)) w one_ne_zero hl`. Use `⟨A * B, ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_mul, ← Matrix.vecMul_vecMul, hA, hB]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma exists_row {F : Type} [Field F] [Fintype F] {n : ℕ} (v w : Fin n → F) (hv : v ≠ 0)
     (hw : w ≠ 0) : ∃ A : GL (Fin n) F, Matrix.vecMul v (A : Matrix (Fin n) (Fin n) F) = w := by
@@ -229,17 +229,17 @@ lemma exists_row {F : Type} [Field F] [Fintype F] {n : ℕ} (v w : Fin n → F) 
   rw [Units.val_mul, ← Matrix.vecMul_vecMul, hA, hB]
 
 /- English proof (translation)
-Introduce `F _ _ _ n v hv`. Establish `hcardne : Fintype.card {w : Fin n → F // w ≠ 0} = Fintype.card F ^ n - 1`. Establish `h` using `Fintype.card_congr (Equiv.optionSubtypeNe (0 : Fin n → F))`. Rewrite `h` using `[Fintype.card_option, Fintype.card_fun, Fintype.card_fin]`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Establish `horbit : Nat.card (@MulAction.orbit (GL (Fin n) F) (RowVec F n) _ v) = Fintype.card F ^ n - 1`. Establish `e : @MulAction.orbit (GL (Fin n) F) (RowVec F n) _ v ≃ {w : Fin n → F // w ≠ 0}` using `Equiv.subtypeEquivRight (fun w => by`. Use `MulAction.mem_orbit_iff.trans ?_` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g, rfl⟩ h0`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Apply `hv` to reduce the goal to its premises. Establish `h1 : Matrix.vecMul (Matrix.vecMul v ((g⁻¹ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F)) (g : Matrix (Fin n) (Fin n) F) = v`. Rewrite using `[Matrix.vecMul_vecMul, Units.inv_mul, Matrix.vecMul_one]`. Establish `h0' : Matrix.vecMul v ((g⁻¹ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) = 0` using `h0`. Rewrite using `[← h1, h0', Matrix.zero_vecMul]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `hw0`. Take `⟨A, hA⟩` from `exists_row v w hv hw0`. Use `⟨A⁻¹, ?_⟩` and prove the remaining obligations. Use `show Matrix.vecMul v (((A⁻¹)⁻¹ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) = w`. Rewrite using `[inv_inv, hA])`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Nat.card_congr e, Nat.card_eq_fintype_card, hcardne]`. Establish `hstab : Fintype.card {A : GL (Fin n) F // Matrix.vecMul v (A : Matrix (Fin n) (Fin n) F) = v} = Nat.card (@MulAction.stabilizer (GL (Fin n) F) (RowVec F n) _ _ v)`. Rewrite using `[← Nat.card_eq_fintype_card]`. Conclude with `Nat.card_congr (Equiv.subtypeEquivRight (fun A => by`. Conclude with `(vecMul_inv_eq_iff v A).symm))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
-Establish `hos : Nat.card (@MulAction.stabilizer (GL (Fin n) F) (RowVec F n) _ _ v) * Nat.card (@MulAction.orbit (GL (Fin n) F) (RowVec F n) _ v) = Nat.card (GL (Fin n) F)` using `by first`. Consider the case `(rw [← MulAction.index_stabilizer]; exact Subgroup.card_mul_index _)`. Consider the case `(rw [mul_comm]; exact MulAction.card_orbit_mul_card_stabilizer_eq_card_group _ _)`. Consider the case `(rw [mul_comm, ← Nat.card_prod]; exact Nat.card_congr (MulAction.orbitProdStabilizerEquivGroup _ _))`. Rewrite using `[hstab, ← horbit, hos, Nat.card_eq_fintype_card]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cardStabilizerVector : CardStabilizerVector := by
   intro F _ _ _ n v hv

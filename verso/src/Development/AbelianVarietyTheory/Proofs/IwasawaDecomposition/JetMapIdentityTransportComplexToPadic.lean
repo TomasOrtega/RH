@@ -26,7 +26,7 @@ open Classical in
 noncomputable def wF (ι : Type) (a : ℕ) : (ι × Fin a × Fin a) → (ι → ℕ) := fun v => Pi.single v.1 1
 
 /- English proof (translation)
-Rewrite using `[weight_apply, Finsupp.sum_fintype _ _ (by intro; simp)]`. Simplify using `[wF, Finset.sum_apply, Pi.single_apply, Fintype.sum_prod_type]`. Rewrite using `[Fintype.sum_eq_single τ (fun x hx => by simp [Ne.symm hx])]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma weight_wF (e : (ι × Fin a × Fin a) →₀ ℕ) (τ : ι) :
     weight (wF ι a) e τ = ∑ α, ∑ s, e (τ, α, s) := by
@@ -37,7 +37,7 @@ lemma weight_wF (e : (ι × Fin a × Fin a) →₀ ℕ) (τ : ι) :
   simp
 
 /- English proof (translation)
-Rewrite using `[weight_apply, Finsupp.sum_fintype _ _ (by intro; simp)]`. Simplify using `[wD, Finset.sum_apply, Pi.single_apply, Fintype.sum_prod_type, Fintype.sum_sum_type]`. Rewrite using `[Fintype.sum_eq_single τ (fun x hx => by simp [Ne.symm hx])]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma weight_wD (u : ((ι × Fin b × Fin b) ⊕ DVar ι a b) →₀ ℕ) (τ : ι) :
     weight (wD ι a b) u τ = ∑ β, ∑ α, u (Sum.inr (τ, β, α)) := by
@@ -48,14 +48,14 @@ lemma weight_wD (u : ((ι × Fin b × Fin b) ⊕ DVar ι a b) →₀ ℕ) (τ : 
   simp
 
 /- English proof (translation)
-Simplify using `[jetMap]`.
+Simplify using the standard rewrite rules.
 -/
 lemma jetMap_zero {K : Type} [Field K] (J : (DVar ι a b →₀ ℕ) → K) (P : Formalism.L2.DIV.Pol K ι a) :
     jetMap J (fun _ => 0) P = jetLin J (subD K ι a b P) := by
   simp [jetMap]
 
 /- English proof (translation)
-Establish `: (monomial u c : MvPolynomial _ K) = c • basisMonomials _ K u`. Rewrite using `[coe_basisMonomials, smul_monomial, smul_eq_mul, mul_one]`. Rewrite using `[this]`. Unfold `jetLin`. Rewrite using `[LinearMap.map_smul, Module.Basis.constr_basis, smul_monomial, smul_eq_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 lemma jetLin_monomial {K : Type} [Field K] (J : (DVar ι a b →₀ ℕ) → K)
     (u : ((ι × Fin b × Fin b) ⊕ DVar ι a b) →₀ ℕ) (c : K) :
@@ -68,7 +68,7 @@ lemma jetLin_monomial {K : Type} [Field K] (J : (DVar ι a b →₀ ℕ) → K)
   rw [LinearMap.map_smul, Module.Basis.constr_basis, smul_monomial, smul_eq_mul]
 
 /- English proof (translation)
-Proceed by induction on `Q using MvPolynomial.induction_on' with`. Consider the case `monomial u c => simp [jetLin_monomial, map_monomial]`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 lemma jetLin_map {K K' : Type} [Field K] [Field K'] (f : K →+* K') (J : (DVar ι a b →₀ ℕ) → K)
     (Q : MvPolynomial ((ι × Fin b × Fin b) ⊕ DVar ι a b) K) :
@@ -78,9 +78,9 @@ lemma jetLin_map {K K' : Type} [Field K] [Field K'] (f : K →+* K') (J : (DVar 
   | add p q hp hq => simp only [map_add, hp, hq]
 
 /- English proof (translation)
-Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C c => simp [subD]`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`. Consider the case `mul_X p v hp`. Rewrite using `[map_mul, map_X, map_mul, hp, map_mul, map_mul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Simplify using `only [subD, aeval_X]`. Apply the tactic sequence `split_ifs <;> simp [map_sum]`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma subD_map {K K' : Type} [Field K] [Field K'] (f : K →+* K') (P : Formalism.L2.DIV.Pol K ι a) :
     subD K' ι a b (map f P) = map f (subD K ι a b P) := by
@@ -94,9 +94,9 @@ lemma subD_map {K K' : Type} [Field K] [Field K'] (f : K →+* K') (P : Formalis
     split_ifs <;> simp [map_sum]
 
 /- English proof (translation)
-Simplify using `only [subD, aeval_X]`. Use `split_ifs with h`. Apply `IsWeightedHomogeneous.sum` to reduce the goal to its premises. Introduce `β _`. Use `(isWeightedHomogeneous_X K (wD ι a b) (Sum.inl (v.1, β, (⟨v.2.2.1, h⟩ : Fin b)))).mul (isWeightedHomogeneous_X K (wD ι a b) (Sum.inr (v.1, β, v.2.1)))` as an intermediate fact.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this` using `[wD, wF]`. Conclude with `isWeightedHomogeneous_zero _ _ _`.
+A detailed English derivation is pending.
 -/
 lemma subD_X_hom {K : Type} [Field K] (v : ι × Fin a × Fin a) :
     IsWeightedHomogeneous (wD ι a b) (subD K ι a b (X v)) (wF ι a v) := by
@@ -110,9 +110,9 @@ lemma subD_X_hom {K : Type} [Field K] (v : ι × Fin a × Fin a) :
   · exact isWeightedHomogeneous_zero _ _ _
 
 /- English proof (translation)
-Rewrite using `[P.as_sum, map_sum]`. Apply `IsWeightedHomogeneous.sum` to reduce the goal to its premises. Introduce `e he`. Establish `hw : weight (wF ι a) e = n` using `hP (MvPolynomial.mem_support_iff.mp he)`. Rewrite using `[subD, aeval_monomial, algebraMap_eq]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `IsWeightedHomogeneous.C_mul` to reduce the goal to its premises. Rewrite using `[← hw, weight_apply]`. Apply `IsWeightedHomogeneous.prod` to reduce the goal to its premises. Introduce `v _`. Simplify `(subD_X_hom (b := b) (K := K) v).pow (e v)` using `only [subD, aeval_X]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma subD_hom {K : Type} [Field K] (P : Formalism.L2.DIV.Pol K ι a) (n : ι → ℕ)
     (hP : IsWeightedHomogeneous (wF ι a) P n) :
@@ -129,9 +129,9 @@ lemma subD_hom {K : Type} [Field K] (P : Formalism.L2.DIV.Pol K ι a) (n : ι �
   simpa only [subD, aeval_X] using (subD_X_hom (b := b) (K := K) v).pow (e v)
 
 /- English proof (translation)
-Rewrite using `[Q.as_sum, map_sum, map_sum]`. Use `Finset.sum_congr rfl fun u hu => ?_` and prove the remaining obligations. Rewrite using `[jetLin_monomial, jetLin_monomial, hJ]`. Introduce `τ`. Establish `hw` using `congrFun (hQ (MvPolynomial.mem_support_iff.mp hu)) τ`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `hw` using `[weight_wD]`. Simplify `hw` using `[Finsupp.comapDomain_apply]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma jetLin_congr {K : Type} [Field K] (J₁ J₂ : (DVar ι a b →₀ ℕ) → K) (n : ι → ℕ)
     (Q : MvPolynomial ((ι × Fin b × Fin b) ⊕ DVar ι a b) K) (hQ : IsWeightedHomogeneous (wD ι a b) Q n)
@@ -148,15 +148,15 @@ lemma jetLin_congr {K : Type} [Field K] (J₁ J₂ : (DVar ι a b →₀ ℕ) �
 end GlobalTheory.JetTransport
 
 /- English proof (translation)
-Introduce `D p _ lam a b J J' n r A P hJ hP h`. Set `x : (DVar D.what₂.Tau a b →₀ ℕ) → Qbar` to `fun m => if hm : ∀ τ, ∑ β, ∑ α, m (τ, β, α) = n τ then (hJ m hm).choose else 0`. Establish `hx1 : ∀ m : DVar D.what₂.Tau a b →₀ ℕ, (∀ τ, ∑ β, ∑ α, m (τ, β, α) = n τ) → J m = (algebraMap Qbar ℂ ∘ x) m`. Introduce `m hm`. Simplify using `only [x, Function.comp_apply, dif_pos hm]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `(hJ m hm).choose_spec.1.symm`. Establish `hx2 : ∀ m : DVar D.what₂.Tau a b →₀ ℕ, (∀ τ, ∑ β, ∑ α, m (τ, β, α) = n τ) → J' m = (lam ∘ x) m`. Introduce `m hm`. Simplify using `only [x, Function.comp_apply, dif_pos hm]`. Conclude with `(hJ m hm).choose_spec.2.symm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hPw : ∀ {K : Type} [Field K] (f : Qbar →+* K), MvPolynomial.IsWeightedHomogeneous (GlobalTheory.JetTransport.wF D.what₂.Tau a) (MvPolynomial.map f P) n`. Introduce `K _ f d hd`. Use function extensionality and compare the values at `τ`. Rewrite using `[GlobalTheory.JetTransport.weight_wF]`. Use `hP d (MvPolynomial.mem_support_iff.mpr fun h0 => hd ?_) τ` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[MvPolynomial.coeff_map, h0, map_zero]`. Establish `key : ∀ {K : Type} [Field K] (f : Qbar →+* K) (JK : (DVar D.what₂.Tau a b →₀ ℕ) → K), (∀ m : DVar D.what₂.Tau a b →₀ ℕ, (∀ τ, ∑ β, ∑ α, m (τ, β, α) = n τ) → JK m = (f ∘ x) m) → jetMap JK (fun _ => 0) (MvPolynomial.map f P) = MvPolynomial.map f (jetMap x (fun _ => 0) P)`. Introduce `K _ f JK hJK`. Rewrite using `[GlobalTheory.JetTransport.jetMap_zero, GlobalTheory.JetTransport.jetMap_zero, ← GlobalTheory.JetTransport.jetLin_map, ← GlobalTheory.JetTransport.subD_map]`. Conclude with `GlobalTheory.JetTransport.jetLin_congr _ _ n _ (GlobalTheory.JetTransport.subD_hom _ n (hPw f)) hJK`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hA : A = MvPolynomial.C r * jetMap x (fun _ => 0) P`. Apply `MvPolynomial.map_injective (algebraMap Qbar ℂ) (algebraMap Qbar ℂ).injective` to reduce the goal to its premises. Rewrite using `[h, key (algebraMap Qbar ℂ) J hx1, map_mul, MvPolynomial.map_C]`. Both sides reduce to the same expression. Rewrite using `[hA, map_mul, MvPolynomial.map_C, key lam J' hx2]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.jetMapTransport : ∀ (D : D7) {p : ℕ} [Fact p.Prime] (lam : Qbar →+* ℂ_[p]) {a b : ℕ}
     (J : (DVar D.what₂.Tau a b →₀ ℕ) → ℂ) (J' : (DVar D.what₂.Tau a b →₀ ℕ) → ℂ_[p]) (n : D.what₂.Tau → ℕ) (r : Qbar)

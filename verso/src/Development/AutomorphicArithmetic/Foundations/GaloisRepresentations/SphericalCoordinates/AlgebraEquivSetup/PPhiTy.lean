@@ -7,23 +7,23 @@ open scoped TensorProduct Classical
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Introduce `hP hL hF hc E _ _ _ A n p _ S F x U w₀ Up V _ _ _ hOff _ r W hAux N hN hStab L hw Ty hTy`. Establish `hj : F.j = F.tr.j` using `F.j_tr`. Establish `h4 : ∀ k : GUf E n, (∀ w : Plc E, (p : 𝓞 E) ∉ w.asIdeal → comp w k = 1) → (∀ w : Plc E, (p : 𝓞 E) ∈ w.asIdeal → comp w k ∈ GlobalTheory.LFun.KGL w n) → ∀ g, V.Φ (CertificateRingHomMap.th (g * k)) = V.Φ (CertificateRingHomMap.th g)`. Introduce `k h1 h2 g`. Establish `hk : CertificateRingHomMap.th k ∈ lev V.S V.Kw` using `(hL E A n p S F.tr V.S V.Kw hOff.1).2 _ (fun w hw' => by rw [CertificateRingHomMap.comp_th, h1 w hw', map_one]) (fun w hw' => by rw [CertificateRingHomMap.comp_th]; exact CertificateRingHomMap.invT_mem_KGL (h2 w hw')) (fun u _ => one_mem _)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e : comp w₀ (CertificateRingHomMap.th k) = 1` using `by rw [CertificateRingHomMap.comp_th, h1 _ hw.2, map_one]`. Establish `hJ : comp w₀ (CertificateRingHomMap.th k) ∈ V.J` using `e ▸ one_mem _`. Establish `hχ : V.χ ⟨comp w₀ (CertificateRingHomMap.th k), hJ⟩ = 1`. Establish `: (⟨comp w₀ (CertificateRingHomMap.th k), hJ⟩ : V.J) = 1` using `Subtype.ext e`. Rewrite using `[this, map_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, V.form.right _ hk hJ, hχ]`. Simplify using the standard rewrite rules. Establish `h3 : ∀ g : GUf E n, (∀ w : Plc E, (p : 𝓞 E) ∈ w.asIdeal → comp w g ∈ GlobalTheory.LFun.KGL w n) → V.Φ (CertificateRingHomMap.th (F.tr.sec (F.j g))) = V.Φ (CertificateRingHomMap.th g)`. Introduce `g hg`. Take `⟨k, e, k1, k2, -⟩` from `hP E A n p S F.tr g`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `h4 k k1 (fun w hw' => by rw [k2 w hw']; exact hg w hw') (F.tr.sec (F.tr.j g))` as an intermediate fact. Rewrite `this` using `[← e]`. Rewrite using `[hj]`. Conclude with `this.symm`. Use `⟨?_, ?_, h3, h4⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨g₀, h0, hg⟩` from `hOff.2`. Introduce `hz`. Apply `h0` to reduce the goal to its premises. Establish `e` using `congrFun hz (F.j (CertificateRingHomMap.th g₀))`. Establish `e' : V.Φ (CertificateRingHomMap.th (F.tr.sec (F.j (CertificateRingHomMap.th g₀)))) = 0` using `e`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e'` using `[h3 _ (fun w hw' => by rw [CertificateRingHomMap.comp_th]; exact CertificateRingHomMap.invT_mem_KGL (hg w hw')), CertificateRingHomMap.th_th]`. Conclude with `e'`. Introduce `k hk g`. Take `⟨⟨k', e, hk'⟩, -⟩` from `(hTy.K_iff k).1 hk`. Rewrite `hk'` using `[th_eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs : F.tr.sec k ∈ lev V.S (CertificateRingHomMap.levT V.Kw)`. Use `(hL E A n p S F.tr V.S (CertificateRingHomMap.levT V.Kw) hOff.1).1 k' (CertificateRingHomMap.th_mem_lev.1 hk')` as an intermediate fact. Rewrite `this` using `[← hj, e]`. Then use the resulting hypothesis. Establish `hs'` using `CertificateRingHomMap.th_mem_lev.2 hs`. Establish `hpr : Ty.L.pr k = comp w₀ (F.tr.sec k)`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h` using `(hF E A n p S F hc ⟨w₀, hw⟩).2 _ (hTy.fac ⟨w₀, hw⟩)`. Rewrite using `[hTy.L_eq, h]`. Both sides reduce to the same expression. Establish `hyy : (comp w₀ (CertificateRingHomMap.th (F.tr.sec k))).val = ((Ty.L.pr k)⁻¹).valᵀ`. Rewrite using `[CertificateRingHomMap.comp_th, CertificateRingHomMap.invT_val, hpr]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hyJ : Ty.L.pr k ∈ Ty.J` using `Ty.fact.2 k hk`. Establish `hJ' : comp w₀ (CertificateRingHomMap.th (F.tr.sec k)) ∈ V.J` using `(hTy.J_iff _ _ hyy).1 hyJ`. Use `show V.Φ (CertificateRingHomMap.th (F.tr.sec (g * k))) = ((Ty.ψ ⟨Ty.L.pr k, Ty.fact.2 k hk⟩ : ℂˣ) : ℂ) • V.Φ (CertificateRingHomMap.th (F.tr.sec g))`. Rewrite using `[map_mul, map_mul, V.form.right _ hs' hJ', hTy.ψ_eq ⟨_, hyJ⟩ ⟨_, hJ'⟩ hyy]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.W2.Seed.pPhiTy :
     PPart → LevSec → FacEq → UpperTheory.Gal.W2.Seed.LocComm → PhiTy := by

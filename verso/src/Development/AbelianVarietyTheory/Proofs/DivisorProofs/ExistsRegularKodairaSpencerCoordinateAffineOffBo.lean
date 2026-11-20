@@ -21,11 +21,11 @@ open GlobalTheory.AllWt (exOf)
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {Y : Model Xo c (RingHom.id c.F)} {X : GlobalTheory.FlagMod.FlagCover Y} {Z : Comp Xo c} (M : Modif (str₀ X Z) (U₀ X Z) (GlobalTheory.FlagTan.dimFlag Dw))
 
 /- English proof (translation)
-Use `choose! W a hp hWV ha hu using loc`. Set `I` to `{p // p ∈ V}`. Establish `hc : ∀ p ∈ V, ∃ i : I, p ∈ W i.1` using `fun p h => ⟨⟨p, h⟩, hp p h⟩`. Take `⟨s, hs, -⟩` from `Z.sheaf.existsUnique_gluing' (fun i : I => W i.1) V (fun i => homOfLE (hWV i.1 i.2)) (fun p h => TopologicalSpace.Opens.mem_iSup.2 (hc p h)) (fun i => a i.1) (fun i j => by`. Use `GlobalTheory.FlagMod.ext_ev_field (a := resG Z inf_le_left (a i.1)) (b := resG Z inf_le_right (a j.1)) fun L _ z hz => ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hi` using `le_preimage_mono inf_le_left hz`. Establish `hj` using `le_preimage_mono inf_le_right hz`. Rewrite using `[GlobalTheory.FlagMod.ev_res z _ hz hi, GlobalTheory.FlagMod.ev_res z _ hz hj]`. Conclude with `hu i.1 i.2 L z hi _ _ (ha i.1 i.2 L z hi) (ha j.1 j.2 L z hj))`. Use `⟨s, fun L _ z hz => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨i, hi⟩` from `hc (z (IsLocalRing.closedPoint L)) (hz (Set.mem_univ _))`. Establish `hi' : ⊤ ≤ z ⁻¹ᵁ W i.1` using `((IsLocalRing.closed_point_mem_iff (U := z ⁻¹ᵁ W i.1)).1 hi).ge`. Establish `e : ev z V hz s = ev z (W i.1) hi' (a i.1)` using `(GlobalTheory.FlagMod.ev_res z (hWV i.1 i.2) hi' hz s).symm.trans (congrArg _ (hs i))`. Conclude with `e ▸ ha i.1 i.2 L z hi'`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem glue_field_cover {Z : Scheme.{0}} [IsReduced Z] (V : Z.Opens)
     (R : ∀ (L : Type) [Field L], (Sp L ⟶ Z) → L → Prop)
@@ -51,49 +51,43 @@ theorem glue_field_cover {Z : Scheme.{0}} [IsReduced Z] (V : Z.Opens)
   exact e ▸ ha i.1 i.2 L z hi'
 
 /- English proof (translation)
-Establish `hWk : ksOpen M i k ≤ M.off ⊓ (toFlag M) ⁻¹ᵁ X.F.U k` using `fun s hs => ⟨hs.1, (((common₀ X Z).pull M.σ).mem _ _ _).1 hs.2.2⟩`. Establish `hWi : ksOpen M i k ≤ M.K.bundle.U i` using `fun s hs => hs.2.1`. Take `⟨V, f, hpV, hf⟩` from `exists_isFrame_dOn M.str (dimFlag Dw) p`. Take `⟨W₁, hW₁, hpW₁, hW₁V⟩` from `Opens.isBasis_iff_nbhd.1 M.X.isBasis_affineOpens (show p ∈ W ⊓ V from ⟨hp, hpV⟩)`. Take `⟨W', hW', eH, hpW', hWW', eH1, eH2⟩` from `GlobalTheory.T.hodge_de_rham_on_modification_of_flag_cover M hP hKS k W₁ ((hW₁V.trans inf_le_left).trans (hW.trans hWk)) p hpW₁`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hWV : W' ≤ W` using `hWW'.trans (hW₁V.trans inf_le_left)`. Establish `hW'k : W' ≤ M.off ⊓ (toFlag M) ⁻¹ᵁ X.F.U k` using `hWV.trans (hW.trans hWk)`. Establish `hW'i : W' ≤ M.K.bundle.U i` using `hWV.trans (hW.trans hWi)`. Take `⟨eV, eV1, eV2⟩` from `GlobalTheory.T.exists_ringMaps_lift_vertical_deformations_affine M k W' hW' hW'k`. Set `e : TIx Dw (psiSet H) → (Γ(M.X, W') →+* DualNumber Γ(M.X, W'))` to `Sum.elim eH eV`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `e1 : ∀ b s, (e b s).fst = s`. Introduce and unpack `(b | b) s`. Conclude with `eH1 b s`. Conclude with `eV1 b s`. Establish `e2 : ∀ (K : Type) [Field K] [Algebra c.F K] (ψ : Γ(M.X, W') →+* K) (hk : ⊤ ≤ ((spMap ψ ≫ tau hW') ≫ toFlag M) ⁻¹ᵁ X.F.U k) (Q : FrPt Xo c K), X.F.ChartFr k _ hk Q → ∃ v, IsTanFrame (psiSet H) Q v ∧ ∀ b, spMap ((dualMap ψ).comp (e b)) ≫ tau hW' ≫ toFlag M = X.ptY (v b)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `K _ _ ψ hk Q hQ`. Use `choose w₁ hw₁ hw₁' hw₁'' using eH2 K ψ hk Q hQ`. Use `choose w₂ hw₂ hw₂' using eV2 K ψ hk Q hQ`. Use `⟨Sum.elim w₁ w₂, ⟨fun b => ⟨hw₁ b, hw₁' b⟩, fun b => hw₂ b⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `(b | b)`.
+Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Conclude with `hw₁'' b`. Conclude with `hw₂' b`. Set `g : Fin (dimFlag Dw) → Γ(M.X, W')` to `fun a => resG M.X (hWW'.trans (hW₁V.trans inf_le_right)) (f a)`. Establish `hu : IsUnit (M.K.jacobian i hW'i g)` using `(M.K.isUnit_jacobian_iff i hW' hW'i g).2 (by`. Use `hf.res hW' (hWW'.trans (hW₁V.trans inf_le_right))` as an intermediate fact.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[resForm_dOn] at this)` and apply the resulting hypothesis. Set `A : Matrix (Fin (dimFlag Dw)) (Fin (dimFlag Dw)) Γ(M.X, W')` to `Matrix.of fun a b => (e (tanOrd Dw b) (g a)).snd`. Set `zv : ∀ {K : Type} [Field K] (ψ : Γ(M.X, W') →+* K), TIx Dw (psiSet H) → (Sp (DualNumber K) ⟶ M.X)` to `fun ψ b => spMap ((dualMap ψ).comp (e b)) ≫ tau hW'`. Establish `hzvW : ∀ {K : Type} [Field K] (ψ : Γ(M.X, W') →+* K) b, ⊤ ≤ zv ψ b ⁻¹ᵁ W'` using `fun ψ b => le_preimage_comp _ (tau_le hW' le_rfl)`. Establish `hred : ∀ {K : Type} [Field K] (ψ : Γ(M.X, W') →+* K) b, spMap (TrivSqZeroExt.fstHom K K K).toRingHom ≫ zv ψ b = spMap ψ ≫ tau hW'` using `fun {K} _ ψ b => by`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [zv]`. Rewrite using `[← Category.assoc, ← spMap_comp]`. Use `congr 2`. Use extensionality with `s`. Simplify using `[dualMap, e1]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hev : ∀ {K : Type} [Field K] (ψ : Γ(M.X, W') →+* K) a b, (evalPt (zv ψ b) W' (hzvW ψ b) (g a)).snd = ψ (e b (g a)).snd` using `fun ψ a b => by`. Use `ev_spMap_tau hW' ((dualMap ψ).comp (e b)) (hzvW ψ b)` as an intermediate fact. Establish `h2 : evalPt (zv ψ b) W' (hzvW ψ b) (g a) = ((dualMap ψ).comp (e b)) (g a)` using `congrFun (congrArg DFunLike.coe this) _`. Rewrite using `[h2]`. Simplify using `[dualMap]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdet : ∀ {K : Type} [Field K] (ψ : Γ(M.X, W') →+* K), (Matrix.of fun a b => (evalPt (zv ψ (tanOrd Dw b)) W' (hzvW ψ _) (g a)).snd).det = ψ A.det` using `fun ψ => by`. Rewrite using `[RingHom.map_det]`. Use `congr 1`. Use extensionality with `a b`. Conclude with `hev ψ a _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hzW : ∀ {K : Type} [Field K] (ψ : Γ(M.X, W') →+* K), ⊤ ≤ (spMap ψ ≫ tau hW') ⁻¹ᵁ W'` using `fun ψ => le_preimage_comp _ (tau_le hW' le_rfl)`. Establish `ho : ∀ {K : Type} [Field K] (ψ : Γ(M.X, W') →+* K), ⊤ ≤ (spMap ψ ≫ tau hW') ⁻¹ᵁ M.off` using `fun ψ => le_preimage_comp _ (tau_le hW' (hW'k.trans inf_le_left))`. Establish `hkk : ∀ {K : Type} [Field K] (ψ : Γ(M.X, W') →+* K), ⊤ ≤ ((spMap ψ ≫ tau hW') ≫ toFlag M) ⁻¹ᵁ X.F.U k` using `fun ψ => by show ⊤ ≤ (spMap ψ ≫ tau hW') ⁻¹ᵁ (toFlag M ⁻¹ᵁ X.F.U k)`. Conclude with `le_preimage_comp _ (tau_le hW' (hW'k.trans inf_le_right))`. Establish `chart : ∀ {K : Type} [Field K] (ψ : Γ(M.X, W') →+* K), ∃ (_ : Algebra c.F K) (Q : FrPt Xo c K), X.F.ChartFr k _ (hkk ψ) Q` using `fun ψ => by`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hF : ⊤ ≤ ((spMap ψ ≫ tau hW') ≫ toFlag M) ⁻¹ᵁ flagOpen X` using `fun s _ => by`. Use `ho ψ (Set.mem_univ s)` as an intermediate fact. Rewrite `this` using `[M.off_eq]`. Conclude with `this`. Take `⟨a, h⟩` from `exists_chartFr _ hF`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Conclude with `⟨a, h k (hkk ψ)⟩`. Establish `hJ : ∀ {K : Type} [Field K] (ψ : Γ(M.X, W') →+* K), evalPt (spMap ψ ≫ tau hW') W' (hzW ψ) (M.K.jacobian i hW'i g) = ψ (M.K.jacobian i hW'i g)` using `fun ψ => congrFun (congrArg DFunLike.coe (ev_spMap_tau hW' ψ (hzW ψ))) _`. Establish `hl' : ∀ {K : Type} [Field K] [Algebra c.F K] (ψ : Γ(M.X, W') →+* K) {v : TIx Dw (psiSet H) → FrPt Xo c (DualNumber K)}, (∀ b, spMap ((dualMap ψ).comp (e b)) ≫ tau hW' ≫ toFlag M = X.ptY (v b)) → ∀ b, zv ψ b ≫ toFlag M = X.ptY (v b)` using `fun ψ _ h b => (Category.assoc _ _ _).trans (h b)`. Establish `hne : ∀ {K : Type} [Field K] (ψ : Γ(M.X, W') →+* K), ψ A.det ≠ 0` using `fun {K} _ ψ => by`. Take `⟨_, Q, hQ⟩` from `chart ψ`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨v, hv, hl⟩` from `e2 K ψ _ Q hQ`. Use `GlobalTheory.T.det_derivatives_tangentLift_ne_zero M hKS (spMap ψ ≫ tau hW') (ho ψ) (FlagCover.eq_ptY hQ.lies) hv (hl' ψ hl) i W' hW'i g (hzW ψ) (hzvW ψ) (by rw [hJ]; exact (hu.map ψ).ne_zero)` as an intermediate fact. Rewrite `this` using `[hdet]`. Then use the resulting hypothesis. Establish `hAu : IsUnit A.det`. Assume the negation of the conclusion as `h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨m, hm, hdm⟩` from `exists_max_ideal_of_mem_nonunits h`. Use `letI := Ideal.Quotient.field m`. Conclude with `hne (Ideal.Quotient.mk m) (Ideal.Quotient.eq_zero_iff_mem.2 hdm)`. Set `a : Γ(M.X, W')` to `M.K.jacobian i hW'i g * ↑(hAu.unit⁻¹)`. Establish `hinv : ∀ {K : Type} [Field K] (ψ : Γ(M.X, W') →+* K), ψ A.det * ψ ↑(hAu.unit⁻¹) = 1` using `fun ψ => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← map_mul]`. Establish `: A.det * ↑(hAu.unit⁻¹) = 1` using `hAu.mul_val_inv`. Rewrite using `[this, map_one]`. Establish `rel : ∀ {K : Type} [Field K] (ψ : Γ(M.X, W') →+* K), KSRel M i k (spMap ψ ≫ tau hW') (ψ a)`. Introduce `K _ ψ _ P Q t v zv' O hO g' hz hzv hk hQ ht hv hl`.
+Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Take `⟨v0, hv0, hl0⟩` from `e2 K ψ hk Q hQ`. Establish `hzO : ∀ b, ⊤ ≤ zv ψ b ⁻¹ᵁ O` using `fun b => le_preimage_of_dualNumber (TrivSqZeroExt.fstHom K K K).toRingHom _ O (by rw [hred]; exact hz)`. Establish `tc` using `GlobalTheory.T.det_derivatives_borelFrameChange_canonicalWeight M hKS (spMap ψ ≫ tau hW') (ho ψ) t (FlagCover.eq_ptY hQ.lies) ht hv hv0 hl (hl' ψ hl0) O g' hzv hzO`. Establish `jc` using `GlobalTheory.T.det_derivatives_div_jacobian_independent M (spMap ψ ≫ tau hW') i (fun b => zv ψ (tanOrd Dw b)) (fun b => hred ψ _) O W' hO hW'i g' g hz (hzW ψ) (fun b => hzO _) (fun b => hzvW ψ _)`. Rewrite `jc` using `[hJ, hdet]`.
+Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[tc]`. Generalize the expression as in `(Matrix.of fun a b => (evalPt (zv ψ (tanOrd Dw b)) O (hzO _) (g' a)).snd).det = D0 at jc ⊢`. Generalize the expression as in `evalPt (spMap ψ ≫ tau hW') O hz (M.K.jacobian i hO g') = J1 at jc ⊢`. Generalize the expression as in `((∏ ix, t ix ^ exOf Dw (kap Dw) 0 ix : Kˣ) : K) = T`. Establish `h1` using `hinv ψ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only [a, map_mul]`. Generalize the expression as in `ψ ↑(hAu.unit⁻¹) = u at h1 ⊢`. Generalize the expression as in `ψ A.det = d at jc h1`. Generalize the expression as in `ψ (M.K.jacobian i hW'i g) = J0 at jc ⊢`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `uniq : ∀ {K : Type} [Field K] (ψ : Γ(M.X, W') →+* K) (x y : K), KSRel M i k (spMap ψ ≫ tau hW') x → KSRel M i k (spMap ψ ≫ tau hW') y → x = y`. Introduce `K _ ψ x y hx hy`. Take `⟨alg, Q, hQ⟩` from `chart ψ`. Take `⟨v0, hv0, hl0⟩` from `e2 K ψ _ Q hQ`. Establish `hb` using `(GlobalTheory.Reg.BorelGroupoid.frBor_groupoid E H Dw l Xo c K).1 Q`.
-
-Establish `a1` using `@hx alg Q Q 1 v0 (zv ψ) W' hW'i g (hzW ψ) (hzvW ψ) _ hQ hb hv0 (hl' ψ hl0)`. Establish `a2` using `@hy alg Q Q 1 v0 (zv ψ) W' hW'i g (hzW ψ) (hzvW ψ) _ hQ hb hv0 (hl' ψ hl0)`. Rewrite `a1`, `a2` using `[hdet]`. Conclude with `mul_right_cancel₀ (hne ψ) (a1.trans a2.symm)`. Use `⟨W', a, hpW', hWV, fun L _ z hz => ?_, fun L _ z hz x y hx hy => ?_⟩` and prove the remaining obligations.
-
-Establish `e0 : spMap (ev z W' hz) ≫ tau hW' = z` using `spMap_ev z hW' hz`. Establish `h : KSRel M i k (spMap (ev z W' hz) ≫ tau hW') (ev z W' hz a)` using `@rel L _ (ev z W' hz)`. Rewrite `h` using `[e0]`. Then use the resulting hypothesis. Establish `e0 : spMap (ev z W' hz) ≫ tau hW' = z` using `spMap_ev z hW' hz`. Rewrite `hx`, `hy` using `[← e0]`.
-
-Conclude with `uniq _ x y hx hy`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_local (hP : GlobalTheory.Published.AbelianDeRham)
     (hKS : ∀ (K : Type) [Field K] [Algebra c.F K] (y : FrPt Xo c K), KSIso (psiSet H) y)
@@ -237,7 +231,7 @@ theorem exists_local (hP : GlobalTheory.Published.AbelianDeRham)
     exact uniq _ x y hx hy
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c Y X Z M hP hKS i k W _ hW`. Use `haveI : Smooth M.str := SmoothOfRelativeDimension.smooth (dimFlag Dw) M.str`. Use `haveI : IsReduced M.X := isReduced_of_smooth M.str`. Conclude with `glue_field_cover W (fun L _ z x => KSRel M i k z x) (exists_local M hP hKS i k W hW)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_regular_ksRel : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {Y : Model Xo c (RingHom.id c.F)} {X : GlobalTheory.FlagMod.FlagCover Y} {Z : Comp Xo c} (M : Modif (str₀ X Z) (U₀ X Z) (GlobalTheory.FlagTan.dimFlag Dw)), GlobalTheory.Published.AbelianDeRham → (∀ (K : Type) [Field K] [Algebra c.F K] (y : FrPt Xo c K), GlobalTheory.FlagTan.KSIso (GlobalTheory.FlagTan.psiSet H) y) → ∀ (i : M.K.bundle.ι) (k : X.F.J) (W : M.X.Opens), IsAffineOpen W → W ≤ ksOpen M i k → ∃ a : Γ(M.X, W), ∀ (K : Type) [Field K] (z : Sp K ⟶ M.X) (hz : ⊤ ≤ z ⁻¹ᵁ W), KSRel M i k z (GlobalTheory.FlagMod.ev z W hz a) := by
   intro E _ _ _ H Dw l Xo c Y X Z M hP hKS i k W _ hW

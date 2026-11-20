@@ -7,23 +7,21 @@ open scoped TensorProduct
 
 open UpperTheory.V.AlgebraTools in
 /- English proof (translation)
-Rewrite using `[isProL_iff]`. Introduce `N g`. Use `set NΓ : Set Γ := Subtype.val '' ((N.toOpenSubgroup : Subgroup H) : Set H) with hNΓ`. Establish `hNo : IsOpen NΓ` using `hH.isOpenMap_subtype_val _ N.toOpenSubgroup.isOpen`. Establish `hKc : IsCompact NΓᶜ` using `hNo.isClosed_compl.isCompact`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `ι` to `{U : OpenNormalSubgroup Γ // ∀ x ∈ H, ∃ e, x ^ l ^ e ∈ U}`. Set `t : ι → Set Γ` to `fun U => ((U.1.toOpenSubgroup : Subgroup Γ) : Set Γ)`. Establish `htc : ∀ i, IsClosed (t i)` using `fun i => i.1.toOpenSubgroup.isClosed`. Establish `hempty : NΓᶜ ∩ ⋂ i, t i = ∅`. Rewrite using `[Set.eq_empty_iff_forall_notMem]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `x ⟨hx1, hx2⟩`. Establish `hxPL : x ∈ PL l H`. Unfold `PL`. Rewrite using `[Subgroup.mem_iInf]`. Introduce `U`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Subgroup.mem_iInf]`. Introduce `hU`. Conclude with `Set.mem_iInter.mp hx2 ⟨U, hU⟩`. Rewrite `hxPL` using `[h, Subgroup.mem_bot]`. Substitute `hxPL` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hx1 ⟨1, N.toOpenSubgroup.one_mem, rfl⟩`. Take `⟨u, hu⟩` from `hKc.elim_finite_subfamily_closed t htc hempty`. Use `choose e he using fun (i : ι) => i.2 (g : Γ) g.2`. Use `⟨∑ i ∈ u, e i, ?_⟩` and prove the remaining obligations. Establish `hin : ((g : Γ) ^ l ^ (∑ i ∈ u, e i)) ∈ ⋂ i ∈ u, t i`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Simplify using `only [Set.mem_iInter]`. Introduce `i hi`. Establish `hle : e i ≤ ∑ j ∈ u, e j` using `Finset.single_le_sum (fun _ _ => Nat.zero_le _) hi`. Take `⟨d, hd⟩` from `Nat.exists_eq_add_of_le hle`. Rewrite using `[hd, pow_add, pow_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Subgroup.pow_mem _ (he i) _`. Establish `hnot : (g : Γ) ^ l ^ (∑ i ∈ u, e i) ∈ NΓ`. Assume the negation of the conclusion as `hc`. Establish `: (g : Γ) ^ l ^ (∑ i ∈ u, e i) ∈ NΓᶜ ∩ ⋂ i ∈ u, t i` using `⟨hc, hin⟩`. Rewrite `this` using `[hu]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `this`. Take `⟨n, hn, hn2⟩` from `hnot`. Establish `: n = g ^ l ^ (∑ i ∈ u, e i)`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hn2]`.
-
-Simplify using the standard rewrite rules. Rewrite using `[← this]`. Conclude with `hn`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isProL_of_PL (l : ℕ) (Γ : Type) [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] [CompactSpace Γ]
     (H : Subgroup Γ) (hH : IsOpen (H : Set Γ)) (h : PL l H = ⊥) : IsProL l H := by
@@ -74,17 +72,15 @@ private theorem isProL_of_PL (l : ℕ) (Γ : Type) [Group Γ] [TopologicalSpace 
 
 open UpperTheory.V.AlgebraTools in
 /- English proof (translation)
-Use `haveI : Finite (Γ ⧸ H) := Subgroup.quotient_finite_of_isOpen H hH`. Establish `hS : ((Subtype.val '' s) ∪ Set.range (Quotient.out : Γ ⧸ H → Γ)).Finite` using `(hs.image _).union (Set.finite_range _)`. Use `⟨hS.toFinset, ?_⟩` and prove the remaining obligations. Rewrite using `[Set.Finite.coe_toFinset]`. Use `set S := (Subtype.val '' s) ∪ Set.range (Quotient.out : Γ ⧸ H → Γ) with hSdef`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set K := (Subgroup.closure S).topologicalClosure with hK`. Establish `hKc : IsClosed (K : Set Γ)` using `Subgroup.isClosed_topologicalClosure _`. Establish `himg : Subtype.val '' ((Subgroup.closure s : Subgroup H) : Set H) ⊆ (K : Set Γ)`. Introduce and unpack `_ ⟨z, hz, rfl⟩`. Apply `Subgroup.le_topologicalClosure` to reduce the goal to its premises.
+Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hz' : H.subtype z ∈ (Subgroup.closure s).map H.subtype` using `⟨z, hz, rfl⟩`. Rewrite `hz'` using `[MonoidHom.map_closure]`. Conclude with `Subgroup.closure_mono (Set.subset_union_left) hz'`. Establish `hHK : ∀ y ∈ H, y ∈ K`. Introduce `y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hd : Dense ((Subgroup.closure s : Subgroup H) : Set H)` using `h`. Establish `h1` using `image_closure_subset_closure_image (f := (Subtype.val : H → Γ)) continuous_subtype_val ⟨⟨y, hy⟩, hd ⟨y, hy⟩, rfl⟩`. Conclude with `closure_minimal himg hKc h1`. Rewrite using `[eq_top_iff]`. Introduce `g _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨k, hk⟩` from `QuotientGroup.mk_out_eq_mul H g`. Establish `hr : (QuotientGroup.mk g : Γ ⧸ H).out ∈ K` using `Subgroup.le_topologicalClosure _ (Subgroup.subset_closure (Set.mem_union_right _ ⟨_, rfl⟩))`. Establish `hg : g = (QuotientGroup.mk g : Γ ⧸ H).out * (k : Γ)⁻¹`. Rewrite using `[hk]`. Use `group`.
-
-Rewrite using `[hg]`. Conclude with `K.mul_mem hr (K.inv_mem (hHK _ k.2))`.
+A detailed English derivation is pending.
 -/
 private theorem fg_of_open (Γ : Type) [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] [CompactSpace Γ]
     (H : Subgroup Γ) (hH : IsOpen (H : Set Γ)) (s : Set H) (hs : s.Finite) (h : TopGen s) :
@@ -121,9 +117,9 @@ private theorem fg_of_open (Γ : Type) [Group Γ] [TopologicalSpace Γ] [IsTopol
   exact K.mul_mem hr (K.inv_mem (hHK _ k.2))
 
 /- English proof (translation)
-Introduce `l _ L G0 T hT`. Apply `phi_fg G0.frame` to reduce the goal to its premises. Use `set HΓ : Subgroup G0.Γ := (T.H.toOpenSubgroup : Subgroup G0.Γ) with hHΓ`. Establish `hHΓo : IsOpen (HΓ : Set G0.Γ)` using `T.H.toOpenSubgroup.isOpen`. Establish `hHΓc : IsClosed (HΓ : Set G0.Γ)` using `T.H.toOpenSubgroup.isClosed`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : CompactSpace HΓ := isCompact_iff_compactSpace.mp hHΓc.isCompact`. Establish `hpro : UpperTheory.V.AlgebraTools.IsProL l HΓ` using `isProL_of_PL l G0.Γ HΓ hHΓo hT.1`. Establish `hfin : {f : HΓ →* Multiplicative (ZMod l) | IsOpen (f.ker : Set HΓ)}.Finite` using `Set.finite_coe_iff.mp T.fin0`. Take `⟨x, hx⟩` from `(UpperTheory.V.AlgebraTools.topGen_of_hom l HΓ hpro).2 _ hfin (Nat.lt_pow_self (Fact.out : l.Prime).one_lt).le`. Conclude with `fg_of_open G0.Γ HΓ hHΓo (Set.range x) (Set.finite_range _) hx`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pa.BC.phi0 :
     ∀ (l : ℕ) [Fact l.Prime] (L : Loc) (G0 : Glob l L) (T : TWGrp G0), T.ProL → PhiCond G0.G₀ l := by

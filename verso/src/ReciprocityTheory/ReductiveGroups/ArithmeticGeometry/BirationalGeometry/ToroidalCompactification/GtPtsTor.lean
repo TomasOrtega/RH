@@ -13,9 +13,9 @@ open TorusInj
 variable {S : Scheme.{0}} {X : Type} [AddCommGroup X]
 
 /- English proof (translation)
-Rewrite using `[charUnit_val, Scheme.Hom.comp_appTop, CommRingCat.comp_apply]`. Use `congr 2`. Use `first`. Consider the case `(rw [Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE]; simp only [Scheme.Hom.preimage_top])`. Consider the case `(simp [Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE, Scheme.Hom.preimage_top])`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(ext1; simp [Scheme.Hom.appLE, Scheme.Hom.appTop])`.
+A detailed English derivation is pending.
 -/
 theorem charUnit_appTop {Z : Scheme.{0}} (τ : Z ⟶ (splitTorus S X).left) (χ : X) :
     τ.appTop.hom (charUnit S X χ).val =
@@ -28,7 +28,7 @@ theorem charUnit_appTop {Z : Scheme.{0}} (τ : Z ⟶ (splitTorus S X).left) (χ 
   | (ext1; simp [Scheme.Hom.appLE, Scheme.Hom.appTop])
 
 /- English proof (translation)
-Use `AddMonoidAlgebra.ringHom_ext (fun b => ?_) h` and prove the remaining obligations. Establish `e : (AddMonoidAlgebra.single 0 b : AddMonoidAlgebra ZU.{0} X) = ((b.down : ℤ) : AddMonoidAlgebra ZU.{0} X)`. Rewrite using `[AddMonoidAlgebra.intCast_def]`. Use `congr 1`. Rewrite using `[e, map_intCast, map_intCast]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 -/
 theorem ringHom_ext_ZU {A : Type} [CommRing A] {f g : AddMonoidAlgebra ZU.{0} X →+* A}
     (h : ∀ χ, f (AddMonoidAlgebra.single χ 1) = g (AddMonoidAlgebra.single χ 1)) : f = g := by
@@ -39,15 +39,13 @@ theorem ringHom_ext_ZU {A : Type} [CommRing A] {f g : AddMonoidAlgebra ZU.{0} X 
   rw [e, map_intCast, map_intCast]
 
 /- English proof (translation)
-Establish `key : ∀ f g : Z.left ⟶ Spec (torusRing ZU X), (Scheme.ΓSpecIso (torusRing ZU X)).inv ≫ f.appTop = (Scheme.ΓSpecIso (torusRing ZU X)).inv ≫ g.appTop → f = g`. Introduce `f g hfg`. Establish `hh : ∀ f' : Z.left ⟶ Spec (torusRing ZU X), (Scheme.ΓSpecIso (torusRing ZU X)).inv ≫ f'.appTop = ((ΓSpec.adjunction.homEquiv Z.left (Opposite.op (torusRing ZU X))).symm f').unop`. Introduce `f'`. Establish `h0` using `ΓSpecIso_inv_ΓSpec_adjunction_homEquiv ((ΓSpec.adjunction.homEquiv Z.left (Opposite.op (torusRing ZU X))).symm f').unop`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hf : f' = ΓSpec.adjunction.homEquiv Z.left (Opposite.op (torusRing ZU X)) ((ΓSpec.adjunction.homEquiv Z.left (Opposite.op (torusRing ZU X))).symm f').unop.op` using `((ΓSpec.adjunction.homEquiv Z.left (Opposite.op (torusRing ZU X))).apply_symm_apply f').symm`. Use `conv_lhs => rw [hf]`. Conclude with `h0`. Establish `hψ` using `(hh f).symm.trans (hfg.trans (hh g))`. Conclude with `(ΓSpec.adjunction.homEquiv Z.left (Opposite.op (torusRing ZU X))).symm.injective (congrArg Quiver.Hom.op hψ)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Apply `pullback.hom_ext` to reduce the goal to its premises. Apply `key` to reduce the goal to its premises. Apply `CommRingCat.hom_ext` to reduce the goal to its premises. Apply `ringHom_ext_ZU` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `χ`. Establish `e1` using `charUnit_appTop τ₁.left χ`. Establish `e2` using `charUnit_appTop τ₂.left χ`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply]`. Use `erw [← e1, ← e2]`.
-
-Conclude with `h χ`. Conclude with `(Over.w τ₁).trans (Over.w τ₂).symm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem torusPt_ext {Z : Over S} {τ₁ τ₂ : Z ⟶ splitTorus S X}
     (h : ∀ χ, τ₁.left.appTop.hom (charUnit S X χ).val = τ₂.left.appTop.hom (charUnit S X χ).val) :

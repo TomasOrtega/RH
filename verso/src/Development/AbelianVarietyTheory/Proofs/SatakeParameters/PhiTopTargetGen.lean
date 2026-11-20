@@ -16,18 +16,18 @@ open GlobalTheory.DatumLaw
 section General
 
 /- English proof (translation)
-Rewrite using `[coarse_of_le h1, blkIdx_replicate ht _ _ (by omega)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem coarse_rep {r t m i : ℕ} (ht : 0 < t) (h1 : r ≤ i) (h2 : i < r + m * t) :
     coarse r (List.replicate m t) i = (i - r) / t + 1 := by
   rw [coarse_of_le h1, blkIdx_replicate ht _ _ (by omega)]
 
 /- English proof (translation)
-Unfold `supSum`. Establish `h1 : ∀ i : Fin n, (∑ j : Fin n, if i.val + 1 = j.val ∧ j.val < r ∧ i.val ∈ Finset.range (r - 1) then M i j else 0) = if i.1 < r - 1 then A i.1 (i.1 + 1) else 0` using `fun i => by split_ifs with h`. Rewrite using `[Finset.sum_eq_single (⟨i.1 + 1, by omega⟩ : Fin n), if_pos ⟨rfl, by simp only; omega, Finset.mem_range.2 h⟩, ← hA]`. Introduce `j _ hj`. Conclude with `if_neg fun h' => hj (Fin.ext h'.1.symm)`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h'`. Conclude with `absurd (Finset.mem_univ _) h'`. Conclude with `Finset.sum_eq_zero fun j _ => if_neg fun h' => h (Finset.mem_range.1 h'.2.2)`. Rewrite using `[Finset.sum_congr rfl fun i _ => h1 i, Fin.sum_univ_eq_sum_range (fun i => if i < r - 1 then A i (i + 1) else 0) n, ← Finset.sum_filter]`. Use `Finset.sum_congr ?_ fun _ _ => rfl` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Use extensionality with `i`. Simplify using `only [Finset.mem_filter, Finset.mem_range]`. Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem supSum_eq {κ : Type} [CommRing κ] {n r : ℕ} (hr : r ≤ n) (M : Matrix (Fin n) (Fin n) κ) (A : ℕ → ℕ → κ)
     (hA : ∀ i j : Fin n, A i.1 j.1 = M i j) :
@@ -50,11 +50,11 @@ theorem supSum_eq {κ : Type} [CommRing κ] {n r : ℕ} (hr : r ≤ n) (M : Matr
   omega
 
 /- English proof (translation)
-Unfold `lamJ lamGen lamF`. Rewrite using `[MonoidHom.mul_apply, Units.val_mul, supChar_val, supSum_eq (by omega) _ A hA, MonoidHom.comp_apply, detChar_apply, List.length_replicate, Units.coe_prod]`. Use `congr 1`. Simplify using the standard rewrite rules. Use `Finset.prod_congr rfl fun s hs => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hs` using `[Finset.mem_range]`. Establish `hb : r + s * t + t ≤ n` using `blk_le hs hn.ge`. Rewrite using `[← GlobalTheory.TopLaw.blkDet_eq_dB (coarse r (List.replicate m t)) (s + 1) (r + s * t) t hb ?_ (Subgroup.inclusion (uniUT_le_blockUT n κ r _) M) A hA]`. Unfold `ext0`. Rewrite using `[dif_pos (Units.isUnit _), IsUnit.unit_of_val_units]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Introduce `i hi`. Distinguish the cases in `h : i < r`. Rewrite using `[coarse_of_lt h]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[coarse_rep ht (by omega) (by omega), Nat.add_right_cancel_iff, Nat.div_eq_iff ht]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -84,7 +84,7 @@ theorem lamJ_eq {κ K : Type} [CommRing κ] [Field K] (ψ : AddChar κ K) (χ : 
 variable {E K : Type} [Field E] [NumberField E] [StarRing E] [Field K] {P : HeightOneSpectrum (𝓞 E)}
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.TopStep.entB_zero _ _ _ _ _ rfl, dif_pos ⟨p.2, p'.2⟩]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem red_entB (k₀ : ℕ) {n : ℕ} (ex : ℕ → ℕ) (j : GLint E n P) (p p' : Fin n) :
     redP P (LocE.entB (qOf P) k₀ 0 n 0 n ex ex (j.1.toLinearMap : HomE E (n + 0) (n + 0)) p.1 p'.1) =
@@ -93,9 +93,9 @@ theorem red_entB (k₀ : ℕ) {n : ℕ} (ex : ℕ → ℕ) (j : GLint E n P) (p 
   rfl
 
 /- English proof (translation)
-Use extensionality with `v`. Unfold `LocE.lamY`. Rewrite using `[LastSteps.mem_sclLat, mem_stdAt]`. Use `forall_congr' fun l => ?_` and prove the remaining obligations. Establish `: LocE.scE n ex l.1 = 0` using `if_pos l.2`.
+By extensionality, compare the relevant components. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[this, zpow_zero, inv_one, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lamY_zero (n : ℕ) (ex : ℕ → ℕ) : LocE.lamY P (qOf P) n 0 ex = stdAt E n P := by
   ext v
@@ -106,26 +106,26 @@ theorem lamY_zero (n : ℕ) (ex : ℕ → ℕ) : LocE.lamY P (qOf P) n 0 ex = st
   rw [this, zpow_zero, inv_one, one_mul]
 
 /- English proof (translation)
-The claim follows from `ent_int (n := n) (c := 0) (g := j.1) ((lamY_zero (E := E) (P := P) n ex).symm ▸ j.2)`.
+A detailed English derivation is pending.
 -/
 theorem int_entB (k₀ : ℕ) {n : ℕ} (ex : ℕ → ℕ) (j : GLint E n P) :
     IntM P (n + 0) (n + 0) (LocE.entB (qOf P) k₀ 0 n 0 n ex ex (j.1.toLinearMap : HomE E (n + 0) (n + 0))) :=
   ent_int (n := n) (c := 0) (g := j.1) ((lamY_zero (E := E) (P := P) n ex).symm ▸ j.2)
 
 /- English proof (translation)
-Take `⟨h1, h2, h3⟩` from `mem_uniUT.1 h`. Establish `hb` using `mem_btG.1 h1`. Establish `hr : r ≤ n` using `by omega`. Use `⟨int_entB k₀ ex j, fun p' hp' => ⟨?_, fun p hp hne hz => ?_⟩, fun i p p' a1 a2 a3 => ?_⟩` and prove the remaining obligations. Conclude with `(red_entB k₀ ex j ⟨p', by omega⟩ ⟨p', by omega⟩).trans (h3 _ hp')`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `(red_entB k₀ ex j ⟨p, hp⟩ ⟨p', by omega⟩).trans ?_` and prove the remaining obligations. Distinguish the cases in `hpr : p < r`. Use `h2 _ _ hpr ?_` and prove the remaining obligations. Establish `e1` using `SymLevelInv.symIdx_cases r 0 p`. Establish `e2` using `SymLevelInv.symIdx_cases r 0 p'`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `Zs at hz`. Simplify using `only`. Use linear arithmetic over natural numbers and integers. Use `hb _ _ ?_` and prove the remaining obligations. Simplify using `only`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[coarse_of_lt hp', coarse_of_le (by omega)]`. Use linear arithmetic over natural numbers and integers. Use `intAt_div_of_redP hq (int_entB k₀ ex j p p' a2 (by omega)) ?_` and prove the remaining obligations. Use `(red_entB k₀ ex j ⟨p, a2⟩ ⟨p', by omega⟩).trans (hb _ _ ?_)` and prove the remaining obligations. Simplify using `only`.
+Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[coarse_rep ht (show r ≤ p by omega) (by omega)]`. Distinguish the cases in `hpr : p' < r`. Rewrite using `[coarse_of_lt hpr]`. Conclude with `Nat.succ_pos _`. Rewrite using `[coarse_rep ht (show r ≤ p' by omega) (by omega)]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `b1 : (p' - r) / t < i`. Rewrite using `[Nat.div_lt_iff_lt_mul ht]`. Use linear arithmetic over natural numbers and integers. Establish `b2 : i ≤ (p - r) / t`. Rewrite using `[Nat.le_div_iff_mul_le ht]`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem levG_of_mem (hq : ((qOf P : ℕ) : 𝓞 E) ∉ P.asIdeal ^ 2) (k₀ : ℕ) {n r t m : ℕ} (ht : 0 < t) (hn : n = r + m * t)
     (ex : ℕ → ℕ) (j : GLint E n P) (h : redGL n P j ∈ HJ (𝓞 E ⧸ P.asIdeal) n r t m) :
@@ -164,9 +164,9 @@ theorem levG_of_mem (hq : ((qOf P : ℕ) : 𝓞 E) ∉ P.asIdeal ^ 2) (k₀ : �
       omega
 
 /- English proof (translation)
-Substitute `hm` using the available equality. Rewrite using `[phiG_eq, lamJ_eq ψ χ ht hn ⟨_, h⟩ (red P (LocE.entB (qOf P) k₀ 0 n 0 n (fun i => i + 1) (fun i => i + 1) (j.1.toLinearMap : HomE E (n + 0) (n + 0)))) (red_entB k₀ (fun i => i + 1) j)]`. Use `(phiM_target (c := 0) (k₁ := r) (rS := 0) (r := r) ψ χ hk le_rfl (by rw [hn]; ring) (((HJ (𝓞 E ⧸ P.asIdeal) n r t (i + 1)).comap (redGL n P)).map (GLint E n P).subtype) ?_ ?_ (g := j.1) ⟨j, h, rfl⟩ x).trans ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨g, -, rfl⟩`. Rewrite using `[lamY_zero]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `g.2`. Introduce and unpack `_ ⟨g, hg, rfl⟩`. Conclude with `levG_of_mem hq k₀ ht hn _ g hg`. Rewrite using `[lamGvS_eq ψ χ le_rfl (int_entB k₀ _ j) hn.ge hn.ge]`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem phiG_target (hq : ((qOf P : ℕ) : 𝓞 E) ∉ P.asIdeal ^ 2) (ψ : AddChar (𝓞 E ⧸ P.asIdeal) K)
     (χ : ℕ → (𝓞 E ⧸ P.asIdeal)ˣ →* Kˣ) {k₀ n r t m i c' n' : ℕ} (hm : m = i + 1) (hk : k₀ ≤ n) (ht : 0 < t)
@@ -190,11 +190,11 @@ theorem phiG_target (hq : ((qOf P : ℕ) : 𝓞 E) ∉ P.asIdeal ^ 2) (ψ : AddC
 end General
 
 /- English proof (translation)
-Introduce `X Pr R Ch S mu m2 P hm hq hP j h x`. Establish `h' : redGL _ P j ∈ HJ (𝓞 X.E ⧸ P.asIdeal) (R.N R.m - 1) R.r R.t R.m`. Use `rowLevel_unipotent_group Ch ⟨P, hP⟩` as an intermediate fact. Rewrite `h` using `[this]`. Conclude with `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e1 : psi0P Ch P = Ch.psi0 ⟨P, hP⟩` using `dif_pos hP`. Establish `e2 : chiP Ch P = chiAt Ch ⟨P, hP⟩` using `dif_pos hP`. Establish `hk : R.k ≤ R.N R.m - 1`. Use `r_le_X' R` as an intermediate fact. Use `(ranks R (j := 0) (by omega)).2.2.2` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[rowLevel_unipotent_character Ch ⟨P, hP⟩ _ h h']`. Unfold `PhiTop`. Rewrite using `[if_pos hP, if_neg Bool.false_ne_true, e1, e2]`. Conclude with `phiG_target hq _ _ hm hk R.t_odd.pos (rank_X'_eq R) j h' x`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem phiTop_target_gen : ∀ {X : Fields} {Pr : Primes X} {R : Ranks} (Ch : Chars X Pr R.m) {S : Set ℕ} (mu : Tup X.F X.E X.K S) (m2 : ℕ) (P : HeightOneSpectrum (𝓞 X.E)), R.m = m2 + 2 → ((qOf P : ℕ) : 𝓞 X.E) ∉ P.asIdeal ^ 2 → ∀ (hP : P ∈ Pr.vGs) (j : GLint X.E (R.N R.m - 1) P) (h : redGL _ P j ∈ (rowTyG Ch (rP0 Ch) ⟨P, hP⟩).H) (x : HomE X.E (R.N (m2 + 1) + cOf R (m2 + 1)) (R.N R.m - 1)), PhiTop Ch mu false m2 P (j.1.toLinearMap ∘ₗ x) * LocE.unitV (chiP Ch P (m2 + 1)) ((LinearEquiv.det j.1 : X.Eˣ) : X.E) = (((rowTyG Ch (rP0 Ch) ⟨P, hP⟩).lam ⟨_, h⟩ : X.Kˣ) : X.K) * PhiTop Ch mu false m2 P x := by
   intro X Pr R Ch S mu m2 P hm hq hP j h x

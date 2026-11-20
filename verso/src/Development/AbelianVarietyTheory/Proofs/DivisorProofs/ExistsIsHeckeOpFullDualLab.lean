@@ -22,11 +22,11 @@ open MeasureTheory
 variable {H : Type} [Group H] [TopologicalSpace H] [IsTopologicalGroup H]
 
 /- English proof (translation)
-Use `haveI : DiscreteTopology (H ⧸ K) := QuotientGroup.discreteTopology ho`. Establish `hf : ((fun k : H => ((k * b : H) : H ⧸ K)) '' (K : Set H)).Finite` using `(hc.image (QuotientGroup.continuous_mk.comp (continuous_mul_const b))).finite_of_discrete`. Use `⟨hf.toFinset.image Quotient.out, fun γ hγ => ?_, ?_⟩` and prove the remaining obligations. Take `⟨q, hq, rfl⟩` from `Finset.mem_image.1 hγ`. Take `⟨k, hk, rfl⟩` from `hf.mem_toFinset.1 hq`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨k', hk'⟩` from `QuotientGroup.mk_out_eq_mul K (k * b)`. Conclude with `⟨k, hk, k', k'.2, hk'⟩`. Introduce and unpack `x ⟨k₁, h₁, k₂, h₂, rfl⟩`. Establish `e : ((k₁ * b : H) : H ⧸ K) = ((k₁ * b * k₂ : H) : H ⧸ K)` using `(QuotientGroup.mk_mul_of_mem _ h₂).symm`. Use `⟨((k₁ * b : H) : H ⧸ K).out, ⟨Finset.mem_image_of_mem _ (hf.mem_toFinset.2 ⟨k₁, h₁, rfl⟩), ?_⟩, ?_⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← QuotientGroup.eq, QuotientGroup.out_eq', e]`. Introduce and unpack `γ ⟨hγ, h⟩`. Take `⟨q, -, rfl⟩` from `Finset.mem_image.1 hγ`. Rewrite `h` using `[← QuotientGroup.eq, QuotientGroup.out_eq']`. Rewrite using `[h, e]`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_rep (K : Subgroup H) (ho : IsOpen (K : Set H)) (hc : IsCompact (K : Set H)) (b : H) :
     ∃ R : Finset H, (∀ γ ∈ R, ∃ k₁ ∈ K, ∃ k₂ ∈ K, γ = k₁ * b * k₂) ∧
@@ -50,21 +50,19 @@ theorem exists_rep (K : Subgroup H) (ho : IsOpen (K : Set H)) (hc : IsCompact (K
       rw [h, e]
 
 /- English proof (translation)
-Establish `hK' : ∀ k, ι k ∈ KS ↔ k ∈ K` using `fun k => (hK _).trans ⟨fun ⟨k', h, e⟩ => hι e ▸ h, fun h => ⟨k, h, rfl⟩⟩`. Establish `hdc : ∀ (b : H) (x : G), (∃ k₁ ∈ KS, ∃ k₂ ∈ KS, x = k₁ * ι b * k₂) ↔ ∃ y, ι y = x ∧ ∃ k₁ ∈ K, ∃ k₂ ∈ K, y = k₁ * b * k₂` using `fun b x => by`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨k₁, h₁, k₂, h₂, rfl⟩`. Take `⟨l₁, g₁, rfl⟩` from `(hK _).1 h₁`.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨l₂, g₂, rfl⟩` from `(hK _).1 h₂`. Conclude with `⟨_, by rw [map_mul, map_mul], l₁, g₁, l₂, g₂, rfl⟩`. Introduce and unpack `⟨_, rfl, k₁, h₁, k₂, h₂, rfl⟩`. Conclude with `⟨_, (hK' _).2 h₁, _, (hK' _).2 h₂, by rw [map_mul, map_mul]⟩`. Take `⟨R', h3, h4⟩` from `exists_rep K ho hc a⁻¹`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Set `μ : Measure H` to `Measure.haar`. Use `haveI : μ.IsMulRightInvariant := ⟨fun g => by`. Rewrite using `[GlobalTheory.AdelicUnimod.map_mul_right_eq, hmod, one_smul]⟩`. Establish `hcard` using `GlobalTheory.card_leftCosets_doubleCoset_inv_eq μ K a (R.preimage ι hι.injOn) R' ho.measurableSet (ho.measure_pos μ ⟨1, one_mem _⟩).ne' hc.measure_lt_top.ne (fun γ hγ => by`. Take `⟨y, e, h⟩` from `(hdc _ _).1 (h1 _ (Finset.mem_preimage.1 hγ))`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `hι e ▸ h) (fun x hx => by`. Take `⟨γ, ⟨hγ, h⟩, hu⟩` from `h2 (ι x) ((hdc _ _).2 ⟨x, rfl, hx⟩)`. Take `⟨y, rfl, -⟩` from `(hdc _ _).1 (h1 _ hγ)`. Use `⟨y, ⟨Finset.mem_preimage.2 hγ, (hK' _).1 (by rwa [map_mul, map_inv])⟩, fun z hz => hι (hu _ ⟨Finset.mem_preimage.1 hz.1, ?_⟩)⟩` and prove the remaining obligations. Rewrite using `[← map_inv, ← map_mul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(hK' _).2 hz.2) h3 h4`. Rewrite using `[← map_inv]`. Use `⟨R'.image ι, fun γ hγ => ?_, fun x hx => ?_, ?_⟩` and prove the remaining obligations. Take `⟨y, hy, rfl⟩` from `Finset.mem_image.1 hγ`. Conclude with `⟨⟨y, rfl⟩, (hdc _ _).2 ⟨y, rfl, h3 y hy⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨y, rfl, hy⟩` from `(hdc _ _).1 hx`. Take `⟨γ, ⟨hγ, h⟩, hu⟩` from `h4 y hy`. Use `⟨ι γ, ⟨Finset.mem_image_of_mem _ hγ, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_inv, ← map_mul]`. Conclude with `(hK' _).2 h`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `z ⟨hz, h'⟩`. Take `⟨w, hw, rfl⟩` from `Finset.mem_image.1 hz`. Rewrite using `[hu w ⟨hw, (hK' _).1 (by rwa [map_mul, map_inv])⟩]`. Rewrite using `[Finset.card_image_of_injective _ hι, ← hcard, Finset.card_preimage, Finset.filter_true_of_mem]`. Introduce `γ hγ`.
-
-Take `⟨y, e, -⟩` from `(hdc _ _).1 (h1 _ hγ)`. Conclude with `⟨y, e⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_rep_inv [LocallyCompactSpace H] [SecondCountableTopology H] [MeasurableSpace H] [BorelSpace H]
     (hmod : ∀ h : H, Measure.modularCharacter h = 1) {G : Type} [Group G] (ι : H →* G) (hι : Function.Injective ι)
@@ -129,13 +127,11 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E)
 
 /- English proof (translation)
-Use `haveI : IsModuleTopology (Fv F v) (Fv F v ⊗[F] E) := ⟨rfl⟩`. Use `haveI : IsTopologicalRing (Fv F v ⊗[F] E) := IsModuleTopology.isTopologicalRing (Fv F v) _`. Use `haveI : IsArtinianRing (Fv F v ⊗[F] E) := IsArtinianRing.of_finite (Fv F v) _`. Use `letI : Algebra ℚ (Fv F v ⊗[F] E) := ((inclR (F := F) (Fv F v)).comp (algebraMap ℚ E)).toAlgebra`. Take `⟨M, hM⟩` from `exists_framed (σ := (σ : E →+* E)) hσ (J := J) (by ext i j; exact hJ.1 i j) hJ.2`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Proceed by induction.
 
-Establish `hF : Framed (sigR (Fv F v) σ) (JR (Fv F v) J) (M.map (inclR (Fv F v)))` using `hM.map fun x => rfl`. Establish `hss : ∀ x, sigR (Fv F v) σ (sigR (Fv F v) σ x) = x` using `fun x => by`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b => simp [sigR, hσ]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`. Take `⟨T, hTc, hT, hT'⟩` from `exists_involution (GlobalTheory.AdelicUnitaryTop.continuous_sigR (Fv F v) σ) hss hF`. Establish `hgen : Generic (sigR (Fv F v) σ)` using `generic_of_semilocal (δ := inclR (Fv F v) δ) (hδ.isUnit.map _) (by`. Rewrite using `[← map_neg, ← hσδ]`. Use the proof step `rfl)`.
-
-Establish `key : ∀ T : GLoc σ J v →* GLoc σ J v, Continuous T → (∀ x, T (T x) = x) → ∀ x, Measure.modularCharacter (T x) = Measure.modularCharacter x` using `fun T => modular_involution T`. Conclude with `char_eq_one hss hF hgen (Measure.modularCharacter (G := GLoc σ J v)) (fun x x' h => by`. Rewrite using `[hT' x x' h]`. Conclude with `key T hTc hT x) g`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem modular_eq_one (hσ : ∀ x, σ (σ x) = x) {δ : E} (hδ : δ ≠ 0) (hσδ : σ δ = -δ) (hJ : IsHermND σ J)
     (v : HeightOneSpectrum (𝓞 F)) (g : GLoc σ J v) : Measure.modularCharacter g = 1 := by
@@ -171,7 +167,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7}
 
 /- English proof (translation)
-Break down `h with ⟨⟨⟨he, -, v, ε, ⟨α, rfl, h1, h2⟩, hf⟩, -⟩, rfl⟩ | ⟨rfl, ⟨v, ε, ⟨α, rfl, h1, h2⟩, rfl⟩, -⟩` into its components or cases. Conclude with `⟨he, v, hf ▸ GlobalTheory.PlaceComp.isIdemOf_algebraMap h1 h2⟩`. Establish `h` using `GlobalTheory.PlaceComp.isIdemOf_algebraMap (E := D.host.E) h1 h2`. Conclude with `⟨(GlobalTheory.SuppLocal.idem_mul_iff h _).2 ⟨h.1, h.2.2⟩, v, h⟩`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem idem_of_isPrimeIdem {P : HeightOneSpectrum (𝓞 D.host.E)} {e f : AE D} (h : IsPrimeIdem P e f) :
     e * e = e ∧ ∃ v, GlobalTheory.PlaceComp.IsIdemOf D.host.E v f := by
@@ -181,11 +177,11 @@ theorem idem_of_isPrimeIdem {P : HeightOneSpectrum (𝓞 D.host.E)} {e f : AE D}
     exact ⟨(GlobalTheory.SuppLocal.idem_mul_iff h _).2 ⟨h.1, h.2.2⟩, v, h⟩
 
 /- English proof (translation)
-Establish `h1 : ∀ w (g : GA D V), GlobalTheory.PlaceComp.locMat D.sp.cm V w g = 1 ↔ GlobalTheory.AdelicU.proj D.sp.cm.sig V.gram w g = 1` using `fun w g => by`. Rewrite using `[← GlobalTheory.AdelicU.projFinLoc_projFin]`. Conclude with `⟨fun h => Subtype.ext h, fun h => congrArg (HA.mat _ _ _) h⟩`. Use `(GlobalTheory.SuppLocal.supp_iff D.sp.cm V hf g).trans ?_` and prove the remaining obligations. Simplify using `only [h1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h2, h3⟩`. Use `⟨GlobalTheory.AdelicU.proj D.sp.cm.sig V.gram v g, GlobalTheory.AdelicU.GAd_ext _ _ (fun w => ?_) fun u => ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.AdelicU.projArch_emb, GlobalTheory.AdelicU.mem_finPts_iff_forall.1 h2 w]`. Distinguish the cases in `e : u = v`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[e, GlobalTheory.AdelicU.proj_emb_self]`. Rewrite using `[GlobalTheory.AdelicU.proj_emb_ne _ _ e, h3 u e]`. Introduce and unpack `⟨x, rfl⟩`. Conclude with `⟨GlobalTheory.AdelicU.mem_finPts.2 (GlobalTheory.AdelicU.projInf_emb _ _ v x), fun w hw => GlobalTheory.AdelicU.proj_emb_ne _ _ hw x⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem suppF_iff (V : HSp D) {v : HeightOneSpectrum (𝓞 D.host.F)} {f : AE D}
     (hf : GlobalTheory.PlaceComp.IsIdemOf D.host.E v f) (g : GA D V) :
@@ -207,9 +203,9 @@ theorem suppF_iff (V : HSp D) {v : HeightOneSpectrum (𝓞 D.host.F)} {f : AE D}
     exact ⟨GlobalTheory.AdelicU.mem_finPts.2 (GlobalTheory.AdelicU.projInf_emb _ _ v x), fun w hw => GlobalTheory.AdelicU.proj_emb_ne _ _ hw x⟩
 
 /- English proof (translation)
-Use `by_contra! h`. Establish `hs : Function.Surjective (algebraMap D.host.F D.host.E)` using `fun a => (D.sp.cm.fixed a).1 (by`. Assume the negation of the conclusion as `hne`. Conclude with `h (star a - a) (sub_ne_zero.2 hne) (by show star _ = _; simp))`. Use `(LinearEquiv.ofBijective (Algebra.linearMap D.host.F D.host.E) ⟨(algebraMap D.host.F D.host.E).injective, hs⟩).finrank_eq` as an intermediate fact.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Rewrite `this` using `[D.sp.cm.deg2, Module.finrank_self]`. Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem exists_skew (D : D7) : ∃ δ : D.host.E, δ ≠ 0 ∧ D.sp.cm.sig δ = -δ := by
   by_contra! h
@@ -222,7 +218,7 @@ theorem exists_skew (D : D7) : ∃ δ : D.host.E, δ ≠ 0 ∧ D.sp.cm.sig δ = 
   omega
 
 /- English proof (translation)
-Use `⟨GlobalTheory.AdelicU.frameLat_fg V, ?_⟩` and prove the remaining obligations. Establish `: (GlobalTheory.AdelicU.frameLat V : Set (Fin V.rank → D.host.E)) = V.frame.equivFun.toLinearMap '' (V.L0 : Set V.V)` using `(V.frame.equivFun.toEquiv.image_eq_preimage_symm _).symm`. Rewrite using `[this, ← Submodule.map_span, V.standardTuple_isLattice.span_eq_top, Submodule.map_top, LinearEquiv.range]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem isLattice_frameLat (V : HSp D) : Submodule.IsLattice D.host.E (GlobalTheory.AdelicU.frameLat V) := by
   refine ⟨GlobalTheory.AdelicU.frameLat_fg V, ?_⟩

@@ -12,11 +12,11 @@ variable {R X M : Type} [CommRing R] [AddCommGroup X] [Module R X] [AddCommGroup
   {σ : R →+* R} {w : R} {γ : X → X → ℂ} {W : X → M →ₗ[ℂ] M}
 
 /- English proof (translation)
-Establish `hex : ¬ ∀ a ∈ C, γ (P z) a = 1` using `fun H => hz ((hC (P z)).2 H)`. Use `push Not at hex`. Take `⟨a, ha, hne⟩` from `hex`. Establish `hQa : W (Q a) e = e` using `he _ (hQC a ha)`. Establish `hg : γ (P z) (Q a) = γ (P z) a` using `by rw [← hadj, hPP]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : W (Q a) (W (P z) e) = γ (Q a) (P z) • W (P z) e` using `by rw [h.comm, hQa]`. Establish `key` using `hl a (W (P z) e)`. Rewrite `key` using `[hc, map_smul, smul_eq_mul]`. Establish `hs : γ (Q a) (P z) ≠ 1`. Rewrite using `[h.swap, hg]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h1`. Conclude with `hne (inv_eq_one.1 h1)`. Assume the negation of the conclusion as `h0`. Conclude with `hs (mul_right_cancel₀ h0 (key.trans (one_mul _).symm))`.
+Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem invariantForm_translate_eq_zero (h : IsHeis σ w γ W) {P Q : X →ₗ[R] X} (hPP : ∀ x, P (P x) = P x)
     (hadj : ∀ x y, γ (P x) y = γ x (Q y)) {C : Submodule R X} (hC : SelfDual γ C) (hQC : ∀ a ∈ C, Q a ∈ C)
@@ -40,41 +40,39 @@ theorem invariantForm_translate_eq_zero (h : IsHeis σ w γ W) {P Q : X →ₗ[R
 end
 
 /- English proof (translation)
-Introduce `R X M _ _ _ _ _ σ w γ W h lam A hA hspan φ hφ hφA hidx T hT hTe P Q hPP hQQ hPQ hQP hadj hPA hQA hφP hφQ hφr`. Establish `hQadj : ∀ u v, γ (Q u) v = γ u (P v)` using `fun u v => by`. Rewrite using `[h.swap, ← hadj, ← h.swap]`. Establish `hPr : ∀ u y, γ (P u) (y - P y - Q y) = 1` using `fun u y => by`. Rewrite using `[hadj, map_sub, map_sub, hQP, hQQ, sub_zero, sub_self, h.zero_right]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hQr : ∀ u y, γ (Q u) (y - P y - Q y) = 1` using `fun u y => by`. Rewrite using `[hQadj, map_sub, map_sub, hPP, hPQ, sub_self, sub_zero, h.zero_right]`. Establish `hrP : ∀ u y, γ (y - P y - Q y) (P u) = 1` using `fun u y => by`. Rewrite using `[h.swap, hPr, inv_one]`. Establish `hsm : ∀ y : X, w • (y - P y - Q y) = w • y - P (w • y) - Q (w • y)` using `fun y => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [smul_sub, map_smul]`. Establish `hsplit : ∀ ℓ : M →ₗ[ℂ] ℂ, (∀ u m, ℓ (W (Q u) m) = ℓ m) → ∀ (y : X) (v : M), γ (w • Q y) (y - Q y) * ℓ (W y v) = ℓ (W (y - P y - Q y) (W (P y) v))`. Introduce `ℓ hl y v`. Establish `e1` using `hl y (W (y - Q y) v)`. Rewrite `e1` using `[h.comp, show Q y + (y - Q y) = y by abel, map_smul, smul_eq_mul]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[e1, h.comp, hsm, hrP, one_smul, show y - P y - Q y + P y = y - Q y by abel]`. Establish `hinvρ : ∀ ℓ : M →ₗ[ℂ] ℂ, (∀ u m, ℓ (W (Q u) m) = ℓ m) → ∀ y : X, ∀ u m, (ℓ.comp (W (y - P y - Q y))) (W (Q u) m) = (ℓ.comp (W (y - P y - Q y))) m`. Introduce `ℓ hl y u m`. Simplify using `only [LinearMap.comp_apply]`. Rewrite using `[h.comm, map_smul, smul_eq_mul, h.swap, hQr, inv_one, one_mul, hl]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hinvT : ∀ ℓ : M →ₗ[ℂ] ℂ, (∀ u m, ℓ (W (Q u) m) = ℓ m) → ∀ u m, (ℓ.comp T) (W (Q u) m) = (ℓ.comp T) m`. Introduce `ℓ hl u m`. Simplify using `only [LinearMap.comp_apply]`. Rewrite using `[hT, hφQ, hl]`. Establish `hterm : ∀ ℓ : M →ₗ[ℂ] ℂ, (∀ u m, ℓ (W (Q u) m) = ℓ m) → ∀ e, Fixes W A e → ∀ b ∈ A.map φ, ℓ (W b e) = ℓ (W (P b) e)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `ℓ hl e he b hb`. Take `⟨a, ha, rfl⟩` from `Submodule.mem_map.1 hb`. Establish `hQb : Q (φ a) ∈ A.map φ`. Rewrite using `[← hφQ]`. Conclude with `Submodule.mem_map_of_mem (hQA a ha)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hd : φ a - Q (φ a) ∈ A.map φ` using `Submodule.sub_mem _ hb hQb`. Establish `hr : φ a - P (φ a) - Q (φ a) ∈ A`. Rewrite using `[hφr]`. Conclude with `Submodule.sub_mem _ (Submodule.sub_mem _ ha (hPA a ha)) (hQA a ha)`. Establish `h1 : W (Q (φ a)) (W (φ a - Q (φ a)) e) = W (φ a) e`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h.comp, h.iso hφA (Submodule.smul_mem _ w hQb) hd, one_smul, show Q (φ a) + (φ a - Q (φ a)) = φ a by abel]`. Establish `h2 : W (P (φ a)) (W (φ a - P (φ a) - Q (φ a)) e) = W (φ a - Q (φ a)) e`. Rewrite using `[h.comp, ← map_smul P w (φ a), hPr, one_smul, show P (φ a) + (φ a - P (φ a) - Q (φ a)) = φ a - Q (φ a) by abel]`. Rewrite using `[← h1, hl, ← h2, he _ hr]`. Take `⟨k, f, hf, ht⟩` from `exists_transversal_of_idx_ne_zero A (A.map φ) hidx`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hE : ∀ ℓ : M →ₗ[ℂ] ℂ, (∀ u m, ℓ (W (Q u) m) = ℓ m) → ∀ e, Fixes W A e → ℓ (T e) = (lam (idx A (A.map φ)))⁻¹ * (((Finset.univ.filter (fun i => P (f i) ∈ A)).card : ℕ) : ℂ) * ℓ e`. Introduce `ℓ hl e he`. Rewrite using `[hTe e he]`. Unfold `normOp`. Rewrite using `[(sumOp_eq_sum_transversal h A (A.map φ) hφA e he (Fin k) f hf ht).1, map_smul, map_sum, smul_eq_mul, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Rewrite using `[Finset.card_filter, Nat.cast_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hterm ℓ hl e he (f i) (hf i)]`. Distinguish the cases in `hm : P (f i) ∈ A`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[hm, he _ hm]`. Rewrite using `[invariantForm_translate_eq_zero h hPP hadj hA hQA ℓ hl he hm]`. Simplify using `[hm]`. Establish `hmain : ∀ ℓ : M →ₗ[ℂ] ℂ, (∀ u m, ℓ (W (Q u) m) = ℓ m) → ∀ x e, Fixes W A e → ℓ (T (W x e)) = (lam (idx A (A.map φ)))⁻¹ * (((Finset.univ.filter (fun i => P (f i) ∈ A)).card : ℕ) : ℂ) * ℓ (W x e)`. Introduce `ℓ hl x e he`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs0` using `h.ne_zero (w • Q x) (x - Q x)`. Establish `hA1` using `hsplit ℓ hl x e`. Establish `hB1` using `hsplit ℓ hl (φ x) (T e)`. Rewrite `hB1` using `[hφr, ← hφQ, ← hφP, ← map_smul φ w (Q x), ← map_sub φ x (Q x), hφ, ← hT, ← hT]`. Distinguish the cases in `hp : P x ∈ A`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hA1`, `hB1` using `[he _ hp]`. Establish `h3` using `hE (ℓ.comp (W (x - P x - Q x))) (hinvρ ℓ hl x) e he`. Simplify using `only [LinearMap.comp_apply] at h3`. Rewrite `hB1` using `[h3, ← hA1]`. Apply `mul_left_cancel₀ hs0` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[hB1]`. Expand and normalize the polynomial expressions, which then agree. Establish `z1` using `invariantForm_translate_eq_zero h hPP hadj hA hQA _ (hinvρ ℓ hl x) he hp`. Establish `z2` using `invariantForm_translate_eq_zero h hPP hadj hA hQA _ (hinvT _ (hinvρ ℓ hl x)) he hp`. Simplify using `only [LinearMap.comp_apply] at z1 z2`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hA1` using `[z1]`. Rewrite `hB1` using `[z2]`. Rewrite using `[(mul_eq_zero.1 hA1).resolve_left hs0, (mul_eq_zero.1 hB1).resolve_left hs0, mul_zero]`. Use `⟨(Finset.univ.filter (fun i => P (f i) ∈ A)).card, ?_, ?_⟩` and prove the remaining obligations. Take `⟨i, hi, -⟩` from `ht 0 (Submodule.zero_mem _)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Use `Finset.card_pos.2 ⟨i, Finset.mem_filter.2 ⟨Finset.mem_univ _, hPA _ ?_⟩⟩` and prove the remaining obligations. Simplify using `using A.neg_mem hi`. Introduce `ℓ hl m`. Establish `hle : (⊤ : Submodule ℂ M) ≤ LinearMap.ker (ℓ.comp T - ((lam (idx A (A.map φ)))⁻¹ * (((Finset.univ.filter (fun i => P (f i) ∈ A)).card : ℕ) : ℂ)) • ℓ)`. Rewrite using `[← hspan, Submodule.span_le]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Introduce and unpack `_ ⟨x, e, he, rfl⟩`. Simplify using `only [SetLike.mem_coe, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.comp_apply, LinearMap.smul_apply, smul_eq_mul]`. Rewrite using `[hmain ℓ hl x e he, sub_self]`. Establish `hm` using `hle (Submodule.mem_top (x := m))`. Simplify using `only [LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.comp_apply, LinearMap.smul_apply, smul_eq_mul] at hm`.
-
-Conclude with `sub_eq_zero.1 hm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem invariantForm_normOp_eq : ∀ {R X M : Type} [CommRing R] [AddCommGroup X] [Module R X] [AddCommGroup M] [Module ℂ M] {σ : R →+* R} {w : R} {γ : X → X → ℂ} {W : X → M →ₗ[ℂ] M}, IsHeis σ w γ W → ∀ lam : ℕ →* ℂ, ∀ A : Submodule R X, SelfDual γ A → Submodule.span ℂ {m : M | ∃ x e, Fixes W A e ∧ m = W x e} = ⊤ → ∀ (φ : X →ₗ[R] X), (∀ x y, γ (φ x) (φ y) = γ x y) → SelfDual γ (A.map φ) → idx A (A.map φ) ≠ 0 → ∀ T : M →ₗ[ℂ] M, (∀ x v, T (W x v) = W (φ x) (T v)) → (∀ e, Fixes W A e → T e = normOp lam W A (A.map φ) e) → ∀ P Q : X →ₗ[R] X, (∀ x, P (P x) = P x) → (∀ x, Q (Q x) = Q x) → (∀ x, P (Q x) = 0) → (∀ x, Q (P x) = 0) → (∀ x y, γ (P x) y = γ x (Q y)) → (∀ a ∈ A, P a ∈ A) → (∀ a ∈ A, Q a ∈ A) → (∀ x, φ (P x) = P (φ x)) → (∀ x, φ (Q x) = Q (φ x)) → (∀ x, φ x - P (φ x) - Q (φ x) = x - P x - Q x) → ∃ n : ℕ, 0 < n ∧ ∀ ℓ : M →ₗ[ℂ] ℂ, (∀ u m, ℓ (W (Q u) m) = ℓ m) → ∀ m, ℓ (T m) = (lam (idx A (A.map φ)))⁻¹ * (n : ℂ) * ℓ m := by
   intro R X M _ _ _ _ _ σ w γ W h lam A hA hspan φ hφ hφA hidx T hT hTe P Q hPP hQQ hPQ hQP hadj hPA hQA hφP hφQ hφr

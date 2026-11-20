@@ -20,7 +20,7 @@ def ConeIntegralPts.Statement : Prop :=
           (IndefiniteRowSideFullHecke.ArithBezout.logFormNorm S hS u)
 
 /- English proof (translation)
-Establish `h` using `Finsupp.support_onFinset_subset hW`. Rewrite `h` using `[Set.Finite.mem_toFinset]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem mem_minimalPrimes_of_mem_fundCycle_support {n : ℕ} {J W : Ideal (MvPolynomial (Fin n) ℂ)}
     (hW : W ∈ (fundCycle J).support) : W ∈ J.minimalPrimes := by

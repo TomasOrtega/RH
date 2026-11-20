@@ -11,9 +11,9 @@ variable {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] [NormedSpace ℝ 
   [IsScalarTower ℝ ℂ E] {ι : Type} [Fintype ι] {n : ℕ}
 
 /- English proof (translation)
-Establish `h` using `hH.posDef _ (hA.mapsTo hy)`. Establish `hu : IsUnit (A y)ᵀ` using `(isUnit_iff_isUnit_det _).2 (by rw [det_transpose]; exact hA.isUnit y hy)`. Establish `e : (A y)ᵀᴴ = (A y)ᴴᵀ` using `by ext; rfl`. Use `h.conjTranspose_mul_mul_same (B := (A y)ᵀᴴ) (mulVec_injective_iff_isUnit.2 hu.star)` as an intermediate fact. Rewrite `this` using `[conjTranspose_conjTranspose, e]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem adaptedGram_posDef {U : Set (ι → ℂ)} {H : (ι → ℂ) → Matrix (Fin n) (Fin n) ℂ} {Y : Set E}
     {π : E → ι → ℂ} {A : E → Matrix (Fin n) (Fin n) ℂ} (hH : IsPosFrame U H)
@@ -26,7 +26,7 @@ theorem adaptedGram_posDef {U : Set (ι → ℂ)} {H : (ι → ℂ) → Matrix (
   exact this
 
 /- English proof (translation)
-Establish `hA' : MContDiffAt ∞ A y` using `fun a b => ((hA.hol_frame a b).contDiffAt (hA.isOpen.mem_nhds hy)).restrict_scalars ℝ`. Establish `hπ : ContDiffAt ℝ ∞ π y` using `(hA.hol_proj.contDiffAt (hA.isOpen.mem_nhds hy)).restrict_scalars ℝ`. Establish `hHπ : MContDiffAt ∞ (fun x => H (π x)) y` using `fun a b => ContDiffAt.comp (g := fun z => H z a b) y ((hH.smooth a b).contDiffAt (hH.isOpen.mem_nhds (hA.mapsTo hy))) hπ`. Conclude with `(hA'.transpose.mul hHπ).mul hA'.conjTranspose.transpose`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem adaptedGram_smooth {U : Set (ι → ℂ)} {H : (ι → ℂ) → Matrix (Fin n) (Fin n) ℂ} {Y : Set E}
     {π : E → ι → ℂ} {A : E → Matrix (Fin n) (Fin n) ℂ} (hH : IsPosFrame U H)
@@ -42,7 +42,7 @@ theorem adaptedGram_smooth {U : Set (ι → ℂ)} {H : (ι → ℂ) → Matrix (
   exact (hA'.transpose.mul hHπ).mul hA'.conjTranspose.transpose
 
 /- English proof (translation)
-Establish `h` using `(posDef_gradedGram (adaptedGram_posDef hH hA hy) i).diag_pos (i := ())`. Rewrite `h` using `[Complex.lt_def]`. Conclude with `⟨h.1, Complex.ext (by rw [ofReal_re]) (by rw [ofReal_im]; exact h.2.symm)⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem lineGram_pos {U : Set (ι → ℂ)} {H : (ι → ℂ) → Matrix (Fin n) (Fin n) ℂ} {Y : Set E}
     {π : E → ι → ℂ} {A : E → Matrix (Fin n) (Fin n) ℂ} (hH : IsPosFrame U H)
@@ -54,9 +54,9 @@ theorem lineGram_pos {U : Set (ι → ℂ)} {H : (ι → ℂ) → Matrix (Fin n)
   exact ⟨h.1, Complex.ext (by rw [ofReal_re]) (by rw [ofReal_im]; exact h.2.symm)⟩
 
 /- English proof (translation)
-Establish `hs : MContDiffAt 2 (fun x => stepGram (adaptedGram H π A x) i) y` using `((adaptedGram_smooth hH hA hy).of_le (by norm_cast)).submatrix _ _`. Establish `hp : (stepGram (adaptedGram H π A y) i).PosDef`. Use `(adaptedGram_posDef hH hA hy).submatrix ?_` and prove the remaining obligations. Introduce and unpack `(a | a) (b | b) hab`. Conclude with `congrArg _ (Fin.castLE_injective i.2.le hab)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Both sides reduce to the same expression.
 
-Conclude with `absurd (congrArg Fin.val hab) a.2.ne`. Conclude with `absurd (congrArg Fin.val hab) b.2.ne'`. Both sides reduce to the same expression. Establish `hu : IsUnit (subGram (stepGram (adaptedGram H π A y) i)).det` using `(isUnit_iff_isUnit_det _).1 (posDef_subGram hp).isUnit`. Conclude with `reCLM.contDiff.contDiffAt.comp y (hs.quotGram hu () ())`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem lineGram_smooth {U : Set (ι → ℂ)} {H : (ι → ℂ) → Matrix (Fin n) (Fin n) ℂ} {Y : Set E}
     {π : E → ι → ℂ} {A : E → Matrix (Fin n) (Fin n) ℂ} (hH : IsPosFrame U H)
@@ -76,13 +76,13 @@ theorem lineGram_smooth {U : Set (ι → ℂ)} {H : (ι → ℂ) → Matrix (Fin
   exact reCLM.contDiff.contDiffAt.comp y (hs.quotGram hu () ())
 
 /- English proof (translation)
-Establish `hre : ∑ i, (lam i : ℂ) * ∑ l ∈ Finset.Iio i, θ i l = ∑ i, ∑ l ∈ Finset.Ioi i, (lam l : ℂ) * θ l i`. Repeatedly rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_comm' fun i l => by simp [Finset.mem_Iio, Finset.mem_Ioi]`. Establish `h1 : ∑ i, ((-lam i : ℝ) : ℂ) * -(c i - ∑ l ∈ Finset.Ioi i, θ l i + ∑ l ∈ Finset.Iio i, θ i l) = ∑ i, (lam i : ℂ) * c i - ∑ i, ∑ l ∈ Finset.Ioi i, (lam i : ℂ) * θ l i + ∑ i, (lam i : ℂ) * ∑ l ∈ Finset.Iio i, θ i l`. Rewrite using `[← Finset.sum_sub_distrib, ← Finset.sum_add_distrib]`.
+Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.mul_sum]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : ∑ i, ∑ l ∈ Finset.Ioi i, ((lam i - lam l : ℝ) : ℂ) * θ l i = ∑ i, ∑ l ∈ Finset.Ioi i, (lam i : ℂ) * θ l i - ∑ i, ∑ l ∈ Finset.Ioi i, (lam l : ℂ) * θ l i`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Use `push_cast`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h1, h2, hre]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem sum_reindex (kap : ℂ) (lam : Fin n → ℝ) (c : Fin n → ℂ) (θ : Fin n → Fin n → ℂ) :
     -(kap * ∑ i, ((-lam i : ℝ) : ℂ) *
@@ -111,15 +111,13 @@ theorem sum_reindex (kap : ℂ) (lam : Fin n → ℝ) (c : Fin n → ℂ) (θ : 
   rw [h1, h2, hre]; ring
 
 /- English proof (translation)
-Introduce `E _ _ _ _ _ ι _ n U H Y π A e hH hA he y hy hcurv lam ξ η`. Establish `hnY : Y ∈ 𝓝 y` using `hA.isOpen.mem_nhds hy`. Establish `hp` using `fun i => lineGram_pos hH hA hy i`. Establish `hfs` using `lineGram_smooth hH hA hy`. Establish `hW : ContDiffAt ℝ 2 (weightNormSq H π A lam) y` using `by show ContDiffAt ℝ 2 (fun x => ∏ i, (lineGram H π A i x () ()).re ^ (-lam i)) y`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `contDiffAt_prod fun i _ => (hfs i).rpow_const_of_ne (hp i).1.ne'`. Establish `hW0 : weightNormSq H π A lam y ≠ 0` using `(Finset.prod_pos fun i _ => Real.rpow_pos_of_pos (hp i).1 _).ne'`. Establish `hlog : (fun x => Real.log (weightNormSq H π A lam x)) =ᶠ[𝓝 y] fun x => ∑ i, -lam i * Real.log ((lineGram H π A i x () ()).re)` using `by filter_upwards [hnY] with x hx`. Rewrite using `[weightNormSq, Real.log_prod fun i _ => (Real.rpow_pos_of_pos (lineGram_pos hH hA hx i).1 _).ne']`. Conclude with `Finset.sum_congr rfl fun i _ => Real.log_rpow (lineGram_pos hH hA hx i).1 _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlogs : ∀ i, ContDiffAt ℝ 2 (fun x => Real.log ((lineGram H π A i x () ()).re)) y` using `fun i => (hfs i).log (hp i).1.ne'`. Establish `hlev : leviForm (fun x => Real.log (weightNormSq H π A lam x)) y ξ η = ∑ i, ((-lam i : ℝ) : ℂ) * leviForm (fun x => Real.log ((lineGram H π A i x () ()).re)) y ξ η`. Rewrite using `[leviForm_congr hlog, leviForm_sum fun i _ => contDiffAt_const.mul (hlogs i), ContinuousLinearMap.sum_apply, ContinuousLinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[leviForm_const_mul _ (hlogs i)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `hcv : ∀ i, leviForm (fun x => Real.log ((lineGram H π A i x () ()).re)) y ξ η = -curv (lineGram H π A i) y ξ η () ()` using `fun i => by`. Rewrite using `[curv_line (hfs i) (hp i).1.ne' (Filter.mem_of_superset hnY fun x hx => (lineGram_pos hH hA hx i).2) ξ η () (), neg_neg]`. Establish `hlc : lineChern (weightNormSq H π A lam) y ξ η = -ddc (fun x => Real.log (weightNormSq H π A lam x)) y ξ η` using `chernOne_line hW hW0 (Filter.Eventually.of_forall fun x => rfl) ξ η`. Rewrite using `[hlc, ddc, hlev]`.
-
-Simplify using `only [hcv, hcurv]`. Conclude with `sum_reindex kappa lam (fun i => curvDiag H π e i y ξ η) (fun l i => thetaSq H π e l i y ξ η)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lineChern_weightNormSq : ∀ (E : Type) [NormedAddCommGroup E] [NormedSpace ℂ E] [NormedSpace ℝ E] [IsScalarTower ℝ ℂ E]
     [FiniteDimensional ℂ E] (ι : Type) [Fintype ι] (n : ℕ) (U : Set (ι → ℂ))

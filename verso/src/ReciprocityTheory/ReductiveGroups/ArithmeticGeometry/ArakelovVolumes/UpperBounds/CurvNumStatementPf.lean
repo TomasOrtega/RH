@@ -16,9 +16,9 @@ def coefR {r : ℕ} (X : Data E r) (v : X.Ψ → Fin r → ℝ) (τ : X.Ψ) (a j
   Dsg X j / Dsg X a * (v τ a - v τ j)
 
 /- English proof (translation)
-Take `⟨h1, h2, h3⟩` from `hv τ`. Establish `hle : a ≤ j` using `Fin.le_iff_val_le_val.mpr h.le`. Establish `f1` using `fun (hj : (j : ℕ) < X.p0) => h1 a j hle hj`. Establish `f2` using `fun (ha : X.p0 ≤ (a : ℕ)) => h2 a j ha hle`. Establish `f3` using `fun (ha : (a : ℕ) < X.p0) (hj : X.p0 ≤ (j : ℕ)) => h3 a j ha hj`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `coefR Dsg sgn`. Apply the tactic sequence `split_ifs <;> first`. Consider the case `(exfalso; omega)`. Consider the case `(norm_num <;> (first | linarith [f1 (by omega)] | linarith [f2 (by omega)] | linarith [f3 (by omega) (by omega)]))`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Treat this case separately. Treat this case separately.
 -/
 theorem coefR_nonneg {r : ℕ} (X : Data E r) (v : X.Ψ → Fin r → ℝ) (hv : IsDominantR X v) (τ : X.Ψ)
     (a j : Fin r) (h : (a : ℕ) < j) : 0 ≤ coefR X v τ a j := by
@@ -33,7 +33,7 @@ theorem coefR_nonneg {r : ℕ} (X : Data E r) (v : X.Ψ → Fin r → ℝ) (hv :
     | (norm_num <;> (first | linarith [f1 (by omega)] | linarith [f2 (by omega)] | linarith [f3 (by omega) (by omega)]))
 
 /- English proof (translation)
-Break down `le_total 0 β with hb | hb` into its components or cases. Use polynomial arithmetic with `[mul_nonneg hb ht]`. Use polynomial arithmetic with `[mul_le_mul_of_nonpos_left ht1 hb]`.
+Separate the alternatives or extract the components of the hypothesis. Use the polynomial consequences of the given equalities and inequalities. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem affine_nonneg (α β t t1 : ℝ) (h0 : 0 ≤ α) (h1 : 0 ≤ α + β * t1) (ht : 0 ≤ t) (ht1 : t ≤ t1) :
     0 ≤ α + β * t := by
@@ -42,19 +42,19 @@ theorem affine_nonneg (α β t t1 : ℝ) (h0 : 0 ≤ α) (h1 : 0 ≤ α + β * t
   · nlinarith [mul_le_mul_of_nonpos_left ht1 hb]
 
 /- English proof (translation)
-Introduce `r X L de Fp T rr η hη hrr hT hL hLde hdom`. Use `⟨fun x0 _ z hz ξ hξ => (curvature_statement_holds r X L x0 z hz).2 hL ξ hξ, fun x0 _ z hz ξ hξ => (curvature_statement_holds r X (2 • L - de) x0 z hz).2 hLde ξ hξ, ?_⟩` and prove the remaining obligations. Introduce `t ht htT x0 _ z hz ξ`. Take `⟨b, hb, hgr⟩` from `MajorantNormalForms.exists_normal_frame X hz`. Establish `hgram : ∀ τ, gram τ.1 X.Gm (mat (rmul (cpt X x0 z) b) τ) = diagonal fun a : Fin r => ((sgn X.p0 (a : ℕ) : ℝ) : ℂ)` using `fun τ => (hgr τ).1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set v : X.Ψ → Fin r → ℝ := fun τ a => ((Fp - kapW X - nd X • L) τ a : ℝ) - t * (rr / 2) * (de τ a : ℝ) - 2 * η * (L τ a : ℝ) with hv`. Establish `ht1 : t ≤ 2 * T / rr` using `by rw [le_div_iff₀ hrr]; linarith`. Establish `hv0` using `hdom 0 (by simp)`. Establish `hv1` using `hdom (2 * T / rr) (by simp)`. Establish `hvt : IsDominantR X v`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `τ`. Take `⟨a0, b0, c0⟩` from `hv0 τ`. Take `⟨a1, b1, c1⟩` from `hv1 τ`. Establish `gen : ∀ i j : Fin r, (fun τ a => ((Fp - kapW X - nd X • L) τ a : ℝ) - 0 * (rr / 2) * (de τ a : ℝ) - 2 * η * (L τ a : ℝ)) τ j ≤ (fun τ a => ((Fp - kapW X - nd X • L) τ a : ℝ) - 0 * (rr / 2) * (de τ a : ℝ) - 2 * η * (L τ a : ℝ)) τ i → (fun τ a => ((Fp - kapW X - nd X • L) τ a : ℝ) …`. Introduce `i j e0 e1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only at e0 e1`. Simplify using `only [hv]`. Establish `h` using `affine_nonneg ((((Fp - kapW X - nd X • L) τ i : ℝ) - 2 * η * (L τ i : ℝ)) - (((Fp - kapW X - nd X • L) τ j : ℝ) - 2 * η * (L τ j : ℝ))) (-(rr / 2) * ((de τ i : ℝ) - de τ j)) t (2 * T / rr) (by linarith) (by linarith) ht ht1`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `⟨fun i j hij hj => gen i j (a0 i j hij hj) (a1 i j hij hj), fun i j hi hij => gen i j (b0 i j hi hij) (b1 i j hi hij), fun i j hi hj => gen j i (c0 i j hi hj) (c1 i j hi hj)⟩`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Supply the required witnesses or components. Replace the relevant objects with their definitions.
 
-Unfold `leviM phla`. Rewrite using `[levi_formula X L x0 z hz b hb hgram ξ, levi_formula X (Fp - kapW X - nd X • L) x0 z hz b hb hgram ξ, levi_formula X de x0 z hz b hb hgram ξ]`. Rewrite using `[← sub_nonneg]`. Establish `key : (∑ τ, ∑ a : Fin r, ∑ j : Fin r, if (a : ℕ) < j then coef X (Fp - kapW X - nd X • L) τ a j * ‖Yd X b z (WithLp.toLp 2 ξ) τ j a‖ ^ 2 else 0) - t * (rr / 2) * (∑ τ, ∑ a : Fin r, ∑ j : Fin r, if (a : ℕ) < j then coef X de τ a j * ‖Yd X b z (WithLp.toLp 2 ξ) τ j a‖ ^ 2 else 0) - …`. Simplify using `only [Finset.mul_sum, ← Finset.sum_sub_distrib]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun τ _ => Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `split_ifs`. Unfold `coef coefR`. Simplify using `only [hv]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hnn : 0 ≤ ∑ τ, ∑ a : Fin r, ∑ j : Fin r, if (a : ℕ) < j then coefR X v τ a j * ‖Yd X b z (WithLp.toLp 2 ξ) τ j a‖ ^ 2 else 0` using `Finset.sum_nonneg fun τ _ => Finset.sum_nonneg fun a _ => Finset.sum_nonneg fun j _ => by split_ifs with h`. Conclude with `mul_nonneg (coefR_nonneg X v hvt τ a j h) (sq_nonneg _)`. Conclude with `le_rfl`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem curvNumStatement_holds : CurvNumStatement (E := E) := by
   intro r X L de Fp T rr η hη hrr hT hL hLde hdom

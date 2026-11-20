@@ -9,9 +9,9 @@ open GlobalTheory.CompanionTheory.LFUDom
 namespace GlobalTheory.CompanionTheory.LFUDom
 
 /- English proof (translation)
-Establish `key : ∀ s : Finset (Fin n), ∏ i ∈ s, uniformizerUnit F ^ l i = uniformizerUnit F ^ (∑ i ∈ s, l i)`. Introduce `s`. Proceed by induction on `s using Finset.cons_induction with`. Consider the case `empty => simp`. Consider the case `cons a s ha ih => rw [Finset.prod_cons, Finset.sum_cons, ih, _root_.zpow_add]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[GeneralLinearGroup.val_det_apply, coe_torusPow, det_diagonal, ← key Finset.univ]`. Simplify using `[Units.coe_prod, Iwasawa.coe_uniformizerUnit, Units.val_zpow_eq_zpow_val]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem det_torusPow_eq (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] (n : ℕ) (l : Fin n → ℤ) :
     GeneralLinearGroup.det (torusPow F n l) = uniformizerUnit F ^ (∑ i, l i) := by

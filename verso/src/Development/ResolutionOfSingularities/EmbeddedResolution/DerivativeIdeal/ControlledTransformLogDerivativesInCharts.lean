@@ -14,9 +14,9 @@ variable (k : Type*) [CommRing k] (ι : Type*)
   [IsScalarTower k (MvPolynomial ι k) S] [Algebra.FormallyEtale (MvPolynomial ι k) S]
 
 /- English proof (translation)
-Use `partialDerivIdeal_le k ι S h (iSup_mono fun j => le_partialDerivIdeal k ι S h (F j)) ?_` and prove the remaining obligations. Introduce `g hg`. Use `Submodule.iSup_induction (motive := fun x => partialDeriv k ι S h x ∈ ⨆ j, partialDerivIdeal k ι S h (F j)) (fun j => F j) hg ?_ ?_ ?_` and prove the remaining obligations. Introduce `j x hx`. Conclude with `le_iSup (fun j => partialDerivIdeal k ι S h (F j)) j (partialDeriv_mem_partialDerivIdeal k ι S h (F j) hx)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_zero]`. Conclude with `Submodule.zero_mem _`. Introduce `x y hx hy`. Simplify using `only [map_add]`. Conclude with `Submodule.add_mem _ hx hy`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem partialDerivIdeal_iSup_le {κ : Sort*} (h : ι) (F : κ → Ideal S) :
     partialDerivIdeal k ι S h (⨆ j, F j) ≤ ⨆ j, partialDerivIdeal k ι S h (F j) := by
@@ -34,7 +34,7 @@ theorem partialDerivIdeal_iSup_le {κ : Sort*} (h : ι) (F : κ → Ideal S) :
     exact Submodule.add_mem _ hx hy
 
 /- English proof (translation)
-The claim follows from `(partialDerivIdeal_iSup_le k ι S h (fun i => ⨆ _ : i ≤ n, F i)).trans (iSup_mono fun i => partialDerivIdeal_iSup_le k ι S h (fun _ : i ≤ n => F i))`.
+A detailed English derivation is pending.
 -/
 theorem partialDerivIdeal_biSup_le (h : ι) (n : ℕ) (F : ℕ → Ideal S) :
     partialDerivIdeal k ι S h (⨆ i, ⨆ _ : i ≤ n, F i) ≤
@@ -54,11 +54,11 @@ variable (k : Type*) [CommRing k] (ι : Type*) [DecidableEq ι]
   (φ : S →ₐ[k] S₁) (T : Finset ι) (s h : ι)
 
 /- English proof (translation)
-Use `partialDerivIdeal_le k ι S₁ h le_sup_left ?_` and prove the remaining obligations. Introduce `g hg`. Establish `hc : m - i = (m - i - 1) + 1` using `by omega`. Establish `hJ : Ideal.span {coord k ι S₁ s ^ ((m - i - 1) + 1)} * L i = Ideal.map φ (derivIdealIterate k i J)`. Rewrite using `[← hc]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hL i (le_of_lt hi)`. Establish `hD : Ideal.map φ (derivIdeal k (derivIdealIterate k i J)) ≤ Ideal.span {coord k ι S₁ s ^ (m - i - 1)} * L (i + 1)`. Establish `h2` using `hL (i + 1) (by omega)`. Establish `h3 : m - (i + 1) = m - i - 1` using `by omega`. Rewrite `h2` using `[h3]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← derivIdealIterate_succ]`. Conclude with `le_of_eq h2.symm`. Conclude with `partialDeriv_mem_sup_of_span_pow_mul_eq_map k ι S S₁ φ T s hin hs hout hnzd h hhT hhs (derivIdealIterate k i J) (L i) (L (i + 1)) (m - i - 1) hJ hD g hg`.
+A detailed English derivation is pending.
 -/
 theorem partialDerivIdeal_controlledTransform_le_sup
     (_hsT : s ∈ T)
@@ -90,13 +90,13 @@ theorem partialDerivIdeal_controlledTransform_le_sup
     (derivIdealIterate k i J) (L i) (L (i + 1)) (m - i - 1) hJ hD g hg
 
 /- English proof (translation)
-Use `revert hl`. Proceed by induction on `l with`. Consider the case `zero`. Introduce `_`. Rewrite using `[partialDerivIdealIterate_zero]`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `le_iSup₂ (f := fun i (_ : i ≤ 0) => L i) 0 le_rfl`. Consider the case `succ l ih`. Introduce `hl`. Rewrite using `[partialDerivIdealIterate_succ]`. Establish `hlm : l ≤ m` using `Nat.le_of_succ_le hl`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1` using `ih hlm`. Use `le_trans (partialDerivIdeal_mono k ι S₁ h h1) ?_` and prove the remaining obligations. Use `le_trans (partialDerivIdeal_biSup_le k ι S₁ h l L) ?_` and prove the remaining obligations. Use `iSup_le fun i => iSup_le fun hi => ?_` and prove the remaining obligations. Establish `him : i < m` using `lt_of_le_of_lt hi (by omega)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hstep` using `partialDerivIdeal_controlledTransform_le_sup k ι S S₁ φ T s h hsT hin hs hout hnzd hhT hhs J L m hL i him`. Use `hstep.trans (sup_le ?_ ?_)` and prove the remaining obligations. Conclude with `le_iSup₂ (f := fun j (_ : j ≤ l + 1) => L j) i (by omega)`. Conclude with `le_iSup₂ (f := fun j (_ : j ≤ l + 1) => L j) (i + 1) (by omega)`.
+A detailed English derivation is pending.
 -/
 theorem partialDerivIdealIterate_controlledTransform_le_iSup
     (hsT : s ∈ T)
@@ -132,11 +132,11 @@ theorem partialDerivIdealIterate_controlledTransform_le_iSup
       · exact le_iSup₂ (f := fun j (_ : j ≤ l + 1) => L j) (i + 1) (by omega)
 
 /- English proof (translation)
-Use `(derivIdealIterate_le_iSup_logDerivIdealIterate_partialDerivIdealIterate k ι S₁ h n (L 0)).trans ?_` and prove the remaining obligations. Use `iSup_le fun l => iSup_le fun hln => ?_` and prove the remaining obligations. Establish `hlm : l ≤ m` using `hln.trans hn`. Establish `h1 : partialDerivIdealIterate k ι S₁ h l (L 0) ≤ ⨆ i, ⨆ _ : i ≤ l, L i` using `partialDerivIdealIterate_controlledTransform_le_iSup k ι S S₁ φ T s h hsT hin hs hout hnzd hhT hhs J L m hL l hlm`. Use `(logDerivIdealIterate_mono k (Ideal.span ({coord k ι S₁ h} : Set S₁)) (n - l) h1).trans ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(logDerivIdealIterate_iSup_le k (Ideal.span ({coord k ι S₁ h} : Set S₁)) (n - l) (fun i => ⨆ _ : i ≤ l, L i)).trans ?_` and prove the remaining obligations. Use `iSup_le fun i => ?_` and prove the remaining obligations. Use `(logDerivIdealIterate_iSup_le k (Ideal.span ({coord k ι S₁ h} : Set S₁)) (n - l) (fun _ : i ≤ l => L i)).trans ?_` and prove the remaining obligations. Use `iSup_le fun hi => ?_` and prove the remaining obligations. Establish `h2 : logDerivIdealIterate k (Ideal.span ({coord k ι S₁ h} : Set S₁)) (n - l) (L i) ≤ logDerivIdealIterate k (Ideal.span ({coord k ι S₁ h} : Set S₁)) (n - i) (L i)` using `logDerivIdealIterate_le_of_le k (Ideal.span ({coord k ι S₁ h} : Set S₁)) (by omega : n - l ≤ n - i) (L i)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `h2.trans (le_iSup₂ (f := fun j (_ : j ≤ n) => logDerivIdealIterate k (Ideal.span ({coord k ι S₁ h} : Set S₁)) (n - j) (L j)) i (hi.trans hln))`.
+A detailed English derivation is pending.
 -/
 theorem derivIdealIterate_le_iSup_logDerivIdealIterate_controlledTransform [Fintype ι]
     (hsT : s ∈ T)

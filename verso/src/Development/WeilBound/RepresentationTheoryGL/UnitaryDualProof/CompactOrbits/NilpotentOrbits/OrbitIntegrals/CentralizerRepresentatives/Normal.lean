@@ -8,7 +8,7 @@ namespace PositivityTheory.RgUd.T.Nil.Orb.BReps
 variable {E W : Type} [Field E] [AddCommGroup W] [Module E W]
 
 /- English proof (translation)
-Take `⟨ι, _, l, s, B, hB, hl, hs, hC, hv⟩` from `exists_good N hN v`. Conclude with `⟨ι, inferInstance, l, s, B, hB, hl, hs, hv, fun A hA a i hi => repr_centralizer_eq_zero N l B hB s hs hC v hv A hA a i hi⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_normal [FiniteDimensional E W] (N : W →ₗ[E] W) (hN : IsNilpotent N) (v : W) :
     ∃ (ι : Type) (_ : Fintype ι) (l s : ι → ℕ) (B : Module.Basis (Σ a, Fin (l a)) E W), IsChain N l B ∧

@@ -12,7 +12,7 @@ open ReciprocityTheory.ChartRestriction.G.Out
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `S S' G _ _ G' _ f φ h`. Rewrite using `[isCommMonObj_iff_isMulCommutative]`. Introduce `T`. Use `⟨⟨fun x y => Over.OverMorphism.ext (h.1.hom_ext ?_ (by rw [Over.w, Over.w]))⟩⟩` and prove the remaining obligations. Rewrite using `[← h.2 T x y (pushPt h.1.w x) (pushPt h.1.w y) rfl rfl, ← h.2 T y x (pushPt h.1.w y) (pushPt h.1.w x) rfl rfl, _root_.mul_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem isCommMonObj_of_grpPullback : ∀ (S S' : Scheme.{0}) (G : Over S) [GrpObj G] [IsCommMonObj G] (G' : Over S') [GrpObj G'] (f : S' ⟶ S) (φ : G'.left ⟶ G.left), IsGrpPullback G' G f φ → IsCommMonObj G' := by
   intro S S' G _ _ G' _ f φ h

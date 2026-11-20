@@ -12,9 +12,9 @@ section Disj
 variable {k σ τ : Type} [Field k] [DecidableEq σ] [DecidableEq τ]
 
 /- English proof (translation)
-Establish `ha : a = b`. Use extensionality with `x`. Establish `h1` using `DFunLike.congr_fun h (e x)`. Simplify `h1` using `[Finsupp.mapDomain_apply he, hβ, hβ']`. Substitute `ha` using the available equality.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Substitute using the available equality.
 
-Conclude with `⟨rfl, add_left_cancel h⟩`.
+Supply the required witnesses or components.
 -/
 theorem mapDomain_add_inj (e : τ → σ) (he : Function.Injective e) (a b : τ →₀ ℕ) (β β' : σ →₀ ℕ)
     (hβ : ∀ x, β (e x) = 0) (hβ' : ∀ x, β' (e x) = 0)
@@ -27,9 +27,9 @@ theorem mapDomain_add_inj (e : τ → σ) (he : Function.Injective e) (a b : τ 
   exact ⟨rfl, add_left_cancel h⟩
 
 /- English proof (translation)
-Unfold `mfac`. Establish `hd : Disjoint (Finsupp.mapDomain e a).support β.support`. Rewrite using `[Finset.disjoint_left]`. Introduce `x hx hx'`. Take `⟨y, _, rfl⟩` from `Finset.mem_image.1 (Finsupp.mapDomain_support hx)`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `(Finsupp.mem_support_iff.1 hx') (hβ y)`. Rewrite using `[Finsupp.prod_add_index_of_disjoint hd, Finsupp.prod_mapDomain_index_inj he]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mfac_mapDomain_add (e : τ → σ) (he : Function.Injective e) (a : τ →₀ ℕ) (β : σ →₀ ℕ)
     (hβ : ∀ x, β (e x) = 0) : (mfac (Finsupp.mapDomain e a + β) : k) = mfac a * mfac β := by
@@ -42,25 +42,21 @@ theorem mfac_mapDomain_add (e : τ → σ) (he : Function.Injective e) (a : τ �
   rw [Finsupp.prod_add_index_of_disjoint hd, Finsupp.prod_mapDomain_index_inj he]
 
 /- English proof (translation)
-Use `set F := rename e A * monomial β (1 : k) with hF`. Use `set G := rename e B * monomial β' c with hG`. Establish `hcF : ∀ m, F.coeff (Finsupp.mapDomain e m + β) = A.coeff m`. Introduce `m`. Rewrite using `[hF, MvPolynomial.coeff_mul_monomial, MvPolynomial.coeff_rename_mapDomain e he, mul_one]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hcF0 : ∀ n, F.coeff n ≠ 0 → ∃ m, n = Finsupp.mapDomain e m + β ∧ A.coeff m ≠ 0`. Introduce `n hn`. Rewrite `hn` using `[hF, MvPolynomial.coeff_mul_monomial']`. Use `split_ifs at hn with hle`. Rewrite `hn` using `[mul_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨u, hu, hu0⟩` from `MvPolynomial.coeff_rename_ne_zero e A (n - β) hn`. Use `⟨u, ?_, hu0⟩` and prove the remaining obligations. Rewrite using `[hu]`. Conclude with `(tsub_add_cancel_of_le hle).symm`. Conclude with `absurd rfl hn`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hcG : ∀ m, G.coeff (Finsupp.mapDomain e m + β) = if β = β' then B.coeff m * c else 0`. Introduce `m`. Use `split_ifs with hb`. Substitute `hb` using the available equality. Rewrite using `[hG, MvPolynomial.coeff_mul_monomial, MvPolynomial.coeff_rename_mapDomain e he]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Assume the negation of the conclusion as `hne`. Rewrite `hne` using `[hG, MvPolynomial.coeff_mul_monomial']`. Use `split_ifs at hne with hle`. Establish `h1 : (rename e B).coeff (Finsupp.mapDomain e m + β - β') ≠ 0` using `fun h0 => hne (by rw [h0, zero_mul])`. Take `⟨u, hu, -⟩` from `MvPolynomial.coeff_rename_ne_zero e B _ h1`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `h2 : Finsupp.mapDomain e m + β = Finsupp.mapDomain e u + β'`. Rewrite using `[hu]`. Conclude with `(tsub_add_cancel_of_le hle).symm`. Conclude with `hb (mapDomain_add_inj e he m u β β' hβ hβ' h2).2`. Conclude with `hne rfl`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hmf : ∀ m : τ →₀ ℕ, ((Finsupp.mapDomain e m + β).prod fun _ j => (j.factorial : k)) = (m.prod fun _ j => (j.factorial : k)) * (β.prod fun _ j => (j.factorial : k))` using `fun m => mfac_mapDomain_add e he m β hβ`. Unfold `Formalism.GM.M.fockK`. Establish `hsub : F.support ⊆ A.support.image (fun m => Finsupp.mapDomain e m + β)`. Introduce `n hn`. Take `⟨m, rfl, hm⟩` from `hcF0 n (MvPolynomial.mem_support_iff.1 hn)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Conclude with `Finset.mem_image.2 ⟨m, MvPolynomial.mem_support_iff.2 hm, rfl⟩`. Rewrite using `[Finset.sum_subset hsub (fun n _ hn => by`. Rewrite `hn` using `[MvPolynomial.mem_support_iff, not_not]`. Rewrite using `[hn]`. Use the proof step `ring)]`.
-
-Establish `hinj : Set.InjOn (fun m => Finsupp.mapDomain e m + β) A.support` using `fun a _ b _ hab => (mapDomain_add_inj e he a b β β hβ hβ hab).1`. Rewrite using `[Finset.sum_image hinj]`. Simplify using `only [hcF, hcG, hmf]`. Use `split_ifs with hb`. Rewrite using `[Finset.mul_sum]`.
-
-Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `x _`. Unfold `mfac`. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fockK_rename_mul (e : τ → σ) (he : Function.Injective e) (A B : MvPolynomial τ k) (β β' : σ →₀ ℕ) (c : k)
     (hβ : ∀ x, β (e x) = 0) (hβ' : ∀ x, β' (e x) = 0) :

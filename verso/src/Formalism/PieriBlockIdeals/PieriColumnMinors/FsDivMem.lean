@@ -5,23 +5,19 @@ namespace Formalism.CohomologicalDescent.LR
 open Formalism.CohomologicalDescent Formalism.CohomologicalDescent.Symmetrization
 
 /- English proof (translation)
-It suffices to establish `key : ∀ n : ℕ, ∀ M : Multiset ι, Multiset.card M = n → ∀ x ∈ L, (((∏ v, (Multiset.count v M).factorial : ℕ) : ℚ)⁻¹) • (M.toList.map φ).prod x ∈ L by`. Introduce `M`. Conclude with `key _ M rfl`. Introduce `n`. Proceed by induction on `n using Nat.strong_induction_on with`.
+Reduce the argument to an intermediate assertion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `_ n ih`. Introduce `M hn x hx`. Distinguish the cases in `hM : M = 0`. Substitute `hM` using the available equality. Simplify using `[hx]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨v, hv⟩` from `Multiset.exists_mem_of_ne_zero hM`. Use `set c := Multiset.count v M with hc`. Use `set M' := M.filter (fun w => ¬ w = v) with hM'`. Establish `hsplit : M = Multiset.replicate c v + M'`. Rewrite using `[hM', hc, ← Multiset.filter_eq' M v, Multiset.filter_add_not]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc0 : 0 < c` using `Multiset.count_pos.mpr hv`. Establish `hcard : Multiset.card M' < n`. Establish `e` using `congrArg Multiset.card hsplit`. Rewrite `e` using `[Multiset.card_add, Multiset.card_replicate]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hperm : M.toList.Perm (List.replicate c v ++ M'.toList)`. Establish `e : (M.toList : Multiset ι) = ((List.replicate c v ++ M'.toList : List ι) : Multiset ι)`. Rewrite using `[Multiset.coe_toList, ← Multiset.coe_add, Multiset.coe_toList, Multiset.coe_replicate]`. Conclude with `hsplit`. Conclude with `Multiset.coe_eq_coe.mp e`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hpw : (M.toList.map φ).Pairwise Commute` using `List.pairwise_map.mpr (List.pairwise_of_forall fun a b => hφ a b)`. Establish `hprod : (M.toList.map φ).prod = φ v ^ c * (M'.toList.map φ).prod`. Rewrite using `[(hperm.map φ).prod_eq' hpw]`. Simplify using `[List.map_append, List.prod_append, List.map_replicate, List.prod_replicate]`. Establish `hcnt : ∀ w ∈ Finset.univ.erase v, Multiset.count w M' = Multiset.count w M`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Introduce `w hw`. Conclude with `Multiset.count_filter_of_pos (Finset.ne_of_mem_erase hw)`. Establish `hcv : Multiset.count v M' = 0` using `Multiset.count_filter_of_neg (fun h => h rfl)`. Establish `hfact : (∏ w, (Multiset.count w M).factorial : ℕ) = c.factorial * ∏ w, (Multiset.count w M').factorial`. Rewrite using `[← Finset.mul_prod_erase Finset.univ (fun w => (Multiset.count w M).factorial) (Finset.mem_univ v), ← Finset.mul_prod_erase Finset.univ (fun w => (Multiset.count w M').factorial) (Finset.mem_univ v), hcv, Nat.factorial_zero, one_mul]`.
-
-Use `congr 1`. Conclude with `Finset.prod_congr rfl fun w hw => by rw [hcnt w hw]`. Establish `hrest` using `ih _ (hn ▸ hcard) M' rfl x hx`. Establish `e : (((∏ w, (Multiset.count w M).factorial : ℕ) : ℚ)⁻¹) • (M.toList.map φ).prod x = ((c.factorial : ℚ)⁻¹) • (φ v ^ c) ((((∏ w, (Multiset.count w M').factorial : ℕ) : ℚ)⁻¹) • (M'.toList.map φ).prod x)`. Rewrite using `[hprod, hfact, Module.End.mul_apply, map_smul, smul_smul, Nat.cast_mul, mul_inv]`.
-
-Rewrite using `[e]`. Conclude with `hL v c _ hrest`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lrd_core {ι V : Type*} [Fintype ι] [DecidableEq ι] [AddCommGroup V] [Module ℚ V]
     (φ : ι → Module.End ℚ V) (hφ : ∀ a b, Commute (φ a) (φ b)) (L : AddSubgroup V)
@@ -81,9 +77,9 @@ theorem lrd_core {ι V : Type*} [Fintype ι] [DecidableEq ι] [AddCommGroup V] [
     exact hL v c _ hrest
 
 /- English proof (translation)
-Establish `hcomm : ∀ a b : R × P, Commute (S.f a) (S.f b)`. Introduce `a b`. Establish `h` using `S.comm (Sum.inr a.1) (Sum.inl a.2) (Sum.inr b.1) (Sum.inl b.2)`. Simplify using `only [reduceCtorEq, if_false, sub_zero] at h`. Conclude with `sub_eq_zero.mp h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Conclude with `lrd_core S.f hcomm L hL m.1 x hx`.
+A detailed English derivation is pending.
 -/
 theorem Fs_div_mem {V P R : Type} [AddCommGroup V] [Module ℚ V] [DecidableEq P] [DecidableEq R] [Fintype P]
     [Fintype R] (S : Symmetrization.HidaSetting ℚ V P R) (L : AddSubgroup V)

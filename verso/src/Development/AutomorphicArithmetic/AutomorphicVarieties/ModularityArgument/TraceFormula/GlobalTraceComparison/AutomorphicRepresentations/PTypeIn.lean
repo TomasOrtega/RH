@@ -36,7 +36,7 @@ private def rtRep {X Γ : Type} [Group X] [Group Γ] (τ : Γ →* X) (F : Submo
     simp [mul_assoc]
 
 /- English proof (translation)
-The claim follows from `FiniteDimensional.of_injective ((F.subtype.comp S.subtype).codRestrict U fun x => h _ x.2) fun x y e => Subtype.ext (Subtype.ext (by have e' := congrArg Subtype.val e; exact e'))`.
+A detailed English derivation is pending.
 -/
 private lemma fd_sub {M : Type} [AddCommGroup M] [Module ℂ M] (F : Submodule ℂ M) (S : Submodule ℂ F)
     (U : Submodule ℂ M) [FiniteDimensional ℂ U] (h : ∀ x ∈ S, x.1 ∈ U) : FiniteDimensional ℂ S :=
@@ -44,7 +44,7 @@ private lemma fd_sub {M : Type} [AddCommGroup M] [Module ℂ M] (F : Submodule �
     fun x y e => Subtype.ext (Subtype.ext (by have e' := congrArg Subtype.val e; exact e'))
 
 /- English proof (translation)
-Establish `hle : Submodule.span ℂ (Set.range g) ≤ U.comap F.subtype` using `Submodule.span_le.2 (by rintro _ ⟨i, rfl⟩; exact h i)`. Conclude with `fd_sub F _ U fun x hx => hle hx`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private lemma fd_span {M ι : Type} [AddCommGroup M] [Module ℂ M] (F : Submodule ℂ M) (g : ι → F)
     (U : Submodule ℂ M) [FiniteDimensional ℂ U] (h : ∀ i, (g i).1 ∈ U) :
@@ -54,9 +54,9 @@ private lemma fd_span {M ι : Type} [AddCommGroup M] [Module ℂ M] (F : Submodu
   exact fd_sub F _ U fun x hx => hle hx
 
 /- English proof (translation)
-Take `⟨s, -, hs⟩` from `hK.elim_nhds_subcover (fun k => {g | k⁻¹ * g ∈ L}) fun k _ => by`. Use `(hL.preimage (continuous_const.mul continuous_id)).mem_nhds ?_` and prove the remaining obligations. Simplify using `[L.one_mem]`. Use `⟨s, fun k hk => ?_⟩` and prove the remaining obligations. Take `⟨t, ht, h⟩` from `Set.mem_iUnion₂.1 (hs hk)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨t, ht, h⟩`.
+Supply the required witnesses or components.
 -/
 private lemma fin_cosets {G : Type} [Group G] [TopologicalSpace G] [ContinuousMul G] (K L : Subgroup G)
     (hK : IsCompact (K : Set G)) (hL : IsOpen (L : Set G)) :
@@ -71,7 +71,7 @@ private lemma fin_cosets {G : Type} [Group G] [TopologicalSpace G] [ContinuousMu
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
 
 /- English proof (translation)
-The claim follows from `(infGL_comm _ k).symm`.
+A detailed English derivation is pending.
 -/
 private lemma fin_kI_comm (k : GL (Fin n) (Af E)) (κ : Kinf E n) :
     finGL E n k * kI E n κ = kI E n κ * finGL E n k :=
@@ -87,9 +87,9 @@ private lemma tau_apply (K : Subgroup (GL (Fin n) (Af E))) (γ : K × Kinf E n) 
     tau K γ = finGL E n γ.1.1 * kI E n γ.2 := rfl
 
 /- English proof (translation)
-Use `⟨cptRep E n κ (π.finPart k ⟨ψ, hψ⟩).1, ?_, ?_⟩` and prove the remaining obligations. Establish `h` using `π.stable (Op.cpt κ) _ (π.finPart k ⟨ψ, hψ⟩).2`. Rewrite `h` using `[GlobalTheory.CuspRep.act]`. Then use the resulting hypothesis. Use function extensionality and compare the values at `x`. Express the relevant statement in the definitionally equal form `ψ.1 (x * kI E n κ * finGL E n k) = _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[mul_assoc, fin_kI_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private lemma trans_mem (π : CuspSub E n) (ψ : Sm E n) (hψ : ψ ∈ π.V) (k : GL (Fin n) (Af E)) (κ : Kinf E n) :
     ∃ ψ' ∈ π.V, ψ'.1 = fun x => ψ.1 (x * (finGL E n k * kI E n κ)) := by
@@ -101,13 +101,11 @@ private lemma trans_mem (π : CuspSub E n) (ψ : Sm E n) (hψ : ψ ∈ π.V) (k 
     rw [mul_assoc, fin_kI_comm]
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `fin_cosets K (stab π.finPart ⟨ψ, hψ⟩) hK (π.isSmooth_finPart _)`. Set `S : GL (Fin n) (Af E) → Submodule ℂ (Sm E n)` to `fun t => orbSpan (π.finPart t ⟨ψ, hψ⟩).1`. Use `haveI : ∀ t, FiniteDimensional ℂ (S t) := fun t => (π.cusp _ (π.finPart t ⟨ψ, hψ⟩).2).1.kfin`. Use `haveI : FiniteDimensional ℂ ↥(s.sup S : Submodule ℂ (Sm E n)) := Submodule.finiteDimensional_finset_sup s S`. Use `⟨(s.sup S).map (Sm E n).subtype, Module.Finite.map _ _, fun k hk κ => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨t, ht, hl⟩` from `hs k hk`. Establish `e : π.finPart k ⟨ψ, hψ⟩ = π.finPart t ⟨ψ, hψ⟩`. Establish `h1 : π.finPart (t⁻¹ * k) ⟨ψ, hψ⟩ = ⟨ψ, hψ⟩` using `hl`. Establish `h2 : k = t * (t⁻¹ * k)` using `by group`. Rewrite using `[h2, map_mul, Module.End.mul_apply, h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨cptRep E n κ (π.finPart t ⟨ψ, hψ⟩).1, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(Finset.le_sup (f := S) ht) (Submodule.subset_span ⟨κ, rfl⟩)`. Rewrite using `[← e]`. Use function extensionality and compare the values at `x`. Express the relevant statement in the definitionally equal form `ψ.1 (x * kI E n κ * finGL E n k) = _`.
-
-Rewrite using `[mul_assoc, fin_kI_comm]`.
+Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma orbit_fin (π : CuspSub E n) (K : Subgroup (GL (Fin n) (Af E)))
     (hK : IsCompact (K : Set (GL (Fin n) (Af E)))) (ψ : Sm E n) (hψ : ψ ∈ π.V) :
@@ -131,9 +129,9 @@ private lemma orbit_fin (π : CuspSub E n) (K : Subgroup (GL (Fin n) (Af E)))
     rw [mul_assoc, fin_kI_comm]
 
 /- English proof (translation)
-Introduce `u hu hc`. Take `⟨v, hv, ev⟩` from `ha u hu hc`. Take `⟨w, hw, ew⟩` from `hb u hu hc`. Use `⟨v - w, Submodule.sub_mem _ hv hw, ?_⟩` and prove the remaining obligations. Establish `e : (v - w) () = v () - w ()` using `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[e]`. Use `filter_upwards [Lp.coeFn_sub (v ()) (w ()), ev, ew] with x h1 h2 h3`. Simplify using `only [h1, Pi.sub_apply, h2, h3]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private lemma inS_sub (D : Dom E n 0) (π : CuspSub E n) {a b : GA E n → ℂ} (ha : InS D π a) (hb : InS D π b) :
     InS D π (a - b) := by
@@ -150,51 +148,43 @@ private lemma inS_sub (D : Dom E n 0) (π : CuspSub E n) {a b : GA E n → ℂ} 
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Introduce `hAdm hDet hEv hCv hForm hOrth hAbs E _ _ _ n hn D π hfix K W hKo hKc hW hWR f hS hI hT`. Take `⟨Fm, B, hF, hBs, hBp, hBw, hBi⟩` from `hForm E n hn D`. Take `⟨Y0, -, hYfd, hY⟩` from `hAdm E n hn π hfix K W hKo hW`. Use `haveI := hYfd`. Use `haveI := hW`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hdet : ∀ γ, logAbs (tau K γ).val.det = 0` using `fun γ => by`. Rewrite using `[tau_apply, DiscreteGroups.T1.G.Dcy.logAbs_det_mul', (hDet E n).2 K hKc _ γ.1.2, (hDet E n).1 γ.2, add_zero]`. Establish `hst : ∀ γ, ∀ a ∈ Fm, (fun x => a (x * tau K γ)) ∈ Fm` using `fun γ a ha => (hBi _ (hdet γ) ⟨a, ha⟩).1`. Set `R` to `rtRep (tau K) Fm hst`. Establish `hR : ∀ γ (a : Fm) x, (R γ a).1 x = a.1 (x * tau K γ)` using `fun _ _ _ => rfl`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `W' : Submodule ℂ ((K × Kinf E n) → ℂ)` to `W.map (LinearMap.funLeft ℂ ℂ Prod.snd)`. Set `V : Submodule ℂ Fm` to `(π.V.map (Sm E n).subtype).comap Fm.subtype`. Set `Y : Submodule ℂ Fm` to `(Y0.map (Sm E n).subtype).comap Fm.subtype`. Establish `hSl : ∀ ψ ∈ π.V, Slab D ψ.1` using `fun ψ h => (hCv E n hn D π hfix ψ h).1`. Establish `hVm : ∀ ψ ∈ π.V, ∀ a : Fm, ψ.1 = a.1 → a ∈ V` using `fun ψ h a e => ⟨ψ, h, e⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `⟨d, p, w, hw, hs⟩` from `hEv (Kinf E n) (Kinf E n → ℂ) (fun x => LinearMap.proj x) (fun v hv => funext hv) W hW`. Set `z : Fm` to `⟨f, (hF f).2 hS⟩`. Set `zb : Fin d → Fm` to `fun b => R (1, p b) z`. Establish `hexp : ∀ γ, R γ z = ∑ b, w b γ.2 • zb b`. Introduce `γ`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Subtype.ext (funext fun x => ?_)` and prove the remaining obligations. Establish `e1 : f (x * tau K γ) = f (x * kI E n γ.2)`. Rewrite using `[tau_apply, fin_kI_comm, ← mul_assoc]`. Conclude with `hT.1 _ γ.1.2 _`. Establish `e2` using `congrFun (hs _ (hT.2 x)) γ.2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [LinearMap.proj_apply, Finset.sum_apply, Pi.smul_apply, smul_eq_mul] at e2`. Express the relevant statement in the definitionally equal form `f (x * tau K γ) = _`. Rewrite using `[e1, e2]`. Simplify using `only [AddSubmonoidClass.coe_finset_sum, Submodule.coe_smul, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Establish `e3 : (zb b).1 x = f (x * kI E n (p b))`. Express the relevant statement in the definitionally equal form `f (x * tau K (1, p b)) = _`. Simplify using `[tau_apply]`. Rewrite using `[e3, mul_comm]`. Take `⟨y, hyV, hyY, horth⟩` from `hAbs (K × Kinf E n) Fm R B W' V Y z hBs hBp (fun γ a b => (hBi _ (hdet γ) a).2 _ b _ (fun _ => rfl) fun _ => rfl) (by`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Introduce and unpack `h ⟨v, hv, rfl⟩ γ`. Use `⟨_, hWR v hv γ.2, funext fun x => ?_⟩` and prove the remaining obligations. Simplify using `[LinearMap.funLeft_apply])`. Use the proof step `(by`. Introduce and unpack `γ v ⟨ψ, hψ, e⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨ψ', h', e'⟩` from `trans_mem π ψ hψ γ.1.1 γ.2`. Use `hVm ψ' h' _ (e'.trans (funext fun x => ?_))` and prove the remaining obligations. Establish `e2 : ψ.1 = v.1` using `e`. Rewrite using `[hR, ← tau_apply, e2])`. Use the proof step `(by`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Introduce and unpack `v ⟨ψ, hψ, e⟩`. Take `⟨U, hU, hUm⟩` from `orbit_fin π K hKc ψ hψ`. Use `haveI := hU`. Use `fd_span Fm _ U fun γ => ?_` and prove the remaining obligations. Use `hUm γ.1.1 γ.1.2 γ.2` as an intermediate fact.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`. Establish `e2 : ψ.1 = v.1` using `e`. Rewrite using `[hR, tau_apply, e2])`. Use the proof step `(by haveI : FiniteDimensional ℂ (Y0.map (Sm E n).subtype) := Module.Finite.map _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `fd_sub Fm Y (Y0.map (Sm E n).subtype) fun x hx => hx)`. Use the proof step `(by`. Introduce and unpack `v ⟨ψ, hψ, e⟩ hl`. Establish `key : ∀ g, ∃ h ∈ W, ∀ γ, h γ.2 = ψ.1 (g * tau K γ)`. Introduce `g`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨h, hh, e'⟩` from `hl ((LinearMap.proj g).comp Fm.subtype)`. Use `⟨h, hh, fun γ => ?_⟩` and prove the remaining obligations. Use `congrFun e' γ` as an intermediate fact. Simplify using `only [LinearMap.funLeft_apply] at this`. Rewrite using `[this]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Express the relevant statement in the definitionally equal form `v.1 (g * tau K γ) = _`. Establish `e2 : ψ.1 = v.1` using `e`. Rewrite using `[e2]`. Establish `hTy : TypeB K W ψ`. Use `⟨fun u hu g => ?_, fun g => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take `⟨h, -, hh⟩` from `key g`. Establish `a1` using `hh (⟨u, hu⟩, 1)`. Establish `a2` using `hh 1`. Simplify using `only [tau_apply, map_one, mul_one] at a1 a2`. Conclude with `a1.symm.trans a2`.
+Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Take `⟨h, hm, hh⟩` from `key g`. Use `hm using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `κ`. Establish `a1` using `hh (1, κ)`. Simplify using `only [tau_apply] at a1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `a2 : ψ.1 (g * kI E n κ) = h κ` using `by simpa using a1.symm`. Conclude with `a2`. Conclude with `⟨ψ, hY ψ hψ hTy, e⟩)`. Use the proof step `(by`. Establish `hle : Submodule.span ℂ (Set.range fun γ => R γ z) ≤ Submodule.span ℂ (Set.range zb)` using `Submodule.span_le.2 (by`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨γ, rfl⟩`. Simplify using `only [hexp γ]`. Conclude with `Submodule.sum_mem _ fun b _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨b, rfl⟩))`. Use `haveI : FiniteDimensional ℂ (Submodule.span ℂ (Set.range zb)) := FiniteDimensional.span_of_finite ℂ (Set.finite_range zb)`. Conclude with `Submodule.finiteDimensional_of_le hle)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `(by`. Introduce `l`. Establish `e : (fun γ => l (R γ z)) = ∑ b, l (zb b) • LinearMap.funLeft ℂ ℂ Prod.snd (w b)`. Use function extensionality and compare the values at `γ`. Simplify using `only [hexp γ, map_sum, map_smul, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, LinearMap.funLeft_apply]`.
-
-Conclude with `Finset.sum_congr rfl fun b _ => mul_comm _ _`. Rewrite using `[e]`. Conclude with `Submodule.sum_mem _ fun b _ => Submodule.smul_mem _ _ ⟨w b, hw b, rfl⟩)`. Take `⟨ψ₀, hψ₀, e₀⟩` from `hyV`. Use `⟨ψ₀, hψ₀, ?_⟩` and prove the remaining obligations.
-
-Establish `e₀' : ψ₀.1 = y.1` using `e₀`. Establish `hz : f - y.1 = 0`. Use `hOrth E n hn D π hfix _ ((hF _).1 (z - y).2) (inS_sub D π hI ?_) fun ψ hψ u hu hc => ?_` and prove the remaining obligations. Rewrite using `[← e₀']`. Conclude with `((hCv E n hn D π hfix ψ₀ hψ₀).2 0 0 ⟨continuous_const, HasCompactSupport.zero⟩ continuous_const).2.2`.
-
-Establish `h1` using `hBw ⟨ψ.1, (hF _).2 (hSl ψ hψ)⟩ (z - y) u hu hc`. Establish `h2` using `horth ⟨ψ.1, (hF _).2 (hSl ψ hψ)⟩ (hVm ψ hψ _ rfl)`. Rewrite `h1` using `[h2, mul_zero]`. Conclude with `h1`. Rewrite using `[e₀']`.
-
-Conclude with `(sub_eq_zero.1 hz).symm`.
+A detailed English derivation is pending.
 -/
 theorem typeIn_pf : PiAdm → DetZero → EvalBasis → CvIn → FormEx → OrthZero → AbsType → TypeIn := by
   intro hAdm hDet hEv hCv hForm hOrth hAbs E _ _ _ n hn D π hfix K W hKo hKc hW hWR f hS hI hT

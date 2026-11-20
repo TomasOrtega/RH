@@ -10,11 +10,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 noncomputable section
 namespace GlobalTheory.RowLift
 /- English proof (translation)
-Introduce `hP D large₂ Γ _ _ Pl0 T A Ks _ _ _ R F hS ch hb CF hs`. Establish `hsc : ch.sc.cGap = 1` using `by rw [hs]`. Take `⟨G, hG, hsp, harr⟩` from `GlobalTheory.GridJoin.exists_gridPre hP.discreteSeriesUpqExists hP.discreteSeriesCover hP.harishChandraModules hS.host hS.size hS.core hsc ch.W hb.weil`. Establish `hfr : ∀ i, i ≤ D.R.m → Formalism.L2.DIV.IsFrame (G.V i 0).β (G.V i 0).Λ`. Introduce and unpack `(_ | i) hi`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Take `⟨c, h⟩` from `hS.core.lev.βY 0 (by have := D.R.two_le_m; omega)`. Conclude with `h.1`. Take `⟨c, h⟩` from `(hG.spaces.vert i 0 hi (Nat.zero_le _)).frame`. Conclude with `h.1`. Take `⟨m00, mV, hm, hν, hfd⟩` from `GlobalTheory.ColMeas.measCol_of_choice ch G hG.meas hsp hfr hb.vol`.
-
-Use `⟨GlobalTheory.GridJoin.withMeas G m00 mV G.mP G.mX, ⟨GlobalTheory.GridJoin.isSpaces_withMeas hG.spaces, GlobalTheory.GridJoin.isChars_withMeas hG.chars, GlobalTheory.GridJoin.isArrows_withMeas hG.arrows, hm, GlobalTheory.GridJoin.isData_withMeas hG.data⟩, ⟨fun i hi => (hsp.vert i …` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_row_lift_matching : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ {D : D7} (large₂ : SizeData₂ D)
     {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type} {A : FamIn D.what₂.LL Γ Pl0 T D.R.m}
@@ -47,7 +45,7 @@ open IsDedekindDomain NumberField GlobalTheory.ChiGrid GlobalTheory.FunObj Globa
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.RowLift.exists_row_lift_matching | exact _root_.GlobalTheory.RowLift.exists_row_lift_matching | (intros; apply _root_.GlobalTheory.RowLift.exists_row_lift_matching <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.twist_row_lift_exists : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ {D : D7} (large₂ : SizeData₂ D)
     {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type} {A : FamIn D.what₂.LL Γ Pl0 T D.R.m}

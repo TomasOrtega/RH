@@ -20,7 +20,7 @@ section
 attribute [local instance] Matrix.linftyOpNormedRing Matrix.linftyOpNormedAlgebra
 
 /- English proof (translation)
-The claim follows from `(LinearMap.toContinuousLinearMap (Matrix.entryLinearMap ℝ ℂ a b)).contDiff.comp (contDiff_expProd Xs)`.
+A detailed English derivation is pending.
 -/
 theorem contDiff_expProd_entry {k : ℕ} (Xs : Fin k → Matrix (Fin n) (Fin n) ℂ) (a b : Fin n) :
     ContDiff ℝ ∞ fun t : Fin k → ℝ => (List.ofFn fun i => NormedSpace.exp (t i • Xs i)).prod a b :=
@@ -32,9 +32,9 @@ section
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 /- English proof (translation)
-Introduce `k Xs hX`. Apply the tactic sequence `have hp : ContDiff ℝ ∞ fun t : Fin k → ℝ => (List.ofFn fun i => NormedSpace.exp (t i • Xs i)).prod := contDiff_pi.2 fun a => contDiff_pi.2 fun b => contDiff_expProd_entry Xs a b`. Establish `hm : ∀ t : Fin k → ℝ, PI.UpqRep.inUH G (List.ofFn fun i => NormedSpace.exp (t i • Xs i)).prod` using `fun t => list_prod_mem (G := G) _ fun g hg => by`. Take `⟨i, rfl⟩` from `(List.mem_ofFn' _ _).1 hg`. Conclude with `exp_mem hG (hX i) _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `contDiff_iff_contDiffAt.2 fun t => ?_` and prove the remaining obligations. Take `⟨U, F, hU, htU, hF, hfF⟩` from `hv _ (hm t)`. Use `((hF.contDiffAt (hU.mem_nhds htU)).comp t hp.contDiffAt).congr_of_eventuallyEq ?_` and prove the remaining obligations. Use `filter_upwards [hp.continuous.continuousAt.preimage_mem_nhds (hU.mem_nhds htU)] with s hs`. Conclude with `hfF _ hs (hm s)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem smoothVec_of_smoothOnH {G : Matrix (Fin n) (Fin n) ℂ} (hG : IsUnit G) {v : H}
     (hv : PI.UpqRep.SmoothOnH G fun g => σ g v) : SmoothVec {X | Xᴴ * G + G * X = 0} σ v := by

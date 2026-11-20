@@ -11,35 +11,29 @@ namespace GlobalTheory.CompanionTheory.LTPer
 open GroundTheory.PAdicHodge GroundTheory.PAdicHodge.EigenChar
 
 /- English proof (translation)
-Introduce `l _ h L _`. Set `H : Subgroup Gal(Om l/↥L)` to `{ carrier := {σ | ∀ w ∈ GroundTheory.PAdicHodge.unramifiedClosure l, σ w = w} mul_mem' := by`. Introduce `a b ha hb w hw`. Use `show a (b w) = w`. Rewrite using `[hb w hw, ha w hw]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use the proof step `one_mem' := by`. Introduce `w _`. Both sides reduce to the same expression. Use the proof step `inv_mem' := by`. Introduce `a ha w hw`.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `haw : a w = w` using `ha w hw`. Combine the equalities or inequalities in the displayed calculation. Introduce `hfin`. Take `⟨M, hM⟩ : ∃ M : Subgroup ℤ_[l]ˣ, M = H.map (GroundTheory.PAdicHodge.cycloChar L)` from `⟨_, rfl⟩`. Establish `hMfin : Finite M`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hs : (M : Set ℤ_[l]ˣ).Finite`. Rewrite using `[hM, Subgroup.coe_map]`. Conclude with `hfin`. Conclude with `hs.to_subtype`. Take `⟨n, hnM⟩ : ∃ n : ℕ, n = Nat.card M` from `⟨_, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hn : 0 < n`. Rewrite using `[hnM]`. Conclude with `Nat.card_pos`. Establish `hpow : ∀ σ ∈ H, (GroundTheory.PAdicHodge.cycloChar L σ) ^ n = 1`. Introduce `σ hσ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hmem : GroundTheory.PAdicHodge.cycloChar L σ ∈ M`. Rewrite using `[hM]`. Conclude with `Subgroup.mem_map_of_mem _ hσ`. Establish `h1 : (⟨GroundTheory.PAdicHodge.cycloChar L σ, hmem⟩ : M) ^ n = 1`. Rewrite using `[hnM]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `pow_card_eq_one'`. Establish `h2` using `congrArg Subtype.val h1`. Simplify using `using h2`. Establish `hroots : ∀ σ : Gal(Om l/↥L), GroundTheory.LocalField.unramifiedDegree ↥L (Om l) σ = 1 → σ ∈ H`. Introduce `σ hσ`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfix` using `(GroundTheory.LocalField.unramifiedDegree_eq_one_iff σ).mp hσ`. Establish `hS : ∀ y ∈ GroundTheory.PAdicHodge.primeToPRoots l, σ y = y`. Introduce and unpack `y ⟨m, hm0, hmcop, hym⟩`. Apply `hfix` to reduce the goal to its premises. Establish `hcop : Nat.Coprime l m` using `Nat.Coprime.symm hmcop`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hmod : l ^ Nat.totient m ≡ 1 [MOD m]` using `Nat.ModEq.pow_totient hcop`. Establish `hle : 1 ≤ l ^ Nat.totient m` using `Nat.one_le_pow _ _ (Nat.Prime.pos Fact.out)`. Establish `hdvd : m ∣ l ^ Nat.totient m - 1` using `(Nat.modEq_iff_dvd' hle).mp hmod.symm`. Take `⟨c, hc⟩` from `hdvd`. Use `GroundTheory.PAdicHodge.EigenWitt.mem_unramifiedRoots_of_pow_eq_one (L := L) (Nat.totient_pos.2 hm0) ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hc, pow_mul, hym, one_pow]`. Establish `hσ' : (σ.restrictScalars ℚ_[l]) ∈ (IntermediateField.adjoin ℚ_[l] (GroundTheory.PAdicHodge.primeToPRoots l)).fixingSubgroup` using `GroundTheory.LocalField.mem_fixingSubgroup_adjoin_iff.mpr (fun y hy => hS y hy)`. Use `show ∀ w ∈ GroundTheory.PAdicHodge.unramifiedClosure l, σ w = w`. Introduce `w hw`. Conclude with `(IntermediateField.mem_fixingSubgroup_iff _ _).mp hσ' w hw`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Set `ψ : Gal(Om l/↥L) →* ℤ_[l]ˣ` to `(powMonoidHom n).comp (GroundTheory.PAdicHodge.cycloChar L)`. Establish `hψc : Continuous ψ` using `(GroundTheory.PAdicHodge.continuous_cycloChar L).pow n`. Establish `hψu : ∀ σ, GroundTheory.LocalField.unramifiedDegree ↥L (Om l) σ = 1 → ψ σ = 1`. Introduce `σ hσ`. Conclude with `hpow σ (hroots σ hσ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨f, hf, x, hx0, hx⟩` from `h L ψ hψc hψu`. Take `⟨j, hj⟩ : ∃ j : ℤ, j = -((n * f : ℕ) : ℤ)` from `⟨_, rfl⟩`. Establish `hj0 : j ≠ 0`. Rewrite using `[hj, neg_ne_zero, Nat.cast_ne_zero]`. Conclude with `Nat.mul_ne_zero hn.ne' hf.ne'`.
-
-Establish `hinv : x ∈ (GroundTheory.PAdicHodge.cpTwistRep L j).invariants`. Express the relevant statement in the definitionally equal form `∀ σ, (GroundTheory.PAdicHodge.cpTwistRep L j σ) x = x`. Introduce `σ`. Establish `key : (((GroundTheory.PAdicHodge.cycloChar L σ ^ j : ℤ_[l]ˣ) : ℤ_[l]) : ℚ_[l]) * ((((ψ σ : ℤ_[l]ˣ) : ℤ_[l]) : ℚ_[l])) ^ f = 1`. Establish `hψσ : ψ σ = GroundTheory.PAdicHodge.cycloChar L σ ^ n` using `rfl`.
-
-Establish `hu : GroundTheory.PAdicHodge.cycloChar L σ ^ j * (GroundTheory.PAdicHodge.cycloChar L σ ^ n) ^ f = 1`. Rewrite using `[hj, ← pow_mul, zpow_neg, zpow_natCast, inv_mul_cancel]`. Rewrite using `[hψσ, ← PadicInt.coe_pow, ← PadicInt.coe_mul, ← Units.val_pow_eq_pow_val, ← Units.val_mul, hu]`. Simplify using the standard rewrite rules. Rewrite using `[GroundTheory.PAdicHodge.cpTwistRep_apply, hx σ, GroundTheory.PAdicHodge.twistScalar, ← mul_assoc, ← map_mul, key, map_one, one_mul]`.
-
-Rewrite `hinv` using `[GroundTheory.PAdicHodge.cpTwistRep_invariants_eq_bot L hj0]`. Conclude with `hx0 ((Submodule.mem_bot _).mp hinv)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cycloChar_inertia_image_infinite : ∀ {l : ℕ} [Fact l.Prime],
     (∀ (E : IntermediateField ℚ_[l] (Om l)) [FiniteDimensional ℚ_[l] ↥E] (ψ : Gal(Om l/↥E) →* ℤ_[l]ˣ), Continuous ψ →

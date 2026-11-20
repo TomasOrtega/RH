@@ -10,7 +10,7 @@ section
 variable (K : Type) [Field K] [CharZero K]
 
 /- English proof (translation)
-Unfold `binK`. Establish `h : ((k.factorial : K))⁻¹ ≠ 0` using `inv_ne_zero (by exact_mod_cast k.factorial_ne_zero)`. Rewrite using `[natDegree_C_mul h, descPochhammer_natDegree]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem binK_natDegree (k : ℕ) : (binK K k).natDegree = k := by
   unfold binK
@@ -18,7 +18,7 @@ theorem binK_natDegree (k : ℕ) : (binK K k).natDegree = k := by
   rw [natDegree_C_mul h, descPochhammer_natDegree]
 
 /- English proof (translation)
-Unfold `binK`. Rewrite using `[coeff_C_mul]`. Establish `h` using `(monic_descPochhammer K k).coeff_natDegree`. Rewrite `h` using `[descPochhammer_natDegree]`. Rewrite using `[h, mul_one]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem binK_coeff_top (k : ℕ) : (binK K k).coeff k = ((k.factorial : K))⁻¹ := by
   unfold binK
@@ -28,7 +28,7 @@ theorem binK_coeff_top (k : ℕ) : (binK K k).coeff k = ((k.factorial : K))⁻¹
   rw [h, mul_one]
 
 /- English proof (translation)
-Unfold `binMatK`. Use `natDegree_sum_le_of_forall_le _ _ fun k hk => ?_` and prove the remaining obligations. Use `(natDegree_C_mul_le _ _).trans ?_` and prove the remaining obligations. Rewrite using `[binK_natDegree]`. Simplify using `only [mem_range] at hk`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -41,9 +41,9 @@ theorem binMat_natDegree_le {n : ℕ} (J : ℕ) (c : Fin n → Fin n → ℕ →
   simp only [mem_range] at hk; omega
 
 /- English proof (translation)
-Unfold `binMatK`. Rewrite using `[finsetSum_coeff, Finset.sum_eq_single J]`. Rewrite using `[coeff_C_mul, binK_coeff_top]`. Introduce `k hk hne`. Rewrite using `[coeff_C_mul, coeff_eq_zero_of_natDegree_lt, mul_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[binK_natDegree]`. Simplify using `only [mem_range] at hk`. Use linear arithmetic over natural numbers and integers. Introduce `h`. Simplify using `at h`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem binMat_coeff_top {n : ℕ} (J : ℕ) (c : Fin n → Fin n → ℕ → K) (a b : Fin n) :
     (binMatK K J c a b).coeff J = c a b J * ((J.factorial : K))⁻¹ := by
@@ -59,17 +59,17 @@ theorem binMat_coeff_top {n : ℕ} (J : ℕ) (c : Fin n → Fin n → ℕ → K)
 end
 
 /- English proof (translation)
-Establish `hJ0 : ((J.factorial : ℚ_[p])) ≠ 0` using `by exact_mod_cast J.factorial_ne_zero`. Take `⟨h1, h2⟩` from `Formalism.CountingSumsFrames.Top.detLeadDiag ℚ_[p] n J (binMatK ℚ_[p] J c) (fun a => d a * ((J.factorial : ℚ_[p]))⁻¹) (binMat_natDegree_le ℚ_[p] J c) (fun a b => by`. Apply the tactic sequence `rw [binMat_coeff_top, hc]; split_ifs <;> simp)`. Establish `hne : ∏ a, d a * ((J.factorial : ℚ_[p]))⁻¹ ≠ 0` using `Finset.prod_ne_zero_iff.2 fun a _ => mul_ne_zero (hd a).1 (inv_ne_zero hJ0)`. Establish `hdet : (binMatK ℚ_[p] J c).det ≠ 0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `h0`. Rewrite `h2` using `[h0, coeff_zero]`. Conclude with `hne h2.symm`. Establish `hdeg : (binMatK ℚ_[p] J c).det.natDegree = n * J` using `le_antisymm h1 (le_natDegree_of_ne_zero (by rw [h2]; exact hne))`. Establish `hlead : (binMatK ℚ_[p] J c).det.leadingCoeff = ∏ a, d a * ((J.factorial : ℚ_[p]))⁻¹`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[leadingCoeff, hdeg, h2]`. Use `⟨hdet, ?_⟩` and prove the remaining obligations. Rewrite using `[hlead, hdeg, norm_prod, Real.logb_prod _ _ (fun a _ => norm_ne_zero_iff.2 (mul_ne_zero (hd a).1 (inv_ne_zero hJ0)))]`. Establish `hterm : ∀ a, Real.logb p ‖d a * ((J.factorial : ℚ_[p]))⁻¹‖ = Real.logb p ‖d a‖ + padicValNat p J.factorial`. Introduce `a`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[norm_mul, norm_inv, Real.logb_mul (norm_ne_zero_iff.2 (hd a).1) (inv_ne_zero (norm_ne_zero_iff.2 hJ0)), Real.logb_inv, Formalism.GM.MeanGammaLemmas.neglog_nat p _ J.factorial_ne_zero]`. Repeatedly rewrite using `[hterm]`. Rewrite using `[Finset.sum_add_distrib, Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]`. Establish `hs : -∑ a, Real.logb p ‖d a‖ ≤ n * R`. Rewrite using `[← Finset.sum_neg_distrib]`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hn : (0 : ℝ) ≤ n` using `Nat.cast_nonneg n`. Use `mul_le_mul_of_nonneg_left hV hn` as an intermediate fact. Use `push_cast`. Establish `e1 : (n : ℝ) * J / ((p : ℝ) - 1) = n * ((J : ℝ) / ((p : ℝ) - 1))` using `by ring`.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1]`. Use the polynomial consequences of the given equalities and inequalities.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem lead_bound (p : ℕ) [hp : Fact p.Prime] (n J : ℕ) (c : Fin n → Fin n → ℕ → ℚ_[p]) (d : Fin n → ℚ_[p])
     (hc : ∀ a b, c a b J = if a = b then d a else 0) (R Λ : ℝ) (hd : ∀ a, d a ≠ 0 ∧ -Real.logb p ‖d a‖ ≤ R)

@@ -8,9 +8,9 @@ open MvPolynomial
 open ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.KH (mIdealOver mConeMapOver)
 
 /- English proof (translation)
-Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C a`. Simplify using `[mConeMapOver, ReciprocityTheory.ChartRestriction.G.Geo.coneMap, MvPolynomial.algebraMap_eq, Polynomial.algebraMap_apply]`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`. Consider the case `mul_X p v hp`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately.
 
-Simplify using `only [map_mul, hp, rename_X]`. Use `congr 1`. Simplify using `[mConeMapOver, ReciprocityTheory.ChartRestriction.G.Geo.coneMap, IndefiniteRowSideFullHecke.Kleiman2.oneBlock]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 -/
 theorem coneMap_rename {F : Type} [Field F] {κ : Type} {Ω : Type} [Field Ω] [Algebra F Ω] (x' : κ → Ω) {N : ℕ}
     (e : κ ≃ Fin (N + 1)) (p : NumbersDVR.MRing (fun _ : Unit => κ) F) :
@@ -26,11 +26,9 @@ theorem coneMap_rename {F : Type} [Field F] {κ : Type} {Ω : Type} [Field Ω] [
     simp [mConeMapOver, ReciprocityTheory.ChartRestriction.G.Geo.coneMap, IndefiniteRowSideFullHecke.Kleiman2.oneBlock]
 
 /- English proof (translation)
-Introduce `F _ κ _ Ω _ _ x' N e`. Set `σ : (Σ _ : Unit, κ) ≃ Fin (N + 1)` to `{ toFun := fun v => e v.2, invFun := fun i => ⟨(), e.symm i⟩, left_inv := fun _ => by simp, right_inv := fun _ => by simp }`. Set `f : NumbersDVR.MRing (fun _ : Unit => κ) F ≃+* Kleiman.Poly F N` to `(renameEquiv F σ).toRingEquiv`. Establish `hc : mIdealOver F (IndefiniteRowSideFullHecke.Kleiman2.oneBlock x') = (Kleiman.primeOf (S` using `F) (x' ∘ e.symm)).comap f.toRingHom := by`. Use extensionality with `p`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Express the relevant statement in the definitionally equal form `mConeMapOver F (IndefiniteRowSideFullHecke.Kleiman2.oneBlock x') p = 0 ↔ ReciprocityTheory.ChartRestriction.G.Geo.coneMap F (x' ∘ e.symm) (rename σ p) = 0`. Rewrite using `[← (uniqueAlgEquiv Ω Unit).injective.eq_iff, map_zero]`. Conclude with `Iff.of_eq (congrArg (· = 0) (coneMap_rename x' e p))`. Establish `h : Kleiman.primeOf (S` using `F) (x' ∘ e.symm) = (mIdealOver F (IndefiniteRowSideFullHecke.Kleiman2.oneBlock x')).map f.toRingHom := by`. Rewrite using `[hc, Ideal.map_comap_of_surjective f.toRingHom f.surjective]`.
-
-Conclude with `ringKrullDim_eq_of_ringEquiv (Ideal.quotientEquiv _ _ f h)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ReindexDim.proof : ReindexDim.Statement := by
   intro F _ κ _ Ω _ _ x' N e

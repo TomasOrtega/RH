@@ -20,7 +20,7 @@ section Complex
 variable {n : ℕ} {G s b c : Matrix (Fin n) (Fin n) ℂ}
 
 /- English proof (translation)
-Take `⟨h1, h2, h3⟩` from `hs`. Establish `h4 : sᴴ * Gᴴ = G * s` using `by rw [← Matrix.conjTranspose_mul]; exact h3.1`. Establish `h5 : sᴴ * sᴴ = 1` using `by rw [← Matrix.conjTranspose_mul, h1, Matrix.conjTranspose_one]`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem herm_of_isCartanInv (hs : IsCartanInv G s) : Gᴴ = G := by
   obtain ⟨h1, h2, h3⟩ := hs
@@ -30,7 +30,7 @@ theorem herm_of_isCartanInv (hs : IsCartanInv G s) : Gᴴ = G := by
     _ = G := by rw [h4, ← mul_assoc, h2]
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem frame_gram_eq (hbc : b * c = 1) (hs : s * s = 1) (h : bᴴ * (G * s) * b = 1) : bᴴ * G * b = c * s * b := by
   calc bᴴ * G * b = bᴴ * (G * (s * (b * c) * s)) * b := by rw [hbc, mul_one, hs, mul_one]
@@ -38,7 +38,7 @@ theorem frame_gram_eq (hbc : b * c = 1) (hs : s * s = 1) (h : bᴴ * (G * s) * b
     _ = _ := by rw [h, one_mul]
 
 /- English proof (translation)
-Rewrite using `[frame_gram_eq hbc hs h]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem frame_gram_sq (hbc : b * c = 1) (hs : s * s = 1) (h : bᴴ * (G * s) * b = 1) :
     (bᴴ * G * b) * (bᴴ * G * b) = 1 := by
@@ -47,7 +47,7 @@ theorem frame_gram_sq (hbc : b * c = 1) (hs : s * s = 1) (h : bᴴ * (G * s) * b
     _ = 1 := by rw [hbc, mul_one, hs, mul_one, mul_eq_one_comm.1 hbc]
 
 /- English proof (translation)
-Rewrite using `[mul_conjTranspose_mul_eq hbc (frame_gram_eq hbc hs h)]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem frame_inv_eq (hbc : b * c = 1) (hs : s * s = 1) (h : bᴴ * (G * s) * b = 1) : b * bᴴ * G = s := by
   rw [mul_conjTranspose_mul_eq hbc (frame_gram_eq hbc hs h)]
@@ -55,7 +55,7 @@ theorem frame_inv_eq (hbc : b * c = 1) (hs : s * s = 1) (h : bᴴ * (G * s) * b 
     _ = s := by rw [hbc, one_mul, mul_one]
 
 /- English proof (translation)
-Simplify using `[blkMat, Matrix.fromBlocks_conjTranspose]`.
+Simplify using the standard rewrite rules.
 -/
 theorem blkMat_conjTranspose (x y : Matrix (Fin n) (Fin n) ℂ) :
     (blkMat finSumFinEquiv x y)ᴴ = blkMat finSumFinEquiv xᴴ yᴴ := by
@@ -66,14 +66,14 @@ end Complex
 variable {D : D7} {θ : InfFam D}
 
 /- English proof (translation)
-The claim follows from `blkMat_map finSumFinEquiv ((θ τ).comp (infPart D)) (map_zero _) _ _`.
+A detailed English derivation is pending.
 -/
 theorem compAt_blkGL (τ : D.what₂.Tau) {n : ℕ} (a : GL (Fin n) (AE D)) :
     compAt θ τ (blkGL finSumFinEquiv (a, a)).1 = blkMat finSumFinEquiv (compAt θ τ a.1) (compAt θ τ a.1) :=
   blkMat_map finSumFinEquiv ((θ τ).comp (infPart D)) (map_zero _) _ _
 
 /- English proof (translation)
-Apply the tactic sequence `refine (unitary_iff_commute (compAt_mul_inv τ a) rfl hd (infMat_isometry hθ τ g)).1 ?_`. Rewrite using `[compAt_eq_map hθ, compAt_eq_map hθ, eq_infProj hθ (embOverOf D τ) rfl]`. Conclude with `(mem_stabArch_iff_unitary (isCMExt_host D) (embOverOf D τ) V.gram a g).1 (((mem_levelAll (σ := D.sp.cm.sig) (J := V.gram) (L := frameLat V) (a := a) (g := g)).1 hg).2 _)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem commute_of_mem_Kmax (hθ : IsInfFam θ) {V : HSp D} {a : GL (Fin V.rank) (AE D)} (τ : D.what₂.Tau)
     (hd : ((compAt θ τ a.1)ᴴ * gramAt D V τ * compAt θ τ a.1) * ((compAt θ τ a.1)ᴴ * gramAt D V τ * compAt θ τ a.1) = 1)
@@ -85,15 +85,13 @@ theorem commute_of_mem_Kmax (hθ : IsInfFam θ) {V : HSp D} {a : GL (Fin V.rank)
     (((mem_levelAll (σ := D.sp.cm.sig) (J := V.gram) (L := frameLat V) (a := a) (g := g)).1 hg).2 _)
 
 /- English proof (translation)
-Introduce `D θ A sA a hθ hs ha`. Establish `hbc` using `fun τ => compAt_mul_inv (θ := θ) τ a`. Establish `e : ∀ τ, frameInv θ (dblSp A) (blkGL finSumFinEquiv (a, a)) τ = blkMat finSumFinEquiv (sA τ) (-sA τ)` using `fun τ => by`. Rewrite using `[frameInv_dblSp, show frameInv θ A a τ = sA τ from frame_inv_eq (hbc τ) (hs τ).1 (ha τ)]`. Establish `hd : ∀ τ, (compAt θ τ (blkGL finSumFinEquiv (a, a)).1)ᴴ * blkMat finSumFinEquiv (gramAt D A τ) (-gramAt D A τ) * compAt θ τ (blkGL finSumFinEquiv (a, a)).1 = blkMat finSumFinEquiv ((compAt θ τ a.1)ᴴ * gramAt D A τ * compAt θ τ a.1) (-((compAt θ τ a.1)ᴴ * gramAt D A τ * compAt θ τ …` using `fun τ => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[compAt_blkGL, blkMat_conjTranspose, blkMat_mul, blkMat_mul, Matrix.mul_neg, Matrix.neg_mul]`. Establish `hd2 : ∀ τ, blkMat finSumFinEquiv ((compAt θ τ a.1)ᴴ * gramAt D A τ * compAt θ τ a.1) (-((compAt θ τ a.1)ᴴ * gramAt D A τ * compAt θ τ a.1)) * blkMat finSumFinEquiv ((compAt θ τ a.1)ᴴ * gramAt D A τ * compAt θ τ a.1) (-((compAt θ τ a.1)ᴴ * gramAt D A τ * compAt θ τ a.1)) = 1` using `fun τ => by`. Rewrite using `[blkMat_mul, neg_mul_neg, frame_gram_sq (hbc τ) (hs τ).1 (ha τ), blkMat_one]`. Use `⟨fun τ => ?_, fun k hk τ => ?_⟩` and prove the remaining obligations. Establish `h` using `isCartanInv_of_frame (compAt_mul_inv (θ := θ) τ (blkGL finSumFinEquiv (a, a))) (hd τ) (hd2 τ) (by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[blkMat_conjTranspose, Matrix.conjTranspose_neg, Matrix.conjTranspose_mul, Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, herm_of_isCartanInv (hs τ), ← mul_assoc])`. Rewrite `h` using `[← gramAt_dblSp]`. Establish `h' : IsCartanInv (gramAt D (dblSp A) τ) (frameInv θ (dblSp A) (blkGL finSumFinEquiv (a, a)) τ)` using `h`. Rewrite `h'` using `[e]`. Conclude with `h'`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hk` using `[Khat_eq]`. Establish `h` using `commute_of_mem_Kmax hθ (V := dblSp A) (a := blkGL finSumFinEquiv (a, a)) τ (by`. Rewrite using `[gramAt_dblSp]`. Conclude with `(congrArg₂ (· * ·) (hd τ) (hd τ)).trans (hd2 τ)) hk`. Rewrite `h` using `[e]`.
-
-Conclude with `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cartan_dbl : ∀ (D : D7) (θ : InfFam D) (A : HSp D) (sA : RealMat A) (a : GL (Fin A.rank) (AE D)), IsInfFam θ → (∀ τ, IsCartanInv (gramAt D A τ) (sA τ)) → (∀ τ, (compAt θ τ a.1)ᴴ * (gramAt D A τ * sA τ) * compAt θ τ a.1 = 1) → (∀ τ, IsCartanInv (gramAt D (dblSp A) τ) ((Matrix.fromBlocks (sA τ) 0 0 (-sA τ)).submatrix finSumFinEquiv.symm finSumFinEquiv.symm)) ∧ ∀ k ∈ Khat A a, ∀ τ, compAt θ τ (Formalism.L2.Theta.mt (dblSp A) k) * (Matrix.fromBlocks (sA τ) 0 0 (-sA τ)).submatrix finSumFinEquiv.symm finSumFinEquiv.symm = (Matrix.fromBlocks (sA τ) 0 0 (-sA τ)).submatrix finSumFinEquiv.symm finSumFinEquiv.symm * compAt θ τ (Formalism.L2.Theta.mt (dblSp A) k) := by
   intro D θ A sA a hθ hs ha

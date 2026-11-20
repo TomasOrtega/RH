@@ -15,7 +15,7 @@ namespace GlobalTheory.Mem.TypePrimes
 variable {X : Fields} {Pr : Primes X}
 
 /- English proof (translation)
-Introduce `h0`. Use `hPr.piG_norm a` as an intermediate fact. Rewrite `this` using `[h0, mul_zero]`. Conclude with `(Nat.cast_ne_zero.2 (hPr.g_prime a).ne_zero) this.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conjO_piG_ne (hPr : Pr.Ok) (a : Fin 2) : X.conjO (Pr.piG a) ≠ 0 := by
   intro h0
@@ -24,13 +24,13 @@ theorem conjO_piG_ne (hPr : Pr.Ok) (a : Fin 2) : X.conjO (Pr.piG a) ≠ 0 := by
   exact (Nat.cast_ne_zero.2 (hPr.g_prime a).ne_zero) this.symm
 
 /- English proof (translation)
-The claim follows from `mem_divs (conjO_piG_ne hPr a) P`.
+A detailed English derivation is pending.
 -/
 theorem mem_vG_iff (hPr : Pr.Ok) (a : Fin 2) (P : HeightOneSpectrum (𝓞 X.E)) :
     P ∈ Pr.vG a ↔ X.conjO (Pr.piG a) ∈ P.asIdeal := mem_divs (conjO_piG_ne hPr a) P
 
 /- English proof (translation)
-Rewrite `h` using `[hv, Ideal.mem_comap, map_natCast]`. Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem g_mem_of_isOver {a : Fin 2} {v : HeightOneSpectrum (𝓞 X.F)} {P : HeightOneSpectrum (𝓞 X.E)}
     (hv : IsOver v P) (h : (Pr.g a : 𝓞 X.F) ∈ v.asIdeal) : ((Pr.g a : ℕ) : 𝓞 X.E) ∈ P.asIdeal := by
@@ -38,11 +38,11 @@ theorem g_mem_of_isOver {a : Fin 2} {v : HeightOneSpectrum (𝓞 X.F)} {P : Heig
   exact h
 
 /- English proof (translation)
-Break down `rll_over_cases hc hPv hQv with e | e` into its components or cases. Conclude with `e`. It suffices to derive a contradiction. Establish `hPa` using `mem_vG_of_g_mem hPr hP (g_mem_of_isOver hPv h)`. Establish `hQa` using `mem_vG_of_g_mem hPr hQ (g_mem_of_isOver hQv h)`.
+Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hPa`, `hQa` using `[mem_vG_iff hPr]`. Rewrite `hQa` using `[e, mem_conjP]`. Establish `h2 : cO X.E (X.conjO (Pr.piG a)) = Pr.piG a` using `RingOfIntegers.ext (star_star _)`. Rewrite `hQa` using `[h2]`. Take `⟨x, y, hxy⟩` from `hPr.piG_cop a`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `P.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 ?_)` and prove the remaining obligations. Rewrite using `[← hxy]`. Conclude with `add_mem (Ideal.mul_mem_left _ _ hQa) (Ideal.mul_mem_left _ _ hPa)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_of_isOver (hc : Formalism.BasicNotions.CMData X.F X.E) (hPr : Pr.Ok) {a : Fin 2} {v : HeightOneSpectrum (𝓞 X.F)}
     (h : (Pr.g a : 𝓞 X.F) ∈ v.asIdeal) {P Q : HeightOneSpectrum (𝓞 X.E)} (hP : P ∈ Pr.vGs) (hQ : Q ∈ Pr.vGs)
@@ -62,9 +62,9 @@ theorem eq_of_isOver (hc : Formalism.BasicNotions.CMData X.F X.E) (hPr : Pr.Ok) 
   exact add_mem (Ideal.mul_mem_left _ _ hQa) (Ideal.mul_mem_left _ _ hPa)
 
 /- English proof (translation)
-Establish `h01 : ∀ b : Fin 2, b = 0 ∨ b = 1` using `by decide`. Establish `hv : v ∈ plUnder X.F Pr.vGs`. Rewrite using `[plUnder_vGs hc hPr v]`. Break down `h01 a with rfl | rfl` into its components or cases. Conclude with `Or.inl h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative.
 
-Conclude with `Or.inr h`. Take `⟨P, hP, hPv⟩` from `hv`. Conclude with `⟨⟨P, hP⟩, hPv⟩`.
+Prove the second alternative. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_over_vGs (hc : Formalism.BasicNotions.CMData X.F X.E) (hPr : Pr.Ok) {a : Fin 2} {v : HeightOneSpectrum (𝓞 X.F)}
     (h : (Pr.g a : 𝓞 X.F) ∈ v.asIdeal) : ∃ w : {w // w ∈ Pr.vGs}, IsOver v w.1 := by
@@ -78,7 +78,7 @@ theorem exists_over_vGs (hc : Formalism.BasicNotions.CMData X.F X.E) (hPr : Pr.O
   exact ⟨⟨P, hP⟩, hPv⟩
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem isOver_of_under {v : HeightOneSpectrum (𝓞 X.F)} {P : HeightOneSpectrum (𝓞 X.E)} (h : P.under (𝓞 X.F) = v) :
     IsOver v P := by
@@ -86,7 +86,7 @@ theorem isOver_of_under {v : HeightOneSpectrum (𝓞 X.F)} {P : HeightOneSpectru
   rfl
 
 /- English proof (translation)
-The claim follows from `HeightOneSpectrum.ext h.symm`.
+A detailed English derivation is pending.
 -/
 theorem under_of_isOver {v : HeightOneSpectrum (𝓞 X.F)} {P : HeightOneSpectrum (𝓞 X.E)} (h : IsOver v P) :
     P.under (𝓞 X.F) = v :=
@@ -99,7 +99,7 @@ namespace GlobalTheory.Mem.TypePrimes
 variable {X : Fields} {Pr : Primes X}
 
 /- English proof (translation)
-Use `haveI : NeZero (Pr.g a) := ⟨(hPr.g_prime a).ne_zero⟩`. Establish `e` using `(nonempty_equiv_zmod (𝓞 X.E ⧸ w.asIdeal) (hPr.g_prime a) (by`. Rewrite using `[← hPr.vG_norm a w hw, Ideal.absNorm_apply, Submodule.cardQuot_apply])).some`. Conclude with `⟨(e.symm c).val, by rw [← map_natCast e, ZMod.natCast_zmod_val, RingEquiv.apply_symm_apply]⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem residue_natCast (hPr : Pr.Ok) {a : Fin 2} {w : HeightOneSpectrum (𝓞 X.E)} (hw : w ∈ Pr.vG a)
     (c : 𝓞 X.E ⧸ w.asIdeal) : ∃ k : ℕ, c = k := by
@@ -109,9 +109,9 @@ theorem residue_natCast (hPr : Pr.Ok) {a : Fin 2} {w : HeightOneSpectrum (𝓞 X
   exact ⟨(e.symm c).val, by rw [← map_natCast e, ZMod.natCast_zmod_val, RingEquiv.apply_symm_apply]⟩
 
 /- English proof (translation)
-Rewrite using `[Finset.disjoint_left]`. Introduce `w h0 h1`. Establish `hc : IsCoprime ((Pr.g 0 : ℕ) : 𝓞 X.E) ((Pr.g 1 : ℕ) : 𝓞 X.E)` using `Nat.Coprime.cast ((Nat.coprime_primes (hPr.g_prime 0) (hPr.g_prime 1)).2 hPr.g_ne)`. Take `⟨x, y, hxy⟩` from `hc`. Use `w.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hxy]`. Conclude with `add_mem (Ideal.mul_mem_left _ _ (g_mem_of_vG hPr h0)) (Ideal.mul_mem_left _ _ (g_mem_of_vG hPr h1))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vG_disjoint (hPr : Pr.Ok) : Disjoint (Pr.vG 0) (Pr.vG 1) := by
   rw [Finset.disjoint_left]
@@ -124,25 +124,23 @@ theorem vG_disjoint (hPr : Pr.Ok) : Disjoint (Pr.vG 0) (Pr.vG 1) := by
   exact add_mem (Ideal.mul_mem_left _ _ (g_mem_of_vG hPr h0)) (Ideal.mul_mem_left _ _ (g_mem_of_vG hPr h1))
 
 /- English proof (translation)
-Introduce `X Pr hc hPr`. Set `wOf : ∀ (a : Fin 2) (v : HeightOneSpectrum (𝓞 X.F)), (Pr.g a : 𝓞 X.F) ∈ v.asIdeal → {w // w ∈ Pr.vGs}` to `fun a v h => (exists_over_vGs hc hPr h).choose`. Establish `hspec : ∀ a v h, IsOver v (wOf a v h).1` using `fun a v h => (exists_over_vGs hc hPr h).choose_spec`. Establish `h1 : ∀ a v h (w : {w // w ∈ Pr.vGs}), IsOver v w.1 ↔ w = wOf a v h`. Introduce `a v h w`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hw`. Conclude with `Subtype.ext (eq_of_isOver hc hPr h (wOf a v h).2 w.2 (hspec a v h) hw)`. Introduce and unpack `rfl`. Conclude with `hspec a v h`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hin : ∀ a v h, (wOf a v h).1 ∈ Pr.vG a` using `fun a v h => mem_vG_of_g_mem hPr (wOf a v h).2 (g_mem_of_isOver (hspec a v h) h)`. Use `⟨wOf, h1, fun a v h => ⟨?_, under_of_isOver (hspec a v h), residue_natCast hPr (hin a v h)⟩, ?_⟩` and prove the remaining obligations. Introduce `P hPu hP`. Establish `hPa : P ∈ Pr.vG a` using `(mem_vG_iff hPr a P).2 hP`. Conclude with `eq_of_isOver hc hPr h (wOf a v h).2 (mem_vGs hPa) (hspec a v h) (isOver_of_under hPu)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `φ`. Set `φ' : HeightOneSpectrum (𝓞 X.E) → ℂ` to `fun w => if hw : w ∈ Pr.vGs then φ ⟨w, hw⟩ else 1`. Establish `hL : ∏ w, φ w = ∏ w ∈ Pr.vGs, φ' w`. Rewrite using `[← Finset.prod_coe_sort Pr.vGs φ']`. Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [φ', dif_pos w.2]`. Establish `hA : ∀ a : Fin 2, ∏ᶠ (v : HeightOneSpectrum (𝓞 X.F)) (h : (Pr.g a : 𝓞 X.F) ∈ v.asIdeal), φ (wOf a v h) = ∏ w ∈ Pr.vG a, φ' w`. Introduce `a`. Set `f : HeightOneSpectrum (𝓞 X.F) → ℂ` to `fun v => if h : (Pr.g a : 𝓞 X.F) ∈ v.asIdeal then φ (wOf a v h) else 1`. Establish `e1 : (∏ᶠ (v : HeightOneSpectrum (𝓞 X.F)) (h : (Pr.g a : 𝓞 X.F) ∈ v.asIdeal), φ (wOf a v h)) = ∏ᶠ v, f v`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `finprod_congr fun v => ?_` and prove the remaining obligations. Conclude with `finprod_eq_dif _`. Establish `hsupp : Function.mulSupport f ⊆ ((Pr.vG a).image fun w => w.under (𝓞 X.F) : Finset _)`. Introduce `v hv`. Establish `h' : (Pr.g a : 𝓞 X.F) ∈ v.asIdeal`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Assume the negation of the conclusion as `hn`. Conclude with `hv (by simp only [f, dif_neg hn])`. Rewrite using `[Finset.coe_image]`. Conclude with `⟨(wOf a v h').1, hin a v h', under_of_isOver (hspec a v h')⟩`. Rewrite using `[e1, finprod_eq_prod_of_mulSupport_subset f hsupp, Finset.prod_image]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Finset.prod_congr rfl fun w hw => ?_` and prove the remaining obligations. Establish `hg : (Pr.g a : 𝓞 X.F) ∈ (w.under (𝓞 X.F)).asIdeal` using `by show (Pr.g a : 𝓞 X.F) ∈ Ideal.comap (algebraMap (𝓞 X.F) (𝓞 X.E)) w.asIdeal`. Rewrite using `[Ideal.mem_comap, map_natCast]`. Conclude with `g_mem_of_vG hPr hw`. Establish `hw' : w ∈ Pr.vGs` using `mem_vGs hw`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : wOf a (w.under (𝓞 X.F)) hg = ⟨w, hw'⟩` using `((h1 a _ hg ⟨w, hw'⟩).1 (isOver_of_under rfl)).symm`. Simplify using `only [f, φ', dif_pos hg, dif_pos hw', e2]`. Introduce `w hw w' hw' he`. Establish `hg : (Pr.g a : 𝓞 X.F) ∈ (w.under (𝓞 X.F)).asIdeal` using `by show (Pr.g a : 𝓞 X.F) ∈ Ideal.comap (algebraMap (𝓞 X.F) (𝓞 X.E)) w.asIdeal`. Rewrite using `[Ideal.mem_comap, map_natCast]`.
-
-Conclude with `g_mem_of_vG hPr hw`. Conclude with `(eq_of_isOver hc hPr hg (mem_vGs hw) (mem_vGs hw') (isOver_of_under rfl) (isOver_of_under he.symm)).symm`. Rewrite using `[hL, Fin.prod_univ_two, hA 0, hA 1]`. Unfold `Primes.vGs`. Conclude with `Finset.prod_union (vG_disjoint hPr)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem primes_over_places : ∀ (X : Fields) (Pr : Primes X) (hc : Formalism.BasicNotions.CMData X.F X.E), Pr.Ok →
     ∃ wOf : ∀ (a : Fin 2) (v : HeightOneSpectrum (𝓞 X.F)), (Pr.g a : 𝓞 X.F) ∈ v.asIdeal → {w // w ∈ Pr.vGs},

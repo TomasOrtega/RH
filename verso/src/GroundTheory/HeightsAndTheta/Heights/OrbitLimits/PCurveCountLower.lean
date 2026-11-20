@@ -12,15 +12,15 @@ namespace GroundTheory.Heights₂.Heights.Targets
 open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.AI.I2 GroundTheory.Heights₂.Heights.Inter
 
 /- English proof (translation)
-Introduce `K _ ι _ Ω _ y A II hII hP hB hS hC`. Take `⟨c, hcX, hc⟩` from `exists_chart hP`. Take `⟨R, hRP, hRu, -⟩` from `regularityPointsSum_holds.proof K ι _ hP`. Use `set b : K → ℕ := fun k => (A.a k).natAbs with hb`. Use `set d : K → ℕ := fun k => (A.a k + b k).toNat with hd'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd : ∀ k, (d k : ℤ) = A.a k + b k` using `fun k => Int.toNat_of_nonneg (by simp only [hb]; omega)`. Establish `h1` using `hD K ι _ A II c R b d hII hP hS hcX hRP hRu hd`. Establish `h2` using `hV K ι Ω y _ d hP (isMultiHomog_curveChartMono c d) (curveChartMono_notMem hc d)`. Establish `h3` using `hV K ι Ω y _ b hP (isMultiHomog_curveChartMono c b) (curveChartMono_notMem hc b)`. Rewrite `h2`, `h3` using `[aeval_curveChartMono]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨hadd, hpow⟩` from `hL K ι Ω y c hP hc`. Establish `h4` using `hadd A.a (fun k => (b k : ℤ))`. Rewrite `h4` using `[show A.a + (fun k => (b k : ℤ)) = fun k => (d k : ℤ) from funext fun k => (hd k).symm]`. Establish `hI : II K ι (mCoordIdeal y) 1 (fun _ => A) = chartIndexLog y c A.a 1 + ∑ t ∈ R, Real.log (chartRadius A c t)`. Establish `e2 : vertR (mCoordIdeal y) (Fin.elim0 : Fin 0 → ReciprocityTheory.ChartRestriction.G.Geo.HermLine ι) (curveChartMono c d) = chartIndexLog y c (fun k => (d k : ℤ)) 1` using `h2`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e3 : vertR (mCoordIdeal y) (Fin.elim0 : Fin 0 → ReciprocityTheory.ChartRestriction.G.Geo.HermLine ι) (curveChartMono c b) = chartIndexLog y c (fun k => (b k : ℤ)) 1` using `h3`. Rewrite using `[h1, e2, e3, h4]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨C, hCC⟩` from `hN K ι Ω y A c R hP hB hC hc hRP hRu`. Use `⟨C, fun τ hτ => ?_⟩` and prove the remaining obligations.
+Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h5` using `hCC τ hτ`. Rewrite `h5` using `[hpow A.a τ]`. Rewrite using `[hI]`. Combine the linear relations using `[mul_add (τ : ℝ) (chartIndexLog y c A.a 1) (∑ t ∈ R, Real.log (chartRadius A c t))]`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem CurveCountLower.proof (hD : CurveDegreeVert.Statement) (hV : CurveVertIndex.Statement)
     (hL : CurveIndexLinear.Statement) (hN : CurveBoxCount.Statement) : CurveCountLower.Statement := by

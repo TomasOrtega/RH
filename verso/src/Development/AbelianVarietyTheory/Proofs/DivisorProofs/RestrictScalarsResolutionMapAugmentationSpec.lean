@@ -29,11 +29,11 @@ theorem rcxSemi_app (φ : R →+* S) {K : Cx S} {J : Cx R} (m : (rcx φ).obj K �
 end
 
 /- English proof (translation)
-Introduce `R S _ _ φ F`. Take `⟨hKI, -, hGE, -, hι, -⟩` from `GlobalTheory.T.chosenInjectiveResolution_etaleSheaf_properties R ((restr φ).obj F)`. Take `⟨-, -, -, hq, hιS, -⟩` from `GlobalTheory.T.chosenInjectiveResolution_etaleSheaf_properties S F`. Use `rAug_quasiIso φ (resAug F)` as an intermediate fact. Take `⟨m, hm⟩` from `(GlobalTheory.T.extend_chainMap_along_quasiIso_kInjective R ((restr φ).obj F) ((rcx φ).obj (res S F)) (res R ((restr φ).obj F)) (rAug φ (resAug F))).1 (resAug ((restr φ).obj F))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨rcxSemi φ m, fun U a => ?_⟩` and prove the remaining obligations. Rewrite using `[rcxSemi_app]`. Establish `h1 : Sec.map (resι S F) a = Sec.map ((resAug F).f 0) (Sec.map (sglι F) a)`. Rewrite using `[← hιS]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `h2` using `rAug_f_zero φ (resAug F) U a`. Establish `h3 : Sec.map (resι R ((restr φ).obj F)) (show Sec ((restr φ).obj F) U from a) = Sec.map (((rAug φ (resAug F)) ≫ m).f 0) (Sec.map (sglι ((restr φ).obj F)) (show Sec ((restr φ).obj F) U from a))`. Rewrite using `[hm, ← hι]`. Both sides reduce to the same expression. Rewrite using `[h3, h1, ← h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -58,7 +58,7 @@ theorem restrMap_exists : ∀ (R S : Type) [CommRing R] [CommRing S] (φ : R →
   rfl
 
 /- English proof (translation)
-Introduce `R S _ _ φ F U a`. Conclude with `pick_spec (restrMap_exists R S φ F) U a`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem restrMap_spec' : ∀ (R S : Type) [CommRing R] [CommRing S] (φ : R →+* S) (F : Shv S) (U : Scheme.{0}) (a : Sec F U), (restrMap φ F).app U 0 (Sec.map (resι S F) a) = Sec.map (resι R ((restr φ).obj F)) (show Sec ((restr φ).obj F) U from a) := by
   intro R S _ _ φ F U a

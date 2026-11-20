@@ -8,7 +8,7 @@ namespace GlobalTheory.CompanionTheory.ContAutForm
 open GlobalTheory.CuspRep
 
 /- English proof (translation)
-The claim follows from `h.continuous`.
+A detailed English derivation is pending.
 -/
 theorem continuous_of_isAutForm_totallyComplex (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (N : ℕ)
     (φ : Sm E N) (h : IsAutForm φ) : Continuous φ.1 :=

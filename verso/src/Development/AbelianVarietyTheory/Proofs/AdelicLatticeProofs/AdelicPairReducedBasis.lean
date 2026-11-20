@@ -35,7 +35,7 @@ def intClosure (O : Subring A) : Subring A where
     exact ⟨-z, -c, neg_mem hc, by push_cast; ring⟩
 
 /- English proof (translation)
-Take `⟨z, c, hc, rfl⟩` from `ha 1 one_pos`. Conclude with `add_mem (intCast_mem _ _) (by simpa using hc)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem intClosure_le (O : Subring A) {a : A} (ha : a ∈ intClosure O) : a ∈ O := by
   obtain ⟨z, c, hc, rfl⟩ := ha 1 one_pos
@@ -61,31 +61,31 @@ def ratSpan (Z : Subring A) : Subring A where
     exact ⟨M, hM, by rw [mul_neg]; exact neg_mem ha⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, one_pos, by simpa using ha⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_ratSpan {Z : Subring A} {a : A} (ha : a ∈ Z) : a ∈ ratSpan Z :=
   ⟨1, one_pos, by simpa using ha⟩
 
 /- English proof (translation)
-Rewrite using `[← map_natCast φ q.den, ← map_mul, Rat.den_mul_eq_num, map_intCast]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem den_mul (φ : ℚ →+* A) (q : ℚ) : (q.den : A) * φ q = (q.num : A) := by
   rw [← map_natCast φ q.den, ← map_mul, Rat.den_mul_eq_num, map_intCast]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨q.den, q.den_pos, by rw [den_mul]; exact intCast_mem _ _⟩`.
+Supply the required witnesses or components.
 -/
 theorem rat_mem (φ : ℚ →+* A) (Z : Subring A) (q : ℚ) : φ q ∈ ratSpan Z :=
   ⟨q.den, q.den_pos, by rw [den_mul]; exact intCast_mem _ _⟩
 
 /- English proof (translation)
-Rewrite using `[← map_natCast φ N, ← map_mul, inv_mul_cancel₀ (Nat.cast_ne_zero.mpr hN.ne'), map_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem inv_mul (φ : ℚ →+* A) {N : ℕ} (hN : 0 < N) : φ (N : ℚ)⁻¹ * (N : A) = 1 := by
   rw [← map_natCast φ N, ← map_mul, inv_mul_cancel₀ (Nat.cast_ne_zero.mpr hN.ne'), map_one]
 
 /- English proof (translation)
-Combine the equalities or inequalities in the calculation `calc a = (φ (N : ℚ)⁻¹ * N) * a := by rw [inv_mul φ hN, one_mul] _ = φ (N : ℚ)⁻¹ * (N * a) := mul_assoc _ _ _ _ = φ (N : ℚ)⁻¹ * (N * b) := by rw [h] _ = b := by rw [← mul_assoc, inv_mul φ hN, one_mul]`.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem cancel (φ : ℚ →+* A) {N : ℕ} (hN : 0 < N) {a b : A} (h : (N : A) * a = N * b) :
     a = b :=
@@ -95,9 +95,9 @@ theorem cancel (φ : ℚ →+* A) {N : ℕ} (hN : 0 < N) {a b : A} (h : (N : A) 
     _ = b := by rw [← mul_assoc, inv_mul φ hN, one_mul]
 
 /- English proof (translation)
-Introduce `M hM`. Take `⟨z, d, hd, hzd⟩` from `h (N * M) (Nat.mul_pos hN hM)`. Establish `hz : (z : A) = N * (c - M * d)` using `by rw [mul_sub, hzd]; push_cast; ring`. Take `⟨y, rfl⟩` from `hint z N hN (c - M * d) (sub_mem hc (mul_mem (natCast_mem _ _) hd)) hz`. Use `⟨y, d, hd, cancel φ hN ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hzd]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem mem_of_mul (φ : ℚ →+* A) (O : Subring A)
     (hint : ∀ (z : ℤ) (N : ℕ), 0 < N → ∀ e ∈ O, (z : A) = N * e → (N : ℤ) ∣ z)
@@ -111,45 +111,41 @@ theorem mem_of_mul (φ : ℚ →+* A) (O : Subring A)
   rw [hzd]; push_cast; ring
 
 /- English proof (translation)
-Use `set Z := intClosure O with hZdef`. Use `set R := ratSpan Z with hRdef`. Establish `hZO : ∀ x ∈ Z, x ∈ O` using `fun x hx => intClosure_le O hx`. Establish `hZR : ∀ x ∈ Z, x ∈ R` using `fun x hx => mem_ratSpan hx`. Set `φR : ℚ →+* R` to `φ.codRestrict R (rat_mem φ Z)`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `_ : Algebra ℚ R` to `φR.toAlgebra`. Set `_ : Algebra R A` to `(Subring.subtype R).toAlgebra`. Establish `hsmul : ∀ (c : R) (x : A), c • x = (c : A) * x` using `fun _ _ => rfl`. Set `R₀ : Subring R` to `Z.comap (Subring.subtype R)`. Establish `hmemR : ∀ c : R, ∃ M : ℕ, 0 < M ∧ (M : A) * c ∈ Z` using `fun c => c.2`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hli : LinearIndependent R w`. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `c hc i`. Use `choose M hM hMc using fun j => hmemR (c j)`. Use `set K := ∏ j, M j with hKdef`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hK : 0 < K` using `Finset.prod_pos fun j _ => hM j`. Establish `hr : ∀ j, (K : A) * c j ∈ Z`. Introduce `j`. Establish `hsplit : (K : A) * c j = ((∏ k ∈ Finset.univ.erase j, M k : ℕ) : A) * ((M j : A) * c j)`. Rewrite using `[← mul_assoc, ← Nat.cast_mul, Finset.prod_erase_mul _ _ (Finset.mem_univ j)]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[hsplit]`. Conclude with `mul_mem (natCast_mem _ _) (hMc j)`. Establish `hc' : ∑ j, (c j : A) * w j = 0` using `by simpa only [hsmul] using hc`. Establish `hsum : ∑ j, ((K : A) * c j) * w j = 0`. Simplify using `only [mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← Finset.mul_sum, hc', mul_zero]`. Establish `hzero : (K : A) * c i = 0`. Apply `h0` to reduce the goal to its premises. Introduce `N hN`. Take `⟨s, hs, hrs⟩` from `hdiv (fun j => (K : A) * c j) N hN hr ⟨0, zero_mem _, by rw [hsum, mul_zero]⟩ i`.
+Supply the required witnesses or components. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨s, hZO s hs, hrs⟩`. Conclude with `Subtype.ext (cancel φ hK (by rw [hzero]; simp))`. Establish `hsp : ⊤ ≤ Submodule.span R (Set.range w)`. Introduce and unpack `a -`. Take `⟨M, hM, hMa⟩` from `hden a`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨r, hr, hra⟩` from `hspan _ hMa`. Establish `hmem : ∀ i, φ (M : ℚ)⁻¹ * r i ∈ R` using `fun i => ⟨M, hM, by rw [← mul_assoc, mul_comm (M : A) (φ _), inv_mul φ hM, one_mul]; exact hr i⟩`. Establish `ha : a = ∑ i, (⟨φ (M : ℚ)⁻¹ * r i, hmem i⟩ : R) • w i`. Simplify using `only [hsmul]`. Apply `cancel φ hM` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[hra, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_assoc, ← mul_assoc, mul_comm (M : A) (φ _), inv_mul φ hM, one_mul]`. Rewrite using `[ha]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Set `b : Module.Basis β R A` to `Module.Basis.mk hli hsp`. Establish `hb : ∀ i, b i = w i` using `fun i => Module.Basis.mk_apply hli hsp i`. Use `⟨R, inferInstance, inferInstance, R₀, inferInstance, b, ?_, ?_, hb, ?_⟩` and prove the remaining obligations. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `q hq`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hq' : φ q ∈ Z` using `hq`. Take `⟨z, c, hc, hzc⟩` from `hq' q.den q.den_pos`. Establish `h1 : ((q.num - q.den * z : ℤ) : A) = (q.den : A) * ((q.den : A) * c)`. Use `push_cast`. Rewrite using `[← den_mul φ q, hzc]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Supply the required witnesses or components.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `h2` using `hint _ q.den q.den_pos _ (mul_mem (natCast_mem _ _) hc) h1`. Establish `h3 : (q.den : ℤ) ∣ q.num`. Establish `h4` using `dvd_add h2 (dvd_mul_right (q.den : ℤ) z)`. Simplify using `using h4`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h5 : q.den = 1` using `Nat.eq_one_of_dvd_coprimes q.reduced.symm dvd_rfl (Int.natCast_dvd.mp h3)`. Conclude with `⟨q.num, ((Rat.den_eq_one_iff q).mp h5).symm⟩`. Introduce `M hM r`. Take `⟨K, hK, hKr⟩` from `hmemR r`. Take `⟨z, c, hc, hzc⟩` from `hKr (K * M) (Nat.mul_pos hK hM)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `hcZ : c ∈ Z`. Apply `mem_of_mul φ O hint (Nat.mul_pos hK hM) hc` to reduce the goal to its premises. Establish `hkm : ((K * M : ℕ) : A) * c = (K : A) * r - z` using `by rw [hzc]; ring`. Rewrite using `[hkm]`. Conclude with `sub_mem hKr (intCast_mem _ _)`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `⟨(z : ℚ) / K, ⟨c, hZR c hcZ⟩, hcZ, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Establish `hk : (K : A) * φ ((z : ℚ) / K) = z`. Rewrite using `[← map_natCast φ K, ← map_mul, mul_div_cancel₀ _ (Nat.cast_ne_zero.mpr hK.ne'), map_intCast]`. Express the relevant statement in the definitionally equal form `(r : A) = φ ((z : ℚ) / K) + (M : A) * c`.
+Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Apply `cancel φ hK` to reduce the goal to its premises. Rewrite using `[hzc, mul_add, hk]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Conclude with `isReduced_of_injective (Subring.subtype R) Subtype.val_injective`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce `a`. Establish `hrep : a = ∑ i, (b.repr a i : A) * w i` using `by conv_lhs => rw [← b.sum_repr a]`. Simplify using `only [hsmul, hb]`. Prove the components needed by the constructor for the conclusion. Introduce `ha i`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨r, hr, hra⟩` from `hspan a ha`. Set `c : β → R` to `fun j => ⟨r j, hZR _ (hr j)⟩`. Establish `hdiff : ∑ j, (b.repr a j - c j) • b j = 0`. Simplify using `only [sub_smul, Finset.sum_sub_distrib, b.sum_repr]`. Rewrite using `[sub_eq_zero]`.
-
-Simplify using `only [hsmul, hb]`. Conclude with `hra`. Establish `h` using `Fintype.linearIndependent_iff.1 b.linearIndependent _ hdiff i`. Rewrite using `[sub_eq_zero.1 h]`. Conclude with `hr i`.
-
-Introduce `h`. Rewrite using `[hrep]`. Conclude with `Subring.sum_mem _ fun i _ => mul_mem (hZO _ (h i)) (hw i)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_basis (φ : ℚ →+* A) (O : Subring A) [IsReduced A] {β : Type} [Fintype β]
     (w : β → A) (hw : ∀ i, w i ∈ O)
@@ -275,9 +271,9 @@ theorem exists_basis (φ : ℚ →+* A) (O : Subring A) [IsReduced A] {β : Type
 end Abstract
 
 /- English proof (translation)
-Introduce `F _ _ β _ ω`. Take `⟨-, -, hz0, -, hden, hred⟩` from `GlobalTheory.IntegralFinAdele.integral_finiteAdele_properties F`. Establish `: IsReduced (FiniteAdeleRing (𝓞 F) F)` using `hred`. Set `O : Subring (FiniteAdeleRing (𝓞 F) F)` to `GlobalTheory.CoordDiv.intAdeles F`. Establish `hint : ∀ (z : ℤ) (N : ℕ), 0 < N → ∀ e ∈ O, (z : FiniteAdeleRing (𝓞 F) F) = N * e → (N : ℤ) ∣ z`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `z N hN e he h`. Take `⟨a, ha⟩` from `GlobalTheory.CoordDiv.dvd_of_eq F (z : 𝓞 F) N hN e he (by simpa using h)`. Conclude with `GlobalTheory.CoordDiv.int_dvd F z N a ha`. Take `⟨R, i1, i2, R₀, i3, b, hP, hR, hb, hmem⟩` from `exists_basis ((algebraMap F (FiniteAdeleRing (𝓞 F) F)).comp (algebraMap ℚ F)) O (fun i => algebraMap F (FiniteAdeleRing (𝓞 F) F) (ω i : 𝓞 F)) (fun i => GlobalTheory.CoordDiv.algebraMap_mem F (ω i)) hint (fun a ha => hz0 a ha) (fun a => hden a) (fun a ha => GlobalTheory.ClassFin.e …`. Conclude with `⟨R, i1, i2, R₀, i3, b, hP, hR, hb, fun a => hmem a⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem finiteAdele_free : ∀ (F : Type) [Field F] [NumberField F] (β : Type) [Fintype β] (ω : Module.Basis β ℤ (𝓞 F)), ∃ (R : Type) (_ : CommRing R) (_ : Algebra ℚ R) (R₀ : Subring R) (_ : Algebra R (FiniteAdeleRing (𝓞 F) F)) (b : Module.Basis β R (FiniteAdeleRing (𝓞 F) F)), AdelicPair R R₀ ∧ IsReduced R ∧ (∀ i, b i = algebraMap F (FiniteAdeleRing (𝓞 F) F) (ω i : 𝓞 F)) ∧ ∀ a : FiniteAdeleRing (𝓞 F) F, (∀ v, (a : FiniteAdeleRing (𝓞 F) F) v ∈ HeightOneSpectrum.adicCompletionIntegers F v) ↔ ∀ i, b.repr a i ∈ R₀ := by
   intro F _ _ β _ ω

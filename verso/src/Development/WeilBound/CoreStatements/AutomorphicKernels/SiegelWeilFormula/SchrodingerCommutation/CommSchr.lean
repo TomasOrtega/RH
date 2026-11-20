@@ -13,9 +13,9 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 variable (d : SD σ)
 
 /- English proof (translation)
-Unfold `actB`. Establish `hx : (x.1.1)ᵀ * ((x⁻¹ : d.G).1.1)ᵀ = 1`. Rewrite using `[← Matrix.transpose_mul, ← Units.val_mul, ← Subgroup.coe_mul, inv_mul_cancel]`. Simplify using the standard rewrite rules. Combine the equalities or inequalities in the displayed calculation.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 
-Simplify using `only [Matrix.mul_assoc]`. Use `_ = v := by rw [mat_mul_inv, hx, Matrix.one_mul, Matrix.mul_one]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem actB_conj (x : d.G) (g : UA σ d.A.J) (v : Matrix (Fin d.m) (Fin d.n ⊕ Fin d.n) (AE F E)) :
     actB (cA σ) x⁻¹ (mat g * actB (cA σ) x (mat g⁻¹ * v)) = v := by
@@ -28,11 +28,11 @@ theorem actB_conj (x : d.G) (g : UA σ d.A.J) (v : Matrix (Fin d.m) (Fin d.n ⊕
     _ = v := by rw [mat_mul_inv, hx, Matrix.one_mul, Matrix.mul_one]
 
 /- English proof (translation)
-Introduce `w φ hφ`. Take `⟨v, rfl⟩` from `d.dd.e.surjective w`. Establish `e1 : ∀ u, schr d.B.ψ (d.dd.e u) = d.dd.rho d.B.ψ u` using `fun u => rfl`. Simplify using `only [Module.End.mul_apply, e1]`. Establish `h1` using `(hS d).impl g⁻¹ v φ hφ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hp1` using `(hS d).pres g⁻¹ φ hφ`. Establish `h2` using `(hO d).impl x (mat g⁻¹ * v) _ hp1`. Establish `hp2` using `(hO d).pres x _ hp1`. Establish `h3` using `(hS d).impl g (actB (cA σ) x (mat g⁻¹ * v)) _ hp2`. Establish `hp3` using `(hS d).pres g _ hp2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4` using `(hO d).impl x⁻¹ (mat g * actB (cA σ) x (mat g⁻¹ * v)) _ hp3`. Use `beta_reduce at h1 h3`. Rewrite using `[h1, h2, h3, h4, actB_conj]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comm_schr (g : UA σ d.A.J) (x : d.G) : ∀ w, ∀ φ ∈ schA F d.κ,
     (d.om x⁻¹ * d.S g * d.om x * d.S g⁻¹) (schr d.B.ψ w φ) =
@@ -52,9 +52,9 @@ theorem comm_schr (g : UA σ d.A.J) (x : d.G) : ∀ w, ∀ φ ∈ schA F d.κ,
   rw [h1, h2, h3, h4, actB_conj]
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `GlobalTheory.WeilSchUnique.scalar_of_commute d.B.ψ (std d) (d.om x⁻¹ * d.S g * d.om x * d.S g⁻¹) (fun l hl => by`. Simplify using `only [Module.End.mul_eq_comp, ← LinearMap.comp_assoc]`. Conclude with `(hS d).adm _ _ ((hO d).adm _ _ ((hS d).adm _ _ ((hO d).adm _ _ hl))))`. Use the proof step `(comm_schr d g x)`. Use `⟨c, fun φ hφ => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h` using `congrArg (d.om x) (hc φ hφ)`. Rewrite `h` using `[map_smul]`. Rewrite using `[← h]`. Simplify using `only [Module.End.mul_apply]`. Rewrite using `[← Module.End.mul_apply (d.om x) (d.om x⁻¹), ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_scalar (g : UA σ d.A.J) (x : d.G) :
     ∃ c : ℂ, ∀ φ ∈ schA F d.κ, (d.S g * d.om x * d.S g⁻¹) φ = c • d.om x φ := by

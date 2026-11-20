@@ -5,9 +5,9 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 open scoped Matrix MatrixGroups Classical
 
 /- English proof (translation)
-Establish `hi : IsIntegral ℤ_[l] a` using `(Algebra.IsIntegral.isIntegral (R := ℤ_[l]) (⟨a, ha⟩ : c.O)).map c.O.val`. Establish `hq : IsIntegral ℚ_[l] a` using `Algebra.IsIntegral.isIntegral a`. Express the relevant statement in the definitionally equal form `spectralValue (minpoly ℚ_[l] a) ≤ 1`. Rewrite using `[spectralValue_le_one_iff (minpoly.monic hq)]`. Introduce `k`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[minpoly.isIntegrallyClosed_eq_field_fractions' ℚ_[l] hi, Polynomial.coeff_map]`. Conclude with `PadicInt.norm_le_one _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem nle {l : ℕ} [Fact l.Prime] (c : Coef l) {a : Qbar l} (ha : a ∈ c.O) : ‖a‖ ≤ 1 := by
   have hi : IsIntegral ℤ_[l] a := (Algebra.IsIntegral.isIntegral (R := ℤ_[l]) (⟨a, ha⟩ : c.O)).map c.O.val
@@ -19,22 +19,22 @@ private theorem nle {l : ℕ} [Fact l.Prime] (c : Coef l) {a : Qbar l} (ha : a �
   exact PadicInt.norm_le_one _
 
 /- English proof (translation)
-The claim follows from `(IsUltrametricDist.norm_add_le_max a b).trans (max_le ha hb)`.
+A detailed English derivation is pending.
 -/
 private theorem sadd {l : ℕ} [Fact l.Prime] {δ : ℝ} {a b : Qbar l} (ha : ‖a‖ ≤ δ) (hb : ‖b‖ ≤ δ) : ‖a + b‖ ≤ δ :=
   (IsUltrametricDist.norm_add_le_max a b).trans (max_le ha hb)
 
 /- English proof (translation)
-Rewrite using `[norm_mul]`. Conclude with `(mul_le_of_le_one_left (norm_nonneg _) ha).trans hb`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem smul' {l : ℕ} [Fact l.Prime] {δ : ℝ} {a b : Qbar l} (ha : ‖a‖ ≤ 1) (hb : ‖b‖ ≤ δ) : ‖a * b‖ ≤ δ := by
   rw [norm_mul]
   exact (mul_le_of_le_one_left (norm_nonneg _) ha).trans hb
 
 /- English proof (translation)
-Establish `e : ∑ y, η y * F (y * t⁻¹) = ∑ y, η (y * t) * F y` using `(Fintype.sum_equiv (Equiv.mulRight t) _ _ fun y => by simp).symm`. Rewrite using `[e, Finset.mul_sum, ← Finset.sum_sub_distrib]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg hδ fun y _ => ?_` and prove the remaining obligations. Establish `: η (y * t) * F y - c * (η y * F y) = F y * (η (y * t) - η y * c)` using `by ring`. Rewrite using `[this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `smul' (hF y) (h y)`.
+A detailed English derivation is pending.
 -/
 private theorem shift {l : ℕ} [Fact l.Prime] {U : Type} [CommGroup U] [Fintype U] {δ : ℝ} (hδ : 0 ≤ δ) (η F : U → Qbar l) (t : U)
     (c : Qbar l) (h : ∀ y, ‖η (y * t) - η y * c‖ ≤ δ) (hF : ∀ y, ‖F y‖ ≤ 1) :
@@ -48,7 +48,7 @@ private theorem shift {l : ℕ} [Fact l.Prime] {U : Type} [CommGroup U] [Fintype
   exact smul' (hF y) (h y)
 
 /- English proof (translation)
-Establish `h` using `Nat.Coprime.coprime_dvd_right (dvd_pow_self l hr) (ZMod.val_coe_unit_coprime y)`. Establish `: IsUnit (((y : ZMod (l ^ r)).val : ℕ) : ℤ_[l])`. Rewrite using `[PadicInt.isUnit_iff, PadicInt.norm_natCast_eq_one_iff]`. Conclude with `h.symm`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem unit_of {l r : ℕ} [hl : Fact l.Prime] (hr : r ≠ 0) (y : (ZMod (l ^ r))ˣ) :
     ∃ u : ℤ_[l]ˣ, (u : ℤ_[l]) = ((y : ZMod (l ^ r)).val : ℕ) := by
@@ -59,13 +59,13 @@ private theorem unit_of {l r : ℕ} [hl : Fact l.Prime] (hr : r ≠ 0) (y : (ZMo
   exact this
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `unit_of hr (y * t)`. Take `⟨v, hv⟩` from `unit_of hr y`. Establish `h1 : (l : ℤ_[l]) ^ r ∣ ((v * τ : ℤ_[l]ˣ) : ℤ_[l]) - u`. Rewrite using `[← Ideal.mem_span_singleton, ← PadicInt.ker_toZModPow, RingHom.mem_ker, map_sub, Units.val_mul, map_mul, hu, hv, h, map_natCast, map_natCast, ZMod.natCast_zmod_val, ZMod.natCast_zmod_val, Units.val_mul, sub_self]`. Take `⟨k, hk⟩` from `h1.trans (sub_dvd_pow_sub_pow _ _ e)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `inv : ∀ w : ℤ_[l]ˣ, (algebraMap ℤ_[l] (Qbar l) w ^ e)⁻¹ = algebraMap ℤ_[l] (Qbar l) ((w⁻¹ : ℤ_[l]ˣ) ^ e)` using `fun w => by`. Apply `inv_eq_of_mul_eq_one_right` to reduce the goal to its premises. Rewrite using `[← map_pow, ← map_mul, ← mul_pow, Units.mul_inv, one_pow, map_one]`. Rewrite using `[← map_natCast (algebraMap ℤ_[l] (Qbar l)) (ZMod.val _), ← map_natCast (algebraMap ℤ_[l] (Qbar l)) (ZMod.val _), ← hu, ← hv, inv, inv, inv, ← map_mul, ← map_sub]`. Establish `e1 : ((u⁻¹ : ℤ_[l]ˣ) : ℤ_[l]) ^ e - ((v⁻¹ : ℤ_[l]ˣ) : ℤ_[l]) ^ e * ((τ⁻¹ : ℤ_[l]ˣ) : ℤ_[l]) ^ e = (k * ((u⁻¹ * (v * τ)⁻¹ : ℤ_[l]ˣ) : ℤ_[l]) ^ e) * (l : ℤ_[l]) ^ r`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `a1 : ((u⁻¹ * (v * τ)⁻¹ : ℤ_[l]ˣ) : ℤ_[l]) ^ e * ((v * τ : ℤ_[l]ˣ) : ℤ_[l]) ^ e = ((u⁻¹ : ℤ_[l]ˣ) : ℤ_[l]) ^ e`. Rewrite using `[← mul_pow, ← Units.val_mul, inv_mul_cancel_right]`. Establish `a2 : ((u⁻¹ * (v * τ)⁻¹ : ℤ_[l]ˣ) : ℤ_[l]) ^ e * (u : ℤ_[l]) ^ e = ((v⁻¹ : ℤ_[l]ˣ) : ℤ_[l]) ^ e * ((τ⁻¹ : ℤ_[l]ˣ) : ℤ_[l]) ^ e`. Rewrite using `[← mul_pow, ← mul_pow, ← Units.val_mul, ← Units.val_mul, mul_comm u⁻¹, inv_mul_cancel_right, mul_inv]`. Rewrite using `[← a1, ← a2, ← mul_sub, hk]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, map_mul, map_pow, map_natCast]`. Conclude with `smul' (nle c (c.O.algebraMap_mem _)) le_rfl`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem inv_cg {l r : ℕ} [hl : Fact l.Prime] (c : Coef l) (hr : r ≠ 0) (e : ℕ) (y t : (ZMod (l ^ r))ˣ) (τ : ℤ_[l]ˣ)
     (h : PadicInt.toZModPow r (τ : ℤ_[l]) = t) :
@@ -94,39 +94,37 @@ private theorem inv_cg {l r : ℕ} [hl : Fact l.Prime] (c : Coef l) (hr : r ≠ 
   exact smul' (nle c (c.O.algebraMap_mem _)) le_rfl
 
 /- English proof (translation)
-Introduce `l hl Ω _ _ _ ι e gN A W ε X pr N _ x c d gm ψ cf hA he hW p r hp hlp a δ k ha hδ hk Y V b hY hb H`. Take `⟨hθ, h1, hmul, hψ, hρ, -, -⟩` from `sInteg l Ω ι e gN A W ε X pr N x c d gm ψ cf hA he hW`. Break down `eq_or_ne r 0 with rfl | hr` into its components or cases. Use `⟨0, fun i => zero_mem _, fun s i => ?_⟩` and prove the remaining obligations. Establish `z : ∀ y : (ZMod (l ^ 0))ˣ, (y : ZMod (l ^ 0)).val = 0` using `fun y => Nat.lt_one_iff.1 (by simpa using ZMod.val_lt (y : ZMod (l ^ 0)))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [Cg, spec, z, Nat.cast_zero, zero_pow (show e ≠ 0 by omega), inv_zero, zero_mul, zero_smul, Finset.sum_const_zero]`. Simplify using the standard rewrite rules. Establish `hS` using `(sSlD Ω ε X N (Nat.pos_of_ne_zero (NeZero.ne N))).2.2.2.2.2.2.2`. Set `rd : (ZMod (l ^ r))ˣ →* (ZMod l)ˣ` to `Units.map (ZMod.castHom (dvd_pow_self l hr) (ZMod l)).toMonoidHom`. Establish `hrd : ∀ y, chiK l ψ r y = ψ (rd y : (ZMod l)ˣ)` using `fun y => by`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[chiK, ZMod.natCast_val]`. Both sides reduce to the same expression. Use `set η : (ZMod (l ^ r))ˣ → Qbar l := fun x => ((((x : ZMod (l ^ r)).val : ℕ) : Qbar l) ^ e)⁻¹ * chiK l ψ r x with hη`. Establish `uO : ∀ w : ℤ_[l]ˣ, (algebraMap ℤ_[l] (Qbar l) w)⁻¹ ∈ cf.O` using `fun w => by`. Rewrite using `[show (algebraMap ℤ_[l] (Qbar l) w)⁻¹ = algebraMap ℤ_[l] (Qbar l) (w⁻¹ : ℤ_[l]ˣ) from inv_eq_of_mul_eq_one_right (by rw [← map_mul, Units.mul_inv, map_one])]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `cf.O.algebraMap_mem _`. Establish `ηO : ∀ y, η y ∈ cf.O` using `fun y => by`. Take `⟨u, hu⟩` from `unit_of hr y`. Simplify using `only [hη]`. Rewrite using `[← map_natCast (algebraMap ℤ_[l] (Qbar l)), ← hu, ← inv_pow, hrd]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `mul_mem (pow_mem (uO u) e) (hψ _)`. Establish `key : ∀ (t : (ZMod (l ^ r))ˣ) (τ : ℤ_[l]ˣ), PadicInt.toZModPow r (τ : ℤ_[l]) = t → ∀ y, ‖η (y * t) - η y * (((algebraMap ℤ_[l] (Qbar l) τ) ^ e)⁻¹ * ψ (rd t : (ZMod l)ˣ))‖ ≤ ‖((l : ℕ) : Qbar l) ^ r‖` using `fun t τ h y => by`. Simplify using `only [hη]`. Rewrite using `[hrd, hrd, map_mul, hmul]`. Use `smul' (nle cf (mul_mem (hψ (rd y)) (hψ (rd t)))) (inv_cg cf hr e y t τ h)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Use `this using 2` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Establish `hp1 : (p : ZMod l) = 1`. Take `⟨m, hm⟩` from `hlp`. Rewrite using `[show p = l * m + 1 by have := hp.pos; omega]`.
+Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `hcop : Nat.Coprime l p`. Rewrite using `[Nat.Prime.coprime_iff_not_dvd hl.out, ← ZMod.natCast_eq_zero_iff, hp1]`. Conclude with `one_ne_zero`. Choose the witnesses or unpack the hypotheses as in `⟨π, hπ⟩ : IsUnit (p : ℤ_[l]) := by`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[PadicInt.isUnit_iff, PadicInt.norm_natCast_eq_one_iff]`. Conclude with `hcop`. Establish `hq : IsUnit (p : ZMod (l ^ r))` using `(ZMod.isUnit_iff_coprime _ _).2 (hcop.symm.pow_right r)`. Establish `hinv : inv1 (l ^ r) p = hq.unit⁻¹` using `dif_pos hq`. Establish `hπ' : algebraMap ℤ_[l] (Qbar l) π = p` using `by rw [hπ, map_natCast]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hrq : ((rd hq.unit : (ZMod l)ˣ) : ZMod l) = 1`. Rewrite using `[← hp1]`. Conclude with `map_natCast (ZMod.castHom (dvd_pow_self l hr) (ZMod l)) p`. Establish `k1` using `key hq.unit π (by rw [hπ, map_natCast]; rfl)`. Establish `k2` using `key (hq.unit ^ 2) (π ^ 2) (by rw [Units.val_pow_eq_pow_val, map_pow, hπ, map_natCast]; rfl)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `k1` using `[hπ', hrq, h1]`. Rewrite `k2` using `[Units.val_pow_eq_pow_val, map_pow, hπ', map_pow, Units.val_pow_eq_pow_val, hrq, one_pow, h1]`. Establish `hpO : (p : Qbar l)⁻¹ ∈ cf.O` using `hπ' ▸ uO π`. Establish `hp0 : (p : Qbar l) ≠ 0` using `Nat.cast_ne_zero.2 hp.ne_zero`. Establish `hpn : ‖(p : Qbar l)‖ ≤ 1` using `nle cf (natCast_mem _ p)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨fun i => (p : Qbar l)⁻¹ * ∑ y, η y * b y i, fun i => mul_mem hpO (sum_mem fun y _ => mul_mem (ηO y) (hb y i)), fun s i => ?_⟩` and prove the remaining obligations. Establish `k3` using `key (cycMod ℚ Ω l r s) (cycZ ℚ Ω l s) rfl`. Establish `hth : ((algebraMap ℤ_[l] (Qbar l) (cycZ ℚ Ω l s : ℤ_[l]ˣ)) ^ e)⁻¹ * ψ (rd (cycMod ℚ Ω l r s) : (ZMod l)ˣ) = thK l e ψ s`. Establish `a1 : rd (cycMod ℚ Ω l r s) = cycM l s`. Rewrite using `[(sCycZ Ω l r s).1]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(hS (l ^ r) s).2.2.2.2 l (dvd_pow_self l hr)`. Establish `a2` using `(hS (l ^ 1) s).2.2.2.2 l (dvd_pow_self l one_ne_zero)`. Rewrite `a2` using `[← (sCycZ Ω l 1 s).1]`. Rewrite using `[a1, ← a2, thK, ZMod.natCast_val]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `k3` using `[hth]`. Establish `h0` using `norm_nonneg (((l : ℕ) : Qbar l) ^ r)`. Establish `s1` using `shift h0 η (fun y => Y s y i) _ _ k1 fun y => hY s y i`. Establish `s2` using `shift h0 η (fun y => Y s y i) _ _ k2 fun y => hY s y i`. Establish `s3` using `fun j => shift h0 η (fun y => b y j) _ _ k3 fun y => nle cf (hb y j)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `s0` using `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (s := Finset.univ) h0 fun y _ => smul' (nle cf (ηO y)) (H s y i)`. Establish `hθ0 : thK l e ψ s ≠ 0` using `fun h => by simpa [h] using hθ s`. Establish `hWρ : ∀ j, mat W s i j = thK l e ψ s * rhoK W e ψ s i j` using `fun j => by`. Rewrite using `[rhoK, Matrix.smul_apply, smul_eq_mul, mul_inv_cancel_left₀ hθ0]`. Establish `E : ∑ y, η y * (((p : Qbar l) • V s y) i - (k • ((p : Qbar l) • Y s y - a • Y s (y * inv1 (l ^ r) p) + ((p : Qbar l) ^ (2 * e - 1) * δ) • Y s (y * inv1 (l ^ r) p ^ 2)) + (rhoK W e ψ s *ᵥ b (y * (cycMod (F` using `ℚ) (Ω := Ω) l r s)⁻¹) - b y)) i) = p * ∑ y, η y * V s y i - (k * (p * ∑ y, η y * Y s y i - a * ∑ y, η y * Y s (y * hq.unit⁻¹) i + ((p : Qbar l) ^ (2 * e - 1) * δ) * ∑ y, η y * Y s (y * (hq.unit ^ 2)⁻¹) i) + (rhoK W e ψ s i 0 * ∑ y, η y * b (y * (cycMod ℚ Ω l r s)⁻¹) 0 + rhoK W e …`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Simplify using `only [Finset.mul_sum, ← Finset.sum_add_distrib, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Simplify using `only [hinv, inv_pow, Pi.add_apply, Pi.sub_apply, Pi.smul_apply, smul_eq_mul, Matrix.mulVec, dotProduct, Fin.sum_univ_two]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `s0` using `[E]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Establish `fin` using `smul' (nle cf hpO) (sadd (sadd (sadd (sadd s0 (smul' (a := -(k * a)) (by rw [norm_neg]; exact smul' hk ha) s1)) (smul' (a := k * ((p : Qbar l) ^ (2 * e - 1) * δ)) (smul' hk (smul' (by rw [norm_pow]; exact pow_le_one₀ (norm_nonneg _) hpn) hδ)) s2)) (smul' (nle cf (hρ s i 0)) (s3 0 …`. Unfold `Cg`. Use `fin using 2` and compare the differences between its conclusion and the goal. Simplify using `only [spec, eul, Finset.sum_apply, Pi.add_apply, Pi.sub_apply, Pi.smul_apply, smul_eq_mul, Matrix.mulVec, dotProduct, Fin.sum_univ_two, hWρ]`. Take `⟨e', rfl⟩ : ∃ e', e = e' + 1` from `⟨e - 1, by omega⟩`.
-
-Rewrite using `[show 2 * (e' + 1) - 1 = 2 * e' + 1 by omega]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Kato.Nb.sSpec :
     UpperTheory.V.Z.Kato.Nb.SSpec := by

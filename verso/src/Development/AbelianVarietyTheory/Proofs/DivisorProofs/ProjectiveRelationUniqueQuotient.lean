@@ -17,9 +17,9 @@ section
 variable {T : Scheme.{0}} {L Q : T.Modules} {N : ℕ}
 
 /- English proof (translation)
-Establish `h : biproduct.desc s = ∑ m, biproduct.π (fun _ : Fin (N + 1) => L) m ≫ s m`. Rewrite using `[← Category.id_comp (biproduct.desc s), ← biproduct.total, Preadditive.sum_comp]`. Simplify using the standard rewrite rules. Set `ev : ((⨁ fun _ : Fin (N + 1) => L) ⟶ Q) →+ Γ(Q, V)` to `{ toFun := fun f => f.app V t map_zero' := by simp map_add' := fun f g => by simp }`. Rewrite using `[h]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(map_sum ev (fun m => biproduct.π (fun _ : Fin (N + 1) => L) m ≫ s m) Finset.univ).trans (Finset.sum_congr rfl fun m _ => rfl)`.
+A detailed English derivation is pending.
 -/
 theorem desc_app (s : Fin (N + 1) → (L ⟶ Q)) (V : T.Opens) (t : Γ(⨁ fun _ : Fin (N + 1) => L, V)) :
     (biproduct.desc s).app V t = ∑ m, (s m).app V ((biproduct.π (fun _ : Fin (N + 1) => L) m).app V t) := by
@@ -35,9 +35,9 @@ theorem desc_app (s : Fin (N + 1) → (L ⟶ Q)) (V : T.Opens) (t : Γ(⨁ fun _
     (Finset.sum_congr rfl fun m _ => rfl)
 
 /- English proof (translation)
-Use `set v : Γ(L, W) := ∑ m, ProjSpace.pullRatio φ W i hi m • (biproduct.π (fun _ : Fin (N + 1) => L) m).app W u with hv`. Establish `key : ∀ {Q₁ : T.Modules} (s₁ : Fin (N + 1) → (L ⟶ Q₁)), Rel φ s₁ → (biproduct.desc s₁).app W u = (s₁ i).app W v`. Introduce `Q₁ s₁ h₁`. Rewrite using `[desc_app, hv, map_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h₁ i m W hi, Scheme.Modules.Hom.app_smul]`. Establish `hv0 : v = 0` using `hj (by rw [hs i j W hi, ← key s hs, h0, smul_zero, map_zero])`. Rewrite using `[key s' hs', hv0, map_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem desc_app_eq_zero {k : Type} [CommRing k] {Q' : T.Modules} {φ : T ⟶ PSpace k N}
     {s : Fin (N + 1) → (L ⟶ Q)} {s' : Fin (N + 1) → (L ⟶ Q')} (hs : Rel φ s) (hs' : Rel φ s')
@@ -58,13 +58,11 @@ theorem desc_app_eq_zero {k : Type} [CommRing k] {Q' : T.Modules} {φ : T ⟶ PS
 end
 
 /- English proof (translation)
-Introduce `k _ N T L Q Q' s s' φ _ _ hJ hG hs hs'`. Establish `hepi : Epi (biproduct.desc s)` using `Preadditive.epi_of_cancel_zero _ fun {Z} a ha => hJ Z a fun j => by simpa using congrArg (biproduct.ι (fun _ : Fin (N + 1) => L) j ≫ ·) ha`. Use `choose j G hxG hGb using hG`. Use `choose i hi using fun x : T => ProjSpace.exists_mem_chart k N (φ x)`. Establish `loc : ∀ (V : T.Opens) (t : Γ(⨁ fun _ : Fin (N + 1) => L, V)), (biproduct.desc s).app V t = 0 → (biproduct.desc s').app V t = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `V t h0`. Use `sec_ext_of_cover (fun x => V ⊓ G x ⊓ φ ⁻¹ᵁ ProjSpace.chart k N (i x)) (fun _ => inf_le_left.trans inf_le_left) (fun y hy => TopologicalSpace.Opens.mem_iSup.2 ⟨y, ⟨⟨hy, hxG y⟩, hi y⟩⟩) fun x => ?_` and prove the remaining obligations. Rewrite using `[← app_resM, map_zero]`. Use `desc_app_eq_zero hs hs' (i x) (j x) inf_le_right (hGb x _ (inf_le_left.trans inf_le_right)).1 _ ?_` and prove the remaining obligations. Rewrite using `[app_resM, h0, map_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hk : kernel.ι (biproduct.desc s) ≫ biproduct.desc s' = 0`. Use extensionality with `V x`. Establish `h` using `congrArg (fun f => f.app V x) (kernel.condition (biproduct.desc s))`. Simplify using `only [Scheme.Modules.Hom.comp_app, Scheme.Modules.Hom.zero_app] at h ⊢`. Conclude with `loc V _ h`.
-
-Use `⟨Abelian.epiDesc _ _ hk, fun j => ?_⟩` and prove the remaining obligations. Rewrite using `[← biproduct.ι_desc s j, Category.assoc, Abelian.comp_epiDesc, biproduct.ι_desc]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_factor_of_rel : ∀ (k : Type) [CommRing k] (N : ℕ) (T : Scheme.{0}) (L Q Q' : T.Modules)
     (s : Fin (N + 1) → (L ⟶ Q)) (s' : Fin (N + 1) → (L ⟶ Q')) (φ : T ⟶ PSpace k N),

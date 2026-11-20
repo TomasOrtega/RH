@@ -14,16 +14,16 @@ variable {V : Type} [AddCommGroup V] [Module K V] [FiniteDimensional K V] [Modul
   [IsScalarTower (𝓞 K) K V]
 
 /- English proof (translation)
-Rewrite using `[← pow_mul, mul_comm, pow_mul]`. Apply the tactic sequence `rcases etaF_eq (K := K) 𝔭 with h | h <;> simp [h]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem eta_pow_sq (𝔭 : Ideal (𝓞 F)) (M : ℕ) : (etaF K F 𝔭 ^ M) ^ 2 = 1 := by
   rw [← pow_mul, mul_comm, pow_mul]
   rcases etaF_eq (K := K) 𝔭 with h | h <;> simp [h]
 
 /- English proof (translation)
-Establish `hq : (0 : ℝ) < (Ideal.absNorm 𝔭 : ℝ)` using `by have := one_lt_q h𝔭; linarith`. Rewrite using `[alphaN]`. Apply `Filter.Tendsto.limUnder_eq` to reduce the goal to its premises. Apply `tendsto_const_nhds.congr'` to reduce the goal to its premises. Use `filter_upwards [Filter.eventually_ge_atTop 1] with k hk`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[nkCount_eq_cnt hK hF hs hd hL hLi h𝔭 hv hk n, cnt_unit hK hF h𝔭 hm hk hn, show k * (2 * finrank K V - 1) = (2 * finrank K V - 1) * k from mul_comm _ _, mul_div_cancel_left₀ _ (pow_ne_zero _ hq.ne')]`.
+A detailed English derivation is pending.
 -/
 theorem alphaN_unit (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F)
     {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm) (hd : IsTotPosDef h) {L : Submodule (𝓞 K) V}
@@ -41,27 +41,27 @@ theorem alphaN_unit (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : I
     mul_div_cancel_left₀ _ (pow_ne_zero _ hq.ne')]
 
 /- English proof (translation)
-Establish `h0 : 𝔭 ≠ ⊥` using `idealPowerSpanBounds.ne_bot h𝔭`. Choose the witnesses or unpack the hypotheses as in `⟨ϖ, hϖ1, hϖ2⟩ : ∃ ϖ ∈ 𝔭, ϖ ∉ 𝔭 ^ 2 := by`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Establish `heq : 𝔭 ^ 2 = 𝔭` using `le_antisymm (Ideal.pow_le_self two_ne_zero) (fun x hx => hcon x hx)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmul : 𝔭 * 𝔭 = 𝔭 * 1` using `by rw [mul_one, ← pow_two, heq]`. Establish `h1 : 𝔭 = 1` using `mul_left_cancel₀ h0 hmul`. Conclude with `h𝔭.ne_top (by rw [h1, Ideal.one_eq_top])`. Establish `hg : ϖ ^ 2 ∉ 𝔭 ^ (2 + 1)`. Use `idealPowerSpanBounds.mul_notMem h𝔭.isPrime h0 (i := 1) (j := 1) hϖ2 hϖ2` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite `this` using `[← pow_two]`. Then use the resulting hypothesis. Establish `hmem : ∀ e, n ∈ 𝔭 ^ e ↔ e ≤ vF 𝔭 n` using `mem_pow_iff_le_vF h𝔭 hn`. Establish `hsup` using `idealPowerSpanBounds.pow_le_span_sup h𝔭.isPrime h0 hg N ((hmem 2).mpr h2)`. Take `⟨a, ha, e, he, hae⟩` from `Submodule.mem_sup.mp hsup`. Take `⟨r, rfl⟩` from `Ideal.mem_span_singleton'.mp ha`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdiff : n - ϖ ^ 2 * r = e` using `by rw [← hae]; ring`. Establish `heN : ∀ t, t ≤ N → e ∈ 𝔭 ^ t` using `fun t ht => Ideal.pow_le_pow_right ht he`. Use `⟨ϖ, hϖ1, hϖ2, r, ?_, ?_, by rw [hdiff]; exact he⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Establish `: n ∈ 𝔭 ^ N` using `by rw [← hae]; simpa using he`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use `(hmem N).mp this` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hr0 : r ≠ 0`. Introduce and unpack `rfl`. Establish `: n ∈ 𝔭 ^ N` using `by rw [← hae]; simpa using he`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use `(hmem N).mp this` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hmemr : ∀ t, r ∈ 𝔭 ^ t ↔ t ≤ vF 𝔭 r` using `mem_pow_iff_le_vF h𝔭 hr0`. Establish `hup : ¬ (vF 𝔭 n - 1 ≤ vF 𝔭 r)`. Introduce `hle`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr` using `(hmemr (vF 𝔭 n - 1)).mpr hle`. Establish `h3 : ϖ ^ 2 * r ∈ 𝔭 ^ (vF 𝔭 n + 1)`. Use `Ideal.mul_mem_mul (Ideal.pow_mem_pow hϖ1 2) hr` as an intermediate fact. Rewrite `this` using `[← pow_add, show 2 + (vF 𝔭 n - 1) = vF 𝔭 n + 1 by omega]`. Then use the resulting hypothesis. Establish `h4 : n ∈ 𝔭 ^ (vF 𝔭 n + 1)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3' : r * ϖ ^ 2 ∈ 𝔭 ^ (vF 𝔭 n + 1)` using `by rw [mul_comm]; exact h3`. Use `Ideal.add_mem _ h3' (heN _ hN)` as an intermediate fact. Rewrite `this` using `[hae]`. Then use the resulting hypothesis. Use `(hmem _).mp h4` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hlow : vF 𝔭 n - 2 ≤ vF 𝔭 r`. Break down `Nat.eq_zero_or_pos (vF 𝔭 n - 2) with h | h` into its components or cases. Use linear arithmetic over natural numbers and integers. Assume the negation of the conclusion as `hlt`. Establish `hr : r ∉ 𝔭 ^ ((vF 𝔭 n - 3) + 1)`.
+Use linear arithmetic over natural numbers and integers. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[hmemr]`. Use linear arithmetic over natural numbers and integers. Establish `h5` using `idealPowerSpanBounds.mul_notMem h𝔭.isPrime h0 hg hr`. Establish `h6 : ϖ ^ 2 * r ∈ 𝔭 ^ vF 𝔭 n`. Rewrite using `[show ϖ ^ 2 * r = n - e by rw [← hdiff]; ring]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Conclude with `Ideal.sub_mem _ ((hmem _).mpr le_rfl) (heN _ (by omega))`. Rewrite `h5` using `[show 2 + (vF 𝔭 n - 3) + 1 = vF 𝔭 n by omega]`. Conclude with `h5 h6`. Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 private theorem exists_uniformizer_sq_mul_congr_of_two_le_vF {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) {n : 𝓞 F} (hn : n ≠ 0)
     (h2 : 2 ≤ vF 𝔭 n) {N : ℕ} (hN : vF 𝔭 n + 1 ≤ N) :
@@ -121,7 +121,7 @@ private theorem exists_uniformizer_sq_mul_congr_of_two_le_vF {𝔭 : Ideal (𝓞
     omega
 
 /- English proof (translation)
-Establish `hq0 : q ≠ 0` using `hq.ne'`. Rewrite using `[show 2 * (m + 1) - 1 = 2 * m + 1 by omega, show (j + 2) * (2 * m + 1) = j * (2 * m + 1) + (2 * m + 2) + 2 * m by ring, show 2 * (m + 1) = 2 * m + 2 by ring, pow_add, pow_add]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem pow_mul_div_pow_eq_inv_sq_mul (q c' : ℝ) (j m : ℕ) (hq : 0 < q) :
     (q ^ (2 * (m + 1)) * c') / q ^ ((j + 2) * (2 * (m + 1) - 1)) =
@@ -134,13 +134,13 @@ private theorem pow_mul_div_pow_eq_inv_sq_mul (q c' : ℝ) (j m : ℕ) (hq : 0 <
   ring
 
 /- English proof (translation)
-Establish `hιn : ι n ∈ extP K 𝔭`. Use `(idealPowerSpanBounds.mem_pow_iff (K := K) 𝔭 1 n).mpr (by rwa [pow_one])` as an intermediate fact. Rewrite `this` using `[pow_one]`. Then use the resulting hypothesis. Establish `hq : (0 : ℝ) < (Ideal.absNorm 𝔭 : ℝ)` using `by have := one_lt_q h𝔭; linarith`. Establish `hadd` using `cnt_eq_add hF h𝔭 (j + 2) (m + 1) (ι n)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hP` using `cntP_eq hK hF h𝔭 (j + 1) (Nat.le_add_left 1 m) (idealPowerSpanBounds.conjO_map hF n)`. Establish `hadd1` using `cnt_eq_add hF h𝔭 1 (m + 1) (ι n)`. Establish `hI1` using `cntI_one_of_mem hF 𝔭 (m + 1) hιn`. Establish `hP1 : (cntP hF 𝔭 1 (m + 1) (ι n) : ℝ) = (cnt hF 𝔭 1 (m + 1) (ι n) : ℝ) - 1`. Rewrite using `[hadd1, hI1]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hadd, hP]`. Use `push_cast`. Rewrite using `[hP1]`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `real_step _ _ _ _ _ _ j m hq rfl (eta_pow_sq (K := K) 𝔭 (m + 1)) rfl hc1`.
+A detailed English derivation is pending.
 -/
 private theorem sub_single_one_add_single_one_of_ne_zero (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F) {𝔭 : Ideal (𝓞 F)}
     (h𝔭 : 𝔭.IsMaximal) {m : ℕ} {n : 𝓞 F} (hn : n ∈ 𝔭)
@@ -165,23 +165,21 @@ private theorem sub_single_one_add_single_one_of_ne_zero (hK : Formalism.Hermiti
   exact real_step _ _ _ _ _ _ j m hq rfl (eta_pow_sq (K := K) 𝔭 (m + 1)) rfl hc1
 
 /- English proof (translation)
-Establish `hq : (0 : ℝ) < (Ideal.absNorm 𝔭 : ℝ)` using `by have := one_lt_q h𝔭; linarith`. Introduce `v`. Proceed by induction on `v using Nat.strong_induction_on with`. Consider the case `_ v ih`. Introduce `n hn0 hnv k hk`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hmem : ∀ e, n ∈ 𝔭 ^ e ↔ e ≤ vF 𝔭 n` using `mem_pow_iff_le_vF h𝔭 hn0`. Break down `v with _ | _ | w` into its components or cases. Establish `hn𝔭 : n ∉ 𝔭`. Introduce `h`. Use `(hmem 1).mp (by rwa [pow_one])` as an intermediate fact.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[cnt_unit hK hF h𝔭 (Nat.le_add_left 1 m) (by omega) hn𝔭, show k * (2 * (m + 1) - 1) = (2 * (m + 1) - 1) * k from mul_comm _ _, mul_div_cancel_left₀ _ (pow_ne_zero _ hq.ne'), zpow_neg, zpow_natCast]`. Simplify using the standard rewrite rules. Establish `hn𝔭 : n ∈ 𝔭` using `by rw [← pow_one 𝔭]; exact (hmem 1).mpr (by omega)`. Take `⟨j, rfl⟩ : ∃ j, k = j + 2` from `⟨k - 2, by omega⟩`.
+Use linear arithmetic over natural numbers and integers. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[sub_single_one_add_single_one_of_ne_zero hK hF h𝔭 hn𝔭 (hc1 n hn𝔭) j]`. Establish `hn2 : ι n ∉ extP K 𝔭 ^ 2`. Rewrite using `[idealPowerSpanBounds.mem_pow_iff, hmem]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[cntI_eq_zero hF 𝔭 j (m + 1) hn2]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Finset.sum_range_succ]`. Establish `hn𝔭 : n ∈ 𝔭` using `by rw [← pow_one 𝔭]; exact (hmem 1).mpr (by omega)`. Take `⟨j, rfl⟩ : ∃ j, k = j + 2` from `⟨k - 2, by omega⟩`. Rewrite using `[sub_single_one_add_single_one_of_ne_zero hK hF h𝔭 hn𝔭 (hc1 n hn𝔭) j]`. Take `⟨ϖ, h1, h2, n', hn'0, hn'v, hdiv⟩` from `exists_uniformizer_sq_mul_congr_of_two_le_vF h𝔭 hn0 (by omega) (N := j + 2) (by omega)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hdivK : ι n - ι ϖ ^ 2 * ι n' ∈ extP K 𝔭 ^ (j + 2)`. Rewrite using `[← map_pow, ← map_mul, ← map_sub, idealPowerSpanBounds.mem_pow_iff]`. Conclude with `hdiv`. Rewrite using `[cntI_add_two hK hF h𝔭 h1 h2 j (m + 1) hdivK]`. Establish `hih` using `ih w (by omega) n' hn'0 (by omega) j (by omega)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Rewrite using `[pow_mul_div_pow_eq_inv_sq_mul _ _ j m hq, hih]`. Use `set x := (etaF K F 𝔭 ^ (m + 1) * ((Ideal.absNorm 𝔭 : ℝ) ^ m)⁻¹) with hx`. Establish `hx2 : x ^ 2 = ((Ideal.absNorm 𝔭 : ℝ) ^ m)⁻¹ ^ 2`. Rewrite using `[hx, mul_pow, eta_pow_sq (K := K) 𝔭 (m + 1), one_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hgeo : ∑ l ∈ Finset.range (w + 1 + 1 + 1), x ^ l = 1 + x + x ^ 2 * ∑ l ∈ Finset.range (w + 1), x ^ l`. Rewrite using `[Finset.sum_range_succ', Finset.sum_range_succ', Finset.mul_sum, Finset.sum_congr rfl (fun i _ => (show x ^ (i + 1 + 1) = x ^ 2 * x ^ i by ring))]`. Simplify using `only [pow_zero, zero_add, pow_one]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hgeo, ← hx2]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private theorem stab_lemma (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F) {𝔭 : Ideal (𝓞 F)}
     (h𝔭 : 𝔭.IsMaximal) {m : ℕ}
@@ -236,11 +234,11 @@ private theorem stab_lemma (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) 
       ring
 
 /- English proof (translation)
-Take `⟨m, hm'⟩ : ∃ m, finrank K V = m + 1` from `⟨finrank K V - 1, by omega⟩`. Establish `hc1 : ∀ n : 𝓞 F, n ∈ 𝔭 → (cnt hF 𝔭 1 (m + 1) (ι n) : ℝ) = (Ideal.absNorm 𝔭 : ℝ) ^ (2 * (m + 1)) - ((Ideal.absNorm 𝔭 : ℝ) - 1) * ((Ideal.absNorm 𝔭 : ℝ) ^ (2 * (m + 1) - 1) * (1 - etaF K F 𝔭 ^ (m + 1) * ((Ideal.absNorm 𝔭 : ℝ) ^ (m + 1))⁻¹))`. Introduce `n' hn'`. Establish `h` using `cnt_one_of_mem hK hF hs hd hL hLi h𝔭 hv hm hn'`. Rewrite `h` using `[hm']`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[h, zpow_neg, zpow_natCast]`. Establish `hA : alphaN h L 𝔭 n = (1 - etaF K F 𝔭 ^ (m + 1) * ((Ideal.absNorm 𝔭 : ℝ) ^ (m + 1))⁻¹) * ∑ l ∈ Finset.range (vF 𝔭 n + 1), (etaF K F 𝔭 ^ (m + 1) * ((Ideal.absNorm 𝔭 : ℝ) ^ m)⁻¹) ^ l`. Rewrite using `[alphaN]`. Apply `Filter.Tendsto.limUnder_eq` to reduce the goal to its premises. Apply `tendsto_const_nhds.congr'` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Use `filter_upwards [Filter.eventually_ge_atTop (2 * vF 𝔭 n + 1)] with k hk`. Rewrite using `[nkCount_eq_cnt hK hF hs hd hL hLi h𝔭 hv (by omega) n, hm', stab_lemma hK hF h𝔭 hc1 (vF 𝔭 n) n hn rfl k hk]`. Rewrite using `[hA, ← stab_lemma hK hF h𝔭 hc1 (vF 𝔭 n) n hn rfl (2 * vF 𝔭 n + 2) (by omega), hm', sub_single_one_add_single_one_of_ne_zero hK hF h𝔭 hn𝔭 (hc1 n hn𝔭) (2 * vF 𝔭 n)]`. Simplify using `only [zpow_neg, zpow_natCast, Nat.add_sub_cancel]`.
+Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem alphaN_step (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F)
     {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm) (hd : IsTotPosDef h) {L : Submodule (𝓞 K) V}
@@ -270,7 +268,7 @@ theorem alphaN_step (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : I
   simp only [zpow_neg, zpow_natCast, Nat.add_sub_cancel]
 
 /- English proof (translation)
-Establish `hq0 : q ≠ 0` using `hq.ne'`. Establish `h1 : 2 * (t + 1) - 1 = 2 * t + 1` using `by omega`. Establish `h2 : (j + 2) * (2 * t + 1) = j * (2 * t + 1) + (2 * t + 2) + 2 * t` using `by ring`. Rewrite using `[h1, h2, pow_add, pow_add, mul_pow, hε, inv_pow]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -285,7 +283,7 @@ theorem real_imp (q ε c' : ℝ) (j t : ℕ) (hq : 0 < q) (hε : ε ^ 2 = 1) :
   ring
 
 /- English proof (translation)
-Establish `e : ∀ i : ℕ, x ^ (i + 1 + 1) = x ^ 2 * x ^ i` using `fun i => by ring`. Rewrite using `[Finset.sum_range_succ', Finset.sum_range_succ']`. Rewrite using `[Finset.sum_congr rfl (fun i _ => e i), ← Finset.mul_sum]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem geom_step (x : ℝ) (w : ℕ) :
     ∑ l ∈ Finset.range (w + 2 + 1), x ^ l = 1 + x + x ^ 2 * ∑ l ∈ Finset.range (w + 1), x ^ l := by
@@ -295,7 +293,7 @@ theorem geom_step (x : ℝ) (w : ℕ) :
   ring
 
 /- English proof (translation)
-Take `⟨ϖ, h1, h2, n', hn', hv', hd⟩` from `exists_uniformizer_sq_mul_congr_of_two_le_vF h𝔭 hn (by omega) (N := N) (by omega)`. Conclude with `⟨ϖ, h1, h2, n', hn', by omega, hd⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_div_sq {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) {n : 𝓞 F} (hn : n ≠ 0) {w : ℕ}
     (hvn : vF 𝔭 n = w + 2) {N : ℕ} (hN : w + 3 ≤ N) :
@@ -304,11 +302,11 @@ theorem exists_div_sq {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) {n : 𝓞
   exact ⟨ϖ, h1, h2, n', hn', by omega, hd⟩
 
 /- English proof (translation)
-Introduce `v n hn hnv`. Take `⟨m, hm'⟩ : ∃ m, finrank K V = m + 1` from `⟨finrank K V - 1, by omega⟩`. Establish `hc1 : ∀ n : 𝓞 F, n ∈ 𝔭 → (cnt hF 𝔭 1 (m + 1) (ι n) : ℝ) = (Ideal.absNorm 𝔭 : ℝ) ^ (2 * (m + 1)) - ((Ideal.absNorm 𝔭 : ℝ) - 1) * ((Ideal.absNorm 𝔭 : ℝ) ^ (2 * (m + 1) - 1) * (1 - etaF K F 𝔭 ^ (m + 1) * ((Ideal.absNorm 𝔭 : ℝ) ^ (m + 1))⁻¹))`. Introduce `n' hn'`. Establish `h` using `cnt_one_of_mem hK hF hs hd hL hLi h𝔭 hv hm hn'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h` using `[hm']`. Rewrite using `[h, zpow_neg, zpow_natCast]`. Rewrite using `[alphaN]`. Apply `Filter.Tendsto.limUnder_eq` to reduce the goal to its premises. Apply `tendsto_const_nhds.congr'` to reduce the goal to its premises.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Use `filter_upwards [Filter.eventually_ge_atTop (2 * v + 1)] with k hk`. Rewrite using `[nkCount_eq_cnt hK hF hs hd hL hLi h𝔭 hv (by omega) n, hm', stab_lemma hK hF h𝔭 hc1 v n hn hnv k hk]`. Simplify using `only [zpow_neg, zpow_natCast, Nat.add_sub_cancel]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem alphaN_closed (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F)
     {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm) (hd : IsTotPosDef h) {L : Submodule (𝓞 K) V}

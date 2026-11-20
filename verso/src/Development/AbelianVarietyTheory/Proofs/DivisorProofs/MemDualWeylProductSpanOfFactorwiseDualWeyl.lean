@@ -20,7 +20,7 @@ section
 variable {σ A B : Type} [CommRing A] [Algebra k A] [CommRing B] [Algebra k B] (L : A →ₗ[k] B)
 
 /- English proof (translation)
-Simplify using `only [mr, coeff_sum, coeff_monomial]`. Rewrite using `[Finset.sum_ite_eq']`. Use `split_ifs with h`. Both sides reduce to the same expression. Rewrite using `[MvPolynomial.notMem_support_iff.mp h, map_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coeff_mr (F : MvPolynomial σ A) (m : σ →₀ ℕ) : coeff m (mr L F) = L (coeff m F) := by
   classical
@@ -31,31 +31,31 @@ theorem coeff_mr (F : MvPolynomial σ A) (m : σ →₀ ℕ) : coeff m (mr L F) 
   · rw [MvPolynomial.notMem_support_iff.mp h, map_zero]
 
 /- English proof (translation)
-Use extensionality with `m`. Simplify using `[coeff_mr]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem mr_add (F G : MvPolynomial σ A) : mr L (F + G) = mr L F + mr L G := by
   ext m; simp [coeff_mr]
 
 /- English proof (translation)
-Use extensionality with `m`. Simplify using `[coeff_mr, coeff_smul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem mr_smul (c : k) (F : MvPolynomial σ A) : mr L (c • F) = c • mr L F := by
   ext m; simp [coeff_mr, coeff_smul]
 
 /- English proof (translation)
-Apply the tactic sequence `ext n; simp only [coeff_mr, coeff_monomial]; split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem mr_monomial (m : σ →₀ ℕ) (a : A) : mr L (monomial m a) = monomial m (L a) := by
   classical
   ext n; simp only [coeff_mr, coeff_monomial]; split_ifs <;> simp
 
 /- English proof (translation)
-The claim follows from `mr_monomial L 0 a`.
+A detailed English derivation is pending.
 -/
 theorem mr_C (a : A) : mr L (C a : MvPolynomial σ A) = C (L a) := mr_monomial L 0 a
 
 /- English proof (translation)
-Use extensionality with `n`. Simplify using `only [coeff_mr, coeff_mul, coeff_map, map_sum]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[← Algebra.smul_def (coeff x.1 q) (coeff x.2 F), LinearMap.map_smul, Algebra.smul_def]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem mr_map_mul (q : MvPolynomial σ k) (F : MvPolynomial σ A) :
     mr L (map (algebraMap k A) q * F) = map (algebraMap k B) q * mr L F := by
@@ -67,7 +67,7 @@ theorem mr_map_mul (q : MvPolynomial σ k) (F : MvPolynomial σ A) :
 end
 
 /- English proof (translation)
-Use extensionality with `n`. Simplify using `only [coeff_mr, coeff_C_mul, coeff_map, coeff_smul, smul_eq_mul]`. Rewrite using `[← Algebra.commutes, ← Algebra.smul_def, LinearMap.map_smul, smul_eq_mul, mul_comm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem mr_C_mul_map {σ A : Type} [CommRing A] [Algebra k A] (L : A →ₗ[k] k) (c : A) (h : MvPolynomial σ k) :
     mr L (C c * map (algebraMap k A) h) = L c • h := by
@@ -76,7 +76,7 @@ theorem mr_C_mul_map {σ A : Type} [CommRing A] [Algebra k A] (L : A →ₗ[k] k
   rw [← Algebra.commutes, ← Algebra.smul_def, LinearMap.map_smul, smul_eq_mul, mul_comm]
 
 /- English proof (translation)
-Rewrite using `[monomial_eq, monomial_eq, C_1, C_1, one_mul, one_mul]`. Simplify using `only [Finsupp.prod, map_prod, map_pow, commAlgEquiv_X]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem commAlgEquiv_monomial_one {S₁ S₂ : Type} (m' : S₁ →₀ ℕ) :
     commAlgEquiv k S₁ S₂ (monomial m' 1) = C (monomial m' 1) := by
@@ -84,9 +84,9 @@ theorem commAlgEquiv_monomial_one {S₁ S₂ : Type} (m' : S₁ →₀ ℕ) :
   simp only [Finsupp.prod, map_prod, map_pow, commAlgEquiv_X]
 
 /- English proof (translation)
-Proceed by induction on `F using MvPolynomial.induction_on' with`. Consider the case `monomial m' a`. Establish `: (monomial m' a : MvPolynomial S₁ (MvPolynomial S₂ k)) = C a * monomial m' 1`. Rewrite using `[C_mul_monomial, mul_one]`. Rewrite using `[this, map_mul, commAlgEquiv_C, commAlgEquiv_monomial_one, mul_comm, coeff_C_mul, coeff_map, ← this, coeff_monomial]`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_comm, C_mul_monomial, mul_one, coeff_monomial]`. Apply the tactic sequence `split_ifs <;> simp`. Consider the case `add p q hp hq => simp [hp, hq]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Treat this case separately.
 -/
 theorem coeff_coeff_commAlgEquiv {S₁ S₂ : Type} (F : MvPolynomial S₁ (MvPolynomial S₂ k)) (β : S₂ →₀ ℕ) (m : S₁ →₀ ℕ) :
     coeff m (coeff β (commAlgEquiv k S₁ S₂ F)) = coeff β (coeff m F) := by
@@ -107,9 +107,9 @@ namespace GlobalTheory.HighWtEmb.NabInter
 variable {k : Type} [Field k]
 
 /- English proof (translation)
-Proceed by induction on `F using MvPolynomial.induction_on' with`. Consider the case `monomial u a`. Establish `h1 : aeval (fun v => map (algebraMap k A) (g v)) (monomial u (1 : A)) = map (algebraMap k A) (aeval g (monomial u (1 : k)))`. Simplify using `only [aeval_monomial, Finsupp.prod, map_prod, map_pow, map_one, one_mul, map_mul, map_X]`. Establish `h2 : (monomial u a : MvPolynomial σ A) = C a * monomial u 1` using `by rw [C_mul_monomial, mul_one]`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[h2, map_mul, aeval_C, h1, algebraMap_eq, mr_C_mul_map, ← h2, mr_monomial, show (monomial u (L a) : MvPolynomial σ k) = L a • monomial u 1 by rw [smul_monomial, smul_eq_mul, mul_one], map_smul]`. Consider the case `add p q hp hq => rw [map_add, mr_add, hp, hq, mr_add, map_add]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately.
 -/
 theorem mr_aeval {σ τ' A : Type} [CommRing A] [Algebra k A] (L : A →ₗ[k] k) (g : σ → MvPolynomial τ' k)
     (F : MvPolynomial σ A) :
@@ -126,7 +126,7 @@ theorem mr_aeval {σ τ' A : Type} [CommRing A] [Algebra k A] (L : A →ₗ[k] k
   | add p q hp hq => rw [map_add, mr_add, hp, hq, mr_add, map_add]
 
 /- English proof (translation)
-Unfold `colAddGen`. Use `congr 1`. Use function extensionality and compare the values at `v`. Apply the tactic sequence `split_ifs <;> simp`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem colAddGen_eq_aeval (A : Type) [CommRing A] [Algebra k A] {r n : ℕ} (l j : Fin n) :
     colAddGen A (r := r) l j = aeval (fun v => map (algebraMap k A)
@@ -138,7 +138,7 @@ theorem colAddGen_eq_aeval (A : Type) [CommRing A] [Algebra k A] {r n : ℕ} (l 
   split_ifs <;> simp
 
 /- English proof (translation)
-Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `v`. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem rename_some_eq_aeval (A : Type) [CommRing A] [Algebra k A] {r n : ℕ} :
     (rename (R := A) (some : Fin r × Fin n → Option (Fin r × Fin n))) =
@@ -148,11 +148,11 @@ theorem rename_some_eq_aeval (A : Type) [CommRing A] [Algebra k A] {r n : ℕ} :
   simp
 
 /- English proof (translation)
-Simplify using `only [dualWeyl, Submodule.mem_inf, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, AlgHom.toLinearMap_apply, sub_eq_zero, mem_weightedHomogeneousSubmodule] at hF ⊢`. Take `⟨h1, h2⟩` from `hF`. Use `⟨?_, fun l j hlj => ?_⟩` and prove the remaining obligations. Introduce `d hd`. Apply `h1` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `h0`. Apply `hd` to reduce the goal to its premises. Rewrite using `[coeff_mr, h0, map_zero]`. Use `congrArg (mr L) (h2 l j hlj)` as an intermediate fact. Rewrite `this` using `[colAddGen_eq_aeval (k := k), rename_some_eq_aeval (k := k), mr_aeval, mr_aeval]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[colAddGen_eq_aeval (k := k), rename_some_eq_aeval (k := k)]`. Simplify `this` using `[Algebra.algebraMap_self, map_id]`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem dualWeyl_mr {A : Type} [CommRing A] [Algebra k A] (L : A →ₗ[k] k) (r n : ℕ) (ν : Fin n → ℕ)
     (F : MvPolynomial (Fin r × Fin n) A) (hF : F ∈ dualWeyl A r n ν) : mr L F ∈ dualWeyl k r n ν := by
@@ -176,7 +176,7 @@ namespace GlobalTheory.HighWtEmb.NabInter
 variable {k : Type} [Field k]
 
 /- English proof (translation)
-Take `⟨q, hq⟩` from `Submodule.exists_isCompl D`. Use `⟨D.subtype ∘ₗ Submodule.projectionOnto D q hq, fun f => by simp, fun f hf => ?_⟩` and prove the remaining obligations. Use `Submodule.projectionOnto_apply_left hq ⟨f, hf⟩` as an intermediate fact. Simplify using `using congrArg Subtype.val this`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem exists_proj {M : Type} [AddCommGroup M] [Module k M] (D : Submodule k M) :
     ∃ π : M →ₗ[k] M, (∀ f, π f ∈ D) ∧ ∀ f ∈ D, π f = f := by
@@ -212,21 +212,21 @@ def Ψ (τ : ι) :
   (renameEquiv k (splitEquiv N τ)).trans (sumAlgEquiv k _ _)
 
 /- English proof (translation)
-Simplify using `[Ψ, splitEquiv]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Ψ_X_self (τ : ι) (v : Fin N × Fin N) : Ψ (k := k) N τ (X (τ, v)) = C (X v) := by
   simp [Ψ, splitEquiv]
 
 /- English proof (translation)
-Simplify using `[Ψ, splitEquiv, h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Ψ_X_ne (τ : ι) (p : BVar N ι) (h : p.1 ≠ τ) : Ψ (k := k) N τ (X p) = X ⟨p, h⟩ := by
   simp [Ψ, splitEquiv, h]
 
 /- English proof (translation)
-Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C a`. Use `(Ψ (k := k) N τ).commutes a` as an intermediate fact. Simplify `this` using `[MvPolynomial.algebraMap_apply]`. Consider the case `add p q hp hq => simp [hp, hq]`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Consider the case `mul_X p v ih => simp [ih, Ψ_X_self]`.
+Treat this case separately.
 -/
 theorem Ψ_rename_self (τ : ι) (f : MvPolynomial (Fin N × Fin N) k) :
     Ψ N τ (rename (fun v : Fin N × Fin N => ((τ, v) : BVar N ι)) f) = C f := by
@@ -238,9 +238,9 @@ theorem Ψ_rename_self (τ : ι) (f : MvPolynomial (Fin N × Fin N) k) :
   | mul_X p v ih => simp [ih, Ψ_X_self]
 
 /- English proof (translation)
-Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C a`. Use `(Ψ (k := k) N τ).commutes a` as an intermediate fact. Simplify `this` using `[MvPolynomial.algebraMap_apply]`. Consider the case `add p q hp hq => simp [hp, hq]`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Consider the case `mul_X p v ih => simp [ih, Ψ_X_ne N τ (σ, v) h]`.
+Treat this case separately.
 -/
 theorem Ψ_rename_ne (τ σ : ι) (h : σ ≠ τ) (f : MvPolynomial (Fin N × Fin N) k) :
     Ψ N τ (rename (fun v : Fin N × Fin N => ((σ, v) : BVar N ι)) f) =
@@ -254,9 +254,9 @@ theorem Ψ_rename_ne (τ σ : ι) (h : σ ≠ τ) (f : MvPolynomial (Fin N × Fi
   | mul_X p v ih => simp [ih, Ψ_X_ne N τ (σ, v) h]
 
 /- English proof (translation)
-Establish `: (Ψ (k` using `k) N τ).toAlgHom = (commAlgEquiv k (Fin N × Fin N) (OVar N τ)).toAlgHom.comp (toBlock k N τ) := by`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce and unpack `⟨a, v⟩`. Distinguish the cases in `h : a = τ`. Substitute `h` using the available equality.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `[toBlock, Ψ_X_self]`. Simplify using `[toBlock, h, Ψ_X_ne N τ (a, v) h]`. Conclude with `congrArg (fun φ : MvPolynomial (BVar N ι) k →ₐ[k] _ => φ P) this`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Ψ_eq_toBlock (τ : ι) (P : MvPolynomial (BVar N ι) k) :
     Ψ N τ P = commAlgEquiv k (Fin N × Fin N) (OVar N τ) (toBlock k N τ P) := by
@@ -288,15 +288,15 @@ def gen (D : ι → Submodule k (MvPolynomial (Fin N × Fin N) k)) (T : Finset �
     Q = ∏ σ, rename (fun v : Fin N × Fin N => ((σ, v) : BVar N ι)) (f σ)}
 
 /- English proof (translation)
-Take `⟨f, hf, rfl⟩` from `hQ`. Use `set A := ∏ σ ∈ Finset.univ.erase τ, rename (fun v : Fin N × Fin N => ((σ, v) : BVar N ι)) (f σ) with hAdef`. Establish `hsplit : ∏ σ, rename (fun v : Fin N × Fin N => ((σ, v) : BVar N ι)) (f σ) = A * rename (fun v : Fin N × Fin N => ((τ, v) : BVar N ι)) (f τ)` using `(Finset.prod_erase_mul _ _ (Finset.mem_univ τ)).symm`. Establish `hA : ∃ q, Ψ N τ A = map (algebraMap k (MvPolynomial (Fin N × Fin N) k)) q`. Use `Finset.prod_induction _ (fun x => ∃ q, Ψ N τ x = map (algebraMap k (MvPolynomial (Fin N × Fin N) k)) q) (fun a b ⟨qa, ha⟩ ⟨qb, hb⟩ => ⟨qa * qb, by rw [map_mul, ha, hb, map_mul]⟩) ⟨1, by simp⟩ ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `σ hσ`. Conclude with `⟨_, Ψ_rename_ne N τ σ (Finset.ne_of_mem_erase hσ) (f σ)⟩`. Take `⟨q, hq⟩` from `hA`. Use `⟨Function.update f τ (π (f τ)), ?_, ?_⟩` and prove the remaining obligations. Introduce `σ hσ`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h : σ = τ`. Substitute `h` using the available equality. Simplify using `[hπ]`. Rewrite using `[Function.update_of_ne h]`. Conclude with `hf σ (by simpa [h] using hσ)`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hA' : ∏ σ ∈ Finset.univ.erase τ, rename (fun v : Fin N × Fin N => ((σ, v) : BVar N ι)) (Function.update f τ (π (f τ)) σ) = A`. Use `Finset.prod_congr rfl fun σ hσ => ?_` and prove the remaining obligations. Rewrite using `[Function.update_of_ne (Finset.ne_of_mem_erase hσ)]`. Establish `hR : ∏ σ, rename (fun v : Fin N × Fin N => ((σ, v) : BVar N ι)) (Function.update f τ (π (f τ)) σ) = A * rename (fun v : Fin N × Fin N => ((τ, v) : BVar N ι)) (π (f τ))`. Rewrite using `[← Finset.prod_erase_mul _ _ (Finset.mem_univ τ), Function.update_self, hA']`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hR, hsplit]`. Use `show (Ψ N τ).symm (mr π (Ψ N τ (A * rename (fun v : Fin N × Fin N => ((τ, v) : BVar N ι)) (f τ)))) = A * rename (fun v : Fin N × Fin N => ((τ, v) : BVar N ι)) (π (f τ))`. Rewrite using `[map_mul, hq, Ψ_rename_self, mr_map_mul, mr_C, ← Ψ_rename_self N τ, ← hq, ← map_mul, AlgEquiv.symm_apply_apply]`.
+A detailed English derivation is pending.
 -/
 theorem E_gen (D : ι → Submodule k (MvPolynomial (Fin N × Fin N) k)) (T : Finset ι) (τ : ι)
     (π : MvPolynomial (Fin N × Fin N) k →ₗ[k] MvPolynomial (Fin N × Fin N) k) (hπ : ∀ f, π f ∈ D τ)
@@ -332,15 +332,15 @@ theorem E_gen (D : ι → Submodule k (MvPolynomial (Fin N × Fin N) k)) (T : Fi
       AlgEquiv.symm_apply_apply]
 
 /- English proof (translation)
-Establish `hmulX : ∀ v : BVar N ι, ∀ Q ∈ Submodule.span k (gen N D ∅), Q * X v ∈ Submodule.span k (gen N D ∅)`. Introduce `v Q hQ`. Proceed by induction on `hQ using Submodule.span_induction with`. Consider the case `mem Q hQ`. Take `⟨f, -, rfl⟩` from `hQ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Use `Submodule.subset_span ⟨fun σ => f σ * (if σ = v.1 then X v.2 else 1), by simp, ?_⟩` and prove the remaining obligations. Simplify using `only [map_mul, Finset.prod_mul_distrib]`. Use `congr 1`. Simplify using `only [apply_ite, rename_X, map_one]`. Rewrite using `[Finset.prod_ite_eq']`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [add_mul]`. Conclude with `add_mem hx hy`. Consider the case `smul c x _ hx => rw [smul_mul_assoc]`.
+Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Treat this case separately. Proceed by induction.
 
-Conclude with `Submodule.smul_mem _ c hx`. Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C a`. Establish `h1 : (1 : MvPolynomial (BVar N ι) k) ∈ gen N D ∅` using `⟨fun _ => 1, by simp, by simp⟩`. Rewrite using `[show (C a : MvPolynomial (BVar N ι) k) = a • 1 by rw [smul_eq_C_mul, mul_one]]`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Conclude with `Submodule.smul_mem _ a (Submodule.subset_span h1)`. Consider the case `add p q hp hq => exact add_mem hp hq`. Consider the case `mul_X p v ih => exact hmulX v p ih`.
+A detailed English derivation is pending.
 -/
 theorem span_gen_empty (D : ι → Submodule k (MvPolynomial (Fin N × Fin N) k)) (P : MvPolynomial (BVar N ι) k) :
     P ∈ Submodule.span k (gen N D ∅) := by
@@ -367,11 +367,11 @@ theorem span_gen_empty (D : ι → Submodule k (MvPolynomial (Fin N × Fin N) k)
   | mul_X p v ih => exact hmulX v p ih
 
 /- English proof (translation)
-Use `choose π hπ1 hπ2 using fun τ => exists_proj (D τ)`. Establish `key : ∀ T : Finset ι, P ∈ Submodule.span k (gen N D T)`. Introduce `T`. Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty => exact span_gen_empty N D P`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `insert τ T hτ ih`. Establish `hfix : E N τ (π τ) P = P` using `by show (Ψ N τ).symm (mr (π τ) (Ψ N τ P)) = P`. Establish `: mr (π τ) (Ψ N τ P) = Ψ N τ P`. Use extensionality with `β`. Rewrite using `[coeff_mr, hπ2 τ _ (h τ β)]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, AlgEquiv.symm_apply_apply]`. Rewrite using `[← hfix]`. Establish `hle : Submodule.span k (gen N D T) ≤ (Submodule.span k (gen N D (insert τ T))).comap (E N τ (π τ))` using `Submodule.span_le.mpr fun Q hQ => Submodule.subset_span (E_gen N D T τ (π τ) (hπ1 τ) Q hQ)`. Conclude with `hle ih`. Conclude with `key Finset.univ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mem_span_gen_univ (D : ι → Submodule k (MvPolynomial (Fin N × Fin N) k)) (P : MvPolynomial (BVar N ι) k)
     (h : ∀ τ β, coeff β (Ψ N τ P) ∈ D τ) : P ∈ Submodule.span k (gen N D Finset.univ) := by
@@ -402,11 +402,11 @@ namespace GlobalTheory.HighWtEmb
 open NabInter in
 
 /- English proof (translation)
-Introduce `k _ N ι _ _ ν P hP`. Establish `h : ∀ τ β, coeff β (Ψ N τ P) ∈ dualWeyl k N N (ν τ)`. Introduce `τ β`. Use `dualWeyl_mr (lcoeff k β) N N (ν τ) _ (hP τ)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use extensionality with `m`. Rewrite using `[Ψ_eq_toBlock, coeff_mr, lcoeff_apply, coeff_coeff_commAlgEquiv]`. Use `mem_span_gen_univ N (fun τ => dualWeyl k N N (ν τ)) P h` as an intermediate fact. Use `Submodule.span_mono ?_ this` and prove the remaining obligations. Introduce and unpack `Q ⟨f, hf, rfl⟩`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨f, fun τ => hf τ (Finset.mem_univ τ), rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_nabK_of_toBlock : ∀ (k : Type) [Field k] (N : ℕ) (ι : Type) [Fintype ι] [DecidableEq ι]
     (ν : ι → Fin N → ℕ) (P : MvPolynomial (BVar N ι) k),

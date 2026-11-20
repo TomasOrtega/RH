@@ -10,7 +10,7 @@ open Formalism.BasicNotions Formalism.MainNotions GlobalTheory.BigTop GlobalTheo
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `_`. Use `⟨1, one_pos, fun eps _ _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun Fm _ _ _ => ?_⟩⟩` and prove the remaining obligations. Conclude with `⟨0, fun x hx _ i _ _ => (Fm.params x hx i).logDerivative_le_power⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components.
 -/
 theorem log_deriv_L_one_le_along_family :
     GlobalTheory.FunPr.Hypotheses₂ → (Closed FamHyp fun Fm _ => EvPt Fm fun x _ i _ =>

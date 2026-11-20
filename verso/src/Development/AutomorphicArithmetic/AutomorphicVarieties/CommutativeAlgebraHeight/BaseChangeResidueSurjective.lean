@@ -4,29 +4,23 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra
 open IsLocalRing UpperTheory.V.Alg UpperTheory.V.CA ReciprocityTheory.CA
 
 /- English proof (translation)
-Establish `hJ : (maximalIdeal R).map (algebraMap R T) ≤ Ideal.jacobson ⊥`. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `r hr`. Rewrite using `[Ideal.mem_comap, Ideal.jacobson, Submodule.mem_sInf]`. Introduce and unpack `P ⟨-, hP⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Establish `h1 : Ideal.comap (algebraMap R T) P = maximalIdeal R` using `IsLocalRing.eq_maximalIdeal (Ideal.isMaximal_comap_of_isIntegral_of_isMaximal (R := R) P)`. Rewrite using `[← Ideal.mem_comap, h1]`. Conclude with `hr`. Use `haveI : Nontrivial T := by`. Use `⟨⟨0, 1, fun h => ?_⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `congrArg φ h`. Rewrite `h2` using `[map_zero, map_one]`. Conclude with `zero_ne_one h2`. Establish `key : ∀ (u y : T), IsUnit u → y ∈ Ideal.jacobson (⊥ : Ideal T) → IsUnit (u + y)`. Introduce `u y hu hy`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨v, rfl⟩` from `hu`. Establish `h3` using `(Ideal.mem_jacobson_bot.mp hy) ↑v⁻¹`. Establish `e : (v : T) + y = v * (y * ↑v⁻¹ + 1)`. Rewrite using `[mul_add, mul_one, mul_comm y, ← mul_assoc, Units.mul_inv, one_mul, add_comm]`. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `v.isUnit.mul h3`. Use `haveI : IsLocalRing T := by`. Use `IsLocalRing.of_isUnit_or_isUnit_one_sub_self fun x => ?_` and prove the remaining obligations. Take `⟨a, ha⟩` from `hs x`. Break down `IsLocalRing.isUnit_or_isUnit_one_sub_self a with h | h` into its components or cases.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities.
 
-Use `left`. Establish `h4` using `key _ _ (h.map (algebraMap O' T)) (hJ ha)`. Rewrite `h4` using `[add_sub_cancel]`. Then use the resulting hypothesis. Use `right`. Establish `h4` using `key _ _ (h.map (algebraMap O' T)) (hJ (neg_mem ha))`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `h4 using 1` and compare the differences between its conclusion and the goal. Rewrite using `[map_sub, map_one]`. Expand and normalize the polynomial expressions, which then agree. Establish `hR : IsCL R R`. Use `⟨inferInstance, inferInstance, ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Algebra.algebraMap_self] infer_instance`. Use `infer_instance`. Establish `hT : IsCL R T` using `cl_fin R R T hR`. Use `haveI : IsNoetherianRing T := hT.noeth`. Use `⟨hT.complete, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨fun a ha => ?_⟩` and prove the remaining obligations. Establish `h5` using `ha.map φ`. Rewrite `h5` using `[hφ]`. Conclude with `(IsLocalRing.residue_ne_zero_iff_isUnit a).mp h5.ne_zero`. Introduce `x`.
-
-Take `⟨a, ha⟩` from `hs x`. Use `⟨a, ?_⟩` and prove the remaining obligations. Establish `h6 : (maximalIdeal R).map (algebraMap R T) ≤ maximalIdeal T`. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `r hr`.
-
-Rewrite using `[Ideal.mem_comap, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Introduce `hu`. Establish `h7` using `hu.map φ`. Rewrite `h7` using `[hm r hr]`. Conclude with `not_isUnit_zero h7`.
-
-Conclude with `h6 ha`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem base_change_residue_surjective (O' R T : Type) [CommRing O'] [IsLocalRing O'] [CommRing R] [IsLocalRing R]
     [IsNoetherianRing R] [IsAdicComplete (maximalIdeal R) R] [CommRing T] [Algebra O' T] [Algebra R T]
@@ -94,23 +88,21 @@ private theorem base_change_residue_surjective (O' R T : Type) [CommRing O'] [Is
     exact h6 ha
 
 /- English proof (translation)
-Introduce `O O' R _ _ _ _ _ _ _ _ _ _`. Use `letI : Algebra R (TensorProduct O O' R) := Algebra.TensorProduct.rightAlgebra`. Establish `hR : ∀ r : R, algebraMap R (TensorProduct O O' R) r = 1 ⊗ₜ r` using `fun r => rfl`. Establish `hL : ∀ x : O', algebraMap O' (TensorProduct O O' R) x = x ⊗ₜ 1` using `fun x => rfl`. Use `haveI : Module.Finite R (TensorProduct O O' R) := by`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `c` to `Algebra.TensorProduct.comm O R O'`. Set `e : TensorProduct O R O' →ₗ[R] TensorProduct O O' R` to `{ toFun := c map_add' := map_add c map_smul' := fun r y => by`. Rewrite using `[Algebra.smul_def, Algebra.smul_def, map_mul]`. Use `congr 1 }`. Conclude with `Module.Finite.of_surjective e c.surjective`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `haveI : IsNoetherianRing R := inferInstance`. Use `haveI : IsAdicComplete (maximalIdeal R) R := IsCO.complete (O := O)`. Set `f : O' →ₐ[O] ResidueField O'` to `IsScalarTower.toAlgHom O O' (ResidueField O')`. Set `g : R →ₐ[O] ResidueField O'` to `(IsScalarTower.toAlgHom O (ResidueField O) (ResidueField O')).comp (res O R)`. Set `φ : TensorProduct O O' R →+* ResidueField O'` to `(Algebra.TensorProduct.productMap f g).toRingHom`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `base_change_residue_surjective O' R (TensorProduct O O' R) φ ?_ ?_ ?_` and prove the remaining obligations. Introduce `a`. Simplify using `[φ, f, g]`. Introduce `r hr`. Establish `h1 : res O R r = 0` using `(res_eq_zero_iff O R r).mpr hr`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Use `show Algebra.TensorProduct.productMap f g (algebraMap R (TensorProduct O O' R) r) = 0`. Rewrite using `[hR, Algebra.TensorProduct.productMap_apply_tmul]`. Simplify using `[g, h1]`. Introduce `x`. Proceed by induction on `x using TensorProduct.induction_on with`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `tmul o r`. Take `⟨c, hc⟩` from `IsCO.res_surj (O := O) r`. Use `⟨algebraMap O O' c * o, ?_⟩` and prove the remaining obligations. Establish `e2 : o ⊗ₜ[O] r - algebraMap O' (TensorProduct O O' R) (algebraMap O O' c * o) = algebraMap O' (TensorProduct O O' R) o * algebraMap R (TensorProduct O O' R) (r - algebraMap O R c)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hR, hL, hL, Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul, TensorProduct.tmul_sub, ← Algebra.smul_def, TensorProduct.smul_tmul, Algebra.algebraMap_eq_smul_one]`. Rewrite using `[e2]`. Conclude with `Ideal.mul_mem_left _ _ (Ideal.mem_map_of_mem _ hc)`. Consider the case `add x y hx hy`. Take `⟨a, ha⟩` from `hx`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Take `⟨b, hb⟩` from `hy`. Use `⟨a + b, ?_⟩` and prove the remaining obligations. Establish `e3 : x + y - algebraMap O' (TensorProduct O O' R) (a + b) = (x - algebraMap O' (TensorProduct O O' R) a) + (y - algebraMap O' (TensorProduct O O' R) b)`. Rewrite using `[map_add]`. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite using `[e3]`. Conclude with `add_mem ha hb`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.CA.cl_bc :
     ∀ (O O' R : Type) [CommRing O] [IsLocalRing O] [CommRing O'] [IsLocalRing O'] [Algebra O O'] [Module.Finite O O'] [IsLocalHom (algebraMap O O')] [CommRing R] [Algebra O R] [IsCO O R], IsCO O' (TensorProduct O O' R) := by

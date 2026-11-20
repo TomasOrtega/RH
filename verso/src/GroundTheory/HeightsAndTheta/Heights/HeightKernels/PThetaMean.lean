@@ -12,7 +12,7 @@ namespace KThetaMean
 variable {g : ℕ}
 
 /- English proof (translation)
-Establish `h1 : Continuous fun x : Fin g → ℝ => x + a` using `continuous_id.add continuous_const`. Establish `h2 : Continuous fun x : Fin g → ℝ => qf Y (x + a)`. Unfold `qf`. Conclude with `h1.dotProduct (continuous_const.matrix_mulVec h1)`. Conclude with `(continuous_const.mul h2).rexp`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_exp_qf_add (Y : Matrix (Fin g) (Fin g) ℝ) (c : ℝ) (a : Fin g → ℝ) :
     Continuous fun x : Fin g → ℝ => exp (-c * qf Y (x + a)) := by
@@ -25,13 +25,11 @@ theorem continuous_exp_qf_add (Y : Matrix (Fin g) (Fin g) ℝ) (c : ℝ) (a : Fi
 end KThetaMean
 
 /- English proof (translation)
-Introduce `g X Y a b hY`. Use `set F : (Fin g → ℝ) → ℝ := fun x => exp (-(2 * π) * qf Y (x + a)) with hF`. Establish `hinner : ∀ u₁ : Fin g → ℝ, ∫ u₂ in Set.Icc (0 : Fin g → ℝ) 1, thetaNorm X Y a b u₁ u₂ ^ 2 = ∑' k : Fin g → ℤ, F (intVec k + u₁)`. Introduce `u₁`. Rewrite using `[h g X Y a b u₁ hY]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use function extensionality and compare the values at `k`. Simplify using `only [hF, add_right_comm]`. Repeatedly rewrite using `[hinner]`. Establish `hs : ∀ u : Fin g → ℝ, Summable fun k : Fin g → ℤ => F (intVec k + u)`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `u`. Simplify using `only [hF, add_assoc]`. Conclude with `KTheta.summable_exp_qf Y hY (2 * π) (by positivity) (u + a)`. Rewrite using `[KTheta.integral_cube_tsum F (fun x => (exp_pos _).le) (KThetaMean.continuous_exp_qf_add Y (2 * π) a) hs]`. Rewrite using `[hF, integral_add_right_eq_self (fun x : Fin g → ℝ => exp (-(2 * π) * qf Y x)) a]`.
-
-Conclude with `KTheta.integral_exp_two_pi_qf Y hY`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ThetaMean.proof (h : ThetaInnerMean.Statement) : ThetaMean.Statement := by
   intro g X Y a b hY

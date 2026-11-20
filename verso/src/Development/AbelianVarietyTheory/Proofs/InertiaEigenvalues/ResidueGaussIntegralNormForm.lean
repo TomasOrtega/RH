@@ -10,9 +10,9 @@ noncomputable section
 namespace GlobalTheory.JR.ResidueGauss
 
 /- English proof (translation)
-Establish `hmp : MeasurePreserving (fun x => s₀ + x) μ μ` using `measurePreserving_add_left μ s₀`. Establish `hpre : (fun x => s₀ + x) ⁻¹' (H : Set G) = H`. Use extensionality with `x`. Simplify using `[H.add_mem_cancel_left hs₀]`. Establish `e` using `hmp.setIntegral_preimage_emb (measurableEmbedding_addLeft s₀) f H`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `e` using `[hpre]`. Rewrite `e` using `[hf s₀]`. Rewrite `e` using `[integral_const_mul]`. Establish `h : (f s₀ - 1) * ∫ x in (H : Set G), f x ∂μ = 0` using `by rw [sub_mul, e]; ring`. Conclude with `(mul_eq_zero.1 h).resolve_left (sub_ne_zero.2 hne)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses repeatedly using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem setIntegral_addChar_eq_zero {G : Type} [AddCommGroup G] [TopologicalSpace G] [IsTopologicalAddGroup G]
     [MeasurableSpace G] [BorelSpace G] (μ : Measure G) [μ.IsAddHaarMeasure] (H : AddSubgroup G) (f : G → ℂ)
@@ -29,21 +29,21 @@ theorem setIntegral_addChar_eq_zero {G : Type} [AddCommGroup G] [TopologicalSpac
   exact (mul_eq_zero.1 h).resolve_left (sub_ne_zero.2 hne)
 
 /- English proof (translation)
-Establish `hU : IsUnit u` using `⟨⟨u, v, huv, by rw [mul_comm]; exact huv⟩, rfl⟩`. Use `set w : Rˣ := hU.unit with hw`. Establish `hwv : (w : R) = u` using `IsUnit.unit_spec hU`. Establish `hvu : v * u = 1` using `by rw [mul_comm]; exact huv`. Establish `hwS : w • S = S`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `y`. Simplify using `only [Set.mem_smul_set, Units.smul_def, hwv, smul_eq_mul]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz, rfl⟩`. Conclude with `hu z hz`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `hy; exact ⟨v * y, hv y hy, by rw [← mul_assoc, huv, one_mul]⟩`. Establish `hΔ : distribHaarChar R w = 1`. Apply `distribHaarChar_eq_of_measure_smul_eq_mul h0 hT` to reduce the goal to its premises. Rewrite using `[hwS]`. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `e : R ≃ₜ R` to `{ toFun := fun y => u * y invFun := fun y => v * y left_inv := fun y => by simp only; rw [← mul_assoc, hvu, one_mul] right_inv := fun y => by simp only; rw [← mul_assoc, huv, one_mul] continuous_toFun := continuous_const.mul continuous_id continuous_invFun := continuous_const.mul …`. Establish `hemb : MeasurableEmbedding (fun y => u * y)` using `e.toMeasurableEquiv.measurableEmbedding`. Establish `hmp : MeasurePreserving (fun y => u * y) μ μ`. Use `⟨hemb.measurable, ?_⟩` and prove the remaining obligations. Use extensionality with `T hT'`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Measure.map_apply hemb.measurable hT']`. Establish `: (fun y => u * y) ⁻¹' T = w⁻¹ • T`. Use extensionality with `y`. Rewrite using `[Set.mem_inv_smul_set_iff, Units.smul_def, hwv]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[this, ← distribHaarChar_mul, map_inv, hΔ]`. Simplify using the standard rewrite rules. Establish `hpre : (fun y => u * y) ⁻¹' S = S`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `hy`. Use `hv _ hy` as an intermediate fact. Simplify using `only at this`. Rewrite `this` using `[← mul_assoc, hvu, one_mul]`. Then use the resulting hypothesis. Introduce `hy`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Conclude with `hu y hy`. Use `hmp.setIntegral_preimage_emb hemb g S` as an intermediate fact. Rewrite `this` using `[hpre]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem setIntegral_comp_mul_unit {R : Type} [CommRing R] [TopologicalSpace R] [IsTopologicalRing R]
     [LocallyCompactSpace R] [T2Space R] [SecondCountableTopology R] [MeasurableSpace R] [BorelSpace R]
@@ -93,7 +93,7 @@ theorem setIntegral_comp_mul_unit {R : Type} [CommRing R] [TopologicalSpace R] [
   rwa [hpre] at this
 
 /- English proof (translation)
-Use `haveI : IsFiniteMeasure (μ.restrict S) := ⟨by simpa using hS.lt_top⟩`. Use `haveI : IsFiniteMeasure (ν.restrict T) := ⟨by simpa using hT.lt_top⟩`. Apply `integral_integral_swap` to reduce the goal to its premises. Conclude with `Integrable.of_bound hg.aestronglyMeasurable 1 (Eventually.of_forall fun q => hb q.1 q.2)`.
+Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem setIntegral_swap_of_continuous {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y]
     [SecondCountableTopology X] [SecondCountableTopology Y] [MeasurableSpace X] [BorelSpace X]
@@ -107,13 +107,13 @@ theorem setIntegral_swap_of_continuous {X Y : Type} [TopologicalSpace X] [Topolo
   exact Integrable.of_bound hg.aestronglyMeasurable 1 (Eventually.of_forall fun q => hb q.1 q.2)
 
 /- English proof (translation)
-Use `U.charZero` as an intermediate fact. Use `U.ultraF` as an intermediate fact. Use `U.lcF` as an intermediate fact. Use `EtMeas.finite_L A` as an intermediate fact. Take `⟨-, hinj, -, -, -⟩` from `Et.quadratic_structure F E A`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨_, _, _, _, -⟩` from `EtMeas.top_facts F A.K`. Take `⟨_, _, _, _, -⟩` from `EtMeas.top_facts F A.L`. Set `ιF : A.K →ₗ[F] A.L` to `(IsScalarTower.toAlgHom F A.K A.L).toLinearMap`. Establish `hιF : ∀ s, ιF s = algebraMap A.K A.L s` using `fun s => rfl`. Establish `hc : Continuous (algebraMap A.K A.L)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `IsModuleTopology.continuous_of_linearMap ιF` as an intermediate fact. Conclude with `this`. Take `⟨r, hr⟩` from `LinearMap.exists_leftInverse_of_injective ιF (LinearMap.ker_eq_bot.2 hinj)`. Establish `hrc : Continuous r` using `IsModuleTopology.continuous_of_linearMap r`. Use `⟨hc, fun O hO => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `(hO.image hrc).of_isClosed_subset (hO.isClosed.preimage hc) ?_` and prove the remaining obligations. Introduce `s hs`. Conclude with `⟨algebraMap A.K A.L s, hs, LinearMap.congr_fun hr s⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem algebraMap_continuous_isCompact_preimage {F E : Type} [NontriviallyNormedField F]
     [NontriviallyNormedField E] [NormedAlgebra F E] [StarRing E] [U : Unram F E] (A : Et F E) :
@@ -137,21 +137,21 @@ theorem algebraMap_continuous_isCompact_preimage {F E : Type} [NontriviallyNorme
   exact ⟨algebraMap A.K A.L s, hs, LinearMap.congr_fun hr s⟩
 
 /- English proof (translation)
-Use `set ι := algebraMap K L with hι`. Establish `hNmul1 : ∀ y z, y * z = 1 → N y * N z = 1`. Introduce `y z h`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[map_mul, hN, hN, map_one]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Use `⟨fun y hy hny => ?_, fun s hs hns => ?_⟩` and prove the remaining obligations. Establish `hNO : ι (N y) ∈ O` using `by rw [hN]; exact O.mul_mem hy (hOs y hy)`. Take `⟨z, hz, hyz⟩` from `(hdich y hy).resolve_left hny`. Establish `h1` using `hNmul1 y z hyz`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hNz : ι (N z) ∈ O` using `by rw [hN]; exact O.mul_mem hz (hOs z hz)`. Use `⟨hNO, ?_, N z, hNz, h1⟩` and prove the remaining obligations. Introduce and unpack `⟨t, ht, e⟩`. Apply `hϖnu` to reduce the goal to its premises. Use `⟨ι t * ι (N z), O.mul_mem ht hNz, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_mul, ← map_mul, ← mul_assoc, ← e, h1, map_one]`. Establish `hsu : ∃ z ∈ O, ι s * z = 1`. Use `(hdich _ hs).resolve_left ?_` and prove the remaining obligations. Introduce and unpack `⟨z, hz, e⟩`. Apply `hns` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨((ϖ⁻¹ : Kˣ) : K) * s, ?_, by rw [← mul_assoc, Units.mul_inv, one_mul]⟩` and prove the remaining obligations. Establish `: ι (((ϖ⁻¹ : Kˣ) : K) * s) = z`. Rewrite using `[map_mul, e, ← mul_assoc, ← map_mul, Units.inv_mul, map_one, one_mul]`. Rewrite using `[this]`. Conclude with `hz`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨z, hz, hsz⟩` from `hsu`. Establish `hs0 : s ≠ 0`. Introduce and unpack `rfl`. Rewrite `hsz` using `[map_zero, zero_mul]`. Establish `h10 : (1 : K) = 0` using `hinj (by rw [map_one, map_zero]; exact hsz.symm)`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨x, y, hxy⟩` from `hK.exists_pair_ne`. Conclude with `hxy (by rw [← one_mul x, ← one_mul y, h10, zero_mul, zero_mul])`. Take `⟨r, hr⟩` from `hK.mul_inv_cancel hs0`. Establish `hzr : z = ι r`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hrO : ι r ∈ O` using `hzr ▸ hz`. Use `⟨⟨r, hrO, hr⟩, ?_⟩` and prove the remaining obligations. Take `⟨w, hw, hNw⟩` from `hnorm s hs ⟨ι r, hrO, by rw [← map_mul, hr, map_one]⟩`. Use `⟨w, hw, star w * ι r, O.mul_mem (hOs w hw) hrO, ?_, hNw⟩` and prove the remaining obligations. Rewrite using `[← mul_assoc, ← hN, hNw, ← map_mul, hr, map_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem residue_algebra {K L : Type} [CommRing K] [CommRing L] [StarRing L] [Algebra K L]
     (hK : IsField K) (hinj : Function.Injective (algebraMap K L)) (N : L → K)
@@ -209,73 +209,63 @@ theorem residue_algebra {K L : Type} [CommRing K] [CommRing L] [StarRing L] [Alg
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Introduce `F E _ _ _ _ U A ψ μ hψ hμ hK hL O ϖ hOo hOc hOs hϖO hϖnu hdich hnorm hvol a ha hna`. Use `U.charZero` as an intermediate fact. Use `U.ultraF` as an intermediate fact. Use `U.lcF` as an intermediate fact. Use `EtMeas.finite_L A` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨_, _, _, _, -⟩` from `EtMeas.top_facts F A.K`. Take `⟨_, _, _, _, -⟩` from `EtMeas.top_facts F A.L`. Establish `: IsTopologicalRing A.L` using `IsModuleTopology.isTopologicalRing F A.L`. Take `⟨-, hinj, hN, -, -⟩` from `Et.quadratic_structure F E A`. Take `⟨hιc, hιK⟩` from `algebraMap_continuous_isCompact_preimage A`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hψlc, hψn, -⟩` from `(GlobalTheory.StdChar.psi_conductor F E).2 ψ hψ`. Take `⟨alg1, alg2⟩` from `residue_algebra hK hinj A.NL hN O ϖ hOs hϖO hϖnu hdich hnorm`. Use `set ι := algebraMap A.K A.L with hι`. Use `set p : A.K := (ϖ : A.K) with hp`. Use `set f : A.K → ℂ := fun t => A.psiK ψ (a * t) with hfdef`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hfadd : ∀ x y, f (x + y) = f x * f y`. Introduce `x y`. Simplify using `only [hfdef, Et.psiK, mul_add, map_add, AddChar.map_add_eq_mul]`. Establish `hfc : Continuous f`. Establish `htr : Continuous (fun t : A.K => Algebra.trace F A.K t)` using `IsModuleTopology.continuous_of_linearMap (Algebra.trace F A.K)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hψlc.continuous.comp (htr.comp (continuous_const.mul continuous_id))`. Establish `hfn : ∀ t, ‖f t‖ = 1` using `fun t => hψn _`. Use `set OK : Subring A.K := O.comap ι with hOK`. Establish `memOK : ∀ s, s ∈ OK ↔ ι s ∈ O` using `fun s => Iff.rfl`. Use `set PK : Set A.K := ϖ • (OK : Set A.K) with hPK`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Establish `memPK : ∀ s, s ∈ PK ↔ ∃ t, ι t ∈ O ∧ s = p * t`. Introduce `s`. Simplify using `only [hPK, Set.mem_smul_set, SetLike.mem_coe, memOK, Units.smul_def, smul_eq_mul]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨t, ht, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨t, ht, rfl⟩`. Introduce and unpack `⟨t, ht, rfl⟩`. Conclude with `⟨t, ht, rfl⟩`. Use `set UK : Set A.K := (OK : Set A.K) \ PK with hUK`. Use `set PL : Set A.L := {y | ∃ z ∈ O, y = ι p * z} with hPL`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use `set UL : Set A.L := (O : Set A.L) \ PL with hUL`. Establish `hPKsub : PK ⊆ OK`. Introduce `s hs`. Take `⟨t, ht, rfl⟩` from `(memPK s).1 hs`. Conclude with `(memOK _).2 (by rw [map_mul]; exact O.mul_mem hϖO ht)`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Establish `hPLsub : PL ⊆ O`. Introduce and unpack `y ⟨z, hz, rfl⟩`. Conclude with `O.mul_mem hϖO hz`. Establish `hPLeq : PL = (fun z => ι p * z) '' (O : Set A.L)`. Use extensionality with `y`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [hPL, Set.mem_ofPred_eq, Set.mem_image, SetLike.mem_coe]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz, rfl⟩`. Conclude with `⟨z, hz, rfl⟩`. Introduce and unpack `⟨z, hz, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨z, hz, rfl⟩`. Establish `hOKo : IsOpen (OK : Set A.K)` using `hOo.preimage hιc`. Establish `hOKc : IsCompact (OK : Set A.K)` using `hιK _ hOc`. Establish `hPKc : IsCompact PK`. Rewrite using `[hPK]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `hOKc.image (continuous_const_smul ϖ)`. Establish `hPLc : IsCompact PL`. Rewrite using `[hPLeq]`. Conclude with `hOc.image (continuous_const.mul continuous_id)`. Establish `hOKm : MeasurableSet (OK : Set A.K)` using `hOKc.isClosed.measurableSet`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hPKm : MeasurableSet PK` using `hPKc.isClosed.measurableSet`. Establish `hUKm : MeasurableSet UK` using `hOKm.diff hPKm`. Establish `hOm : MeasurableSet (O : Set A.L)` using `hOc.isClosed.measurableSet`. Establish `hPLm : MeasurableSet PL` using `hPLc.isClosed.measurableSet`. Establish `hULm : MeasurableSet UL` using `hOm.diff hPLm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1UK : (1 : A.K) ∈ UK`. Use `⟨(memOK 1).2 (by rw [map_one]; exact O.one_mem), fun h => hϖnu ?_⟩` and prove the remaining obligations. Take `⟨t, ht, e⟩` from `(memPK 1).1 h`. Conclude with `⟨ι t, ht, by rw [← map_mul, ← e, map_one]⟩`. Establish `hUKo : IsOpen UK` using `hOKo.sdiff hPKc.isClosed`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set μK : Measure A.K := Measure.addHaar with hμK`. Use `set x : ℝ := A.absK p with hxdef`. Establish `hx : x = (distribHaarChar A.K ϖ : ℝ)` using `EtMeas.absK_unit A ϖ`. Establish `hx0 : 0 ≤ x` using `by rw [hx]; exact NNReal.coe_nonneg _`. Establish `hOKT : μK OK ≠ ⊤` using `hOKc.measure_lt_top.ne`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hPKT : μK PK ≠ ⊤` using `hPKc.measure_lt_top.ne`. Establish `hUKT : μK UK ≠ ⊤` using `(measure_mono Set.sdiff_subset).trans_lt hOKc.measure_lt_top |>.ne`. Establish `hUK0 : μK UK ≠ 0` using `hUKo.measure_ne_zero μK ⟨1, h1UK⟩`. Establish `hOT : μ O ≠ ⊤` using `hOc.measure_lt_top.ne`. Establish `hO0 : μ O ≠ 0` using `hOo.measure_ne_zero μ ⟨1, O.one_mem⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set mK : ℝ := (μK OK).toReal with hmK`. Use `set M : ℝ := (μ O).toReal with hM`. Establish `hmPK : (μK PK).toReal = x * mK`. Rewrite using `[hPK, ← distribHaarChar_mul, ENNReal.toReal_mul, hx]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hmUK : (μK UK).toReal = mK - x * mK`. Rewrite using `[hUK, measure_sdiff hPKsub hPKm.nullMeasurableSet hPKT, ENNReal.toReal_sub_of_le (measure_mono hPKsub) hOKT, hmPK]`. Establish `hmPL : (μ PL).toReal = x ^ 2 * M`. Rewrite using `[hvol, ENNReal.toReal_mul, ENNReal.toReal_ofReal (sq_nonneg _)]`. Establish `hmUL : (μ UL).toReal = M - x ^ 2 * M`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hUL, measure_sdiff hPLsub hPLm.nullMeasurableSet (measure_ne_top_of_subset hPLsub hOT), ENNReal.toReal_sub_of_le (measure_mono hPLsub) hOT, hmPL]`. Establish `hmUKpos : 0 < (μK UK).toReal` using `ENNReal.toReal_pos hUK0 hUKT`. Establish `hf1 : ∀ m, ι m ∈ O → f (p * m) = 1`. Introduce `m hm`. Simplify using `only [hfdef]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← mul_assoc]`. Conclude with `ha m hm`. Establish `hNp : ∀ z, A.NL (ι p * z) = p * (p * A.NL z)`. Introduce `z`. Apply `hinj` to reduce the goal to its premises.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hN, map_mul, map_mul, hN, star_mul', A.star_K]`. Expand and normalize the polynomial expressions, which then agree. Use `set I : ℂ := ∫ y in (O : Set A.L), f (A.NL y) ∂μ with hIdef`. Establish `hI1 : ∀ s ∈ UK, ∫ y in (O : Set A.L), f (s * A.NL y) ∂μ = I`. Introduce `s hs`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨-, w, hw, v, hv, hwv, hNw⟩` from `alg2 s ((memOK s).1 hs.1) (fun ⟨t, ht, e⟩ => hs.2 ((memPK s).2 ⟨t, ht, e⟩))`. Establish `key : ∀ y, A.NL (w * y) = s * A.NL y`. Introduce `y`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[hN, map_mul, hN, ← hNw, hN, star_mul']`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Expand and normalize the polynomial expressions, which then agree. Use `setIntegral_comp_mul_unit μ (O : Set A.L) w v hwv hO0 hOT (fun y hy => O.mul_mem hw hy) (fun y hy => O.mul_mem hv hy) (fun y => f (A.NL y))` as an intermediate fact. Simplify using `only [key] at this`. Conclude with `this`. Establish `hIOK : IntegrableOn f OK μK` using `hfc.continuousOn.integrableOn_compact hOKc`.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hintOK : ∫ s in (OK : Set A.K), f s ∂μK = 0`. Take `⟨s₀, hs₀, hne⟩` from `hna`. Conclude with `setIntegral_addChar_eq_zero μK OK.toAddSubgroup f hfadd s₀ hs₀ hne`. Establish `hintPK : ∫ s in PK, f s ∂μK = (μK PK).toReal`. Rewrite using `[setIntegral_congr_fun hPKm (g := fun _ => (1 : ℂ)) (fun s hs => by`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Take `⟨t, ht, rfl⟩` from `(memPK s).1 hs`. Conclude with `hf1 t ht)]`. Simplify using `[Measure.real]`. Establish `hintUK : ∫ s in UK, f s ∂μK = -((μK PK).toReal : ℂ)`. Rewrite using `[hUK, setIntegral_sdiff hPKm hIOK hPKsub, hintOK, hintPK, zero_sub]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hUKmul : ∀ t ∈ UK, ∫ s in UK, f (s * t) ∂μK = -((μK PK).toReal : ℂ)`. Introduce `t ht`. Take `⟨⟨r, hr, htr⟩, -⟩` from `alg2 t ((memOK t).1 ht.1) (fun ⟨m, hm, e⟩ => ht.2 ((memPK t).2 ⟨m, hm, e⟩))`. Establish `hcl : ∀ u v : A.K, u * v = 1 → ι u ∈ O → ι v ∈ O → ∀ s ∈ UK, u * s ∈ UK`. Introduce `u v huv hu hv s hs`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `⟨(memOK _).2 (by rw [map_mul]; exact O.mul_mem hu hs.1), fun h => hs.2 ?_⟩` and prove the remaining obligations. Take `⟨m, hm, e⟩` from `(memPK _).1 h`. Use `(memPK s).2 ⟨v * m, by rw [map_mul]; exact O.mul_mem hv hm, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Use `setIntegral_comp_mul_unit μK UK t r htr hUK0 hUKT (hcl t r htr ht.1 hr) (hcl r t (by rw [mul_comm]; exact htr) hr ht.1) f` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [mul_comm _ t]`. Rewrite using `[this, hintUK]`. Establish `hJP : ∀ y ∈ PL, ∫ s in UK, f (s * A.NL y) ∂μK = (μK UK).toReal`. Introduce and unpack `y ⟨z, hz, rfl⟩`. Rewrite using `[setIntegral_congr_fun hUKm (g := fun _ => (1 : ℂ)) (fun s hs => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [hNp]`. Rewrite using `[show s * (p * (p * A.NL z)) = p * (s * p * A.NL z) by ring]`. Use `hf1 _ ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, hN]`. Conclude with `O.mul_mem (O.mul_mem hs.1 hϖO) (O.mul_mem hz (hOs z hz)))]`.
-
-Simplify using `[Measure.real]`. Establish `hJU : ∀ y ∈ UL, ∫ s in UK, f (s * A.NL y) ∂μK = -((μK PK).toReal : ℂ)`. Introduce `y hy`. Take `⟨h1, h2, -⟩` from `alg1 y hy.1 hy.2`. Conclude with `hUKmul _ ⟨(memOK _).2 h1, fun h => h2 ((memPK _).1 h)⟩`.
-
-Establish `hswap` using `setIntegral_swap_of_continuous μK μ UK (O : Set A.L) hUKT hOT (fun s y => f (s * A.NL y)) (hfc.comp (continuous_fst.mul ((EtMeas.continuous_NL A).comp continuous_snd))) (fun s y => (hfn _).le)`. Establish `hLHS : ∫ s in UK, ∫ y in (O : Set A.L), f (s * A.NL y) ∂μ ∂μK = (μK UK).toReal * I`. Rewrite using `[setIntegral_congr_fun hUKm (g := fun _ => I) hI1]`. Simplify using `[Measure.real]`. Establish `hOsplit : (O : Set A.L) = PL ∪ UL` using `(Set.union_sdiff_cancel hPLsub).symm`.
-
-Establish `hRHS : ∫ y in (O : Set A.L), ∫ s in UK, f (s * A.NL y) ∂μK ∂μ = (μ PL).toReal * (μK UK).toReal + (μ UL).toReal * (-((μK PK).toReal : ℂ))`. Establish `hPLT : μ PL ≠ ⊤` using `measure_ne_top_of_subset hPLsub hOT`. Establish `hULT : μ UL ≠ ⊤` using `measure_ne_top_of_subset Set.sdiff_subset hOT`. Establish `i1 : IntegrableOn (fun y => ∫ s in UK, f (s * A.NL y) ∂μK) PL μ` using `(integrableOn_const hPLT).congr_fun (fun y hy => (hJP y hy).symm) hPLm`. Establish `i2 : IntegrableOn (fun y => ∫ s in UK, f (s * A.NL y) ∂μK) UL μ` using `(integrableOn_const hULT).congr_fun (fun y hy => (hJU y hy).symm) hULm`.
-
-Rewrite using `[hOsplit, setIntegral_union Set.disjoint_sdiff_right hULm i1 i2, setIntegral_congr_fun hPLm hJP, setIntegral_congr_fun hULm hJU]`. Simplify using `[Measure.real]`. Rewrite `hswap` using `[hLHS, hRHS]`. Establish `hne : ((μK UK).toReal : ℂ) ≠ 0` using `by exact_mod_cast hmUKpos.ne'`. Apply `mul_left_cancel₀ hne` to reduce the goal to its premises.
-
-Rewrite using `[hswap, hmUK, hmPL, hmUL, hmPK]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem residue_gauss_integral : ∀ (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E] [StarRing E] [Unram F E] (A : Et F E) (ψ : AddChar F ℂ) (μ : Measure A.L), IsStdChar ψ → μ.IsAddHaarMeasure → IsField A.K → IsField A.L → ∀ (O : Subring A.L) (ϖ : A.Kˣ), IsOpen (O : Set A.L) → IsCompact (O : Set A.L) → (∀ y ∈ O, star y ∈ O) → algebraMap A.K A.L (ϖ : A.K) ∈ O → (¬ ∃ z ∈ O, algebraMap A.K A.L (ϖ : A.K) * z = 1) → (∀ y ∈ O, (∃ z ∈ O, y = algebraMap A.K A.L (ϖ : A.K) * z) ∨ ∃ z ∈ O, y * z = 1) → (∀ s : A.K, algebraMap A.K A.L s ∈ O → (∃ r ∈ O, algebraMap A.K A.L s * r = 1) → ∃ w ∈ O, A.NL w = s) → μ {y : A.L | ∃ z ∈ O, y = algebraMap A.K A.L (ϖ : A.K) * z} = ENNReal.ofReal (A.absK (ϖ : A.K) ^ 2) * μ (O : Set A.L) → ∀ a : A.K, (∀ s : A.K, algebraMap A.K A.L s ∈ O → A.psiK ψ (a * ϖ * s) = 1) → (∃ s : A.K, algebraMap A.K A.L s ∈ O ∧ A.psiK ψ (a * s) ≠ 1) → ∫ y in (O : Set A.L), A.psiK ψ (a * A.NL y) ∂μ = -((A.absK (ϖ : A.K) : ℝ) : ℂ) * (((μ (O : Set A.L)).toReal : ℝ) : ℂ) := by
   intro F E _ _ _ _ U A ψ μ hψ hμ hK hL O ϖ hOo hOc hOs hϖO hϖnu hdich hnorm hvol a ha hna

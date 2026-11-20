@@ -6,7 +6,7 @@ open scoped ComplexOrder Matrix
 namespace GlobalTheory.HSAmp
 
 /- English proof (translation)
-Rewrite using `[Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec]`. Simplify using `[Matrix.mulVec_single, dotProduct_single]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem star_mulVec_single_dot (ι : Type) [Fintype ι] [DecidableEq ι]
     (T M : Matrix ι ι ℂ) (i : ι) :
@@ -15,25 +15,25 @@ theorem star_mulVec_single_dot (ι : Type) [Fintype ι] [DecidableEq ι]
   simp [Matrix.mulVec_single, dotProduct_single]
 
 /- English proof (translation)
-Take `⟨T, d, hT, hTB, hTA⟩` from `GlobalTheory.T.exists_simultaneous_diagonalisation_posDef_hermitian ι B A hB hA.isHermitian`. Establish `hTu : IsUnit T` using `(Matrix.isUnit_iff_isUnit_det T).2 hT`. Establish `hinj : Function.Injective T.mulVec` using `Matrix.mulVec_injective_iff_isUnit.2 hTu`. Establish `hcol : ∀ i, T *ᵥ Pi.single i 1 ≠ 0`. Introduce `i h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: Pi.single i (1 : ℂ) = 0` using `hinj (by rw [h, Matrix.mulVec_zero])`. Simplify using `using congrFun this i`. Establish `hBi : ∀ i, star (T *ᵥ Pi.single i 1) ⬝ᵥ B *ᵥ (T *ᵥ Pi.single i 1) = 1`. Introduce `i`. Rewrite using `[star_mulVec_single_dot, hTB]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `hAi : ∀ i, star (T *ᵥ Pi.single i 1) ⬝ᵥ A *ᵥ (T *ᵥ Pi.single i 1) = (d i : ℂ)`. Introduce `i`. Rewrite using `[star_mulVec_single_dot, hTA]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hdpos : ∀ i, 0 < d i`. Introduce `i`. Establish `h` using `hA.dotProduct_mulVec_pos (hcol i)`. Rewrite `h` using `[hAi]`. Conclude with `h` after adjusting the coercions.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hdle : ∀ i, d i ≤ κ`. Introduce `i`. Establish `h` using `hle (T *ᵥ Pi.single i 1)`. Rewrite `h` using `[hAi, hBi]`. Simplify using `using h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `set t := T.det`. Establish `hn : (Complex.normSq t : ℂ) = star t * t` using `Complex.normSq_eq_conj_mul_self`. Establish `hdetB : (Complex.normSq t : ℂ) * B.det = 1`. Use `congrArg Matrix.det hTB` as an intermediate fact. Rewrite `this` using `[Matrix.det_mul, Matrix.det_mul, Matrix.det_conjTranspose, Matrix.det_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[hn, ← this]`. Expand and normalize the polynomial expressions, which then agree. Establish `hdetA : (Complex.normSq t : ℂ) * A.det = ((∏ i, d i : ℝ) : ℂ)`. Use `congrArg Matrix.det hTA` as an intermediate fact. Rewrite `this` using `[Matrix.det_mul, Matrix.det_mul, Matrix.det_conjTranspose, Matrix.det_diagonal]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[hn, Complex.ofReal_prod, ← this]`. Expand and normalize the polynomial expressions, which then agree. Establish `hpos : 0 < Complex.normSq t` using `Complex.normSq_pos.2 hT.ne_zero`. Establish `hBre : Complex.normSq t * B.det.re = 1`. Use `congrArg Complex.re hdetB` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify `this` using `[Complex.re_ofReal_mul]`. Establish `hAre : Complex.normSq t * A.det.re = ∏ i, d i`. Use `congrArg Complex.re hdetA` as an intermediate fact. Rewrite `this` using `[Complex.re_ofReal_mul, Complex.ofReal_re]`. Then use the resulting hypothesis. Establish `hprod : ∏ i, d i ≤ κ ^ Fintype.card ι`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Combine the equalities or inequalities in the displayed calculation. Use `le_of_mul_le_mul_left ?_ hpos` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_left_comm, hBre, mul_one]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_re_le_pow_mul_det_re (ι : Type) [Fintype ι] [DecidableEq ι] (A B : Matrix ι ι ℂ)
     (κ : ℝ) (hA : A.PosDef) (hB : B.PosDef)

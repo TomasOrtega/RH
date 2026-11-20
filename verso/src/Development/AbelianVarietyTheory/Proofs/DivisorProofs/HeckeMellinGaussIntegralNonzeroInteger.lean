@@ -13,13 +13,13 @@ open NumberField MeasureTheory
 namespace GlobalTheory.HeckeMellinOne
 
 /- English proof (translation)
-Establish `hn : ((‖z‖ : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast norm_ne_zero_iff.2 hz`. Establish `hc : starRingEnd ℂ z * z = ((‖z‖ : ℝ) : ℂ) ^ 2`. Rewrite using `[mul_comm, Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Unfold `GlobalTheory.HeckeTheta.hmon`. Use `split_ifs with h`. Take `⟨m, rfl⟩` from `Int.eq_ofNat_of_zero_le h`. Simplify using `only [Int.toNat_natCast, Int.natAbs_natCast, zpow_neg, zpow_natCast]`. Rewrite using `[← inv_pow, ← mul_pow]`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Clear the denominators using the available nonvanishing facts. Take the linear combination `hc`. Take `⟨m, hm⟩ : ∃ m : ℕ, -n = m` from `⟨(-n).toNat, by omega⟩`. Establish `hm' : n.natAbs = m` using `by omega`.
+Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hm, hm', Int.toNat_natCast, zpow_natCast, ← mul_pow]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts.
+Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem hmon_eq_mul (n : ℤ) {z : ℂ} (hz : z ≠ 0) :
     GlobalTheory.HeckeTheta.hmon n z = ((‖z‖ : ℝ) : ℂ) ^ n.natAbs * (z / ((‖z‖ : ℝ) : ℂ)) ^ (-n) := by
@@ -41,7 +41,7 @@ theorem hmon_eq_mul (n : ℤ) {z : ℂ} (hz : z ≠ 0) :
     field_simp
 
 /- English proof (translation)
-Proceed by induction on `t using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a t ha ih`. Rewrite using `[Finset.prod_insert ha, Finset.prod_insert ha, Complex.ofReal_mul, Complex.mul_cpow_ofReal_nonneg (hf a) (Finset.prod_nonneg fun j _ => hf j), ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem ofReal_prod_cpow {J : Type} (t : Finset J) (f : J → ℝ) (hf : ∀ j, 0 ≤ f j) (w : ℂ) :
     (((∏ j ∈ t, f j : ℝ)) : ℂ) ^ w = ∏ j ∈ t, ((f j : ℝ) : ℂ) ^ w := by
@@ -53,9 +53,9 @@ theorem ofReal_prod_cpow {J : Type} (t : Finset J) (f : J → ℝ) (hf : ∀ j, 
       Complex.mul_cpow_ofReal_nonneg (hf a) (Finset.prod_nonneg fun j _ => hf j), ih]
 
 /- English proof (translation)
-Substitute `hk` using the available equality. Establish `h2π : 0 < 2 * Real.pi` using `by positivity`. Rewrite using `[Real.rpow_def_of_pos (by positivity), Real.rpow_def_of_pos h2π, Real.rpow_def_of_pos (by positivity), Real.log_mul h2π.ne' (by positivity), Real.log_pow, ← Real.exp_log (pow_pos hr k), Real.log_pow]`. Establish `key : Real.exp (k * Real.log r) * Real.exp ((Real.log (2 * Real.pi) + (2 : ℕ) * Real.log r) * -(σ + k / 2)) = Real.exp (Real.log (2 * Real.pi) * -(σ + k / 2)) * Real.exp ((2 : ℕ) * Real.log r * -σ)`. Rewrite using `[← Real.exp_add, ← Real.exp_add]`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Take the linear combination `G * key`.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem real_factor (r σ a G : ℝ) (k : ℕ) (hr : 0 < r) (hk : (k : ℝ) = a) :
     r ^ k * G * (2 * Real.pi * r ^ 2) ^ (-(σ + a / 2)) =
@@ -70,11 +70,11 @@ theorem real_factor (r σ a G : ℝ) (k : ℕ) (hr : 0 < r) (hk : (k : ℝ) = a)
   linear_combination G * key
 
 /- English proof (translation)
-Establish `hr : 0 < ‖z‖` using `norm_pos_iff.2 hz`. Establish `h2π : 0 < 2 * Real.pi` using `by positivity`. Establish `e2 : (2 * (Real.pi : ℂ)) = ((2 * Real.pi : ℝ) : ℂ)` using `by push_cast; ring`. Establish `hk : ((n.natAbs : ℕ) : ℂ) = ((|n| : ℤ) : ℂ)`. Rewrite using `[← Int.cast_natCast, Int.natCast_natAbs]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hmon_eq_mul n hz, e2, ← Complex.cpow_natCast, Complex.cpow_def_of_ne_zero (by exact_mod_cast hr.ne'), Complex.cpow_def_of_ne_zero (by exact_mod_cast (by positivity : (0:ℝ) < 2 * Real.pi * ‖z‖ ^ 2).ne'), Complex.cpow_def_of_ne_zero (by exact_mod_cast h2π.ne'), Complex.cpow_def_of …`. Establish `key : Complex.exp (((Real.log ‖z‖ : ℝ) : ℂ) * ((|n| : ℤ) : ℂ)) * Complex.exp (((Real.log (2 * Real.pi) + (2 : ℕ) * Real.log ‖z‖ : ℝ) : ℂ) * -(s + ((|n| : ℤ) : ℂ) / 2)) = Complex.exp (((Real.log (2 * Real.pi) : ℝ) : ℂ) * -(s + ((|n| : ℤ) : ℂ) / 2)) * Complex.exp ((((2 : ℕ) * Real. …`. Rewrite using `[← Complex.exp_add, ← Complex.exp_add]`. Use `congr 1`. Use `push_cast`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Take the linear combination `(2 * (z / ((‖z‖ : ℝ) : ℂ)) ^ (-n) * G) * key`.
+Expand and normalize the polynomial expressions, which then agree. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem complex_factor (z : ℂ) (hz : z ≠ 0) (n : ℤ) (s G : ℂ) :
     2 * (GlobalTheory.HeckeTheta.hmon n z * G *
@@ -105,7 +105,7 @@ end GlobalTheory.HeckeMellinOne
 namespace GlobalTheory.HeckeMellinOne
 
 /- English proof (translation)
-Proceed by induction on `t using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a t ha ih`. Rewrite using `[Finset.prod_insert ha, Finset.prod_insert ha, Real.mul_rpow (hf a) (Finset.prod_nonneg fun j _ => hf j), ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem real_prod_rpow {J : Type} (t : Finset J) (f : J → ℝ) (hf : ∀ j, 0 ≤ f j) (w : ℝ) :
     (∏ j ∈ t, f j) ^ w = ∏ j ∈ t, f j ^ w := by
@@ -117,13 +117,13 @@ theorem real_prod_rpow {J : Type} (t : Finset J) (f : J → ℝ) (hf : ∀ j, 0 
       Real.mul_rpow (hf a) (Finset.prod_nonneg fun j _ => hf j), ih]
 
 /- English proof (translation)
-Introduce `K _ _ _ I _ φ hφ n s hs α hα`. Establish `hαK : (α : K) ≠ 0` using `by exact_mod_cast hα`. Establish `hv : ∀ i, GlobalTheory.HeckeTheta.emb φ (α : K) i ≠ 0` using `fun i => (map_ne_zero (φ i)).2 hαK`. Take `⟨hint, hI, hN⟩` from `GlobalTheory.T.integral_heckeMellinGaussIntegrand_eq_prod_gamma I n s hs _ hv`. Establish `hnorm` using `GlobalTheory.T.cmType_prod_norm_sq_eq_absNorm_span K I φ hφ α`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨hint, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hI, ← Complex.ofReal_natCast, ← hnorm, ofReal_prod_cpow _ _ (fun i => by positivity), ← Finset.card_univ, Finset.pow_card_mul_prod]`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.CompletedLStripBounds.archFactor GlobalTheory.HeckeStrip.wt`. Rewrite using `[← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[complex_factor _ (hv i)]`. Simplify using `only [GlobalTheory.HeckeTheta.emb]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hN, ← hnorm, real_prod_rpow _ _ (fun i => by positivity), ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `real_factor _ _ _ _ _ (norm_pos_iff.2 (hv i)) (by rw [Nat.cast_natAbs, Int.cast_abs])`.
+A detailed English derivation is pending.
 -/
 theorem mellin_term : ∀ (K : Type) [Field K] [NumberField K] [NumberField.IsTotallyComplex K] (I : Type) [Fintype I] (φ : I → K →+* ℂ), GlobalTheory.CMVal.IsCMType φ → ∀ (n : I → ℤ) (s : ℂ), 0 < s.re → ∀ α : 𝓞 K, α ≠ 0 → Integrable (GlobalTheory.HeckeMellin.term n s (GlobalTheory.HeckeTheta.emb φ (α : K))) ∧ 2 ^ Fintype.card I * ∫ y, GlobalTheory.HeckeMellin.term n s (GlobalTheory.HeckeTheta.emb φ (α : K)) y = GlobalTheory.IndefiniteRowSideFullHecke.CompletedLStripBounds.archFactor n s * GlobalTheory.HeckeStrip.wt φ n (α : K) * ((Ideal.absNorm (Ideal.span {α}) : ℕ) : ℂ) ^ (-s) ∧ ∫ y, ‖GlobalTheory.HeckeMellin.term n s (GlobalTheory.HeckeTheta.emb φ (α : K)) y‖ = (∏ i, (2 * Real.pi) ^ (-(s.re + (|n i| : ℝ) / 2)) * Real.Gamma (s.re + (|n i| : ℝ) / 2)) * ((Ideal.absNorm (Ideal.span {α}) : ℕ) : ℝ) ^ (-s.re) := by
   intro K _ _ _ I _ φ hφ n s hs α hα

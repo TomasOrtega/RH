@@ -11,7 +11,7 @@ noncomputable section
 namespace GlobalTheory.BSP.Height
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun a => by simp [hF.ext, hG.ext], fun x => (hG.norm_le _).trans (hF.norm_le x)⟩`.
+Supply the required witnesses or components.
 -/
 theorem isDiscMap_comp' {l : ℕ} {A A' A'' : Type} [CommRing A] [CommRing A'] [CommRing A'']
     {u : A} {u' : A'} {u'' : A''} {ρ ρ' ρ'' : ℝ≥0} {f : A →+* A'} {g : A' →+* A''}
@@ -20,11 +20,11 @@ theorem isDiscMap_comp' {l : ℕ} {A A' A'' : Type} [CommRing A] [CommRing A'] [
   ⟨fun a => by simp [hF.ext, hG.ext], fun x => (hG.norm_le _).trans (hF.norm_le x)⟩
 
 /- English proof (translation)
-Introduce `l _ K bk d ρ τ s ht B B' f₀ f g f₀' k ε hrel`. Establish `hk : ‖toDisc l (BK.hf f₀' X) bk.ρ₀ (k.f (BK.hf f₀ X))‖ ≤ bk.ρ₀` using `(GlobalTheory.T.norm_breuilKisinHom_uniformizer_frobenius_le l K bk B' f₀' (k.comp f₀)).1`. Use `⟨⟨Disc.map k.f hk, isDiscMap_map k.f hk⟩, ?_⟩` and prove the remaining obligations. Introduce `Fk hFk Ff' Fg' hf' hg'`. Establish `hff` using `(GlobalTheory.T.norm_breuilKisinHom_uniformizer_frobenius_le l K bk B f₀ f).1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hgg` using `(GlobalTheory.T.norm_breuilKisinHom_uniformizer_frobenius_le l K bk B f₀ g).1`. Establish `h` using `congrArg (fun M => Matrix.map M Fk) (hrel _ _ (isDiscMap_map (BK.hf f) hff) (isDiscMap_map (BK.hf g) hgg))`. Establish `e1 : Fk.comp (Disc.map (BK.hf f) hff) = Ff'` using `(isDiscMap_comp' (isDiscMap_map (BK.hf f) hff) hFk).unique hf'`. Establish `e2 : Fk.comp (Disc.map (BK.hf g) hgg) = Fg'` using `(isDiscMap_comp' (isDiscMap_map (BK.hf g) hgg) hFk).unique hg'`. Substitute `e1 e2` using the available equality.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality.
 
-Use extensionality with `i j`. Establish `h2` using `congrFun (congrFun h i) j`. Simplify using `only [Matrix.map_apply, Matrix.smul_apply, Matrix.mul_apply, map_mul, map_pow, map_sum, smul_eq_mul, hFk.ext, RingHom.comp_apply] at h2 ⊢`. Conclude with `h2`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rel_map : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (d : ℕ) (ρ : ↥(GK K) → Matrix (Fin d) (Fin d) ℤ_[l]) (τ : Ainf l) (s : Seed bk d ρ τ) (ht : Height s) (B B' : Obj l ↥(OL K)) (f₀ f g : Hom bk.prism B) (f₀' : Hom bk.prism B') (k : Hom B B') (ε : Matrix (Fin d) (Fin d) (Disc l (BK.hf f₀ X) bk.ρ₀)), ht.Rel (BK.hf f₀ X) f g ε → (∃ Fk : Disc l (BK.hf f₀ X) bk.ρ₀ →+* Disc l (BK.hf f₀' X) bk.ρ₀, IsDiscMap k.f Fk) ∧ ∀ Fk : Disc l (BK.hf f₀ X) bk.ρ₀ →+* Disc l (BK.hf f₀' X) bk.ρ₀, IsDiscMap k.f Fk → ht.Rel (BK.hf f₀' X) (k.comp f) (k.comp g) (ε.map Fk) := by
   intro l _ K bk d ρ τ s ht B B' f₀ f g f₀' k ε hrel

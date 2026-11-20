@@ -8,11 +8,9 @@ noncomputable section
 namespace GlobalTheory.SymChain
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Simplify using `only [not_exists, not_not] at hne`. Apply `h0` to reduce the goal to its premises. Use function extensionality and compare the values at `x₀`. Establish `key : ∀ e, om μ 1 h Φ (affPt 1 x₀ e) = 0` using `fun e => by`.
+Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `h1 : Φ ((h⁻¹).val * affPt 1 x₀ e * (1 : GL (n' ⊕ Fin (c + 1)) k).val) = 0`. Rewrite using `[Units.val_one, Matrix.mul_one]`. Conclude with `hne x₀ e`. Conclude with `mul_eq_zero_of_right _ h1`. Unfold `flat opE`.
-
-Simplify using `only [key, zero_mul, integral_zero, Pi.zero_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_affPt_of_flat_ne_zero {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] [MeasurableSpace k] {n n' : Type} [Fintype n] [DecidableEq n]
@@ -31,9 +29,9 @@ theorem exists_affPt_of_flat_ne_zero {k : Type} [Field k] [ValuativeRel k] [Topo
   simp only [key, zero_mul, integral_zero, Pi.zero_apply]
 
 /- English proof (translation)
-Introduce `k _ _ _ _ _ _ ν hν s κ S t _ _ hC hS j c hjc β hβ`. Use `hν.1` as an intermediate fact. Take `⟨h, rfl, h0⟩` from `hβ`. Take `⟨r, hr, u, hu, rfl⟩` from `hC j c hjc h h0`. Establish `HL : (S.T t).Laws` using `Chain.ofType_laws _ _ _ _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1` using `(GlobalTheory.UnfoldedEntries.flat_ne_zero_congr (ψ := S.ψ) (ν := ν) (h₂' := 1) (h₂ := u) (by omega) (HL.1 j (c + 1) (by omega)) rfl ((DoubleCoset.eq _ _ _ _).2 ⟨r⁻¹, inv_mem hr, 1, one_mem _, by group⟩)).1 h0`. Take `⟨x₀, e, he⟩` from `exists_affPt_of_flat_ne_zero _ _ _ _ _ h1`. Take `⟨r', hr', w, hw, rfl⟩` from `hS j c hjc u hu x₀ e he`. Conclude with `(DoubleCoset.eq _ _ _ _).2 ⟨(r * r')⁻¹, inv_mem (mul_mem hr hr'), w⁻¹, inv_mem hw, by group⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem oneIndex_of_oneClass_of_supportOne :
     ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k]

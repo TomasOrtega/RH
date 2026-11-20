@@ -27,7 +27,7 @@ def redExt (c : O) : ((↥L.T ⊗[O] X) × O) →ₗ[O] ((↥L.T ⊗[O] X) × (O
 
 omit [TopologicalSpace G] in
 /- English proof (translation)
-Introduce and unpack `⟨m, y⟩`. Take `⟨y, rfl⟩` from `Submodule.mkQ_surjective _ y`. Conclude with `⟨(m, y), rfl⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem redExt_surjective (c : O) : Function.Surjective (redExt L X c) := by
   rintro ⟨m, y⟩
@@ -36,14 +36,14 @@ theorem redExt_surjective (c : O) : Function.Surjective (redExt L X c) := by
 
 omit [TopologicalSpace G] in
 /- English proof (translation)
-Rewrite using `[redExt, LinearMap.ker_prodMap, LinearMap.ker_id, Submodule.ker_mkQ]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ker_redExt (lam : O) (a : ℕ) : LinearMap.ker (redExt L X (lam ^ a)) = tableLineDegreeTwo.kerExt L X lam a := by
   rw [redExt, LinearMap.ker_prodMap, LinearMap.ker_id, Submodule.ker_mkQ]
   rfl
 
 /- English proof (translation)
-Take `⟨m, y⟩` from `x`. Establish `h` using `Ea_apply (latRep L) χ₁ hc ⟨z, hz⟩ g m y`. Express the relevant statement in the definitionally equal form `(_, _) = Ea (latRep L) χ₁ hc ⟨z, hz⟩ g (m, Ideal.Quotient.mk _ y)`. Rewrite using `[h]`. Simplify using `only [tableLineDegreeTwo.actExt, smul_smul, mul_comm y]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 Both sides reduce to the same expression.
 -/
@@ -62,7 +62,7 @@ end Gen
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Introduce `l _ P S jT hj T L X _ _ z hz a ha`. Establish `h` using `GlobalTheory.FullCharpoly.admissibleQuotient_iff_admissible_module S jT hj _ _ (tableLineDegreeTwo.actExt L X S.Γ.χ₁ z) (Ea (latRep L) S.Γ.χ₁ ha ⟨z, hz⟩) (redExt L X (S.Γ.lam ^ a)) (redExt_surjective L X _) (redExt_actExt L X S.Γ.χ₁ ha z hz)`. Rewrite `h` using `[ker_redExt L X S.Γ.lam a]`. Conclude with `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem admissible_quotientExtension_iff_admissible_ext' : ∀ {l : ℕ} [Fact l.Prime] {P : LocPrime l} (S : TopSit P) (jT : ZMod S.n → ℤ → ℤ),
     (∀ i a, ((S.D.Ut i).count a : ℤ) = jT i a) →

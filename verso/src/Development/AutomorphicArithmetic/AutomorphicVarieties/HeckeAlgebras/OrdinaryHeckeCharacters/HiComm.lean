@@ -12,7 +12,7 @@ open UpperTheory.V.HV (Coef)
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Rewrite using `[dc, finsum_set_coe_eq_finsum_mem (f := fun q : H ⧸ K => ρ q.out), finsum_mem_eq_finite_toFinset_sum _ hfin, LinearMap.sum_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem hiC_sum {A H M : Type} [CommRing A] [Group H] [AddCommGroup M] [Module A M]
     (ρ : Representation A H M) (K : Subgroup H) (x : H) (hfin : (MulAction.orbit K (x : H ⧸ K)).Finite) (v : M) :
@@ -21,7 +21,7 @@ private theorem hiC_sum {A H M : Type} [CommRing A] [Group H] [AddCommGroup M] [
     LinearMap.sum_apply]
 
 /- English proof (translation)
-Rewrite using `[hiC_sum ρ K x hfin, hiC_sum ρ K x hfin, map_sum]`. Conclude with `Finset.sum_congr rfl fun q _ => hT _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem hiC_comm {A H M : Type} [CommRing A] [Group H] [AddCommGroup M] [Module A M]
     (ρ : Representation A H M) (K : Subgroup H) (x : H) (hfin : (MulAction.orbit K (x : H ⧸ K)).Finite)
@@ -30,7 +30,7 @@ private theorem hiC_comm {A H M : Type} [CommRing A] [Group H] [AddCommGroup M] 
   exact Finset.sum_congr rfl fun q _ => hT _ _
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨k, hk⟩`. Conclude with `⟨k, k.2, QuotientGroup.eq.mp hk⟩`. Introduce and unpack `⟨k, hk, h⟩`. Conclude with `⟨⟨k, hk⟩, QuotientGroup.eq.mpr h⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 private theorem hiC_orb {H : Type} [Group H] (K : Subgroup H) (x y : H) :
     (y : H ⧸ K) ∈ MulAction.orbit K (x : H ⧸ K) ↔ ∃ k ∈ K, (k * x)⁻¹ * y ∈ K := by
@@ -41,17 +41,15 @@ private theorem hiC_orb {H : Type} [Group H] (K : Subgroup H) (x y : H) :
     exact ⟨⟨k, hk⟩, QuotientGroup.eq.mpr h⟩
 
 /- English proof (translation)
-Establish `hq : ∀ a b : H', ((e a : H) : H ⧸ K) = (e b : H) ↔ (a : H' ⧸ K') = b` using `fun a b => by`. Rewrite using `[QuotientGroup.eq, QuotientGroup.eq, ← map_inv, ← map_mul, he]`. Establish `ho : ∀ y : H', ((e y : H) : H ⧸ K) ∈ MulAction.orbit K (e x : H ⧸ K) ↔ (y : H' ⧸ K') ∈ MulAction.orbit K' (x : H' ⧸ K')` using `fun y => by`. Rewrite using `[hiC_orb, hiC_orb]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨k, hk, h⟩`. Take `⟨k, rfl⟩` from `e.surjective k`. Conclude with `⟨k, (he k).1 hk, (he _).1 (by simpa using h)⟩`. Introduce and unpack `⟨k, hk, h⟩`. Conclude with `⟨e k, (he k).2 hk, by simpa using (he _).2 h⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Rewrite using `[hiC_sum ρ' K' x hfin', (dcSum A H M ρ K K (e x) hfin).1 (hfin'.toFinset.image fun q => e q.out) ?_ ?_ v hv, Finset.sum_image]`. Conclude with `Finset.sum_congr rfl fun q _ => by rw [hρ]`. Introduce `p _ q _ h`. Conclude with `Quotient.out_injective (e.injective h)`. Introduce `y hy`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨q, hq', rfl⟩` from `Finset.mem_image.1 hy`. Rewrite using `[ho, QuotientGroup.out_eq']`. Conclude with `hfin'.mem_toFinset.1 hq'`. Introduce `q hq'`. Take `⟨y, rfl⟩` from `QuotientGroup.mk_surjective q`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨y, rfl⟩` from `e.surjective y`. Use `⟨e (y : H' ⧸ K').out, ⟨Finset.mem_image.2 ⟨_, hfin'.mem_toFinset.2 ((ho y).1 hq'), rfl⟩, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hq, QuotientGroup.out_eq']`. Introduce and unpack `z ⟨hz, h⟩`. Take `⟨p, -, rfl⟩` from `Finset.mem_image.1 hz`.
-
-Rewrite `h` using `[hq, QuotientGroup.out_eq']`. Rewrite using `[h]`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem hiC_equiv {A H H' M : Type} [CommRing A] [Group H] [Group H'] [AddCommGroup M] [Module A M]
     (ρ : Representation A H M) (ρ' : Representation A H' M) (K : Subgroup H) (K' : Subgroup H') (e : H' ≃* H)
@@ -105,13 +103,13 @@ private def hiC_stab {A H M : Type} [CommRing A] [Group H] [AddCommGroup M] [Mod
     rw [← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]
 
 /- English proof (translation)
-Take `⟨-, h2, h3, -⟩` from `spStab Γ Ga Gp X A m τ θ hθ`. Establish `hval : ∀ (k : ℕ) (f : X.Fn A m), f ∈ X.valIn A m k ↔ ∀ g i, f g i ∈ maximalIdeal A ^ k` using `fun k f => by`. Simplify using `[Frame.valIn, Submodule.mem_pi]`. Rewrite `hf`, the goal using `[mem_ord_iff]`. Use `⟨⟨Submodule.sum_mem _ fun q _ => h2 _ f hf.1.1, hfix⟩, fun k => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨n, hn⟩` from `hf.2 k`. Establish `key : ∀ (u : X.Ub) (j : ℕ), X.ra τ u ((X.U A m X.I.z ^ j) f) = (X.U A m X.I.z ^ j) (X.ra τ u f)`. Introduce `u j`. Proceed by induction on `j with`. Consider the case `zero => rfl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `succ j ih => rw [pow_succ', Module.End.mul_apply, Module.End.mul_apply, ← ih, h3 _ X.I.z_mem]`. Use `⟨n, ?_⟩` and prove the remaining obligations. Rewrite using `[map_sum, ← Finset.sum_sub_distrib]`. Use `Submodule.sum_mem _ fun q _ => ?_` and prove the remaining obligations. Rewrite using `[← key, ← map_sub]`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hn`, the goal using `[hval]`. Introduce `g i`. Rewrite using `[Frame.ra_apply]`. Simplify using `only [Matrix.mulVec, dotProduct]`. Conclude with `Submodule.sum_mem _ fun j _ => Ideal.mul_mem_left _ _ (hn _ j)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem hiC_ord {Γ Ga Gp : Type} [Group Γ] [Group Ga] [Group Gp] (X : Frame Γ Ga Gp) {A : Type} [CommRing A]
     [IsCNL A] {m : ℕ} (τ : X.Ub →* GL (Fin m) A) (θ : X.I.T →* Aˣ) (hθ : X.I.ContChar θ) (U : Subgroup X.Ub)
@@ -143,15 +141,15 @@ section
 variable {A U M : Type} [CommRing A] [Group U] [AddCommGroup M] [Module A M] (ρ : Representation A U M)
 
 /- English proof (translation)
-Rewrite using `[← Module.End.mul_apply, ← map_mul, h.eq, map_mul, Module.End.mul_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem hiC_ra {u u' : U} (h : Commute u u') (f : M) : ρ u (ρ u' f) = ρ u' (ρ u f) := by
   rw [← Module.End.mul_apply, ← map_mul, h.eq, map_mul, Module.End.mul_apply]
 
 /- English proof (translation)
-Establish `hc : ∀ u ∈ V ⊔ ⨆ i, W i, (∀ g, Commute u (s g)) → ρ u (dc (ρ.comp s) K K x f) = dc (ρ.comp s) K K x f` using `fun u hu h => by rw [hiC_comm _ _ _ hfin _ (fun g v => hiC_ra ρ (h g) v), hf u hu]`. Establish `h4 : V ⊔ ⨆ i, W i ≤ hiC_stab ρ (dc (ρ.comp s) K K x f)`. Use `sup_le (fun u hu => ?_) (iSup_le fun q u hu => ?_)` and prove the remaining obligations. Take `⟨k, hk, u', hu', rfl, h⟩` from `h2 u hu`. Use `mul_mem ?_ (hc u' (Subgroup.mem_sup_left hu') h)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(dcSum A _ _ (ρ.comp s) K K x hfin).2.1 f (fun a ha => hf _ (Subgroup.mem_sup_left (h1 ⟨a, ha, rfl⟩))) k hk`. Conclude with `hc _ (Subgroup.mem_sup_right (Subgroup.mem_iSup_of_mem q hu)) (h3 q u hu)`. Conclude with `h4`.
+A detailed English derivation is pending.
 -/
 private theorem hiC_fix {H ι : Type} [Group H] (s : H →* U) (K : Subgroup H) (x : H)
     (hfin : (MulAction.orbit K (x : H ⧸ K)).Finite) (V : Subgroup U) (W : ι → Subgroup U) (h1 : K.map s ≤ V)
@@ -169,7 +167,7 @@ private theorem hiC_fix {H ι : Type} [Group H] (s : H →* U) (K : Subgroup H) 
   exact h4
 
 /- English proof (translation)
-The claim follows from `hiC_comm _ _ _ hfin' _ (fun g v => (hiC_comm (ρ.comp s) _ _ hfin (ρ (s' g)) (fun g' v => hiC_ra ρ (h g' g).symm v) v).symm) f`.
+A detailed English derivation is pending.
 -/
 private theorem hiC_two {H H' : Type} [Group H] [Group H'] (s : H →* U) (K : Subgroup H) (x : H)
     (hfin : (MulAction.orbit K (x : H ⧸ K)).Finite) (s' : H' →* U) (K' : Subgroup H') (x' : H')
@@ -181,7 +179,7 @@ private theorem hiC_two {H H' : Type} [Group H] [Group H'] (s : H →* U) (K : S
 end
 
 /- English proof (translation)
-Rewrite `hfix`, the goal using `[hiC_sum _ _ _ hfin]`. Conclude with `hiC_ord X τ θ hθ U _ (fun q : H ⧸ K => s q.out) f hf hfix`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem hiC_dcOrd {Γ Ga Gp : Type} [Group Γ] [Group Ga] [Group Gp] (X : Frame Γ Ga Gp) {A : Type} [CommRing A]
     [IsCNL A] {m : ℕ} (τ : X.Ub →* GL (Fin m) A) (θ : X.I.T →* Aˣ) (hθ : X.I.ContChar θ) (U : Subgroup X.Ub)
@@ -197,9 +195,9 @@ variable {L Ω : Type} [Field L] [NumberField L] [Field Ω] [Algebra L Ω] [IsAl
   {c : Coef l} (H : HSet L Ω l n c) {A : Type} [CommRing A] [Algebra c.O A]
 
 /- English proof (translation)
-Introduce `v' _`. Unfold `alV`. Distinguish the cases in `h : v' = v`. Substitute `h` using the available equality. Rewrite using `[Pi.mulSingle_eq_same]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Conclude with `al_mem _ n j`. Rewrite using `[Pi.mulSingle_eq_of_ne h]`. Conclude with `(glIwa ((H.Sl v').adicCompletion L) n).P.one_mem`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem hiC_P (v : H.V) (j : ℕ) : alV n H.Sl v j ∈ H.X.I.P := by
   classical
@@ -213,14 +211,14 @@ private theorem hiC_P (v : H.V) (j : ℕ) : alV n H.Sl v j ∈ H.X.I.P := by
     exact (glIwa ((H.Sl v').adicCompletion L) n).P.one_mem
 
 /- English proof (translation)
-The claim follows from `(sphComm (w.adicCompletion L) n ℤ ℤ (Representation.trivial _ _ _)).1 x`.
+A detailed English derivation is pending.
 -/
 private theorem hiC_fin (w : W.Plc L) (x : GLw n w) :
     (MulAction.orbit (KO (w.adicCompletion L) (Fin n)) (x : GLw n w ⧸ KO (w.adicCompletion L) (Fin n))).Finite :=
   (sphComm (w.adicCompletion L) n ℤ ℤ (Representation.trivial _ _ _)).1 x
 
 /- English proof (translation)
-Introduce `u hu` and use `hf _ (Subgroup.mem_sup_left (hA.W_le w hw ⟨u, hu, rfl⟩))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem hiC_KO (hA : H.Ax) (K : H.Lev) (w : W.Plc L) (hw : w ∈ H.Wp) (f : H.X.Fn A H.m)
     (hf : f ∈ fixd (H.X.ra (H.τA A)) (H.lev K)) :
@@ -228,7 +226,7 @@ private theorem hiC_KO (hA : H.Ax) (K : H.Lev) (w : W.Plc L) (hw : w ∈ H.Wp) (
   hf _ (Subgroup.mem_sup_left (hA.W_le w hw ⟨u, hu, rfl⟩))
 
 /- English proof (translation)
-Use `hiC_fix (H.X.ra (H.τA A)) (H.sec w) _ _ (hiC_fin w _) H.UQ _ (hA.W_le w hw) (hA.W_dec w hw) ?_ f hf` and prove the remaining obligations. Introduce and unpack `q _ ⟨g, -, rfl⟩`. Conclude with `hA.sectionsCommuteAtSplit q w hw g`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 private theorem hiC_Tfix (hA : H.Ax) (K : H.Lev) (w : W.Plc L) (hw : w ∈ H.Wp) (j : ℕ) (f : H.X.Fn A H.m)
     (hf : f ∈ fixd (H.X.ra (H.τA A)) (H.lev K)) :
@@ -238,7 +236,7 @@ private theorem hiC_Tfix (hA : H.Ax) (K : H.Lev) (w : W.Plc L) (hw : w ∈ H.Wp)
   exact hA.sectionsCommuteAtSplit q w hw g
 
 /- English proof (translation)
-Break down `hA.Wm_mul_Wm_comm w hw w' hw' with h | ⟨e, he, h⟩` into its components or cases. Conclude with `hiC_two (H.X.ra (H.τA A)) (H.sec w) _ _ (hiC_fin w _) (H.sec w') _ _ (hiC_fin w' _) h f`. Establish `he' : ∀ v ∈ fixd (H.X.ra (H.τA A)) (H.lev K), sphOp ((H.X.ra (H.τA A)).comp (H.sec w')) j' v = dc ((H.X.ra (H.τA A)).comp (H.sec w)) (KO _ (Fin n)) (KO _ (Fin n)) (e (al _ n j')) v` using `fun v hv => hiC_equiv _ _ _ _ e he (fun g => congrArg (H.X.ra (H.τA A)) (h g)) _ (hiC_fin w' _) (hiC_fin w _) v (hiC_KO H hA K w hw v hv)`. Rewrite using `[he' f hf, he' _ (hiC_Tfix H hA K w hw j f hf)]`. Conclude with `(sphComm _ n A _ _).2.1 _ _ f (hiC_KO H hA K w hw f hf)`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem hiC_TT (hA : H.Ax) (K : H.Lev) (w : W.Plc L) (hw : w ∈ H.Wp) (j : ℕ) (w' : W.Plc L) (hw' : w' ∈ H.Wp) (j' : ℕ)
     (f : H.X.Fn A H.m) (hf : f ∈ fixd (H.X.ra (H.τA A)) (H.lev K)) :
@@ -254,13 +252,11 @@ private theorem hiC_TT (hA : H.Ax) (K : H.Lev) (w : W.Plc L) (hw : w ∈ H.Wp) (
     exact (sphComm _ n A _ _).2.1 _ _ f (hiC_KO H hA K w hw f hf)
 
 /- English proof (translation)
-Take `⟨-, -, h3, h4, -⟩` from `spStab _ _ _ H.X A H.m (H.τA A) θ hθ`. Establish `hUT : ∀ (w : W.Plc L) j a, a ∈ H.X.I.P → ∀ f, H.X.U A H.m a (sphOp ((H.X.ra (H.τA A)).comp (H.sec w)) j f) = sphOp ((H.X.ra (H.τA A)).comp (H.sec w)) j (H.X.U A H.m a f)` using `fun w j a ha f => hiC_comm _ _ _ (hiC_fin w _) _ (fun g v => (h3 a ha (H.sec w g) v).symm) f`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `(x | x) f hf`. Conclude with `hiC_dcOrd H.X _ θ hθ _ (H.sec x.1.1) _ _ (hiC_fin _ _) f hf (hiC_Tfix H hA K _ x.1.2 _ f hf.1.2)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components.
 
-Conclude with `(h4 _ _ (hiC_P H _ _)).2 f hf`. Introduce and unpack `(x | x) (y | y) f hf`. Conclude with `hiC_TT H hA K _ x.1.2 _ _ y.1.2 _ f hf.1.2`. Conclude with `(hUT _ _ _ (hiC_P H _ _) f).symm`. Conclude with `hUT _ _ _ (hiC_P H _ _) f`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hN : f ∈ fixd (H.X.rp A H.m) H.X.I.N` using `hf.1.1.2.1`. Establish `p1` using `hiC_P H x.1 (x.2 + 1)`. Establish `p2` using `hiC_P H y.1 (y.2 + 1)`. Establish `b1` using `(uOpMul _ H.X.I A _ (H.X.rp A H.m) _ _ p1 p2 f hN).2.1`. Establish `b2` using `(uOpMul _ H.X.I A _ (H.X.rp A H.m) _ _ p2 p1 f hN).2.1`.
-
-Rewrite `b1` using `[H.X.I.comm _ (H.X.I.P_le _ p1) _ (H.X.I.P_le _ p2)]`. Conclude with `b1.trans b2.symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem hiC_main [IsCNL A] (hA : H.Ax) (θ : H.X.I.T →* Aˣ) (hθ : H.X.I.ContChar θ) (K : H.Lev) :
     CommOn (H.X.Ord (H.τA A) θ (H.lev K)) (H.op A) := by
@@ -287,9 +283,9 @@ private theorem hiC_main [IsCNL A] (hA : H.Ax) (θ : H.X.I.T →* Aˣ) (hθ : H.
 end
 
 /- English proof (translation)
-Introduce `L Ω _ _ _ _ _ l _ n c H hA A _ _ _ θ hθ K`. Use `haveI : Finite (ResidueField c.O) := (UpperTheory.V.abelian₂.dvr_finite l c.O).2.1`. Use `haveI : IsCNL A := IsCNL.ofCO c.O A`. Take `⟨hfi, hfr, -⟩` from `ordFree _ _ _ H.X A H.m (H.τA A) θ hθ.cont (H.lev K) (hA.fin K) (hθ.free K)`. Establish `hC` using `hiC_main H hA θ hθ.cont K`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨hC, hfi, hfr, fun a => ?_⟩` and prove the remaining obligations. Take `⟨b1, -, b2, -, b3⟩` from `AlgebraTools.AnnihilatorQuotientFinite.locFree A _ _ (H.X.Ord (H.τA A) θ (H.lev K)) (H.op A) (fun i => algebraMap c.O A (a i)) hC`. Conclude with `⟨b1, b2, b3 inferInstance⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Hi.hiComm :
     ∀ (L Ω : Type) [Field L] [NumberField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] (l : ℕ) [Fact l.Prime] (n : ℕ) (c : Coef l) (H : HSet L Ω l n c), H.Ax →

@@ -9,9 +9,9 @@ namespace PoleLengthBounds
 variable {D : D7} {B : WeightFamilies.Prov D} {P : ModuliIntegralCharts.Prov D} {j : ℕ} {X : PJ D B P j}
 
 /- English proof (translation)
-Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Simplify using `using hv`. Introduce `a s ha ih`. Rewrite using `[Finset.prod_insert ha, Finset.sum_insert ha, mul_assoc]`. Use `sec_pow_mul_mem X la w a.succ u _ (α a) ih` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[show n + ∑ i ∈ s, α i + α a = n + (α a + ∑ i ∈ s, α i) by ring]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem prod_sec_pow_mul_mem {la : HeightOneSpectrum (𝓞 B.KO)} {N : ℕ} {wL : WeightFamilies.Wt D j}
     (w : Fin N → B.Cusp j wL) (u : WeightFamilies.Wt D j) (α : Fin (WeightFamilies.dimY D j) → ℕ) (s : Finset (Fin (WeightFamilies.dimY D j)))
@@ -26,15 +26,15 @@ theorem prod_sec_pow_mul_mem {la : HeightOneSpectrum (𝓞 B.KO)} {N : ℕ} {wL 
     rwa [show n + ∑ i ∈ s, α i + α a = n + (α a + ∑ i ∈ s, α i) by ring] at this
 
 /- English proof (translation)
-Introduce `D B P j X ka wL wF G la T k hk α hα i`. Establish `hs : ∑ i, α i = k` using `Finset.Nat.mem_antidiagonalTuple.1 hα`. Establish `hkT : ∑ i, α i ≤ T`. Establish `: a0 D j T ≤ T` using `Nat.sub_le _ _`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Establish `h0 : emb X la G.N (X.inc wF (G.th' i)) ∈ Vw X la G.N (addL wF wL 0)`. Rewrite using `[addL_zero]`. Conclude with `emb_mem_Vw X la G.N wF _`. Establish `h1` using `sec_pow_mul_mem X la G.w 0 wF 0 (T - ∑ i, α i) h0`. Establish `h2` using `prod_sec_pow_mul_mem G.w wF α Finset.univ h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[show 0 + (T - ∑ i, α i) + ∑ i, α i = T by omega]`. Establish `hf : secPow X la G.w α * sec X la G.w 0 ^ (T - ∑ i, α i) * emb X la G.N (X.inc wF (G.th' i)) ∈ Vw X la G.N (addL wF wL T)`. Rewrite using `[mul_assoc]`. Conclude with `h2`. Use `⟨toHK X la G.w wF T ⟨_, hf⟩, toHK0 X la G.w wF ⟨emb X la G.N (X.inc wF (G.th' i)), emb_mem_Vw X la G.N wF (G.th' i)⟩, ?_, ?_, rfl⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Conclude with `Submodule.subset_span ⟨⟨_, hf⟩, ⟨α, i, by omega, rfl⟩, rfl⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `e1 : ((ym G la α : ↥(Frac0 X la G.w)) : Lw X la G.w) = frac X la G.w (∑ i, α i) (secPow X la G.w α)` using `coe_prod_sfr X la G.w α`. Rewrite using `[Submodule.coe_smul, Subalgebra.smul_def, smul_eq_mul, e1, coe_toHK, coe_toHK0, ← frac_zero, frac_mul, add_zero]`. Establish `e2` using `frac_pow_mul X la G.w (∑ i, α i) (T - ∑ i, α i) (secPow X la G.w α * emb X la G.N (X.inc wF (G.th' i)))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite `e2` using `[show ∑ i, α i + (T - ∑ i, α i) = T by omega]`. Rewrite using `[← e2]`. Use `congr 1`. Use `show _ = _`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem taylorSpanGenerators : TaylorSpanGenerators := by
   intro D B P j X ka wL wF G la T k hk α hα i

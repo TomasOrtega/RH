@@ -21,49 +21,45 @@ open scoped MatrixGroups Real ComplexConjugate Manifold ModularForm
 namespace GlobalTheory.EisM
 
 /- English proof (translation)
-Introduce `k N l χ g ρ α β hk hN hl hlN hg hρ hab hαβ`. Use `haveI : NeZero N := ⟨by omega⟩`. Use `set h : ℕ → ℂ := fun n => conj (g n) with hh_def`. Establish `hNl : 0 < N * l` using `Nat.mul_pos hN hl.pos`. Establish `hdvd : N ∣ N * l` using `dvd_mul_right N l`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hP : Prim k N χ⁻¹ h` using `(GlobalTheory.T.cuspForm_conjugate_coefficients_inv_char k N χ g).2 hg`. Establish `hMFh : MF k N (ch χ⁻¹) h` using `hP.cf.1`. Establish `lin` using `GlobalTheory.T.modularFormCoeffSeq_linear_structure k (N * l) (ch χ⁻¹)`. Establish `hCFh : CF k (N * l) (ch χ⁻¹) h` using `(GlobalTheory.T.modularFormCoeffSeq_linear_structure k N (ch χ⁻¹)).2.2.2.2.2 (N * l) h hdvd hP.cf`. Establish `hCFV : CF k (N * l) (ch χ⁻¹) (Vo l h)` using `(GlobalTheory.T.coeffHeckeVOperator_raises_level k N l (ch χ⁻¹) h hl.pos).2 hP.cf`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `petlin` using `GlobalTheory.T.halfPeterssonIntegralWeighted_linear_forms k (N * l) (N * l) N χ⁻¹ ρ hk hNl hdvd hρ`. Establish `hsc : ∀ (h' a : ℕ → ℂ) (x : ℂ), CF k (N * l) (ch χ⁻¹) h' → MF k (N * l) (ch χ⁻¹) a → pet k ρ (qs (x • h')) (qs a) = conj x * pet k ρ (qs h') (qs a)`. Introduce `h' a x hh' ha`. Establish `e : qs (x • h') = fun τ => x * qs h' τ + 0 * qs h' τ`. Rewrite using `[(lin.2.2.1 x h' hh'.1).2]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `τ`. Simplify using the standard rewrite rules. Rewrite using `[e, petlin.2 h' h' a x 0 hh' hh' ha.1]`. Simplify using the standard rewrite rules. Establish `hconj : ∀ x : ZMod N, conj (χ x) = χ⁻¹ x` using `fun x => MulChar.star_apply' χ x`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hch : ∀ n : ℕ, ch χ⁻¹ (n : ℤ) = χ⁻¹ (n : ZMod N)` using `by intro n; simp [ch]`. Use `set φ : (ℕ → ℂ) → ℂ := fun a => pet k ρ (qs (Vo l h)) (qs a) - β / (l : ℂ) ^ k * pet k ρ (qs h) (qs a) with hφ_def`. Take `⟨B, hB⟩` from `GlobalTheory.T.exists_sturmBound_isModularFormCoeffSeq k (N * l) N χ⁻¹ hNl hdvd`. Take `⟨c, hc⟩` from `GlobalTheory.T.linearFunctional_eq_coeffLinearCombinationFinite {a | MF k (N * l) (ch χ⁻¹) a} B φ lin.1 (by`. Introduce `a ha b hb`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨(lin.2.1 a b ha hb).1, ?_⟩` and prove the remaining obligations. Establish `e1` using `petlin.1 (Vo l h) a b 1 1 hCFV ha.1 hb.1`. Establish `e2` using `petlin.1 h a b 1 1 hCFh ha.1 hb.1`. Simplify using `only [one_smul, one_mul] at e1 e2`. Simplify using `only [hφ_def, e1, e2]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use the proof step `ring)`. Use the proof step `(by`. Introduce `x a ha`. Use `⟨(lin.2.2.1 x a ha).1, ?_⟩` and prove the remaining obligations. Establish `e1` using `petlin.1 (Vo l h) a a x 0 hCFV ha.1 ha.1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e2` using `petlin.1 h a a x 0 hCFh ha.1 ha.1`. Simplify using `only [zero_smul, add_zero, zero_mul] at e1 e2`. Simplify using `only [hφ_def, e1, e2]`. Use the proof step `ring)`. Use `hB`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hφ : ∀ a, MF k (N * l) (ch χ⁻¹) a → lam B c a = φ a` using `fun a ha => (hc a ha).symm`. Use `⟨B, c, ⟨?_, ?_⟩, hφ⟩` and prove the remaining obligations. Introduce `a ha q hq hqNl`. Establish `hqN : ¬ q ∣ N` using `fun d => hqNl (dvd_mul_of_dvd_left d l)`. Establish `hql : q ≠ l` using `fun e => hqNl (e ▸ dvd_mul_left q N)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `hcop : q.Coprime l` using `(Nat.coprime_primes hq hl).2 hql`. Establish `hTa` using `GlobalTheory.T.isModularFormCoeffSeq_heckeT_of_prime_not_dvd k (N * l) N q χ⁻¹ a hk hdvd hq hqNl ha`. Rewrite using `[hφ _ hTa, hφ _ ha]`. Establish `eigh : To k (ch χ⁻¹ q) q h = h q • h`. Rewrite using `[hP.eig q hq hqN]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `n`. Simplify using the standard rewrite rules. Establish `eigV : To k (ch χ⁻¹ q) q (Vo l h) = h q • Vo l h`. Rewrite using `[(GlobalTheory.T.coeffHecke_UV_cauchyProduct_identities ℂ l hl.pos).2.2.2.2.1 k q _ h hcop hq.pos, eigh]`. Apply the tactic sequence `funext n; simp only [Vo, Pi.smul_apply, smul_eq_mul]; split_ifs <;> simp`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `adj0` using `GlobalTheory.T.halfPeterssonIntegral_heckeT_adjoint k (N * l) N q χ⁻¹ ρ h a hk hNl hdvd hq hqNl hρ hCFh ha`. Establish `adj1` using `GlobalTheory.T.halfPeterssonIntegral_heckeT_adjoint k (N * l) N q χ⁻¹ ρ (Vo l h) a hk hNl hdvd hq hqNl hρ hCFV ha`. Rewrite `adj0` using `[eigh, hsc h a _ hCFh ha]`. Rewrite `adj1` using `[eigV, hsc (Vo l h) a _ hCFV ha]`. Establish `hgq : conj (h q) = g q` using `by simp [hh_def]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [hφ_def]`. Rewrite using `[adj0, adj1]`. Simplify using `only [hgq, hch]`. Expand and normalize the polynomial expressions, which then agree. Introduce `a ha`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hper : ∀ d : ℤ, ch χ⁻¹ (d + ((N * l : ℕ) : ℤ)) = ch χ⁻¹ d`. Introduce `d`. Simplify using `only [ch]`. Use `congr 1`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `hUa` using `(GlobalTheory.T.isModularFormCoeffSeq_heckeU_and_depletion k (N * l) l (ch χ⁻¹) a hk hl (dvd_mul_left l N) hper ha).1`. Rewrite using `[hφ _ hUa, hφ _ ha]`. Establish `adjU0` using `GlobalTheory.T.halfPeterssonIntegral_heckeU_adjoint k (N * l) N l χ⁻¹ ρ h a hk hNl hdvd hl (dvd_mul_left l N) hlN hρ hCFh ha`. Establish `adjU1` using `GlobalTheory.T.halfPeterssonIntegral_heckeU_adjoint k (N * l) N l χ⁻¹ ρ (Vo l h) a hk hNl hdvd hl (dvd_mul_left l N) hlN hρ hCFV ha`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `tr0` using `GlobalTheory.T.sum_slash_heckeRepLowerLevel_eq_pow_mul_heckeV k N l χ⁻¹ h hk hl.pos hMFh`. Establish `eigl : To k (ch χ⁻¹ l) l h = h l • h`. Rewrite using `[hP.eig l hl hlN]`. Use function extensionality and compare the values at `n`. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `tr1` using `GlobalTheory.T.sum_slash_heckeRepLower_heckeV_eigenform k N l χ⁻¹ h (h l) hk hN hl hlN hMFh eigl`. Establish `f0 : (fun τ => ∑ j : Fin l, slz k (repL (N * l) l (some j)) (qs h) τ) = fun τ => ((l : ℂ) ^ k) * qs (Vo l h) τ + 0 * qs (Vo l h) τ`. Use function extensionality and compare the values at `τ`. Rewrite using `[tr0]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `f1 : (fun τ => ∑ j : Fin l, slz k (repL (N * l) l (some j)) (qs (Vo l h)) τ) = fun τ => (ch χ⁻¹⁻¹ l * h l) * qs (Vo l h) τ + (-(ch χ⁻¹⁻¹ l * (l : ℂ)⁻¹)) * qs h τ`. Use function extensionality and compare the values at `τ`. Rewrite using `[tr1]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `adjU0` using `[f0, petlin.2 (Vo l h) (Vo l h) a _ 0 hCFV hCFV ha.1]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `adjU1` using `[f1, petlin.2 (Vo l h) h a _ _ hCFV hCFh ha.1]`. Establish `e1 : conj (ch χ⁻¹⁻¹ (l : ℤ)) = χ⁻¹ (l : ZMod N)`. Rewrite using `[inv_inv]`. Simplify using `only [ch, Int.cast_natCast]`. Conclude with `hconj _`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `hgl : conj (h l) = g l` using `by simp [hh_def]`. Establish `hl0 : (l : ℂ) ≠ 0` using `by exact_mod_cast hl.ne_zero`. Establish `key : (l : ℂ) ^ (k - 1) / (l : ℂ) ^ k = (l : ℂ)⁻¹`. Take `⟨m, rfl⟩ : ∃ m, k = m + 1` from `⟨k - 1, by omega⟩`. Simplify using `only [Nat.add_sub_cancel, pow_succ]`.
-
-Clear the denominators using the available nonvanishing facts. Simplify using `only [map_mul, map_neg, map_inv₀, map_pow, Complex.conj_natCast, map_zero, e1, hgl, zero_mul, add_zero] at adjU0 adjU1`. Simplify using `only [hφ_def, adjU0, adjU1]`. Use `set P0 := pet k ρ (qs h) (qs a)`. Use `set P1 := pet k ρ (qs (Vo l h)) (qs a)`.
-
-Establish `hcan : (l : ℂ) ^ k / (l : ℂ) ^ k = 1` using `div_self (pow_ne_zero _ hl0)`. Take the linear combination `(-P1) * hab + (P0 / (l : ℂ) ^ k) * hαβ + (χ⁻¹ (l : ZMod N) * P0) * key + (-β * P1) * hcan`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem eigF_of_prim : ∀ (k N l : ℕ) (χ : DirichletCharacter ℂ N) (g : ℕ → ℂ) (ρ : ℍ → ℝ) (α β : ℂ), 1 ≤ k → 0 < N → l.Prime → ¬ l ∣ N → Prim k N χ g → Wt (N * l) ρ → α + β = χ⁻¹ l * g l → α * β = χ⁻¹ l * (l : ℂ) ^ (k - 1) → ∃ (B : ℕ) (c : ℕ → ℂ), EigF k N l χ⁻¹ (fun q => χ⁻¹ q * g q) α B c ∧ ∀ a, MF k (N * l) (ch χ⁻¹) a → lam B c a = pet k ρ (qs (Vo l fun n => conj (g n))) (qs a) - β / (l : ℂ) ^ k * pet k ρ (qs fun n => conj (g n)) (qs a) := by
   intro k N l χ g ρ α β hk hN hl hlN hg hρ hab hαβ

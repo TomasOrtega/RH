@@ -13,14 +13,14 @@ noncomputable section
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : Data E r)
 
 /- English proof (translation)
-The claim follows from `add_nonneg (ExF.rhF_nonneg X x0 ho hz) (Real.log_nonneg (by nlinarith [norm_nonneg z]))`.
+A detailed English derivation is pending.
 -/
 theorem eF_nonneg (x0 : Frame X.Ψ r) (ho : IsOrth X x0) {z : V (nd X)} (hz : z ∈ OmF X x0) :
     0 ≤ eF X x0 z :=
   add_nonneg (ExF.rhF_nonneg X x0 ho hz) (Real.log_nonneg (by nlinarith [norm_nonneg z]))
 
 /- English proof (translation)
-Introduce `y hy ξ`. Take `⟨S, hSz, hSe⟩` from `exhaustF_holds (E := E) r X x0 ho`. Establish `h` using `S.levi_e ⟨y, hy⟩ ξ`. Rewrite `h` using `[hSz, hSe]`. Rewrite `h` using `[HE.levi_val (ExF.isOpen_OmF X x0) (eF X x0)]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem eF_levi (x0 : Frame X.Ψ r) (ho : IsOrth X x0) :
     ∀ y ∈ OmF X x0, ∀ ξ : Fin (nd X) → ℂ, 0 ≤ (leviV (nd X) (fun w => (eF X x0 w : ℂ)) y ξ).re := by
@@ -31,13 +31,13 @@ theorem eF_levi (x0 : Frame X.Ψ r) (ho : IsOrth X x0) :
   rwa [HE.levi_val (ExF.isOpen_OmF X x0) (eF X x0)] at h
 
 /- English proof (translation)
-Introduce `z hz` and use `(ExF.eF_contDiffAt X x0 ho hz).contDiffWithinAt`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem eF_smooth (x0 : Frame X.Ψ r) (ho : IsOrth X x0) : ContDiffOn ℝ ∞ (eF X x0) (OmF X x0) :=
   fun z hz => (ExF.eF_contDiffAt X x0 ho hz).contDiffWithinAt
 
 /- English proof (translation)
-The claim follows from `ExF.isCompact_subF X x0 ho a`.
+A detailed English derivation is pending.
 -/
 theorem eF_compact (x0 : Frame X.Ψ r) (ho : IsOrth X x0) (a : ℝ) :
     IsCompact {y | y ∈ OmF X x0 ∧ eF X x0 y ≤ a} := ExF.isCompact_subF X x0 ho a
@@ -47,7 +47,7 @@ def psie (x0 : Frame X.Ψ r) (Fp L : Wt X.Ψ r) (ψ : Frame X.Ψ r → ℝ) (bb 
     Real.log (densF X x0 w)
 
 /- English proof (translation)
-The claim follows from `(((((phla_cpt_cdAt X x0 hz Fp).add (hψs.contDiffAt ((ExF.isOpen_OmF X x0).mem_nhds hz))).sub (contDiffAt_const.mul (phla_cpt_cdAt X x0 hz L))).sub (contDiffAt_const.mul (ExF.rhF_contDiffAt X x0 ho hz))).sub (logDens_cdAt X x0 hz))`.
+A detailed English derivation is pending.
 -/
 theorem psie_cdAt (x0 : Frame X.Ψ r) (ho : IsOrth X x0) (Fp L : Wt X.Ψ r) (ψ : Frame X.Ψ r → ℝ)
     (hψs : ContDiffOn ℝ ∞ (fun z => ψ (cpt X x0 z)) (OmF X x0)) (bb : ℝ) {z : V (nd X)}
@@ -57,11 +57,11 @@ theorem psie_cdAt (x0 : Frame X.Ψ r) (ho : IsOrth X x0) (Fp L : Wt X.Ψ r) (ψ 
       (contDiffAt_const.mul (ExF.rhF_contDiffAt X x0 ho hz))).sub (logDens_cdAt X x0 hz))
 
 /- English proof (translation)
-Establish `h1` using `(phla_cpt_cdAt X x0 hz Fp).of_le HE.two_le_inf`. Establish `h2` using `(hψs.contDiffAt ((ExF.isOpen_OmF X x0).mem_nhds hz)).of_le HE.two_le_inf`. Establish `h3` using `(phla_cpt_cdAt X x0 hz L).of_le HE.two_le_inf`. Establish `h4` using `(ExF.rhF_contDiffAt X x0 ho hz).of_le HE.two_le_inf`. Establish `h5` using `(logDens_cdAt X x0 hz).of_le HE.two_le_inf`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : (fun w => (psie X x0 Fp L ψ bb w : ℂ)) = fun w => ((phla X Fp (cpt X x0 w) + (ψ (cpt X x0 w) + ((-(nd X : ℝ)) * phla X L (cpt X x0 w) + ((-bb) * rhF X x0 w + (-1) * Real.log (densF X x0 w)))) : ℝ) : ℂ)`. Use function extensionality and compare the values at `w`. Simplify using `only [psie]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[e, Y.LocalMaximumSecondDerivative.leviV_ofReal_add h1 (h2.add ((contDiffAt_const.mul h3).add ((contDiffAt_const.mul h4).add (contDiffAt_const.mul h5)))), Y.LocalMaximumSecondDerivative.leviV_ofReal_add h2 ((contDiffAt_const.mul h3).add ((contDiffAt_const.mul h4).add (contDiffAt_ …`. Simplify using `only [Complex.add_re, Complex.re_ofReal_mul, leviO, leviM, leviRh, leviDens]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem psie_levi (x0 : Frame X.Ψ r) (ho : IsOrth X x0) (Fp L : Wt X.Ψ r) (ψ : Frame X.Ψ r → ℝ)
     (hψs : ContDiffOn ℝ ∞ (fun z => ψ (cpt X x0 z)) (OmF X x0)) (bb : ℝ) {z : V (nd X)}
@@ -98,7 +98,7 @@ Both sides reduce to the same expression.
 theorem mat_idF (τ : X.Ψ) : mat (idF X) τ = 1 := rfl
 
 /- English proof (translation)
-Introduce `τ`. Use `⟨?_, fun a c h => ?_⟩` and prove the remaining obligations. Rewrite using `[mat_idF, Matrix.det_one]`. Conclude with `one_ne_zero`. Conclude with `Matrix.one_apply_ne h.ne'`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem idF_mem : idF X ∈ Bor X.Ψ r := by
   intro τ
@@ -108,7 +108,7 @@ theorem idF_mem : idF X ∈ Bor X.Ψ r := by
   · exact Matrix.one_apply_ne h.ne'
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Use `show mat x τ * mat (idF X) τ = x τ`. Rewrite using `[mat_idF, Matrix.mul_one]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem rmul_idF (x : Frame X.Ψ r) : rmul x (idF X) = x := by
   funext τ
@@ -117,11 +117,11 @@ theorem rmul_idF (x : Frame X.Ψ r) : rmul x (idF X) = x := by
   rfl
 
 /- English proof (translation)
-Establish `hw0 : X.IsSec Xa.L Fl.w0` using `Fl.weightForm_vanishes.1.1.1`. Establish `hs : ∀ k, X.IsSec Xa.L (Fl.s k)` using `fun k => (Fl.s_van k).1.1.1`. Establish `hx0` using `orth_mem_dom X x0 ho`. Establish `hw : Fl.w0 x0 ≠ 0`. Introduce `h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `Fl.w0_ne j` to reduce the goal to its premises. Rewrite using `[hx, hw0.2.1 x0 hx0 b0 hb0, h, mul_zero]`. Establish `hS : ∀ k, Fl.s k (Fl.xs j) = 0` using `(Fl.S_eq (Fl.xs j) (Fl.xs_mem j)).2 ⟨j, 1, X.Γ.one_mem, idF X, idF_mem X, by`. Rewrite using `[rmul_idF, lact_one]⟩`. Use `⟨hw, fun k => ?_, ?_⟩` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h` using `hS k`. Rewrite `h` using `[hx, (hs k).2.1 x0 hx0 b0 hb0]`. Conclude with `(mul_eq_zero.1 h).resolve_left (bchar_ne_zero X hb0 _)`. Conclude with `etale_transfer X hLU hw0 hs (Fl.xs_mem j) (Fl.coord j) X.Γ.one_mem (idF_mem X) ho hb0 (by rw [rmul_idF, lact_one, hx]) hw`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coord_data (hLU : LUStatement (E := E)) (Xa : ArchInM X) (Fl : FlatM X Xa) (j : Fin Fl.δ)
     (x0 : Frame X.Ψ r) (ho : IsOrth X x0) (b0 : Frame X.Ψ r) (hb0 : b0 ∈ Bor X.Ψ r)
@@ -146,33 +146,31 @@ theorem coord_data (hLU : LUStatement (E := E)) (Xa : ArchInM X) (Fl : FlatM X X
       (by rw [rmul_idF, lact_one, hx]) hw
 
 /- English proof (translation)
-Take `⟨hw, hs0, hdet⟩` from `coord_data X hLU Xa Fl j x0 ho b0 hb0 hx`. Establish `hw0 : X.IsSec Xa.L Fl.w0` using `Fl.weightForm_vanishes.1.1.1`. Establish `hs : ∀ k, X.IsSec Xa.L (Fl.s k)` using `fun k => (Fl.s_van k).1.1.1`. Establish `hx0` using `orth_mem_dom X x0 ho`. Establish `hO` using `ExF.isOpen_OmF X x0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h00` using `zero_mem_OmF X x0 ho`. Establish `hσd : DifferentiableAt ℂ (fun z => sig X Fl.w0 Fl.s (cpt X x0 z)) 0` using `sig_cpt_diffAt X hw0 hs (by rw [cpt_zero]; exact hx0) (by rw [cpt_zero]; exact hw)`. Establish `hσ0 : (fun z => sig X Fl.w0 Fl.s (cpt X x0 z)) 0 = 0` using `by show WithLp.toLp 2 (fun k => Fl.s k (cpt X x0 0) / Fl.w0 (cpt X x0 0)) = 0`. Simplify using `only [cpt_zero, hs0, zero_div]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Take `⟨δ, hδ, hiso0⟩` from `HE.iso_zero hσd.hasFDerivAt hdet hσ0`. Take `⟨ρ, hρ, hρU⟩` from `Metric.isOpen_iff.1 hO 0 h00`. Establish `hε : 0 < min (δ / 2) (ρ / 4)` using `lt_min (by positivity) (by positivity)`. Establish `hε1` using `min_le_left (δ / 2) (ρ / 4)`. Establish `hε2` using `min_le_right (δ / 2) (ρ / 4)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hball : closedBall (0 : V (nd X)) (2 * min (δ / 2) (ρ / 4)) ⊆ OmF X x0` using `fun y hy => hρU (mem_ball.2 (lt_of_le_of_lt (mem_closedBall.1 hy) (by linarith)))`. Establish `hiso : ∀ y ∈ closedBall (0 : V (nd X)) (2 * min (δ / 2) (ρ / 4)), (∀ k, Fl.s k (cpt X x0 y) = 0) → y = 0`. Introduce `y hy hsy`. Use `hiso0 y (mem_closedBall.2 ((mem_closedBall.1 hy).trans (by linarith))) ?_` and prove the remaining obligations. Use `show WithLp.toLp 2 (fun k => Fl.s k (cpt X x0 y) / Fl.w0 (cpt X x0 y)) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [hsy, zero_div]`. Both sides reduce to the same expression. Take `⟨k0, hk0⟩` from `HE.coord_ne_of_det (f := fun z => sig X Fl.w0 Fl.s (cpt X x0 z)) (by have := Xa.n_ge; omega) hdet`. Establish `hsd : ∀ k, DifferentiableOn ℂ (fun z => Fl.s k (cpt X x0 z)) (OmF X x0)` using `fun k => comp_cpt_diffOn X (hs k).1 x0`. Establish `hk0' : ¬ (fun z => Fl.s k0 (cpt X x0 z)) =ᶠ[𝓝 0] 0`.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Apply `hk0` to reduce the goal to its premises. Use `filter_upwards [h] with z hz`. Use `show Fl.s k0 (cpt X x0 z) / Fl.w0 (cpt X x0 z) = 0`. Rewrite using `[show Fl.s k0 (cpt X x0 z) = 0 from hz, zero_div]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgn` using `HE.hgn_of hO (hC r X x0 ho) (hsd k0) h00 hk0'`. Establish `hm : 0 < m` using `hbb.trans hbm`. Establish `hq : 0 < 1 - bb / m` using `by rw [sub_pos, div_lt_one hm]; exact hbm`. Establish `hlevi : ∀ z ∈ OmF X x0, ∀ ξ : Fin (nd X) → ℂ, (1 - bb / m) * (leviO X x0 (phla X Xa.Fp) z ξ - leviDens X x0 z ξ - (nd X : ℝ) * leviO X x0 (phla X Xa.L) z ξ + leviO X x0 ψ z ξ) ≤ (leviV (nd X) (fun w => (psie X x0 Xa.Fp Xa.L ψ bb w : ℂ)) z ξ).re`. Introduce `z hz ξ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[psie_levi X x0 ho Xa.Fp Xa.L ψ hψs bb hz ξ]`. Establish `h1` using `hmar z hz ξ`. Establish `h2 : bb * leviRh X x0 z ξ ≤ bb / m * (leviO X x0 (phla X Xa.Fp) z ξ - leviDens X x0 z ξ - (nd X : ℝ) * leviO X x0 (phla X Xa.L) z ξ + leviO X x0 ψ z ξ)`. Use `mul_le_mul_of_nonneg_left h1 (div_nonneg hbb.le hm.le)` as an intermediate fact. Rewrite `this` using `[← mul_assoc, div_mul_cancel₀ _ hm.ne']`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use the polynomial consequences of the given equalities and inequalities. Establish `hψl : ∀ y ∈ OmF X x0, ∀ ξ : Fin (nd X) → ℂ, 0 ≤ (leviV (nd X) (fun w => (psie X x0 Xa.Fp Xa.L ψ bb w : ℂ)) y ξ).re`. Introduce `y hy ξ`. Use `le_trans ?_ (hlevi y hy ξ)` and prove the remaining obligations. Use `hstr y hy ξ` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `hLnn y hy ξ` as an intermediate fact. Conclude with `mul_nonneg hq.le (by nlinarith)`. Establish `hgL : ContDiffOn ℝ ∞ (fun w => phla X Xa.L (cpt X x0 w)) (OmF X x0)` using `fun z hz => (phla_cpt_cdAt X x0 hz Xa.L).contDiffWithinAt`. Take `⟨cL, hcL, hcLb⟩` from `HE.levi_unif hO hgL (isCompact_closedBall _ _) hball (fun z hz ξ hξ => Xa.posL x0 hx0 z (hball hz) ξ hξ)`. Establish `hc : 0 < (1 - bb / m) * (2 * η) * cL` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hpos : ∀ y ∈ closedBall (0 : V (nd X)) (2 * min (δ / 2) (ρ / 4)), ∀ ξ : Fin (nd X) → ℂ, (1 - bb / m) * (2 * η) * cL * ∑ j, ‖ξ j‖ ^ 2 ≤ (leviV (nd X) (fun w => (psie X x0 Xa.Fp Xa.L ψ bb w : ℂ)) y ξ).re`. Introduce `y hy ξ`. Use `le_trans ?_ (hlevi y (hball hy) ξ)` and prove the remaining obligations. Establish `h1` using `hcLb y hy ξ`. Establish `h2` using `hstr y (hball hy) ξ`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Extract witnesses or component facts from the available result.
 
-Establish `h3 : (1 - bb / m) * (2 * η) * (cL * ∑ j, ‖ξ j‖ ^ 2) ≤ (1 - bb / m) * (2 * η * leviO X x0 (phla X Xa.L) y ξ)`. Rewrite using `[mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left (mul_le_mul_of_nonneg_left h1 (by positivity)) hq.le`. Use the polynomial consequences of the given equalities and inequalities. Take `⟨F, hFd, hI⟩` from `HE.interp_euclid hO (eF X x0) (eF_smooth X x0 ho) (eF_levi X x0 ho) (eF_compact X x0 ho) (fun y hy => eF_nonneg X x0 ho hy) (fun k z => Fl.s k (cpt X x0 z)) hsd k0 hgn (psie X x0 Xa.Fp Xa.L ψ bb) (fun z hz => (psie_cdAt X x0 ho Xa.Fp Xa.L ψ hψs bb hz).contDiffWithinAt) hψl (min ( …`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hnull : volume {y | y ∈ OmF X x0 ∧ HE.nsq (fun k z => Fl.s k (cpt X x0 z)) y = 0} = 0`. Establish `hsub : {y | y ∈ OmF X x0 ∧ HE.nsq (fun k z => Fl.s k (cpt X x0 z)) y = 0} ⊆ {y | y ∈ OmF X x0 ∧ Fl.s k0 (cpt X x0 y) = 0}`. Introduce `y hy`. Use `⟨hy.1, ?_⟩` and prove the remaining obligations. Establish `h0` using `hy.2`.
-
-Unfold `HE.nsq at h0`. Use `(Finset.sum_eq_zero_iff_of_nonneg (fun k _ => Complex.normSq_nonneg _)).1 h0 k0 (Finset.mem_univ _)` as an intermediate fact. Conclude with `Complex.normSq_eq_zero.1 this`. Conclude with `measure_mono_null hsub (HE.zeros_null hO (hsd k0) hgn)`. Conclude with `⟨min (δ / 2) (ρ / 4), hε, hball, hiso, hnull, F, hFd, hI⟩`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem coord_step (hLU : LUStatement (E := E)) (hC : OmFConnStatement (E := E)) (Xa : ArchInM X)
     (Fl : FlatM X Xa) (ψ : Frame X.Ψ r → ℝ) (x0 : Frame X.Ψ r) (ho : IsOrth X x0)
@@ -287,11 +285,11 @@ theorem coord_step (hLU : LUStatement (E := E)) (hC : OmFConnStatement (E := E))
   exact ⟨min (δ / 2) (ρ / 4), hε, hball, hiso, hnull, F, hFd, hI⟩
 
 /- English proof (translation)
-Unfold `densF`. Establish `hd : cpt X x0 z ∈ X.dom` using `hz`. Use `Finset.prod_pos fun τ _ => Finset.prod_pos fun i _ => ?_` and prove the remaining obligations. Establish `h` using `(hd τ).2 i.castSucc`. Establish `hne : dmin X.Gm (cpt X x0 z) τ i.castSucc ≠ 0`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `h0`. Rewrite `h` using `[h0]`. Simplify using `at h`. Use `first`. Consider the case `exact zpow_pos (norm_pos_iff.mpr hne) _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately.
 
-Consider the case `exact Real.rpow_pos_of_pos (norm_pos_iff.mpr hne) _`. Consider the case `positivity`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem densF_pos (x0 : Frame X.Ψ r) {z : V (nd X)} (hz : z ∈ OmF X x0) : 0 < densF X x0 z := by
   unfold densF
@@ -308,9 +306,9 @@ theorem densF_pos (x0 : Frame X.Ψ r) {z : V (nd X)} (hz : z ∈ OmF X x0) : 0 <
   | positivity
 
 /- English proof (translation)
-Unfold `dmin lminor`. Use `(Continuous.matrix_submatrix ?_ _ _).matrix_det` and prove the remaining obligations. Use `continuous_pi fun a => continuous_pi fun b => ?_` and prove the remaining obligations. Establish `hc : ∀ i j, Continuous fun y : Frame X.Ψ r => mat y τ i j` using `fun i j => (continuous_apply j).comp ((continuous_apply i).comp (continuous_apply τ))`. Simplify using `only [FD.gram, FD.hermC, FD.col, Matrix.of_apply]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `continuous_finset_sum _ fun a' _ => continuous_finset_sum _ fun b' _ => ((hc a' a).mul continuous_const).mul (Complex.continuous_conj.comp (hc b' b))`.
+A detailed English derivation is pending.
 -/
 private lemma continuous_dmin_Gm (τ : X.Ψ) (i : Fin (r + 1)) :
     Continuous fun y : Frame X.Ψ r => dmin X.Gm y τ i := by
@@ -324,11 +322,11 @@ private lemma continuous_dmin_Gm (τ : X.Ψ) (i : Fin (r + 1)) :
     ((hc a' a).mul continuous_const).mul (Complex.continuous_conj.comp (hc b' b))
 
 /- English proof (translation)
-Establish `hr : Continuous fun y : Frame X.Ψ r => rmul x0 y` using `continuous_pi fun τ => (show Continuous fun y : Frame X.Ψ r => (mat x0 τ * mat y τ : Matrix (Fin r) (Fin r) ℂ) from continuous_const.matrix_mul (continuous_apply τ))`. Unfold `cpt nmat`. Use `hr.comp ?_` and prove the remaining obligations. Use `continuous_pi fun τ => continuous_pi fun a => continuous_pi fun b => ?_` and prove the remaining obligations. Distinguish the cases in `h : b < a`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Simplify using `only [dif_pos h] first`. Consider the case `fun_prop`. Consider the case `exact (continuous_apply _).comp (PiLp.continuous_ofLp 2 _)`. Consider the case `continuity`. Simplify using `only [dif_neg h]`.
+Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Conclude with `continuous_const`.
+A detailed English derivation is pending.
 -/
 private lemma continuous_cpt' (x0 : Frame X.Ψ r) : Continuous (cpt X x0) := by
   have hr : Continuous fun y : Frame X.Ψ r => rmul x0 y := continuous_pi fun τ =>
@@ -347,9 +345,9 @@ private lemma continuous_cpt' (x0 : Frame X.Ψ r) : Continuous (cpt X x0) := by
     exact continuous_const
 
 /- English proof (translation)
-Unfold `densF`. Use `Finset.measurable_prod _ fun τ _ => Finset.measurable_prod _ fun i _ => ?_` and prove the remaining obligations. Establish `hm` using `((continuous_dmin_Gm X τ i.castSucc).comp (continuous_cpt' X x0)).norm.measurable`. Use `first`. Consider the case `exact hm.pow_const _`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
-Consider the case `(simp only [zpow_neg]; exact (hm.pow_const _).inv)`. Consider the case `fun_prop`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem densF_meas (x0 : Frame X.Ψ r) : Measurable (densF X x0) := by
   unfold densF
@@ -364,7 +362,7 @@ def rhoF (x0 : Frame X.Ψ r) (Fp : Wt X.Ψ r) (ψ : Frame X.Ψ r → ℝ) (bb : 
   Real.exp (-(phla X Fp (cpt X x0 z) + ψ (cpt X x0 z)) + bb * rhF X x0 z + Real.log (densF X x0 z))
 
 /- English proof (translation)
-Introduce `h0`. Establish `h` using `(hx τ).2 i`. Rewrite `h` using `[h0]`. Simplify using `at h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private lemma dmin_ne_zero_of_mem_dom' {x : Frame X.Ψ r} (hx : x ∈ X.dom) (τ : X.Ψ) (i : Fin (r + 1)) :
     dmin X.Gm x τ i ≠ 0 := by
@@ -374,9 +372,9 @@ private lemma dmin_ne_zero_of_mem_dom' {x : Frame X.Ψ r} (hx : x ∈ X.dom) (τ
   simp at h
 
 /- English proof (translation)
-Establish `h : X.dom = ⋂ τ : X.Ψ, ({x : Frame X.Ψ r | (mat x τ).det ≠ 0} ∩ ⋂ i : Fin (r + 1), {x : Frame X.Ψ r | 0 < psgn X.p0 i * (dmin X.Gm x τ i).re})`. Use extensionality with `x`. Simplify using `[FD.GG]`. Rewrite using `[h]`. Use `isOpen_iInter_of_finite fun τ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `IsOpen.inter ?_ (isOpen_iInter_of_finite fun i => ?_)` and prove the remaining obligations. Conclude with `isOpen_ne_fun ((show Continuous fun x : Frame X.Ψ r => mat x τ from continuous_apply τ).matrix_det) continuous_const`. Conclude with `isOpen_lt continuous_const (continuous_const.mul (Complex.continuous_re.comp (continuous_dmin_Gm X τ i)))`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private lemma isOpen_data_dom : IsOpen X.dom := by
   have h : X.dom = ⋂ τ : X.Ψ, ({x : Frame X.Ψ r | (mat x τ).det ≠ 0} ∩
@@ -392,15 +390,13 @@ private lemma isOpen_data_dom : IsOpen X.dom := by
       (continuous_const.mul (Complex.continuous_re.comp (continuous_dmin_Gm X τ i)))
 
 /- English proof (translation)
-Establish `hO : IsOpen (OmF X x0)` using `(isOpen_data_dom X).preimage (continuous_cpt' X x0)`. Use `fun z hz => ContinuousAt.continuousWithinAt ?_` and prove the remaining obligations. Establish `hc : cpt X x0 z ∈ X.dom` using `hz`. Establish `hdm : ∀ τ i, ContinuousAt (fun w => dmin X.Gm (cpt X x0 w) τ i) z` using `fun τ i => ((continuous_dmin_Gm X τ i).comp (continuous_cpt' X x0)).continuousAt`. Establish `hne : ∀ τ i, dmin X.Gm (cpt X x0 z) τ i ≠ 0` using `fun τ i => dmin_ne_zero_of_mem_dom' X hc τ i`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnf : ContinuousAt (fun w => X.nfac Fp (cpt X x0 w)) z` using `by show ContinuousAt (fun w => ∏ τ, ∏ i : Fin r, ‖dmin X.Gm (cpt X x0 w) τ i.succ / dmin X.Gm (cpt X x0 w) τ i.castSucc‖ ^ (-(Fp τ i : ℝ) / 2)) z`. Conclude with `tendsto_finset_prod _ fun τ _ => tendsto_finset_prod _ fun i _ => ((hdm τ i.succ).div (hdm τ i.castSucc) (hne τ _)).norm.rpow_const (Or.inl (norm_ne_zero_iff.mpr (div_ne_zero (hne τ _) (hne τ _))))`. Establish `hnp : 0 < X.nfac Fp (cpt X x0 z)`. Unfold `Data.nfac`. Conclude with `Finset.prod_pos fun τ _ => Finset.prod_pos fun i _ => Real.rpow_pos_of_pos (norm_pos_iff.mpr (div_ne_zero (hne τ _) (hne τ _))) _`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hph : ContinuousAt (fun w => phla X Fp (cpt X x0 w)) z` using `by show ContinuousAt (fun w => -2 * Real.log (X.nfac Fp (cpt X x0 w))) z`. Conclude with `continuousAt_const.mul (hnf.log hnp.ne')`. Establish `hψ : ContinuousAt (fun w => ψ (cpt X x0 w)) z` using `hψs.continuousOn.continuousAt (hO.mem_nhds hz)`. Establish `hrh : ContinuousAt (rhF X x0) z`. Unfold `rhF`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(tendsto_finset_sum _ fun τ _ => (hdm τ _).norm.log (norm_ne_zero_iff.mpr (hne τ _))).neg`. Establish `hdF : ContinuousAt (densF X x0) z`. Unfold `densF`. Use `tendsto_finset_prod _ fun τ _ => tendsto_finset_prod _ fun i _ => ?_` and prove the remaining obligations. Use `first`.
-
-Consider the case `exact (hdm τ _).norm.zpow₀ _ (Or.inl (norm_ne_zero_iff.mpr (hne τ _)))`. Consider the case `exact (hdm τ _).norm.rpow_const (Or.inl (norm_ne_zero_iff.mpr (hne τ _)))`. Unfold `rhoF`. Conclude with `(((hph.add hψ).neg.add (continuousAt_const.mul hrh)).add (hdF.log (densF_pos X x0 hz).ne')).rexp`.
+Treat this case separately. Treat this case separately. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem rhoF_cont (x0 : Frame X.Ψ r) (ho : IsOrth X x0) (Fp : Wt X.Ψ r) (ψ : Frame X.Ψ r → ℝ)
     (hψs : ContDiffOn ℝ ∞ (fun z => ψ (cpt X x0 z)) (OmF X x0)) (bb : ℝ) :
@@ -440,7 +436,7 @@ theorem rhoF_cont (x0 : Frame X.Ψ r) (ho : IsOrth X x0) (Fp : Wt X.Ψ r) (ψ : 
     (hdF.log (densF_pos X x0 hz).ne')).rexp
 
 /- English proof (translation)
-Unfold `Data.nfac`. Use `Finset.prod_pos fun τ _ => Finset.prod_pos fun i _ => Real.rpow_pos_of_pos (norm_pos_iff.mpr (div_ne_zero (dmin_ne_zero_of_mem_dom' X hx τ _) (dmin_ne_zero_of_mem_dom' X hx τ _))) _` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem nfac_pos' (la : Wt X.Ψ r) {x : Frame X.Ψ r} (hx : x ∈ X.dom) : 0 < X.nfac la x := by
   unfold Data.nfac
@@ -448,7 +444,7 @@ theorem nfac_pos' (la : Wt X.Ψ r) {x : Frame X.Ψ r} (hx : x ∈ X.dom) : 0 < X
     (norm_pos_iff.mpr (div_ne_zero (dmin_ne_zero_of_mem_dom' X hx τ _) (dmin_ne_zero_of_mem_dom' X hx τ _))) _
 
 /- English proof (translation)
-Unfold `phla`. Establish `hn` using `nfac_pos' X la hx`. Rewrite using `[show -(-2 * Real.log (X.nfac la x)) = Real.log (X.nfac la x) * 2 by ring, Real.exp_mul, Real.exp_log hn, Real.rpow_two]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem exp_neg_phla (la : Wt X.Ψ r) {x : Frame X.Ψ r} (hx : x ∈ X.dom) :
     Real.exp (-phla X la x) = X.nfac la x ^ 2 := by
@@ -458,7 +454,7 @@ theorem exp_neg_phla (la : Wt X.Ψ r) {x : Frame X.Ψ r} (hx : x ∈ X.dom) :
     Real.exp_log hn, Real.rpow_two]
 
 /- English proof (translation)
-Rewrite using `[exp_neg_phla X L hx, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Unfold `Data.pnorm`. Rewrite using `[mul_pow, Complex.sq_norm]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem pnorm_sum_eq (L : Wt X.Ψ r) (s : Fin (nd X) → Frame X.Ψ r → ℂ) {x : Frame X.Ψ r}
     (hx : x ∈ X.dom) :
@@ -470,9 +466,9 @@ theorem pnorm_sum_eq (L : Wt X.Ψ r) (s : Fin (nd X) → Frame X.Ψ r → ℂ) {
   rfl
 
 /- English proof (translation)
-Establish `hc : cpt X x0 z ∈ X.dom` using `hz`. Establish `hNdef : HE.nsq (fun k w => s k (cpt X x0 w)) z = ∑ k, Complex.normSq (s k (cpt X x0 z))` using `rfl`. Establish `hNn : HE.nsq (fun k w => s k (cpt X x0 w)) z ^ (nd X : ℝ) ≠ 0` using `(Real.rpow_pos_of_pos hN _).ne'`. Rewrite using `[pnorm_sum_eq X L s hc, ← hNdef, Real.mul_rpow hN.le (Real.exp_pos _).le, ← Real.exp_mul, Real.rpow_neg hN.le, mul_assoc, ← mul_assoc _ (HE.nsq (fun k w => s k (cpt X x0 w)) z ^ (nd X : ℝ)), inv_mul_cancel₀ hNn, one_mul, ← Real.exp_add]`. Unfold `rhoF psie`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem rhoF_eq (x0 : Frame X.Ψ r) (Fp L : Wt X.Ψ r) (ψ : Frame X.Ψ r → ℝ) (bb : ℝ)
     (s : Fin (nd X) → Frame X.Ψ r → ℂ) {z : V (nd X)} (hz : z ∈ OmF X x0)
@@ -491,31 +487,27 @@ theorem rhoF_eq (x0 : Frame X.Ψ r) (Fp L : Wt X.Ψ r) (ψ : Frame X.Ψ r → �
   ring
 
 /- English proof (translation)
-Establish `hO` using `ExF.isOpen_OmF X x0`. Establish `hCk : ∀ k, ∃ C : ℝ, ∀ x ∈ X.dom, X.pnorm Xa.L (Fl.s k) x ≤ C` using `fun k => (Fl.s_van k).1.1.2`. Use `choose C hC using hCk`. Use `set Ks : ℝ := 1 + ∑ k, C k ^ 2 with hKs`. Establish `hKs1 : 1 ≤ Ks` using `by rw [hKs]; linarith [Finset.sum_nonneg fun k (_ : k ∈ Finset.univ) => sq_nonneg (C k)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hpn : ∀ x ∈ X.dom, ∑ k, X.pnorm Xa.L (Fl.s k) x ^ 2 ≤ Ks`. Introduce `x hx`. Establish `: ∑ k, X.pnorm Xa.L (Fl.s k) x ^ 2 ≤ ∑ k, C k ^ 2` using `Finset.sum_le_sum fun k _ => by`. Establish `h0 : 0 ≤ X.pnorm Xa.L (Fl.s k) x` using `mul_nonneg (norm_nonneg _) (nfac_pos' X _ hx).le`. Conclude with `pow_le_pow_left₀ h0 (hC k x hx) 2`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨B, hB⟩` from `(isCompact_closedBall (0 : V (nd X)) (2 * ε)).exists_bound_of_continuousOn ((rhoF_cont X x0 ho Xa.Fp ψ hψs bb).mono hball)`. Establish `hpt : ∀ᵐ z ∂(volume.restrict (OmF X x0)), ENNReal.ofReal (‖F z‖ ^ 2 * rhoF X x0 Xa.Fp ψ bb z) ≤ (closedBall (0 : V (nd X)) (2 * ε)).indicator (fun _ => ENNReal.ofReal (2 * |B|)) z + ENNReal.ofReal (2 * Ks ^ (nd X : ℝ)) * ENNReal.ofReal (‖HE.cut ε hε z - F z‖ ^ 2 * Real.exp (-psie …`. Rewrite using `[ae_restrict_iff' hO.measurableSet]`. Establish `hnull' : ∀ᵐ z ∂(volume : Measure (V (nd X))), z ∉ {y | y ∈ OmF X x0 ∧ HE.nsq (fun k z => Fl.s k (cpt X x0 z)) y = 0}` using `measure_eq_zero_iff_ae_notMem.1 hnull`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Use `filter_upwards [hnull'] with z hz0 hz`. Establish `hN : 0 < HE.nsq (fun k z => Fl.s k (cpt X x0 z)) z`. Break down `(HE.nsq_nonneg _ z).lt_or_eq with h | h` into its components or cases. Conclude with `h`. Conclude with `absurd ⟨hz, h.symm⟩ hz0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx : cpt X x0 z ∈ X.dom` using `hz`. Establish `hrho` using `rhoF_eq X x0 Xa.Fp Xa.L ψ bb Fl.s hz hN`. Use `set A := Real.exp (-psie X x0 Xa.Fp Xa.L ψ bb z) * HE.nsq (fun k z => Fl.s k (cpt X x0 z)) z ^ (-(nd X : ℝ)) with hAdef`. Establish `hA : 0 ≤ A` using `by positivity`. Establish `hP` using `hpn _ hx`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hP0 : 0 ≤ ∑ k, X.pnorm Xa.L (Fl.s k) (cpt X x0 z) ^ 2` using `Finset.sum_nonneg fun k _ => sq_nonneg _`. Establish `hrho_le : rhoF X x0 Xa.Fp ψ bb z ≤ A * Ks ^ (nd X : ℝ)`. Rewrite using `[hrho]`. Conclude with `mul_le_mul_of_nonneg_left (Real.rpow_le_rpow hP0 hP (Nat.cast_nonneg _)) hA`. Establish `hrho0 : 0 ≤ rhoF X x0 Xa.Fp ψ bb z` using `(Real.exp_pos _).le`.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Establish `hsq` using `HE.sq_le_two (HE.cut ε hε z) (F z)`. Establish `hc1` using `HE.cut_norm_le ε hε z`. Establish `hsplit : ‖F z‖ ^ 2 * rhoF X x0 Xa.Fp ψ bb z ≤ 2 * ‖HE.cut ε hε z‖ ^ 2 * rhoF X x0 Xa.Fp ψ bb z + 2 * Ks ^ (nd X : ℝ) * (‖HE.cut ε hε z - F z‖ ^ 2 * A)`. Establish `h1` using `mul_le_mul_of_nonneg_right hsq hrho0`. Establish `h2 : 2 * ‖HE.cut ε hε z - F z‖ ^ 2 * rhoF X x0 Xa.Fp ψ bb z ≤ 2 * ‖HE.cut ε hε z - F z‖ ^ 2 * (A * Ks ^ (nd X : ℝ))` using `mul_le_mul_of_nonneg_left hrho_le (by positivity)`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use the polynomial consequences of the given equalities and inequalities. Establish `hfirst : ENNReal.ofReal (2 * ‖HE.cut ε hε z‖ ^ 2 * rhoF X x0 Xa.Fp ψ bb z) ≤ (closedBall (0 : V (nd X)) (2 * ε)).indicator (fun _ => ENNReal.ofReal (2 * |B|)) z`. Distinguish the cases in `hzb : z ∈ closedBall (0 : V (nd X)) (2 * ε)`. Rewrite using `[Set.indicator_of_mem hzb]`. Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hBz` using `hB z hzb`. Rewrite `hBz` using `[Real.norm_of_nonneg hrho0]`. Establish `: ‖HE.cut ε hε z‖ ^ 2 ≤ 1` using `by nlinarith [norm_nonneg (HE.cut ε hε z)]`. Establish `hB0 : rhoF X x0 Xa.Fp ψ bb z ≤ |B|` using `hBz.trans (le_abs_self B)`. Use the polynomial consequences of the given equalities and inequalities.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hcz : HE.cut ε hε z = 0` using `HE.cut_zero ε hε (by`. Rewrite `hzb` using `[mem_closedBall, dist_zero_right, not_le]`. Conclude with `hzb.le)`. Rewrite using `[hcz]`. Simplify using the standard rewrite rules.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[ENNReal.ofReal_add (by positivity) (by positivity), ENNReal.ofReal_mul (p := 2 * Ks ^ (nd X : ℝ)) (by positivity)]`. Use `_ ≤ _ := by`. Establish `hAeq : ‖HE.cut ε hε z - F z‖ ^ 2 * A = ‖HE.cut ε hε z - F z‖ ^ 2 * Real.exp (-psie X x0 Xa.Fp Xa.L ψ bb z) * HE.nsq (fun k z => Fl.s k (cpt X x0 z)) z ^ (-(nd X : ℝ))`. Rewrite using `[hAdef]`.
-
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hAeq]`. Conclude with `add_le_add hfirst le_rfl`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[lintegral_add_left (measurable_const.indicator measurableSet_closedBall), lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]`.
-
-Use `_ < ⊤ := by`. Use `ENNReal.add_lt_top.2 ⟨?_, ENNReal.mul_lt_top ENNReal.ofReal_lt_top hI⟩` and prove the remaining obligations. Use `(setLIntegral_le_lintegral _ _).trans_lt ?_` and prove the remaining obligations. Rewrite using `[lintegral_indicator_const measurableSet_closedBall]`. Conclude with `ENNReal.mul_lt_top ENNReal.ofReal_lt_top measure_closedBall_lt_top`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integ_step (x0 : Frame X.Ψ r) (ho : IsOrth X x0) (Xa : ArchInM X) (Fl : FlatM X Xa)
     (ψ : Frame X.Ψ r → ℝ) (hψs : ContDiffOn ℝ ∞ (fun z => ψ (cpt X x0 z)) (OmF X x0)) (bb : ℝ)

@@ -6,21 +6,19 @@ open GlobalTheory.Dec (IsHaarSub IsIsoC NW IsSqIntIrr)
 open scoped Topology InnerProductSpace
 
 /- English proof (translation)
-Introduce `n ε H _ _ σ d hrep hF v a`. Take `⟨⟨_, hmul⟩, hiso, hcont⟩` from `hrep`. Establish `hinner : ∀ g ∈ UJset ε, ∀ x y : H, ⟪σ g x, σ g y⟫_ℂ = ⟪x, y⟫_ℂ` using `fun g hg x y => LinearIsometry.inner_map_map ⟨(σ g).toLinearMap, hiso g hg⟩ x y`. Establish `hmem : ∀ g : UJ ε, umat g ∈ UJset ε` using `fun g => g.2`. Establish `hcoef : ∀ w z : H, Continuous (coefOn (ε` using `ε) σ w z) := by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `w z`. Establish `hu : Continuous fun g : UJ ε => umat g` using `Units.continuous_val.comp continuous_subtype_val`. Establish `hs : Continuous fun g : UJ ε => σ (umat g) w` using `(hcont w).comp_continuous hu hmem`. Conclude with `continuous_const.inner hs`. Use `⟨hcoef a v, fun x => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hback : ∀ (g : UJ ε) (y : H), σ (umat g) (σ (umat g⁻¹) y) = y`. Introduce `g y`. Establish `h` using `hmul _ (hmem g) _ (hmem g⁻¹)`. Establish `hone : umat g * umat g⁻¹ = 1` using `by show ((g * g⁻¹ : UJ ε) : (Matrix (Fin n) (Fin n) ℂ)ˣ).val = 1`. Rewrite using `[mul_inv_cancel]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite `h` using `[hone]`. Establish `h1 : σ 1 = 1` using `by assumption`. Rewrite `h` using `[h1]`. Conclude with `(congrArg (fun f : H →L[ℂ] H => f y) h).symm`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key : ∀ g : UJ ε, coefOn σ v v g * coefOn σ a v (g⁻¹ * x) = coefOn σ v v g * star (coefOn σ v (σ (umat x) a) g)`. Introduce `g`. Use `congr 1`. Simplify using `only [coefOn]`. Establish `hsplit : σ (umat (g⁻¹ * x)) a = σ (umat g⁻¹) (σ (umat x) a)`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[show umat (g⁻¹ * x) = umat g⁻¹ * umat x from rfl, hmul _ (hmem _) _ (hmem _)]`. Both sides reduce to the same expression. Rewrite using `[hsplit]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← inner_conj_symm]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Use `show ∫ g, coefOn σ v v g * coefOn σ a v (g⁻¹ * x) ∂(muG ε) = _`. Rewrite using `[show (fun g => coefOn σ v v g * coefOn σ a v (g⁻¹ * x)) = fun g => coefOn σ v v g * star (coefOn σ v (σ (umat x) a) g) from funext key, (hF.2 v v v (σ (umat x) a)).2, inner_self_eq_norm_sq_to_K]`. Use `show _ = _ * ⟪v, σ (umat x) a⟫_ℂ`. Use `push_cast`.
-
-Rewrite using `[div_eq_mul_inv, div_eq_mul_inv, mul_assoc, mul_comm]`. Rewrite using `[mul_comm (_ * _) _, mul_comm ⟪v, σ (umat x) a⟫_ℂ, ← mul_assoc]`. Both sides reduce to the same expression.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Lit.Cusp.conv_coef :
     ∀ (n : ℕ) (ε : Fin n → Bool) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H]

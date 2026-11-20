@@ -16,19 +16,17 @@ section Rank
 variable {K : Type*} [Field K] {m l : Type*} [Fintype m] [Fintype l] [DecidableEq m]
 
 /- English proof (translation)
-Use `set f := A.mulVecLin with hf`. Establish `hr : Module.finrank K (LinearMap.range f) = A.rank` using `rfl`. Set `b : Module.Basis (Fin A.rank) K (LinearMap.range f)` to `Module.finBasisOfFinrankEq K _ hr`. Establish `hx : ∀ i, ∃ x, f x = (b i : m → K)` using `fun i => LinearMap.mem_range.1 (b i).2`. Use `choose x hx using hx`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `R : Matrix l (Fin A.rank) K` to `Matrix.of fun j i => x i j`. Establish `hRc : ∀ c : Fin A.rank → K, R *ᵥ c = ∑ i, c i • x i`. Introduce `c`. Use extensionality with `j`. Simplify using `[R, Matrix.mulVec, dotProduct, Finset.sum_apply, mul_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hAR : ∀ c : Fin A.rank → K, (A * R) *ᵥ c = ∑ i, c i • (b i : m → K)`. Introduce `c`. Rewrite using `[← Matrix.mulVec_mulVec, hRc]`. Establish `: A *ᵥ (∑ i, c i • x i) = f (∑ i, c i • x i)` using `rfl`. Rewrite using `[this, map_sum]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [map_smul, hx]`. Establish `hli : LinearIndependent K (fun i => (b i : m → K))` using `b.linearIndependent.map' (LinearMap.range f).subtype (Submodule.ker_subtype _)`. Establish `hker : LinearMap.ker (A * R).mulVecLin = ⊥`. Rewrite using `[LinearMap.ker_eq_bot']`. Introduce `c hc`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : ∑ i, c i • (b i : m → K) = 0`. Rewrite using `[← hAR]`. Conclude with `hc`. Use function extensionality and compare the values at `i`. Conclude with `Fintype.linearIndependent_iff.1 hli c h1 i`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨h, hh⟩` from `LinearMap.exists_leftInverse_of_injective _ hker`. Use `⟨LinearMap.toMatrix' h, R, ?_⟩` and prove the remaining obligations. Establish `h2 : LinearMap.toMatrix' (h.comp (A * R).mulVecLin) = 1`. Rewrite using `[hh, LinearMap.toMatrix'_id]`. Rewrite `h2` using `[LinearMap.toMatrix'_comp, ← Matrix.toLin'_apply', LinearMap.toMatrix'_toLin']`.
-
-Rewrite using `[Matrix.mul_assoc]`. Conclude with `h2`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_mul_mul_eq_one_of_rank (A : Matrix m l K) :
     ∃ (L : Matrix (Fin A.rank) m K) (R : Matrix l (Fin A.rank) K), L * A * R = 1 := by
@@ -70,11 +68,11 @@ theorem exists_mul_mul_eq_one_of_rank (A : Matrix m l K) :
 variable [TopologicalSpace K] [IsTopologicalRing K] [T1Space K]
 
 /- English proof (translation)
-Rewrite using `[isOpen_iff_forall_mem_open]`. Introduce `A₀ hA₀`. Take `⟨L, R, hLR⟩` from `exists_mul_mul_eq_one_of_rank A₀`. Use `⟨{A | (L * A * R).det ≠ 0}, fun A hA => ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `hu : IsUnit (L * A * R)` using `(Matrix.isUnit_iff_isUnit_det _).2 (isUnit_iff_ne_zero.2 hA)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1 : (L * A * R).rank = A₀.rank`. Rewrite using `[Matrix.rank_of_isUnit _ hu, Fintype.card_fin]`. Establish `h2 : (L * A * R).rank ≤ A.rank` using `(Matrix.rank_mul_le_left _ _).trans (Matrix.rank_mul_le_right _ _)`. Conclude with `le_trans hA₀ (h1 ▸ h2)`. Establish `hc : Continuous fun A : Matrix m l K => (L * A * R).det` using `((continuous_const.matrix_mul continuous_id).matrix_mul continuous_const).matrix_det`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `isOpen_compl_singleton.preimage hc`. Use `show (L * A₀ * R).det ≠ 0`. Rewrite using `[hLR, Matrix.det_one]`. Conclude with `one_ne_zero`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_setOf_le_rank (k : ℕ) : IsOpen {A : Matrix m l K | k ≤ A.rank} := by
   classical
@@ -111,9 +109,9 @@ def cellRank (g : GL (Fin n) F) (a b : ℕ) : ℕ :=
 variable {β γ}
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [submatrix_apply, mul_apply]`. Rewrite using `[← Fintype.sum_subtype_add_sum_subtype (fun k => a ≤ β k)]`. Establish `h0 : ∑ k : {k : Fin n // ¬ a ≤ β k}, (p : Matrix (Fin n) (Fin n) F) i k * M k (c j) = 0` using `Finset.sum_eq_zero fun k _ => by`. Establish `hk : β k < β i` using `lt_of_lt_of_le (not_le.1 k.2) i.2`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hp hk, zero_mul]`. Rewrite using `[h0, add_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem submatrix_mul_of_mem_blockUpper {p : GL (Fin n) F} (hp : p ∈ blockUpper F n β)
     (M : Matrix (Fin n) (Fin n) F) {ι : Type*} (c : ι → Fin n) (a : ℕ) :
@@ -131,9 +129,9 @@ theorem submatrix_mul_of_mem_blockUpper {p : GL (Fin n) F} (hp : p ∈ blockUppe
   rw [h0, add_zero]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [submatrix_apply, mul_apply]`. Rewrite using `[← Fintype.sum_subtype_add_sum_subtype (fun k => γ k ≤ b)]`. Establish `h0 : ∑ k : {k : Fin n // ¬ γ k ≤ b}, M (r i) k * (q : Matrix (Fin n) (Fin n) F) k j = 0` using `Finset.sum_eq_zero fun k _ => by`. Establish `hk : γ j < γ k` using `lt_of_le_of_lt j.2 (not_le.1 k.2)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hq hk, mul_zero]`. Rewrite using `[h0, add_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem mul_submatrix_of_mem_blockUpper {q : GL (Fin n) F} (hq : q ∈ blockUpper F n γ)
     (M : Matrix (Fin n) (Fin n) F) {ι : Type*} (r : ι → Fin n) (b : ℕ) :
@@ -151,7 +149,7 @@ theorem mul_submatrix_of_mem_blockUpper {q : GL (Fin n) F} (hq : q ∈ blockUppe
   rw [h0, add_zero]
 
 /- English proof (translation)
-Apply `Matrix.isUnit_det_of_right_inverse (B := ((p⁻¹ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F).submatrix (fun i : {i : Fin n // a ≤ β i} => (i : Fin n)) (fun i : {i : Fin n // a ≤ β i} => (i : Fin n)))` to reduce the goal to its premises. Rewrite using `[← submatrix_mul_of_mem_blockUpper hp, ← Units.val_mul, mul_inv_cancel, Units.val_one]`. Conclude with `Matrix.submatrix_one _ Subtype.val_injective`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_det_submatrix_of_mem_blockUpper {p : GL (Fin n) F} (hp : p ∈ blockUpper F n β)
     (a : ℕ) :
@@ -164,7 +162,7 @@ theorem isUnit_det_submatrix_of_mem_blockUpper {p : GL (Fin n) F} (hp : p ∈ bl
   exact Matrix.submatrix_one _ Subtype.val_injective
 
 /- English proof (translation)
-Apply `Matrix.isUnit_det_of_left_inverse (B := ((q⁻¹ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F).submatrix (fun j : {j : Fin n // γ j ≤ b} => (j : Fin n)) (fun j : {j : Fin n // γ j ≤ b} => (j : Fin n)))` to reduce the goal to its premises. Rewrite using `[← mul_submatrix_of_mem_blockUpper hq, ← Units.val_mul, inv_mul_cancel, Units.val_one]`. Conclude with `Matrix.submatrix_one _ Subtype.val_injective`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_det_submatrix_of_mem_blockUpper' {q : GL (Fin n) F} (hq : q ∈ blockUpper F n γ)
     (b : ℕ) :
@@ -177,7 +175,7 @@ theorem isUnit_det_submatrix_of_mem_blockUpper' {q : GL (Fin n) F} (hq : q ∈ b
   exact Matrix.submatrix_one _ Subtype.val_injective
 
 /- English proof (translation)
-Unfold `cellRank`. Rewrite using `[Units.val_mul, Units.val_mul, Matrix.mul_assoc, submatrix_mul_of_mem_blockUpper hp, mul_submatrix_of_mem_blockUpper hq, Matrix.rank_mul_eq_right_of_isUnit_det _ _ (isUnit_det_submatrix_of_mem_blockUpper hp a), Matrix.rank_mul_eq_left_of_isUnit_det _ _ (isUnit_det_submatrix_of_me …`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem cellRank_mul_mul {p q : GL (Fin n) F} (hp : p ∈ blockUpper F n β)
     (hq : q ∈ blockUpper F n γ) (g : GL (Fin n) F) (a b : ℕ) :
@@ -190,7 +188,7 @@ theorem cellRank_mul_mul {p q : GL (Fin n) F} (hp : p ∈ blockUpper F n β)
     Matrix.rank_mul_eq_left_of_isUnit_det _ _ (isUnit_det_submatrix_of_mem_blockUpper' hq b)]
 
 /- English proof (translation)
-Take `⟨p, hp, q, hq, rfl⟩` from `mem_doubleCoset.1 hx`. Conclude with `cellRank_mul_mul hp hq g a b`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem cellRank_of_mem_doubleCoset {g x : GL (Fin n) F}
     (hx : x ∈ doubleCoset g (blockUpper F n β : Set (GL (Fin n) F)) (blockUpper F n γ)) (a b : ℕ) :
@@ -205,19 +203,19 @@ section Permutations
 variable {β γ : Fin n → ℕ}
 
 /- English proof (translation)
-Unfold `cellRank`. Use `set X := ((permGL F w : GL (Fin n) F) : Matrix (Fin n) (Fin n) F).submatrix (fun i : {i : Fin n // a ≤ β i} => (i : Fin n)) (fun j : {j : Fin n // γ j ≤ b} => (j : Fin n)) with hX`. Rewrite using `[Matrix.rank_eq_finrank_span_cols]`. Set `v : {j : Fin n // γ j ≤ b ∧ a ≤ β (w j)} → ({i : Fin n // a ≤ β i} → F)` to `fun t => Pi.single ⟨w t, t.2.2⟩ 1`. Establish `hv : LinearIndependent F v`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(Pi.basisFun F {i : Fin n // a ≤ β i}).linearIndependent.comp (fun t : {j : Fin n // γ j ≤ b ∧ a ≤ β (w j)} => (⟨w t, t.2.2⟩ : {i : Fin n // a ≤ β i})) (fun s t hst => Subtype.ext (w.injective (congrArg Subtype.val hst)))` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `t`. Simplify using `[v, Pi.basisFun_apply]`. Establish `hspan : Submodule.span F (Set.range Xᵀ) = Submodule.span F (Set.range v)`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨j, rfl⟩`. Distinguish the cases in `h : a ≤ β (w j)`. Apply `Submodule.subset_span` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨j, j.2, h⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Simplify using `only [hX, v, transpose_apply, submatrix_apply, permGL_apply, Pi.single_apply, Subtype.ext_iff]`. Establish `h0 : Xᵀ j = 0`. Use function extensionality and compare the values at `i`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `only [hX, transpose_apply, submatrix_apply, permGL_apply, Pi.zero_apply]`. Rewrite using `[if_neg]`. Introduce `hi`. Conclude with `h (hi ▸ i.2)`. Rewrite using `[h0]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `zero_mem _`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨t, rfl⟩`. Apply `Submodule.subset_span` to reduce the goal to its premises. Use `⟨⟨t, t.2.1⟩, ?_⟩` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `i`. Simplify using `only [hX, v, transpose_apply, submatrix_apply, permGL_apply, Pi.single_apply, Subtype.ext_iff]`. Rewrite using `[show Set.range X.col = Set.range Xᵀ from rfl, hspan, finrank_span_eq_card hv, Fintype.card_subtype]`.
+A detailed English derivation is pending.
 -/
 theorem cellRank_permGL (w : Equiv.Perm (Fin n)) (a b : ℕ) :
     cellRank β γ (permGL F w) a b = (Finset.univ.filter fun j => γ j ≤ b ∧ a ≤ β (w j)).card := by
@@ -265,9 +263,7 @@ theorem cellRank_permGL (w : Equiv.Perm (Fin n)) (a b : ℕ) :
     Fintype.card_subtype]
 
 /- English proof (translation)
-Introduce `i j hij`. Use `show ((permGL F u : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) i j = 0`. Rewrite using `[permGL_apply, if_neg]`. Introduce and unpack `rfl`. Rewrite `hij` using `[hu]`.
-
-Conclude with `lt_irrefl _ hij`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem permGL_mem_blockUpper {u : Equiv.Perm (Fin n)} (hu : ∀ x, β (u x) = β x) :
     permGL F u ∈ blockUpper F n β := by
@@ -279,33 +275,31 @@ theorem permGL_mem_blockUpper {u : Equiv.Perm (Fin n)} (hu : ∀ x, β (u x) = �
   exact lt_irrefl _ hij
 
 /- English proof (translation)
-Establish `h1 : ∀ a b, (Finset.univ.filter fun j => γ j = b ∧ a ≤ β (w j)).card = (Finset.univ.filter fun j => γ j = b ∧ a ≤ β (w' j)).card`. Introduce `a b`. Consider the cases of `b with`. Consider the case `zero => simpa using h a 0`. Consider the case `succ b`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 
-Establish `key : ∀ u : Equiv.Perm (Fin n), (Finset.univ.filter fun j => γ j ≤ b + 1 ∧ a ≤ β (u j)).card = (Finset.univ.filter fun j => γ j = b + 1 ∧ a ≤ β (u j)).card + (Finset.univ.filter fun j => γ j ≤ b ∧ a ≤ β (u j)).card`. Introduce `u`. Rewrite using `[← Finset.card_union_of_disjoint]`. Use `congr 1`. Use extensionality with `j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_union]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[Finset.disjoint_filter]`. Introduce `j _ h1 h2`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Use linear arithmetic over natural numbers and integers.
 
-Use `h a (b + 1)` as an intermediate fact. Rewrite `this` using `[key w, key w', h a b]`. Use linear arithmetic over natural numbers and integers. Establish `h2 : ∀ a b, (Finset.univ.filter fun j => γ j = b ∧ β (w j) = a).card = (Finset.univ.filter fun j => γ j = b ∧ β (w' j) = a).card`. Introduce `a b`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key : ∀ u : Equiv.Perm (Fin n), (Finset.univ.filter fun j => γ j = b ∧ a ≤ β (u j)).card = (Finset.univ.filter fun j => γ j = b ∧ β (u j) = a).card + (Finset.univ.filter fun j => γ j = b ∧ a + 1 ≤ β (u j)).card`. Introduce `u`. Rewrite using `[← Finset.card_union_of_disjoint]`. Use `congr 1`. Use extensionality with `j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_union]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[Finset.disjoint_filter]`. Introduce `j _ h1 h2`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Use linear arithmetic over natural numbers and integers.
 
-Use `h1 a b` as an intermediate fact. Rewrite `this` using `[key w, key w', h1 (a + 1) b]`. Use linear arithmetic over natural numbers and integers. Establish `hcard : ∀ c : ℕ × ℕ, Fintype.card {j : Fin n // (β (w j), γ j) = c} = Fintype.card {j : Fin n // (β (w' j), γ j) = c}`. Introduce `c`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Fintype.card_subtype, Fintype.card_subtype]`. Establish `e1 : (Finset.univ.filter fun j => (β (w j), γ j) = c) = Finset.univ.filter fun j => γ j = c.2 ∧ β (w j) = c.1`. Use extensionality with `j`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Prod.ext_iff]`. The claim follows by propositional logic.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. The claim follows by propositional logic.
 
-Establish `e2 : (Finset.univ.filter fun j => (β (w' j), γ j) = c) = Finset.univ.filter fun j => γ j = c.2 ∧ β (w' j) = c.1`. Use extensionality with `j`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Prod.ext_iff]`. The claim follows by propositional logic. Rewrite using `[e1, e2, h2]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. The claim follows by propositional logic. Rewrite the conclusion using the stated equalities.
 
-Set `v : Fin n ≃ Fin n` to `Equiv.ofFiberEquiv fun c => Fintype.equivOfCardEq (hcard c)`. Establish `hv : ∀ j, (β (w' (v j)), γ (v j)) = (β (w j), γ j)` using `fun j => Equiv.ofFiberEquiv_map (fun c => Fintype.equivOfCardEq (hcard c)) j`. Establish `hvβ : ∀ j, β (w' (v j)) = β (w j)` using `fun j => (Prod.ext_iff.1 (hv j)).1`. Establish `hvγ : ∀ j, γ (v j) = γ j` using `fun j => (Prod.ext_iff.1 (hv j)).2`. Set `u : Equiv.Perm (Fin n)` to `w' * v * w⁻¹`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hu : ∀ x, β (u x) = β x`. Introduce `x`. Simplify using `only [u, Equiv.Perm.mul_apply]`. Rewrite using `[hvβ]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hv' : ∀ x, γ ((v⁻¹ : Equiv.Perm (Fin n)) x) = γ x`. Introduce `x`. Use `hvγ ((v⁻¹ : Equiv.Perm (Fin n)) x)` as an intermediate fact. Establish `h' : v ((v⁻¹ : Equiv.Perm (Fin n)) x) = x` using `Equiv.apply_symm_apply v x`. Rewrite `this` using `[h']`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this.symm`. Use `mem_doubleCoset.2 ⟨permGL F u, permGL_mem_blockUpper hu, permGL F v⁻¹, permGL_mem_blockUpper hv', ?_⟩` and prove the remaining obligations. Rewrite using `[← map_mul, ← map_mul]`. Use `congr 1`. Simplify using `only [u]`.
-
-Use `group`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem permGL_mem_doubleCoset_of_card {w w' : Equiv.Perm (Fin n)}
     (h : ∀ a b, (Finset.univ.filter fun j => γ j ≤ b ∧ a ≤ β (w j)).card =
@@ -395,11 +389,11 @@ theorem permGL_mem_doubleCoset_of_card {w w' : Equiv.Perm (Fin n)}
   group
 
 /- English proof (translation)
-Establish `key : ∀ r c, ((permGL F s * g * (permGL F s)⁻¹ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) r c = (g : Matrix (Fin n) (Fin n) F) (s⁻¹ r) (s⁻¹ c)`. Introduce `r c`. Rewrite using `[← map_inv, Units.val_mul, Units.val_mul, mul_permGL_apply, permGL_mul_apply]`. Prove the components needed by the constructor for the conclusion. Introduce `h i j hij`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `h (i := s i) (j := s j) hij` as an intermediate fact. Rewrite `this` using `[key]`. Simplify using `using this`. Introduce `h r c hrc show ((permGL F s * g * (permGL F s)⁻¹ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) r c = 0`. Rewrite using `[key]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Apply `h` to reduce the goal to its premises. Simplify using `using hrc`.
+Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem conj_permGL_mem_blockUpper_iff {α : Type*} [LinearOrder α] {β : Fin n → α}
     (s : Equiv.Perm (Fin n)) {g : GL (Fin n) F} :
@@ -420,11 +414,9 @@ theorem conj_permGL_mem_blockUpper_iff {α : Type*} [LinearOrder α] {β : Fin n
     simpa using hrc
 
 /- English proof (translation)
-Use `set s := Tuple.sort β`. Use `set t := Tuple.sort γ`. Establish `hB : ∀ {δ : Fin n → ℕ} {u : Equiv.Perm (Fin n)}, Monotone (δ ∘ u) → ∀ b ∈ GroundTheory.Automorphic.borel n F, b ∈ blockUpper F n (δ ∘ u)`. Introduce `δ u hm b hb i j hij`. Apply `(mem_borel_iff b).1 hb` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Assume the negation of the conclusion as `hle`. Conclude with `absurd (hm (not_lt.1 hle)) (not_le.2 hij)`. Take `⟨w, hw⟩` from `exists_mem_doubleCoset_permGL (k := F) ((permGL F s)⁻¹ * g * permGL F t)`. Take `⟨b₁, hb₁, b₂, hb₂, heq⟩` from `mem_doubleCoset.1 hw`. Use `⟨s * w * t⁻¹, mem_doubleCoset.2 ⟨permGL F s * b₁ * (permGL F s)⁻¹, (conj_permGL_mem_blockUpper_iff s).2 (hB (Tuple.monotone_sort β) b₁ hb₁), permGL F t * b₂ * (permGL F t)⁻¹, (conj_permGL_mem_blockUpper_iff t).2 (hB (Tuple.monotone_sort γ) b₂ hb₂), ?_⟩⟩` and prove the remaining obligations.
-
-Establish `hg : g = permGL F s * ((permGL F s)⁻¹ * g * permGL F t) * (permGL F t)⁻¹` using `by group`. Rewrite using `[hg, heq, map_mul, map_mul, map_inv]`. Use `group`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_permGL_mem_doubleCoset (g : GL (Fin n) F) :
     ∃ w : Equiv.Perm (Fin n), g ∈ doubleCoset (permGL F w) (blockUpper F n β : Set (GL (Fin n) F))
@@ -448,9 +440,9 @@ theorem exists_permGL_mem_doubleCoset (g : GL (Fin n) F) :
   group
 
 /- English proof (translation)
-Take `⟨w, hw⟩` from `exists_permGL_mem_doubleCoset (β := β) (γ := γ) g`. Take `⟨w', hw'⟩` from `exists_permGL_mem_doubleCoset (β := β) (γ := γ) x`. Establish `hcnt : ∀ a b, (Finset.univ.filter fun j => γ j ≤ b ∧ a ≤ β (w j)).card = (Finset.univ.filter fun j => γ j ≤ b ∧ a ≤ β (w' j)).card`. Introduce `a b`. Rewrite using `[← cellRank_permGL (F := F), ← cellRank_permGL (F := F), ← cellRank_of_mem_doubleCoset hw, ← cellRank_of_mem_doubleCoset hw', h]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hww'` using `permGL_mem_doubleCoset_of_card (F := F) hcnt`. Rewrite using `[doubleCoset_eq_of_mem hw, ← doubleCoset_eq_of_mem hww']`. Conclude with `hw'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_doubleCoset_of_cellRank_eq {g x : GL (Fin n) F}
     (h : ∀ a b, cellRank β γ x a b = cellRank β γ g a b) :
@@ -479,7 +471,7 @@ def cellHeight (g : GL (Fin n) F) : ℕ :=
 variable {β γ}
 
 /- English proof (translation)
-Unfold `cellRank`. Establish `hcard : Fintype.card {i : Fin n // a ≤ β i} = 0`. Rewrite using `[Fintype.card_eq_zero_iff]`. Conclude with `⟨fun i => absurd (lt_of_le_of_lt (Finset.le_sup (Finset.mem_univ i.1)) ha) (not_lt.2 i.2)⟩`. Conclude with `Nat.le_zero.1 (hcard ▸ Matrix.rank_le_card_height _)`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem cellRank_eq_zero_of_lt {a : ℕ} (ha : Finset.univ.sup β < a) (g : GL (Fin n) F) (b : ℕ) :
     cellRank β γ g a b = 0 := by
@@ -490,9 +482,9 @@ theorem cellRank_eq_zero_of_lt {a : ℕ} (ha : Finset.univ.sup β < a) (g : GL (
   exact Nat.le_zero.1 (hcard ▸ Matrix.rank_le_card_height _)
 
 /- English proof (translation)
-Establish `key : ∀ c, Finset.univ.sup γ ≤ c → cellRank β γ g a c = ((g : Matrix (Fin n) (Fin n) F).submatrix (fun i : {i : Fin n // a ≤ β i} => (i : Fin n)) id).rank`. Introduce `c hc`. Establish `hall : ∀ j, γ j ≤ c` using `fun j => (Finset.le_sup (Finset.mem_univ j)).trans hc`. Unfold `cellRank`. Rewrite using `[← Matrix.rank_submatrix _ (Equiv.refl _) (Equiv.subtypeUnivEquiv hall)]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[key b hb, key _ le_rfl]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem cellRank_eq_of_le {b : ℕ} (hb : Finset.univ.sup γ ≤ b) (g : GL (Fin n) F) (a : ℕ) :
     cellRank β γ g a b = cellRank β γ g a (Finset.univ.sup γ) := by
@@ -508,9 +500,9 @@ theorem cellRank_eq_of_le {b : ℕ} (hb : Finset.univ.sup γ ≤ b) (g : GL (Fin
   rw [key b hb, key _ le_rfl]
 
 /- English proof (translation)
-Break down `le_or_gt a (Finset.univ.sup β + 1) with ha | ha` into its components or cases. Rewrite using `[min_eq_left ha]`. Break down `le_or_gt b (Finset.univ.sup γ) with hb | hb` into its components or cases. Rewrite using `[min_eq_left hb]`. Rewrite using `[min_eq_right hb.le, cellRank_eq_of_le hb.le]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[min_eq_right ha.le, cellRank_eq_zero_of_lt (by omega), cellRank_eq_zero_of_lt (by omega)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cellRank_clip (g : GL (Fin n) F) (a b : ℕ) :
     cellRank β γ g a b =
@@ -523,9 +515,9 @@ theorem cellRank_clip (g : GL (Fin n) F) (a b : ℕ) :
   · rw [min_eq_right ha.le, cellRank_eq_zero_of_lt (by omega), cellRank_eq_zero_of_lt (by omega)]
 
 /- English proof (translation)
-Establish `hbox : ∀ a ∈ Finset.range (Finset.univ.sup β + 2), ∀ b ∈ Finset.range (Finset.univ.sup γ + 1), cellRank β γ x a b = cellRank β γ g a b`. Assume the negation of the conclusion as `hne`. Use `push Not at hne`. Take `⟨a, ha, b, hb, hne⟩` from `hne`. Establish `: cellHeight β γ x < cellHeight β γ g` using `Finset.sum_lt_sum (fun a _ => Finset.sum_le_sum fun b _ => h a b) ⟨a, ha, Finset.sum_lt_sum (fun b _ => h a b) ⟨b, hb, lt_of_le_of_ne (h a b) hne⟩⟩`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Introduce `a b`. Rewrite using `[cellRank_clip x, cellRank_clip g]`. Apply the tactic sequence `apply hbox <;> rw [Finset.mem_range] <;> omega`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem cellRank_eq_of_le_of_cellHeight_le {g x : GL (Fin n) F}
     (h : ∀ a b, cellRank β γ x a b ≤ cellRank β γ g a b)
@@ -546,18 +538,18 @@ theorem cellRank_eq_of_le_of_cellHeight_le {g x : GL (Fin n) F}
 variable [TopologicalSpace F] [IsTopologicalRing F] [T1Space F]
 
 /- English proof (translation)
-The claim follows from `(isOpen_setOf_le_rank k).preimage (Units.continuous_val.matrix_submatrix _ _)`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_setOf_le_cellRank (a b k : ℕ) :
     IsOpen {x : GL (Fin n) F | k ≤ cellRank β γ x a b} :=
   (isOpen_setOf_le_rank k).preimage (Units.continuous_val.matrix_submatrix _ _)
 
 /- English proof (translation)
-Use `set Z := {x : GL (Fin n) F | ∀ a b, cellRank β γ x a b ≤ cellRank β γ g a b}`. Establish `hZ : IsClosed Z`. Establish `: Z = ⋂ a, ⋂ b, {x : GL (Fin n) F | cellRank β γ g a b + 1 ≤ cellRank β γ x a b}ᶜ`. Use extensionality with `x`. Simplify using `only [Z, Set.mem_ofPred_eq, Set.mem_iInter, Set.mem_compl_iff, not_le, Nat.lt_succ_iff]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `isClosed_iInter fun a => isClosed_iInter fun b => (isOpen_setOf_le_cellRank a b _).isClosed_compl`. Establish `hsub : doubleCoset g (blockUpper F n β : Set (GL (Fin n) F)) (blockUpper F n γ) ⊆ Z` using `fun x hx a b => (cellRank_of_mem_doubleCoset hx a b).le`. Introduce `x hx`. Establish `hxZ : x ∈ Z` using `closure_minimal hsub hZ hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Prove the second alternative.
 
-Distinguish the cases in `hlt : cellHeight β γ x < cellHeight β γ g`. Conclude with `Or.inr hlt`. Conclude with `Or.inl (mem_doubleCoset_of_cellRank_eq (cellRank_eq_of_le_of_cellHeight_le hxZ (not_lt.1 hlt)))`.
+Prove the first alternative. A detailed English derivation is pending.
 -/
 theorem closure_doubleCoset_subset (g : GL (Fin n) F) :
     closure (doubleCoset g (blockUpper F n β : Set (GL (Fin n) F)) (blockUpper F n γ)) ⊆
@@ -583,7 +575,7 @@ theorem closure_doubleCoset_subset (g : GL (Fin n) F) :
 omit [TopologicalSpace F] [IsTopologicalRing F] [T1Space F] in
 
 /- English proof (translation)
-Unfold `cellHeight`. Simplify using `only [cellRank_of_mem_doubleCoset hx]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem cellHeight_of_mem_doubleCoset {g x : GL (Fin n) F}
     (hx : x ∈ doubleCoset g (blockUpper F n β : Set (GL (Fin n) F)) (blockUpper F n γ)) :

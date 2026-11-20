@@ -11,9 +11,9 @@ open ReciprocityTheory.ChartRestriction.L1 (DD jT IsMF IsTauOf)
 namespace GlobalTheory.QFam
 
 /- English proof (translation)
-Establish `hq' : ∀ i, QAll (· ∈ (integralClosure R ℂ).toSubring) N (f i)` using `fun i => by`. Take `⟨a, ha, haR⟩` from `hq i`. Conclude with `⟨a, ha, fun n => (integralClosure R ℂ).algebraMap_mem ⟨a n, haR n⟩⟩`. Establish `hs` using `GlobalTheory.T.esymm_pow_twelve_div_discriminant_mem_subring ι act w N f (integralClosure R ℂ).toSubring τ₀ hN hact hf hq' hj`. Establish `h1 : IsIntegral (integralClosure R ℂ) (f i τ₀ ^ 12 / DD τ₀ ^ w)` using `GlobalTheory.T.isIntegral_of_esymm_mem_subring ι (integralClosure R ℂ).toSubring (fun i => f i τ₀ ^ 12 / DD τ₀ ^ w) hs i`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : IsIntegral R (f i τ₀ ^ 12 / DD τ₀ ^ w)` using `isIntegral_trans _ h1`. Establish `h3 : (f i τ₀ / Ω ^ w) ^ 12 = f i τ₀ ^ 12 / DD τ₀ ^ w`. Rewrite using `[div_pow, ← hΩ, ← pow_mul, ← pow_mul, mul_comm]`. Conclude with `IsIntegral.of_pow (n := 12) (by norm_num) (h3 ▸ h2)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isIntegral_value_div (ι : Type) [Fintype ι] (act : ι → SL(2, ℤ) → ι) (w N : ℕ)
     (f : ι → ℍ → ℂ) (R : Subring ℂ) (τ₀ : ℍ) (Ω : ℂ) (hN : 0 < N) (hact : ActBij act)

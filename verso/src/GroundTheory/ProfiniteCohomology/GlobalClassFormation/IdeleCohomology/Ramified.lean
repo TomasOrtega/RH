@@ -8,11 +8,11 @@ open IsDedekindDomain NumberField
 variable {K : Type*} [Field K] [NumberField K] {L : Type*} [Field L] [NumberField L] [Algebra K L]
 
 /- English proof (translation)
-Establish `h2 : 2 ≤ w.asIdeal.ramificationIdx (𝓞 K)`. Use `Ideal.ramificationIdx_pos w.asIdeal (𝓞 K)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `set v := w.asIdeal.under (𝓞 K)`. Establish `hv0 : v ≠ ⊥` using `mt Ideal.eq_bot_of_comap_eq_bot w.ne_bot`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: v.IsMaximal` using `Ideal.IsPrime.isMaximal inferInstance hv0`. Establish `hmap : v.map (algebraMap (𝓞 K) (𝓞 L)) ≠ ⊥` using `(Ideal.map_eq_bot_iff_of_injective (FaithfulSMul.algebraMap_injective (𝓞 K) (𝓞 L))).not.mpr hv0`. Establish `he` using `Ideal.IsDedekindDomain.ramificationIdx_eq_multiplicity v w.asIdeal hmap`. Establish `hdvd : w.asIdeal ^ w.asIdeal.ramificationIdx (𝓞 K) ∣ v.map (algebraMap (𝓞 K) (𝓞 L))`. Rewrite using `[he]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `pow_multiplicity_dvd _ _`. Use `pow_sub_one_dvd_differentIdeal_aux (𝓞 K) K L w.asIdeal (by omega) hv0 hdvd` as an intermediate fact. Conclude with `(dvd_pow_self _ (by omega)).trans this`.
+A detailed English derivation is pending.
 -/
 theorem ramified_dvd_differentIdeal {w : HeightOneSpectrum (𝓞 L)}
     (h : w.asIdeal.ramificationIdx (𝓞 K) ≠ 1) :
@@ -37,7 +37,7 @@ theorem ramified_dvd_differentIdeal {w : HeightOneSpectrum (𝓞 L)}
 variable (K L) in
 
 /- English proof (translation)
-The claim follows from `(Ideal.finite_factors (differentIdeal_ne_bot (A := 𝓞 K) (B := 𝓞 L))).subset fun _ hw => ramified_dvd_differentIdeal hw`.
+A detailed English derivation is pending.
 -/
 theorem finite_setOf_ramified :
     {w : HeightOneSpectrum (𝓞 L) | w.asIdeal.ramificationIdx (𝓞 K) ≠ 1}.Finite :=

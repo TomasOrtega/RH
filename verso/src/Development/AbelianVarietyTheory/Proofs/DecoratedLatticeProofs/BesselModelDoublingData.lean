@@ -16,17 +16,17 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.Core.Mi
 
 /- English proof (translation)
-Introduce `hDS hCR D X h u ψ A B Y θ S M J χ t hS hθ hψ hgap hE hM hHH T hper`. Use `set P := PuFun X u Y.hK (Y.Dt u) T with hP`. Establish `hPmem : P ∈ HHX X` using `⟨P, (hHH T (Y.Dt u) (Y.reps u)).2.2.2⟩`. Take `⟨v₀, hv₀⟩` from `GlobalTheory.Core.Mi.exists_conjVec hDS D X h θ S M hS hθ hgap hE`. Establish `hss : star (star P) ∈ HHX X` using `by simpa using hPmem`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨G, hG, hae⟩` from `GlobalTheory.Core.SeeOnto.see_onto hDS D X h θ S M J χ t v₀ hS hθ hgap hE hM hv₀ (star P) hss`. Establish `hrow` using `(GlobalTheory.Core.Mi.rowFun_evS hCR D X h θ S M J χ t hθ hM G hG (PiTensorProduct.tprod ℂ v₀)).1`. Take `⟨c, hc⟩` from `GlobalTheory.T.conjugateRow_pairing_poincareSeries_besselPeriods D X h u ψ A B Y hψ hHH`. Establish `hsplit` using `GlobalTheory.Core.Mi.SeeReal.realSplit_of_idE D X h θ hθ hE`. Establish `key` using `hc T _ (star P) hrow hae`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht1 : (iotaX X h t).1 = 1` using `(hsplit.1 t).1 hM.1`. Establish `hint : ∀ y, B.lev.per ψ (B.colForm T.1 (X.Wu u y)) (fun g => evS X h t (G (PiTensorProduct.tprod ℂ v₀)) (iotaX X h g * (y, X.xu u))) = 0`. Introduce `y`. Establish `hg₀ : (iotaX X h).symm (y, 1) ∈ GinfC (D.sp.Y 0)` using `(hsplit.2.1 _).2 (by simp)`. Take `⟨σ, hσ⟩` from `GlobalTheory.RealTransSm.rTrans_eq_map D θ (D.sp.Y 0) S M hθ _ hg₀`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hfun : (fun g => evS X h t (G (PiTensorProduct.tprod ℂ v₀)) (iotaX X h g * (y, X.xu u))) = rTrans ((iotaX X h).symm (1, X.xu u) * t) (G (σ (PiTensorProduct.tprod ℂ v₀)))`. Use function extensionality and compare the values at `g`. Rewrite using `[hσ J χ G hG]`. Use `show G (PiTensorProduct.tprod ℂ v₀) ((iotaX X h).symm (iotaX X h g * (y, X.xu u)) * t) = G (PiTensorProduct.tprod ℂ v₀) (g * ((iotaX X h).symm (1, X.xu u) * t) * (iotaX X h).symm (y, 1))`. Use `congrArg (G (PiTensorProduct.tprod ℂ v₀)) ?_` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Apply `(iotaX X h).injective` to reduce the goal to its premises. Simplify using `only [map_mul, ContinuousMulEquiv.apply_symm_apply]`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Simplify using `only [Prod.fst_mul, ht1, mul_one]`. Simplify using `only [Prod.snd_mul, mul_one, mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hfun]`. Conclude with `hper G hG _ _`. Simplify using `only [hint, MeasureTheory.integral_zero, mul_zero, star_star] at key`. Conclude with `inner_self_eq_zero.mp key`.
+A detailed English derivation is pending.
 -/
 theorem poincare_eq_zero_of_per_vanish : GlobalTheory.Published.DiscreteSeriesClassification → GlobalTheory.Published.CuspRapidDecay → ∀ (D : D7) (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D) (u : D.what₂.Word) (ψ : AddChar (AF D.host.F) ℂ) (A : HSp D) (B : SBes X h u ψ A) (Y : Formalism.L2.SG.Full.Full X) (θ : InfFam D) (S : D.what₂.Tau → SPar) (M : DSModel (D.sp.Y 0) S) (J : Set (GA D (D.sp.Y 0))) (χ : GA D (D.sp.Y 0) → ℂ) (t : GA D (D.sp.Y 0)), S = parB (Ptw D) 0 → IsInfFam θ → IsStdChar D ψ (-1) → GlobalTheory.Count.GapGe X.B (100 * (D.R.r : ℝ) ^ 4) → GlobalTheory.Core.Mi.IdE X → Matches X h J χ t → InHH X u Y.hK → ∀ T : Cu X u Y.hK, (∀ G ∈ MultT θ M J χ, ∀ ξ x, B.lev.per ψ (B.colForm T.1 ξ) (rTrans ((iotaX X h).symm (1, X.xu u) * t) (G x)) = 0) → PuFun X u Y.hK (Y.Dt u) T = 0 := by
   intro hDS hCR D X h u ψ A B Y θ S M J χ t hS hθ hψ hgap hE hM hHH T hper

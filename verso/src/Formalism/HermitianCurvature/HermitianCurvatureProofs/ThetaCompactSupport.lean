@@ -19,7 +19,7 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 variable {k r : ℕ} {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
 
 /- English proof (translation)
-The claim follows from `| [], _ => h | X :: w, hw => by intro g hg hgG have ih := rw_vanish_GV hO h w (fun Y hY => hw Y (List.mem_cons_of_mem _ hY)) have hX : inLie k r X := hw X List.mem_cons_self show RdV X (Rw w f) g = 0 unfold RdV have hc : Continuous (fun t : ℝ => g * NormedSpace.exp ((t : ℂ) • X)) …`.
+A detailed English derivation is pending.
 -/
 theorem rw_vanish_GV {O : Set (Mat k r)} (hO : IsOpen O) {f : Mat k r → E}
     (h : ∀ g ∈ O, g ∈ GV k r → f g = 0) :
@@ -50,7 +50,7 @@ variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace �
   [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq]
 
 /- English proof (translation)
-Unfold `opApply`. Apply `List.sum_eq_zero` to reduce the goal to its premises. Introduce `x hx`. Take `⟨T, hT, rfl⟩` from `List.mem_map.1 hx`. Rewrite using `[h T hT, map_zero]`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem opApply_eq_zero (Θ : DiffOp k r Wp Wq) (F : Mat k r → (Wq →L[ℂ] Wp)) (g : Mat k r)
     (h : ∀ T ∈ Θ, Rw T.word F g = 0) : opApply Θ F g = 0 := by
@@ -61,7 +61,7 @@ theorem opApply_eq_zero (Θ : DiffOp k r Wp Wq) (F : Mat k r → (Wq →L[ℂ] W
   rw [h T hT, map_zero]
 
 /- English proof (translation)
-The claim follows from `| [], _, _ => by have e : opApply ([] : DiffOp k r Wp Wq) F = fun _ => 0 := by funext g; simp [opApply] rw [e]; exact Formalism.FourierDecayAlt.P.BetaSesquilinearity.CkOn_zero | T :: Θ, hc, hsu => by have e : opApply (T :: Θ) F = fun g => T.coef g (Rw T.word F g) + opApply Θ F g …`.
+A detailed English derivation is pending.
 -/
 theorem ckOn_opApply_list (UU : Set (Mat k r)) (F : Mat k r → (Wq →L[ℂ] Wp))
     (hF : CkOn ⊤ (GV k r) F) (hs : closure {g | g ∈ GV k r ∧ F g ≠ 0} ⊆ UU) :
@@ -88,23 +88,19 @@ namespace Formalism.FourierDecayAlt.P
 open MeasureTheory Filter Topology Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt.B
 
 /- English proof (translation)
-Introduce `Wp Wq _ _ _ _ _ _ P p F w e Cb hDD hF hw`. Take `⟨nf, fib, o, κ, Dop, _, hIn, _, _, hΘeq⟩` from `hDD w hw e`. Take `⟨hFs, ⟨R, hR⟩, ε, hε, hεF⟩` from `hF`. Establish `hGc : Continuous (Gf P.k P.r p.T.base.z p.T.base.z')` using `Formalism.FourierDecayAlt.P.Ux8.cont_Gf _ _ _ _`. Establish `hv1 : ∀ T ∈ Dop, ∀ g ∈ {g : Mat P.k P.r | Gf P.k P.r p.T.base.z p.T.base.z' g < ε}, g ∈ GV P.k P.r → Rw T.word F g = 0` using `fun T _ => PBJ.rw_vanish_GV (isOpen_lt hGc continuous_const) (fun g hg hgG => by by_contra hne; exact absurd (hεF g hgG hne) (not_le.2 hg)) T.word T.word_lie`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hv2 : ∀ T ∈ Dop, ∀ g ∈ {g : Mat P.k P.r | R < gN g}, g ∈ GV P.k P.r → Rw T.word F g = 0` using `fun T _ => PBJ.rw_vanish_GV (isOpen_lt continuous_const Formalism.FourierDecayAlt.P.B6.gN_continuous) (fun g hg hgG => by by_contra hne; exact absurd (hR g hgG hne) (not_le.2 hg)) T.word T.word_lie`. Establish `hcl : IsClosed {g : Mat P.k P.r | g ∈ GV P.k P.r ∧ ε ≤ Gf P.k P.r p.T.base.z p.T.base.z' g}` using `Formalism.FourierDecayAlt.P.B5.GV_closed.inter (isClosed_le continuous_const hGc)`. Establish `hsub : {g : Mat P.k P.r | g ∈ GV P.k P.r ∧ ε ≤ Gf P.k P.r p.T.base.z p.T.base.z' g} ⊆ C6.domL p.T.base ∅` using `fun g hg => ⟨hg.1, lt_of_lt_of_le hε hg.2, by simp⟩`. Establish `hsF : closure {g | g ∈ GV P.k P.r ∧ F g ≠ 0} ⊆ C6.domL p.T.base ∅`. Use `subset_trans (closure_minimal ?_ hcl) hsub` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `g hg`. Conclude with `⟨hg.1, hεF g hg.1 hg.2⟩`. Establish `hsT : ∀ T ∈ Dop, closure {g | g ∈ GV P.k P.r ∧ Rw T.word F g ≠ 0} ⊆ C6.domL p.T.base ∅`. Introduce `T hT`. Use `subset_trans (closure_minimal ?_ hcl) hsub` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `g hg`. Use `⟨hg.1, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hlt`. Conclude with `hg.2 (hv1 T hT g (not_le.1 hlt) hg.1)`. Use `⟨opApply Dop F, ⟨?_, ⟨R, ?_⟩, ε, hε, ?_⟩, fun g hg => hΘeq F g hg, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `PBJ.ckOn_opApply_list _ F hFs hsF Dop (fun T hT => (hIn.1 T hT).1) hsT`. Introduce `g hgG hne`. Assume the negation of the conclusion as `hlt`. Conclude with `hne (PBJ.opApply_eq_zero Dop F g fun T hT => hv2 T hT g (not_le.1 hlt) hgG)`. Introduce `g hgG hne`.
+Assume the negation of the conclusion and derive a contradiction. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Assume the negation of the conclusion as `hlt`. Conclude with `hne (PBJ.opApply_eq_zero Dop F g fun T hT => hv1 T hT g (not_le.1 hlt) hgG)`. Introduce `a show D.vecV p.T.base p.ν' p.m₀ _ a = D.vecV p.T.base p.ν' p.m₀ _ a`. Unfold `D.vecV`. Use `split_ifs with h1 h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hγ` using `h2.choose_spec`. Establish `hG : 0 < Gf P.k P.r p.T.base.z p.T.base.z' h2.choose`. Rewrite using `[← Formalism.FourierDecayAlt.P.ptG_spec _ _ _ _ a _ h1.1 hγ.2.1]`. Conclude with `h1.2`. Rewrite using `[Formalism.FourierDecayAlt.P.JCx1.needs.orbJ_smul_of_ae p.T.base h2.choose _ (p.Θ.Θ w e F) (opApply Dop F) 1 ?_, one_smul]`.
-
-Use `filter_upwards [Formalism.FourierDecayAlt.P.B5.ae_inSS p.T.base] with q hq`. Rewrite using `[one_smul]`. Simplify using `only [D.orbIntegrand, rho]`. Rewrite using `[hΘeq F _ ⟨Formalism.FourierDecayAlt.P.B7.sgs_mem p.T.base hq hγ.1, by rw [Formalism.FourierDecayAlt.P.JCx1.needs.gf_sgs p.T.base hq]; exact hG, by simp⟩]`. Both sides reduce to the same expression.
-
-Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem theta_compact_support : Formalism.FourierDecayAlt.KB.ThetaCpt := by
   intro Wp Wq _ _ _ _ _ _ P p F w e Cb hDD hF hw

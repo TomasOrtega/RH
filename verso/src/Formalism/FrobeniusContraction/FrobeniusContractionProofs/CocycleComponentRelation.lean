@@ -26,7 +26,7 @@ Both sides reduce to the same expression.
     extMap f g w p = (f p.1 + g p.2 • w, g p.2) := rfl
 
 /- English proof (translation)
-Establish `e : (fun w => ((w, (0 : AA)) : V × AA)) '' s = (LinearMap.inl AA V AA) '' s` using `rfl`. Rewrite using `[e, Submodule.span_image, hs]`. Conclude with `⟨v, Submodule.mem_top, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 lemma span_inl {s : Set V} (hs : Submodule.span AA s = ⊤) (v : V) :
     ((v, (0 : AA)) : V × AA) ∈ Submodule.span AA ((fun w => ((w, (0 : AA)) : V × AA)) '' s) := by
@@ -41,7 +41,7 @@ variable {B : Base O A} {E : Amb B AA} {n : ℕ} (W : WachDatum E n V)
 def NN (i : ZMod n) : Submodule A (V × AA) := (W.N i).prod (1 : Submodule A AA)
 
 /- English proof (translation)
-Rewrite using `[NN, Submodule.mem_prod, Submodule.mem_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma mem_NN (i : ZMod n) (p : V × AA) :
     p ∈ NN W i ↔ p.1 ∈ W.N i ∧ ∃ a0 : A, algebraMap A AA a0 = p.2 := by
@@ -50,13 +50,13 @@ lemma mem_NN (i : ZMod n) (p : V × AA) :
 variable {W}
 
 /- English proof (translation)
-Take `⟨v, a⟩` from `p`. Take `⟨m, hm, hzm⟩` from `hz i`. Establish `key : ∀ a0 : A, (algebraMap A AA a0) • z i ∈ W.N i` using `fun a0 => by`. Rewrite using `[algebraMap_smul, hzm]`. Conclude with `(W.N i).smul_mem _ ((W.N i).smul_mem _ hm)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [mem_NN, extMap_apply]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hv, a0, rfl⟩`. Use `⟨?_, B.γ a0, (E.γ_ext a0).symm⟩` and prove the remaining obligations. Rewrite using `[E.γ_ext]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `(W.N i).add_mem ((W.γ_N i v).1 hv) (key _)`. Introduce and unpack `⟨hv, b, hb⟩`. Take `⟨a0, rfl⟩` from `B.γ_bij.2 b`. Establish `ha : a = algebraMap A AA a0` using `E.γ_bij.1 (by rw [E.γ_ext, hb])`. Substitute `ha` using the available equality.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨?_, a0, rfl⟩` and prove the remaining obligations. Rewrite `hv` using `[E.γ_ext]`. Use `(W.N i).sub_mem hv (key (B.γ a0))` as an intermediate fact. Rewrite `this` using `[add_sub_cancel_right]`. Conclude with `(W.γ_N i v).2 this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma ext_γN {z : ZMod n → V} (hz : ∀ j, ∃ m ∈ W.N j, z j = B.X • m) (i : ZMod n) (p : V × AA) :
     p ∈ NN W i ↔ extMap (W.γ i) E.γ (z i) p ∈ NN W i := by
@@ -80,11 +80,11 @@ lemma ext_γN {z : ZMod n → V} (hz : ∀ j, ∃ m ∈ W.N j, z j = B.X • m) 
     exact (W.γ_N i v).2 this
 
 /- English proof (translation)
-Introduce and unpack `⟨v, a⟩ hp`. Take `⟨hv, a0, rfl⟩` from `(mem_NN W i _).1 hp`. Take `⟨m, hm, hzm⟩` from `hz i`. Take `⟨x', hx', hx⟩` from `W.γ_sub i v hv`. Take `⟨d, hd⟩` from `Ideal.mem_span_singleton'.1 (B.γ_modX a0)`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨(x' + B.γ a0 • m, algebraMap A AA d), (mem_NN W i _).2 ⟨(W.N i).add_mem hx' ((W.N i).smul_mem _ hm), d, rfl⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [extMap_apply, E.γ_ext, Prod.mk_sub_mk, Prod.smul_mk]`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Simplify using `only`. Rewrite using `[add_sub_right_comm, hx, hzm, algebraMap_smul, smul_add, smul_smul, smul_smul, mul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only`. Rewrite using `[← map_sub, ← hd, Algebra.smul_def, ← map_mul, mul_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 lemma ext_γsub {z : ZMod n → V} (hz : ∀ j, ∃ m ∈ W.N j, z j = B.X • m) (i : ZMod n) :
     ∀ p ∈ NN W i, ∃ p' ∈ NN W i, extMap (W.γ i) E.γ (z i) p - p = B.X • p' := by
@@ -103,9 +103,9 @@ lemma ext_γsub {z : ZMod n → V} (hz : ∀ j, ∃ m ∈ W.N j, z j = B.X • m
     rw [← map_sub, ← hd, Algebra.smul_def, ← map_mul, mul_comm]
 
 /- English proof (translation)
-Use `set S := Submodule.span AA (Set.range (extMap (W.φ i) E.φ (y (i + 1))))`. Establish `hsub : (fun w => ((w, (0 : AA)) : V × AA)) '' Set.range (W.φ i) ⊆ Set.range (extMap (W.φ i) E.φ (y (i + 1)))`. Introduce and unpack `_ ⟨_, ⟨w, rfl⟩, rfl⟩`. Conclude with `⟨(w, 0), by simp⟩`. Establish `h1 : ∀ v : V, ((v, 0) : V × AA) ∈ S` using `fun v => Submodule.span_mono hsub (span_inl (W.φ_span i) v)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : ((y (i + 1), 1) : V × AA) ∈ S` using `Submodule.subset_span ⟨(0, 1), by simp⟩`. Rewrite using `[eq_top_iff]`. Introduce and unpack `⟨v, a⟩ -`. Use `add_mem (h1 (v - a • y (i + 1))) (S.smul_mem a h2)` as an intermediate fact. Simplify using `using this`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 lemma ext_φspan (y : ZMod n → V) (i : ZMod n) :
     Submodule.span AA (Set.range (extMap (W.φ i) E.φ (y (i + 1)))) = ⊤ := by
@@ -123,11 +123,9 @@ lemma ext_φspan (y : ZMod n → V) (i : ZMod n) :
   simpa using this
 
 /- English proof (translation)
-Introduce and unpack `⟨v, a⟩ hp`. Take `⟨hv, a0, rfl⟩` from `(mem_NN W i _).1 hp`. Take `⟨k1, hk1⟩` from `W.φ_N i v hv`. Use `⟨k1 + k0, (mem_NN W _ _).2 ⟨?_, B.q ^ (k1 + k0) * B.φ a0, ?_⟩⟩` and prove the remaining obligations. Simplify using `only [extMap_apply, E.φ_ext, algebraMap_smul, smul_add, Prod.smul_fst]`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `add_mem ?_ ?_` and prove the remaining obligations. Rewrite using `[pow_add, mul_comm, mul_smul]`. Conclude with `(W.N _).smul_mem _ hk1`. Rewrite using `[smul_comm, pow_add, mul_smul]`. Conclude with `(W.N _).smul_mem _ ((W.N _).smul_mem _ (hk0 _))`.
-
-Simplify using `[extMap_apply, E.φ_ext, Algebra.smul_def]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma ext_φN {y : ZMod n → V} {k0 : ℕ} (hk0 : ∀ j, B.q ^ k0 • y j ∈ W.N j) (i : ZMod n) :
     ∀ p ∈ NN W i, ∃ k : ℕ, B.q ^ k • extMap (W.φ i) E.φ (y (i + 1)) p ∈ NN W (i + 1) := by
@@ -143,15 +141,15 @@ lemma ext_φN {y : ZMod n → V} {k0 : ℕ} (hk0 : ∀ j, B.q ^ k0 • y j ∈ W
   · simp [extMap_apply, E.φ_ext, Algebra.smul_def]
 
 /- English proof (translation)
-Introduce and unpack `⟨v, a⟩ hp`. Take `⟨hv, a0, rfl⟩` from `(mem_NN W _ _).1 hp`. Use `set S := Submodule.span A (extMap (W.φ i) E.φ (y (i + 1)) '' (NN W i : Set (V × AA)))`. Establish `hw : B.q ^ k0 • (v - a0 • y (i + 1)) ∈ W.N (i + 1)`. Rewrite using `[smul_sub, smul_comm]`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `sub_mem ((W.N _).smul_mem _ hv) ((W.N _).smul_mem _ (hk0 _))`. Take `⟨k2, hk2⟩` from `W.N_φ i _ hw`. Establish `hsub : (fun w => ((w, (0 : AA)) : V × AA)) '' (W.φ i '' (W.N i : Set V)) ⊆ extMap (W.φ i) E.φ (y (i + 1)) '' (NN W i : Set (V × AA))`. Introduce and unpack `_ ⟨_, ⟨w, hw, rfl⟩, rfl⟩`. Conclude with `⟨(w, 0), (mem_NN W i _).2 ⟨hw, 0, map_zero _⟩, by simp⟩`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ((B.q ^ k2 • B.q ^ k0 • (v - a0 • y (i + 1)), (0 : AA)) : V × AA) ∈ S`. Establish `e : (fun w => ((w, (0 : AA)) : V × AA)) '' (W.φ i '' (W.N i : Set V)) = (LinearMap.inl A V AA) '' (W.φ i '' (W.N i : Set V))` using `rfl`. Establish `: ((B.q ^ k2 • B.q ^ k0 • (v - a0 • y (i + 1)), (0 : AA)) : V × AA) ∈ Submodule.span A ((fun w => ((w, (0 : AA)) : V × AA)) '' (W.φ i '' (W.N i : Set V)))`. Rewrite using `[e, Submodule.span_image]`. Conclude with `⟨_, hk2, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Submodule.span_mono hsub this`. Establish `h2 : ((y (i + 1), 1) : V × AA) ∈ S` using `Submodule.subset_span ⟨(0, 1), (mem_NN W i _).2 ⟨zero_mem _, 1, map_one _⟩, by simp⟩`. Use `⟨k2 + k0, ?_⟩` and prove the remaining obligations. Use `add_mem h1 (S.smul_mem (B.q ^ (k2 + k0) * a0) h2)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Prod.ext ?_ ?_` and prove the remaining obligations. Simplify using `only [Prod.fst_add, Prod.smul_mk]`. Rewrite using `[smul_sub, smul_sub, smul_smul, smul_smul, smul_smul, ← pow_add]`. Normalize the expressions using the abelian group laws. Simplify using `[Algebra.smul_def]`.
+Normalize the expressions using the abelian group laws. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma ext_Nφ {y : ZMod n → V} {k0 : ℕ} (hk0 : ∀ j, B.q ^ k0 • y j ∈ W.N j) (i : ZMod n) :
     ∀ p ∈ NN W (i + 1), ∃ k : ℕ, B.q ^ k • p ∈

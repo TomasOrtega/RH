@@ -42,9 +42,9 @@ instance {O : Type} [CommRing O] (N : NumD O) (b : N.A) : CommGroup (Ext N b) wh
     rw [N.cub.s01, mul_comm]
 
 /- English proof (translation)
-Set `π : Additive (Ext N b) →+ N.X` to `AddMonoidHom.mk' (fun e => e.toMul.x) fun _ _ => rfl`. Take `⟨s, hs⟩` from `π.toIntLinearMap.exists_rightInverse_of_surjective (LinearMap.range_eq_top.2 fun x => ⟨Additive.ofMul ⟨x, 1⟩, rfl⟩)`. Establish `h : ∀ χ, (s χ).toMul.x = χ` using `fun χ => LinearMap.congr_fun hs χ`. Use `⟨⟨b, fun χ => (s χ).toMul.u, fun χ χ' => ?_⟩, rfl⟩` and prove the remaining obligations. Rewrite using `[map_add]`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `(s χ).toMul.u * (s χ').toMul.u / N.θ (N.c (s χ).toMul.x) (N.c (s χ').toMul.x) b * _ = _`. Rewrite using `[h, h, div_mul_cancel]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_lift {O : Type} [CommRing O] (N : NumD O) (b : N.A) : ∃ γ : N.Gt, γ.b = b := by
   let π : Additive (Ext N b) →+ N.X := AddMonoidHom.mk' (fun e => e.toMul.x) fun _ _ => rfl
@@ -71,7 +71,7 @@ Both sides reduce to the same expression.
 theorem chr_apply (u : ι → U) (χ : Multiplicative X) : chr v u χ = ∏ i, u i ^ v.repr χ.toAdd i := rfl
 
 /- English proof (translation)
-Rewrite using `[chr_apply, Finset.prod_eq_single i]`. Simplify using the standard rewrite rules. Introduce `j _ hj`. Simplify using `[Finsupp.single_apply, hj.symm]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem chr_basis (u : ι → U) (i : ι) : chr v u (Multiplicative.ofAdd (v i)) = u i := by
   classical
@@ -82,7 +82,7 @@ theorem chr_basis (u : ι → U) (i : ι) : chr v u (Multiplicative.ofAdd (v i))
   · simp
 
 /- English proof (translation)
-Use `MonoidHom.ext fun χ => ?_` and prove the remaining obligations. Rewrite using `[chr_apply]`. Use `conv_rhs => rw [← ofAdd_toAdd χ, ← v.sum_repr χ.toAdd, ofAdd_sum, map_prod]`. Simplify using `only [ofAdd_zsmul, map_zpow]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem chr_eq (t : Multiplicative X →* U) : chr v (fun i => t (Multiplicative.ofAdd (v i))) = t := by
   refine MonoidHom.ext fun χ => ?_
@@ -91,7 +91,7 @@ theorem chr_eq (t : Multiplicative X →* U) : chr v (fun i => t (Multiplicative
   simp only [ofAdd_zsmul, map_zpow]
 
 /- English proof (translation)
-Introduce `u u' h` and use `funext fun i => by rw [← chr_basis v u, h, chr_basis]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem chr_injective : Function.Injective (chr (U := U) v) := fun u u' h =>
   funext fun i => by rw [← chr_basis v u, h, chr_basis]
@@ -99,9 +99,9 @@ theorem chr_injective : Function.Injective (chr (U := U) v) := fun u u' h =>
 end Chr
 
 /- English proof (translation)
-Use `letI : Module (ZMod k) (Additive M) := AddCommGroup.zmodModule (n := k) (G := Additive M) fun x => hM x.toMul`. Set `i' : (Fin d → ZMod k) →ₗ[ZMod k] Additive M` to `(MonoidHom.toAdditiveRight i).toZModLinearMap k`. Set `π' : Additive M →ₗ[ZMod k] (Fin a → ZMod k)` to `(MonoidHom.toAdditiveLeft π).toZModLinearMap k`. Take `⟨s, hs⟩` from `π'.exists_rightInverse_of_surjective (LinearMap.range_eq_top.2 hπ)`. Establish `hE : Function.Exact i' π'` using `fun x => hex x.toMul`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Set `e` to `(hE.splitSurjectiveEquiv hi ⟨s, hs⟩).1`. Set `e' : Additive M ≃ₗ[ZMod k] (Fin (a + d) → ZMod k)` to `e.trans ((LinearEquiv.prodComm _ _ _).trans ((LinearEquiv.sumArrowLequivProdArrow _ _ _ _).symm.trans (LinearEquiv.funCongrLeft _ _ finSumFinEquiv.symm)))`. Conclude with `⟨AddEquiv.toMultiplicativeRight e'.toAddEquiv⟩`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Supply the required witnesses or components.
 -/
 theorem split_ext {M : Type} [CommGroup M] (k a d : ℕ) [NeZero k] (hM : ∀ x : M, x ^ k = 1)
     (i : Multiplicative (Fin d → ZMod k) →* M) (π : M →* Multiplicative (Fin a → ZMod k))
@@ -119,9 +119,9 @@ theorem split_ext {M : Type} [CommGroup M] (k a d : ℕ) [NeZero k] (hM : ∀ x 
   exact ⟨AddEquiv.toMultiplicativeRight e'.toAddEquiv⟩
 
 /- English proof (translation)
-Use `haveI : NeZero (k : C) := ⟨hk⟩`. Use `haveI : NeZero k := ⟨by rintro rfl; simp at hk⟩`. Take `⟨z, hz⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot C k`. Establish `h` using `hz.isUnit_unit (NeZero.ne k)`. Use `⟨_, h, (Subgroup.subtype _).comp (AddEquiv.toMultiplicativeLeft h.zmodEquivZPowers).toMonoidHom, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `Subtype.val_injective.comp (AddEquiv.toMultiplicativeLeft h.zmodEquivZPowers).injective`. Introduce `u hu`. Establish `: u ∈ Subgroup.zpowers _` using `h.zpowers_eq ▸ (mem_rootsOfUnity k u).2 hu`. Take `⟨y, hy⟩` from `(AddEquiv.toMultiplicativeLeft h.zmodEquivZPowers).surjective ⟨u, this⟩`. Conclude with `⟨y, congrArg Subtype.val hy⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_roots (C : Type) [Field C] [IsAlgClosed C] (k : ℕ) (hk : (k : C) ≠ 0) :
     ∃ ζ : Cˣ, IsPrimitiveRoot ζ k ∧ ∃ e : Multiplicative (ZMod k) →* Cˣ, Function.Injective e ∧
@@ -141,11 +141,11 @@ section Main
 variable {C : Type} [Field C] [IsAlgClosed C] (N : NumD C) {k : ℕ}
 
 /- English proof (translation)
-Set `v` to `Module.finBasis ℤ N.X`. Establish `h : ∀ u : Cˣ, ∃ w : Cˣ, w ^ k = u` using `fun u => by`. Take `⟨z, hz⟩` from `IsAlgClosed.exists_pow_nat_eq (u : C) (Nat.pos_of_ne_zero hk)`. Establish `h0 : z ≠ 0`. Introduce and unpack `rfl`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `u.ne_zero (by rw [← hz, zero_pow hk])`. Conclude with `⟨Units.mk0 z h0, Units.ext (by simpa using hz)⟩`. Use `choose w hw using h`. Use `⟨chr v fun i => w (t (Multiplicative.ofAdd (v i))), ?_⟩` and prove the remaining obligations. Rewrite using `[← map_pow]`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `conv_rhs => rw [← chr_eq v t]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Conclude with `hw _`.
+A detailed English derivation is pending.
 -/
 theorem tor_div (hk : k ≠ 0) (t : Multiplicative N.X →* Cˣ) : ∃ t' : Multiplicative N.X →* Cˣ, t' ^ k = t := by
   let v := Module.finBasis ℤ N.X
@@ -164,7 +164,7 @@ theorem tor_div (hk : k ≠ 0) (t : Multiplicative N.X →* Cˣ) : ∃ t' : Mult
   exact hw _
 
 /- English proof (translation)
-Take `⟨γ₀, h₀⟩` from `exists_lift N b`. Take `⟨t, ht⟩` from `(N.exists_tor_iff (γ * (γ₀ ^ k)⁻¹)).2 (by simp [h₀, hb])`. Take `⟨t', rfl⟩` from `tor_div N hk t`. Use `⟨N.tor t' * γ₀, by simp [h₀], ?_⟩` and prove the remaining obligations. Rewrite using `[mul_pow, ← N.tor_pow, ht, inv_mul_cancel_right]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem root_over (hk : k ≠ 0) (γ : N.Gt) (b : N.A) (hb : b ^ k = γ.b) : ∃ γ' : N.Gt, γ'.b = b ∧ γ' ^ k = γ := by
   obtain ⟨γ₀, h₀⟩ := exists_lift N b
@@ -174,21 +174,19 @@ theorem root_over (hk : k ≠ 0) (γ : N.Gt) (b : N.A) (hb : b ^ k = γ.b) : ∃
   rw [mul_pow, ← N.tor_pow, ht, inv_mul_cancel_right]
 
 /- English proof (translation)
-Use `haveI : NeZero k := ⟨by rintro rfl; simp at hk⟩`. Take `⟨-, -, ε, hε, hε'⟩` from `exists_roots C k hk`. Set `v` to `Module.finBasis ℤ N.X`. Set `j : Multiplicative (Fin (Module.finrank ℤ N.X) → ZMod k) →* (Fin (Module.finrank ℤ N.X) → Cˣ)` to `MonoidHom.mk' (fun y i => ε (Multiplicative.ofAdd (y.toAdd i))) fun y y' => funext fun i => by`. Simplify using `[ofAdd_add]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hj : Function.Injective j` using `fun y y' h => by`. Use `Multiplicative.toAdd.injective (funext fun i => ?_)` and prove the remaining obligations. Conclude with `Multiplicative.ofAdd.injective (hε (congrFun h i))`. Set `i₀` to `N.torHom.comp ((chr v).comp j)`. Establish `hpow : ∀ y, i₀ y ∈ (powMonoidHom k : N.Gt →* N.Gt).ker` using `fun y => by`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[MonoidHom.mem_ker, powMonoidHom_apply, ← map_pow]`. Establish `: y ^ k = 1`. Use `Multiplicative.toAdd.injective (funext fun i => ?_)` and prove the remaining obligations. Simplify using the standard rewrite rules. Rewrite using `[this, map_one]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `π₀ : (powMonoidHom k : N.Gt →* N.Gt).ker →* (powMonoidHom k : N.A →* N.A).ker` to `(N.projB.comp (Subgroup.subtype _)).codRestrict _ fun g => by`. Establish `h : g.1 ^ k = 1` using `g.2`. Express the relevant statement in the definitionally equal form `g.1.b ^ k = 1`. Rewrite using `[← NumD.Gt.pow_b, h, NumD.Gt.one_b]`. Use `split_ext k a _ (fun x => Subtype.ext x.2) (i₀.codRestrict _ hpow) (e.toMonoidHom.comp π₀) ?_ ?_ ?_` and prove the remaining obligations.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y y' h`. Conclude with `hj (chr_injective v (N.tor_injective (congrArg Subtype.val h)))`. Introduce `z`. Take `⟨b, rfl⟩` from `e.surjective z`. Take `⟨γ, h, h'⟩` from `root_over N (NeZero.ne k) 1 b.1 b.2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion.
 
-Conclude with `⟨⟨γ, h'⟩, congrArg e (Subtype.ext h)⟩`. Introduce `x`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h1 : π₀ x = 1` using `e.injective (h.trans (map_one e).symm)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨t, ht⟩` from `(N.exists_tor_iff x.1).2 (congrArg Subtype.val h1)`. Establish `h2 : t ^ k = 1` using `N.tor_injective (by rw [N.tor_pow, ht, N.tor_one]; exact x.2)`. Use `choose z hz using fun i => hε' (t (Multiplicative.ofAdd (v i))) (DFunLike.congr_fun h2 _)`. Use `⟨Multiplicative.ofAdd fun i => (z i).toAdd, Subtype.ext ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `N.tor (chr v _) = x.1`.
-
-Rewrite using `[← ht, ← chr_eq v t]`. Use `congr 2`. Conclude with `funext hz`. Introduce and unpack `⟨y, rfl⟩`. Conclude with `(congrArg e (Subtype.ext rfl)).trans (map_one e)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem ker_struct (hk : (k : C) ≠ 0) (a : ℕ)
     (e : (powMonoidHom k : N.A →* N.A).ker ≃* Multiplicative (Fin a → ZMod k)) :
@@ -237,13 +235,11 @@ theorem ker_struct (hk : (k : C) ≠ 0) (a : ℕ)
       exact (congrArg e (Subtype.ext rfl)).trans (map_one e)
 
 /- English proof (translation)
-Take `⟨ζ, hζ, -⟩` from `exists_roots C k hk`. Set `v` to `Module.finBasis ℤ N.X`. Establish `hd : ∀ i, (k : ℤ) ∣ v.repr y i` using `fun i => by`. Rewrite using `[← hζ.zpow_eq_one_iff_dvd]`. Use `h (chr v (Pi.mulSingle i ζ)) (by rw [← map_pow, ← Pi.mulSingle_pow, hζ.pow_eq_one, Pi.mulSingle_one, map_one])` as an intermediate fact.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[chr_apply, Finset.prod_eq_single i]`. Simplify using `using this`. Introduce `j _ hj`. Simplify using `[Pi.mulSingle_eq_of_ne hj]`. Simplify using the standard rewrite rules.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `choose c hc using hd`. Use `⟨∑ i, c i • v i, ?_⟩` and prove the remaining obligations. Use `conv_lhs => rw [← v.sum_repr y]`. Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[hc, mul_smul, natCast_zsmul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_nsmul (hk : (k : C) ≠ 0) (y : N.X)
     (h : ∀ t : Multiplicative N.X →* Cˣ, t ^ k = 1 → t (Multiplicative.ofAdd y) = 1) : ∃ z : N.X, y = k • z := by
@@ -266,15 +262,13 @@ theorem exists_nsmul (hk : (k : C) ≠ 0) (y : N.X)
   rw [hc, mul_smul, natCast_zsmul]
 
 /- English proof (translation)
-Establish `hk0 : k ≠ 0` using `by rintro rfl; simp at hk`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨z, hz⟩` from `exists_nsmul N hk p.1.1.toAdd fun t ht => by`. Use `h (N.qTor t ht) rfl` as an intermediate fact.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `this` using `[N.wp_swap, N.wp_qTor, inv_eq_one]`. Then use the resulting hypothesis. Establish `hq : N.QEq p (p * N.qTriv k (-z))` using `(N.qEq_iff _ _).2 ⟨_, rfl⟩`. Establish `h1 : (p * N.qTriv k (-z)).1.1.toAdd = 0`. Express the relevant statement in the definitionally equal form `p.1.1.toAdd + k • (-z) = 0`. Rewrite using `[hz, smul_neg, add_neg_cancel]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `⟨_, hq, h1, nd _ ?_ fun b' hb' => ?_⟩` and prove the remaining obligations. Rewrite using `[N.QT_pow_b, h1, N.c_zero]`. Take `⟨γ, hγ, hγ'⟩` from `root_over N hk0 1 b' hb'`. Set `p' : N.QT k` to `⟨(1, γ), hγ'.trans N.io_zero.symm⟩`. Establish `e` using `N.wp_of_eq_zero (p * N.qTriv k (-z)) p' h1 rfl`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite `e` using `[← (GlobalTheory.T.degenerationWeilPairing_properties C N k p _ p').2.2.2.2.1 hq, h p' rfl]`. Rewrite using `[← hγ]`. Conclude with `e.symm`. Introduce and unpack `⟨p₀, hq, h1, h2⟩ p' hp'`. Rewrite using `[(GlobalTheory.T.degenerationWeilPairing_properties C N k p p₀ p').2.2.2.2.1 hq, (GlobalTheory.T.degenerationWeilPairing_properties C N k p₀ p' p').2.2.2.2.2.1 h1 h2, hp']`.
-
-Conclude with `NumD.Gt.s_zero _`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem orth_iff (hk : (k : C) ≠ 0)
     (nd : ∀ b : N.A, b ^ k = 1 → (∀ b', b' ^ k = 1 → N.weil k b b' = 1) → b = 1) (p : N.QT k) :
@@ -304,17 +298,17 @@ theorem orth_iff (hk : (k : C) ≠ 0)
 end Main
 
 /- English proof (translation)
-Introduce `C _ _ N n g hn hT j`. Establish `hk : ((n ^ j : ℕ) : C) ≠ 0` using `by rw [Nat.cast_pow]; exact pow_ne_zero _ hn`. Establish `hk0 : n ^ j ≠ 0` using `fun h => hk (by rw [h, Nat.cast_zero])`. Establish `hdiv : ∀ (i : ℕ) (x : N.A), ∃ y, y ^ n ^ i = x`. Introduce `i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `i with`. Consider the case `zero => exact fun x => ⟨x, by simp⟩`. Consider the case `succ i ih`. Introduce `x`. Take `⟨y, rfl⟩` from `ih x`.
+Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨z, rfl⟩` from `hT.div y`. Conclude with `⟨z, by rw [pow_succ', pow_mul]⟩`. Establish `h2 : ∀ γ : N.Gt, ∃ γ' : N.Gt, γ' ^ n ^ j = γ` using `fun γ => by`. Take `⟨b, hb⟩` from `hdiv j γ.b`. Take `⟨γ', -, h⟩` from `root_over N hk0 γ b hb`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨γ', h⟩`. Establish `h3 : ∀ y : N.X, ∃ p : N.QT (n ^ j), p.1.1.toAdd = y` using `fun y => by`. Take `⟨γ, h⟩` from `h2 (N.io y)`. Conclude with `⟨⟨(Multiplicative.ofAdd y, γ), h⟩, rfl⟩`. Take `⟨e⟩` from `hT.str j`.
+Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Use `⟨exists_lift N, h2, h3, ker_struct N hk _ e, orth_iff N hk (hT.nondeg j), fun p hp => ?_⟩` and prove the remaining obligations. Take `⟨p₀, hq, h1, hb⟩` from `(orth_iff N hk (hT.nondeg j) p).1 fun p' _ => hp p'`. Establish `: p₀ = 1`. Use `Subtype.ext (Prod.ext h1 (NumD.Gt.ext hb (funext fun χ => ?_)))` and prove the remaining obligations. Take `⟨p', rfl⟩` from `h3 χ`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← (GlobalTheory.T.degenerationWeilPairing_properties C N _ p₀ p' p').2.2.2.2.2.1 h1 hb, ← (GlobalTheory.T.degenerationWeilPairing_properties C N _ p p₀ p').2.2.2.2.1 hq, hp p']`. Both sides reduce to the same expression. Rewrite `hq` using `[this]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem qStructure : ∀ (C : Type) [NormedField C] [IsAlgClosed C] (N : NumD C) (n g : ℕ), (n : C) ≠ 0 → N.Tors n g → ∀ j : ℕ, (∀ b : N.A, ∃ γ : N.Gt, γ.b = b) ∧ (∀ γ : N.Gt, ∃ γ' : N.Gt, γ' ^ n ^ j = γ) ∧ (∀ y : N.X, ∃ p : N.QT (n ^ j), p.1.1.toAdd = y) ∧ Nonempty ((powMonoidHom (n ^ j) : N.Gt →* N.Gt).ker ≃* Multiplicative (Fin (2 * g + Module.finrank ℤ N.X) → ZMod (n ^ j))) ∧ (∀ p : N.QT (n ^ j), (∀ p' : N.QT (n ^ j), p'.1.1 = 1 → N.wp p p' = 1) ↔ ∃ p₀ : N.QT (n ^ j), N.QEq p p₀ ∧ p₀.1.1 = 1 ∧ p₀.1.2.b = 1) ∧ ∀ p : N.QT (n ^ j), (∀ p', N.wp p p' = 1) → N.QEq p 1 := by
   intro C _ _ N n g hn hT j

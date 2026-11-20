@@ -19,13 +19,11 @@ open Formalism.BasicNotions Formalism.DivisionValues Formalism.EigenvalueLevelCe
 open GlobalTheory.OntoChain GlobalTheory.RealIndexBoundProbe
 
 /- English proof (translation)
-Use `⟨hp, fun j => ?_⟩` and prove the remaining obligations. Establish `hb` using `X.liftMat_bij cr b hk he hn h5 hr j Bs.μ0`. Establish `h1` using `sum_finrank ((lv (fc X.zs) b).Qp Bs.μ0) wf.Qp_indep wf.Qp_top`. Establish `h2` using `sum_finrank ((lv (fc X.zs) b).Zp j Bs.μ0) (wf.Zp_indep _) (ht _)`. Rewrite `h1`, `h2` using `[Module.finrank_fin_fun]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h0 : (lv (fc X.zs) b).dZ j Bs.μ0 = X.dW b j` using `dim_of_bij _ hb`. Use `show X.dW b j = (lv (fc X.zs) b).dQ Bs.μ0`. Rewrite using `[← h0, ← h1, ← h2]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Establish `e1 : (lv (fc X.zs) b).Qp Bs.μ0 p = X.Ep cr b p` using `Submodule.ext fun x => h3 p x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : (lv (fc X.zs) b).Zp j Bs.μ0 p = (X.WpK b j p).comap (X.liftMat cr b j Bs.μ0).mulVecLin`. Use extensionality with `x`. Rewrite using `[Submodule.mem_comap, Matrix.mulVecLin_apply, CxData.mem_WpK, X.key_lift cr b h5 hr]`. Conclude with `h3W j p x`. Rewrite using `[e1, e2, finrank_comap_bij _ hb]`.
-
-Conclude with `hd j p`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rankRows_cx {K : Type} [Field K] [NumberField K] [StarRing K] {Bs : DefBase K} {A : DefAmb Bs} (X : CxData A)
     {fc : DefSub A → DefFace Bs} (cr : Crd A fc) (b : Bool) (wf : (lv (fc X.zs) b).WF) (hp : (lv (fc X.zs) b).Pos)
@@ -57,7 +55,7 @@ section Any
 variable {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks} {F : Face D A}
 
 /- English proof (translation)
-The claim follows from `rankRows_cx (R.toCx F) F.cr false (A.side_WF hOk F.P0 F.ψ0 _ hSt hBl hsep) (hP false) (hT false) (hE false) (hW false) (h5 false) (hr false) (RealDat.kForm hU false) (RealDat.ewNorm false) (RealDat.nP_pos false) (hd false)`.
+A detailed English derivation is pending.
 -/
 theorem rankRows_of_links {s : ℕ} (hOk : A.fam.Ok s) (hsep : A.fam.TypesSep) (hSt : R.LStable F) (hBl : R.LBlock F)
     (hP : R.LPos F) (hT : R.LTypes F) (hE : R.LPartsE F) (hW : R.LPartsW F) (h5 : R.LTheta F) (hr : R.LRatTh F)
@@ -66,7 +64,7 @@ theorem rankRows_of_links {s : ℕ} (hOk : A.fam.Ok s) (hsep : A.fam.TypesSep) (
     (h5 false) (hr false) (RealDat.kForm hU false) (RealDat.ewNorm false) (RealDat.nP_pos false) (hd false)
 
 /- English proof (translation)
-The claim follows from `exists_char_not_onto h hw ⟨0, lt_of_lt_of_le two_pos D.R.two_le_m⟩`.
+A detailed English derivation is pending.
 -/
 theorem not_onto_of_char_alone (h : R.Char F) {w : HeightOneSpectrum (𝓞 D.what₂.LL)} (hw : w ∈ R.twPl) :
     ∃ R' : RealDat D A Ks, R'.Char F ∧ R'.mu = R.mu ∧ R'.twPl = R.twPl ∧ ∀ C CH, ¬ R'.LOnto F C CH :=
@@ -75,7 +73,7 @@ theorem not_onto_of_char_alone (h : R.Char F) {w : HeightOneSpectrum (𝓞 D.wha
 variable {P : Type} [Group P] [Finite P] {c : OnConst}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨on_built (R.num F C CH) O C hRk hMk hSup hProj hC hSp hS hT0 hD hJ hI h2 h1 hSh hIU hBS hUn hG hR h2p hL hPg hSz hX hBad hJS hJE hCE tE1, on_of_leaves (R.num F C CH) O C hRk hMk hSup hProj hC hSp hS hT0 hD hJ hI h2 h1 hSh hIU hBS hUn hG hR h2p hL hPg hSz hX hBad hJS hJE hCE tE1⟩`.
+Supply the required witnesses or components.
 -/
 theorem onto_of_coord (O : OnObj ((R.toCx F).data F.cr false) P c) (C CH : ℝ)
     (hRk : RankRows ((R.toCx F).data F.cr false)) (hC : TieCoord O)
@@ -94,7 +92,7 @@ theorem onto_of_coord (O : OnObj ((R.toCx F).data F.cr false) P c) (C CH : ℝ)
       hBad hJS hJE hCE tE1⟩
 
 /- English proof (translation)
-The claim follows from `have h := onto_of_coord (onOf R F c a) C CH hRk (tieCoord c a hOk hC.grp.levels hC.tup.mu_conj) (leafMackey c a hC.grp.levels) (leafSup c a hI) (leafProj c a hOk.irr) hSp hS hT0 hD hJ (leafIdentity c a hOk) h2 h1 hSh (leafIndexU c a hC.grp.record hY) hBS (leafUnip c a hC.grp.reco …`.
+A detailed English derivation is pending.
 -/
 theorem onto_built {s : ℕ} (c : OnConst) (a : ChainArgs D.what₂.LL (Fin D.R.m) R.nW) (C CH : ℝ)
     (hOk : A.fam.Ok s) (hC : R.Char F) (hI : R.LIntegral) (hRk : RankRows ((R.toCx F).data F.cr false))
@@ -124,11 +122,11 @@ variable {K : Type} [Field K] [NumberField K] [StarRing K] {B : BlockDat K G Pl0
   {v0 : InfinitePlace K} {s : ℕ}
 
 /- English proof (translation)
-Use `set u := (B.S.lvlE B.r ℓ.P ℓ.ψ).mulVec k with hu`. Establish `h1 : ((B.fE ℓ Z)ᴴ * B.S.H).mulVec u = 0`. Use function extensionality and compare the values at `i`. Use `hk (Pi.single i 1)` as an intermediate fact. Rewrite `this` using `[RationalHermitianForm.hform_eq_dot, Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this` using `[← Pi.single_star]`. Establish `h2 : (B.vE ℓ)ᴴ * B.S.H * (B.vE ℓ * B.vPr ℓ) = (B.vE ℓ)ᴴ * B.S.H`. Use `(BlockDat.lf_v_proj h).1.2` as an intermediate fact. Rewrite `this` using `[Matrix.mul_sub, Matrix.mul_one, sub_eq_zero]`. Conclude with `this.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : (B.zE ℓ Z)ᴴ * B.HV ℓ * B.vPr ℓ = (Nat.card ℓ.P : K)⁻¹ • ((B.fE ℓ Z)ᴴ * B.S.H)`. Rewrite using `[BlockDat.lf_HV_eq, Matrix.mul_smul, Matrix.smul_mul, BlockDat.fE, Matrix.conjTranspose_mul, Matrix.mul_assoc, Matrix.mul_assoc _ (B.vE ℓ), h2, Matrix.mul_assoc]`. Rewrite using `[BlockDat.lPr, ← Matrix.mulVec_mulVec, ← hu, BlockDat.Pq, orthPr, Matrix.mul_assoc, h3, ← Matrix.mulVec_mulVec, Matrix.smul_mulVec, h1, smul_zero, Matrix.mulVec_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lPr_eq_zero (h : BlockHyp B ℓ v0 s) (k : Fin (B.S.lvlDim B.r ℓ.P ℓ.ψ) → K)
     (hk : ∀ y, hform B.S.H ((B.fE ℓ Z).mulVec y) ((B.S.lvlE B.r ℓ.P ℓ.ψ).mulVec k) = 0) : (B.lPr ℓ Z).mulVec k = 0 := by
@@ -162,14 +160,14 @@ def PhasedLift (ph : Fin D.R.m → ℂ) : Prop :=
   ∀ i t x, (R.HW i (sg0 D A)).e (R.thG i t x) = ph i • postOn _ (R.eWf i (sg0 D A)) (R.thF i t x)
 
 /- English proof (translation)
-Introduce `i t x` and use `by rw [one_smul]; exact h i t x`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem phasedLift_one (h : R.thP_thG) : PhasedLift R fun _ => 1 := fun i t x => by rw [one_smul]; exact h i t x
 
 /- English proof (translation)
-Establish `h` using `(hU i (sg0 D A)).2.2`. Unfold `adForm goodOp`. Rewrite using `[Arith.FormsL.eOp_apply, map_sum, map_sum]`. Establish `e : ∀ T : MMap (R.MW i (sg0 D A)), postOn _ (R.eWf i (sg0 D A)) T = ∑ g, RealDat.eC (A` using `A) (sg0 D A) g • postOn _ (actL (Wc D i) (R.βW i) (R.datWp i R.triv) (R.eG g)) T := fun T => by`. Use extensionality with `v y`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[postOn, RealDat.eWf, gaL, LinearMap.sum_apply]`. Both sides reduce to the same expression. Rewrite using `[e]`. Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations. Rewrite using `[map_smulₛₗ, map_smul, h, smul_smul, map_mul, mul_assoc, ← map_mul, Units.inv_mul, map_one, mul_one]`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -189,7 +187,7 @@ theorem adForm_goodOp (hU : R.LUnif) (i : Fin D.R.m) (x : Fin (R.nW i) → D.wha
   rfl
 
 /- English proof (translation)
-Use `(injective_iff_map_eq_zero _).2 fun x hx => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h0`. Use `(hU i (sg0 D A)).1 1 (fun _ => x) (linearIndependent_unique_iff.2 h0)` as an intermediate fact. Conclude with `this.ne_zero 0 hx`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem j_injective (hU : R.LUnif) (i : Fin D.R.m) : Function.Injective ((R.FW i).j (sg0 D A)) := by
   refine (injective_iff_map_eq_zero _).2 fun x hx => ?_
@@ -198,7 +196,7 @@ theorem j_injective (hU : R.LUnif) (i : Fin D.R.m) : Function.Injective ((R.FW i
   exact this.ne_zero 0 hx
 
 /- English proof (translation)
-Use `((h1 i t).2.2 (R.jV i t f) (R.jV i t g)).trans ?_` and prove the remaining obligations. Use `(congrArg₂ (Bridge.adInner (Bridge.ratF (Vc D i)) (levEnv _ (R.βV i) (R.datVt i t)).J (R.B.L i t).pres.y) (h2 i t f) (h2 i t g)).trans ?_` and prove the remaining obligations. Conclude with `GlobalTheory.PresBasic.isom (R.B.L i t).pres f g`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem inner_jV (h1 : R.models_HV) (h2 : R.models_jV) (i : Fin D.R.m) (t : T0) (f g : A.fam.amb.FL i t) :
     inner ℂ (R.jV i t f) (R.jV i t g) = D.what₂.embLL ((A.fam.L i t).S.csum f.1 g.1) := by
@@ -208,9 +206,9 @@ theorem inner_jV (h1 : R.models_HV) (h2 : R.models_jV) (i : Fin D.R.m) (t : T0) 
   exact GlobalTheory.PresBasic.isom (R.B.L i t).pres f g
 
 /- English proof (translation)
-Take `⟨w, hw⟩ : (R.toCx F).jL i t f ∈ LinearMap.range (LinearMap.adjoint ((R.toCx F).θ' i t))` from `hf`. Establish `h3 : inner ℂ ((R.toCx F).jL i t f) ((R.toCx F).jL i t g) = 0`. Establish `h4 : (R.toCx F).θ' i t ((R.toCx F).jL i t g) = 0` using `hg`. Rewrite using `[← hw, LinearMap.adjoint_inner_left, h4, inner_zero_right]`. Establish `h5 : cj (twAt D.what₂.embLL A.v0) (inner ℂ (R.jV i t f) (R.jV i t g)) = 0` using `h3`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h5` using `[inner_jV h1 h2, map_eq_zero, map_eq_zero]`. Conclude with `h5`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem csum_eq_zero (h1 : R.models_HV) (h2 : R.models_jV) (i : Fin D.R.m) (t : T0) {f g : A.fam.amb.FL i t}
     (hf : f ∈ liftSub R F i t) (hg : R.thG i t (R.jV i t g) = 0) : (A.fam.L i t).S.csum f.1 g.1 = 0 := by
@@ -226,7 +224,7 @@ def srcF (F : Face D A) (i : Fin D.R.m) (t : T0) : (Fin (OntoChain.srcDim F i t)
   srcForm A i t F.P0 F.ψ0⁻¹
 
 /- English proof (translation)
-Use `BlockDat.lf_lvlE_lE (Z := liftSub R F i t) (blockHyp (F := F) hOk i t)` as an intermediate fact. Use `show (A.fam.L i t).S.basis.equivFun.symm (((A.fam.L i t).vE (liftLvl F)).mulVec (((A.fam.L i t).zE (liftLvl F) (liftSub R F i t)).mulVec y)) = (A.fam.L i t).S.basis.equivFun.symm (((A.fam.L i t).S.lvlE (A.fam.L i t).r (liftLvl F).P (liftLvl F).ψ).mulVec (((A.fam.L i t).lE (liftLv …`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, this]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem toF_eq_srcF {s : ℕ} (hOk : A.fam.Ok s) (i : Fin D.R.m) (t : T0)
     (y : Fin ((A.fam.L i t).dZ (liftLvl F) (liftSub R F i t)) → D.what₂.LL) :
@@ -241,9 +239,9 @@ theorem toF_eq_srcF {s : ℕ} (hOk : A.fam.Ok s) (i : Fin D.R.m) (t : T0)
   rfl
 
 /- English proof (translation)
-Use `lPr_eq_zero (Z := liftSub R F i t) (blockHyp (F := F) hOk i t) k fun y' => ?_` and prove the remaining obligations. Establish `hm : (A.fam.L i t).toF (liftLvl F) (liftSub R F i t) y' ∈ liftSub R F i t`. Take `⟨f, hf, e⟩ : ((A.fam.L i t).zE (liftLvl F) (liftSub R F i t)).mulVec y' ∈ (A.fam.L i t).Z0 (liftLvl F) (liftSub R F i t)` from `(subspace_image_spec _ _ _).2.le ⟨y', rfl⟩`. Establish `: (A.fam.L i t).toF (liftLvl F) (liftSub R F i t) y' = f` using `(congrArg (A.fam.L i t).S.basis.equivFun.symm e.symm).trans ((A.fam.L i t).S.basis.equivFun.symm_apply_apply f)`. Conclude with `this ▸ hf`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `csum_eq_zero hHV hjV i t hm hk` as an intermediate fact. Rewrite using `[(A.fam.L i t).S.isClassSum, BlockDat.fE, ← Matrix.mulVec_mulVec]`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lPr_eq_zero_of_ker {s : ℕ} (hOk : A.fam.Ok s) (hHV : R.models_HV) (hjV : R.models_jV) (i : Fin D.R.m) (t : T0)
     (k : Fin (OntoChain.srcDim F i t) → D.what₂.LL) (hk : R.thG i t (R.jV i t (srcF F i t k)) = 0) :
@@ -260,16 +258,16 @@ theorem lPr_eq_zero_of_ker {s : ℕ} (hOk : A.fam.Ok s) (hHV : R.models_HV) (hjV
   exact this
 
 /- English proof (translation)
-The claim follows from `((R.thG i t).toAddMonoidHom.comp ((R.jV i t).toAddMonoidHom.comp (srcF F i t).toAddMonoidHom)).map_sub x y`.
+A detailed English derivation is pending.
 -/
 theorem lift_sub (i : Fin D.R.m) (t : T0) (x y : Fin (OntoChain.srcDim F i t) → D.what₂.LL) :
     R.thG i t (R.jV i t (srcF F i t (x - y))) = R.thG i t (R.jV i t (srcF F i t x)) - R.thG i t (R.jV i t (srcF F i t y)) :=
   ((R.thG i t).toAddMonoidHom.comp ((R.jV i t).toAddMonoidHom.comp (srcF F i t).toAddMonoidHom)).map_sub x y
 
 /- English proof (translation)
-Rewrite `hu` using `[← range_coordMap]`. Take `⟨z, rfl⟩` from `hu`. Take `⟨y, rfl⟩ : ∃ y, (thetaMat R F i t).mulVec y = z` from `((R.toCx F).liftMat_bij F.cr false (RealDat.kForm hU false) (RealDat.ewNorm false) (RealDat.nP_pos false) (h5 false) (hr false) i t).2 z`. Establish `hb : _ = R.thG i t (R.jV i t (srcF F i t (((A.fam.L i t).lE (liftLvl F) (liftSub R F i t)).mulVec y)))` using `(j_thetaMat h5 hr i t y).trans (congrArg (fun f => R.thG i t (R.jV i t f)) (toF_eq_srcF hOk i t y))`. Establish `h0` using `lPr_eq_zero_of_ker hOk hHV hjV i t (x - ((A.fam.L i t).lE (liftLvl F) (liftSub R F i t)).mulVec y) ((lift_sub i t _ _).trans (sub_eq_zero.2 (ha.symm.trans hb)))`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h0` using `[Matrix.mulVec_sub, Matrix.mulVec_mulVec, BlockDat.lf_lPr_lE (blockHyp (F := F) hOk i t), Matrix.one_mulVec, sub_eq_zero]`. Rewrite using `[← h0, Matrix.mulVec_mulVec]`. Both sides reduce to the same expression.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem eq_thetaOp {s : ℕ} (hOk : A.fam.Ok s) (hHV : R.models_HV) (hjV : R.models_jV) (hU : R.LUnif) (h5 : R.LTheta F)
     (hr : R.LRatTh F) (i : Fin D.R.m) (t : T0) (x : Fin (OntoChain.srcDim F i t) → D.what₂.LL) {u : Fin (R.nW i) → D.what₂.LL}
@@ -289,7 +287,7 @@ theorem eq_thetaOp {s : ℕ} (hOk : A.fam.Ok s) (hHV : R.models_HV) (hjV : R.mod
   rfl
 
 /- English proof (translation)
-Use `eq_thetaOp hOk hHV hjV hU h5 hr i t x hx ((hHW i _).1 ?_)` and prove the remaining obligations. Use `(adForm_goodOp hU i _).trans ?_` and prove the remaining obligations. Use `(congrArg (postOn _ (R.eWf i (sg0 D A))) (hθ x)).trans ?_` and prove the remaining obligations. Conclude with `(LinearMap.map_smul _ _ _).trans (hG i t _).symm`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem goodOp_classSum {s : ℕ} (hOk : A.fam.Ok s) {ph : Fin D.R.m → ℂ} (hG : PhasedLift R ph) (hHV : R.models_HV)
     (hjV : R.models_jV) (hHW : R.models_HW) (hU : R.LUnif) (h5 : R.LTheta F) (hr : R.LRatTh F) (i : Fin D.R.m) (t : T0)
@@ -302,11 +300,11 @@ theorem goodOp_classSum {s : ℕ} (hOk : A.fam.Ok s) {ph : Fin D.R.m → ℂ} (h
   exact (LinearMap.map_smul _ _ _).trans (hG i t _).symm
 
 /- English proof (translation)
-Take `⟨u, hu, rfl⟩` from `(mem_base_iff h1 g).1 hg`. Establish `hm` using `(mem_pi_unip_iff R _).2 ⟨u, hu, rfl⟩`. Apply `Units.ext` to reduce the goal to its premises. Apply `D.what₂.embLL.injective` to reduce the goal to its premises. Rewrite using `[h2, Units.val_one, map_one, eG_mirIncl]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_eq_one fun PP _ => ?_` and prove the remaining obligations. Establish `h3` using `hm PP (Set.mem_univ _)`. Establish `: Matrix.GeneralLinearGroup.det (mirToGL R u PP) = 1`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply, Matrix.det_of_isUpperTriangular (fun a b hab => h3.1 hab)]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.prod_eq_one fun a _ => h3.2 a`. Rewrite using `[this, map_one, Units.val_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chi_eq_one (h1 : R.grp_levels F) (h2 : R.grp_chiW) (i : Fin D.R.m) {g : G} (hg : g ∈ F.P0) : (R.FW i).chi g = 1 := by
   obtain ⟨u, hu, rfl⟩ := (mem_base_iff h1 g).1 hg
@@ -338,13 +336,13 @@ variable {O : OnObj ((R.toCx F).data F.cr false) P c}
   {w : ∀ j, (Fin (O.nZ j) → D.what₂.LL) ≃ₗ[D.what₂.LL] (Fin (R.nW j) → D.what₂.LL)} {inc : P →* G}
 
 /- English proof (translation)
-Establish `e1 : x ∈ eig (O.ρ j) O.U O.ψ ↔ ∀ u : O.U, O.ρ j u x = ((O.ψ u : 𝓞 D.what₂.LL) : D.what₂.LL) • x`. Unfold `eig`. Rewrite using `[Submodule.mem_iInf]`. Conclude with `forall_congr' fun u => sub_eq_zero`. Establish `e2 : ∀ (g : P) (hg : inc g ∈ F.P0), O.ρ j g x = ((O.ψ g : 𝓞 D.what₂.LL) : D.what₂.LL) • x ↔ (R.FW j).ρ (inc g) (w j x) = (((R.FW j).chi (inc g) * F.ψ0⁻¹ ⟨inc g, hg⟩ : D.what₂.LLˣ) : D.what₂.LL) • w j x` using `fun g hg => by`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[chi_eq_one h1 h2 j hg, one_mul, ← hψ g hg, ← hρ, ← LinearEquiv.map_smul, (w j).injective.eq_iff]`. Use `and_congr (e1.trans ⟨?_, fun h u => ?_⟩) ⟨?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `h ⟨g, hg⟩`. Take `⟨p, rfl⟩` from `hinc hg`. Conclude with `(e2 p hg).1 (h ⟨p, hU ▸ hg⟩)`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hg : inc u ∈ F.P0` using `(hU ▸ u.2 : (u : P) ∈ F.P0.comap inc)`. Conclude with `(e2 u hg).2 (h ⟨inc u, hg⟩)`. Introduce `hx`. Take `⟨y, rfl⟩ : x ∈ LinearMap.range (O.e j)` from `hV ▸ hx`. Conclude with `⟨w j y, (he y).symm⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨y, hy⟩`. Establish `: x ∈ LinearMap.range (O.e j)` using `⟨(w j).symm y, (w j).injective (by`. Rewrite using `[he, LinearEquiv.apply_symm_apply]`. Conclude with `hy)⟩`. Conclude with `hV ▸ this`.
+A detailed English derivation is pending.
 -/
 theorem mem_Zg_iff (h1 : R.grp_levels F) (h2 : R.grp_chiW) (hinc : F.P0 ≤ inc.range) (j : Fin D.R.m)
     (hρ : ∀ g x, w j (O.ρ j g x) = (R.FW j).ρ (inc g) (w j x)) (hU : O.U = F.P0.comap inc)
@@ -374,11 +372,11 @@ theorem mem_Zg_iff (h1 : R.grp_levels F) (h2 : R.grp_chiW) (hinc : F.P0 ≤ inc.
     exact hV ▸ this
 
 /- English proof (translation)
-Establish `hφ : ∀ z, w j ((withCoord O w).φ j z) = coordMap R F j z` using `fun z => (w j).apply_symm_apply _`. Establish `hsur : ∀ x, w j x ∈ R.WL F false j → ∃ z, (withCoord O w).φ j z = x` using `fun x hx => by`. Rewrite `hx` using `[← range_coordMap]`. Take `⟨z, hz⟩` from `hx`. Conclude with `⟨z, (w j).injective ((hφ z).trans hz)⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hmem : ∀ z, coordMap R F j z ∈ R.WL F false j` using `fun z => (range_coordMap j).le ⟨z, rfl⟩`. Establish `hMz : ∀ z, z ∈ ((R.toCx F).data F.cr false).M j ↔ coordMap R F j z ∈ supLat (R.FW j)` using `fun z => ⟨fun h => h.1.1, fun h => ⟨⟨h, (hmem z).1⟩, (hmem z).2⟩⟩`. Use `⟨(w j).symm.injective.comp (coordMap_injective j), le_antisymm ?_ fun x hx => hsur x ((hZ x).1 hx), le_antisymm ?_ ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨z, rfl⟩`. Conclude with `(hZ _).2 (hφ z ▸ hmem z)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨z, hz, rfl⟩`. Conclude with `⟨(hM _).2 (hφ z ▸ (hMz z).1 hz), (hZ _).2 (hφ z ▸ hmem z)⟩`. Introduce and unpack `x ⟨h1, h2⟩`. Take `⟨z, rfl⟩` from `hsur x ((hZ x).1 h2)`. Conclude with `⟨z, (hMz z).2 (hφ z ▸ (hM _).1 h1), rfl⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem coord_lattice (j : Fin D.R.m) (hZ : ∀ x, x ∈ O.Zg j ↔ w j x ∈ R.WL F false j)
     (hM : ∀ x, x ∈ O.Ms j ↔ w j x ∈ supLat (R.FW j)) :
@@ -404,11 +402,11 @@ theorem coord_lattice (j : Fin D.R.m) (hZ : ∀ x, x ∈ O.Zg j ↔ w j x ∈ R.
     exact ⟨z, (hMz z).2 (hφ z ▸ (hM _).1 h1), rfl⟩
 
 /- English proof (translation)
-Establish `h3 : ∀ x, O.θ' v j (O.pr v j (O.eX v j x)) = O.e j (O.θ' v j x)` using `fun x => by`. Use `hI.2 _ ⟨x, rfl⟩` as an intermediate fact. Rewrite `this` using `[LinearMap.mem_ker, LinearMap.map_sub, sub_eq_zero]`. Conclude with `this.symm.trans (LinearMap.congr_fun hI.1 x)`. Establish `h4 : ∀ x ∈ O.Mt v j, (withCoord O w).φ j ((thetaMat R F j (R.mu v)).mulVec (((A.fam.L j (R.mu v)).lPr (liftLvl F) (liftSub R F j (R.mu v))).mulVec (y x))) = O.θ' v j (O.pr v j (O.eX v j x))` using `fun x hx => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h3, Matrix.mulVec_mulVec]`. Conclude with `(w j).symm_apply_eq.2 (hθ x hx).symm`. Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨_, ⟨_, ⟨x, hx, rfl⟩, rfl⟩, rfl⟩`. Take `⟨x, rfl⟩` from `y.surjective x`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨_, ⟨_, ⟨x, (hMt x).2 hx, rfl⟩, rfl⟩, (h4 x ((hMt x).2 hx)).symm⟩`. Introduce and unpack `_ ⟨_, ⟨_, ⟨x, hx, rfl⟩, rfl⟩, rfl⟩`. Conclude with `⟨_, ⟨_, ⟨y x, (hMt x).1 hx, rfl⟩, rfl⟩, h4 x hx⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem coord_tuple (j : Fin D.R.m) (v : HeightOneSpectrum (𝓞 D.what₂.LL))
     (y : (Fin (O.nX v j) → D.what₂.LL) ≃ₗ[D.what₂.LL] (Fin (OntoChain.srcDim F j (R.mu v)) → D.what₂.LL))
@@ -464,11 +462,11 @@ Both sides reduce to the same expression.
 theorem RunData.full_J {J : CoreJ D} (r : RunData J) : r.full.J = J := rfl
 
 /- English proof (translation)
-Establish `e : ∀ x, (f.liftBaseChange K ∘ₗ z.toLinearMap) (z.symm (1 ⊗ₜ x)) = f x` using `fun x => by`. Rewrite using `[LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.apply_symm_apply, LinearMap.liftBaseChange_tmul, one_smul]`. Unfold `spanK`. Rewrite using `[Submodule.map_span]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `u`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨x, hx, rfl⟩, rfl⟩`. Conclude with `(e x).symm ▸ (h1 x).2 hx`. Introduce `hu`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨x, rfl⟩` from `h2 u hu`. Conclude with `⟨_, ⟨x, (h1 x).1 hu, rfl⟩, e x⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem map_spanK (B : WeightFamilies.Prov D) {j : ℕ} {w : WeightFamilies.Wt D j} {K : Type} [Field K] [NumberField K] [Algebra B.KO K] {m n : ℕ}
     (f : B.Cusp j w →ₗ[B.KO] (Fin m → K)) (z : (Fin n → K) ≃ₗ[K] K ⊗[B.KO] B.Cusp j w) (t : Set (Fin m → K))
@@ -505,7 +503,7 @@ variable {T : Full D} [inst : Algebra T.J.Q.c.F D.what₂.LL] {R : RealDat D A T
   {y : (Fin (O.nX v i) → D.what₂.LL) ≃ₗ[D.what₂.LL] (Fin (OnTies.srcDim A ι (R.mu v) U ψ) → D.what₂.LL)}
 
 /- English proof (translation)
-Establish `e : (O.Ms i).map ((toForms h fw ι z).restrictScalars (𝓞 D.what₂.LL)) = supLat (R.FW ι)` using `(congrArg _ t.Ms_eq).trans (map_spanK (recB h.toLawsCore) (cuspTo h fw ι) z _ (fun f => (fw.mem_MK ι ⟨f.1, cutR_le _ _ _ f.2⟩).trans ⟨fun H la v hv => H la ⟨v, hv⟩, fun H la y => H la y.1 y.2⟩) fun u hu => (cutTo_spec fw ι).2.ge ((R.FW ι).MK_le_WK hu))`. Rewrite using `[← e]`. Conclude with `⟨fun hx => ⟨x, hx, rfl⟩, fun ⟨x', hx', e'⟩ => (toForms_bijective h fw ι z).1 e' ▸ hx'⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem mem_Ms_iff (t : OnTie h fw hinj EX p ι wL wF nT O v i z act inc ℓ U ψ ph y) (x : Fin (O.nZ i) → D.what₂.LL) :
     x ∈ O.Ms i ↔ toForms h fw ι z x ∈ supLat (R.FW ι) := by
@@ -552,13 +550,13 @@ variable {fw : FWTie J R κ v₀} {hc : LawsCore J.toCore} {run : HeightOneSpect
   {ph : Fin D.R.m → ℂ} {c : OnConst} {s : ℕ}
 
 /- English proof (translation)
-Take `⟨z, act, y, ht⟩` from `ht`. Take `⟨v₁, -⟩` from `exists_place3 D.what₂.LL`. Set `w : ∀ j, (Fin (O.nZ j) → D.what₂.LL) ≃ₗ[D.what₂.LL] (Fin (R.nW j) → D.what₂.LL)` to `fun j => LinearEquiv.ofBijective (toForms (T := (run v₁).full) (R := R) (h v₁) fw j (z j)) (toForms_bijective (T := (run v₁).full) (R := R) (h v₁) fw j (z j))`. Establish `he : ∀ j x, w j (O.e j x) = goodOp R j (w j x)` using `fun j x => (ht v₁ j).1.e_eOp x`. Establish `hZ : ∀ j x, x ∈ O.Zg j ↔ w j x ∈ R.WL F false j` using `fun j => mem_Zg_iff h1 h2 hinc j ((ht v₁ j).1.rho_eq_of_actionPin (ht v₁ j).2) (ht v₁ j).1.U_eq (ht v₁ j).1.ψ_eq (he j) (ht v₁ j).1.V₀_eq`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hM : ∀ j x, x ∈ O.Ms j ↔ w j x ∈ supLat (R.FW j)` using `fun j x => mem_Ms_iff (ht v₁ j).1 x`. Establish `key : ∀ v j, ClassSumRational R j (R.mu v) F.P0 F.ψ0⁻¹ (ph j) → (O.θ' v j ∘ₗ O.eX v j = O.e j ∘ₗ O.θ' v j ∧ ∀ x ∈ LinearMap.range (O.eX v j), x - O.pr v j x ∈ LinearMap.ker (O.θ' v j)) → IsLatIn (O.Zg j) (O.Im v j) → (withCoord O w).TjId j v (R.mu v)` using `fun v j hra hI hT => by`. Use `coord_tuple j v (y v j) (fun x => by rw [(ht v j).1.Mt_eq]; rfl) (fun x hx => ?_) hI` and prove the remaining obligations. Establish `hθ : OnTies.IsClassSum R j (R.mu v) F.P0 F.ψ0⁻¹ (ph j) ((w j).toLinearMap ∘ₗ O.θ' v j ∘ₗ (y v j).symm.toLinearMap)` using `(ht v j).1.θ'_eq hra`. Establish `e : ((w j).toLinearMap ∘ₗ O.θ' v j ∘ₗ (y v j).symm.toLinearMap) (y v j x) = w j (O.θ' v j x)` using `congrArg (fun u => w j (O.θ' v j u)) ((y v j).symm_apply_apply x)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm : w j (O.e j (O.θ' v j x)) ∈ R.WL F false j` using `(hZ j _).1 (hT.2.le (Submodule.subset_span ⟨_, ⟨x, hx, rfl⟩, rfl⟩))`. Use `goodOp_classSum hOk hG hHV hjV hHW hU h5 hr j (R.mu v) hθ (y v j x) (by rw [e, ← he]; exact hm)` as an intermediate fact. Rewrite `this` using `[e, ← he]`. Conclude with `this`. Use `⟨w, fun j => coord_lattice j (hZ j) (hM j), fun v hv j => ⟨key v j (hrat v hv j) ((hI v hv).1 j) ((hT v hv).1 j).2.1, ?_⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `key (conjPl v) j (by rw [hμ v]; exact hrat v hv j) ((hI v hv).2 j) ((hT v hv).2 j).2.1` as an intermediate fact. Rewrite `this` using `[hμ v]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_tieCoord {P : Type} [Group P] [Finite P] {inc : P →* G} {O : OnObj ((R.toCx F).data F.cr false) P c}
     (ht : OnObjLevelCompatibility F fw hc run h hinj EX p wL wF nT ℓ ph inc O) (hinc : F.P0 ≤ inc.range)
@@ -595,13 +593,13 @@ theorem exists_tieCoord {P : Type} [Group P] [Finite P] {inc : P →* G} {O : On
   rwa [hμ v] at this
 
 /- English proof (translation)
-Take `⟨z, act, y, ht⟩` from `ht`. Take `⟨v, -⟩` from `exists_place3 D.what₂.LL`. Establish `t` using `(ht v ⟨0, lt_of_lt_of_le two_pos D.R.two_le_m⟩).1`. Establish `hU : O.U = uni R` using `t.U_eq.trans (Subgroup.ext fun g => (mem_base_iff h1 _).trans ⟨fun ⟨u, hu, e⟩ => mirIncl_injective R e ▸ hu, fun hg => ⟨g, hg, rfl⟩⟩)`. Establish `hψ : ∀ u ∈ uni R, O.ψ u = psiU (Res R) (rankPred D.R) (levelChar R F) _ u` using `fun u hu =>`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm` using `(mem_base_iff h1 _).2 ⟨u, hu, rfl⟩`. Use the proof step `Subtype.ext ((t.ψ_eq u hm).trans ((levelChar_spec h1).val u hu hm).symm)`. Take `⟨m1, m2, m3⟩ : IsMackey (uni R) (psiU (Res R) (rankPred D.R) (levelChar R F) _)` from `leafMackey (F := F) c (supArgs R) h1`. Use `⟨hU, ?_, fun j => ⟨LinearMap.ext fun x => ?_, (ht v j).1.V₀_eq.symm⟩⟩` and prove the remaining obligations. Unfold `LeafMackey`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hU]`. Use `⟨(hψ 1 (one_mem _)).trans m1, fun u hu u' hu' => ?_, fun g hg => ?_⟩` and prove the remaining obligations. Rewrite using `[hψ _ (mul_mem hu hu'), hψ u hu, hψ u' hu', m2 u hu u' hu']`. Take `⟨u, hu, hu', hne⟩` from `m3 g hg`. Conclude with `⟨u, hu, hu', by rwa [hψ _ hu', hψ u hu]⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Use `(toForms_bijective (T := (run v).full) (R := R) (h v) fw j (z j)).1 ?_` and prove the remaining obligations. Use `((ht v j).1.e_eOp _).trans ((congrArg (goodOp R j) ((ht v j).1.e_eOp x)).trans ?_)` and prove the remaining obligations. Conclude with `(LinearMap.congr_fun (goodOp_idem hX j) _).trans ((ht v j).1.e_eOp x).symm`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem level_of_tied {O : OnObj ((R.toCx F).data F.cr false) (Mir R) c}
     (ht : OnObjLevelCompatibility F fw hc run h hinj EX p wL wF nT ℓ ph (mirIncl R) O) (hX : ∀ χ ∈ A.X, IsAbsIrrChar χ)
@@ -628,7 +626,7 @@ theorem level_of_tied {O : OnObj ((R.toCx F).data F.cr false) (Mir R) c}
     exact (LinearMap.congr_fun (goodOp_idem hX j) _).trans ((ht v j).1.e_eOp x).symm
 
 /- English proof (translation)
-Take `⟨w, hw⟩` from `exists_tieCoord ht (fun g hg => by`. Take `⟨u, -, e⟩` from `(mem_base_iff h1 g).1 hg`. Conclude with `⟨u, e⟩) hOk h1 h2 hHV hjV hHW hμ hG hU h5 hr hrat hI hT2`. Take `⟨tU, hMk, hP⟩` from `level_of_tied ht hOk.irr h1`. Conclude with `onto_of_coord (withCoord O w) C CH hRk hw hMk hSup hP hSp hS hT0 hD hJ hI hT2 hT1 hSh (leafIndexU_of O D.R.f (mirab_levelGroups _ _) hSq hY tU hN) hBS (leafUnip_of O D.R.f (mirab_levelGroups _ _) hSq tU hN) hDG hDR hD2 hDL hPg hSz hX hBad hJS hJE hCE tE1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem onto_of_tied_phase {O : OnObj ((R.toCx F).data F.cr false) (Mir R) c} (C CH : ℝ)
     (ht : OnObjLevelCompatibility F fw hc run h hinj EX p wL wF nT ℓ ph (mirIncl R) O)
@@ -652,7 +650,7 @@ theorem onto_of_tied_phase {O : OnObj ((R.toCx F).data F.cr false) (Mir R) c} (C
     hDG hDR hD2 hDL hPg hSz hX hBad hJS hJE hCE tE1
 
 /- English proof (translation)
-The claim follows from `have k := onto_of_tied_phase C CH ht hOk hC.grp.levels hC.grp.chiW hC.models.HV hC.models.jV hC.models.HW hC.tup.mu_conj (phasedLift_one hC.thP.thG) hU h5 hr hrat hRk hN hSq hY hSup hSp hS hT0 hD hJ hI hT2 hT1 hSh hBS hDG hDR hD2 hDL hPg hSz hX hBad hJS hJE hCE tE1 ⟨⟨char_withErr …`.
+A detailed English derivation is pending.
 -/
 theorem onto_of_tied {O : OnObj ((R.toCx F).data F.cr false) (Mir R) c} (C CH : ℝ)
     (hC : R.Char F) (hOk : A.fam.Ok s)
@@ -686,7 +684,7 @@ def runScalar (B : WeightFamilies.Prov D) (hinj : Function.Injective D.what₂.O
   algebraMap B.KO K (sigRec B hinj EX ka wL wF nT : 𝓞 B.KO)
 
 /- English proof (translation)
-Take `⟨v₁, -⟩` from `exists_place3 D.what₂.LL`. Take `⟨O₁, z, y, -, H⟩` from `exists_onTie (T := (run v₁).full) (R := R) (h v₁) fw hinj EX O (fun i => i) p (wL v₁) (wF v₁) nT inc ℓ ρ (hρ v₁) F.P0 F.ψ0⁻¹ ph`. Set `O' : OnObj ((R.toCx F).data F.cr false) P c` to `{ O₁ with Th := fun v i => scaledSpan (recPJ (h v) ((i : ℕ) + 1) (inR_succ i)) hinj EX (p v) (κ i) (wL v i) (wF v i) nT (z i) σ := fun v i => runScalar (recB (h v).toLawsCore) hinj EX (κ i) (wL v i) (wF v i) nT D.what₂.LL ThK := fun v i => shortSpan (recPJ (h v) ((i : ℕ) + 1) (in …`. Conclude with `⟨O', z, fun i g f => ρ i g f, y, fun v i => ⟨{ Ms_eq := (H v i).Ms_eq, rho_eq := (H v i).rho_eq, Th_eq := rfl, σ_eq := rfl, ThK_eq := rfl, act_eq := hρ v i, U_eq := (H v i).U_eq, ψ_eq := (H v i).ψ_eq, e_eq := (H v i).e_eq, V₀_eq := (H v i).V₀_eq, Th0_eq := rfl, ThJ_eq := (H v i). …`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Supply the required witnesses or components.
 -/
 theorem exists_tiedObj {P : Type} [Group P] [Finite P] (inc : P →* G) (O : OnObj ((R.toCx F).data F.cr false) P c)
     (ha : ∀ v (i : Fin D.R.m), ActionPin (T := (run v).full) (R := R) (h v) fw i (ℓ i))

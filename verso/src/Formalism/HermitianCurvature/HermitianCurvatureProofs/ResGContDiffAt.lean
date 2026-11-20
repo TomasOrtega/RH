@@ -24,9 +24,9 @@ def resW (h : Mx k r → V) (g : Mx k r) : (Fin r → ℂ) → V :=
   fun c' => if c' ∈ OmX r then resG k r (Fin.last r) h c' g else 0
 
 /- English proof (translation)
-Establish `hsf` using `Formalism.FourierDecayAlt.P5.Rad.sf_resG hh`. Take `⟨U, F, hU, hxU, hF, hE⟩` from `hsf (c₀, g) ⟨hc₀, Formalism.FourierDecayAlt.P5.Rad.wCell_mem_omPlus Bs.z_mem Bs.z'_mem hc₀ hg hG⟩ hg`. Establish `hpre : IsOpen ((fun c : Fin r → ℂ => (c, g)) ⁻¹' U)` using `hU.preimage (by fun_prop)`. Establish `hmem : c₀ ∈ (fun c : Fin r → ℂ => (c, g)) ⁻¹' U` using `hxU`. Establish `hcd : ContDiffAt ℝ ∞ (fun c : Fin r → ℂ => F (c, g)) c₀`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ContDiffOn ℝ ∞ (fun c : Fin r → ℂ => F (c, g)) ((fun c : Fin r → ℂ => (c, g)) ⁻¹' U)` using `hF.comp (by fun_prop : ContDiff ℝ ∞ (fun c : Fin r → ℂ => (c, g))).contDiffOn (fun c hc => hc)`. Conclude with `h1.contDiffAt (hpre.mem_nhds hmem)`. Use `hcd.congr_of_eventuallyEq ?_` and prove the remaining obligations. Use `filter_upwards [hpre.mem_nhds hmem] with c hc`. Conclude with `hE (c, g) hc hg`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem resG_contDiffAt (Bs : B.RealPlaceData k r Wp Wq) {h : Mx k r → V}
     (hh : SmoothLev k r 0 (OmPlus k r Bs.z Bs.z') h) {g : Mx k r} (hg : g ∈ Glev k r (Fin.last r))
@@ -46,7 +46,7 @@ theorem resG_contDiffAt (Bs : B.RealPlaceData k r Wp Wq) {h : Mx k r → V}
   exact hE (c, g) hc hg
 
 /- English proof (translation)
-Use `⟨?_, fun x hx => by simp [resW, hx]⟩` and prove the remaining obligations. Introduce `c hc`. Establish `h1` using `(resG_contDiffAt Bs hh hg hG hc).contDiffWithinAt (s := OmX r)`. Use `h1.congr (fun c' hc' => by simp [resW, hc']) (by simp [resW, hc])` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem resG_wsm (Bs : B.RealPlaceData k r Wp Wq) {h : Mx k r → V} (hh : SmoothLev k r 0 (OmPlus k r Bs.z Bs.z') h)
     {g : Mx k r} (hg : g ∈ Glev k r (Fin.last r)) (hG : 0 < GGl k r Bs.z Bs.z' g) :
@@ -57,18 +57,16 @@ theorem resG_wsm (Bs : B.RealPlaceData k r Wp Wq) {h : Mx k r → V} (hh : Smoot
   refine h1.congr (fun c' hc' => by simp [resW, hc']) (by simp [resW, hc])
 
 /- English proof (translation)
-Simplify using `[resW, hc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem wsm_resG_eq (h : Mx k r → V) (g : Mx k r) {c : Fin r → ℂ} (hc : c ∈ OmX r) :
     resW h g c = resG k r (Fin.last r) h c g := by
   simp [resW, hc]
 
 /- English proof (translation)
-Establish `hgl : ∀ c' ∈ OmX r, wCell k r (Fin.last r) c' * g ∈ Glev k r 0` using `fun c' hc' => Formalism.FourierDecayAlt.P.Qx3.glev_mul (Formalism.FourierDecayAlt.P.Qx3.wlist_glev hc' _) (Formalism.FourierDecayAlt.P.Qx3.glev_mono (Fin.zero_le _) hg)`. Take `⟨U, F, hU, hgU, hF, hE⟩` from `hh (wCell k r (Fin.last r) c * g) ⟨hgl c hc, Formalism.FourierDecayAlt.P5.Rad.wCell_mem_omPlus Bs.z_mem Bs.z'_mem hc hg hG⟩`. Establish `hw : ContDiffOn ℝ ∞ (fun c' : Fin r → ℂ => wCell k r (Fin.last r) c' * g) (OmX r)` using `Formalism.FourierDecayAlt.P.Qx3.cdo_mul (Formalism.FourierDecayAlt.P.Qx3.wlist_smooth _) contDiffOn_const`. Establish `hwc : ContinuousAt (fun c' : Fin r → ℂ => wCell k r (Fin.last r) c' * g) c` using `(hw.continuousOn).continuousAt ((Formalism.FourierDecayAlt.P.Qx3.isOpen_OmX r).mem_nhds hc)`. Establish `hd : DifferentiableAt ℝ (fun c' => F (wCell k r (Fin.last r) c' * g)) c`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hFd : DifferentiableAt ℝ F (wCell k r (Fin.last r) c * g)` using `(hF.differentiableOn (by simp)).differentiableAt (hU.mem_nhds hgU)`. Establish `hwd : DifferentiableAt ℝ (fun c' : Fin r → ℂ => wCell k r (Fin.last r) c' * g) c` using `(hw.differentiableOn (by simp)).differentiableAt ((Formalism.FourierDecayAlt.P.Qx3.isOpen_OmX r).mem_nhds hc)`. Conclude with `hFd.comp c hwd`. Use `hd.congr_of_eventuallyEq ?_` and prove the remaining obligations. Use `filter_upwards [(Formalism.FourierDecayAlt.P.Qx3.isOpen_OmX r).mem_nhds hc, hwc.preimage_mem_nhds (hU.mem_nhds hgU)] with c' h1 h2`.
-
-Conclude with `hE _ h2 (hgl c' h1)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem cell_diff (Bs : B.RealPlaceData k r Wp Wq) {h : Mx k r → V} (hh : SmoothLev k r 0 (OmPlus k r Bs.z Bs.z') h)
     {g : Mx k r} (hg : g ∈ Glev k r (Fin.last r)) (hG : 0 < GGl k r Bs.z Bs.z' g) {c : Fin r → ℂ}
@@ -99,19 +97,19 @@ section chain
 variable {r : ℕ} {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V]
 
 /- English proof (translation)
-The claim follows from `(WSm r V).sub_mem hf hg`.
+A detailed English derivation is pending.
 -/
 theorem wsm_sub {f g : (Fin r → ℂ) → V} (hf : f ∈ WSm r V) (hg : g ∈ WSm r V) : f - g ∈ WSm r V :=
   (WSm r V).sub_mem hf hg
 
 /- English proof (translation)
-The claim follows from `preserved_operators_holds r V l i f hf`.
+A detailed English derivation is pending.
 -/
 theorem opL_mem (l : Fin r) (i : Fin 6) {f : (Fin r → ℂ) → V} (hf : f ∈ WSm r V) : opL l i f ∈ WSm r V :=
   preserved_operators_holds r V l i f hf
 
 /- English proof (translation)
-Establish `hng : (-1 : ℂ) • g ∈ WSm r V` using `(WSm r V).smul_mem _ hg`. Establish `e : f - g = f + (-1 : ℂ) • g` using `by rw [neg_one_smul, sub_eq_add_neg]`. Rewrite using `[e, (linear_operators_holds r V l i f _ 1 hf hng).1, (linear_operators_holds r V l i g g (-1) hg hg).2, neg_one_smul, sub_eq_add_neg]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem opL_sub (l : Fin r) (i : Fin 6) {f g : (Fin r → ℂ) → V} (hf : f ∈ WSm r V) (hg : g ∈ WSm r V) :
     opL l i (f - g) = opL l i f - opL l i g := by
@@ -121,27 +119,27 @@ theorem opL_sub (l : Fin r) (i : Fin 6) {f g : (Fin r → ℂ) → V} (hf : f �
     sub_eq_add_neg]
 
 /- English proof (translation)
-The claim follows from `(linear_operators_holds r V l i f g 1 hf hg).1`.
+A detailed English derivation is pending.
 -/
 theorem opL_add (l : Fin r) (i : Fin 6) {f g : (Fin r → ℂ) → V} (hf : f ∈ WSm r V) (hg : g ∈ WSm r V) :
     opL l i (f + g) = opL l i f + opL l i g :=
   (linear_operators_holds r V l i f g 1 hf hg).1
 
 /- English proof (translation)
-The claim follows from `(linear_operators_holds r V l i f f a hf hf).2`.
+A detailed English derivation is pending.
 -/
 theorem opL_smul (l : Fin r) (i : Fin 6) {f : (Fin r → ℂ) → V} (hf : f ∈ WSm r V) (a : ℂ) :
     opL l i (a • f) = a • opL l i f :=
   (linear_operators_holds r V l i f f a hf hf).2
 
 /- English proof (translation)
-Apply the tactic sequence `funext x; unfold pOp wirt; split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem pOp_zero (l : Fin r) : pOp l (fun _ : Fin r → ℂ => (0 : V)) = fun _ => 0 := by
   funext x; unfold pOp wirt; split_ifs <;> simp
 
 /- English proof (translation)
-The claim follows from `| 0, G, hG => ⟨hG, (WSm r V).zero_mem⟩ | i + 1, G, hG => by obtain ⟨hA, hB⟩ := vAB_mem y i hG by_cases hi : i < r · simp only [vAB, dif_pos hi] refine ⟨wsm_sub ((WSm r V).add_mem ((WSm r V).smul_mem y hA) (opL_mem ⟨i, hi⟩ 0 hA)) (opL_mem ⟨i, hi⟩ 1 hB), opL_mem ⟨i, hi⟩ 2 hA⟩ · sim …`.
+A detailed English derivation is pending.
 -/
 theorem vAB_mem (y : ℂ) : ∀ (i : ℕ) {G : (Fin r → ℂ) → V}, G ∈ WSm r V →
     (vAB r y i).1 G ∈ WSm r V ∧ (vAB r y i).2 G ∈ WSm r V
@@ -156,7 +154,7 @@ theorem vAB_mem (y : ℂ) : ∀ (i : ℕ) {G : (Fin r → ℂ) → V}, G ∈ WSm
       exact ⟨hA, hB⟩
 
 /- English proof (translation)
-The claim follows from `| 0, G₁, G₂, _, _, s => ⟨rfl, by show (0 : (Fin r → ℂ) → V) = 0 + s • 0; simp⟩ | i + 1, G₁, G₂, h₁, h₂, s => by obtain ⟨ih1, ih2⟩ := vAB_lin y i h₁ h₂ s obtain ⟨hA₁, hB₁⟩ := vAB_mem y i h₁ obtain ⟨hA₂, hB₂⟩ := vAB_mem y i h₂ have hsA := (WSm r V).smul_mem s hA₂ have hsB := (WSm r …`.
+A detailed English derivation is pending.
 -/
 theorem vAB_lin (y : ℂ) : ∀ (i : ℕ) {G₁ G₂ : (Fin r → ℂ) → V}, G₁ ∈ WSm r V → G₂ ∈ WSm r V → ∀ s : ℂ,
     (vAB r y i).1 (G₁ + s • G₂) = (vAB r y i).1 G₁ + s • (vAB r y i).1 G₂ ∧
@@ -188,7 +186,7 @@ theorem vAB_lin (y : ℂ) : ∀ (i : ℕ) {G₁ G₂ : (Fin r → ℂ) → V}, G
       exact ⟨ih1, ih2⟩
 
 /- English proof (translation)
-The claim follows from `| 0, _, G, hG => ⟨hG, (WSm r V).zero_mem, rfl, by simp only [vAB]; exact (pOp_zero j).symm⟩ | i + 1, hij, G, hG => by obtain ⟨hA, hB, c1, c2⟩ := vAB_comm y j i (by omega) hG have hpG : pOp j G ∈ WSm r V := opL_mem j 0 hG have hi : i < r := by have := j.isLt; omega have hne : (⟨i, …`.
+A detailed English derivation is pending.
 -/
 theorem vAB_comm (y : ℂ) (j : Fin r) : ∀ (i : ℕ), i ≤ j.val → ∀ {G : (Fin r → ℂ) → V}, G ∈ WSm r V →
     (vAB r y i).1 G ∈ WSm r V ∧ (vAB r y i).2 G ∈ WSm r V ∧

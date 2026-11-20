@@ -8,21 +8,17 @@ open GlobalTheory.CuspRep (CuspSub GA Af Ad finGL locGL)
 open UpperTheory.ConvolutionTheory.C UpperTheory.ConvolutionTheory.Dp UpperTheory.V
 
 /- English proof (translation)
-Set `I : H →ₗᵢ[ℂ] H` to `⟨U.toLinearMap, h1⟩`. Establish `hinj : Function.Injective U` using `I.injective`. Establish `hcm : ∀ X : Submodule ℂ H, (X.map U.toLinearMap).comap U.toLinearMap = X` using `fun X => Submodule.comap_map_eq_of_injective hinj X`. Establish `hmc : ∀ X : Submodule ℂ H, (X.comap U.toLinearMap).map U.toLinearMap = X` using `fun X => Submodule.map_comap_eq_of_surjective h2 X`. Establish `cl1 : ∀ X : Submodule ℂ H, IsClosed (X : Set H) → IsClosed (X.map U.toLinearMap : Set H)` using `fun X hX => I.isometry.isClosedEmbedding.isClosedMap _ hX`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `cl2 : ∀ X : Submodule ℂ H, IsClosed (X : Set H) → IsClosed (X.comap U.toLinearMap : Set H)` using `fun X hX => hX.preimage U.continuous`. Establish `i1 : ∀ X : Submodule ℂ H, π.IsInvariant X → π.IsInvariant (X.map U.toLinearMap)`. Introduce and unpack `X hX g _ ⟨v, hv, rfl⟩`. Take `⟨g, rfl⟩` from `he g`. Conclude with `⟨_, hX g v hv, h3 g v⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `i2 : ∀ X : Submodule ℂ H, π.IsInvariant X → π.IsInvariant (X.comap U.toLinearMap)` using `fun X hX g v hv => by show U _ ∈ X`. Rewrite using `[h3]`. Conclude with `hX _ _ hv`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, cl1 _ h.closed, i1 _ h.inv, fun e => h.ne_bot ?_, fun X hX c i => ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨v, hv, rfl⟩`. Conclude with `(hc v).2 (h.le hv)`. Rewrite using `[← hcm V, e, Submodule.comap_bot]`. Conclude with `LinearMap.ker_eq_bot.2 hinj`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Break down `h.irred _ ((Submodule.comap_mono hX).trans (hcm V).le) (cl2 _ c) (i2 _ i) with e | e` into its components or cases. Use `left`. Rewrite using `[← hmc X, e, Submodule.map_bot]`. Use `right`. Rewrite using `[← hmc X, e]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `h`. Establish `a1` using `cl2 _ h.closed`. Establish `a2` using `i2 _ h.inv`. Rewrite `a1`, `a2` using `[hcm]`. Use `⟨fun v hv => (hc v).1 (h.le ⟨v, hv, rfl⟩), a1, a2, fun e => h.ne_bot ?_, fun X hX c i => ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[e, Submodule.map_bot]`. Break down `h.irred _ (Submodule.map_mono hX) (cl1 _ c) (i1 _ i) with e | e` into its components or cases. Use `left`. Rewrite using `[← hcm X, e, Submodule.comap_bot]`. Conclude with `LinearMap.ker_eq_bot.2 hinj`.
-
-Use `right`. Rewrite using `[← hcm X, e, hcm]`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem aux {G H : Type} [Group G] [TopologicalSpace G] [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
     (π : UnitaryRep G H) (W : Submodule ℂ H) (e : G → G) (he : Function.Surjective e) (U : H →L[ℂ] H) (h1 : ∀ v, ‖U v‖ = ‖v‖)
@@ -66,9 +62,9 @@ private theorem aux {G H : Type} [Group G] [TopologicalSpace G] [NormedAddCommGr
       · right; rw [← hcm X, e, hcm]
 
 /- English proof (translation)
-Introduce `K _ _ n μ _ θ V`. Take `⟨h1, h2, h3⟩` from `twUnitary K n μ θ`. Establish `hinj : Function.Injective θ.U` using `(⟨θ.U.toLinearMap, h1⟩ : LL μ →ₗᵢ[ℂ] LL μ).injective`. Use `aux _ _ θ.e θ.e.surjective θ.U h1 h2 h3 (fun v => ?_) V` and prove the remaining obligations. Establish `e : θ.U (PositivityTheory.Rg.Tf.Core.Pc μ v) = PositivityTheory.Rg.Tf.Core.Pc μ (θ.U v)` using `DFunLike.congr_fun θ.U_comm v`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `a : ∀ x, PositivityTheory.Rg.Tf.Core.Pc μ x = x ↔ x ∈ cuspidalL2 μ` using `fun x => Submodule.starProjection_eq_self_iff`. Rewrite using `[← a, ← a, ← e, hinj.eq_iff]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.ConvolutionTheory.Dp.twSummand :
     UpperTheory.ConvolutionTheory.Dp.TwSummand := by

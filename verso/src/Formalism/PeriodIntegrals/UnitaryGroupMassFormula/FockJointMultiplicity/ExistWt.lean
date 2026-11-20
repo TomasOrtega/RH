@@ -8,11 +8,11 @@ noncomputable section
 namespace PI.FJMX
 
 /- English proof (translation)
-Establish `anti : Antitone g` using `antitone_nat_of_succ_le hg`. Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Rewrite using `[Finset.sum_range_succ, ih]`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `hg n`. Distinguish the cases in `h : i₀ < n`. Establish `h2 : g n ≤ g i₀` using `anti h.le`. Rewrite using `[if_pos h, if_pos (by omega : i₀ ≤ n), if_pos (by omega : i₀ < n + 1)]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Distinguish the cases in `h' : i₀ = n`. Substitute `h'` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[if_neg h, if_neg (by omega : ¬ i₀ ≤ n), if_neg (by omega : ¬ i₀ < n + 1)]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem tele (g : ℕ → ℕ) (hg : ∀ t, g (t + 1) ≤ g t) (i₀ : ℕ) (n : ℕ) :
     ∑ t ∈ Finset.range n, (if i₀ ≤ t then (g t - g (t + 1)) else 0) =
@@ -33,9 +33,9 @@ theorem tele (g : ℕ → ℕ) (hg : ∀ t, g (t + 1) ≤ g t) (i₀ : ℕ) (n :
       · rw [if_neg h, if_neg (by omega : ¬ i₀ ≤ n), if_neg (by omega : ¬ i₀ < n + 1)]
 
 /- English proof (translation)
-Rewrite using `[List.getD_eq_getElem?_getD, List.getD_eq_getElem?_getD]`. Distinguish the cases in `h : t + 1 < α.length`. Rewrite using `[List.getElem?_eq_getElem h, List.getElem?_eq_getElem (by omega)]`. Simplify using `only [Option.getD_some]`. Conclude with `(List.pairwise_iff_getElem.1 hα) t (t + 1) (by omega) h (by omega)`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[List.getElem?_eq_none (by omega)]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem getD_succ_le (α : List ℕ) (hα : α.Pairwise (· ≥ ·)) (t : ℕ) :
     α.getD (t + 1) 0 ≤ α.getD t 0 := by
@@ -54,11 +54,11 @@ theorem getD_length (α : List ℕ) : α.getD α.length 0 = 0 := by
   simp
 
 /- English proof (translation)
-Establish `e : ∀ t, (α.getD t 0 - α.getD (t + 1) 0) • (if i₀ < t + 1 then 1 else 0) = if i₀ ≤ t then (α.getD t 0 - α.getD (t + 1) 0) else 0`. Introduce `t`. Distinguish the cases in `h : i₀ ≤ t`. Rewrite using `[if_pos (by omega), if_pos h]; simp`. Rewrite using `[if_neg (by omega), if_neg h]; simp`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [e]`. Rewrite using `[tele (fun t => α.getD t 0) (getD_succ_le α hα), getD_length]`. Use `split_ifs with h`. Simplify using the standard rewrite rules. Rewrite using `[List.getD_eq_getElem?_getD, List.getElem?_eq_none (by omega)]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem shape_sum (α : List ℕ) (hα : α.Pairwise (· ≥ ·)) (i₀ : ℕ) :
     ∑ t ∈ Finset.range α.length, (α.getD t 0 - α.getD (t + 1) 0) • (if i₀ < t + 1 then 1 else 0) =
@@ -79,17 +79,17 @@ theorem shape_sum (α : List ℕ) (hα : α.Pairwise (· ≥ ·)) (i₀ : ℕ) :
 variable {p q r s m k : ℕ}
 
 /- English proof (translation)
-Unfold `leadT`. Use `split_ifs with hh hlt`. Use `minorPolynomial_isWeightedHomogeneous (R := ℂ) (fun i j : Fin t => (ρ (Fin.castLE hh.1 i), κ (Fin.castLE hh.2 j))) w (fun i => if Fin.castLE hh.1 i = i₀ then 1 else 0) (fun _ => 0) (fun i j => by simp [hw])` as an intermediate fact. Establish `hs : ∑ i : Fin t, (if Fin.castLE hh.1 i = i₀ then 1 else 0) + ∑ _j : Fin t, 0 = 1`. Simplify using `only [Finset.sum_const_zero, add_zero]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_eq_single ⟨i₀.val, hlt⟩]`. Simplify using `[Fin.ext_iff]`. Introduce `i _ hi`. Rewrite using `[if_neg]`. Introduce `e`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hi` to reduce the goal to its premises. Use `ext`. Simplify using `[← e]`. Simplify using the standard rewrite rules. Rewrite `this` using `[hs]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `this`. Use `minorPolynomial_isWeightedHomogeneous (R := ℂ) (fun i j : Fin t => (ρ (Fin.castLE hh.1 i), κ (Fin.castLE hh.2 j))) w (fun i => if Fin.castLE hh.1 i = i₀ then 1 else 0) (fun _ => 0) (fun i j => by simp [hw])` as an intermediate fact. Establish `hs : ∑ i : Fin t, (if Fin.castLE hh.1 i = i₀ then 1 else 0) + ∑ _j : Fin t, 0 = 0`. Simplify using `only [Finset.sum_const_zero, add_zero]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `i _`. Rewrite using `[if_neg]`. Introduce `e`. Apply `hlt` to reduce the goal to its premises. Rewrite using `[← e]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite `this` using `[hs]`. Conclude with `this`. Conclude with `isWeightedHomogeneous_zero _ _ _`. Conclude with `isWeightedHomogeneous_zero _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem leadT_hom_row (ρ : Fin m → Ix p q) (κ : Fin k → Ix r s) (w : Ln p q r s → ℕ) (i₀ : Fin m)
     (hw : ∀ i j, w (ρ i, κ j) = if i = i₀ then 1 else 0) (t : ℕ) :
@@ -129,17 +129,17 @@ theorem leadT_hom_row (ρ : Fin m → Ix p q) (κ : Fin k → Ix r s) (w : Ln p 
   · exact isWeightedHomogeneous_zero _ _ _
 
 /- English proof (translation)
-Unfold `leadT`. Use `split_ifs with hh hlt`. Use `minorPolynomial_isWeightedHomogeneous (R := ℂ) (fun i j : Fin t => (ρ (Fin.castLE hh.1 i), κ (Fin.castLE hh.2 j))) w (fun _ => 0) (fun j => if Fin.castLE hh.2 j = j₀ then 1 else 0) (fun i j => by simp [hw])` as an intermediate fact. Establish `hs : ∑ _i : Fin t, 0 + ∑ j : Fin t, (if Fin.castLE hh.2 j = j₀ then 1 else 0) = 1`. Simplify using `only [Finset.sum_const_zero, zero_add]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_eq_single ⟨j₀.val, hlt⟩]`. Simplify using `[Fin.ext_iff]`. Introduce `j _ hj`. Rewrite using `[if_neg]`. Introduce `e`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hj` to reduce the goal to its premises. Use `ext`. Simplify using `[← e]`. Simplify using the standard rewrite rules. Rewrite `this` using `[hs]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `this`. Use `minorPolynomial_isWeightedHomogeneous (R := ℂ) (fun i j : Fin t => (ρ (Fin.castLE hh.1 i), κ (Fin.castLE hh.2 j))) w (fun _ => 0) (fun j => if Fin.castLE hh.2 j = j₀ then 1 else 0) (fun i j => by simp [hw])` as an intermediate fact. Establish `hs : ∑ _i : Fin t, 0 + ∑ j : Fin t, (if Fin.castLE hh.2 j = j₀ then 1 else 0) = 0`. Simplify using `only [Finset.sum_const_zero, zero_add]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `j _`. Rewrite using `[if_neg]`. Introduce `e`. Apply `hlt` to reduce the goal to its premises. Rewrite using `[← e]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite `this` using `[hs]`. Conclude with `this`. Conclude with `isWeightedHomogeneous_zero _ _ _`. Conclude with `isWeightedHomogeneous_zero _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem leadT_hom_col (ρ : Fin m → Ix p q) (κ : Fin k → Ix r s) (w : Ln p q r s → ℕ) (j₀ : Fin k)
     (hw : ∀ i j, w (ρ i, κ j) = if j = j₀ then 1 else 0) (t : ℕ) :
@@ -179,9 +179,7 @@ theorem leadT_hom_col (ρ : Fin m → Ix p q) (κ : Fin k → Ix r s) (w : Ln p 
   · exact isWeightedHomogeneous_zero _ _ _
 
 /- English proof (translation)
-Unfold `leadT`. Use `split_ifs with hh`. Use `minorPolynomial_isWeightedHomogeneous (R := ℂ) (fun i j : Fin t => (ρ (Fin.castLE hh.1 i), κ (Fin.castLE hh.2 j))) w (fun _ => 0) (fun _ => 0) (fun i j => by simp [hw])` as an intermediate fact. Simplify using `only [Finset.sum_const_zero, add_zero] at this`. Conclude with `this`.
-
-Conclude with `isWeightedHomogeneous_zero _ _ _`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem leadT_hom_zero (ρ : Fin m → Ix p q) (κ : Fin k → Ix r s) (w : Ln p q r s → ℕ)
     (hw : ∀ i j, w (ρ i, κ j) = 0) (t : ℕ) :
@@ -195,7 +193,7 @@ theorem leadT_hom_zero (ρ : Fin m → Ix p q) (κ : Fin k → Ix r s) (w : Ln p
   · exact isWeightedHomogeneous_zero _ _ _
 
 /- English proof (translation)
-Unfold `shapeProd`. Conclude with `IsWeightedHomogeneous.prod _ _ _ fun t _ => (h (t + 1)).pow _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem shapeProd_hom_of (M : Matrix (Fin m) (Fin k) (Pol p q r s)) (w : Ln p q r s → ℕ) (α : List ℕ)
     (deg : ℕ → ℕ) (h : ∀ t, IsWeightedHomogeneous w (leadT M t) (deg t)) :
@@ -205,7 +203,7 @@ theorem shapeProd_hom_of (M : Matrix (Fin m) (Fin k) (Pol p q r s)) (w : Ln p q 
   exact IsWeightedHomogeneous.prod _ _ _ fun t _ => (h (t + 1)).pow _
 
 /- English proof (translation)
-Use `shapeProd_hom_of (varMat ρ κ) w α _ (leadT_hom_row ρ κ w i₀ hw)` as an intermediate fact. Rewrite `this` using `[shape_sum α hα]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem shapeProd_hom_row (ρ : Fin m → Ix p q) (κ : Fin k → Ix r s) (w : Ln p q r s → ℕ) (i₀ : Fin m)
     (hw : ∀ i j, w (ρ i, κ j) = if i = i₀ then 1 else 0) (α : List ℕ) (hα : α.Pairwise (· ≥ ·)) :
@@ -214,7 +212,7 @@ theorem shapeProd_hom_row (ρ : Fin m → Ix p q) (κ : Fin k → Ix r s) (w : L
   rwa [shape_sum α hα] at this
 
 /- English proof (translation)
-Use `shapeProd_hom_of (varMat ρ κ) w α _ (leadT_hom_col ρ κ w j₀ hw)` as an intermediate fact. Rewrite `this` using `[shape_sum α hα]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem shapeProd_hom_col (ρ : Fin m → Ix p q) (κ : Fin k → Ix r s) (w : Ln p q r s → ℕ) (j₀ : Fin k)
     (hw : ∀ i j, w (ρ i, κ j) = if j = j₀ then 1 else 0) (α : List ℕ) (hα : α.Pairwise (· ≥ ·)) :
@@ -223,7 +221,7 @@ theorem shapeProd_hom_col (ρ : Fin m → Ix p q) (κ : Fin k → Ix r s) (w : L
   rwa [shape_sum α hα] at this
 
 /- English proof (translation)
-Use `shapeProd_hom_of (varMat ρ κ) w α _ (leadT_hom_zero ρ κ w hw)` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem shapeProd_hom_zero (ρ : Fin m → Ix p q) (κ : Fin k → Ix r s) (w : Ln p q r s → ℕ)
     (hw : ∀ i j, w (ρ i, κ j) = 0) (α : List ℕ) :

@@ -18,11 +18,9 @@ variable [W.IsElliptic]
 omit [W.IsElliptic] in
 
 /- English proof (translation)
-Use `haveI : DecidableEq (ResidueField (gaussRing W)) := Classical.decEq _`. Establish `h₁ : (curveK (W.baseChange K).toAffine.FunctionField (gaussCurve W V)).Nonsingular (algebraMap (gaussRing W) _ x) (algebraMap (gaussRing W) _ y)` using `by show ((gaussCurve W V).map (algebraMap _ _)).toAffine.Nonsingular _ _`. Rewrite using `[gaussCurve_map_functionField]`. Conclude with `h`. Establish `e₁ : pointCongr (gaussCurve_map_functionField K W V).symm (Point.some _ _ h) = Point.some _ _ h₁` using `pointCongr_some _ h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `n₁` using `nonsingular_residue_of_isElliptic (W.baseChange K).toAffine.FunctionField (gaussCurve W V) h₁.1`. Take `⟨h₂, e₂⟩` from `pointMapRing_some (gaussResidue W) ((gaussCurve W V).map (residue _)) n₁`. Use `⟨by rw [← gaussCurve_map_residue W V]; exact h₂, ?_⟩` and prove the remaining obligations. Simplify using `only [reduceFF, AddMonoidHom.comp_apply, AddEquiv.coe_toAddMonoidHom, reductionHom_apply]`. Rewrite using `[e₁, reducePoint_some_integral _ _ h₁ n₁]`.
-
-Use `erw [e₂]`. Rewrite using `[pointCongr_some]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem reduceFF_some (V : WeierstrassCurve 𝒪) [V.IsElliptic] {x y : gaussRing W}
     (h : ((V.baseChange K).baseChange (W.baseChange K).toAffine.FunctionField).toAffine.Nonsingular
@@ -46,11 +44,11 @@ theorem reduceFF_some (V : WeierstrassCurve 𝒪) [V.IsElliptic] {x y : gaussRin
   rw [pointCongr_some]
 
 /- English proof (translation)
-Use `haveI : DecidableEq (ResidueField (gaussRing W)) := Classical.decEq _`. Establish `hx` using `algebraMap_gaussX W K`. Establish `hy` using `algebraMap_gaussY W K`. Choose the witnesses or unpack the hypotheses as in `⟨h₁, e₁⟩ : ∃ h₁ : (curveK (W.baseChange K).toAffine.FunctionField (gaussCurve W W)).Nonsingular (algebraMap (gaussRing W) _ (gaussX W)) (algebraMap (gaussRing W) _ (gaussY W)), pointCongr (gaussCurve_map_functionField K W W).symm (GroundTheory.Arith.Abelian.genericPoint (W.baseCh …`. Rewrite using `[GroundTheory.Arith.Abelian.genericPoint, pointCongr_some]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `exists_some_eq _ hx.symm hy.symm`. Establish `n₁` using `nonsingular_residue_of_isElliptic (W.baseChange K).toAffine.FunctionField (gaussCurve W W) h₁.1`. Take `⟨h₂, e₂⟩` from `pointMapRing_some (gaussResidue W) ((gaussCurve W W).map (residue _)) n₁`. Simplify using `only [reduceFF, AddMonoidHom.comp_apply, AddEquiv.coe_toAddMonoidHom, reductionHom_apply]`. Rewrite using `[e₁, reducePoint_some_integral _ _ h₁ n₁]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Use `erw [e₂]`. Rewrite using `[pointCongr_some, GroundTheory.Arith.Abelian.genericPoint, Point.some.injEq, gaussResidue_gaussX, gaussResidue_gaussY]`. Conclude with `⟨rfl, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem reduceFF_genericPoint :
     reduceFF K W W (GroundTheory.Arith.Abelian.genericPoint (W.baseChange K)) =
@@ -76,7 +74,7 @@ theorem reduceFF_genericPoint :
   exact ⟨rfl, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[map_zsmul, reduceFF_genericPoint]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem reduceFF_zsmul_genericPoint (n : ℤ) :
     reduceFF K W W (n • GroundTheory.Arith.Abelian.genericPoint (W.baseChange K)) =
@@ -90,21 +88,21 @@ section Coordinates
 variable {F : Type*} [Field F] [DecidableEq F]
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem xOf_pointCongr {V₁ V₂ : WeierstrassCurve F} (h : V₁ = V₂) (P : V₁.toAffine.Point) :
     xOf V₂ (pointCongr h P) = xOf V₁ P := by
   subst h; rfl
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem yOf_pointCongr {V₁ V₂ : WeierstrassCurve F} (h : V₁ = V₂) (P : V₁.toAffine.Point) :
     yOf V₂ (pointCongr h P) = yOf V₁ P := by
   subst h; rfl
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem pointCongr_eq_zero_iff {V₁ V₂ : WeierstrassCurve F} (h : V₁ = V₂)
     (P : V₁.toAffine.Point) : pointCongr h P = 0 ↔ P = 0 := by
@@ -113,9 +111,9 @@ theorem pointCongr_eq_zero_iff {V₁ V₂ : WeierstrassCurve F} (h : V₁ = V₂
 variable {L : Type*} [Field L] [DecidableEq L]
 
 /- English proof (translation)
-Break down `P with _ | ⟨x, y, h⟩` into its components or cases. Use `show (0 : L) = f 0`. Rewrite using `[map_zero]`. Take `⟨h', e⟩` from `pointMapRing_some f V h`. Rewrite using `[e]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem xOf_pointMapRing (f : F →+* L) (V : WeierstrassCurve F) (P : V.toAffine.Point) :
     xOf (V.map f) (pointMapRing f V P) = f (xOf V P) := by
@@ -125,9 +123,9 @@ theorem xOf_pointMapRing (f : F →+* L) (V : WeierstrassCurve F) (P : V.toAffin
     rw [e]; rfl
 
 /- English proof (translation)
-Break down `P with _ | ⟨x, y, h⟩` into its components or cases. Use `show (0 : L) = f 0`. Rewrite using `[map_zero]`. Take `⟨h', e⟩` from `pointMapRing_some f V h`. Rewrite using `[e]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem yOf_pointMapRing (f : F →+* L) (V : WeierstrassCurve F) (P : V.toAffine.Point) :
     yOf (V.map f) (pointMapRing f V P) = f (yOf V P) := by
@@ -137,7 +135,7 @@ theorem yOf_pointMapRing (f : F →+* L) (V : WeierstrassCurve F) (P : V.toAffin
     rw [e]; rfl
 
 /- English proof (translation)
-Break down `P with _ | ⟨x, y, h⟩` into its components or cases. Conclude with `⟨fun _ => rfl, fun _ => rfl⟩`. Take `⟨h', e⟩` from `pointMapRing_some f V h`. Rewrite using `[e]`. Conclude with `⟨fun h0 => absurd h0 (Point.some_ne_zero _), fun h0 => absurd h0 (Point.some_ne_zero _)⟩`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem pointMapRing_eq_zero_iff (f : F →+* L) (V : WeierstrassCurve F) (P : V.toAffine.Point) :
     pointMapRing f V P = 0 ↔ P = 0 := by
@@ -148,9 +146,7 @@ theorem pointMapRing_eq_zero_iff (f : F →+* L) (V : WeierstrassCurve F) (P : V
     exact ⟨fun h0 => absurd h0 (Point.some_ne_zero _), fun h0 => absurd h0 (Point.some_ne_zero _)⟩
 
 /- English proof (translation)
-Apply the tactic sequence `rcases P with _ | ⟨x, y, h⟩ <;> rcases Q with _ | ⟨x', y', h'⟩`. Both sides reduce to the same expression. Conclude with `absurd (h0.1 rfl) (Point.some_ne_zero _)`. Conclude with `absurd (h0.2 rfl) (Point.some_ne_zero _)`. Rewrite using `[Point.some.injEq]`.
-
-Conclude with `⟨hx, hy⟩`.
+Apply the first step, then apply the next step to every resulting obligation. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem point_ext_xy {V : WeierstrassCurve F} {P Q : V.toAffine.Point} (h0 : P = 0 ↔ Q = 0)
     (hx : xOf V P = xOf V Q) (hy : yOf V P = yOf V Q) : P = Q := by
@@ -165,7 +161,7 @@ end Coordinates
 section Composition
 
 /- English proof (translation)
-Substitute `h₁` using the available equality. Substitute `h₂` using the available equality. Substitute `h₃` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Substitute using the available equality. Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem pointCongr₃_eq {F : Type*} [Field F] [DecidableEq F]
     {V₁ V₂ V₃ V₄ : WeierstrassCurve F} (h₁ : V₁ = V₂) (h₂ : V₂ = V₃) (h₃ : V₃ = V₄)
@@ -175,7 +171,7 @@ theorem pointCongr₃_eq {F : Type*} [Field F] [DecidableEq F]
 
 omit [IsFractionRing 𝒪 K] in
 /- English proof (translation)
-Apply `ringHom_ext_functionField` to reduce the goal to its premises. Introduce `c`. Rewrite using `[fieldEvalRed_algebraMap, fieldEvalRed_algebraMap]`. Rewrite using `[fieldEvalRed_genX, fieldEvalRed_genX, ex]`. Rewrite using `[fieldEvalRed_genY, fieldEvalRed_genY, ey]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem fieldEvalRed_congr {Λ : Type*} [CommRing Λ] [IsDomain Λ] [IsDiscreteValuationRing Λ]
     (j : 𝒪 →+* Λ) [IsLocalHom j] {x₁ y₁ x₂ y₂ : Λ} (hxy₁ : (W.map j).toAffine.Equation x₁ y₁)
@@ -191,7 +187,7 @@ theorem fieldEvalRed_congr {Λ : Type*} [CommRing Λ] [IsDomain Λ] [IsDiscreteV
 
 omit [IsFractionRing 𝒪 K] in
 /- English proof (translation)
-Use `RingHom.ext fun c => ?_` and prove the remaining obligations. Take `⟨c, rfl⟩` from `residue_surjective c`. Rewrite using `[RingHom.comp_apply, ResidueField.map_residue, gaussResidue_residue_algebraMap]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem gaussResidue_comp_residueField_map :
     (gaussResidue W).comp (ResidueField.map (algebraMap 𝒪 (gaussRing W))) =
@@ -205,29 +201,27 @@ variable (W' W'' : WeierstrassCurve 𝒪) [W'.IsElliptic] [W''.IsElliptic]
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Use `haveI : DecidableEq (ResidueField (gaussRing W)) := Classical.decEq _`. Establish `e` using `gaussCurve_map_functionField K W W'`. Establish `hne : reducePoint (W.baseChange K).toAffine.FunctionField (gaussCurve W W') (pointCongr e.symm R) ≠ 0`. Introduce `h0`. Apply `isGenPt_ne_zero _ hR'` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Simplify using `only [reduceFF, AddMonoidHom.comp_apply, AddEquiv.coe_toAddMonoidHom, reductionHom_apply]`. Use `erw [h0]`. Rewrite using `[map_zero, map_zero]`. Take `⟨x, y, h₀, hP⟩` from `exists_integral_of_reducePoint_ne_zero _ _ hne`. Establish `hRe : R = pointCongr e (Point.some _ _ h₀)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[← hP, pointCongr_pointCongr]`. Both sides reduce to the same expression. Choose the witnesses or unpack the hypotheses as in `⟨h, hRs⟩ : ∃ h, R = Point.some (algebraMap (gaussRing W) _ x) (algebraMap (gaussRing W) _ y) h := by`. Rewrite using `[hRe, pointCongr_some]`. Conclude with `⟨_, rfl⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Substitute using the available equality. Extract witnesses or component facts from the available result.
 
-Substitute `hRs` using the available equality. Take `⟨h', e'⟩` from `reduceFF_some K W W' h`. Establish `hR'' : IsGenPt (W'.map (residue 𝒪)) (Point.some _ _ h')` using `e' ▸ hR'`. Rewrite using `[genEval_congr _ e' hR' hR'']`. Use `set j := algebraMap 𝒪 (gaussRing W)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hjM : ∀ c : 𝒪, algebraMap K (W.baseChange K).toAffine.FunctionField (algebraMap 𝒪 K c) = algebraMap (gaussRing W) (W.baseChange K).toAffine.FunctionField (j c)` using `fun c => by`. Rewrite using `[← IsScalarTower.algebraMap_apply, ← IsScalarTower.algebraMap_apply]`. Establish `hxy : (W'.map j).toAffine.Equation x y`. Establish `h₁ : ((W'.map j).map (algebraMap _ (W.baseChange K).toAffine.FunctionField)).toAffine.Equation (algebraMap _ _ x) (algebraMap _ _ y)`. Rewrite using `[← map_baseChange_eq_map_of K W' j _ hjM]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `h.1`. Conclude with `(WeierstrassCurve.Affine.map_equation (W'.map j).toAffine (IsFractionRing.injective _ (W.baseChange K).toAffine.FunctionField) x y).mp h₁`. Establish `hx : Function.Injective (eval₂RingHom (ResidueField.map j) (residue _ x))`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `p hp`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hp0`. Establish `hT : Transcendental (ResidueField 𝒪) (gaussResidue W (residue _ x))` using `hR''`. Apply `hT` to reduce the goal to its premises. Use `⟨p, hp0, ?_⟩` and prove the remaining obligations. Establish `key : aeval (gaussResidue W (residue _ x)) p = gaussResidue W (eval₂RingHom (ResidueField.map j) (residue _ x) p)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[aeval_def, coe_eval₂RingHom, Polynomial.hom_eval₂, gaussResidue_comp_residueField_map]`. Rewrite using `[key, hp, map_zero]`. Establish `hring : (gaussResidue W).comp (fieldEvalRed W' j hxy hx) = (genEval (W'.map (residue 𝒪)) _ hR'').toRingHom`. Apply `ringHom_ext_functionField` to reduce the goal to its premises. Introduce `c`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[RingHom.comp_apply, fieldEvalRed_algebraMap, ← RingHom.comp_apply, gaussResidue_comp_residueField_map]`. Conclude with `((genEval _ _ hR'').commutes c).symm`. Rewrite using `[RingHom.comp_apply, fieldEvalRed_genX, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, genEval_genX]`. Both sides reduce to the same expression. Rewrite using `[RingHom.comp_apply, fieldEvalRed_genY, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, genEval_genY]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `main` using `reducePoint_genEval (K := K) (W := W') (W' := W'') (j := j) (M := (W.baseChange K).toAffine.FunctionField) (hxy := hxy) (hx := hx) hjM h hR Q`. Establish `main' : reducePoint (W.baseChange K).toAffine.FunctionField (gaussCurve W W'') (pointCongr (gaussCurve_map_functionField K W W'').symm (Point.map (genEval (W'.baseChange K) _ hR) Q)) = pointCongr (map_fieldEvalRed_eq W' W'' j hxy hx) (pointMapRing (fieldEvalRed W' j hxy hx) _ (re …` using `main`. Establish `hL : reduceFF K W W'' (Point.map (genEval (W'.baseChange K) _ hR) Q) = pointCongr (gaussCurve_map_residue W W'') (pointMapRing (gaussResidue W) _ (reducePoint (W.baseChange K).toAffine.FunctionField (gaussCurve W W'') (pointCongr (gaussCurve_map_functionField K W W'').symm (Point …`. Simplify using `only [reduceFF, AddMonoidHom.comp_apply, AddEquiv.coe_toAddMonoidHom, reductionHom_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[hL, main']`. Establish `hf` using `DFunLike.congr_fun hring`. Simplify using `only [RingHom.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe] at hf`. Apply `point_ext_xy` to reduce the goal to its premises.
-
-Rewrite using `[pointCongr_eq_zero_iff, pointMapRing_eq_zero_iff, pointCongr_eq_zero_iff, pointMapRing_eq_zero_iff, map_eq_pointCongr_pointMapRing, pointCongr_eq_zero_iff, pointMapRing_eq_zero_iff]`. Rewrite using `[xOf_pointCongr, xOf_pointMapRing, xOf_pointCongr, xOf_pointMapRing, hf, map_eq_pointCongr_pointMapRing, xOf_pointCongr, xOf_pointMapRing]`. Both sides reduce to the same expression. Rewrite using `[yOf_pointCongr, yOf_pointMapRing, yOf_pointCongr, yOf_pointMapRing, hf, map_eq_pointCongr_pointMapRing, yOf_pointCongr, yOf_pointMapRing]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem reduceFF_map_genEval
     {R : ((W'.baseChange K).baseChange (W.baseChange K).toAffine.FunctionField).toAffine.Point}

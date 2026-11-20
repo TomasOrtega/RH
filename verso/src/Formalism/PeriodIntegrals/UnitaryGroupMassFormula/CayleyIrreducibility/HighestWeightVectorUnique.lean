@@ -17,7 +17,7 @@ section Common
 variable {ι : Type} [Fintype ι] [DecidableEq ι] {n : ℕ}
 
 /- English proof (translation)
-Unfold `DomWeight.natW`. Introduce `a b hab`. Conclude with `Int.toNat_le_toNat (sub_le_sub_right (lam.2 hab) _)`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem natW_anti_v (lam : DomWeight n) : Antitone lam.natW := by
   unfold DomWeight.natW
@@ -25,20 +25,20 @@ theorem natW_anti_v (lam : DomWeight n) : Antitone lam.natW := by
   exact Int.toNat_le_toNat (sub_le_sub_right (lam.2 hab) _)
 
 /- English proof (translation)
-The claim follows from `weylLeDual_of highestWeightVectorMem dualWeylModuleRowDividedPowerStable ℂ n n le_rfl _ (natW_anti_v lam)`.
+A detailed English derivation is pending.
 -/
 theorem delSq_le_dual (lam : DomWeight n) : delSq ℂ n lam ≤ dualWeyl ℂ n n lam.natW :=
   weylLeDual_of highestWeightVectorMem dualWeylModuleRowDividedPowerStable ℂ n n le_rfl _ (natW_anti_v lam)
 
 /- English proof (translation)
-Simplify using `only [tenV, map_prod, MvPolynomial.eval_rename, Function.comp_def]`.
+Simplify using the standard rewrite rules.
 -/
 theorem eval_tenV (x : ι × Fin n × Fin n → ℂ) (f : ι → MvPolynomial (Fin n × Fin n) ℂ) :
     eval x (tenV f) = ∏ τ, eval (fun p => x (τ, p)) (f τ) := by
   simp only [tenV, map_prod, MvPolynomial.eval_rename, Function.comp_def]
 
 /- English proof (translation)
-Simplify using `only [hw, map_prod, map_pow, eval_idPoint_lpMinor, one_pow, Finset.prod_const_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem eval_hw_id (ν : Fin n → ℕ) : eval (idPoint ℂ n n) (hw ℂ (le_refl n) ν) = 1 := by
   simp only [hw, map_prod, map_pow, eval_idPoint_lpMinor, one_pow, Finset.prod_const_one]
@@ -48,9 +48,9 @@ def sl (τ₀ : ι) (x : ι × Fin n × Fin n → ℂ) :
   aeval fun v => if v.1 = τ₀ then X v.2 else C (x v)
 
 /- English proof (translation)
-Establish `h : (MvPolynomial.aeval y).comp (sl τ₀ x) = MvPolynomial.aeval (fun v => if v.1 = τ₀ then y v.2 else x v)`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `v`. Simplify using `only [sl, AlgHom.comp_apply, MvPolynomial.aeval_X]`. Apply the tactic sequence `split_ifs <;> simp`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `h2` using `DFunLike.congr_fun h P`. Simplify using `only [AlgHom.comp_apply] at h2`. Conclude with `h2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eval_sl (τ₀ : ι) (x : ι × Fin n × Fin n → ℂ) (y : Fin n × Fin n → ℂ)
     (P : MvPolynomial (ι × Fin n × Fin n) ℂ) :
@@ -66,7 +66,7 @@ theorem eval_sl (τ₀ : ι) (x : ι × Fin n × Fin n → ℂ) (y : Fin n × Fi
   exact h2
 
 /- English proof (translation)
-Establish `h : (sl τ₀ x).comp (rename (Prod.mk τ₀)) = AlgHom.id ℂ _`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `q`. Simplify using `[sl]`. Simplify `DFunLike.congr_fun h p` using `only [AlgHom.comp_apply, AlgHom.id_apply]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem sl_rename_self (τ₀ : ι) (x : ι × Fin n × Fin n → ℂ) (p : MvPolynomial (Fin n × Fin n) ℂ) :
     sl τ₀ x (rename (Prod.mk τ₀) p) = p := by
@@ -77,9 +77,9 @@ theorem sl_rename_self (τ₀ : ι) (x : ι × Fin n × Fin n → ℂ) (p : MvPo
   simpa only [AlgHom.comp_apply, AlgHom.id_apply] using DFunLike.congr_fun h p
 
 /- English proof (translation)
-Establish `h : (sl τ₀ x).comp (rename (Prod.mk σ)) = (Algebra.ofId ℂ (MvPolynomial (Fin n × Fin n) ℂ)).comp (MvPolynomial.aeval fun q => x (σ, q))`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `q`. Simplify using `[sl, h, MvPolynomial.algebraMap_eq]`. Establish `h2` using `DFunLike.congr_fun h p`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [AlgHom.comp_apply, Algebra.ofId_apply, MvPolynomial.algebraMap_eq] at h2`. Conclude with `h2`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sl_rename_ne (τ₀ σ : ι) (h : σ ≠ τ₀) (x : ι × Fin n × Fin n → ℂ)
     (p : MvPolynomial (Fin n × Fin n) ℂ) :
@@ -94,7 +94,7 @@ theorem sl_rename_ne (τ₀ σ : ι) (h : σ ≠ τ₀) (x : ι × Fin n × Fin 
   exact h2
 
 /- English proof (translation)
-Rewrite using `[tenV, map_prod, ← Finset.mul_prod_erase _ _ (Finset.mem_univ τ₀), sl_rename_self, mul_comm, map_prod]`. Use `congr 1`. Use `Finset.prod_congr rfl fun σ hσ => ?_` and prove the remaining obligations. Conclude with `sl_rename_ne τ₀ σ (Finset.ne_of_mem_erase hσ) x (f σ)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem sl_tenV (τ₀ : ι) (x : ι × Fin n × Fin n → ℂ) (f : ι → MvPolynomial (Fin n × Fin n) ℂ) :
     sl τ₀ x (tenV f) = C (∏ σ ∈ Finset.univ.erase τ₀, eval (fun q => x (σ, q)) (f σ)) * f τ₀ := by
@@ -105,11 +105,9 @@ theorem sl_tenV (τ₀ : ι) (x : ι × Fin n × Fin n → ℂ) (f : ι → MvPo
   exact sl_rename_ne τ₀ σ (Finset.ne_of_mem_erase hσ) x (f σ)
 
 /- English proof (translation)
-Simplify using `only [CSpanV, delSq] at hQ ⊢`. Proceed by induction on `hQ using Submodule.span_induction with`. Consider the case `mem P hP`. Take `⟨f, hf, rfl⟩` from `hP`. Rewrite using `[sl_tenV, MvPolynomial.C_mul']`.
+Simplify using the standard rewrite rules. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.smul_mem _ _ (hf τ₀)`. Consider the case `zero => rw [map_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add P R _ _ hP hR => rw [map_add]`. Conclude with `Submodule.add_mem _ hP hR`.
-
-Consider the case `smul c P _ hP => rw [map_smul]`. Conclude with `Submodule.smul_mem _ c hP`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem sl_mem (lam : ι → DomWeight n) (τ₀ : ι) (x : ι × Fin n × Fin n → ℂ)
     {Q : MvPolynomial (ι × Fin n × Fin n) ℂ} (hQ : Q ∈ CSpanV lam) :
@@ -125,9 +123,9 @@ theorem sl_mem (lam : ι → DomWeight n) (τ₀ : ι) (x : ι × Fin n × Fin n
   | smul c P _ hP => rw [map_smul]; exact Submodule.smul_mem _ c hP
 
 /- English proof (translation)
-Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `v`. Take `⟨σ, r, c⟩` from `v`. Distinguish the cases in `hσ : σ = τ₀`. Substitute `hσ` using the available equality.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Apply the tactic sequence `by_cases hb : r = b <;> simp [rowGen, bigGen, sl, hb]`. Simplify using `[rowGen, bigGen, sl, hσ, Polynomial.algebraMap_apply, MvPolynomial.algebraMap_eq]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem rowGen_sl (τ₀ : ι) (x : ι × Fin n × Fin n → ℂ) (a b : Fin n) :
     (rowGen ℂ a b).comp (sl τ₀ x) = (Polynomial.mapAlgHom (sl τ₀ x)).comp (bigGen τ₀ a b) := by
@@ -140,7 +138,7 @@ theorem rowGen_sl (τ₀ : ι) (x : ι × Fin n × Fin n → ℂ) (a b : Fin n) 
   · simp [rowGen, bigGen, sl, hσ, Polynomial.algebraMap_apply, MvPolynomial.algebraMap_eq]
 
 /- English proof (translation)
-Simplify using `only [rowDiv, bigDiv]`. Establish `h` using `DFunLike.congr_fun (rowGen_sl τ₀ x a b) P`. Simplify using `only [AlgHom.comp_apply] at h`. Rewrite using `[h]`. Conclude with `Polynomial.coeff_map _ _`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rowDiv_sl (τ₀ : ι) (x : ι × Fin n × Fin n → ℂ) (a b : Fin n) (k : ℕ)
     (P : MvPolynomial (ι × Fin n × Fin n) ℂ) :
@@ -158,11 +156,11 @@ section UniqPf
 variable {ι : Type} [Fintype ι] [DecidableEq ι] {n : ℕ}
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `highest_weight_line ℂ n n le_rfl (lam τ₀).natW (natW_anti_v _) (sl τ₀ x Q) (delSq_le_dual _ (sl_mem lam τ₀ x hQ)) (fun a b hab k hk1 => by rw [rowDiv_sl, hk τ₀ a b hab k hk1, map_zero])`. Establish `h1` using `congrArg (eval (fun p => x (τ₀, p))) hc`. Establish `h2` using `congrArg (eval (idPoint ℂ n n)) hc`. Rewrite `h1`, `h2` using `[eval_sl, smul_eval]`. Rewrite `h2` using `[eval_hw_id, mul_one]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hx : (fun v : ι × Fin n × Fin n => if v.1 = τ₀ then x (τ₀, v.2) else x v) = x`. Use function extensionality and compare the values at `v`. Use `split_ifs with h`. Rewrite using `[← h]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[hx]`. Rewrite using `[h1, ← h2, mul_comm]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem uniq_block (lam : ι → DomWeight n) (Q : MvPolynomial (ι × Fin n × Fin n) ℂ)
     (hQ : Q ∈ CSpanV lam)
@@ -187,11 +185,11 @@ theorem uniq_block (lam : ι → DomWeight n) (Q : MvPolynomial (ι × Fin n × 
   rfl
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => intro x`. Simplify using the standard rewrite rules. Consider the case `@insert τ s hτ ih`. Introduce `x`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hb : eval (fun v : ι × Fin n × Fin n => if v.1 ∈ s then idPoint ℂ n n v.2 else x v) Q = eval (fun p => x (τ, p)) (extremal ℂ n (lam τ)) * eval (fun v : ι × Fin n × Fin n => if v.1 ∈ insert τ s then idPoint ℂ n n v.2 else x v) Q`. Use `(uniq_block lam Q hQ hk τ (fun v => if v.1 ∈ s then idPoint ℂ n n v.2 else x v)) using 4` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `p`. Simplify using `[hτ]`. Apply the tactic sequence `funext v; by_cases h1 : v.1 = τ <;> simp [h1]`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[ih x, hb, Finset.prod_insert hτ]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem uniq_iter (lam : ι → DomWeight n) (Q : MvPolynomial (ι × Fin n × Fin n) ℂ)
     (hQ : Q ∈ CSpanV lam)
@@ -213,9 +211,9 @@ theorem uniq_iter (lam : ι → DomWeight n) (Q : MvPolynomial (ι × Fin n × F
     ring
 
 /- English proof (translation)
-Unfold `Uniq`. Introduce `ι _ _ n lam Q hQ hk`. Use `⟨eval (fun v : ι × Fin n × Fin n => idPoint ℂ n n v.2) Q, ?_⟩` and prove the remaining obligations. Apply `MvPolynomial.funext` to reduce the goal to its premises. Introduce `x`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[uniq_iter lam Q hQ hk Finset.univ x, MvPolynomial.smul_eval]`. Simplify using `only [tenHW, eval_tenV, Finset.mem_univ, if_true]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem highest_weight_vector_unique : Uniq := by
   unfold Uniq
@@ -234,7 +232,7 @@ section GenPf
 variable {ι : Type} [Fintype ι] [DecidableEq ι] {n : ℕ}
 
 /- English proof (translation)
-Rewrite using `[tenV, ← Finset.mul_prod_erase _ _ (Finset.mem_univ τ), Function.update_self]`. Use `congr 1`. Use `Finset.prod_congr rfl fun σ hσ => ?_` and prove the remaining obligations. Rewrite using `[Function.update_of_ne (Finset.ne_of_mem_erase hσ)]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem tenV_update (f : ι → MvPolynomial (Fin n × Fin n) ℂ) (τ : ι)
     (p : MvPolynomial (Fin n × Fin n) ℂ) :
@@ -246,9 +244,9 @@ theorem tenV_update (f : ι → MvPolynomial (Fin n × Fin n) ℂ) (τ : ι)
   rw [Function.update_of_ne (Finset.ne_of_mem_erase hσ)]
 
 /- English proof (translation)
-Establish `h' : (bigGen τ a b).comp (rename (Prod.mk τ)) = (Polynomial.mapAlgHom (rename (R` using `ℂ) (Prod.mk τ))).comp (rowGen ℂ a b) := by`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `q`. Apply the tactic sequence `by_cases hb : q.1 = b <;> simp [bigGen, rowGen, hb]`. Establish `h2` using `DFunLike.congr_fun h' p`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Simplify using `only [AlgHom.comp_apply] at h2`. Conclude with `h2`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem bigGen_rename_self (τ : ι) (a b : Fin n) (p : MvPolynomial (Fin n × Fin n) ℂ) :
     bigGen τ a b (rename (Prod.mk τ) p) = Polynomial.map (rename (R := ℂ) (Prod.mk τ)).toRingHom (rowGen ℂ a b p) := by
@@ -262,9 +260,9 @@ theorem bigGen_rename_self (τ : ι) (a b : Fin n) (p : MvPolynomial (Fin n × F
   exact h2
 
 /- English proof (translation)
-Establish `h' : (bigGen τ a b).comp (rename (Prod.mk σ)) = Polynomial.CAlgHom.comp (rename (R` using `ℂ) (Prod.mk σ)) := by`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `q`. Simplify using `[bigGen, h]`. Establish `h2` using `DFunLike.congr_fun h' p`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [AlgHom.comp_apply, Polynomial.CAlgHom_apply] at h2`. Conclude with `h2`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem bigGen_rename_ne (τ σ : ι) (h : σ ≠ τ) (a b : Fin n) (p : MvPolynomial (Fin n × Fin n) ℂ) :
     bigGen τ a b (rename (Prod.mk σ) p) = Polynomial.C (rename (Prod.mk σ) p) := by
@@ -277,7 +275,7 @@ theorem bigGen_rename_ne (τ σ : ι) (h : σ ≠ τ) (a b : Fin n) (p : MvPolyn
   exact h2
 
 /- English proof (translation)
-Simplify using `only [bigDiv, rowDiv]`. Rewrite using `[tenV_update, tenV_update, map_mul, map_prod, bigGen_rename_self, Finset.prod_congr rfl (fun σ hσ => bigGen_rename_ne τ σ (Finset.ne_of_mem_erase hσ) a b (f σ)), ← map_prod Polynomial.C, Polynomial.coeff_mul_C, Polynomial.coeff_map]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem bigDiv_tenV_update (f : ι → MvPolynomial (Fin n × Fin n) ℂ) (τ : ι) (a b : Fin n) (k : ℕ)
     (p : MvPolynomial (Fin n × Fin n) ℂ) :
@@ -290,23 +288,21 @@ theorem bigDiv_tenV_update (f : ι → MvPolynomial (Fin n × Fin n) ℂ) (τ : 
   rfl
 
 /- English proof (translation)
-Introduce `ι _ _ n lam M hM hT`. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨f, hf, rfl⟩`. Establish `key : ∀ s : Finset ι, ∀ f : ι → MvPolynomial (Fin n × Fin n) ℂ, (∀ τ ∈ s, f τ ∈ delSq ℂ n (lam τ)) → (∀ τ ∉ s, f τ = extremal ℂ n (lam τ)) → tenV f ∈ M`. Introduce `s`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Introduce `f _ h0`. Establish `: f = fun τ => extremal ℂ n (lam τ)` using `funext fun τ => h0 τ (Finset.notMem_empty τ)`. Rewrite using `[this]`. Conclude with `hT`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `τ₀ s hτ ih f h1 h0`. Establish `hword : ∀ wd : List (Fin n × Fin n × ℕ), tenV (Function.update f τ₀ (applyWord ℂ wd (hw ℂ le_rfl (lam τ₀).natW))) ∈ M`. Introduce `wd`. Proceed by induction on `wd with`. Consider the case `nil`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `ih` to reduce the goal to its premises. Introduce `τ hτs`. Rewrite using `[Function.update_of_ne (fun e => hτ (by rw [← e]; exact hτs))]`. Conclude with `h1 τ (Finset.mem_insert_of_mem hτs)`. Introduce `τ hτs`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `e : τ = τ₀`. Rewrite using `[e, Function.update_self]`. Both sides reduce to the same expression. Rewrite using `[Function.update_of_ne e]`. Conclude with `h0 τ (by simp [e, hτs])`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Consider the case `cons y wd ihw => show tenV (Function.update f τ₀ (rowDiv ℂ y.1 y.2.1 y.2.2 (applyWord ℂ wd _))) ∈ M`. Rewrite using `[← bigDiv_tenV_update]`. Conclude with `hM τ₀ _ _ _ _ ihw`. Establish `hspan : f τ₀ ∈ Submodule.span ℂ (Set.range fun wd : List (Fin n × Fin n × ℕ) => applyWord ℂ wd (hw ℂ le_rfl (lam τ₀).natW))` using `h1 τ₀ (Finset.mem_insert_self _ _)`. Establish `hmem : tenV (Function.update f τ₀ (f τ₀)) ∈ M`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Submodule.span_induction (p := fun p _ => tenV (Function.update f τ₀ p) ∈ M) ?_ ?_ ?_ ?_ hspan` and prove the remaining obligations. Introduce and unpack `_ ⟨wd, rfl⟩`. Conclude with `hword wd`. Rewrite using `[tenV_update, map_zero, zero_mul]`. Conclude with `M.zero_mem`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `p q _ _ hp hq`. Rewrite `hp`, `hq`, the goal using `[tenV_update]`. Rewrite using `[map_add, add_mul]`. Conclude with `M.add_mem hp hq`. Introduce `c p _ hp`.
-
-Rewrite `hp`, the goal using `[tenV_update]`. Rewrite using `[map_smul, smul_mul_assoc]`. Conclude with `M.smul_mem c hp`. Rewrite `hmem` using `[Function.update_eq_self]`. Then use the resulting hypothesis. Conclude with `key Finset.univ f (fun τ _ => hf τ) (fun τ h => absurd (Finset.mem_univ τ) h)`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem generation_holds : Gen := by
   intro ι _ _ n lam M hM hT

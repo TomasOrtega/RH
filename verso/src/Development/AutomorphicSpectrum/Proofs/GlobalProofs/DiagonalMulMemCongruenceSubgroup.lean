@@ -26,9 +26,9 @@ variable {K : Type} [Field K] [NumberField K]
 local notation "𝓘" => (FractionalIdeal (𝓞 K)⁰ K)ˣ
 
 /- English proof (translation)
-Use extensionality with `z`. Rewrite using `[mem_idealLattice, hL, Units.val_one]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Take `⟨a, rfl⟩` from `(FractionalIdeal.mem_one_iff _).1 hx`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨a, rfl⟩`. Introduce and unpack `⟨a, rfl⟩`. Conclude with `⟨_, (FractionalIdeal.mem_one_iff _).2 ⟨a, rfl⟩, rfl⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem idealLattice_one [Algebra K ℂ] (L : PeriodPair)
     (hL : ∀ z, z ∈ L.lattice ↔ ∃ a : 𝓞 K, algebraMap K ℂ (a : K) = z) :
@@ -43,18 +43,18 @@ theorem idealLattice_one [Algebra K ℂ] (L : PeriodPair)
     exact ⟨_, (FractionalIdeal.mem_one_iff _).2 ⟨a, rfl⟩, rfl⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨rfl, rfl, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem isShortForm_curve (L : PeriodPair) : IsShortForm (weierstrassCurve L) := ⟨rfl, rfl, rfl⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨by simp [h.a₁_eq], by simp [h.a₂_eq], by simp [h.a₃_eq]⟩`.
+Supply the required witnesses or components.
 -/
 theorem isShortForm_map {W : WeierstrassCurve ℂ} (h : IsShortForm W) (φ : ℂ →+* ℂ) : IsShortForm (W.map φ) :=
   ⟨by simp [h.a₁_eq], by simp [h.a₂_eq], by simp [h.a₃_eq]⟩
 
 /- English proof (translation)
-Rewrite using `[weberValue_of_ne_zero (by simpa using h2) (by simpa using h3), weierstrassCurve_Δ]`. Simplify using `only [ShortWeierstrass.g₂, ShortWeierstrass.g₃, weierstrassCurve_a₄, weierstrassCurve_a₆, Elliptic.discr]`. Apply the tactic sequence `congr 2 <;> ring`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem weberValue_curve (L : PeriodPair) (h2 : L.g₂ ≠ 0) (h3 : L.g₃ ≠ 0) (x : ℂ) :
     weberValue (weierstrassCurve L) x = L.g₂ * L.g₃ / (L.g₂ ^ 3 - 27 * L.g₃ ^ 2) * x := by
@@ -63,7 +63,7 @@ theorem weberValue_curve (L : PeriodPair) (h2 : L.g₂ ≠ 0) (h3 : L.g₃ ≠ 0
   congr 2 <;> ring
 
 /- English proof (translation)
-Rewrite using `[WeierstrassCurve.j, Units.val_inv_eq_inv_val, WeierstrassCurve.coe_Δ', weierstrassCurve_Δ, Elliptic.discr]`. Simplify using `only [WeierstrassCurve.c₄, WeierstrassCurve.b₂, WeierstrassCurve.b₄, weierstrassCurve_a₁, weierstrassCurve_a₂, weierstrassCurve_a₃, weierstrassCurve_a₄]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem j_curve (L : PeriodPair) :
     (weierstrassCurve L).j = 1728 * (L.g₂ ^ 3 / (L.g₂ ^ 3 - 27 * L.g₃ ^ 2)) := by
@@ -73,7 +73,7 @@ theorem j_curve (L : PeriodPair) :
   ring
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `weberFunction (weierstrassCurve L) (toPoint L z) = _`. Rewrite using `[toPoint_of_notMem hz, weberFunction_some, weberValue_curve L h2 h3]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem weberFunction_toPointHom (L : PeriodPair) (h2 : L.g₂ ≠ 0) (h3 : L.g₃ ≠ 0) {z : ℂ} (hz : z ∉ L.lattice) :
     weberFunction (weierstrassCurve L) (toPointHom L z) =
@@ -82,7 +82,7 @@ theorem weberFunction_toPointHom (L : PeriodPair) (h2 : L.g₂ ≠ 0) (h3 : L.g�
   rw [toPoint_of_notMem hz, weberFunction_some, weberValue_curve L h2 h3]
 
 /- English proof (translation)
-Rewrite using `[← weberFunction_eq_of_isAnalyticUniformization (isShortForm_curve L) (isShortForm_map (isShortForm_curve L) φ) (isAnalyticUniformization_toPointHom L) hf' y, h, pointMapRing_eq_pointMapOfRingHom, weberFunction_pointMapOfRingHom]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem weberFunction_transport (L : PeriodPair) (φ : ℂ →+* ℂ)
     {f' : ℂ →+ ((weierstrassCurve L).map φ).toAffine.Point}
@@ -95,15 +95,13 @@ theorem weberFunction_transport (L : PeriodPair) (φ : ℂ →+* ℂ)
     pointMapRing_eq_pointMapOfRingHom, weberFunction_pointMapOfRingHom]
 
 /- English proof (translation)
-Rewrite using `[smulQuotient_mk_eq_mk_iff]`. Introduce `v`. Rewrite using `[localIdeal_smul]`. Use `set S : v.adicCompletion K := (finiteProj v u : v.adicCompletion K) with hSdef`. Establish `hS0 : S ≠ 0` using `(finiteProj v u).ne_zero`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : ((u⁻¹ : IdeleGroup K) : 𝔸[K]).2 v = S⁻¹`. Rewrite using `[← coe_finiteProj, map_inv, Units.val_inv_eq_inv_val]`. Use `⟨(t : v.adicCompletion K) * (1 - S), ?_, ?_⟩` and prove the remaining obligations. Establish `hmv` using `Modulus.valued_natCast (K := K) n hn v`. Establish `huv` using `(Modulus.mem_congruenceSubgroup _).1 hu`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hW : Valued.v (1 - S) ≤ Valued.v ((n : K) : v.adicCompletion K)`. Rewrite using `[hmv, Valuation.map_sub_swap]`. Conclude with `(huv.1 v).2`. Rewrite using `[SetLike.mem_coe, mem_localIdeal_iff 𝔞.ne_zero, map_mul]`. Establish `hmt : Valued.v (((n : K) * t : K) : v.adicCompletion K) ≤ WithZero.exp (-FractionalIdeal.count K v (𝔞 : FractionalIdeal (𝓞 K)⁰ K))` using `(mem_localIdeal_iff 𝔞.ne_zero v).1 (coe_mem_localIdeal v ht)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite `hmt` using `[adicCompletion.coe_mul, map_mul]`. Combine the equalities or inequalities in the displayed calculation. Establish `hc' : ((finiteProj v u⁻¹ : (v.adicCompletion K)ˣ) : v.adicCompletion K) = S⁻¹`. Rewrite using `[map_inv, Units.val_inv_eq_inv_val]`. Rewrite using `[LinearMap.mulLeft_apply, hc, hc']`.
-
-Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem smulQuotient_inv_mk_eq_self {n : ℕ} {hn : n ≠ 0} {u : IdeleGroup K}
     (hu : u ∈ (Modulus.ofNat (K := K) n hn).congruenceSubgroup) (𝔞 : 𝓘) {t : K}
@@ -138,27 +136,25 @@ theorem smulQuotient_inv_mk_eq_self {n : ℕ} {hn : n ≠ 0} {u : IdeleGroup K}
     field_simp
 
 /- English proof (translation)
-Establish `hu1 : u⁻¹ • (1 : 𝓘) = 1` using `smul_eq_self_iff.2 (inv_mem hu)`. Rewrite `h` using `[smulQuotient_mk_eq_mk_iff]`. Establish `hn' : (n : K) ≠ 0` using `by exact_mod_cast hn`. Establish `hone : ∀ (v : HeightOneSpectrum (𝓞 K)) (x : v.adicCompletion K), x ∈ localIdeal (((1 : 𝓘)) : FractionalIdeal (𝓞 K)⁰ K) v ↔ Valued.v x ≤ 1` using `fun v x => by`. Rewrite using `[mem_localIdeal_iff (Units.ne_zero _), Units.val_one, FractionalIdeal.count_one, neg_zero, WithZero.exp_zero]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Modulus.mem_congruenceSubgroup]`. Use `⟨fun v => ?_, fun w hw => absurd hw (Set.notMem_empty _)⟩` and prove the remaining obligations. Establish `huv : Valued.v ((finiteProj v u : (v.adicCompletion K)ˣ) : v.adicCompletion K) = 1` using `(((Modulus.mem_congruenceSubgroup _).1 (Modulus.congruenceSubgroup_one (K := K) ▸ hu)).1 v).1`. Establish `h1` using `h v`. Rewrite `h1` using `[hu1, hone]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `(hone v _).1 (coe_mem_localIdeal v hy)`. Establish `hc : ∀ k : K, (k : v.adicCompletion K) = algebraMap K (v.adicCompletion K) k` using `fun k ↦ by`. Rewrite using `[HeightOneSpectrum.algebraMap_adicCompletion]`. Both sides reduce to the same expression. Use `set S : v.adicCompletion K := (finiteProj v u : v.adicCompletion K) with hSdef`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use `set E : v.adicCompletion K := algebraMap K (v.adicCompletion K) (algebraMap (𝓞 K) K ε) with hEdef`. Use `set N : v.adicCompletion K := algebraMap K (v.adicCompletion K) (n : K) with hNdef`. Establish `hS0 : S ≠ 0` using `(finiteProj v u).ne_zero`. Establish `hN0 : N ≠ 0`. Rewrite using `[hNdef]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(map_ne_zero _).2 hn'`. Establish `hE : Valued.v E = 1`. Rewrite using `[hEdef, ← hc, valuedAdicCompletion_eq_valuation']`. Establish `a` using `v.valuation_le_one (K := K) (ε : 𝓞 K)`. Establish `b` using `v.valuation_le_one (K := K) ((ε⁻¹ : (𝓞 K)ˣ) : 𝓞 K)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `c : v.valuation K (algebraMap (𝓞 K) K ε) * v.valuation K (algebraMap (𝓞 K) K ((ε⁻¹ : (𝓞 K)ˣ) : 𝓞 K)) = 1`. Rewrite using `[← map_mul, ← map_mul, Units.mul_inv, map_one, map_one]`. Conclude with `le_antisymm a (by`. Combine the equalities or inequalities in the displayed calculation. Establish `hNv : Valued.v N = WithZero.exp (-((Modulus.ofNat (K` using `K) n hn).exponent v : ℤ)) := by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hNdef, ← hc]`. Conclude with `Modulus.valued_natCast (K := K) n hn v`. Establish `hfin : ((finiteProj v u⁻¹ : (v.adicCompletion K)ˣ) : v.adicCompletion K) = S⁻¹`. Rewrite using `[map_inv, Units.val_inv_eq_inv_val]`. Rewrite `h1` using `[hfin, hc, hc, map_inv₀]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[hc, map_sub, map_mul, map_inv₀]`. Establish `h3 : Valued.v ((S⁻¹ - E) * N⁻¹) ≤ 1`. Establish `e : (S⁻¹ - E) * N⁻¹ = (S⁻¹ * N⁻¹ - algebraMap K (v.adicCompletion K) y) + (algebraMap K (v.adicCompletion K) y - E * N⁻¹)` using `by ring`. Rewrite using `[e]`. Conclude with `Valuation.map_add_le _ h1 h2`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h4 : Valued.v (S⁻¹ - E) ≤ Valued.v N`. Rewrite `h3` using `[map_mul, map_inv₀]`. Establish `hNv0 : Valued.v N ≠ 0` using `(Valuation.ne_zero_iff _).2 hN0`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_assoc, inv_mul_cancel₀ hNv0, mul_one]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `_ ≤ 1 * Valued.v N := mul_le_mul_left h3 _`. Use `_ = _ := one_mul _`. Establish `hx : ((finiteProj v (diagonal K (Units.map (algebraMap (𝓞 K) K).toMonoidHom ε) * u) : (v.adicCompletion K)ˣ) : v.adicCompletion K) = E * S`. Rewrite using `[map_mul, Units.val_mul, coe_finiteProj_diagonal, hc]`. Both sides reduce to the same expression.
-
-Rewrite using `[mem_unitsLevel, hx, map_mul, hE, huv, one_mul]`. Use `⟨rfl, ?_⟩` and prove the remaining obligations. Establish `e : E * S - 1 = -S * (S⁻¹ - E)` using `by field_simp; ring`. Rewrite using `[e, map_mul, Valuation.map_neg, huv, one_mul, ← hNv]`. Conclude with `h4`.
+A detailed English derivation is pending.
 -/
 theorem diagonal_mul_mem_congruenceSubgroup {n : ℕ} (hn : n ≠ 0) {u : IdeleGroup K}
     (hu : u ∈ standardOpenSubgroup K) (ε : (𝓞 K)ˣ) {y : K}
@@ -228,9 +224,9 @@ theorem diagonal_mul_mem_congruenceSubgroup {n : ℕ} (hn : n ≠ 0) {u : IdeleG
   exact h4
 
 /- English proof (translation)
-Establish `: FiniteDimensional k F` using `Module.finite_of_finrank_eq_succ h2`. Establish `h` using `hζ.intermediateField_adjoin_isCyclotomicExtension k`. Establish `e : IntermediateField.adjoin k {ζ} = ⊤`. Apply `IntermediateField.eq_of_le_of_finrank_eq le_top` to reduce the goal to its premises. Rewrite using `[IsCyclotomicExtension.finrank (n := n) _ hirr, hn, IntermediateField.finrank_top', h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `IsCyclotomicExtension.equiv _ _ _ ((IntermediateField.equivOfEq e).trans IntermediateField.topEquiv)`.
+A detailed English derivation is pending.
 -/
 theorem isCyclotomic_of_root {k F : Type} [Field k] [Field F] [Algebra k F] (h2 : Module.finrank k F = 2) {n : ℕ}
     [NeZero n] (hirr : Irreducible (Polynomial.cyclotomic n k))
@@ -244,9 +240,9 @@ theorem isCyclotomic_of_root {k F : Type} [Field k] [Field F] [Algebra k F] (h2 
   exact IsCyclotomicExtension.equiv _ _ _ ((IntermediateField.equivOfEq e).trans IntermediateField.topEquiv)
 
 /- English proof (translation)
-Establish `H₀` using `isHomothetic_scalePeriods L m hm0`. Establish `e` using `lattice_eq_of_g₂_eq_of_g₃_eq (H₀.g₂_eq.trans e2) (H₀.g₃_eq.trans e3)`. Use `(H₀ 1).2 ((hL 1).2 ⟨1, by simp⟩)` as an intermediate fact. Rewrite `this` using `[e, _root_.mul_one, hL]`. Take `⟨s, rfl⟩` from `this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨_, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_of_invariant [Algebra K ℂ] (L : PeriodPair)
     (hL : ∀ z, z ∈ L.lattice ↔ ∃ a : 𝓞 K, algebraMap K ℂ (a : K) = z)
@@ -260,13 +256,13 @@ theorem mem_of_invariant [Algebra K ℂ] (L : PeriodPair)
   exact ⟨_, rfl⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `hz` using `Complex.isPrimitiveRoot_exp 3 (by norm_num)`. Take `⟨a, ha⟩` from `mem_of_invariant L hL _ (hz.ne_zero (by norm_num)) (by simp [h]) (by rw [show 6 = 3 * 2 by norm_num, pow_mul, hz.pow_eq_one]; simp)`. Rewrite `hz` using `[← ha]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hz' : IsPrimitiveRoot a 3` using `IsPrimitiveRoot.of_map_of_injective (f := algebraMap K ℂ) hz (algebraMap K ℂ).injective`. Use `isCyclotomic_of_root hK (n := 3) (Polynomial.cyclotomic.irreducible_rat (by norm_num)) (by decide) hz'` as an intermediate fact. Establish `: Fact (Nat.Prime 3)` using `⟨by norm_num⟩`. Establish `e` using `IsCyclotomicExtension.Rat.discr_prime 3 K`. Evaluate the numerical expressions using `at e`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Evaluate the numerical expressions.
 
-Use linear arithmetic over natural numbers and integers. Introduce `h`. Establish `hz` using `Complex.isPrimitiveRoot_exp 4 (by norm_num)`. Take `⟨a, ha⟩` from `mem_of_invariant L hL _ (hz.ne_zero (by norm_num)) (by rw [hz.pow_eq_one]; simp) (by simp [h])`. Rewrite `hz` using `[← ha]`.
+Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hz' : IsPrimitiveRoot a (2 ^ 2)` using `IsPrimitiveRoot.of_map_of_injective (f := algebraMap K ℂ) hz (algebraMap K ℂ).injective`. Use `isCyclotomic_of_root hK (n := 2 ^ 2) (Polynomial.cyclotomic.irreducible_rat (by norm_num)) (by decide) hz'` as an intermediate fact. Establish `e` using `IsCyclotomicExtension.Rat.discr_prime_pow_succ 2 1 K`. Evaluate the numerical expressions using `at e`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Evaluate the numerical expressions. Use linear arithmetic over natural numbers and integers.
 -/
 theorem g_ne_zero [Algebra K ℂ] (hK : finrank ℚ K = 2) (hd : NumberField.discr K < -4) (L : PeriodPair)
     (hL : ∀ z, z ∈ L.lattice ↔ ∃ a : 𝓞 K, algebraMap K ℂ (a : K) = z) : L.g₂ ≠ 0 ∧ L.g₃ ≠ 0 := by
@@ -301,15 +297,15 @@ variable [Algebra K ℂ] [IsTotallyComplex K] (hK : finrank ℚ K = 2)
 include hK in
 
 /- English proof (translation)
-Take `⟨h2, h3⟩` from `g_ne_zero hK hd L hL`. Establish `hone` using `idealLattice_one L hL`. Establish `hf : IsAnalyticUniformization (idealLattice (algebraMap K ℂ) ((1 : 𝓘) : FractionalIdeal (𝓞 K)⁰ K)) (toPointHom L)` using `by rw [hone]; exact isAnalyticUniformization_toPointHom L`. Take `⟨f', ⟨hf', hp⟩, -⟩` from `main_theorem_complexMultiplication hK σ u hs 1 hf`. Establish `hu1 : u⁻¹ • (1 : 𝓘) = 1` using `smul_eq_self_iff.2 (inv_mem (Modulus.congruenceSubgroup_le_standardOpenSubgroup _ hu))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `hf'` using `[hu1, hone]`. Establish `hn' : (n : K) ≠ 0` using `by exact_mod_cast hn`. Introduce and unpack `w (rfl | ⟨z, hz, hzn, rfl⟩)`. Establish `hj` using `j_eq_of_isAnalyticUniformization (isAnalyticUniformization_toPointHom L) hf'`. Rewrite `hj` using `[map_j, j_curve]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1728 : (1728 : ℂ) ≠ 0` using `by norm_num`. Establish `e1 : ((σ : ℂ →+* ℂ)) (1728 : ℂ) = 1728` using `map_ofNat _ _`. Rewrite `hj` using `[map_mul, e1]`. Conclude with `mul_left_cancel₀ h1728 hj`. Take `⟨a, rfl⟩` from `(hL z).1 hz set t : K := (a : K) / n with ht`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hzt : algebraMap K ℂ (a : K) / n = algebraMap K ℂ t` using `by simp [ht]`. Rewrite `hzn`, the goal using `[hzt]`. Establish `hq` using `smulQuotient_inv_mk_eq_self hu (1 : 𝓘) (t := t) (by`. Rewrite using `[ht, mul_div_cancel₀ _ hn', Units.val_one]`. Conclude with `(FractionalIdeal.mem_one_iff _).2 ⟨a, rfl⟩)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e` using `weberFunction_transport L (σ : ℂ →+* ℂ) hf' _ _ (hp t t hq)`. Rewrite `e` using `[weberFunction_toPointHom L h2 h3 hzn]`. Conclude with `(Option.some_injective _ e).symm`.
+A detailed English derivation is pending.
 -/
 theorem weberSet_fixed (hd : NumberField.discr K < -4) (L : PeriodPair)
     (hL : ∀ z, z ∈ L.lattice ↔ ∃ a : 𝓞 K, algebraMap K ℂ (a : K) = z) {n : ℕ} (hn : n ≠ 0)
@@ -349,19 +345,19 @@ theorem weberSet_fixed (hd : NumberField.discr K < -4) (L : PeriodPair)
 include hK in
 
 /- English proof (translation)
-Take `⟨h2, h3⟩` from `g_ne_zero hK hd L hL`. Establish `hone` using `idealLattice_one L hL`. Establish `hf : IsAnalyticUniformization (idealLattice (algebraMap K ℂ) ((1 : 𝓘) : FractionalIdeal (𝓞 K)⁰ K)) (toPointHom L)` using `by rw [hone]; exact isAnalyticUniformization_toPointHom L`. Take `⟨f', ⟨hf', hp⟩, -⟩` from `main_theorem_complexMultiplication hK σ u hs 1 hf`. Establish `hu1 : u⁻¹ • (1 : 𝓘) = 1` using `smul_eq_self_iff.2 (inv_mem hu)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `hf'` using `[hu1, hone]`. Establish `hn' : (n : K) ≠ 0` using `by exact_mod_cast hn`. Take `⟨y, hy⟩` from `Submodule.Quotient.mk_surjective _ (smulQuotient u⁻¹ (1 : 𝓘) (Submodule.Quotient.mk (n : K)⁻¹))`. Establish `e` using `weberFunction_transport L (σ : ℂ →+* ℂ) hf' _ _ (hp _ y hy.symm)`. Establish `hfix : OnePoint.map (σ : ℂ →+* ℂ) (weberFunction (weierstrassCurve L) (toPointHom L (algebraMap K ℂ (n : K)⁻¹))) = weberFunction (weierstrassCurve L) (toPointHom L (algebraMap K ℂ (n : K)⁻¹))`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Distinguish the cases in `hm : algebraMap K ℂ (n : K)⁻¹ ∈ L.lattice`. Establish `: toPointHom L (algebraMap K ℂ (n : K)⁻¹) = 0`. Express the relevant statement in the definitionally equal form `toPoint L _ = 0`. Conclude with `toPoint_of_mem hm`. Rewrite using `[this]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `hz1 : (1 : ℂ) ∈ L.lattice` using `(hL 1).2 ⟨1, by simp⟩`. Establish `hv : algebraMap K ℂ (n : K)⁻¹ = 1 / (n : ℂ)` using `by simp`. Rewrite using `[weberFunction_toPointHom L h2 h3 hm]`. Establish `hw'` using `hw _ (Or.inr ⟨1, hz1, hv ▸ hm, rfl⟩)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hw'` using `[← hv]`. Conclude with `congrArg OnePoint.some hw'`. Rewrite `e` using `[hfix]`. Take `⟨ξ, hξ⟩` from `(weberFunction_eq_iff (isShortForm_curve L) _ _).1 e.symm`. Take `⟨ε, hε⟩` from `exists_unit_automorphismPoint_eq hK 1 hf ξ`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hξ` using `[hε]`. Establish `hmem : y - algebraMap (𝓞 K) K ε * (n : K)⁻¹ ∈ ((1 : 𝓘) : FractionalIdeal (𝓞 K)⁰ K)`. Apply `mem_of_map_mem_idealLattice (algebraMap K ℂ)` to reduce the goal to its premises. Rewrite using `[← hf.map_eq_zero_iff, map_sub (algebraMap K ℂ), map_mul (algebraMap K ℂ), map_sub (toPointHom L), hξ, sub_self]`. Use `⟨_, diagonal_mul_mem_congruenceSubgroup hn hu ε hy.symm hmem, ?_⟩` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `QuotientGroup.eq.2 ⟨(Units.map (algebraMap (𝓞 K) K).toMonoidHom ε)⁻¹, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_inv, mul_assoc, inv_mul_cancel, mul_one, map_inv]`.
+A detailed English derivation is pending.
 -/
 theorem mk_mem_of_fixed (hd : NumberField.discr K < -4) (L : PeriodPair)
     (hL : ∀ z, z ∈ L.lattice ↔ ∃ a : 𝓞 K, algebraMap K ℂ (a : K) = z) {n : ℕ} (hn : n ≠ 0)
@@ -416,11 +412,11 @@ variable [Algebra K ℂ] [IsTotallyComplex K] (hK : finrank ℚ K = 2)
 include hK in
 
 /- English proof (translation)
-Use `eq_of_forall_algEquiv fun σ => ?_` and prove the remaining obligations. Take `⟨s, hs⟩` from `exists_idele_artinMap_eq σ`. Establish `hone` using `idealLattice_one L hL`. Establish `hf : IsAnalyticUniformization (idealLattice (algebraMap K ℂ) ((1 : 𝓘) : FractionalIdeal (𝓞 K)⁰ K)) (toPointHom L)` using `by rw [hone]; exact isAnalyticUniformization_toPointHom L`. Prove the components needed by the constructor for the conclusion.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h`. Establish `hW : ∀ w ∈ weberSet L n, σ w = w` using `fun w hw => h w (IntermediateField.subset_adjoin K _ hw)`. Establish `hj : σ (weierstrassCurve L).j = (weierstrassCurve L).j`. Rewrite using `[j_curve, map_mul, map_ofNat, hW _ (Or.inl rfl)]`. Take `⟨u, hu, e⟩` from `mk_mem_map_standardOpenSubgroup_of_apply_j_eq hK σ s hs 1 hf hj`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[forall_rayClassField_apply_eq_iff σ s hs, ← e]`. Conclude with `mk_mem_of_fixed hK hd L hL hn σ u (by rw [e]; exact hs) hu hW`. Introduce `h`. Take `⟨u, hu, e⟩` from `(forall_rayClassField_apply_eq_iff σ s hs _).1 h`. Conclude with `forall_adjoin_apply_eq σ (weberSet_fixed hK hd L hL hn σ u (by rw [e]; exact hs) hu)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem adjoin_weberSet_eq_rayClassField (hd : NumberField.discr K < -4) (L : PeriodPair)
     (hL : ∀ z, z ∈ L.lattice ↔ ∃ a : 𝓞 K, algebraMap K ℂ (a : K) = z) {n : ℕ} (hn : n ≠ 0) :
@@ -445,34 +441,32 @@ theorem adjoin_weberSet_eq_rayClassField (hd : NumberField.discr K < -4) (L : Pe
 end Final
 
 /- English proof (translation)
-Rewrite using `[← Modulus.valued_natCast (K := K) n hn v, valuedAdicCompletion_eq_valuation']`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem valuation_natCast (n : ℕ) (hn : n ≠ 0) (v : HeightOneSpectrum (𝓞 K)) :
     v.valuation K (n : K) = WithZero.exp (-((Modulus.ofNat (K := K) n hn).exponent v : ℤ)) := by
   rw [← Modulus.valued_natCast (K := K) n hn v, valuedAdicCompletion_eq_valuation']
 
 /- English proof (translation)
-Establish `hn' : (n : K) ≠ 0` using `by exact_mod_cast hn`. Rewrite using `[Modulus.primeClass, QuotientGroup.eq_one_iff, Modulus.mem_principalRay]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, e⟩`. Establish `e' : FractionalIdeal.spanSingleton (𝓞 K)⁰ (a : K) = (v.asIdeal : FractionalIdeal (𝓞 K)⁰ K)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use `congrArg (Units.val) e` as an intermediate fact. Rewrite `this` using `[coe_toPrincipalIdeal, coe_primeIdealUnit]`. Then use the resulting hypothesis. Establish `hmem : (a : K) ∈ (v.asIdeal : FractionalIdeal (𝓞 K)⁰ K)`. Rewrite using `[← e']`. Conclude with `FractionalIdeal.mem_spanSingleton_self _ _`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨π, -, hπ⟩` from `(FractionalIdeal.mem_coeIdeal _).1 hmem`. Use `⟨π, ?_, ?_⟩` and prove the remaining obligations. Apply `FractionalIdeal.coeIdeal_injective (K := K) show (v.asIdeal : FractionalIdeal (𝓞 K)⁰ K) = ((Ideal.span {π} : Ideal (𝓞 K)) : FractionalIdeal (𝓞 K)⁰ K)` to reduce the goal to its premises. Rewrite using `[← e', FractionalIdeal.coeIdeal_span_singleton, hπ]`. Establish `hint : ((π : K) - 1) / n ∈ (algebraMap (𝓞 K) K).range`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `HeightOneSpectrum.mem_integers_of_valuation_le_one K _ fun w => ?_` and prove the remaining obligations. Establish `h1 : w.valuation K ((π : K) - 1) ≤ WithZero.exp (-((Modulus.ofNat (K` using `K) n hn).exponent w : ℤ)) := by`. Distinguish the cases in `hw : w.asIdeal ∣ (Modulus.ofNat (K := K) n hn).ideal`. Use `((Modulus.ofNat (K := K) n hn).mem_rayUnits.1 ha).1 w hw` as an intermediate fact. Rewrite `this` using `[← hπ]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[((Modulus.ofNat (K := K) n hn).exponent_eq_zero_iff w).2 hw]`. Simplify using `using (w.valuation_le_one (K := K) (π - 1))`. Rewrite using `[map_div₀, valuation_natCast n hn w]`. Conclude with `div_le_one_of_le₀ h1 zero_le'`. Take `⟨b, hb⟩` from `hint`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Ideal.mem_span_singleton']`. Use `⟨b, RingOfIntegers.coe_injective ?_⟩` and prove the remaining obligations. Establish `: (b : K) * n = (π : K) - 1`. Express the relevant statement in the definitionally equal form `algebraMap (𝓞 K) K b * n = _`. Rewrite using `[hb]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Simplify to obtain the desired conclusion from the available facts.
 
-Clear the denominators using the available nonvanishing facts. Simplify using `using this`. Introduce and unpack `⟨π, hp, hc⟩`. Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.1 hc`. Establish `hπ0 : (π : K) ≠ 0`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `h0`. Establish `: π = 0` using `RingOfIntegers.coe_injective (by simpa using h0)`. Rewrite `hp` using `[this]`. Conclude with `v.ne_bot (by simpa using hp)`. Use `⟨Units.mk0 (π : K) hπ0, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `(Modulus.ofNat (K := K) n hn).mem_rayUnits.2 ⟨fun w _ => ?_, fun w hw => absurd hw (Set.notMem_empty _)⟩` and prove the remaining obligations. Establish `e : ((Units.mk0 (π : K) hπ0 : Kˣ) : K) - 1 = (c : K) * n`. Rewrite using `[Units.val_mk0]`. Use `congrArg (algebraMap (𝓞 K) K) hc` as an intermediate fact. Simplify using `using this.symm`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, map_mul, valuation_natCast n hn w]`. Conclude with `mul_le_of_le_one_left' (w.valuation_le_one (K := K) c)`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[coe_toPrincipalIdeal]`. Use `show _ = ((primeIdealUnit v : (FractionalIdeal (𝓞 K)⁰ K)ˣ) : FractionalIdeal (𝓞 K)⁰ K)`.
-
-Rewrite using `[coe_primeIdealUnit, hp, FractionalIdeal.coeIdeal_span_singleton]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem primeClass_eq_one_iff (n : ℕ) (hn : n ≠ 0) (v : HeightOneSpectrum (𝓞 K))
     (hv : ¬ v.asIdeal ∣ (Modulus.ofNat (K := K) n hn).ideal) :
@@ -533,7 +527,7 @@ theorem primeClass_eq_one_iff (n : ℕ) (hn : n ≠ 0) (v : HeightOneSpectrum (�
       rfl
 
 /- English proof (translation)
-Establish `h : Ideal.span {a} ≠ (0 : Ideal (𝓞 K))`. Simplify `ha` using `[Ideal.span_singleton_eq_bot]`. Use `(Ideal.finite_factors h).subset ?_` and prove the remaining obligations. Introduce `𝔭 h𝔭`. Conclude with `Ideal.dvd_span_singleton.2 h𝔭`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem finite_mem {a : 𝓞 K} (ha : a ≠ 0) : {𝔭 : HeightOneSpectrum (𝓞 K) | a ∈ 𝔭.asIdeal}.Finite := by
   have h : Ideal.span {a} ≠ (0 : Ideal (𝓞 K)) := by
@@ -547,7 +541,7 @@ section Bridge
 variable [Algebra K ℂ]
 
 /- English proof (translation)
-Establish `hv : ¬ 𝔭.asIdeal ∣ (Modulus.ofNat (K` using `K) n hn).ideal := by`. Rewrite using `[Modulus.asIdeal_dvd_ofNat_iff]` and apply the resulting hypothesis. Rewrite using `[GlobalTheory.FieldSize.RaySplit.ncard_eq_primesOver, ← splitsCompletely_iff_ncard_primesOver, (Modulus.ofNat (K := K) n hn).splitsCompletely_rayClassField_iff ℂ hv, primeClass_eq_one_iff]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 -/
 theorem ncard_rayClassField_iff (n : ℕ) (hn : n ≠ 0) (𝔭 : HeightOneSpectrum (𝓞 K)) (hp : (n : 𝓞 K) ∉ 𝔭.asIdeal) :
     {Q : HeightOneSpectrum (𝓞 ((Modulus.ofNat (K := K) n hn).rayClassField ℂ)) |
@@ -560,7 +554,7 @@ theorem ncard_rayClassField_iff (n : ℕ) (hn : n ≠ 0) (𝔭 : HeightOneSpectr
     (Modulus.ofNat (K := K) n hn).splitsCompletely_rayClassField_iff ℂ hv, primeClass_eq_one_iff]
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `hM`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem isRay_of_eq {M N : IntermediateField K ℂ} (h : M = N) [NumberField M] [NumberField N] {𝔮 : Ideal (𝓞 K)}
     (hM : IsRay M 𝔮) : IsRay N 𝔮 := by
@@ -568,17 +562,15 @@ theorem isRay_of_eq {M N : IntermediateField K ℂ} (h : M = N) [NumberField M] 
   exact hM
 
 /- English proof (translation)
-Establish `hn0 : (n : 𝓞 K) ≠ 0` using `by exact_mod_cast hn`. Establish `hq : Ideal.span {(n : 𝓞 K)} ≠ ⊥`. Rewrite using `[Ne, Ideal.span_singleton_eq_bot]` and apply the resulting hypothesis. Establish `hR : GlobalTheory.NT.RayField` using `GlobalTheory.Published.GlobalArtinReciprocity.rayClassFieldSt GlobalTheory.CompanionTheory.Hypotheses₂.globalArtinReciprocity`. Take `⟨M, _, _, _, hM⟩` from `GlobalTheory.Mem.Fld.rayField_iff.1 hR K _ hq`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `hM.1` as an intermediate fact. Set `f : M →ₐ[K] ℂ` to `IsAlgClosed.lift`. Set `e : M ≃ₐ[K] f.fieldRange` to `AlgEquiv.ofInjectiveField f`. Establish `: FiniteDimensional K f.fieldRange` using `e.toLinearEquiv.finiteDimensional`. Establish `: NumberField f.fieldRange` using `NumberField.of_module_finite K f.fieldRange`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `hM.of_algEquiv e`. Use `h.1` as an intermediate fact. Establish `hIsRay : IsRay f.fieldRange (Ideal.span {(n : 𝓞 K)})` using `h.2`. Establish `hiff : ∀ 𝔭 : HeightOneSpectrum (𝓞 K), (n : 𝓞 K) ∉ 𝔭.asIdeal → ({Q : HeightOneSpectrum (𝓞 f.fieldRange) | Q.asIdeal.comap (algebraMap (𝓞 K) (𝓞 f.fieldRange)) = 𝔭.asIdeal}.ncard = Module.finrank K f.fieldRange ↔ {Q : HeightOneSpectrum (𝓞 ((Modulus.ofNat (K` using `K) n hn).rayClassField ℂ)) | Q.asIdeal.comap (algebraMap (𝓞 K) (𝓞 ((Modulus.ofNat (K := K) n hn).rayClassField ℂ))) = 𝔭.asIdeal}.ncard = Module.finrank K ((Modulus.ofNat (K := K) n hn).rayClassField ℂ)) := fun 𝔭 hp => by`. Rewrite using `[ncard_rayClassField_iff n hn 𝔭 hp, GlobalTheory.FieldSize.RaySplit.ncard_eq_finrank_iff K f.fieldRange n (Nat.pos_of_ne_zero hn) hIsRay 𝔭 hp]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hEq : f.fieldRange = (Modulus.ofNat (K` using `K) n hn).rayClassField ℂ := by`. Apply `le_antisymm` to reduce the goal to its premises. Use `GlobalTheory.Bauer.le_of_finite_split_not_split K ℂ _ _ ((finite_mem hn0).subset ?_)` and prove the remaining obligations. Introduce and unpack `𝔭 ⟨-, h1, h2⟩`. Assume the negation of the conclusion as `hp`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `h2 ((hiff 𝔭 hp).2 h1)`. Use `GlobalTheory.Bauer.le_of_finite_split_not_split K ℂ _ _ ((finite_mem hn0).subset ?_)` and prove the remaining obligations. Introduce and unpack `𝔭 ⟨-, h1, h2⟩`. Assume the negation of the conclusion as `hp`. Conclude with `h2 ((hiff 𝔭 hp).1 h1)`.
-
-Conclude with `isRay_of_eq hEq hIsRay`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem isRay_rayClassField [IsTotallyComplex K] (n : ℕ) (hn : n ≠ 0) :
     IsRay ((Modulus.ofNat (K := K) n hn).rayClassField ℂ) (Ideal.span {(n : 𝓞 K)}) := by
@@ -619,7 +611,7 @@ theorem isRay_rayClassField [IsTotallyComplex K] (n : ℕ) (hn : n ≠ 0) :
 end Bridge
 
 /- English proof (translation)
-Introduce `K _ _ _ _ h2 hd L hL n hn`. Rewrite using `[adjoin_weberSet_eq_rayClassField h2 hd L hL hn.ne']`. Conclude with `⟨inferInstance, inferInstance, isRay_rayClassField n hn.ne'⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem weberRayField : GlobalTheory.Published.WeberRayFieldSt := by
   intro K _ _ _ _ h2 hd L hL n hn

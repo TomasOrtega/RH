@@ -16,7 +16,7 @@ def bdZ (m : ℕ) : ((Fin (m + 1) → G) →₀ ℤ) →ₗ[ℤ] ((Fin m → G) 
       ∑ j : Fin (m + 1), ((-1 : ℤ) ^ ((j : ℕ) + 1)) • Finsupp.single (Fin.contractNth j (· * ·) g) 1
 
 /- English proof (translation)
-Simplify using `only [bdZ, Finsupp.linearCombination_single, smul_add, Finset.smul_sum, Finsupp.smul_single, smul_eq_mul, mul_one]`. Use `congr 1`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem bdZ_single (m : ℕ) (g : Fin (m + 1) → G) (a : ℤ) :
     bdZ G m (Finsupp.single g a) = Finsupp.single (fun i => g i.succ) a +
@@ -34,9 +34,9 @@ def eC (n : ℕ) : ℝ ⊗[ℤ] ((Fin n → G) →₀ ℤ) ≃ₗ[ℝ] Chn G n :
 
 omit [Group G] in
 /- English proof (translation)
-Use `letI := Classical.decEq (Fin n → G)`. Use extensionality with `i`. Rewrite using `[eC, TensorProduct.finsuppScalarRight_apply_tmul_apply, zsmul_eq_mul]`. Distinguish the cases in `h : g = i`. Substitute `h` using the available equality.
+Equip the data with the indicated structure. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Simplify using `[h]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem eC_single (n : ℕ) (r : ℝ) (g : Fin n → G) (a : ℤ) :
     eC G n (r ⊗ₜ Finsupp.single g a) = Finsupp.single g ((a : ℝ) * r) := by
@@ -48,9 +48,9 @@ theorem eC_single (n : ℕ) (r : ℝ) (g : Fin n → G) (a : ℤ) :
   · simp [h]
 
 /- English proof (translation)
-Use `TensorProduct.AlgebraTensorModule.ext fun r x => ?_` and prove the remaining obligations. Proceed by induction on `x using Finsupp.induction_linear with`. Consider the case `zero => simp`. Consider the case `add x y hx hy`. Simplify using `only [LinearMap.coe_comp, Function.comp_apply, LinearEquiv.coe_coe, tmul_add, map_add] at hx hy ⊢`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Rewrite using `[hx, hy]`. Consider the case `single g a`. Simplify using `only [LinearMap.coe_comp, Function.comp_apply, LinearEquiv.coe_coe, LinearMap.baseChange_tmul, eC_single, bdZ_single, tmul_add, tmul_sum, map_add, map_sum, bd, Finsupp.linearCombination_single, smul_add, Finset.smul_sum, Finsupp.smul_single, smul_eq_mul, mul_one]`. Apply the tactic sequence `congr 1 <;> (try funext j) <;> congr 1 <;> push_cast <;> ring`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem bd_eC (m : ℕ) :
     bd G m ∘ₗ (eC G (m + 1)).toLinearMap = (eC G m).toLinearMap ∘ₗ (bdZ G m).baseChange ℝ := by
@@ -69,9 +69,9 @@ theorem bd_eC (m : ℕ) :
     congr 1 <;> (try funext j) <;> congr 1 <;> push_cast <;> ring
 
 /- English proof (translation)
-Use `TensorProduct.AlgebraTensorModule.ext fun r x => ?_` and prove the remaining obligations. Proceed by induction on `x using Finsupp.induction_linear with`. Consider the case `zero => simp`. Consider the case `add x y hx hy`. Simplify using `only [LinearMap.coe_comp, Function.comp_apply, LinearEquiv.coe_coe, tmul_add, map_add] at hx hy ⊢`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Rewrite using `[hx, hy]`. Consider the case `single g a`. Simplify using `only [LinearMap.coe_comp, Function.comp_apply, LinearEquiv.coe_coe, LinearMap.baseChange_tmul, eC_single, cmap, Finsupp.lmapDomain_apply, Finsupp.mapDomain_single]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Simplify using the standard rewrite rules.
 -/
 theorem cmap_eC {H : Type} [Group H] (f : G →* H) (n : ℕ) :
     cmap f n ∘ₗ (eC G n).toLinearMap =

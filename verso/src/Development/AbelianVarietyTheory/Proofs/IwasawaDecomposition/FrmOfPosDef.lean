@@ -20,7 +20,7 @@ def frm {n : ℕ} (H : Matrix (Fin n) (Fin n) K) : InfinitePlace K → Matrix (F
   fun v => if (H.map v.embedding).PosDef then frameOf (H.map v.embedding) else 1
 
 /- English proof (translation)
-Unfold `frm`. Use `split_ifs with h`. Conclude with `(frameOfSpec _ _ h).1`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem frm_det {n : ℕ} (H : Matrix (Fin n) (Fin n) K) (v : InfinitePlace K) : IsUnit (frm H v).det := by
   unfold frm
@@ -29,7 +29,7 @@ theorem frm_det {n : ℕ} (H : Matrix (Fin n) (Fin n) K) (v : InfinitePlace K) :
   · simp
 
 /- English proof (translation)
-Unfold `frm`. Rewrite using `[if_pos h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem frm_of_posDef {n : ℕ} (H : Matrix (Fin n) (Fin n) K) (v : InfinitePlace K) (h : (H.map v.embedding).PosDef) :
     frm H v = frameOf (H.map v.embedding) := by
@@ -50,7 +50,7 @@ Both sides reduce to the same expression.
 theorem rdx_apply {a b : ℕ} (h : a = b) (x : Fin b → K) (i : Fin a) : rdx h x i = x (Fin.cast h i) := rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Rewrite using `[rdx_apply]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem rdx_refl {a : ℕ} (h : a = a) (x : Fin a → K) : rdx h x = x := by
   funext i

@@ -24,9 +24,9 @@ namespace UpperTheory.Zero.ConvolutionTheory.EB
 attribute [local instance] borelG borelF borelA borelH
 
 /- English proof (translation)
-Proceed by induction on `h using Submodule.span_induction with`. Consider the case `mem g hg`. Take `⟨w₁, h₁, w₂, _, rfl⟩` from `hg`. Use `W₁.smul_mem (w₂ y) h₁` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use function extensionality and compare the values at `x`. Simplify using `[mul_comm]`. Consider the case `zero => exact W₁.zero_mem`. Consider the case `add g g' _ _ hg hg' => exact W₁.add_mem hg hg'`. Consider the case `smul c g _ hg => exact W₁.smul_mem c hg`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 private theorem slice_left {X Y : Type} (W₁ : Submodule ℂ (X → ℂ)) (W₂ : Submodule ℂ (Y → ℂ)) (y : Y) (F : X × Y → ℂ)
     (h : F ∈ Submodule.span ℂ {f : X × Y → ℂ | ∃ w₁ ∈ W₁, ∃ w₂ ∈ W₂, f = fun k => w₁ k.1 * w₂ k.2}) :
@@ -43,9 +43,9 @@ private theorem slice_left {X Y : Type} (W₁ : Submodule ℂ (X → ℂ)) (W₂
   | smul c g _ hg => exact W₁.smul_mem c hg
 
 /- English proof (translation)
-Proceed by induction on `h using Submodule.span_induction with`. Consider the case `mem g hg`. Take `⟨w₁, _, w₂, h₂, rfl⟩` from `hg`. Conclude with `W₂.smul_mem (w₁ x) h₂`. Consider the case `zero => exact W₂.zero_mem`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Consider the case `add g g' _ _ hg hg' => exact W₂.add_mem hg hg'`. Consider the case `smul c g _ hg => exact W₂.smul_mem c hg`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem slice_right {X Y : Type} (W₁ : Submodule ℂ (X → ℂ)) (W₂ : Submodule ℂ (Y → ℂ)) (x : X) (F : X × Y → ℂ)
     (h : F ∈ Submodule.span ℂ {f : X × Y → ℂ | ∃ w₁ ∈ W₁, ∃ w₂ ∈ W₂, f = fun k => w₁ k.1 * w₂ k.2}) :
@@ -61,7 +61,7 @@ private theorem slice_right {X Y : Type} (W₁ : Submodule ℂ (X → ℂ)) (W�
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {a b : ℕ}
 
 /- English proof (translation)
-Use `⟨fun u hu g => ?_, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[hφ]`. Simplify using `using h.1 u hu 1 K₂.one_mem (g, m₂)`. Rewrite using `[hφ]`. Simplify using `using slice_left W₁ W₂ 1 _ (h.2 (g, m₂))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem type_left {K₁ : Subgroup (GL (Fin a) (Af E))} {K₂ : Subgroup (GL (Fin b) (Af E))}
     {W₁ : Submodule ℂ (Kinf E a → ℂ)} {W₂ : Submodule ℂ (Kinf E b → ℂ)} {F : H E a b → ℂ} (h : TypeH K₁ K₂ W₁ W₂ F)
@@ -73,7 +73,7 @@ private theorem type_left {K₁ : Subgroup (GL (Fin a) (Af E))} {K₂ : Subgroup
     simpa using slice_left W₁ W₂ 1 _ (h.2 (g, m₂))
 
 /- English proof (translation)
-Use `⟨fun u hu g => ?_, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[hφ]`. Simplify using `using h.1 1 K₁.one_mem u hu (m₁, g)`. Rewrite using `[hφ]`. Simplify using `using slice_right W₁ W₂ 1 _ (h.2 (m₁, g))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem type_right {K₁ : Subgroup (GL (Fin a) (Af E))} {K₂ : Subgroup (GL (Fin b) (Af E))}
     {W₁ : Submodule ℂ (Kinf E a → ℂ)} {W₂ : Submodule ℂ (Kinf E b → ℂ)} {F : H E a b → ℂ} (h : TypeH K₁ K₂ W₁ W₂ F)
@@ -85,9 +85,9 @@ private theorem type_right {K₁ : Subgroup (GL (Fin a) (Af E))} {K₂ : Subgrou
     simpa using slice_right W₁ W₂ 1 _ (h.2 (m₁, g))
 
 /- English proof (translation)
-Establish `h1 : (fun w => A.ka (if w = v ∧ false = false then [(r, m)] else []) w) = Function.update (A.ka []) v (A.ka [(r, m)] v)`. Use function extensionality and compare the values at `w`. Distinguish the cases in `h : w = v`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[h]`. Establish `h2 : (fun w => A.kb (if w = v ∧ false = true then [(r, m)] else []) w) = A.kb []`. Use function extensionality and compare the values at `w`. Simplify using the standard rewrite rules. Rewrite using `[← h1, ← h2]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -109,9 +109,9 @@ private theorem gen_a {l₁ : InfinitePlace E → DomWeight a} {l₂ : InfiniteP
   rfl
 
 /- English proof (translation)
-Establish `h1 : (fun w => A.kb (if w = v ∧ true = true then [(r, m)] else []) w) = Function.update (A.kb []) v (A.kb [(r, m)] v)`. Use function extensionality and compare the values at `w`. Distinguish the cases in `h : w = v`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[h]`. Establish `h2 : (fun w => A.ka (if w = v ∧ true = false then [(r, m)] else []) w) = A.ka []`. Use function extensionality and compare the values at `w`. Simplify using the standard rewrite rules. Rewrite using `[← h1, ← h2]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -133,27 +133,23 @@ private theorem gen_b {l₁ : InfinitePlace E → DomWeight a} {l₂ : InfiniteP
   rfl
 
 /- English proof (translation)
-Introduce `E _ _ _ a b l₁ l₂`. Take `⟨W₁, W₂, f₁, f₂, hW⟩` from `PositivityTheory.Rg.BcB.CG.pack_holds E a b (Ml l₁) (Ml l₂)`. Use `⟨W₁, W₂, f₁, f₂, ?_⟩` and prove the remaining obligations. Introduce `D A S Z L hS hZ T e₁ e₂ s f hs hE`. Use `haveI := A.ha`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `haveI := A.hb`. Use `haveI := A.hν`. Use `haveI : BorelSpace (G a) := ⟨rfl⟩`. Use `haveI : BorelSpace (G b) := ⟨rfl⟩`. Use `haveI : BorelSpace (Hf E a b) := ⟨rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨-, -, hOk, -, -⟩` from `ptOk E a b l₁ l₂ D A`. Take `⟨hψ, -, -, -, -, -, hhk, -⟩` from `hkMul E a b l₁ l₂ D A S Z L hS hZ`. Take `⟨hlev, -, hfix⟩` from `idmAct E a b l₁ l₂ D A S Z L hS hZ`. Establish `hK₁` using `kgFacts E a S Z L.L₁ hS hZ (fun w => ⟨L.open₁ w, L.le₁ w⟩) (fun w hw => (L.off w hw).1)`. Establish `hK₂` using `kgFacts E b S Z L.L₂ hS hZ (fun w => ⟨L.open₂ w, L.le₂ w⟩) (fun w hw => (L.off w hw).2)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0` using `hOk (fun _ => []) (fun _ => []) (A.idm S L) hψ`. Establish `hka : IsMults A.μa (A.ka []) (fun v => A.valW []) A.T` using `h0.ka`. Establish `hkb : IsMults A.μb (A.kb []) (fun v => A.valW []) A.T` using `h0.kb`. Establish `he : PositivityTheory.Rg.BcB.E.conv D.μ (tens (A.ka []) (A.kb []) (A.idm S L)) f = s (.inl ()) • f` using `hE.eig (.inl ())`. Establish `hea : ∀ v r m, PositivityTheory.Rg.BcB.E.conv D.μ (tens (Function.update (A.ka []) v (A.ka [(r, m)] v)) (A.kb []) (A.idm S L)) f = s (.inr (.inl (v, r, m, false))) • f` using `fun v r m => by`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `h1` using `hE.eig (.inr (.inl (v, r, m, false)))`. Rewrite `h1` using `[gen_a]`. Conclude with `h1`. Establish `heb : ∀ v r m, PositivityTheory.Rg.BcB.E.conv D.μ (tens (A.ka []) (Function.update (A.kb []) v (A.kb [(r, m)] v)) (A.idm S L)) f = s (.inr (.inl (v, r, m, true))) • f` using `fun v r m => by`. Establish `h1` using `hE.eig (.inr (.inl (v, r, m, true)))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[gen_b]`. Conclude with `h1`. Take `⟨M, hM⟩` from `hE.wl`. Take `⟨χa, χb, ga, gb, hEig, hty, s₁, s₂, au₁, au₂, ic₁, ic₂⟩` from `hW D A.μa A.μb A.ν Unit (A.ka []) (A.kb []) (fun v => A.valW []) (fun v => A.valW []) A.T (A.idm S L) A.bump (fun r m => A.ka [(r, m)]) (fun r m => A.kb [(r, m)]) (Kg S L.L₁) (Kg S L.L₂) M f (s (.inl ())) (fun v r m => s (.inr (.inl (v, r, m, false)))) (fun v r m => s (.inr (.inl …`. Establish `hlevel : LevelF (Kg S L.L₁) (Kg S L.L₂) f` using `fun i u₁ h₁ u₂ h₂ x => (hty i).1 u₁ h₁ u₂ h₂ x`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hR : Repr D (A.ka []) (A.kb []) (A.idm S L) f` using `⟨hE.cont, s (.inl ()), hs, he⟩`. Establish `hact : ∀ ψ', IsFinM ψ' → PositivityTheory.Rg.BcB.E.conv D.μ (tens (A.ka []) (A.kb []) ψ') f = (valA (fun v => A.valW []) χa * valA (fun v => A.valW []) χb) • convF A.ν ψ' f` using `fun ψ' h' => actVal_holds E a b D A.μa A.μb A.ν (Ml l₁) (Ml l₂) Unit (A.ka []) (A.ka []) (A.kb []) (A.kb []) _ _ _ _ A.T A.T (A.idm S L) ψ' f χa χb A.compat hka hkb hψ hR ⟨s₁, s₂⟩ hEig hka hkb h'`. Establish `hval : valA (fun v => A.valW []) χa * valA (fun v => A.valW []) χb = s (.inl ())`. Establish `h1` using `hact _ hψ`. Rewrite `h1` using `[he, hfix f hlevel]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(smul_left_injective ℂ hE.ne h1).symm`. Establish `hfin : ∀ ψ' c', IsFinM ψ' → PositivityTheory.Rg.BcB.E.conv D.μ (tens (A.ka []) (A.kb []) ψ') f = c' • f → convF A.ν ψ' f = (c' / s (.inl ())) • f` using `fun ψ' c' h' e' => by`. Establish `h1` using `hact ψ' h'`. Rewrite `h1` using `[e', hval]`. Establish `h2 : convF A.ν ψ' f = (s (.inl ()))⁻¹ • (s (.inl ()) • convF A.ν ψ' f)`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Rewrite using `[smul_smul, inv_mul_cancel₀ hs, one_smul]`. Rewrite using `[h2, ← h1, smul_smul, inv_mul_eq_div]`. Use `⟨χa, χb, ga, gb, hlevel, ⟨s₁, s₂⟩, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `φ hφ`. Take `⟨i, m₂, e⟩` from `id hφ`.
-
-Conclude with `⟨au₁ φ hφ, type_left (hty i) m₂ φ e, fun t => ⟨(ic₁ t).1, fun u => (ic₁ t).2 u φ (Submodule.subset_span hφ)⟩⟩`. Introduce `φ hφ`. Take `⟨i, m₁, e⟩` from `id hφ`. Conclude with `⟨au₂ φ hφ, type_right (hty i) m₁ φ e, fun t => ⟨(ic₂ t).1, fun u => (ic₂ t).2 u φ (Submodule.subset_span hφ)⟩⟩`. Introduce and unpack `(x | u)`.
-
-Conclude with `hfin _ _ (hhk _ _ _).1 (hE.eig (.inr (.inr (.inl x))))`. Conclude with `hfin _ _ (hhk _ _ _).1 (hE.eig (.inr (.inr (.inr u))))`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem packStep : PackStep := by
   intro E _ _ _ a b l₁ l₂

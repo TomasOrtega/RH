@@ -6,17 +6,17 @@ noncomputable section
 namespace GlobalTheory.AffineMean
 
 /- English proof (translation)
-Introduce `g Λ' Λ₁ Fd' L c f hcount hΛ hF' _ hmean`. Set `L' : (Fin g → ℂ) ≃ₗ[ℝ] (Fin g → ℂ)` to `L.restrictScalars ℝ`. Establish `hL : ∀ z, L' z = L z` using `fun z => rfl`. Set `e : (Fin g → ℂ) ≃ᵐ (Fin g → ℂ)` to `(L'.toContinuousLinearEquiv.toHomeomorph.trans (Homeomorph.addRight c)).toMeasurableEquiv`. Establish `he : ∀ z, e z = L z + c` using `fun z => rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hpre : (fun z => L z + c) ⁻¹' Fd' = e ⁻¹' Fd'` using `rfl`. Establish `hd : LinearMap.det (L' : (Fin g → ℂ) →ₗ[ℝ] (Fin g → ℂ)) ≠ 0` using `(LinearEquiv.isUnit_det' L').ne_zero`. Establish `hmapL : Measure.map L' volume = ENNReal.ofReal |(LinearMap.det (L' : (Fin g → ℂ) →ₗ[ℝ] (Fin g → ℂ)))⁻¹| • volume` using `Measure.map_linearMap_addHaar_eq_smul_addHaar volume hd`. Establish `hc : 0 < |(LinearMap.det (L' : (Fin g → ℂ) →ₗ[ℝ] (Fin g → ℂ)))⁻¹|` using `abs_pos.2 (inv_ne_zero hd)`. Generalize the expression as in `|(LinearMap.det (L' : (Fin g → ℂ) →ₗ[ℝ] (Fin g → ℂ)))⁻¹| = k at hmapL hc`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable.
 
-Establish `hmap : Measure.map e volume = ENNReal.ofReal k • volume`. Establish `h1 : (e : (Fin g → ℂ) → (Fin g → ℂ)) = (fun z => z + c) ∘ (L' : (Fin g → ℂ) → (Fin g → ℂ))` using `rfl`. Establish `hLm : Measurable (L' : (Fin g → ℂ) → (Fin g → ℂ))` using `L'.toContinuousLinearEquiv.continuous.measurable`. Rewrite using `[h1, ← Measure.map_map (measurable_add_const c) hLm, hmapL, Measure.map_smul, map_add_right_eq_self]`. Establish `hq : Measure.QuasiMeasurePreserving e volume volume` using `⟨e.measurable, by rw [hmap]; exact Measure.smul_absolutelyContinuous⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Set `ε : Λ' → Λ₁` to `fun a => ⟨L.symm a, (hΛ _).1 (by rw [L.apply_symm_apply]; exact a.2)⟩`. Establish `hε : Function.Bijective ε` using `⟨fun a b hab => Subtype.ext (L.symm.injective (congrArg Subtype.val hab)), fun a => ⟨⟨L a, (hΛ _).2 a.2⟩, Subtype.ext (L.symm_apply_apply _)⟩⟩`. Establish `hF2 : IsAddFundamentalDomain Λ₁ (e ⁻¹' Fd') volume` using `hF'.preimage_of_equiv hq hε fun a z => by`. Express the relevant statement in the definitionally equal form `L (L.symm (a : Fin g → ℂ) + z) + c = (a : Fin g → ℂ) + (L z + c)`. Rewrite using `[map_add, L.apply_symm_apply, add_assoc]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `i2 : ∫ z in e ⁻¹' Fd', f (e z) = k * ∫ z in Fd', f z`. Use `setIntegral_map_equiv (μ := volume) e f Fd'` as an intermediate fact. Rewrite `this` using `[hmap, Measure.restrict_smul, integral_smul_measure, ENNReal.toReal_ofReal hc.le, smul_eq_mul]`. Conclude with `this.symm`. Establish `i3 : (volume (e ⁻¹' Fd')).toReal = k * (volume Fd').toReal`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← e.map_apply, hmap, Measure.smul_apply, smul_eq_mul, ENNReal.toReal_mul, ENNReal.toReal_ofReal hc.le]`. Use `⟨hpre ▸ hF2, ?_⟩` and prove the remaining obligations. Rewrite using `[hpre]`. Establish `i2' : ∫ z in e ⁻¹' Fd', f (L z + c) = k * ∫ z in Fd', f z` using `i2`. Rewrite using `[i2', i3, mul_div_mul_left _ _ hc.ne', hmean]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem affine_fundamentalDomain_mean :
     ∀ (g : ℕ) (Λ' Λ₁ : AddSubgroup (Fin g → ℂ)) (Fd' : Set (Fin g → ℂ)) (L : (Fin g → ℂ) ≃ₗ[ℂ] (Fin g → ℂ))

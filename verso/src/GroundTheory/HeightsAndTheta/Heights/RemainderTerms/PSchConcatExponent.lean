@@ -15,14 +15,14 @@ def SchConcatExponent.rotateInv (r a : ℕ) (q : Fin (r + a)) : Fin (r + a) :=
   if h : (q : ℕ) < r then ⟨q + a, by omega⟩ else ⟨q - r, by have := q.isLt; omega⟩
 
 /- English proof (translation)
-Apply the tactic sequence `unfold SchConcatExponent.rotateFun; split <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem SchConcatExponent.rotateFun_val (r a : ℕ) (p : Fin (r + a)) :
     (SchConcatExponent.rotateFun r a p : ℕ) = if (p : ℕ) < a then r + p else p - a := by
   unfold SchConcatExponent.rotateFun; split <;> rfl
 
 /- English proof (translation)
-Apply the tactic sequence `unfold SchConcatExponent.rotateInv; split <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem SchConcatExponent.rotateInv_val (r a : ℕ) (q : Fin (r + a)) :
     (SchConcatExponent.rotateInv r a q : ℕ) = if (q : ℕ) < r then q + a else q - r := by
@@ -43,21 +43,21 @@ def SchConcatExponent.rotate (r a : ℕ) : Equiv.Perm (Fin (r + a)) where
     split_ifs <;> omega
 
 /- English proof (translation)
-Introduce `r a c`. Consider the cases of `c with`. Consider the case `first`. Use `⟨Equiv.refl _, fun lam hlam => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `p`.
+Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hp` using `p.isLt`. Distinguish the cases in `h : (p : ℕ) < r`. Use `hlam ⟨p, h⟩` as an intermediate fact. Simplify using `[smallBlockOf, Schur.padPartition, h]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Simplify using `[smallBlockOf, Schur.padPartition, h]`. Use linear arithmetic over natural numbers and integers. Consider the case `last`. Use `⟨SchConcatExponent.rotate r a, fun lam hlam => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `p`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hp` using `p.isLt`. Simplify using `only [Function.comp_apply]`. Generalize the expression as in `hq : SchConcatExponent.rotate r a p = q`. Establish `hv : (q : ℕ) = if (p : ℕ) < a then r + p else p - a`. Rewrite using `[← hq]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `SchConcatExponent.rotateFun_val r a p`. Simplify using `only [Schur.padPartition, smallBlockOf]`. Distinguish the cases in `h : (p : ℕ) < a`. Establish `hn : ¬ ((q : ℕ) < r)` using `by rw [hv, if_pos h]; omega`. Rewrite using `[dif_pos h, dif_neg hn]`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Sum.elim_inr]`. Rewrite using `[hv, if_pos h]`. Use linear arithmetic over natural numbers and integers. Establish `h' : (p : ℕ) - a < r` using `by omega`. Establish `hn : (q : ℕ) < r` using `by rw [hv, if_neg h]; exact h'`.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_neg h, dif_pos hn]`. Simplify using `only [Sum.elim_inl]`. Establish `hqe : (⟨q, hn⟩ : Fin r) = ⟨(p : ℕ) - a, h'⟩` using `Fin.ext (by rw [hv, if_neg h])`. Rewrite using `[hqe, hv, if_neg h]`. Use `hlam ⟨(p : ℕ) - a, h'⟩` as an intermediate fact.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem SchConcatExponent.proof : SchConcatExponent.Statement := by
   intro r a c

@@ -20,7 +20,7 @@ open Formalism.MainNotions.G GlobalTheory.HCEntries GlobalTheory.FockDegreeGap
 variable {D : D7} {L : SizeData₂ D}
 
 /- English proof (translation)
-Introduce `h`. Establish `h1` using `congrArg (fun g : φ.GG => g.1.1) h`. Simplify using `only [Formalism.HC.Frame.tau1, Formalism.HC.Frame.tau2] at h1`. Conclude with `absurd h1 (by decide)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ramifiedTau1_ne_ramifiedTau2 {φ : Formalism.HC.Frame} (t t' : φ.A) : φ.tau1 t ≠ φ.tau2 t' := by
   intro h
@@ -29,7 +29,7 @@ theorem ramifiedTau1_ne_ramifiedTau2 {φ : Formalism.HC.Frame} (t t' : φ.A) : �
   exact absurd h1 (by decide)
 
 /- English proof (translation)
-Unfold `tauPl`. Rewrite using `[Equiv.apply_symm_apply]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem eTau_false (D : D7) (t : HH D) :
     (D.eTau (tauPl D (false, t)) : D.R.GG) = D.R.tau1 t := by
@@ -38,7 +38,7 @@ theorem eTau_false (D : D7) (t : HH D) :
   rfl
 
 /- English proof (translation)
-Unfold `tauPl`. Rewrite using `[Equiv.apply_symm_apply]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem eTau_true (D : D7) (t : HH D) :
     (D.eTau (tauPl D (true, t)) : D.R.GG) = D.R.tau2 t := by
@@ -47,7 +47,7 @@ theorem eTau_true (D : D7) (t : HH D) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[eTau_false]`. Introduce `h`. Take `⟨s, -, hs⟩` from `Finset.mem_image.1 h`. Conclude with `ramifiedTau1_ne_ramifiedTau2 _ _ hs.symm`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem false_not_thick (D : D7) (t : HH D) :
     (D.eTau (tauPl D (false, t)) : D.R.GG) ∉ D.host.thickPlaces := by
@@ -57,7 +57,7 @@ theorem false_not_thick (D : D7) (t : HH D) :
   exact ramifiedTau1_ne_ramifiedTau2 _ _ hs.symm
 
 /- English proof (translation)
-Rewrite using `[eTau_true]`. Introduce `h`. Take `⟨s, -, hs⟩` from `Finset.mem_image.1 h`. Conclude with `ramifiedTau1_ne_ramifiedTau2 _ _ hs`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem true_not_top (D : D7) (t : HH D) :
     (D.eTau (tauPl D (true, t)) : D.R.GG) ∉ D.host.topPlaces := by
@@ -67,7 +67,7 @@ theorem true_not_top (D : D7) (t : HH D) :
   exact ramifiedTau1_ne_ramifiedTau2 _ _ hs
 
 /- English proof (translation)
-Rewrite using `[eTau_false]`. Introduce `h`. Take `⟨s, hs, he⟩` from `Finset.mem_image.1 h`. Establish `hst : s = t` using `D.R.iota_bijective.1 (congrArg Prod.snd he)`. Conclude with `ht (hst ▸ hs)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem false_not_top {t : HH D} (ht : t ∉ D.host.TT) :
     (D.eTau (tauPl D (false, t)) : D.R.GG) ∉ D.host.topPlaces := by
@@ -78,15 +78,15 @@ theorem false_not_top {t : HH D} (ht : t ∉ D.host.TT) :
   exact ht (hst ▸ hs)
 
 /- English proof (translation)
-Establish `hk` using `one_le_k D`. Establish `ht` using `one_le_letterBlockLength D`. Establish `hn` using `one_le_n D`. Establish `hL` using `one_le_scL L`. Establish `hb` using `one_le_b L`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hS` using `L.Sc_pos`. Establish `he` using `L.etaSz_pos`. Establish `hm0 : (0 : ℝ) ≤ D.R.m` using `Nat.cast_nonneg _`. Establish `hN0 : (0 : ℝ) ≤ D.R.N D.R.m` using `Nat.cast_nonneg _`. Establish `hmt : (D.R.m : ℝ) ≤ D.R.t`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: D.R.m ≤ D.R.t` using `by have := D.R.three_m_lt_t; omega`. Conclude with `this` after adjusting the coercions. Establish `h0 : 0 ≤ szlStar L` using `by unfold szlStar; positivity`. Establish `h1 : (D.R.k : ℝ) * szlStar L ≤ L.sc.b`. Unfold `szlStar`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← mul_div_assoc, div_le_iff₀ (by positivity), ← mul_assoc, mul_comm]`. Use `mul_le_mul_of_nonneg_left ?_ (by linarith)` and prove the remaining obligations. Establish `e2 : L.Sc + D.R.t + L.sc.L ≤ (D.R.n : ℝ) ^ 2 * (L.Sc + D.R.t + L.sc.L)` using `le_mul_of_one_le_left (by positivity) (one_le_pow₀ hn)`. Establish `e1 : (D.R.k : ℝ) * D.R.m ≤ (D.R.k : ℝ) * ((D.R.n : ℝ) ^ 2 * (L.Sc + D.R.t + L.sc.L))` using `mul_le_mul_of_nonneg_left (by linarith) (by linarith)`. Establish `e3 : 0 ≤ (D.R.n : ℝ) * (D.R.t : ℝ) ^ 2 * ((D.R.N D.R.m : ℝ) + D.R.t) * L.sc.L ^ 2` using `by positivity`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `h2 : 0 ≤ L.sc.b / szlStar L` using `div_nonneg (by linarith) h0`. Establish `h3 : L.sc.b' ≤ szlStar L` using `by linarith [h.1]`. Conclude with `(mul_le_mul_of_nonneg_left h3 (by linarith)).trans h1`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem k_b'_le (h : SizeLstar L) : (D.R.k : ℝ) * L.sc.b' ≤ L.sc.b := by
   have hk := one_le_k D
@@ -117,13 +117,13 @@ theorem k_b'_le (h : SizeLstar L) : (D.R.k : ℝ) * L.sc.b' ≤ L.sc.b := by
   exact (mul_le_mul_of_nonneg_left h3 (by linarith)).trans h1
 
 /- English proof (translation)
-Establish `hb'` using `b'_pos L`. Establish `hm : (1 : ℝ) ≤ D.R.m` using `by exact_mod_cast (by have := D.R.two_le_m; omega : 1 ≤ D.R.m)`. Establish `ht : (0 : ℝ) ≤ D.R.t` using `Nat.cast_nonneg _`. Establish `he : L.etaSz ≤ L.sc.w'' D.R.n` using `(le_mul_of_one_le_left L.etaSz_pos.le (one_le_mul_of_one_le_of_one_le hm (by linarith))).trans P.mteta`. Use `⟨he, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1` using `P.h0_ge.2.2.2.2.1`. Establish `h2 : LevelStarExponents.h0 L ≤ L.etaSz` using `div_le_self L.etaSz_pos.le hm`. Take `⟨r1, r2⟩` from `ranks_le D`. Establish `hN : (1 : ℝ) ≤ D.R.N D.R.m` using `by linarith`. Establish `h3 : (D.R.k : ℝ) * D.R.N D.R.m ≤ (D.R.N D.R.m : ℝ) ^ 2` using `by nlinarith`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : (D.R.N D.R.m : ℝ) ^ 2 ≤ (D.R.N D.R.m : ℝ) ^ 3` using `pow_le_pow_right₀ hN (by norm_num)`. Establish `h5 : (0 : ℝ) ≤ (D.R.N D.R.m : ℝ) ^ 3` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Unfold `Scale.w''`. Use `div_le_div_of_nonneg_left hb'.le (by norm_num) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Use polynomial arithmetic with `[one_le_n D]`.
+Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem small_le (P : ParameterChoice' D L) (hx : 2 ≤ L.sc.x) :
     L.etaSz ≤ L.sc.w'' D.R.n ∧ (D.R.k : ℝ) * D.R.N D.R.m ≤ L.sc.w'' D.R.n ∧
@@ -147,9 +147,9 @@ theorem small_le (P : ParameterChoice' D L) (hx : 2 ≤ L.sc.x) :
     nlinarith [one_le_n D]
 
 /- English proof (translation)
-Take `⟨-, -, -, -, -, -, -, -, hLa, hR, hB, -⟩` from `h`. Take `⟨e1, -, e3⟩` from `small_le P hx`. Establish `hb'` using `b'_pos L`. Distinguish the cases in `ht : t ∈ D.host.TT`. Establish `a2` using `(L.win_top j h1 h2 _ ⟨t, ht⟩ (eTau_false D t)).2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `a4` using `bT_le hLa hR hB ⟨t, ht⟩`. Establish `a6 : L.sc.b' / L.sc.x ≤ L.sc.b' / 2` using `div_le_div_of_nonneg_left hb'.le (by norm_num) hx`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `a2` using `(L.win_thin j h1 h2 _ ⟨(D.eTau _).2, false_not_top ht, false_not_thick D t⟩).2`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem wj_false_le (h : SizesAt L) (P : ParameterChoice' D L) (hx : 2 ≤ L.sc.x) (j : ℕ) (h1 : 1 ≤ j) (h2 : j ≤ D.R.m)
     (t : HH D) : wj D j (tauPl D (false, t)) ≤ 9 / 4 * L.sc.b' := by
@@ -165,9 +165,9 @@ theorem wj_false_le (h : SizesAt L) (P : ParameterChoice' D L) (hx : 2 ≤ L.sc.
     linarith
 
 /- English proof (translation)
-Take `⟨-, -, -, -, -, -, -, -, -, -, -, -, -, -, -, hS, -⟩` from `h`. Take `⟨e1, -, e3⟩` from `small_le P hx`. Establish `hb'` using `b'_pos L`. Establish `hbb : L.sc.b' ≤ L.sc.b` using `by linarith [b'_Sc_le hS, L.Sc_pos]`. Distinguish the cases in `hc : (D.eTau (tauPl D (true, t)) : D.R.GG) ∈ D.host.thickPlaces`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Conclude with `(L.win_thick j h1 h2 _ hc).2`. Establish `a2` using `(L.win_thin j h1 h2 _ ⟨(D.eTau _).2, true_not_top D t, hc⟩).2`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem wj_true_le (h : SizesAt L) (P : ParameterChoice' D L) (hx : 2 ≤ L.sc.x) (j : ℕ) (h1 : 1 ≤ j) (h2 : j ≤ D.R.m)
     (t : HH D) : wj D j (tauPl D (true, t)) ≤ L.sc.b + L.etaSz + 1 := by
@@ -181,11 +181,11 @@ theorem wj_true_le (h : SizesAt L) (P : ParameterChoice' D L) (hx : 2 ≤ L.sc.x
     linarith
 
 /- English proof (translation)
-Take `⟨j1, j2⟩` from `Finset.mem_Icc.1 hj`. Take `⟨i, rfl⟩ : ∃ i, j = i + 1` from `⟨j - 1, by omega⟩`. Establish `hk` using `D.R.m_add_three_le_k`. Establish `hp : ∀ τ, ∀ r ∈ Finset.range (D.R.N (i + 1 - 1)), 0 ≤ nuRow D u (i + 1) τ r` using `fun τ r hr => (RowWeightLemmas.nuRow_pos D u i j2 τ r (Finset.mem_range.1 hr)).le`. Establish `m0 : 0 ∈ Finset.range (D.R.N (i + 1 - 1))` using `Finset.mem_range.2 (by unfold Ranks.N; omega)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `m1 : 1 ∈ Finset.range (D.R.N (i + 1 - 1))` using `Finset.mem_range.2 (by unfold Ranks.N; omega)`. Establish `a1` using `Finset.single_le_sum (hp (tauPl D (false, t))) m0`. Establish `a2` using `hp (tauPl D (false, t)) 0 m0`. Establish `a3` using `hp (tauPl D (false, t)) 1 m1`. Establish `a4` using `hp (tauPl D (true, t)) 0 m0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `ctD nuAbs`. Apply the tactic sequence `split_ifs <;> linarith`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem ctD_nonneg (u : D.what₂.Word) (j : ℕ) (hj : j ∈ SizeData₂.lifts D) (t : HH D) : 0 ≤ ctD D u j t := by
   obtain ⟨j1, j2⟩ := Finset.mem_Icc.1 hj
@@ -203,19 +203,19 @@ theorem ctD_nonneg (u : D.what₂.Word) (j : ℕ) (hj : j ∈ SizeData₂.lifts 
   split_ifs <;> linarith
 
 /- English proof (translation)
-Take `⟨j1, j2⟩` from `Finset.mem_Icc.1 hj`. Take `⟨i, rfl⟩ : ∃ i, j = i + 1` from `⟨j - 1, by omega⟩`. Establish `hk : 5 ≤ D.R.k` using `by have := D.R.m_add_three_le_k; have := D.R.two_le_m; omega`. Establish `hk' : (5 : ℝ) ≤ D.R.k` using `by exact_mod_cast hk`. Take `⟨e1, e2, e3⟩` from `small_le P hx`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `e4` using `P.kS_le`. Establish `e5` using `P.mteta`. Establish `hb'` using `b'_pos L`. Establish `hb` using `one_le_b L`. Establish `hS` using `L.Sc_pos`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hN : (0 : ℝ) ≤ D.R.N D.R.m` using `Nat.cast_nonneg _`. Establish `e6 : L.Sc ≤ L.sc.w'' D.R.n` using `by nlinarith`. Establish `e7 : (D.R.N D.R.m : ℝ) ≤ L.sc.w'' D.R.n` using `by nlinarith`. Establish `w0` using `(wj_bounds h hx (i + 1) j1 j2 (tauPl D (false, t))).1`. Establish `w1` using `wj_false_le h P hx (i + 1) j1 j2 t`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `w2` using `wj_true_le h P hx (i + 1) j1 j2 t`. Establish `w3 : (D.R.k : ℝ) * wj D (i + 1) (tauPl D (false, t)) ≤ D.R.k * (9 / 4 * L.sc.b')` using `mul_le_mul_of_nonneg_left w1 (by linarith)`. Establish `w4 : 5 * L.sc.b' ≤ D.R.k * L.sc.b'` using `mul_le_mul_of_nonneg_right hk' hb'.le`. Establish `a` using `(abs_le.1 (nuAbs_place P u i j2 _ w0)).2`. Unfold `ctD`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Distinguish the cases in `ht : t ∈ D.host.TT`. Simplify using `only [if_pos ht]`. Rewrite `a` using `[topWt_top L (t := ⟨t, ht⟩) (eTau_false D t)]`. Establish `b1` using `(head_row u i j2 (tauPl D (false, t)) 0 (by omega)).2`. Rewrite `b1` using `[D.hcW_first u _ (by omega), (L.top_u _ ⟨t, ht⟩ (by omega) (eTau_false D t)).1]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `b2` using `(head_row u i j2 (tauPl D (false, t)) 1 (by omega)).1`. Establish `b3` using `(L.cloud_u u (tauPl D (false, t)) ⟨1, by omega⟩ le_rfl (by show 1 + 1 < D.R.k; omega)).2`. Establish `b4` using `(head_row u i j2 (tauPl D (true, t)) 0 (by omega)).1`. Rewrite `b4` using `[D.hcW_first u _ (by omega)]`. Establish `b5` using `P.cloud_place_bound (tauPl D (true, t)) (by omega) (true_not_top D t)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `b6` using `(L.cloud_v (tauPl D (true, t)) ⟨0, by omega⟩).2`. Move the coercions through the operations in `at b5`. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using `only [if_neg ht]`. Rewrite `a` using `[topWt_off L (false_not_top ht)]`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -261,14 +261,14 @@ theorem ctD_le (h : SizesAt L) (P : ParameterChoice' D L) (hx : 2 ≤ L.sc.x) (u
     linarith
 
 /- English proof (translation)
-Establish `: Fintype.card (HH D) = D.R.n` using `D.R.card_A`. Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem card_HH (D : D7) : (Fintype.card (HH D) : ℝ) = D.R.n := by
   have : Fintype.card (HH D) = D.R.n := D.R.card_A
   exact_mod_cast this
 
 /- English proof (translation)
-Unfold `Ranks.f`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem f_eq (D : D7) : (D.R.f : ℝ) = 2 * D.R.n := by
   unfold Ranks.f
@@ -276,7 +276,7 @@ theorem f_eq (D : D7) : (D.R.f : ℝ) = 2 * D.R.n := by
   ring
 
 /- English proof (translation)
-Use `(Finset.sum_le_sum fun t _ => ctD_le h P hx u j hj t).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[Finset.sum_add_distrib, Finset.sum_ite_mem, Finset.univ_inter, Finset.sum_const, Finset.sum_const, Finset.card_univ, nsmul_eq_mul, nsmul_eq_mul, card_HH, f_eq]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem sum_ctD_le (h : SizesAt L) (P : ParameterChoice' D L) (hx : 2 ≤ L.sc.x) (j : ℕ) (hj : j ∈ SizeData₂.lifts D)
     (u : D.what₂.Word) :
@@ -287,11 +287,11 @@ theorem sum_ctD_le (h : SizesAt L) (P : ParameterChoice' D L) (hx : 2 ≤ L.sc.x
   ring
 
 /- English proof (translation)
-Take `⟨j1, j2⟩` from `Finset.mem_Icc.1 hj`. Establish `hk` using `one_le_k D`. Establish `hn` using `one_le_n D`. Establish `hb'` using `b'_pos L`. Establish `h0 : 0 ≤ ∑ t : HH D, min (wPl D j (false, t)) (wPl D j (true, t))` using `Finset.sum_nonneg fun t _ => le_min (wj_bounds h hx j j1 j2 _).1 (wj_bounds h hx j j1 j2 _).1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ∑ t : HH D, min (wPl D j (false, t)) (wPl D j (true, t)) ≤ D.R.n * (9 / 4 * L.sc.b')`. Use `(Finset.sum_le_card_nsmul _ _ _ fun t _ => (min_le_left _ _).trans (wj_false_le h P hx j j1 j2 t)).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[Finset.card_univ, nsmul_eq_mul, card_HH]`. Establish `h2 : ((D.R.k : ℝ) - 1) / 2 * ∑ t : HH D, min (wPl D j (false, t)) (wPl D j (true, t)) ≤ D.R.k / 2 * (D.R.n * (9 / 4 * L.sc.b'))` using `mul_le_mul (by linarith) h1 h0 (by linarith)`. Establish `h3 : 0 ≤ (D.R.n : ℝ) * D.R.k * L.sc.b'` using `by positivity`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `FRamD`. Rewrite using `[f_eq]`. Conclude with `⟨by linarith, mul_nonpos_of_nonpos_of_nonneg (by linarith) h0⟩`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem FRamD_bounds (h : SizesAt L) (P : ParameterChoice' D L) (hx : 2 ≤ L.sc.x) (j : ℕ) (hj : j ∈ SizeData₂.lifts D) :
     -((D.R.f : ℝ) * D.R.k * L.sc.b') ≤ FRamD D j ∧ FRamD D j ≤ 0 := by
@@ -313,7 +313,7 @@ theorem FRamD_bounds (h : SizesAt L) (P : ParameterChoice' D L) (hx : 2 ≤ L.sc
   exact ⟨by linarith, mul_nonpos_of_nonpos_of_nonneg (by linarith) h0⟩
 
 /- English proof (translation)
-The claim follows from `|EatD D j| ≤ (D.host.TT.card : ℝ) * L.sc.b + (D.R.f : ℝ) * D.R.k * L.sc.b' := by obtain ⟨a1, a2⟩ := FRamD_bounds h P hx j hj have a3 := Finset.sup'_le (⟨D.u₀, Finset.mem_univ _⟩ : (Finset.univ : Finset D.what₂.Word).Nonempty) (fun u : D.what₂.Word => ∑ t : HH D, ctD D u j t) fun …`.
+A detailed English derivation is pending.
 -/
 theorem abs_EatD_le (h : SizesAt L) (P : ParameterChoice' D L) (hx : 2 ≤ L.sc.x) (j : ℕ) (hj : j ∈ SizeData₂.lifts D) :
     |EatD D j| ≤ (D.host.TT.card : ℝ) * L.sc.b + (D.R.f : ℝ) * D.R.k * L.sc.b' := by
@@ -328,7 +328,7 @@ theorem abs_EatD_le (h : SizesAt L) (P : ParameterChoice' D L) (hx : 2 ≤ L.sc.
   constructor <;> linarith
 
 /- English proof (translation)
-The claim follows from `|L.E u j w| ≤ (padicValNat D.host.d (D.mem u).C.DGam : ℝ) + 2 * (D.R.f : ℝ) * L.sc.b := by have h0 : D.what₂.places.resChar w ≠ D.host.g 0 := fun h => hg (by simp [SizeData₂.gTypes, h]) have h1 : D.what₂.places.resChar w ≠ D.host.g 1 := fun h => hg (by simp [SizeData₂.gTypes, h]) …`.
+A detailed English derivation is pending.
 -/
 theorem abs_E_le {X : ErrX D} {K : Formalism.MainNotions.G.Consts} {c : ErrC} (hE : L.EDef X K c) (h : SizesAt L) (P : ParameterChoice' D L)
     (hx : 2 ≤ L.sc.x) (u : D.what₂.Word) (j : ℕ) (hj : j ∈ SizeData₂.lifts D) (w : D.what₂.places.Pl)
@@ -369,29 +369,27 @@ theorem abs_E_le {X : ErrX D} {K : Formalism.MainNotions.G.Consts} {c : ErrC} (h
     linarith
 
 /- English proof (translation)
-Establish `hp : D.host.d.Prime` using `D.host.hyp.2.1`. Take `⟨S, hS⟩` from `GlobalTheory.TypeLoss.exists_over D _ hp`. Establish `hb` using `one_le_b L`. Establish `hL` using `one_le_scL L`. Establish `hk` using `one_le_k D`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hf : (1 : ℝ) ≤ D.R.f` using `by linarith [f_eq D, one_le_n D]`. Establish `hm : (1 : ℝ) ≤ D.R.m` using `by exact_mod_cast (by have := D.R.two_le_m; omega : 1 ≤ D.R.m)`. Use `set A : ℝ := (padicValNat D.host.d (D.mem u).C.DGam : ℝ) + 2 * (D.R.f : ℝ) * L.sc.b with hA`. Establish `hA0 : 0 ≤ A` using `by positivity`. Establish `hl : ∀ w : D.what₂.places.Pl, 0 ≤ lw D.what₂.LL (D.plEq w) * (D.what₂.places.ramIdx w : ℝ)` using `fun w => mul_nonneg (div_nonneg (Real.log_natCast_nonneg _) (Nat.cast_nonneg _)) (Nat.cast_nonneg _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `s1 : ∑ w ∈ L.supp.filter (fun w => D.what₂.places.resChar w = D.host.d ∧ D.what₂.places.resChar w ≠ (D.mem u).A.T ∧ D.what₂.places.resChar w ∉ L.gTypes), |SizeData₂.sz w (L.E u j w)| ≤ 2 * A * Real.log D.host.d`. Rewrite using `[← factEtaMean D _ hp S hS, Finset.mul_sum]`. Use `(Finset.sum_le_sum fun w hw => ?_).trans (Finset.sum_le_sum_of_subset_of_nonneg (fun w hw => (hS w).2 (Finset.mem_filter.1 hw).2.1) fun w _ _ => mul_nonneg (by linarith) (hl w))` and prove the remaining obligations. Take `⟨-, a1, a2, a3⟩` from `Finset.mem_filter.1 hw`. Establish `e : SizeData₂.sz w (L.E u j w) = 2 * (lw D.what₂.LL (D.plEq w) * (D.what₂.places.ramIdx w : ℝ)) * L.E u j w`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `SizeData₂.sz SizeData₂.lwP`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, abs_mul, abs_of_nonneg (mul_nonneg zero_le_two (hl w))]`. Use `mul_le_mul_of_nonneg_left (abs_E_le hE h P hx u j hj w a1 a2 a3) (mul_nonneg zero_le_two (hl w))` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hlog : Real.log D.host.d ≤ L.sc.L`. Take `⟨-, -, -, -, -, -, hQ, -⟩` from `h`. Use `hQ.2.2.2.2.1.trans (Real.rpow_le_rpow_of_exponent_le L.sc.one_lt_alt.le ?_)` and prove the remaining obligations. Unfold `szTh`. Combine the linear relations using `[L.sc.eps_pos]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hB : L.B0 = D.R.f * D.R.m * L.sc.b * L.sc.L` using `rfl`. Establish `hB1 : D.R.f * L.sc.b * L.sc.L ≤ L.B0`. Rewrite using `[hB, show (D.R.f : ℝ) * D.R.m * L.sc.b * L.sc.L = D.R.m * (D.R.f * L.sc.b * L.sc.L) by ring]`. Conclude with `le_mul_of_one_le_left (by positivity) hm`. Establish `hB2 : D.R.f * L.sc.b ≤ L.B0` using `(le_mul_of_one_le_right (by positivity) hL).trans hB1`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `t1 : D.R.f * L.sc.b * Real.log D.host.d ≤ L.B0` using `(mul_le_mul_of_nonneg_left hlog (by positivity)).trans hB1`. Establish `t2 : (padicValNat D.host.d (D.mem u).C.DGam : ℝ) * Real.log D.host.d ≤ |C| * L.B0`. Establish `hN : (1 : ℝ) ≤ D.R.N D.R.m` using `by linarith [(ranks_le D).1]`. Establish `hη0` using `L.etaSz_pos.le`. Establish `ht` using `one_le_letterBlockLength D`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hNη : (D.R.N D.R.m : ℝ) ^ 2 ≤ L.etaSz`. Establish `a1` using `P.h0_ge.2.2.2.2.1`. Establish `a2 : LevelStarExponents.h0 L ≤ L.etaSz` using `div_le_self hη0 hm`. Establish `a3 : (D.R.N D.R.m : ℝ) ^ 2 ≤ (D.R.N D.R.m : ℝ) ^ 3` using `pow_le_pow_right₀ hN (by norm_num)`. Establish `a4 : 0 ≤ (D.R.N D.R.m : ℝ) ^ 3` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hfη : (D.R.f : ℝ) * L.etaSz ≤ L.sc.b`. Establish `a1` using `P.eta_le`. Rewrite `a1` using `[le_div_iff₀ (by positivity)]`. Establish `a2 : (1 : ℝ) ≤ (D.R.t : ℝ) ^ 3 * (D.R.k : ℝ) ^ 3` using `one_le_mul_of_one_le_of_one_le (one_le_pow₀ ht) (one_le_pow₀ hk)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hfN : (1 : ℝ) ≤ D.R.f * D.R.N D.R.m` using `one_le_mul_of_one_le_of_one_le hf hN`. Establish `l0 : 0 ≤ Real.log ((D.R.f : ℝ) * D.R.N D.R.m)` using `Real.log_nonneg hfN`. Establish `l1 : Real.log ((D.R.f : ℝ) * D.R.N D.R.m) ≤ D.R.f * D.R.N D.R.m` using `(Real.log_le_sub_one_of_pos (by linarith)).trans (by linarith)`. Establish `l2 : (D.R.f : ℝ) * D.R.N D.R.m * Real.log ((D.R.f : ℝ) * D.R.N D.R.m) ≤ L.B0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_assoc, ← mul_assoc]`. Conclude with `hC u`. Use `_ ≤ |C| * ((D.R.f : ℝ) * D.R.N D.R.m * Real.log ((D.R.f : ℝ) * D.R.N D.R.m)) := mul_le_mul_of_nonneg_right (le_abs_self _) (mul_nonneg (by linarith) l0)`.
-
-Use `_ ≤ _ := mul_le_mul_of_nonneg_left l2 (abs_nonneg _)`. Use `s1.trans ?_` and prove the remaining obligations. Rewrite using `[hA]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem bound_one {X : ErrX D} {K : Formalism.MainNotions.G.Consts} {c : ErrC} (hE : L.EDef X K c) (h : SizesAt L) (P : ParameterChoice' D L)
     (hx : 2 ≤ L.sc.x) (C : ℝ) (hC : FactDGam D C) (u : D.what₂.Word) (j : ℕ) (hj : j ∈ SizeData₂.lifts D) :
@@ -474,7 +472,7 @@ theorem bound_one {X : ErrX D} {K : Formalism.MainNotions.G.Consts} {c : ErrC} (
   linarith
 
 /- English proof (translation)
-Introduce `eps Fm _ _ ⟨C, x₀, hC⟩`. Use `⟨2 * |C| + 4, max 2 x₀, fun x hx0 hx i u j hj => ?_⟩` and prove the remaining obligations. Conclude with `bound_one (Fm.ex x hx i).err.edef (Fm.sizes x hx i) (Fm.params x hx i) (by rw [Fm.L_x x i hx]; exact (le_max_left _ _).trans hx0) C (hC x ((le_max_right _ _).trans hx0) i) u j hj`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem ramifiedLoss_sum : ∀ {eps : ℝ} (Fm : FamP eps), 0 < eps → eps < 1 / 52 → DGamSize Fm → ∃ C x0 : ℝ, ∀ x, x0 ≤ x → ∀ hx : Fm.x1 < x, ∀ i : Fm.Ix x, ∀ u, ∀ j ∈ SizeData₂.lifts (Fm.D x i), ∑ w ∈ (Fm.L x i).supp.filter (fun w => (Fm.D x i).what₂.places.resChar w = (Fm.D x i).host.d ∧ (Fm.D x i).what₂.places.resChar w ≠ ((Fm.D x i).mem u).A.T ∧ (Fm.D x i).what₂.places.resChar w ∉ (Fm.L x i).gTypes), |SizeData₂.sz w ((Fm.L x i).E u j w)| ≤ C * (Fm.L x i).B0 := by
   intro eps Fm _ _ ⟨C, x₀, hC⟩

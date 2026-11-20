@@ -14,14 +14,14 @@ open ReciprocityTheory.Gal Pointwise
 namespace GlobalTheory.UnrChar
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.exists_ringHom_apply_eq_pow_prime_pow p τ N hN z hz`.
+A detailed English derivation is pending.
 -/
 theorem frob_orbit {k : Type} [Field k] (p : ℕ) [Fact p.Prime] [CharP k p] (τ : k →+* k) (N : ℕ)
     (hN : 0 < N) (z : k) (hz : z ^ p ^ N = z) : ∃ e : ℕ, τ z = z ^ p ^ e :=
   GlobalTheory.T.exists_ringHom_apply_eq_pow_prime_pow p τ N hN z hz
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.exists_padicInt_of_compatible_zmod_pow' p c hc`.
+A detailed English derivation is pending.
 -/
 theorem exists_padic_of_compat (p : ℕ) [Fact p.Prime] (c : ∀ n : ℕ, ZMod (p ^ n))
     (hc : ∀ n₁ n₂ (h : n₁ ≤ n₂), ZMod.castHom (pow_dvd_pow p h) (ZMod (p ^ n₁)) (c n₂) = c n₁) :
@@ -29,7 +29,7 @@ theorem exists_padic_of_compat (p : ℕ) [Fact p.Prime] (c : ∀ n : ℕ, ZMod (
   GlobalTheory.T.exists_padicInt_of_compatible_zmod_pow' p c hc
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.padicInt_continuous_hom_normalize_one p χ hc hadd g₀ h₀`.
+A detailed English derivation is pending.
 -/
 theorem exists_normalized {G : Type} [Group G] [TopologicalSpace G] (p : ℕ) [Fact p.Prime]
     (χ : G → ℤ_[p]) (hc : Continuous χ) (hadd : ∀ g h, χ (g * h) = χ g + χ h) (g₀ : G)
@@ -38,7 +38,7 @@ theorem exists_normalized {G : Type} [Group G] [TopologicalSpace G] (p : ℕ) [F
   GlobalTheory.T.padicInt_continuous_hom_normalize_one p χ hc hadd g₀ h₀
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.exists_frob_at_valuationSubring_over_prime A hp`.
+A detailed English derivation is pending.
 -/
 theorem exists_frob_ne_one {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω]
     [IsAlgClosure F Ω] {p : ℕ} [Fact p.Prime] (A : ValuationSubring Ω)
@@ -47,19 +47,19 @@ theorem exists_frob_ne_one {F Ω : Type} [Field F] [NumberField F] [Field Ω] [A
   GlobalTheory.T.exists_frob_at_valuationSubring_over_prime A hp
 
 /- English proof (translation)
-The claim follows from `Nat.one_lt_pow (pow_pos (Fact.out : p.Prime).pos n).ne' (Fact.out : p.Prime).one_lt`.
+A detailed English derivation is pending.
 -/
 theorem one_lt_pow_pow (p : ℕ) [Fact p.Prime] (n : ℕ) : 1 < p ^ p ^ n :=
   Nat.one_lt_pow (pow_pos (Fact.out : p.Prime).pos n).ne' (Fact.out : p.Prime).one_lt
 
 /- English proof (translation)
-Use `one_lt_pow_pow p n` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem pow_pow_sub_one_ne_zero (p : ℕ) [Fact p.Prime] (n : ℕ) : p ^ p ^ n - 1 ≠ 0 := by
   have := one_lt_pow_pow p n; omega
 
 /- English proof (translation)
-Use `haveI : NeZero (p ^ p ^ n - 1) := ⟨pow_pow_sub_one_ne_zero p n⟩`. Use `haveI : NeZero ((p ^ p ^ n - 1 : ℕ) : Ω) := inferInstance`. Conclude with `HasEnoughRootsOfUnity.exists_primitiveRoot Ω _`.
+A detailed English derivation is pending.
 -/
 theorem exists_primitive (Ω : Type) [Field Ω] [IsAlgClosed Ω] [CharZero Ω] (p : ℕ) [Fact p.Prime]
     (n : ℕ) : ∃ ζ : Ω, IsPrimitiveRoot ζ (p ^ p ^ n - 1) := by
@@ -68,11 +68,9 @@ theorem exists_primitive (Ω : Type) [Field Ω] [IsAlgClosed Ω] [CharZero Ω] (
   exact HasEnoughRootsOfUnity.exists_primitiveRoot Ω _
 
 /- English proof (translation)
-Introduce `h`. Establish `h1 : A.valuation ((p : Ω) ^ p ^ n) < 1`. Rewrite using `[map_pow]`. Conclude with `pow_lt_one₀ zero_le' hp (pow_pos (Fact.out : p.Prime).pos n).ne'`. Establish `e : (1 : Ω) = (p : Ω) ^ p ^ n + -((p ^ p ^ n - 1 : ℕ) : Ω)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Nat.cast_sub (one_lt_pow_pow p n).le]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `Valuation.map_add_lt A.valuation h1 (by rw [Valuation.map_neg]; exact h)` as an intermediate fact. Rewrite `this` using `[← e, map_one]`.
-
-Conclude with `lt_irrefl _ this`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem not_valuation_lt_one {Ω : Type} [Field Ω] {p : ℕ} [Fact p.Prime] (A : ValuationSubring Ω)
     (hp : A.valuation (p : Ω) < 1) (n : ℕ) : ¬ A.valuation ((p ^ p ^ n - 1 : ℕ) : Ω) < 1 := by
@@ -93,9 +91,9 @@ def PowOn (p : ℕ) (g : Ω ≃ₐ[F] Ω) (n e : ℕ) : Prop :=
   ∀ x : Ω, x ^ (p ^ p ^ n - 1) = 1 → g x = x ^ p ^ e
 
 /- English proof (translation)
-Introduce `x hx`. Apply `he` to reduce the goal to its premises. Choose the witnesses or unpack the hypotheses as in `⟨d, hd⟩ : p ^ p ^ n₁ - 1 ∣ p ^ p ^ n₂ - 1 := by`. Establish `: p ^ p ^ n₂ = (p ^ p ^ n₁) ^ p ^ (n₂ - n₁)`. Rewrite using `[← pow_mul, ← pow_add, Nat.add_sub_cancel' h]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Simplify using `using Nat.sub_dvd_pow_sub_pow (p ^ p ^ n₁) 1 (p ^ (n₂ - n₁))`. Rewrite using `[hd, pow_mul, hx, one_pow]`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 -/
 theorem PowOn.mono {p : ℕ} {g : Ω ≃ₐ[F] Ω} {n₁ n₂ e : ℕ} (h : n₁ ≤ n₂) (he : PowOn p g n₂ e) :
     PowOn p g n₁ e := by
@@ -108,7 +106,7 @@ theorem PowOn.mono {p : ℕ} {g : Ω ≃ₐ[F] Ω} {n₁ n₂ e : ℕ} (h : n₁
   rw [hd, pow_mul, hx, one_pow]
 
 /- English proof (translation)
-Introduce `x hx`. Rewrite using `[AlgEquiv.mul_apply, hh x hx, hg _ (by rw [← pow_mul, mul_comm, pow_mul, hx, one_pow]), ← pow_mul, pow_add, mul_comm (p ^ a)]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem PowOn.mul {p : ℕ} {g h : Ω ≃ₐ[F] Ω} {n a b : ℕ} (hg : PowOn p g n a) (hh : PowOn p h n b) :
     PowOn p (g * h) n (a + b) := by
@@ -117,9 +115,9 @@ theorem PowOn.mul {p : ℕ} {g h : Ω ≃ₐ[F] Ω} {n a b : ℕ} (hg : PowOn p 
     ← pow_mul, pow_add, mul_comm (p ^ a)]
 
 /- English proof (translation)
-Take `⟨ζ, hζ⟩` from `exists_primitive Ω p n`. Establish `h1` using `(ha ζ hζ.pow_eq_one).symm.trans (hb ζ hζ.pow_eq_one)`. Apply `GlobalTheory.Cyc.modEq_of_pow_modEq_pow_sub_one p (p ^ n) a b (Fact.out : p.Prime).two_le (pow_pos (Fact.out : p.Prime).pos n)` to reduce the goal to its premises. Establish `hfin : IsOfFinOrder ζ` using `hζ.isOfFinOrder (pow_pow_sub_one_ne_zero p n)`. Rewrite using `[hζ.eq_orderOf]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hfin.pow_eq_pow_iff_modEq.1 h1`.
+A detailed English derivation is pending.
 -/
 theorem PowOn.modEq [IsAlgClosed Ω] [CharZero Ω] {p : ℕ} [Fact p.Prime] {g : Ω ≃ₐ[F] Ω}
     {n a b : ℕ} (ha : PowOn p g n a) (hb : PowOn p g n b) : a ≡ b [MOD p ^ n] := by
@@ -134,19 +132,17 @@ theorem PowOn.modEq [IsAlgClosed Ω] [CharZero Ω] {p : ℕ} [Fact p.Prime] {g :
 variable [NumberField F] [IsAlgClosure F Ω]
 
 /- English proof (translation)
-Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed F`. Use `haveI : CharZero Ω := charZero_of_injective_algebraMap (algebraMap F Ω).injective`. Establish `hpp : p.Prime` using `Fact.out`. Take `⟨ζ, hζ⟩` from `exists_primitive Ω p n`. Establish `hm0 : p ^ p ^ n - 1 ≠ 0` using `pow_pow_sub_one_ne_zero p n`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : NeZero (p ^ p ^ n - 1) := ⟨hm0⟩`. Establish `hζm : ζ ^ (p ^ p ^ n - 1) = 1` using `hζ.pow_eq_one`. Establish `hgm : ((g : Ω ≃ₐ[F] Ω) ζ) ^ (p ^ p ^ n - 1) = 1` using `by rw [← map_pow, hζm, map_one]`. Establish `hζA : ζ ∈ A` using `(A.valuation_le_one_iff ζ).mp (valuation_eq_one_of_pow_eq_one A hm0 hζm).le`. Set `a : A` to `⟨ζ, hζA⟩`.
+Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : CharP (IsLocalRing.ResidueField A) p := by`. Rewrite using `[CharP.charP_iff_prime_eq_zero hpp]`. Establish `: ((p : A)) ∈ IsLocalRing.maximalIdeal A` using `(A.valuation_lt_one_iff _).mpr (by simpa using hp)`. Rewrite using `[← map_natCast (IsLocalRing.residue A), IsLocalRing.residue_eq_zero_iff]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hz : (IsLocalRing.residue A a) ^ p ^ p ^ n = IsLocalRing.residue A a`. Rewrite using `[← map_pow]`. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show ζ ^ p ^ p ^ n = ζ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Nat.sub_add_cancel (one_lt_pow_pow p n).le, pow_succ, hζm, one_mul]`. Take `⟨e, he⟩` from `frob_orbit p (MulSemiringAction.toRingHom _ (IsLocalRing.ResidueField A) g) (p ^ n) (pow_pos hpp.pos n) _ hz`. Establish `h2 : IsLocalRing.residue A (g • a - a ^ p ^ e) = 0`. Rewrite using `[map_sub, IsLocalRing.ResidueField.residue_smul, map_pow, sub_eq_zero]`. Conclude with `he`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h2` using `[IsLocalRing.residue_eq_zero_iff, ValuationSubring.valuation_lt_one_iff]`. Establish `e2 : ((g • a - a ^ p ^ e : A) : Ω) = (g : Ω ≃ₐ[F] Ω) ζ - ζ ^ p ^ e` using `rfl`. Rewrite `h2` using `[e2]`. Establish `hgζ : (g : Ω ≃ₐ[F] Ω) ζ = ζ ^ p ^ e`. Use `eq_of_pow_eq_one A (not_valuation_lt_one A hp n) hgm ?_ h2` and prove the remaining obligations.
-
-Rewrite using `[← pow_mul, mul_comm, pow_mul, hζm, one_pow]`. Use `⟨e, fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨i, -, rfl⟩` from `hζ.eq_pow_of_pow_eq_one hx`. Rewrite using `[map_pow, hgζ, ← pow_mul, ← pow_mul, mul_comm]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_powOn {p : ℕ} [Fact p.Prime] (A : ValuationSubring Ω) (hp : A.valuation (p : Ω) < 1)
     (g : A.decompositionSubgroup F) (n : ℕ) : ∃ e, PowOn p (g : Ω ≃ₐ[F] Ω) n e := by
@@ -183,37 +179,33 @@ theorem exists_powOn {p : ℕ} [Fact p.Prime] (A : ValuationSubring Ω) (hp : A.
   rw [map_pow, hgζ, ← pow_mul, ← pow_mul, mul_comm]
 
 /- English proof (translation)
-Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed F`. Use `haveI : CharZero Ω := charZero_of_injective_algebraMap (algebraMap F Ω).injective`. Establish `hpp : p.Prime` using `Fact.out`. Use `choose E hE using fun (g : A.decompositionSubgroup F) n => exists_powOn A hp g n`. Establish `compat : ∀ (g : A.decompositionSubgroup F) n₁ n₂ (h : n₁ ≤ n₂), ZMod.castHom (pow_dvd_pow p h) (ZMod (p ^ n₁)) ((E g n₂ : ℕ) : ZMod (p ^ n₂)) = ((E g n₁ : ℕ) : ZMod (p ^ n₁))`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `g n₁ n₂ h`. Rewrite using `[map_natCast, ZMod.natCast_eq_natCast_iff]`. Conclude with `PowOn.modEq ((hE g n₂).mono h) (hE g n₁)`. Use `choose χ' hχ' using fun g : A.decompositionSubgroup F => exists_padic_of_compat p (fun n => ((E g n : ℕ) : ZMod (p ^ n))) (compat g)`. Establish `key : ∀ (g : A.decompositionSubgroup F) n e, PowOn p (g : Ω ≃ₐ[F] Ω) n e → PadicInt.toZModPow n (χ' g) = (e : ZMod (p ^ n))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `g n e he`. Rewrite using `[hχ' g n, ZMod.natCast_eq_natCast_iff]`. Conclude with `PowOn.modEq (hE g n) he`. Establish `hadd : ∀ g h : A.decompositionSubgroup F, χ' (g * h) = χ' g + χ' h`. Introduce `g h`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `PadicInt.ext_of_toZModPow.mp fun n => ?_` and prove the remaining obligations. Rewrite using `[key (g * h) n _ ((hE g n).mul (hE h n)), map_add, hχ' g n, hχ' h n, Nat.cast_add]`. Establish `hine : ∀ g : A.decompositionSubgroup F, (g : Ω ≃ₐ[F] Ω) ∈ Ine (F` using `F) A → χ' g = 0 := by`. Introduce `g hg`. Use `PadicInt.ext_of_toZModPow.mp fun n => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_zero, key g n 0 ?_, Nat.cast_zero]`. Introduce `x hx`. Rewrite using `[pow_zero, pow_one]`. Use `eq_of_pow_eq_one A (not_valuation_lt_one A hp n) (by rw [← map_pow, hx, map_one]) hx ?_` and prove the remaining obligations. Conclude with `hg.2 x (valuation_eq_one_of_pow_eq_one A (pow_pow_sub_one_ne_zero p n) hx).le`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcont : Continuous χ'`. Use `continuous_iff_continuousAt.mpr fun g₀ => Metric.tendsto_nhds.mpr fun ε hε => ?_` and prove the remaining obligations. Take `⟨k, hk⟩` from `PadicInt.exists_pow_neg_lt p hε`. Take `⟨ζ, hζ⟩` from `exists_primitive Ω p k`. Use `haveI : NeZero (p ^ p ^ k - 1) := ⟨pow_pow_sub_one_ne_zero p k⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hV : IsOpen {g : A.decompositionSubgroup F | (g : Ω ≃ₐ[F] Ω) ζ = (g₀ : Ω ≃ₐ[F] Ω) ζ}` using `(isOpen_setOf_apply (F := F) ζ (· = (g₀ : Ω ≃ₐ[F] Ω) ζ)).preimage continuous_subtype_val`. Use `filter_upwards [hV.mem_nhds rfl] with g hg`. Establish `hg' : (g : Ω ≃ₐ[F] Ω) ζ = (g₀ : Ω ≃ₐ[F] Ω) ζ` using `hg`. Establish `he : PowOn p (g : Ω ≃ₐ[F] Ω) k (E g₀ k)`. Introduce `x hx`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨i, -, rfl⟩` from `hζ.eq_pow_of_pow_eq_one hx`. Rewrite using `[map_pow, hg', ← map_pow]`. Conclude with `hE g₀ k _ hx`. Establish `h1 : PadicInt.toZModPow k (χ' g - χ' g₀) = 0`. Rewrite using `[map_sub, key g k _ he, hχ' g₀ k, sub_self]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[← RingHom.mem_ker, PadicInt.ker_toZModPow, ← PadicInt.norm_le_pow_iff_mem_span_pow]`. Rewrite using `[dist_eq_norm]`. Conclude with `lt_of_le_of_lt h1 hk`. Take `⟨σ, hσA, q, hq1, hσ⟩` from `exists_frob_ne_one (F := F) A hp`. Set `σ' : A.decompositionSubgroup F` to `⟨σ, hσA⟩`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hne : χ' σ' ≠ 0`. Introduce `h0`. Take `⟨ζ, hζ⟩` from `exists_primitive Ω p (q + 1)`. Establish `hq : q + 3 ≤ p ^ p ^ (q + 1)`. Establish `h1 : q + 1 < p ^ (q + 1)` using `Nat.lt_pow_self hpp.one_lt`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Establish `h2 : p ^ (q + 1) < p ^ p ^ (q + 1)` using `Nat.pow_lt_pow_right hpp.one_lt h1`. Use linear arithmetic over natural numbers and integers. Establish `hk` using `key σ' (q + 1) _ (hE σ' (q + 1))`. Rewrite `hk` using `[h0, map_zero, eq_comm, ZMod.natCast_eq_zero_iff]`. Take `⟨j, hj⟩` from `hk`.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hz1 : ζ ^ p ^ p ^ (q + 1) = ζ`. Rewrite using `[← Nat.sub_add_cancel (one_lt_pow_pow p (q + 1)).le, pow_succ, hζ.pow_eq_one, one_mul]`. Establish `hfix : ∀ j : ℕ, ζ ^ p ^ (p ^ (q + 1) * j) = ζ`. Introduce `j`. Proceed by induction on `j with`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Consider the case `zero => simp`. Consider the case `succ j ih => rw [Nat.mul_succ, pow_add, pow_mul, ih, hz1]`. Establish `hσζ : σ ζ = ζ`. Use `hE σ' (q + 1) ζ hζ.pow_eq_one` as an intermediate fact. Rewrite `this` using `[hj, hfix]`.
+Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `this`. Establish `hζq : ζ = ζ ^ q`. Use `eq_of_pow_eq_one A (not_valuation_lt_one A hp (q + 1)) hζ.pow_eq_one (by rw [← pow_mul, mul_comm, pow_mul, hζ.pow_eq_one, one_pow]) ?_` and prove the remaining obligations. Use `hσ ζ (valuation_eq_one_of_pow_eq_one A (pow_pow_sub_one_ne_zero p (q + 1)) hζ.pow_eq_one).le` as an intermediate fact. Rewrite `this` using `[hσζ]`. Then use the resulting hypothesis.
-
-Establish `hfin : IsOfFinOrder ζ` using `hζ.isOfFinOrder (pow_pow_sub_one_ne_zero p (q + 1))`. Use `hfin.pow_eq_pow_iff_modEq.1 (show ζ ^ 1 = ζ ^ q by rw [pow_one]; exact hζq)` as an intermediate fact. Rewrite `this` using `[← hζ.eq_orderOf]`. Unfold `Nat.ModEq at this`. Rewrite `this` using `[Nat.mod_eq_of_lt (by omega), Nat.mod_eq_of_lt (by omega)]`.
-
-Conclude with `hq1 this.symm`. Take `⟨ψ, hψc, hψa, hψ0, hψ1⟩` from `exists_normalized p χ' hcont hadd σ' hne`. Conclude with `⟨ψ, hψc, hψa, fun g hg => hψ0 g (hine g hg), hψ1⟩`.
+A detailed English derivation is pending.
 -/
 theorem main {p : ℕ} [Fact p.Prime] (A : ValuationSubring Ω) (hp : A.valuation (p : Ω) < 1) :
     ∃ χ : ↥(A.decompositionSubgroup F) → ℤ_[p], Continuous χ ∧ (∀ g h, χ (g * h) = χ g + χ h) ∧
@@ -305,7 +297,7 @@ theorem main {p : ℕ} [Fact p.Prime] (A : ValuationSubring Ω) (hp : A.valuatio
 end main
 
 /- English proof (translation)
-Introduce `F Ω _ _ _ _ _ p _ A hp`. Conclude with `main A hp`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem unrDec : ReciprocityTheory.ChartRestriction.T2.UnrDec := by
   intro F Ω _ _ _ _ _ p _ A hp

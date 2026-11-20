@@ -10,23 +10,23 @@ variable {K Kt : Type} [Field K] [CommRing Kt] (p : ℕ) [Fact p.Prime] [CharP K
 
 omit [Fact p.Prime] in
 /- English proof (translation)
-Rewrite using `[hπ.ann]`. Simplify using `[map_natCast, CharP.cast_eq_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma logLift_pp_zero (hπ : IsFlatLift p π) : (p : Kt) * p = 0 := by
   rw [hπ.ann]; simp [map_natCast, CharP.cast_eq_zero]
 
 omit [Fact p.Prime] in
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, map_one π, fun i _ => ⟨0, by simp [A.zero_mem], by simp⟩⟩`.
+Supply the required witnesses or components.
 -/
 lemma logLift_one : LogLift p π F s (A : Set K) 1 :=
   ⟨1, map_one π, fun i _ => ⟨0, by simp [A.zero_mem], by simp⟩⟩
 
 omit [Fact p.Prime] in
 /- English proof (translation)
-Take `⟨z, hz, hF⟩` from `hg`. Take `⟨z', hz', hF'⟩` from `hg'`. Establish `hpp` using `logLift_pp_zero p π hπ`. Use `⟨z * z', by simp [hz, hz'], fun i hi => ?_⟩` and prove the remaining obligations. Take `⟨w, hw, hFw⟩` from `hF i hi`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨w', hw', hFw'⟩` from `hF' i hi`. Use `⟨w + w', by rw [map_add]; exact A.add_mem hw hw', ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, hFw, hFw', mul_pow]`. Take the linear combination `(z ^ p * z' ^ p * w * w') * hpp`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 lemma logLift_mul (hπ : IsFlatLift p π) {g g' : K} (hg : LogLift p π F s (A : Set K) g)
     (hg' : LogLift p π F s (A : Set K) g') : LogLift p π F s (A : Set K) (g * g') := by
@@ -42,15 +42,13 @@ lemma logLift_mul (hπ : IsFlatLift p π) {g g' : K} (hg : LogLift p π F s (A :
 
 omit [Fact p.Prime] in
 /- English proof (translation)
-Take `⟨z, hz, hF⟩` from `hg`. Establish `hpp` using `logLift_pp_zero p π hπ`. Establish `hπp : π (p : Kt) = 0` using `by simp [map_natCast, CharP.cast_eq_zero]`. Take `⟨z', hz'⟩` from `hπ.surj g⁻¹`. Take `⟨e, he⟩` from `(hπ.ker (z * z' - 1)).1 (by simp [hz, hz', hg0])`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `set u := z' * (1 - p * e) with hu`. Establish `hzu : z * u = 1`. Establish `: z * z' = 1 + p * e` using `by linear_combination he`. Rewrite using `[hu, ← mul_assoc, this]`. Take the linear combination `(-(e * e)) * hpp`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hπu : π u = g⁻¹` using `by simp [hu, hz', hπp]`. Use `clear_value u`. Use `⟨u, hπu, fun i hi => ?_⟩` and prove the remaining obligations. Take `⟨w, hw, hFw⟩` from `hF i hi`. Use `⟨-w, by rw [map_neg]; exact A.neg_mem hw, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : F i z * F i u = 1` using `by rw [← map_mul, hzu, map_one]`. Establish `h2 : F i z * (u ^ p * (1 + p * -w)) = 1`. Rewrite using `[hFw]`. Establish `: z ^ p * u ^ p = 1` using `by rw [← mul_pow, hzu, one_pow]`. Take the linear combination `(1 - (p:Kt) * w * ((p:Kt) * w)) * this - (w * w) * hpp`.
-
-Take the linear combination `(u ^ p * (1 + p * -w)) * h1 - (F i u) * h2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 lemma logLift_inv (hπ : IsFlatLift p π) {g : K} (hg0 : g ≠ 0) (hg : LogLift p π F s (A : Set K) g) :
     LogLift p π F s (A : Set K) g⁻¹ := by
@@ -77,11 +75,11 @@ lemma logLift_inv (hπ : IsFlatLift p π) {g : K} (hg0 : g ≠ 0) (hg : LogLift 
 
 omit [Fact p.Prime] in
 /- English proof (translation)
-Establish `hpow : ∀ {h : K}, LogLift p π F s (A : Set K) h → ∀ k : ℕ, LogLift p π F s (A : Set K) (h ^ k)`. Introduce `h hh k`. Proceed by induction on `k with`. Consider the case `zero => simpa using logLift_one p π F s A`. Consider the case `succ k ih => rw [pow_succ]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Conclude with `logLift_mul p π F s A hπ ih hh`. Introduce `n`. Consider the cases of `n with`. Consider the case `ofNat k => rw [Int.ofNat_eq_coe, zpow_natCast]`. Conclude with `hpow hg k`.
+Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `negSucc k`. Rewrite using `[zpow_negSucc, ← inv_pow]`. Conclude with `hpow (logLift_inv p π F s A hπ hg0 hg) (k + 1)`.
+A detailed English derivation is pending.
 -/
 lemma logLift_zpow (hπ : IsFlatLift p π) {g : K} (hg0 : g ≠ 0) (hg : LogLift p π F s (A : Set K) g) :
     ∀ n : ℤ, LogLift p π F s (A : Set K) (g ^ n) := by

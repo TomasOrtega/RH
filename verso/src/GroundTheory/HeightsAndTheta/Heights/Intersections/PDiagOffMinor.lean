@@ -27,7 +27,7 @@ def blockSubst : T.WBlk → Polynomial (MvPolynomial T.WBlk Φ)
 omit [Fintype ι] [Fintype ν] [Fintype κ] in
 
 /- English proof (translation)
-Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `r`. Simplify using `[T.multiConeMap]`. Introduce and unpack `⟨b, q⟩`. Apply the tactic sequence `cases b <;> simp [T.multiConeMap, T.wwCoord, lineSubst, blockSubst]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Apply the first step, then apply the next step to every resulting obligation.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -47,19 +47,19 @@ theorem map_comp_subst (x : ι → Ω) (δ : ν → Ω) (e : Module.Basis (Fin 2
 omit [Fintype ι] [Fintype ν] [Fintype κ] in
 
 /- English proof (translation)
-Set `K` to `FractionRing (MRing (T.wwIdx ι ν κ) ⧸ W)`. Set `π : MRing (T.wwIdx ι ν κ) →+* K` to `(algebraMap _ K).comp (Ideal.Quotient.mk W)`. Establish `hπ : ∀ g, π g = 0 ↔ g ∈ W` using `fun g => by`. Simplify using `only [π, RingHom.comp_apply, IsFractionRing.to_map_eq_zero_iff, Ideal.Quotient.eq_zero_iff_mem]`. Set `σ` to `eval₂Hom (Int.castRingHom (Polynomial (MRing (T.wwIdx ι ν κ)))) (lineSubst ι ν κ)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Establish `hm' : π (X ⟨.line0, m⟩) ≠ 0` using `fun h => hm ((hπ _).1 h)`. Establish `hσ : (Polynomial.eval₂RingHom π (π (X ⟨.line1, m⟩) / π (X ⟨.line0, m⟩))).comp σ = π`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `r`. Simplify using `[σ]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce and unpack `⟨b, q⟩`. Consider the cases of `b`. Simplify using `[σ, lineSubst]`. Simplify using `[σ, lineSubst]`. Simplify using `[σ, lineSubst]`.
+Assume the hypotheses and unpack their components. Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `h` using `(hπ _).2 (hprop q)`. Rewrite `h` using `[map_sub, map_mul, map_mul, sub_eq_zero]`. Simplify using `only [σ, RingHom.comp_apply, eval₂Hom_X', lineSubst, Polynomial.coe_eval₂RingHom, Polynomial.eval₂_mul, Polynomial.eval₂_C, Polynomial.eval₂_X]`. Rewrite using `[mul_div_assoc', div_eq_iff hm']`. Take the linear combination `-h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Introduce `g hg`. Rewrite `hg` using `[T.wwIdeal, RingHom.mem_ker]`. Establish `h1 : Polynomial.mapRingHom (T.multiConeMap (T.wwCoord x δ e φ a₀ a₁)) (σ g) = 0`. Rewrite using `[← RingHom.comp_apply, map_comp_subst, RingHom.comp_apply, hg, map_zero]`. Establish `h2 : (σ g).map π = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use extensionality with `n`. Rewrite using `[Polynomial.coeff_map, Polynomial.coeff_zero, hπ]`. Use `hW ?_` and prove the remaining obligations. Rewrite using `[T.wwIdeal, RingHom.mem_ker]`. Use `congrArg (fun f => Polynomial.coeff f n) h1` as an intermediate fact.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify `this` using `[Polynomial.coeff_map]`. Rewrite using `[← hπ, ← hσ, RingHom.comp_apply, Polynomial.coe_eval₂RingHom, Polynomial.eval₂_eq_eval_map, h2, Polynomial.eval_zero]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 -/
 theorem diag_le_of_prop (x : ι → Ω) (δ : ν → Ω) (e : Module.Basis (Fin 2) Ω E) (φ : κ → E →ₗ[Ω] Ω)
     (a₀ a₁ : Φ) (W : Ideal (MRing (T.wwIdx ι ν κ))) [W.IsPrime] (hW : T.wwIdeal x δ e φ a₀ a₁ ≤ W) (m : κ)
@@ -104,23 +104,21 @@ theorem diag_le_of_prop (x : ι → Ω) (δ : ν → Ω) (e : Module.Basis (Fin 
     Polynomial.eval_zero]
 
 /- English proof (translation)
-Take `⟨r₁, hr₁, h₁⟩` from `DiagonalForms.mul_dForm_mem B e φ hsec i hi p k' ((hdet i hi).1 l)`. Take `⟨r₂, hr₂, h₂⟩` from `DiagonalForms.mul_dForm_mem B e φ hsec i hi k p ((hdet i hi).1 l)`. Take `⟨n₁, G, hG, hGv⟩` from `DiagonalForms.exists_form (ν := ν) (κ := κ) x δ e φ a₀ a₁ i hi hr₁`. Take `⟨n₂, H, hH, hHv⟩` from `DiagonalForms.exists_form (ν := ν) (κ := κ) x δ e φ a₀ a₁ i hi hr₂`. Apply the tactic sequence `have hXp : ∀ M, IsMultiHomog ((X ⟨T.WBlk.base, i⟩ : MRing (T.wwIdx ι ν κ)) ^ M) (T.wwDeg M 0) := fun M => DiagonalForms.isMultiHomog_of_eq (DiagonalForms.isMultiHomog_pow (DiagonalForms.isMultiHomog_X (ι := T.wwIdx ι ν κ) T.WBlk.base i) M) (by funext b; cases b <;> simp [T.wwDeg] …`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `have hdeg : ∀ {A B C : ℕ} {f : MRing (T.wwIdx ι ν κ)}, A + B = C → IsMultiHomog f (T.wwDeg B 0) → IsMultiHomog ((X ⟨T.WBlk.base, i⟩ : MRing (T.wwIdx ι ν κ)) ^ A * f) (T.wwDeg C 0) := fun hABC hf => DiagonalForms.isMultiHomog_of_eq (DiagonalForms.isMultiHomog_mul (hXp _) hf) (by f …`. Establish `hu` using `hdeg (A := n₁ + n₂) (C := N + 3 + n₁ + n₂) (by omega) hF`. Establish `hα` using `hdeg (A := N + 3 + n₂) (C := N + 3 + n₁ + n₂) (by omega) hG`. Establish `hβ` using `hdeg (A := N + 3 + n₁) (C := N + 3 + n₁ + n₂) (by omega) hH`. Use `set c := T.wwCoord x δ e φ a₀ a₁`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set s := x i ^ (N + n₁ + n₂) * δ l`. Establish `hxi : aeval c (X ⟨T.WBlk.base, i⟩ : MRing (T.wwIdx ι ν κ)) = algebraMap Ω Φ (x i)`. Rewrite using `[aeval_X]`. Both sides reduce to the same expression. Establish `hUv : aeval c ((X ⟨T.WBlk.base, i⟩ : MRing (T.wwIdx ι ν κ)) ^ (n₁ + n₂) * F) = algebraMap Ω Φ (s * dualMinor e φ k k')`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[map_mul, map_pow, hxi, hFv, ← map_pow, ← map_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `hAv : aeval c ((X ⟨T.WBlk.base, i⟩ : MRing (T.wwIdx ι ν κ)) ^ (N + 3 + n₂) * G) = algebraMap Ω Φ (s * dualMinor e φ p k')`. Rewrite using `[map_mul, map_pow, hxi, hGv, ← map_pow, ← map_mul]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Simplify using `only [s, dualMinor]`. Take the linear combination `(-(x i ^ (N + n₁ + n₂))) * h₁`. Establish `hBv : aeval c ((X ⟨T.WBlk.base, i⟩ : MRing (T.wwIdx ι ν κ)) ^ (N + 3 + n₁) * H) = algebraMap Ω Φ (s * dualMinor e φ k p)`. Rewrite using `[map_mul, map_pow, hxi, hHv, ← map_pow, ← map_mul]`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Simplify using `only [s, dualMinor]`. Take the linear combination `(-(x i ^ (N + n₁ + n₂))) * h₂`. Establish `hcr : ∀ a : Φ, algebraMap Ω Φ (s * dualMinor e φ k k') * T.lineVal e (φ p) a - algebraMap Ω Φ (s * dualMinor e φ p k') * T.lineVal e (φ k) a - algebraMap Ω Φ (s * dualMinor e φ k p) * T.lineVal e (φ k') a = 0` using `fun a => by`. Simplify using `only [T.lineVal, dualMinor, map_mul, map_sub]`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hC : ∀ a : Φ, (C (algebraMap Ω Φ (s * dualMinor e φ k k')) * C (T.lineVal e (φ p) a) - C (algebraMap Ω Φ (s * dualMinor e φ p k')) * C (T.lineVal e (φ k) a) - C (algebraMap Ω Φ (s * dualMinor e φ k p)) * C (T.lineVal e (φ k') a) : MvPolynomial T.WBlk Φ) = 0` using `fun a => by rw [← map_mul, ← map_mul, ← map_mul, ← map_sub, ← map_sub, hcr, map_zero]`. Establish `hX0 : ∀ q : κ, T.multiConeMap c (X ⟨T.WBlk.line0, q⟩) = C (T.lineVal e (φ q) a₀) * X T.WBlk.line0` using `fun q => by simp [T.multiConeMap, c, T.wwCoord]`. Establish `hX1 : ∀ q : κ, T.multiConeMap c (X ⟨T.WBlk.line1, q⟩) = C (T.lineVal e (φ q) a₁) * X T.WBlk.line1` using `fun q => by simp [T.multiConeMap, c, T.wwCoord]`. Use `⟨n₁ + n₂, X ⟨T.WBlk.base, i⟩ ^ (N + 3 + n₂) * G, X ⟨T.WBlk.base, i⟩ ^ (N + 3 + n₁) * H, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `all_goals`. Rewrite using `[T.wwIdeal, RingHom.mem_ker, map_sub, map_sub, map_mul _ (_ ^ (n₁ + n₂) * F), map_mul _ (_ ^ (N + 3 + n₂) * G), map_mul _ (_ ^ (N + 3 + n₁) * H), DiagRAux.multiConeMap_of_homog c _ _ hu, DiagRAux.multiConeMap_of_homog c _ _ hα, DiagRAux.multiConeMap_of_homog c _ _ hβ, hUv, hAv, h …`. Rewrite using `[hX0, hX0, hX0]`. Take the linear combination `((∏ b, X b ^ T.wwDeg (N + 3 + n₁ + n₂) 0 b) * X T.WBlk.line0) * hC a₀`. Rewrite using `[hX1, hX1, hX1]`.
-
-Take the linear combination `((∏ b, X b ^ T.wwDeg (N + 3 + n₁ + n₂) 0 b) * X T.WBlk.line1) * hC a₁`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem frame_rel (x : ι → Ω) (δ : ν → Ω) (e : Module.Basis (Fin 2) Ω E) (φ : κ → E →ₗ[Ω] Ω)
     (B : ChartBundle ℤ x 2 E) (hsec : T.IsTwistedDualSec B φ) (hdet : T.IsTwistedDetGen B e δ) (a₀ a₁ : Φ)
@@ -190,23 +188,21 @@ end DiagonalOffMinor
 open DiagonalOffMinor in
 
 /- English proof (translation)
-Introduce `Ω _ ι ν κ _ _ _ E _ _ Φ _ _ x B e φ δ hsec _ hdet _ a _ W hWp hrel hW i l k k' hfr hQ`. Take `⟨hXi, -, N, F, hF, hFv, hFW⟩` from `hfr`. Establish `hi : x i ≠ 0`. Introduce `h0`. Apply `hXi` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hW` to reduce the goal to its premises. Rewrite using `[T.wwIdeal, RingHom.mem_ker]`. Simplify using `[T.multiConeMap, T.wwCoord, h0]`. Establish `hrel' : ∀ p : κ, ∃ u α β : MRing (T.wwIdx ι ν κ), u ∉ W ∧ u * X ⟨.line0, p⟩ - α * X ⟨.line0, k⟩ - β * X ⟨.line0, k'⟩ ∈ W ∧ u * X ⟨.line1, p⟩ - α * X ⟨.line1, k⟩ - β * X ⟨.line1, k'⟩ ∈ W` using `fun p => by`. Take `⟨n, α, β, h0, h1⟩` from `frame_rel x δ e φ B hsec hdet (a 0) (a 1) i hi l k k' N F hF hFv p`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨X ⟨T.WBlk.base, i⟩ ^ n * F, α, β, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `h`. Break down `hWp.mem_or_mem h with h' | h'` into its components or cases. Establish `hXn : ∀ m : ℕ, (X ⟨T.WBlk.base, i⟩ : MRing (T.wwIdx ι ν κ)) ^ m ∉ W`. Introduce `m`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `m with`. Consider the case `zero => rw [pow_zero]`. Conclude with `(Ideal.ne_top_iff_one W).1 hWp.ne_top`. Consider the case `succ m ihm => rw [pow_succ]`. Conclude with `fun hm => (hWp.mem_or_mem hm).elim ihm hXi`.
+Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact.
 
-Conclude with `hXn n h'`. Conclude with `hFW h'`. Conclude with `hW h0`. Conclude with `hW h1`. Establish `hQ' : (X ⟨.line0, k⟩ * X ⟨.line1, k'⟩ - X ⟨.line0, k'⟩ * X ⟨.line1, k⟩ : MRing (T.wwIdx ι ν κ)) ∈ W` using `hQ`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨p, hp⟩` from `hrel T.WBlk.line0`. Distinguish the cases in `hk : (X ⟨.line0, k⟩ : MRing (T.wwIdx ι ν κ)) ∈ W`. Establish `hk' : (X ⟨.line0, k'⟩ : MRing (T.wwIdx ι ν κ)) ∉ W`. Introduce `hk'`. Take `⟨u, α, β, hu, h0, -⟩` from `hrel' p`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `h` using `add_mem (add_mem h0 (W.mul_mem_left α hk)) (W.mul_mem_left β hk')`. Rewrite `h` using `[show u * X ⟨.line0, p⟩ - α * X ⟨.line0, k⟩ - β * X ⟨.line0, k'⟩ + α * X ⟨.line0, k⟩ + β * X ⟨.line0, k'⟩ = u * (X ⟨.line0, p⟩ : MRing (T.wwIdx ι ν κ)) by ring]`. Conclude with `(hWp.mem_or_mem h).elim hu hp`. Use `hWp` as an intermediate fact. Use `diag_le_of_prop x δ e φ (a 0) (a 1) W hW k' hk' fun q => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨u, α, β, hu, h0, h1⟩` from `hrel' q`. Use `(hWp.mem_or_mem ?_).resolve_left hu` and prove the remaining obligations. Rewrite using `[show u * (X ⟨.line0, k'⟩ * X ⟨.line1, q⟩ - X ⟨.line1, k'⟩ * X ⟨.line0, q⟩) = X ⟨.line0, k'⟩ * (u * X ⟨.line1, q⟩ - α * X ⟨.line1, k⟩ - β * X ⟨.line1, k'⟩) - X ⟨.line1, k'⟩ * (u * X ⟨.line0, q⟩ - α * X ⟨.line0, k⟩ - β * X ⟨.line0, k'⟩) - α * (X ⟨.line0, k⟩ * X ⟨.line1, k'⟩ - X ⟨. …`. Conclude with `sub_mem (sub_mem (W.mul_mem_left _ h1) (W.mul_mem_left _ h0)) (W.mul_mem_left _ hQ')`. Use `hWp` as an intermediate fact.
-
-Use `diag_le_of_prop x δ e φ (a 0) (a 1) W hW k hk fun q => ?_` and prove the remaining obligations. Take `⟨u, α, β, hu, h0, h1⟩` from `hrel' q`. Use `(hWp.mem_or_mem ?_).resolve_left hu` and prove the remaining obligations. Rewrite using `[show u * (X ⟨.line0, k⟩ * X ⟨.line1, q⟩ - X ⟨.line1, k⟩ * X ⟨.line0, q⟩) = X ⟨.line0, k⟩ * (u * X ⟨.line1, q⟩ - α * X ⟨.line1, k⟩ - β * X ⟨.line1, k'⟩) - X ⟨.line1, k⟩ * (u * X ⟨.line0, q⟩ - α * X ⟨.line0, k⟩ - β * X ⟨.line0, k'⟩) + β * (X ⟨.line0, k⟩ * X ⟨.line1, k'⟩ - X ⟨.line …`. Conclude with `add_mem (sub_mem (W.mul_mem_left _ h1) (W.mul_mem_left _ h0)) (W.mul_mem_left _ hQ')`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem DiagOffMinor.proof : DiagOffMinor.Statement := by
   intro Ω _ ι ν κ _ _ _ E _ _ Φ _ _ x B e φ δ hsec _ hdet _ a _ W hWp hrel hW i l k k' hfr hQ

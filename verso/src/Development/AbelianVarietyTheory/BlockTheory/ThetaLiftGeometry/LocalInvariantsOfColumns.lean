@@ -27,7 +27,7 @@ def NoInv {k Γ V : Type} [Field k] [Group Γ] [AddCommGroup V] [Module k V]
   Representation.invariants (ρ.comp D.subtype) = ⊥
 
 /- English proof (translation)
-Unfold `NoInv`. Rewrite using `[Submodule.eq_bot_iff]`. Use `forall_congr' fun v => imp_congr ?_ Iff.rfl` and prove the remaining obligations. Rewrite using `[Representation.mem_invariants]`. Conclude with `⟨fun h g hg => h ⟨g, hg⟩, fun h g => h g.1 g.2⟩`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem noInv_iff {k Γ V : Type} [Field k] [Group Γ] [AddCommGroup V] [Module k V]
     (ρ : Representation k Γ V) (D : Subgroup Γ) :
@@ -39,7 +39,7 @@ theorem noInv_iff {k Γ V : Type} [Field k] [Group Γ] [AddCommGroup V] [Module 
   exact ⟨fun h g hg => h ⟨g, hg⟩, fun h g => h g.1 g.2⟩
 
 /- English proof (translation)
-Rewrite using `[noInv_iff]`. Introduce `h`. Take `⟨v, hv⟩` from `exists_ne (0 : V)`. Conclude with `hv (h v fun _ _ => rfl)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 example {k Γ V : Type} [Field k] [Group Γ] [AddCommGroup V] [Module k V] [Nontrivial V]
     (D : Subgroup Γ) : ¬ NoInv (Representation.trivial k Γ V) D := by

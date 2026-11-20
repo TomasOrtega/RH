@@ -11,7 +11,7 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ArchSch.darboux_rho_acts_sch | exact GlobalTheory.ArchSch.darboux_rho_acts_sch | (intros; apply GlobalTheory.ArchSch.darboux_rho_acts_sch <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.darboux_schroedinger_archimedean_acts : ∀ {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ] {V : Type} [AddCommGroup V] [Module (AF F) V]
     {B : V → V → AF F} (d : Darboux B κ) (ψ : AddChar (AF F) ℂ), IsStd ψ → ∀ z : V, At (evI F) z →

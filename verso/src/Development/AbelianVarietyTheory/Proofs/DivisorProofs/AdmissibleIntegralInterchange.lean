@@ -22,21 +22,17 @@ noncomputable def evalAt (x : D) : SchwartzMap D ℂ →L[ℂ] ℂ :=
   (BoundedContinuousFunction.evalCLM ℂ x).comp (SchwartzMap.toBoundedContinuousFunctionCLM ℂ D ℂ)
 
 /- English proof (translation)
-Use `choose c hcc hci hcb using hb`. Establish `hwt : ∀ s (T : SchwartzMap D ℂ →L[ℂ] ℂ), Continuous fun t => T (f s t)` using `fun s T => (hw T).comp (continuous_const.prodMk continuous_id)`. Establish `hG : ∀ s, ∃ G : SchwartzMap D ℂ, (∀ (n : ℕ) (x : D), iteratedFDeriv ℝ n G x = ∫ t, iteratedFDeriv ℝ n (f s t) x ∂μ₂) ∧ ∀ m n, SchwartzMap.seminorm ℂ m n G ≤ ∫ t, c m n t ∂μ₂`. Introduce `s`. Establish `hd` using `GlobalTheory.T.weak_continuity_derivative_continuous (f s) (hwt s)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨G, -, hG1, hG2⟩` from `GlobalTheory.T.schwartz_integral_of_integrable_bounds μ₂ (f s) (fun n x => (hd n x).aestronglyMeasurable) (fun m n => ⟨c m n, hci m n, hcb m n s⟩)`. Conclude with `⟨G, hG1, fun m n => hG2 m n (c m n) (hci m n) (hcb m n s)⟩`. Use `choose G hG1 hG2 using hG`. Establish `hfc : ∀ s, Continuous (f s)` using `fun s => GlobalTheory.T.schwartz_continuous_of_seminorm_bounds (f s) (GlobalTheory.T.weak_continuity_derivative_continuous (f s) (hwt s)) (fun m n => ⟨c m n, hcc m n, hcb m n s⟩)`. Establish `hTG : ∀ s (T : SchwartzMap D ℂ →L[ℂ] ℂ), T (G s) = ∫ t, T (f s t) ∂μ₂` using `fun s T => GlobalTheory.T.schwartz_integral_eq_of_bounds μ₂ (f s) (G s) (hfc s) (fun m n => ⟨c m n, hci m n, hcb m n s⟩) (hG1 s) T`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hTb : ∀ T : SchwartzMap D ℂ →L[ℂ] ℂ, ∃ b : S₂ → ℝ, Integrable b μ₂ ∧ ∀ s t, ‖T (f s t)‖ ≤ b t`. Introduce `T`. Take `⟨N, C, hC, hT⟩` from `GlobalTheory.T.tempered_functional_seminorm_bound T`. Use `⟨fun t => C * ∑ m ∈ Finset.range (N + 1), ∑ n ∈ Finset.range (N + 1), c m n t, ?_, fun s t => ?_⟩` and prove the remaining obligations. Conclude with `(integrable_finset_sum _ fun m _ => integrable_finset_sum _ fun n _ => hci m n).const_mul C`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `(hT _).trans (mul_le_mul_of_nonneg_left ?_ hC)` and prove the remaining obligations. Conclude with `Finset.sum_le_sum fun m _ => Finset.sum_le_sum fun n _ => hcb m n s t`. Establish `hint : ∀ (T : SchwartzMap D ℂ →L[ℂ] ℂ) s, Integrable (fun t => T (f s t)) μ₂` using `fun T s => by`. Take `⟨b, hbi, hbb⟩` from `hTb T`. Conclude with `hbi.mono' (hwt s T).aestronglyMeasurable (ae_of_all _ fun t => hbb s t)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact.
 
-Establish `hGc : ∀ T : SchwartzMap D ℂ →L[ℂ] ℂ, Continuous fun s => T (G s)`. Introduce `T`. Take `⟨b, hbi, hbb⟩` from `hTb T`. Repeatedly rewrite using `[hTG _ T]`. Conclude with `continuous_of_dominated (fun s => (hwt s T).aestronglyMeasurable) (fun s => ae_of_all _ fun t => hbb s t) hbi (ae_of_all _ fun t => (hw T).comp (continuous_id.prodMk continuous_const))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hGb : ∀ m n : ℕ, ∃ c' : S₁ → ℝ, Integrable c' μ₁ ∧ ∀ s, SchwartzMap.seminorm ℂ m n (G s) ≤ c' s` using `fun m n => ⟨fun _ => ∫ t, c m n t ∂μ₂, integrable_const _, fun s => hG2 s m n⟩`. Establish `hGcont : Continuous G` using `GlobalTheory.T.schwartz_continuous_of_seminorm_bounds G (GlobalTheory.T.weak_continuity_derivative_continuous G hGc) (fun m n => ⟨fun _ => ∫ t, c m n t ∂μ₂, continuous_const, fun s => hG2 s m n⟩)`. Take `⟨F, -, hF1, -⟩` from `GlobalTheory.T.schwartz_integral_of_integrable_bounds μ₁ G (fun n x => (GlobalTheory.T.weak_continuity_derivative_continuous G hGc n x).aestronglyMeasurable) hGb`. Use `⟨F, fun T => ⟨hint T, ?_, ?_⟩⟩` and prove the remaining obligations. Establish `e : (fun s => ∫ t, T (f s t) ∂μ₂) = fun s => T (G s)` using `funext fun s => (hTG s T).symm`.
-
-Rewrite using `[e]`. Take `⟨b, hbi, hbb⟩` from `hTb T`. Use `(integrable_const (∫ t, b t ∂μ₂)).mono' (hGc T).aestronglyMeasurable (ae_of_all _ fun s => ?_)` and prove the remaining obligations. Rewrite using `[hTG s T]`. Conclude with `norm_integral_le_of_norm_le hbi (ae_of_all _ fun t => hbb s t)`.
-
-Rewrite using `[GlobalTheory.T.schwartz_integral_eq_of_bounds μ₁ G F hGcont hGb hF1 T]`. Conclude with `integral_congr_ae (ae_of_all _ fun s => hTG s T)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_iterated_integral_comm {S₁ S₂ : Type} [TopologicalSpace S₁] [SecondCountableTopology S₁]
     [MeasurableSpace S₁] [BorelSpace S₁] [TopologicalSpace S₂] [SecondCountableTopology S₂] [MeasurableSpace S₂]
@@ -93,17 +89,15 @@ theorem exists_iterated_integral_comm {S₁ S₂ : Type} [TopologicalSpace S₁]
     exact integral_congr_ae (ae_of_all _ fun s => hTG s T)
 
 /- English proof (translation)
-Introduce `F _ _ κ _ S₁ S₂ _ _ _ _ _ _ _ _ μ₁ μ₂ _ r g f hg hc hd L hL`. Use `choose Fj hFj using fun j => exists_iterated_integral_comm μ₁ μ₂ (f j) (hc j) (hd j)`. Use `choose T hT using fun j => hL (g j) (hg j)`. Establish `hpt : (fun y => ∫ s, ∫ t, ∑ j, pureA F (f j s t) (g j) y ∂μ₂ ∂μ₁) = ∑ j, pureA F (Fj j) (g j)`. Use function extensionality and compare the values at `y`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_apply]`. Simplify using `only [pureA]`. Use `set a := fun i => InfiniteAdeleRing.ringEquiv_mixedSpace F (y i).1`. Use `set b := fun i => (y i).2`. Establish `hi : ∀ j s, Integrable (fun t => f j s t a * g j b) μ₂` using `fun j s => ((hFj j (evalAt a)).1 s).mul_const _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Establish `ho : ∀ j, Integrable (fun s => (∫ t, f j s t a ∂μ₂) * g j b) μ₁` using `fun j => (hFj j (evalAt a)).2.1.mul_const _`. Establish `e1 : ∀ s, ∫ t, ∑ j, f j s t a * g j b ∂μ₂ = ∑ j, (∫ t, f j s t a ∂μ₂) * g j b` using `fun s => by`. Rewrite using `[integral_finset_sum _ fun j _ => hi j s]`. Conclude with `Finset.sum_congr rfl fun j _ => integral_mul_const _ _`. Repeatedly rewrite using `[e1]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[integral_finset_sum _ fun j _ => ho j]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[integral_mul_const]`. Use `congr 1`. Conclude with `((hFj j (evalAt a)).2.2).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities.
 
-Rewrite using `[hpt, map_sum]`. Establish `e2 : ∀ s t, L (∑ j, pureA F (f j s t) (g j)) = ∑ j, T j (f j s t)` using `fun s t => by`. Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => hT j _`. Repeatedly rewrite using `[e2]`.
-
-Establish `e3 : ∀ s, ∫ t, ∑ j, T j (f j s t) ∂μ₂ = ∑ j, ∫ t, T j (f j s t) ∂μ₂` using `fun s => integral_finset_sum _ fun j _ => (hFj j (T j)).1 s`. Repeatedly rewrite using `[e3]`. Rewrite using `[integral_finset_sum _ fun j _ => (hFj j (T j)).2.1]`. Conclude with `Finset.sum_congr rfl fun j _ => by rw [hT j]; exact (hFj j (T j)).2.2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adm_integral_comm : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] (S₁ S₂ : Type) [TopologicalSpace S₁] [SecondCountableTopology S₁]
     [MeasurableSpace S₁] [BorelSpace S₁] [TopologicalSpace S₂] [SecondCountableTopology S₂] [MeasurableSpace S₂] [BorelSpace S₂]

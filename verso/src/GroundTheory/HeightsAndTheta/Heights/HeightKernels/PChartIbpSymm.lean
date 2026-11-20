@@ -12,13 +12,13 @@ open scoped ComplexOrder
 noncomputable section
 
 /- English proof (translation)
-Introduce `n A B C D T hA hB hC hD hT`. Establish `hF` using `integrable_pot_mul_maDensity hA hB hC hD hT`. Establish `hG` using `integrable_pot_mul_maDensity hC hD hA hB hT`. Establish `hFG` using `hF.sub hG`. Establish `hlim : Tendsto (fun k : ℕ => ∫ y : Fin (n + 1) → ℂ, chartCutoff k y * ((hermChartPot A y - hermChartPot B y) * maDensity (Fin.cons (fun y' => hermChartPot C y' - hermChartPot D y') fun i => hermChartPot (T i)) y - (hermChartPot C y - hermChartPot D y) * maDensity (Fin.cons (fun y …`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `tendsto_integral_of_dominated_convergence _ (fun k => ?_) hFG.norm (fun k => ?_) ?_` and prove the remaining obligations. Conclude with `(contDiff_chartCutoff k 0).continuous.aestronglyMeasurable.mul hFG.aestronglyMeasurable`. Use `Eventually.of_forall fun y => ?_` and prove the remaining obligations. Rewrite using `[norm_mul]`. Use `mul_le_of_le_one_left (norm_nonneg _) ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Real.norm_eq_abs, abs_of_nonneg (chartCutoff_nonneg k y)]`. Conclude with `chartCutoff_le_one k y`. Use `Eventually.of_forall fun y => ?_` and prove the remaining obligations. Simplify using `using (tendsto_chartCutoff y).mul_const ((hermChartPot A y - hermChartPot B y) * maDensity (Fin.cons (fun y' => hermChartPot C y' - hermChartPot D y') fun i => hermChartPot (T i)) y - (hermChartPot C y - hermChartPot D y) * maDensity (Fin.cons (fun y' => hermChartPot A y' - hermC …`. Establish `h0` using `tendsto_nhds_unique hlim (hCut n A B C D T hA hB hC hD hT)`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite `h0` using `[integral_sub hF hG]`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem ChartIbpSymm.proof (hCut : ChartIbpCutoff.Statement) : ChartIbpSymm.Statement := by
   intro n A B C D T hA hB hC hD hT

@@ -13,19 +13,17 @@ namespace GlobalTheory.CompanionTheory.ConeLocal
 open GlobalTheory.CompanionTheory.CocProd in
 
 /- English proof (translation)
-Take `⟨f', hf', rfl, hv⟩` from `hf`. Take `⟨g', hg', hc, hv'⟩` from `hg`. Establish `hB : f' - g' ∈ (CH.cx (sq a b)).B n`. Use `(Submodule.Quotient.eq _).1 hc` as an intermediate fact. Conclude with `this`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Split into cases according to the possible forms of the given data.
 
-Consider the cases of `n with`. Consider the case `zero`. Establish `h0 : f' - g' = 0` using `hB`. Use `⟨f - g, fun s => ?_, ?_⟩` and prove the remaining obligations. Establish `e1 : (show sqM a b _ from f' s) = (show sqM a b _ from g' s)` using `congrFun (sub_eq_zero.1 h0) s`.
+Treat this case separately. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2` using `(hv s).symm.trans ((congrArg Subtype.val e1).trans (hv' s))`. Establish `e3 : ∀ x y : A.obj (s.obj (Fin.last 0)), Ideal.Quotient.mk (b.S _) x = Ideal.Quotient.mk (b.S _) y → x - y ∈ b.S _` using `fun x y h => Ideal.Quotient.eq.1 h`. Conclude with `e3 _ _ e2`. Rewrite using `[map_sub]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Consider the case `succ m`. Take `⟨h', hh⟩` from `hB`. Establish `hl : ∀ s, ∃ t ∈ a.S _, Ideal.Quotient.mk (b.S _) t = (show sqM a b _ from h' s).1` using `fun s => (Ideal.mem_map_iff_of_surjective _ Ideal.Quotient.mk_surjective).1 (show sqM a b _ from h' s).2`. Use `choose l hl1 hl2 using hl`. Set `l' : CH.Cn (CH.modF A) m` to `fun s => l s`.
+Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨f - g - CH.d _ m l', fun s => ?_, ?_⟩` and prove the remaining obligations. Establish `e0` using `d_val h' (fun s => l s) (fun s => (hl2 s).symm) s`. Establish `e1 : (show sqM a b _ from CH.d (sq a b) m h' s) = (show sqM a b _ from f' s) - (show sqM a b _ from g' s)` using `congrFun hh s`. Rewrite `e0` using `[e1]`. Establish `e3 : ∀ x y z : A.obj (s.obj (Fin.last (m + 1))), Ideal.Quotient.mk (b.S _) x - Ideal.Quotient.mk (b.S _) y = Ideal.Quotient.mk (b.S _) z → x - y - z ∈ b.S _` using `fun x y z h => by`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h` using `[← map_sub]`. Conclude with `Ideal.Quotient.eq.1 h`. Use `e3 _ _ _ ?_` and prove the remaining obligations. Rewrite using `[← hv, ← hv']`. Conclude with `e0`.
-
-Rewrite using `[map_sub, map_sub, CH.d_d]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem d_eq_of_rep {R : Type} [CommRing R] {C : Type 1} [Category.{0} C] {A : C ⥤ CommAlgCat.{0} R} {a b : IdF A} {n : ℕ}
     (f g : CH.Cn (CH.modF A) n) {c : CH.H (sq a b) n}
@@ -78,37 +76,33 @@ def headP {j : ℕ} (I : Fin j → Fin d) (s : ComposableArrows C (j + 1)) : Φ.
   ∏ k : Fin j, ga E σ (I k) s k.castSucc.castSucc k.succ.castSucc (by rw [Fin.le_def]; simp)
 
 /- English proof (translation)
-Use `set u : Fin j → Φ.A.obj (s.obj (Fin.last (j + 1))) := fun k => ga E σ (I k) s k.castSucc.castSucc k.succ.castSucc (by rw [Fin.le_def]; simp) with hu`. Use `set v : Fin j → Φ.A.obj (s.obj (Fin.last (j + 1))) := fun k => ga E σ (I k) s k.succ.castSucc k.succ.succ (by rw [Fin.le_def]; simp) with hv`. Use `set P : ℕ → Φ.A.obj (s.obj (Fin.last (j + 1))) := fun n => ∏ k : Fin j, if (k : ℕ) < n then u k else v k with hP`. Use `set T : Fin (j + 2) → Φ.A.obj (s.obj (Fin.last (j + 1))) := fun i => ∏ k : Fin j, ga E σ (I k) s (i.succAbove k.castSucc) (i.succAbove k.succ) ((Fin.strictMono_succAbove i).monotone (Fin.castSucc_lt_succ (i := k)).le) with hT`. Use `set W : Fin (j + 2) → Φ.A.obj (s.obj (Fin.last (j + 1))) := fun i => (Φ.A.map (toLast i s)).hom ((Φ.A.map (σ _)).hom x) with hW`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Use `set Y := (Φ.A.map (σ (s.obj (Fin.last (j + 1))))).hom x with hY`. Establish `hT0 : T 0 = P 0`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `only [Nat.not_lt_zero, if_false]`. Apply the tactic sequence `refine ga_congr E σ _ s _ _ ?_ ?_ <;> simp`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hTl : T (Fin.last (j + 1)) = P j`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `only [k.2, if_true]`. Apply the tactic sequence `refine ga_congr E σ _ s _ _ ?_ ?_ <;> simp`. Establish `hTi : ∀ i : Fin j, T i.succ.castSucc = P (i + 1) + P i`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `i`. Establish `hPa : P (i + 1) = u i * ∏ k ∈ Finset.univ.erase i, (if (k : ℕ) < i + 1 then u k else v k)`. Use `Finset.mul_prod_erase Finset.univ (fun k : Fin j => if (k : ℕ) < i + 1 then u k else v k) (Finset.mem_univ i)` as an intermediate fact. Simplify using `only [Nat.lt_add_one, if_true] at this`. Conclude with `this.symm`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hPb : P i = v i * ∏ k ∈ Finset.univ.erase i, (if (k : ℕ) < i then u k else v k)`. Use `Finset.mul_prod_erase Finset.univ (fun k : Fin j => if (k : ℕ) < i then u k else v k) (Finset.mem_univ i)` as an intermediate fact. Simplify using `only [lt_irrefl, if_false] at this`. Conclude with `this.symm`. Establish `hTa : T i.succ.castSucc = (u i + v i) * ∏ k ∈ Finset.univ.erase i, (if (k : ℕ) < i then u k else v k)`.
+Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.mul_prod_erase Finset.univ (fun k : Fin j => ga E σ (I k) s (i.succ.castSucc.succAbove k.castSucc) (i.succ.castSucc.succAbove k.succ) ((Fin.strictMono_succAbove _).monotone (Fin.castSucc_lt_succ (i := k)).le)) (Finset.mem_univ i)` as an intermediate fact. Use `this.symm.trans ?_` and prove the remaining obligations. Use `congr 1`. Rewrite using `[hu, hv] dsimp only`. Rewrite using `[← ga_add]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Apply the tactic sequence `refine ga_congr E σ _ s _ _ ?_ ?_ <;> fa`. Use `Finset.prod_congr rfl fun k hk => ?_` and prove the remaining obligations. Establish `hki : (k : ℕ) ≠ i` using `fun h => Finset.ne_of_mem_erase hk (Fin.ext h)`. Use `split_ifs with h`. Apply the tactic sequence `refine ga_congr E σ _ s _ _ ?_ ?_ <;> fa`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Apply the tactic sequence `refine ga_congr E σ _ s _ _ ?_ ?_ <;> fa`. Establish `hE : ∏ k ∈ Finset.univ.erase i, (if (k : ℕ) < i + 1 then u k else v k) = ∏ k ∈ Finset.univ.erase i, (if (k : ℕ) < i then u k else v k)`. Use `Finset.prod_congr rfl fun k hk => ?_` and prove the remaining obligations. Establish `hki : (k : ℕ) ≠ i` using `fun h => Finset.ne_of_mem_erase hk (Fin.ext h)`. Establish `: (k : ℕ) < i + 1 ↔ (k : ℕ) < i` using `by omega`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [this]`. Rewrite using `[hTa, hPa, hPb, hE]`. Expand and normalize the polynomial expressions, which then agree. Establish `hWY : ∀ i : Fin (j + 2), i ≠ Fin.last (j + 1) → W i = Y`. Introduce `i hi`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Chain the equalities or inequalities of the calculation.
 
-Establish `hi' : i.succAbove (Fin.last j) = Fin.last (j + 1)`. Establish `h1 : (i : ℕ) ≠ j + 1` using `fun h => hi (Fin.ext h)`. Establish `h2` using `i.2`. Apply `Fin.ext` to reduce the goal to its premises. Rewrite using `[sa_val]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Simplify using `only [Fin.val_last]`. Apply the tactic sequence `split_ifs <;> omega`. Combine the equalities or inequalities in the displayed calculation. Establish `hPj : headP E σ I s = P j`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Simplify using `only [k.2, if_true]`. Both sides reduce to the same expression. Establish `hWl : (Φ.A.map (σ _ ≫ toLast (Fin.last (j + 1)) s)).hom x = W (Fin.last (j + 1))` using `(map_map _ _ _).symm`. Rewrite using `[hWl, hPj]`. Establish `hterm : ∀ i : Fin (j + 2), (-1 : ℤ) ^ (i : ℕ) • (Φ.A.map (toLast i s)).hom (E.form σ I x (face i s)) = (-1) ^ (i : ℕ) * (T i * W i)`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `i`. Rewrite using `[face_form, zsmul_eq_mul]`. Use `push_cast`. Both sides reduce to the same expression. Rewrite using `[Finset.sum_congr rfl fun i _ => hterm i, Fin.sum_univ_castSucc, Fin.sum_univ_succ]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `h0 : T (Fin.castSucc 0) = P 0` using `hT0`. Establish `hne0 : Fin.castSucc (0 : Fin (j + 1)) ≠ Fin.last (j + 1)` using `(Fin.castSucc_lt_last _).ne`. Establish `hint : ∑ i : Fin j, (-1) ^ ((i.succ.castSucc : Fin (j + 2)) : ℕ) * (T i.succ.castSucc * W i.succ.castSucc) = (∑ m ∈ Finset.range j, (-1) ^ (m + 1) * (P (m + 1) + P m)) * Y`. Rewrite using `[Finset.sum_mul, ← Fin.sum_univ_eq_sum_range (fun m => (-1) ^ (m + 1) * (P (m + 1) + P m) * Y) j]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[hTi, hWY _ (Fin.castSucc_lt_last _).ne]`. Simplify using `only [Fin.val_castSucc, Fin.val_succ]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hint, h0, hWY _ hne0, hTl]`. Simplify using `only [Fin.val_castSucc, Fin.val_zero, Fin.val_last, pow_zero]`.
-
-Take the linear combination `Y * tele P j`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem alt_sum_form {j : ℕ} (I : Fin j → Fin d) (x : Φ.A.obj E.D) (s : ComposableArrows C (j + 1)) :
     ∑ i : Fin (j + 2), (-1 : ℤ) ^ (i : ℕ) • (Φ.A.map (toLast i s)).hom (E.form σ I x (face i s)) =
@@ -204,11 +198,11 @@ theorem alt_sum_form {j : ℕ} (I : Fin j → Fin d) (x : Φ.A.obj E.D) (s : Com
   linear_combination Y * tele P j
 
 /- English proof (translation)
-Unfold `Frame.form headP`. Rewrite using `[Fin.prod_univ_castSucc, mul_assoc]`. Use `congr 1`. Use `Finset.prod_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[Fin.snoc_castSucc (α := fun _ => Fin d)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ga_congr E σ _ s _ _ (by simp) (by simp)`. Use `congr 1`. Rewrite using `[Fin.snoc_last (α := fun _ => Fin d)]`. Use `ga_congr E σ _ s (Fin.castSucc_lt_succ (i := Fin.last j)).le _ ?_ ?_` and prove the remaining obligations. Simplify using `[sa_val]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem form_snoc {j : ℕ} (I : Fin j → Fin d) (k : Fin d) (z : Φ.A.obj E.D) (s : ComposableArrows C (j + 1)) :
     E.form σ (Fin.snoc (α := fun _ => Fin d) I k) z s =
@@ -227,7 +221,7 @@ theorem form_snoc {j : ℕ} (I : Fin j → Fin d) (k : Fin d) (z : Φ.A.obj E.D)
     · simp
 
 /- English proof (translation)
-Unfold `ga`. Establish `: (homOfLE (Fin.le_last (Fin.last (j + 1))) : Fin.last (j + 1) ⟶ Fin.last (j + 1)) = 𝟙 _` using `Subsingleton.elim _ _`. Rewrite using `[this, s.map_id]`. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem ga_last {j : ℕ} (k : Fin d) (s : ComposableArrows C (j + 1)) (q : Fin (j + 2)) (h : q ≤ Fin.last (j + 1)) :
     ga E σ k s q (Fin.last (j + 1)) h = E.τ k (σ (s.obj q) ≫ s.map (homOfLE h)) (σ (s.obj (Fin.last (j + 1)))) := by
@@ -238,7 +232,7 @@ theorem ga_last {j : ℕ} (k : Fin d) (s : ComposableArrows C (j + 1)) (q : Fin 
   rfl
 
 /- English proof (translation)
-Unfold `Frame.form`. Rewrite using `[map_mul, map_pow, map_neg, map_one]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem form_neg_pow {j : ℕ} (I : Fin j → Fin d) (x : Φ.A.obj E.D) (m : ℕ) (s : ComposableArrows C j) :
     E.form σ I ((-1) ^ m * x) s = (-1) ^ m * E.form σ I x s := by
@@ -253,19 +247,17 @@ open GlobalTheory.CompanionTheory.CocProd
 variable {R : Type} [CommRing R] {C : Type 1} [Category.{0} C] {Φ : PDF R C} {d : ℕ}
 
 /- English proof (translation)
-Use `set q := (Fin.last (j + 1)).succAbove (Fin.last j) with hq`. Use `set T := s.obj (Fin.last (j + 1)) with hTdef`. Use `set v : E.D ⟶ T := σ (s.obj q) ≫ s.map (homOfLE (Fin.le_last q)) with hv`. Establish `hvl : (σ _ ≫ toLast (Fin.last (j + 1)) s) = v` using `rfl`. Use `set g : Fin d → Φ.A.obj T := fun k => ga E σ k s q (Fin.last (j + 1)) (Fin.le_last _) with hg`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hgτ : ∀ k, g k = E.τ k v (σ T)` using `fun k => ga_last E σ k s q (Fin.le_last _)`. Establish `hg1 : ∀ k, g k ∈ (Fil ((1 : ℕ) : ℤ)).S T` using `fun k => ga_mem E σ hF k s q _ _`. Establish `hdiff : ∀ k, g k * ((Φ.A.map v).hom (p k x) - (Φ.A.map (σ T)).hom (p k x)) ∈ (Fil ((2 : ℕ) : ℤ)).S T`. Introduce `k`. Establish `h0 : p k x ∈ (Fil ((0 : ℕ) : ℤ)).S E.D`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hF.top _ (by norm_num)]; trivial`. Establish `h1` using `hc 0 v (σ T) h0`. Establish `e1 : (((0 : ℕ) : ℤ) + 1) = ((1 : ℕ) : ℤ)` using `by norm_num`. Rewrite `h1` using `[e1]`. Conclude with `hF.mul 1 1 T (hg1 k) h1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hin : (Φ.A.map (σ T)).hom x - (Φ.A.map v).hom x - ∑ k, g k * (Φ.A.map (σ T)).hom (p k x) ∈ (Fil ((2 : ℕ) : ℤ)).S T`. Establish `tay` using `hT T (σ T) v x`. Establish `e2 : (2 : ℤ) = ((2 : ℕ) : ℤ)` using `by norm_num`. Rewrite `tay` using `[e2]`. Establish `e3 : (Φ.A.map (σ T)).hom x - (Φ.A.map v).hom x - ∑ k, g k * (Φ.A.map (σ T)).hom (p k x) = ((Φ.A.map (σ T)).hom x - (Φ.A.map v).hom x - ∑ k, E.τ k v (σ T) * (Φ.A.map v).hom (p k x)) + ∑ k, g k * ((Φ.A.map v).hom (p k x) - (Φ.A.map (σ T)).hom (p k x))`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [hgτ, mul_sub, Finset.sum_sub_distrib]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e3]`. Conclude with `Ideal.add_mem _ tay (Ideal.sum_mem _ fun k _ => hdiff k)`. Establish `hfin` using `prod_mem hF (fun k : Fin j => ga E σ (I k) s k.castSucc.castSucc k.succ.castSucc (by rw [Fin.le_def]; simp)) (fun k => ga_mem E σ hF _ s _ _ _) hin`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `e4 : ((j + 2 : ℕ) : ℤ) = (j : ℤ) + 1 + 1` using `by push_cast; ring`. Rewrite `hfin` using `[e4]`. Establish `e5 : ∑ i : Fin (j + 2), (-1 : ℤ) ^ (i : ℕ) • (Φ.A.map (toLast i s)).hom (E.form σ I x (face i s)) - (-1) ^ j * ∑ k : Fin d, E.form σ (Fin.snoc (α` using `fun _ => Fin d) I k) (p k x) s = (-1) ^ j * (headP E σ I s * ((Φ.A.map (σ T)).hom x - (Φ.A.map v).hom x - ∑ k, g k * (Φ.A.map (σ T)).hom (p k x))) := by`. Rewrite using `[alt_sum_form, hvl]`. Simplify using `only [form_snoc, ← Finset.mul_sum]`.
-
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e5]`. Conclude with `Ideal.mul_mem_left _ _ hfin`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem d_form {Fil : ℤ → IdF Φ.A} (hF : IsFil Φ Fil) (E : Frame Φ d) (σ : ∀ T : C, E.D ⟶ T) (hc : E.GrConst Fil)
     {p : Fin d → Φ.A.obj E.D → Φ.A.obj E.D} (hT : Taylor Fil E p) {j : ℕ} (I : Fin j → Fin d) (x : Φ.A.obj E.D)
@@ -312,15 +304,15 @@ theorem d_form {Fil : ℤ → IdF Φ.A} (hF : IsFil Φ Fil) (E : Frame Φ d) (σ
   exact Ideal.mul_mem_left _ _ hfin
 
 /- English proof (translation)
-Set `g : CH.Cn (CH.modF Φ.A) n` to `fun u => (∑ I : Idx n d, E.form σ I.1 (y I) u : Φ.A.obj (u.obj (Fin.last n)))`. Take `⟨e, he, hde⟩` from `d_eq_of_rep f g hf hg`. Establish `h0 : CrystallineSemistableComparison.Pb.Rep (Fil ((n : ℤ) + 1)) (Fil ((n : ℤ) + 1 + 1)) (fun u => CH.d _ n (-e) u) 0` using `rep_d (-e) fun s => (Fil ((n : ℤ) + 1)).S _ |>.neg_mem (he s)`. Establish `h1` using `rep_add hx h0`. Rewrite `h1` using `[add_zero]`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `rep_congr h1 fun s => ?_` and prove the remaining obligations. Establish `e1 : CH.d _ n f s + CH.d _ n (-e) s = CH.d _ n g s`. Rewrite using `[hde, map_neg]`. Simplify using the standard rewrite rules. Establish `e2 : ∀ (a b : Φ.A.obj (s.obj (Fin.last (n + 1)))), (CH.d _ n f s + CH.d _ n (-e) s : (CH.modF Φ.A).obj _) = a → a - b ∈ (Fil ((n : ℤ) + 1 + 1)).S _ → (show Φ.A.obj _ from CH.d _ n f s) + (show Φ.A.obj _ from CH.d _ n (-e) s) - b ∈ (Fil ((n : ℤ) + 1 + 1)).S _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `a b h h'`. Rewrite `h'` using `[← h]`. Conclude with `h'`. Use `e2 (∑ I : Idx n d, ∑ i : Fin (n + 2), (-1 : ℤ) ^ (i : ℕ) • (Φ.A.map (toLast i s)).hom (E.form σ I.1 (y I) (face i s))) _ ?_ ?_` and prove the remaining obligations. Rewrite using `[e1]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `∑ i : Fin (n + 2), (-1 : ℤ) ^ (i : ℕ) • (Φ.A.map (toLast i s)).hom (∑ I : Idx n d, E.form σ I.1 (y I) (face i s)) = _`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_sum, Finset.smul_sum]`. Rewrite using `[Fintype.sum_prod_type, ← Finset.sum_sub_distrib]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Ideal.sum_mem _ fun I _ => ?_` and prove the remaining obligations. Use `d_form hF E σ hc hT I.1 (y I) s` as an intermediate fact. Simplify `this` using `only [form_neg_pow, Finset.mul_sum]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem connecting_form {R : Type} [CommRing R] {C : Type 1} [Category.{0} C] {Φ : PDF R C} {Fil : ℤ → IdF Φ.A} {d : ℕ} (hF : IsFil Φ Fil) (E : Frame Φ d) (σ : ∀ T : C, E.D ⟶ T) (hc : E.GrConst Fil)
     (p : Fin d → Φ.A.obj E.D → Φ.A.obj E.D) (hT : Taylor Fil E p) (n : ℕ) (f : CH.Cn (CH.modF Φ.A) n) (y : Idx n d → Φ.A.obj E.D) (c : CH.H (gr Fil (n : ℤ)) n)

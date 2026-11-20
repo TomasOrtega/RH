@@ -15,9 +15,9 @@ open scoped CategoryTheory.Obj TensorProduct
 namespace GlobalTheory.LevelSpread
 
 /- English proof (translation)
-Establish `: IsClosedImmersion (equalizer.ι u u').left` using `inferInstance`. Use `⟨Set.range (equalizer.ι u u').left, (Scheme.Hom.isClosedEmbedding _).isClosed_range, fun K _ x h => ⟨fun e => ?_, fun e => ?_⟩⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨p, rfl⟩`. Use `⟨(equalizer.lift h e).left p, ?_⟩` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.comp_apply, ← Over.comp_left, equalizer.lift_ι]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `: IsReduced (Over.mk x).left` using `inferInstanceAs (IsReduced (Sp K))`. Take `⟨f, hf⟩` from `exists_lift_closedImmersion_of_dense (equalizer.ι u u').left h.left Set.univ dense_univ fun p _ => e ⟨p, rfl⟩`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[Over.comp_left, Over.comp_left, ← hf, Category.assoc, Category.assoc, ← Over.comp_left, ← Over.comp_left, equalizer.condition]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_closed_eq {S : Scheme.{0}} {Z A : Over S} [IsSeparated A.hom] (u u' : Z ⟶ A) :
     ∃ C : Set Z.left, IsClosed C ∧ ∀ (K : Type) [Field K] (x : Sp K ⟶ S) (h : Over.mk x ⟶ Z),
@@ -36,9 +36,7 @@ theorem exists_closed_eq {S : Scheme.{0}} {Z A : Over S} [IsSeparated A.hom] (u 
       equalizer.condition]
 
 /- English proof (translation)
-Rewrite using `[← basicOpen_eq_bot_iff, ← Scheme.preimage_basicOpen_top, eq_bot_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `e _ ⟨p, rfl⟩ hp`. Conclude with `e hp`. Introduce `e p hp`.
-
-Conclude with `e ⟨p, rfl⟩ hp`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem appTop_eq_zero_iff {Z : Scheme.{0}} (f : Γ(Z, ⊤)) {K : Type} [Field K] (h : Sp K ⟶ Z) :
     h.appTop.hom f = 0 ↔ Set.range h ⊆ (Z.basicOpen f : Set Z)ᶜ := by
@@ -50,9 +48,9 @@ theorem appTop_eq_zero_iff {Z : Scheme.{0}} (f : Γ(Z, ⊤)) {K : Type} [Field K
     exact e ⟨p, rfl⟩ hp
 
 /- English proof (translation)
-Establish `h1 : (h ≫ g).appTop = g.appTop ≫ h.appTop` using `Scheme.Hom.comp_appTop _ _`. Establish `h2` using `Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom β)`. Establish `h3` using `congrArg (fun φ => φ.hom c) h2`. Rewrite `h1` using `[e]`. Establish `h4` using `congrArg (fun φ => φ.hom ((Scheme.ΓSpecIso (CommRingCat.of L)).inv.hom c)) h1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h4.symm.trans h3.symm`.
+A detailed English derivation is pending.
 -/
 theorem map_fnOn_apply {L k : Type} [CommRing L] [CommRing k] {T : Scheme.{0}} (g : T ⟶ Sp L) (h : Sp k ⟶ T)
     (β : L →+* k) (e : h ≫ g = spMap β) (c : L) :
@@ -65,14 +63,14 @@ theorem map_fnOn_apply {L k : Type} [CommRing L] [CommRing k] {T : Scheme.{0}} (
   exact h4.symm.trans h3.symm
 
 /- English proof (translation)
-Use `⟨Units.map (Scheme.ΓSpecIso (CommRingCat.of K)).hom.hom.toMonoidHom c, Units.ext ?_⟩` and prove the remaining obligations. Conclude with `((Scheme.ΓSpecIso (CommRingCat.of K)).hom_inv_id_apply c).symm`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_unitOn {K : Type} [CommRing K] (c : Γ(Sp K, ⊤)ˣ) : ∃ ζ : Kˣ, c = unitOn ζ := by
   refine ⟨Units.map (Scheme.ΓSpecIso (CommRingCat.of K)).hom.hom.toMonoidHom c, Units.ext ?_⟩
   exact ((Scheme.ΓSpecIso (CommRingCat.of K)).hom_inv_id_apply c).symm
 
 /- English proof (translation)
-Establish `h1 : h.appTop.hom c = (Scheme.ΓSpecIso (CommRingCat.of K)).inv.hom ζ` using `congrArg Units.val hc`. Rewrite using `[← appTop_eq_zero_iff, map_sub, map_pow, h1, map_fnOn_apply g h β e, ← map_pow, sub_eq_zero]`. Conclude with `((Scheme.ΓSpecIso (CommRingCat.of K)).symm.commRingCatIsoToRingEquiv.injective.eq_iff).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_eq_iff {L K : Type} [CommRing L] [Field K] {T : Scheme.{0}} (g : T ⟶ Sp L) (h : Sp K ⟶ T)
     (β : L →+* K) (e : h ≫ g = spMap β) (z : L) (c : Γ(T, ⊤)ˣ) (ζ : Kˣ) (m : ℕ)
@@ -89,19 +87,19 @@ namespace GlobalTheory
 open LevelSpread
 
 /- English proof (translation)
-Introduce `hL E _ _ _ H D S P act o _ s z κ lam pt n m hn hD K _ _ x β hK hx`. Take `⟨hfree, hfin⟩` from `LevCover.datum_free D`. Use `P.isAb.comm` as an intermediate fact. Use `P.isAb.proper` as an intermediate fact. Take `⟨Z, et, c, hu, hadd, hpow, hc, hprim, hrep, hlast⟩` from `GlobalTheory.T.exists_finite_scheme_latticeTorsionHom_primitiveRoot S P.A n D.La P.isAb hn`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `choose C1 hC1 HC1 using fun (b : 𝓞 E) (a : D.La) => exists_closed_eq (et (b • a)) (et a ≫ act b)`. Use `choose C2 hC2 HC2 using fun (a a' : D.La) => GlobalTheory.exists_clopen_weilIs_iff hL S P n Z (et a) (et a') (c ^ D.EF a a') hn hu (hpow _) (hpow _) (by rw [← zpow_natCast, ← zpow_mul, mul_comm, zpow_mul, zpow_natCast, hc, one_zpow])`. Set `q : Z ⟶ Out.baseOver S` to `Over.homMk Z.hom (by simp)`. Use `choose C4 hC4 HC4 using fun i : κ => exists_closed_eq (et (lam i) ^ m) (q ≫ pt i)`. Set `C3 : Set Z.left` to `(Z.left.basicOpen ((c : Γ(Z.left, ⊤)) ^ m - LevCover.fnOn (Z.hom ≫ s) z) : Set Z.left)ᶜ`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `C : Set Z.left` to `(⋂ b, ⋂ a, C1 b a) ∩ (⋂ a, ⋂ a', (C2 a a' : Set Z.left)) ∩ C3 ∩ ⋂ i, C4 i`. Establish `hC : IsClosed C` using `(((isClosed_iInter fun b => isClosed_iInter fun a => hC1 b a).inter (isClosed_iInter fun a => isClosed_iInter fun a' => hC2 a a')).inter (Z.left.basicOpen _).isOpen.isClosed_compl).inter (isClosed_iInter hC4)`. Establish `key : ∀ (K : Type) [Field K] (x : Sp K ⟶ S) (β : o →+* K) (ζ : Kˣ) (h : Over.mk x ⟶ Z), x ≫ s = spMap β → Units.map h.left.appTop.hom.toMonoidHom c = unitOn ζ → (((∀ (b : 𝓞 E) a, h ≫ et (b • a) = (h ≫ et a) ≫ act b) ∧ (∀ a a', Out.WeilIs P.A P.L n (h ≫ et a) (h ≫ et a') (unitOn ( …`. Introduce `K _ x β ζ h hx hζ`. Establish `hw : h.left ≫ Z.hom = x` using `Over.w h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq : h ≫ q = (Over.homMk x (by simp) : Over.mk x ⟶ Out.baseOver S)` using `Over.OverMorphism.ext hw`. Establish `h3` using `pow_eq_iff (Z.hom ≫ s) h.left β (by rw [← Category.assoc, hw, hx]) z c ζ m hζ`. Establish `hz : ∀ k : ℤ, unitOn (ζ ^ k) = Units.map h.left.appTop.hom.toMonoidHom (c ^ k)` using `fun k => by`. Rewrite using `[map_zpow, hζ, unitOn, unitOn, map_zpow]`. Simplify using `only [C, Set.subset_inter_iff, Set.subset_iInter_iff, and_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `and_congr (forall₂_congr fun b a => ?_) (and_congr (forall₂_congr fun a a' => ?_) (and_congr h3 (forall_congr' fun i => ?_)))` and prove the remaining obligations. Rewrite using `[← HC1 b a K x h, Category.assoc]`. Rewrite using `[← HC2 a a' _ h, hz]`. Rewrite using `[← HC4 i K x h, ← hq, Category.assoc, MonObj.comp_pow]`. Establish `hdense : Dense (Z.hom '' C)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Use `hD.mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨K, _, x, β, ζ, ev, hK, ⟨p, rfl⟩, hx, h1, h2, h3, h4⟩`. Take `⟨h, hh, hζ⟩` from `hrep K x ev ζ hK h2 h3 h1`. Take `rfl : (fun a => h ≫ et a) = ev` from `funext hh`. Establish `hw : h.left ≫ Z.hom = x` using `Over.w h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨h.left p, (key K x β ζ h hx hζ).1 h4 ⟨p, rfl⟩, by rw [← Scheme.Hom.comp_apply, hw]⟩`. Take `⟨h, hh⟩` from `hlast C hC K x hK (by rw [hdense.closure_eq]; exact Set.subset_univ _)`. Take `⟨ζ, hζ⟩` from `exists_unitOn (K := K) (Units.map h.left.appTop.hom.toMonoidHom c)`. Conclude with `⟨ζ, fun a => h ≫ et a, hprim K h.left ζ hζ, fun a a' => by beta_reduce; rw [hadd, MonObj.comp_mul], fun a => by beta_reduce; rw [← MonObj.comp_pow, hpow, MonObj.comp_one], (key K x β ζ h hx hζ).2 hh⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_levelIsometry_of_dense : Out.Laws → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (S : Scheme.{0}) (P : Out.PolAV S) (act : 𝓞 E → (P.A ⟶ P.A)) (o : Type) [CommRing o] (s : S ⟶ Sp o) (z : o) (κ : Type) (lam : κ → D.La) (pt : κ → (Out.baseOver S ⟶ P.A)) (n m : ℕ), 0 < n → Dense {p : S | ∃ (K : Type) (_ : Field K) (x : Sp K ⟶ S) (β : o →+* K) (ζ : Kˣ) (ev : D.La → (Over.mk x ⟶ P.A)), (n : K) ≠ 0 ∧ p ∈ Set.range x ∧ x ≫ s = spMap β ∧ IsPrimitiveRoot ζ n ∧ (∀ a c, ev (a + c) = ev a * ev c) ∧ (∀ a, ev a ^ n = 1) ∧ (∀ (c : 𝓞 E) a, ev (c • a) = ev a ≫ act c) ∧ (∀ a c, Out.WeilIs P.A P.L n (ev a) (ev c) (unitOn (ζ ^ D.EF a c))) ∧ (ζ : K) ^ m = β z ∧ ∀ i, ev (lam i) ^ m = (Over.homMk x (by simp) : Over.mk x ⟶ Out.baseOver S) ≫ pt i} → ∀ (K : Type) [Field K] [IsAlgClosed K] (x : Sp K ⟶ S) (β : o →+* K), (n : K) ≠ 0 → x ≫ s = spMap β → ∃ (ζ : Kˣ) (ev : D.La → (Over.mk x ⟶ P.A)), IsPrimitiveRoot ζ n ∧ (∀ a c, ev (a + c) = ev a * ev c) ∧ (∀ a, ev a ^ n = 1) ∧ (∀ (c : 𝓞 E) a, ev (c • a) = ev a ≫ act c) ∧ (∀ a c, Out.WeilIs P.A P.L n (ev a) (ev c) (unitOn (ζ ^ D.EF a c))) ∧ (ζ : K) ^ m = β z ∧ ∀ i, ev (lam i) ^ m = (Over.homMk x (by simp) : Over.mk x ⟶ Out.baseOver S) ≫ pt i := by
   intro hL E _ _ _ H D S P act o _ s z κ lam pt n m hn hD K _ _ x β hK hx

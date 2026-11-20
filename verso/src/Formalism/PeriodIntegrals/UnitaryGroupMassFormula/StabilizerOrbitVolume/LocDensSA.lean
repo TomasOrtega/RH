@@ -14,13 +14,13 @@ def SAf : Prop :=
     ∀ x : FiniteAdeleRing (𝓞 F) F, ∃ a : F, x - algebraMap F (FiniteAdeleRing (𝓞 F) F) a ∈ U
 
 /- English proof (translation)
-Introduce `F _ _ U hU x`. Take `⟨N, hN, hNU⟩` from `PI.InvTopW.finite_neighbourhood_second F (U : Set (FiniteAdeleRing (𝓞 F) F)) (hU.mem_nhds U.zero_mem)`. Take `⟨m, hm, hmx⟩` from `PIW.AdelClassFin.DictRing.af_denom (F := F) x`. Take `⟨β, y, hy, e⟩` from `PIW.AdelClassFin.DictRing.af_approx (F := F) _ hmx (m * N) (Nat.mul_pos hm (by omega))`. Use `⟨(β : F) / m, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hm0 : (m : F) ≠ 0` using `Nat.cast_ne_zero.2 hm.ne'`. Establish `hu : (m : FiniteAdeleRing (𝓞 F) F) * algebraMap F (FiniteAdeleRing (𝓞 F) F) ((m : F)⁻¹) = 1`. Rewrite using `[← map_natCast (algebraMap F (FiniteAdeleRing (𝓞 F) F)) m, ← map_mul, mul_inv_cancel₀ hm0, map_one]`. Establish `hβ : algebraMap (𝓞 F) (FiniteAdeleRing (𝓞 F) F) β = algebraMap F (FiniteAdeleRing (𝓞 F) F) (β : F)` using `IsScalarTower.algebraMap_apply (𝓞 F) F _ β`. Establish `hdiv : algebraMap F (FiniteAdeleRing (𝓞 F) F) ((β : F) / m) = algebraMap F (FiniteAdeleRing (𝓞 F) F) (β : F) * algebraMap F (FiniteAdeleRing (𝓞 F) F) ((m : F)⁻¹)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[div_eq_mul_inv, map_mul]`. Establish `key : x - algebraMap F (FiniteAdeleRing (𝓞 F) F) ((β : F) / m) = (N : FiniteAdeleRing (𝓞 F) F) * y`. Rewrite using `[hdiv, ← hβ]`. Move the coercions through the operations in `at e`. Take the linear combination `algebraMap F (FiniteAdeleRing (𝓞 F) F) ((m : F)⁻¹) * e - (x - (N : FiniteAdeleRing (𝓞 F) F) * y) * hu`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite using `[key]`. Conclude with `hNU y hy`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sAf_holds : SAf := by
   intro F _ _ U hU x

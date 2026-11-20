@@ -16,9 +16,9 @@ open GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Cusp Global
 namespace Pts
 
 /- English proof (translation)
-Introduce `U f`. Establish `key : ∀ t ∈ {b ∈ T | ⊤ ≤ y b ⁻¹ᵁ U}, {b ∈ T | ⊤ ≤ y b ⁻¹ᵁ U} ∈ 𝓝 t ∧ DifferentiableAt ℂ (fun b => valAt' (y b) U f) t`. Introduce and unpack `t ⟨ht, hU⟩`. Take `⟨B, hBT, htB, hB⟩` from `h t ht`. Establish `hn` using `(hB U f).1.mem_nhds (show t ∈ {b ∈ B | ⊤ ≤ y b ⁻¹ᵁ U} from ⟨htB, hU⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `⟨mem_of_superset hn fun b hb => ⟨hBT hb.1, hb.2⟩, (hB U f).2.differentiableAt hn⟩`. Conclude with `⟨isOpen_iff_mem_nhds.2 fun t ht => (key t ht).1, fun t ht => (key t ht).2.differentiableWithinAt⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem isHolTo_of_local {X : Scheme.{0}} {n : ℕ} {T : Set (Fin n → ℂ)} {y : (Fin n → ℂ) → (Sp ℂ ⟶ X)}
     (h : ∀ t ∈ T, ∃ B, B ⊆ T ∧ t ∈ B ∧ IsHolTo B y) : IsHolTo T y := by
@@ -32,23 +32,23 @@ theorem isHolTo_of_local {X : Scheme.{0}} {n : ℕ} {T : Set (Fin n → ℂ)} {y
   exact ⟨isOpen_iff_mem_nhds.2 fun t ht => (key t ht).1, fun t ht => (key t ht).2.differentiableWithinAt⟩
 
 /- English proof (translation)
-Introduce `h` and use `by simpa using h.2 1 trivial`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem not_mem_top {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] (w : (Σ k, ι k) → ℂ) :
     w ∉ mcPts (⊤ : Ideal (MRing ι)) := fun h => by
   simpa using h.2 1 trivial
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun ⟨_, e, a, ha, h⟩ => ⟨a, ha, by rw [h, Set.mem_singleton_iff.1 e]; rfl⟩, fun ⟨a, ha, h⟩ => ⟨w', rfl, a, ha, h⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem sat_iff {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {w w' : (Σ k, ι k) → ℂ} :
     w ∈ torusSat {w'} ↔ SameOrbit w w' :=
   ⟨fun ⟨_, e, a, ha, h⟩ => ⟨a, ha, by rw [h, Set.mem_singleton_iff.1 e]; rfl⟩, fun ⟨a, ha, h⟩ => ⟨w', rfl, a, ha, h⟩⟩
 
 /- English proof (translation)
-Take `⟨j, hj⟩` from `B.cover (ψ ((A.chart k).symm t))`. Establish `h1 : AnalyticAt ℂ (B.chart j ∘ ψ ∘ (A.chart k).symm) t` using `hψ.2 k j t ⟨ht, hj⟩`. Establish `h2 : AnalyticAt ℂ (f ∘ (B.chart j).symm) ((B.chart j ∘ ψ ∘ (A.chart k).symm) t)` using `hf j _ ⟨(B.chart j).map_source hj, by show (B.chart j).symm (B.chart j (ψ ((A.chart k).symm t))) ∈ U`. Rewrite using `[(B.chart j).left_inv hj]⟩` and apply the resulting hypothesis. Use `(h2.comp h1).congr ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hc : ContinuousAt (fun s => ψ ((A.chart k).symm s)) t` using `hψ.1.continuousAt.comp ((A.chart k).continuousAt_symm ht)`. Use `filter_upwards [hc.eventually ((B.chart j).open_source.mem_nhds hj)] with s hs`. Use `show f ((B.chart j).symm (B.chart j (ψ ((A.chart k).symm s)))) = _`. Rewrite using `[(B.chart j).left_inv hs]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem analyticAt_comp {e : ℕ} {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y] {A : FinHolAtlas e X}
     {B : FinHolAtlas e Y} {ψ : X → Y} (hψ : HoloMap A B ψ) {U : Set Y} {f : Y → ℂ} (hf : B.HoloOn U f)
@@ -72,23 +72,21 @@ end Pts
 open Pts
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c Y S RM Sys Fx Or ψ hJ hψ hπψ hψπ`. Establish `hnJ : ∀ w, w ∉ mcPts Or.Re.J` using `fun w => by rw [hJ]; exact not_mem_top w`. Use `choose z hz using fun x : Sys.X => SheetDecomposition.exists_pt Or.𝔐 (Or.Re.R.mem (ψ x) (ψ x) (Or.Re.R.mem_U (ψ x)))`. Establish `hol : ∀ k, IsHolTo (Sys.A.chart k).target fun t => z ((Sys.A.chart k).symm t)` using `fun k => by`. Use `isHolTo_of_local fun t₀ ht₀ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Set `w₀` to `ψ ((Sys.A.chart k).symm t₀)`. Establish `hB : IsOpen ((Sys.A.chart k).target ∩ (Sys.A.chart k).symm ⁻¹' (ψ ⁻¹' Or.Re.R.U w₀))` using `(Sys.A.chart k).symm.isOpen_inter_preimage ((Or.Re.R.isOpen_U w₀).preimage hψ.1)`. Use `⟨(Sys.A.chart k).target ∩ (Sys.A.chart k).symm ⁻¹' (ψ ⁻¹' Or.Re.R.U w₀), Set.inter_subset_left, ⟨ht₀, Or.Re.R.mem_U w₀⟩, ?_⟩` and prove the remaining obligations. Use `GlobalTheory.T.holomorphic_coords_of_generic_point _ _ Or.𝔐.ξ _ _ RM.y Or.𝔐.tie Or.𝔐.all _ _ (fun t => Or.Re.R.lift w₀ (ψ ((Sys.A.chart k).symm t))) _ hB ?_ ?_` and prove the remaining obligations. Use `differentiableOn_pi.2 fun p t ht => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(analyticAt_comp hψ (Or.Re.R.holo w₀ p) k ht.1 ht.2).differentiableAt.differentiableWithinAt`. Introduce `t ht`. Conclude with `SheetDecomposition.coords_of_sat Or.𝔐 (hz _) (sat_iff.2 (Or.Re.R.compat _ _ _ ⟨ht.2, Or.Re.R.mem_U _⟩))`. Use `⟨z, fun x x' e => ?_, hz, hol, fun U hU => ?_⟩` and prove the remaining obligations. Establish `h` using `sat_iff.1 (SheetDecomposition.sat_of_coords Or.𝔐 (hz x') (e ▸ hz x))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← hπψ x, Or.Re.R.inj _ _ (hnJ _) h, hπψ]`. Take `⟨g, hg, hgU⟩` from `SheetDecomposition.ChartForm.exists_form Or.𝔐.tie U hU`. Take `⟨w, hw, hwg⟩` from `GroundTheory.Heights₂.Heights.HilbertSamuel.exists_mcPts_not_mem_mcPts (J := Ideal.span {g}) RM.arith (fun h => hg (h (Ideal.subset_span rfl)))`. Establish `hg0 : MvPolynomial.aeval w g ≠ 0` using `fun h0 => hwg ⟨hw.1, fun f hf => by`. Take `⟨a, rfl⟩` from `Ideal.mem_span_singleton'.1 hf`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `: MvPolynomial.eval w (MvPolynomial.map (Int.castRingHom ℂ) g) = 0`. Rewrite using `[MvPolynomial.eval_map]`. Conclude with `h0`. Rewrite using `[map_mul, map_mul, this, mul_zero]⟩`. Take `⟨w₁, hw₁⟩` from `Or.Re.R.surj w hw (hnJ w)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hsym : SameOrbit w (Or.Re.R.lift w₁ w₁)`. Take `⟨a, ha, h⟩` from `hw₁`. Use `⟨fun k => (a k)⁻¹, fun k => inv_ne_zero (ha k), funext fun p => ?_⟩` and prove the remaining obligations. Rewrite using `[h]`. Simplify using `only [inv_mul_cancel_left₀ (ha _)]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hc : CoordsAt Or.𝔐.ξ RM.y (z (Or.Re.π w₁)) w` using `SheetDecomposition.coords_of_sat Or.𝔐 (hz _) (sat_iff.2 (by rw [hψπ]; exact hsym))`. Establish `hx₀ : centre (z (Or.Re.π w₁)) ∈ U` using `hgU _ _ (Or.𝔐.all _) hc hg0`. Take `⟨k, hk⟩` from `Sys.A.cover (Or.Re.π w₁)`. Establish `hopen` using `(Sys.A.chart k).isOpen_inter_preimage (hol k U 0).1`. Establish `hd` using `(GlobalTheory.T.section_boundary_closed_and_codense _ _ Sys.A Sys.L Sys.s Sys.nb Sys.m Sys.W Sys.sec Sys.snc).2`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨x, ⟨hxs, -, hxU⟩, hxo⟩` from `hd.inter_open_nonempty _ hopen ⟨Or.Re.π w₁, hk, (Sys.A.chart k).map_source hk, by show ⊤ ≤ z ((Sys.A.chart k).symm (Sys.A.chart k _)) ⁻¹ᵁ U`. Rewrite using `[(Sys.A.chart k).left_inv hk]`. Conclude with `(SheetDecomposition.top_le_iff_pt _ _ _).2 hx₀⟩`. Use `⟨x, hxo, ?_⟩` and prove the remaining obligations. Establish `h2 : ⊤ ≤ z ((Sys.A.chart k).symm (Sys.A.chart k x)) ⁻¹ᵁ U` using `hxU`.
-
-Rewrite `h2` using `[(Sys.A.chart k).left_inv hxs]`. Conclude with `(SheetDecomposition.top_le_iff_pt _ _ _).1 h2`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ptsFam : PtsFam := by
   intro E _ _ _ H D l Xo c Y S RM Sys Fx Or ψ hJ hψ hπψ hψπ

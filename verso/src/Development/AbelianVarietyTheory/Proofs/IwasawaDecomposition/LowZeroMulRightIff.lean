@@ -10,7 +10,7 @@ section
 variable {κ : Type} [CommRing κ] {b r : ℕ}
 
 /- English proof (translation)
-Use extensionality with `i j`. Distinguish the cases in `hi : i.val < b`. Simplify using `[topL, hi, Matrix.mul_apply]`. Simplify using `[topL, hi, Matrix.mul_apply]`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem topL_mul_right (y : Matrix (Fin b) (Fin r) κ) (h : Matrix (Fin r) (Fin r) κ) :
     topL r (y * h) = topL r y * h := by
@@ -20,7 +20,7 @@ theorem topL_mul_right (y : Matrix (Fin b) (Fin r) κ) (h : Matrix (Fin r) (Fin 
   · simp [topL, hi, Matrix.mul_apply]
 
 /- English proof (translation)
-Introduce `i j hi _`. Rewrite using `[Matrix.mul_apply]`. Conclude with `Finset.sum_eq_zero fun k _ => by rw [hy i k hi k.2, zero_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lowZero_mul_right {y : Matrix (Fin b) (Fin r) κ} (hy : LowZero r y) (h : Matrix (Fin r) (Fin r) κ) :
     LowZero r (y * h) := by
@@ -29,7 +29,7 @@ theorem lowZero_mul_right {y : Matrix (Fin b) (Fin r) κ} (hy : LowZero r y) (h 
   exact Finset.sum_eq_zero fun k _ => by rw [hy i k hi k.2, zero_mul]
 
 /- English proof (translation)
-Use `⟨fun H => ?_, fun H => lowZero_mul_right H _⟩` and prove the remaining obligations. Use `lowZero_mul_right H (h⁻¹).1` as an intermediate fact. Rewrite `this` using `[Matrix.mul_assoc, Units.mul_inv, Matrix.mul_one]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem lowZero_mul_right_iff (y : Matrix (Fin b) (Fin r) κ) (h : GL (Fin r) κ) :
     LowZero r (y * h.1) ↔ LowZero r y := by
@@ -38,7 +38,7 @@ theorem lowZero_mul_right_iff (y : Matrix (Fin b) (Fin r) κ) (h : GL (Fin r) κ
   rwa [Matrix.mul_assoc, Units.mul_inv, Matrix.mul_one] at this
 
 /- English proof (translation)
-Rewrite using `[topL_mul_right, Matrix.det_mul, mul_comm, Matrix.GeneralLinearGroup.val_det_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem det_topL_mul_right (y : Matrix (Fin b) (Fin r) κ) (h : GL (Fin r) κ) :
     (topL r (y * h.1)).det = ((Matrix.GeneralLinearGroup.det h : κˣ) : κ) * (topL r y).det := by
@@ -47,11 +47,11 @@ theorem det_topL_mul_right (y : Matrix (Fin b) (Fin r) κ) (h : GL (Fin r) κ) :
 end
 
 /- English proof (translation)
-Introduce `D b r Q ξ h y y' hy`. Establish `hiff : (∀ PP ∈ Q, LowZero r (y' PP) ∧ IsUnit (topL r (y' PP)).det) ↔ (∀ PP ∈ Q, LowZero r (y PP) ∧ IsUnit (topL r (y PP)).det)`. Use `forall₂_congr fun PP hP => ?_` and prove the remaining obligations. Rewrite using `[hy PP hP, lowZero_mul_right_iff, det_topL_mul_right, Units.isUnit_units_mul]`. Unfold `omegaQ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Distinguish the cases in `c : ∀ PP ∈ Q, LowZero r (y PP) ∧ IsUnit (topL r (y PP)).det`. Rewrite using `[dif_pos c, dif_pos (hiff.2 c), ← Finset.prod_attach Q, Units.coe_prod, ← Finset.prod_inv_distrib, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun PP _ => ?_` and prove the remaining obligations. Establish `e : ((hiff.2 c) PP.1 PP.2).2.unit = Matrix.GeneralLinearGroup.det (h PP.1) * (c PP.1 PP.2).2.unit`. Apply `Units.ext` to reduce the goal to its premises.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Units.val_mul, IsUnit.unit_spec, IsUnit.unit_spec, hy PP.1 PP.2, det_topL_mul_right]`. Rewrite using `[e, map_mul, Units.val_mul, zpow_neg_one, zpow_neg_one, mul_inv]`. Rewrite using `[dif_neg c, dif_neg (fun h' => c (hiff.1 h')), mul_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem omegaQ_mul_right : ∀ (D : D7) (b r : ℕ) (Q : Finset (Pl D.host.E)) (ξ : ∀ PP : Pl D.host.E, (kP PP)ˣ →* ℂˣ) (h : ∀ PP : Pl D.host.E, GL (Fin r) (kP PP)) (y y' : ∀ PP : Pl D.host.E, Matrix (Fin b) (Fin r) (kP PP)), (∀ PP ∈ Q, y' PP = y PP * (h PP).1) → omegaQ Q r ξ (-1) y' = ((∏ PP ∈ Q, ξ PP (Matrix.GeneralLinearGroup.det (h PP)) : ℂˣ) : ℂ)⁻¹ * omegaQ Q r ξ (-1) y := by
   intro D b r Q ξ h y y' hy

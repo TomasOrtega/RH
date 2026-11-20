@@ -2,9 +2,9 @@ import Mathlib
 import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.IsCompactUnitaryPointsAtPlaceFstMemCompact
 
 /- English proof (translation)
-Introduce `A K _ _ _ E _ _ c p R N Ω _ _ _ _ D σ`. Establish `hZ : (LinearMap.range D.h.toIntLinearMap).FG` using `Submodule.fg_range _`. Establish `hA : (Submodule.span A (Set.range D.h)).FG`. Take `⟨S, hS⟩` from `hZ`. Use `⟨S, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : Set.range D.h = (Submodule.span ℤ (S : Set Ω) : Set Ω)`. Rewrite using `[hS]`. Both sides reduce to the same expression. Rewrite using `[h1, Submodule.span_span_of_tower]`. Conclude with `(hA.sup (D.om_lat.fg.map _)).map _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.FinitelyGeneratedHomology.omHT_fg :
     ∀ {A K : Type} [inst : CommRing A] [inst_1 : Field K] [inst_2 : Algebra A K] {E : Type} [inst_3 : Field E]

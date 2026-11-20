@@ -14,7 +14,7 @@ open GlobalTheory.SS
 open GlobalTheory.SS.ArcInf
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.SS.ArcInf.extends_of_regular_second_axis` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDegenerationProofs%2FArcExtendsOfRegularSecondAxis.lean&line=36#L36)
 -/

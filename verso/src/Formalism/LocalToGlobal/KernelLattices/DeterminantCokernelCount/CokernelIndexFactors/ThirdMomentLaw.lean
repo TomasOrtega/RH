@@ -13,13 +13,13 @@ def chiRatio (χ : Γ →* Cˣ) (M M' : ℕ) (dg dg' dg₁ dg₂ : Γ) : C :=
 def idxExp (M M' : ℕ) (a a' : ℤ) : ℤ := 2 * ((M' : ℤ) * a - (M : ℤ) * a')
 
 /- English proof (translation)
-Rewrite using `[Units.val_zpow_eq_zpow_val, norm_zpow]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_units_zpow (x : Cˣ) (z : ℤ) : ‖((x ^ z : Cˣ) : C)‖ = ‖(x : C)‖ ^ z := by
   rw [Units.val_zpow_eq_zpow_val, norm_zpow]
 
 /- English proof (translation)
-The claim follows from `norm_ne_zero_iff.mpr x.ne_zero`.
+A detailed English derivation is pending.
 -/
 theorem norm_units_ne_zero (x : Cˣ) : ‖(x : C)‖ ≠ 0 := norm_ne_zero_iff.mpr x.ne_zero
 
@@ -28,7 +28,7 @@ section Val
 variable {V : Type*} [Fintype V]
 
 /- English proof (translation)
-Use `first`. Consider the case `(rw [map_prod, Units.coe_prod, norm_prod]`. Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[map_zpow, norm_units_zpow, ht v])`. Consider the case `(simp [map_prod, norm_prod, norm_units_zpow, ht])`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem norm_chi_prod (χ : Γ →* Cˣ) (t : V → Γ) (Q : V → ℕ) (a : V → ℤ)
     (ht : ∀ v, ‖((χ (t v) : Cˣ) : C)‖ = ‖(Q v : C)‖) :
@@ -40,13 +40,13 @@ theorem norm_chi_prod (χ : Γ →* Cˣ) (t : V → Γ) (Q : V → ℕ) (a : V �
   | (simp [map_prod, norm_prod, norm_units_zpow, ht])
 
 /- English proof (translation)
-Substitute `hk hk'` using the available equality. Establish `hu1 : χ u = 1` using `hχH u hu`. Establish `hu1' : χ u' = 1` using `hχH u' hu'`. Establish `hQn : ∀ v, ‖(Q v : C)‖ ≠ 0` using `fun v => norm_ne_zero_iff.mpr (hQ v)`. Establish `hα` using `norm_units_ne_zero (χ dg)`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hβ` using `norm_units_ne_zero (χ dg')`. Establish `hprod : ∏ v, ‖(Q v : C)‖ ^ ((M' : ℤ) * a v - (M : ℤ) * a' v) = (∏ v, ‖(Q v : C)‖ ^ a v) ^ (M' : ℤ) * (∏ v, ‖(Q v : C)‖ ^ a' v) ^ (-(M : ℤ))` using `by first`. Consider the case `rw [← Finset.prod_zpow, ← Finset.prod_zpow, ← Finset.prod_mul_distrib]`. Consider the case `rw [Finset.prod_zpow, Finset.prod_zpow, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← zpow_mul, ← zpow_mul, ← zpow_add₀ (hQn v)]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [chiRatio, Units.val_div_eq_div_val, Units.val_mul, norm_div, norm_mul, norm_units_zpow, map_mul, hu1, hu1', mul_one, norm_chi_prod χ t Q a ht, norm_chi_prod χ t Q a' ht]`. Rewrite using `[hprod, mul_zpow, mul_zpow]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `first`. Consider the case `(rw [div_eq_iff (mul_ne_zero (zpow_ne_zero _ hα) (zpow_ne_zero _ hβ))] ring)`. Consider the case `(field_simp ring)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem norm_chiRatio (χ : Γ →* Cˣ) (H : Subgroup Γ) (hχH : ∀ h ∈ H, χ h = 1)
     (M M' : ℕ) (t : V → Γ) (Q : V → ℕ) (a a' : V → ℤ) (dg dg' dg₁ dg₂ u u' : Γ)
@@ -79,9 +79,9 @@ theorem norm_chiRatio (χ : Γ →* Cˣ) (H : Subgroup Γ) (hχH : ∀ h ∈ H, 
      ring)
 
 /- English proof (translation)
-Establish `hQn : ∀ v, ‖(Q v : C)‖ ≠ 0` using `fun v => norm_ne_zero_iff.mpr (hQ v)`. Establish `hR : 0 ≤ ∏ v, ‖(Q v : C)‖ ^ ((M' : ℤ) * a v - (M : ℤ) * a' v)` using `Finset.prod_nonneg fun v _ => zpow_nonneg (norm_nonneg _) _`. Establish `hsq : ‖s‖ * ‖s‖ = (∏ v, ‖(Q v : C)‖ ^ ((M' : ℤ) * a v - (M : ℤ) * a' v)) * (∏ v, ‖(Q v : C)‖ ^ ((M' : ℤ) * a v - (M : ℤ) * a' v))`. Rewrite using `[← norm_mul, hs, hn, norm_prod, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[norm_zpow, ← zpow_add₀ (hQn v), idxExp, two_mul]`. Use `first`. Consider the case `exact (mul_self_inj (norm_nonneg _) hR).1 hsq`. Consider the case `nlinarith [norm_nonneg s]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem norm_sqrt_idx (M M' : ℕ) (Q : V → ℕ) (a a' : V → ℤ) (hQ : ∀ v, (Q v : C) ≠ 0)
     (n : ℕ) (hn : (n : C) = ∏ v, (Q v : C) ^ idxExp M M' (a v) (a' v)) (s : C) (hs : s * s = n) :
@@ -99,7 +99,7 @@ theorem norm_sqrt_idx (M M' : ℕ) (Q : V → ℕ) (a a' : V → ℤ) (hQ : ∀ 
   | nlinarith [norm_nonneg s]
 
 /- English proof (translation)
-Establish `hQn : ∀ v, ‖(Q v : C)‖ ≠ 0` using `fun v => norm_ne_zero_iff.mpr (hQ v)`. Rewrite using `[norm_mul, norm_inv, norm_sqrt_idx M M' Q a a' hQ n hn s hs, norm_chiRatio χ H hχH M M' t Q a a' dg dg' dg₁ dg₂ u u' hu hu' hk hk' hQ ht]`. Conclude with `inv_mul_cancel₀ (Finset.prod_ne_zero_iff.mpr fun v _ => zpow_ne_zero _ (hQn v))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_inv_mul_charRatio (χ : Γ →* Cˣ) (H : Subgroup Γ) (hχH : ∀ h ∈ H, χ h = 1)
     (M M' : ℕ) (t : V → Γ) (Q : V → ℕ) (a a' : V → ℤ) (dg dg' dg₁ dg₂ u u' : Γ)
@@ -144,7 +144,7 @@ def RelIndexFormula : Prop :=
         (matLat O K N N').relIndex (movLat O K k k') = Q ^ ((N' : ℤ) * a - (N : ℤ) * a').toNat
 
 /- English proof (translation)
-Rewrite using `[Nat.cast_prod]`. Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[hnv v, Nat.cast_pow, ← zpow_natCast, Int.toNat_of_nonneg (hpos v)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem hn_of_idx {V : Type*} [Fintype V] (M₀ M₀' : ℕ) (Q : V → ℕ) (a a' : V → ℤ) (nv : V → ℕ)
     (hpos : ∀ v, 0 ≤ idxExp M₀ M₀' (a v) (a' v))
@@ -155,7 +155,7 @@ theorem hn_of_idx {V : Type*} [Fintype V] (M₀ M₀' : ℕ) (Q : V → ℕ) (a 
   rw [hnv v, Nat.cast_pow, ← zpow_natCast, Int.toNat_of_nonneg (hpos v)]
 
 /- English proof (translation)
-Unfold `idxExp`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem idxExp_eq (M₀ M₀' : ℕ) (a a' : ℤ) :
     idxExp M₀ M₀' a a' = ((2 * M₀' : ℕ) : ℤ) * a - ((2 * M₀ : ℕ) : ℤ) * a' := by
@@ -176,11 +176,11 @@ section IdxMain
 open scoped Matrix
 
 /- English proof (translation)
-Establish `hinj` using `IsFractionRing.injective O K`. Establish `key : ∀ (j : ℕ) (V : Oˣ), algebraMap O K ϖ ^ j = algebraMap O K (V : O) → j = 0`. Introduce `j V hj`. Assume the negation of the conclusion as `hj0`. Establish `h1 : ϖ ^ j = (V : O)` using `hinj (by rw [map_pow]; exact hj)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `h2 : IsUnit (ϖ ^ j)` using `by rw [h1]; exact V.isUnit`. Conclude with `hϖ.1 ((isUnit_pow_iff hj0).1 h2)`. Break down `Int.eq_nat_or_neg m with ⟨j, rfl | rfl⟩` into its components or cases. Rewrite `h` using `[zpow_natCast]`. Simplify using `[key j U h]`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[zpow_neg, zpow_natCast, inv_eq_iff_eq_inv, ← map_units_inv (algebraMap O K)]`. Simplify using `[key j _ h]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem zpow_eq_unit {O K : Type*} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field K] [Algebra O K]
     [IsFractionRing O K] (ϖ : O) (hϖ : Irreducible ϖ) (m : ℤ) (U : Oˣ)
@@ -199,9 +199,9 @@ theorem zpow_eq_unit {O K : Type*} [CommRing O] [IsDomain O] [IsDiscreteValuatio
     simp [key j _ h]
 
 /- English proof (translation)
-Simplify using `only [movHom, AddMonoidHom.coe_mk, ZeroHom.coe_mk, inv_inv]`. Use `first`. Consider the case `(rw [← Matrix.mul_assoc, ← Matrix.mul_assoc, Units.inv_mul, Matrix.one_mul, Matrix.mul_assoc, Units.inv_mul, Matrix.mul_one])`. Consider the case `(simp only [← Matrix.mul_assoc, Units.inv_mul, Matrix.one_mul]`. Rewrite using `[Matrix.mul_assoc, Units.inv_mul, Matrix.mul_one])`.
+Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `simp [Matrix.mul_assoc]`.
+A detailed English derivation is pending.
 -/
 theorem movHom_inv_apply {K : Type*} [Field K] {N N' : ℕ} (k : GL (Fin N) K) (k' : GL (Fin N') K)
     (x : Matrix (Fin N') (Fin N) K) : movHom K k⁻¹ k'⁻¹ (movHom K k k' x) = x := by
@@ -214,7 +214,7 @@ theorem movHom_inv_apply {K : Type*} [Field K] {N N' : ℕ} (k : GL (Fin N) K) (
   | simp [Matrix.mul_assoc]
 
 /- English proof (translation)
-Introduce `x y hxy`. Establish `h` using `congrArg (movHom K k⁻¹⁻¹ k'⁻¹⁻¹) hxy`. Rewrite `h` using `[movHom_inv_apply, movHom_inv_apply]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem movHom_inv_injective {K : Type*} [Field K] {N N' : ℕ} (k : GL (Fin N) K) (k' : GL (Fin N') K) :
     Function.Injective (movHom K k⁻¹ k'⁻¹) := by
@@ -223,9 +223,9 @@ theorem movHom_inv_injective {K : Type*} [Field K] {N N' : ℕ} (k : GL (Fin N) 
   rwa [movHom_inv_apply, movHom_inv_apply] at h
 
 /- English proof (translation)
-Establish `h1 : x ^ ((N' : ℤ) * a) = (x ^ a) ^ N'` using `by rw [mul_comm, zpow_mul, zpow_natCast]`. Establish `h2 : x ^ ((N : ℤ) * a') = (x ^ a') ^ N` using `by rw [mul_comm, zpow_mul, zpow_natCast]`. Rewrite using `[zpow_sub₀ hx, h1, h2]`. Use `first`. Consider the case `ring`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Consider the case `(field_simp ring)`.
+A detailed English derivation is pending.
 -/
 private theorem zpow_identity_aux_lemma {K : Type*} [Field K] (x y z : K) (hx : x ≠ 0) (N N' : ℕ) (a a' : ℤ) :
     ((x ^ a' * z)⁻¹) ^ N * (x ^ a * y) ^ N' = x ^ ((N' : ℤ) * a - (N : ℤ) * a') * (y ^ N' * z⁻¹ ^ N) := by
@@ -238,55 +238,49 @@ private theorem zpow_identity_aux_lemma {K : Type*} [Field K] (x y z : K) (hx : 
      ring)
 
 /- English proof (translation)
-Unfold `RelIndexFormula`. Introduce `O K _ _ _ _ _ _ ϖ hϖ Q hQ N N' k k' a a' w w' hdk hdk' hle`. Establish `hmem : ∀ y : Matrix (Fin N') (Fin N) K, y ∈ matLat O K N N' ↔ ∀ i j, y i j ∈ (algebraMap O K).range` using `fun y => Iff.rfl`. Establish `hTT₀ : ∀ x, movHom K k⁻¹ k'⁻¹ (movHom K k k' x) = x` using `movHom_inv_apply k k'`. Establish `hT₀T : ∀ x, movHom K k k' (movHom K k⁻¹ k'⁻¹ x) = x`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `x`. Simplify `movHom_inv_apply k⁻¹ k'⁻¹ x` using `only [inv_inv]`. Establish `hTL : ∀ y ∈ matLat O K N N', movHom K k⁻¹ k'⁻¹ y ∈ matLat O K N N'`. Introduce `y hy`. Take `⟨x, hx, rfl⟩` from `AddSubgroup.mem_map.1 (hle hy)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hTT₀]` and apply the resulting hypothesis. Establish `hent : ∀ (i p : Fin N') (j q : Fin N), ∃ z : O, algebraMap O K z = ((k'⁻¹ : GL (Fin N') K) : Matrix (Fin N') (Fin N') K) i p * (k : Matrix (Fin N) (Fin N) K) q j`. Introduce `i p j q`. Establish `hE : (Matrix.of fun (r : Fin N') (c : Fin N) => if r = p then (if c = q then (1 : K) else 0) else 0) ∈ matLat O K N N'`. Use `(hmem _).2 fun r c => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Matrix.of_apply]`. Use `split_ifs`. Conclude with `Subring.one_mem _`. Conclude with `Subring.zero_mem _`. Conclude with `Subring.zero_mem _`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Treat this case separately. Treat this case separately.
 
-Take `⟨z, hz⟩` from `RingHom.mem_range.1 ((hmem _).1 (hTL _ hE) i j)`. Use `⟨z, hz.trans ?_⟩` and prove the remaining obligations. Use `first`. Consider the case `(simp only [movHom, AddMonoidHom.coe_mk, ZeroHom.coe_mk, inv_inv, Matrix.mul_apply, Matrix.of_apply, mul_ite, mul_one, mul_zero, ite_mul, zero_mul, Finset.sum_ite_eq', Finset.sum_ite_eq, Finset.mem_univ, ite_true]; done)`. Consider the case `(simp only [movHom, AddMonoidHom.coe_mk, ZeroHom.coe_mk, inv_inv, Matrix.mul_apply, Matrix.of_apply, mul_ite, mul_one, mul_zero, ite_mul, zero_mul, Finset.sum_ite_eq', Finset.sum_ite_eq, Finset.mem_univ, if_true]; done)`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `(simp [movHom, Matrix.mul_apply, mul_ite, ite_mul]; done)`. Use `choose D hD using hent`. Take `⟨Mat, hMat⟩ : ∃ Mat : Matrix (Fin N' × Fin N) (Fin N' × Fin N) O, ∀ i j p q, algebraMap O K (Mat (i, j) (p, q)) = ((k'⁻¹ : GL (Fin N') K) : Matrix (Fin N') (Fin N') K) i p * (k : Matrix (Fin N) (Fin N) K) q j` from `⟨Matrix.of fun r c => D r.1 c.1 r.2 c.2, fun i j p q => hD i p j q⟩`. Take `⟨Φ, hΦ⟩ : ∃ Φ : (Fin N' × Fin N → O) →+ Matrix (Fin N') (Fin N) K, ∀ x i j, Φ x i j = algebraMap O K (x (i, j))` from `⟨{ toFun := fun x => Matrix.of fun i j => algebraMap O K (x (i, j)) map_zero' := by ext i j; simp map_add' := fun x y => by ext i j; simp }, fun x i j => rfl⟩`. Establish `hΦinj : Function.Injective Φ`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `x y hxy`. Use function extensionality and compare the values at `r`. Take `⟨i, j⟩` from `r`. Establish `h : Φ x i j = Φ y i j` using `by rw [hxy]`. Rewrite `h` using `[hΦ, hΦ]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `IsFractionRing.injective O K h`. Establish `hrange : Φ.range = matLat O K N N'`. Use extensionality with `y`. Rewrite using `[AddMonoidHom.mem_range, hmem]`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨x, rfl⟩ i j`. Rewrite using `[hΦ]`. Conclude with `RingHom.mem_range.2 ⟨x (i, j), rfl⟩`. Introduce `hy`. Establish `hy' : ∀ i j, ∃ z, algebraMap O K z = y i j` using `fun i j => RingHom.mem_range.1 (hy i j)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `choose f hf using hy'`. Use `⟨fun r => f r.1 r.2, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Rewrite using `[hΦ]`. Conclude with `hf i j`.
+Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hcomm : ∀ x, Φ (Matrix.toLin' Mat x) = movHom K k⁻¹ k'⁻¹ (Φ x)`. Introduce `x`. Use extensionality with `i j`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hΦ, Matrix.toLin'_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Treat this case separately.
 
-Use `first`. Consider the case `(simp only [Matrix.mulVec, dotProduct, Fintype.sum_prod_type, map_sum, map_mul, hMat]; done)`. Consider the case `(simp only [Matrix.mulVec, Matrix.dotProduct, Fintype.sum_prod_type, map_sum, map_mul, hMat]; done)`. Consider the case `(simp [Matrix.mulVec, dotProduct, Fintype.sum_prod_type, map_sum, hMat]; done)`. Use `_ = ∑ l : Fin N, (∑ m : Fin N', ((k'⁻¹ : GL (Fin N') K) : Matrix (Fin N') (Fin N') K) i m * Φ x m l) * (k : Matrix (Fin N) (Fin N) K) l j := by`.
+Treat this case separately. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[hΦ]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Use `_ = movHom K k⁻¹ k'⁻¹ (Φ x) i j := by first`. Consider the case `(simp only [movHom, AddMonoidHom.coe_mk, ZeroHom.coe_mk, inv_inv, Matrix.mul_apply]; done)`. Consider the case `rfl`. Establish `hsub : ((matLat O K N N').comap (movHom K k k')).comap Φ = (LinearMap.range (Matrix.toLin' Mat)).toAddSubgroup`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
-Use extensionality with `x`. Rewrite using `[AddSubgroup.mem_comap, AddSubgroup.mem_comap, Submodule.mem_toAddSubgroup, LinearMap.mem_range]`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Rewrite `hx` using `[← hrange]`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Take `⟨y, hy⟩` from `AddMonoidHom.mem_range.1 hx`. Use `⟨y, hΦinj ?_⟩` and prove the remaining obligations. Rewrite using `[hcomm, hy, hTT₀]`. Introduce and unpack `⟨y, rfl⟩`. Rewrite using `[hcomm, hT₀T, ← hrange]`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
-Conclude with `AddMonoidHom.mem_range.2 ⟨y, rfl⟩`. Establish `hidx : ((matLat O K N N').comap (movHom K k k')).relIndex (matLat O K N N') = (((matLat O K N N').comap (movHom K k k')).comap Φ).index` using `by first`. Consider the case `(rw [AddSubgroup.index_comap, hrange])`. Consider the case `(rw [← AddSubgroup.relIndex_top_right, AddSubgroup.relIndex_comap, ← AddMonoidHom.range_eq_map, hrange])`. Establish `hrc : (matLat O K N N').relIndex ((matLat O K N N').map (movHom K k k')) = ((matLat O K N N').comap (movHom K k k')).relIndex (matLat O K N N')` using `by first`.
+Treat this case separately. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Consider the case `exact (AddSubgroup.relIndex_comap _ _).symm`. Consider the case `rw [AddSubgroup.relIndex_comap]`. Establish `hmapMat : (algebraMap O K).mapMatrix Mat = Matrix.kroneckerMap (· * ·) ((k'⁻¹ : GL (Fin N') K) : Matrix (Fin N') (Fin N') K) (k : Matrix (Fin N) (Fin N) K).transpose`. Use extensionality with `⟨i, j⟩ ⟨p, q⟩`. Use `first`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Consider the case `(rw [RingHom.mapMatrix_apply, Matrix.map_apply, hMat, Matrix.kroneckerMap_apply, Matrix.transpose_apply]; done)`. Consider the case `(simp [hMat, Matrix.kroneckerMap_apply]; done)`. Establish `hdetA : ((k'⁻¹ : GL (Fin N') K) : Matrix (Fin N') (Fin N') K).det = ((k' : Matrix (Fin N') (Fin N') K).det)⁻¹` using `by first`. Consider the case `exact eq_inv_of_mul_eq_one_left (by rw [← Matrix.det_mul, Units.inv_mul, Matrix.det_one])`. Consider the case `rw [Matrix.coe_units_inv, Matrix.det_nonsing_inv, Ring.inverse_eq_inv']`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Consider the case `simp`. Establish `hπ : algebraMap O K ϖ ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective O K)).2 hϖ.ne_zero`. Take `⟨u₀, hu₀⟩ : ∃ u₀ : Oˣ, algebraMap O K (u₀ : O) = algebraMap O K (w : O) ^ N' * (algebraMap O K (w' : O))⁻¹ ^ N` from `⟨w ^ N' * w'⁻¹ ^ N, by simp only [Units.val_mul, Units.val_pow_eq_pow_val, map_mul, map_pow, map_units_inv]⟩`. Establish `hdetK : algebraMap O K Mat.det = algebraMap O K ϖ ^ ((N' : ℤ) * a - (N : ℤ) * a') * algebraMap O K (u₀ : O)`. Rewrite using `[hu₀, RingHom.map_det, hmapMat, Matrix.det_kronecker, Matrix.det_transpose, hdetA, hdk, hdk']`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Simplify using `only [Fintype.card_fin]`. Conclude with `zpow_identity_aux_lemma _ _ _ hπ N N' a a'`. Establish `hU0 : algebraMap O K (u₀ : O) ≠ 0` using `(u₀.isUnit.map (algebraMap O K)).ne_zero`. Establish `hd0 : Mat.det ≠ 0`. Introduce `h0`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hdetK` using `[h0, map_zero]`. Conclude with `mul_ne_zero (zpow_ne_zero _ hπ) hU0 hdetK.symm`. Take `⟨m, v, hdv⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hd0 hϖ`. Establish `hV : algebraMap O K (v : O) ≠ 0` using `(v.isUnit.map (algebraMap O K)).ne_zero`. Establish `h' : algebraMap O K (v : O) * algebraMap O K ϖ ^ m = algebraMap O K ϖ ^ ((N' : ℤ) * a - (N : ℤ) * a') * algebraMap O K (u₀ : O)`.
-
-Rewrite using `[← hdetK, hdv, map_mul, map_pow]`. Establish `hm : algebraMap O K ϖ ^ m = (algebraMap O K (v : O))⁻¹ * (algebraMap O K (v : O) * algebraMap O K ϖ ^ m)`. Rewrite using `[← mul_assoc, inv_mul_cancel₀ hV, one_mul]`. Establish `hkey : algebraMap O K ϖ ^ ((m : ℤ) - ((N' : ℤ) * a - (N : ℤ) * a')) = algebraMap O K ((u₀ * v⁻¹ : Oˣ) : O)`. Rewrite using `[zpow_sub₀ hπ, zpow_natCast, Units.val_mul, map_mul, map_units_inv, div_eq_iff (zpow_ne_zero _ hπ), hm, h']`.
-
-Expand and normalize the polynomial expressions, which then agree. Establish `hm0` using `zpow_eq_unit ϖ hϖ _ _ hkey`. Establish `he : (N' : ℤ) * a - (N : ℤ) * a' = m` using `by linarith`. Establish `hc` using `card_quot_range_toLin' ϖ hϖ Mat m v (by rw [hdv, mul_comm])`. Use `⟨by rw [he]; omega, ?_⟩` and prove the remaining obligations.
-
-Establish `htoNat : ((N' : ℤ) * a - (N : ℤ) * a').toNat = m` using `by rw [he]; simp`. Rewrite using `[htoNat, ← hQ, ← hc, show movLat O K k k' = (matLat O K N N').map (movHom K k k') from rfl, hrc, hidx, hsub]`. Use `first`. Consider the case `rfl`. Consider the case `exact AddSubgroup.index_eq_card _`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem relIndexFormula : RelIndexFormula := by
   unfold RelIndexFormula
@@ -464,15 +458,13 @@ def MapsToUpToSign (ΞTh : F →ₗ[C] M) (oneYP : F) (ThY : M) (s : C) : Prop :
   ∃ ε : C, (ε = 1 ∨ ε = -1) ∧ ΞTh (s • oneYP) = ε • ThY
 
 /- English proof (translation)
-Take `⟨ε, hε, hΞ⟩` from `hvac`. Establish `hn0 : (n : C) ≠ 0`. Rewrite using `[hn]`. Conclude with `Finset.prod_ne_zero_iff.mpr fun v _ => zpow_ne_zero _ (hQ v)`. Establish `hs0 : s ≠ 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `rfl`. Apply `hn0` to reduce the goal to its premises. Rewrite using `[← hs, zero_mul]`. Establish `hc0 : ((χ dg ^ (M₀' : ℤ) * χ dg' ^ (-(M₀ : ℤ)) : Cˣ) : C) ≠ 0` using `Units.ne_zero _`. Use `⟨ε * (s⁻¹ * chiRatio χ M₀ M₀' dg dg' dg₁ dg₂), ?_, ?_⟩` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[norm_mul, norm_inv_mul_charRatio χ H hχH M₀ M₀' t Q a a' dg dg' dg₁ dg₂ u u' hu hu' hk hk' hQ ht n hn s hs, mul_one]`. Break down `hε with rfl | rfl` into its components or cases. Conclude with `norm_one`. Rewrite using `[norm_neg, norm_one]`. Establish `hx : ΞTh oneYP = s⁻¹ • ε • ThY`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← hΞ, map_smul, inv_smul_smul₀ hs0]`. Simplify using `only [xiNat, eNat, chiRatio, LinearMap.smul_apply, hx, smul_smul, Units.val_div_eq_div_val]`. Use `congr 1`. Use `first`. Consider the case `(rw [mul_assoc ε, mul_assoc s⁻¹, div_mul_cancel₀ _ hc0] ring)`.
-
-Consider the case `(field_simp ring)`.
+Reduce the equality to equality of the corresponding arguments. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_norm_eq_one_scaledMap_eq {V : Type*} [Fintype V] (χ : Γ →* Cˣ) (H : Subgroup Γ) (hχH : ∀ h ∈ H, χ h = 1)
     (M₀ M₀' : ℕ) (t : V → Γ) (Q : V → ℕ) (a a' : V → ℤ) (dg dg' dg₁ dg₂ u u' : Γ)
@@ -512,9 +504,9 @@ end Model
 section Assembled
 
 /- English proof (translation)
-Establish `hR` using `fun v => relIndexFormula (OV v) (KV v) (ϖ v) (hϖ v) _ rfl (2 * M₀) (2 * M₀') (k v) (k' v) (a v) (a' v) (wv v) (wv' v) (hdk v) (hdk' v) (hle v)`. Use `exists_norm_eq_one_scaledMap_eq χ H hχH M₀ M₀' t (fun v => Nat.card (IsLocalRing.ResidueField (OV v))) a a' dg dg' dg₁ dg₂ u u' hu hu' hk hk' hQ ht _ ?_ s hs ΞTh oneYP ThY hvac` and prove the remaining obligations. Use `hn_of_idx M₀ M₀' _ a a' _ (fun v => ?_) (fun v => ?_)` and prove the remaining obligations. Rewrite using `[idxExp_eq]`. Conclude with `(hR v).1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[idxExp_eq]`. Conclude with `(hR v).2`.
+A detailed English derivation is pending.
 -/
 theorem exists_norm_eq_one_scaledMap_eq_of_relIndex {V : Type*} [Fintype V] (OV KV : V → Type) [∀ v, CommRing (OV v)] [∀ v, IsDomain (OV v)]
     [∀ v, IsDiscreteValuationRing (OV v)] [∀ v, Field (KV v)] [∀ v, Algebra (OV v) (KV v)]

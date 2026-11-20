@@ -9,7 +9,7 @@ attribute [local instance] GlobalTheory.Mem.Col2.starE
 namespace GlobalTheory.Mem.Df
 
 /- English proof (translation)
-Introduce `B C W _ η`. Take `⟨V, -, -, -, -, -, -, -, hη, -⟩` from `GlobalTheory.Mem.exists_divStage B C W W.Drows W.onb.toBasis (fun _ => 1) (fun _ => by simp) ⊤ (fun u => ((C.fm u).lat 0).L) (fun _ => 0) (fun _ => 0) η`. Conclude with `⟨V, hη⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_divStage_standIn : ∀ (B : Base) (C : Cols B) (W : RowsRest B C), StandIn W →
     ∀ η : ℝ, ∃ V : DivStage B C W, V.div.etaF = η := by

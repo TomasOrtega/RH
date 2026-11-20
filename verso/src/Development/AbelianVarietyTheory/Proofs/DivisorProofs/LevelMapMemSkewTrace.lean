@@ -7,21 +7,21 @@ namespace GlobalTheory.SUCong.LevMem
 variable {A : Type} [CommRing A] {n : Type} [Fintype n] [DecidableEq n]
 
 /- English proof (translation)
-Introduce `i j` and use `by rw [mul_apply]; exact Subring.sum_mem _ fun l _ => mul_mem (hM i l) (hN l j)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem intM_mul (S : Subring A) {M N : Matrix n n A} (hM : ∀ i j, M i j ∈ S)
     (hN : ∀ i j, N i j ∈ S) : ∀ i j, (M * N) i j ∈ S := fun i j => by
   rw [mul_apply]; exact Subring.sum_mem _ fun l _ => mul_mem (hM i l) (hN l j)
 
 /- English proof (translation)
-Introduce `i j` and use `by simp only [Formalism.UG.cT, transpose_apply, map_apply]; exact hσ _ (hM j i)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem intM_cT (S : Subring A) (σ : A →+* A) (hσ : ∀ s ∈ S, σ s ∈ S) {M : Matrix n n A}
     (hM : ∀ i j, M i j ∈ S) : ∀ i j, Formalism.UG.cT σ M i j ∈ S := fun i j => by
   simp only [Formalism.UG.cT, transpose_apply, map_apply]; exact hσ _ (hM j i)
 
 /- English proof (translation)
-Proceed by induction on `k generalizing a with`. Consider the case `zero => simpa using ha`. Consider the case `succ k ih => exact h _ (ih (by rw [← mul_assoc, mul_comm _ ϖ, ← pow_succ']; exact ha))`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem cancel_pow {ϖ : A} (h : ∀ a : A, ϖ * a = 0 → a = 0) (k : ℕ) {a : A}
     (ha : ϖ ^ k * a = 0) : a = 0 := by
@@ -30,7 +30,7 @@ theorem cancel_pow {ϖ : A} (h : ∀ a : A, ϖ * a = 0 → a = 0) (k : ℕ) {a :
   | succ k ih => exact h _ (ih (by rw [← mul_assoc, mul_comm _ ϖ, ← pow_succ']; exact ha))
 
 /- English proof (translation)
-Use extensionality with `i j`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using `[Formalism.UG.cT, hc]`. Simplify using `[Formalism.UG.cT, hc, one_apply, h, Ne.symm h]`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem cT_one_add_smul (σ : A →+* A) {c : A} (hc : σ c = c) (X : Matrix n n A) :
     Formalism.UG.cT σ (1 + c • X) = 1 + c • Formalism.UG.cT σ X := by
@@ -44,27 +44,27 @@ end GlobalTheory.SUCong.LevMem
 open GlobalTheory.SUCong.LevMem in
 
 /- English proof (translation)
-Introduce `A _ n _ _ S σ H ϖ q k hR hF hk g hg`. Take `⟨hU, hdet, -, -, hpow⟩` from `hg`. Take `⟨-, hσS, hϖS, hσϖ, hnz, -⟩` from `hR`. Take `⟨hHS, -, -⟩` from `hF`. Use `set X : Matrix n n A := fun i j => Classical.choose (hpow i j) with hX`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hXS : ∀ i j, X i j ∈ S` using `fun i j => (Classical.choose_spec (hpow i j)).1`. Establish `hXe : ∀ i j, ((g : Matrix n n A) - 1) i j = ϖ ^ k * X i j` using `fun i j => (Classical.choose_spec (hpow i j)).2`. Establish `hg1 : (g : Matrix n n A) = 1 + ϖ ^ k • X`. Use extensionality with `i j`. Use `hXe i j` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[Matrix.sub_apply]`. Rewrite using `[Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, ← this]`. Expand and normalize the polynomial expressions, which then agree. Establish `hkm : ϖ ^ k = ϖ * ϖ ^ (k - 1)` using `by rw [← pow_succ']; congr 1; omega`. Use `⟨X, hXS, fun i j => ?_, fun i j => ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [levMap, dif_pos (hpow i j)]`. Both sides reduce to the same expression. Establish `hU' : Formalism.UG.cT σ (g : Matrix n n A) * H * (g : Matrix n n A) = H` using `hU`. Rewrite `hU'` using `[hg1, cT_one_add_smul σ (by rw [map_pow, hσϖ]) X]`. Establish `hexp : (1 + ϖ ^ k • Formalism.UG.cT σ X) * H * (1 + ϖ ^ k • X) = H + ϖ ^ k • (Formalism.UG.cT σ X * H + H * X + ϖ ^ k • (Formalism.UG.cT σ X * H * X))`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [add_mul, mul_add, one_mul, mul_one, Matrix.smul_mul, Matrix.mul_smul, smul_add, smul_smul, Matrix.mul_assoc]`. Normalize the expressions using the abelian group laws. Rewrite `hU'` using `[hexp]`. Establish `e` using `congrFun (congrFun hU' i) j`. Simplify using `only [Matrix.add_apply, Matrix.smul_apply, smul_eq_mul] at e`.
+Normalize the expressions using the abelian group laws. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e2 : ϖ ^ k * ((Formalism.UG.cT σ X * H) i j + (H * X) i j + ϖ ^ k * (Formalism.UG.cT σ X * H * X) i j) = 0` using `by linear_combination e`. Establish `e3` using `cancel_pow hnz k e2`. Establish `hZ` using `intM_mul S (intM_mul S (intM_cT S σ hσS hXS) hHS) hXS i j`. Use `⟨-(ϖ ^ (k - 1) * (Formalism.UG.cT σ X * H * X) i j), neg_mem (mul_mem (pow_mem hϖS _) hZ), ?_⟩` and prove the remaining obligations. Rewrite using `[pow_one, Matrix.add_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `e3 - (Formalism.UG.cT σ X * H * X) i j * hkm`. Set `XS : Matrix n n S` to `fun i j => ⟨X i j, hXS i j⟩`. Set `t : S` to `⟨ϖ, hϖS⟩ ^ k`. Establish `hd` using `Matrix.det_one_add_smul t XS`. Use `set c := Polynomial.eval t (1 + (Polynomial.X : Polynomial S) • XS.map Polynomial.C).det.divX.divX`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hm : S.subtype.mapMatrix (1 + t • XS) = (g : Matrix n n A)`. Rewrite using `[hg1]`. Use extensionality with `i j`. Distinguish the cases in `h : i = j`. Apply the tactic sequence `subst h; simp [XS, t] <;> rfl`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Apply the tactic sequence `simp [XS, t, one_apply, h] <;> rfl`. Establish `h1 : ((1 + t • XS).det : A) = (g : Matrix n n A).det`. Rewrite using `[← hm, ← RingHom.map_det]`. Both sides reduce to the same expression. Establish `h2 : ((1 + t • XS).det : A) = 1 + X.trace * ϖ ^ k + (c : A) * (ϖ ^ k) ^ 2`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply the tactic sequence `rw [hd]; simp [t, XS, Matrix.trace] <;> rfl`. Rewrite `h2` using `[h1, hdet]`. Establish `e3 : ϖ ^ k * (X.trace + ϖ ^ k * c) = 0` using `by linear_combination -h2`. Establish `e4` using `cancel_pow hnz k e3`. Use `⟨-(ϖ ^ (k - 1) * c), neg_mem (mul_mem (pow_mem hϖS _) c.2), ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite using `[pow_one]`. Take the linear combination `e4 - (c : A) * hkm`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.SUCong.levMap_mem_skewTr : ∀ {A : Type} [CommRing A] {n : Type} [Fintype n] [DecidableEq n] (S : Subring A) (σ : A →+* A) (H : Matrix n n A) (ϖ : A) (q k : ℕ), GoodRing S σ ϖ q → GoodForm S σ H → 1 ≤ k → ∀ (g : GL n A), g ∈ congSU S σ H ϖ k → levMap S ϖ k (g : Matrix n n A) ∈ skewTr S σ H ϖ := by
   intro A _ n _ _ S σ H ϖ q k hR hF hk g hg

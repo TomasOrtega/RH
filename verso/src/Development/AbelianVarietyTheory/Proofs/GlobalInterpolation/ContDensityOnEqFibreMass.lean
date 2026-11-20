@@ -6,17 +6,17 @@ open NumberField IsDedekindDomain MeasureTheory Topology Formalism.MainNotions.G
 namespace GlobalTheory
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Establish `hpos : 0 < ‖h t‖` using `norm_pos_iff.2 hne`. Establish `hca : ContinuousAt h t` using `hc.continuousAt (hB.mem_nhds ht)`. Take `⟨ε, hε, hball⟩` from `Metric.continuousAt_iff.1 hca (‖h t‖ / 2) (half_pos hpos)`. Take `⟨δ, hδ, hδB⟩` from `Metric.isOpen_iff.1 hB t ht`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hρ0 : 0 < min (ε / 2) (δ / 2)` using `lt_min (half_pos hε) (half_pos hδ)`. Establish `hmemS : ∀ b ∈ Metric.closedBall t (min (ε / 2) (δ / 2)), dist b t < ε ∧ dist b t < δ`. Introduce `b hb`. Establish `hb'` using `Metric.mem_closedBall.1 hb`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Combine the linear relations using `[min_le_left (ε / 2) (δ / 2)]`. Combine the linear relations using `[min_le_right (ε / 2) (δ / 2)]`. Establish `hSc` using `isCompact_closedBall t (min (ε / 2) (δ / 2))`. Establish `hSB : Metric.closedBall t (min (ε / 2) (δ / 2)) ⊆ B` using `fun b hb => hδB (Metric.mem_ball.2 (hmemS b hb).2)`. Establish `hνS : 0 < ν (Metric.closedBall t (min (ε / 2) (δ / 2)))` using `Metric.measure_closedBall_pos ν t hρ0`.
+Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hνSf : ν (Metric.closedBall t (min (ε / 2) (δ / 2))) < ⊤` using `hSc.measure_lt_top`. Establish `hIh : IntegrableOn h (Metric.closedBall t (min (ε / 2) (δ / 2))) ν` using `(hc.mono hSB).integrableOn_compact hSc`. Establish `hIc : IntegrableOn (fun _ => h t) (Metric.closedBall t (min (ε / 2) (δ / 2))) ν` using `integrableOn_const hνSf.ne`. Establish `key` using `integral_sub hIh hIc`. Rewrite `key` using `[hz _ hSc hSB, setIntegral_const, zero_sub]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hbound` using `norm_setIntegral_le_of_norm_le_const hνSf (f := fun b => h b - h t) (C := ‖h t‖ / 2) (fun b hb => by rw [← dist_eq_norm]; exact (hball (hmemS b hb).1).le)`. Rewrite `hbound` using `[key, norm_neg, norm_smul, Real.norm_of_nonneg measureReal_nonneg]`. Establish `hreal : 0 < ν.real (Metric.closedBall t (min (ε / 2) (δ / 2)))`. Rewrite using `[measureReal_def]`. Conclude with `ENNReal.toReal_pos hνS.ne' hνSf.ne`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Use polynomial arithmetic with `[mul_pos hreal hpos]`.
+A detailed English derivation is pending.
 -/
 theorem eq_zero_of_setIntegral_compact_eq_zero {K : Type} [MetricSpace K] [ProperSpace K]
     [MeasurableSpace K] [BorelSpace K] (ν : Measure K) [IsFiniteMeasureOnCompacts ν]
@@ -55,25 +55,25 @@ theorem eq_zero_of_setIntegral_compact_eq_zero {K : Type} [MetricSpace K] [Prope
   nlinarith [mul_pos hreal hpos]
 
 /- English proof (translation)
-Introduce `K V _ _ _ _ _ _ _ _ μ ν _ q hq fib hfib L hLc hLo g hg t ht`. Take `⟨hf1, hf2, hf3⟩` from `hfib`. Take `⟨hgc, hgS⟩` from `hg`. Establish `hLm : MeasurableSet L` using `hLo.measurableSet`. Establish `hBo : IsOpen {t : K | t ≠ 0}` using `isOpen_ne`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hφc : Continuous (L.indicator (1 : V → ℝ))` using `IsClopen.continuous_indicator ⟨hLc.isClosed, hLo⟩ continuous_const`. Establish `hφs : HasCompactSupport (L.indicator (1 : V → ℝ))` using `HasCompactSupport.intro hLc (fun x hx => Set.indicator_of_notMem hx _)`. Take `⟨hint, hcont⟩` from `hf3 _ hφc hφs (Set.subset_univ _)`. Establish `hm_eq : (fun b => ∫ v, L.indicator (1 : V → ℝ) v ∂(fib b)) = fun b => (fib b L).toReal`. Use function extensionality and compare the values at `b`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[integral_indicator_one hLm]`. Both sides reduce to the same expression. Establish `hmc : ContinuousOn (fun b => (fib b L).toReal) {t : K | t ≠ 0}`. Rewrite using `[← hm_eq]`. Conclude with `hcont`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hfin : ∀ b ∈ {t : K | t ≠ 0}, fib b L < ⊤`. Introduce `b hb`. Establish `hi` using `hint b hb`. Rewrite `hi` using `[integrable_indicator_iff hLm]`. Conclude with `((integrableOn_const_iff (C := (1 : ℝ))).1 hi).resolve_left (by simp)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmcC : ContinuousOn (fun b => (((fib b L).toReal : ℝ) : ℂ)) {t : K | t ≠ 0}` using `Complex.continuous_ofReal.comp_continuousOn hmc`. Establish `key : ∀ S : Set K, IsCompact S → S ⊆ {t : K | t ≠ 0} → ∫ b in S, (g b - (((fib b L).toReal : ℝ) : ℂ)) ∂ν = 0`. Introduce `S hS hSB`. Establish `hSm : MeasurableSet S` using `hS.measurableSet`. Rewrite using `[integral_sub ((hgc.mono hSB).integrableOn_compact hS) ((hmcC.mono hSB).integrableOn_compact hS), sub_eq_zero, ← hgS S hS hSB, Set.image_id]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hind : L.indicator (1 : V → ℂ) = L.indicator (fun _ => (1 : ℂ))` using `rfl`. Rewrite using `[hind, integral_indicator_const _ hLm, integral_complex_ofReal, Complex.real_smul, mul_one]`. Use `congr 1`. Establish `haem : AEMeasurable (fun b => fib b L) (ν.restrict S)` using `((hmc.mono hSB).aemeasurable hSm).ennreal_ofReal.congr ((ae_restrict_mem hSm).mono fun b hb => ENNReal.ofReal_toReal (hfin b (hSB hb)).ne)`. Rewrite using `[integral_toReal haem ((ae_restrict_mem hSm).mono fun b hb => hfin b (hSB hb)), measureReal_def, Measure.restrict_apply hLm]`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Use `congr 1`. Establish `hTm : MeasurableSet (L ∩ q ⁻¹' S)` using `hLm.inter (hq.measurable hSm)`. Establish `h2` using `hf2 ((L ∩ q ⁻¹' S).indicator 1) (measurable_one.indicator hTm)`. Rewrite `h2` using `[Measure.restrict_univ, lintegral_indicator_one hTm]`. Rewrite using `[h2, ← lintegral_indicator hSm]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `lintegral_congr fun b => ?_` and prove the remaining obligations. Rewrite using `[lintegral_indicator_one hTm]`. Distinguish the cases in `hb : b ∈ S`. Rewrite using `[Set.indicator_of_mem hb]`. Use `measure_inter_conull (measure_mono_null (Set.compl_subset_compl.2 ?_) (hf1 b))` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `v hv`. Simplify using `only [Set.mem_inter_iff, Set.mem_preimage, Set.mem_singleton_iff, id] at hv`. Simplify using `only [Set.mem_preimage, hv.1, hb]`. Rewrite using `[Set.indicator_of_notMem hb]`. Use `measure_mono_null (fun v hv => ?_) (hf1 b)` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Set.mem_compl_iff, Set.mem_inter_iff, Set.mem_preimage, Set.mem_singleton_iff, id, Set.mem_univ, and_true]`. Introduce `hqv`. Conclude with `hb (hqv ▸ hv.2)`. Conclude with `sub_eq_zero.1 (eq_zero_of_setIntegral_compact_eq_zero ν hBo (hgc.sub hmcC) key (show t ∈ {t : K | t ≠ 0} from ht))`.
+A detailed English derivation is pending.
 -/
 theorem contDensityOn_eq_fibre_mass : ∀ (K V : Type) [NormedField K] [ProperSpace K] [MeasurableSpace K] [BorelSpace K] [TopologicalSpace V] [T2Space V] [MeasurableSpace V] [BorelSpace V] (μ : Measure V) (ν : Measure K) [ν.IsAddHaarMeasure] (q : V → K), Continuous q → ∀ (fib : K → Measure V), IsFibreFamily μ q id Set.univ ν {t | t ≠ 0} fib → ∀ (L : Set V), IsCompact L → IsOpen L → ∀ g : K → ℂ, IsContDensityOn μ q id ν {t | t ≠ 0} (L.indicator 1) g → ∀ t : K, t ≠ 0 → g t = (((fib t L).toReal : ℝ) : ℂ) := by
   intro K V _ _ _ _ _ _ _ _ μ ν _ q hq fib hfib L hLc hLo g hg t ht

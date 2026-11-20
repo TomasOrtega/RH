@@ -11,13 +11,13 @@ open GlobalTheory.CompanionTheory.GodementH
 namespace GlobalTheory.CompanionTheory.GodementH
 
 /- English proof (translation)
-Establish `hent : ∀ i j, absFin F v (compFin F E v ((X.1 * κ) i j)) ≤ htFin F v (Formalism.UG.bc (compFin F E v) X)`. Introduce `i j`. Establish `h1 : compFin F E v ((X.1 * κ) i j) = ((X.1.map (compFin F E v)) * (κ.map (compFin F E v))) i j`. Rewrite using `[← Matrix.map_mul]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[h1]`. Use `(absFin_le_normFin F v _ i j).trans ((normFin_mul_le F v _ _).trans ?_)` and prove the remaining obligations. Establish `h2 : normFin F v (κ.map (compFin F E v)) ≤ 1` using `(normFin_le_iff F v).2 fun a b => hκ a b`. Conclude with `(mul_le_of_le_one_right' h2).trans (le_htOf (normFin F v) (Formalism.UG.bc (compFin F E v) X))`. Rewrite using `[RingHom.map_det, Matrix.det_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `absFin_sum_le F v _ _ fun σ _ => ?_` and prove the remaining obligations. Establish `hprod : absFin F v (∏ i : Fin n, ((compFin F E v).mapMatrix ((X.1 * κ).submatrix f e)) (σ i) i) ≤ htFin F v (Formalism.UG.bc (compFin F E v) X) ^ n`. Combine the equalities or inequalities in the displayed calculation. Break down `Int.units_eq_one_or (Equiv.Perm.sign σ) with h | h` into its components or cases. Rewrite using `[h, one_smul]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hprod`. Rewrite using `[h, Units.neg_smul, one_smul, absFin_neg]`. Conclude with `hprod`.
+A detailed English derivation is pending.
 -/
 theorem absFin_minor_mul_le (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (n : ℕ)
     (ι : Type) [Fintype ι] [DecidableEq ι] (v : Pl F) (X : GL ι (AE F E)) (κ : Matrix ι ι (AE F E))

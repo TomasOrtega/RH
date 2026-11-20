@@ -13,13 +13,13 @@ variable {p n' : ℕ} (R : RS p n') {k : ℕ}
 abbrev RS.res : R.W →+* (R.W ⧸ Ideal.span {(p : R.W)}) := Ideal.Quotient.mk _
 
 /- English proof (translation)
-Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mem_span_singleton_self _)`.
+A detailed English derivation is pending.
 -/
 theorem RS.res_p : R.res (p : R.W) = 0 := by
   exact Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mem_span_singleton_self _)
 
 /- English proof (translation)
-Establish `hp : IsLocalRing.maximalIdeal R.W = Ideal.span {(p : R.W)}` using `(IsDiscreteValuationRing.irreducible_iff_uniformizer _).1 R.std.1.p_unif`. Assume the negation of the conclusion as `hu`. Apply `h` to reduce the goal to its premises. Rewrite using `[RS.res, Ideal.Quotient.eq_zero_iff_mem, ← hp]`. Conclude with `(IsLocalRing.mem_maximalIdeal x).2 hu`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem RS.unit_of_res_ne {x : R.W} (h : R.res x ≠ 0) : IsUnit x := by
   have hp : IsLocalRing.maximalIdeal R.W = Ideal.span {(p : R.W)} :=
@@ -30,9 +30,9 @@ theorem RS.unit_of_res_ne {x : R.W} (h : R.res x ≠ 0) : IsUnit x := by
   exact (IsLocalRing.mem_maximalIdeal x).2 hu
 
 /- English proof (translation)
-Establish `h1` using `Matrix.det_updateCol_sum (1 : Matrix (Fin k) (Fin k) A) j v`. Establish `e : (fun k' => ∑ i, v i • (1 : Matrix (Fin k) (Fin k) A) k' i) = v`. Use function extensionality and compare the values at `k'`. Simplify using `[Matrix.one_apply]`. Rewrite `h1` using `[e, Matrix.det_one, smul_eq_mul, mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h1`.
+A detailed English derivation is pending.
 -/
 theorem det_updateCol_one {A : Type*} [CommRing A] (j : Fin k) (v : Fin k → A) :
     ((1 : Matrix (Fin k) (Fin k) A).updateCol j v).det = v j := by
@@ -44,9 +44,9 @@ theorem det_updateCol_one {A : Type*} [CommRing A] (j : Fin k) (v : Fin k → A)
   exact h1
 
 /- English proof (translation)
-Establish `h1` using `Matrix.det_updateRow_sum (1 : Matrix (Fin k) (Fin k) A) j v`. Establish `e : (∑ k', v k' • (1 : Matrix (Fin k) (Fin k) A) k') = v`. Use function extensionality and compare the values at `i`. Simplify using `[Matrix.one_apply]`. Rewrite `h1` using `[e, Matrix.det_one, smul_eq_mul, mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h1`.
+A detailed English derivation is pending.
 -/
 theorem det_updateRow_one {A : Type*} [CommRing A] (j : Fin k) (v : Fin k → A) :
     ((1 : Matrix (Fin k) (Fin k) A).updateRow j v).det = v j := by
@@ -58,7 +58,7 @@ theorem det_updateRow_one {A : Type*} [CommRing A] (j : Fin k) (v : Fin k → A)
   exact h1
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Establish `h1` using `congrFun h i`. Use `haveI := R.std.1.frac_alt`. Conclude with `IsFractionRing.injective R.W R.Qq h1`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem emb_inj {w w' : Fin k → R.W} (h : (emb w : Fin k → R.Qq) = emb w') : w = w' := by
   funext i
@@ -67,23 +67,21 @@ theorem emb_inj {w w' : Fin k → R.W} (h : (emb w : Fin k → R.Qq) = emb w') :
   exact IsFractionRing.injective R.W R.Qq h1
 
 /- English proof (translation)
-Take `⟨j, hj⟩` from `Function.ne_iff.mp hv`. Use `choose vt hvt using fun i => Ideal.Quotient.mk_surjective (v i)`. Establish `hres : ∀ i, R.res (vt i) = v i` using `hvt`. Establish `hu : IsUnit (vt j)` using `R.unit_of_res_ne (by rw [hres]; exact hj)`. Set `V : Matrix (Fin k) (Fin k) R.W` to `(1 : Matrix (Fin k) (Fin k) R.W).updateCol j vt`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hV : IsUnit V.det` using `by show IsUnit ((1 : Matrix (Fin k) (Fin k) R.W).updateCol j vt).det`. Rewrite using `[det_updateCol_one]`. Conclude with `hu`. Use `⟨_, edgeS R V hV j, rfl, vt, hres, ?_, ?_⟩` and prove the remaining obligations. Apply `Submodule.subset_span` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `⟨j, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Simplify using `[V, mapM, dj, Matrix.mul_diagonal, Matrix.updateCol_apply]`. Apply the tactic sequence `try ring`. Introduce `x hx`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately.
 
-Unfold `colSpan at hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨c0, rfl⟩` from `hx`. Distinguish the cases in `hc : c0 = j`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Substitute `hc` using the available equality. Use `⟨1, 0, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Simplify using `[V, mapM, dj, Matrix.mul_diagonal, Matrix.updateCol_apply]`. Apply the tactic sequence `try ring`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Treat this case separately.
 
-Use `⟨0, fun i => (1 : Matrix (Fin k) (Fin k) R.W) i c0, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Simplify using `[V, mapM, dj, Matrix.mul_diagonal, Matrix.updateCol_apply, hc]`. Apply the tactic sequence `try ring`. Consider the case `zero`.
+Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨0, 0, by funext i; simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨y1, s1, rfl⟩` from `hx`. Take `⟨y2, s2, rfl⟩` from `hy`. Conclude with `⟨y1 + y2, s1 + s2, by funext i; simp only [Pi.add_apply, map_add]; ring⟩`.
+Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Consider the case `smul r x _ hx`. Take `⟨y1, s1, rfl⟩` from `hx`. Conclude with `⟨r * y1, r • s1, by`. Use function extensionality and compare the values at `i`. Simplify using `only [Pi.smul_apply, smul_eq_mul, Algebra.smul_def, map_mul]`.
-
-Use the proof step `ring⟩`.
+A detailed English derivation is pending.
 -/
 theorem famS (v : Fin k → R.W ⧸ Ideal.span {(p : R.W)}) (hv : v ≠ 0) :
     ∃ e : Edge R.W R.Qq k, IsEdge p n' 1 e ∧ e.src = colSpan R.W (1 : Matrix (Fin k) (Fin k) R.Qq) ∧
@@ -142,7 +140,7 @@ def VT (j : Fin k) (a : Fin k → R.W) : Matrix (Fin k) (Fin k) R.W :=
   (1 : Matrix (Fin k) (Fin k) R.W).updateRow j fun i => if i = j then 1 else -a i
 
 /- English proof (translation)
-Unfold `phi VT`. Rewrite using `[Fintype.sum_eq_add i j hij]`. Apply the tactic sequence `simp [Matrix.updateRow_ne hij, Matrix.one_apply, hij] <;> ring`. Introduce and unpack `l ⟨hli, hlj⟩`. Simplify using `[Matrix.updateRow_ne hlj, Matrix.one_apply, hli]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 -/
 theorem phi_col (c : Fin k → R.W ⧸ Ideal.span {(p : R.W)}) (j : Fin k) (a : Fin k → R.W) (i : Fin k)
     (hij : i ≠ j) : phi R c (fun l => VT R j a l i) = c i - R.res (a i) * c j := by
@@ -153,27 +151,27 @@ theorem phi_col (c : Fin k → R.W ⧸ Ideal.span {(p : R.W)}) (j : Fin k) (a : 
     simp [Matrix.updateRow_ne hlj, Matrix.one_apply, hli]
 
 /- English proof (translation)
-Establish `hdet : IsUnit (VT R j a).det`. Unfold `VT`. Rewrite using `[det_updateRow_one]`. Simplify using the standard rewrite rules. Use `⟨edgeT R (VT R j a) hdet j, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `x hx`. Unfold `colSpan at hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨c0, rfl⟩` from `hx`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Use `⟨fun i => VT R j a i c0 * (if c0 = j then (p : R.W) else 1), ?_, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Apply the tactic sequence `by_cases hc : c0 = j <;> simp [emb, mapM, dj, Matrix.mul_diagonal, hc]`. Distinguish the cases in `hc : c0 = j`. Substitute `hc` using the available equality.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Unfold `phi`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `l _`. Simplify using `[map_mul, R.res_p]`. Simplify using `only [hc, if_false, mul_one]`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[phi_col R c j a c0 hc, ha c0, sub_self]`. Consider the case `zero`. Use `⟨0, ?_, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Simplify using `[emb]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Unfold `phi`. Simplify using the standard rewrite rules. Consider the case `add x y _ _ hx hy`. Take `⟨w1, rfl, h1⟩` from `hx`. Take `⟨w2, rfl, h2⟩` from `hy`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨w1 + w2, ?_, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Simplify using `[emb]`. Unfold `phi at h1 h2 ⊢`. Simplify using `only [Pi.add_apply, map_add, mul_add, Finset.sum_add_distrib, h1, h2, add_zero]`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Consider the case `smul r x _ hx`. Take `⟨w, rfl, hw⟩` from `hx`. Use `⟨r • w, ?_, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Simplify using `[emb, Algebra.smul_def]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Unfold `phi at hw ⊢`. Simplify using `only [Pi.smul_apply, smul_eq_mul, map_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.mul_sum]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `l _`. Expand and normalize the polynomial expressions, which then agree. Use `_ = 0 := by rw [hw, mul_zero]`. Introduce `i hij`. Apply `Submodule.subset_span` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨i, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `l`. Simplify using `[emb, mapM, dj, Matrix.mul_diagonal, hij]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem famT (c : Fin k → R.W ⧸ Ideal.span {(p : R.W)}) (j : Fin k) (a : Fin k → R.W)
     (ha : ∀ i, R.res (a i) * c j = c i) :
@@ -239,31 +237,27 @@ theorem famT (c : Fin k → R.W ⧸ Ideal.span {(p : R.W)}) (j : Fin k) (a : Fin
 end Fam
 
 /- English proof (translation)
-Introduce `p n' R k hk L hL`. Use `haveI hmax : (Ideal.span {(p : R.W)}).IsMaximal := PrincipalIdealRing.isMaximal_of_irreducible R.std.1.p_unif`. Use `letI : Field (R.W ⧸ Ideal.span {(p : R.W)}) := Ideal.Quotient.field _`. Use `haveI := R.std.1.frac_alt`. Establish `hcard : Nat.card (R.W ⧸ Ideal.span {(p : R.W)}) = p ^ n'` using `R.std.1.res_card`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp5 : 5 ≤ p` using `R.std.1.five_le`. Establish `hq2 : 2 ≤ p ^ n'` using `le_trans (by omega) (Nat.le_self_pow (by have := R.std.1.two_le; omega) p)`. Use `haveI : Finite (R.W ⧸ Ideal.span {(p : R.W)}) := Nat.finite_of_card_ne_zero (by rw [hcard]; omega)`. Use `haveI : Finite (Projectivization (R.W ⧸ Ideal.span {(p : R.W)}) (Fin k → R.W ⧸ Ideal.span {(p : R.W)})) := by`. Unfold `Projectivization`.
+Replace the relevant objects with their definitions. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `infer_instance`. Use `set Ne := Nat.card (Projectivization (R.W ⧸ Ideal.span {(p : R.W)}) (Fin k → R.W ⧸ Ideal.span {(p : R.W)}))`. Set `eqv` to `Finite.equivFin (Projectivization (R.W ⧸ Ideal.span {(p : R.W)}) (Fin k → R.W ⧸ Ideal.span {(p : R.W)}))`. Use `set v : Fin Ne → Fin k → R.W ⧸ Ideal.span {(p : R.W)} := fun i => (eqv.symm i).rep with hvdef`. Establish `hv0 : ∀ i, v i ≠ 0` using `fun i => Projectivization.rep_nonzero _`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `choose es he using fun i => famS R (v i) (hv0 i)`. Establish `hp0 : (p : R.Qq) ≠ 0`. Establish `h1 : (p : R.W) ≠ 0` using `R.std.1.p_unif.ne_zero`. Introduce `h2`. Apply `h1` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply `IsFractionRing.injective R.W R.Qq` to reduce the goal to its premises. Rewrite using `[map_natCast, map_zero]`. Conclude with `h2`. Establish `hpp : (p : R.Qq) * (p : R.Qq)⁻¹ = 1` using `mul_inv_cancel₀ hp0`. Establish `hinj : Function.Injective es`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `i i' hii`. Take `⟨-, -, vt, hvt, hmem, -⟩` from `he i'`. Take `⟨-, -, vt0, hvt0, -, hall⟩` from `he i`. Rewrite `hmem` using `[← hii]`. Take `⟨y, s, hys⟩` from `hall _ hmem`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Establish `hW : ∀ l, vt l = vt0 l * y + (p : R.W) * s l`. Introduce `l`. Establish `e1` using `congrFun hys l`. Apply `IsFractionRing.injective R.W R.Qq` to reduce the goal to its premises. Rewrite using `[map_add, map_mul, map_mul, map_natCast]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `(p : R.Qq) * e1 - (algebraMap R.W R.Qq (vt l) - algebraMap R.W R.Qq (vt0 l) * algebraMap R.W R.Qq y) * hpp`. Establish `hv : (R.res y) • v i = v i'`. Use function extensionality and compare the values at `l`. Rewrite using `[Pi.smul_apply, ← hvt l, ← hvt0 l, hW l, smul_eq_mul]`. Simplify using `[R.res_p, mul_comm]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `key : Projectivization.mk (R.W ⧸ Ideal.span {(p : R.W)}) (v i') (hv0 i') = Projectivization.mk (R.W ⧸ Ideal.span {(p : R.W)}) (v i) (hv0 i)`. Establish `hy0 : R.res y ≠ 0` using `fun h0 => hv0 i' (by rw [← hv, h0, zero_smul])`. Conclude with `(Projectivization.mk_eq_mk_iff _ _ _ _ _).2 ⟨Units.mk0 (R.res y) hy0, by rw [Units.smul_def, Units.val_mk0]; exact hv⟩`. Apply `eqv.symm.injective` to reduce the goal to its premises. Rewrite using `[← Projectivization.mk_rep (eqv.symm i), ← Projectivization.mk_rep (eqv.symm i')]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `key.symm`. Take `⟨es', hinj', hedge', -, hsrc'⟩` from `transport R L hL es hinj (fun i => (he i).1)`. Use `⟨Ne, es', hinj', fun i => ⟨hedge' i, hsrc' i (he i).2.1⟩, ?_⟩` and prove the remaining obligations. Establish `hV : Nat.card (Fin k → R.W ⧸ Ideal.span {(p : R.W)}) = (p ^ n') ^ k`. Rewrite using `[Nat.card_fun, hcard, Nat.card_fin]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `h1 : (p ^ n') ^ k - 1 = Ne * (p ^ n' - 1)`. Establish `h2` using `Projectivization.card (R.W ⧸ Ideal.span {(p : R.W)}) (Fin k → R.W ⧸ Ideal.span {(p : R.W)})`. Rewrite `h2` using `[hV, hcard]`. Then use the resulting hypothesis. Establish `hqk : 1 ≤ (p ^ n') ^ k` using `Nat.one_le_pow _ _ (by omega)`. Establish `h1' : (((p ^ n' : ℕ) : ℝ)) ^ k - 1 = (Ne : ℝ) * (((p ^ n' : ℕ) : ℝ) - 1)`.
-
-Establish `h3` using `congrArg (Nat.cast : ℕ → ℝ) h1`. Rewrite `h3` using `[Nat.cast_sub hqk, Nat.cast_mul, Nat.cast_sub (by omega : 1 ≤ p ^ n'), Nat.cast_pow, Nat.cast_one]`. Conclude with `h3`. Establish `hq2' : (2 : ℝ) ≤ ((p ^ n' : ℕ) : ℝ)` using `by exact_mod_cast hq2`. Unfold `gaussianNumber`.
-
-Rewrite using `[div_le_iff₀ (by linarith)]`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem restEdgeCountSrc : RestEdgeCountSrc := by
   intro p n' R k hk L hL
@@ -332,33 +326,29 @@ theorem restEdgeCountSrc : RestEdgeCountSrc := by
   linarith
 
 /- English proof (translation)
-Introduce `p n' R k hk L hL`. Use `haveI hmax : (Ideal.span {(p : R.W)}).IsMaximal := PrincipalIdealRing.isMaximal_of_irreducible R.std.1.p_unif`. Use `letI : Field (R.W ⧸ Ideal.span {(p : R.W)}) := Ideal.Quotient.field _`. Use `haveI := R.std.1.frac_alt`. Establish `hcard : Nat.card (R.W ⧸ Ideal.span {(p : R.W)}) = p ^ n'` using `R.std.1.res_card`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp5 : 5 ≤ p` using `R.std.1.five_le`. Establish `hq2 : 2 ≤ p ^ n'` using `le_trans (by omega) (Nat.le_self_pow (by have := R.std.1.two_le; omega) p)`. Use `haveI : Finite (R.W ⧸ Ideal.span {(p : R.W)}) := Nat.finite_of_card_ne_zero (by rw [hcard]; omega)`. Use `haveI : Finite (Projectivization (R.W ⧸ Ideal.span {(p : R.W)}) (Fin k → R.W ⧸ Ideal.span {(p : R.W)})) := by`. Unfold `Projectivization`.
+Replace the relevant objects with their definitions. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `infer_instance`. Use `set Ne := Nat.card (Projectivization (R.W ⧸ Ideal.span {(p : R.W)}) (Fin k → R.W ⧸ Ideal.span {(p : R.W)}))`. Set `eqv` to `Finite.equivFin (Projectivization (R.W ⧸ Ideal.span {(p : R.W)}) (Fin k → R.W ⧸ Ideal.span {(p : R.W)}))`. Use `set cc : Fin Ne → Fin k → R.W ⧸ Ideal.span {(p : R.W)} := fun i => (eqv.symm i).rep with hccdef`. Establish `hc0 : ∀ i, cc i ≠ 0` using `fun i => Projectivization.rep_nonzero _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `choose jj hjj using fun i => Function.ne_iff.mp (hc0 i)`. Establish `hjj' : ∀ i, cc i (jj i) ≠ 0` using `fun i => by simpa using hjj i`. Use `choose aa haa using fun i l => Ideal.Quotient.mk_surjective (cc i l * (cc i (jj i))⁻¹)`. Establish `hres : ∀ i l, R.res (aa i l) = cc i l * (cc i (jj i))⁻¹` using `haa`. Establish `hA : ∀ i l, R.res (aa i l) * cc i (jj i) = cc i l`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i l`. Rewrite using `[hres, mul_assoc, inv_mul_cancel₀ (hjj' i), mul_one]`. Establish `hf` using `fun i => famT R (cc i) (jj i) (aa i) (hA i)`. Set `es : Fin Ne → Edge R.W R.Qq k` to `fun i => ⟨colSpan R.W (mapM (VT R (jj i) (aa i)) * dj (jj i) (p : R.Qq)), colSpan R.W (1 : Matrix (Fin k) (Fin k) R.Qq)⟩`. Establish `hinj : Function.Injective es`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `i i' hii`. Establish `hsrc` using `congrArg Edge.src hii`. Establish `key : ∀ l, cc i l = cc i' l * (cc i' (jj i'))⁻¹ * cc i (jj i')`. Introduce `l`. Distinguish the cases in `hl : l = jj i'`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Substitute `hl` using the available equality. Rewrite using `[mul_inv_cancel₀ (hjj' i'), one_mul]`. Establish `hmem` using `(hf i').2.2 l hl`. Establish `hmem' : (emb (fun l' => VT R (jj i') (aa i') l' l) : Fin k → R.Qq) ∈ (es i).src`. Rewrite using `[hsrc]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Conclude with `hmem`. Take `⟨w, hw, hphi⟩` from `(hf i).2.1 _ hmem'`. Establish `hw'` using `emb_inj R hw`. Rewrite `hphi` using `[← hw', phi_col R (cc i) (jj i') (aa i') l hl, hres]`. Take the linear combination `hphi`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hv : (cc i (jj i') * (cc i' (jj i'))⁻¹) • cc i' = cc i`. Use function extensionality and compare the values at `l`. Rewrite using `[Pi.smul_apply, smul_eq_mul, key l]`. Expand and normalize the polynomial expressions, which then agree. Establish `hne : cc i (jj i') * (cc i' (jj i'))⁻¹ ≠ 0`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `h0`. Apply `hc0 i` to reduce the goal to its premises. Rewrite using `[← hv, h0, zero_smul]`. Establish `key2 : Projectivization.mk (R.W ⧸ Ideal.span {(p : R.W)}) (cc i) (hc0 i) = Projectivization.mk (R.W ⧸ Ideal.span {(p : R.W)}) (cc i') (hc0 i')` using `(Projectivization.mk_eq_mk_iff _ _ _ _ _).2 ⟨Units.mk0 _ hne, by rw [Units.smul_def, Units.val_mk0]; exact hv⟩`. Apply `eqv.symm.injective` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Projectivization.mk_rep (eqv.symm i), ← Projectivization.mk_rep (eqv.symm i')]`. Conclude with `key2`. Take `⟨es', hinj', hedge', htgt', -⟩` from `transport R L hL es hinj (fun i => (hf i).1)`. Use `⟨Ne, es', hinj', fun i => ⟨hedge' i, htgt' i rfl⟩, ?_⟩` and prove the remaining obligations. Establish `hV : Nat.card (Fin k → R.W ⧸ Ideal.span {(p : R.W)}) = (p ^ n') ^ k`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Nat.card_fun, hcard, Nat.card_fin]`. Establish `h1 : (p ^ n') ^ k - 1 = Ne * (p ^ n' - 1)`. Establish `h2` using `Projectivization.card (R.W ⧸ Ideal.span {(p : R.W)}) (Fin k → R.W ⧸ Ideal.span {(p : R.W)})`. Rewrite `h2` using `[hV, hcard]`. Then use the resulting hypothesis. Establish `hqk : 1 ≤ (p ^ n') ^ k` using `Nat.one_le_pow _ _ (by omega)`.
-
-Establish `h1' : (((p ^ n' : ℕ) : ℝ)) ^ k - 1 = (Ne : ℝ) * (((p ^ n' : ℕ) : ℝ) - 1)`. Establish `h3` using `congrArg (Nat.cast : ℕ → ℝ) h1`. Rewrite `h3` using `[Nat.cast_sub hqk, Nat.cast_mul, Nat.cast_sub (by omega : 1 ≤ p ^ n'), Nat.cast_pow, Nat.cast_one]`. Conclude with `h3`. Establish `hq2' : (2 : ℝ) ≤ ((p ^ n' : ℕ) : ℝ)` using `by exact_mod_cast hq2`.
-
-Unfold `gaussianNumber`. Rewrite using `[div_le_iff₀ (by linarith)]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem restEdgeCount : RestEdgeCount := by
   intro p n' R k hk L hL
@@ -434,13 +424,13 @@ theorem restEdgeCount : RestEdgeCount := by
   linarith
 
 /- English proof (translation)
-Conclude with `rho_lower_bound_of_edge_count restEdgeCount`.
+A detailed English derivation is pending.
 -/
 theorem rho_lower_bound_large_conductor : RhoLowerBoundLargeConductor := by
   exact rho_lower_bound_of_edge_count restEdgeCount
 
 /- English proof (translation)
-Conclude with `rho_upper_bound_of_edge_count restEdgeCountSrc`.
+A detailed English derivation is pending.
 -/
 theorem rho_upper_bound_small_depth : RhoUpperBoundSmallDepth := by
   exact rho_upper_bound_of_edge_count restEdgeCountSrc

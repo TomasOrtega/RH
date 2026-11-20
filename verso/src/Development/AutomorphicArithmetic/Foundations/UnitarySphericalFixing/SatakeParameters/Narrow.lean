@@ -14,17 +14,17 @@ variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAl
   {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver A w} {rc : IrrGL (w.adicCompletion E) → WD h}
 
 /- English proof (translation)
-The claim follows from `s.elim`.
+A detailed English derivation is pending.
 -/
 theorem Old.typeS (s : Sw) (_H : IsRec h rc) : TypeLaw h rc := s.elim
 
 /- English proof (translation)
-The claim follows from `H.choose_spec.choose_spec.type`.
+A detailed English derivation is pending.
 -/
 theorem New.typeS (_s : TrivialCondition) (H : IsRecT h rc) : TypeLaw h rc := H.choose_spec.choose_spec.type
 
 /- English proof (translation)
-Introduce `_ E' _ _ _ _ _ _ _ _ _ _ _ _ _ g _ _ _ _ w' h' _ H i hi n hn _ h1 h2 a' ha' K _ _ red h3 h4 θ hθ τ hτ h5 σ h6` and use `(Old.typeS s H E' g w' h' i hi n hn h1 h2 a' ha' K red h3 h4 θ hθ τ hτ h5 σ h6).2`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem narrowBig (s : Sw) (_art : GlobalTheory.Published.GlobalArtinReciprocity) (_hL : GlobalTheory.Published.LocalLanglandsGL) :
     DiscreteGroups.sglob.DzType.NarrowBig :=

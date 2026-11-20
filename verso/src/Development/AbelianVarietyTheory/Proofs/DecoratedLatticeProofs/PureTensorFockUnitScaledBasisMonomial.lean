@@ -12,9 +12,9 @@ namespace GlobalTheory.FockScal
 open GlobalTheory.FockSubst
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => simpa using hf`. Consider the case `cons i l ih`. Use `⟨hA _ _ ih.1, ?_⟩` and prove the remaining obligations. Simplify using `only [List.foldr_cons, List.map_cons, List.prod_cons]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[ih.2, h _ _ (hsm _ _ ih.1), Asm _ _ _ ih.1, smul_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem foldr_scal {ι X : Type} {A A' : ι → (X → ℂ) → (X → ℂ)} {P : (X → ℂ) → Prop} (c : ι → ℂ)
     (hsm : ∀ (a : ℂ) f, P f → P (a • f)) (hA : ∀ i f, P f → P (A i f))
@@ -30,7 +30,7 @@ theorem foldr_scal {ι X : Type} {A A' : ι → (X → ℂ) → (X → ℂ)} {P 
     rw [ih.2, h _ _ (hsm _ _ ih.1), Asm _ _ _ ih.1, smul_smul]
 
 /- English proof (translation)
-Unfold `pureTensorL`. Use `(MvPolynomial.basisMonomials ι ℂ).constr_basis ℂ (fun k : ι →₀ ℕ => opPow A k f) α` as an intermediate fact. Rewrite `this` using `[MvPolynomial.coe_basisMonomials]`. Then use the resulting hypothesis.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem pure_monomial {ι X : Type} (A : ι → (X → ℂ) → (X → ℂ)) (f : X → ℂ) (α : ι →₀ ℕ) :
     pureTensorL A f (MvPolynomial.monomial α 1) = opPow A α f := by
@@ -39,7 +39,7 @@ theorem pure_monomial {ι X : Type} (A : ι → (X → ℂ) → (X → ℂ)) (f 
   rwa [MvPolynomial.coe_basisMonomials] at this
 
 /- English proof (translation)
-Rewrite using `[← Multiset.prod_coe, ← Multiset.map_coe, Multiset.coe_toList, Finsupp.toMultiset_map, Finsupp.prod_toMultiset, Finsupp.prod_mapDomain_index (by simp) (by intros; rw [pow_add]), Finsupp.prod, ← Finset.prod_fiberwise (s := α.support) (g := g)]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.prod_pow_eq_pow_sum]`. Use `Finset.prod_congr rfl fun v hv => ?_` and prove the remaining obligations. Rewrite using `[(Finset.mem_filter.1 hv).2]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem prod_fiber {ι κ : Type} [Fintype κ] [DecidableEq κ] (g : ι → κ) (μ : κ → ℂ) (α : ι →₀ ℕ) :
     ((Finsupp.toMultiset α).toList.map fun i => μ (g i)).prod = ∏ τ, μ τ ^ (∑ v ∈ α.support with g v = τ, α v) := by
@@ -52,7 +52,7 @@ theorem prod_fiber {ι κ : Type} [Fintype κ] [DecidableEq κ] (g : ι → κ) 
   rw [(Finset.mem_filter.1 hv).2]
 
 /- English proof (translation)
-Rewrite using `[pure_monomial, pure_monomial]`. Unfold `opPow`. Rewrite using `[(foldr_scal (fun i => μ (g i)) hsm hA Asm h hf _).2, prod_fiber]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem pure_scal {ι κ X : Type} [Fintype κ] [DecidableEq κ] {A A' : ι → (X → ℂ) → (X → ℂ)} {P : (X → ℂ) → Prop}
     (g : ι → κ) (μ : κ → ℂ) (hsm : ∀ (a : ℂ) f, P f → P (a • f)) (hA : ∀ i f, P f → P (A i f))
@@ -65,7 +65,7 @@ theorem pure_scal {ι κ X : Type} [Fintype κ] [DecidableEq κ] {A A' : ι → 
   rw [(foldr_scal (fun i => μ (g i)) hsm hA Asm h hf _).2, prod_fiber]
 
 /- English proof (translation)
-Establish `e : z • B = B * (z • (1 : Matrix (Fin n) (Fin n) ℂ))` using `by simp`. Establish `e' : (z • (1 : Matrix (Fin n) (Fin n) ℂ))⁻¹ = z⁻¹ • 1` using `Matrix.inv_eq_left_inv (by simp [smul_smul, hz])`. Unfold `unitMap`. Rewrite using `[e, Matrix.mul_inv_rev, e']`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem unitMap_smul {m n : ℕ} (B : Matrix (Fin n) (Fin n) ℂ) (B' : Matrix (Fin m) (Fin m) ℂ) {z : ℂ} (hz : z ≠ 0)
     (a : Fin m) (j : Fin n) : unitMap (z • B) B' a j = z⁻¹ • unitMap B B' a j := by
@@ -77,9 +77,9 @@ theorem unitMap_smul {m n : ℕ} (B : Matrix (Fin n) (Fin n) ℂ) (B' : Matrix (
   simp
 
 /- English proof (translation)
-Establish `h1 : (-1 : Matrix (Fin n) (Fin n) ℂ) ≠ 1` using `fun h => by`. Use `congrFun (congrFun h j) j` as an intermediate fact. Simplify using `at this`. Evaluate the numerical expressions using `at this`. Establish `h2 : (-1 : Matrix (Fin m) (Fin m) ℂ) ≠ 1` using `fun h => by`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Evaluate the numerical expressions. Establish an intermediate fact.
 
-Use `congrFun (congrFun h a) a` as an intermediate fact. Simplify using `at this`. Evaluate the numerical expressions using `at this`. Unfold `cplxO`. Apply the tactic sequence `rcases hs with rfl | rfl <;> rcases ht with rfl | rfl <;> simp [h1, h2]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Evaluate the numerical expressions. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cplxO_pm {m n : ℕ} {s : Matrix (Fin n) (Fin n) ℂ} {t : Matrix (Fin m) (Fin m) ℂ} (hs : s = 1 ∨ s = -1)
     (ht : t = 1 ∨ t = -1) (a : Fin m) (j : Fin n) (u : Matrix (Fin m) (Fin n) ℂ) :
@@ -96,11 +96,11 @@ theorem cplxO_pm {m n : ℕ} {s : Matrix (Fin n) (Fin n) ℂ} {t : Matrix (Fin m
   rcases hs with rfl | rfl <;> rcases ht with rfl | rfl <;> simp [h1, h2]
 
 /- English proof (translation)
-Introduce `D ψ θ hψ hθ S T x y hx hy f hf ζ hζ α`. Establish `hz : ∀ τ, ζ τ ≠ 0` using `fun τ h => by simpa [h] using hζ τ`. Set `μ : D.what₂.Tau → ℂ` to `fun τ => if (x.s τ = 1 ↔ y.s τ = 1) then (ζ τ)⁻¹ else ζ τ`. Establish `key : ∀ (i : FVar D T.rank S.rank) g, IsThetaFunO ψ S T g → aPlusAll (heisO ψ S T) θ (fun τ => cplxO (x.s τ) (y.s τ)) (fun τ => ζ τ • x.B τ) y.B i g = μ i.1 • aPlusAll (heisO ψ S T) θ (fun τ => cplxO (x.s τ) (y.s τ)) x.B y.B i g`. Introduce and unpack `⟨ρ, a, j⟩ g hg`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Simplify using `only [aPlusAll, μ]`. Rewrite using `[unitMap_smul _ _ (hz ρ), aPlus_dir_smul hψ hθ ρ _ _ hg _ _ (cplxO_pm (hx.pm ρ) (hy.pm ρ) a j _)]`. Use `congr 1`. Rewrite using `[map_inv₀, ← Complex.inv_eq_conj (hζ ρ), inv_inv]`. Simplify using `only [decide_eq_true_eq]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hA : ∀ i f, IsThetaFunO ψ S T f → IsThetaFunO ψ S T (aPlusAll (heisO ψ S T) θ (fun τ => cplxO (x.s τ) (y.s τ)) x.B y.B i f)` using `fun _ _ h => aPlus_th hψ hθ _ _ _ h`. Establish `Asm : ∀ i (a : ℂ) f, IsThetaFunO ψ S T f → aPlusAll (heisO ψ S T) θ (fun τ => cplxO (x.s τ) (y.s τ)) x.B y.B i (a • f) = a • aPlusAll (heisO ψ S T) θ (fun τ => cplxO (x.s τ) (y.s τ)) x.B y.B i f` using `fun _ a _ h => aPlus_smul hψ hθ _ _ _ a h`. Unfold `pureTensorO`. Conclude with `pure_scal (P := IsThetaFunO ψ S T) (fun v : FVar D T.rank S.rank => v.1) μ (fun a _ => GlobalTheory.OrientedHeis.theta_smul a) hA Asm key hf α`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem pureTensorO_scal : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsStdChar D ψ (-1) → IsInfFam θ → ∀ (S T : HSp D) (x : DefSp S) (y : DefSp T), x.Is → y.Is → ∀ f : WO S T → ℂ, IsThetaFunO ψ S T f → ∀ ζ : D.what₂.Tau → ℂ, (∀ τ, ‖ζ τ‖ = 1) → ∀ α : FVar D T.rank S.rank →₀ ℕ, pureTensorO ψ θ S T x.s y.s (fun τ => ζ τ • x.B τ) y.B f (MvPolynomial.monomial α 1) = (∏ τ, (if (x.s τ = 1 ↔ y.s τ = 1) then (ζ τ)⁻¹ else ζ τ) ^ (∑ v ∈ α.support with v.1 = τ, α v)) • pureTensorO ψ θ S T x.s y.s x.B y.B f (MvPolynomial.monomial α 1) := by
   intro D ψ θ hψ hθ S T x y hx hy f hf ζ hζ α

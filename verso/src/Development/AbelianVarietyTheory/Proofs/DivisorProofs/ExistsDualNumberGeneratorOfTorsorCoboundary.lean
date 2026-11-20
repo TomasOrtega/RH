@@ -17,23 +17,21 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.PtExt.EpsGenCob
 
 /- English proof (translation)
-Unfold `evU`. Rewrite using `[dif_pos h, dif_pos h, dif_pos h, map_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem evU_mul' {Y : Scheme.{0}} {D : Type} [CommRing D] (y : Sp D ⟶ Y) (U : Y.Opens) (h : ⊤ ≤ y ⁻¹ᵁ U)
     (a b : Γ(Y, U)) : evU y U (a * b) = evU y U a * evU y U b := by
   unfold evU; rw [dif_pos h, dif_pos h, dif_pos h, map_mul]
 
 /- English proof (translation)
-Unfold `evU`. Rewrite using `[dif_pos h]`. Conclude with `a.isUnit.map _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evU_isUnit' {Y : Scheme.{0}} {D : Type} [CommRing D] (y : Sp D ⟶ Y) (U : Y.Opens) (h : ⊤ ≤ y ⁻¹ᵁ U)
     (a : Γ(Y, U)ˣ) : IsUnit (evU y U a.val) := by
   unfold evU; rw [dif_pos h]; exact a.isUnit.map _
 
 /- English proof (translation)
-Establish `h3 : ⊤ ≤ y ⁻¹ᵁ (P.U a ⊓ P.U b ⊓ P.U c)` using `fun p hp ↦ ⟨⟨ha hp, hb hp⟩, hc hp⟩`. Establish `e` using `congrArg (fun u ↦ evU y _ (Units.val u)) (hP.cocycle a b c)`. Simplify using `only [ReciprocityTheory.ChartRestriction.G.Semi.res, Units.val_mul, Units.coe_map, MonoidHom.coe_coe] at e`. Rewrite `e` using `[evU_mul' y _ h3, evalSectionAtPointOrZero_restriction, evalSectionAtPointOrZero_restriction, evalSectionAtPointOrZero_restriction]`. Conclude with `e.symm`.
-
-Apply the tactic sequence `all_goals exact h3`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evU_cocycle {X : Scheme.{0}} (P : LB X) (hP : P.IsLB) {D : Type} [CommRing D] (y : Sp D ⟶ X)
     (a b c : P.ι) (ha : ⊤ ≤ y ⁻¹ᵁ P.U a) (hb : ⊤ ≤ y ⁻¹ᵁ P.U b) (hc : ⊤ ≤ y ⁻¹ᵁ P.U c) :
@@ -47,7 +45,7 @@ theorem evU_cocycle {X : Scheme.{0}} (P : LB X) (hP : P.IsLB) {D : Type} [CommRi
   all_goals exact h3
 
 /- English proof (translation)
-Take `⟨w, hw⟩` from `hu.map (TrivSqZeroExt.fstHom D D D)`. Simplify using `only [TrivSqZeroExt.fstHom_apply] at hw`. Unfold `dl`. Rewrite using `[← hw, Ring.inverse_unit]`. Rewrite using `[mul_comm, _root_.mul_assoc, Units.inv_mul, _root_.mul_one]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem snd_eq_fst_mul_dl {D : Type} [CommRing D] (u : DualNumber D) (hu : IsUnit u) : u.snd = u.fst * dl u := by
   obtain ⟨w, hw⟩ := hu.map (TrivSqZeroExt.fstHom D D D)
@@ -57,7 +55,7 @@ theorem snd_eq_fst_mul_dl {D : Type} [CommRing D] (u : DualNumber D) (hu : IsUni
   rw [mul_comm, _root_.mul_assoc, Units.inv_mul, _root_.mul_one]
 
 /- English proof (translation)
-Apply the tactic sequence `constructor <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dualNumber_inl_mul_one_add_inr_fst_snd {D : Type} [CommRing D] (a c : D) :
     (TrivSqZeroExt.inl a * (1 + TrivSqZeroExt.inr c) : DualNumber D).fst = a ∧
@@ -71,13 +69,13 @@ namespace GlobalTheory.PtExt.EpsGenCob
 variable {R : Type} [CommRing R] {A B : Over (Sp R)} [GrpObj A] [GrpObj B]
 
 /- English proof (translation)
-Establish `hv' : spOver (TrivSqZeroExt.fstHom R R R) ≫ v = toUnit _ ≫ η[B]`. Use `Over.OverMorphism.ext ?_` and prove the remaining obligations. Use `hv.trans ?_` and prove the remaining obligations. Simplify using `[spMap]`. Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [ptV, Category.assoc, lift_fst, Category.comp_id]`. Rewrite using `[← Category.assoc, spOver_comp]`. Establish `: (TrivSqZeroExt.fstHom R E E).comp (TrivSqZeroExt.inlAlgHom R E E) = AlgHom.id R E` using `by ext; simp`. Rewrite using `[this]`. Use `Over.OverMorphism.ext ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[spOver, spMap]`. Simplify using `only [ptV, Category.assoc, lift_snd]`. Rewrite using `[← Category.assoc, spOver_comp]`. Establish `: (TrivSqZeroExt.fstHom R E E).comp (EpsWeil.epsMap R E) = (Algebra.ofId R E).comp (TrivSqZeroExt.fstHom R R R)`. Apply `DualNumber.algHom_ext` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `[EpsWeil.epsMap]`. Rewrite using `[this, ← spOver_comp, Category.assoc, hv', Hom.one_def, ← Category.assoc, ← Category.assoc]`. Use `congr 1`. Conclude with `toUnit_unique _ _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem red_ptV {v : epsR R ⟶ B} (hv : IsTangent v) {E : Type} [CommRing E] [Algebra R E] (x : Pt A E) :
     spOver (TrivSqZeroExt.fstHom R E E) ≫ ptV v x = x ≫ AbDual.inl A B := by
@@ -103,9 +101,9 @@ theorem red_ptV {v : epsR R ⟶ B} (hv : IsTangent v) {E : Type} [CommRing E] [A
     exact toUnit_unique _ _
 
 /- English proof (translation)
-Introduce `p _`. Establish `hs : Function.Surjective (PrimeSpectrum.comap (TrivSqZeroExt.fstHom R E E : DualNumber E →+* E))`. Use `(PrimeSpectrum.isHomeomorph_comap _ (fun a ↦ ⟨1, one_pos, TrivSqZeroExt.inl a, by simp⟩) ?_).surjective` and prove the remaining obligations. Introduce `a ha`. Take `⟨c, rfl⟩` from `DualNumber.fst_eq_zero_iff_eps_dvd.1 (show TrivSqZeroExt.fst a = 0 from ha)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `mem_nilradical.2 ⟨2, by rw [mul_pow, sq DualNumber.eps, DualNumber.eps_mul_eps, zero_mul]⟩`. Take `⟨p', rfl⟩` from `hs p`. Establish `h1 : ⊤ ≤ (x ≫ AbDual.inl A B).left ⁻¹ᵁ P.U i` using `h`. Rewrite `h1` using `[← red_ptV hv]`. Conclude with `h1 (Set.mem_univ p')`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ptV_mem (P : LB (A ⊗ B).left) {v : epsR R ⟶ B} (hv : IsTangent v) {E : Type} [CommRing E] [Algebra R E]
     (x : Pt A E) (i : P.ι) (h : ⊤ ≤ x.left ⁻¹ᵁ chartsA P i) : ⊤ ≤ (ptV v x).left ⁻¹ᵁ P.U i := by
@@ -121,9 +119,9 @@ theorem ptV_mem (P : LB (A ⊗ B).left) {v : epsR R ⟶ B} (hv : IsTangent v) {E
   exact h1 (Set.mem_univ p')
 
 /- English proof (translation)
-Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises. Simplify using `only [ptV, Category.assoc, lift_fst]`. Rewrite using `[← Category.assoc, ← Category.assoc, spOver_comp, spOver_comp]`. Use `congr 2`. Apply the tactic sequence `ext a <;> simp [epsHom, DualNumber.lift_apply_inl]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `only [ptV, Category.assoc, lift_snd]`. Rewrite using `[← Category.assoc, spOver_comp]`. Use `congr 2`. Apply `DualNumber.algHom_ext` to reduce the goal to its premises. Simplify using `[epsHom, EpsWeil.epsMap]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 -/
 theorem ptV_nat (v : epsR R ⟶ B) {E E' : Type} [CommRing E] [Algebra R E] [CommRing E'] [Algebra R E']
     (ψ : E →ₐ[R] E') (x : Pt A E) : ptV v (spOver ψ ≫ x) = spOver (epsHom ψ) ≫ ptV v x := by
@@ -139,7 +137,7 @@ theorem ptV_nat (v : epsR R ⟶ B) {E E' : Type} [CommRing E] [Algebra R E] [Com
     simp [epsHom, EpsWeil.epsMap]
 
 /- English proof (translation)
-The claim follows from `fun p hp ↦ ⟨ptV_mem P hv x a ha hp, ptV_mem P hv x b hb hp⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem memV (P : LB (A ⊗ B).left) {v : epsR R ⟶ B} (hv : IsTangent v) {E : Type} [CommRing E] [Algebra R E]
     (x : Pt A E) (a b : P.ι) (ha : ⊤ ≤ x.left ⁻¹ᵁ chartsA P a) (hb : ⊤ ≤ x.left ⁻¹ᵁ chartsA P b) :
@@ -147,9 +145,9 @@ theorem memV (P : LB (A ⊗ B).left) {v : epsR R ⟶ B} (hv : IsTangent v) {E : 
   ⟨ptV_mem P hv x a ha hp, ptV_mem P hv x b hb hp⟩
 
 /- English proof (translation)
-Establish `h` using `evalSectionAtPointOrZero_specMap_comp _ _ _ (TrivSqZeroExt.fstHom R E E : DualNumber E →+* E) (ptV v x).left _ (P.g a b).val (memV P hv x a b ha hb)`. Establish `e : spMap (TrivSqZeroExt.fstHom R E E : DualNumber E →+* E) ≫ (ptV v x).left = (x ≫ AbDual.inl A B).left`. Rewrite using `[← red_ptV hv x, Over.comp_left]`. Both sides reduce to the same expression. Rewrite `h` using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[h]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem fst_gV (P : LB (A ⊗ B).left) {v : epsR R ⟶ B} (hv : IsTangent v) {E : Type} [CommRing E] [Algebra R E]
     (x : Pt A E) (a b : P.ι) (ha : ⊤ ≤ x.left ⁻¹ᵁ chartsA P a) (hb : ⊤ ≤ x.left ⁻¹ᵁ chartsA P b) :
@@ -168,25 +166,25 @@ end GlobalTheory.PtExt.EpsGenCob
 open GlobalTheory.PtExt.EpsGenCob in
 
 /- English proof (translation)
-Introduce `R _ A B _ _ P hP v hv j hj s hs k hk`. Take `⟨hs1, hs2, hs3⟩` from `hs`. Use `⟨fun E _ _ x i ↦ TrivSqZeroExt.inl (s E x i) * (1 + TrivSqZeroExt.inr (dl (evU (ptV v x).left (P.U i ⊓ P.U (j E x)) (P.g i (j E x)).val) + k E x)), ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `E _ _ x i h`. Conclude with `((hs1 E x i h).map (TrivSqZeroExt.inlHom E E)).mul (EpsWeil.epsUnit _).isUnit`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `E _ _ E' _ _ ψ x i h`. Establish `h' : ⊤ ≤ (spOver ψ ≫ x).left ⁻¹ᵁ chartsA P i` using `fun p _ ↦ h (Set.mem_univ _)`. Establish `hjx : ⊤ ≤ x.left ⁻¹ᵁ chartsA P (j E x)` using `hj E x ⟨i, h⟩`. Establish `hjx2 : ⊤ ≤ (spOver ψ ≫ x).left ⁻¹ᵁ chartsA P (j E x)` using `fun p _ ↦ hjx (Set.mem_univ _)`. Establish `hjx' : ⊤ ≤ (spOver ψ ≫ x).left ⁻¹ᵁ chartsA P (j E' (spOver ψ ≫ x))` using `hj E' _ ⟨i, h'⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc` using `evU_cocycle P hP (ptV v (spOver ψ ≫ x)).left i (j E' (spOver ψ ≫ x)) (j E x) (ptV_mem P hv _ i h') (ptV_mem P hv _ _ hjx') (ptV_mem P hv _ _ hjx2)`. Establish `u1` using `evU_isUnit' _ _ (memV P hv _ i _ h' hjx') (P.g i (j E' (spOver ψ ≫ x)))`. Establish `u2` using `evU_isUnit' _ _ (memV P hv _ _ _ hjx' hjx2) (P.g (j E' (spOver ψ ≫ x)) (j E x))`. Establish `hd` using `dualNumberSndMulInverseFst_mul_units E' _ _ u1 u2`. Rewrite `hd` using `[← hc]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `uG` using `evU_isUnit' _ _ (memV P hv x i _ h hjx) (P.g i (j E x))`. Establish `hnat : evU (ptV v (spOver ψ ≫ x)).left (P.U i ⊓ P.U (j E x)) (P.g i (j E x)).val = epsHom ψ (evU (ptV v x).left (P.U i ⊓ P.U (j E x)) (P.g i (j E x)).val)`. Establish `e : (ptV v (spOver ψ ≫ x)).left = spMap (epsHom ψ : DualNumber E →+* DualNumber E') ≫ (ptV v x).left`. Rewrite using `[ptV_nat, Over.comp_left]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, evalSectionAtPointOrZero_specMap_comp _ _ _ _ _ _ _ (memV P hv x i _ h hjx)]`. Both sides reduce to the same expression. Establish `e1 : dl (evU (ptV v (spOver ψ ≫ x)).left (P.U i ⊓ P.U (j E x)) (P.g i (j E x)).val) = ψ (dl (evU (ptV v x).left (P.U i ⊓ P.U (j E x)) (P.g i (j E x)).val))`. Rewrite using `[hnat, (dualNumberAlgHomMap_fst_snd_logDerivative R E E' ψ _).2.2 uG]`. Establish `hcob : dl (evU (ptV v (spOver ψ ≫ x)).left (P.U (j E' (spOver ψ ≫ x)) ⊓ P.U (j E x)) (P.g (j E' (spOver ψ ≫ x)) (j E x)).val) = k E' (spOver ψ ≫ x) - ψ (k E x)` using `hk E E' ψ x ⟨i, h⟩`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs` using `hs2 E E' ψ x i h`. Take `⟨a1, a2⟩` from `dualNumber_inl_mul_one_add_inr_fst_snd (s E x i) (dl (evU (ptV v x).left (P.U i ⊓ P.U (j E x)) (P.g i (j E x)).val) + k E x)`. Take `⟨b1, b2⟩` from `dualNumber_inl_mul_one_add_inr_fst_snd (s E' (spOver ψ ≫ x) i) (dl (evU (ptV v (spOver ψ ≫ x)).left (P.U i ⊓ P.U (j E' (spOver ψ ≫ x))) (P.g i (j E' (spOver ψ ≫ x))).val) + k E' (spOver ψ ≫ x))`. Use `beta_reduce`. Use `TrivSqZeroExt.ext ?_ ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[b1, (dualNumberAlgHomMap_fst_snd_logDerivative R E E' ψ _).1, a1, hs]`. Rewrite using `[b2, (dualNumberAlgHomMap_fst_snd_logDerivative R E E' ψ _).2.1, a2, hs, map_mul, map_add]`. Take the linear combination `(ψ (s E x i)) * (-hd + e1 - hcob)`. Introduce `E _ _ x i i' hi hi'`. Establish `hjx : ⊤ ≤ x.left ⁻¹ᵁ chartsA P (j E x)` using `hj E x ⟨i, hi⟩`.
+Take a linear combination of the given relations to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc` using `evU_cocycle P hP (ptV v x).left i i' (j E x) (ptV_mem P hv x i hi) (ptV_mem P hv x i' hi') (ptV_mem P hv x _ hjx)`. Establish `u1` using `evU_isUnit' _ _ (memV P hv x i i' hi hi') (P.g i i')`. Establish `u2` using `evU_isUnit' _ _ (memV P hv x i' (j E x) hi' hjx) (P.g i' (j E x))`. Establish `hd` using `dualNumberSndMulInverseFst_mul_units E _ _ u1 u2`. Rewrite `hd` using `[← hc]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsnd` using `snd_eq_fst_mul_dl _ u1`. Establish `hfst` using `fst_gV P hv x i i' hi hi'`. Establish `ht` using `hs3 E x i i' hi hi'`. Take `⟨a1, a2⟩` from `dualNumber_inl_mul_one_add_inr_fst_snd (s E x i) (dl (evU (ptV v x).left (P.U i ⊓ P.U (j E x)) (P.g i (j E x)).val) + k E x)`. Take `⟨b1, b2⟩` from `dualNumber_inl_mul_one_add_inr_fst_snd (s E x i') (dl (evU (ptV v x).left (P.U i' ⊓ P.U (j E x)) (P.g i' (j E x)).val) + k E x)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `beta_reduce`. Use `TrivSqZeroExt.ext ?_ ?_` and prove the remaining obligations. Rewrite using `[a1, TrivSqZeroExt.fst_mul, b1, hfst, ht]`. Rewrite using `[a2, TrivSqZeroExt.snd_mul, b1, b2, hsnd, hfst, hd, ht, smul_eq_mul, MulOpposite.smul_eq_mul_unop, MulOpposite.unop_op]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.PtExt.exists_isEpsGen_of_isCob : ∀ (R : Type) [CommRing R] (A B : Over (Sp R)) [GrpObj A] [GrpObj B]
     (P : LB (A ⊗ B).left), P.IsLB → ∀ v : epsR R ⟶ B, IsTangent v →

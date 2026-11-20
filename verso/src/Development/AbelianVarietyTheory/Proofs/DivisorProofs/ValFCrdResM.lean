@@ -24,7 +24,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open MonObj CategoryTheory.Obj in
 
 /- English proof (translation)
-Substitute `hy` using the available equality. Establish `hu : LocM.IsFrame (Y Z.i).t (φ.comp (Z.alg a)) (spMap φ ≫ Z.chart a ≫ Z.π) ((Z.fr a).bc φ)` using `isFrame_bc E H Dw _ _ _ _ _ _ _ φ _ _ (Z.frame a)`. Take `⟨c, hc, -⟩` from `GlobalTheory.TanSec.Frame.exists_unique_coords hu (LieMet.tanOf hv)`. Use `⟨fun i => c (x i), (LieMet.isComb_iff (fun i => LieMet.tanOf (hu.1 (x i).1 (x i).2).1) _ (LieMet.tanOf hv)).2 ?_⟩` and prove the remaining obligations. Conclude with `hc.trans (Function.Bijective.sum_comp hx fun j => c j • LieMet.tanOf (hu.1 j.1 j.2).1).symm`.
+Substitute using the available equality. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_comb {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H}
     {Xo : ∀ l : Level H, Moduli Dw l} {p : ℕ} {W : ValuationSubring ℂ} {Y : LocalSystem Xo p W} {i₀ : Idx H p}
@@ -40,7 +40,7 @@ theorem exists_comb {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host
   exact hc.trans (Function.Bijective.sum_comp hx fun j => c j • LieMet.tanOf (hu.1 j.1 j.2).1).symm
 
 /- English proof (translation)
-Rewrite using `[← FieldPtGlue.valF_restrict (inf_le_inf_right T hle) hw, crd, crd]`. Use `congrArg (valF w _) ?_` and prove the remaining obligations. Conclude with `((congrArg (fun m => (hs.basis inf_le_right).repr m i) ((resM_resM _ _ _).trans (resM_resM _ _ _).symm))).trans (hs.repr_resM inf_le_right (inf_le_inf_right T hle) _ i)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem valF_crd_resM {X : Scheme.{0}} {F : X.Modules} {r : ℕ} {V V' T : X.Opens} {s : Fin r → Γ(F, T)}
     (hs : GlobalTheory.VB.IsFrame s) (hle : V' ≤ V) (σ : Γ(F, V)) {k : Type} [Field k] {w : Sp k ⟶ X}
@@ -51,7 +51,7 @@ theorem valF_crd_resM {X : Scheme.{0}} {F : X.Modules} {r : ℕ} {V V' T : X.Ope
     ((resM_resM _ _ _).trans (resM_resM _ _ _).symm))).trans (hs.repr_resM inf_le_right (inf_le_inf_right T hle) _ i)
 
 /- English proof (translation)
-Establish `h : genericPoint X ∈ Set.range (X.fromSpecStalk (genericPoint X))` using `⟨_, Scheme.fromSpecStalk_closedPoint⟩`. Take `⟨q', hq'⟩` from `h`. Establish `: Subsingleton (Spec (X.presheaf.stalk (genericPoint X)))` using `inferInstanceAs (Subsingleton (PrimeSpectrum X.functionField))`. Conclude with `(congrArg (X.fromSpecStalk (genericPoint X)) (Subsingleton.elim _ q')).trans hq'`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem genPt_apply (X : Scheme.{0}) [IsIntegral X] (q : Sp (Kbar X)) : genPt X q = genericPoint X := by
   have h : genericPoint X ∈ Set.range (X.fromSpecStalk (genericPoint X)) := ⟨_, Scheme.fromSpecStalk_closedPoint⟩
@@ -61,19 +61,19 @@ theorem genPt_apply (X : Scheme.{0}) [IsIntegral X] (q : Sp (Kbar X)) : genPt X 
   exact (congrArg (X.fromSpecStalk (genericPoint X)) (Subsingleton.elim _ q')).trans hq'
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw Xo p W Y i₀ Z X _ h r x hx hopn F s hs U U' hle t t' φt φt' hφt lam lam' hl hl' σ v v' hv`. Set `κ' : U'.Bp →+* Kbar X` to `algebraMap _ _`. Set `κ : U.Bp →+* Kbar X` to `algebraMap _ _`. Establish `e : κ'.comp (AffOp.res hle) = κ` using `RingHom.ext fun _ => rfl`. Establish `g : spMap κ ≫ U.toX = genPt X` using `U.val_toX`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `g' : spMap κ' ≫ U'.toX = genPt X` using `U'.val_toX`. Establish `hη : h (genericPoint X) ∈ Z.opn` using `hopn _ fun y hy => (hy.antisymm (genericPoint_specializes y)).eq`. Rewrite `hη` using `[← Z.cover]`. Take `⟨a, ha⟩` from `Set.mem_iUnion.1 hη`. Establish `hT : ⊤ ≤ (genPt X ≫ h) ⁻¹ᵁ (Z.U a).1` using `fun q _ => by show h (genPt X q) ∈ (Z.U a).1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[genPt_apply]`. Conclude with `ha`. Establish `hU' : ⊤ ≤ genPt X ⁻¹ᵁ U'.1` using `fun q _ => by show genPt X q ∈ U'.1`. Rewrite using `[genPt_apply]`. Conclude with `((genericPoint_spec X).mem_open_set_iff U'.1.isOpen).2 (by simpa using U'.2.2)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨φ, hφ⟩` from `Pull.exists_fromSpec (Z.U a).2 (genPt X ≫ h) hT`. Establish `hφ₀ : spMap φ ≫ Z.chart a = genPt X ≫ h` using `hφ`. Establish `hφ₁ : spMap φ ≫ Z.chart a = spMap κ ≫ U.toX ≫ h` using `by rw [hφ₀, ← g, Category.assoc]`. Establish `hφ₂ : spMap φ ≫ Z.chart a = spMap κ' ≫ U'.toX ≫ h` using `by rw [hφ₀, ← g', Category.assoc]`. Establish `hy : spMap κ' ≫ U'.toX ≫ h ≫ Z.π = spMap κ ≫ U.toX ≫ h ≫ Z.π`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Category.assoc, g', ← g, Category.assoc]`. Establish `hw : spMap (Formalism.L2.Pj.dualMap κ') ≫ v'.1.left ≫ φt' = spMap (Formalism.L2.Pj.dualMap κ) ≫ v.1.left ≫ φt`. Rewrite using `[hv, ← Category.assoc, ← Cris.spMap_comp, ← e]`. Use `congr 2`. Use `RingHom.ext fun z => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result.
 
-Apply the tactic sequence `ext <;> simp [Formalism.L2.Pj.dualMap]`. Take `⟨cf, hcf⟩` from `exists_comb Z hx a φ (y := spMap κ ≫ U.toX ≫ h ≫ Z.π) (by rw [← Category.assoc, hφ₁, Category.assoc, Category.assoc]) (LieMet.isTan_map κ rfl (TanPair.isTanAtG_lieG hφt v))`. Establish `h₁` using `hl σ v _ κ a φ hφ₁ cf hcf`. Establish `h₂` using `hl' (resM F hle σ) v' _ κ' a φ hφ₂ cf (by rw [hy, hw]; exact hcf)`. Use `Subtype.ext (h₂.trans (Eq.trans ?_ h₁.symm))` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[g, g', valF_crd_resM (hs a) hle σ fun q hq => ⟨hU' hq, hT hq⟩]`.
+A detailed English derivation is pending.
 -/
 theorem formResSt : GlobalTheory.ChainPts.SysB.FormResSt := by
   intro E _ _ _ H Dw Xo p W Y i₀ Z X _ h r x hx hopn F s hs U U' hle t t' φt φt' hφt lam lam' hl hl' σ v v' hv

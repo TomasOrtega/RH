@@ -13,11 +13,11 @@ variable {O : Type} [CommRing O] {bar : O → O} {φ : InvFun O} {X X₁ : Type}
   [Module.Finite O X] [AddCommGroup X₁] [Module O X₁] [Module.Finite O X₁] {m : ℕ}
 
 /- English proof (translation)
-Take `⟨h1, h2, h3⟩` from `h`. Establish `ht' : (0 : ℝ) < t` using `by exact_mod_cast ht`. Use `⟨fun i => ?_, fun β hβ hp => ?_, fun β hβ hp he => h3 β hβ hp ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.smul_apply, smul_eq_mul, Int.cast_mul, Int.cast_natCast, h1 i, Nat.cast_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Use `mul_le_mul_of_nonneg_left (h2 β hβ hp) ht'.le` as an intermediate fact. Simplify using `only [LinearMap.smul_apply, smul_eq_mul, Int.cast_mul, Int.cast_natCast, Nat.cast_mul]`. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using `only [LinearMap.smul_apply, smul_eq_mul, Int.cast_mul, Int.cast_natCast, Nat.cast_mul] at he`. Establish `: (t : ℝ) * (N * φ.evalZ β) = t * ℓ β` using `by linarith`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `mul_left_cancel₀ ht'.ne' this`.
+A detailed English derivation is pending.
 -/
 theorem StrictWith.mul {N t : ℕ} (ht : 0 < t) {ℓ : LinearMap.BilinForm ℤ X →ₗ[ℤ] ℤ}
     {u : Fin m → LinearMap.BilinForm ℤ X} (h : StrictWith bar φ N ℓ u) :
@@ -34,9 +34,9 @@ theorem StrictWith.mul {N t : ℕ} (ht : 0 < t) {ℓ : LinearMap.BilinForm ℤ X
     exact mul_left_cancel₀ ht'.ne' this
 
 /- English proof (translation)
-Take `⟨h1, h2, h3⟩` from `h`. Use `⟨fun i => (h1 i).trans (by rw [evalZ_pull φ hr]), fun β hβ hp => ?_, fun β hβ hp he => ?_⟩` and prove the remaining obligations. Rewrite using `[← evalZ_pull φ hr]`. Conclude with `h2 _ (pull_mem r hβ) fun y => hp _`. Rewrite `he` using `[← evalZ_pull φ hr]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨k, c, hk, hc⟩` from `h3 _ (pull_mem r hβ) (fun y => hp _) he`. Use `⟨k, c, hk, LinearMap.ext₂ fun a b => ?_⟩` and prove the remaining obligations. Take `⟨a, rfl⟩` from `hr a`. Take `⟨b, rfl⟩` from `hr b`. Simplify `LinearMap.congr_fun₂ hc a b` using `[LinearMap.sum_apply]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem StrictWith.of_pull {N : ℕ} {r : X →ₗ[O] X₁} (hr : Function.Surjective r) {ℓ : LinearMap.BilinForm ℤ X →ₗ[ℤ] ℤ}
     {u : Fin m → LinearMap.BilinForm ℤ X₁} (h : StrictWith bar φ N ℓ fun i => pull r (u i)) :
@@ -57,21 +57,17 @@ end GlobalTheory.PolCell
 open Classical in
 
 /- English proof (translation)
-Introduce `X _ _ φ hφ`. Take `⟨S, hS, hSc⟩` from `hφ.finite`. Use `haveI : Finite S := hS.to_subtype`. Set `K` to `Σ m : Fin (Nat.card S + 1), (Fin m → S)`. Use `haveI : Fintype K := Fintype.ofFinite K`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `D : K → ℕ` to `fun k => if h : IsCone (id : ℤ → ℤ) φ (fun i => ((k.2 i : S) : LinearMap.BilinForm ℤ X)) then Classical.choose h.strict else 1`. Establish `hD : ∀ k, 0 < D k` using `fun k => by`. Simplify using `only [D]`. Use `split_ifs with h`. Conclude with `(Classical.choose_spec (Classical.choose_spec h.strict)).1`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `one_pos`. Use `⟨∏ k, D k, Finset.prod_pos fun k _ => hD k, fun B hB => ?_⟩` and prove the remaining obligations. Take `⟨m, γ, c, hγ, hc, rfl⟩` from `hφ.cover B hB`. Take `⟨e, he⟩` from `hSc m γ hγ`. Establish `hγ'` using `hγ.pull_equiv e`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hm : m < Nat.card S + 1`. Use `Nat.card_le_card_of_injective (fun i : Fin m => (⟨_, he i⟩ : S)) (fun i j h => hγ'.injective (congrArg Subtype.val h))` as an intermediate fact. Rewrite `this` using `[Nat.card_fin]`. Conclude with `Nat.lt_succ_of_le this`. Set `k : K` to `⟨⟨m, hm⟩, fun i => ⟨_, he i⟩⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hk : IsCone (id : ℤ → ℤ) φ (fun i => ((k.2 i : S) : LinearMap.BilinForm ℤ X))` using `hγ'`. Establish `hDk : D k = Classical.choose hk.strict` using `dif_pos hk`. Take `⟨ℓ, -, hℓ⟩` from `Classical.choose_spec hk.strict`. Take `⟨t, ht⟩ : D k ∣ ∏ k, D k` from `Finset.dvd_prod_of_mem D (Finset.mem_univ k)`. Establish `ht0 : 0 < t`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Break down `Nat.eq_zero_or_pos t with h | h` into its components or cases. Use `Finset.prod_pos fun k (_ : k ∈ Finset.univ) => hD k` as an intermediate fact. Rewrite `this` using `[ht, h, mul_zero]`. Conclude with `absurd this (lt_irrefl 0)`. Conclude with `h`.
-
-Establish `h1 : StrictWith (id : ℤ → ℤ) φ (t * D k) ((t : ℤ) • ℓ) fun i => pull e.toLinearMap (γ i)`. Rewrite using `[hDk]`. Conclude with `StrictWith.mul ht0 hℓ`. Establish `h2` using `StrictWith.of_pull e.surjective h1`. Take `⟨w, hw⟩` from `exists_linW_eq X (((t : ℤ) • ℓ) ∘ₗ { toFun := pull e.toLinearMap, map_add' := fun _ _ => rfl, map_smul' := fun _ _ => rfl })`.
-
-Use `⟨m, γ, w, hγ, ?_, c, hc, rfl⟩` and prove the remaining obligations. Rewrite using `[hw, ht, mul_comm]`. Conclude with `h2`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.PolCell.exists_common_den : ∀ (X : Type) [AddCommGroup X] [Module.Finite ℤ X] (φ : InvFun ℤ),
     IsPolFanOn (id : ℤ → ℤ) φ X → ∃ N : ℕ, 0 < N ∧ ∀ B ∈ psdCone (id : ℤ → ℤ) X, ∃ (m : ℕ)

@@ -10,9 +10,9 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.CompanionTheory.RootsDistinctVal
 
 /- English proof (translation)
-Introduce `L _ _ n y hy u u' hu hu' hprod`. Use function extensionality and compare the values at `i`. Establish `h0 : (∏ j, (X - C (u' j))).eval (u i) = 0`. Rewrite using `[← hprod, Polynomial.eval_prod]`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ i) (by simp)`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h0` using `[Polynomial.eval_prod, Finset.prod_eq_zero_iff]`. Take `⟨j, -, hj⟩` from `h0`. Establish `hij : u i = u' j` using `by simpa [sub_eq_zero] using hj`. Establish `: i = j` using `hy (by rw [← hu i, ← hu' j, hij])`. Rewrite using `[hij, this]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem roots_eq_of_distinct_ord : ∀ (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))] (n : ℕ) (y : Fin n → ℤ),
     Function.Injective y → ∀ u u' : Fin n → L, (∀ i, ordL (u i) = y i) → (∀ i, ordL (u' i) = y i) →

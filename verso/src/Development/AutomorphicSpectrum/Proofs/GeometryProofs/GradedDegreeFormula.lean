@@ -22,11 +22,11 @@ section Algebra
 variable {R M : Type*} [CommRing R] [AddCommGroup M] [Module R M]
 
 /- English proof (translation)
-Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg`. Rewrite `hg` using `[Fin.sum_univ_castSucc]`. Simplify using `only [Fin.snoc_castSucc, Fin.snoc_last] at hg`. Establish `hlast : g (Fin.last n) = 0`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `h0`. Apply `hs` to reduce the goal to its premises. Apply `hsat _ _ h0` to reduce the goal to its premises. Establish `: g (Fin.last n) • s = -∑ a : Fin n, g a.castSucc • f a` using `eq_neg_of_add_eq_zero_right hg`. Rewrite using `[this]`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `F.neg_mem (F.sum_mem fun a _ => F.smul_mem _ (hf a))`. Rewrite `hg` using `[hlast, zero_smul, add_zero]`. Establish `hz` using `Fintype.linearIndependent_iff.mp hli (fun a => g a.castSucc) hg`. Introduce `j`. Conclude with `Fin.lastCases hlast (fun a => hz a) j`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem linearIndependent_snoc {F : Submodule R M}
     (hsat : ∀ (a : R) (x : M), a ≠ 0 → a • x ∈ F → x ∈ F) {n : ℕ} {f : Fin n → M}
@@ -49,23 +49,23 @@ theorem linearIndependent_snoc {F : Submodule R M}
   exact Fin.lastCases hlast (fun a => hz a) j
 
 /- English proof (translation)
-Use `set S : Submodule R G := (F ⊔ Submodule.span R {s}).comap G.subtype with hS`. Establish `hTS : T ≤ S` using `fun x hx => (sup_le_sup_right hPF _) ((hT x).1 hx)`. Set `φ : F →ₗ[R] G ⧸ T` to `T.mkQ ∘ₗ Submodule.inclusion hFG`. Establish `hker : LinearMap.ker φ = U`. Use extensionality with `x`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hU]`. Simplify using `only [φ, LinearMap.mem_ker, LinearMap.comp_apply, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Rewrite using `[hT]`. Express the relevant statement in the definitionally equal form `(x : M) ∈ P ⊔ Submodule.span R {s} ↔ _`. Prove the components needed by the constructor for the conclusion.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Take `⟨y, hy, z, hz, hyz⟩` from `Submodule.mem_sup.1 h`. Take `⟨a, rfl⟩` from `Submodule.mem_span_singleton.1 hz`. Establish `ha : a = 0`. Assume the negation of the conclusion as `h0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hs` to reduce the goal to its premises. Apply `hsat a s h0` to reduce the goal to its premises. Establish `: a • s = (x : M) - y` using `by rw [← hyz]; abel`. Rewrite using `[this]`. Conclude with `F.sub_mem x.2 (hPF hy)`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Rewrite `hyz` using `[ha, zero_smul, add_zero]`. Rewrite using `[← hyz]` and apply the resulting hypothesis. Conclude with `fun h => Submodule.mem_sup_left h`. Establish `hrange : LinearMap.range φ = S.map T.mkQ`. Use extensionality with `q`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, rfl⟩`. Conclude with `⟨Submodule.inclusion hFG x, Submodule.mem_sup_left x.2, rfl⟩`. Introduce and unpack `⟨y, hy, rfl⟩`. Take `⟨x, hx, z, hz, hxz⟩` from `Submodule.mem_sup.1 (show (y : M) ∈ F ⊔ Submodule.span R {s} from hy)`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨a, rfl⟩` from `Submodule.mem_span_singleton.1 hz`. Use `⟨⟨x, hx⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [φ, LinearMap.comp_apply, Submodule.mkQ_apply]`. Rewrite using `[Submodule.Quotient.eq, hT]`. Establish `: ((Submodule.inclusion hFG ⟨x, hx⟩ - y : G) : M) = -(a • s)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `x - (y : M) = _`. Rewrite using `[← hxz]`. Normalize the expressions using the abelian group laws. Rewrite using `[this]`. Conclude with `neg_mem (Submodule.mem_sup_right (Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self s)))`.
+Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hc : Nat.card (F ⧸ U) = Nat.card (S.map T.mkQ)`. Rewrite using `[← hker, ← hrange]`. Conclude with `Nat.card_congr φ.quotKerEquivRange.toEquiv`. Rewrite using `[hc, mul_comm]`. Conclude with `(Submodule.card_quotient_mul_card_quotient S T hTS).symm`.
+A detailed English derivation is pending.
 -/
 theorem card_quotient_line {F G P : Submodule R M} (hFG : F ≤ G) (hPF : P ≤ F)
     (hsat : ∀ (a : R) (x : M), a ≠ 0 → a • x ∈ F → x ∈ F) {s : M} (hs : s ∉ F)
@@ -126,7 +126,7 @@ end Algebra
 open scoped ComplexOrder in
 
 /- English proof (translation)
-Establish `hd : B.gramDet σ e = (Matrix.gram ℂ fun i => fibreVec B.metric σ (e i)).det` using `rfl`. Establish `hp : 0 < (Matrix.gram ℂ fun i => fibreVec B.metric σ (e i)).det` using `(Matrix.posDef_gram_of_linearIndependent (linearIndependent_fibreVec B.metric σ hli)).det_pos`. Take `⟨h1, h2⟩` from `Complex.lt_def.mp hp`. Establish `hz : (((Matrix.gram ℂ fun i => fibreVec B.metric σ (e i)).det).re : ℂ) = (Matrix.gram ℂ fun i => fibreVec B.metric σ (e i)).det` using `Complex.ext (by simp) (by simpa using h2)`. Rewrite using `[hd, ← hz, Complex.norm_real, Real.norm_eq_abs, abs_of_pos (by simpa using h1)]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -144,33 +144,31 @@ theorem gramDet_re_eq_norm {L : Type} [Field L] [NumberField L] (B : HermitianBu
   rfl
 
 /- English proof (translation)
-Introduce `L _ _ B r A i f s hf hli hs hs0`. Establish `hFG : A.F i.castSucc ≤ A.F i.succ` using `A.mono (Fin.castSucc_lt_succ).le`. Establish `hsat : ∀ (a : 𝓞 L) (x : B.carrier), a ≠ 0 → a • x ∈ A.F i.castSucc → x ∈ A.F i.castSucc` using `A.sat i.castSucc`. Establish `hsn : LinearIndependent (𝓞 L) (Fin.snoc f s : Fin (i + 1) → B.carrier)` using `linearIndependent_snoc hsat hf hli hs0`. Establish `hmem : ∀ a, (Fin.snoc f s : Fin (i + 1) → B.carrier) a ∈ A.F i.succ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `a`. Use `Fin.lastCases ?_ (fun j => ?_) a` and prove the remaining obligations. Simplify using `using hs`. Simplify using `using hFG (hf j)`. Set `f' : Fin i → A.F i.castSucc` to `fun a => ⟨f a, hf a⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression.
 
-Set `g' : Fin (i + 1) → A.F i.succ` to `fun a => ⟨(Fin.snoc f s : Fin (i + 1) → B.carrier) a, hmem a⟩`. Establish `hf' : LinearIndependent (𝓞 L) f'` using `LinearIndependent.of_comp (A.F i.castSucc).subtype hli`. Establish `hg' : LinearIndependent (𝓞 L) g'` using `LinearIndependent.of_comp (A.F i.succ).subtype hsn`. Establish `hcF : Fintype.card (Fin i) = B.rank (A.F i.castSucc)`. Rewrite using `[Fintype.card_fin, A.rank]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `hcG : Fintype.card (Fin (i + 1)) = B.rank (A.F i.succ)`. Rewrite using `[Fintype.card_fin, A.rank]`. Simplify using the standard rewrite rules. Establish `hP : Submodule.span (𝓞 L) (Set.range f) ≤ A.F i.castSucc` using `Submodule.span_le.2 (by rintro _ ⟨a, rfl⟩; exact hf a)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hU : ∀ x : A.F i.castSucc, x ∈ Submodule.span (𝓞 L) (Set.range f') ↔ (x : B.carrier) ∈ Submodule.span (𝓞 L) (Set.range f)`. Introduce `x`. Establish `hm : (Submodule.span (𝓞 L) (Set.range f')).map (A.F i.castSucc).subtype = Submodule.span (𝓞 L) (Set.range f)`. Rewrite using `[Submodule.map_span, ← Set.range_comp]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[← hm]`. Prove the components needed by the constructor for the conclusion. Conclude with `fun h => ⟨x, h, rfl⟩`. Introduce and unpack `⟨y, hy, hyx⟩`. Rewrite using `[← Subtype.ext hyx]` and apply the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Establish `hT : ∀ x : A.F i.succ, x ∈ Submodule.span (𝓞 L) (Set.range g') ↔ (x : B.carrier) ∈ Submodule.span (𝓞 L) (Set.range f) ⊔ Submodule.span (𝓞 L) {s}`. Introduce `x`. Establish `hm : (Submodule.span (𝓞 L) (Set.range g')).map (A.F i.succ).subtype = Submodule.span (𝓞 L) (Set.range f) ⊔ Submodule.span (𝓞 L) {s}`. Rewrite using `[Submodule.map_span, ← Set.range_comp, ← Submodule.span_union]`. Use `congr 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hr : Set.range ((A.F i.succ).subtype ∘ g') = Set.range (Fin.snoc f s : Fin (i + 1) → B.carrier)` using `rfl`. Rewrite using `[hr]`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Use `Fin.lastCases ?_ (fun j => ?_) a` and prove the remaining obligations. Use `right`. Simplify using the standard rewrite rules. Use the proof step `left; exact ⟨j, by simp⟩`. Introduce and unpack `(⟨j, rfl⟩ | hy)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `⟨j.castSucc, by simp⟩`. Conclude with `⟨Fin.last _, by simpa using hy.symm⟩`. Rewrite using `[← hm]`. Prove the components needed by the constructor for the conclusion. Conclude with `fun h => ⟨x, h, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Introduce and unpack `⟨y, hy, hyx⟩`. Rewrite using `[← Subtype.ext hyx]` and apply the resulting hypothesis. Establish `hidx` using `card_quotient_line hFG hP hsat hs0 _ _ hT hU`. Establish `hfinF : Finite (A.F i.castSucc ⧸ Submodule.span (𝓞 L) (Set.range f'))` using `finite_quotient_span hf' hcF`. Establish `hfinG : Finite (A.F i.succ ⧸ Submodule.span (𝓞 L) (Set.range g'))` using `finite_quotient_span hg' hcG`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hne : (Nat.card (A.F i.succ ⧸ Submodule.span (𝓞 L) (Set.range g')) : ℝ) ≠ 0`. Conclude with `Nat.card_pos.ne'` after adjusting the coercions. Establish `hlog : Real.log (Nat.card (A.F i.succ ⧸ Submodule.span (𝓞 L) (Set.range g'))) = Real.log (Nat.card (A.F i.succ ⧸ (A.F i.castSucc ⊔ Submodule.span (𝓞 L) {s}).comap (A.F i.succ).subtype)) + Real.log (Nat.card (A.F i.castSucc ⧸ Submodule.span (𝓞 L) (Set.range f')))`. Rewrite `hne`, the goal using `[hidx]`. Move the coercions through the operations in `at hne ⊢`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Real.log_mul (left_ne_zero_of_mul hne) (right_ne_zero_of_mul hne)`. Establish `hgF : ∀ σ : L →+* ℂ, GroundTheory.Heights₂.Heights.gramDet B.metric σ (fun a => ((f' a : A.F i.castSucc) : B.carrier)) = ‖B.gramDet σ f‖` using `fun σ => gramDet_re_eq_norm B σ hli`. Establish `hgG : ∀ σ : L →+* ℂ, GroundTheory.Heights₂.Heights.gramDet B.metric σ (fun a => ((g' a : A.F i.succ) : B.carrier)) = ‖B.gramDet σ (Fin.snoc f s : Fin (i + 1) → B.carrier)‖` using `fun σ => gramDet_re_eq_norm B σ hsn`. Rewrite using `[SatFlag.grDeg, HermitianBundle.normDegree, HermitianBundle.normDegree, B.degree_eq_of_linearIndependent _ hf' hcF, B.degree_eq_of_linearIndependent _ hg' hcG, hlog]`. Simplify using `only [hgF, hgG, Finset.sum_sub_distrib]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem grDeg_eq : ∀ (L : Type) [Field L] [NumberField L] (B : GroundTheory.Heights₂.Heights.HermitianBundle.{0} L) (r : ℕ) (A : SatFlag B r) (i : Fin r) (f : Fin i → B.carrier) (s : B.carrier), (∀ a, f a ∈ A.F i.castSucc) → LinearIndependent (𝓞 L) f → s ∈ A.F i.succ → s ∉ A.F i.castSucc → A.grDeg i = (Module.finrank ℚ L : ℝ)⁻¹ * (Real.log (Nat.card (A.F i.succ ⧸ (A.F i.castSucc ⊔ Submodule.span (𝓞 L) {s}).comap (A.F i.succ).subtype)) - (1 / 2) * ∑ σ : L →+* ℂ, (Real.log ‖B.gramDet σ (Fin.snoc f s : Fin (i + 1) → B.carrier)‖ - Real.log ‖B.gramDet σ f‖)) := by
   intro L _ _ B r A i f s hf hli hs hs0

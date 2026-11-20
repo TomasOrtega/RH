@@ -13,7 +13,7 @@ namespace GlobalTheory.ColumnSymplectic
 variable {n g : ℕ}
 
 /- English proof (translation)
-Use extensionality with `p q`. Simplify using `only [blk, of_apply, kroneckerMap_apply, one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem blk_eq (τ : Matrix (Fin g) (Fin g) ℂ) :
     blk n τ = (1 : Matrix (Fin n) (Fin n) ℂ) ⊗ₖ τ := by
@@ -22,21 +22,21 @@ theorem blk_eq (τ : Matrix (Fin g) (Fin g) ℂ) :
   split_ifs <;> simp
 
 /- English proof (translation)
-Rewrite using `[blk_eq, blk_eq, blk_eq, ← mul_kronecker_mul, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem blk_mul (A B : Matrix (Fin g) (Fin g) ℂ) : blk n A * blk n B = blk n (A * B) := by
   rw [blk_eq, blk_eq, blk_eq, ← mul_kronecker_mul, one_mul]
 
 /- English proof (translation)
-Rewrite using `[blk_eq, one_kronecker_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem blk_one : blk n (1 : Matrix (Fin g) (Fin g) ℂ) = 1 := by
   rw [blk_eq, one_kronecker_one]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `p`. Simplify using `only [mulVec, dotProduct, blk, of_apply, Fintype.sum_prod_type, ite_mul, zero_mul]`. Rewrite using `[Finset.sum_eq_single p.1]`. Simplify using the standard rewrite rules. Introduce `b _ hb`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[Ne.symm hb]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem blk_mulVec (A : Matrix (Fin g) (Fin g) ℂ) (w : Fin n × Fin g → ℂ) :
     blk n A *ᵥ w = fun p => (A *ᵥ fun i => w (p.1, i)) p.2 := by
@@ -49,11 +49,11 @@ theorem blk_mulVec (A : Matrix (Fin g) (Fin g) ℂ) (w : Fin n × Fin g → ℂ)
   · simp
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `show (blk n τ)ᵀ = blk n τ`. Use extensionality with `p q`. Simplify using `only [transpose_apply, blk, of_apply]`. Distinguish the cases in `e : p.1 = q.1`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_pos e.symm, if_pos e]`. Conclude with `congrFun (congrFun h.1 p.2) q.2`. Rewrite using `[if_neg (Ne.symm e), if_neg e]`. Establish `e : (blk n τ).map Complex.im = (1 : Matrix (Fin n) (Fin n) ℝ) ⊗ₖ τ.map Complex.im`. Use extensionality with `p q`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `only [map_apply, blk, of_apply, kroneckerMap_apply, one_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[e]`. Conclude with `PosDef.one.kronecker h.2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem blk_mem_siegel {τ : Matrix (Fin g) (Fin g) ℂ} (h : τ ∈ Siegel (Fin g)) :
     blk n τ ∈ Siegel (Fin n × Fin g) := by
@@ -73,7 +73,7 @@ theorem blk_mem_siegel {τ : Matrix (Fin g) (Fin g) ℂ} (h : τ ∈ Siegel (Fin
     exact PosDef.one.kronecker h.2
 
 /- English proof (translation)
-Simplify using `only [herm, trace, diag, mul_apply, ccT, transpose_apply, map_apply, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem sum_herm_eq_trace_mul_ccT {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
     (G : Matrix (Fin r) (Fin r) E) (y y' : Matrix (Fin n) (Fin r) E) :
@@ -86,7 +86,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} {X : Data 
   {bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ} (idx : Fin g ≃ X.Ψ × Fin r)
 
 /- English proof (translation)
-Rewrite using `[sum_herm_eq_trace_mul_ccT, sum_herm_eq_trace_mul_ccT, Base.ccT_mul]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[trace_mul_comm]`. Simplify using `only [Matrix.mul_assoc, hu, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sum_herm_mul {h : Matrix (Fin n) (Fin n) E} (hu : ccT h * h = 1) (G : Matrix (Fin r) (Fin r) E)
     (y y' : Matrix (Fin n) (Fin r) E) :
@@ -97,7 +97,7 @@ theorem sum_herm_mul {h : Matrix (Fin n) (Fin n) E} (hu : ccT h * h = 1) (G : Ma
   simp only [Matrix.mul_assoc, hu, Matrix.mul_one]
 
 /- English proof (translation)
-Simplify using `only [EF_def, ← map_sum, ← Finset.mul_sum]`. Rewrite using `[sum_herm_mul hu]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_EF_mul {h : Matrix (Fin n) (Fin n) E} (hu : ccT h * h = 1)
     (y y' : Matrix (Fin n) (Fin r) E) :
@@ -106,7 +106,7 @@ theorem sum_EF_mul {h : Matrix (Fin n) (Fin n) E} (hu : ccT h * h = 1)
   rw [sum_herm_mul hu]
 
 /- English proof (translation)
-Simplify using `only [EF_crd hs, dotProduct, Fintype.sum_prod_type, Finset.sum_neg_distrib, neg_neg, ← Finset.sum_sub_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem crd_dotProduct_sub_eq_neg_sum_EF (hs : IsSympl X bas) (Z Z' : Matrix (Fin n) (Fin r) E) :
     (fun p : Fin n × Fin g => crd X bas (Z p.1) (Sum.inl p.2)) ⬝ᵥ
@@ -150,9 +150,9 @@ noncomputable def colMap (hs : IsSympl X bas) (h : Matrix (Fin n) (Fin n) E) :
     rfl
 
 /- English proof (translation)
-Establish `hcrd : ∀ (w : (Fin n × Fin g → ℚ) × (Fin n × Fin g → ℚ)) (k : Fin n), crd X bas (famOf bas w k) = Sum.elim (fun i => w.1 (k, i)) fun i => w.2 (k, i)`. Introduce `w k`. Simplify using `only [famOf]`. Conclude with `crd_vecQ hs _`. Establish `e1` using `crd_dotProduct_sub_eq_neg_sum_EF hs (h * famOf bas u) (h * famOf bas v)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2` using `crd_dotProduct_sub_eq_neg_sum_EF hs (famOf bas u) (famOf bas v)`. Rewrite `e1` using `[sum_EF_mul hu, ← e2]`. Simplify using `only [hcrd, Sum.elim_inl, Sum.elim_inr] at e1`. Conclude with `e1`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem colMap_form (hs : IsSympl X bas) {h : Matrix (Fin n) (Fin n) E} (hu : ccT h * h = 1)
     (u v : (Fin n × Fin g → ℚ) × (Fin n × Fin g → ℚ)) :
@@ -173,7 +173,7 @@ noncomputable def actM (h : Matrix (Fin n) (Fin n) E) : Matrix (Fin n × Fin g) 
   blockDiagonal fun i => (rowType X (idx i)).mapMatrix h
 
 /- English proof (translation)
-Use function extensionality and compare the values at `p`. Simplify using `only [actM, Dict.hAct, mulVec, dotProduct, blockDiagonal_apply, Fintype.sum_prod_type, ite_mul, zero_mul, RingHom.mapMatrix_apply, map_apply, Finset.sum_ite_eq, Finset.mem_univ, if_true]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem actM_mulVec (h : Matrix (Fin n) (Fin n) E) (z : Fin n → Fin g → ℂ) :
     (actM idx h *ᵥ fun p => z p.1 p.2) = fun p => Dict.hAct X idx h z p.1 p.2 := by
@@ -182,7 +182,7 @@ theorem actM_mulVec (h : Matrix (Fin n) (Fin n) E) (z : Fin n → Fin g → ℂ)
     zero_mul, RingHom.mapMatrix_apply, map_apply, Finset.sum_ite_eq, Finset.mem_univ, if_true]
 
 /- English proof (translation)
-Rewrite using `[actM, det_blockDiagonal]`. Conclude with `Finset.prod_congr rfl fun i _ => (RingHom.map_det _ _).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_actM (h : Matrix (Fin n) (Fin n) E) :
     (actM idx h).det = ∏ i, rowType X (idx i) h.det := by
@@ -190,9 +190,9 @@ theorem det_actM (h : Matrix (Fin n) (Fin n) E) :
   exact Finset.prod_congr rfl fun i _ => (RingHom.map_det _ _).symm
 
 /- English proof (translation)
-Establish `e : (h * y) k = ∑ k', h k k' • y k'`. Use extensionality with `a`. Simplify using `[mul_apply, Finset.sum_apply]`. Use function extensionality and compare the values at `i`. Rewrite using `[e, per_sum]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Function.comp_apply, Finset.sum_apply, per_smul, Dict.hAct]`.
+Simplify using the standard rewrite rules.
 -/
 theorem per_mul (x : Frame X.Ψ r) (h : Matrix (Fin n) (Fin n) E) (y : Matrix (Fin n) (Fin r) E)
     (k : Fin n) : per X x ((h * y) k) ∘ idx = Dict.hAct X idx h (fun k => per X x (y k) ∘ idx) k := by
@@ -204,9 +204,9 @@ theorem per_mul (x : Frame X.Ψ r) (h : Matrix (Fin n) (Fin n) E) (y : Matrix (F
   simp only [Function.comp_apply, Finset.sum_apply, per_smul, Dict.hAct]
 
 /- English proof (translation)
-Establish `hH : (hMat X bas idx x)⁻¹ * hMat X bas idx x = 1` using `nonsing_inv_mul _ (isUnit_det_hMat (idx := idx) hs hx)`. Establish `e3 : (blk n (hMat X bas idx x)⁻¹ *ᵥ fun p : Fin n × Fin g => (hMat X bas idx x *ᵥ z p.1) p.2) = fun p => z p.1 p.2`. Rewrite using `[blk_mulVec]`. Use function extensionality and compare the values at `p`. Simplify using `only [mulVec_mulVec, hH, one_mulVec]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[← mulVec_mulVec, e3, ← mulVec_mulVec, actM_mulVec, blk_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_mulVec (hs : IsSympl X bas) {x : Frame X.Ψ r} (hx : x ∈ X.dom)
     (h : Matrix (Fin n) (Fin n) E) (z : Fin n → Fin g → ℂ) :
@@ -223,21 +223,19 @@ theorem conj_mulVec (hs : IsSympl X bas) {x : Frame X.Ψ r} (hx : x ∈ X.dom)
   rw [← mulVec_mulVec, e3, ← mulVec_mulVec, actM_mulVec, blk_mulVec]
 
 /- English proof (translation)
-Introduce `E _ _ _ r X g bas idx n hs _ h hu`. Establish `hcrd : ∀ (w : (Fin n × Fin g → ℚ) × (Fin n × Fin g → ℚ)) (k : Fin n), crd X bas (famOf bas w k) = Sum.elim (fun i => w.1 (k, i)) fun i => w.2 (k, i)`. Introduce `w k`. Simplify using `only [famOf]`. Conclude with `crd_vecQ hs _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hsS, hact⟩` from `GlobalTheory.SymplecticPeriods.exists_symplectic_action (Fin n × Fin g) (colMap hs h) (colMap_form hs hu)`. Use `⟨s, hsS, fun x hx => ?_⟩` and prove the remaining obligations. Establish `hT : tauMat X bas idx x ∈ Siegel (Fin g)` using `⟨tauMat_isSymm (idx := idx) hs hx, tauMat_im_posDef (idx := idx) hs hx⟩`. Establish `hB` using `blk_mem_siegel (n := n) hT`. Establish `hUnit` using `isUnit_det_hMat (idx := idx) hs hx`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : ∀ u : (Fin n × Fin g → ℚ) × (Fin n × Fin g → ℚ), (blk n (hMat X bas idx x) * actM idx h * blk n (hMat X bas idx x)⁻¹) *ᵥ (qv u.1 + blk n (tauMat X bas idx x) *ᵥ qv u.2) = qv (colMap hs h u).1 + blk n (tauMat X bas idx x) *ᵥ qv (colMap hs h u).2`. Introduce `u`. Establish `ea : qv u.1 + blk n (tauMat X bas idx x) *ᵥ qv u.2 = fun p : Fin n × Fin g => (hMat X bas idx x *ᵥ (fun k => per X x (famOf bas u k) ∘ idx) p.1) p.2`. Use function extensionality and compare the values at `p`. Rewrite using `[hMat_mulVec_per_crd idx hs hx, Pi.add_apply, blk_mulVec]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Pi.add_apply, hcrd, Sum.elim_inl, Sum.elim_inr]`. Both sides reduce to the same expression. Rewrite using `[ea, conj_mulVec idx hs hx h (fun k => per X x (famOf bas u k) ∘ idx)]`. Use function extensionality and compare the values at `p`. Rewrite using `[← per_mul idx x h (famOf bas u) p.1, hMat_mulVec_per_crd idx hs hx, Pi.add_apply, Pi.add_apply, blk_mulVec]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Take `⟨e1, e2⟩` from `hact _ hB _ _ hB.1 key`. Establish `hdetM : (blk n (hMat X bas idx x) * actM idx h * blk n (hMat X bas idx x)⁻¹).det = ∏ i, rowType X (idx i) h.det`. Rewrite using `[det_mul, det_mul, mul_right_comm, ← det_mul, blk_mul, mul_nonsing_inv _ hUnit, blk_one, det_one, one_mul, det_actM]`. Establish `hdeth : h.det ≠ 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrArg Matrix.det hu` as an intermediate fact. Rewrite `this` using `[det_mul, det_one]`. Conclude with `right_ne_zero_of_mul_eq_one this`. Establish `hP : ∏ i, rowType X (idx i) h.det ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun i _ => (map_ne_zero _).mpr hdeth`. Rewrite `hdetM` using `[e2, det_transpose, det_nonsing_inv, Ring.inverse_eq_inv']`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hD : (spDen s (blk n (tauMat X bas idx x))).det ≠ 0`. Introduce `hz`. Rewrite `hdetM` using `[hz, _root_.inv_zero]`. Conclude with `hP hdetM.symm`. Use `⟨hT, e1.symm, ?_, fun z => ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[← hdetM, mul_inv_cancel₀ hD]`. Rewrite using `[← mulVec_transpose, ← e2]`. Conclude with `conj_mulVec idx hs hx h z`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_symplectic_columns : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r) (g : ℕ) (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ) (idx : Fin g ≃ X.Ψ × Fin r) (n : ℕ), IsSympl X bas → Even n → ∀ h : Matrix (Fin n) (Fin n) E, ccT h * h = 1 → ∃ s ∈ Matrix.symplecticGroup (Fin n × Fin g) ℚ, ∀ x ∈ X.dom, tauMat X bas idx x ∈ Siegel (Fin g) ∧ spAct s (blk n (tauMat X bas idx x)) = blk n (tauMat X bas idx x) ∧ (spDen s (blk n (tauMat X bas idx x))).det * ∏ i : Fin g, rowType X (idx i) h.det = 1 ∧ ∀ z : Fin n → Fin g → ℂ, (fun p : Fin n × Fin g => (hMat X bas idx x *ᵥ z p.1) p.2) ᵥ* (spDen s (blk n (tauMat X bas idx x)))⁻¹ = fun p : Fin n × Fin g => (hMat X bas idx x *ᵥ Dict.hAct X idx h z p.1) p.2 := by
   intro E _ _ _ r X g bas idx n hs _ h hu

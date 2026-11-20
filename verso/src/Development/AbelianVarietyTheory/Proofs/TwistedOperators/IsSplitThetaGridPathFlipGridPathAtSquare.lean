@@ -7,14 +7,14 @@ namespace GlobalTheory.FlipPathPairwise
 def srcDiff (e : Edge) : ℤ := (e.src.1 : ℤ) - e.src.2
 
 /- English proof (translation)
-Apply the tactic sequence `cases e <;> cases e' <;> simp only [Edge.src, Edge.tgt, Prod.mk.injEq] at h <;>`. Apply the tactic sequence `simp only [srcDiff, Edge.src] <;> omega`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem srcDiff_of_join {e e' : Edge} (h : e.tgt = e'.src) : srcDiff e' = srcDiff e + 1 := by
   cases e <;> cases e' <;> simp only [Edge.src, Edge.tgt, Prod.mk.injEq] at h <;>
     simp only [srcDiff, Edge.src] <;> omega
 
 /- English proof (translation)
-Establish `h' : γ.IsChain fun a b => srcDiff a < srcDiff b` using `List.IsChain.imp (fun a b hab => by rw [srcDiff_of_join hab]; omega) h`. Use `haveI : Trans (fun a b : Edge => srcDiff a < srcDiff b) (fun a b => srcDiff a < srcDiff b) (fun a b => srcDiff a < srcDiff b) := ⟨fun h1 h2 => lt_trans h1 h2⟩`. Conclude with `h'.pairwise`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem pairwise_of_isPath {γ : List Edge} (h : IsPath γ) :
     γ.Pairwise fun a b => srcDiff a < srcDiff b := by
@@ -29,19 +29,19 @@ end GlobalTheory.FlipPathPairwise
 open GlobalTheory.FlipPathPairwise in
 
 /- English proof (translation)
-Introduce `γ i j hγ hP`. Take `⟨s, t, rfl⟩` from `hP`. Establish `hpw` using `pairwise_of_isPath hγ`. Rewrite `hpw` using `[List.pairwise_append, List.pairwise_append]`. Establish `hs : ∀ a ∈ s, a ≠ .theta i j ∧ a ≠ .ex i j` using `fun a ha => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `hpw.1.2.2 a ha (.theta i j) (by simp)`. Establish `h2` using `hpw.1.2.2 a ha (.ex i j) (by simp)`. Conclude with `⟨fun h => by subst h; exact lt_irrefl _ h1, fun h => by subst h; exact lt_irrefl _ h2⟩`. Establish `ht : ∀ a ∈ t, a ≠ .theta i j ∧ a ≠ .ex i j` using `fun a ha => by`. Establish `h1` using `hpw.2.2 (.theta i j) (by simp) a ha`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `hpw.2.2 (.ex i j) (by simp) a ha`. Conclude with `⟨fun h => by subst h; exact lt_irrefl _ h1, fun h => by subst h; exact lt_irrefl _ h2⟩`. Establish `hflip : flipPath i j (s ++ [Edge.theta i j, Edge.ex i j] ++ t) = s ++ Edge.ex i (j + 1) :: Edge.theta (i + 1) j :: t`. Establish `key : ∀ l : List Edge, (∀ a ∈ l, a ≠ .theta i j ∧ a ≠ .ex i j) → l.map (fun e => if e = .theta i j then Edge.ex i (j + 1) else if e = .ex i j then .theta (i + 1) j else e) = l` using `fun l hl => (List.map_congr_left fun a ha => by simp [hl a ha]).trans (List.map_id l)`. Unfold `flipPath`.
+Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[List.map_append, List.map_append, key s hs, key t ht]`. Simplify using the standard rewrite rules. Rewrite using `[hflip]`. Unfold `IsPath at hγ ⊢`. Rewrite `hγ` using `[List.append_assoc, List.cons_append, List.cons_append, List.nil_append, List.isChain_append]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨h1, h2, h3⟩` from `hγ`. Rewrite `h2` using `[List.isChain_cons_cons]`. Take `⟨-, h2⟩` from `h2`. Rewrite `h2` using `[List.isChain_cons]`. Use `List.isChain_append.2 ⟨h1, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[List.isChain_cons_cons, List.isChain_cons]`. Conclude with `⟨rfl, h2.1, h2.2⟩`. Introduce `x hx y hy`. Simplify using `only [List.head?_cons, Option.mem_def, Option.some.injEq] at hy`. Substitute `hy` using the available equality.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Substitute using the available equality.
 
-Conclude with `h3 x hx (Edge.theta i j) rfl`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.SplitFlip.isPath_flipPath : ∀ {γ : List Edge} {i j : ℕ}, IsPath γ → PassesThrough i j γ →
     IsPath (flipPath i j γ) := by

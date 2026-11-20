@@ -73,7 +73,7 @@ instance : PreservesColimitsOfShape (Discrete ι) (free R) := by
   unfold free; infer_instance
 
 /- English proof (translation)
-Establish `h1 : Scheme.etaleTopology.W (ψ X)` using `GrothendieckTopology.W_of_isLocallyBijective _ _`. Establish `h2` using `Scheme.etaleTopology.W_of_preservesSheafification (ModuleCat.free (ULift.{1} R)) _ h1`. Rewrite `h2` using `[GrothendieckTopology.W_iff]`. Conclude with `h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma isIso_free_φ : IsIso ((free R).map (φ X)) := by
   have h1 : Scheme.etaleTopology.W (ψ X) := GrothendieckTopology.W_of_isLocallyBijective _ _
@@ -82,9 +82,9 @@ lemma isIso_free_φ : IsIso ((free R).map (φ X)) := by
   exact h2
 
 /- English proof (translation)
-Introduce `R _ ι X`. Use `isIso_free_φ X R` as an intermediate fact. Establish `h0` using `isColimitCofanMkObjOfIsColimit (free R) _ _ (isColimitCofanSigmaOfRepresentablePresheaves X)`. Use `⟨IsColimit.ofIsoColimit h0 (Cofan.ext (asIso ((free R).map (φ X))) fun j => ?_)⟩` and prove the remaining obligations. Use `show (free R).map (inj X j) ≫ (free R).map (φ X) = (free R).map (yoneda.map (Sigma.ι X j))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Functor.map_comp, inj_φ]`.
+A detailed English derivation is pending.
 -/
 theorem FreeCoprod_of : LateralTheory.E.CoprodPf.FreeCoprod := by
   intro R _ ι X

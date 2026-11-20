@@ -16,7 +16,7 @@ def RightRule {F X : Type} [Field F] (R : Matrix (Fin 2) (Fin 2) F → X → X) 
   h.det = 1 ∧ ∀ g : Matrix (Fin 2) (Fin 2) F, g.det = 1 → ∀ Φ ∈ S, R (g * h) Φ = R g (R h Φ)
 
 /- English proof (translation)
-Use `⟨by rw [Matrix.det_mul, p₁.1, p₂.1, one_mul], fun g hg Φ hΦ => ?_⟩` and prove the remaining obligations. Establish `hΦ'` using `hS h₂ p₂.1 Φ hΦ`. Rewrite using `[← mul_assoc, p₂.2 (g * h₁) (by rw [Matrix.det_mul, hg, p₁.1, one_mul]) Φ hΦ, p₁.2 g hg _ hΦ', p₂.2 h₁ p₁.1 Φ hΦ]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem RightRule.mul {F X : Type} [Field F] {R : Matrix (Fin 2) (Fin 2) F → X → X} {S : Set X}
     (hS : ∀ g : Matrix (Fin 2) (Fin 2) F, g.det = 1 → ∀ Φ ∈ S, R g Φ ∈ S)
@@ -28,15 +28,13 @@ theorem RightRule.mul {F X : Type} [Field F] {R : Matrix (Fin 2) (Fin 2) F → X
     p₁.2 g hg _ hΦ', p₂.2 h₁ p₁.1 Φ hΦ]
 
 /- English proof (translation)
-Establish `hdet : h 0 0 * h 1 1 - h 0 1 * h 1 0 = 1`. Rewrite using `[← Matrix.det_fin_two]`. Conclude with `hh`. Distinguish the cases in `hc : h 1 0 = 0`. Rewrite `hdet` using `[hc, mul_zero, sub_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h0 : h 0 0 ≠ 0` using `left_ne_zero_of_mul_eq_one hdet`. Establish `e : h = !![1, h 0 1 * h 0 0; 0, 1] * !![((Units.mk0 _ h0 : Fˣ) : F), 0; 0, (((Units.mk0 _ h0)⁻¹ : Fˣ) : F)]`. Establish `e1 : h 1 1 = (h 0 0)⁻¹` using `eq_inv_of_mul_eq_one_right hdet`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two, hc, e1, h0]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `(hN _).mul hS (hM _)`. Establish `hs : -(h 1 0)⁻¹ ≠ 0` using `neg_ne_zero.mpr (inv_ne_zero hc)`. Establish `e : h = !![1, h 0 0 / h 1 0; 0, 1] * (!![((Units.mk0 _ hs : Fˣ) : F), 0; 0, (((Units.mk0 _ hs)⁻¹ : Fˣ) : F)] * (!![0, 1; -1, 0] * !![1, h 1 1 / h 1 0; 0, 1]))`. Establish `e1 : h 0 1 = (h 0 0 * h 1 1 - 1) / h 1 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[← hdet]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two]`.
-
-Apply the tactic sequence `all_goals first | field_simp | skip`. Apply the tactic sequence `all_goals first | (rw [e1]; field_simp; ring) | ring`. Rewrite using `[e]`. Conclude with `(hN _).mul hS ((hM _).mul hS (hW.mul hS (hN _)))`.
+Expand and normalize the polynomial expressions, which then agree. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rightRule_all {F X : Type} [Field F] {R : Matrix (Fin 2) (Fin 2) F → X → X} {S : Set X}
     (hS : ∀ g : Matrix (Fin 2) (Fin 2) F, g.det = 1 → ∀ Φ ∈ S, R g Φ ∈ S)
@@ -76,9 +74,9 @@ end GlobalTheory.CompanionTheory.GL2LocalData.WRepProof
 open GlobalTheory.CompanionTheory.GL2LocalData.WRepProof in
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ _ _ χ hχ hχ1 E _ _ _ _ _ _ _ hfr hcont σ hσ η hη g h hg hh Φ hΦ`. Establish `hS : ∀ g : Matrix (Fin 2) (Fin 2) F, g.det = 1 → ∀ Φ ∈ SBE E, rWE E χ σ η g Φ ∈ SBE E` using `fun g hg Φ hΦ => (GlobalTheory.CompanionTheory.WeilSB.wsb F χ hχ hχ1 E hfr hcont σ hσ η hη g hg Φ hΦ).1`. Establish `hN : ∀ b : F, RightRule (rWE E χ σ η) (SBE E) !![1, b; 0, 1]` using `fun b => ⟨by simp [Matrix.det_fin_two], fun g hg Φ hΦ => GlobalTheory.CompanionTheory.GL2LocalData.wRepN F χ hχ hχ1 E hfr hcont σ hσ η hη g hg b Φ hΦ⟩`. Establish `hM : ∀ s : Fˣ, RightRule (rWE E χ σ η) (SBE E) !![(s : F), 0; 0, ((s⁻¹ : Fˣ) : F)]` using `fun s => ⟨by simp [Matrix.det_fin_two], fun g hg Φ hΦ => GlobalTheory.CompanionTheory.WeilTorus.wRepM F χ hχ hχ1 E hfr hcont σ hσ η hη g hg s Φ hΦ⟩`. Establish `hW : RightRule (rWE E χ σ η) (SBE E) !![0, 1; -1, 0]` using `⟨by simp [Matrix.det_fin_two], fun g hg Φ hΦ => GlobalTheory.T.weil_representation_whittaker_hypothesis F χ hχ hχ1 E hfr hcont σ hσ η hη g hg Φ hΦ⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(rightRule_all hS hN hM hW h hh).2 g hg Φ hΦ`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CompanionTheory.GL2LocalData.wRep : Ad3.K.GL2LocalData.WRep := by
   intro F _ _ _ _ _ _ _ χ hχ hχ1 E _ _ _ _ _ _ _ hfr hcont σ hσ η hη g h hg hh Φ hΦ

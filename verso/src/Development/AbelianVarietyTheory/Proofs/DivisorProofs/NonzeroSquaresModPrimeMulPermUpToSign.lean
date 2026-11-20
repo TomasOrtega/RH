@@ -8,11 +8,11 @@ open scoped IntermediateField BigOperators Topology
 namespace GlobalTheory.CMModel
 
 /- English proof (translation)
-Distinguish the cases in `hs : IsSquare a`. Conclude with `Or.inl hs`. Use `right`. Establish `h1 : quadraticChar (ZMod p) a = -1` using `(quadraticChar_neg_one_iff_not_isSquare).2 hs`. Establish `hm1 : ¬ IsSquare (-1 : ZMod p)`.
+Consider separately whether the proposition holds or fails. Prove the first alternative. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ZMod.exists_sq_eq_neg_one_iff]`. Use linear arithmetic over natural numbers and integers. Establish `h2 : quadraticChar (ZMod p) (-1) = -1` using `(quadraticChar_neg_one_iff_not_isSquare).2 hm1`. Establish `h4 : quadraticChar (ZMod p) (-a) = 1`. Rewrite using `[neg_eq_neg_one_mul, map_mul, h1, h2]`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Evaluate the numerical expressions. Conclude with `(quadraticChar_one_iff_isSquare (neg_ne_zero.2 ha)).1 h4`.
+A detailed English derivation is pending.
 -/
 theorem isSquare_or_isSquare_neg_of_mod_four {p : ℕ} [Fact p.Prime] (h3 : p % 4 = 3)
     {a : ZMod p} (ha : a ≠ 0) : IsSquare a ∨ IsSquare (-a) := by
@@ -28,21 +28,19 @@ theorem isSquare_or_isSquare_neg_of_mod_four {p : ℕ} [Fact p.Prime] (h3 : p % 
     exact (quadraticChar_one_iff_isSquare (neg_ne_zero.2 ha)).1 h4
 
 /- English proof (translation)
-Introduce `p c hp h3 hc`. Use `haveI : Fact p.Prime := ⟨hp⟩`. Establish `hc0 : ((c : ℕ) : ZMod p) ≠ 0`. Rewrite using `[Ne, ZMod.natCast_eq_zero_iff]` and apply the resulting hypothesis. Choose the witnesses or unpack the hypotheses as in `⟨ε, hε, hsq⟩ : ∃ ε : ℤ, (ε = 1 ∨ ε = -1) ∧ IsSquare ((ε : ZMod p) * (c : ZMod p)) := by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `isSquare_or_isSquare_neg_of_mod_four h3 hc0 with h | h` into its components or cases. Conclude with `⟨1, Or.inl rfl, by simpa using h⟩`. Conclude with `⟨-1, Or.inr rfl, by simpa using h⟩`. Use `set s : ZMod p := (ε : ZMod p) * (c : ZMod p) with hs`. Establish `hε2 : (ε : ZMod p) * (ε : ZMod p) = 1`.
+Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Apply the tactic sequence `rcases hε with h | h <;> subst h <;> simp`. Establish `hs0 : s ≠ 0`. Introduce `h0`. Establish `: (ε : ZMod p) * s = 0` using `by rw [h0, mul_zero]`. Rewrite `this` using `[hs, ← mul_assoc, hε2, one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Simplify using the standard rewrite rules.
 
-Conclude with `hc0 this`. Set `f : Sq p → Sq p` to `fun k => ⟨⟨(s * ((k.1 : ℕ) : ZMod p)).val, ZMod.val_lt _⟩, by`. Simplify using `only [ZMod.natCast_val, ZMod.cast_id', id]`. Conclude with `⟨mul_ne_zero hs0 k.2.1, hsq.mul k.2.2⟩⟩`. Establish `hf : ∀ k, (((f k).1 : ℕ) : ZMod p) = s * ((k.1 : ℕ) : ZMod p)`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `k`. Simplify using `[f]`. Establish `hinj : Function.Injective f`. Introduce `k₁ k₂ h`. Establish `h' : s * ((k₁.1 : ℕ) : ZMod p) = s * ((k₂.1 : ℕ) : ZMod p)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← hf, ← hf, h]`. Establish `h''` using `mul_left_cancel₀ hs0 h'`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Fin.ext` to reduce the goal to its premises. Use `congrArg ZMod.val h''` as an intermediate fact.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `this` using `[ZMod.val_cast_of_lt k₁.1.2, ZMod.val_cast_of_lt k₂.1.2]`. Then use the resulting hypothesis. Establish `hbij : Function.Bijective f` using `Finite.injective_iff_bijective.1 hinj`. Use `⟨Equiv.ofBijective f hbij, ε, hε, fun k => ?_⟩` and prove the remaining obligations. Rewrite using `[← ZMod.intCast_zmod_eq_zero_iff_dvd]`. Use `push_cast`.
-
-Rewrite using `[Equiv.ofBijective_apply, hf, hs]`. Take the linear combination `(-(((k.1 : ℕ) : ZMod p) * (c : ZMod p))) * hε2`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem sq_perm_mul :
     ∀ (p c : ℕ), p.Prime → p % 4 = 3 → ¬ p ∣ c → ∃ (e : Sq p ≃ Sq p) (ε : ℤ), (ε = 1 ∨ ε = -1) ∧

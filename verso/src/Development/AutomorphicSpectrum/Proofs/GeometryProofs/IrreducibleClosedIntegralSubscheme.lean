@@ -10,7 +10,7 @@ open scoped CategoryTheory.Obj
 namespace GlobalTheory.CompanionTheory.Ar.TorusUnif
 
 /- English proof (translation)
-The claim follows from `PositivityTheory.Xgn.exists_integral_closed_subscheme_of_irreducible`.
+A detailed English derivation is pending.
 -/
 theorem exists_integral_closed_subscheme : ∀ (S : Scheme.{0}) (F : Set S), IsClosed F → IsIrreducible F →
     ∃ (Z : Scheme.{0}) (_ : IsIntegral Z) (i : Z ⟶ S), IsClosedImmersion i ∧ Set.range i = F ∧

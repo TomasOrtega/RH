@@ -54,7 +54,7 @@ example (z : (padTrue s Φ hm jC hj hA L G).Mp p la) :
 end Prime
 
 /- English proof (translation)
-Rewrite using `[padTrue_arDeg, ArIn.arDeg, LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `numL _ _ (MvPolynomial.rename _ _) = _`. Rewrite using `[map_pow, MvPolynomial.rename_X, numL_X_pow]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 example (T : Finset ℕ) (R : ℝ) (x : DV.Rt D.what₂.Tau N) :
     (padTrue s Φ hm jC hj hA L G).arDeg T R (MvPolynomial.X x ^ (Formalism.DegreeFormula.dimFl D.what₂.Tau N + 1)) =
@@ -67,7 +67,7 @@ example (T : Finset ℕ) (R : ℝ) (x : DV.Rt D.what₂.Tau N) :
   rfl
 
 /- English proof (translation)
-The claim follows from `(arIn s Φ hm).arDeg_homog T R 1 0 (Nat.succ_ne_zero _).symm (MvPolynomial.isHomogeneous_one _ _)`.
+A detailed English derivation is pending.
 -/
 example (T : Finset ℕ) (R : ℝ) : (padTrue s Φ hm jC hj hA L G).arDeg T R 1 = 0 :=
   (arIn s Φ hm).arDeg_homog T R 1 0 (Nat.succ_ne_zero _).symm (MvPolynomial.isHomogeneous_one _ _)

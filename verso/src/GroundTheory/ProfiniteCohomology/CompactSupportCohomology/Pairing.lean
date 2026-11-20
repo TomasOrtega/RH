@@ -16,26 +16,26 @@ section Elements
 variable (K : CochainComplex (ModuleCat.{u} k) ℕ)
 
 /- English proof (translation)
-The claim follows from `(ModuleCat.mono_iff_injective _).1 inferInstance`.
+A detailed English derivation is pending.
 -/
 theorem iCycles_hom_injective (n : ℕ) : Function.Injective (K.iCycles n).hom :=
   (ModuleCat.mono_iff_injective _).1 inferInstance
 
 /- English proof (translation)
-The claim follows from `(ModuleCat.epi_iff_surjective _).1 inferInstance`.
+A detailed English derivation is pending.
 -/
 theorem homologyπ_hom_surjective (n : ℕ) : Function.Surjective (K.homologyπ n).hom :=
   (ModuleCat.epi_iff_surjective _).1 inferInstance
 
 /- English proof (translation)
-The claim follows from `hom_apply_hom_apply_of_comp_eq (K.toCycles_i i n) a`.
+A detailed English derivation is pending.
 -/
 theorem iCycles_toCycles_hom_apply (i n : ℕ) (a : K.X i) :
     (K.iCycles n).hom ((K.toCycles i n).hom a) = (K.d i n).hom a :=
   hom_apply_hom_apply_of_comp_eq (K.toCycles_i i n) a
 
 /- English proof (translation)
-The claim follows from `hom_apply_hom_apply_of_comp_eq (K.toCycles_comp_homologyπ i n) a`.
+A detailed English derivation is pending.
 -/
 theorem homologyπ_toCycles_hom_apply (i n : ℕ) (a : K.X i) :
     (K.homologyπ n).hom ((K.toCycles i n).hom a) = 0 :=
@@ -51,7 +51,7 @@ noncomputable def descHomologyNat {r : ℕ} {T : Type u} [AddCommGroup T] [Modul
       exact zero_comp))).hom
 
 /- English proof (translation)
-The claim follows from `ConcreteCategory.congr_hom (Cofork.IsColimit.π_desc (K.homologyIsCokernel _ r rfl)) x`.
+A detailed English derivation is pending.
 -/
 theorem descHomologyNat_homologyπ {r : ℕ} {T : Type u} [AddCommGroup T] [Module k T]
     (L : K.cycles r →ₗ[k] T) (hL : ∀ i, i + 1 = r → ∀ a, L ((K.toCycles i r).hom a) = 0)
@@ -73,7 +73,7 @@ namespace LeibnizPairing
 variable {M N P : CochainComplex (ModuleCat.{u} k) ℕ} (μ : LeibnizPairing M N P)
 
 /- English proof (translation)
-Rewrite using `[μ.leibniz, iCycles_d_apply, iCycles_d_apply, map_zero, LinearMap.zero_apply, map_zero, smul_zero, add_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem d_μ_cycles {r s n : ℕ} (h : r + s = n) (x : M.cycles r) (y : N.cycles s) :
     (P.d n (n + 1)).hom (μ.μ h ((M.iCycles r).hom x) ((N.iCycles s).hom y)) = 0 := by
@@ -86,7 +86,7 @@ noncomputable def cyclesProduct {r s n : ℕ} (h : r + s = n) (x : M.cycles r) (
     (μ.d_μ_cycles h x y)
 
 /- English proof (translation)
-The claim follows from `P.i_cyclesMk _ _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem iCycles_cyclesProduct {r s n : ℕ} (h : r + s = n) (x : M.cycles r) (y : N.cycles s) :
     (P.iCycles n).hom (μ.cyclesProduct h x y) = μ.μ h ((M.iCycles r).hom x) ((N.iCycles s).hom y) :=
@@ -102,14 +102,14 @@ noncomputable def cycles {r s n : ℕ} (h : r + s = n) :
 
 @[simp]
 /- English proof (translation)
-The claim follows from `μ.iCycles_cyclesProduct h x y`.
+A detailed English derivation is pending.
 -/
 theorem iCycles_cycles {r s n : ℕ} (h : r + s = n) (x : M.cycles r) (y : N.cycles s) :
     (P.iCycles n).hom (μ.cycles h x y) = μ.μ h ((M.iCycles r).hom x) ((N.iCycles s).hom y) :=
   μ.iCycles_cyclesProduct h x y
 
 /- English proof (translation)
-Substitute `hi hmn` using the available equality. Apply `iCycles_hom_injective P` to reduce the goal to its premises. Rewrite using `[iCycles_cycles, iCycles_toCycles_hom_apply, iCycles_toCycles_hom_apply, μ.leibniz hm, iCycles_d_apply, map_zero, smul_zero, add_zero]`.
+Substitute using the available equality. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem cycles_toCycles_left {r s n i m : ℕ} (h : r + s = n) (hi : i + 1 = r) (hm : i + s = m)
     (hmn : m + 1 = n) (a : M.X i) (y : N.cycles s) :
@@ -121,7 +121,7 @@ theorem cycles_toCycles_left {r s n i m : ℕ} (h : r + s = n) (hi : i + 1 = r) 
     iCycles_d_apply, map_zero, smul_zero, add_zero]
 
 /- English proof (translation)
-Substitute `hj hmn` using the available equality. Apply `iCycles_hom_injective P` to reduce the goal to its premises. Rewrite using `[iCycles_cycles, map_smul, iCycles_toCycles_hom_apply, iCycles_toCycles_hom_apply, μ.leibniz hm, iCycles_d_apply, map_zero, LinearMap.zero_apply, zero_add, smul_smul, ← mul_pow, neg_one_mul, neg_neg, one_pow, one_smul]`.
+Substitute using the available equality. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem cycles_toCycles_right {r s n j m : ℕ} (h : r + s = n) (hj : j + 1 = s) (hm : r + j = m)
     (hmn : m + 1 = n) (x : M.cycles r) (b : N.X j) :
@@ -142,7 +142,7 @@ noncomputable def homologyPairing {r s n : ℕ} (h : r + s = n) :
       smul_zero]
 
 /- English proof (translation)
-Rewrite using `[homologyPairing, descHomologyNat_homologyπ]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem homologyPairing_homology_class {r s n : ℕ} (h : r + s = n) (x : M.cycles r) (y : N.cycles s) :
     μ.homologyPairing h ((N.homologyπ s).hom y) x = (P.homologyπ n).hom (μ.cycles h x y) := by
@@ -160,7 +160,7 @@ noncomputable def homology {r s n : ℕ} (h : r + s = n) :
 
 @[simp]
 /- English proof (translation)
-Rewrite using `[homology, descHomologyNat_homologyπ, LinearMap.flip_apply, homologyPairing_homology_class]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem homology_homologyπ {r s n : ℕ} (h : r + s = n) (x : M.cycles r) (y : N.cycles s) :
     μ.homology h ((M.homologyπ r).hom x) ((N.homologyπ s).hom y) =
@@ -175,9 +175,9 @@ variable {SM SN : ShortComplex (CochainComplex (ModuleCat.{u} k) ℕ)}
   {P : CochainComplex (ModuleCat.{u} k) ℕ}
 
 /- English proof (translation)
-Establish `hx₃ : (SM.X₃.d r (r + 1)).hom ((SM.X₃.iCycles r).hom x₃) = 0` using `iCycles_d_apply _ r (r + 1) x₃`. Establish `key` using `hS.δ_apply r (r + 1) rfl ((SM.X₃.iCycles r).hom x₃) hx₃ x₂ hx₂ ((SM.X₁.iCycles (r + 1)).hom x₁) hx₁ (r + 1 + 1) (by simp)`. Establish `e3 : SM.X₃.cyclesMk ((SM.X₃.iCycles r).hom x₃) (r + 1) ((ComplexShape.up ℕ).next_eq' rfl) hx₃ = x₃` using `iCycles_hom_injective _ r (SM.X₃.i_cyclesMk _ _ _ _)`. Establish `e1 : SM.X₁.cyclesMk ((SM.X₁.iCycles (r + 1)).hom x₁) (r + 1 + 1) (by simp) (hS.d_eq_zero_of_f_eq_d_apply r (r + 1) x₂ ((SM.X₁.iCycles (r + 1)).hom x₁) hx₁ (r + 1 + 1)) = x₁` using `iCycles_hom_injective _ (r + 1) (SM.X₁.i_cyclesMk _ _ _ _)`. Rewrite using `[← e3, ← e1]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `key`.
+A detailed English derivation is pending.
 -/
 theorem δ_homologyπ_of_lift (hS : SM.ShortExact) (r : ℕ) (x₃ : SM.X₃.cycles r)
     (x₂ : SM.X₂.X r) (hx₂ : (SM.g.f r).hom x₂ = (SM.X₃.iCycles r).hom x₃)
@@ -199,9 +199,9 @@ theorem δ_homologyπ_of_lift (hS : SM.ShortExact) (r : ℕ) (x₃ : SM.X₃.cyc
   exact key
 
 /- English proof (translation)
-Establish `hn` using `(HomologicalComplex.shortExact_iff_degreewise_shortExact SM).1 hS (r + 1)`. Establish `e` using `hn.exact`. Rewrite `e` using `[ShortComplex.moduleCat_exact_iff]`. Take `⟨y, hy⟩` from `e ((SM.X₂.d r (r + 1)).hom x₂) (by`. Express the relevant statement in the definitionally equal form `(SM.g.f (r + 1)).hom ((SM.X₂.d r (r + 1)).hom x₂) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[← hom_apply_hom_apply_eq_of_comp_eq (SM.g.comm r (r + 1)) x₂, hx₂, iCycles_d_apply])`. Establish `hy' : (SM.X₁.d (r + 1) (r + 1 + 1)).hom y = 0` using `hS.d_eq_zero_of_f_eq_d_apply r (r + 1) x₂ y hy (r + 1 + 1)`. Take `⟨x₁, hx₁⟩` from `exists_iCycles_eq (K := SM.X₁) y (by rw [CochainComplex.next]; exact hy')`. Conclude with `⟨x₁, by rw [hx₁]; exact hy⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_cycles_f_eq_d (hS : SM.ShortExact) (r : ℕ) (x₃ : SM.X₃.cycles r)
     (x₂ : SM.X₂.X r) (hx₂ : (SM.g.f r).hom x₂ = (SM.X₃.iCycles r).hom x₃) :
@@ -222,11 +222,11 @@ variable (μ : LeibnizPairing SM.X₂ SN.X₂ P) (μ₁ : LeibnizPairing SM.X₁
   (μ₃ : LeibnizPairing SM.X₃ SN.X₁ P)
 
 /- English proof (translation)
-Take `⟨x₃, rfl⟩` from `homologyπ_hom_surjective _ r x`. Take `⟨y₃, rfl⟩` from `homologyπ_hom_surjective _ s y`. Establish `hSMr` using `(HomologicalComplex.shortExact_iff_degreewise_shortExact SM).1 hSM r`. Establish `hSNs` using `(HomologicalComplex.shortExact_iff_degreewise_shortExact SN).1 hSN s`. Take `⟨x₂, hx₂⟩ : ∃ x₂ : SM.X₂.X r, (SM.g.f r).hom x₂ = (SM.X₃.iCycles r).hom x₃` from `(ModuleCat.epi_iff_surjective _).1 hSMr.epi_g _`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨y₂, hy₂⟩ : ∃ y₂ : SN.X₂.X s, (SN.g.f s).hom y₂ = (SN.X₃.iCycles s).hom y₃` from `(ModuleCat.epi_iff_surjective _).1 hSNs.epi_g _`. Take `⟨x₁, hx₁⟩` from `exists_cycles_f_eq_d hSM r x₃ x₂ hx₂`. Take `⟨y₁, hy₁⟩` from `exists_cycles_f_eq_d hSN s y₃ y₂ hy₂`. Rewrite using `[δ_homologyπ_of_lift hSM r x₃ x₂ hx₂ x₁ hx₁, δ_homologyπ_of_lift hSN s y₃ y₂ hy₂ y₁ hy₁, μ₁.homology_homologyπ, μ₃.homology_homologyπ, ← map_smul, ← map_add]`. Establish `hn : n = r + s` using `by omega`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Substitute `hn` using the available equality. Establish `e : μ₁.cycles h₁ x₁ y₃ + (-1 : k) ^ r • μ₃.cycles h₃ x₃ y₁ = (P.toCycles (r + s) (r + s + 1)).hom (μ.μ rfl x₂ y₂)`. Apply `iCycles_hom_injective P` to reduce the goal to its premises. Rewrite using `[map_add, map_smul, LeibnizPairing.iCycles_cycles, LeibnizPairing.iCycles_cycles, iCycles_toCycles_hom_apply, μ.leibniz, ← hx₁, ← hy₁, h₁₂, h₂₃, hx₂, hy₂]`. Rewrite using `[e, homologyπ_toCycles_hom_apply]`.
+Substitute using the available equality. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem LeibnizPairing.homology_δ_add_homology_δ
     (h₁₂ : ∀ {r s n : ℕ} (h : r + s = n) (x : SM.X₁.X r) (y : SN.X₂.X s),

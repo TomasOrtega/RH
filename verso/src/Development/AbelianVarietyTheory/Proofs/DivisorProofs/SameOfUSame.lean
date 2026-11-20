@@ -23,7 +23,7 @@ section Cong
 variable {Y : Type} [AddCommGroup Y]
 
 /- English proof (translation)
-Take `⟨w, rfl⟩` from `h`. Take `⟨w', rfl⟩` from `h'`. Conclude with `⟨w' + w, by rw [smul_add]; abel⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem cm_trans {N : ℕ} {x y z : Y} (h : CongMod N x y) (h' : CongMod N y z) : CongMod N x z := by
   obtain ⟨w, rfl⟩ := h
@@ -31,14 +31,14 @@ theorem cm_trans {N : ℕ} {x y z : Y} (h : CongMod N x y) (h' : CongMod N y z) 
   exact ⟨w' + w, by rw [smul_add]; abel⟩
 
 /- English proof (translation)
-Take `⟨w, rfl⟩` from `h`. Conclude with `⟨-w, by rw [smul_neg]; abel⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem cm_symm {N : ℕ} {x y : Y} (h : CongMod N x y) : CongMod N y x := by
   obtain ⟨w, rfl⟩ := h
   exact ⟨-w, by rw [smul_neg]; abel⟩
 
 /- English proof (translation)
-Take `⟨w, rfl⟩` from `h`. Conclude with `⟨f w, by rw [map_add, map_nsmul]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem cm_map {Y' : Type} [AddCommGroup Y'] (f : Y →+ Y') {N : ℕ} {x y : Y} (h : CongMod N x y) :
     CongMod N (f x) (f y) := by
@@ -46,7 +46,7 @@ theorem cm_map {Y' : Type} [AddCommGroup Y'] (f : Y →+ Y') {N : ℕ} {x y : Y}
   exact ⟨f w, by rw [map_add, map_nsmul]⟩
 
 /- English proof (translation)
-Rewrite `h` using `[QuotientAddGroup.eq]`. Take `⟨w, hw⟩` from `h`. Establish `hw' : N • w = -x + y` using `hw`. Conclude with `⟨-w, by rw [smul_neg, hw']; abel⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem cm_of_mk {N : ℕ} {x y : Y} (h : (QuotientAddGroup.mk x : ModN N Y) = QuotientAddGroup.mk y) : CongMod N x y := by
   rw [QuotientAddGroup.eq] at h
@@ -55,7 +55,7 @@ theorem cm_of_mk {N : ℕ} {x y : Y} (h : (QuotientAddGroup.mk x : ModN N Y) = Q
   exact ⟨-w, by rw [smul_neg, hw']; abel⟩
 
 /- English proof (translation)
-Rewrite using `[QuotientAddGroup.eq]`. Take `⟨w, rfl⟩` from `h`. Conclude with `⟨-w, by change N • (-w) = -(y + N • w) + y; rw [smul_neg]; abel⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem cm_mk {N : ℕ} {x y : Y} (h : CongMod N x y) : (QuotientAddGroup.mk x : ModN N Y) = QuotientAddGroup.mk y := by
   rw [QuotientAddGroup.eq]
@@ -78,7 +78,7 @@ def GLab (y : Sp (PadicAlgCl p) ⟶ M.Z) (yy : S.Gam →+ ModN (S.r * S.N) Y) : 
         ∀ a χ, lb.yy a = QuotientAddGroup.mk χ → yy a = QuotientAddGroup.mk (j χ)
 
 /- English proof (translation)
-Take `⟨P₀, a, a', h₁, h₂, l₁, l₂, hp⟩` from `h`. Conclude with `⟨P₀, a, a', fun _ => 𝟙 _, h₁, h₂, l₁, l₂, fun _ => ⟨by simp, by simp⟩, hp⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem same_of_uSame {o Ω o' Ω' : Type} [CommRing o] [Field Ω] [Algebra o Ω] [CommRing o'] [Field Ω'] [Algebra o' Ω']
     {S : ThetaSys o Ω} {S' : ThetaSys o' Ω'} {ρ : S.Real} {ρ' : S'.Real} {lab : S.Gam → S'.Gam} {φ : Ω →+* Ω'}
@@ -87,17 +87,15 @@ theorem same_of_uSame {o Ω o' Ω' : Type} [CommRing o] [Field Ω] [Algebra o Ω
   exact ⟨P₀, a, a', fun _ => 𝟙 _, h₁, h₂, l₁, l₂, fun _ => ⟨by simp, by simp⟩, hp⟩
 
 /- English proof (translation)
-Take `⟨c₀, hc, R', fg, frac, hth, hev, ρ', hS, -, hR, y₀, hy₀, u, lb, j, hq, hyy⟩` from `h₁`. Take `⟨c₁, hc₁, R'', fg₁, frac₁, hth₁, hev₁, ρ'', hS₁, -, hR₁, y₁, hy₁, u', lb', j', hq', hyy'⟩` from `h₂`. Take `⟨P, b, t, hb, ht, l₁, lt, hp⟩` from `hg`. Take `⟨Q, b', b'', hb', hb'', l', l'', hpQ, -⟩` from `GalTrans.exists_generic ρ _ ρ' _ ρ'' _ _ _ (same_of_uSame hS) (same_of_uSame hS₁) σ g P b t (fun _ => 𝟙 _) hb ht l₁ lt (fun _ => ⟨by simp, by simp⟩) hp`. Take `⟨P₀, a, a', ha, ha', hL, hL', hlab, -⟩` from `GalTrans.spread M hM ρ' ρ'' σ s hs y hR hR₁ y₀ y₁ hy₀ hy₁ u u' Q hb' hb'' l' l''`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨e, hψ, htor⟩` from `GlobalTheory.T.exists_latticeIso_of_two_padicAlgCl_uniformisations _ _ ρ' ρ'' p y₀ y₁ u u' P₀ a a' ha ha' hL hL'`. Use `haveI : CharZero (FractionRing u.V) := (algebraMap (FractionRing u.V) (PadicAlgCl p)).charZero`. Use `haveI : CharZero u.V := (algebraMap u.V (FractionRing u.V)).charZero`. Use `haveI : CharZero (FractionRing u'.V) := (algebraMap (FractionRing u'.V) (PadicAlgCl p)).charZero`. Use `haveI : CharZero u'.V := (algebraMap u'.V (FractionRing u'.V)).charZero`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Establish `hrN : 1 ≤ S.r * S.N` using `NeZero.one_le`. Use `⟨(j.symm.trans e).trans j', fun v => ?_, fun k ν hν => ?_⟩` and prove the remaining obligations. Take `⟨χ, rfl⟩` from `j.surjective v`. Simplify using `only [AddEquiv.trans_apply, AddEquiv.symm_apply_apply]`. Rewrite using `[← hq, ← hq']`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `(neg_injective (Real.exp_injective (GlobalTheory.ZH.RealCase.psiNorm_unique u' (e χ) ((hψ χ _).1 (lb.q_eq χ)) (lb'.q_eq (e χ))))).symm`. Take `⟨w₀, hw₀, e', e''⟩` from `hpQ k`. Take `⟨w, x, x', hw, hwa, hwa', hx, hx'⟩` from `hlab _ _ w₀ hw₀ e' e''`. Take `⟨f, hf1, hf2, -⟩` from `uTors_closed u.V u.complete u.A u.G u.D u.U (PadicAlgCl p) _ hrN`. Take `⟨f', hf1', hf2', -⟩` from `uTors_closed u'.V u'.complete u'.A u'.G u'.D u'.U (PadicAlgCl p) _ hrN`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨pk, hpk⟩` from `hf2 x (GlobalTheory.LabelTorsion.pow_eq_one_of_over_label _ ρ' p y₀ u _ x hx)`. Take `⟨pk', hpk'⟩` from `hf2' x' (GlobalTheory.LabelTorsion.pow_eq_one_of_over_label _ ρ'' p y₁ u' _ x' hx')`. Establish `Q₁` using `(hf1 pk x).2 hpk.symm`. Establish `Q₂` using `(hf1' pk' x').2 hpk'.symm`. Rewrite using `[hyy' k _ (lb'.yy_eq _ pk' x' Q₂ hx')]`.
-
-Establish `c₀ : CongMod (S.r * S.N) (j.symm ν) pk.y`. Simplify using `using cm_map j.symm.toAddMonoidHom (cm_of_mk (hν.symm.trans (hyy _ _ (lb.yy_eq _ pk x Q₁ hx))))`. Conclude with `cm_mk (cm_map j'.toAddMonoidHom (cm_trans (htor _ pk pk' x x' w hrN Q₁ Q₂ hw hwa hwa') (cm_symm (cm_map e.toAddMonoidHom c₀))))`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem GLab.conj [IsNoetherianRing o] (hM : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme M.Z) {σ : Ω →+* Ω} {g : S.Gam → S.Gam}
     (hg : IsConj ρ σ g) {s : M.Z ⟶ M.Z} (hs : M.pt ≫ s = spMap σ ≫ M.pt) {y : Sp (PadicAlgCl p) ⟶ M.Z}
@@ -137,7 +135,7 @@ theorem GLab.conj [IsNoetherianRing o] (hM : ReciprocityTheory.ChartRestriction.
       (cm_symm (cm_map e.toAddMonoidHom c₀))))
 
 /- English proof (translation)
-Take `⟨c₀, hc, R', fg, frac, hth, hev, ρ', -, -, -, y₀, -, u, lb, j, hq, -⟩` from `h`. Use `lb.pos.comp j.symm.injective.tendsto_cofinite` as an intermediate fact. Use `this.congr fun x => ?_` and prove the remaining obligations. Simplify using `[hq]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem GLab.tendsto {y : Sp (PadicAlgCl p) ⟶ M.Z} {yy : S.Gam →+ ModN (S.r * S.N) Y} (h : GLab ρ M q y yy) :
     Filter.Tendsto q Filter.cofinite Filter.atTop := by
@@ -147,17 +145,17 @@ theorem GLab.tendsto {y : Sp (PadicAlgCl p) ⟶ M.Z} {yy : S.Gam →+ ModN (S.r 
   simp [hq]
 
 /- English proof (translation)
-Take `⟨c₀, hc, R', fg, frac, hth, hev, ρ', -, -, hle, y₀, hy₀, u, l, j, hq, -⟩` from `h`. Establish `hint : ∀ a : o, ‖y₀ (algebraMap o R' a)‖ ≤ 1` using `fun a => by`. Rewrite using `[hy₀]`. Conclude with `RatModel.norm_val_le_one hz ((M.O z).algebraMap_mem a)`. Take `⟨sc, h0, h₁, -, h₃⟩` from `TestVal.exists_scale GlobalTheory.abelianSchemeLaws_all.1 GlobalTheory.abelianSchemeLaws_all.2 u l hint`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hδ` using `(GlobalTheory.UnitTheta.closure_unit_theta GlobalTheory.abelianSchemeLaws_all.1 GlobalTheory.abelianSchemeLaws_all.2 GlobalTheory.ZH.uTors_closed _ _ _ ρ' p y₀ u l hint).1`. Establish `hle' : ∀ a, ‖y₀ ⟨c₀ * S.th a, hth a⟩‖ ≤ sc` using `fun a => by`. Take `⟨w, -, hw⟩` from `h₁ a`. Use `hw.trans (mul_le_of_le_one_right h0 (Real.exp_le_one_iff.2 (neg_nonpos.2 (div_nonneg ?_ (by positivity)))))` and prove the remaining obligations. Rewrite using `[hq]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hq0 _`. Establish `hsc : 0 < sc` using `hδ.trans_le (Real.iSup_le hle' h0)`. Take `⟨a, -, ha, hn⟩` from `h₃ k hk hkd 0 (zero_mem _)`. Use `⟨a, by simpa using ha, ?_⟩` and prove the remaining obligations. Take `⟨d, hdv⟩` from `hd z`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `(hdv.div_iff_isUnit a).2 ((RatModel.norm_val_eq_one_iff hz (hdv.2 a)).1 ?_)` and prove the remaining obligations. Establish `hs` using `RatModel.gPt_specializes hz`. Establish `e : ‖y₀ ⟨c₀ * S.th a, hth a⟩‖ = ‖y₀ ⟨c₀ * S.th d, hth d⟩‖ * ‖M.val (gPt p ≫ y) (S.th a / S.th d)‖`. Rewrite using `[hy₀, hy₀, ← norm_mul, ← RatModel.val_mul (z := (gPt p ≫ y) (closedPoint (PadicAlgCl p))) (fun w => by rw [Subsingleton.elim w (closedPoint (PadicAlgCl p))]) (hle (hth d)) (RatModel.O_le_of_specializes (hs _) (hdv.2 a))]`. Use `congr 2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 
-Use `hdv.1` as an intermediate fact. Clear the denominators using the available nonvanishing facts. Establish `hn' : ‖y₀ ⟨c₀ * S.th a, hth a⟩‖ = sc` using `hn`. Establish `b₁` using `RatModel.norm_val_le_one hz (hdv.2 a)`. Establish `b₂` using `hle' d`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `le_antisymm b₁ (not_lt.1 fun hlt => ?_)` and prove the remaining obligations. Use `mul_le_mul_of_nonneg_right b₂ (norm_nonneg (M.val (gPt p ≫ y) (S.th a / S.th d)))` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem GLab.exists_div [ArithBase o Ω] (hd : M.HasDiv S.th) {y : Sp (OO p) ⟶ M.Z} {z : M.Z} (hz : y (cPt p) = z)
     {yy : S.Gam →+ ModN (S.r * S.N) Y} (h : GLab ρ M q (gPt p ≫ y) yy) (hq0 : ∀ x, 0 ≤ q x) {k : ℕ} (hk : 2 ≤ k)
@@ -195,39 +193,35 @@ theorem GLab.exists_div [ArithBase o Ω] (hd : M.HasDiv S.th) {y : Sp (OO p) ⟶
   nlinarith
 
 /- English proof (translation)
-Take `⟨c₀, hc, R', fg, frac, hth, hev, ρ', -, hi, hle, y₀, hy₀, u, l, j, hq, hyy⟩` from `h`. Take `⟨ν, rfl⟩` from `j.surjective ν`. Establish `hker : yy.ker = l.yy.ker`. Use extensionality with `b`. Take `⟨χ, hχ⟩` from `QuotientAddGroup.mk_surjective (l.yy b)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result.
 
-Rewrite using `[AddMonoidHom.mem_ker, AddMonoidHom.mem_ker, hyy b χ hχ.symm, ← hχ]`. Conclude with `⟨fun h => cm_mk (by simpa using cm_map j.symm.toAddMonoidHom (cm_of_mk (y := 0) h)), fun h => cm_mk (y := 0) (by simpa using cm_map j.toAddMonoidHom (cm_of_mk (y := 0) h))⟩`. Establish `hla : l.yy a = QuotientAddGroup.mk ν`. Take `⟨χ, hχ⟩` from `QuotientAddGroup.mk_surjective (l.yy a)`. Rewrite using `[← hχ]`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `cm_mk (by simpa using cm_map j.symm.toAddMonoidHom (cm_of_mk ((hyy a χ hχ.symm).symm.trans ha)))`. Establish `hwt : l.wt (m • ν) = wtChar S (S.perp l.yy.ker) (m • a)` using `AddMonoidHom.ext (l.wt_eq (m • a) _ (by rw [map_nsmul, hla]; rfl))`. Establish `hint : ∀ a : o, ‖y₀ (algebraMap o R' a)‖ ≤ 1` using `fun a => by`. Rewrite using `[hy₀]`. Conclude with `RatModel.norm_val_le_one hz ((M.O z).algebraMap_mem a)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hδ` using `(GlobalTheory.UnitTheta.closure_unit_theta GlobalTheory.abelianSchemeLaws_all.1 GlobalTheory.abelianSchemeLaws_all.2 GlobalTheory.ZH.uTors_closed _ _ _ ρ' p y₀ u l hint).1`. Use `set z₀ := (gPt p ≫ y) (closedPoint (PadicAlgCl p))`. Establish `hsp : ∀ w, (gPt p ≫ y) w ⤳ z₀` using `RatModel.specializes_of_range_eq (RatModel.range_eq_singleton _ _)`. Establish `hgz : z₀ ⤳ z` using `RatModel.gPt_specializes hz _`. Establish `hd0` using `hd.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hδd : ‖y₀ ⟨c₀ * S.th d, hth d⟩‖ = (S.rechart c₀ hc R' fg frac hth hev).delta y₀`. Use `le_antisymm (le_ciSup (f := fun x => ‖y₀ ⟨c₀ * S.th x, hth x⟩‖) (Set.finite_range _).bddAbove d) (ciSup_le fun x => ?_)` and prove the remaining obligations. Use `show ‖y₀ ⟨c₀ * S.th x, hth x⟩‖ ≤ _`. Rewrite using `[hy₀, hy₀, show ((⟨c₀ * S.th x, hth x⟩ : R') : Ω) = S.th x / S.th d * (c₀ * S.th d) by field_simp, RatModel.val_mul hsp (RatModel.O_le_of_specializes hgz (hd.2 x)) (hle (hth d)), norm_mul]`. Conclude with `mul_le_of_le_one_left (norm_nonneg _) (RatModel.norm_val_le_one hz (hd.2 x))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `key : ∀ (h : S.Gam) (ξ : Ω) (n : ℕ), 0 < n → ξ ^ n = 1 → ‖M.val (gPt p ≫ y) (ξ * (partV S yy.ker ρ.i₀ (m • a) h / S.th d))‖ * (S.rechart c₀ hc R' fg frac hth hev).delta y₀ = ‖∑ i, y₀ (algebraMap o R' (S.proj _ (l.wt (m • ν)) i ρ'.i₀)) * y₀ ⟨c₀ * S.ev h i, hev h i⟩‖`. Introduce `h ξ n hn hξ`. Set `v` to `RatModel.valHomOf (gPt p ≫ y) z₀ hsp`. Use `RatModel.isIntegrallyClosed_O hM z₀` as an intermediate fact. Take `⟨ξ', rfl⟩` from `IsIntegrallyClosed.isIntegral_iff.1 (show IsIntegral (M.O z₀) ξ from ⟨_, Polynomial.monic_X_pow_sub_C (1 : M.O z₀) hn.ne', by simp [hξ]⟩)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Establish `n1 : ‖v ξ'‖ = 1`. Establish `e : ξ' ^ n = 1` using `Subtype.ext hξ`. Use `congrArg (fun t => ‖v t‖) e` as an intermediate fact. Simplify using `only [map_pow, norm_pow, map_one, norm_one] at this`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) hn.ne').1 this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Set `A : R'` to `∑ i, algebraMap o R' (S.proj _ (l.wt (m • ν)) i ρ'.i₀) * ⟨c₀ * S.ev h i, hev h i⟩`. Establish `hA : (A : Ω) = c₀ * partV S yy.ker ρ.i₀ (m • a) h`. Rewrite using `[hker, partV, ← hwt, ← hi, Finset.mul_sum]`. Use `(map_sum R'.val _ _).trans (Finset.sum_congr rfl fun i _ => ?_)` and prove the remaining obligations. Conclude with `mul_left_comm _ _ _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Establish `hB : IsUnit (⟨c₀ * S.th d, hle (hth d)⟩ : M.O z₀)` using `(RatModel.val_ne_zero_iff (RatModel.range_eq_singleton _ _) _).1 (by`. Use `fun h0 => hδ.ne' ?_` and prove the remaining obligations. Rewrite using `[← hδd, hy₀]`. Conclude with `norm_eq_zero.2 h0)`. Establish `hF : partV S yy.ker ρ.i₀ (m • a) h / S.th d ∈ M.O z₀`.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `mul_mem (hle A.2) ((RatModel.isUnit_O_iff _).1 hB).2` as an intermediate fact. Rewrite `this` using `[hA]`. Use `this using 1` and compare the differences between its conclusion and the goal. Clear the denominators using the available nonvanishing facts. Establish `n2 : ‖M.val (gPt p ≫ y) (ξ' : Ω)‖ = 1` using `(congrArg norm (RatModel.valHomOf_apply _ _ hsp ξ')).symm.trans n1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `e₁ : ‖M.val (gPt p ≫ y) ((ξ' : Ω) * (partV S yy.ker ρ.i₀ (m • a) h / S.th d))‖ = ‖M.val (gPt p ≫ y) (partV S yy.ker ρ.i₀ (m • a) h / S.th d)‖`. Rewrite using `[RatModel.val_mul hsp ξ'.2 hF, norm_mul, n2, _root_.one_mul]`. Establish `e₂ : y₀ A = M.val (gPt p ≫ y) (partV S yy.ker ρ.i₀ (m • a) h / S.th d) * y₀ ⟨c₀ * S.th d, hth d⟩`. Rewrite using `[hy₀, hy₀, ← RatModel.val_mul hsp hF (hle (hth d)), hA]`. Use `congr 1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Clear the denominators using the available nonvanishing facts. Use `(congrArg₂ (· * ·) e₁ hδd.symm).trans ?_` and prove the remaining obligations. Rewrite using `[← norm_mul, ← e₂, map_sum]`. Simplify using `only [map_mul]`. Establish `hm0 : (m : ℝ) ≠ 0`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `S.N_ge` as an intermediate fact. Introduce and unpack `h0`. Take `rfl : m = 0` from `by exact_mod_cast h0`. Use linear arithmetic over natural numbers and integers. Establish `hqm : ∀ χ, l.q (m • χ) = (S.N : ℝ) * l.q χ` using `fun χ => by`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← natCast_zsmul, QuadraticMap.map_smul, congrArg (Nat.cast : ℕ → ℝ) hm]`. Simplify using `[sq]`. Establish `hN : (0 : ℝ) < S.N` using `by have := S.N_ge; positivity`. Use `⟨fun hmin h hh ξ n hn hξ => ?_, fun hmin k hk hkm => ?_⟩` and prove the remaining obligations. Use `WeightBound.main GlobalTheory.abelianSchemeLaws_all.1 GlobalTheory.abelianSchemeLaws_all.2 uTors_closed _ _ _ ρ' p y₀ u l hint (m • ν) (fun v₀ => by` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : S.N • v₀ = m • m • v₀` using `by rw [← mul_smul, ← sq, ← hm]`. Use `show _ ≤ l.q (m • ν + S.N • v₀)`. Rewrite using `[e, ← smul_add, hqm, hqm, hq, hq]`. Conclude with `mul_le_mul_of_nonneg_left (hmin _ ⟨j v₀, by rw [map_add, map_nsmul]⟩) hN.le) h (hker ▸ hh) ρ'.i₀`. Use `replace this := (key h ξ n hn hξ).trans_le this`.
-
-Rewrite `this` using `[mul_comm, mul_le_mul_iff_right₀ hδ, hqm, hq]`. Use `this.trans (le_of_eq ?_)` and prove the remaining obligations. Use `congr 2`. Conclude with `mul_div_cancel_left₀ _ hN.ne'`. Take `⟨h, hh, hk0, he⟩` from `GlobalTheory.T.weightPart_attains_bound_unique_shortest_vector u l hint m k hm hk hkm ν (fun χ hχ => by`.
-
-Rewrite using `[hq, hq]`. Conclude with `hmin _ ⟨j χ, by rw [map_add, map_nsmul]⟩ fun e => hχ (by simpa using j.injective e))`. Use `⟨h, hker ▸ hh, hk0, fun ξ n hn hξ => ?_⟩` and prove the remaining obligations. Use `(key h ξ n hn hξ).trans he` as an intermediate fact. Rewrite `this` using `[mul_comm, mul_right_inj' hδ.ne', hq]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem GLab.norms [ArithBase o Ω] (hM : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme M.Z) {y : Sp (OO p) ⟶ M.Z} {z : M.Z}
     (hz : y (cPt p) = z) {d : S.Gam} (hd : M.Div S.th d z) {yy : S.Gam →+ ModN (S.r * S.N) Y}

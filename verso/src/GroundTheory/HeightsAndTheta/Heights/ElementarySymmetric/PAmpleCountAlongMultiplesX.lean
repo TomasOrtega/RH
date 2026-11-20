@@ -13,7 +13,7 @@ open GroundTheory.Heights₂.Heights.HilbertSamuel
 noncomputable section
 
 /- English proof (translation)
-Introduce `K _ ι _ Ω _ _ y D M P0 II hD hII har hb hM`. Take `⟨-, Cp, hCp⟩` from `hPk K ι Ω y D M (chartLat y M.a) har hb hM.semipos.1 (fun τ _ hs' c hc' => isIntegral_algebraMap (x := (⟨_, hs' c hc'⟩ : chartRingZ y c)))`. Conclude with `NefCountAlongMultiples.le_arithmeticVolume_of_alongMultiples hCp fun ε hε => hBig K ι Ω y D M P0 II hD hII har hb hM ε hε`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem AmpleCountAlongMultiples.statementB (hBig : NefBigCountAlongMultiples.Statement) (hPk : PackingStatement) :
     G6.StatementB := by
@@ -23,11 +23,9 @@ theorem AmpleCountAlongMultiples.statementB (hBig : NefBigCountAlongMultiples.St
   exact NefCountAlongMultiples.le_arithmeticVolume_of_alongMultiples hCp fun ε hε => hBig K ι Ω y D M P0 II hD hII har hb hM ε hε
 
 /- English proof (translation)
-Establish `: CharZero Ω` using `ArithmeticVolumeDegreeZero.charZero_of_horizontal y har.2.2.1`. Establish `hB` using `AmpleCountAlongMultiples.statementB hBig hPk`. Take `⟨C, hC0, hC⟩` from `hV K ι Ω y D A P0 hD har hb hP0 hs hnef hc`. Take `⟨p, hpdeg, hpc, hp⟩` from `hI K ι II (mCoordIdeal y) (D + 1) A (fsH ι) hII har hs.1 (GroundTheory.Heights₂.Heights.Inter.isSmoothHerm_ofMetrics_fs 1)`. Take `⟨r, hrdeg, hrc, hr⟩` from `hG K ι (mCoordIdeal y) D A.a ((1 : ℤ) • (fsH ι).a) har`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hbound : ∀ q : ℕ, 1 ≤ q → p.eval (q : ℝ) ≤ C * ((q : ℝ) + 1) * r.eval (q : ℝ)`. Introduce `q hq`. Rewrite using `[← hp q, ← hr q]`. Conclude with `(hB K ι Ω y D _ P0 II hD hII har hb (hN K ι Ω y D A P0 hD har hb hP0 hs hnef hc q hq)).trans (hC q hq)`. Rewrite using `[← hpc]`.
-
-Conclude with `ArithmeticVolumeDegreeZero.coeff_le_of_eval_le_mul p r hC0 hpdeg hrdeg (by rw [hrc]; exact_mod_cast hdeg) hbound`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem AmpleCountAlongMultiples.top_nonpos (hBig : NefBigCountAlongMultiples.Statement) (hPk : PackingStatement)
     (hN : ShiftNefBig.Statement) (hV : ShiftVolumeBound.Statement) (hI : ShiftIntersectionPolynomial.Statement)
@@ -53,9 +51,9 @@ theorem AmpleCountAlongMultiples.top_nonpos (hBig : NefBigCountAlongMultiples.St
   exact ArithmeticVolumeDegreeZero.coeff_le_of_eval_le_mul p r hC0 hpdeg hrdeg (by rw [hrc]; exact_mod_cast hdeg) hbound
 
 /- English proof (translation)
-Introduce `K _ _ ι _ _ Ω _ y D N P0 II hD hII har hb hP0 hs hcj _ hfib ε hε`. Establish `hnef : NefOnFibres (mCoordIdeal y) N.a` using `hF K ι Ω y N.a hfib`. Distinguish the cases in `hT : II K ι (mCoordIdeal y) (D + 1) (fun _ => N) - ε ≤ 0`. Conclude with `⟨1, le_rfl, Eventually.of_forall fun n => (mul_nonpos_of_nonpos_of_nonneg hT (by positivity)).trans (Real.log_natCast_nonneg _)⟩`. Distinguish the cases in `hg : genDeg (mCoordIdeal y) D N.a ≤ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Consider separately whether the proposition holds or fails.
 
-Conclude with `absurd (AmpleCountAlongMultiples.top_nonpos hBig hPk hN hV hI hG hD hII har hb hP0 hs hnef hcj hg) (by linarith)`. Conclude with `hBig K ι Ω y D N P0 II hD hII har hb ⟨hP0, hs, hcj, hnef, by omega⟩ ε hε`.
+A detailed English derivation is pending.
 -/
 theorem AmpleCountAlongMultiples.proof (hBig : NefBigCountAlongMultiples.Statement)
     (hF : AmpleVNefOnFibres.Statement) (hPk : PackingStatement) (hN : ShiftNefBig.Statement)

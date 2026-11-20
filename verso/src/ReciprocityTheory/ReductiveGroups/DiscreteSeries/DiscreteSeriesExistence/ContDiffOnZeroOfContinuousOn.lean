@@ -16,7 +16,7 @@ variable {n : ℕ} {ε : Fin n → Bool}
 local notation "JJ" => Formalism.REAL.Jm
 
 /- English proof (translation)
-Use `first`. Consider the case `exact_mod_cast (le_top : ((N + 1 : ℕ) : ℕ∞) ≤ ⊤)`. Consider the case `(norm_cast; exact le_top)`. Consider the case `exact WithTop.coe_le_coe.mpr le_top`. Consider the case `simp`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem slm_le_inf (N : ℕ) : (N : WithTop ℕ∞) + 1 ≤ ∞ := by
   first
@@ -26,7 +26,7 @@ theorem slm_le_inf (N : ℕ) : (N : WithTop ℕ∞) + 1 ≤ ∞ := by
   | simp
 
 /- English proof (translation)
-Use `first`. Consider the case `exact_mod_cast (le_top : ((N : ℕ) : ℕ∞) ≤ ⊤)`. Consider the case `(norm_cast; exact le_top)`. Consider the case `exact WithTop.coe_le_coe.mpr le_top`. Consider the case `simp`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem slm_le_inf' (N : ℕ) : (N : WithTop ℕ∞) ≤ ∞ := by
   first
@@ -36,7 +36,7 @@ theorem slm_le_inf' (N : ℕ) : (N : WithTop ℕ∞) ≤ ∞ := by
   | simp
 
 /- English proof (translation)
-Use `first`. Consider the case `exact hasDerivAt_pi.trans (forall_congr' fun i => hasDerivAt_pi)`. Consider the case `exact (hasDerivAt_pi (Φ := f)).trans (forall_congr' fun i => hasDerivAt_pi)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem slm_hd_iff {f : ℝ → Matrix (Fin n) (Fin n) ℂ} {f' : Matrix (Fin n) (Fin n) ℂ} {s : ℝ} :
     HasDerivAt f f' s ↔ ∀ i j, HasDerivAt (fun t => f t i j) (f' i j) s := by
@@ -45,9 +45,9 @@ theorem slm_hd_iff {f : ℝ → Matrix (Fin n) (Fin n) ℂ} {f' : Matrix (Fin n)
   | exact (hasDerivAt_pi (Φ := f)).trans (forall_congr' fun i => hasDerivAt_pi)
 
 /- English proof (translation)
-Use `slm_hd_iff.mpr fun i j => ?_` and prove the remaining obligations. Establish `hf'` using `slm_hd_iff.mp hf`. Establish `hg'` using `slm_hd_iff.mp hg`. Simplify using `only [Matrix.mul_apply, Matrix.add_apply, ← Finset.sum_add_distrib]`. Use `first`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `exact HasDerivAt.fun_sum fun k _ => (hf' i k).mul (hg' k j)`. Consider the case `exact HasDerivAt.sum fun k _ => (hf' i k).mul (hg' k j)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem slm_hd_mul {f g : ℝ → Matrix (Fin n) (Fin n) ℂ} {f' g' : Matrix (Fin n) (Fin n) ℂ} {s : ℝ}
     (hf : HasDerivAt f f' s) (hg : HasDerivAt g g' s) :
@@ -61,7 +61,7 @@ theorem slm_hd_mul {f g : ℝ → Matrix (Fin n) (Fin n) ℂ} {f' g' : Matrix (F
   | exact HasDerivAt.sum fun k _ => (hf' i k).mul (hg' k j)
 
 /- English proof (translation)
-Use `slm_hd_iff.mpr fun i j => ?_` and prove the remaining obligations. Establish `h1` using `(slm_hd_iff.mp hf j i).star`. Simplify `h1` using `[Matrix.conjTranspose_apply]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem slm_hd_conjT {f : ℝ → Matrix (Fin n) (Fin n) ℂ} {f' : Matrix (Fin n) (Fin n) ℂ} {s : ℝ}
     (hf : HasDerivAt f f' s) : HasDerivAt (fun t => (f t)ᴴ) f'ᴴ s := by
@@ -70,7 +70,7 @@ theorem slm_hd_conjT {f : ℝ → Matrix (Fin n) (Fin n) ℂ} {f' : Matrix (Fin 
   simpa [Matrix.conjTranspose_apply] using h1
 
 /- English proof (translation)
-Unfold `slmJi`. Rewrite using `[Matrix.conjTranspose_mul]`. Simplify using `only [mul_assoc]`. Rewrite using `[← mul_assoc (Formalism.REAL.Jm ε) (Formalism.REAL.Jm ε), Formalism.REAL.Jm_mul_self, one_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem slm_Ji_mul_mul (a b : Matrix (Fin n) (Fin n) ℂ) : slmJi ε (a * b) = slmJi ε b * slmJi ε a := by
   unfold slmJi
@@ -79,13 +79,11 @@ theorem slm_Ji_mul_mul (a b : Matrix (Fin n) (Fin n) ℂ) : slmJi ε (a * b) = s
   rw [← mul_assoc (Formalism.REAL.Jm ε) (Formalism.REAL.Jm ε), Formalism.REAL.Jm_mul_self, one_mul]
 
 /- English proof (translation)
-Establish `hJ` using `Formalism.REAL.Jm_mul_self ε`. Establish `hJt` using `Formalism.REAL.Jm_conjTranspose ε`. Establish `e1 : ∀ M : Matrix (Fin n) (Fin n) ℂ, Formalism.REAL.Jm ε * (Formalism.REAL.Jm ε * M) = M` using `fun M => by`. Rewrite using `[← mul_assoc, hJ, one_mul]`. Establish `h1 : HasDerivAt (fun s => (c s)ᴴ * Formalism.REAL.Jm ε) (c'ᴴ * Formalism.REAL.Jm ε) s0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `slm_hd_mul (slm_hd_conjT hc) (hasDerivAt_const s0 (Formalism.REAL.Jm ε))` as an intermediate fact. Simplify using `using this`. Establish `hD : HasDerivAt (fun s => (c s)ᴴ * Formalism.REAL.Jm ε * c s) (c'ᴴ * Formalism.REAL.Jm ε * c s0 + (c s0)ᴴ * Formalism.REAL.Jm ε * c') s0` using `slm_hd_mul h1 hc`. Establish `hD0 : HasDerivAt (fun s => (c s)ᴴ * Formalism.REAL.Jm ε * c s) 0 s0`. Apply `(hasDerivAt_const s0 (Formalism.REAL.Jm ε)).congr_of_eventuallyEq` to reduce the goal to its premises.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Use `filter_upwards [hcU] with s hs`. Conclude with `hs`. Establish `hsum` using `hD.unique hD0`. Use `show (slmJi ε (c s0) * c')ᴴ * Formalism.REAL.Jm ε + Formalism.REAL.Jm ε * (slmJi ε (c s0) * c') = 0`. Unfold `slmJi`.
-
-Simplify using `only [Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, hJt, mul_assoc, hJ, Matrix.mul_one, e1]`. Simplify `hsum` using `[mul_assoc]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem slm_inG_of_curve {c : ℝ → Matrix (Fin n) (Fin n) ℂ} {c' : Matrix (Fin n) (Fin n) ℂ} {s0 : ℝ}
     (hc : HasDerivAt c c' s0) (hcU : ∀ᶠ s in 𝓝 s0, Formalism.REAL.inUJ ε (c s)) :
@@ -121,14 +119,14 @@ def slmG (C : ι → Y →L[ℝ] ℝ) (fd : X →L[ℝ] Y) (w : ι → E) : X �
   ∑ i, ((C i).comp fd).smulRight (w i)
 
 /- English proof (translation)
-Simplify using `[slmG, ContinuousLinearMap.sum_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem slmG_apply (C : ι → Y →L[ℝ] ℝ) (fd : X →L[ℝ] Y) (w : ι → E) (W : X) :
     slmG C fd w W = ∑ i, (C i (fd W)) • w i := by
   simp [slmG, ContinuousLinearMap.sum_apply]
 
 /- English proof (translation)
-Rewrite using `[slmG_apply]`. Simplify using `only [hκ]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem slmG_apply' (C : ι → Y →L[ℝ] ℝ) (fd : X →L[ℝ] Y) (w : ι → E) (W : X) (κ : ι → ℝ)
     (hκ : ∀ i, C i (fd W) = κ i) : slmG C fd w W = ∑ i, κ i • w i := by
@@ -136,9 +134,9 @@ theorem slmG_apply' (C : ι → Y →L[ℝ] ℝ) (fd : X →L[ℝ] Y) (w : ι �
   simp only [hκ]
 
 /- English proof (translation)
-Establish `hfd : ContDiffOn ℝ N (fun q => fderiv ℝ γ q) V` using `hγ.fderiv_of_isOpen hV (slm_le_inf N)`. Unfold `slmG`. Use `first`. Consider the case `exact ContDiffOn.sum fun i _ => (contDiffOn_const.clm_comp hfd).smulRight (hw i)`. Consider the case `exact ContDiffOn.fun_sum fun i _ => (contDiffOn_const.clm_comp hfd).smulRight (hw i)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `simp only [ContinuousLinearMap.sum_apply]`. Conclude with `ContDiffOn.sum fun i _ => (contDiffOn_const.clm_comp hfd).smulRight (hw i)`.
+A detailed English derivation is pending.
 -/
 theorem slmG_cd {V : Set X} (hV : IsOpen V) {γ : X → Y} (hγ : ContDiffOn ℝ ∞ γ V)
     (C : ι → Y →L[ℝ] ℝ) {N : ℕ} {w : ι → X → E} (hw : ∀ i, ContDiffOn ℝ N (w i) V) :
@@ -152,7 +150,7 @@ theorem slmG_cd {V : Set X} (hV : IsOpen V) {γ : X → Y} (hγ : ContDiffOn ℝ
     exact ContDiffOn.sum fun i _ => (contDiffOn_const.clm_comp hfd).smulRight (hw i)
 
 /- English proof (translation)
-Use `first`. Consider the case `exact contDiffOn_zero.mpr h`. Consider the case `(rw [Nat.cast_zero]; exact contDiffOn_zero.mpr h)`. Consider the case `(simp only [Nat.cast_zero, CharP.cast_eq_zero]; exact contDiffOn_zero.mpr h)`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem contDiffOn_zero_of_continuousOn {V : Set X} {f : X → E} (h : ContinuousOn f V) : ContDiffOn ℝ ((0 : ℕ) : WithTop ℕ∞) f V := by
   first
@@ -161,15 +159,13 @@ theorem contDiffOn_zero_of_continuousOn {V : Set X} {f : X → E} (h : Continuou
   | (simp only [Nat.cast_zero, CharP.cast_eq_zero]; exact contDiffOn_zero.mpr h)
 
 /- English proof (translation)
-Introduce `F hF q hq`. Use `set L : X → (X →L[ℝ] E) := fun x => slmG C (fderiv ℝ γ x) (fun i => c i x • Φ (Op i F) x) with hLdef`. Establish `hw0 : ∀ i, ContDiffOn ℝ ((0 : ℕ) : WithTop ℕ∞) (fun x => c i x • Φ (Op i F) x) V` using `fun i => contDiffOn_zero_of_continuousOn (((hc i).continuousOn).smul (hcont (Op i F) (hP F hF i)))`. Establish `hLc : ContinuousAt L q` using `((slmG_cd hV hγ C hw0).continuousOn).continuousAt (hV.mem_nhds hq)`. Rewrite using `[hasFDerivAt_iff_isLittleO_nhds_zero, Asymptotics.isLittleO_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `ε hε`. Take `⟨ρ, hρ, hρL⟩` from `Metric.continuousAt_iff.mp hLc ε hε`. Take `⟨δ, hδ, hδh⟩` from `hint F hF q hq`. Establish `hball : ∀ᶠ W in 𝓝 (0 : X), ‖W‖ < min δ ρ`. Use `Metric.ball_mem_nhds (0 : X) (lt_min hδ hρ)` as an intermediate fact.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `filter_upwards [this] with W hW`. Simplify using `using hW`. Use `filter_upwards [hball] with W hW`. Apply `hδh W (lt_of_lt_of_le hW (min_le_left _ _)) (ε * ‖W‖)` to reduce the goal to its premises. Introduce `s hs`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Establish `hd : dist (q + s • W) q < ρ`. Rewrite using `[dist_eq_norm, add_sub_cancel_left, norm_smul, Real.norm_eq_abs, abs_of_pos hs.1]`. Combine the equalities or inequalities in the displayed calculation. Establish `h1` using `hρL hd`. Rewrite `h1` using `[dist_eq_norm]`.
-
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[ContinuousLinearMap.sub_apply]`. Use `_ ≤ ‖L (q + s • W) - L q‖ * ‖W‖ := ContinuousLinearMap.le_opNorm _ _`. Use `_ ≤ ε * ‖W‖ := mul_le_mul_of_nonneg_right h1.le (norm_nonneg _)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem slm_gen_hD {V : Set X} (hV : IsOpen V) {γ : X → Y} (hγ : ContDiffOn ℝ ∞ γ V)
     (C : ι → Y →L[ℝ] ℝ) {A : Type*} (c : ι → X → ℂ) (hc : ∀ i, ContDiffOn ℝ ∞ (c i) V)
@@ -213,11 +209,11 @@ theorem slm_gen_hD {V : Set X} (hV : IsOpen V) {γ : X → Y} (hγ : ContDiffOn 
     _ ≤ ε * ‖W‖ := mul_le_mul_of_nonneg_right h1.le (norm_nonneg _)
 
 /- English proof (translation)
-Introduce `F hF`. Establish `key : ∀ N : ℕ, ∀ F, P F → ContDiffOn ℝ N (Φ F) V`. Introduce `N`. Proceed by induction on `N with`. Consider the case `zero => intro F hF`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Conclude with `contDiffOn_zero_of_continuousOn (hcont F hF)`. Consider the case `succ N ih`. Introduce `F hF`. Establish `hD` using `slm_gen_hD hV hγ C c hc P Op hP Φ hcont hint F hF`. Establish `hw : ∀ i, ContDiffOn ℝ N (fun q => c i q • Φ (Op i F) q) V` using `fun i => ((hc i).of_le (slm_le_inf' N)).smul (ih (Op i F) (hP F hF i))`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfd : ContDiffOn ℝ N (fderiv ℝ (Φ F)) V` using `(slmG_cd hV hγ C hw).congr fun q hq => (hD q hq).fderiv`. Rewrite using `[Nat.cast_succ, contDiffOn_succ_iff_fderiv_of_isOpen hV]`. Conclude with `⟨fun q hq => (hD q hq).differentiableAt.differentiableWithinAt, by simp, hfd⟩`. Conclude with `contDiffOn_infty.mpr fun N => key N F hF`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem slm_gen {V : Set X} (hV : IsOpen V) {γ : X → Y} (hγ : ContDiffOn ℝ ∞ γ V)
     (C : ι → Y →L[ℝ] ℝ) {A : Type*} (c : ι → X → ℂ) (hc : ∀ i, ContDiffOn ℝ ∞ (c i) V)
@@ -270,14 +266,14 @@ def slmc (m : Matrix (Fin n) (Fin n) ℂ → Matrix (Fin n) (Fin n) ℂ) (i : Fi
   if i.2.2.2 then m q i.1 i.2.2.1 else Complex.I * m q i.1 i.2.2.1
 
 /- English proof (translation)
-Use `conv_rhs => rw [← Complex.re_add_im z]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem re_mul_add_im_mul_I (z c : ℂ) : (z.re : ℂ) * c + (z.im : ℂ) * (Complex.I * c) = c * z := by
   conv_rhs => rw [← Complex.re_add_im z]
   ring
 
 /- English proof (translation)
-Establish `h1 : ContDiffOn ℝ ∞ (fun q => m q i.1 i.2.2.1) V` using `(slmEnt i.1 i.2.2.1).contDiff.comp_contDiffOn hm`. Unfold `slmc`. Use `split_ifs`. Conclude with `h1`. Conclude with `contDiffOn_const.mul h1`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem slmc_cd {V : Set (Matrix (Fin n) (Fin n) ℂ)} {m : Matrix (Fin n) (Fin n) ℂ → Matrix (Fin n) (Fin n) ℂ}
     (hm : ContDiffOn ℝ ∞ m V) (i : Fin n × Fin n × Fin n × Bool) : ContDiffOn ℝ ∞ (slmc m i) V := by
@@ -291,7 +287,7 @@ theorem slmc_cd {V : Set (Matrix (Fin n) (Fin n) ℂ)} {m : Matrix (Fin n) (Fin 
 variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
 
 /- English proof (translation)
-Use `(slmG_apply (Y := Matrix (Fin n) (Fin n) ℂ) slmC (fderiv ℝ γ q) _ W).trans ?_` and prove the remaining obligations. Simplify using `only [Fintype.sum_prod_type, Fintype.sum_bool, slmC, slmc, ↓reduceIte, Bool.false_eq_true, ContinuousLinearMap.coe_comp', Function.comp_apply, slmEnt_apply, Complex.reCLM_apply, Complex.imCLM_apply, Matrix.mul_apply, Finset.sum_smul]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← re_mul_add_im_mul_I (fderiv ℝ γ q W k b) (m q a k)]`. Simplify using `only [add_smul, mul_smul, Complex.coe_smul]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 Both sides reduce to the same expression.
 -/
@@ -311,9 +307,9 @@ theorem slmG_mat_apply (γ : Matrix (Fin n) (Fin n) ℂ → Matrix (Fin n) (Fin 
   rfl
 
 /- English proof (translation)
-Introduce `F hF q hq`. Take `⟨δ, hδ, h⟩` from `hint F hF q hq`. Use `⟨δ, hδ, fun W hW B hB => ?_⟩` and prove the remaining obligations. Rewrite using `[slmG_mat_apply γ m q (fun a b => Φ (Op a b F) q) W]`. Use `h W hW B fun s hs => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1` using `hB s hs`. Rewrite `h1` using `[slmG_mat_apply γ m (q + s • W) (fun a b => Φ (Op a b F) (q + s • W)) W, slmG_mat_apply γ m q (fun a b => Φ (Op a b F) q) W]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem slm_mat_hint {V : Set (Matrix (Fin n) (Fin n) ℂ)}
     {γ m : Matrix (Fin n) (Fin n) ℂ → Matrix (Fin n) (Fin n) ℂ} (Φ : (Matrix (Fin n) (Fin n) ℂ → ℂ) → Matrix (Fin n) (Fin n) ℂ → E)
@@ -339,7 +335,7 @@ theorem slm_mat_hint {V : Set (Matrix (Fin n) (Fin n) ℂ)}
     slmG_mat_apply γ m q (fun a b => Φ (Op a b F) q) W] at h1
 
 /- English proof (translation)
-The claim follows from `slm_gen_hD hV hγ slmC (fun i => slmc m i) (fun i => slmc_cd hm i) P (fun i => Op i.1 i.2.1) (fun F hF i => hP F hF i.1 i.2.1) Φ hcont (slm_mat_hint Φ P Op hint) F hF q hq`.
+A detailed English derivation is pending.
 -/
 theorem slm_mat_hD {V : Set (Matrix (Fin n) (Fin n) ℂ)} (hV : IsOpen V)
     {γ m : Matrix (Fin n) (Fin n) ℂ → Matrix (Fin n) (Fin n) ℂ} (hγ : ContDiffOn ℝ ∞ γ V)
@@ -359,7 +355,7 @@ theorem slm_mat_hD {V : Set (Matrix (Fin n) (Fin n) ℂ)} (hV : IsOpen V)
     (fun F hF i => hP F hF i.1 i.2.1) Φ hcont (slm_mat_hint Φ P Op hint) F hF q hq
 
 /- English proof (translation)
-The claim follows from `slm_gen hV hγ slmC (fun i => slmc m i) (fun i => slmc_cd hm i) P (fun i => Op i.1 i.2.1) (fun F hF i => hP F hF i.1 i.2.1) Φ hcont (slm_mat_hint Φ P Op hint)`.
+A detailed English derivation is pending.
 -/
 theorem slm_mat {V : Set (Matrix (Fin n) (Fin n) ℂ)} (hV : IsOpen V)
     {γ m : Matrix (Fin n) (Fin n) ℂ → Matrix (Fin n) (Fin n) ℂ} (hγ : ContDiffOn ℝ ∞ γ V)
@@ -383,9 +379,9 @@ section Lp
 variable {X : Type*} [MeasurableSpace X] {μ : Measure X}
 
 /- English proof (translation)
-Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Simplify using `only [Finset.sum_empty]`. Conclude with `Lp.coeFn_zero ℂ 2 μ`. Introduce `i t hi ih`. Rewrite using `[Finset.sum_insert hi]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(Lp.coeFn_add _ _).trans ?_` and prove the remaining obligations. Use `filter_upwards [ih] with x hx`. Simplify using `only [Pi.add_apply, hx, Finset.sum_insert hi]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem slm_coeFn_sum {ι : Type*} (s : Finset ι) (f : ι → Lp ℂ 2 μ) :
     (⇑(∑ i ∈ s, f i) : X → ℂ) =ᵐ[μ] fun x => ∑ i ∈ s, f i x := by

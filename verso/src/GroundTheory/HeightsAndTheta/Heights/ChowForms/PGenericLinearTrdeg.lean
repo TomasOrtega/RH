@@ -9,11 +9,9 @@ open MvPolynomial
 namespace GenericLinearTrdeg
 
 /- English proof (translation)
-Establish `hlin : (Polynomial.C e * Polynomial.X + Polynomial.C c).natDegree ≤ 1` using `Polynomial.natDegree_linear_le`. Use `split_ifs with hD`. Substitute `hD` using the available equality. Rewrite using `[Polynomial.coeff_X_pow_mul', if_pos (by omega), show a + b - a = b * 1 by omega, Polynomial.coeff_pow_of_natDegree_le hlin]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Substitute using the available equality. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Polynomial.coeff_eq_zero_of_natDegree_lt` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Use `(Polynomial.natDegree_mul_le).trans (add_le_add ?_ ?_)` and prove the remaining obligations. Conclude with `Polynomial.natDegree_X_pow_le a`. Conclude with `Polynomial.natDegree_pow_le_of_le b hlin`.
-
-Use `_ < D := by omega`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem coeff_X_pow_mul_linear_pow {R : Type*} [CommRing R] (e c : R) (a b D : ℕ) (h : a + b ≤ D) :
     (Polynomial.X ^ a * (Polynomial.C e * Polynomial.X + Polynomial.C c) ^ b).coeff D =
@@ -33,29 +31,25 @@ theorem coeff_X_pow_mul_linear_pow {R : Type*} [CommRing R] (e c : R) (a b D : �
       _ < D := by omega
 
 /- English proof (translation)
-Use `set B' := Algebra.adjoin R ({η, r} : Set A)`. Set `η' : B'` to `⟨η, Algebra.subset_adjoin (by simp)⟩`. Set `r' : B'` to `⟨r, Algebra.subset_adjoin (by simp)⟩`. Rewrite using `[algebraicIndependent_iff]`. Introduce `p hp`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hp0`. Use `set D := p.totalDegree`. Set `f : Fin 2 → Polynomial B'` to `![Polynomial.X, Polynomial.C η' * Polynomial.X + Polynomial.C r']`. Set `Q : Polynomial B'` to `MvPolynomial.aeval f p`. Establish `hQ : Polynomial.aeval x Q = 0`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: Polynomial.aeval x Q = MvPolynomial.aeval (fun i => (Polynomial.aeval x).restrictScalars R (f i)) p`. Rewrite using `[← MvPolynomial.comp_aeval]`. Both sides reduce to the same expression. Establish `hf : (fun i => (Polynomial.aeval x).restrictScalars R (f i)) = ![x, x * η + r]`. Use function extensionality and compare the values at `i`.
+Both sides reduce to the same expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `fin_cases i <;> simp [f, η', r'] <;> ring`. Rewrite using `[this, hf, hp]`. Establish `hQ0 : Q = 0` using `transcendental_iff.mp hx Q hQ`. Establish `hdeg : ∀ μ ∈ p.support, μ 0 + μ 1 ≤ D` using `fun μ hμ => by`. Use `MvPolynomial.le_totalDegree hμ` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite `this` using `[Finsupp.sum_fintype _ _ (by simp), Fin.sum_univ_two]`. Then use the resulting hypothesis. Establish `hcoeff : Q.coeff D = ∑ μ ∈ p.support, algebraMap R B' (p.coeff μ) * (if μ 0 + μ 1 = D then η' ^ (μ 1) else 0)`. Simplify using `only [Q, MvPolynomial.aeval_def, MvPolynomial.eval₂_eq', Fin.prod_univ_two, Polynomial.finsetSum_coeff]`. Use `Finset.sum_congr rfl fun μ hμ => ?_` and prove the remaining obligations. Rewrite using `[Polynomial.algebraMap_apply, Polynomial.coeff_C_mul]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Introduce a local definition for the expression.
 
-Use `congr 1`. Conclude with `coeff_X_pow_mul_linear_pow η' r' (μ 0) (μ 1) D (hdeg μ hμ)`. Set `g : Polynomial R` to `∑ μ ∈ p.support, if μ 0 + μ 1 = D then Polynomial.C (p.coeff μ) * Polynomial.X ^ (μ 1) else 0`. Establish `hg : Polynomial.aeval η g = ((Q.coeff D : B') : A)`. Rewrite using `[hcoeff]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `only [g, map_sum, AddSubmonoidClass.coe_finsetSum]`. Use `Finset.sum_congr rfl fun μ _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp [η']`. Establish `hg0 : g ≠ 0`. Take `⟨μ, hμ, hμD⟩` from `Finset.exists_mem_eq_sup p.support (MvPolynomial.support_nonempty.mpr hp0) (fun s => s.sum fun _ e => e)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hμD' : μ 0 + μ 1 = D`. Rewrite `hμD` using `[Finsupp.sum_fintype _ _ (by simp), Fin.sum_univ_two]`. Conclude with `hμD.symm`. Introduce `h0`. Establish `hc` using `congrArg (fun q => Polynomial.coeff q (μ 1)) h0`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [g, Polynomial.finsetSum_coeff, Polynomial.coeff_zero] at hc`. Rewrite `hc` using `[Finset.sum_eq_single μ]`. Rewrite `hc` using `[if_pos hμD', Polynomial.coeff_C_mul_X_pow, if_pos rfl]`. Conclude with `(MvPolynomial.mem_support_iff.mp hμ) hc`. Introduce `ν _ hνμ split_ifs with hν`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[Polynomial.coeff_C_mul_X_pow, if_neg]`. Introduce `h1`. Apply `hνμ` to reduce the goal to its premises. Use extensionality with `i`. Use `fin_cases i`.
-
-Simplify using `only [Fin.zero_eta]`. Use linear arithmetic over natural numbers and integers. Conclude with `h1.symm`. Simplify using the standard rewrite rules. Introduce `h`.
-
-Conclude with `absurd hμ h`. Use `transcendental_iff.mp hη g (by rw [hg, hQ0]; simp)` as an intermediate fact. Conclude with `hg0 this`.
+Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem algebraicIndependent_pair_linear {R A : Type*} [CommRing R] [CommRing A] [IsDomain A]
     [Algebra R A] {η r x : A} (hη : Transcendental R η)
@@ -126,9 +120,9 @@ theorem algebraicIndependent_pair_linear {R A : Type*} [CommRing R] [CommRing A]
   exact hg0 this
 
 /- English proof (translation)
-Set `f : S₁ →+* S₂` to `{ toFun := fun y => ⟨y, h y.2⟩ map_one' := rfl map_mul' := fun _ _ => rfl map_zero' := rfl map_add' := fun _ _ => rfl }`. Set `_ : Algebra S₁ S₂` to `f.toAlgebra`. Establish `: IsScalarTower S₁ S₂ A` using `.of_algebraMap_eq fun _ => rfl`. Use `hx.restrictScalars ?_` and prove the remaining obligations. Introduce `a b hab`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Establish `hab'` using `congrArg Subtype.val hab`. Conclude with `hab'`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem transcendental_of_subset {A R₁ R₂ : Type*} [CommRing A] [CommRing R₁] [CommRing R₂]
     [Algebra R₁ A] [Algebra R₂ A] (S₁ : Subalgebra R₁ A) (S₂ : Subalgebra R₂ A)
@@ -148,9 +142,9 @@ theorem transcendental_of_subset {A R₁ R₂ : Type*} [CommRing A] [CommRing R�
   exact hab'
 
 /- English proof (translation)
-Introduce `y hy`. Proceed by induction on `hy using Algebra.adjoin_induction with`. Consider the case `mem a ha => exact h2 ha`. Consider the case `algebraMap c => exact h1 c`. Consider the case `add a b _ _ ha hb => exact T.add_mem ha hb`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `mul a b _ _ ha hb => exact T.mul_mem ha hb`.
+Treat this case separately.
 -/
 theorem adjoin_subset {A R : Type*} [CommRing A] [CommRing R] [Algebra R A] (T : Subring A)
     (s : Set A) (h1 : ∀ c : R, algebraMap R A c ∈ T) (h2 : s ⊆ T) :
@@ -163,47 +157,43 @@ theorem adjoin_subset {A R : Type*} [CommRing A] [CommRing R] [Algebra R A] (T :
   | mul a b _ _ ha hb => exact T.mul_mem ha hb
 
 /- English proof (translation)
-Set `sf : Fin k → MvPolynomial (Fin k × Fin N) E` to `fun i => ∑ m, X (i, m) * C (η m)`. Set `g : ℕ → (Fin k × Fin N) ⊕ Fin r → MvPolynomial (Fin k × Fin N) E` to `fun i => Sum.elim X (fun l => if (l : ℕ) < i then sf (Fin.castLE hrk l) else C (η (j l)))`. Establish `key : ∀ i ≤ r, AlgebraicIndependent F (g i)`. Introduce `i`. Proceed by induction on `i with`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero`. Introduce `_`. Use `AlgebraicIndependent.sumElim_comp (S := E) hind (MvPolynomial.algebraicIndependent_X (Fin k × Fin N) E)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `t`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Break down `t with t | l` into its components or cases. Both sides reduce to the same expression. Simplify using `[g, MvPolynomial.algebraMap_eq]`. Consider the case `succ i ih`. Introduce `hi`.
+Separate the alternatives or extract the components of the hypothesis. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `IH` using `ih (by omega)`. Set `il : Fin r` to `⟨i, by omega⟩`. Set `i' : Fin k` to `Fin.castLE hrk il`. Set `m0 : Fin N` to `j il`. Establish `hgt : ∀ t, t ≠ Sum.inr il → g (i+1) t = g i t`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce and unpack `(t | l) ht`. Both sides reduce to the same expression. Establish `hl : (l : ℕ) ≠ i` using `fun h => ht (by rw [show l = il from Fin.ext h])`. Simplify using `only [g, Sum.elim_inr]`. Break down `Nat.lt_or_ge l i with h | h` into its components or cases.
+Assume the hypotheses and unpack their components. Both sides reduce to the same expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[if_pos h, if_pos (by omega)]`. Rewrite using `[if_neg (by omega), if_neg (by omega)]`. Rewrite using `[AlgebraicIndependent.iff_transcendental_adjoin_image (Sum.inr il)]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `h1` using `((AlgebraicIndependent.iff_transcendental_adjoin_image (Sum.inr il)).mp IH).1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `h1 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `t`. Conclude with `hgt t.1 t.2`. Establish `himg : g (i+1) '' {Sum.inr il}ᶜ = g i '' {Sum.inr il}ᶜ` using `Set.image_congr (fun t ht => hgt t ht)`. Rewrite using `[himg]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hval : g (i+1) (Sum.inr il) = sf i'` using `by simp [g, il, i']`. Rewrite using `[hval]`. Set `U : Set ((Fin k × Fin N) ⊕ Fin r)` to `{Sum.inr il, Sum.inl (i', m0)}ᶜ`. Set `B` to `Algebra.adjoin F (g i '' U)`. Set `x : MvPolynomial (Fin k × Fin N) E` to `X (i', m0)`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `η0 : MvPolynomial (Fin k × Fin N) E` to `C (η m0)`. Set `rr : MvPolynomial (Fin k × Fin N) E` to `∑ m ∈ Finset.univ.erase m0, X (i', m) * C (η m)`. Establish `hsplit : sf i' = x * η0 + rr` using `(Finset.add_sum_erase _ _ (Finset.mem_univ m0)).symm`. Establish `hη : Transcendental B η0`. Use `IH.transcendental_adjoin (s := U) (i := Sum.inr il) (by simp [U])` as an intermediate fact.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this` using `[g, il]`. Set `T : Subalgebra E (MvPolynomial (Fin k × Fin N) E)` to `Algebra.adjoin E (X '' {(i', m0)}ᶜ)`. Establish `hXT : ∀ ab, ab ≠ (i', m0) → (X ab : MvPolynomial (Fin k × Fin N) E) ∈ T` using `fun ab h => Algebra.subset_adjoin ⟨ab, h, rfl⟩`. Establish `hCT : ∀ e : E, (C e : MvPolynomial (Fin k × Fin N) E) ∈ T` using `fun e => T.algebraMap_mem e`. Establish `hBT : (B : Set (MvPolynomial (Fin k × Fin N) E)) ⊆ T`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `adjoin_subset T.toSubring` to reduce the goal to its premises. Introduce `c`. Conclude with `hCT (algebraMap F E c)`. Introduce and unpack `_ ⟨t, ht, rfl⟩`. Break down `t with ab | l` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `hXT ab (fun h => ht (by simp [h]))`. Establish `hl : l ≠ il` using `fun h => ht (by simp [h])`. Simplify using `only [g, Sum.elim_inr]`. Use `split_ifs with hli`. Apply `T.sum_mem` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `m _`. Apply `T.mul_mem _ (hCT _)` to reduce the goal to its premises. Apply `hXT` to reduce the goal to its premises. Introduce `h`. Use `congrArg (fun p => (p.1 : ℕ)) h` as an intermediate fact.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[i', il] at this`. Use linear arithmetic over natural numbers and integers. Conclude with `hCT _`. Establish `hx : Transcendental (Algebra.adjoin B ({η0, rr} : Set _)) x`. Use `transcendental_of_subset _ T ?_ ((MvPolynomial.algebraicIndependent_X _ E).transcendental_adjoin (s := {(i', m0)}ᶜ) (i := (i', m0)) (by simp))` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply `adjoin_subset T.toSubring` to reduce the goal to its premises. Introduce `c`. Conclude with `hBT c.2`. Introduce `z hz`. Break down `hz with rfl | hz` into its components or cases.
+Substitute using the available equality. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hCT _`. Rewrite `hz` using `[Set.mem_singleton_iff]`. Substitute `hz` using the available equality. Apply `T.sum_mem` to reduce the goal to its premises. Introduce `m hm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `T.mul_mem (hXT _ (by simpa using (Finset.ne_of_mem_erase hm))) (hCT _)`. Establish `hOV` using `algebraicIndependent_pair_linear hη hx`. Establish `htr` using `hOV.transcendental_adjoin (s := {0}) (i := 1) (by simp)`. Establish `htr' : Transcendental (Algebra.adjoin B (![x, x * η0 + rr] '' {0})) (x * η0 + rr)` using `htr`. Rewrite using `[hsplit]`.
+Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `transcendental_of_subset _ _ ?_ htr'` and prove the remaining obligations. Apply `adjoin_subset (Algebra.adjoin B (![x, x * η0 + rr] '' {0})).toSubring` to reduce the goal to its premises. Introduce `c`. Conclude with `(Algebra.adjoin B (![x, x * η0 + rr] '' {0})).algebraMap_mem (⟨algebraMap F _ c, B.algebraMap_mem c⟩ : B)`. Introduce and unpack `_ ⟨t, ht, rfl⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis.
 
-Distinguish the cases in `htx : t = Sum.inl (i', m0)`. Substitute `htx` using the available equality. Conclude with `Algebra.subset_adjoin ⟨0, rfl, rfl⟩`. Establish `htU : t ∈ U`. Simplify using `only [U, Set.mem_compl_iff, Set.mem_insert_iff, Set.mem_singleton_iff, not_or]`.
-
-Conclude with `⟨ht, htx⟩`. Conclude with `(Algebra.adjoin B (![x, x * η0 + rr] '' {0})).algebraMap_mem (⟨g i t, Algebra.subset_adjoin ⟨t, htU, rfl⟩⟩ : B)`. Use `key r le_rfl` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `t`.
-
-Break down `t with t | l` into its components or cases. Both sides reduce to the same expression. Simplify using `[g, sf, l.2]`.
+Both sides reduce to the same expression. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem algebraicIndependent_rows (F E : Type) [Field F] [Field E] [Algebra F E] (N k r : ℕ)
     (η : Fin N → E) (hrk : r ≤ k) (j : Fin r → Fin N) (hind : AlgebraicIndependent F (η ∘ j)) :
@@ -324,17 +314,15 @@ theorem algebraicIndependent_rows (F E : Type) [Field F] [Field E] [Algebra F E]
   · simp [g, sf, l.2]
 
 /- English proof (translation)
-Use `set D := Algebra.adjoin F (Set.range η)`. Set `ηD : Fin N → D` to `fun m => ⟨η m, Algebra.subset_adjoin ⟨m, rfl⟩⟩`. Establish `htop : Algebra.adjoin F (Set.range ηD) = ⊤`. Apply `Subalgebra.map_injective (f := D.val) Subtype.val_injective` to reduce the goal to its premises. Rewrite using `[← Algebra.adjoin_image, Algebra.map_top, Subalgebra.range_val, ← Set.range_comp]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `: Algebra.IsAlgebraic (Algebra.adjoin F (Set.range ηD)) D` using `⟨fun y => isAlgebraic_algebraMap (R := Algebra.adjoin F (Set.range ηD)) (⟨y, by rw [htop]; trivial⟩ : Algebra.adjoin F (Set.range ηD))⟩`. Establish `: FaithfulSMul F D` using `(faithfulSMul_iff_algebraMap_injective F D).mpr (algebraMap F D).injective`. Take `⟨t, hts, hb⟩` from `exists_isTranscendenceBasis_subset (R := F) (Set.range ηD)`. Establish `hcard : Cardinal.mk t = d` using `hb.cardinalMk_eq_trdeg.trans hd`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfin : t.Finite` using `(Set.finite_range ηD).subset hts`. Use `hfin.fintype` as an intermediate fact. Establish `hc : Fintype.card t = d`. Rewrite `hcard` using `[Cardinal.mk_fintype]`. Conclude with `hcard` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `e : Fin d ≃ t` to `(Fintype.equivFinOfCardEq hc).symm`. Establish `hpre : ∀ l, ∃ m, ηD m = (e l : D)` using `fun l => hts (e l).2`. Use `choose j hj using hpre`. Use `⟨j, ?_⟩` and prove the remaining obligations. Establish `h1 : AlgebraicIndependent F (fun l => ((e l : t) : D))` using `hb.1.comp e e.injective`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `h2` using `h1.map' (f := D.val) Subtype.val_injective`. Use `h2 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `l`. Simplify using `only [Function.comp_apply]`. Rewrite using `[← hj l]`.
-
-Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_indep {F E : Type} [Field F] [Field E] [Algebra F E] {N : ℕ} (η : Fin N → E) (d : ℕ)
     (hd : Algebra.trdeg F (Algebra.adjoin F (Set.range η)) = d) :
@@ -373,25 +361,25 @@ theorem exists_indep {F E : Type} [Field F] [Field E] [Algebra F E] {N : ℕ} (�
 end GenericLinearTrdeg
 
 /- English proof (translation)
-Introduce `F E _ _ _ N k d η hd`. Use `set S := Algebra.adjoin F (Set.range (fun ij : Fin k × Fin N => (X ij : MvPolynomial (Fin k × Fin N) E)) ∪ Set.range (fun i : Fin k => ∑ m, X (i, m) * C (η m))) with hSdef`. Take `⟨j, hj⟩` from `GenericLinearTrdeg.exists_indep η d hd`. Establish `hrk : min k d ≤ k` using `min_le_left _ _`. Establish `hrd : min k d ≤ d` using `min_le_right _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hind` using `GenericLinearTrdeg.algebraicIndependent_rows F E N k (min k d) η hrk (j ∘ Fin.castLE hrd) (hj.comp _ (Fin.castLE_injective hrd))`. Establish `hlow : ((k * N + min k d : ℕ) : Cardinal) ≤ Algebra.trdeg F S`. Establish `hmem : ∀ t, Sum.elim (fun ij : Fin k × Fin N => (X ij : MvPolynomial (Fin k × Fin N) E)) (fun l : Fin (min k d) => ∑ m, X (Fin.castLE hrk l, m) * C (η m)) t ∈ S`. Introduce and unpack `(ab | l)`. Conclude with `Algebra.subset_adjoin (Or.inl ⟨ab, rfl⟩)`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `Algebra.subset_adjoin (Or.inr ⟨Fin.castLE hrk l, rfl⟩)`. Set `G' : (Fin k × Fin N) ⊕ Fin (min k d) → S` to `fun t => ⟨_, hmem t⟩`. Establish `hG : AlgebraicIndependent F G'` using `AlgebraicIndependent.of_comp S.val hind`. Use `hG.cardinalMk_le_trdeg` as an intermediate fact. Establish `hc : Cardinal.mk ((Fin k × Fin N) ⊕ Fin (min k d)) = ((k * N + min k d : ℕ) : Cardinal)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[Cardinal.mk_fintype]`. Simplify using the standard rewrite rules. Rewrite `this` using `[hc]`. Then use the resulting hypothesis. Establish `hup1 : Algebra.trdeg F S ≤ ((k * N + k : ℕ) : Cardinal)`. Set `G : (Fin k × Fin N) ⊕ Fin k → MvPolynomial (Fin k × Fin N) E` to `Sum.elim (fun ij => X ij) (fun i => ∑ m, X (i, m) * C (η m))`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hS : S = (MvPolynomial.aeval (R` using `F) G).range := by`. Rewrite using `[← Algebra.adjoin_range_eq_range_aeval, Set.Sum.elim_range]`. Establish `h1` using `trdeg_le_of_surjective (MvPolynomial.aeval (R := F) G).rangeRestrict (AlgHom.rangeRestrict_surjective _)`. Rewrite `h1` using `[MvPolynomial.trdeg_of_isDomain, Cardinal.lift_id, Cardinal.mk_fintype]`. Rewrite using `[hS]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `h1 using 1` and compare the differences between its conclusion and the goal. Simplify using the standard rewrite rules. Establish `hup2 : Algebra.trdeg F S ≤ ((k * N + d : ℕ) : Cardinal)` using `by set D := Algebra.adjoin F (Set.range η)`. Set `φ : MvPolynomial (Fin k × Fin N) D →ₐ[F] MvPolynomial (Fin k × Fin N) E` to `MvPolynomial.mapAlgHom D.val`. Establish `hle : S ≤ φ.range`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Rewrite using `[hSdef, Algebra.adjoin_le_iff]`. Introduce and unpack `_ (⟨ab, rfl⟩ | ⟨i, rfl⟩)`. Conclude with `⟨X ab, by simp [φ]⟩`. Use `⟨∑ m, X (i, m) * C ⟨η m, Algebra.subset_adjoin ⟨m, rfl⟩⟩, ?_⟩` and prove the remaining obligations. Simplify using `[φ]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `trdeg_le_of_injective (Subalgebra.inclusion hle) (Subalgebra.inclusion_injective hle)`. Establish `h2` using `trdeg_le_of_surjective φ.rangeRestrict (AlgHom.rangeRestrict_surjective _)`. Establish `: FaithfulSMul F D` using `(faithfulSMul_iff_algebraMap_injective F D).mpr (algebraMap F D).injective`. Establish `: FaithfulSMul D (MvPolynomial (Fin k × Fin N) D)` using `(faithfulSMul_iff_algebraMap_injective _ _).mpr (MvPolynomial.C_injective _ _)`. Establish `h3` using `trdeg_add_eq F D (A := MvPolynomial (Fin k × Fin N) D)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h3` using `[MvPolynomial.trdeg_of_isDomain, hd, Cardinal.lift_id, Cardinal.mk_fintype]`. Use `h1.trans (h2.trans (le_of_eq ?_))` and prove the remaining obligations. Rewrite using `[← h3]`. Simplify using `[add_comm]`. Use `le_antisymm ?_ hlow` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Break down `le_total k d with h | h` into its components or cases. Rewrite using `[min_eq_left h]`. Conclude with `hup1`. Rewrite using `[min_eq_right h]`. Conclude with `hup2`.
+A detailed English derivation is pending.
 -/
 theorem GenericLinearTrdeg.proof : GenericLinearTrdeg.Statement := by
   intro F E _ _ _ N k d η hd

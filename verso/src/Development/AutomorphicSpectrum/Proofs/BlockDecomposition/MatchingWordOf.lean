@@ -23,24 +23,24 @@ variable {H : Type} [Group H] [TopologicalSpace H] [IsTopologicalGroup H]
 
 omit [TopologicalSpace H] [IsTopologicalGroup H] in
 /- English proof (translation)
-Rewrite using `[mul_comm, ← GlobalTheory.CompanionTheory.ActTr.hint_const_mul]`. Simplify using `only [mul_comm]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem hint_mul_right (K : Subgroup H) (u : H → ℂ) (c : ℂ) : hint K (fun x => u x * c) = hint K u * c := by
   rw [mul_comm, ← GlobalTheory.CompanionTheory.ActTr.hint_const_mul]
   simp only [mul_comm]
 
 /- English proof (translation)
-Establish `hC₁ : IsCompact ((fun t => y * t⁻¹) '' tsupport k)` using `IsCompact.image hk.1 (continuous_const.mul continuous_inv)`. Establish `h₁ : ∀ l ∈ K, ∀ z x, f x * g (x⁻¹ * (z * l)) * k ((z * l)⁻¹ * y) = f x * g (x⁻¹ * z) * k (z⁻¹ * y)`. Introduce `l hl z x`. Establish `e : (z * l)⁻¹ * y = l⁻¹ * (z⁻¹ * y)` using `by group`. Establish `e2 : x⁻¹ * (z * l) = x⁻¹ * z * l` using `by group`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e, e2, (hg.2 l hl _).2, (hk.2 l⁻¹ (inv_mem hl) _).1]`. Establish `h₂ : ∀ l ∈ K, ∀ z x, f (x * l) * g ((x * l)⁻¹ * z) * k (z⁻¹ * y) = f x * g (x⁻¹ * z) * k (z⁻¹ * y)`. Introduce `l hl z x`. Establish `e : (x * l)⁻¹ * z = l⁻¹ * (x⁻¹ * z)` using `by group`. Rewrite using `[e, (hf.2 l hl x).2, (hg.2 l⁻¹ (inv_mem hl) _).1]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h₃ : ∀ z x, f x * g (x⁻¹ * z) * k (z⁻¹ * y) ≠ 0 → z ∈ (fun t => y * t⁻¹) '' tsupport k ∧ x ∈ tsupport f`. Introduce `z x h`. Use `⟨⟨z⁻¹ * y, subset_tsupport _ (right_ne_zero_of_mul h), by group⟩, subset_tsupport _ (left_ne_zero_of_mul (left_ne_zero_of_mul h))⟩` and prove the remaining obligations. Establish `e` using `GlobalTheory.CompanionTheory.ActTr.hint_comm hK hO le_rfl hC₁ hK hO le_rfl hf.1 (fun z x => f x * g (x⁻¹ * z) * k (z⁻¹ * y)) h₁ h₂ h₃`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Use `congr 1`. Use function extensionality and compare the values at `z`. Rewrite using `[hint_mul_right]`. Use `_ = hint K (fun x => hint K (fun z => f x * g (x⁻¹ * z) * k (z⁻¹ * y))) := e`. Use `_ = _ := by`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `congr 1`. Use function extensionality and compare the values at `x`. Establish `e' : (fun z => f x * g (x⁻¹ * z) * k (z⁻¹ * y)) = fun z => f x * (fun t => g t * k (t⁻¹ * (x⁻¹ * y))) (x⁻¹ * z)`. Use function extensionality and compare the values at `z`. Establish `e2 : (x⁻¹ * z)⁻¹ * (x⁻¹ * y) = z⁻¹ * y` using `by group`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Simplify using `only [e2, mul_assoc]`. Rewrite using `[e', GlobalTheory.CompanionTheory.ActTr.hint_const_mul, GlobalTheory.CompanionTheory.CtMulSplit.hint_left K x⁻¹ (fun t => g t * k (t⁻¹ * (x⁻¹ * y)))]`.
+A detailed English derivation is pending.
 -/
 theorem conv_assoc {K : Subgroup H} (hK : IsCompact (K : Set H)) (hO : IsOpen (K : Set H)) {f g k : H → ℂ}
     (hf : IsHecke K f) (hg : IsHecke K g) (hk : IsHecke K k) (y : H) :
@@ -85,7 +85,7 @@ end Generic
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `y`. Conclude with `conv_assoc (GlobalTheory.CompanionTheory.SphLine.isCompact_KL hE n w) (GlobalTheory.CompanionTheory.SphLine.isOpen_KL n w) hf hg hk y`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem lconv_assoc (hE : Unr E) {w : Pl E} {f g k : UL n w → ℂ} (hf : IsHecke (KL n w) f) (hg : IsHecke (KL n w) g)
     (hk : IsHecke (KL n w) k) : lconv (lconv f g) k = lconv f (lconv g k) := by
@@ -93,27 +93,27 @@ theorem lconv_assoc (hE : Unr E) {w : Pl E} {f g k : UL n w → ℂ} (hf : IsHec
   exact conv_assoc (GlobalTheory.CompanionTheory.SphLine.isCompact_KL hE n w) (GlobalTheory.CompanionTheory.SphLine.isOpen_KL n w) hf hg hk y
 
 /- English proof (translation)
-Use function extensionality and compare the values at `m`. Conclude with `GlobalTheory.CompanionTheory.FmPowP.hint_ind_left _ _ le_rfl (by simp [Subgroup.relIndex_self]) f (fun u hu g => (hf.2 u hu g).1) m`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem lconv_lone_left {w : Pl E} {f : UL n w → ℂ} (hf : IsHecke (KL n w) f) : lconv (lone (KL n w)) f = f := by
   funext m
   exact GlobalTheory.CompanionTheory.FmPowP.hint_ind_left _ _ le_rfl (by simp [Subgroup.relIndex_self]) f (fun u hu g => (hf.2 u hu g).1) m
 
 /- English proof (translation)
-Use function extensionality and compare the values at `m`. Conclude with `GlobalTheory.CompanionTheory.FmPowP.hint_ind_right _ _ le_rfl (by simp [Subgroup.relIndex_self]) f (fun u hu g => (hf.2 u hu g).2) m`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem lconv_lone_right {w : Pl E} {f : UL n w → ℂ} (hf : IsHecke (KL n w) f) : lconv f (lone (KL n w)) = f := by
   funext m
   exact GlobalTheory.CompanionTheory.FmPowP.hint_ind_right _ _ le_rfl (by simp [Subgroup.relIndex_self]) f (fun u hu g => (hf.2 u hu g).2) m
 
 /- English proof (translation)
-Establish `hH` using `GlobalTheory.CompanionTheory.CtMulSplit.isHk_of_isHecke hU hf`. Use `set F : GLw n w → ℂ := fun y => f (toSub (UL n w) y) with hF`. Establish `hb : ∀ u ∈ GlobalTheory.LFun.KGL w n, ∀ g, F (u * g) = F g ∧ F (g * u) = F g` using `fun u hu g => ⟨by simpa using hH.2.2.2 u hu 1 (Subgroup.one_mem _) g, by simpa using hH.2.2.2 1 (Subgroup.one_mem _) u hu g⟩`. Establish `hbi` using `GlobalTheory.CompanionTheory.GL3BlockMatrixLocal.constant_term_bi_invariant (a := a) (b := b) h w (GlobalTheory.LFun.KGL w n) le_rfl (fun k hk k' hk' => mul_mem (mul_mem hk hk') (inv_mem hk)) F hH.2.2.2 1 1 (one_mem _) (one_mem _)`. Establish `hone : (1 : GLw a w × GLw b w) ∈ leviOf h w (GlobalTheory.LFun.KGL w n)` using `GlobalTheory.CompanionTheory.CtHecke.blk_zero_mem h w (one_mem _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : ctMu h w μ f = fun m => GlobalTheory.CompanionTheory.CtHecke.cMu μ m * phi3 h w F 1 1 m`. Use function extensionality and compare the values at `m`. Use `show GlobalTheory.CompanionTheory.CtHecke.cMu μ m * ct h w F m = _`. Apply the tactic sequence `rw [GlobalTheory.CompanionTheory.CtMulSplit.constant_term_eq_mackey_entry h w hb]`. Rewrite using `[e]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨?_, fun κ hκ x => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Conclude with `(GlobalTheory.CompanionTheory.GL3BlockMatrixLocal.constant_term_compact_support h w _ hH.2.2.1 1 1).mul_left`. Use `hbi κ 1 (GlobalTheory.CompanionTheory.CtHecke.blk_zero_mem h w hκ) hone x` as an intermediate fact. Rewrite `this` using `[mul_one]`. Simplify using `only [GlobalTheory.CompanionTheory.CtHecke.cMu_mul_left hμ hκ, this]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `hbi 1 κ hone (GlobalTheory.CompanionTheory.CtHecke.blk_zero_mem h w hκ) x` as an intermediate fact. Rewrite `this` using `[one_mul]`. Simplify using `only [GlobalTheory.CompanionTheory.CtHecke.cMu_mul_right hμ hκ, this]`.
+A detailed English derivation is pending.
 -/
 theorem isHecke_ctMu {a b : ℕ} (h : a + b = n) {w : Pl E} (hU : UL n w = ⊤) (μ : (w.adicCompletion E)ˣ →* ℂˣ)
     (hμ : ∀ u : (w.adicCompletion E)ˣ, ordL (u : w.adicCompletion E) = 0 → μ u = 1) {f : UL n w → ℂ}
@@ -140,11 +140,11 @@ theorem isHecke_ctMu {a b : ℕ} (h : a + b = n) {w : Pl E} (hU : UL n w = ⊤) 
     simp only [GlobalTheory.CompanionTheory.CtHecke.cMu_mul_right hμ hκ, this]
 
 /- English proof (translation)
-Establish `h0 : (d.ϖ w : w.adicCompletion E) ≠ 0` using `(d.ϖ w).ne_zero`. Establish `hϖ : IsUnifV E w (d.ϖ w : w.adicCompletion E)` using `GlobalTheory.CompanionTheory.CtHecke.isUnifV_of_ordL h0 (hd.unif w)`. Establish `hT` using `Tj_mem_hecke (n := n) hϖ k`. Establish `hcl : IsClosed ((UL n w : Subgroup (GLw n w)) : Set (GLw n w))`. Rewrite using `[hU]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `isClosed_univ`. Use `⟨(GlobalTheory.CompanionTheory.CtHecke.hasCompactSupport_Tj h0 k).comp_isClosedEmbedding hcl.isClosedEmbedding_subtypeVal, fun κ hκ x => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Use `hT.1 ⟨κ.1, hκ⟩ 1 x.1` as an intermediate fact. Simplify `this` using `[LocData.hU]`. Use `hT.1 1 ⟨κ.1, hκ⟩ x.1` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this` using `[LocData.hU]`.
+A detailed English derivation is pending.
 -/
 theorem isHecke_hU (d : LocData E n) (hd : d.Ok) {w : Pl E} (hU : UL n w = ⊤) (k : ℕ) : IsHecke (KL n w) (d.hU w k) := by
   have h0 : (d.ϖ w : w.adicCompletion E) ≠ 0 := (d.ϖ w).ne_zero
@@ -161,9 +161,9 @@ theorem isHecke_hU (d : LocData E n) (hd : d.Ok) {w : Pl E} (hU : UL n w = ⊤) 
     simpa [LocData.hU] using this
 
 /- English proof (translation)
-Establish `h1 : d.sgn a w = 1`. Unfold `LocData.sgn`. Rewrite using `[map_pow, hμ _ (GlobalTheory.CompanionTheory.CtMulSplit.ordL_neg_one w)]`. Simplify using the standard rewrite rules. Unfold `LocData.hc`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Rewrite using `[h1, inv_one, one_smul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem hc_eq (d : LocData E n) (a : ℕ) (ha : a ≤ n) {w : Pl E}
     (hμ : ∀ u : (w.adicCompletion E)ˣ, ordL (u : w.adicCompletion E) = 0 → d.μ w u = 1) (k : ℕ) :
@@ -177,29 +177,25 @@ theorem hc_eq (d : LocData E n) (a : ℕ) (ha : a ≤ n) {w : Pl E}
   rfl
 
 /- English proof (translation)
-Take `⟨hw, hT, hS₀, hBad, hμ⟩` from `hG`. Establish `hU : UL n w = ⊤` using `if_pos hw`. Use `set C := ctMu (Nat.add_sub_cancel' ha) w (d.μ w) with hC`. Establish `conv : ∀ {f g : UL n w → ℂ}, IsHecke (KL n w) f → IsHecke (KL n w) g → IsHecke (KL n w) (lconv f g)` using `fun hf hg => GlobalTheory.CompanionTheory.UnitaryWord.isHecke_lconv GlobalTheory.CompanionTheory.LocHecke.locAlg (GlobalTheory.CompanionTheory.MatchPowers.isLevel_KL n w) hf hg`. Establish `mul : ∀ {f g : UL n w → ℂ}, IsHecke (KL n w) f → IsHecke (KL n w) g → C (lconv f g) = mconv (C f) (C g)` using `fun hf hg => hCt E n a ha w hw (d.μ w) hμ _ _ hf hg`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hone : IsHecke (KL n w) (lone (KL n w))` using `GlobalTheory.CompanionTheory.MatchUnit.isHecke_lone_KL hE`. Establish `hunit : C (lone (KL n w)) = PositivityTheory.Rg.BcB.F.idem (K2 a (n - a) w)` using `GlobalTheory.CompanionTheory.MatchUnit.ctMu_lone _ hU _ hμ`. Establish `hlev : d.lev a w = K2 a (n - a) w`. Unfold `LocData.lev`. Rewrite using `[if_neg hT, if_neg (by simp [hS₀, hBad])]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hlev₂ : d.lev₂ a w = K2 a (n - a) w`. Unfold `LocData.lev₂`. Rewrite using `[if_neg (by simp [hS₀, hBad])]`. Establish `hes : (d.eL a).s w = C (lone (KL n w))`. Rewrite using `[hunit]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show PositivityTheory.Rg.BcB.F.idem (d.lev a w) = _`. Rewrite using `[hlev]`. Establish `het : (d.eL a).t w = C (lone (KL n w))`. Rewrite using `[hunit]`. Use `show PositivityTheory.Rg.BcB.F.idem (d.lev₂ a w) = _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately.
 
-Rewrite using `[hlev₂]`. Proceed by induction on `l with`. Consider the case `nil`. Use `⟨?_, lone (KL n w), lone (KL n w), hone, hone, hes, het, ?_⟩` and prove the remaining obligations. Use `show IsHecke (KL n w) ((KL n w : Set (UL n w)).indicator 1)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Treat this case separately.
 
-Rewrite `hone` using `[GlobalTheory.CompanionTheory.UnitaryWord.lone_KL]`. Conclude with `hone`. Rewrite using `[← mul hone hone, lconv_lone_left hone, GlobalTheory.CompanionTheory.UnitaryWord.lone_KL]`. Both sides reduce to the same expression. Consider the case `cons x l ih`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hW, A, B, hA, hB, hs, ht, hm⟩` from `ih`. Take `⟨k, intersection_update_fsHerm_neg_one⟩` from `x`. Establish `hTk` using `isHecke_hU d hd hU k`. Establish `hck : d.hc a ha w k = C (d.hU w k)` using `hc_eq d a ha hμ k`. Establish `hWc : wordU d w ((k, intersection_update_fsHerm_neg_one) :: l) = lconv (d.hU w k) (wordU d w l)` using `rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data.
 
-Establish `key : mconv (C (lconv (d.hU w k) A)) (C B) = C (lconv (d.hU w k) (wordU d w l))`. Rewrite using `[← mul (conv hTk hA) hB, lconv_assoc hE hTk hA hB, mul hTk (conv hA hB), mul hA hB, hm, ← mul hTk hW]`. Use `⟨hWc ▸ conv hTk hW, ?_⟩` and prove the remaining obligations. Rewrite using `[hWc]`. Consider the cases of `intersection_update_fsHerm_neg_one with`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Consider the case `false`. Use `⟨lconv (d.hU w k) A, B, conv hTk hA, hB, ?_, ?_, key⟩` and prove the remaining obligations. Use `show mconv ((d.hL a ha w k false).s w) ((wordL d a ha w l).s w) = _`. Establish `e : (d.hL a ha w k false).s w = d.hc a ha w k` using `by simp [LocData.hL]`. Rewrite using `[e, hs, hck, ← mul hTk hA]`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show mconv ((d.eL a).t w) ((wordL d a ha w l).t w) = _`. Rewrite using `[het, ht, ← mul hone hB, lconv_lone_left hB]`. Consider the case `true`. Use `⟨A, lconv (d.hU w k) B, hA, conv hTk hB, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `show mconv ((d.eL a).s w) ((wordL d a ha w l).s w) = _`.
-
-Rewrite using `[hes, hs, ← mul hone hA, lconv_lone_left hA]`. Use `show mconv ((d.hL a ha w k true).t w) ((wordL d a ha w l).t w) = _`. Establish `e : (d.hL a ha w k true).t w = d.hc a ha w k` using `by simp [LocData.hL]`. Rewrite using `[e, ht, hck, ← mul hTk hB]`. Rewrite using `[← mul hA (conv hTk hB), ← lconv_assoc hE hA hTk hB, mul (conv hA hTk) hB, mul hA hTk, hSp E a (n - a) w (C A) (C (d.hU w k)) (isHecke_ctMu _ hU _ hμ hA) (isHecke_ctMu _ hU _ hμ hTk), ← mul hTk hA]`.
-
-Conclude with `key`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem word_ct (d : LocData E n) (a : ℕ) (ha : a ≤ n) {w : Pl E} (hCt : MT.CtMul) (hSp : SphComm) (hE : Unr E)
     (hd : d.Ok) (hG : d.Good w) (l : List (ℕ × Bool)) :
@@ -270,11 +266,11 @@ theorem word_ct (d : LocData E n) (a : ℕ) (ha : a ≤ n) {w : Pl E} (hCt : MT.
         exact key
 
 /- English proof (translation)
-Introduce `hS hCt hSp _ E _ _ _ hE n d hd a ha w hG l`. Establish `hP : w ∉ d.P` using `by simp [LocData.P, hG.2.1, hG.2.2.1]`. Establish `htr : (wordL d a ha w l).tr d.P d.one w = (wordL d a ha w l).s w` using `if_neg hP`. Take `⟨hW, A, B, -, -, hs, ht, hm⟩` from `word_ct d a ha hCt hSp hE hd hG l`. Rewrite using `[htr, hs, ht, hm]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hμ` using `hG.2.2.2.2`. Establish `hw` using `hG.1`. Establish `h1` using `hS E n a ha w hw (d.μ w) hμ _ hW 1 le_rfl`. Establish `hone : IsHecke (KL n w) (lone (KL n w))` using `GlobalTheory.CompanionTheory.MatchUnit.isHecke_lone_KL hE`. Establish `e1 : lpow (KL n w) (wordU d w l) 1 = wordU d w l` using `lconv_lone_right hW`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : mconv (ctMu (Nat.add_sub_cancel' ha) w (d.μ w) (wordU d w l)) (ctMu (Nat.add_sub_cancel' ha) w (d.μ w) (lone (KL n w))) = ctMu (Nat.add_sub_cancel' ha) w (d.μ w) (wordU d w l)`. Rewrite using `[← hCt E n a ha w hw (d.μ w) hμ _ _ hW hone, lconv_lone_right hW]`. Rewrite `h1` using `[e1]`. Conclude with `e2 ▸ h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem matchLMWordOf : PositivityTheory.Rg.BcB.F.MLM.MatchLMWordOf := by
   intro hS hCt hSp _ E _ _ _ hE n d hd a ha w hG l

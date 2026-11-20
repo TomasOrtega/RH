@@ -6,9 +6,9 @@ open scoped Pointwise ENNReal
 namespace GlobalTheory.CompanionTheory.Ar.Cmp
 
 /- English proof (translation)
-Establish `hn : ∀ φ : E →+* ℂ, ‖φ z‖ = 1`. Introduce `φ`. Establish `h1` using `congrArg φ h`. Rewrite `h1` using `[map_mul, map_one, IsCMField.complexEmbedding_complexConj]`. Establish `h2` using `congrArg norm h1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h2` using `[norm_mul, norm_one, RCLike.norm_conj]`. Establish `h0` using `norm_nonneg (φ z)`. Use the polynomial consequences of the given equalities and inequalities. Take `⟨n, hn0, hn1⟩` from `NumberField.Embeddings.pow_eq_one_of_norm_eq_one E ℂ hz hn`. Conclude with `⟨n, hn0, hn1⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem pow_eq_one_of_isIntegral_of_mul_complexConj_eq_one
     (E : Type) [Field E] [NumberField E] [IsCMField E] (z : E) (hz : IsIntegral ℤ z)

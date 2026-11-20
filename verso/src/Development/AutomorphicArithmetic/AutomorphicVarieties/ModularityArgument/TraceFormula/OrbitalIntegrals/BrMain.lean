@@ -17,72 +17,72 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 namespace UpperTheory.V.Z.Tf.Orb
 
 /- English proof (translation)
-The claim follows from `twCentImg centComm_of`.
+A detailed English derivation is pending.
 -/
 theorem twCentImg_holds : TwCentImg := twCentImg centComm_of
 
 /- English proof (translation)
-The claim follows from `quotAlong haarComm_of quotIndep_of`.
+A detailed English derivation is pending.
 -/
 theorem quotAlong_holds : QuotAlong := quotAlong haarComm_of quotIndep_of
 
 /- English proof (translation)
-The claim follows from `inclClosed extCont_of`.
+A detailed English derivation is pending.
 -/
 theorem inclClosed_holds : InclClosed := inclClosed extCont_of
 
 /- English proof (translation)
-The claim follows from `geoOfMatch gLTop_of extCont_of centComm_of twCentImg_holds quotAlong_holds inclClosed_holds`.
+A detailed English derivation is pending.
 -/
 theorem geoOfMatch_holds : GeoOfMatch := geoOfMatch gLTop_of extCont_of centComm_of twCentImg_holds quotAlong_holds inclClosed_holds
 
 /- English proof (translation)
-The claim follows from `quotReal`.
+A detailed English derivation is pending.
 -/
 theorem quotReal_holds : QuotReal := quotReal
 
 /- English proof (translation)
-The claim follows from `unitSB`.
+A detailed English derivation is pending.
 -/
 theorem unitSB_holds : UnitSB := unitSB
 
 /- English proof (translation)
-The claim follows from `unitMatch gLTop_of extCont_of centComm_of twCent_of haarComm_of quotReal_holds unitSB_holds`.
+A detailed English derivation is pending.
 -/
 theorem unitMatch_holds : UnitMatch := unitMatch gLTop_of extCont_of centComm_of twCent_of haarComm_of quotReal_holds unitSB_holds
 
 /- English proof (translation)
-The claim follows from `geoTransport`.
+A detailed English derivation is pending.
 -/
 theorem geoTransport_holds : GeoTransport := geoTransport
 
 /- English proof (translation)
-The claim follows from `alongIndep`.
+A detailed English derivation is pending.
 -/
 theorem alongIndep_holds : AlongIndep := alongIndep
 
 /- English proof (translation)
-The claim follows from `placeData`.
+A detailed English derivation is pending.
 -/
 theorem placeData_holds : PlaceData := placeData
 
 /- English proof (translation)
-The claim follows from `placeOfLocal gLTop_of extCont_of centComm_of haarComm_of twCentImg_holds geoOfMatch_holds geoTransport_holds alongIndep_holds`.
+A detailed English derivation is pending.
 -/
 theorem placeOfLocal_holds : PlaceOfLocal := placeOfLocal gLTop_of extCont_of centComm_of haarComm_of twCentImg_holds geoOfMatch_holds geoTransport_holds alongIndep_holds
 
 /- English proof (translation)
-The claim follows from `placeUniq`.
+A detailed English derivation is pending.
 -/
 theorem placeUniq_holds : PlaceUniq := placeUniq
 
 /- English proof (translation)
-The claim follows from `placeInt`.
+A detailed English derivation is pending.
 -/
 theorem placeInt_holds : PlaceInt := placeInt
 
 /- English proof (translation)
-The claim follows from `placeUnit unitMatch_holds unitSB_holds placeData_holds placeOfLocal_holds placeInt_holds`.
+A detailed English derivation is pending.
 -/
 theorem placeUnit_holds : PlaceUnit := placeUnit unitMatch_holds unitSB_holds placeData_holds placeOfLocal_holds placeInt_holds
 

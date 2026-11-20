@@ -18,7 +18,7 @@ local notation "ℚ̄" => AlgebraicClosure ℚ
 attribute [local instance 2000] Rep.hV2
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `card_dvd_exponent_nsmul_rank' A hA`. Use `hP.mem_of_pow_mem (AddGroup.rank A) ?_` and prove the remaining obligations. Rewrite using `[← Nat.cast_pow, hc, Nat.cast_mul]`. Conclude with `P.mul_mem_right _ h`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem natCast_mem_of_natCard_mem {R : Type*} [CommRing R] {P : Ideal R} (hP : P.IsPrime)
     {A : Type*} [AddCommGroup A] [Finite A] {n : ℕ} (hA : ∀ a : A, n • a = 0)
@@ -42,7 +42,7 @@ abbrev resMap (v : ι) (g : A ⟶ B) : Rep.res (φ v).toMonoidHom A ⟶ Rep.res 
   (Rep.resFunctor (φ v).toMonoidHom).map g
 
 /- English proof (translation)
-The claim follows from `ConcreteCategory.congr_hom (localToCompact_compactCohomologyMap φ (A := A) (B := B) (Aᵥ := fun v => Rep.res (φ v).toMonoidHom A) (Bᵥ := fun v => Rep.res (φ v).toMonoidHom B) (a := fun _ => 𝟙 _) (b := fun _ => 𝟙 _) (g := g) (gᵥ := fun v => resMap φ v g) (hg := fun _ => (Category.i …`.
+A detailed English derivation is pending.
 -/
 theorem compactCohomologyResMap_localToCompact (g : A ⟶ B) (n : ℕ)
     (ξ : ∀ v, cohomology (Rep.res (φ v).toMonoidHom A) n) :
@@ -56,7 +56,7 @@ theorem compactCohomologyResMap_localToCompact (g : A ⟶ B) (n : ℕ)
     (hg := fun _ => (Category.id_comp _).trans (Category.comp_id _).symm) (n := n)) ξ
 
 /- English proof (translation)
-Rewrite using `[cohomologyMap_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem cohomologyMap_toAddMonoidHom_comp {C : Rep.{0} (ULift.{0} ℤ) G} [IsDiscreteRep C] (f : A ⟶ B)
     (g : B ⟶ C) (n : ℕ) :
@@ -66,7 +66,7 @@ theorem cohomologyMap_toAddMonoidHom_comp {C : Rep.{0} (ULift.{0} ℤ) G} [IsDis
   rfl
 
 /- English proof (translation)
-Take `⟨ξ, rfl⟩` from `hsurj z`. Rewrite using `[compactCohomologyResMap_localToCompact, htB, htA]`. Conclude with `Finset.sum_congr rfl fun v _ => DFunLike.congr_fun (hinv v) (ξ v)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zmodToQZ_compactCohomologyResMap_of_localInv [Fintype ι] {q n : ℕ}
     (j : A ⟶ B) (tA : compactCohomologyRes φ A 3 →+ ZMod q) (tB : compactCohomologyRes φ B 3 →+ ZMod n)
@@ -95,7 +95,7 @@ variable {n : ℕ} [NeZero n] (hS : ∀ v : HeightOneSpectrum (𝓞 K.1), ((n : 
 include hS hK in
 
 /- English proof (translation)
-The claim follows from `subsingleton_cohomology_of_cdp_le_two (NeZero.ne n) (fun _ hℓ hℓn => cdp_galUnramifiedOutside_le_two_of_dvd K S (NeZero.ne n) hS hK hℓ hℓn) M hM hr`.
+A detailed English derivation is pending.
 -/
 theorem subsingleton_cohomology_gs_of_nsmul (M : Rep.{0} (ULift.{0} ℤ) (galUnramifiedOutside K.1 ℚ̄ S))
     [IsDiscreteRep M] (hM : ∀ m : M, n • m = 0) {r : ℕ} (hr : 3 ≤ r) :
@@ -106,7 +106,7 @@ theorem subsingleton_cohomology_gs_of_nsmul (M : Rep.{0} (ULift.{0} ℤ) (galUnr
 include hS hK in
 
 /- English proof (translation)
-Break down `le_or_gt r 2 with hr | hr` into its components or cases. Conclude with `finite_cohomology_gs K S M (fun v hv => hS v (natCast_mem_of_natCard_mem v.isPrime hM hv)) r hr`. Use `subsingleton_cohomology_gs_of_nsmul S hS hK M hM (show 3 ≤ r by omega)` as an intermediate fact. Conclude with `Finite.of_subsingleton`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finite_cohomology_gs_of_nsmul [Finite S]
     (M : Rep.{0} (ULift.{0} ℤ) (galUnramifiedOutside K.1 ℚ̄ S)) [IsDiscreteRep M] [Finite M]
@@ -120,7 +120,7 @@ theorem finite_cohomology_gs_of_nsmul [Finite S]
 include hS hK in
 
 /- English proof (translation)
-Use `finite_cohomology_gs_of_nsmul S hS hK M hM r` as an intermediate fact. Conclude with `finite_compactCohomologyRes_gs_of_finite K S ιs M r`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finite_compactCohomologyRes_gs_of_nsmul [Finite S]
     (M : Rep.{0} (ULift.{0} ℤ) (galUnramifiedOutside K.1 ℚ̄ S)) [IsDiscreteRep M] [Finite M]
@@ -131,7 +131,7 @@ theorem finite_compactCohomologyRes_gs_of_nsmul [Finite S]
 include hS in
 
 /- English proof (translation)
-Establish `hcard : Nat.card (rootsOfUnity n (maxUnramifiedOutside K.1 ℚ̄ S)) = Nat.card (Multiplicative (ZMod n))`. Rewrite using `[card_rootsOfUnity_maxUnramifiedOutside K S n (NeZero.ne n) (fun v hv h => hv (hS v h)), Nat.card_eq_fintype_card, Fintype.card_multiplicative, ZMod.card]`. Conclude with `⟨MulEquiv.toAdditive (mulEquivOfCyclicCardEq hcard)⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem nonempty_addEquiv_gsRoots_of_mem : Nonempty (gsRoots S n ≃+ ZMod n) := by
   have hcard : Nat.card (rootsOfUnity n (maxUnramifiedOutside K.1 ℚ̄ S)) = Nat.card (Multiplicative (ZMod n)) := by
@@ -142,7 +142,7 @@ theorem nonempty_addEquiv_gsRoots_of_mem : Nonempty (gsRoots S n ≃+ ZMod n) :=
 include hS hK in
 
 /- English proof (translation)
-The claim follows from `subsingleton_cohomology_gs_of_nsmul S hS hK _ (nsmul_gsRoots S n) le_rfl`.
+A detailed English derivation is pending.
 -/
 theorem subsingleton_cohomology_three_gsRoots : Subsingleton (cohomology (gsRoots S n) 3) :=
   subsingleton_cohomology_gs_of_nsmul S hS hK _ (nsmul_gsRoots S n) le_rfl
@@ -152,7 +152,7 @@ variable [Fintype S]
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem zmodToQZ_gsCompactInv_localToCompact (h3 : Subsingleton (cohomology (gsRoots S n) 3))
     (ξ : ∀ v : S, cohomology (Rep.res (gsFinFamily S ιs v).toMonoidHom (gsRoots S n)) 2) :
@@ -178,14 +178,14 @@ def gsRootsIncl (hqn : q ∣ n) : gsRoots S q ⟶ gsRoots S n :=
     fun _ => LinearMap.ext fun _ => rfl⟩
 
 /- English proof (translation)
-Introduce `_ _ hab` and use `Additive.toMul.injective (Subgroup.inclusion_injective (rootsOfUnity_le_of_dvd hqn) (congrArg Additive.toMul hab))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem gsRootsIncl_injective (hqn : q ∣ n) : Function.Injective (gsRootsIncl S hqn).hom :=
   fun _ _ hab => Additive.toMul.injective
     (Subgroup.inclusion_injective (rootsOfUnity_le_of_dvd hqn) (congrArg Additive.toMul hab))
 
 /- English proof (translation)
-Establish `hρ : resMap (gsFinFamily S ιs) v (gsRootsIncl S hqn) ≫ gsRootsToLocalUnits S ιs n v = gsRootsToLocalUnits S ιs q v` using `Rep.Hom.ext (Representation.IntertwiningMap.ext (LinearMap.ext fun _ => rfl))`. Conclude with `((congrArg (fun F => F.comp (cohomologyMap (resMap (gsFinFamily S ιs) v (gsRootsIncl S hqn)) 2).hom.toAddMonoidHom) (gsLocalInvRootsQZ_eq_comp S ιs n v)).trans ((AddMonoidHom.comp_assoc _ _ _).trans (congrArg (AddMonoidHom.comp _) ((cohomologyMap_toAddMonoidHom_comp _ _ 2).trans …`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem gsLocalInvRootsQZ_comp_gsRootsIncl (hqn : q ∣ n) (v : S) :
     (gsLocalInvRootsQZ S ιs n v).comp
@@ -204,7 +204,7 @@ theorem gsLocalInvRootsQZ_comp_gsRootsIncl (hqn : q ∣ n) (v : S) :
 variable [NeZero q] [NeZero n] [Fintype S]
 
 /- English proof (translation)
-The claim follows from `zmodToQZ_compactCohomologyResMap_of_localInv (gsFinFamily S ιs) (gsRootsIncl S hqn) (gsCompactInv S ιs q hKq h3q) (gsCompactInv S ιs n hKn h3n) (gsLocalInvRootsQZ S ιs q) (gsLocalInvRootsQZ S ιs n) (gsLocalInvRootsQZ_comp_gsRootsIncl S ιs hqn) (zmodToQZ_gsCompactInv_localToCompac …`.
+A detailed English derivation is pending.
 -/
 theorem zmodToQZ_gsCompactInv_gsRootsIncl (hqn : q ∣ n) (hKn : Odd n ∨ IsTotallyComplex K.1)
     (hKq : Odd q ∨ IsTotallyComplex K.1) (h3n : Subsingleton (cohomology (gsRoots S n) 3))
@@ -230,7 +230,7 @@ variable {N : ℕ} (hS : ∀ v : HeightOneSpectrum (𝓞 K.1), ((N : ℕ) : 𝓞
 include hS in
 
 /- English proof (translation)
-Take `⟨c, rfl⟩` from `hd`. Use `hS v ?_` and prove the remaining obligations. Rewrite using `[Nat.cast_mul]`. Conclude with `v.asIdeal.mul_mem_right _ hv`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_of_natCast_dvd_mem {d : ℕ} (hd : d ∣ N) (v : HeightOneSpectrum (𝓞 K.1))
     (hv : ((d : ℕ) : 𝓞 K.1) ∈ v.asIdeal) : v ∈ S := by
@@ -242,7 +242,7 @@ theorem mem_of_natCast_dvd_mem {d : ℕ} (hd : d ∣ N) (v : HeightOneSpectrum (
 include hK in
 
 /- English proof (translation)
-The claim follows from `hK.imp (fun ho => ho.of_dvd_nat hd) id`.
+A detailed English derivation is pending.
 -/
 theorem odd_or_isTotallyComplex_of_dvd {d : ℕ} (hd : d ∣ N) : Odd d ∨ IsTotallyComplex K.1 :=
   hK.imp (fun ho => ho.of_dvd_nat hd) id
@@ -250,7 +250,7 @@ theorem odd_or_isTotallyComplex_of_dvd {d : ℕ} (hd : d ∣ N) : Odd d ∨ IsTo
 variable [NeZero N] [Fintype S]
 
 /- English proof (translation)
-The claim follows from `nonempty_addEquiv_gsRoots_of_mem S hS bijective_compactDualityMap M _ _ hM _ _ h := bijective_compactDualityMap_of_primePow (gsFinFamily S ιs) (gsRoots S N) _ (fun p => gsRoots S (p ^ N.factorization p)) (fun p => gsCompactInv S ιs (p ^ N.factorization p) (odd_or_isTotallyComplex …`.
+A detailed English derivation is pending.
 -/
 theorem gsPoitouTateDualityHypotheses
     (H : ∀ p ∈ N.primeFactors, ∃ U₀ : OpenSubgroup (galUnramifiedOutside K.1 ℚ̄ S),

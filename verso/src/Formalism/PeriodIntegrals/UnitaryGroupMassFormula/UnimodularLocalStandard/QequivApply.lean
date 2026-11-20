@@ -12,13 +12,13 @@ variable {V : Type*} [AddCommGroup V] [Module ℂ V] (H : Sesq V)
 def qmap (z : V) (ν : ℂ) : V →ₗ[ℂ] V := LinearMap.id - (ν • H.flip z).smulRight z
 
 /- English proof (translation)
-Simplify using `[qmap]`.
+Simplify using the standard rewrite rules.
 -/
 lemma qmap_apply (z : V) (ν : ℂ) (w : V) : qmap H z ν w = w - (ν * H w z) • z := by
   simp [qmap]
 
 /- English proof (translation)
-Substitute `hc` using the available equality. Establish `hc1 : conj c ≠ 0` using `by simpa using hc0`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Substitute using the available equality. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma qmap_coef {c h k : ℂ} (hc0 : c ≠ 0) (hc : c + conj c = k) :
     c⁻¹ * h + (conj c)⁻¹ * (h - c⁻¹ * h * k) = 0 := by
@@ -28,7 +28,7 @@ lemma qmap_coef {c h k : ℂ} (hc0 : c ≠ 0) (hc : c + conj c = k) :
   ring
 
 /- English proof (translation)
-Rewrite using `[qmap_apply, qmap_apply]`. Establish `e : H (w - (c⁻¹ * H w z) • z) z = H w z - c⁻¹ * H w z * H z z`. Simplify using `[map_sub, map_smul, mul_assoc]`. Rewrite using `[e, sub_sub, ← add_smul, qmap_coef hc0 hc, zero_smul, sub_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 lemma qmap_qmap {z : V} {c : ℂ} (hc0 : c ≠ 0) (hc : c + conj c = H z z) (w : V) :
     qmap H z (conj c)⁻¹ (qmap H z c⁻¹ w) = w := by
@@ -38,7 +38,7 @@ lemma qmap_qmap {z : V} {c : ℂ} (hc0 : c ≠ 0) (hc : c + conj c = H z z) (w :
   rw [e, sub_sub, ← add_smul, qmap_coef hc0 hc, zero_smul, sub_zero]
 
 /- English proof (translation)
-Establish `h1` using `qmap_qmap H (c := conj c) (by simpa using hc0) (by rw [Complex.conj_conj, add_comm]; exact hc) w`. Rewrite `h1` using `[Complex.conj_conj]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 lemma qmap_qmap' {z : V} {c : ℂ} (hc0 : c ≠ 0) (hc : c + conj c = H z z) (w : V) :
     qmap H z c⁻¹ (qmap H z (conj c)⁻¹ w) = w := by
@@ -50,7 +50,7 @@ def qequiv (z : V) {c : ℂ} (hc0 : c ≠ 0) (hc : c + conj c = H z z) : V ≃�
     (LinearMap.ext fun w => qmap_qmap' H hc0 hc w) (LinearMap.ext fun w => qmap_qmap H hc0 hc w)
 
 /- English proof (translation)
-Use `show qmap H z c⁻¹ w = _`. Conclude with `qmap_apply H z c⁻¹ w`.
+A detailed English derivation is pending.
 -/
 lemma qequiv_apply (z : V) {c : ℂ} (hc0 : c ≠ 0) (hc : c + conj c = H z z) (w : V) :
     qequiv H z hc0 hc w = w - (c⁻¹ * H w z) • z := by
@@ -58,7 +58,7 @@ lemma qequiv_apply (z : V) {c : ℂ} (hc0 : c ≠ 0) (hc : c + conj c = H z z) (
   exact qmap_apply H z c⁻¹ w
 
 /- English proof (translation)
-Introduce `x y`. Establish `hc1 : conj c ≠ 0` using `by simpa using hc0`. Simplify using `only [LinearEquiv.coe_coe]`. Rewrite using `[qequiv_apply, qequiv_apply]`. Simplify using `only [map_sub, map_smulₛₗ, LinearMap.sub_apply, LinearMap.smul_apply, smul_eq_mul, map_mul, map_inv₀, RingHom.id_apply, hsym y z, ← hc]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 -/

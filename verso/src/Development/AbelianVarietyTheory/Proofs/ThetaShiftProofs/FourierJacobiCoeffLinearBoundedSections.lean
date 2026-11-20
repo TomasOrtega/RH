@@ -7,11 +7,11 @@ open NumberField ReciprocityTheory.ChartRestriction.G.FD MeasureTheory
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `E _ _ _ r X la m a Q f hQ hf ξ hξ ν x hx`. Unfold `Data.fj`. Use `split_ifs with h1 h2`. Establish `hint` using `fun i => (BoundedSectionAlgebra.integrableOn_fj X (hQ i) hξ.2.1 hx ν h2.choose_spec.2.2.2).const_mul (a i)`. Establish `hs` using `integral_finsetSum (s := Finset.univ) (fun i _ => hint i)`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdom : ∀ s : X.Ψ → ℝ, X.flow ξ (fun τ => (s τ : ℂ)) x ∈ X.dom` using `fun s => TransvectionPeriodicity.flow_real_mem_dom X hξ.2.1 s x hx`. Simplify using `only [integral_const_mul] at hs`. Simplify using `only [hf _ (hdom _), Finset.sum_mul, mul_assoc] at hs ⊢`. Rewrite using `[hs, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => mul_left_comm _ _ _`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem fj_eq_sum_of_eqOn_dom : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r) (la : Wt X.Ψ r) (m : ℕ) (a : Fin m → ℂ) (Q : Fin m → Frame X.Ψ r → ℂ) (f : Frame X.Ψ r → ℂ), (∀ i, X.IsBddSec la (Q i)) → (∀ x ∈ X.dom, f x = ∑ i, a i * Q i x) → ∀ ξ, X.IsIso ξ → ∀ ν : X.Ψ → ℝ, ∀ x ∈ X.dom, X.fj la ξ ν f x = ∑ i, a i * X.fj la ξ ν (Q i) x := by
   intro E _ _ _ r X la m a Q f hQ hf ξ hξ ν x hx

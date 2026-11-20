@@ -11,7 +11,7 @@ namespace GlobalTheory.SatBc
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.UG GlobalTheory.PRep GlobalTheory.AdelicU GlobalTheory.LFun
 
 /- English proof (translation)
-Introduce `L _ _ _ ϖ σ q n hU α α' e φ hφ`. Establish `e1` using `congrArg (Multiset.map fun z : ℂˣ => (z : ℂ)) (add_right_cancel e)`. Use `GlobalTheory.eq_of_perm_inv_invariant_of_multiset_eq _ (SatU ϖ q φ) (fun γ hγ => GlobalTheory.SatakeWeyl.satWeyl L ϖ σ q n (n / 2) hU (by omega) (by omega) γ hγ φ hφ) _ _ (fun i => (α i).ne_zero) ?_` and prove the remaining obligations. Simplify `e1` using `[Multiset.map_map, Function.comp_def]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem satU_eq_of_bcParam_eq : ∀ (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))] [CompleteSpace L] (ϖ : L)
     (σ : L →+* L) (q n : ℕ), IsUnramInv ϖ σ q → ∀ α α' : Fin (n / 2) → ℂˣ,

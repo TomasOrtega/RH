@@ -11,9 +11,9 @@ open MeasureTheory Pointwise
 namespace GlobalTheory.SupMeas
 
 /- English proof (translation)
-Set `P : Subgroup G` to `{ carrier := {x | ∃ n ∈ N, ∃ q ∈ Q, n * q = x} one_mem' := ⟨1, N.one_mem, 1, Q.one_mem, mul_one 1⟩ mul_mem' := by`. Introduce and unpack `_ _ ⟨n, hn, q, hq, rfl⟩ ⟨n', hn', q', hq', rfl⟩`. Conclude with `⟨n * (q * n' * q⁻¹), N.mul_mem hn (hQ q hq n' hn'), q * q', Q.mul_mem hq hq', by group⟩`. Use the proof step `inv_mem' := by`. Introduce and unpack `_ ⟨n, hn, q, hq, rfl⟩`.
+Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨q⁻¹ * n⁻¹ * q⁻¹⁻¹, hQ _ (Q.inv_mem hq) _ (N.inv_mem hn), q⁻¹, Q.inv_mem hq, by group⟩ }`. Establish `hle : Q ⊔ N ≤ P` using `sup_le (fun q hq => ⟨1, N.one_mem, q, hq, one_mul q⟩) (fun n hn => ⟨n, hn, 1, Q.one_mem, mul_one n⟩)`. Introduce `h hh`. Conclude with `hle hh`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem mem_sup_exists_mul {G : Type} [Group G] (N Q : Subgroup G) (hQ : ∀ q ∈ Q, ∀ n ∈ N, q * n * q⁻¹ ∈ N) :
     ∀ h ∈ Q ⊔ N, ∃ n ∈ N, ∃ q ∈ Q, n * q = h := by
@@ -32,23 +32,21 @@ theorem mem_sup_exists_mul {G : Type} [Group G] (N Q : Subgroup G) (hQ : ∀ q �
   exact hle hh
 
 /- English proof (translation)
-Establish `key : ∀ f : K → K, Measurable f → ∀ c : NNReal, μ.map f = c • μ → IsFundamentalDomain Γ (f ⁻¹' E) μ → MeasurePreserving f μ μ`. Introduce `f hf c e hF`. Establish `h3 : μ.map f E = μ E`. Rewrite using `[Measure.map_apply₀ hf.aemeasurable (hE.nullMeasurableSet.mono_ac (by rw [e]; exact Measure.smul_absolutelyContinuous))]`. Conclude with `hF.measure_eq hE`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hc : ((c : NNReal) : ENNReal) = 1`. Rewrite `h3` using `[e, Measure.smul_apply, ENNReal.smul_def, smul_eq_mul]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `⟨hf, by rw [e, ENNReal.coe_eq_one.1 hc, one_smul]⟩`. Establish `hRI : ∀ g : K, MeasurePreserving (· * g) μ μ`.
+Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g`. Establish `e` using `Measure.isMulLeftInvariant_eq_smul (μ.map (· * g)) μ`. Establish `hq : Measure.QuasiMeasurePreserving (· * g) μ μ` using `⟨measurable_mul_const g, by rw [e]; exact Measure.smul_absolutelyContinuous⟩`. Use `key _ (measurable_mul_const g) _ e ?_` and prove the remaining obligations. Conclude with `hE.preimage_of_equiv hq (e := id) Function.bijective_id fun γ x => by`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [id, Subgroup.smul_def, smul_eq_mul, mul_assoc]`. Use `haveI : μ.IsMulRightInvariant := ⟨fun g => (hRI g).map_eq⟩`. Establish `hinv : μ.inv = μ`. Establish `hc` using `Measure.isMulLeftInvariant_eq_smul μ.inv μ`. Use `set c := μ.inv.haarScalarFactor μ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : μ = (c ^ 2 : NNReal) • μ`. Establish `: Measure.map Inv.inv (Measure.map Inv.inv μ) = (c ^ 2 : NNReal) • μ`. Rewrite using `[← Measure.inv_def μ, hc, Measure.map_smul, ← Measure.inv_def μ, hc, smul_smul, pow_two]`. Rewrite `this` using `[Measure.map_map continuous_inv.measurable continuous_inv.measurable]`. Simplify `this` using `only [inv_involutive, Function.Involutive.comp_self, Measure.map_id]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 
-Establish `h3 : ((c ^ 2 : NNReal) : ENNReal) = 1`. Establish `h4` using `congrArg (fun ν : Measure K => ν E) h2`. Simplify using `only [Measure.smul_apply, ENNReal.smul_def, smul_eq_mul] at h4`. Combine the equalities or inequalities in the displayed calculation. Establish `h5 : c = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: c ^ 2 = 1` using `by exact_mod_cast h3`. Conclude with `(pow_eq_one_iff_of_nonneg (bot_le : (0 : NNReal) ≤ c) two_ne_zero).1 this`. Rewrite using `[hc, h5, one_smul]`. Use `⟨hRI, ⟨measurable_inv, hinv⟩, ?_⟩` and prove the remaining obligations. Introduce `φ hφ hφs hΓ hΓs`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `haveI := MulEquiv.isHaarMeasure_map μ φ hφ hφs`. Establish `e` using `Measure.isMulLeftInvariant_eq_smul (μ.map φ) μ`. Establish `hq : Measure.QuasiMeasurePreserving φ μ μ` using `⟨hφ.measurable, by rw [e]; exact Measure.smul_absolutelyContinuous⟩`. Use `key _ hφ.measurable _ e ?_` and prove the remaining obligations. Use `hE.preimage_of_equiv hq (e := fun γ : Γ => (⟨φ.symm γ, hΓs γ γ.2⟩ : Γ)) (Function.bijective_iff_has_inverse.2 ⟨fun γ => ⟨φ γ, hΓ γ γ.2⟩, fun γ => Subtype.ext (by simp), fun γ => Subtype.ext (by simp)⟩) fun γ x => ?_` and prove the remaining obligations.
-
-Simplify using `only [Subgroup.smul_def, smul_eq_mul, map_mul, MulEquiv.apply_symm_apply]`.
+A detailed English derivation is pending.
 -/
 theorem haar_invariances {K : Type} [Group K] [TopologicalSpace K] [IsTopologicalGroup K] [LocallyCompactSpace K]
     [SecondCountableTopology K] [T2Space K] [MeasurableSpace K] [BorelSpace K]
@@ -113,33 +111,27 @@ end GlobalTheory.SupMeas
 namespace GlobalTheory.SupMeas
 
 /- English proof (translation)
-Introduce `G _ _ _ _ _ _ _ _ N Q _ m hN hQ hm hmQ νN hνN E hE hE0 hEtop c hc0 hctop hmod`. Establish `memQ₂ : ∀ x, x ∈ Q.map (MulAut.conj m⁻¹).toMonoidHom ↔ ∃ q ∈ Q, m⁻¹ * q * m = x`. Introduce `x`. Simplify using `[Subgroup.mem_map, MulAut.conj_apply]`. Establish `hle : Q.map (MulAut.conj m⁻¹).toMonoidHom ≤ Q ⊔ N`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `x hx`. Take `⟨q, hq, rfl⟩` from `(memQ₂ x).1 hx`. Establish `e : m⁻¹ * q * m = (m⁻¹ * q * m * q⁻¹) * q` using `by group`. Rewrite using `[e]`. Conclude with `Subgroup.mul_mem _ (Subgroup.mem_sup_right (hmQ q hq)) (Subgroup.mem_sup_left hq)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hle, ?_⟩` and prove the remaining obligations. Establish `hdec` using `mem_sup_exists_mul N Q hQ`. Establish `hnorm : ∀ h ∈ Q ⊔ N, ∀ n ∈ N, h * n * h⁻¹ ∈ N`. Introduce `h hh n hn`. Take `⟨n₀, hn₀, q, hq, rfl⟩` from `hdec h hh`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e : n₀ * q * n * (n₀ * q)⁻¹ = n₀ * (q * n * q⁻¹) * n₀⁻¹` using `by group`. Rewrite using `[e]`. Conclude with `N.mul_mem (N.mul_mem hn₀ (hQ q hq n hn)) (N.inv_mem hn₀)`. Use `haveI : LocallyCompactSpace N := hN.locallyCompactSpace`. Use `haveI : SecondCountableTopology N := TopologicalSpace.Subtype.secondCountableTopology _`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `haveI : Countable (Q.subgroupOf N) := Function.Injective.countable (f := fun x : Q.subgroupOf N => (⟨(x : N), x.2⟩ : Q)) (fun x y hxy => Subtype.ext (Subtype.ext (by simpa using congrArg Subtype.val hxy)))`. Take `⟨hR, hI, hφ⟩` from `haar_invariances (Q.subgroupOf N) νN E hE hE0 hEtop`. Establish `hC : ∀ h ∈ Q ⊔ N, ∀ f : N → N, (∀ n, (f n : G) = h * n * h⁻¹) → MeasurePreserving f νN νN`. Introduce `h hh f hf`. Take `⟨n₀, hn₀, q, hq, rfl⟩` from `hdec h hh`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Set `φ : N ≃* N` to `{ toFun := fun n => ⟨q * n * q⁻¹, hQ q hq n n.2⟩ invFun := fun n => ⟨q⁻¹ * n * q, by simpa using hQ q⁻¹ (Q.inv_mem hq) n n.2⟩ left_inv := fun n => Subtype.ext (by simp [mul_assoc]) right_inv := fun n => Subtype.ext (by simp [mul_assoc]) map_mul' := fun a b => Subtype.ext (by simp …`. Establish `hφc : Continuous φ` using `continuous_induced_rng.2 ((continuous_const.mul continuous_subtype_val).mul continuous_const)`. Establish `hφs : Continuous φ.symm` using `continuous_induced_rng.2 ((continuous_const.mul continuous_subtype_val).mul continuous_const)`. Establish `hmp` using `hφ φ hφc hφs (fun γ hγ => by`. Rewrite `hγ`, the goal using `[Subgroup.mem_subgroupOf]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Q.mul_mem (Q.mul_mem hq hγ) (Q.inv_mem hq))`. Use the proof step `(fun γ hγ => by`. Rewrite `hγ`, the goal using `[Subgroup.mem_subgroupOf]`. Conclude with `Q.mul_mem (Q.mul_mem (Q.inv_mem hq) hγ) hq)`. Establish `e : f = (fun x => (⟨n₀, hn₀⟩ : N) * x) ∘ (· * (⟨n₀, hn₀⟩ : N)⁻¹) ∘ φ`.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `x`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hf]`. Simplify using `only [Function.comp_apply, Subgroup.coe_mul, Subgroup.coe_inv]`. Express the relevant statement in the definitionally equal form `_ = n₀ * (q * x * q⁻¹ * n₀⁻¹)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `group`. Rewrite using `[e]`. Conclude with `(measurePreserving_mul_left νN _).comp ((hR _).comp hmp)`. Take `⟨hSF, hL⟩` from `GlobalTheory.T.semidirect_quotient_measure_conjugation_invariant N Q hdec hnorm νN hR hC`. Establish `hInv` using `GlobalTheory.T.conjugation_measure_preserving_semidirect N Q hnorm νN hR hI hC`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hmass` using `GlobalTheory.T.semidirect_measure_restriction_normal_part N Q hN hdec νN hR`. Establish `covQ : ∀ h ∈ Q ⊔ N, ∃ r ∈ Q, r * h ∈ N`. Introduce `h hh`. Take `⟨n, hn, q, hq, rfl⟩` from `hdec h hh`. Use `⟨q⁻¹, Q.inv_mem hq, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : q⁻¹ * (n * q) = q⁻¹ * n * q⁻¹⁻¹` using `by group`. Rewrite using `[e]`. Conclude with `hQ _ (Q.inv_mem hq) n hn`. Establish `covQ₂ : ∀ h ∈ Q ⊔ N, ∃ r ∈ Q.map (MulAut.conj m⁻¹).toMonoidHom, r * h ∈ N`. Introduce `h hh`.
-
-Take `⟨n, hn, q, hq, rfl⟩` from `hdec h hh`. Use `⟨m⁻¹ * q⁻¹ * m, (memQ₂ _).2 ⟨q⁻¹, Q.inv_mem hq, rfl⟩, ?_⟩` and prove the remaining obligations. Establish `e : m⁻¹ * q⁻¹ * m * (n * q) = (m⁻¹ * q⁻¹ * m * q⁻¹⁻¹) * (q⁻¹ * n * q⁻¹⁻¹)` using `by group`. Rewrite using `[e]`. Conclude with `N.mul_mem (hmQ _ (Q.inv_mem hq)) (hQ _ (Q.inv_mem hq) n hn)`.
-
-Use `haveI : Countable (Q.map (MulAut.conj m⁻¹).toMonoidHom) := Function.Surjective.countable (f := fun q : Q => (⟨(MulAut.conj m⁻¹).toMonoidHom q, Subgroup.mem_map_of_mem _ q.2⟩ : Q.map (MulAut.conj m⁻¹).toMonoidHom)) (fun x => by obtain ⟨q, hq, e⟩ := Subgroup.mem_map.1 x.2; exact ⟨⟨ …`. Establish `hE'` using `GlobalTheory.T.normalizing_element_fundamental_domain_scaling N Q m hN hm νN E hE c hc0 hmod`. Use `⟨supMeas N Q νN, hSF, hInv, fun γ _ => hL γ, fun γ _ => hL γ, _, _, GlobalTheory.T.countable_transversal_measure_extension N Q Q hN covQ νN _ hmass hL E hE, GlobalTheory.T.countable_transversal_measure_extension N Q _ hN covQ₂ νN _ hmass hL _ hE', ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hmass, hmass]`. Conclude with `hmod E`.
-
-Rewrite using `[hmass]`. Conclude with `hE0`. Rewrite using `[hmass]`. Conclude with `hEtop`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_supMeas : ∀ {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [LocallyCompactSpace G] [SecondCountableTopology G] [T2Space G] [MeasurableSpace G] [BorelSpace G] (N Q : Subgroup G) [Countable Q] (m : G), IsClosed (N : Set G) → (∀ q ∈ Q, ∀ n ∈ N, q * n * q⁻¹ ∈ N) → (∀ n ∈ N, m * n * m⁻¹ ∈ N ∧ m⁻¹ * n * m ∈ N) → (∀ q ∈ Q, m⁻¹ * q * m * q⁻¹ ∈ N) → ∀ νN : Measure N, νN.IsHaarMeasure → ∀ E : Set N, IsFundamentalDomain (Q.subgroupOf N) E νN → νN E ≠ 0 → νN E ≠ ⊤ → ∀ c : ENNReal, c ≠ 0 → c ≠ ⊤ → (∀ S : Set N, c * νN (Subtype.val ⁻¹' ((fun g => m⁻¹ * g * m) '' (Subtype.val '' S))) = νN S) → Q.map (MulAut.conj m⁻¹).toMonoidHom ≤ Q ⊔ N ∧ ∃ ν : Measure ↥(Q ⊔ N), SFinite ν ∧ MeasurePreserving (fun p : ↥(Q ⊔ N) => p⁻¹) ν ν ∧ (∀ γ ∈ Q.subgroupOf (Q ⊔ N), MeasurePreserving (fun p : ↥(Q ⊔ N) => γ * p) ν ν) ∧ (∀ γ ∈ (Q.map (MulAut.conj m⁻¹).toMonoidHom).subgroupOf (Q ⊔ N), MeasurePreserving (fun p : ↥(Q ⊔ N) => γ * p) ν ν) ∧ ∃ E₁ E₂ : Set ↥(Q ⊔ N), IsFundamentalDomain (Q.subgroupOf (Q ⊔ N)) E₁ ν ∧ IsFundamentalDomain ((Q.map (MulAut.conj m⁻¹).toMonoidHom).subgroupOf (Q ⊔ N)) E₂ ν ∧ c * ν E₂ = ν E₁ ∧ ν E₁ ≠ 0 ∧ ν E₁ ≠ ⊤ := by
   intro G _ _ _ _ _ _ _ _ N Q _ m hN hQ hm hmQ νN hνN E hE hE0 hEtop c hc0 hctop hmod

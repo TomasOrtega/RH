@@ -16,17 +16,15 @@ variable {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field 
     {V : Type} [AddCommGroup V] [Module Qp V] [FiniteDimensional Qp V] [IsDomain B]
 
 /- English proof (translation)
-Take `⟨h1, -⟩` from `finite_le₀ PD hf ρ`. Establish `h2 : finrank K₀ ↥(DcrisK₀ PD ρ) = d`. Rewrite using `[(isCrys_iff_finrank PD ρ).1 h, finrank_eq_card_basis v, Fintype.card_fin]`. Set `d₀` to `Module.finBasisOfFinrankEq K₀ ↥(DcrisK₀ PD ρ) h2`. Set `b` to `(Algebra.TensorProduct.basis B d₀).map (LinearEquiv.ofBijective _ (comparison_bijective PD hf hu ρ h))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hd : ∀ g i, sig PD ρ g (b i) = b i`. Introduce `g i`. Establish `: b i = (d₀ i : B ⊗[Qp] V)` using `by simp [b, comparison_tmul]`. Rewrite using `[this]`. Conclude with `(mem_DcrisK₀ PD ρ _).1 (d₀ i).2 g`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `e` to `Algebra.TensorProduct.basis B v`. Establish `hrep : ∀ g (w : B ⊗[Qp] V) k, e.repr (sig PD ρ g w) k = ∑ j, algebraMap Qp B (v.repr (ρ g (v j)) k) * PD.actB g (e.repr w j)`. Introduce `g w k`. Use `conv_lhs => rw [← e.sum_repr w]`. Simplify using `only [map_sum, sig_smul, map_smul, Finsupp.coe_finset_sum, Finset.sum_apply, Finsupp.smul_apply, smul_eq_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm]`. Use `congr 1`. Simplify using `[e, sig_tmul, Algebra.algebraMap_eq_smul_one]`. Use `⟨e.toMatrix b, b.toMatrix e, Basis.toMatrix_mul_toMatrix_flip _ _, fun g => ?_⟩` and prove the remaining obligations.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `k i`. Rewrite using `[Matrix.mul_apply]`. Express the relevant statement in the definitionally equal form `_ = e.repr (b i) k`. Use `conv_rhs => rw [← hd g i, hrep]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
-
-Simplify using `[LinearMap.toMatrix_apply, Basis.toMatrix_apply]`.
+Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem exists_inv_matrix (hf : FracInv PD) (hu : LineUnit PD) (ρ : Representation Qp G V) {d : ℕ}
     (v : Basis (Fin d) Qp V) (h : IsCrys PD ρ) :
@@ -64,19 +62,19 @@ private theorem exists_inv_matrix (hf : FracInv PD) (hu : LineUnit PD) (ρ : Rep
   simp [LinearMap.toMatrix_apply, Basis.toMatrix_apply]
 
 /- English proof (translation)
-Take `⟨M, M', hM, hg⟩` from `exists_inv_matrix PD hf hu ρ v h`. Establish `hM' : M' * M = 1` using `mul_eq_one_comm.1 hM`. Establish `hinv : ∀ g, (M' * M.map PD.φ).map (PD.actB g) = M' * M.map PD.φ`. Introduce `g`. Use `set R := (LinearMap.toMatrix v v (ρ g)).map (algebraMap Qp B) with hR`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1 : M.map (PD.actB g) * M'.map (PD.actB g) = 1`. Rewrite using `[← Matrix.map_mul, hM, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `h2 : M'.map (PD.actB g) = M' * R`. Establish `: R * (M.map (PD.actB g) * M'.map (PD.actB g)) = M * M'.map (PD.actB g)`. Rewrite using `[← Matrix.mul_assoc, hg g]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[h1, Matrix.mul_one]`. Rewrite using `[this, ← Matrix.mul_assoc, hM', Matrix.one_mul]`. Establish `h3 : R * (M.map PD.φ).map (PD.actB g) = M.map PD.φ`. Establish `h4 : R.map PD.φ = R`. Use extensionality with `i j`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[hR]`. Establish `h5 : (M.map PD.φ).map (PD.actB g) = (M.map (PD.actB g)).map PD.φ`. Use extensionality with `i j`. Simplify using `[PD.φ_comm]`. Rewrite using `[h5, ← h4, ← Matrix.map_mul, hg g]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.map_mul, h2, Matrix.mul_assoc, h3]`. Use `choose A hA using fun i j => PD.invB ((M' * M.map PD.φ) i j) fun g => congrFun (congrFun (hinv g) i) j`. Establish `hA' : (Matrix.of A).map (algebraMap K₀ B) = M' * M.map PD.φ`. Use extensionality with `i j`. Conclude with `hA i j`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨M, M', Matrix.of A, hM, ?_, by rw [hA', ← Matrix.mul_assoc, hM, Matrix.one_mul], hg⟩` and prove the remaining obligations. Rewrite using `[isUnit_iff_ne_zero]`. Introduce `h0`. Establish `h1 : ((Matrix.of A).map (algebraMap K₀ B)).det = 0`. Rewrite using `[← RingHom.mapMatrix_apply, ← RingHom.map_det, h0, map_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : (M' * M.map PD.φ) * (M'.map PD.φ * M) = 1`. Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc (M.map PD.φ), ← Matrix.map_mul, hM, Matrix.map_one _ (map_zero _) (map_one _), Matrix.one_mul, hM']`. Establish `h3` using `congrArg Matrix.det h2`. Rewrite `h3` using `[Matrix.det_mul, ← hA', h1, zero_mul, Matrix.det_one]`. Conclude with `zero_ne_one h3`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_period_matrix (hf : FracInv PD) (hu : LineUnit PD) (ρ : Representation Qp G V) {d : ℕ}
     (v : Basis (Fin d) Qp V) (h : IsCrys PD ρ) :
@@ -123,11 +121,9 @@ private theorem exists_period_matrix (hf : FracInv PD) (hu : LineUnit PD) (ρ : 
 end Generic
 
 /- English proof (translation)
-Introduce `l _ K V _ _ _ ρ d e h`. Take `⟨T⟩` from `tiedP l`. Use `haveI := GlobalTheory.RegularRing.isDomain_of_tied T K`. Take `⟨M, M', A, h1, h2, h3, h4⟩` from `exists_period_matrix ((PP l).PD K) (GlobalTheory.TateDualCrys.fracInv_of_tied T K) (GlobalTheory.TateDualCrys.lineUnit_of_tied T K) ρ e h`. Use `⟨M, M', A, h1, h2, ?_, fun g => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h3]`. Use extensionality with `i j`. Conclude with `((PP l).PD_φ K _).symm`. Establish `h5 : M.map ((PP l).actQ (g : GQ l)) = M.map (((PP l).PD K).actB g)`. Use extensionality with `i j`.
-
-Conclude with `((PP l).PD_actB K g _).symm`. Rewrite using `[h5, h4]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.exists_crystalline_period_matrix_bcris_of_isCrys :
     ∀ {l : ℕ} [Fact l.Prime] (K : FinExt l) {V : Type} [AddCommGroup V] [Module ℚ_[l] V] [FiniteDimensional ℚ_[l] V] (ρ : Representation ℚ_[l] ↥(GK K) V) {d : ℕ} (e : Basis (Fin d) ℚ_[l] V), IsCrys ((PP l).PD K) ρ → ∃ (M M' : Matrix (Fin d) (Fin d) (Bcr l)) (A : Matrix (Fin d) (Fin d) ↥(K0 K)), M * M' = 1 ∧ IsUnit A.det ∧ M.map (PP l).φB = M * A.map (algebraMap ↥(K0 K) (Bcr l)) ∧ (∀ g : ↥(GK K), (LinearMap.toMatrix e e (ρ g)).map (algebraMap ℚ_[l] (Bcr l)) * M.map ((PP l).actQ (g : GQ l)) = M) := by

@@ -7,17 +7,15 @@ open GlobalTheory.Sandwich GlobalTheory.IndefiniteRowSideFullHecke.SandwichMaps
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `p _ Λ _ _ _ _ _ _ N h hh ρ a`. Set `f : Λ →+* Module.End ℤ_[p] (Fin h → ℤ_[p])` to `((Matrix.toLinAlgEquiv' : Matrix (Fin h) (Fin h) ℤ_[p] ≃ₐ[ℤ_[p]] _).toAlgHom.comp ρ).toRingHom`. Use `letI : Module Λ (Fin h → ℤ_[p]) := Module.compHom _ f`. Establish `hsmul : ∀ (b : Λ) (x : Fin h → ℤ_[p]), b • x = (ρ b).mulVec x` using `fun b x => rfl`. Use `haveI : IsScalarTower ℤ_[p] Λ (Fin h → ℤ_[p]) := ⟨fun r b x => by`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hsmul, hsmul, map_smul]`. Use extensionality with `i`. Simplify using `[Matrix.mulVec, dotProduct, Finset.mul_sum, mul_assoc]⟩`. Use `haveI : Module.Finite Λ (Fin h → ℤ_[p]) := Module.Finite.of_restrictScalars_finite ℤ_[p] Λ _`. Use `haveI : NoZeroSMulDivisors Λ (Fin h → ℤ_[p]) := ⟨fun {b x} hbx => by`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Prove the first alternative. Prove the second alternative.
 
-Distinguish the cases in `hb : b = 0`. Conclude with `Or.inl hb`. Conclude with `Or.inr (GlobalTheory.T.faithful_rep_mulVec_injective ℤ_[p] Λ h ρ b x hb (by rw [← hsmul]; exact hbx))⟩`. Use `haveI : Module.Free Λ (Fin h → ℤ_[p]) := Module.free_of_finite_type_torsion_free'`. Use `haveI : Module.IsTorsionFree ℤ_[p] Λ := NoZeroSMulDivisors.iff_algebraMap_injective.mpr (FaithfulSMul.algebraMap_injective ℤ_[p] Λ)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : Module.Free ℤ_[p] Λ := Module.free_of_finite_type_torsion_free'`. Establish `hrank : Module.finrank Λ (Fin h → ℤ_[p]) = N`. Establish `h1` using `Module.finrank_mul_finrank ℤ_[p] Λ (Fin h → ℤ_[p])`. Rewrite `h1` using `[Module.finrank_fin_fun]`. Establish `h2` using `h1.trans hh`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hpos : 0 < Module.finrank ℤ_[p] Λ` using `Module.finrank_pos`. Conclude with `Nat.eq_of_mul_eq_mul_left hpos h2`. Establish `key` using `GlobalTheory.T.trace_lsmul_eq_finrank_mul_trace ℤ_[p] Λ (Fin h → ℤ_[p]) a`. Rewrite `key` using `[hrank]`. Rewrite using `[← key]`.
-
-Establish `hlin : Algebra.lsmul ℤ_[p] ℤ_[p] (Fin h → ℤ_[p]) a = Matrix.toLin' (ρ a)`. Conclude with `LinearMap.ext fun x => hsmul a x`. Rewrite using `[hlin, Matrix.trace_toLin'_eq]`.
+A detailed English derivation is pending.
 -/
 theorem traceOnLattice_eq_rank_mul_trace : ∀ (p : ℕ) [Fact p.Prime] (Λ : Type) [CommRing Λ] [IsDomain Λ] [IsDiscreteValuationRing Λ] [Algebra ℤ_[p] Λ] [Module.Finite ℤ_[p] Λ] [FaithfulSMul ℤ_[p] Λ] (N h : ℕ), h = Module.finrank ℤ_[p] Λ * N → ∀ (ρ : Λ →ₐ[ℤ_[p]] Matrix (Fin h) (Fin h) ℤ_[p]) (a : Λ), (ρ a).trace = (N : ℤ_[p]) * Algebra.trace ℤ_[p] Λ a := by
   intro p _ Λ _ _ _ _ _ _ N h hh ρ a

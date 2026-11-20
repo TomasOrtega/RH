@@ -14,17 +14,17 @@ open scoped WithZero TensorProduct
 namespace GlobalTheory.CNorm
 
 /- English proof (translation)
-Introduce `p F _ _ _ ζ δ u S₀ hp hζ hδ hu hδs huδ`. Take `⟨E, _, _, θ, σ, hq⟩` from `exists_isKum p F ζ δ hp hζ hδs`. Take `⟨hfd, -, -, -, -, hpow, -⟩` from `GlobalTheory.T.cyclic_hilbert90_kummer_and_mem_kNorm_iff p F E ζ δ θ σ hq`. Use `haveI : NumberField E := NumberField.of_module_finite F E`. Use `haveI : IsTotallyComplex E := isTotallyComplex_of_algebra F E`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `huE : ∀ y : E, y ^ p ≠ algebraMap F E u`. Introduce `y h`. Take `⟨k, r, hr⟩` from `hpow u y h`. Conclude with `huδ k r hr`. Establish `h2 : (p : F) ≠ 0` using `by exact_mod_cast hp.ne_zero`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨S, hS, hSu⟩` from `exists_superset_mem_sUnits F {Units.mk0 (p : F) h2, Units.mk0 δ hδ, Units.mk0 u hu} S₀`. Take `⟨SE, hSE⟩` from `(places_over F E).1 S`. Take `⟨w, hw, hwu⟩` from `GlobalTheory.T.exists_place_not_pow_adicCompletion p E (algebraMap F E ζ) (algebraMap F E u) SE hp (hζ.map_of_injective (algebraMap F E).injective) (by simpa using hu) huE`. Take `⟨φ, hφ⟩` from `exists_ringHom_adicCompletion_under F E w`. Establish `hv : w.under (𝓞 F) ∉ S` using `fun h => hw ((hSE w).2 h)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hval : ∀ x : F, Valued.v (algebraMap F ((w.under (𝓞 F)).adicCompletion F) x) = (w.under (𝓞 F)).valuation F x` using `fun x => HeightOneSpectrum.valuedAdicCompletion_eq_valuation' _ x`. Establish `hv2 : (w.under (𝓞 F)).valuation F (p : F) = 1` using `(mem_sUnits F S _).1 (hSu S subset_rfl (Units.mk0 (p : F) h2) (by simp)) _ hv`. Establish `hvδ : (w.under (𝓞 F)).valuation F δ = 1` using `(mem_sUnits F S _).1 (hSu S subset_rfl (Units.mk0 δ hδ) (by simp)) _ hv`. Establish `hvu : (w.under (𝓞 F)).valuation F u = 1` using `(mem_sUnits F S _).1 (hSu S subset_rfl (Units.mk0 u hu) (by simp)) _ hv`. Establish `hunsq : ∀ r : (w.under (𝓞 F)).adicCompletion F, r ^ p ≠ algebraMap F ((w.under (𝓞 F)).adicCompletion F) u`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Introduce `r h`. Apply `hwu (φ r)` to reduce the goal to its premises. Rewrite using `[← hφ, ← h, map_pow]`. Use `⟨w.under (𝓞 F), fun h => hv (hS h), ?_, hunsq⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hδn`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `push Not at hδn`. Take `⟨k, r, hr⟩` from `exists_eq_pow_mul_pow_of_unit p F (w.under (𝓞 F)) _ _ hp hv2 ((hval δ).trans hvδ) ((hval u).trans hvu) hδn`. Apply `hwu (algebraMap E (w.adicCompletion E) θ ^ k * φ r)` to reduce the goal to its premises. Rewrite using `[← hφ, hr, map_mul, map_pow, map_pow, hφ, ← hq.pow, map_pow, mul_pow, ← pow_mul, ← pow_mul, mul_comm k p]`.
+A detailed English derivation is pending.
 -/
 theorem exists_place_pow_and_not_pow :
     ∀ (p : ℕ) (F : Type) [Field F] [NumberField F] [IsTotallyComplex F] (ζ δ u : F) (S₀ : Finset (HeightOneSpectrum (𝓞 F))), p.Prime → IsPrimitiveRoot ζ p → δ ≠ 0 → u ≠ 0 → (∀ r : F, r ^ p ≠ δ) → (∀ (k : ℕ) (r : F), u ≠ δ ^ k * r ^ p) → ∃ v, v ∉ S₀ ∧ (∃ r : v.adicCompletion F, r ^ p = algebraMap F (v.adicCompletion F) δ) ∧ ∀ r : v.adicCompletion F, r ^ p ≠ algebraMap F (v.adicCompletion F) u := by

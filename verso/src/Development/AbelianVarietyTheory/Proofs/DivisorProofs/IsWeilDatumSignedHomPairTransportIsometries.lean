@@ -32,9 +32,9 @@ namespace GlobalTheory.IsoBoth
 variable {D : D7}
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation. Unfold `hO`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Conclude with `sum_form (cA D) (T.gram.map (incA D)) x y (incA D (S.gram⁻¹ a b)) a b`. Use `_ = _ := by`.
+Chain the equalities or inequalities of the calculation. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Matrix.trace]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.diag_apply, Matrix.mul_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem hO_eq_trace (S T : HSp D) (x y : WO S T) :
     hO S T x y = Matrix.trace (HMul.hMul ((S.gram⁻¹).map (incA D))
@@ -53,9 +53,9 @@ theorem hO_eq_trace (S T : HSp D) (x y : WO S T) :
 variable {A A' : HSp D} (J : IsoMat A A')
 
 /- English proof (translation)
-Use `symm`. Apply `Matrix.inv_eq_left_inv` to reduce the goal to its premises. Establish `hu : IsUnit A'.gram.det` using `isUnit_iff_ne_zero.2 (gram_det_ne A')`. Establish `h1 : cT (D.sp.cm.sig : D.host.E →+* D.host.E) J.Q * cT (D.sp.cm.sig : D.host.E →+* D.host.E) J.P = 1`. Rewrite using `[← cT_mul, J.PQ, cT_one]`.
+Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← J.gram]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem gram_inv_conj : J.Q * A'.gram⁻¹ * cT (D.sp.cm.sig : D.host.E →+* D.host.E) J.Q = A.gram⁻¹ := by
   symm
@@ -74,11 +74,11 @@ theorem gram_inv_conj : J.Q * A'.gram⁻¹ * cT (D.sp.cm.sig : D.host.E →+* D.
 variable (T : HSp D)
 
 /- English proof (translation)
-Rewrite using `[hO_eq_trace, hO_eq_trace, cT_mul]`. Establish `e1 : cT (cA D) J.aQ = (cT (D.sp.cm.sig : D.host.E →+* D.host.E) J.Q).map (incA D)`. Use extensionality with `i j`. Both sides reduce to the same expression. Establish `e2 : HMul.hMul (HMul.hMul J.aQ ((A'.gram⁻¹).map (incA D))) (cT (cA D) J.aQ) = ((A.gram⁻¹).map (incA D) : Matrix (Fin A.rank) (Fin A.rank) (AE D))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[e1, IsoMat.aQ, ← Matrix.map_mul, ← Matrix.map_mul, gram_inv_conj]`. Rewrite using `[← e2]`. Establish `e3 : HMul.hMul ((A'.gram⁻¹).map (incA D)) (HMul.hMul (HMul.hMul (HMul.hMul (cT (cA D) J.aQ) (cT (cA D) y)) (T.gram.map (incA D))) (HMul.hMul x J.aQ)) = HMul.hMul (HMul.hMul (HMul.hMul ((A'.gram⁻¹).map (incA D)) (cT (cA D) J.aQ)) (HMul.hMul (HMul.hMul (cT (cA D) y) (T.gram.map (in …`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[e3, Matrix.trace_mul_comm]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hO_rmul (x y : WO A T) : hO A' T (HMul.hMul x J.aQ) (HMul.hMul y J.aQ) = hO A T x y := by
   rw [hO_eq_trace, hO_eq_trace, cT_mul]
@@ -98,7 +98,7 @@ theorem hO_rmul (x y : WO A T) : hO A' T (HMul.hMul x J.aQ) (HMul.hMul y J.aQ) =
   simp only [Matrix.mul_assoc]
 
 /- English proof (translation)
-Unfold `symplOH symplO`. Rewrite using `[hO_rmul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem symplOH_rmul (x y : WO A T) : symplOH A' T (HMul.hMul x J.aQ) (HMul.hMul y J.aQ) = symplOH A T x y := by
   unfold symplOH symplO
@@ -121,7 +121,7 @@ Both sides reduce to the same expression.
 theorem rS_apply (x : WO A T) : rS J T x = HMul.hMul x J.aQ := rfl
 
 /- English proof (translation)
-Establish `: IsModuleTopology (AF D.host.F) (AF D.host.F ⊗[D.host.F] D.host.E)` using `⟨rfl⟩`. Establish `: IsTopologicalRing (AF D.host.F ⊗[D.host.F] D.host.E)` using `IsModuleTopology.isTopologicalRing (AF D.host.F) _`. Conclude with `continuous_id.matrix_mul continuous_const`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_rS : Continuous (rS J T) := by
   have : IsModuleTopology (AF D.host.F) (AF D.host.F ⊗[D.host.F] D.host.E) := ⟨rfl⟩
@@ -129,12 +129,12 @@ theorem continuous_rS : Continuous (rS J T) := by
   exact continuous_id.matrix_mul continuous_const
 
 /- English proof (translation)
-The claim follows from `continuous_rS J.symm T`.
+A detailed English derivation is pending.
 -/
 theorem continuous_rS_symm : Continuous (rS J T).symm := continuous_rS J.symm T
 
 /- English proof (translation)
-The claim follows from `symplOH_rmul J T x y`.
+A detailed English derivation is pending.
 -/
 theorem sympl_rS (x y : WO A T) : symplOH A' T (rS J T x) (rS J T y) = symplOH A T x y := symplOH_rmul J T x y
 
@@ -146,7 +146,7 @@ def trSL : (WO A T → ℂ) →ₗ[ℂ] (WO A' T → ℂ) where
   map_smul' _ _ := rfl
 
 /- English proof (translation)
-The claim follows from `funext fun w => congrArg f ((rS J T).symm_apply_apply w)`.
+A detailed English derivation is pending.
 -/
 theorem trS_symm_trS (f : WO A T → ℂ) : trS J.symm T (trS J T f) = f :=
   funext fun w => congrArg f ((rS J T).symm_apply_apply w)
@@ -154,14 +154,14 @@ theorem trS_symm_trS (f : WO A T → ℂ) : trS J.symm T (trS J T f) = f :=
 variable {T}
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.WeilSrc.theta_comp (A := A') (B := A) J.P (fun x y => sympl_rS J.symm T x y) hf`.
+A detailed English derivation is pending.
 -/
 theorem theta_trS {ψ : AddChar (AF D.host.F) ℂ} {f : WO A T → ℂ} (hf : IsThetaFunO ψ A T f) :
     IsThetaFunO ψ A' T (trS J T f) :=
   GlobalTheory.WeilSrc.theta_comp (A := A') (B := A) J.P (fun x y => sympl_rS J.symm T x y) hf
 
 /- English proof (translation)
-Use function extensionality and compare the values at `w`. Take `⟨w, rfl⟩` from `(rS J T).surjective w`. Simplify using `only [heisO, trS, ← map_add, AddEquiv.symm_apply_apply, sympl_rS]`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 theorem heis_trS (ψ : AddChar (AF D.host.F) ℂ) (u : WO A T) (G : WO A T → ℂ) :
     heisO ψ A' T (rS J T u) (trS J T G) = trS J T (heisO ψ A T u G) := by
@@ -170,7 +170,7 @@ theorem heis_trS (ψ : AddChar (AF D.host.F) ℂ) (u : WO A T) (G : WO A T → �
   simp only [heisO, trS, ← map_add, AddEquiv.symm_apply_apply, sympl_rS]
 
 /- English proof (translation)
-Use `show HMul.hMul (HMul.hMul (HMul.hMul (mt T h) x) (mt A g⁻¹)) J.aQ = HMul.hMul (HMul.hMul (mt T h) (HMul.hMul x J.aQ)) (mt A' (J.kap g)⁻¹)`. Rewrite using `[← map_inv, J.mt_kap, J.conjM_apply]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[J.aQ_aP, Matrix.mul_one]`. Use `_ = _ := by simp only [Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem actO_rS (g : GA D A) (h : GA D T) (x : WO A T) :
     rS J T (actO A T g h x) = actO A' T (J.kap g) h (rS J T x) := by
@@ -182,9 +182,9 @@ theorem actO_rS (g : GA D A) (h : GA D T) (x : WO A T) :
     _ = _ := by simp only [Matrix.mul_assoc]
 
 /- English proof (translation)
-Rewrite using `[ratL_eq, ratL_eq]`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Use `ratMx_mul hx (rat_mem J.P)` as an intermediate fact. Rewrite `this` using `[show rat J.P = J.aP from rfl, rS_apply, Matrix.mul_assoc, J.aQ_aP, Matrix.mul_one]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Introduce `hx`. Conclude with `ratMx_mul hx (rat_mem J.Q)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem rat_iff (x : WO A T) : rS J T x ∈ ratL T A' ↔ x ∈ ratL T A := by
   rw [ratL_eq, ratL_eq]
@@ -224,23 +224,19 @@ namespace GlobalTheory.IsoBoth
 variable {D : D7} {A A' T : HSp D} (J : IsoMat A A')
 
 /- English proof (translation)
-Establish `hT : ∀ F, IsThetaFunO ψ A' T F → IsThetaFunO ψ A T (trS J.symm T F)` using `fun F hF => theta_trS J.symm hF`. Use `⟨H.std, H.hecS, H.hecT, J.rank_eq ▸ H.resS, H.resT, fun p F hF => ?_, fun g h w₀ F hF => ?_, fun γ hγ γ' hγ' F hF => ?_, fun F hF w => ?_, fun μ 𝓕 hμ h𝓕 p F hF => ?_, fun e he g h hg hh x y hx hy => ?_⟩` and prove the remaining obligations. Conclude with `theta_trS J (H.om_pres _ _ (hT F hF))`. Rewrite using `[omS_apply, omS_apply, ← heis_trS J.symm ψ w₀ F, H.om_heis _ _ _ _ (hT F hF), ← heis_trS J, actO_rS]`. Use `congr 2`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Conclude with `J.kap.apply_symm_apply g`. Conclude with `(rS J T).apply_symm_apply w₀`. Rewrite using `[omS_apply] show om (J.kap.symm γ, γ') (trS J.symm T F) ((rS J T).symm 0) = F 0`. Use `H.om_aut (J.kap.symm γ) (J.symm.kap_mem_GQ hγ) γ' hγ' _ (hT F hF)` as an intermediate fact. Rewrite using `[map_zero, this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `show F ((rS J T) 0) = F 0`. Rewrite using `[map_zero]`. Conclude with `(H.om_cont _ (hT F hF) ((rS J T).symm w)).comp ((J.continuous_kap_symm.comp continuous_fst).prodMk continuous_snd)`. Use `haveI : BorelSpace (WO A T) := ⟨rfl⟩ haveI : BorelSpace (WO A' T) := ⟨rfl⟩`. Take `⟨ν, hν, h𝓖, hu⟩` from `GlobalTheory.WeilSrc.haar_pull (rS J T) (continuous_rS J T) (continuous_rS_symm J T) (ratL T A) (ratL T A') (rat_iff J) μ 𝓕 hμ h𝓕`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 
-Establish `e1` using `hu fun w => ‖omS J T om p F w‖ₑ ^ 2`. Establish `e2` using `hu fun w => ‖F w‖ₑ ^ 2`. Establish `e3 : ∀ x, omS J T om p F (rS J T x) = om (J.kap.symm p.1, p.2) (trS J.symm T F) x` using `fun x => by show om _ _ ((rS J T).symm (rS J T x)) = _`. Rewrite using `[AddEquiv.symm_apply_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [e3] at e1`. Rewrite using `[← e1, ← e2]`. Conclude with `H.om_unit ν _ hν h𝓖 _ _ (hT F hF)`. Establish `e0 : mt A (J.kap.symm g) - 1 = _` using `GlobalTheory.TargetIsom.sub_one_conj J.aQ_aP (mt A' g)`. Establish `hsupp : SuppAt e A (J.kap.symm g)` using `fun i j => by`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Unfold `SuppAt at hg`. Rewrite using `[e0]`. Conclude with `GlobalTheory.TargetIsom.entries_fix _ hg _ _ i j`. Establish `e1 : (mt A (J.kap.symm g)).det = (mt A' g).det` using `GlobalTheory.TargetIsom.det_conj_rect J.rank_eq.symm J.aP_aQ (mt A' g)`. Establish `hdet : IsDetAt e A (J.kap.symm g) x`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Unfold `IsDetAt at hx ⊢`. Rewrite using `[e1]`. Conclude with `hx`. Take `⟨r, hr, Hs⟩` from `H.om_split e he (J.kap.symm g) h hsupp hh x y hdet hy`. Use `⟨r, hr, fun ℓ hℓ F hF => ?_⟩` and prove the remaining obligations.
-
-Establish `hinv : ∀ u : WO A T, (∀ i j, cA D e * u i j = u i j) → ∀ G, IsThetaFunO ψ A T G → (ℓ ∘ₗ trSL J T) (heisO ψ A T u G) = (ℓ ∘ₗ trSL J T) G`. Introduce `u hu G hG`. Use `show ℓ (trS J T (heisO ψ A T u G)) = ℓ (trS J T G)`. Rewrite using `[← heis_trS]`. Conclude with `hℓ _ (fun i j => GlobalTheory.WeilSrc.entries_fix_right _ hu J.aQ i j) _ (theta_trS J hG)`.
-
-Use `Hs (ℓ ∘ₗ trSL J T) hinv _ (hT F hF)` as an intermediate fact. Establish `e2 : (ℓ ∘ₗ trSL J T) (trS J.symm T F) = ℓ F` using `congrArg ℓ (trS_symm_trS J.symm T F)`. Rewrite `this` using `[e2]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isWeilDatumO_omS {ψ : AddChar (AF D.host.F) ℂ} {χS χT : (AE D)ˣ →* Circle}
     {om : GA D A × GA D T →* Module.End ℂ (WO A T → ℂ)} (H : IsWeilDatumO ψ A T χS χT om) :
@@ -309,9 +305,9 @@ def sgnIso (ε : Bool) {S S' : HSp D} (I : IsoMat S S') : IsoMat (GlobalTheory.G
       rw [Matrix.mul_neg, Matrix.neg_mul, I.gram]
 
 /- English proof (translation)
-Use `MonoidHom.ext fun p => LinearMap.ext fun F => funext fun w => ?_` and prove the remaining obligations. Take `⟨g, h⟩` from `p`. Establish `e1 : (GlobalTheory.Grid.ofSgn ε S) ((sgnIso ε IS).kap.symm g) = IS.kap.symm (GlobalTheory.Grid.ofSgn ε S' g)` using `GlobalTheory.AutFunCounterexample.GA_ext S rfl`. Establish `e2 : (fun x : WO S T => F (HMul.hMul IT.aP (HMul.hMul x IS.aQ))) = fun x : WO S T => F (HMul.hMul (HMul.hMul IT.aP x) IS.aQ)` using `funext fun x => by rw [Matrix.mul_assoc]`. Use `show om (IS.kap.symm (GlobalTheory.Grid.ofSgn ε S' g), IT.kap.symm h) (fun x : WO S T => F (HMul.hMul (HMul.hMul IT.aP x) IS.aQ)) (HMul.hMul (HMul.hMul IT.aQ (w : Matrix (Fin T'.rank) (Fin S'.rank) (AE D))) IS.aP : Matrix (Fin T.rank) (Fin S.rank) (AE D)) = om ((GlobalTheory.Grid …`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, e2]`.
+A detailed English derivation is pending.
 -/
 theorem toSgn_omH (ε : Bool) {S S' T T' : HSp D} (IS : IsoMat S S') (IT : IsoMat T T')
     (om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)) :
@@ -336,7 +332,7 @@ end GlobalTheory.IsoBoth
 open GlobalTheory.IsoBoth in
 
 /- English proof (translation)
-Introduce `D ψ ε S S' T T' IS IT χS χT om h`. Unfold `GlobalTheory.Grid.IsWeil at h ⊢`. Rewrite using `[toSgn_omH]`. Conclude with `GlobalTheory.TargetIsom.isWeilDatumO_tr IT (GlobalTheory.Grid.sgn ε S') (isWeilDatumO_omS (sgnIso ε IS) h)`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.IsoBoth.isWeil_omH : ∀ {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (ε : Bool) {S S' T T' : HSp D}
     (IS : GlobalTheory.Mem.Isom.IsoMat S S') (IT : GlobalTheory.Mem.Isom.IsoMat T T') (χS χT : (AE D)ˣ →* Circle)

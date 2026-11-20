@@ -13,7 +13,7 @@ open scoped TensorProduct
 namespace GlobalTheory.FockExtGroup
 
 /- English proof (translation)
-Rewrite using `[← ContinuousLinearMap.mul_apply, ← ContinuousLinearMap.mul_apply, ← map_mul, ← map_mul]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem pi_comm {p q r s : ℕ} {T0 : GrpData (p * r + q * s) (p * s + q * r)} {T1 : GrpData p q}
     {T2 : GrpData r s} (F : FockData T0 T1 T2) (g : T1.G) (h : T2.G) (x : F.H) :
@@ -22,21 +22,17 @@ theorem pi_comm {p q r s : ℕ} {T0 : GrpData (p * r + q * s) (p * s + q * r)} {
   simp
 
 /- English proof (translation)
-Introduce `p q n T0 T1 T2 F hn D τ M j I v₀ hτ hM hv₀ hI hJ`. Take `⟨hfin, -, -, hirr⟩` from `GlobalTheory.CompactCoverIrr.hcMod_finite_irr n hn T2 τ M j hτ hM ⟨v₀, 0, hv₀⟩`. Take `⟨hF, -, hder⟩` from `GlobalTheory.FockEmbExp.fock_derived p q n 0 T0 T1 T2 F`. Set `σ : URep T2` to `{ H := F.H π := F.π.comp (MonoidHom.inr _ _) isom := fun _ x => F.isom _ x cont := fun x => (F.cont x).comp (hF.comp (continuous_const.prodMk continuous_id)) }`. Establish `h1 : ∀ (h : T2.G) (x : D.HK.V) (v v' : M.V), j v' = τ.π h (j v) → F.π (1, h) (F.ι (I (x ⊗ₜ v))) = F.ι (I (x ⊗ₜ v'))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `h x v v' hv`. Establish `hK : h ∈ T2.Kset`. Introduce and unpack `(a | a) (b | b) hab`. Conclude with `(hab trivial).elim`. Conclude with `b.elim0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Conclude with `a.elim0`. Conclude with `a.elim0`. Set `j₂ : M.V →ₗ[ℂ] σ.H` to `F.ι ∘ₗ I ∘ₗ TensorProduct.mk ℂ D.HK.V M.V x`. Take `⟨w, hw1, hw2⟩` from `GlobalTheory.RealPar.pair_kEquivariant_of_lie n 0 T2 (GlobalTheory.CoverKGen.kset_gen n 0 (by omega) T2) τ σ M.V (fun Y => M.act Y) j j₂ (fun Y hY _ w => ⟨hM.2.2 Y hY w, by`. Establish `h2` using `hder Y hY (I (x ⊗ₜ w))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h3 : fockAct2 p q n 0 Y (I (x ⊗ₜ w)) = I (x ⊗ₜ M.act Y w)` using `hI.2 Y x w`. Rewrite `h2` using `[h3]`. Conclude with `h2⟩) h hK v`. Take `rfl : v' = w` from `hM.1 (hv.trans hw1)`. Conclude with `hw2`.
+Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Use `⟨h1, ?_⟩` and prove the remaining obligations. Set `N : Submodule ℂ M.V` to `{ carrier := {v | ∃ J : D.U.H →L[ℂ] F.H, (∀ x, J (D.ι x) = F.ι (I (x ⊗ₜ v))) ∧ ∀ g y, F.π (g, 1) (J y) = J (D.U.π g y)} add_mem' := by`. Introduce and unpack `a b ⟨J, hJ1, hJ2⟩ ⟨J', hJ1', hJ2'⟩`. Conclude with `⟨J + J', fun x => by simp [hJ1, hJ1', TensorProduct.tmul_add], fun g y => by simp [hJ2, hJ2']⟩`. Use the proof step `zero_mem' := ⟨0, fun x => by simp, fun g y => by simp⟩`.
+Separate the alternatives or extract the components of the hypothesis. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `smul_mem' := by`. Introduce and unpack `c a ⟨J, hJ1, hJ2⟩`. Conclude with `⟨c • J, fun x => by simp [hJ1, TensorProduct.tmul_smul], fun g y => by simp [hJ2]⟩ }`. Break down `hirr N (by` into its components or cases. Introduce and unpack `h v ⟨J, hJ1, hJ2⟩ v' hv`.
-
-Use `⟨F.π (1, h) ∘L J, fun x => ?_, fun g y => ?_⟩` and prove the remaining obligations. Rewrite using `[ContinuousLinearMap.comp_apply, hJ1, h1 h x v v' hv]`. Rewrite using `[ContinuousLinearMap.comp_apply, ContinuousLinearMap.comp_apply, pi_comm, hJ2]) with h | h`. Establish `: v₀ ∈ N` using `hJ`. Rewrite `this` using `[h]`.
-
-Conclude with `(hv₀ this).elim`. Introduce `v`. Establish `: v ∈ N` using `h ▸ Submodule.mem_top`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem comm_and_extend : ∀ (p q n : ℕ) (T0 : GrpData (p * n + q * 0) (p * 0 + q * n)) (T1 : GrpData p q) (T2 : GrpData n 0) (F : FockData T0 T1 T2), 1 ≤ n → ∀ (D : DSRep T1) (τ : URep T2) (M : GKMod n 0) (j : M.V →ₗ[ℂ] τ.H) (I : D.HK.V ⊗[ℂ] M.V →ₗ[ℂ] Pol p q n 0) (v₀ : M.V), IrrU τ → IsHCMod τ M j → v₀ ≠ 0 → IsGIntw F D.HK M I → (∃ J : D.U.H →L[ℂ] F.H, (∀ x, J (D.ι x) = F.ι (I (x ⊗ₜ v₀))) ∧ ∀ g y, F.π (g, 1) (J y) = J (D.U.π g y)) → (∀ (h : T2.G) (x : D.HK.V) (v v' : M.V), j v' = τ.π h (j v) → F.π (1, h) (F.ι (I (x ⊗ₜ v))) = F.ι (I (x ⊗ₜ v'))) ∧ ∀ v : M.V, ∃ J : D.U.H →L[ℂ] F.H, (∀ x, J (D.ι x) = F.ι (I (x ⊗ₜ v))) ∧ ∀ g y, F.π (g, 1) (J y) = J (D.U.π g y) := by
   intro p q n T0 T1 T2 F hn D τ M j I v₀ hτ hM hv₀ hI hJ

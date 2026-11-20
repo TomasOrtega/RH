@@ -3,7 +3,7 @@ import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.SchurSc
 open NumberField IsDedekindDomain Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.MainNotions.N Polynomial GlobalTheory.CuspRep GlobalTheory.HeckeGal GlobalTheory.GalOfCusp UpperTheory.V UpperTheory.V.Af UpperTheory.V.Af.Bc UpperTheory.V.Published UpperTheory.V.Af.Sol
 
 /- English proof (translation)
-Take `⟨hne, -, -⟩` from `hirr`. Assume the negation of the conclusion as `hc`. Rewrite `hc` using `[not_nontrivial_iff_subsingleton]`. Conclude with `hne (Subsingleton.elim _ _)`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem irr_nontrivial {Γ k : Type} [Group Γ] [Field k] {n : ℕ} (r : Γ →* GL (Fin n) k)
     (hirr : IsIrr r) : Nontrivial (Fin n → k) := by
@@ -13,7 +13,7 @@ private theorem irr_nontrivial {Γ k : Type} [Group Γ] [Field k] {n : ℕ} (r :
   exact hne (Subsingleton.elim _ _)
 
 /- English proof (translation)
-Take `⟨v, hv⟩` from `exists_ne (0 : Fin n → k)`. Establish `h2` using `congrArg (fun M : Matrix (Fin n) (Fin n) k => M.mulVec v) h`. Simplify using `only [Matrix.smul_mulVec, Matrix.one_mulVec] at h2`. Conclude with `smul_left_injective k hv h2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem smul_one_inj {k : Type} [Field k] {n : ℕ} [Nontrivial (Fin n → k)] (a b : k)
     (h : a • (1 : Matrix (Fin n) (Fin n) k) = b • 1) : a = b := by
@@ -23,7 +23,7 @@ private theorem smul_one_inj {k : Type} [Field k] {n : ℕ} [Nontrivial (Fin n �
   exact smul_left_injective k hv h2
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.Qi17.schur_scalar r hirr g hg`.
+A detailed English derivation is pending.
 -/
 private theorem schur_scalar {Γ k : Type} [Group Γ] [Field k] [IsAlgClosed k] {n : ℕ} (r : Γ →* GL (Fin n) k)
     (hirr : IsIrr r) (g : GL (Fin n) k) (hg : ∀ s, r s * g = g * r s) :
@@ -31,21 +31,21 @@ private theorem schur_scalar {Γ k : Type} [Group Γ] [Field k] [IsAlgClosed k] 
   _root_.UpperTheory.Reformulated.B.Qi17.schur_scalar r hirr g hg
 
 /- English proof (translation)
-Introduce `Γ Γ' k _ _ _ _ n r r₁ φ hN hirr hiso`. Take `⟨g, hg⟩` from `hiso`. Establish `hnt` using `irr_nontrivial _ hirr`. Simplify using `only [MonoidHom.comp_apply] at hg`. Establish `hcomm : ∀ s t, (r.comp φ) t * (r s * (g * r₁ s * g⁻¹)⁻¹) = (r s * (g * r₁ s * g⁻¹)⁻¹) * (r.comp φ) t`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `s t`. Take `⟨u, hu⟩` from `hN.conj_mem' (φ t) ⟨t, rfl⟩ s`. Establish `h1` using `hg u`. Rewrite `h1` using `[hu]`. Simplify using `only [map_mul, map_inv] at h1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h2 : r (φ t) * r s = r s * ((r s)⁻¹ * r (φ t) * r s)` using `by group`. Rewrite using `[MonoidHom.comp_apply, ← mul_assoc, h2, h1, hg t]`. Use `group`. Use `choose c hc using fun s => schur_scalar _ hirr _ (hcomm s)`. Establish `hr : ∀ s, (r s : Matrix (Fin n) (Fin n) k) = (c s : k) • ((g * r₁ s * g⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `s`. Establish `h1 : r s = (r s * (g * r₁ s * g⁻¹)⁻¹) * (g * r₁ s * g⁻¹)` using `by group`. Rewrite using `[h1, Units.val_mul, hc s, Matrix.smul_mul, Matrix.one_mul]`. Establish `huniq : ∀ s (a : kˣ), (r s : Matrix (Fin n) (Fin n) k) = (a : k) • ((g * r₁ s * g⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) → c s = a`. Introduce `s a ha`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Units.ext` to reduce the goal to its premises. Apply `smul_one_inj (n := n)` to reduce the goal to its premises. Rewrite using `[← hc s, Units.val_mul, ha, Matrix.smul_mul, Units.mul_inv]`. Establish `hmul : ∀ s t, c (s * t) = c s * c t`. Introduce `s t`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Apply `huniq` to reduce the goal to its premises. Establish `h1 : g * r₁ (s * t) * g⁻¹ = (g * r₁ s * g⁻¹) * (g * r₁ t * g⁻¹)`. Rewrite using `[map_mul]`. Use `group`. Rewrite using `[map_mul r, Units.val_mul, hr s, hr t, h1, Units.val_mul (g * r₁ s * g⁻¹), Matrix.smul_mul, Matrix.mul_smul, smul_smul, Units.val_mul (c s)]`.
+Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Use `⟨MonoidHom.mk' c hmul, ?_, g, ?_⟩` and prove the remaining obligations. Use extensionality with `t`. Establish `: c (φ t) = 1` using `huniq _ _ (by rw [← hg t]; simp)`. Simplify using `[this]`. Introduce `s`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[hr s]`. Simplify using `only [Units.val_mul, tw_val, MonoidHom.mk'_apply, Matrix.smul_mul, Matrix.mul_smul]`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.schur_extension :
     UpperTheory.V.Af.Sol.SchurExt := by

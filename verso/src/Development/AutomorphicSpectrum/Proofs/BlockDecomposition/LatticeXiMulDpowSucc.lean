@@ -11,11 +11,11 @@ open DividedPowers CrystallineSemistableComparison.Pb
 namespace GlobalTheory.CompanionTheory.LatDp
 
 /- English proof (translation)
-Establish `hi : ((i : ℚ) + 1) ≠ 0` using `by positivity`. Establish `hf : (i.factorial : ℚ) ≠ 0` using `by exact_mod_cast i.factorial_ne_zero`. Establish `key : ((i : B) + 1) * ((((i + 1).factorial : ℚ)⁻¹) • η ^ (i + 1)) = ((i.factorial : ℚ)⁻¹) • η ^ (i + 1)`. Establish `h1 : ((i : B) + 1) = algebraMap ℚ B ((i : ℚ) + 1)` using `by simp`. Rewrite using `[h1, ← Algebra.smul_def, smul_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Rewrite using `[Nat.factorial_succ]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Rewrite using `[mul_assoc c ((i : B) + 1), key, mul_assoc c η]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Algebra.mul_smul_comm, pow_succ]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem mul_divPow_succ {B : Type} [CommRing B] [Algebra ℚ B] (c η : B) (i : ℕ) :
     (c * η) * (((i.factorial : ℚ)⁻¹) • η ^ i) =
@@ -36,7 +36,7 @@ theorem mul_divPow_succ {B : Type} [CommRing B] [Algebra ℚ B] (c η : B) (i : 
   ring
 
 /- English proof (translation)
-Establish `h0 : ((l : ℚ) ^ M) ≠ 0` using `pow_ne_zero _ (by exact_mod_cast hl)`. Establish `h1 : ((l : B) ^ M) = algebraMap ℚ B ((l : ℚ) ^ M)` using `by simp`. Rewrite using `[h1, ← Algebra.smul_def, smul_smul, mul_inv_cancel₀ h0, one_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem natPow_mul_inv_smul {B : Type} [CommRing B] [Algebra ℚ B] (x : B) (l M : ℕ) (hl : l ≠ 0) :
     (l : B) ^ M * ((((l : ℚ) ^ M)⁻¹) • x) = x := by
@@ -45,7 +45,7 @@ theorem natPow_mul_inv_smul {B : Type} [CommRing B] [Algebra ℚ B] (x : B) (l M
   rw [h1, ← Algebra.smul_def, smul_smul, mul_inv_cancel₀ h0, one_smul]
 
 /- English proof (translation)
-Establish `h` using `mul_divPow_succ ((l : B) ^ M) ((((l : ℚ) ^ M)⁻¹) • x) i`. Rewrite `h` using `[natPow_mul_inv_smul x l M hl]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem mul_divPow_eq_elem {B : Type} [CommRing B] [Algebra ℚ B] (x : B) (l M : ℕ) (hl : l ≠ 0) (i : ℕ) :
     x * (((i.factorial : ℚ)⁻¹) • ((((l : ℚ) ^ M)⁻¹) • x) ^ i) =
@@ -55,7 +55,7 @@ theorem mul_divPow_eq_elem {B : Type} [CommRing B] [Algebra ℚ B] (x : B) (l M 
   rwa [natPow_mul_inv_smul x l M hl] at h
 
 /- English proof (translation)
-Introduce `W B _ _ _ f ξ l M hl i`. Simplify using `only [Lat.dpE, Lat.η]`. Conclude with `mul_divPow_eq_elem (f ξ) l M hl i`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mul_divPow_eq : ∀ {W B : Type} [CommRing W] [CommRing B] [Algebra ℚ B] (f : W →+* B) (ξ : W)
     (l M : ℕ), l ≠ 0 → ∀ i : ℕ,

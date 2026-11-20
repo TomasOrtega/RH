@@ -15,7 +15,7 @@ open ReciprocityTheory.ChartRestriction.DS
 namespace DiscreteSeriesData
 
 /- English proof (translation)
-Establish `h` using `Finset.card_filter_le (Finset.univ : Finset (Fin n)) p`. Rewrite `h` using `[Finset.card_univ, Fintype.card_fin]`. Conclude with `h` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_le {n : ℕ} (p : Fin n → Prop) [DecidablePred p] : ((univ.filter p).card : ℝ) ≤ n := by
   have h := Finset.card_filter_le (Finset.univ : Finset (Fin n)) p
@@ -23,9 +23,9 @@ theorem card_le {n : ℕ} (p : Fin n → Prop) [DecidablePred p] : ((univ.filter
   exact_mod_cast h
 
 /- English proof (translation)
-Establish `h1 : (pOf ε : ℝ) ≤ n` using `card_le _`. Establish `h2 : (qOf ε : ℝ) ≤ n` using `card_le _`. Establish `h0 : (0 : ℝ) ≤ n` using `Nat.cast_nonneg n`. Establish `h3 : (0 : ℝ) ≤ pOf ε` using `Nat.cast_nonneg _`. Establish `h4 : (0 : ℝ) ≤ qOf ε` using `Nat.cast_nonneg _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Apply `mul_le_mul (mul_le_mul_of_nonneg_left h1 h0) h2 h4 (by positivity)` to reduce the goal to its premises. Use `_ = (n : ℝ) ^ 3 := by ring`.
+Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem npq_le {n : ℕ} (ε : Fin n → Bool) : (n : ℝ) * (pOf ε : ℝ) * (qOf ε : ℝ) ≤ (n : ℝ) ^ 3 := by
   have h1 : (pOf ε : ℝ) ≤ n := card_le _
@@ -41,33 +41,31 @@ end DiscreteSeriesData
 
 open DiscreteSeriesData in
 /- English proof (translation)
-Introduce `n ε H i1 i2 i3 π hU lam h hHC hgap hh hDS`. Establish `hn0 : (0 : ℝ) ≤ n` using `Nat.cast_nonneg n`. Establish `hlt : (n : ℝ) * (pOf ε : ℝ) * (qOf ε : ℝ) + 1 < h`. Combine the linear relations using `[npq_le ε]`. Take `⟨hCas, -, -, hSm, -⟩` from `ReciprocityTheory.ChartRestriction.DS.isDS_props_of_gap n ε lam hHC h hgap hlt H π hDS`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result.
 
-Establish `hD` using `isDerivedOn_smE (ε := ε) (σ := π) hU`. Establish `hmemD : ∀ v : H, v ∈ smD ε π ↔ IsSmoothVecU ε π v` using `fun v => (exists_smoothDerived ε π).choose_spec.choose_spec.1 v`. Establish `part1 : ∀ x : smD ε π, casimir (smE ε π) x = ((casVal lam : ℝ) : ℂ) • x`. Introduce `x`. Apply `Subtype.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← casU_eq_casimir hD x, Submodule.coe_smul]`. Conclude with `hCas x ((hmemD x).1 x.2)`. Take `⟨S, hS⟩` from `hDS.2.2.2.2.2.1`. Establish `hSle : S ≤ smD ε π` using `fun v hv => (hmemD v).2 (hSm S hS.1 hS.2.1 v hv)`. Take `⟨w, hwS, hw0, hw⟩` from `exists_isKHWVec_of_isKTypeOf hU hD hS hSle`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨part1, ?_, ?_⟩` and prove the remaining obligations. Use `⟨((‖w‖ : ℂ))⁻¹ • w, norm_smul_inv_norm hw0, ?_, ?_⟩` and prove the remaining obligations. Introduce `a`. Rewrite using `[LinearMap.map_smul, hw.1 a, smul_comm]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a b hab he`. Rewrite using `[LinearMap.map_smul, hw.2 a b hab he, smul_zero]`. Set `V : Submodule ℂ (smD ε π)` to `S.comap (smD ε π).subtype haveI : FiniteDimensional ℂ S := hS.1`. Establish `hmapV : V.map (smD ε π).subtype = S`. Rewrite using `[Submodule.map_comap_subtype]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `inf_eq_right.mpr hSle`. Establish `hVfd : FiniteDimensional ℂ V` using `by haveI hV : FiniteDimensional ℂ (V.map (smD ε π).subtype) := by`. Rewrite using `[hmapV]`. Use `infer_instance`. Conclude with `(Submodule.equivMapOfInjective _ (Submodule.injective_subtype _) V).symm.finiteDimensional`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hVk : ∀ k ∈ Kset ε, ∀ v ∈ V, ∃ u ∈ V, (u : H) = π k v`. Introduce `k hk v hv`. Use `⟨⟨π k v, hD.kStable k hk v v.2⟩, ?_, rfl⟩` and prove the remaining obligations. Conclude with `hS.2.1 k hk v hv`. Establish `hVks : IsKStableSub ε (smE ε π) V` using `isKStableSub_of_kStable hU hD V hVfd hVk`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hwV : w ∈ V` using `hwS`. Establish `hirr : IsKIrrHW ε (smE ε π) (lowK ε lam) V`. Use `⟨hVfd, hVks, ?_, w, hwV, hw0, hw⟩` and prove the remaining obligations. Introduce `S' hS'le hS'ks`. Establish `hS'fd : FiniteDimensional ℂ S'` using `Submodule.finiteDimensional_of_le hS'le`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hS'k` using `kStable_of_isKStableSub hU hD S' hS'fd hS'ks`. Establish `hle : S'.map (smD ε π).subtype ≤ S`. Rewrite using `[← hmapV]`. Conclude with `Submodule.map_mono hS'le`. Establish `hst : Formalism.MainNotions.S.IsKStableOn ε π (S'.map (smD ε π).subtype)`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Separate the alternatives or extract the components of the hypothesis. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `g hg _ ⟨v, hv, rfl⟩`. Take `⟨u, hu, hue⟩` from `hS'k g hg v hv`. Conclude with `⟨u, hu, hue⟩`. Break down `hS.2.2.1 _ hle hst with h0 | h1` into its components or cases. Use `left`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `Submodule.map_injective_of_injective (Submodule.injective_subtype (smD ε π))` to reduce the goal to its premises. Rewrite using `[h0, Submodule.map_bot]`. Use `right`. Apply `Submodule.map_injective_of_injective (Submodule.injective_subtype (smD ε π))` to reduce the goal to its premises. Rewrite using `[h1, hmapV]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hstd : ReciprocityTheory.ChartRestriction.DS.G2.StdGap ε lam` using `⟨hHC.1, h, hgap, by linarith [pow_nonneg hn0 3]⟩`. Establish `hTop` using `ReciprocityTheory.ChartRestriction.DS.G2.data_closGen_eq_top hstd hU hD hirr (fun v _ => part1 v) hVk hDS.2.2.2.1 (fun hb => hw0 ((Submodule.eq_bot_iff V).1 hb w hwV))`. Introduce `x δ hδ`. Establish `hx : x ∈ closGen (smE ε π) V`. Rewrite using `[hTop]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Discharge the goal by the elementary cases of `trivial`. Rewrite `hx` using `[closGen, ← SetLike.mem_coe, Submodule.topologicalClosure_coe, Metric.mem_closure_iff]`. Take `⟨y, hy, hxy⟩` from `hx δ hδ`. Take `⟨f, hf, rfl⟩` from `hy`. Use `⟨f, ?_, ?_⟩` and prove the remaining obligations.
-
-Rewrite `hf` using `[SetLike.mem_coe, genSub_eq_iSup_layer hD.glRep hVks, Submodule.mem_iSup_of_directed _ (Monotone.directed_le fun k l hkl => layer_mono hkl)]`. Take `⟨k, hk⟩` from `hf`. Conclude with `⟨layer ε (smE ε π) V k, finiteDimensional_layer hVfd k, layer_kStable hD.glRep hVks k, hk⟩`. Rewrite using `[← dist_eq_norm]`. Conclude with `hxy`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem discrete_series_data_holds : DSData := by
   intro n ε H i1 i2 i3 π hU lam h hHC hgap hh hDS

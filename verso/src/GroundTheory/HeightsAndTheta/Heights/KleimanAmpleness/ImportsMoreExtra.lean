@@ -17,7 +17,7 @@ def GenFibNef.Statement : Prop :=
       IndefiniteRowSideFullHecke.Kleiman2.IsNef F y β
 
 /- English proof (translation)
-The claim follows from `h exO exF exΩ (Unit ⊕ Unit) (graphIdx 1 2) (graphVec (Kleiman.lineX exF) (Kleiman.lineX exF)) (graphDeg 0)`.
+A detailed English derivation is pending.
 -/
 example (h : GenFibNef.Statement) :=
   h exO exF exΩ (Unit ⊕ Unit) (graphIdx 1 2) (graphVec (Kleiman.lineX exF) (Kleiman.lineX exF)) (graphDeg 0)

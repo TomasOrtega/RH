@@ -17,7 +17,7 @@ noncomputable section
 namespace GlobalTheory.UU.IntWit
 
 /- English proof (translation)
-Unfold `gs`. Use `split_ifs`. Simplify using `only [map_zero]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem gs_zero {X Y : Scheme.{0}} (f : Y ⟶ X) (y : Y) (U : X.Opens) : gs f y U 0 = 0 := by
   unfold gs
@@ -26,14 +26,14 @@ theorem gs_zero {X Y : Scheme.{0}} (f : Y ⟶ X) (y : Y) (U : X.Opens) : gs f y 
   · rfl
 
 /- English proof (translation)
-The claim follows from `(congrArg (gs r z _) (h _)).trans (gs_zero r z _)`.
+A detailed English derivation is pending.
 -/
 theorem sval_eq_zero {X Y Z : Scheme.{0}} {L : LB X} {K : Type} [Fintype K] {φ : K → (Y ⟶ X)} {ε : K → ℤ}
     (s : LB.Sec (LB.LinComb L φ ε)) (h : ∀ j, s.f j = 0) (r : Z ⟶ Y) (z : Z) (J) : sval s r z J = 0 :=
   (congrArg (gs r z _) (h _)).trans (gs_zero r z _)
 
 /- English proof (translation)
-Use `fn_ext (V := LB.wchart L φ j) fun y hy => ?_` and prove the remaining obligations. Take `⟨J, hJ, e⟩` from `sval_trans hL s y j hy`. Rewrite `e` using `[h y J hJ, mul_zero]`. Conclude with `e.trans (gs_zero _ _ _).symm`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_sval {X Y : Scheme.{0}} {L : LB X} (hL : L.IsLB) {K : Type} [Fintype K] {φ : K → (Y ⟶ X)}
     {ε : K → ℤ} (s : LB.Sec (LB.LinComb L φ ε)) (h : ∀ y J, Good L y J → sval s (𝟙 Y) y J = 0) (j : K → L.ι) :
@@ -44,13 +44,11 @@ theorem eq_zero_of_sval {X Y : Scheme.{0}} {L : LB X} (hL : L.IsLB) {K : Type} [
   exact e.trans (gs_zero _ _ _).symm
 
 /- English proof (translation)
-Introduce `V _ _ _ hV D A G _ _ U F _ _ k β hFE hS`. Take `⟨t, s, ⟨n, c, σ, f, hE, -, hB⟩, j₀, hj₀⟩` from `hS`. Take `⟨hG, hP⟩` from `GlobalTheory.UU.PullSec.pullEx V hV D A G U F (𝟙_ _) (toUnit _) k`. Use `choose s' hs' using fun i => (hP (f i)).exists`. Establish `hex : ∃ i, ∃ j, (s' i β).f j ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hn`. Use `push Not at hn`. Use `hj₀ (eq_zero_of_sval D.P.isLB (s β) (fun y J hJ => ?_) j₀)` and prove the remaining obligations. Establish `w : (toUnit (TF (R` using `V) F) ▷ D.P.A).left ≫ (snd (𝟙_ _) D.P.A).left = (snd _ D.P.A).left := congrArg CommaMorphism.left (whiskerRight_snd (toUnit (TF (R := V) F)) D.P.A)`. Use `(hB β _ (𝟙 _) (toUnit (TF (R := V) F) ▷ D.P.A).left (w.trans (Category.id_comp _).symm) y J hJ).trans ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Conclude with `(congrArg (_ * ·) ((hs' i β y J hJ).symm.trans (sval_eq_zero _ (hn i) _ _ _))).trans (mul_zero _)`. Take `⟨i, j, hj⟩` from `hex`. Take `⟨t', ht'⟩` from `(hG (σ i)).exists`. Use `⟨σ i, f i, s' i, hE i, hs' i, hFE t' (s' i) (IntExp.expF_of_expT V _ D A G U F k (σ i) (f i) t' (s' i) (hE i) ht' (hs' i)), ⟨j, hj⟩, ?_⟩` and prove the remaining obligations.
-
-Assume the negation of the conclusion as `hn`. Use `push Not at hn`. Conclude with `hj (eq_zero_of_sval D.P.isLB (s' i β) (fun y J hJ => (hs' i β y J hJ).trans (sval_eq_zero _ hn _ _ _)) j)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem integral_witness : AllPre fun {V} _ _ _ {D} {_} {_} _ _ U => ∀ (F : Type) [Field F] [Algebra (FractionRing V) F] (k : ℕ) (β : D.X), U.FE F k → U.Supp F k β → ∃ (σ : U.SecGT (𝟙_ _) k) (f : ∀ α, SecBT D (𝟙_ _) k α) (s : Raw D F k), U.ExpT (𝟙_ _) k σ f ∧ PullB D F (toUnit _) k f s ∧ DegPre.FamFE D F k s ∧ (∃ j, (s β).f j ≠ 0) ∧ ∃ j, (f β).f j ≠ 0 := by
   intro V _ _ _ hV D A G _ _ U F _ _ k β hFE hS

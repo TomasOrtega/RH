@@ -19,7 +19,7 @@ Both sides reduce to the same expression.
 theorem chi_apply (ψ : AddChar (Ad E) ℂ) (z : Cinf E) : chi ψ z = ψ (sInf E z) := rfl
 
 /- English proof (translation)
-The claim follows from `(infEq E).symm_apply_apply z`.
+A detailed English derivation is pending.
 -/
 theorem pInf_sInf (z : Cinf E) : pInf E (sInf E z) = z := (infEq E).symm_apply_apply z
 
@@ -29,7 +29,7 @@ Both sides reduce to the same expression.
 theorem pFin_sInf (z : Cinf E) : pFin E (sInf E z) = 0 := rfl
 
 /- English proof (translation)
-Use `ad_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[map_mul, pInf_sInf, pInf_sInf]`. Rewrite using `[map_mul, pFin_sInf, pFin_sInf, zero_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem sInf_mul (z : Cinf E) (x : Ad E) : sInf E z * x = sInf E (z * pInf E x) := by
   refine ad_ext ?_ ?_
@@ -37,7 +37,7 @@ theorem sInf_mul (z : Cinf E) (x : Ad E) : sInf E z * x = sInf E (z * pInf E x) 
   · rw [map_mul, pFin_sInf, pFin_sInf, zero_mul]
 
 /- English proof (translation)
-The claim follows from `((continuous_infEq E).prodMk continuous_const : Continuous fun x : Cinf E => ((infEq E x, 0) : InfiniteAdeleRing E × Af E))`.
+A detailed English derivation is pending.
 -/
 theorem continuous_sInf : Continuous (sInf E) :=
   ((continuous_infEq E).prodMk continuous_const :
@@ -45,22 +45,22 @@ theorem continuous_sInf : Continuous (sInf E) :=
 
 omit [IsTotallyComplex E] in
 /- English proof (translation)
-Take `⟨M, hM⟩` from `Ideal.exists_maximal (𝓞 E)`. Conclude with `⟨⟨M, hM.isPrime, Ring.ne_bot_of_isMaximal_of_not_isField hM (RingOfIntegers.not_isField E)⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem nonempty_pl : Nonempty (Pl E) := by
   obtain ⟨M, hM⟩ := Ideal.exists_maximal (𝓞 E)
   exact ⟨⟨M, hM.isPrime, Ring.ne_bot_of_isMaximal_of_not_isField hM (RingOfIntegers.not_isField E)⟩⟩
 
 /- English proof (translation)
-The claim follows from `hψ.cont.comp continuous_sInf`.
+A detailed English derivation is pending.
 -/
 theorem continuous_chi {ψ : AddChar (Ad E) ℂ} (hψ : StdPsi ψ) : Continuous (chi ψ) :=
   hψ.cont.comp continuous_sInf
 
 /- English proof (translation)
-Take `⟨d, hd⟩` from `hψ.ann (sInf E z) fun c => by rw [sInf_mul]; exact hz _`. Establish `hd0 : d = 0`. Assume the negation of the conclusion as `h0`. Take `⟨w⟩` from `nonempty_pl (E := E)`. Establish `h1 : sInf E z * algebraMap E (Ad E) d⁻¹ = 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hd, ← map_mul, mul_inv_cancel₀ h0, map_one]`. Establish `h2` using `congrArg (fun x => pLoc E w (pFin E x)) h1`. Simplify using `only [map_mul, pFin_sInf, zero_mul, map_zero, map_one] at h2`. Conclude with `zero_ne_one h2`. Rewrite using `[← pInf_sInf z, hd, hd0, map_zero, map_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chi_nondeg {ψ : AddChar (Ad E) ℂ} (hψ : StdPsi ψ) (z : Cinf E) (hz : ∀ w, chi ψ (z * w) = 1) : z = 0 := by
   obtain ⟨d, hd⟩ := hψ.ann (sInf E z) fun c => by rw [sInf_mul]; exact hz _
@@ -75,7 +75,7 @@ theorem chi_nondeg {ψ : AddChar (Ad E) ℂ} (hψ : StdPsi ψ) (z : Cinf E) (hz 
   rw [← pInf_sInf z, hd, hd0, map_zero, map_zero]
 
 /- English proof (translation)
-Simplify using `only [lastE, map_sum]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sInf_lastE (k : ℕ) (y : UnipotentBlockColumnIndex a k k → Cinf E) :
     sInf E (lastE k y) = lastE k (fun t => sInf E (y t)) := by
@@ -84,7 +84,7 @@ theorem sInf_lastE (k : ℕ) (y : UnipotentBlockColumnIndex a k k → Cinf E) :
   split_ifs <;> simp
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, 0, zero_le_one, fun g x => by show ‖Rt E a (infGL E a g) x‖ ≤ 1 * _ ^ 0 * ‖x‖ rw [pow_zero, mul_one, one_mul, norm_Rt]⟩`.
+Supply the required witnesses or components.
 -/
 theorem polyBd : PolyBd (repI E a) := ⟨1, 0, zero_le_one, fun g x => by
   show ‖Rt E a (infGL E a g) x‖ ≤ 1 * _ ^ 0 * ‖x‖
@@ -94,33 +94,31 @@ end CharacterNondegenerate
 
 open CharacterNondegenerate in
 /- English proof (translation)
-Introduce `hS7 hS10 hG0 hG5 E _ _ _ a ψ hψ S Y Y' hY hY' n m hn hSt`. Take `⟨φ, hφY, φ', hφY', hsm, hsm', hlev, hlev', hW1, hWeq⟩` from `hSt`. Take `⟨hcI, hcLI, hcIf, -, -, -, hcomm, -, hb, -⟩` from `hG0 E a`. Take `⟨hΛ, hRt, hGood, hlaw⟩` from `hG5 E a ψ hψ`. Take `⟨hdec, -, -, hBlk1, -⟩` from `hS10 (Cinf E) a (n + 1)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨η, r, hη1, hr1, hmir, -, -, hv⟩` from `hS7 (InfinitePlace E) a (XB E a) (repI E a) polyBd n hn (chi ψ) (continuous_chi hψ) (fun z => hψ.norm _) (chi_nondeg hψ) Set.univ Filter.univ_mem`. Establish `memY : ∀ Z : Submodule ℂ (XB E a), YOK ψ S Z → ∀ g, ∀ x ∈ Z, repI E a g x ∈ Z` using `fun Z hZ g x hx => hZ.stable _ (fun w _ => hcLI w g) x hx`. Establish `whB : ∀ x : XB E a, Good ψ (a - 1) x → ∀ (y : UnipotentBlockColumnIndex a (n + 1) (n + 1) → Cinf E) (g : GA E a), Wh ψ x (infGL E a (blkU y) * g) = chi ψ (lastE (n + 1) y) * Wh ψ x g`. Introduce `x hx y g`. Rewrite using `[hb, chi_apply, sInf_lastE]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hlaw x hx).2.2 (n + 1) n.succ_pos _ g`. Establish `lawOf : ∀ Z : Submodule ℂ (XB E a), YOK ψ S Z → ∀ g' : GA E a, cInf g' = 1 → ∀ Λ : XB E a →L[ℂ] ℂ, (∀ x : XB E a, Good ψ (a - 1) x → Λ x = Wh ψ x g') → ∀ x ∈ Z, ∀ y : UnipotentBlockColumnIndex a (n + 1) (n + 1) → Cinf E, Λ (repI E a (blkU y) x) = chi ψ (lastE (n + 1) y) * Λ x`. Introduce `Z hZ g' hg' Λ hΛg x hx y`. Establish `hx'` using `hZ.good x hx`. Express the relevant statement in the definitionally equal form `Λ (Rt E a (infGL E a (blkU y)) x) = _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hΛg _ (hGood x _ hx'), hΛg x hx', hRt, hcomm g' hg', whB x hx']`. Establish `levOf : ∀ x x' : XB E a, Lev S x → (∀ Z : Submodule ℂ (XB E a), IsClosed (Z : Set (XB E a)) → (∀ g, ∀ y ∈ Z, repI E a g y ∈ Z) → x ∈ Z → x' ∈ Z) → Lev S x'`. Introduce `x x' hx hZ w hw`. Use `Filter.mem_of_superset (hx w hw) fun u hu => ?_` and prove the remaining obligations. Establish `hu' : Rt E a (fl a w u) x = x` using `hu`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `T : XB E a →L[ℂ] XB E a` to `Rt E a (fl a w u) - ContinuousLinearMap.id ℂ _`. Establish `hmem : ∀ y, T y = 0 ↔ Rt E a (fl a w u) y = y` using `fun y => by simp [T, sub_eq_zero]`. Establish `hk` using `hZ _ T.isClosed_ker (fun g y hy => by`. Rewrite `hy`, the goal using `[LinearMap.mem_ker]`. Use `(hmem _).2 ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hy'` using `(hmem y).1 hy`. Express the relevant statement in the definitionally equal form `Rt E a (fl a w u) (Rt E a (infGL E a g) y) = Rt E a (infGL E a g) y`. Rewrite using `[← ContinuousLinearMap.mul_apply, ← map_mul, hcomm _ (hcIf w u), map_mul, ContinuousLinearMap.mul_apply, hy'])`. Use the proof step `(LinearMap.mem_ker.2 ((hmem x).2 hu'))`. Rewrite `hk` using `[LinearMap.mem_ker]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `(hmem x').1 hk`. Take `⟨v, hvs, hvP⟩` from `hv φ hsm`. Take `⟨v', hvs', hvP'⟩` from `hv φ' hsm'`. Take `⟨hvY, hvΛ⟩` from `hvP Y hY.closed (memY Y hY) hφY`. Take `⟨hvY', hvΛ'⟩` from `hvP' Y' hY'.closed (memY Y' hY') hφY'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `conv : ∀ (g' : GA E a) (Λ : XB E a →L[ℂ] ℂ), (∀ x : XB E a, Good ψ (a - 1) x → Λ x = Wh ψ x g') → ∀ x : XB E a, Good ψ (a - 1) x → ∀ k, Λ (repI E a k x) = Wh ψ x (g' * infGL E a k)`. Introduce `g' Λ hΛg x hx k`. Express the relevant statement in the definitionally equal form `Λ (Rt E a (infGL E a k) x) = _`. Rewrite using `[hΛg _ (hGood x _ hx), hRt]`. Establish `hgY` using `hY.good`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hgY'` using `hY'.good`. Use `⟨v, hvY, v', hvY', hvs, hvs', levOf φ v hlev fun Z hc hs hx => (hvP Z hc hs hx).1, levOf φ' v' hlev' fun Z hc hs hx => (hvP' Z hc hs hx).1, ?_, ?_⟩` and prove the remaining obligations. Take `⟨Λ₁, hΛ₁⟩` from `hΛ 1`. Establish `e1` using `hvΛ Λ₁ (lawOf Y hY 1 (map_one _) Λ₁ hΛ₁) 1 hBlk1`. Rewrite `e1` using `[conv 1 Λ₁ hΛ₁ v (hgY v hvY), conv 1 Λ₁ hΛ₁ φ (hgY φ hφY), hr1, map_one, one_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[e1]`. Conclude with `mul_ne_zero hη1 hW1`. Introduce `g hg`. Take `⟨hgI, hgL⟩` from `hg`. Take `⟨y, h, hh, hyh⟩` from `hdec (cInf g) hgI`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨g', hg'⟩ : ∃ g' : GA E a, g' = (infGL E a (cInf g))⁻¹ * g` from `⟨_, rfl⟩`. Establish `hg'1 : cInf g' = 1` using `by rw [hg', map_mul, map_inv, hcI, inv_mul_cancel]`. Establish `hgeq : g = infGL E a (blkU y) * (g' * infGL E a h)`. Rewrite using `[hcomm g' hg'1 h, ← mul_assoc, ← map_mul, ← hyh, hg', mul_inv_cancel_left]`. Take `⟨Λ, hΛg⟩` from `hΛ g'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e` using `hvΛ Λ (lawOf Y hY g' hg'1 Λ hΛg) h hh`. Establish `e'` using `hvΛ' Λ (lawOf Y' hY' g' hg'1 Λ hΛg) h hh`. Rewrite `e` using `[conv g' Λ hΛg v (hgY v hvY), conv g' Λ hΛg φ (hgY φ hφY)]`. Rewrite `e'` using `[conv g' Λ hΛg v' (hgY' v' hvY'), conv g' Λ hΛg φ' (hgY' φ' hφY')]`. Rewrite using `[hgeq, whB v (hgY v hvY), whB v' (hgY' v' hvY'), e, e']`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hη : η h = 0`. Simplify using `[hη]`. Rewrite using `[hWeq _ ⟨?_, fun w => ?_⟩]`. Rewrite using `[map_mul, hg'1, one_mul, hcI]`. Conclude with `hmir h hh hη`.
-
-Rewrite using `[map_mul, hcLI, mul_one, hg', map_mul, map_inv, hcLI, inv_one, one_mul]`. Conclude with `hgL w`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem whittaker_nondegenerate_character : S7 → MirabolicColumnBlock → G0 → G5 → G6 := by
   intro hS7 hS10 hG0 hG5 E _ _ _ a ψ hψ S Y Y' hY hY' n m hn hSt

@@ -12,13 +12,13 @@ namespace GlobalTheory.CompanionTheory.Ar.RootHt.RatioSum
 variable {L : Type} [Field L] [NumberField L]
 
 /- English proof (translation)
-Establish `hmul : (Function.mulSupport fun v : FinitePlace L => v x).Finite` using `FinitePlace.hasFiniteMulSupport hx`. Establish `h1 : ∑ᶠ v : FinitePlace L, Real.log (v x) = Real.log (∏ᶠ v : FinitePlace L, v x)`. Rewrite using `[finsum_eq_sum_of_support_subset (s := hmul.toFinset), finprod_eq_prod_of_mulSupport_subset (s := hmul.toFinset) _ (by simp), Real.log_prod (fun v _ => (FinitePlace.pos_iff.2 hx).ne')]`. Introduce `v hv`. Simplify using `only [Set.Finite.coe_toFinset, Function.mem_mulSupport]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `h1`. Apply `hv` to reduce the goal to its premises. Simplify using `[h1]`. Establish `h2 : ∑ σ : L →+* ℂ, Real.log ‖σ x‖ = Real.log |((Algebra.norm ℚ x : ℚ) : ℝ)|` using `by classical`. Rewrite using `[← Real.log_prod fun σ _ => norm_ne_zero_iff.mpr ((map_ne_zero σ).mpr hx), ← norm_prod]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h3` using `Algebra.norm_eq_prod_embeddings ℚ ℂ x`. Establish `h4 : ∏ σ : L →+* ℂ, σ x = ∏ σ : L →ₐ[ℚ] ℂ, σ x` using `Fintype.prod_equiv (RingHom.equivRatAlgHom L ℂ) _ _ fun σ => (DFunLike.congr rfl rfl)`. Rewrite using `[h4, ← h3, eq_ratCast, Complex.norm_ratCast]`. Rewrite using `[h1, h2, FinitePlace.prod_eq_inv_abs_norm hx]`. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[Real.log_inv, neg_add_cancel]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem finsum_log_add_sum_log {x : L} (hx : x ≠ 0) :
     ∑ᶠ v : FinitePlace L, Real.log (v x) + ∑ σ : L →+* ℂ, Real.log ‖σ x‖ = 0 := by
@@ -45,7 +45,7 @@ theorem finsum_log_add_sum_log {x : L} (hx : x ≠ 0) :
   rw [Real.log_inv, neg_add_cancel]
 
 /- English proof (translation)
-Use `(show (Function.mulSupport fun v : FinitePlace L => v x).Finite from FinitePlace.hasFiniteMulSupport hx).subset fun v hv h => hv ?_` and prove the remaining obligations. Simplify using `[show v x = 1 from h]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem support_log_finite {x : L} (hx : x ≠ 0) :
     (Function.support fun v : FinitePlace L => Real.log (v x)).Finite := by
@@ -59,7 +59,7 @@ def badPlaces (w : (Σ k, J k) → L) : Set (FinitePlace L) :=
   ⋃ p : Σ k, J k, {v | w p ≠ 0 ∧ v (w p) ≠ 1}
 
 /- English proof (translation)
-Use `Set.finite_iUnion fun p => ?_` and prove the remaining obligations. Distinguish the cases in `hp : w p = 0`. Conclude with `Set.finite_empty.subset fun v hv => hv.1 hp`. Use `(show (Function.mulSupport fun v : FinitePlace L => v (w p)).Finite from FinitePlace.hasFiniteMulSupport hp).subset fun v hv => hv.2` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem badPlaces_finite (w : (Σ k, J k) → L) : (badPlaces w).Finite := by
   refine Set.finite_iUnion fun p => ?_
@@ -69,7 +69,7 @@ theorem badPlaces_finite (w : (Σ k, J k) → L) : (badPlaces w).Finite := by
       FinitePlace.hasFiniteMulSupport hp).subset fun v hv => hv.2
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Conclude with `hv (Set.mem_iUnion.2 ⟨p, hp, h⟩)`.
+Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem eq_one_of_notMem {w : (Σ k, J k) → L} {v : FinitePlace L} (hv : v ∉ badPlaces w)
     {p : Σ k, J k} (hp : w p ≠ 0) : v (w p) = 1 := by
@@ -77,14 +77,14 @@ theorem eq_one_of_notMem {w : (Σ k, J k) → L} {v : FinitePlace L} (hv : v ∉
   exact hv (Set.mem_iUnion.2 ⟨p, hp, h⟩)
 
 /- English proof (translation)
-The claim follows from `le_ciSup (f := fun i => v (w ⟨k, i⟩)) (Set.finite_range _).bddAbove c`.
+A detailed English derivation is pending.
 -/
 theorem le_iSup_place (w : (Σ k, J k) → L) (v : FinitePlace L) (k : K) (c : J k) :
     v (w ⟨k, c⟩) ≤ ⨆ i, v (w ⟨k, i⟩) :=
   le_ciSup (f := fun i => v (w ⟨k, i⟩)) (Set.finite_range _).bddAbove c
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `h`. Conclude with `(FinitePlace.pos_iff.2 hc).trans_le (le_iSup_place w v k c)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem iSup_place_pos {w : (Σ k, J k) → L} (v : FinitePlace L) {k : K} (h : ∃ c, w ⟨k, c⟩ ≠ 0) :
     0 < ⨆ i, v (w ⟨k, i⟩) := by
@@ -92,9 +92,9 @@ theorem iSup_place_pos {w : (Σ k, J k) → L} (v : FinitePlace L) {k : K} (h : 
   exact (FinitePlace.pos_iff.2 hc).trans_le (le_iSup_place w v k c)
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `h`. Use `haveI : Nonempty (J k) := ⟨c⟩`. Use `le_antisymm (ciSup_le fun i => ?_) ?_` and prove the remaining obligations. Distinguish the cases in `hi : w ⟨k, i⟩ = 0`. Rewrite using `[hi, map_zero]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `zero_le_one`. Conclude with `(eq_one_of_notMem hv hi).le`. Rewrite using `[← eq_one_of_notMem hv hc]`. Conclude with `le_iSup_place w v k c`.
+A detailed English derivation is pending.
 -/
 theorem iSup_place_eq_one {w : (Σ k, J k) → L} {v : FinitePlace L} (hv : v ∉ badPlaces w) {k : K}
     (h : ∃ c, w ⟨k, c⟩ ≠ 0) : ⨆ i, v (w ⟨k, i⟩) = 1 := by
@@ -108,7 +108,7 @@ theorem iSup_place_eq_one {w : (Σ k, J k) → L} {v : FinitePlace L} (hv : v �
     exact le_iSup_place w v k c
 
 /- English proof (translation)
-Unfold `locRatio`. Rewrite using `[Real.log_prod fun k _ => zpow_ne_zero _ (div_ne_zero (iSup_place_pos v (h k)).ne' (FinitePlace.pos_iff.2 (h₀ k)).ne'), ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Real.log_zpow, Real.log_div (iSup_place_pos v (h k)).ne' (FinitePlace.pos_iff.2 (h₀ k)).ne', mul_sub]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem log_locRatio (a : K → ℤ) {w : (Σ k, J k) → L} (c₀ : (k : K) → J k)
     (h : ∀ k, ∃ c, w ⟨k, c⟩ ≠ 0) (h₀ : ∀ k, w ⟨k, c₀ k⟩ ≠ 0) (v : FinitePlace L) :
@@ -124,21 +124,19 @@ theorem log_locRatio (a : K → ℤ) {w : (Σ k, J k) → L} (c₀ : (k : K) →
     mul_sub]
 
 /- English proof (translation)
-Introduce `h h₀ hu`. Use `⟨fun v => ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `Finset.prod_pos fun k _ => zpow_pos (div_pos (iSup_place_pos v (h k)) (FinitePlace.pos_iff.2 (h₀ k))) _`. Use `(badPlaces_finite w).subset fun v hv => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hb`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hv` to reduce the goal to its premises. Unfold `locRatio`. Use `Finset.prod_eq_one fun k _ => ?_` and prove the remaining obligations. Rewrite using `[iSup_place_eq_one hb (h k), eq_one_of_notMem hb (h₀ k)]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hS : (Function.support fun v : FinitePlace L => ∑ k, (a k : ℝ) * Real.log (⨆ i, v (w ⟨k, i⟩))).Finite`. Use `(badPlaces_finite w).subset fun v hv => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hb`. Apply `hv` to reduce the goal to its premises. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[iSup_place_eq_one hb (h k), Real.log_one, mul_zero]`. Establish `hT1 : ∀ k, (Function.support fun v : FinitePlace L => (a k : ℝ) * Real.log (v (w ⟨k, c₀ k⟩))).Finite` using `fun k => (support_log_finite (h₀ k)).subset fun v hv hz => hv (by simp [show Real.log (v (w ⟨k, c₀ k⟩)) = 0 from hz])`. Establish `hT : (Function.support fun v : FinitePlace L => ∑ k, (a k : ℝ) * Real.log (v (w ⟨k, c₀ k⟩))).Finite`. Use `(Set.finite_iUnion hT1).subset fun v hv => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hb`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hv` to reduce the goal to its premises. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hk`. Conclude with `hb (Set.mem_iUnion.2 ⟨k, hk⟩)`. Establish `hTsum : ∑ᶠ v : FinitePlace L, ∑ k, (a k : ℝ) * Real.log (v (w ⟨k, c₀ k⟩)) = -∑ k, (a k : ℝ) * ∑ σ : L →+* ℂ, Real.log ‖σ (w ⟨k, c₀ k⟩)‖`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[finsum_sum_comm _ _ fun k _ => hT1 k, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_finsum, eq_neg_of_add_eq_zero_left (finsum_log_add_sum_log (h₀ k)), mul_neg]`. Establish `hu'` using `eq_neg_of_add_eq_zero_left (finsum_log_add_sum_log hu)`. Repeatedly rewrite using `[log_locRatio a c₀ h h₀]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hST` using `(hS.union hT).subset (Function.support_sub (fun v : FinitePlace L => ∑ k, (a k : ℝ) * Real.log (⨆ i, v (w ⟨k, i⟩))) (fun v : FinitePlace L => ∑ k, (a k : ℝ) * Real.log (v (w ⟨k, c₀ k⟩))))`. Establish `hcomm : ∑ σ : L →+* ℂ, ∑ k, (a k : ℝ) * Real.log ‖σ (w ⟨k, c₀ k⟩)‖ = ∑ k, (a k : ℝ) * ∑ σ : L →+* ℂ, Real.log ‖σ (w ⟨k, c₀ k⟩)‖`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun k _ => (Finset.mul_sum _ _ _).symm`. Rewrite using `[finsum_sub_distrib hST (support_log_finite hu), finsum_sub_distrib hS hT, hTsum, hu', Finset.sum_add_distrib, hcomm]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem ratio_sum (L : Type) [Field L] [NumberField L] (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)]
     (a : K → ℤ) (w : (Σ k, J k) → L) (c₀ : (k : K) → J k) (u : L) :

@@ -12,14 +12,14 @@ namespace RootFieldNumerics.PC
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {g : ℕ} {Λ : Type} [AddCommGroup Λ] [Module (𝓞 E) Λ]
 
 /- English proof (translation)
-Simplify using `[eigSp, Submodule.mem_iInf, sub_eq_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_eig {V : Type} [AddCommGroup V] [Module ℂ V] {ρ : 𝓞 E →+* Module.End ℂ V} {s : 𝓞 E →+* ℂ} {x : V} :
     x ∈ eigSp ρ s ↔ ∀ a, ρ a x = s a • x := by
   simp [eigSp, Submodule.mem_iInf, sub_eq_zero]
 
 /- English proof (translation)
-Simplify using `only [RiemLat.ip, star_sum, star_smul, mulVec_sum, mulVec_smul, sum_dotProduct, dotProduct_sum, smul_dotProduct, dotProduct_smul, smul_eq_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ip_sum (R : RiemLat E g Λ) {ι κ : Type} [Fintype ι] [Fintype κ] (a : ι → ℂ) (c : κ → ℂ) (u : ι → Fin g → ℂ)
     (w : κ → Fin g → ℂ) :
@@ -29,31 +29,31 @@ theorem ip_sum (R : RiemLat E g Λ) {ι κ : Type} [Fintype ι] [Fintype κ] (a 
   exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring
 
 /- English proof (translation)
-The claim follows from `conj_hermForm R.herm y x`.
+A detailed English derivation is pending.
 -/
 theorem ip_conj (R : RiemLat E g Λ) (x y : Fin g → ℂ) : (starRingEnd ℂ) (R.ip x y) = R.ip y x :=
   conj_hermForm R.herm y x
 
 /- English proof (translation)
-Simplify using `[RiemLat.ip]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ip_zero_left (R : RiemLat E g Λ) (y : Fin g → ℂ) : R.ip 0 y = 0 := by simp [RiemLat.ip]
 
 /- English proof (translation)
-Simplify using `[RiemLat.ip]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ip_zero_right (R : RiemLat E g Λ) (y : Fin g → ℂ) : R.ip y 0 = 0 := by simp [RiemLat.ip]
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `GlobalTheory.T.hermitian_restriction_orthonormal_coords g m R.Hm R.herm R.pos W hm`. Establish `hinj : Function.Injective (c.comp W.subtype)`. Use `(injective_iff_map_eq_zero _).2 fun z hz => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h0`. Establish `h1` using `R.pos z fun h => h0 (Subtype.ext h)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hz' : c z = 0` using `hz`. Rewrite `h1` using `[hc z z.2 z z.2, hz']`. Simplify using `at h1`. Establish `hsur : Function.Surjective (c.comp W.subtype)` using `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank (by simp [hm])).1 hinj`. Use `choose e he using fun i => hsur (Pi.single i 1)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun i => e i, fun i => (e i).2, fun i j => ?_, fun z hz => ⟨c z, ?_⟩⟩` and prove the remaining obligations. Establish `h1 : c (e i) = Pi.single i 1` using `he i`. Establish `h2 : c (e j) = Pi.single j 1` using `he j`. Rewrite using `[RiemLat.ip, hc _ (e i).2 _ (e j).2, h1, h2]`. Simplify using `[Pi.single_apply, eq_comm]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h : (⟨z, hz⟩ : W) = ∑ i, c z i • e i`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[map_sum]`. Simplify using `only [map_smul, he]`. Use extensionality with `k`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[Pi.single_apply]`. Simplify using `using congrArg Subtype.val h`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_onb (R : RiemLat E g Λ) (W : Submodule ℂ (Fin g → ℂ)) {m : ℕ} (hm : Module.finrank ℂ W = m) :
     ∃ e : Fin m → Fin g → ℂ, (∀ i, e i ∈ W) ∧ (∀ i j, R.ip (e i) (e j) = if i = j then 1 else 0) ∧
@@ -97,14 +97,14 @@ theorem Pc_apply (R : RiemLat E g Λ) (ξ : Fin (2 * g) → ℂ) : Pc b R ξ = �
 def io (a : Λ) : Fin (2 * g) → ℂ := fun k => (b.repr a k : ℂ)
 
 /- English proof (translation)
-Use extensionality with `k`. Simplify using `[io]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem star_io (a : Λ) : star (io b a) = io b a := by
   ext k
   simp [io]
 
 /- English proof (translation)
-Use `conv_rhs => rw [← b.sum_repr a]`. Rewrite using `[Pc_apply, map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul, io, Int.cast_smul_eq_zsmul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Pc_io (R : RiemLat E g Λ) (a : Λ) : Pc b R (io b a) = R.P a := by
   conv_rhs => rw [← b.sum_repr a]
@@ -115,24 +115,24 @@ theorem Pc_io (R : RiemLat E g Λ) (a : Λ) : Pc b R (io b a) = R.P a := by
 def act (a : 𝓞 E) (ξ : Fin (2 * g) → ℂ) : Fin (2 * g) → ℂ := ∑ k, ξ k • io b (a • b k)
 
 /- English proof (translation)
-Rewrite using `[act, map_sum, Pc_apply b R ξ, map_sum]`. Simplify using `only [map_smul, Pc_io, R.act]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem Pc_act (R : RiemLat E g Λ) (a : 𝓞 E) (ξ : Fin (2 * g) → ℂ) : Pc b R (act b a ξ) = R.B a (Pc b R ξ) := by
   rw [act, map_sum, Pc_apply b R ξ, map_sum]
   simp only [map_smul, Pc_io, R.act]
 
 /- English proof (translation)
-Simplify using `only [act, star_sum, star_smul, star_io, Pi.star_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem star_act (a : 𝓞 E) (ξ : Fin (2 * g) → ℂ) : star (act b a ξ) = act b a (star ξ) := by
   simp only [act, star_sum, star_smul, star_io, Pi.star_apply]
 
 /- English proof (translation)
-Establish `he : e ∈ Submodule.span ℝ (Set.range R.P)` using `by rw [SheetDecomposition.Riem.span_top]; trivial`. Proceed by induction on `he using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨a, rfl⟩` from `hx`. Conclude with `⟨_, star_io b a, Pc_io b R a⟩`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Consider the case `zero => exact ⟨0, star_zero _, map_zero _⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨ξ, h1, h2⟩` from `hx`. Take `⟨ξ', h1', h2'⟩` from `hy`. Conclude with `⟨ξ + ξ', by rw [star_add, h1, h1'], by rw [map_add, h2, h2']⟩`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Consider the case `smul r x _ hx`. Take `⟨ξ, h1, h2⟩` from `hx`. Conclude with `⟨(r : ℂ) • ξ, by rw [star_smul, h1]; simp, by rw [map_smul, h2]; rfl⟩`.
+Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_real (R : RiemLat E g Λ) (e : Fin g → ℂ) : ∃ ξ, star ξ = ξ ∧ Pc b R ξ = e := by
   have he : e ∈ Submodule.span ℝ (Set.range R.P) := by rw [SheetDecomposition.Riem.span_top]; trivial
@@ -150,11 +150,11 @@ theorem exists_real (R : RiemLat E g Λ) (e : Fin g → ℂ) : ∃ ξ, star ξ =
     exact ⟨(r : ℂ) • ξ, by rw [star_smul, h1]; simp, by rw [map_smul, h2]; rfl⟩
 
 /- English proof (translation)
-Take `⟨ξ, h1, h2⟩` from `exists_real b R ((2⁻¹ : ℂ) • (e + e'))`. Take `⟨ξ', h1', h2'⟩` from `exists_real b R ((2⁻¹ * Complex.I : ℂ) • (e' - e))`. Use `⟨ξ + Complex.I • ξ', ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, map_smul, h2, h2', smul_smul]`. Use extensionality with `k`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Simplify using `only [Pi.add_apply, Pi.smul_apply, Pi.sub_apply, smul_eq_mul]`. Take the linear combination `(2⁻¹ * (e' k - e k)) * Complex.I_mul_I`. Rewrite using `[star_add, star_smul, h1, h1', map_add, map_smul, h2, h2', smul_smul]`. Use extensionality with `k`. Simplify using `only [Pi.add_apply, Pi.smul_apply, Pi.sub_apply, smul_eq_mul, Complex.star_def, Complex.conj_I]`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Take the linear combination `(-2⁻¹ * (e' k - e k)) * Complex.I_mul_I`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem exists_pair (R : RiemLat E g Λ) (e e' : Fin g → ℂ) : ∃ η, Pc b R η = e ∧ Pc b R (star η) = e' := by
   obtain ⟨ξ, h1, h2⟩ := exists_real b R ((2⁻¹ : ℂ) • (e + e'))
@@ -170,9 +170,9 @@ theorem exists_pair (R : RiemLat E g Λ) (e e' : Fin g → ℂ) : ∃ η, Pc b R
     linear_combination (-2⁻¹ * (e' k - e k)) * Complex.I_mul_I
 
 /- English proof (translation)
-Set `Θ : (Fin (2 * g) → ℂ) →ₗ[ℂ] (Fin g → ℂ) × (Fin g → ℂ)` to `(Pc b R).prod (Fintype.linearCombination ℂ fun k => star (R.P (b k)))`. Establish `hΘ : ∀ ξ, Θ ξ = (Pc b R ξ, star (Pc b R (star ξ)))` using `fun ξ => by`. Use `Prod.ext rfl ?_` and prove the remaining obligations. Use `show ∑ k, ξ k • star (R.P (b k)) = star (∑ k, star ξ k • R.P (b k))`. Simplify using `only [star_sum, star_smul, Pi.star_apply, star_star]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hs : Function.Surjective Θ` using `fun ⟨e, e'⟩ => by`. Take `⟨η, h1, h2⟩` from `exists_pair b R e (star e')`. Conclude with `⟨η, by rw [hΘ, h1, h2, star_star]⟩`. Use `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank (by simp [two_mul])).2 hs ?_` and prove the remaining obligations. Rewrite using `[hΘ, hΘ, h, h']`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ext_pair (R : RiemLat E g Λ) {η η' : Fin (2 * g) → ℂ} (h : Pc b R η = Pc b R η')
     (h' : Pc b R (star η) = Pc b R (star η')) : η = η' := by
@@ -189,9 +189,9 @@ theorem ext_pair (R : RiemLat E g Λ) {η η' : Fin (2 * g) → ℂ} (h : Pc b R
   rw [hΘ, hΘ, h, h']
 
 /- English proof (translation)
-Simplify using `only [Pc_apply, ip_sum]`. Rewrite using `[Finset.sum_comm (f := fun k l => star (star ξ' k) * star ξ l * R.ip (R.P (b k)) (R.P (b l))), ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h` using `Complex.sub_conj (R.ip (R.P (b k)) (R.P (b l)))`. Establish `h2 : (R.ip (R.P (b k)) (R.P (b l))).im = R.form (b l) (b k)` using `R.im _ _`. Rewrite `h` using `[ip_conj, h2]`. Move the coercions through the operations in `at h`. Rewrite using `[← h, Pi.star_apply, Pi.star_apply, star_star]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -213,11 +213,11 @@ theorem psi_eq (R : RiemLat E g Λ) (ξ ξ' : Fin (2 * g) → ℂ) :
 end Cx
 
 /- English proof (translation)
-Use `top_unique fun z _ => ?_` and prove the remaining obligations. Take `⟨y, hy, rfl⟩` from `SheetDecomposition.Riem.exists_decomp B z`. Use `W.sum_mem fun s _ => ?_` and prove the remaining obligations. Distinguish the cases in `e : ∃ τ, σ τ = s.comp (algebraMap (𝓞 E) E)`. Take `⟨τ, e⟩` from `e`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Conclude with `h τ (e ▸ hy s)`. Take `⟨τ, e'⟩` from `not_not.1 (mt (hσ.2 _).2 e)`. Use `h' τ ?_` and prove the remaining obligations. Establish `: (starRingEnd ℂ).comp (σ τ) = s.comp (algebraMap (𝓞 E) E)`. Rewrite using `[e']`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use extensionality with `a`. Simplify using the standard rewrite rules. Conclude with `this ▸ hy s`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_of_eig {Ψ : Type} [Fintype Ψ] (B : 𝓞 E →+* Module.End ℂ (Fin g → ℂ)) {σ : Ψ → (𝓞 E →+* ℂ)} (hσ : IsCMFam σ)
     (W : Submodule ℂ (Fin g → ℂ)) (h : ∀ τ, eigSp B (σ τ) ≤ W) (h' : ∀ τ, eigSp B ((starRingEnd ℂ).comp (σ τ)) ≤ W) :

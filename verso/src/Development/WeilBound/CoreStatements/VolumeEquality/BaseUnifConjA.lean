@@ -19,14 +19,14 @@ variable {X : Scheme.{0}} {Ω : Type} [Field Ω] {G : Over X} [GrpObj G] {ξ : S
   {E : Type} [AddCommGroup E] [Module Ω E]
 
 /- English proof (translation)
-The claim follows from `RingHom.ext fun a => TrivSqZeroExt.ext (by simp [dualMap]) (by simp [dualMap])`.
+A detailed English derivation is pending.
 -/
 theorem dualMap_comp {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRing R''] (φ : R →+* R') (ψ : R' →+* R'') :
     dualMap (ψ.comp φ) = (dualMap ψ).comp (dualMap φ) :=
   RingHom.ext fun a => TrivSqZeroExt.ext (by simp [dualMap]) (by simp [dualMap])
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `dualMap φ (TrivSqZeroExt.inl a) = TrivSqZeroExt.inl (φ a)`. Conclude with `TrivSqZeroExt.ext (by simp [dualMap]) (by simp [dualMap])`.
+Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem dualMap_algebraMap {R R' : Type} [CommRing R] [CommRing R'] (φ : R →+* R') (a : R) :
     dualMap φ (algebraMap R (DualNumber R) a) = algebraMap R' (DualNumber R') (φ a) := by
@@ -34,7 +34,7 @@ theorem dualMap_algebraMap {R R' : Type} [CommRing R] [CommRing R'] (φ : R →+
   exact TrivSqZeroExt.ext (by simp [dualMap]) (by simp [dualMap])
 
 /- English proof (translation)
-Establish `h : (spMap (starRingEnd ℂ)) (IsLocalRing.closedPoint ℂ) = IsLocalRing.closedPoint ℂ` using `Subsingleton.elim (α := PrimeSpectrum ℂ) _ _`. Conclude with `congrArg (fun p => z p) h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem centre_conj (z : Spec (CommRingCat.of ℂ) ⟶ X) : centre (spMap (starRingEnd ℂ) ≫ z) = centre z := by
   have h : (spMap (starRingEnd ℂ)) (IsLocalRing.closedPoint ℂ) = IsLocalRing.closedPoint ℂ :=
@@ -42,15 +42,15 @@ theorem centre_conj (z : Spec (CommRingCat.of ℂ) ⟶ X) : centre (spMap (starR
   exact congrArg (fun p => z p) h
 
 /- English proof (translation)
-Rewrite using `[← Category.assoc, GlobalTheory.ArchMetricCompare.cj_cj, Category.id_comp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cj_cj (z : Sp ℂ ⟶ X) : spMap (starRingEnd ℂ) ≫ spMap (starRingEnd ℂ) ≫ z = z := by
   rw [← Category.assoc, GlobalTheory.ArchMetricCompare.cj_cj, Category.id_comp]
 
 /- English proof (translation)
-Substitute `hx` using the available equality. Use `⟨v, hv, ?_⟩` and prove the remaining obligations. Establish `h1 : Spec.map φ' = Spec.map (φ ≫ CommRingCat.ofHom (starRingEnd ℂ))`. Rewrite using `[← cancel_mono (X.fromSpecStalk x), H, Spec.map_comp, Category.assoc]`. Establish `h2 : φ' = φ ≫ CommRingCat.ofHom (starRingEnd ℂ)` using `Spec.map_injective h1`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Substitute `h2` using the available equality. Establish `h3 : dualMap (φ ≫ CommRingCat.ofHom (starRingEnd ℂ)).hom = (dualMap (starRingEnd ℂ)).comp (dualMap φ.hom)` using `dualMap_comp _ _`. Rewrite using `[h3, CommRingCat.ofHom_comp, Spec.map_comp]`. Conclude with `Category.assoc _ _ _`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem extends_conj (M : LieModel G ξ E) {x x' : X} (hx : x = x') (h : genPt ξ ⤳ x) (h' : genPt ξ ⤳ x') (e : E)
     (v : epsAt (X.fromSpecStalk x) ⟶ G) (hv : M.Extends ⟨x, h⟩ e v)
@@ -71,7 +71,7 @@ theorem extends_conj (M : LieModel G ξ E) {x x' : X} (hx : x = x') (h : genPt �
   exact Category.assoc _ _ _
 
 /- English proof (translation)
-Establish `h2 : CommRingCat.ofHom (algebraMap ℂ (DualNumber ℂ)) ≫ CommRingCat.ofHom (dualMap (starRingEnd ℂ)) = CommRingCat.ofHom (starRingEnd ℂ) ≫ CommRingCat.ofHom (algebraMap ℂ (DualNumber ℂ))` using `CommRingCat.hom_ext (RingHom.ext fun a => dualMap_algebraMap (starRingEnd ℂ) a)`. Establish `h3` using `congrArg Spec.map h2`. Simplify `h3` using `only [Spec.map_comp]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem eps_sq : spMap (dualMap (starRingEnd ℂ)) ≫ spMap (algebraMap ℂ (DualNumber ℂ)) =
     spMap (algebraMap ℂ (DualNumber ℂ)) ≫ spMap (starRingEnd ℂ) := by
@@ -88,9 +88,9 @@ def cjVec (z : Spec (CommRingCat.of ℂ) ⟶ X) (w : epsAt z ⟶ G) : epsAt (spM
     rw [← Category.assoc, eps_sq, Category.assoc])
 
 /- English proof (translation)
-Take `⟨h, v, hv, hl⟩` from `hw`. Establish `hc` using `centre_conj z`. Establish `h' : genPt ξ ⤳ centre (spMap (starRingEnd ℂ) ≫ z)` using `hc ▸ h`. Take `⟨v', hv', hl'⟩` from `extends_conj M hc.symm h h' e v hv (Scheme.stalkClosedPointTo z) (Scheme.stalkClosedPointTo (spMap (starRingEnd ℂ) ≫ z)) (by`. Use `(Scheme.Spec_stalkClosedPointTo_fromSpecStalk (spMap (starRingEnd ℂ) ≫ z)).trans ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `congrArg (spMap (starRingEnd ℂ) ≫ ·) (Scheme.Spec_stalkClosedPointTo_fromSpecStalk z).symm)`. Use `⟨h', v', hv', ?_⟩` and prove the remaining obligations. Establish `: (cjVec z w).left = spMap (dualMap (starRingEnd ℂ)) ≫ w.left` using `rfl`. Rewrite using `[this, hl]`. Conclude with `hl'.symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valAt_conj (M : LieModel G ξ E) (z : Spec (CommRingCat.of ℂ) ⟶ X) (e : E) (w : epsAt z ⟶ G)
     (hw : M.ValAt z e w) : M.ValAt (spMap (starRingEnd ℂ) ≫ z) e (cjVec z w) := by
@@ -107,9 +107,9 @@ theorem valAt_conj (M : LieModel G ξ E) (z : Spec (CommRingCat.of ℂ) ⟶ X) (
   exact hl'.symm
 
 /- English proof (translation)
-Use `h.1.hom_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, e]`. Use `Eq.trans ?_ (GlobalTheory.PolBaseChange.eSec_comm h).symm` and prove the remaining obligations. Use `Eq.trans hv ?_` and prove the remaining obligations. Use `show (toUnit _ ≫ η[G]).left = _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `[eSec]`. Establish `z` using `congrArg (· ≫ A.hom) (GlobalTheory.ArchMetricCompare.isTangent_zero A)`. Rewrite using `[← z, Category.assoc, Category.assoc, Over.w, Over.w]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isTangent_of_fibre {A : Over (Sp ℂ)} [GrpObj A] {z : Sp ℂ ⟶ X} {φ : A.left ⟶ G.left} (h : IsGrpPullback A G z φ)
     {v : epsAt z ⟶ G} (hv : IsTanAt G z v) {v' : epsR ℂ ⟶ A} (e : v'.left ≫ φ = v.left) : IsTangent v' := by
@@ -128,17 +128,15 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {g : �
   [Module (𝓞 E) Λ]
 
 /- English proof (translation)
-Take `⟨A, _, φ, u, χ, hpb, hAH, hact, hinj, hmem, hvec⟩` from `hF`. Establish `h` using `isGrpPullback_pullback A (spMap (starRingEnd ℂ))`. Use `⟨(Over.pullback (spMap (starRingEnd ℂ))).obj A, inferInstance, pullback.fst _ _ ≫ φ, GlobalTheory.ArchMetricCompare.cjUnif h u, fun l => star (χ ⟨star l.1, l.2⟩), h.comp hpb, ?_, fun a p => ?_, ?_, fun p => ?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[hH]`. Conclude with `GlobalTheory.ArchMetricCompare.cj_isAH h u hAH`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show (GlobalTheory.ArchMetricCompare.cjPt h (u.ex (star (R'.B a p)))).left ≫ pullback.fst _ _ ≫ φ = (GlobalTheory.ArchMetricCompare.cjPt h (u.ex (star p))).left ≫ (pullback.fst _ _ ≫ φ) ≫ (t.act.act a).left`. Rewrite using `[hB a p, star_star, GlobalTheory.ArchMetricCompare.cjPt_comp' h, Category.assoc, ← Category.assoc _ φ, ← Category.assoc _ (pullback.fst _ _ ≫ φ), GlobalTheory.ArchMetricCompare.cjPt_comp', hact a (star p)]`. Simplify using `only [Category.assoc]`. Introduce `x y e`. Rewrite `e` using `[hP, hP]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Conclude with `hinj (star_injective e)`. Use `show star p ∈ u.Λ ↔ _`. Rewrite using `[hmem]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨x, by rw [hP, hx, star_star]⟩`. Introduce and unpack `⟨x, rfl⟩`. Conclude with `⟨x, by rw [hP, star_star]⟩`. Take `⟨v', e, hd⟩` from `hvec i`. Establish `sq : (spMap (dualMap (starRingEnd ℂ)) ≫ v'.left) ≫ A.hom = (epsR ℂ).hom ≫ spMap (starRingEnd ℂ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Category.assoc, Over.w]`. Conclude with `eps_sq`. Set `t'' : epsR ℂ ⟶ (Over.pullback (spMap (starRingEnd ℂ))).obj A` to `Over.homMk (h.1.lift _ _ sq) (h.1.lift_snd _ _ _)`. Establish `e' : t''.left ≫ pullback.fst _ _ = spMap (dualMap (starRingEnd ℂ)) ≫ v'.left` using `h.1.lift_fst _ _ _`. Use `⟨t'', ?_, GlobalTheory.ArchMetricCompare.cj_isDiff h u (isTangent_of_fibre hpb (htan i) e) e' hd⟩` and prove the remaining obligations.
-
-Rewrite using `[← Category.assoc, e', Category.assoc, e]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem fibreLatVec_conj {X : Scheme.{0}} (t : SAB H X) (z : Sp ℂ ⟶ X) (R R' : RiemLat E g Λ) {A₀ : Type}
     (x : A₀ → Fin g → ℂ) (v : A₀ → (epsAt z ⟶ t.G)) (hP : ∀ x, R'.P x = star (R.P x))
@@ -179,7 +177,7 @@ theorem fibreLatVec_conj {X : Scheme.{0}} (t : SAB H X) (z : Sp ℂ ⟶ X) (R R'
     rfl
 
 /- English proof (translation)
-Take `⟨k, hk⟩` from `h`. Use `⟨{ toFun := fun x => star (k (star x)) invFun := fun x => star (k.symm (star x)) map_add' := fun x y => by simp map_smul' := fun a x => by simp left_inv := fun x => by simp right_inv := fun x => by simp }, fun x => ?_⟩` and prove the remaining obligations. Use `show R₂'.P (gm x) = star (k (star (R₁'.P x)))`. Rewrite using `[h₁, h₂, hk, star_star]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eqvBy_conj {R₁ R₂ R₁' R₂' : RiemLat E g Λ} (h₁ : ∀ x, R₁'.P x = star (R₁.P x))
     (h₂ : ∀ x, R₂'.P x = star (R₂.P x)) {gm : Λ ≃ₗ[𝓞 E] Λ} (h : R₁.EqvBy R₂ gm) : R₁'.EqvBy R₂' gm := by
@@ -194,7 +192,7 @@ theorem eqvBy_conj {R₁ R₂ R₁' R₂' : RiemLat E g Λ} (h₁ : ∀ x, R₁'
   rw [h₁, h₂, hk, star_star]
 
 /- English proof (translation)
-Use extensionality with `gm`. Use `show (∀ x y, (-f) (gm x) (gm y) = (-f) x y) ↔ ∀ x y, f (gm x) (gm y) = f x y`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem autGrp_neg (f : Λ →ₗ[ℤ] Λ →ₗ[ℤ] ℤ) : autGrp (E := E) (-f) = autGrp f := by
   ext gm
@@ -202,9 +200,9 @@ theorem autGrp_neg (f : Λ →ₗ[ℤ] Λ →ₗ[ℤ] ℤ) : autGrp (E := E) (-f
   simp
 
 /- English proof (translation)
-Introduce `τ`. Establish `e : 1 - (ballMat q (star t) τ)ᴴ * ballMat q (star t) τ = (1 - (ballMat q t τ)ᴴ * ballMat q t τ)ᵀ`. Use extensionality with `a b`. Simplify using `[ballMat, Matrix.mul_apply, Matrix.one_apply, eq_comm, _root_.mul_comm]`. Rewrite using `[e]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(ht τ).transpose`.
+A detailed English derivation is pending.
 -/
 theorem star_mem_ballDom {Ψ : Type} [Fintype Ψ] {j j' n : ℕ} {q : Ψ × Fin j × Fin j' ≃ Fin n} {t : Fin n → ℂ}
     (ht : t ∈ ballDom q) : star t ∈ ballDom q := by
@@ -216,9 +214,9 @@ theorem star_mem_ballDom {Ψ : Type} [Fintype Ψ] {j j' n : ℕ} {q : Ψ × Fin 
   exact (ht τ).transpose
 
 /- English proof (translation)
-Use extensionality with `t`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h'` using `star_mem_ballDom (q := q) (t := star t) h`. Rewrite `h'` using `[star_star]`. Then use the resulting hypothesis.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Introduce `h`. Conclude with `star_mem_ballDom (q := q) (t := t) h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem preimage_star_ballDom {Ψ : Type} [Fintype Ψ] {j j' n : ℕ} (q : Ψ × Fin j × Fin j' ≃ Fin n) :
     star ⁻¹' ballDom q = ballDom q := by
@@ -231,7 +229,7 @@ theorem preimage_star_ballDom {Ψ : Type} [Fintype Ψ] {j j' n : ℕ} (q : Ψ ×
     exact star_mem_ballDom (q := q) (t := t) h
 
 /- English proof (translation)
-Establish `h1 : ∀ᶠ t in 𝓝 t₀, AnalyticAt ℂ f (star t)` using `(continuous_star.continuousAt (x := t₀)).tendsto.eventually h.eventually_analyticAt`. Use `GlobalTheory.SCV.analyticAt_of_differentiableOn (s := {t | AnalyticAt ℂ f (star t)}) (fun t ht => ?_) h1` and prove the remaining obligations. Use `(show AnalyticAt ℂ f (star t) from ht).differentiableAt.star_star` as an intermediate fact. Rewrite `this` using `[star_star]`. Conclude with `this.differentiableWithinAt`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem analyticAt_star_star {n : ℕ} {f : (Fin n → ℂ) → Fin g → ℂ} {t₀ : Fin n → ℂ} (h : AnalyticAt ℂ f (star t₀)) :
     AnalyticAt ℂ (fun t => star (f (star t))) t₀ := by

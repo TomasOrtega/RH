@@ -4,9 +4,9 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsIsSymplect
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `h k M hM`. Take `⟨N, hN⟩` from `symplecticGroupMap_zmod_surjective (Fin h) k ⟨M, hM⟩`. Use `⟨N.1, N.2, ?_⟩` and prove the remaining obligations. Use `congrArg Subtype.val hN` as an intermediate fact. Rewrite `this` using `[coe_symplecticGroupMap]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem symplectic_zmod_lift : ∀ (h k : ℕ) (M : Matrix (Fin h ⊕ Fin h) (Fin h ⊕ Fin h) (ZMod k)),
     M ∈ Matrix.symplecticGroup (Fin h) (ZMod k) → ∃ N : Matrix (Fin h ⊕ Fin h) (Fin h ⊕ Fin h) ℤ,

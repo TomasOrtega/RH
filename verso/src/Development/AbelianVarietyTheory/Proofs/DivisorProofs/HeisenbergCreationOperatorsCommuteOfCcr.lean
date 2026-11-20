@@ -8,15 +8,15 @@ open NumberField Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Forma
 namespace GlobalTheory.CCRFock
 
 /- English proof (translation)
-Take `⟨w, a, b⟩` from `j`. Take `⟨w', a', b'⟩` from `k`. Rewrite using `[Finset.sum_eq_single w, Finset.sum_eq_single a, Finset.sum_eq_single b]`. Distinguish the cases in `hw : w = w'`. Substitute `hw` using the available equality.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Distinguish the cases in `ha : a = a'`. Substitute `ha` using the available equality. Distinguish the cases in `hb : b = b'`. Substitute `hb` using the available equality. Simplify using `[unitAt]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[unitAt, hb, Ne.symm hb]`. Simplify using `[unitAt, ha, Ne.symm ha]`. Simplify using `[unitAt, hw]`. Introduce `c _ hc`. Simplify using `[unitAt, Ne.symm hc]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Introduce `c _ hc`. Simplify using `[unitAt, Ne.symm hc]`. Simplify using the standard rewrite rules. Introduce `c _ hc`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[unitAt, hc]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem fockM_comm_sum {W : Type} [Fintype W] [DecidableEq W] {P Q R S : ℕ} (j k : W × (Ix P Q × Ix R S)) (z z' : ℂ) :
     (∑ w, ∑ a, ∑ b, lineSign a b * unitAt j z w a b * star (unitAt k z' w a b)) =
@@ -41,11 +41,11 @@ theorem fockM_comm_sum {W : Type} [Fintype W] [DecidableEq W] {P Q R S : ℕ} (j
   · simp
 
 /- English proof (translation)
-Introduce `V _ _ W _ _ P Q R S H _ _ hc j k`. Establish `h11` using `hc (unitAt j 1) (unitAt k 1)`. Establish `h1i` using `hc (unitAt j 1) (unitAt k Complex.I)`. Establish `hi1` using `hc (unitAt j Complex.I) (unitAt k 1)`. Establish `hii` using `hc (unitAt j Complex.I) (unitAt k Complex.I)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h11`, `h1i`, `hi1`, `hii` using `[fockM_comm_sum]`. Distinguish the cases in `hjk : j = k`. Rewrite using `[hjk]`. Simplify using `only [if_neg hjk, Complex.zero_im, Complex.ofReal_zero, mul_zero, zero_smul, sub_eq_zero] at h11 h1i hi1 hii`. Unfold `fockM`.
+Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Establish `c : Commute (H (unitAt j 1) - (lineSign j.2.1 j.2.2 * Complex.I) • H (unitAt j Complex.I)) (H (unitAt k 1) - (lineSign k.2.1 k.2.2 * Complex.I) • H (unitAt k Complex.I))` using `Commute.sub_left (Commute.sub_right h11 (Commute.smul_right h1i _)) (Commute.smul_left (Commute.sub_right hi1 (Commute.smul_right hii _)) _)`. Conclude with `((c.smul_left _).smul_right _).eq`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem fockM_comm : ∀ {V : Type} [AddCommGroup V] [Module ℂ V] {W : Type} [Fintype W] [DecidableEq W] {P Q R S : ℕ}
     (H : (W → Matrix (Ix P Q) (Ix R S) ℂ) → Module.End ℂ V),

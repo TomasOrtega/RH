@@ -17,15 +17,13 @@ noncomputable section
 namespace GlobalTheory.ThKIntCont
 
 /- English proof (translation)
-Introduce `hKP F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP Φ hΦ`. Establish `hb` using `GlobalTheory.T.theta_basic_properties hKP.base F E σ B n d X W M χX χW om r s r' s' hP`. Establish `hS : Φ ∈ schA F (Fin n × Fin d)` using `GlobalTheory.ThKRatInv.polData_le_schA B M hP.good (Submodule.mem_inf.1 hΦ).1`. Take `⟨C, k, hC⟩` from `GlobalTheory.T.schwartz_orbit_decay hKP F E σ B n d X W M χX χW om r s r' s' hP Φ (Submodule.mem_inf.1 hΦ).2 0`. Establish `hσ` using `GlobalTheory.SiegelSet.sigma_sigma hP.base.cm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI := hP.good.haar`. Establish `hvol : M.μ M.dom < ⊤` using `GlobalTheory.UnitaryVol.measure_fundDom_lt_top hKP.siegelSetUnitary hP.base.cm (GlobalTheory.UnitaryVol.isHermND_map hσ hP.herm) hP.good.dom`. Use `haveI : BorelSpace (UA σ X.J) := ⟨rfl⟩`. Establish `hθ : Continuous (fun x : UA σ X.J × UA σ W.J => theta om Φ x.1 x.2)` using `(hb.1 Φ hS).1`. Establish `hht : Continuous (fun h : UA σ W.J => (ht h : ℝ))` using `Continuous.comp NNReal.continuous_coe (Continuous.comp (GlobalTheory.Grow.continuous_heightGL (F := F) (E := E)) continuous_subtype_val)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `haveI : SecondCountableTopology (UA σ W.J) := (GlobalTheory.UnitaryAdelicTop.lcsc_UA F E σ d W.J).2.2.1`. Use `haveI : FirstCountableTopology (UA σ W.J) := TopologicalSpace.SecondCountableTopology.to_firstCountableTopology _`. Use `continuous_iff_continuousAt.2 fun h₀ => ?_` and prove the remaining obligations. Establish `hev : ∀ᶠ h in 𝓝 h₀, (ht h : ℝ) < ht h₀ + 1` using `hht.continuousAt (Iio_mem_nhds (lt_add_one _))`. Use `continuousAt_of_dominated (bound := fun _ => max C 0 * ((ht h₀ : ℝ) + 1) ^ k) ?_ ?_ ?_ ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Eventually.of_forall fun h => (hθ.comp (continuous_id.prodMk continuous_const)).aestronglyMeasurable`. Use `filter_upwards [hev] with h hh`. Use `Eventually.of_forall fun g => ?_` and prove the remaining obligations. Establish `h1 : (1 : ℝ) ≤ ht h` using `by exact_mod_cast GlobalTheory.AdelicU.one_le_heightGL (F := F) h.1`. Establish `h2` using `hC g h`.
-
-Rewrite `h2` using `[pow_zero, mul_one]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `integrableOn_const hvol.ne`. Conclude with `Eventually.of_forall fun g => (hθ.comp (continuous_const.prodMk continuous_id)).continuousAt`.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem continuous_I_so : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ), IsPair B M χX χW om r s r' s' → ∀ Φ ∈ PolData B M ⊓ M.So B.ψ B.τ₁, Continuous (M.I om Φ) := by
   intro hKP F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP Φ hΦ

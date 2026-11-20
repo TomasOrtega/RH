@@ -13,21 +13,21 @@ open scoped TensorProduct NNReal Classical
 namespace GlobalTheory.TruncKer
 
 /- English proof (translation)
-Take `⟨e⟩ : Nonempty ((Fin k ⊕ Fin k) ⊕ Fin m ≃ Fin n)` from `Fintype.card_eq.1 (by simp; omega)`. Set `a0` to `fromCols (fromCols (r • (C + D)) (r • (C - D))) M`. Set `s : (Fin k ⊕ Fin k) ⊕ Fin m → Bool` to `Sum.elim (Sum.elim (fun _ => true) fun _ => false) ε`. Set `Δ : Matrix _ _ A` to `diagonal fun i => if s i then 1 else -1`. Establish `hc : cT σ a0 = fromRows (fromRows (r • (cT σ C + cT σ D)) (r • (cT σ C - cT σ D))) (cT σ M)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use extensionality with `(i | i) j`. Apply the tactic sequence `rcases i with i | i <;> simp [cT, a0, hr, mul_add, mul_sub]`. Simplify using `[cT, a0]`. Establish `hrr : r * r + r * r = 1` using `by rw [← h2]; ring`. Establish `h0 : cT σ a0 * J * a0 = Δ`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hc]`. Simplify using `only [a0, fromRows_mul, mul_fromCols, Matrix.smul_mul, Matrix.mul_smul, Matrix.add_mul, Matrix.sub_mul, Matrix.mul_add, Matrix.mul_sub, hCC, hDD, hCD, hDC, hMC, hMD, hCM, hDM, hMM]`. Use extensionality with `(i | i) (j | j)`. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j <;> by_cases h : i = j <;>`. Simplify using `[Δ, s, h, diagonal, mul_add, mul_sub, hrr]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Take the linear combination `(-1 : A) * hrr`. Apply the tactic sequence `rcases i with i | i <;> simp [Δ]`. Apply the tactic sequence `rcases j with j | j <;> simp [Δ]`. Apply the tactic sequence `by_cases h : i = j <;> simp [Δ, s, diagonal, h]`. Reduce the equality to equality of the corresponding arguments.
+Take a linear combination of the given relations to obtain the conclusion. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hΔ : Δ * Δ = 1`. Apply the tactic sequence `rw [diagonal_mul_diagonal, ← diagonal_one]; congr 1; funext i; split_ifs <;> simp`. Establish `h1 : a0 * (cT σ a0 * (J * D)) = C`. Rewrite using `[← Matrix.mul_assoc (cT σ a0), hc]`. Simplify using `only [a0, fromRows_mul, fromCols_mul_fromRows, Matrix.smul_mul, Matrix.mul_smul, Matrix.add_mul, Matrix.sub_mul, hDD, hCD, hMD, Matrix.mul_zero, Matrix.mul_one, add_zero, sub_zero, smul_smul]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← smul_add, add_add_sub_cancel, smul_add, ← add_smul, hrr, one_smul]`. Set `a` to `a0.submatrix id e.symm`. Establish `hca : cT σ a = (cT σ a0).submatrix e.symm id` using `rfl`. Establish `h3 : cT σ a * J * a = Δ.submatrix e.symm e.symm` using `by rw [← h0]; rfl`. Establish `h4 : (Δ.submatrix e.symm e.symm * (cT σ a * J)) * a = 1`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Matrix.mul_assoc, h3, submatrix_mul_equiv, hΔ, submatrix_one_equiv]`. Set `b : GL (Fin n) A` to `⟨a, _, mul_eq_one_comm.1 h4, h4⟩`. Use `⟨b, s ∘ e.symm, h3.trans (submatrix_diagonal_equiv _ _), ?_⟩` and prove the remaining obligations. Establish `h5 : b.1 * (cT σ b.1 * (J * D)) = C`. Rewrite using `[← h1, ← Matrix.mul_assoc, ← Matrix.mul_assoc a0]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Conclude with `submatrix_mul_equiv a0 (cT σ a0) id e.symm id`. Rewrite using `[← h5, Matrix.mul_assoc, ← Matrix.mul_assoc (b⁻¹).1, Units.inv_mul, Matrix.one_mul, ← Matrix.mul_assoc, ← cT_mul, Units.mul_inv, cT_one, Matrix.one_mul]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_majorant {A : Type} [CommRing A] (σ : A →+* A) {n k m : ℕ} (J : Matrix (Fin n) (Fin n) A)
     (C D : Matrix (Fin n) (Fin k) A) (M : Matrix (Fin n) (Fin m) A) (r : A) (hr : σ r = r) (h2 : 2 * r * r = 1)
@@ -79,27 +79,25 @@ theorem exists_majorant {A : Type} [CommRing A] (σ : A →+* A) {n k m : ℕ} (
     Units.mul_inv, cT_one, Matrix.one_mul]
 
 /- English proof (translation)
-Establish `sy : ∀ x y, V.hT y x = star (V.hT x y)` using `fun x y => (V.herm.eq x y).symm`. Establish `ef : ∀ a b, V.hT (e a) (f b) = if a = b then 1 else 0` using `fun a b => by`. Apply the tactic sequence `rw [sy, fe]; by_cases h : a = b <;> simp [h, eq_comm]`. Establish `he' : ∀ a x, V.hT (e a) (ι x) = 0` using `fun a x => by rw [sy, he, star_zero]`. Establish `hf' : ∀ a x, V.hT (f a) (ι x) = 0` using `fun a x => by rw [sy, hf, star_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `st : ∀ z ∈ (1 : Submodule (𝓞 E) E), star z ∈ (1 : Submodule (𝓞 E) E)` using `fun z hz => Submodule.mem_one.2 (SelfDual.sig_mem_range hc.sig (Submodule.mem_one.1 hz))`. Establish `o1 : (1 : E) ∈ (1 : Submodule (𝓞 E) E)` using `Submodule.mem_one.2 ⟨1, map_one _⟩`. Establish `hd : ∀ {S : HSpace E} (L : Submodule (𝓞 E) S.V) x, x ∈ Formalism.HermitianLatticesTheory.dual S.hT L ↔ ∀ y ∈ L, S.hT y x ∈ (1 : Submodule (𝓞 E) E)` using `fun L x => by`. Simplify using `only [Formalism.HermitianLatticesTheory.dual, Formalism.E.hdual, Submodule.mem_iInf]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Set `G : Set V.V` to `(Set.range e ∪ Set.range f) ∪ ι '' V'.L0`. Establish `hG : Submodule.span (𝓞 E) G = Submodule.span (𝓞 E) (Set.range e ∪ Set.range f) ⊔ V'.L0.map (ι.restrictScalars (𝓞 E))`. Rewrite using `[Submodule.span_union]`. Use `congr 1`. Conclude with `Submodule.span_eq (V'.L0.map (ι.restrictScalars (𝓞 E)))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Establish `hE : ∀ i, e i ∈ Submodule.span (𝓞 E) G` using `fun i => Submodule.subset_span (.inl (.inl ⟨i, rfl⟩))`. Establish `hF : ∀ i, f i ∈ Submodule.span (𝓞 E) G` using `fun i => Submodule.subset_span (.inl (.inr ⟨i, rfl⟩))`. Establish `dec : ∀ x, ∃ c, x = ι c + (∑ i, V.hT (f i) x • e i + ∑ i, V.hT (e i) x • f i)` using `fun x => by`. Take `⟨_, ⟨c, rfl⟩, y, hy, rfl⟩` from `Submodule.mem_sup.1 (ht.ge (Submodule.mem_top (x := x)))`. Use `⟨c, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_add, he', hf', zero_add, add_right_inj]`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy => rcases hy with ⟨a, rfl⟩ | ⟨a, rfl⟩ <;> simp [ee, ff, ef, fe]`. Consider the case `zero => simp`. Consider the case `add y z _ _ h1 h2`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_add, add_smul, Finset.sum_add_distrib]`. Rewrite using `[add_add_add_comm, ← h1, ← h2]`. Consider the case `smul a y _ h1`. Simplify using `only [map_smul, smul_eq_mul, mul_smul, ← Finset.smul_sum, ← smul_add, ← h1]`. Establish `lin : ∀ x, (∀ y ∈ G, V.hT x y ∈ (1 : Submodule (𝓞 E) E)) → ∀ y ∈ Submodule.span (𝓞 E) G, V.hT x y ∈ (1 : Submodule (𝓞 E) E)` using `fun x h y hy => (Submodule.span_le (p := (1 : Submodule (𝓞 E) E).comap ((V.hT x).restrictScalars (𝓞 E)))).2 h hy`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Submodule.span (𝓞 E) G, ⟨?_, ?_⟩, Submodule.ext fun x => (hd _ x).trans ⟨fun h => ?_, fun hx y hy => ?_⟩, fun i => ⟨hE i, hF i⟩⟩` and prove the remaining obligations. Rewrite using `[hG]`. Conclude with `(Submodule.fg_span ((Set.finite_range e).union (Set.finite_range f))).sup (V'.standardTuple_isLattice.fg.map _)`. Rewrite using `[Submodule.span_span_of_tower, Submodule.span_union, Submodule.span_image, V'.standardTuple_isLattice.span_eq_top, Submodule.map_top, sup_comm, ht]`. Take `⟨c, hx⟩` from `dec x`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `sm : ∀ z ∈ (1 : Submodule (𝓞 E) E), ∀ y ∈ Submodule.span (𝓞 E) G, z • y ∈ Submodule.span (𝓞 E) G`. Introduce `z hz y hy`. Take `⟨r, rfl⟩` from `Submodule.mem_one.1 hz`. Rewrite using `[algebraMap_smul]`. Conclude with `Submodule.smul_mem _ r hy`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hc' : c ∈ V'.L0` using `V'.baseLattice_isUnimodular ▸ (hd _ c).2 fun y hy => by`. Use `h (ι y) (Submodule.subset_span (.inr ⟨y, hy, rfl⟩))` as an intermediate fact. Rewrite `this` using `[hx]`. Simplify `this` using `[he, hf, hι y c]`. Rewrite using `[hx]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Conclude with `add_mem (Submodule.subset_span (.inr ⟨c, hc', rfl⟩)) (add_mem (sum_mem fun i _ => sm _ (h _ (hF i)) _ (hE i)) (sum_mem fun i _ => sm _ (h _ (hE i)) _ (hF i)))`. Use `lin y (fun x hx => sy x y ▸ st _ (lin x (fun y hy => ?_) y hy)) x hx` and prove the remaining obligations. Establish `ite : ∀ a b : Fin k, (if a = b then (1 : E) else 0) ∈ (1 : Submodule (𝓞 E) E)` using `fun a b => by split_ifs; exacts [o1, zero_mem _]`. Apply the tactic sequence `rcases hx with (⟨a, rfl⟩ | ⟨a, rfl⟩) | ⟨a, ha, rfl⟩ <;> rcases hy with (⟨b, rfl⟩ | ⟨b, rfl⟩) | ⟨b, hb, rfl⟩`. Use `rotate_right`.
-
-Rewrite using `[hι]`. Conclude with `(hd _ b).1 (V'.baseLattice_isUnimodular.symm ▸ hb) a ha`. Apply the tactic sequence `all_goals simp only [ee, ff, ef, fe, he, hf, he', hf', zero_mem, ite]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_lattice {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E]
     (hc : CMData F E) (V V' : HSpace E) (ι : V'.V →ₗ[E] V.V) (hι : HSpace.IsIsomEmb V' V ι) {k : ℕ} (e f : Fin k → V.V)
@@ -175,7 +173,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarR
 def cols {p : Type} (x : p → V.V) : Matrix (Fin V.rank) p E := of fun a i => V.frame.repr (x i) a
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[of_apply, IndefiniteRowSideFullHecke.AdelicUnitaryGroups.hT_coord, Finset.sum_comm]`. Simplify using `only [Matrix.mul_apply, Finset.sum_mul]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem gram_cols {p q : Type} (x : p → V.V) (y : q → V.V) :
     cT (hc.sig : E →+* E) (cols V x) * V.gram * cols V y = of fun i j => V.hT (x i) (y j) := by
@@ -184,13 +182,13 @@ theorem gram_cols {p q : Type} (x : p → V.V) (y : q → V.V) :
   simp only [Matrix.mul_apply, Finset.sum_mul]; rfl
 
 /- English proof (translation)
-Establish `sy : ∀ x y, V.hT y x = star (V.hT x y)` using `fun x y => (V.herm.eq x y).symm`. Establish `kk : ∀ {p q : ℕ} (x : Fin p → V.V) (y : Fin q → V.V), (cT (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR R hc.sig) ((cols V x).map (inclR (F` using `F) R)) * JR (F := F) R V.gram : Matrix (Fin _) (Fin V.rank) (R ⊗[F] E)) * (cols V y).map (inclR (F := F) R) = (of fun i j => V.hT (x i) (y j)).map (inclR (F := F) R) := fun x y => by rw [AutFunCounterexample.cT_map_gen, JR, ← Matrix.map_mul, ← Matrix.map_mul, gram_cols]`. Establish `k0 : ∀ {p q : ℕ} (x : Fin p → V.V) (y : Fin q → V.V), (∀ i j, V.hT (x i) (y j) = 0) → (cT (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR R hc.sig) ((cols V x).map (inclR (F` using `F) R)) * JR (F := F) R V.gram : Matrix (Fin _) (Fin V.rank) (R ⊗[F] E)) * (cols V y).map (inclR (F := F) R) = (0 : Matrix _ _ (R ⊗[F] E)) := fun x y h => by`. Rewrite using `[kk]`. Conclude with `Matrix.ext fun i j => (congrArg (inclR R) (h i j)).trans (map_zero _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `k1 : ∀ (x y : Fin k → V.V), (∀ i j, V.hT (x i) (y j) = if i = j then 1 else 0) → (cT (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR R hc.sig) ((cols V x).map (inclR (F` using `F) R)) * JR (F := F) R V.gram : Matrix (Fin _) (Fin V.rank) (R ⊗[F] E)) * (cols V y).map (inclR (F := F) R) = (1 : Matrix _ _ (R ⊗[F] E)) := fun x y h => by`. Rewrite using `[kk, show (of fun i j => V.hT (x i) (y j)) = 1 from Matrix.ext h, Matrix.map_one _ (map_zero _) (map_one _)]`. Use `exists_majorant _ _ _ _ ((cols V fun i => ι (V'.frame i)).map (inclR (F := F) R) * c) (algebraMap R _ ρ) ?_ ?_ (k0 _ _ ee) (k0 _ _ ff) (k1 _ _ fun i j => ?_) (k1 _ _ fe) ?_ ?_ ?_ ?_ ε ?_ hr` and prove the remaining obligations. Simplify using `[Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR]`. Rewrite using `[← map_ofNat (algebraMap R (R ⊗[F] E)) 2, ← map_mul, ← map_mul, hρ, map_one]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `rw [sy, fe]; by_cases h : i = j <;> simp [h, eq_comm]`. Rewrite using `[cT_mul, Matrix.mul_assoc (cT _ c), Matrix.mul_assoc (cT _ c), k0 _ _ fun _ _ => he _ _, Matrix.mul_zero]`. Rewrite using `[cT_mul, Matrix.mul_assoc (cT _ c), Matrix.mul_assoc (cT _ c), k0 _ _ fun _ _ => hf _ _, Matrix.mul_zero]`. Rewrite using `[← Matrix.mul_assoc, k0 _ _ fun _ _ => by rw [sy, he, star_zero], Matrix.zero_mul]`. Rewrite using `[← Matrix.mul_assoc, k0 _ _ fun _ _ => by rw [sy, hf, star_zero], Matrix.zero_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[cT_mul, ← hcc, ← Matrix.mul_assoc, Matrix.mul_assoc (cT _ c), Matrix.mul_assoc (cT _ c), kk]`. Conclude with `congrArg (fun X : Matrix _ _ E => cT _ c * X.map (inclR (F := F) R) * c) (Matrix.ext fun i j => hι _ _)`.
+A detailed English derivation is pending.
 -/
 theorem exists_majorant_of_frame (V' : HSpace E) (ι : V'.V →ₗ[E] V.V) (hι : HSpace.IsIsomEmb V' V ι) {k : ℕ}
     (e f : Fin k → V.V) (ee : ∀ a b, V.hT (e a) (e b) = 0) (ff : ∀ a b, V.hT (f a) (f b) = 0)
@@ -228,11 +226,11 @@ theorem exists_majorant_of_frame (V' : HSpace E) (ι : V'.V →ₗ[E] V.V) (hι 
     exact congrArg (fun X : Matrix _ _ E => cT _ c * X.map (inclR (F := F) R) * c) (Matrix.ext fun i j => hι _ _)
 
 /- English proof (translation)
-Establish `hc1 : cT σ (1 + B * (P - 1) * Q) = 1 + cT σ Q * (cT σ P - 1) * cT σ B`. Establish `e1 : cT σ (P - 1) = cT σ P - cT σ 1` using `Matrix.ext fun _ _ => map_sub σ _ _`. Establish `e2 : ∀ X : Matrix n n A, cT σ (1 + X) = cT σ 1 + cT σ X` using `fun X => Matrix.ext fun _ _ => map_add σ _ _`. Rewrite using `[e2, cT_one, cT_mul, cT_mul, e1, cT_one, Matrix.mul_assoc]`. Establish `h3 : ∀ X : Matrix m n A, J * (B * X) = cT σ Q * (S * X)` using `fun X => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Matrix.mul_assoc, h2, Matrix.mul_assoc]`. Establish `h4 : ∀ X : Matrix m n A, Q * (B * X) = X` using `fun X => by rw [← Matrix.mul_assoc, hQB, Matrix.one_mul]`. Establish `h5` using `congrArg (fun X => cT σ Q * (X * Q)) hP`. Rewrite using `[hc1, Matrix.add_mul, Matrix.one_mul, Matrix.mul_assoc _ (cT σ B), h1]`. Simplify using `only [Matrix.mul_add, Matrix.add_mul, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, Matrix.one_mul, Matrix.mul_assoc, h3, h4] at h5 ⊢`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[h5]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem unitary_extension {A n m : Type} [CommRing A] [Fintype n] [DecidableEq n] [Fintype m] [DecidableEq m]
     (σ : A →+* A) {J : Matrix n n A} {B : Matrix n m A} {S P : Matrix m m A} {Q : Matrix m n A}
@@ -252,7 +250,7 @@ theorem unitary_extension {A n m : Type} [CommRing A] [Fintype n] [DecidableEq n
   rw [h5]; abel
 
 /- English proof (translation)
-Establish `h0` using `ε.ne_zero`. Establish `h1 : (ε : SignType) ≠ 1` using `fun e => h (Units.ext e)`. Generalize the expression as in `(ε : SignType) = s at h0 h1`. Use `revert s`. Evaluate the decidable proposition.
+Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Evaluate the decidable proposition. A detailed English derivation is pending.
 -/
 theorem sign_unit (ε : SignTypeˣ) (h : ε ≠ 1) : (ε : SignType) = -1 := by
   have h0 := ε.ne_zero
@@ -261,27 +259,25 @@ theorem sign_unit (ε : SignTypeˣ) (h : ε ≠ 1) : (ε : SignType) = -1 := by
   revert s; decide
 
 /- English proof (translation)
-Set `b : Fin (wittIndex V) × Bool → V.V` to `fun a => if a.2 then Φ.e a.1 else Φ.f a.1`. Set `τ : Equiv.Perm (Fin (wittIndex V) × Bool)` to `(Equiv.prodCongrRight fun i => if ε i = 1 then Equiv.refl Bool else Equiv.boolNot).trans (π.prodCongr (.refl _))`. Establish `hτ : ∀ i s, τ (i, s) = (π i, if ε i = 1 then s else !s)` using `fun i s => by`. Apply the tactic sequence `by_cases h : ε i = 1 <;> simp [τ, h]`. Use `clear_value τ`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Introduce a local definition for the expression.
 
-Set `σ : E →+* E` to `hc.sig`. Set `S : Matrix (Fin (wittIndex V) × Bool) (Fin (wittIndex V) × Bool) E` to `(1 : Matrix _ _ E).submatrix id ((Equiv.refl _).prodCongr Equiv.boolNot)`. Establish `fe : ∀ i j, V.hT (Φ.f i) (Φ.e j) = if i = j then 1 else 0` using `fun i j => (Φ.ef j i).trans (by simp only [eq_comm])`. Establish `ef : ∀ i j, V.hT (Φ.e i) (Φ.f j) = if i = j then 1 else 0` using `fun i j => by`. Apply the tactic sequence `rw [← V.herm.eq, fe]; by_cases h : i = j <;> simp [h, eq_comm]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `ee : ∀ i j, V.hT (Φ.e i) (Φ.e j) = 0` using `fun i j => Φ.ee j i`. Establish `ff : ∀ i j, V.hT (Φ.f i) (Φ.f j) = 0` using `fun i j => Φ.ff j i`. Establish `hB : cT σ (cols V b) * V.gram * cols V b = S`. Rewrite using `[gram_cols]`. Apply the tactic sequence `ext ⟨i, _ | _⟩ ⟨j, _ | _⟩ <;> simp [b, S, ee, ff, ef, fe, Matrix.one_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `hSS : S * S = 1`. Use `(Matrix.mul_submatrix_one (Equiv.refl _) _ S).trans ?_` and prove the remaining obligations. Use extensionality with `⟨i, s⟩ ⟨j, t⟩`. Simplify using `[S, Matrix.one_apply]`. Establish `hS : cT σ S = S`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `ext ⟨i, _ | _⟩ ⟨j, _ | _⟩ <;> simp [cT, S, Matrix.one_apply, eq_comm, apply_ite σ]`. Set `P : Matrix (Fin (wittIndex V) × Bool) (Fin (wittIndex V) × Bool) E` to `(1 : Matrix _ _ E).submatrix id τ`. Establish `hBP : cols V b * P = cols V (b ∘ τ)` using `Matrix.mul_submatrix_one (Equiv.refl _) τ _`. Establish `hP : cT σ P * S * P = S`. Rewrite using `[← hB, ← Matrix.mul_assoc, ← Matrix.mul_assoc, ← cT_mul, Matrix.mul_assoc, hBP, gram_cols, gram_cols]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `ext ⟨i, _ | _⟩ ⟨j, _ | _⟩ <;> by_cases h1 : ε i = 1 <;> by_cases h2 : ε j = 1 <;>`. Apply the tactic sequence `simp [hτ, b, ee, ff, ef, fe, h1, h2] <;> (rintro rfl; contradiction)`. Take `⟨Q, hQ⟩ : ∃ Q, Q = S * (cT σ (cols V b) * V.gram)` from `⟨_, rfl⟩`. Establish `hQB : Q * cols V b = 1` using `by rw [hQ, Matrix.mul_assoc, hB, hSS]`. Establish `h1 : cT σ (cols V b) * V.gram = S * Q` using `by rw [hQ, ← Matrix.mul_assoc S S, hSS, Matrix.one_mul]`.
+Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : V.gram * cols V b = cT σ Q * S`. Use `congrArg (cT σ) h1` as an intermediate fact. Rewrite `this` using `[cT_mul, cT_mul, AutFunCompare.cT_cT', IndefiniteRowSideFullHecke.AdelicUnitaryGroups.cT_gram, hS]`. Then use the resulting hypothesis. Establish `hw` using `unitary_extension σ h1 h2 hQB hP`. Establish `hi : V.gram⁻¹ * (cT σ (1 + cols V b * (P - 1) * Q) * V.gram) * (1 + cols V b * (P - 1) * Q) = 1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mul_assoc, hw, Matrix.nonsing_inv_mul _ (IndefiniteRowSideFullHecke.AdelicUnitaryGroups.gram_det_isUnit V)]`. Set `w : GRat hc.sig V.gram` to `⟨⟨_, _, mul_eq_one_comm.1 hi, hi⟩, hw⟩`. Establish `hwb : ∀ a, ratAct hc V w (b a) = b (τ a)` using `fun a => by`. Establish `: (1 + cols V b * (P - 1) * Q) * cols V b = cols V (b ∘ τ)`. Rewrite using `[Matrix.add_mul, Matrix.mul_assoc, hQB, Matrix.mul_one, Matrix.one_mul, Matrix.mul_sub, Matrix.mul_one, hBP, add_sub_cancel]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `V.frame.repr.injective (DFunLike.coe_injective ?_)` and prove the remaining obligations. Rewrite using `[ratAct, Matrix.repr_toLin]`. Conclude with `funext fun i => congrFun (congrFun this i) a`. Use `⟨w, fun u x hx => (Submodule.span_le (p := (Φ.sub u).comap (ratAct hc V w))).2 ?_ hx⟩` and prove the remaining obligations. Establish `hε : ∀ i, ε i ≠ 1 → (ε i : SignType) = -1` using `fun i => sign_unit (ε i)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ (⟨i, hi, rfl⟩ | ⟨i, hi, rfl⟩)`. Use `Submodule.subset_span ((hwb (i, true)).symm ▸ ?_)` and prove the remaining obligations. Distinguish the cases in `h : ε i = 1`. Conclude with `.inl ⟨π i, by simpa [invSV, h] using hi, by simp [b, hτ, h]⟩`. Conclude with `.inr ⟨π i, by simpa [invSV, hε i h, neg_eq_iff_eq_neg] using hi, by simp [b, hτ, h]⟩`.
-
-Use `Submodule.subset_span ((hwb (i, false)).symm ▸ ?_)` and prove the remaining obligations. Distinguish the cases in `h : ε i = 1`. Conclude with `.inr ⟨π i, by simpa [invSV, h] using hi, by simp [b, hτ, h]⟩`. Conclude with `.inl ⟨π i, by simpa [invSV, hε i h] using hi, by simp [b, hτ, h]⟩`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. A detailed English derivation is pending.
 -/
 theorem WittFrame.exists_isWeylRep (Φ : WittFrame V) (π : Equiv.Perm (Fin (wittIndex V)))
     (ε : Fin (wittIndex V) → SignTypeˣ) : ∃ w, Φ.IsWeylRep hc π ε w := by
@@ -346,17 +342,15 @@ theorem WittFrame.exists_isWeylRep (Φ : WittFrame V) (π : Equiv.Perm (Fin (wit
 end Arch
 
 /- English proof (translation)
-Set `ρ : Fin k → ℕ` to `fun i => (Q.filter (· i = 0)).card`. Use `⟨(Tuple.sort ρ).symm, fun i => if ∃ u ∈ Q, u i = -1 then -1 else 1, fun u hu => ?_⟩` and prove the remaining obligations. Establish `hne : (Finset.univ.filter (u · ≠ 0)).Nonempty`. Assume the negation of the conclusion as `e`. Conclude with `h.1 ((funext fun i => by_contra fun hi => e ⟨i, by simpa using hi⟩ : u = 0) ▸ hu)`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Take `⟨i₀, h0, hm⟩` from `Finset.exists_max_image _ (Tuple.sort ρ).symm hne`. Establish `h0 : u i₀ ≠ 0` using `by simpa using h0`. Use `Finset.mem_image.2 ⟨stdVec ((Tuple.sort ρ).symm i₀), Finset.mem_image_of_mem _ (Finset.mem_univ _),` and prove the remaining obligations. Use function extensionality and compare the values at `fun i => ?_⟩`. Distinguish the cases in `hi : u i = 0`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `: ρ i₀ < ρ i` using `Finset.card_lt_card ⟨fun v hv => Finset.mem_filter.2 ⟨(Finset.mem_filter.1 hv).1, by`. Break down `h.2 u hu v (Finset.mem_filter.1 hv).1 with e | e` into its components or cases. Conclude with `(h0 ((e i₀ h0).symm.trans (Finset.mem_filter.1 hv).2)).elim`. Assume the negation of the conclusion as `e'`. Conclude with `e' ((e i e').symm.trans hi)⟩,`.
+Separate the alternatives or extract the components of the hypothesis. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `fun e => h0 (Finset.mem_filter.1 (e (Finset.mem_filter.2 ⟨hu, hi⟩))).2⟩`. Establish `h2 : ¬(Tuple.sort ρ).symm i ≤ (Tuple.sort ρ).symm i₀` using `fun e => this.not_ge (by simpa using Tuple.monotone_sort ρ e)`. Simplify using `[invSV, stdVec, h2, hi]`. Establish `h2` using `hm i (by simpa using hi)`. Simplify using `only [invSV, stdVec, h2, if_true, mul_one]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable.
 
-Use `split_ifs with e`. Take `⟨v, hv, e⟩` from `e`. Break down `h.2 u hu v hv with e' | e'` into its components or cases. Conclude with `e.symm.trans (e' i hi)`. Conclude with `((e' i (by simp [e])).trans e).symm`.
-
-Establish `: u i ≠ -1` using `fun e' => e ⟨u, hu, e'⟩`. Generalize the expression as in `u i = s at hi this`. Apply the tactic sequence `cases s <;> simp_all`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem exists_subset_weylPar {k : ℕ} {Q : Finset (SV k)} (h : IsPar Q) : ∃ π ε, Q ⊆ weylPar π ε := by
   let ρ : Fin k → ℕ := fun i => (Q.filter (· i = 0)).card
@@ -391,19 +385,17 @@ theorem exists_subset_weylPar {k : ℕ} {Q : Finset (SV k)} (h : IsPar Q) : ∃ 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Take `⟨hr, ι, hι, C, hC, hM⟩` from `isWittLower_minusHyp (V := V) (le_refl (wittIndex V))`. Generalize the expression as in `minusHyp V (wittIndex V) le_rfl = V' at hr ι hι hM`. Establish `hinj : Function.Injective ι` using `(injective_iff_map_eq_zero ι).2 fun x hx => V'.nondeg.1 x fun y => by rw [← hι, hx]; simp`. Establish `key` using `fun {p q : ℕ} (x : Fin p → V.V) (y : Fin q → V.V) i j => congrFun (congrFun (gram_cols D.sp.cm V x y) i) j`. Set `e : Fin (wittIndex V) → V.V` to `fun i => AutFunCompare.vecOf V (Cᵀ i)`.
+Extract witnesses or component facts from the available result. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `eC : cols V e = C` using `Matrix.ext fun a i => AutFunCompare.repr_vecOf V _ a`. Establish `eM : (cols V fun i => ι (V'.frame i)) = Formalism.L2.Theta.frameMat V V' ι` using `Matrix.ext fun a i => (LinearMap.toMatrix_apply _ _ _ _ _).symm`. Establish `ee : ∀ a b, V.hT (e a) (e b) = 0` using `fun a b => (key e e a b).symm.trans (by rw [eC, hC.2]; rfl)`. Establish `he : ∀ a x, V.hT (ι x) (e a) = 0` using `fun a x => by`. Establish `: ∀ i, V.hT (ι (V'.frame i)) (e a) = 0` using `fun i => (key (fun i => ι (V'.frame i)) e i a).symm.trans (by rw [eC, eM, hM]; rfl)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← V'.frame.sum_repr x]`. Simplify using `only [map_sum, map_smul, map_smulₛₗ, LinearMap.sum_apply, LinearMap.smul_apply, this, smul_zero, Finset.sum_const_zero]`. Take `⟨f, ff, fe, hf, ht⟩` from `GlobalTheory.exists_hyperbolic_completion _ _ V.hT V.herm V.nondeg (LinearMap.range ι) (by rintro _ ⟨x, rfl⟩ h; rw [V'.nondeg.1 x fun y => (hι x y).symm.trans (h _ ⟨y, rfl⟩), map_zero]) _ e (linearIndependent_vecOf hC.1) ee (by rintro a _ ⟨x, rfl⟩; exact he a x) (by rw [LinearMap …`. Establish `hf' : ∀ a x, V.hT (ι x) (f a) = 0` using `fun a x => hf a _ ⟨x, rfl⟩`. Take `⟨L, h1, h2, h3⟩` from `exists_lattice D.sp.cm V V' ι hι e f ee ff fe he hf' ht`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Set `V₂ : HSp D` to `{ V with L0 := L, standardTuple_isLattice := h1, baseLattice_isUnimodular := h2 }`. Set `Φ : WittFrame V` to `⟨e, f, fun i j => ee j i, fun i j => ff j i, fun i j => (fe j i).trans (by simp only [eq_comm])⟩`. Establish `hρ : ∀ w : InfinitePlace D.host.F, ∃ ρ : w.Completion, 2 * ρ * ρ = 1` using `fun w => by`. Use `D.sp.cm.totReal` as an intermediate fact. Set `ρ` to `InfinitePlace.Completion.ringEquivRealOfIsReal (IsTotallyReal.isReal w)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Conclude with `⟨ρ.symm (√2)⁻¹, ρ.injective (by`. Rewrite using `[map_mul, map_mul, ρ.apply_symm_apply, map_ofNat, map_one, mul_assoc, ← mul_inv, Real.mul_self_sqrt zero_le_two, mul_inv_cancel₀ two_ne_zero])⟩`. Use `choose ρ hρ using hρ`. Use `choose c ε₀ hc using Frames.exists_arch_frame (isCMExt_host D) (Orb.isHermND_gram V')`. Use `choose b ε hb hb' using fun w : InfinitePlace D.host.F => exists_majorant_of_frame D.sp.cm V V' ι hι e f ee ff fe he hf' hr w.Completion (ρ w) (hρ w) _ _ (hc w)`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨a, -, ha⟩` from `Frames.exists_GL_of_components ∅ (fun _ => 1) (fun _ _ => rfl) b`. Use `⟨Φ, frameLat V₂, a, SelfDual.isLattice_frameLat V₂, SelfDual.isSelfDualAt_frameLat D V₂, fun i => ?_, fun w => ⟨ε w, ha w ▸ hb w⟩, fun w i => ?_⟩` and prove the remaining obligations. Establish `: ∀ x ∈ L, V.frame.equivFun x ∈ frameLat V₂` using `fun x hx => show V.frame.equivFun.symm (V.frame.equivFun x) ∈ L by rwa [LinearEquiv.symm_apply_apply]`. Conclude with `⟨this _ (h3 i).1, this _ (h3 i).2⟩`. Rewrite using `[map_inv, ha]`.
-
-Conclude with `funext fun a => congrFun (congrFun (hb' w) a) i`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isGood {D : D7} (V : HSp D) : ∃ (Φ : WittFrame V) (L : _) (a : _), Φ.IsGood D.sp.cm L a := by
   obtain ⟨hr, ι, hι, C, hC, hM⟩ := isWittLower_minusHyp (V := V) (le_refl (wittIndex V))
@@ -451,7 +443,7 @@ theorem exists_isGood {D : D7} (V : HSp D) : ∃ (Φ : WittFrame V) (L : _) (a :
 variable {D : D7} {V : HSp D} {Φ : WittFrame V} {K : Subgroup (GA D V)}
 
 /- English proof (translation)
-Take `⟨π, ε, e⟩` from `exists_subset_weylPar h`. Take `⟨w, hw⟩` from `Φ.exists_isWeylRep D.sp.cm V π ε`. Establish `: ∃ s : Equiv.Perm (Fin (wittIndex V)) × (Fin (wittIndex V) → SignTypeˣ) × GF V, Φ.IsWeylRep D.sp.cm s.1 s.2.1 s.2.2 ∧ Q ⊆ weylPar s.1 s.2.1` using `⟨(π, ε, w), hw, e⟩`. Conclude with `⟨_, _, _, this.choose_spec.1, this.choose_spec.2, fun x T => dif_pos this⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_Yfam_eq {Q : Finset (SV (wittIndex V))} (h : IsPar Q) : ∃ π ε w, Φ.IsWeylRep D.sp.cm π ε w ∧
     Q ⊆ weylPar π ε ∧ ∀ x T, Yfam Φ K x T Q = pr Q (Ys Φ K π ε w x T) := by
@@ -462,9 +454,9 @@ theorem exists_Yfam_eq {Q : Finset (SV (wittIndex V))} (h : IsPar Q) : ∃ π ε
   exact ⟨_, _, _, this.choose_spec.1, this.choose_spec.2, fun x T => dif_pos this⟩
 
 /- English proof (translation)
-Establish `: IsModuleTopology (AF D.host.F) (AF D.host.F ⊗[D.host.F] D.host.E)` using `⟨rfl⟩`. Establish `: IsTopologicalRing (AF D.host.F ⊗[D.host.F] D.host.E)` using `IsModuleTopology.isTopologicalRing (AF D.host.F) _`. Establish `hm : Continuous fun g : PA Φ.flag0 => (HA.mat _ D.sp.cm.sig V.gram g.1).1` using `(Units.continuous_val.comp continuous_subtype_val).comp continuous_subtype_val`. Establish `h : Continuous (Φ.chi D.sp.cm (AF D.host.F) i)`. Express the relevant statement in the definitionally equal form `Continuous fun p : PA Φ.flag0 => hR _ D.sp.cm.sig V.gram _ (act D.sp.cm V p.1 _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Simplify using `only [hR_eq, act]`. Conclude with `continuous_const.dotProduct (continuous_const.matrix_mulVec (hm.matrix_mulVec continuous_const))`. Conclude with `Doubling.continuous_absE.comp (Units.continuous_iff.2 ⟨h, h.comp continuous_inv⟩)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuous_absChi (i : Fin (wittIndex V)) : Continuous (absChi Φ i) := by
   have : IsModuleTopology (AF D.host.F) (AF D.host.F ⊗[D.host.F] D.host.E) := ⟨rfl⟩
@@ -478,7 +470,7 @@ theorem continuous_absChi (i : Fin (wittIndex V)) : Continuous (absChi Φ i) := 
   exact Doubling.continuous_absE.comp (Units.continuous_iff.2 ⟨h, h.comp continuous_inv⟩)
 
 /- English proof (translation)
-Use `Doubling.t2Space_adeleRing' (F := D.host.F)` as an intermediate fact. Conclude with `congrArg (fun r : ℝ≥0 => Real.log r) (Doubling.iwAbs_mul_of_triv (Doubling.triv_of_isCompact (Φ.flag0.isClosed_par _ _) (continuous_absChi i) hK) p hk)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mul_mem_riemannRochSpace_add (hK : IsCompact (K : Set (GA D V))) (p : PA Φ.flag0) {k : GA D V} (hk : k ∈ K) (i : Fin (wittIndex V)) :
     H0 Φ K (p * k) i = Real.log (absChi Φ i p) := by
@@ -487,7 +479,7 @@ theorem mul_mem_riemannRochSpace_add (hK : IsCompact (K : Set (GA D V))) (p : PA
     (Doubling.triv_of_isCompact (Φ.flag0.isClosed_par _ _) (continuous_absChi i) hK) p hk)
 
 /- English proof (translation)
-The claim follows from `have := h.1 Doubling.isCompact_levelAll (isCMExt_host D) _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem WittFrame.IsGood.isCompact {L : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)}
     {a : GL (Fin V.rank) (AF D.host.F ⊗[D.host.F] D.host.E)} (h : Φ.IsGood D.sp.cm L a) :

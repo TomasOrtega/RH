@@ -31,27 +31,27 @@ def stdE (L : LvDat C0 CE1 CE2 mu X β) (j : Fin (numSeg X.TT)) : MonH X :=
     nPart C0 CE1 CE2 X β j
 
 /- English proof (translation)
-Establish `hd : digitMon (KK O) C0 CE1 CE2 X j (β j) = monomial (∑ i : Fin (segS X.TT j), ∑ c : Fin (X.m + 1), (Finsupp.single ((topOdd X j i, true), c) ((β j).rz i c) + Finsupp.single ((topOdd X j i, false), c) ((β j).ry i c))) 1`. Unfold `digitMon`. Rewrite using `[monomial_sum_one]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[monomial_sum_one]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[X_pow_eq_monomial, X_pow_eq_monomial, monomial_mul, one_mul]`. Establish `hs : sTopMon (KK O) X.p C0 CE1 CE2 X j (β j) = monomial (∑ i : Fin (segS X.TT j), if (i : ℕ) < (X.seg C0 CE1 CE2 j).sigma then Finsupp.single ((topOdd X j i, true), (0 : Fin (X.m + 1))) ((X.seg C0 CE1 CE2 j).P X.p i * (coarseA X.p (X.seg C0 CE1 CE2 j) (β j) i - (β j).w i)) + Fins …`. Unfold `sTopMon`. Rewrite using `[monomial_sum_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `split_ifs`. Rewrite using `[X_pow_eq_monomial, X_pow_eq_monomial, monomial_mul, one_mul]`. Simplify using the standard rewrite rules. Establish `hu : (∏ l : Fin (BDk C0 CE1 CE2 mu X β j).T.t, ioD O C0 CE1 CE2 mu X β j (MvPolynomial.X (scalZ (2 * segS X.TT j + 1) X.m (BDk C0 CE1 CE2 mu X β j).T.t (Fin.castSucc l))) ^ (BDk C0 CE1 CE2 mu X β j).T.z l) = monomial (∑ i : Fin (segS X.TT j), if (i : ℕ) < (X.seg C0 CE1 CE2 j).sig …`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[← uTop_sum (X.seg C0 CE1 CE2 j) (fun i => Finsupp.single ((topOdd X j i, true), (0 : Fin (X.m + 1))) ((X.seg C0 CE1 CE2 j).P X.p i * (coarseA X.p (X.seg C0 CE1 CE2 j) (β j) i - (β j).o i))), monomial_sum_one]`. Use `Finset.prod_congr rfl fun l _ => ?_` and prove the remaining obligations. Unfold `scalZ`. Rewrite using `[ioD_scal, ← pow_mul, X_pow_eq_monomial]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hx : ioD O C0 CE1 CE2 mu X β j (MvPolynomial.X (scalZ (2 * segS X.TT j + 1) X.m (BDk C0 CE1 CE2 mu X β j).T.t (Fin.last (BDk C0 CE1 CE2 mu X β j).T.t))) ^ (BDk C0 CE1 CE2 mu X β j).zPlus = monomial (Finsupp.single ((topEnd X j, true), (0 : Fin (X.m + 1))) (segAPlus X.TT X.aT j - …`. Unfold `scalZ`. Rewrite using `[ioD_scalLast, X_pow_eq_monomial]`. Both sides reduce to the same expression. Establish `hxi : (∏ c, ioD O C0 CE1 CE2 mu X β j (MvPolynomial.X (xiVar (2 * segS X.TT j + 1) X.m (BDk C0 CE1 CE2 mu X β j).T.t c)) ^ L.γ j c) = monomial (∑ c : Fin X.m, Finsupp.single ((topEnd X j, false), c.succ) (L.γ j c)) 1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[monomial_sum_one]`. Use `Finset.prod_congr rfl fun c _ => ?_` and prove the remaining obligations. Unfold `xiVar`. Rewrite using `[ioD_end β j 1 (by omega) _ (by rfl), X_pow_eq_monomial]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Replace the relevant objects with their definitions.
 
-Unfold `LvDat.stdPoly`. Simplify using `only [map_mul, map_prod, map_pow]`. Rewrite using `[hd, hs, hu, hx, hxi]`. Simplify using `only [monomial_mul, one_mul]`. Use `congr 1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions.
 
-Unfold `stdE rPl zPart nPart`. Establish `hi : ∀ i : Fin (segS X.TT j), (∑ c : Fin (X.m + 1), (Finsupp.single ((topOdd X j i, true), c) ((β j).rz i c) + Finsupp.single ((topOdd X j i, false), c) ((β j).ry i c))) + (if (i : ℕ) < (X.seg C0 CE1 CE2 j).sigma then Finsupp.single ((topOdd X j i, true), (0 : Fin (X.m + 1))) ((X …`. Introduce `i`. Rewrite using `[Fin.sum_univ_succ, Finset.sum_add_distrib, Finsupp.single_add]`. Distinguish the cases in `h : (i : ℕ) < (X.seg C0 CE1 CE2 j).sigma`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify using `only [if_pos h]`. Normalize the expressions using the abelian group laws. Simplify using `only [if_neg h, hsg i h, mul_zero, Finsupp.single_zero]`. Normalize the expressions using the abelian group laws. Establish `hsum` using `Finset.sum_congr (s₁ := (Finset.univ : Finset (Fin (segS X.TT j)))) rfl (fun i _ => hi i)`.
+Normalize the expressions using the abelian group laws. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Finset.sum_add_distrib] at hsum`. Simplify using `only [Finset.sum_add_distrib] at hsum ⊢`. Establish `key : ∀ (a b c d e x y u1 u2 u3 : MonH X), u1 + u2 + u3 = a + b + c + d + e → u1 + u2 + (u3 + x + y) = a + b + y + x + c + (d + e)`. Introduce `a b c d e x y u1 u2 u3 h`. Establish `: u1 + u2 + (u3 + x + y) = (u1 + u2 + u3) + (x + y)` using `by abel`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, h]`. Normalize the expressions using the abelian group laws. Rewrite using `[key _ _ _ _ _ _ _ _ _ _ hsum]`.
+Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stdPoly_eq (O : Type) [CommRing O] [IsDomain O] (L : LvDat C0 CE1 CE2 mu X β) (j : Fin (numSeg X.TT))
     (hsg : ∀ i : Fin (segS X.TT j), ¬ (i : ℕ) < (X.seg C0 CE1 CE2 j).sigma → (β j).sg i = 0) :

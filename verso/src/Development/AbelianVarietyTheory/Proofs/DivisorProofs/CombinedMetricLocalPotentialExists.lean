@@ -17,7 +17,7 @@ namespace GlobalTheory.CombPot
 variable {F : Type} [Field F] [NumberField F] {Y : Var F}
 
 /- English proof (translation)
-Take `⟨g, hg, hu⟩` from `h`. Take `⟨U, hU, hU'⟩` from `hg.exists_nhds`. Take `⟨V, hV, hV'⟩` from `hu.exists_nhds`. Conclude with `⟨U ⊓ V, ⟨hU, hV⟩, fun y hy => ⟨g, hU' y hy.1, hV' y hy.2⟩⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem generatesAt_exists_nhds {D : Y.Dv} {x : Y.X} {f : Y.Fn} (h : D.GeneratesAt x f) :
     ∃ U : Y.X.Opens, x ∈ U ∧ ∀ y ∈ U, D.GeneratesAt y f := by
@@ -27,43 +27,37 @@ theorem generatesAt_exists_nhds {D : Y.Dv} {x : Y.X} {f : Y.Fn} (h : D.Generates
   exact ⟨U ⊓ V, ⟨hU, hV⟩, fun y hy => ⟨g, hU' y hy.1, hV' y hy.2⟩⟩
 
 /- English proof (translation)
-Introduce `F _ _ Y e M I ι _ Mb ρ t g a Q hC hQ hg`. Take `⟨q, b, hq, hqt, hD, hN, -⟩` from `hC`. Use `choose f hf using fun i => (hQ i).1`. Use `set σ := I.ε a with hσ`. Set `fM : M.X a → Y.Fn` to `fun x => genAt Mb.D (under (I.pt a x))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hfM : ∀ x, Mb.D.GeneratesAt (under (I.pt a x)) (fM x)` using `fun x => generatesAt_genAt _ _`. Set `h : M.X a → Y.Fn` to `fun x => fM x ^ q / ∏ i, f i x ^ b i`. Establish `hh : ∀ x, UnitAt (under (I.pt a x)) (h x)` using `fun x => GlobalTheory.T.unit_at_of_divisor_relation F Y ι Mb.D (fun i => (ρ i).D) q b _ (fM x) (fun i => f i x) hD (hfM x) (fun i => by simpa using ((hf i x x ((Q i).mem_U x)).1))`. Use `choose W hWo hxW G hG hGe using fun x => GlobalTheory.T.log_norm_unit_locally_harmonic F Y e M I a (h x) x (hh x)`. Use `choose V hxV hV using fun x => generatesAt_exists_nhds (hfM x)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `set K : ℝ := (q : ℝ) * ((Mb.n : ℕ) : ℝ) * Mb.ci (InfinitePlace.mk σ) - ∑ i, (b i : ℝ) * (((ρ i).n : ℕ) : ℝ) * (ρ i).ci (InfinitePlace.mk σ) with hK`. Use `set u : M.X a → ℝ := fun z => ((Mb.n : ℕ) : ℝ) * g σ (I.pt a z) with hu`. Establish `hus : (M.A a).Smooth u` using `fun j => contDiffOn_const.mul (hg j)`. Use `set P := InhabCalc.combPot Q (fun i => (b i : ℝ) / q) u with hP`. Establish `hPpot : IsPotential (M.A a) P` using `InhabCalc.isPotential_combPot _ Q (fun i => (hQ i).2) _ u hus`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `QM : LocPot (M.X a)` to `{ U := fun x => (⋂ i, (Q i).U x) ∩ W x ∩ (I.pt a) ⁻¹' ptsIn Y.str σ (V x) isOpen_U := fun x => ((isOpen_iInter_of_finite fun i => (Q i).isOpen_U x).inter (hWo x)).inter ((isOpen_ptsIn _).preimage (I.pt a).continuous) mem_U := fun x => ⟨⟨Set.mem_iInter.2 fun i => (Q i).mem_U x, hx …`. Establish `hqpos : (0 : ℝ) < q` using `Nat.cast_pos.2 hq`. Establish `hform : ∀ x, ∀ y ∈ QM.U x, QM.φ x y = P.φ x y + (-(q : ℝ)⁻¹) * (G x y + (K : ℂ)).re`. Introduce and unpack `x y ⟨⟨hy1, hy2⟩, hy3⟩`. Establish `hyi : ∀ i, y ∈ (Q i).U x` using `fun i => Set.mem_iInter.1 hy1 i`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgM : Mb.D.GeneratesAt (under (I.pt a y)) (fM x)` using `hV x _ (mem_ptsIn.1 hy3)`. Establish `hgi : ∀ i, (ρ i).D.GeneratesAt (under (I.pt a y)) (f i x)` using `fun i => by`. Simplify using `using (hf i x y (hyi i)).1`. Establish `hk` using `GlobalTheory.T.unit_at_of_divisor_relation F Y ι Mb.D (fun i => (ρ i).D) q b (under (I.pt a y)) _ _ hD (generatesAt_genAt _ _) (fun i => generatesAt_genAt (ρ i).D _)`. Establish `hh'` using `GlobalTheory.T.unit_at_of_divisor_relation F Y ι Mb.D (fun i => (ρ i).D) q b (under (I.pt a y)) (fM x) (fun i => f i x) hD hgM hgi`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `e` using `GlobalTheory.T.log_adelic_metric_divisor_relation F Y ι Mb ρ q b σ (I.pt a y) (g σ (I.pt a y)) (fM x) (fun i => f i x) (hN σ _).1 (fun i => by simpa using (hf i x y (hyi i)).2.1) (hN σ _).2 hgM hgi hk hh'`. Establish `eQ : ∀ i, lnN ((ρ i).m σ) (f i x) (I.pt a y) = -(Q i).φ x y` using `fun i => by`. Use `(hf i x y (hyi i)).2.2` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using `only [eQ] at e`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `e` using `[hGe x y hy2]`. Use `show -lnN (Mb.m σ) (fM x) (I.pt a y) = (∑ i, (b i : ℝ) / q * (Q i).φ x y + u y) + _`. Simplify using `only [hu, Complex.add_re, Complex.ofReal_re]`. Rewrite `e` using `[← hK]`. Establish `hs : ∑ i, (b i : ℝ) / q * (Q i).φ x y = (∑ i, (b i : ℝ) * (Q i).φ x y) / q`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Rewrite using `[Finset.sum_div]; exact Finset.sum_congr rfl fun i _ => by ring`. Establish `hs2 : ∑ i, (b i : ℝ) * -(Q i).φ x y = -∑ i, (b i : ℝ) * (Q i).φ x y`. Rewrite using `[← Finset.sum_neg_distrib]; exact Finset.sum_congr rfl fun i _ => by ring`. Rewrite `e` using `[hs2]`. Rewrite using `[hs]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Clear the denominators using the available nonvanishing facts. Take the linear combination `-e`. Establish `hUP : ∀ x, QM.U x ⊆ P.U x` using `fun x y hy => hy.1.1`. Establish `hUW : ∀ x, QM.U x ⊆ W x` using `fun x y hy => hy.1.2`. Establish `hGs : ∀ x j, ContDiffOn ℝ (⊤ : ℕ∞) (fun v => (G x (((M.A a).chart j).symm v) + (K : ℂ)).re) (((M.A a).chart j).target ∩ ((M.A a).chart j).symm ⁻¹' W x)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `x j`. Establish `h1 : ContDiffOn ℂ (⊤ : ℕ∞) (G x ∘ ((M.A a).chart j).symm) (((M.A a).chart j).target ∩ ((M.A a).chart j).symm ⁻¹' W x)` using `(hG x j).contDiffOn (((M.A a).chart j).isOpen_inter_preimage_symm (hWo x)).uniqueDiffOn`. Conclude with `Complex.reCLM.contDiff.comp_contDiffOn ((h1.restrict_scalars ℝ).add contDiffOn_const)`. Use `⟨QM, fun x => ⟨fM x, fun y hy => ⟨hV x _ (mem_ptsIn.1 hy.2), (hN σ _).1, rfl⟩⟩, ⟨fun x j => ?_, fun x x' y hy => ?_⟩, fun j y hy w => ?_⟩` and prove the remaining obligations. Establish `h1` using `(hPpot.1 x j).mono (Set.inter_subset_inter_right _ (Set.preimage_mono (hUP x)))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `h2` using `(hGs x j).mono (Set.inter_subset_inter_right _ (Set.preimage_mono (hUW x)))`. Use `(h1.add ((contDiffOn_const (c := -(q : ℝ)⁻¹)).mul h2)).congr fun v hv => ?_` and prove the remaining obligations. Conclude with `hform x _ hv.2`. Take `⟨W1, hW1, hyW1, G1, hG1, hG1e⟩` from `hPpot.2 x x' y ⟨hUP x hy.1, hUP x' hy.2⟩`. Use `⟨W1 ∩ W x ∩ W x', (hW1.inter (hWo x)).inter (hWo x'), ⟨⟨hyW1, hUW x hy.1⟩, hUW x' hy.2⟩, fun z => G1 z + ((-(q : ℝ)⁻¹ : ℝ) : ℂ) * (G x z - G x' z), fun j => ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Introduce `v hv`. Establish `a1` using `hG1 j v ⟨hv.1, hv.2.1.1⟩`. Establish `a2` using `hG x j v ⟨hv.1, hv.2.1.2⟩`. Establish `a3` using `hG x' j v ⟨hv.1, hv.2.2⟩`. Conclude with `a1.add (analyticAt_const.mul (a2.sub a3))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `z ⟨⟨hz, hz1⟩, hz2⟩`. Rewrite using `[hform x z hz1, hform x' z hz2]`. Use `hG1e z ⟨⟨hz.1.1, hUP x hz1⟩, hUP x' hz2⟩` as an intermediate fact. Simplify using `only [Complex.add_re, Complex.sub_re, Complex.mul_re, Complex.ofReal_re, Complex.ofReal_im, zero_mul, sub_zero]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set x0 := ((M.A a).chart j).symm y with hx0`. Establish `hS : IsOpen (((M.A a).chart j).target ∩ ((M.A a).chart j).symm ⁻¹' QM.U x0)` using `((M.A a).chart j).isOpen_inter_preimage_symm (QM.isOpen_U x0)`. Establish `hyS : y ∈ ((M.A a).chart j).target ∩ ((M.A a).chart j).symm ⁻¹' QM.U x0` using `⟨hy, QM.mem_U x0⟩`. Establish `hev : (QM.φ x0 ∘ ((M.A a).chart j).symm) =ᶠ[nhds y] fun v => (P.φ x0 ∘ ((M.A a).chart j).symm) v + (-(q : ℝ)⁻¹) * (G x0 (((M.A a).chart j).symm v) + (K : ℂ)).re` using `by filter_upwards [hS.mem_nhds hyS] with v hv`. Conclude with `hform x0 _ hv.2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hP2 : ContDiffAt ℝ 2 (P.φ x0 ∘ ((M.A a).chart j).symm) y` using `GlobalTheory.LeviOnly.pot_two hPpot x0 j hy (P.mem_U x0)`. Establish `hGa : AnalyticAt ℂ (fun v => G x0 (((M.A a).chart j).symm v) + (K : ℂ)) y` using `(hG x0 j y ⟨hy, hUW x0 (QM.mem_U x0)⟩).add analyticAt_const`. Establish `hRe2 : ContDiffAt ℝ 2 (fun v => (G x0 (((M.A a).chart j).symm v) + (K : ℂ)).re) y` using `Complex.reCLM.contDiff.contDiffAt.comp y (hGa.restrictScalars (𝕜 := ℝ)).contDiffAt`. Establish `e1 : leviAt (M.A a) QM j y w = leviAt (M.A a) P j y w` using `by show levi (QM.φ x0 ∘ ((M.A a).chart j).symm) y w = levi (P.φ x0 ∘ ((M.A a).chart j).symm) y w`. Rewrite using `[levi_congr hev, levi_add_smul _ hP2 hRe2, levi_re_analytic hGa, mul_zero, add_zero]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2` using `LeviFormCombination.GlobalTheory.CompanionTheory.LeviComb.leviAt_combPot e (M.X a) (M.A a) ι Q (fun i => (b i : ℝ) / q) u (fun i => (hQ i).2) hus j y hy w`. Establish `hg2 : ContDiffAt ℝ 2 ((fun z => g σ (I.pt a z)) ∘ ((M.A a).chart j).symm) y` using `((hg j).contDiffAt ((((M.A a).chart j).isOpen_inter_preimage_symm isOpen_univ).mem_nhds ⟨hy, Set.mem_univ _⟩)).of_le (WithTop.coe_le_coe.2 le_top)`. Establish `e3 : leviAt (M.A a) (LocPot.ofFun u) j y w = ((Mb.n : ℕ) : ℝ) * leviAt (M.A a) (LocPot.ofFun fun z => g σ (I.pt a z)) j y w`. Establish `h0 : levi (fun _ : Fin e → ℂ => (0 : ℝ)) y w = 0` using `by simp [levi]`. Use `levi_add_smul ((Mb.n : ℕ) : ℝ) (contDiffAt_const (c := (0 : ℝ))) hg2 w` as an intermediate fact.
-
-Rewrite `this` using `[h0, zero_add]`. Simplify using `only [zero_add] at this`. Conclude with `this`. Rewrite using `[e1, e2, e3, mul_add, Finset.mul_sum]`. Use `congr 1`.
-
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `hn : (0 : ℝ) < (((ρ i).n : ℕ) : ℝ)` using `Nat.cast_pos.2 (ρ i).n.pos`. Establish `hc : (b i : ℝ) / q = ((Mb.n : ℕ) : ℝ) * t i / (((ρ i).n : ℕ) : ℝ)`. Rewrite using `[div_eq_div_iff hqpos.ne' hn.ne']`. Take the linear combination `-(hqt i)`.
-
-Rewrite using `[hc]`. Expand and normalize the polynomial expressions, which then agree.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_pot_comb : ∀ (F : Type) [Field F] [NumberField F] (Y : Var F) (e : ℕ) (M : Man e) (I : ManIs M Y) (ι : Type) [Fintype ι] (Mb : Adl (cxSt F) Y) (ρ : ι → Adl (cxSt F) Y) (t : ι → ℝ) (g : ∀ σ, Pts Y σ → ℝ) (a : Fin (M.n + 1)) (Q : ι → LocPot (M.X a)), IsComb Mb ρ t g → (∀ i, IsPot (I.pt a) ((ρ i).m (I.ε a)) (Q i) ∧ IsPotential (M.A a) (Q i)) → (M.A a).Smooth (fun z => g (I.ε a) (I.pt a z)) → ∃ QM : LocPot (M.X a), IsPot (I.pt a) (Mb.m (I.ε a)) QM ∧ IsPotential (M.A a) QM ∧ ∀ j, ∀ y ∈ ((M.A a).chart j).target, ∀ w, leviAt (M.A a) QM j y w = ((Mb.n : ℕ) : ℝ) * (∑ i, t i / (((ρ i).n : ℕ) : ℝ) * leviAt (M.A a) (Q i) j y w + leviAt (M.A a) (LocPot.ofFun fun z => g (I.ε a) (I.pt a z)) j y w) := by
   intro F _ _ Y e M I ι _ Mb ρ t g a Q hC hQ hg

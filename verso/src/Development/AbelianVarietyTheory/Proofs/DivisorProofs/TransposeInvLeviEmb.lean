@@ -18,7 +18,7 @@ namespace GlobalTheory.DetEqv
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Set `e : Matrix (Fin n) (Fin d) k ≃ₜ Matrix (Fin n) (Fin d) k` to `{ toFun := fun X => X * (A : Matrix (Fin d) (Fin d) k) invFun := fun X => X * ((A⁻¹ : GL (Fin d) k) : Matrix (Fin d) (Fin d) k) left_inv := fun X => by simp [Matrix.mul_assoc] right_inv := fun X => by simp [Matrix.mul_assoc] continuous_toFun := continuous_id.matrix_mul continuous …`. Use `⟨(IsLocallyConstant.const c).mul (hΦ.1.comp_continuous e.continuous), ?_⟩` and prove the remaining obligations. Conclude with `(hΦ.2.comp_homeomorph e).mul_left`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem mul_right_mem_SB {n d : ℕ} (c : ℂ) (A : GL (Fin d) k) (Φ : Matrix (Fin n) (Fin d) k → ℂ)
     (hΦ : Φ ∈ SB (Matrix (Fin n) (Fin d) k)) :
@@ -34,7 +34,7 @@ theorem mul_right_mem_SB {n d : ℕ} (c : ℂ) (A : GL (Fin d) k) (Φ : Matrix (
   exact (hΦ.2.comp_homeomorph e).mul_left
 
 /- English proof (translation)
-The claim follows from `| 0 => GlobalTheory.T.determinant_vanishing_at_zero k | n + 1 => by intro Y _ m hm μ hμ L hL obtain ⟨m', rfl⟩ : ∃ m', m = m' + 1 := ⟨m - 1, by omega⟩ exact GlobalTheory.T.invariant_functional_large_rank_vanish k n (vanishAt_all n) Y (m' + 1) hm μ hμ L hL (fun Φ hΦ => GlobalTheory …`.
+A detailed English derivation is pending.
 -/
 theorem vanishAt_all : ∀ n : ℕ, VanishAt k n
   | 0 => GlobalTheory.T.determinant_vanishing_at_zero k
@@ -46,11 +46,11 @@ theorem vanishAt_all : ∀ n : ℕ, VanishAt k n
         GlobalTheory.T.split_weil_equivariant_functional_unique k n (vanishAt_all n) Y m' (by omega) μ hμ L hL Φ' hΦ') Φ hΦ)
 
 /- English proof (translation)
-Rewrite using `[← map_inv, ← Pi.mulSingle_inv]`. Use extensionality with `i j`. Take `⟨⟨a, i⟩, rfl⟩` from `(GlobalTheory.ThK.MidJac.e2 x x').surjective i`. Take `⟨⟨b, j⟩, rfl⟩` from `(GlobalTheory.ThK.MidJac.e2 x x').surjective j`. Rewrite using `[Matrix.transpose_apply]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Rewrite using `[leviEmb_apply_same, leviEmb_apply_same]`. Distinguish the cases in `ha : a = 1`. Substitute `ha` using the available equality.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[Pi.mulSingle_eq_same, Pi.mulSingle_eq_same, GlobalTheory.SplitFlip.invT_inv_val, Matrix.transpose_apply]`. Rewrite using `[Pi.mulSingle_eq_of_ne ha, Pi.mulSingle_eq_of_ne ha]`. Simplify using `[Matrix.one_apply, eq_comm]`. Rewrite using `[leviEmb_apply_ne _ _ _ (Ne.symm hab), leviEmb_apply_ne _ _ _ hab]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem transpose_inv_leviEmb (x x' : ℕ) (g : GL (Fin (![x, x'] 1)) k) :
     (((leviEmb k (GlobalTheory.ThK.MidJac.e2 x x') (Pi.mulSingle (1 : Fin 2) (GlobalTheory.SplitFlip.invT g)))⁻¹ :
@@ -77,39 +77,37 @@ end GlobalTheory.DetEqv
 namespace GlobalTheory.DetEqv
 
 /- English proof (translation)
-Simplify using `[modExp, Finset.sum_filter, Fin.sum_univ_two]`.
+Simplify using the standard rewrite rules.
 -/
 theorem modExp_two_one (x x' : ℕ) : modExp (fun a : Fin 2 => Fin (![x, x'] a)) 1 = -(x : ℤ) := by
   simp [modExp, Finset.sum_filter, Fin.sum_univ_two]
 
 /- English proof (translation)
-Introduce `k _ _ _ _ x x' n hn α β _ _ hαβ T hT`. Set `L : SB (Matrix (Fin n) (Fin (x + x')) k) →ₗ[ℂ] ℂ` to `{ toFun := fun Φ => (T Φ).1.1 1 map_add' := fun Φ Ψ => by simp only [map_add]; rfl map_smul' := fun c Φ => by simp only [map_smul]; rfl }`. Establish `hmod : ∀ (h : GL (Fin (x + x')) k) (Φ : SB (Matrix (Fin n) (Fin (x + x')) k)), ∃ Φ' : SB (Matrix (Fin n) (Fin (x + x')) k), ∀ X, (Φ' : Matrix (Fin n) (Fin (x + x')) k → ℂ) X = (α (Matrix.GeneralLinearGroup.det h) : ℂ) * ((nabs k (Matrix.GeneralLinearGroup.det h) ^ (-(n : ℝ) / 2) …` using `fun h Φ => ⟨⟨_, mul_right_mem_SB ((α (Matrix.GeneralLinearGroup.det h) : ℂ) * ((nabs k (Matrix.GeneralLinearGroup.det h) ^ (-(n : ℝ) / 2) : ℝ) : ℂ)) (GlobalTheory.SplitFlip.invT h) _ Φ.2⟩, fun X => rfl⟩`. Establish `hval : ∀ (h : GL (Fin (x + x')) k) (Φ Φ' : SB (Matrix (Fin n) (Fin (x + x')) k)), (∀ X, (Φ' : Matrix (Fin n) (Fin (x + x')) k → ℂ) X = (α (Matrix.GeneralLinearGroup.det h) : ℂ) * ((nabs k (Matrix.GeneralLinearGroup.det h) ^ (-(n : ℝ) / 2) : ℝ) : ℂ) * (Φ : Matrix (Fin n) (Fin (x + …`. Introduce `h Φ Φ' hΦ'`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show (T Φ').1.1 1 = _`. Rewrite using `[hT h Φ Φ' hΦ']`. Use `show (parInd _ _ h (T Φ)).1.1 1 = _`. Rewrite using `[parInd_apply, one_mul]`. Establish `hL : L = 0`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `GlobalTheory.T.split_weil_equivariant_functional_block k x x' n (vanishAt_all n) hn (α * β⁻¹ * absPow k (((x : ℂ) - n) / 2)) ?_ L ?_` and prove the remaining obligations. Introduce `t ht`. Apply `hαβ (t - ((x : ℝ) - n) / 2)` to reduce the goal to its premises. Rewrite using `[show (((t - ((x : ℝ) - n) / 2 : ℝ)) : ℂ) = (t : ℂ) + -(((x : ℂ) - n) / 2) by push_cast; ring, absPow_add, absPow_neg, ← ht, mul_inv_cancel_right]`. Introduce `g Φ Φ' hΦ' set u := GlobalTheory.SplitFlip.invT g with hu set h := leviEmb k (GlobalTheory.ThK.MidJac.e2 x x') (Pi.mulSingle (1 : Fin 2) u) with hh`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨Φ₁, hΦ₁⟩` from `hmod h Φ`. Use `set c : ℂ := (α (Matrix.GeneralLinearGroup.det h) : ℂ) * ((nabs k (Matrix.GeneralLinearGroup.det h) ^ (-(n : ℝ) / 2) : ℝ) : ℂ) with hc`. Establish `e1 : Φ₁ = c • Φ'`. Use `Subtype.ext (funext fun X => ?_)` and prove the remaining obligations. Rewrite using `[hΦ₁, hh, hu, transpose_inv_leviEmb, ← hΦ']`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Both sides reduce to the same expression. Establish `h1` using `hval h Φ Φ₁ hΦ₁`. Rewrite `h1` using `[e1, map_smul, smul_eq_mul]`. Establish `h2` using `parInd_law (GlobalTheory.ThK.MidJac.e2 x x') (ofChar (GlobalTheory.ThK.DetProd.twoDet x x' α β)) (T Φ) ⟨h, leviEmb_mem_parab k _ _⟩ 1`. Rewrite `h2` using `[mul_one]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `(T Φ).1.1 h = _ at h2`. Rewrite `h2` using `[leviProj_leviEmb, ofChar_apply]`. Establish `hdh : Matrix.GeneralLinearGroup.det h = (Matrix.GeneralLinearGroup.det g)⁻¹`. Rewrite using `[hh, det_leviEmb, Fin.prod_univ_two, Pi.mulSingle_eq_same, Pi.mulSingle_eq_of_ne (by decide), map_one, one_mul, hu]`. Conclude with `GlobalTheory.SplitFlip.gdet_invT g`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hdu : Matrix.GeneralLinearGroup.det u = (Matrix.GeneralLinearGroup.det g)⁻¹`. Rewrite using `[hu]`. Conclude with `GlobalTheory.SplitFlip.gdet_invT g`. Establish `hδ : deltaHalf k (fun a : Fin 2 => Fin (![x, x'] a)) (Pi.mulSingle (1 : Fin 2) u) = absPow k (((-(x : ℤ) : ℤ) : ℂ) / 2) (Matrix.GeneralLinearGroup.det u)`. Rewrite using `[deltaHalf_apply, Fin.prod_univ_two, Pi.mulSingle_eq_same, Pi.mulSingle_eq_of_ne (by decide), map_one, map_one, one_mul, modExp_two_one]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `htw : GlobalTheory.ThK.DetProd.twoDet x x' α β (Pi.mulSingle (1 : Fin 2) u) = β (Matrix.GeneralLinearGroup.det u)`. Express the relevant statement in the definitionally equal form `α (Matrix.GeneralLinearGroup.det ((Pi.mulSingle (1 : Fin 2) u : ∀ a : Fin 2, GL (Fin (![x, x'] a)) k) 0)) * β (Matrix.GeneralLinearGroup.det ((Pi.mulSingle (1 : Fin 2) u : ∀ a : Fin 2, GL (Fin (![x, x'] a)) k) 1)) = _`. Rewrite using `[Pi.mulSingle_eq_same, Pi.mulSingle_eq_of_ne (by decide), map_one, map_one, one_mul]`. Rewrite `h1` using `[h2, hδ, htw, hdu, smul_eq_mul]`. Rewrite `h1` using `[hc, hdh]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `set t := Matrix.GeneralLinearGroup.det g`. Establish `hP : ∀ s : ℝ, (((nabs k t⁻¹ ^ s : ℝ)) : ℂ) = ((absPow k (s : ℂ) t)⁻¹ : ℂˣ)`. Introduce `s`. Rewrite using `[← val_absPow_ofReal, map_inv]`. Rewrite `h1` using `[hP]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hrel : absPow k (((x : ℂ) - n) / 2) t * absPow k (((-(x : ℤ) : ℤ) : ℂ) / 2) t = absPow k ((-(n : ℝ) / 2 : ℝ) : ℂ) t`. Rewrite using `[← MonoidHom.mul_apply, ← absPow_add]`. Use `congr 2`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hne : ∀ z : ℂˣ, (z : ℂ) ≠ 0` using `fun z => z.ne_zero`. Use `show L Φ' = ((α * β⁻¹ * absPow k (((x : ℂ) - n) / 2)) t : ℂ) * L Φ`. Rewrite using `[MonoidHom.mul_apply, MonoidHom.mul_apply, MonoidHom.inv_apply]`. Rewrite `h1` using `[map_inv, map_inv, map_inv]`. Rewrite `h1` using `[← hrel]`.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `hA` using `hne (α t)`. Establish `hB` using `hne (β t)`. Establish `hC` using `hne (absPow k (((x : ℂ) - n) / 2) t)`. Establish `hD` using `hne (absPow k (((-(x : ℤ) : ℤ) : ℂ) / 2) t)`. Move the coercions through the operations in `at h1 ⊢`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Clear denominators, using `at h1 ⊢` for the nonvanishing conditions. Take the linear combination `h1`. Use `LinearMap.ext fun Φ => Subtype.ext (Subtype.ext (funext fun g => ?_))` and prove the remaining obligations. Take `⟨Φ₁, hΦ₁⟩` from `hmod g Φ`. Rewrite using `[← hval g Φ Φ₁ hΦ₁]`.
-
-Use `show L Φ₁ = _`. Rewrite using `[hL]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem no_map_of_lt : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (x x' n : ℕ), n < x' → ∀ (α β : kˣ →* ℂˣ), GlobalTheory.SmGL.IsSmoothChar α → GlobalTheory.SmGL.IsSmoothChar β → (∀ t : ℝ, α * β⁻¹ ≠ GlobalTheory.SmGL.absPow k (t : ℂ)) →

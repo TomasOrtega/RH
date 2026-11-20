@@ -159,7 +159,7 @@ def CentU : Prop :=
       χ.UnrAt w ∧ χ.val w = B.prod
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ _ l _ ι a ha d hd U hU r hr dd ρ hc hs hin w hw B hB hg hk`. Take `⟨ψ, hψ⟩` from `h1 E Ω l ι a ha U hU`. Conclude with `h3 E Ω l ι a dd U ψ hψ r ρ hc hs hin (h2 E Ω l ι a d hd U hU ψ hψ r hr) w hw B hB hg hk`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem phiOfDiv_of (h1 : DetEx) (h2 : DivDet) (h3 : PhiSeed) : PhiOfDiv := by
   intro E Ω _ _ _ _ _ _ l _ ι a ha d hd U hU r hr dd ρ hc hs hin w hw B hB hg hk
@@ -167,9 +167,9 @@ theorem phiOfDiv_of (h1 : DetEx) (h2 : DivDet) (h3 : PhiSeed) : PhiOfDiv := by
   exact h3 E Ω l ι a dd U ψ hψ r ρ hc hs hin (h2 E Ω l ι a d hd U hU ψ hψ r hr) w hw B hB hg hk
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ _ l _ ι a ha d hd U hU ⟨d₀, ρ₀, h₀⟩`. Take `⟨ψ, hψ⟩` from `h1 E Ω l ι a ha U hU`. Take `⟨r, hr, -, -⟩` from `h4 E Ω l ι a d hd U hU ψ hψ d₀ ρ₀ h₀`. Establish `hdet` using `h2 E Ω l ι a d hd U hU ψ hψ r hr`. Use `⟨r, hr, fun dd ρ hρ w => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨r', hr', hin', hco'⟩` from `h4 E Ω l ι a d hd U hU ψ hψ dd ρ hρ`. Take `⟨m1, m2⟩` from `h6 _ _ a dd r' r ρ (h5 E Ω l ι a d hd U hU r' r hr' hr)`. Use `⟨fun hw hl B hB hg he => h7 E Ω l ι a dd U ψ hψ r ρ (m1 hin') hdet w hw hl B hB hg he, fun hc hj => ?_, fun hw B hB hg hk => h3 E Ω l ι a dd U ψ hψ r ρ hρ.1 hρ.2.1 (m1 hin') hdet w hw B hB hg hk⟩` and prove the remaining obligations. Use `h8 E Ω l ι a dd U r ρ hr.2.1 (m2 hco') w (fun P AI hT A h O _ _ _ Bw hBw => ?_) hj` and prove the remaining obligations. Conclude with `((h9 E Ω l a dd r ρ hρ.2.1 (m1 hin') ι w P AI hT A h O Bw hBw).1 (hc P AI hT A h O Bw hBw)).1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem divAll_of (h1 : DetEx) (h2 : DivDet) (h3 : PhiSeed) (h4 : DivOne) (h5 : DivUniq) (h6 : IsoMove) (h7 : FrobeniusCondition)
     (h8 : JumpCondition) (h9 : SubLoc) : DivAll := by

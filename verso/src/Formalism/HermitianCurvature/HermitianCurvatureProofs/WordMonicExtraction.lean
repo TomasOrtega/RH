@@ -5,13 +5,11 @@ namespace Formalism.FourierDecayAlt.P.WordMonicExtraction
 open Finset Polynomial Formalism.FourierDecayAlt.F7
 
 /- English proof (translation)
-Establish `hdeg : P.degree < ((Finset.univ : Finset (Fin (d + 1))).card : WithBot ℕ)`. Rewrite using `[Finset.card_univ, Fintype.card_fin]`. Conclude with `lt_of_le_of_lt Polynomial.degree_le_natDegree (by exact_mod_cast Nat.lt_succ_of_le hP)`. Establish `hI` using `Lagrange.eq_interpolate (s := Finset.univ) (v := v) hv.injOn hdeg`. Use `conv_rhs => rw [hI]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Lagrange.interpolate_apply, Polynomial.finset_sum_coeff]`. Use `Finset.sum_congr rfl (fun j _ => ?_)` and prove the remaining obligations. Establish `hb : Lagrange.basis Finset.univ v j = Polynomial.C (∏ i ∈ Finset.univ.erase j, (v j - v i)⁻¹) * Lagrange.nodal (Finset.univ.erase j) v`. Unfold `Lagrange.basis Lagrange.basisDivisor Lagrange.nodal`. Rewrite using `[Finset.prod_mul_distrib, map_prod]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hn : (Lagrange.nodal (Finset.univ.erase j) v).natDegree = d`. Rewrite using `[Lagrange.natDegree_nodal, Finset.card_erase_of_mem (Finset.mem_univ _), Finset.card_univ, Fintype.card_fin, Nat.add_sub_cancel]`. Establish `hm` using `(Lagrange.nodal_monic (s := Finset.univ.erase j) (v := v)).coeff_natDegree`. Rewrite `hm` using `[hn]`. Rewrite using `[Polynomial.coeff_C_mul, hb, Polynomial.coeff_C_mul, hm]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private theorem lagsum_lemma {F : Type} [Field F] {d : ℕ} (v : Fin (d + 1) → F)
     (hv : Function.Injective v) (P : Polynomial F) (hP : P.natDegree ≤ d) :
@@ -37,7 +35,7 @@ private theorem lagsum_lemma {F : Type} [Field F] {d : ℕ} (v : Fin (d + 1) →
   ring
 
 /- English proof (translation)
-Establish `h` using `lagsum_lemma y hy (Polynomial.X ^ k) (by rw [Polynomial.natDegree_X_pow]; exact hk)`. Simplify using `only [Polynomial.eval_pow, Polynomial.eval_X, Polynomial.coeff_X_pow] at h`. Simplify using `only [lagCo]`. Rewrite using `[h]`. Conclude with `if_congr eq_comm rfl rfl`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem moment (d : ℕ) (y : Fin (d + 1) → ℝ) (hy : Function.Injective y) (k : ℕ) (hk : k ≤ d) :
     ∑ j, lagCo y j * y j ^ k = if k = d then 1 else 0 := by
@@ -48,13 +46,13 @@ theorem moment (d : ℕ) (y : Fin (d + 1) → ℝ) (hy : Function.Injective y) (
   exact if_congr eq_comm rfl rfl
 
 /- English proof (translation)
-Establish `hm : ∀ k : Fin (d + 1), (∑ j, ((lagCo y j : ℝ) : ℂ) * (y j : ℂ) ^ (k : ℕ)) = if (k : ℕ) = d then 1 else 0`. Introduce `k`. Establish `h1` using `moment d y hy k (Nat.lt_succ_iff.mp k.2)`. Establish `h2 : (∑ j, ((lagCo y j : ℝ) : ℂ) * (y j : ℂ) ^ (k : ℕ)) = ((∑ j, lagCo y j * y j ^ (k : ℕ) : ℝ) : ℂ)`. Use `push_cast`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Apply the tactic sequence `try rfl`. Rewrite using `[h2, h1]`. Apply the tactic sequence `split_ifs <;> simp`. Repeatedly rewrite using `[Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Repeatedly rewrite using `[← Finset.sum_smul, hm]`. Rewrite using `[Finset.sum_eq_single (Fin.last d)]`. Simplify using the standard rewrite rules. Introduce `b _ hb`. Establish `hbd : (b : ℕ) ≠ d` using `fun h => hb (Fin.ext (by simp [h]))`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[hbd]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem lead_c {V : Type} [AddCommGroup V] [Module ℂ V] (d : ℕ) (y : Fin (d + 1) → ℝ)
     (hy : Function.Injective y) (c : Fin (d + 1) → V) :
@@ -81,9 +79,9 @@ theorem lead_c {V : Type} [AddCommGroup V] [Module ℂ V] (d : ℕ) (y : Fin (d 
     exact absurd (Finset.mem_univ _) h
 
 /- English proof (translation)
-Unfold `IsTopCoeff at h`. Take `⟨P, hPd, hPc, hW⟩` from `h`. Establish `h1` using `lagsum_lemma (fun i => ((y i : ℝ) : ℂ)) (fun a b hab => hy (Complex.ofReal_injective hab)) P hPd`. Rewrite `h1` using `[hPc]`. Rewrite using `[← h1]`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl (fun j _ => ?_)` and prove the remaining obligations. Rewrite using `[hW]`. Simplify using `only [lagCo]`. Use `push_cast`. Apply the tactic sequence `try rfl`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem top_extract {W : ℝ → ℂ} {d : ℕ} {c : ℂ} (h : IsTopCoeff W d c) (y : Fin (d + 1) → ℝ)
     (hy : Function.Injective y) : ∑ i, ((lagCo y i : ℝ) : ℂ) * W (y i) = c := by
@@ -104,7 +102,7 @@ variable {R M : Type} [Ring R] [Algebra ℂ R] [AddCommGroup M] [Module ℂ M] [
   [IsScalarTower ℂ R M]
 
 /- English proof (translation)
-Unfold `evR`. Rewrite using `[Polynomial.eval_eq_sum_range' (Nat.lt_succ_of_le ha), Finset.sum_smul]`. Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[← map_pow, ← Algebra.commutes, mul_smul, algebraMap_smul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem evR_smul (P : R[X]) (a : ℕ) (ha : P.natDegree ≤ a) (Y : ℝ) (X : M) :
     evR P Y • X = ∑ i ∈ range (a + 1), ((Y : ℂ) ^ i) • (P.coeff i • X) := by
@@ -116,7 +114,7 @@ theorem evR_smul (P : R[X]) (a : ℕ) (ha : P.natDegree ≤ a) (Y : ℝ) (X : M)
 end
 
 /- English proof (translation)
-Unfold `IsTopCoeff at h h' ⊢`. Take `⟨P, hP, hPc, hW⟩` from `h`. Take `⟨P', hP', hPc', hW'⟩` from `h'`. Conclude with `⟨P - P', (Polynomial.natDegree_sub_le _ _).trans (max_le hP hP'), by rw [Polynomial.coeff_sub, hPc, hPc'], fun Y => by simp only [Polynomial.eval_sub, hW, hW']⟩`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isTop_sub {W W' : ℝ → ℂ} {d : ℕ} {c c' : ℂ} (h : IsTopCoeff W d c)
     (h' : IsTopCoeff W' d c') : IsTopCoeff (fun Y => W Y - W' Y) d (c - c') := by
@@ -127,7 +125,7 @@ theorem isTop_sub {W W' : ℝ → ℂ} {d : ℕ} {c c' : ℂ} (h : IsTopCoeff W 
     by rw [Polynomial.coeff_sub, hPc, hPc'], fun Y => by simp only [Polynomial.eval_sub, hW, hW']⟩
 
 /- English proof (translation)
-Unfold `IsTopCoeff at h ⊢`. Take `⟨P, hP, hPc, hW⟩` from `h`. Conclude with `⟨Polynomial.C k * P, (Polynomial.natDegree_C_mul_le _ _).trans hP, by rw [Polynomial.coeff_C_mul, hPc], fun Y => by simp only [Polynomial.eval_C_mul, hW]⟩`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isTop_const_mul {W : ℝ → ℂ} {d : ℕ} {c : ℂ} (k : ℂ) (h : IsTopCoeff W d c) :
     IsTopCoeff (fun Y => k * W Y) d (k * c) := by
@@ -137,7 +135,7 @@ theorem isTop_const_mul {W : ℝ → ℂ} {d : ℕ} {c : ℂ} (k : ℂ) (h : IsT
     by rw [Polynomial.coeff_C_mul, hPc], fun Y => by simp only [Polynomial.eval_C_mul, hW]⟩
 
 /- English proof (translation)
-Rewrite using `[(Polynomial.monic_X_pow i).natDegree_mul ((Polynomial.monic_X_add_C h).pow j), Polynomial.natDegree_X_pow, (Polynomial.monic_X_add_C h).natDegree_pow, Polynomial.natDegree_X_add_C, mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem natDegree_mono (h : ℂ) (i j : ℕ) :
     ((X : ℂ[X]) ^ i * (X + C h) ^ j).natDegree = i + j := by
@@ -146,9 +144,9 @@ theorem natDegree_mono (h : ℂ) (i j : ℕ) :
     mul_one]
 
 /- English proof (translation)
-Distinguish the cases in `hij : i = a ∧ j = b`. Take `⟨rfl, rfl⟩` from `hij`. Rewrite using `[if_pos ⟨rfl, rfl⟩]`. Establish `hm` using `((Polynomial.monic_X_pow i).mul ((Polynomial.monic_X_add_C h).pow j)).coeff_natDegree`. Rewrite `hm` using `[natDegree_mono]`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hm`. Rewrite using `[if_neg hij]`. Apply `Polynomial.coeff_eq_zero_of_natDegree_lt` to reduce the goal to its premises. Rewrite using `[natDegree_mono]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem coeff_mono (h : ℂ) (a b i j : ℕ) (hi : i ≤ a) (hj : j ≤ b) :
     ((X : ℂ[X]) ^ i * (X + C h) ^ j).coeff (a + b) = if i = a ∧ j = b then 1 else 0 := by
@@ -169,17 +167,17 @@ variable {R M : Type} [Ring R] [Algebra ℂ R] [AddCommGroup M] [Module ℂ M] [
   [IsScalarTower ℂ R M]
 
 /- English proof (translation)
-Unfold `IsTopCoeff`. Use `⟨∑ i ∈ range (a + 1), ∑ k ∈ range (b + 1), Polynomial.C (Ξ (P₁.coeff i • X) (P₂.coeff k • X')) * (Polynomial.X ^ i * (Polynomial.X + Polynomial.C (h : ℂ)) ^ k), ?_, ?_, ?_⟩` and prove the remaining obligations. Apply `Polynomial.natDegree_sum_le_of_forall_le` to reduce the goal to its premises. Introduce `i hi`. Apply `Polynomial.natDegree_sum_le_of_forall_le` to reduce the goal to its premises.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `k hk`. Use `(Polynomial.natDegree_C_mul_le _ _).trans ?_` and prove the remaining obligations. Rewrite using `[natDegree_mono]`. Rewrite `hi`, `hk` using `[Finset.mem_range]`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[Polynomial.finset_sum_coeff]`. Repeatedly rewrite using `[Polynomial.finset_sum_coeff, Polynomial.coeff_C_mul]`. Rewrite using `[Finset.sum_eq_single_of_mem a (Finset.mem_range.mpr (Nat.lt_succ_self a)) ?_]`. Rewrite using `[Finset.sum_eq_single_of_mem b (Finset.mem_range.mpr (Nat.lt_succ_self b)) ?_]`. Rewrite using `[coeff_mono _ _ _ _ _ le_rfl le_rfl, if_pos ⟨rfl, rfl⟩, mul_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `k hk hkb`. Rewrite using `[coeff_mono _ _ _ _ _ le_rfl (Nat.lt_succ_iff.mp (Finset.mem_range.mp hk)), if_neg (fun hh => hkb hh.2), mul_zero]`. Introduce `i hi hia`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `k hk`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[coeff_mono _ _ _ _ _ (Nat.lt_succ_iff.mp (Finset.mem_range.mp hi)) (Nat.lt_succ_iff.mp (Finset.mem_range.mp hk)), if_neg (fun hh => hia hh.1), mul_zero]`. Introduce `Y beta_reduce`. Rewrite using `[evR_smul P₁ a ha Y X, evR_smul P₂ b hb (Y + h) X']`. Simplify using `only [map_sum, LinearMap.sum_apply, map_smul, map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, RingHom.id_apply, Polynomial.eval_finset_sum, Polynomial.eval_mul, Polynomial.eval_C, Polynomial.eval_pow, Polynomial.eval_X, Polynomial.eval_add, map_pow, map_add, Complex.conj_ofReal, C …`. Use `first`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `(refine Finset.sum_congr rfl (fun i _ => Finset.sum_congr rfl (fun k _ => ?_)); ring)`. Consider the case `(rw [Finset.sum_comm]; refine Finset.sum_congr rfl (fun i _ => Finset.sum_congr rfl (fun k _ => ?_)); ring)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem pairTop (Ξ : Sesq M) (P₁ P₂ : R[X]) (a b : ℕ) (h : ℝ) (X X' : M)
     (ha : P₁.natDegree ≤ a) (hb : P₂.natDegree ≤ b) :
@@ -226,15 +224,15 @@ noncomputable def letterVal (Ξ : Sesq M) (D : Dat R) (y : ℝ) (x x' : M) : ℂ
     Ξ (evR D.A y • x) (evR D.Bv (y + 1) • x')
 
 /- English proof (translation)
-Take `⟨hAm, hAn, hBd⟩` from `hS`. Take `⟨hAvm, hAvn, hBvd⟩` from `hSv`. Establish `hBn : D.B.natDegree ≤ n` using `Polynomial.natDegree_le_of_degree_le hBd.le`. Establish `hBvn : D.Bv.natDegree ≤ n` using `Polynomial.natDegree_le_of_degree_le hBvd.le`. Establish `hB0 : D.B.coeff n = 0` using `Polynomial.coeff_eq_zero_of_degree_lt hBd`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hBv0 : D.Bv.coeff n = 0` using `Polynomial.coeff_eq_zero_of_degree_lt hBvd`. Establish `hA1 : D.A.coeff n = 1`. Rewrite using `[← hAn]`. Conclude with `hAm.coeff_natDegree`. Establish `hAv1 : D.Av.coeff n = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hAvn]`. Conclude with `hAvm.coeff_natDegree`. Establish `hP₁n : (D.B + Polynomial.C (algebraMap ℂ R D.s) * D.A).natDegree ≤ n` using `(Polynomial.natDegree_add_le _ _).trans (max_le hBn ((Polynomial.natDegree_C_mul_le _ _).trans hAn.le))`. Establish `hev : ∀ Y : ℝ, evR D.B Y + algebraMap ℂ R D.s * evR D.A Y = evR (D.B + Polynomial.C (algebraMap ℂ R D.s) * D.A) Y`. Introduce `Y`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [evR, Polynomial.eval_add, Polynomial.eval_C_mul]`. Establish `t1` using `pairTop Ξ (D.B + Polynomial.C (algebraMap ℂ R D.s) * D.A) D.Av n n 1 x x' hP₁n hAvn.le`. Establish `t2` using `pairTop Ξ D.A D.Bv n n 1 x x' hAn.le hBvn`. Establish `ht` using `isTop_sub t1 t2`. Unfold `letterVal`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Repeatedly rewrite using `[hev]`. Rewrite using `[two_mul]`. Use `ht using 1` and compare the differences between its conclusion and the goal. Simplify using `only [Polynomial.coeff_add, Polynomial.coeff_C_mul, hB0, hA1, hAv1, hBv0, zero_add, mul_one, one_smul, zero_smul, map_zero, sub_zero, algebraMap_smul, map_smul, LinearMap.smul_apply, smul_eq_mul]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem planeLetter (Ξ : Sesq M) (n : ℕ) (D : Dat R) (x x' : M) (hS : Shape n D.A D.B)
     (hSv : Shape n D.Av D.Bv) :
@@ -270,17 +268,17 @@ theorem planeLetter (Ξ : Sesq M) (n : ℕ) (D : Dat R) (x x' : M) (hS : Shape n
     smul_eq_mul]
 
 /- English proof (translation)
-Establish `hA1 : D.A.coeff (n + s) = 1`. Rewrite using `[← hAn]`. Conclude with `hA.coeff_natDegree`. Establish `hAv1 : D.Av.coeff (n + s) = 1`. Rewrite using `[← hAvn]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hAv.coeff_natDegree`. Establish `hA₀1 : A₀.coeff n = 1`. Rewrite using `[← hA₀n]`. Conclude with `hA₀.coeff_natDegree`. Establish `hA₀v1 : A₀v.coeff n = 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[← hA₀vn]`. Conclude with `hA₀v.coeff_natDegree`. Establish `hce : starRingEnd ℂ e = e`. Apply the tactic sequence `rcases he with rfl | rfl <;> simp`. Establish `t1` using `isTop_const_mul (e * t⁻¹) (pairTop Ξ A₀ D.Av n (n + s) 1 x x' hA₀n.le hAvn.le)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `t2` using `isTop_const_mul (e * t'⁻¹) (pairTop Ξ D.A A₀v (n + s) n 1 x x' hAn.le hA₀vn.le)`. Establish `hdeg1 : n + (n + s) = 2 * n + s` using `by ring`. Establish `hdeg2 : n + s + n = 2 * n + s` using `by ring`. Rewrite `t1` using `[hdeg1]`. Rewrite `t2` using `[hdeg2]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions.
 
-Establish `ht` using `isTop_sub t1 t2`. Establish `hfun : (fun Y => letterVal Ξ D Y x x') = (fun Y => e * t⁻¹ * Ξ (evR A₀ Y • x) (evR D.Av (Y + 1) • x') - e * t'⁻¹ * Ξ (evR D.A Y • x) (evR A₀v (Y + 1) • x'))`. Use function extensionality and compare the values at `Y`. Unfold `letterVal`. Rewrite using `[hs, map_zero, zero_mul, add_zero, hB Y (Y + 1), hBv Y (Y + 1)]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_smul, map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, RingHom.id_apply, map_mul, map_inv₀, Complex.conj_conj, hce]`. Rewrite using `[hfun]`. Use `ht using 1` and compare the differences between its conclusion and the goal. Simplify using `only [hA1, hAv1, hA₀1, hA₀v1, one_smul, one_div]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem liftLetter (Ξ : Sesq M) (n s : ℕ) (D : Dat R) (A₀ A₀v : R[X]) (e t t' : ℂ) (x x' : M)
     (hs : D.s = 0) (he : e = 1 ∨ e = -1)
@@ -326,9 +324,9 @@ theorem liftLetter (Ξ : Sesq M) (n s : ℕ) (D : Dat R) (A₀ A₀v : R[X]) (e 
   ring
 
 /- English proof (translation)
-Proceed by induction on `w generalizing P P' with`. Consider the case `nil`. Simplify using `only [List.nil_append, Fw, mul_smul]`. Consider the case `cons m w ih`. Simplify using `only [List.cons_append, Fw]`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules.
 
-Rewrite using `[ih, ih]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem Fw_concat (Ξ : Sesq M) (X X' : M) (l : Dat R × ℝ) (w : List (Dat R × ℝ)) (P P' : R) :
     Fw Ξ X X' (w ++ [l]) P P' =
@@ -344,7 +342,7 @@ theorem Fw_concat (Ξ : Sesq M) (X X' : M) (l : Dat R × ℝ) (w : List (Dat R �
     ring
 
 /- English proof (translation)
-Rewrite using `[← (Fin.snocEquiv (fun _ => Fin m)).sum_comp f, Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl (fun x _ => Finset.sum_congr rfl (fun y _ => ?_))` and prove the remaining obligations. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 -/
 private theorem sumsnoc_lemma_2 {K m : ℕ} {β : Type} [AddCommMonoid β] (f : (Fin (K + 1) → Fin m) → β) :
     ∑ j, f j = ∑ jl : Fin m, ∑ j' : Fin K → Fin m, f (Fin.snoc j' jl) := by
@@ -353,7 +351,7 @@ private theorem sumsnoc_lemma_2 {K m : ℕ} {β : Type} [AddCommMonoid β] (f : 
   congr 1
 
 /- English proof (translation)
-Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[← Finset.sum_sub_distrib, Finset.mul_sum]`. Use `Finset.sum_congr rfl (fun k _ => ?_)` and prove the remaining obligations. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem sumlin_lemma_3 {ι κ : Type} [Fintype ι] [Fintype κ] (P : κ → ℝ) (L : ι → ℝ)
     (F G : ι → κ → ℂ) :
@@ -366,15 +364,15 @@ private theorem sumlin_lemma_3 {ι κ : Type} [Fintype ι] [Fintype κ] (P : κ 
   ring
 
 /- English proof (translation)
-Introduce `K`. Proceed by induction on `K with`. Consider the case `zero`. Introduce `dat grid c _ Q Q'`. Simplify using `[Fw]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Consider the case `succ K ih`. Introduce `dat grid c hc Q Q'`. Establish `ih'` using `ih (fun a => dat a.castSucc) (fun a => grid a.castSucc) (fun a => c a.castSucc) (fun a => hc a.castSucc)`. Use `beta_reduce at ih'`. Establish `hl` using `hc (Fin.last K) Q Q'`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `letterVal at hl`. Simplify using `only [← mul_smul] at hl`. Rewrite using `[sumsnoc_lemma_2]`. Simplify using `only [Fin.prod_univ_castSucc, Fin.snoc_castSucc, Fin.snoc_last, List.ofFn_succ', List.concat_eq_append, Fw_concat]`. Simplify using `only [← mul_smul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sumlin_lemma_3]`. Simplify using `only [← ih']`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← hl, Finset.mul_sum]`. Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem word_gen (Ξ : Sesq M) (d : ℕ) (X X' : M) : ∀ (K : ℕ) (dat : Fin K → Dat R)
     (grid : Fin K → Fin (d + 1) → ℝ) (c : Fin K → ℂ),
@@ -410,9 +408,9 @@ theorem word_gen (Ξ : Sesq M) (d : ℕ) (X X' : M) : ∀ (K : ℕ) (dat : Fin K
         ring
 
 /- English proof (translation)
-Establish `hc1 : A₀.coeff n = 1`. Rewrite using `[← hn]`. Conclude with `hA.coeff_natDegree`. Establish `h` using `lead_c n y hy (fun k : Fin (n + 1) => ev (A₀.coeff k • x))`. Simplify using `only [Fin.val_last, hc1, one_smul] at h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h]`. Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[evR_smul A₀ n hn.le (y i) x, map_sum, Finset.sum_range]`. Simplify using `only [map_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem monic_extract {V : Type} [AddCommGroup V] [Module ℂ V] (ev : M →ₗ[ℂ] V) (n : ℕ) (A₀ : R[X])
     (hA : A₀.Monic) (hn : A₀.natDegree = n) (y : Fin (n + 1) → ℝ) (hy : Function.Injective y)
@@ -436,7 +434,7 @@ namespace Formalism.FourierDecayAlt.P
 open Finset Polynomial Formalism.FourierDecayAlt.F7 Formalism.FourierDecayAlt.P.WordMonicExtraction
 
 /- English proof (translation)
-Introduce `R M _ _ _ _ _ _ Ξ n K dat grid X X' hS hg`. Establish `h` using `word_gen Ξ (2 * n) X X' K dat grid (fun a => (dat a).s) (fun a Q Q' => top_extract (planeLetter Ξ n (dat a) (Q • X) (Q' • X') (hS a).1 (hS a).2) (grid a) (hg a)) 1 1`. Simplify `h` using `only [one_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem plane_wave_word_formula : Formalism.FourierDecayAlt.F7.PlaneWaveWord := by
   intro R M _ _ _ _ _ _ Ξ n K dat grid X X' hS hg
@@ -446,11 +444,9 @@ theorem plane_wave_word_formula : Formalism.FourierDecayAlt.F7.PlaneWaveWord := 
   simpa only [one_smul] using h
 
 /- English proof (translation)
-Unfold `LiftWord`. Introduce `R M _ _ _ _ _ _ Ξ n s K dat A₀ A₀v e t t' grid X X' hs1 hs0 he ht hA hA0 hB hBv hg`. Establish `h` using `word_gen Ξ (2 * n + s) X X' K dat grid (fun a => e a * (1 / t a - 1 / t' a)) (fun a Q Q' => top_extract (liftLetter Ξ n s (dat a) (A₀ a) (A₀v a) (e a) (t a) (t' a) (Q • X) (Q' • X') (hs0 a) (he a) (hA a).1 (hA a).2.1 (hA a).2.2.1 (hA a).2.2.2 (hA0 a).1 (hA0 a).2.1 (hA0 a).2.2.1 ( …`. Establish `hh` using `hB a Y Q (evR (dat a).Av Y' * Q')`. Rewrite `hh` using `[mul_smul (evR (dat a).Av Y') Q' X']`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hh)`. Use the proof step `(fun Y Y' => by`. Establish `hh` using `hBv a Y' (evR (dat a).A Y * Q) Q'`. Rewrite `hh` using `[mul_smul (evR (dat a).A Y) Q X]`. Conclude with `hh)) (grid a) (hg a)) 1 1`.
-
-Simplify using `only [one_smul] at h`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lift_word_formula : Formalism.FourierDecayAlt.F7.LiftWord := by
   unfold LiftWord
@@ -471,17 +467,17 @@ theorem lift_word_formula : Formalism.FourierDecayAlt.F7.LiftWord := by
   exact h
 
 /- English proof (translation)
-Introduce `K`. Proceed by induction on `K with`. Consider the case `zero`. Introduce `G A₀ c grid _ _ _ Q`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Consider the case `succ K ih`. Introduce `G A₀ c grid hA hG hg Q`. Establish `ih'` using `ih (fun a => G a.castSucc) (fun a => A₀ a.castSucc) (fun a => c a.castSucc) (fun a => grid a.castSucc) (fun a => hA a.castSucc) (fun a => hG a.castSucc) (fun a => hg a.castSucc)`. Use `beta_reduce at ih'`. Rewrite using `[sumsnoc_lemma_2]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Fin.prod_univ_castSucc, Fin.snoc_castSucc, Fin.snoc_last, List.ofFn_succ', List.concat_eq_append, List.prod_append, List.prod_singleton, mul_smul]`. Establish `inner : ∀ jl : Fin (n + 1), ∑ j' : Fin K → Fin (n + 1), (((∏ a : Fin K, lagCo (grid a.castSucc) (j' a)) * lagCo (grid (Fin.last K)) jl : ℝ) : ℂ) • ev ((List.ofFn fun a : Fin K => G a.castSucc (grid a.castSucc (j' a))).prod • G (Fin.last K) (grid (Fin.last K) jl) • Q • X₀) = ((lag …`. Introduce `jl`. Establish `e` using `ih' (G (Fin.last K) (grid (Fin.last K) jl) * Q)`. Simplify using `only [mul_smul] at e`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, Finset.smul_sum]`. Use `Finset.sum_congr rfl (fun j' _ => ?_)` and prove the remaining obligations. Rewrite using `[smul_smul ((lagCo (grid (Fin.last K)) jl : ℝ) : ℂ)]`. Use `congr 1`. Use `push_cast`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Simplify using `only [inner]`. Establish `hm` using `monic_extract ev n (A₀ (Fin.last K)) (hA (Fin.last K)).1 (hA (Fin.last K)).2 (grid (Fin.last K)) (hg (Fin.last K)) (Q • X₀)`. Repeatedly rewrite using `[hG (Fin.last K)]`. Rewrite using `[← hm, Finset.smul_sum, Finset.smul_sum]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Simplify using `only [smul_smul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private theorem liftvec_lemma_4 {R M V : Type} [Ring R] [Algebra ℂ R] [AddCommGroup M] [Module ℂ M]
     [Module R M] [IsScalarTower ℂ R M] [AddCommGroup V] [Module ℂ V] (ev : M →ₗ[ℂ] V) (n : ℕ)
@@ -534,7 +530,7 @@ private theorem liftvec_lemma_4 {R M V : Type} [Ring R] [Algebra ℂ R] [AddComm
     ring
 
 /- English proof (translation)
-Unfold `LiftVectorWord`. Introduce `R M V _ _ _ _ _ _ _ _ ev n K G A₀ c grid X₀ hA hG hg`. Establish `h` using `liftvec_lemma_4 ev n X₀ K G A₀ c grid hA hG hg 1`. Simplify using `only [one_smul] at h`. Conclude with `h`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lift_vector_word : Formalism.FourierDecayAlt.F7.LiftVectorWord := by
   unfold LiftVectorWord

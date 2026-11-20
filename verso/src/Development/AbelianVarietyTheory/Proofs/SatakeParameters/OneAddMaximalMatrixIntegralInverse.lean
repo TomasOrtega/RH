@@ -7,15 +7,13 @@ open Matrix
 namespace GlobalTheory.Hk3
 
 /- English proof (translation)
-Set `v : Valuation L (WithZero (Multiplicative ℤ))` to `Valued.v`. Set `O` to `v.valuationSubring`. Set `Y : Matrix (Fin n) (Fin n) O` to `fun i j => ⟨X i j, (hX i j).le⟩`. Establish `hY : ∀ i j, IsLocalRing.residue O (Y i j) = 0` using `fun i j => by`. Rewrite using `[IsLocalRing.residue_eq_zero_iff]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Valuation.mem_maximalIdeal_iff L v).2 (hX i j)`. Establish `h1 : (IsLocalRing.residue O).mapMatrix (1 + Y) = 1`. Rewrite using `[map_add, map_one]`. Establish `: (IsLocalRing.residue O).mapMatrix Y = 0`. Use extensionality with `i j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hY i j`. Rewrite using `[this, add_zero]`. Establish `hd : IsUnit (1 + Y).det`. Rewrite using `[← IsLocalRing.residue_ne_zero_iff_isUnit, RingHom.map_det, h1, det_one]`. Conclude with `one_ne_zero`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨u, hu⟩` from `(Matrix.isUnit_iff_isUnit_det _).2 hd`. Use `⟨Units.map (O.subtype.mapMatrix : Matrix (Fin n) (Fin n) O →+* _).toMonoidHom u, ?_, ?_⟩` and prove the remaining obligations. Use `show O.subtype.mapMatrix (u : Matrix (Fin n) (Fin n) O) = _`. Rewrite using `[hu, map_add, map_one]`. Both sides reduce to the same expression.
-
-Introduce `i j`. Rewrite using `[← map_inv]`. Conclude with `((u⁻¹ : (Matrix (Fin n) (Fin n) O)ˣ).1 i j).2`.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem one_add_maximal_inv_int (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))]
     (n : ℕ) (X : Matrix (Fin n) (Fin n) L) (hX : ∀ i j, Valued.v (X i j) < 1) :

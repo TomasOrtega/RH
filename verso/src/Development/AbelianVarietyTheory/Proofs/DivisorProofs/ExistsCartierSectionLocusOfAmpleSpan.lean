@@ -10,9 +10,9 @@ noncomputable section
 namespace GlobalTheory.Desc
 
 /- English proof (translation)
-Take `⟨a', rfl⟩` from `ha`. Take `⟨b', rfl⟩` from `hb`. Take `⟨w, hw, e⟩` from `h`. Rewrite `e` using `[← map_mul]`. Take `rfl` from `IsFractionRing.injective (X.presheaf.stalk x) X.functionField e`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨b', isUnit_of_mul_isUnit_right hw, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem unitAt_of_mul_right {X : Scheme.{0}} [IsIntegral X] {x : X} {a b : X.functionField}
     (ha : RegAt x a) (hb : RegAt x b) (h : UnitAt x (a * b)) : UnitAt x b := by
@@ -24,22 +24,20 @@ theorem unitAt_of_mul_right {X : Scheme.{0}} [IsIntegral X] {x : X} {a b : X.fun
   exact ⟨b', isUnit_of_mul_isUnit_right hw, rfl⟩
 
 /- English proof (translation)
-The claim follows from `regAt_fnOf (x := x) (U := ⊤) trivial trivial _`.
+A detailed English derivation is pending.
 -/
 theorem regAt_cst {R : Type} [CommRing R] {X : Scheme.{0}} [IsIntegral X] (p : X ⟶ Sp R) (x : X) (r : R) :
     RegAt x (cst p r) :=
   regAt_fnOf (x := x) (U := ⊤) trivial trivial _
 
 /- English proof (translation)
-Introduce `R₁ F _ _ Y _ q θ N D₁ hA hS y`. Take `⟨k, hk, u, hu, U, -, hU, hy⟩` from `hA y`. Establish `hyu : y ∈ locus D₁ k u` using `hU ▸ hy`. Establish `hu' : u ∈ spanBy (cst q) (θ '' N k)` using `hS k ▸ hu`. Take `⟨n, r, t, ht, rfl⟩` from `hu'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨g, hg⟩` from `(k • D₁).exists_isEqn y`. Establish `hunit : UnitAt y ((∑ i, cst q (r i) * t i) * g)` using `hg.generatesAt_iff.1 hyu`. Establish `hsec : ∀ i, RegAt y (t i * g)` using `fun i => by`. Establish `: t i ∈ Sec D₁ k` using `by rw [hS k]; exact subset_spanBy _ _ (ht i)`. Conclude with `hg.regularAt_iff.1 (this y)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Apply `(zeroAt_iff.1 ?_).2 hunit` to reduce the goal to its premises. Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_induction _ (ZeroAt y) (fun _ _ => ZeroAt.add) (zeroAt_zero y) fun i _ => ?_` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[_root_.mul_assoc]`. Use `zeroAt_iff.2 ⟨(regAt_cst q y (r i)).mul (hsec i), fun hu => ?_⟩` and prove the remaining obligations. Take `⟨b, hb, hbt⟩` from `ht i`. Apply `hne k hk b hb` to reduce the goal to its premises. Use `show (k • D₁).GeneratesAt y (θ b)`.
-
-Rewrite using `[hg.generatesAt_iff, hbt]`. Conclude with `unitAt_of_mul_right (regAt_cst q y (r i)) (hsec i) hu`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_locus_of_span : ∀ (R₁ F : Type) [CommRing R₁] [Field F] (Y : Scheme.{0}) [IsIntegral Y] (q : Y ⟶ Sp R₁) (θ : F →+* Y.functionField) (N : ℕ → Set F) (D₁ : CartierDiv Y), AmpleDiv D₁ → (∀ k, Sec D₁ k = spanBy (GlobalTheory.Desc.cst q) (θ '' N k)) → ∀ y : Y, ∃ k, 1 ≤ k ∧ ∃ b ∈ N k, y ∈ locus D₁ k (θ b) := by
   intro R₁ F _ _ Y _ q θ N D₁ hA hS y

@@ -9,27 +9,27 @@ namespace GlobalTheory.PD.Loc
 variable {k : Type} [Field k] {F : Type} [Field F] [Algebra k F] {d : ℕ} {x : Fin (d + 1) → F}
 
 /- English proof (translation)
-The claim follows from `Algebra.subset_adjoin ⟨i, hi, j, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem gen_mem (I : Finset (Fin (d + 1))) {i : Fin (d + 1)} (hi : i ∈ I) (j : Fin (d + 1)) :
     x j / x i ∈ rA k x I :=
   Algebra.subset_adjoin ⟨i, hi, j, rfl⟩
 
 /- English proof (translation)
-The claim follows from `Algebra.adjoin_mono fun _ ⟨i, hi, j, e⟩ => ⟨i, h hi, j, e⟩`.
+A detailed English derivation is pending.
 -/
 theorem rA_mono {I J : Finset (Fin (d + 1))} (h : I ⊆ J) : rA k x I ≤ rA k x J :=
   Algebra.adjoin_mono fun _ ⟨i, hi, j, e⟩ => ⟨i, h hi, j, e⟩
 
 /- English proof (translation)
-The claim follows from `Subalgebra.prod_mem _ fun j _ => gen_mem {i} (Finset.mem_singleton_self i) j`.
+A detailed English derivation is pending.
 -/
 theorem prod_mem_single (I : Finset (Fin (d + 1))) (i : Fin (d + 1)) :
     ∏ j ∈ I, x j / x i ∈ rA k x {i} :=
   Subalgebra.prod_mem _ fun j _ => gen_mem {i} (Finset.mem_singleton_self i) j
 
 /- English proof (translation)
-Rewrite using `[← Finset.mul_prod_erase I (fun l => x l / x i) hi', ← mul_assoc]`. Establish `e : x j / x i' * (x i' / x i) = x j / x i`. Clear denominators, using `[hne i', hne i]` for the nonvanishing conditions. Rewrite using `[e]`. Conclude with `Subalgebra.mul_mem _ (gen_mem {i} (Finset.mem_singleton_self i) j) (Subalgebra.prod_mem _ fun l _ => gen_mem {i} (Finset.mem_singleton_self i) l)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gen_mul_prod_mem (hne : ∀ l, x l ≠ 0) (I : Finset (Fin (d + 1))) (i : Fin (d + 1))
     {i' : Fin (d + 1)} (hi' : i' ∈ I) (j : Fin (d + 1)) :
@@ -46,19 +46,17 @@ end GlobalTheory.PD.Loc
 open GlobalTheory.PD.Loc in
 
 /- English proof (translation)
-Introduce `k _ F _ _ d x hx I i hi y`. Use `set P := ∏ j ∈ I, x j / x i with hP`. Establish `hPm : P ∈ rA k x {i}` using `prod_mem_single I i`. Prove the components needed by the constructor for the conclusion. Introduce `hy`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `hy using Algebra.adjoin_induction with`. Consider the case `mem z hz`. Take `⟨i', hi', j, rfl⟩` from `hz`. Conclude with `⟨1, by rw [pow_one]; exact gen_mul_prod_mem hx.ne I i hi' j⟩`. Consider the case `algebraMap r => exact ⟨0, by rw [pow_zero, mul_one]; exact Subalgebra.algebraMap_mem _ r⟩`.
+Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Treat this case separately.
 
-Consider the case `add a b _ _ ha hb`. Take `⟨N₁, h₁⟩` from `ha`. Take `⟨N₂, h₂⟩` from `hb`. Use `⟨N₁ + N₂, ?_⟩` and prove the remaining obligations. Establish `e : (a + b) * P ^ (N₁ + N₂) = (a * P ^ N₁) * P ^ N₂ + (b * P ^ N₂) * P ^ N₁` using `by ring`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `Subalgebra.add_mem _ (Subalgebra.mul_mem _ h₁ (Subalgebra.pow_mem _ hPm _)) (Subalgebra.mul_mem _ h₂ (Subalgebra.pow_mem _ hPm _))`. Consider the case `mul a b _ _ ha hb`. Take `⟨N₁, h₁⟩` from `ha`. Take `⟨N₂, h₂⟩` from `hb`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨N₁ + N₂, ?_⟩` and prove the remaining obligations. Establish `e : (a * b) * P ^ (N₁ + N₂) = (a * P ^ N₁) * (b * P ^ N₂)` using `by ring`. Rewrite using `[e]`. Conclude with `Subalgebra.mul_mem _ h₁ h₂`. Introduce and unpack `⟨N, hN⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hP0 : P ≠ 0` using `Finset.prod_ne_zero_iff.2 fun j _ => div_ne_zero (hx.ne j) (hx.ne i)`. Establish `hPinv : P⁻¹ ∈ rA k x I`. Rewrite using `[hP, ← Finset.prod_inv_distrib]`. Conclude with `Subalgebra.prod_mem _ fun j hj => by rw [inv_div]; exact gen_mem I hj i`. Establish `e : y = (y * P ^ N) * P⁻¹ ^ N`.
-
-Rewrite using `[mul_assoc, ← mul_pow, mul_inv_cancel₀ hP0, one_pow, mul_one]`. Rewrite using `[e]`. Conclude with `Subalgebra.mul_mem _ (rA_mono (Finset.singleton_subset_iff.2 hi) hN) (Subalgebra.pow_mem _ hPinv _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.PD.rA_eq_loc : ∀ (k : Type) [Field k] (F : Type) [Field F] [Algebra k F] (d : ℕ) (x : Fin (d + 1) → F),
     IsPd k x → ∀ (I : Finset (Fin (d + 1))) (i : Fin (d + 1)), i ∈ I → ∀ y : F,

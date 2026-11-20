@@ -16,7 +16,7 @@ variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Secon
   [MeasurableSpace G] [BorelSpace G]
 
 /- English proof (translation)
-Use `conv_rhs => rw [← hμ]`. Rewrite using `[lintegral_map hg hφ]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem lintegral_comp_of_map_eq {μ : Measure G} {φ : G → G} {g : G → ℝ≥0∞} (hφ : Measurable φ) (hμ : μ.map φ = μ)
     (hg : Measurable g) : ∫⁻ x, g (φ x) ∂μ = ∫⁻ x, g x ∂μ := by
@@ -24,13 +24,11 @@ private theorem lintegral_comp_of_map_eq {μ : Measure G} {φ : G → G} {g : G 
   rw [lintegral_map hg hφ]
 
 /- English proof (translation)
-Establish `hae_ν : ∀ᵐ y ∂ν, y ∈ H` using `(ae_iff (p := fun a => a ∈ H)).mpr hνc`. Establish `hae_μ : ∀ᵐ x ∂μ, x ∈ H` using `(ae_iff (p := fun a => a ∈ H)).mpr hμc`. Apply `Measure.ext_of_lintegral` to reduce the goal to its premises. Introduce `f hf`. Establish `hF : Measurable (Function.uncurry fun y x => f (y⁻¹ * x))` using `hf.comp (measurable_fst.inv.mul measurable_snd)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[lintegral_smul_measure, lintegral_map hf (measurable_inv : Measurable fun x : G => x⁻¹)]`. Combine the equalities or inequalities in the displayed calculation. Apply `lintegral_congr_ae` to reduce the goal to its premises. Use `filter_upwards [hae_ν] with y hy`. Conclude with `(lintegral_comp_of_map_eq (φ := fun x => y⁻¹ * x) (g := f) (measurable_const_mul _) (hμl _ (hinvH y hy)) hf).symm`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation.
 
-Use `_ = ∫⁻ x, ∫⁻ y, f (y⁻¹ * x) ∂ν ∂μ := lintegral_lintegral_swap hF.aemeasurable`. Use `_ = ∫⁻ x, ∫⁻ y, f y⁻¹ ∂ν ∂μ := by`. Apply `lintegral_congr_ae` to reduce the goal to its premises. Use `filter_upwards [hae_μ] with x hx`. Combine the equalities or inequalities in the displayed calculation.
-
-Use `_ = μ Set.univ * ∫⁻ y, f y⁻¹ ∂ν := by rw [lintegral_const, mul_comm]`.
+A detailed English derivation is pending.
 -/
 theorem eq_smul_inv {H : Set G} (hHm : MeasurableSet H) (hinvH : ∀ h ∈ H, h⁻¹ ∈ H) {μ ν : Measure G}
     [SFinite μ] [IsProbabilityMeasure ν] (hμc : μ Hᶜ = 0) (hμl : ∀ h ∈ H, μ.map (fun x => h * x) = μ)
@@ -60,23 +58,21 @@ theorem eq_smul_inv {H : Set G} (hHm : MeasurableSet H) (hinvH : ∀ h ∈ H, h�
     _ = μ Set.univ * ∫⁻ y, f y⁻¹ ∂ν := by rw [lintegral_const, mul_comm]
 
 /- English proof (translation)
-Establish `hμeq` using `eq_smul_inv hHm hinvH hμc hμl hνc hνl`. Establish `hνeq` using `eq_smul_inv hHm hinvH hνc hνl hνc hνl`. Rewrite `hνeq` using `[measure_univ, one_smul]`. Establish `hS : ∀ S, μ S = μ Set.univ * (ν.map (fun x => x⁻¹)) S`. Introduce `S`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `conv_lhs => rw [hμeq]`. Rewrite using `[Measure.smul_apply, smul_eq_mul]`. Establish `hfin : μ Set.univ < ⊤`. Assume the negation of the conclusion as `hinf`. Rewrite `hinf` using `[not_lt, top_le_iff]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, μ (spanningSets μ i) ≠ 0 := by`. Assume the negation of the conclusion as `hall`. Use `push_neg at hall`. Establish `h0 : μ Set.univ = 0`. Rewrite using `[← iUnion_spanningSets μ]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `measure_iUnion_null hall`. Rewrite `hinf` using `[h0]`. Conclude with `ENNReal.zero_ne_top hinf`. Establish `hlt` using `measure_spanningSets_lt_top μ i`. Rewrite `hlt`, `hi` using `[hS, hinf]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h0 : (ν.map (fun x => x⁻¹)) (spanningSets μ i) = 0`. Assume the negation of the conclusion as `h`. Rewrite `hlt` using `[ENNReal.top_mul h]`. Conclude with `lt_irrefl _ hlt`. Rewrite `hi` using `[h0, mul_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hi rfl`. Establish `hint : ∀ g : G → ℝ≥0∞, Measurable g → ∫⁻ x, g x ∂μ = μ Set.univ * ∫⁻ y, g y⁻¹ ∂ν`. Introduce `g hg`. Use `conv_lhs => rw [hμeq]`. Simplify using `only [lintegral_smul_measure, smul_eq_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[lintegral_map hg (measurable_inv : Measurable fun x : G => x⁻¹)]`. Use `⟨⟨hfin⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce `h hh`. Apply `Measure.ext_of_lintegral` to reduce the goal to its premises. Introduce `f hf`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hstep : ∫⁻ y, f (y⁻¹ * h) ∂ν = ∫⁻ y, f y⁻¹ ∂ν`. Combine the equalities or inequalities in the displayed calculation. Conclude with `(lintegral_map hf (measurable_mul_const h)).trans ((hint (fun x => f (x * h)) (hf.comp (measurable_mul_const h))).trans ((congrArg (fun c => μ Set.univ * c) hstep).trans (hint f hf).symm))`. Apply `Measure.ext_of_lintegral` to reduce the goal to its premises. Introduce `f hf`.
-
-Establish `hstep2 : ∫⁻ y, f y⁻¹⁻¹ ∂ν = ∫⁻ y, f y⁻¹ ∂ν`. Simplify using `only [inv_inv]`. Use `conv_lhs => rw [hνeq]`. Rewrite using `[lintegral_map hf (measurable_inv : Measurable fun x : G => x⁻¹)]`. Conclude with `(lintegral_map hf measurable_inv).trans ((hint (fun x => f x⁻¹) (hf.comp measurable_inv)).trans ((congrArg (fun c => μ Set.univ * c) hstep2).trans (hint f hf).symm))`.
+A detailed English derivation is pending.
 -/
 theorem finite_bi {H : Set G} (hHm : MeasurableSet H) (hinvH : ∀ h ∈ H, h⁻¹ ∈ H) {μ ν : Measure G}
     [SigmaFinite μ] [IsProbabilityMeasure ν] (hμc : μ Hᶜ = 0) (hμl : ∀ h ∈ H, μ.map (fun x => h * x) = μ)
@@ -149,17 +145,17 @@ def HuSub (hD : SDecomp) {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D
   inv_mem' {a} ha := (hD D X u).2.2.2.2.2.2.2.2.2.2.1 a ha
 
 /- English proof (translation)
-Introduce `D X u`. Take `⟨hsf, _, hc, hl⟩` from `X.muH_haar u`. Use `haveI := hsf`. Establish `hd` using `hD D X u`. Establish `hcomp : IsCompact (Hu X u)` using `hd.2.2.2.2.2.2.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinv : ∀ a ∈ Hu X u, a⁻¹ ∈ Hu X u` using `hd.2.2.2.2.2.2.2.2.2.2.1`. Establish `hHm : MeasurableSet (Hu X u)` using `hcomp.isClosed.measurableSet`. Set `K` to `HuSub hD X u`. Use `haveI : CompactSpace K := isCompact_iff_compactSpace.mp hcomp`. Set `μK : Measure K` to `haarMeasure ⊤`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hμK1 : μK Set.univ = 1`. Establish `h` using `haarMeasure_self (G := K) (K₀ := ⊤)`. Rewrite `h` using `[TopologicalSpace.PositiveCompacts.coe_top]`. Then use the resulting hypothesis. Set `ν : Measure X.B.I.Ginf` to `μK.map Subtype.val`. Use `haveI : IsProbabilityMeasure ν := ⟨by rw [Measure.map_apply measurable_subtype_coe MeasurableSet.univ, Set.preimage_univ]; exact hμK1⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hνc : ν (Hu X u)ᶜ = 0`. Rewrite using `[Measure.map_apply measurable_subtype_coe hHm.compl]`. Establish `he : (Subtype.val ⁻¹' (Hu X u)ᶜ : Set K) = ∅`. Use extensionality with `x`. Simplify using `only [Set.mem_preimage, Set.mem_compl_iff, Set.mem_empty_iff_false, iff_false, not_not]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `x.2`. Rewrite using `[he, measure_empty]`. Establish `hνl : ∀ h ∈ Hu X u, ν.map (fun x => h * x) = ν`. Introduce `h hh`. Rewrite using `[Measure.map_map (measurable_const_mul h) measurable_subtype_coe]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `he : (fun x => h * x) ∘ (Subtype.val : K → X.B.I.Ginf) = Subtype.val ∘ (fun y : K => (⟨h, hh⟩ : K) * y)` using `rfl`. Rewrite using `[he, ← Measure.map_map measurable_subtype_coe (measurable_const_mul _), map_mul_left_eq_self]`. Take `⟨h1, h2, h3⟩` from `finite_bi hHm hinv hc hl hνc hνl`. Conclude with `⟨h1, h2, h3⟩`.
+A detailed English derivation is pending.
 -/
 theorem measH_of (hD : SDecomp) : MeasH := by
   intro D X u

@@ -12,9 +12,9 @@ noncomputable section
 namespace GlobalTheory.StdFstInv
 
 /- English proof (translation)
-Use `choose w hwO hw using hZ`. Use `⟨∑ k, w i k * Y k j, O.sum_mem fun k _ => O.mul_mem (hwO i k) (hY k j), ?_⟩` and prove the remaining obligations. Establish `hsplit : (Z * Y) i j - Y i j = ∑ k, (Z i k - (1 : Matrix (Fin b) (Fin b) R) i k) * Y k j`. Simplify using `only [sub_mul, Finset.sum_sub_distrib]`. Rewrite using `[← Matrix.mul_apply, ← Matrix.mul_apply, Matrix.one_mul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hsplit, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun k _ => by rw [hw i k, mul_assoc]`.
+A detailed English derivation is pending.
 -/
 theorem mul_sub_mem {R : Type} [CommRing R] (O : Subring R) (c : R) {b a : ℕ} (Z : Matrix (Fin b) (Fin b) R)
     (hZ : ∀ i j, ∃ w ∈ O, Z i j - (1 : Matrix (Fin b) (Fin b) R) i j = c * w)
@@ -29,13 +29,13 @@ theorem mul_sub_mem {R : Type} [CommRing R] (O : Subring R) (c : R) {b a : ℕ} 
   exact Finset.sum_congr rfl fun k _ => by rw [hw i k, mul_assoc]
 
 /- English proof (translation)
-Establish `hq : q ∈ O`. Establish `e : q = p + (N : R) * w` using `by linear_combination h`. Rewrite using `[e]`. Conclude with `O.add_mem hp (O.mul_mem (natCast_mem O N) hw)`. Establish `key : (⟨q, hq⟩ : O) = ⟨p, hp⟩ + (N : O) * ⟨w, hw⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use `show q = p + ((N : O) : R) * w`. Rewrite using `[show ((N : O) : R) = (N : R) from map_natCast O.subtype N]`. Take the linear combination `h`. Establish `hNw : (N : O) * ⟨w, hw⟩ ∈ J` using `J.mul_mem_right _ hN`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, hJ⟩`. Use `⟨hp, ?_⟩` and prove the remaining obligations. Rewrite `hJ` using `[key]`. Conclude with `(J.add_mem_iff_left hNw).1 hJ`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨_, hJ⟩`. Use `⟨hq, ?_⟩` and prove the remaining obligations. Rewrite using `[key]`. Conclude with `J.add_mem hJ hNw`.
+A detailed English derivation is pending.
 -/
 theorem mem_iff {R : Type} [CommRing R] (O : Subring R) (J : Ideal O) (N : ℕ) (hN : (N : O) ∈ J) {p q w : R}
     (hp : p ∈ O) (hw : w ∈ O) (h : q - p = (N : R) * w) :
@@ -61,7 +61,7 @@ theorem mem_iff {R : Type} [CommRing R] (O : Subring R) (J : Ideal O) (N : ℕ) 
     exact J.add_mem hJ hNw
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[mul_left_comm, H k j]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem fixed_mul {R : Type} [CommRing R] {b a : ℕ} (e : R) (M : Matrix (Fin b) (Fin b) R) (x : Matrix (Fin b) (Fin a) R)
     (H : ∀ i j, e * x i j = x i j) (i : Fin b) (j : Fin a) : e * (M * x) i j = (M * x) i j := by
@@ -70,9 +70,9 @@ theorem fixed_mul {R : Type} [CommRing R] {b a : ℕ} (e : R) (M : Matrix (Fin b
   rw [mul_left_comm, H k j]
 
 /- English proof (translation)
-Substitute `hP` using the available equality. Simplify using `only [Matrix.mul_one]`. Prove the components needed by the constructor for the conclusion. Introduce `h i j`. Establish `hx : x = (M⁻¹).val * (M.val * x)`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[← Matrix.mul_assoc, Units.inv_mul, Matrix.one_mul]`. Rewrite using `[hx]`. Conclude with `fixed_mul e _ _ h i j`. Introduce `h i j`. Conclude with `fixed_mul e _ _ h i j`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem fixed_iff {R : Type} [CommRing R] {b a : ℕ} (e : R) (M : GL (Fin b) R) (P : Matrix (Fin a) (Fin a) R) (hP : P = 1)
     (x : Matrix (Fin b) (Fin a) R) :
@@ -91,14 +91,14 @@ theorem fixed_iff {R : Type} [CommRing R] {b a : ℕ} (e : R) (M : GL (Fin b) R)
 variable {D : D7}
 
 /- English proof (translation)
-Unfold `Formalism.L2.Theta.mt`. Rewrite using `[inv_one, map_one, Units.val_one]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem mt_one (V : HSp D) : Formalism.L2.Theta.mt V (1 : GA D V)⁻¹ = 1 := by
   unfold Formalism.L2.Theta.mt
   rw [inv_one, map_one, Units.val_one]
 
 /- English proof (translation)
-Unfold `actO`. Rewrite using `[mt_one, mt_one]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem actO_neg_one (A WW : HSp D) (κ : GA D WW) (x : WO A WW) :
     actO (GlobalTheory.Grid.neg A) WW 1 κ x = actO A WW 1 κ x := by
@@ -106,7 +106,7 @@ theorem actO_neg_one (A WW : HSp D) (κ : GA D WW) (x : WO A WW) :
   rw [mt_one, mt_one]
 
 /- English proof (translation)
-Unfold `IsHalf actO`. Conclude with `fixed_iff e (matHom WW κ) _ (mt_one A) x`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem isHalf_iff (A WW : HSp D) (κ : GA D WW) (e : AE D) (x : WO A WW) :
     IsHalf e (actO A WW 1 κ x) ↔ IsHalf e x := by
@@ -114,7 +114,7 @@ theorem isHalf_iff (A WW : HSp D) (κ : GA D WW) (e : AE D) (x : WO A WW) :
   exact fixed_iff e (matHom WW κ) _ (mt_one A) x
 
 /- English proof (translation)
-Establish `h1` using `GlobalTheory.FrameRed.frMapO_actO (βS := βA) (βT := βW) (g := (1 : GA D A)) (h := κ⁻¹) (y := 1) (z := z⁻¹) (by rw [map_one, map_one]) (by rw [map_inv, map_inv, hz]) x`. Rewrite `h1` using `[inv_one, inv_inv]`. Conclude with `h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frMapO_eq {A WW : HSp D} (βA : GL (Fin A.rank) (Lev.EAf D)) {βW : GL (Fin WW.rank) (Lev.EAf D)}
     {κ : GA D WW} {z : GL (Fin WW.rank) (Formalism.L2.Herm.intAf D.host.F D.host.E)}
@@ -129,7 +129,7 @@ theorem frMapO_eq {A WW : HSp D} (βA : GL (Fin A.rank) (Lev.EAf D)) {βW : GL (
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Rewrite using `[frMapO_eq βA hz x, map_inv (intGL D.host.F D.host.E WW.rank), inv_inv, map_one (intGL D.host.F D.host.E A.rank), Units.val_one, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem frMapO_eq' {A WW : HSp D} (βA : GL (Fin A.rank) (Lev.EAf D)) {βW : GL (Fin WW.rank) (Lev.EAf D)}
     {κ : GA D WW} {z : GL (Fin WW.rank) (Formalism.L2.Herm.intAf D.host.F D.host.E)}
@@ -139,7 +139,7 @@ theorem frMapO_eq' {A WW : HSp D} (βA : GL (Fin A.rank) (Lev.EAf D)) {βW : GL 
     map_one (intGL D.host.F D.host.E A.rank), Units.val_one, Matrix.mul_one]
 
 /- English proof (translation)
-Introduce `i j`. Unfold `topL`. Use `split_ifs with hij`. Conclude with `hY _ _`. Conclude with `zero_mem _`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem topL_int {b a : ℕ} (k : ℕ) {Y : Matrix (Fin b) (Fin a) (Lev.EAf D)} (hY : IsIntM (D := D) Y) :
     IsIntM (D := D) (topL k Y) := by
@@ -150,7 +150,7 @@ theorem topL_int {b a : ℕ} (k : ℕ) {Y : Matrix (Fin b) (Fin a) (Lev.EAf D)} 
   · exact zero_mem _
 
 /- English proof (translation)
-Unfold `topL`. Use `split_ifs with hij`. Conclude with `h _ _`. Conclude with `⟨0, O.zero_mem, by rw [sub_self, mul_zero]⟩`.
+Replace the relevant objects with their definitions. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem topL_sub {R : Type} [CommRing R] (O : Subring R) (c : R) {b a : ℕ} (k : ℕ) {Y Y' : Matrix (Fin b) (Fin a) R}
     (h : ∀ i j, ∃ w ∈ O, Y' i j - Y i j = c * w) (i j : Fin k) :
@@ -162,15 +162,13 @@ theorem topL_sub {R : Type} [CommRing R] (O : Subring R) (c : R) {b a : ℕ} (k 
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Introduce `D A WW ν e Sf hSf I βA βW N hN hNI hNS hν κ z hz hz1 x`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle.stdFst`. Rewrite using `[actO_neg_one, isHalf_iff, frMapO_eq' βA hz x]`. Establish `hInt : IsIntM (D` using `D) ((intGL D.host.F D.host.E _ z).val * frMapO A WW βA βW x) ↔ IsIntM (D := D) (frMapO A WW βA βW x) := by`. Establish `h2` using `GlobalTheory.FrameRed.isIntM_iff (D := D) z⁻¹ (1 : GL (Fin A.rank) (Formalism.L2.Herm.intAf D.host.F D.host.E)) (frMapO A WW βA βW x)`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[map_inv (intGL D.host.F D.host.E WW.rank), inv_inv, map_one (intGL D.host.F D.host.E A.rank), Units.val_one, Matrix.mul_one]`. Then use the resulting hypothesis. Distinguish the cases in `hM : IsIntM (D := D) (frMapO A WW βA βW x)`. Establish `hc : ∀ i j, ∃ w ∈ Formalism.L2.Herm.intAf D.host.F D.host.E, ((intGL D.host.F D.host.E _ z).val * frMapO A WW βA βW x) i j - frMapO A WW βA βW x i j = (N : Lev.EAf D) * w` using `mul_sub_mem (Formalism.L2.Herm.intAf D.host.F D.host.E) (N : Lev.EAf D) (intGL D.host.F D.host.E _ z).val hz1 _ hM`. Establish `hNJ : ((N : ℕ) : Formalism.L2.Herm.intAf D.host.F D.host.E) ∈ Formalism.L2.DIV.idS D.host.F I`. Rewrite using `[← map_natCast (Formalism.L2.DIV.oToS D.host.F D.host.E) N]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.mem_map_of_mem _ hNI`. Establish `hId : ∀ i j, GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle.InId I (((intGL D.host.F D.host.E _ z).val * frMapO A WW βA βW x) i j) ↔ GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle.InId I (frMapO A WW βA βW x i j)` using `fun i j => by`. Take `⟨w, hw, hq⟩` from `hc i j`. Conclude with `GlobalTheory.StdFstInv.mem_iff _ _ N hNJ (hM i j) hw hq`. Establish `hU` using `GlobalTheory.UnitCharCong.unitChar_eq_of_natCong D ν e Sf hSf N hN hNS hν _ _ (topL_int A.rank hM) (topL_sub _ _ A.rank hc)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hU]`. Establish `hcond` using `and_congr (Iff.rfl (a := IsHalf e x)) (and_congr hInt (forall_congr' fun (i : Fin WW.rank) => forall_congr' fun (j : Fin A.rank) => imp_congr (Iff.rfl (a := A.rank ≤ (i : ℕ))) (hId i j)))`. Use `split_ifs with h1 h2 h2`. Both sides reduce to the same expression. Conclude with `absurd (hcond.1 h1) h2`.
-
-Conclude with `absurd (hcond.2 h2) h1`. Both sides reduce to the same expression. Rewrite using `[if_neg (fun h => hM (hInt.1 h.2.1)), if_neg (fun h => hM h.2.1)]`.
+Both sides reduce to the same expression. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stdFst_actO : ∀ (D : D7) (A WW : HSp D) (ν : (AE D)ˣ →* Circle) (e : AE D) (Sf : Finset (Formalism.L2.DIV.Pl D.host.E)), IsIdemSum e Sf → ∀ (I : Ideal (𝓞 D.host.E)) (βA : GL (Fin A.rank) (Lev.EAf D)) (βW : GL (Fin WW.rank) (Lev.EAf D)) (N : ℕ), 0 < N → ((N : ℕ) : 𝓞 D.host.E) ∈ I → (∀ w ∈ Sf, ((N : ℕ) : 𝓞 D.host.E) ∈ w.asIdeal) → (∀ u : (AE D)ˣ, infPart D (u : AE D) = 1 → (∃ w ∈ Formalism.L2.Herm.intAf D.host.F D.host.E, toEAf D (u : AE D) = 1 + (N : Lev.EAf D) * w) → (∃ w ∈ Formalism.L2.Herm.intAf D.host.F D.host.E, toEAf D ((u⁻¹ : (AE D)ˣ) : AE D) = 1 + (N : Lev.EAf D) * w) → ν u = 1) → ∀ (κ : GA D WW) (z : GL (Fin WW.rank) (Formalism.L2.Herm.intAf D.host.F D.host.E)), Formalism.L2.DIV.frGL βW z = Lev.finE WW κ → (∀ a b, ∃ w ∈ Formalism.L2.Herm.intAf D.host.F D.host.E, ((z.1 a b : Formalism.L2.Herm.intAf D.host.F D.host.E) : Lev.EAf D) - (1 : Matrix (Fin WW.rank) (Fin WW.rank) (Lev.EAf D)) a b = (N : Lev.EAf D) * w) → ∀ x, GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle.stdFst ν e I A WW βA βW (actO (GlobalTheory.Grid.neg A) WW 1 κ x) = GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle.stdFst ν e I A WW βA βW x := by
   intro D A WW ν e Sf hSf I βA βW N hN hNI hNS hν κ z hz hz1 x

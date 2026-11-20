@@ -12,7 +12,7 @@ noncomputable section
 namespace MajorantStabCompact
 
 /- English proof (translation)
-Establish `hc : (A.map (starRingEnd ℂ))ᵀ = Aᴴ`. Use extensionality with `i j`. Simplify using `[conjTranspose_apply]`. Rewrite `hA` using `[hc]`. Rewrite using `[star_mulVec, ← dotProduct_mulVec, mulVec_mulVec, mulVec_mulVec, hA]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem form_mulVec {ι : Type*} [Fintype ι] {P A : Matrix ι ι ℂ}
     (hA : (A.map (starRingEnd ℂ))ᵀ * P * A = P) (y : ι → ℂ) :
@@ -34,17 +34,15 @@ variable {W : Type*} [AddCommGroup W] [Module E W] {ι : Type*} [Fintype ι] [De
 omit [NumberField F] [IsTotallyReal F] [IsTotallyComplex E] in
 
 /- English proof (translation)
-Introduce `M`. Use `set e : Fin (Fintype.card ι) → W := v ∘ (Fintype.equivFin ι).symm`. Establish `he : Submodule.span E (Set.range e) = ⊤`. Rewrite using `[Set.range_comp, Equiv.range_eq_univ, Set.image_univ, v.span_eq]`. Use `set C : ℝ := ∑ a, M.len (vecAt v (e a))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcpt` using `BoundedInverseCompact.proof h v M _ e he C`. Establish `hclosed : IsClosed (M.stab : Set (archUnitary h v))`. Establish `: (M.stab : Set (archUnitary h v)) = ⋂ w, {g : archUnitary h v | ((((g : InfinitePlace E → GL ι ℂ) w : Matrix ι ι ℂ)).map (starRingEnd ℂ))ᵀ * M.P w * (((g : InfinitePlace E → GL ι ℂ) w : Matrix ι ι ℂ)) = M.P w}`. Use extensionality with `g`. Simplify using `[Majorant.stab, Subgroup.mem_subgroupOf, Subgroup.mem_pi, mem_unitaryGroupMatrix]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[this]`. Use `isClosed_iInter fun w => isClosed_eq ?_ continuous_const` and prove the remaining obligations. Establish `hg : Continuous fun g : archUnitary h v => (((g : InfinitePlace E → GL ι ℂ) w : Matrix ι ι ℂ))` using `Units.continuous_val.comp ((continuous_apply w).comp continuous_subtype_val)`. Conclude with `((hg.matrix_map Complex.continuous_conj).matrix_transpose.matrix_mul continuous_const).matrix_mul hg`. Use `hcpt.of_isClosed_subset hclosed ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `g hg a`. Establish `hgi : (g⁻¹ : archUnitary h v) ∈ M.stab` using `inv_mem hg`. Establish `hw : ∀ w, (((((g⁻¹ : archUnitary h v) : InfinitePlace E → GL ι ℂ) w : Matrix ι ι ℂ)).map (starRingEnd ℂ))ᵀ * M.P w * ((((g⁻¹ : archUnitary h v) : InfinitePlace E → GL ι ℂ) w : Matrix ι ι ℂ)) = M.P w`. Introduce `w`. Use `(Subgroup.mem_pi _).mp (Subgroup.mem_subgroupOf.mp hgi) w (Set.mem_univ w)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `mem_unitaryGroupMatrix.mp this`. Establish `heq : M.len (invApply g (vecAt v (e a))) = M.len (vecAt v (e a))`. Simplify using `only [Majorant.len, invApply]`. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun w _ => by rw [form_mulVec (hw w)]`.
-
-Rewrite using `[heq]`. Conclude with `Finset.single_le_sum (f := fun a => M.len (vecAt v (e a))) (fun b _ => Real.sqrt_nonneg _) (Finset.mem_univ a)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem MajorantStabCompact.proof (h : HermitianForm F E W) (v : Basis ι E W) :
     MajorantStabCompact.Statement h v := by

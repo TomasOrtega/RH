@@ -13,7 +13,7 @@ open Finset
 open Finset
 
 /- English proof (translation)
-Rewrite using `[← pow_add, ZMod.val_add]`. Use `conv_rhs => rw [← Nat.mod_add_div (s.val + t.val) p, pow_add, pow_mul, hζ.pow_eq_one, one_pow, mul_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_val_add {R : Type} [CommRing R] {p : ℕ} [Fact p.Prime] {ζ : R}
     (hζ : IsPrimitiveRoot ζ p) (s t : ZMod p) :
@@ -22,17 +22,15 @@ theorem pow_val_add {R : Type} [CommRing R] {p : ℕ} [Fact p.Prime] {ζ : R}
   conv_rhs => rw [← Nat.mod_add_div (s.val + t.val) p, pow_add, pow_mul, hζ.pow_eq_one, one_pow, mul_one]
 
 /- English proof (translation)
-Establish `: Fact (1 < p)` using `⟨hp.out.one_lt⟩`. Use `split_ifs with hw`. Substitute `hw` using the available equality. Simplify using `[ZMod.card]`. Choose the witnesses or unpack the hypotheses as in `⟨a0, ha0⟩ : ∃ a0, w a0 ≠ 0 := by`.
+Establish an intermediate fact. Substitute using the available equality. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `h`. Use `push Not at h`. Conclude with `hw (funext h)`. Establish `hshift : (∑ y : ι → ZMod p, ζ ^ (∑ a, w a * y a).val) = (∑ y : ι → ZMod p, ζ ^ (∑ a, w a * y a).val) * ζ` using `by conv_lhs => rw [← Fintype.sum_equiv (Equiv.addRight (Pi.single a0 (w a0)⁻¹ : ι → ZMod p)) (fun y => ζ ^ (∑ a, w a * (y + (Pi.single a0 (w a0)⁻¹ : ι → ZMod p)) a).val) (fun y => ζ ^ (∑ a, w a * y a).val) (fun _ => rfl)]`. Rewrite using `[Finset.sum_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Establish `e : ∑ a, w a * (y + (Pi.single a0 (w a0)⁻¹ : ι → ZMod p)) a = (∑ a, w a * y a) + 1`. Simplify using `only [Pi.add_apply, mul_add, Finset.sum_add_distrib]`. Use `congr 1`. Rewrite using `[Finset.sum_eq_single a0]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `[ha0]`. Introduce `b _ hb`. Simplify using `[hb]`. Simplify using the standard rewrite rules. Rewrite using `[e, pow_val_add hζ, ZMod.val_one, pow_one]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hne : ζ ≠ 1` using `hζ.ne_one hp.out.one_lt`. Establish `h0 : (∑ y : ι → ZMod p, ζ ^ (∑ a, w a * y a).val) * (ζ - 1) = 0`. Rewrite using `[mul_sub, mul_one, ← hshift, sub_self]`. Break down `mul_eq_zero.mp h0 with h | h` into its components or cases. Conclude with `h`.
-
-Conclude with `absurd (sub_eq_zero.mp h) hne`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem sum_char {R : Type} [CommRing R] [IsDomain R] {p : ℕ} [hp : Fact p.Prime] {ζ : R}
     {ι : Type} [Fintype ι] [DecidableEq ι] (hζ : IsPrimitiveRoot ζ p) (w : ι → ZMod p) :
@@ -67,23 +65,23 @@ theorem sum_char {R : Type} [CommRing R] [IsDomain R] {p : ℕ} [hp : Fact p.Pri
     · exact absurd (sub_eq_zero.mp h) hne
 
 /- English proof (translation)
-Introduce `p _ f n R _ _ ζ hζ φ h1 h2`. Set `φb : (Fin f × Fin n → ZMod p) → R` to `fun v => φ (fun a => (((v a).val : ℕ) : ℚ_[p]))`. Use `⟨fun y => ∑ v : Fin f × Fin n → ZMod p, φb v * ζ ^ (∑ a, v a * (-y) a).val, fun x => ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : ∀ a, ‖x a‖ ≤ 1`. Rewrite using `[dif_pos h]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Take `⟨xi, hxi, hxb0⟩ : ∃ xi : Fin f × Fin n → ℤ_[p], (∀ a, (xi a : ℚ_[p]) = x a) ∧ ∀ a, PadicInt.toZMod (show ℤ_[p] from ⟨x a, h a⟩) = PadicInt.toZMod (xi a)` from `⟨fun a => ⟨x a, h a⟩, fun a => rfl, fun a => rfl⟩`. Take `⟨xb, hxb⟩ : ∃ xb : Fin f × Fin n → ZMod p, ∀ a, PadicInt.toZMod (xi a) = xb a` from `⟨_, fun a => rfl⟩`. Simplify using `only [hxb0, hxb]`. Establish `hz : ∀ a, ∃ z : ℤ_[p], z * (p : ℤ_[p]) = xi a - (ZMod.cast (xb a) : ℤ_[p])`. Introduce `a`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `PadicInt.toZMod_spec (xi a)` as an intermediate fact. Rewrite `this` using `[hxb a, PadicInt.maximalIdeal_eq_span_p, Ideal.mem_span_singleton']`. Conclude with `this`. Use `choose z hz using hz`. Establish `step1 : φ x = φb xb`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `h2 (fun a => (((xb a).val : ℕ) : ℚ_[p])) z` as an intermediate fact. Use `show φ x = φ (fun a => (((xb a).val : ℕ) : ℚ_[p]))`. Rewrite using `[← this]`. Use `congr 1`. Use function extensionality and compare the values at `a`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e` using `congrArg (fun t : ℤ_[p] => (t : ℚ_[p])) (hz a)`. Rewrite `e` using `[PadicInt.coe_mul, PadicInt.coe_sub, ZMod.cast_eq_val, PadicInt.coe_natCast, PadicInt.coe_natCast]`. Rewrite `e` using `[hxi a]`. Take the linear combination `(-1 : ℚ_[p]) * e`. Rewrite using `[step1]`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `step2 : ∀ (y v : Fin f × Fin n → ZMod p), ζ ^ (∑ a, v a * (-y) a).val * ζ ^ (∑ a, xb a * y a).val = ζ ^ (∑ a, (xb - v) a * y a).val`. Introduce `y v`. Rewrite using `[← pow_val_add hζ, ← Finset.sum_add_distrib]`. Use `congr 2`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion repeatedly using the stated equalities.
 
-Simplify using `only [Pi.neg_apply, Pi.sub_apply]`. Expand and normalize the polynomial expressions, which then agree. Repeatedly rewrite using `[Finset.sum_mul, mul_assoc, step2]`. Rewrite using `[Finset.sum_comm]`. Repeatedly rewrite using `[← Finset.mul_sum, sum_char hζ]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Finset.sum_eq_single xb]`. Simplify using `[Fintype.card_prod, mul_comm]`. Introduce `v _ hv`. Rewrite using `[if_neg (sub_ne_zero.mpr (Ne.symm hv)), mul_zero]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite using `[dif_neg h]`. Establish `: φ x = 0`. Assume the negation of the conclusion as `hx`. Conclude with `h (h1 x hx)`. Rewrite using `[this, mul_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem l2 : ConditionalKappaBounds.L2.LocalAdditiveCharacterExpansion := by
   intro p _ f n R _ _ ζ hζ φ h1 h2
@@ -143,7 +141,7 @@ theorem l2 : ConditionalKappaBounds.L2.LocalAdditiveCharacterExpansion := by
 open Formalism.BasicNotions
 
 /- English proof (translation)
-The claim follows from `Formalism.MainNotions.DIV.projector_statement_of_integrality D (fun i b => IntegralHeckeForms.idempotent_scaled_integral D i b) hS`.
+A detailed English derivation is pending.
 -/
 theorem projector_statement_of_stability (D : D7) (hS : ThetaNormsAndLinks.SupLatticeGroupStable D) : PDVN.ConjugationNormInvariance D :=
   Formalism.MainNotions.DIV.projector_statement_of_integrality D (fun i b => IntegralHeckeForms.idempotent_scaled_integral D i b) hS

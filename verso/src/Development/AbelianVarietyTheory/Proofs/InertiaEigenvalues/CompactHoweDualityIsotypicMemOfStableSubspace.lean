@@ -20,21 +20,19 @@ open GlobalTheory.DownLift
 namespace GlobalTheory.HoweGen
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T A Ks _ _ _ R F hG hF i t U hstab hlie hio φ hφ w`. Establish `hadd : ∀ a b : PolF D (Wc D i).rank (Vc D i).rank, R.ptP i t (a + b) = R.ptP i t a + R.ptP i t b`. Introduce `a b`. Unfold `RealDat.ptP`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Establish `hsmul : ∀ (c : ℂ) (a : PolF D (Wc D i).rank (Vc D i).rank), R.ptP i t (c • a) = c • R.ptP i t a`. Introduce `c a`. Unfold `RealDat.ptP`. Simplify using the standard rewrite rules. Establish `hzero : R.ptP i t 0 = 0` using `by simpa using hsmul 0 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Set `M : Submodule ℂ ((R.cV i).W →ₗ[ℂ] PolF D (Wc D i).rank (Vc D i).rank)` to `{ carrier := {ψ | (∀ u ∈ GinfC (Vc D i), ∀ w', R.ptP i t (ψ ((R.cV i).ρ u w')) = R.ωP i t (u, 1) (R.ptP i t (ψ w'))) ∧ ∀ w, ψ w ∈ U} add_mem' := by`. Introduce and unpack `ψ₁ ψ₂ ⟨h₁, h₁'⟩ ⟨h₂, h₂'⟩`. Use `⟨fun u hu w' => ?_, fun w => ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.add_apply, hadd, h₁ u hu w', h₂ u hu w', map_add]`. Simplify using `only [LinearMap.add_apply]`.
+Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `U.add_mem (h₁' w) (h₂' w)`. Use the proof step `zero_mem' := by`. Use `⟨fun u hu w' => ?_, fun w => ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.zero_apply, hzero, map_zero]`. Simplify using `only [LinearMap.zero_apply]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `U.zero_mem`. Use the proof step `smul_mem' := by`. Introduce and unpack `c ψ ⟨h₁, h₁'⟩`. Use `⟨fun u hu w' => ?_, fun w => ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.smul_apply, hsmul, h₁ u hu w', map_smul]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Simplify using `only [LinearMap.smul_apply]`. Conclude with `U.smul_mem c (h₁' w) }`. Establish `hioM : ∀ x, R.ioP i x ∈ M` using `fun x => ⟨fun u hu w' => ((hG.core.thP.ioP i t).1 u hu x w').symm, fun w => hio x w⟩`. Establish `hne : M ≠ ⊥`. Take `⟨v, w₀, -, -, hv⟩` from `(hG.core.thP.ioP i t).2.2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Introduce `hM`. Establish `h0 : R.ioP i (PiTensorProduct.tprod ℂ v) ∈ (⊥ : Submodule ℂ ((R.cV i).W →ₗ[ℂ] PolF D (Wc D i).rank (Vc D i).rank))` using `hM ▸ hioM _`. Rewrite `h0` using `[Submodule.mem_bot]`. Apply `GlobalTheory.AdTh.IoExtPf.Delta_ne (D := D) i` to reduce the goal to its premises. Rewrite using `[← hv, h0]`.
-
-Both sides reduce to the same expression. Establish `hφM : φ ∈ M` using `GlobalTheory.T.howeDuality_compactPair_realPlaces_irreducible D G Pl0 T A Ks R F hG hF i t M (fun ψ hψ => hψ.1) (fun ψ hψ τ Y hY ψ' hd => ⟨GlobalTheory.T.fockPolynomial_lieDerivative_equivariant D G Pl0 T A Ks R F hG hF i t τ Y hY ψ ψ' hψ.1 hd, fun w => hlie τ Y hY (ψ w) (ψ' w) ( …`. Conclude with `hφM.2 w`.
+Both sides reduce to the same expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cvType_mem_of_stable : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (A : FamIn D.what₂.LL G Pl0 T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), GlobalTheory.LiftRows.Given R F → R.FullP → ∀ (i : Fin D.R.m) (t : T), ∀ (U : Submodule ℂ (PolF D (Wc D i).rank (Vc D i).rank)), (∀ u ∈ GinfC (Vc D i), ∀ P ∈ U, ∀ P' : PolF D (Wc D i).rank (Vc D i).rank, R.ptP i t P' = R.ωP i t (u, 1) (R.ptP i t P) → P' ∈ U) → (∀ (τ : D.what₂.Tau) (Y : Matrix (Fin (Wc D i).rank) (Fin (Wc D i).rank) ℂ), Y ∈ lieAt (Wc D i) τ → ∀ (P P' : PolF D (Wc D i).rank (Vc D i).rank), (∀ z, HasDerivAt (fun s : ℝ => R.ωP i t (1, oneP R.θ (Wc D i) τ Y s) (R.ptP i t P) z) (R.ptP i t P' z) 0) → P ∈ U → P' ∈ U) → (∀ (x : LowT (R.MW i (sg0 D A))) (w : (R.cV i).W), R.ioP i x w ∈ U) → ∀ (φ : (R.cV i).W →ₗ[ℂ] PolF D (Wc D i).rank (Vc D i).rank), (∀ u ∈ GinfC (Vc D i), ∀ w', R.ptP i t (φ ((R.cV i).ρ u w')) = R.ωP i t (u, 1) (R.ptP i t (φ w'))) → ∀ w, φ w ∈ U := by
   intro D G _ _ Pl0 T A Ks _ _ _ R F hG hF i t U hstab hlie hio φ hφ w

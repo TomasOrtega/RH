@@ -12,9 +12,9 @@ open GlobalTheory.Sandwich GlobalTheory.IndefiniteRowSideFullHecke.SandwichMaps 
 namespace GlobalTheory.DetInv
 
 /- English proof (translation)
-Establish `hbase : σ.comp (algebraMap ℤ_[p] Λ) = τ.comp (algebraMap ℤ_[p] Λ)` using `GlobalTheory.padicInt_ringHom_ext_of_isHausdorff p O _ _`. Use extensionality with `x`. Establish `hx : x ∈ Algebra.adjoin ℤ_[p] {α}` using `hα ▸ Algebra.mem_top`. Use `Algebra.adjoin_induction (fun y hy => ?_) (fun r => ?_) (fun y z _ _ hy hz => ?_) (fun y z _ _ hy hz => ?_) hx` and prove the remaining obligations. Rewrite using `[Set.mem_singleton_iff.1 hy]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h`. Conclude with `congrArg (fun f : ℤ_[p] →+* O => f r) hbase`. Rewrite using `[map_add, map_add, hy, hz]`. Rewrite using `[map_mul, map_mul, hy, hz]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ringHom_eq_of_eq_on_generator {p : ℕ} [Fact p.Prime] {O : Type} [CommRing O]
     [IsHausdorff (Ideal.span {(p : O)}) O] {Λ : Type} [CommRing Λ] [Algebra ℤ_[p] Λ]
@@ -31,31 +31,29 @@ theorem ringHom_eq_of_eq_on_generator {p : ℕ} [Fact p.Prime] {O : Type} [CommR
   · rw [map_mul, map_mul, hy, hz]
 
 /- English proof (translation)
-Introduce `p _ C _ _ _ v O _ _ _ _ hv ε hε Λ _ _ _ _ _ _ τ₀`. Take `⟨α, hα⟩` from `GlobalTheory.MonoGen.exists_adjoin_eq_top_padicInt p Λ`. Take `⟨κ₀, κ', hlin⟩` from `GlobalTheory.T.psi_embedding_determinant_property p C v O hv ε hε Λ τ₀`. Take `⟨hfin, -⟩` from `GlobalTheory.card_ringHom_to_integers_eq_finrank p C v O hv Λ`. Use `haveI := hfin`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Equip the data with the indicated structure.
 
-Use `letI := Fintype.ofFinite (Λ →+* O)`. Set `c : (Λ →+* O) → ℝ` to `fun σ => if σ = τ₀ then 0 else Real.log (v (algebraMap O C (τ₀ α) - algebraMap O C (σ α)))`. Use `⟨κ₀, fun σ => κ' σ - c σ, ?_⟩` and prove the remaining obligations. Introduce `γ hγ N h hh D`. Take `⟨γC, hγC, hvγ⟩` from `hγ`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `set τ : Λ →+* O := (γ : O →+* O).comp τ₀ with hτ`. Take `⟨⟨ι, hι, -⟩, -⟩` from `GlobalTheory.T.tilt_lattice_bound_second p C v O hv ε hε Λ N h hh D τ`. Take `⟨lam, hlam, hlat⟩` from `GlobalTheory.T.tilt_lattice_bound_third p C v O hv ε hε Λ N h hh D τ ι hι`. Establish `hsh` using `GlobalTheory.T.dvr_alpha_determinant_valuation p C v O hv ε hε Λ α hα N h hh D τ ι lam hι hlat`. Establish `hlog` using `hlin γ ⟨γC, hγC, hvγ⟩ N h hh D ι lam hι hlam hlat`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hsep : ∀ σ : Λ →+* O, σ ≠ τ → v (algebraMap O C (τ α) - algebraMap O C (σ α)) ≠ 0`. Introduce `σ hσ`. Use `(Valuation.ne_zero_iff v).mpr ?_` and prove the remaining obligations. Rewrite using `[← map_sub]`. Introduce `h0`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Apply `hσ` to reduce the goal to its premises. Use `(ringHom_eq_of_eq_on_generator hα σ τ ?_)` and prove the remaining obligations. Establish `h1 : τ α - σ α = 0` using `hv.hom_inj (by rw [h0, map_zero])`. Conclude with `(sub_eq_zero.1 h1).symm`. Establish `hv0 : v lam ≠ 0` using `(Valuation.ne_zero_iff v).mpr hlam`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set P : NNReal := ∏ᶠ σ : {σ : Λ →+* O // σ ≠ τ}, v (algebraMap O C (τ α) - algebraMap O C (σ.1 α)) ^ D.lieRank σ.1 with hP`. Establish `hPe : P = ∏ σ : {σ : Λ →+* O // σ ≠ τ}, v (algebraMap O C (τ α) - algebraMap O C (σ.1 α)) ^ D.lieRank σ.1` using `finprod_eq_prod_of_fintype _`. Establish `hP0 : P ≠ 0`. Rewrite using `[hPe]`. Conclude with `Finset.prod_ne_zero_iff.mpr fun σ _ => pow_ne_zero _ (hsep σ.1 σ.2)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨v lam * P⁻¹, mul_ne_zero hv0 (inv_ne_zero hP0), hsh, ?_⟩` and prove the remaining obligations. Establish `hlogP : Real.log (P : ℝ) = ∑ σ : {σ : Λ →+* O // σ ≠ τ}, (D.lieRank σ.1 : ℝ) * Real.log (v (algebraMap O C (τ α) - algebraMap O C (σ.1 α)))`. Rewrite using `[hPe, NNReal.coe_prod, Real.log_prod]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[NNReal.coe_pow, Real.log_pow]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `σ _`. Conclude with `pow_ne_zero _ (hsep σ.1 σ.2)` after adjusting the coercions. Establish `hlr : Real.log ((v lam * P⁻¹ : NNReal) : ℝ) = Real.log (v lam) - Real.log (P : ℝ)`. Rewrite using `[NNReal.coe_mul, NNReal.coe_inv, Real.log_mul, Real.log_inv, sub_eq_add_neg]`. Conclude with `hv0` after adjusting the coercions.
+Rewrite the hypotheses and the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Conclude with `inv_ne_zero (by exact_mod_cast hP0)`. Set `e : (Λ →+* O) ≃ (Λ →+* O)` to `{ toFun := fun σ => (γ : O →+* O).comp σ invFun := fun σ => (γ.symm : O →+* O).comp σ left_inv := fun σ => by ext x; simp right_inv := fun σ => by ext x; simp }`. Establish `hsub : ∑ σ : {σ : Λ →+* O // σ ≠ τ}, (D.lieRank σ.1 : ℝ) * Real.log (v (algebraMap O C (τ α) - algebraMap O C (σ.1 α))) = ∑ σ : Λ →+* O, (D.lieRank ((γ : O →+* O).comp σ) : ℝ) * c σ`. Rewrite using `[← Finset.sum_subtype (Finset.univ.filter fun σ => σ ≠ τ) (by simp) (fun σ => (D.lieRank σ : ℝ) * Real.log (v (algebraMap O C (τ α) - algebraMap O C (σ α)))), Finset.sum_filter]`. Use `symm`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use `Fintype.sum_equiv e _ _ fun σ => ?_` and prove the remaining obligations. Use `show (D.lieRank ((γ : O →+* O).comp σ) : ℝ) * c σ = if (γ : O →+* O).comp σ ≠ τ then _ else 0`. Distinguish the cases in `hσ : σ = τ₀`. Establish `heq : (γ : O →+* O).comp σ = τ` using `by rw [hσ]`. Rewrite using `[if_neg (not_not.2 heq)]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [c, if_pos hσ, mul_zero]`. Establish `hne : (γ : O →+* O).comp σ ≠ τ`. Introduce `heq`. Apply `hσ` to reduce the goal to its premises. Use extensionality with `x`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Conclude with `γ.injective (congrArg (fun f : Λ →+* O => f x) heq)`. Rewrite using `[if_pos hne]`. Simplify using `only [c, if_neg hσ]`. Establish `hiso : v (algebraMap O C (τ₀ α) - algebraMap O C (σ α)) = v (algebraMap O C (γ (τ₀ α)) - algebraMap O C (γ (σ α)))`. Rewrite using `[← hγC, ← hγC, ← map_sub γC, hvγ]`.
-
-Rewrite using `[hiso]`. Both sides reduce to the same expression. Rewrite using `[hlr, hlogP, hsub, hlog, finsum_eq_sum_of_fintype, finsum_eq_sum_of_fintype]`. Simplify using `only [mul_sub, Finset.sum_sub_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem shift_linear_isom : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O], v.Integers O → ∀ (ε : PreTilt O p), IsPrimitiveRoot (root ε).untilt p → ∀ (Λ : Type) [CommRing Λ] [IsDomain Λ] [IsDiscreteValuationRing Λ] [Algebra ℤ_[p] Λ] [Module.Finite ℤ_[p] Λ] [FaithfulSMul ℤ_[p] Λ], ∀ τ₀ : Λ →+* O, ∃ (κ₀ : ℝ) (κ : (Λ →+* O) → ℝ), ∀ (γ : O ≃+* O), IsIsom C v γ → ∀ (N h : ℕ), h = Module.finrank ℤ_[p] Λ * N → ∀ (D : Datum ε h Λ), ∃ r : NNReal, r ≠ 0 ∧ IsShift C v D ((γ : O →+* O).comp τ₀) r ∧ Real.log r = N * κ₀ + ∑ᶠ σ, (D.lieRank ((γ : O →+* O).comp σ) : ℝ) * κ σ := by
   classical

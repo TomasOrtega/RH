@@ -1,9 +1,9 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `A _ _ n f v w hv hw hne h`. Apply `hne` to reduce the goal to its premises. Establish `key : finFunctionFinEquiv (fun i => (⟨v i, hv i⟩ : Fin (2 + f.totalDegree))) = finFunctionFinEquiv (fun i => (⟨w i, hw i⟩ : Fin (2 + f.totalDegree)))`. Apply `Fin.ext` to reduce the goal to its premises. Rewrite using `[finFunctionFinEquiv_apply, finFunctionFinEquiv_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Simplify `h` using `only [mul_comm]`. Establish `hfun` using `finFunctionFinEquiv.injective key`. Use extensionality with `i`. Conclude with `congrArg Fin.val (congrFun hfun i)`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Qn10.sum_r_mul_ne.{u_1} :
     ∀ {A : Type u_1} [inst : CommRing A] [IsDomain A]

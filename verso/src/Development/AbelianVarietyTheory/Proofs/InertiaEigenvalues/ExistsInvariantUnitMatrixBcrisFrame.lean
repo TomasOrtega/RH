@@ -16,40 +16,38 @@ noncomputable section
 namespace GlobalTheory.BcrisInv
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem map_smul_matrix {R S : Type} [CommRing R] [CommRing S] {d : ℕ} (f : R →+* S) (a : R)
     (M : Matrix (Fin d) (Fin d) R) : (a • M).map f = f a • M.map f := by
   ext i j; simp
 
 /- English proof (translation)
-Introduce `l _ K bk τ hτ N d k ρ Y Y' ε Q Q' hYY hgal hQQ hε`. Establish `hFφ : ∀ a : Ainf l, WittVector.frobenius a = Per.φA l a` using `fun a => (GlobalTheory.RingBasics.φA_apply l a).symm`. Use `set f : Ainf l →+* Per.Bcris l := (Per.aB l).comp (Per.φA l) with hf`. Use `set alg : Per.Acris l →+* Per.Bcris l := algebraMap (Per.Acris l) (Per.Bcris l) with halg`. Take `⟨-, e, η, ⟨he1, he2⟩, hτe⟩` from `hτ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hne : e ≠ 1`. Introduce and unpack `rfl`. Apply `he2` to reduce the goal to its premises. Simplify using the standard rewrite rules. Establish `hmu : IsUnit (Per.aB l (WittVector.teichmuller l e - 1))` using `GlobalTheory.CrisLoc.unit_of_root_aB l e he1 hne`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hw : IsUnit (f τ)`. Establish `: f τ = Per.aB l (η : Ainf l) * Per.aB l (WittVector.teichmuller l e - 1)`. Simplify using `only [hf, RingHom.comp_apply, ← hFφ, hτe, map_mul]`. Rewrite using `[this]`. Conclude with `(η.isUnit.map _).mul hmu`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨W, hW⟩` from `hw.pow N`. Use `set A := Y.map f with hA`. Use `set B := Q.map alg with hB`. Use `⟨((W⁻¹ : (Per.Bcris l)ˣ) : Per.Bcris l) • (A * B), ?_, ?_⟩` and prove the remaining obligations. Establish `hB' : B * Q'.map alg = alg ((l : Per.Acris l) ^ (2 * k)) • (1 : Matrix (Fin d) (Fin d) (Per.Bcris l))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hB, ← Matrix.map_mul, hQQ, map_smul_matrix, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `hA' : A * Y'.map f = f τ ^ (2 * N) • (1 : Matrix (Fin d) (Fin d) (Per.Bcris l))`. Rewrite using `[hA, ← Matrix.map_mul, hYY, map_smul_matrix, Matrix.map_one _ (map_zero _) (map_one _), map_pow]`. Establish `hc : IsUnit (((W⁻¹ : (Per.Bcris l)ˣ) : Per.Bcris l) * alg ((l : Per.Acris l) ^ (2 * k)) * f τ ^ (2 * N))`. Use `(W⁻¹.isUnit.mul ?_).mul (hw.pow _)` and prove the remaining obligations.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h` using `(isUnit_l_Bcris l).pow (2 * k)`. Simplify `h` using `[halg, map_pow, map_natCast]`. Take `⟨c, hcv⟩` from `hc`. Use `set V := Q'.map alg * Y'.map f`. Establish `hUV : (((W⁻¹ : (Per.Bcris l)ˣ) : Per.Bcris l) • (A * B)) * V = (c : Per.Bcris l) • (1 : Matrix (Fin d) (Fin d) (Per.Bcris l))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[hcv, smul_mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc B, hB', smul_mul_assoc, Matrix.one_mul, mul_smul_comm, hA', smul_smul, smul_smul, mul_assoc]`. Establish `h1 : (((W⁻¹ : (Per.Bcris l)ˣ) : Per.Bcris l) • (A * B)) * (((c⁻¹ : (Per.Bcris l)ˣ) : Per.Bcris l) • V) = 1`. Rewrite using `[Matrix.mul_smul, hUV, smul_smul, Units.inv_mul, one_smul]`. Conclude with `⟨⟨_, _, h1, mul_eq_one_comm.mp h1⟩, rfl⟩`. Introduce `g set σ := Per.σB (g : GQ l) with hσ`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hσaB : ∀ a : Ainf l, σ (Per.aB l a) = Per.aB l (Per.σA (g : GQ l) a)` using `(ActLaws.act_laws l).2.2.2.2.2.1 (g : GQ l)`. Establish `hσf : ∀ a : Ainf l, σ (f a) = f (Per.σA (g : GQ l) a)` using `fun a => by`. Simplify using `only [hf, RingHom.comp_apply, hσaB, ActLaws.φA_σA]`. Establish `hfz : ∀ z : ℤ_[l], f (Per.zA l z) = Per.zB l z` using `fun z => by`. Simplify using `only [hf, RingHom.comp_apply, GlobalTheory.RingIface.zB_eq_aB_zA, (ActLaws.act_laws l).2.2.2.2.2.2.2.2.1 z]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hσalg : ∀ x : Per.Acris l, σ (alg x) = alg (sigA (g : GQ l) x)` using `(ActLaws.act_laws l).2.2.2.2.2.2.2.2.2.2.2.1 (g : GQ l)`. Establish `hG` using `congrArg (fun M => M.map f) (hgal g)`. Simplify using `only [map_smul_matrix, Matrix.map_mul, Matrix.map_map, map_pow] at hG`. Establish `e1 : (⇑f ∘ ⇑(Per.zA l)) = ⇑(Per.zB l)` using `funext hfz`. Rewrite `hG` using `[e1, ← hσf]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hE` using `congrArg (fun M => M.map alg) (hε g)`. Simplify using `only [Matrix.map_mul, Matrix.map_map] at hE`. Establish `e2 : (⇑alg ∘ fun a => (algebraMap (Ainf l) (Per.Acris l)) (WittVector.frobenius a)) = ⇑f`. Use function extensionality and compare the values at `a`. Simplify using `only [Function.comp_apply, hFφ, hf, halg, RingHom.comp_apply, GlobalTheory.RingIface.aB_eq_alg]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Rewrite `hE` using `[e2]`. Establish `eA : A.map σ = Y.map (⇑f ∘ ⇑(Per.σA (g : GQ l)))`. Rewrite using `[hA, Matrix.map_map]`. Use `congr 1`. Use function extensionality and compare the values at `a`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hσf a`. Establish `eB : B.map σ = Q.map (⇑alg ∘ ⇑(sigA (g : GQ l)))`. Rewrite using `[hB, Matrix.map_map]`. Use `congr 1`. Use function extensionality and compare the values at `a`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hσalg a`. Rewrite using `[map_smul_matrix, Matrix.map_mul, eA, eB]`. Establish `hsW : σ ((W⁻¹ : (Per.Bcris l)ˣ) : Per.Bcris l) * σ (W : Per.Bcris l) = 1`. Rewrite using `[← map_mul, Units.inv_mul, map_one]`. Establish `hσW : σ (f τ) ^ N = σ (W : Per.Bcris l)` using `by rw [hW, map_pow]`.
-
-Rewrite `hG` using `[hσW, ← hW]`. Establish `hZ : (ρ g).val.map (Per.zB l) * Y.map (⇑f ∘ ⇑(Per.σA (g : GQ l))) = (((W⁻¹ : (Per.Bcris l)ˣ) : Per.Bcris l) * σ (W : Per.Bcris l)) • (A * (ε g).map f)`. Rewrite using `[← smul_smul, ← hG, smul_smul, Units.inv_mul, one_smul]`. Rewrite using `[mul_smul_comm, ← Matrix.mul_assoc, hZ, smul_mul_assoc, Matrix.mul_assoc, hE, smul_smul, mul_left_comm, hsW, mul_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem invariant_unit : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (τ : Ainf l), bk.IsPer τ → ∀ (N d k : ℕ) (ρ : ↥(GK K) →* GL (Fin d) ℤ_[l]) (Y Y' : Matrix (Fin d) (Fin d) (Ainf l)) (ε : ↥(GK K) → Matrix (Fin d) (Fin d) (Ainf l)) (Q Q' : Matrix (Fin d) (Fin d) (Per.Acris l)), Y * Y' = τ ^ (2 * N) • (1 : Matrix (Fin d) (Fin d) (Ainf l)) → (∀ g : ↥(GK K), τ ^ N • ((ρ g).val.map (Per.zA l) * Y.map (Per.σA (g : GQ l))) = Per.σA (g : GQ l) τ ^ N • (Y * ε g)) → Q * Q' = (l : Per.Acris l) ^ (2 * k) • (1 : Matrix (Fin d) (Fin d) (Per.Acris l)) → (∀ g : ↥(GK K), (ε g).map (fun a => algebraMap (Ainf l) (Per.Acris l) (WittVector.frobenius a)) * Q.map (sigA (g : GQ l)) = Q) → ∃ U : Matrix (Fin d) (Fin d) (Per.Bcris l), IsUnit U ∧ ∀ g : ↥(GK K), (ρ g).val.map (Per.zB l) * U.map (Per.σB (g : GQ l)) = U := by
   intro l _ K bk τ hτ N d k ρ Y Y' ε Q Q' hYY hgal hQQ hε

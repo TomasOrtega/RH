@@ -14,7 +14,7 @@ noncomputable section
 namespace GlobalTheory.LeviEvLaw
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem sum_reorder {R : Type} [AddCommMonoid R] {α β μ : Type} [Fintype α] [Fintype β] [Fintype μ]
     (G : α → β → α → β → μ → R) :
@@ -31,9 +31,9 @@ theorem sum_reorder {R : Type} [AddCommMonoid R] {α β μ : Type} [Fintype α] 
     _ = _ := Finset.sum_congr rfl fun m _ => Finset.sum_congr rfl fun j _ => Finset.sum_comm
 
 /- English proof (translation)
-Establish `e : ∀ i j k l, (∑ m, a i m * u j m) * A i k * B j l * (xv k * yv l) = ∑ m, (a i m * A i k * xv k) * (u j m * B j l * yv l)` using `fun i j k l => by`. Rewrite using `[Finset.sum_mul, Finset.sum_mul, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun m _ => by ring`. Repeatedly rewrite using `[e]`. Rewrite using `[sum_reorder (fun i j k l m => (a i m * A i k * xv k) * (u j m * B j l * yv l))]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_eq_zero fun m _ => Finset.sum_eq_zero fun j _ => Finset.sum_eq_zero fun l _ => ?_` and prove the remaining obligations. Establish `: ∑ i, ∑ k, (a i m * A i k * xv k) * (u j m * B j l * yv l) = (∑ i, ∑ k, a i m * A i k * xv k) * (u j m * B j l * yv l)`. Simplify using `only [Finset.sum_mul]`. Rewrite using `[this, h m, zero_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_tensor_eq_zero {R : Type} [CommRing R] {α β μ : Type} [Fintype α] [Fintype β] [Fintype μ]
     (a : α → μ → R) (u : β → μ → R) (A : α → α → R) (B : β → β → R) (xv : α → R) (yv : β → R)
@@ -58,9 +58,9 @@ namespace GlobalTheory.LeviEvLaw
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Establish `h0` using `(hH.orth (Pi.single m 1)).1`. Establish `e : ∑ i, ∑ k, incM F H.ι i m * incM F X.J i k * cA σ (incV F H.x k) = inclR (F` using `F) (AF F) (form σ X.J (H.ι *ᵥ Pi.single m 1) H.x) := by`. Rewrite using `[Matrix.mulVec_single_one]`. Simplify using `only [form, dotProduct, Matrix.mulVec, map_sum, map_mul, Finset.mul_sum, Matrix.transpose_apply]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [incM, incV, Matrix.map_apply]`. Rewrite using `[mul_assoc]`. Both sides reduce to the same expression. Rewrite using `[e, h0, map_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem inner_eq_zero {σ : E →ₐ[F] E} {B : Base F E} {n n₁ : ℕ} {X : Spc F E n} {X₁ : Spc F E n₁} {H : Plane E n n₁}
     {j₀ j₁ : ℕ} (hH : H.IsAdapted σ B X X₁ j₀ j₁) (m : Fin n₁) :
@@ -83,7 +83,7 @@ namespace GlobalTheory.LeviEvLaw
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Establish `h : hTens (cA σ) (incM F X.J) (incM F W.J) (incM F H.ι * uᵀ) (Matrix.vecMulVec (incV F H.x) y) = 0`. Use `sum_tensor_eq_zero (fun i m => incM F H.ι i m) (fun j m => u j m) (fun i k => incM F X.J i k) (fun j l => incM F W.J j l) (fun k => cA σ (incV F H.x k)) (fun l => cA σ (y l)) (inner_eq_zero hH)` as an intermediate fact. Rewrite using `[← this]`. Simplify using `only [hTens, Matrix.mul_apply, Matrix.transpose_apply, Matrix.vecMulVec_apply, map_mul]`. Simplify using `only [symp, h, mul_zero, map_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem symp_eq_zero {σ : E →ₐ[F] E} {B : Base F E} {n n₁ d : ℕ} {X : Spc F E n} {X₁ : Spc F E n₁} {W : Spc F E d}
     {H : Plane E n n₁} {j₀ j₁ : ℕ} (hH : H.IsAdapted σ B X X₁ j₀ j₁) (y : Fin d → AE F E)
@@ -97,11 +97,11 @@ theorem symp_eq_zero {σ : E →ₐ[F] E} {B : Base F E} {n n₁ d : ℕ} {X : S
   simp only [symp, h, mul_zero, map_zero]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n d X W M hψ n₁ X₁ H j₀ j₁ M₁ hH e he y u Φ hΦ`. Establish `hs` using `symp_eq_zero (W := W) hH y u`. Rewrite `hs` using `[M.co.form]`. Establish `hsplit : M.co.rho B.ψ (Matrix.vecMulVec (incV F H.x) y + incM F H.ι * uᵀ) Φ = M.co.rho B.ψ (incM F H.ι * uᵀ) (M.co.rho B.ψ (Matrix.vecMulVec (incV F H.x) y) Φ)`. Rewrite using `[add_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Darboux.rho, map_add]`. Conclude with `GlobalTheory.LagrUniq.schr_add_of_orth B.ψ _ _ hs Φ`. Establish `hq : M.co.rho B.ψ (Matrix.vecMulVec (incV F H.x) y) Φ ∈ schA F (Fin n × Fin d)` using `GlobalTheory.HeisSchA.rho_mem_schA M B.ψ hψ _ Φ hΦ`. Establish `hheis` using `he.Heisenberg₂ uᵀ _ hq`. Rewrite `hheis` using `[GlobalTheory.LagrUniq.incM_one, Matrix.transpose_one, Matrix.mul_one]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hsplit, hheis, he.inv _ ⟨y, rfl⟩ Φ hΦ]`.
+A detailed English derivation is pending.
 -/
 theorem ev_law : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W), IsStd B.ψ →
@@ -126,7 +126,7 @@ theorem ev_law : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberFie
 end GlobalTheory.LeviEvLaw
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.LeviEvLaw.ev_law`.
+A detailed English derivation is pending.
 -/
 example : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W), IsStd B.ψ →

@@ -23,9 +23,9 @@ open GlobalTheory.Published GlobalTheory.TheRec GlobalTheory.ContraPair
 namespace GlobalTheory.TraceConjCofinite
 
 /- English proof (translation)
-Rewrite using `[dense_iff_inter_open]`. Introduce and unpack `W hW ⟨g, hg⟩`. Establish `hV : IsOpen {s : G E Ω | s * g ∈ W}` using `hW.preimage (continuous_mul_const g)`. Establish `: IsGalois E Ω` using `{}`. Take `⟨U, hU⟩` from `ProfiniteGrp.exist_openNormalSubgroup_sub_open_nhds_of_one hV (by simpa using hg)`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨v, hv, -, -, B, hB, -, σ, hσ, hU'⟩` from `GlobalTheory.Published.cheb_holds E Ω U.toSubgroup U.isOpen U.isNormal' g hS.toFinset`. Use `hU hU'` as an intermediate fact. Simplify using `only [Set.mem_ofPred_eq, inv_mul_cancel_right] at this`. Use `⟨σ, this, v, fun h => hv ?_, B, hB, hσ⟩` and prove the remaining obligations. Simplify using `using h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem dense_frob_outside (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω]
     [IsAlgClosure E Ω] (S : Set (HeightOneSpectrum (𝓞 E))) (hS : S.Finite) :
@@ -45,9 +45,9 @@ theorem dense_frob_outside (E Ω : Type) [Field E] [NumberField E] [Field Ω] [A
   simpa using h
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ l _ a r r' hr hr' hs hs' ht`. Use `GlobalTheory.TraceConj.conj_of_trace_eq (G E Ω) (Qbar l) a r r' hs hs' fun g => ?_` and prove the remaining obligations. Establish `hc : ∀ ρ : G E Ω →* GL (Fin a) (Qbar l), Continuous ρ → Continuous fun g => ((ρ g : GL (Fin a) (Qbar l)) : Matrix (Fin a) (Fin a) (Qbar l)).trace` using `fun ρ hρ => (Units.continuous_val.comp hρ).matrix_trace`. Establish `hcl : IsClosed {g : G E Ω | ((r g : GL (Fin a) (Qbar l)) : Matrix (Fin a) (Fin a) (Qbar l)).trace = ((r' g : GL (Fin a) (Qbar l)) : Matrix (Fin a) (Fin a) (Qbar l)).trace}` using `isClosed_eq (hc r hr) (hc r' hr')`. Establish `hd` using `dense_frob_outside E Ω _ (Filter.eventually_cofinite.1 ht)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `closure_minimal ?_ hcl (hd.closure_eq ▸ Set.mem_univ g)` and prove the remaining obligations. Introduce and unpack `σ ⟨w, hw, B, hB, hσ⟩`. Conclude with `(not_not.1 hw) B hB ⟨σ, GlobalTheory.TraceConjWeil.frob_mem_weil hB hσ⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem main : ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (l : ℕ) [Fact l.Prime] (a : ℕ) (r r' : G E Ω →* GL (Fin a) (Qbar l)), Continuous r → Continuous r' → IsSSRep r → IsSSRep r' → (∀ᶠ w : HeightOneSpectrum (𝓞 E) in Filter.cofinite, ∀ (A : ValuationSubring Ω) (h : IsPlaceOver A w) (σ : Weil h), (r (σ : G E Ω)).val.trace = (r' (σ : G E Ω)).val.trace) → ∃ p : GL (Fin a) (Qbar l), ∀ g, r' g = p * r g * p⁻¹ := by
   intro E Ω _ _ _ _ _ l _ a r r' hr hr' hs hs' ht

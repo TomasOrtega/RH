@@ -28,9 +28,9 @@ def StepDuality : Prop :=
         1 / Formalism.HN.htQ (bas I) (frm I x) S' S)
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Conclude with `Submodule.span_le.2 fun _ hy => hy.1`. Introduce `y hy`. Use `Submodule.subset_span ⟨hy, fun s hs => ?_⟩` and prove the remaining obligations. Rewrite `hs` using `[Submodule.mem_bot]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality.
 
-Substitute `hs` using the available equality. Simplify using `[Formalism.UG.hform]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem perpIn_bot (I : AutInst) (x : I.GA) : perpIn I x ⊥ = lamX I x := by
   apply le_antisymm

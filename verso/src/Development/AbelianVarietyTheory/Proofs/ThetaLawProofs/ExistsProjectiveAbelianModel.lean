@@ -30,7 +30,7 @@ open scoped CategoryTheory.Obj
 namespace GlobalTheory.KeyTf
 
 /- English proof (translation)
-Establish `e : spMap R₀.subtype = spMap R₁.subtype ≫ spMap (Subring.inclusion h)` using `spMap_comp (Subring.inclusion h) R₁.subtype`. Establish `hp` using `isGrpPullback_pullback A₀ (spMap (Subring.inclusion h))`. Use `⟨hp.1.lift φ (A.hom ≫ spMap R₁.subtype) (by rw [H.1.w, e, Category.assoc]), ?_⟩` and prove the remaining obligations. Conclude with `IsGrpPullback.cancel hp (H.congr e (hp.1.lift_fst _ _ _).symm) (hp.1.lift_snd _ _ _)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_isGrpPullback_of_le {S : Type} [CommRing S] {R₀ R₁ : Subring S} (h : R₀ ≤ R₁) (A : Over (Sp S))
     [GrpObj A] (A₀ : Over (Sp R₀)) [GrpObj A₀] (φ : A.left ⟶ A₀.left)
@@ -44,19 +44,17 @@ theorem exists_isGrpPullback_of_le {S : Type} [CommRing S] {R₀ R₁ : Subring 
   exact IsGrpPullback.cancel hp (H.congr e (hp.1.lift_fst _ _ _).symm) (hp.1.lift_snd _ _ _)
 
 /- English proof (translation)
-Introduce `S _ _ _ P`. Establish `hc` using `P.isAb.comm`. Establish `hs` using `P.isAb.smooth`. Establish `hpr` using `P.isAb.proper`. Establish `hg` using `P.isAb.geomConnected`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨R₀, A₀, _, _, φ₀, -, hft₀, hs₀, hsep₀, hqc₀, H₀⟩` from `GlobalTheory.smooth_grpScheme_descends_to_fg_subring S P.A ∅ hs inferInstance inferInstance`. Take `⟨F, hF⟩` from `GlobalTheory.T.isProjOver_descends_to_subring' S R₀ _ _ P.A.hom A₀.hom φ₀ H₀.1 (GlobalTheory.ProjSpace.isProjOver_polAV P)`. Take `⟨R₁, h₀₁, hF₁, hft₁⟩` from `exists_finiteType_subring_adjoin S R₀ F hft₀`. Choose the witnesses or unpack the hypotheses as in `⟨A₁, _, _, φ₁, hp₁, hs₁, H₁⟩ : ∃ (A₁ : Over (Sp R₁)) (_ : GrpObj A₁) (_ : IsCommMonObj A₁) (φ₁ : P.A.left ⟶ A₁.left), IsProjOver A₁.hom ∧ Smooth A₁.hom ∧ IsGrpPullback P.A A₁ (spMap R₁.subtype) φ₁ := by`. Take `⟨φ₁, H₁⟩` from `exists_isGrpPullback_of_le h₀₁ P.A A₀ φ₀ H₀`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨_, _, inferInstance, φ₁, hF R₁ h₀₁ hF₁ _ _ _ (IsPullback.of_hasPullback _ _), inferInstanceAs (Smooth (pullback.snd _ _)), H₁⟩`. Set `κ` to `IsLocalRing.residue S`. Establish `e₁ : spMap (κ.comp R₁.subtype) = spMap κ ≫ spMap R₁.subtype` using `spMap_comp _ _`. Establish `hfib : GeometricallyConnected (pullback.snd A₁.hom (spMap (κ.comp R₁.subtype)))`. Establish `Q` using `IsPullback.of_hasPullback A₁.hom (spMap (κ.comp R₁.subtype))`.
+Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `l` to `H₁.1.lift (pullback.fst A₁.hom (spMap (κ.comp R₁.subtype))) (pullback.snd _ _ ≫ spMap κ) (by rw [Q.w, e₁, Category.assoc])`. Establish `Q' : IsPullback l (pullback.snd A₁.hom (spMap (κ.comp R₁.subtype))) P.A.hom (spMap κ)` using `IsPullback.of_right (by rw [H₁.1.lift_fst, ← e₁]; exact Q) (H₁.1.lift_snd _ _ _) H₁.1`. Conclude with `MorphismProperty.of_isPullback (P := @GeometricallyConnected) Q' hg`. Take `⟨f, hf, hconn⟩` from `GlobalTheory.T.geometricallyConnected_open_condition_smooth_projective R₁ _ A₁.hom _ (κ.comp R₁.subtype) hp₁ hs₁ hfib`. Take `⟨u, hu⟩ : IsUnit (f : S)` from `(IsLocalRing.residue_ne_zero_iff_isUnit _).1 hf`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨R₂, h₁₂, hF₂, hft₂⟩` from `exists_finiteType_subring_adjoin S R₁ {((u⁻¹ : Sˣ) : S)} hft₁`. Take `⟨φ₂, H₂⟩` from `exists_isGrpPullback_of_le h₁₂ P.A A₁ φ₁ H₁`. Establish `hunit : IsUnit (Subring.inclusion h₁₂ f)` using `IsUnit.of_mul_eq_one (⟨((u⁻¹ : Sˣ) : S), hF₂ (by simp)⟩ : R₂) (Subtype.ext (by show (f : S) * _ = 1`. Rewrite using `[← hu]`. Conclude with `u.mul_inv))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp₂ : IsProjOver ((Over.pullback (spMap (Subring.inclusion h₁₂))).obj A₁).hom` using `GlobalTheory.ProjSpace.isProjOver_pullback_snd _ hp₁`. Establish `hab : IsAbelianScheme ((Over.pullback (spMap (Subring.inclusion h₁₂))).obj A₁)` using `⟨inferInstance, inferInstanceAs (Smooth (pullback.snd _ _)), projProper _ _ _ hp₂, hconn R₂ _ hunit⟩`. Use `⟨R₂, _, inferInstance, φ₂, hft₂, hab, ?_, hp₂, H₂⟩` and prove the remaining obligations. Establish `e₂ : spMap (κ.comp R₂.subtype) = spMap κ ≫ spMap R₂.subtype` using `spMap_comp _ _`. Use `GlobalTheory.CM.smoothOfRelativeDimension_of_fibre R₂ _ (κ.comp R₂.subtype) _ _ (pullback.fst P.A.hom (spMap κ) ≫ φ₂) (pullback.snd P.A.hom (spMap κ)) P.g hab ?_ ?_` and prove the remaining obligations.
-
-Rewrite using `[e₂]`. Conclude with `(IsPullback.of_hasPullback _ _).paste_horiz H₂.1`. Conclude with `(smoothOfRelativeDimension_isStableUnderBaseChange P.g).of_isPullback (IsPullback.of_hasPullback _ _) P.smoothDim`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_projective_abelian_model : ∀ (S : Type) [CommRing S] [IsDomain S] [IsLocalRing S] (P : Out.PolAV (Sp S)), ∃ (R : Subring S) (A₀ : Over (Sp R)) (_ : GrpObj A₀) (φ : P.A.left ⟶ A₀.left), Algebra.FiniteType ℤ R ∧ IsAbelianScheme A₀ ∧ SmoothOfRelativeDimension P.g A₀.hom ∧ IsProjOver A₀.hom ∧ IsGrpPullback P.A A₀ (spMap R.subtype) φ := by
   intro S _ _ _ P

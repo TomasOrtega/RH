@@ -20,7 +20,7 @@ open scoped TensorProduct ENNReal NNReal Matrix Classical
 namespace GlobalTheory.CompanionTheory.SW.RankOneSiegelWeil
 
 /- English proof (translation)
-Unfold `IsNm at *`. Establish `e : ((n * n' : (AF F)ˣ) : AF F) ⊗ₜ[F] (1 : E) = ((n : AF F) ⊗ₜ[F] (1 : E)) * ((n' : AF F) ⊗ₜ[F] (1 : E))`. Simplify using the standard rewrite rules. Rewrite using `[e, h, h']`. Simplify using `only [Units.val_mul, map_mul]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -34,7 +34,7 @@ theorem nm_mul {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] 
   ring
 
 /- English proof (translation)
-Unfold `IsNm`. Establish `e : ((ofF a : (AF F ⊗[F] E)ˣ) : AF F ⊗[F] E) = (a : AF F) ⊗ₜ[F] (1 : E)` using `rfl`. Rewrite using `[e]`. Simplify using `[sigR]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem nm_ofF {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     (a : (AF F)ˣ) : IsNm σ (ofF a) (a * a) := by
@@ -44,9 +44,9 @@ theorem nm_ofF {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] 
   simp [sigR]
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Establish `h1` using `hr ε hε`. Establish `h2` using `hr (ε ^ 2) (by positivity)`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((r (ε ^ 2) : AF F)).1 = (r ε : AF F).1 * (r ε : AF F).1`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[h1.1, h2.1, ← map_mul, sq]`. Express the relevant statement in the definitionally equal form `((r (ε ^ 2) : AF F)).2 = (r ε : AF F).2 * (r ε : AF F).2`. Rewrite using `[h1.2, h2.2, one_mul]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem ray_sq {F : Type} [Field F] [NumberField F] {θ : ℝ →+* Ainf F} {r : ℝ → (AF F)ˣ} (hr : IsRay θ r) {ε : ℝ}
     (hε : 0 < ε) : r (ε ^ 2) = r ε * r ε := by
@@ -60,24 +60,24 @@ theorem ray_sq {F : Type} [Field F] [NumberField F] {θ : ℝ →+* Ainf F} {r :
     rw [h1.2, h2.2, one_mul]
 
 /- English proof (translation)
-Simplify using `[md]`.
+Simplify using the standard rewrite rules.
 -/
 theorem md_mul {F : Type} [Field F] [NumberField F] (a b : (AF F)ˣ) : md (a * b) = md a * md b := by
   simp [md]
 
 /- English proof (translation)
-The claim follows from `(IdeleGroup.ideleModule F a).2`.
+A detailed English derivation is pending.
 -/
 theorem md_pos {F : Type} [Field F] [NumberField F] (a : (AF F)ˣ) : 0 < md a := (IdeleGroup.ideleModule F a).2
 
 /- English proof (translation)
-Introduce `hEq F E _ _ _ _ _ σ hcm J hJ d b li lam hli hlam θ hθ r hr S φ A hT`. Take `⟨K, hK, hdec⟩` from `GlobalTheory.T.idele_class_compact_ray_decomposition F E σ hcm θ hθ r hr`. Take `⟨R, hR⟩` from `GlobalTheory.T.theta_test_function_bounded_large_norm F E σ hcm J hJ d b S φ A hT`. Take `⟨C, hC⟩` from `GlobalTheory.T.rank_one_theta_integral_ray_formula hEq F E σ hcm J hJ d b li lam hli hlam θ hθ r hr S φ A hT K hK (max 1 R)`. Use `⟨C, fun y n hn => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨q, k, ε, hk, hε, rfl, hm⟩` from `hdec y n hn`. Rewrite using `[GlobalTheory.T.theta_series_invariant_rational_units]`. Distinguish the cases in `h : ε ≤ max 1 R`. Rewrite using `[hm]`. Conclude with `hC k hk ε hε h`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : 1 < ε` using `lt_of_le_of_lt (le_max_left _ _) (not_le.1 h)`. Establish `h2 : R < ε` using `lt_of_le_of_lt (le_max_right _ _) (not_le.1 h)`. Establish `h3 : 2 * Module.finrank ℚ F ≠ 0`. Use `Module.finrank_pos (R := ℚ) (M := F)` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `h4 : ε ≤ ε ^ (2 * Module.finrank ℚ F)` using `le_self_pow₀ h1.le h3`. Establish `h5` using `hR _ n hn (by rw [hm]; linarith)`. Rewrite `h5` using `[GlobalTheory.T.theta_series_invariant_rational_units]`. Rewrite using `[h5, mul_zero]`. Conclude with `bot_le`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bound : PositivityTheory.Rg.Mass.Equi → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (J : Matrix (Fin 1) (Fin 1) E), IsHermND σ J → ∀ (d : ℕ) (b : Module.Basis (Fin d) F E) (li : Measure (Ainf F)) (lam : ∀ v : HeightOneSpectrum (𝓞 F), Measure (Fv F v)), IsStdInf li → (∀ v, IsStdV v (lam v)) → ∀ θ : ℝ →+* Ainf F, Continuous θ → ∀ r, IsRay θ r → ∀ (S : Finset (HeightOneSpectrum (𝓞 F))) (φ : (Fin 1 → Fin 1 → Ainf F ⊗[F] E) → ℝ) (A : ∀ v : HeightOneSpectrum (𝓞 F), Set (Fin 1 → Fin 1 → Fv F v ⊗[F] E)), IsTest σ J b S φ A →
     ∃ C : ℝ≥0, ∀ (y : (AF F ⊗[F] E)ˣ) (n : (AF F)ˣ), IsNm σ y n → ENNReal.ofReal (md n) * Th φ A y ≤ C := by
@@ -103,33 +103,29 @@ theorem bound : PositivityTheory.Rg.Mass.Equi → ∀ (F E : Type) [Field F] [Nu
     exact bot_le
 
 /- English proof (translation)
-Introduce `hEq F E _ _ _ _ _ σ J d b li lam μ 𝓕 mi m hcm hJ hli hlam hμ h𝓕 hmi hm θ hθ r hr S φ A hT`. Take `⟨⟨_, _, _⟩, -⟩` from `GlobalTheory.T.adeles_locally_compact_second_countable F`. Take `⟨_, _, _, _, -, -, -, hB, -, -⟩` from `GlobalTheory.T.tensor_locally_compact_ring F E σ hcm (AF F)`. Establish `hG` using `GlobalTheory.T.adelic_unitary_group_locally_compact F E σ hcm 1 J hJ (AF F)`. Use `haveI : IsTopologicalGroup (HA (AF F) σ J) := hG.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : LocallyCompactSpace (HA (AF F) σ J) := hG.2.1`. Use `haveI : SecondCountableTopology (HA (AF F) σ J) := hG.2.2.1`. Use `haveI : T2Space (HA (AF F) σ J) := hG.2.2.2.1`. Use `haveI : BorelSpace (HA (AF F) σ J) := hG.2.2.2.2.1`. Establish `hfin : μ 𝓕 < ⊤` using `((GlobalTheory.T.unitary_group_finite_volume F E σ hcm 1 J hJ).2 μ hμ).2 𝓕 h𝓕`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: μ.IsHaarMeasure` using `hμ`. Set `Γ : Subgroup (HA (AF F) σ J)` to `HFinIn (AF F) σ J`. Establish `: Countable Γ` using `(GlobalTheory.T.arithmetic_unitary_group_discrete F E σ hcm 1 J hJ).1`. Establish `h𝓕' : IsFundamentalDomain Γ 𝓕 μ` using `h𝓕`. Establish `h0 : μ 𝓕 ≠ 0` using `(GlobalTheory.T.finite_covolume_unimodular (HA (AF F) σ J) Γ μ 𝓕 h𝓕' hfin).1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hft : μ 𝓕 ≠ ⊤` using `hfin.ne`. Take `⟨C, hC⟩` from `bound hEq F E σ hcm J hJ d b li lam hli hlam θ hθ r hr S φ A hT`. Take `⟨R, hR⟩` from `GlobalTheory.T.theta_test_function_bounded_large_norm F E σ hcm J hJ d b S φ A hT`. Establish `hM` using `fun x => GlobalTheory.T.rank_one_siegel_weil_theta_average F E σ hcm J hJ μ 𝓕 hμ h𝓕 d b S φ A hT x`. Establish `hnm : ∀ (x : (AF F ⊗[F] E)ˣ) (n : (AF F)ˣ) (h : HA (AF F) σ J), IsNm σ x n → IsNm σ (x * ue (AF F) σ J h⁻¹) n` using `fun x n h hn => by simpa using nm_mul hn (GlobalTheory.T.unitary_scalar_has_norm_one F E σ hcm J hJ h⁻¹)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Establish `hcan : (μ 𝓕)⁻¹ * μ 𝓕 = 1` using `ENNReal.inv_mul_cancel h0 hft`. Use `⟨⟨C, fun x n hn => ?_⟩, ⟨R, fun x n hn hRn => ?_⟩, fun x n hn => ?_⟩` and prove the remaining obligations. Rewrite using `[(hM x).1, mul_left_comm, ← lintegral_const_mul _ (hM x).2]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `hC _ n (hnm x n h hn)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `_ = C := by`. Rewrite using `[lintegral_const, Measure.restrict_apply_univ, mul_comm (C : ℝ≥0∞), ← mul_assoc, hcan, one_mul]`. Rewrite using `[(hM x).1]`. Establish `: ∀ h : HA (AF F) σ J, Th φ A (x * ue (AF F) σ J h⁻¹) = 0` using `fun h => hR _ n (hnm x n h hn) hRn`. Simplify using `[this]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set m := 2 * Module.finrank ℚ F with hmdef`. Establish `hmr` using `(GlobalTheory.T.ray_norm_and_module_formula F hcm.1 θ hθ r hr).2`. Establish `hmd : ∀ ε : ℝ, 0 < ε → md (n * r (ε ^ 2)) = md n * ε ^ m` using `fun ε hε => by`. Rewrite using `[md_mul, hmr _ (by positivity), hmdef, pow_mul]`. Establish `hne : ∀ ε : ℝ, 0 < ε → IsNm σ (x * ofF (r ε)) (n * r (ε ^ 2))` using `fun ε hε => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[ray_sq hr hε]`. Conclude with `nm_mul hn (nm_ofF _)`. Use `set f : ℝ → HA (AF F) σ J → ℝ≥0∞ := fun ε h => ENNReal.ofReal (md (n * r (ε ^ 2))) * Th φ A (x * ofF (r ε) * ue (AF F) σ J h⁻¹) with hf`. Establish `hfm : ∀ ε, Measurable (f ε)` using `fun ε => (hM _).2.const_mul _`. Establish `hbd : ∀ᶠ ε in 𝓝[>] (0 : ℝ), ∀ h, f ε h ≤ C` using `by filter_upwards [self_mem_nhdsWithin] with ε hε h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hC _ _ (hnm _ _ h (hne ε hε))`. Establish `hpt : ∀ h, Tendsto (fun ε => f ε h) (𝓝[>] 0) (𝓝 (vol b li lam S φ A))` using `fun h => by`. Establish `hy` using `hnm x n h hn`. Establish `e0 : ∀ ε, x * ofF (r ε) * ue (AF F) σ J h⁻¹ = x * ue (AF F) σ J h⁻¹ * ofF (r ε)` using `fun ε => by`. Rewrite using `[mul_assoc, mul_comm (ofF (r ε)), ← mul_assoc]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hT1 : ∀ᶠ ε in 𝓝[>] (0 : ℝ), Th φ A (x * ue (AF F) σ J h⁻¹ * ofF (r ε)) ≠ ⊤` using `by filter_upwards [hbd, self_mem_nhdsWithin] with ε h1 h2 h3`. Establish `h4` using `h1 h`. Simplify using `only [hf, e0, h3] at h4`. Rewrite `h4` using `[ENNReal.mul_top (by simpa using md_pos _)]`. Conclude with `absurd h4 (not_le.2 ENNReal.coe_lt_top)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hL` using `GlobalTheory.T.rank_one_theta_integral_ray_limit hEq F E σ hcm J hJ d b li lam hli hlam θ hθ r hr S φ A hT _ n hy hT1`. Establish `hmn : ENNReal.ofReal (md n) ≠ 0` using `by simpa using md_pos n`. Establish `h2` using `ENNReal.Tendsto.const_mul hL (Or.inr (ENNReal.ofReal_ne_top (r := md n)))`. Rewrite `h2` using `[← mul_assoc, ENNReal.mul_inv_cancel hmn ENNReal.ofReal_ne_top, one_mul]`. Use `h2.congr' ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `filter_upwards [self_mem_nhdsWithin] with ε hε`. Establish `hε' : (0 : ℝ) < ε` using `hε`. Simplify using `only [hf]`. Rewrite using `[e0, hmd ε hε', ENNReal.ofReal_mul (md_pos n).le]`. Conclude with `(mul_assoc _ _ _).symm`.
-
-Establish `hlim : Tendsto (fun ε => ∫⁻ h in 𝓕, f ε h ∂μ) (𝓝[>] 0) (𝓝 (∫⁻ _ in 𝓕, vol b li lam S φ A ∂μ))`. Use `tendsto_lintegral_filter_of_dominated_convergence (fun _ => (C : ℝ≥0∞)) (Eventually.of_forall hfm) (hbd.mono fun ε h => ae_of_all _ h) ?_ (ae_of_all _ hpt)` and prove the remaining obligations. Rewrite using `[lintegral_const, Measure.restrict_apply_univ]`. Conclude with `ENNReal.mul_ne_top ENNReal.coe_ne_top hft`. Establish `h2` using `ENNReal.Tendsto.const_mul hlim (Or.inr (ENNReal.inv_ne_top.2 h0)) (a := (μ 𝓕)⁻¹)`.
-
-Rewrite `h2` using `[lintegral_const, Measure.restrict_apply_univ, mul_comm (vol b li lam S φ A), ← mul_assoc, hcan, one_mul]`. Use `h2.congr fun ε => ?_` and prove the remaining obligations. Simplify using `only [hf]`. Rewrite using `[(hM _).1, lintegral_const_mul _ (hM _).2, mul_left_comm]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem lside : PositivityTheory.Rg.Mass.Equi → LSide := by
   intro hEq F E _ _ _ _ _ σ J d b li lam μ 𝓕 mi m hcm hJ hli hlam hμ h𝓕 hmi hm θ hθ r hr S φ A hT

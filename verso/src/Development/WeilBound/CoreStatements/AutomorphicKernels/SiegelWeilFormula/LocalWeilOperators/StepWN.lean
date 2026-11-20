@@ -20,19 +20,19 @@ namespace RD
 variable {d : SD σ} (R : RD d) (w : InfinitePlace F)
 
 /- English proof (translation)
-Introduce `ε w₀ hw`. Take `⟨⟨ν, hν⟩, -, -⟩` from `hA F E σ d`. Take `⟨C, μ', hC, -, hfact⟩` from `KFock.intFact F E σ d R w ν hν`. Establish `hs : (-2 * ((ε : ℤ) : ℂ) * ((R.sg w : ℤ) : ℂ) / R.ζ) ≠ 0`. Use `div_ne_zero (mul_ne_zero (mul_ne_zero (by norm_num) ?_) ?_) (KW.zeta_ne R)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Int.cast_ne_zero.mpr (Units.ne_zero ε)`. Conclude with `Int.cast_ne_zero.mpr (Units.ne_zero (R.sg w))`. Use `⟨(C : ℂ), fun Ψ X => ∫ Z, d.B.ψ (((ε : ℤ) : AF F) * d.tt (d.gram X Z.1)) * Ψ Z.1 ∂μ', by exact_mod_cast hC.ne', fun f hf => KW.locFT_sw _ _ hs f hf, fun Ψ hΨ => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Introduce `X Z hZ1 hZ2`. Use `MeasureTheory.integral_congr_ae (Filter.Eventually.of_forall fun Z₀ => ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only`. Rewrite using `[KW.psi_add_left, KW.gram_supp_cmp d w ⟨hZ1, hZ2⟩ Z₀.2, KW.psi_zero_gram, mul_one]`. Introduce `f hf Φ hΦ hTΦ`. Use function extensionality and compare the values at `X`. Rewrite using `[hT.2.2.1 F E σ d ν hν ε w₀ hw Φ hΦ X, hTΦ]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `Ψ' : Mx F E d.m d.n → ℂ` to `fun Z => d.B.ψ (((ε : ℤ) : AF F) * d.tt (d.gram X (Z - KW.insL R w (R.loc w Z)))) * Ψ Z`. Establish `hΨ' : ∀ X' Z, (∀ w', w' ≠ w → d.cw w' Z = 0) → finOne F • Z = 0 → Ψ' (X' + Z) = Ψ' X'`. Introduce `X' Z hZ1 hZ2`. Simplify using `only [Ψ']`. Rewrite using `[KW.rest_inv R w X' Z ⟨hZ1, hZ2⟩, hΨ X' Z hZ1 hZ2]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `e : (fun Z => d.B.ψ (((ε : ℤ) : AF F) * d.tt (d.gram X Z)) * R.tens w f Ψ Z) = R.tens w (fun u => d.B.ψ (((ε : ℤ) : AF F) * d.tt (d.gram X (KW.insL R w u))) * f u) Ψ'`. Use function extensionality and compare the values at `Z`. Simplify using `only [RD.tens, Ψ']`. Establish `h` using `KW.psi_add_right d ε X (KW.insL R w (R.loc w Z)) (Z - KW.insL R w (R.loc w Z))`. Rewrite `h` using `[add_sub_cancel]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[h]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, hfact _ Ψ' hΨ']`. Establish `e2 : ∫ Z, Ψ' Z.1 ∂μ' = ∫ Z, d.B.ψ (((ε : ℤ) : AF F) * d.tt (d.gram X Z.1)) * Ψ Z.1 ∂μ'`. Use `MeasureTheory.integral_congr_ae (Filter.Eventually.of_forall fun Z => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Ψ']`. Rewrite using `[KFock.loc_of_mem d R w Z.2, KW.insL_zero, sub_zero]`. Rewrite using `[e2]`. Simplify using `only [RD.tens, KW.kernel R w ε X]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem stepW_exp (hT : TAll) (hA : AuxiliaryPrimeFunction) : ∀ (ε : ℤˣ) (w₀ : d.G), d.IsW ε w₀ →
     ∃ (C : ℂ) (B : d.MF → d.MF), C ≠ 0 ∧ R.StepOK w w₀ (fun f u => C * ∫ v : Fin d.m → Fin d.n → ℂ,

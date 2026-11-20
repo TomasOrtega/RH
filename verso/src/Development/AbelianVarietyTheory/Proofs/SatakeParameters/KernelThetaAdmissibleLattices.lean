@@ -24,16 +24,16 @@ section Abs
 variable {V : Type} [AddCommGroup V] [Module ℂ V] [DecidableEq V] (H : Sesq V) (α : V → ℂ) (T : V ≃+ V)
 
 /- English proof (translation)
-Unfold `brk altE`. Rewrite using `[hH]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem brk_map (hH : ∀ x y, H (T x) (T y) = H x y) (y t : V) : brk H (T y) (T t) = brk H y t := by
   unfold brk altE
   rw [hH]
 
 /- English proof (translation)
-Unfold `hatS`. Rewrite using `[Finset.card_image_of_injective _ T.injective, Finset.sum_image (fun a _ b _ h => T.injective h)]`. Use `congr 2`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Rewrite using `[brk_map H T hH]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_sub]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hatS_map (hH : ∀ x y, H (T x) (T y) = H x y) (vol : ℝ) (SA : Finset V) (Φ : V → ℂ) (x y : V) :
     hatS H vol (SA.image T) (fun s => Φ (s - T x)) (T y) = hatS H vol SA (fun s => Φ (T (s - x))) y := by
@@ -45,7 +45,7 @@ theorem hatS_map (hH : ∀ x y, H (T x) (T y) = H x y) (vol : ℝ) (SA : Finset 
   simp only [map_sub]
 
 /- English proof (translation)
-Unfold `opU`. Rewrite using `[hH, hH, ← map_add]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem opU_map (hH : ∀ x y, H (T x) (T y) = H x y) (x : V) (e : V → ℂ) (z : V) :
     opU H (T x) e (T z) = opU H x (fun v => e (T v)) z := by
@@ -53,7 +53,7 @@ theorem opU_map (hH : ∀ x y, H (T x) (T y) = H x y) (x : V) (e : V → ℂ) (z
   rw [hH, hH, ← map_add]
 
 /- English proof (translation)
-Rewrite using `[xiL_expand, xiL_expand, Finset.sum_image (fun a _ b _ h => T.injective h)]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_image (fun a _ b _ h => T.injective h)]`. Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Rewrite using `[hatS_map H T hH, hα, hα, hH, hH, ← map_add, opU_map H T hH]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem xiL_map (hH : ∀ x y, H (T x) (T y) = H x y) (hα : ∀ x, α (T x) = α x) (vol : ℝ) (SX SA SB : Finset V) (Φ e : V → ℂ) (z : V) :
     xiL H α vol (SX.image T) (SA.image T) (SB.image T) Φ e (T z) =
@@ -65,9 +65,9 @@ theorem xiL_map (hH : ∀ x y, H (T x) (T y) = H x y) (hα : ∀ x, α (T x) = �
   rw [hatS_map H T hH, hα, hα, hH, hH, ← map_add, opU_map H T hH]
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.TransportLemma.main`. Consider the case `exact _root_.GlobalTheory.TransportLemma.main`. Consider the case `(apply _root_.GlobalTheory.TransportLemma.main <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.TransportLemma.main <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.TransportLemma.main <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.TransportLemma.main ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem isReps_image {Λ₁ Λ₂ M₁ M₂ : AddSubgroup V} {S : Finset V} (hS : IsReps Λ₁ Λ₂ S) (h1 : ∀ x, T x ∈ M₁ ↔ x ∈ Λ₁)
     (h2 : ∀ x, T x ∈ M₂ ↔ x ∈ Λ₂) : IsReps M₁ M₂ (S.image T) := by
@@ -82,14 +82,14 @@ theorem isReps_image {Λ₁ Λ₂ M₁ M₂ : AddSubgroup V} {S : Finset V} (hS 
 omit [DecidableEq V] in
 
 /- English proof (translation)
-Unfold `repsOf`. Conclude with `Classical.epsilon_spec h`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem repsOf_of_exists {Λ₁ Λ₂ : AddSubgroup V} (h : ∃ S, IsReps Λ₁ Λ₂ S) : IsReps Λ₁ Λ₂ (repsOf Λ₁ Λ₂) := by
   unfold repsOf
   exact Classical.epsilon_spec h
 
 /- English proof (translation)
-Establish `hΛA : ∀ x, T x ∈ Λ ⊓ A ↔ x ∈ Λ₁ ⊓ A₁` using `fun x => by`. Rewrite using `[AddSubgroup.mem_inf, AddSubgroup.mem_inf, hΛ, hA]`. Rewrite using `[← xiL_map H α T hH hα]`. Conclude with `twist_representatives V H α A B Λ hyp SX SA SB _ _ _ hSX hSA hSB (isReps_image T hSX₁ hΛ hA) (isReps_image T hSA₁ hB hΛA) (isReps_image T hSB₁ hΛ hB) vol θ hθ Φ hΦ (T z)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem xiL_transport {A B Λ A₁ B₁ Λ₁ : AddSubgroup V} (hyp : SplitHyp H α A B Λ) (hH : ∀ x y, H (T x) (T y) = H x y)
     (hα : ∀ x, α (T x) = α x) (hΛ : ∀ x, T x ∈ Λ ↔ x ∈ Λ₁) (hA : ∀ x, T x ∈ A ↔ x ∈ A₁) (hB : ∀ x, T x ∈ B ↔ x ∈ B₁)
@@ -104,7 +104,7 @@ theorem xiL_transport {A B Λ A₁ B₁ Λ₁ : AddSubgroup V} (hyp : SplitHyp H
     (isReps_image T hSA₁ hB hΛA) (isReps_image T hSB₁ hΛ hB) vol θ hθ Φ hΦ (T z)
 
 /- English proof (translation)
-Use `⟨S.image T.symm, isReps_image T.symm hS (fun x => ?_) (fun x => ?_)⟩` and prove the remaining obligations. Rewrite using `[← h1, AddEquiv.apply_symm_apply]`. Rewrite using `[← h2, AddEquiv.apply_symm_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_reps_symm {Λ₁ Λ₂ M₁ M₂ : AddSubgroup V} {S : Finset V} (hS : IsReps M₁ M₂ S) (h1 : ∀ x, T x ∈ M₁ ↔ x ∈ Λ₁)
     (h2 : ∀ x, T x ∈ M₂ ↔ x ∈ Λ₂) : ∃ S₁, IsReps Λ₁ Λ₂ S₁ := by
@@ -119,7 +119,7 @@ section Conc
 variable {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} {a b : ℕ}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Use `show (Matrix.conjTranspose (g'.map (TaylorLogMetric.embT D τ)) * (Matrix.conjTranspose (e'.map (TaylorLogMetric.embT D τ)) * Matrix.of (z τ) * e.map (TaylorLogMetric.embT D τ)) * g.map (TaylorLogMetric.embT D τ) : Matrix _ _ ℂ) = Matrix.conjTranspose ((e' * g').map (TaylorLogMetr …`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, Matrix.conjTranspose_mul]`. Simplify using `only [Matrix.mul_assoc]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tPull_tPull (e g : Matrix (Fin a) (Fin a) D.host.E) (e' g' : Matrix (Fin b) (Fin b) D.host.E) (z : TaylorLogMetric.VC D a b) :
     tPull D (TaylorLogMetric.tor0 D cc δ) g g' (tPull D (TaylorLogMetric.tor0 D cc δ) e e' z) = tPull D (TaylorLogMetric.tor0 D cc δ) (e * g) (e' * g') z := by
@@ -131,7 +131,7 @@ theorem tPull_tPull (e g : Matrix (Fin a) (Fin a) D.host.E) (e' g' : Matrix (Fin
   simp only [Matrix.mul_assoc]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Use `show (Matrix.conjTranspose ((1 : Matrix (Fin b) (Fin b) D.host.E).map (TaylorLogMetric.embT D τ)) * Matrix.of (z τ) * (1 : Matrix (Fin a) (Fin a) D.host.E).map (TaylorLogMetric.embT D τ) : Matrix _ _ ℂ) = Matrix.of (z τ)`. Rewrite using `[Matrix.map_one _ (map_zero _) (map_one _), Matrix.map_one _ (map_zero _) (map_one _), Matrix.conjTranspose_one, Matrix.one_mul, Matrix.mul_one]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tPull_one (z : TaylorLogMetric.VC D a b) :
     tPull D (TaylorLogMetric.tor0 D cc δ) (1 : Matrix (Fin a) (Fin a) D.host.E) (1 : Matrix (Fin b) (Fin b) D.host.E) z = z := by
@@ -158,7 +158,7 @@ theorem TT_apply (e : Matrix (Fin a) (Fin a) D.host.E) (e' : Matrix (Fin b) (Fin
     (he' : e' * star e' = 1) (z : TaylorLogMetric.VC D a b) : TT cc δ e e' he he' z = tPull D (TaylorLogMetric.tor0 D cc δ) e e' z := rfl
 
 /- English proof (translation)
-Simplify using `only [TaylorLogMetric.Hf, TaylorLogMetric.tor0, hK, HV, LinearMap.mk₂'ₛₗ_apply]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hK_eq_Hf (z w : TaylorLogMetric.VC D a b) : hK D cc δ a b z w = TaylorLogMetric.Hf D (TaylorLogMetric.tor0 D cc δ) z w := by
   simp only [TaylorLogMetric.Hf, TaylorLogMetric.tor0, hK, HV, LinearMap.mk₂'ₛₗ_apply]
@@ -166,7 +166,7 @@ theorem hK_eq_Hf (z w : TaylorLogMetric.VC D a b) : hK D cc δ a b z w = TaylorL
   ring
 
 /- English proof (translation)
-Rewrite using `[hK_eq_Hf, hK_eq_Hf]`. Conclude with `Hf_tPull cc δ e e' he he' x y`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hK_TT (e : Matrix (Fin a) (Fin a) D.host.E) (e' : Matrix (Fin b) (Fin b) D.host.E) (he : e * star e = 1)
     (he' : e' * star e' = 1) (x y : TaylorLogMetric.VC D a b) :
@@ -175,7 +175,7 @@ theorem hK_TT (e : Matrix (Fin a) (Fin a) D.host.E) (e' : Matrix (Fin b) (Fin b)
   exact Hf_tPull cc δ e e' he he' x y
 
 /- English proof (translation)
-Establish `h` using `hK_TT (cc := cc) (δ := δ) e e' he he' x x`. Unfold `hK at h`. Simplify using `only [alK, alV, alphaQ, qOf, h]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem alK_TT (e : Matrix (Fin a) (Fin a) D.host.E) (e' : Matrix (Fin b) (Fin b) D.host.E) (he : e * star e = 1)
     (he' : e' * star e' = 1) (x : TaylorLogMetric.VC D a b) :
@@ -201,7 +201,7 @@ theorem RR_apply (e : Matrix (Fin a) (Fin a) D.host.E) (e' : Matrix (Fin b) (Fin
     RR e e' x = Matrix.toLin' (star e') ∘ₗ x ∘ₗ Matrix.toLin' e := rfl
 
 /- English proof (translation)
-Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Use `show Matrix.toLin' (star e') (x (Matrix.toLin' e (Pi.single j 1))) i = _`. Rewrite using `[← RepComb.matH_mulVec x, Matrix.toLin'_apply, Matrix.toLin'_apply, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_single_one]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem matH_RR (e : Matrix (Fin a) (Fin a) D.host.E) (e' : Matrix (Fin b) (Fin b) D.host.E) (x : Formalism.L2.Col.HomE D.host.E a b) :
     RepComb.matH (RR e e' x) = star e' * RepComb.matH x * e := by
@@ -212,9 +212,9 @@ theorem matH_RR (e : Matrix (Fin a) (Fin a) D.host.E) (e' : Matrix (Fin b) (Fin 
   rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ i j`. Establish `h1 : (Matrix.of (fun i j => δ * TaylorLogMetric.embT D τ (RepComb.matH x i j)) : Matrix (Fin b) (Fin a) ℂ) = δ • (RepComb.matH x).map (TaylorLogMetric.embT D τ)`. Use extensionality with `i j`. Both sides reduce to the same expression. Use `show (Matrix.conjTranspose (e'.map (TaylorLogMetric.embT D τ)) * Matrix.of (fun i j => δ * TaylorLogMetric.embT D τ (RepComb.matH x i j)) * e.map (TaylorLogMetric.embT D τ) : Matrix _ _ ℂ) i j = δ * TaylorLogMetric.embT D τ (RepComb.matH (RR e e' x) i j)`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, matH_RR, ← Matrix.star_eq_conjTranspose, PullbackComparison.map_star, Matrix.mul_smul, Matrix.smul_mul, ← Matrix.map_mul, ← Matrix.map_mul]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem tPull_embH (e : Matrix (Fin a) (Fin a) D.host.E) (e' : Matrix (Fin b) (Fin b) D.host.E) (x : Formalism.L2.Col.HomE D.host.E a b) :
     tPull D (TaylorLogMetric.tor0 D cc δ) e e' (embH (ι := D.what₂.Tau) (fun τ => TaylorLogMetric.embT D τ) δ x) =
@@ -235,7 +235,7 @@ variable {W : Type} [AddCommGroup W] [Module D.host.E W] [Module (𝓞 D.host.E)
   (f : W →ₗ[D.host.E] W)
 
 /- English proof (translation)
-Take `⟨s, hs, h⟩` from `hx`. Use `⟨s, hs, ?_⟩` and prove the remaining obligations. Use `hM _ h` as an intermediate fact. Rewrite `this` using `[← LinearMap.coe_restrictScalars (𝓞 D.host.E) f, map_smul]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem localization_map₂ (M M' : Submodule (𝓞 D.host.E) W) (hM : ∀ x ∈ M, f x ∈ M') (Q : HeightOneSpectrum (𝓞 D.host.E)) (x : W)
     (hx : x ∈ Formalism.HermitianLatticesTheory.localization₂ Q.asIdeal M) : f x ∈ Formalism.HermitianLatticesTheory.localization₂ Q.asIdeal M' := by
@@ -245,7 +245,7 @@ theorem localization_map₂ (M M' : Submodule (𝓞 D.host.E) W) (hM : ∀ x ∈
   rwa [← LinearMap.coe_restrictScalars (𝓞 D.host.E) f, map_smul] at this
 
 /- English proof (translation)
-Rewrite `hx`, the goal using `[mem_twO]`. Introduce `Q`. Rewrite using `[← map_smul]`. Conclude with `localization_map₂ f M M' hM Q _ (hx Q)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem twO_map (M M' : Submodule (𝓞 D.host.E) W) (hM : ∀ x ∈ M, f x ∈ M') (c : ℕ) (ex : HeightOneSpectrum (𝓞 D.host.E) → ℤ) (x : W)
     (hx : x ∈ twist₂ M c ex) : f x ∈ twist₂ M' c ex := by
@@ -257,9 +257,9 @@ theorem twO_map (M M' : Submodule (𝓞 D.host.E) W) (hM : ∀ x ∈ M, f x ∈ 
 end Map
 
 /- English proof (translation)
-Establish `h : (perO AA0 N₁ N₁').map (f.restrictScalars (𝓞 D.host.E)) ≤ perO AA0 N N'`. Unfold `perO`. Rewrite using `[Submodule.map_span_le]`. Introduce and unpack `z ⟨r, hr, y, hy, rfl⟩`. Use `Submodule.subset_span ⟨r, hr, f y, hf y hy, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[LinearMap.coe_restrictScalars, map_smul]`. Conclude with `h (Submodule.mem_map_of_mem hx)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem perO_map (AA0 : Submodule (𝓞 D.host.E) D.host.E) (N₁ N : Submodule (𝓞 D.host.E) (Formalism.L2.Col.Sp D.host.E a))
     (N₁' N' : Submodule (𝓞 D.host.E) (Formalism.L2.Col.Sp D.host.E b)) (f : Formalism.L2.Col.HomE D.host.E a b →ₗ[D.host.E] Formalism.L2.Col.HomE D.host.E a b)
@@ -274,9 +274,9 @@ theorem perO_map (AA0 : Submodule (𝓞 D.host.E) D.host.E) (N₁ N : Submodule 
   exact h (Submodule.mem_map_of_mem hx)
 
 /- English proof (translation)
-Introduce `y hy`. Take `⟨n', hn', h⟩` from `hx (Matrix.toLin' e y) ⟨y, hy, rfl⟩`. Rewrite using `[RR_apply, LinearMap.comp_apply, LinearMap.comp_apply]`. Express the relevant statement in the definitionally equal form `Matrix.toLin' e' n' = x (Matrix.toLin' e y) at h`. Rewrite using `[← h, ← LinearMap.comp_apply, ← Matrix.toLin'_mul, mul_eq_one_comm.1 he', Matrix.toLin'_one, LinearMap.id_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hn'`.
+A detailed English derivation is pending.
 -/
 theorem homO_RR (e : Matrix (Fin a) (Fin a) D.host.E) (e' : Matrix (Fin b) (Fin b) D.host.E) (he' : e' * star e' = 1)
     (N : Submodule (𝓞 D.host.E) (Formalism.L2.Col.Sp D.host.E a)) (N' : Submodule (𝓞 D.host.E) (Formalism.L2.Col.Sp D.host.E b))
@@ -289,7 +289,7 @@ theorem homO_RR (e : Matrix (Fin a) (Fin a) D.host.E) (e' : Matrix (Fin b) (Fin 
   exact hn'
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨n, hn, rfl⟩`. Use `⟨x n, hx n hn, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Matrix.toLin' e' (x n) = Matrix.toLin' (star (star e')) (x (Matrix.toLin' (star e) (Matrix.toLin' e n)))`. Rewrite using `[star_star, ← LinearMap.comp_apply (Matrix.toLin' (star e)), ← Matrix.toLin'_mul, mul_eq_one_comm.1 he, Matrix.toLin'_one, LinearMap.id_apply]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem homO_RR_inv (e : Matrix (Fin a) (Fin a) D.host.E) (e' : Matrix (Fin b) (Fin b) D.host.E) (he : e * star e = 1)
     (N : Submodule (𝓞 D.host.E) (Formalism.L2.Col.Sp D.host.E a)) (N' : Submodule (𝓞 D.host.E) (Formalism.L2.Col.Sp D.host.E b))
@@ -302,7 +302,7 @@ theorem homO_RR_inv (e : Matrix (Fin a) (Fin a) D.host.E) (e' : Matrix (Fin b) (
     LinearMap.id_apply]
 
 /- English proof (translation)
-Take `⟨x, hx, rfl⟩` from `hv`. Conclude with `⟨RR e e' x, hM x hx, (tPull_embH e e' x).symm⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem laV_RR (e : Matrix (Fin a) (Fin a) D.host.E) (e' : Matrix (Fin b) (Fin b) D.host.E)
     (M₁ M : Submodule (𝓞 D.host.E) (Formalism.L2.Col.HomE D.host.E a b)) (hM : ∀ x ∈ M₁, RR e e' x ∈ M) (v : TaylorLogMetric.VC D a b)
@@ -312,9 +312,9 @@ theorem laV_RR (e : Matrix (Fin a) (Fin a) D.host.E) (e' : Matrix (Fin b) (Fin b
   exact ⟨RR e e' x, hM x hx, (tPull_embH e e' x).symm⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h1` using `laV_RR (cc := cc) (star e) (star e') M M₁ hM' _ h`. Establish `h2 : tPull D (TaylorLogMetric.tor0 D cc δ) (star e) (star e') (TT cc δ e e' he he' v) = v` using `(TT cc δ e e' he he').left_inv v`. Rewrite `h1` using `[h2]`. Then use the resulting hypothesis.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Conclude with `laV_RR e e' M₁ M hM v`.
+A detailed English derivation is pending.
 -/
 theorem TT_mem_iff (e : Matrix (Fin a) (Fin a) D.host.E) (e' : Matrix (Fin b) (Fin b) D.host.E) (he : e * star e = 1)
     (he' : e' * star e' = 1) (M₁ M : Submodule (𝓞 D.host.E) (Formalism.L2.Col.HomE D.host.E a b))
@@ -330,12 +330,12 @@ theorem TT_mem_iff (e : Matrix (Fin a) (Fin a) D.host.E) (e' : Matrix (Fin b) (F
   · exact laV_RR e e' M₁ M hM v
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨D.eTau.symm (Classical.arbitrary _)⟩`.
+Supply the required witnesses or components.
 -/
 theorem tau_nonempty (D : D7) : Nonempty D.what₂.Tau := ⟨D.eTau.symm (Classical.arbitrary _)⟩
 
 /- English proof (translation)
-Use `tau_nonempty D` as an intermediate fact. Establish `h : ∃ y, embH (ι` using `D.what₂.Tau) (fun τ => TaylorLogMetric.embT D τ) δ y = embH (ι := D.what₂.Tau) (fun τ => TaylorLogMetric.embT D τ) δ x := ⟨x, rfl⟩`. Unfold `onV`. Rewrite using `[dif_pos h]`. Conclude with `congrArg Ξ (embH_inj _ hδ0 h.choose_spec)`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem onV_embH (hδ0 : δ ≠ 0) (Ξ : Formalism.L2.Col.HomE D.host.E a b → ℂ) (x : Formalism.L2.Col.HomE D.host.E a b) :
     onV (ι := D.what₂.Tau) (fun τ => TaylorLogMetric.embT D τ) δ Ξ (embH (ι := D.what₂.Tau) (fun τ => TaylorLogMetric.embT D τ) δ x) = Ξ x := by
@@ -346,11 +346,11 @@ theorem onV_embH (hδ0 : δ ≠ 0) (Ξ : Formalism.L2.Col.HomE D.host.E a b → 
   exact congrArg Ξ (embH_inj _ hδ0 h.choose_spec)
 
 /- English proof (translation)
-Distinguish the cases in `h : ∃ x, embH (ι := D.what₂.Tau) (fun τ => TaylorLogMetric.embT D τ) δ x = v`. Take `⟨x, rfl⟩` from `h`. Rewrite using `[TT_apply, tPull_embH, onV_embH hδ0, onV_embH hδ0]`. Establish `h2 : ¬ ∃ x, embH (ι` using `D.what₂.Tau) (fun τ => TaylorLogMetric.embT D τ) δ x = TT cc δ e e' he he' v := by`. Introduce and unpack `⟨y, hy⟩`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Apply `h` to reduce the goal to its premises. Use `⟨RR (star e) (star e') y, ?_⟩` and prove the remaining obligations. Rewrite using `[← tPull_embH (cc := cc), hy]`. Conclude with `(TT cc δ e e' he he').left_inv v`. Unfold `onV`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_neg h, dif_neg h2]`.
+A detailed English derivation is pending.
 -/
 theorem onV_TT (hδ0 : δ ≠ 0) (e : Matrix (Fin a) (Fin a) D.host.E) (e' : Matrix (Fin b) (Fin b) D.host.E) (he : e * star e = 1)
     (he' : e' * star e' = 1) (Ξ : Formalism.L2.Col.HomE D.host.E a b → ℂ) (v : TaylorLogMetric.VC D a b) :
@@ -369,11 +369,11 @@ theorem onV_TT (hδ0 : δ ≠ 0) (e : Matrix (Fin a) (Fin a) D.host.E) (e' : Mat
     rw [dif_neg h, dif_neg h2]
 
 /- English proof (translation)
-Establish `hm : ∀ y, y ∈ Formalism.HermitianLatticesTheory.dual (Formalism.L2.Col.hStd D.host.E n) L ↔ ∀ x ∈ L, stdH D.host.E n x y ∈ (algebraMap (𝓞 D.host.E) D.host.E).range`. Introduce `y`. Simplify using `only [Formalism.HermitianLatticesTheory.dual, Formalism.E.hdual, Submodule.mem_iInf, Submodule.mem_comap, LinearMap.coe_restrictScalars, Submodule.mem_one, RingHom.mem_range]`. Both sides reduce to the same expression. Unfold `Formalism.HermitianLatticesTheory.IsUnimodular`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Replace the relevant objects with their definitions.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h y`. Rewrite using `[← hm y, h]`. Introduce `h`. Use extensionality with `y`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Rewrite using `[hm y]`. Conclude with `(h y).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unimod_iff {n : ℕ} (L : Submodule (𝓞 D.host.E) (Formalism.L2.Col.Sp D.host.E n)) :
     Formalism.HermitianLatticesTheory.IsUnimodular (Formalism.L2.Col.hStd D.host.E n) L ↔
@@ -397,7 +397,7 @@ variable (SS : Finset (HeightOneSpectrum (𝓞 D.host.E))) (cl : ℕ)
   (N : Submodule (𝓞 D.host.E) (Formalism.L2.Col.Sp D.host.E a)) (N' : Submodule (𝓞 D.host.E) (Formalism.L2.Col.Sp D.host.E b))
 
 /- English proof (translation)
-Establish `hl` using `hh_tw_lattice N' ⟨hA.2.2.2.1, hA.2.2.2.2.1⟩ hcl ex h01`. Conclude with `⟨hA.1, hA.2.1, hA.2.2.1, hl.fg, hl.span_eq_top, (unimod_iff _).1 (twist_selfDual D.host.E b N' cl ex hA.2.2.2.1 hcl hc ((unimod_iff _).2 hA.2.2.2.2.2))⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem admissible_pair_twist (hA : TaylorLogMetric.admitted D a b N N') (hcl : 0 < cl) (ex : HeightOneSpectrum (𝓞 D.host.E) → ℤ)
     (h01 : ∀ Q, ex Q = 1 ∨ ex Q = 0 ∨ ex Q = -1) (hc : ∀ Q, ex (Formalism.L2.Col.conjPrime₂ Q) = -ex Q) :
@@ -407,11 +407,11 @@ theorem admissible_pair_twist (hA : TaylorLogMetric.admitted D a b N N') (hcl : 
     (unimod_iff _).1 (twist_selfDual D.host.E b N' cl ex hA.2.2.2.1 hcl hc ((unimod_iff _).2 hA.2.2.2.2.2))⟩
 
 /- English proof (translation)
-Use `tau_nonempty D` as an intermediate fact. Establish `he1 : ∀ Q, expS SS Q = 1 ∨ expS SS Q = 0 ∨ expS SS Q = -1` using `expS_cases SS`. Establish `he2 : ∀ Q, (fun Q => -expS SS Q) Q = 1 ∨ (fun Q => -expS SS Q) Q = 0 ∨ (fun Q => -expS SS Q) Q = -1`. Introduce `Q`. Use `he1 Q` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `show -expS SS Q = 1 ∨ -expS SS Q = 0 ∨ -expS SS Q = -1`. Use linear arithmetic over natural numbers and integers. Establish `hconj1 : ∀ Q, expS SS (Formalism.L2.Col.conjPrime₂ Q) = -expS SS Q` using `exponent_set_conjugate D.host.E SS hSS`. Establish `hconj2 : ∀ Q, (fun Q => -expS SS Q) (Formalism.L2.Col.conjPrime₂ Q) = -(fun Q => -expS SS Q) Q`. Introduce `Q`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `show -expS SS (Formalism.L2.Col.conjPrime₂ Q) = - -expS SS Q`. Rewrite using `[hconj1 Q]`. Conclude with `half_periods_of_lattice D.host.E D.what₂.Tau a b (fun τ => TaylorLogMetric.embT D τ) δ D.host.d (TaylorLogMetric.area (TaylorLogMetric.lamOf D cc δ))⁻¹ (aaOf D cc) SS N N' cl hδ0 hcl hSS hA.2.2.1.1 (laFacts_of_adm B hcc hδ hA) (laFacts_of_adm B hcc hδ (admissible_pair_twist cl N …`.
+A detailed English derivation is pending.
 -/
 theorem split_of_adm (B : Base D cc δ) (hcc : TaylorLogMetric.IsCurveIdeal D cc) (hδ : TaylorLogMetric.IsDiscriminantTwelfthRootOfIdealLattice D cc δ) (hδ0 : δ ≠ 0)
     (hA : TaylorLogMetric.admitted D a b N N') (hcl : 0 < cl) (hSS : ∀ P ∈ SS, Formalism.L2.Col.conjPrime₂ P ∉ SS) :
@@ -433,18 +433,18 @@ theorem split_of_adm (B : Base D cc δ) (hcc : TaylorLogMetric.IsCurveIdeal D cc
     (laFacts_of_adm B hcc hδ (admissible_pair_twist cl N N' hA hcl _ he1 hconj1)) (laFacts_of_adm B hcc hδ (admissible_pair_twist cl N N' hA hcl _ he2 hconj2))
 
 /- English proof (translation)
-The claim follows from `finite_index_of_fg D.host.E D.what₂.Tau a b (fun τ => TaylorLogMetric.embT D τ) δ (aaOf D cc) SS N N' cl hcl (period_lattice_finitely_generated D.host.E D.what₂.Tau a b (fun τ => TaylorLogMetric.embT D τ) δ (aaOf D cc) N N' hA.2.2.2.1 hA.2.2.1.2.1 (aaOf_fg cc))`.
+A detailed English derivation is pending.
 -/
 theorem finIdx_of_adm (hA : TaylorLogMetric.admitted D a b N N') (hcl : 0 < cl) : FinIdx cc δ SS cl N N' :=
   finite_index_of_fg D.host.E D.what₂.Tau a b (fun τ => TaylorLogMetric.embT D τ) δ (aaOf D cc) SS N N' cl hcl
     (period_lattice_finitely_generated D.host.E D.what₂.Tau a b (fun τ => TaylorLogMetric.embT D τ) δ (aaOf D cc) N N' hA.2.2.2.1 hA.2.2.1.2.1 (aaOf_fg cc))
 
 /- English proof (translation)
-Establish `hm` using `(hVec a b N N' hA).1`. Introduce `x hx z`. Establish `hx' : x ∈ TaylorLogMetric.La D B.tor N N'` using `by rw [← lamK_eq cc δ N N']; exact hx`. Establish `h1` using `hm.2 x hx' z`. Rewrite `h1` using `[U_eq_opU]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hal : alK D cc δ a b x = TaylorLogMetric.al D B.tor x`. Rewrite using `[KS.Lat.al_eq_La B hcc hδ hA x hx']`. Unfold `alK alV`. Rewrite using `[HV_eq_formV]`. Rewrite using `[hal]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h1`.
+A detailed English derivation is pending.
 -/
 theorem eNat_fixed (B : Base D cc δ) (χ : TaylorLogMetric.IdE D → ℂ) (hcc : TaylorLogMetric.IsCurveIdeal D cc) (hδ : TaylorLogMetric.IsDiscriminantTwelfthRootOfIdealLattice D cc δ)
     (hVec : B.VecP χ) (hA : TaylorLogMetric.admitted D a b N N') :
@@ -462,13 +462,13 @@ theorem eNat_fixed (B : Base D cc δ) (χ : TaylorLogMetric.IdE D → ℂ) (hcc 
   exact h1
 
 /- English proof (translation)
-Use `tau_nonempty D` as an intermediate fact. Establish `p1 : ∀ x ∈ perO (aaOf D cc) (SDLat.smulLat e N) (SDLat.smulLat e' N'), RR e e' x ∈ perO (aaOf D cc) N N'` using `perO_map _ _ _ _ _ (RR e e') (homO_RR e e' he' N N')`. Establish `p2 : ∀ x ∈ perO (aaOf D cc) N N', RR (star e) (star e') x ∈ perO (aaOf D cc) (SDLat.smulLat e N) (SDLat.smulLat e' N')` using `perO_map _ _ _ _ _ (RR (star e) (star e')) (homO_RR_inv e e' he N N')`. Establish `hΛ : ∀ v, TT cc δ e e' he he' v ∈ lamK cc δ N N' ↔ v ∈ lamK cc δ (SDLat.smulLat e N) (SDLat.smulLat e' N')` using `TT_mem_iff e e' he he' _ _ p1 p2`. Establish `hAh : ∀ v, TT cc δ e e' he he' v ∈ halfA cc δ SS cl N N' ↔ v ∈ halfA cc δ SS cl (SDLat.smulLat e N) (SDLat.smulLat e' N')` using `TT_mem_iff e e' he he' _ _ (twO_map (RR e e') _ _ p1 cl _) (twO_map (RR (star e) (star e')) _ _ p2 cl _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hBh : ∀ v, TT cc δ e e' he he' v ∈ halfB cc δ SS cl N N' ↔ v ∈ halfB cc δ SS cl (SDLat.smulLat e N) (SDLat.smulLat e' N')` using `TT_mem_iff e e' he he' _ _ (twO_map (RR e e') _ _ p1 cl _) (twO_map (RR (star e) (star e')) _ _ p2 cl _)`. Establish `hΛA : ∀ v, TT cc δ e e' he he' v ∈ lamK cc δ N N' ⊓ halfA cc δ SS cl N N' ↔ v ∈ lamK cc δ (SDLat.smulLat e N) (SDLat.smulLat e' N') ⊓ halfA cc δ SS cl (SDLat.smulLat e N) (SDLat.smulLat e' N')` using `fun v => by`. Rewrite using `[AddSubgroup.mem_inf, AddSubgroup.mem_inf, hΛ, hAh]`. Establish `hyp` using `split_of_adm SS cl N N' B hcc hδ hδ0 hA hcl hSS`. Establish `hI` using `finIdx_of_adm (cc := cc) (δ := δ) SS cl N N' hA hcl`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hθ` using `eNat_fixed N N' B χ hcc hδ hVec hA`. Establish `hΦ : InvOn (halfA cc δ SS cl N N') (halfB cc δ SS cl N N') (onV (ι` using `D.what₂.Tau) (fun τ => TaylorLogMetric.embT D τ) δ Ξ) := hDat.invOn (fun τ => TaylorLogMetric.embT D τ) δ (embH_inj _ hδ0)`. Establish `hvec : B.eNat χ a b (SDLat.smulLat e N) (SDLat.smulLat e' N') = fun v => B.eNat χ a b N N' (TT cc δ e e' he he' v)` using `(hEq.1 a b ⟨N, hA.2.2.1⟩ ⟨N', hA.2.2.2⟩ hA.1 hA.2.1 ⟨e, Matrix.mem_unitaryGroup_iff.2 he⟩ ⟨e', Matrix.mem_unitaryGroup_iff.2 he'⟩).symm`. Establish `hdat : onV (ι` using `D.what₂.Tau) (fun τ => TaylorLogMetric.embT D τ) δ (fun x => Ξ (Matrix.toLin' (star e') ∘ₗ x ∘ₗ Matrix.toLin' e)) = fun v => onV (ι := D.what₂.Tau) (fun τ => TaylorLogMetric.embT D τ) δ Ξ (TT cc δ e e' he he' v) :=`. Use function extensionality and compare the values at `(onV_TT hδ0 e e' he he' Ξ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `z`. Unfold `kerTh thC xiV`. Rewrite using `[hdat, hvec]`. Conclude with `xiL_transport (hK D cc δ a b) (alK D cc δ a b) (TT cc δ e e' he he') hyp (hK_TT e e' he he') (alK_TT e e' he he') hΛ hAh hBh (repsOf_spec _ _ hI.1) (repsOf_spec _ _ hI.2.1) (repsOf_spec _ _ hI.2.2) (repsOf_of_exists (exists_reps_symm _ (repsOf_spec _ _ hI.1) hΛ hAh)) (repsOf_of_e …`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kernel_theta_move_local (B : Base D cc δ) (χ : TaylorLogMetric.IdE D → ℂ) (hcc : TaylorLogMetric.IsCurveIdeal D cc) (hδ : TaylorLogMetric.IsDiscriminantTwelfthRootOfIdealLattice D cc δ) (hδ0 : δ ≠ 0)
     (hVec : B.VecP χ) (hEq : B.EqP χ) (hcl : 0 < cl) (hSS : ∀ Q ∈ SS, Formalism.L2.Col.conjPrime₂ Q ∉ SS)
@@ -518,7 +518,7 @@ section Main
 open GlobalTheory.TwU TensorProduct
 
 /- English proof (translation)
-Introduce `D cc δ B χ hcc hδ hδ0 hχ _ hVec hEq SS cl hcl hSS a b N N' Ξ hA hDat e e' he he'`. Conclude with `kernel_theta_move_local SS cl N N' B χ hcc hδ hδ0 hVec hEq hcl hSS Ξ hA hDat e e' he he'`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem kerTh_move : letI := fun D : D7 => D.host.cmStar; ∀ (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (B : Base D cc δ) (χ : TaylorLogMetric.IdE D → ℂ), TaylorLogMetric.IsCurveIdeal D cc → TaylorLogMetric.IsDiscriminantTwelfthRootOfIdealLattice D cc δ → δ ≠ 0 → TaylorLogMetric.IsChi D χ → B.LatAll → B.VecP χ → B.EqP χ → ∀ (SS : Finset (HeightOneSpectrum (𝓞 D.host.E))) (cl : ℕ), 0 < cl → (∀ Q ∈ SS, Formalism.L2.Col.conjPrime₂ Q ∉ SS) → ∀ (a b : ℕ) (N : Submodule (𝓞 D.host.E) (Fin a → D.host.E)) (N' : Submodule (𝓞 D.host.E) (Fin b → D.host.E)) (Ξ : Formalism.L2.Col.HomE D.host.E a b → ℂ), TaylorLogMetric.admitted D a b N N' → DatLoc D cc SS cl N N' Ξ → ∀ (e : Matrix (Fin a) (Fin a) D.host.E) (e' : Matrix (Fin b) (Fin b) D.host.E), e * star e = 1 → e' * star e' = 1 → kerTh B χ SS cl (SDLat.smulLat e N) (SDLat.smulLat e' N') (fun x => Ξ (Matrix.toLin' (star e') ∘ₗ x ∘ₗ Matrix.toLin' e)) = TaylorLogMetric.pull D B.tor e e' (kerTh B χ SS cl N N' Ξ) := by
   intro D cc δ B χ hcc hδ hδ0 hχ _ hVec hEq SS cl hcl hSS a b N N' Ξ hA hDat e e' he he'

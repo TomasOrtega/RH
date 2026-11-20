@@ -14,7 +14,7 @@ variable {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRingCat.of Ω) 
   {W : Type} [AddCommGroup W] [Module Ω W]
 
 /- English proof (translation)
-Establish `h` using `(exteriorPower.ιMulti_family_linearIndependent_field (n := r) hb).ne_zero (Set.powersetCard.ofFinEmbEquiv (OrderIso.refl (Fin r)).toOrderEmbedding)`. Introduce `h0`. Apply `h` to reduce the goal to its premises. Simplify `h0` using `[exteriorPower.ιMulti_family]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem wedge_ne_zero {r : ℕ} {b : Fin r → W} (hb : LinearIndependent Ω b) :
     exteriorPower.ιMulti Ω r b ≠ 0 := by
@@ -25,7 +25,7 @@ theorem wedge_ne_zero {r : ℕ} {b : Fin r → W} (hb : LinearIndependent Ω b) 
   simpa [exteriorPower.ιMulti_family] using h0
 
 /- English proof (translation)
-Consider the cases of `n with`. Consider the case `ofNat n => simpa using ZUnit.pow hu n`. Consider the case `negSucc n => rw [zpow_negSucc]`. Conclude with `ZUnit.inv (ZUnit.pow hu _)`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem unit_zpow {p : Cpt ξ} {u : Ω} (hu : unitAt ξ p u) (n : ℤ) : unitAt ξ p (u ^ n) := by
   cases n with
@@ -33,21 +33,21 @@ theorem unit_zpow {p : Cpt ξ} {u : Ω} (hu : unitAt ξ p u) (n : ℤ) : unitAt 
   | negSucc n => rw [zpow_negSucc]; exact ZUnit.inv (ZUnit.pow hu _)
 
 /- English proof (translation)
-The claim follows from `Finset.prod_induction u (unitAt ξ p) (fun _ _ => ZUnit.mul) ZUnit.one (fun i _ => hu i)`.
+A detailed English derivation is pending.
 -/
 theorem unit_prod {p : Cpt ξ} {I : Type} (s : Finset I) (u : I → Ω) (hu : ∀ i, unitAt ξ p (u i)) :
     unitAt ξ p (∏ i ∈ s, u i) :=
   Finset.prod_induction u (unitAt ξ p) (fun _ _ => ZUnit.mul) ZUnit.one (fun i _ => hu i)
 
 /- English proof (translation)
-The claim follows from `Submodule.mem_span_singleton.2 ⟨⟨u, hu⟩, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem mul_mem_span {p : Cpt ξ} {u : Ω} (hu : u ∈ regAt ξ p) (t : Ω) :
     u * t ∈ Submodule.span (regAt ξ p) {t} :=
   Submodule.mem_span_singleton.2 ⟨⟨u, hu⟩, rfl⟩
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Conclude with `(Submodule.span_singleton_le_iff_mem _ _).2 (mul_mem_span hu.2.1 t)`. Use `(Submodule.span_singleton_le_iff_mem _ _).2 ?_` and prove the remaining obligations. Use `mul_mem_span hu.2.2 (u * t)` as an intermediate fact. Rewrite `this` using `[inv_mul_cancel_left₀ hu.1]`. Then use the resulting hypothesis.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem span_unit_mul {p : Cpt ξ} {u : Ω} (hu : unitAt ξ p u) (t : Ω) :
     Submodule.span (regAt ξ p) {u * t} = Submodule.span (regAt ξ p) {t} := by
@@ -58,7 +58,7 @@ theorem span_unit_mul {p : Cpt ξ} {u : Ω} (hu : unitAt ξ p u) (t : Ω) :
     rwa [inv_mul_cancel_left₀ hu.1] at this
 
 /- English proof (translation)
-Take `⟨U, hU, b, hbF, hbL⟩` from `hFl p trivial`. Establish `hfr : L.IsFrameAt b p` using `hbL p trivial hU`. Use `choose c hc using FlagDet.exists_diag hbF`. Use `⟨c, fun i => FlagGrGen.gr_isGenAt X Ω ξ W L r b₀ b p i (c i) hb₀ hbF hfr (hc i), ?_⟩` and prove the remaining obligations. Rewrite using `[Lat.wedge_eq_span_of_isFrameAt X Ω ξ W _ r _ p hfr, FlagDet.alt_triangular (exteriorPower.ιMulti Ω r (M := W)) b b₀ c hc]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_gen_wedge {L : Lat ξ W} {r : ℕ} {b₀ : Fin r → W} (hb₀ : LinearIndependent Ω b₀)
     (hFl : L.IsFlagVBOn Set.univ b₀) (p : Cpt ξ) :
@@ -72,13 +72,13 @@ theorem exists_gen_wedge {L : Lat ξ W} {r : ℕ} {b₀ : Fin r → W} (hb₀ : 
     FlagDet.alt_triangular (exteriorPower.ιMulti Ω r (M := W)) b b₀ c hc]
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨f, ⟨α', β', hα', hβ', hA', hB', hf⟩, rfl⟩`. Take `⟨u, hu, eu⟩` from `ZUnit.exists_of_span_eq (smul_ne_zero hα' ha) (hA'.symm.trans hA)`. Take `⟨v, hv, ev⟩` from `ZUnit.exists_of_span_eq (smul_ne_zero hβ' hb) (hB'.symm.trans hB)`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite `eu`, `ev` using `[smul_smul]`. Establish `e1 : α' = u * α` using `smul_left_injective Ω ha eu`. Establish `e2 : β' = v * β` using `smul_left_injective Ω hb ev`. Establish `e3 : f = β' / α'` using `by rw [← hf]; field_simp`. Establish `e4 : f⁻¹ = (u * v⁻¹) * (α / β)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hu.1` as an intermediate fact. Use `hv.1` as an intermediate fact. Rewrite using `[e3, e1, e2]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e4]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_mem_span (mul_mem hu.2.1 hv.2.2) _`. Use `(Submodule.span_singleton_le_iff_mem _ _).2 (Submodule.subset_span ?_)` and prove the remaining obligations. Conclude with `⟨β / α, ⟨α, β, hα, hβ, hA, hB, div_mul_cancel₀ _ hα⟩, (inv_div _ _).symm⟩`.
+Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem lineLat_eq {A B : Lat ξ W} {p q : ℕ} {a : ⋀[Ω]^p W} {b : ⋀[Ω]^q W} (ha : a ≠ 0) (hb : b ≠ 0)
     {x : Cpt ξ} {α β : Ω} (hα : α ≠ 0) (hβ : β ≠ 0)
@@ -104,11 +104,9 @@ theorem lineLat_eq {A B : Lat ξ W} {p q : ℕ} {a : ⋀[Ω]^p W} {b : ⋀[Ω]^q
     exact ⟨β / α, ⟨α, β, hα, hβ, hA, hB, div_mul_cancel₀ _ hα⟩, (inv_div _ _).symm⟩
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨s, hs, rfl⟩`. Take `⟨u, hu, eu⟩` from `ZUnit.exists_of_span_eq (hs ()).1 ((hs ()).2.symm.trans ht.2)`. Establish `e : ∏ i : Unit, s i ^ n = u ^ n * t ^ n`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[Fintype.prod_unique, ← mul_zpow]`. Conclude with `congrArg (· ^ n) eu`. Rewrite using `[e]`. Conclude with `mul_mem_span (unit_zpow hu n).2.1 _`. Use `(Submodule.span_singleton_le_iff_mem _ _).2 (Submodule.subset_span ?_)` and prove the remaining obligations.
-
-Conclude with `⟨fun _ => t, fun _ => ht, by rw [Fintype.prod_unique]⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem tens_unit_eq {Λ : Lat ξ Ω} {p : Cpt ξ} {t : Ω} (ht : Λ.IsGenAt p t) (n : ℤ) :
     Lat.tens (fun _ : Unit => Λ) (fun _ => n) p = Submodule.span (regAt ξ p) {t ^ n} := by
@@ -125,7 +123,7 @@ theorem tens_unit_eq {Λ : Lat ξ Ω} {p : Cpt ξ} {t : Ω} (ht : Λ.IsGenAt p t
     exact ⟨fun _ => t, fun _ => ht, by rw [Fintype.prod_unique]⟩
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert i s hi ih => rw [Finset.sum_insert hi, Finset.prod_insert hi, zpow_add₀ ha, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem zpow_finsum {a : Ω} (ha : a ≠ 0) {I : Type} (s : Finset I) (n : I → ℤ) :
     a ^ (∑ i ∈ s, n i) = ∏ i ∈ s, a ^ n i := by
@@ -137,13 +135,13 @@ theorem zpow_finsum {a : Ω} (ha : a ≠ 0) {I : Type} (s : Finset I) (n : I →
 end General
 
 /- English proof (translation)
-Rewrite using `[Fin.prod_univ_add, div_eq_mul_inv]`. Use `congr 1`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `h : ((Fin.castAdd D.q i : Fin (D.p + D.q)) : ℕ) < D.p` using `i.2`. Establish `e : HodgeCpt.rootIdx D (τ, Fin.castAdd D.q i) = ⟨.inl τ, i⟩` using `dif_pos h`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e' : HodgeCpt.rootSgn D (τ, Fin.castAdd D.q i) = 1` using `if_pos h`. Rewrite using `[e, e', zpow_one]`. Rewrite using `[← Finset.prod_inv_distrib]`. Use `Fintype.prod_equiv (Fin.revPerm (n := D.q)) _ _ fun j => ?_` and prove the remaining obligations. Establish `h : ¬ ((Fin.natAdd D.p j : Fin (D.p + D.q)) : ℕ) < D.p` using `by simp`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e : HodgeCpt.rootIdx D (τ, Fin.natAdd D.p j) = ⟨.inr τ, Fin.rev j⟩`. Use `(dif_neg h).trans ?_` and prove the remaining obligations. Use `congr 1`. Apply `Fin.ext` to reduce the goal to its premises. Establish `hj : (j : ℕ) < D.q` using `j.2`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Use `show D.p + D.q - 1 - (D.p + (j : ℕ)) = D.q - ((j : ℕ) + 1)`. Use linear arithmetic over natural numbers and integers. Establish `e' : HodgeCpt.rootSgn D (τ, Fin.natAdd D.p j) = -1` using `if_neg h`. Rewrite using `[e, e', zpow_neg_one]`. Both sides reduce to the same expression.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem prod_root {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} (D : Datum H)
     {Ω : Type} [Field Ω] (t : ∀ s, Fin (labelRk D s) → Ω) (τ : CMType H) :
@@ -174,11 +172,11 @@ end PositivityTheory.Xgn.ComponentDegreeAlt
 
 open PositivityTheory.Xgn.ComponentDegreeAlt in
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c O _ β Y S Ω _ K _ J _ y 𝔐 Fl xdeg e τ hR`. Establish `hli : ∀ s, LinearIndependent Ω (Fl.b s)`. Take `⟨_, _, -, -, -, h, -⟩` from `Fl.generic`. Conclude with `h`. Use `⟨Finset.prod_ne_zero_iff.2 fun i _ => (hR (τ, i)).1, fun p _ cc hcc => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `choose t ht hw using fun s => exists_gen_wedge (hli s) (Fl.sub s) p`. Establish `hy : ∀ k, y ⟨k, cc k⟩ ≠ 0` using `fun k => Finset.prod_ne_zero_iff.1 hcc.1 k (Finset.mem_univ k)`. Rewrite using `[lineLat_eq (wedge_ne_zero (hli _)) (wedge_ne_zero (hli _)) (Finset.prod_ne_zero_iff.2 fun i _ => (ht _ i).1) (Finset.prod_ne_zero_iff.2 fun i _ => (ht _ i).1) (hw (.inl τ)) (hw (.inr τ)), ← prod_root D t τ]`. Establish `hu : ∀ i : Fin (D.p + D.q), ∃ u : Ω, unitAt 𝔐.ξ p u ∧ t (HodgeCpt.rootIdx D (τ, i)).1 (HodgeCpt.rootIdx D (τ, i)).2 ^ HodgeCpt.rootSgn D (τ, i) = u • (∏ k, y ⟨k, cc k⟩ ^ xdeg (τ, i) k) • e (τ, i)` using `fun i => ZUnit.exists_of_span_eq (zpow_ne_zero _ (ht _ _).1) ((tens_unit_eq (ht _ _) _).symm.trans ((hR (τ, i)).2 p trivial cc hcc))`. Use `choose u hu eu using hu`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `key : ∏ i : Fin (D.p + D.q), t (HodgeCpt.rootIdx D (τ, i)).1 (HodgeCpt.rootIdx D (τ, i)).2 ^ HodgeCpt.rootSgn D (τ, i) = (∏ i, u i) * ((∏ k, y ⟨k, cc k⟩ ^ (∑ i, xdeg (τ, i)) k) • ∏ i, e (τ, i))`. Simplify using `only [eu, smul_eq_mul, Finset.prod_mul_distrib, Finset.sum_apply, zpow_finsum (hy _)]`. Rewrite using `[Finset.prod_comm]`. Rewrite using `[key]`. Conclude with `span_unit_mul (unit_prod _ u hu) _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem PositivityTheory.Xgn.hodge_component_flag_degree : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (S : Finset ℕ) (Ω : Type) [Field Ω] (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (y : (Σ k, J k) → Ω) (𝔐 : HodgeCpt Y S y) (Fl : 𝔐.Flag) (xdeg : CMType H × Fin (D.p + D.q) → K → ℤ) (e : CMType H × Fin (D.p + D.q) → Ω) (τ : CMType H), Fl.RootLines xdeg e → (lineLat (𝔐.V (.inl τ)) (𝔐.V (.inr τ)) (labelRk D (.inl τ)) (labelRk D (.inr τ)) (exteriorPower.ιMulti Ω _ (Fl.b (.inl τ))) (exteriorPower.ιMulti Ω _ (Fl.b (.inr τ)))).IsDegOn Set.univ y (∑ i, xdeg (τ, i)) (∏ i, e (τ, i)) := by
   intro E _ _ _ H D l Xo c O _ β Y S Ω _ K _ J _ y 𝔐 Fl xdeg e τ hR

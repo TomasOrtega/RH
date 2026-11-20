@@ -6,21 +6,21 @@ open CategoryTheory TensorProduct Coalgebra Bialgebra GlobalTheory GlobalTheory.
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce and unpack `⟨h1, h2⟩`. Establish `hp0 : p ≠ 0` using `(Fact.out : p.Prime).ne_zero`. Establish `hpA : ((p : ℕ) : A ⊗[k] A) = 0`. Rewrite using `[← map_natCast (algebraMap k (A ⊗[k] A)) p, CharP.cast_eq_zero, map_zero]`. Use `⟨fun a => ?_, fun a => ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← mem_nilradical]`. Proceed by induction on `a using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b`. Rewrite using `[Algebra.TensorProduct.map_tmul]`.
+Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Establish `e : a ⊗ₜ[k] b - π a ⊗ₜ[k] π b = (a - π a) ⊗ₜ[k] b + π a ⊗ₜ[k] (b - π b)`. Rewrite using `[TensorProduct.sub_tmul, TensorProduct.tmul_sub]`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Use `Ideal.add_mem _ ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: (a - π a) ⊗ₜ[k] b = Algebra.TensorProduct.includeLeft (S` using `k) (B := A) (a - π a) * ((1 : A) ⊗ₜ[k] b) := by`. Simplify using `[Algebra.TensorProduct.tmul_mul_tmul]`. Rewrite using `[this]`. Conclude with `Ideal.mul_mem_right _ _ (mem_nilradical.2 ((h1 a).map _))`. Establish `: π a ⊗ₜ[k] (b - π b) = ((π a) ⊗ₜ[k] (1 : A)) * Algebra.TensorProduct.includeRight (R` using `k) (A := A) (b - π b) := by`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[Algebra.TensorProduct.tmul_mul_tmul]`. Rewrite using `[this]`. Conclude with `Ideal.mul_mem_left _ _ (mem_nilradical.2 ((h1 b).map _))`. Consider the case `add x y hx hy`. Rewrite using `[map_add, add_sub_add_comm]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately.
 
-Conclude with `Ideal.add_mem _ hx hy`. Proceed by induction on `a using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, by simp [hp0]⟩`. Consider the case `tmul a b`. Take `⟨a', ha⟩` from `h2 a`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Take `⟨b', hb⟩` from `h2 b`. Use `⟨a' ⊗ₜ[k] b', ?_⟩` and prove the remaining obligations. Simplify using `only [Algebra.TensorProduct.map_tmul, Algebra.TensorProduct.tmul_pow, ha, hb]`. Consider the case `add x y hx hy`. Take `⟨u, hu⟩` from `hx`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨v, hv⟩` from `hy`. Use `⟨u + v, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, map_add, hu, hv, ← frobRing_apply hpA, ← frobRing_apply hpA, ← frobRing_apply hpA, map_add]`.
+A detailed English derivation is pending.
 -/
 theorem tensorSquare_perfectProjection (p : ℕ) [Fact p.Prime] (k : Type) [Field k] [CharP k p] (A : Type) [CommRing A] [Algebra k A] (π : A →ₐ[k] A) :
     ((∀ a : A, IsNilpotent (a - π a)) ∧ ∀ a : A, ∃ b : A, π a = π b ^ p) → ((∀ a : A ⊗[k] A, IsNilpotent (a - Algebra.TensorProduct.map π π a)) ∧ ∀ a : A ⊗[k] A, ∃ b : A ⊗[k] A, Algebra.TensorProduct.map π π a = Algebra.TensorProduct.map π π b ^ p) := by

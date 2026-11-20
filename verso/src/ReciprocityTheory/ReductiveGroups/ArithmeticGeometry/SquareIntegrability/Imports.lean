@@ -7,7 +7,7 @@ namespace ReciprocityTheory.ChartRestriction.G.I2
 open MeasureTheory Complex
 
 /- English proof (translation)
-The claim follows from `ChA.char_main hx`.
+A detailed English derivation is pending.
 -/
 theorem char (hx : Ext.All) : CharStatement :=
   ChA.char_main hx

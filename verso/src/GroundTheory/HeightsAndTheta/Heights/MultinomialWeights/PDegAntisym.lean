@@ -10,7 +10,7 @@ namespace GroundTheory.Heights₂.Heights.TheoremB
 open MvPolynomial Finset
 
 /- English proof (translation)
-Simplify using `only [lamDotX, map_sum, map_mul, RestTerms.blockPermute, rename_C, rename_X, permWeight]`. Conclude with `Fintype.sum_equiv (Equiv.prodShear (Equiv.refl _) w) _ _ (fun p => rfl)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem blockPermute_lamDotX_permWeight (d : IndexData) (w : Fin d.f → Equiv.Perm (Fin d.N))
     (u : Idx d → ℚ) :
@@ -19,7 +19,7 @@ theorem blockPermute_lamDotX_permWeight (d : IndexData) (w : Fin d.f → Equiv.P
   exact Fintype.sum_equiv (Equiv.prodShear (Equiv.refl _) w) _ _ (fun p => rfl)
 
 /- English proof (translation)
-Simplify using `only [lineClass, map_neg, blockPermute_lamDotX_permWeight]`.
+Simplify using the standard rewrite rules.
 -/
 theorem blockPermute_lineClass_permWeight (d : IndexData) (w : Fin d.f → Equiv.Perm (Fin d.N))
     (u : Idx d → ℚ) :
@@ -27,7 +27,7 @@ theorem blockPermute_lineClass_permWeight (d : IndexData) (w : Fin d.f → Equiv
   simp only [lineClass, map_neg, blockPermute_lamDotX_permWeight]
 
 /- English proof (translation)
-Simplify using `only [intFl, LinearMap.smul_apply, flagIntegralLin, LinearMap.coe_mk, AddHom.coe_mk, smul_eq_mul, RestTerms.FlagIntegralPermute.full d.f d.N w H]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem intFl_blockPermute (d : IndexData) (w : Fin d.f → Equiv.Perm (Fin d.N)) (H : XPoly d) :
     intFl d (RestTerms.blockPermute d.f d.N w H) = RestTerms.blockSign d.f d.N w * intFl d H := by
@@ -36,7 +36,7 @@ theorem intFl_blockPermute (d : IndexData) (w : Fin d.f → Equiv.Perm (Fin d.N)
   ring
 
 /- English proof (translation)
-Introduce `d w u`. Establish `h : degAt d u = RestTerms.blockSign d.f d.N w * degAt d (permWeight d w u)`. Simplify using `only [degAt]`. Rewrite using `[← intFl_blockPermute, map_pow (RestTerms.blockPermute d.f d.N w), blockPermute_lineClass_permWeight]`. Rewrite using `[h, ← mul_assoc, RestTerms.Flag.blockSign_mul_self, one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem DegAntisym.proof : DegAntisym.Statement := by
   intro d w u
@@ -47,7 +47,7 @@ theorem DegAntisym.proof : DegAntisym.Statement := by
   rw [h, ← mul_assoc, RestTerms.Flag.blockSign_mul_self, one_mul]
 
 /- English proof (translation)
-The claim follows from `DegAntisym.proof`.
+A detailed English derivation is pending.
 -/
 theorem DegAntisym.full : DegAntisym.Statement := DegAntisym.proof
 

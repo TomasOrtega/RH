@@ -10,9 +10,9 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.PB.WMan.Transv
 
 /- English proof (translation)
-Unfold `lastCol at hca`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `simp only [stepCols, Finset.mem_filter, Finset.mem_univ, true_and] split_ifs at hca ⊢ <;> omega`. Introduce `r hr`. Simplify using `only [stepCols, Finset.mem_filter, Finset.mem_univ, true_and] at hr`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[Fin.le_iff_val_le_val]`. Apply the tactic sequence `split_ifs at hca hr <;> omega`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem lastCol_mem {N j : ℕ} {a ca : Fin N} (hj : j ≤ N) (hca : (ca : ℕ) = lastCol N j a) :
     ca ∈ stepCols N j a ∧ ∀ r ∈ stepCols N j a, r ≤ ca := by
@@ -26,7 +26,7 @@ theorem lastCol_mem {N j : ℕ} {a ca : Fin N} (hj : j ≤ N) (hca : (ca : ℕ) 
     split_ifs at hca hr <;> omega
 
 /- English proof (translation)
-Rewrite using `[add_mul, one_mul, mul_add, mul_one, Matrix.single_mul_single_of_ne s cb ca cb hne (-s), add_zero, add_assoc, ← Matrix.single_add, neg_add_cancel, Matrix.single_zero, add_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem transv_mul_transv {N : ℕ} {ca cb : Fin N} (hne : ca ≠ cb) (s : ℂ) :
     (1 + Matrix.single cb ca s) * (1 + Matrix.single cb ca (-s)) = (1 : Matrix (Fin N) (Fin N) ℂ) := by
@@ -34,59 +34,53 @@ theorem transv_mul_transv {N : ℕ} {ca cb : Fin N} (hne : ca ≠ cb) (s : ℂ) 
     add_assoc, ← Matrix.single_add, neg_add_cancel, Matrix.single_zero, add_zero]
 
 /- English proof (translation)
-Introduce `N j a ca cb L U t' hj hca hcb hblk hL hLu hU hUt hUd hmin`. Establish `hne : ca ≠ cb`. Introduce `h`. Establish `h1` using `congrArg Fin.val h`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Take `⟨hcaS, hmax⟩` from `lastCol_mem hj hca`. Establish `hLM : L * U * (1 + Matrix.single cb ca t') = L * (U * (1 + Matrix.single cb ca t'))` using `Matrix.mul_assoc _ _ _`. Use `set M := U * (1 + Matrix.single cb ca t') with hMdef`. Establish `hMe : ∀ x y, M x y = U x y + if y = ca then U x cb * t' else 0`. Introduce `x y`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hMdef, Matrix.mul_add, Matrix.mul_one, Matrix.add_apply]`. Use `split_ifs with hy`. Rewrite using `[hy, Matrix.mul_single_apply_same]`. Rewrite using `[Matrix.mul_single_apply_of_ne t' cb ca x y hy U]`. Establish `hUz : ∀ x y : Fin N, y < x → U x y = 0` using `fun x y h => hUt (show id y < id x from h)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hMut : ∀ x y : Fin N, y < x → x ≠ cb → M x y = 0`. Introduce `x y hxy hx`. Rewrite using `[hMe, hUz x y hxy]`. Use `split_ifs with hy`. Rewrite `hxy` using `[hy]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : cb < x`. Rewrite `hxy`, the goal using `[Fin.lt_iff_val_lt_val]`. Establish `h2 : (x : ℕ) ≠ cb` using `fun h => hx (Fin.ext h)`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hUz x cb h1]`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish `hMca : M ca ca ≠ 0`. Introduce `h0`. Apply `hmin` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hLM]`. Unfold `minorIJ`. Rewrite using `[dif_pos rfl]`. Use `set f := (stepCols N j a).orderEmbOfFin (rfl : (stepCols N j a).card = (stepCols N j a).card) with hf`. Establish `hfmem : ∀ r, f r ∈ stepCols N j a` using `fun r => Finset.orderEmbOfFin_mem _ _ r`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hSmap : Finset.univ.map f.toEmbedding = stepCols N j a` using `Finset.map_orderEmbOfFin_univ _ _`. Establish `hrange : Set.range f = ↑(stepCols N j a)` using `Finset.range_orderEmbOfFin _ _`. Establish `hprod : (L * M).submatrix f f = L.submatrix f f * M.submatrix f f`. Use extensionality with `p q`. Simplify using `only [Matrix.submatrix_apply, Matrix.mul_apply]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Establish `hfpS` using `hfmem p`. Establish `hz : ∀ i ∈ (Finset.univ : Finset (Fin N)), i ∉ stepCols N j a → L (f p) i * M i (f q) = 0`. Introduce `i _ hi`. Distinguish the cases in `hic : (ca : ℕ) < i`. Establish `hfp` using `hmax (f p) hfpS`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Establish `hlt : f p < i`. Rewrite `hfp` using `[Fin.le_iff_val_le_val]`. Rewrite using `[Fin.lt_iff_val_lt_val]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hLu.2 (f p) i hlt, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hLz : L (f p) i = 0`. Apply `hL` to reduce the goal to its premises. Introduce `hiff`. Simplify using `only [stepCols, Finset.mem_filter, Finset.mem_univ, true_and] at hi hfpS`. Unfold `lastCol at hca`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs at hi hfpS hca`. Establish `h3` using `hiff.mpr (by omega)`. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers. Rewrite using `[hLz, zero_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hm` using `Finset.sum_map Finset.univ f.toEmbedding (fun x => L (f p) x * M x (f q))`. Rewrite `hm` using `[hSmap]`. Rewrite using `[← Finset.sum_subset (Finset.subset_univ (stepCols N j a)) hz]`. Conclude with `hm`. Establish `hUT : (M.submatrix f f).IsUpperTriangular`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `p q hpq`. Rewrite using `[Matrix.submatrix_apply]`. Establish `hfpcb : f p ≠ cb`. Introduce `hfp`. Establish `h4` using `hmax (f p) (hfmem p)`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `h4` using `[hfp, Fin.le_iff_val_le_val]`. Use linear arithmetic over natural numbers and integers. Conclude with `hMut (f p) (f q) (f.strictMono hpq) hfpcb`. Establish `hdetM : (M.submatrix f f).det = 0`. Rewrite using `[Matrix.det_of_upperTriangular hUT]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Choose the witnesses or unpack the hypotheses as in `⟨p0, hp0⟩ : ∃ p0, f p0 = ca := by`. Establish `h1 : ca ∈ Set.range f`. Rewrite using `[hrange]`. Conclude with `hcaS`. Conclude with `h1`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `Finset.prod_eq_zero (Finset.mem_univ p0) (by rw [Matrix.submatrix_apply, hp0]; exact h0)`. Rewrite using `[hprod, Matrix.det_mul, hdetM, mul_zero]`. Establish `hMb : ∀ x y : Fin N, ¬((x : ℕ) < N - j ↔ (y : ℕ) < N - j) → M x y = 0`. Introduce `x y hxy`. Rewrite using `[hMe, hU x y hxy]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `split_ifs with hy`. Rewrite `hxy` using `[hy]`. Rewrite using `[hU x cb (fun h => hxy (h.trans hblk.symm))]`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `set t := M cb ca / M ca ca with ht`. Establish `hVe : ∀ x y, ((1 + Matrix.single cb ca (-t)) * M) x y = M x y + if x = cb then -t * M ca y else 0`. Introduce `x y`. Rewrite using `[Matrix.add_mul, Matrix.one_mul, Matrix.add_apply]`. Use `split_ifs with hx`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[hx, Matrix.single_mul_apply_same]`. Rewrite using `[Matrix.single_mul_apply_of_ne (-t) cb ca x y hx M]`. Use `⟨t, (1 + Matrix.single cb ca (-t)) * M, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x y hxy`. Rewrite using `[hVe, hMb x y hxy]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `split_ifs with hx`. Rewrite `hxy` using `[hx]`. Rewrite using `[hMb ca y (fun h => hxy (hblk.symm.trans h))]`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `x y hxy`. Express the relevant statement in the definitionally equal form `y < x at hxy`. Rewrite using `[hVe]`. Distinguish the cases in `hx : x = cb`. Rewrite using `[if_pos hx, hx]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hxy` using `[hx]`. Distinguish the cases in `hy : y = ca`. Rewrite using `[hy, ht, neg_mul, div_mul_cancel₀ _ hMca, add_neg_cancel]`. Establish `hylt : y < ca`. Rewrite `hxy`, the goal using `[Fin.lt_iff_val_lt_val]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Establish `h2 : (y : ℕ) ≠ ca` using `fun h => hy (Fin.ext h)`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hMe cb y, if_neg hy, hUz cb y hxy, hMe ca y, if_neg hy, hUz ca y hylt]`. Simplify using the standard rewrite rules. Rewrite using `[if_neg hx, add_zero]`.
-
-Conclude with `hMut x y hxy hx`. Introduce `c hc`. Rewrite using `[hVe]`. Establish `hcle` using `hmax c hc`. Establish `hccb : c ≠ cb`.
-
-Introduce `h`. Rewrite `hcle` using `[h, Fin.le_iff_val_le_val]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[if_neg hccb, add_zero]`. Distinguish the cases in `hcc : c = ca`.
-
-Rewrite using `[hcc]`. Conclude with `hMca`. Rewrite using `[hMe, if_neg hcc, add_zero]`. Conclude with `hUd c`. Rewrite using `[← Matrix.mul_assoc, transv_mul_transv hne t, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ (N j : ℕ) (a ca cb : Fin N) (L U : Matrix (Fin N) (Fin N) ℂ) (t' : ℂ), j ≤ N → (ca : ℕ) = lastCol N j a → (cb : ℕ) = ca + 1 → ((ca : ℕ) < N - j ↔ (cb : ℕ) < N - j) → IsBlockDiag j L → IsLowerUni L → IsBlockDiag j U → U.BlockTriangular id → (∀ c, U c c ≠ 0) → minorIJ (L * U * (1 + Matrix.single cb ca t')) (stepCols N j a) (stepCols N j a) ≠ 0 → ∃ (t : ℂ) (V : Matrix (Fin N) (Fin N) ℂ), IsBlockDiag j V ∧ V.BlockTriangular id ∧ (∀ c ∈ stepCols N j a, V c c ≠ 0) ∧ U * (1 + Matrix.single cb ca t') = (1 + Matrix.single cb ca t) * V := by
   intro N j a ca cb L U t' hj hca hcb hblk hL hLu hU hUt hUd hmin

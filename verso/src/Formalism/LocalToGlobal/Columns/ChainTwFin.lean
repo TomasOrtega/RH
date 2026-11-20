@@ -15,18 +15,16 @@ section Approx
 variable {E : Type} [Field E] [NumberField E] [StarRing E] (P : HeightOneSpectrum (𝓞 E))
 
 /- English proof (translation)
-Rewrite using `[HeightOneSpectrum.valuation_of_algebraMap]`. Conclude with `(HeightOneSpectrum.intValuation_le_pow_iff_mem P u N).mpr hu`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tfVal_mem {u : 𝓞 E} {N : ℕ} (hu : u ∈ P.asIdeal ^ N) : P.valuation E (algebraMap (𝓞 E) E u) ≤ WithZero.exp (-(N : ℤ)) := by
   rw [HeightOneSpectrum.valuation_of_algebraMap]
   exact (HeightOneSpectrum.intValuation_le_pow_iff_mem P u N).mpr hu
 
 /- English proof (translation)
-Establish `hPN : P.asIdeal ^ N ≠ ⊥` using `by first`. Consider the case `exact pow_ne_zero _ P.ne_bot`. Take `⟨t, htP, ht0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hPN`. Establish `hc : algebraMap E (P.adicCompletion E) a ∈ P.adicCompletionIntegers E`. Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers]`.
+Establish an intermediate fact. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `erw [HeightOneSpectrum.valuedAdicCompletion_eq_valuation']`. Conclude with `ha`. Take `⟨r, hr⟩` from `Formalism.L2.GlobalTheoryTheory.FiltrationBoundaryCriterion.CompactFixesLatticeTheory.AdeleIntA.exists_approx_local P (algebraMap E (P.adicCompletion E) a) hc t ht0`. Use `⟨r, ?_⟩` and prove the remaining obligations. Rewrite `hr` using `[← map_sub]`.
-
-Use `erw [HeightOneSpectrum.valuedAdicCompletion_eq_valuation'] at hr`. Conclude with `hr.trans ((HeightOneSpectrum.intValuation_le_pow_iff_mem P t N).mpr htP)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tfApprox (a : E) (ha : P.valuation E a ≤ 1) (N : ℕ) : ∃ r : 𝓞 E, P.valuation E (a - algebraMap (𝓞 E) E r) ≤ WithZero.exp (-(N : ℤ)) := by
   have hPN : P.asIdeal ^ N ≠ ⊥ := by
@@ -54,15 +52,15 @@ def tfRed (g : ↥(GLint E n P)) : Fin n → Fin n → 𝓞 E ⧸ P.asIdeal ^ N 
   Ideal.Quotient.mk _ (tfApprox P _ (qsp_entry_int P g i j) N).choose
 
 /- English proof (translation)
-Establish `hmat : ∀ x : ↥(GLint E n P), ((toGLm E n x.1 : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) = LinearMap.toMatrix' ((x.1 : Sp E n ≃ₗ[E] Sp E n) : Sp E n →ₗ[E] Sp E n)` using `fun x => rfl`. Establish `hclose : ∀ l k, P.valuation E (((toGLm E n g'.1 : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) l k - ((toGLm E n g.1 : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) l k) ≤ WithZero.exp (-(N : ℤ))`. Introduce `l k`. Establish `hr` using `(tfApprox P _ (qsp_entry_int P g l k) N).choose_spec`. Establish `hr'` using `(tfApprox P _ (qsp_entry_int P g' l k) N).choose_spec`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmk` using `congrFun (congrFun h l) k`. Simplify using `only [tfRed] at hmk`. Establish `hrr` using `tfVal_mem P (Ideal.Quotient.eq.mp hmk)`. Rewrite `hrr` using `[map_sub]`. Establish `e : ((toGLm E n g'.1 : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) l k - ((toGLm E n g.1 : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) l k = (((toGLm E n g'.1 : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) l k - algebraMap (𝓞 E) E (tfApprox P _ (qsp_entry_int P g' l k) N).choose) + (-(a …` using `by ring`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e]`. Use `Valuation.map_add_le _ hr' (Valuation.map_add_le _ ?_ ?_)` and prove the remaining obligations. Rewrite using `[Valuation.map_neg]`. Conclude with `hrr`. Rewrite using `[Valuation.map_neg]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hr`. Establish `hM1 : ((toGLm E n (g⁻¹ * g').1 : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) = ((toGLm E n (g⁻¹).1 : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) * ((toGLm E n g'.1 : GL (Fin n) E) : Matrix (Fin n) (Fin n) E)`. Rewrite using `[Subgroup.coe_mul, map_mul, Units.val_mul]`. Establish `hM2 : ((toGLm E n (g⁻¹).1 : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) * ((toGLm E n g.1 : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) = 1`. Rewrite using `[← Units.val_mul, ← map_mul, ← Subgroup.coe_mul, inv_mul_cancel, Subgroup.coe_one, map_one, Units.val_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Introduce `i j`. Rewrite using `[← hmat (g⁻¹ * g'), hM1, ← hM2, ← Matrix.mul_sub, Matrix.mul_apply]`. Use `Valuation.map_sum_le _ fun l _ => ?_` and prove the remaining obligations. Rewrite using `[Valuation.map_mul, Matrix.sub_apply]`. Conclude with `le_trans (mul_le_of_le_one_left' (qsp_entry_int P g⁻¹ i l)) (hclose l j)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tfRed_eq {g g' : ↥(GLint E n P)} (h : tfRed P N g = tfRed P N g') : lqPrinc P N ((g⁻¹ * g' : ↥(GLint E n P)) : Sp E n ≃ₗ[E] Sp E n) := by
   classical
@@ -106,7 +104,7 @@ theorem tfRed_eq {g g' : ↥(GLint E n P)} (h : tfRed P N g = tfRed P N g') : lq
   exact le_trans (mul_le_of_le_one_left' (qsp_entry_int P g⁻¹ i l)) (hclose l j)
 
 /- English proof (translation)
-Establish `hPN : P.asIdeal ^ N ≠ ⊥` using `pow_ne_zero _ P.ne_bot`. Use `first`. Consider the case `exact @Finite.of_fintype _ (Ideal.fintypeQuotientOfFreeOfNeBot _ hPN)`. Consider the case `exact Ideal.finiteQuotientOfFreeOfNeBot _ hPN`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem tfFinite_quot (hN : 0 < N) : Finite (𝓞 E ⧸ P.asIdeal ^ N) := by
   have hPN : P.asIdeal ^ N ≠ ⊥ := pow_ne_zero _ P.ne_bot
@@ -115,11 +113,9 @@ theorem tfFinite_quot (hN : 0 < N) : Finite (𝓞 E ⧸ P.asIdeal ^ N) := by
     | exact Ideal.finiteQuotientOfFreeOfNeBot _ hPN
 
 /- English proof (translation)
-Use `haveI := tfFinite_quot P N hN`. Set `q : Set.range (tfRed P N) → (↥(GLint E n P) ⧸ H)` to `fun v => QuotientGroup.mk v.2.choose`. Use `Finite.of_surjective q ?_` and prove the remaining obligations. Introduce `x`. Proceed by induction on `x using QuotientGroup.induction_on with`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `H g`. Use `⟨⟨tfRed P N g, g, rfl⟩, ?_⟩` and prove the remaining obligations. Use `show QuotientGroup.mk _ = QuotientGroup.mk g`. Rewrite using `[QuotientGroup.eq]`. Apply `hH` to reduce the goal to its premises.
-
-Conclude with `tfRed_eq P N (⟨tfRed P N g, g, rfl⟩ : Set.range (tfRed P N)).2.choose_spec`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem tfFinite_of_princ (hN : 0 < N) (H : Subgroup ↥(GLint E n P)) (hH : ∀ g : ↥(GLint E n P), lqPrinc P N (g : Sp E n ≃ₗ[E] Sp E n) → g ∈ H) :
     Finite (↥(GLint E n P) ⧸ H) := by
@@ -137,13 +133,11 @@ theorem tfFinite_of_princ (hN : 0 < N) (H : Subgroup ↥(GLint E n P)) (hH : ∀
     exact tfRed_eq P N (⟨tfRed P N g, g, rfl⟩ : Set.range (tfRed P N)).2.choose_spec
 
 /- English proof (translation)
-Use `haveI := tfFinite_quot P N hN`. Establish `key : ∀ k1 k2 : ℕ, k1 < k2 → tfRed P N ((x : ↥(GLint E n P)) ^ k1) = tfRed P N ((x : ↥(GLint E n P)) ^ k2) → ∃ m : ℕ, 0 < m ∧ lam x ^ m = 1`. Introduce `k1 k2 hlt heq`. Establish `hp` using `tfRed_eq P N heq`. Establish `hpow : ((x : ↥(GLint E n P)) ^ k1)⁻¹ * (x : ↥(GLint E n P)) ^ k2 = (x : ↥(GLint E n P)) ^ (k2 - k1)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[inv_mul_eq_iff_eq_mul, ← pow_add, Nat.add_sub_cancel' hlt.le]`. Rewrite `hp` using `[hpow]`. Take `⟨hmem, hlam⟩` from `hH _ hp`. Use `⟨k2 - k1, by omega, ?_⟩` and prove the remaining obligations. Establish `hx : (⟨(x : ↥(GLint E n P)) ^ (k2 - k1), hmem⟩ : ↥H) = x ^ (k2 - k1)`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Simplify using the standard rewrite rules. Rewrite using `[← map_pow, ← hx, hlam]`. Take `⟨k1, k2, hne, heq⟩` from `Finite.exists_ne_map_eq_of_infinite (fun k : ℕ => tfRed P N ((x : ↥(GLint E n P)) ^ k))`. Break down `lt_or_gt_of_ne hne with hlt | hlt` into its components or cases.
-
-Conclude with `key k1 k2 hlt heq`. Conclude with `key k2 k1 hlt heq.symm`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem tfRoot_of_princ (hN : 0 < N) (H : Subgroup ↥(GLint E n P)) (lam : ↥H →* Kˣ)
     (hH : ∀ g : ↥(GLint E n P), lqPrinc P N (g : Sp E n ≃ₗ[E] Sp E n) → ∃ h : g ∈ H, lam ⟨g, h⟩ = 1) (x : ↥H) :
@@ -176,7 +170,7 @@ end Idx
 section Pi
 
 /- English proof (translation)
-Simplify using `only [piChar, MonoidHom.finset_prod_apply, MonoidHom.comp_apply]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem tfPiChar {K : Type} [Field K] {ι : Type} [Fintype ι] {G : ι → Type} [∀ i, Group (G i)] (H : ∀ i, Subgroup (G i))
     (lam : ∀ i, ↥(H i) →* Kˣ) (x : ↥(Subgroup.pi Set.univ H)) :
@@ -191,18 +185,18 @@ section Fam
 variable {E K : Type} [Field E] [NumberField E] [StarRing E] [Field K] {n : ℕ} {Q : Finset (HeightOneSpectrum (𝓞 E))} (Θ : LevQFam E K n Q)
 
 /- English proof (translation)
-Take `⟨N, hN, hg⟩` from `h P`. Conclude with `tfFinite_of_princ P.1 N hN (Θ P).H (fun g hgp => (hg g hgp).1)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem thetaOpen_finIdx (h : ThetaOpen Θ) (P : Q) : Finite (↥(GLint E n P.1) ⧸ (Θ P).H) := by
   obtain ⟨N, hN, hg⟩ := h P
   exact tfFinite_of_princ P.1 N hN (Θ P).H (fun g hgp => (hg g hgp).1)
 
 /- English proof (translation)
-Establish `hP : ∀ P : Q, ∃ m : ℕ, 0 < m ∧ (Θ P).lam ⟨c.1 P, c.2 P (Set.mem_univ P)⟩ ^ m = 1`. Introduce `P`. Take `⟨N, hN, hg⟩` from `h P`. Conclude with `tfRoot_of_princ P.1 N hN (Θ P).H (Θ P).lam hg _`. Use `choose m hm0 hm using hP`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : (Θ.chr c) ^ (∏ P, m P) = 1`. Establish `hc : Θ.chr c = ∏ P, (Θ P).lam ⟨c.1 P, c.2 P (Set.mem_univ P)⟩` using `tfPiChar (fun P => (Θ P).H) (fun P => (Θ P).lam) c`. Rewrite using `[hc, ← Finset.prod_pow]`. Use `Finset.prod_eq_one fun P _ => ?_` and prove the remaining obligations. Take `⟨d, hd⟩ : m P ∣ ∏ Q, m Q` from `Finset.dvd_prod_of_mem _ (Finset.mem_univ P)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hd, pow_mul, hm P, one_pow]`. Use `⟨∏ P, m P, Finset.prod_pos fun P _ => hm0 P, ?_⟩` and prove the remaining obligations. Rewrite using `[← Units.val_pow_eq_pow_val, key, Units.val_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem thetaOpen_root (h : ThetaOpen Θ) (c : ↥Θ.grp) : ∃ m : ℕ, 0 < m ∧ ((Θ.chr c : Kˣ) : K) ^ m = 1 := by
   classical
@@ -230,11 +224,11 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R) (Ch : Ch
   (Λt : ∀ j, LevFam X.E X.K (R.N j) Pr.vGs) (Θt : ∀ j, LevQFam X.E X.K (R.N j) (QE sel (mu : Chr X.F X.E X.K)))
 
 /- English proof (translation)
-Unfold `twIdxTop ChIdx.withTop at b ⊢`. Take `⟨ob, hob⟩` from `b`. Consider the cases of `ob with`. Consider the case `some b'`. Conclude with `thetaOpen_twIdx (Ch := Ch) (sel := sel) (mu := mu) (cst := cst) hc hQg m2 j b'`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 
-Consider the case `none`. Establish `hj : m2 + 1 < j`. Simplify using `only [Option.isSome_none] at hob`. Assume the negation of the conclusion as `hcon`. Establish `h1 : j ≤ m2 + 1` using `by omega`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[h1] at hob`. Conclude with `hΘ j hj`.
+A detailed English derivation is pending.
 -/
 theorem thetaOpen_twIdxTop (hc : cst.Ok) (hQg : ∀ P ∈ QE sel (mu : Chr X.F X.E X.K), P ∉ Pr.vGs) (hΘ : ∀ j, m2 + 1 < j → ThetaOpen (Θt j)) (j : ℕ)
     (b : (twIdxTop Ch sel mu cst m2 Λt Θt).β j) : ThetaOpen ((twIdxTop Ch sel mu cst m2 Λt Θt).levQ j b) := by
@@ -252,7 +246,7 @@ theorem thetaOpen_twIdxTop (hc : cst.Ok) (hQg : ∀ P ∈ QE sel (mu : Chr X.F X
     exact hΘ j hj
 
 /- English proof (translation)
-The claim follows from `chF_ok_of_finIdx (W := W) (sel := sel) (mu := mu) (L := twIdxTop Ch sel mu cst m2 Λt Θt) hX u j (fun b P => thetaOpen_finIdx _ (thetaOpen_twIdxTop Ch sel mu cst m2 Λt Θt hc hQg hΘ j b) P) (fun b c => thetaOpen_root _ (thetaOpen_twIdxTop Ch sel mu cst m2 Λt Θt hc hQg hΘ j b) c)`.
+A detailed English derivation is pending.
 -/
 theorem chF_ok_twIdxTop (hX : X.Ok) (hc : cst.Ok) (hQg : ∀ P ∈ QE sel (mu : Chr X.F X.E X.K), P ∉ Pr.vGs) (hΘ : ∀ j, m2 + 1 < j → ThetaOpen (Θt j))
     (u : Pr.Word) (j : ℕ) : (chF W sel mu (twIdxTop Ch sel mu cst m2 Λt Θt) u j).Ok :=

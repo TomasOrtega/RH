@@ -18,11 +18,9 @@ def shcAdC {ε : Fin n → Bool} (y : PCoord ε → ℂ) (w : PCoord ε → ℂ)
   fun ab => shcAd y (pmat w) ab.1.1 ab.1.2
 
 /- English proof (translation)
-Use `set U : Matrix (Fin n) (Fin n) ℂ := ((pmat_isHermitian y).eigenvectorUnitary : Matrix (Fin n) (Fin n) ℂ) with hUdef`. Establish `hU : Uᴴ * U = 1` using `(pmat_isHermitian y).eigenvectorUnitary.2.1`. Establish `hU' : U * Uᴴ = 1` using `(pmat_isHermitian y).eigenvectorUnitary.2.2`. Establish `hY : U * dpbD (pev y) * Uᴴ = pmat y` using `(pmat_isHermitian y).spectral_theorem.symm`. Establish `e1 : shcAd y = LinearMap.toContinuousLinearMap (dpbL U (pev y) shc)` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : shcAdC y = LinearMap.toContinuousLinearMap (dpbP ε ∘ₗ dpbL U (pev y) shc ∘ₗ dpbE ε)`. Use function extensionality and compare the values at `w ab`. Use `(dpbP_herm (W := dpbH U (pev y) shc (pmat w)) ?_ ab).symm` and prove the remaining obligations. Rewrite using `[dpbH_conjTranspose U _ shc dpb_shc_neg, (pmat_isHermitian w).eq]`. Rewrite using `[e1, e2, ContinuousLinearMap.fderiv, ContinuousLinearMap.fderiv]`.
-
-Conclude with `dpb_det hU hU' (by rw [hY]; exact dpb_JYJ y)`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem detPb {ε : Fin n → Bool} (y : PCoord ε → ℂ) :
     LinearMap.det ((fderiv ℝ (shcAd y) 0 : Matrix (Fin n) (Fin n) ℂ →L[ℝ] Matrix (Fin n) (Fin n) ℂ) :

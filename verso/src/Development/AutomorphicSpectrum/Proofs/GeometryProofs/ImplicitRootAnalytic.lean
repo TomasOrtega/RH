@@ -5,17 +5,15 @@ open Filter Topology
 namespace GlobalTheory.CompanionTheory.SimpleRoot
 
 /- English proof (translation)
-Use `set F : E × ℂ → ℂ := fun p => ∑ j ∈ Finset.range (n + 1), c j p.1 * p.2 ^ j with hFdef`. Establish `hFa : AnalyticAt ℂ F (w₀, τ₀)`. Use `Finset.analyticAt_fun_sum _ fun j _ => ?_` and prove the remaining obligations. Conclude with `((hc j).comp analyticAt_fst).mul (analyticAt_snd.pow j)`. Establish `cdf : ContDiffAt ℂ (⊤ : WithTop ℕ∞) F (w₀, τ₀)` using `hFa.contDiffAt`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `pn : (⊤ : WithTop ℕ∞) ≠ 0` using `by simp`. Use `set d : ℂ := ∑ j ∈ Finset.range (n + 1), (j : ℂ) * c j w₀ * τ₀ ^ (j - 1) with hd_def`. Establish `hd : HasDerivAt (fun τ => F (w₀, τ)) d τ₀` using `HasDerivAt.fun_sum (u := Finset.range (n + 1)) (A := fun j τ => c j w₀ * τ ^ j) (A' := fun j => (j : ℂ) * c j w₀ * τ₀ ^ (j - 1)) fun j _ => by`. Rewrite using `[show (j : ℂ) * c j w₀ * τ₀ ^ (j - 1) = c j w₀ * ((j : ℂ) * τ₀ ^ (j - 1)) by ring]`. Conclude with `(hasDerivAt_pow j τ₀).const_mul (c j w₀)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hfd : HasFDerivAt (fun τ => F (w₀, τ)) ((fderiv ℂ F (w₀, τ₀)).comp (ContinuousLinearMap.inr ℂ E ℂ)) τ₀` using `hFa.differentiableAt.hasFDerivAt.comp τ₀ (hasFDerivAt_prodMk_right w₀ τ₀)`. Establish `heq : (fderiv ℂ F (w₀, τ₀)).comp (ContinuousLinearMap.inr ℂ E ℂ) = ContinuousLinearMap.smulRight (1 : ℂ →L[ℂ] ℂ) d` using `hfd.unique hd.hasFDerivAt`. Establish `if₂ : ((fderiv ℂ F (w₀, τ₀)).comp (ContinuousLinearMap.inr ℂ E ℂ)).IsInvertible`. Rewrite using `[heq]`. Use `⟨ContinuousLinearEquiv.unitsEquivAut ℂ (Units.mk0 d h1), ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `ext`. Simplify using the standard rewrite rules. Use `set g := cdf.implicitFunction pn if₂ with hg_def`. Establish `hg : AnalyticAt ℂ g w₀` using `(cdf.contDiffAt_implicitFunction pn if₂).analyticAt`. Take `⟨V₂, W, hV₂o, hw₀V₂, hWo, hτ₀W, hsub⟩` from `mem_nhds_prod_iff'.1 (cdf.eventually_apply_eq_iff_implicitFunction pn if₂)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `⟨{w | AnalyticAt ℂ g w} ∩ V₂, W, g, (isOpen_analyticAt ℂ g).inter hV₂o, ⟨hg, hw₀V₂⟩, hWo, hτ₀W, fun w hw => hw.1, ?_⟩` and prove the remaining obligations. Introduce `w hw τ hτ hroot`. Establish `hmem` using `hsub (Set.mk_mem_prod hw.2 hτ)`. Simplify using `only [Set.mem_ofPred_eq] at hmem`. Establish `h' : F (w, τ) = F (w₀, τ₀)`.
-
-Express the relevant statement in the definitionally equal form `(∑ j ∈ Finset.range (n + 1), c j w * τ ^ j) = ∑ j ∈ Finset.range (n + 1), c j w₀ * τ₀ ^ j`. Rewrite using `[hroot, h0]`. Conclude with `(hmem.1 h').symm`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_analytic_simple_root
     (E : Type) [NormedAddCommGroup E] [NormedSpace ℂ E] [CompleteSpace E] (n : ℕ)

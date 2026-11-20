@@ -5,43 +5,39 @@ open scoped ContDiff
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `ι X _ _ _ e e' hec he'c he he' hr hadd F hF`. Use `letI : MeasureSpace UnitAddCircle := ⟨AddCircle.haarAddCircle⟩`. Use `haveI : Measure.IsAddHaarMeasure (volume : Measure UnitAddCircle) := inferInstanceAs (Measure.IsAddHaarMeasure AddCircle.haarAddCircle)`. Use `haveI : IsProbabilityMeasure (volume : Measure UnitAddCircle) := inferInstanceAs (IsProbabilityMeasure AddCircle.haarAddCircle)`. Set `p : (ι → ℝ) → UnitAddTorus ι` to `fun x i => (x i : UnitAddCircle)`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq : IsOpenQuotientMap p` using `IsOpenQuotientMap.piMap fun _ => QuotientAddGroup.isOpenQuotientMap_mk`. Establish `hpadd : ∀ x y, p (x + y) = p x + p y` using `fun x y => by`. Use function extensionality and compare the values at `i`. Conclude with `AddCircle.coe_add (1 : ℝ) (x i) (y i)`. Establish `hpeq : ∀ x y, p x = p y ↔ ∀ i, ∃ n : ℤ, x i - y i = n`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `x y`. Simplify using `only [p, funext_iff]`. Use `forall_congr' fun i => ?_` and prove the remaining obligations. Rewrite using `[← sub_eq_zero, ← AddCircle.coe_sub, AddCircle.coe_eq_zero_iff]`. Simplify using `[eq_comm]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `σ` to `Function.surjInv hq.surjective`. Establish `hσ : ∀ t, p (σ t) = t` using `Function.surjInv_eq hq.surjective`. Set `E : UnitAddTorus ι → X` to `fun t => e (σ t)`. Set `E' : UnitAddTorus ι → X` to `fun t => e' (σ t)`. Establish `hEp : ∀ x, E (p x) = e x` using `fun x => (he _ _).2 ((hpeq _ _).1 (hσ (p x)))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hE'p : ∀ x, E' (p x) = e' x` using `fun x => (he' _ _).2 ((hpeq _ _).1 (hσ (p x)))`. Establish `hEc : Continuous E` using `hq.isQuotientMap.continuous_iff.2 (by`. Establish `: E ∘ p = e` using `funext hEp`. Rewrite using `[this]`. Conclude with `hec)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hE'c : Continuous E'` using `hq.isQuotientMap.continuous_iff.2 (by`. Establish `: E' ∘ p = e'` using `funext hE'p`. Rewrite using `[this]`. Conclude with `he'c)`. Establish `hE'i : Function.Injective E'` using `fun s t h => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Rewrite using `[← hσ s, ← hσ t]`. Conclude with `(hpeq _ _).2 ((he' _ _).1 h)`. Establish `hrE : range E = range e`. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Introduce and unpack `⟨t, rfl⟩`. Conclude with `⟨_, rfl⟩`. Introduce and unpack `⟨x, rfl⟩`. Conclude with `⟨p x, hEp x⟩`. Establish `hrE' : range E' = range e'`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨t, rfl⟩`. Conclude with `⟨_, rfl⟩`. Introduce and unpack `⟨x, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨p x, hE'p x⟩`. Establish `hα : ∀ t, ∃ u, E' u = E t` using `fun t => by`. Establish `: E t ∈ range E'` using `by rw [hrE', ← hr, ← hrE]; exact ⟨t, rfl⟩`. Conclude with `this`. Use `choose α hαE using hα`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hemb : Topology.IsClosedEmbedding E'` using `hE'c.isClosedEmbedding hE'i`. Establish `hαc : Continuous α` using `hemb.isInducing.continuous_iff.2 (by`. Establish `: E' ∘ α = E` using `funext hαE`. Rewrite using `[this]`. Conclude with `hEc)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hαadd : ∀ s t, α (s + t) = α s + α t`. Introduce `s t`. Apply `hE'i` to reduce the goal to its premises. Rewrite using `[hαE]`. Take `⟨x, rfl⟩` from `hq.surjective s`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨y, rfl⟩` from `hq.surjective t`. Take `⟨x', hx'⟩` from `hq.surjective (α (p x))`. Take `⟨y', hy'⟩` from `hq.surjective (α (p y))`. Establish `h1 : e x = e' x'` using `by rw [← hEp x, ← hE'p x', hx', hαE]`. Establish `h2 : e y = e' y'` using `by rw [← hEp y, ← hE'p y', hy', hαE]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hx', ← hy', ← hpadd, ← hpadd, hEp, hE'p]`. Conclude with `hadd x x' y y' h1 h2`. Establish `hαs : Function.Surjective α` using `fun u => by`. Take `⟨t, ht⟩ : E' u ∈ range E` from `by rw [hrE, hr, ← hrE']; exact ⟨u, rfl⟩`. Conclude with `⟨t, hE'i (by rw [hαE]; exact ht)⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Set `A : UnitAddTorus ι →+ UnitAddTorus ι` to `AddMonoidHom.mk' α hαadd`. Establish `hmp : MeasurePreserving A volume volume` using `AddMonoidHom.measurePreserving (f := A) hαc hαs rfl`. Set `G' : UnitAddTorus ι → ℂ` to `fun t => F (E' t)`. Establish `hG'c : Continuous G'` using `hF.comp_continuous hE'c (fun t => by`. Rewrite using `[hr, ← hrE']`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Conclude with `⟨t, rfl⟩)`. Establish `hint : ∫ t, F (E t) = ∫ t, F (E' t)`. Establish `: (fun t => F (E t)) = fun t => G' (A t)` using `funext fun t => by`. Simplify using `only [G', A, AddMonoidHom.mk'_apply, hαE]`. Rewrite using `[this, ← integral_map hmp.measurable.aemeasurable hG'c.aestronglyMeasurable, hmp.map_eq]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hae : Set.Icc (0 : ι → ℝ) 1 =ᵐ[volume] {x : ι → ℝ | ∀ i, x i ∈ Set.Ioc ((0 : ι → ℝ) i) ((0 : ι → ℝ) i + 1)}`. Establish `h` using `Measure.univ_pi_Ioc_ae_eq_Icc (μ := fun _ : ι => (volume : Measure ℝ)) (f := (0 : ι → ℝ)) (g := 1)`. Establish `e0 : {x : ι → ℝ | ∀ i, x i ∈ Set.Ioc ((0 : ι → ℝ) i) ((0 : ι → ℝ) i + 1)} = Set.univ.pi fun i => Set.Ioc ((0 : ι → ℝ) i) ((1 : ι → ℝ) i)`. Use extensionality with `x`. Simplify using `[Set.mem_pi]`.
-
-Rewrite using `[e0]`. Conclude with `h.symm`. Establish `hEp' : ∀ x : ι → ℝ, E (fun i => (x i : UnitAddCircle)) = e x` using `hEp`. Establish `hE'p' : ∀ x : ι → ℝ, E' (fun i => (x i : UnitAddCircle)) = e' x` using `hE'p`. Establish `h1` using `UnitAddTorus.integral_preimage (fun t => F (E t)) 0`.
-
-Establish `h2` using `UnitAddTorus.integral_preimage (fun t => F (E' t)) 0`. Simplify using `only [hEp'] at h1`. Simplify using `only [hE'p'] at h2`. Rewrite using `[setIntegral_congr_set hae, setIntegral_congr_set hae, ← h1, ← h2]`. Conclude with `hint`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem setIntegral_unitCube_eq_of_torus_parametrisations :
     ∀ (ι X : Type) [Fintype ι] [TopologicalSpace X] [T2Space X] (e e' : (ι → ℝ) → X), Continuous e → Continuous e' → (∀ x y, e x = e y ↔ ∀ i, ∃ n : ℤ, x i - y i = n) → (∀ x y, e' x = e' y ↔ ∀ i, ∃ n : ℤ, x i - y i = n) → Set.range e = Set.range e' → (∀ x x' y y', e x = e' x' → e y = e' y' → e (x + y) = e' (x' + y')) → ∀ F : X → ℂ, ContinuousOn F (Set.range e) → ∫ x in Icc (0 : ι → ℝ) 1, F (e x) = ∫ x in Icc (0 : ι → ℝ) 1, F (e' x) := by

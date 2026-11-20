@@ -8,18 +8,18 @@ namespace PositivityTheory.AdelicQuotientData
 open PositivityTheory.RgJS
 
 /- English proof (translation)
-The claim follows from `rsPole_of_inputs jumpWindows.automorphic_basic_setup_holds cauchyAll jumpWindows.compositionalInverseSymm JacquetShalikaLocal.l7 JacquetShalikaLocal.l12 jumpWindows.whittaker_functional_exists_holds jumpWindows.mirabolic_induction_step_holds jumpWindows.positive_matrix_block_prod …`.
+A detailed English derivation is pending.
 -/
 theorem rsPole : RSPole :=
   rsPole_of_inputs jumpWindows.automorphic_basic_setup_holds cauchyAll jumpWindows.compositionalInverseSymm JacquetShalikaLocal.l7 JacquetShalikaLocal.l12 jumpWindows.whittaker_functional_exists_holds jumpWindows.mirabolic_induction_step_holds jumpWindows.positive_matrix_block_product_holds jumpWindows.smooth_vectors_regular_holds jumpWindows.orthogonalSplitPolarizationVanishes jumpWindows.lattice_open_last_entry_holds jumpWindows.multiplicity_one_holds jumpWindows.almost_everywhere_spherical jumpWindows.hecke_operator_automorphic_holds jumpWindows.averaging_projection_linear_holds jumpWindows.local_uniqueness_auxiliary_holds jumpWindows.expCongruenceExtendsToSum jumpWindows.exists_logarithm_linear_holds (jumpWindows.finite_part_of_meet_holds JacquetShalikaLocal.l7 JacquetShalikaLocal.l12) (jumpWindows.smooth_multiplicity_normalized JacquetShalikaLocal.l7 JacquetShalikaLocal.l12) JacquetShalikaLocal.jacquetShalikaBound jumpWindows.adelic_character_condition_holds
 
 /- English proof (translation)
-The claim follows from `rigid rsPole JacquetShalikaLocal.jacquetShalikaBound`.
+A detailed English derivation is pending.
 -/
 theorem jacquetShalikaRigidity : GlobalTheory.Published.JacquetShalikaRigidity := rigid rsPole JacquetShalikaLocal.jacquetShalikaBound
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨jacquetShalikaRigidity, JacquetShalikaLocal.jacquetShalikaBound⟩`.
+Supply the required witnesses or components.
 -/
 theorem jacquetShalika : GlobalTheory.Published.JacquetShalika := ⟨jacquetShalikaRigidity, JacquetShalikaLocal.jacquetShalikaBound⟩
 

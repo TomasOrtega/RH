@@ -7,11 +7,11 @@ namespace Formalism.HermitianLattices.TraceIntegrality
 open MeasureTheory Finset
 
 /- English proof (translation)
-Establish `hk : (0 : ℝ) ≤ k` using `Nat.cast_nonneg k`. Establish `h` using `Complex.integral_rpow_mul_exp_neg_mul_rpow (p := 2) (q := k) (b := Om⁻¹) (by norm_num) (by linarith) (inv_pos.mpr hOm)`. Establish `e : ∀ z : ℂ, ‖z‖ ^ (k : ℝ) * Real.exp (-Om⁻¹ * ‖z‖ ^ (2 : ℝ)) = ‖z‖ ^ k * Real.exp (-‖z‖ ^ 2 / Om)`. Introduce `z`. Rewrite using `[Real.rpow_natCast, Real.rpow_two]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Clear the denominators using the available nonvanishing facts. Rewrite `h` using `[e]`. Rewrite using `[h, Real.inv_rpow hOm.le, ← Real.rpow_neg hOm.le]`. Establish `h1 : -(-((k : ℝ) + 2) / 2) = (k : ℝ) / 2 + 1` using `by ring`.
+Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts. Rewrite the indicated hypotheses repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : ((k : ℝ) + 2) / 2 = (k : ℝ) / 2 + 1` using `by ring`. Rewrite using `[h1, h2]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 private lemma fock_real_integral (Om : ℝ) (hOm : 0 < Om) (k : ℕ) :
     ∫ z : ℂ, ‖z‖ ^ k * Real.exp (-‖z‖ ^ 2 / Om) =
@@ -33,9 +33,9 @@ private lemma fock_real_integral (Om : ℝ) (hOm : 0 < Om) (k : ℕ) :
   ring
 
 /- English proof (translation)
-Establish `hk : (0 : ℝ) ≤ k` using `Nat.cast_nonneg k`. Assume the negation of the conclusion as `hn`. Establish `h0` using `integral_undef hn`. Rewrite `h0` using `[fock_real_integral Om hOm k]`. Establish `: 0 < Real.pi * Om ^ ((k : ℝ) / 2 + 1) * Real.Gamma ((k : ℝ) / 2 + 1)`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `Real.Gamma_pos_of_pos (s := (k : ℝ) / 2 + 1) (by positivity)` as an intermediate fact. Use `Real.rpow_pos_of_pos hOm ((k : ℝ) / 2 + 1)` as an intermediate fact. Use `Real.pi_pos` as an intermediate fact. Check the signs of the components of the expression. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 private lemma fock_real_integrable (Om : ℝ) (hOm : 0 < Om) (k : ℕ) :
     Integrable (fun z : ℂ => ‖z‖ ^ k * Real.exp (-‖z‖ ^ 2 / Om)) := by
@@ -51,7 +51,7 @@ private lemma fock_real_integrable (Om : ℝ) (hOm : 0 < Om) (k : ℕ) :
   linarith
 
 /- English proof (translation)
-Use `(fock_real_integrable Om hOm (p + q)).mono' ?_ ?_` and prove the remaining obligations. Apply `Continuous.aestronglyMeasurable fun_prop` to reduce the goal to its premises. Use `Filter.Eventually.of_forall (fun z => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul, norm_mul, norm_pow, norm_pow, RCLike.norm_conj, Complex.norm_real, Real.norm_eq_abs, abs_of_pos (Real.exp_pos _), pow_add]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private lemma fock_integrable (Om : ℝ) (hOm : 0 < Om) (p q : ℕ) :
     Integrable
@@ -64,9 +64,9 @@ private lemma fock_integrable (Om : ℝ) (hOm : 0 < Om) (p q : ℕ) :
       Real.norm_eq_abs, abs_of_pos (Real.exp_pos _), pow_add]
 
 /- English proof (translation)
-Establish `hmp : MeasurePreserving (rotation c) (volume : Measure ℂ) volume` using `(rotation c).measurePreserving`. Establish `h` using `hmp.integral_comp (rotation c).toHomeomorph.measurableEmbedding (fun z : ℂ => z ^ p * (starRingEnd ℂ z) ^ q * (Real.exp (-‖z‖ ^ 2 / Om) : ℂ))`. Use `conv_lhs => rw [← h]`. Rewrite using `[← integral_const_mul]`. Use `integral_congr_ae (Filter.Eventually.of_forall (fun z => ?_))` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [rotation_apply, map_mul, norm_mul, Circle.norm_coe, one_mul, mul_pow]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private lemma fock_rotate (Om : ℝ) (p q : ℕ) (c : Circle) :
     ∫ z : ℂ, z ^ p * (starRingEnd ℂ z) ^ q * (Real.exp (-‖z‖ ^ 2 / Om) : ℂ) =
@@ -83,21 +83,19 @@ private lemma fock_rotate (Om : ℝ) (p q : ℕ) (c : Circle) :
   ring
 
 /- English proof (translation)
-Introduce `Om p q hOm`. Use `⟨fock_integrable Om hOm p q, ?_⟩` and prove the remaining obligations. Use `split_ifs with hpq`. Substitute `hpq` using the available equality. Establish `e : ∀ z : ℂ, z ^ p * (starRingEnd ℂ z) ^ p * (Real.exp (-‖z‖ ^ 2 / Om) : ℂ) = ((‖z‖ ^ (2 * p) * Real.exp (-‖z‖ ^ 2 / Om) : ℝ) : ℂ)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Substitute using the available equality. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `z`. Rewrite using `[← mul_pow, Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Use `push_cast`. Rewrite using `[pow_mul]`. Repeatedly rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[integral_complex_ofReal, fock_real_integral Om hOm (2 * p)]`. Use `congr 1`. Establish `h1 : ((2 * p : ℕ) : ℝ) / 2 + 1 = (p : ℝ) + 1` using `by push_cast; ring`. Rewrite using `[h1, Real.Gamma_nat_eq_factorial, Real.rpow_add hOm, Real.rpow_natCast, Real.rpow_one]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hd : ((p : ℝ) - q) ≠ 0`. Introduce `h`. Apply `hpq` to reduce the goal to its premises. Establish `: (p : ℝ) = q` using `by linarith`. Conclude with `this` after adjusting the coercions.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set θ : ℝ := Real.pi / ((p : ℝ) - q) with hθ`. Establish `hrot` using `fock_rotate Om p q (Circle.exp θ)`. Establish `hc : ((Circle.exp θ : Circle) : ℂ) ^ p * (starRingEnd ℂ ((Circle.exp θ : Circle) : ℂ)) ^ q = -1`. Rewrite using `[Circle.coe_exp, ← Complex.exp_conj, ← Complex.exp_nat_mul, ← Complex.exp_nat_mul, ← Complex.exp_add]`. Establish `: (p : ℂ) * ((θ : ℂ) * Complex.I) + (q : ℂ) * (starRingEnd ℂ) ((θ : ℂ) * Complex.I) = (Real.pi : ℂ) * Complex.I`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, Complex.conj_ofReal, Complex.conj_I]`. Establish `hd' : ((p : ℂ) - q) ≠ 0` using `by exact_mod_cast hd`. Rewrite using `[hθ]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, Complex.exp_pi_mul_I]`. Rewrite `hrot` using `[hc]`. Establish `h2 : (2 : ℂ) * ∫ z : ℂ, z ^ p * (starRingEnd ℂ z) ^ q * (Real.exp (-‖z‖ ^ 2 / Om) : ℂ) = 0`. Take the linear combination `hrot`.
-
-Conclude with `(mul_eq_zero.mp h2).resolve_left two_ne_zero`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem fock_monomial_orthogonality : FockMonomialOrthogonality := by
   intro Om p q hOm
@@ -144,15 +142,13 @@ theorem fock_monomial_orthogonality : FockMonomialOrthogonality := by
     exact (mul_eq_zero.mp h2).resolve_left two_ne_zero
 
 /- English proof (translation)
-Introduce `ι _ n g₀ Th S2 hg hS2 h`. Use `set e : ι → ℝ := fun τ => if n τ = 0 then (1 : ℝ) else min 1 ((g₀ : ℝ) / n τ) with he`. Establish `hg0 : (0 : ℝ) < g₀` using `by exact_mod_cast hg`. Establish `hepos : ∀ τ, 0 < e τ`. Introduce `τ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [he]`. Use `split_ifs with h0`. Conclude with `one_pos`. Establish `: (0 : ℝ) < n τ` using `by exact_mod_cast Nat.pos_of_ne_zero h0`. Conclude with `lt_min one_pos (div_pos hg0 this)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hP : 0 < ∏ τ, (1 + e τ) ^ (n τ + g₀)` using `Finset.prod_pos (fun τ _ => pow_pos (by linarith [hepos τ]) _)`. Establish `h' : Th * (∏ τ, (1 + e τ) ^ (n τ + g₀))⁻¹ ≤ S2 * ∏ τ, ((e τ) ^ g₀)⁻¹`. Rewrite using `[← Finset.prod_inv_distrib]`. Conclude with `h`. Establish `h1 : Th ≤ S2 * (∏ τ, ((e τ) ^ g₀)⁻¹) * ∏ τ, (1 + e τ) ^ (n τ + g₀)`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h'` using `[← div_eq_mul_inv, div_le_iff₀ hP]`. Then use the resulting hypothesis. Use `h1.trans ?_` and prove the remaining obligations. Rewrite using `[mul_assoc, ← Finset.prod_mul_distrib]`. Use `mul_le_mul_of_nonneg_left ?_ hS2` and prove the remaining obligations. Use `Finset.prod_le_prod (fun τ _ => ?_) (fun τ _ => ?_)` and prove the remaining obligations.
-
-Use `hepos τ` as an intermediate fact. Check the signs of the components of the expression. Conclude with `Formalism.LogVandermondeBounds.flipTwoThree.jet_exponential_bound (n τ) g₀ hg`.
+Establish an intermediate fact. Check the signs of the components of the expression. A detailed English derivation is pending.
 -/
 theorem product_of_jets : JetsProductBound := by
   intro ι _ n g₀ Th S2 hg hS2 h
@@ -181,9 +177,9 @@ theorem product_of_jets : JetsProductBound := by
   · exact Formalism.LogVandermondeBounds.flipTwoThree.jet_exponential_bound (n τ) g₀ hg
 
 /- English proof (translation)
-Introduce `X X' V V' _ _ _ _ _ _ A φ β hβ`. Establish `hφ : 0 ≤ ∑ x, ‖φ x‖ ^ 2` using `Finset.sum_nonneg (fun x _ => by positivity)`. Establish `h1 : ∑ x', ‖∑ x, A x' x (φ x)‖ ^ 2 ≤ (∑ x', ∑ x, ‖A x' x‖ ^ 2) * ∑ x, ‖φ x‖ ^ 2`. Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_le_sum (fun x' _ => ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2 : ‖∑ x, A x' x (φ x)‖ ≤ ∑ x, ‖A x' x‖ * ‖φ x‖` using `(norm_sum_le _ _).trans (Finset.sum_le_sum (fun x _ => (A x' x).le_opNorm (φ x)))`. Combine the equalities or inequalities in the displayed calculation. Use `⟨h1, h1.trans (mul_le_mul_of_nonneg_right ?_ hφ)⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/

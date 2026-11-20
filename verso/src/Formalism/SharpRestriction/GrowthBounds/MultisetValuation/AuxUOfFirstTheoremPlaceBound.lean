@@ -27,7 +27,7 @@ theorem PIvS_congr (j : ℕ) (I : X.ColCh j) (i0 : X.Pl → ℕ) (v : X.Pl) :
     PIvS X j I i0 v = PIvS X j I (fun _ => i0 v) v := rfl
 
 /- English proof (translation)
-Unfold `Sys.colExp`. Apply the tactic sequence `split_ifs <;> simp`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem colExp_zero (j : ℕ) (I : X.ColCh j) (v : X.Pl) (s : Fin (X.G.P.n' v)) (c : ℕ) :
     X.colExp j I (fun _ => 0) v s c = 0 := by
@@ -35,7 +35,7 @@ theorem colExp_zero (j : ℕ) (I : X.ColCh j) (v : X.Pl) (s : Fin (X.G.P.n' v)) 
   split_ifs <;> simp
 
 /- English proof (translation)
-Unfold `PIvS Sys.PIv`. Simplify using `only [colExp_zero, pow_zero, one_mul]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem PIvS_zero (j : ℕ) (I : X.ColCh j) (v : X.Pl) : PIvS X j I (fun _ => 0) v = X.PIv j I v := by
   unfold PIvS Sys.PIv
@@ -50,14 +50,14 @@ def LowAtI (j : ℕ) (v : X.Pl) (i : ℕ) (g : ℝ) : Prop :=
 variable {X Y}
 
 /- English proof (translation)
-Unfold `LowAtI Pend.LowAt`. Simplify using `only [PIvS_zero]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem lowAtI_zero {j : ℕ} {v : X.Pl} {g : ℝ} : LowAtI X Y j v 0 g ↔ Y.LowAt j v g := by
   unfold LowAtI Pend.LowAt
   simp only [PIvS_zero]
 
 /- English proof (translation)
-Introduce `U hU I n` and use `Y.geC_mono h (hg U hU I n)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem LowAtI.mono {j : ℕ} {v : X.Pl} {i : ℕ} {g g' : ℝ} (h : g' ≤ g) (hg : LowAtI X Y j v i g) :
     LowAtI X Y j v i g' :=
@@ -80,14 +80,14 @@ def RestPlaces (D : Formalism.BasicNotions.D7) : Prop :=
 variable {X Y}
 
 /- English proof (translation)
-The claim follows from `h hA`.
+A detailed English derivation is pending.
 -/
 theorem auxU_of_firstTheoremPlaceBound (D : Formalism.BasicNotions.D7) (h : EntryBoundOfHypotheses X Y D) (hA : admitted D X Y) : VolumeRatio₂ D X Y := h hA
 
 /- English proof (translation)
-Introduce `j hj i0 gP hPl`. Use `hP hA j hj i0 gP fun v => ?_` and prove the remaining obligations. Break down `hPl v with ⟨h0, h1 | h1⟩ | ⟨h0, h1, h3⟩` into its components or cases. Rewrite using `[h0]`. Conclude with `lowAtI_zero.2 h1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h0]`. Conclude with `lowAtI_zero.2 (Pend.LowAt.mono Y h1 (h2 hA v j hj))`. Conclude with `LowAtI.mono h3 (hB hA v j hj (i0 v) (Finset.mem_Icc.2 ⟨h0, h1⟩))`.
+A detailed English derivation is pending.
 -/
 theorem restEnt_of_rest (D : Formalism.BasicNotions.D7) (hP : RestPlaces X Y D) (h2 : PlacewiseLowerBoundEvenShift X Y D) (hB : RestBU X Y D)
     (hA : admitted D X Y) : EntCondition X Y := by

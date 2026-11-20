@@ -15,9 +15,9 @@ noncomputable section
 namespace ConeFibreDegree
 
 /- English proof (translation)
-Establish `hU : (⋃ r : ℕ, LogInt.polydisc ι r) = Set.univ`. Use `Set.eq_univ_of_forall fun u => ?_` and prove the remaining obligations. Take `⟨r, hr⟩` from `exists_nat_ge ‖u‖`. Use `Set.mem_iUnion.mpr ⟨r, Set.mem_univ_pi.mpr fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[Metric.mem_closedBall, dist_zero_right]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(norm_le_pi_norm u i).trans hr`. Establish `h` using `(ae_restrict_iUnion_iff (fun r : ℕ => LogInt.polydisc ι r) (fun u => eval u g ≠ 0)).mpr fun r => LogInt.ae_eval_ne_zero g hg r`. Rewrite `h` using `[hU, Measure.restrict_univ]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem ae_eval_ne_zero_univ {ι : Type*} [Fintype ι] (g : MvPolynomial ι ℂ) (hg : g ≠ 0) :
     ∀ᵐ u : ι → ℂ, eval u g ≠ 0 := by
@@ -32,7 +32,7 @@ theorem ae_eval_ne_zero_univ {ι : Type*} [Fintype ι] (g : MvPolynomial ι ℂ)
   rwa [hU, Measure.restrict_univ] at h
 
 /- English proof (translation)
-Establish `hmap : (volume : Measure (Fin k → Fin n → ℂ)) = (volume : Measure (Fin k × Fin n → ℂ)).map (MeasurableEquiv.curry (Fin k) (Fin n) ℂ)`. Rewrite using `[ObjectsHeight.map_curry_volume]`. Both sides reduce to the same expression. Rewrite using `[hmap, (MeasurableEquiv.curry (Fin k) (Fin n) ℂ).measurableEmbedding.ae_map_iff]`. Conclude with `ae_eval_ne_zero_univ g hg`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ae_eval_matrix_ne_zero {k n : ℕ} (g : MvPolynomial (Fin k × Fin n) ℂ) (hg : g ≠ 0) :
     ∀ᵐ π : Fin k → Fin n → ℂ, eval (fun ij => π ij.1 ij.2) g ≠ 0 := by
@@ -44,9 +44,7 @@ theorem ae_eval_matrix_ne_zero {k n : ℕ} (g : MvPolynomial (Fin k × Fin n) �
   exact ae_eval_ne_zero_univ g hg
 
 /- English proof (translation)
-Set `L : EuclideanSpace ℂ (Fin m) ≃L[ℝ] (Fin m → ℂ)` to `(PiLp.continuousLinearEquiv 2 ℝ fun _ : Fin m => ℂ)`. Establish `hac : (volume : Measure (EuclideanSpace ℂ (Fin m))).map L ≪ volume` using `Measure.absolutelyContinuous_isAddHaarMeasure _ _`. Establish `h : ∀ᵐ u ∂(volume : Measure (EuclideanSpace ℂ (Fin m))).map L, eval u g ≠ 0` using `hac.ae_le (ae_eval_ne_zero_univ g hg)`. Rewrite `h` using `[ae_map_iff L.continuous.measurable.aemeasurable]`. Conclude with `h`.
-
-Conclude with `(isClosed_eq (continuous_eval g) continuous_const).isOpen_compl.measurableSet`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ae_eval_euclid_ne_zero {m : ℕ} (g : MvPolynomial (Fin m) ℂ) (hg : g ≠ 0) :
     ∀ᵐ w : EuclideanSpace ℂ (Fin m), eval (WithLp.ofLp w) g ≠ 0 := by
@@ -61,17 +59,15 @@ theorem ae_eval_euclid_ne_zero {m : ℕ} (g : MvPolynomial (Fin m) ℂ) (hg : g 
   · exact (isClosed_eq (continuous_eval g) continuous_const).isOpen_compl.measurableSet
 
 /- English proof (translation)
-Establish `hu : IsUnit h.matᵀ.det` using `by rw [det_transpose]; exact h.isUnit_det`. Establish `hinj : Function.Injective h.pointOf`. Introduce `y y' hyy`. Establish `hv` using `congrArg (fun v => (h.matᵀ)⁻¹ *ᵥ v) hyy`. Simplify using `only [HermNorm.pointOf, mulVec_mulVec, nonsing_inv_mul _ hu, one_mulVec] at hv`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `WithLp.ofLp_injective 2 hv`. Establish `hπ : ∀ y : EuclideanSpace ℂ (Fin n), (Matrix.of π * (h.matᵀ)⁻¹) *ᵥ h.pointOf y = WithLp.ofLp (linProj π y)`. Introduce `y`. Rewrite using `[HermNorm.pointOf, mulVec_mulVec, Matrix.mul_assoc, nonsing_inv_mul _ hu, Matrix.mul_one]`. Use extensionality with `i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[linProj, mulVec, dotProduct]`. Rewrite using `[fibreCount, ← hinj.injOn.encard_image]`. Use `congr 1`. Use extensionality with `x`. Simplify using `only [Set.mem_image, Set.mem_ofPred_eq, ComplexSets.fibre, ComplexSets.zeroSet, coneSet]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, ⟨hy, rfl⟩, rfl⟩`. Conclude with `⟨hy, hπ y⟩`. Introduce and unpack `⟨hx, hxw⟩`. Establish `hpt : h.pointOf (WithLp.toLp 2 ((h.matᵀ)⁻¹ *ᵥ x)) = x`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[HermNorm.pointOf, mulVec_mulVec, mul_nonsing_inv _ hu]`. Use `⟨WithLp.toLp 2 ((h.matᵀ)⁻¹ *ᵥ x), ⟨?_, ?_⟩, hpt⟩` and prove the remaining obligations. Rewrite using `[hpt]`. Conclude with `hx`. Apply `WithLp.ofLp_injective 2` to reduce the goal to its premises.
-
-Rewrite using `[← hπ, hpt, hxw]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fibreCount_eq {k n : ℕ} (h : HermNorm n) (W : Ideal (MvPolynomial (Fin n) ℂ))
     (π : Fin k → Fin n → ℂ) (w : EuclideanSpace ℂ (Fin k)) :
@@ -105,19 +101,15 @@ theorem fibreCount_eq {k n : ℕ} (h : HermNorm n) (W : Ideal (MvPolynomial (Fin
       rw [← hπ, hpt, hxw]
 
 /- English proof (translation)
-Introduce `n e δ h W f hW hf hδ`. Establish `hdim` using `hD ℂ n (e + 1) W f hW hf`. Take `⟨⟨U, ⟨S, hS⟩, ⟨A₀, hA₀⟩, hUfin⟩, -, -, -⟩` from `hG n (e + 1) W hW.isPrime hdim`. Rewrite `hA₀` using `[hS]`. Take `⟨p, hpS, hp⟩` from `hA₀`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hu : IsUnit h.matᵀ.det` using `by rw [det_transpose]; exact h.isUnit_det`. Use `set B := (h.matᵀ)⁻¹ with hB`. Use `set q : MvPolynomial (Fin (e + 1) × Fin n) ℂ := bind₁ (fun ij => ∑ k, X (ij.1, k) * C (B k ij.2)) p with hqdef`. Establish `hq : ∀ π : Fin (e + 1) → Fin n → ℂ, eval (fun ij => π ij.1 ij.2) q = eval (fun ij => (Matrix.of π * B) ij.1 ij.2) p`. Introduce `π`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `show eval₂Hom (RingHom.id ℂ) _ q = eval₂Hom (RingHom.id ℂ) _ p`. Rewrite using `[hqdef, eval₂Hom_bind₁]`. Use `congr 2`. Use function extensionality and compare the values at `ij`. Simplify using `[Matrix.mul_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hq0 : q ≠ 0`. Introduce `h0`. Establish `h1` using `hq fun i j => (A₀ * h.matᵀ) i j`. Establish `hA : Matrix.of (fun i j => (A₀ * h.matᵀ) i j) * B = A₀`. Rewrite using `[hB, show Matrix.of (fun i j => (A₀ * h.matᵀ) i j) = A₀ * h.matᵀ from rfl, Matrix.mul_assoc, mul_nonsing_inv _ hu, Matrix.mul_one]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[h0, map_zero, hA]`. Conclude with `hp h1.symm`. Use `filter_upwards [ae_eval_matrix_ne_zero q hq0] with π hπ`. Establish `hfin : ComplexSets.IsFiniteProjection W (Matrix.of π * B)`. Establish `hmem : Matrix.of π * B ∈ {A : Matrix (Fin (e + 1)) (Fin n) ℂ | ∃ p ∈ S, eval (fun ij => A ij.1 ij.2) p ≠ 0}` using `⟨p, hpS, by rw [← hq]; exact hπ⟩`.
-
-Rewrite `hmem` using `[← hS]`. Conclude with `hUfin _ hmem`. Take `⟨P, hP0, hPy⟩` from `hC n (e + 1) W (Matrix.of π * B) hW.isPrime hdim hfin`. Use `filter_upwards [ae_eval_euclid_ne_zero P hP0] with w hw`. Take `⟨hfinite, hcard, -⟩` from `hPy _ hw`.
-
-Rewrite using `[fibreCount_eq, ← hfinite.cast_ncard_eq, hcard, hP n e δ W f _ hW hf hδ hfin]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem proof (hD : ConeDimOfChowForm.Statement)
     (hG : ComplexSets.GenericProjectionFinite.Statement)

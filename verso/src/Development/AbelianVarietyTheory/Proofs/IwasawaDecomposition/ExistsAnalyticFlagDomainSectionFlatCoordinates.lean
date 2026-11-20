@@ -26,9 +26,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : Data 
   {Tau : Type} (κ : Tau ≃ X.Ψ)
 
 /- English proof (translation)
-Establish `hM : ∀ c, AnalyticAt ℂ (fun v : Tau × Fin j × Fin (r - j) → ℂ => ((reindex (idx hj) (idx hj)).symm (fromBlocks 1 (unflat v (κ.symm τ)) 0 1)) c b) v₀`. Introduce `c`. Simplify using `only [reindex_symm, reindex_apply, Equiv.symm_symm, submatrix_apply]`. Apply the tactic sequence `rcases (idx hj) c with c' | c' <;> rcases (idx hj) b with b' | b' <;>`. Apply the tactic sequence `simp only [fromBlocks_apply₁₁, fromBlocks_apply₁₂, fromBlocks_apply₂₁, fromBlocks_apply₂₂, unflat, of_apply] <;>`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `first | exact analyticAt_const | exact (ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Tau × Fin j × Fin (r - j) => ℂ) _).analyticAt _`. Simplify using `only [mat_frameAt, mul_apply]`. Conclude with `Finset.analyticAt_fun_sum _ fun c _ => analyticAt_const.fun_mul (hM c)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem analyticAt_frameAt [Fintype Tau] (τ : X.Ψ) (a b : Fin r) (v₀ : Tau × Fin j × Fin (r - j) → ℂ) :
     AnalyticAt ℂ (fun v : Tau × Fin j × Fin (r - j) → ℂ => mat (frameAt X hj κ (unflat v)) τ a b) v₀ := by
@@ -47,13 +47,13 @@ end GlobalTheory.FrameLift
 open ReciprocityTheory.ChartRestriction.G.FD GlobalTheory.ShFam.SecFrame in
 
 /- English proof (translation)
-Introduce `E _ _ _ p q n Xd hp h v hv`. Use `⟨fun w => frameAt Xd (Nat.le_add_right p q) (Equiv.refl Xd.Ψ) (unflat (GlobalTheory.UnifDens.flatL h w)), ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[analyticAt_pi_iff]`. Introduce `τ`. Rewrite using `[analyticAt_pi_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `a`. Rewrite using `[analyticAt_pi_iff]`. Introduce `b`. Establish `hL : AnalyticAt ℂ (GlobalTheory.UnifDens.flatL h) v` using `(GlobalTheory.UnifDens.flatL h).toContinuousLinearMap.analyticAt v`. Conclude with `(GlobalTheory.FrameLift.analyticAt_frameAt Xd (Nat.le_add_right p q) (Equiv.refl Xd.Ψ) τ a b (GlobalTheory.UnifDens.flatL h v)).comp hL`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `τ a b`. Establish `e : (fun w => coW Xd (Nat.le_add_right p q) (frameAt Xd (Nat.le_add_right p q) (Equiv.refl Xd.Ψ) (unflat (GlobalTheory.UnifDens.flatL h w))) τ a b) = fun _ => (1 : Matrix (Fin p) (Fin p) ℂ) a b`. Use function extensionality and compare the values at `w`. Rewrite using `[(co_frameAt Xd (Nat.le_add_right p q) (Equiv.refl Xd.Ψ) _ τ).1]`. Rewrite using `[e]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `analyticAt_const`. Establish `ho : IsOpen (DomFlat Xd.Ψ p (p + q - p))` using `GlobalTheory.HodgeDomain.ActionDeriv.isOpen_domFlat filter_upwards [(GlobalTheory.UnifDens.flatL h).continuous.continuousAt.preimage_mem_nhds (ho.mem_nhds hv)] with w hw`. Use `⟨frameAt_mem Xd (Nat.le_add_right p q) (Equiv.refl Xd.Ψ) hp hw, ?_⟩` and prove the remaining obligations. Rewrite using `[domPt_frameAt]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.FrameLift.exists_analytic_section : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (p q n : ℕ) (Xd : ReciprocityTheory.ChartRestriction.G.FD.Data E (p + q)), Xd.p0 = p + q - p → ∀ (h : Fintype.card (Xd.Ψ × Fin p × Fin (p + q - p)) = n) (v : ReciprocityTheory.L2DbarEstimates.V n), GlobalTheory.UnifDens.flatL h v ∈ DomFlat Xd.Ψ p (p + q - p) → ∃ s : ReciprocityTheory.L2DbarEstimates.V n → ReciprocityTheory.ChartRestriction.G.FD.Frame Xd.Ψ (p + q), AnalyticAt ℂ s v ∧ (∀ (τ : Xd.Ψ) (a b : Fin p), AnalyticAt ℂ (fun w => coW Xd (Nat.le_add_right p q) (s w) τ a b) v) ∧ ∀ᶠ w in nhds v, ∃ hs : s w ∈ Xd.dom, flat (domPt Xd (Nat.le_add_right p q) (Equiv.refl Xd.Ψ) (s w)) = GlobalTheory.UnifDens.flatL h w := by
   intro E _ _ _ p q n Xd hp h v hv

@@ -13,9 +13,9 @@ namespace GlobalTheory.LatOrb
 variable {K : Type} [Field K] {n : ℕ}
 
 /- English proof (translation)
-Set `f : S →ₗ[K] S` to `LinearMap.mulLeft K (⟨a, ha⟩ : S)`. Establish `hinj : Function.Injective f`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Apply `Subtype.ext` to reduce the goal to its premises.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `hc x.1 (by simpa [f] using congrArg Subtype.val hx)`. Take `⟨b, hb⟩` from `(LinearMap.injective_iff_surjective.mp hinj) 1`. Conclude with `⟨b.1, b.2, by simpa [f] using congrArg Subtype.val hb⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_mul_eq_one_mem {B : Type} [Ring B] [Algebra K B] (S : Subalgebra K B)
     [FiniteDimensional K S] {a : B} (ha : a ∈ S) (hc : ∀ b : B, a * b = 0 → b = 0) :
@@ -30,15 +30,15 @@ theorem exists_mul_eq_one_mem {B : Type} [Ring B] [Algebra K B] (S : Subalgebra 
   exact ⟨b.1, b.2, by simpa [f] using congrArg Subtype.val hb⟩
 
 /- English proof (translation)
-Proceed by induction on `ha using Algebra.adjoin_induction with`. Consider the case `mem x hx`. Rewrite `hx` using `[Set.mem_singleton_iff]`. Substitute `hx` using the available equality. Take `⟨b, hbm, hb⟩` from `exists_mul_eq_one_mem (Algebra.adjoin K {x}) (Algebra.subset_adjoin rfl) (fun b hb => by rw [← Matrix.one_mul b, ← hγ, Matrix.mul_assoc, hb, Matrix.mul_zero])`.
+Proceed by induction. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Extract witnesses or component facts from the available result.
 
-Establish `: (x.map σ)ᵀ = b`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[this]`. Conclude with `hbm`. Consider the case `algebraMap r`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact.
 
-Establish `: ((algebraMap K (Matrix (Fin n) (Fin n) K) r).map σ)ᵀ = algebraMap K (Matrix (Fin n) (Fin n) K) (σ r)`. Use extensionality with `i j`. Simplify using `only [Matrix.transpose_apply, Matrix.map_apply, Matrix.algebraMap_matrix_apply]`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Simplify using `[h, Ne.symm h]`. Rewrite using `[this]`. Conclude with `Subalgebra.algebraMap_mem _ _`. Consider the case `add x y _ _ hx hy`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[Matrix.map_add _ (map_add σ), Matrix.transpose_add]`. Conclude with `add_mem hx hy`. Consider the case `mul x y _ _ hx hy`. Rewrite using `[Matrix.map_mul, Matrix.transpose_mul]`. Conclude with `mul_mem hy hx`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conjTranspose_mem_adjoin (σ : K →+* K) (γ : Matrix (Fin n) (Fin n) K)
     (hγ : (γ.map σ)ᵀ * γ = 1) {a : Matrix (Fin n) (Fin n) K} (ha : a ∈ Algebra.adjoin K {γ}) :
@@ -68,11 +68,11 @@ theorem conjTranspose_mem_adjoin (σ : K →+* K) (γ : Matrix (Fin n) (Fin n) K
     rw [Matrix.map_mul, Matrix.transpose_mul]; exact mul_mem hy hx
 
 /- English proof (translation)
-Proceed by induction on `r using Polynomial.induction_on' with`. Consider the case `add p q hp hq`. Introduce `v hv`. Rewrite using `[Polynomial.map_add, map_add, Matrix.add_mulVec]`. Conclude with `add_mem (hp v hv) (hq v hv)`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `monomial k a`. Introduce `v hv`. Establish `hk : ∀ k : ℕ, γ ^ k *ᵥ v ∈ M`. Introduce `k`. Proceed by induction on `k with`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => simpa using hv`. Consider the case `succ k ih => rw [pow_succ', ← Matrix.mulVec_mulVec]`. Conclude with `hM _ ih`. Rewrite using `[Polynomial.map_monomial, aeval_monomial, ← Matrix.mulVec_mulVec, Algebra.algebraMap_eq_smul_one, Matrix.smul_mulVec, Matrix.one_mulVec, algebraMap_smul]`. Conclude with `M.smul_mem a (hk k)`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem aeval_map_mulVec_mem {O : Type} [CommRing O] [Algebra O K] (M : Submodule O (Fin n → K))
     (γ : Matrix (Fin n) (Fin n) K) (hM : ∀ v ∈ M, γ *ᵥ v ∈ M) (r : O[X]) :
@@ -94,7 +94,7 @@ theorem aeval_map_mulVec_mem {O : Type} [CommRing O] [Algebra O K] (M : Submodul
     exact M.smul_mem a (hk k)
 
 /- English proof (translation)
-Introduce `v hv`. Take `⟨w, hw, rfl⟩` from `(mem_matLat u M v).mp hv`. Conclude with `hu w hw`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem matLat_le {O : Type} [CommRing O] [Algebra O K] (M : Submodule O (Fin n → K))
     (u : Matrix (Fin n) (Fin n) K) (hu : ∀ v ∈ M, u *ᵥ v ∈ M) : matLat O u M ≤ M := by
@@ -103,7 +103,7 @@ theorem matLat_le {O : Type} [CommRing O] [Algebra O K] (M : Submodule O (Fin n 
   exact hu w hw
 
 /- English proof (translation)
-The claim follows from `Submodule.map_mono h`.
+A detailed English derivation is pending.
 -/
 theorem matLat_mono {O : Type} [CommRing O] [Algebra O K] {M N : Submodule O (Fin n → K)}
     (u : Matrix (Fin n) (Fin n) K) (h : M ≤ N) : matLat O u M ≤ matLat O u N :=
@@ -114,51 +114,43 @@ end GlobalTheory.LatOrb
 namespace GlobalTheory.LatOrb
 
 /- English proof (translation)
-Introduce `O K _ _ _ _ _ _ _ n P₀ hcop γ hchar σ hσ hσO hγ M hML hMγ p hpu hpM`. Use `set A := Algebra.adjoin K {γ} with hAdef`. Establish `hcomm : ∀ u ∈ A, ∀ v ∈ A, u * v = v * u`. Establish `hc : ∀ a ∈ ({γ} : Set (Matrix (Fin n) (Fin n) K)), ∀ b ∈ ({γ} : Set _), a * b = b * a`. Introduce `a ha b hb`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `ha`, `hb` using `[Set.mem_singleton_iff]`. Rewrite using `[ha, hb]`. Use `letI : CommRing A := Algebra.adjoinCommRingOfComm K hc`. Introduce `u hu v hv`. Conclude with `congrArg Subtype.val (mul_comm (⟨u, hu⟩ : A) ⟨v, hv⟩)`.
+Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `letI : CommRing A := Algebra.adjoinCommRingOfComm K (by`. Introduce `a ha b hb`. Rewrite `ha`, `hb` using `[Set.mem_singleton_iff]`. Rewrite using `[ha, hb])`. Establish `hstar : ∀ a ∈ A, (a.map σ)ᵀ ∈ A` using `fun a ha => conjTranspose_mem_adjoin σ γ hγ ha`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result.
 
-Set `τ : A →+* A` to `{ toFun := fun a => ⟨(a.1.map σ)ᵀ, hstar a.1 a.2⟩ map_one' := by`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show (((1 : Matrix (Fin n) (Fin n) K)).map σ)ᵀ = 1`. Rewrite using `[Matrix.map_one _ (map_zero σ) (map_one σ), Matrix.transpose_one]`. Use the proof step `map_mul' := fun a b => by`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use `show ((a.1 * b.1).map σ)ᵀ = (a.1.map σ)ᵀ * (b.1.map σ)ᵀ`. Rewrite using `[Matrix.map_mul, Matrix.transpose_mul]`. Conclude with `hcomm _ (hstar b.1 b.2) _ (hstar a.1 a.2)`. Use the proof step `map_zero' := by`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use `show (((0 : Matrix (Fin n) (Fin n) K)).map σ)ᵀ = 0`. Rewrite using `[Matrix.map_zero _ (map_zero σ), Matrix.transpose_zero]`. Use the proof step `map_add' := fun a b => by`. Apply `Subtype.ext` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `show ((a.1 + b.1).map σ)ᵀ = (a.1.map σ)ᵀ + (b.1.map σ)ᵀ`. Rewrite using `[Matrix.map_add _ (map_add σ), Matrix.transpose_add] }`. Establish `hτv : ∀ a : A, (τ a).1 = (a.1.map σ)ᵀ` using `fun a => rfl`. Establish `hττ : ∀ a, τ (τ a) = a`. Introduce `a`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hτv, hτv, Matrix.transpose_map, Matrix.map_map, Matrix.transpose_transpose]`. Use extensionality with `i j`. Simplify using `[hσ]`. Establish `hτk : ∀ k, τ (algebraMap K A k) = algebraMap K A (σ k)`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `k`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hτv]`. Use `show ((algebraMap K (Matrix (Fin n) (Fin n) K) k).map σ)ᵀ = algebraMap K (Matrix (Fin n) (Fin n) K) (σ k)`. Use extensionality with `i j`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.transpose_apply, Matrix.map_apply, Matrix.algebraMap_matrix_apply]`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h, Ne.symm h]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hred : IsReduced A`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `a ⟨k, hk⟩`. Choose the witnesses or unpack the hypotheses as in `⟨q, hq⟩ : ∃ q, aeval γ q = a.1 := by`. Conclude with `(Algebra.adjoin_singleton_eq_range_aeval K γ).le a.2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `h1 : aeval γ (q ^ k) = 0`. Rewrite using `[map_pow, hq]`. Conclude with `congrArg Subtype.val hk`. Establish `hsep : (minpoly K γ).Separable` using `((show P₀.Separable from hcop).map (f := algebraMap O K)).of_dvd (hchar ▸ Matrix.minpoly_dvd_charpoly γ)`. Establish `h2 : minpoly K γ ∣ q` using `hsep.squarefree.isRadical k q (minpoly.dvd K γ h1)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[← hq]`. Conclude with `Polynomial.aeval_eq_zero_of_dvd_aeval_eq_zero h2 (minpoly.aeval K γ)`. Establish `hxA : aeval γ p ∈ A` using `Polynomial.aeval_mem_adjoin_singleton K γ`. Take `⟨b, hbA, hb⟩` from `exists_mul_eq_one_mem A hxA (fun b hb => by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨u, hu⟩` from `hpu`. Rewrite `hb` using `[← hu]`. Rewrite using `[← Matrix.one_mul b, ← u.inv_mul, Matrix.mul_assoc, hb, Matrix.mul_zero])`. Set `x : Aˣ` to `Units.mkOfMulEqOne (⟨aeval γ p, hxA⟩ : A) ⟨b, hbA⟩ (Subtype.ext hb)`. Establish `hxv : ((x : A) : Matrix (Fin n) (Fin n) K) = aeval γ p` using `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `ι : A →ₐ[O] Matrix (Fin n) (Fin n) K` to `(A.val).restrictScalars O`. Establish `hι : ∀ a : A, IsIntegral O a ↔ IsIntegral O a.1` using `fun a => (isIntegral_algHom_iff ι Subtype.val_injective).symm`. Establish `hcM : ∀ v ∈ M, (τ x * x : A).1 *ᵥ v ∈ M`. Introduce `v hv`. Establish `: (τ x * x : A).1 *ᵥ v ∈ matLat O (((aeval γ p).map σ)ᵀ * aeval γ p) M` using `(mem_matLat _ _ _).mpr ⟨v, hv, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite `this` using `[hpM]`. Then use the resulting hypothesis. Establish `hcinv : (τ ((x⁻¹ : Aˣ) : A) * ((x⁻¹ : Aˣ) : A)) * (τ x * x) = 1`. Rewrite using `[mul_mul_mul_comm, ← map_mul, Units.inv_mul, map_one, one_mul]`. Establish `hc'M : ∀ v ∈ M, (τ ((x⁻¹ : Aˣ) : A) * ((x⁻¹ : Aˣ) : A) : A).1 *ᵥ v ∈ M`. Introduce `v hv`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite `hv` using `[← hpM]`. Take `⟨u, hu, rfl⟩` from `(mem_matLat _ _ _).mp hv`. Establish `e : ((τ ((x⁻¹ : Aˣ) : A) * ((x⁻¹ : Aˣ) : A) : A).1 *ᵥ ((((aeval γ p).map σ)ᵀ * aeval γ p) *ᵥ u)) = u`. Rewrite using `[Matrix.mulVec_mulVec]`. Use `congrArg Subtype.val hcinv` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `(congrArg (· *ᵥ u) this).trans (Matrix.one_mulVec u)`. Rewrite using `[e]`. Conclude with `hu`. Establish `hi1 : IsIntegral O (τ (x : A) * x)` using `(hι _).mpr (GlobalTheory.T.isIntegral_matrix_of_mapsTo_fullRankLattice n M hML _ hcM)`. Establish `hi2 : IsIntegral O (τ ((x⁻¹ : Aˣ) : A) * ((x⁻¹ : Aˣ) : A))` using `(hι _).mpr (GlobalTheory.T.isIntegral_matrix_of_mapsTo_fullRankLattice n M hML _ hc'M)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨t, ht1, ht2, ht3⟩` from `GlobalTheory.T.exists_unitary_mul_integral_of_norm_maximalOrder_unit σ hσO τ hττ hτk x hi1 hi2`. Establish `hkeep : ∀ a : A, IsIntegral O a → ∀ v ∈ M, a.1 *ᵥ v ∈ M`. Introduce `a ha`. Choose the witnesses or unpack the hypotheses as in `⟨q, hq⟩ : ∃ q, aeval γ q = a.1 := by`. Conclude with `(Algebra.adjoin_singleton_eq_range_aeval K γ).le a.2`.
-
-Establish `ha' : IsIntegral O (aeval γ q)` using `hq ▸ (hι a).mp ha`. Take `⟨r, hr⟩` from `GlobalTheory.T.integral_aeval_eq_aeval_map_of_coprime_charpoly n P₀ hcop γ hchar q ha'`. Rewrite using `[← hq, hr]`. Conclude with `aeval_map_mulVec_mem M γ hMγ r`. Establish `hk1` using `hkeep _ ht2`.
-
-Establish `hk2` using `hkeep _ ht3`. Use `⟨(t : A).1, congrArg Subtype.val ht1, hcomm _ (t : A).2 _ (Algebra.subset_adjoin rfl), ?_⟩` and prove the remaining obligations. Apply `le_antisymm` to reduce the goal to its premises. Establish `e : (t : A).1 = (aeval γ p) * ((t : A) * ((x⁻¹ : Aˣ) : A)).1`. Rewrite using `[← hxv]`.
-
-Use `show (t : A).1 = ((x : A) * ((t : A) * ((x⁻¹ : Aˣ) : A))).1`. Rewrite using `[mul_comm (t : A), ← mul_assoc, Units.mul_inv, one_mul]`. Rewrite using `[e, matLat_mul]`. Conclude with `matLat_mono _ (matLat_le M _ hk1)`. Establish `e : aeval γ p = (t : A).1 * (((t⁻¹ : Aˣ) : A) * (x : A)).1`.
-
-Rewrite using `[← hxv]`. Use `show ((x : A)).1 = ((t : A) * (((t⁻¹ : Aˣ) : A) * (x : A))).1`. Rewrite using `[← mul_assoc, Units.mul_inv, one_mul]`. Rewrite using `[e, matLat_mul]`. Conclude with `matLat_mono _ (matLat_le M _ hk2)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_unitary_matLat_eq : ∀ {O K : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     [IsAdicComplete (IsLocalRing.maximalIdeal O) O] [Field K] [Algebra O K] [IsFractionRing O K]

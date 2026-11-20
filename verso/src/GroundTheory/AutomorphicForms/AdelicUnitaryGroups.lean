@@ -98,13 +98,13 @@ def adeleUnitaryEquiv (hH : IsUnit H.det) :
             ((finiteAdeleUnitaryEquiv H b hH).symm.continuous.comp continuous_snd) })
 
 /- English proof (translation)
-The claim follows from `t2Space_unitaryPoints H 𝔸[K] hH`.
+A detailed English derivation is pending.
 -/
 theorem t2Space_unitaryPoints_adele (hH : IsUnit H.det) : T2Space (unitaryPoints K E H 𝔸[K]) :=
   t2Space_unitaryPoints H 𝔸[K] hH
 
 /- English proof (translation)
-The claim follows from `locallyCompactSpace_unitaryPoints H 𝔸[K] hH`.
+A detailed English derivation is pending.
 -/
 theorem locallyCompactSpace_unitaryPoints_adele (hH : IsUnit H.det) :
     LocallyCompactSpace (unitaryPoints K E H 𝔸[K]) :=
@@ -116,11 +116,11 @@ def unitaryDiagonal : unitaryPoints K E H K →* unitaryPoints K E H 𝔸[K] :=
   unitaryMap K E H (Algebra.ofId K 𝔸[K])
 
 /- English proof (translation)
-Set `b` to `Module.finBasis K E`. Use `GroundTheory.Global.discreteTopology_principalSubgroup K` as an intermediate fact. Establish `hmem : ∀ (x : (unitaryDiagonal K H).range) (p : ι × ι × Fin (finrank K E)), unitaryCoords H 𝔸[K] b x.1 p ∈ AdeleRing.principalSubgroup (𝓞 K) K`. Introduce and unpack `⟨_, g, rfl⟩ p`. Simplify using `only [unitaryDiagonal, unitaryCoords_unitaryMap]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Conclude with `⟨unitaryCoords H K b g p, rfl⟩`. Set `c : (unitaryDiagonal K H).range → ι × ι × Fin (finrank K E) → AdeleRing.principalSubgroup (𝓞 K) K` to `fun x p => ⟨unitaryCoords H 𝔸[K] b x.1 p, hmem x p⟩`. Use `DiscreteTopology.of_continuous_injective (f := c) ?_ ?_` and prove the remaining obligations. Conclude with `continuous_pi fun p => Continuous.subtype_mk ((continuous_apply p).comp ((continuous_unitaryCoords H 𝔸[K] b).comp continuous_subtype_val)) _`. Introduce `x y hxy`.
+Supply the required witnesses or components. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Apply `unitaryCoords_injective H 𝔸[K] b` to reduce the goal to its premises. Use function extensionality and compare the values at `p`. Conclude with `congrArg Subtype.val (congrFun hxy p)`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem discreteTopology_unitaryDiagonal_range :
     DiscreteTopology (unitaryDiagonal K H).range := by

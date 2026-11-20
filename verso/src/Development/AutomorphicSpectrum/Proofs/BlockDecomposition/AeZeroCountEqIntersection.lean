@@ -28,9 +28,9 @@ open GlobalTheory.CompanionTheory.KoszulCount
 namespace GlobalTheory.CompanionTheory.KoszulCount
 
 /- English proof (translation)
-Introduce `x i hx`. Use `hreg x` as an intermediate fact. Take `⟨h₁, h₂⟩` from `GlobalTheory.T.weakly_regular_of_cotangent_indep (X.presheaf.stalk x) d (fun j => germSec (t j) hx) (hdim x) (h x i hx)`. Establish `e : ((structureModule X).presheaf.stalk x :) ≃ₗ[X.presheaf.stalk x] X.presheaf.stalk x` using `structureModuleStalkEquiv x`. Use `⟨(LinearEquiv.isWeaklyRegular_congr e _).2 h₁, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `set I := Ideal.span (Set.range fun j => germSec (t j) hx) with hI`. Establish `hmap : (I • (⊤ : Submodule (X.presheaf.stalk x) ((structureModule X).presheaf.stalk x :))).map e.toLinearMap = I`. Rewrite using `[Submodule.map_smul'', Submodule.map_top, LinearMap.range_eq_top.2 e.surjective, smul_eq_mul, Ideal.mul_top]`. Rewrite using `[(Submodule.Quotient.equiv _ I e hmap).length_eq]`. Conclude with `h₂`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem goodStalks_structureModule {X : Scheme.{0}} [IsLocallyNoetherian X] {L : LB X} {d : ℕ}
     (t : Fin d → L.Sec) (hreg : ∀ x : X, IsRegularLocalRing (X.presheaf.stalk x))
@@ -56,17 +56,17 @@ end GlobalTheory.CompanionTheory.KoszulCount
 namespace GlobalTheory.CompanionTheory.KoszulCount
 
 /- English proof (translation)
-Use `isNoetherian_of_isProjOver hp` as an intermediate fact. Proceed by induction on `d with`. Consider the case `zero`. Introduce `F _ hF hd t hg`. Establish `hlen : ∀ x : X, Module.length (X.presheaf.stalk x) (F.presheaf.stalk x :) ≤ 1`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `x`. Take `⟨i, hi⟩` from `Opens.mem_iSup.1 (hL.cover.ge (Set.mem_univ x))`. Establish `h` using `(hg x i hi).2`. Establish `e : Ideal.span (Set.range fun j : Fin 0 => germSec (t j) hi) = ⊥` using `by simp`. Rewrite `h` using `[e, Submodule.bot_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[(Submodule.quotEquivOfEqBot _ rfl).length_eq]`. Then use the resulting hypothesis. Take `⟨h₁, h₂⟩` from `GlobalTheory.T.euler_char_zero_dim_support hp F hd hlen`. Establish `e : support F ∩ {x | ∀ j : Fin 0, x ∉ nonzeroLocus (t j)} = support F` using `by simp`. Rewrite using `[e, interNum_of_isEmpty]`. Conclude with `⟨h₁, h₂⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Consider the case `succ d ih`. Introduce `F _ hF hd t hg`. Establish `hg' : GoodStalks F (Fin.cons (t 0) (Fin.tail t) : Fin (d + 1) → L.Sec)`. Rewrite using `[Fin.cons_self_tail]` and apply the resulting hypothesis. Take `⟨hm, hc⟩` from `GlobalTheory.T.hyperplane_cut_good_stalks hL F (t 0) (Fin.tail t) hg'`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Establish `e : (fun _ : Fin (d + 1) => L) = Fin.cons L (fun _ : Fin d => L)`. Use function extensionality and compare the values at `j`. Conclude with `Fin.cases rfl (fun _ => rfl) j`. Establish `hS : support F ∩ {x | ∀ j, x ∉ nonzeroLocus (t j)} = support (cut F hL (t 0)) ∩ {x | ∀ j, x ∉ nonzeroLocus (Fin.tail t j)}`. Rewrite using `[support_cut]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use extensionality with `x`. Simplify using `only [Set.mem_inter_iff, Set.mem_setOf_eq, Set.mem_diff, Fin.forall_fin_succ, Fin.tail]`. The claim follows by propositional logic. Rewrite using `[e, interNum_cons_eq_interNum_cut hL (t 0) (fun _ => hL) hF, hS]`. Conclude with `ih (cut F hL (t 0)) (FiniteCohTwists.cut hL _ hF) (suppDim_cut_le F hL (t 0) hd) _ hc`.
+Simplify using the standard rewrite rules. The claim follows by propositional logic. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem interNum_eq_ncard {K : Type} [Field K] [IsAlgClosed K] {X : Scheme.{0}}
     [Algebra K Γ(X, ⊤)] (hp : IsProjOver (strHom K X)) {L : LB X} (hL : L.IsLB) (d : ℕ) :
@@ -112,7 +112,7 @@ end GlobalTheory.CompanionTheory.KoszulCount
 namespace GlobalTheory.CompanionTheory.KoszulCount
 
 /- English proof (translation)
-Establish `e : ∀ a : ℂ, algebraMap ℂ Γ(Y.X, ⊤) a = ReciprocityTheory.ChartRestriction.G.DVR.FlatBC.algX Y.str ⊤ a` using `fun a => by`. Rewrite using `[← GlobalTheory.strHom_eq Y.algebraMap_Γ]`. Conclude with `(GlobalTheory.GeomConnConst.algX_top_strHom ℂ Y.X a).symm`. Simplify using `only [e, map_sum, secVal_smul, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, RingHom.id_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem secVal_comb (Y : Var ℂ) (L : LB Y.X) {n : ℕ} (c : Fin n → ℂ) (b : Fin n → L.Sec) (i : L.ι)
     (y : CxPts Y.str (RingHom.id ℂ)) :
@@ -124,15 +124,13 @@ theorem secVal_comb (Y : Var ℂ) (L : LB Y.X) {n : ℕ} (c : Fin n → ℂ) (b 
   simp only [e, map_sum, secVal_smul, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, RingHom.id_apply]
 
 /- English proof (translation)
-Introduce `Y Δ L r hL n b hb hP`. Take `⟨Q, hQ, hC⟩` from `GlobalTheory.T.generic_sections_cotangent_indep Y L hL n Y.dim b hb`. Use `filter_upwards [GlobalTheory.T.ae_polynomial_nonvanishing _ _ Q hQ] with C hCQ`. Establish `hct` using `hC C hCQ`. Use `set t : Fin Y.dim → L.Sec := fun k => ∑ j, algebraMap ℂ Γ(Y.X, ⊤) (C k j) • b j with ht`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hp : IsProjOver (strHom ℂ Y.X)`. Rewrite using `[GlobalTheory.strHom_eq Y.algebraMap_Γ]`. Conclude with `Y.isProjOver`. Establish `hg : GoodStalks (structureModule Y.X) t` using `goodStalks_structureModule t (fun x => (GlobalTheory.T.variety_stalk_regular_dim Y x).1) (fun x => (GlobalTheory.T.variety_stalk_regular_dim Y x).2) hct`. Take `⟨h₁, h₂⟩` from `interNum_eq_ncard hp hL Y.dim (structureModule Y.X) (Y.isAmple_projective_O_one.finiteCohTwists Y.algebraMap_Γ _) (by rw [suppDim_structureModule, Y.topologicalKrullDim_eq]) t hg`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite `h₁`, `h₂` using `[support_structureModule, Set.univ_inter]`. Establish `hset : {y : CxPts Y.str (RingHom.id ℂ) | ∀ (k : Fin Y.dim) (i : L.ι), y ∈ ptsIn Y.str (RingHom.id ℂ) (L.U i) → ∑ j, C k j * secVal Y.str (RingHom.id ℂ) (b j) i y = 0} = {y | y.1 (IsLocalRing.closedPoint ℂ) ∈ {x | ∀ j, x ∉ nonzeroLocus (t j)}}`. Use extensionality with `y`. Simplify using `only [Set.mem_setOf_eq]`. Establish `key : ∀ (k : Fin Y.dim) (i : L.ι), y ∈ ptsIn Y.str (RingHom.id ℂ) (L.U i) → (∑ j, C k j * secVal Y.str (RingHom.id ℂ) (b j) i y = 0 ↔ y.1 (IsLocalRing.closedPoint ℂ) ∉ nonzeroLocus (t k))` using `fun k i hi => by`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← secVal_comb Y L (C k) b i y, ← mem_ptsIn, ← secVal_ne_zero_iff (t k) hi, not_not]`. Prove the components needed by the constructor for the conclusion. Introduce `h k`. Take `⟨i, hi⟩` from `exists_mem_ptsIn hL.cover y`. Conclude with `(key k i hi).1 (h k i hi)`.
-
-Introduce `h k i hi`. Conclude with `(key k i hi).2 (h k)`. Rewrite using `[hset, GlobalTheory.T.closed_points_count_complex Y _ h₂, ← h₁]`. Conclude with `(Var.inter_eq_of_toPic_eq (fun _ => hL) (fun _ => hP.toPic_eq)).symm`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem koszul_count : ∀ (Y : Var ℂ) (Δ : Y.Dv) (L : LB Y.X) (r : L.ι → Y.Fnˣ) (hL : L.IsLB) (n : ℕ) (b : Fin n → L.Sec) (hb : ⨆ j, nonzeroLocus (b j) = ⊤), Presents Δ L r → ∀ᵐ C ∂(volume : Measure (Fin Y.dim → Fin n → ℂ)), ((({y : CxPts Y.str (RingHom.id ℂ) | ∀ (k : Fin Y.dim) (i : L.ι), y ∈ ptsIn Y.str (RingHom.id ℂ) (L.U i) → ∑ j, C k j * secVal Y.str (RingHom.id ℂ) (b j) i y = 0}).ncard : ℕ) : ℤ) = Y.inter fun _ => Δ := by
   intro Y Δ L r hL n b hb hP

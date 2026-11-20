@@ -7,7 +7,7 @@ open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `q _ k B _ _ _ _ _ _ hq n i hn`. Break down `eq_or_lt_of_le hn with h | h` into its components or cases. Substitute `h` using the available equality. Conclude with `GlobalTheory.T.subsingleton_Ht_two_of_isDedekindDomain_of_isAlgClosed q k B hq i`. Conclude with `GlobalTheory.T.smoothAffineCurve_tateTwistCohomology_subsingleton_of_ge_three q k B hq n i (by omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem EtC.etC_c2 : GlobalTheory.EtC.C2 := by
   intro q _ k B _ _ _ _ _ _ hq n i hn

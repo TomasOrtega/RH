@@ -17,14 +17,14 @@ noncomputable def ball : ValuationSubring L :=
 variable {L}
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_ball {x : L} : x ∈ ball L ↔ ‖x‖ ≤ 1 := Iff.rfl
 
 /- English proof (translation)
-Establish `hx : (x : L) ≠ 0`. Introduce `h0`. Rewrite `h` using `[h0, norm_zero]`. Conclude with `zero_ne_one h`. Establish `hi : (x : L)⁻¹ ∈ ball L`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mem_ball, norm_inv, h, inv_one]`. Use `IsUnit.of_mul_eq_one ⟨(x : L)⁻¹, hi⟩ ?_` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[hx]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isUnit_of_norm_eq_one {x : ball L} (h : ‖(x : L)‖ = 1) : IsUnit x := by
   have hx : (x : L) ≠ 0 := by
@@ -38,9 +38,9 @@ theorem isUnit_of_norm_eq_one {x : ball L} (h : ‖(x : L)‖ = 1) : IsUnit x :=
   simp [hx]
 
 /- English proof (translation)
-Take `⟨y, hy⟩` from `h.exists_right_inv`. Establish `h1 : (x : L) * (y : L) = 1`. Use `congrArg (Subtype.val) hy` as an intermediate fact. Simplify using `using this`. Establish `h2 : ‖(x : L)‖ * ‖(y : L)‖ = 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite using `[← norm_mul, h1, norm_one]`. Establish `hx : ‖(x : L)‖ ≤ 1` using `x.2`. Establish `hy' : ‖(y : L)‖ ≤ 1` using `y.2`. Use polynomial arithmetic with `[norm_nonneg (x : L), norm_nonneg (y : L)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem norm_eq_one_of_isUnit {x : ball L} (h : IsUnit x) : ‖(x : L)‖ = 1 := by
   obtain ⟨y, hy⟩ := h.exists_right_inv
@@ -56,14 +56,14 @@ theorem norm_eq_one_of_isUnit {x : ball L} (h : IsUnit x) : ‖(x : L)‖ = 1 :=
 variable {p : Lˣ}
 
 /- English proof (translation)
-The claim follows from `norm_pos_iff.2 p.ne_zero`.
+A detailed English derivation is pending.
 -/
 theorem norm_unif_pos (p : Lˣ) : 0 < ‖(p : L)‖ := norm_pos_iff.2 p.ne_zero
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `hp.2 x hx`. Establish `h0` using `norm_unif_pos p`. Establish `hnn : 0 ≤ a`. Assume the negation of the conclusion as `hneg`. Establish `hlt : a < 0` using `not_le.1 hneg`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `: 1 < ‖(p : L)‖ ^ a` using `one_lt_zpow_of_neg₀ h0 hp.1 hlt`. Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨a.toNat, ?_⟩` and prove the remaining obligations. Rewrite using `[ha, ← zpow_natCast, Int.toNat_of_nonneg hnn]`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_nat_norm (hp : IsUnif p) {x : L} (hx : x ≠ 0) (h1 : ‖x‖ ≤ 1) :
     ∃ m : ℕ, ‖x‖ = ‖(p : L)‖ ^ m := by
@@ -85,15 +85,15 @@ Both sides reduce to the same expression.
 theorem unif_coe (hp : IsUnif p) : ((unif hp : ball L) : L) = p := rfl
 
 /- English proof (translation)
-Establish `h0` using `norm_unif_pos p`. Use `⟨fun h => ?_, ?_⟩` and prove the remaining obligations. Use `norm_eq_one_of_isUnit h` as an intermediate fact. Rewrite `this` using `[unif_coe]`. Conclude with `absurd this hp.1.ne`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a b hab`. Establish `hab' : (p : L) = (a : L) * (b : L)`. Use `congrArg (Subtype.val) hab` as an intermediate fact. Simplify `this` using `[unif_coe]`. Establish `ha0 : (a : L) ≠ 0` using `fun h => p.ne_zero (by rw [hab', h, zero_mul])`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb0 : (b : L) ≠ 0` using `fun h => p.ne_zero (by rw [hab', h, mul_zero])`. Take `⟨i, hi⟩` from `exists_nat_norm hp ha0 a.2`. Take `⟨j, hj⟩` from `exists_nat_norm hp hb0 b.2`. Establish `hn : ‖(p : L)‖ ^ 1 = ‖(p : L)‖ ^ (i + j)`. Rewrite using `[pow_one, pow_add, ← hi, ← hj, ← norm_mul, ← hab']`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hij : 1 = i + j` using `pow_right_injective₀ h0 hp.1.ne hn`. Break down `Nat.eq_zero_or_pos i with h | h` into its components or cases. Use `left`. Apply `isUnit_of_norm_eq_one` to reduce the goal to its premises. Rewrite using `[hi, h, pow_zero]`.
+Separate the alternatives or extract the components of the hypothesis. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Use `right`. Establish `: j = 0` using `by omega`. Apply `isUnit_of_norm_eq_one` to reduce the goal to its premises. Rewrite using `[hj, this, pow_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem irreducible_unif (hp : IsUnif p) : Irreducible (unif hp) := by
   have h0 := norm_unif_pos p
@@ -122,13 +122,13 @@ theorem irreducible_unif (hp : IsUnif p) : Irreducible (unif hp) := by
       rw [hj, this, pow_zero]
 
 /- English proof (translation)
-Use `IsDiscreteValuationRing.ofHasUnitMulPowIrreducibleFactorization ⟨unif hp, irreducible_unif hp, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Establish `hx0 : (x : L) ≠ 0` using `fun h => hx (Subtype.ext h)`. Take `⟨m, hm⟩` from `exists_nat_norm hp hx0 x.2`. Establish `h0` using `norm_unif_pos p`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hpm : (p : L) ^ m ≠ 0` using `pow_ne_zero _ p.ne_zero`. Establish `hq : ‖(x : L) / (p : L) ^ m‖ = 1`. Rewrite using `[norm_div, norm_pow, hm]`. Conclude with `div_self (pow_ne_zero _ h0.ne')`. Set `q : ball L` to `⟨(x : L) / (p : L) ^ m, hq.le⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Take `⟨u, hu⟩` from `isUnit_of_norm_eq_one (x := q) hq`. Use `⟨m, u, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Establish `hu' : ((u : ball L) : L) = (x : L) / (p : L) ^ m` using `by rw [hu]`. Express the relevant statement in the definitionally equal form `((unif hp : ball L) : L) ^ m * ((u : ball L) : L) = (x : L)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hu', unif_coe]`. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem isDVR (hp : IsUnif p) : IsDiscreteValuationRing (ball L) := by
   refine IsDiscreteValuationRing.ofHasUnitMulPowIrreducibleFactorization
@@ -151,9 +151,9 @@ theorem isDVR (hp : IsUnif p) : IsDiscreteValuationRing (ball L) := by
   field_simp
 
 /- English proof (translation)
-Establish `key : ∀ (A : Matrix (Fin n) (Fin n) (ball L)) (i j : Fin n), ‖(A.map (algebraMap (ball L) L) - 1) i j‖ ≤ 1`. Introduce `A i j`. Rewrite using `[Matrix.sub_apply, Matrix.map_apply, sub_eq_add_neg]`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le (A i j).2 ?_)` and prove the remaining obligations. Rewrite using `[norm_neg, Matrix.one_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `split_ifs <;> simp`. Introduce `i j`. Use `⟨key _ i j, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_inv]`. Conclude with `key _ i j`.
+Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_mem_congK (n : ℕ) (U : GL (Fin n) (ball L)) :
     Matrix.GeneralLinearGroup.map (algebraMap (ball L) L) U ∈ congK L n 1 zero_le_one le_rfl := by
@@ -176,11 +176,11 @@ namespace GlobalTheory.CompanionTheory.CartGL
 open UnitBall in
 
 /- English proof (translation)
-Use `haveI := isDVR hp`. Establish `hdet : IsUnit (g : Matrix (Fin n) (Fin n) L).det` using `(Matrix.isUnit_iff_isUnit_det _).1 g.isUnit`. Take `⟨u, v, a, hu, hv, ha, hg⟩` from `GlobalTheory.CompanionTheory.Dblock.CartanDVR.cartan_exists (ball L) L n (unif hp) (irreducible_unif hp) (g : Matrix (Fin n) (Fin n) L) hdet`. Take `⟨U, rfl⟩` from `(Matrix.isUnit_iff_isUnit_det u).2 hu`. Take `⟨V, rfl⟩` from `(Matrix.isUnit_iff_isUnit_det v).2 hv`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨a, ha, _, map_mem_congK n U, _, map_mem_congK n V, ?_⟩` and prove the remaining obligations. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[hg, Units.val_mul, Units.val_mul, dPow_val]`. Establish `hd : (Matrix.diagonal fun i => (algebraMap (ball L) L (unif hp)) ^ (a i)) = Matrix.diagonal fun i => ((p ^ a i : Lˣ) : L)`. Use `congr 1`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `i`. Rewrite using `[Units.val_zpow_eq_zpow_val]`. Both sides reduce to the same expression. Rewrite using `[hd]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem cartan_unitBall (L : Type) [NontriviallyNormedField L] [IsUltrametricDist L] [ProperSpace L]
     (n : ℕ) (p : Lˣ) (hp : IsUnif p) (g : GL (Fin n) L) :

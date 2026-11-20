@@ -9,7 +9,7 @@ open GlobalTheory GlobalTheory.Toroidal GlobalTheory.Models GlobalTheory.LN Glob
 namespace GlobalTheory.PrincStalk
 
 /- English proof (translation)
-Introduce `Y V D n g v`. Take `⟨i, hi⟩` from `D.exists_mem (g v)`. Rewrite using `[GlobalTheory.VanStalk.stalkId_comap, GlobalTheory.Vanishing.stalkId_pow, D.stalkId_idealSheaf i _ hi, Ideal.span_singleton_pow, Ideal.map_span, Set.image_singleton]`. Conclude with `⟨_, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem stalkId_comap_pow_isPrincipal : ∀ {Y V : Scheme.{0}} (D : EffCartierData Y) (n : ℕ) (g : V ⟶ Y) (v : V),
     (FinalTheorems.stalkId ((D.idealSheaf ^ n).comap g) v).IsPrincipal := by

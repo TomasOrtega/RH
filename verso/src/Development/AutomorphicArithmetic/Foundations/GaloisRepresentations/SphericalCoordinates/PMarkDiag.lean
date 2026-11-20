@@ -6,7 +6,7 @@ open scoped Matrix
 open GlobalTheory.HodgeCoh GlobalTheory.CechDR Polynomial UpperTheory.Gal.W2
 
 /- English proof (translation)
-Rewrite using `[Matrix.mulVec_mulVec, h, ← Matrix.mulVec_mulVec]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Simplify using `[Matrix.mulVec_diagonal]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 private theorem mulVec_mulVec_of_mul_eq_mul_diagonal {g : ℕ} (Sb A : Matrix (Fin g) (Fin g) ℂ) (d : Fin g → ℂ)
     (h : A * Sb = Sb * Matrix.diagonal d) (w : Fin g → ℂ) :
@@ -17,29 +17,29 @@ private theorem mulVec_mulVec_of_mul_eq_mul_diagonal {g : ℕ} (Sb A : Matrix (F
   simp [Matrix.mulVec_diagonal]
 
 /- English proof (translation)
-Introduce `hTC F _ _ O _ bar g ρ a n t₀ ε hsig H Sb ty ev hD mu`. Take `⟨hdet, hρ, hH⟩` from `hD`. Establish `hcard` using `(hTC F O bar g ρ a n t₀ ε hsig H Sb ty ev ⟨hdet, hρ, hH⟩ t₀).1`. Rewrite `hcard` using `[show typeMult n t₀ ε t₀ = 1 by simp [typeMult]]`. Unfold `evAt at hcard ⊢`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite `hcard` using `[Multiset.card_map, Finset.card_val, Finset.card_eq_one]`. Take `⟨i₀, hi₀⟩` from `hcard`. Rewrite using `[hi₀, Finset.singleton_val, Multiset.map_singleton, Multiset.singleton_inj]`. Establish `hmemS : ∀ j, ty j = t₀ ↔ j = i₀`. Introduce `j`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `congrArg (j ∈ ·) hi₀` as an intermediate fact. Simplify using `using this`. Establish `hcol` using `mulVec_mulVec_of_mul_eq_mul_diagonal Sb`. Establish `hinj` using `Matrix.mulVec_injective_of_det_ne_zero hdet`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨v, hv0, hvρ, hvH⟩`. Establish `hunit : IsUnit Sb.det` using `isUnit_iff_ne_zero.2 hdet`. Take `⟨w, hvw⟩ : ∃ w, v = Sb *ᵥ w` from `⟨Sb⁻¹ *ᵥ v, by rw [Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ hunit, Matrix.one_mulVec]⟩`. Substitute `hvw` using the available equality. Establish `hsupp : ∀ j, w j ≠ 0 → j = i₀`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Substitute using the available equality. Establish an intermediate fact.
 
-Introduce `j hj`. Rewrite using `[← hmemS]`. Apply `IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 F))` to reduce the goal to its premises. Use extensionality with `c`. Establish `h1` using `hvρ c`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Rewrite `h1` using `[hcol _ _ (hρ c), ← Matrix.mulVec_smul]`. Establish `h2` using `congr_fun (hinj h1) j`. Simplify using `only [Pi.smul_apply, smul_eq_mul] at h2`. Simplify using `only [RingHom.comp_apply]`. Conclude with `mul_right_cancel₀ hj h2`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hw0 : w ≠ 0`. Introduce `h`. Apply `hv0` to reduce the goal to its premises. Rewrite using `[h, Matrix.mulVec_zero]`. Take `⟨j, hj⟩` from `Function.ne_iff.1 hw0`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hj` using `[hsupp j hj]`. Establish `h1` using `hvH`. Rewrite `h1` using `[hcol _ _ hH, ← Matrix.mulVec_smul]`. Establish `h2` using `congr_fun (hinj h1) i₀`. Simplify using `only [Pi.smul_apply, smul_eq_mul] at h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `mul_right_cancel₀ hj h2`. Introduce `h`. Use `⟨Sb *ᵥ Pi.single i₀ 1, ?_, fun c => ?_, ?_⟩` and prove the remaining obligations. Introduce `h0`. Establish `: Pi.single i₀ (1 : ℂ) = 0` using `hinj (by rw [h0, Matrix.mulVec_zero])`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using congr_fun this i₀`. Rewrite using `[hcol _ _ (hρ c), ← Matrix.mulVec_smul]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = i₀`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Substitute `hj` using the available equality. Simplify using `[(hmemS _).2 rfl]`. Simplify using `[Pi.single_apply, hj]`. Rewrite using `[hcol _ _ hH, ← Matrix.mulVec_smul]`. Use `congr 1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = i₀`. Substitute `hj` using the available equality. Simplify using `[h]`. Simplify using `[Pi.single_apply, hj]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.W2.markDiag_of :
     UpperTheory.Gal.W2.TypeCount → UpperTheory.Gal.W2.MarkDiag := by

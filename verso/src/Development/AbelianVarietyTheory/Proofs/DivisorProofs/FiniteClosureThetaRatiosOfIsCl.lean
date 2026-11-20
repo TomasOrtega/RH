@@ -7,11 +7,11 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.ZH
 namespace GlobalTheory.ZH
 
 /- English proof (translation)
-Take `⟨i, hi⟩` from `h.1 (genericPoint M.Z)`. Take `⟨U, hU, hD, hR⟩` from `h.2 i hi.1`. Establish `hne : (U : Set M.Z).Nonempty` using `⟨genericPoint M.Z, by rw [hD]; exact hi⟩`. Set `A : Subalgebra o Ω` to `{ K.toSubring with algebraMap_mem' := hc }`. Establish `hle : M.ringOn U ≤ A`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[hR]`. Use `Algebra.adjoin_le ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨j, rfl⟩`. Conclude with `hr i j`. Use `top_unique fun x _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨a, b, -, rfl⟩` from `RatModel.exists_eq_div hU hne x`. Conclude with `div_mem (hle ((RatModel.mem_ringOn_iff_exists hne).2 ⟨a, rfl⟩)) (hle ((RatModel.mem_ringOn_iff_exists hne).2 ⟨b, rfl⟩))`.
+A detailed English derivation is pending.
 -/
 theorem RatModel.IsCl.subfield_eq_top_of_ratios {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω]
     {M : RatModel o Ω} {J : Type} {t : J → Ω} (h : M.IsCl t) (K : Subfield Ω)
@@ -31,7 +31,7 @@ theorem RatModel.IsCl.subfield_eq_top_of_ratios {o Ω : Type} [CommRing o] [Fiel
     (hle ((RatModel.mem_ringOn_iff_exists hne).2 ⟨b, rfl⟩))
 
 /- English proof (translation)
-Take `⟨x, hx⟩` from `S.th_ne`. Establish `htop` using `h.subfield_eq_top_of_ratios (Subfield.closure (Set.range (algebraMap o Ω) ∪ {x | ∃ i j : S.Gam × J, x = S.th j.1 * t j.2 / (S.th i.1 * t i.2)})) (fun a => Subfield.subset_closure (Or.inl ⟨a, rfl⟩)) (fun i j => Subfield.subset_closure (Or.inr ⟨(x, i), (x, j), (mul_div_mul_left _ _ …`. Use `Module.Finite.of_surjective (Algebra.linearMap _ Ω) fun y => ⟨⟨y, ?_⟩, rfl⟩` and prove the remaining obligations. Rewrite using `[htop]`. Conclude with `Subfield.mem_top y`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_closure_theta_ratios_of_isCl (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] (S : ThetaSys o Ω)
     (M : RatModel o Ω) (J : Type) (t : J → Ω) (h : M.IsCl t) :

@@ -4,19 +4,19 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Schur
 open Finset MvPolynomial UpperTheory.Gal.Schur
 
 /- English proof (translation)
-Introduce `hOff hSplit R _ _ n lam g y hu`. Establish `hv : IsUnit (vdm g)`. Unfold `vdm`. Use `IsUnit.prod_iff.mpr fun i _ => IsUnit.prod_iff.mpr fun j hj => ?_` and prove the remaining obligations. Establish `hij : i < j` using `by simpa using hj`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `using (hu i j (ne_of_gt hij)).neg`. Establish `hScale : ∀ i, vdm (scaleAt y i g) = (-1) ^ (i : ℕ) * vdmAway i g * ∏ k ∈ univ.erase i, (y * g i - g k)`. Introduce `i`. Rewrite using `[hSplit R n (scaleAt y i g) i]`. Use `congr 1`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Unfold `vdmAway`. Use `Finset.prod_congr rfl fun a ha => Finset.prod_congr rfl fun b hb => ?_` and prove the remaining obligations. Establish `ha' : a ≠ i` using `Finset.ne_of_mem_erase ha`. Establish `hb' : b ≠ i` using `Finset.ne_of_mem_erase hb`.
+Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[scaleAt, ha', hb']`. Use `Finset.prod_congr rfl fun k hk => ?_` and prove the remaining obligations. Establish `hk' : k ≠ i` using `Finset.ne_of_mem_erase hk`. Simplify using `[scaleAt, hk']`. Establish `key : ∀ i, (∏ k ∈ univ.erase i, (g k - y * g i) * Ring.inverse (g k - g i)) * ∏ k ∈ univ.erase i, (g i - g k) = ∏ k ∈ univ.erase i, (y * g i - g k)`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `i`. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun k hk => ?_` and prove the remaining obligations. Establish `hki : k ≠ i` using `Finset.ne_of_mem_erase hk`. Rewrite using `[show g i - g k = -(g k - g i) by ring, mul_neg, mul_assoc, Ring.inverse_mul_cancel _ (hu i k hki), mul_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Apply `hv.mul_right_cancel` to reduce the goal to its premises. Establish `hR : sch lam g * (∑ i : Fin n, y ^ (lam i + (n - 1 - (i : ℕ)))) * vdm g = sch lam g * vdm g * ∑ i : Fin n, y ^ (lam i + (n - 1 - (i : ℕ)))` using `by ring`. Rewrite using `[hR, ← hOff R n lam g y, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Expand and normalize the polynomial expressions, which then agree. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hScale i, hSplit R n g i, ← key i]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem UpperTheory.Gal.Schur.schurY_of :
     SchurYClr → VdmSplit → SchurY := by

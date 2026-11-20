@@ -44,11 +44,11 @@ section
 open NumberField IsDedekindDomain Formalism Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions Formalism.MainNotions.N Formalism.WeaklyAdmissibleFiltrations Module
 open GlobalTheory.RestPtAssembly in
 /- English proof (translation)
-Introduce `hF D r ρ hP h41 hO i hl π hπ`. Establish `hg0 : D.nd.l i ≠ D.host.g 0` using `fun h => hl (by simp [TwistedPlaces.gset, h])`. Establish `hg1 : D.nd.l i ≠ D.host.g 1` using `fun h => hl (by simp [TwistedPlaces.gset, h])`. Establish `hZ : π ∈ D.nd.Z i`. Establish `hx` using `hπ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[D.Z_tie]`. Rewrite `hx` using `[D.Zgood_tie]`. Conclude with `hx.1`. Take `⟨hrho, hss, hblock, hdec⟩` from `GlobalTheory.T.pointConditions_of_pointGaloisRepFamilies D r ρ hP i π hZ`. Take `⟨hshape, heps⟩` from `GlobalTheory.T.admissible_shape_and_epsilon_at_every_localisation D i`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hG2` using `((h41 i).2.2 _ (hP.good i)).2.1`. Establish `hX` using `_root_.GlobalTheory.T.semisimple_decomposition_of_good_galois_local hF D i (r i) (ρ i) π (hP.good i) hG2 hg0 hg1 hdec`. Conclude with `{ ng0 := hg0 ng1 := hg1 good := hP.good i chi1 := fun w hw C => (hX w hw C).1 block := hblock chi := fun w hw C c h1 h2 => chiRat_isCrys D i w hw C c h1 h2 g3 := UpperTheory.GalS.jointCondition_of_constituentCondition_split D i _ (hP.good i) ((_root_.UpperTheory.GalS.g3' ((h41 i) …`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.restPt_of_ptFam_aux41_oSplit : GlobalTheory.Published.FontaineBcris → ∀ (D : D7) (r : ∀ i : D.nd.Loc, D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i))) (ρ : ∀ i : D.nd.Loc, D.nd.X i → (GE D.nd →* GL (Fin D.R.r) (D.nd.O i))), GlobalTheory.PtCore.PtFam D r ρ → _root_.Formalism.MainNotions.SumRepresentations.provisionFortyOne D → GlobalTheory.SplitCoef.OSplit D → ∀ i : D.nd.Loc, D.nd.l i ∉ TwistedPlaces.gset D → ∀ π ∈ D.nd.Zgood i, RestPt i (r i) (ρ i) π := by
   intro hF D r ρ hP h41 hO i hl π hπ

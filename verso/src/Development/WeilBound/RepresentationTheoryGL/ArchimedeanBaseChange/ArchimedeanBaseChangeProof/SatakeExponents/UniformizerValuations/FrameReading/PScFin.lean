@@ -19,13 +19,13 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchim
   {ι : Type} [Fintype ι] [DecidableEq ι] {V : Type} [AddCommGroup V] [Module ℂ V]
 
 /- English proof (translation)
-Simplify using `[hk]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hk_zero' (ρ : Representation ℂ (GL ι F) V) (K : Subgroup (GL ι F)) (e : GL ι F → ℂ) : hk ρ K e 0 = 0 := by
   simp [hk]
 
 /- English proof (translation)
-Use `(GlobalTheory.CompanionTheory.DiagAvg.finite_cosets K he.1 e he.2.2.1).subset fun q hq => ?_` and prove the remaining obligations. Introduce `h0`. Conclude with `hq (by simp [show e q.out = 0 from h0])`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem hk_supp (ρ : Representation ℂ (GL ι F) V) (K : Subgroup (GL ι F)) (e : GL ι F → ℂ) (he : IsHk K e) (v : V) :
     Function.HasFiniteSupport fun q : GL ι F ⧸ K => e q.out • ρ q.out v := by
@@ -34,7 +34,7 @@ theorem hk_supp (ρ : Representation ℂ (GL ι F) V) (K : Subgroup (GL ι F)) (
   exact hq (by simp [show e q.out = 0 from h0])
 
 /- English proof (translation)
-Unfold `hk`. Rewrite using `[← finsum_add_distrib (hk_supp ρ K e he v) (hk_supp ρ K e he w)]`. Conclude with `finsum_congr fun q => by rw [map_add, smul_add]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hk_add' (ρ : Representation ℂ (GL ι F) V) (K : Subgroup (GL ι F)) (e : GL ι F → ℂ) (he : IsHk K e) (v w : V) :
     hk ρ K e (v + w) = hk ρ K e v + hk ρ K e w := by
@@ -43,7 +43,7 @@ theorem hk_add' (ρ : Representation ℂ (GL ι F) V) (K : Subgroup (GL ι F)) (
   exact finsum_congr fun q => by rw [map_add, smul_add]
 
 /- English proof (translation)
-Unfold `hk`. Rewrite using `[smul_finsum]`. Conclude with `finsum_congr fun q => by rw [map_smul, smul_comm]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hk_smul' (ρ : Representation ℂ (GL ι F) V) (K : Subgroup (GL ι F)) (e : GL ι F → ℂ) (c : ℂ) (v : V) :
     hk ρ K e (c • v) = c • hk ρ K e v := by
@@ -58,9 +58,9 @@ def hkEnd (ρ : Representation ℂ (GL ι F) V) (K : Subgroup (GL ι F)) (e : GL
   map_smul' c v := Subtype.ext (hk_smul' ρ K e c v.1)
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => intro x`. Both sides reduce to the same expression. Consider the case `succ k ih`. Introduce `x`.
+Proceed by induction. Treat this case separately. Both sides reduce to the same expression. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[pow_succ, Module.End.mul_apply, ih, Function.iterate_succ_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem hkEnd_pow (ρ : Representation ℂ (GL ι F) V) (K : Subgroup (GL ι F)) (e : GL ι F → ℂ) (he : IsHk K e) (k : ℕ) :
     ∀ x : fixed ρ K, ((hkEnd ρ K e he ^ k) x).1 = (hk ρ K e)^[k] x.1 := by
@@ -72,7 +72,7 @@ theorem hkEnd_pow (ρ : Representation ℂ (GL ι F) V) (K : Subgroup (GL ι F))
     rfl
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => rfl`. Consider the case `succ k ih => rw [Function.iterate_succ_apply, hk_zero', ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem hk_iter_zero (ρ : Representation ℂ (GL ι F) V) (K : Subgroup (GL ι F)) (e : GL ι F → ℂ) (k : ℕ) :
     (hk ρ K e)^[k] 0 = 0 := by
@@ -81,15 +81,13 @@ theorem hk_iter_zero (ρ : Representation ℂ (GL ι F) V) (K : Subgroup (GL ι 
   | succ k ih => rw [Function.iterate_succ_apply, hk_zero', ih]
 
 /- English proof (translation)
-Introduce `r`. Break down `le_total r m with hr | hr` into its components or cases. Use `⟨u, hu, fun h0 => hne ?_⟩` and prove the remaining obligations. Establish `: m = (m - r) + r` using `(Nat.sub_add_cancel hr).symm`. Rewrite using `[this, Function.iterate_add_apply, h0, hk_iter_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Assume the negation of the conclusion as `hall push_neg at hall set T := hkEnd ρ K e he`. Establish `hker : LinearMap.ker (T ^ r) = ⊤`. Rewrite using `[eq_top_iff]`. Introduce `x _`. Rewrite using `[LinearMap.mem_ker]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Subtype.ext (by rw [hkEnd_pow]; exact hall x.1 x.2)`. Establish `e1` using `Module.End.ker_pow_eq_ker_pow_finrank_of_le (f := T) (le_trans hdim hr)`. Establish `e2` using `Module.End.ker_pow_eq_ker_pow_finrank_of_le (f := T) hdim`. Establish `hm : (⟨u, hu⟩ : fixed ρ K) ∈ LinearMap.ker (T ^ m)`. Rewrite using `[e2, ← e1, hker]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition.
 
-Discharge the goal by the elementary cases of `trivial`. Rewrite `hm` using `[LinearMap.mem_ker]`. Apply `hne` to reduce the goal to its premises. Use `congrArg Subtype.val hm` as an intermediate fact. Rewrite `this` using `[hkEnd_pow]`.
-
-Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nonnil_of_pow (ρ : Representation ℂ (GL ι F) V) (K : Subgroup (GL ι F)) (e : GL ι F → ℂ) (he : IsHk K e)
     [FiniteDimensional ℂ (fixed ρ K)] (m : ℕ) (hdim : Module.finrank ℂ (fixed ρ K) ≤ m) (u : V) (hu : u ∈ fixed ρ K)
@@ -122,9 +120,7 @@ end Gen
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Establish `hsm : GlobalTheory.PRep.IsSmooth (prodAt D w)` using `GlobalTheory.SmGL.isSmooth_parInd _ _`. Establish `hfl : GlobalTheory.SmGL.HasFiniteLength (prodAt D w)` using `PositivityTheory.Rg.BcN.F2.Final.prodFinLen (w.adicCompletion E) (Fin n) (Fin D.c) (fun i => Fin (D.N i)) (GlobalTheory.SmGL.stdBlocks D.N D.h) (fun i => (D.σ i w).V) (fun i => (D.σ i w).ρ) (fun i => (D.σ i w).smooth) (fun i => (D.σ i w).irred)`. Use `haveI : FiniteDimensional ℂ (fixed (prodAt D w) K') := GlobalTheory.LeviFactor.finiteDimensional_fixed_of_hasFiniteLength (fun Y _ _ π hs hi => GlobalTheory.CompanionTheory.SmGLBridge.irreducibleAdmissible (w.adicCompletion E) (Fin n) Y π hs hi) hsm hfl K' he.1 he.2.1`. Use `PositivityTheory.Rg.BcN.F2.Final.subOfNonNil' (w.adicCompletion E) (Fin n) K' e he P.V P.ρ P.smooth P.irred _ (prodAt D w) hsm hfl ?_ ?_` and prove the remaining obligations. Introduce `W _ _ τ hs hi hsub hemp v hv`.
-
-Conclude with `hkill ⟨W, τ, hs, hi⟩ hsub hemp v hv`. Conclude with `nonnil_of_pow (prodAt D w) K' e he (m - 1) (by omega) u hu hne`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem sub_of_pow {n : ℕ} (D : Pre E n) (w : Pl E) (K' : Subgroup (GLw n w)) (e : GLw n w → ℂ) (he : IsHk K' e)
     (P : SmIrr (GLw n w))

@@ -16,13 +16,13 @@ open scoped ContDiff Topology
 variable {P : Type} [NormedAddCommGroup P] [NormedSpace ℝ P]
 
 /- English proof (translation)
-Establish `key : HasFDerivAt (fun p => f p (l p) - f p 0) (l.smulRight (f' 0 0)) 0`. Rewrite using `[hasFDerivAt_iff_isLittleO_nhds_zero]`. Use `IsLittleO.trans_isBigO (g := fun p => l p) ?_ (l.isBigO_id _)` and prove the remaining obligations. Rewrite using `[isLittleO_iff]`. Introduce `ε hε`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨δ, hδ, h4⟩` from `Metric.continuousAt_iff.1 h3 ε hε`. Establish `e1 : ∀ᶠ p in 𝓝 (0 : P), ‖p‖ < δ` using `(continuous_norm.tendsto' 0 0 norm_zero).eventually (gt_mem_nhds hδ)`. Establish `e2 : ∀ᶠ p in 𝓝 (0 : P), ‖l p‖ < δ` using `(l.continuous.norm.tendsto' 0 0 (by simp)).eventually (gt_mem_nhds hδ)`. Use `filter_upwards [e1, e2] with p q1 q2`. Use `(convex_ball (0 : ℝ) δ).norm_image_sub_le_of_norm_hasDerivWithin_le (f := fun t => f p t - t • f' 0 0) (f' := fun t => f' p t - f' 0 0) (C := ε) (x := 0) (y := l p) (fun t _ => ((h2 p t).sub (by simpa using (hasDerivAt_id t).smul_const (f' 0 0))).hasDerivWithinAt) (fun t ht => by` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `@h4 (p, t) (by` as an intermediate fact. Rewrite using `[Prod.dist_eq, max_lt_iff]`. Conclude with `⟨by simpa using q1, ht⟩)`. Rewrite `this` using `[dist_eq_norm]`. Conclude with `this.le)`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Use the proof step `(Metric.mem_ball_self hδ) (by simpa using q2)`. Simplify using `only [zero_add, map_zero, sub_self, sub_zero, zero_smul, ContinuousLinearMap.smulRight_apply] at this ⊢`. Rewrite using `[sub_right_comm]` and apply the resulting hypothesis. Use `h1.fun_add key` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem hasFDerivAt_diag {f f' : P → ℝ → ℂ} {A : P →L[ℝ] ℂ} (l : P →L[ℝ] ℝ) (h1 : HasFDerivAt (fun p => f p 0) A 0)
     (h2 : ∀ p t, HasDerivAt (f p) (f' p t) t) (h3 : ContinuousAt (fun q : P × ℝ => f' q.1 q.2) (0, 0)) :
@@ -57,15 +57,15 @@ variable {𝔸 L G : Type} [NormedRing 𝔸] [NormedAlgebra ℝ 𝔸] [FiniteDim
 
 omit [FiniteDimensional ℝ 𝔸] in
 /- English proof (translation)
-Rewrite using `[H.anti, mul_assoc, ← mul_assoc (σ a), ha, one_mul, hb]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem unit_mul (H : IsLieData σ j s) {a b : 𝔸} (ha : σ a * a = 1) (hb : σ b * b = 1) : σ (a * b) * (a * b) = 1 := by
   rw [H.anti, mul_assoc, ← mul_assoc (σ a), ha, one_mul, hb]
 
 /- English proof (translation)
-Establish `: CompleteSpace 𝔸` using `FiniteDimensional.complete ℝ 𝔸`. Set `: NormedAlgebra ℚ 𝔸` to `NormedAlgebra.restrictScalars ℚ ℝ 𝔸`. Unfold `expMap`. Rewrite using `[← H.mul _ _ (exp_unitary H _) (exp_unitary H _), add_smul, map_add, NormedSpace.exp_add_of_commute]`. Rewrite using `[map_smul, map_smul]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `((Commute.refl _).smul_left _).smul_right _`.
+A detailed English derivation is pending.
 -/
 theorem expMap_add (H : IsLieData σ j s) (X : L) (t u : ℝ) :
     expMap j s ((t + u) • X) = expMap j s (t • X) * expMap j s (u • X) := by
@@ -77,19 +77,17 @@ theorem expMap_add (H : IsLieData σ j s) (X : L) (t u : ℝ) :
   exact ((Commute.refl _).smul_left _).smul_right _
 
 /- English proof (translation)
-Establish `: CompleteSpace 𝔸` using `FiniteDimensional.complete ℝ 𝔸`. Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty`. Use `⟨fun _ => 1, contDiff_const, fun _ => by simp [H.one], rfl, ?_, ?_⟩` and prove the remaining obligations. Simplify using `using hasFDerivAt_const (1 : 𝔸) (0 : P)`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using hasFDerivAt_const (φ (g * s 1)) (0 : P)`. Consider the case `insert i S hi ih`. Take `⟨c, h1, h2, h4, h5, h6⟩` from `ih`. Set `A : P →L[ℝ] L` to `(l i).smulRight (b i)`. Establish `hA : ContDiff ℝ ∞ fun p => exp (J (A p))` using `contDiff_exp.comp (J ∘L A).contDiff`.
+Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hu : ∀ X, σ (exp (J X)) * exp (J X) = 1` using `fun p => by rw [hJ]; exact exp_unitary H _`. Use `⟨fun p => c p * exp (J (A p)), h1.mul hA, fun p => unit_mul H (h2 p) (hu _), by simp [h4], ?_, ?_⟩` and prove the remaining obligations. Establish `hd : HasFDerivAt (fun p => exp (J (A p))) (J ∘L A) 0`. Use `HasFDerivAt.comp (g := (exp : 𝔸 → 𝔸)) (g' := 1) (0 : P) (by simpa using hasFDerivAt_exp_zero (𝕂 := ℝ) (𝔸 := 𝔸)) (J ∘L A).hasFDerivAt` as an intermediate fact. Conclude with `this`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(h5.mul' hd).congr_fderiv ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_insert hi]`. Use extensionality with `p`. Simplify using `[h4, A]`. Establish `e : ∀ p (t : ℝ), s (c p * exp (J (t • b i))) = s (c p) * expMap j s (t • b i)` using `fun p t => by`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[H.mul _ _ (h2 p) (hu _), hJ, expMap]`. Use `hasFDerivAt_diag (f := fun p t => φ (g * s (c p * exp (J (t • b i))))) (f' := fun p t => φ' i (g * s (c p * exp (J (t • b i))))) (l i) (by simpa using h6) (fun p t => ?_) ?_` as an intermediate fact. Rewrite using `[Finset.sum_insert hi, add_comm]`. Simplify `this` using `[h4, map_one_eq H, A]`. Establish `k` using `hd i (g * s (c p * exp (J (t • b i))))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `k2` using `HasDerivAt.comp_sub_const t t (by rw [sub_self]; exact k)`. Use `k2.congr_of_eventuallyEq (Eventually.of_forall fun u => ?_)` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[e, e, mul_assoc, mul_assoc, ← expMap_add H, add_sub_cancel]`. Use `((hc i).comp_continuous (f := fun q : P × ℝ => c q.1 * exp (J (q.2 • b i))) ?_ fun q => unit_mul H (h2 _) (hu _)).continuousAt` and prove the remaining obligations.
-
-Conclude with `(h1.continuous.comp continuous_fst).mul (contDiff_exp.continuous.comp (by fun_prop))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_coord (H : IsLieData σ j s) (J : L →L[ℝ] 𝔸) (hJ : ∀ X, J X = j X) {ι : Type} (l : ι → P →L[ℝ] ℝ)
     (b : ι → L) {φ : G → ℂ} {φ' : ι → G → ℂ}
@@ -135,19 +133,19 @@ theorem exists_coord (H : IsLieData σ j s) (J : L →L[ℝ] 𝔸) (hJ : ∀ X, 
         exact (h1.continuous.comp continuous_fst).mul (contDiff_exp.continuous.comp (by fun_prop))
 
 /- English proof (translation)
-Establish `: CompleteSpace 𝔸` using `FiniteDimensional.complete ℝ 𝔸`. Establish `: FiniteDimensional ℝ L` using `FiniteDimensional.of_injective j H.inj`. Establish `: CompleteSpace L` using `FiniteDimensional.complete ℝ L`. Set `J : L →L[ℝ] 𝔸` to `LinearMap.toContinuousLinearMap j`. Take `⟨c, h1, h2, h4, h5, h6⟩` from `exists_coord H J (fun _ => rfl) l b hd g hc Finset.univ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Rewrite `h5` using `[hb, ContinuousLinearMap.comp_id]`. Take `⟨Λ, l1, l2, l3⟩` from `hl`. Establish `hΛ : Λ 1 = 0` using `by simpa using l3.self_of_nhds`. Establish `l4` using `(l1.differentiableAt (by simp)).hasFDerivAt`. Establish `hd : HasFDerivAt (fun X : L => exp (j X)) J 0` using `HasFDerivAt.comp (g := (exp : 𝔸 → 𝔸)) (g' := 1) (0 : L) (by simpa using hasFDerivAt_exp_zero (𝕂 := ℝ) (𝔸 := 𝔸)) J.hasFDerivAt`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `l5 : fderiv ℝ Λ 1 ∘L J = ContinuousLinearMap.id ℝ L`. Use `HasFDerivAt.comp (g := Λ) (g' := fderiv ℝ Λ 1) (0 : L) (by simpa using l4) hd` as an intermediate fact. Conclude with `this.unique ((hasFDerivAt_id (0 : L)).congr_of_eventuallyEq l3)`. Establish `hΦ : ContDiffAt ℝ ∞ (Λ ∘ c) 0` using `ContDiffAt.comp 0 (by rwa [h4]) h1.contDiffAt`. Establish `hΦ' : HasFDerivAt (Λ ∘ c) (ContinuousLinearEquiv.refl ℝ L : L →L[ℝ] L) 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `HasFDerivAt.comp (g := Λ) (g' := fderiv ℝ Λ 1) _ (by rwa [h4]) h5` as an intermediate fact. Rewrite `this` using `[l5]`. Then use the resulting hypothesis. Establish `h0 : (Λ ∘ c) 0 = 0` using `by simp [h4, hΛ]`. Establish `hs` using `hΦ.hasStrictFDerivAt' hΦ' (by simp)`. Establish `p1` using `hs.to_localInverse.hasFDerivAt`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `p2` using `hs.localInverse_apply_image`. Establish `p3` using `hs.eventually_right_inverse`. Rewrite `p1`, `p2`, `p3` using `[h0]`. Use `set Ψ := hs.localInverse _ _ _`. Establish `ht : Tendsto (fun X => c (Ψ X)) (𝓝 0) (𝓝 1)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `(h1.continuous.tendsto (Ψ 0)).comp p1.continuousAt` as an intermediate fact. Rewrite `this` using `[p2, h4]`. Then use the resulting hypothesis. Use `(HasFDerivAt.comp (g := fun p => φ (g * s (c p))) (0 : L) (by rw [p2]; exact h6) p1).congr_of_eventuallyEq ?_` and prove the remaining obligations. Use `filter_upwards [p3, ht.eventually l2] with X q1 q2`. Use `q2 (h2 _)` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Function.comp] at q1 ⊢`. Rewrite `this` using `[q1]`. Rewrite using `[← this, expMap]`.
+A detailed English derivation is pending.
 -/
 theorem hasFDerivAt_expMap (H : IsLieData σ j s) (hl : HasLog σ j) {ι : Type} [Fintype ι] (l : ι → L →L[ℝ] ℝ)
     (b : ι → L) (hb : ∑ i, (l i).smulRight (b i) = ContinuousLinearMap.id ℝ L) {φ : G → ℂ} {φ' : ι → G → ℂ}
@@ -191,25 +189,23 @@ theorem hasFDerivAt_expMap (H : IsLieData σ j s) (hl : HasLog σ j) {ι : Type}
   rw [← this, expMap]
 
 /- English proof (translation)
-Establish `: CompleteSpace 𝔸` using `FiniteDimensional.complete ℝ 𝔸`. Establish `: FiniteDimensional ℝ L` using `FiniteDimensional.of_injective j H.inj`. Set `J : L →L[ℝ] 𝔸` to `LinearMap.toContinuousLinearMap j`. Set `b₀` to `Module.Basis.ofSpan hT.ge`. Use `FiniteDimensional.fintypeBasisIndex b₀` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `b` to `b₀.reindex (Fintype.equivFin _)`. Establish `hb : ∀ i, b i ∈ T` using `fun i => Module.Basis.ofSpan_subset hT.ge ⟨_, (b₀.reindex_apply _ i).symm⟩`. Set `l` to `fun i => LinearMap.toContinuousLinearMap (b.coord i)`. Establish `hl' : ∑ i, (l i).smulRight (b i) = ContinuousLinearMap.id ℝ L` using `ContinuousLinearMap.ext fun X => by`. Rewrite using `[_root_.sum_apply]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `b.sum_repr X`. Take `⟨c, hcd⟩ : ∃ c : L → 𝔸, c = fun X => exp (j X)` from `⟨_, rfl⟩`. Establish `hE : ContDiff ℝ ∞ c` using `hcd ▸ contDiff_exp.comp J.contDiff`. Establish `hu : ∀ p, σ (c p) * c p = 1` using `hcd ▸ exp_unitary H`. Establish `hσ : ContDiff ℝ ∞ fun p => σ (c p)` using `(LinearMap.toContinuousLinearMap σ).contDiff.comp hE`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨Λ, h1, h2, h3⟩` from `id hl`. Establish `hΛ : Λ 1 = 0` using `by simpa using h3.self_of_nhds`. Establish `key : ∀ n : ℕ, ∀ φ ∈ 𝒮, ∀ g, ContDiff ℝ n fun p => φ (g * s (c p))`. Introduce `n`. Proceed by induction on `n with`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => exact fun φ hφ g => contDiff_zero.2 ((hc φ hφ g).comp_continuous hE.continuous hu)`. Consider the case `succ n ih`. Introduce `φ hφ g`. Use `choose φ' m1 m2 using fun i => hd φ hφ _ (hb i)`. Establish `der : ∀ p₀, HasFDerivAt (fun p => φ (g * s (c p))) ((∑ i, (l i).smulRight (φ' i (g * s (c p₀)))) ∘L (fderiv ℝ Λ 1 ∘L (σ (c p₀) • fderiv ℝ c p₀))) p₀` using `fun p₀ => by`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr : c p₀ * σ (c p₀) = 1` using `by haveI : IsArtinianRing 𝔸 := IsArtinianRing.of_finite ℝ 𝔸`. Conclude with `mul_eq_one_comm.1 (hu p₀)`. Establish `hd : HasFDerivAt (fun p => σ (c p₀) * c p) (σ (c p₀) • fderiv ℝ c p₀) p₀` using `(hE.differentiable (by simp) p₀).hasFDerivAt.const_mul _`. Establish `ht : Tendsto (fun p => σ (c p₀) * c p) (𝓝 p₀) (𝓝 1)`. Use `hd.continuousAt.tendsto` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[hu p₀]`. Then use the resulting hypothesis. Establish `hu' : ∀ p, σ (σ (c p₀) * c p) * (σ (c p₀) * c p) = 1` using `fun p => unit_mul H (by rw [H.invol, hr]) (hu p)`. Establish `h4` using `HasFDerivAt.comp (g := Λ) (g' := fderiv ℝ Λ 1) p₀ (by rw [hu p₀]; exact (h1.differentiableAt (by simp)).hasFDerivAt) hd`. Establish `h5` using `HasFDerivAt.comp (g := fun X : L => φ (g * s (c p₀) * expMap j s X)) p₀ (by`. Rewrite using `[Function.comp, hu p₀, hΛ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hasFDerivAt_expMap H hl l b hl' m2 _ fun i => hc _ (m1 i) _) h4`. Use `h5.congr_of_eventuallyEq ((ht.eventually h2).mono fun p hp => ?_)` and prove the remaining obligations. Simplify using `only [Function.comp, expMap]`. Rewrite using `[hp (hu' p), mul_assoc, ← H.mul _ _ (hu p₀) (hu' p), ← mul_assoc, hr, one_mul]`. Rewrite using `[Nat.cast_succ, contDiff_succ_iff_fderiv_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨fun p => (der p).differentiableAt, by simp, fun y => ?_⟩` and prove the remaining obligations. Simplify using `only [(der _).fderiv, ContinuousLinearMap.comp_apply, _root_.sum_apply, ContinuousLinearMap.smulRight_apply, ContinuousLinearMap.smul_apply]`. Use `ContDiff.sum fun i _ => ContDiff.smul (𝕜' := ℝ) ?_ (ih _ (m1 i) g)` and prove the remaining obligations. Establish `k : ContDiff ℝ ∞ fun p => fderiv ℝ c p y` using `(hE.fderiv_right (m := ∞) (by simp)).clm_apply contDiff_const`. Conclude with `contDiff_infty.1 ((l i ∘L fderiv ℝ Λ 1).contDiff.comp (hσ.mul k)) n`.
-
-Introduce `φ hφ g`. Substitute `hcd` using the available equality. Conclude with `contDiff_infty.2 fun n => key n φ hφ g`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem sm_of_closed (H : IsLieData σ j s) (hl : HasLog σ j) (T : Set L) (hT : Submodule.span ℝ T = ⊤)
     (𝒮 : Set (G → ℂ)) (hc : ∀ φ ∈ 𝒮, ∀ g, ContinuousOn (fun u => φ (g * s u)) {u | σ u * u = 1})
@@ -282,7 +278,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.SmoothForms
 
 /- English proof (translation)
-Establish `R` using `(GlobalTheory.T.adelicUnitary_realPoints_structure_realPlaces D).2 θ hθ V`. Establish `h` using `GlobalTheory.RealLift.continuousOn_prodAt hθ V Finset.univ.toList`. Use `ContinuousOn.congr (h.mono fun u hu => (unit_iff R u).1 hu) fun u hu => ?_` and prove the remaining obligations. Use `R.2.2.1 _ (secInf_spec R hu).1 _ (GlobalTheory.RealLift.prodAt_mem θ V _ u) fun τ => ?_` and prove the remaining obligations. Rewrite using `[(secInf_spec R hu).2, GlobalTheory.RealLift.infMat_prodAt hθ V ((unit_iff R u).1 hu) τ _ (Finset.nodup_toList _), if_pos (Finset.mem_toList.2 (Finset.mem_univ _))]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem continuousOn_secInf {D : D7} {θ : InfF D} (hθ : IsInfFam θ) (V : HSp D) :
     ContinuousOn (secInf θ V) {u | sigInf V u * u = 1} := by
@@ -294,13 +290,11 @@ theorem continuousOn_secInf {D : D7} {θ : InfF D} (hθ : IsInfFam θ) (V : HSp 
     if_pos (Finset.mem_toList.2 (Finset.mem_univ _))]
 
 /- English proof (translation)
-Introduce `D θ hθ V 𝒮 hc hd φ hφ`. Establish `R` using `(GlobalTheory.T.adelicUnitary_realPoints_structure_realPlaces D).2 θ hθ V`. Establish `: IsTopologicalGroup (GA D V)` using `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA _ _`. Establish `hT : Submodule.span ℝ {Y : LieN V | ∃ τ X, Y = atPlace V τ X} = ⊤`. Rewrite using `[eq_top_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `X _`. Establish `: X = ∑ τ, (atPlace V τ (X τ) : LieN V)` using `(sum_atPlace X).symm`. Rewrite using `[this]`. Conclude with `sum_mem fun τ _ => Submodule.subset_span ⟨τ, _, rfl⟩`. Use `(smooth_iff R φ).2 (sm_of_closed (isLieData R) (hasLog R) _ hT 𝒮 (fun ψ hψ g => ?_) ?_ φ hφ)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `(hc ψ hψ).comp_continuousOn (continuousOn_const.mul (continuousOn_secInf hθ V))`. Introduce and unpack `ψ hψ _ ⟨τ, X, rfl⟩`. Take `⟨ψ', h1, h2⟩` from `hd ψ hψ τ X.1 X.2`. Use `⟨ψ', h1, fun g => ?_⟩` and prove the remaining obligations. Use `h2 g` as an intermediate fact.
-
-Simplify using `only [oneP_eq R] at this`. Conclude with `this`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_smFun_of_closed : ∀ (D : D7) (θ : InfF D), IsInfFam θ → ∀ (V : HSp D), ∀ 𝒮 : Set (GA D V → ℂ), (∀ φ ∈ 𝒮, Continuous φ) → (∀ φ ∈ 𝒮, ∀ τ, ∀ X ∈ lieAt V τ, ∃ φ' ∈ 𝒮, ∀ g, HasDerivAt (fun t : ℝ => φ (g * oneP θ V τ X t)) (φ' g) 0) → ∀ φ ∈ 𝒮, φ ∈ SmFun θ V := by
   intro D θ hθ V 𝒮 hc hd φ hφ

@@ -15,16 +15,16 @@ noncomputable section
 namespace GlobalTheory.HessPiola
 
 /- English proof (translation)
-Simplify using `only [ReciprocityTheory.L2DbarEstimates.wdb, h.fderiv_eq]`.
+Simplify using the standard rewrite rules.
 -/
 theorem wdb_congr {n : ℕ} {f g : V n → ℂ} {y : V n} (h : f =ᶠ[𝓝 y] g) (l : Fin n) :
     ReciprocityTheory.L2DbarEstimates.wdb n l f y = ReciprocityTheory.L2DbarEstimates.wdb n l g y := by
   simp only [ReciprocityTheory.L2DbarEstimates.wdb, h.fderiv_eq]
 
 /- English proof (translation)
-Establish `h1 : ContDiffAt ℝ m (fderiv ℝ g) y` using `hg.fderiv_right le_rfl`. Establish `ha : ∀ v, ContDiffAt ℝ m (fun y => fderiv ℝ g y v) y` using `fun v => h1.clm_apply contDiffAt_const`. Establish `: ReciprocityTheory.L2DbarEstimates.wd n j g = fun y => (fderiv ℝ g y (ReciprocityTheory.L2DbarEstimates.bas n j) - Complex.I * fderiv ℝ g y (Complex.I • ReciprocityTheory.L2DbarEstimates.bas n j)) / 2`. Use function extensionality and compare the values at `y`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression.
 
-Rewrite using `[this]`. Conclude with `((ha _).sub (contDiffAt_const.mul (ha _))).div_const _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wd_contDiffAt {n : ℕ} {g : V n → ℂ} {y : V n} {m : WithTop ℕ∞}
     (hg : ContDiffAt ℝ (m + 1) g y) (j : Fin n) :
@@ -39,9 +39,9 @@ theorem wd_contDiffAt {n : ℕ} {g : V n → ℂ} {y : V n} {m : WithTop ℕ∞}
   exact ((ha _).sub (contDiffAt_const.mul (ha _))).div_const _
 
 /- English proof (translation)
-Establish `h1 : ContDiffAt ℝ m (fderiv ℝ g) y` using `hg.fderiv_right le_rfl`. Establish `ha : ∀ v, ContDiffAt ℝ m (fun y => fderiv ℝ g y v) y` using `fun v => h1.clm_apply contDiffAt_const`. Establish `: ReciprocityTheory.L2DbarEstimates.wdb n j g = fun y => (fderiv ℝ g y (ReciprocityTheory.L2DbarEstimates.bas n j) + Complex.I * fderiv ℝ g y (Complex.I • ReciprocityTheory.L2DbarEstimates.bas n j)) / 2`. Use function extensionality and compare the values at `y`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression.
 
-Rewrite using `[this]`. Conclude with `((ha _).add (contDiffAt_const.mul (ha _))).div_const _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wdb_contDiffAt {n : ℕ} {g : V n → ℂ} {y : V n} {m : WithTop ℕ∞}
     (hg : ContDiffAt ℝ (m + 1) g y) (j : Fin n) :
@@ -56,9 +56,9 @@ theorem wdb_contDiffAt {n : ℕ} {g : V n → ℂ} {y : V n} {m : WithTop ℕ∞
   exact ((ha _).add (contDiffAt_const.mul (ha _))).div_const _
 
 /- English proof (translation)
-Establish `hw : w = ∑ b, w b • (Pi.single b (1 : ℂ) : Fin n → ℂ)`. Use extensionality with `k`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← hw]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Use `_ = _ := by simp only [map_sum, map_smul, smul_eq_mul, ReciprocityTheory.L2DbarEstimates.I.macofRow_apply]`.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem det_updateRow_expand {n : ℕ} (M : Matrix (Fin n) (Fin n) ℂ) (i : Fin n) (w : Fin n → ℂ) :
     (M.updateRow i w).det = ∑ b, w b * (M.updateRow i (Pi.single b 1)).det := by
@@ -70,7 +70,7 @@ theorem det_updateRow_expand {n : ℕ} (M : Matrix (Fin n) (Fin n) ℂ) (i : Fin
     _ = _ := by simp only [map_sum, map_smul, smul_eq_mul, ReciprocityTheory.L2DbarEstimates.I.macofRow_apply]
 
 /- English proof (translation)
-Use extensionality with `r k`. Simplify using `only [Matrix.updateRow_apply]`. Apply the tactic sequence `split_ifs <;> simp_all`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem updateRow_comm' {n : ℕ} (M : Matrix (Fin n) (Fin n) ℂ) {i j : Fin n} (h : i ≠ j)
     (e c : Fin n → ℂ) : (M.updateRow i e).updateRow j c = (M.updateRow j c).updateRow i e := by
@@ -79,43 +79,37 @@ theorem updateRow_comm' {n : ℕ} (M : Matrix (Fin n) (Fin n) ℂ) {i j : Fin n}
   split_ifs <;> simp_all
 
 /- English proof (translation)
-Establish `hu3 : ContDiffAt ℝ (2 + 1) u z`. Rewrite using `[show ((2 : WithTop ℕ∞) + 1) = 3 by norm_num]; exact hu`. Establish `hb : ∀ b, ContDiffAt ℝ (1 + 1) (ReciprocityTheory.L2DbarEstimates.wdb D b u) z` using `fun b => by`. Rewrite using `[show ((1 : WithTop ℕ∞) + 1) = 2 by norm_num]; exact wdb_contDiffAt hu3 b`. Establish `hA : ∀ i b, ContDiffAt ℝ 1 (fun x => cHess D u x i b) z` using `fun i b => wd_contDiffAt (hb b) i`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hdetC : ∀ (B : V D → Matrix (Fin D) (Fin D) ℂ), (∀ i b, ContDiffAt ℝ 1 (fun x => B x i b) z) → ContDiffAt ℝ 1 (fun x => (B x).det) z`. Introduce `B hB`. Establish `hrow : ContDiffAt ℝ 1 (fun x => (fun i b => B x i b : Fin D → Fin D → ℂ)) z` using `contDiffAt_pi.2 fun i => contDiffAt_pi.2 fun b => hB i b`. Conclude with `(ReciprocityTheory.L2DbarEstimates.I.macofDet D).contDiff.contDiffAt.comp z hrow`. Establish `hBl : ∀ l j i b, ContDiffAt ℝ 1 (fun x => ((cHess D u x).updateRow j (Pi.single l 1)) i b) z`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `l j i b`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using `only [Matrix.updateRow_self]`. Conclude with `contDiffAt_const`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Matrix.updateRow_ne hij]`. Conclude with `hA i b`. Use `⟨fun l j => ?_, fun j => ?_⟩` and prove the remaining obligations. Simplify using `only [Matrix.adjugate_apply]`. Conclude with `hdetC _ (hBl l j)`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨c, hc⟩ : ∃ c : Fin D → Fin D → Fin D → ℂ, c = fun l i b => ReciprocityTheory.L2DbarEstimates.wdb D l (fun x => cHess D u x i b) z` from `⟨_, rfl⟩`. Establish `hgerm : ∀ i b, (fun x => cHess D u x i b) =ᶠ[𝓝 z] ReciprocityTheory.L2DbarEstimates.wdb D b (ReciprocityTheory.L2DbarEstimates.wd D i u)`. Introduce `i b`. Use `filter_upwards [hu.eventually (by simp)] with y hy`. Conclude with `ReciprocityTheory.L2DbarEstimates.comm_wd_wdb u y (hy.of_le (by norm_num)) i b`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hcs : ∀ l i b, c l i b = c b i l`. Introduce `l i b`. Establish `h2 : ContDiffAt ℝ 2 (ReciprocityTheory.L2DbarEstimates.wd D i u) z` using `wd_contDiffAt hu3 i`. Rewrite using `[hc]`. Simplify using `only`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Rewrite using `[wdb_congr (hgerm i b), wdb_congr (hgerm i l)]`. Conclude with `ReciprocityTheory.L2DbarEstimates.comm_wdb_wdb _ z h2 l b`. Take `⟨t, ht⟩ : ∃ t : Fin D → Fin D → ℂ, t = fun l i => (((cHess D u z).updateRow j (Pi.single l 1)).updateRow i (if i = j then 0 else c l i)).det` from `⟨_, rfl⟩`. Establish `hterm : ∀ l, dbar (fun x => (cHess D u x).adjugate l j) z (EuclideanSpace.single l 1) = ∑ i, t l i`. Introduce `l`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Set `B : V D → Matrix (Fin D) (Fin D) ℂ` to `fun w => (cHess D u w).updateRow j (Pi.single l 1)`. Set `B' : Fin D → Fin D → (V D →L[ℝ] ℂ)` to `fun i b => if i = j then 0 else fderiv ℝ (fun x => cHess D u x i b) z`. Establish `hB : ∀ i b, HasFDerivAt (fun w => B w i b) (B' i b) z`. Introduce `i b`. Distinguish the cases in `hij : i = j`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Substitute `hij` using the available equality. Simplify using `only [B, B', Matrix.updateRow_self, if_true]`. Conclude with `hasFDerivAt_const _ _`. Simplify using `only [B, B', Matrix.updateRow_ne hij, if_neg hij]`. Conclude with `((hA i b).differentiableAt (by simp)).hasFDerivAt`.
+Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hfun : (fun w => (cHess D u w).adjugate l j) = fun w => (B w).det`. Use function extensionality and compare the values at `w`. Simplify using `only [B, Matrix.adjugate_apply]`. Establish `key : ∀ i, (1 / 2 : ℂ) • (((B z).updateRow i (fun b => B' i b (EuclideanSpace.single l 1))).det + Complex.I • ((B z).updateRow i (fun b => B' i b (Complex.I • EuclideanSpace.single l 1))).det) = t l i`. Introduce `i`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_smul, map_add, map_smul]`. Simplify using `only [ReciprocityTheory.L2DbarEstimates.I.macofRow_apply]`. Use `_ = t l i := by`. Rewrite using `[ht]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Use `show ReciprocityTheory.L2DbarEstimates.I.macofRow (B z) i _ = ReciprocityTheory.L2DbarEstimates.I.macofRow (B z) i _`. Use `congr 1`. Use function extensionality and compare the values at `b`. Distinguish the cases in `hij : i = j`. Simplify using `[B', hij]`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [B', hij, if_false, hc, ReciprocityTheory.L2DbarEstimates.wdb, ReciprocityTheory.L2DbarEstimates.bas, Pi.smul_apply, Pi.add_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hfun, dbar_apply, ReciprocityTheory.L2DbarEstimates.I.macof_hasFDerivAt_det B z B' hB, ReciprocityTheory.L2DbarEstimates.I.macof_hasFDerivAt_det B z B' hB, Finset.smul_sum, ← Finset.sum_add_distrib, Finset.smul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => key i`. Rewrite using `[Finset.sum_congr rfl fun l _ => hterm l, Finset.sum_comm]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Use `Finset.sum_eq_zero fun l _ => ?_` and prove the remaining obligations. Rewrite using `[ht]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions.
 
-Simplify using `only [if_true]`. Establish `h0 : ReciprocityTheory.L2DbarEstimates.I.macofRow ((cHess D u z).updateRow i (Pi.single l 1)) i 0 = 0` using `map_zero _`. Rewrite `h0` using `[ReciprocityTheory.L2DbarEstimates.I.macofRow_apply]`. Then use the resulting hypothesis. Take `⟨d, hd⟩ : ∃ d : Fin D → Fin D → ℂ, d = fun l b => (((cHess D u z).updateRow j (Pi.single l 1)).updateRow i (Pi.single b 1)).det` from `⟨_, rfl⟩`. Establish `hexp : ∀ l, t l i = ∑ b, c l i b * d l b`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Introduce `l`. Rewrite using `[ht, hd]`. Simplify using `only [if_neg hij]`. Conclude with `det_updateRow_expand _ i _`. Establish `hanti : ∀ l b, d b l = - d l b`.
-
-Introduce `l b`. Rewrite using `[hd]`. Simplify using `only`. Rewrite using `[← updateRow_comm' _ hij]`. Conclude with `ReciprocityTheory.L2DbarEstimates.I.macof_swap _ hij _ _`.
-
-Simplify using `only [hexp]`. Establish `hS : ∑ l, ∑ b, c l i b * d l b = -(∑ l, ∑ b, c l i b * d l b)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_comm]`. Simplify using `[Finset.sum_neg_distrib]`.
-
-Take the linear combination `hS / 2`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem cHess_adjugate_piola (D : ℕ) (u : V D → ℂ) (z : V D) (hu : ContDiffAt ℝ 3 u z) :
     (∀ l j : Fin D, ContDiffAt ℝ 1 (fun x => (cHess D u x).adjugate l j) z) ∧

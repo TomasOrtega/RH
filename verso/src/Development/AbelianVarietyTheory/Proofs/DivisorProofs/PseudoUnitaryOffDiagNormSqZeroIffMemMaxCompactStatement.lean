@@ -5,7 +5,7 @@ open MeasureTheory Matrix
 open Formalism.REAL (UJ KG toM toMK muK expG inG Jm Kset)
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.offDiag_zero_iff_mem_K` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FPseudoUnitaryOffDiagNormSqZeroIffMemMaxCompact.lean&line=102#L102)
 -/

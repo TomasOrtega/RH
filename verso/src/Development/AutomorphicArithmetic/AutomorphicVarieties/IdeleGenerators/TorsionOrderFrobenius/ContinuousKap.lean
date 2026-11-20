@@ -5,11 +5,11 @@ import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.IsRati
 open NumberField IsDedekindDomain Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual ReciprocityTheory.Gal GlobalTheory.HeckeGal UpperTheory.V.Base
 
 /- English proof (translation)
-Establish `hker : p.rangeRestrict.ker ≤ f.ker`. Introduce `c hc`. Rewrite `hc` using `[MonoidHom.ker_rangeRestrict, MonoidHom.mem_ker]`. Rewrite using `[MonoidHom.mem_ker]`. Conclude with `h c hc`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `ω' : p.range →* ℂˣ` to `p.rangeRestrict.liftOfSurjective p.rangeRestrict_surjective ⟨f, hker⟩`. Establish `hω' : ∀ c, ω' (p.rangeRestrict c) = f c` using `fun c => MonoidHom.liftOfRightInverse_comp_apply _ _ _ _ c`. Take `⟨F, hF⟩` from `KStar.Choice.isDiv_complex_circle.1.exists_extension p.range ω'`. Use `⟨F, fun c => ?_⟩` and prove the remaining obligations. Rewrite using `[← hω', ← hF]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 private theorem glue {G H : Type*} [CommGroup G] [CommGroup H] (p : G →* H)
     (f : G →* ℂˣ) (h : ∀ x, p x = 1 → f x = 1) : ∃ F : H →* ℂˣ, ∀ x, F (p x) = f x := by
@@ -53,15 +53,13 @@ private def lev (K : Type) [Field K] [NumberField K] (N : ℕ) : Subgroup (Idele
     exact ha.2 v⟩
 
 /- English proof (translation)
-Establish `hO : IsOpen {a : FiniteAdeleRing (𝓞 K) K | ∀ v, a v ∈ v.adicCompletionIntegers K}` using `RestrictedProduct.isOpen_forall_mem (A := fun v : HeightOneSpectrum (𝓞 K) => (v.adicCompletionIntegers K : Set (v.adicCompletion K))) fun _ => Valued.isOpen_valuationSubring _`. Establish `h1 : Continuous fun x : Ideles K => x.val.2` using `continuous_snd.comp Units.continuous_val`. Establish `h2 : Continuous fun x : Ideles K => (x⁻¹).val.2` using `h1.comp continuous_inv`. Establish `h3 : Continuous fun x : Ideles K => (x.val.2 - 1) * algebraMap K (FiniteAdeleRing (𝓞 K) K) (N : K)⁻¹` using `(h1.sub continuous_const).mul continuous_const`. Establish `hU` using `((hO.preimage h1).inter (hO.preimage h2)).inter (hO.preimage h3)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Filter.mem_of_superset (hU.mem_nhds ⟨⟨fun v => one_mem _, fun v => one_mem _⟩, fun v => ?_⟩) ?_` and prove the remaining obligations. Establish `: ((1 : Ideles K).val.2 - 1) = 0` using `sub_self _`. Simplify using `only [this, zero_mul]`. Conclude with `zero_mem _`. Introduce and unpack `y ⟨⟨hy, hy'⟩, hy''⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun v => ?_, fun v => ?_⟩` and prove the remaining obligations. Establish `e : y.val.2 v * (y⁻¹).val.2 v = 1` using `congrArg (fun a : AdeleRing (𝓞 K) K => a.2 v) y.mul_inv`. Establish `e'` using `congrArg Valued.v e`. Rewrite `e'` using `[map_mul, map_one]`. Conclude with `eq_one_of_one_le_mul_left (hy v) (hy' v) e'.ge`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : Valued.v ((y.val.2 v - 1) * algebraMap K (v.adicCompletion K) (N : K)⁻¹) ≤ 1` using `hy'' v haveI : CharZero (v.adicCompletion K) := charZero_of_injective_algebraMap (algebraMap K _).injective`. Establish `h0 : Valued.v (N : v.adicCompletion K) ≠ 0`. Rewrite using `[Valuation.ne_zero_iff]`. Conclude with `Nat.cast_ne_zero.2 hN`. Rewrite `e` using `[map_inv₀, map_natCast, map_mul, map_inv₀, mul_inv_le_iff₀ (zero_lt_iff.2 h0), one_mul]`.
-
-Conclude with `e`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem lev_mem_nhds (K : Type) [Field K] [NumberField K] {N : ℕ} (hN : N ≠ 0) :
     (lev K N : Set (Ideles K)) ∈ nhds (1 : Ideles K) := by
@@ -103,7 +101,7 @@ private noncomputable def kap (K : Type) [Field K] [NumberField K] (a : ℤ) : I
   ∏ w : InfinitePlace K, crd K w ^ a
 
 /- English proof (translation)
-Rewrite using `[kap, MonoidHom.finsetProd_apply, Units.coe_prod]`. Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[MonoidHom.zpow_apply, Units.val_zpow_eq_zpow_val]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem coe_kap (K : Type) [Field K] [NumberField K] (a : ℤ) (x : Ideles K) :
     (kap K a x : ℂ) = ∏ w : InfinitePlace K, InfinitePlace.Completion.extensionEmbedding w (x.val.1 w) ^ a := by
@@ -113,9 +111,9 @@ private theorem coe_kap (K : Type) [Field K] [NumberField K] (a : ℤ) (x : Idel
   rfl
 
 /- English proof (translation)
-Establish `e : (kap K a : Ideles K → ℂˣ) = fun x => ∏ w : InfinitePlace K, (crd K w x) ^ a`. Use function extensionality and compare the values at `x`. Rewrite using `[kap, MonoidHom.finsetProd_apply]`. Both sides reduce to the same expression. Rewrite using `[e]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Use `continuous_finsetProd _ fun w _ => Continuous.zpow (f := crd K w) (Continuous.units_map _ ?_) a` and prove the remaining obligations. Conclude with `(InfinitePlace.Completion.isometry_extensionEmbedding w).continuous.comp ((continuous_apply w).comp continuous_fst)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem continuous_kap (K : Type) [Field K] [NumberField K] (a : ℤ) : Continuous (kap K a) := by
   have e : (kap K a : Ideles K → ℂˣ) = fun x => ∏ w : InfinitePlace K, (crd K w x) ^ a := by
@@ -128,11 +126,9 @@ private theorem continuous_kap (K : Type) [Field K] [NumberField K] (a : ℤ) : 
     ((continuous_apply w).comp continuous_fst)
 
 /- English proof (translation)
-Rewrite using `[infDiag, MonoidHom.finsetProd_apply, Units.coe_prod]`. Set `p1 : AdeleRing (𝓞 E) E →+* InfiniteAdeleRing E` to `RingHom.fst _ _`. Set `p2 : AdeleRing (𝓞 E) E →+* FiniteAdeleRing (𝓞 E) E` to `RingHom.snd _ _`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `p1 _ = _`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[map_prod]`. Express the relevant statement in the definitionally equal form `∏ w : InfinitePlace E, Pi.mulSingle w (algebraMap E w.Completion (k : E)) = _`. Conclude with `Finset.univ_prod_mulSingle _`. Express the relevant statement in the definitionally equal form `p2 _ = _`. Rewrite using `[map_prod]`.
-
-Conclude with `Finset.prod_eq_one fun _ _ => rfl`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem coe_infDiag' {E : Type} [Field E] [NumberField E] (k : Eˣ) :
     (infDiag k : AdeleRing (𝓞 E) E) = (algebraMap E (InfiniteAdeleRing E) k, 1) := by
@@ -150,7 +146,7 @@ private theorem coe_infDiag' {E : Type} [Field E] [NumberField E] (k : Eˣ) :
     exact Finset.prod_eq_one fun _ _ => rfl
 
 /- English proof (translation)
-Rewrite using `[coe_kap, h]`. Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations. Use `congr 1`. Conclude with `InfinitePlace.Completion.extensionEmbedding_coe w (WithAbs.toAbs _ k)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 private theorem kap_of_fst {K : Type} [Field K] [NumberField K] (a : ℤ) (x : Ideles K) (k : K)
     (h : x.val.1 = algebraMap K (InfiniteAdeleRing K) k) :
@@ -162,9 +158,9 @@ private theorem kap_of_fst {K : Type} [Field K] [NumberField K] (a : ℤ) (x : I
 
 open Classical in
 /- English proof (translation)
-Rewrite using `[← Finset.prod_fiberwise Finset.univ InfinitePlace.mk]`. Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_eq_single_of_mem w.embedding (by simp)]`. Rewrite using `[InfinitePlace.mk_embedding, if_pos rfl]`. Introduce `φ hφ hne`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[(Finset.mem_filter.1 hφ).2, if_neg hne.symm, zpow_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem prod_type (E : Type) [Field E] [NumberField E] (a : ℤ) (k : E) :
     ∏ w : InfinitePlace E, w.embedding k ^ a =
@@ -177,7 +173,7 @@ private theorem prod_type (E : Type) [Field E] [NumberField E] (a : ℤ) (k : E)
     rw [(Finset.mem_filter.1 hφ).2, if_neg hne.symm, zpow_zero]
 
 /- English proof (translation)
-Use `show (Pi.mulSingle v (x : v.adicCompletion E) : ∀ w : HeightOneSpectrum (𝓞 E), w.adicCompletion E) v = x`. Use `Pi.mulSingle_eq_same v (x : v.adicCompletion E)` and compare the differences between its conclusion and the goal.
+Apply an available result and prove the equalities needed to match it to the conclusion. A detailed English derivation is pending.
 -/
 private theorem loc_self {E : Type} [Field E] [NumberField E] (v : HeightOneSpectrum (𝓞 E))
     (x : (v.adicCompletion E)ˣ) : ((localIdele E v x : Ideles E) : AdeleRing (𝓞 E) E).2 v = x := by
@@ -186,7 +182,7 @@ private theorem loc_self {E : Type} [Field E] [NumberField E] (v : HeightOneSpec
   convert Pi.mulSingle_eq_same v (x : v.adicCompletion E)
 
 /- English proof (translation)
-Use `show (Pi.mulSingle v (x : v.adicCompletion E) : ∀ w : HeightOneSpectrum (𝓞 E), w.adicCompletion E) w = 1`. Use `Pi.mulSingle_eq_of_ne h (x : v.adicCompletion E)` and compare the differences between its conclusion and the goal.
+Apply an available result and prove the equalities needed to match it to the conclusion. A detailed English derivation is pending.
 -/
 private theorem loc_ne {E : Type} [Field E] [NumberField E] {v w : HeightOneSpectrum (𝓞 E)} (h : w ≠ v)
     (x : (v.adicCompletion E)ˣ) : ((localIdele E v x : Ideles E) : AdeleRing (𝓞 E) E).2 w = 1 := by
@@ -195,9 +191,9 @@ private theorem loc_ne {E : Type} [Field E] [NumberField E] {v w : HeightOneSpec
   convert Pi.mulSingle_eq_of_ne h (x : v.adicCompletion E)
 
 /- English proof (translation)
-Introduce `w`. Distinguish the cases in `h : w = v`. Substitute `h` using the available equality. Rewrite using `[loc_self]`. Conclude with `hx`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[loc_ne h, map_one]`.
+A detailed English derivation is pending.
 -/
 private theorem loc_mem {E : Type} [Field E] [NumberField E] {v : HeightOneSpectrum (𝓞 E)}
     {x : (v.adicCompletion E)ˣ} (hx : IsUnitAt v x) : localIdele E v x ∈ GlobalTheory.Mem.Chr.unitIdl E := by
@@ -209,7 +205,7 @@ private theorem loc_mem {E : Type} [Field E] [NumberField E] {v : HeightOneSpect
   · rw [loc_ne h, map_one]
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[kap_of_fst a _ 1 (by rw [map_one]; rfl)]`. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem kap_loc {E : Type} [Field E] [NumberField E] (a : ℤ) (v : HeightOneSpectrum (𝓞 E))
     (x : (v.adicCompletion E)ˣ) : kap E a (localIdele E v x) = 1 := by
@@ -218,16 +214,16 @@ private theorem kap_loc {E : Type} [Field E] [NumberField E] (a : ℤ) (v : Heig
   simp
 
 /- English proof (translation)
-The claim follows from `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v a`.
+A detailed English derivation is pending.
 -/
 private theorem val_alg {E : Type} [Field E] [NumberField E] (v : HeightOneSpectrum (𝓞 E)) (a : E) :
     Valued.v (algebraMap E (v.adicCompletion E) a) = v.valuation E a :=
   HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v a
 
 /- English proof (translation)
-Establish `key : ∀ k : Eˣ, diagUnits E k ∈ GlobalTheory.Mem.Chr.unitIdl E → ∃ r : 𝓞 E, algebraMap (𝓞 E) E r = k` using `fun k h => HeightOneSpectrum.mem_integers_of_valuation_le_one (R := 𝓞 E) E (k : E) fun v => by`. Rewrite using `[← val_alg]`. Conclude with `(h v).le`. Take `⟨r, hr⟩` from `key k h`. Take `⟨s, hs⟩` from `key k⁻¹ (by rw [map_inv]; exact inv_mem h)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e : r * s = 1`. Apply `IsFractionRing.injective (𝓞 E) E` to reduce the goal to its premises. Rewrite using `[map_mul, hr, hs, map_one, Units.mul_inv]`. Conclude with `⟨Units.mkOfMulEqOne r s e, hr⟩`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem exists_unit {E : Type} [Field E] [NumberField E] (k : Eˣ)
     (h : diagUnits E k ∈ GlobalTheory.Mem.Chr.unitIdl E) : ∃ u : (𝓞 E)ˣ, ((u : 𝓞 E) : E) = k := by
@@ -243,45 +239,39 @@ private theorem exists_unit {E : Type} [Field E] [NumberField E] (k : Eˣ)
   exact ⟨Units.mkOfMulEqOne r s e, hr⟩
 
 /- English proof (translation)
-Introduce `K _ _ _ h2 l hl hl2 hd N hN χ hχ hχ1`. Establish `hc : Fintype.card (InfinitePlace K) = 1`. Use `IsTotallyComplex.finrank K` as an intermediate fact. Rewrite using `[InfinitePlace.card_eq_nrRealPlaces_add_nrComplexPlaces, IsTotallyComplex.nrRealPlaces_eq_zero]`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Take `⟨w₀, hw₀⟩` from `Fintype.card_eq_one_iff.1 hc`. Establish `hk : ∀ (x : Ideles K) (k : K), x.val.1 = algebraMap K (InfiniteAdeleRing K) k → (kap K (-1) x : ℂ) = (w₀.embedding k)⁻¹` using `fun x k h => by`. Rewrite using `[kap_of_fst _ x k h, Fintype.prod_eq_single w₀ (fun y hy => absurd (hw₀ y) hy), zpow_neg_one]`. Take `⟨red, hred⟩` from `UpperTheory.V.Sd.Tw.red K N (by omega)`. Take `⟨e, m, hm, hlm, hem, heu, hen⟩` from `UpperTheory.V.Sd.Tw.fin K h2 l hl hl2 hd N hN χ hχ hχ1 w₀.embedding`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨ξ, hξ⟩` from `glue ((GlobalTheory.Mem.Chr.unitIdl K).subtype.coprod (diagUnits K)) ((((kap K (-1)).comp (GlobalTheory.Mem.Chr.unitIdl K).subtype) * e.comp red).coprod 1) (by`. Introduce and unpack `⟨⟨b, hb⟩, k⟩ h`. Express the relevant statement in the definitionally equal form `b * diagUnits K k = 1 at h`. Express the relevant statement in the definitionally equal form `kap K (-1) b * e (red ⟨b, hb⟩) * 1 = 1`. Take `rfl : b = diagUnits K k⁻¹` from `by rw [map_inv]; exact eq_inv_of_mul_eq_one_left h`.
+Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Extract witnesses or component facts from the available result.
 
-Take `⟨u, hu⟩` from `exists_unit _ hb`. Establish `h1 : red ⟨_, hb⟩ = Units.map (Ideal.Quotient.mk (Ideal.span {(N : 𝓞 K)})).toMonoidHom u` using `Units.ext (hred _ u fun v _ => by`. Rewrite using `[hu]`. Use `show Valued.v (algebraMap K (v.adicCompletion K) ((k⁻¹ : Kˣ) : K) - _) ≤ _`. Rewrite using `[sub_self, map_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `zero_le)`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[mul_one, Units.val_mul, h1, heu, hk _ ((k⁻¹ : Kˣ) : K) rfl, hu, Units.val_one]`. Conclude with `inv_mul_cancel₀ (by simp))`. Establish `hu : ∀ u (h : u ∈ GlobalTheory.Mem.Chr.unitIdl K), ξ u = kap K (-1) u * e (red ⟨u, h⟩)` using `fun u h => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using hξ (⟨u, h⟩, 1)`. Establish `hu1 : ∀ u (h : u ∈ GlobalTheory.Mem.Chr.unitIdl K), (∀ v : HeightOneSpectrum (𝓞 K), (N : 𝓞 K) ∈ v.asIdeal → Valued.v ((u : AdeleRing (𝓞 K) K).2 v - 1) ≤ Valued.v (N : v.adicCompletion K)) → ξ u = kap K (-1) u` using `fun u h h' => by`. Establish `h1 : red ⟨u, h⟩ = 1` using `Units.ext (by`. Rewrite using `[hred ⟨u, h⟩ 1 fun v hv => by simpa using h' v hv]`. Use the proof step `rfl)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[hu u h, h1, map_one, mul_one]`. Establish `hcont : Continuous ξ`. Use `continuous_of_continuousAt_one ξ ((continuous_kap K (-1)).continuousAt.congr ?_)` and prove the remaining obligations. Use `filter_upwards [lev_mem_nhds K (N := N) (by omega)] with x hx`. Conclude with `(hu1 x hx.1 fun v _ => hx.2 v).symm`.
+Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hdiag : ∀ k, ξ (diagUnits K k) = 1` using `fun k => by simpa using hξ (1, k)`. Set `Y : HChar K` to `⟨ξ, hcont, hdiag⟩`. Establish `hunr : ∀ v : HeightOneSpectrum (𝓞 K), (N : 𝓞 K) ∉ v.asIdeal → Y.UnrAt v` using `fun v hv x hx => by`. Express the relevant statement in the definitionally equal form `ξ (localIdele K v x) = 1`. Rewrite using `[hu1 _ (loc_mem hx), kap_loc]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `w hw`. Rewrite using `[loc_ne (fun h : w = v => hv (h ▸ hw)), sub_self, map_zero]`. Conclude with `zero_le`. Use `⟨Y, fun φ => if (InfinitePlace.mk φ).embedding = φ then -1 else 0, w₀.embedding, fun k => ?_, ?_, ?_, hunr, ⟨m, hm, hlm, fun v x hx => ?_⟩, fun p hp w hw => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((ξ (infDiag k) : ℂˣ) : ℂ) = _`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hu1, kap_of_fst _ _ (k : K) (by rw [coe_infDiag']), prod_type]`. Introduce `v`. Rewrite using `[coe_infDiag']`. Conclude with `map_one _`. Introduce `v _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[coe_infDiag']`. Use `show Valued.v ((1 : v.adicCompletion K) - 1) ≤ _`. Rewrite using `[sub_self, map_zero]`. Conclude with `zero_le`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Use `if_neg ?_` and prove the remaining obligations. Rewrite using `[hw₀ (InfinitePlace.mk _)]`. Introduce `h`. Conclude with `IsTotallyComplex.complexEmbedding_not_isReal _ (ComplexEmbedding.isReal_iff.2 h.symm)`. Express the relevant statement in the definitionally equal form `ξ (localIdele K v x) ^ m = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[hu _ (loc_mem hx), kap_loc, one_mul, hem]`. Establish `hp0 : (p : 𝓞 K) ≠ 0` using `fun h => w.ne_bot (by rw [hw, h, Ideal.span_singleton_eq_bot])`. Establish `hpw : (p : 𝓞 K) ∈ w.asIdeal` using `hw ▸ Ideal.mem_span_singleton_self _`. Establish `hNw : (N : 𝓞 K) ∉ w.asIdeal` using `fun h => by`. Take `⟨a, b, hab⟩ : IsCoprime (p : 𝓞 K) (N : 𝓞 K)` from `Nat.Coprime.cast hp`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Conclude with `w.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 (hab ▸ add_mem (Ideal.mul_mem_left _ _ hpw) (Ideal.mul_mem_left _ _ h)))`. Set `k : Kˣ` to `Units.mk0 ((p : 𝓞 K) : K) (by simpa using hp0)`. Establish `hval : ∀ v : HeightOneSpectrum (𝓞 K), Valued.v (algebraMap K (v.adicCompletion K) k) = v.intValuation (p : 𝓞 K)` using `fun v => by`. Rewrite using `[val_alg]`. Conclude with `v.valuation_of_algebraMap _`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hun : IsUnifAt w (atFin w k)` using `(hval w).trans (w.intValuation_singleton hp0 hw)`. Set `b : Ideles K` to `diagUnits K k * localIdele K w (atFin w k)⁻¹`. Establish `hb2 : ∀ v : HeightOneSpectrum (𝓞 K), v ≠ w → (b : AdeleRing (𝓞 K) K).2 v = algebraMap K (v.adicCompletion K) k` using `fun v hv => by`. Express the relevant statement in the definitionally equal form `algebraMap K (v.adicCompletion K) k * (localIdele K w (atFin w k)⁻¹).val.2 v = _`. Rewrite using `[loc_ne hv, mul_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hb : b ∈ GlobalTheory.Mem.Chr.unitIdl K` using `fun v => by`. Distinguish the cases in `hv : v = w`. Substitute `hv` using the available equality. Express the relevant statement in the definitionally equal form `Valued.v (((atFin v k : (v.adicCompletion K)ˣ) : v.adicCompletion K) * (localIdele K v (atFin v k)⁻¹).val.2 v) = 1`. Rewrite using `[loc_self, Units.mul_inv, map_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[hb2 v hv, hval, v.intValuation_eq_one_iff]`. Introduce `h`. Use `hv (HeightOneSpectrum.ext (w.isMaximal.eq_of_le v.isPrime.ne_top ?_).symm)` and prove the remaining obligations. Rewrite using `[hw]`. Conclude with `(Ideal.span_singleton_le_iff_mem _).2 h`.
-
-Establish `h1 : e (red ⟨b, hb⟩) = χ (ZMod.unitOfCoprime p hp)` using `hen _ p hp (by`. Rewrite using `[hred ⟨b, hb⟩ p, map_natCast]`. Introduce `v hv`. Rewrite using `[hb2 v fun h => hNw (h ▸ hv)]`. Use `show Valued.v (algebraMap K (v.adicCompletion K) k - algebraMap K (v.adicCompletion K) k) ≤ _`.
-
-Rewrite using `[sub_self, map_zero]`. Conclude with `zero_le)`. Establish `h3 : (kap K (-1) b : ℂ) = (p : ℂ)⁻¹`. Rewrite using `[hk b k (mul_one _)]`. Simplify using `[k]`.
-
-Establish `h4 : ξ b = (Y.val w)⁻¹`. Rewrite using `[← Y.val_eq (hunr w hNw) _ hun, map_mul, hdiag, one_mul, map_inv, map_inv]`. Both sides reduce to the same expression. Rewrite using `[← inv_inv (Y.val w), ← h4, hu b hb, h1, mul_inv, Units.val_mul, Units.val_inv_eq_inv_val, h3, inv_inv]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Sd.Tw.hecke :
     ∀ (K : Type) [Field K] [NumberField K] [IsTotallyComplex K], Module.finrank ℚ K = 2 → ∀ (l : ℕ), l.Prime → l ≠ 2 →

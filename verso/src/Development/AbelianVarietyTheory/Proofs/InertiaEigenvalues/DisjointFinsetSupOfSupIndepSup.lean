@@ -3,17 +3,17 @@ import Mathlib
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `R V ι _ _ _ F G B hind hdis`. Proceed by induction on `F using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `@insert a s ha ih`. Establish `hs : s.SupIndep (fun i => G i ⊔ B i)` using `hind.subset (Finset.subset_insert _ _)`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `ih'` using `ih hs (fun i hi => hdis i (Finset.mem_insert_of_mem hi))`. Establish `hA : Disjoint (G a ⊔ B a) (s.sup fun i => G i ⊔ B i)` using `hind (Finset.subset_insert a s) (Finset.mem_insert_self a s) ha`. Establish `hGs : s.sup G ≤ s.sup (fun i => G i ⊔ B i)` using `Finset.sup_mono_fun (fun i _ => le_sup_left)`. Establish `hBs : s.sup B ≤ s.sup (fun i => G i ⊔ B i)` using `Finset.sup_mono_fun (fun i _ => le_sup_right)`. Rewrite using `[Finset.sup_insert, Finset.sup_insert, Submodule.disjoint_def]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `x hxG hxB`. Take `⟨g, hg, g', hg', rfl⟩` from `Submodule.mem_sup.mp hxG`. Take `⟨b, hb, b', hb', hbb⟩` from `Submodule.mem_sup.mp hxB`. Establish `h1 : g - b ∈ G a ⊔ B a` using `Submodule.sub_mem _ (Submodule.mem_sup_left hg) (Submodule.mem_sup_right hb)`. Establish `h2 : g - b ∈ s.sup (fun i => G i ⊔ B i)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: g - b = b' - g'`. Rewrite using `[sub_eq_sub_iff_add_eq_add, add_comm b' b, hbb]`. Rewrite using `[this]`. Conclude with `Submodule.sub_mem _ (hBs hb') (hGs hg')`. Establish `h3 : g - b = 0` using `(Submodule.disjoint_def.mp hA) _ h1 h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgb : g = b` using `sub_eq_zero.mp h3`. Establish `hg0 : g = 0` using `(Submodule.disjoint_def.mp (hdis a (Finset.mem_insert_self a s))) g hg (hgb ▸ hb)`. Establish `hg'b' : g' = b'`. Substitute `hgb` using the available equality. Conclude with `add_left_cancel hbb.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hg'0 : g' = 0` using `(Submodule.disjoint_def.mp ih') g' hg' (hg'b' ▸ hb')`. Rewrite using `[hg0, hg'0, add_zero]`.
+A detailed English derivation is pending.
 -/
 theorem disjoint_finset_sup_of_supIndep_sup :
     ∀ (R V ι : Type) [Ring R] [AddCommGroup V] [Module R V] (F : Finset ι) (G B : ι → Submodule R V),

@@ -16,13 +16,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.LocReg
 
 /- English proof (translation)
-Establish `hU : IsAffineOpen U.1` using `U.2`. Use `set p := hU.primeIdealOf ⟨y, hy⟩ with hp`. Establish `hpy : hU.fromSpec p = y` using `hU.fromSpec_primeIdealOf ⟨y, hy⟩`. Establish `hle : mm ≤ p.asIdeal`. Introduce `f hf`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hfp`. Apply `h f hf` to reduce the goal to its premises. Establish `h1 : p ∈ hU.fromSpec ⁻¹ᵁ X.basicOpen f`. Rewrite using `[hU.fromSpec_preimage_basicOpen]`. Conclude with `hfp`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hpy]`. Conclude with `h1`. Establish `heq : mm = p.asIdeal` using `hm.eq_of_le p.isPrime.ne_top hle`. Establish `hcl : IsClosed ({p} : Set (PrimeSpectrum Γ(X, U.1)))` using `(PrimeSpectrum.isClosed_singleton_iff_isMaximal p).2 (heq ▸ hm)`. Establish `he` using `hU.fromSpec.isOpenEmbedding`.
-
-Establish `hlc` using `IsLocallyClosed.image (f := hU.fromSpec) (s := {p}) hcl.isLocallyClosed he.isInducing he.isOpen_range.isLocallyClosed`. Establish `e : hU.fromSpec '' {p} = {y}` using `Set.image_singleton.trans (congrArg _ hpy)`. Conclude with `isClosed_singleton_of_isLocallyClosed_singleton (e ▸ hlc)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isClosed_singleton_of_maximal {X : Scheme.{0}} [JacobsonSpace X] (U : X.affineOpens)
     (mm : Ideal Γ(X, U.1)) (hm : mm.IsMaximal) (y : X) (hy : y ∈ U.1)
@@ -47,11 +45,11 @@ theorem isClosed_singleton_of_maximal {X : Scheme.{0}} [JacobsonSpace X] (U : X.
   exact isClosed_singleton_of_isLocallyClosed_singleton (e ▸ hlc)
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c Y U mm hm x hx h`. Establish `: LocallyOfFiniteType Y.s`. Take `⟨N, i, hi, hs⟩` from `Y.proj`. Use `isProper_str c.F N` as an intermediate fact. Rewrite using `[← hs]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `infer_instance`. Establish `: JacobsonSpace (Sp c.F)` using `inferInstanceAs (JacobsonSpace (PrimeSpectrum c.F))`. Establish `: JacobsonSpace Y.X` using `LocallyOfFiniteType.jacobsonSpace Y.s`. Establish `hc` using `isClosed_singleton_of_maximal U mm hm _ hx h`. Establish `hiso : IsIso (genι Y)` using `isIso_fst Y`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinj : Function.Injective (genι Y)` using `(genι Y).isOpenEmbedding.injective`. Use `hc.preimage (genι Y).continuous` as an intermediate fact. Rewrite `this` using `[← Set.image_singleton, Set.preimage_image_eq _ hinj]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem isClosed_singleton_gen : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (Y : Model Xo c (RingHom.id c.F)) (U : Y.X.affineOpens) (mm : Ideal Γ(Y.X, U.1)), mm.IsMaximal → ∀ x : gen Y, genι Y x ∈ U.1 → (∀ f ∈ mm, genι Y x ∉ Y.X.basicOpen f) → IsClosed ({x} : Set (gen Y)) := by
   intro E _ _ _ H Dw l Xo c Y U mm hm x hx h

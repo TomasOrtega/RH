@@ -16,7 +16,7 @@ def IsInt {n : ℕ} (R : Subring F) (Z : Matrix (Fin n) (Fin n) F) : Prop := ∀
 def intMat (O : Subring F) (n a : ℕ) : Set (Matrix (Fin n) (Fin a) F) := {y | ∀ i j, y i j ∈ O}
 
 /- English proof (translation)
-Introduce `a b`. Rewrite using `[Matrix.mul_apply]`. Conclude with `sum_mem fun k _ => O.mul_mem (hx a k) (hy k b)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isInt_mul' (O : Subring F) {a : ℕ} {x y : Matrix (Fin a) (Fin a) F} (hx : IsInt O x)
     (hy : IsInt O y) : IsInt O (x * y) := by

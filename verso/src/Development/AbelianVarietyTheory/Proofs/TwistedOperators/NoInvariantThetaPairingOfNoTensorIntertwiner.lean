@@ -24,7 +24,7 @@ open GlobalTheory.Chain.IoLift.UImg (sumAct sumMod sumAct_single)
 variable {p q r s : ℕ} {T : GrpData p q} (R : DSRep T)
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x y => simp [ctr_tmul]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem ctr_map_right {U U' : Type} [AddCommGroup U] [Module ℂ U] [AddCommGroup U'] [Module ℂ U']
     (g : U →ₗ[ℂ] U') (v : R.HK.V) (z : R.HK.V ⊗[ℂ] U) :
@@ -35,45 +35,41 @@ theorem ctr_map_right {U U' : Type} [AddCommGroup U] [Module ℂ U] [AddCommGrou
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Take `⟨G, hG⟩ : ∃ G : Set (R.HK.V →₀ M.V), G = {x | (∃ (P : M.V) (v w : R.HK.V), x = Finsupp.single (v + w) P - Finsupp.single v P - Finsupp.single w P) ∨ (∃ (P : M.V) (v : R.HK.V) (c : ℂ), x = Finsupp.single (c • v) P - starRingEnd ℂ c • Finsupp.single v P) ∨ ∃ (P : M.V) (v : R.HK.V) …` from `⟨_, rfl⟩`. Take `⟨N, hNdef⟩ : ∃ N : Submodule ℂ (R.HK.V →₀ M.V), N = Submodule.span ℂ G` from `⟨_, rfl⟩`. Establish `hGN : ∀ x ∈ G, x ∈ N` using `fun x hx => hNdef ▸ Submodule.subset_span hx`. Establish `hN : ∀ Z : Mat r s, N ≤ N.comap (sumAct M R.HK.V Z)`. Introduce `Z`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `conv_lhs => rw [hNdef]`. Rewrite using `[Submodule.span_le]`. Introduce `x hx`. Rewrite `hx` using `[hG]`. Rewrite using `[SetLike.mem_coe, Submodule.mem_comap]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `hx with ⟨P, v, w, rfl⟩ | ⟨P, v, c, rfl⟩ | ⟨P, v, Y, hY, rfl⟩` into its components or cases. Use `hGN _ ?_` and prove the remaining obligations. Rewrite using `[hG]`. Conclude with `Or.inl ⟨M.act Z P, v, w, by simp [sumAct_single]⟩`. Use `hGN _ ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Prove the first alternative. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hG]`. Conclude with `Or.inr (Or.inl ⟨M.act Z P, v, c, by simp [sumAct_single]⟩)`. Use `hGN _ ?_` and prove the remaining obligations. Rewrite using `[hG]`. Establish `hcomm : a Y (M.act Z P) = M.act Z (a Y P)` using `LinearMap.congr_fun (hc Y Z) P`.
+Prove the second alternative. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Prove the second alternative.
 
-Conclude with `Or.inr (Or.inr ⟨M.act Z P, v, Y, hY, by simp [sumAct_single, hcomm]⟩)`. Set `actQ : Mat r s →ₗ[ℂ] Module.End ℂ ((R.HK.V →₀ M.V) ⧸ N)` to `{ toFun := fun Z => N.mapQ N (sumAct M R.HK.V Z) (hN Z) map_add' := fun Z Z' => by`. Use `Submodule.linearMap_qext _ (LinearMap.ext fun y => ?_)` and prove the remaining obligations. Simplify using `[Submodule.mapQ_apply]`. Use the proof step `map_smul' := fun c Z => by`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `Submodule.linearMap_qext _ (LinearMap.ext fun y => ?_)` and prove the remaining obligations. Simplify using `[Submodule.mapQ_apply] }`. Establish `hQ : ∀ Z y, actQ Z (Submodule.Quotient.mk y) = Submodule.Quotient.mk (sumAct M R.HK.V Z y)` using `fun _ _ => rfl`. Set `Q : GKMod r s` to `{ V := (R.HK.V →₀ M.V) ⧸ N act := actQ lie := fun X Y => by`. Establish `h : sumAct M R.HK.V (X * Y - Y * X) = sumAct M R.HK.V X * sumAct M R.HK.V Y - sumAct M R.HK.V Y * sumAct M R.HK.V X` using `(sumMod M R.HK.V).lie X Y`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `Submodule.linearMap_qext _ (LinearMap.ext fun y => ?_)` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, Submodule.mkQ_apply, LinearMap.sub_apply, Module.End.mul_apply, hQ]`. Rewrite using `[h]`. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply, Submodule.Quotient.mk_sub]`. Use `kfin := fun x => by`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective N x`. Take `⟨W, hW, hy, hK⟩ : ∃ W : Submodule ℂ (R.HK.V →₀ M.V), FiniteDimensional ℂ W ∧ y ∈ W ∧ KStable (sumAct M R.HK.V) W` from `(sumMod M R.HK.V).kfin y`. Use `⟨W.map N.mkQ, Module.Finite.map W N.mkQ, Submodule.mem_map_of_mem hy, ?_⟩` and prove the remaining obligations. Introduce `X hX w hw`. Take `⟨u, hu, rfl⟩` from `Submodule.mem_map.mp hw`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Submodule.mem_map_of_mem (hK X hX u hu)`. Use `wts := fun x => by`. Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective N x`. Establish `hy : y ∈ ⨆ μ : Ix r s → ℚ, wtSub (sumAct M R.HK.V) μ` using `(sumMod M R.HK.V).wts y`. Establish `hle : (⨆ μ : Ix r s → ℚ, wtSub (sumAct M R.HK.V) μ).map N.mkQ ≤ ⨆ μ : Ix r s → ℚ, wtSub actQ μ`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Submodule.map_iSup]`. Use `iSup_mono fun μ => ?_` and prove the remaining obligations. Rewrite using `[Submodule.map_le_iff_le_comap]`. Introduce `u hu`. Rewrite using `[Submodule.mem_comap]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [wtSub, Submodule.mem_iInf, LinearMap.mem_ker] at hu ⊢`. Introduce `i`. Establish `hi` using `hu i`. Simplify using `only [LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply] at hi ⊢`. Rewrite using `[Submodule.mkQ_apply, hQ, ← Submodule.Quotient.mk_smul, ← Submodule.Quotient.mk_sub, hi, Submodule.Quotient.mk_zero]`.
+Introduce a local definition for the expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hle (Submodule.mem_map_of_mem hy) }`. Set `B₀ : M.V →ₗ[ℂ] R.HK.V →ₛₗ[starRingEnd ℂ] ((R.HK.V →₀ M.V) ⧸ N)` to `LinearMap.mk₂'ₛₗ (RingHom.id ℂ) (starRingEnd ℂ) (fun P v => N.mkQ (Finsupp.single v P)) (fun P P' v => by simp [Finsupp.single_add]) (fun c P v => by`. Simplify using `only [RingHom.id_apply]`. Rewrite using `[← Finsupp.smul_single, map_smul])`. Use the proof step `(fun P v w => by`.
+Rewrite the conclusion using the stated equalities. Prove the first alternative. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_add, ← sub_eq_zero, ← map_sub, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Use `hGN _ ?_` and prove the remaining obligations. Rewrite using `[hG]`. Conclude with `Or.inl ⟨P, v, w, by abel⟩)`. Use the proof step `(fun c P v => by`.
+Prove the second alternative. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← map_smul, ← sub_eq_zero, ← map_sub, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Use `hGN _ ?_` and prove the remaining obligations. Rewrite using `[hG]`. Conclude with `Or.inr (Or.inl ⟨P, v, c, rfl⟩))`. Use `⟨Q, B₀, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Prove the second alternative. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `Z hZ P v show N.mkQ (Finsupp.single v (a Z P)) + N.mkQ (Finsupp.single (R.HK.act Z v) P) = 0`. Rewrite using `[← map_add, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Use `hGN _ ?_` and prove the remaining obligations. Rewrite using `[hG]`. Conclude with `Or.inr (Or.inr ⟨P, v, Z, hZ, rfl⟩)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `Z P v show N.mkQ (Finsupp.single v (M.act Z P)) = actQ Z (N.mkQ (Finsupp.single v P))`. Rewrite using `[Submodule.mkQ_apply, Submodule.mkQ_apply, hQ, sumAct_single]`. Introduce `P v h B hB`. Set `L : (R.HK.V →₀ M.V) →ₗ[ℂ] U` to `Finsupp.lsum ℂ fun w => B.flip w`. Establish `hL : ∀ w (P' : M.V), L (Finsupp.single w P') = B P' w`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Introduce `w P'`. Simplify using `[L]`. Establish `hNL : N ≤ LinearMap.ker L`. Rewrite using `[hNdef, Submodule.span_le]`. Introduce `x hx`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hx` using `[hG]`. Rewrite using `[SetLike.mem_coe, LinearMap.mem_ker]`. Break down `hx with ⟨P', w, w', rfl⟩ | ⟨P', w, c, rfl⟩ | ⟨P', w, Z, hZ, rfl⟩` into its components or cases. Simplify using `[hL]`. Simplify using `[hL]`.
-
-Rewrite using `[map_add, hL, hL]`. Conclude with `hB Z hZ P' w`. Establish `h' : N.mkQ (Finsupp.single v P) = 0` using `h`. Rewrite `h'` using `[Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Use `hNL h'` as an intermediate fact.
-
-Rewrite `this` using `[LinearMap.mem_ker, hL]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_universal (M : GKMod r s) (a : Mat p q →ₗ[ℂ] Module.End ℂ M.V)
     (hc : ∀ Y Z, a Y * M.act Z = M.act Z * a Y) (U : Type) [AddCommGroup U] [Module ℂ U] :
@@ -203,11 +199,11 @@ theorem exists_universal (M : GKMod r s) (a : Mat p q →ₗ[ℂ] Module.End ℂ
     exact this
 
 /- English proof (translation)
-Introduce `p q r s T₁ σ a₁ a₂ R₁ h₁ h₂ hc hA hT U _ _ B hB`. Set `M : GKMod r s` to `{ V := MvPolynomial σ ℂ act := a₂ lie := h₂.1 kfin := h₂.2.1 wts := h₂.2.2 }`. Take `⟨Q, B₀, hB₀, hZ, huniv⟩` from `exists_universal R₁ M a₁ hc U`. Take `⟨f, hf, hfB⟩` from `GlobalTheory.ArchRec.PairTensor.exists_map R₁ a₁ h₁ hA B₀ hB₀`. Establish `hT' : TIntw a₁ a₂ R₁.HK Q f`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨hf, fun Y => LinearMap.ext fun P => ?_⟩` and prove the remaining obligations. Use `GlobalTheory.ArchRec.PairTensor.ext_ctr R₁ Q.V _ _ fun v => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply]`. Rewrite using `[← hfB, ctr_map_right, ← hfB]`. Conclude with `hZ Y P v`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hf0 : f = 0` using `hT Q f hT'`. Use `LinearMap.ext fun P => LinearMap.ext fun v => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.zero_apply, LinearMap.zero_apply]`. Use `huniv P v ?_ B hB` and prove the remaining obligations. Rewrite using `[hfB, hf0, LinearMap.zero_apply, map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pairNo_of_tensNo : ∀ (p q r s : ℕ) (T₁ : GrpData p q) (σ : Type) (a₁ : Mat p q →ₗ[ℂ] Module.End ℂ (MvPolynomial σ ℂ)) (a₂ : Mat r s →ₗ[ℂ] Module.End ℂ (MvPolynomial σ ℂ)) (R₁ : DSRep T₁), IsGK a₁ → IsGK a₂ → (∀ Y Z, a₁ Y * a₂ Z = a₂ Z * a₁ Y) → AdmGK R₁.HK → TensNo a₁ a₂ R₁ → PairNo a₁ R₁ := by
   intro p q r s T₁ σ a₁ a₂ R₁ h₁ h₂ hc hA hT U _ _ B hB

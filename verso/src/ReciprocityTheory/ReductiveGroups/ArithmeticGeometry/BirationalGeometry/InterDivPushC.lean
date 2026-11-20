@@ -24,23 +24,21 @@ def projOfForms {e r : ℕ} (L : Fin r → ((k : K) → ι k) → ℚ) :
     split_ifs <;> simp [Finset.mul_sum, mul_left_comm]
 
 /- English proof (translation)
-Introduce `z hz hΨ`. Take `⟨k0⟩` from `hK`. Use `choose i1 hi1 using hz.1`. Establish `hs : segre z i1 ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun k _ => hi1 k`. Take `⟨p, hpm, hp⟩` from `hL i1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `g0 : MvPolynomial (Fin r) ℚ →+* ℂ` to `eval₂Hom (algebraMap ℚ ℂ) 0`. Establish `key : ∀ c : ℂ, c ≠ 0 → Polynomial.eval (c * segre z i1) (p.map g0) = 0`. Introduce `c hc`. Establish `hzc` using `scaleBlock_mem_zeroLocus P hhom k0 hc hz`. Establish `hv : ∀ t, evQ P _ hzc (segQ P t) = c * segre z t`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `t`. Rewrite using `[segQ, evQ_mk, segMon, eval₂_prod]`. Simplify using `only [eval₂_X, scaleBlock, Finset.prod_mul_distrib, segre]`. Use `congr 1`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hforms : ∀ j, evQ P _ hzc (forms (segQ P) L j) = 0`. Introduce `j`. Establish `hΨj` using `congrFun hΨ ⟨j.1, by omega⟩`. Simplify using `only [projOfForms, LinearMap.coe_mk, AddHom.coe_mk, dif_pos j.2, Fin.eta, Pi.zero_apply] at hΨj`. Simplify using `only [forms, map_sum, map_rat_smul, hv, Rat.smul_def]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[show ∑ t, (L j t : ℂ) * (c * segre z t) = c * ∑ t, (L j t : ℂ) * segre z t by`. Rewrite using `[Finset.mul_sum]`. Use `congr 1`. Use function extensionality and compare the values at `t`. Use the proof step `ring, hΨj, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hcomp : (evQ P _ hzc).comp ((aeval (forms (segQ P) L) : MvPolynomial (Fin r) ℚ →ₐ[ℚ] _) : MvPolynomial (Fin r) ℚ →+* _) = g0`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `a`. Simplify using `[g0]`. Introduce `j`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[g0, hforms]`. Use `congrArg (evQ P _ hzc) hp` as an intermediate fact. Rewrite `this` using `[Polynomial.hom_eval₂, hcomp, hv, map_zero]`. Rewrite using `[Polynomial.eval_map]`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hinf : {x : ℂ | (p.map g0).IsRoot x}.Infinite`. Use `Set.Infinite.mono ?_ (Set.finite_singleton (0 : ℂ)).infinite_compl` and prove the remaining obligations. Introduce `x hx`. Establish `hx0 : x ≠ 0` using `hx`. Use `key (x / segre z i1) (div_ne_zero hx0 hs)` as an intermediate fact.
-
-Rewrite `this` using `[div_mul_cancel₀ x hs]`. Conclude with `this`. Conclude with `(hpm.map g0).ne_zero (Polynomial.eq_zero_of_infinite_isRoot _ hinf)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isGoodProj_of_intOver {P : Ideal (MRing ι)} (hK : Nonempty K) (hhom : IsMultiHomogIdeal P)
     {e r : ℕ} (hr : r ≤ e + 1) (L : Fin r → ((k : K) → ι k) → ℚ)
@@ -91,7 +89,7 @@ theorem isGoodProj_of_intOver {P : Ideal (MRing ι)} (hK : Nonempty K) (hhom : I
   exact (hpm.map g0).ne_zero (Polynomial.eq_zero_of_infinite_isRoot _ hinf)
 
 /- English proof (translation)
-Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `j`. Simplify using `[forms]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem evalAlgHom_comp_aeval_forms {F : Type} (Q : F → Ideal (MRing ι))
     {r : ℕ} (L : Fin r → ((k : K) → ι k) → ℚ) (W : F) :
@@ -102,21 +100,19 @@ theorem evalAlgHom_comp_aeval_forms {F : Type} (Q : F → Ideal (MRing ι))
   simp [forms]
 
 /- English proof (translation)
-Introduce `K _ ι _ P n A s hP hs`. Set `F` to `((divSupp_finite P s).subset (fun _ h => h.1) : {W' | W' ∈ divSupp P s ∧ IsHorizontal W'}.Finite).toFinset`. Establish `hAr : ∀ W : F, IsArithVar W.1 (n + 1)` using `fun W => by`. Establish `h` using `W.2`. Rewrite `h` using `[Set.Finite.mem_toFinset]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(divSuppArith K ι P (n + 1) A s W.1 hP hs h.1).1 h.2`. Set `v : ((k : K) → ι k) → ∀ W : F, MvPolynomial (Σ k, ι k) ℚ ⧸ qIdeal W.1` to `fun t W => segQ W.1 t`. Take `⟨r, hr, L, hL⟩` from `exists_linear_normalization (k := ℚ) v (n + 1) (by`. Introduce `r L hrL hind`. Establish `hW : ∀ W : F, ∃ p : MvPolynomial (Fin r) ℚ, aeval (forms (segQ W.1) L) p = 0 ∧ p ≠ 0`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `W`. Establish `h` using `forms_not_algebraicIndependent W.1 n (hAr W) hrL L`. Rewrite `h` using `[algebraicIndependent_iff]`. Use `push Not at h`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `choose G hG0 hGne using hW`. Establish `hQ : (∏ W : F, G W) ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun W _ => hGne W`. Use `hQ ((algebraicIndependent_iff.mp hind) _ ?_)` and prove the remaining obligations. Use function extensionality and compare the values at `W`. Establish `h1` using `DFunLike.congr_fun (evalAlgHom_comp_aeval_forms (fun W : F => W.1) L W) (∏ W : F, G W)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [AlgHom.comp_apply, Pi.evalAlgHom_apply] at h1`. Rewrite using `[Pi.zero_apply]`. Use `h1.trans ?_` and prove the remaining obligations. Rewrite using `[map_prod]`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ W) (hG0 W))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Use `⟨projOfForms L, fun W hW hH => ?_⟩` and prove the remaining obligations. Establish `hWF : W ∈ F`. Rewrite using `[Set.Finite.mem_toFinset]`. Conclude with `⟨hW, hH⟩`. Establish `hA` using `hAr ⟨W, hWF⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `isGoodProj_of_intOver hA.1 hA.2.1.2.1 hr L fun t => ?_` and prove the remaining obligations. Take `⟨p, hpm, hp⟩` from `hL t`. Use `⟨p, hpm, ?_⟩` and prove the remaining obligations. Establish `h1` using `congrArg ((Pi.evalAlgHom ℚ (fun W : F => MvPolynomial (Σ k, ι k) ℚ ⧸ qIdeal W.1) ⟨W, hWF⟩ : (∀ W : F, MvPolynomial (Σ k, ι k) ℚ ⧸ qIdeal W.1) →+* MvPolynomial (Σ k, ι k) ℚ ⧸ qIdeal W)) hp`. Rewrite `h1` using `[Polynomial.hom_eval₂, map_zero, ← AlgHom.comp_toRingHom, evalAlgHom_comp_aeval_forms (fun W : F => W.1) L ⟨W, hWF⟩]`.
-
-Conclude with `h1`.
+A detailed English derivation is pending.
 -/
 theorem divPushCommonProj : DivPushCommonProjStatement := by
   intro K _ ι _ P n A s hP hs

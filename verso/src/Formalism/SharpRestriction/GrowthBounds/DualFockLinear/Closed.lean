@@ -13,7 +13,7 @@ namespace Formalism.MainNotions.TestSideCounting
 open Formalism.MainNotions.G Formalism.MainNotions.Pf14
 
 /- English proof (translation)
-Take `⟨C, hC, H⟩` from `Formalism.MainNotions.G.symbolGeneratorData.classMap_estimate_of_admissible`. Use `⟨C, hC, fun D CLa Ck Crk Cdeg hA => ?_⟩` and prove the remaining obligations. Take `⟨_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, h15, h16, h17, h18, _, h20, h21, _⟩` from `hA`. Conclude with `⟨WittFrameLocaliserOrders.theta_kernel_expansion D, WittFrameLocaliserOrders.splitting_package_holds D, WittFrameLocaliserOrders.segment_statement_holds D, WittFrameLocaliserOrders.order_lemma_holds D, WittFrameLocaliserOrders.divisibility_of_field_lemma D h21, H D h15 h16 h17 h1 …`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem cleaning_of_admitted : ∃ C : ℝ, 1 ≤ C ∧ ∀ (D : Formalism.BasicNotions.D7) (CLa Ck Crk Cdeg : ℝ), tableLineDegreeFive.admitted D CLa Ck Crk Cdeg →
     SourceCleaning.aux₃ D C (C + 1) C := by
@@ -24,7 +24,7 @@ theorem cleaning_of_admitted : ∃ C : ℝ, 1 ≤ C ∧ ∀ (D : Formalism.Basic
     WittFrameLocaliserOrders.divisibility_of_field_lemma D h21, H D h15 h16 h17 h18 h20 h21⟩
 
 /- English proof (translation)
-Take `⟨_, _, _, _, _, _, _, _, _, _, h11, _, h12, _, h14, h15, _, _, _, _, _, _, _, h23, h24, _⟩` from `hA`. Establish `hV : Formalism.MainNotions.CovariantDegrees.ValuationLemmaField D` using `h12`. Establish `hL52 : Formalism.MainNotions.CovariantDegrees.UnitProductSecondLemma D` using `h23`. Establish `hL61 : Formalism.MainNotions.CovariantDegrees.DerivativeLemma D` using `h24`. Conclude with `⟨Joints.isotypic_multiplicity_of_reducibility_alt D hV (GLWeightTheory.weight_condition_from_integral_form D), ⟨Joints.valuation_clauses_of_lattice_index D hL61.1, Joints.twisted_valuation_second_sentence D⟩, ⟨Joints.isotypic_coefficient_of_degree_bound D h14, Joints.third_degree …`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem plane_gram_lemmas_of_admitted (D : Formalism.BasicNotions.D7) (CLa Ck Crk Cdeg : ℝ) (hA : tableLineDegreeFive.admitted D CLa Ck Crk Cdeg) : PlaneGramData.admitted D := by
   obtain ⟨_, _, _, _, _, _, _, _, _, _, h11, _, h12, _, h14, h15, _, _, _, _, _, _, _, h23, h24, _⟩ := hA
@@ -38,7 +38,7 @@ theorem plane_gram_lemmas_of_admitted (D : Formalism.BasicNotions.D7) (CLa Ck Cr
     Joints.derivation_of_lattice_index D hL61.2.1⟩
 
 /- English proof (translation)
-Take `⟨a1, a2, a3, a4, a5, a6⟩` from `plane_gram_lemmas_of_admitted D CLa Ck Crk Cdeg hA`. Introduce `p O _ _ _ _ hSet`. Conclude with `Formalism.MainNotions.PlaneGram.stmt D hCH p O hSet ⟨a1 p O hSet, ⟨a2.1 p O hSet, a2.2 p O hSet⟩, ⟨a3.1 p O hSet, a3.2.1 p O hSet, a3.2.2 p O hSet⟩, a4 p O hSet, a5 p O hSet, a6 p O hSet⟩`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem plane_gram_of_admitted (D : Formalism.BasicNotions.D7) (CLa Ck Crk Cdeg : ℝ) (hA : tableLineDegreeFive.admitted D CLa Ck Crk Cdeg) {CH : ℝ} (hCH : 26 ≤ CH) :
     PlaneGramData.aux₃ D CH 2 24 60 := by
@@ -49,7 +49,7 @@ theorem plane_gram_of_admitted (D : Formalism.BasicNotions.D7) (CLa Ck Crk Cdeg 
       a5 p O hSet, a6 p O hSet⟩
 
 /- English proof (translation)
-Take `⟨C, hC, H⟩` from `cleaning_of_admitted`. Use `⟨C, hC, fun D CLa Ck Crk Cdeg hA h6b => ?_⟩` and prove the remaining obligations. Conclude with `theorem_II_of_split_cloud_bounds D CLa Ck Crk Cdeg C (C + 1) C 26 2 24 60 hA (H D CLa Ck Crk Cdeg hA) (plane_gram_of_admitted D CLa Ck Crk Cdeg hA le_rfl) (rest6a D CLa Ck Crk Cdeg) h6b`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem theorem_II_closed_of_test_bound : ∃ C : ℝ, 1 ≤ C ∧ ∀ (D : Formalism.BasicNotions.D7) (CLa Ck Crk Cdeg : ℝ), tableLineDegreeFive.admitted D CLa Ck Crk Cdeg →
     RemainingInputsAfter D CLa Ck Crk Cdeg C (C + 1) C 26 2 24 60 → tableLineDegreeFive.ConclusionE D := by
@@ -59,7 +59,7 @@ theorem theorem_II_closed_of_test_bound : ∃ C : ℝ, 1 ≤ C ∧ ∀ (D : Form
     (plane_gram_of_admitted D CLa Ck Crk Cdeg hA le_rfl) (rest6a D CLa Ck Crk Cdeg) h6b
 
 /- English proof (translation)
-Take `⟨C, _, H⟩` from `theorem_II_closed_of_test_bound`. Introduce `CLa Ck Crk Cdeg hA`. Take `⟨h1, h2⟩` from `h CLa Ck Crk Cdeg C (C + 1) C 26 2 24 60`. Conclude with `H D CLa Ck Crk Cdeg hA (test_bound_of_two_halves D CLa Ck Crk Cdeg C (C + 1) C 26 2 24 60 h1 h2)`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem stmtE_of_rests (D : Formalism.BasicNotions.D7)
     (h : ∀ CLa Ck Crk Cdeg CLa' CD Csz CH CE C6 C18 : ℝ,
@@ -70,7 +70,7 @@ theorem stmtE_of_rests (D : Formalism.BasicNotions.D7)
   exact H D CLa Ck Crk Cdeg hA (test_bound_of_two_halves D CLa Ck Crk Cdeg C (C + 1) C 26 2 24 60 h1 h2)
 
 /- English proof (translation)
-Take `⟨C, _, H⟩` from `theorem_II_closed_of_test_bound`. Introduce `CLa Ck Crk Cdeg hA`. Conclude with `H D CLa Ck Crk Cdeg hA (h CLa Ck Crk Cdeg C (C + 1) C 26 2 24 60)`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem stmtE_of_rest6b (D : Formalism.BasicNotions.D7)
     (h : ∀ CLa Ck Crk Cdeg CLa' CD Csz CH CE C6 C18 : ℝ, RemainingInputsAfter D CLa Ck Crk Cdeg CLa' CD Csz CH CE C6 C18) :

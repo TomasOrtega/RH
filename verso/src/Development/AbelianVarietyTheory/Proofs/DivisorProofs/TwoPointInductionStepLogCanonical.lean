@@ -23,15 +23,15 @@ set_option autoImplicit false
 namespace GlobalTheory.PairStep
 
 /- English proof (translation)
-Establish `hsing : ∀ a b : closure ({x} : Set X), a = b`. Introduce `a b`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `ha : (a : X) = x` using `Set.mem_singleton_iff.mp (hx.closure_subset a.2)`. Establish `hb : (b : X) = x` using `Set.mem_singleton_iff.mp (hx.closure_subset b.2)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[ha, hb]`. Establish `hirr : ∀ s t : IrreducibleCloseds (closure ({x} : Set X)), s = t`. Introduce `s t`. Apply `SetLike.ext` to reduce the goal to its premises. Introduce `a`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨b, hb⟩` from `s.isIrreducible.nonempty`. Take `⟨c, hc⟩` from `t.isIrreducible.nonempty`. Prove the components needed by the constructor for the conclusion. Introduce `_`. Rewrite using `[hsing a c]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hc`. Introduce `_`. Rewrite using `[hsing a b]`. Conclude with `hb`. Unfold `topologicalKrullDim`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Order.krullDim_nonpos_iff_forall_isMax]`. Introduce `s t _`. Rewrite using `[hirr t s]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem topologicalKrullDim_closure_closedPt_le_zero {X : Scheme.{0}} {x : X}
     (hx : IsClosed ({x} : Set X)) : topologicalKrullDim (closure ({x} : Set X)) ≤ 0 := by
@@ -60,18 +60,18 @@ theorem topologicalKrullDim_closure_closedPt_le_zero {X : Scheme.{0}} {x : X}
   rw [hirr t s]
 
 /- English proof (translation)
-Conclude with `Set.mem_singleton_iff.mp (hx.closure_subset (specializes_iff_mem_closure.mp h))`.
+A detailed English derivation is pending.
 -/
 theorem eq_of_closedPt_specializes {X : Scheme.{0}} {x y : X} (hx : IsClosed ({x} : Set X))
     (h : x ⤳ y) : y = x := by
   exact Set.mem_singleton_iff.mp (hx.closure_subset (specializes_iff_mem_closure.mp h))
 
 /- English proof (translation)
-Establish `htk : 0 < t ^ k` using `pow_pos ht k`. Establish `hc : 0 < c`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Establish `: t ^ k * c ≤ 0` using `mul_nonpos_of_nonneg_of_nonpos htk.le hc`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hpow : t ^ k ≤ t' ^ k` using `by first`. Consider the case `exact pow_le_pow_left ht.le htt k`. Consider the case `exact pow_le_pow_left₀ ht.le htt k`. Establish `: t ^ k * c ≤ t' ^ k * c` using `mul_le_mul_of_nonneg_right hpow hc.le`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `constructor <;> linarith`.
+A detailed English derivation is pending.
 -/
 private lemma two_mul_lt_pow_mul_of_le (a t t' c : ℚ) (k : ℕ) (ha : 0 ≤ a) (ht : 0 < t) (htt : t ≤ t')
     (h : 2 * a < t ^ k * c) : 2 * a < t' ^ k * c ∧ a < t' ^ k * c := by
@@ -89,39 +89,35 @@ private lemma two_mul_lt_pow_mul_of_le (a t t' c : ℚ) (k : ℕ) (ha : 0 ≤ a)
   constructor <;> linarith
 
 /- English proof (translation)
-Introduce `hP hNV hNef X _ _ _ p n hp hn Δ m G N D d ε h x x' j hΔ hklt hm hG hN hx hx' hxx' hpos hbig hε hD hd hcut hnk`. Take `⟨hlcx, hnkx, hdim⟩` from `hcut`. Distinguish the cases in `h0 : LcCut p n (Δ + D) x 0`. Conclude with `Or.inl h0`. Use `right`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Prove the first alternative. Establish an intermediate fact.
 
-Establish `hex : ∃ z, z ⤳ x ∧ ¬ KltAt p n (Δ + D) z ∧ ¬ topologicalKrullDim (closure ({z} : Set X)) ≤ 0`. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Apply `h0` to reduce the goal to its premises. Unfold `LcCut`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨hlcx, hnkx, fun z hz hkz => ?_⟩` and prove the remaining obligations. Use `hne z hz hkz` as an intermediate fact. Simplify using `using this`. Take `⟨z, hzx, hkz, hz0⟩` from `hex`. Establish `hzne : z ≠ x`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `rfl`. Conclude with `hz0 (topologicalKrullDim_closure_closedPt_le_zero hx)`. Establish `hDq : IsQCart D` using `hD.isQCart`. Take `⟨w, hwz, hw⟩` from `GlobalTheory.T.exists_nonKltCentre_of_not_klt_after_adding X p n hp hn Δ D z hDq (hklt z) hkz`. Establish `hwx : w ⤳ x` using `hwz.trans hzx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Establish `hwne : w ≠ x`. Introduce and unpack `rfl`. Conclude with `hzne (eq_of_closedPt_specializes hx hwz)`. Take `⟨e, -, hdw, he1⟩` from `GlobalTheory.T.exists_topologicalKrullDim_closure_point_le X n w hn`. Establish `he1' : 1 ≤ e` using `he1 x hwx hwne.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hkw : ¬ KltAt p n (Δ + D) w` using `not_kltAt_of_isNkltCentre X p n hp hn (Δ + D) w w hw (specializes_refl w)`. Establish `hej : e ≤ j`. Establish `hle` using `hdim w hwx hkw`. Rewrite `hle` using `[hdw]`. Conclude with `hle` after adjusting the coercions.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Take `⟨i, rfl⟩ : ∃ i, e = i + 1` from `⟨e - 1, by omega⟩`. Establish `hwN` using `hbig w (i + 1) (Or.inl hwx) he1' hdw`. Distinguish the cases in `hlx' : LcAt p n (Δ + D) x'`. Take `⟨w', hw'x', hw'⟩` from `GlobalTheory.T.exists_nonKltCentre_of_not_klt_after_adding X p n hp hn Δ D x' hDq (hklt x') hnk`. Distinguish the cases in `hw'x : w' ⤳ x`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hkw' : ¬ KltAt p n (Δ + D) w'` using `not_kltAt_of_isNkltCentre X p n hp hn (Δ + D) w' w' hw' (specializes_refl w')`. Take `⟨e', -, hdw', he1''⟩` from `GlobalTheory.T.exists_topologicalKrullDim_closure_point_le X n w' hn`. Establish `h1e' : 1 ≤ e'`. Distinguish the cases in `hxw : x = w'`. Use `he1'' x' hw'x' ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Introduce `h2`. Conclude with `hxx' (hxw.trans h2.symm)`. Conclude with `he1'' x hw'x hxw`. Establish `he'j : e' ≤ j`. Establish `hle` using `hdim w' hw'x hkw'`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Rewrite `hle` using `[hdw']`. Conclude with `hle` after adjusting the coercions. Take `⟨i', rfl⟩ : ∃ i', e' = i' + 1` from `⟨e' - 1, by omega⟩`. Establish `hw'N` using `hbig w' (i' + 1) (Or.inl hw'x) h1e' hdw'`. Establish `hnum` using `two_mul_lt_pow_mul_of_le _ (h (i' + 1)) (h (i' + 1) + ε) _ (i' + 1) (by positivity) (hpos _) (by linarith) hw'N`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨D', d', hd'0, hd'le, hD', hfin⟩` from `GlobalTheory.T.lc_cut_two_closed_points_one_centre hP hNV hNef X p n hp hn Δ m G N D d (h (i' + 1) + ε) x x' w' i' hΔ hklt hm hG hN hD hd hx hx' hlcx hlx' hw'x hw'x' (Or.inr hw') hdw' (by linarith [hpos (i' + 1)]) hnum.1`. Conclude with `⟨i', D', d', by omega, hd'0, hd'le, hD', hfin⟩`. Take `⟨b, A, hb0, hbε, hA, hAx, hAw'⟩` from `GlobalTheory.T.exists_small_ample_through_off' X p hp N x w' ε hN hw'x hε`. Establish `hAq : IsQCart A` using `hA.isQCart`. Establish `hsum : Δ + D + (1 : ℚ) • A = Δ + (D + A)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[one_smul, add_assoc]`. Establish `hoff` using `off_add_smul X p n (Δ + D) A 1 x hAx`. Rewrite `hoff` using `[hsum]`. Take `⟨hkltiff, hlciff, -, hoffz⟩` from `hoff`. Establish `hcut' : LcCut p n (Δ + (D + A)) x j`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Unfold `LcCut`. Use `⟨hlciff.mpr hlcx, fun hk => hnkx (hkltiff.mp hk), fun y hy hky => ?_⟩` and prove the remaining obligations. Establish `h2` using `(off_add_smul X p n (Δ + D) A 1 y (hoffz y hy)).1`. Rewrite `h2` using `[hsum]`. Conclude with `hdim y hy (fun hk => hky (h2.mpr hk))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hw2 : IsNkltCentre p n (Δ + (D + A)) w`. Establish `h3` using `(off_add_smul X p n (Δ + D) A 1 w (hoffz w hwx)).2.2.1`. Rewrite `h3` using `[hsum]`. Conclude with `h3.mpr hw`. Establish `hnlc : ¬ LcAt p n (Δ + (D + A)) x'`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `h4` using `GlobalTheory.T.not_lcAt_add_of_isNkltCentre' X p n hp hn (Δ + D) A w' x' hw' hAq hAw' hw'x'`. Rewrite `h4` using `[add_assoc]`. Conclude with `h4`. Establish `hDA : QNum p N (d + b) (D + A)` using `qNum_add X p hp N d b D A hD hA`. Establish `hnum` using `two_mul_lt_pow_mul_of_le _ (h (i + 1)) (h (i + 1) + ε - b) _ (i + 1) (by positivity) (hpos _) (by linarith) hwN`.
-
-Take `⟨hlcx2, -, -⟩` from `hcut'`. Take `⟨D', d', hd'0, hd'le, hD', hcutD', hnkD'⟩` from `GlobalTheory.T.exists_lc_cut_point_of_not_lc_other hP hNV hNef X p n hp hn Δ m G N (D + A) (d + b) (h (i + 1) + ε - b) x x' w i hΔ hklt hm hG hN hDA (by linarith) hx hlcx2 hnlc hwx hw2 hdw (by linarith [hpos (i + 1)]) hnum.2`. Conclude with `⟨i, D', d', by omega, hd'0, by linarith, hD', Or.inl ⟨hcutD', hnkD'⟩⟩`. Establish `hnum` using `two_mul_lt_pow_mul_of_le _ (h (i + 1)) (h (i + 1) + ε) _ (i + 1) (by positivity) (hpos _) (by linarith) hwN`. Take `⟨D', d', hd'0, hd'le, hD', hcutD', hnkD'⟩` from `GlobalTheory.T.exists_lc_cut_point_of_not_lc_other hP hNV hNef X p n hp hn Δ m G N D d (h (i + 1) + ε) x x' w i hΔ hklt hm hG hN hD hd hx hlcx hlx' hwx hw hdw (by linarith [hpos (i + 1)]) hnum.2`.
-
-Conclude with `⟨i, D', d', by omega, hd'0, hd'le, hD', Or.inl ⟨hcutD', hnkD'⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem twoPoint_step : GlobalTheory.Published.Principalisation → GlobalTheory.Published.NadelVanishingPair → GlobalTheory.Published.NefNumerics → ∀ (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X] [GlobalTheory.IsNormalScheme X] (p : X ⟶ Sp ℂ) (n : ℕ), IsProjOver p → topologicalKrullDim X = n → letI := algebraΓOfHom p; ∀ (Δ : X → ℚ) (m : ℕ) (G : CartierDiv X) (N : LB X) (D : X → ℚ) (d ε : ℚ) (h : ℕ → ℚ) (x x' : X) (j : ℕ), IsEffQDiv Δ → (∀ y, KltAt p n Δ y) → 0 < m → IsLogCanonicalMultiple p n Δ m G → IsAmpleLB N → IsClosed ({x} : Set X) → IsClosed ({x'} : Set X) → x ≠ x' → (∀ e, 0 < h e) → (∀ (z : X) (e : ℕ), z ⤳ x ∨ z ⤳ x' → 1 ≤ e → topologicalKrullDim (closure ({z} : Set X)) = e → 2 * (e : ℚ) ^ e < h e ^ e * (interNumRed ℂ (Closeds.closure ({z} : Set X)) fun _ : Fin e => N : ℤ)) → 0 < ε → QNum p N d D → 0 ≤ d → LcCut p n (Δ + D) x j → ¬ KltAt p n (Δ + D) x' → LcCut p n (Δ + D) x 0 ∨ ∃ (i : ℕ) (D' : X → ℚ) (d' : ℚ), i < j ∧ 0 ≤ d' ∧ d' ≤ d + (h (i + 1) + ε) ∧ QNum p N d' D' ∧ ((LcCut p n (Δ + D') x i ∧ ¬ KltAt p n (Δ + D') x') ∨ (LcCut p n (Δ + D') x' i ∧ ¬ KltAt p n (Δ + D') x)) := by
   intro hP hNV hNef X _ _ _ p n hp hn Δ m G N D d ε h x x' j hΔ hklt hm hG hN hx hx' hxx' hpos hbig

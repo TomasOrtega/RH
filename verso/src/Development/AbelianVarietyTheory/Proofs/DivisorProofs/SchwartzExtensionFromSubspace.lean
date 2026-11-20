@@ -7,9 +7,9 @@ noncomputable section
 namespace GlobalTheory.SchwartzExtend
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.SchwartzDerivativeCompositionBound.norm_iteratedFDeriv_schwartz_comp_clm_le`. Consider the case `exact _root_.GlobalTheory.SchwartzDerivativeCompositionBound.norm_iteratedFDeriv_schwartz_comp_clm_le`. Consider the case `(apply _root_.GlobalTheory.SchwartzDerivativeCompositionBound.norm_iteratedFDeriv_schwartz_comp_clm_le <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.SchwartzDerivativeCompositionBound.norm_iteratedFDeriv_schwartz_comp_clm_le <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.SchwartzDerivativeCompositionBound.norm_iteratedFDeriv_schwartz_comp_clm_le <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.SchwartzDerivativeCompositionBound.norm_iteratedFDeriv_schwartz_comp_clm_le ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem norm_iteratedFDeriv_comp_clm_le {Y F : Type} [NormedAddCommGroup Y] [NormedSpace ℝ Y]
     [NormedAddCommGroup F] [NormedSpace ℝ F] (L : Y →L[ℝ] F) (f : 𝓢(F, ℂ)) (i : ℕ) (y : Y) :
@@ -23,13 +23,13 @@ theorem norm_iteratedFDeriv_comp_clm_le {Y F : Type} [NormedAddCommGroup Y] [Nor
   | (intros; exact _root_.GlobalTheory.SchwartzDerivativeCompositionBound.norm_iteratedFDeriv_schwartz_comp_clm_le ..)
 
 /- English proof (translation)
-Establish `hm : a + b ≤ 2 * max a b`. Break down `le_total a b with h | h` into its components or cases. Rewrite using `[max_eq_right h]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[max_eq_left h]`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `h1 : (a + b) ^ k ≤ (2 * max a b) ^ k` using `pow_le_pow_left₀ (by positivity) hm k`. Rewrite `h1` using `[mul_pow]`. Use `h1.trans ?_` and prove the remaining obligations. Use `gcongr`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `p1` using `pow_nonneg ha k`. Establish `p2` using `pow_nonneg hb k`. Break down `le_total a b with h | h` into its components or cases. Rewrite using `[max_eq_right h]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[max_eq_left h]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem pow_add_le (a b : ℝ) (ha : 0 ≤ a) (hb : 0 ≤ b) (k : ℕ) :
     (a + b) ^ k ≤ 2 ^ k * (a ^ k + b ^ k) := by
@@ -48,9 +48,9 @@ theorem pow_add_le (a b : ℝ) (ha : 0 ≤ a) (hb : 0 ≤ b) (k : ℕ) :
   · rw [max_eq_left h]; linarith
 
 /- English proof (translation)
-Set `b : ContDiffBump (0 : C)` to `⟨1, 2, one_pos, one_lt_two⟩`. Establish `h1 : HasCompactSupport (fun x => ((b x : ℝ) : ℂ))` using `b.hasCompactSupport.comp_left Complex.ofReal_zero`. Establish `h2 : ContDiff ℝ ∞ (fun x => ((b x : ℝ) : ℂ))` using `Complex.ofRealCLM.contDiff.comp b.contDiff`. Use `⟨h1.toSchwartzMap h2, ?_⟩` and prove the remaining obligations. Use `show ((b 0 : ℝ) : ℂ) = 1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[b.one_of_mem_closedBall (Metric.mem_closedBall_self b.rIn_pos.le)]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_schwartz_eq_one_zero (C : Type) [NormedAddCommGroup C] [NormedSpace ℝ C]
     [FiniteDimensional ℝ C] : ∃ χ : 𝓢(C, ℂ), χ 0 = 1 := by
@@ -126,11 +126,11 @@ theorem extCLM_apply {Y F₁ F₂ : Type} [NormedAddCommGroup Y] [NormedSpace �
     (φ : 𝓢(F₁, ℂ)) (y : Y) : extCLM L₁ L₂ hL χ φ y = φ (L₁ y) * χ (L₂ y) := rfl
 
 /- English proof (translation)
-Take `⟨C, hC⟩` from `Submodule.exists_isCompl P`. Set `π₁ : Y →L[ℝ] P` to `LinearMap.toContinuousLinearMap (Submodule.linearProjOfIsCompl P C hC)`. Set `π₂ : Y →L[ℝ] C` to `LinearMap.toContinuousLinearMap (Submodule.linearProjOfIsCompl C P hC.symm)`. Establish `hL : ∀ y, ‖y‖ ≤ ‖π₁ y‖ + ‖π₂ y‖` using `fun y => by`. Establish `e : ((Submodule.linearProjOfIsCompl P C hC y : P) : Y) + ((Submodule.linearProjOfIsCompl C P hC.symm y : C) : Y) = y` using `Submodule.projection_add_projection_eq_self hC y`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Take `⟨χ, hχ⟩` from `exists_schwartz_eq_one_zero C`. Use `⟨extCLM π₁ π₂ hL χ, fun φ p => ?_⟩` and prove the remaining obligations. Rewrite using `[extCLM_apply]`. Establish `h1 : π₁ (p : Y) = p` using `Submodule.linearProjOfIsCompl_apply_left hC p`.
+Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : π₂ (p : Y) = 0` using `Submodule.linearProjOfIsCompl_apply_right hC.symm p`. Rewrite using `[h1, h2, hχ, mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_extend_clm {Y : Type} [NormedAddCommGroup Y] [NormedSpace ℝ Y] [FiniteDimensional ℝ Y]
     (P : Submodule ℝ Y) :
@@ -153,7 +153,7 @@ theorem exists_extend_clm {Y : Type} [NormedAddCommGroup Y] [NormedSpace ℝ Y] 
   rw [h1, h2, hχ, mul_one]
 
 /- English proof (translation)
-Introduce `P` and use `exists_extend_clm P`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem extend_clm_of_submodule : ∀ {Y : Type} [NormedAddCommGroup Y] [NormedSpace ℝ Y] [FiniteDimensional ℝ Y] (P : Submodule ℝ Y),
     ∃ E : SchwartzMap P ℂ →L[ℂ] SchwartzMap Y ℂ, ∀ (φ : SchwartzMap P ℂ) (p : P), E φ (p : Y) = φ p :=

@@ -18,13 +18,13 @@ def box (m : ℕ) (s : kˣ) : AddSubgroup (Fin m → k) where
   neg_mem' ha j := neg_mem_cball (ha j)
 
 /- English proof (translation)
-Conclude with `Iff.rfl`.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_box {m : ℕ} {s : kˣ} {l : Fin m → k} : l ∈ box m s ↔ ∀ j, l j ∈ cball s := by
   exact Iff.rfl
 
 /- English proof (translation)
-Use extensionality with `l`. Simplify using `only [SetLike.mem_coe, mem_box, Set.mem_univ_pi]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem coe_box (m : ℕ) (s : kˣ) :
     (box m s : Set (Fin m → k)) = Set.univ.pi fun _ => cball s := by
@@ -32,23 +32,23 @@ theorem coe_box (m : ℕ) (s : kˣ) :
   simp only [SetLike.mem_coe, mem_box, Set.mem_univ_pi]
 
 /- English proof (translation)
-Rewrite using `[coe_box]`. Conclude with `isCompact_univ_pi fun _ => GlobalTheory.SplitWeil.isCompact_cball s`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCompact_box (m : ℕ) (s : kˣ) : IsCompact (box m s : Set (Fin m → k)) := by
   rw [coe_box]
   exact isCompact_univ_pi fun _ => GlobalTheory.SplitWeil.isCompact_cball s
 
 /- English proof (translation)
-Rewrite using `[coe_box]`. Conclude with `set_pi_mem_nhds Set.finite_univ fun _ _ => GlobalTheory.SplitWeil.cball_mem_nhds s`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem box_mem_nhds (m : ℕ) (s : kˣ) : (box m s : Set (Fin m → k)) ∈ 𝓝 (0 : Fin m → k) := by
   rw [coe_box]
   exact set_pi_mem_nhds Set.finite_univ fun _ _ => GlobalTheory.SplitWeil.cball_mem_nhds s
 
 /- English proof (translation)
-Rewrite `hΩ` using `[nhds_pi, Filter.mem_pi']`. Take `⟨I, t, ht, hsub⟩` from `hΩ`. Use `choose s hs using fun i => GlobalTheory.SplitWeil.exists_cball_subset (by simpa using ht i)`. Distinguish the cases in `hm : Nonempty (Fin m)`. Take `⟨i₀, -, hi₀⟩` from `Finset.exists_min_image Finset.univ (fun i => ValuativeRel.valuation k (s i : k)) Finset.univ_nonempty`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨s i₀, fun l hl => hsub fun i _ => hs i ?_⟩` and prove the remaining obligations. Conclude with `le_trans (show ValuativeRel.valuation k (l i) ≤ _ from (mem_box.1 hl) i) (hi₀ i (Finset.mem_univ _))`. Conclude with `⟨1, fun l _ => hsub fun i _ => (hm ⟨i⟩).elim⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_box_subset {m : ℕ} {Ω : Set (Fin m → k)} (hΩ : Ω ∈ 𝓝 (0 : Fin m → k)) :
     ∃ r : kˣ, (box m r : Set (Fin m → k)) ⊆ Ω := by
@@ -63,11 +63,11 @@ theorem exists_box_subset {m : ℕ} {Ω : Set (Fin m → k)} (hΩ : Ω ∈ 𝓝 
   · exact ⟨1, fun l _ => hsub fun i _ => (hm ⟨i⟩).elim⟩
 
 /- English proof (translation)
-Unfold `dotProduct`. Use `Finset.sum_induction _ (· ∈ cball r) (fun a b ha hb => add_mem_cball ha hb) ?_ ?_` and prove the remaining obligations. Simplify using `only [GlobalTheory.SplitWeil.cball, Set.mem_ofPred_eq] show ValuativeRel.valuation k 0 ≤ _`. Simplify using the standard rewrite rules. Introduce `j _`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `(mem_box.1 hb) j`. Establish `h2` using `(mem_box.1 hl) j`. Simplify using `only [GlobalTheory.SplitWeil.cball, Set.mem_ofPred_eq]`. Use `show ValuativeRel.valuation k (b j * l j) ≤ ValuativeRel.valuation k (r : k)`. Rewrite using `[map_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← map_mul]`. Use `congr 1`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dotProduct_mem_cball {m : ℕ} {r s : kˣ} {b l : Fin m → k} (hb : b ∈ box m (r * s⁻¹))
     (hl : l ∈ box m s) : b ⬝ᵥ l ∈ cball r := by

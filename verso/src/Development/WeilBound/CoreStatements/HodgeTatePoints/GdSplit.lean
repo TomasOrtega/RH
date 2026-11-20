@@ -7,9 +7,9 @@ noncomputable section
 namespace PositivityTheory.HtPt.Gd
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `Module.projective_def'.mp ‹Module.Projective A P›`. Establish `hinj : Function.Injective s` using `Function.LeftInverse.injective (g := Finsupp.linearCombination A id) (fun x => LinearMap.congr_fun hs x)`. Use `⟨fun r hr p p' h => hinj ?_⟩` and prove the remaining obligations. Establish `h' : r • s p = r • s p'`. Rewrite using `[← map_smul, ← map_smul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg s h`. Use extensionality with `x`. Establish `hx` using `congrArg (fun g => g x) h'`. Simplify using `only [Finsupp.smul_apply, smul_eq_mul] at hx`. Conclude with `hr.left hx`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem isTorsionFree_of_projective {A P : Type*} [CommRing A] [AddCommGroup P] [Module A P]
     [Module.Projective A P] : Module.IsTorsionFree A P := by
@@ -27,19 +27,17 @@ private theorem isTorsionFree_of_projective {A P : Type*} [CommRing A] [AddCommG
   exact hr.left hx
 
 /- English proof (translation)
-Use `haveI : Module.IsTorsionFree A (Fin N → A) := isTorsionFree_of_projective`. Take `⟨r, hr1, hrP⟩` from `Submodule.exists_sub_one_mem_and_smul_le_of_fg_of_le_sup (I := Ideal.span {a}) (N := LinearMap.range φ) (Module.Finite.fg_top (R := A) (M := P)) le_rfl (by`. Introduce `z _`. Take `⟨x₀, z', rfl⟩` from `hs z`. Conclude with `Submodule.add_mem_sup (LinearMap.mem_range_self φ x₀) (Submodule.smul_mem_smul (Ideal.mem_span_singleton_self a) Submodule.mem_top))`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.mp hr1`. Distinguish the cases in `hr : r = 0`. Use `⟨-(c • x), ?_⟩` and prove the remaining obligations. Rewrite using `[smul_neg, smul_smul, mul_comm, hc, hr]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hrange : ∀ p : P, r • p ∈ LinearMap.range φ` using `fun p => hrP (Submodule.smul_mem_pointwise_smul p r ⊤ Submodule.mem_top)`. Set `f : P →ₗ[A] LinearMap.range φ` to `LinearMap.codRestrict (LinearMap.range φ) (r • LinearMap.id) (fun p => hrange p)`. Establish `hf : Function.Injective f`. Introduce `p p' h`. Establish `h' : r • p = r • p'` using `congrArg Subtype.val h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `smul_right_injective P hr h'`. Establish `hrk : (N : Cardinal) ≤ Module.rank A (LinearMap.range φ)` using `hN.trans (LinearMap.rank_le_of_injective f hf)`. Establish `hsum` using `LinearMap.rank_range_add_rank_ker φ`. Rewrite `hsum` using `[rank_fin_fun]`. Establish `hker : Module.rank A (LinearMap.ker φ) = 0`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hle : Module.rank A (LinearMap.range φ) ≤ N`. Rewrite using `[← hsum]`. Conclude with `le_self_add`. Rewrite `hsum` using `[le_antisymm hle hrk, add_comm]`. Conclude with `(Cardinal.add_right_inj_of_lt_aleph0 Cardinal.natCast_lt_aleph0).mp (by rw [hsum, zero_add])`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hinj : Function.Injective φ` using `LinearMap.ker_eq_bot.mp (Submodule.rank_eq_zero.mp hker)`. Take `⟨z, hz⟩` from `hrange y`. Establish `hxz : r • x = a • z` using `hinj (by rw [map_smul, map_smul, hx, hz, smul_smul, smul_smul, mul_comm])`. Use `⟨z - c • x, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_sub, ← hxz, smul_smul, ← sub_smul, mul_comm a c, hc]`.
-
-Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem inj_mod_of_surj_mod {A : Type} [CommRing A] [IsDomain A] {P : Type} [AddCommGroup P]
     [Module A P] [Module.Finite A P] [Module.IsTorsionFree A P] {N : ℕ} (a : A)
@@ -86,19 +84,17 @@ theorem inj_mod_of_surj_mod {A : Type} [CommRing A] [IsDomain A] {P : Type} [Add
   simp
 
 /- English proof (translation)
-Introduce `A _ _ P₁ P₂ _ _ _ _ _ _ _ _ N a i r q hrank hri hq hqi x hx`. Use `haveI : Module.IsTorsionFree A (P₁ × P₂) := isTorsionFree_of_projective`. Establish `hN : (N : Cardinal) ≤ Module.rank A (P₁ × P₂)`. Rewrite using `[← hrank, Nat.cast_add, Module.finrank_eq_rank, Module.finrank_eq_rank]`. Conclude with `rank_add_rank_le_rank_prod A P₁`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hs : ∀ y : P₁ × P₂, ∃ x y', y = (r.prod q) x + a • y'`. Introduce and unpack `⟨w, y⟩`. Take `⟨x₀, y₀, rfl⟩` from `hq y`. Take `⟨w', hw'⟩` from `hri (w - r x₀)`. Take `⟨y'', hy''⟩` from `hqi (w - r x₀)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨x₀ + i (w - r x₀), (-w', y₀ - y''), Prod.ext ?_ ?_⟩` and prove the remaining obligations. Use `show w = r (x₀ + i (w - r x₀)) + a • -w'`. Rewrite using `[map_add, hw', smul_neg]`. Normalize the expressions using the abelian group laws. Use `show q x₀ + a • y₀ = q (x₀ + i (w - r x₀)) + a • (y₀ - y'')`.
+Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[map_add, hy'', smul_sub]`. Normalize the expressions using the abelian group laws. Take `⟨w', hw'⟩` from `hri (r x)`. Take `⟨y'', hy''⟩` from `hqi (r x)`. Take `⟨y, hy⟩` from `hx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Establish `hφ : (r.prod q) (x - i (r x)) = a • (-w', y - y'')`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use `show r (x - i (r x)) = a • -w'`. Rewrite using `[map_sub, hw', smul_neg]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Use `show q (x - i (r x)) = a • (y - y'')`. Rewrite using `[map_sub, hy, hy'', smul_sub]`. Take `⟨x', hx'⟩` from `PositivityTheory.HtPt.Gd.inj_mod_of_surj_mod a (r.prod q) hN hs _ _ hφ`. Use `⟨r x, x', ?_⟩` and prove the remaining obligations. Rewrite using `[← hx']`.
-
-Normalize the expressions using the abelian group laws.
+A detailed English derivation is pending.
 -/
 theorem split_exact : ∀ (A : Type) [CommRing A] [IsDomain A] (P₁ P₂ : Type) [AddCommGroup P₁] [Module A P₁] [Module.Finite A P₁] [Module.Projective A P₁] [AddCommGroup P₂] [Module A P₂] [Module.Finite A P₂] [Module.Projective A P₂] (N : ℕ) (a : A) (i : P₁ →ₗ[A] (Fin N → A)) (r : (Fin N → A) →ₗ[A] P₁) (q : (Fin N → A) →ₗ[A] P₂), Module.finrank A P₁ + Module.finrank A P₂ = N → (∀ w, ∃ w', r (i w) = w + a • w') → (∀ y, ∃ x y', y = q x + a • y') → (∀ w, ∃ y, q (i w) = a • y) → ∀ x, (∃ y, q x = a • y) → ∃ w x', x = i w + a • x' := by
   intro A _ _ P₁ P₂ _ _ _ _ _ _ _ _ N a i r q hrank hri hq hqi x hx

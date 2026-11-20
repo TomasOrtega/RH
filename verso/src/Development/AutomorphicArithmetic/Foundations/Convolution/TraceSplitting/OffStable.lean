@@ -15,13 +15,13 @@ section
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Establish `hK : ∀ x : E, Valued.v (galEquiv v σ w u h (algebraMap E (w.adicCompletion E) x)) = Valued.v (algebraMap E (w.adicCompletion E) x)`. Introduce `x`. Establish `hx` using `valuation_smul σ w x`. Rewrite `hx` using `[← h]`. Rewrite using `[galEquiv_algebraMap, HeightOneSpectrum.algebraMap_adicCompletion, HeightOneSpectrum.algebraMap_adicCompletion]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Function.comp_apply, HeightOneSpectrum.valuedAdicCompletion_eq_valuation']`. Simplify using `using hx`. Establish `hclosed : IsClosed {y : w.adicCompletion E | Valued.v (galEquiv v σ w u h y) = Valued.v y}`. Rewrite using `[← isOpen_compl_iff, isOpen_iff_mem_nhds]`. Introduce `y0 hy0`.
+Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h0 : y0 ≠ 0`. Introduce and unpack `rfl`. Simplify using `at hy0`. Establish `h1 : Valued.v y0 ≠ 0` using `(Valuation.ne_zero_iff _).2 h0`. Establish `h2 : Valued.v (galEquiv v σ w u h y0) ≠ 0` using `(Valuation.ne_zero_iff _).2 ((map_ne_zero _).2 h0)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `filter_upwards [Valued.locally_const h1, (continuous_galEquiv v σ w u h).continuousAt.preimage_mem_nhds (Valued.locally_const h2)] with y hy hy'`. Simplify using `only [Set.mem_ofPred_eq, Set.mem_preimage, Set.mem_compl_iff] at hy hy' hy0 ⊢`. Rewrite using `[hy, hy']` and apply the resulting hypothesis. Conclude with `(HeightOneSpectrum.denseRange_algebraMap E w).induction_on y hclosed hK`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 private theorem val_gal (v : HeightOneSpectrum (𝓞 F)) (σ : E ≃ₐ[F] E) (w u : HeightOneSpectrum (𝓞 E))
     [w.asIdeal.LiesOver v.asIdeal] [u.asIdeal.LiesOver v.asIdeal] (h : u = σ • w) (y : w.adicCompletion E) :
@@ -52,11 +52,11 @@ private theorem val_gal (v : HeightOneSpectrum (𝓞 F)) (σ : E ≃ₐ[F] E) (w
   exact (HeightOneSpectrum.denseRange_algebraMap E w).induction_on y hclosed hK
 
 /- English proof (translation)
-Take `⟨t, rfl⟩` from `(tensorEquiv' E v).surjective y`. Establish `h1 : galFin σ v (tensorEquiv' E v t) = tensorEquiv' E v (Algebra.TensorProduct.map (σ : E →ₐ[F] E) (AlgHom.id F (v.adicCompletion F)) t)`. Simplify using `[galFin, galOf]`. Rewrite using `[h1]`. Use `clear h1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Proceed by induction.
 
-Proceed by induction on `t with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [map_add, Pi.add_apply, ha, hb]`. Consider the case `tmul x a`. Rewrite using `[Algebra.TensorProduct.map_tmul, tensorEquiv'_tmul, tensorEquiv'_tmul, Pi.mul_apply, Pi.mul_apply, map_mul]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Conclude with `(galEquiv_algebraMap v σ _ _ _ x).symm`. Conclude with `((galEquiv v σ _ _ (eq_smul_inv_smul v σ u)).commutes a).symm`.
+A detailed English derivation is pending.
 -/
 private theorem galFin_apply (σ : E ≃ₐ[F] E) (v : HeightOneSpectrum (𝓞 F)) (y : CompletionsOver E v)
     (u : PlacesOver E v) :
@@ -79,7 +79,7 @@ private theorem galFin_apply (σ : E ≃ₐ[F] E) (v : HeightOneSpectrum (𝓞 F
 variable {w u : HeightOneSpectrum (𝓞 E)} (φ : w.adicCompletion E →+* u.adicCompletion E)
 
 /- English proof (translation)
-Rewrite using `[(ValuativeRel.isEquiv (valuation (u.adicCompletion E)) Valued.v).le_one_iff_le_one, hφ]`. Conclude with `(ValuativeRel.isEquiv (valuation (w.adicCompletion E)) Valued.v).le_one_iff_le_one.1 hy`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem le_of_val (hφ : ∀ y, Valued.v (φ y) = Valued.v y) {y : w.adicCompletion E}
     (hy : valuation (w.adicCompletion E) y ≤ 1) : valuation (u.adicCompletion E) (φ y) ≤ 1 := by
@@ -87,7 +87,7 @@ private theorem le_of_val (hφ : ∀ y, Valued.v (φ y) = Valued.v y) {y : w.adi
   exact (ValuativeRel.isEquiv (valuation (w.adicCompletion E)) Valued.v).le_one_iff_le_one.1 hy
 
 /- English proof (translation)
-Rewrite using `[(ValuativeRel.isEquiv (valuation (u.adicCompletion E)) Valued.v).lt_one_iff_lt_one, hφ]`. Conclude with `(ValuativeRel.isEquiv (valuation (w.adicCompletion E)) Valued.v).lt_one_iff_lt_one.1 hy`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem lt_of_val (hφ : ∀ y, Valued.v (φ y) = Valued.v y) {y : w.adicCompletion E}
     (hy : valuation (w.adicCompletion E) y < 1) : valuation (u.adicCompletion E) (φ y) < 1 := by
@@ -95,7 +95,7 @@ private theorem lt_of_val (hφ : ∀ y, Valued.v (φ y) = Valued.v y) {y : w.adi
   exact (ValuativeRel.isEquiv (valuation (w.adicCompletion E)) Valued.v).lt_one_iff_lt_one.1 hy
 
 /- English proof (translation)
-Rewrite using `[(ValuativeRel.isEquiv (valuation (u.adicCompletion E)) Valued.v).eq_one_iff_eq_one, hφ]`. Conclude with `(ValuativeRel.isEquiv (valuation (w.adicCompletion E)) Valued.v).eq_one_iff_eq_one.1 hy`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem eq_of_val (hφ : ∀ y, Valued.v (φ y) = Valued.v y) {y : w.adicCompletion E}
     (hy : valuation (w.adicCompletion E) y = 1) : valuation (u.adicCompletion E) (φ y) = 1 := by
@@ -103,7 +103,7 @@ private theorem eq_of_val (hφ : ∀ y, Valued.v (φ y) = Valued.v y) {y : w.adi
   exact (ValuativeRel.isEquiv (valuation (w.adicCompletion E)) Valued.v).eq_one_iff_eq_one.1 hy
 
 /- English proof (translation)
-Rewrite `hg`, the goal using `[GLnLocal.mem_integralGL_iff]`. Rewrite using `[← map_inv]`. Simplify using `only [Valuation.mem_integer_iff] at hg ⊢`. Conclude with `⟨fun i j => le_of_val φ hφ (hg.1 i j), fun i j => le_of_val φ hφ (hg.2 i j)⟩`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 private theorem integral_map (n : ℕ) (hφ : ∀ y, Valued.v (φ y) = Valued.v y)
     {g : GL (Fin n) (w.adicCompletion E)} (hg : g ∈ GLnLocal.integralGL (w.adicCompletion E) n) :
@@ -114,7 +114,7 @@ private theorem integral_map (n : ℕ) (hφ : ∀ y, Valued.v (φ y) = Valued.v 
   exact ⟨fun i j => le_of_val φ hφ (hg.1 i j), fun i j => le_of_val φ hφ (hg.2 i j)⟩
 
 /- English proof (translation)
-Rewrite `hg`, the goal using `[GLnLocal.mem_iwahori_iff]`. Conclude with `⟨fun i j => le_of_val φ hφ (hg.1 i j), fun i j h => lt_of_val φ hφ (hg.2.1 i j h), fun i => eq_of_val φ hφ (hg.2.2 i)⟩`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 private theorem iwahori_map (n : ℕ) (hφ : ∀ y, Valued.v (φ y) = Valued.v y)
     {g : GL (Fin n) (w.adicCompletion E)} (hg : g ∈ GLnLocal.iwahori (w.adicCompletion E) n) :
@@ -128,9 +128,9 @@ end
 end UpperTheory.ConvolutionTheory.T
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ _ _ σ hσ _ n _ v`. Establish `hv : ∀ (u : PlacesOver E v) y, Valued.v ((galEquiv v σ (σ⁻¹ • u).1 u.1 (eq_smul_inv_smul v σ u)).toRingEquiv.toRingHom y) = Valued.v y` using `fun u y => UpperTheory.ConvolutionTheory.T.val_gal v σ _ _ _ y`. Establish `hc : ∀ (x : GL (Fin n) (CompletionsOver E v)) (u : PlacesOver E v), GM.cmp u (mapGL n (galFin σ v) x) = mapGL n (galEquiv v σ (σ⁻¹ • u).1 u.1 (eq_smul_inv_smul v σ u)).toRingEquiv.toRingHom (GM.cmp (σ⁻¹ • u) x)` using `fun x u => Units.ext (Matrix.ext fun a b => UpperTheory.ConvolutionTheory.T.galFin_apply σ v _ u)`. Use `⟨fun x hx u => ?_, fun x hx u => ?_, ⟨⨅ u : PlacesOver E v, (GLnLocal.integralGL (u.1.adicCompletion E) n).comap (GM.cmp u), ?_⟩, ⟨⨅ u : PlacesOver E v, (GLnLocal.iwahori (u.1.adicCompletion E) n).comap (GM.cmp u), fun g => by simp [Subgroup.mem_iInf]⟩, fun w => ⟨And.intro (GLnLo …` and prove the remaining obligations. Rewrite using `[hc]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `UpperTheory.ConvolutionTheory.T.integral_map _ n (hv u) (hx _)`. Rewrite using `[hc]`. Conclude with `UpperTheory.ConvolutionTheory.T.iwahori_map _ n (hv u) (hx _)`. Use extensionality with `g`. Simplify using `[Subgroup.mem_iInf, unitSet, GM.cmp]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.T.offStable :
     UpperTheory.ConvolutionTheory.T.OffStable := by

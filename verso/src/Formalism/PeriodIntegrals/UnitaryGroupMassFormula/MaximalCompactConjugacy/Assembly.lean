@@ -11,13 +11,13 @@ open Formalism.MainNotions.S (AutInst uMat)
 open Formalism.L2.SG.AdBridge
 
 /- English proof (translation)
-Establish `hd : IsUnit P.det` using `(Matrix.isUnit_iff_isUnit_det P).mp hP`. Establish `hPi : P⁻¹ * P = 1` using `Matrix.nonsing_inv_mul P hd`. Establish `hPi' : P * P⁻¹ = 1` using `Matrix.mul_nonsing_inv P hd`. Establish `hH : Pᴴ * (P⁻¹)ᴴ = 1`. Rewrite using `[← Matrix.conjTranspose_mul, hPi, Matrix.conjTranspose_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hH' : (P⁻¹)ᴴ * Pᴴ = 1`. Rewrite using `[← Matrix.conjTranspose_mul, hPi', Matrix.conjTranspose_one]`. Establish `e1 : (P⁻¹ * θ * P)ᴴ * (P⁻¹ * θ * P) = Pᴴ * (θᴴ * ((P⁻¹)ᴴ * P⁻¹) * θ) * P`. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Rewrite using `[e1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hH', hPi', Matrix.one_mul, Matrix.mul_one]`. Use `_ = (P⁻¹)ᴴ * (Pᴴ * (θᴴ * ((P⁻¹)ᴴ * P⁻¹) * θ) * P) * P⁻¹ := by`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mul_assoc]`. Use `_ = (P⁻¹)ᴴ * P⁻¹ := by rw [h, Matrix.mul_one]`. Introduce `h`. Rewrite using `[h, ← Matrix.mul_assoc, hH, Matrix.one_mul, hPi]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_unitary_iff {n : ℕ} (P θ : Matrix (Fin n) (Fin n) ℂ) (hP : IsUnit P) :
     ((P⁻¹ * θ * P)ᴴ * (P⁻¹ * θ * P) = 1) ↔
@@ -44,11 +44,11 @@ theorem conj_unitary_iff {n : ℕ} (P θ : Matrix (Fin n) (Fin n) ℂ) (hP : IsU
     rw [h, ← Matrix.mul_assoc, hH, Matrix.one_mul, hPi]
 
 /- English proof (translation)
-Establish `key : ∀ v, (x.1 v ∈ KinfV I v ↔ ((hmat I (e x)).map (thetaV I v))ᴴ * majV I v * (hmat I (e x)).map (thetaV I v) = majV I v)`. Introduce `v`. Establish `hu : uMat (x.1 v) = (I.P v)⁻¹ * (hmat I (e x)).map (thetaV I v) * I.P v` using `(hb x).1 v`. Establish `hP : IsUnit (I.P v)`. Assume the negation of the conclusion as `hP`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `h0 : (I.P v)⁻¹ = 0` using `Matrix.nonsing_inv_apply_not_isUnit _ (fun h => hP ((Matrix.isUnit_iff_isUnit_det _).mpr h))`. Establish `hU : IsUnit (uMat (x.1 v))` using `Units.isUnit _`. Rewrite `hU` using `[hu, h0, zero_mul, zero_mul]`. Use `haveI : Subsingleton (Matrix (Fin I.n) (Fin I.n) ℂ) := subsingleton_of_zero_eq_one (isUnit_zero_iff.mp hU)`. Conclude with `hP (by rw [Subsingleton.elim (I.P v) 1]; exact isUnit_one)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hk : Formalism.REAL.inUJ (I.ε v) (uMat (x.1 v))` using `(x.1 v).2`. Establish `h1` using `hR I.n (I.ε v) (uMat (x.1 v)) hk`. Combine the equalities or inequalities in the displayed calculation. Use `show (∀ v, x.1 v ∈ KinfV I v) ↔ ∀ v, ((hmat I (e x)).map (thetaV I v))ᴴ * majV I v * (hmat I (e x)).map (thetaV I v) = majV I v`. Conclude with `forall_congr' key`.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem kinf_iff (hR : PI.AdBridgeSteps.RealK) (I : AutInst) (e : I.GA ≃ₜ* HAd I)
     (hb : IsBridge I e) (x : I.GA) : (∀ v, x.1 v ∈ KinfV I v) ↔ e x ∈ KinfHA I := by
@@ -75,7 +75,7 @@ theorem kinf_iff (hR : PI.AdBridgeSteps.RealK) (I : AutInst) (e : I.GA ≃ₜ* H
   exact forall_congr' key
 
 /- English proof (translation)
-Establish `h` using `hF I (e x)`. Rewrite `h` using `[← (hb x).2]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kf_iff (hF : PI.AdBridgeSteps.FinK) (I : AutInst) (e : I.GA ≃ₜ* HAd I)
     (hb : IsBridge I e) (x : I.GA) : x.2 ∈ I.Kset ↔ e x ∈ KfHA I := by
@@ -84,7 +84,7 @@ theorem kf_iff (hF : PI.AdBridgeSteps.FinK) (I : AutInst) (e : I.GA ≃ₜ* HAd 
   exact h
 
 /- English proof (translation)
-Use `show ((∀ v, x.1 v ∈ KinfV I v) ∧ x.2 ∈ I.Kset) ↔ (e x ∈ KinfHA I ∧ e x ∈ KfHA I)`. Conclude with `and_congr (kinf_iff hR I e hb x) (kf_iff hF I e hb x)`.
+A detailed English derivation is pending.
 -/
 theorem mem_KGA_iff (hR : PI.AdBridgeSteps.RealK) (hF : PI.AdBridgeSteps.FinK) (I : AutInst)
     (e : I.GA ≃ₜ* HAd I) (hb : IsBridge I e) (x : I.GA) : x ∈ KGA I ↔ e x ∈ KHA I := by
@@ -92,9 +92,9 @@ theorem mem_KGA_iff (hR : PI.AdBridgeSteps.RealK) (hF : PI.AdBridgeSteps.FinK) (
   exact and_congr (kinf_iff hR I e hb x) (kf_iff hF I e hb x)
 
 /- English proof (translation)
-Introduce `I e hb`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `(mem_KGA_iff hR hF I e hb x).1 hx`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hy`. Use `⟨e.symm y, (mem_KGA_iff hR hF I e hb _).2 ?_, by simp⟩` and prove the remaining obligations. Simplify using `using hy`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem bridgeMaxCpt_of (hR : PI.AdBridgeSteps.RealK) (hF : PI.AdBridgeSteps.FinK) :
     ∀ I : AutInst, AdBridgeK I := by

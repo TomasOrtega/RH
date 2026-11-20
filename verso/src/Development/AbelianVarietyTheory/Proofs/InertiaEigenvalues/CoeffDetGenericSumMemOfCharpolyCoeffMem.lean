@@ -9,37 +9,33 @@ namespace Amitsur
 open Matrix Polynomial
 
 /- English proof (translation)
-Establish `hpow : ∀ (k : ℕ), ∀ a ∈ S, t ^ k • a ∈ S`. Introduce `k a ha`. Proceed by induction on `k with`. Consider the case `zero => simpa using ha`. Consider the case `succ k ih => rw [pow_succ', mul_smul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Conclude with `hsm _ ih`. Establish `hM1 : ∀ a ∈ S, ∀ y ∈ AddSubmonoid.closure S, a * y ∈ AddSubmonoid.closure S`. Introduce `a ha y hy`. Proceed by induction on `hy using AddSubmonoid.closure_induction with`. Consider the case `mem x hx => exact AddSubmonoid.subset_closure (hmul a ha x hx)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [mul_add]`. Conclude with `add_mem hx hy`. Establish `hM2 : ∀ y ∈ AddSubmonoid.closure S, t • y ∈ AddSubmonoid.closure S`. Introduce `y hy`.
+Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `hy using AddSubmonoid.closure_induction with`. Consider the case `mem x hx => exact AddSubmonoid.subset_closure (hsm x hx)`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [smul_add]`. Conclude with `add_mem hx hy`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Establish `hM3 : ∀ a ∈ S, ∀ (j : ℕ), ∀ y ∈ AddSubmonoid.closure S, a ^ j * y ∈ AddSubmonoid.closure S`. Introduce `a ha j y hy`. Proceed by induction on `j with`. Consider the case `zero => simpa using hy`. Consider the case `succ j ih => rw [pow_succ', mul_assoc]`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `hM1 a ha _ ih`. Establish `step : ∀ e : ℕ, (∀ C ∈ AddSubmonoid.closure S, (1 - t ^ (e + 2) • C).det ∈ U) → ∀ B ∈ AddSubmonoid.closure S, (1 - t ^ (e + 1) • B).det ∈ U`. Introduce `e ih`. Establish `key : ∀ B ∈ AddSubmonoid.closure S, ∀ C ∈ AddSubmonoid.closure S, (1 - t ^ (e + 1) • (B + t • C)).det ∈ U`. Introduce `B hB`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Proceed by induction on `hB using AddSubmonoid.closure_induction_left with`. Consider the case `zero`. Introduce `C hC`. Use `ih C hC` as an intermediate fact. Rewrite using `[zero_add, smul_smul, ← pow_succ]` and apply the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Consider the case `add_left s hs B hB ihB`. Introduce `C hC`. Use `set a : Matrix ι ι A := t ^ (e + 1) • s with ha`. Establish `haS : a ∈ S` using `hpow _ _ hs`. Establish `haN : a ^ N = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[ha, _root_.smul_pow, ← pow_mul, add_mul, one_mul, pow_add, ht, mul_zero, zero_smul]`. Use `set g : Matrix ι ι A := ∑ j ∈ Finset.range N, a ^ j with hg`. Establish `hga : (1 - a) * g = 1`. Rewrite using `[hg, mul_neg_geom_sum, haN, sub_zero]`. Use `set y : Matrix ι ι A := B + t • C with hy`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hyM : y ∈ AddSubmonoid.closure S` using `add_mem hB (hM2 C hC)`. Establish `hgy : g * y ∈ AddSubmonoid.closure S`. Rewrite using `[hg, Finset.sum_mul]`. Conclude with `sum_mem fun j _ => hM3 a haS j y hyM`. Establish `hC' : C + (t ^ e • s) * (g * y) ∈ AddSubmonoid.closure S` using `add_mem hC (hM1 _ (hpow _ _ hs) _ hgy)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `ihB _ hC'`. Establish `e1 : B + t • (C + (t ^ e • s) * (g * y)) = g * y`. Establish `h2 : t • ((t ^ e • s) * (g * y)) = a * (g * y)`. Rewrite using `[← smul_mul_assoc, smul_smul, ← pow_succ']`. Establish `h3 : g * y = (1 - a) * g * y + a * (g * y)` using `by noncomm_ring`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite using `[smul_add, h2, ← add_assoc, ← hy]`. Use `conv_rhs => rw [h3, hga, one_mul]`. Rewrite `h1` using `[e1]`. Establish `e2 : 1 - t ^ (e + 1) • (s + B + t • C) = (1 - a) * (1 - t ^ (e + 1) • (g * y))`. Rewrite using `[mul_sub, mul_one, mul_smul_comm, ← mul_assoc, hga, one_mul, add_assoc, ← hy, smul_add, ← ha, sub_sub]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[e2, det_mul]`. Conclude with `U.mul_mem (hdet a haS) h1`. Introduce `B hB`. Simplify using `using key B hB 0 (zero_mem _)`. Establish `all : ∀ k e : ℕ, N ≤ e + k → ∀ B ∈ AddSubmonoid.closure S, (1 - t ^ (e + 1) • B).det ∈ U`.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `e he B _`. Establish `: t ^ (e + 1) = 0` using `pow_eq_zero_of_le (by omega) ht`.
-
-Simplify using `[this]`. Consider the case `succ k ih`. Introduce `e he`. Conclude with `step e (ih (e + 1) (by omega))`. Introduce `B hB`.
-
-Simplify using `using all N 0 (by omega) B hB`.
+A detailed English derivation is pending.
 -/
 theorem det_one_sub_smul_mem_of_nilpotent {A ι : Type*} [CommRing A] [Fintype ι] [DecidableEq ι]
     (U : Subring A) (t : A) (N : ℕ) (ht : t ^ N = 0) (S : Set (Matrix ι ι A))
@@ -126,7 +122,7 @@ theorem det_one_sub_smul_mem_of_nilpotent {A ι : Type*} [CommRing A] [Fintype �
   simpa using all N 0 (by omega) B hB
 
 /- English proof (translation)
-Rewrite using `[← coe_eval₂RingHom, Matrix.charpolyRev, RingHom.map_det]`. Use `congr 1`. Use extensionality with `i j`. Apply the tactic sequence `by_cases h : i = j <;> simp [h, Matrix.one_apply] <;> ring`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem eval₂_charpolyRev {R A ι : Type*} [CommRing R] [CommRing A] [Fintype ι] [DecidableEq ι]
     (φ : R →+* A) (u : A) (s : Matrix ι ι R) :
@@ -137,21 +133,19 @@ theorem eval₂_charpolyRev {R A ι : Type*} [CommRing R] [CommRing A] [Fintype 
   by_cases h : i = j <;> simp [h, Matrix.one_apply] <;> ring
 
 /- English proof (translation)
-Use `nontriviality R`. Use `set n := Fintype.card ι with hn`. Set `I : Ideal R[X]` to `Ideal.span {X ^ (n + 1)}`. Set `π : R[X] →+* R[X] ⧸ I` to `Ideal.Quotient.mk I`. Set `φ : R →+* R[X] ⧸ I` to `π.comp C`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `U : Subring (R[X] ⧸ I)` to `(π.comp (Polynomial.mapRingHom T.subtype)).range`. Establish `hφ : ∀ x ∈ T, φ x ∈ U` using `fun x hx => ⟨C ⟨x, hx⟩, by simp [φ]⟩`. Establish `htU : π X ∈ U` using `⟨X, by simp⟩`. Establish `ht : π X ^ (n + 1) = 0`. Rewrite using `[← map_pow]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.subset_span rfl)`. Set `S' : Set (Matrix ι ι (R[X] ⧸ I))` to `{a | ∃ u ∈ U, ∃ b ∈ S, a = u • b.map φ}`. Establish `main` using `det_one_sub_smul_mem_of_nilpotent U (π X) (n + 1) ht S' (by`. Introduce and unpack `_ ⟨u, hu, a, ha, rfl⟩ _ ⟨v, hv, b, hb, rfl⟩`. Use `⟨u * v, U.mul_mem hu hv, a * b, hmul a ha b hb, ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Rewrite using `[Matrix.map_mul, smul_mul_smul_comm]) (by`. Introduce and unpack `_ ⟨u, hu, a, ha, rfl⟩`. Conclude with `⟨π X * u, U.mul_mem htU hu, a, ha, by rw [smul_smul]⟩) (by`. Introduce and unpack `_ ⟨u, hu, a, ha, rfl⟩`. Rewrite using `[eval₂_charpolyRev, eval₂_eq_sum, Polynomial.sum]`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `U.sum_mem fun j _ => U.mul_mem (hφ _ ?_) (U.pow_mem hu _)` and prove the remaining obligations. Rewrite using `[← reverse_charpoly, coeff_reverse]`. Conclude with `hchar a ha _)`. Use the proof step `((∑ k ∈ F, c k • s k).map φ) (by`. Establish `: (∑ k ∈ F, c k • s k).map φ = ∑ k ∈ F, φ (c k) • (s k).map φ`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use extensionality with `i j`. Simplify using `[Matrix.sum_apply]`. Rewrite using `[this]`. Conclude with `sum_mem fun k _ => AddSubmonoid.subset_closure ⟨_, hφ _ (hc k), _, hs k, rfl⟩)`. Use `set B := ∑ k ∈ F, c k • s k`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `main` using `[eval₂_charpolyRev]`. Establish `h1 : B.charpolyRev.eval₂ φ (π X) = π B.charpolyRev`. Rewrite using `[← Polynomial.hom_eval₂, eval₂_C_X]`. Rewrite `main` using `[h1]`. Take `⟨p, hp⟩` from `main`.
-
-Establish `h2 : X ^ (n + 1) ∣ p.map T.subtype - B.charpolyRev` using `Ideal.mem_span_singleton.1 (Ideal.Quotient.eq.1 hp)`. Establish `h3` using `X_pow_dvd_iff.1 h2 n (by omega)`. Rewrite `h3` using `[coeff_sub, sub_eq_zero, coeff_map, ← reverse_charpoly, coeff_reverse, charpoly_natDegree_eq_dim, ← hn, revAt_le le_rfl, Nat.sub_self]`. Rewrite using `[det_eq_sign_charpoly_coeff, ← h3]`. Conclude with `T.mul_mem (T.pow_mem (T.neg_mem T.one_mem) _) (p.coeff n).2`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_sum_smul_mem {R ι κ : Type*} [CommRing R] [Fintype ι] [DecidableEq ι]
     (T : Subring R) (S : Set (Matrix ι ι R)) (hmul : ∀ a ∈ S, ∀ b ∈ S, a * b ∈ S)
@@ -204,21 +198,19 @@ theorem det_sum_smul_mem {R ι κ : Type*} [CommRing R] [Fintype ι] [DecidableE
 end Amitsur
 
 /- English proof (translation)
-Introduce `O X G _ _ T n r h m g d`. Set `ρ : G → Matrix (Fin n) (Fin n) (X → O)` to `fun a => Matrix.of fun i j x => r x a i j`. Establish `hρx : ∀ a x, (ρ a).map (Pi.evalRingHom (fun _ : X => O) x) = r x a`. Introduce `a x`. Use extensionality with `i j`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Simplify using `[ρ]`. Establish `hρ : ∀ a b, ρ (a * b) = ρ a * ρ b`. Introduce `a b`. Use extensionality with `i j x`. Simplify using `[ρ, Matrix.mul_apply]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hch : ∀ a j, (ρ a).charpoly.coeff j ∈ T`. Introduce `a j`. Use `h a j using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`. Rewrite using `[← hρx, Matrix.charpoly_map, Polynomial.coeff_map]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Set `T' : Subring (MvPolynomial (Fin m) (X → O))` to `(MvPolynomial.map (σ := Fin m) T.toSubring.subtype).range`. Establish `main` using `Amitsur.det_sum_smul_mem T' (Set.range fun a => (ρ a).map (MvPolynomial.C (σ := Fin m))) (by`. Introduce and unpack `_ ⟨a, rfl⟩ _ ⟨b, rfl⟩`. Conclude with `⟨a * b, by simp only [hρ, Matrix.map_mul]⟩) (by`.
+Both sides reduce to the same expression. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `_ ⟨a, rfl⟩ j`. Rewrite using `[Matrix.charpoly_map, Polynomial.coeff_map]`. Conclude with `⟨MvPolynomial.C ⟨_, hch a j⟩, MvPolynomial.map_C _ _⟩)`. Use the proof step `Finset.univ (fun k => MvPolynomial.X k) (fun k => (ρ (g k)).map MvPolynomial.C)`. Use the proof step `(fun k => ⟨MvPolynomial.X k, by simp⟩) (fun k => ⟨g k, rfl⟩)`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨p, hp⟩` from `main`. Establish `h1 : MvPolynomial.coeff d (MvPolynomial.map T.toSubring.subtype p) ∈ T`. Rewrite using `[MvPolynomial.coeff_map]`. Conclude with `(MvPolynomial.coeff d p).2`. Rewrite `h1` using `[hp]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition.
 
-Use `h1 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`. Express the relevant statement in the definitionally equal form `_ = Pi.evalRingHom (fun _ : X => O) x (MvPolynomial.coeff d _)`. Rewrite using `[← MvPolynomial.coeff_map, RingHom.map_det]`. Use `congr 2`.
-
-Use `ext1 i j`. Simplify using `[Matrix.sum_apply, ρ]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem coeff_det_generic_sum_mem_of_charpoly_coeff_mem :
     ∀ {O X G : Type} [CommRing O] [Monoid G] (T : Subalgebra O (X → O)) (n : ℕ)

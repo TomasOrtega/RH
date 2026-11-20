@@ -14,7 +14,7 @@ variable {m n : ℕ}
 def flip (k : Fin m × Fin n × Bool) : Fin m × Fin n × Bool := (k.1, k.2.1, !k.2.2)
 
 /- English proof (translation)
-Take `⟨a, i, b⟩` from `k`. Simplify using `[flip]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 @[simp] theorem flip_flip (k : Fin m × Fin n × Bool) : flip (flip k) = k := by
   obtain ⟨a, i, b⟩ := k; simp [flip]
@@ -27,15 +27,15 @@ def fac (c : ℝ) (s : Fin m × Fin n × Bool →₀ ℕ) (a : Fin m) (i : Fin n
   z ^ s (a, i, false) * star z ^ s (a, i, true) * Complex.exp ((-(c * ‖z‖ ^ 2) : ℝ))
 
 /- English proof (translation)
-Establish `h1 : evX (monomial s r) x = r * ∏ a, ∏ i, (x a i ^ s (a, i, false) * star (x a i) ^ s (a, i, true))`. Rewrite using `[evX, eval_monomial, Finsupp.prod_fintype _ _ (fun _ => pow_zero _)]`. Use `congr 1`. Rewrite using `[Fintype.prod_prod_type]`. Use `Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Fintype.prod_prod_type]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Fintype.prod_bool]`. Simplify using `[mul_comm]`. Establish `h2 : gs c x = ∏ a, ∏ i, Complex.exp ((-(c * ‖x a i‖ ^ 2) : ℝ))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[gs, ← Complex.ofReal_neg]`. Establish `: (-(c * ∑ a, ∑ i, ‖x a i‖ ^ 2) : ℝ) = ∑ a, ∑ i, (-(c * ‖x a i‖ ^ 2))`. Rewrite using `[Finset.mul_sum, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum, ← Finset.sum_neg_distrib]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, Complex.ofReal_sum, Complex.exp_sum]`. Use `Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.ofReal_sum, Complex.exp_sum]`. Rewrite using `[h1, h2, mul_assoc, ← Finset.prod_mul_distrib]`. Use `congr 2`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `a`. Rewrite using `[← Finset.prod_mul_distrib]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem evX_monomial_mul_gs (c : ℝ) (s : Fin m × Fin n × Bool →₀ ℕ) (r : ℂ) (x : Fin m → Fin n → ℂ) :
     evX (monomial s r) x * gs c x = r * ∏ a, ∏ i, fac c s a i (x a i) := by
@@ -67,7 +67,7 @@ variable (hM : OneMom)
 
 include hM in
 /- English proof (translation)
-Repeatedly rewrite using `[evX_monomial_mul_gs]`. Use `Integrable.const_mul ?_ r` and prove the remaining obligations. Conclude with `Integrable.fintype_prod (f := fun a (y : Fin n → ℂ) => ∏ i, fac c s a i (y i)) (fun a => Integrable.fintype_prod (f := fun i (z : ℂ) => fac c s a i z) (fun i => (hM c hc _ _).1))`.
+Rewrite the conclusion repeatedly using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem integrable_monomial (c : ℝ) (hc : 0 < c) (s : Fin m × Fin n × Bool →₀ ℕ) (r : ℂ) :
     Integrable (fun x : Fin m → Fin n → ℂ => evX (monomial s r) x * gs c x) := by
@@ -78,9 +78,9 @@ theorem integrable_monomial (c : ℝ) (hc : 0 < c) (s : Fin m × Fin n × Bool �
 
 include hM in
 /- English proof (translation)
-Rewrite using `[mom]`. Repeatedly rewrite using `[evX_monomial_mul_gs]`. Rewrite using `[integral_const_mul]`. Use `congr 1`. Rewrite using `[integral_fintype_prod_volume_eq_prod (f := fun a (y : Fin n → ℂ) => ∏ i, fac c s a i (y i))]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[integral_fintype_prod_volume_eq_prod (f := fun i (z : ℂ) => fac c s a i z)]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Conclude with `(hM c hc _ _).2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem mom_monomial (c : ℝ) (hc : 0 < c) (s : Fin m × Fin n × Bool →₀ ℕ) (r : ℂ) :
     mom c (monomial s r) = r * phi c s := by
@@ -96,9 +96,9 @@ theorem mom_monomial (c : ℝ) (hc : 0 < c) (s : Fin m × Fin n × Bool →₀ �
 
 include hM in
 /- English proof (translation)
-Proceed by induction on `P using MvPolynomial.induction_on' with`. Consider the case `monomial s r => exact integrable_monomial hM c hc s r`. Consider the case `add P Q hP hQ`. Establish `: (fun x => evX (P + Q) x * gs c x) = fun x => evX P x * gs c x + evX Q x * gs c x`. Use function extensionality and compare the values at `x`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[evX, add_mul]`. Rewrite using `[this]`. Conclude with `hP.add hQ`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integrable_evX (c : ℝ) (hc : 0 < c) (P : PX m n) :
     Integrable (fun x : Fin m → Fin n → ℂ => evX P x * gs c x) := by
@@ -111,7 +111,7 @@ theorem integrable_evX (c : ℝ) (hc : 0 < c) (P : PX m n) :
 
 include hM in
 /- English proof (translation)
-Rewrite using `[mom, mom, mom, ← integral_add (integrable_evX hM c hc P) (integrable_evX hM c hc Q)]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Simplify using `[evX, add_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem mom_add (c : ℝ) (hc : 0 < c) (P Q : PX m n) : mom c (P + Q) = mom c P + mom c Q := by
   rw [mom, mom, mom, ← integral_add (integrable_evX hM c hc P) (integrable_evX hM c hc Q)]
@@ -119,7 +119,7 @@ theorem mom_add (c : ℝ) (hc : 0 < c) (P Q : PX m n) : mom c (P + Q) = mom c P 
 
 omit hM in
 /- English proof (translation)
-Rewrite using `[mom, mom, ← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Simplify using `[evX, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem mom_smul (c : ℝ) (r : ℂ) (P : PX m n) : mom c (r • P) = r * mom c P := by
   rw [mom, mom, ← integral_const_mul]

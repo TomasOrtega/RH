@@ -8,23 +8,23 @@ open UpperTheory.Gal.G3 (sp)
 open UpperTheory.Gal.FiniteEtaleModels
 
 /- English proof (translation)
-Establish `hcomp : ∀ g : B →ₐ[K] K, Spec.map (CommRingCat.ofHom (g : B →+* K)) ≫ Spec.map (CommRingCat.ofHom (algebraMap K B)) = 𝟙 _`. Introduce `g`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Establish `: (g : B →+* K).comp (algebraMap K B) = RingHom.id K`. Use extensionality with `z`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using the standard rewrite rules. Rewrite using `[this]`. Conclude with `Spec.map_id _`. Set `F : (B →ₐ[K] K) → {y : Spec (CommRingCat.of K) ⟶ Y' // y ≫ s = x}` to `fun g => ⟨Spec.map (CommRingCat.ofHom (g : B →+* K)) ≫ f, by`. Rewrite using `[Category.assoc, h.w, ← Category.assoc, hcomp, Category.id_comp]⟩`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hF : Function.Bijective F`. Prove the components needed by the constructor for the conclusion. Introduce `g g' e`. Establish `e1 : Spec.map (CommRingCat.ofHom (g : B →+* K)) ≫ f = Spec.map (CommRingCat.ofHom (g' : B →+* K)) ≫ f` using `congrArg Subtype.val e`. Establish `e2 : Spec.map (CommRingCat.ofHom (g : B →+* K)) = Spec.map (CommRingCat.ofHom (g' : B →+* K))` using `h.hom_ext e1 ((hcomp g).trans (hcomp g').symm)`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e3` using `Spec.map_injective e2`. Establish `e4 : (g : B →+* K) = (g' : B →+* K)`. Simplify using `using congrArg CommRingCat.Hom.hom e3`. Conclude with `AlgHom.coe_ringHom_injective e4`. Introduce and unpack `⟨y, hy⟩`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `t : Spec (CommRingCat.of K) ⟶ Spec (CommRingCat.of B)` to `h.lift y (𝟙 _) (by rw [hy, Category.id_comp])`. Establish `ht1 : t ≫ f = y` using `h.lift_fst _ _ _`. Establish `ht2 : t ≫ Spec.map (CommRingCat.ofHom (algebraMap K B)) = 𝟙 _` using `h.lift_snd _ _ _`. Set `g0 : CommRingCat.of B ⟶ CommRingCat.of K` to `Spec.preimage t`. Establish `hg0 : Spec.map g0 = t` using `Spec.map_preimage t`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hc : CommRingCat.ofHom (algebraMap K B) ≫ g0 = 𝟙 _`. Apply `Spec.map_injective` to reduce the goal to its premises. Rewrite using `[Spec.map_comp, hg0, ht2, Spec.map_id]`. Set `g : B →ₐ[K] K` to `{ g0.hom with commutes' := fun r => by`. Use `congrArg (fun u => u.hom r) hc` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify using `using this }`. Establish `hgg : CommRingCat.ofHom (g : B →+* K) = g0`. Use extensionality with `z`. Both sides reduce to the same expression. Use `⟨g, Subtype.ext ?_⟩` and prove the remaining obligations.
+By extensionality, compare the relevant components. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `Spec.map (CommRingCat.ofHom (g : B →+* K)) ≫ f = y`. Rewrite using `[hgg, hg0, ht1]`. Rewrite using `[← Nat.card_congr (Equiv.ofBijective F hF)]`. Take `⟨hfin, hsp⟩` from `UpperTheory.Gal.crystallineComparison.splitsField_of K B K inferInstance`. Use `haveI := Fintype.ofFinite (B →ₐ[K] K)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Set `e : (TensorProduct K K B) ≃ₗ[K] ((B →ₐ[K] K) → K)` to `LinearEquiv.ofBijective (UpperTheory.Gal.crystallineComparison.splitMap (fun z : B →ₐ[K] K => z)).toLinearMap hsp`. Establish `e1` using `e.finrank_eq`. Rewrite `e1` using `[Module.finrank_fintype_fun_eq_card, ← Nat.card_eq_fintype_card, (TensorProduct.lid K B).finrank_eq]`. Conclude with `e1.symm`.
+A detailed English derivation is pending.
 -/
 private theorem card_of_pb {K : Type} [Field K] [IsAlgClosed K] {Y Y' : Scheme.{0}} (s : Y' ⟶ Y)
     (x : Spec (CommRingCat.of K) ⟶ Y) (B : Type) [CommRing B] [Algebra K B] [Module.Finite K B] [Algebra.Etale K B]
@@ -81,13 +81,11 @@ private theorem card_of_pb {K : Type} [Field K] [IsAlgClosed K] {Y Y' : Scheme.{
   exact e1.symm
 
 /- English proof (translation)
-Use `haveI : Etale (pullback.snd s x) := inferInstance`. Use `haveI : IsAffine (pullback s x) := isAffine_of_isAffineHom (pullback.snd s x)`. Set `e` to `(pullback s x).isoSpec`. Set `φ : CommRingCat.of K ⟶ Γ(pullback s x, ⊤)` to `Spec.preimage (e.inv ≫ pullback.snd s x)`. Establish `hφ : Spec.map φ = e.inv ≫ pullback.snd s x` using `Spec.map_preimage _`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfinφ : IsFinite (Spec.map φ)` using `by rw [hφ]; infer_instance`. Establish `hetφ : Etale (Spec.map φ)` using `by rw [hφ]; infer_instance`. Use `letI : Algebra K Γ(pullback s x, ⊤) := φ.hom.toAlgebra`. Use `haveI : Module.Finite K Γ(pullback s x, ⊤) := ((IsFinite.SpecMap_iff φ).mp hfinφ : φ.hom.Finite)`. Use `haveI : Algebra.Etale K Γ(pullback s x, ⊤) := RingHom.etale_algebraMap.mp (HasRingHomProperty.Spec_iff.mp hetφ : φ.hom.Etale)`.
+Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hpb : IsPullback (e.inv ≫ pullback.fst s x) (Spec.map φ) s x`. Rewrite using `[hφ]`. Conclude with `IsPullback.of_iso_pullback ⟨by simp [pullback.condition]⟩ e.symm (by simp) (by simp)`. Rewrite using `[card_of_pb s x Γ(pullback s x, ⊤) _ hpb]`. Establish `h1` using `Scheme.Hom.finrank_of_isPullback _ _ _ _ hpb z`.
-
-Rewrite using `[← h1]`. Establish `h2` using `Scheme.Hom.finrank_SpecMap_algebraMap K Γ(pullback s x, ⊤) z`. Rewrite `h2` using `[Module.rankAtStalk_eq_finrank_of_free]`. Conclude with `h2.symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem card_lifts {K : Type} [Field K] [IsAlgClosed K] {Y Y' : Scheme.{0}} (s : Y' ⟶ Y) [IsFinite s] [Etale s]
     (x : Spec (CommRingCat.of K) ⟶ Y) (z : Spec (CommRingCat.of K)) :
@@ -114,21 +112,21 @@ private theorem card_lifts {K : Type} [Field K] [IsAlgClosed K] {Y Y' : Scheme.{
   exact h2.symm
 
 /- English proof (translation)
-Introduce `O E _ _ _ _ _ Y Y' pY s d hfl hfin het hd`. Establish `key : ∀ y₀ : Y, Scheme.Hom.finrank s y₀ = d`. Introduce `y₀`. Establish `hg` using `Flat.generalizingMap pY`. Establish `hsp : (⊥ : PrimeSpectrum O) ⤳ pY y₀` using `(PrimeSpectrum.le_iff_specializes _ _).mp bot_le`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨y₁, h1, h2⟩` from `hg hsp`. Take `⟨k, _, _, a, ha⟩` from `GlobalTheory.FinEt.exists_algClosed_point Y y₁`. Set `pt : Spec (CommRingCat.of k)` to `(⊥ : PrimeSpectrum k)`. Establish `ha1 : a pt = y₁`. Establish `: a pt ∈ Set.range a` using `⟨pt, rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[ha]`. Conclude with `this`. Set `f : CommRingCat.of O ⟶ CommRingCat.of k` to `Spec.preimage (a ≫ pY)`. Establish `hf : Spec.map f = a ≫ pY` using `Spec.map_preimage _`. Establish `hpt : (Spec.map f) pt = (⊥ : PrimeSpectrum O)`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hf, Scheme.Hom.comp_apply, ha1, h2]`. Establish `hinj : Function.Injective f.hom`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `r hr`. Establish `h3 : r ∈ (PrimeSpectrum.comap f.hom (⊥ : PrimeSpectrum k)).asIdeal`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `hr` using `[PrimeSpectrum.comap_asIdeal]`. Establish `h4 : PrimeSpectrum.comap f.hom (⊥ : PrimeSpectrum k) = (⊥ : PrimeSpectrum O)` using `hpt`. Rewrite `h3` using `[h4]`. Simplify using `using h3`. Set `g : E →+* k` to `IsFractionRing.lift hinj`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `σ : sp k ⟶ sp E` to `Spec.map (CommRingCat.ofHom g)`. Establish `hσ : a ≫ pY = σ ≫ gen O E`. Rewrite using `[← hf, gen, ← Spec.map_comp]`. Use `congr 1`. Use extensionality with `z`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[g]`. Establish `h3` using `hd k a σ hσ`. Rewrite `h3` using `[card_lifts s a pt, ha1]`. Establish `h5` using `h1.map (Scheme.Hom.isLocallyConstant_finrank s).continuous`. Rewrite using `[← h3]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(specializes_iff_eq.mp h5).symm`. Use `⟨hfin, het, fun K _ _ x => ?_⟩` and prove the remaining obligations. Rewrite using `[card_lifts s x (⊥ : PrimeSpectrum K), key]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.FiniteEtaleModels.fEtExt_holds :
     FEtExt := by

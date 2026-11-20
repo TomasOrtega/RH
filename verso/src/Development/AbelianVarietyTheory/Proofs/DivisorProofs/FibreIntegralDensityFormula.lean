@@ -19,7 +19,7 @@ open scoped ContDiff ComplexOrder ENNReal Classical
 namespace GlobalTheory.FubIdent
 
 /- English proof (translation)
-Break down `le_total 0 t with h | h` into its components or cases. Simplify using `[abs_of_nonneg h, ENNReal.ofReal_of_nonpos (neg_nonpos.2 h)]`. Simplify using `[abs_of_nonpos h, ENNReal.ofReal_of_nonpos h]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem ofReal_abs_eq_add (t : ℝ) : ENNReal.ofReal |t| = ENNReal.ofReal t + ENNReal.ofReal (-t) := by
   rcases le_total 0 t with h | h
@@ -27,23 +27,21 @@ theorem ofReal_abs_eq_add (t : ℝ) : ENNReal.ofReal |t| = ENNReal.ofReal t + EN
   · simp [abs_of_nonpos h, ENNReal.ofReal_of_nonpos h]
 
 /- English proof (translation)
-Establish `habs : ∀ u ∈ K, (∫⁻ x, ENNReal.ofReal |a u| * ENNReal.ofReal |φ u x| ∂ν) = (∫⁻ x, ENNReal.ofReal |a u| * ENNReal.ofReal (φ u x) ∂ν) + ∫⁻ x, ENNReal.ofReal |a u| * ENNReal.ofReal (-φ u x) ∂ν`. Introduce `u hu`. Rewrite using `[← lintegral_add_left' (((hφ u hu).ennreal_ofReal).const_mul _)]`. Use `lintegral_congr fun x => ?_` and prove the remaining obligations. Rewrite using `[ofReal_abs_eq_add (φ u x), mul_add]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hsum : (∫⁻ u in K, (∫⁻ x, ENNReal.ofReal |a u| * ENNReal.ofReal (φ u x) ∂ν) + ∫⁻ x, ENNReal.ofReal |a u| * ENNReal.ofReal (-φ u x) ∂ν ∂μ) ≠ ⊤`. Rewrite using `[lintegral_add_left' hapos]`. Conclude with `ENNReal.add_ne_top.2 ⟨hfp, hfn⟩`. Establish `hfin : ∀ᵐ u ∂μ, u ∈ K → (∫⁻ x, ENNReal.ofReal |a u| * ENNReal.ofReal |φ u x| ∂ν) ≠ ⊤`. Establish `h1` using `ae_lt_top' (hapos.add haneg) hsum`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[ae_restrict_iff' hK]`. Use `filter_upwards [h1] with u hu huK`. Rewrite using `[habs u huK]`. Conclude with `(hu huK).ne`. Establish `hA : AEMeasurable (fun u => |a u|) (μ.restrict K)` using `continuous_abs.measurable.comp_aemeasurable ha`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc1 : AEMeasurable (fun u => ENNReal.ofReal (a u) * ENNReal.ofReal (-G u)) (μ.restrict K)` using `ha.ennreal_ofReal.mul hG.neg.ennreal_ofReal`. Establish `hc2 : AEMeasurable (fun u => ENNReal.ofReal (-a u) * ENNReal.ofReal (G u)) (μ.restrict K)` using `ha.neg.ennreal_ofReal.mul hG.ennreal_ofReal`. Establish `hc3 : AEMeasurable (fun u => ENNReal.ofReal (a u) * ENNReal.ofReal (G u)) (μ.restrict K)` using `ha.ennreal_ofReal.mul hG.ennreal_ofReal`. Establish `hc4 : AEMeasurable (fun u => ENNReal.ofReal (-a u) * ENNReal.ofReal (-G u)) (μ.restrict K)` using `ha.neg.ennreal_ofReal.mul hG.neg.ennreal_ofReal`. Establish `hc5 : AEMeasurable (fun u => ENNReal.ofReal |a u| * ENNReal.ofReal (G u)) (μ.restrict K)` using `hA.ennreal_ofReal.mul hG.ennreal_ofReal`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `eL : ((∫⁻ u in K, ∫⁻ x, ENNReal.ofReal (a u) * ENNReal.ofReal (φ u x) ∂ν ∂μ) + (∫⁻ u in K, ∫⁻ x, ENNReal.ofReal (-a u) * ENNReal.ofReal (-φ u x) ∂ν ∂μ) + ((∫⁻ u in K, ENNReal.ofReal (a u) * ENNReal.ofReal (-G u) ∂μ) + ∫⁻ u in K, ENNReal.ofReal (-a u) * ENNReal.ofReal (G u) ∂μ)) = …`. Establish `h12 : AEMeasurable (fun u => ENNReal.ofReal (a u) * ENNReal.ofReal (-G u) + ENNReal.ofReal (-a u) * ENNReal.ofReal (G u)) (μ.restrict K)` using `hc1.add hc2`. Rewrite using `[lintegral_add_right' _ h12, lintegral_add_left' hpp, lintegral_add_left' hc1]`. Establish `eR : ((∫⁻ u in K, ∫⁻ x, ENNReal.ofReal (a u) * ENNReal.ofReal (-φ u x) ∂ν ∂μ) + (∫⁻ u in K, ∫⁻ x, ENNReal.ofReal (-a u) * ENNReal.ofReal (φ u x) ∂ν ∂μ) + ((∫⁻ u in K, ENNReal.ofReal (a u) * ENNReal.ofReal (G u) ∂μ) + ∫⁻ u in K, ENNReal.ofReal (-a u) * ENNReal.ofReal (-G u) ∂μ)) = …`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h34 : AEMeasurable (fun u => ENNReal.ofReal (a u) * ENNReal.ofReal (G u) + ENNReal.ofReal (-a u) * ENNReal.ofReal (-G u)) (μ.restrict K)` using `hc3.add hc4`. Rewrite using `[lintegral_add_right' _ h34, lintegral_add_right' _ hmp, lintegral_add_left' hc3]`. Rewrite using `[eL, eR]`. Use `setLIntegral_congr_fun_ae hK ?_` and prove the remaining obligations. Use `filter_upwards [hfin] with u hfu huK`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `F` using `GlobalTheory.T.lintegral_positive_negative_parts α ν (a u) (G u) (φ u) (hφ u huK) (hint u huK)`. Establish `m1 : AEMeasurable (fun x => ENNReal.ofReal (a u) * ENNReal.ofReal (φ u x)) ν` using `((hφ u huK).ennreal_ofReal).const_mul _`. Establish `m2 : AEMeasurable (fun x => ENNReal.ofReal (a u) * ENNReal.ofReal (-φ u x)) ν` using `((hφ u huK).neg.ennreal_ofReal).const_mul _`. Rewrite using `[← lintegral_add_left' m1, ← lintegral_add_left' m2]`. Conclude with `F.2 (hfu huK)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `eA : (∫⁻ u in K, ENNReal.ofReal |a u| * ENNReal.ofReal (G u) ∂μ) + (∫⁻ u in K, ENNReal.ofReal |a u| * ENNReal.ofReal (-G u) ∂μ) = ∫⁻ u in K, ENNReal.ofReal |a u| * ENNReal.ofReal |G u| ∂μ`. Rewrite using `[← lintegral_add_left' hc5]`. Use `lintegral_congr fun u => ?_` and prove the remaining obligations. Rewrite using `[ofReal_abs_eq_add (G u), mul_add]`. Rewrite using `[eA, ← lintegral_add_left' hapos]`.
-
-Use `setLIntegral_mono_ae (hapos.add haneg) ?_` and prove the remaining obligations. Use `filter_upwards with u huK`. Rewrite using `[← habs u huK]`. Conclude with `(GlobalTheory.T.lintegral_positive_negative_parts α ν (a u) (G u) (φ u) (hφ u huK) (hint u huK)).1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem core {β α : Type} [MeasurableSpace β] [MeasurableSpace α] (μ : Measure β) (ν : Measure α)
     (K : Set β) (hK : MeasurableSet K) (a G : β → ℝ) (φ : β → α → ℝ)
@@ -144,21 +142,19 @@ end GlobalTheory.FubIdent
 namespace GlobalTheory.FubIdent
 
 /- English proof (translation)
-Introduce `k _ B Y q p π w n r D ε σ _ c c' hq hp hcell ρ g f hρ hg hf hint A hA hAs hfin1 hfin2`. Use `haveI := CxPts.secondCountableTopology_of_isProjOver σ hq.isProjOver`. Establish `hρ' : IsDens (fun c y => -ρ c y)` using `(GlobalTheory.MixDens.isDens_zero.sub hρ).congr (fun _ _ _ => by simp)`. Establish `hg' : IsDens (fun c y => -g c y)` using `(GlobalTheory.MixDens.isDens_zero.sub hg).congr (fun _ _ _ => by simp)`. Establish `hKt : c.e '' A ⊆ c.e.target`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨y, hy, rfl⟩`. Conclude with `c.e.map_source (hAs hy)`. Establish `hK : MeasurableSet (c.e '' A)` using `ReciprocityTheory.L2DbarEstimates.measurableSet_image_of_chart n c.e c.e (fun _ _ => rfl) A hA hAs`. Establish `hpt : ∀ u ∈ c.e.target, ∀ x, pt ε u x ∈ c'.e.target`. Introduce `u hu x`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hcell.2.1]`. Use `show base ε (pt ε u x) ∈ c.e.target`. Rewrite using `[base_pt]`. Conclude with `hu`. Establish `hcont : ∀ u ∈ c.e.target, Continuous (fun x : Low r → ℂ => ρ c' (c'.e.symm (pt ε u x)))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Replace the chosen expression with an arbitrary variable.
 
-Introduce `u hu`. Use `(hρ.2 c').comp_continuous ?_ (hpt u hu)` and prove the remaining obligations. Use `(PiLp.continuous_toLp 2 _).comp (continuous_pi fun j => ?_)` and prove the remaining obligations. Generalize the expression as in `ε j = s`. Apply the tactic sequence `cases s <;> simp [continuous_const, continuous_apply]`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `mP : Measurable (fun u => ENNReal.ofReal (f u))` using `hf.ennreal_ofReal`. Establish `mN : Measurable (fun u => ENNReal.ofReal (-f u))` using `hf.neg.ennreal_ofReal`. Establish `mA : Measurable (fun u => ENNReal.ofReal |f u|)` using `(continuous_abs.measurable.comp hf).ennreal_ofReal`. Establish `C1` using `GlobalTheory.T.lintegral_fibre_over_cell k B Y q p π w n r D ε σ c c' hp hcell ρ hρ A hA hAs _ mP`. Establish `C2` using `GlobalTheory.T.lintegral_fibre_over_cell k B Y q p π w n r D ε σ c c' hp hcell _ hρ' A hA hAs _ mN`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `C3` using `GlobalTheory.T.lintegral_fibre_over_cell k B Y q p π w n r D ε σ c c' hp hcell _ hρ' A hA hAs _ mP`. Establish `C4` using `GlobalTheory.T.lintegral_fibre_over_cell k B Y q p π w n r D ε σ c c' hp hcell ρ hρ A hA hAs _ mN`. Establish `C5` using `GlobalTheory.T.lintegral_fibre_over_cell k B Y q p π w n r D ε σ c c' hp hcell ρ hρ A hA hAs _ mA`. Establish `C6` using `GlobalTheory.T.lintegral_fibre_over_cell k B Y q p π w n r D ε σ c c' hp hcell _ hρ' A hA hAs _ mA`. Establish `H1` using `GlobalTheory.T.lintegral_density_chart k B q σ n _ hg' c A hA hAs _ mP`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `H2` using `GlobalTheory.T.lintegral_density_chart k B q σ n g hg c A hA hAs _ mN`. Establish `H3` using `GlobalTheory.T.lintegral_density_chart k B q σ n g hg c A hA hAs _ mP`. Establish `H4` using `GlobalTheory.T.lintegral_density_chart k B q σ n _ hg' c A hA hAs _ mN`. Establish `H5` using `GlobalTheory.T.lintegral_density_chart k B q σ n g hg c A hA hAs _ mA`. Establish `H6` using `GlobalTheory.T.lintegral_density_chart k B q σ n _ hg' c A hA hAs _ mA`.
-
-Rewrite `hfin1` using `[C5.1]`. Rewrite `hfin2` using `[C6.1]`. Rewrite using `[C1.1, C2.1, C3.1, C4.1, C5.1, C6.1, H1, H2, H3, H4, H5, H6]`. Conclude with `core volume volume (c.e '' A) hK (fun u => f (c.e.symm u)) (fun u => g c (c.e.symm u)) (fun u x => ρ c' (c'.e.symm (pt ε u x))) (fun u hu => (hcont u (hKt hu)).aemeasurable) (fun u hu => hint u (hKt hu)) (hf.comp_aemeasurable ((c.e.continuousOn_symm.mono hKt).aemeasurable hK)) (( …`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cell_balance : ∀ (k : Type) [CommRing k] (B Y : Scheme.{0}) (q : B ⟶ Sp k) (p : Y ⟶ Sp k) (π : Y ⟶ B) (w : π ≫ q = p) (n r D : ℕ) (ε : Fin D ≃ Fin n ⊕ Low r) (σ : k →+* ℂ) [IsIntegral Y] (c : AlgChart q σ n) (c' : AlgChart p σ D), IsArithVar q n → IsArithVar p D → IsCell ε π w c c' → ∀ (ρ : AlgChart p σ D → CxPts p σ → ℝ) (g : AlgChart q σ n → CxPts q σ → ℝ) (f : CxPts q σ → ℝ), IsDens ρ → IsDens g → Measurable f → (∀ u ∈ c.e.target, ∫ x : Low r → ℂ, ρ c' (c'.e.symm (pt ε u x)) = g c (c.e.symm u)) → ∀ A : Set (CxPts q σ), MeasurableSet A → A ⊆ c.e.source → (∫⁻ y in PtsOver.map π w (spMap σ) ⁻¹' A, ENNReal.ofReal |f (PtsOver.map π w (spMap σ) y)| ∂part ρ) ≠ ⊤ → (∫⁻ y in PtsOver.map π w (spMap σ) ⁻¹' A, ENNReal.ofReal |f (PtsOver.map π w (spMap σ) y)| ∂part fun c y => -ρ c y) ≠ ⊤ → ((∫⁻ y in PtsOver.map π w (spMap σ) ⁻¹' A, ENNReal.ofReal (f (PtsOver.map π w (spMap σ) y)) ∂part ρ) + (∫⁻ y in PtsOver.map π w (spMap σ) ⁻¹' A, ENNReal.ofReal (-f (PtsOver.map π w (spMap σ) y)) ∂part fun c y => -ρ c y) + ((∫⁻ u in A, ENNReal.ofReal (f u) ∂part fun c y => -g c y) + ∫⁻ u in A, ENNReal.ofReal (-f u) ∂part g) = (∫⁻ y in PtsOver.map π w (spMap σ) ⁻¹' A, ENNReal.ofReal (f (PtsOver.map π w (spMap σ) y)) ∂part fun c y => -ρ c y) + (∫⁻ y in PtsOver.map π w (spMap σ) ⁻¹' A, ENNReal.ofReal (-f (PtsOver.map π w (spMap σ) y)) ∂part ρ) + ((∫⁻ u in A, ENNReal.ofReal (f u) ∂part g) + ∫⁻ u in A, ENNReal.ofReal (-f u) ∂part fun c y => -g c y)) ∧ (∫⁻ u in A, ENNReal.ofReal |f u| ∂part g) + (∫⁻ u in A, ENNReal.ofReal |f u| ∂part fun c y => -g c y) ≤ (∫⁻ y in PtsOver.map π w (spMap σ) ⁻¹' A, ENNReal.ofReal |f (PtsOver.map π w (spMap σ) y)| ∂part ρ) + ∫⁻ y in PtsOver.map π w (spMap σ) ⁻¹' A, ENNReal.ofReal |f (PtsOver.map π w (spMap σ) y)| ∂part fun c y => -ρ c y := by
   intro k _ B Y q p π w n r D ε σ _ c c' hq hp hcell ρ g f hρ hg hf hint A hA hAs hfin1 hfin2

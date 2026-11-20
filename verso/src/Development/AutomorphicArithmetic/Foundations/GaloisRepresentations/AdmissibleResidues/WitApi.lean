@@ -23,9 +23,9 @@ variable {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] {l : 
   {ι : Qbar l ≃+* ℂ} {r r' : G F Ω →* GL (Fin n) (Qbar l)}
 
 /- English proof (translation)
-Take `⟨π, hreg, hd, ha⟩` from `h`. Use `⟨π, hreg, ⟨quadChar F ^ n, fun v => ?_, ?_⟩, ha⟩` and prove the remaining obligations. Establish `e : (quadChar F ^ n).locInf v (-1) = (quadChar F).locInf v (-1) ^ n` using `rfl`. Rewrite using `[e, quadChar_locInf]`. Rewrite using `[map_pow, compNorm_quadChar, one_pow]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(GlobalTheory.ContraPair.dualIsConjBy_one π).2 hd`.
+A detailed English derivation is pending.
 -/
 theorem AutCsd0.pol [IsCMField F] (h : AutCsd0 ι r) : AutPol ι r := by
   obtain ⟨π, hreg, hd, ha⟩ := h
@@ -39,23 +39,23 @@ def IsRegAlgAutomorphicAttached [IsCMField F] (ι : Qbar l ≃+* ℂ) (r : G F �
   ∃ π : CuspSub F n, (CG.mk π).IsRegAlg ∧ AttC ι r π
 
 /- English proof (translation)
-The claim follows from `h.imp fun _ k => ⟨k.1, k.2.2⟩`.
+A detailed English derivation is pending.
 -/
 theorem AutCsd0.c0 [IsCMField F] (h : AutCsd0 ι r) : IsRegAlgAutomorphicAttached ι r := h.imp fun _ k => ⟨k.1, k.2.2⟩
 /- English proof (translation)
-The claim follows from `h.imp fun _ k => ⟨k.1, k.2.2⟩`.
+A detailed English derivation is pending.
 -/
 theorem AutPol.c0 [IsCMField F] (h : AutPol ι r) : IsRegAlgAutomorphicAttached ι r := h.imp fun _ k => ⟨k.1, k.2.2⟩
 
 variable [IsAlgClosure F Ω]
 
 /- English proof (translation)
-The claim follows from `L.wiso F Ω l n r r' e h`.
+A detailed English derivation is pending.
 -/
 theorem Wit.iso [IsCMField F] (e : RepIso r r') (h : Wit ι r) : Wit ι r' := L.wiso F Ω l n r r' e h
 
 /- English proof (translation)
-The claim follows from `L.wtw F Ω l n r μ hc h`.
+A detailed English derivation is pending.
 -/
 theorem Wit.tw [IsCMField F] (_P : Hypotheses₂) {μ : G F Ω →* (Qbar l)ˣ} (_hμ : IsAlgChar ι μ) (hc : Continuous μ) (_ha : IsRegAlgAutomorphicAttached ι r)
     (h : Wit ι r) : Wit ι (Af.tw r μ) := L.wtw F Ω l n r μ hc h
@@ -64,14 +64,14 @@ section
 variable (K : Type) [Field K] [NumberField K] [IsCMField F] [IsCMField K] [Algebra F K] [Algebra K Ω] [IsScalarTower F K Ω]
 
 /- English proof (translation)
-The claim follows from `L.wup F Ω l n r K h`.
+A detailed English derivation is pending.
 -/
 theorem Wit.up (_P : Hypotheses₂) [IsGalois F K] (_hs : Group.IsSolvable (K ≃ₐ[F] K)) (_hc : Continuous r) (_ha : IsRegAlgAutomorphicAttached ι r)
     (_hb : IsRegAlgAutomorphicAttached ι (r.comp (AlgEquiv.restrictScalarsHom F : G K Ω →* G F Ω))) (h : Wit ι r) :
     Wit ι (r.comp (AlgEquiv.restrictScalarsHom F : G K Ω →* G F Ω)) := L.wup F Ω l n r K h
 
 /- English proof (translation)
-The claim follows from `L.wdown F Ω l n r K h`.
+A detailed English derivation is pending.
 -/
 theorem Wit.down (_P : Hypotheses₂) [IsGalois F K] (_hs : Group.IsSolvable (K ≃ₐ[F] K)) (_hc : Continuous r) (_ha : IsRegAlgAutomorphicAttached ι r)
     (_hb : IsRegAlgAutomorphicAttached ι (r.comp (AlgEquiv.restrictScalarsHom F : G K Ω →* G F Ω)))
@@ -79,7 +79,7 @@ theorem Wit.down (_P : Hypotheses₂) [IsGalois F K] (_hs : Group.IsSolvable (K 
 end
 
 /- English proof (translation)
-Introduce `K _ _ _ _ _ _ h2 hi`. Use `haveI : IsAlgClosure K Ω := ⟨IsAlgClosure.isAlgClosed F, haveI := IsAlgClosure.isAlgebraic (R := F) (K := Ω); Algebra.IsAlgebraic.tower_top (K := F) K⟩`. Take `⟨g, hg⟩` from `e`. Establish `e' : RepIso (r.comp (AlgEquiv.restrictScalarsHom F : G K Ω →* G F Ω)) (r'.comp (AlgEquiv.restrictScalarsHom F : G K Ω →* G F Ω))` using `⟨g, fun s => hg _⟩`. Conclude with `(h K h2 (isIrr_iso e'.symm' hi)).iso e'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem WitQ.iso (e : RepIso r r') (h : WitQ ι r) : WitQ ι r' := by
   intro K _ _ _ _ _ _ h2 hi
@@ -90,7 +90,7 @@ theorem WitQ.iso (e : RepIso r r') (h : WitQ ι r) : WitQ ι r' := by
   exact (h K h2 (isIrr_iso e'.symm' hi)).iso e'
 
 /- English proof (translation)
-The claim follows from `L.wread F Ω l n r ι w A h hl _ hc hW hf (k.awV hl).pol (k.awV hl).n0`.
+A detailed English derivation is pending.
 -/
 theorem Wit.read [IsCMField F] (_P : Hypotheses₂) {π : CuspSub F n} (_hreg : (CG.mk π).IsRegAlg) (_hatt : AttC ι r π) (hc : Continuous r)
     (hW : Wit ι r) {w : HeightOneSpectrum (𝓞 F)} {A : ValuationSubring Ω} {h : IsPlaceOver A w} (hl : ((l : ℕ) : 𝓞 F) ∉ w.asIdeal)
@@ -101,12 +101,12 @@ theorem Wit.read [IsCMField F] (_P : Hypotheses₂) {π : CuspSub F n} (_hreg : 
 
 omit [IsAlgClosure F Ω] in
 /- English proof (translation)
-The claim follows from `h`.
+A detailed English derivation is pending.
 -/
 theorem Wit.born [IsCMField F] (h : Unlinked r) : Wit ι r := h
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h0, fun c => (h.2 (continuous_of_iso c e.symm')).iso e⟩`.
+Supply the required witnesses or components.
 -/
 theorem IsAutCsdN.iso [IsCMField F] (e : RepIso r r') (h0 : AutCsd0 ι r') (h : IsAutCsdN ι r) :
     IsAutCsdN ι r' := ⟨h0, fun c => (h.2 (continuous_of_iso c e.symm')).iso e⟩

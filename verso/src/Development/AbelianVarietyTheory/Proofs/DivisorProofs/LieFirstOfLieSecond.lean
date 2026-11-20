@@ -22,14 +22,14 @@ Both sides reduce to the same expression.
 theorem swapE_apply (f : Formalism.BasicNotions.TH.Pol R S P Q) : swapE P Q R S f = rename Prod.swap f := rfl
 
 /- English proof (translation)
-Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem lineSign_swap (a : Ix P Q) (b : Ix R S) :
     lineSign (p := R) (q := S) (r := P) (s := Q) b a = lineSign (p := P) (q := Q) (r := R) (s := S) a b := by
   rcases a with a | a <;> rcases b with b | b <;> rfl
 
 /- English proof (translation)
-Simplify using `only [heisOp, swapE_apply, LinearMap.smul_apply, LinearMap.sum_apply, LinearMap.sub_apply, map_smul, map_sum, map_sub, GlobalTheory.FockSwap.rename_raiB, GlobalTheory.FockSwap.rename_lowB]`. Use `congr 1`. Use `Fintype.sum_equiv (Equiv.prodComm _ _) _ _ fun l => ?_` and prove the remaining obligations. Simplify using `[lineSign_swap]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem swapE_heisOp (c : Matrix (Ix R S) (Ix P Q) ℂ) (f : Formalism.BasicNotions.TH.Pol R S P Q) :
     swapE P Q R S (heisOp c f) = heisOp cᵀ (swapE P Q R S f) := by
@@ -48,9 +48,9 @@ def swapT (ι : Type) (P Q R S : ℕ) :
   PiTensorProduct.congr fun _ => swapE P Q R S
 
 /- English proof (translation)
-Establish `e : (swapT ι P Q R S).toLinearMap ∘ₗ atPl w L' = atPl w L ∘ₗ (swapT ι P Q R S).toLinearMap`. Use `PiTensorProduct.ext (MultilinearMap.ext fun x => ?_)` and prove the remaining obligations. Simplify using `only [LinearMap.compMultilinearMap_apply, LinearMap.comp_apply, LinearEquiv.coe_coe, atPl, swapT, PiTensorProduct.map_tprod, PiTensorProduct.congr_tprod]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Distinguish the cases in `hi : i = w`. Substitute `hi` using the available equality. Simplify using `[h]`. Simplify using `[Function.update_of_ne hi]`. Conclude with `LinearMap.congr_fun e T`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem swapT_atPl (w : ι) (L' : Module.End ℂ (Formalism.BasicNotions.TH.Pol R S P Q)) (L : Module.End ℂ (Formalism.BasicNotions.TH.Pol P Q R S))
     (h : ∀ f, swapE P Q R S (L' f) = L (swapE P Q R S f)) (T : ⨂[ℂ] _ : ι, Formalism.BasicNotions.TH.Pol R S P Q) :
@@ -67,7 +67,7 @@ theorem swapT_atPl (w : ι) (L' : Module.End ℂ (Formalism.BasicNotions.TH.Pol 
   exact LinearMap.congr_fun e T
 
 /- English proof (translation)
-Simplify using `only [sumPl, LinearMap.sum_apply, map_sum]`. Conclude with `Finset.sum_congr rfl fun w _ => swapT_atPl w (L' w) (L w) (h w) T`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem swapT_sumPl (L' : ι → Module.End ℂ (Formalism.BasicNotions.TH.Pol R S P Q)) (L : ι → Module.End ℂ (Formalism.BasicNotions.TH.Pol P Q R S))
     (h : ∀ w f, swapE P Q R S (L' w f) = L w (swapE P Q R S f)) (T : ⨂[ℂ] _ : ι, Formalism.BasicNotions.TH.Pol R S P Q) :
@@ -80,13 +80,13 @@ end Tensor
 open scoped Classical in
 
 /- English proof (translation)
-Introduce `h2 F E _ _ _ _ _ σ α β κ _ _ _ _ _ P Q R S ψ τ JA JB d d' a b A C Φ om χ m hCM hψ hfr hΦ hdd hW hm`. Establish `hfr' : Framed τ JB JA b a C A` using `⟨by rw [mul_comm]; exact hfr.1, hfr.2.2, hfr.2.1⟩`. Establish `hΦ' : IsFockMap ψ τ d' C A (Φ ∘ₗ (swapT (InfinitePlace F) P Q R S).toLinearMap)`. Use `⟨hΦ.1.comp (swapT (InfinitePlace F) P Q R S).injective, fun u hu c hc T => ?_⟩` and prove the remaining obligations. Establish `hu' : At (evI F) uᵀ` using `fun x hx => by rw [← Matrix.transpose_smul, hu x hx, Matrix.transpose_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hc' : ∀ w, uᵀ.map (piInf (τ w)) = A w * (c w)ᵀ * (C w)ᵀ` using `fun w => by`. Rewrite using `[Matrix.transpose_map, hc w]`. Simplify using `[Matrix.transpose_mul, Matrix.mul_assoc]`. Establish `key` using `hΦ.2 uᵀ hu' (fun w => (c w)ᵀ) hc' (swapT (InfinitePlace F) P Q R S T)`. Establish `hr : ∀ t : ℝ, d'.rho ψ (realAd F t • u) = d.rho ψ (realAd F t • uᵀ)` using `fun t => by show schr ψ (d'.e _) = schr ψ (d.e _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hdd, Matrix.transpose_smul, Matrix.transpose_transpose]`. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe, hr]`. Rewrite using `[swapT_sumPl (fun w => heisOp (c w)) (fun w => heisOp (c w)ᵀ) (fun w f => swapE_heisOp (c w) f)]` and apply the resulting hypothesis. Establish `hA` using `h2 F E σ β α κ R S P Q ψ τ JB JA d' b a C A _ om χ m hCM hψ hfr' hΦ' hW hm`. Introduce `γ hγ Y hY T`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key` using `hA γ hγ Y hY ((swapT (InfinitePlace F) P Q R S).symm T)`. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.apply_symm_apply] at key`. Rewrite using `[swapT_sumPl (fun w => fockAct2 R S P Q (Y w) + (((m w : ℂ) / 2) * (Y w).trace) • 1) (fun w => fockAct1 P Q R S (Y w) + (((m w : ℂ) / 2) * (Y w).trace) • 1) (fun w f => by` and apply the resulting hypothesis. Apply the tactic sequence `simp only [LinearMap.add_apply, LinearMap.smul_apply, Module.End.one_apply, map_add, map_smul, swapE_apply, (GlobalTheory.FockSwap.swap_symmetry R S P Q).2.1]), LinearEquiv.apply_symm_apply] at key`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Use the resulting assumption. Simplify using the standard rewrite rules.
 -/
 theorem lieFirst_of_lieSecond : LieSecond → LieFirst := by
   intro h2 F E _ _ _ _ _ σ α β κ _ _ _ _ _ P Q R S ψ τ JA JB d d' a b A C Φ om χ m hCM hψ hfr hΦ hdd hW hm

@@ -12,7 +12,7 @@ variable {n : ℕ} [NeZero n] {κ : Type} [Fintype κ] [DecidableEq κ] {B : Mat
   {ps : (mu nu : Fin n → ℤ) → Matrix (TIdx mu × κ) (TIdx nu) ℤ}
 
 /- English proof (translation)
-The claim follows from `congrFun (congrFun (hd.2.2.2.1 mu hmu nu hnu) (K, k)) I`.
+A detailed English derivation is pending.
 -/
 lemma qx_ps_equiv (hd : IsStripData B be Str ps) {mu nu : Fin n → ℤ} (hmu : Dominant mu) (hnu : nu ∈ Str mu)
     (K : TIdx mu) (k : κ) (I : TIdx nu) :
@@ -21,9 +21,9 @@ lemma qx_ps_equiv (hd : IsStripData B be Str ps) {mu nu : Fin n → ℤ} (hmu : 
   congrFun (congrFun (hd.2.2.2.1 mu hmu nu hnu) (K, k)) I
 
 /- English proof (translation)
-Establish `h1` using `congrArg (evGL (torusPt n)) (qx_ps_equiv hd hmu hnu K k I)`. Simplify using `only [map_sum, map_mul, map_intCast, qb_evGL_torus_TMat, hd.2.1, Fintype.sum_prod_type, ite_mul, zero_mul, mul_ite, mul_zero, sum_ite_eq, sum_ite_eq', mem_univ, if_true, AddMonoidAlgebra.single_mul_single, one_mul] at h1`. Assume the negation of the conclusion as `hne`. Establish `h2` using `congrArg (fun x => x.coeff (qb_wtT nu I)) h1`. Simplify using `only [← zsmul_eq_mul', ← zsmul_eq_mul, AddMonoidAlgebra.coeff_smul, Finsupp.smul_apply, AddMonoidAlgebra.coeff_single, Finsupp.single_apply, smul_eq_mul, if_neg hne, if_true, mul_zero, mul_one] at h2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `h h2.symm`.
+A detailed English derivation is pending.
 -/
 lemma qx_wt (hd : IsStripData B be Str ps) {mu nu : Fin n → ℤ} (hmu : Dominant mu) (hnu : nu ∈ Str mu)
     (K : TIdx mu) (k : κ) (I : TIdx nu) (h : ps mu nu (K, k) I ≠ 0) :
@@ -39,7 +39,7 @@ lemma qx_wt (hd : IsStripData B be Str ps) {mu nu : Fin n → ℤ} (hmu : Domina
   exact h h2.symm
 
 /- English proof (translation)
-Establish `h1` using `qx_wt hd hmu hnu K k _ h`. Rewrite `h1` using `[qb_wtT_can (hd.2.2.1 mu hmu nu hnu)]`. Rewrite using `[← h1, add_sub_cancel_right]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 lemma qx_wt_can (hd : IsStripData B be Str ps) {mu nu : Fin n → ℤ} (hmu : Dominant mu) (hnu : nu ∈ Str mu)
     (K : TIdx mu) (k : κ) (h : ps mu nu (K, k) (canT nu) ≠ 0) : qb_wtT mu K = nu - be k := by
@@ -64,17 +64,15 @@ lemma qx_ph_apply (e : M'.ι ≃ M.ι × κ) (CF : ColFam M) (x : qx_J Str CF) (
     qx_ph ps e CF x i I = ∑ K : TIdx (CF.mu x.1), CF.ph x.1 (e i).1 K * ps (CF.mu x.1) x.2 (K, (e i).2) I := rfl
 
 /- English proof (translation)
-Take `⟨j, nu, hnu⟩` from `x`. Establish `hmu` using `CF.dom j`. Establish `hT' : ∀ i j, M'.A i j = M.A (e i).1 (e j).1 * B (e i).2 (e j).2` using `hT`. Simplify using `only [qx_ph_apply, hT', Int.cast_sum, Int.cast_mul]`. Rewrite using `[← e.symm.sum_comp]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Equiv.apply_symm_apply, Fintype.sum_prod_type]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [mul_sum, sum_mul]`. Rewrite using `[sum_comm]`. Use `conv_lhs => enter [2, k]`.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sum_comm]`. Rewrite using `[sum_comm]`. Use `sum_congr rfl fun K _ => sum_congr rfl fun k _ => sum_congr rfl fun m _ => by ring` and prove the remaining obligations. Use `_ = ∑ K', (CF.ph j (e i).1 K' : GLCoord ℤ n) * ∑ y : TIdx (CF.mu j) × κ, TMat (CF.mu j) K' y.1 * B (e i).2 y.2 * (ps (CF.mu j) nu y I : GLCoord ℤ n) := by`. Simplify using `only [qb_equiv_apply, Fintype.sum_prod_type, mul_sum, sum_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sum_comm]`. Use `conv_lhs => enter [2, k]`. Rewrite using `[sum_comm]`. Rewrite using `[sum_comm]`. Use `conv_lhs => enter [2, k]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sum_comm]`. Use `sum_congr rfl fun K' _ => sum_congr rfl fun K _ => sum_congr rfl fun k _ => by ring` and prove the remaining obligations. Use `_ = _ := by`. Simplify using `only [qx_ps_equiv hd hmu hnu, mul_sum, sum_mul]`. Rewrite using `[sum_comm]`.
-
-Use `sum_congr rfl fun I' _ => sum_congr rfl fun K _ => by ring` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 lemma qx_equiv (hd : IsStripData B be Str ps) (e : M'.ι ≃ M.ι × κ) (hT : IsTensor M M' B e) (CF : ColFam M)
     (x : qx_J Str CF) (i : M'.ι) (I : TIdx (x.2 : Fin n → ℤ)) :
@@ -109,7 +107,7 @@ lemma qx_equiv (hd : IsStripData B be Str ps) (e : M'.ι ≃ M.ι × κ) (hT : I
         refine sum_congr rfl fun I' _ => sum_congr rfl fun K _ => by ring
 
 /- English proof (translation)
-Rewrite using `[Fintype.card_congr e, Fintype.card_prod, CF.rank, sum_mul, Fintype.sum_sigma]`. Use `sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hd.2.2.2.2.2 _ (CF.dom j)]`. Conclude with `(Finset.sum_coe_sort (Str (CF.mu j)) dMu).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma qx_rank (hd : IsStripData B be Str ps) (e : M'.ι ≃ M.ι × κ) (CF : ColFam M) :
     Fintype.card M'.ι = ∑ x : qx_J Str CF, dMu (x.2 : Fin n → ℤ) := by

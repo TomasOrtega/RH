@@ -15,9 +15,9 @@ section Loc
 variable {E : Type} [Field E] [NumberField E]
 
 /- English proof (translation)
-Distinguish the cases in `h0 : x = 0`. Rewrite using `[h0]`. Conclude with `zero_le`. Rewrite `h`, the goal using `[← WithZero.exp_log h0]`. Rewrite `h` using `[← WithZero.exp_zero, WithZero.exp_lt_exp]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem hk_le_exp {x : WithZero (Multiplicative ℤ)} (h : x < 1) : x ≤ WithZero.exp (-1 : ℤ) := by
   by_cases h0 : x = 0
@@ -28,7 +28,7 @@ theorem hk_le_exp {x : WithZero (Multiplicative ℤ)} (h : x < 1) : x ≤ WithZe
     omega
 
 /- English proof (translation)
-Establish `e : a = 1 + (a - 1)` using `by ring`. Rewrite using `[e]`. Establish `h1 : P.valuation E (a - 1) < P.valuation E (1 : E)` using `by rw [map_one]; exact h`. Rewrite using `[Valuation.map_add_eq_of_lt_left _ h1, map_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem hk_val_one {P : HeightOneSpectrum (𝓞 E)} {a : E} (h : OneAt P a) : P.valuation E a = 1 := by
   have e : a = 1 + (a - 1) := by ring
@@ -37,14 +37,14 @@ theorem hk_val_one {P : HeightOneSpectrum (𝓞 E)} {a : E} (h : OneAt P a) : P.
   rw [Valuation.map_add_eq_of_lt_left _ h1, map_one]
 
 /- English proof (translation)
-The claim follows from `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' P (a : E)`.
+A detailed English derivation is pending.
 -/
 theorem hk_valued (P : HeightOneSpectrum (𝓞 E)) (a : Eˣ) :
     Valued.v ((atFin P a : (P.adicCompletion E)ˣ) : P.adicCompletion E) = P.valuation E (a : E) :=
   HeightOneSpectrum.valuedAdicCompletion_eq_valuation' P (a : E)
 
 /- English proof (translation)
-Establish `e : ((atFin P a : (P.adicCompletion E)ˣ) : P.adicCompletion E) - 1 = (((a : E) - 1 : E) : P.adicCompletion E)` using `by show algebraMap E (P.adicCompletion E) (a : E) - 1 = algebraMap E (P.adicCompletion E) ((a : E) - 1)`. Rewrite using `[map_sub, map_one]`. Rewrite using `[e]`. Conclude with `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' P ((a : E) - 1)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hk_valued_sub (P : HeightOneSpectrum (𝓞 E)) (a : Eˣ) :
     Valued.v (((atFin P a : (P.adicCompletion E)ˣ) : P.adicCompletion E) - 1) = P.valuation E ((a : E) - 1) := by
@@ -55,7 +55,7 @@ theorem hk_valued_sub (P : HeightOneSpectrum (𝓞 E)) (a : Eˣ) :
   exact HeightOneSpectrum.valuedAdicCompletion_eq_valuation' P ((a : E) - 1)
 
 /- English proof (translation)
-Use `h (atFin P a) ?_ ?_` and prove the remaining obligations. Use `show Valued.v _ = 1`. Rewrite using `[hk_valued, hk_val_one ha]`. Rewrite using `[hk_valued_sub]`. Conclude with `hk_le_exp ha`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hk_tame (χ : HChar E) {P : HeightOneSpectrum (𝓞 E)} (h : χ.TameAt P) (a : Eˣ) (ha : OneAt P (a : E)) : χ.locK P a = 1 := by
   refine h (atFin P a) ?_ ?_
@@ -65,7 +65,7 @@ theorem hk_tame (χ : HChar E) {P : HeightOneSpectrum (𝓞 E)} (h : χ.TameAt P
     exact hk_le_exp ha
 
 /- English proof (translation)
-Use `h (atFin P a) ?_` and prove the remaining obligations. Use `show Valued.v _ = 1`. Rewrite using `[hk_valued, ha]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hk_unr (χ : HChar E) {P : HeightOneSpectrum (𝓞 E)} (h : χ.UnrAt P) (a : Eˣ) (ha : P.valuation E (a : E) = 1) : χ.locK P a = 1 := by
   refine h (atFin P a) ?_
@@ -73,7 +73,7 @@ theorem hk_unr (χ : HChar E) {P : HeightOneSpectrum (𝓞 E)} (h : χ.UnrAt P) 
   rw [hk_valued, ha]
 
 /- English proof (translation)
-Use `χ.val_eq h (atFin P a) ?_` and prove the remaining obligations. Use `show Valued.v _ = _`. Rewrite using `[hk_valued, ha]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hk_unif (χ : HChar E) {P : HeightOneSpectrum (𝓞 E)} (h : χ.UnrAt P) (a : Eˣ) (ha : P.valuation E (a : E) = WithZero.exp (-1 : ℤ)) :
     χ.locK P a = χ.val P := by
@@ -82,7 +82,7 @@ theorem hk_unif (χ : HChar E) {P : HeightOneSpectrum (𝓞 E)} (h : χ.UnrAt P)
   rw [hk_valued, ha]
 
 /- English proof (translation)
-Introduce `_ _ _ χ _` and use `⟨fun h a ha => hk_tame χ h a ha, fun h a ha => hk_unr χ h a ha, fun h a ha => hk_unif χ h a ha⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem hecke_character_local_behaviour : HLoc := fun _ _ _ χ _ =>
   ⟨fun h a ha => hk_tame χ h a ha, fun h a ha => hk_unr χ h a ha, fun h a ha => hk_unif χ h a ha⟩
@@ -94,9 +94,9 @@ section Sys
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Unfold `aboveF`. Rewrite using `[Set.Finite.mem_toFinset, Set.mem_ofPred_eq]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[← h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Introduce `h`. Conclude with `HeightOneSpectrum.ext h`.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem hk_mem_above (v : HeightOneSpectrum (𝓞 F)) (P : HeightOneSpectrum (𝓞 E)) :
     P ∈ aboveF (L := E) F v ↔ P.asIdeal.under (𝓞 F) = v.asIdeal := by
@@ -107,7 +107,7 @@ theorem hk_mem_above (v : HeightOneSpectrum (𝓞 F)) (P : HeightOneSpectrum (�
   · intro h; exact HeightOneSpectrum.ext h
 
 /- English proof (translation)
-Unfold `lamH`. Rewrite using `[MonoidHom.finsetProd_apply]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem hk_lamH (χ : HChar E) (v : HeightOneSpectrum (𝓞 F)) (a : Eˣ) :
     lamH (F := F) χ v a = ∏ P ∈ aboveF (L := E) F v, χ.locK P a := by
@@ -115,11 +115,11 @@ theorem hk_lamH (χ : HChar E) (v : HeightOneSpectrum (𝓞 F)) (a : Eˣ) :
   rw [MonoidHom.finsetProd_apply]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ χ Rm ht hF hu`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `v a ha`. Rewrite using `[hk_lamH]`. Conclude with `Finset.prod_eq_one fun P hP => hk_tame χ (ht P) a (ha P ((hk_mem_above v P).1 hP))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `v k`. Rewrite using `[hk_lamH]`. Establish `h` using `hF.1 v k`. Unfold `HChar.resFin at h`. Rewrite `h` using `[MonoidHom.finsetProd_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `h`. Introduce `v hv a ha`. Rewrite using `[hk_lamH]`. Conclude with `Finset.prod_eq_one fun P hP => hk_unr χ (hu v hv P ((hk_mem_above v P).1 hP)) a (ha P ((hk_mem_above v P).1 hP))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hecke_character_compatible_system : HSys := by
   intro F E _ _ _ _ _ χ Rm ht hF hu
@@ -139,9 +139,9 @@ theorem hecke_character_compatible_system : HSys := by
       hk_unr χ (hu v hv P ((hk_mem_above v P).1 hP)) a (ha P ((hk_mem_above v P).1 hP))
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ χ ht v P hP b hb`. Rewrite using `[hk_lamH]`. Use `Finset.prod_eq_single P ?_ ?_` and prove the remaining obligations. Introduce `P' hP' hne`. Conclude with `hk_tame χ (ht P') b (hb P' hne ((hk_mem_above v P').1 hP'))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Conclude with `absurd ((hk_mem_above v P).2 hP) h`.
+A detailed English derivation is pending.
 -/
 theorem hecke_character_evaluation : HEval := by
   intro F E _ _ _ _ _ χ ht v P hP b hb
@@ -159,27 +159,25 @@ section Prod
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ χ S hS x`. Establish `hfin : {P : HeightOneSpectrum (𝓞 E) | ¬ P.valuation E (x : E) = 1}.Finite`. Establish `h` using `Filter.eventually_cofinite.1 (valued_comp_eventually E (diagUnits E x))`. Simplify `h` using `only [diag_comp]`. Use `set T0 : Finset (HeightOneSpectrum (𝓞 E)) := S ∪ hfin.toFinset with hT0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hval : ∀ P, P ∉ T0 → P.valuation E (x : E) = 1`. Introduce `P hP`. Assume the negation of the conclusion as `h`. Conclude with `hP (Finset.mem_union_right _ (hfin.mem_toFinset.2 h))`. Establish `hone : ∀ P, P ∉ T0 → χ.locK P x = 1` using `fun P hP => hk_unr χ (hS P fun h => hP (Finset.mem_union_left _ h)) x (hval P hP)`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmain : χ.inf x * ∏ P ∈ T0, χ.locK P x = 1`. Establish `h` using `χ.productRule T0 (fun P hP => hS P fun h => hP (Finset.mem_union_left _ h)) x`. Establish `h2 : (∏ᶠ (v : HeightOneSpectrum (𝓞 E)) (_ : v ∉ T0), χ.val v ^ ordF v x) = 1`. Use `finprod_eq_one_of_forall_eq_one fun P => ?_` and prove the remaining obligations. Rewrite using `[finprod_eq_if]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use `split_ifs with hP`. Both sides reduce to the same expression. Establish `h0 : ordF P x = 0`. Unfold `ordF`. Rewrite using `[hval P hP, WithZero.log_one, neg_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h0, zpow_zero]`. Rewrite `h` using `[h2, mul_one]`. Conclude with `h`. Use `set T : Finset (HeightOneSpectrum (𝓞 F)) := T0.image (fun P => P.under (𝓞 F)) with hT`. Establish `hsupp : ∀ v, v ∉ T → lamH (F` using `F) χ v x = 1 := by`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Introduce `v hv`. Rewrite using `[hk_lamH]`. Use `Finset.prod_eq_one fun P hP => hone P fun hPT => hv ?_` and prove the remaining obligations. Rewrite using `[hT, Finset.mem_image]`. Conclude with `⟨P, hPT, HeightOneSpectrum.ext ((hk_mem_above v P).1 hP)⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hsub : Function.mulSupport (fun v : HeightOneSpectrum (𝓞 F) => lamH (F` using `F) χ v x) ⊆ ↑T := by`. Introduce `v hv`. Assume the negation of the conclusion as `h`. Conclude with `hv (hsupp v h)`. Use `⟨T.finite_toSet.subset hsub, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation.
 
-Rewrite using `[finprod_eq_prod_of_mulSupport_subset _ hsub]`. Establish `e : ∏ v ∈ T, lamH (F` using `F) χ v x = ∏ P ∈ T0, χ.locK P x := by`. Rewrite using `[← Finset.prod_fiberwise_of_maps_to (s := T0) (t := T) (g := fun P => P.under (𝓞 F)) (fun P hP => Finset.mem_image_of_mem _ hP)]`. Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[hk_lamH]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `symm`. Use `Finset.prod_subset ?_ ?_` and prove the remaining obligations. Introduce `P hP`. Rewrite `hP` using `[Finset.mem_filter]`. Rewrite using `[hk_mem_above, ← hP.2]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Introduce `P hP hn`. Apply `hone` to reduce the goal to its premises. Introduce `hPT`. Apply `hn` to reduce the goal to its premises.
-
-Rewrite using `[Finset.mem_filter]`. Conclude with `⟨hPT, HeightOneSpectrum.ext ((hk_mem_above v P).1 hP)⟩`. Rewrite using `[e]`. Conclude with `eq_inv_of_mul_eq_one_right hmain`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hecke_character_product_formula : HProd := by
   classical
@@ -244,9 +242,9 @@ end Prod
 section Inf
 
 /- English proof (translation)
-Establish `h1 : ((‖w‖ : ℝ) : ℂ) ^ 2 = w * (starRingEnd ℂ) w`. Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Use `push_cast`. Both sides reduce to the same expression. Establish `hc : (starRingEnd ℂ) w ≠ 0` using `(map_ne_zero _).2 hw`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[div_pow, h1]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 -/
 theorem hk_sq (w : ℂ) (hw : w ≠ 0) : (w / ((‖w‖ : ℝ) : ℂ)) ^ 2 = w / (starRingEnd ℂ) w := by
   have h1 : ((‖w‖ : ℝ) : ℂ) ^ 2 = w * (starRingEnd ℂ) w := by
@@ -258,9 +256,9 @@ theorem hk_sq (w : ℂ) (hw : w ≠ 0) : (w / ((‖w‖ : ℝ) : ℂ)) ^ 2 = w /
   field_simp
 
 /- English proof (translation)
-Introduce `X hX σ₀ χ n e hn hne x`. Rewrite using `[hn x]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Establish `hw : X.embC σ₀ τ (x : X.E) ≠ 0` using `(map_ne_zero _).2 x.ne_zero`. Rewrite using `[hne τ, zpow_mul, show (2 : ℤ) = ((2 : ℕ) : ℤ) from rfl, zpow_natCast, hk_sq _ hw, ← hX.conjE (X.embC σ₀ τ) (x : X.E)]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Rewrite using `[map_div₀, map_div₀]`. Both sides reduce to the same expression.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem hecke_character_infinity_type : HInf := by
   intro X hX σ₀ χ n e hn hne x

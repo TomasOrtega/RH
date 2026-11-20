@@ -11,7 +11,7 @@ namespace GlobalTheory.VFComp
 variable {d : ℕ}
 
 /- English proof (translation)
-The claim follows from `| [] => hu | j :: w => by have h := ((contDiffOn_infty_iff_fderiv_of_isOpen hU).1 (dw_contDiffOn hU hu w)).2 exact h.clm_apply contDiffOn_const`.
+A detailed English derivation is pending.
 -/
 theorem dw_contDiffOn {U : Set (E d)} (hU : IsOpen U) {u : E d → ℂ} (hu : ContDiffOn ℝ ∞ u U) :
     ∀ w : List (Fin d), ContDiffOn ℝ ∞ (dw w u) U
@@ -21,7 +21,7 @@ theorem dw_contDiffOn {U : Set (E d)} (hU : IsOpen U) {u : E d → ℂ} (hu : Co
     exact h.clm_apply contDiffOn_const
 
 /- English proof (translation)
-The claim follows from `(((contDiffOn_infty_iff_fderiv_of_isOpen hU).1 hf).1).differentiableAt (hU.mem_nhds hx)`.
+A detailed English derivation is pending.
 -/
 theorem diffAt_of {U : Set (E d)} (hU : IsOpen U) {f : E d → ℂ} (hf : ContDiffOn ℝ ∞ f U)
     {x : E d} (hx : x ∈ U) : DifferentiableAt ℝ f x :=
@@ -41,7 +41,7 @@ def coefVF (m : ℕ) (a : (n : ℕ) → (Fin n → Fin d) → E d → ℂ) (c : 
   coefA m a c n w x + coefB m a c n w x
 
 /- English proof (translation)
-Rewrite using `[← (Fin.consEquiv fun _ => Fin d).sum_comp, Fintype.sum_prod_type]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem sum_cons {M : Type*} [AddCommMonoid M] (k : ℕ) (g : (Fin (k + 1) → Fin d) → M) :
     ∑ w : Fin (k + 1) → Fin d, g w = ∑ j : Fin d, ∑ w : Fin k → Fin d, g (Fin.cons j w) := by
@@ -54,11 +54,9 @@ namespace GlobalTheory.VFComp
 variable {d : ℕ}
 
 /- English proof (translation)
-Establish `hB : ContDiffOn ℝ ∞ (coefB m a c n w) U`. Unfold `coefB`. Use `split_ifs`. Conclude with `ContDiffOn.sum fun j _ => (hc j).mul (dw_contDiffOn hU (ha n w) [j])`. Conclude with `contDiffOn_const`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Establish `hA : ContDiffOn ℝ ∞ (coefA m a c n w) U`. Consider the cases of `n with`. Consider the case `zero => exact contDiffOn_const`. Consider the case `succ k => show ContDiffOn ℝ ∞ (fun x => if k ≤ m then c (w 0) x * a k (Fin.tail w) x else 0) U split_ifs`. Conclude with `(hc _).mul (ha _ _)`.
-
-Conclude with `contDiffOn_const`. Conclude with `hA.add hB`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem coefVF_contDiffOn {U : Set (E d)} (hU : IsOpen U) (m : ℕ)
     (a : (n : ℕ) → (Fin n → Fin d) → E d → ℂ) (c : Fin d → E d → ℂ)
@@ -80,7 +78,7 @@ theorem coefVF_contDiffOn {U : Set (E d)} (hU : IsOpen U) (m : ℕ)
   exact hA.add hB
 
 /- English proof (translation)
-Unfold `symb coefVF coefB`. Rewrite using `[sum_cons, Finset.sum_mul_sum]`. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Simplify using `only [coefA, le_refl, if_true, show ¬ (m + 1 ≤ m) by omega, if_false, add_zero, Fin.cons_zero, Fin.tail_cons, Fin.prod_univ_succ, Fin.cons_succ]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem symb_coefVF (m : ℕ) (a : (n : ℕ) → (Fin n → Fin d) → E d → ℂ) (c : Fin d → E d → ℂ)
     (x ξ : E d) : symb (m + 1) (coefVF m a c) x ξ = (∑ j, c j x * ((ξ j : ℝ) : ℂ)) * symb m a x ξ := by
@@ -97,9 +95,9 @@ namespace GlobalTheory.VFComp
 variable {d : ℕ}
 
 /- English proof (translation)
-Establish `hd` using `HasFDerivAt.sum (u := Finset.range (m + 1)) (x := x) (A := fun n => ∑ w : Fin n → Fin d, a n w * dw (List.ofFn w) u) fun n _ => HasFDerivAt.sum (u := Finset.univ) fun w _ => (diffAt_of hU (ha n w) hx).hasFDerivAt.mul (diffAt_of hU (dw_contDiffOn hU hu (List.ofFn w)) hx).hasFDeriv …`. Establish `he : apOp m a u = ∑ n ∈ Finset.range (m + 1), ∑ w : Fin n → Fin d, a n w * dw (List.ofFn w) u`. Use function extensionality and compare the values at `y`. Simplify using `[apOp, Finset.sum_apply]`. Rewrite using `[he, hd.fderiv]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [ContinuousLinearMap.sum_apply, ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, smul_eq_mul]`. Use `Finset.sum_congr rfl fun n _ => Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Simplify using `only [dw]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem fderiv_apOp {U : Set (E d)} (hU : IsOpen U) (m : ℕ) (a : (n : ℕ) → (Fin n → Fin d) → E d → ℂ)
     (ha : ∀ n w, ContDiffOn ℝ ∞ (a n w) U) {u : E d → ℂ} (hu : ContDiffOn ℝ ∞ u U) {x : E d} (hx : x ∈ U)
@@ -127,19 +125,19 @@ namespace GlobalTheory.VFComp
 variable {d : ℕ}
 
 /- English proof (translation)
-Establish `hL : ∑ j, c j x * fderiv ℝ (apOp m a u) x (ev j) = (∑ n ∈ Finset.range (m + 1), ∑ w : Fin n → Fin d, (∑ j, c j x * fderiv ℝ (a n w) x (ev j)) * dw (List.ofFn w) u x) + ∑ n ∈ Finset.range (m + 1), ∑ j : Fin d, ∑ w : Fin n → Fin d, c j x * a n w x * dw (j :: List.ofFn w) u x`. Simplify using `only [fderiv_apOp hU m a ha hu hx, Finset.mul_sum, mul_add, Finset.sum_add_distrib]`. Use `congr 1`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun n _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun n _ => Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Establish `hR : apOp (m + 1) (coefVF m a c) u x = (∑ n ∈ Finset.range (m + 1), ∑ w : Fin n → Fin d, (∑ j, c j x * fderiv ℝ (a n w) x (ev j)) * dw (List.ofFn w) u x) + ∑ n ∈ Finset.range (m + 1), ∑ j : Fin d, ∑ w : Fin n → Fin d, c j x * a n w x * dw (j :: List.ofFn w) u x`. Simplify using `only [apOp, coefVF, add_mul, Finset.sum_add_distrib]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[add_comm]`. Use `congr 1`. Rewrite using `[Finset.sum_range_succ]`. Establish `h0 : ∑ w : Fin (m + 1) → Fin d, coefB m a c (m + 1) w x * dw (List.ofFn w) u x = 0`. Simplify using `[coefB]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[h0, add_zero]`. Use `Finset.sum_congr rfl fun n hn => Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Establish `: n ≤ m` using `Nat.lt_succ_iff.mp (Finset.mem_range.mp hn)`. Simplify using `[coefB, this]`. Rewrite using `[Finset.sum_range_succ']`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `h0 : ∑ w : Fin 0 → Fin d, coefA m a c 0 w x * dw (List.ofFn w) u x = 0`. Simplify using `[coefA]`. Rewrite using `[h0, add_zero]`. Use `Finset.sum_congr rfl fun n hn => ?_` and prove the remaining obligations. Establish `: n ≤ m` using `Nat.lt_succ_iff.mp (Finset.mem_range.mp hn)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[sum_cons]`. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Simplify using `[coefA, this, List.ofFn_cons]`. Rewrite using `[hL, hR]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem apOp_coefVF {U : Set (E d)} (hU : IsOpen U) (m : ℕ) (a : (n : ℕ) → (Fin n → Fin d) → E d → ℂ)
     (c : Fin d → E d → ℂ) (ha : ∀ n w, ContDiffOn ℝ ∞ (a n w) U) {u : E d → ℂ} (hu : ContDiffOn ℝ ∞ u U)
@@ -191,7 +189,7 @@ theorem apOp_coefVF {U : Set (E d)} (hU : IsOpen U) (m : ℕ) (a : (n : ℕ) →
 end GlobalTheory.VFComp
 
 /- English proof (translation)
-Introduce `d m U hU a c ha hc`. Conclude with `⟨GlobalTheory.VFComp.coefVF m a c, GlobalTheory.VFComp.coefVF_contDiffOn hU m a c ha hc, GlobalTheory.VFComp.symb_coefVF m a c, fun u hu x hx => GlobalTheory.VFComp.apOp_coefVF hU m a c ha hu hx⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem GlobalTheory.VFComp.vectorField_comp : ∀ (d m : ℕ) (U : Set (E d)), IsOpen U → ∀ (a : (n : ℕ) → (Fin n → Fin d) → E d → ℂ) (c : Fin d → E d → ℂ), (∀ n w, ContDiffOn ℝ ∞ (a n w) U) → (∀ j, ContDiffOn ℝ ∞ (c j) U) → ∃ a' : (n : ℕ) → (Fin n → Fin d) → E d → ℂ, (∀ n w, ContDiffOn ℝ ∞ (a' n w) U) ∧ (∀ x ξ : E d, symb (m + 1) a' x ξ = (∑ j, c j x * ((ξ j : ℝ) : ℂ)) * symb m a x ξ) ∧ ∀ u : E d → ℂ, ContDiffOn ℝ ∞ u U → ∀ x ∈ U, ∑ j, c j x * fderiv ℝ (apOp m a u) x (ev j) = apOp (m + 1) a' u x := by
   intro d m U hU a c ha hc

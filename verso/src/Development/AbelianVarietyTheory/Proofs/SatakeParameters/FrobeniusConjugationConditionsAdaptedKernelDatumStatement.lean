@@ -13,7 +13,7 @@ open Formalism.L2.Th1.D (F1 F2 OwOK TrDual phFF)
 open Formalism.InvariantFactorPaths.G7 (UnrOK IsLawOfLog cob)
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.Ggeo.frobeniusConjugation_conditions_adaptedKernelDatum_alt` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSatakeParameters%2FFrobeniusConjugationConditionsAdaptedKernelDatum.lean&line=23#L23)
 -/

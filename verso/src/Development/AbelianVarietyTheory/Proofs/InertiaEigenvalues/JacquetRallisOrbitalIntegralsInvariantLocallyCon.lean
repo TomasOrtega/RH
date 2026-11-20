@@ -11,11 +11,11 @@ open GlobalTheory.JR Matrix MeasureTheory Filter Topology
 namespace GlobalTheory.JR.OrbLC
 
 /- English proof (translation)
-Establish `h` using `hK.eventually_forall_of_forall_eventually (x₀ := a₀) (P := fun a g => Φ a g = Φ a₀ g) (by`. Introduce `g hg`. Establish `h1` using `hloc g hg`. Establish `hT : Tendsto (fun z : A × G => (a₀, z.2)) (𝓝 (a₀, g)) (𝓝 (a₀, g))`. Establish `: Continuous (fun z : A × G => (a₀, z.2))` using `by fun_prop`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using this.tendsto (a₀, g)`. Establish `h2` using `hT.eventually h1`. Use `filter_upwards [h1, h2] with z hz1 hz2`. Rewrite using `[hz1, hz2])`. Use `filter_upwards [h, hout] with a h1 h2`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Use function extensionality and compare the values at `g`. Distinguish the cases in `hg : g ∈ K`. Conclude with `h1 g hg`. Conclude with `h2 g hg`.
+A detailed English derivation is pending.
 -/
 theorem eventually_eq_fun {A G β : Type} [TopologicalSpace A] [TopologicalSpace G] (Φ : A → G → β) (a₀ : A)
     (K : Set G) (hK : IsCompact K) (hloc : ∀ g ∈ K, ∀ᶠ z in 𝓝 (a₀, g), Φ z.1 z.2 = Φ a₀ g)
@@ -36,14 +36,14 @@ theorem eventually_eq_fun {A G β : Type} [TopologicalSpace A] [TopologicalSpace
   · exact h2 g hg
 
 /- English proof (translation)
-Simplify using `only [act, Units.val_mul, _root_.mul_inv_rev, Matrix.mulVec_mulVec, Matrix.vecMul_vecMul, Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem act_mul {r : ℕ} {k : Type} [CommRing k] (g h : GL (Fin r) k) (Y : Gl r k) :
     act (g * h) Y = act g (act h Y) := by
   simp only [act, Units.val_mul, _root_.mul_inv_rev, Matrix.mulVec_mulVec, Matrix.vecMul_vecMul, Matrix.mul_assoc]
 
 /- English proof (translation)
-Simplify using `only [actU]`. Use `Prod.ext ?_ (Prod.ext ?_ rfl)` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [Submonoid.coe_mul, star_mul, Matrix.mul_assoc]`. Simplify using `only [Submonoid.coe_mul, Matrix.mulVec_mulVec]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem actU_mul {r : ℕ} {F E : Type} [CommRing F] [CommRing E] [StarRing E] [Algebra F E]
     (g h : Matrix.unitaryGroup (Fin r) E) (X : Hn r F E) : actU (g * h) X = actU g (actU h X) := by
@@ -54,9 +54,7 @@ theorem actU_mul {r : ℕ} {F E : Type} [CommRing F] [CommRing E] [StarRing E] [
   · simp only [Submonoid.coe_mul, Matrix.mulVec_mulVec]
 
 /- English proof (translation)
-Use `letI := M.mG`. Use `haveI := M.bG`. Use `haveI := GlobalTheory.T.generalLinear_haar_isMulRightInvariant_unramified F E r M`. Unfold `orbG`. Simplify using `only [← act_mul]`.
-
-Conclude with `integral_mul_right_eq_self (fun h => f' (act h Y) * omega (act h Y)) g`.
+Equip the data with the indicated structure. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem part1 (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E] [StarRing E]
     [Unram F E] (r : ℕ) (M : Meas r F E) (f' : Gl r F → ℂ) (g : GL (Fin r) F) (Y : Gl r F) :
@@ -69,9 +67,7 @@ theorem part1 (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField 
   exact integral_mul_right_eq_self (fun h => f' (act h Y) * omega (act h Y)) g
 
 /- English proof (translation)
-Use `letI := M.mU`. Use `haveI := M.bU`. Use `haveI := (GlobalTheory.T.unitaryGroup_positiveCharacter_trivial_and_unimodular F E r).2 M`. Unfold `orbU`. Simplify using `only [← actU_mul]`.
-
-Conclude with `integral_mul_right_eq_self (fun h => f (actU h X)) g`.
+Equip the data with the indicated structure. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem part2 (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E] [StarRing E]
     [Unram F E] (r : ℕ) (M : Meas r F E) (f : Hn r F E → ℂ) (g : Matrix.unitaryGroup (Fin r) E) (X : Hn r F E) :
@@ -88,11 +84,11 @@ end GlobalTheory.JR.OrbLC
 namespace GlobalTheory.JR.OrbLC
 
 /- English proof (translation)
-Introduce `j`. Proceed by induction on `j with`. Consider the case `zero`. Introduce `hj`. Use function extensionality and compare the values at `i`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [pow_zero, Matrix.one_mulVec, Pi.single_apply, Fin.ext_iff]`. Consider the case `succ j ih`. Introduce `hj`. Rewrite using `[pow_succ', ← Matrix.mulVec_mulVec, ih (by omega)]`. Use function extensionality and compare the values at `i`.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[Matrix.mulVec_single]`. Simplify using `only [companion, Matrix.of_apply, mul_one, Pi.single_apply, Fin.ext_iff]`. Establish `: j + 1 ≠ r` using `by omega`. Simplify using `[this]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem companion_pow_mulVec {r : ℕ} {k : Type} [CommRing k] (p : Fin r → k) :
     ∀ (j : ℕ) (hj : j < r), (companion p) ^ j *ᵥ (fun i : Fin r => if (i : ℕ) = 0 then (1 : k) else 0) =
@@ -113,9 +109,9 @@ theorem companion_pow_mulVec {r : ℕ} {k : Type} [CommRing k] (p : Fin r → k)
     simp [this]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Cm, hankel, mom, Matrix.of_apply]`. Rewrite using `[pow_add, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec]`. Establish `h` using `companion_pow_mulVec a.1 j j.2`. Simplify using `only [sec] at h ⊢`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[h, Fin.eta, dotProduct_single, mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Cm_sec {r : ℕ} {k : Type} [CommRing k] (a : Inv r k) : Cm (sec a) = hankel a := by
   ext i j
@@ -126,7 +122,7 @@ theorem Cm_sec {r : ℕ} {k : Type} [CommRing k] (a : Inv r k) : Cm (sec a) = ha
   rw [h, Fin.eta, dotProduct_single, mul_one]
 
 /- English proof (translation)
-Rewrite using `[(GlobalTheory.T.jacquetRallis_transfer_factor_krylov_det k r).1, (GlobalTheory.T.jacquetRallis_transfer_factor_krylov_det k r).2, Matrix.det_mul, Cm_sec]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem lastDet_act_sec {r : ℕ} {k : Type} [CommRing k] (g : GL (Fin r) k) (a : Inv r k) :
     lastDet (act g (sec a)) = (-1) ^ r * (Delta a * ((g⁻¹ : GL (Fin r) k) : Matrix (Fin r) (Fin r) k).det) := by
@@ -134,9 +130,9 @@ theorem lastDet_act_sec {r : ℕ} {k : Type} [CommRing k] (g : GL (Fin r) k) (a 
   rfl
 
 /- English proof (translation)
-Establish `hpos : 0 < ‖x‖` using `norm_pos_iff.mpr hx`. Use `filter_upwards [Metric.ball_mem_nhds x hpos] with y hy`. Establish `hn : ‖y‖ = ‖x‖`. Rewrite `hy` using `[Metric.mem_ball, dist_eq_norm]`. Use `IsUltrametricDist.norm_add_eq_max_of_norm_ne_norm (x := y - x) (y := x) hy.ne` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[sub_add_cancel]`. Rewrite using `[this, max_eq_right hy.le]`. Unfold `eta`. Rewrite using `[hn]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eta_eventually {F : Type} [NormedField F] [IsUltrametricDist F] (x : F) (hx : x ≠ 0) :
     ∀ᶠ y in 𝓝 x, eta y = eta x := by
@@ -155,19 +151,15 @@ end GlobalTheory.JR.OrbLC
 namespace GlobalTheory.JR.OrbLC
 
 /- English proof (translation)
-Use `haveI : LocallyCompactSpace F := Unram.lcF (E := E)`. Use `haveI : IsUltrametricDist F := Unram.ultraF (E := E)`. Take `⟨hcont, -, hDc, hprop⟩` from `GlobalTheory.T.jacquetRallis_orbit_invariant_map_proper F E r`. Establish `hopen : IsOpen {a : Inv r F | Delta a ≠ 0}` using `isOpen_ne_fun hDc continuous_const`. Take `⟨Ω, hΩn, hΩsub, hΩc⟩` from `local_compact_nhds (hopen.mem_nhds hΔ)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set K : Set (GL (Fin r) F) := Prod.fst '' {p : GL (Fin r) F × Inv r F | p.2 ∈ Ω ∧ act p.1 (sec p.2) ∈ tsupport f'} with hKdef`. Establish `hK : IsCompact K` using `(hprop (tsupport f') Ω hf.2 hΩc (fun a ha => hΩsub ha)).image continuous_fst`. Establish `hzero : ∀ a ∈ Ω, ∀ g ∉ K, f' (act g (sec a)) = 0`. Introduce `a ha g hg`. Assume the negation of the conclusion as `h`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hg ⟨(g, a), ⟨ha, subset_tsupport _ h⟩, rfl⟩`. Use `set Φ : Inv r F → GL (Fin r) F → ℂ := fun a g => f' (act g (sec a)) * omega (act g (sec a)) with hΦ`. Establish `ha₀ : a₀ ∈ Ω` using `mem_of_mem_nhds hΩn`. Establish `hc2 : Continuous (fun z : Inv r F × GL (Fin r) F => act z.2 (sec z.1))` using `hcont.comp continuous_swap`. Establish `hdet : Continuous (fun z : Inv r F × GL (Fin r) F => (-1 : F) ^ r * (Delta z.1 * ((z.2⁻¹ : GL (Fin r) F) : Matrix (Fin r) (Fin r) F).det))`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : Continuous (fun z : Inv r F × GL (Fin r) F => ((z.2⁻¹ : GL (Fin r) F) : Matrix (Fin r) (Fin r) F))` using `Units.continuous_val.comp (continuous_inv.comp continuous_snd)`. Conclude with `continuous_const.mul ((hDc.comp continuous_fst).mul h1.matrix_det)`. Establish `hloc : ∀ g ∈ K, ∀ᶠ z in 𝓝 (a₀, g), Φ z.1 z.2 = Φ a₀ g`. Introduce `g _`. Establish `h1 : ∀ᶠ z in 𝓝 (a₀, g), f' (act z.2 (sec z.1)) = f' (act g (sec a₀))` using `(hc2.tendsto (a₀, g)).eventually ((IsLocallyConstant.iff_eventually_eq f').1 hf.1 _)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hne : (-1 : F) ^ r * (Delta a₀ * ((g⁻¹ : GL (Fin r) F) : Matrix (Fin r) (Fin r) F).det) ≠ 0`. Use `mul_ne_zero (pow_ne_zero _ (neg_ne_zero.mpr one_ne_zero)) (mul_ne_zero hΔ ?_)` and prove the remaining obligations. Conclude with `((Matrix.isUnit_iff_isUnit_det _).mp (Units.isUnit (g⁻¹ : GL (Fin r) F))).ne_zero`. Establish `h2` using `(hdet.tendsto (a₀, g)).eventually (eta_eventually _ hne)`. Use `filter_upwards [h1, h2] with z hz1 hz2`.
-
-Simplify using `only [hΦ, omega, lastDet_act_sec]`. Rewrite using `[hz1]`. Rewrite using `[hz2]`. Establish `hout : ∀ᶠ a in 𝓝 a₀, ∀ g ∉ K, Φ a g = Φ a₀ g` using `by filter_upwards [hΩn] with a ha g hg`. Simplify using `only [hΦ, hzero a ha g hg, hzero a₀ ha₀ g hg, zero_mul]`.
-
-Use `filter_upwards [eventually_eq_fun Φ a₀ K hK hloc hout] with a h`. Establish `h' : ∀ g, f' (act g (sec a)) * omega (act g (sec a)) = f' (act g (sec a₀)) * omega (act g (sec a₀))` using `fun g => congrFun h g`. Simplify using `only [orbG, h']`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem part3 (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E] [StarRing E]
     [Unram F E] (r : ℕ) (M : Meas r F E) (f' : Gl r F → ℂ) (hf : IsTest f') (a₀ : Inv r F) (hΔ : Delta a₀ ≠ 0) :
@@ -218,16 +210,16 @@ end GlobalTheory.JR.OrbLC
 namespace GlobalTheory.JR.OrbLC
 
 /- English proof (translation)
-The claim follows from `(AddMonoidHomClass.isometry_of_norm (starAddEquiv (R := E)) (fun x => Unram.norm_star (F := F) x)).continuous`.
+A detailed English derivation is pending.
 -/
 theorem continuous_star_of_unram (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField E]
     [NormedAlgebra F E] [StarRing E] [Unram F E] : Continuous (star : E → E) :=
   (AddMonoidHomClass.isometry_of_norm (starAddEquiv (R := E)) (fun x => Unram.norm_star (F := F) x)).continuous
 
 /- English proof (translation)
-Use `haveI : ContinuousStar E := ⟨continuous_star_of_unram F E⟩`. Establish `hg : Continuous (fun p : Matrix.unitaryGroup (Fin r) E × Hn r F E => (p.1 : Matrix (Fin r) (Fin r) E))` using `continuous_subtype_val.comp continuous_fst`. Establish `hA : Continuous (fun p : Matrix.unitaryGroup (Fin r) E × Hn r F E => (p.2.1 : Matrix (Fin r) (Fin r) E))` using `continuous_subtype_val.comp (continuous_fst.comp continuous_snd)`. Establish `hb : Continuous (fun p : Matrix.unitaryGroup (Fin r) E × Hn r F E => p.2.2.1)` using `continuous_fst.comp (continuous_snd.comp continuous_snd)`. Establish `hl : Continuous (fun p : Matrix.unitaryGroup (Fin r) E × Hn r F E => p.2.2.2)` using `continuous_snd.comp (continuous_snd.comp continuous_snd)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Continuous.prodMk ?_ (Continuous.prodMk (hg.matrix_mulVec hb) hl)` and prove the remaining obligations. Conclude with `Continuous.subtype_mk ((hg.mul hA).mul hg.star) _`.
+A detailed English derivation is pending.
 -/
 theorem continuous_actU (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E]
     [StarRing E] [Unram F E] (r : ℕ) :
@@ -245,17 +237,15 @@ theorem continuous_actU (F E : Type) [NontriviallyNormedField F] [NontriviallyNo
   exact Continuous.subtype_mk ((hg.mul hA).mul hg.star) _
 
 /- English proof (translation)
-Take `⟨Ω, s, hΩc, hΩo, ha₀, hs, hsinv, hprop⟩` from `(GlobalTheory.T.invariant_image_openClosed_local_sections F E r a₀ hΔ).2 ⟨X₀, hX₀⟩`. Establish `huniq` using `(GlobalTheory.T.unitary_action_hermitian_invariants_transitive F E r).2.2.1`. Use `set K : Set (Matrix.unitaryGroup (Fin r) E) := Prod.fst '' {p : Matrix.unitaryGroup (Fin r) E × Inv r F | p.2 ∈ Ω ∧ actU p.1 (s p.2) ∈ tsupport f} with hKdef`. Establish `hK : IsCompact K` using `(hprop (tsupport f) hf.2).image continuous_fst`. Establish `hzero : ∀ a ∈ Ω, ∀ g ∉ K, f (actU g (s a)) = 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a ha g hg`. Assume the negation of the conclusion as `h`. Conclude with `hg ⟨(g, a), ⟨ha, subset_tsupport _ h⟩, rfl⟩`. Use `set Φ : Inv r F → Matrix.unitaryGroup (Fin r) E → ℂ := fun a g => f (actU g (s a)) with hΦ`. Establish `hloc : ∀ g ∈ K, ∀ᶠ z in 𝓝 (a₀, g), Φ z.1 z.2 = Φ a₀ g`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `g _`. Establish `hsa : ContinuousAt s a₀` using `hs.continuousAt (hΩo.mem_nhds ha₀)`. Establish `h1 : ContinuousAt (fun z : Inv r F × Matrix.unitaryGroup (Fin r) E => (z.2, s z.1)) (a₀, g)` using `continuousAt_snd.prodMk (hsa.comp continuousAt_fst)`. Establish `hT : ContinuousAt (fun z : Inv r F × Matrix.unitaryGroup (Fin r) E => actU z.2 (s z.1)) (a₀, g)` using `ContinuousAt.comp (g := fun p : Matrix.unitaryGroup (Fin r) E × Hn r F E => actU p.1 p.2) (f := fun z : Inv r F × Matrix.unitaryGroup (Fin r) E => (z.2, s z.1)) ((continuous_actU F E r).continuousAt) h1`. Conclude with `hT.tendsto.eventually ((IsLocallyConstant.iff_eventually_eq f).1 hf.1 _)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hout : ∀ᶠ a in 𝓝 a₀, ∀ g ∉ K, Φ a g = Φ a₀ g` using `by filter_upwards [hΩo.mem_nhds ha₀] with a ha g hg`. Simplify using `only [hΦ, hzero a ha g hg, hzero a₀ ha₀ g hg]`. Establish `horb : ∀ a ∈ Ω, ∀ X : Hn r F E, HasInv X a → orbU M f X = orbU M f (s a)`. Introduce `a ha X hX`. Take `⟨g, hg, -⟩` from `huniq (s a) X a (hsinv a ha).1 (hsinv a ha).2 hX`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hg, part2]`. Use `filter_upwards [eventually_eq_fun Φ a₀ K hK hloc hout, hΩo.mem_nhds ha₀] with a h ha`. Use `⟨⟨s a, (hsinv a ha).2⟩, fun X hX => ?_⟩` and prove the remaining obligations. Establish `h' : ∀ g, f (actU g (s a)) = f (actU g (s a₀))` using `fun g => congrFun h g`. Rewrite using `[horb a ha X hX, horb a₀ ha₀ X₀ hX₀]`.
-
-Simplify using `only [orbU, h']`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem part4 (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E] [StarRing E]
     [Unram F E] (r : ℕ) (M : Meas r F E) (f : Hn r F E → ℂ) (hf : IsTest f) (a₀ : Inv r F) (X₀ : Hn r F E)
@@ -295,7 +285,7 @@ theorem part4 (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField 
   simp only [orbU, h']
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ r M`. Conclude with `⟨part1 F E r M, part2 F E r M, fun f' hf a₀ hΔ => part3 F E r M f' hf a₀ hΔ, fun f hf a₀ X₀ hΔ hX₀ => part4 F E r M f hf a₀ X₀ hΔ hX₀⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem orbital_integrals_invariant_locally_constant : ∀ (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E] [StarRing E] [Unram F E] (r : ℕ) (M : Meas r F E), (∀ (f' : Gl r F → ℂ) (g : GL (Fin r) F) (Y : Gl r F), orbG M f' (act g Y) = orbG M f' Y) ∧ (∀ (f : Hn r F E → ℂ) (g : Matrix.unitaryGroup (Fin r) E) (X : Hn r F E), orbU M f (actU g X) = orbU M f X) ∧ (∀ (f' : Gl r F → ℂ), IsTest f' → ∀ a₀ : Inv r F, Delta a₀ ≠ 0 → ∀ᶠ a in 𝓝 a₀, orbG M f' (sec a) = orbG M f' (sec a₀)) ∧ ∀ (f : Hn r F E → ℂ), IsTest f → ∀ (a₀ : Inv r F) (X₀ : Hn r F E), Delta a₀ ≠ 0 → HasInv X₀ a₀ → ∀ᶠ a in 𝓝 a₀, (∃ X : Hn r F E, HasInv X a) ∧ ∀ X : Hn r F E, HasInv X a → orbU M f X = orbU M f X₀ := by
   intro F E _ _ _ _ _ r M

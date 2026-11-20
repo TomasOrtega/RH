@@ -14,7 +14,7 @@ variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 omit [∀ k, Fintype (ι k)] in
 
 /- English proof (translation)
-Consider the cases of `A`. Consider the cases of `B`. Consider the cases of `ha`. Consider the cases of `hh`. Both sides reduce to the same expression.
+Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Both sides reduce to the same expression.
 -/
 theorem hermLine_eq_of {A B : HermLine ι} (ha : A.a = B.a) (hh : A.h = B.h) : A = B := by
   cases A
@@ -24,16 +24,16 @@ theorem hermLine_eq_of {A B : HermLine ι} (ha : A.a = B.a) (hh : A.h = B.h) : A
   rfl
 
 /- English proof (translation)
-The claim follows from `hA.mul hB`.
+A detailed English derivation is pending.
 -/
 theorem isSmoothHerm_tensor {A B : HermLine ι} (hA : IsSmoothHerm A) (hB : IsSmoothHerm B) :
     IsSmoothHerm (A.tensor B) :=
   hA.mul hB
 
 /- English proof (translation)
-Take `⟨n, rfl | rfl⟩` from `Int.eq_nat_or_neg m`. Establish `h : (hermZpow A (n : ℤ)).h = fun z => A.h z ^ n` using `funext fun z => zpow_natCast (A.h z) n`. Unfold `IsSmoothHerm`. Rewrite using `[h]`. Conclude with `hA.pow n`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h : (hermZpow A (-(n : ℤ))).h = fun z => (A.h z ^ n)⁻¹`. Use function extensionality and compare the values at `fun z => by rw [← zpow_natCast, ← zpow_neg]; rfl`. Unfold `IsSmoothHerm`. Rewrite using `[h]`. Conclude with `(hA.pow n).inv fun z hz => (pow_pos (A.pos z hz) n).ne'`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isSmoothHerm_hermZpow {A : HermLine ι} (hA : IsSmoothHerm A) (m : ℤ) :
     IsSmoothHerm (hermZpow A m) := by
@@ -60,7 +60,7 @@ variable {I : Ideal (MRing ι) → (n : ℕ) → (Fin n → HermLine ι) → ℝ
 omit [∀ k, Fintype (ι k)] in
 
 /- English proof (translation)
-Simplify using `[famExt, MultilinearMap.compLinearMap_apply, MultilinearMap.mkPiAlgebra_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem famExt_apply (e : Fin 2 → HermLine ι) (v : Fin n → Fin 2 → ℝ) :
     famExt I P n e v = ∑ s : Fin n → Fin 2, I P n (e ∘ s) * ∏ j, v j (s j) := by
@@ -69,9 +69,9 @@ theorem famExt_apply (e : Fin 2 → HermLine ι) (v : Fin n → Fin 2 → ℝ) :
 omit [∀ k, Fintype (ι k)] in
 
 /- English proof (translation)
-Rewrite using `[famExt_apply, Finset.sum_eq_single t]`. Simplify using the standard rewrite rules. Introduce `s _ hs`. Choose the witnesses or unpack the hypotheses as in `⟨j, hj⟩ : ∃ j, s j ≠ t j := by`. Assume the negation of the conclusion as `h`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Use `push Not at h`. Conclude with `hs (funext h)`. Rewrite using `[Finset.prod_eq_zero (Finset.mem_univ j) (by simp [hj]), mul_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ t) h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem famExt_basis (e : Fin 2 → HermLine ι) (t : Fin n → Fin 2) :
     famExt I P n e (fun j => Pi.single (t j) 1) = I P n (e ∘ t) := by
@@ -87,9 +87,9 @@ theorem famExt_basis (e : Fin 2 → HermLine ι) (t : Fin n → Fin 2) :
     exact absurd (Finset.mem_univ t) h
 
 /- English proof (translation)
-Introduce `σ v`. Rewrite using `[famExt_apply, famExt_apply]`. Use `Fintype.sum_equiv (Equiv.arrowCongr σ (Equiv.refl (Fin 2))) _ _ fun s => ?_` and prove the remaining obligations. Establish `h1 : e ∘ (Equiv.arrowCongr σ (Equiv.refl (Fin 2)) s) = (e ∘ s) ∘ σ.symm` using `rfl`. Establish `h2 : ∏ j, v j ((Equiv.arrowCongr σ (Equiv.refl (Fin 2)) s) j) = ∏ j, (v ∘ σ) j (s j)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(Equiv.prod_comp σ fun j => v j (s (σ.symm j))).symm.trans ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Rewrite using `[h1, h2, hI.1 P n (e ∘ s) σ.symm hP fun j => he _]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem famExt_symm (hI : IsIntersectionFamily I) (hP : IsArithVar P n) (e : Fin 2 → HermLine ι)
     (he : ∀ i, IsSmoothHerm (e i)) : IsSymmForm (famExt I P n e) := by
@@ -103,7 +103,7 @@ theorem famExt_symm (hI : IsIntersectionFamily I) (hP : IsArithVar P n) (e : Fin
   rw [h1, h2, hI.1 P n (e ∘ s) σ.symm hP fun j => he _]
 
 /- English proof (translation)
-Establish `e : (hermZpow X 0).tensor (hermZpow X 0) = hermZpow X 0` using `hermLine_eq_of (by simp [HermLine.tensor, hermZpow]) (by funext z; simp [HermLine.tensor, hermZpow])`. Establish `h` using `hI.2.1 P n L _ _ hP hL (isSmoothHerm_hermZpow hX 0) (isSmoothHerm_hermZpow hX 0)`. Rewrite `h` using `[e]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem fam_snoc_zpow_zero (hI : IsIntersectionFamily I) (hP : IsArithVar P (n + 1))
     (L : Fin n → HermLine ι) (hL : ∀ j, IsSmoothHerm (L j)) {X : HermLine ι} (hX : IsSmoothHerm X) :
@@ -115,9 +115,9 @@ theorem fam_snoc_zpow_zero (hI : IsIntersectionFamily I) (hP : IsArithVar P (n +
   linarith
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero`. Simplify using `only [Nat.cast_zero, zero_mul]`. Conclude with `fam_snoc_zpow_zero hI hP L hL hX`. Consider the case `succ k ih`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact.
 
-Establish `e : hermZpow X ((k + 1 : ℕ) : ℤ) = (hermZpow X k).tensor X` using `hermLine_eq_of (by simp [HermLine.tensor, hermZpow, add_smul]) (funext fun z => by show X.h z ^ ((k + 1 : ℕ) : ℤ) = X.h z ^ (k : ℤ) * X.h z`. Rewrite using `[zpow_natCast, zpow_natCast, pow_succ])`. Rewrite using `[e, hI.2.1 P n L _ _ hP hL (isSmoothHerm_hermZpow hX k) hX, ih]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem fam_snoc_zpow_nat (hI : IsIntersectionFamily I) (hP : IsArithVar P (n + 1))
     (L : Fin n → HermLine ι) (hL : ∀ j, IsSmoothHerm (L j)) {X : HermLine ι} (hX : IsSmoothHerm X) (k : ℕ) :
@@ -137,17 +137,17 @@ theorem fam_snoc_zpow_nat (hI : IsIntersectionFamily I) (hP : IsArithVar P (n + 
     ring
 
 /- English proof (translation)
-Take `⟨k, rfl | rfl⟩` from `Int.eq_nat_or_neg m`. Rewrite using `[fam_snoc_zpow_nat hI hP L hL hX k, Int.cast_natCast]`. Establish `hs : ∀ m : ℤ, IsSmoothHerm (hermZpow X m)` using `isSmoothHerm_hermZpow hX`. Establish `hsum` using `hI.2.1 P n L _ _ hP hL (hs (-k)) (hs k)`. Establish `h1 : (1 : MRing ι) ∉ P` using `(Ideal.ne_top_iff_one P).mp hP.2.1.1.ne_top`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hh : IsMultiHomog (1 : MRing ι) (0 : K → ℕ)`. Introduce `d hd k'`. Rewrite `hd` using `[MvPolynomial.support_one, Finset.mem_singleton]`. Substitute `hd` using the available equality. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Establish `hT : I P (n + 1) (Fin.snoc L ((hermZpow X (-k)).tensor (hermZpow X k))) = I P (n + 1) (Fin.snoc L (hermZpow X 0))`. Rewrite using `[hI.2.2 P n L _ 1 0 hP hL (isSmoothHerm_tensor (hs _) (hs _)) (fun k' => by simp [HermLine.tensor, hermZpow]) hh h1, hI.2.2 P n L _ 1 0 hP hL (hs 0) (fun k' => by simp [hermZpow]) hh h1, recR_eq, recR_eq]`. Use `congr 1`. Unfold `arInt`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `z`. Unfold `logNorm`. Simplify using `only [map_one, norm_one]`. Use `show Real.log (1 / (X.h z ^ (-(k : ℤ)) * X.h z ^ (k : ℤ))) = Real.log (1 / X.h z ^ (0 : ℤ))`. Break down `eq_or_ne (X.h z) 0 with hx | hx` into its components or cases.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hx]`. Break down `eq_or_ne k 0 with rfl | hk` into its components or cases. Simplify using the standard rewrite rules. Rewrite using `[zero_zpow (k : ℤ) (by exact_mod_cast hk), mul_zero]`. Simplify using the standard rewrite rules.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[zpow_neg, inv_mul_cancel₀ (zpow_ne_zero _ hx)]`. Simplify using the standard rewrite rules. Rewrite `hsum` using `[hT, fam_snoc_zpow_zero hI hP L hL hX, fam_snoc_zpow_nat hI hP L hL hX k]`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem fam_snoc_zpow (hI : IsIntersectionFamily I) (hP : IsArithVar P (n + 1))
     (L : Fin n → HermLine ι) (hL : ∀ j, IsSmoothHerm (L j)) {X : HermLine ι} (hX : IsSmoothHerm X) (m : ℤ) :
@@ -187,11 +187,11 @@ theorem fam_snoc_zpow (hI : IsIntersectionFamily I) (hP : IsArithVar P (n + 1))
     linarith
 
 /- English proof (translation)
-Establish `hs : ∀ j, IsSmoothHerm (Function.update L a B j)`. Introduce `j`. Break down `eq_or_ne j a with rfl | h` into its components or cases. Rewrite using `[Function.update_self]` and apply the resulting hypothesis. Rewrite using `[Function.update_of_ne h]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hL j`. Rewrite using `[← hI.1 P (n + 1) _ (Equiv.swap a (Fin.last n)) hP hs]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Use `Fin.lastCases ?_ (fun i => ?_) j` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[Function.comp_apply, Fin.snoc_castSucc, Function.update_of_ne]`. Introduce `h`. Rewrite `h` using `[Equiv.swap_apply_eq_iff, Equiv.swap_apply_left]`. Conclude with `Fin.castSucc_ne_last i h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fam_update_eq_snoc (hI : IsIntersectionFamily I) (hP : IsArithVar P (n + 1))
     (L : Fin (n + 1) → HermLine ι) (hL : ∀ j, IsSmoothHerm (L j)) (a : Fin (n + 1)) {B : HermLine ι}
@@ -215,9 +215,9 @@ theorem fam_update_eq_snoc (hI : IsIntersectionFamily I) (hP : IsArithVar P (n +
     exact Fin.castSucc_ne_last i h
 
 /- English proof (translation)
-Unfold `lamLine`. Establish `hAA` using `isSmoothHerm_tensor hA hA`. Establish `hXc` using `isSmoothHerm_hermZpow hX (-c)`. Establish `hR : ∀ i : Fin n, IsSmoothHerm ((fun i : Fin n => L (Equiv.swap a (Fin.last n) i.castSucc)) i)` using `fun i => hL _`. Rewrite using `[fam_update_eq_snoc hI hP L hL a (isSmoothHerm_tensor hAA hXc), fam_update_eq_snoc hI hP L hL a hA, fam_update_eq_snoc hI hP L hL a hX]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h₁` using `hI.2.1 P n (fun i : Fin n => L (Equiv.swap a (Fin.last n) i.castSucc)) _ _ hP hR hAA hXc`. Establish `h₂` using `hI.2.1 P n (fun i : Fin n => L (Equiv.swap a (Fin.last n) i.castSucc)) _ _ hP hR hA hA`. Establish `h₃` using `fam_snoc_zpow hI hP (fun i : Fin n => L (Equiv.swap a (Fin.last n) i.castSucc)) hR hX (-c)`. Rewrite using `[h₁, h₂, h₃]`. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -241,19 +241,19 @@ theorem fam_update_lamLine (hI : IsIntersectionFamily I) (hP : IsArithVar P (n +
   ring
 
 /- English proof (translation)
-Establish `hsm : ∀ i, IsSmoothHerm (![X, A] i)` using `Fin.forall_fin_two.mpr ⟨hX, hA⟩`. Proceed by induction on `T using Finset.induction_on generalizing t with`. Consider the case `empty`. Simplify using `only [Finset.notMem_empty, if_false]`. Conclude with `(famExt_basis ![X, A] t).symm`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `insert a T ha ih`. Establish `hins : ∀ {β : Type} (y : β) (F : Fin 2 → β), (fun j => if j ∈ insert a T then y else F (t j)) = Function.update (fun j => if j ∈ T then y else F (t j)) a y`. Introduce `β y F`. Use function extensionality and compare the values at `j`. Break down `eq_or_ne j a with rfl | h` into its components or cases.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Simplify using `[h]`. Establish `hupd : ∀ {β : Type} (y : β) (F : Fin 2 → β) (i : Fin 2), Function.update (fun j => if j ∈ T then y else F (t j)) a (F i) = fun j => if j ∈ T then y else F (Function.update t a i j)`. Introduce `β y F i`. Use function extensionality and compare the values at `j`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `eq_or_ne j a with rfl | h` into its components or cases. Simplify using `[ha]`. Simplify using `[Function.update_of_ne h]`. Establish `hL : ∀ j, IsSmoothHerm ((fun j => if j ∈ T then lamLine A X c else ![X, A] (t j)) j)`. Introduce `j`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify by unfolding definitions.
 
-Simplify using `only`. Use `split_ifs`. Conclude with `isSmoothHerm_tensor (isSmoothHerm_tensor hA hA) (isSmoothHerm_hermZpow hX _)`. Conclude with `hsm (t j)`. Establish `eL : (fun j => if j ∈ insert a T then lamLine A X c else ![X, A] (t j)) = Function.update (fun j => if j ∈ T then lamLine A X c else ![X, A] (t j)) a (lamLine A X c)` using `hins _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `eV : (fun j => if j ∈ insert a T then (![-(c : ℝ), 2] : Fin 2 → ℝ) else Pi.single (t j) 1) = Function.update (fun j => if j ∈ T then (![-(c : ℝ), 2] : Fin 2 → ℝ) else Pi.single (t j) 1) a ![-(c : ℝ), 2]` using `hins (![-(c : ℝ), 2] : Fin 2 → ℝ) fun i => Pi.single i 1`. Establish `hA1 : Function.update (fun j => if j ∈ T then lamLine A X c else ![X, A] (t j)) a A = fun j => if j ∈ T then lamLine A X c else ![X, A] (Function.update t a 1 j)` using `hupd _ ![X, A] 1`. Establish `hX0 : Function.update (fun j => if j ∈ T then lamLine A X c else ![X, A] (t j)) a X = fun j => if j ∈ T then lamLine A X c else ![X, A] (Function.update t a 0 j)` using `hupd _ ![X, A] 0`. Establish `hV1 : Function.update (fun j => if j ∈ T then (![-(c : ℝ), 2] : Fin 2 → ℝ) else Pi.single (t j) 1) a (Pi.single 1 1) = fun j => if j ∈ T then ![-(c : ℝ), 2] else Pi.single (Function.update t a 1 j) 1` using `hupd (![-(c : ℝ), 2] : Fin 2 → ℝ) (fun i => Pi.single i 1) 1`. Establish `hV0 : Function.update (fun j => if j ∈ T then (![-(c : ℝ), 2] : Fin 2 → ℝ) else Pi.single (t j) 1) a (Pi.single 0 1) = fun j => if j ∈ T then ![-(c : ℝ), 2] else Pi.single (Function.update t a 0 j) 1` using `hupd (![-(c : ℝ), 2] : Fin 2 → ℝ) (fun i => Pi.single i 1) 0`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Establish `hw : (![-(c : ℝ), 2] : Fin 2 → ℝ) = (2 : ℝ) • Pi.single 1 1 + (-(c : ℝ)) • Pi.single 0 1`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `fin_cases i <;> simp`. Rewrite using `[eL, eV, fam_update_lamLine hI hP _ hL a hA hX c, hA1, hX0, ih, ih, congrArg (Function.update (fun j => if j ∈ T then (![-(c : ℝ), 2] : Fin 2 → ℝ) else Pi.single (t j) 1) a) hw, MultilinearMap.map_update_add, MultilinearMap.map_update_smul, MultilinearMap.map_update_smul, hV1, hV …`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem fam_eq_famExt (hI : IsIntersectionFamily I) (hP : IsArithVar P (n + 1)) {A X : HermLine ι}
     (hA : IsSmoothHerm A) (hX : IsSmoothHerm X) (c : ℤ) (T : Finset (Fin (n + 1))) (t : Fin (n + 1) → Fin 2) :
@@ -315,15 +315,15 @@ theorem fam_eq_famExt (hI : IsIntersectionFamily I) (hP : IsArithVar P (n + 1)) 
     ring
 
 /- English proof (translation)
-Establish `hsm : ∀ i, IsSmoothHerm (![X, A] i)` using `Fin.forall_fin_two.mpr ⟨hX, hA⟩`. Establish `h` using `fam_eq_famExt hI hP hA hX c Finset.univ (fun _ => 0)`. Simplify using `only [Finset.mem_univ, if_true] at h`. Rewrite using `[h]`. Establish `hw : (fun _ : Fin (n + 1) => (![-(c : ℝ), 2] : Fin 2 → ℝ)) = fun _ => (2 : ℝ) • ((Pi.single 1 1 : Fin 2 → ℝ) + (-(c : ℝ) / 2) • Pi.single 0 1)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i k`. Use `fin_cases k`. Simplify using `only [Fin.zero_eta, Fin.isValue, Matrix.cons_val_zero, Pi.smul_apply, Pi.add_apply, smul_eq_mul]`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[hw, MultilinearMap.map_smul_univ, Finset.prod_const, Finset.card_univ, Fintype.card_fin, smul_eq_mul, symm_expand _ (famExt_symm hI hP ![X, A] hsm)]`. Use `congr 1`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `hm : (mix j (Pi.single 0 1) (Pi.single 1 1) : Fin (n + 1) → Fin 2 → ℝ) = fun i => Pi.single ((fun i : Fin (n + 1) => if (i : ℕ) < j then (0 : Fin 2) else 1) i) 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `i`. Simplify using `only [mix]`. Apply the tactic sequence `split_ifs <;> rfl`. Rewrite using `[hm, famExt_basis]`. Use `congr 2`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `i`. Simplify using `only [mix, Function.comp]`. Apply the tactic sequence `split_ifs <;> rfl`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem fam_lamLine_expand (hI : IsIntersectionFamily I) (hP : IsArithVar P (n + 1)) {A X : HermLine ι}
     (hA : IsSmoothHerm A) (hX : IsSmoothHerm X) (c : ℤ) :

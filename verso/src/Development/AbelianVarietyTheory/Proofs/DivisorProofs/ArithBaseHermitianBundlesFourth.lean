@@ -14,7 +14,7 @@ open GlobalTheory.Cartier GlobalTheory.CxPts GlobalTheory.ProjVar
 open scoped Classical
 
 /- English proof (translation)
-Introduce `p2 pH rA _ D O hO B _ R hR c Bs _ q arq nBs E h H Bg jB πB u Gm hL`. Conclude with `GlobalTheory.BcRead.FinPl.lg_root_eq p2 pH rA D O hO (setB O.Y B) R hR c Bs q arq nBs E h H Bg jB πB u ⟨hL.1, hL.2.1, hL.2.2.1, hL.2.2.2.1⟩ hL.2.2.2.2.1 ⟨Gm, hL.2.2.2.2.2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.FlagCovFin.finNorm_of_flagCover : Hypotheses2 → HypothesesH → RegularAlteration → ScholzeWeinsteinB →
   ∀ (D : D7) (O : Setup D) (hO : O.Core) (B : ℝ) (hB : 2 ≤ B) (R : ℝ) (hR : 2 ≤ R) (c : O.s.Comp)

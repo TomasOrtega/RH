@@ -13,7 +13,7 @@ universe u
 variable {k G : Type u} [CommRing k] [Group G]
 
 /- English proof (translation)
-Rewrite using `[← ShortComplex.exact_map_iff_of_faithful _ (forget₂ (Rep.{u} k G) (ModuleCat.{u} k)), ShortComplex.moduleCat_exact_iff]`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem shortComplex_exact_of_forall {S : ShortComplex (Rep.{u} k G)}
     (h : ∀ x : S.X₂, S.g.hom x = 0 → ∃ y : S.X₁, S.f.hom y = x) : S.Exact := by
@@ -41,7 +41,7 @@ noncomputable def ratSES : ShortComplex (Rep.{0} ℤ G) :=
     exact ⟨n, by simp⟩)
 
 /- English proof (translation)
-The claim follows from `(Rep.mono_iff_injective _).2 fun a b h => Int.cast_injective (α := ℚ) h epi_g := (Rep.epi_iff_surjective _).2 fun x => QuotientAddGroup.mk_surjective x exact := by refine shortComplex_exact_of_forall fun q hq => ?_ have hq' : ((show ℚ from q) : AddCircle (1 : ℚ)) = 0 := hq obtain …`.
+A detailed English derivation is pending.
 -/
 theorem ratSES_shortExact : (ratSES G).ShortExact where
   mono_f := (Rep.mono_iff_injective _).2 fun a b h => Int.cast_injective (α := ℚ) h
@@ -73,7 +73,7 @@ theorem h1RatModIntIso_inv_apply (χ : Additive G →+ AddCircle (1 : ℚ)) :
   rfl
 
 /- English proof (translation)
-The claim follows from `isIso_δ_of_isZero (ratSES_shortExact G) 1 (isZero_groupCohomology_trivial_rat 1) (isZero_groupCohomology_trivial_rat 2)`.
+A detailed English derivation is pending.
 -/
 theorem isIso_δ_ratSES : IsIso (groupCohomology.δ (ratSES_shortExact G) 1 2 rfl) :=
   isIso_δ_of_isZero (ratSES_shortExact G) 1 (isZero_groupCohomology_trivial_rat 1)
@@ -100,11 +100,11 @@ theorem h2IntAddEquiv_symm_apply (χ : Additive G →+ AddCircle (1 : ℚ)) :
   rfl
 
 /- English proof (translation)
-Establish `hfx : (ratSES G).f.hom ∘ x = d₁₂ (ratSES G).X₂ y`. Use function extensionality and compare the values at `p`. Express the relevant statement in the definitionally equal form `((x p : ℤ) : ℚ) = y p.2 - y (p.1 * p.2) + y p.1`. Rewrite using `[hx]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Use `⟨mem_cocycles₂_of_comp_eq_d₁₂ (ratSES_shortExact G) hfx, ?_⟩` and prove the remaining obligations. Rewrite using `[h2IntAddEquiv_symm_apply, h1RatModIntIso_inv_apply]`. Use `δ₁_apply (ratSES_shortExact G) ((cocycles₁IsoOfIsTrivial (Rep.trivial ℤ G (AddCircle (1 : ℚ)))).inv χ) y ?_ x hfx` and prove the remaining obligations. Use function extensionality and compare the values at `g`. Express the relevant statement in the definitionally equal form `((y g : ℚ) : AddCircle (1 : ℚ)) = χ (Additive.ofMul g)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `hy g`.
+A detailed English derivation is pending.
 -/
 theorem h2IntAddEquiv_symm_apply_eq_H2_class (χ : Additive G →+ AddCircle (1 : ℚ)) (y : G → ℚ)
     (hy : ∀ g : G, (y g : AddCircle (1 : ℚ)) = χ (Additive.ofMul g)) (x : G × G → ℤ)
@@ -133,7 +133,7 @@ omit [Fintype G] in
 include hσ in
 
 /- English proof (translation)
-Introduce `x`. Take `⟨k, hk⟩` from `Subgroup.mem_zpowers_iff.1 (hσ x.toMul)`. Conclude with `AddSubgroup.mem_zmultiples_iff.2 ⟨k, by rw [← ofMul_zpow, hk, ofMul_toMul]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem forall_mem_zmultiples_ofMul :
     ∀ x : Additive G, x ∈ AddSubgroup.zmultiples (Additive.ofMul σ) := by
@@ -144,7 +144,7 @@ theorem forall_mem_zmultiples_ofMul :
 include hσ in
 
 /- English proof (translation)
-Establish `: Fact ((0 : ℚ) < 1)` using `⟨one_pos⟩`. Rewrite using `[orderOf_ofAdd_eq_addOrderOf, AddCircle.addOrderOf_period_div Nat.card_pos, orderOf_eq_card_of_forall_mem_zpowers hσ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem orderOf_ofAdd_div_card_dvd :
     orderOf (Multiplicative.ofAdd (((1 : ℚ) / Nat.card G : ℚ) : AddCircle (1 : ℚ))) ∣
@@ -157,7 +157,7 @@ noncomputable def cyclicChar : Additive G →+ AddCircle (1 : ℚ) :=
   MonoidHom.toAdditiveLeft (monoidHomOfForallMemZpowers hσ (orderOf_ofAdd_div_card_dvd σ hσ))
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `Multiplicative.toAdd (monoidHomOfForallMemZpowers hσ (orderOf_ofAdd_div_card_dvd σ hσ) σ) = _`. Rewrite using `[monoidHomOfForallMemZpowers_apply_gen]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem cyclicChar_apply_gen :
     cyclicChar σ hσ (Additive.ofMul σ) = (((1 : ℚ) / Nat.card G : ℚ) : AddCircle (1 : ℚ)) := by
@@ -167,15 +167,15 @@ theorem cyclicChar_apply_gen :
   rfl
 
 /- English proof (translation)
-Use `eq_top_iff.2 fun f _ => ?_` and prove the remaining obligations. Use `set n := Nat.card G`. Establish `hn : (n : ℚ) ≠ 0` using `Nat.cast_ne_zero.2 Nat.card_pos.ne'`. Take `⟨q, hq⟩` from `QuotientAddGroup.mk_surjective (f (Additive.ofMul σ))`. Establish `h0 : n • f (Additive.ofMul σ) = 0`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpow : σ ^ n = 1`. Rewrite using `[show n = orderOf σ from (orderOf_eq_card_of_forall_mem_zpowers hσ).symm]`. Conclude with `pow_orderOf_eq_one σ`. Rewrite using `[← map_nsmul, ← ofMul_pow, hpow, ofMul_one, map_zero]`. Rewrite `h0` using `[← hq]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : (((n : ℚ) * q : ℚ) : AddCircle (1 : ℚ)) = 0`. Rewrite using `[← nsmul_eq_mul]`. Conclude with `h0`. Take `⟨m, hm⟩` from `(AddCircle.coe_eq_zero_iff _).1 h1`. Use `AddSubgroup.mem_zmultiples_iff.2 ⟨m, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `((AddMonoidHom.eq_iff_eq_on_generator (forall_mem_zmultiples_ofMul σ hσ) _ _).2 ?_)` and prove the remaining obligations. Rewrite using `[AddMonoidHom.zsmul_apply, cyclicChar_apply_gen, ← hq]`. Establish `hq' : q = m • ((1 : ℚ) / n)`. Rewrite `hm` using `[zsmul_one]`. Rewrite using `[zsmul_eq_mul, hm]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Clear the denominators using the available nonvanishing facts. Rewrite using `[hq']`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem zmultiples_cyclicChar : AddSubgroup.zmultiples (cyclicChar σ hσ) = ⊤ := by
   refine eq_top_iff.2 fun f _ => ?_
@@ -201,9 +201,9 @@ theorem zmultiples_cyclicChar : AddSubgroup.zmultiples (cyclicChar σ hσ) = ⊤
   rfl
 
 /- English proof (translation)
-Establish `: Fact ((0 : ℚ) < 1)` using `⟨one_pos⟩`. Set `ev : (Additive G →+ AddCircle (1 : ℚ)) →+ AddCircle (1 : ℚ)` to `AddMonoidHom.mk' (fun f => f (Additive.ofMul σ)) fun _ _ => rfl`. Establish `hev : Function.Injective ev` using `fun f g h => (AddMonoidHom.eq_iff_eq_on_generator (forall_mem_zmultiples_ofMul σ hσ) _ _).2 h`. Rewrite using `[← addOrderOf_injective ev hev]`. Express the relevant statement in the definitionally equal form `addOrderOf (cyclicChar σ hσ (Additive.ofMul σ)) = _`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[cyclicChar_apply_gen, AddCircle.addOrderOf_period_div Nat.card_pos]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem addOrderOf_cyclicChar : addOrderOf (cyclicChar σ hσ) = Nat.card G := by
   have : Fact ((0 : ℚ) < 1) := ⟨one_pos⟩
@@ -219,9 +219,9 @@ noncomputable def cyclicH2Gen : H2 (Rep.trivial ℤ G ℤ) :=
   (h2IntAddEquiv G).symm (cyclicChar σ hσ)
 
 /- English proof (translation)
-Use `eq_top_iff.2 fun x _ => ?_` and prove the remaining obligations. Establish `hx : h2IntAddEquiv G x ∈ AddSubgroup.zmultiples (cyclicChar σ hσ)`. Rewrite using `[zmultiples_cyclicChar]`. Discharge the goal by the elementary cases of `trivial`. Take `⟨m, hm⟩` from `AddSubgroup.mem_zmultiples_iff.1 hx`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Extract witnesses or component facts from the available result.
 
-Use `AddSubgroup.mem_zmultiples_iff.2 ⟨m, ?_⟩` and prove the remaining obligations. Rewrite using `[cyclicH2Gen, ← map_zsmul, hm, AddEquiv.symm_apply_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem zmultiples_cyclicH2Gen : AddSubgroup.zmultiples (cyclicH2Gen σ hσ) = ⊤ := by
   refine eq_top_iff.2 fun x _ => ?_
@@ -232,7 +232,7 @@ theorem zmultiples_cyclicH2Gen : AddSubgroup.zmultiples (cyclicH2Gen σ hσ) = �
   rw [cyclicH2Gen, ← map_zsmul, hm, AddEquiv.symm_apply_apply]
 
 /- English proof (translation)
-The claim follows from `(addOrderOf_injective (h2IntAddEquiv G).symm.toAddMonoidHom (h2IntAddEquiv G).symm.injective (cyclicChar σ hσ)).trans (addOrderOf_cyclicChar σ hσ)`.
+A detailed English derivation is pending.
 -/
 theorem addOrderOf_cyclicH2Gen : addOrderOf (cyclicH2Gen σ hσ) = Nat.card G :=
   (addOrderOf_injective (h2IntAddEquiv G).symm.toAddMonoidHom
@@ -241,7 +241,7 @@ theorem addOrderOf_cyclicH2Gen : addOrderOf (cyclicH2Gen σ hσ) = Nat.card G :=
 include hσ in
 
 /- English proof (translation)
-Rewrite using `[← addOrderOf_cyclicH2Gen σ hσ, ← Nat.card_zmultiples, zmultiples_cyclicH2Gen, AddSubgroup.card_top]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem card_h2Int_of_cyclic : Nat.card (H2 (Rep.trivial ℤ G ℤ)) = Nat.card G := by
   rw [← addOrderOf_cyclicH2Gen σ hσ, ← Nat.card_zmultiples, zmultiples_cyclicH2Gen,

@@ -5,7 +5,7 @@ open IsLocalRing GlobalTheory.Henselisation
 namespace GlobalTheory.Henselisation
 
 /- English proof (translation)
-Introduce `R _ _ i`. Use `haveI : Module.Flat i.A i.B := IsLocalization.flat i.B i.q.primeCompl`. Conclude with `Module.Flat.trans R i.A i.B`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem EtNbhd.flat_B : ∀ (R : Type) [CommRing R] [IsLocalRing R] (i : EtNbhd R), Module.Flat R i.B := by
   intro R _ _ i

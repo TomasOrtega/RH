@@ -22,13 +22,13 @@ open ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestrictio
 namespace GlobalTheory.CoverBound
 
 /- English proof (translation)
-Distinguish the cases in `h0 : x = 0`. Substitute `h0` using the available equality. Simplify using `[InV, vV]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, rfl⟩`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Establish `h1 : valV T.V (algebraMap T.V T.Fr a) ≤ 1` using `HeightOneSpectrum.valuation_le_one _ a`. Establish `h2` using `(WithZero.log_le_log (valV_ne_zero (V := T.V) h0) one_ne_zero).2 h1`. Rewrite `h2` using `[WithZero.log_one]`. Unfold `vV`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers.
 
-Introduce `h3`. Establish `h4 : valV T.V x ≤ 1`. Use `(WithZero.log_le_log (valV_ne_zero h0) one_ne_zero).1 ?_` and prove the remaining obligations. Rewrite using `[WithZero.log_one]`. Unfold `vV at h3`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Use linear arithmetic over natural numbers and integers. Conclude with `IsDiscreteValuationRing.exists_lift_of_le_one (A := T.V) (K := T.Fr) h4`.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem inV_iff (T : CDVR) (x : T.Fr) : InV T x ↔ 0 ≤ vV T.V x := by
   by_cases h0 : x = 0
@@ -50,7 +50,7 @@ theorem inV_iff (T : CDVR) (x : T.Fr) : InV T x ↔ 0 ≤ vV T.V x := by
     exact IsDiscreteValuationRing.exists_lift_of_le_one (A := T.V) (K := T.Fr) h4
 
 /- English proof (translation)
-Rewrite using `[inV_iff, inV_iff, hi]`. Conclude with `mul_nonneg_iff_of_pos_left (by exact_mod_cast hr)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inV_map_iff {T T' : CDVR} (i : T.Fr →+* T'.Fr) {r : ℕ} (hr : 0 < r)
     (hi : ∀ a : T.Fr, vV T'.V (i a) = (r : ℤ) * vV T.V a) (x : T.Fr) : InV T' (i x) ↔ InV T x := by
@@ -58,9 +58,9 @@ theorem inV_map_iff {T T' : CDVR} (i : T.Fr →+* T'.Fr) {r : ℕ} (hr : 0 < r)
   exact mul_nonneg_iff_of_pos_left (by exact_mod_cast hr)
 
 /- English proof (translation)
-Rewrite using `[inV_iff, ho.2]`. Use `mul_nonneg (Nat.cast_nonneg e) ?_` and prove the remaining obligations. Distinguish the cases in `h0 : x = 0`. Simplify using `[vLa, h0]`. Establish `h2` using `(WithZero.log_le_log ((la.valuation K).ne_zero_iff.2 h0) one_ne_zero).2 hx`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `h2` using `[WithZero.log_one]`. Unfold `vLa`. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers.
 -/
 theorem inV_of_overLa {K : Type} [Field K] [NumberField K] {la : HeightOneSpectrum (𝓞 K)} {T : CDVR}
     {io : K →+* T.Fr} {e : ℕ} (ho : OverLa la T.V io e) {x : K} (hx : la.valuation K x ≤ 1) : InV T (io x) := by
@@ -74,9 +74,9 @@ theorem inV_of_overLa {K : Type} [Field K] [NumberField K] {la : HeightOneSpectr
   omega
 
 /- English proof (translation)
-Distinguish the cases in `h0 : x = 0`. Substitute `h0` using the available equality. Conclude with `zero_mem (algebraMap T.V T.Fr).range`. Establish `h` using `GlobalTheory.PlaceExtField.vV_pow (V := T.V) h0 (e + 1)`. Rewrite `h` using `[hx]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[inV_iff]`. Establish `he' : (0 : ℤ) < e` using `by exact_mod_cast he`. Move the coercions through the operations in `at h`. Establish `: (e : ℤ) * vV T.V x = 0` using `by linarith`. Conclude with `((mul_eq_zero.1 this).resolve_left he'.ne').ge`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem inV_of_pow_eq (T : CDVR) {x : T.Fr} {e : ℕ} (he : 0 < e) (hx : x ^ (e + 1) = x) : InV T x := by
   by_cases h0 : x = 0
@@ -93,11 +93,11 @@ theorem inV_of_pow_eq (T : CDVR) {x : T.Fr} {e : ℕ} (he : 0 < e) (hx : x ^ (e 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
 /- English proof (translation)
-Take `⟨G, t', m1, m2, hp⟩` from `h`. Take `⟨φ, hφ⟩` from `GlobalTheory.PlaceInt.Ext.exists_restrict T T' i e hi`. Take `⟨G', ⟨mG⟩⟩ : ∃ G' : SAB H (Sp T'.V), Nonempty (SABMap G' G (spMap φ))` from `⟨_, ⟨ReciprocityTheory.ChartRestriction.G.PullbackSections.sabM ReciprocityTheory.ChartRestriction.G.Out.CubePf.cubePull (spMap φ) G⟩⟩`. Take `⟨s, ⟨n⟩⟩ : ∃ s : SAB H (Sp T'.Fr), Nonempty (SABMap s t' (spMap i))` from `⟨_, ⟨ReciprocityTheory.ChartRestriction.G.PullbackSections.sabM ReciprocityTheory.ChartRestriction.G.Out.CubePf.cubePull (spMap i) t'⟩⟩`. Establish `hio : spMap i ≫ spMap (algebraMap T.V T.Fr) = spMap (algebraMap T'.V T'.Fr) ≫ spMap φ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← GlobalTheory.FramedBaseChange.spec_comp, ← GlobalTheory.FramedBaseChange.spec_comp]`. Conclude with `congrArg spMap (RingHom.ext fun a => (hφ a).symm)`. Take `⟨a1, -⟩` from `sabComp pullCubComp E H _ _ _ _ _ _ _ _ m1 n`. Take `⟨a2, -⟩` from `sabComp pullCubComp E H _ _ _ _ _ _ _ _ m2 n`. Rewrite `a1` using `[← hx]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `a2` using `[hio]`. Take `⟨b1, -⟩` from `sabCancel pullCubCancel E H _ _ _ _ _ _ _ _ m a1`. Take `⟨b2, -⟩` from `sabCancel pullCubCancel E H _ _ _ _ _ _ _ _ mG a2`. Conclude with `⟨G', s, b1, b2, MorphismProperty.of_isPullback mG.cart.1 hp⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem good_lift {X X₂ : Scheme.{0}} (t : SAB H X) (t₂ : SAB H X₂) (r : X₂ ⟶ X) (m : SABMap t₂ t r) (T T' : CDVR)
     (i : T.Fr →+* T'.Fr) (e : ℕ) (hi : ∀ a : T.Fr, vV T'.V (i a) = (e : ℤ) * vV T.V a) (x : Sp T.Fr ⟶ X)
@@ -126,7 +126,7 @@ theorem good_lift {X X₂ : Scheme.{0}} (t : SAB H X) (t₂ : SAB H X₂) (r : X
 variable {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l}
 
 /- English proof (translation)
-Take `⟨S, _, _, φ, y', a, b, F, hf, hm, h1, h2, h3, h4, h5⟩` from `hv`. Use `⟨S, inferInstance, inferInstance, φ.comp ψ, y', a, b, F, ?_, GlobalTheory.FramedBaseChange.trans ψ φ h hm, h1, h2, h3, h4, h5⟩` and prove the remaining obligations. Use `haveI : Nontrivial S := hf.injective.nontrivial`. Use `letI := (φ.comp ψ).toRingHom.toAlgebra`. Conclude with `RingHom.faithfullyFlat_algebraMap_iff.2 inferInstance`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem shortValAt_of_map (nab : NabV Xo c) {n : ℕ} (w : (Fin n → LevQ Dw l) → c.F) (La : GenLat E n) (β : c.F)
     (N : ℕ) (P : MvPolynomial (LtN Dw n) c.F) {K k : Type} [Field K] [Field k] [Algebra c.F K] [Algebra c.F k]
@@ -140,7 +140,7 @@ theorem shortValAt_of_map (nab : NabV Xo c) {n : ℕ} (w : (Fin n → LevQ Dw l)
   exact RingHom.faithfullyFlat_algebraMap_iff.2 inferInstance
 
 /- English proof (translation)
-Proceed by induction on `e with`. Consider the case `zero => rw [zero_add, pow_one, pow_one]`. Consider the case `succ e ih => rw [pow_succ f, pow_succ (evR Xo c f y), ← ih]`. Conclude with `evalAt_mul _ _ _ _ _`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem evR_pow_succ (f : Rul Xo c) {S : Type} [CommRing S] [Algebra c.F S] (y : FrPt Xo c S) (e : ℕ) :
     evR Xo c (f ^ (e + 1)) y = evR Xo c f y ^ (e + 1) := by
@@ -151,31 +151,29 @@ theorem evR_pow_succ (f : Rul Xo c) {S : Type} [CommRing S] [Algebra c.F S] (y :
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c r U hU la p hp hpl hl _ a n d N m dδ La cs e w P f hdom hlev hnab hun htr hN he hcs hw hP hf hval`. Use `GlobalTheory.T.cuspFormBound_goodPoints_extends_allPoints E H Dw l Xo c r U hU la p hp hpl hl a n f _ hdom hf ?_` and prove the remaining obligations. Introduce `T io e₀ ho y hfin hgood`. Establish `laws` using `GlobalTheory.firstFiveLaws.1`. Take `⟨T₁, i₁, e₁, y₁, io₁, z₁, ⟨he₁, hv₁, φ₁, hφ₁, hm₁⟩, -, hio₁, hover⟩` from `GlobalTheory.CoverPoint.exists_ext_lift_to_cover E H Dw l Xo c n dδ hlev T io y hfin`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `letI a0 : Algebra c.F T.Fr := io.toAlgebra`. Use `letI a1 : Algebra c.F T₁.Fr := (i₁.comp io).toAlgebra`. Use `letI b1 : Algebra dδ.c₂.F T₁.Fr := io₁.toAlgebra`. Take `⟨k, _, _, _, _, -⟩ : ∃ (k : Type) (_ : Field k) (_ : IsAlgClosed k) (_ : Algebra T₁.Fr k) (_ : Algebra.IsAlgebraic T₁.Fr k), True` from `⟨AlgebraicClosure T₁.Fr, inferInstance, inferInstance, inferInstance, inferInstance, trivial⟩`. Use `letI ak : Algebra c.F k := ((algebraMap T₁.Fr k).comp (i₁.comp io)).toAlgebra`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Equip the data with the indicated structure.
 
-Use `letI bk : Algebra dδ.c₂.F k := ((algebraMap T₁.Fr k).comp io₁).toAlgebra`. Set `ψ₁ : T₁.Fr →ₐ[c.F] k` to `{ algebraMap T₁.Fr k with commutes' := fun _ => rfl }`. Set `ψ₂ : T₁.Fr →ₐ[dδ.c₂.F] k` to `{ algebraMap T₁.Fr k with commutes' := fun _ => rfl }`. Take `⟨yk, hyk⟩` from `GlobalTheory.FramedBaseChange.exists_frMap laws E H Dw l Xo c _ _ ψ₁ y₁.1`. Take `⟨zk, hzk⟩` from `GlobalTheory.FramedBaseChange.exists_frMap laws E H Dw dδ.l₂ dδ.Xo₂ dδ.c₂ _ _ ψ₂ z₁.1`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hc1 : ∀ x : c.F, algebraMap dδ.c₂.F T₁.Fr (dδ.eF x) = algebraMap c.F T₁.Fr x` using `hio₁`. Establish `hck : ∀ x : c.F, algebraMap dδ.c₂.F k (dδ.eF x) = algebraMap c.F k x` using `fun x => congrArg (algebraMap T₁.Fr k) (hio₁ x)`. Establish `hoverk : FrOver dδ zk yk` using `(GlobalTheory.frames_lift_to_cover laws E H Dw l Xo c n dδ).2.1 T₁.Fr hc1 k hck ψ₁ ψ₂ rfl y₁.1 z₁.1 yk zk hover hyk hzk`. Take `⟨v, hv, hev⟩` from `hval k hck yk zk hoverk`. Set `K` to `IntermediateField.adjoin T₁.Fr (Set.range v)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Use `haveI : FiniteDimensional T₁.Fr K := IntermediateField.finiteDimensional_adjoin fun x _ => (Algebra.IsAlgebraic.isAlgebraic x).isIntegral`. Take `⟨T₂, i₂, e₂, ρ, -, he₂, hv₂, hρ, -, -⟩` from `GlobalTheory.PlaceExtField.exists_cdvr_finite_extension T₁ K`. Take `⟨z₂, -, -, φ₂, hφ₂, hm₂⟩` from `(GlobalTheory.PlaceInt.exists_isExt_and_trans E H Dw dδ.l₂ dδ.Xo₂ dδ.c₂ T₁ T₂ io₁ z₁ i₂ e₂ he₂ hv₂).1`. Use `letI b2 : Algebra dδ.c₂.F T₂.Fr := (i₂.comp io₁).toAlgebra`. Choose the witnesses or unpack the hypotheses as in `⟨j, hj, hjv⟩ : ∃ j : T₂.Fr →+* k, (∀ x, j (i₂ x) = algebraMap T₁.Fr k x) ∧ ∀ t, ∃ u, j u = v t := by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(algebraMap K k).comp ρ.symm.toRingHom, fun x => ?_, fun t => ⟨ρ ⟨v t, IntermediateField.subset_adjoin _ _ ⟨t, rfl⟩⟩, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[← hρ]`. Conclude with `congrArg (algebraMap K k) (ρ.symm_apply_apply _)`. Conclude with `congrArg (algebraMap K k) (ρ.symm_apply_apply _)`. Use `choose u hu using hjv`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Set `χ : T₂.Fr →ₐ[dδ.c₂.F] k` to `{ j with commutes' := fun x => hj (io₁ x) }`. Establish `hχ : χ.comp φ₂ = ψ₂` using `AlgHom.ext fun x => by show j (φ₂.toRingHom x) = algebraMap T₁.Fr k x`. Rewrite using `[hφ₂, hj]`. Establish `hm₃ : FrMap χ z₂.1 zk` using `GlobalTheory.FramedBaseChange.cancel φ₂ χ hm₂ (hχ ▸ hzk)`. Establish `hv₀ : ∀ x : T.Fr, vV T₂.V ((i₂.comp i₁) x) = ((e₂ * e₁ : ℕ) : ℤ) * vV T.V x` using `fun x => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[RingHom.comp_apply, hv₂, hv₁]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `he₀ : 0 < e₂ * e₁` using `Nat.mul_pos he₂ he₁`. Establish `hgood₂ : Good z₂`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `good_lift Xo.univ.t dδ.Xo₂.univ.t dδ.r dδ.m T T₂ (i₂.comp i₁) _ hv₀ y.1.x z₂.1.x ?_ hgood` and prove the remaining obligations. Rewrite using `[hm₂.1, Category.assoc, hover.1, hm₁.1, hφ₁, hφ₂, ← Category.assoc, ← GlobalTheory.FramedBaseChange.spec_comp]`. Establish `hint : ∀ x : c.F, la.valuation c.F x ≤ 1 → InV T₂ ((i₂.comp io₁) (dδ.eF x))` using `fun x hx => by`. Rewrite using `[RingHom.comp_apply, hio₁]`. Conclude with `(inV_map_iff (i₂.comp i₁) he₀ hv₀ _).2 (inV_of_overLa ho hx)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hth` using `fun t => GlobalTheory.T.shortThetaValue_bounded_goodReduction E H Dw dδ.l₂ dδ.Xo₂ dδ.c₂ dδ.nab₂ hnab T₂ (i₂.comp io₁) z₂ n d N La (fun q => dδ.eF (w t q)) (MvPolynomial.map (dδ.eF : c.F →+* dδ.c₂.F) (P t)) (u t) hgood₂ hun htr hN (fun q => hint _ (hw t q)) (ReciprocityTheory.Char …`. Establish `h` using `hv t`. Rewrite `h` using `[← hu t]`. Conclude with `h))`. Establish `e1 : evR Xo c f yk = (ψ₁.comp φ₁) (evR Xo c f y.1)` using `GlobalTheory.PlaceInt.evR_of_frMap_fromTest (GlobalTheory.Frames.algebraic_laws laws.secBaseChange E H Dw l Xo c).2.2.1 f (cusp_le_sec Xo c U a n hf).1 _ y.1 y.2.1 yk (GlobalTheory.FramedBaseChange.trans φ₁ ψ₁ hm₁ hyk)`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : ∀ t, evR dδ.Xo₂ dδ.c₂ (cs t) zk = j (evR dδ.Xo₂ dδ.c₂ (cs t) z₂.1)` using `fun t => GlobalTheory.PlaceInt.evR_of_frMap_fromTest (GlobalTheory.Frames.algebraic_laws laws.secBaseChange E H Dw dδ.l₂ dδ.Xo₂ dδ.c₂).2.2.1 (cs t) (hcs t).1.1 χ z₂.1 z₂.2.1 zk hm₃`. Establish `e3 : (i₂.comp i₁) (evI y f) = ∑ t, evR dδ.Xo₂ dδ.c₂ (cs t) z₂.1 * u t`. Apply `j.injective` to reduce the goal to its premises. Establish `e4 : j ((i₂.comp i₁) (evI y f)) = (ψ₁.comp φ₁) (evR Xo c f y.1)` using `by show j (i₂ (i₁ (evR Xo c f y.1))) = algebraMap T₁.Fr k (φ₁.toRingHom (evR Xo c f y.1))`. Rewrite using `[hφ₁, hj]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e4, ← e1, hev, map_sum]`. Conclude with `Finset.sum_congr rfl fun t _ => by rw [map_mul, e2, hu]`. Rewrite using `[← inV_map_iff (i₂.comp i₁) he₀ hv₀, map_mul, e3, Finset.mul_sum]`. Use `sum_mem (S := (algebraMap T₂.V T₂.Fr).range) fun t _ => ?_` and prove the remaining obligations. Establish `h1 : InV T₂ (evR dδ.Xo₂ dδ.c₂ (cs t) z₂.1)` using `inV_of_pow_eq T₂ he (by rw [← evR_pow_succ, (hcs t).2])`.
-
-Establish `h2` using `mul_mem h1 (hth t)`. Rewrite using `[map_mul, map_natCast, map_pow, map_intCast, map_mul, map_natCast, map_pow, map_intCast, mul_left_comm]`. Conclude with `h2`.
+A detailed English derivation is pending.
 -/
 theorem bddAll_of_theta_sum_on_cover : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (r : ℕ) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r), (∀ σ, GoodEmb c σ → IsUnf (U σ)) → ∀ (la : HeightOneSpectrum (𝓞 c.F)) (p : ℕ), p.Prime → (p : 𝓞 c.F) ∈ la.asIdeal → l.GoodAt p → ∀ [StarRing (𝓞 E)] (a : (E →+* ℂ) × ℕ → ℕ) (n d N m : ℕ) (dδ : DeltaDat Xo c n) (La : GenLat E n) (cs : Fin m → Rul dδ.Xo₂ dδ.c₂) (e : ℕ) (w : Fin m → (Fin n → LevQ Dw dδ.l₂) → c.F) (P : Fin m → MvPolynomial (LtN Dw n) c.F) (f : Rul Xo c), Dom a n → dδ.IsLev → IsNab dδ.Xo₂ dδ.c₂ dδ.nab₂ → La.Unimod → La.TrivAt dδ.l₂.M → La.LevOK N dδ.l₂.M → 0 < e → (∀ t, cs t ∈ sec dδ.Xo₂ dδ.c₂ 0 0 ∧ cs t ^ (e + 1) = cs t) → (∀ t q, la.valuation c.F (w t q) ≤ 1) → (∀ t, P t ∈ harmK Dw.mult n c.F ComplexEmbedding.conjugate (InPsi H) (fun _ => 1) ∧ (P t).IsHomogeneous d ∧ ∀ k, la.valuation c.F ((P t).coeff k) ≤ 1) → f ∈ cusp Xo c U a n → (∀ (k : Type) [Field k] [IsAlgClosed k] [Algebra c.F k] [Algebra dδ.c₂.F k], (∀ x : c.F, algebraMap dδ.c₂.F k (dδ.eF x) = algebraMap c.F k x) → ∀ (y : FrPt Xo c k) (y₂ : FrPt dδ.Xo₂ dδ.c₂ k), FrOver dδ y₂ y → ∃ v : Fin m → k, (∀ t, thLaValAt dδ.Xo₂ dδ.c₂ dδ.nab₂ (fun q => dδ.eF (w t q)) La N (MvPolynomial.map (dδ.eF : c.F →+* dδ.c₂.F) (P t)) y₂ (v t)) ∧ evR Xo c f y = ∑ t, evR dδ.Xo₂ dδ.c₂ (cs t) y₂ * v t) → BddAll Xo c la (((La.mIdx N (Dw.p + Dw.q) * Nat.card (Fin n → LevQ Dw dδ.l₂) : ℕ) : c.F) * ((2 * NumberField.discr E * N : ℤ) : c.F) ^ d) f := by
   intro E _ _ _ H Dw l Xo c r U hU la p hp hpl hl _ a n d N m dδ La cs e w P f hdom hlev hnab hun htr hN he hcs hw hP hf

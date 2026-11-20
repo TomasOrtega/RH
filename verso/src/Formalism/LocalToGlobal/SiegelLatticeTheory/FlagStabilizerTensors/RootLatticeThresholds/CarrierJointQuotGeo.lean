@@ -21,9 +21,9 @@ variable {H : Type} [Group H] [TopologicalSpace H] [IsTopologicalGroup H] [Local
   {C : Type*} [TopologicalSpace C] [MeasurableSpace C] [BorelSpace C]
 
 /- English proof (translation)
-Establish `hS : S = {y | φ (κ y) = y}`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Conclude with `hφκ y`. Introduce `h`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h' : φ (κ y) = y` using `h`. Conclude with `h' ▸ hφS (κ y)`. Rewrite using `[hS]`. Conclude with `isClosed_eq (hφ.comp hκ) continuous_id`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chart_closed (S : Set H) (κ : H → C) (φ : C → H) (hκ : Continuous κ) (hφ : Continuous φ)
     (hφS : ∀ c, φ c ∈ S) (hφκ : ∀ y ∈ S, φ (κ y) = y) : IsClosed S := by
@@ -38,7 +38,7 @@ theorem chart_closed (S : Set H) (κ : H → C) (φ : C → H) (hκ : Continuous
   exact isClosed_eq (hφ.comp hκ) continuous_id
 
 /- English proof (translation)
-Rewrite using `[Measure.map_map hFm hφm]`. Establish `h : F ∘ φ = φ ∘ T` using `funext hcomm`. Rewrite using `[h, ← Measure.map_map hφm hT.measurable, hT.map_eq]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_comm_eq {C' H' : Type*} [MeasurableSpace C'] [MeasurableSpace H'] (μC : Measure C') (φ : C' → H')
     (hφm : Measurable φ) (T : C' → C') (hT : MeasurePreserving T μC μC) (F : H' → H') (hFm : Measurable F)
@@ -48,35 +48,29 @@ theorem map_comm_eq {C' H' : Type*} [MeasurableSpace C'] [MeasurableSpace H'] (�
   rw [h, ← Measure.map_map hφm hT.measurable, hT.map_eq]
 
 /- English proof (translation)
-Establish `hSc : IsClosed S` using `chart_closed S κ φ hκ hφ hφS hφκ`. Establish `hrange : Set.range φ = S`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `hφS c`. Introduce `hy`. Conclude with `⟨κ y, hφκ y hy⟩`. Establish `hemb : MeasurableEmbedding φ` using `MeasurableEmbedding.of_measurable_inverse hφ.measurable (hrange ▸ hSc.measurableSet) hκ.measurable hκφ`. Establish `hσ : SigmaFinite (μC.map φ)` using `hemb.sigmaFinite_map`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hμC0 : μC ≠ 0`. Introduce `h`. Establish `h2` using `(isOpen_univ.measure_pos μC Set.univ_nonempty).ne'`. Rewrite `h2` using `[h]`. Conclude with `h2 rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hne : μC.map φ ≠ 0` using `fun h => hμC0 ((Measure.map_eq_zero_iff hφ.measurable.aemeasurable).mp h)`. Establish `hcompl : μC.map φ Sᶜ = 0`. Rewrite using `[Measure.map_apply hφ.measurable hSc.isOpen_compl.measurableSet]`. Establish `h2 : φ ⁻¹' Sᶜ = ∅` using `by ext c; simp [hφS c]`. Rewrite using `[h2, measure_empty]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hleft : ∀ s ∈ S, (μC.map φ).map (fun x => s * x) = μC.map φ` using `fun s hs => map_comm_eq μC φ hφ.measurable _ (hL s hs) _ (measurable_const_mul s) (fun c => (hφκ _ (hmul s hs _ (hφS c))).symm)`. Establish `hinvν : (μC.map φ).map (fun s => s⁻¹) = μC.map φ` using `map_comm_eq μC φ hφ.measurable _ hI _ measurable_inv (fun c => (hφκ _ (hinv _ (hφS c))).symm)`. Establish `hκmap : (μC.map φ).map κ = μC`. Rewrite using `[Measure.map_map hκ.measurable hφ.measurable]`. Establish `h2 : κ ∘ φ = id` using `funext hκφ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[h2, Measure.map_id]`. Use `⟨hσ, hne, hcompl, hleft, hinvν, hκmap, ?_⟩` and prove the remaining obligations. Establish `hright : ∀ t ∈ S, (μC.map φ).map (fun x => x * t) = μC.map φ`. Introduce `t ht`. Establish `hc : (fun x : H => x * t) = (fun x : H => x⁻¹) ∘ (fun x => t⁻¹ * x) ∘ (fun x : H => x⁻¹)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `x`. Simplify using `[_root_.mul_inv_rev]`. Rewrite using `[hc, ← Measure.map_map measurable_inv ((measurable_const_mul _).comp measurable_inv), ← Measure.map_map (measurable_const_mul _) measurable_inv, hinvν, hleft _ (hinv t ht), hinvν]`. Set `S' : Subgroup H` to `{ carrier := S, mul_mem' := fun {a b} ha hb => hmul a ha b hb, one_mem' := h1, inv_mem' := fun {a} ha => hinv a ha }`. Establish `hS'c : IsClosed (S' : Set H)` using `hSc`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `e : C ≃ₜ S'` to `{ toFun := fun c => ⟨φ c, hφS c⟩, invFun := fun y => κ y, left_inv := fun c => hκφ c, right_inv := fun y => Subtype.ext (hφκ y y.2), continuous_toFun := hφ.subtype_mk _, continuous_invFun := hκ.comp continuous_subtype_val }`. Set `μS : Measure S'` to `μC.map e.toMeasurableEquiv`. Establish `hval : (μS.map Subtype.val : Measure H) = μC.map φ`. Rewrite using `[Measure.map_map measurable_subtype_coe e.toMeasurableEquiv.measurable]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hvemb : MeasurableEmbedding (Subtype.val : S' → H)` using `MeasurableEmbedding.subtype_coe hS'c.measurableSet`. Use `haveI : μS.IsMulRightInvariant := ⟨fun g => by`. Establish `h2 : (μS.map (fun x => x * g)).map Subtype.val = μS.map Subtype.val`. Rewrite using `[Measure.map_map measurable_subtype_coe (measurable_mul_const g)]`. Establish `h3 : (Subtype.val ∘ fun x : S' => x * g) = (fun y : H => y * (g : H)) ∘ Subtype.val`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `x`. Simplify using the standard rewrite rules. Rewrite using `[h3, ← Measure.map_map (measurable_mul_const _) measurable_subtype_coe, hval, hright _ g.2]`. Rewrite using `[← hvemb.comap_map (μS.map (fun x => x * g)), h2, hvemb.comap_map]⟩`. Use `haveI : IsFiniteMeasureOnCompacts μS := ⟨fun K hK => by show μC.map e.toMeasurableEquiv K < ⊤`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[MeasurableEquiv.map_apply, Homeomorph.toMeasurableEquiv_coe, ← Homeomorph.image_symm]`. Conclude with `(hK.image e.symm.continuous).measure_lt_top⟩`. Use `haveI : Measure.IsOpenPosMeasure μS := ⟨fun U hU hne' => by show μC.map e.toMeasurableEquiv U ≠ 0`. Rewrite using `[MeasurableEquiv.map_apply, Homeomorph.toMeasurableEquiv_coe]`. Conclude with `(hU.preimage e.continuous).measure_ne_zero μC (hne'.preimage e.surjective)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Take `⟨b, hb, hb1⟩` from `Formalism.L2.SG.Pf.QuotIndep.QuotIndepPf.exists_bruhat S' hS'c μS`. Establish `hb1' : ∀ x, ∫⁻ s, b (s * x) ∂(μC.map φ) = 1`. Introduce `x`. Rewrite using `[← hval, lintegral_map (show Measurable (fun s : H => b (s * x)) from hb.comp (measurable_mul_const x)) measurable_subtype_coe]`. Conclude with `hb1 x`.
-
-Use `⟨fun x => if b x = ⊤ then 0 else b x, ?_, ?_, fun x => ?_⟩` and prove the remaining obligations. Conclude with `Measurable.ite (hb (measurableSet_singleton ⊤)) measurable_const hb`. Introduce `x show (if b x = ⊤ then 0 else b x) ≠ ⊤ split_ifs with h`. Conclude with `ENNReal.zero_ne_top`. Conclude with `h`.
-
-Rewrite using `[← hb1' x]`. Apply `lintegral_congr_ae` to reduce the goal to its premises. Establish `h4` using `ae_lt_top (μ := μC.map φ) (show Measurable (fun s : H => b (s * x)) from hb.comp (measurable_mul_const x)) (by rw [hb1' x]; exact ENNReal.one_ne_top)`. Use `filter_upwards [h4] with s hs`. Establish `hs' : b (s * x) ≠ ⊤` using `hs.ne`.
-
-Simplify using `[hs']`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem chart_haar (S : Set H) (κ : H → C) (φ : C → H) (μC : Measure C) (hκ : Continuous κ) (hφ : Continuous φ)
     (hφS : ∀ c, φ c ∈ S) (hφκ : ∀ y ∈ S, φ (κ y) = y) (hκφ : ∀ c, κ (φ c) = c)
@@ -176,7 +170,7 @@ end Chart
 variable {D : D7}
 
 /- English proof (translation)
-Unfold `stCoordV Formalism.L2.SG.HidaSetting.hJ`. Establish `hu : Continuous fun y : Formalism.REAL.UJ (X.B.I.ε v) => uMat ((γ v)⁻¹ * y * γ v)` using `(Units.continuous_val.comp continuous_subtype_val).comp ((continuous_const.mul continuous_id).mul continuous_const)`. Apply `continuous_pi` to reduce the goal to its premises. Introduce `p`. Conclude with `continuous_const.mul (continuous_const.dotProduct (continuous_const.matrix_mulVec (hu.matrix_mulVec continuous_const)))`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem stCoordV_continuous (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (u' : D.what₂.Word) (w : Point D.host.E (D.R.rS + 1))
     (γ : X.B.I.Ginf) (v : InfinitePlace X.B.I.F) : Continuous (stCoordV X u' w γ v) := by
@@ -190,9 +184,9 @@ theorem stCoordV_continuous (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (u' 
     (continuous_const.dotProduct (continuous_const.matrix_mulVec (hu.matrix_mulVec continuous_const)))
 
 /- English proof (translation)
-Unfold `muStabV`. Establish `h : ENNReal.ofReal (D.host.ka / (X.B.g : ℝ) / Real.pi) • (volume : Measure ℂ) = (ENNReal.ofReal (D.host.ka / (X.B.g : ℝ) / Real.pi)).toNNReal • (volume : Measure ℂ)`. Use extensionality with `s hs`. Simplify using `only [Measure.smul_apply, smul_eq_mul, ENNReal.smul_def, ENNReal.coe_toNNReal ENNReal.ofReal_ne_top]`. Simplify using `only [h]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `Measure.pi_eq fun s hs => ?_` and prove the remaining obligations. Rewrite using `[Measure.smul_apply, MeasureTheory.volume_pi, Measure.pi_pi]`. Simplify using `only [Measure.smul_apply, smul_eq_mul, ENNReal.smul_def, Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, ENNReal.coe_toNNReal ENNReal.ofReal_ne_top]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem muStabV_eq_smul (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (w : Point D.host.E (D.R.rS + 1)) :
     muStabV X w = ENNReal.ofReal (D.host.ka / (X.B.g : ℝ) / Real.pi) ^ Fintype.card (FreeE w) •
@@ -224,9 +218,9 @@ def StVGeo (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (u u' : D.what₂.Wor
       MeasurePreserving (fun c => stCoordV X u' w (gamW X u u' w) v (φ c)⁻¹)
 
 /- English proof (translation)
-Unfold `muStabV`. Establish `h : ENNReal.ofReal (D.host.ka / (X.B.g : ℝ) / Real.pi) • (volume : Measure ℂ) = (ENNReal.ofReal (D.host.ka / (X.B.g : ℝ) / Real.pi)).toNNReal • (volume : Measure ℂ)`. Use extensionality with `s hs`. Simplify using `only [Measure.smul_apply, smul_eq_mul, ENNReal.smul_def, ENNReal.coe_toNNReal ENNReal.ofReal_ne_top]`. Simplify using `only [h]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `infer_instance`.
+A detailed English derivation is pending.
 -/
 theorem muStabV_sigmaFinite (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (w : Point D.host.E (D.R.rS + 1)) :
     SigmaFinite (muStabV X w) := by
@@ -240,9 +234,9 @@ theorem muStabV_sigmaFinite (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (w :
   infer_instance
 
 /- English proof (translation)
-Apply `Continuous.measurable` to reduce the goal to its premises. Unfold `stCoord Formalism.L2.SG.HidaSetting.hJ`. Apply `continuous_pi` to reduce the goal to its premises. Introduce `v`. Apply `continuous_pi` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `p`. Establish `hu : Continuous fun y : X.B.I.Ginf => uMat ((γ⁻¹ * y * γ) v)` using `(Units.continuous_val.comp continuous_subtype_val).comp ((continuous_apply v).comp ((continuous_const.mul continuous_id).mul continuous_const))`. Conclude with `continuous_const.mul (continuous_const.dotProduct (continuous_const.matrix_mulVec (hu.matrix_mulVec continuous_const)))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem stCoord_measurable (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (u' : D.what₂.Word) (w : Point D.host.E (D.R.rS + 1))
     (γ : X.B.I.Ginf) : Measurable (stCoord X u' w γ) := by
@@ -257,21 +251,19 @@ theorem stCoord_measurable (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (u' :
     (continuous_const.dotProduct (continuous_const.matrix_mulVec (hu.matrix_mulVec continuous_const)))
 
 /- English proof (translation)
-Introduce `w hok μR hμR hmap v`. Take `⟨⟨h1, hmul, hinv⟩, φ, hφ, hφS, hφκ, hκφ, hL, hI⟩` from `hG w hok v`. Establish `heq` using `muStabV_eq_smul X w`. Use `haveI := muStabV_sigmaFinite X w`. Establish `hct : ENNReal.ofReal (D.host.ka / (X.B.g : ℝ) / Real.pi) ^ Fintype.card (FreeE w) ≠ ⊤` using `ENNReal.pow_ne_top ENNReal.ofReal_ne_top`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc0 : ENNReal.ofReal (D.host.ka / (X.B.g : ℝ) / Real.pi) ^ Fintype.card (FreeE w) ≠ 0`. Break down `Nat.eq_zero_or_pos (Fintype.card (FreeE w)) with hcard | hcard` into its components or cases. Rewrite using `[hcard, pow_zero]`. Conclude with `one_ne_zero`. Apply `pow_ne_zero` to reduce the goal to its premises.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `hK0`. Apply `hμR.2.1` to reduce the goal to its premises. Establish `hz : ENNReal.ofReal (D.host.ka / (X.B.g : ℝ) / Real.pi) • (volume : Measure ℂ) = 0`. Rewrite using `[hK0, zero_smul]`. Establish `h2 : (μR.map (stCoord X u' w (gamW X u u' w))) Set.univ = μR Set.univ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Measure.map_apply (stCoord_measurable X u' w _) MeasurableSet.univ, Set.preimage_univ]`. Establish `hunivR : μR Set.univ = 0`. Rewrite using `[← h2, hmap]`. Unfold `muStab`. Simplify using `only [hz]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Use `haveI : Nonempty (FreeE w) := Fintype.card_pos_iff.mp hcard`. Rewrite using `[Measure.pi_univ]`. Apply `Finset.prod_eq_zero (Finset.mem_univ (Classical.arbitrary _))` to reduce the goal to its premises. Rewrite using `[Measure.pi_univ]`. Apply `Finset.prod_eq_zero (Finset.mem_univ (Classical.arbitrary _))` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Conclude with `Measure.measure_univ_eq_zero.mp hunivR`. Use `haveI : IsFiniteMeasureOnCompacts (muStabV X w) := ⟨fun Kc hKc => by`. Rewrite using `[heq, Measure.smul_apply, smul_eq_mul]`. Conclude with `ENNReal.mul_lt_top hct.lt_top hKc.measure_lt_top⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Use `haveI : Measure.IsOpenPosMeasure (muStabV X w) := by`. Rewrite using `[heq]`. Conclude with `Measure.isOpenPosMeasure_smul _ hc0`. Establish `hMP : ∀ f : (FreeE w → ℂ) → (FreeE w → ℂ), MeasurePreserving f volume volume → MeasurePreserving f (muStabV X w) (muStabV X w)`. Introduce `f hf`.
-
-Rewrite using `[heq]`. Conclude with `⟨hf.measurable, by rw [Measure.map_smul, hf.map_eq]⟩`. Take `⟨hσ, hne, hc, hleft, hinvν, hκm, b, hb, hbt, hb1⟩` from `chart_haar (StV X u u' (gamW X u u' w) v) (stCoordV X u' w (gamW X u u' w) v) φ (muStabV X w) (stCoordV_continuous X u' w _ v) hφ hφS hφκ hκφ h1 hmul hinv (fun s hs => hMP _ (hL s hs)) (hMP _ hI)`. Conclude with `⟨(muStabV X w).map φ, ⟨hσ, hne, hc, hleft⟩, hinvν, hκm, b, hb, hbt, hb1⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem locUni_of (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (u u' : D.what₂.Word) (hG : StVGeo X u u') : LocUni X u u' := by
   intro w hok μR hμR hmap v
@@ -318,19 +310,17 @@ theorem locUni_of (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (u u' : D.what
   exact ⟨(muStabV X w).map φ, ⟨hσ, hne, hc, hleft⟩, hinvν, hκm, b, hb, hbt, hb1⟩
 
 /- English proof (translation)
-Introduce `w hok μR hμR hmap μRv hRv`. Establish `hG'` using `fun v => (hG w hok v).2`. Use `choose φ hφc hφS hφκ hκφ hL hI using hG'`. Use `haveI : ∀ v, SigmaFinite (μRv v) := fun v => (hRv v).1.1`. Set `Φ : (InfinitePlace X.B.I.F → FreeE w → ℂ) → X.B.I.Ginf` to `fun c v => φ v (c v)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hΦm : Measurable Φ` using `measurable_pi_lambda _ fun v => (hφc v).measurable.comp (measurable_pi_apply v)`. Establish `hsc` using `stCoord_measurable X u' w (gamW X u u' w)`. Establish `hleft : ∀ y ∈ StInf X u u' (gamW X u u' w), Φ (stCoord X u' w (gamW X u u' w) y) = y`. Introduce `y hy`. Use function extensionality and compare the values at `v`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hφκ v (y v) ⟨hy.1 v, hy.2 v⟩`. Establish `hae : ∀ᵐ y ∂μR, y ∈ StInf X u u' (gamW X u u' w)` using `ae_iff.mpr hμR.2.2.1`. Establish `h1 : μR = (muStab X w).map Φ`. Combine the equalities or inequalities in the displayed calculation. Establish `hae2 : ∀ᵐ y ∂(Measure.pi μRv), y ∈ StInf X u u' (gamW X u u' w)`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : ∀ v, ∀ᵐ y ∂(Measure.pi μRv), y v ∈ StV X u u' (gamW X u u' w) v`. Introduce `v`. Rewrite using `[ae_iff]`. Conclude with `Measure.pi_eval_preimage_null μRv (hRv v).1.2.2.1`. Use `filter_upwards [ae_all_iff.mpr h3] with y hy`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨fun v => (hy v).1, fun v => (hy v).2⟩`. Establish `hall : ∀ v, (μRv v).map (stCoordV X u' w (gamW X u u' w) v) = muStabV X w` using `fun v => (hRv v).2`. Use `haveI : ∀ v, SigmaFinite ((μRv v).map (stCoordV X u' w (gamW X u u' w) v)) := fun v => by`. Rewrite using `[hall v]`. Conclude with `muStabV_sigmaFinite X w`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hmap2 : (Measure.pi μRv).map (stCoord X u' w (gamW X u u' w)) = muStab X w`. Rewrite using `[show stCoord X u' w (gamW X u u' w) = (fun y v => stCoordV X u' w (gamW X u u' w) v (y v)) from rfl]`. Rewrite using `[Measure.pi_map_pi (fun v => (stCoordV_continuous X u' w _ v).measurable.aemeasurable)]`. Simplify using `only [hall]`. Both sides reduce to the same expression.
-
-Establish `h2 : Measure.pi μRv = (muStab X w).map Φ`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h1, h2]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem globProd_of (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (u u' : D.what₂.Word) (hG : StVGeo X u u') :
     GlobProd X u u' := by
@@ -380,7 +370,7 @@ theorem globProd_of (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (u u' : D.wh
   rw [h1, h2]
 
 /- English proof (translation)
-The claim follows from `ooQuot_pin X u u' νq hN hR (locUni_of X u u' hG) (globProd_of X u u' hG)`.
+A detailed English derivation is pending.
 -/
 theorem ooQuot_geo (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (u u' : D.what₂.Word)
     (νq : X.B.I.Ginf → Measure X.B.I.Ginf) (hN : NuQPin X u u' νq) (hR : StRel X u u') (hG : StVGeo X u u') :

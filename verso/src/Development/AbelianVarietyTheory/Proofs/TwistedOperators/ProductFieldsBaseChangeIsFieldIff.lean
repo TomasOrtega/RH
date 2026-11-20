@@ -8,17 +8,17 @@ open scoped TensorProduct
 namespace GlobalTheory.RegSS
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `hk : k = 1`. Break down `Nat.lt_trichotomy k 1 with hlt | heq | hgt` into its components or cases. Take `⟨a, b, hab⟩` from `h.exists_pair_ne`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Establish `hk0 : k = 0` using `by omega`. Substitute `hk0` using the available equality. Conclude with `absurd (funext fun i => i.elim0) hab`. Conclude with `heq`. Set `i₀ : Fin k` to `⟨0, by omega⟩`.
+Establish an intermediate fact. Substitute using the available equality. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `i₁ : Fin k` to `⟨1, hgt⟩`. Establish `hne : i₁ ≠ i₀`. Introduce `hij`. Use `congrArg Fin.val hij` as an intermediate fact. Simplify using `[i₀, i₁] at this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hx : (Pi.single i₀ (1 : A i₀) : ∀ i, A i) ≠ 0`. Introduce `hx`. Use `congrFun hx i₀` as an intermediate fact. Simplify using `at this`. Take `⟨y, hy⟩` from `h.mul_inv_cancel hx`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `congrFun hy i₁` as an intermediate fact. Rewrite `this` using `[Pi.mul_apply, Pi.single_eq_of_ne hne, zero_mul, Pi.one_apply]`. Conclude with `absurd this zero_ne_one`. Use `⟨hk, ?_⟩` and prove the remaining obligations. Substitute `hk` using the available equality.
+Reduce the conclusion to the remaining proof obligations. Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce `i`. Establish `hdef : IsField (A default)` using `(RingEquiv.piUnique A).symm.toMulEquiv.isField h`. Conclude with `(Unique.eq_default i).symm ▸ hdef`. Introduce and unpack `⟨rfl, h⟩`. Conclude with `(RingEquiv.piUnique A).toMulEquiv.isField (h default)`.
+A detailed English derivation is pending.
 -/
 theorem isField_pi_fin_iff {k : ℕ} (A : Fin k → Type) [∀ i, CommRing (A i)]
     [∀ i, Nontrivial (A i)] : IsField (∀ i, A i) ↔ k = 1 ∧ ∀ i, IsField (A i) := by
@@ -55,7 +55,7 @@ theorem isField_pi_fin_iff {k : ℕ} (A : Fin k → Type) [∀ i, CommRing (A i)
     exact (RingEquiv.piUnique A).toMulEquiv.isField (h default)
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ P _ _ k K _ _ ⟨e⟩`. Set `φ : P ⊗[F] E ≃ₐ[F] ∀ i, K i ⊗[F] E` to `(Algebra.TensorProduct.congr e AlgEquiv.refl).trans ((Algebra.TensorProduct.comm F _ E).trans ((Algebra.TensorProduct.piRight F F E K).trans (AlgEquiv.piCongrRight fun i => Algebra.TensorProduct.comm F E (K i))))`. Establish `: ∀ i, Nontrivial (K i ⊗[F] E)` using `fun i => TensorProduct.nontrivial_of_linearMap_injective_of_flat_right (R := F) (M := K i) (N := E) (Algebra.linearMap F (K i)) (algebraMap F (K i)).injective`. Rewrite using `[φ.toRingEquiv.toMulEquiv.isField_congr]`. Conclude with `isField_pi_fin_iff _`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tensorFieldIff : TensorFieldIff := by
   intro F E _ _ _ _ P _ _ k K _ _ ⟨e⟩

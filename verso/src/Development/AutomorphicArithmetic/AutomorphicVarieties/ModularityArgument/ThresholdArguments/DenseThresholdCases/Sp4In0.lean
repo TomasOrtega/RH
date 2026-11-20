@@ -16,7 +16,7 @@ section
 open UpperTheory.Top
 namespace UpperTheory.V.HV.DescentVanishingReductions
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.V.Cu.sp4In_alt (_root_.UpperTheory.V.HV.DescentVanishingReductions.adjoint_lift_of_prints hH).coh FW.ferreroWashington (_root_.UpperTheory.V.Z.Bc.seedIIs_alt hH) (_root_.UpperTheory.V.Z.Win.Birth.fourth_initial_of_prints_h hH) (_root_.UpperTheory.V.HV.DescentVa …`.
+A detailed English derivation is pending.
 -/
 theorem sp4In0_alt (hH : _root_.UpperTheory.V.Af.HypothesesH') : _root_.UpperTheory.V.Aut.SymplecticFourImageDense :=
   _root_.UpperTheory.V.Cu.sp4In_alt (_root_.UpperTheory.V.HV.DescentVanishingReductions.adjoint_lift_of_prints hH).coh FW.ferreroWashington (_root_.UpperTheory.V.Z.Bc.seedIIs_alt hH) (_root_.UpperTheory.V.Z.Win.Birth.fourth_initial_of_prints_h hH) (_root_.UpperTheory.V.HV.DescentVanishingReductions.pmEx_of_printsH hH)

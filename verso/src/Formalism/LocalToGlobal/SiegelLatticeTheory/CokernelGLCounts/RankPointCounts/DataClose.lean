@@ -8,7 +8,7 @@ noncomputable section
 namespace Formalism.L2.SG.DataCut
 
 /- English proof (translation)
-The claim follows from `densInputAt_of hL (Formalism.L2.SG.Pf.alpBound_holds D) (Formalism.L2.SG.Pf.placesOver_holds D)`.
+A detailed English derivation is pending.
 -/
 theorem densInputAt_of_loc {D : Formalism.BasicNotions.D7} (hL : DensLocBound D) : Formalism.L2.SG.DataInst.DensInputAt D :=
   densInputAt_of hL (Formalism.L2.SG.Pf.alpBound_holds D) (Formalism.L2.SG.Pf.placesOver_holds D)

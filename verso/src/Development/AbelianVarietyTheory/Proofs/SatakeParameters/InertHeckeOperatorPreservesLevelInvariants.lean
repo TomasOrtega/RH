@@ -20,11 +20,11 @@ variable {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ}
   {v : HeightOneSpectrum (𝓞 (maximalRealSubfield L))} {w : HeightOneSpectrum (𝓞 L)}
 
 /- English proof (translation)
-Establish `key : ALint L ≤ (tensInt (F` using `maximalRealSubfield L) (v.adicCompletion (maximalRealSubfield L)) (intOE L) (Formalism.UG.Ov (maximalRealSubfield L) v)).comap (compAt L v) := by`. Rewrite using `[ALint, Subring.closure_le]`. Introduce and unpack `_ (⟨y, rfl⟩ | ⟨a, ha, rfl⟩)`. Apply `Subring.subset_closure left` to reduce the goal to its premises. Use `⟨⟨(y : L), y, rfl⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Use `show _ = compAt L v ((y : L) ⊗ₜ[maximalRealSubfield L] (1 : AFplus L))`. Rewrite using `[GlobalTheory.InertUmax.compAt_tmul]`. Both sides reduce to the same expression. Apply `Subring.subset_closure right` to reduce the goal to its premises. Use `⟨⟨a v, ha v⟩, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show _ = compAt L v ((1 : L) ⊗ₜ[maximalRealSubfield L] a)`. Rewrite using `[GlobalTheory.InertUmax.compAt_tmul]`. Conclude with `key hx`.
+A detailed English derivation is pending.
 -/
 theorem compAt_mem_tensInt (x : AL L) (hx : x ∈ ALint L) :
     compAt L v x ∈ tensInt (F := maximalRealSubfield L) (v.adicCompletion (maximalRealSubfield L))
@@ -47,9 +47,9 @@ theorem compAt_mem_tensInt (x : AL L) (hx : x ∈ ALint L) :
   exact key hx
 
 /- English proof (translation)
-Establish `hP` using `GlobalTheory.InertUmax.entries_mem_of_range _ _ Dv.Pint`. Establish `hP'` using `GlobalTheory.InertUmax.entries_mem_of_range _ _ (inv_mem Dv.Pint)`. Establish `hm : ∀ k l, ((Formalism.UG.bc (n` using `Fin n) (Dv.e : L ⊗[maximalRealSubfield L] v.adicCompletion (maximalRealSubfield L) →+* w.adicCompletion L) (Matrix.GeneralLinearGroup.map (compAt L v) (z : GL (Fin n) (AL L))) : GL (Fin n) _) : Matrix (Fin n) (Fin n) (w.adicCompletion L)) k l ∈ intL (w.adicCompletion L) := by`. Introduce `k l`. Establish `hzk : ((z.1 : GL (Fin n) (AL L)) : Matrix (Fin n) (Fin n) (AL L)) k l ∈ ALint L` using `hz k l`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `(Dv.integ _).1 (compAt_mem_tensInt (v := v) _ hzk)`. Unfold `InertDatum.loc`. Simplify using `only [Units.val_mul, Matrix.mul_apply]`. Conclude with `Subring.sum_mem _ fun k _ => Subring.mul_mem _ (Subring.sum_mem _ fun l _ => Subring.mul_mem _ (hP' i l) (hm l k)) (hP k j)`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem loc_entries_int (Dv : InertDatum L n v w) (z : GAf L n) (hz : z ∈ Umax L n) (i j : Fin n) :
     ((Dv.loc z : GL (Fin n) (w.adicCompletion L)) : Matrix (Fin n) (Fin n) (w.adicCompletion L)) i j ∈
@@ -69,7 +69,7 @@ theorem loc_entries_int (Dv : InertDatum L n v w) (z : GAf L n) (hz : z ∈ Umax
     (Subring.sum_mem _ fun l _ => Subring.mul_mem _ (hP' i l) (hm l k)) (hP k j)
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b`. Simplify using `[conjAL, compAt, Formalism.UG.sigR, Algebra.TensorProduct.map_tmul]`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 -/
 theorem compAt_conjAL (x : AL L) :
     compAt L v (conjAL L x) =
@@ -81,17 +81,15 @@ theorem compAt_conjAL (x : AL L) :
   | add a b ha hb => simp only [map_add, ha, hb]
 
 /- English proof (translation)
-Use `set φ : AL L →+* w.adicCompletion L := (Dv.e : L ⊗[maximalRealSubfield L] v.adicCompletion (maximalRealSubfield L) →+* w.adicCompletion L).comp (compAt L v) with hφ`. Use `set Y : Matrix (Fin n) (Fin n) (w.adicCompletion L) := ((z.1 : GL (Fin n) (AL L)) : Matrix (Fin n) (Fin n) (AL L)).map φ with hY`. Establish `hφc : ∀ x, φ (conjAL L x) = Dv.σw (φ x)`. Introduce `x`. Simplify using `only [hφ, RingHom.comp_apply, compAt_conjAL]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Dv.comm _`. Establish `hz : ((z.1 : GL (Fin n) (AL L)) : Matrix (Fin n) (Fin n) (AL L)) * conjT (conjAL L) ((z.1 : GL (Fin n) (AL L)) : Matrix (Fin n) (Fin n) (AL L)) = 1` using `z.2`. Establish `hYY : Y * Formalism.UG.cT Dv.σw Y = 1`. Use `congrArg (fun M => M.map φ) hz` as an intermediate fact. Simplify using `only [Matrix.map_mul, Matrix.map_one _ (map_zero φ) (map_one φ)] at this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Rewrite using `[← this]`. Use `congr 1`. Use extensionality with `i j`. Simplify using `[Formalism.UG.cT, conjT, hY, hφc]`. Establish `hYY' : Formalism.UG.cT Dv.σw Y * Y = 1` using `mul_eq_one_comm.1 hYY`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set P : Matrix (Fin n) (Fin n) (w.adicCompletion L) := (Dv.P : Matrix (Fin n) (Fin n) (w.adicCompletion L))`. Use `set Pi : Matrix (Fin n) (Fin n) (w.adicCompletion L) := ((Dv.P⁻¹ : GL (Fin n) (w.adicCompletion L)) : Matrix (Fin n) (Fin n) (w.adicCompletion L))`. Establish `hPPi : P * Pi = 1` using `by simp [P, Pi]`. Establish `hPi : Formalism.UG.cT Dv.σw Pi * Formalism.UG.cT Dv.σw P = 1`. Rewrite using `[← Formalism.UG.cT_mul, hPPi, Formalism.UG.cT_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Establish `hloc : ((Dv.loc z : GL (Fin n) (w.adicCompletion L)) : Matrix (Fin n) (Fin n) (w.adicCompletion L)) = Pi * Y * P` using `rfl`. Use `show Formalism.UG.cT Dv.σw ((Dv.loc z : GL (Fin n) (w.adicCompletion L)) : Matrix (Fin n) (Fin n) _) * Formalism.UG.antiJ (w.adicCompletion L) n * ((Dv.loc z : GL (Fin n) (w.adicCompletion L)) : Matrix (Fin n) (Fin n) _) = Formalism.UG.antiJ (w.adicCompletion L) n`. Rewrite using `[hloc, ← Dv.Panti, Formalism.UG.cT_mul, Formalism.UG.cT_mul]`. Express the relevant statement in the definitionally equal form `Formalism.UG.cT Dv.σw P * (Formalism.UG.cT Dv.σw Y * Formalism.UG.cT Dv.σw Pi) * (Formalism.UG.cT Dv.σw P * P) * (Pi * Y * P) = Formalism.UG.cT Dv.σw P * P`. Combine the equalities or inequalities in the displayed calculation.
-
-Simplify using `only [Matrix.mul_assoc]`. Use `_ = Formalism.UG.cT Dv.σw P * (Formalism.UG.cT Dv.σw Y * Y) * P := by`. Rewrite using `[hPi, hPPi]`. Simplify using `only [Matrix.mul_one, Matrix.mul_assoc]`. Use `_ = Formalism.UG.cT Dv.σw P * P := by rw [hYY', Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem loc_mem_GU (Dv : InertDatum L n v w) (z : GAf L n) : Dv.loc z ∈ Formalism.UG.GU Dv.σw n := by
   set φ : AL L →+* w.adicCompletion L :=
@@ -135,9 +133,9 @@ theorem loc_mem_GU (Dv : InertDatum L n v w) (z : GAf L n) : Dv.loc z ∈ Formal
     _ = Formalism.UG.cT Dv.σw P * P := by rw [hYY', Matrix.mul_one]
 
 /- English proof (translation)
-Apply `GlobalTheory.SatInd.DCoset.mem_KU_of_entries` to reduce the goal to its premises. Introduce `i j`. Conclude with `(Valuation.mem_integer_iff _ _).1 (loc_entries_int Dv z hz i j)`. Introduce `i j`. Establish `e : (((⟨Dv.loc z, loc_mem_GU Dv z⟩ : Formalism.UG.GU Dv.σw n)⁻¹ : Formalism.UG.GU Dv.σw n) : GL (Fin n) (w.adicCompletion L)) = Dv.loc z⁻¹` using `by show (Dv.loc z)⁻¹ = GlobalTheory.SatInd.CosetFin.locHom Dv z⁻¹`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_inv]`. Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `(Valuation.mem_integer_iff _ _).1 (loc_entries_int Dv z⁻¹ (inv_mem hz) i j)`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem loc_mem_KU (Dv : InertDatum L n v w) (z : GAf L n) (hz : z ∈ Umax L n) :
     (⟨Dv.loc z, loc_mem_GU Dv z⟩ : Formalism.UG.GU Dv.σw n) ∈ Formalism.UG.KU Dv.σw n := by
@@ -153,11 +151,11 @@ theorem loc_mem_KU (Dv : InertDatum L n v w) (z : GAf L n) (hz : z ∈ Umax L n)
     exact (Valuation.mem_integer_iff _ _).1 (loc_entries_int Dv z⁻¹ (inv_mem hz) i j)
 
 /- English proof (translation)
-Unfold `InertDatum.hval`. Distinguish the cases in `hm : m ∈ Formalism.UG.GU Dv.σw n`. Establish `hm' : (k₁ : GL (Fin n) (w.adicCompletion L)) * m * k₂ ∈ Formalism.UG.GU Dv.σw n` using `mul_mem (mul_mem k₁.2 hm) k₂.2`. Rewrite using `[dif_pos hm', dif_pos hm]`. Use `hbi ⟨k₁, hk₁⟩ ⟨k₂, hk₂⟩ ⟨m, hm⟩` as an intermediate fact.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `this`. Establish `hm' : (k₁ : GL (Fin n) (w.adicCompletion L)) * m * k₂ ∉ Formalism.UG.GU Dv.σw n`. Introduce `h'`. Apply `hm` to reduce the goal to its premises. Establish `e : m = (k₁⁻¹ : Formalism.UG.GU Dv.σw n) * ((k₁ : GL (Fin n) (w.adicCompletion L)) * m * k₂) * (k₂⁻¹ : Formalism.UG.GU Dv.σw n)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[mul_assoc]`. Rewrite using `[e]`. Conclude with `mul_mem (mul_mem (k₁⁻¹).2 h') (k₂⁻¹).2`. Rewrite using `[dif_neg hm', dif_neg hm]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hval_mul_KU (Dv : InertDatum L n v w) (h : Formalism.UG.GU Dv.σw n → ℂ)
     (hbi : IsBiInv (Formalism.UG.KU Dv.σw n) h) (k₁ k₂ : Formalism.UG.GU Dv.σw n)
@@ -184,27 +182,27 @@ end GlobalTheory.InertInvar
 
 open GlobalTheory.InertInvar GlobalTheory.SatInd.CosetFin in
 /- English proof (translation)
-Introduce `L _ _ _ n v w Dv U hU hsplit W _ _ h hh f hf κ hκ`. Take `⟨a, b, rfl, haU, hat, hbU, hbc⟩` from `hsplit κ hκ`. Establish `hfr : ∀ r ∈ U, ∀ y, f (y * r) = f y` using `fun r hr y => congrFun (hf r hr) y`. Establish `haM : a ∈ Umax L n` using `(hU a hat).1 haU`. Establish `hbi : IsBiInv (KU Dv.σw n) h` using `hh.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ∀ g, heckeFunI L n U Dv h f (g * (a * b)) = heckeFunI L n U Dv h f (g * a)`. Introduce `g`. Unfold `heckeFunI`. Use `finsum_congr fun c => ?_` and prove the remaining obligations. Use `split_ifs with hc`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Establish `e : g * (a * b) * hc.choose = g * a * hc.choose * b`. Simplify using `only [mul_assoc]`. Rewrite using `[← hbc _ hc.choose_spec.2]`. Rewrite using `[e, hfr b hbU]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `h2 : ∀ g, heckeFunI L n U Dv h f (g * a) = heckeFunI L n U Dv h f g`. Introduce `g`. Unfold `heckeFunI`. Use `Eq.trans ?_ (finsum_comp_equiv (MulAction.toPerm a : GAf L n ⧸ U ≃ GAf L n ⧸ U))` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `finsum_congr fun c => ?_` and prove the remaining obligations. Establish `hac : (MulAction.toPerm a : GAf L n ⧸ U ≃ GAf L n ⧸ U) c = a • c` using `rfl`. Distinguish the cases in `hc : ∃ x : GAf L n, (x : GAf L n ⧸ U) = c ∧ TrivOutside {v} x`. Take `⟨x0, hx0, hx0t⟩` from `id hc`. Establish `hc' : ∃ y : GAf L n, (y : GAf L n ⧸ U) = (MulAction.toPerm a : GAf L n ⧸ U ≃ GAf L n ⧸ U) c ∧ TrivOutside {v} y` using `⟨a * x0, by rw [hac, ← hx0, MulAction.Quotient.smul_mk, smul_eq_mul], trivOutside_mul hat hx0t⟩`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_pos hc, dif_pos hc']`. Use `set x := hc.choose with hxdef`. Use `set y := hc'.choose with hydef`. Establish `hx` using `hc.choose_spec`. Establish `hy` using `hc'.choose_spec`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hx` using `[← hxdef]`. Rewrite `hy` using `[← hydef]`. Establish `hq : ((a * x : GAf L n) : GAf L n ⧸ U) = (y : GAf L n ⧸ U)`. Rewrite using `[hy.1, hac, ← hx.1, MulAction.Quotient.smul_mk, smul_eq_mul]`. Establish `hrU : (a * x)⁻¹ * y ∈ U` using `QuotientGroup.eq.1 hq`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrt : TrivOutside {v} ((a * x)⁻¹ * y)` using `trivOutside_mul (trivOutside_inv (trivOutside_mul hat hx.2)) hy.2`. Establish `hrM : (a * x)⁻¹ * y ∈ Umax L n` using `(hU _ hrt).1 hrU`. Establish `hye : y = a * x * ((a * x)⁻¹ * y)` using `by group`. Establish `hloc : Dv.loc y = Dv.loc a * Dv.loc x * Dv.loc ((a * x)⁻¹ * y)` using `by conv_lhs => rw [hye] show locHom Dv _ = locHom Dv a * locHom Dv x * locHom Dv _`. Rewrite using `[map_mul, map_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hfy : f (g * y) = f (g * a * x)` using `by conv_lhs => rw [hye]`. Rewrite using `[← hfr _ hrU (g * a * x)]`. Simplify using `only [mul_assoc]`. Rewrite using `[hfy, hloc, hval_mul_KU Dv h hbi ⟨Dv.loc a, loc_mem_GU Dv a⟩ ⟨Dv.loc _, loc_mem_GU Dv _⟩ (loc_mem_KU Dv a haM) (loc_mem_KU Dv _ hrM) (Dv.loc x)]`. Establish `hc' : ¬ ∃ y : GAf L n, (y : GAf L n ⧸ U) = (MulAction.toPerm a : GAf L n ⧸ U ≃ GAf L n ⧸ U) c ∧ TrivOutside {v} y`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce and unpack `⟨y, hy1, hy2⟩`. Use `hc ⟨a⁻¹ * y, ?_, trivOutside_mul (trivOutside_inv hat) hy2⟩` and prove the remaining obligations. Establish `e : ((a⁻¹ * y : GAf L n) : GAf L n ⧸ U) = a⁻¹ • (y : GAf L n ⧸ U)`. Rewrite using `[MulAction.Quotient.smul_mk, smul_eq_mul]`. Rewrite using `[e, hy1, hac]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Conclude with `inv_smul_smul a c`. Rewrite using `[dif_neg hc, dif_neg hc']`. Use function extensionality and compare the values at `g`. Use `show heckeFunI L n U Dv h f (g * (a * b)) = heckeFunI L n U Dv h f g`. Rewrite using `[h1, h2]`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.heckeFunI_rt_invariant : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) (v : HeightOneSpectrum (𝓞 (maximalRealSubfield L))) (w : HeightOneSpectrum (𝓞 L)) (Dv : InertDatum L n v w) (U : Subgroup (GAf L n)), (∀ κ, TrivOutside {v} κ → (κ ∈ U ↔ κ ∈ Umax L n)) → (∀ u ∈ U, ∃ a b : GAf L n, u = a * b ∧ a ∈ U ∧ TrivOutside {v} a ∧ b ∈ U ∧ ∀ x : GAf L n, TrivOutside {v} x → x * b = b * x) → ∀ (W : Type) [AddCommGroup W] [Module ℂ W], ∀ h ∈ Hecke ℂ (KU Dv.σw n), ∀ f : GAf L n → W, (∀ κ ∈ U, NG.rt L n κ f = f) → ∀ κ ∈ U, NG.rt L n κ (heckeFunI L n U Dv h f) = heckeFunI L n U Dv h f := by
   intro L _ _ _ n v w Dv U hU hsplit W _ _ h hh f hf κ hκ

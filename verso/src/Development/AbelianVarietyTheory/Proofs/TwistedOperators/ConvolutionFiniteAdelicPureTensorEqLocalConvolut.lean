@@ -16,9 +16,9 @@ namespace GlobalTheory.TrConv
 variable {D : D7}
 
 /- English proof (translation)
-Unfold `finFn tensorFin`. Use `finprod_congr fun v => congrArg (ff v) ?_` and prove the remaining obligations. Use `proj_ofFin D.sp.cm.sig V.gram v ((finPtsEquiv D.sp.cm.sig V.gram).symm y)` as an intermediate fact. Rewrite using `[← this]`. Use `congr 1`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `(congrArg Subtype.val ((finPtsEquiv D.sp.cm.sig V.gram).apply_symm_apply y)).symm`.
+A detailed English derivation is pending.
 -/
 theorem finFn_eq_tensorFin (V : HSp D) (ff : ∀ v, GLoc D.sp.cm.sig V.gram v → ℂ) (y : GfC V) :
     finFn V ff y = tensorFin D.sp.cm.sig V.gram ff ((finPtsEquiv D.sp.cm.sig V.gram).symm y) := by
@@ -30,17 +30,17 @@ theorem finFn_eq_tensorFin (V : HSp D) (ff : ∀ v, GLoc D.sp.cm.sig V.gram v �
   exact (congrArg Subtype.val ((finPtsEquiv D.sp.cm.sig V.gram).apply_symm_apply y)).symm
 
 /- English proof (translation)
-Introduce `D V μf _ h1 ν hν a b ha hb`. Use `⟨GlobalTheory.Orb.IsFinFamily.conv ha hb h1, funext fun y => ?_, ?_⟩` and prove the remaining obligations. Establish `hfam` using `GlobalTheory.Orb.IsFinFamily.mul_translate ha hb (y : GA D V)`. Establish `hint : (fun x : GfC V => finFn V a x * finFn V b (x⁻¹ * y)) = finFn V (fun v x => a v x * b v (x⁻¹ * proj D.sp.cm.sig V.gram v (y : GA D V)))`. Use function extensionality and compare the values at `x`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `e1` using `ha.finite_mulSupport ((finPtsEquiv D.sp.cm.sig V.gram).symm x)`. Establish `e2` using `hb.finite_mulSupport ((finPtsEquiv D.sp.cm.sig V.gram).symm (x⁻¹ * y))`. Rewrite using `[finFn_eq_tensorFin, finFn_eq_tensorFin]`. Unfold `finFn`. Unfold `tensorFin`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions.
 
-Rewrite using `[← finprod_mul_distrib e1 e2]`. Use `finprod_congr fun v => ?_` and prove the remaining obligations. Establish `p1` using `proj_ofFin D.sp.cm.sig V.gram v ((finPtsEquiv D.sp.cm.sig V.gram).symm x)`. Establish `p2` using `proj_ofFin D.sp.cm.sig V.gram v ((finPtsEquiv D.sp.cm.sig V.gram).symm (x⁻¹ * y))`. Establish `q1 : ofFin D.sp.cm.sig V.gram ((finPtsEquiv D.sp.cm.sig V.gram).symm x) = (x : GA D V)` using `congrArg Subtype.val ((finPtsEquiv D.sp.cm.sig V.gram).apply_symm_apply x)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `q2 : ofFin D.sp.cm.sig V.gram ((finPtsEquiv D.sp.cm.sig V.gram).symm (x⁻¹ * y)) = ((x⁻¹ * y : GfC V) : GA D V)` using `congrArg Subtype.val ((finPtsEquiv D.sp.cm.sig V.gram).apply_symm_apply _)`. Rewrite `p1` using `[q1]`. Rewrite `p2` using `[q2]`. Rewrite using `[← p1, ← p2]`. Simplify using `[map_mul, map_inv]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `symm`. Use `show ∫ x, finFn V a x * finFn V b (x⁻¹ * y) ∂ν = _`. Rewrite using `[hint, hν.2 _ hfam]`. Both sides reduce to the same expression. Establish `hm` using `ha.tensorFin_mem`.
+Use symmetry to reverse the relation. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show finFn V a = tensorFin D.sp.cm.sig V.gram a ∘ (finPtsEquiv D.sp.cm.sig V.gram).symm from`. Use function extensionality and compare the values at `fun y => finFn_eq_tensorFin V a y]`. Conclude with `⟨hm.1.comp_continuous (finPtsEquiv D.sp.cm.sig V.gram).symm.continuous, hm.2.comp_homeomorph (finPtsEquiv D.sp.cm.sig V.gram).symm.toHomeomorph⟩`.
+Apply function extensionality and compare values at an arbitrary argument. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem conv_finFn : ∀ (D : D7) (V : HSp D) (μf : ∀ v, Measure (GLoc D.sp.cm.sig V.gram v)), (∀ v, (μf v).IsHaarMeasure) → (∀ᶠ v in cofinite, μf v (Kv V v) = 1) → ∀ ν, IsFinMeas V μf ν → ∀ a b, IsFinFamily D.sp.cm.sig V.gram (frameLat V) a → IsFinFamily D.sp.cm.sig V.gram (frameLat V) b → IsFinFamily D.sp.cm.sig V.gram (frameLat V) (fun v => conv (μf v) (a v) (b v)) ∧ finFn V (fun v => conv (μf v) (a v) (b v)) = conv ν (finFn V a) (finFn V b) ∧ finFn V a ∈ GlobalTheory.SplitWeil.SB (GfC V) := by
   intro D V μf _ h1 ν hν a b ha hb

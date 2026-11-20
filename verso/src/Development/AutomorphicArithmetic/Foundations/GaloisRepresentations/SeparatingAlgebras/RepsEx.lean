@@ -3,17 +3,17 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Separ
 open MeasureTheory GroundTheory.Automorphic GroundTheory.Automorphic.Spherical UpperTheory.Gal.Gen
 
 /- English proof (translation)
-Introduce `F _ _ _ _ n _ _ μ _ h`. Establish `hKc` using `GLnLocal.isCompact_integralGL F n`. Establish `hKo : IsOpen ((GLnLocal.integralGL F n : Subgroup (GL (Fin n) F)) : Set (GL (Fin n) F))` using `(integralOpen F n).isOpen`. Establish `hbi` using `HeckeAlgebra.HeckeAlgebraLevel.val_mem hKc hKo h`. Establish `hsupp : HasCompactSupport ⇑(HeckeAlgebra.HeckeAlgebraLevel.val hKc hKo h)` using `(HeckeAlgebra.mem _).2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set φ : GL (Fin n) F → ℂ := ⇑(HeckeAlgebra.HeckeAlgebraLevel.val hKc hKo h) with hφ`. Establish `hright : ∀ g k, k ∈ GLnLocal.integralGL F n → φ (g * k) = φ g` using `fun g k hk => (hbi k hk g).2`. Use `set S := (finite_image_mk_tsupport (integralOpen F n) hsupp).toFinset with hS`. Use `⟨S.image Quotient.out, ?_, ?_⟩` and prove the remaining obligations. Introduce `g hg g' hg' hgg`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Simplify using `only [Finset.mem_image] at hg hg'`. Take `⟨x, -, rfl⟩` from `hg`. Take `⟨y, -, rfl⟩` from `hg'`. Establish `hxy : x = y`. Rewrite using `[← QuotientGroup.out_eq' x, ← QuotientGroup.out_eq' y]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `QuotientGroup.eq.2 hgg`. Rewrite using `[hxy]`. Introduce `f hf`. Establish `hint` using `integral_eq_smul_finsum_coset μ (integralOpen F n) hKc (f := fun x => φ x * f x) hsupp.mul_right (fun g k hk => by simp only [hright g k hk, hf g k hk])`. Rewrite using `[hint, Complex.real_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `congr 1`. Rewrite using `[finsum_eq_sum_of_support_subset (s := S) _ ?_, Finset.sum_image]`. Both sides reduce to the same expression. Introduce `x _ y _ hxy`. Conclude with `Quotient.out_injective hxy`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Introduce `x hx`. Establish `hne : φ (Quotient.out x) ≠ 0` using `left_ne_zero_of_mul hx`. Rewrite using `[hS, Set.Finite.coe_toFinset]`. Conclude with `⟨Quotient.out x, subset_tsupport _ hne, QuotientGroup.out_eq' x⟩`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.Gen.repsEx_pf :
     UpperTheory.Gal.Gen.RepsEx := by

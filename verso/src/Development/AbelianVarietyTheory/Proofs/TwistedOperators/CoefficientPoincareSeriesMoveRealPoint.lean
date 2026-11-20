@@ -22,7 +22,7 @@ namespace GlobalTheory.PoinConj
 variable {D : D7}
 
 /- English proof (translation)
-Establish `e : ∀ h : GA D V, infMat D.sp.cm.sig V.gram (θ τ) h = (infHom V h).1.map (θ τ)` using `fun _ => rfl`. Use `show infMat D.sp.cm.sig V.gram (θ τ) (a * b) = infMat D.sp.cm.sig V.gram (θ τ) a * infMat D.sp.cm.sig V.gram (θ τ) b`. Rewrite using `[e, e, e, map_mul, Units.val_mul, Matrix.map_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cmp_mul' (θ : InfFam D) (V : HSp D) (τ : D.what₂.Tau) (a b : GA D V) :
     cmp θ τ (a * b) = cmp θ τ a * cmp θ τ b := by
@@ -31,7 +31,7 @@ theorem cmp_mul' (θ : InfFam D) (V : HSp D) (τ : D.what₂.Tau) (a b : GA D V)
   rw [e, e, e, map_mul, Units.val_mul, Matrix.map_mul]
 
 /- English proof (translation)
-Establish `e : ∀ h : GA D V, infMat D.sp.cm.sig V.gram (θ τ) h = (infHom V h).1.map (θ τ)` using `fun _ => rfl`. Use `show infMat D.sp.cm.sig V.gram (θ τ) 1 = 1`. Rewrite using `[e, map_one, Units.val_one, Matrix.map_one _ (map_zero _) (map_one _)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cmp_one' (θ : InfFam D) (V : HSp D) (τ : D.what₂.Tau) : cmp θ τ (1 : GA D V) = 1 := by
   have e : ∀ h : GA D V, infMat D.sp.cm.sig V.gram (θ τ) h = (infHom V h).1.map (θ τ) := fun _ => rfl
@@ -41,9 +41,9 @@ theorem cmp_one' (θ : InfFam D) (V : HSp D) (τ : D.what₂.Tau) : cmp θ τ (1
 variable {V : HSp D} {S : D.what₂.Tau → SPar}
 
 /- English proof (translation)
-Establish `hd` using `(Matrix.isUnit_iff_isUnit_det _).1 (M.fr_unit τ)`. Establish `hg' : gᴴ * gramAt D V τ * g = gramAt D V τ` using `hg`. Rewrite `hg'` using `[← M.fr_gram τ]`. Express the relevant statement in the definitionally equal form `_ * _ * _ = _`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Chain the equalities or inequalities of the calculation.
 
-Simplify using `only [Matrix.conjTranspose_mul, mul_assoc]`. Use `_ = (M.fr τ * (M.fr τ)⁻¹)ᴴ * Formalism.REAL.Jm (M.ε τ) * (M.fr τ * (M.fr τ)⁻¹) := by`. Rewrite using `[hg']`. Simplify using `only [Matrix.conjTranspose_mul, mul_assoc]`. Use `_ = _ := by rw [Matrix.mul_nonsing_inv _ hd]; simp`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem frConj_mem (M : DSModel V S) (τ : D.what₂.Tau) {g : Matrix (Fin V.rank) (Fin V.rank) ℂ}
     (hg : g ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ)) : M.fr τ * g * (M.fr τ)⁻¹ ∈ Formalism.MainNotions.S.UJset (M.ε τ) := by
@@ -58,7 +58,7 @@ theorem frConj_mem (M : DSModel V S) (τ : D.what₂.Tau) {g : Matrix (Fin V.ran
     _ = _ := by rw [Matrix.mul_nonsing_inv _ hd]; simp
 
 /- English proof (translation)
-Establish `h1 : M.σ τ 1 = 1` using `(M.ds τ).2.2.1.1.1`. Rewrite using `[DSModel.rep, mul_one, Matrix.mul_nonsing_inv _ ((Matrix.isUnit_iff_isUnit_det _).1 (M.fr_unit τ)), h1]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem rep_one' (M : DSModel V S) (τ : D.what₂.Tau) (w : M.H τ) : M.rep τ 1 w = w := by
   have h1 : M.σ τ 1 = 1 := (M.ds τ).2.2.1.1.1
@@ -66,9 +66,9 @@ theorem rep_one' (M : DSModel V S) (τ : D.what₂.Tau) (w : M.H τ) : M.rep τ 
   rfl
 
 /- English proof (translation)
-Establish `hd` using `(Matrix.isUnit_iff_isUnit_det _).1 (M.fr_unit τ)`. Establish `h` using `(M.ds τ).2.2.1.1.2 _ (frConj_mem M τ hg) _ (frConj_mem M τ hg')`. Establish `e : M.fr τ * (g * g') * (M.fr τ)⁻¹ = (M.fr τ * g * (M.fr τ)⁻¹) * (M.fr τ * g' * (M.fr τ)⁻¹)`. Simplify using `only [mul_assoc]`. Rewrite using `[Matrix.nonsing_inv_mul_cancel_left _ _ hd]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[DSModel.rep, e, h]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem rep_mul'' (M : DSModel V S) (τ : D.what₂.Tau) {g g' : Matrix (Fin V.rank) (Fin V.rank) ℂ}
     (hg : g ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ)) (hg' : g' ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ)) (w : M.H τ) :
@@ -82,7 +82,7 @@ theorem rep_mul'' (M : DSModel V S) (τ : D.what₂.Tau) {g g' : Matrix (Fin V.r
   rfl
 
 /- English proof (translation)
-The claim follows from `(⟨(M.rep τ g : M.H τ →ₗ[ℂ] M.H τ), fun v => (M.ds τ).2.2.1.2.1 _ (frConj_mem M τ hg) v⟩ : M.H τ →ₗᵢ[ℂ] M.H τ).inner_map_map a b`.
+A detailed English derivation is pending.
 -/
 theorem rep_inner' (M : DSModel V S) (τ : D.what₂.Tau) {g : Matrix (Fin V.rank) (Fin V.rank) ℂ}
     (hg : g ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ)) (a b : M.H τ) : ⟪M.rep τ g a, M.rep τ g b⟫_ℂ = ⟪a, b⟫_ℂ :=
@@ -96,13 +96,13 @@ namespace GlobalTheory.PoinConj
 variable {D : D7}
 
 /- English proof (translation)
-Introduce `D θ hθ V S M K v₀ g₀ hg₀ c g`. Unfold `poin`. Use `congr 1`. Use function extensionality and compare the values at `γ`. Establish `ez : g₀⁻¹ * c * γ * (g * g₀) = g₀⁻¹ * (c * γ * g) * g₀` using `by group`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Rewrite using `[ez]`. Use `set z := c * γ * g`. Establish `h1 : Lev.finE V g₀ = 1`. Simplify using `only [Lev.finE, MonoidHom.comp_apply]`. Rewrite using `[show finHom V g₀ = 1 from hg₀, map_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hf : Lev.finE V (g₀⁻¹ * z * g₀) = Lev.finE V z`. Rewrite using `[map_mul, map_mul, map_inv, h1, inv_one, one_mul, mul_one]`. Unfold `coef`. Rewrite using `[hf]`. Use `split_ifs with hK`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `coefR`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Establish `hU : ∀ x : GA D V, cmp θ τ x ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ)` using `fun x => GlobalTheory.FockCompare.RealAction.infMat_mem_UH hθ V x τ`. Rewrite using `[cmp_mul', cmp_mul', rep_mul'' M τ (by rw [← cmp_mul']; exact hU _) (hU _), rep_mul'' M τ (hU _) (hU _), ← rep_inner' M τ (hU g₀), ← rep_mul'' M τ (hU g₀) (hU g₀⁻¹), ← cmp_mul', mul_inv_cancel, cmp_one', rep_one']`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem poin_conj : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → ∀ (V : HSp D) (S : D.what₂.Tau → SPar) (M : DSModel V S) (K : Subgroup (GL (Fin V.rank) (Lev.EAf D))) (v₀ : ∀ τ, M.H τ) (g₀ : GA D V), g₀ ∈ GinfC V → ∀ c g : GA D V, poin θ M K v₀ (g₀⁻¹ * c) v₀ (g * g₀) = poin θ M K (fun τ => M.rep τ (cmp θ τ g₀) (v₀ τ)) c (fun τ => M.rep τ (cmp θ τ g₀) (v₀ τ)) g := by
   intro D θ hθ V S M K v₀ g₀ hg₀ c g

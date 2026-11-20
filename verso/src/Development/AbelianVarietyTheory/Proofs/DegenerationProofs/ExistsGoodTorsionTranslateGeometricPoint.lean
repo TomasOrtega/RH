@@ -16,13 +16,13 @@ namespace GlobalTheory.ThetaReal
 open GlobalTheory.ThetaPtMove
 
 /- English proof (translation)
-Introduce `hL S P K _ _ x n hn hK th hth a`. Set `β : Over.mk x ⟶ baseOver S` to `Over.homMk x (by simp)`. Establish `: IsAffine (Over.mk x).left` using `inferInstanceAs (IsAffine (Spec (CommRingCat.of K)))`. Establish `: Nontrivial Γ((Over.mk x).left, ⊤)` using `(Scheme.ΓSpecIso (CommRingCat.of K)).commRingCatIsoToRingEquiv.toEquiv.nontrivial`. Take `⟨c, hc⟩` from `hth (Over.mk x) β`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h₀ : SecM.ofSec P.A (VVRank.pullS P.A 1 β th) ≠ 0` using `fun e => c.ne_zero 0 ((hc 0).trans e)`. Take `⟨y, hy, hu⟩` from `GlobalTheory.UT.ExactTerm.exists_good_point hL.goodPt hL.polBaseChange P x hn hK _ h₀ a`. Use `⟨y, hy, fun z τ v hz _ hv h0 => ?_⟩` and prove the remaining obligations. Set `p : (Over.mk x).left` to `IsLocalRing.closedPoint K`. Take `⟨J, hJ⟩` from `GlobalTheory.ConstFam.exists_good' P.isLB p`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Establish `q` using `hu p J hJ`. Establish `e : (ptSecT P.A (a * y)).left ≫ (β ▷ P.A).left = β.left ≫ (ptSecT P.A z).left`. Rewrite using `[← Over.comp_left, ← Over.comp_left, ← hz]`. Use `congr 1`. Apply the tactic sequence `ext1 <;> simp [ptSecT, β]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite `q` using `[VVRank.sv_pullS _ _ _ _ _ _ hJ, e, sv_of_isValueAt hv _ p hJ, h0, GlobalTheory.UT.ExactTerm.gs_zero' β.left p ⊤ trivial, MulZeroClass.zero_mul]`. Conclude with `not_isUnit_zero q`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_good_translate : Laws → ∀ (S : Scheme.{0}) (P : PolAV S) (K : Type) [Field K] [IsAlgClosed K] (x : Sp K ⟶ S) (n : ℕ), 2 ≤ n → (n : K) ≠ 0 → ∀ (th : LB.Sec (LPow P.A P.L 1 (baseOver S))), UnivBasis P 1 (fun _ : Fin 1 => SecM.ofSec P.A th) → ∀ a : Over.mk x ⟶ P.A, ∃ y : Over.mk x ⟶ P.A, y ^ n = 1 ∧ ∀ (z : baseOver S ⟶ P.A) (τ : LB.Gen (LB.LinComb P.L (Y := (baseOver S).left) (K := Fin 1) (fun _ => z.left) (fun _ => 1))) (v : Γ((baseOver S).left, ⊤)), (Over.homMk x (by simp) : Over.mk x ⟶ baseOver S) ≫ z = a * y → τ.IsGen → IsValueAt P.A P.L 1 th z τ v → v ≠ 0 := by
   intro hL S P K _ _ x n hn hK th hth a

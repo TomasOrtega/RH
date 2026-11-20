@@ -26,7 +26,7 @@ def StabLaw : Prop :=
       MvPowerSeries.C ((kapG X Kc j c ε)⁻¹) * SA X Kc j (gamAt X j c ε) (ThR j (c, L0) La') = ThR j (c, L0) La'
 
 /- English proof (translation)
-Unfold `SA`. Rewrite using `[← MvPowerSeries.coe_substAlgHom (hasSubst_actS X Kc j B), map_mul, MvPowerSeries.coe_substAlgHom (hasSubst_actS X Kc j B), MvPowerSeries.subst_C]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem SA_C_mul (j : ℕ) (B : ∀ v : X.Pl, GL (Fin ((X.Pj j).m + 1)) (X.G.P.Qq v)) (a : Kc)
     (f : MvPowerSeries (X.ZA j) Kc) :
@@ -44,17 +44,15 @@ theorem thN_eq (j : ℕ) (c : X.Lv.comp j) (L : (X.Pj j).Tup) (La' : X.Lt (j + 1
         (ThR j (c, (X.Lv.lev j c).smul (delt X hfin j c L)⁻¹ L) La') := rfl
 
 /- English proof (translation)
-Introduce `j c L La' γ hL`. Establish `hL' : (X.Pj j).IsLatTup ((X.Lv.lev j c).smul γ L)` using `(Formalism.MainNotions.FormalGroupSystem.Pf.latTup_smul _ _ γ L).2 hL`. Take `⟨L0, h0, e0⟩` from `delt_spec X hfin j c L hL`. Take `⟨L1, h1, e1⟩` from `delt_spec X hfin j c _ hL'`. Rewrite using `[thN_eq, thN_eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Generalize the expression as in `delt X hfin j c L = δ at e0 ⊢`. Generalize the expression as in `delt X hfin j c ((X.Lv.lev j c).smul γ L) = δ' at e1 ⊢`. Establish `e2 : (X.Lv.lev j c).smul γ L = (X.Lv.lev j c).smul (γ * δ) L0`. Rewrite using `[lsmul_mul, ← e0]`. Establish `h10 : L1 = L0` using `(repOf_ex X.Lv hfin j c _ hL').unique ⟨h1, δ', e1⟩ ⟨h0, γ * δ, e2⟩`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Substitute `h10` using the available equality. Establish `r1 : (X.Lv.lev j c).smul δ'⁻¹ ((X.Lv.lev j c).smul γ L) = L1` using `by conv_lhs => rw [e1]`. Conclude with `lsmul_inv_lsmul _ _ _`. Establish `r0 : (X.Lv.lev j c).smul δ⁻¹ L = L1` using `by conv_lhs => rw [e0]`. Conclude with `lsmul_inv_lsmul _ _ _`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hst : (X.Lv.lev j c).smul ((γ * δ)⁻¹ * δ') L1 = L1`. Rewrite using `[lsmul_mul, ← e1, e2, lsmul_inv_lsmul]`. Rewrite using `[r1, r0]`. Take `⟨ε, hε⟩ : ∃ ε, ε = (γ * δ)⁻¹ * δ'` from `⟨_, rfl⟩`. Rewrite `hst` using `[← hε]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Substitute using the available equality.
 
-Establish `hd : δ' = γ * δ * ε` using `by rw [hε]; group`. Substitute `hd` using the available equality. Establish `hS'` using `hS j c L1 La' ε h0 hst`. Rewrite using `[SA_C_mul, SA_mul, ← gamAt_mul, ← mul_assoc, ← map_mul]`. Use `conv_rhs => rw [← hS']`.
-
-Rewrite using `[SA_C_mul, SA_mul, ← gamAt_mul, ← mul_assoc, ← map_mul, kapG_mul X Kc hp0, kapG_mul X Kc hp0, mul_inv, mul_inv]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kapLaw_of_stabLaw (hp0 : (p : Kc) ≠ 0) (hS : StabLaw X Kc hfin ThR) :
     KapLaw X Kc (thFN X Kc hfin (thGeo X Kc hfin ThR)) := by
@@ -88,11 +86,11 @@ theorem kapLaw_of_stabLaw (hp0 : (p : Kc) ≠ 0) (hS : StabLaw X Kc hfin ThR) :
   rw [SA_C_mul, SA_mul, ← gamAt_mul, ← mul_assoc, ← map_mul, kapG_mul X Kc hp0, kapG_mul X Kc hp0, mul_inv, mul_inv]
 
 /- English proof (translation)
-Establish `hpK : (p : X.G.Kf) ≠ 0` using `fun h => hp0 (by rw [← map_natCast (algebraMap X.G.Kf Kc), h, map_zero])`. Establish `e1 : ((((X.Lv.lev j c).χ γ : X.G.Oˣ) : X.G.O) • (X.Lv.lev j c).actX γ G) = (algebraMap X.G.O X.G.Kf (((X.Lv.lev j c).χ γ : X.G.Oˣ) : X.G.O)) • (X.Pj j).natAct (fun v => (X.Lv.lev j c).act v γ) G` using `(algebraMap_smul X.G.Kf _ _).symm`. Establish `e2 : delF X Kc j ((X.Pj j).natAct (fun v => (X.Lv.lev j c).act v γ) G) (SA X Kc j (gamAt X j c γ) (Th j (c, L) La')) = cA X Kc j (gamAt X j c γ) • delF X Kc j G (Th j (c, L) La')` using `hD j (fun v => (X.Lv.lev j c).act v γ) G (Th j (c, L) La') hGood`. Rewrite using `[hK j c L La' γ hL, delF_C_mul, e1, map_smul, LinearMap.smul_apply, e2, eSX_smul X hpK j c γ L hL]`. Rewrite using `[← algebraMap_smul Kc (eSX X j (c, L) * pP X X.G.Kf j (gamAt X j c γ) * t), ← algebraMap_smul Kc (algebraMap X.G.O X.G.Kf (((X.Lv.lev j c).χ γ : X.G.Oˣ) : X.G.O)), ← algebraMap_smul Kc (eSX X j (c, L) * t), smul_smul, smul_smul, smul_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `congr 1`. Establish `hk` using `kapG_ne_zero X Kc hp0 j c γ`. Establish `hk'` using `kapG_eq X Kc j c γ`. Rewrite using `[map_mul, map_mul, map_mul, pPart_map]`. Use `show _ * (kapG X Kc j c γ)⁻¹ * chiC X Kc j c γ * cA X Kc j (gamAt X j c γ) = _`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts. Rewrite using `[hk']`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem ker_law (hp0 : (p : Kc) ≠ 0) {Gd : ∀ j, (X.Pj j).Xsp → Prop} (hD : DelEquivOn X Kc Gd)
     (Th : ∀ j, X.Lt j → X.Lt (j + 1) → MvPowerSeries (X.ZA j) Kc) (hK : KapLaw X Kc Th) (j : ℕ)

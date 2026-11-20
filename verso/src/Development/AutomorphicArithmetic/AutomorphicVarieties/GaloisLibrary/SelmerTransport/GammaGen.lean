@@ -5,37 +5,33 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Selm
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.Base
 
 /- English proof (translation)
-Introduce `k Ω _ _ _ _ _ l _ U hUc hUg hUk`. Establish `hχc : Continuous (cycZ k Ω l)` using `continuous_cycZ k Ω l`. Establish `hHc : IsClosed ((U.map (cycZ k Ω l) : Subgroup ℤ_[l]ˣ) : Set ℤ_[l]ˣ)`. Rewrite using `[Subgroup.coe_map]`. Conclude with `(hUc.isCompact.image hχc).isClosed`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hHp : U.map (cycZ k Ω l) ≤ KStar.TotallyRealRoots.princ l (qExp l)`. Introduce and unpack `_ ⟨u, hu, rfl⟩`. Establish `h` using `hUg hu`. Simplify using `only [gamU, levU, Subgroup.mem_inf, Subgroup.mem_comap] at h`. Conclude with `h.2`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hHb : U.map (cycZ k Ω l) ≠ ⊥`. Introduce `h`. Apply `hUk` to reduce the goal to its premises. Introduce `u hu`. Establish `hm : cycZ k Ω l u ∈ U.map (cycZ k Ω l)` using `⟨u, hu, rfl⟩`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `hm` using `[h]`. Conclude with `MonoidHom.mem_ker.mpr (Subgroup.mem_bot.mp hm)`. Take `⟨⟨e⟩, htor⟩` from `princZl l _ hHc hHp hHb`. Set `ψ : U →* U.map (cycZ k Ω l)` to `(cycZ k Ω l).subgroupMap U`. Establish `hψc : Continuous ψ`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Apply `Continuous.subtype_mk` to reduce the goal to its premises. Conclude with `hχc.comp continuous_subtype_val`. Set `κ : U →* Multiplicative ℤ_[l]` to `e.toMulEquiv.toMonoidHom.comp ψ`. Establish `hκc : Continuous κ` using `e.continuous.comp hψc`. Establish `hκs : Function.Surjective κ` using `e.surjective.comp (MonoidHom.subgroupMap_surjective _ U)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hkκ : ∀ x : U, κ x = 1 ↔ cycZ k Ω l x = 1`. Introduce `x`. Establish `h1 : κ x = e (ψ x)` using `rfl`. Rewrite using `[h1, map_eq_one_iff e e.injective, Subtype.ext_iff]`. Conclude with `Iff.rfl`.
+Unfold both sides to obtain the same proposition, which implies itself. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Take `⟨γ, hγ⟩` from `hκs (Multiplicative.ofAdd 1)`. Use `⟨κ, γ, hκc, hκs, ?_, hγ, ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Rewrite using `[MonoidHom.mem_ker, hkκ, Subgroup.mem_subgroupOf]`. Simplify using `only [cycU, Subgroup.mem_inf, MonoidHom.mem_ker]`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨fun h => ⟨x.2, h⟩, fun h => h.2⟩`. Use `set V := (Subgroup.zpowers γ.1 ⊔ cycU l U).topologicalClosure with hV`. Establish `hVc : IsClosed (V : Set (G k Ω))` using `Subgroup.isClosed_topologicalClosure _`. Establish `hsub : Subgroup.zpowers γ.1 ⊔ cycU l U ≤ V` using `Subgroup.le_topologicalClosure _`. Establish `hcU : CompactSpace U` using `isCompact_iff_compactSpace.mp hUc.isCompact`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `S : Set U` to `Subtype.val ⁻¹' (V : Set (G k Ω))`. Establish `hSc : IsClosed S` using `hVc.preimage continuous_subtype_val`. Establish `hIc : IsClosed (κ '' S)` using `(hSc.isCompact.image hκc).isClosed`. Set `T : Set ℤ_[l]` to `fun a => Multiplicative.ofAdd a ∈ κ '' S`. Establish `hTc : IsClosed T` using `hIc.preimage continuous_ofAdd`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hTz : Set.range (Int.cast : ℤ → ℤ_[l]) ⊆ T`. Introduce and unpack `_ ⟨n, rfl⟩`. Use `⟨γ ^ n, ?_, ?_⟩` and prove the remaining obligations. Use `show ((γ ^ n : U) : G k Ω) ∈ V`. Rewrite using `[Subgroup.coe_zpow]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `hsub (Subgroup.mem_sup_left (Subgroup.zpow_mem_zpowers _ n))`. Rewrite using `[map_zpow, hγ, ← ofAdd_zsmul, zsmul_one]`. Establish `hT : T = Set.univ`. Apply `Set.eq_univ_of_univ_subset` to reduce the goal to its premises. Rewrite using `[← PadicInt.denseRange_intCast.closure_range]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `closure_minimal hTz hTc`. Introduce `u hu`. Establish `ha : Multiplicative.toAdd (κ ⟨u, hu⟩) ∈ T` using `by rw [hT]; trivial`. Take `⟨s, hs, hks⟩` from `ha`. Establish `hks' : κ s = κ ⟨u, hu⟩` using `hks`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hq : κ (⟨u, hu⟩ * s⁻¹) = 1` using `by rw [map_mul, map_inv, ← hks', mul_inv_cancel]`. Establish `hq'` using `(hkκ _).mp hq`. Establish `hmem : ((⟨u, hu⟩ * s⁻¹ : U) : G k Ω) ∈ V`. Apply `hsub` to reduce the goal to its premises. Apply `Subgroup.mem_sup_right` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [cycU, Subgroup.mem_inf, MonoidHom.mem_ker]`. Conclude with `⟨(⟨u, hu⟩ * s⁻¹ : U).2, hq'⟩`. Establish `hu' : u = ((⟨u, hu⟩ * s⁻¹ : U) : G k Ω) * (s : G k Ω)`. Simplify using the standard rewrite rules. Rewrite using `[hu']`.
-
-Conclude with `V.mul_mem hmem hs`. Introduce `hfin`. Establish `hm : cycZ k Ω l γ.1 ∈ U.map (cycZ k Ω l)` using `⟨γ.1, γ.2, rfl⟩`. Establish `h1` using `(hkκ γ).mpr (htor _ hm hfin)`. Rewrite `h1` using `[hγ]`.
-
-Conclude with `one_ne_zero (ofAdd_eq_one.mp h1)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Base.gammaGen :
     ∀ (k Ω : Type) [Field k] [NumberField k] [Field Ω] [Algebra k Ω] [IsAlgClosure k Ω] (l : ℕ) [Fact l.Prime] (U : Subgroup (G k Ω)), IsClosed (U : Set (G k Ω)) → U ≤ gamU l ⊤ → ¬ U ≤ (cycZ k Ω l).ker →

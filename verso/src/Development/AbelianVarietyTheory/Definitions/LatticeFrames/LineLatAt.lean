@@ -102,7 +102,7 @@ structure YGood (o : OffX a k ι) (G : ∀ PP : a.c.Pg, GX a o.ζ₀ PP.1) (b : 
   framed : ∀ PP, (H PP).Framed b.t
 
 /- English proof (translation)
-Establish `h1 : (j + 1 + 1) / 2 = j / 2 + 1` using `by omega`. Establish `h2 : (D.R.m - j) / 2 = (D.R.m - (j + 1 + 1)) / 2 + 1` using `by omega`. Rewrite using `[cI, cI, h1, h2, pow_succ, pow_succ, ← FractionalIdeal.spanSingleton_mul_spanSingleton]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem cI_step (D : D7) {j : ℕ} (h : j + 1 + 1 ≤ D.R.m) :
     FractionalIdeal.spanSingleton _ D.host.xi0 * cI D j = D.host.AA * D.host.AAbar⁻¹ * cI D (j + 1 + 1) := by
@@ -113,7 +113,7 @@ theorem cI_step (D : D7) {j : ℕ} (h : j + 1 + 1 ≤ D.R.m) :
   ring
 
 /- English proof (translation)
-Apply `AddSubgroup.closure_mono` to reduce the goal to its premises. Introduce and unpack `y ⟨α, hα, hv, x, hx, rfl⟩`. Conclude with `⟨α, hα, hv, x, h hx, rfl⟩`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem idV_mono {𝔞 𝔟 : FI D} (h : 𝔞 ≤ 𝔟) (v : Pl D) : idV 𝔞 v ≤ idV 𝔟 v := by
   apply AddSubgroup.closure_mono
@@ -121,7 +121,7 @@ theorem idV_mono {𝔞 𝔟 : FI D} (h : 𝔞 ≤ 𝔟) (v : Pl D) : idV 𝔞 v 
   exact ⟨α, hα, hv, x, h hx, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[idV, AddSubgroup.closure_eq_bot_iff]`. Introduce and unpack `y ⟨α, -, -, x, hx, rfl⟩`. Take `rfl : x = 0` from `by simpa using hx`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 theorem idV_zero (v : Pl D) : idV (0 : FI D) v = ⊥ := by
 
@@ -131,9 +131,7 @@ theorem idV_zero (v : Pl D) : idV (0 : FI D) v = ⊥ := by
   simp
 
 /- English proof (translation)
-Establish `hb` using `h.base`. Conclude with `{ hb with t := ht }`. Use `chBF := h.chBF`. Use `chFB := h.chFB`. Use `norm := h.norm`.
-
-Use `tau := h.tau`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem YPart.Sk.withT {ζ₀ : Fin a.Lz.rank → D.host.E} {τ} (h : b.Sk ζ₀ τ) (t : ∀ j, GA D ((a.geo b.bot b.mid).st j).V)
     (ht : ∀ j, t j ∈ GfC _) : (b.withT t).Sk ζ₀ τ where
@@ -147,7 +145,7 @@ theorem YPart.Sk.withT {ζ₀ : Fin a.Lz.rank → D.host.E} {τ} (h : b.Sk ζ₀
   tau := h.tau
 
 /- English proof (translation)
-Use `⟨h.sd, ?_, h.split, h.line⟩` and prove the remaining obligations. Conclude with `h.glued`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem CoreLat.withT {β₀ M} (h : CoreLat o b β₀ M) (t : ∀ j, GA D ((a.geo b.bot b.mid).st j).V) :
     CoreLat o (b.withT t) β₀ M := by
@@ -159,7 +157,7 @@ def GY.withT {ζ₀ : Fin a.Lz.rank → D.host.E} {PP : Formalism.L2.DIV.Pl D.ho
   ⟨H.FY, H.sc, H.sc_unit, H.sc_step, H.hz_unit, H.bes, H.jac, H.tau⟩
 
 /- English proof (translation)
-The claim follows from `h _ D.host`.
+A detailed English derivation is pending.
 -/
 example (h : FactPrincipalDatum) : dI D * ((D.host.ddE : Ideal (𝓞 D.host.E)) : FI D) = 1 := h _ D.host
 
@@ -169,12 +167,12 @@ Both sides reduce to the same expression.
 example (b : YPart a) : b.withT b.t = b := rfl
 
 /- English proof (translation)
-Simplify using `[bI]`.
+Simplify using the standard rewrite rules.
 -/
 example (j : ℕ) : bI D j 1 0 = dI D * cI D j := by simp [bI]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => h.1, fun h => ⟨h, fun i => i.elim0⟩⟩`.
+Supply the required witnesses or components.
 -/
 example {S S₀ : HSp D} (d : HypDec S S₀ 0) (L : Lat S) (L₀ : Lat S₀) (𝔟 : ℕ → FI D) (v : Pl D) :
     MonoId d L L₀ 𝔟 v ↔ MonoAt d L L₀ v :=

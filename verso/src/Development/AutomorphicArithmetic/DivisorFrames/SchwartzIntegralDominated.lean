@@ -6,29 +6,25 @@ open MeasureTheory
 
 open GlobalTheory.SchwClm in
 /- English proof (translation)
-Introduce `V _ _ _ Ω _ _ _ _ μ G hG hdom S hS0 l`. Use `choose w hw hwb using hdom`. Establish `hS : ∀ (n : ℕ) (x : V), iteratedFDeriv ℝ n S x = ∫ p, iteratedFDeriv ℝ n (G p) x ∂μ`. Introduce `n x`. Establish `e : (⇑S : V → ℂ) = fun y => ∫ p, G p y ∂μ` using `funext hS0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, GlobalTheory.ParamSchwartz.iteratedFDeriv_integral_eq (μ := μ) (fun t => ⇑(G t)) (fun t => (G t).smooth ⊤) (fun n y => ((GlobalTheory.SchwInt.iterEvalCLM n y).continuous.comp hG).aestronglyMeasurable) (fun n => w 0 n) (fun n => hw 0 n) (fun n t y => (SchwartzMap.norm_iterated …`. Take `⟨s, c, -, hc⟩` from `Seminorm.bound_of_continuous (schwartz_withSeminorms ℂ V ℂ) ((normSeminorm ℂ ℂ).comp l.toLinearMap) (continuous_norm.comp l.continuous)`. Use `set T : SchwartzMap V ℂ →L[ℂ] WeightedTarget V s := toWeighted s with hTdef`. Establish `hlT : ∀ f, ‖l f‖ ≤ (c : ℝ) * ‖T f‖`. Introduce `f`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `hc f`. Rewrite `h1` using `[Seminorm.smul_apply, NNReal.smul_def, smul_eq_mul]`. Conclude with `h1.trans (mul_le_mul_of_nonneg_left (finset_sup_le_norm_toWeighted s f) c.2)`. Use `set T' : SchwartzMap V ℂ →ₗ[ℂ] WeightedTarget V s := T.toLinearMap`. Establish `hker : LinearMap.ker T' ≤ LinearMap.ker l.toLinearMap`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `f hf`. Rewrite `hf`, the goal using `[LinearMap.mem_ker]`. Establish `h` using `hlT f`. Establish `hf' : T f = 0` using `hf`. Rewrite `h` using `[hf', norm_zero, mul_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `norm_le_zero_iff.1 h`. Set `l₀ : LinearMap.range T' →ₗ[ℂ] ℂ` to `(LinearMap.ker T').liftQ l.toLinearMap hker ∘ₗ T'.quotKerEquivRange.symm.toLinearMap`. Establish `hl₀ : ∀ f, l₀ ⟨T f, f, rfl⟩ = l f`. Introduce `f`. Establish `e : T'.quotKerEquivRange (Submodule.Quotient.mk f) = ⟨T f, f, rfl⟩` using `Subtype.ext (LinearMap.quotKerEquivRange_apply_mk T' f)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only [l₀, LinearMap.comp_apply, LinearEquiv.coe_coe, ← e, LinearEquiv.symm_apply_apply, Submodule.liftQ_apply, ContinuousLinearMap.coe_coe]`. Establish `hbd : ∀ y : LinearMap.range T', ‖l₀ y‖ ≤ (c : ℝ) * ‖y‖`. Introduce `y`. Take `⟨f, hf⟩` from `y.2`. Establish `hy : y = ⟨T f, f, rfl⟩` using `Subtype.ext hf.symm`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hy, hl₀ f]`. Conclude with `hlT f`. Take `⟨L, hL, -⟩` from `exists_extension_norm_eq (LinearMap.range T') (l₀.mkContinuous c hbd)`. Establish `hLT : ∀ f, L (T f) = l f`. Introduce `f`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hL ⟨T f, f, rfl⟩, LinearMap.mkContinuous_apply, hl₀]`. Establish `hw0 : ∀ a n p, 0 ≤ w a n p` using `fun a n p => (apply_nonneg _ _).trans (hwb a n p)`. Establish `hint : Integrable (fun p => T (G p)) μ` using `by haveI : SecondCountableTopologyEither Ω (WeightedTarget V s) := ⟨Or.inl inferInstance⟩`. Use `Integrable.mono' (g := fun p => ∑ i ∈ s, w i.1 i.2 p) (integrable_finset_sum s fun i _ => hw i.1 i.2) (T.continuous.comp hG).aestronglyMeasurable (ae_of_all _ fun p => ?_)` and prove the remaining obligations. Use `(pi_norm_le_iff_of_nonneg (Finset.sum_nonneg fun i _ => hw0 i.1 i.2 p)).2 fun i => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `((norm_weightedDeriv_le _ _ (G p)).trans (hwb i.1.1 i.1.2 p)).trans ?_` and prove the remaining obligations. Conclude with `Finset.single_le_sum (f := fun j : ℕ × ℕ => w j.1 j.2 p) (fun j _ => hw0 j.1 j.2 p) i.2`. Establish `hTS : T S = ∫ p, T (G p) ∂μ`. Use function extensionality and compare the values at `i`. Establish `hi : (∫ p, T (G p) ∂μ) i = ∫ p, T (G p) i ∂μ` using `((ContinuousLinearMap.proj (R := ℂ) (φ := fun j : s => BoundedContinuousFunction V (ContinuousMultilinearMap ℝ (fun _ : Fin j.1.2 => V) ℂ)) i).integral_comp_comm hint).symm`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hint_i : Integrable (fun p => T (G p) i) μ` using `(ContinuousLinearMap.proj (R := ℂ) (φ := fun j : s => BoundedContinuousFunction V (ContinuousMultilinearMap ℝ (fun _ : Fin j.1.2 => V) ℂ)) i).integrable_comp hint`. Rewrite using `[hi]`. Use `ext1 x`. Rewrite using `[← BoundedContinuousFunction.evalCLM_apply ℂ x (∫ p, T (G p) i ∂μ), ← ContinuousLinearMap.integral_comp_comm _ hint_i]`. Simplify using `only [BoundedContinuousFunction.evalCLM_apply, hTdef, toWeighted_apply, weightedDeriv_apply, GlobalTheory.SchwInt.iterEvalCLM_apply]`.
-
-Rewrite using `[integral_smul, hS]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `L.integrable_comp hint` as an intermediate fact. Simplify `this` using `only [hLT]`. Rewrite using `[← hLT S, hTS, ← ContinuousLinearMap.integral_comp_comm L hint]`.
-
-Repeatedly rewrite using `[hLT]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.schwartz_integral_dominated :
     ∀ {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V]

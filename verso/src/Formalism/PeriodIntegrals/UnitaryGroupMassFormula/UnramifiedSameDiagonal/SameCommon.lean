@@ -9,18 +9,18 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.product_
 open NumberField IsDedekindDomain Matrix CrossDiaZero
 
 /- English proof (translation)
-Conclude with `smul_comm t m w`.
+A detailed English derivation is pending.
 -/
 theorem smul_comm_OE {E : Type} [Field E] [NumberField E] {n : ℕ} (t : E) (m : 𝓞 E) (w : Fin n → E) :
     t • (m • w) = m • (t • w) := by
   exact smul_comm t m w
 
 /- English proof (translation)
-Establish `hS : s ∈ P.primeCompl` using `hs`. Use extensionality with `x`. Express the relevant statement in the definitionally equal form `(∃ t ∈ P.primeCompl, t • x ∈ L ⊔ Submodule.span R {s • y}) ↔ ∃ t ∈ P.primeCompl, t • x ∈ L ⊔ Submodule.span R {y}`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨t, ht, hx⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Use `⟨t, ht, (sup_le_sup_left ?_ L) hx⟩` and prove the remaining obligations. Rewrite using `[Submodule.span_le, Set.singleton_subset_iff]`. Conclude with `Submodule.smul_mem _ s (Submodule.mem_span_singleton_self y)`. Introduce and unpack `⟨t, ht, hx⟩`. Use `⟨s * t, P.primeCompl.mul_mem hS ht, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨l, hl, z, hz, he⟩` from `Submodule.mem_sup.mp hx`. Take `⟨c, rfl⟩` from `Submodule.mem_span_singleton.mp hz`. Rewrite using `[mul_smul, ← he, smul_add, smul_comm s c y]`. Conclude with `Submodule.add_mem_sup (L.smul_mem s hl) (Submodule.smul_mem _ c (Submodule.mem_span_singleton_self _))`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem localization_LshKer_eq_localization_sup {R W : Type} [CommRing R] [AddCommGroup W] [Module R W] (P : Ideal R) [P.IsPrime]
     (L : Submodule R W) (y : W) (s : R) (hs : s ∉ P) :

@@ -4,7 +4,7 @@ open Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.MainNotions.N G
 open UpperTheory.V.Z.Kato.Joint
 
 /- English proof (translation)
-Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ`. Use `haveI : CharZero Ω := (RingHom.charZero_iff (algebraMap ℚ Ω).injective).1 inferInstance`. Use `haveI : NeZero (l : Ω) := ⟨Nat.cast_ne_zero.2 (Fact.out : Nat.Prime l).ne_zero⟩`. Conclude with `cyclotomicCharacter.spec l (n := 1) (MulSemiringAction.toRingAut (G ℚ Ω) Ω s) ζ (by rwa [pow_one])`.
+A detailed English derivation is pending.
 -/
 private theorem apply_eq_pow_cycMod_of_pow_eq_one (l : ℕ) [Fact (Nat.Prime l)] (Ω : Type) [Field Ω] [Algebra ℚ Ω]
     [IsAlgClosure ℚ Ω] (s : G ℚ Ω) (ζ : Ω) (hζ : ζ ^ l = 1) :
@@ -16,17 +16,13 @@ private theorem apply_eq_pow_cycMod_of_pow_eq_one (l : ℕ) [Fact (Nat.Prime l)]
     (by rwa [pow_one])
 
 /- English proof (translation)
-Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ`. Use `haveI : CharZero Ω := (RingHom.charZero_iff (algebraMap ℚ Ω).injective).1 inferInstance`. Use `haveI : NeZero (l : Ω) := ⟨Nat.cast_ne_zero.2 (Fact.out : Nat.Prime l).ne_zero⟩`. Use `haveI : NeZero l := ⟨(Fact.out : Nat.Prime l).ne_zero⟩`. Use `haveI : Normal ℚ Ω := IsAlgClosure.normal ℚ Ω`.
+Extract witnesses or component facts from the available result. Apply an available result and prove the equalities needed to match it to the conclusion. Both sides reduce to the same expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Take `⟨ζ, hζ⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot Ω l`. Use `set K := IntermediateField.adjoin ℚ ({ζ} : Set Ω) with hK`. Use `haveI : IsCyclotomicExtension {l} ℚ K := by`. Use `hζ.intermediateField_adjoin_isCyclotomicExtension ℚ` and compare the differences between its conclusion and the goal. Both sides reduce to the same expression.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Subsingleton.elim _ _`. Use `haveI : NumberField K := IsCyclotomicExtension.numberField {l} ℚ K`. Use `haveI : IsScalarTower ℚ K Ω := IsScalarTower.of_algebraMap_eq (fun x => by simp)`. Set `σ` to `(IsCyclotomicExtension.Rat.galEquivZMod l K).symm u`. Set `ζK : K` to `⟨ζ, IntermediateField.mem_adjoin_simple_self ℚ ζ⟩`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hζK : ζK ^ l = 1` using `Subtype.ext (by simpa using hζ.pow_eq_one)`. Use `⟨σ.liftNormal Ω, ?_⟩` and prove the remaining obligations. Establish `h1 : (σ.liftNormal Ω) ζ = ζ ^ (u : ZMod l).val`. Establish `h2` using `σ.liftNormal_commutes Ω ζK`. Rewrite `h2` using `[IsCyclotomicExtension.Rat.galEquivZMod_apply_of_pow_eq l K σ hζK, show IsCyclotomicExtension.Rat.galEquivZMod l K σ = u from MulEquiv.apply_symm_apply _ u]`.
-
-Simplify `h2` using `[ζK]`. Establish `h3` using `apply_eq_pow_cycMod_of_pow_eq_one l Ω (σ.liftNormal Ω) ζ hζ.pow_eq_one`. Rewrite `h3` using `[h1]`. Establish `hc : (cycMod ℚ Ω l 1 (σ.liftNormal Ω) : ZMod (l ^ 1)).val < l`. Simplify `ZMod.val_lt (cycMod ℚ Ω l 1 (σ.liftNormal Ω) : ZMod (l ^ 1))` using `[pow_one]`.
-
-Establish `h4` using `hζ.pow_inj (ZMod.val_lt (u : ZMod l)) hc h3`. Unfold `cyc1`. Rewrite using `[← h4, ZMod.natCast_zmod_val]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem cyc1_surjective (l : ℕ) [Fact (Nat.Prime l)] (Ω : Type) [Field Ω] [Algebra ℚ Ω]
     [IsAlgClosure ℚ Ω] (u : (ZMod l)ˣ) : ∃ s : G ℚ Ω, cyc1 l s = u := by
@@ -61,23 +57,21 @@ private theorem cyc1_surjective (l : ℕ) [Fact (Nat.Prime l)] (Ω : Type) [Fiel
   rw [← h4, ZMod.natCast_zmod_val]
 
 /- English proof (translation)
-Introduce `l _ Ω _ _ _ ι χ hχ`. Establish `key : ∀ s t : G ℚ Ω, cyc1 l s = cyc1 l t → χ s = χ t`. Introduce `s t hst`. Establish `hv : (cycMod ℚ Ω l 1 s : ZMod (l ^ 1)).val = (cycMod ℚ Ω l 1 t : ZMod (l ^ 1)).val`. Establish `h1` using `congrArg ZMod.val hst`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `cyc1 at h1`. Establish `hs : (cycMod ℚ Ω l 1 s : ZMod (l ^ 1)).val < l`. Simplify `ZMod.val_lt (cycMod ℚ Ω l 1 s : ZMod (l ^ 1))` using `[pow_one]`. Establish `ht : (cycMod ℚ Ω l 1 t : ZMod (l ^ 1)).val < l`. Simplify `ZMod.val_lt (cycMod ℚ Ω l 1 t : ZMod (l ^ 1))` using `[pow_one]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `h1` using `[ZMod.val_natCast, ZMod.val_natCast, Nat.mod_eq_of_lt hs, Nat.mod_eq_of_lt ht]`. Conclude with `h1`. Establish `hfix : ∀ ζ : Ω, ζ ^ l = 1 → (t⁻¹ * s) ζ = ζ`. Introduce `ζ hζ`. Rewrite using `[AlgEquiv.mul_apply, apply_eq_pow_cycMod_of_pow_eq_one l Ω s ζ hζ, hv, ← apply_eq_pow_cycMod_of_pow_eq_one l Ω t ζ hζ]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `t.symm_apply_apply ζ`. Establish `h1` using `hχ (t⁻¹ * s) hfix`. Rewrite `h1` using `[map_mul, map_inv, inv_mul_eq_one]`. Conclude with `h1.symm`. Establish `hd : l ∣ l ^ 1` using `by rw [pow_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Establish `hcast : ∀ s : G ℚ Ω, cyc1 l s = ZMod.cast (cycMod ℚ Ω l 1 s : ZMod (l ^ 1))`. Introduce `s`. Unfold `cyc1`. Rewrite using `[ZMod.cast_eq_val]`. Establish `hone : cyc1 l (1 : G ℚ Ω) = 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hcast, map_one, Units.val_one, ZMod.cast_one hd]`. Establish `hmul : ∀ s t : G ℚ Ω, cyc1 l (s * t) = cyc1 l s * cyc1 l t`. Introduce `s t`. Rewrite using `[hcast, hcast, hcast, map_mul, Units.val_mul, ZMod.cast_mul hd]`. Set `sec : (ZMod l)ˣ → G ℚ Ω` to `fun u => (cyc1_surjective l Ω u).choose`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Establish `hsec : ∀ u, cyc1 l (sec u) = u` using `fun u => (cyc1_surjective l Ω u).choose_spec`. Set `f : (ZMod l)ˣ →* ℂˣ` to `{ toFun := fun u => Units.map ι.toMonoidHom (χ (sec u)) map_one' := by`. Rewrite using `[key (sec 1) 1 (by rw [hsec, hone, Units.val_one]), map_one, map_one]`. Use the proof step `map_mul' := by`. Introduce `u v`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[key (sec (u * v)) (sec u * sec v) (by rw [hsec, hmul, hsec, hsec, Units.val_mul]), map_mul, map_mul] }`. Use `⟨MulChar.ofUnitHom f, fun s => ?_⟩` and prove the remaining obligations. Set `w : (ZMod l)ˣ` to `Units.map (ZMod.castHom hd (ZMod l)).toMonoidHom (cycMod ℚ Ω l 1 s)`. Establish `hw : (w : ZMod l) = cyc1 l s`. Rewrite using `[hcast]`.
-
-Both sides reduce to the same expression. Rewrite using `[← hw, MulChar.ofUnitHom_coe]`. Use `show (χ s : Formalism.ConjugateSelfDual.Qbar l) = ι.symm (ι (χ (sec w) : Formalism.ConjugateSelfDual.Qbar l))`. Rewrite using `[RingEquiv.symm_apply_apply, key s (sec w) (by rw [hsec, hw])]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Kato.Joint.psiEx :
     UpperTheory.V.Z.Kato.Joint.PsiEx := by

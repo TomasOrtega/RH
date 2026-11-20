@@ -20,7 +20,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.PtExt
 
 /- English proof (translation)
-Introduce `c hc`. Establish `hd : diagSum R (G.A n) m c = ∑ i ∈ Finset.range m, multDiag R (G.A n) i c`. Simplify using `[diagSum, LinearMap.sum_apply]`. Establish `hz : m • c = 0` using `by rw [← Nat.cast_smul_eq_nsmul R, hm, zero_smul]`. Rewrite using `[pullTwo_mulBy_eq c hc m, hz, add_zero, hd, Algebra.algebraMap_eq_smul_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Normalize the expressions using the abelian group laws.
 -/

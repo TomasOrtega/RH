@@ -11,14 +11,14 @@ namespace GlobalTheory.CompanionTheory.ExtCharU
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Simplify using `only [GlobalTheory.BCT.pw, Pi.add_apply, zpow_add, Units.val_mul, Finset.prod_mul_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pw_add {n : ℕ} (ξ : Fin n → ℂˣ) (x y : Fin n → ℤ) :
     GlobalTheory.BCT.pw ξ (x + y) = GlobalTheory.BCT.pw ξ x * GlobalTheory.BCT.pw ξ y := by
   simp only [GlobalTheory.BCT.pw, Pi.add_apply, zpow_add, Units.val_mul, Finset.prod_mul_distrib]
 
 /- English proof (translation)
-The claim follows from `Finset.prod_ne_zero_iff.2 fun i _ => Units.ne_zero _`.
+A detailed English derivation is pending.
 -/
 theorem pw_ne_zero {n : ℕ} (ξ : Fin n → ℂˣ) (x : Fin n → ℤ) : GlobalTheory.BCT.pw ξ x ≠ 0 :=
   Finset.prod_ne_zero_iff.2 fun i _ => Units.ne_zero _
@@ -26,15 +26,15 @@ theorem pw_ne_zero {n : ℕ} (ξ : Fin n → ℂˣ) (x : Fin n → ℤ) : Global
 def dg {n : ℕ} (ϖ : kˣ) (e : Fin n → ℤ) : Fin n → kˣ := fun i => ϖ ^ e i
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[dg, zpow_add]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem dg_add {n : ℕ} (ϖ : kˣ) (x y : Fin n → ℤ) : dg ϖ (x + y) = dg ϖ x * dg ϖ y := by
   funext i; simp [dg, zpow_add]
 
 /- English proof (translation)
-Set `o : kˣ →* Multiplicative ℤ` to `MonoidHom.mk' (fun x => .ofAdd (ord k x)) fun x y => by`. Rewrite using `[ord_mul, ofAdd_add]`. Establish `h` using `map_zpow o ϖ m`. Establish `h2 : ord k (ϖ ^ m) = m • ord k ϖ`. Use `congrArg Multiplicative.toAdd h` as an intermediate fact.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `this` using `[o]`. Simplify using `using h2`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem ord_zpow (ϖ : kˣ) (m : ℤ) : ord k (ϖ ^ m) = m * ord k ϖ := by
   let o : kˣ →* Multiplicative ℤ := MonoidHom.mk' (fun x => .ofAdd (ord k x)) fun x y => by
@@ -48,14 +48,14 @@ theorem ord_zpow (ϖ : kˣ) (m : ℤ) : ord k (ϖ ^ m) = m * ord k ϖ := by
 def rr (n : ℕ) : Fin n → ℤ := fun i => (n : ℤ) - 1 - (i : ℕ)
 
 /- English proof (translation)
-Introduce `i j h` and use `by have : (i : ℕ) < j := h simp only [rr]; omega`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem rr_anti (n : ℕ) : StrictAnti (rr n) := fun i j h => by
   have : (i : ℕ) < j := h
   simp only [rr]; omega
 
 /- English proof (translation)
-Introduce `i j h` and use `by have := rr_anti n h simp only [Pi.smul_apply, smul_eq_mul] exact mul_lt_mul_of_pos_left this hN`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem rr_smul_anti (n : ℕ) {N : ℤ} (hN : 0 < N) : StrictAnti (N • rr n) := fun i j h => by
   have := rr_anti n h
@@ -63,11 +63,11 @@ theorem rr_smul_anti (n : ℕ) {N : ℤ} (hN : 0 < N) : StrictAnti (N • rr n) 
   exact mul_lt_mul_of_pos_left this hN
 
 /- English proof (translation)
-Use `⟨1 + 2 * ∑ i, |e i|, by positivity, fun i j h => ?_⟩` and prove the remaining obligations. Establish `hij : (i : ℕ) < j` using `h`. Establish `hi : |e i| ≤ ∑ l, |e l|` using `Finset.single_le_sum (f := fun l => |e l|) (fun _ _ => abs_nonneg _) (Finset.mem_univ i)`. Establish `hj : |e j| ≤ ∑ l, |e l|` using `Finset.single_le_sum (f := fun l => |e l|) (fun _ _ => abs_nonneg _) (Finset.mem_univ j)`. Establish `h1` using `abs_le.1 (le_refl |e i|)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `abs_le.1 (le_refl |e j|)`. Use `set S := ∑ l, |e l|`. Establish `hd : (1 : ℤ) ≤ rr n i - rr n j` using `by simp only [rr]; omega`. Establish `hS : 0 ≤ S` using `Finset.sum_nonneg fun _ _ => abs_nonneg _`. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use the polynomial consequences of the given equalities and inequalities.
 
-Use the polynomial consequences of the given equalities and inequalities.
+A detailed English derivation is pending.
 -/
 theorem add_anti {n : ℕ} (e : Fin n → ℤ) :
     ∃ N : ℤ, 0 < N ∧ StrictAnti (e + N • rr n) := by
@@ -88,13 +88,13 @@ theorem add_anti {n : ℕ} (e : Fin n → ℤ) :
 variable {n : ℕ} {M : Type} [AddCommGroup M] [Module ℂ M]
 
 /- English proof (translation)
-Establish `hr` using `hx (rr n) (rr_anti n)`. Establish `h2` using `hx (rr n + rr n) (by`. Simplify `rr_smul_anti n (N := 2) (by norm_num))` using `[two_smul]`. Establish `hd : (fun i => ϖ ^ (rr n + rr n) i) = (fun i => ϖ ^ rr n i) * (fun i => ϖ ^ rr n i)` using `dg_add ϖ (rr n) (rr n)`. Rewrite `h2` using `[hd, map_mul, Module.End.mul_apply, hr, map_smul, hr, smul_smul, pw_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `set p := GlobalTheory.BCT.pw ξ (rr n)`. Establish `hp : p ≠ 0` using `pw_ne_zero ξ _`. Establish `h3 : c * p * (c * p) = c * (p * p)` using `smul_left_injective ℂ hz h2`. Establish `hc : c ≠ 0`. Introduce and unpack `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hz` to reduce the goal to its premises. Establish `h4 : R (fun i => ϖ ^ rr n i) z = 0` using `by simpa using hr`. Establish `h5` using `congrArg (R (fun i => ϖ ^ rr n i)⁻¹) h4`. Rewrite `h5` using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, map_zero]`. Simplify using `using h5`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hpp : p * p ≠ 0` using `mul_ne_zero hp hp`. Apply `mul_left_cancel₀ (mul_ne_zero hc hpp)` to reduce the goal to its premises. Take the linear combination `h3`.
+Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem const_eq_one (R : Representation ℂ (Fin n → kˣ) M) {z : M} {ϖ : kˣ} {ξ : Fin n → ℂˣ} {c : ℂ}
     (hz : z ≠ 0)
@@ -121,9 +121,9 @@ theorem const_eq_one (R : Representation ℂ (Fin n → kˣ) M) {z : M} {ϖ : k�
   linear_combination h3
 
 /- English proof (translation)
-Take `⟨N, hN, ha⟩` from `add_anti e`. Establish `hy` using `hx _ (rr_smul_anti n hN)`. Establish `hxy` using `hx _ ha`. Establish `hd : (fun i => ϖ ^ (e + N • rr n) i) = dg ϖ e * (fun i => ϖ ^ (N • rr n) i)` using `dg_add ϖ e _`. Rewrite `hxy` using `[hd, map_mul, Module.End.mul_apply, hy, map_smul, pw_add, mul_comm, mul_smul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `smul_right_injective M (pw_ne_zero ξ (N • rr n)) hxy`.
+A detailed English derivation is pending.
 -/
 theorem eig_all (R : Representation ℂ (Fin n → kˣ) M) {z : M} {ϖ : kˣ} {ξ : Fin n → ℂˣ}
     (hx : ∀ x : Fin n → ℤ, StrictAnti x → R (fun i => ϖ ^ x i) z = GlobalTheory.BCT.pw ξ x • z)
@@ -137,13 +137,13 @@ theorem eig_all (R : Representation ℂ (Fin n → kˣ) M) {z : M} {ϖ : kˣ} {�
   exact smul_right_injective M (pw_ne_zero ξ (N • rr n)) hxy
 
 /- English proof (translation)
-Introduce `k _ _ _ _ n M _ _ R z ϖ ξ c hz hϖ hO hx t`. Establish `hc : c = 1` using `const_eq_one R hz hx`. Substitute `hc` using the available equality. Simplify using `only [one_mul] at hx`. Use `set e : Fin n → ℤ := fun i => ord k (t i) with he`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hu : t * (dg ϖ e)⁻¹ ∈ torusO k (Fin n)`. Introduce `i`. Apply `ord_eq_zero_iff.1` to reduce the goal to its premises. Establish `h1 : ord k (t i * (ϖ ^ e i)⁻¹) = 0`. Establish `h2` using `ord_mul k (t i * (ϖ ^ e i)⁻¹) (ϖ ^ e i)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[inv_mul_cancel_right, ord_zpow, hϖ, mul_one]`. Establish `h3 : e i = ord k (t i)` using `rfl`. Use linear arithmetic over natural numbers and integers. Simplify `h1` using `[dg]`. Establish `ht : t = dg ϖ e * (t * (dg ϖ e)⁻¹)` using `by simp`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : R t z = R (dg ϖ e) z` using `by conv_lhs => rw [ht]`. Rewrite using `[map_mul, Module.End.mul_apply, hO _ hu]`. Rewrite using `[h1, eig_all R hx e, torusChar_apply]`. Use `congr 1`. Simplify using `[GlobalTheory.BCT.pw, he, unrChar_apply]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem extChar : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (n : ℕ) (M : Type) [AddCommGroup M] [Module ℂ M]

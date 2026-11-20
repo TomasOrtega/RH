@@ -3,17 +3,15 @@ import Mathlib
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `: IsSemisimpleModule R (Fin n → M)` using `inferInstance`. Use `set A := LinearMap.toSpanSingleton R (Fin n → M) w with hA`. Use `set B := LinearMap.toSpanSingleton R M v with hB`. Establish `hk : LinearMap.ker A ≤ LinearMap.ker B`. Introduce `a ha`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [LinearMap.mem_ker, hA, hB, LinearMap.toSpanSingleton_apply] at ha ⊢`. Apply `h a` to reduce the goal to its premises. Introduce `j`. Use `congrFun ha j` as an intermediate fact. Simplify using `using this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Set `φ : LinearMap.range A →ₗ[R] M` to `(Submodule.liftQ _ B hk) ∘ₗ (LinearMap.quotKerEquivRange A).symm.toLinearMap`. Take `⟨F, hF⟩` from `IsSemisimpleModule.extension_property (LinearMap.range A).subtype (Submodule.injective_subtype _) φ`. Use `⟨fun j => F ∘ₗ LinearMap.single R (fun _ => M) j, ?_⟩` and prove the remaining obligations. Establish `hw : w ∈ LinearMap.range A` using `⟨1, by simp [hA]⟩`. Establish `h1 : F w = v`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `LinearMap.congr_fun hF ⟨w, hw⟩` as an intermediate fact. Simplify using `only [LinearMap.comp_apply, Submodule.subtype_apply] at this`. Rewrite using `[this]`. Establish `e : (LinearMap.quotKerEquivRange A).symm ⟨w, hw⟩ = Submodule.Quotient.mk 1`. Rewrite using `[LinearEquiv.symm_apply_eq]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `ext1`. Simplify using `[hA]`. Simplify using `only [φ, LinearMap.comp_apply, LinearEquiv.coe_coe, e, Submodule.liftQ_apply, hB, LinearMap.toSpanSingleton_apply, one_smul]`. Rewrite using `[← h1]`. Use `conv_lhs => rw [← Finset.univ_sum_single w]`.
-
-Simplify using `[map_sum]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem semisimple_mem_sum_endo_images (R : Type) [Ring R] (M : Type) [AddCommGroup M] [Module R M]
     (hM : IsSemisimpleModule R M) (n : ℕ) (w : Fin n → M) (v : M)

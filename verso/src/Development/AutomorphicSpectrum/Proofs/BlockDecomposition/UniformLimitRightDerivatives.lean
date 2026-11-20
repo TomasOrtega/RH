@@ -13,17 +13,15 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.PresSobA.LimSmooth
 
 /- English proof (translation)
-Rewrite using `[Metric.tendstoLocallyUniformlyOn_iff]`. Introduce `ε hε x hx`. Use `set M : ℝ := ∑ p, (‖A p x‖ + 1) with hM`. Establish `hM0 : 0 ≤ M` using `Finset.sum_nonneg fun p _ => by positivity`. Establish `hnear : ∀ᶠ y in 𝓝[GLs n] x, ∀ p, ‖A p y‖ < ‖A p x‖ + 1`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Filter.eventually_all]`. Introduce `p`. Conclude with `Filter.Tendsto.eventually_lt_const (lt_add_one _) (hA p x hx).norm`. Establish `hpos : 0 < ε / (M + 1)` using `by positivity`. Use `⟨{y | ∀ p, ‖A p y‖ < ‖A p x‖ + 1} ∩ GLs n, Filter.inter_mem hnear self_mem_nhdsWithin, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hev : ∀ᶠ k in atTop, ∀ p, ∀ y ∈ GLs n, dist (U p y) (u p k y) < ε / (M + 1)`. Rewrite using `[Filter.eventually_all]`. Introduce `p`. Conclude with `Metric.tendstoUniformlyOn_iff.1 (hu p) _ hpos`. Use `filter_upwards [hev] with k hk y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[dist_eq_norm, ← Finset.sum_sub_distrib]`. Establish `hterm : ∀ p, ‖(A p y).smulRight (U p y) - (A p y).smulRight (u p k y)‖ ≤ (‖A p x‖ + 1) * (ε / (M + 1))`. Introduce `p`. Establish `he : (A p y).smulRight (U p y) - (A p y).smulRight (u p k y) = (A p y).smulRight (U p y - u p k y)`. Use extensionality with `v`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `[smul_sub]`. Rewrite using `[he, ContinuousLinearMap.norm_smulRight_apply]`. Establish `h1` using `hk p y hy.2`. Rewrite `h1` using `[dist_eq_norm]`. Conclude with `mul_le_mul (hy.1 p).le h1.le (norm_nonneg _) (by positivity)`.
-
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_div_assoc', div_lt_iff₀ (by positivity)]`. Use the polynomial consequences of the given equalities and inequalities.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem tendstoLocallyUniformlyOn_frame {n : ℕ} {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V]
     {ι : Type} [Fintype ι] {A : ι → Mat n → CLof (Mat n) ℝ} (hA : ∀ p, ContinuousOn (A p) (GLs n))
@@ -76,25 +74,23 @@ theorem sum_smulRight_apply {n : ℕ} {V : Type} [NormedAddCommGroup V] [NormedS
   simp
 
 /- English proof (translation)
-Introduce `n V _ _ _ g hg hc`. Take `⟨A, hAc, hA⟩` from `GlobalTheory.T.derivative_right_basis_expansion n`. Establish `hopen : IsOpen (GLs n)` using `isOpen_GLs`. Set `Gf : List (Bool × Fin n × Fin n) → Mat n → V` to `fun w z => limUnder atTop (fun k => Rw w (g k) z)`. Establish `hpt : ∀ w, ∀ z ∈ GLs n, Tendsto (fun k => Rw w (g k) z) atTop (𝓝 (Gf w z))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `w z hz`. Establish `hcs : CauchySeq (fun k => Rw w (g k) z)` using `(hc w).cauchy_map hz`. Take `⟨x, hx⟩` from `cauchySeq_tendsto_of_complete hcs`. Establish `he : Gf w z = x` using `hx.limUnder_eq`. Rewrite using `[he]` and apply the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Establish `hu : ∀ w, TendstoUniformlyOn (fun k => Rw w (g k)) (Gf w) atTop (GLs n)` using `fun w => (hc w).tendstoUniformlyOn_of_tendsto (hpt w)`. Establish `hsm : ∀ k w, ContDiffOn ℝ ∞ (Rw w (g k)) (GLs n)` using `fun k w => GlobalTheory.CompanionTheory.SobGL.Smooth.Rw_contDiffOn' (hg k) w`. Establish `hderiv : ∀ k w, ∀ z ∈ GLs n, fderiv ℝ (Rw w (g k)) z = (∑ p, (A p z).smulRight (Rw (p :: w) (g k) z) : CLof (Mat n) V)`. Introduce `k w z hz`. Conclude with `hA V (fderiv ℝ (Rw w (g k)) z) z hz`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hhas : ∀ w, ∀ z ∈ GLs n, HasFDerivAt (Gf w) (∑ p, (A p z).smulRight (Gf (p :: w) z) : CLof (Mat n) V) z`. Introduce `w z hz`. Use `hasFDerivAt_of_tendstoLocallyUniformlyOn (f := fun k => Rw w (g k)) (f' := fun (k : ℕ) (y : Mat n) => (∑ p, (A p y).smulRight (Rw (p :: w) (g k) y) : CLof (Mat n) V)) (g' := fun y => (∑ p, (A p y).smulRight (Gf (p :: w) y) : CLof (Mat n) V)) hopen (tendstoLocallyUniformlyOn_frame …` and prove the remaining obligations. Introduce `k y hy`. Establish `hd : DifferentiableAt ℝ (Rw w (g k)) y` using `((hsm k w).contDiffAt (hopen.mem_nhds hy)).differentiableAt (by simp)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `hd.hasFDerivAt`. Rewrite `h2` using `[hderiv k w y hy]`. Then use the resulting hypothesis. Establish `hRd : ∀ w p, ∀ z ∈ GLs n, Rd (bs p) (Gf w) z = Gf (p :: w) z`. Introduce `w p z hz`. Establish `h1 : Rd (bs p) (Gf w) z = (∑ q, (A q z).smulRight (Gf (q :: w) z) : CLof (Mat n) V) (z * bs p)`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0` using `(hhas w z hz).fderiv`. Conclude with `congrArg (fun L : CLof (Mat n) V => L (z * bs p)) h0`. Establish `h2 : Tendsto (fun k => Rw (p :: w) (g k) z) atTop (𝓝 ((∑ q, (A q z).smulRight (Gf (q :: w) z) : CLof (Mat n) V) (z * bs p)))`. Establish `h3 : ∀ k, Rw (p :: w) (g k) z = ∑ q, (A q z (z * bs p)) • Rw (q :: w) (g k) z`. Introduce `k`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h4 : Rw (p :: w) (g k) z = (∑ q, (A q z).smulRight (Rw (q :: w) (g k) z) : CLof (Mat n) V) (z * bs p)` using `congrArg (fun L : CLof (Mat n) V => L (z * bs p)) (hderiv k w z hz)`. Rewrite using `[h4, sum_smulRight_apply]`. Rewrite using `[sum_smulRight_apply]`. Simplify using `only [h3]`. Conclude with `tendsto_finsetSum _ fun q _ => (hpt (q :: w) z hz).const_smul _`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[h1]`. Conclude with `tendsto_nhds_unique h2 (hpt (p :: w) z hz)`. Establish `hfam : ∀ v, ContDiffOn ℝ ∞ (Gf v) (GLs n)` using `GlobalTheory.T.closed_derivative_system_smooth n V (List (Bool × Fin n × Fin n)) Gf (fun p w => p :: w) (fun v z hz => (hhas v z hz).differentiableAt) (fun v p z hz => hRd v p z hz)`. Use `⟨Gf, hu, hfam [], ?_⟩` and prove the remaining obligations. Introduce `w`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Both sides reduce to the same expression. Treat this case separately.
 
-Proceed by induction on `w with`. Consider the case `nil => intro z _`. Both sides reduce to the same expression. Consider the case `cons p w ih`. Introduce `z hz`.
-
-Conclude with `(Rd_congr ih (bs p) z hz).trans (hRd w p z hz)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem limit_smooth : ∀ (n : ℕ) (V : Type) [NormedAddCommGroup V] [NormedSpace ℂ V] [CompleteSpace V]
     (g : ℕ → Mat n → V), (∀ k, ContDiffOn ℝ ∞ (g k) (GLs n)) →

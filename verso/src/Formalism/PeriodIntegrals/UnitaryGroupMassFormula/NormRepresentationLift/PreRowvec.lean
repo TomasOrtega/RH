@@ -13,23 +13,23 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions.S
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {S : HSpace E} {r : ℕ}
 
 /- English proof (translation)
-Use `choose y hy h0 q hq using hdual`. Set `v₀ : S.V` to `∑ c : Fin r, (if a < c then cj (t c.castSucc) else 0) • y c`. Establish `hv₀ : v₀ ∈ Λ` using `Λ.sum_mem fun c _ => Λ.smul_mem _ (hy c)`. Establish `hv0e : ∀ i, S.hT v₀ (F.fl.e i) = if a < i then (t i.castSucc : E) * ((1 + g * q i : 𝓞 E) : E) else 0`. Introduce `i`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sum, LinearMap.sum_apply, Finset.sum_eq_single i]`. Distinguish the cases in `hai : a < i`. Rewrite using `[if_pos hai, if_pos hai, hT_cj_left, hq]`. Rewrite using `[if_neg hai, if_neg hai, zero_smul, map_zero, LinearMap.zero_apply]`. Introduce `c _ hci`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hac : a < c`. Rewrite using `[if_pos hac, hT_cj_left, h0 c i (Ne.symm hci), mul_zero]`. Rewrite using `[if_neg hac, zero_smul, map_zero, LinearMap.zero_apply]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ i) h`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨ζ, hζ⟩` from `hint v₀ hv₀ F.fl.z hz`. Take `⟨x, y', hxy⟩` from `hTg`. Establish `hxyE : (x : E) * (Tn : E) + (y' : E) * (g : E) = 1`. Use `congrArg (fun o : 𝓞 E => (o : E)) hxy` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `m : 𝓞 E` to `x * (ζ - t (Fin.last r))`. Set `v : S.V` to `v₀ + cj m • F.fl.z`. Establish `hze : ∀ i, S.hT F.fl.z (F.fl.e i) = 0`. Introduce `i`. Rewrite using `[herm_eq, F.fl.z_orth i, star_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hve : ∀ i, S.hT v (F.fl.e i) = S.hT v₀ (F.fl.e i)`. Introduce `i`. Simplify using `only [v, map_add, LinearMap.add_apply, hT_cj_left, hze, mul_zero, add_zero]`. Use `⟨v, Λ.add_mem hv₀ (Λ.smul_mem _ hz), fun i hi => ?_, fun c hc => ?_⟩` and prove the remaining obligations. Rewrite using `[hve, hv0e, if_neg (not_lt.mpr hi)]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `c using Fin.lastCases with`. Consider the case `last`. Use `⟨y' * (ζ - t (Fin.last r)), ?_⟩` and prove the remaining obligations. Establish `hfz : frame F (Fin.last r) = F.fl.z` using `by simp [frame, FlagG.fvec]`. Rewrite using `[hfz]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Simplify using `only [v, map_add, LinearMap.add_apply, hT_cj_left, F.fl.z_norm, hζ, m]`. Use `push_cast`. Take the linear combination `(-((ζ : E) - (t (Fin.last r) : E))) * hxyE`. Consider the case `cast i`. Establish `hai : a < i` using `Fin.castSucc_lt_castSucc_iff.mp hc`.
+Take a linear combination of the given relations to obtain the conclusion. Treat this case separately. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨t i.castSucc * q i, ?_⟩` and prove the remaining obligations. Establish `hfi : frame F (Fin.castSucc i) = F.fl.e i` using `by simp [frame, FlagG.fvec]`. Rewrite using `[hfi, hve, hv0e, if_pos hai]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem pre_rowvec (Λ : Submodule (𝓞 E) S.V) (hint : IntLat Λ) (Tn : ℕ) (F : LFlag S r ((Tn : ℕ) : E))
     (hz : F.fl.z ∈ Λ) (g : 𝓞 E)
@@ -82,20 +82,20 @@ theorem pre_rowvec (Λ : Submodule (𝓞 E) S.V) (hint : IntLat Λ) (Tn : ℕ) (
       push_cast; ring
 
 /- English proof (translation)
-The claim follows from `map_natCast (algebraMap (𝓞 E) E) N`.
+A detailed English derivation is pending.
 -/
 theorem coe_nat (N : ℕ) : ((N : 𝓞 E) : E) = (N : E) := map_natCast (algebraMap (𝓞 E) E) N
 
 /- English proof (translation)
-Take `⟨o, ho⟩` from `hint v hv v hv`. Establish `hself : star (o : E) = (o : E)` using `by rw [← ho, ← herm_eq]`. Break down `htr with ⟨k, hk⟩ | ⟨ω, hω⟩` into its components or cases. Take `⟨M, hM⟩ : ∃ M : ℕ, M = 2 * (k + 1)` from `⟨_, rfl⟩`. Take `⟨N, hN⟩ : ∃ N : ℕ, N = 2 * (k + 1) * (k + 1)` from `⟨_, rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hmE : (M : E) = 2 * ((k : E) + 1)` using `by rw [hM]; push_cast; ring`. Establish `hNE : (N : E) = 2 * ((k : E) + 1) * ((k : E) + 1)` using `by rw [hN]; push_cast; ring`. Establish `hmg : (M : E) = (g : E) + 1` using `by rw [hmE, hk]; ring`. Use `⟨cj (M : 𝓞 E) • v, Λ.smul_mem _ hv, -((N : 𝓞 E) * o), ?_, fun c hcZ => ?_, fun c hcZ => ?_⟩` and prove the remaining obligations. Rewrite using `[hT_cj_left, hT_osmul_right, coe_cj, ho]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [coe_nat, map_neg, map_mul, map_natCast, star_neg, star_mul', hself, star_natCast]`. Rewrite using `[hNE, hmE]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hT_cj_left, hZ c hcZ, mul_zero]`. Take `⟨q, hq⟩` from `hc c hcZ`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨t c + (M : 𝓞 E) * q, ?_⟩` and prove the remaining obligations. Rewrite using `[hT_cj_left, hq]`. Simplify using `only [coe_nat, map_add, map_mul, map_natCast]`. Take the linear combination `((t c : E) + (g : E) * (q : E) - (g : E) * (q : E)) * hmg`. Use `⟨v, hv, -(ω * o), ?_, hZ, hc⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[ho]`. Simplify using `only [map_neg, map_mul, star_neg, star_mul', hself]`. Take the linear combination `(-(o : E)) * hω`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem trace_fix (Λ : Submodule (𝓞 E) S.V) (hint : IntLat Λ) {n : ℕ} (f : Fin n → S.V) (g : 𝓞 E)
     (htr : (∃ k : ℕ, (g : E) = 2 * (k : E) + 1) ∨ ∃ ω : 𝓞 E, (ω : E) + star (ω : E) = 1)

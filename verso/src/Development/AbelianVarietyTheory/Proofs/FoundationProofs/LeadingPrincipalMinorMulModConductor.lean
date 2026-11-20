@@ -10,13 +10,13 @@ namespace GlobalTheory.PsType.MinorMul
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Introduce `u hu hle` and use `hx u hu (hle.trans h)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem triv_of_val_le {χ : kˣ →* ℂˣ} {x y : k} (h : valuation k y ≤ valuation k x) (hx : Triv χ x) : Triv χ y :=
   fun u hu hle => hx u hu (hle.trans h)
 
 /- English proof (translation)
-Introduce `u _ hle`. Rewrite `hle` using `[map_zero, le_zero_iff, map_eq_zero, sub_eq_zero]`. Establish `: u = 1` using `Units.ext hle`. Simplify using `[this]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem triv_zero (χ : kˣ →* ℂˣ) : Triv χ (0 : k) := by
   intro u _ hle
@@ -39,16 +39,16 @@ def trivIdeal (χ : kˣ →* ℂˣ) : Ideal 𝒪[k] where
     exact mul_le_of_le_one_left' ((Valuation.mem_integer_iff _ _).1 c.2)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_trivIdeal {χ : kˣ →* ℂˣ} {x : 𝒪[k]} : x ∈ trivIdeal χ ↔ Triv χ (x : k) := Iff.rfl
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hn`. Take `⟨y, hy⟩` from `hx.exists_right_inv`. Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Establish `h1 : x * y - 1 ∈ I`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_sub, map_mul, hy, map_one, sub_self]`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hm : x * y ∈ IsLocalRing.maximalIdeal R` using `Ideal.mul_mem_right _ _ ((IsLocalRing.mem_maximalIdeal x).2 hn)`. Establish `h2` using `(IsLocalRing.le_maximalIdeal hI) h1`. Establish `: (1 : R) ∈ IsLocalRing.maximalIdeal R`. Use `Ideal.sub_mem _ hm h2` as an intermediate fact. Rewrite `this` using `[sub_sub_cancel]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Conclude with `(IsLocalRing.maximalIdeal.isMaximal R).ne_top ((Ideal.eq_top_iff_one _).2 this)`.
+A detailed English derivation is pending.
 -/
 theorem isUnit_of_isUnit_mk {R : Type*} [CommRing R] [IsLocalRing R] {I : Ideal R} (hI : I ≠ ⊤) {x : R}
     (hx : IsUnit (Ideal.Quotient.mk I x)) : IsUnit x := by
@@ -66,7 +66,7 @@ theorem isUnit_of_isUnit_mk {R : Type*} [CommRing R] [IsLocalRing R] {I : Ideal 
   exact (IsLocalRing.maximalIdeal.isMaximal R).ne_top ((Ideal.eq_top_iff_one _).2 this)
 
 /- English proof (translation)
-Establish `h0 : (M.toBlock p fun i => ¬ p i) = 0`. Use extensionality with `i j`. Conclude with `h i i.2 j j.2`. Unfold `toSquareBlockProp`. Rewrite using `[toBlock_mul_eq_add p p p M N, h0, Matrix.zero_mul, add_zero]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toSquareBlockProp_mul {R : Type*} [CommRing R] {ι : Type*} [Fintype ι] (p : ι → Prop) [DecidablePred p]
     (M N : Matrix ι ι R) (h : ∀ i, p i → ∀ j, ¬ p j → M i j = 0) :
@@ -77,7 +77,7 @@ theorem toSquareBlockProp_mul {R : Type*} [CommRing R] {ι : Type*} [Fintype ι]
   rw [toBlock_mul_eq_add p p p M N, h0, Matrix.zero_mul, add_zero]
 
 /- English proof (translation)
-Rewrite using `[RingHom.map_det]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem minor_map {n : ℕ} (u : GL (Fin n) 𝒪[k]) (m : Fin n) :
     minor (GeneralLinearGroup.map (algebraMap 𝒪[k] k) u) m =
@@ -88,23 +88,19 @@ end GlobalTheory.PsType.MinorMul
 
 open GlobalTheory.PsType.MinorMul in
 /- English proof (translation)
-Introduce `k _ _ _ _ n ψ hψ m hm`. Use `set χ := ψ m / nxt ψ m with hχ`. Use `set I := trivIdeal χ with hIdef`. Establish `hI : I ≠ ⊤`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (1 : 𝒪[k]) ∈ I` using `h ▸ Submodule.mem_top`. Conclude with `hm (by have h2 := (mem_trivIdeal (χ := χ) (x := 1)).1 this; simpa using h2)`. Establish `hent : ∀ a ∈ grp ψ, ∀ i j : Fin n, i ≤ m → ¬ j ≤ m → Triv χ (a.val i j)`. Introduce `a ha i j hi hj`. Establish `hj' : m < j` using `not_le.1 hj`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlt : (m : ℕ) + 1 < n` using `lt_of_le_of_lt (Nat.succ_le_of_lt (Fin.lt_def.1 hj')) j.2`. Establish `hnx : nxt ψ m = ψ ⟨(m : ℕ) + 1, hlt⟩` using `dif_pos hlt`. Establish `h1` using `ha.2 i j (lt_of_le_of_lt hi hj')`. Rewrite using `[hχ, hnx]`. Conclude with `hψ i m ⟨(m : ℕ) + 1, hlt⟩ j hi (Fin.le_def.2 (Nat.le_succ _)) (Fin.le_def.2 (Nat.succ_le_of_lt (Fin.lt_def.1 hj'))) _ h1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hzero : ∀ u : GL (Fin n) 𝒪[k], GeneralLinearGroup.map (algebraMap 𝒪[k] k) u ∈ grp ψ → ∀ i, i ≤ m → ∀ j, ¬ j ≤ m → (Ideal.Quotient.mk I).mapMatrix u.val i j = 0`. Introduce `u hu i hi j hj`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 (hent _ hu i j hi hj)`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `a ha`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨u, rfl⟩` from `ha.1`. Rewrite using `[minor_map]`. Use `(Valuation.integer.integers (valuation k)).isUnit_iff_valuation_eq_one.1 ?_` and prove the remaining obligations. Use `isUnit_of_isUnit_mk hI ?_` and prove the remaining obligations. Establish `hdet : IsUnit ((Ideal.Quotient.mk I).mapMatrix u.val).det`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← RingHom.map_det]`. Conclude with `(Matrix.isUnits_det_units u).map _`. Rewrite `hdet` using `[twoBlockTriangular_det' _ (fun i => i ≤ m) (hzero u ha)]`. Use `isUnit_of_mul_isUnit_left hdet` as an intermediate fact. Rewrite `this` using `[show (((Ideal.Quotient.mk I).mapMatrix u.val).toSquareBlockProp fun i => i ≤ m) = (Ideal.Quotient.mk I).mapMatrix (u.val.toSquareBlockProp fun i => i ≤ m) from rfl, ← RingHom.map_det]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the argument to an intermediate assertion. Rewrite the conclusion using the stated equalities.
 
-Introduce `a ha b hb`. Take `⟨u, rfl⟩` from `ha.1`. Take `⟨w, rfl⟩` from `hb.1`. Rewrite using `[← map_mul, minor_map, minor_map, minor_map, ← map_mul, ← map_sub]`. It suffices to establish `hs : (((u * w).val.toSquareBlockProp fun i => i ≤ m).det - (u.val.toSquareBlockProp fun i => i ≤ m).det * (w.val.toSquareBlockProp fun i => i ≤ m).det) ∈ I from hs`.
-
-Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_sub, map_mul, RingHom.map_det, RingHom.map_det, RingHom.map_det, sub_eq_zero, ← det_mul]`. Use `congr 1`. Rewrite using `[Units.val_mul]`. Use `show ((Ideal.Quotient.mk I).mapMatrix (u.val * w.val)).toSquareBlockProp (fun i => i ≤ m) = _`. Rewrite using `[map_mul, toSquareBlockProp_mul _ _ _ (hzero u ha)]`.
-
-Both sides reduce to the same expression.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.PsType.minor_mul_mod : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n : ℕ) (ψ : Fin n → kˣ →* ℂˣ), Ordered ψ → ∀ m : Fin n, ¬ Triv (ψ m / nxt ψ m) 1 → (∀ a ∈ grp ψ, valuation k (minor a m) = 1) ∧ ∀ a ∈ grp ψ, ∀ b ∈ grp ψ, Triv (ψ m / nxt ψ m) (minor (a * b) m - minor a m * minor b m) := by
   intro k _ _ _ _ n ψ hψ m hm

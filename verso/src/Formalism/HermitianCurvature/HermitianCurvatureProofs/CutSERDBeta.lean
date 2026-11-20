@@ -9,11 +9,11 @@ namespace Formalism.FourierDecayAlt.P.CutSE
 open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt.Q Formalism.FourierDecayAlt.Wd Formalism.FourierDecayAlt.P5
 
 /- English proof (translation)
-Introduce `k r Wp Wq _ _ _ _ _ _ D μ hμ`. Take `⟨C1, hC1, hpair⟩` from `Formalism.FourierDecayAlt.P.JCx2.rb_pairAt D μ hμ`. Use `⟨(C1 : ℂ), by exact_mod_cast hC1.ne', fun F H Φ Ψ hF hH hΦ hΨ c => ?_⟩` and prove the remaining obligations. Establish `h` using `Formalism.FourierDecayAlt.P.JCx2.rb_main D μ C1 hpair (n := 0) (fun _ => F) (fun _ => H) (fun _ => Φ) (fun _ => Ψ) (fun _ => hF) (fun _ => hH) (fun _ => hΦ) (fun _ => hΨ)`. Establish `hsum : ∑ _a : Wd.Ix (Fin 0), B.beta D F H = B.beta D F H` using `by simp`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[hsum]`. Rewrite using `[← h]`. Unfold `LocFacts₂ P5.form`. Use `integral_congr_ae (Filter.Eventually.of_forall fun c' => ?_)` and prove the remaining obligations. Establish `hg : glue (0 : Fin (r + 1)) c c' = glue 0 0 c'`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `l`. Simplify using `only [glue]`. Establish `h0 : ((0 : Fin (r + 1)) : ℕ) ≤ (l : ℕ)` using `Nat.zero_le _`. Rewrite using `[dif_pos h0, dif_pos h0]`. Simplify using `only [hg, Finset.univ_unique, Finset.sum_singleton]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem radial_beta_identity : RDBeta := by
   intro k r Wp Wq _ _ _ _ _ _ D μ hμ

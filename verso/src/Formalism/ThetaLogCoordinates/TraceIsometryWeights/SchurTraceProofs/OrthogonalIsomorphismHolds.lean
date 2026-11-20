@@ -22,7 +22,7 @@ noncomputable def perpV (h : MvPolynomial σ ℚ_[p]) : Submodule ℚ_[p] (MvPol
     rw [fock_smul_left', hx, mul_zero]
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_perpV (h x : MvPolynomial σ ℚ_[p]) : x ∈ perpV h ↔ fock p x h = 0 := Iff.rfl
 
@@ -37,7 +37,7 @@ noncomputable def perpS (A : Submodule ℚ_[p] (MvPolynomial σ ℚ_[p])) : Subm
     rw [fock_smul_right', hy x hx, mul_zero]
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_perpS (A : Submodule ℚ_[p] (MvPolynomial σ ℚ_[p])) (y : MvPolynomial σ ℚ_[p]) :
     y ∈ perpS A ↔ ∀ x ∈ A, fock p x y = 0 := Iff.rfl
@@ -47,11 +47,9 @@ end perp
 variable {p : ℕ} [Fact p.Prime] {N r n : ℕ}
 
 /- English proof (translation)
-Proceed by induction on `cs with`. Consider the case `nil`. Simplify using `only [List.map_nil, List.prod_nil, one_smul]`. Rewrite using `[show G.cprod [] v = v from rfl, sub_self]`. Conclude with `U.zero_mem`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `cons c cs ih`. Establish `key : G.cprod (c :: cs) v - (List.map (fun c : ℤ => ((c0 - c : ℤ) : K)) (c :: cs)).prod • v = (List.map (fun c : ℤ => ((c0 - c : ℤ) : K)) cs).prod • (G.Cas v - ((c0 : ℤ) : K) • v) + (G.Cas (G.cprod cs v - (List.map (fun c : ℤ => ((c0 - c : ℤ) : K)) cs).prod • v) - ((c : ℤ) : K) • …`. Rewrite using `[G.cprod_cons, List.map_cons, List.prod_cons, map_sub, map_smul]`. Use `push_cast`. Use `module`.
-
-Rewrite using `[key]`. Conclude with `U.add_mem (U.smul_mem _ hv) (U.sub_mem (G.Cas_mem hU ih) (U.smul_mem _ ih))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem cprod_sub_prod_smul_mem_of_cas_sub_smul_mem {K V : Type} [Field K] [CharZero K] [AddCommGroup V] [Module K V] {n : ℕ}
     (G : GlW K V n) {U : Submodule K V} (hU : G.Stable U) {v : V} {c0 : ℤ}
@@ -74,33 +72,31 @@ private theorem cprod_sub_prod_smul_mem_of_cas_sub_smul_mem {K V : Type} [Field 
     exact U.add_mem (U.smul_mem _ hv) (U.sub_mem (G.Cas_mem hU ih) (U.smul_mem _ ih))
 
 /- English proof (translation)
-Use `set S := ⨆ i : {h : V // h ∈ W ∧ h ≠ 0 ∧ ∃ ν, G.IsHW ν h}, G.gS {i.1} with hS`. Establish `hSst : G.Stable S` using `CountingSumsFrames.GlX.iSup_stable G (fun i => G.gS_stable _)`. Assume the negation of the conclusion as `hWS`. Take `⟨v, hvW, hvS, μ, hvμ, hraise⟩` from `G.exists_hwmod (G.graded_of hW) (G.raising_of hW) hF hWS`. Establish `hdomμ : DomW μ` using `G.dom_of_hwmod hSst hW hF hvW hvS hvμ hraise`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨c0, hc0⟩ : ∃ c0, c0 = GlW.casI μ` from `⟨_, rfl⟩`. Establish `hCas : G.Cas v - ((c0 : ℤ) : K) • v ∈ S`. Rewrite using `[hc0]`. Conclude with `G.Cas_hwmod hSst hvμ hraise`. Establish `hdec : ∀ a b : Fin n, ∃ f : {h : V // h ∈ W ∧ h ≠ 0 ∧ ∃ ν, G.IsHW ν h} →₀ V, (∀ i, f i ∈ G.gS {i.1}) ∧ (a < b → (f.sum fun _ x => x) = G.E a b v)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Introduce `a b`. Distinguish the cases in `hab : a < b`. Take `⟨f, hf1, hf2⟩` from `(Submodule.mem_iSup_iff_exists_finsupp _ _).mp (hraise a b hab)`. Conclude with `⟨f, hf1, fun _ => hf2⟩`. Conclude with `⟨0, fun i => by simp, fun h => absurd h hab⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `choose f hf1 hf2 using hdec`. Take `⟨cs, hcs⟩ : ∃ cs : List ℤ, cs = ((Finset.univ.biUnion fun a => Finset.univ.biUnion fun b => (f a b).support.image fun i => GlW.casI i.2.2.2.choose).filter (fun c => c ≠ c0)).toList` from `⟨_, rfl⟩`. Establish `hcs_ne : ∀ c ∈ cs, c ≠ c0`. Introduce `c hc`. Rewrite `hc` using `[hcs, Finset.mem_toList, Finset.mem_filter]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hc.2`. Establish `hcs_mem : ∀ a b i, i ∈ (f a b).support → GlW.casI i.2.2.2.choose ≠ c0 → GlW.casI i.2.2.2.choose ∈ cs`. Introduce `a b i hi hne`. Rewrite using `[hcs, Finset.mem_toList, Finset.mem_filter]`. Use `⟨?_, hne⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Finset.mem_biUnion, Finset.mem_univ, true_and, Finset.mem_image]`. Conclude with `⟨a, b, i, hi, rfl⟩`. Establish `hP : (List.map (fun c : ℤ => ((c0 - c : ℤ) : K)) cs).prod ≠ 0` using `cprod_ne (K := K) (V := V) c0 cs hcs_ne`. Establish `hmod` using `cprod_sub_prod_smul_mem_of_cas_sub_smul_mem G hSst hCas cs`. Establish `hv2mod : G.comp μ (G.cprod cs v) - (List.map (fun c : ℤ => ((c0 - c : ℤ) : K)) cs).prod • v ∈ S`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `G.graded_of hSst μ _ hmod`. Rewrite `h` using `[map_sub, map_smul, show G.comp μ v = v from hvμ]`. Then use the resulting hypothesis. Establish `hv2W : G.comp μ (G.cprod cs v) ∈ W` using `G.graded_of hW μ _ (G.cprod_mem hW cs hvW)`. Establish `hv2wt : G.IsWt μ (G.comp μ (G.cprod cs v))` using `by show G.comp μ (G.comp μ _) = _`. Rewrite using `[G.idem, if_pos rfl]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hv2hw : ∀ a b, a < b → G.E a b (G.comp μ (G.cprod cs v)) = 0`. Introduce `a b hab`. Establish `hsh` using `G.shift a b (μ + dl a b) (G.cprod cs v)`. Rewrite `hsh` using `[add_sub_cancel_right]`. Rewrite using `[← hsh, G.E_cprod, ← hf2 a b hab, Finsupp.sum, map_sum, map_sum]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_eq_zero fun i hi => ?_` and prove the remaining obligations. Establish `hi1` using `hf1 a b i`. Establish `hCasi : G.Cas (f a b i) = ((GlW.casI i.2.2.2.choose : ℤ) : K) • f a b i` using `G.Cas_gS i.2.2.2.choose_spec hi1`. Rewrite using `[cprod_eig G hCasi cs]`. Distinguish the cases in `hc : GlW.casI i.2.2.2.choose = c0`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz : G.comp (μ + dl a b) (f a b i) = 0`. Assume the negation of the conclusion as `hne0`. Establish `hle` using `G.wt_le_of_mem i.2.2.2.choose_spec hi1 hne0`. Establish `hdomν : DomW i.2.2.2.choose` using `G.dom_of_hwmod G.bot_stable hW hF i.2.1 (by simpa using i.2.2.1) i.2.2.2.choose_spec.1 (fun a' b' hab' => by rw [i.2.2.2.choose_spec.2 a' b' hab']; exact Submodule.zero_mem _)`. Establish `hμν : Dle μ i.2.2.2.choose` using `Dle_trans (Dle_raise μ hab) hle`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hneμ : μ ≠ i.2.2.2.choose`. Introduce `heq`. Rewrite `hle` using `[← heq]`. Establish `h2` using `Dle_antisymm hle (Dle_raise μ hab)`. Conclude with `dl_ne_zero (ne_of_lt hab) (by simpa using h2)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hlt` using `cas_lt hdomμ hdomν hμν hneμ`. Rewrite `hlt` using `[hc, ← hc0]`. Conclude with `lt_irrefl _ hlt`. Rewrite using `[map_smul, hz, smul_zero]`. Establish `hmem` using `hcs_mem a b i hi hc`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[List.prod_eq_zero (List.mem_map.mpr ⟨_, hmem, by simp⟩), zero_smul, map_zero]`. Establish `hv2S : G.comp μ (G.cprod cs v) ∈ S`. Distinguish the cases in `h0 : G.comp μ (G.cprod cs v) = 0`. Rewrite using `[h0]`. Conclude with `S.zero_mem`.
-
-Conclude with `Submodule.mem_iSup_of_mem (⟨_, hv2W, h0, μ, hv2wt, hv2hw⟩ : {h : V // h ∈ W ∧ h ≠ 0 ∧ ∃ ν, G.IsHW ν h}) (G.subset_gS _ (Set.mem_singleton _))`. Establish `hPv` using `S.sub_mem hv2S hv2mod`. Rewrite `hPv` using `[sub_sub_cancel]`. Conclude with `hvS ((Submodule.smul_mem_iff _ hP).mp hPv)`.
+A detailed English derivation is pending.
 -/
 private theorem le_iSup_gS_highestWeight_of_stable_of_finW {K V : Type} [Field K] [CharZero K] [AddCommGroup V] [Module K V] {n : ℕ}
     (G : GlW K V n) (W : Submodule K V) (hW : G.Stable W) (hF : G.FinW W) :
@@ -187,11 +183,11 @@ private theorem le_iSup_gS_highestWeight_of_stable_of_finW {K V : Type} [Field K
   exact hvS ((Submodule.smul_mem_iff _ hP).mp hPv)
 
 /- English proof (translation)
-Establish `hW` using `GAe_pol_stable (p := p) LL L2 j (enumC Cs)`. Establish `hF` using `GAe_pol_finW (p := p) LL L2 j (enumC Cs)`. Use `le_trans (le_iSup_gS_highestWeight_of_stable_of_finW (GAe p LL j (enumC Cs)) (Pol p r L2) hW hF) ?_` and prove the remaining obligations. Use `iSup_le fun i => ?_` and prove the remaining obligations. Use `le_iSup_of_le (Function.extend (⇑(enumC Cs)) i.2.2.2.choose 0) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[isoC_eq]`. Establish `hcomp : Function.extend (⇑(enumC Cs)) i.2.2.2.choose 0 ∘ ⇑(enumC Cs) = i.2.2.2.choose`. Use function extensionality and compare the values at `a`. Conclude with `(enumC Cs).injective.extend_apply _ _ a`. Rewrite using `[hcomp]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(GAe p LL j (enumC Cs)).gS_le ?_ ((GAe p LL j (enumC Cs)).gS_stable _)` and prove the remaining obligations. Rewrite using `[Set.singleton_subset_iff]`. Conclude with `(GAe p LL j (enumC Cs)).subset_gS _ i.2.2.2.choose_spec`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pol_le_iSup (LL L2 : Letters N) (j : ℕ) (Cs : Finset (Fin r)) :
     Pol p r L2 ≤ ⨆ la : Fin r → ℤ, IsoC p LL j Cs la := by
@@ -210,9 +206,9 @@ theorem pol_le_iSup (LL L2 : Letters N) (j : ℕ) (Cs : Finset (Fin r)) :
   exact (GAe p LL j (enumC Cs)).subset_gS _ i.2.2.2.choose_spec
 
 /- English proof (translation)
-Introduce `p _ N r LL j Cs`. Rewrite using `[eq_top_iff]`. Introduce `x _`. Rewrite using `[x.as_sum]`. Use `Submodule.sum_mem _ fun m _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `pol_le_iSup LL _ j Cs (monomial_mem_pol LL m _)`.
+A detailed English derivation is pending.
 -/
 theorem span_isomorphism_holds : SpanIso := by
   intro p _ N r LL j Cs
@@ -223,9 +219,9 @@ theorem span_isomorphism_holds : SpanIso := by
   exact pol_le_iSup LL _ j Cs (monomial_mem_pol LL m _)
 
 /- English proof (translation)
-Rewrite `hx`, `hy` using `[GAe_isWt_iff, MvPolynomial.mem_restrictSupport_iff]`. Apply `fock_disjoint` to reduce the goal to its premises. Introduce `m hmx hmy`. Take `⟨a, ha⟩` from `Function.ne_iff.mp hne`. Establish `h1 : wt LL j (e a) m = μ a` using `hx hmx a`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h2 : wt LL j (e a) m = ν a` using `hy hmy a`. Conclude with `ha (h1.symm.trans h2)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem fock_wt_ne (LL : Letters N) (j : ℕ) (e : Fin n ↪o Fin r) {μ ν : Fin n → ℤ} (hne : μ ≠ ν)
     {x y : MvPolynomial (Fin N × Fin r) ℚ_[p]} (hx : (GAe p LL j e).IsWt μ x) (hy : (GAe p LL j e).IsWt ν y) :
@@ -239,9 +235,9 @@ theorem fock_wt_ne (LL : Letters N) (j : ℕ) (e : Fin n ↪o Fin r) {μ ν : Fi
   exact ha (h1.symm.trans h2)
 
 /- English proof (translation)
-Use `le_trans ((GAe p LL j e).gS_le_Lw hh) ?_` and prove the remaining obligations. Use `(GAe p LL j e).Lw_le h ?_ ?_` and prove the remaining obligations. Rewrite using `[mem_perpV]`. Conclude with `fock_wt_ne LL j e hne hh.1 hh'.1`. Introduce `a b hba x _`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mem_perpV]`. Establish `hk : (GAe p LL j e).E b a h' = 0` using `hh'.2 b a hba`. Rewrite `hk`, the goal using `[GAe_E]`. Rewrite using `[fischerAdjointness_holds p N r LL j (e a) (e b) x h', hk, fock_zero_right']`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gS_le_perpV (LL : Letters N) (j : ℕ) (e : Fin n ↪o Fin r) {μ ν : Fin n → ℤ} (hne : μ ≠ ν)
     {h h' : MvPolynomial (Fin N × Fin r) ℚ_[p]} (hh : (GAe p LL j e).IsHW μ h) (hh' : (GAe p LL j e).IsHW ν h') :
@@ -257,13 +253,13 @@ theorem gS_le_perpV (LL : Letters N) (j : ℕ) (e : Fin n ↪o Fin r) {μ ν : F
     rw [fischerAdjointness_holds p N r LL j (e a) (e b) x h', hk, fock_zero_right']
 
 /- English proof (translation)
-Establish `hA : (GAe p LL j e).Stable ((GAe p LL j e).gS {h'})` using `(GAe p LL j e).gS_stable _`. Establish `hst : (GAe p LL j e).Stable (perpS ((GAe p LL j e).gS {h'}))`. Introduce `a b y hy`. Rewrite `hy`, the goal using `[mem_perpS]`. Introduce `x hx`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hmem` using `hA b a x hx`. Rewrite `hmem`, the goal using `[GAe_E]`. Rewrite using `[← fischerAdjointness_holds p N r LL j (e b) (e a) x y]`. Conclude with `hy _ hmem`. Use `le_trans ((GAe p LL j e).gS_le ?_ hst) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `v hv`. Rewrite using `[SetLike.mem_coe, mem_perpS]`. Introduce `y hy`. Establish `hy'` using `gS_le_perpV LL j e (Ne.symm hne) hh' hv hy`. Rewrite `hy'` using `[mem_perpV]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hy'`. Introduce `y hy`. Rewrite `hy` using `[mem_perpS]`. Rewrite using `[mem_perpV, fock_symm']`. Conclude with `hy h' ((GAe p LL j e).subset_gS {h'} (Set.mem_singleton h'))`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gSall_le_perpV (LL : Letters N) (j : ℕ) (e : Fin n ↪o Fin r) {μ ν : Fin n → ℤ} (hne : μ ≠ ν)
     {h' : MvPolynomial (Fin N × Fin r) ℚ_[p]} (hh' : (GAe p LL j e).IsHW ν h') :
@@ -290,9 +286,9 @@ theorem gSall_le_perpV (LL : Letters N) (j : ℕ) (e : Fin n ↪o Fin r) {μ ν 
     exact hy h' ((GAe p LL j e).subset_gS {h'} (Set.mem_singleton h'))
 
 /- English proof (translation)
-Introduce `a b y hy`. Rewrite `hy`, the goal using `[mem_perpS]`. Introduce `x hx`. Establish `hmem` using `hA b a x hx`. Rewrite `hmem`, the goal using `[GAe_E]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[← fischerAdjointness_holds p N r LL j (e b) (e a) x y]`. Conclude with `hy _ hmem`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem perpS_stable (LL : Letters N) (j : ℕ) (e : Fin n ↪o Fin r)
     {A : Submodule ℚ_[p] (MvPolynomial (Fin N × Fin r) ℚ_[p])} (hA : (GAe p LL j e).Stable A) :
@@ -306,13 +302,13 @@ theorem perpS_stable (LL : Letters N) (j : ℕ) (e : Fin n ↪o Fin r)
   exact hy _ hmem
 
 /- English proof (translation)
-Introduce `p _ N r LL j Cs la mu hne x hx y hy`. Rewrite `hx`, `hy` using `[isoC_eq]`. Establish `hne' : la ∘ (enumC Cs) ≠ mu ∘ (enumC Cs)`. Take `⟨c, hc, hlc⟩` from `hne`. Take `⟨a, rfl⟩` from `enumC_surj Cs hc`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce `h`. Conclude with `hlc (congrFun h a)`. Establish `hB : (GAe p LL j (enumC Cs)).Stable ((GAe p LL j (enumC Cs)).gS {v | (GAe p LL j (enumC Cs)).IsHW (mu ∘ enumC Cs) v})` using `(GAe p LL j (enumC Cs)).gS_stable _`. Establish `hle : (GAe p LL j (enumC Cs)).gS {v | (GAe p LL j (enumC Cs)).IsHW (la ∘ enumC Cs) v} ≤ perpS ((GAe p LL j (enumC Cs)).gS {v | (GAe p LL j (enumC Cs)).IsHW (mu ∘ enumC Cs) v})`. Use `(GAe p LL j (enumC Cs)).gS_le ?_ (perpS_stable LL j (enumC Cs) hB)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `v hv`. Rewrite using `[SetLike.mem_coe, mem_perpS]`. Introduce `z hz`. Establish `hz'` using `gSall_le_perpV LL j (enumC Cs) (Ne.symm hne') hv hz`. Rewrite `hz'` using `[mem_perpV]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hxy` using `hle hx`. Rewrite `hxy` using `[mem_perpS]`. Rewrite using `[fock_symm']`. Conclude with `hxy y hy`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem orthogonal_isomorphism_holds : OrthIso := by
   intro p _ N r LL j Cs la mu hne x hx y hy
@@ -339,33 +335,29 @@ theorem orthogonal_isomorphism_holds : OrthIso := by
   exact hxy y hy
 
 /- English proof (translation)
-Introduce `p _ N r LL j Cs T hT`. Use `set A := ⨆ la ∈ T, IsoC p LL j Cs la with hA`. Use `set B := ⨆ mu, ⨆ (_ : mu ∉ T), IsoC p LL j Cs mu with hB`. Establish `horth : ∀ la mu : Fin r → ℤ, la ∈ T → mu ∉ T → ∀ x ∈ IsoC p LL j Cs la, ∀ y ∈ IsoC p LL j Cs mu, fock p x y = 0`. Introduce `la mu hla hmu x hx y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hne : ∃ c ∈ Cs, la c ≠ mu c`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Conclude with `hmu ((hT la mu hcon).mp hla)`. Conclude with `orthogonal_isomorphism_holds p N r LL j Cs la mu hne x hx y hy`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hAB : A ≤ perpS B`. Use `iSup₂_le fun la hla => ?_` and prove the remaining obligations. Introduce `y hy`. Rewrite using `[mem_perpS]`. Introduce `x hx`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hBle : B ≤ perpS (IsoC p LL j Cs la)`. Use `iSup₂_le fun mu hmu => ?_` and prove the remaining obligations. Introduce `z hz`. Rewrite using `[mem_perpS]`. Introduce `w hw`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `horth la mu hla hmu w hw z hz`. Establish `hx'` using `hBle hx`. Rewrite `hx'` using `[mem_perpS]`. Rewrite using `[fock_symm']`. Conclude with `hx' y hy`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hsup : A ⊔ B = ⊤`. Rewrite using `[eq_top_iff, ← span_isomorphism_holds p N r LL j Cs]`. Use `iSup_le fun la => ?_` and prove the remaining obligations. Distinguish the cases in `hla : la ∈ T`. Conclude with `le_sup_of_le_left (le_iSup₂_of_le la hla le_rfl)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities.
 
-Conclude with `le_sup_of_le_right (le_iSup₂_of_le la hla le_rfl)`. Establish `hAB' : ∀ a ∈ A, ∀ b ∈ B, fock p a b = 0`. Introduce `a ha b hb`. Establish `h1` using `hAB ha`. Rewrite `h1` using `[mem_perpS]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[fock_symm']`. Conclude with `h1 b hb`. Establish `hcompl : IsCompl A B`. Prove the components needed by the constructor for the conclusion. Rewrite using `[Submodule.disjoint_def]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hxA hxB`. Apply `fock_nondeg x` to reduce the goal to its premises. Introduce `G`. Establish `hG : G ∈ A ⊔ B`. Rewrite using `[hsup]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Submodule.mem_top`. Take `⟨g1, hg1, g2, hg2, rfl⟩` from `Submodule.mem_sup.mp hG`. Rewrite using `[fock_add_right', fock_symm', hAB' g1 hg1 x hxB, hAB' x hxA g2 hg2, add_zero]`. Rewrite using `[codisjoint_iff, hsup]`. Establish `hdec : ∀ H, ∃ h1 ∈ A, ∃ h2 ∈ B, H = h1 + h2 ∧ (A.subtype ∘ₗ A.projectionOnto B hcompl) H = h1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Introduce `H`. Establish `hH : H ∈ A ⊔ B`. Rewrite using `[hsup]`. Conclude with `Submodule.mem_top`. Take `⟨h1, hh1, h2, hh2, rfl⟩` from `Submodule.mem_sup.mp hH`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `e1 : A.projectionOnto B hcompl h1 = ⟨h1, hh1⟩` using `Submodule.linearProjOfIsCompl_apply_left hcompl ⟨h1, hh1⟩`. Establish `e2 : A.projectionOnto B hcompl h2 = 0` using `Submodule.linearProjOfIsCompl_apply_right hcompl ⟨h2, hh2⟩`. Use `⟨h1, hh1, h2, hh2, rfl, ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.comp_apply, map_add, e1, e2, add_zero]`. Both sides reduce to the same expression.
-
-Use `⟨A.subtype ∘ₗ A.projectionOnto B hcompl, ⟨?_, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Simplify using `only [LinearMap.comp_apply, Submodule.coe_subtype, Submodule.linearProjOfIsCompl_apply_left]`. Rewrite using `[LinearMap.range_comp, Submodule.linearProjOfIsCompl_range, Submodule.map_subtype_top]`. Rewrite using `[LinearMap.ker_comp, Submodule.ker_subtype, Submodule.comap_bot, Submodule.linearProjOfIsCompl_ker]`.
-
-Introduce `F G`. Take `⟨f1, hf1, f2, hf2, rfl, hPF⟩` from `hdec F`. Take `⟨g1, hg1, g2, hg2, rfl, hPG⟩` from `hdec G`. Rewrite using `[hPF, hPG, fock_add_right', fock_add_left', hAB' f1 hf1 g2 hg2, fock_symm' f2 g1, hAB' g1 hg1 f2 hf2]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem projection_lattice_holds : ProjP := by
   intro p _ N r LL j Cs T hT

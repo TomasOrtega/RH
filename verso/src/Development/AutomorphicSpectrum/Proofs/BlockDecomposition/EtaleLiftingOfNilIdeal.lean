@@ -7,24 +7,24 @@ open CategoryTheory AlgebraicGeometry Polynomial DividedPowers GlobalTheory.LogC
 namespace GlobalTheory.CompanionTheory.EtNil
 
 /- English proof (translation)
-The claim follows from `(Ideal.FG.isNilpotent_iff_le_nilradical hfg).2 fun x hx => mem_nilradical.2 (hJ x (hle hx))`.
+A detailed English derivation is pending.
 -/
 theorem isNilpotent_of_fg_of_le {B : Type} [CommRing B] {J J' : Ideal B}
     (hJ : ∀ x ∈ J, IsNilpotent x) (hfg : J'.FG) (hle : J' ≤ J) : IsNilpotent J' :=
   (Ideal.FG.isNilpotent_iff_le_nilradical hfg).2 fun x hx => mem_nilradical.2 (hJ x (hle hx))
 
 /- English proof (translation)
-Take `⟨n, π, hπ, hK⟩` from `Algebra.FinitePresentation.out (R := P) (A := E)`. Use `choose b hb using fun i => Ideal.Quotient.mk_surjective (g (π (MvPolynomial.X i)))`. Set `φ : MvPolynomial (Fin n) P →ₐ[P] B` to `MvPolynomial.aeval b`. Establish `hφ : (Ideal.Quotient.mkₐ P J).comp φ = g.comp π` using `MvPolynomial.algHom_ext fun i => by simp [φ, hb]`. Establish `hφ' : ∀ p, Ideal.Quotient.mk J (φ p) = g (π p)` using `fun p => DFunLike.congr_fun hφ p`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `J' : Ideal B` to `(RingHom.ker π.toRingHom).map φ.toRingHom`. Establish `hle : J' ≤ J`. Use `Ideal.map_le_iff_le_comap.2 fun p hp => ?_` and prove the remaining obligations. Establish `hp0 : π p = 0` using `hp`. Use `Ideal.mem_comap.2 (Ideal.Quotient.eq_zero_iff_mem.1 ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk J (φ p) = 0`. Rewrite using `[hφ', hp0, map_zero]`. Establish `hnil : IsNilpotent J'` using `isNilpotent_of_fg_of_le hJ (hK.map _) hle`. Establish `hkill : ∀ a ∈ RingHom.ker π, ((Ideal.Quotient.mkₐ P J').comp φ) a = 0` using `fun a ha => Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mem_map_of_mem φ.toRingHom ha)`. Set `e` to `Ideal.quotientKerAlgEquivOfSurjective hπ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `g' : E →ₐ[P] B ⧸ J'` to `(Ideal.Quotient.liftₐ (RingHom.ker π) ((Ideal.Quotient.mkₐ P J').comp φ) hkill).comp e.symm.toAlgHom`. Establish `hg' : ∀ p, g' (π p) = Ideal.Quotient.mk J' (φ p)` using `fun p => by`. Establish `: e.symm (π p) = Ideal.Quotient.mk (RingHom.ker π) p`. Rewrite using `[AlgEquiv.symm_apply_eq]`. Conclude with `(Ideal.quotientKerAlgEquivOfSurjective_mk hπ p).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `Ideal.Quotient.liftₐ (RingHom.ker π) ((Ideal.Quotient.mkₐ P J').comp φ) hkill (e.symm (π p)) = _`. Rewrite using `[this]`. Both sides reduce to the same expression. Use `⟨Algebra.FormallySmooth.lift J' hnil g', AlgHom.ext fun x => ?_⟩` and prove the remaining obligations. Take `⟨p, rfl⟩` from `hπ x`.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `Algebra.FormallySmooth.mk_lift J' hnil g' (π p)`. Rewrite `h1` using `[hg', Ideal.Quotient.eq]`. Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk J (Algebra.FormallySmooth.lift J' hnil g' (π p)) = g (π p)`. Rewrite using `[← hφ', Ideal.Quotient.eq]`. Conclude with `hle h1`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_lift {P E B : Type} [CommRing P] [CommRing E] [CommRing B] [Algebra P E]
     [Algebra P B] [Algebra.FormallySmooth P E] [Algebra.FinitePresentation P E] (J : Ideal B)
@@ -67,11 +67,11 @@ theorem exists_lift {P E B : Type} [CommRing P] [CommRing E] [CommRing B] [Algeb
   exact hle h1
 
 /- English proof (translation)
-Take `⟨n, π, hπ, -⟩` from `Algebra.FinitePresentation.out (R := P) (A := E)`. Set `d : Fin n → B` to `fun i => h₁ (π (MvPolynomial.X i)) - h₂ (π (MvPolynomial.X i))`. Set `J' : Ideal B` to `Ideal.span (Set.range d)`. Establish `hfg : J'.FG` using `Submodule.fg_span (Set.finite_range d)`. Establish `hle : J' ≤ J`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Ideal.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `Ideal.Quotient.eq.1 (H _)`. Establish `hnil : IsNilpotent J'` using `isNilpotent_of_fg_of_le hJ hfg hle`. Establish `hc : (Ideal.Quotient.mkₐ P J').comp (h₁.comp π) = (Ideal.Quotient.mkₐ P J').comp (h₂.comp π)` using `MvPolynomial.algHom_ext fun i => Ideal.Quotient.eq.2 (Ideal.subset_span ⟨i, rfl⟩)`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Algebra.FormallyUnramified.ext J' hnil fun x => ?_` and prove the remaining obligations. Take `⟨p, rfl⟩` from `hπ x`. Conclude with `DFunLike.congr_fun hc p`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem lift_unique {P E B : Type} [CommRing P] [CommRing E] [CommRing B] [Algebra P E]
     [Algebra P B] [Algebra.FormallyUnramified P E] [Algebra.FinitePresentation P E] (J : Ideal B)
@@ -97,11 +97,11 @@ theorem lift_unique {P E B : Type} [CommRing P] [CommRing E] [CommRing B] [Algeb
 end GlobalTheory.CompanionTheory.EtNil
 
 /- English proof (translation)
-Introduce `B _ J hJ P E _ _ ψ hψ f g hg`. Use `letI := ψ.toAlgebra`. Use `letI := f.toAlgebra`. Use `haveI : Algebra.Etale P E := hψ`. Set `gA : E →ₐ[P] B ⧸ J` to `{ g with commutes' := fun p => DFunLike.congr_fun hg p }`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Take `⟨h, hh⟩` from `GlobalTheory.CompanionTheory.EtNil.exists_lift J hJ gA`. Establish `hh' : ∀ x, Ideal.Quotient.mk J (h x) = g x` using `fun x => DFunLike.congr_fun hh x`. Use `⟨h.toRingHom, ⟨RingHom.ext fun p => h.commutes p, RingHom.ext hh'⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `h' ⟨h1, h2⟩`. Set `hA : E →ₐ[P] B` to `{ h' with commutes' := fun p => DFunLike.congr_fun h1 p }`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `: hA = h` using `GlobalTheory.CompanionTheory.EtNil.lift_unique J hJ hA h fun x => by`. Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk J (h' x) = _`. Rewrite using `[hh']`. Conclude with `DFunLike.congr_fun h2 x`. Conclude with `RingHom.ext fun x => DFunLike.congr_fun this x`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CompanionTheory.EtNil.etLift_of_nil : ∀ {B : Type} [CommRing B] (J : Ideal B),
     (∀ x ∈ J, IsNilpotent x) → EtLift J := by

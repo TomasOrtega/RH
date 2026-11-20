@@ -51,7 +51,7 @@ variable {D : Formalism.BasicNotions.D7} {M : ∀ p : PlF D, Loc.Model (D.s.atP 
   {what₂ : Finset (Submodule (𝓞 D.host.E) (VS D).V)}
 
 /- English proof (translation)
-Establish `hg : ((g : ℕ) : E) = algebraMap ℚ E (g : ℚ)` using `by simp`. Rewrite using `[hg, div_eq_mul_inv, ← map_inv₀, mul_comm, ← Algebra.smul_def, map_neg, LinearMap.map_smul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem trace_neg_div (E : Type) [Field E] [NumberField E] (s : E) (g : ℕ) :
     Algebra.trace ℚ E (-(s / (g : E))) = -(Algebra.trace ℚ E s / (g : ℚ)) := by
@@ -60,11 +60,11 @@ theorem trace_neg_div (E : Type) [Field E] [NumberField E] (s : E) (g : ℕ) :
   ring
 
 /- English proof (translation)
-Introduce `γ w F' L U hrel hgen hN`. Establish `hfun : (fun p => phL M δ (D.mem u).A.T (D.mem u').A.T p w (CntLocal.ZZP (M` using `M) δ u u' p (ZhatL (lf D F0) F') * sgnP p)) = fun p => (D.s.atP p).psiE ((D.s.atP p).ιE (-((PairVal.sgLo L + PairVal.sgUp U) / ((gS D : ℕ) : D.host.E)))) :=`. Use function extensionality and compare the values at `(hL γ w F' L U hrel hgen hN)`. Rewrite using `[hfun]`. Take `⟨hf, hp⟩` from `hP (-((PairVal.sgLo L + PairVal.sgUp U) / ((gS D : ℕ) : D.host.E)))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨hf, ?_⟩` and prove the remaining obligations. Rewrite using `[hp, trace_neg_div, map_add]`. Unfold `PairVal.phasePair PairVal.psiInf`. Rewrite using `[← Complex.exp_neg, ← Complex.exp_neg, ← Complex.exp_add]`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem phaseAtRep_of (hL : PhaseLoc M δ u u' F0 what₂) (hP : PsiProdE D) : PhaseAtRep M δ u u' F0 what₂ := by
   intro γ w F' L U hrel hgen hN
@@ -83,15 +83,15 @@ theorem phaseAtRep_of (hL : PhaseLoc M δ u u' F0 what₂) (hP : PsiProdE D) : P
   ring
 
 /- English proof (translation)
-Introduce `γ w hγ`. Establish `hrel` using `PCount.eligRel_holds γ w hγ`. Establish `hex` using `normRepElig_of hN γ w hγ`. Establish `hz : zT γ = ZhatL (lf D F0) hex.choose.2.1`. Unfold `zT nrep`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[dif_pos hex]`. Establish `hpt : ptT γ = hex.choose.1`. Unfold `ptT nrep`. Rewrite using `[dif_pos hex]`. Establish `hw : hex.choose.1 = w` using `hpt.symm.trans (FCount.ptT_eq hN hrows hγ hrel)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h0 : PairVal.NormRep γ w hex.choose.2.1 hex.choose.2.2.1 hex.choose.2.2.2`. Use `hex.choose_spec` as an intermediate fact. Rewrite `this` using `[hw]`. Conclude with `this`. Take `⟨hf, hp⟩` from `hR γ w _ _ _ hrel hγ.1.1 h0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hyT : ∀ p, yT M δ u u' F0 what₂ γ p = CntLocal.ZZP (M` using `M) δ u u' p (ZhatL (lf D F0) hex.choose.2.1) * sgnP p := fun p => by`. Unfold `yT`. Rewrite using `[hz]`. Simplify using `only [hyT]`. Use `⟨hf, ?_⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hp]`. Establish `hex1 : ∃ x : LFlag (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E) × PairVal.MatR D × PairVal.MatR D, PairVal.NormRep γ w x.1 x.2.1 x.2.2` using `⟨(hex.choose.2.1, hex.choose.2.2.1, hex.choose.2.2.2), h0⟩`. Unfold `PairVal.phaseAt`. Rewrite using `[dif_pos hex1]`. Conclude with `hW γ w hrel _ _ _ _ _ _ hex1.choose_spec h0`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem phaseProd_of (hrows : IsRowReps D F0 what₂) (hN : PairVal.NormRepExists D u u' F0 what₂)
     (hW : PairVal.PhaseWellDef D u u' F0 what₂) (hR : PhaseAtRep M δ u u' F0 what₂) : PhaseProd M δ u u' F0 what₂ := by

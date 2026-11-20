@@ -19,7 +19,7 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.GL2Factorization.OrthParam
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_fin_two_of]`. Use `Real.sin_sq_add_cos_sq θ` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem rot_det_ne (θ : ℝ) : !![Real.cos θ, Real.sin θ; -Real.sin θ, Real.cos θ].det ≠ 0 := by
   rw [Matrix.det_fin_two_of]
@@ -27,7 +27,7 @@ theorem rot_det_ne (θ : ℝ) : !![Real.cos θ, Real.sin θ; -Real.sin θ, Real.
   nlinarith
 
 /- English proof (translation)
-Simplify using `only [GL2LocalData.rotR, dif_pos (rot_det_ne θ)]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem rot_val (θ : ℝ) :
     (GL2LocalData.rotR θ : Matrix (Fin 2) (Fin 2) ℝ) = !![Real.cos θ, Real.sin θ; -Real.sin θ, Real.cos θ] := by
@@ -35,7 +35,7 @@ theorem rot_val (θ : ℝ) :
   rfl
 
 /- English proof (translation)
-Apply `Units.inv_eq_of_mul_eq_one_right` to reduce the goal to its premises. Rewrite using `[rot_val]`. Establish `h` using `Real.sin_sq_add_cos_sq θ`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two] <;> nlinarith`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem rot_inv_val (θ : ℝ) :
     (((GL2LocalData.rotR θ)⁻¹ : GL (Fin 2) ℝ) : Matrix (Fin 2) (Fin 2) ℝ) =
@@ -47,9 +47,9 @@ theorem rot_inv_val (θ : ℝ) :
   fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two] <;> nlinarith
 
 /- English proof (translation)
-Use `Units.continuous_iff.2 ⟨?_, ?_⟩` and prove the remaining obligations. Establish `: (Units.val ∘ GL2LocalData.rotR : ℝ → Matrix (Fin 2) (Fin 2) ℝ) = fun θ => !![Real.cos θ, Real.sin θ; -Real.sin θ, Real.cos θ]` using `funext rot_val`. Rewrite using `[this]`. Use `continuous_matrix fun i j => ?_` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp <;> fun_prop`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hc : Continuous fun θ : ℝ => (!![Real.cos θ, -Real.sin θ; Real.sin θ, Real.cos θ] : Matrix (Fin 2) (Fin 2) ℝ)`. Use `continuous_matrix fun i j => ?_` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp <;> fun_prop`. Conclude with `hc.congr fun θ => (rot_inv_val θ).symm`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem continuous_rot : Continuous GL2LocalData.rotR := by
   refine Units.continuous_iff.2 ⟨?_, ?_⟩
@@ -65,7 +65,7 @@ theorem continuous_rot : Continuous GL2LocalData.rotR := by
     exact hc.congr fun θ => (rot_inv_val θ).symm
 
 /- English proof (translation)
-Rewrite using `[rot_val]`. Establish `h` using `Real.sin_sq_add_cos_sq θ`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Apply the tactic sequence `simp [Matrix.mul_apply, Fin.sum_univ_two, Matrix.transpose_apply] <;> nlinarith`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem rot_orth (θ : ℝ) : (GL2LocalData.rotR θ).val * (GL2LocalData.rotR θ).valᵀ = 1 := by
   rw [rot_val]
@@ -75,11 +75,11 @@ theorem rot_orth (θ : ℝ) : (GL2LocalData.rotR θ).val * (GL2LocalData.rotR θ
     simp [Matrix.mul_apply, Fin.sum_univ_two, Matrix.transpose_apply] <;> nlinarith
 
 /- English proof (translation)
-Introduce `ε`. Use `⟨?_, fun θ => ?_⟩` and prove the remaining obligations. Unfold `GL2LocalData.kR`. Conclude with `continuous_rot.mul continuous_const`. Establish `hr` using `rot_orth θ`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Establish an intermediate fact. Split into cases according to the possible forms of the given data.
 
-Consider the cases of `ε`. Simplify `hr` using `[GL2LocalData.kR]`. Establish `hd : ((dg2 (1 : ℝˣ) (-1) : GL (Fin 2) ℝ) : Matrix (Fin 2) (Fin 2) ℝ) * ((dg2 (1 : ℝˣ) (-1) : GL (Fin 2) ℝ) : Matrix (Fin 2) (Fin 2) ℝ)ᵀ = 1`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Simplify using `[dg2, Matrix.mul_apply, Fin.sum_univ_two, Matrix.transpose_apply]`. Simplify using `only [GL2LocalData.kR, if_true, Units.val_mul, Matrix.transpose_mul]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = 1 := by rw [hd, Matrix.mul_one, hr]`.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem kR_continuous_orthogonal :
     ∀ ε : Bool, Continuous (fun θ : ℝ => GL2LocalData.kR θ ε) ∧

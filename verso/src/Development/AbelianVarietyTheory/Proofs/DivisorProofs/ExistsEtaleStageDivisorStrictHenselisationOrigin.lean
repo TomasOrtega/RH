@@ -9,29 +9,23 @@ noncomputable section
 namespace GlobalTheory.KeyOriginCut
 
 /- English proof (translation)
-Introduce `T O _ _ _ _ _ _ _ _ hAIC P _ φ hφ hSH hPeq b c s hs hbc`. Set `I : Ideal (MvPolynomial (Fin 2) (Polynomial T))` to `Ideal.span {MvPolynomial.X 0 * MvPolynomial.X 1 - MvPolynomial.C (Polynomial.C s)}`. Use `haveI : Algebra.FinitePresentation (Polynomial T) (MvPolynomial (Fin 2) (Polynomial T) ⧸ I) := Algebra.FinitePresentation.quotient (Submodule.fg_span (Set.finite_singleton _))`. Establish `hI : ∀ a ∈ I, MvPolynomial.aeval (R` using `Polynomial T) ![b, c] a = 0 := by`. Introduce `a ha`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hle : I ≤ RingHom.ker (MvPolynomial.aeval (R` using `Polynomial T) ![b, c]) := by`. Rewrite using `[Ideal.span_le, Set.singleton_subset_iff, SetLike.mem_coe, RingHom.mem_ker]`. Simplify using `only [map_sub, map_mul, MvPolynomial.aeval_X, MvPolynomial.aeval_C]`. Use `show b * c - _ = 0`. Rewrite using `[hbc, IsScalarTower.algebraMap_apply T (Polynomial T) O, Polynomial.algebraMap_eq, sub_self]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Conclude with `hle ha`. Set `g : (MvPolynomial (Fin 2) (Polynomial T) ⧸ I) →ₐ[Polynomial T] O` to `Ideal.Quotient.liftₐ I (MvPolynomial.aeval ![b, c]) hI`. Take `⟨W, _, _, _, u, v, huv⟩` from `GlobalTheory.IndEtFactorLoc.exists_etale_factor_of_indEt_atPrime (Polynomial T) O P φ hφ hSH.2.2.2 _ g`. Use `letI : Algebra T W := ((algebraMap (Polynomial T) W).comp (algebraMap T (Polynomial T))).toAlgebra`. Use `haveI : IsScalarTower T (Polynomial T) W := IsScalarTower.of_algebraMap_eq (fun _ => rfl)`.
+Equip the data with the indicated structure. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `set Q : Ideal W := (maximalIdeal O).comap v.toRingHom with hQdef`. Use `haveI : Q.IsPrime := Ideal.comap_isPrime _ _`. Establish `hloc : (maximalIdeal O).comap φ = maximalIdeal (Localization.AtPrime P)` using `by haveI := hSH.2.2.1`. Apply `le_antisymm` to reduce the goal to its premises. Conclude with `IsLocalRing.le_maximalIdeal (Ideal.comap_ne_top _ (Ideal.IsMaximal.ne_top inferInstance))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `x hx`. Rewrite using `[Ideal.mem_comap, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Introduce `hu`. Conclude with `(IsLocalRing.mem_maximalIdeal _).1 hx (isUnit_of_map_unit φ x hu)`. Establish `hQP : Q.comap (algebraMap (Polynomial T) W) = P`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression.
 
-Rewrite using `[hQdef, Ideal.comap_comap]`. Establish `h1 : v.toRingHom.comp (algebraMap (Polynomial T) W) = φ.comp (algebraMap (Polynomial T) _)`. Rewrite using `[hφ]`. Conclude with `v.comp_algebraMap`. Rewrite using `[h1, ← Ideal.comap_comap, hloc]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Localization.AtPrime.comap_maximalIdeal (R := Polynomial T) (I := P)`. Establish `hunit : ∀ y : Q.primeCompl, IsUnit (v.toRingHom (y : W))`. Introduce `y`. Assume the negation of the conclusion as `hy`. Conclude with `y.2 (show (y : W) ∈ Q from (IsLocalRing.mem_maximalIdeal _).2 hy)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Set `j : Localization.AtPrime Q →+* O` to `IsLocalization.lift (M := Q.primeCompl) hunit`. Establish `hjE : j.comp (algebraMap W (Localization.AtPrime Q)) = v.toRingHom` using `IsLocalization.lift_comp hunit`. Establish `hjR : j.comp (algebraMap (Polynomial T) (Localization.AtPrime Q)) = algebraMap (Polynomial T) O`. Rewrite using `[IsScalarTower.algebraMap_eq (Polynomial T) W (Localization.AtPrime Q), ← RingHom.comp_assoc, hjE]`. Conclude with `v.comp_algebraMap`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Establish `hjW : ∀ w : W, j (algebraMap W (Localization.AtPrime Q) w) = v w` using `fun w => congrArg (fun f => f w) hjE`. Establish `hgX : ∀ i : Fin 2, v (u (Ideal.Quotient.mk I (MvPolynomial.X i))) = ![b, c] i`. Introduce `i`. Rewrite using `[← AlgHom.comp_apply, huv]`. Use `show Ideal.Quotient.liftₐ I _ hI (Ideal.Quotient.mk I _) = _`.
-
-Express the relevant statement in the definitionally equal form `MvPolynomial.aeval ![b, c] (MvPolynomial.X i) = _`. Rewrite using `[MvPolynomial.aeval_X]`. Establish `hprod : Ideal.Quotient.mk I (MvPolynomial.X 0) * Ideal.Quotient.mk I (MvPolynomial.X 1) = algebraMap (Polynomial T) _ (Polynomial.C s)`. Rewrite using `[← map_mul, ← Ideal.Quotient.mk_algebraMap, MvPolynomial.algebraMap_eq]`. Conclude with `Ideal.Quotient.eq.mpr (Ideal.subset_span rfl)`.
-
-Use `⟨W, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, Q, inferInstance, hQP.trans hPeq, j, hjR, algebraMap W _ (u (Ideal.Quotient.mk I (MvPolynomial.X 0))), algebraMap W _ (u (Ideal.Quotient.mk I (MvPolynomial.X 1))), ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_mul, ← map_mul, hprod, AlgHom.commutes, IsScalarTower.algebraMap_apply T W (Localization.AtPrime Q)]`. Both sides reduce to the same expression. Rewrite using `[hjW, hgX]`. Both sides reduce to the same expression.
-
-Rewrite using `[hjW, hgX]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_stage_divisor : ∀ (T O : Type) [CommRing T] [IsDomain T] [IsLocalRing T] [CommRing O] [IsLocalRing O] [Algebra T O]
     [Algebra (Polynomial T) O] [IsScalarTower T (Polynomial T) O], GlobalTheory.LocAcyc.AbsIntClosed T →

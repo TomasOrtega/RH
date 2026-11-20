@@ -6,7 +6,7 @@ open NumberField IsDedekindDomain Matrix GlobalTheory.CuspRep GlobalTheory.PRep 
 namespace GlobalTheory.InfSurj
 
 /- English proof (translation)
-The claim follows from `| [], _, h => absurd h List.not_mem_nil | u :: l, hn, h => by rw [List.nodup_cons] at hn rw [List.map_cons, List.prod_cons] by_cases hu : u = v · subst hu have : (l.map fun w => if w = u then a else 1) = l.map fun _ => 1 := List.map_congr_left fun w hw => if_neg fun (e : w = u) = …`.
+A detailed English derivation is pending.
 -/
 theorem list_prod_single {G ι : Type} [Monoid G] [DecidableEq ι] (v : ι) (a : G) :
     ∀ l : List ι, l.Nodup → v ∈ l → (l.map fun u => if u = v then a else 1).prod = a
@@ -25,17 +25,17 @@ theorem list_prod_single {G ι : Type} [Monoid G] [DecidableEq ι] (v : ι) (a :
 end GlobalTheory.InfSurj
 
 /- English proof (translation)
-Introduce `E _ _ _ n g hg`. Establish `he` using `fun v : InfinitePlace E => GlobalTheory.EmbUnitary.exists_equiv_unitaryGroup E n v.embedding`. Use `choose e he using he`. Set `y : InfinitePlace E → UA E n` to `fun v => ((e v).symm ⟨(g v : Matrix (Fin n) (Fin n) ℂ), hg v⟩ : embU n v.embedding)`. Establish `hy : ∀ v, y v ∈ embU n v.embedding` using `fun v => ((e v).symm _).2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hyv : ∀ v, cEmb v.embedding (y v) = g v` using `fun v => by`. Rewrite using `[← he v, ContinuousMulEquiv.apply_symm_apply]`. Use extensionality with `i j`. Both sides reduce to the same expression. Establish `hyu : ∀ u v, u ≠ v → cEmb v.embedding (y u) = 1` using `fun u v huv => by`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `(Subgroup.mem_inf.1 (hy u)).2`. Rewrite `h` using `[Subgroup.mem_iInf]`. Establish `h2` using `h v.embedding`. Rewrite `h2` using `[Subgroup.mem_iInf]`. Conclude with `h2 (by rw [InfinitePlace.mk_embedding, InfinitePlace.mk_embedding]; exact Ne.symm huv)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(Finset.univ.toList.map y).prod, ?_, ?_⟩` and prove the remaining obligations. Use `(infU E n).list_prod_mem fun z hz => ?_` and prove the remaining obligations. Take `⟨u, -, rfl⟩` from `List.mem_map.1 hz`. Conclude with `(Subgroup.mem_inf.1 (hy u)).1`. Use function extensionality and compare the values at `v`.
+Extract witnesses or component facts from the available result. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `cEmb v.embedding _ = g v`. Rewrite using `[map_list_prod, List.map_map]`. Establish `: (Finset.univ.toList.map (cEmb v.embedding ∘ y)) = Finset.univ.toList.map fun u => if u = v then g v else 1` using `List.map_congr_left fun u _ => by`. Distinguish the cases in `h : u = v`. Substitute `h` using the available equality.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[hyv]`. Simplify using `[h, hyu u v h]`. Rewrite using `[this]`. Conclude with `GlobalTheory.InfSurj.list_prod_single v (g v) _ (Finset.nodup_toList _) (Finset.mem_toList.2 (Finset.mem_univ v))`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.InfSurj.exists_infU_cAll_eq : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) (g : InfinitePlace E → GL (Fin n) ℂ), (∀ v, ((g v : GL (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ) ∈ Matrix.unitaryGroup (Fin n) ℂ) → ∃ x ∈ infU E n, cAll x = g := by
   intro E _ _ _ n g hg

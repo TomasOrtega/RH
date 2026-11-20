@@ -16,7 +16,7 @@ open GlobalTheory.FlatModel
 namespace GlobalTheory.CoeffUnit
 
 /- English proof (translation)
-Establish `h1 : IsIntegral A x` using `hx.tower_top`. Take `⟨y, hy⟩` from `(IsIntegrallyClosed.isIntegral_iff (R := A) (K := Ω)).mp h1`. Rewrite using `[← hy]`. Conclude with `y.2`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_of_isIntegral_int {Ω : Type} [Field Ω] (A : ValuationSubring Ω) {x : Ω} (hx : IsIntegral ℤ x) : x ∈ A := by
   have h1 : IsIntegral A x := hx.tower_top
@@ -25,35 +25,29 @@ theorem mem_of_isIntegral_int {Ω : Type} [Field Ω] (A : ValuationSubring Ω) {
   exact y.2
 
 /- English proof (translation)
-Introduce `E _ _ _ H l' c' W p hp hpW A _ β hpA a ha`. Use `haveI := c'.fin`. Use `set x : c'.F := (a : c'.F) with hxdef`. Establish `hx0 : x ≠ 0`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Apply `ha` to reduce the goal to its premises. Conclude with `Subtype.ext h`. Establish `halg : IsAlgebraic ℤ (x⁻¹ : c'.F)`. Establish `h1 : IsAlgebraic ℚ (x⁻¹ : c'.F)` using `Algebra.IsAlgebraic.isAlgebraic _`. Conclude with `(IsFractionRing.isAlgebraic_iff ℤ ℚ c'.F).mpr h1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨d, hd0, hdint⟩` from `halg.exists_integral_multiple`. Choose the witnesses or unpack the hypotheses as in `⟨n, hn0, hnint⟩ : ∃ n : ℕ, n ≠ 0 ∧ IsIntegral ℤ ((n : c'.F) * x⁻¹) := by`. Take `⟨n, rfl | rfl⟩` from `Int.eq_nat_or_neg d`. Use `⟨n, by exact_mod_cast hd0, ?_⟩` and prove the remaining obligations. Rewrite `hdint` using `[zsmul_eq_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Conclude with `hdint` after adjusting the coercions. Use `⟨n, by simpa using hd0, ?_⟩` and prove the remaining obligations. Use `hdint.neg` as an intermediate fact. Rewrite `this` using `[zsmul_eq_mul]`. Use `this using 1` and compare the differences between its conclusion and the goal.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Take `⟨k, m, hpm, hnm⟩` from `Nat.exists_eq_pow_mul_and_not_dvd hn0 p hp.ne_one`. Establish `hpmax : ((p : W)) ∈ IsLocalRing.maximalIdeal W`. Take `⟨h1, h2⟩` from `ValuationSubring.mem_nonunits_iff_exists_mem_maximalIdeal.mp hpW`.
+Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Use `h2 using 1` and compare the differences between its conclusion and the goal. Use `ext`. Simplify using the standard rewrite rules. Establish `hmunit : IsUnit ((m : W))`. Assume the negation of the conclusion as `hm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hmmax : ((m : W)) ∈ IsLocalRing.maximalIdeal W` using `hm`. Establish `hcop : Nat.Coprime p m` using `(Nat.Prime.coprime_iff_not_dvd hp).mpr hpm`. Establish `hbez : ((1 : ℤ)) = (p : ℤ) * Nat.gcdA p m + (m : ℤ) * Nat.gcdB p m`. Use `Nat.gcd_eq_gcd_ab p m` as an intermediate fact. Rewrite `this` using `[hcop]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this` after adjusting the coercions. Establish `h1 : ((1 : W)) ∈ IsLocalRing.maximalIdeal W`. Establish `: ((1 : W)) = (p : W) * (Nat.gcdA p m : W) + (m : W) * (Nat.gcdB p m : W)`. Use `congrArg (fun t : ℤ => (t : W)) hbez` as an intermediate fact. Move the coercions through the operations in `at this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this`. Rewrite using `[this]`. Conclude with `Ideal.add_mem _ (Ideal.mul_mem_right _ _ hpmax) (Ideal.mul_mem_right _ _ hmmax)`. Conclude with `(IsLocalRing.maximalIdeal.isMaximal W).ne_top ((Ideal.eq_top_iff_one _).mpr h1)`. Take `⟨u, hu⟩` from `hmunit`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnW : (((n : c'.F) * x⁻¹ : c'.F) : ℂ) ∈ W`. Apply `mem_of_isIntegral_int W` to reduce the goal to its premises. Conclude with `hnint.map (c'.F.val.restrictScalars ℤ)`. Establish `hum : (((u⁻¹ : Wˣ) : W) : ℂ) * (m : ℂ) = 1`. Establish `h1 : ((u⁻¹ : Wˣ) : W) * (m : W) = 1` using `by rw [← hu]; exact u.inv_mul`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 
-Establish `h2` using `congrArg (fun t : W => (t : ℂ)) h1`. Simplify using `using h2`. Establish `hinv : (((u⁻¹ : Wˣ) : W) : ℂ) = (m : ℂ)⁻¹` using `eq_inv_of_mul_eq_one_left hum`. Establish `hbW : ((((p : c'.F) ^ k * x⁻¹ : c'.F)) : ℂ) ∈ W`. Establish `heq : ((((p : c'.F) ^ k * x⁻¹ : c'.F)) : ℂ) = (((u⁻¹ : Wˣ) : W) : ℂ) * ((((n : c'.F) * x⁻¹ : c'.F)) : ℂ)`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hm0 : (m : ℂ) ≠ 0`. Establish `: m ≠ 0` using `by rintro rfl; simp at hnm; exact hn0 hnm`. Conclude with `this` after adjusting the coercions. Rewrite using `[hinv, hnm]`. Use `push_cast`.
-
-Clear the denominators using the available nonvanishing facts. Rewrite using `[heq]`. Conclude with `W.mul_mem _ _ (SetLike.coe_mem _) hnW`. Set `b : c'.V W` to `⟨(p : c'.F) ^ k * x⁻¹, ValuationSubring.mem_comap.mpr hbW⟩`. Establish `hab : a * b = (p : c'.V W) ^ k`.
-
-Apply `Subtype.ext` to reduce the goal to its premises. Use `show (a : c'.F) * ((p : c'.F) ^ k * x⁻¹) = (((p : c'.V W) ^ k : c'.V W) : c'.F)`. Rewrite using `[← hxdef]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
-
-Establish `hu' : IsUnit (β a * β b)`. Rewrite using `[← map_mul, hab, map_pow, map_natCast]`. Conclude with `hpA.pow k`. Conclude with `isUnit_of_mul_isUnit_left hu'`.
+Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_of_ne_zero : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (l' : Level H) (c' : Coeff l') (W : ValuationSubring ℂ) (p : ℕ), p.Prime → (p : ℂ) ∈ W.nonunits → ∀ (A : Type) [CommRing A] (β : c'.V W →+* A), IsUnit (p : A) → ∀ a : c'.V W, a ≠ 0 → IsUnit (β a) := by
   intro E _ _ _ H l' c' W p hp hpW A _ β hpA a ha

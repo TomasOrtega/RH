@@ -14,11 +14,11 @@ open GlobalTheory.CompanionTheory.Ar.Flat.CPoint
 namespace GlobalTheory.CompanionTheory.Ar.Flat.CPoint
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hM`. Take `⟨c, hc0, hc⟩` from `Matrix.exists_vecMul_eq_zero_iff.mpr (by simpa [isUnit_iff_ne_zero] using hM)`. Apply `hc0` to reduce the goal to its premises. Establish `hsum : ∑ i, c i • a i = 0`. Repeatedly rewrite using `[h, Finset.smul_sum, smul_smul]`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_smul]`. Establish `hk` using `congrFun hc k`. Simplify using `only [Matrix.vecMul, dotProduct, Pi.zero_apply] at hk`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[hk, zero_smul]`. Conclude with `funext (Fintype.linearIndependent_iff.mp ha c hsum)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isUnit_det_of_linearIndependent_frame {C W : Type} [Field C] [AddCommGroup W] [Module C W] {n : ℕ}
     (M : Matrix (Fin n) (Fin n) C) (a b : Fin n → W) (h : ∀ i, a i = ∑ k, M i k • b k)
@@ -37,7 +37,7 @@ private theorem isUnit_det_of_linearIndependent_frame {C W : Type} [Field C] [Ad
   exact funext (Fintype.linearIndependent_iff.mp ha c hsum)
 
 /- English proof (translation)
-Introduce `i`. Repeatedly rewrite using `[h, Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Repeatedly rewrite using `[← Finset.sum_smul, ← Matrix.mul_apply, Matrix.nonsing_inv_mul M hM, Matrix.one_apply, ite_smul, one_smul, zero_smul]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem eq_sum_inv_smul_of_eq_sum_smul {C W : Type} [Field C] [AddCommGroup W] [Module C W] {n : ℕ}
     (M : Matrix (Fin n) (Fin n) C) (hM : IsUnit M.det) (a b : Fin n → W) (h : ∀ i, a i = ∑ k, M i k • b k) :
@@ -50,7 +50,7 @@ private theorem eq_sum_inv_smul_of_eq_sum_smul {C W : Type} [Field C] [AddCommGr
   simp
 
 /- English proof (translation)
-Introduce `i`. Rewrite using `[hx]`. Repeatedly rewrite using `[hy, Finset.smul_sum, smul_smul, Matrix.mul_apply, Finset.sum_smul]`. Rewrite using `[Finset.sum_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem eq_sum_mul_smul_of_eq_sum_smul_of_eq_sum_smul {C W : Type} [Field C] [AddCommGroup W] [Module C W] {n m : ℕ}
     (M : Matrix (Fin n) (Fin m) C) (N : Matrix (Fin m) (Fin m) C) (x : Fin n → W) (y z : Fin m → W)
@@ -62,15 +62,15 @@ private theorem eq_sum_mul_smul_of_eq_sum_smul_of_eq_sum_smul {C W : Type} [Fiel
   rw [Finset.sum_comm]
 
 /- English proof (translation)
-Introduce `E _ _ C A _ _ _ _ bar σ σ' g p q ρC ρHC HV tC b₁ v b₂ w u Ap P Q gm h1 h2 h3 h4 hA hfree had hvP hwQ hb₁ hAp H hv hvspan hvA hw hwspan hwA`. Take `⟨u', hu'ad, -, hu'span⟩` from `GlobalTheory.T.hermitian_signature_basis E C (Fin g → C) ρC ρHC bar σ σ' p q v w h1 h2 h3 h4 hv hvspan hw hwspan`. Establish `hP` using `isUnit_det_of_linearIndependent_frame P v b₁ hvP hv`. Establish `hQ` using `isUnit_det_of_linearIndependent_frame Q w b₂ hwQ hw`. Take `⟨B0, hB0, hB0det⟩` from `GlobalTheory.T.adapted_bases_change_by_block_matrices E C (Fin g → C) ρHC σ p q v b₁ w b₂ u' u P⁻¹ Q⁻¹ hu'ad had hv hu'span (eq_sum_inv_smul_of_eq_sum_smul P hP v b₁ hvP) (eq_sum_inv_smul_of_eq_sum_smul Q hQ w b₂ hwQ)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hcomb` using `eq_sum_mul_smul_of_eq_sum_smul_of_eq_sum_smul Ap B0 (fun i => HT.eigProj ρHC σ (tC i)) u u' hAp hB0`. Establish `hfam : (fun i => ∑ k, (Ap * B0) i k • u' k) = fun i => HT.eigProj ρHC σ (tC i)`. Use function extensionality and compare the values at `fun i => (hcomb i).symm`. Establish `hli : LinearIndependent C (fun i => HT.eigProj ρHC σ (tC i))` using `GlobalTheory.CompanionTheory.Ar.Flat.HodgeDeterminantLattice.linearIndependent_eigProj σ hfree`. Establish `hsp : Submodule.span A (Set.range fun i => HT.eigProj ρHC σ (tC i)) = HT.eigQuot ρHC σ HV` using `(GlobalTheory.CompanionTheory.Ar.Flat.HodgeDeterminantLattice.eigQuot_eq_span σ hfree hA).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨ε, hε⟩` from `H v w u' (Ap * B0) hv hvA hw hwA hu'ad (by rw [hfam]; exact hli) (by rw [hfam]; exact hsp)`. Use `⟨ε, ?_⟩` and prove the remaining obligations. Rewrite `hε` using `[Matrix.det_mul]`. Rewrite `hB0det` using `[Matrix.det_nonsing_inv, Matrix.det_nonsing_inv, Ring.inverse_eq_inv, Ring.inverse_eq_inv]`. Establish `hPd : P.det ≠ 0` using `hP.ne_zero`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hQd : Q.det ≠ 0` using `hQ.ne_zero`. Establish `hB : B0.det = Q.det * (P.det)⁻¹`. Rewrite using `[← hB0det, _root_.mul_comm Q.det, _root_.mul_assoc, inv_mul_cancel₀ hQd, _root_.mul_one]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hB, _root_.mul_assoc, _root_.mul_assoc, inv_mul_cancel₀ hPd, _root_.mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `_ = algebraMap A C ε * gm * P.det := by rw [hε]`.
+A detailed English derivation is pending.
 -/
 theorem det_evaluated_frame : ∀ (E : Type) [Field E] [NumberField E] (C A : Type) [Field C] [CharZero C] [CommRing A] [Algebra A C]
     (bar : 𝓞 E ≃+* 𝓞 E) (σ σ' : E →+* C) (g p q : ℕ) (ρC : 𝓞 E →+* Module.End C (Fin g → C))

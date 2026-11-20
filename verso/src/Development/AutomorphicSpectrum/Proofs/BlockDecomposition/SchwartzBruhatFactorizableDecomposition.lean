@@ -34,9 +34,9 @@ def lvN (v : HeightOneSpectrum (𝓞 F)) (P : AddSubgroup (Fv F v)) (n M : ℕ) 
     exact neg_mem (hx a i k)
 
 /- English proof (translation)
-Establish `hc : ∀ (x : Fin n) (i : Fin M) (k : Fin d), Continuous (fun Y : Fin n → Fin M → Fv F v ⊗[F] E => crd b (Fv F v) (Y x i) k)` using `fun x i k => (continuous_crd b (Fv F v) k).comp ((continuous_apply i).comp (continuous_apply x))`. Establish `e : (lvN b v (P : AddSubgroup (Fv F v)) n M : Set (Fin n → Fin M → Fv F v ⊗[F] E)) = ⋂ x, ⋂ i, ⋂ k, (fun Y : Fin n → Fin M → Fv F v ⊗[F] E => crd b (Fv F v) (Y x i) k) ⁻¹' (P : Set (Fv F v))`. Use extensionality with `Y`. Simplify using `[lvN]`. Rewrite using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨isClosed_iInter fun x => isClosed_iInter fun i => isClosed_iInter fun k => P.isClosed.preimage (hc x i k), isOpen_iInter_of_finite fun x => isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun k => P.isOpen.preimage (hc x i k)⟩`.
+Supply the required witnesses or components.
 -/
 theorem isClopen_lvN (v : HeightOneSpectrum (𝓞 F)) (P : OpenAddSubgroup (Fv F v)) (n M : ℕ) :
     IsClopen (lvN b v (P : AddSubgroup (Fv F v)) n M : Set (Fin n → Fin M → Fv F v ⊗[F] E)) := by
@@ -53,7 +53,7 @@ theorem isClopen_lvN (v : HeightOneSpectrum (𝓞 F)) (P : OpenAddSubgroup (Fv F
     isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun k => P.isOpen.preimage (hc x i k)⟩
 
 /- English proof (translation)
-The claim follows from `(isCompact_latV b v n M).of_isClosed_subset (isClopen_lvN b v P n M).isClosed fun _ hZ a i k => hP (hZ a i k)`.
+A detailed English derivation is pending.
 -/
 theorem isCompact_lvN (v : HeightOneSpectrum (𝓞 F)) (P : OpenAddSubgroup (Fv F v)) (hP : P ≤ intSub v) (n M : ℕ) :
     IsCompact (lvN b v (P : AddSubgroup (Fv F v)) n M : Set (Fin n → Fin M → Fv F v ⊗[F] E)) :=
@@ -61,7 +61,7 @@ theorem isCompact_lvN (v : HeightOneSpectrum (𝓞 F)) (P : OpenAddSubgroup (Fv 
     fun _ hZ a i k => hP (hZ a i k)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a i`. Simplify using `[projV, map_sub]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem projV_subN (v : HeightOneSpectrum (𝓞 F)) {n M : ℕ} (X Y : Fin n → Fin M → Af F ⊗[F] E) :
     projV v (X - Y) = projV v X - projV v Y := by
@@ -73,7 +73,7 @@ def cosVN (v : HeightOneSpectrum (𝓞 F)) (P : OpenAddSubgroup (Fv F v)) {n M :
   {Z | Z - a ∈ lvN b v (P : AddSubgroup (Fv F v)) n M}
 
 /- English proof (translation)
-Use `haveI : IsModuleTopology (Fv F v) (Fv F v ⊗[F] E) := ⟨rfl⟩`. Use `haveI : IsTopologicalRing (Fv F v ⊗[F] E) := IsModuleTopology.isTopologicalRing (Fv F v) _`. Establish `e : cosVN b v P a = (Homeomorph.subRight a) ⁻¹' (lvN b v (P : AddSubgroup (Fv F v)) n M : Set _)` using `rfl`. Rewrite using `[e]`. Conclude with `⟨(Homeomorph.subRight a).isCompact_preimage.2 (isCompact_lvN b v P hP n M), (isClopen_lvN b v P n M).isOpen.preimage (Homeomorph.subRight a).continuous⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isCompact_isOpen_cosVN (v : HeightOneSpectrum (𝓞 F)) (P : OpenAddSubgroup (Fv F v)) (hP : P ≤ intSub v)
     {n M : ℕ} (a : Fin n → Fin M → Fv F v ⊗[F] E) : IsCompact (cosVN b v P a) ∧ IsOpen (cosVN b v P a) := by
@@ -85,9 +85,9 @@ theorem isCompact_isOpen_cosVN (v : HeightOneSpectrum (𝓞 F)) (P : OpenAddSubg
     (isClopen_lvN b v P n M).isOpen.preimage (Homeomorph.subRight a).continuous⟩
 
 /- English proof (translation)
-Establish `ha' : a ∈ lvN b v ((intSub v : OpenAddSubgroup (Fv F v)) : AddSubgroup (Fv F v)) n M` using `ha`. Use extensionality with `Z`. Establish `e1 : Z ∈ cosVN b v (intSub v) a ↔ Z - a ∈ lvN b v ((intSub v : OpenAddSubgroup (Fv F v)) : AddSubgroup (Fv F v)) n M` using `Iff.rfl`. Establish `e2 : Z ∈ latV b v ↔ Z ∈ lvN b v ((intSub v : OpenAddSubgroup (Fv F v)) : AddSubgroup (Fv F v)) n M` using `Iff.rfl`. Rewrite using `[e1, e2, sub_eq_add_neg]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `add_mem_cancel_right (neg_mem ha')`.
+A detailed English derivation is pending.
 -/
 theorem cosVN_intSub (v : HeightOneSpectrum (𝓞 F)) {n M : ℕ} {a : Fin n → Fin M → Fv F v ⊗[F] E}
     (ha : a ∈ latV b v) : cosVN b v (intSub v) a = latV b v := by
@@ -100,37 +100,29 @@ theorem cosVN_intSub (v : HeightOneSpectrum (𝓞 F)) {n M : ℕ} {a : Fin n →
   exact add_mem_cancel_right (neg_mem ha')
 
 /- English proof (translation)
-Use `haveI : IsModuleTopology (Af F) (Af F ⊗[F] E) := ⟨rfl⟩`. Use `haveI : IsTopologicalRing (Af F ⊗[F] E) := IsModuleTopology.isTopologicalRing (Af F) _`. Establish `hU` using `invariant_mem_nhds hg.1 hg.2`. Set `Lc : (Fin n → Fin M → Fin d → Af F) → (Fin n → Fin M → Af F ⊗[F] E)` to `fun c x i => ∑ k, c x i k • ((1 : Af F) ⊗ₜ[F] b k)`. Establish `hL : Continuous Lc`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `continuous_pi fun x => continuous_pi fun i => continuous_finsetSum _ fun k _ => ?_` and prove the remaining obligations. Conclude with `continuous_smul.comp (((continuous_apply k).comp ((continuous_apply i).comp (continuous_apply x))).prodMk continuous_const)`. Establish `hL0 : Lc (fun _ _ _ => 0) = 0`. Use function extensionality and compare the values at `x i`. Simplify using `[Lc]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hp : Lc ⁻¹' {u | ∀ x, g (x + u) = g x} ∈ 𝓝 (fun _ => fun _ => fun _ => (0 : Af F))` using `hL.continuousAt.preimage_mem_nhds (by rw [hL0]; exact hU)`. Take `⟨W1, hW1, h1⟩` from `exists_nhds_of_pi hp`. Take `⟨W2, hW2, h2⟩` from `exists_nhds_of_pi hW1`. Take `⟨W, hW, h3⟩` from `exists_nhds_of_pi hW2`. Take `⟨T, P, hPO, hPT, hsub⟩` from `exists_box_subset hW`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `B : AddSubgroup (Af F)` to `{ carrier := {y | ∀ v, y v ∈ P v} add_mem' := fun hx hy v => add_mem (hx v) (hy v) zero_mem' := fun v => zero_mem (P v) neg_mem' := fun hx v => neg_mem (hx v) }`. Establish `hBo : IsOpen (B : Set (Af F))`. Establish `e : (B : Set (Af F)) = {y : Af F | ∀ v, y v ∈ v.adicCompletionIntegers F} ∩ ⋂ v ∈ T, (fun y : Af F => y v) ⁻¹' (P v : Set (Fv F v))`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Introduce `hy`. Conclude with `⟨fun v => hPO v (hy v), Set.mem_iInter₂.2 fun v _ => hy v⟩`. Introduce and unpack `⟨hy1, hy2⟩ v`. Distinguish the cases in `hv : v ∈ T`. Conclude with `Set.mem_iInter₂.1 hy2 v hv`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Rewrite using `[hPT v hv]`. Conclude with `hy1 v`. Rewrite using `[e]`. Use `IsOpen.inter ?_ (T.finite_toSet.isOpen_biInter fun v _ => (P v).isOpen.preimage (RestrictedProduct.continuous_eval (R := fun w : HeightOneSpectrum (𝓞 F) => w.adicCompletion F) v))` and prove the remaining obligations. Conclude with `RestrictedProduct.isOpen_forall_mem (R := fun v : HeightOneSpectrum (𝓞 F) => v.adicCompletion F) (A := fun v => (v.adicCompletionIntegers F : Set (v.adicCompletion F))) (fun v => Valued.isOpen_valuationSubring _)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `L : AddSubgroup (Fin n → Fin M → Af F ⊗[F] E)` to `{ carrier := {X | ∀ a i k, crd b (Af F) (X a i) k ∈ B} add_mem' := fun {x y} hx hy a i k => by`. Rewrite using `[Pi.add_apply, Pi.add_apply, crd_add]`. Conclude with `add_mem (hx a i k) (hy a i k)`. Use the proof step `zero_mem' := fun a i k => by`. Rewrite using `[Pi.zero_apply, Pi.zero_apply, crd_zero]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `zero_mem B`. Use the proof step `neg_mem' := fun {x} hx a i k => by`. Rewrite using `[Pi.neg_apply, Pi.neg_apply, crd_neg]`. Conclude with `neg_mem (hx a i k) }`. Establish `hLo : IsOpen (L : Set (Fin n → Fin M → Af F ⊗[F] E))`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `e : (L : Set (Fin n → Fin M → Af F ⊗[F] E)) = ⋂ a, ⋂ i, ⋂ k, (fun X : Fin n → Fin M → Af F ⊗[F] E => crd b (Af F) (X a i) k) ⁻¹' (B : Set (Af F))`. Use extensionality with `X`. Simplify using `[L]`. Rewrite using `[e]`. Conclude with `isOpen_iInter_of_finite fun a => isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun k => hBo.preimage ((continuous_crd b (Af F) k).comp ((continuous_apply i).comp (continuous_apply a)))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hinv : ∀ x, ∀ l ∈ L, g (x + l) = g x`. Introduce `x l hl`. Establish `hl' : l = Lc fun a i k => crd b (Af F) (l a i) k`. Use function extensionality and compare the values at `a i`. Conclude with `eq_sum_crd b (Af F) (l a i)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Rewrite using `[hl']`. Use `h1 _ (fun a => h2 _ fun i => h3 _ fun k => hsub (hl a i k)) x` and prove the remaining obligations. Take `⟨s, hs⟩` from `eq_sum_cosets hg.2 L hLo hinv`. Establish `hbad : ∀ a : Fin n → Fin M → Af F ⊗[F] E, {v | ¬ projV v a ∈ latV b v}.Finite` using `fun a => Filter.eventually_cofinite.1 (eventually_mem_latV b a)`. Use `⟨s, fun a v => cosVN b v (P v) (projV v a), T ∪ s.biUnion fun a => (hbad a).toFinset, fun a v => isCompact_isOpen_cosVN b v (P v) (hPO v) _, fun a ha v hv => ?_, fun Y => ?_⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hvT : v ∉ T` using `fun h => hv (Finset.mem_union_left _ h)`. Establish `hva : projV v a ∈ latV b v`. Assume the negation of the conclusion as `h`. Conclude with `hv (Finset.mem_union_right _ (Finset.mem_biUnion.2 ⟨a, ha, (hbad a).mem_toFinset.2 h⟩))`. Use `show cosVN b v (P v) (projV v a) = latV b v`.
-
-Rewrite using `[hPT v hvT]`. Conclude with `cosVN_intSub b v hva`. Rewrite using `[hs Y]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Use `congr 2`.
-
-Use extensionality with `X`. Use `show X - a ∈ L ↔ ∀ v, projV v X - projV v a ∈ lvN b v ((P v : OpenAddSubgroup (Fv F v)) : AddSubgroup (Fv F v)) n M`. Prove the components needed by the constructor for the conclusion. Introduce `h v i j k`. Rewrite using `[← projV_subN]`.
-
-Use `crd_projV b (X - a) v i j k` as an intermediate fact. Rewrite using `[this]`. Conclude with `h i j k v`. Introduce `h i j k v`. Use `crd_projV b (X - a) v i j k` as an intermediate fact.
-
-Rewrite using `[← this, projV_subN]`. Conclude with `h v i j k`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_box_combN {n M : ℕ} (g : (Fin n → Fin M → Af F ⊗[F] E) → ℂ) (hg : IsSB g) :
     ∃ (s : Finset (Fin n → Fin M → Af F ⊗[F] E))
@@ -236,7 +228,7 @@ theorem exists_box_combN {n M : ℕ} (g : (Fin n → Fin M → Af F ⊗[F] E) �
       exact h v i j k
 
 /- English proof (translation)
-Take `⟨N, e, c1, c2, f, hf⟩` from `h`. Conclude with `⟨N, e, c1, c2, c • f, fun X => by simp [hf X, mul_comm]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isSchwartzArch_const_mulN {n M : ℕ} {φ : (Fin n → Fin M → Ainf F ⊗[F] E) → ℂ} (h : IsSchwartzArch φ) (c : ℂ) :
     IsSchwartzArch fun X => φ X * c := by
@@ -248,11 +240,11 @@ end GlobalTheory.CompanionTheory.WhitFree.DecN
 namespace GlobalTheory.CompanionTheory.WhitFree
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ _ M J _ n _ _ d b Φ hΦ`. Use `haveI : FiniteDimensional F E := Module.Finite.of_basis b`. Take `⟨k', Φinf, Φf, hi, hf, hs⟩` from `hΦ`. Use `choose s A S hA hS hdec using fun i => DecN.exists_box_combN b (Φf i) (hf i)`. Set `I` to `Σ i : Fin k', ↥(s i)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Set `e : I ≃ Fin (Fintype.card I)` to `Fintype.equivFin I`. Use `⟨Fintype.card I, fun j X => Φinf (e.symm j).1 X * Φf (e.symm j).1 (e.symm j).2.1, fun j => A (e.symm j).1 (e.symm j).2.1, Finset.univ.biUnion S, fun j => ?_, fun j v => hA _ _ v, fun j v hv => ?_, fun X => ?_⟩` and prove the remaining obligations. Conclude with `DecN.isSchwartzArch_const_mulN (hi _) _`. Use `hS _ _ (e.symm j).2.2 v fun h => hv (Finset.mem_biUnion.2 ⟨_, Finset.mem_univ _, h⟩)` and prove the remaining obligations. Rewrite using `[hs X, Fintype.sum_equiv e.symm _ (fun p : I => pureN (fun Y => Φinf p.1 Y * Φf p.1 p.2.1) (A p.1 p.2.1) X) (fun _ => rfl), Fintype.sum_sigma]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hdec i (projFin X), Finset.mul_sum, ← Finset.sum_coe_sort (s i)]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Simplify using `only [pureN, mul_assoc]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem schwartzBruhat_eq_sum_pureN : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → ∀ n : ℕ, 0 < n → 2 * n < M → ∀ (d : ℕ) (b : Module.Basis (Fin d) F E) (Φ : (Fin n → Fin M → AF F ⊗[F] E) → ℂ), GlobalTheory.Published.SiegelOneVector.IsSchwartzBruhat Φ → ∃ (k : ℕ) (φ : Fin k → (Fin n → Fin M → Ainf F ⊗[F] E) → ℂ) (A : Fin k → (∀ v : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers F), Set (Fin n → Fin M → Fv F v ⊗[F] E))) (S : Finset (IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers F))), (∀ i, GlobalTheory.Published.SiegelOneVector.IsSchwartzArch (φ i)) ∧ (∀ i v, IsCompact (A i v) ∧ IsOpen (A i v)) ∧ (∀ i v, v ∉ S → A i v = latV b v) ∧ ∀ X, Φ X = ∑ i, pureN (φ i) (A i) X := by
   intro F E _ _ _ _ _ σ _ M J _ n _ _ d b Φ hΦ

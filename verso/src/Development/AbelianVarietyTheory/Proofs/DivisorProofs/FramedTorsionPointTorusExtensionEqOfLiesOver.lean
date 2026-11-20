@@ -28,17 +28,15 @@ noncomputable section
 namespace GlobalTheory.Poinc.Sep.LiesUniq
 
 /- English proof (translation)
-Establish `hL : GlobalTheory.UT.LL` using `GlobalTheory.firstFiveLaws`. Establish `hbij` using `(expBijF_and_expandsF_lin hL R _ hA D A G hG U).1 F`. Take `⟨lam, -, hlam⟩` from `CoefBasic.exists_frame_ratio hw hw'`. Establish `hk : ∀ k : ℕ, 4 ≤ k → lam ^ k = 1` using `fun k hk => by`. Take `⟨W, hW, hWv⟩` from `TorsionValue.exists_frm_pow w hw k`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨W', hW', hWv'⟩` from `TorsionValue.exists_frm_pow w' hw' k`. Take `⟨s, e, he, hs⟩` from `NonVan.exists_sec_ne_zero hL R A F k hk x fr hfr`. Take `⟨s', hs', -⟩` from `(hbij k (by omega) w₀ hw₀).1 s`. Establish `S₁` using `h k (by omega) W hWv hW s s' e hs' hs`. Establish `S₂` using `h' k (by omega) W' hWv' hW' s s' e hs' hs`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `sc` using `TorsionValue.coef_scale (w' := W') hW (c := lam ^ k) (fun z J hJ => by`. Rewrite using `[hWv z J hJ, hWv' z J hJ, Units.val_pow_eq_pow_val, Units.val_pow_eq_pow_val, hlam z J hJ, mul_pow, CoefBasic.cst_eq, CoefBasic.cst_eq, map_pow]) s'`. Establish `S₃` using `(GlobalTheory.AdicSum.sumF_calculus R I hA F _ _ _ e e).2.1 S₁ S₁ (lam ^ k - 1)`. Establish `e₁ : (fun i => (lam ^ k - 1) * coef s' g W i + coef s' g W i) = coef s' g W'` using `funext fun i => by`. Rewrite using `[sc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite `S₃` using `[e₁]`. Establish `e₂` using `(GlobalTheory.AdicSum.sumF_calculus R I hA F _ _ (coef s' g W') _ _).1 S₃ S₂`. Conclude with `sub_eq_zero.1 ((mul_eq_zero.1 (add_eq_right.1 e₂)).resolve_right he)`. Establish `h1 : lam = 1`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hk 5 (by norm_num)` as an intermediate fact. Rewrite `this` using `[pow_succ, hk 4 le_rfl, _root_.one_mul]`. Then use the resulting hypothesis. Introduce `z J hJ`. Use `hlam z J hJ` as an intermediate fact. Rewrite `this` using `[h1, CoefBasic.cst_eq, map_one, _root_.one_mul]`.
-
-Conclude with `Units.ext this.symm`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frame_unique {R : Type} [CommRing R] [IsDomain R] [CharZero R] {I : Ideal R} (hA : AdmBase R I)
     {D : DegData R I} {A : PolAV (Sp (FractionRing R))} {G : Over (Sp R)} [GrpObj G] [IsCommMonObj G]
@@ -75,15 +73,15 @@ theorem frame_unique {R : Type} [CommRing R] [IsDomain R] [CharZero R] {I : Idea
   exact Units.ext this.symm
 
 /- English proof (translation)
-Introduce `V _ _ _ hCN D A G _ _ hG U w₀ hw₀ N hN g g' w w' x fr hg hg' hw hw' hfr h h'`. Use `haveI : CharZero V := hCN.2.2.2`. Establish `hL : GlobalTheory.UT.LL` using `GlobalTheory.firstFiveLaws`. Establish `hA : AdmBase V (maximalIdeal V)` using `⟨hCN.1, inferInstance, hCN.2.1, hCN.2.2.1⟩`. Establish `hB` using `D.tau_bimult`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨p, hy, rfl, hp⟩` from `GlobalTheory.T.exists_torus_pair_of_torsion_point_over V hCN D A G hG U w₀ hw₀ N hN g w x fr hg hw hfr h`. Take `⟨p', hy', rfl, hp'⟩` from `GlobalTheory.T.exists_torus_pair_of_torsion_point_over V hCN D A G hG U w₀ hw₀ N hN g' w' x fr hg' hw' hfr h'`. Establish `hf : (algebraMap (FractionRing V) (AlgebraicClosure (FractionRing V))).comp (algebraMap (FractionRing V) (FractionRing V)) = algebraMap _ _` using `RingHom.comp_id _`. Establish `hq` using `(GlobalTheory.TorsionExt.qkToAkU_iff_of_algebra hL.1.globalFns hL.1.kerPow U hN ((GlobalTheory.TorusExt.qkExt_iff hB _ hf p _).2 rfl) x).1 hp`. Establish `hq'` using `(GlobalTheory.TorsionExt.qkToAkU_iff_of_algebra hL.1.globalFns hL.1.kerPow U hN ((GlobalTheory.TorusExt.qkExt_iff hB _ hf p' _).2 rfl) x).1 hp'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he` using `GlobalTheory.TorsionMapInj.qkToAk_injective hL.1 hL.2.1 V _ hA D A G hG U _ N hN _ _ _ hq hq'`. Take `⟨z, hz, hz'⟩` from `(GlobalTheory.TorusExt.equiv_iff hB _ _).1 he`. Establish `e : p.g = p'.g`. Use `letI := GlobalTheory.TorusExt.gtGroup D.toPre (AlgebraicClosure (FractionRing V))`. Establish `hz₁ : p'.y = p.y + N • z` using `hz`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hz₁` using `[hy, hy', zero_add, ← natCast_zsmul]`. Take `rfl : z = 0` from `(smul_eq_zero.1 hz₁.symm).resolve_left (by exact_mod_cast (by omega : N ≠ 0))`. Rewrite `hz'` using `[map_zero, add_zero]`. Conclude with `GlobalTheory.Balanced.gtExt_injective _ hf D.toPre hz'.symm`. Take `⟨y, g, hg₁⟩` from `p`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify by unfolding definitions.
 
-Take `⟨y', g', hg₁'⟩` from `p'`. Simplify using `only at e`. Substitute `e` using the available equality. Conclude with `⟨rfl, frame_unique hA hG U hw₀ hw hw' hfr h h'⟩`.
+Substitute using the available equality. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem eq_of_liesOver : ∀ (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V], IsCN V → ∀ (D : DegData V (maximalIdeal V)) (A : PolAV (Sp (FractionRing V))) (G : Over (Sp V)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ (U : Unif (maximalIdeal V) D A G) (w₀ : W0 U.toUnifPre), w₀.IsGen → ∀ N : ℕ, 1 ≤ N → ∀ (g g' : GtPtF D.toPre (FractionRing V)) (w : Frm D.toPre (FractionRing V) 1 g.b) (w' : Frm D.toPre (FractionRing V) 1 g'.b) (x : TFK (R := V) (FractionRing V) ⟶ A.A) (fr : FrAt x), (∃ o, GtPtF.IsNsmul N g o ∧ o.IsZero) → (∃ o, GtPtF.IsNsmul N g' o ∧ o.IsZero) → w.IsGen → w'.IsGen → fr.IsGen → LiesOver U.toUnifPre w₀ g w x fr → LiesOver U.toUnifPre w₀ g' w' x fr → g = g' ∧ ∀ z J, Good D.toPre.P.L z J → val w (𝟙 _) z J = val w' (𝟙 _) z J := by
   intro V _ _ _ hCN D A G _ _ hG U w₀ hw₀ N hN g g' w w' x fr hg hg' hw hw' hfr h h'

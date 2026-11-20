@@ -11,9 +11,9 @@ open Formalism.InvariantFactorPaths.GelfandTsetlinBases (dGT colHeight)
 open Formalism.InvariantFactorPaths.GelfandTsetlinBases.Branch (TabP Dom cnt)
 
 /- English proof (translation)
-Unfold `colH`. Rewrite using `[filter_true_of_mem, card_univ, Fintype.card_fin]`. Introduce `m _`. Use `hc.trans (hmu ?_)` and prove the remaining obligations. Use `show m.1 ≤ n - 1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `m.2` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 lemma qk_colH_low {n : ℕ} [NeZero n] {mu : Fin n → ℤ} (hmu : Dominant mu) {c : ℤ} (hc : c ≤ mu (lastIdx n)) :
     colH mu c = n := by
@@ -26,7 +26,7 @@ lemma qk_colH_low {n : ℕ} [NeZero n] {mu : Fin n → ℤ} (hmu : Dominant mu) 
   omega
 
 /- English proof (translation)
-Unfold `colH`. Rewrite using `[filter_false_of_mem, card_empty]`. Introduce `m _`. Establish `: mu m ≤ mu 0` using `hmu (Fin.zero_le m)`. Use linear arithmetic over natural numbers and integers.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 lemma qk_colH_high {n : ℕ} [NeZero n] {mu : Fin n → ℤ} (hmu : Dominant mu) {c : ℤ} (hc : mu 0 < c) :
     colH mu c = 0 := by
@@ -40,29 +40,29 @@ def extendedColumns {n : ℕ} [NeZero n] {mu : Fin n → ℤ} (I : TIdx mu) : �
   fun c => if h : c ∈ TCols mu then (I ⟨c, h⟩).1 else if c ≤ mu (lastIdx n) then univ else ∅
 
 /- English proof (translation)
-Introduce `x`. Conclude with `card_le_card (filter_subset_filter _ (subset_univ _))`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 lemma qk_dom_univ {n : ℕ} (B : Finset (Fin n)) : Dom univ B := by
   intro x
   exact card_le_card (filter_subset_filter _ (subset_univ _))
 
 /- English proof (translation)
-Introduce `x`. Simplify using `[cnt]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 lemma qk_dom_empty {n : ℕ} (A : Finset (Fin n)) : Dom A ∅ := by
   intro x
   simp [cnt]
 
 /- English proof (translation)
-Establish `key : ∀ (C : Finset (Fin n)) (t : Fin n), (C.filter (· ≤ t)).card = cnt C (t.1 + 1)`. Introduce `C t`. Unfold `cnt`. Use `congr 1`. Use extensionality with `a`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Simplify using `only [mem_filter, Fin.le_def, Nat.lt_succ_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h t`. Rewrite using `[key, key]`. Conclude with `h _`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h x`. Break down `Nat.eq_zero_or_pos x with rfl | hx` into its components or cases. Simplify using `[cnt]`. Distinguish the cases in `hxn : x ≤ n`. Use `h ⟨x - 1, by omega⟩` as an intermediate fact.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[key, key]`. Establish `e : x - 1 + 1 = x` using `by omega`. Simplify `this` using `only [e]`. Establish `hn : 0 < n` using `NeZero.pos n`. Use `h ⟨n - 1, by omega⟩` as an intermediate fact.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[key, key]`. Establish `e : n - 1 + 1 = n` using `by omega`. Simplify using `only [e] at this`. Rewrite using `[Formalism.InvariantFactorPaths.GelfandTsetlinBases.Branch.cnt_of_le A (by omega), Formalism.InvariantFactorPaths.GelfandTsetlinBases.Branch.cnt_of_le B (by omega), ← Formalism.InvariantFactorPaths.GelfandTsetlinBases.Branch.cnt_of_le A le_rfl, ← Formalism.InvariantFactorPaths.Ge …`. Conclude with `this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma qk_dom_iff {n : ℕ} [NeZero n] (A B : Finset (Fin n)) :
     Dom A B ↔ ∀ t : Fin n, (B.filter (· ≤ t)).card ≤ (A.filter (· ≤ t)).card := by
@@ -94,17 +94,15 @@ lemma qk_dom_iff {n : ℕ} [NeZero n] (A B : Finset (Fin n)) :
         exact this
 
 /- English proof (translation)
-Use `⟨fun c => ?_, fun c => ?_⟩` and prove the remaining obligations. Unfold `extendedColumns split_ifs with h h2`. Conclude with `(I ⟨c, h⟩).2`. Rewrite using `[card_univ, Fintype.card_fin]`. Conclude with `(qk_colH_low hmu h2).symm`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[card_empty]`. Use `(qk_colH_high hmu ?_).symm` and prove the remaining obligations. Simplify using `only [TCols, mem_Ioc, not_and, not_le] at h`. Conclude with `h (not_le.1 h2)`. Distinguish the cases in `h1 : c ≤ mu (lastIdx n)`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `: extendedColumns I c = univ`. Unfold `extendedColumns`. Rewrite using `[dif_neg (by simp only [TCols, mem_Ioc]; omega), if_pos h1]`. Rewrite using `[this]`. Conclude with `qk_dom_univ _`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Distinguish the cases in `h2 : c + 1 ≤ mu 0`. Establish `hc : c ∈ TCols mu` using `by simp only [TCols, mem_Ioc]; omega`. Establish `hc' : c + 1 ∈ TCols mu` using `by simp only [TCols, mem_Ioc]; omega`. Establish `e1 : extendedColumns I c = (I ⟨c, hc⟩).1` using `by unfold extendedColumns; rw [dif_pos hc]`. Establish `e2 : extendedColumns I (c + 1) = (I ⟨c + 1, hc'⟩).1` using `by unfold extendedColumns; rw [dif_pos hc']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, e2, qk_dom_iff]`. Conclude with `hI ⟨c, hc⟩ hc'`. Establish `: extendedColumns I (c + 1) = ∅`. Unfold `extendedColumns`. Rewrite using `[dif_neg (by simp only [TCols, mem_Ioc]; omega), if_neg (by omega)]`.
-
-Rewrite using `[this]`. Conclude with `qk_dom_empty _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma qk_T_tab {n : ℕ} [NeZero n] {mu : Fin n → ℤ} (hmu : Dominant mu) (I : TIdx mu) (hI : StdT I) :
     TabP mu (extendedColumns I) := by
@@ -165,7 +163,7 @@ def qk_tabEquiv {n : ℕ} [NeZero n] {mu : Fin n → ℤ} (hmu : Dominant mu) :
       exact h (not_le.1 h2)
 
 /- English proof (translation)
-Introduce `n _ mu hmu`. Unfold `dMu`. Rewrite using `[Nat.card_congr (qk_tabEquiv hmu)]`. Conclude with `(Formalism.InvariantFactorPaths.GelfandTsetlinBases.Branch.tab_count n mu hmu).2`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem qk_dMu_eq_dGT : ∀ (n : ℕ) [NeZero n] (mu : Fin n → ℤ), Dominant mu → dMu mu = dGT n mu := by
   intro n _ mu hmu

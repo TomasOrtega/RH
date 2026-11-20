@@ -7,17 +7,15 @@ open scoped ContDiff
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `d U U' τ b b' hU hτ hmap hb' hpull k l`. Establish `han : AnalyticOnNhd ℂ τ U`. Establish `hc : ∀ i, AnalyticOnNhd ℂ (fun v => (τ v).ofLp i) U` using `fun i => ReciprocityTheory.MultiplicativeHeights.analyticOnNhd_V_of_differentiableOn hU ((EuclideanSpace.proj i : ReciprocityTheory.L2DbarEstimates.V d →L[ℂ] ℂ).differentiable.comp_differentiableOn hτ)`. Introduce `v hv`. Set `e` to `EuclideanSpace.equiv (Fin d) ℂ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Establish `h : AnalyticAt ℂ (fun w => e (τ w)) v` using `analyticAt_pi_iff.mpr fun i => by simpa [e] using hc i v hv`. Establish `h2 : AnalyticAt ℂ (fun w => e.symm (e (τ w))) v` using `((e.symm : (Fin d → ℂ) →L[ℂ] ReciprocityTheory.L2DbarEstimates.V d).analyticAt (e (τ v))).comp (f := fun w => e (τ w)) h`. Simplify using `using h2`. Establish `hD : ∀ (w : ReciprocityTheory.L2DbarEstimates.V d) (i : Fin d), ContDiffOn ℝ ∞ (fun v => (fderiv ℂ τ v w).ofLp i) U`. Introduce `w i`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : AnalyticOnNhd ℂ (fun v => fderiv ℂ τ v) U` using `han.fderiv`. Establish `h2 : AnalyticOnNhd ℂ (fun v => (fderiv ℂ τ v w).ofLp i) U`. Introduce `v hv`. Conclude with `(((EuclideanSpace.proj i : ReciprocityTheory.L2DbarEstimates.V d →L[ℂ] ℂ).comp (ContinuousLinearMap.apply ℂ (ReciprocityTheory.L2DbarEstimates.V d) w)).analyticAt _).comp (h1 v hv)`. Conclude with `(h2.contDiffOn (n := ∞) hU.uniqueDiffOn).restrict_scalars ℝ`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hτR : ContDiffOn ℝ ∞ τ U` using `(han.contDiffOn (n := ∞) hU.uniqueDiffOn).restrict_scalars ℝ`. Establish `hB : ∀ i j, ContDiffOn ℝ ∞ (fun v => b' (τ v) i j) U` using `fun i j => (hb' i j).comp hτR hmap`. Establish `key : ∀ v ∈ U, b v k l = ∑ j, (∑ i, (fderiv ℂ τ v (EuclideanSpace.single k 1)).ofLp i * b' (τ v) i j) * star ((fderiv ℂ τ v (EuclideanSpace.single l 1)).ofLp j)`. Introduce `v hv`. Establish `h` using `hpull v hv (EuclideanSpace.single k 1) (EuclideanSpace.single l 1)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [dotProduct, vecMul, Pi.star_apply] at h`. Rewrite using `[← h]`. Simplify using `[Pi.single_apply]`. Use `ContDiffOn.congr ?_ key` and prove the remaining obligations. Use `ContDiffOn.sum fun j _ => ContDiffOn.mul ?_ ?_` and prove the remaining obligations.
-
-Conclude with `ContDiffOn.sum fun i _ => (hD _ i).mul (hB i j)`. Conclude with `(Complex.conjCLE.contDiff.comp_contDiffOn (hD (EuclideanSpace.single l 1) j)).congr (fun x _ => by simp [Complex.conjCLE_apply, Complex.star_def])`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem metric_pullback_contDiffOn : ∀ (d : ℕ) (U U' : Set (ReciprocityTheory.L2DbarEstimates.V d)) (τ : ReciprocityTheory.L2DbarEstimates.V d → ReciprocityTheory.L2DbarEstimates.V d) (b b' : ReciprocityTheory.L2DbarEstimates.V d → Matrix (Fin d) (Fin d) ℂ), IsOpen U → DifferentiableOn ℂ τ U → Set.MapsTo τ U U' → (∀ k l, ContDiffOn ℝ ∞ (fun v => b' v k l) U') → (∀ v ∈ U, ∀ ξ ζ : ReciprocityTheory.L2DbarEstimates.V d, (ξ.ofLp ᵥ* b v) ⬝ᵥ star ζ.ofLp = ((fderiv ℂ τ v ξ).ofLp ᵥ* b' (τ v)) ⬝ᵥ star (fderiv ℂ τ v ζ).ofLp) → ∀ k l, ContDiffOn ℝ ∞ (fun v => b v k l) U := by
   intro d U U' τ b b' hU hτ hmap hb' hpull k l

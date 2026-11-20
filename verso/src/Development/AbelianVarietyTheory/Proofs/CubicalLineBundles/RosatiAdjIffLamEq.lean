@@ -13,9 +13,9 @@ open GlobalTheory GlobalTheory.CM GlobalTheory.LamF
 namespace GlobalTheory.RosLam
 
 /- English proof (translation)
-Establish `p` using `prod_ros f g (fst G G) (snd G G) k`. Rewrite `p` using `[lift_fst_snd]`. Simplify using `only [Over.id_left, Category.id_comp] at p`. Rewrite using `[p, GlobalTheory.NormRos.prod_square, GlobalTheory.NormRos.prod_square]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [ofMul_mul, ofMul_inv, ofMul_div]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem form_rosati {S : Scheme.{0}} {G : Over S} [GrpObj G] [IsCommMonObj G] (f g : G ⟶ G)
     {V : Type} [CommGroup V] (k : ((G ⊗ G).left ⟶ G.left) → V) :
@@ -33,9 +33,9 @@ theorem form_rosati {S : Scheme.{0}} {G : Over S} [GrpObj G] [IsCommMonObj G] (f
   abel
 
 /- English proof (translation)
-Take `⟨Pic, _, cl, pl, h₁, h₂, -, -, h₅, -⟩` from `GlobalTheory.CechPicMul.exists_picardGroup`. Take `⟨a, a'⟩` from `h₅ _ _ L hL _ (Out.rosatiφ G f g) Out.rosatiε`. Take `⟨b, b'⟩ : (cubeLB G ![fst G G ≫ f, snd G G] L).IsLB ∧ cl (cubeLB G ![fst G G ≫ f, snd G G] L) = _` from `h₅ _ _ L hL _ _ _`. Take `⟨c, c'⟩ : (cubeLB G ![fst G G, snd G G ≫ g] L).IsLB ∧ cl (cubeLB G ![fst G G, snd G G ≫ g] L) = _` from `h₅ _ _ L hL _ _ _`. Use `(h₁ _ _ _ b c).1 ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e` using `((h₂ _ _ a).2 ⟨t, ht⟩).symm.trans a'`. Rewrite using `[b', c', ← div_eq_one, e]`. Establish `key` using `form_rosati f g (V := Multiplicative (FreeAbelianGroup ((G ⊗ G).left ⟶ G.left))) (fun ψ => Multiplicative.ofAdd (FreeAbelianGroup.of ψ))`. Establish `k` using `congrArg (AddMonoidHom.toMultiplicativeLeft (FreeAbelianGroup.lift fun ψ : (G ⊗ G).left ⟶ G.left => Additive.ofMul (pl ψ (cl L)))) key`. Simplify `k` using `only [map_div, map_prod, map_zpow, AddMonoidHom.coe_toMultiplicativeLeft, Function.comp_apply, toAdd_ofAdd, FreeAbelianGroup.lift_apply_of, toMul_ofMul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem lbIso_of_gen {S : Scheme.{0}} {G : Over S} [GrpObj G] [IsCommMonObj G] {L : LB G.left} (hL : L.IsLB)
     (f g : G ⟶ G) (t : LB.Gen (LB.LinComb L (Out.rosatiφ G f g) Out.rosatiε)) (ht : t.IsGen) :
@@ -57,11 +57,11 @@ theorem lbIso_of_gen {S : Scheme.{0}} {G : Over S} [GrpObj G] [IsCommMonObj G] {
     FreeAbelianGroup.lift_apply_of, toMul_ofMul] using k
 
 /- English proof (translation)
-Introduce `hG S P f g hf hg`. Use `P.isAb.comm` as an intermediate fact. Unfold `LamEq`. Rewrite using `[Category.comp_id, Category.comp_id]`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h`. Take `⟨u, hu, -⟩` from `exists_ros hG P.isAb P.isLB f g h`. Conclude with `lbIso_of_gen P.isLB f g u hu`. Introduce `h s`. Take `⟨t, ht⟩` from `GlobalTheory.NormRos.exists_gen_rosati P.isLB f g h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨⊤, trivial, LB.pullGen P.L _ _ t _, DVR.pullGen_isGen _ _ _ _ ht _⟩`.
+A detailed English derivation is pending.
 -/
 theorem rosatiAdj_iff_lamEq : Out.GlobalFnsSt → ∀ (S : Scheme.{0}) (P : Out.PolAV S) (f g : P.A ⟶ P.A), IsMonHom f → IsMonHom g → (Out.RosatiAdj P.A P.L f g ↔ LamEq P.L f (𝟙 P.A) P.L (𝟙 P.A) g) := by
   intro hG S P f g hf hg

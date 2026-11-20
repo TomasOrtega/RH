@@ -10,15 +10,13 @@ open Polynomial
 variable {p : ℕ} [Fact p.Prime] {Ω : Type} [Field Ω] [Algebra (O0 p) Ω]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨X - C 1, X_sub_C_ne_zero 1, by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem isAlgZp_one : IsAlgZp p (1 : Ω) :=
   ⟨X - C 1, X_sub_C_ne_zero 1, by simp⟩
 
 /- English proof (translation)
-Use `letI : Algebra ℤ_[p] Ω := Algebra.compHom Ω (algebraMap ℤ_[p] (O0 p))`. Use `haveI : IsScalarTower ℤ_[p] (O0 p) Ω := IsScalarTower.of_algebraMap_eq (fun _ => rfl)`. Establish `key : ∀ z : Ω, IsAlgZp p z ↔ IsAlgebraic ℤ_[p] z` using `fun z => by`. Simplify using `only [IsAlgZp, IsAlgebraic, aeval_map_algebraMap]`. Rewrite `hx`, `hy`, the goal using `[key]`.
-
-Conclude with `hx.mul hy`.
+Equip the data with the indicated structure. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isAlgZp_mul {x y : Ω} (hx : IsAlgZp p x) (hy : IsAlgZp p y) : IsAlgZp p (x * y) := by
   letI : Algebra ℤ_[p] Ω := Algebra.compHom Ω (algebraMap ℤ_[p] (O0 p))
@@ -36,7 +34,7 @@ def algZpMonoid : Submonoid Ω where
   mul_mem' := isAlgZp_mul
 
 /- English proof (translation)
-Rewrite using `[← Subalgebra.mem_toSubmodule, Algebra.adjoin_eq_span]`. Establish `hcl : (Submonoid.closure {x : Ω | IsAlgZp p x} : Set Ω) = {x | IsAlgZp p x}`. Rewrite using `[show {x : Ω | IsAlgZp p x} = (algZpMonoid p Ω : Set Ω) from rfl, Submonoid.closure_eq]`. Rewrite using `[hcl]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_adjoin_iff (z : Ω) :
     z ∈ Algebra.adjoin (O0 p) {x : Ω | IsAlgZp p x} ↔
@@ -47,25 +45,23 @@ theorem mem_adjoin_iff (z : Ω) :
   rw [hcl]
 
 /- English proof (translation)
-Introduce `p _ Ω _ _ h b hb`. Use `set B := Algebra.adjoin (O0 p) {x : Ω | IsAlgZp p x} with hBdef`. Set `S : Subfield Ω` to `{ carrier := {b | ∃ g : O0 p, g ≠ 0 ∧ algebraMap (O0 p) Ω g * b ∈ B} zero_mem' := ⟨1, one_ne_zero, by rw [mul_zero]; exact B.zero_mem⟩ one_mem' := ⟨1, one_ne_zero, by rw [map_one, mul_one]; exact B.one_mem⟩ add_mem' := by`. Introduce and unpack `a c ⟨g, hg, ha⟩ ⟨g', hg', hc⟩`. Use `⟨g * g', mul_ne_zero hg hg', ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e : algebraMap (O0 p) Ω (g * g') * (a + c) = algebraMap (O0 p) Ω g' * (algebraMap (O0 p) Ω g * a) + algebraMap (O0 p) Ω g * (algebraMap (O0 p) Ω g' * c)`. Rewrite using `[map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `B.add_mem (B.mul_mem (B.algebraMap_mem _) ha) (B.mul_mem (B.algebraMap_mem _) hc)`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use the proof step `mul_mem' := by`. Introduce and unpack `a c ⟨g, hg, ha⟩ ⟨g', hg', hc⟩`. Use `⟨g * g', mul_ne_zero hg hg', ?_⟩` and prove the remaining obligations. Establish `e : algebraMap (O0 p) Ω (g * g') * (a * c) = (algebraMap (O0 p) Ω g * a) * (algebraMap (O0 p) Ω g' * c)`. Rewrite using `[map_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `B.mul_mem ha hc`. Use the proof step `neg_mem' := by`. Introduce and unpack `a ⟨g, hg, ha⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨g, hg, by rw [mul_neg]; exact B.neg_mem ha⟩`. Use the proof step `inv_mem' := by`. Introduce and unpack `a ⟨g, hg, ha⟩`. Distinguish the cases in `ha0 : a = 0`. Conclude with `⟨1, one_ne_zero, by rw [ha0, inv_zero, mul_zero]; exact B.zero_mem⟩`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hg0 : algebraMap (O0 p) Ω g ≠ 0` using `fun e => hg (h.inj (by rw [e, map_zero]))`. Establish `hy0 : algebraMap (O0 p) Ω g * a ≠ 0` using `mul_ne_zero hg0 ha0`. Set `y : B` to `⟨algebraMap (O0 p) Ω g * a, ha⟩`. Establish `halg : IsAlgebraic (O0 p) y` using `(isAlgebraic_algHom_iff B.val Subtype.val_injective).1 (h.alg.isAlgebraic _)`. Establish `hnz : y ∈ nonZeroDivisors B` using `mem_nonZeroDivisors_of_ne_zero (fun e => hy0 (congrArg Subtype.val e))`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨r, hr, s, hs⟩` from `halg.exists_nonzero_dvd hnz`. Establish `hs' : algebraMap (O0 p) Ω r = algebraMap (O0 p) Ω g * a * (s : Ω)`. Use `congrArg Subtype.val hs` as an intermediate fact. Simplify `this` using `[y]`. Use `⟨r, hr, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : algebraMap (O0 p) Ω r * a⁻¹ = algebraMap (O0 p) Ω g * (s : Ω)`. Rewrite using `[hs']`. Clear the denominators using the available nonvanishing facts. Use `show algebraMap (O0 p) Ω r * a⁻¹ ∈ B`. Rewrite using `[e]`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `B.mul_mem (B.algebraMap_mem g) s.2 }`. Establish `hle : Subfield.closure (Set.range (algebraMap (O0 p) Ω) ∪ {x | IsAlgZp p x}) ≤ S`. Rewrite using `[Subfield.closure_le]`. Introduce and unpack `x (⟨c, rfl⟩ | hx)`. Conclude with `⟨1, one_ne_zero, by rw [map_one, one_mul]; exact B.algebraMap_mem c⟩`.
-
-Conclude with `⟨1, one_ne_zero, by rw [map_one, one_mul]; exact Algebra.subset_adjoin hx⟩`. Take `⟨g, hg, hgb⟩` from `hle hb`. Conclude with `⟨g, hg, (mem_adjoin_iff _).1 hgb⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_mul_mem_span : ∀ (p : ℕ) [Fact p.Prime] (Ω : Type) [Field Ω] [Algebra (O0 p) Ω], IsClo p Ω →
     ∀ b ∈ Subfield.closure (Set.range (algebraMap (O0 p) Ω) ∪ {x | IsAlgZp p x}),

@@ -36,7 +36,7 @@ def pt (χ : HChar E) {d : ℕ} (G : Matrix (Fin d) (Fin d) ℂ) (x y : Sm E a �
   (‖((chiDet a χ g : ℂˣ) : ℂ)‖ ^ 2 : ℝ) * (star (ev x g) ⬝ᵥ G *ᵥ ev y g)
 
 /- English proof (translation)
-Proceed by induction on `m using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul φ v => simp [mul_comm]`. Consider the case `add x y hx hy => simp [hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem cmp_ev {d : ℕ} (m : Sm E a ⊗[ℂ] (Fin d → ℂ)) (j : Fin d) (g : GA E a) : (cmp j m).1 g = ev m g j := by
   induction m using TensorProduct.induction_on with
@@ -45,7 +45,7 @@ theorem cmp_ev {d : ℕ} (m : Sm E a ⊗[ℂ] (Fin d → ℂ)) (j : Fin d) (g : 
   | add x y hx hy => simp [hx, hy]
 
 /- English proof (translation)
-Simplify using `only [ptIp, pt, Finset.mul_sum]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ptIp_eq {Ξ : AlgRep E a} {q : ℕ} (χ : HChar E) (G : Matrix (Fin Ξ.d) (Fin Ξ.d) ℂ) {n : ℕ} (e : Fin n → Herm E a)
     (α β : Co Ξ q) (g : GA E a) :
@@ -53,21 +53,21 @@ theorem ptIp_eq {Ξ : AlgRep E a} {q : ℕ} (χ : HChar E) (G : Matrix (Fin Ξ.d
   simp only [ptIp, pt, Finset.mul_sum]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨continuous_finset_sum _ fun i _ => (h i).cont, fun γ g => Finset.sum_congr rfl fun i _ => (h i).left γ g, fun t g => Finset.sum_congr rfl fun i _ => (h i).centre t g⟩`.
+Supply the required witnesses or components.
 -/
 theorem CInv.sum {ι : Type} (s : Finset ι) {F : ι → GA E a → ℂ} (h : ∀ i, CInv (F i)) : CInv fun g => ∑ i ∈ s, F i g :=
   ⟨continuous_finset_sum _ fun i _ => (h i).cont, fun γ g => Finset.sum_congr rfl fun i _ => (h i).left γ g,
     fun t g => Finset.sum_congr rfl fun i _ => (h i).centre t g⟩
 
 /- English proof (translation)
-The claim follows from `h.imp fun _ hR g hg => by simp [pt, hR g hg]`.
+A detailed English derivation is pending.
 -/
 theorem cs_pt_left (χ : HChar E) {d : ℕ} (G : Matrix (Fin d) (Fin d) ℂ) {x : Sm E a ⊗[ℂ] (Fin d → ℂ)} (y : Sm E a ⊗[ℂ] (Fin d → ℂ))
     (h : Cs (ev x)) : Cs (pt χ G x y) :=
   h.imp fun _ hR g hg => by simp [pt, hR g hg]
 
 /- English proof (translation)
-The claim follows from `h.imp fun _ hR g hg => by simp [pt, hR g hg]`.
+A detailed English derivation is pending.
 -/
 theorem cs_pt_right (χ : HChar E) {d : ℕ} (G : Matrix (Fin d) (Fin d) ℂ) (x : Sm E a ⊗[ℂ] (Fin d → ℂ)) {y : Sm E a ⊗[ℂ] (Fin d → ℂ)}
     (h : Cs (ev y)) : Cs (pt χ G x y) :=
@@ -163,15 +163,13 @@ def PtPos : Prop :=
     (∀ g, ∃ t : ℝ, 0 ≤ t ∧ ptIp χ G e α α g = t) ∧ ((∀ g, ptIp χ G e α α g = 0) → α = 0)
 
 /- English proof (translation)
-Introduce `E _ _ _ a ha μ _ U hU Ξ r χ G n e hD q`. Establish `hv` using `h3 E a ha U hU Ξ r χ hD.one hD.tw`. Establish `hc : ∀ α β : Co Ξ q, IsLev U Ξ α → IsLev U Ξ β → CInv (ptIp χ G e α β)` using `fun α β hα hβ => by`. Rewrite using `[show ptIp χ G e α β = _ from funext (ptIp_eq χ G e α β)]`. Conclude with `CInv.sum _ fun I => (h4 E a χ _ G _ _).2.1 (hv q α hα _) (hv q β hβ _)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun α β hα hβ hr hm => ?_, fun α β hα hβ hs => ⟨?_, ?_⟩, fun α hα hi h0 => ?_, fun β η hβ hη hs => ?_⟩` and prove the remaining obligations. Take `⟨s, hs⟩` from `hD.tw.1`. Conclude with `(h1 E a μ _ (hc α β hα hβ) (h2 E a _ (hc α β hα hβ) (.inr (h7 E a Ξ χ s hs G n e q α β hr hm)))).1`. Use `(h1 E a μ _ (hc α β hα hβ) (h2 E a _ (hc α β hα hβ) (.inl ?_))).1` and prove the remaining obligations. Conclude with `hs.imp fun R hR g hg => by simp [ptIp, hR _ g hg]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(h1 E a μ _ (hc β α hβ hα) (h2 E a _ (hc β α hβ hα) (.inl ?_))).1` and prove the remaining obligations. Conclude with `hs.imp fun R hR g hg => by simp [ptIp, hR _ g hg]`. Establish `hp` using `h9 E a Ξ χ G hD.adm n e hD.frame q α`. Conclude with `hp.2 (h8 E a μ _ (hc α α hα hα) hp.1 hi h0)`. Establish `hA` using `fun (J : Fin q → Fin n) (j : Fin n) => h5 E a μ Ξ r χ G hD.tw hD.adm (e j) (β (Matrix.vecCons (e j) fun i => e (J i))) (η fun i => e (J i)) (hv _ β hβ _) (hv _ η hη _) (hs.imp (fun h => h.imp fun R hR g hg => hR _ g hg) fun h => h.imp fun R hR g hg => hR _ g hg)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [pair, (h6 E a Ξ χ G n e q (smLie Ξ) β η _).1, (h6 E a Ξ χ G n e q (smAdj Ξ r) β η _).2]`. Rewrite using `[integral_const_mul, integral_finset_sum _ fun J _ => integrable_finset_sum _ fun j _ => (hA J j).1, integral_finset_sum _ fun J _ => integrable_finset_sum _ fun j _ => (hA J j).2.1]`. Use `congr 1`. Use `Finset.sum_congr rfl fun J _ => ?_` and prove the remaining obligations. Rewrite using `[integral_finset_sum _ fun j _ => (hA J j).1, integral_finset_sum _ fun j _ => (hA J j).2.1]`.
-
-Conclude with `Finset.sum_congr rfl fun j _ => (hA J j).2.2`.
+A detailed English derivation is pending.
 -/
 theorem pairFacts_of_steps (h1 : BddInt) (h2 : CsBdd) (h3 : LevInv) (h4 : PtInv) (h5 : AdjInt) (h6 : PtD) (h7 : RapidBdd)
     (h8 : ZeroInt) (h9 : PtPos) : PairFacts := by

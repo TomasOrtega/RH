@@ -6,11 +6,11 @@ attribute [local instance] GlobalTheory.Mem.Col2.starE Formalism.BasicNotions.Ho
 namespace GlobalTheory.Mem.Col2.AdT
 
 /- English proof (translation)
-Introduce `B X I hOk u a i hi b κ P`. Establish `hL` using `hOk.idx_ok a`. Take `⟨al, rfl⟩ : ∃ al, b = Idx.of al hi` from `⟨_, (Idx.of_get b hi _).symm⟩`. Distinguish the cases in `hP : P.1 ∈ (B.primes X).vGs`. Establish `hm : κ.2.1.1 ⟨P.1, hP⟩ ∈ ((I.idx a).levG i al ⟨P.1, hP⟩).H` using `κ.2.1.2 ⟨P.1, hP⟩ trivial`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Take `⟨g, hg, hred⟩` from `(hL.grpG i al ⟨P.1, hP⟩ _).1 (inv_mem hm)`. Take `⟨z, hz⟩` from `(GlobalTheory.TwU.exists_midLev_iff (R := B.R) I.Ch I.sel (I.tup a) (I.cst a) i P _ g).2 hg`. Conclude with `⟨g, z, hz, hL.int i al P hg, fun _ => hred, fun h => absurd hP (Q_notMem_of_ok hOk a _ h)⟩`. Establish `hP' : P.1 ∈ I.Q a` using `(@Finset.mem_union _ (Classical.decEq _) _ _ _).1 P.2 |>.resolve_left hP`. Establish `hm : κ.2.2.1 ⟨P.1, hP'⟩ ∈ ((I.idx a).levQ i al ⟨P.1, hP'⟩).H` using `κ.2.2.2 ⟨P.1, hP'⟩ trivial`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `inv_mem hm`. Rewrite `h3` using `[hL.grpQ, Subgroup.mem_subgroupOf]`. Take `⟨z, hz⟩` from `(GlobalTheory.TwU.exists_midLev_iff (R := B.R) I.Ch I.sel (I.tup a) (I.cst a) i P _ _).2 h3`. Conclude with `⟨_, z, hz, ((κ.2.2.1 ⟨P.1, hP'⟩)⁻¹).2, fun h => absurd h hP, fun _ => rfl⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_midAt_liftsInv : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → ∀ (u : B.Word) (a : I.ι) (i : ℕ) (hi : i < B.R.m) (b : (I.stp u a i).β) (κ : (I.stp u a i).G b) (P : SBof I a), ∃ g z, MidAt I hi b P g z ∧ LiftsInv I κ P g := by
   intro B X I hOk u a i hi b κ P

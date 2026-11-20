@@ -11,9 +11,9 @@ noncomputable def lineHom (a w : Fin D → ℂ) : MvPolynomial (Fin D) ℂ →�
   aeval fun i => Polynomial.C (a i) + Polynomial.C (w i) * Polynomial.X
 
 /- English proof (translation)
-Proceed by induction on `F using MvPolynomial.induction_on with`. Consider the case `C c => simp [lineHom]`. Consider the case `add p q hp hq => rw [map_add, Polynomial.eval_add, hp, hq, MvPolynomial.eval_add]`. Consider the case `mul_X p i hp`. Rewrite using `[map_mul, Polynomial.eval_mul, hp, MvPolynomial.eval_mul, MvPolynomial.eval_X]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[lineHom]`.
+Simplify using the standard rewrite rules.
 -/
 theorem eval_lineHom (a w : Fin D → ℂ) (F : MvPolynomial (Fin D) ℂ) (s : ℂ) :
     (lineHom a w F).eval s = eval (fun i => a i + w i * s) F := by

@@ -15,17 +15,17 @@ private def tw (Q : Type) [CommRing Q] [Algebra O Q] (A B : M4 O) (q : Q) : M4 (
   Matrix.of fun i j => TrivSqZeroExt.inl (A i j) + TrivSqZeroExt.inr (B i j • q)
 
 /- English proof (translation)
-Simplify using `[tw]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem tw_fst (A B : M4 O) (q : Q) (i j : Fin 4) : (tw Q A B q i j).fst = A i j := by simp [tw]
 
 /- English proof (translation)
-Simplify using `[tw]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem tw_snd (A B : M4 O) (q : Q) (i j : Fin 4) : (tw Q A B q i j).snd = B i j • q := by simp [tw]
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `rw [tw_fst]; by_cases h : i = j <;> simp [Matrix.one_apply, h]`. Apply the tactic sequence `rw [tw_snd]; by_cases h : i = j <;> simp [Matrix.one_apply, h]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem tw_one (B : M4 O) : tw Q 1 B 0 = 1 := by
   ext i j
@@ -33,9 +33,9 @@ private theorem tw_one (B : M4 O) : tw Q 1 B 0 = 1 := by
   · rw [tw_snd]; by_cases h : i = j <;> simp [Matrix.one_apply, h]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[tw_fst, Matrix.mul_apply, TrivSqZeroExt.fst_sum]`. Establish `e1` using `congrFun (congrFun h1 i) j`. Establish `e2` using `congrFun (congrFun h2 i) j`. Rewrite `e1`, `e2` using `[Matrix.mul_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e2` using `[Matrix.smul_apply, smul_eq_mul]`. Simplify using `only [tw_fst, tw_snd, Matrix.mul_apply, TrivSqZeroExt.snd_sum, TrivSqZeroExt.snd_mul, op_smul_eq_smul, smul_smul, Finset.sum_add_distrib, ← Finset.sum_smul, smul_add]`. Rewrite using `[e2, mul_comm u, add_comm, ← e1]`. Simplify using `only [mul_comm]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem tw_mul (A B A' B' C : M4 O) (q q' : Q) (u : O) (h1 : B * A' = C) (h2 : A * B' = u • C) :
     tw Q (A * A') C (q + u • q') = tw Q A B q * tw Q A' B' q' := by
@@ -51,7 +51,7 @@ private theorem tw_mul (A B A' B' C : M4 O) (q q' : Q) (u : O) (h1 : B * A' = C)
     simp only [mul_comm]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [adj_apply, TrivSqZeroExt.fst_smul, tw_fst]`. Simplify using `only [adj_apply, TrivSqZeroExt.snd_smul, tw_snd, smul_assoc]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private theorem tw_adj (A B : M4 O) (q : Q) : adj (tw Q A B q) = tw Q (adj A) (adj B) q := by
   ext i j
@@ -59,9 +59,9 @@ private theorem tw_adj (A B : M4 O) (q : Q) : adj (tw Q A B q) = tw Q (adj A) (a
   · simp only [adj_apply, TrivSqZeroExt.snd_smul, tw_snd, smul_assoc]
 
 /- English proof (translation)
-Unfold `IsGSp at *`. Establish `h` using `tw_mul (adj A) (adj B) A B (adj B * A) q q (-1) rfl (by rw [h2]; simp)`. Rewrite using `[tw_adj, ← h, h1]`. Use extensionality with `i j`. Apply the tactic sequence `rw [tw_fst]; by_cases h : i = j <;> simp [Matrix.one_apply, h, TrivSqZeroExt.algebraMap_eq_inl]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `rw [tw_snd]; by_cases h : i = j <;> simp [Matrix.one_apply, h, TrivSqZeroExt.algebraMap_eq_inl]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem tw_gsp (A B : M4 O) (q : Q) (ν : O) (h1 : IsGSp ν A) (h2 : adj B * A = -(adj A * B)) :
     IsGSp (algebraMap O _ ν) (tw Q A B q) := by
@@ -73,7 +73,7 @@ private theorem tw_gsp (A B : M4 O) (q : Q) (ν : O) (h1 : IsGSp ν A) (h2 : adj
   · rw [tw_snd]; by_cases h : i = j <;> simp [Matrix.one_apply, h, TrivSqZeroExt.algebraMap_eq_inl]
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Xm, Matrix.single_apply, Matrix.diagonal_mul, Matrix.mul_diagonal, Matrix.add_mul, Matrix.mul_add, h2, h3]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem dg_comm (d : Fin 4 → O) (u : O) (h2 : d 2 = u * d 0) (h3 : d 3 = u * d 1) :
     Matrix.diagonal d * Xm O = u • (Xm O * Matrix.diagonal d) := by
@@ -81,14 +81,14 @@ private theorem dg_comm (d : Fin 4 → O) (u : O) (h2 : d 2 = u * d 0) (h3 : d 3
   fin_cases i <;> fin_cases j <;> simp [Xm, Matrix.single_apply, Matrix.diagonal_mul, Matrix.mul_diagonal, Matrix.add_mul, Matrix.mul_add, h2, h3]
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [adj_apply, sgn, Fin.rev, Matrix.diagonal_apply]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem adj_dg (d : Fin 4 → O) : adj (Matrix.diagonal d) = Matrix.diagonal fun i => d i.rev := by
   ext i j
   fin_cases i <;> fin_cases j <;> simp [adj_apply, sgn, Fin.rev, Matrix.diagonal_apply]
 
 /- English proof (translation)
-Unfold `IsGSp`. Rewrite using `[adj_dg, Matrix.diagonal_mul_diagonal, Matrix.smul_one_eq_diagonal]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Rewrite using `[mul_comm, h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 private theorem dg_gsp (d : Fin 4 → O) (ν : O) (h : ∀ i, d i * d i.rev = ν) : IsGSp ν (Matrix.diagonal d) := by
   unfold IsGSp
@@ -98,7 +98,7 @@ private theorem dg_gsp (d : Fin 4 → O) (ν : O) (h : ∀ i, d i * d i.rev = ν
   rw [mul_comm, h]
 
 /- English proof (translation)
-Rewrite using `[adj_dg]`. Use extensionality with `i j`. Rewrite using `[Matrix.neg_apply, Matrix.mul_diagonal, Matrix.diagonal_mul, adj_apply, Matrix.mul_diagonal, Matrix.mul_diagonal]`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Xm, Matrix.single_apply, sgn, Fin.rev]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem dg_adj (d : Fin 4 → O) :
     adj (Xm O * Matrix.diagonal d) * Matrix.diagonal d = -(adj (Matrix.diagonal d) * (Xm O * Matrix.diagonal d)) := by
@@ -108,7 +108,7 @@ private theorem dg_adj (d : Fin 4 → O) :
   fin_cases i <;> fin_cases j <;> simp [Xm, Matrix.single_apply, sgn, Fin.rev]
 
 /- English proof (translation)
-Use `show adj _ = -_`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [adj_apply, sgn, Xm, Fin.rev, Matrix.single_apply]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 private theorem Xm_sp : Xm O ∈ sp4 O := by
   show adj _ = -_
@@ -116,33 +116,33 @@ private theorem Xm_sp : Xm O ∈ sp4 O := by
   fin_cases i <;> fin_cases j <;> simp [adj_apply, sgn, Xm, Fin.rev, Matrix.single_apply]
 
 /- English proof (translation)
-Apply the tactic sequence `fin_cases i <;> fin_cases j <;> first | exact absurd (by decide) h | simp [Xm, Matrix.single_apply]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem Xm_wt (i j : Fin 4) (h : wt i j ≠ -wPs) : Xm O i j = 0 := by
   fin_cases i <;> fin_cases j <;> first | exact absurd (by decide) h | simp [Xm, Matrix.single_apply]
 
 /- English proof (translation)
-Introduce `_` and use `h.comp _`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem ac_lc {Γ R : Type} [TopologicalSpace Γ] [CommRing R] (I : Ideal R) {f : Γ → R} (h : IsLocallyConstant f) :
     AdicCont I f := fun _ => h.comp _
 
 /- English proof (translation)
-Introduce `N` and use `by simp only [map_add]; exact (h N).add (h' N)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem ac_add {Γ R : Type} [TopologicalSpace Γ] [CommRing R] {I : Ideal R} {f g : Γ → R} (h : AdicCont I f)
     (h' : AdicCont I g) : AdicCont I fun x => f x + g x := fun N => by
   simp only [map_add]; exact (h N).add (h' N)
 
 /- English proof (translation)
-Introduce `N` and use `by simp only [map_mul]; exact (h N).mul (h' N)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem ac_mul {Γ R : Type} [TopologicalSpace Γ] [CommRing R] {I : Ideal R} {f g : Γ → R} (h : AdicCont I f)
     (h' : AdicCont I g) : AdicCont I fun x => f x * g x := fun N => by
   simp only [map_mul]; exact (h N).mul (h' N)
 
 /- English proof (translation)
-Introduce `N` and use `by have hle : maximalIdeal O ^ N ≤ (maximalIdeal R ^ N).comap (algebraMap O R) := by refine le_trans (Ideal.pow_right_mono (fun y hy => ?_) N) (Ideal.le_comap_pow _ N) exact fun hu => hy (IsLocalHom.map_nonunit y hu) exact (h N).comp (Ideal.quotientMap _ (algebraMap O R) hle)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem ac_map {Γ R : Type} [TopologicalSpace Γ] [IsLocalRing O] [CommRing R] [Algebra O R] [IsCO O R] {f : Γ → O}
     (h : AdicCont (maximalIdeal O) f) : AdicCont (maximalIdeal R) fun x => algebraMap O R (f x) := fun N => by
@@ -152,7 +152,7 @@ private theorem ac_map {Γ R : Type} [TopologicalSpace Γ] [IsLocalRing O] [Comm
   exact (h N).comp (Ideal.quotientMap _ (algebraMap O R) hle)
 
 /- English proof (translation)
-Distinguish the cases in `e : i = j`. Substitute `e` using the available equality. Simplify using `using h i`. Simplify using `only [Matrix.diagonal_apply_ne _ e]`. Conclude with `ac_lc _ (IsLocallyConstant.const _)`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem ac_dg {Γ : Type} [TopologicalSpace Γ] {I : Ideal O} {d : Γ → Fin 4 → O} (h : ∀ i, AdicCont I fun g => d g i)
     (i j : Fin 4) : AdicCont I fun g => Matrix.diagonal (d g) i j := by
@@ -161,7 +161,7 @@ private theorem ac_dg {Γ : Type} [TopologicalSpace Γ] {I : Ideal O} {d : Γ �
   · simp only [Matrix.diagonal_apply_ne _ e]; exact ac_lc _ (IsLocallyConstant.const _)
 
 /- English proof (translation)
-Use `ac_add (ac_map (R := TrivSqZeroExt O Q) hA) (ac_mul (ac_map hB) (ac_lc _ (hq.comp TrivSqZeroExt.inr)))` as an intermediate fact. Use `this using 2 with g` and compare the differences between its conclusion and the goal. Apply the tactic sequence `ext <;> simp [tw_fst, tw_snd, TrivSqZeroExt.algebraMap_eq_inl]`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem ac_tw {Γ : Type} [TopologicalSpace Γ] [IsLocalRing O] [IsCO O (TrivSqZeroExt O Q)] {A B : Γ → M4 O} {q : Γ → Q}
     (i j : Fin 4) (hA : AdicCont (maximalIdeal O) fun g => A g i j) (hB : AdicCont (maximalIdeal O) fun g => B g i j)
@@ -171,7 +171,7 @@ private theorem ac_tw {Γ : Type} [TopologicalSpace Γ] [IsLocalRing O] [IsCO O 
   ext <;> simp [tw_fst, tw_snd, TrivSqZeroExt.algebraMap_eq_inl]
 
 /- English proof (translation)
-Rewrite using `[← res_map (TrivSqZeroExt.fstHom O O Q) x]`. Conclude with `(res O O).commutes _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem res_fst [IsLocalRing O] [IsNoetherianRing O] [IsAdicComplete (maximalIdeal O) O] [IsCO O (TrivSqZeroExt O Q)]
     (x : TrivSqZeroExt O Q) : res O _ x = residue O x.fst := by
@@ -195,7 +195,7 @@ end Abs
 variable {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} {D : Raw Ω c}
 
 /- English proof (translation)
-Use `⟨?_, Matrix.map_one _ (map_zero _) (map_one _)⟩` and prove the remaining obligations. Rewrite using `[← Matrix.diagonal_one]`. Conclude with `dg_gsp _ _ fun _ => mul_one _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem symplectic_integral_one {O R : Type} [CommRing O] [IsLocalRing O] [CommRing R] [Algebra O R] [IsCO O R] :
     Sp1 O (1 : M4 R) := by
@@ -204,7 +204,7 @@ private theorem symplectic_integral_one {O R : Type} [CommRing O] [IsLocalRing O
   exact dg_gsp _ _ fun _ => mul_one _
 
 /- English proof (translation)
-Use `⟨Ex.mult_map D f r h.mult, Ex.unr_map D f r h.unr, fun _ => symplectic_integral_one, rfl, fun v g => ?_⟩` and prove the remaining obligations. Use `h.loc v g` as an intermediate fact. Rewrite `this`, the goal using `[mul_one, one_mul]`. Use extensionality with `a b`. Rewrite using `[Lift.map_hom, this]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -220,39 +220,35 @@ private theorem fr_map {L : LocBase D} {R R' : Type} [CommRing R] [Algebra c.O R
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Use `haveI : IsCO c.O (TrivSqZeroExt c.O Q) := co_sqz c.O c.O _ fun _ => rfl`. Take `⟨-, -, f3, -, -, f6, -, -, -, -, f11, -⟩` from `facts D hD`. Establish `h1 : z 1 = 0`. Use `coc 1 1` as an intermediate fact. Rewrite `this` using `[mul_one, map_one, Units.val_one, one_smul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `left_eq_add.1 this`. Establish `h2 : ∀ g, (D.ps 2 g : c.O) = ((D.Psi⁻¹ g : c.Oˣ) : c.O) * D.ps 0 g` using `fun g => by`. Rewrite using `[← Units.val_mul]`. Use `congr 1`. Use `show D.al g = (D.Psi g)⁻¹ * (D.al g * D.Psi g)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_comm, mul_inv_cancel_right]`. Establish `h3 : ∀ g, (D.ps 3 g : c.O) = ((D.Psi⁻¹ g : c.Oˣ) : c.O) * D.ps 1 g` using `fun g => by`. Rewrite using `[← Units.val_mul]`. Use `congr 1`. Use `show 1 = (D.Psi g)⁻¹ * D.Psi g`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[inv_mul_cancel]`. Establish `c0 : ∀ i j, AdicCont (maximalIdeal c.O) fun g => D.r0 g i j` using `ac_dg (d := fun g i => (D.ps i g : c.O)) f11`. Set `r : Lift c.O D.rbar (TrivSqZeroExt c.O Q)` to `{ hom := twRep D.ps _ h2 h3 z coc h1 cont := fun i j => ac_tw (A := fun g => D.r0 g) (B := fun g => Xm c.O * D.r0 g) i j (c0 i j) (by`. Establish `e : ∀ g, (Xm c.O * D.r0 g) i j = Xm c.O i j * (D.ps j g : c.O)` using `fun g => Matrix.mul_diagonal _ _ _ _`. Simplify using `only [e]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `ac_mul (ac_lc _ (IsLocallyConstant.const _)) (f11 j)) lc`. Use `red := fun g i j => (res_fst _).trans (congrArg (residue c.O) (tw_fst _ _ _ i j)) }`. Establish `hr : ∀ g, r.hom g = tw Q (D.r0 g) (Xm c.O * D.r0 g) (z g)` using `fun _ => rfl`. Take `⟨ρ, hρ, hρ'⟩` from `UpperTheory.exists_local_first_order_lifts D hD (fun v => (-m v) • Xm c.O) fun v => (sp4 c.O).smul_mem _ Xm_sp`. Take `⟨yB, hyB, -⟩` from `L.univ _ ρ hρ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hc : ∀ (v : D.T) (g : G ℚ Ω), (-m v) • Xm c.O * D.r0 g - D.r0 g * (-m v) • Xm c.O = (((D.Psi⁻¹ g : c.Oˣ) : c.O) * m v - m v) • (Xm c.O * D.r0 g)` using `fun v g => by`. Establish `: D.r0 g * Xm c.O = _ • (Xm c.O * D.r0 g)` using `dg_comm (fun i => (D.ps i g : c.O)) _ (h2 g) (h3 g)`. Rewrite using `[smul_mul_assoc, mul_smul_comm, this, smul_smul, ← sub_smul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hy : ∀ (v : D.T) (g : D.Gp v) i j, (yB ((L.ρ v).hom g i j)).fst = D.r0 g i j ∧ (yB ((L.ρ v).hom g i j)).snd = (((D.Psi⁻¹ g : c.Oˣ) : c.O) * m v - m v) * (Xm c.O * D.r0 g) i j` using `fun v g i j => by`. Establish `e : yB ((L.ρ v).hom g i j) = (ρ v).hom g i j` using `by rw [← hyB v]; rfl`. Rewrite using `[e, (hρ' v g i j).1, (hρ' v g i j).2, hc]`. Conclude with `⟨rfl, rfl⟩`. Take `⟨w1, w2⟩` from `UpperTheory.smoothPt_weightedPresentation_of_pointDerivations D hD L yB (-wPs) fun v g i j => ⟨(hy v g i j).1, fun h => by`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : (Xm c.O * D.r0 g) i j = Xm c.O i j * (D.ps j g : c.O)` using `Matrix.mul_diagonal _ _ _ _`. Rewrite using `[(hy v g i j).2, e, Xm_wt i j h, zero_mul, mul_zero]⟩`. Set `p : DualNumber c.O →ₐ[c.O] TrivSqZeroExt c.O Q` to `TrivSqZeroExt.map (Algebra.linearMap c.O Q)`. Establish `p1 : ∀ x, (p x).fst = x.fst` using `fun x => TrivSqZeroExt.fst_map _ x`. Establish `p2 : ∀ x, (p x).snd = algebraMap c.O Q x.snd` using `fun x => TrivSqZeroExt.snd_map _ x`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hF : IsFr L (p.comp yB) r fun _ => 1`. Use `⟨fun g => ?_, fun A hA g hg hg' => ?_, fun _ => symplectic_integral_one, rfl, fun v g => ?_⟩` and prove the remaining obligations. Rewrite using `[hr]`. Use `tw_gsp _ _ _ _ (dg_gsp (fun i => (D.ps i g : c.O)) _ fun i => ?_) (dg_adj fun i => (D.ps i g : c.O))` and prove the remaining obligations. Rewrite using `[← f6 i]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Both sides reduce to the same expression. Establish `e : D.r0 g = 1` using `by show Matrix.diagonal (fun i => (D.ps i g : c.O)) = 1`. Simplify using `only [fun i => f3 i A hA g hg hg', Units.val_one, Matrix.diagonal_one]`. Rewrite using `[hr, unr A hA g hg hg', e, tw_one]`. Rewrite using `[mul_one, one_mul, hr]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Matrix.ext fun i j => TrivSqZeroExt.ext ?_ ?_` and prove the remaining obligations. Rewrite using `[tw_fst, Matrix.map_apply, AlgHom.comp_apply, p1, (hy v g i j).1]`. Rewrite using `[tw_snd, Matrix.map_apply, AlgHom.comp_apply, p2, (hy v g i j).2, hm v g g.2, map_mul, Algebra.smul_def, mul_comm]`. Take `⟨y, ⟨y1, y2, y3⟩, -⟩` from `F.univ _ _ _ _ hF`. Establish `y2' : ∀ g i j, y (F.r.hom g i j) = tw Q (D.r0 g) (Xm c.O * D.r0 g) (z g) i j` using `fun g i j => by`.
+Both sides reduce to the same expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hr, ← y2]`. Both sides reduce to the same expression. Establish `y3' : ∀ v i j, y (F.α v i j) = (1 : M4 (TrivSqZeroExt c.O Q)) i j` using `fun v i j => congrFun (congrFun (y3 v) i) j`. Set `q : TrivSqZeroExt c.O Q →ₐ[c.O] c.O` to `TrivSqZeroExt.fstHom c.O c.O Q`. Establish `hq : ∀ x, q x = x.fst` using `fun _ => rfl`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Establish `hfst : q.comp y = F.W.origin F.org`. Use `(F.univ _ _ _ _ (fr_map hF q)).unique ⟨by rw [AlgHom.comp_assoc, y1], by rw [← y2]; rfl, fun v => ?_⟩ ⟨?_, Lift.ext (MonoidHom.ext fun g => Matrix.ext fun i j => ?_), F.at0α⟩` and prove the remaining obligations. Use extensionality with `i j : 1`. Rewrite using `[Matrix.map_apply, AlgHom.comp_apply, y3']`. Apply the tactic sequence `by_cases h : i = j <;> simp [Matrix.one_apply, h]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[F.at0i]`. Use `AlgHom.ext fun x => ?_` and prove the remaining obligations. Rewrite using `[AlgHom.comp_apply, AlgHom.comp_apply, hq, p1, w1]`. Rewrite using `[Lift.map_hom, Lift.map_hom, F.at0r, hr, hq, tw_fst]`. Take `⟨Db, hDb, e1⟩` from `(der_hom c.O F.U c.O Q (F.W.origin F.org) fun x => (y x).snd).2 ⟨y, fun x => ⟨by rw [← hfst]; rfl, rfl⟩⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨DB, hDB, e2⟩` from `(der_hom c.O L.B c.O c.O (L.W.origin L.org) fun x => (yB x).snd).2 ⟨yB, fun x => ⟨w1 x, rfl⟩⟩`. Use `⟨Db, hDb, DB, hDB, fun i hi x hx => ?_, fun x => ?_, fun g i j => ?_, fun v i j => ?_⟩` and prove the remaining obligations. Rewrite using `[e2]`. Conclude with `w2 i hi x hx`. Rewrite using `[e1, e2] show ((y.comp F.i) x).snd = _`.
-
-Rewrite using `[y1, AlgHom.comp_apply, p2]`. Rewrite using `[e1] show (y _).snd = _`. Rewrite using `[y2', tw_snd]`. Rewrite using `[e1] show (y _).snd = _`. Rewrite using `[y3']`.
-
-Apply the tactic sequence `by_cases h : i = j <;> simp [Matrix.one_apply, h]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 private theorem main (hD : D.Good) (L : LocBase D) (F : Fr D L) (Q : Type) [CommRing Q] [Algebra c.O Q] [Module c.Oᵐᵒᵖ Q]
     [IsCentralScalar c.O Q] [Module.Finite c.O Q] (z : G ℚ Ω → Q) (lc : IsLocallyConstant z)
@@ -354,9 +350,9 @@ private theorem main (hD : D.Good) (L : LocBase D) (F : Fr D L) (Q : Type) [Comm
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Introduce `Ω _ _ _ l _ c D hD L F a z hz`. Establish `hm : ∀ v : D.T, ∃ m : c.O, ∀ g ∈ D.Gp v, z g = algebraMap c.O (c.O ⧸ Ideal.span {a}) (((D.Psi⁻¹ g : c.Oˣ) : c.O) * m - m)` using `fun v => by`. Take `⟨m, hm⟩` from `hz.loc v v.2`. Take `⟨m, rfl⟩` from `Ideal.Quotient.mk_surjective m`. Conclude with `⟨m, fun g hg => by rw [hm g hg, map_sub, map_mul]; rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `choose m hm using hm`. Take `⟨Db, h1, DB, h2, h3, h4, h5, h6⟩` from `main hD L F (c.O ⧸ Ideal.span {a}) z hz.lc (fun g h => by rw [hz.coc, Algebra.smul_def]; rfl) hz.unr m hm`. Conclude with `⟨Db, h1, DB, h2, h3, h4, fun g i j => by rw [h5, Algebra.smul_def]; rfl, h6⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.exists_quotientDerivation_of_shaCocycle :
     ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} (D : Raw Ω c), D.Good → ∀ (L : LocBase D) (F : Fr D L) (a : c.O) (z : G ℚ Ω → c.O ⧸ Ideal.span {a}), D.ShaCoc a z → ∃ Db ∈ QDer (F.W.origin F.org) a, ∃ DB ∈ PtDer (L.W.origin L.org) c.O, HasWt L.W.part (-wPs) DB ∧ (∀ x, Db (F.i x) = Ideal.Quotient.mk _ (DB x)) ∧ (∀ g i j, Db (F.r.hom g i j) = Ideal.Quotient.mk _ ((Xm c.O * D.r0 g) i j) * z g) ∧ ∀ v i j, Db (F.α v i j) = 0 := by

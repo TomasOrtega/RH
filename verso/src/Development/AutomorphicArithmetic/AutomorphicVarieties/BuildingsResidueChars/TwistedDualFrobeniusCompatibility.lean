@@ -10,9 +10,9 @@ open GlobalTheory.GalOfCusp UpperTheory.V UpperTheory.V.Af UpperTheory.V.Af.Bc U
 open scoped Matrix
 
 /- English proof (translation)
-Rewrite `h` using `[← Matrix.charpoly_map]`. Establish `h3` using `GlobalTheory.charpoly_smul_inv_of_charpoly_eq_prod n (Matrix.GeneralLinearGroup.map φ M) (φ t) _ h`. Establish `h4 : (t • ((M⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K)).map φ = φ t • (((Matrix.GeneralLinearGroup.map φ M)⁻¹ : GL (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ)`. Rewrite using `[← map_inv]`. Use extensionality with `i j`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Simplify using `only [Matrix.map_apply, Matrix.smul_apply, smul_eq_mul, map_mul]`. Both sides reduce to the same expression. Rewrite using `[← Matrix.transpose_smul, Matrix.charpoly_transpose, ← Matrix.charpoly_map, h4, h3, Multiset.map_map]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem eig_dual {K : Type} [Field K] (φ : K →+* ℂ) {n : ℕ} (M : GL (Fin n) K) (t : K) (S : Multiset ℂ)
     (h : (M : Matrix (Fin n) (Fin n) K).charpoly.map φ = (S.map fun b => X - C b).prod) :
@@ -30,14 +30,14 @@ private theorem eig_dual {K : Type} [Field K] (φ : K →+* ℂ) {n : ℕ} (M : 
   rfl
 
 /- English proof (translation)
-The claim follows from `HeightOneSpectrum.ext ((GlobalTheory.Mem.Chr.conjPl_iff_comap _ _ _).1 (conjPl_conjSrc _ w))`.
+A detailed English derivation is pending.
 -/
 private theorem cPl_eq {E : Type} [Field E] [NumberField E] [IsCMField E] (w : HeightOneSpectrum (𝓞 E)) :
     cPl w = preplace (IsCMField.complexConj E).toRingEquiv w :=
   HeightOneSpectrum.ext ((GlobalTheory.Mem.Chr.conjPl_iff_comap _ _ _).1 (conjPl_conjSrc _ w))
 
 /- English proof (translation)
-Use `show Nat.card (𝓞 K ⧸ (preplace τ v).asIdeal) = Nat.card (𝓞 K ⧸ v.asIdeal)`. Use `Nat.card_congr (Ideal.quotientEquiv _ _ (RingOfIntegers.mapRingEquiv τ) ?_).toEquiv` and prove the remaining obligations. Conclude with `(Ideal.map_comap_of_surjective (RingOfIntegers.mapRingEquiv τ : 𝓞 K →+* 𝓞 K) (RingOfIntegers.mapRingEquiv τ).surjective v.asIdeal).symm`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem normV_preplace {K : Type} [Field K] [NumberField K] (τ : K ≃+* K) (v : HeightOneSpectrum (𝓞 K)) :
     normV (preplace τ v) = normV v := by
@@ -47,7 +47,7 @@ private theorem normV_preplace {K : Type} [Field K] [NumberField K] (τ : K ≃+
     (RingOfIntegers.mapRingEquiv τ).surjective v.asIdeal).symm
 
 /- English proof (translation)
-Use `⟨conjGal_mem_Dec h hA hg.1, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[← val_lt_one hA, map_sub, apply_conjGal, map_pow]`. Conclude with `hg.2 _ ((A'.valuation_le_one_iff _).2 ((hA x).2 ((A.valuation_le_one_iff _).1 hx)))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isFrob_conjGal {K Ω : Type} [Field K] [NumberField K] [Field Ω] [Algebra K Ω] {τ : K ≃+* K} {σ : Ω ≃+* Ω}
     (h : IsLift τ σ) {A A' : ValuationSubring Ω} (hA : ∀ x, σ x ∈ A' ↔ x ∈ A) {q : ℕ} {g : G K Ω}
@@ -57,9 +57,9 @@ private theorem isFrob_conjGal {K Ω : Type} [Field K] [NumberField K] [Field Ω
   exact hg.2 _ ((A'.valuation_le_one_iff _).2 ((hA x).2 ((A.valuation_le_one_iff _).1 hx)))
 
 /- English proof (translation)
-Take `⟨j, hj⟩` from `hc`. Introduce `x`. Use `c.symm_apply_eq.2 (j.injective ?_)` and prove the remaining obligations. Rewrite using `[hj]`. Establish `h` using `IsCMField.complexEmbedding_complexConj F (j.comp (algebraMap F Ω)) x`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(Complex.conj_conj _).symm.trans (congrArg (starRingEnd ℂ) h.symm)`.
+A detailed English derivation is pending.
 -/
 private theorem isLift_conj {F Ω : Type} [Field F] [NumberField F] [IsCMField F] [Field Ω] [Algebra F Ω]
     {c : G (maximalRealSubfield F) Ω} (hc : IsConjEl c) :
@@ -75,14 +75,14 @@ private noncomputable def dPerp {k : Type} [Field k] {a : ℕ} (W : Submodule k 
   W.dualAnnihilator.comap (dotProductEquiv k (Fin a)).toLinearMap
 
 /- English proof (translation)
-Simplify using `[dPerp, Submodule.mem_dualAnnihilator]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem mem_dPerp {k : Type} [Field k] {a : ℕ} (W : Submodule k (Fin a → k)) (y : Fin a → k) :
     y ∈ dPerp W ↔ ∀ x ∈ W, y ⬝ᵥ x = 0 := by
   simp [dPerp, Submodule.mem_dualAnnihilator]
 
 /- English proof (translation)
-The claim follows from `(Submodule.orderIsoMapComap (dotProductEquiv k (Fin a))).symm.isCompl (Subspace.isCompl_dualAnnihilator h)`.
+A detailed English derivation is pending.
 -/
 private theorem isCompl_dPerp {k : Type} [Field k] {a : ℕ} {W U : Submodule k (Fin a → k)}
     (h : IsCompl W U) : IsCompl (dPerp W) (dPerp U) :=
@@ -90,11 +90,11 @@ private theorem isCompl_dPerp {k : Type} [Field k] {a : ℕ} {W U : Submodule k 
     (Subspace.isCompl_dualAnnihilator h)
 
 /- English proof (translation)
-Use extensionality with `y`. Rewrite using `[mem_dPerp]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[← Subspace.dualAnnihilator_dualCoannihilator_eq (W := W), Submodule.mem_dualCoannihilator]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `φ hφ`. Take `⟨x, rfl⟩` from `(dotProductEquiv k (Fin a)).surjective φ`. Use `h x hφ` as an intermediate fact. Rewrite `this` using `[dotProduct_comm]`. Simplify using `using this`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `hy x hx`. Rewrite using `[dotProduct_comm]`. Conclude with `(mem_dPerp W x).1 hx y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem dPerp_dPerp {k : Type} [Field k] {a : ℕ} (W : Submodule k (Fin a → k)) :
     dPerp (dPerp W) = W := by
@@ -113,9 +113,9 @@ private theorem dPerp_dPerp {k : Type} [Field k] {a : ℕ} (W : Submodule k (Fin
     exact (mem_dPerp W x).1 hx y hy
 
 /- English proof (translation)
-Introduce `y hy`. Rewrite `hy`, the goal using `[mem_dPerp]`. Introduce `x hx`. Use `hy _ (h x hx)` as an intermediate fact. Rewrite using `[dotProduct_comm, Matrix.dotProduct_mulVec, ← Matrix.mulVec_transpose, dotProduct_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this`.
+A detailed English derivation is pending.
 -/
 private theorem mulVec_mem_dPerp {k : Type} [Field k] {a : ℕ} {W : Submodule k (Fin a → k)}
     (M : Matrix (Fin a) (Fin a) k) (h : ∀ v ∈ W, M.transpose.mulVec v ∈ W) :
@@ -128,11 +128,11 @@ private theorem mulVec_mem_dPerp {k : Type} [Field k] {a : ℕ} {W : Submodule k
   exact this
 
 /- English proof (translation)
-Introduce `Γ k _ _ a r hr W hW`. Take `⟨U, hU, hc⟩` from `hr (dPerp W) (by`. Introduce `g`. Apply `mulVec_mem_dPerp` to reduce the goal to its premises. Introduce `v hv`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hW g⁻¹ v hv` as an intermediate fact. Rewrite using `[coe_dualRep, inv_inv] at this)` and apply the resulting hypothesis. Use `⟨dPerp U, ?_, ?_⟩` and prove the remaining obligations. Introduce `g`. Apply `mulVec_mem_dPerp` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `v hv`. Rewrite using `[coe_dualRep, Matrix.transpose_transpose]`. Conclude with `hU g⁻¹ v hv`. Use `isCompl_dPerp hc` as an intermediate fact. Rewrite `this` using `[dPerp_dPerp]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 private theorem ss_dual : ∀ (Γ k : Type) [Group Γ] [Field k] (a : ℕ) (r : Γ →* GL (Fin a) k),
     IsSSRep r → IsSSRep (GlobalTheory.MonoConj.dualRep r) := by
@@ -153,11 +153,11 @@ private theorem ss_dual : ∀ (Γ k : Type) [Group Γ] [Field k] (a : ℕ) (r : 
     rwa [dPerp_dPerp] at this
 
 /- English proof (translation)
-Establish `key : ∀ W, IsInv (tw r χ) W ↔ IsInv r W` using `fun W => by`. Prove the components needed by the constructor for the conclusion. Introduce `h g v hv`. Use `W.smul_mem ((χ g : k)⁻¹) (h g v hv)` as an intermediate fact. Rewrite `this` using `[tw_val, Matrix.smul_mulVec, smul_smul, inv_mul_cancel₀ (Units.ne_zero _), one_smul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Introduce `h g v hv`. Rewrite using `[tw_val, Matrix.smul_mulVec]`. Conclude with `W.smul_mem _ (h g v hv)`. Introduce `W hW`. Take `⟨W', hW', hc⟩` from `h W ((key W).1 hW)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨W', (key W').2 hW', hc⟩`.
+A detailed English derivation is pending.
 -/
 private theorem ss_tw {Γ k : Type} [Group Γ] [Field k] {n : ℕ} (r : Γ →* GL (Fin n) k) (χ : Γ →* kˣ)
     (h : IsSSRep r) : IsSSRep (tw r χ) := by
@@ -174,7 +174,7 @@ private theorem ss_tw {Γ k : Type} [Group Γ] [Field k] {n : ℕ} (r : Γ →* 
   exact ⟨W', (key W').2 hW', hc⟩
 
 /- English proof (translation)
-Introduce `W hW`. Take `⟨W', hW', hc⟩` from `h W fun g v hv => by`. Take `⟨g, rfl⟩` from `hf g`. Conclude with `hW g v hv`. Conclude with `⟨W', fun g v hv => hW' (f g) v hv, hc⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem ss_comp {Γ k : Type} [Group Γ] [Field k] {n : ℕ} (r : Γ →* GL (Fin n) k) (f : Γ →* Γ)
     (hf : Function.Surjective f) (h : IsSSRep r) : IsSSRep (r.comp f) := by
@@ -185,16 +185,14 @@ private theorem ss_comp {Γ k : Type} [Group Γ] [Field k] {n : ℕ} (r : Γ →
   exact ⟨W', fun g v hv => hW' (f g) v hv, hc⟩
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.CyclotomicBarContinuous.cont_cycBar F Ω l`.
+A detailed English derivation is pending.
 -/
 private theorem cont_cycBar (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] (l : ℕ) [Fact l.Prime] :
     Continuous (cycBar F Ω l) :=
   _root_.UpperTheory.Reformulated.B.CyclotomicBarContinuous.cont_cycBar F Ω l
 
 /- English proof (translation)
-Establish `h : Continuous fun s => (tw (dualRep r) χ s : Matrix (Fin n) (Fin n) k)`. Simplify using `only [tw_val, coe_dualRep]`. Conclude with `(Units.continuous_val.comp hχ).smul (Units.continuous_val.comp (hr.comp continuous_inv)).matrix_transpose`. Use `Units.continuous_iff.2 ⟨h, ?_⟩` and prove the remaining obligations. Simplify using `only [← map_inv]`.
-
-Conclude with `h.comp continuous_inv`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem cont_twDual {Γ k : Type} [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] [Field k]
     [TopologicalSpace k] [IsTopologicalRing k] {n : ℕ} (r : Γ →* GL (Fin n) k) (χ : Γ →* kˣ)
@@ -208,9 +206,9 @@ private theorem cont_twDual {Γ k : Type} [Group Γ] [TopologicalSpace Γ] [IsTo
   exact h.comp continuous_inv
 
 /- English proof (translation)
-Introduce `A hA`. Establish `hAA : ∀ y, σ y ∈ A ↔ y ∈ A.comap σ.toRingHom` using `fun _ => Iff.rfl`. Rewrite `hB` using `[cPl_eq]`. Take `⟨h1, h2⟩` from `hB _ (isPlaceOver_preplace hL hAA hA)`. Use `⟨fun s hs => h1 _ (conjGal_mem_Ine hL hAA hs), fun s hs => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e` using `h2 (conjGal hL s) (by rw [normV_preplace]; exact isFrob_conjGal hL hAA hs)`. Rewrite `e` using `[normV_preplace, ← map_inv]`. Conclude with `e`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem frob_conj {F Ω : Type} [Field F] [NumberField F] [IsCMField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω]
     {l : ℕ} [Fact l.Prime] {ι : Qbar l ≃+* ℂ} {n : ℕ} {r : G F Ω →* GL (Fin n) (Qbar l)} {σ : Ω ≃+* Ω}
@@ -227,21 +225,21 @@ private theorem frob_conj {F Ω : Type} [Field F] [NumberField F] [IsCMField F] 
   exact e
 
 /- English proof (translation)
-Introduce `A hA`. Take `⟨h0, h1⟩` from `hB A hA`. Use `⟨fun s hs => ?_, fun σ hσ => ?_⟩` and prove the remaining obligations. Establish `hc : cycZ F Ω l s = 1`. Use `Units.ext (PadicInt.ext_of_toZModPow.mp fun m => ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[cycZ_toZModPow_eq hw hA (q := 1) (fun x hx => by simpa using hs.2 x hx) m]`. Simplify using the standard rewrite rules. Establish `hc' : cycBar F Ω l s = 1`. Rewrite using `[cycBar, MonoidHom.comp_apply, hc, map_one]`. Apply `Units.ext` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[tw_val, coe_dualRep, map_inv, h0 s hs, MonoidHom.zpow_apply, hc']`. Simplify using the standard rewrite rules. Establish `h2 : ((cycBar F Ω l σ : (Qbar l)ˣ) : Qbar l) = (normV w : ℕ)`. Express the relevant statement in the definitionally equal form `algebraMap ℚ_[l] (Qbar l) (PadicInt.Coe.ringHom ((cycZ F Ω l σ : ℤ_[l]ˣ) : ℤ_[l])) = _`. Rewrite using `[cycZ_of_isFrob hw hA hσ, map_natCast, map_natCast]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `hq0 : normV w ≠ 0`. Introduce `h0`. Rewrite `h2` using `[h0, Nat.cast_zero]`. Conclude with `Units.ne_zero _ h2`. Establish `hqR : (0 : ℝ) < normV w` using `by exact_mod_cast Nat.pos_of_ne_zero hq0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set d : ℂ := ((((normV w : ℕ) : ℝ) ^ (((n : ℝ) - 1) / 2) : ℝ) : ℂ) with hd`. Establish `hd0 : d ≠ 0`. Rewrite using `[hd]`. Conclude with `(Real.rpow_pos_of_pos hqR _).ne'` after adjusting the coercions. Establish `hdd : d * d = (normV w : ℂ) ^ ((n : ℤ) - 1)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 
-Rewrite using `[hd, ← Complex.ofReal_mul, ← Real.rpow_add hqR, add_halves, show ((n : ℝ) - 1) = (((n : ℤ) - 1 : ℤ) : ℝ) by push_cast; ring, Real.rpow_intCast]`. Use `push_cast`. Both sides reduce to the same expression. Establish `h4 : ι.toRingHom (((cycBar F Ω l ^ (1 - (n : ℤ))) σ⁻¹ : (Qbar l)ˣ) : Qbar l) = d * d`. Express the relevant statement in the definitionally equal form `ι _ = _`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[MonoidHom.zpow_apply, map_inv (cycBar F Ω l), Units.val_zpow_eq_zpow_val, Units.val_inv_eq_inv_val, h2, map_zpow₀, map_inv₀, map_natCast, hdd, inv_zpow', neg_sub]`. Establish `hS : ∀ B : Multiset ℂˣ, algSat n (normV w) B = B.map fun α : ℂˣ => d * (α : ℂ)` using `fun B => by`. Simplify using `only [algSat, ← hd, Multiset.bind_def, Multiset.pure_def, Multiset.bind_singleton, Multiset.map_map, Function.comp_def]`. Rewrite using `[tw_val, coe_dualRep, map_inv r σ⁻¹, eig_dual _ _ _ _ (h1 σ hσ), h4, hS, hS]`. Simplify using `only [Multiset.map_map, Function.comp_def]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `congrArg Multiset.prod (Multiset.map_congr rfl fun a _ => ?_)` and prove the remaining obligations. Use `congr 2`. Rewrite using `[Units.val_inv_eq_inv_val]`. Use `a.ne_zero` as an intermediate fact. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 private theorem frob_twDual {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω]
     {l : ℕ} [Fact l.Prime] {ι : Qbar l ≃+* ℂ} {n : ℕ} {r : G F Ω →* GL (Fin n) (Qbar l)}
@@ -293,11 +291,11 @@ private theorem frob_twDual {F Ω : Type} [Field F] [NumberField F] [Field Ω] [
   field_simp
 
 /- English proof (translation)
-Introduce `H E Ω _ _ _ _ _ _ l _ ι n r hr hs hF c hc`. Establish `hL` using `isLift_conj hc`. Establish `h0 : Ideal.span {((l : ℕ) : 𝓞 E)} ≠ 0`. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `(Fact.out : l.Prime).ne_zero` after adjusting the coercions.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hl : ∀ᶠ v : HeightOneSpectrum (𝓞 E) in Filter.cofinite, ((l : ℕ) : 𝓞 E) ∉ v.asIdeal` using `(Ideal.finite_factors h0).subset fun v hv => Ideal.dvd_span_singleton.mpr (not_not.1 hv)`. Establish `hsurj : Function.Surjective (conjGal hL)` using `fun g => ⟨conjGal hL.symm g, AlgEquiv.ext fun x => by simp [UpperTheory.V.conjGal_apply]⟩`. Establish `hχ : Continuous (cycBar E Ω l ^ (1 - (n : ℤ)) : G E Ω →* (Qbar l)ˣ)` using `(cont_cycBar E Ω l).zpow (1 - (n : ℤ))`. Take `⟨P, hP⟩` from `H E Ω l ι n (r.comp (conjGal hL)) (tw (dualRep r) (cycBar E Ω l ^ (1 - (n : ℤ)))) (hr.comp (continuous_conjGal hL)) (cont_twDual r _ hr hχ) (ss_comp r _ hsurj hs) (ss_tw _ _ (ss_dual _ _ _ r hs)) (by filter_upwards [hF, hl] with w ⟨B, hB, hB'⟩ hw`. Conclude with `⟨_, frob_conj hL hB', frob_twDual hw hB⟩)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨P, fun s s' hs' => ?_⟩` and prove the remaining obligations. Establish `e : s' = conjGal hL s` using `AlgEquiv.ext fun x => DFunLike.congr_fun hs' x`. Establish `h1` using `congrArg (fun g : GL (Fin n) (Qbar l) => ((g * P : GL (Fin n) (Qbar l)) : Matrix (Fin n) (Fin n) (Qbar l))) (hP s)`. Simplify using `only [inv_mul_cancel_right, Units.val_mul, tw_val, coe_dualRep, MonoidHom.comp_apply] at h1`. Rewrite using `[e, Matrix.mul_assoc, ← h1, Matrix.smul_mul, Matrix.mul_smul, ← Matrix.mul_assoc, ← Matrix.transpose_mul, ← Units.val_mul, ← map_mul, inv_mul_cancel, map_one, Units.val_one, Matrix.transpose_one, Matrix.one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.twistedDual_frobenius_compatibility :
     IsoOfFrob → PolOfFrob := by

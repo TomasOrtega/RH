@@ -25,7 +25,7 @@ namespace GlobalTheory.ZetaSumU
 
 open GlobalTheory.IndefiniteRowSideFullHecke.SphericalSectionVariables in
 /- English proof (translation)
-Introduce `L _ _ _ ϖ σ q n hU g`. Take `⟨d, hd, a, ha, b, hb, e⟩` from `GlobalTheory.LFun.UnitaryDiv.exists_good_div L ϖ σ q n hU g`. Take `⟨t, ht⟩` from `GlobalTheory.InertThetaCompare.exists_diag hU hd`. Take `⟨k₁, h₁, k₂, h₂, e'⟩` from `GlobalTheory.T.unitaryDoubleCoset_of_GLintDoubleCoset L ϖ σ q n hU t g a b ha hb (Units.ext (by rw [e, ← ht]; rfl))`. Conclude with `⟨fun i => d.getD i.1 0, t, ht, k₁, h₁, k₂, h₂, e'⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem cartan_complete : ∀ (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))] [CompleteSpace L] (ϖ : L)
     (σ : L →+* L) (q n : ℕ), IsUnramInv ϖ σ q → ∀ g : GU σ n, ∃ (d : Fin n → ℤ) (t : GU σ n),
@@ -40,7 +40,7 @@ section
 variable {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))] [CompleteSpace L] {σ : L →+* L} {q n : ℕ}
 
 /- English proof (translation)
-Take `⟨d, t, ht, a, ha, b, hb, rfl⟩` from `cartan_complete L ϖ σ q n hU g`. Rewrite using `[show k₁ * (a * t * b) * k₂ = (k₁ * a) * t * (b * k₂) by group, hφ d t ht _ (mul_mem h₁ ha) _ (mul_mem hb h₂), hφ d t ht a ha b hb]`.
+Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem kerU_biInv {ϖ : L} (hU : IsUnramInv ϖ σ q) {N : ℕ} {z : ℂˣ} {φ : GU σ n → ℂ} (hφ : KerU ϖ q N z φ)
     (g : GU σ n) {k₁ k₂ : GU σ n} (h₁ : k₁ ∈ KU σ n) (h₂ : k₂ ∈ KU σ n) : φ (k₁ * g * k₂) = φ g := by
@@ -50,7 +50,7 @@ theorem kerU_biInv {ϖ : L} (hU : IsUnramInv ϖ σ q) {N : ℕ} {z : ℂˣ} {φ 
 
 open GlobalTheory.IndefiniteRowSideFullHecke.SphericalSectionVariables in
 /- English proof (translation)
-Take `⟨d, t, ht, a, ha, b, hb, rfl⟩` from `cartan_complete L (ϖ : L) σ q n hU g`. Rewrite using `[GlobalTheory.T.sphericalDoublingSection_graph_diagonal_eq L ϖ σ q n hU χ hχ s Φ hΦ d t ht a ha b hb, hφ d t ht a ha b hb, hX]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem sph_eq (ϖ : Lˣ) (hU : IsUnramInv (ϖ : L) σ q) {χ : Lˣ →* ℂˣ} (hχ : IsUnr χ) {s : ℂ} {Φ : GD σ n → ℂ}
     (hΦ : IsSphSec σ q n χ s Φ) {N : ℕ} {z : ℂˣ} {φ : GU σ n → ℂ} (hφ : KerU (ϖ : L) q N z φ)
@@ -60,11 +60,11 @@ theorem sph_eq (ϖ : Lˣ) (hU : IsUnramInv (ϖ : L) σ q) {χ : Lˣ →* ℂˣ} 
 
 open GlobalTheory.IndefiniteRowSideFullHecke.SphericalSectionVariables in
 /- English proof (translation)
-Use `⟨{ toFun := fun u => z ^ Formalism.UG.ordL (u : L), map_one' := ?_, map_mul' := fun a b => ?_ }, fun u hu => ?_, ?_⟩` and prove the remaining obligations. Establish `: Formalism.UG.ordL (1 : L) = 0` using `by simp [Formalism.UG.ordL]; rfl`. Simplify using `[this]`. Simplify using `[Formalism.UG.P.fIwasawa_ordL_mul _ _ a.ne_zero b.ne_zero, _root_.zpow_add]`. Establish `: Formalism.UG.ordL (u : L) = 0`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h0 : Valued.v (u : L) ≠ 0` using `by rw [hu]; exact one_ne_zero`. Establish `h1 : WithZero.unzero h0 = 1` using `WithZero.coe_injective (by rw [WithZero.coe_unzero, hu]; rfl)`. Simplify using `[Formalism.UG.ordL, h0, h1]`. Simplify using `[this]`. Establish `h` using `Formalism.UG.P.fSatake_ord_zpow hU.2.2.2.1 (1 : ℤ)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `h` using `[zpow_one]`. Simplify using `[h]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem exists_unr_char (ϖ : Lˣ) (hU : IsUnramInv (ϖ : L) σ q) (z : ℂˣ) : ∃ χ : Lˣ →* ℂˣ, IsUnr χ ∧ χ ϖ = z := by
   refine ⟨{ toFun := fun u => z ^ Formalism.UG.ordL (u : L), map_one' := ?_, map_mul' := fun a b => ?_ }, fun u hu => ?_, ?_⟩
@@ -81,7 +81,7 @@ theorem exists_unr_char (ϖ : Lˣ) (hU : IsUnramInv (ϖ : L) σ q) (z : ℂˣ) :
     simp [h]
 
 /- English proof (translation)
-Use `haveI := GlobalTheory.LGrp.locallyCompact_GU_of_unram hU n`. Take `⟨ho, hc⟩` from `GlobalTheory.LFun.IntPtsUnitary.isOpen_isCompact_KU L ϖ σ q n hU`. Set `K₀ : TopologicalSpace.PositiveCompacts (GU σ n)` to `⟨⟨_, hc⟩, by rw [ho.interior_eq]; exact ⟨1, one_mem _⟩⟩`. Conclude with `⟨Measure.haarMeasure K₀, inferInstance, Measure.haarMeasure_self⟩`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_haar (ϖ : L) (hU : IsUnramInv ϖ σ q) (n : ℕ) [MeasurableSpace (GU σ n)] [BorelSpace (GU σ n)] :
     ∃ μ : Measure (GU σ n), μ.IsHaarMeasure ∧ μ (KU σ n) = 1 := by
@@ -95,9 +95,9 @@ end
 
 open GlobalTheory.IndefiniteRowSideFullHecke.SphericalSectionVariables in
 /- English proof (translation)
-Rewrite using `[closedForm, GlobalTheory.LGrp.bcParam, GlobalTheory.LFun.eulerFac_add, GlobalTheory.LFun.eulerFac_add, GlobalTheory.LFun.eulerFac_map, GlobalTheory.LFun.eulerFac_map, Finset.prod_mul_distrib]`. Simplify using `only [Units.val_inv_eq_inv_val, div_eq_mul_inv, mul_comm y]`. Break down `Nat.even_or_odd r with h | h` into its components or cases. Rewrite using `[if_neg (Nat.not_odd_iff_even.2 h), Nat.even_iff.1 h]`. Simplify using `only [Multiset.replicate_zero, GlobalTheory.LFun.eulerFac_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_pos h, Nat.odd_iff.1 h]`. Simplify using `only [Multiset.replicate_one, GlobalTheory.LFun.eulerFac_singleton, Units.val_one, one_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem closedForm_eq' (q r : ℕ) (X y : ℂ) (α : Fin (r / 2) → ℂˣ) :
     closedForm q r X y α = eulerFac (bcParam r α) y * ∏ j ∈ Finset.range r, (1 - (-(q : ℂ)) ^ j * X) := by
@@ -114,7 +114,7 @@ theorem closedForm_eq' (q r : ℕ) (X y : ℂ) (α : Fin (r / 2) → ℂˣ) :
 
 open GlobalTheory.IndefiniteRowSideFullHecke.SphericalSectionVariables in
 /- English proof (translation)
-Establish `hq0 : (q : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 (by omega)`. Prove the components needed by the constructor for the conclusion. Rewrite using `[varX, show -(2 * ((t : ℂ) / 2) + r) = -(((r + t : ℕ) : ℂ)) by push_cast; ring, Complex.cpow_neg, Complex.cpow_natCast]`. Rewrite using `[varY, show -(2 * ((t : ℂ) / 2) + 1) = -(((t + 1 : ℕ) : ℂ)) by push_cast; ring, Complex.cpow_neg, Complex.cpow_natCast]`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem varXY_eq (q r t : ℕ) (hq : 2 ≤ q) (z : ℂ) :
     varX q r z ((t : ℂ) / 2) = z * ((q : ℂ) ^ (r + t))⁻¹ ∧ varY q z ((t : ℂ) / 2) = z * ((q : ℂ) ^ (t + 1))⁻¹ := by
@@ -126,9 +126,9 @@ theorem varXY_eq (q r t : ℕ) (hq : 2 ≤ q) (z : ℂ) :
       Complex.cpow_natCast]
 
 /- English proof (translation)
-Introduce `q r hq α hα i`. Establish `hq1 : (1:ℝ) ≤ q` using `by exact_mod_cast (by omega : 1 ≤ q)`. Establish `hn : ‖(α i : ℂ)‖ = (q:ℝ) ^ ((((r:ℤ) - 1 - 2 * (i.val:ℤ) : ℤ)) : ℝ)`. Rewrite using `[hα, norm_zpow, Complex.norm_natCast, Real.rpow_intCast]`. Establish `hi : 2 * i.val + 1 ≤ r` using `by have := i.2; omega`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hi' : 2 * (i.val : ℝ) + 1 ≤ r` using `by exact_mod_cast hi`. Establish `hi0 : (0:ℝ) ≤ i.val` using `Nat.cast_nonneg _`. Rewrite using `[Real.rpow_neg (by positivity), GlobalTheory.IndefiniteRowSideFullHecke.TrivialParameterBound.bound_eq, hn, ← Real.rpow_neg (by positivity)]`. Apply the tactic sequence `constructor <;> apply Real.rpow_le_rpow_of_exponent_le hq1 <;> push_cast <;> linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem tb_triv : ∀ (q r : ℕ), 2 ≤ q → ∀ α : Fin (r / 2) → ℂˣ, (∀ i, (α i : ℂ) = (q : ℂ) ^ ((r : ℤ) - 1 - 2 * (i.val : ℤ))) → GlobalTheory.IndefiniteRowSideFullHecke.TrivialParameterBound.TrivialBound q r α := by
   intro q r hq α hα i
@@ -142,13 +142,13 @@ theorem tb_triv : ∀ (q r : ℕ), 2 ≤ q → ∀ α : Fin (r / 2) → ℂˣ, (
   constructor <;> apply Real.rpow_le_rpow_of_exponent_le hq1 <;> push_cast <;> linarith
 
 /- English proof (translation)
-Introduce `q r t hq hrt z hz α hα`. Establish `hq1 : (1:ℝ) ≤ q` using `by exact_mod_cast (by omega : 1 ≤ q)`. Establish `hq1' : (1:ℝ) < q` using `by exact_mod_cast (by omega : 1 < q)`. Establish `hq0 : (0:ℝ) < q` using `by linarith`. Rewrite using `[(varXY_eq q r t hq z).2]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hy : ‖z * ((q:ℂ)^(t+1))⁻¹‖ = ((q:ℝ)^(t+1))⁻¹`. Rewrite using `[norm_mul, hz, one_mul, norm_inv, norm_pow, Complex.norm_natCast]`. Establish `hB : ((q:ℝ)^2)^(((r:ℝ)-1)/2) ≤ (q:ℝ)^t`. Rewrite using `[GlobalTheory.IndefiniteRowSideFullHecke.TrivialParameterBound.bound_eq, ← Real.rpow_natCast]`. Conclude with `Real.rpow_le_rpow_of_exponent_le hq1 (by have : (r:ℝ) ≤ t := (by exact_mod_cast hrt); linarith)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hBp : 0 < ((q:ℝ)^2)^(((r:ℝ)-1)/2)` using `by positivity`. Establish `e : ((q:ℝ)^(t+1))⁻¹ * (q:ℝ)^t = (q:ℝ)⁻¹` using `by rw [pow_succ]; field_simp`. Establish `key : ∀ a : ℝ, a ≤ (q:ℝ)^t → ((q:ℝ)^(t+1))⁻¹ * a < 1` using `fun a ha =>`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[GlobalTheory.IndefiniteRowSideFullHecke.SphericalSectionVariables.Domain, hy]`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨by simpa using key 1 (one_le_pow₀ hq1), fun i => ⟨key _ ((hα i).2.trans hB), key _ ?_⟩⟩` and prove the remaining obligations. Establish `h1` using `(hα i).1`. Rewrite `h1` using `[Real.rpow_neg (by positivity)]`. Establish `hαp : 0 < ‖(α i : ℂ)‖` using `norm_pos_iff.2 (α i).ne_zero`. Conclude with `(inv_le_of_inv_le₀ hBp h1).trans hB`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem dom_of_tb : ∀ (q r t : ℕ), 2 ≤ q → r ≤ t → ∀ (z : ℂ), ‖z‖ = 1 → ∀ α : Fin (r / 2) → ℂˣ, GlobalTheory.IndefiniteRowSideFullHecke.TrivialParameterBound.TrivialBound q r α → GlobalTheory.IndefiniteRowSideFullHecke.SphericalSectionVariables.Domain (GlobalTheory.IndefiniteRowSideFullHecke.SphericalSectionVariables.varY q z ((t : ℂ) / 2)) α := by
   intro q r t hq hrt z hz α hα
@@ -178,35 +178,31 @@ set_option maxHeartbeats 1000000 in
 open GlobalTheory.IndefiniteRowSideFullHecke.SphericalSectionVariables in
 
 /- English proof (translation)
-Introduce `L _ _ _ ϖ σ q r t hU hrt z φ hz hφ V _ _ ρ x α hx hα ℓ hℓ`. Take `⟨C, hC⟩` from `hℓ`. Establish `hq2 : 2 ≤ q` using `hU.2.2.2.2.2.1`. Establish `hq : q ≠ 0` using `by omega`. Establish `hϖ0 : ϖ ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `h`. Establish `h'` using `hU.2.2.2.1`. Rewrite `h'` using `[h, map_zero]`. Conclude with `WithZero.zero_ne_coe h'`. Set `ϖu : Lˣ` to `Units.mk0 ϖ hϖ0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hUu : IsUnramInv (ϖu : L) σ q` using `hU`. Take `⟨χ, hχ, hχϖ⟩` from `exists_unr_char ϖu hUu z`. Take `⟨Φ, hΦ⟩` from `exists_isSphSec σ hq r hχ ((t : ℂ) / 2)`. Take `⟨hXe, hYe⟩` from `varXY_eq q r t hq2 (z : ℂ)`. Establish `hX : varX q r (χ ϖu) ((t : ℂ) / 2) = (z : ℂ) * ((q : ℂ) ^ (r + t))⁻¹` using `by rw [hχϖ, hXe]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hΦφ : ∀ g, Φ (io1 σ r g) = φ g` using `sph_eq ϖu hUu hχ hΦ hφ hX`. Use `letI : MeasurableSpace (GU σ r) := borel _`. Use `haveI : BorelSpace (GU σ r) := ⟨rfl⟩`. Take `⟨μ, hμH, hμK⟩` from `exists_haar ϖ hU r`. Establish `hK` using `Formalism.UG.P.isCommensurated_integral_unitary_of_unramified hU r`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hKo` using `(GlobalTheory.LFun.IntPtsUnitary.isOpen_isCompact_KU L ϖ σ q r hU).1`. Establish `hright : ∀ g, ∀ k ∈ KU σ r, φ (g * k) = φ g` using `fun g k hk => by`. Simplify using `using kerU_biInv hU hφ g (one_mem _) hk`. Establish `hdouble` using `GlobalTheory.T.unramifiedDoublingIntegral_inert_place L ϖu σ q r hUu μ hμK χ hχ _ Φ hΦ`. Establish `hzχ : ((χ ϖu : ℂˣ) : ℂ) = z` using `by rw [hχϖ]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hdom : ∀ β : Fin (r / 2) → ℂˣ, GlobalTheory.IndefiniteRowSideFullHecke.TrivialParameterBound.TrivialBound q r β → Domain (varY q (χ ϖu) ((t : ℂ) / 2)) β` using `fun β hβ => by`. Rewrite using `[hzχ]`. Conclude with `dom_of_tb q r t hq2 hrt z hz β hβ`. Take `⟨α0, hα0, hw0⟩` from `isZonal_one hU r`. Establish `hint1` using `((hdouble α0 _ hw0).1 (hdom α0 (tb_triv q r hq2 α0 hα0))).1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hintφ : Integrable φ μ` using `by simpa [hΦφ] using hint1`. Take `⟨w, hw⟩` from `GlobalTheory.T.exists_zonalSphericalFunction_unramifiedUnitary L ϖ σ q r hU α`. Take `⟨hintw, hval, -⟩` from `(hdouble α w hw).1 (hdom α hα)`. Simplify using `only [hΦφ] at hintw hval`. Establish `hFw : ∀ g, ∀ k ∈ KU σ r, φ (g * k) * w (g * k) = φ g * w g` using `fun g k hk => by`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `hw.1 1 ⟨k, hk⟩ g`. Simplify using `only [OneMemClass.coe_one, one_mul] at h1`. Rewrite using `[hright g k hk, h1]`. Establish `hsw` using `(GlobalTheory.T.summable_norm_coset_out' _ μ (KU σ r) hKo hμK _ hFw hintw).of_norm`. Establish `hci` using `(GlobalTheory.T.integral_right_invariant_eq_sum_open_subgroup_cosets _ μ (KU σ r) hKo hμK (fun g => φ g * w g) _ hFw hsw.hasSum).2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hS1 : HasSum (fun a : GU σ r ⧸ KU σ r => φ a.out * w a.out) (closedForm q r (varX q r (χ ϖu) ((t : ℂ) / 2)) (varY q (χ ϖu) ((t : ℂ) / 2)) α)`. Rewrite using `[← hval, hci]`. Conclude with `hsw.hasSum`. Establish `hsφ` using `GlobalTheory.T.summable_norm_coset_out' _ μ (KU σ r) hKo hμK φ hright hintφ`. Establish `hsψ : Summable (fun a : GU σ r ⧸ KU σ r => φ a.out * ℓ (ρ a.out x))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Summable.of_norm_bounded (hsφ.mul_left C) fun a => ?_` and prove the remaining obligations. Rewrite using `[norm_mul, mul_comm]`. Conclude with `mul_le_mul_of_nonneg_right (hC _) (norm_nonneg _)`. Establish `hm : ∀ g : GU σ r, dosetInd ℂ (KU σ r) g ∈ Formalism.UG.Hecke ℂ (KU σ r)` using `fun g => Formalism.UG.Final.DosetIndMem _ _ ℂ g`. Establish `hcond : ∀ g : GU σ r, Formalism.UG.hAct (KU σ r) (dosetInd ℂ (KU σ r) g) (fun g => ℓ x * w g) 1 = Formalism.UG.hAct (KU σ r) (dosetInd ℂ (KU σ r) g) (fun g => ℓ (ρ g x)) 1` using `fun g => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `h1` using `hw.2.2 _ (hm g)`. Establish `h2` using `congrArg ℓ (hx.2.2 _ (hm g))`. Rewrite `h2` using `[map_smul, smul_eq_mul]`. Establish `e1 : Formalism.UG.hAct (KU σ r) (dosetInd ℂ (KU σ r) g) (fun g => ℓ x * w g) 1 = ℓ x * Formalism.UG.hAct (KU σ r) (dosetInd ℂ (KU σ r) g) w 1`. Unfold `Formalism.UG.hAct`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_finsum]`. Conclude with `finsum_congr fun c => by simp only [smul_eq_mul]; ring`. Establish `e2 : Formalism.UG.hAct (KU σ r) (dosetInd ℂ (KU σ r) g) (fun g => ℓ (ρ g x)) 1 = ℓ (GlobalTheory.LFun.heckeVec ρ (KU σ r) (dosetInd ℂ (KU σ r) g) x)`. Use `Eq.trans (finsum_congr fun c => ?_) (ℓ.toAddMonoidHom.map_finsum (GlobalTheory.LFun.finite_heckeVec hK (hm g) ρ x)).symm` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, e2, h1, h2, mul_comm]`. Establish `hswap` using `GlobalTheory.T.biInvariant_replace_same_double_coset_sums _ (KU σ r) hK φ (fun g => ℓ x * w g) (fun g => ℓ (ρ g x)) _ (fun a b g => kerU_biInv hU hφ g a.2 b.2) (fun a b g => by simp only [hw.1 a b g]) hcond hsψ.hasSum`. Establish `h2 : HasSum (fun a : GU σ r ⧸ KU σ r => φ a.out * (ℓ x * w a.out)) (closedForm q r (varX q r (χ ϖu) ((t : ℂ) / 2)) (varY q (χ ϖu) ((t : ℂ) / 2)) α * ℓ x)`. Establish `h3 : (fun a : GU σ r ⧸ KU σ r => φ a.out * (ℓ x * w a.out)) = fun a => φ a.out * w a.out * ℓ x`. Use function extensionality and compare the values at `fun a => by ring`.
-
-Rewrite using `[h3]`. Conclude with `hS1.mul_right (ℓ x)`. Establish `e` using `hswap.unique h2`. Rewrite `e` using `[hX, hzχ, hYe, closedForm_eq']`. Rewrite using `[← e]`.
-
-Conclude with `hsψ.hasSum`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasSum_zetaSum_inert : ∀ (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))] [CompleteSpace L] (ϖ : L) (σ : L →+* L) (q r t : ℕ), IsUnramInv ϖ σ q → r ≤ t → ∀ (z : ℂˣ) (φ : GU σ r → ℂ), ‖(z : ℂ)‖ = 1 → KerU ϖ q (r + t) z φ → ∀ (V : Type) [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ (GU σ r) V) (x : V) (α : Fin (r / 2) → ℂˣ), IsSatVecU ϖ q ρ x α → GlobalTheory.IndefiniteRowSideFullHecke.TrivialParameterBound.TrivialBound q r α → ∀ ℓ : V →ₗ[ℂ] ℂ, (∃ C : ℝ, ∀ g, ‖ℓ (ρ g x)‖ ≤ C) → HasSum (fun a : GU σ r ⧸ KU σ r => φ a.out * ℓ (ρ a.out x)) (eulerFac (bcParam r α) ((z : ℂ) * ((q : ℂ) ^ (t + 1))⁻¹) * (∏ j ∈ Finset.range r, (1 - (-(q : ℂ)) ^ j * ((z : ℂ) * ((q : ℂ) ^ (r + t))⁻¹))) * ℓ x) := by
   intro L _ _ _ ϖ σ q r t hU hrt z φ hz hφ V _ _ ρ x α hx hα ℓ hℓ

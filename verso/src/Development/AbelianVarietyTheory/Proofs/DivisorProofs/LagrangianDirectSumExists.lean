@@ -15,9 +15,9 @@ def lagrangianDoublingMap (F : Type) [Field F] (κ : Type) :
     refine Prod.ext (funext fun i => ?_) (funext fun i => ?_) <;> cases i <;> simp
 
 /- English proof (translation)
-Introduce `p q h`. Simplify using `only [lagrangianDoublingMap, LinearMap.coe_mk, AddHom.coe_mk, Prod.mk.injEq] at h`. Take `⟨h1, h2⟩` from `h`. Establish `a1 : p.1.1 = q.1.1` using `funext fun i => by simpa using congrFun h1 (Sum.inl i)`. Establish `b1 : p.2.1 = q.2.1` using `funext fun i => by simpa using congrFun h1 (Sum.inr i)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a2 : p.1.2 = q.1.2` using `funext fun i => by simpa using congrFun h2 (Sum.inl i)`. Establish `b2 : p.2.2 = q.2.2` using `funext fun i => by simpa using congrFun h2 (Sum.inr i)`. Conclude with `Prod.ext (Prod.ext a1 a2) (Prod.ext b1 b2)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem lagrangianDoublingMap_injective (F : Type) [Field F] (κ : Type) :
     Function.Injective (lagrangianDoublingMap F κ) := by
@@ -31,13 +31,13 @@ theorem lagrangianDoublingMap_injective (F : Type) [Field F] (κ : Type) :
   exact Prod.ext (Prod.ext a1 a2) (Prod.ext b1 b2)
 
 /- English proof (translation)
-Introduce `hiso hrk`. Set `g : (L₀ × L₀) →ₗ[F] (κ ⊕ κ → F) × (κ ⊕ κ → F)` to `(lagrangianDoublingMap F κ).comp (L₀.subtype.prodMap L₀.subtype)`. Establish `hg : ∀ p : L₀ × L₀, g p = (Sum.elim (p.1 : (κ → F) × (κ → F)).1 (p.2 : (κ → F) × (κ → F)).1, Sum.elim (p.1 : (κ → F) × (κ → F)).2 (-(p.2 : (κ → F) × (κ → F)).2))` using `fun p => rfl`. Establish `ginj : Function.Injective g`. Introduce `p q h`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `lagrangianDoublingMap_injective F κ h` as an intermediate fact. Simplify using `only [LinearMap.prodMap_apply, Submodule.coe_subtype, Prod.mk.injEq] at this`. Conclude with `Prod.ext (Subtype.ext this.1) (Subtype.ext this.2)`. Use `⟨LinearMap.range g, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨p, rfl⟩ _ ⟨q, rfl⟩`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hg, hg]`. Simplify using `only [dotProduct, Fintype.sum_sum_type, Sum.elim_inl, Sum.elim_inr, Pi.neg_apply, mul_neg, Finset.sum_neg_distrib]`. Establish `h1` using `hiso _ p.1.2 _ q.1.2`. Establish `h2` using `hiso _ p.2.2 _ q.2.2`. Simplify using `only [dotProduct] at h1 h2`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, h2]`. Rewrite using `[LinearMap.finrank_range_of_inj ginj, Module.finrank_prod, hrk, Fintype.card_sum]`. Introduce and unpack `_ ⟨p, rfl⟩`. Conclude with `⟨p.1, p.1.2, p.2, p.2.2, hg p⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem lagrangian_doubling_exists {F : Type} [Field F] {κ : Type} [Fintype κ]
     (L₀ : Submodule F ((κ → F) × (κ → F))) :

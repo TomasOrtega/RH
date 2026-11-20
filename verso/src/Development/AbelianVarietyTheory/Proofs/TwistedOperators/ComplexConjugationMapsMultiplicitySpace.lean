@@ -32,7 +32,7 @@ def realEquiv (c : H' ≃ₗᵢ⋆[ℂ] H) : H' ≃L[ℝ] H where
   continuous_invFun := c.symm.continuous
 
 /- English proof (translation)
-Use `List.prod_induction _ (fun a b => mul_mem_UH J) (one_mem_UH J) fun x hx => ?_` and prove the remaining obligations. Take `⟨i, rfl⟩` from `List.mem_ofFn.1 hx`. Conclude with `GlobalTheory.SmoothAutCheck.exp_mem_UH hJ (hX i) _`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem expProd_mem (hJ : IsUnit J.det) {k : ℕ} {Xs : Fin k → Matrix (Fin n) (Fin n) ℂ}
     (hX : ∀ i, (Xs i)ᴴ * J + J * Xs i = 0) (t : Fin k → ℝ) :
@@ -42,7 +42,7 @@ theorem expProd_mem (hJ : IsUnit J.det) {k : ℕ} {Xs : Fin k → Matrix (Fin n)
   exact GlobalTheory.SmoothAutCheck.exp_mem_UH hJ (hX i) _
 
 /- English proof (translation)
-Introduce `k Xs hX`. Use `(realEquiv c).contDiff.comp (hw k Xs hX)` as an intermediate fact. Use `this using 2 with t` and compare the differences between its conclusion and the goal. Conclude with `(hc _ (expProd_mem hJ hX t) w).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. A detailed English derivation is pending.
 -/
 theorem smoothVec_conj (hJ : IsUnit J.det) (c : H' ≃ₗᵢ⋆[ℂ] H)
     (hc : ∀ g ∈ Formalism.QuantumDeterminants.UH J, ∀ w, c (σ' g w) = σ g (c w)) {w : H'}
@@ -53,9 +53,9 @@ theorem smoothVec_conj (hJ : IsUnit J.det) (c : H' ≃ₗᵢ⋆[ℂ] H)
   exact (hc _ (expProd_mem hJ hX t) w).symm
 
 /- English proof (translation)
-Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem x hx => exact Submodule.subset_span (smoothVec_conj hJ c hc hx)`. Consider the case `zero => rw [map_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [map_add]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Conclude with `add_mem hx hy`. Consider the case `smul a x _ hx => rw [map_smulₛₗ]`. Conclude with `Submodule.smul_mem _ _ hx`.
+A detailed English derivation is pending.
 -/
 theorem span_conj (hJ : IsUnit J.det) (c : H' ≃ₗᵢ⋆[ℂ] H)
     (hc : ∀ g ∈ Formalism.QuantumDeterminants.UH J, ∀ w, c (σ' g w) = σ g (c w)) {w : H'}
@@ -68,7 +68,7 @@ theorem span_conj (hJ : IsUnit J.det) (c : H' ≃ₗᵢ⋆[ℂ] H)
   | smul a x _ hx => rw [map_smulₛₗ]; exact Submodule.smul_mem _ _ hx
 
 /- English proof (translation)
-Establish `e : (fun t : ℝ => σ (NormedSpace.exp (t • X)) (c w)) = realEquiv c ∘ fun t : ℝ => σ' (NormedSpace.exp (t • X)) w`. Use function extensionality and compare the values at `fun t => (hc _ (GlobalTheory.SmoothAutCheck.exp_mem_UH hJ hX t) w).symm`. Rewrite using `[dRep, e, deriv, ContinuousLinearEquiv.comp_fderiv]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem dRep_conj (hJ : IsUnit J.det) (c : H' ≃ₗᵢ⋆[ℂ] H)
     (hc : ∀ g ∈ Formalism.QuantumDeterminants.UH J, ∀ w, c (σ' g w) = σ g (c w)) {X : Matrix (Fin n) (Fin n) ℂ}
@@ -80,11 +80,11 @@ theorem dRep_conj (hJ : IsUnit J.det) (c : H' ≃ₗᵢ⋆[ℂ] H)
   rfl
 
 /- English proof (translation)
-Take `⟨S, C, hS, hC⟩` from `h`. Use `⟨{ toFun := fun w => star (ℓ (c w)) map_add' := fun x y => by simp map_smul' := fun a x => by rw [map_smulₛₗ, map_smul]; simp }, ⟨S, C, hS, fun w hw => ?_⟩, fun _ => rfl⟩` and prove the remaining obligations. Establish `e : ∀ l : List (Matrix (Fin n) (Fin n) ℂ), (∀ X ∈ l, Xᴴ * J + J * X = 0) → l.foldr (dRep σ) (c w) = c (l.foldr (dRep σ') w)`. Introduce `l`. Proceed by induction on `l with`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `nil => intro _`. Both sides reduce to the same expression. Consider the case `cons X l ih`. Introduce `hl`. Rewrite using `[List.foldr_cons, ih fun Y hY => hl Y (List.mem_cons_of_mem _ hY), dRep_conj hJ c hc (hl X List.mem_cons_self), List.foldr_cons]`.
+Treat this case separately. Both sides reduce to the same expression. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `hC _ (smoothVec_conj hJ c hc hw)`. Establish `h2 : (S.map fun l => ‖l.foldr (dRep σ) (c w)‖) = S.map fun l => ‖l.foldr (dRep σ') w‖` using `List.map_congr_left fun l hl => by rw [e l (hS l hl), c.norm_map]`. Rewrite `h1` using `[h2]`. Conclude with `(norm_star _).trans_le h1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sobCont_conj (hJ : IsUnit J.det) (c : H' ≃ₗᵢ⋆[ℂ] H)
     (hc : ∀ g ∈ Formalism.QuantumDeterminants.UH J, ∀ w, c (σ' g w) = σ g (c w)) {ℓ : H →ₗ[ℂ] ℂ}
@@ -110,9 +110,9 @@ theorem sobCont_conj (hJ : IsUnit J.det) (c : H' ≃ₗᵢ⋆[ℂ] H)
   exact (norm_star _).trans_le h1
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => simp`. Consider the case `cons a l ih`. Rewrite using `[List.prod_cons, List.map_cons, List.prod_cons, mul_assoc, ih]`. Simplify using `only [mul_assoc]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Matrix.mul_nonsing_inv_cancel_left _ _ hg]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem prod_conj {g : Matrix (Fin n) (Fin n) ℂ} (hg : IsUnit g.det) (l : List (Matrix (Fin n) (Fin n) ℂ)) :
     l.prod * g = g * (l.map fun a => g⁻¹ * a * g).prod := by
@@ -124,15 +124,15 @@ theorem prod_conj {g : Matrix (Fin n) (Fin n) ℂ} (hg : IsUnit g.det) (l : List
     rw [Matrix.mul_nonsing_inv_cancel_left _ _ hg]
 
 /- English proof (translation)
-Introduce `k Xs hX`. Establish `hu` using `isUnit_of_UH hJ hg`. Establish `hd` using `(Matrix.isUnit_iff_isUnit_det _).1 hu`. Establish `hi : (g⁻¹)ᴴ * J * g⁻¹ = J`. Establish `: (hu.unit⁻¹).1 ∈ Formalism.QuantumDeterminants.UH J` using `(UG J).inv_mem (x := hu.unit) hg`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[Matrix.coe_units_inv]`. Then use the resulting hypothesis. Establish `hg' : gᴴ * J * g = J` using `hg`. Establish `hX' : ∀ i, (g⁻¹ * Xs i * g)ᴴ * J + J * (g⁻¹ * Xs i * g) = 0` using `fun i => by`. Establish `h1 : (g⁻¹)ᴴ * J = J * g` using `by conv_rhs => rw [← hi]`. Rewrite using `[Matrix.nonsing_inv_mul_cancel_right _ _ hd]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : J * g⁻¹ = gᴴ * J` using `by conv_lhs => rw [← hg']`. Rewrite using `[Matrix.mul_nonsing_inv_cancel_right _ _ hd]`. Establish `h3 : (Xs i)ᴴ * J + J * Xs i = 0` using `hX i`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.conjTranspose_mul, mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Use `_ = gᴴ * ((Xs i)ᴴ * J + J * Xs i) * g := by rw [h1, h2]; simp only [mul_add, add_mul, mul_assoc]`. Use `_ = 0 := by rw [h3, mul_zero, zero_mul]`. Use `((σ g).restrictScalars ℝ).contDiff.comp (hw k _ hX')` as an intermediate fact. Use `this using 2 with t` and compare the differences between its conclusion and the goal. Express the relevant statement in the definitionally equal form `_ = σ g (σ _ w)`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← hm _ (expProd_mem hJ hX t) _ hg, ← hm _ hg _ (expProd_mem hJ hX' t), prod_conj hd, List.map_ofFn]`. Use `congr 5`. Use function extensionality and compare the values at `i`. Rewrite using `[Function.comp_apply, ← Matrix.exp_conj' _ _ hu, mul_smul_comm, smul_mul_assoc]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smoothVec_act (hJ : IsUnit J.det)
     (hm : ∀ g ∈ Formalism.QuantumDeterminants.UH J, ∀ g' ∈ Formalism.QuantumDeterminants.UH J, ∀ w, σ (g * g') w = σ g (σ g' w))
@@ -170,7 +170,7 @@ end Rep
 variable {D : D7} {V : HSp D} {S S' : D.what₂.Tau → SPar}
 
 /- English proof (translation)
-Establish `h1 : M.σ τ 1 = 1` using `(M.ds τ).2.2.1.1.1`. Rewrite using `[DSModel.rep, mul_one, Matrix.mul_nonsing_inv _ ((Matrix.isUnit_iff_isUnit_det _).1 (M.fr_unit τ)), h1]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem rep_one (M : DSModel V S) (τ : D.what₂.Tau) (w : M.H τ) : M.rep τ 1 w = w := by
   have h1 : M.σ τ 1 = 1 := (M.ds τ).2.2.1.1.1
@@ -178,13 +178,13 @@ theorem rep_one (M : DSModel V S) (τ : D.what₂.Tau) (w : M.H τ) : M.rep τ 1
   rfl
 
 /- English proof (translation)
-Establish `hd` using `(Matrix.isUnit_iff_isUnit_det _).1 (M.fr_unit τ)`. Establish `key : ∀ g ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ), M.fr τ * g * (M.fr τ)⁻¹ ∈ UJset (M.ε τ)` using `fun g hg => by`. Establish `hg' : gᴴ * gramAt D V τ * g = gramAt D V τ` using `hg`. Rewrite `hg'` using `[← M.fr_gram τ]`. Express the relevant statement in the definitionally equal form `_ * _ * _ = _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.conjTranspose_mul, mul_assoc]`. Use `_ = (M.fr τ * (M.fr τ)⁻¹)ᴴ * Formalism.REAL.Jm (M.ε τ) * (M.fr τ * (M.fr τ)⁻¹) := by`. Rewrite using `[hg']`. Simplify using `only [Matrix.conjTranspose_mul, mul_assoc]`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `_ = _ := by rw [Matrix.mul_nonsing_inv _ hd]; simp`. Introduce `g hg g' hg' w`. Establish `h` using `(M.ds τ).2.2.1.1.2 _ (key g hg) _ (key g' hg')`. Establish `e : M.fr τ * (g * g') * (M.fr τ)⁻¹ = (M.fr τ * g * (M.fr τ)⁻¹) * (M.fr τ * g' * (M.fr τ)⁻¹)`. Simplify using `only [mul_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.nonsing_inv_mul_cancel_left _ _ hd]`. Rewrite using `[DSModel.rep, e, h]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem rep_mul (M : DSModel V S) (τ : D.what₂.Tau) : ∀ g ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ),
     ∀ g' ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ), ∀ w, M.rep τ (g * g') w = M.rep τ g (M.rep τ g' w) := by
@@ -207,9 +207,9 @@ theorem rep_mul (M : DSModel V S) (τ : D.what₂.Tau) : ∀ g ∈ Formalism.Qua
   rfl
 
 /- English proof (translation)
-Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem x hx`. Conclude with `Submodule.subset_span (smoothVec_act (GlobalTheory.SmoothAutCheck.gramAt_unit V τ) (rep_mul M τ) hg hx)`. Consider the case `zero => rw [map_zero]`. Conclude with `zero_mem _`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `add_mem hx hy`. Consider the case `smul a x _ hx => rw [map_smul]`. Conclude with `Submodule.smul_mem _ _ hx`.
+A detailed English derivation is pending.
 -/
 theorem rep_mem_sm (M : DSModel V S) (τ : D.what₂.Tau) {g : Matrix (Fin V.rank) (Fin V.rank) ℂ}
     (hg : g ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ)) {w : M.H τ} (hw : w ∈ M.sm τ) : M.rep τ g w ∈ M.sm τ := by
@@ -221,15 +221,15 @@ theorem rep_mem_sm (M : DSModel V S) (τ : D.what₂.Tau) {g : Matrix (Fin V.ran
   | smul a x _ hx => rw [map_smul]; exact Submodule.smul_mem _ _ hx
 
 /- English proof (translation)
-Establish `h1 : ∀ y ∈ realMon θ V, ∀ v, ∃ v', ∀ x, T v (x * y) = T v' x`. Introduce `y hy`. Proceed by induction on `hy using Submonoid.closure_induction with`. Consider the case `mem y hy`. Take `⟨τ, g, hg, rfl⟩` from `hy`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Introduce `v`. Conclude with `⟨_, fun x => (congrFun (h.equiv τ g hg v ⟨_, rep_mem_sm M τ hg (v τ).2⟩ rfl) x).symm⟩`. Consider the case `one => exact fun v => ⟨v, fun x => by rw [mul_one]⟩`. Consider the case `mul a b _ _ ha hb`. Introduce `v`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨v₁, h₁⟩` from `hb v`. Take `⟨v₂, h₂⟩` from `ha v₁`. Conclude with `⟨v₂, fun x => by rw [← mul_assoc, h₁, h₂]⟩`. Introduce `y hy τ x`. Take `⟨u, hu⟩` from `h1 y hy v`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Simplify using `only [hu]`. Use `⟨?_, fun g hg g' hg' => ?_⟩` and prove the remaining obligations. Use `congrFun (h.equiv τ 1 (one_mem_UH _) u (u τ) (rep_one M τ _).symm) x` as an intermediate fact. Rewrite `this` using `[Function.update_eq_self]`. Conclude with `this.symm`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `a1` using `congrFun (h.equiv τ g' hg' u ⟨_, rep_mem_sm M τ hg' (u τ).2⟩ rfl) (x * atTau θ V τ g)`. Establish `a2` using `congrFun (h.equiv τ (g * g') (mul_mem_UH _ hg hg') u ⟨_, rep_mem_sm M τ (mul_mem_UH _ hg hg') (u τ).2⟩ rfl) x`. Establish `a3` using `congrFun (h.equiv τ g hg (Function.update u τ ⟨_, rep_mem_sm M τ hg' (u τ).2⟩) ⟨_, rep_mem_sm M τ (mul_mem_UH _ hg hg') (u τ).2⟩ (by rw [Function.update_self]; exact rep_mul M τ g hg g' hg' _)) x`. Rewrite `a3` using `[Function.update_idem]`. Conclude with `a1.symm.trans (a3.symm.trans a2)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem value_mem_homFun {θ : InfFam D} {M : DSModel V S} {J : Set (GA D V)} {χ : GA D V → ℂ} {T : MMap M}
     (h : IsMultMap θ M J χ T) (v : M.Vec) : T v ∈ homFun θ V := by
@@ -262,17 +262,17 @@ theorem value_mem_homFun {θ : InfFam D} {M : DSModel V S} {J : Set (GA D V)} {�
     exact a1.symm.trans (a3.symm.trans a2)
 
 /- English proof (translation)
-Introduce `D V S S' θ M M' c hc`. Establish `hs : ∀ τ {w : M'.H τ}, w ∈ M'.sm τ → c τ w ∈ M.sm τ` using `fun τ _ hw => span_conj (GlobalTheory.SmoothAutCheck.gramAt_unit V τ) (c τ) (hc τ) hw`. Use `⟨fun τ w => ⟨hs τ, fun hw => ?_⟩, fun J χ T hT => ?_⟩` and prove the remaining obligations. Use `span_conj (σ := M'.rep τ) (σ' := M.rep τ) (GlobalTheory.SmoothAutCheck.gramAt_unit V τ) (c τ).symm (fun g hg w => (c τ).injective (by rw [hc τ g hg, (c τ).apply_symm_apply, (c τ).apply_symm_apply])) hw` as an intermediate fact. Rewrite `this` using `[(c τ).symm_apply_apply]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h` using `(GlobalTheory.MultMem.mem_mult_iff D θ V S M J χ T).1 hT`. Set `cs : ∀ τ, M'.sm τ → M.sm τ` to `fun τ w => ⟨c τ w, hs τ w.2⟩`. Set `cv : M'.Vec → M.Vec` to `fun v τ => cs τ (v τ)`. Establish `hup : ∀ [DecidableEq D.what₂.Tau] (v : M'.Vec) τ w, cv (Function.update v τ w) = Function.update (cv v) τ (cs τ w)` using `fun v τ w => funext fun ρ => Function.apply_update cs v τ w ρ`. Set `T' : MMap M'` to `{ toFun := fun v => star (T (cv v)) map_update_add' := fun v τ x y => by`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `: cs τ (x + y) = cs τ x + cs τ y` using `Subtype.ext (map_add (c τ) _ _)`. Rewrite using `[hup, hup, hup, this, T.map_update_add, star_add]`. Use the proof step `map_update_smul' := fun v τ a x => by`. Establish `: cs τ (a • x) = star a • cs τ x` using `Subtype.ext (map_smulₛₗ (c τ) _ _)`. Rewrite using `[hup, hup, this, T.map_update_smul, star_smul, star_star] }`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hT' : ∀ v, T' v = star (T (cv v))` using `fun _ => rfl`. Use `⟨T', Submodule.subset_span ⟨fun v => isAutFunSm_star (h.aut _) (value_mem_homFun h _), fun v => ?_, fun v k hk g => ?_, fun τ g hg v w hw => ?_, fun τ v x => ?_⟩, fun v' v hv g => ?_⟩` and prove the remaining obligations. Introduce `r C hC μ 𝓕 hμ h𝓕 g`. Use `h.cusp (cv v) r C hC μ 𝓕 hμ h𝓕 g` as an intermediate fact. Express the relevant statement in the definitionally equal form `∫ n in 𝓕, starRingEnd ℂ (T (cv v) ((n : GA D V) * g)) ∂μ = 0`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[integral_conj, this, map_zero]`. Rewrite using `[hT', Pi.star_apply, Pi.star_apply, h.lev _ k hk, star_mul']`. Rewrite using `[hT', hT', hup, h.equiv τ g hg (cv v) (cs τ w) (by change c τ w = _; rw [hw, hc τ g hg])]`. Both sides reduce to the same expression. Take `⟨ℓ, h1, h2⟩` from `h.cont τ (cv v) x`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨ℓ', h3, h4⟩` from `sobCont_conj (GlobalTheory.SmoothAutCheck.gramAt_unit V τ) (c τ) (hc τ) h1`. Use `⟨ℓ', h3, fun w => ?_⟩` and prove the remaining obligations. Rewrite using `[h4, hT', hup, Pi.star_apply, ← h2]`. Establish `: cv v' = v` using `funext fun τ => Subtype.ext (hv τ).symm`. Rewrite using `[hT', this, Pi.star_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_mult : ∀ {D : D7} {V : HSp D} {S S' : D.what₂.Tau → SPar} (θ : InfFam D) (M : DSModel V S) (M' : DSModel V S') (c : ∀ τ, M'.H τ ≃ₗᵢ⋆[ℂ] M.H τ), (∀ τ, ∀ g ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ), ∀ w, c τ (M'.rep τ g w) = M.rep τ g (c τ w)) → (∀ τ (w : M'.H τ), w ∈ M'.sm τ ↔ c τ w ∈ M.sm τ) ∧ ∀ J χ, ∀ T ∈ Mult θ M J χ, ∃ T' ∈ Mult θ M' J (fun k => star (χ k)), ∀ (v' : M'.Vec) (v : M.Vec), (∀ τ, (v τ : M.H τ) = c τ (v' τ)) → ∀ g, T' v' g = star (T v g) := by
   intro D V S S' θ M M' c hc

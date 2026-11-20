@@ -21,7 +21,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar instCM
 variable {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D) {θ : ℝ} (C : Choice X θ)
 
 /- English proof (translation)
-Conclude with `⟨rfl, rfl, rfl, rfl, rfl, rfl, Formalism.MainNotions.LatticeGluingRadicals.d_card D⟩`.
+Supply the required witnesses or components.
 -/
 theorem compat_ITc (u u' : D.what₂.Word) (e : InfinitePlace D.host.E ≃ D.what₂.Tau) (he : PlaceTie X e)
     (hv : D.host.v = Formalism.FourierDecayAlt.S6.rd D.host.E / 2) (CA : ℝ) (de de' : ℕ → ℝ) (l : ℕ)
@@ -35,17 +35,13 @@ theorem compat_ITc (u u' : D.what₂.Word) (e : InfinitePlace D.host.E ≃ D.wha
   exact ⟨rfl, rfl, rfl, rfl, rfl, rfl, Formalism.MainNotions.LatticeGluingRadicals.d_card D⟩
 
 /- English proof (translation)
-Introduce `v`. Establish `hw : tauE X e ((tauE X e).symm v) = v` using `Equiv.apply_symm_apply _ v`. Establish `hT` using `transpC X C v`. Use `⟨?_, ?_, ?_, fun m => ?_, fun m => ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `h` using `isTransp_cs (Formalism.L2.SG.Pf.torTie X) C (X.pl v)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h` using `[show vOf X (X.pl v) = v from X.pl.symm_apply_apply v]`. Then use the resulting hypothesis. Use `show (towersOf X C u u' e ((tauE X e).symm v)).base.z = zc X C u v`. Rewrite using `[towersOf_base]`. Use `show zc X C u (tauE X e ((tauE X e).symm v)) = zc X C u v`. Rewrite using `[hw]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show (towersOf X C u u' e ((tauE X e).symm v)).base.z' = zc X C u' v`. Rewrite using `[towersOf_base]`. Use `show zc X C u' (tauE X e ((tauE X e).symm v)) = zc X C u' v`. Rewrite using `[hw]`. Use `show (towersOf X C u u' e ((tauE X e).symm v)).base.π m = _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[towersOf_base]`. Conclude with `(cast_conj X C u (tauE_symm X e v) m).symm`. Use `show (towersOf X C u u' e ((tauE X e).symm v)).base.π' m = _`. Rewrite using `[towersOf_base]`. Conclude with `(cast_conj X C u' (tauE_symm X e v) m).symm`.
-
-Use `show (towersOf X C u u' e ((tauE X e).symm v)).base.μG = μGc X C v`. Rewrite using `[towersOf_base]`. Use `show μGc X C (tauE X e ((tauE X e).symm v)) = μGc X C v`. Rewrite using `[hw]`. Use `show ∃ μS : Measure (Formalism.REAL.UJ (X.B.I.ε v)), Formalism.L2.SG.RealObj.IsHaarLoc {γ | Formalism.L2.SG.RealObj.trG (Qc X C v) (Qic X C v) γ ∈ Formalism.QuantumDeterminants.Sset D.R.k D.R.rS (towersOf X C u u' e ((tauE X e).symm v)).base.z} μS ∧ μS.map (fun γ => Matrix.of.sym …`.
-
-Rewrite using `[towersOf_base]`. Use `show ∃ μS : Measure (Formalism.REAL.UJ (X.B.I.ε v)), Formalism.L2.SG.RealObj.IsHaarLoc {γ | Formalism.L2.SG.RealObj.trG (Qc X C v) (Qic X C v) γ ∈ Formalism.QuantumDeterminants.Sset D.R.k D.R.rS (zc X C u (tauE X e ((tauE X e).symm v)))} μS ∧ μS.map (fun γ => Matrix.of.symm (Form …`. Rewrite using `[hw]`. Conclude with `muS_loc (n_eq' X) (X.B.I.ε v) hT.1 hT.2.1 hT.2.2.1 (zc_spec X C u v).1 (zc_pos X C u v) (μW_exists X C u v).choose_spec.1 (μW_exists X C u v).choose_spec.2 (Formalism.FourierDecayAlt.P.Dx2.MN.haar D.R.rS)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem builtFromX_ITc (u u' : D.what₂.Word) (e : InfinitePlace D.host.E ≃ D.what₂.Tau) (he : PlaceTie X e)
     (hv : D.host.v = Formalism.FourierDecayAlt.S6.rd D.host.E / 2) (CA : ℝ) (de de' : ℕ → ℝ) (l : ℕ)
@@ -106,7 +102,7 @@ theorem builtFromX_ITc (u u' : D.what₂.Word) (e : InfinitePlace D.host.E ≃ D
       (μW_exists X C u v).choose_spec.1 (μW_exists X C u v).choose_spec.2 (Formalism.FourierDecayAlt.P.Dx2.MN.haar D.R.rS)
 
 /- English proof (translation)
-The claim follows from `Formalism.L2.SG.Pf.CarrierBase.baseFromX_of X u u' _ i0 i0' _ _ _ (fun v => (isTransp_Qcs X C v).2.1) hi`.
+A detailed English derivation is pending.
 -/
 theorem baseFromX_ITc (u u' : D.what₂.Word) (e : InfinitePlace D.host.E ≃ D.what₂.Tau) (he : PlaceTie X e)
     (hv : D.host.v = Formalism.FourierDecayAlt.S6.rd D.host.E / 2) (CA : ℝ) (de de' : ℕ → ℝ) (l : ℕ)
@@ -124,7 +120,7 @@ theorem baseFromX_ITc (u u' : D.what₂.Word) (e : InfinitePlace D.host.E ≃ D.
   Formalism.L2.SG.Pf.CarrierBase.baseFromX_of X u u' _ i0 i0' _ _ _ (fun v => (isTransp_Qcs X C v).2.1) hi
 
 /- English proof (translation)
-The claim follows from `Formalism.L2.SG.Pf.CarrierTop.topTie_of X _ u u' sc i0 i0'' FdN FdN' νq _ hPG (fun j x => embE_apply X e j x) (G_sOf _)`.
+A detailed English derivation is pending.
 -/
 theorem topTie_ITc (u u' : D.what₂.Word) (e : InfinitePlace D.host.E ≃ D.what₂.Tau) (he : PlaceTie X e)
     (hv : D.host.v = Formalism.FourierDecayAlt.S6.rd D.host.E / 2) (CA : ℝ) (de de' : ℕ → ℝ) (l : ℕ)
@@ -144,7 +140,7 @@ theorem topTie_ITc (u u' : D.what₂.Word) (e : InfinitePlace D.host.E ≃ D.wha
     (G_sOf _)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨_, _, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, sOf (ITc X C u u' e he hv CA de de' l grid grid1 fc c i0' Θ TP A₀), fun j => plOf X C u u' e he hv CA de de' l grid grid1 fc c i0' Θ TP A₀ hN hty hl2 hΘ j, (ITc X C u u' e he hv CA de …`.
+Supply the required witnesses or components.
 -/
 theorem carrierDataBuilt_of_compact_test (Cb Cc C₆ : ℝ) (u u' : D.what₂.Word) (e : InfinitePlace D.host.E ≃ D.what₂.Tau) (he : PlaceTie X e)
     (hv : D.host.v = Formalism.FourierDecayAlt.S6.rd D.host.E / 2) (CA : ℝ) (de de' : ℕ → ℝ) (l : ℕ)

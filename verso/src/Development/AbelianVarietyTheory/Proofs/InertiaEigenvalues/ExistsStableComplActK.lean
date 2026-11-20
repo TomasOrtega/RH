@@ -24,9 +24,9 @@ def HasRelCompl {V : Type} [AddCommGroup V] [Module K V] (f : Γ → V →ₗ[K]
 variable {V : Type} [AddCommGroup V] [Module K V] {f : Γ → V →ₗ[K] V}
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.ComplementedSup.complemented_sup`. Consider the case `exact _root_.GlobalTheory.ComplementedSup.complemented_sup`. Consider the case `(apply _root_.GlobalTheory.ComplementedSup.complemented_sup <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.ComplementedSup.complemented_sup <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.ComplementedSup.complemented_sup <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.ComplementedSup.complemented_sup ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem hasRelCompl_sup {X U : Submodule K V} (hXs : StableUnder f X) (hUs : StableUnder f U)
     (hX : HasRelCompl f X) (hU : HasRelCompl f U) : HasRelCompl f (X ⊔ U) := by
@@ -67,7 +67,7 @@ def blockSub (s : Set ι) : Submodule K (ι → n → K) where
     simp [hv b hb]
 
 /- English proof (translation)
-Introduce `γ v hv b hb`. Rewrite using `[blockAct_apply, hv b hb, Matrix.mulVec_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem blockSub_stable (ρ : Γ → ι → Matrix n n K) (s : Set ι) :
     StableUnder (blockAct ρ) (blockSub s : Submodule K (ι → n → K)) := by
@@ -75,14 +75,14 @@ theorem blockSub_stable (ρ : Γ → ι → Matrix n n K) (s : Set ι) :
   rw [blockAct_apply, hv b hb, Matrix.mulVec_zero]
 
 /- English proof (translation)
-Introduce `_ hv b hb` and use `hv b (fun hs => hb (h hs))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem blockSub_mono {s t : Set ι} (h : s ⊆ t) :
     (blockSub s : Submodule K (ι → n → K)) ≤ blockSub t :=
   fun _ hv b hb => hv b (fun hs => hb (h hs))
 
 /- English proof (translation)
-Rewrite using `[eq_bot_iff]`. Introduce `v hv`. Rewrite using `[Submodule.mem_bot]`. Use function extensionality and compare the values at `b`. Conclude with `hv b (Set.notMem_empty b)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem blockSub_empty : (blockSub (∅ : Set ι) : Submodule K (ι → n → K)) = ⊥ := by
   rw [eq_bot_iff]
@@ -92,7 +92,7 @@ theorem blockSub_empty : (blockSub (∅ : Set ι) : Submodule K (ι → n → K)
   exact hv b (Set.notMem_empty b)
 
 /- English proof (translation)
-Rewrite using `[eq_top_iff]`. Introduce `v _ b hb`. Conclude with `absurd (Set.mem_univ b) hb`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem blockSub_univ : (blockSub (Set.univ : Set ι) : Submodule K (ι → n → K)) = ⊤ := by
   rw [eq_top_iff]
@@ -100,13 +100,13 @@ theorem blockSub_univ : (blockSub (Set.univ : Set ι) : Submodule K (ι → n �
   exact absurd (Set.mem_univ b) hb
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Introduce `v hv`. Use `Submodule.mem_sup.mpr ⟨Function.update v b 0, ?_, Pi.single b (v b), ?_, ?_⟩` and prove the remaining obligations. Introduce `c hc`. Distinguish the cases in `h : c = b`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Substitute `h` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[Function.update_of_ne h]`. Conclude with `hv c (by simp [h, hc])`. Introduce `c hc`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h : c ≠ b` using `by simpa using hc`. Simplify using `[h]`. Use function extensionality and compare the values at `c`. Distinguish the cases in `h : c = b`. Substitute `h` using the available equality.
+Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Simplify using `[h]`. Conclude with `sup_le (blockSub_mono (Set.subset_insert _ _)) (blockSub_mono (Set.singleton_subset_iff.mpr (Set.mem_insert _ _)))`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem blockSub_insert (b : ι) (s : Set ι) :
     (blockSub (insert b s) : Submodule K (ι → n → K)) = blockSub s ⊔ blockSub {b} := by
@@ -133,23 +133,23 @@ def BlockHasCompl (ρ : Γ → ι → Matrix n n K) (b : ι) : Prop :=
     ∃ D : Submodule K (n → K), (∀ γ, ∀ y ∈ D, (ρ γ b).mulVec y ∈ D) ∧ IsCompl S D
 
 /- English proof (translation)
-Introduce `W hW hWY`. Take `⟨D', hD's, hc⟩` from `hb (W.map (LinearMap.proj b)) (by`. Introduce and unpack `γ _ ⟨v, hv, rfl⟩`. Conclude with `⟨blockAct ρ γ v, hW γ v hv, rfl⟩)`. Establish `hDle : D'.map (LinearMap.single K (fun _ : ι => n → K) b) ≤ blockSub {b}`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨y, _, rfl⟩ c hc`. Establish `h : c ≠ b` using `by simpa using hc`. Simplify using `[h]`. Use `⟨D'.map (LinearMap.single K (fun _ : ι => n → K) b), ?_, hDle, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `γ _ ⟨y, hy, rfl⟩`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `⟨(ρ γ b).mulVec y, hD's γ y hy, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `c`. Rewrite using `[blockAct_apply]`. Distinguish the cases in `h : c = b`. Substitute `h` using the available equality.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Simplify using `[h]`. Rewrite using `[eq_bot_iff]`. Introduce `v hv`. Take `⟨hvW, hvD⟩` from `Submodule.mem_inf.mp hv`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy, rfl⟩` from `hvD`. Establish `hy0 : y = 0`. Establish `hm : y ∈ W.map (LinearMap.proj b) ⊓ D'` using `Submodule.mem_inf.mpr ⟨⟨_, hvW, by simp⟩, hy⟩`. Rewrite `hm` using `[hc.inf_eq_bot]`. Conclude with `(Submodule.mem_bot K).mp hm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality.
 
-Substitute `hy0` using the available equality. Simplify using the standard rewrite rules. Apply `le_antisymm (sup_le hWY hDle)` to reduce the goal to its premises. Introduce `u hu`. Establish `hub : u b ∈ W.map (LinearMap.proj b) ⊔ D'`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc.sup_eq_top]`. Discharge the goal by the elementary cases of `trivial`. Take `⟨s', ⟨v, hv, rfl⟩, d', hd', hsum⟩` from `Submodule.mem_sup.mp hub`. Use `Submodule.mem_sup.mpr ⟨v, hv, Pi.single b d', ⟨d', hd', by simp⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `c`.
+Check the elementary cases of the proposition. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h : c = b`. Substitute `h` using the available equality. Simplify using `using hsum`. Establish `h1 : u c = 0` using `hu c (by simpa using h)`. Establish `h2 : v c = 0` using `hWY hv c (by simpa using h)`.
+Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[h, h1, h2]`.
+A detailed English derivation is pending.
 -/
 theorem hasRelCompl_single (ρ : Γ → ι → Matrix n n K) (b : ι) (hb : BlockHasCompl ρ b) :
     HasRelCompl (blockAct ρ) (blockSub ({b} : Set ι) : Submodule K (ι → n → K)) := by
@@ -195,11 +195,9 @@ theorem hasRelCompl_single (ρ : Γ → ι → Matrix n n K) (b : ι) (hb : Bloc
       simp [h, h1, h2]
 
 /- English proof (translation)
-Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Introduce `W _ hWY`. Rewrite `hWY`, the goal using `[Finset.coe_empty, blockSub_empty]`. Use `⟨⊥, fun γ v hv => ?_, le_rfl, inf_bot_eq _, ?_⟩` and prove the remaining obligations. Rewrite using `[(Submodule.mem_bot K).mp hv, map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.zero_mem _`. Rewrite using `[sup_bot_eq]`. Conclude with `le_antisymm hWY bot_le`. Introduce `b s _ ih`. Rewrite using `[Finset.coe_insert, blockSub_insert]`.
-
-Conclude with `hasRelCompl_sup (blockSub_stable ρ _) (blockSub_stable ρ _) ih (hasRelCompl_single ρ b (hblk b))`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasRelCompl_finset (ρ : Γ → ι → Matrix n n K) (hblk : ∀ b, BlockHasCompl ρ b)
     (s : Finset ι) :
@@ -216,7 +214,7 @@ theorem hasRelCompl_finset (ρ : Γ → ι → Matrix n n K) (hblk : ∀ b, Bloc
       (hasRelCompl_single ρ b (hblk b))
 
 /- English proof (translation)
-Establish `h` using `hasRelCompl_finset ρ hblk Finset.univ W hW (by rw [Finset.coe_univ, blockSub_univ]; exact le_top)`. Rewrite `h` using `[Finset.coe_univ, blockSub_univ]`. Take `⟨C, hCs, _, h1, h2⟩` from `h`. Conclude with `⟨C, hCs, ⟨disjoint_iff.mpr h1, codisjoint_iff.mpr h2⟩⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_stable_compl [Fintype ι] (ρ : Γ → ι → Matrix n n K)
     (hblk : ∀ b, BlockHasCompl ρ b) (W : Submodule K (ι → n → K))
@@ -238,17 +236,15 @@ set_option maxHeartbeats 1000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Introduce `D i r Xs hG a x W hW`. Set `ρ : GE D.nd → Fin a → Matrix (Fin D.R.nV) (Fin D.R.nV) (KK D.nd i)` to `fun γ b => (mapM (toK D.nd i) (rTwO D.nd i r ↑(x b))) γ`. Establish `hact : ∀ γ v, actK i r Xs x γ v = blockAct ρ γ v` using `fun γ v => rfl`. Establish `hblk : ∀ b, BlockHasCompl ρ b`. Introduce `b`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hss` using `(hG ↑(x b)).2.1`. Use `set c : GE D.nd → KK D.nd i := fun γ => toK D.nd i ((((chiU D.nd i 1)⁻¹ γ : (D.nd.O i)ˣ)) : D.nd.O i) with hcdef`. Establish `hrel : ∀ γ, ρ γ b = c γ • (↑(mapRep (algebraMap (D.nd.O i) (Kf D.nd i)) (r ↑(x b)) γ) : Matrix (Fin D.R.nV) (Fin D.R.nV) (KK D.nd i))`. Introduce `γ`. Use extensionality with `j k`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[ρ, c, mapM, rTwO, twistM, mapRep, rO]`. Establish `hc0 : ∀ γ, c γ ≠ 0` using `fun γ => ((((chiU D.nd i 1)⁻¹ γ : (D.nd.O i)ˣ)).isUnit.map (toK D.nd i)).ne_zero`. Introduce `S hS`. Take `⟨D', hD', hcompl⟩` from `hss S (by`. Introduce `g y hy`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h` using `hS g y hy`. Rewrite `h` using `[hrel, Matrix.smul_mulVec]`. Establish `h2` using `S.smul_mem (c g)⁻¹ h`. Rewrite using `[smul_smul, inv_mul_cancel₀ (hc0 g), one_smul] at h2)` and apply the resulting hypothesis. Use `⟨D', fun g y hy => ?_, hcompl⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hrel, Matrix.smul_mulVec]`. Conclude with `D'.smul_mem _ (hD' g y hy)`. Take `⟨C, hCs, hc⟩` from `exists_stable_compl ρ hblk W (fun γ v hv => by`. Rewrite using `[← hact]`. Conclude with `hW γ v hv)`.
-
-Conclude with `⟨C, fun γ v hv => by rw [hact]; exact hCs γ v hv, hc⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_stable_compl_actK : ∀ (D : D7) (i : D.nd.Loc) (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i)))
     (Xs : Set (D.nd.X i)), GoodR D.nd i r → ∀ {a : ℕ} (x : Fin a → ↥Xs)

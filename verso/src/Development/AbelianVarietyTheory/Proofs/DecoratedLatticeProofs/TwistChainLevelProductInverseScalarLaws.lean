@@ -21,13 +21,13 @@ noncomputable section
 namespace GlobalTheory.QFinLaw
 
 /- English proof (translation)
-Introduce `l`. Proceed by induction on `l with`. Consider the case `nil`. Introduce `_ u hu i j`. Establish `h0 : aconv ([] : List (WO S T →₀ ℂ)) = Finsupp.single 0 1` using `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `hu` using `[h0, Finsupp.support_single_ne_zero _ one_ne_zero, Finset.mem_singleton]`. Substitute `hu` using the available equality. Simplify using `using (GlobalTheory.FinPl.idAt D P).zero_mem`. Consider the case `cons e l ih`. Introduce `hl u hu`.
+Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e1 : aconv (e :: l) = aconv [e, aconv l]`. Apply `AddMonoidAlgebra.ofCoeff_injective (R := ℂ) (M := WO S T)` to reduce the goal to its premises. Rewrite using `[GlobalTheory.QValOuter.aconv_cons, GlobalTheory.QValOuter.aconv_pair]`. Rewrite `hu` using `[e1]`. Take `⟨a, ha, b, hb, rfl⟩` from `GlobalTheory.QValOuter.mem_support_aconv_pair _ _ hu`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Introduce `i j`. Rewrite using `[Matrix.add_apply]`. Conclude with `Ideal.add_mem _ (hl e List.mem_cons_self a ha i j) (ih (fun e' he' => hl e' (List.mem_cons_of_mem _ he')) b hb i j)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem combAt_aconv {D : D7} {S T : HSp D} (P : GlobalTheory.FinPl.Pl D → Prop) :
     ∀ l : List (WO S T →₀ ℂ), (∀ e ∈ l, GlobalTheory.FinPl.CombAt P e) → GlobalTheory.FinPl.CombAt P (aconv l) := by
@@ -52,9 +52,9 @@ theorem combAt_aconv {D : D7} {S T : HSp D} (P : GlobalTheory.FinPl.Pl D → Pro
       (ih (fun e' he' => hl e' (List.mem_cons_of_mem _ he')) b hb i j)
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.HeisComb.comb_comb, GlobalTheory.HeisComb.comb_eq_sum]`. Establish `hG0 : ∀ u, (0 : ℂ) • heisO ψ S T u f = 0` using `fun u => zero_smul _ _`. Establish `hGa : ∀ u (a b : ℂ), (a + b) • heisO ψ S T u f = a • heisO ψ S T u f + b • heisO ψ S T u f` using `fun u a b => add_smul _ _ _`. Use `show (e.sum fun g a => (aconv l).sum fun h b => Finsupp.single (g + h) (a * b)).sum (fun u a => a • heisO ψ S T u f) = _`. Rewrite using `[Finsupp.sum_sum_index hG0 hGa, Finsupp.sum]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun x hx => ?_` and prove the remaining obligations. Rewrite using `[Finsupp.sum_sum_index hG0 hGa, Finsupp.sum]`. Use `Finset.sum_congr rfl fun y hy => ?_` and prove the remaining obligations. Rewrite using `[Finsupp.sum_single_index (hG0 _), GlobalTheory.SplitScalar.heisO_add_of_orth ψ S T (h x hx y hy)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comb_aconv_cons {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (e : WO S T →₀ ℂ)
     (l : List (WO S T →₀ ℂ)) (h : ∀ x ∈ e.support, ∀ y ∈ (aconv l).support, symplO S T x y = 0) (f : WO S T → ℂ) :
@@ -72,11 +72,11 @@ theorem comb_aconv_cons {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) 
   rw [Finsupp.sum_single_index (hG0 _), GlobalTheory.SplitScalar.heisO_add_of_orth ψ S T (h x hx y hy)]
 
 /- English proof (translation)
-Introduce `L`. Proceed by induction on `L with`. Consider the case `nil => intro _`. Conclude with `GlobalTheory.LevelComb.comb_single_zero ψ f`. Consider the case `cons a L ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hL`. Rewrite using `[List.map_cons, comb_aconv_cons, ih hL.of_cons, List.foldr_cons]`. Introduce `x hx y hy`. Use `GlobalTheory.DisjComb.symplO_disj (P := (· = p a)) (P' := fun v => ∃ b ∈ L, v = p b) ?_ (hE a x hx) ?_` and prove the remaining obligations. Introduce and unpack `_ rfl ⟨b, hb, hab⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Conclude with `(List.nodup_cons.1 hL).1 (hp hab ▸ hb)`. Conclude with `combAt_aconv _ (L.map E) (fun e he => by`. Take `⟨b, hb, rfl⟩` from `List.mem_map.1 he`. Conclude with `fun u hu => GlobalTheory.DisjComb.mxAt_mono (fun v hv => ⟨b, hb, hv⟩) (hE b u hu)) y hy`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem comb_aconv_map {D : D7} (ψ : AddChar (AF D.host.F) ℂ) {S T : HSp D} {r : ℕ} (p : Fin r → GlobalTheory.FinPl.Pl D)
     (hp : Function.Injective p) (E : Fin r → WO S T →₀ ℂ) (hE : ∀ a, GlobalTheory.FinPl.CombAt (· = p a) (E a))
@@ -97,15 +97,13 @@ theorem comb_aconv_map {D : D7} (ψ : AddChar (AF D.host.F) ℂ) {S T : HSp D} {
         exact fun u hu => GlobalTheory.DisjComb.mxAt_mono (fun v hv => ⟨b, hb, hv⟩) (hE b u hu)) y hy
 
 /- English proof (translation)
-Introduce `D c v t w F hc hv hP j hj Ψ hΨ i`. Establish `hI` using `fun P P' hd => GlobalTheory.T.heisenbergCombination_disjoint_places_commute_vacua D c.ψ hc.std (c.V j) (c.V (j + 1)) P P' hd`. Establish `hca : ∀ a, GlobalTheory.FinPl.CombAt (· = (F.Q a).q.v) ((F.Q a).eL j)`. Introduce `a u hu r q'`. Use `(F.Q a).hs` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `(GlobalTheory.FinPl.FrameLat.idem_iff (F.Q a).q _).2 (((F.Q a).eL_at j ((F.Q a).s - j) (by omega)).1 u hu r q')`. Establish `hdisj : ∀ a b : Fin F.r, a ≠ b → ∀ p, p = (F.Q a).q.v → ¬ p = (F.Q b).q.v` using `fun a b hab p ha hb => hab (hP.inj (ha.symm.trans hb))`. Set `g : Fin F.r → (WO (c.V j) (c.V (j + 1)) → ℂ) → (WO (c.V j) (c.V (j + 1)) → ℂ)` to `fun a f => comb c.ψ _ _ ((F.Q a).eL j) f`. Establish `hfold : comb c.ψ _ _ (w.eQ j) Ψ = (List.finRange F.r).foldr g Ψ`. Rewrite using `[hP.eQ j hj, List.ofFn_eq_map]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `comb_aconv_map c.ψ (fun a => (F.Q a).q.v) hP.inj (fun a => (F.Q a).eL j) hca Ψ _ (List.nodup_finRange _)`. Use `⟨((List.finRange F.r).erase i).foldr g Ψ, ?_, ?_⟩` and prove the remaining obligations. Establish `h0 : GlobalTheory.FinPl.Vac c.ψ _ _ (v.N j) (v.N (j + 1)) (· = (F.Q i).q.v) Ψ` using `GlobalTheory.GSuppComb.vac_mono (fun p hp => by rw [hp]; exact (hP.places _).2 ⟨i, rfl⟩) hΨ`. Establish `key : ∀ l : List (Fin F.r), (∀ a ∈ l, a ≠ i) → GlobalTheory.FinPl.Vac c.ψ _ _ (v.N j) (v.N (j + 1)) (· = (F.Q i).q.v) (l.foldr g Ψ)`. Introduce `l`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `l with`. Consider the case `nil => intro _`. Conclude with `h0`. Consider the case `cons a l ih`. Introduce `hl`.
-
-Conclude with `((hI (· = (F.Q a).q.v) (· = (F.Q i).q.v) (hdisj a i (hl a List.mem_cons_self))).2.1 _ (hca a)).2 _ _ _ (ih fun b hb => hl b (List.mem_cons_of_mem _ hb))`. Conclude with `key _ fun a ha => ((List.nodup_finRange F.r).mem_erase_iff.1 ha).1`. Rewrite using `[hfold]`. Conclude with `GlobalTheory.GSuppComb.foldr_extract g i (fun a ha x => (hI _ _ (hdisj a i ha)).1 _ _ (hca a) (hca i) x) _ Ψ (List.mem_finRange i)`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eQ_comb_at_place : ∀ (D : D7) (c : Comm D) (v : VCom c) (t : Tup c) (w : VTup t) (F : QFam v t), c.Is → v.Is → F.Pins w → ∀ j, j + 1 < D.R.m → ∀ Ψ, GlobalTheory.FinPl.Vac c.ψ _ _ (v.N j) (v.N (j + 1)) (· ∈ w.Q) Ψ → ∀ i, ∃ f, GlobalTheory.FinPl.Vac c.ψ _ _ (v.N j) (v.N (j + 1)) (· = (F.Q i).q.v) f ∧ comb c.ψ _ _ (w.eQ j) Ψ = comb c.ψ _ _ ((F.Q i).eL j) f := by
   intro D c v t w F hc hv hP j hj Ψ hΨ i
@@ -139,9 +137,9 @@ theorem eQ_comb_at_place : ∀ (D : D7) (c : Comm D) (v : VCom c) (t : Tup c) (w
       (List.mem_finRange i)
 
 /- English proof (translation)
-Introduce `D k _ _ _ _ q hU ψ ψk hψ hch hcond S T χS χT ω hω μS μT cS cT Y Y' _ _ _ _ FS FT LS LT hLS hLT hFS hFT e Φ hΦ hcomb f hf g gk h hk hg hh z hz`. Take `⟨Tm, hTm, hTO⟩` from `(GlobalTheory.T.integralIndicator_gives_localVacuum_splitPlace D k q hU Y Y' S T FS FT ψ ψk hψ hch hcond LS LT hLS hLT hFS hFT).2 f hf`. Take `⟨O, hO, -⟩` from `GlobalTheory.LocMod.PinModel.exists_isOne (k := k) (Y := Y) (Y' := Y')`. Set `Φs : SB (Matrix Y Y' k)` to `⟨Φ, hΦ⟩`. Establish `e1 : Tm Φs = comb ψ S T e f` using `by rw [hcomb.2 Tm hTm O Φs hO rfl, hTO O hO]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `e2` using `GlobalTheory.T.weilDatum_localModel_formula D k (ofSplit q) ψ S T χS χT ω hω μS μT cS cT Y Y' FS FT Tm hTm g gk h hk hg hh Φs (z • Φs) (by rw [Submodule.coe_smul]; exact hz.symm)`. Rewrite using `[← e1, e2, map_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem local_scalar_law : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (q : GlobalTheory.FinPl.SplitPt D k), q.UnitAA → ∀ (ψ : AddChar (AF D.host.F) ℂ) (ψk : AddChar k Circle), IsStdChar D ψ (-1) → (ofSplit q).IsChar ψ ψk → HasConductor ψk 1 → ∀ (S T : HSp D) (χS χT : (AE D)ˣ →* Circle) (ω : Om S T), IsWeilDatumO ψ S T χS χT ω → ∀ (μS μT : kˣ →* ℂˣ), (ofSplit q).IsComp χS μS → (ofSplit q).IsComp χT μT → ∀ (Y Y' : Type) [Fintype Y] [DecidableEq Y] [Fintype Y'] [DecidableEq Y'] (FS : Frame k S.rank Y') (FT : Frame k T.rank Y) (LS : GlobalTheory.FinPl.Lat S) (LT : GlobalTheory.FinPl.Lat T), IsSelfDualC S LS → IsSelfDualC T LT → (∀ y : Y' → k, (∀ i, y i ∈ 𝒪[k]) ↔ (fun i => q.sec ((FS.β *ᵥ y) i)) ∈ GlobalTheory.FinPl.latV S LS (· = q.v)) → (∀ y : Y → k, (∀ i, y i ∈ 𝒪[k]) ↔ (fun i => q.sec ((FT.β *ᵥ y) i)) ∈ GlobalTheory.FinPl.latV T LT (· = q.v)) → ∀ (e : WO S T →₀ ℂ) (Φ : Matrix Y Y' k → ℂ), Φ ∈ SB (Matrix Y Y' k) → (ofSplit q).IsCombAt ψ FS FT e Φ → ∀ f, GlobalTheory.FinPl.Vac ψ S T LS LT (· = q.v) f → ∀ g gk h hk, (ofSplit q).IsLoc FS g gk → (ofSplit q).IsLoc FT h hk → ∀ z : ℂ, (((μS * μT⁻¹) (Matrix.GeneralLinearGroup.det gk) : ℂˣ) : ℂ) • om μS⁻¹ gk hk Φ = z • Φ → ω (g, h) (comb ψ S T e f) = z • comb ψ S T e f := by
   intro D k _ _ _ _ q hU ψ ψk hψ hch hcond S T χS χT ω hω μS μT cS cT Y Y' _ _ _ _ FS FT LS LT hLS hLT hFS hFT e Φ hΦ
@@ -156,7 +154,7 @@ theorem local_scalar_law : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [T
   rw [← e1, e2, map_smul]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [om, Pi.smul_apply, smul_eq_mul, MonoidHom.mul_apply, Units.val_mul, mul_inv, Units.val_inv_eq_inv_val]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem om_twist {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {a b : Type} [Fintype a] [DecidableEq a] [Fintype b] [DecidableEq b] (μ ζ : kˣ →* ℂˣ) (g : GL a k) (h : GL b k)
@@ -170,7 +168,7 @@ theorem om_twist {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsN
 variable {D : D7}
 
 /- English proof (translation)
-Introduce `x a ha` and use `by rw [MonoidHom.mul_apply, MonoidHom.mul_apply, Units.val_mul, Circle.coe_mul, h x a ha, h' x a ha]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isComp_mul {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (p : Place D k) {χ χ' : (AE D)ˣ →* Circle} {μ μ' : kˣ →* ℂˣ} (h : p.IsComp χ μ) (h' : p.IsComp χ' μ') :
@@ -178,32 +176,30 @@ theorem isComp_mul {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [I
   rw [MonoidHom.mul_apply, MonoidHom.mul_apply, Units.val_mul, Circle.coe_mul, h x a ha, h' x a ha]
 
 /- English proof (translation)
-Introduce `x a ha` and use `by rw [MonoidHom.inv_apply, MonoidHom.inv_apply, Units.val_inv_eq_inv_val, Circle.coe_inv, h x a ha]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isComp_inv {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (p : Place D k) {χ : (AE D)ˣ →* Circle} {μ : kˣ →* ℂˣ} (h : p.IsComp χ μ) : p.IsComp χ⁻¹ μ⁻¹ := fun x a ha => by
   rw [MonoidHom.inv_apply, MonoidHom.inv_apply, Units.val_inv_eq_inv_val, Circle.coe_inv, h x a ha]
 
 /- English proof (translation)
-Establish `hs` using `(F.Q i).hs`. Take `⟨d, rfl⟩ : ∃ d, cc = d + 1` from `⟨cc - 1, by omega⟩`. Establish `hjd : j + (d + 1) = (F.Q i).s` using `by omega`. Establish `hjd' : j + 1 + d = (F.Q i).s` using `by omega`. Take `⟨χz, hV, hW, hV', hW'⟩` from `hP.mid j σ h`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨ζ, hζ⟩` from `GlobalTheory.LocMod.Witness.exists_isComp (ofSplit (F.Q i).q) χz`. Use `⟨(((F.Q i).T.lev (j + 1) (d + 1) hcc).lam ⟨x, hx⟩ : ℂ) * (((ζ (Matrix.GeneralLinearGroup.det x))⁻¹ : ℂˣ) : ℂ), mul_ne_zero (Units.ne_zero _) (Units.ne_zero _), fun Ψ₁ Ψ₂ h₁ h₂ => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Take `⟨f, hf, hfe⟩` from `eQ_comb_at_place D c v t w F hc hv hP j (by omega) Ψ₁ h₁ i`. Rewrite using `[hfe]`. Establish `hw` using `(t.sBF j (σ + 1) h).weil`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hw` using `[(ht.sBF j (σ + 1) h).1]`. Establish `hmu` using `isComp_inv _ ((F.Q i).mu j (by omega)).1`. Rewrite `hmu` using `[inv_inv]`. Establish `cS : (ofSplit (F.Q i).q).IsComp (t.sBF j (σ + 1) h).χV (((F.Q i).T.mu (j + 1))⁻¹ * ζ)`. Rewrite using `[hV]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `isComp_mul _ hmu hζ`. Establish `cT : (ofSplit (F.Q i).q).IsComp (t.sBF j (σ + 1) h).χW ((F.Q i).T.mu (j + 1))⁻¹`. Rewrite using `[hW]`. Conclude with `hmu`. Establish `h1 : (ofSplit (F.Q i).q).IsLoc ((F.Q i).FY j (d + 1 + 1) (by omega)) 1 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `(F.Q i).gl_loc j (d + 1 + 1) (by omega) 1` as an intermediate fact. Rewrite `this` using `[map_one]`. Then use the resulting hypothesis. Use `local_scalar_law D (F.Q i).k (F.Q i).q (F.Q i).unit c.ψ (F.Q i).ψk hc.std (F.Q i).char (F.Q i).cond _ _ _ _ (t.om j) hw _ _ cS cT _ _ ((F.Q i).FY j (d + 1 + 1) (by omega)) ((F.Q i).FY (j + 1) (d + 1) (by omega)) (v.N j) (v.N (j + 1)) (hv.sd j (by omega)) (hv.sd (j + 1) (by omega) …` and prove the remaining obligations. Rewrite using `[map_one, map_one, Units.val_one, one_smul, mul_inv, inv_inv, om_twist, ((F.Q i).laws.1 j (d + 1) hjd).2 ⟨x, hx⟩, smul_smul]`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [map_one, MonoidHom.inv_apply, inv_one, Units.val_one, one_mul, inv_inv, mul_inv, Units.val_inv_eq_inv_val]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨f, hf, hfe⟩` from `eQ_comb_at_place D c v t w F hc hv hP (j + 1) (by omega) Ψ₂ h₂ i`. Rewrite using `[hfe]`. Establish `hw` using `(t.sFB j σ h).weil`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hw` using `[(ht.sFB j σ h).1]`. Establish `hmu` using `isComp_inv _ ((F.Q i).mu (j + 1) (by omega)).1`. Rewrite `hmu` using `[inv_inv]`. Establish `cS : (ofSplit (F.Q i).q).IsComp (t.sFB j σ h).χV ((F.Q i).T.mu (j + 1 + 1))⁻¹`. Rewrite using `[hV']`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hmu`. Establish `cT : (ofSplit (F.Q i).q).IsComp (t.sFB j σ h).χW (((F.Q i).T.mu (j + 1 + 1))⁻¹ * ζ)`. Rewrite using `[hW']`. Conclude with `isComp_mul _ hmu hζ`. Establish `h1 : (ofSplit (F.Q i).q).IsLoc ((F.Q i).FY (j + 1 + 1) d (by omega)) 1 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(F.Q i).gl_loc (j + 1 + 1) d (by omega) 1` as an intermediate fact. Rewrite `this` using `[map_one]`. Then use the resulting hypothesis. Use `local_scalar_law D (F.Q i).k (F.Q i).q (F.Q i).unit c.ψ (F.Q i).ψk hc.std (F.Q i).char (F.Q i).cond _ _ _ _ (t.om (j + 1)) hw _ _ cS cT _ _ ((F.Q i).FY (j + 1) (d + 1) (by omega)) ((F.Q i).FY (j + 1 + 1) d (by omega)) (v.N (j + 1)) (v.N (j + 1 + 1)) (hv.sd (j + 1) (by omega)) (hv …` and prove the remaining obligations. Rewrite using `[inv_inv, ((F.Q i).laws.1 (j + 1) d hjd').1 ⟨x, hx⟩, smul_smul]`. Use `congr 1`.
-
-Simplify using `only [MonoidHom.mul_apply, MonoidHom.inv_apply, mul_inv, inv_inv, Units.val_mul, Units.val_inv_eq_inv_val]`. Clear the denominators using the available nonvanishing facts.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem place_law (D : D7) (c : Comm D) (v : VCom c) (t : Tup c) (w : VTup t) (F : QFam v t)
     (hc : c.Is) (ht : t.Is) (hv : v.Is) (hP : F.Pins w) (j σ : ℕ) (h : j + 2 * (σ + 1) + 2 = D.R.m) (i : Fin F.r)
@@ -270,13 +266,13 @@ theorem place_law (D : D7) (c : Comm D) (v : VCom c) (t : Tup c) (w : VTup t) (F
     field_simp
 
 /- English proof (translation)
-Introduce `D c v t w F hc ht hv _ hP j σ h k hk`. Use `Subgroup.iSup_induction (fun i => GlobalTheory.QuotientFiniteLevel.locK F j σ h i) (C := fun k => ∃ a : ℂ, a ≠ 0 ∧ ∀ Ψ₁ Ψ₂, GlobalTheory.FinPl.Vac c.ψ _ _ (v.N j) (v.N (j + 1)) (· ∈ w.Q) Ψ₁ → GlobalTheory.FinPl.Vac c.ψ _ _ (v.N (j + 1)) (v.N (j + 1 + 1)) (· ∈ w.Q) Ψ₂ → t.om j (1, …` and prove the remaining obligations. Introduce `i k hk`. Take `⟨x, hx, rfl⟩` from `Subgroup.mem_map.1 hk`. Conclude with `place_law D c v t w F hc ht hv hP j σ h i _ _ x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨1, one_ne_zero, fun Ψ₁ Ψ₂ _ _ => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[show ((1 : GA D (c.V j)), (1 : GA D (c.V (j + 1)))) = 1 from rfl, map_one, inv_one, one_smul]`. Both sides reduce to the same expression. Rewrite using `[show ((1 : GA D (c.V (j + 1))), (1 : GA D (c.V (j + 1 + 1)))) = 1 from rfl, map_one, one_smul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `x y ⟨a, ha, hxa⟩ ⟨b, hb, hyb⟩`. Use `⟨a * b, mul_ne_zero ha hb, fun Ψ₁ Ψ₂ h₁ h₂ => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Establish `e : ((1 : GA D (c.V j)), x * y) = (1, x) * (1, y)` using `by simp`. Rewrite using `[e, map_mul, Module.End.mul_apply, (hyb Ψ₁ Ψ₂ h₁ h₂).1, map_smul, (hxa Ψ₁ Ψ₂ h₁ h₂).1, smul_smul, mul_inv, mul_comm b⁻¹]`. Establish `e : (x * y, (1 : GA D (c.V (j + 1 + 1)))) = (x, 1) * (y, 1)` using `by simp`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, map_mul, Module.End.mul_apply, (hyb Ψ₁ Ψ₂ h₁ h₂).2, map_smul, (hxa Ψ₁ Ψ₂ h₁ h₂).2, smul_smul, mul_comm b a]`.
+A detailed English derivation is pending.
 -/
 theorem inverse_laws : ∀ (D : D7) (c : Comm D) (v : VCom c) (t : Tup c) (w : VTup t) (F : QFam v t), c.Is → t.Is → v.Is → WeilOK (t := t) v → F.Pins w → ∀ j σ (h : j + 2 * (σ + 1) + 2 = D.R.m), ∀ k ∈ GlobalTheory.QuotientFiniteLevel.qK F j σ h, ∃ a : ℂ, a ≠ 0 ∧ ∀ Ψ₁ Ψ₂, GlobalTheory.FinPl.Vac c.ψ _ _ (v.N j) (v.N (j + 1)) (· ∈ w.Q) Ψ₁ → GlobalTheory.FinPl.Vac c.ψ _ _ (v.N (j + 1)) (v.N (j + 1 + 1)) (· ∈ w.Q) Ψ₂ → t.om j (1, k) (comb c.ψ _ _ (w.eQ j) Ψ₁) = a⁻¹ • comb c.ψ _ _ (w.eQ j) Ψ₁ ∧ t.om (j + 1) (k, 1) (comb c.ψ _ _ (w.eQ (j + 1)) Ψ₂) = a • comb c.ψ _ _ (w.eQ (j + 1)) Ψ₂ := by
   intro D c v t w F hc ht hv _ hP j σ h k hk

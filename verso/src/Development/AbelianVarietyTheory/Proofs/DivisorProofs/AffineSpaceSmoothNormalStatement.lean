@@ -4,7 +4,7 @@ import Mathlib
 open CategoryTheory AlgebraicGeometry
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.affineSpace_over_integral_affine_open_smooth_integral_normal` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FAffineSpaceSmoothNormal.lean&line=29#L29)
 -/

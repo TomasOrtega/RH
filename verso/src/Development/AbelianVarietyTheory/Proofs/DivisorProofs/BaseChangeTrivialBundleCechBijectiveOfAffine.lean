@@ -11,7 +11,7 @@ open GlobalTheory.CechPoset
 namespace GlobalTheory.CechPoset
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.AbLaw.SecOn.chart (LB.isLB_pull (LB.isLB_triv X) φ) (i0 φ) (by rw [triv_pull_U]; exact le_top)).bijective`.
+A detailed English derivation is pending.
 -/
 theorem trivCoord_bijective {R' : Type} [CommRing R'] {X X' : Scheme.{0}} (φ : X' ⟶ X)
     (s' : X' ⟶ Sp R') (V : X'.Opens) : Function.Bijective (trivCoord φ s' V) :=
@@ -19,7 +19,7 @@ theorem trivCoord_bijective {R' : Type} [CommRing R'] {X X' : Scheme.{0}} (φ : 
     (by rw [triv_pull_U]; exact le_top)).bijective
 
 /- English proof (translation)
-Introduce `R R' _ _ _ X X' s s' φ h κ _ _ D hD' hD p`. Establish `hB` using `GlobalTheory.AbLaw.secTermBaseChange_bijective (M := LB.triv X) (D := D) (LB.isLB_triv X) h (p + 1) fun t ht => hD t (Finset.card_pos.1 (by omega))`. Conclude with `(Function.Bijective.piMap fun t => trivCoord_bijective φ s' _).comp hB`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem Φ_bijective_of_affine : ∀ {R R' : Type} [CommRing R] [CommRing R'] [Algebra R R'] {X X' : Scheme.{0}} {s : X ⟶ Sp R} {s' : X' ⟶ Sp R'} {φ : X' ⟶ X} (h : IsPullback φ s' s (spMap (algebraMap R R'))) {κ : Type} [LinearOrder κ] [Fintype κ] (D : κ → X.Opens) (hD' : ∀ I : Finset κ, I.Nonempty → IsAffineOpen (⨅ i ∈ I, φ ⁻¹ᵁ D i)), (∀ I : Finset κ, I.Nonempty → IsAffineOpen (⨅ i ∈ I, D i)) → ∀ p : ℕ, Function.Bijective (Φ h.w D hD' p) := by
   intro R R' _ _ _ X X' s s' φ h κ _ _ D hD' hD p

@@ -17,9 +17,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.SqZeroCrys
 
 /- English proof (translation)
-Introduce `k _ V _ _ _ _ A₀ _ hA h2 m`. Use `hA.smooth` as an intermediate fact. Take `⟨g, hg⟩` from `GlobalTheory.SerreDim.exists_dim_of_grpObj A₀`. Establish `e : (𝟙 _ : Sp k ⟶ Sp k) = spMap (RingHom.id k)` using `(Cris.spMap_id k).symm`. Establish `h` using `(GlobalTheory.CrysConn.isGrpPullback_refl A₀).congr e rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : ∀ (t : Sp k ⟶ Sp k), t = spMap (RingHom.id k) → ∀ m : GrpMor (dp0 k) t A₀ (divided₂ h2) (spMap (TrivSqZeroExt.fstHom k k V).toRingHom) A₀ (algebraMap k (TrivSqZeroExt k V)) (𝟙 _) (Over.Hom.left (𝟙 A₀)), m.IsBC`. Introduce and unpack `_ rfl m`. Conclude with `GlobalTheory.CrysConn.isBC_of_lift GlobalTheory.T.abelianScheme_firstDeRham_structure hA hg (isDPNilpotent_bot k) Function.surjective_id ((RingHom.injective_iff_ker_eq_bot _).1 Function.injective_id) h (isDPNilpotent_squareZero _) (fun r ↦ ⟨TrivSqZeroExt.inl r, rfl⟩) rfl m (Globa …`. Conclude with `key _ e m`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem isBC_trivSqZeroExt : ∀ (k : Type) [Field k] (V : Type) [AddCommGroup V] [Module k V] [Module kᵐᵒᵖ V]
     [IsCentralScalar k V] (A₀ : Over (Sp k)) [GrpObj A₀], IsAbelianScheme A₀ →

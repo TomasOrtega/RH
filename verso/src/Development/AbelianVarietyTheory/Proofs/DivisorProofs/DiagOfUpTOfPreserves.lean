@@ -8,7 +8,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.HolDict
 
 /- English proof (translation)
-Use extensionality with `i j`. Break down `lt_trichotomy i j with hij | rfl | hij` into its components or cases. Rewrite using `[hup i j hij, diagonal_apply_ne _ (ne_of_lt hij)]`. Rewrite using `[diagonal_apply_eq]`. Rewrite using `[hlow i j hij, diagonal_apply_ne _ (ne_of_gt hij)]`.
+By extensionality, compare the relevant components. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem eq_diagonal_of_lower_upper_zero {n : ℕ} (b : Mt n) (hlow : ∀ a c : Fin n, c < a → b a c = 0)
     (hup : ∀ a c : Fin n, a < c → b a c = 0) : b = diagonal fun a => b a a := by
@@ -19,9 +19,9 @@ private theorem eq_diagonal_of_lower_upper_zero {n : ℕ} (b : Mt n) (hlow : ∀
   · rw [hlow i j hij, diagonal_apply_ne _ (ne_of_gt hij)]
 
 /- English proof (translation)
-Establish `hn : Complex.normSq z = 1`. Establish `h1 : (Complex.normSq z : ℂ) = 1` using `(Complex.normSq_eq_conj_mul_self).trans hz`. Conclude with `h1` after adjusting the coercions. Establish `habs : ‖z‖ = 1`. Establish `h2 : ‖z‖ ^ 2 = 1` using `by rw [← Complex.normSq_eq_norm_sq]; exact hn`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : 0 ≤ ‖z‖` using `norm_nonneg z`. Use polynomial arithmetic with `[sq_nonneg (‖z‖ - 1)]`. Establish `key` using `Complex.norm_mul_exp_arg_mul_I z`. Rewrite `key` using `[habs, Complex.ofReal_one, one_mul]`. Conclude with `key.symm`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem eq_exp_arg_mul_I_of_star_mul_self_eq_one (z : ℂ) (hz : star z * z = 1) :
     z = Complex.exp ((Complex.arg z : ℂ) * Complex.I) := by
@@ -37,21 +37,19 @@ private theorem eq_exp_arg_mul_I_of_star_mul_self_eq_one (z : ℂ) (hz : star z 
   exact key.symm
 
 /- English proof (translation)
-Establish `hDD : diagonal d * diagonal d = 1`. Rewrite using `[diagonal_mul_diagonal, ← diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Conclude with `hd a`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `hdne : ∀ a, d a ≠ 0`. Introduce `a h0`. Establish `h1` using `hd a`. Rewrite `h1` using `[h0, zero_mul]`. Conclude with `zero_ne_one h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hleft : diagonal d * bᴴ * diagonal d * b = 1`. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc bᴴ, h, hDD]`. Use `letI : Invertible b.det := (Ne.isUnit hb.1).invertible`. Use `letI : Invertible b := Matrix.invertibleOfDetInvertible b`. Establish `hinv : b⁻¹ = diagonal d * bᴴ * diagonal d` using `Matrix.inv_eq_left_inv hleft`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbt : Matrix.BlockTriangular b id` using `fun i j hij => hb.2 i j hij`. Establish `hbit` using `Matrix.blockTriangular_inv_of_blockTriangular hbt`. Establish `hup : ∀ a c : Fin n, a < c → b a c = 0`. Introduce `a c hac`. Establish `h0 : b⁻¹ c a = 0` using `hbit hac`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite `h0` using `[hinv, Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.conjTranspose_apply]`. Break down `mul_eq_zero.1 h0 with h1 | h1` into its components or cases. Break down `mul_eq_zero.1 h1 with h2 | h2` into its components or cases. Conclude with `absurd h2 (hdne c)`. Conclude with `star_eq_zero.1 h2`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `absurd h1 (hdne a)`. Establish `hdiag` using `eq_diagonal_of_lower_upper_zero b hb.2 hup`. Establish `hh` using `h`. Rewrite `hh` using `[hdiag, Matrix.diagonal_conjTranspose, diagonal_mul_diagonal, diagonal_mul_diagonal]`. Establish `hu : ∀ a, star (b a a) * b a a = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `a`. Establish `h1` using `congrFun (Matrix.diagonal_injective hh) a`. Simplify using `only [Pi.star_apply] at h1`. Establish `h2 : d a * (star (b a a) * b a a) = d a * 1` using `by linear_combination h1`. Conclude with `mul_left_cancel₀ (hdne a) h2`.
-
-Use `⟨fun a => Complex.arg (b a a), ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Use `congr 1`. Use function extensionality and compare the values at `a`. Conclude with `eq_exp_arg_mul_I_of_star_mul_self_eq_one _ (hu a)`.
+Chain the equalities or inequalities of the calculation. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem diag_of_upT_of_preserves {n : ℕ} (d : Fin n → ℂ) (hd : ∀ a, d a * d a = 1) (b : Mt n) (hb : UpT b)
     (h : bᴴ * diagonal d * b = diagonal d) :
@@ -103,15 +101,15 @@ theorem diag_of_upT_of_preserves {n : ℕ} (d : Fin n → ℂ) (hd : ∀ a, d a 
       exact eq_exp_arg_mul_I_of_star_mul_self_eq_one _ (hu a)
 
 /- English proof (translation)
-Introduce `n Hm q x₀ hx b hb hu`. Take `⟨-, hx⟩` from `hx`. Use `set d : Fin n → ℂ := fun a : Fin n => -((ReciprocityTheory.ChartRestriction.G.FD.sgn q (a : ℕ) : ℝ) : ℂ) with hd_def`. Establish `hd : ∀ a, d a * d a = 1`. Introduce `a`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [hd_def, ReciprocityTheory.ChartRestriction.G.FD.sgn]`. Apply the tactic sequence `split_ifs <;> norm_num`. Establish `hdet : x₀.det ≠ 0`. Introduce `h0`. Establish `h1` using `congrArg Matrix.det hx`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[det_mul, det_mul, h0, mul_zero, det_diagonal]`. Use `(Finset.prod_ne_zero_iff.2 fun a _ => ?_) h1.symm` and prove the remaining obligations. Introduce `h2`. Establish `h3` using `hd a`. Rewrite `h3` using `[h2, zero_mul]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `zero_ne_one h3`. Establish `hu' : (x₀ * b * x₀⁻¹)ᴴ * Hm * (x₀ * b * x₀⁻¹) = Hm` using `hu`. Establish `hcx : x₀ * b * x₀⁻¹ * x₀ = x₀ * b`. Rewrite using `[Matrix.mul_assoc, Matrix.nonsing_inv_mul _ (Ne.isUnit hdet), Matrix.mul_one]`. Establish `key : bᴴ * diagonal d * b = diagonal d`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[conjTranspose_mul (x₀ * b * x₀⁻¹) x₀]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = diagonal d := by rw [hu', hx]`. Conclude with `diag_of_upT_of_preserves d hd b hb key`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem diag_of_upT_unitary : ∀ (n : ℕ) (Hm : Mt n) (q : ℕ) (x₀ : Mt n), OrthFr Hm q x₀ → ∀ b : Mt n, UpT b → x₀ * b * x₀⁻¹ ∈ Formalism.QuantumDeterminants.UH Hm → ∃ s : Fin n → ℝ, b = diagonal fun a => Complex.exp ((s a : ℂ) * Complex.I) := by
   intro n Hm q x₀ hx b hb hu

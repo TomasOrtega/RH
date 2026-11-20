@@ -30,7 +30,7 @@ lemma specHom_left (φ : S →ₐ[R] T) :
     (specHom φ).left = Spec.map (CommRingCat.ofHom φ.toRingHom) := rfl
 
 /- English proof (translation)
-Use `ext1`. Rewrite using `[Over.comp_left, specHom_left, specHom_left, specHom_left, ← Spec.map_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 lemma specHom_comp (φ : S →ₐ[R] T) (ψ : T →ₐ[R] T') :
     specHom (ψ.comp φ) = specHom ψ ≫ specHom φ := by
@@ -39,7 +39,7 @@ lemma specHom_comp (φ : S →ₐ[R] T) (ψ : T →ₐ[R] T') :
   rfl
 
 /- English proof (translation)
-Introduce `φ ψ h`. Use `Spec.map_injective congr(($h).left)` as an intermediate fact. Use extensionality with `x`. Conclude with `congr($this x)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 lemma specHom_injective : Function.Injective (specHom : (S →ₐ[R] T) → _) := by
   intro φ ψ h
@@ -52,9 +52,9 @@ end
 variable {Λ B : Type} [CommRing Λ] [HopfAlgebra R Λ] [CommRing B] [Algebra R B]
 
 /- English proof (translation)
-Use `(Spec.mapMulEquiv (R := R) (S := Λ) (T := T)).map_mul (WithConv.toConv φ) (WithConv.toConv ψ)` as an intermediate fact. Use `Eq.trans ?_ this` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `specHom _ = specHom _`. Use `congr 1`. Rewrite using `[AlgHom.convMul_def, ← AlgHom.comp_assoc]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Apply the tactic sequence `ext <;> simp`.
+Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma specHom_lift_comul {T : Type} [CommRing T] [Algebra R T] (φ ψ : Λ →ₐ[R] T) :
     specHom ((Algebra.TensorProduct.lift φ ψ fun _ _ ↦ .all _ _).comp
@@ -69,7 +69,7 @@ lemma specHom_lift_comul {T : Type} [CommRing T] [Algebra R T] (φ ψ : Λ →�
   ext <;> simp
 
 /- English proof (translation)
-Use `ext1`. Rewrite using `[Over.comp_left, one_spec_asOver_spec_left, specHom_left]`. Conclude with `Spec.map_comp (CommRingCat.ofHom (Bialgebra.counitAlgHom R Λ).toRingHom) (CommRingCat.ofHom (algebraMap R T))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma specHom_counit {T : Type} [CommRing T] [Algebra R T] :
     specHom ((Algebra.ofId R T).comp (Bialgebra.counitAlgHom R Λ)) =
@@ -86,7 +86,7 @@ variable {A : Over (Spec (CommRingCat.of R))} [GrpObj A]
 include hρ
 
 /- English proof (translation)
-Rewrite using `[specHom_comp, specHom_comp, specHom_comp, Category.assoc, hρ, comp_mul, Category.assoc, Category.assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma specHom_comp_coaction {T : Type} [CommRing T] [Algebra R T] (φ : B ⊗[R] Λ →ₐ[R] T) :
     specHom (φ.comp ρ) ≫ v =
@@ -95,9 +95,9 @@ lemma specHom_comp_coaction {T : Type} [CommRing T] [Algebra R T] (φ : B ⊗[R]
     Category.assoc]
 
 /- English proof (translation)
-Set `φ : B ⊗[R] Λ →ₐ[R] B` to `Algebra.TensorProduct.lift (AlgHom.id R B) ((Algebra.ofId R B).comp (Bialgebra.counitAlgHom R Λ)) fun _ _ ↦ .all _ _`. Establish `h` using `specHom_comp_coaction i v ρ hρ φ`. Rewrite `h` using `[lift_comp_includeRight', lift_comp_includeLeft, specHom_counit, Category.assoc, IsMonHom.one_hom, ← Hom.one_def, _root_.one_mul, cancel_mono]`. Establish `h1 : φ (ρ b) = b` using `congr($(specHom_injective h) b)`. Use `Eq.trans ?_ h1` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Generalize the expression as in `ρ b = z`. Proceed by induction on `z with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul x y => simp [φ, Algebra.smul_def, _root_.mul_comm]`.
+Replace the chosen expression with an arbitrary variable. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 lemma coaction_counit [IsMonHom i] [Mono v] (b : B) :
     TensorProduct.rid R B ((Coalgebra.counit (R := R) (A := Λ)).lTensor B (ρ b)) = b := by
@@ -115,21 +115,21 @@ lemma coaction_counit [IsMonHom i] [Mono v] (b : B) :
   | tmul x y => simp [φ, Algebra.smul_def, _root_.mul_comm]
 
 /- English proof (translation)
-Set `l : B →ₐ[R] B ⊗[R] (Λ ⊗[R] Λ)` to `includeLeft`. Set `r₁ : Λ →ₐ[R] B ⊗[R] (Λ ⊗[R] Λ)` to `includeRight.comp includeLeft`. Set `r₂ : Λ →ₐ[R] B ⊗[R] (Λ ⊗[R] Λ)` to `includeRight.comp includeRight`. Set `φ₀ : B ⊗[R] Λ →ₐ[R] B ⊗[R] (Λ ⊗[R] Λ)` to `Algebra.TensorProduct.lift l r₁ fun _ _ ↦ .all _ _`. Set `φ₁ : B ⊗[R] Λ →ₐ[R] B ⊗[R] (Λ ⊗[R] Λ)` to `Algebra.TensorProduct.lift (φ₀.comp ρ) r₂ fun _ _ ↦ .all _ _`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `φ₂ : B ⊗[R] Λ →ₐ[R] B ⊗[R] (Λ ⊗[R] Λ)` to `Algebra.TensorProduct.lift l ((Algebra.TensorProduct.lift r₁ r₂ fun _ _ ↦ .all _ _).comp (Bialgebra.comulAlgHom R Λ)) fun _ _ ↦ .all _ _`. Establish `h₀` using `specHom_comp_coaction i v ρ hρ φ₀`. Establish `h₁` using `specHom_comp_coaction i v ρ hρ φ₁`. Establish `h₂` using `specHom_comp_coaction i v ρ hρ φ₂`. Rewrite `h₀`, `h₁`, `h₂` using `[lift_comp_includeRight', lift_comp_includeLeft]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h₁` using `[h₀, ← _root_.mul_assoc, _root_.mul_comm (specHom r₂ ≫ i), ← MonObj.mul_comp]`. Rewrite `h₂` using `[specHom_lift_comul, ← h₁, cancel_mono]`. Establish `h : φ₂ (ρ b) = φ₁ (ρ b)` using `congr($(specHom_injective h₂) b)`. Establish `e₁ (z : B ⊗[R] Λ) : TensorProduct.assoc R B Λ Λ (ρ.toLinearMap.rTensor Λ z) = φ₁ z`. Proceed by induction on `z with`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul x y`. Simplify using `only [LinearMap.rTensor_tmul, AlgHom.toLinearMap_apply, φ₁, Algebra.TensorProduct.lift_tmul, AlgHom.comp_apply]`. Generalize the expression as in `ρ x = w`.
+Treat this case separately. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable.
 
-Proceed by induction on `w with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, add_tmul, add_mul, hx, hy]`. Consider the case `tmul x y => simp [φ₀, l, r₁, r₂]`. Establish `e₂ (z : B ⊗[R] Λ) : (Coalgebra.comul (R` using `R) (A := Λ)).lTensor B z = φ₂ z := by`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Proceed by induction on `z with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul x y`. Simplify using `only [LinearMap.lTensor_tmul, φ₂, Algebra.TensorProduct.lift_tmul, AlgHom.comp_apply, Bialgebra.comulAlgHom_apply]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Generalize the expression as in `Coalgebra.comul (R := R) y = w`. Proceed by induction on `w with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, tmul_add, mul_add, hx, hy]`. Consider the case `tmul x y => simp [l, r₁, r₂]`.
+Replace the chosen expression with an arbitrary variable. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Rewrite using `[e₁, e₂, h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma coaction_assoc [IsCommMonObj A] [IsMonHom i] [Mono v] (b : B) :
     TensorProduct.assoc R B Λ Λ (ρ.toLinearMap.rTensor Λ (ρ b)) =
@@ -178,19 +178,17 @@ lemma coaction_assoc [IsCommMonObj A] [IsMonHom i] [Mono v] (b : B) :
   rw [e₁, e₂, h]
 
 /- English proof (translation)
-Set `m` to `productMap (includeLeft : B →ₐ[R] B ⊗[R] Λ) ρ`. Establish `: Epi (CommRingCat.ofHom m.toRingHom)`. Use `⟨fun {T} φ ψ h ↦ ?_⟩` and prove the remaining obligations. Establish `hm (z) : φ (m z) = ψ (m z)` using `congr($h z)`. Set `: Algebra R T` to `(φ.hom.comp (algebraMap R (B ⊗[R] Λ))).toAlgebra`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `φ' : B ⊗[R] Λ →ₐ[R] T` to `⟨φ.hom, fun _ ↦ rfl⟩`. Set `ψ' : B ⊗[R] Λ →ₐ[R] T` to `⟨ψ.hom, fun r ↦ by`. Use `hm (algebraMap R _ r)` as an intermediate fact. Rewrite `this` using `[AlgHom.commutes]`. Conclude with `this.symm⟩`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h₁ : φ'.comp includeLeft = ψ'.comp (includeLeft : B →ₐ[R] B ⊗[R] Λ)`. Use extensionality with `b`. Use `hm (b ⊗ₜ 1)` as an intermediate fact. Rewrite `this` using `[productMap_left_apply]`. Conclude with `this`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `h₂ : φ'.comp ρ = ψ'.comp ρ`. Use extensionality with `b`. Use `hm (1 ⊗ₜ b)` as an intermediate fact. Rewrite `this` using `[productMap_right_apply]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h₃` using `specHom_comp_coaction i v ρ hρ φ'`. Rewrite `h₃` using `[h₂, h₁, specHom_comp_coaction i v ρ hρ ψ', mul_left_inj, cancel_mono]`. Establish `h₄` using `specHom_injective h₃`. Establish `: φ' = ψ'` using `Algebra.TensorProduct.ext h₁ h₄.symm`. Use `ext1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Conclude with `congr(($this).toRingHom)`. Use `RingHom.surjective_of_epi_of_finite (CommRingCat.ofHom m.toRingHom) ?_` and prove the remaining obligations. Use `RingHom.Finite.of_comp_finite (f := (includeLeftRingHom : B →+* B ⊗[R] B)) ?_` and prove the remaining obligations. Establish `: (CommRingCat.ofHom m.toRingHom).hom.comp (includeLeftRingHom : B →+* B ⊗[R] B) = algebraMap B (B ⊗[R] Λ)`. Use extensionality with `b`.
-
-Simplify using `[m]`. Rewrite using `[this, RingHom.finite_algebraMap]`. Use `infer_instance`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma coaction_free [Mono i] [Module.Finite R Λ] :
     Function.Surjective (productMap (includeLeft : B →ₐ[R] B ⊗[R] Λ) ρ) := by
@@ -233,19 +231,17 @@ lemma coaction_free [Mono i] [Module.Finite R Λ] :
 omit hρ in
 
 /- English proof (translation)
-Use `⟨⟨by ext x; exact x.2⟩, ⟨PushoutCocone.isColimitAux' _ fun s ↦ ?_⟩⟩` and prove the remaining obligations. Establish `hs (b : B) (hb : α b = β b) : s.inl b = s.inr b` using `congr($(s.condition) ⟨b, hb⟩)`. Set `: Algebra R s.pt` to `(s.inl.hom.comp (algebraMap R B)).toAlgebra`. Set `φ : B →ₐ[R] s.pt` to `⟨s.inl.hom, fun _ ↦ rfl⟩`. Set `ψ : B →ₐ[R] s.pt` to `⟨s.inr.hom, fun r ↦ (hs _ (by simp)).symm⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hk : RingHom.ker (productMap β α).toRingHom ≤ RingHom.ker (productMap ψ φ).toRingHom`. Use `h₂.le.trans (Ideal.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨b, hb, rfl⟩`. Establish `: ψ b = φ b` using `(hs b hb).symm`. Simplify `this` using `[sub_eq_zero, RingHom.mem_ker]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Set `d : T →+* s.pt` to `(productMap β α).toRingHom.liftOfSurjective h₁ ⟨(productMap ψ φ).toRingHom, hk⟩`. Establish `hd (z) : d (productMap β α z) = productMap ψ φ z` using `RingHom.liftOfRightInverse_comp_apply (productMap β α).toRingHom _ _ _ z`. Use `⟨CommRingCat.ofHom d, ?_, ?_, fun {m} hm₁ hm₂ ↦ ?_⟩` and prove the remaining obligations. Use extensionality with `b`. Use `hd (1 ⊗ₜ b)` as an intermediate fact.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Rewrite `this` using `[productMap_right_apply, productMap_right_apply]`. Conclude with `this`. Use extensionality with `b`. Use `hd (b ⊗ₜ 1)` as an intermediate fact. Rewrite `this` using `[productMap_left_apply, productMap_left_apply]`.
+Rewrite the indicated hypotheses using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. By extensionality, compare the relevant components.
 
-Conclude with `this`. Use extensionality with `t`. Take `⟨z, rfl⟩` from `h₁ t`. Use `Eq.trans ?_ (hd z).symm` and prove the remaining obligations. Establish `e₁ (b) : m.hom (α b) = φ b` using `congr($hm₁ b)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Proceed by induction.
 
-Establish `e₂ (b) : m.hom (β b) = ψ b` using `congr($hm₂ b)`. Proceed by induction on `z with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul x y`.
-
-Rewrite using `[productMap_apply_tmul, productMap_apply_tmul, ← e₁, ← e₂]`. Conclude with `map_mul m.hom _ _`.
+Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma isPushout_equalizer {T : Type} [CommRing T] [Algebra R T] (α β : B →ₐ[R] T)
     (h₁ : Function.Surjective (productMap β α))

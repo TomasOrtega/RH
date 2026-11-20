@@ -7,7 +7,7 @@ open MvPolynomial Finset
 namespace Formalism.InvariantFactorPaths.ColumnFamilies
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `[genMat]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 lemma genMat_map_eval {n : ℕ} {R : Type} [CommRing R] (f : ℤ →+* R) (g : Matrix (Fin n) (Fin n) R) :
     (MvPolynomial.eval₂Hom f (fun ab : Fin n × Fin n => g ab.1 ab.2)).mapMatrix (genMat ℤ n) = g := by
@@ -20,7 +20,7 @@ def evGL {n : ℕ} {R : Type} [CommRing R] (g : GL (Fin n) R) : GLCoord ℤ n �
     (by rw [RingHom.map_det, genMat_map_eval]; exact Matrix.isUnits_det_units g)
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `[genMat]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 lemma genMat_map_coord {n : ℕ} (F : Type) [CommRing F] :
     (MvPolynomial.map (Int.castRingHom F)).mapMatrix (genMat ℤ n) = genMat F n := by
@@ -49,7 +49,7 @@ abbrev TIdx {n : ℕ} [NeZero n] (mu : Fin n → ℤ) :=
   (c : ↥(TCols mu)) → {J : Finset (Fin n) // J.card = colH mu c}
 
 /- English proof (translation)
-The claim follows from `le_of_le_of_eq (Finset.card_filter_le _ _) (by simp)`.
+A detailed English derivation is pending.
 -/
 lemma colH_le {n : ℕ} (mu : Fin n → ℤ) (c : ℤ) : colH mu c ≤ n :=
   le_of_le_of_eq (Finset.card_filter_le _ _) (by simp)
@@ -166,7 +166,7 @@ def IsBlock {m : ℕ} {R : Type} [CommRing R] (h : GL (Fin (m + 1)) R) (g1 : GL 
   ∀ a : Fin m, h.val a.castSucc (Fin.last m) = 0 ∧ h.val (Fin.last m) a.castSucc = 0
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `[genMat]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 lemma genMat_map_evalR {n : ℕ} {R R' : Type} [CommRing R] [CommRing R'] [Algebra R R']
     (g : Matrix (Fin n) (Fin n) R') :

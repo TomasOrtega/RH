@@ -12,7 +12,7 @@ namespace GlobalTheory.ColSubst
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Use `set r : 𝒪[k] := Quotient.out ((Matrix.of T * N.map (Ideal.Quotient.mk (IsLocalRing.maximalIdeal 𝒪[k] ^ e))) i j) - ∑ l, Quotient.out (T i l) * N l j with hr`. Establish `h1 : ((liftRes (Matrix.of T * N.map (Ideal.Quotient.mk (IsLocalRing.maximalIdeal 𝒪[k] ^ e)) : A → C → Res k e) - liftRes T * N.map (fun x => (x : k))) i j) = (r : k)`. Simplify using `[hr, liftRes, Matrix.mul_apply]`. Rewrite using `[h1, ← GlobalTheory.SplitFlip.Model.val_le_iff_mem hϖ, ← Ideal.Quotient.eq_zero_iff_mem, hr, map_sub, map_sum]`. Simplify using `[Matrix.mul_apply, Ideal.Quotient.mk_out]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem liftRes_mul_sub {A C : Type} [Fintype C] {ϖ : kˣ} (hϖ : IsUnif ϖ) (e : ℕ) (T : A → C → Res k e)
     (N : Matrix C C 𝒪[k]) (i : A) (j : C) :
@@ -27,11 +27,11 @@ theorem liftRes_mul_sub {A C : Type} [Fintype C] {ϖ : kˣ} (hϖ : IsUnif ϖ) (e
   simp [Matrix.mul_apply, Ideal.Quotient.mk_out]
 
 /- English proof (translation)
-Use `set π := Ideal.Quotient.mk (IsLocalRing.maximalIdeal 𝒪[k] ^ e) with hπ`. Set `φ : (A → C → Res k e) → (A → C → Res k e)` to `fun T => Matrix.of T * N.map π`. Establish `hinj : Function.Injective φ`. Introduce `T T' h`. Establish `h2` using `congrArg (fun M : Matrix A C (Res k e) => M * N'.map π) h`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [φ, Matrix.mul_assoc, ← Matrix.map_mul, hN, Matrix.map_one _ (map_zero π) (map_one π), Matrix.mul_one] at h2`. Conclude with `h2`. Establish `hbij : Function.Bijective φ` using `Finite.injective_iff_bijective.1 hinj`. Rewrite using `[← hbij.sum_comp (fun T => F (liftRes T))]`. Use `Finset.sum_congr rfl fun T _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Use symmetry to reverse the relation. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `symm`. Rewrite using `[show liftRes (φ T) = liftRes T * N.map (fun x => (x : k)) + (liftRes (φ T) - liftRes T * N.map (fun x => (x : k))) by abel]`. Conclude with `hF _ _ fun i j => liftRes_mul_sub hϖ e T N i j`.
+A detailed English derivation is pending.
 -/
 theorem sum_liftRes_mul {A C : Type} [Fintype A] [DecidableEq A] [Fintype C] [DecidableEq C] {ϖ : kˣ} (hϖ : IsUnif ϖ) (e : ℕ)
     (N N' : Matrix C C 𝒪[k]) (hN : N * N' = 1) (F : Matrix A C k → ℂ)

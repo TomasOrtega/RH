@@ -3,9 +3,9 @@ import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.BundleCher
 import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.Objects
 
 /- English proof (translation)
-Introduce `O _ _ _ K _ _ ι _ σ _ T P`. Establish `key : ∀ Gs : σ → MvPolynomial (σ ⊕ σ) ℝ, T.val P Gs = ∑ i, Finsupp.linearCombination ℝ (fun μ => (GlobalTheory.CompanionTheory.Ar.Num.cycList (GroundTheory.Heights₂.Heights.NumbersDVR.ratDiv P (T.f i) (T.g i)) (GroundTheory.Heights₂.Heights.NumbersDVR.classList (Sum.elim T.x T.x' …` using `fun Gs => rfl`. Use `⟨fun Gs Hs => ?_, fun c Gs => ?_, fun α s Gs => ?_⟩` and prove the remaining obligations. Simplify using `only [key, Pi.add_apply, map_add, Finset.sum_add_distrib]`. Simplify using `only [key, MvPolynomial.C_mul', map_smul, smul_eq_mul, Finset.mul_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [key, map_sum]`. Conclude with `Finset.sum_comm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Qp9.locPair_val_linear :
     ∀ (O : Type) [inst : CommRing O] [inst_1 : IsDomain O]

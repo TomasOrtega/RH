@@ -20,7 +20,7 @@ variable {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} {σ : k →+*
   {S : ShortComplex X.Modules}
 
 /- English proof (translation)
-Rewrite using `[h.form_eq (a.mid hS) hx u w hV, Met.gram_frame h hS a hx, form_eq_sum, form_eq_sum, ← finSumFinEquiv.sum_comp]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← finSumFinEquiv.sum_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem form_eq_gram_frame {r s : ℕ} (h : Met p σ S.X₂ (r + s)) (hS : S.ShortExact)
     (a : AdaptedChart S r s) {V : X.Opens} (u w : Γ(S.X₂, V)) {x : CxPts p σ}
@@ -45,7 +45,7 @@ def adaptedOf (a : AdaptedChart S 1 1) {U : X.Opens} (t : Γ(S.X₁, U))
     exact a.ht.res inf_le_right
 
 /- English proof (translation)
-Establish `e : (adaptedOf a t ht).frame (.inl 0) = resM S.X₂ inf_le_left (S.f.app U t)` using `app_resM _ _ _`. Use function extensionality and compare the values at `i`. Rewrite using `[← Chart.crd_resM _ (S.f.app U t) (inf_le_left : (adaptedOf a t ht).U ≤ U) hx, ← e]`. Use `(AdaptedChart.crd_frame hS (adaptedOf a t ht) hx i (.inl 0)).trans ?_` and prove the remaining obligations. Rewrite using `[Matrix.one_apply, Pi.single_apply]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem crd_adaptedOf (hS : S.ShortExact) (a : AdaptedChart S 1 1) {U : X.Opens} (t : Γ(S.X₁, U))
     (ht : IsFrame fun _ : Fin 1 => t) {x : CxPts p σ} (hx : x ∈ ptsIn p σ (adaptedOf a t ht).U) :
@@ -59,15 +59,15 @@ theorem crd_adaptedOf (hS : S.ShortExact) (a : AdaptedChart S 1 1) {U : X.Opens}
   rw [Matrix.one_apply, Pi.single_apply]
 
 /- English proof (translation)
-Take `⟨a', ha'⟩` from `Met.exists_adapted (p := p) (σ := σ) hS h₁ h₃ y`. Use `set a := adaptedOf a' t ht with a_def`. Establish `ha : y ∈ ptsIn p σ a.U` using `mem_ptsIn_inf.2 ⟨hU, ha'⟩`. Use `set G : ReciprocityTheory.L2DbarEstimates.V 1 → Matrix (Fin 1 ⊕ Fin 1) (Fin 1 ⊕ Fin 1) ℂ := fun v => h.gram a.frame (c.e.symm v) with G_def`. Use `set s : ReciprocityTheory.L2DbarEstimates.V 1 → Fin 1 ⊕ Fin 1 → ℂ := fun v i => (a.mid hS).crd p σ w (c.e.symm v) (finSumFinEquiv i) with s_def`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs : ∀ i, DifferentiableAt ℂ (fun x => s x i) (c.e y)` using `fun i => c.differentiableAt_ev _ hy (mem_ptsIn_inf.2 ⟨hU, ha⟩)`. Establish `hG : MContDiffAt 1 G (c.e y)` using `((H.gram a.frame ha).mContDiffAt c hy).of_le (by norm_cast)`. Establish `hp` using `h.eventually_posDef hS a c hy ha`. Establish `hn : ∀ᶠ v in 𝓝 (c.e y), c.e.symm v ∈ ptsIn p σ (U ⊓ a'.U)` using `eventually_of_mem ((ChartGlue.isOpen_over c.e (isOpen_ptsIn (U ⊓ a'.U))).mem_nhds (ChartGlue.mem_over c.e hy ha)) fun _ hv => hv.2`. Establish `e₀ : c.e.symm (c.e y) = y` using `c.e.left_inv hy`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key (v : ReciprocityTheory.L2DbarEstimates.V 1) (hv : c.e.symm v ∈ ptsIn p σ (U ⊓ a'.U)) : h.form w (S.f.app U t) (c.e.symm v) = form (G v) (s v) (Pi.single (Sum.inl 0) 1) ∧ h.form (S.f.app U t) (S.f.app U t) (c.e.symm v) = G v (Sum.inl 0) (Sum.inl 0) ∧ h.form w w (c.e.symm v) = …`. Establish `hv' : c.e.symm v ∈ ptsIn p σ U` using `(mem_ptsIn_inf.1 hv).1`. Establish `hc` using `crd_adaptedOf hS a' t ht hv`. Use `⟨?_, ?_, form_eq_gram_frame h hS a w w hv hv'⟩` and prove the remaining obligations. Rewrite using `[form_eq_gram_frame h hS a w _ hv hv', hc]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[form_eq_gram_frame h hS a _ _ hv hv', hc, form_single]`. Establish `k₀` using `key _ (e₀.symm ▸ ha)`. Rewrite `k₀` using `[e₀]`. Establish `e₁ : dbar (fun v => h.form w (S.f.app U t) (c.e.symm v)) (c.e y) = dbar (fun v => form (G v) (s v) (Pi.single (Sum.inl 0) 1)) (c.e y)` using `dbar_congr (hn.mono fun v hv => (key v hv).1)`. Establish `e₂ : dbar (fun v => (Real.log (h.form (S.f.app U t) (S.f.app U t) (c.e.symm v)).re : ℂ)) (c.e y) = dbar (fun v => (Real.log (G v (Sum.inl 0) (Sum.inl 0)).re : ℂ)) (c.e y)` using `dbar_congr (hn.mono fun v hv => by simp only [(key v hv).2.1])`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e₃ : G (c.e y) = h.gram a.frame y` using `by rw [G_def]; simp only [e₀]`. Establish `main` using `GlobalTheory.T.norm_dbar_form_sub_log_metric_le _ G s (EuclideanSpace.single 0 1) (c.e y) hG hp hs`. Rewrite using `[e₁, e₂, k₀.1, k₀.2.1, k₀.2.2, Met.bcDens_eq hS h₁ h₃ a c H hy ha]`. Conclude with `main`.
+A detailed English derivation is pending.
 -/
 theorem norm_dbar_projection_sq (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) (σ : k →+* ℂ)
     (S : ShortComplex X.Modules) (h : Met p σ S.X₂ (1 + 1)) (hS : S.ShortExact) (h₁ : IsVB S.X₁ 1)

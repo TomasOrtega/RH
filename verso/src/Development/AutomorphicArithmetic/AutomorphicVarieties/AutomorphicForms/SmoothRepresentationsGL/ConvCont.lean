@@ -9,19 +9,15 @@ open UpperTheory.V.TR (Rinf Lie chart infGL pInf sInf toL lmul oneL invSet CuspS
 open scoped SchwartzMap FourierTransform RealInnerProductSpace ContDiff Topology
 
 /- English proof (translation)
-Introduce `hc E _ _ _ n f hf hb α`. Take `⟨C, hC⟩` from `hb`. Take `⟨h1, h2⟩` from `hc E n f hf`. Establish `hC0 : 0 ≤ C` using `(norm_nonneg _).trans (hC 1)`. Establish `hch : ∀ g x, ‖chart f g x‖ ≤ C`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `g x`. Unfold `UpperTheory.V.TR.chart`. Use `split_ifs`. Conclude with `hC _`. Simplify using `using hC0`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hbd : ∀ g x, ‖chart f g x * α x‖ ≤ C * ‖α x‖`. Introduce `g x`. Rewrite using `[norm_mul]`. Conclude with `mul_le_mul_of_nonneg_right (hch g x) (norm_nonneg _)`. Use `haveI i1 : (volume : Measure (Rinf E)).IsAddHaarMeasure := inferInstance`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI i2 : (volume : Measure (Fin n → Rinf E)).IsAddHaarMeasure := Measure.pi.isAddHaarMeasure _`. Use `haveI i3 : (volume : Measure (Lie E n)).IsAddHaarMeasure := Measure.pi.isAddHaarMeasure _`. Establish `hint : Integrable (fun x => C * ‖α x‖)` using `(α.integrable.norm).const_mul C`. Use `haveI : FirstCountableTopology (GA E n) := GroundTheory.Automorphic.FourierWhittaker.firstCountableTopology_adelicGL ..`. Use `⟨?_, ∫ x, C * ‖α x‖, fun g => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Unfold `conv`. Use `continuous_of_dominated (bound := fun x => C * ‖α x‖) (fun g => ?_) (fun g => ?_) hint ?_` and prove the remaining obligations. Conclude with `((h2 g).mul α.continuous.measurable).aestronglyMeasurable`. Conclude with `Filter.Eventually.of_forall (hbd g)`. Use `Filter.Eventually.of_forall fun x => ?_` and prove the remaining obligations.
-
-Use `Continuous.mul ?_ continuous_const` and prove the remaining obligations. Distinguish the cases in `hx : x ∈ invSet E n`. Conclude with `h1.comp_continuous (f := fun g : GA E n => (g, x)) (by fun_prop) fun g => ⟨Set.mem_univ _, hx⟩`. Establish `: (fun g => chart f g x) = fun _ => 0`. Use function extensionality and compare the values at `g`.
-
-Unfold `UpperTheory.V.TR.chart`. Conclude with `dif_neg hx`. Rewrite using `[this]`. Conclude with `continuous_const`. Conclude with `norm_integral_le_of_norm_le hint (Filter.Eventually.of_forall (hbd g))`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Af.Smo.convCont :
     UpperTheory.V.Af.Smo.ChartCont → UpperTheory.V.Af.Smo.ConvCont := by

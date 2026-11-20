@@ -15,17 +15,15 @@ namespace CompanionTheory.PfDual
 open GlobalTheory.TrivRep in
 
 /- English proof (translation)
-Introduce `R _ _ B _ hB F hF`. Establish `hG : GlobalFnsSt` using `GlobalTheory.globalFns_holds`. Use `haveI := hB.proper`. Use `haveI := hB.geomConnected`. Use `haveI : Smooth B.hom := hB.smooth`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hP : Nonempty (Perf B.hom F)` using `GlobalTheory.ProperFinite.nonempty_perf_of_isProper B.hom hF`. Establish `hQ : Nonempty (Perf B.hom (pw F (-1)))` using `GlobalTheory.ProperFinite.nonempty_perf_of_isProper B.hom (isLB_pw hF (-1))`. Establish `hC` using `GlobalTheory.TrivLocus.isClosed_trivLocus R _ B.hom F hF hP hQ hB.proper (GlobalTheory.forall_geometricallyIntegral_of_smooth_of_geometricallyConnected _ _ _ hB.smooth hB.geomConnected)`. Take `⟨I, hI⟩` from `exists_ideal (TrivOn B.hom F) (TrivOn.comp B.hom F) (fun p => by`. Distinguish the cases in `hp : p ∈ {p : PrimeSpectrum R | ∃ (K : Type) (_ : Field K) (g : R →+* K) (X' : Scheme.{0}) (π : X' ⟶ B.left) (f' : X' ⟶ Spec (CommRingCat.of K)), RingHom.ker g = p.asIdeal ∧ IsPullback π f' B.hom (Spec.map (CommRingCat.ofHom g)) ∧ Triv (F.pull π)}`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨K, _, g₀, X₀, π₀, f₀, hk, h₀, ht⟩` from `hp`. Take `⟨r, I, hr, -, H⟩` from `GlobalTheory.AbLaw.Seesaw.seesaw R _ B.hom F hF hP inferInstance inferInstance K g₀ X₀ π₀ f₀ h₀ (CubeOpen.bijective_appTop hG B hB h₀) ht`. Conclude with `⟨r, hk ▸ hr, I, fun S _ g hu => H S g _ _ _ (IsPullback.of_hasPullback _ _) hu⟩`. Take `⟨_, ⟨r, rfl⟩, hr, hU⟩` from `PrimeSpectrum.isTopologicalBasis_basic_opens.exists_subset_of_mem_open (Set.mem_compl hp) hC.isOpen_compl`. Use `⟨r, hr, ⊤, fun S _ g hu => ⟨fun ht => ?_, fun h => ?_⟩⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Extract witnesses or component facts from the available result.
 
-Break down `subsingleton_or_nontrivial S with _ | _` into its components or cases. Conclude with `fun a _ => Subsingleton.elim _ _`. Take `⟨m, hm⟩` from `Ideal.exists_maximal S`. Use `letI := Ideal.Quotient.field m`. Set `g'` to `(Ideal.Quotient.mk m).comp g`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Use `(hU (a := ⟨RingHom.ker g', RingHom.ker_isPrime g'⟩) (hu.map (Ideal.Quotient.mk m)).ne_zero ?_).elim` and prove the remaining obligations. Conclude with `⟨S ⧸ m, inferInstance, g', _, _, _, rfl, IsPullback.of_hasPullback _ _, ht.comp B.hom F S g _ _⟩`. Use `haveI : Subsingleton S := subsingleton_of_zero_eq_one ((h (Submodule.mem_top (x := 1))).symm.trans (map_one g))`. Conclude with `trivOn_of_subsingleton B.hom F S g)`. Use `⟨I, fun S _ g X' π f' h => ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[← hI S g]`. Conclude with `forall_congr' fun q => loc_iff B.hom F h q`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_ideal_locTriv_noeth : ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (B : Over (Spec (CommRingCat.of R))) [GrpObj B], IsAbelianScheme B → ∀ F : LB B.left, F.IsLB → ∃ I : Ideal R, ∀ (R' : Type) [CommRing R'] (g : R →+* R') (X' : Scheme.{0}) (π : X' ⟶ B.left) (f' : X' ⟶ Spec (CommRingCat.of R')), IsPullback π f' B.hom (Spec.map (CommRingCat.ofHom g)) → ((∀ p : Spec (CommRingCat.of R'), ∃ U : (Spec (CommRingCat.of R')).Opens, p ∈ U ∧ Triv ((F.pull π).pull (f' ⁻¹ᵁ U).ι)) ↔ I ≤ RingHom.ker g) := by
   intro R _ _ B _ hB F hF

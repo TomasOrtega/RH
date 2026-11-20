@@ -21,7 +21,7 @@ noncomputable abbrev brauerInflation (E : IntermediateField K L) [FiniteDimensio
   unitsInflation E 2
 
 /- English proof (translation)
-Use `AlgEquiv.ext fun x => Subtype.ext ?_` and prove the remaining obligations. Rewrite using `[quotientEquivGal_mk_apply]`. Conclude with `(AlgEquiv.restrictNormal_commutes σ _ x).symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem quotientEquivGal_mk_eq_restrictNormalHom (U : OpenNormalSubgroup Gal(L/K))
     (σ : Gal(L/K)) :
@@ -32,11 +32,11 @@ theorem quotientEquivGal_mk_eq_restrictNormalHom (U : OpenNormalSubgroup Gal(L/K
   exact (AlgEquiv.restrictNormal_commutes σ _ x).symm
 
 /- English proof (translation)
-Rewrite using `[groupCohomologyQuotientGalUnitsIso, groupCohomology.mapIso_hom]`. Unfold `inflation unitsInflation`. Use `Eq.trans ?_ (HomologicalComplex.homologyMap_comp _ _ n)` and prove the remaining obligations. Use `congr 1`. Use extensionality with `m : 1`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Rewrite using `[← cancel_mono ((cochainsComplexι (galUnits.{u} K L)).f m), HomologicalComplex.comp_f, Category.assoc]`. Use extensionality with `x : 2`. Use function extensionality and compare the values at `g`. Establish `hq : ∀ i, (quotientEquivGal U).symm (AlgEquiv.restrictNormalHom (fixedField (U : Subgroup Gal(L/K))) (g i)) = (g i : Gal(L/K) ⧸ (U : Subgroup Gal(L/K)))` using `fun i => (MulEquiv.symm_apply_eq _).2 (quotientEquivGal_mk_eq_restrictNormalHom U (g i)).symm`. Express the relevant statement in the definitionally equal form `((x fun i => (g i : Gal(L/K) ⧸ (U : Subgroup Gal(L/K)))).1 : Additive Lˣ) = (unitsRestrictHom (fixedField (U : Subgroup Gal(L/K)))).hom (invariantsGalUnitsAddEquiv (U : Subgroup Gal(L/K)) (x fun i => (quotientEquivGal U).symm (AlgEquiv.restrictNormalHom (fixedField (U : Subgroup …`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Simplify using `only [hq]`. Conclude with `Additive.toMul.injective (Units.ext rfl)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem inflation_galUnits_eq (U : OpenNormalSubgroup Gal(L/K)) (n : ℕ) :
     inflation (galUnits.{u} K L) U n =
@@ -64,7 +64,7 @@ theorem inflation_galUnits_eq (U : OpenNormalSubgroup Gal(L/K)) (n : ℕ) :
   exact Additive.toMul.injective (Units.ext rfl)
 
 /- English proof (translation)
-Take `⟨U, y, rfl⟩` from `exists_inflation_eq (galUnits.{u} K L) n x`. Use `⟨fixedFiniteGalois U, (groupCohomologyQuotientGalUnitsIso U n).hom.hom y, ?_⟩` and prove the remaining obligations. Rewrite using `[inflation_galUnits_eq]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem exists_unitsInflation_eq (n : ℕ) (x : cohomology (galUnits.{u} K L) n) :
     ∃ (E : FiniteGaloisIntermediateField K L)
@@ -76,7 +76,7 @@ theorem exists_unitsInflation_eq (n : ℕ) (x : cohomology (galUnits.{u} K L) n)
   rfl
 
 /- English proof (translation)
-The claim follows from `exists_unitsInflation_eq 2 x`.
+A detailed English derivation is pending.
 -/
 theorem exists_brauerInflation_eq (x : galoisBrauerGroup K L) :
     ∃ (E : FiniteGaloisIntermediateField K L)

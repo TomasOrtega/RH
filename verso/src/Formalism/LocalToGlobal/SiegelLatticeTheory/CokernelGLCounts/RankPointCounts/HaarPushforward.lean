@@ -15,15 +15,13 @@ variable {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Meas
   [LocallyCompactSpace G] [T2Space G] [SecondCountableTopology G]
 
 /- English proof (translation)
-Establish `hce : IsClosedEmbedding (Subtype.val : R → G)` using `hR.isClosedEmbedding_subtypeVal`. Use `haveI : LocallyCompactSpace R := hce.locallyCompactSpace`. Use `haveI : BorelSpace R := Subtype.borelSpace _`. Use `haveI : SecondCountableTopology R := TopologicalSpace.Subtype.secondCountableTopology (R : Set G)`. Set `μ : Measure R` to `Measure.haar`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `haveI : SigmaFinite μ := sigmaFinite_of_locallyFinite`. Establish `hemb : MeasurableEmbedding (Subtype.val : R → G)` using `MeasurableEmbedding.subtype_coe hR.measurableSet`. Use `⟨μ.map Subtype.val, hemb.sigmaFinite_map, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `h`. Rewrite `h` using `[Measure.map_eq_zero_iff hemb.measurable.aemeasurable]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Supply the required witnesses or components.
 
-Conclude with `(NeZero.ne μ) h`. Rewrite using `[hemb.map_apply]`. Establish `e : (Subtype.val ⁻¹' ((R : Set G)ᶜ) : Set R) = ∅`. Use extensionality with `x`. Conclude with `⟨fun hx => (hx x.2).elim, fun h => h.elim⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[e, measure_empty]`. Introduce `K hK`. Rewrite using `[hemb.map_apply]`. Conclude with `(hce.isCompact_preimage hK).measure_lt_top`. Introduce `r hr`.
-
-Establish `hm : Measurable (fun x : G => r * x)` using `(continuous_const.mul continuous_id).measurable`. Establish `hm' : Measurable (fun y : R => (⟨r, hr⟩ : R) * y)` using `(continuous_const.mul continuous_id).measurable`. Rewrite using `[Measure.map_map hm hemb.measurable]`. Establish `e : (fun x : G => r * x) ∘ Subtype.val = Subtype.val ∘ (fun y : R => (⟨r, hr⟩ : R) * y)` using `rfl`. Rewrite using `[e, ← Measure.map_map hemb.measurable hm', map_mul_left_eq_self]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pushHaar (R : Subgroup G) (hR : IsClosed (R : Set G)) :
     ∃ ν : Measure G, SigmaFinite ν ∧ ν ≠ 0 ∧ ν (R : Set G)ᶜ = 0 ∧ (∀ K : Set G, IsCompact K → ν K < ⊤) ∧
@@ -55,21 +53,19 @@ theorem pushHaar (R : Subgroup G) (hR : IsClosed (R : Set G)) :
     rw [e, ← Measure.map_map hemb.measurable hm', map_mul_left_eq_self]
 
 /- English proof (translation)
-Establish `hce : IsClosedEmbedding (Subtype.val : R → G)` using `hR.isClosedEmbedding_subtypeVal`. Use `haveI : LocallyCompactSpace R := hce.locallyCompactSpace`. Use `haveI : BorelSpace R := Subtype.borelSpace _`. Use `haveI : SecondCountableTopology R := TopologicalSpace.Subtype.secondCountableTopology (R : Set G)`. Set `μ : Measure R` to `Measure.haar`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `haveI : SigmaFinite μ := sigmaFinite_of_locallyFinite`. Establish `hemb : MeasurableEmbedding (Subtype.val : R → G)` using `MeasurableEmbedding.subtype_coe hR.measurableSet`. Set `Γ' : Subgroup R` to `Γ.subgroupOf R`. Set `ι : Γ' → Γ` to `fun x => ⟨x.1.1, Subgroup.mem_subgroupOf.1 x.2⟩`. Establish `hι : Function.Injective ι`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `a b e`. Simplify using `only [ι, Subtype.mk.injEq] at e`. Conclude with `Subtype.ext (Subtype.ext e)`. Use `haveI : Countable Γ' := hι.countable`. Use `haveI : DiscreteTopology Γ' := DiscreteTopology.of_continuous_injective ((continuous_subtype_val.comp continuous_subtype_val).subtype_mk _) hι`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨K, hK, hKc⟩` from `hcov`. Establish `hinv : μ.map (fun x => x⁻¹) = μ` using `haar_map_inv_of_lattice μ Γ' (hce.isCompact_preimage hK) (fun x => by`. Take `⟨s, hs, hsK⟩` from `hKc x.1 x.2`. Conclude with `⟨⟨s, hΓ hs⟩, Subgroup.mem_subgroupOf.2 hs, hsK⟩)`. Use `⟨μ.map Subtype.val, hemb.sigmaFinite_map, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Rewrite `h` using `[Measure.map_eq_zero_iff hemb.measurable.aemeasurable]`. Conclude with `(NeZero.ne μ) h`. Rewrite using `[hemb.map_apply]`. Establish `e : (Subtype.val ⁻¹' ((R : Set G)ᶜ) : Set R) = ∅`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `x`. Conclude with `⟨fun hx => (hx x.2).elim, fun h => h.elim⟩`. Rewrite using `[e, measure_empty]`. Introduce `K hK`. Rewrite using `[hemb.map_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(hce.isCompact_preimage hK).measure_lt_top`. Introduce `r hr`. Establish `hm : Measurable (fun x : G => r * x)` using `(continuous_const.mul continuous_id).measurable`. Establish `hm' : Measurable (fun y : R => (⟨r, hr⟩ : R) * y)` using `(continuous_const.mul continuous_id).measurable`. Rewrite using `[Measure.map_map hm hemb.measurable]`.
-
-Establish `e : (fun x : G => r * x) ∘ Subtype.val = Subtype.val ∘ (fun y : R => (⟨r, hr⟩ : R) * y)` using `rfl`. Rewrite using `[e, ← Measure.map_map hemb.measurable hm', map_mul_left_eq_self]`. Rewrite using `[Measure.map_map continuous_inv.measurable hemb.measurable]`. Establish `e : (fun x : G => x⁻¹) ∘ Subtype.val = Subtype.val ∘ (fun y : R => y⁻¹)` using `rfl`. Rewrite using `[e, ← Measure.map_map hemb.measurable continuous_inv.measurable, hinv]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pushHaar_inv (R Γ : Subgroup G) [Countable Γ] [DiscreteTopology Γ] (hR : IsClosed (R : Set G)) (hΓ : Γ ≤ R)
     (hcov : ∃ K : Set G, IsCompact K ∧ ∀ r ∈ R, ∃ s ∈ Γ, s * r ∈ K) :
@@ -130,11 +126,11 @@ def RConjModC : Prop :=
       (∀ r ∈ Rset t, ν.map (fun x => r * x) = ν) → ν.map (fun x => x⁻¹) = ν → ν.map (fun x => h⁻¹ * x * h) = ν
 
 /- English proof (translation)
-Introduce `D X Y u u' t h hh`. Establish `hΓR : ROsub X (X.Fu u) (X.Fu u') t.lam t.lam' t.lin ≤ Rsub hG t`. Introduce `s hs`. Establish `hs0 : s ∈ ROset X (X.Fu u) (X.Fu u') t.lam t.lam' t.lin` using `hs`. Take `⟨z, n, hz, hzs, hn, hn'⟩` from `hs0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hl : RatLink X (t.pt⁻¹ * z * t.pt) (t.lin⁻¹ * n * t.lin)` using `ratLink_mul X (ratLink_mul X (ratLink_inv X t.rep.2.1) hz) t.rep.2.1`. Establish `hs2` using `hN D X u' t.lam' _ _ hl hn'`. Rewrite `hs2` using `[Prod.fst_mul, Prod.fst_mul, Prod.fst_inv, ← hzs]`. Conclude with `⟨hzs ▸ hN D X u t.lam z n hz hn, hs2⟩`. Use `haveI := ROsub_countable X (X.Fu u) (X.Fu u') t.lam t.lam' t.lin`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Use `haveI := h2 D X Y u u' t`. Take `⟨K, hK, hKc⟩` from `h3 D X Y u u' t`. Take `⟨ν, hs, h0, hc, hKf, hl, hi⟩` from `pushHaar_inv (Rsub hG t) (ROsub X (X.Fu u) (X.Fu u') t.lam t.lam' t.lin) (h1 D X Y u u' t) hΓR ⟨K, hK, fun r hr => hKc r hr⟩`. Conclude with `⟨ν, hs, h0, hc, hKf, hl, hi, hM D X Y u u' t h hh ν hs h0 hc hKf hl hi⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem rHaarC_of (hN : NLamNinf) (hG : PsiInfChar) (h1 : RClosedC) (h2 : RODiscreteC) (h3 : RCocompactC)
     (hM : RConjModC) : RHaarC := by

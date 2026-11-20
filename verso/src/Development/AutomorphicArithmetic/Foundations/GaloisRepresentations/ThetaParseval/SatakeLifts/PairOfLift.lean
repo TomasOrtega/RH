@@ -5,9 +5,9 @@ open NumberField IsDedekindDomain ValuativeRel GlobalTheory.PRep GlobalTheory.Sm
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Establish `hmem : GlobalTheory.SplitFlip.omA ν b (GlobalTheory.SplitFlip.invT g) h (Φ : Matrix (Fin n) (Fin d) k → ℂ) ∈ SB (Matrix (Fin n) (Fin d) k)` using `(hK k n d).1 ν b _ h _ Φ.2`. Establish `hfun : GlobalTheory.SplitFlip.omA ν b (GlobalTheory.SplitFlip.invT g) h (Φ : Matrix (Fin n) (Fin d) k → ℂ) = ((ν * b) (Matrix.GeneralLinearGroup.det g) : ℂ) • (Φ' : Matrix (Fin n) (Fin d) k → ℂ)`. Establish `hΦf : (Φ : Matrix (Fin n) (Fin d) k → ℂ) = fun Y => Ψ Y.transpose` using `funext hΦ`. Use function extensionality and compare the values at `X`. Rewrite using `[hΦf, hD k n d ν b g h Ψ X, Pi.smul_apply, smul_eq_mul, hΦ' X, hΨ']`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Establish `hsub : (⟨_, hmem⟩ : SB (Matrix (Fin n) (Fin d) k)) = ((ν * b) (Matrix.GeneralLinearGroup.det g) : ℂ) • Φ'` using `Subtype.ext hfun`. Establish `key` using `hβ (GlobalTheory.SplitFlip.invT g) h Φ ⟨_, hmem⟩ rfl v`. Rewrite using `[src_apply, map_smul, ← LinearMap.smul_apply, ← map_smul, ← hsub, key]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem lift_key (hK : UpperTheory.Gal.TP.Loc.KeepsSB) (hD : UpperTheory.Gal.TP.Loc.ModelDict)
     {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {n d : ℕ}
@@ -35,40 +35,36 @@ private theorem lift_key (hK : UpperTheory.Gal.TP.Loc.KeepsSB) (hD : UpperTheory
   rw [src_apply, map_smul, ← LinearMap.smul_apply, ← map_smul, ← hsub, key]
 
 /- English proof (translation)
-The claim follows from `Units.continuous_iff.2 ⟨Units.continuous_coe_inv.matrix_transpose, Units.continuous_val.matrix_transpose⟩`.
+A detailed English derivation is pending.
 -/
 private theorem continuous_invT' {k : Type} [Field k] [TopologicalSpace k] [IsTopologicalRing k] {n : ℕ} :
     Continuous (GlobalTheory.SplitFlip.invT : GL (Fin n) k →* GL (Fin n) k) :=
   Units.continuous_iff.2 ⟨Units.continuous_coe_inv.matrix_transpose, Units.continuous_val.matrix_transpose⟩
 
 /- English proof (translation)
-Introduce `hL hK hD hS k _ _ _ _ n d ν b V _ _ W _ _ σ π hν hb hπ ⟨β, hβ0, hβ⟩`. Set `tr : SB (Matrix (Fin d) (Fin n) k) → SB (Matrix (Fin n) (Fin d) k)` to `fun Ψ => ⟨fun X => (Ψ : Matrix (Fin d) (Fin n) k → ℂ) X.transpose, (hK k n d).2 _ Ψ.2⟩`. Establish `tr_add : ∀ Ψ₁ Ψ₂, tr (Ψ₁ + Ψ₂) = tr Ψ₁ + tr Ψ₂` using `fun _ _ => rfl`. Establish `tr_smul : ∀ (c : ℂ) Ψ, tr (c • Ψ) = c • tr Ψ` using `fun _ _ => rfl`. Establish `hsm : ∀ (Ψ : SB (Matrix (Fin d) (Fin n) k)) (F : smoothPart π.dual), (F : Module.Dual ℂ W) ∘ₗ β (tr Ψ) ∈ smoothPart (src (ν * b) σ).dual`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `Ψ F`. Apply `mem_smoothPart_of_nhds` to reduce the goal to its premises. Establish `hT : {g : GL (Fin n) k | ∀ Y : Matrix (Fin d) (Fin n) k, (Ψ : Matrix (Fin d) (Fin n) k → ℂ) (Y * (g : Matrix (Fin n) (Fin n) k)) = (Ψ : Matrix (Fin d) (Fin n) k → ℂ) Y} ∈ nhds 1`. Establish `hc : Continuous (fun g : GL (Fin n) k => GlobalTheory.SplitFlip.invT g⁻¹)` using `continuous_invT'.comp continuous_inv`. Establish `h1 : (fun g : GL (Fin n) k => GlobalTheory.SplitFlip.invT g⁻¹) 1 = 1` using `by simp`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpre` using `hc.tendsto' 1 1 h1 (hL k n d (tr Ψ))`. Use `filter_upwards [hpre] with g hg Y`. Establish `hval : ((GlobalTheory.SplitFlip.invT g⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) = (g : Matrix (Fin n) (Fin n) k).transpose`. Rewrite using `[GlobalTheory.SplitFlip.invT_val, inv_inv]`. Establish `hY` using `hg Y.transpose`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Set.mem_preimage, Set.mem_setOf_eq] at hY`. Simplify using `only [tr, hval, Matrix.transpose_mul, Matrix.transpose_transpose] at hY`. Conclude with `hY`. Establish `hK0 : (KO k (Fin n) : Set (GL (Fin n) k)) ∈ nhds 1` using `GlobalTheory.SplitFlip.isOpen_KO.mem_nhds (one_mem _)`. Establish `hker : ((detChar (Fin n) b).ker : Set (GL (Fin n) k)) ∈ nhds 1` using `(IsSmoothChar.detChar hb).mem_nhds (one_mem _)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hab1 : nabs k (1 : kˣ) = 1` using `GlobalTheory.SplitFlip.nabs_of_valuation_eq_one (by simp)`. Establish `hfix : {g : GL (Fin n) k | om b⁻¹ g 1 (Ψ : Matrix (Fin d) (Fin n) k → ℂ) = Ψ} ∈ nhds 1` using `by filter_upwards [hT, hK0, hker] with g hgT hgK hgk`. Establish `hdet : b (Matrix.GeneralLinearGroup.det g) = 1` using `hgk`. Establish `hab : nabs k (Matrix.GeneralLinearGroup.det g) = 1` using `GlobalTheory.SplitFlip.nabs_of_valuation_eq_one (GlobalTheory.SplitFlip.valuation_gdet_of_mem_KO hgK)`. Use function extensionality and compare the values at `x`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[om, hdet, hab, hab1, hgT]`. Establish `hfix'` using `(continuous_inv.tendsto' (1 : GL (Fin n) k) 1 inv_one) hfix`. Use `filter_upwards [hfix'] with g hg`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `v`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[Representation.dual_apply]`. Simplify using `only [Module.Dual.transpose_apply, LinearMap.coe_comp, Function.comp_apply]`. Use `congr 1`. Establish `hk` using `lift_key hK hD hβ g⁻¹ 1 (tr Ψ) (tr Ψ) Ψ Ψ (fun _ => rfl) (fun _ => rfl) hg.symm v`. Simplify using `using hk`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `B : SB (Matrix (Fin d) (Fin n) k) →ₗ[ℂ] smoothPart π.dual →ₗ[ℂ] smoothPart (src (ν * b) σ).dual` to `LinearMap.mk₂ ℂ (fun Ψ F => ⟨(F : Module.Dual ℂ W) ∘ₗ β (tr Ψ), hsm Ψ F⟩) (fun Ψ₁ Ψ₂ F => by ext v; simp [tr_add]) (fun c Ψ F => by ext v; simp [tr_smul]) (fun Ψ F₁ F₂ => by ext v; simp) (fun c Ψ F => by ext v; simp)`. Use `⟨B, ?_, ?_⟩` and prove the remaining obligations. Introduce `hB`. Choose the witnesses or unpack the hypotheses as in `⟨Φ0, hΦ0⟩ : ∃ Φ0, β Φ0 ≠ 0 := by`. Assume the negation of the conclusion as `hc`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Use `push_neg at hc`. Conclude with `hβ0 (LinearMap.ext hc)`. Choose the witnesses or unpack the hypotheses as in `⟨v, hv⟩ : ∃ v, β Φ0 v ≠ 0 := by`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `hΦ0 (LinearMap.ext hc)`. Take `⟨l, hl⟩` from `hS k d W π hπ _ hv`. Set `Ψ0 : SB (Matrix (Fin d) (Fin n) k)` to `⟨fun Y => (Φ0 : Matrix (Fin n) (Fin d) k → ℂ) Y.transpose, (hK k d n).2 _ Φ0.2⟩`. Establish `htr : tr Ψ0 = Φ0` using `Subtype.ext (funext fun X => by simp [tr, Ψ0])`. Apply `hl` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `congrArg (fun B' : SB (Matrix (Fin d) (Fin n) k) →ₗ[ℂ] smoothPart π.dual →ₗ[ℂ] smoothPart (src (ν * b) σ).dual => ((B' Ψ0 l : smoothPart _) : Module.Dual ℂ V) v) hB` as an intermediate fact. Simplify `this` using `[B, htr]`. Introduce `g h Ψ Ψ' hΨ' F`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `LinearMap.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `v`. Establish `key` using `lift_key hK hD hβ g h (tr Ψ) (tr Ψ') Ψ Ψ' (fun _ => rfl) (fun _ => rfl) hΨ' ((src (ν * b) σ) g⁻¹ v)`. Establish `hv : (src (ν * b) σ) g ((src (ν * b) σ) g⁻¹ v) = v` using `by show ((src (ν * b) σ) g * (src (ν * b) σ) g⁻¹) v = v`. Rewrite using `[← map_mul]`. Simplify using the standard rewrite rules.
-
-Rewrite `key` using `[hv]`. Simplify using `only [B, LinearMap.mk₂_apply, contra_apply, LinearMap.coe_comp, Function.comp_apply]`. Rewrite using `[key]`. Use `congr 1`. Use `show (π h⁻¹ * π h) _ = _`.
-
-Rewrite using `[← map_mul]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.TP.Loc.pairOfLift :
     UpperTheory.Gal.TP.Loc.LeftSmooth → UpperTheory.Gal.TP.Loc.KeepsSB → UpperTheory.Gal.TP.Loc.ModelDict → UpperTheory.Gal.TP.Loc.Separates → UpperTheory.Gal.TP.Loc.PairOfLift := by

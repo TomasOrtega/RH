@@ -20,15 +20,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.SemiAbAffineUnit
 
 /- English proof (translation)
-Introduce `R _ _ _ G _ hG _`. Use `hG.smooth` as an intermediate fact. Use `hG.separated` as an intermediate fact. Use `hG.quasiCompact` as an intermediate fact. Establish `hR : IsRegularRing R` using `GlobalTheory.isRegularRing_of_isRegularLocalRing R`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsIntegral G.left` using `GlobalTheory.isIntegral_left_of_isSemiAbelian G`. Establish `: IsLocallyNoetherian G.left` using `LocallyOfFiniteType.isLocallyNoetherian G.hom`. Establish `: CompactSpace G.left` using `QuasiCompact.compactSpace_of_compactSpace G.hom`. Establish `: G.left.IsSeparated` using `⟨by rw [← terminal.comp_from G.hom]; infer_instance⟩`. Establish `hst : ∀ x : G.left, UniqueFactorizationMonoid (G.left.presheaf.stalk x)` using `fun x =>`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `ExtendRig.isRegularRing_stalk isRegularRing_of_smooth R G.hom x` as an intermediate fact. Use `uniqueFactorizationMonoid_of_isRegularRing_of_isLocalRing exists_hasProjectiveDimensionLE_of_isRegularLocalRing isPrincipal_map_away_of_hasProjectiveDimensionLE _`. Establish `he : (η[G]).left ≫ G.hom = 𝟙 _` using `Over.w (η[G])`. Use `set y₀ : G.left := (η[G]).left (closedPoint R) with hy₀`. Establish `hy : G.hom y₀ = closedPoint R`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `Scheme.Hom.comp_apply (η[G]).left G.hom (closedPoint R : (𝟙_ (Over (Sp R))).left)`. Rewrite `h2` using `[he]`. Conclude with `h2.symm`. Take `⟨W, hW, hyW, -⟩` from `exists_isAffineOpen_mem_and_subset (U := ⊤) (x := y₀) trivial`. Take `⟨L, s, hL, hs⟩` from `GlobalTheory.SS.exists_nonzeroLocus_eq_of_isAffineOpen G.left hst W hW ⟨_, hyW⟩`.
-
-Conclude with `⟨L, s, hL, hs ▸ hW, y₀, hs ▸ hyW, hy⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_affine_nonzeroLocus_unit : ∀ (R : Type) [CommRing R] [IsRegularLocalRing R] [IsDomain R] (G : Over (Sp R)) [GrpObj G], IsSemiAbelian G → IsAbelianScheme ((Over.pullback (jK R)).obj G) → ∃ (M₀ : LB G.left) (s₀ : M₀.Sec), M₀.IsLB ∧ IsAffineOpen (nonzeroLocus s₀) ∧ ∃ y₀ ∈ nonzeroLocus s₀, G.hom y₀ = closedPoint R := by
   intro R _ _ _ G _ hG _

@@ -15,15 +15,15 @@ universe u w
 attribute [local instance] twistMonoid
 
 /- English proof (translation)
-Introduce `k _ Ω _ _ N x n pp L hW`. Use `set L₀ : Fin n → LineBundle k x := fun j => L (Fin.castSucc j) with hL₀`. Establish `hdim : ringKrullDim (Poly k N ⧸ pp) ≤ ((n + 1 : ℕ) : WithBot ℕ∞)` using `hW.dim.le`. Establish `hA` using `hM k Ω N x n pp hW.isPrime hW.homog hW.le hdim L₀ (L (Fin.last n)) 0`. Establish `hB` using `hM k Ω N x n pp hW.isPrime hW.homog hW.le hdim L₀ (twistBundle k x 0) 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `filter_upwards [hA, hB] with c hAc hBc`. Establish `hL : (fun i => (L i).toSubSystem) = Fin.snoc (α` using `fun _ => SubSystem k x Ω) (fun j => (L₀ j).toSubSystem) (L (Fin.last n)).toSubSystem := by`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `refine Fin.lastCases ?_ (fun j => ?_) i <;> simp [hL₀]`. Rewrite using `[interSum_eq_mixDiff, hL, mixDiff_snoc]`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `eA : mixDiff (fun g => restrLen pp (((L (Fin.last n)).toSubSystem * g).twist (twistSys k x (c : ℤ)))) (fun j => (L₀ j).toSubSystem) = ∑ T : Finset (Fin n), (-1 : ℤ) ^ (n - T.card) * restrLen pp (((tensorSub (fun i => (L₀ i).toSubSystem) T).twist (L (Fin.last n)).toSubSystem).twis …`. Unfold `mixDiff`. Use `Finset.sum_congr rfl fun T _ => ?_` and prove the remaining obligations. Establish `hc : (L (Fin.last n)).toSubSystem * ∏ j ∈ T, (L₀ j).toSubSystem = (∏ j ∈ T, (L₀ j).toSubSystem).twist (L (Fin.last n)).toSubSystem` using `SubSystem.twist_comm _ _`. Rewrite using `[tensorSub_eq_prod, add_zero]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `beta_reduce`. Rewrite using `[hc]`. Establish `eB : mixDiff (fun F => restrLen pp (F.twist (twistSys k x (c : ℤ)))) (fun j => (L₀ j).toSubSystem) = ∑ T : Finset (Fin n), (-1 : ℤ) ^ (n - T.card) * restrLen pp (((tensorSub (fun i => (L₀ i).toSubSystem) T).twist (twistBundle k x 0).toSubSystem).twist (twistSys k x ((c : ℤ) + 0)) …`. Unfold `mixDiff`. Use `Finset.sum_congr rfl fun T _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hz : (∏ j ∈ T, (L₀ j).toSubSystem).twist (twistBundle k x 0).toSubSystem = ∏ j ∈ T, (L₀ j).toSubSystem` using `SubSystem.twist_twistSys_zero _`. Rewrite using `[tensorSub_eq_prod, add_zero]`. Use `beta_reduce`. Rewrite using `[hz]`. Rewrite using `[eA, eB, hAc, hBc, sub_self]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem InterSumTopVanish.proof (hM : MixedTwistShift.Statement.{u, w}) : InterSumTopVanish.Statement.{u, w} := by
   intro k _ Ω _ _ N x n pp L hW

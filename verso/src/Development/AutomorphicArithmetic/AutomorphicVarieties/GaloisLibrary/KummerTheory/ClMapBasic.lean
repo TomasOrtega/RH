@@ -3,7 +3,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Kumm
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.LDataCardLeFinrank UpperTheory.V.Base UpperTheory.V.Kum
 
 /- English proof (translation)
-The claim follows from `Ideal.mem_map_iff_of_surjective _ (RingOfIntegers.mapRingEquiv τ).surjective`.
+A detailed English derivation is pending.
 -/
 private theorem clMapBasic_mem {K K' : Type} [Field K] [NumberField K] [Field K'] [NumberField K'] (τ : K ≃+* K')
     (I : Ideal (𝓞 K)) (y : 𝓞 K') :
@@ -11,11 +11,11 @@ private theorem clMapBasic_mem {K K' : Type} [Field K] [NumberField K] [Field K'
   Ideal.mem_map_iff_of_surjective _ (RingOfIntegers.mapRingEquiv τ).surjective
 
 /- English proof (translation)
-Take `⟨I, rfl⟩` from `ClassGroup.mk0_surjective c`. Rewrite using `[class_map_mk0, class_map_mk0, class_map_mk0]`. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show Ideal.map _ _ = Ideal.map _ (Ideal.map _ _)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Use extensionality with `y`. Rewrite using `[clMapBasic_mem, clMapBasic_mem]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `⟨RingOfIntegers.mapRingEquiv τ x, (clMapBasic_mem τ _ _).mpr ⟨x, hx, rfl⟩, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨z, hz, rfl⟩`. Take `⟨x, hx, rfl⟩` from `(clMapBasic_mem τ _ _).mp hz`. Conclude with `⟨x, hx, rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem clMapBasic_lemma {K K' K'' : Type} [Field K] [NumberField K] [Field K'] [NumberField K']
     [Field K''] [NumberField K''] (τ : K ≃+* K') (τ' : K' ≃+* K'') (c : ClassGroup (𝓞 K)) :
@@ -34,11 +34,11 @@ private theorem clMapBasic_lemma {K K' K'' : Type} [Field K] [NumberField K] [Fi
     obtain ⟨x, hx, rfl⟩ := (clMapBasic_mem τ _ _).mp hz
     exact ⟨x, hx, rfl⟩
 /- English proof (translation)
-Take `⟨I, rfl⟩` from `ClassGroup.mk0_surjective c`. Rewrite using `[class_map_mk0]`. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show Ideal.map _ _ = _`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Use extensionality with `y`. Rewrite using `[clMapBasic_mem]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `hx`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Introduce `hy`. Conclude with `⟨y, hy, rfl⟩`.
+A detailed English derivation is pending.
 -/
 private theorem clMap_refl_apply {K : Type} [Field K] [NumberField K] (c : ClassGroup (𝓞 K)) :
     clMap (RingEquiv.refl K) c = c := by
@@ -56,15 +56,15 @@ private theorem clMap_refl_apply {K : Type} [Field K] [NumberField K] (c : Class
     exact ⟨y, hy, rfl⟩
 
 /- English proof (translation)
-Introduce `K K' K'' _ _ _ _ _ _ τ τ'`. Use `⟨clMap_refl_apply, clMapBasic_lemma τ τ', ?_, ?_⟩` and prove the remaining obligations. Establish `hl : ∀ c, clMap τ.symm (clMap τ c) = c`. Introduce `c`. Rewrite using `[← clMapBasic_lemma, RingEquiv.self_trans_symm, clMap_refl_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hr : ∀ c, clMap τ (clMap τ.symm c) = c`. Introduce `c`. Rewrite using `[← clMapBasic_lemma, RingEquiv.symm_trans_self, clMap_refl_apply]`. Conclude with `⟨Function.LeftInverse.injective hl, Function.RightInverse.surjective hr⟩`. Introduce `v w hvw`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `primeCl`. Rewrite using `[class_map_mk0]`. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show Ideal.map _ _ = _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Use extensionality with `y`. Rewrite using `[clMapBasic_mem]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `(hvw x).mp hx`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `hy`. Use `⟨(RingOfIntegers.mapRingEquiv τ).symm y, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hvw, RingEquiv.apply_symm_apply]`. Conclude with `hy`. Conclude with `RingEquiv.apply_symm_apply _ y`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Kum.clMapBasic :
     ∀ (K K' K'' : Type) [Field K] [NumberField K] [Field K'] [NumberField K'] [Field K''] [NumberField K''] (τ : K ≃+* K') (τ' : K' ≃+* K''),

@@ -27,25 +27,25 @@ def LocalGlobalEta : Prop := ∀ (i : N.Loc) (a : ℕ), 1 ≤ a → ∀ (π : A.
       (w ∈ placesOver H.E (N.l i) → DeRham N A i ρ w)
 
 /- English proof (translation)
-Introduce `hs`. Take `⟨P, hP, hB⟩` from `hx`. Take `⟨σ, hσ⟩ : ∃ σ, FrobLift N w σ` from `exists_isFrob (N.plOm.2 w)`. Take `⟨r, hr⟩` from `r_odd R`. Take `⟨t, ht⟩` from `R.t_odd`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hrt` using `r_add_le R`. Establish `a1` using `part_alg N A hη hW i P _ hB ⟨R.r, A.tw π A.etaTinv, 1⟩ (by simp [twistIso]) (r_odd R) odd_one`. Establish `a2` using `part_alg N A hη hW i P _ hB ⟨1, A.tw (A.muC i) A.etaTinv, R.t⟩ (by simp [twistIso, muPart]) odd_one R.t_odd`. Establish `x1 : (1 - (R.nV : ℝ)) / 2 = -(R.t : ℝ) / 2 + (1 - (R.r : ℝ)) / 2`. Rewrite using `[Ranks.nV]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `l1` using `hLG i R.r (r_odd R).pos (A.tw π A.etaTinv) (-(R.t : ℝ) / 2) a1.1 a1.2 ⟨-(t : ℤ) - 1, by rw [ht]; push_cast; ring⟩ ρ hρ.1 hρ.2.1 (x1 ▸ matches_rho N A i x π P hP hB ρ hρ) w`. Establish `hc : Cont N i (charRep N i (N.chi i 1 * eps N i ^ j))`. Use `charRep_cont N i _ ?_` and prove the remaining obligations.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `((N.chi_cont i 1).mul ((eps_cont N i).pow j)).congr fun g => ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Establish `x2 : ((R.t : ℝ) - 1) / 2 + (1 - (R.nV : ℝ)) / 2 + j = (-(R.r : ℝ) / 2 + j) + (1 - ((1 : ℕ) : ℝ)) / 2`. Rewrite using `[Ranks.nV]`. Use `push_cast`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `l2` using `hLG i 1 le_rfl (A.tw (A.muC i) A.etaTinv) (-(R.r : ℝ) / 2 + j) a2.1 a2.2 ⟨(j : ℤ) - r - 1, by rw [hr]; push_cast; ring⟩ _ hc (charRep_ss N i _) (x2 ▸ matches_chi N A i j) w`. Take `⟨c1, c2, c3⟩` from `hL w σ hσ`. Take `⟨m, hm⟩` from `Multiset.card_eq_one.mp ((c1 (A.locG (A.tw (A.muC i) A.etaTinv) w)).trans (A.locG_dim _ w))`. Take `⟨c, hcc⟩` from `Multiset.card_eq_one.mp ((c1 (A.locG A.etaT w)).trans (A.locG_dim _ w))`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hmem` using `eig_mem N A eig hA hAb i ρ _ hρ.1 hc w l1.2 l2.2 hs σ hσ _ (by rw [l2.1, c2, hm, Multiset.map_singleton])`. Rewrite `hmem` using `[l1.1, c2]`. Take `⟨α, hα, he⟩` from `Multiset.mem_map.mp hmem`. Establish `s1` using `(hS w σ hσ _ (hT _ (r_odd R).pos _ a1.1 a1.2 w) (α * c) (by`. Rewrite using `[A.locG_tw, c3 _ _ c (A.locG_dim _ w) hcc]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Multiset.mem_map_of_mem _ hα)).2`. Establish `s2` using `(hS w σ hσ _ (hT _ le_rfl _ a2.1 a2.2 w) (m * c) (by`. Rewrite using `[A.locG_tw, c3 _ _ c (A.locG_dim _ w) hcc, hm]`. Use the proof step `simp)).1`. Rewrite `s1`, `s2` using `[A.locG_dim]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq` using `one_lt_normV w`. Establish `hq0 : (0 : ℝ) < ((normV w : ℕ) : ℝ)` using `lt_trans one_pos hq`. Establish `s2' : 1 ≤ ‖m * c‖` using `by simpa using s2`. Establish `hn : ‖α * c‖ * ((normV w : ℕ) : ℝ) ^ (-(R.t : ℝ) / 2 + (1 - (R.r : ℝ)) / 2) = ‖m * c‖ * ((normV w : ℕ) : ℝ) ^ ((-(R.r : ℝ) / 2 + j) + (1 - ((1 : ℕ) : ℝ)) / 2)`. Rewrite using `[← norm_cpow w, ← norm_cpow w, ← norm_mul, ← norm_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Take a linear combination of the given relations to obtain the conclusion.
 
-Use `congr 1`. Take the linear combination `c * he`. Establish `hle : ((normV w : ℕ) : ℝ) ^ ((-(R.r : ℝ) / 2 + j) + (1 - ((1 : ℕ) : ℝ)) / 2) ≤ ((normV w : ℕ) : ℝ) ^ (((R.r : ℝ) - 1) / 2 + (-(R.t : ℝ) / 2 + (1 - (R.r : ℝ)) / 2))`. Rewrite using `[Real.rpow_add hq0 (((R.r : ℝ) - 1) / 2)]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hle` using `[Real.rpow_le_rpow_left_iff hq]`. Establish `h1 : (R.r : ℝ) + 5 ≤ R.t` using `by exact_mod_cast hrt`. Establish `h2 : (0 : ℝ) ≤ j` using `Nat.cast_nonneg j`. Move the coercions through the operations in `at hle`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem not_subOrQuot (eig : Eig N A) (hT : GlobalTheory.IndefiniteRowSideFullHecke.TemperedRepresentations.Tempered N A) (hLG : LocalGlobalEta N A)
     (hL : EigLaws N A eig) (hA : EigAway N A eig) (hAb : EigAbove N A eig) (hS : TemperedSizes N A eig)
@@ -114,13 +114,13 @@ theorem not_subOrQuot (eig : Eig N A) (hT : GlobalTheory.IndefiniteRowSideFullHe
   linarith
 
 /- English proof (translation)
-Take `⟨-, Sig, hx, π, rfl⟩` from `hx`. Introduce `w`. Establish `key` using `not_subOrQuot N A eig hT hLG hL hA hAb hS hη hW i x π hx ρ hρ w`. Prove the components needed by the constructor for the conclusion. Introduce `v hv`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Assume the negation of the conclusion as `h0`. Use `key 0 ⟨v, h0, Or.inl fun g hg => ?_⟩` and prove the remaining obligations. Rewrite using `[matK_eq, Matrix.smul_mulVec, hv g hg]`. Simplify using the standard rewrite rules. Introduce `v hv`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Assume the negation of the conclusion as `h0`. Use `key 1 ⟨v, h0, Or.inr fun g hg => ?_⟩` and prove the remaining obligations. Establish `h1 : Matrix.vecMul v (matT N i ρ g)ᵀ = v`. Rewrite using `[Matrix.vecMul_transpose]`. Conclude with `hv g hg`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : Matrix.vecMul v (matW N i ρ g) = algebraMap (N.O i) (Kf N i) ((eps N i g : (N.O i)ˣ) : N.O i) • v` using `by conv_lhs => rw [← h1]`. Rewrite using `[Matrix.vecMul_vecMul, matT_transpose_mul_matW, Matrix.vecMul_smul, Matrix.vecMul_one]`. Rewrite using `[matK_eq, Matrix.vecMul_smul, h2, smul_smul]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem noLocalInv_cusp (eig : Eig N A) (hT : GlobalTheory.IndefiniteRowSideFullHecke.TemperedRepresentations.Tempered N A) (hLG : LocalGlobalEta N A)
     (hL : EigLaws N A eig) (hA : EigAway N A eig) (hAb : EigAbove N A eig) (hS : TemperedSizes N A eig)
@@ -148,7 +148,7 @@ theorem noLocalInv_cusp (eig : Eig N A) (hT : GlobalTheory.IndefiniteRowSideFull
     simp
 
 /- English proof (translation)
-Take `⟨-, ⟨⟨h1, -⟩, h2, -⟩, -⟩` from `h`. Use `⟨h1, fun τ z hz => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `rcases (h2 τ).1 with e | e <;> rw [e, Multiset.mem_singleton] at hz <;> subst hz`. Conclude with `⟨0, by simp⟩`. Conclude with `⟨-1, by push_cast; ring⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem etaType_of_tie (D : D7) (h : Formalism.MainNotions.SumRepresentations.tie0 D) : EtaType D.nd D.naut := by
   obtain ⟨-, ⟨⟨h1, -⟩, h2, -⟩, -⟩ := h
@@ -160,11 +160,11 @@ theorem etaType_of_tie (D : D7) (h : Formalism.MainNotions.SumRepresentations.ti
 end GlobalTheory.LocalInvEta
 
 /- English proof (translation)
-Introduce `D T htie h2 h5 h7 _ hG hA hAb i r hr x hx ρ hss hchar w`. Establish `hcusp : GlobalTheory.IndefiniteRowSideFullHecke.NoLocalInvariantsRankParts.IsCuspPoint D.nd D.naut i x`. Break down `hx with ⟨hz, Sig, h1, h2⟩ | h` into its components or cases. Conclude with `⟨hz, Sig, h1, hG i x Sig h1 h2⟩`. Conclude with `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hcont` using `GlobalTheory.T.charpoly_factorization_semisimple D h5 i x (r x) (hr x) ρ hss hchar`. Establish `hrank : GlobalTheory.IndefiniteRowSideFullHecke.NoLocalInvariantsRankParts.IsRankPart D.nd i x ρ` using `⟨hcont, hss, fun w hw B σ hB hσ => by rw [← hchar σ]; exact (hr x).2.2 w hw B σ hB hσ⟩`. Establish `hLG : GlobalTheory.LocalInvEta.LocalGlobalEta D.nd D.naut` using `GlobalTheory.T.local_invariants_match_semisimple D htie h2 h5`. Establish `hT : GlobalTheory.IndefiniteRowSideFullHecke.TemperedRepresentations.Tempered D.nd D.naut` using `fun a ha π hc hra => h7 a π ha hc hra`. Establish `hno` using `GlobalTheory.LocalInvEta.noLocalInv_cusp D.nd D.naut T.eig hT hLG (GlobalTheory.RowTie.eigLaws_of_wdTie _ _ _ _ _ T) hA hAb (GlobalTheory.LocalInv.temperedSizes_of_tie _ _ _ _ _ T) (GlobalTheory.LocalInvEta.etaType_of_tie D htie) (GlobalTheory.LocalInv.weightRegular_definite D) i …`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 
-Conclude with `⟨GlobalTheory.T.H0_weight_part_no_invariants _ _ _ _ i ρ _ hno.1, GlobalTheory.T.H0_coefRep_T2_subtype_eq_bot_of_noInv_matT _ _ _ _ i ρ _ hno.2⟩`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.LocalInvEta.noLocalInvariants_everywhere : ∀ (D : D7) (T : WDTie D.nd D.naut), Formalism.MainNotions.SumRepresentations.tie0 D → Formalism.MainNotions.SumRepresentations.adm2 D → Formalism.MainNotions.SumRepresentations.adm5 D → Formalism.MainNotions.SumRepresentations.adm7 D → MuInt D.nd D.naut → GlobalTheory.LocalInv.GoodCuspidal D.nd D.naut → GlobalTheory.LocalInv.EigAway D.nd D.naut T.eig → GlobalTheory.LocalInv.EigAbove D.nd D.naut T.eig → Formalism.MainNotions.SumRepresentations.CuspidalGaloisUnramified D := by
   intro D T htie h2 h5 h7 _ hG hA hAb i r hr x hx ρ hss hchar w

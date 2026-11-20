@@ -21,7 +21,7 @@ def kerM (d : ℕ) : ord d :=
   ⟨single (Sum.inl 0) (Sum.inr 0) 1 * formInv d, fun i j => by simp [Matrix.mul_apply, single]⟩
 
 /- English proof (translation)
-Use `ext1`. Simplify using `only [Subring.coe_mul, idem, kerN, polUnit_coe]`. Rewrite using `[← Matrix.mul_assoc, Matrix.single_mul_mul_single]`. Simplify using `[form]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem idem_mul_kerN (d : ℕ) : idem d * kerN d = polUnit d := by
   ext1
@@ -30,7 +30,7 @@ theorem idem_mul_kerN (d : ℕ) : idem d * kerN d = polUnit d := by
   simp [form]
 
 /- English proof (translation)
-Use `ext1`. Simplify using `only [Subring.coe_mul, bar_coe, kerM, kerN, idem, Matrix.transpose_mul, transpose_single, form_transpose]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[formInv_mul_form hd, form_mul_formInv hd, Matrix.mul_one, Matrix.mul_one, single_mul_single_same, _root_.one_mul]`.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kerM_mul_bar_kerN {d : ℕ} (hd : 0 < d) : kerM d * bar d (kerN d) = idem d := by
   ext1
@@ -49,19 +49,19 @@ namespace GlobalTheory.ZarhinKer
 open GlobalTheory.ZarhinFam
 
 /- English proof (translation)
-Introduce `h M d hd S t c z act inc pr _hdu _hker _hprin hact hadj _hinc _hpr hip hpi hP T x hx`. Establish `hinc_idem : inc ≫ act (idem d) = inc`. Rewrite using `[← hpi, ← Category.assoc, hip, Category.id_comp]`. Establish `hN : inc ≫ act (kerN d) = inc ≫ act (polUnit d)`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hM : inc ≫ act (kerM d) ≫ act (bar d (kerN d)) = inc`. Rewrite using `[← hact.2.2.1, kerM_mul_bar_kerN hd, hinc_idem]`. Establish `hv : (snd c.A T ≫ x ≫ inc) ≫ act (kerN d) = 1`. Rewrite using `[Category.assoc, Category.assoc, hN, hx, comp_one]`. Establish `e1 : ((fst c.A T ≫ inc ≫ act (kerM d)) ≫ lift (1 : z.A ⟶ z.A) (𝟙 z.A)).left = (lift (snd c.A T ≫ x ≫ inc) (fst c.A T ≫ inc ≫ act (kerM d))).left ≫ (lift (fst z.A z.A ≫ act (kerN d)) (snd z.A z.A)).left`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Over.comp_left]`. Use `congr 1`. Use `ext1`. Simplify using `only [Category.assoc, lift_fst, lift_fst_assoc, comp_one]`. Rewrite using `[← hv]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Category.assoc]`. Simplify using `only [Category.assoc, lift_snd, lift_snd_assoc, Category.comp_id]`. Establish `e2 : (lift (snd c.A T ≫ x ≫ inc) (fst c.A T ≫ inc)).left = (lift (snd c.A T ≫ x ≫ inc) (fst c.A T ≫ inc ≫ act (kerM d))).left ≫ (lift (fst z.A z.A) (snd z.A z.A ≫ act (bar d (kerN d)))).left`. Rewrite using `[← Over.comp_left]`. Use `congr 1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Use `ext1`. Simplify using `only [Category.assoc, lift_fst, lift_fst_assoc]`. Simplify using `only [Category.assoc, lift_snd, lift_snd_assoc, hM]`. Establish `e3 : (lift (snd c.A T ≫ x ≫ inc) (fst c.A T ≫ inc)).left = (lift (snd c.A T ≫ x) (fst c.A T)).left ≫ (inc ⊗ₘ inc).left`. Rewrite using `[← Over.comp_left]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Rewrite using `[lift_map, Category.assoc]`. Establish `i1` using `GlobalTheory.GenSpread.lbIso_pull_comp _ e1 e2 (hadj (kerN d))`. Establish `i2` using `GlobalTheory.GenSpread.lbIso_pull_of_lbIso hP (lift (snd c.A T ≫ x) (fst c.A T)).left e3`. Take `⟨t0, ht0⟩` from `z.rig₁`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `g1 : ∃ u : LB.Gen (z.P.pull ((fst c.A T ≫ inc ≫ act (kerM d)) ≫ lift (1 : z.A ⟶ z.A) (𝟙 z.A)).left), u.IsGen` using `⟨LB.pullGen z.P _ _ t0 (fst c.A T ≫ inc ≫ act (kerM d)).left, LB.isGen_pullGen z.P _ _ t0 ht0 (fst c.A T ≫ inc ≫ act (kerM d)).left⟩`. Establish `g2` using `GlobalTheory.RigidBundleGlue.exists_gen_of_lbIso (pull_isLB z.isLB _) (pull_isLB z.isLB _) i1 g1`. Conclude with `GlobalTheory.RigidBundleGlue.exists_gen_of_lbIso (pull_isLB z.isLB _) (pull_isLB c.isLB _) i2.symm g2`.
+A detailed English derivation is pending.
 -/
 theorem polUnit_ker_le : ∀ (h M d : ℕ), 0 < d → ∀ (S : Scheme.{0}) (t : S ⟶ Sp (cycAway M)) (c : SiegPre h M (zetaAway M) t) (z : SiegPre (8 * h) M (zetaAway M) t) (act : GlobalTheory.ZarhinFam.ord d → (z.A ⟶ z.A)) (inc : c.A ⟶ z.A) (pr : z.A ⟶ c.A), IsUnit ((d : ℕ) : Γ(S, ⊤)) → SiegKerBy c d → z.Principal → IsRAct z.A act → Adj z.A z.P (GlobalTheory.ZarhinFam.bar d) act → IsMonHom inc → IsMonHom pr → inc ≫ pr = 𝟙 c.A → pr ≫ inc = act (GlobalTheory.ZarhinFam.idem d) → LBIso c.P (z.P.pull (inc ⊗ₘ inc).left) → ∀ (T : Over S) (x : T ⟶ c.A), x ≫ inc ≫ act (GlobalTheory.ZarhinFam.polUnit d) = 1 → ∃ u : (c.P.pull (lift (snd c.A T ≫ x) (fst c.A T)).left).Gen, u.IsGen := by
   intro h M d hd S t c z act inc pr _hdu _hker _hprin hact hadj _hinc _hpr hip hpi hP T x hx

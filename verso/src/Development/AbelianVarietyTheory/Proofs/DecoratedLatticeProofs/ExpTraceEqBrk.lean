@@ -21,15 +21,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.TraceBrk
 
 /- English proof (translation)
-Introduce `D ψ θ S T δ sc h M Y`. Establish `hz : ∀ (γ : Matrix (Fin T.rank) (Fin S.rank) D.host.E) τ i j, embH (tauE D) δ (Matrix.toLin' γ) τ i j = δ * tauE D τ (γ i j)`. Introduce `γ τ i j`. Simplify using `[embH, Matrix.toLin'_apply, Matrix.mulVec_single_one]`. Establish `hδ : δ * starRingEnd ℂ δ = ((‖δ‖ ^ 2 : ℝ) : ℂ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Establish `hHV : HV sc (embH (tauE D) δ (Matrix.toLin' M)) (embH (tauE D) δ (Matrix.toLin' Y)) = ((sc * ‖δ‖ ^ 2 : ℝ) : ℂ) * ∑ τ, tauE D τ (GlobalTheory.LatVac.hRat S T M Y)`. Rewrite using `[GlobalTheory.LatSign.hRat_one S T h.gS h.gT]`. Simplify using `only [HV, LinearMap.mk₂'ₛₗ_apply, hz, map_sum, map_mul, GlobalTheory.LatSign.tauE_star']`. Rewrite using `[Complex.ofReal_mul, ← hδ, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Simplify using `only [Finset.mul_sum]`. Use `Finset.sum_congr rfl fun τ _ => Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[brk, Formalism.L2.Th1.H.altE, hHV, h.scale, ← GlobalTheory.LatSign.sum_two_re_eq_trace, Complex.im_ofReal_mul, Complex.im_sum, ← Complex.ofReal_sum]`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Establish `hs : ∑ τ, 2 * (tauE D τ (D.host.xi0 * GlobalTheory.LatVac.hRat S T M Y)).re = -(2 * (Real.sqrt D.host.d)⁻¹ * ∑ τ, (tauE D τ (GlobalTheory.LatVac.hRat S T M Y)).im)`. Rewrite using `[Finset.mul_sum, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, h.xi, mul_assoc, Complex.I_mul_re, Complex.im_ofReal_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[hs, Complex.ofReal_neg]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem exp_trace_eq_brk : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D) (δ : ℂ) (sc : ℝ), StdPair θ S T δ sc ψ → ∀ M Y : Matrix (Fin T.rank) (Fin S.rank) D.host.E, Complex.exp (2 * Real.pi * Complex.I * ((Algebra.trace ℚ D.host.E (D.host.xi0 * GlobalTheory.LatVac.hRat S T M Y) : ℚ) : ℂ)) = brk (HV sc) (embH (tauE D) δ (Matrix.toLin' Y)) (embH (tauE D) δ (Matrix.toLin' M)) := by
   intro D ψ θ S T δ sc h M Y

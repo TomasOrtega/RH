@@ -4,13 +4,13 @@ import Mathlib.Analysis.Fourier.FiniteAbelian.PontryaginDuality
 open UpperTheory.V.Sd.Eis
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Use `push_neg at h`. Apply `hF` to reduce the goal to its premises. Use function extensionality and compare the values at `x`. Establish `key : ∑ ψ : AddChar α ℂ, ∑ a, F a * ψ (x - a) = (Fintype.card α : ℂ) * F x`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_comm]`. Repeatedly rewrite using `[← Finset.mul_sum, AddChar.sum_apply_eq_ite, sub_eq_zero]`. Rewrite using `[Finset.sum_eq_single x]`. Simplify using `[mul_comm]`. Introduce `b _ hb`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `[Ne.symm hb]`. Simplify using the standard rewrite rules. Establish `key2 : ∑ ψ : AddChar α ℂ, ∑ a, F a * ψ (x - a) = 0`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `ψ _`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion repeatedly using the stated equalities.
 
-Repeatedly rewrite using `[sub_eq_add_neg, AddChar.map_add_eq_mul, mul_left_comm (F _), ← Finset.mul_sum, h ψ, mul_zero]`. Establish `hc : (Fintype.card α : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 Fintype.card_ne_zero`. Use `key.symm.trans key2` as an intermediate fact. Simplify `this` using `[hc]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem exists_addChar_fourier_coeff_ne_zero_of_ne_zero {α : Type} [AddCommGroup α] [Fintype α] (F : α → ℂ) (hF : F ≠ 0) :
     ∃ ψ : AddChar α ℂ, ∑ a, F a * ψ (-a) ≠ 0 := by
@@ -36,59 +36,53 @@ private theorem exists_addChar_fourier_coeff_ne_zero_of_ne_zero {α : Type} [Add
   simpa [hc] using this
 
 /- English proof (translation)
-Introduce `T _ U₀ hU₀ f₀ hf₀ hinv`. Establish `inv_out : ∀ (V : Subgroup T) (w : T → ℂ), (∀ t u, u ∈ V → w (t * u) = w t) → ∀ t : T, w ((QuotientGroup.mk t : T ⧸ V).out) = w t`. Introduce `V w hw t`. Take `⟨h, hh⟩` from `QuotientGroup.mk_out_eq_mul V t`. Rewrite using `[hh, hw _ _ h.2]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : Fintype (T ⧸ U₀) := Fintype.ofFinite _`. Set `F : Additive (T ⧸ U₀) → ℂ` to `fun a => f₀ (Additive.toMul a).out`. Establish `hF : F ≠ 0`. Take `⟨t, ht⟩` from `Function.ne_iff.mp hf₀`. Introduce `h0`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `ht` to reduce the goal to its premises. Use `congrFun h0 (Additive.ofMul (QuotientGroup.mk t))` as an intermediate fact. Simplify using `only [F, toMul_ofMul, Pi.zero_apply] at this`. Rewrite `this` using `[inv_out U₀ f₀ hinv t]`. Conclude with `this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `⟨ψ, hψ⟩` from `exists_addChar_fourier_coeff_ne_zero_of_ne_zero F hF`. Set `χ : T →* ℂˣ` to `{ toFun := fun t => ⟨ψ (Additive.ofMul (QuotientGroup.mk t : T ⧸ U₀)), ψ (-(Additive.ofMul (QuotientGroup.mk t : T ⧸ U₀))), by rw [← AddChar.map_add_eq_mul, add_neg_cancel, AddChar.map_zero_eq_one], by rw [← AddChar.map_add_eq_mul, neg_add_cancel, AddChar.map_zero_eq_one]⟩ map_on …`. Establish `hχval : ∀ t, (((χ t)⁻¹ : ℂˣ) : ℂ) = ψ (-(Additive.ofMul (QuotientGroup.mk t : T ⧸ U₀)))` using `fun t => rfl`. Establish `hχU₀ : ∀ u ∈ U₀, χ u = 1`. Introduce `u hu`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use `ext`. Simplify using `[χ, (QuotientGroup.eq_one_iff u).mpr hu]`. Set `aV : Subgroup T → (T → ℂ) → ℂ` to `fun V h => ∑ᶠ q : T ⧸ V, h q.out * (((χ q.out)⁻¹ : ℂˣ) : ℂ)`. Establish `aV_lin : ∀ V : Subgroup T, V.FiniteIndex → ∀ (c : ℂ) (p p' : T → ℂ), aV V (c • p + p') = c * aV V p + aV V p'`. Introduce `V hV c p p'`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `haveI := hV`. Use `haveI : Fintype (T ⧸ V) := Fintype.ofFinite _`. Simplify using `only [aV, finsum_eq_sum_of_fintype, Pi.add_apply, Pi.smul_apply, smul_eq_mul, add_mul, Finset.sum_add_distrib, Finset.mul_sum, mul_assoc]`. Establish `aV_zero : ∀ V : Subgroup T, aV V 0 = 0`. Introduce `V`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Simplify using `[aV]`. Establish `kill : ∀ V : Subgroup T, V.FiniteIndex → V ≤ U₀ → ∀ g : T → ℂ, (∀ t u, u ∈ V → g (t * u) = g t) → ∀ s, aV V (fun t => g (t * s)) = (χ s : ℂ) * aV V g`. Introduce `V hV hVU g hg s`. Use `haveI := hV`. Use `haveI : Fintype (T ⧸ V) := Fintype.ofFinite _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Set `φ : T → ℂ` to `fun t => g t * (((χ t)⁻¹ : ℂˣ) : ℂ)`. Establish `hφ : ∀ t u, u ∈ V → φ (t * u) = φ t`. Introduce `t u hu`. Simplify using `only [φ, map_mul, hχU₀ u (hVU hu), mul_one, hg t u hu]`. Simplify using `only [aV, finsum_eq_sum_of_fintype]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hre : ∑ q : T ⧸ V, g q.out * (((χ q.out)⁻¹ : ℂˣ) : ℂ) = ∑ q : T ⧸ V, g (q * (QuotientGroup.mk s : T ⧸ V)).out * (((χ (q * (QuotientGroup.mk s : T ⧸ V)).out)⁻¹ : ℂˣ) : ℂ)` using `(Equiv.sum_comp (Equiv.mulRight (QuotientGroup.mk s : T ⧸ V)) (fun q => g q.out * (((χ q.out)⁻¹ : ℂˣ) : ℂ))).symm`. Rewrite using `[hre, Finset.mul_sum]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `q _`. Establish `hq : q * (QuotientGroup.mk s : T ⧸ V) = QuotientGroup.mk (q.out * s)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[QuotientGroup.mk_mul, QuotientGroup.out_eq']`. Establish `h2` using `inv_out V φ hφ (q.out * s)`. Rewrite using `[hq]`. Express the relevant statement in the definitionally equal form `_ = _ * φ _`. Rewrite using `[h2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [φ, map_mul, mul_inv, Units.val_mul]`. Establish `hs1 : (χ s : ℂ) * (((χ s)⁻¹ : ℂˣ) : ℂ) = 1`. Rewrite using `[← Units.val_mul, mul_inv_cancel, Units.val_one]`. Take the linear combination `(-(g (q.out * s) * (((χ q.out)⁻¹ : ℂˣ) : ℂ))) * hs1`. Establish `fiber : ∀ V : Subgroup T, V ≤ U₀ → V.FiniteIndex → aV V f₀ ≠ 0`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `V hVU hV`. Use `haveI := hV`. Use `haveI : Fintype (T ⧸ V) := Fintype.ofFinite _`. Set `π : T ⧸ V →* T ⧸ U₀` to `QuotientGroup.map V U₀ (MonoidHom.id T) (fun x hx => hVU hx)`. Set `φ0 : T → ℂ` to `fun t => f₀ t * (((χ t)⁻¹ : ℂˣ) : ℂ)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Both sides reduce to the same expression.
 
-Establish `hφ0 : ∀ t u, u ∈ U₀ → φ0 (t * u) = φ0 t`. Introduce `t u hu`. Simplify using `only [φ0, map_mul, hχU₀ u hu, mul_one, hinv t u hu]`. Set `Kf : T ⧸ U₀ → ℂ` to `fun r => φ0 r.out`. Establish `hH : ∀ q : T ⧸ V, f₀ q.out * (((χ q.out)⁻¹ : ℂˣ) : ℂ) = Kf (π q)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Introduce `q`. Establish `: π q = QuotientGroup.mk q.out` using `by conv_lhs => rw [← QuotientGroup.out_eq' q]`. Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `(inv_out U₀ φ0 hφ0 q.out).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hsurj : ∀ r : T ⧸ U₀, r ∈ Set.range π`. Introduce `r`. Use `⟨QuotientGroup.mk r.out, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(QuotientGroup.mk r.out : T ⧸ U₀) = r`. Conclude with `QuotientGroup.out_eq' r`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hcard : ∀ r : T ⧸ U₀, (Finset.univ.filter fun q => π q = r).card = (Finset.univ.filter fun q => π q = 1).card` using `fun r => MonoidHom.card_fiber_eq_of_mem_range π (hsurj r) (hsurj 1)`. Establish `hpos : (Finset.univ.filter fun q => π q = 1).card ≠ 0`. Rewrite using `[Finset.card_ne_zero]`. Conclude with `⟨1, by simp⟩`. Establish `hsumK : ∑ r, Kf r ≠ 0`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e : ∑ r, Kf r = ∑ a, F a * ψ (-a)`. Use `Fintype.sum_equiv Additive.ofMul _ _ (fun r => ?_)` and prove the remaining obligations. Simplify using `only [Kf, φ0, F, hχval, QuotientGroup.out_eq', toMul_ofMul]`. Rewrite using `[e]`. Conclude with `hψ`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [aV, finsum_eq_sum_of_fintype, hH]`. Rewrite using `[← Finset.sum_fiberwise' Finset.univ π Kf]`. Simplify using `only [Finset.sum_const, hcard, nsmul_eq_mul, ← Finset.mul_sum]`. Conclude with `mul_ne_zero (Nat.cast_ne_zero.mpr hpos) hsumK`. Set `Kset : Set (T → ℂ)` to `{p | ∃ (U : Subgroup T) (g : T → ℂ) (s : T), U.FiniteIndex ∧ (∀ t u, u ∈ U → g (t * u) = g t) ∧ p = (fun t => g (t * s)) - (χ s : ℂ) • g}`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Establish `key : ∀ p : T → ℂ, p ∈ Submodule.span ℂ Kset → ∃ V : Subgroup T, V ≤ U₀ ∧ V.FiniteIndex ∧ ∀ V' : Subgroup T, V' ≤ V → V'.FiniteIndex → aV V' p = 0`. Introduce `p hmem`. Proceed by induction on `hmem using Submodule.span_induction with`. Consider the case `mem p hp`. Take `⟨U, g, s, hU, hg, rfl⟩` from `hp`.
+Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI := hU`. Use `haveI := hU₀`. Use `⟨U ⊓ U₀, inf_le_right, inferInstance, fun V' hV' hV'f => ?_⟩` and prove the remaining obligations. Establish `hg' : ∀ t u, u ∈ V' → g (t * u) = g t` using `fun t u hu => hg t u (Subgroup.mem_inf.mp (hV' hu)).1`. Establish `e : (fun t => g (t * s)) - (χ s : ℂ) • g = (-(χ s : ℂ)) • g + (fun t => g (t * s))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Use function extensionality and compare the values at `t`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, aV_lin V' hV'f, kill V' hV'f (hV'.trans inf_le_right) g hg' s]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Consider the case `zero => exact ⟨U₀, le_rfl, hU₀, fun V' _ _ => aV_zero V'⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨V1, hV1U, hV1f, hV1⟩` from `hx`. Take `⟨V2, hV2U, hV2f, hV2⟩` from `hy`. Use `haveI := hV1f`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI := hV2f`. Use `⟨V1 ⊓ V2, inf_le_left.trans hV1U, inferInstance, fun V' hV' hV'f => ?_⟩` and prove the remaining obligations. Use `aV_lin V' hV'f 1 x y` as an intermediate fact. Rewrite `this` using `[one_smul, one_mul]`. Rewrite using `[this, hV1 V' (hV'.trans inf_le_left) hV'f, hV2 V' (hV'.trans inf_le_right) hV'f, add_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Consider the case `smul c x _ hx`. Take `⟨V1, hV1U, hV1f, hV1⟩` from `hx`. Use `⟨V1, hV1U, hV1f, fun V' hV' hV'f => ?_⟩` and prove the remaining obligations. Use `aV_lin V' hV'f c x 0` as an intermediate fact. Rewrite `this` using `[add_zero, aV_zero, add_zero]`.
-
-Rewrite using `[this, hV1 V' hV' hV'f, mul_zero]`. Establish `hnot : f₀ ∉ Submodule.span ℂ Kset`. Introduce `hmem`. Take `⟨V, hVU, hVf, hV⟩` from `key f₀ hmem`. Conclude with `fiber V hVU hVf (hV V le_rfl hVf)`.
-
-Take `⟨L, hL, hLK⟩` from `Submodule.exists_dual_map_eq_bot_of_notMem hnot inferInstance`. Use `⟨χ, L, hχU₀, hL, ?_⟩` and prove the remaining obligations. Introduce `U hU f hf s`. Establish `hmemK : (fun t => f (t * s)) - (χ s : ℂ) • f ∈ Submodule.span ℂ Kset` using `Submodule.subset_span ⟨U, f, s, hU, hf, rfl⟩`. Establish `h0 : L ((fun t => f (t * s)) - (χ s : ℂ) • f) = 0`.
-
-Use `Submodule.mem_map_of_mem (f := L) hmemK` as an intermediate fact. Rewrite `this` using `[hLK, Submodule.mem_bot]`. Conclude with `this`. Rewrite `h0` using `[map_sub, map_smul, smul_eq_mul, sub_eq_zero]`. Conclude with `h0`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.exists_character_separation :
     UpperTheory.V.Sd.Eis.CharPick := by

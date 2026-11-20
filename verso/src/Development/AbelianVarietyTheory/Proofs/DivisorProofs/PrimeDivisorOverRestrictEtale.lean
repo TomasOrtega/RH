@@ -17,23 +17,19 @@ noncomputable section
 namespace GlobalTheory.EtaleKlt
 
 /- English proof (translation)
-Introduce `M W _ _ _ _ p f _ n _ _ U hf y hy E' hE'`. Establish `e` using `functionFieldMap_comp_constFn p f`. Establish `hc : ∀ a, functionFieldMap f (Cartier.constFn p a) ∈ E'.ring` using `fun a => by`. Rewrite using `[← RingHom.comp_apply, e]`. Conclude with `E'.const_mem a`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨z, hzy, hz⟩` from `GlobalTheory.T.exists_specializes_dominatesStalk_of_regular M E'.ring y hE'`. Establish `hzU : z ∈ U` using `hzy.mem_open U.isOpen hy`. Establish `hfin` using `GlobalTheory.T.finiteDimensional_functionField_of_etale_on_open' M W f U hf ⟨y, hy⟩`. Establish `hess' : ((functionFieldMap f).comp (Cartier.constFn p)).codRestrict E'.ring hc = (Cartier.constFn (f ≫ p)).codRestrict E'.ring E'.const_mem` using `RingHom.ext fun a => Subtype.ext (RingHom.congr_fun e a)`. Take `⟨hdvr, hess⟩` from `GlobalTheory.T.dvr_comap_finiteIndex_essFiniteType_complex W.functionField M.functionField (functionFieldMap f) (Cartier.constFn p) hfin E'.ring hc (hess' ▸ E'.essFiniteType)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `E : DivOver p` to `⟨E'.ring.comap (functionFieldMap f), hc, hdvr, hess⟩`. Use `haveI : IsDiscreteValuationRing (E'.ring.comap (functionFieldMap f)) := hdvr`. Establish `hun` using `GlobalTheory.T.etale_restrict_dvr_comap_dominatesStalk M W f U hf z hzU E'.ring hz`. Set `ψ : E.ring →+* E'.ring` to `(functionFieldMap f).restrict E.ring E'.ring fun _ hx => hx`. Use `letI := ψ.toAlgebra`.
+Establish an intermediate fact. Introduce a local definition for the expression. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hψ : ψ.comp E.const = E'.const` using `RingHom.ext fun a => Subtype.ext (RingHom.congr_fun e a)`. Establish `hft : Algebra.EssFiniteType E.ring E'.ring`. Establish `h1 : (ψ.comp E.const).EssFiniteType` using `hψ ▸ E'.essFiniteType`. Conclude with `RingHom.EssFiniteType.of_comp E.const h1`. Establish `hord : ∀ g : W.functionFieldˣ, E'.ord (Units.map (functionFieldMap f).toMonoidHom g) = E.ord g` using `fun g => GlobalTheory.T.log_ordFrac_comap_formallyUnramified_dvr W.functionField M.functionField (functionFieldMap f) E'.ring ⟨hun, hft⟩ g g.ne_zero`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨E, fun g ⟨a, ha⟩ => ?_, hord, fun η hη => ?_⟩` and prove the remaining obligations. Use `show functionFieldMap f g ∈ E'.ring`. Conclude with `hE' _ ⟨f.stalkMap y a, by rw [← functionFieldMap_algebraMap, ha]⟩`. Use `haveI := SmoothOfRelativeDimension.smooth n p haveI := SmoothOfRelativeDimension.smooth n (f ≫ p)`. Establish `hnW : topologicalKrullDim W = n` using `NadelApp.topologicalKrullDim_eq_of_smooth W p n`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnM : topologicalKrullDim M = n` using `NadelApp.topologicalKrullDim_eq_of_smooth M (f ≫ p) n`. Take `⟨ω, hω, g, rfl, hg⟩` from `E.isFormOrd_formOrd hnW hη`. Establish `hω'` using `GlobalTheory.T.isFreeGenerator_topForms_of_formallyUnramified E.const E'.const ψ hψ n hun ω hω (E'.exists_isFreeGen hnM)`. Establish `key : ratPull p f n (E.toRat n ω) = E'.toRat n (TopForm.formMap n ψ hψ ω)`. Establish `h1` using `formMap_formMap (D := n) E.ring.subtype (functionFieldMap f) ((functionFieldMap f).comp E.ring.subtype) rfl rfl e (by rw [RingHom.comp_assoc]; exact e) ω`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2` using `formMap_formMap (D := n) ψ E'.ring.subtype ((functionFieldMap f).comp E.ring.subtype) rfl hψ rfl (by rw [RingHom.comp_assoc]; exact e) ω`. Conclude with `h1.trans h2.symm`. Establish `hpull : ratPull p f n ((g : W.functionField) • E.toRat n ω) = ((Units.map (functionFieldMap f).toMonoidHom g : M.functionFieldˣ) : M.functionField) • E'.toRat n (TopForm.formMap n ψ hψ ω)`. Rewrite using `[map_smulₛₗ, key]`. Both sides reduce to the same expression.
-
-Establish `hne : ratPull p f n ((g : W.functionField) • E.toRat n ω) ≠ 0`. Rewrite using `[hpull]`. Use `smul_ne_zero (Units.ne_zero _) fun h0 => ?_` and prove the remaining obligations. Use `(E'.isFreeGen_toRat hω').1 (a₁ := 0) (a₂ := 1) (by simp [h0])` as an intermediate fact. Conclude with `zero_ne_one this`.
-
-Rewrite using `[← hg, ← hord g]`. Conclude with `DivOver.IsFormOrd.formOrd_eq hne ⟨_, hω', _, hpull, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem divOver_restrict : ∀ (M W : Scheme.{0}) [IsIntegral M] [IsIntegral W] [IsLocallyNoetherian M] [IsLocallyNoetherian W] (p : W ⟶ Sp ℂ) (f : M ⟶ W) [IsDominant f] (n : ℕ) [SmoothOfRelativeDimension n p] [SmoothOfRelativeDimension n (f ≫ p)] (U : M.Opens), Etale (U.ι ≫ f) → ∀ y ∈ U, ∀ E' : DivOver (f ≫ p), E'.Through y → ∃ E : DivOver p, E.Through (f y) ∧ (∀ g : W.functionFieldˣ, E'.ord (Units.map (functionFieldMap f).toMonoidHom g) = E.ord g) ∧ ∀ η : RatForms p n, η ≠ 0 → E'.formOrd (GlobalTheory.EtaleKlt.ratPull p f n η) = E.formOrd η := by
   intro M W _ _ _ _ p f _ n _ _ U hf y hy E' hE'

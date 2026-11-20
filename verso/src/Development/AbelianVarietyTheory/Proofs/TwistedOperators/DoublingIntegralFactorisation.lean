@@ -37,9 +37,9 @@ noncomputable section
 namespace GlobalTheory.SquareAgree
 
 /- English proof (translation)
-Introduce `hU hR hM hP D ψ θ W W₁ X A A₁ B α β ν 𝓕 ν₁ 𝓕₁ ωA ωB e Bs Γ Xc om om' cA cB hθ hT hO hT' R Rf hRf Pi rf rl p p' hm Φ hΦ ΦD hΦD hD`. Take `⟨K₁, g₁, ne₁, max₁, h₁⟩` from `GlobalTheory.T.seesaw_unfolding_measure hP D ψ θ W W₁ X A A₁ B α β ν 𝓕 ν₁ 𝓕₁ ωA ωB e Bs Γ Xc om om' cA cB hθ hT hO hT' Pi rf rl p p' hm`. Take `⟨K₂, g₂, ne₂, h₂⟩` from `GlobalTheory.T.matched_maps_triple_factor hP _ _ _ Bs _ _ Γ Xc om om' hT' R Rf hRf`. Establish `hle : K₁ ≤ K₂` using `fun x hx => (h₂ x (g₁.1.1 hx)).2 (GlobalTheory.T.triple_geometry_unitary hU hR hM hP _ _ _ Bs _ _ Γ Xc om om' hT' R Rf hRf K₁ g₁ ne₁ x hx)`. Break down `max₁ K₂ g₂ hle with h | h` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[← h₁ Φ hΦ ΦD hΦD hD, ← h, h₂ ΦD hΦD]`. Conclude with `absurd h ne₂`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem matchKerP : GlobalTheory.Published.HoweDualityUnitary → GlobalTheory.Published.HoweDualityReal → GlobalTheory.Published.MinguezThetaGL → GlobalTheory.FunPr.Hypotheses₂ → ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (W W₁ X : HSp D) (A : Fr W) (A₁ : Fr W₁)
     (B : Fr X) (α β : (AE D)ˣ →* Circle) (ν : Measure (GA D W)) (𝓕 : Set (GA D W)) (ν₁ : Measure (GA D W₁))
@@ -65,13 +65,11 @@ theorem matchKerP : GlobalTheory.Published.HoweDualityUnitary → GlobalTheory.P
   · exact absurd h ne₂
 
 /- English proof (translation)
-Introduce `hU hR hMi hP D ψ θ W W₁ X A A₁ B α β ν 𝓕 ν₁ 𝓕₁ ωA ωB e Bs Γ Xc om om' cA cB hθ hT hO hT' R Rf hM Pi rf rl p p' hm Φ₀ hΦ₀ Φ₀D hΦ₀D hD`. Take `⟨K, hK, hKs, hKne⟩` from `GlobalTheory.T.seesaw_unfolding_fundamental_domain hP D ψ θ W W₁ X A A₁ B α β ν 𝓕 ν₁ 𝓕₁ ωA ωB e Bs Γ Xc om om' cA cB hθ hT hO hT' Pi rf rl p p' hm`. Take `⟨KD, hKD, hKDs, hKDne⟩` from `GlobalTheory.T.matched_maps_finite_identity hP Bs Γ Xc om om' R Rf hM`. Establish `h1 : K ≤ KD` using `fun Φ hΦ => (hKD Φ).2 ⟨hKs.le hΦ, GlobalTheory.T.matched_maps_real_finite hU hR hMi hP Bs Γ Xc om om' R Rf hM K hKs hKne Φ hΦ⟩`. Establish `h2 : KD = K` using `(GlobalTheory.T.seesaw_unfolding_integrable hP D ψ θ W W₁ X A A₁ B α β ν 𝓕 ν₁ 𝓕₁ ωA ωB e Bs Γ Xc om om' cA cB hθ hT hO hT' Pi rf rl p p' hm K KD hK hKDs h1).resolve_right hKDne`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h0`. Establish `hm : Φ₀D ∈ K` using `(hK Φ₀D).2 ⟨hΦ₀D, Φ₀, hΦ₀, hD, h0⟩`. Rewrite `hm` using `[← h2]`. Conclude with `((hKD _).1 hm).2`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hpm`. Establish `hm : Φ₀D ∈ KD` using `(hKD _).2 ⟨hΦ₀D, hpm⟩`. Rewrite `hm` using `[h2]`. Take `⟨_, Φ₁, _, hD₁, h0⟩` from `(hK _).1 hm`. Rewrite using `[IsDatum.fun_eq Γ.M' ψ cB cB.surjective hD hD₁]`.
-
-Conclude with `h0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem matchKerPPrime : GlobalTheory.Published.HoweDualityUnitary → GlobalTheory.Published.HoweDualityReal → GlobalTheory.Published.MinguezThetaGL → GlobalTheory.FunPr.Hypotheses₂ → ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (W W₁ X : HSp D) (A : Fr W) (A₁ : Fr W₁)
     (B : Fr X) (α β : (AE D)ˣ →* Circle) (ν : Measure (GA D W)) (𝓕 : Set (GA D W)) (ν₁ : Measure (GA D W₁))
@@ -106,35 +104,33 @@ theorem matchKerPPrime : GlobalTheory.Published.HoweDualityUnitary → GlobalThe
     exact h0
 
 /- English proof (translation)
-Introduce `hU hRe hMi hP D ψ θ W W₁ X A A₁ B α β ν 𝓕 ν₁ 𝓕₁ ωA ωB e Bs Γ Xc om om' cA cB hθ hT hO hTD R Rf hR Pi rf rl p p' hM`. Establish `hstd : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsStd ψ` using `hO.psi ▸ hTD.base.std`. Establish `dA` using `GlobalTheory.SquareAgree.isDatum_linear Γ.M ψ hstd cA`. Establish `dB` using `GlobalTheory.SquareAgree.isDatum_linear Γ.M' ψ hstd cB`. Establish `lin` using `GlobalTheory.PolMatchLin.polMatch_linear Bs Γ Xc om om' R Rf hR.fin`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `G : Set (Pi × Pi)` to `{x | ∃ Φ ∈ algF ψ θ true A B, ∃ Φ₀ ∈ algF ψ θ false A₁ B, ∃ ΦD ∈ algD Γ.M Bs.ψ Bs.emb, ∃ Φ₀D ∈ algD Γ.M' Bs.ψ Bs.emb, IsDatum Γ.M ψ cA ΦD Φ ∧ IsDatum Γ.M' ψ cB Φ₀D Φ₀ ∧ GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.PolMatch Bs Γ Xc R Rf ΦD Φ₀D ∧ x = (p Φ, p' Φ₀)}`. Establish `G0 : (0 : Pi × Pi) ∈ G` using `⟨0, zero_mem _, 0, zero_mem _, 0, zero_mem _, 0, zero_mem _, dA.1, dB.1, lin.1, Prod.ext (map_zero p).symm (map_zero p').symm⟩`. Establish `Glin : ∀ x ∈ G, ∀ y ∈ G, ∀ c : ℂ, x + c • y ∈ G`. Introduce and unpack `_ ⟨Φ, hΦ, Φ₀, hΦ₀, ΦD, hΦD, Φ₀D, hΦ₀D, h1, h2, h3, rfl⟩ _ ⟨Ψ, hΨ, Ψ₀, hΨ₀, ΨD, hΨD, Ψ₀D, hΨ₀D, k1, k2, k3, rfl⟩ c`. Apply the tactic sequence `exact ⟨Φ + c • Ψ, add_mem hΦ (Submodule.smul_mem _ c hΨ), Φ₀ + c • Ψ₀, add_mem hΦ₀ (Submodule.smul_mem _ c hΨ₀), ΦD + c • ΨD, add_mem hΦD (Submodule.smul_mem _ c hΨD), Φ₀D + c • Ψ₀D, add_mem hΦ₀D (Submodule.smul_mem _ c hΨ₀D), dA.2 _ _ _ _ c h1 k1, dB.2 _ _ _ _ c h2 k2, lin.2 _ _ …`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Apply the first step, then apply the next step to every resulting obligation.
 
-Set `S : Submodule ℂ (Pi × Pi)` to `{ carrier := G add_mem' := fun {x y} hx hy => by simpa using Glin x hx y hy 1 zero_mem' := G0 smul_mem' := fun c x hx => by simpa using Glin 0 G0 x hx c }`. Establish `stf : ∀ g ∈ GfC X, ∀ x ∈ S, (rf g x.1, rf g x.2) ∈ S`. Introduce and unpack `g hg _ ⟨Φ, hΦ, Φ₀, hΦ₀, ΦD, hΦD, Φ₀D, hΦ₀D, h1, h2, h3, rfl⟩`. Establish `a1` using `hM.mapA.stabX.1 g hg Φ hΦ`. Establish `b1` using `hM.mapB.stabX.1 g hg Φ₀ hΦ₀`.
+Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨ΨD, hΨD, hΨ⟩` from `hO.algA _ a1`. Take `⟨Ψ₀D, hΨ₀D, hΨ₀⟩` from `hO.algB _ b1`. Establish `e1` using `GlobalTheory.ThetaInj.theta_inj Γ.M ψ hstd cA _ _ _ hΨ (hO.weilA ΦD Φ h1 1 g)`. Establish `e2` using `GlobalTheory.ThetaInj.theta_inj Γ.M' ψ hstd cB _ _ _ hΨ₀ (hO.weilB Φ₀D Φ₀ h2 1 g)`. Use `⟨_, a1, _, b1, ΨD, hΨD, Ψ₀D, hΨ₀D, hΨ, hΨ₀, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e1, e2]`. Conclude with `GlobalTheory.SquareAgree.polMatch_kapX hP D ψ θ W W₁ X A A₁ B α β ν 𝓕 ν₁ 𝓕₁ ωA ωB e Bs Γ Xc om om' cA cB hθ hT hO hTD R Rf hR Pi rf rl p p' hM g hg ΦD hΦD Φ₀D hΦ₀D h3`. Rewrite using `[hM.mapA.eqf g hg Φ hΦ, hM.mapB.eqf g hg Φ₀ hΦ₀]`. Establish `stl : ∀ τ, ∀ Y ∈ lieAt X τ, ∀ x ∈ S, (rl τ Y x.1, rl τ Y x.2) ∈ S`. Introduce and unpack `τ Y hY _ ⟨Φ, hΦ, Φ₀, hΦ₀, ΦD, hΦD, Φ₀D, hΦ₀D, h1, h2, h3, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨Φ', hΦ', hd⟩` from `hM.mapA.stabX.2 τ Y hY Φ hΦ`. Take `⟨Φ₀', hΦ₀', hd₀⟩` from `hM.mapB.stabX.2 τ Y hY Φ₀ hΦ₀`. Take `⟨ΨD, hΨD, hΨ⟩` from `hO.algA _ hΦ'`. Take `⟨Ψ₀D, hΨ₀D, hΨ₀⟩` from `hO.algB _ hΦ₀'`. Use `⟨Φ', hΦ', Φ₀', hΦ₀', ΨD, hΨD, Ψ₀D, hΨ₀D, hΨ, hΨ₀, GlobalTheory.SquareAgree.LieEq.polMatch_der hP D ψ θ W W₁ X A A₁ B α β ν 𝓕 ν₁ 𝓕₁ ωA ωB e Bs Γ Xc om om' cA cB hθ hT hO hTD R Rf hR Pi rf rl p p' hM τ Y hY Φ hΦ Φ' hΦ' Φ₀ hΦ₀ Φ₀' hΦ₀' hd hd₀ ΦD hΦD ΨD hΨD Φ₀D hΦ₀D Ψ₀D hΨ₀D h1 hΨ h2 …` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hM.mapA.eql τ Y hY Φ hΦ Φ' hΦ' hd, hM.mapB.eql τ Y hY Φ₀ hΦ₀ Φ₀' hΦ₀' hd₀]`. Establish `k1 : ∀ x : Pi, ((x, 0) : Pi × Pi) ∈ S → x = 0`. Introduce and unpack `x ⟨Φ, hΦ, Φ₀, hΦ₀, ΦD, hΦD, Φ₀D, hΦ₀D, h1, h2, h3, hx⟩`. Simplify using `only [Prod.mk.injEq] at hx`. Take `⟨rfl, h0⟩` from `hx`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `m0` using `(matchKerPPrime hU hRe hMi hP D ψ θ W W₁ X A A₁ B α β ν 𝓕 ν₁ 𝓕₁ ωA ωB e Bs Γ Xc om om' cA cB hθ hT hO hTD R Rf hR Pi rf rl p p' hM Φ₀ hΦ₀ Φ₀D hΦ₀D h2).1 h0.symm`. Establish `m1` using `lin.2 _ _ _ _ (-1) h3 m0`. Rewrite `m1` using `[smul_zero, add_zero, neg_one_smul, add_neg_cancel]`. Conclude with `(matchKerP hU hRe hMi hP D ψ θ W W₁ X A A₁ B α β ν 𝓕 ν₁ 𝓕₁ ωA ωB e Bs Γ Xc om om' cA cB hθ hT hO hTD R Rf hR Pi rf rl p p' hM Φ hΦ ΦD hΦD h1).2 m1`. Establish `k2 : ∀ y : Pi, ((0, y) : Pi × Pi) ∈ S → y = 0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Introduce and unpack `y ⟨Φ, hΦ, Φ₀, hΦ₀, ΦD, hΦD, Φ₀D, hΦ₀D, h1, h2, h3, hy⟩`. Simplify using `only [Prod.mk.injEq] at hy`. Take `⟨h0, rfl⟩` from `hy`. Establish `m0` using `(matchKerP hU hRe hMi hP D ψ θ W W₁ X A A₁ B α β ν 𝓕 ν₁ 𝓕₁ ωA ωB e Bs Γ Xc om om' cA cB hθ hT hO hTD R Rf hR Pi rf rl p p' hM Φ hΦ ΦD hΦD h1).1 h0.symm`. Establish `m1` using `lin.2 _ _ _ _ (-1) h3 m0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `m1` using `[smul_zero, add_zero, neg_one_smul, add_neg_cancel]`. Conclude with `(matchKerPPrime hU hRe hMi hP D ψ θ W W₁ X A A₁ B α β ν 𝓕 ν₁ 𝓕₁ ωA ωB e Bs Γ Xc om om' cA cB hθ hT hO hTD R Rf hR Pi rf rl p p' hM Φ₀ hΦ₀ Φ₀D hΦ₀D h2).2 m1`. Establish `on : ∀ x : Pi, ∃ y : Pi, ((x, y) : Pi × Pi) ∈ S`. Introduce `x`. Establish `hx : x ∈ (algF ψ θ true A B).map p` using `hM.mapA.onto ▸ Submodule.mem_top`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨Φ, hΦ, rfl⟩` from `hx`. Take `⟨ΦD, hΦD, h1⟩` from `hO.algA Φ hΦ`. Take `⟨Φ₀D, hΦ₀D, h3⟩` from `GlobalTheory.SquareAgree.polMatch_onto Bs Γ Xc om om' R Rf hR ΦD hΦD`. Take `⟨Φ₀, hΦ₀, h2⟩` from `hO.algB' Φ₀D hΦ₀D`. Conclude with `⟨p' Φ₀, Φ, hΦ, Φ₀, hΦ₀, ΦD, hΦD, Φ₀D, hΦ₀D, h1, h2, h3, rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨c, hc0, hc⟩` from `GlobalTheory.SquareAgree.eq_smul_of_stable_graph D X Pi rf rl hM.irred (GlobalTheory.SquareAgree.rank_pi_le_aleph0 hU hRe hP D ψ θ W W₁ X A A₁ B α β ν 𝓕 ν₁ 𝓕₁ ωA ωB e Bs Γ Xc om om' cA cB hθ hT hO hTD R Rf hR Pi rf rl p p' hM) S stf stl k1 k2 on`. Use `⟨c, hc0, ?_⟩` and prove the remaining obligations. Introduce `Φ hΦ Φ₀ hΦ₀ ΦD Φ₀D hD hD₀ hSo hp`. Take `⟨ΦD', hΦD', h1⟩` from `hO.algA Φ hΦ`. Establish `hΦD : ΦD ∈ algD Γ.M Bs.ψ Bs.emb` using `(GlobalTheory.ThetaInj.theta_inj Γ.M ψ hstd cA _ _ _ hD h1) ▸ hΦD'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨Φ₀D', hΦ₀D', h2⟩` from `hO.algB Φ₀ hΦ₀`. Establish `hΦ₀D : Φ₀D ∈ algD Γ.M' Bs.ψ Bs.emb` using `(GlobalTheory.ThetaInj.theta_inj Γ.M' ψ hstd cB _ _ _ hD₀ h2) ▸ hΦ₀D'`. Take `⟨Φ₁D, hΦ₁D, m1⟩` from `GlobalTheory.SquareAgree.polMatch_onto Bs Γ Xc om om' R Rf hR ΦD hΦD`. Take `⟨Φ₁, hΦ₁, h4⟩` from `hO.algB' Φ₁D hΦ₁D`. Establish `hy` using `hc (p Φ) (p' Φ₁) ⟨Φ, hΦ, Φ₁, hΦ₁, ΦD, hΦD, Φ₁D, hΦ₁D, hD, h4, m1, rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h5` using `dB.2 _ _ _ _ (-c) h4 hD₀`. Establish `hz : p' (Φ₁ + (-c) • Φ₀) = 0` using `by rw [map_add, map_smul, hy, hp, neg_smul, add_neg_cancel]`. Establish `m2` using `(matchKerPPrime hU hRe hMi hP D ψ θ W W₁ X A A₁ B α β ν 𝓕 ν₁ 𝓕₁ ωA ωB e Bs Γ Xc om om' cA cB hθ hT hO hTD R Rf hR Pi rf rl p p' hM _ (add_mem hΦ₁ (Submodule.smul_mem _ _ hΦ₀)) _ (add_mem hΦ₁D (Submodule.smul_mem _ _ hΦ₀D)) h5).1 hz`. Establish `m3` using `lin.2 _ _ _ _ (-1) m1 m2`. Establish `e3 : Φ₁D + (-1 : ℂ) • (Φ₁D + (-c) • Φ₀D) = c • Φ₀D` using `by module`.
-
-Rewrite `m3` using `[smul_zero, add_zero, e3]`. Conclude with `GlobalTheory.SquareAgree.PolMatchConst.match_of_polMatch Bs Γ Xc om om' R Rf hTD _ _ m3 (Submodule.smul_mem _ c hSo)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem matchUpToScalar : GlobalTheory.Published.HoweDualityUnitary → GlobalTheory.Published.HoweDualityReal → GlobalTheory.Published.MinguezThetaGL → GlobalTheory.FunPr.Hypotheses₂ → ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (W W₁ X : HSp D) (A : Fr W) (A₁ : Fr W₁)
     (B : Fr X) (α β : (AE D)ˣ →* Circle) (ν : Measure (GA D W)) (𝓕 : Set (GA D W)) (ν₁ : Measure (GA D W₁))

@@ -18,9 +18,9 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 variable {n : ℕ}
 
 /- English proof (translation)
-Establish `hc : Continuous fun p : Kg × M2 n => ι p.1 * p.2` using `(hι.comp continuous_fst).mul continuous_snd`. Establish `hcl : IsClosed {p : Kg × M2 n | ι p.1 * p.2 ∉ U}` using `(hU.preimage hc).isClosed_compl`. Establish `himg` using `isClosedMap_snd_of_compactSpace (X := Kg) (Y := M2 n) _ hcl`. Establish `heq : {x : M2 n | ∀ k, ι k * x ∈ U} = (Prod.snd '' {p : Kg × M2 n | ι p.1 * p.2 ∉ U})ᶜ`. Use extensionality with `x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [Set.mem_setOf_eq, Set.mem_compl_iff, Set.mem_image, Prod.exists, exists_eq_right, not_exists, not_not]`. Rewrite using `[heq]`. Conclude with `himg.isOpen_compl`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_setK {U : Set (M2 n)} (hU : IsOpen U) (Kg : Type) [TopologicalSpace Kg] [CompactSpace Kg]
     (ι : Kg → M2 n) (hι : Continuous ι) : IsOpen {x : M2 n | ∀ k, ι k * x ∈ U} := by
@@ -35,7 +35,7 @@ theorem isOpen_setK {U : Set (M2 n)} (hU : IsOpen U) (Kg : Type) [TopologicalSpa
   exact himg.isOpen_compl
 
 /- English proof (translation)
-Rewrite using `[← fromBlocks_toBlocks y]`. Use extensionality with `i j`. Simplify using `[Cm, fromBlocks_multiply, u1, toBlocks₂₁, toBlocks₂₂]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem u1_eq_toBlocks₂₁_mul_Cm (y : M2 n) : u1 y = toBlocks₂₁ (y * Cm n) := by
   rw [← fromBlocks_toBlocks y]
@@ -43,7 +43,7 @@ private theorem u1_eq_toBlocks₂₁_mul_Cm (y : M2 n) : u1 y = toBlocks₂₁ (
   simp [Cm, fromBlocks_multiply, u1, toBlocks₂₁, toBlocks₂₂]
 
 /- English proof (translation)
-Rewrite using `[ub1]`. Use `conv_rhs => rw [← fromBlocks_toBlocks y⁻¹]`. Simplify using `[fromBlocks_multiply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem ub1_eq_toBlocks₁₁_fromBlocks_mul_inv (y : M2 n) :
     ub1 y = toBlocks₁₁ (fromBlocks 1 (Complex.I • 1) 0 0 * y⁻¹) := by
@@ -52,7 +52,7 @@ private theorem ub1_eq_toBlocks₁₁_fromBlocks_mul_inv (y : M2 n) :
   simp [fromBlocks_multiply]
 
 /- English proof (translation)
-Establish `h : fromBlocks (1 : Matrix (Fin n) (Fin n) ℂ) (Complex.I • 1) 0 0 * Cm n = fromBlocks ((2 * Complex.I) • 1) 0 0 0`. Simplify using `only [Cm, fromBlocks_multiply]`. Apply the tactic sequence `congr 1 <;> ext i j <;> simp [Matrix.one_apply] <;> split_ifs <;> ring_nf <;> simp`. Rewrite using `[h, fromBlocks_multiply, fromBlocks_multiply]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem fromBlocks_I_mul_Cm_mul_fromBlocks_diag (A B : Matrix (Fin n) (Fin n) ℂ) :
     fromBlocks (1 : Matrix (Fin n) (Fin n) ℂ) (Complex.I • 1) 0 0 * Cm n * fromBlocks A 0 0 B =
@@ -65,13 +65,13 @@ private theorem fromBlocks_I_mul_Cm_mul_fromBlocks_diag (A B : Matrix (Fin n) (F
   simp
 
 /- English proof (translation)
-Establish `hd : ∀ a, P' a a = 0`. Introduce `a`. Assume the negation of the conclusion as `h`. Take `⟨h1, h2⟩` from `hP a a h`. Simplify using `[blkB] at h2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Conclude with `h2 h1`. Rewrite using `[Matrix.det_of_upperTriangular]`. Simplify using `[hd]`. Introduce `a b hab`. Establish `hab' : (b : ℕ) < a` using `hab`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hne : a ≠ b` using `fun h => by subst h; omega`. Simplify using `only [Matrix.add_apply, Matrix.one_apply, hne, if_false, zero_add]`. Assume the negation of the conclusion as `h`. Take `⟨h1, h2⟩` from `hP a b h`. Simplify using `[blkA, blkB] at h1 h2`.
+Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 private theorem det_one_add_of_support_blkA_blkB (j : ℕ) (P' : Matrix (Fin n) (Fin n) ℂ)
     (hP : ∀ a b, P' a b ≠ 0 → a ∈ blkA j ∧ b ∈ blkB j) : det (1 + P') = 1 := by
@@ -93,13 +93,13 @@ private theorem det_one_add_of_support_blkA_blkB (j : ℕ) (P' : Matrix (Fin n) 
     omega
 
 /- English proof (translation)
-Establish `hd : ∀ a, S' a a = 0`. Introduce `a`. Assume the negation of the conclusion as `h`. Take `⟨h1, h2⟩` from `hS a a h`. Simplify using `[blkB] at h1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Conclude with `h1 h2`. Rewrite using `[Matrix.det_of_lowerTriangular]`. Simplify using `[hd]`. Introduce `a b hab`. Establish `hab' : (a : ℕ) < b` using `hab`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hne : a ≠ b` using `fun h => by subst h; omega`. Simplify using `only [Matrix.add_apply, Matrix.one_apply, hne, if_false, zero_add]`. Assume the negation of the conclusion as `h`. Take `⟨h1, h2⟩` from `hS a b h`. Simplify using `[blkA, blkB] at h1 h2`.
+Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 private theorem det_one_add_of_support_blkB_blkA (j : ℕ) (S' : Matrix (Fin n) (Fin n) ℂ)
     (hS : ∀ a b, S' a b ≠ 0 → a ∈ blkB j ∧ b ∈ blkA j) : det (1 + S') = 1 := by
@@ -121,21 +121,21 @@ private theorem det_one_add_of_support_blkB_blkA (j : ℕ) (S' : Matrix (Fin n) 
     omega
 
 /- English proof (translation)
-Establish `hPd : det (1 + P') = 1` using `det_one_add_of_support_blkA_blkB j P' hP`. Establish `hSd : det (1 + S') = 1` using `det_one_add_of_support_blkB_blkA j S' hS`. Establish `hPu : IsUnit (det (1 + P'))` using `by rw [hPd]; exact isUnit_one`. Establish `hSu : IsUnit (det (1 + S'))` using `by rw [hSd]; exact isUnit_one`. Establish `hCi : (Cm n)⁻¹ = Cmi n` using `Matrix.inv_eq_left_inv cmi_mul_cm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hCii : (Cmi n)⁻¹ = Cm n` using `Matrix.inv_eq_right_inv cmi_mul_cm`. Establish `hCC : Cm n * Cmi n = 1` using `mul_eq_one_comm.mp cmi_mul_cm`. Establish `hg : mX (1 + P') 0 0 (1 + S') = Cm n * fromBlocks (1 + P') 0 0 (1 + S') * Cmi n`. Rewrite using `[mX, hCi]`. Establish `hDinv : (fromBlocks (1 + P') 0 0 (1 + S'))⁻¹ = fromBlocks (1 + P')⁻¹ 0 0 (1 + S')⁻¹`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `Matrix.inv_eq_left_inv` to reduce the goal to its premises. Rewrite using `[fromBlocks_multiply]`. Simplify using `[Matrix.nonsing_inv_mul _ hPu, Matrix.nonsing_inv_mul _ hSu]`. Establish `hu : u1 (x * mX (1 + P') 0 0 (1 + S')) = u1 x * (1 + P')`. Rewrite using `[u1_eq_toBlocks₂₁_mul_Cm, u1_eq_toBlocks₂₁_mul_Cm x, hg]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h : x * (Cm n * fromBlocks (1 + P') 0 0 (1 + S') * Cmi n) * Cm n = (x * Cm n) * fromBlocks (1 + P') 0 0 (1 + S')`. Simplify using `only [Matrix.mul_assoc, cmi_mul_cm, Matrix.mul_one]`. Rewrite using `[h]`. Use `conv_lhs => rw [← fromBlocks_toBlocks (x * Cm n)]`. Rewrite using `[fromBlocks_multiply]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `hub : ub1 (x * mX (1 + P') 0 0 (1 + S')) = (1 + P')⁻¹ * ub1 x`. Rewrite using `[ub1_eq_toBlocks₁₁_fromBlocks_mul_inv, ub1_eq_toBlocks₁₁_fromBlocks_mul_inv x, hg, Matrix.mul_inv_rev, Matrix.mul_inv_rev, Matrix.mul_inv_rev, hCii, hDinv, hCi]`. Establish `h : fromBlocks (1 : Matrix (Fin n) (Fin n) ℂ) (Complex.I • 1) 0 0 * (Cm n * (fromBlocks (1 + P')⁻¹ 0 0 (1 + S')⁻¹ * Cmi n) * x⁻¹) = fromBlocks (1 + P')⁻¹ 0 0 1 * (fromBlocks (1 : Matrix (Fin n) (Fin n) ℂ) (Complex.I • 1) 0 0 * x⁻¹)`. Establish `h3` using `fromBlocks_I_mul_Cm_mul_fromBlocks_diag (n := n) (1 + P')⁻¹ (1 + S')⁻¹`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = _ := by`. Rewrite using `[h3]`. Simplify using `only [Matrix.mul_assoc, hCC, Matrix.one_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h]`. Use `conv_lhs => rw [← fromBlocks_toBlocks (fromBlocks (1 : Matrix (Fin n) (Fin n) ℂ) (Complex.I • 1) 0 0 * x⁻¹)]`. Rewrite using `[fromBlocks_multiply]`. Simplify using the standard rewrite rules. Unfold `Fd`.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Use function extensionality and compare the values at `z`. Simplify using `only [fz]`. Rewrite using `[hu, hub, det_mul, det_mul, det_mul, hPd, Matrix.det_nonsing_inv, hPd]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Fd_kpart (m j : ℕ) (x : M2 n) (hx : x ∈ Dom n)
     (P' S' : Matrix (Fin n) (Fin n) ℂ) (hP : ∀ a b, P' a b ≠ 0 → a ∈ blkA j ∧ b ∈ blkB j)
@@ -187,7 +187,7 @@ theorem Fd_kpart (m j : ℕ) (x : M2 n) (hx : x ∈ Dom n)
   simp
 
 /- English proof (translation)
-Rewrite using `[← fromBlocks_toBlocks y]`. Use extensionality with `i j`. Simplify using `[Cm, fromBlocks_multiply, u2, toBlocks₂₁, toBlocks₂₂]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem u2_eq_toBlocks₂₂_mul_Cm (y : M2 n) : u2 y = toBlocks₂₂ (y * Cm n) := by
   rw [← fromBlocks_toBlocks y]
@@ -195,23 +195,23 @@ private theorem u2_eq_toBlocks₂₂_mul_Cm (y : M2 n) : u2 y = toBlocks₂₂ (
   simp [Cm, fromBlocks_multiply, u2, toBlocks₂₁, toBlocks₂₂]
 
 /- English proof (translation)
-Use `set E : Matrix (Fin n) (Fin n) ℂ := Matrix.single a0 b0 1 with hE`. Take `⟨hdx, hd1, hd2, hdb⟩` from `hx`. Establish `hCi : (Cm n)⁻¹ = Cmi n` using `Matrix.inv_eq_left_inv cmi_mul_cm`. Establish `hCC : Cm n * Cmi n = 1` using `mul_eq_one_comm.mp cmi_mul_cm`. Establish `hline : ∀ t : ℂ, x + t • (x * WD 0 E) = x * mX 1 0 (t • E) 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `t`. Establish `h : mX 1 0 (t • E) 1 = 1 + t • WD 0 E`. Simplify using `only [mX, WD, hCi]`. Establish `h' : (fromBlocks (1 : Matrix (Fin n) (Fin n) ℂ) 0 (t • E) 1 : M2 n) = 1 + t • (fromBlocks 0 0 E 0 : M2 n)`. Rewrite using `[← fromBlocks_one, fromBlocks_smul, fromBlocks_add]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[h', Matrix.mul_add, Matrix.add_mul, Matrix.mul_one, hCC, Matrix.mul_smul, Matrix.smul_mul]`. Rewrite using `[h, Matrix.mul_add, Matrix.mul_one, Matrix.mul_smul]`. Establish `hu1 : ∀ t : ℂ, u1 (x * mX 1 0 (t • E) 1) = u1 x + t • (u2 x * E)`. Introduce `t`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[u1_eq_toBlocks₂₁_mul_Cm, u1_eq_toBlocks₂₁_mul_Cm x, u2_eq_toBlocks₂₂_mul_Cm x, mX, hCi]`. Establish `h : x * (Cm n * fromBlocks 1 0 (t • E) 1 * Cmi n) * Cm n = (x * Cm n) * fromBlocks 1 0 (t • E) 1`. Simplify using `only [Matrix.mul_assoc, cmi_mul_cm, Matrix.mul_one]`. Rewrite using `[h]`. Use `conv_lhs => rw [← fromBlocks_toBlocks (x * Cm n)]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[fromBlocks_multiply]`. Simplify using `[Matrix.mul_smul]`. Establish `hub : ∀ t : ℂ, ub1 (x * mX 1 0 (t • E) 1) = ub1 x`. Introduce `t`. Rewrite using `[inverse_first_block_mul_unipotent_domain x ⟨hdx, hd1, hd2, hdb⟩ 0 (t • E) (by simp) (by simp)]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `hg : (fun t : ℂ => fV (n` using `n) (m : ℤ) 0 (x + t • (x * WD 0 E))) = fun t : ℂ => (u1 x + t • (u2 x * E)).det ^ ((m : ℤ) - n) * (ub1 x).det ^ (-(n : ℤ)) := by`. Use function extensionality and compare the values at `t`. Rewrite using `[hline, fV, hu1, hub]`. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdiff : DifferentiableAt ℂ (fV (n` using `n) (m : ℤ) 0) x := ((contDiffOn_fV (m : ℤ) 0).contDiffAt (isOpen_dom.mem_nhds ⟨hdx, hd1, hd2, hdb⟩)).differentiableAt (by simp)`. Establish `hL` using `((hasDerivAt_id (0 : ℂ)).smul_const (x * WD 0 E)).const_add x`. Simplify using `only [id, one_smul] at hL`. Establish `h1` using `hdiff.hasFDerivAt.comp_hasDerivAt_of_eq (0 : ℂ) hL (by simp)`. Establish `hdet` using `hasDerivAt_det_add (u1 x) (u2 x * E) (isUnit_iff_ne_zero.mpr hd1)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `((hasDerivAt_zpow ((m : ℤ) - n) ((u1 x + (0 : ℂ) • (u2 x * E)).det) (Or.inl (by simpa using hd1))).comp (0 : ℂ) hdet).mul_const ((ub1 x).det ^ (-(n : ℤ)))`. Establish `h1' : HasDerivAt (fun t : ℂ => fV (n` using `n) (m : ℤ) 0 (x + t • (x * WD 0 E))) (fderiv ℂ (fV (n := n) (m : ℤ) 0) x (x * WD 0 E)) 0 := h1`. Rewrite `h1'` using `[hg]`. Rewrite using `[h1'.unique h2]`. Simplify using `only [zero_smul, add_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Matrix.mul_assoc, hE, trace_mul_single, fV, zpow_sub_one₀ hd1]`. Simplify using `only [zpow_zero, mul_one, MulOpposite.op_one, one_smul, Int.cast_sub, Int.cast_natCast]`. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem fderiv_fV_R (m : ℕ) (x : M2 n) (hx : x ∈ Dom n) (a0 b0 : Fin n) :
     fderiv ℂ (fV (n := n) (m : ℤ) 0) x (x * WD 0 (Matrix.single a0 b0 1)) =

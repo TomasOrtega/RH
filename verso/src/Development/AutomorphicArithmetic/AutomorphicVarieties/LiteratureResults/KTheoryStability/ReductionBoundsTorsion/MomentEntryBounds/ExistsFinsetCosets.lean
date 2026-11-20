@@ -16,15 +16,13 @@ namespace PositivityTheory.KB.MomentRationality.RedGL
 variable {L : Type} [Field L] [NumberField L] {N : ℕ}
 
 /- English proof (translation)
-Set `e : InfinitePlace L → Fin N → Fin N → AdelicGLn.AdelicGL L N → ℝ` to `fun w i j b => ‖((Reduction.infAt w b : GL (Fin N) w.Completion) : Matrix (Fin N) (Fin N) w.Completion) i j‖`. Establish `hc : ∀ w i j, Continuous (e w i j)`. Introduce `w i j`. Establish `h1 : Continuous (Reduction.infAt (K` using `L) (n := N) w) := by`. Unfold `Reduction.infAt`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Conclude with `(continuous_apply w).comp (continuous_fst.comp (AdelicGLn.restrictedProductEquiv L N).continuous)`. Establish `h2 : Continuous fun b : AdelicGLn.AdelicGL L N => ((Reduction.infAt w b : GL (Fin N) w.Completion) : Matrix (Fin N) (Fin N) w.Completion)` using `(Units.continuous_val (M := Matrix (Fin N) (Fin N) w.Completion)).comp h1`. Conclude with `continuous_norm.comp ((continuous_apply j).comp ((continuous_apply i).comp h2))`. Set `F : AdelicGLn.AdelicGL L N → ℝ` to `fun b => ∑ w, ∑ i, ∑ j, (e w i j b + e w i j b⁻¹)`. Establish `hF : Continuous F`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `continuous_finset_sum _ fun w _ => continuous_finset_sum _ fun i _ => continuous_finset_sum _ fun j _ => ?_` and prove the remaining obligations. Conclude with `(hc w i j).add ((hc w i j).comp continuous_inv)`. Take `⟨M, hM⟩` from `(hω.image hF).bddAbove`. Use `⟨max M 0, le_max_right _ _, fun b hb w i j => ?_⟩` and prove the remaining obligations. Establish `hFb : F b ≤ max M 0` using `(hM ⟨b, hb, rfl⟩).trans (le_max_left _ _)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hnn : ∀ w i j, 0 ≤ e w i j b + e w i j b⁻¹` using `fun w i j => add_nonneg (norm_nonneg _) (norm_nonneg _)`. Establish `hterm : e w i j b + e w i j b⁻¹ ≤ F b`. Combine the equalities or inequalities in the displayed calculation. Use `⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `(le_add_of_nonneg_right (norm_nonneg _)).trans (hterm.trans hFb)`.
-
-Conclude with `(le_add_of_nonneg_left (norm_nonneg _)).trans (hterm.trans hFb)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_bound_omega {ω : Set (AdelicGLn.AdelicGL L N)} (hω : IsCompact ω) :
     ∃ M0 : ℝ, 0 ≤ M0 ∧ ∀ b ∈ ω, ∀ (w : InfinitePlace L) (i j : Fin N),
@@ -69,21 +67,19 @@ theorem exists_bound_omega {ω : Set (AdelicGLn.AdelicGL L N)} (hω : IsCompact 
   · exact (le_add_of_nonneg_left (norm_nonneg _)).trans (hterm.trans hFb)
 
 /- English proof (translation)
-Establish `hint : ∀ x : L, algebraMap L (IsDedekindDomain.FiniteAdeleRing (𝓞 L) L) x ∈ GroundTheory.Global.integralFiniteAdeles (𝓞 L) L → x ∈ (algebraMap (𝓞 L) L).range`. Introduce `x hx`. Apply `IsDedekindDomain.HeightOneSpectrum.mem_integers_of_valuation_le_one` to reduce the goal to its premises. Introduce `v`. Establish `h` using `hx v`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h` using `[IsDedekindDomain.HeightOneSpectrum.mem_adicCompletionIntegers]`. Rewrite `h` using `[show (algebraMap L (IsDedekindDomain.FiniteAdeleRing (𝓞 L) L) x) v = (x : v.adicCompletion L) from rfl, IsDedekindDomain.HeightOneSpectrum.valuedAdicCompletion_eq_valuation']`. Then use the resulting hypothesis. Take `⟨⟨P, hP⟩, ⟨Q, hQ⟩⟩` from `(Submonoid.mem_units_iff _ _).1 h`. Establish `h1 : ∀ i j, (γ : Matrix (Fin N) (Fin N) L) i j ∈ (algebraMap (𝓞 L) L).range`. Introduce `i j`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hint` to reduce the goal to its premises. Use `congrFun (congrFun hP i) j` as an intermediate fact. Rewrite using `[show algebraMap L (IsDedekindDomain.FiniteAdeleRing (𝓞 L) L) ((γ : Matrix (Fin N) (Fin N) L) i j) = ((AdelicGLn.prodEquiv L N (AdelicGLn.diagonal L N γ)).2 : Matrix (Fin N) (Fin N) (IsDedekindDomain.FiniteAdeleRing (𝓞 L) L)) i j from rfl, ← this]`. Conclude with `(P i j).2`. Establish `h2 : ∀ i j, ((γ⁻¹ : GL (Fin N) L) : Matrix (Fin N) (Fin N) L) i j ∈ (algebraMap (𝓞 L) L).range`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i j`. Apply `hint` to reduce the goal to its premises. Use `congrFun (congrFun hQ i) j` as an intermediate fact. Rewrite using `[show algebraMap L (IsDedekindDomain.FiniteAdeleRing (𝓞 L) L) (((γ⁻¹ : GL (Fin N) L) : Matrix (Fin N) (Fin N) L) i j) = ((AdelicGLn.prodEquiv L N (AdelicGLn.diagonal L N γ⁻¹)).2 : Matrix (Fin N) (Fin N) (IsDedekindDomain.FiniteAdeleRing (𝓞 L) L)) i j from rfl, map_inv, map_inv, P …`. Conclude with `(Q i j).2`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose A hA using h1`. Use `choose B hB using h2`. Establish `hinj : Function.Injective (algebraMap (𝓞 L) L)` using `FaithfulSMul.algebraMap_injective _ _`. Establish `hAm : (Matrix.of A).map (algebraMap (𝓞 L) L) = (γ : Matrix (Fin N) (Fin N) L)`. Use extensionality with `i j`.
+By extensionality, compare the relevant components. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `hA i j`. Establish `hBm : (Matrix.of B).map (algebraMap (𝓞 L) L) = ((γ⁻¹ : GL (Fin N) L) : Matrix (Fin N) (Fin N) L)`. Use extensionality with `i j`. Conclude with `hB i j`. Establish `hAB : Matrix.of A * Matrix.of B = 1`.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify by unfolding definitions.
 
-Apply `Matrix.map_injective hinj` to reduce the goal to its premises. Simplify using `only`. Rewrite using `[Matrix.map_mul, hAm, hBm, Units.mul_inv, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `hBA : Matrix.of B * Matrix.of A = 1`. Apply `Matrix.map_injective hinj` to reduce the goal to its premises.
-
-Simplify using `only`. Rewrite using `[Matrix.map_mul, hAm, hBm, Units.inv_mul, Matrix.map_one _ (map_zero _) (map_one _)]`. Use `⟨⟨Matrix.of A, Matrix.of B, hAB, hBA⟩, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Conclude with `hA i j`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem exists_gm_of_fin (γ : GL (Fin N) L)
     (h : (AdelicGLn.prodEquiv L N (AdelicGLn.diagonal L N γ)).2 ∈ AdelicGLn.integralFiniteGL L N) :
@@ -142,17 +138,15 @@ theorem exists_gm_of_fin (γ : GL (Fin N) L)
   exact hA i j
 
 /- English proof (translation)
-Use `set U := AdelicGLn.integralFiniteGL L N with hU`. Set `p : GL (Fin N) L → AdelicGLn.FiniteAdelicGL L N` to `fun γ => (AdelicGLn.prodEquiv L N (AdelicGLn.diagonal L N γ)).2`. Establish `hp : ∀ a b : GL (Fin N) L, p (a⁻¹ * b) = (p a)⁻¹ * p b`. Introduce `a b`. Simplify using `only [p, map_mul, map_inv, Prod.snd_mul, Prod.snd_inv]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Set `V : C → Set (AdelicGLn.FiniteAdelicGL L N)` to `fun c => {x | (c : AdelicGLn.FiniteAdelicGL L N)⁻¹ * x ∈ U}`. Establish `hV : ∀ c, IsOpen (V c)` using `fun c => (AdelicGLn.isOpen_integralFiniteGL L N).preimage (continuous_const.mul continuous_id)`. Establish `hcov : C ⊆ ⋃ c, V c`. Introduce `x hx`. Use `Set.mem_iUnion.2 ⟨⟨x, hx⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show x⁻¹ * x ∈ U`. Rewrite using `[inv_mul_cancel]`. Conclude with `U.one_mem`. Take `⟨t, ht⟩` from `hC.elim_finite_subcover V hV hcov`. Set `g : C → GL (Fin N) L` to `fun c => if h : ∃ γ : GL (Fin N) L, p γ ∈ C ∧ p γ ∈ V c then h.choose else 1`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨t.image g, fun γ hγ => ?_⟩` and prove the remaining obligations. Take `⟨c, hct, hc⟩` from `Set.mem_iUnion₂.1 (ht hγ)`. Establish `hex : ∃ γ : GL (Fin N) L, p γ ∈ C ∧ p γ ∈ V c` using `⟨γ, hγ, hc⟩`. Establish `hg : g c = hex.choose` using `dif_pos hex`. Establish `hgV : p (g c) ∈ V c`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hg]`. Conclude with `hex.choose_spec.2`. Use `⟨g c, Finset.mem_image_of_mem g hct, ?_⟩` and prove the remaining obligations. Apply `exists_gm_of_fin` to reduce the goal to its premises. Use `show p ((g c)⁻¹ * γ) ∈ U`.
-
-Rewrite using `[hp]`. Establish `h1 : ((c : AdelicGLn.FiniteAdelicGL L N)⁻¹ * p (g c))⁻¹ * ((c : AdelicGLn.FiniteAdelicGL L N)⁻¹ * p γ) ∈ U` using `U.mul_mem (U.inv_mem hgV) hc`. Simplify `h1` using `[mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_finset_cosets {C : Set (AdelicGLn.FiniteAdelicGL L N)} (hC : IsCompact C) :
     ∃ R : Finset (GL (Fin N) L), ∀ γ : GL (Fin N) L,

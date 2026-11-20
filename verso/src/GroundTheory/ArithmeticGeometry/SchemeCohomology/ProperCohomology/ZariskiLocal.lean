@@ -25,7 +25,7 @@ variable {X}
 omit [IsNoetherianRing A] [IsLocalRing A] in
 
 /- English proof (translation)
-Establish `h1 : algebraMap A Γ(X, ⊤) a = (X ↘ Spec (.of A)).appTop ((Scheme.ΓSpecIso (.of A)).inv a)`. Both sides reduce to the same expression. Rewrite using `[h1, ← Scheme.preimage_basicOpen_top, basicOpen_eq_of_affine]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 lemma mem_basicOpen_algebraMap_iff (x : X) (a : A) :
     x ∈ X.basicOpen (algebraMap A Γ(X, ⊤) a) ↔ a ∉ ((X ↘ Spec (.of A)).base x).asIdeal := by
@@ -37,9 +37,9 @@ lemma mem_basicOpen_algebraMap_iff (x : X) (a : A) :
 omit [IsNoetherianRing A] in
 
 /- English proof (translation)
-Use `set y := (X ↘ Spec (.of A)).base x`. Establish `hne : y ≠ closedPoint A` using `hx`. Establish `hnot : ¬ (maximalIdeal A ≤ y.asIdeal)`. Introduce `h`. Apply `hne` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result.
 
-Conclude with `PrimeSpectrum.ext (le_antisymm (le_maximalIdeal y.isPrime.ne_top) h)`. Take `⟨a, ha, hay⟩` from `Set.not_subset.1 hnot`. Conclude with `⟨a, ha, (mem_basicOpen_algebraMap_iff x a).2 hay⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 lemma exists_mem_basicOpen_of_not_mem_closedFibre {x : X} (hx : x ∉ closedFibre (A := A) X) :
     ∃ a ∈ maximalIdeal A, x ∈ X.basicOpen (algebraMap A Γ(X, ⊤) a) := by
@@ -55,7 +55,7 @@ lemma exists_mem_basicOpen_of_not_mem_closedFibre {x : X} (hx : x ∉ closedFibr
 omit [IsNoetherianRing A] in
 
 /- English proof (translation)
-Rewrite using `[mem_basicOpen_algebraMap_iff, not_not]`. Establish `: (X ↘ Spec (.of A)).base x = closedPoint A` using `hx`. Rewrite using `[this]`. Conclude with `ha`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma not_mem_basicOpen_of_mem_closedFibre {x : X} (hx : x ∈ closedFibre (A := A) X) {a : A}
     (ha : a ∈ maximalIdeal A) : x ∉ X.basicOpen (algebraMap A Γ(X, ⊤) a) := by
@@ -76,11 +76,11 @@ abbrev fibreOne (n : ℕ) : Γ(fibreQuot A X n, ⊤) :=
 instance : (𝟙_ X.Modules).IsQuasicoherent := isQuasicoherent_unit X
 
 /- English proof (translation)
-Take `⟨u, rfl⟩` from `surjective_quotPowπ_app (maximalIdeal A) (𝟙_ X.Modules) hV n t`. Rewrite using `[quotPowπ_app_eq_zero_iff _ _ hV]`. Establish `hunit : IsUnit (toFunctions V (a ^ (n + 1)))`. Rewrite using `[map_pow]`. Use `IsUnit.pow _ ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h` using `X.toRingedSpace.isUnit_res_basicOpen (algebraMap A Γ(X, ⊤) a)`. Establish `e : toFunctions V a = X.presheaf.map (homOfLE hVa).op (X.presheaf.map (homOfLE (X.basicOpen_le (algebraMap A Γ(X, ⊤) a))).op (algebraMap A Γ(X, ⊤) a))`. Express the relevant statement in the definitionally equal form `(X.presheaf.map (homOfLE le_top).op).hom _ = _`. Rewrite using `[← ConcreteCategory.comp_apply, ← Functor.map_comp]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[e]`. Conclude with `h.map _`. Establish `htop : Ideal.map (toFunctions V) (maximalIdeal A ^ (n + 1)) = ⊤` using `Ideal.eq_top_of_isUnit_mem _ (Ideal.mem_map_of_mem _ (Ideal.pow_mem_pow ha _)) hunit`. Rewrite using `[htop, Submodule.top_smul]`. Conclude with `Submodule.mem_top`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma eq_zero_of_isAffineOpen_le_basicOpen {V : X.Opens} (hV : IsAffineOpen V) {a : A}
     (ha : a ∈ maximalIdeal A) (hVa : V ≤ X.basicOpen (algebraMap A Γ(X, ⊤) a)) (n : ℕ)
@@ -105,9 +105,9 @@ lemma eq_zero_of_isAffineOpen_le_basicOpen {V : X.Opens} (hV : IsAffineOpen V) {
   exact Submodule.mem_top
 
 /- English proof (translation)
-Introduce `U hU s`. Apply `sheaf_eq_of_locally (modulesAb (fibreQuot A X n)) s 0` to reduce the goal to its premises. Introduce `x hxU`. Establish `hx : x ∉ closedFibre (A` using `A) X := fun h => Set.disjoint_left.1 hU hxU h`. Take `⟨a, ha, hxa⟩` from `exists_mem_basicOpen_of_not_mem_closedFibre hx`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨_, ⟨V, hV, rfl⟩, hxV, hVle⟩` from `X.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_inter hxU hxa) (U ⊓ X.basicOpen (algebraMap A Γ(X, ⊤) a)).2`. Establish `hVU : V ≤ U` using `fun y hy => (hVle hy).1`. Use `⟨V, hVU, hxV, ?_⟩` and prove the remaining obligations. Rewrite using `[map_zero]`. Conclude with `eq_zero_of_isAffineOpen_le_basicOpen hV ha (fun y hy => (hVle hy).2) n _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma supportedIn_fibreQuot_closedFibre (n : ℕ) :
     Scheme.Modules.SupportedIn (fibreQuot A X n) (closedFibre (A := A) X) := by
@@ -124,17 +124,15 @@ lemma supportedIn_fibreQuot_closedFibre (n : ℕ) :
   exact eq_zero_of_isAffineOpen_le_basicOpen hV ha (fun y hy => (hVle hy).2) n _
 
 /- English proof (translation)
-Introduce `h0`. Take `⟨_, ⟨V, hV, rfl⟩, hxV, hVW⟩` from `X.isBasis_affineOpens.exists_subset_of_mem_open hxW W.2`. Use `replace hVW : V ≤ W := hVW`. Establish `h1 : (quotPowπ (maximalIdeal A) (𝟙_ X.Modules) n).app V (resF (𝟙_ X.Modules) (le_top : V ≤ ⊤) (show Γ(𝟙_ X.Modules, ⊤) from (1 : Γ(X, ⊤)))) = 0`. Establish `e1` using `resF_app (quotPowπ (maximalIdeal A) (𝟙_ X.Modules) n) (le_top : V ≤ ⊤) (show Γ(𝟙_ X.Modules, ⊤) from (1 : Γ(X, ⊤)))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2` using `resF_resF (fibreQuot A X n) (le_top : W ≤ ⊤) hVW (fibreOne A X n)`. Rewrite `e2` using `[h0, map_zero]`. Conclude with `e1.symm.trans e2.symm`. Rewrite `h1` using `[quotPowπ_app_eq_zero_iff _ _ hV]`. Establish `h2 : (1 : Γ(X, V)) ∈ Ideal.map (toFunctions V) (maximalIdeal A ^ (n + 1))`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e : resF (𝟙_ X.Modules) (le_top : V ≤ ⊤) (show Γ(𝟙_ X.Modules, ⊤) from (1 : Γ(X, ⊤))) = (show Γ(𝟙_ X.Modules, V) from (1 : Γ(X, V)))` using `map_one (restrictTop V)`. Rewrite `h1` using `[e]`. Use `Submodule.smul_induction_on (p := fun y : Γ(𝟙_ X.Modules, V) => (show Γ(X, V) from y) ∈ Ideal.map (toFunctions V) (maximalIdeal A ^ (n + 1))) h1 (fun a ha m _ => ?_) (fun x y hx hy => Ideal.add_mem _ hx hy)` and prove the remaining obligations. Conclude with `Ideal.mul_mem_right _ _ ha`. Establish `hle : Ideal.map (toFunctions V) (maximalIdeal A ^ (n + 1)) ≤ (maximalIdeal (X.presheaf.stalk x)).comap (X.presheaf.germ V x hxV).hom`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `a ha`. Rewrite using `[Ideal.mem_comap, Ideal.mem_comap, mem_maximalIdeal, mem_nonunits_iff]`. Establish `ha' : a ∈ maximalIdeal A` using `Ideal.pow_le_self (Nat.succ_ne_zero n) ha`. Introduce `hu`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Apply `not_mem_basicOpen_of_mem_closedFibre hx ha'` to reduce the goal to its premises. Establish `hb : x ∈ X.basicOpen (toFunctions V a)` using `(X.mem_basicOpen (toFunctions V a) x hxV).2 hu`. Express the relevant statement in the definitionally equal form `x ∈ X.basicOpen (X.presheaf.map (homOfLE (le_top : V ≤ ⊤)).op (algebraMap A Γ(X, ⊤) a)) at hb`. Rewrite `hb` using `[X.basicOpen_res]`. Conclude with `hb.2`.
-
-Establish `h3` using `hle h2`. Rewrite `h3` using `[Ideal.mem_comap, map_one]`. Conclude with `(maximalIdeal.isMaximal _).ne_top ((Ideal.eq_top_iff_one _).2 h3)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma resF_fibreOne_ne_zero {x : X} (hx : x ∈ closedFibre (A := A) X) {W : X.Opens} (hxW : x ∈ W)
     (n : ℕ) : resF (fibreQuot A X n) (le_top : W ≤ ⊤) (fibreOne A X n) ≠ 0 := by

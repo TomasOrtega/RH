@@ -86,9 +86,9 @@ def GammaModMSt : Prop :=
     ∀ y, ∃ z, e₂.symm (e₁ y) = y + (l.M : ℤ) • z
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l c k _ bF a t P hP φ₁ φ₂ he₁ he₂ w₁ w₂ e₁ e₂ hw₁ hw₂ hq`. Establish `hR : RigidIn a P φ₁ φ₂ he₁ he₂ w₁ w₂ e₁ e₂` using `And.intro hw₁ (And.intro hw₂ hq)`. Establish `he : e₁ = e₂` using `hΓ E H D l c k bF a t P hP φ₁ φ₂ he₁ he₂ w₁ w₂ e₁ e₂ hR`. Substitute `he` using the available equality. Establish `hφ : φ₁ = φ₂` using `hΘ E H D l c k bF a t P hP φ₁ φ₂ he₁ he₂ w₁ w₂ e₁ hR`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
 
-Substitute `hφ` using the available equality. Conclude with `⟨rfl, rfl, heq_of_eq (hW E H D l c k bF a P.D P.oD φ₁ he₁ w₁ w₂ e₁ hw₁ hw₂)⟩`.
+Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem dataRigid_torsion_of_trivial (hΓ : GammaTrivSt) (hΘ : ThetaTrivSt) (hW : WTrivSt) : DataRigidTorsion := by
   intro E _ _ _ H D l c k _ bF a t P hP φ₁ φ₂ he₁ he₂ w₁ w₂ e₁ e₂ hw₁ hw₂ hq
@@ -103,13 +103,13 @@ theorem dataRigid_torsion_of_trivial (hΓ : GammaTrivSt) (hΘ : ThetaTrivSt) (hW
   exact ⟨rfl, rfl, heq_of_eq (hW E H D l c k bF a P.D P.oD φ₁ he₁ w₁ w₂ e₁ hw₁ hw₂)⟩
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l c k _ bF a t P hP φ₁ φ₂ he₁ he₂ w₁ w₂ e₁ e₂ hR`. Establish `hR0` using `hR`. Take `⟨hw₁, hw₂, -⟩` from `hR0`. Establish `hβ` using `hBe E H D l c k bF a P.D P.oD φ₁ φ₂ he₁ he₂ w₁ w₂ e₁ e₂ hw₁ hw₂`. Establish `hM` using `hMo E H D l c k bF a t P hP φ₁ φ₂ he₁ he₂ w₁ w₂ e₁ e₂ hR`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `σ : a.D₀.X ≃ₗ[ℤ] a.D₀.X` to `(e₁.trans e₂.symm).toAddEquiv.toIntLinearEquiv`. Establish `hσapp : ∀ y, σ y = e₂.symm (e₁ y)` using `fun y => rfl`. Take `⟨n, hn, hσn⟩` from `hF a.D₀.X a.be a.be_symm a.be_pos σ (fun y z => by rw [hσapp, hσapp]; exact hβ y z)`. Establish `hσ : σ = 1`. Use `hK a.D₀.X σ n l.M hn hσn l.three_le (fun y => ?_)` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨z, hz⟩` from `hM y`. Use `⟨z, ?_⟩` and prove the remaining obligations. Rewrite using `[hσapp, hz]`. Simplify using the standard rewrite rules. Use extensionality with `y`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. By extensionality, compare the relevant components.
 
-Establish `h1 : σ y = y` using `by rw [hσ]; rfl`. Rewrite `h1` using `[hσapp]`. Conclude with `(LinearEquiv.symm_apply_eq e₂).mp h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gammaTriv (hBe : GammaBetaSt) (hMo : GammaModMSt) (hF : LatFinOrdSt) (hK : LatMinkowskiSt) : GammaTrivSt := by
   intro E _ _ _ H D l c k _ bF a t P hP φ₁ φ₂ he₁ he₂ w₁ w₂ e₁ e₂ hR
@@ -182,9 +182,9 @@ def WeilRosatiSt : Prop :=
     (Out.WeilIs P.A P.L k (x ≫ o.act a) y c ↔ Out.WeilIs P.A P.L k x (y ≫ o.act (star a)) c)
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l c k _ bF a t P hP φ₁ φ₂ he₁ he₂ w₁ w₂ e₁ hR`. Establish `hR0` using `hR`. Take `⟨hw₁, hw₂, -⟩` from `hR0`. Establish `hMb` using `h1 E H D l c k bF a t P hP φ₁ φ₂ he₁ he₂ w₁ w₂ e₁ hR`. Use `h3 E H D l c k bF a P.D P.oD φ₁ φ₂ he₁ he₂ w₁ w₂ e₁ e₁ hw₁ hw₂ ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `F _ _ _ x hx`. Conclude with `h2 E H D l c k bF a P.D P.oD φ₁ φ₂ he₁ he₂ w₁ w₂ e₁ e₁ hw₁ hw₂ F (hMb F) x hx`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem thetaTriv (h1 : ThetaFixMbSt) (h2 : ThetaWeilSt) (h3 : SerreAllSt) : ThetaTrivSt := by
   intro E _ _ _ H D l c k _ bF a t P hP φ₁ φ₂ he₁ he₂ w₁ w₂ e₁ hR

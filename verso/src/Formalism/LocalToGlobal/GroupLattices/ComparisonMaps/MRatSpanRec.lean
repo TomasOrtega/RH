@@ -16,7 +16,7 @@ variable {p : ℕ} {O Kf : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationR
 abbrev modLL : Module LL (FnP P α) := Module.compHom _ e
 
 /- English proof (translation)
-Introduce `i L`. Take `⟨Q, hQ⟩` from `h i L`. Take `⟨Q', hQ'⟩` from `h' i L`. Conclude with `⟨Q + Q', by rw [map_add, hQ, hQ']; rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isRational_add {F F' : FnP P α} (h : RatFnP P α e F) (h' : RatFnP P α e F') : RatFnP P α e (F + F') := by
   intro i L
@@ -25,7 +25,7 @@ theorem isRational_add {F F' : FnP P α} (h : RatFnP P α e F) (h' : RatFnP P α
   exact ⟨Q + Q', by rw [map_add, hQ, hQ']; rfl⟩
 
 /- English proof (translation)
-Introduce `i L`. Take `⟨Q, hQ⟩` from `h i L`. Use `⟨MvPolynomial.C a * Q, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, MvPolynomial.map_C, hQ, ← MvPolynomial.smul_eq_C_mul]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem isRational_smul (a : LL) {F : FnP P α} (h : RatFnP P α e F) : RatFnP P α e (e a • F) := by
   intro i L
@@ -57,7 +57,7 @@ Both sides reduce to the same expression.
 theorem cmpF_apply (x : FormsLL P α e Mi) : cmpF P α e Mi x = x.1 := rfl
 
 /- English proof (translation)
-Rewrite using `[cmpF_apply]`. Conclude with `x.2.2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cmpF_rat (x : FormsLL P α e Mi) : RatFnP P α e (cmpF P α e Mi x) := by rw [cmpF_apply]; exact x.2.2
 
@@ -85,11 +85,9 @@ def equivRec (h : ValRat c) u (w : D.what₂.places.Pl) (hg : GIdx D.host (D.mem
       exact ⟨x, Subtype.ext hx⟩⟩
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `hx`. Use `(c.cmp_M u w hg).symm.le.trans ?_` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Submodule.span_mono` to reduce the goal to its premises. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Use `⟨equivRec c h u w hg x, ?_, rfl⟩` and prove the remaining obligations. Use `show c.cmp u w hg x ∈ (D.gat u w hg).M`. Rewrite using `[← c.cmp_M u w hg]`.
-
-Conclude with `Submodule.subset_span ⟨x, hx, rfl⟩`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mRatSpan_rec (h : ValRat c) u (w : D.what₂.places.Pl) (hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)) :
     MRatSpan (D.gat u w hg).P (D.gat u w hg).comp (c.embW u w hg) (D.gat u w hg).M := by

@@ -14,11 +14,11 @@ noncomputable section
 namespace TwoBlockStepLocal
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Rewrite `h` using `[not_nonempty_iff]`. Establish `: IsEmpty (Σ k : Unit, GlobalTheory κ k)` using `⟨fun p => h.false p.2⟩`. Establish `h1 : ringKrullDim (MRing (GlobalTheory κ)) = 1`. Rewrite using `[ringKrullDim_mvPolynomial_of_isEmpty]`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `IsPrincipalIdealRing.ringKrullDim_eq_one ℤ Int.not_isField`. Establish `h2` using `ringKrullDim_quotient_le (coordIdeal ℤ x : Ideal (MRing (GlobalTheory κ)))`. Rewrite `h2` using `[hX.2.2.2, h1]`. Establish `h3 : ((D + 1 + Fintype.card Unit : ℕ) : WithBot ℕ∞) ≤ ((1 : ℕ) : WithBot ℕ∞)` using `by simpa using h2`. Establish `h4` using `WithBot.coe_le_coe.1 h3`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Put the expressions in a common number system so they can be compared.
 
-Normalize the coercions in `at h4`.
+A detailed English derivation is pending.
 -/
 theorem nonempty_of_isArithVar {D : ℕ} {Ω : Type} [Field Ω] [CharZero Ω] {κ : Type} [Fintype κ] {x : Ix κ → Ω}
     (hX : IsArithVar (ι := GlobalTheory κ) (coordIdeal ℤ x) (D + 1)) : Nonempty κ := by
@@ -35,9 +35,9 @@ theorem nonempty_of_isArithVar {D : ℕ} {Ω : Type} [Field Ω] [CharZero Ω] {�
   norm_cast at h4
 
 /- English proof (translation)
-Establish `e : ((D.choose i : ℕ) : ℝ) * (i.factorial : ℝ) * ((D - i).factorial : ℝ) = (D.factorial : ℝ)`. Conclude with `Nat.choose_mul_factorial_mul_factorial hi` after adjusting the coercions. Establish `h0 : (D.choose i : ℝ) ≠ 0` using `by exact_mod_cast (Nat.choose_pos hi).ne'`. Establish `h1 : (i.factorial : ℝ) ≠ 0` using `by positivity`. Establish `h2 : ((D - i).factorial : ℝ) ≠ 0` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← e]`. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts.
 -/
 theorem choose_div_factorial {D i : ℕ} (hi : i ≤ D) (u : ℝ) :
     (D.choose i : ℝ) * u / (D.factorial : ℝ) = u / ((i.factorial : ℝ) * ((D - i).factorial : ℝ)) := by
@@ -54,11 +54,11 @@ end TwoBlockStepLocal
 open TwoBlockStepLocal in
 
 /- English proof (translation)
-Introduce `D Ω _ _ κ _ I x B m m' hI hX hx hB hm hm' hsp`. Take `⟨c⟩` from `nonempty_of_isArithVar hX`. Choose the witnesses or unpack the hypotheses as in `⟨l, hl⟩ : ∃ l : Ix κ → ℤ, x ⟨(), c⟩ = ∑ j, (l j : Ω) * matAct B x j := by`. Establish `hc : x ⟨(), c⟩ ∈ Submodule.span ℤ (Set.range (matAct B x))` using `hsp (Submodule.subset_span ⟨⟨(), c⟩, rfl⟩)`. Take `⟨l, hl⟩` from `(Submodule.mem_span_range_iff_exists_fun ℤ).1 hc`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨l, by rw [← hl]; simp [zsmul_eq_mul]⟩`. Take `⟨a₀, C, h⟩` from `hA D Ω κ x B c l hX hx hB hsp hl`. Use `⟨a₀, C, fun a b ha hb => ?_⟩` and prove the remaining obligations. Use `h a b ha hb using 3` and compare the differences between its conclusion and the goal. Rewrite using `[hM D Ω κ x B c l hX hx hB hsp hl a b, Finset.sum_div]`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Establish `hiD : i ≤ D` using `Nat.lt_succ_iff.1 (Finset.mem_range.1 hi)`. Rewrite using `[hR D Ω κ I x B m m' c l hI hX hx hB hm hm' hsp hl i hiD, show (D.choose i : ℝ) * (a : ℝ) ^ i * (b : ℝ) ^ (D - i) * twoBlockVert x (matAct B x) c l (twoBlockDegList D i) = (D.choose i : ℝ) * ((a : ℝ) ^ i * (b : ℝ) ^ (D - i) * twoBlockVert x (matAct B x) c l (twoBlockDegList D i)) …`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem TwoBlockStepLocal.proof (hA : TwoBlockPieceCycle.Statement) (hM : TwoBlockCycleExpand.Statement)
     (hR : TwoBlockCoeffCycle.Statement) : TwoBlockStepLocal.Statement := by

@@ -6,11 +6,11 @@ open GroundTheory.Automorphic.CuspidalSpectrum GlobalTheory.IndefiniteRowSideFul
 open scoped InnerProductSpace
 
 /- English proof (translation)
-Introduce `K _ _ n μ _ w _ _ m _ φ hφ`. Establish `hL : MemLp φ 1 m` using `hφ.1.continuous.memLp_of_hasCompactSupport hφ.2`. Set `π : UnitaryRep (Gw n w) (LL μ)` to `(rightRegularRep (rationalGLOne K n) μ).compHom ((MultiplicityOne.finProj K n).comp (AdelicGLn.localEmbedding w)) (MultiplicityOne.continuous_finProj.comp (UpperTheory.ConvolutionTheory.Tf.locEmb K n w).1)`. Use `⟨π.integrated m hL.toLp, fun u v => ?_, fun T hT => ?_⟩` and prove the remaining obligations. Establish `hπ : ∀ g, π g v = rhoL μ w g v` using `fun _ => rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[UnitaryRep.inner_integrated]`. Use `integral_congr_ae ((MemLp.coeFn_toLp hL).mono fun g hg => ?_)` and prove the remaining obligations. Simplify using `only [hπ]`. Rewrite using `[hg]`. Use `ContinuousLinearMap.ext fun v => ext_inner_left ℂ fun u => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hT u v, UnitaryRep.inner_integrated]`. Establish `hπ : ∀ g, π g v = rhoL μ w g v` using `fun _ => rfl`. Use `integral_congr_ae ((MemLp.coeFn_toLp hL).mono fun g hg => ?_)` and prove the remaining obligations. Simplify using `only [hπ]`. Rewrite using `[hg]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.ConvolutionTheory.C.olocEx :
     UpperTheory.ConvolutionTheory.C.OlocEx := by

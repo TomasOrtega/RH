@@ -11,9 +11,9 @@ set_option autoImplicit false
 namespace GlobalTheory.RealMult.LocalGen
 
 /- English proof (translation)
-Use `haveI : Module.FinitePresentation A L := Module.finitePresentation_of_projective A L`. Use `haveI : Module.Free (Localization.AtPrime p.asIdeal) (LocalizedModule p.asIdeal.primeCompl L) := Module.free_of_flat_of_isLocalRing`. Set `b : Module.Basis (Fin n) (Localization.AtPrime p.asIdeal) (LocalizedModule p.asIdeal.primeCompl L)` to `Module.finBasisOfFinrankEq _ _ hn`. Take `⟨g, hg, b', -⟩` from `Module.FinitePresentation.exists_basis_localizedModule_powers p.asIdeal.primeCompl (LocalizedModule.mkLinearMap p.asIdeal.primeCompl L) (Localization.AtPrime p.asIdeal) b`. Use `⟨g, hg, fun B _ _ hu ↦ ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure. Introduce a local definition for the expression.
 
-Use `letI : Algebra (Localization (Submonoid.powers g)) B := (IsLocalization.Away.lift g hu).toAlgebra`. Use `haveI : IsScalarTower A (Localization (Submonoid.powers g)) B := IsScalarTower.of_algebraMap_eq fun a ↦ (IsLocalization.Away.lift_eq g hu a).symm`. Set `e` to `(IsLocalizedModule.isBaseChange (Submonoid.powers g) (Localization (Submonoid.powers g)) (LocalizedModule.mkLinearMap (Submonoid.powers g) L)).equiv`. Conclude with `⟨((b'.map e.symm).baseChange B).map (AlgebraTensorModule.cancelBaseChange A (Localization (Submonoid.powers g)) B B L)⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_basis_away {A : Type} [CommRing A] (L : Type) [AddCommGroup L] [Module A L] [Module.Finite A L]
     [Module.Projective A L] (p : PrimeSpectrum A) (n : ℕ) (hn : Module.rankAtStalk (R := A) L p = n) :
@@ -38,7 +38,7 @@ theorem exists_basis_away {A : Type} [CommRing A] (L : Type) [AddCommGroup L] [M
 variable {F : Type} [Field F] [NumberField F] {𝔠 : FracId F}
 
 /- English proof (translation)
-Use `⟨⟨b.det, Submodule.eq_top_iff'.2 fun f ↦ ?_⟩⟩` and prove the remaining obligations. Rewrite using `[f.eq_smul_basis_det b]`. Conclude with `Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self _)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nonempty_detGen_of_basis {R : Type} [CommRing R] (X : Obj F 𝔠 (Sp R))
     (b : Module.Basis (Fin (Module.finrank ℚ F)) R X.Lie) : Nonempty X.DetGen := by
@@ -47,9 +47,9 @@ theorem nonempty_detGen_of_basis {R : Type} [CommRing R] (X : Obj F 𝔠 (Sp R))
   exact Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self _)
 
 /- English proof (translation)
-Take `⟨hfin, hproj, hrk⟩` from `GlobalTheory.T.lie_algebra_finite_projective_rank Y`. Take `⟨g, hg, H⟩` from `exists_basis_away Y.Lie p _ (hrk p)`. Use `⟨g, hg, fun B _ σ hu X φ h ↦ ?_⟩` and prove the remaining obligations. Use `letI := σ.toAlgebra`. Take `⟨b⟩` from `H B hu`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure. Extract witnesses or component facts from the available result.
 
-Take `⟨e, -⟩` from `Obj.exists_lieEquiv (R' := B) h`. Conclude with `nonempty_detGen_of_basis X (b.map e)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_detGen_away {A : Type} [CommRing A] (Y : Obj F 𝔠 (Sp A)) (p : PrimeSpectrum A) :
     ∃ g : A, g ∉ p.asIdeal ∧ ∀ (B : Type) [CommRing B] (σ : A →+* B), IsUnit (σ g) →
@@ -63,13 +63,13 @@ theorem exists_detGen_away {A : Type} [CommRing A] (Y : Obj F 𝔠 (Sp A)) (p : 
   exact nonempty_detGen_of_basis X (b.map e)
 
 /- English proof (translation)
-Take `⟨_, ⟨W₀, hW₀, rfl⟩, hm, -⟩` from `M.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ m) isOpen_univ`. Use `replace hW₀ : IsAffineOpen W₀ := hW₀`. Take `⟨Y, ψ, hY⟩` from `Obj.exists_isPullBy (S' := Sp Γ(M, W₀)) U hW₀.fromSpec`. Take `⟨g, hg, H⟩` from `exists_detGen_away Y (hW₀.primeIdealOf ⟨m, hm⟩)`. Use `⟨M.basicOpen g, hW₀.basicOpen g, ?_, fun X φ h ↦ ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1 : hW₀.primeIdealOf ⟨m, hm⟩ ∈ hW₀.fromSpec ⁻¹ᵁ M.basicOpen g`. Rewrite using `[hW₀.fromSpec_preimage_basicOpen]`. Conclude with `hg`. Establish `h2 : hW₀.fromSpec (hW₀.primeIdealOf ⟨m, hm⟩) ∈ M.basicOpen g` using `h1`. Rewrite `h2` using `[hW₀.fromSpec_primeIdealOf]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `ρ : Γ(M, W₀) ⟶ Γ(M, M.basicOpen g)` to `M.presheaf.map (homOfLE (M.basicOpen_le g)).op`. Set `j` to `(Algebra.TensorProduct.includeRight : Γ(M, M.basicOpen g) →ₐ[ℤ] R₀ ⊗[ℤ] Γ(M, M.basicOpen g)).toRingHom`. Establish `e : coefSpecMap (hW₀.basicOpen g) R₀ = spMap (j.comp ρ.hom) ≫ hW₀.fromSpec`. Rewrite using `[coefSpecMap, ← hW₀.map_fromSpec (hW₀.basicOpen g) (homOfLE (M.basicOpen_le g)).op, ← Category.assoc]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `(Spec.map_comp ρ (CommRingCat.ofHom j)).symm`. Rewrite `h` using `[e]`. Take `⟨χ, hχ, -⟩` from `h.cancel hY`. Conclude with `H _ (j.comp ρ.hom) ((M.toRingedSpace.isUnit_res_basicOpen g).map j) X χ hχ`.
+A detailed English derivation is pending.
 -/
 theorem exists_affine_detGen (F : Type) [Field F] [NumberField F] (𝔠 : FracId F) (M : Scheme.{0}) (U : Obj F 𝔠 M)
     (R₀ : Type) [CommRing R₀] (m : M) : ∃ (W : M.Opens) (hW : IsAffineOpen W), m ∈ W ∧

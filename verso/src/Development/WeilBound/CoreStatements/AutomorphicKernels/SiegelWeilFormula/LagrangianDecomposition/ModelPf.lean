@@ -15,13 +15,13 @@ namespace PositivityTheory.SiegelWeilFormula.Ald
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Simplify using `[Bf]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Bf_zero_left {m n : ℕ} (J : Matrix (Fin m) (Fin m) E) (Z : Mx F E m n) : Bf σ J 0 Z = 0 := by
   simp [Bf]
 
 /- English proof (translation)
-Establish `e` using `had 0 X`. Rewrite `e` using `[Matrix.zero_mul, zero_add]`. Simplify using `only [Tof, ev0, LinearMap.coe_mk, AddHom.coe_mk, Darboux.rho, schr, e, Bf_zero_left]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem tof_adapted {m n : ℕ} {A : Spc F E m} {Y : Spc F E n} {b : GL (Fin n ⊕ Fin n) E} (bs : Module.Basis (Fin 2) F E)
     (ψ : AddChar (AF F) ℂ)
@@ -34,7 +34,7 @@ theorem tof_adapted {m n : ℕ} {A : Spc F E m} {Y : Spc F E n} {b : GL (Fin n �
   simp
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Break down `k with ⟨a, i, t⟩ | ⟨a, t⟩` into its components or cases. Both sides reduce to the same expression. Simplify using `[crdB, eK, hX]`.
+Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 -/
 theorem crdB_eK {m n N : ℕ} (h : n + 1 = N) (bs : Module.Basis (Fin 2) F E) (X : Mx F E m N)
     (hX : ∀ a, X a (i0 h) = 0) :
@@ -45,7 +45,7 @@ theorem crdB_eK {m n N : ℕ} (h : n + 1 = N) (bs : Module.Basis (Fin 2) F E) (X
   · simp [crdB, eK, hX]
 
 /- English proof (translation)
-Use `⟨fun a i => (Algebra.TensorProduct.basis (AF F) bs).repr.symm (Finsupp.equivFunOnFinite.symm fun t => x (a, i, t)),` and prove the remaining obligations. Use function extensionality and compare the values at `fun k => ?_⟩`. Simplify using `[crdB]`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem crdB_surj {m n : ℕ} (bs : Module.Basis (Fin 2) F E) (x : Fin m × Fin n × Fin 2 → AF F) :
     ∃ X : Mx F E m n, crdB bs X = x := by
@@ -54,42 +54,42 @@ theorem crdB_surj {m n : ℕ} (bs : Module.Basis (Fin 2) F E) (x : Fin m × Fin 
   simp [crdB]
 
 /- English proof (translation)
-Introduce `a` and use `by simp [ext0, i0]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem extend_zero_column {m n N : ℕ} (h : n + 1 = N) (X : Mx F E m n) : ∀ a, ext0 h X a (i0 h) = 0 := fun a => by
   simp [ext0, i0]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a i`. Simplify using `[ext0, em0]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem extension_zero_sub {m n N : ℕ} (h : n + 1 = N) (X : Mx F E m n) : (ext0 h X).submatrix id (em0 h) = X := by
   funext a i
   simp [ext0, em0]
 
 /- English proof (translation)
-Introduce `hT hA F E _ _ _ _ _ σ d n h Y b j hn hs hb hε hj`. Take `⟨ε, e1, e2⟩` from `hε`. Establish `hψ : IsStd d.B.ψ` using `d.ok.good.std`. Take `⟨dd0, had0, hr0⟩` from `hS F E σ d.B d.bs d.m d.n d.A d.Y d.b ε d.r d.s d.ok.good d.ok.hm d.ok.hn d.ok.sign d.ok.frame e1`. Take `⟨dd', had', hr'⟩` from `hS F E σ d.B d.bs d.m n d.A Y b ε d.r d.s d.ok.good d.ok.hm hn hs hb e2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hev, hkill, htheta⟩` from `hE F E σ d.B d.bs d.m n d.A Y b ε d.r d.s d.ok.good d.ok.hm hn hs hb e2 dd' had'`. Take `⟨S0, S0', C, hC0, hop, hTf⟩` from `hB hT hA F E σ d dd0 had0 hr0`. Take `⟨c1, c2, c3, c4, -⟩` from `hC F E σ d n h Y b j ε hn hs hb e1 e2 hj dd0 dd' had0 had'`. Set `dd1` to `GlobalTheory.TowU.reindexD dd0 (eK d.m h).symm`. Set `S1` to `GlobalTheory.TowU.RealComp.reix (eK d.m h) ∘ₗ S0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `S1'` to `S0' ∘ₗ GlobalTheory.TowU.RealComp.reix (eK d.m h).symm`. Establish `hop1 : GlobalTheory.TowU.IsOp d.B.ψ (fun w => dd1.e (d.dd.e.symm w)) S1 S1'` using `GlobalTheory.TowU.RealComp.isOp_comp hop.1 (GlobalTheory.TowU.RealComp.isOp_reix d.B.ψ (eK d.m h))`. Establish `hT1 : ∀ Φ ∈ d.sch, ∀ X, d.T Φ X = C * S1 Φ (crdB d.bs X ∘ eK d.m h)` using `fun Φ hΦ X => by`. Rewrite using `[hTf Φ hΦ X]`. Simplify using `only [S1, LinearMap.comp_apply, GlobalTheory.TowU.RealComp.reix_apply]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Function.comp_assoc, Equiv.self_comp_symm, Function.comp_id]`. Establish `hw` using `d.ok.dbl.weil`. Take `⟨om1, hom1⟩` from `projHom (G := d.G) (fun x => S1 ∘ₗ d.om x ∘ₗ S1') (fun x φ hφ => hop1.pres _ (hw.2.1.pres x _ (hop1.pres' φ hφ))) (fun φ hφ => by simp [hop1.right φ hφ]) (fun x y φ hφ => by`. Simplify using `only [LinearMap.comp_apply, map_mul, Module.End.mul_apply]`. Rewrite using `[hop1.left _ (hw.2.1.pres y _ (hop1.pres' φ hφ))])`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hsp1 : IsUSplitting (adeleClass F) d.B.ψ dd1 (actB (cA σ)) om1` using `GlobalTheory.TowU.isUSplitting_of_isOp hψ (fun w => by simp) hop1 hom1 hw.2.1`. Establish `hsr1 : SiegelRule (cA σ) (adeleClass F) d.B.ψ (-1) (incM F d.A.J) (dbl (incM F d.Y.J)) dd1 d.χ (diagCols (Fin d.n)) om1` using `GlobalTheory.TowU.siegelRule_of_isOp (fun w => by simp) hop1 hom1 hw.2.2`. Take `⟨hsl1, hsl2, ⟨φ₀, hφ₀, hφ₀0, hφ₀n⟩, -⟩` from `hF F (Fin d.m × Fin n × Fin 2) (Fin d.m × Fin 2)`. Establish `hbox` using `fun g => hO F d.B.ψ hψ _ _ _ _ dd1 d.G (actB (cA σ)) om1 hsp1.toIsSplitting c2 (j g) (c3 g) φ₀ hφ₀ hφ₀0`. Set `cg : G2 σ Y → ((Fin d.m × Fin n × Fin 2 → AF F) → ℂ) →ₗ[ℂ] ((Fin d.m × Fin n × Fin 2 → AF F) → ℂ)` to `fun g => slice0 _ _ ∘ₗ om1 (j g) ∘ₗ PositivityTheory.ThKF0.Chr.boxL _ φ₀`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hbx : ∀ φ' ∈ schA F (Fin d.m × Fin n × Fin 2), boxFun φ' φ₀ ∈ schA F (K1 d.m n)` using `fun φ' hφ' => GlobalTheory.SchwartzBox.boxFun_mem_schA F _ _ φ' hφ' φ₀ hφ₀`. Establish `hsl0 : ∀ φ' : (Fin d.m × Fin n × Fin 2 → AF F) → ℂ, slice0 _ _ (boxFun φ' φ₀) = φ'` using `fun φ' => by`. Use function extensionality and compare the values at `x`. Simplify using `[slice0, boxFun, hφ₀0]`. Establish `hcg : ∀ g φ', cg g φ' = slice0 _ _ (om1 (j g) (boxFun φ' φ₀))` using `fun g φ' => rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hboxc : ∀ g, ∀ φ' ∈ schA F (Fin d.m × Fin n × Fin 2), om1 (j g) (boxFun φ' φ₀) = boxFun (cg g φ') φ₀` using `fun g φ' hφ' => (hbox g).2 φ' hφ' φ₀ hφ₀`. Take `⟨om', hom'⟩` from `projHom cg (fun g φ' hφ' => hsl1 _ (hsp1.pres _ _ (hbx φ' hφ'))) (fun φ' hφ' => by rw [hcg, map_one, map_one, Module.End.one_apply, hsl0]) (fun g g' φ' hφ' => by`. Rewrite using `[hcg, map_mul, map_mul, Module.End.mul_apply, hboxc g' φ' hφ', hcg g])`. Establish `hboxom : ∀ g, ∀ φ' ∈ schA F (Fin d.m × Fin n × Fin 2), om1 (j g) (boxFun φ' φ₀) = boxFun (om' g φ') φ₀` using `fun g φ' hφ' => by rw [hom' g φ' hφ', hboxc g φ' hφ']`. Establish `hsp' : IsUSplitting (adeleClass F) d.B.ψ dd' (actB (cA σ)) om'` using `hU F d.B.ψ hψ _ _ _ _ _ _ dd1 dd' (emb h b d.b) c1 d.G (G2 σ Y) (actB (cA σ)) (actB (cA σ)) j hj.1 c4 om1 om' hsp1 φ₀ hφ₀ hφ₀0 hφ₀n (fun g => ⟨φ₀, hφ₀, hφ₀0, fun _ _ => rfl, hboxom g⟩)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsg'` using `hG F E σ d n h Y b j ε hn hs hb e1 e2 hj dd0 dd' had0 had' om1 hsp1.toIsSplitting hsr1 φ₀ hφ₀ hφ₀0 om' hboxom`. Take `⟨S', hS'1, hS'2⟩` from `hA' hT F E σ d n h Y b j ε hn hs hb e1 e2 hj dd0 dd' had0 had' S1 S1' C hC0 hop1 hT1`. Use `⟨Fin d.m × Fin n × Fin 2, inferInstance, dd', om', S', ev0 _, ⟨hr', ⟨isLagr_diagCols _ _, hsp', hsg'⟩, hS'1, hev, hkill, hS'2, htheta⟩, ?_⟩` and prove the remaining obligations. Introduce `Φ hΦ Φ' hΦ' hres g X hX`. Establish `hS1Φ : S1 Φ ∈ schA F (K1 d.m n)` using `hop1.pres Φ hΦ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hsl : Φ' = C • slice0 _ _ (S1 Φ)`. Use function extensionality and compare the values at `x`. Take `⟨X', rfl⟩` from `crdB_surj d.bs x`. Establish `e` using `hres (ext0 h X') (extend_zero_column h X')`. Rewrite `e` using `[extension_zero_sub, tof_adapted d.bs d.B.ψ had', hT1 Φ hΦ, crdB_eK h d.bs _ (extend_zero_column h X'), extension_zero_sub]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[e]`. Both sides reduce to the same expression. Rewrite using `[tof_adapted d.bs d.B.ψ had', hom' g Φ' hΦ', hT1 _ (hw.2.1.pres (j g) Φ hΦ), crdB_eK h d.bs X hX]`. Establish `e1' : S1 (d.om (j g) Φ) = om1 (j g) (S1 Φ)`. Rewrite using `[hom1 (j g) _ hS1Φ]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [LinearMap.comp_apply]`. Rewrite using `[hop1.left Φ hΦ]`. Rewrite using `[e1', show (Sum.elim (crdB d.bs (X.submatrix id (em0 h))) 0 : K1 d.m n → AF F) = Sum.elim (crdB d.bs (X.submatrix id (em0 h))) 0 from rfl]`. Establish `e2'` using `congrFun ((hbox g).1 (S1 Φ) hS1Φ) (crdB d.bs (X.submatrix id (em0 h)))`. Simplify using `only [slice0, LinearMap.coe_mk, AddHom.coe_mk] at e2'`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[e2', hcg, hsl]`. Simplify using `only [slice0, LinearMap.coe_mk, AddHom.coe_mk]`. Rewrite using `[GlobalTheory.SchwartzBox.boxFun_smul_left, map_smul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem modelEx_of (hS : SDarb) (hE : SEv) (hB : BigT) (hF : SliceFacts) (hO : OpBox) (hU : SubSplit)
     (hC : ChartFacts) (hG : SiegelSmall) (hA' : SmallS) : ModelEx := by

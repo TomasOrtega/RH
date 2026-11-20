@@ -11,7 +11,7 @@ namespace Formalism.DworkPowerSeriesWeights
 section PairJetAux
 
 /- English proof (translation)
-Unfold `mfact`. Conclude with `Finsupp.prod_fintype _ _ (fun _ => rfl)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 lemma mfact_eq_prod_univ {σ : Type} [Fintype σ] (κ : σ →₀ ℕ) :
     mfact κ = ∏ x, (κ x).factorial := by
@@ -19,7 +19,7 @@ lemma mfact_eq_prod_univ {σ : Type} [Fintype σ] (κ : σ →₀ ℕ) :
   exact Finsupp.prod_fintype _ _ (fun _ => rfl)
 
 /- English proof (translation)
-Rewrite using `[mfact_eq_prod_univ, mfact_eq_prod_univ, mfact_eq_prod_univ, ← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_dvd_prod_of_dvd _ _ fun x _ => Nat.factorial_mul_factorial_dvd_factorial_add _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma mfact_mul_dvd {σ : Type} [Fintype σ] (μ ν : σ →₀ ℕ) :
     mfact μ * mfact ν ∣ mfact (μ + ν) := by
@@ -31,9 +31,9 @@ def pairExp {ι : Type} [Fintype ι] (n : ι → ℕ) : (Bool × ι) →₀ ℕ 
   ∑ i, n i • (Finsupp.single (false, i) 1 + Finsupp.single (true, i) 1)
 
 /- English proof (translation)
-Unfold `pairExp`. Rewrite using `[Finsupp.finsetSum_apply]`. Rewrite using `[Finset.sum_eq_single i]`. Apply the tactic sequence `cases b <;> simp`. Introduce `j _ hj`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply the tactic sequence `cases b <;> simp [hj]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ i) h`.
+Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 lemma pairExp_apply {ι : Type} [Fintype ι] (n : ι → ℕ) (b : Bool) (i : ι) :
     pairExp n (b, i) = n i := by
@@ -47,7 +47,7 @@ lemma pairExp_apply {ι : Type} [Fintype ι] (n : ι → ℕ) (b : Bool) (i : ι
   · intro h; exact absurd (Finset.mem_univ i) h
 
 /- English proof (translation)
-Rewrite using `[mfact_eq_prod_univ, Fintype.prod_prod_type, Fintype.prod_bool]`. Simplify using `only [pairExp_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma mfact_pairExp {ι : Type} [Fintype ι] (n : ι → ℕ) :
     mfact (pairExp n) = (∏ i, (n i).factorial) * ∏ i, (n i).factorial := by
@@ -58,9 +58,9 @@ lemma mfact_pairExp {ι : Type} [Fintype ι] (n : ι → ℕ) :
 variable {K : Type u} [NormedField K] [IsUltrametricDist K] [CharZero K]
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_pow_eq_sum_piAntidiag]`. Use `Finset.sum_congr rfl fun n _ => ?_` and prove the remaining obligations. Use `congr 1`. Unfold `pairExp`. Rewrite using `[← MvPowerSeries.prod_monomial]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← MvPowerSeries.monomial_pow]`. Use `congr 1`. Rewrite using `[MvPowerSeries.X_def, MvPowerSeries.X_def, ← MvPowerSeries.monomial_zero_eq_C_apply, MvPowerSeries.monomial_mul_monomial, MvPowerSeries.monomial_mul_monomial]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma quad_pow {ι : Type} [Fintype ι] [DecidableEq ι] (u : ι → K) (k : ℕ) :
     (∑ i, MvPowerSeries.C (u i) * MvPowerSeries.X (false, i) * MvPowerSeries.X (true, i) :
@@ -81,23 +81,21 @@ lemma quad_pow {ι : Type} [Fintype ι] [DecidableEq ι] (u : ι → K) (k : ℕ
   simp
 
 /- English proof (translation)
-Establish `hr0 : (0 : ℝ) ≤ r` using `by linarith`. Establish `hQ0 : MvPowerSeries.constantCoeff ((-S) • ∑ i, MvPowerSeries.C (u i) * MvPowerSeries.X (false, i) * MvPowerSeries.X (true, i) : MvPowerSeries (Bool × ι) K) = 0`. Simplify using the standard rewrite rules. Establish `hs` using `PowerSeries.HasSubst.of_constantCoeff_zero hQ0`. Unfold `mvExp`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[PowerSeries.coeff_subst hs, mul_finsum]`. Use `norm_finsum_le_of (pow_nonneg hr0 _) fun k => ?_` and prove the remaining obligations. Rewrite using `[smul_pow, quad_pow, PowerSeries.coeff_exp, Finset.smul_sum, map_sum, Finset.smul_sum, Finset.mul_sum]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (pow_nonneg hr0 _) fun n hn => ?_` and prove the remaining obligations. Rewrite `hn` using `[Finset.mem_piAntidiag]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hk : ∑ i, n i = k` using `hn.1`. Rewrite using `[← map_natCast (MvPowerSeries.C (σ := Bool × ι) (R := K)), ← MvPowerSeries.smul_eq_C_mul, map_smul, map_smul, MvPowerSeries.coeff_monomial]`. Distinguish the cases in `hκ : κ = pairExp n`. Rewrite using `[if_pos hκ]`. Establish `hspec` using `Nat.multinomial_spec Finset.univ n`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hspec` using `[hk]`. Establish `hk0 : ((k.factorial : ℕ) : K) ≠ 0` using `Nat.cast_ne_zero.mpr (Nat.factorial_ne_zero k)`. Establish `hval : ((mfact κ : ℕ) : K) * ((algebraMap ℚ K) (1 / (k.factorial : ℚ)) • ((-S) ^ k • ((Nat.multinomial Finset.univ n : ℕ) : K) • ∏ i, u i ^ n i)) = ((∏ i, (n i).factorial : ℕ) : K) * ((-S) ^ k * ∏ i, u i ^ n i)`. Rewrite using `[hκ, mfact_pairExp, map_div₀, map_one, map_natCast, ← hspec]`. Rewrite `hk0` using `[← hspec]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [smul_eq_mul]`. Move the coercions through the operations in `at hk0 ⊢`. Establish `hP` using `left_ne_zero_of_mul hk0`. Establish `hM` using `right_ne_zero_of_mul hk0`. Clear the denominators using the available nonvanishing facts.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[hval, norm_mul, norm_mul, norm_pow, norm_neg, norm_prod]`. Establish `h1 : ‖((∏ i, (n i).factorial : ℕ) : K)‖ ≤ 1` using `IsUltrametricDist.norm_natCast_le_one K _`. Establish `h2 : ∏ i, ‖u i ^ n i‖ ≤ 1` using `Finset.prod_le_one (fun _ _ => norm_nonneg _) fun i _ => by`. Rewrite using `[norm_pow]`. Conclude with `pow_le_one₀ (norm_nonneg _) (hu i)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : ‖S‖ ^ k ≤ r ^ k` using `pow_le_pow_left₀ (norm_nonneg _) hS k`. Establish `h4 : ∑ i, min (κ (false, i)) (κ (true, i)) = k`. Rewrite using `[hκ, ← hk]`. Simplify using `only [pairExp_apply, min_self]`. Rewrite using `[h4]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Apply `mul_le_mul h1 _ (by positivity) zero_le_one` to reduce the goal to its premises. Conclude with `mul_le_mul h3 h2 (Finset.prod_nonneg fun _ _ => norm_nonneg _) (pow_nonneg hr0 _)`. Use `_ = r ^ k := by ring`. Rewrite using `[if_neg hκ]`.
-
-Simplify using `only [smul_zero, mul_zero, norm_zero]`. Conclude with `pow_nonneg hr0 _`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma exp_jet (r : ℝ) (hr : 1 ≤ r) (ι : Type) [Fintype ι] (S : K) (u : ι → K) (hS : ‖S‖ ≤ r)
     (hu : ∀ i, ‖u i‖ ≤ 1) (κ : (Bool × ι) →₀ ℕ) :
@@ -156,19 +154,17 @@ lemma exp_jet (r : ℝ) (hr : 1 ≤ r) (ι : Type) [Fintype ι] (S : K) (u : ι 
 end PairJetAux
 
 /- English proof (translation)
-Introduce `K _ _ _ pi h0 h1 ι _ S u hS hu sg hsg κ`. Use `set r : ℝ := pi ^ (-(1 / 2 : ℝ)) with hrdef`. Establish `hr : 1 ≤ r` using `Real.one_le_rpow_of_pos_of_le_one_of_nonpos h0 h1.le (by norm_num)`. Establish `hr0 : (0 : ℝ) ≤ r` using `by linarith`. Establish `hrhs : pi ^ (-(1 / 2 : ℝ) * ∑ i, (min (κ (false, i)) (κ (true, i)) : ℝ)) = r ^ (∑ i, min (κ (false, i)) (κ (true, i)))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Real.rpow_mul h0.le, ← Real.rpow_natCast]`. Use `congr 1`. Use `push_cast`. Both sides reduce to the same expression. Rewrite using `[hrhs, MvPowerSeries.coeff_mul, Finset.mul_sum]`.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (pow_nonneg hr0 _) fun p hp => ?_` and prove the remaining obligations. Rewrite `hp` using `[Finset.HasAntidiagonal.mem_antidiagonal]`. Take `⟨c, hc⟩` from `mfact_mul_dvd p.1 p.2`. Rewrite `hc` using `[hp]`. Establish `hE` using `exp_jet r hr ι S u hS hu p.1`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hG` using `hsg p.2`. Establish `hcn : ‖((c : ℕ) : K)‖ ≤ 1` using `IsUltrametricDist.norm_natCast_le_one K _`. Use `set E := mvExp ((-S) • ∑ i, MvPowerSeries.C (u i) * MvPowerSeries.X (false, i) * MvPowerSeries.X (true, i) : MvPowerSeries (Bool × ι) K)`. Establish `hre : ((mfact κ : ℕ) : K) * (MvPowerSeries.coeff p.1 E * MvPowerSeries.coeff p.2 sg) = (((mfact p.1 : ℕ) : K) * MvPowerSeries.coeff p.1 E) * ((((mfact p.2 : ℕ) : K) * MvPowerSeries.coeff p.2 sg) * ((c : ℕ) : K))`. Rewrite using `[hc]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hre, norm_mul, norm_mul (((mfact p.2 : ℕ) : K) * MvPowerSeries.coeff p.2 sg)]`. Establish `hmono : r ^ (∑ i, min (p.1 (false, i)) (p.1 (true, i))) ≤ r ^ (∑ i, min (κ (false, i)) (κ (true, i)))`. Apply `pow_le_pow_right₀ hr` to reduce the goal to its premises.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `Finset.sum_le_sum fun i _ => ?_` to reduce the goal to its premises. Rewrite using `[← hp]`. Simplify using `only [Finsupp.add_apply]`. Use linear arithmetic over natural numbers and integers. Combine the equalities or inequalities in the displayed calculation.
-
-Apply `mul_le_mul hE _ (by positivity) (pow_nonneg hr0 _)` to reduce the goal to its premises. Conclude with `mul_le_mul hG hcn (norm_nonneg _) zero_le_one`. Use `_ ≤ _ := by rw [mul_one, mul_one]; exact hmono`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem pair_jet_bound : PairJet.{u} := by
   intro K _ _ _ pi h0 h1 ι _ S u hS hu sg hsg κ

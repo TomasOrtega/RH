@@ -12,7 +12,7 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.WeilGaussScale
 
 /- English proof (translation)
-Rewrite using `[← smul_valBall ht n, ← smul_eq_mul]`. Conclude with `Set.smul_mem_smul_set_iff₀ ht _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_mem_valBall_add_ord_iff {K : Type} [Field K] [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K] {t : K} (ht : t ≠ 0) (n : ℤ) (u : K) :
@@ -21,11 +21,11 @@ theorem mul_mem_valBall_add_ord_iff {K : Type} [Field K] [ValuativeRel K] [Topol
   exact Set.smul_mem_smul_set_iff₀ ht _ _
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ _ _ χ hχ hχ1 E _ _ _ _ _ _ _ hfr hcont σ hσ η hη t n`. Use `haveI : Fact (Module.finrank F E = 2) := ⟨hfr⟩`. Use `haveI : FiniteDimensional F E := Module.finite_of_finrank_pos (by omega)`. Use `haveI : ValuativeExtension F E := GlobalTheory.CompanionTheory.WeilSB.valuativeExtension_of_continuous hcont`. Use `haveI : Algebra.IsSeparable F E := inferInstance`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[modulus_norm (K := F) (t : E)]`. Use `set f : E → ℂ := (valBall E (n + ord (t : E)) : Set E).indicator (fun u => (χ (Algebra.norm F u) : ℂ)) with hf`. Establish `hsub` using `integral_comp_mul_left (muE E χ) t.ne_zero f`. Establish `hpt : (fun u => f ((t : E) * u)) = (valBall E n : Set E).indicator (fun u => (χ (Algebra.norm F (t : E) * Algebra.norm F u) : ℂ))`. Use function extensionality and compare the values at `u`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hu : u ∈ (valBall E n : Set E)`. Rewrite using `[Set.indicator_of_mem hu, hf, Set.indicator_of_mem ((mul_mem_valBall_add_ord_iff t.ne_zero n u).2 hu), map_mul]`. Rewrite using `[Set.indicator_of_notMem hu, hf, Set.indicator_of_notMem (fun h => hu ((mul_mem_valBall_add_ord_iff t.ne_zero n u).1 h))]`. Rewrite `hsub` using `[hpt, integral_indicator (measurableSet_valBall n), hf, integral_indicator (measurableSet_valBall _)]`. Rewrite using `[hsub, Complex.real_smul]`.
+A detailed English derivation is pending.
 -/
 theorem integral_valBall_dilation : ForEF fun F _ _ _ _ _ _ _ E _ _ _ _ _ _ _ χ σ η => ∀ (t : Eˣ) (n : ℤ),
   ∫ u in (valBall E n : Set E), (χ (Algebra.norm F (t : E) * Algebra.norm F u) : ℂ) ∂muE E χ =

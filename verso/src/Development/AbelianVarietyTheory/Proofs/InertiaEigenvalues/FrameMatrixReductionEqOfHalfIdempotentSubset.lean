@@ -15,7 +15,7 @@ namespace GlobalTheory.RedHalfDrop
 variable {D : D7}
 
 /- English proof (translation)
-Proceed by induction on `a using TensorProduct.induction_on with`. Consider the case `zero => simp only [RingHom.map_zero]`. Consider the case `add a b ha hb => simp only [RingHom.map_add, ha, hb]`. Consider the case `tmul y e => rfl`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem toEAf_cA_sig (a : AE D) :
     toEAf D (cA D a) = Formalism.UG.sigR D.sp.cm.sig (Af D.host.F) (toEAf D a) := by
@@ -25,7 +25,7 @@ theorem toEAf_cA_sig (a : AE D) :
   | tmul y e => rfl
 
 /- English proof (translation)
-Take `⟨hu, -⟩` from `GlobalTheory.IdemRes.resS_idem_eq_one D _ PP (h.isIdemAt hPP)`. Conclude with `hu`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem int_idemAt {P : Finset (Pl D.host.E)} (h : SplitSet P) {PP : Pl D.host.E} (hPP : PP ∈ P) :
     toEAf D (idemAt PP) ∈ Formalism.L2.Herm.intAf D.host.F D.host.E := by
@@ -33,7 +33,7 @@ theorem int_idemAt {P : Finset (Pl D.host.E)} (h : SplitSet P) {PP : Pl D.host.E
   exact hu
 
 /- English proof (translation)
-Rewrite using `[toEAf_cA_sig]`. Conclude with `GlobalTheory.ResConjPlace.conj_mem_int _ (int_idemAt h hPP)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem int_cA_idemAt {P : Finset (Pl D.host.E)} (h : SplitSet P) {PP : Pl D.host.E} (hPP : PP ∈ P) :
     toEAf D (cA D (idemAt PP)) ∈ Formalism.L2.Herm.intAf D.host.F D.host.E := by
@@ -41,7 +41,7 @@ theorem int_cA_idemAt {P : Finset (Pl D.host.E)} (h : SplitSet P) {PP : Pl D.hos
   exact GlobalTheory.ResConjPlace.conj_mem_int _ (int_idemAt h hPP)
 
 /- English proof (translation)
-Take `⟨hu, h1⟩` from `GlobalTheory.IdemRes.resS_idem_eq_one D e PP he`. Establish `hm : (⟨toEAf D e, hu⟩ : Formalism.L2.Herm.intAf D.host.F D.host.E) * ⟨toEAf D a, ha⟩ = 0` using `Subtype.ext (by show toEAf D e * toEAf D a = 0; rw [← map_mul, h0, map_zero])`. Establish `h2` using `congrArg (resS D.host.F PP) hm`. Rewrite `h2` using `[map_mul, h1, one_mul, map_zero]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem resS_eq_zero_of_mul {e a : AE D} {PP : Pl D.host.E} (he : Formalism.L2.NTheta.IsIdemAt e PP)
     (ha : toEAf D a ∈ Formalism.L2.Herm.intAf D.host.F D.host.E) (h0 : e * a = 0) :
@@ -54,7 +54,7 @@ theorem resS_eq_zero_of_mul {e a : AE D} {PP : Pl D.host.E} (he : Formalism.L2.N
   rwa [map_mul, h1, one_mul, map_zero] at h2
 
 /- English proof (translation)
-Establish `hm : x - c * x ∈ O` using `sub_mem hx (mul_mem hc hx)`. Rewrite using `[dif_pos hm, dif_pos hx]`. Establish `e : (⟨x - c * x, hm⟩ : O) = ⟨x, hx⟩ - ⟨c, hc⟩ * ⟨x, hx⟩` using `rfl`. Rewrite using `[e, map_sub, map_mul, h0, zero_mul, sub_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem subring_hom_dite_sub_mul_eq_of_kernel {R k : Type} [CommRing R] [CommRing k] (O : Subring R) (f : O →+* k) (x c : R) (hx : x ∈ O)
     (hc : c ∈ O) (h0 : f ⟨c, hc⟩ = 0) [Decidable (x - c * x ∈ O)] [Decidable (x ∈ O)] :
@@ -65,7 +65,7 @@ theorem subring_hom_dite_sub_mul_eq_of_kernel {R k : Type} [CommRing R] [CommRin
   rw [e, map_sub, map_mul, h0, zero_mul, sub_zero]
 
 /- English proof (translation)
-Use extensionality with `i j`. Unfold `redM`. Simplify using `only [Matrix.sub_apply, Matrix.smul_apply, smul_eq_mul]`. Conclude with `subring_hom_dite_sub_mul_eq_of_kernel _ (resS D.host.F PP) _ _ (hN i j) hc h0`.
+By extensionality, compare the relevant components. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem redM_sub_smul (PP : Pl D.host.E) {b a : ℕ} {N : Matrix (Fin b) (Fin a) (EAf D)} (hN : IsIntM N) {c : EAf D}
     (hc : c ∈ Formalism.L2.Herm.intAf D.host.F D.host.E) (h0 : resS D.host.F PP ⟨c, hc⟩ = 0) :
@@ -76,7 +76,7 @@ theorem redM_sub_smul (PP : Pl D.host.E) {b a : ℕ} {N : Matrix (Fin b) (Fin a)
   exact subring_hom_dite_sub_mul_eq_of_kernel _ (resS D.host.F PP) _ _ (hN i j) hc h0
 
 /- English proof (translation)
-Unfold `frMapO`. Establish `: (e • x : Matrix (Fin T.rank) (Fin S.rank) (AE D)).map (toEAf D) = toEAf D e • x.map (toEAf D)` using `Matrix.ext fun i j => by simp [Matrix.smul_apply, map_mul]`. Rewrite using `[this, Matrix.mul_smul, Matrix.smul_mul]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem frMapO_smul_eq {S T : HSp D} (βS : GL (Fin S.rank) (EAf D)) (βT : GL (Fin T.rank) (EAf D)) (e : AE D)
     (x : WO S T) : frMapO S T βS βT (e • x) = toEAf D e • frMapO S T βS βT x := by
@@ -86,7 +86,7 @@ theorem frMapO_smul_eq {S T : HSp D} (βS : GL (Fin S.rank) (EAf D)) (βT : GL (
   rw [this, Matrix.mul_smul, Matrix.smul_mul]
 
 /- English proof (translation)
-Unfold `frMapAdj`. Establish `h1 : ((e • x : WO S T) : Matrix (Fin T.rank) (Fin S.rank) (AE D)).map (cA D) = cA D e • (x : Matrix (Fin T.rank) (Fin S.rank) (AE D)).map (cA D)` using `Matrix.ext fun i j => by simp [Matrix.smul_apply, map_mul]`. Establish `h2 : ∀ M : Matrix (Fin S.rank) (Fin T.rank) (AE D), (cA D e • M).map (toEAf D) = toEAf D (cA D e) • M.map (toEAf D)` using `fun M => Matrix.ext fun i j => by simp [Matrix.smul_apply, map_mul]`. Rewrite using `[h1, Matrix.transpose_smul, Matrix.mul_smul, Matrix.smul_mul, h2, Matrix.mul_smul, Matrix.smul_mul]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem frMapAdj_smul_eq {S T : HSp D} (βS : GL (Fin S.rank) (EAf D)) (βT : GL (Fin T.rank) (EAf D)) (e : AE D)
     (x : WO S T) : frMapAdj S T βS βT (e • x) = toEAf D (cA D e) • frMapAdj S T βS βT x := by
@@ -100,23 +100,21 @@ theorem frMapAdj_smul_eq {S T : HSp D} (βS : GL (Fin S.rank) (EAf D)) (βT : GL
   rw [h1, Matrix.transpose_smul, Matrix.mul_smul, Matrix.smul_mul, h2, Matrix.mul_smul, Matrix.smul_mul]
 
 /- English proof (translation)
-Introduce `D S T βS βT Pg Qa Qb hP hQ x hx h1 h2`. Take `⟨P, hPg, hQa, hS⟩` from `hP.split`. Establish `hab : halfIdem Pg Qa = halfIdem Pg Qb + idem (Qa \ Qb)`. Unfold `halfIdem idem`. Rewrite using `[← Finset.sum_sdiff hQ]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hxx : (halfIdem Pg Qb + idem (Qa \ Qb)) • x = x`. Rewrite using `[← hab]`. Use extensionality with `i j`. Conclude with `hx i j`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `hsub : ∀ P' ∈ Qa \ Qb, P' ∈ P` using `fun P' hP' => hQa (Finset.sdiff_subset hP')`. Prove the components needed by the constructor for the conclusion. Introduce `PP hPP`. Establish `e1` using `frMapAdj_smul_eq βS βT (halfIdem Pg Qb + idem (Qa \ Qb)) x`. Rewrite `e1` using `[hxx, map_add, map_add, add_smul]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e2 : frMapAdj S T βS βT (halfIdem Pg Qb • x) = frMapAdj S T βS βT x - toEAf D (cA D (idem (Qa \ Qb))) • frMapAdj S T βS βT x`. Rewrite using `[frMapAdj_smul_eq]`. Conclude with `eq_sub_of_add_eq e1.symm`. Establish `hint : toEAf D (cA D (idem (Qa \ Qb))) ∈ Formalism.L2.Herm.intAf D.host.F D.host.E`. Unfold `idem`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_sum, map_sum]`. Conclude with `sum_mem fun P' hP' => int_cA_idemAt hS (hsub P' hP')`. Establish `hz : resS D.host.F PP ⟨_, hint⟩ = 0` using `resS_eq_zero_of_mul (hS.isIdemAt (hPg hPP)) hint (by`. Unfold `idem`. Rewrite using `[map_sum, Finset.mul_sum]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `Finset.sum_eq_zero fun P' hP' => hS.mul_conj (hPg hPP) (hsub P' hP'))`. Rewrite using `[e2, redM_sub_smul PP h1 hint hz]`. Introduce `PP hPP`. Establish `e1` using `frMapO_smul_eq βS βT (halfIdem Pg Qb + idem (Qa \ Qb)) x`. Rewrite `e1` using `[hxx, map_add, add_smul]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `e2 : frMapO S T βS βT (halfIdem Pg Qb • x) = frMapO S T βS βT x - toEAf D (idem (Qa \ Qb)) • frMapO S T βS βT x`. Rewrite using `[frMapO_smul_eq]`. Conclude with `eq_sub_of_add_eq e1.symm`. Establish `hint : toEAf D (idem (Qa \ Qb)) ∈ Formalism.L2.Herm.intAf D.host.F D.host.E`. Unfold `idem`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sum]`. Conclude with `sum_mem fun P' hP' => int_idemAt hS (hsub P' hP')`. Establish `hz : resS D.host.F PP ⟨_, hint⟩ = 0` using `resS_eq_zero_of_mul (hS.isIdemAt (hQa (hQ hPP))) hint (by`. Unfold `idem`. Rewrite using `[Finset.mul_sum]`.
-
-Conclude with `Finset.sum_eq_zero fun P' hP' => hS.mul_eq_zero (hQa (hQ hPP)) (hsub P' hP') fun e => (Finset.mem_sdiff.1 hP').2 (e ▸ hPP))`. Rewrite using `[e2, redM_sub_smul PP h2 hint hz]`.
+A detailed English derivation is pending.
 -/
 theorem redM_drop : ∀ {D : D7} {S T : HSp D} (βS : GL (Fin S.rank) (EAf D)) (βT : GL (Fin T.rank) (EAf D)) {Pg Qa Qb : Finset (Pl D.host.E)}, PlacesOK Pg Qa → Qb ⊆ Qa → ∀ {x : WO S T}, IsHalf (halfIdem Pg Qa) x → IsIntM (frMapAdj S T βS βT x) → IsIntM (frMapO S T βS βT x) → (∀ PP ∈ Pg, redM PP (frMapAdj S T βS βT x) = redM PP (frMapAdj S T βS βT (halfIdem Pg Qb • x))) ∧ (∀ PP ∈ Qb, redM PP (frMapO S T βS βT x) = redM PP (frMapO S T βS βT (halfIdem Pg Qb • x))) := by
   intro D S T βS βT Pg Qa Qb hP hQ x hx h1 h2

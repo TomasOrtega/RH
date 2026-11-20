@@ -12,7 +12,7 @@ variable {A : Type} [Ring A] [Algebra ℂ A] {n : ℕ}
 def genSet (E : Fin n → Fin n → A) : Set A := Set.range fun p : Fin n × Fin n => E p.1 p.2
 
 /- English proof (translation)
-Unfold `GlobalTheory.SmoothForms.gelfA`. Use `Subalgebra.sum_mem _ fun idx _ => Subalgebra.list_prod_mem _ fun x hx => ?_` and prove the remaining obligations. Rewrite `hx` using `[List.mem_ofFn]`. Take `⟨a, rfl⟩` from `hx`. Conclude with `Algebra.subset_adjoin ⟨(_, _), rfl⟩`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem gelfA_mem_adjoin (E : Fin n → Fin n → A) (k : ℕ) :
     GlobalTheory.SmoothForms.gelfA E k ∈ Algebra.adjoin ℂ (genSet E) := by
@@ -23,22 +23,22 @@ theorem gelfA_mem_adjoin (E : Fin n → Fin n → A) (k : ℕ) :
   exact Algebra.subset_adjoin ⟨(_, _), rfl⟩
 
 /- English proof (translation)
-The claim follows from `Algebra.adjoin_le fun x hx => (Subalgebra.mem_centralizer_iff ℂ).2 fun y hy => h x hx y hy`.
+A detailed English derivation is pending.
 -/
 theorem adjoin_le_centralizer {S T : Set A} (h : ∀ x ∈ S, ∀ y ∈ T, y * x = x * y) :
     Algebra.adjoin ℂ S ≤ Subalgebra.centralizer ℂ T :=
   Algebra.adjoin_le fun x hx => (Subalgebra.mem_centralizer_iff ℂ).2 fun y hy => h x hx y hy
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => intro C _ z hz _`. Simplify using `using hz`. Consider the case `insert w s hw ih`. Introduce `C hC z hz hzc`.
+Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hz`, the goal using `[Finset.sup_insert]`. Establish `hle : s.sup (fun i => Algebra.adjoin ℂ (genSet (X i))) ⊔ C ≤ Subalgebra.centralizer ℂ (genSet (X w))`. Use `sup_le (Finset.sup_le fun i hi => adjoin_le_centralizer ?_) (hC w (Finset.mem_insert_self _ _))` and prove the remaining obligations. Introduce and unpack `x ⟨⟨a, b⟩, rfl⟩ y ⟨⟨c, d⟩, rfl⟩`. Conclude with `hc w i (fun h => hw (h ▸ hi)) c d a b`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hB : ∀ b ∈ s.sup (fun i => Algebra.adjoin ℂ (genSet (X i))) ⊔ C, ∀ a c, X w a c * b = b * X w a c` using `fun b hb a c => (Subalgebra.mem_centralizer_iff ℂ).1 (hle hb) _ ⟨(a, c), rfl⟩`. Establish `hz' : z ∈ Algebra.adjoin ℂ (Set.range fun p : Fin n × Fin n => X w p.1 p.2) ⊔ (s.sup (fun i => Algebra.adjoin ℂ (genSet (X i))) ⊔ C)`. Rewrite using `[← sup_assoc]`. Conclude with `hz`. Establish `h1` using `hRC A n (X w) (hX w) _ hB z hz' fun a c => (Subalgebra.mem_centralizer_iff ℂ).1 (hzc w (Finset.mem_insert_self _ _)) _ ⟨(a, c), rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[sup_left_comm]`. Establish `hC' : ∀ i ∈ s, Algebra.adjoin ℂ (Set.range (GlobalTheory.SmoothForms.gelfA (X w))) ⊔ C ≤ Subalgebra.centralizer ℂ (genSet (X i))`. Introduce `i hi`. Use `sup_le ((Algebra.adjoin_le (Set.range_subset_iff.2 fun k => gelfA_mem_adjoin (X w) k)).trans (adjoin_le_centralizer ?_)) (hC i (Finset.mem_insert_of_mem hi))` and prove the remaining obligations. Introduce and unpack `x ⟨⟨a, b⟩, rfl⟩ y ⟨⟨c, d⟩, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hc i w (fun h => hw (h ▸ hi)) c d a b`. Establish `h2` using `ih _ hC' z h1 fun i hi => hzc i (Finset.mem_insert_of_mem hi)`. Rewrite using `[sup_assoc]`. Rewrite `h2` using `[sup_left_comm]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem centre_of_commuting_families_sup (hRC : RelativeCentre) {ι : Type} (X : ι → Fin n → Fin n → A)
     (hX : ∀ i, Formalism.REAL.GlRel (X i)) (hc : ∀ i j, i ≠ j → ∀ a b c d, X i a b * X j c d = X j c d * X i a b)
@@ -75,11 +75,11 @@ theorem centre_of_commuting_families_sup (hRC : RelativeCentre) {ι : Type} (X :
     rw [sup_assoc]; rwa [sup_left_comm] at h2
 
 /- English proof (translation)
-Introduce `hRC A _ _ ι _ n X hX hc z hz hzc`. Use `letI := Fintype.ofFinite ι`. Establish `hz' : z ∈ (Finset.univ : Finset ι).sup (fun i => Algebra.adjoin ℂ (genSet (X i))) ⊔ ⊥`. Rewrite using `[sup_bot_eq]`. Use `(Algebra.adjoin_le ?_) hz` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨⟨i, a, b⟩, rfl⟩`. Conclude with `Finset.le_sup (f := fun i => Algebra.adjoin ℂ (genSet (X i))) (Finset.mem_univ i) (Algebra.subset_adjoin ⟨(a, b), rfl⟩)`. Establish `h` using `centre_of_commuting_families_sup hRC X hX hc Finset.univ ⊥ (fun _ _ => bot_le) z hz' fun i _ => (Subalgebra.mem_centralizer_iff ℂ).2 (by rintro _ ⟨⟨a, b⟩, rfl⟩; exact hzc i a b)`. Rewrite `h` using `[sup_bot_eq]`. Use `(Finset.sup_le fun i _ => Algebra.adjoin_mono ?_) h` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `⟨(i, k), rfl⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem centre_multi : RelativeCentre → ∀ (A : Type) [Ring A] [Algebra ℂ A] (ι : Type) [Finite ι] (n : ℕ)
     (X : ι → Fin n → Fin n → A),

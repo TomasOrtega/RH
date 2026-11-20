@@ -19,33 +19,31 @@ open ReciprocityTheory.ChartRestriction.G.DVR ReciprocityTheory.ChartRestriction
 variable {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} (Y : Ext D)
 
 /- English proof (translation)
-Establish `h` using `((isPull_iff _ _ _).1 (Y.rep.1 T Y.H x (𝟙 _))).1`. Rewrite `h` using `[Category.comp_id]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem Φ_b {T : Over (Sp R)} (x : T ⟶ Y.H) : (Y.Φ T x).b = x ≫ Y.q := by
   have h := ((isPull_iff _ _ _).1 (Y.rep.1 T Y.H x (𝟙 _))).1
   rwa [Category.comp_id] at h
 
 /- English proof (translation)
-The claim follows from `isMonHom_of_mul _ fun T x x' => by rw [← Φ_b, ← Φ_b, ← Φ_b]; exact ((TorusModel.isAdd_iff _ _ _).1 (Y.rep.2 T x x')).1`.
+A detailed English derivation is pending.
 -/
 theorem isMonHom_q : IsMonHom Y.q :=
   isMonHom_of_mul _ fun T x x' => by
     rw [← Φ_b, ← Φ_b, ← Φ_b]; exact ((TorusModel.isAdd_iff _ _ _).1 (Y.rep.2 T x x')).1
 
 /- English proof (translation)
-Set `F` to `fstG (⊥ : Ideal R) 0 Y.H`. Set `j` to `inv F.left`. Establish `hF : F.left ≫ Y.H.hom = (thickObj R ⊥ 0 Y.H).hom ≫ thick R ⊥ 0` using `Over.w F`. Set `ξ` to `Y.Φ Y.H (𝟙 _)`. Take `⟨x, hx⟩` from `GlobalTheory.TorusCoord.exists_point c (T := Y.H) (Y.H.hom ≫ inv (thick R ⊥ 0)) (by simp) ξ`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Take `⟨ξ', hξ'⟩` from `GlobalTheory.TorusCoord.exists_isPointOf c (T := Y.H) j (by`. Rewrite using `[← hF]`. Conclude with `IsIso.inv_hom_id_assoc _ _)`. Set `b : Y.H ⟶ Y.H` to `(Y.Φ Y.H).symm ξ'`. Establish `hb : Y.Φ Y.H b = ξ'` using `Equiv.apply_symm_apply _ _`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `a` to `x ≫ F.left`. Establish `ha : a ≫ Y.H.hom = Y.H.hom`. Rewrite using `[Category.assoc, hF]`. Conclude with `GlobalTheory.TorusCoord.IsPointOf.comp_hom c hx`. Set `a' : Y.H ⟶ Y.H` to `Over.homMk a ha`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `haj : a ≫ j = x` using `by simp [a, j]`. Establish `e1 : b.left ≫ x = j`. Establish `h1 : GtPt.IsPull b.left ξ (Y.Φ Y.H (b ≫ 𝟙 _))` using `Y.rep.1 Y.H Y.H b (𝟙 _)`. Rewrite `h1` using `[Category.comp_id, hb]`. Conclude with `(GlobalTheory.TorusCoord.IsPointOf.pull c hx h1).unique_left c hξ'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `e1' : b.left ≫ a = 𝟙 _`. Rewrite using `[← Category.assoc, e1]`. Simplify using `[j]`. Establish `e2 : a' ≫ b = 𝟙 _`. Establish `h2 : GtPt.IsPull a (Y.Φ Y.H b) (Y.Φ Y.H (a' ≫ b))` using `Y.rep.1 Y.H Y.H a' b`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[hb]`. Establish `h3` using `GlobalTheory.TorusCoord.IsPointOf.pull c hξ' h2`. Rewrite `h3` using `[haj]`. Conclude with `(Y.Φ Y.H).injective (h3.unique_right c hx)`. Establish `e2' : a ≫ b.left = 𝟙 _` using `congrArg (·.left) e2`.
-
-Establish `: IsIso a` using `⟨⟨b.left, e2', e1'⟩⟩`. Use `⟨a ≫ j, inferInstance, ?_⟩` and prove the remaining obligations. Rewrite using `[haj, ← GlobalTheory.TorusCoord.pG_left]`. Conclude with `hx.1`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_q_eq (c : GtCoord (⊥ : Ideal R) D 0 Y.H) : ∃ a : Y.H.left ⟶ (thickObj R ⊥ 0 Y.H).left, IsIso a ∧
     Y.q.left = a ≫ c.q.left ≫ pullback.fst D.P.A.hom (thick R ⊥ 0) := by
@@ -83,9 +81,9 @@ theorem exists_q_eq (c : GtCoord (⊥ : Ideal R) D 0 Y.H) : ∃ a : Y.H.left ⟶
   exact hx.1
 
 /- English proof (translation)
-Take `⟨c⟩` from `GlobalTheory.TorusModel.nonempty_gtCoord GlobalTheory.allSixLaws.1.globalFns Y.isGt ⊥ 0`. Use `smooth_gtCoord_q c` as an intermediate fact. Use `c.q_surj` as an intermediate fact. Use `c.q_affine` as an intermediate fact. Take `⟨a, _, h⟩` from `Y.exists_q_eq c`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[h]`. Conclude with `⟨inferInstance, inferInstance, inferInstance⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem q_props : Smooth Y.q.left ∧ IsAffineHom Y.q.left ∧ Surjective Y.q.left := by
   obtain ⟨c⟩ := GlobalTheory.TorusModel.nonempty_gtCoord GlobalTheory.allSixLaws.1.globalFns Y.isGt ⊥ 0
@@ -97,13 +95,13 @@ theorem q_props : Smooth Y.q.left ∧ IsAffineHom Y.q.left ∧ Surjective Y.q.le
   exact ⟨inferInstance, inferInstance, inferInstance⟩
 
 /- English proof (translation)
-Establish `e1 : Y.q ≫ padd D.P.A (𝟙 D.P.A) (toUnit _ ≫ D.c α) = padd D.P.A (DegPre.cT D Y.H α) Y.q`. Simplify using `only [padd, comp_lift_assoc, Category.comp_id]`. Rewrite using `[← Hom.mul_def, ← Hom.mul_def, mul_comm, comp_toUnit_assoc]`. Establish `e2 : Y.q.left ≫ (toUnit D.P.A ≫ D.c α).left = (DegPre.cT D Y.H α).left`. Rewrite using `[← Over.comp_left, comp_toUnit_assoc]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e3 : Y.q.left ≫ (toUnit D.P.A ≫ η[D.P.A]).left = (DegPre.zeroT D Y.H).left`. Rewrite using `[← Over.comp_left, comp_toUnit_assoc]`. Establish `e0 : Y.q.left ≫ (padd D.P.A (𝟙 D.P.A) (toUnit _ ≫ D.c α)).left = (padd D.P.A (DegPre.cT D Y.H α) Y.q).left`. Rewrite using `[← Over.comp_left, e1]`. Introduce `U _ h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Fintype.prod_sum_type, Fin.prod_univ_four, Fin.prod_univ_four, Fin.prod_univ_one]`. Simplify using `only [Sum.elim_inl, Sum.elim_inr]`. Simplify using `only [DegPre.famφB, DegPre.famε, DegPre.gtφT, DegPre.gtε, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.cons_val_three, Matrix.head_cons, Matrix.tail_cons, Category.comp_id, e0, e2, e3]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_zpow]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Use `module`.
+A detailed English derivation is pending.
 -/
 theorem formEq_term (k : ℕ) (α : D.X) :
     FormEq (Sum.elim (fun i => Y.q.left ≫ DegPre.famφB D α i) (DegPre.gtφT D Y.H Y.q α))
@@ -128,9 +126,9 @@ theorem formEq_term (k : ℕ) (α : D.X) :
   module
 
 /- English proof (translation)
-Take `⟨τ, hτ⟩` from `exists_sec D.P.isLB (Y.formEq_term k α) (pullMulSec σ Y.q.left ((Y.Φ Y.H (𝟙 _)).s α) ((Y.Φ Y.H (𝟙 _)).isGen α))`. Use `⟨τ, fun T x y J hJ => ?_⟩` and prove the remaining obligations. Use `(hτ _ _ y J hJ).trans ((sval_pullMulSec σ Y.q.left ((Y.Φ Y.H (𝟙 _)).s α) ((Y.Φ Y.H (𝟙 _)).isGen α) x.left y hJ).trans ?_)` and prove the remaining obligations. Take `⟨-, h₂⟩` from `(isPull_iff _ _ _).1 (Y.rep.1 T Y.H x (𝟙 _))`. Establish `e` using `h₂ α y J hJ`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `e` using `[Category.comp_id]`. Rewrite using `[Over.comp_left]`. Conclude with `congrArg _ (congrArg Units.val e.symm)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isTermOf (k : ℕ) (α : D.X) (σ : D.SecB k α) : ∃ τ : SecK D.P.L Y.q.left k, IsTermOf Y σ τ := by
   obtain ⟨τ, hτ⟩ := exists_sec D.P.isLB (Y.formEq_term k α)
@@ -149,7 +147,7 @@ end GlobalTheory.Mum.Ext
 namespace GlobalTheory.Mum
 
 /- English proof (translation)
-Take `⟨h1, h2, h3⟩` from `Y.q_props`. Use `⟨?_, h2, h3, Y.isMonHom_q, Y.exists_isTermOf⟩` and prove the remaining obligations. Establish `: Smooth D.P.A.hom` using `D.P.isAb.smooth`. Rewrite using `[← Over.w Y.q]`. Use `infer_instance`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ext_smooth_affine_surj_terms (R : Type) [CommRing R] [IsDomain R] (D : DegPre R) (Y : Ext D) :
     Smooth Y.H.hom ∧ IsAffineHom Y.q.left ∧ Surjective Y.q.left ∧ IsMonHom Y.q ∧

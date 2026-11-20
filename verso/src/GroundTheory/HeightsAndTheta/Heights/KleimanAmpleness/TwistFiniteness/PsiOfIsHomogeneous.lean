@@ -52,18 +52,18 @@ Both sides reduce to the same expression.
 theorem toA_smulSy (s : Sy S r) (a : Amb x η) : toA x η (s • a) = psi η S s * toA x η a := rfl
 
 /- English proof (translation)
-The claim follows from `eval₂Hom_C _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem phi_C (s : Sy S r) : phi x η S (C s) = psi η S s := eval₂Hom_C _ _ _
 
 /- English proof (translation)
-The claim follows from `eval₂Hom_X' _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem phi_X (i : Fin (N + 1)) : phi x η S (X i) = single ((1 : ℤ), (0 : ℤ)) (x i) :=
   eval₂Hom_X' _ _ _
 
 /- English proof (translation)
-The claim follows from `aeval_X _ _`.
+A detailed English derivation is pending.
 -/
 theorem psi_X (j : Fin (r + 1)) : psi η S (X j) = single ((0 : ℤ), (1 : ℤ)) (η j) :=
   aeval_X _ _
@@ -76,7 +76,7 @@ instance : IsScalarTower (Sy S r) (Poly (Sy S r) N) (Amb x η) where
 abbrev tgr (c : ℤ) : Submodule Ω (LA Ω) := gradeBy Ω (AddMonoidHom.fst ℤ ℤ) c
 
 /- English proof (translation)
-The claim follows from `single_mem_gradeBy (R := Ω) (AddMonoidHom.fst ℤ ℤ) (c, k) ω`.
+A detailed English derivation is pending.
 -/
 theorem single_mem_tgr (c k : ℤ) (ω : Ω) : (single (c, k) ω : LA Ω) ∈ tgr c :=
   single_mem_gradeBy (R := Ω) (AddMonoidHom.fst ℤ ℤ) (c, k) ω
@@ -88,9 +88,9 @@ theorem algebraMap_LA (s : S) : algebraMap S (LA Ω) s = single ((0 : ℤ), (0 :
   rfl
 
 /- English proof (translation)
-Proceed by induction on `s using MvPolynomial.induction_on with`. Consider the case `C a`. Rewrite using `[psi, aeval_C, algebraMap_LA]`. Conclude with `single_mem_tgr 0 0 _`. Consider the case `add p q hp hq => rw [map_add]`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Conclude with `add_mem hp hq`. Consider the case `mul_X p j hp`. Rewrite using `[map_mul, psi_X]`. Simplify using `using SetLike.mul_mem_graded hp (single_mem_tgr 0 1 (η j))`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem psi_mem_tgr (s : Sy S r) : psi η S s ∈ tgr 0 := by
   induction s using MvPolynomial.induction_on with
@@ -103,11 +103,11 @@ theorem psi_mem_tgr (s : Sy S r) : psi η S s ∈ tgr 0 := by
     simpa using SetLike.mul_mem_graded hp (single_mem_tgr 0 1 (η j))
 
 /- English proof (translation)
-Rewrite using `[p.as_sum, map_sum]`. Use `Submodule.sum_mem _ fun μ hμ => ?_` and prove the remaining obligations. Establish `hdeg : ∑ i ∈ μ.support, μ i = d`. Use `hp (mem_support_iff.mp hμ)` as an intermediate fact. Simplify `this` using `[Finsupp.weight_apply, Finsupp.sum]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[phi, coe_eval₂Hom, eval₂_monomial]`. Establish `h1` using `psi_mem_tgr η S (MvPolynomial.coeff μ p)`. Establish `h2 : (∏ i ∈ μ.support, (single ((1 : ℤ), (0 : ℤ)) (x i) : LA Ω) ^ μ i) ∈ tgr (∑ i ∈ μ.support, ((μ i : ℕ) : ℤ))`. Use `SetLike.prod_mem_graded _ _ _ fun i _ => ?_` and prove the remaining obligations. Simplify using `using SetLike.pow_mem_graded (μ i) (single_mem_tgr 1 0 (x i))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h3` using `SetLike.mul_mem_graded h1 h2`. Rewrite `h3` using `[zero_add, ← Nat.cast_sum, hdeg]`. Conclude with `h3`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem phi_mem_tgr {p : Poly (Sy S r) N} {d : ℕ} (hp : p.IsHomogeneous d) :
     phi x η S p ∈ tgr (d : ℤ) := by
@@ -132,13 +132,13 @@ def kapT : Polynomial Ω →ₐ[Ω] LA Ω := Polynomial.aeval (single ((1 : ℤ)
 def kapU : Polynomial Ω →ₐ[Ω] LA Ω := Polynomial.aeval (single ((0 : ℤ), (1 : ℤ)) 1)
 
 /- English proof (translation)
-Establish `key : (phi x η S).comp (MvPolynomial.map (C : S →+* Sy S r)) = (kapT (Ω` using `Ω)).toRingHom.comp (cone (S := S) x).toRingHom := by`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `a`. Simplify using `only [RingHom.coe_comp, Function.comp_apply, map_C, phi_C]`. Express the relevant statement in the definitionally equal form `psi η S (C a) = kapT ((cone (S := S) x) (C a))`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[psi, aeval_C, ← MvPolynomial.algebraMap_eq, AlgHom.commutes, Polynomial.algebraMap_apply, kapT, Polynomial.aeval_C, coe_algebraMap, Function.comp_apply, algebraMap_LA, Algebra.algebraMap_self, RingHom.id_apply]`. Both sides reduce to the same expression. Introduce `i`. Simplify using `only [RingHom.coe_comp, Function.comp_apply, map_X, phi_X]`. Express the relevant statement in the definitionally equal form `_ = kapT (coneGen x (X i))`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[coneGen, aeval_X, kapT, map_mul, Polynomial.aeval_C, Polynomial.aeval_X, coe_algebraMap, Function.comp_apply, single_mul_single]`. Simplify using the standard rewrite rules. Use `congrArg (fun g => g f) key` as an intermediate fact. Simplify using `only [RingHom.coe_comp, Function.comp_apply] at this`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `kapT (cone (S := S) x f) = _`. Rewrite using `[cone_of_isHomogeneous x hf, kapT, map_mul, map_pow, Polynomial.aeval_C, Polynomial.aeval_X, coe_algebraMap, Function.comp_apply, single_pow, single_mul_single]`. Simplify using `[MvPolynomial.aeval_def]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem phi_map_C {f : Poly S N} {e : ℕ} (hf : f.IsHomogeneous e) :
     phi x η S (MvPolynomial.map (C : S →+* Sy S r) f) = single ((e : ℤ), (0 : ℤ)) (aeval x f) := by
@@ -167,11 +167,11 @@ theorem phi_map_C {f : Poly S N} {e : ℕ} (hf : f.IsHomogeneous e) :
   simp [MvPolynomial.aeval_def]
 
 /- English proof (translation)
-Establish `key : (psi η S).toRingHom = (kapU (Ω` using `Ω)).toRingHom.comp (coneGen (S := S) η).toRingHom := by`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `a`. Express the relevant statement in the definitionally equal form `psi η S (C a) = kapU ((coneGen (S := S) η) (C a))`. Rewrite using `[psi, aeval_C, ← MvPolynomial.algebraMap_eq, AlgHom.commutes, Polynomial.algebraMap_apply, kapU, Polynomial.aeval_C, coe_algebraMap, Function.comp_apply, algebraMap_LA, Algebra.algebraMap_self, RingHom.id_apply]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Introduce `j`. Express the relevant statement in the definitionally equal form `psi η S (X j) = kapU (coneGen η (X j))`. Rewrite using `[psi_X, coneGen, aeval_X, kapU, map_mul, Polynomial.aeval_C, Polynomial.aeval_X, coe_algebraMap, Function.comp_apply, single_mul_single]`. Simplify using the standard rewrite rules.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `congrArg (fun g => g h) key` as an intermediate fact. Express the relevant statement in the definitionally equal form `psi η S h = kapU (coneGen (S := S) η h) at this`. Rewrite using `[this, coneGen_of_isHomogeneous η hh, kapU, map_mul, map_pow, Polynomial.aeval_C, Polynomial.aeval_X, coe_algebraMap, Function.comp_apply, single_pow, single_mul_single]`. Simplify using `[MvPolynomial.aeval_def]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem psi_of_isHomogeneous {h : Sy S r} {b : ℕ} (hh : h.IsHomogeneous b) :
     psi η S h = single ((0 : ℤ), (b : ℤ)) (aeval η h) := by

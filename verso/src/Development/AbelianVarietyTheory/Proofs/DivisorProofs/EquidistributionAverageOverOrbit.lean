@@ -13,25 +13,23 @@ open Formalism.BasicNotions GlobalTheory GlobalTheory.Cartier GlobalTheory.ProjV
 namespace GlobalTheory.Mean4O
 
 /- English proof (translation)
-Introduce `F _ _ Y V e M I ε π hD w hw d z hL g`. Use `CoverHt.isPreimmersion_j V` as an intermediate fact. Establish `hx : IsClosed ({V.π w} : Set Y.X)`. Use `V.π.isClosedMap _ hw` as an intermediate fact. Rewrite `this` using `[Set.image_singleton]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Set `g₁ : ∀ σ : F →+* ℂ, Pts Y σ → ℝ` to `Equiv.piCongrLeft (fun σ => Pts Y σ → ℝ) I.ε (fun a y => g a ((I.pt a).symm y))`. Establish `hg₁ (a) (x : M.X a) : g₁ (I.ε a) (I.pt a x) = g a x`. Simplify using `only [g₁, Equiv.piCongrLeft_apply_apply, Homeomorph.symm_apply_apply]`. Establish `hg₂ : ∀ (τ σ : F →+* ℂ) (_ : τ = σ) (p : Pts Y τ) (q : Pts Y σ), p.1 = q.1 → g₁ τ p = g₁ σ q`. Introduce and unpack `τ σ rfl p q h`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Rewrite using `[Subtype.ext h]`. Establish `hmean` using `mean_listed_eq F Y e M I (V.π w) d z g₁ hx hL`. Simplify using `only [hg₁] at hmean`. Establish `inner (σ : F →+* ℂ) : ∑ᶠ x ∈ {x : CxPts V.p (σ.comp (algebraMap (𝓞 F) F)) | x.1 (IsLocalRing.closedPoint ℂ) = V.j w}, M.pull ε π g (σ.comp (algebraMap (𝓞 F) F)) x = (V.π.residueDegree w : ℝ) * ∑ᶠ (y : Pts Y σ) (_ : under y = V.π w), g₁ σ y`. Establish `hs : spMap (σ.comp (algebraMap (𝓞 F) F)) = spMap σ ≫ spMap (algebraMap (𝓞 F) F)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression. Take `⟨hε, hπ⟩` from `hD (σ.comp (algebraMap (𝓞 F) F))`. Establish `hτ : I.ε (ε (σ.comp (algebraMap (𝓞 F) F))) = σ` using `(HtModel.bijective_comp F).1 hε`. Set `Φ : {z : {z : Sp ℂ ⟶ V.G // z ≫ V.π ≫ Y.str = spMap σ} // below z.1 = w} → ↥{x : CxPts V.p (σ.comp (algebraMap (𝓞 F) F)) | x.1 (IsLocalRing.closedPoint ℂ) = V.j w}` to `fun z => ⟨⟨z.1.1 ≫ V.j, by rw [Category.assoc, V.pb.w, ← Category.assoc, z.1.2, hs]⟩, (Scheme.Hom.comp_apply _ _ _).trans (congrArg V.j z.2)⟩`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hΦ : Function.Bijective Φ`. Use `⟨fun a b h => ?_, ?_⟩` and prove the remaining obligations. Establish `h' : a.1.1 ≫ V.j = b.1.1 ≫ V.j` using `congrArg (fun t => t.1.1) h`. Conclude with `Subtype.ext (Subtype.ext (V.pb.hom_ext h' (a.1.2.trans b.1.2.symm)))`. Introduce and unpack `⟨x, hx'⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `e1 : x.1 ≫ V.p = spMap σ ≫ spMap (algebraMap (𝓞 F) F)` using `x.2.trans hs`. Use `⟨⟨⟨V.pb.lift x.1 (spMap σ) e1, V.pb.lift_snd _ _ _⟩, ?_⟩, ?_⟩` and prove the remaining obligations. Apply `V.j.isEmbedding.injective` to reduce the goal to its premises. Conclude with `(Scheme.Hom.comp_apply _ _ _).symm.trans ((congrArg (fun t : Sp ℂ ⟶ V.X => t (IsLocalRing.closedPoint ℂ)) (V.pb.lift_fst _ _ e1)).trans hx')`. Conclude with `Subtype.ext (Subtype.ext (V.pb.lift_fst _ _ _))`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← finsum_set_coe_eq_finsum_mem, ← finsum_eq_of_bijective Φ hΦ (f := fun z => g₁ σ ⟨z.1.1 ≫ V.π, (Category.assoc _ _ _).trans z.1.2⟩) fun z => ?_]`. Rewrite using `[CoverHt.finsum_lifts σ V.π Y.str w hw (g₁ σ)]`. Use `congr 1`. Conclude with `finsum_subtype_eq_finsum_cond (fun y : Pts Y σ => under y = V.π w)`. Take `⟨w', h1, h2⟩` from `hπ (Φ z).1 show g₁ σ _ = g _ _`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← hg₁]`. Use `(hg₂ _ _ hτ _ _ ?_).symm` and prove the remaining obligations. Rewrite using `[← h2]`. Use `congr 1`. Use `V.pb.hom_ext h1 ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← Category.assoc, h2, (I.pt _ _).2, z.1.2, hτ]`. Rewrite using `[hmean, CoverHt.card_emb V w hw, ← finsum_eq_of_bijective _ (HtModel.bijective_comp F) fun σ => (inner σ).symm, finsum_eq_sum_of_fintype, ← Finset.mul_sum]`. Take `⟨_, _⟩` from `ExtConj.pts Y _ hx`. Establish `hN : (Nat.card {y : AlgPt Y // below y.1 = V.π w} : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 Nat.card_pos.ne'`. Establish `hF : (Module.finrank ℚ F : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 Module.finrank_pos.ne'`.
-
-Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem mean_listed_eq_cover : ∀ (F : Type) [Field F] [NumberField F] (Y : Var F) (V : Cover Y) (e : ℕ) (M : Man e) (I : ManIs M Y) (ε : (𝓞 F →+* ℂ) → Fin (M.n + 1)) (π : ∀ σ, CxPts V.p σ → M.X (ε σ)), V.IsDown I ε π → ∀ (w : V.G), IsClosed ({w} : Set V.G) → ∀ (d : ℕ) (z : ∀ a, Fin (d + 1) → M.X a), I.Lists (V.π w) z → ∀ g : M.Fun, (M.κ * ∑ a, (∑ i, g a (z a i)) / ((d : ℝ) + 1)) * Nat.card (V.X.residueField (V.j w) →+* ℂ) = ∑ᶠ σ, ∑ᶠ x ∈ {x : CxPts V.p σ | x.1 (IsLocalRing.closedPoint ℂ) = V.j w}, M.pull ε π g σ x := by
   intro F _ _ Y V e M I ε π hD w hw d z hL g

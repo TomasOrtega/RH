@@ -13,7 +13,7 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 
 variable (k) in
 /- English proof (translation)
-Use `letI := IsTopologicalAddGroup.rightUniformSpace k`. Use `haveI := isUniformAddGroup_of_addCommGroup (G := k)`. Use `infer_instance`.
+Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem local_field_t2Space : T2Space k := by
   letI := IsTopologicalAddGroup.rightUniformSpace k
@@ -22,9 +22,9 @@ theorem local_field_t2Space : T2Space k := by
 
 variable (k) in
 /- English proof (translation)
-Rewrite using `[← mem_closure_iff_nhdsWithin_neBot, mem_closure_iff_nhds]`. Introduce `s hs`. Take `⟨r, hr, hrs⟩` from `(IsValuativeTopology.hasBasis_nhds_zero' k).mem_iff.mp hs`. Take `⟨p, hp0, hp⟩` from `Valuation.IsNontrivial.exists_lt_one (v := ValuativeRel.valuation k)`. Take `⟨y, rfl⟩` from `ValuativeRel.valuation_surjective r`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hy : y ≠ 0` using `by simpa using hr`. Use `⟨y * p, hrs ?_, mul_ne_zero hy (by simpa using hp0)⟩` and prove the remaining obligations. Use `show ValuativeRel.valuation k (y * p) < _`. Rewrite using `[map_mul]`. Conclude with `mul_lt_of_lt_one_right (zero_lt_iff.2 hr) hp`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem loc_neBot : NeBot (𝓝[≠] (0 : k)) := by
   rw [← mem_closure_iff_nhdsWithin_neBot, mem_closure_iff_nhds]
@@ -47,7 +47,7 @@ def intM : AddSubgroup (Matrix (Fin n) (Fin d) k) where
   neg_mem' := fun {x} hx a b => by simpa using hx a b
 
 /- English proof (translation)
-Use `AddSubgroup.isOpen_of_mem_nhds _ (g := 0) ?_` and prove the remaining obligations. Establish `h : {x : k | ValuativeRel.valuation k x < 1} ∈ 𝓝 (0 : k)` using `(IsValuativeTopology.hasBasis_nhds_zero' k).mem_of_mem one_ne_zero`. Establish `h2 : ∀ᶠ Y : Matrix (Fin n) (Fin d) k in 𝓝 0, ∀ a b, ValuativeRel.valuation k (Y a b) < 1` using `eventually_all.2 fun a => eventually_all.2 fun b => (show Continuous fun Y : Matrix (Fin n) (Fin d) k => Y a b by fun_prop).continuousAt.eventually_mem (s := {x : k | ValuativeRel.valuation k x < 1}) h`. Conclude with `h2.mono fun Y hY a b => (hY a b).le`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem intM_open : IsOpen (intM k n d : Set (Matrix (Fin n) (Fin d) k)) := by
   refine AddSubgroup.isOpen_of_mem_nhds _ (g := 0) ?_
@@ -59,7 +59,7 @@ theorem intM_open : IsOpen (intM k n d : Set (Matrix (Fin n) (Fin d) k)) := by
   exact h2.mono fun Y hY a b => (hY a b).le
 
 /- English proof (translation)
-Establish `h` using `isCompact_univ_pi fun _ : Fin n => isCompact_univ_pi fun _ : Fin d => IsNonarchimedeanLocalField.isCompact_closedBall k 1`. Establish `e : (intM k n d : Set (Matrix (Fin n) (Fin d) k)) = Set.univ.pi fun _ : Fin n => Set.univ.pi fun _ : Fin d => {x : k | ValuativeRel.valuation k x ≤ 1}` using `Set.ext fun Y => ⟨fun h a _ b _ => h a b, fun h a b => h a trivial b trivial⟩`. Rewrite using `[e]`. Conclude with `h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intM_compact : IsCompact (intM k n d : Set (Matrix (Fin n) (Fin d) k)) := by
   have h := isCompact_univ_pi fun _ : Fin n => isCompact_univ_pi fun _ : Fin d => IsNonarchimedeanLocalField.isCompact_closedBall k 1
@@ -80,13 +80,13 @@ Both sides reduce to the same expression.
 theorem colL_apply (i : Fin d) (ρ : Fin d → k) (Y : Matrix (Fin n) (Fin d) k) (a b) : colL i ρ Y a b = Y a i * ρ b := rfl
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `[colL_apply, h]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem colL_colL {i j : Fin d} {ρ ρ' : Fin d → k} (h : ρ' i = 0) (Y : Matrix (Fin n) (Fin d) k) : colL i ρ (colL j ρ' Y) = 0 := by
   ext a b; simp [colL_apply, h]
 
 /- English proof (translation)
-The claim follows from `continuousAt_pi.2 fun a => continuousAt_pi.2 fun b => by have h1 : ContinuousAt (fun p : Matrix (Fin n) (Fin d) k × Matrix (Fin n) (Fin d) k => ρ p.1 b) (Y₀, v) := ContinuousAt.comp (g := fun Y => ρ Y b) (f := Prod.fst) (continuousAt_pi.1 h b) continuousAt_fst exact (show Continu …`.
+A detailed English derivation is pending.
 -/
 theorem colL_cont (i : Fin d) {ρ : Matrix (Fin n) (Fin d) k → Fin d → k} {Y₀ : Matrix (Fin n) (Fin d) k} (h : ContinuousAt ρ Y₀) (v) :
     ContinuousAt (fun p : Matrix (Fin n) (Fin d) k × Matrix (Fin n) (Fin d) k => colL i (ρ p.1) p.2) (Y₀, v) :=
@@ -96,7 +96,7 @@ theorem colL_cont (i : Fin d) {ρ : Matrix (Fin n) (Fin d) k → Fin d → k} {Y
     exact (show Continuous fun p : Matrix (Fin n) (Fin d) k × Matrix (Fin n) (Fin d) k => p.2 a i by fun_prop).continuousAt.mul h1
 
 /- English proof (translation)
-Use `haveI := local_field_t2Space k`. Conclude with `sb_comp hφ (f := fun y => y + C y) (g := fun y => y - C y) (by fun_prop) (by fun_prop) fun x => by simp [h]`.
+A detailed English derivation is pending.
 -/
 theorem sb_sq {φ : Matrix (Fin n) (Fin d) k → ℂ} (hφ : φ ∈ SB _) (C : Matrix (Fin n) (Fin d) k →ₗ[k] Matrix (Fin n) (Fin d) k)
     (hc : Continuous C) (h : ∀ v, C (C v) = 0) : (fun y => φ (y + C y)) ∈ SB (Matrix (Fin n) (Fin d) k) := by
@@ -104,7 +104,7 @@ theorem sb_sq {φ : Matrix (Fin n) (Fin d) k → ℂ} (hφ : φ ∈ SB _) (C : M
   exact sb_comp hφ (f := fun y => y + C y) (g := fun y => y - C y) (by fun_prop) (by fun_prop) fun x => by simp [h]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `e`. Use `push Not at e`. Conclude with `h (AddChar.ext _ _ e)`.
+Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem exists_ne_one {ψ : AddChar k ℂ} (h : ψ ≠ 1) : ∃ t, ψ t ≠ 1 := by
   by_contra e
@@ -114,7 +114,7 @@ theorem exists_ne_one {ψ : AddChar k ℂ} (h : ψ ≠ 1) : ∃ t, ψ t ≠ 1 :=
 variable {ψ : AddChar k ℂ} {i₀ i₁ i₂ : Fin d} {ξ : kˣ →* ℂˣ} {l : (Matrix (Fin n) (Fin d) k → ℂ) →ₗ[ℂ] ℂ}
 
 /- English proof (translation)
-Use `haveI := loc_neBot k`. Conclude with `kills_of_local (V := Matrix (Fin n) (Fin d) k) k (Λ := intM k n d) (intM_open (k := k) (n := n) (d := d)) (intM_compact (k := k) (n := n) (d := d)) l h`.
+A detailed English derivation is pending.
 -/
 theorem killsM {U : Set (Matrix (Fin n) (Fin d) k)} (h : ∀ Y₀ ∈ U, ∃ Ω ∈ 𝓝 Y₀, Kills l Ω) : Kills l U := by
   haveI := loc_neBot k
@@ -122,7 +122,7 @@ theorem killsM {U : Set (Matrix (Fin n) (Fin d) k)} (h : ∀ Y₀ ∈ U, ∃ Ω 
     (intM_compact (k := k) (n := n) (d := d)) l h
 
 /- English proof (translation)
-Use `haveI := loc_neBot k`. Conclude with `dead (V := Matrix (Fin n) (Fin d) k) (k := k) (Λ₀ := intM k n d) (intM_open (k := k) (n := n) (d := d)) (intM_compact (k := k) (n := n) (d := d)) l hU Y₀ A B hA hB hA0 hB0 hAB (h.mono fun Y hY => or_iff_not_imp_left.2 hY)`.
+A detailed English derivation is pending.
 -/
 theorem deadM {U : Set (Matrix (Fin n) (Fin d) k)} (hU : Kills l U) (Y₀ : Matrix (Fin n) (Fin d) k)
     (A B : Matrix (Fin n) (Fin d) k → Matrix (Fin n) (Fin d) k →ₗ[k] Matrix (Fin n) (Fin d) k)
@@ -137,13 +137,13 @@ theorem deadM {U : Set (Matrix (Fin n) (Fin d) k)} (hU : Kills l U) (Y₀ : Matr
     (intM_compact (k := k) (n := n) (d := d)) l hU Y₀ A B hA hB hA0 hB0 hAB (h.mono fun Y hY => or_iff_not_imp_left.2 hY)
 
 /- English proof (translation)
-Establish `key : ∀ j : Fin 2, ∃ μ : Fin n → k, ∀ i, μ ⬝ᵥ ![x, y] i = if j = i then 1 else 0` using `fun j => by`. Take `⟨g, hg⟩` from `LinearMap.exists_extend ((Finsupp.lapply j : (Fin 2 →₀ k) →ₗ[k] k) ∘ₗ h.repr)`. Use `⟨fun a => g (Pi.single a 1), fun i => ?_⟩` and prove the remaining obligations. Establish `h1 : g (![x, y] i) = if j = i then 1 else 0`. Use `LinearMap.congr_fun hg ⟨![x, y] i, Submodule.subset_span ⟨i, rfl⟩⟩` as an intermediate fact.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[LinearMap.comp_apply, LinearMap.comp_apply, h.repr_eq_single i _ rfl]`. Simplify `this` using `[Finsupp.single_apply, eq_comm]`. Rewrite using `[← h1, LinearMap.pi_apply_eq_sum_univ g, dotProduct]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[smul_eq_mul, mul_comm]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Use function extensionality and compare the values at `b`. Simplify using `[Pi.single_apply, eq_comm]`. Take `⟨μ, hμ⟩` from `key 1`. Take `⟨ν, hν⟩` from `key 0`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨μ, ν, by simpa using hμ 0, by simpa using hμ 1, by simpa using hν 0⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_rows {x y : Fin n → k} (h : LinearIndependent k ![x, y]) :
     ∃ μ ν : Fin n → k, μ ⬝ᵥ x = 0 ∧ μ ⬝ᵥ y = 1 ∧ ν ⬝ᵥ x = 1 := by
@@ -165,29 +165,27 @@ theorem exists_rows {x y : Fin n → k} (h : LinearIndependent k ![x, y]) :
   exact ⟨μ, ν, by simpa using hμ 0, by simpa using hμ 1, by simpa using hν 0⟩
 
 /- English proof (translation)
-Take `⟨t, ht⟩` from `exists_ne_one hψ`. Use `killsM fun Y₀ hY => ?_` and prove the remaining obligations. Take `⟨μ, ν, h1, h2, h3⟩` from `exists_rows hY`. Set `c₀ : Matrix (Fin n) (Fin d) k → Fin n → k` to `fun Y a => Y a i₀`. Set `c₁ : Matrix (Fin n) (Fin d) k → Fin n → k` to `fun Y a => Y a i₁`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `Dt : Matrix (Fin n) (Fin d) k → k` to `fun Y => (ν ⬝ᵥ c₀ Y) * (μ ⬝ᵥ c₁ Y) - (μ ⬝ᵥ c₀ Y) * (ν ⬝ᵥ c₁ Y)`. Set `lam : Matrix (Fin n) (Fin d) k → Fin n → k` to `fun Y => (Dt Y)⁻¹ • ((ν ⬝ᵥ c₀ Y) • μ - (μ ⬝ᵥ c₀ Y) • ν)`. Establish `cD : Continuous Dt` using `by simp only [Dt, c₀, c₁]; fun_prop`. Establish `hD : Dt Y₀ ≠ 0` using `by simp only [Dt, c₀, c₁, h1, h2, h3]; simp`. Establish `cl : ContinuousAt lam Y₀` using `(cD.continuousAt.inv₀ hD).smul (by simp only [c₀]; fun_prop)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `l0 : ∀ Y, lam Y ⬝ᵥ c₀ Y = 0` using `fun Y => by`. Simplify using `only [lam, smul_dotProduct, sub_dotProduct, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `l1 : ∀ Y, Dt Y ≠ 0 → lam Y ⬝ᵥ c₁ Y = 1` using `fun Y hY => by`. Simplify using `only [lam, smul_dotProduct, sub_dotProduct, smul_eq_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `inv_mul_cancel₀ hY`. Set `N : Matrix (Fin n) (Fin d) k → Matrix (Fin n) (Fin n) k` to `fun Y => vecMulVec (-t • c₀ Y) (lam Y)`. Establish `hN : ∀ Y, N Y * N Y = 0` using `fun Y => by`. Simplify using `only [N, vecMulVec_mul_vecMulVec, dotProduct_smul, l0]`. Simplify using the standard rewrite rules.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Set `A : Matrix (Fin n) (Fin d) k → Matrix (Fin n) (Fin d) k →ₗ[k] Matrix (Fin n) (Fin d) k` to `fun Y => { toFun := fun v => N Y * v, map_add' := Matrix.mul_add _, map_smul' := fun c v => Matrix.mul_smul _ c v }`. Establish `hA : ∀ Y v, A Y v = N Y * v` using `fun _ _ => rfl`. Establish `hAA : ∀ Y v, A Y (A Y v) = 0` using `fun Y v => by rw [hA, hA, ← Matrix.mul_assoc, hN, Matrix.zero_mul]`. Set `ρ : Matrix (Fin n) (Fin d) k → Fin d → k` to `fun Y b => t * (lam Y ⬝ᵥ fun a => Y a b)`. Establish `r0 : ∀ Y, ρ Y i₀ = 0` using `fun Y => by simp only [ρ]; rw [l0 Y, mul_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `cN : ContinuousAt N Y₀` using `continuousAt_pi.2 fun a => continuousAt_pi.2 fun b => (show Continuous fun Y => (-t • c₀ Y) a by simp only [c₀]; fun_prop).continuousAt.mul (continuousAt_pi.1 cl b)`. Establish `hAe : ∀ Y v a b, A Y v a b = -t * Y a i₀ * (lam Y ⬝ᵥ fun a => v a b)` using `fun Y v a b => by`. Simplify using `only [hA, N, c₀, mul_apply, vecMulVec_apply, dotProduct, Finset.mul_sum, Pi.smul_apply, smul_eq_mul, mul_assoc]`. Use `deadM (U := ∅) (fun φ _ h => by` and prove the remaining obligations. Rewrite using `[show φ = 0 from funext fun y => by by_contra e; exact h y e, map_zero]) Y₀ A (fun Y => colL i₀ (ρ Y)) (fun v => ?_)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use the proof step `(fun v => ?_) (hAA Y₀) (fun v => colL_colL (r0 Y₀) v) (fun v => ?_) ?_`. Establish `e : ContinuousAt (fun p : Matrix (Fin n) (Fin d) k × Matrix (Fin n) (Fin d) k => (N p.1, p.2)) (Y₀, v)` using `(ContinuousAt.comp (g := N) (f := Prod.fst) cN continuousAt_fst).prodMk continuousAt_snd`. Conclude with `ContinuousAt.comp (g := fun q : Matrix (Fin n) (Fin n) k × Matrix (Fin n) (Fin d) k => q.1 * q.2) (continuous_fst.matrix_mul continuous_snd).continuousAt e`. Use `colL_cont i₀ (ρ := ρ) (continuousAt_pi.2 fun b => continuousAt_const.mul ?_) v` and prove the remaining obligations. Conclude with `ContinuousAt.comp (g := fun q : (Fin n → k) × (Fin n → k) => q.1 ⬝ᵥ q.2) (f := fun Y => (lam Y, fun a => Y a b)) (continuous_fst.dotProduct continuous_snd).continuousAt (cl.prodMk (continuous_pi fun a => show Continuous fun Y : Matrix (Fin n) (Fin d) k => Y a b by fun_prop).conti …`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Use extensionality with `a b`. Simplify using `only [hA, colL_apply, mul_apply, Finset.sum_mul, mul_assoc]`. Use `filter_upwards [cD.continuousAt.eventually_ne hD] with Y hDY`. Use `fun _ => ⟨hAA Y, colL_colL (r0 Y), ?_, ψ t, ht, fun φ hφ => ?_⟩` and prove the remaining obligations. Use extensionality with `a b`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `e : (lam Y ⬝ᵥ fun a => Y a b + Y a i₀ * ρ Y b) = lam Y ⬝ᵥ fun a => Y a b`. Use `l0 Y` as an intermediate fact. Simplify using `only [dotProduct, mul_add, Finset.sum_add_distrib, ← mul_assoc, ← Finset.sum_mul, c₀] at this ⊢`. Rewrite using `[this, zero_mul, add_zero]`. Simplify using `only [Matrix.add_apply, hAe, colL_apply, e]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [ρ]`. Expand and normalize the polynomial expressions, which then agree. Set `γ : GL (Fin n) k` to `⟨1 + N Y, 1 - N Y, by rw [add_mul, mul_sub, mul_sub, hN]; simp, by rw [sub_mul, mul_add, mul_add, hN]; simp⟩`. Establish `hγ : Matrix.GeneralLinearGroup.det γ = 1` using `Units.ext (by show (1 + N Y).det = 1`. Simplify using `only [N]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[vecMulVec_eq Unit, det_one_add_replicateCol_mul_replicateRow, dotProduct_smul, l0]`. Use the proof step `simp)`. Establish `e1` using `hL φ hφ γ`. Rewrite `e1` using `[hγ, map_one, Units.val_one, one_mul]`. Establish `e0 : ∀ y : Matrix (Fin n) (Fin d) k, γ.1 * y = y + A Y y` using `fun y => by show (1 + N Y) * y = _`.
-
-Rewrite using `[Matrix.add_mul, Matrix.one_mul, hA]`. Simplify using `only [e0] at e1`. Establish `e2` using `hC _ (sb_sq hφ (A Y) (continuous_const.matrix_mul continuous_id) (hAA Y)) (ρ Y) (by simpa using r0 Y)`. Rewrite `e2` using `[e1, show ρ Y i₁ = t from by simp only [ρ]; rw [l1 Y hDY, mul_one]]`. Conclude with `e2`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kills_indep (hψ : ψ ≠ 1) (hL : LeftLaw ξ l) (hC : ColLaw ψ {i₀} i₀ i₁ l) :
     Kills l {Y | LinearIndependent k ![fun a => Y a i₀, fun a => Y a i₁]} := by
@@ -258,7 +256,7 @@ theorem kills_indep (hψ : ψ ≠ 1) (hL : LeftLaw ξ l) (hC : ColLaw ψ {i₀} 
       exact e2
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _ _ hψ _ _ _ _ _ hL hC φ hφ h` and use `kills_indep hψ hL hC φ hφ fun y hy => by by_contra e exact hy (h y e)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem locSupp : LocSupp := fun _ _ _ _ _ _ _ _ hψ _ _ _ _ _ hL hC φ hφ h =>
   kills_indep hψ hL hC φ hφ fun y hy => by
@@ -266,19 +264,15 @@ theorem locSupp : LocSupp := fun _ _ _ _ _ _ _ _ hψ _ _ _ _ _ hL hC φ hφ h =>
     exact hy (h y e)
 
 /- English proof (translation)
-Take `⟨t, ht⟩` from `exists_ne_one hψ`. Use `killsM fun Y₀ hY => ?_` and prove the remaining obligations. Take `⟨a₀, ha⟩ : ∃ a, Y₀ a i₀ ≠ 0` from `Function.ne_iff.1 hY`. Establish `cc : Continuous fun Y : Matrix (Fin n) (Fin d) k => Y a₀ i₀` using `by fun_prop`. Set `ρ : Matrix (Fin n) (Fin d) k → Fin d → k` to `fun Y => Pi.single i₂ (-t * (Y a₀ i₁ * (Y a₀ i₀)⁻¹))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `cρ : ContinuousAt ρ Y₀` using `ContinuousAt.comp (g := fun x : k => (Pi.single i₂ x : Fin d → k)) (continuous_single i₂).continuousAt (continuousAt_const.mul ((show Continuous fun Y : Matrix (Fin n) (Fin d) k => Y a₀ i₁ by fun_prop).continuousAt.mul (cc.continuousAt.inv₀ ha)))`. Establish `s0 : ∀ x : k, (Pi.single i₂ x : Fin d → k) i₀ = 0` using `fun x => Pi.single_eq_of_ne h02 _`. Establish `s1 : ∀ x : k, (Pi.single i₂ x : Fin d → k) i₁ = 0` using `fun x => Pi.single_eq_of_ne h12 _`. Use `deadM (kills_indep hψ hL hC) Y₀ (fun _ => colL i₁ (Pi.single i₂ t)) (fun Y => colL i₀ (ρ Y)) (fun v => ?_) (fun v => ?_) (fun v => ?_) (fun v => ?_) (fun v => ?_) ?_` and prove the remaining obligations. Conclude with `colL_cont i₁ (ρ := fun _ => Pi.single i₂ t) continuousAt_const v`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `colL_cont i₀ (ρ := ρ) cρ v`. Conclude with `colL_colL (s1 _) v`. Conclude with `colL_colL (s0 _) v`. Conclude with `(colL_colL (s1 _) v).trans (colL_colL (s0 _) v).symm`. Use `filter_upwards [cc.continuousAt.eventually_ne ha] with Y hY`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use `fun hd => ⟨colL_colL (s1 _), colL_colL (s0 _), ?_, ψ t, ht, fun φ hφ => ?_⟩` and prove the remaining obligations. Establish `hx : (fun a => Y a i₀) ≠ 0` using `fun e => hY (congrFun e a₀)`. Choose the witnesses or unpack the hypotheses as in `⟨s, hs⟩ : ∃ s : k, s • (fun a => Y a i₀) = fun a => Y a i₁ := by`. Assume the negation of the conclusion as `e`. Use `push Not at e`.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `hd ((LinearIndependent.pair_iff' hx).2 e)`. Establish `hs' : ∀ a, Y a i₁ = s * Y a i₀` using `fun a => (congrFun hs a).symm`. Use extensionality with `a b`. Simplify using `only [Matrix.add_apply, colL_apply, ρ, s1, hs', Pi.single_apply]`. Use `split_ifs`.
-
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Establish `e1` using `hC' φ hφ (Pi.single i₂ t) (by rintro s (rfl | rfl); exacts [s0 _, s1 _])`. Establish `e2` using `hC _ (sb_sq hφ (colL i₁ (Pi.single i₂ t)) (continuous_matrix fun a b => show Continuous fun Y : Matrix (Fin n) (Fin d) k => Y a i₁ * (Pi.single i₂ t : Fin d → k) b by fun_prop) (colL_colL (s1 _))) (ρ Y) (by simpa using s0 _)`.
-
-Rewrite `e2` using `[show ρ Y i₁ = 0 from s1 _, AddChar.map_zero_eq_one, one_mul]`. Rewrite `e1` using `[Pi.single_eq_same]`. Conclude with `e2.trans e1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kills_ne (hψ : ψ ≠ 1) (h01 : i₀ ≠ i₁) (h02 : i₀ ≠ i₂) (h12 : i₁ ≠ i₂) (hL : LeftLaw ξ l) (hC : ColLaw ψ {i₀} i₀ i₁ l)
     (hC' : ColLaw ψ {i₀, i₁} i₁ i₂ l) : Kills l {Y | (fun a => Y a i₀) ≠ 0} := by
@@ -322,13 +316,13 @@ theorem kills_ne (hψ : ψ ≠ 1) (h01 : i₀ ≠ i₁) (h02 : i₀ ≠ i₂) (h
     exact e2.trans e1
 
 /- English proof (translation)
-Introduce `k _ _ _ _ n d ψ hψ i₀ i₁ i₂ h01 h02 h12 ξ l hL hC hC' φ hφ`. Take `⟨t, ht⟩` from `exists_ne_one hψ`. Use `killsM (l := l) (U := Set.univ) (fun Y₀ _ => ?_) φ hφ fun _ _ => trivial` and prove the remaining obligations. Establish `s0 : (Pi.single i₁ t : Fin d → k) i₀ = 0` using `Pi.single_eq_of_ne h01 _`. Use `deadM (kills_ne hψ h01 h02 h12 hL hC hC') Y₀ (fun _ => 0) (fun _ => colL i₀ (Pi.single i₁ t)) (fun _ => ?_) (fun v => ?_) (fun _ => ?_) (fun v => ?_) (fun v => ?_) (Eventually.of_forall fun Y hd => ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `using continuousAt_const`. Conclude with `colL_cont i₀ (ρ := fun _ => Pi.single i₁ t) continuousAt_const v`. Simplify using the standard rewrite rules. Conclude with `colL_colL s0 v`. Simplify using the standard rewrite rules.
+Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨fun _ => by simp, fun v => colL_colL s0 v, ?_, ψ t, ht, fun φ hφ => ?_⟩` and prove the remaining obligations. Establish `hx : ∀ a, Y a i₀ = 0` using `congrFun (not_not.1 hd)`. Use extensionality with `a b`. Simplify using `[colL_apply, hx]`. Establish `e` using `hC φ hφ (Pi.single i₁ t) (by simpa using s0)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `e` using `[Pi.single_eq_same]`. Simplify using `only [LinearMap.zero_apply, add_zero]`. Conclude with `e`.
+A detailed English derivation is pending.
 -/
 theorem locThree : LocThree := by
   intro k _ _ _ _ n d ψ hψ i₀ i₁ i₂ h01 h02 h12 ξ l hL hC hC' φ hφ

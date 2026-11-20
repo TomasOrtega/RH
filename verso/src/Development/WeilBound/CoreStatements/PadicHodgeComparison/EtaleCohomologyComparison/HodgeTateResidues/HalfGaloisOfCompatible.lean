@@ -19,7 +19,7 @@ variable {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicAlgCl l)}
   {S : ∀ m, Lv (cb K ht hs) (m + 1)} (H : Hyp S)
 
 /- English proof (translation)
-The claim follows from `(toY_comp ht hs x).2 h`.
+A detailed English derivation is pending.
 -/
 theorem cY {M : Model l K} {r j : ℕ} {x : Fam M r j} (h : Comp x) : CB.Comp (toY ht hs x) := (toY_comp ht hs x).2 h
 
@@ -35,7 +35,7 @@ def galY (M : Model l K) (σ : K.fixingSubgroup) (n : ℕ) : GlobalTheory.LogCri
   CrystallineSemistableComparison.SH.galM (B.schFn M.p) (okToOC l K) (IntermediateField.fixingSubgroupEquiv K σ) (galOC_okToOC _) false n
 
 /- English proof (translation)
-The claim follows from `CrystallineSemistableComparison.SH.base_snd (B.schFn M.p) (B.gal_κb (okToOC l K) (IntermediateField.fixingSubgroupEquiv K σ) (galOC_okToOC _) false n) B₀ y`.
+A detailed English derivation is pending.
 -/
 theorem galY_pt (M : Model l K) (σ : K.fixingSubgroup) (n : ℕ) (B₀ : CommRingCat.{0}) (y : ((cb K ht hs).L M n).Pt.obj B₀) :
     ((galY ht hs M σ n).pt.app B₀ y).1.2 = y.1.2 :=
@@ -50,7 +50,7 @@ theorem toY_gal {M : Model l K} (σ : K.fixingSubgroup) {r j : ℕ} (x : Fam M r
 
 include H in
 /- English proof (translation)
-The claim follows from `H.add hM (cY ht hs hx) (cY ht hs hy) (cY ht hs (comp_add hx hy)) a lin hM _ _ c x hx a φ := H.lin hM c (cY ht hs hx) (cY ht hs (comp_smul c hx)) a φ lin' hM _ _ x hx a k φ := H.lin' hM (cY ht hs hx) a k φ sh hM _ _ _ k h x hx a := H.sh hM k h (cY ht hs hx) (cY ht hs (comp_sh ht k …`.
+A detailed English derivation is pending.
 -/
 theorem half_galois_of_compatible (hg : ∀ (m : ℕ) (σ : K.fixingSubgroup), Nonempty (LHom (S m) (S m)
     (ACris.galCris (IntermediateField.fixingSubgroupEquiv K σ)) (galBase (IntermediateField.fixingSubgroupEquiv K σ))
@@ -69,7 +69,7 @@ theorem half_galois_of_compatible (hg : ∀ (m : ℕ) (σ : K.fixingSubgroup), N
 
 variable (l K) in
 /- English proof (translation)
-Introduce `ht hs hL h1 h2 h3 h4 h5 h6 h7 _` and use `(hL ht hs).elim fun S => ⟨_, half_galois_of_compatible ht hs (S := S.L) ⟨h1, h2, h3, h4, h5, h6, h7, fun m => ⟨S.dn m⟩⟩ fun m σ => ⟨S.gal m σ⟩⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem half2Of : Half2Of l K := fun ht hs hL h1 h2 h3 h4 h5 h6 h7 _ =>
   (hL ht hs).elim fun S => ⟨_, half_galois_of_compatible ht hs (S := S.L) ⟨h1, h2, h3, h4, h5, h6, h7, fun m => ⟨S.dn m⟩⟩ fun m σ => ⟨S.gal m σ⟩⟩

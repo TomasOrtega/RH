@@ -16,9 +16,9 @@ namespace GlobalTheory.Mum.FreeCoord
 open GlobalTheory.BoxIndep TensorProduct
 
 /- English proof (translation)
-Establish `: (Ideal.span {a}).annihilator = ⊤`. Assume the negation of the conclusion as `hne`. Take `⟨p, hp, hI⟩` from `Ideal.exists_le_maximal _ hne`. Set `z : Spec B` to `⟨p, hp.isPrime⟩`. Establish `h1 : algebraMap B ((Spec.structureSheaf B).presheaf.stalk z) a = 0` using `h z hp`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `StructureSheaf.IsLocalization.to_stalk B z` as an intermediate fact. Take `⟨c, hc⟩` from `(IsLocalization.map_eq_zero_iff z.asIdeal.primeCompl _ _).1 h1`. Conclude with `c.2 (hI (Submodule.mem_annihilator_span_singleton _ _ |>.2 hc))`. Establish `h1 : (1 : B) ∈ (Ideal.span {a}).annihilator` using `this ▸ Submodule.mem_top`. Conclude with `(one_smul B _).symm.trans ((Submodule.mem_annihilator_span_singleton _ _).1 h1)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_germOf_max {B : CommRingCat.{0}} (a : B)
     (h : ∀ z : Spec B, z.asIdeal.IsMaximal → germOf (𝟙 (Spec B)) z a = 0) : a = 0 := by
@@ -34,28 +34,28 @@ theorem eq_zero_of_germOf_max {B : CommRingCat.{0}} (a : B)
   exact (one_smul B _).symm.trans ((Submodule.mem_annihilator_span_singleton _ _).1 h1)
 
 /- English proof (translation)
-Rewrite using `[← gs_pull r F z U h, gs_stalkMap r z _ h, gs_pull (𝟙 _) F (r z) U h, Category.id_comp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem gs_comp' {Z Y X : Scheme.{0}} (r : Z ⟶ Y) (F : Y ⟶ X) (z : Z) (U : X.Opens) (h : F (r z) ∈ U) (f : Γ(X, U)) :
     gs (r ≫ F) z U f = (r.stalkMap z).hom (gs F (r z) U f) := by
   rw [← gs_pull r F z U h, gs_stalkMap r z _ h, gs_pull (𝟙 _) F (r z) U h, Category.id_comp]
 
 /- English proof (translation)
-Introduce `R R₁ _ _ ρ₁ d b hb X f U a x hx h`. Set `_ : Algebra R R₁` to `ρ₁.toAlgebra`. Set `A : CommRingCat.{0}` to `X.presheaf.stalk x`. Set `_ : Algebra R A` to `(germOf (B := CommRingCat.of R) f x).toAlgebra`. Establish `hli : LinearIndependent R b` using `Fintype.linearIndependent_iff.2 fun c hc => congrFun ((hb 0).unique (y₁ := c) (y₂ := 0) (by simp only [Algebra.smul_def] at hc; exact hc.symm) (by simp))`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hsp : ⊤ ≤ Submodule.span R (Set.range b)` using `fun r _ => by`. Take `⟨c, hc, -⟩` from `hb r`. Rewrite using `[hc]`. Conclude with `Submodule.sum_mem _ fun l _ => Submodule.smul_mem _ (c l) (Submodule.subset_span ⟨l, rfl⟩)`. Set `β` to `Module.Basis.mk hli hsp`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `: Module.Finite R R₁` using `Module.Finite.of_basis β`. Set `B : CommRingCat.{0}` to `CommRingCat.of (A ⊗[R] R₁)`. Set `iA : A ⟶ B` to `CommRingCat.ofHom (algebraMap A (A ⊗[R] R₁))`. Set `iR : CommRingCat.of R₁ ⟶ B` to `CommRingCat.ofHom (Algebra.TensorProduct.includeRight (R := R) (A := A) (B := R₁)).toRingHom`. Establish `w : (Spec.map iA ≫ X.fromSpecStalk x) ≫ f = Spec.map iR ≫ spMap ρ₁`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, fromSpecStalk_comp (B := CommRingCat.of R)]`. Use `(Spec.map_comp _ _).symm.trans (Eq.trans (congrArg Spec.map ?_) (Spec.map_comp _ _))` and prove the remaining obligations. Use extensionality with `r`. Conclude with `(IsScalarTower.algebraMap_apply R A (A ⊗[R] R₁) r).symm.trans ((Algebra.TensorProduct.includeRight (R := R) (A := A) (B := R₁)).commutes r).symm`. Set `r : Spec B ⟶ pullback f (spMap ρ₁)` to `pullback.lift _ _ w`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `r1 : r ≫ pullback.fst f (spMap ρ₁) = Spec.map iA ≫ X.fromSpecStalk x` using `pullback.lift_fst _ _ _`. Establish `r2 : r ≫ pullback.snd f (spMap ρ₁) = Spec.map iR` using `pullback.lift_snd _ _ _`. Establish `key : (∑ l, iR.hom (b l) * iA.hom (gs (𝟙 X) x U (a l)) : B) = 0`. Use `eq_zero_of_germOf_max _ fun z hz => ?_` and prove the remaining obligations. Establish `hm : (z.asIdeal.comap (algebraMap A (A ⊗[R] R₁))).IsMaximal` using `Ideal.isMaximal_comap_of_isIntegral_of_isMaximal (R := A) (S := A ⊗[R] R₁) z.asIdeal`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : Spec.map iA z = closedPoint A` using `PrimeSpectrum.ext (IsLocalRing.eq_maximalIdeal hm)`. Establish `hzx : pullback.fst f (spMap ρ₁) (r z) = x`. Establish `: (r ≫ pullback.fst f (spMap ρ₁)) z = X.fromSpecStalk x (Spec.map iA z)` using `by rw [r1]; rfl`. Rewrite `this` using `[hc, Scheme.fromSpecStalk_closedPoint]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e` using `congrArg (r.stalkMap z).hom (h (r z) hzx)`. Rewrite `e` using `[map_zero, map_sum]`. Rewrite using `[← e, map_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, ← gs_comp' r _ z ⊤ trivial, ← gs_comp' r _ z U (hzx ▸ hx), r1, r2, gs_fromSpecStalk x hx, ← germOf_apply, ← germOf_map, ← germOf_map, Category.id_comp, Category.id_comp]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hli'` using `(Algebra.TensorProduct.basis A β).linearIndependent`. Use `Fintype.linearIndependent_iff.1 hli' (fun l => gs (𝟙 X) x U (a l)) ?_` and prove the remaining obligations. Use `Eq.trans (Finset.sum_congr rfl fun l _ => ?_) key` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, _root_.mul_comm, Algebra.TensorProduct.basis_apply, Module.Basis.mk_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem germ_eq_zero : ∀ (R R₁ : Type) [CommRing R] [CommRing R₁] (ρ₁ : R →+* R₁) (d : ℕ) (b : Fin d → R₁), (∀ r : R₁, ∃! c : Fin d → R, r = ∑ l, ρ₁ (c l) * b l) → ∀ (X : Scheme.{0}) (f : X ⟶ Sp R) (U : X.Opens) (a : Fin d → Γ(X, U)) (x : X), x ∈ U → (∀ z : (pullback f (spMap ρ₁) : Scheme.{0}), (pullback.fst f (spMap ρ₁)) z = x → ∑ l, gs (pullback.snd f (spMap ρ₁)) z ⊤ ((Scheme.ΓSpecIso (CommRingCat.of R₁)).inv.hom (b l)) * gs (pullback.fst f (spMap ρ₁)) z U (a l) = 0) → ∀ l, gs (𝟙 X) x U (a l) = 0 := by
   intro R R₁ _ _ ρ₁ d b hb X f U a x hx h

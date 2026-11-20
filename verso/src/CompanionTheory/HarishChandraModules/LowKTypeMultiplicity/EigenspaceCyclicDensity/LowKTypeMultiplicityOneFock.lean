@@ -4,7 +4,7 @@ import CompanionTheory.HarishChandraModules.LowKTypeMultiplicity.EigenspaceCycli
 namespace CompanionTheory.D.LK
 
 /- English proof (translation)
-The claim follows from `low_K_type_multiplicity_one_of low_K_type_multiplicity_one_unconditional`.
+A detailed English derivation is pending.
 -/
 theorem low_K_type_multiplicity_one : Formalism.MainNotions.DiscreteSeriesWeylDimension.LowKMultOne := low_K_type_multiplicity_one_of low_K_type_multiplicity_one_unconditional
 

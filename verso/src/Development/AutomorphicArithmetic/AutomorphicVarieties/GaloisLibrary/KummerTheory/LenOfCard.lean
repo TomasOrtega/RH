@@ -3,9 +3,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Kumm
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.LDataCardLeFinrank UpperTheory.V.Base UpperTheory.V.Kum
 
 /- English proof (translation)
-Take `⟨I, hI, ⟨e⟩⟩` from `isSimpleModule_iff_quot_maximal.mp h`. Establish `hIm : I = IsLocalRing.maximalIdeal ℤ_[l]` using `IsLocalRing.eq_maximalIdeal hI`. Substitute `hIm` using the available equality. Rewrite using `[Nat.card_congr e.toEquiv]`. Establish `f` using `RingHom.quotientKerEquivOfSurjective (ZMod.ringHom_surjective (PadicInt.toZMod (p := l)))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `g` using `Ideal.quotEquivOfEq (PadicInt.ker_toZMod (p := l))`. Rewrite using `[← Nat.card_congr g.toEquiv, Nat.card_congr f.toEquiv, Nat.card_zmod]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem card_simple (l : ℕ) [Fact l.Prime] (M : Type) [AddCommGroup M] [Module ℤ_[l] M]
     [h : IsSimpleModule ℤ_[l] M] : Nat.card M = l := by
@@ -18,11 +18,11 @@ private theorem card_simple (l : ℕ) [Fact l.Prime] (M : Type) [AddCommGroup M]
   rw [← Nat.card_congr g.toEquiv, Nat.card_congr f.toEquiv, Nat.card_zmod]
 
 /- English proof (translation)
-Proceed by induction on `h with`. Consider the case `of_subsingleton`. Conclude with `⟨0, by rw [Module.length_eq_zero]; rfl, by rw [Nat.card_of_subsingleton (0 : _)]; simp⟩`. Consider the case `@of_simple_quotient M _ _ N _ _ ih`. Take `⟨k, hk, hc⟩` from `ih`.
+Proceed by induction. Treat this case separately. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Use `⟨k + 1, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Module.length_eq_add_of_exact N.subtype N.mkQ (Submodule.injective_subtype N) (Submodule.mkQ_surjective N) (LinearMap.exact_subtype_mkQ N), hk, Module.length_eq_one]`. Both sides reduce to the same expression. Rewrite using `[AddSubgroup.card_eq_card_quotient_mul_card_addSubgroup N.toAddSubgroup]`. Establish `h1 : Nat.card (M ⧸ N.toAddSubgroup) = l` using `card_simple l (M ⧸ N)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : Nat.card N.toAddSubgroup = l ^ k` using `hc`. Rewrite using `[h1, h2, pow_succ, mul_comm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem aux (l : ℕ) [Fact l.Prime] (M : Type) [AddCommGroup M] [Module ℤ_[l] M]
     (h : IsFiniteLength ℤ_[l] M) : ∃ k : ℕ, Module.length ℤ_[l] M = k ∧ Nat.card M = l ^ k := by
@@ -41,7 +41,7 @@ private theorem aux (l : ℕ) [Fact l.Prime] (M : Type) [AddCommGroup M] [Module
       rw [h1, h2, pow_succ, mul_comm]
 
 /- English proof (translation)
-Introduce `l _ M _ _ _`. Conclude with `aux l M (isFiniteLength_iff_isNoetherian_isArtinian.2 ⟨inferInstance, inferInstance⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Kum.lenOfCard :
     ∀ (l : ℕ) [Fact l.Prime] (M : Type) [AddCommGroup M] [Module ℤ_[l] M] [Finite M], ∃ k : ℕ, Module.length ℤ_[l] M = k ∧ Nat.card M = l ^ k := by

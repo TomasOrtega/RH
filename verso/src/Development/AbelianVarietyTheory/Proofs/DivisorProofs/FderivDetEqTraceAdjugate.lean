@@ -10,13 +10,13 @@ noncomputable section
 namespace GlobalTheory.MatDeriv
 
 /- English proof (translation)
-Establish `h1 : ∀ i, (A.adjugate * D) i i = (A.updateCol i (fun k => D k i)).det`. Introduce `i`. Rewrite using `[← cramer_apply, cramer_eq_adjugate_mulVec]`. Simplify using `[Matrix.mul_apply, Matrix.mulVec, dotProduct]`. Simplify using `only [Matrix.trace, Matrix.diag, h1, det_apply']`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl (fun σ _ => ?_)` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← Finset.mul_prod_erase Finset.univ _ (Finset.mem_univ i)]`. Simplify using `only [updateCol_apply, smul_eq_mul]`. Rewrite using `[mul_comm]`. Use `congr 1`. Use `Finset.prod_congr rfl (fun j hj => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[if_neg (Finset.ne_of_mem_erase hj)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem trace_adjugate_mul_eq_sum_perm' {r : ℕ} (A D : Matrix (Fin r) (Fin r) ℂ) :
     (A.adjugate * D).trace = ∑ σ : Equiv.Perm (Fin r), (Equiv.Perm.sign σ : ℂ) *
@@ -39,7 +39,7 @@ theorem trace_adjugate_mul_eq_sum_perm' {r : ℕ} (A D : Matrix (Fin r) (Fin r) 
   rw [if_neg (Finset.ne_of_mem_erase hj)]
 
 /- English proof (translation)
-Establish `h2` using `HasFDerivAt.sum (u := Finset.univ) (fun σ _ => ((HasFDerivAt.finset_prod (u := Finset.univ) (g := fun i w' => B w' (σ i) i) (fun i _ => (hB (σ i) i).hasFDerivAt)).const_smul (Equiv.Perm.sign σ : ℂ)))`. Use `h2.congr_of_eventuallyEq (Filter.Eventually.of_forall fun w' => ?_)` and prove the remaining obligations. Simplify using `only [det_apply', Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Units.smul_def, Int.cast_smul_eq_zsmul]`. Simplify using `[zsmul_eq_mul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem hasFDerivAt_det {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {n : ℕ}
     (B : E → Matrix (Fin n) (Fin n) ℂ) (w : E)
@@ -55,7 +55,7 @@ theorem hasFDerivAt_det {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {n
   simp [zsmul_eq_mul]
 
 /- English proof (translation)
-Introduce `E _ _ n B w hB`. Establish `h` using `hasFDerivAt_det B w hB`. Use `⟨h.differentiableAt, fun ξ => ?_⟩` and prove the remaining obligations. Rewrite using `[h.fderiv, trace_adjugate_mul_eq_sum_perm']`. Simplify using `[dMat, ContinuousLinearMap.sum_apply, Finset.smul_sum, smul_eq_mul, Finset.mul_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem jacobi_fderiv_det : ∀ {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {n : ℕ}
     (B : E → Matrix (Fin n) (Fin n) ℂ) (w : E), (∀ a b, DifferentiableAt ℝ (fun w' => B w' a b) w) →

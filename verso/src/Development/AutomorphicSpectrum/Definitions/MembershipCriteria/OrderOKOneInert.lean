@@ -152,7 +152,7 @@ def sqrtConj {k : Type} [Field k] (δ : k) : QuadraticAlgebra k δ 0 →ₐ[k] Q
   commutes' r := by ext <;> simp
 
 /- English proof (translation)
-Take `⟨δ, -, h2, h3⟩` from `h.sq`. Introduce `e`. Establish `e2 : δ = 1` using `h.quad.algebraMap_injective (by rw [← h2, e, map_one])`. Simplify `h3 1 (by simp)` using `[e2]`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 example {k : Type} [Field k] [ValuativeRel k] {E : Type} [CommRing E] [Algebra k E] {c : E →ₐ[k] E} {ξ : E}
     (h : Inert k c ξ) : ξ * ξ ≠ 1 := by
@@ -162,7 +162,7 @@ example {k : Type} [Field k] [ValuativeRel k] {E : Type} [CommRing E] [Algebra k
   simpa [e2] using h3 1 (by simp)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ _ _ => rfl, zero_mem _⟩`.
+Supply the required witnesses or components.
 -/
 example {E : Type} [CommRing E] (A : Subring E) : Unram A 1 ∧ (0 : Matrix Unit Unit E) ∈ intMat A Unit Unit :=
   ⟨fun _ _ _ => rfl, zero_mem _⟩

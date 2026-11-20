@@ -4,15 +4,15 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.HidaC
 open UpperTheory.V.AlgebraTools.AnnihilatorQuotientFinite TensorProduct
 
 /- English proof (translation)
-Introduce `R _ M _ _ _ I _ _`. Establish `hH : IsHausdorff I M` using `IsHausdorff.of_le_jacobson I M (IsAdicComplete.le_jacobson_bot I)`. Establish `hP : IsPrecomplete I M`. Rewrite using `[← AdicCompletion.of_surjective_iff]`. Establish `hR : Function.Surjective (AdicCompletion.of I R)` using `AdicCompletion.of_surjective_iff.mpr inferInstance`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `x`. Take `⟨t, rfl⟩` from `AdicCompletion.ofTensorProduct_surjective_of_finite I M x`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `tmul a m`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Take `⟨r, rfl⟩` from `hR a`. Use `⟨r • m, ?_⟩` and prove the remaining obligations. Rewrite using `[AdicCompletion.ofTensorProduct_tmul, map_smul]`. Use extensionality with `n`. Rewrite using `[AdicCompletion.val_smul_apply]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Apply the tactic sequence `try rfl`. Consider the case `add a b ha hb`. Take `⟨u, hu⟩` from `ha`. Take `⟨v, hv⟩` from `hb`.
+Simplify using the standard rewrite rules. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨u + v, by rw [map_add, map_add, hu, hv]⟩`. Conclude with `{ toIsHausdorff := hH, toIsPrecomplete := hP }`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.AlgebraTools.AnnihilatorQuotientFinite.completeFin :
     ∀ {R : Type*} [CommRing R] {M : Type*} [AddCommGroup M] [Module R M] [IsNoetherianRing R] (I : Ideal R) [IsAdicComplete I R] [Module.Finite R M], IsAdicComplete I M := by

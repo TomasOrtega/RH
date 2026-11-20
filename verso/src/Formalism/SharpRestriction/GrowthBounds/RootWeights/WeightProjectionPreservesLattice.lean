@@ -12,9 +12,9 @@ section pw
 variable {n : ℕ} {K : Type} [Field K] {L W : Type} [AddCommGroup L] [Module K L] [AddCommGroup W] [Module K W]
 
 /- English proof (translation)
-Proceed by induction on `m generalizing f with`. Consider the case `zero`. Use extensionality with `x`. Simplify using the standard rewrite rules. Consider the case `succ m ih`.
+Proceed by induction. Treat this case separately. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Treat this case separately.
 
-Rewrite using `[pow_succ, Module.End.mul_apply, ih, pow_succ, Module.End.mul_eq_comp, LinearMap.comp_assoc]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem llcomp_pow_apply (X : Module.End K W) (m : ℕ) (f : L →ₗ[K] W) :
     ((LinearMap.llcomp K L W W X) ^ m) f = (X ^ m) ∘ₗ f := by
@@ -27,9 +27,9 @@ theorem llcomp_pow_apply (X : Module.End K W) (m : ℕ) (f : L →ₗ[K] W) :
     rfl
 
 /- English proof (translation)
-Proceed by induction on `j generalizing f with`. Consider the case `zero`. Use extensionality with `x`. Simplify using the standard rewrite rules. Consider the case `succ j ih`.
+Proceed by induction. Treat this case separately. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Treat this case separately.
 
-Rewrite using `[pow_succ, Module.End.mul_apply, ih, pow_succ', Module.End.mul_eq_comp, ← LinearMap.comp_assoc]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem lcomp_pow_apply (Y : Module.End K L) (j : ℕ) (f : L →ₗ[K] W) :
     ((LinearMap.lcomp K W Y) ^ j) f = f ∘ₗ (Y ^ j) := by
@@ -42,11 +42,11 @@ theorem lcomp_pow_apply (Y : Module.End K L) (j : ℕ) (f : L →ₗ[K] W) :
     rfl
 
 /- English proof (translation)
-Establish `hc : Commute (LinearMap.llcomp K L W W (E a b)) ((-1 : K) • LinearMap.lcomp K W (EL a b))`. Use `Commute.smul_right ?_ (-1 : K)` and prove the remaining obligations. Use extensionality with `g y`. Both sides reduce to the same expression. Establish `ht : homRepresentation EL E a b = LinearMap.llcomp K L W W (E a b) + (-1 : K) • LinearMap.lcomp K W (EL a b)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[neg_one_smul, ← sub_eq_add_neg]`. Both sides reduce to the same expression. Rewrite using `[ht, hc.add_pow, LinearMap.sum_apply, LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Simplify using `only [Module.End.mul_apply, Module.End.natCast_apply, smul_pow, LinearMap.smul_apply, map_nsmul, map_smul, llcomp_pow_apply, lcomp_pow_apply, LinearMap.comp_apply]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Nat.cast_smul_eq_nsmul K, smul_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem homRepresentation_pow_apply (EL : GLOps n K L) (E : GLOps n K W) (a b : Fin n) (k : ℕ) (f : L →ₗ[K] W) (x : L) :
     ((homRepresentation EL E a b) ^ k) f x =
@@ -72,7 +72,7 @@ variable {n : ℕ} {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing
   {W : Type} [AddCommGroup W] [Module (KK O) W] [Module O W] [IsScalarTower O (KK O) W]
 
 /- English proof (translation)
-Proceed by induction on `j generalizing x with`. Consider the case `zero => simp`. Consider the case `succ j ih`. Rewrite using `[pow_succ, Module.End.mul_apply, ih, pow_succ, Module.End.mul_apply]`. Both sides reduce to the same expression.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem restrictRepresentation_pow_coe (E : GLOps n (KK O) W) (L : Submodule (KK O) W) (hL : IsSubrepresentation E L) (a b : Fin n) (j : ℕ)
     (x : L) : (((restrictRepresentation E L hL a b) ^ j) x : W) = (E a b ^ j) (x : W) := by
@@ -83,54 +83,48 @@ theorem restrictRepresentation_pow_coe (E : GLOps n (KK O) W) (L : Submodule (KK
     rfl
 
 /- English proof (translation)
-Rewrite using `[Int.cast_smul_eq_zsmul]`. Conclude with `zsmul_mem hx z`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem int_smul_mem_lattice (M : Submodule O W) (z : ℤ) {x : W} (hx : x ∈ M) : ((z : ℤ) : KK O) • x ∈ M := by
   rw [Int.cast_smul_eq_zsmul]
   exact zsmul_mem hx z
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨sh, shwt, shM⟩ : ∃ sh : Fin n → ℤ → ℕ → Module.End (KK O) W, (∀ a c d ρ x, x ∈ weightSp E ρ → sh a c d x = ((Ring.choose (ρ a + c) d : ℤ) : KK O) • x) ∧ (∀ a c d x, x ∈ M → sh a c d x ∈ M) := by`. Use `⟨fun a c d => ∑ ij ∈ antidiagonal d, ((Ring.choose c ij.2 : ℤ) : KK O) • binomE E a ij.1, ?_, ?_⟩` and prove the remaining obligations. Introduce `a c d ρ x hx`. Rewrite using `[LinearMap.sum_apply]`. Simplify using `only [LinearMap.smul_apply, binomial_diagonal_apply_weight E a ρ x hx, smul_smul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Finset.sum_smul, Ring.add_choose_eq d (Commute.all _ _)]`. Use `push_cast`. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun ij _ => by ring`. Introduce `a c d x hx`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Reduce the equality to equality of the corresponding arguments. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearMap.sum_apply]`. Use `Submodule.sum_mem _ fun ij _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.smul_apply]`. Conclude with `int_smul_mem_lattice M _ (hM _ (Or.inr ⟨a, ij.1, rfl⟩) x hx)`. Establish `hT : ∀ nu : Fin n → ℤ, ∃ (T : Module.End (KK O) W) (h : (Fin n → ℤ) → ℤ), h mu = 1 ∧ (nu ≠ mu → h nu = 0) ∧ (∀ ρ, ∀ x ∈ weightSp E ρ, T x = ((h ρ : ℤ) : KK O) • x) ∧ ∀ x ∈ M, T x ∈ M`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Introduce `nu`. Distinguish the cases in `hne : nu = mu`. Use `⟨1, fun _ => 1, rfl, fun h => absurd hne h, fun ρ x _ => by simp, fun x hx => by simpa using hx⟩` and prove the remaining obligations. Take `⟨a, ha⟩` from `Function.ne_iff.1 hne`. Break down `lt_or_gt_of_ne ha with hlt | hgt` into its components or cases.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨d, hd⟩ : ∃ d : ℕ, mu a - nu a = (d : ℤ)` from `⟨(mu a - nu a).toNat, by omega⟩`. Establish `hd0 : 0 < d` using `by omega`. Use `⟨sh a (-(nu a)) d, fun ρ => Ring.choose (ρ a + -(nu a)) d, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `show Ring.choose (mu a + -(nu a)) d = 1`. Rewrite using `[show mu a + -(nu a) = ((d : ℕ) : ℤ) by omega, Ring.choose_natCast, Nat.choose_self]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Introduce `_ show Ring.choose (nu a + -(nu a)) d = 0`. Rewrite using `[show nu a + -(nu a) = ((0 : ℕ) : ℤ) by omega, Ring.choose_natCast, Nat.choose_eq_zero_of_lt hd0]`. Both sides reduce to the same expression. Introduce `ρ x hx`.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `shwt a _ _ ρ x hx`. Introduce `x hx`. Conclude with `shM a _ _ x hx`. Take `⟨d, hd⟩ : ∃ d : ℕ, nu a - mu a = (d : ℤ)` from `⟨(nu a - mu a).toNat, by omega⟩`. Use `⟨sh a (-(mu a)) 0 - sh a (-(mu a)) d, fun ρ => Ring.choose (ρ a + -(mu a)) 0 - Ring.choose (ρ a + -(mu a)) d, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `show Ring.choose (mu a + -(mu a)) 0 - Ring.choose (mu a + -(mu a)) d = 1`. Establish `hd0 : 0 < d` using `by omega`. Rewrite using `[Ring.choose_zero_right, show mu a + -(mu a) = ((0 : ℕ) : ℤ) by omega, Ring.choose_natCast, Nat.choose_eq_zero_of_lt hd0]`. Both sides reduce to the same expression. Introduce `_ show Ring.choose (nu a + -(mu a)) 0 - Ring.choose (nu a + -(mu a)) d = 0`.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 
-Rewrite using `[Ring.choose_zero_right, show nu a + -(mu a) = ((d : ℕ) : ℤ) by omega, Ring.choose_natCast, Nat.choose_self]`. Both sides reduce to the same expression. Introduce `ρ x hx`. Rewrite using `[LinearMap.sub_apply, shwt a _ _ ρ x hx, shwt a _ _ ρ x hx, ← sub_smul]`. Use `push_cast`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Both sides reduce to the same expression. Introduce `x hx`. Rewrite using `[LinearMap.sub_apply]`. Conclude with `M.sub_mem (shM a _ _ x hx) (shM a _ _ x hx)`. Establish `hproj : ∀ F : Finset (Fin n → ℤ), ∃ (P : Module.End (KK O) W) (g : (Fin n → ℤ) → ℤ), g mu = 1 ∧ (∀ nu ∈ F, nu ≠ mu → g nu = 0) ∧ (∀ nu, ∀ x ∈ weightSp E nu, P x = ((g nu : ℤ) : KK O) • x) ∧ ∀ x ∈ M, P x ∈ M`.
+Treat this case separately. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce `F`. Proceed by induction on `F using Finset.induction_on with`. Consider the case `empty`. Conclude with `⟨1, fun _ => 1, rfl, by simp, fun nu x _ => by simp, fun x hx => by simpa using hx⟩`. Consider the case `insert nu F hnu ih`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Take `⟨P, g, hg1, hg0, hgw, hgM⟩` from `ih`. Take `⟨T, h, hh1, hh0, hhw, hhM⟩` from `hT nu`. Use `⟨T * P, fun ρ => h ρ * g ρ, by simp [hh1, hg1], ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `ν hν hne`. Break down `Finset.mem_insert.1 hν with rfl | hν'` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `[hh0 hne]`. Simplify using `[hg0 ν hν' hne]`. Introduce `ρ x hx`. Rewrite using `[Module.End.mul_apply, hgw ρ x hx, map_smul, hhw ρ x hx, smul_smul]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Introduce `x hx`. Conclude with `hhM _ (hgM x hx)`. Choose the witnesses or unpack the hypotheses as in `⟨F, hF⟩ : ∃ F : Finset (Fin n → ℤ), (⊤ : Submodule (KK O) W) ≤ ⨆ nu ∈ F, weightSp E nu := by`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Set `bs` to `Module.finBasis (KK O) W`. Establish `hb : ∀ i, ∃ s : Finset (Fin n → ℤ), bs i ∈ ⨆ nu ∈ s, weightSp E nu`. Introduce `i`. Apply `Submodule.mem_iSup_iff_exists_finset.1` to reduce the goal to its premises. Rewrite using `[hE.2.2]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Submodule.mem_top`. Use `choose s hs using hb`. Use `⟨Finset.univ.biUnion s, ?_⟩` and prove the remaining obligations. Rewrite using `[← bs.span_eq, Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Establish `hmono : (⨆ nu ∈ s i, weightSp E nu) ≤ ⨆ nu ∈ Finset.univ.biUnion s, weightSp E nu` using `biSup_mono fun nu hnu => Finset.mem_biUnion.2 ⟨i, Finset.mem_univ _, hnu⟩`. Conclude with `hmono (hs i)`. Take `⟨P, g, hg1, hg0, hgw, hgM⟩` from `hproj F`. Establish `hπP : π = P`. Establish `hle : (⨆ nu ∈ F, weightSp E nu) ≤ LinearMap.ker (π - P)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Use `iSup₂_le fun nu hnu => ?_` and prove the remaining obligations. Introduce `x hx`. Rewrite using `[LinearMap.mem_ker, LinearMap.sub_apply, sub_eq_zero, hgw nu x hx]`. Distinguish the cases in `h : nu = mu`. Substitute `h` using the available equality.
-
-Rewrite using `[hπ.1 x hx, hg1]`. Simplify using the standard rewrite rules. Rewrite using `[hπ.2 nu h x hx, hg0 nu hnu h]`. Simplify using the standard rewrite rules. Use extensionality with `x`.
-
-Establish `hx` using `hle (hF (Submodule.mem_top (x := x)))`. Rewrite `hx` using `[LinearMap.mem_ker, LinearMap.sub_apply, sub_eq_zero]`. Conclude with `hx`. Introduce `x hx`. Rewrite using `[hπP]`.
-
-Conclude with `hgM x hx`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem weightProjection_preserves_lattice [CharZero (KK O)] [FiniteDimensional (KK O) W] (E : GLOps n (KK O) W) (hE : IsGLRep E)
     (M : Submodule O W) (hM : UZStable (O := O) E M) (mu : Fin n → ℤ) (π : Module.End (KK O) W)
@@ -253,15 +247,15 @@ theorem weightProjection_preserves_lattice [CharZero (KK O)] [FiniteDimensional 
   exact hgM x hx
 
 /- English proof (translation)
-Establish `hf' : ∀ y : L, (y : W) ∈ M → f y ∈ M` using `hf`. Use `show ∀ x : L, (x : W) ∈ M → divPowE (homRepresentation (restrictRepresentation E L hL) E) a b k f x ∈ M`. Introduce `x hx`. Establish `hexp : divPowE (homRepresentation (restrictRepresentation E L hL) E) a b k f x = ∑ m ∈ range (k + 1), (((-1 : ℤ) ^ (k - m) : ℤ) : KK O) • divPowE E a b m (f ((((k - m).factorial : KK O)⁻¹) • ((restrictRepresentation E L hL a b) ^ (k - m)) x))`. Rewrite using `[divPowE, LinearMap.smul_apply, LinearMap.smul_apply, homRepresentation_pow_apply, Finset.smul_sum]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations. Establish `hmk : m ≤ k` using `Nat.lt_succ_iff.1 (Finset.mem_range.1 hm)`. Simplify using `only [divPowE, LinearMap.smul_apply, map_smul, smul_smul]`. Use `congr 1`. Establish `hc : ((k.choose m : ℕ) : KK O) * (m.factorial : KK O) * ((k - m).factorial : KK O) = (k.factorial : KK O)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Nat.choose_mul_factorial_mul_factorial hmk` after adjusting the coercions. Establish `h1 : (m.factorial : KK O) ≠ 0` using `Nat.cast_ne_zero.2 (Nat.factorial_ne_zero m)`. Establish `h2 : ((k - m).factorial : KK O) ≠ 0` using `Nat.cast_ne_zero.2 (Nat.factorial_ne_zero (k - m))`. Rewrite using `[← hc]`. Establish `h3 : ((k.choose m : ℕ) : KK O) ≠ 0` using `Nat.cast_ne_zero.2 (Nat.choose_pos hmk).ne'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 
-Use `push_cast`. Clear the denominators using the available nonvanishing facts. Rewrite using `[hexp]`. Use `Submodule.sum_mem _ fun m _ => ?_` and prove the remaining obligations. Apply `int_smul_mem_lattice` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hy : (((((k - m).factorial : KK O)⁻¹) • ((restrictRepresentation E L hL a b) ^ (k - m)) x : L) : W) = divPowE E a b (k - m) (x : W)`. Rewrite using `[Submodule.coe_smul, restrictRepresentation_pow_coe, divPowE, LinearMap.smul_apply]`. Establish `hyM : divPowE E a b (k - m) (x : W) ∈ M` using `hM _ (Or.inl ⟨a, b, k - m, hab, rfl⟩) _ hx`. Establish `hfy` using `hf' _ (by rw [hy]; exact hyM)`. Conclude with `hM _ (Or.inl ⟨a, b, m, hab, rfl⟩) _ hfy`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem homLattice_dividedPower_stable [CharZero (KK O)] (E : GLOps n (KK O) W) (M : Submodule O W) (hM : UZStable (O := O) E M)
     (L : Submodule (KK O) W) (hL : IsSubrepresentation E L) (a b : Fin n) (hab : a ≠ b) (k : ℕ)

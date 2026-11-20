@@ -22,21 +22,19 @@ open scoped ENNReal Classical
 namespace GlobalTheory.Mass.PrimMeanRow
 
 /- English proof (translation)
-Establish `hd0 : 0 < de` using `by linarith`. Establish `hN0 : 0 < N` using `by linarith`. Establish `hx : 1 ≤ de * N` using `by nlinarith`. Establish `hx0 : 0 < de * N` using `by linarith`. Establish `e1 : (de ^ 2) ^ ((j : ℝ) / 2) = de ^ j`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Real.rpow_natCast de 2, ← Real.rpow_mul hd0.le, ← Real.rpow_natCast de j]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `e2 : ∀ E : ℝ, (de ^ 2 * N ^ 2) ^ (E / 2) = (de * N) ^ E` using `fun E => by`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[← mul_pow, ← Real.rpow_natCast _ 2, ← Real.rpow_mul hx0.le]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hl : 0 ≤ Real.log f` using `Real.log_nonneg hf`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hs' : (2 : ℝ) ≤ s` using `by exact_mod_cast hs`. Establish `hlb : Real.logb 2 (2 * f) ≤ 1 + 2 * Real.log f`. Establish `h2` using `Real.log_two_gt_d9`. Rewrite using `[Real.logb, Real.log_mul (by norm_num) (by linarith), div_le_iff₀ (by linarith)]`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `hE : (9 * (s : ℝ) + 8 + 4 * Real.logb 2 (2 * f)) + 1 ≤ C * s + C * Real.log f` using `by nlinarith`. Establish `h3` using `Real.rpow_le_rpow_of_exponent_le hx hE`. Rewrite `h3` using `[Real.rpow_add_one hx0.ne']`. Rewrite using `[e1, e2]`. Use `set X := (de * N) ^ (9 * (s : ℝ) + 8 + 4 * Real.logb 2 (2 * f))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set Y := (de * N) ^ (C * s + C * Real.log f)`. Establish `hX : 0 ≤ X` using `Real.rpow_nonneg hx0.le _`. Establish `hY : 0 ≤ Y` using `Real.rpow_nonneg hx0.le _`. Establish `h4 : X * N ≤ Y` using `le_trans (mul_le_mul_of_nonneg_left (by nlinarith) hX) h3`. Establish `h5 : de ^ j ≤ de ^ (j + s)` using `pow_le_pow_right₀ hde (by omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `e3 : N ^ (j + s) = N ^ (j + s - 1) * N` using `by rw [← pow_succ]; congr 1; omega`. Combine the equalities or inequalities in the displayed calculation. Establish `: X ≤ Y / N` using `(le_div_iff₀ hN0).2 h4`. Use `gcongr`. Use `_ = (mk * N ^ (j + s - 1)) * ((de / N) ^ (j + s) * Y * (b * a / mk)) := by`.
-
-Rewrite using `[div_pow, e3]`. Clear the denominators using the available nonvanishing facts. Use `_ ≤ _ := by gcongr`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem num_mid (a b mk M de N C f : ℝ) (j s : ℕ) (ha : 0 ≤ a) (hb : 0 ≤ b) (hmk : 0 < mk) (hde : 1 ≤ de)
     (hN : 1 ≤ N) (hC : 16 ≤ C) (hf : 1 ≤ f) (hs : 2 ≤ s) (hM : mk * N ^ (j + s - 1) ≤ M) :
@@ -77,15 +75,15 @@ theorem num_mid (a b mk M de N C f : ℝ) (j s : ℕ) (ha : 0 ≤ a) (hb : 0 ≤
     _ ≤ _ := by gcongr
 
 /- English proof (translation)
-Establish `hk' : (1 : ℝ) ≤ k` using `by exact_mod_cast hk`. Establish `hm' : (1 : ℝ) ≤ m` using `by exact_mod_cast hm`. Establish `hf' : (0 : ℝ) ≤ f` using `Nat.cast_nonneg f`. Establish `hN0 : 0 < N` using `by linarith`. Establish `h1 : rd ^ f ≤ HH`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `le_trans ?_ hH` and prove the remaining obligations. Rewrite using `[← Real.exp_mul, ← Real.exp_log (show 0 < rd by linarith), ← Real.exp_nat_mul]`. Apply `Real.exp_le_exp.2` to reduce the goal to its premises. Establish `a1 : L / c₀ ≤ L * C`. Rewrite using `[div_eq_mul_one_div]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `gcongr`. Establish `a2 : L * C ≤ L * C * (m : ℝ) ^ 2` using `le_mul_of_one_le_right (by positivity) (by nlinarith)`. Combine the equalities or inequalities in the displayed calculation. Establish `h0 : 1 ≤ rd ^ f` using `one_le_pow₀ hrd`. Establish `h2 : (rd ^ f * N) ^ k ≤ (HH * N) ^ (C * k)`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `h3 : 1 ≤ (de * N) ^ E` using `Real.one_le_rpow (by nlinarith) hE`. Establish `h4 : (9 : ℝ) ^ (k * f) ≤ (C * k) ^ (k * f)` using `by gcongr; nlinarith`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[div_pow, mul_pow, mul_pow, ← pow_mul, mul_comm f k]`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts. Use `_ ≤ _ := by gcongr`.
+A detailed English derivation is pending.
 -/
 theorem num_top (c₀ C L rd HH de N E : ℝ) (k m f : ℕ) (hc : 0 < c₀) (hC : 16 ≤ C) (hC' : 1 / c₀ ≤ C) (hL : 0 ≤ L)
     (hrd : 1 ≤ rd) (hrd' : Real.log rd ≤ L / c₀) (hk : 1 ≤ k) (hm : 1 ≤ m)
@@ -123,11 +121,11 @@ variable {K V : Type} [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [M
 omit [FiniteDimensional K V] in
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Establish `e1 : discN h N = Nat.card (↥(dual h N) ⧸ N.comap (dual h N).subtype)` using `rfl`. Rewrite using `[e1, Nat.card_congr e.toEquiv, ← Submodule.cardQuot_apply, ← Ideal.absNorm_apply, Ideal.absNorm_span_singleton, Algebra.norm_natCast, RingOfIntegers.rank]`. Simplify using the standard rewrite rules. Use `⟨{e.symm 1}, by simp, ?_⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[eq_top_iff]`. Introduce `x _`. Take `⟨r, hr⟩` from `Ideal.Quotient.mk_surjective (e x)`. Rewrite using `[Finset.coe_singleton, Submodule.mem_span_singleton]`. Use `⟨r, e.injective ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_smul, e.apply_symm_apply, ← hr, Algebra.smul_def, mul_one]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem disc_of_equiv (h : V →ₗ⋆[K] V →ₗ[K] K) (N : Submodule (𝓞 K) V) (T : ℕ)
     (e : (↥(dual h N) ⧸ N.comap (dual h N).subtype) ≃ₗ[𝓞 K] (𝓞 K ⧸ Ideal.span {(T : 𝓞 K)})) :
@@ -149,7 +147,7 @@ theorem disc_of_equiv (h : V →ₗ⋆[K] V →ₗ[K] K) (N : Submodule (𝓞 K)
 end General
 
 /- English proof (translation)
-Rewrite using `[H.finrank_cmField]`. Simplify using `only [Ranks.f, Ranks.n]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem finrank_E {R : Ranks} (H : Host R) : Module.finrank ℚ H.E = 2 * R.f := by
   rw [H.finrank_cmField]
@@ -157,9 +155,9 @@ theorem finrank_E {R : Ranks} (H : Host R) : Module.finrank ℚ H.E = 2 * R.f :=
   ring
 
 /- English proof (translation)
-Set `_` to `D.host.cmStar`. Establish `: IsTotallyComplex D.host.E` using `D.sp.cm.cmUnram.1`. Establish `h1` using `NumberField.InfinitePlace.card_eq_nrRealPlaces_add_nrComplexPlaces (K := D.host.E)`. Establish `h2` using `NumberField.InfinitePlace.card_add_two_mul_card_eq_rank D.host.E`. Establish `h3 : NumberField.InfinitePlace.nrRealPlaces D.host.E = 0`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[NumberField.nrRealPlaces_eq_zero_iff]`. Use `infer_instance`. Establish `h4` using `finrank_E D.host`. Unfold `fDeg`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem fDeg_E (D : D7) : fDeg D.host.E = D.R.f := by
   let _ := D.host.cmStar
@@ -173,7 +171,7 @@ theorem fDeg_E (D : D7) : fDeg D.host.E = D.R.f := by
   omega
 
 /- English proof (translation)
-Unfold `vInv Host.rdE`. Rewrite using `[fDeg_E, finrank_E]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem vInv_E (D : D7) : 2 * vInv D.host.E = D.host.rdE := by
   unfold vInv Host.rdE
@@ -182,7 +180,7 @@ theorem vInv_E (D : D7) : 2 * vInv D.host.E = D.host.rdE := by
   ring
 
 /- English proof (translation)
-Use `Real.one_le_rpow ?_ (by positivity)` and prove the remaining obligations. Use `Int.one_le_abs (discr_ne_zero D.host.E)` as an intermediate fact. Conclude with `this` after adjusting the coercions.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem one_le_rdE (D : D7) : 1 ≤ D.host.rdE := by
   refine Real.one_le_rpow ?_ (by positivity)
@@ -190,35 +188,35 @@ theorem one_le_rdE (D : D7) : 1 ≤ D.host.rdE := by
   exact_mod_cast this
 
 /- English proof (translation)
-Introduce `c₀ hc₀`. Use `⟨max 16 (1 / c₀), fun C hC D large₂ u u' C' Cl Cg cb Cu cT CT C0 A hCl => ?_⟩` and prove the remaining obligations. Use `letI := D.host.cmStar`. Introduce `hyp F0 he hz Λ hΛ reps hreps s hs2 hsk de hde HH hHH`. Establish `hC1 : 16 ≤ C` using `le_trans (le_max_left _ _) hC`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hC2 : 1 / c₀ ≤ C` using `le_trans (le_max_right _ _) hC`. Establish `hK : IsCMUnram D.host.E` using `D.sp.cm.cmUnram`. Take `⟨⟨hS0, -, -⟩, ⟨-, hTp, -, -, -, hTs, -⟩, -⟩` from `hyp`. Establish `hrd : Real.log D.host.rdE ≤ large₂.sc.L / Cl` using `hS0.2.2.2.2.2.2.2.2.2.2.1`. Establish `hL : 0 ≤ large₂.sc.L` using `Real.rpow_nonneg (by linarith [large₂.sc.one_lt_alt]) _`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrd' : Real.log D.host.rdE ≤ large₂.sc.L / c₀` using `hrd.trans (by gcongr)`. Take `⟨⟨hPD, hrk⟩, hrow⟩` from `GlobalTheory.Mass.RowPerp.main D u F0 he hz`. Take `⟨hint, hcyc⟩` from `hrow Λ hΛ`. Establish `hM` using `(GlobalTheory.T.mass_rowLattice_orthogonal_split_prime D u F0 he hz hTp hTs Λ hΛ).2`. Establish `hs` using `(D.sp.X 0).herm`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgen` using `(GlobalTheory.Mass.CyclicGenus.main _ _ _ hK hs (D.sp.X 0).nondeg _ hTp hTs).2`. Generalize the expression as in `Lat.L0X D Λ (lf D F0) = L₀ at *`. Use `set h := (D.sp.X 0).hT with hh`. Take `⟨hm1, hm2, hst, -, hsum⟩` from `GlobalTheory.Mass.GenusOrb.main _ _ h hK hs hPD L₀ hint.1`. Establish `hmem : ∀ L ∈ genus h L₀, IsIntLat h L ∧ discN h L = Lat.Tu D u ^ (2 * D.R.f) ∧ (∃ t : Finset (D.sp.X 0).V, t.card ≤ 1 ∧ dual h L = L ⊔ Submodule.span (𝓞 D.host.E) (t : Set (D.sp.X 0).V))` using `fun L hL => by`.
+Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ⟨e⟩⟩` from `(hgen L₀ L hint hcyc).1 hL`. Take `⟨b, c⟩` from `disc_of_equiv h L _ e`. Conclude with `⟨a, by rw [b, finrank_E], ((GlobalTheory.Mass.DetAgree.main _ _ h hK hs hPD L a).2.2.2.1 1).1 c⟩`. Establish `hlhs : (∑ L' ∈ reps, ENNReal.ofReal ((Nat.card (Formalism.ThetaLiftIndependence.autL h L') : ℝ))⁻¹ * (Cnt.cntPrim h L' (D.R.k - s) de : ℝ≥0∞)) = orbSum (isom h) (genus h L₀) (fun L => (((primSp h L (D.R.k - s) (de ^ 2)).encard : ℕ∞) : ℝ≥0∞))`. Rewrite using `[← hsum reps _ hreps fun g M => by`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(GlobalTheory.Mass.PrimMove.main _ _ h hK hs (D.sp.X 0).nondeg g M ⊥ _ _).2]]`. Use `Finset.sum_congr rfl fun M hM => ?_` and prove the remaining obligations. Rewrite using `[(GlobalTheory.Mass.DetAgree.main _ _ h hK hs hPD M (hmem M (hreps.1 M hM)).1).2.2.1]`. Rewrite using `[hlhs]`. Establish `hf : 1 ≤ D.R.f`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : 0 < D.R.n` using `D.R.ord_pos`. Establish `h1 : D.R.f = 2 * D.R.n` using `rfl`. Use linear arithmetic over natural numbers and integers. Establish `hf' : (1 : ℝ) ≤ D.R.f` using `by exact_mod_cast hf`. Establish `hde' : (1 : ℝ) ≤ de` using `by exact_mod_cast hde`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hde2 : 1 ≤ de ^ 2` using `Nat.one_le_pow _ _ hde`. Establish `hN : 1 ≤ Cnt.NT D u` using `one_le_pow₀ (by exact_mod_cast hTp.one_le)`. Establish `hU` using `GlobalTheory.Mass.StdMass.main _ hK`. Distinguish the cases in `hmid : s ≤ D.R.k - 2`. Establish `H` using `GlobalTheory.Mass.PrimMean.main GlobalTheory.T.maximalHermitianLattice_massRatio _ _ h hK hs hPD (GlobalTheory.T.exists_orthonormalLattice_of_unimodular_landherr _ hK) (D.R.k - s) s (by omega) (by omega) (by omega) _ _ _ (hU (D.R.k - s)).1 (hU (D.R.k - s)).2.1 _ _ _ (hU s).1 (hU …`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `H.trans (ENNReal.ofReal_le_ofReal ?_)` and prove the remaining obligations. Establish `e1 : D.R.k - s + s = D.R.k` using `by omega`. Establish `H2` using `num_mid _ _ _ (mass h L₀) de _ C D.R.f (D.R.k - s) s (hU (D.R.k - s)).2.2.1.le (hU s).2.2.1.le (hU D.R.k).2.2.1 hde' hN hC1 hf' hs2 (by rw [e1]; exact hM)`. Rewrite `H2` using `[e1]`. Establish `e2 : ((Lat.Tu D u ^ (2 * D.R.f) : ℕ) : ℝ) = Cnt.NT D u ^ 2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Cnt.NT, ← pow_mul, mul_comm D.R.f]`. Use `push_cast`. Both sides reduce to the same expression. Rewrite using `[e2, finrank_E, Cnt.XiS, Cnt.Xi, if_pos ⟨hs2, hmid⟩]`. Use `push_cast`.
+Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact.
 
-Conclude with `H2`. Establish `hk : 1 ≤ D.R.k` using `by omega`. Establish `H2` using `num_top c₀ C large₂.sc.L D.host.rdE HH de (Cnt.NT D u) (C * s + C * Real.log D.R.f) D.R.k D.R.m D.R.f hc₀ hC1 hC2 hL (one_le_rdE D) hrd' hk (le_trans one_le_two D.R.two_le_m) hHH hde' hN (by have := Real.log_nonneg hf'; positivity)`. Take `⟨o1, o2, -⟩` from `GlobalTheory.Mass.OrbMono.main (isom h) (Submodule (𝓞 D.host.E) (D.sp.X 0).V)`. Use `(o1 _ _ _ (fun _ => ENNReal.ofReal ((9 * D.host.rdE) ^ (D.R.k * D.R.f) * (de : ℝ) ^ D.R.k)) subset_rfl fun L hL => ?_).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis.
 
-Take `⟨p1, p0⟩` from `GlobalTheory.Mass.PrimCount.main _ _ h hK hs hPD L (hmem L hL).1 _ hde2`. Break down `(by omega : D.R.k - s = 1 ∨ D.R.k - s = 0) with e | e` into its components or cases. Rewrite using `[e]`. Use `p1.trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[vInv_E, fDeg_E, hrk]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
-Use `congr 2`. Use `push_cast`. Rewrite using `[← Real.rpow_natCast (de : ℝ) 2, ← Real.rpow_mul (by linarith), ← Real.rpow_natCast (de : ℝ) D.R.k]`. Use `congr 1`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Use `le_trans (b := 1) (by exact_mod_cast p0) (ENNReal.one_le_ofReal.2 ?_)` and prove the remaining obligations. Use `one_le_rdE D` as an intermediate fact. Conclude with `one_le_mul_of_one_le_of_one_le (one_le_pow₀ (by linarith)) (one_le_pow₀ hde')`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[o2, ← hm1, mul_comm, ← ENNReal.ofReal_mul hm2.le]`. Use `ENNReal.ofReal_le_ofReal (mul_le_mul_of_nonneg_left ?_ hm2.le)` and prove the remaining obligations. Rewrite using `[Cnt.XiS, Cnt.Xi, if_neg (fun a => hmid a.2), if_pos (by omega)]`. Conclude with `H2`.
+A detailed English derivation is pending.
 -/
 theorem main : ∀ c₀ : ℝ, 0 < c₀ → ∃ C₀ : ℝ, ∀ C : ℝ, C₀ ≤ C → ∀ (D : D7) (large₂ : SizeData₂ D) (u u' : D.what₂.Word) (C' Cl Cg cb Cu cT CT C0 A : ℝ), c₀ ≤ Cl → UnitaryVolumeMass.congruence_at_split_frobenius_holds D large₂ u u' C' Cl Cg cb Cu cT CT C0 A C := by
   intro c₀ hc₀

@@ -15,7 +15,7 @@ def dualMap (g : A →+* B) : DualNumber A →+* DualNumber B :=
   (DualNumber.lift ⟨(Algebra.ofId A (DualNumber B), DualNumber.eps), by simp, fun _ ↦ Commute.all _ _⟩).toRingHom
 
 /- English proof (translation)
-Use `letI : Algebra A B := g.toAlgebra`. Use `show (DualNumber.lift _ : DualNumber A →ₐ[A] DualNumber B) x = _`. Rewrite using `[DualNumber.lift_apply_apply]`. Apply the tactic sequence `ext <;> simp [Algebra.ofId_apply, TrivSqZeroExt.algebraMap_eq_inl', RingHom.algebraMap_toAlgebra]`.
+Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem dualMap_apply (g : A →+* B) (x : DualNumber A) :
     dualMap g x = TrivSqZeroExt.inl (g x.fst) + TrivSqZeroExt.inr (g x.snd) := by
@@ -25,13 +25,13 @@ theorem dualMap_apply (g : A →+* B) (x : DualNumber A) :
   ext <;> simp [Algebra.ofId_apply, TrivSqZeroExt.algebraMap_eq_inl', RingHom.algebraMap_toAlgebra]
 
 /- English proof (translation)
-Simplify using `[dualMap_apply]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem dualMap_fst (g : A →+* B) (x : DualNumber A) : (dualMap g x).fst = g x.fst := by
   simp [dualMap_apply]
 
 /- English proof (translation)
-Simplify using `[dualMap_apply]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem dualMap_snd (g : A →+* B) (x : DualNumber A) : (dualMap g x).snd = g x.snd := by
   simp [dualMap_apply]
@@ -42,21 +42,21 @@ namespace GlobalTheory.DualCover
 variable {A B : Type} [CommRing A] [CommRing B]
 
 /- English proof (translation)
-Use `letI : Algebra A B := g.toAlgebra`. Establish `hc : ∀ a : A, dualMap g (algebraMap A (DualNumber A) a) = algebraMap A (DualNumber B) a`. Introduce `a`. Apply the tactic sequence `ext <;> simp [dualMap_apply, TrivSqZeroExt.algebraMap_eq_inl', RingHom.algebraMap_toAlgebra]`. Set `ψ₀ : DualNumber A →ₐ[A] DualNumber B` to `AlgHom.mk (dualMap g) hc`.
+Equip the data with the indicated structure. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Introduce a local definition for the expression.
 
-Establish `hψ₀ : ∀ x, ψ₀ x = dualMap g x` using `fun _ ↦ rfl`. Set `j : B →ₐ[A] DualNumber B` to `TrivSqZeroExt.inlAlgHom A B B`. Set `G : TensorProduct A (DualNumber A) B →ₐ[A] DualNumber B` to `Algebra.TensorProduct.lift ψ₀ j (fun _ _ ↦ Commute.all _ _)`. Set `h : DualNumber B → TensorProduct A (DualNumber A) B` to `fun x ↦ (1 : DualNumber A) ⊗ₜ[A] x.fst + (DualNumber.eps : DualNumber A) ⊗ₜ[A] x.snd`. Establish `hadd : ∀ u v, h (u + v) = h u + h v`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `u v`. Simplify using `only [h, TrivSqZeroExt.fst_add, TrivSqZeroExt.snd_add, TensorProduct.tmul_add]`. Normalize the expressions using the abelian group laws. Establish `hgh : ∀ x, G (h x) = x`. Introduce `x`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [h, G, map_add, Algebra.TensorProduct.lift_tmul, map_one, _root_.one_mul]`. Apply the tactic sequence `ext <;> simp [j, hψ₀, dualMap_apply]`. Establish `hhg : ∀ x, h (G x) = x`. Introduce `x`. Proceed by induction on `x using TensorProduct.induction_on with`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero => simp [h]`. Consider the case `tmul a b`. Establish `e1 : a = TrivSqZeroExt.fst a • (1 : DualNumber A) + TrivSqZeroExt.snd a • DualNumber.eps`. Apply the tactic sequence `ext <;> simp`. Establish `f1 : TrivSqZeroExt.fst (ψ₀ a * j b) = TrivSqZeroExt.fst a • b`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Simplify using `[hψ₀, dualMap_apply, j, Algebra.smul_def, RingHom.algebraMap_toAlgebra]`. Establish `f2 : TrivSqZeroExt.snd (ψ₀ a * j b) = TrivSqZeroExt.snd a • b`. Simplify using `[hψ₀, dualMap_apply, j, Algebra.smul_def, RingHom.algebraMap_toAlgebra, TrivSqZeroExt.algebraMap_eq_inl]`. Use `show (1 : DualNumber A) ⊗ₜ[A] TrivSqZeroExt.fst (ψ₀ a * j b) + (DualNumber.eps : DualNumber A) ⊗ₜ[A] TrivSqZeroExt.snd (ψ₀ a * j b) = a ⊗ₜ[A] b`. Rewrite using `[f1, f2, ← TensorProduct.smul_tmul, ← TensorProduct.smul_tmul, ← TensorProduct.add_tmul, ← e1]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `add x y hx hy => rw [map_add, hadd, hx, hy]`. Establish `hbij : Function.Bijective G` using `Function.bijective_iff_has_inverse.2 ⟨h, hhg, hgh⟩`. Set `eR : TensorProduct A (DualNumber A) B ≃+* DualNumber B` to `(AlgEquiv.ofBijective G hbij).toRingEquiv`. Use `(CommRingCat.isPushout_tensorProduct A (DualNumber A) B).of_iso (Iso.refl _) (Iso.refl _) (Iso.refl _) eR.toCommRingCatIso (by simp) (by ext; simp [RingHom.algebraMap_toAlgebra]) ?_ ?_` and prove the remaining obligations. Use `CommRingCat.hom_ext (RingHom.ext fun x ↦ ?_) show G (x ⊗ₜ[A] 1) = dualMap g x` and prove the remaining obligations.
+Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `[G, hψ₀]`. Use `CommRingCat.hom_ext (RingHom.ext fun x ↦ ?_) show G (1 ⊗ₜ[A] x) = algebraMap B (DualNumber B) x` and prove the remaining obligations. Simplify using `[G, j, TrivSqZeroExt.algebraMap_eq_inl']`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isPushout_dualMap (g : A →+* B) :
     IsPushout (CommRingCat.ofHom (algebraMap A (DualNumber A))) (CommRingCat.ofHom g)
@@ -111,7 +111,7 @@ end GlobalTheory.DualCover
 namespace GlobalTheory.DualCover
 
 /- English proof (translation)
-Establish `h2` using `isPullback_SpecMap_of_isPushout _ _ _ _ (isPushout_dualMap g)`. Establish `h3 : IsPullback (spMap (dualMap g)) (spMap (algebraMap B (DualNumber B)) ≫ x') (spMap (algebraMap A (DualNumber A)) ≫ x) π` using `(IsPullback.paste_horiz h2.flip hsq.flip).flip`. Establish `he` using `GlobalTheory.GaloisCartDesc.epi_pullback_fst hG (spMap (algebraMap A (DualNumber A)) ≫ x)`. Rewrite using `[← h3.isoPullback_hom_fst]`. Conclude with `epi_comp _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem epi_spMap_dualMap {X Y : Scheme.{0}} {π : X ⟶ Y} {Ga : Type} [Group Ga] {ρ : Ga → (X ⟶ X)}
     (hG : GlobalTheory.ZM.IsGaloisCover Ga ρ π) {A B : Type} [CommRing A] [CommRing B] (g : A →+* B)
@@ -125,13 +125,13 @@ theorem epi_spMap_dualMap {X Y : Scheme.{0}} {π : X ⟶ Y} {Ga : Type} [Group G
   exact epi_comp _ _
 
 /- English proof (translation)
-Introduce `X Y π Ga _ ρ hG R' _ x`. Use `haveI : IsFinite π := hG.fin`. Use `haveI : IsAffine (pullback x π) := isAffine_of_isAffineHom (pullback.fst x π)`. Set `X'` to `pullback x π`. Set `g₁ : R' →+* Γ(X', ⊤)` to `(Spec.preimage (X'.isoSpec.inv ≫ pullback.fst x π)).hom`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hg₁ : spMap g₁ = X'.isoSpec.inv ≫ pullback.fst x π` using `Spec.map_preimage _`. Set `x'' : Sp Γ(X', ⊤) ⟶ X` to `X'.isoSpec.inv ≫ pullback.snd x π`. Establish `hsq : IsPullback (spMap g₁) x'' x π`. Rewrite using `[hg₁]`. Conclude with `IsPullback.of_iso_pullback ⟨by simp [x'', pullback.condition]⟩ X'.isoSpec.symm (by simp) (by simp [x''])`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `⟨Γ(X', ⊤), inferInstance, g₁, x'', dualMap g₁, hsq.w.symm, ?_, ?_, ?_, epi_spMap_dualMap hG g₁ x x'' hsq⟩` and prove the remaining obligations. Use `RingHom.ext fun a ↦ ?_` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp [dualMap_apply, TrivSqZeroExt.algebraMap_eq_inl']`. Use `RingHom.ext fun a ↦ ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Introduce `r`. Use `RingHom.ext fun a ↦ ?_` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp [epsScaleR, dualMap_apply] <;> ring`.
+A detailed English derivation is pending.
 -/
 theorem exists_dualCover : ∀ (X Y : Scheme.{0}) (π : X ⟶ Y) (Ga : Type) [Group Ga] (ρ : Ga → (X ⟶ X)), GlobalTheory.ZM.IsGaloisCover Ga ρ π → ∀ (R' : Type) [CommRing R'] (x : Sp R' ⟶ Y), ∃ (R'' : Type) (_ : CommRing R'') (g₁ : R' →+* R'') (x'' : Sp R'' ⟶ X) (d₁ : DualNumber R' →+* DualNumber R''), x'' ≫ π = spMap g₁ ≫ x ∧ d₁.comp (algebraMap R' (DualNumber R')) = (algebraMap R'' (DualNumber R'')).comp g₁ ∧ (TrivSqZeroExt.fstHom R'' R'' R'').toRingHom.comp d₁ = g₁.comp (TrivSqZeroExt.fstHom R' R' R').toRingHom ∧ (∀ r : R', d₁.comp (epsScaleR r) = (epsScaleR (g₁ r)).comp d₁) ∧ Epi (spMap d₁) := by
   intro X Y π Ga _ ρ hG R' _ x

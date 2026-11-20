@@ -25,7 +25,7 @@ def toStalk : ℂ →+* (Sp ℂ).presheaf.stalk pt :=
   ((Sp ℂ).presheaf.germ ⊤ pt trivial).hom.comp (Scheme.ΓSpecIso (CommRingCat.of ℂ)).inv.hom
 
 /- English proof (translation)
-Rewrite using `[gs_eq x pt U (h trivial), valAt', dif_pos h, valAt, toStalk, RingHom.comp_apply]`. Use `erw [(Scheme.ΓSpecIso (CommRingCat.of ℂ)).hom_inv_id_apply]`. Conclude with `(TopCat.Presheaf.germ_res_apply (Sp ℂ).presheaf (homOfLE h) pt trivial _).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gs_eq_toStalk {X : Scheme.{0}} (x : Sp ℂ ⟶ X) (U : X.Opens) (h : ⊤ ≤ x ⁻¹ᵁ U) (f : Γ(X, U)) :
     gs x pt U f = toStalk (valAt' x U f) := by
@@ -38,14 +38,14 @@ variable {A : Over (Sp ℂ)} [GrpObj A] {L : LB A.left} {g : ℕ} {u : HolUnif A
   {φ : K → (Y ⟶ A.left)} {ε : K → ℤ} {φ' : K' → (Y' ⟶ A.left)} {ε' : K' → ℤ} {φ'' : K'' → (Y ⟶ A.left)} {ε'' : K'' → ℤ}
 
 /- English proof (translation)
-Introduce `ψ` and use `le_chartAt hL ψ trivial`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem good_chartAt (hL : L.IsLB) : Good L pt (chartAt hL) := fun ψ => le_chartAt hL ψ trivial
 
 /- English proof (translation)
-Establish `h₁` using `le_wchart_chartAt hL φ y`. Establish `h₂` using `le_wchart_chartAt hL φ' y'`. Establish `h₃` using `le_wchart_chartAt hL φ'' y`. Rewrite using `[secVal, secVal, genVal, secValIn, secValIn, genValIn, div_mul_div_comm]`. Use `congrArg₂ (· / ·) (toStalk.injective ?_) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(gs_eq_toStalk _ _ h₁ _).symm.trans (h.trans ((congrArg₂ (· * ·) (gs_eq_toStalk _ _ h₂ _) ((gs_unit y pt _ (h₃ trivial) _).symm.trans (gs_eq_toStalk _ _ h₃ _))).trans (map_mul _ _ _).symm))`. Use `congrArg (Units.coeHom ℂ) (hs fun w => Units.mk0 _ (u.fr_ne _ w (le_chartAt hL (u.ex w).left)))` as an intermediate fact. Simplify using `only [map_mul, map_prod, map_zpow, Units.coeHom_apply, Units.val_mk0] at this`. Simplify using `only [frameProd, hz _, hz' _, hz'' _]`. Conclude with `this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem secVal_eq_mul (hL : L.IsLB) {s : LB.Sec (LB.LinComb L φ ε)} {s' : LB.Sec (LB.LinComb L φ' ε')}
     {t : LB.Gen (LB.LinComb L φ'' ε'')} {y : Sp ℂ ⟶ Y} {y' : Sp ℂ ⟶ Y'}
@@ -67,7 +67,7 @@ theorem secVal_eq_mul (hL : L.IsLB) {s : LB.Sec (LB.LinComb L φ ε)} {s' : LB.S
     exact this
 
 /- English proof (translation)
-Take `⟨e, he⟩` from `(valueRules Y y).2.1 _ (le_wchart_chartAt hL φ y)`. Simplify using `only [secVal, secValIn, ← add_div]`. Conclude with `congrArg (· / _) ((he _).trans ((map_add e _ _).trans (congrArg₂ (· + ·) (he _).symm (he _).symm)))`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem secVal_add (hL : L.IsLB) (π : Y ⟶ Sp ℂ) (s t : SecOver π (LB.LinComb L φ ε)) (y : Sp ℂ ⟶ Y)
     (z : K → Fin g → ℂ) : secVal u hL (s + t : SecOver π _) y z = secVal u hL s y z + secVal u hL t y z := by
@@ -76,7 +76,7 @@ theorem secVal_add (hL : L.IsLB) (π : Y ⟶ Sp ℂ) (s t : SecOver π (LB.LinCo
   exact congrArg (· / _) ((he _).trans ((map_add e _ _).trans (congrArg₂ (· + ·) (he _).symm (he _).symm)))
 
 /- English proof (translation)
-Establish `h` using `le_wchart_chartAt hL φ y`. Take `⟨e, he⟩` from `(valueRules Y y).2.1 _ h`. Simplify using `only [secVal, secValIn, ← mul_div_assoc]`. Conclude with `congrArg (· / _) ((he _).trans ((map_mul e _ _).trans (congrArg₂ (· * ·) ((he _).symm.trans ((valueRules Y y).2.2.2.2.2 π hy _ c h)) (he _).symm)))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem secVal_smul (hL : L.IsLB) (π : Y ⟶ Sp ℂ) (c : ℂ) (s : SecOver π (LB.LinComb L φ ε)) {y : Sp ℂ ⟶ Y}
     (hy : y ≫ π = 𝟙 _) (z : K → Fin g → ℂ) : secVal u hL (c • s : SecOver π _) y z = c * secVal u hL s y z := by
@@ -106,7 +106,7 @@ def thetaShift (Hm : Matrix (Fin g) (Fin g) ℂ) (χ : u.Λ → ℂ) (j : ℕ) (
 variable {u} {Hm : Matrix (Fin g) (Fin g) ℂ} {χ : u.Λ → ℂ}
 
 /- English proof (translation)
-Rewrite using `[ahFactor, ahFactor, hermForm_add_left, _root_.mul_assoc (χ l), ← Complex.exp_add]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem ahFactor_translate (l : u.Λ) (z c : Fin g → ℂ) :
     ahFactor Hm χ l (z + c) = ahFactor Hm χ l z * Complex.exp (Real.pi * hermForm Hm c l) := by
@@ -114,7 +114,7 @@ theorem ahFactor_translate (l : u.Λ) (z c : Fin g → ℂ) :
   congr 2; ring
 
 /- English proof (translation)
-Rewrite using `[← Nat.cast_smul_eq_nsmul ℂ, hermForm_smul_left, ← Complex.exp_nat_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem exp_nsmul (j : ℕ) (b l : Fin g → ℂ) :
     Complex.exp (Real.pi * hermForm Hm (j • b) l) = Complex.exp (Real.pi * hermForm Hm b l) ^ j := by
@@ -122,9 +122,9 @@ theorem exp_nsmul (j : ℕ) (b l : Fin g → ℂ) :
   congr 1; ring
 
 /- English proof (translation)
-Use `⟨h.1.comp (differentiable_id.sub_const b), fun l z => ?_⟩` and prove the remaining obligations. Establish `e` using `ahFactor_translate (Hm := Hm) (χ := χ) l (z - b) b`. Rewrite `e` using `[sub_add_cancel]`. Use `show θ (z + l - b) = ahFactor Hm χ l z ^ j * θ (z - b)`. Rewrite using `[add_sub_right_comm, h.2, exp_nsmul, e, mul_pow (ahFactor Hm χ l (z - b))]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem isThetaFn_sub {j : ℕ} {b : Fin g → ℂ} {θ : (Fin g → ℂ) → ℂ} (h : θ ∈ thetaShift u Hm χ j (j • b)) :
     u.IsThetaFn Hm χ j fun z => θ (z - b) := by
@@ -136,7 +136,7 @@ theorem isThetaFn_sub {j : ℕ} {b : Fin g → ℂ} {θ : (Fin g → ℂ) → �
   rfl
 
 /- English proof (translation)
-Proceed by induction on `j with`. Consider the case `zero => rw [zero_smul, pow_zero, ex_zero]`. Consider the case `succ n ih => rw [succ_nsmul, u.ex_add, ih, pow_succ]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem ex_nsmul (u : HolUnif A L g) (j : ℕ) (b : Fin g → ℂ) : u.ex (j • b) = u.ex b ^ j := by
   induction j with
@@ -144,7 +144,7 @@ theorem ex_nsmul (u : HolUnif A L g) (j : ℕ) (b : Fin g → ℂ) : u.ex (j •
   | succ n ih => rw [succ_nsmul, u.ex_add, ih, pow_succ]
 
 /- English proof (translation)
-Rewrite using `[← Category.assoc, Subsingleton.elim (x ≫ toUnit A) (𝟙 _), Category.id_comp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem comp_const (x y : 𝟙_ (Over (Sp ℂ)) ⟶ A) : x ≫ toUnit A ≫ y = y := by
   rw [← Category.assoc, Subsingleton.elim (x ≫ toUnit A) (𝟙 _), Category.id_comp]
@@ -171,7 +171,7 @@ theorem secFn_apply (s : D.SecB j α) (z : Fin g → ℂ) :
     secFn D u j α c s z = secVal u D.P.isLB s (u.ex z).left ![z, z + c, c, 0] := rfl
 
 /- English proof (translation)
-Introduce `k` and use `by have e : ∀ (q : D.P.A ⟶ D.P.A) w, u.ex z ≫ q = u.ex w → (u.ex z).left ≫ q.left = (u.ex w).left := fun q w hq => congrArg (fun m => m.left) hq fin_cases k · exact Category.comp_id _ · exact e _ (z + c) ((MonObj.comp_mul _ _ _).trans (by rw [Category.comp_id, comp_const, u.ex_ad …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isLift_fam (hc : u.ex c = D.c α) (z : Fin g → ℂ) :
     IsLift u (D.famφB α) (u.ex z).left ![z, z + c, c, 0] := fun k => by
@@ -184,7 +184,7 @@ theorem isLift_fam (hc : u.ex c = D.c α) (z : Fin g → ℂ) :
   · exact e _ 0 ((MonObj.comp_one _).trans (ex_zero u).symm)
 
 /- English proof (translation)
-Use `(valAt'_sec D.P.isLB s (isLift_fam hc z) hi).trans (congrArg₂ (· * ·) rfl ?_)` and prove the remaining obligations. Simplify using `[frameProd, Fin.prod_univ_four, Out.DegPre.famε]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem valAt'_eq_secFn (hc : u.ex c = D.c α) (s : D.SecB j α) (z : Fin g → ℂ) (i : Fin 4 → D.P.L.ι)
     (hi : ⊤ ≤ (u.ex z).left ⁻¹ᵁ D.P.L.wchart (D.famφB α) i) :
@@ -194,9 +194,9 @@ theorem valAt'_eq_secFn (hc : u.ex c = D.c α) (s : D.SecB j α) (z : Fin g → 
   simp [frameProd, Fin.prod_univ_four, Out.DegPre.famε]
 
 /- English proof (translation)
-Introduce `s t h`. Use `D.P.isAb.smooth` as an intermediate fact. Use `isReduced_of_smooth_complex _ D.P.A.hom inferInstance` as an intermediate fact. Use `DVR.SecOps.sec_ext fun i => ComplexPoints.eq_of_valAt'_eq D.P.A.hom _ _ _ fun x hx hi => ?_` and prove the remaining obligations. Take `⟨z, hz⟩` from `u.ex_onto (Over.homMk x hx)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `rfl : (u.ex z).left = x` from `by rw [hz]; rfl`. Conclude with `(valAt'_eq_secFn hc s z i hi).trans ((congrArg (· * _) (congrFun h z)).trans (valAt'_eq_secFn hc t z i hi).symm)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem secFn_injective (hc : u.ex c = D.c α) : Function.Injective (secFn D u j α c) := by
   intro s t h
@@ -210,11 +210,11 @@ theorem secFn_injective (hc : u.ex c = D.c α) : Function.Injective (secFn D u j
 variable {Hm : Matrix (Fin g) (Fin g) ℂ} {χ : u.Λ → ℂ}
 
 /- English proof (translation)
-Use `⟨?_, fun l z => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `have := differentiable_secVal D.P.isLB s (𝟙 _) (q := id) differentiable_id (z := fun z => ![z, z + c, c, 0]) (fun k => by fin_cases k <;> simp <;> fun_prop) (fun w => by rw [id, Category.comp_id]; exact isLift_fam hc w)`. Simplify using `only [id, Category.comp_id] at this`. Conclude with `this`. Establish `e : ![z + l, z + l + c, c, 0] = fun k => ![z, z + c, c, 0] k + ((![l, l, 0, 0] : Fin 4 → u.Λ) k : Fin g → ℂ)`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `k`. Apply the tactic sequence `fin_cases k <;> simp`. Normalize the expressions using the abelian group laws. Use `(secFn_apply s _).trans (Eq.trans ?_ (congrArg₂ (· * ·) rfl (secFn_apply s z).symm))` and prove the remaining obligations. Rewrite using `[ex_add_period u z l l.2, e, secVal_add_period D.P.isLB h s (isLift_fam hc z)]`.
+Apply the first step, then apply the next step to every resulting obligation. Normalize the expressions using the abelian group laws. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Establish `n` using `ahFactor_ne_zero h l z`. Simplify using `only [Fin.prod_univ_four, Out.DegPre.famε, Matrix.cons_val, ahFactor_zero D.P.isLB h, ahFactor_translate, zpow_one, one_zpow, _root_.mul_one, zpow_sub₀ n, zpow_natCast]`. Express the relevant statement in the definitionally equal form `_ = ahFactor Hm χ l z ^ j * _`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem secFn_mem (h : u.IsAH Hm χ) (hc : u.ex c = D.c α) (s : SecSpace D j α) :
     secFn D u j α c s ∈ thetaShift u Hm χ j c := by
@@ -239,11 +239,11 @@ theorem secFn_mem (h : u.IsAH Hm χ) (hc : u.ex c = D.c α) (s : SecSpace D j α
 abbrev transl (b : 𝟙_ (Over (Sp ℂ)) ⟶ D.P.A) : D.P.A ⟶ D.P.A := 𝟙 D.P.A * (toUnit D.P.A ≫ b)
 
 /- English proof (translation)
-Take `⟨t₁, h₁, -⟩` from `exists_cubN D.cub (1 : D.P.A ⟶ D.P.A) (toUnit _ ≫ b) (𝟙 _) j`. Take `⟨t₂, h₂⟩` from `DVR.exists_gen_of_local (V := ℂ) D.P.L D.P.isLB (K := Fin 2) ![b.left, (1 : 𝟙_ (Over (Sp ℂ)) ⟶ D.P.A).left] ![-(j : ℤ), j]`. Establish `e : (toUnit D.P.A ≫ b) ^ j = toUnit D.P.A ≫ D.c α` using `by rw [← hb, MonObj.comp_pow]`. Establish `e₁ : (toUnit D.P.A).left ≫ b.left = (toUnit D.P.A ≫ b).left` using `rfl`. Establish `e₂ : (toUnit D.P.A).left ≫ (1 : 𝟙_ (Over (Sp ℂ)) ⟶ D.P.A).left = (1 : D.P.A ⟶ D.P.A).left` using `congrArg (fun m : D.P.A ⟶ D.P.A => m.left) (MonObj.comp_one (toUnit D.P.A))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e₃ : D.famφB α = ![(𝟙 D.P.A : _ ⟶ _).left, (𝟙 D.P.A * (toUnit D.P.A ≫ D.c α)).left, (toUnit D.P.A ≫ D.c α).left, (1 : D.P.A ⟶ D.P.A).left]` using `rfl`. Use `(exists_gen D.P.isLB (fun U _ f => ?_) _ (DVR.mulGen_isGen _ _ _ _ _ _ _ h₁ (DVR.pullGen_isGen _ _ _ _ h₂ (toUnit D.P.A).left))).imp fun t ht => ht.1` and prove the remaining obligations. Rewrite using `[Fintype.prod_sum_type, Fintype.prod_sum_type, e₃, _root_.one_mul, _root_.one_mul, e, _root_.mul_comm (toUnit D.P.A ≫ D.c α), _root_.mul_comm (toUnit D.P.A ≫ b)]`. Simplify using `only [Sum.elim_inl, Sum.elim_inr, Fin.prod_univ_eight, Fin.prod_univ_four, Fin.prod_univ_two, Matrix.cons_val, Matrix.cons_val_zero, Matrix.cons_val_one, e₁, e₂, Out.DegPre.famε, Fintype.prod_unique]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [ofMul_mul, ofMul_zpow]`. Use `module`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_gen_transl {b : 𝟙_ (Over (Sp ℂ)) ⟶ D.P.A} (hb : b ^ j = D.c α) :
     ∃ t : LB.Gen (LB.LinComb D.P.L (Sum.elim (D.famφB α) fun _ : PUnit => (transl b).left)
@@ -268,25 +268,23 @@ theorem exists_gen_transl {b : 𝟙_ (Over (Sp ℂ)) ⟶ D.P.A} (hb : b ^ j = D.
   module
 
 /- English proof (translation)
-Establish `hL` using `D.P.isLB`. Take `⟨b, rfl⟩ : ∃ b : Fin g → ℂ, c = j • b` from `⟨(j : ℂ)⁻¹ • c, by`. Rewrite using `[← Nat.cast_smul_eq_nsmul ℂ, smul_inv_smul₀ (Nat.cast_ne_zero.2 hj)]⟩`. Take `⟨t, ht⟩` from `exists_gen_transl (b := u.ex b) ((ex_nsmul u j b).symm.trans hc)`. Establish `tr : ∀ z, (u.ex z).left ≫ (transl (u.ex b)).left = (u.ex (z + b)).left` using `fun z => congrArg (fun m : 𝟙_ (Over (Sp ℂ)) ⟶ D.P.A => m.left) (show u.ex z ≫ transl (u.ex b) = u.ex (z + b) by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[MonObj.comp_mul, Category.comp_id, comp_const, u.ex_add])`. Establish `hz : ∀ z, IsLift u (Sum.elim (D.famφB α) fun _ : PUnit => (transl (u.ex b)).left) (u.ex z).left (Sum.elim ![z, z + j • b, j • b, 0] fun _ => z + b)`. Introduce and unpack `z (k | k)`. Use `exacts [isLift_fam hc z k, tr z]`. Take `⟨V, hV⟩ : ∃ V : (Fin g → ℂ) → ℂ, ∀ z, V z = genVal u hL t (u.ex z).left (Sum.elim ![z, z + j • b, j • b, 0] fun _ => z + b)` from `⟨_, fun _ => rfl⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hd : Differentiable ℂ V`. Use `differentiable_genVal hL ht (𝟙 _) (q := id) differentiable_id (z := fun z => Sum.elim ![z, z + j • b, j • b, 0] fun _ => z + b) (by` as an intermediate fact. Introduce and unpack `(k | k)`. Apply the tactic sequence `fin_cases k <;> simp <;> fun_prop`. Use the proof step `simp)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Apply the first step, then apply the next step to every resulting obligation. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use the proof step `(fun w => by rw [id, Category.comp_id]; exact hz w)`. Simplify `this` using `only [id, Category.comp_id, ← hV]`. Establish `hconst : ∀ z, V z = V 0` using `fun z => entire_apply_eq_of_periodic_of_span_real hd u.full (fun w l hl => by`. Establish `e : (Sum.elim ![w + l, w + l + j • b, j • b, 0] fun _ : PUnit => w + l + b) = fun k => (Sum.elim ![w, w + j • b, j • b, 0] fun _ : PUnit => w + b) k + ((Sum.elim ![⟨l, hl⟩, ⟨l, hl⟩, 0, 0] (fun _ => ⟨l, hl⟩) : Fin 4 ⊕ PUnit → u.Λ) k : Fin g → ℂ)`. Use function extensionality and compare the values at `k`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Apply the first step, then apply the next step to every resulting obligation. Normalize the expressions using the abelian group laws.
 
-Break down `k with k | k` into its components or cases. Apply the tactic sequence `fin_cases k <;> simp`. Normalize the expressions using the abelian group laws. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[hV, hV, ex_add_period u w l hl, e, genVal_add_period hL h t (hz w)]`. Use `(congrArg (· * _) ?_).trans (_root_.one_mul _)` and prove the remaining obligations. Establish `n` using `ahFactor_ne_zero h ⟨l, hl⟩ w`. Simplify using `only [Fintype.prod_sum_type, Sum.elim_inl, Sum.elim_inr, Fintype.prod_unique, Fin.prod_univ_four, Out.DegPre.famε, Matrix.cons_val, ahFactor_zero hL h, ahFactor_translate, exp_nsmul, zpow_one, one_zpow, _root_.mul_one, zpow_sub₀ n, zpow_neg, zpow_natCast, mul_pow]`. Use the proof step `field_simp) z 0`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Establish `hne : V 0 ≠ 0` using `(hV 0).symm ▸ genVal_ne_zero hL t (hz 0)`. Take `⟨s, hs⟩` from `hθ _ (isThetaFn_sub ((thetaShift u Hm χ j (j • b)).smul_mem (V 0)⁻¹ hm))`. Take `⟨σ, hσ⟩` from `exists_sec hL (φ' := D.famφB α) (ε' := Out.DegPre.famε j) (fun U _ f => by`. Simplify using `only [Fintype.prod_sum_type, Sum.elim_inl, Sum.elim_inr, Fintype.prod_unique, Category.comp_id, zpow_neg]`. Rewrite using `[_root_.mul_left_comm, mul_inv_cancel, _root_.mul_one]) (pullMulSec s (transl (u.ex b)).left t ht)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨σ, funext fun z => ?_⟩` and prove the remaining obligations. Establish `hz' : IsLift u (fun _ : PUnit => 𝟙 D.P.A.left) (u.ex (z + b)).left fun _ => z + b` using `fun _ => Category.comp_id _`. Establish `e` using `(hσ _ (u.ex z).left pt _ (good_chartAt hL)).trans (sval_pullMulSec s _ t ht _ pt (good_chartAt hL))`. Rewrite `e` using `[tr]`. Establish `hi` using `le_wchart_chartAt hL (fun _ : PUnit => 𝟙 D.P.A.left) (u.ex (z + b)).left`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `v : secVal u hL s (u.ex (z + b)).left (fun _ => z + b) = (V 0)⁻¹ * θ z`. Use `(div_eq_iff (frameProd_ne_zero hz' _ hi)).2 ((hs _ (z + b) hi).trans ?_)` and prove the remaining obligations. Simplify using `[frameProd]`. Use `(secVal_eq_mul hL e (isLift_fam hc z) hz' (hz z) fun f => ?_).trans ?_` and prove the remaining obligations. Simplify using `only [Fintype.prod_sum_type, Sum.elim_inl, Sum.elim_inr, Fintype.prod_unique, zpow_neg]`.
-
-Rewrite using `[_root_.mul_left_comm, mul_inv_cancel, _root_.mul_one]`. Rewrite using `[v, ← hV, hconst z, _root_.mul_right_comm, inv_mul_cancel₀ hne, _root_.one_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_secFn_eq (h : u.IsAH Hm χ) (hj : j ≠ 0) (hθ : ∀ θ, u.IsThetaFn Hm χ j θ → ∃ s, u.IsFnPow j s θ)
     (hc : u.ex c = D.c α) {θ : (Fin g → ℂ) → ℂ} (hm : θ ∈ thetaShift u Hm χ j c) : ∃ s, secFn D u j α c s = θ := by
@@ -356,9 +354,9 @@ def secEquiv (h : u.IsAH Hm χ) (hj : j ≠ 0) (hθ : ∀ θ, u.IsThetaFn Hm χ 
 end Main
 
 /- English proof (translation)
-Use extensionality with `θ`. Use `and_congr_right fun _ => ⟨fun H l z => ?_, fun H l z => ?_⟩` and prove the remaining obligations. Rewrite using `[hχ l ⟨l, hΛ ▸ l.2⟩ rfl]`. Conclude with `H ⟨l, hΛ ▸ l.2⟩ z`. Use `H ⟨l, hΛ.ge l.2⟩ z` as an intermediate fact.
+By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[hχ _ l rfl]`. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem theta_eq_thetaShift {O : Type} [CommRing O] [StarRing O] (A : AnArc O) {B : Over (Sp ℂ)} [GrpObj B]
     {L : LB B.left} (u : HolUnif B L A.gB) (χ : u.Λ → ℂ) (hΛ : u.Λ = A.abelian₂)
@@ -373,7 +371,7 @@ theorem theta_eq_thetaShift {O : Type} [CommRing O] [StarRing O] (A : AnArc O) {
     exact this
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨secEquiv h (Nat.one_le_iff_ne_zero.1 hj) hθ hc, fun _ _ => rfl, valAt'_eq_secFn hc⟩`.
+Supply the required witnesses or components.
 -/
 theorem sections_equiv_theta (D : Out.DegPre ℂ) {g : ℕ} (u : HolUnif D.P.A D.P.L g) (Hm : Matrix (Fin g) (Fin g) ℂ)
     (χ : u.Λ → ℂ) (h : u.IsAH Hm χ) (j : ℕ) (hj : 1 ≤ j) (hθ : ∀ θ, u.IsThetaFn Hm χ j θ → ∃ s, u.IsFnPow j s θ)
@@ -386,7 +384,7 @@ theorem sections_equiv_theta (D : Out.DegPre ℂ) {g : ℕ} (u : HolUnif D.P.A D
   ⟨secEquiv h (Nat.one_le_iff_ne_zero.1 hj) hθ hc, fun _ _ => rfl, valAt'_eq_secFn hc⟩
 
 /- English proof (translation)
-Rewrite using `[theta_eq_thetaShift A u χ hΛ hχ]`. Conclude with `sections_equiv_theta D u A.Hm χ h j hj hθ α _ hc`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sections_equiv_anArc_theta {O : Type} [CommRing O] [StarRing O] (A : AnArc O) (D : Out.DegPre ℂ)
     (u : HolUnif D.P.A D.P.L A.gB) (χ : u.Λ → ℂ) (hΛ : u.Λ = A.abelian₂)

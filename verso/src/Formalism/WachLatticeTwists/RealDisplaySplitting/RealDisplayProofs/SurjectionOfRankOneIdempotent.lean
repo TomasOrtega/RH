@@ -30,25 +30,23 @@ instance [IsDomain O] [IsDiscreteValuationRing O] :
 end Inst
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (algebraMap O (FractionRing O))` using `IsFractionRing.injective O _`. Establish `he0 : e ≠ 0`. Introduce and unpack `rfl`. Simplify using `at hrk`. Choose the witnesses or unpack the hypotheses as in `⟨i1, j1, h1⟩ : ∃ i j, e i j ≠ 0 := by`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `he0 (Matrix.ext h)`. Take `⟨⟨i0, j0⟩, -, hp0⟩` from `Finset.exists_min_image (Finset.univ : Finset (n × n)) (fun p => IsDiscreteValuationRing.addVal O (e p.1 p.2)) ⟨(i1, j1), Finset.mem_univ _⟩`. Establish `hdiv : ∀ i j, e i0 j0 ∣ e i j` using `fun i j => (IsDiscreteValuationRing.addVal_le_iff_dvd).1 (hp0 (i, j) (Finset.mem_univ _))`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hd0 : e i0 j0 ≠ 0`. Introduce `h`. Apply `h1` to reduce the goal to its premises. Use `hp0 (i1, j1) (Finset.mem_univ _)` as an intermediate fact. Simplify using `only [h, IsDiscreteValuationRing.addVal_zero, top_le_iff] at this`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(IsDiscreteValuationRing.addVal_eq_top_iff).1 this`. Establish `hminor : ∀ i j, e i j * e i0 j0 = e i j0 * e i0 j`. Establish `hcol : ∀ j, (fun i => (e.map (algebraMap O (FractionRing O))) i j) ∈ LinearMap.range (e.map (algebraMap O (FractionRing O))).mulVecLin` using `fun j => ⟨Pi.single j 1, by`. Use extensionality with `i`. Simplify using `[Matrix.mulVecLin_apply, Matrix.mulVec, dotProduct, Pi.single_apply]⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hnz : (⟨_, hcol j0⟩ : LinearMap.range (e.map (algebraMap O (FractionRing O))).mulVecLin) ≠ 0`. Introduce `h`. Use `congrFun (congrArg Subtype.val h) i0` as an intermediate fact. Simplify using `only [Matrix.map_apply, ZeroMemClass.coe_zero, Pi.zero_apply] at this`. Conclude with `hd0 ((map_eq_zero_iff _ hinj).1 this)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hrk' : Module.finrank (FractionRing O) (LinearMap.range (e.map (algebraMap O (FractionRing O))).mulVecLin) = 1` using `hrk`. Establish `hall` using `(finrank_eq_one_iff_of_nonzero' _ hnz).1 hrk'`. Introduce `i j`. Take `⟨t, ht⟩` from `hall ⟨_, hcol j⟩`. Establish `hti : ∀ i', t * algebraMap O (FractionRing O) (e i' j0) = algebraMap O (FractionRing O) (e i' j)` using `fun i' => by`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `congrFun (congrArg Subtype.val ht) i'` as an intermediate fact. Simplify using `using this`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[map_mul, map_mul, ← hti i, ← hti i0]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result.
 
-Use `choose v hv using fun i => hdiv i j0`. Use `⟨v, fun j => e i0 j, fun i j => ?_, ?_⟩` and prove the remaining obligations. Apply `mul_left_cancel₀ hd0` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Apply `mul_left_cancel₀ hd0` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Establish `hsq : ∑ j, e i0 j * e j j0 = e i0 j0`. Use `congrFun (congrFun he i0) j0` as an intermediate fact. Simplify `this` using `[Matrix.mul_apply]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.mul_sum]`.
-
-Conclude with `Finset.sum_congr rfl fun j _ => by ring`. Use `_ = ∑ j, e i0 j * e j j0 := by simp_rw [← hv]`. Use `_ = e i0 j0 * 1 := by rw [hsq, mul_one]`.
+A detailed English derivation is pending.
 -/
 theorem rank_one_factor (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (n : Type) [Fintype n]
     [DecidableEq n] (e : Matrix n n O) (he : e * e = e)
@@ -112,35 +110,29 @@ theorem rank_one_factor (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuatio
       _ = e i0 j0 * 1 := by rw [hsq, mul_one]
 
 /- English proof (translation)
-Establish `hE : ρ e₁ * ρ e₁ = ρ e₁` using `by rw [← map_mul, he]`. Take `⟨v, w, hvw, hwv⟩` from `rank_one_factor O n (ρ e₁) hE hrk`. Establish `hmap : ∀ i, ∑ j, ρ e₁ i j * v j = v i` using `fun i => by`. Simplify using `only [hvw]`. Rewrite using `[show ∑ j, v i * w j * v j = v i * ∑ j, w j * v j by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[Finset.mul_sum]; exact Finset.sum_congr rfl fun j _ => by ring, hwv, mul_one]`. Establish `hfix : e₁ • (show LatM O O n ρ from v) = (show LatM O O n ρ from v)`. Use function extensionality and compare the values at `i`. Use `show ∑ j, ρ e₁ i j • v j = v i`. Simplify `hmap i` using `only [smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨v, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, hfix, ?_⟩` and prove the remaining obligations. Introduce `a u x`. Use function extensionality and compare the values at `i`. Use `show (∑ j, ρ a i j • u j) • x = ∑ j, ρ a i j • (u j • x)`. Rewrite using `[Finset.sum_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [smul_eq_mul, mul_smul]`. Introduce `m hm`. Use `⟨∑ j, w j • m j, ?_⟩` and prove the remaining obligations. Use `conv_lhs => rw [← hm]`. Use function extensionality and compare the values at `i`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `show ∑ j, ρ e₁ i j • m j = v i • ∑ j, w j • m j`. Simplify using `only [hvw, mul_smul, Finset.smul_sum]`. Introduce `a u`. Use function extensionality and compare the values at `i`. Use `show algebraMap O (FractionRing O) (∑ j, ρ a i j • u j) = ∑ j, ρ a i j • algebraMap O (FractionRing O) (u j)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sum]`. Simplify using `[Algebra.smul_def]`. Introduce `a u`. Use function extensionality and compare the values at `i`. Use `show (1 : Submodule O (FractionRing O)).mkQ (∑ j, ρ a i j • u j) = ∑ j, ρ a i j • (1 : Submodule O (FractionRing O)).mkQ (u j)`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[map_sum]`. Simplify using `only [map_smul]`. Introduce `u x`. Use function extensionality and compare the values at `i`. Use `show u i • Submodule.Quotient.mk x = (1 : Submodule O (FractionRing O)).mkQ (x * algebraMap O (FractionRing O) (u i))`.
+Apply function extensionality and compare values at an arbitrary argument. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[Submodule.mkQ_apply, ← Submodule.Quotient.mk_smul, Algebra.smul_def, mul_comm]`. Introduce `u u' h`. Use function extensionality and compare the values at `i`. Conclude with `IsFractionRing.injective O (FractionRing O) (congrFun h i)`. Introduce `q choose y hy using fun i => Submodule.Quotient.mk_surjective _ (q i)`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `⟨y, funext hy⟩`. Use extensionality with `u`. Simplify using `only [LinearMap.mem_ker, LinearMap.mem_range]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Establish `hi : ∀ i, ∃ c : O, algebraMap O (FractionRing O) c = u i` using `fun i => by`. Establish `h' : (1 : Submodule O (FractionRing O)).mkQ (u i) = 0` using `congrFun h i`. Rewrite `h'` using `[Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero, Submodule.mem_one]`. Conclude with `h'`. Use `choose c hc using hi`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨c, funext hc⟩`. Introduce and unpack `⟨c, rfl⟩`. Use function extensionality and compare the values at `i`. Use `show (1 : Submodule O (FractionRing O)).mkQ (algebraMap O (FractionRing O) (c i)) = 0`. Rewrite using `[Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero, Submodule.mem_one]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨c i, rfl⟩`. Introduce `u`. Take `⟨b, hb⟩` from `IsLocalization.exist_integer_multiples (nonZeroDivisors O) (Finset.univ : Finset n) (fun i => (u i : FractionRing O))`. Use `⟨b, nonZeroDivisors.coe_ne_zero b, ?_⟩` and prove the remaining obligations. Use `choose c hc using fun i => hb i (Finset.mem_univ i)`.
-
-Conclude with `⟨c, funext fun i => (hc i).trans rfl⟩`. Introduce `u`. Take `⟨c, hc⟩` from `hsurj (Matrix.of fun i j => u i * w j)`. Use `⟨c, ?_⟩` and prove the remaining obligations. Establish `hms : (c * e₁) • (show LatM O O n ρ from v) = c • e₁ • (show LatM O O n ρ from v)` using `mul_smul _ _ _`.
-
-Use `hms.trans ?_` and prove the remaining obligations. Rewrite using `[hfix]`. Use function extensionality and compare the values at `i`. Use `show ∑ j, ρ c i j • v j = u i`. Simplify using `only [hc, Matrix.of_apply, smul_eq_mul]`.
-
-Rewrite using `[show ∑ j, u i * w j * v j = u i * ∑ j, w j * v j by`. Rewrite using `[Finset.mul_sum]; exact Finset.sum_congr rfl fun j _ => by ring, hwv, mul_one]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem surjection_of_rank_one_idempotent (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (A : Type) [Ring A]
     (n : Type) [Fintype n] [DecidableEq n] (ρ : A →+* Matrix n n O) (e₁ : A)
@@ -225,9 +217,9 @@ theorem surjection_of_rank_one_idempotent (O : Type) [CommRing O] [IsDomain O] [
       rw [Finset.mul_sum]; exact Finset.sum_congr rfl fun j _ => by ring, hwv, mul_one]
 
 /- English proof (translation)
-Use `⟨fun c => ?_, fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨y, hy⟩` from `hsc c`. Use `⟨y * δO, Ideal.mul_mem_left _ y (Ideal.mem_span_singleton_self δO), fun m => ?_⟩` and prove the remaining obligations. Rewrite using `[mul_smul, hE, hy, mul_smul]`. Take `⟨a, rfl⟩` from `Ideal.mem_span_singleton'.1 hx`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨algebraMap O A a, fun m => ?_⟩` and prove the remaining obligations. Rewrite using `[mul_smul, hE, algebraMap_smul, mul_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem scalar_action_on_block (O : Type) [CommRing O] (A : Type) [Ring A] [Algebra O A] (M : Type) [AddCommGroup M] [Module A M]
     [Module O M] [IsScalarTower O A M] (E : A) (δO : O) (hE : ∀ m : M, E • m = δO • m)

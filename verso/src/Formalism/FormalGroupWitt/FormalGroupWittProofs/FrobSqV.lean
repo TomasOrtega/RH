@@ -9,9 +9,9 @@ open Formalism.G
 namespace PadicFrobeniusSquare
 
 /- English proof (translation)
-Establish `h1 : y ∈ RingHom.ker (PadicInt.toZMod (p` using `p)) := hy`. Rewrite `h1` using `[PadicInt.ker_toZMod]`. Establish `h2 : ‖y‖ < 1` using `PadicInt.mem_nonunits.1 ((IsLocalRing.mem_maximalIdeal _).1 h1)`. Take `⟨z, rfl⟩` from `(PadicInt.norm_lt_one_iff_dvd _).1 h2`. Rewrite using `[norm_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_le_of_le_one_right (norm_nonneg _) (PadicInt.norm_le_one z)`.
+A detailed English derivation is pending.
 -/
 theorem padicInt_norm_le_p {p : ℕ} [Fact p.Prime] (y : ℤ_[p]) (hy : PadicInt.toZMod y = 0) :
     ‖y‖ ≤ ‖(p : ℤ_[p])‖ := by
@@ -25,9 +25,9 @@ theorem padicInt_norm_le_p {p : ℕ} [Fact p.Prime] (y : ℤ_[p]) (hy : PadicInt
 end PadicFrobeniusSquare
 
 /- English proof (translation)
-Introduce `l _`. Use `⟨Fact.out, ⟨2, two_pos, rfl⟩, Padic.norm_p_lt_one, ?_⟩` and prove the remaining obligations. Introduce `a ha`. Establish `hz : ∀ z : ZMod l, z ^ l ^ 2 = z` using `fun z => by`. Rewrite using `[pow_two, pow_mul, ZMod.pow_card, ZMod.pow_card]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `y : ℤ_[l]` to `⟨a, ha⟩`. Establish `h` using `PadicFrobeniusSquare.padicInt_norm_le_p (y - y ^ l ^ 2) (by rw [map_sub, map_pow, hz, sub_self])`. Rewrite `h` using `[PadicInt.norm_def, PadicInt.norm_def, PadicInt.coe_sub, PadicInt.coe_pow, PadicInt.coe_natCast]`. Use `show ‖a - a ^ l ^ 2‖ ≤ ‖(l : ℚ_[l])‖`. Conclude with `h`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frobenius_lift_padic_square : Formalism.FG.FrobLiftPadicSq := by
   intro l _

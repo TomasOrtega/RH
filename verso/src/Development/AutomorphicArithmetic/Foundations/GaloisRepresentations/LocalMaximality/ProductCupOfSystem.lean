@@ -8,7 +8,7 @@ open scoped TensorProduct
 namespace UpperTheory.Gal.productCup_of_system
 
 /- English proof (translation)
-Establish `h : Finset.map ofLex.toEmbedding (Finset.map toLex.toEmbedding (I.disjSum J)) = I.disjSum J`. Use extensionality with `x`. Simplify using the standard rewrite rules. Simplify using `only [lft, uni, h, Finset.toLeft_disjSum]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private lemma lft_uni' {ι κ : Type} [LinearOrder ι] [LinearOrder κ] (I : Finset ι) (J : Finset κ) : lft (uni I J) = I := by
   have h : Finset.map ofLex.toEmbedding (Finset.map toLex.toEmbedding (I.disjSum J)) = I.disjSum J := by
@@ -17,7 +17,7 @@ private lemma lft_uni' {ι κ : Type} [LinearOrder ι] [LinearOrder κ] (I : Fin
   simp only [lft, uni, h, Finset.toLeft_disjSum]
 
 /- English proof (translation)
-Establish `h : Finset.map ofLex.toEmbedding (Finset.map toLex.toEmbedding (I.disjSum J)) = I.disjSum J`. Use extensionality with `x`. Simplify using the standard rewrite rules. Simplify using `only [rgt, uni, h, Finset.toRight_disjSum]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private lemma rgt_uni' {ι κ : Type} [LinearOrder ι] [LinearOrder κ] (I : Finset ι) (J : Finset κ) : rgt (uni I J) = J := by
   have h : Finset.map ofLex.toEmbedding (Finset.map toLex.toEmbedding (I.disjSum J)) = I.disjSum J := by
@@ -26,7 +26,7 @@ private lemma rgt_uni' {ι κ : Type} [LinearOrder ι] [LinearOrder κ] (I : Fin
   simp only [rgt, uni, h, Finset.toRight_disjSum]
 
 /- English proof (translation)
-Simplify using `only [lft, rgt, uni, Finset.toLeft_disjSum_toRight]`. Use extensionality with `x`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private lemma uni_lft_rgt' {ι κ : Type} [LinearOrder ι] [LinearOrder κ] (s : Finset (ι ⊕ₗ κ)) : uni (lft s) (rgt s) = s := by
   simp only [lft, rgt, uni, Finset.toLeft_disjSum_toRight]
@@ -34,17 +34,17 @@ private lemma uni_lft_rgt' {ι κ : Type} [LinearOrder ι] [LinearOrder κ] (s :
   simp
 
 /- English proof (translation)
-Simplify using `[uni]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma card_uni' {ι κ : Type} [LinearOrder ι] [LinearOrder κ] (I : Finset ι) (J : Finset κ) : (uni I J).card = I.card + J.card := by
   simp [uni]
 
 /- English proof (translation)
-Rewrite using `[← Finset.card_union_add_card_inter, Finset.filter_union_right]`. Establish `h1 : I.filter (fun x => x ≤ i ∨ i ≤ x) = I` using `Finset.filter_true_of_mem (fun x _ => le_total x i)`. Establish `h2 : I.filter (· ≤ i) ∩ I.filter (i ≤ ·) = {i}`. Use extensionality with `x`. Simplify using `only [Finset.mem_inter, Finset.mem_filter, Finset.mem_singleton]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨_, a⟩, _, b⟩`. Conclude with `le_antisymm a b`. Introduce and unpack `rfl`. Conclude with `⟨⟨hi, le_rfl⟩, hi, le_rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, h2, Finset.card_singleton]`.
+A detailed English derivation is pending.
 -/
 private lemma card_split {ι : Type} [LinearOrder ι] (I : Finset ι) (i : ι) (hi : i ∈ I) :
     (I.filter (· ≤ i)).card + (I.filter (i ≤ ·)).card = I.card + 1 := by
@@ -61,7 +61,7 @@ private lemma card_split {ι : Type} [LinearOrder ι] (I : Finset ι) (i : ι) (
   rw [h1, h2, Finset.card_singleton]
 
 /- English proof (translation)
-Simplify using `[acx, Submodule.mem_pi]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma mem_acx_C {ι E : Type} [LinearOrder ι] [AddCommGroup E] [Module ℂ E] (A : Finset ι → Submodule ℂ E)
     (w : ι → Module.End ℂ E) (n : ℤ) (c : Finset ι → E) :
@@ -69,9 +69,7 @@ private lemma mem_acx_C {ι E : Type} [LinearOrder ι] [AddCommGroup E] [Module 
   simp [acx, Submodule.mem_pi]
 
 /- English proof (translation)
-Use `Submodule.span_induction (p := fun y _ => y ∈ ⋀[K]^q Ω[K⁄ℂ]) ?_ ?_ ?_ ?_ hy` and prove the remaining obligations. Introduce and unpack `_ ⟨b, -, v, -, rfl⟩`. Conclude with `Submodule.smul_mem _ _ (ExteriorAlgebra.ιMulti_range K q ⟨_, rfl⟩)`. Conclude with `Submodule.zero_mem _`. Introduce `a b _ _ ha hb`.
-
-Conclude with `Submodule.add_mem _ ha hb`. Introduce `c a _ ha`. Conclude with `Submodule.smul_of_tower_mem _ c ha`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private lemma omB_le_fixed {K : Type} [Field K] [Algebra ℂ K] (B : Subalgebra ℂ K) (q : ℕ) (y : DR ℂ K)
     (hy : y ∈ omB ℂ K B q) : y ∈ ⋀[K]^q Ω[K⁄ℂ] := by
@@ -85,9 +83,9 @@ private lemma omB_le_fixed {K : Type} [Field K] [Algebra ℂ K] (B : Subalgebra 
     exact Submodule.smul_of_tower_mem _ c ha
 
 /- English proof (translation)
-Establish `hne : I.Nonempty` using `⟨i, hi⟩`. Establish `hmin : I.min' hne ∈ I.filter (· ≤ i)` using `Finset.mem_filter.2 ⟨Finset.min'_mem _ _, Finset.min'_le _ _ hi⟩`. Establish `hfne : (I.filter (· ≤ i)).Nonempty` using `⟨_, hmin⟩`. Simplify using `only [pk, dif_pos hne, dif_pos hfne]`. Apply `le_antisymm` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `Finset.min'_le _ _ hmin`. Conclude with `Finset.le_min' _ _ _ (fun y hy => Finset.min'_le _ _ (Finset.mem_filter.1 hy).1)`.
+A detailed English derivation is pending.
 -/
 private lemma pk_filter {d : ℕ} (I : Finset (Fin (d + 1))) (i : Fin (d + 1)) (hi : i ∈ I) :
     pk (I.filter (· ≤ i)) = pk I := by
@@ -104,7 +102,7 @@ section
 variable {F K : Type} [Field F] [Field K] [Algebra ℂ F] [Algebra ℂ K] [Algebra F K] [IsScalarTower ℂ F K]
 
 /- English proof (translation)
-Simplify using `[muP]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma muP_tmul' (τ : DR ℂ K →ₗ[K] K) (w' w'' w : DR ℂ K) :
     muP F K τ (w' ⊗ₜ w'') w = (Algebra.trace F K (τ (w' * w))) ⊗ₜ[ℂ] w'' := by
@@ -114,21 +112,21 @@ private abbrev phi : F ⊗[ℂ] K →ₐ[ℂ] K ⊗[ℂ] K :=
   Algebra.TensorProduct.map (IsScalarTower.toAlgHom ℂ F K) (AlgHom.id ℂ K)
 
 /- English proof (translation)
-Simplify using `[phi, sysP, sysZ]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma phi_X {d : ℕ} (x : Fin (d + 1) → Fˣ) (a : ℕ) (i : Fin (d + 1)) :
     phi (((sysP K x a).X i : (F ⊗[ℂ] K)ˣ) : F ⊗[ℂ] K) = (((sysZ K x a).X i : (K ⊗[ℂ] K)ˣ) : K ⊗[ℂ] K) := by
   simp [phi, sysP, sysZ]
 
 /- English proof (translation)
-Simplify using `[phi, sysP, sysZ]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma phi_Y {d : ℕ} (x : Fin (d + 1) → Fˣ) (a : ℕ) (i : Fin (d + 1)) :
     phi (((sysP K x a).Y i : (F ⊗[ℂ] K)ˣ) : F ⊗[ℂ] K) = (((sysZ K x a).Y i : (K ⊗[ℂ] K)ˣ) : K ⊗[ℂ] K) := by
   simp [phi, sysP, sysZ]
 
 /- English proof (translation)
-Simplify using `only [Units.coe_prod, map_prod]`. Use `Finset.prod_congr rfl (fun l _ => ?_)` and prove the remaining obligations. Simplify using `only [Sys.u, n11, Units.val_mul, Units.val_pow_eq_pow_val, map_mul, map_pow, phi_X, phi_Y]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 private lemma phi_u {d : ℕ} (x : Fin (d + 1) → Fˣ) (a : ℕ) (i j : Fin (d + 1)) (L : Finset (Mi d)) :
     phi (((∏ l ∈ L, (sysP K x a).u n11 i j l : (F ⊗[ℂ] K)ˣ)) : F ⊗[ℂ] K) =
@@ -138,20 +136,20 @@ private lemma phi_u {d : ℕ} (x : Fin (d + 1) → Fˣ) (a : ℕ) (i j : Fin (d 
   simp only [Sys.u, n11, Units.val_mul, Units.val_pow_eq_pow_val, map_mul, map_pow, phi_X, phi_Y]
 
 /- English proof (translation)
-Simplify using `only [Sys.mu, map_sub, map_mul, phi_X, phi_Y]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma phi_mu {d : ℕ} (x : Fin (d + 1) → Fˣ) (a : ℕ) (l : Mi d) :
     phi ((sysP K x a).mu l) = (sysZ K x a).mu l := by
   simp only [Sys.mu, map_sub, map_mul, phi_X, phi_Y]
 
 /- English proof (translation)
-Take `⟨m0, hm0, rfl⟩` from `Submodule.mem_map.1 hm`. Establish `hU : ((∏ l ∈ L, (sysZ K x a).u n11 (pk I') (pk J) l : (K ⊗[ℂ] K)ˣ) : K ⊗[ℂ] K) = phi ((∏ l ∈ L, (sysP K x a).u n11 (pk I) (pk J) l : (F ⊗[ℂ] K)ˣ) : F ⊗[ℂ] K)`. Rewrite using `[phi_u, hpk]`. Establish `e : muP F K τ ((sysZ K x a).act ((∏ l ∈ L, (sysZ K x a).u n11 (pk I') (pk J) l : (K ⊗[ℂ] K)ˣ) : K ⊗[ℂ] K) m0) y = (sysP K x a).act ((∏ l ∈ L, (sysP K x a).u n11 (pk I) (pk J) l : (F ⊗[ℂ] K)ˣ) : F ⊗[ℂ] K) (muP F K τ m0 y)`. Rewrite using `[hU]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h6 _ m0 y`. Rewrite using `[e]`. Use `Submodule.mem_map_of_mem ?_` and prove the remaining obligations. Establish `hne : I.Nonempty` using `hI'.mono hs'`. Establish `hyI : y ∈ omB ℂ K (rB ℂ K (xv x) I) a` using `hmono a I'' I hI'' hs'' hy`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : ∀ w' ∈ omB ℂ K (rB ℂ K (xv x) I') (d - a), ∀ w'' ∈ omB ℂ K (rB ℂ K (xv x) J) a, muP F K τ (w' ⊗ₜ w'') y ∈ (sysP K x a).M I J`. Introduce `w' hw' w'' hw''`. Rewrite using `[muP_tmul']`. Establish `hw'I : w' ∈ omB ℂ K (rB ℂ K (xv x) I) (d - a)` using `hmono (d - a) I' I hI' hs' hw'`. Establish `htr` using `(GlobalTheory.T.twistedDual_regularForms_finiteCover ℂ F K d (xv x) hfin τ hτ I hne (d - a) a (Nat.sub_add_cancel had) y (omB_le_fixed _ a y hyI)).2 hyI w' hw'I`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Submodule.apply_mem_map₂ _ htr hw''`. Establish `hle : Submodule.map₂ (TensorProduct.mk ℂ (DR ℂ K) (DR ℂ K)) (omB ℂ K (rB ℂ K (xv x) I') (d - a)) (omB ℂ K (rB ℂ K (xv x) J) a) ≤ ((sysP K x a).M I J).comap ((muP F K τ).flip y)` using `Submodule.map₂_le.2 (fun w' hw' w'' hw'' => key w' hw' w'' hw'')`. Conclude with `hle hm0`.
+A detailed English derivation is pending.
 -/
 private lemma term_mem {d : ℕ} (x : Fin (d + 1) → Fˣ) (hfin : IsFinCover ℂ K (xv x)) (τ : DR ℂ K →ₗ[K] K)
     (hτ : IsTop ℂ K (xv x) τ) (a : ℕ) (had : a ≤ d)
@@ -196,55 +194,47 @@ end
 end UpperTheory.Gal.productCup_of_system
 
 /- English proof (translation)
-Introduce `hR hB hOk hA hG`. Unfold `PCup`. Introduce `F K _ _ _ _ _ _ d x hfin τ hτ a p had c hc hdiag α hα`. Take `⟨hcC, hcD⟩` from `Submodule.mem_inf.1 hc`. Take `⟨hαC, hαD⟩` from `Submodule.mem_inf.1 hα`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hAL` using `hA F K d x hfin τ hτ a`. Establish `h6 : ∀ (s : F ⊗[ℂ] K) m w, muP F K τ (actZ K (phi (F` using `F) (K := K) s) m) w = (sysP K x a).act s (muP F K τ m w) := hAL.2.2.2.2.2`. Establish `hmono : ∀ (q : ℕ) (s t : Finset (Fin (d + 1))), s.Nonempty → s ⊆ t → omB ℂ K (rB ℂ K (xv x) s) q ≤ omB ℂ K (rB ℂ K (xv x) t) q` using `fun q => (hG F K d x hfin q).2.2`. Establish `hcv` using `(mem_acx_C _ _ _ c).1 hcC`. Establish `hcz : ∀ (I J : Finset (Fin (d + 1))) (L : Finset (Mi d)), ¬ (I.card + J.card + L.card = d + 2 ∧ I.Nonempty ∧ J.Nonempty) → c (uni (uni I J) L) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `I J L h`. Establish `hv` using `hcv (uni (uni I J) L)`. Rewrite `hv` using `[card_uni', card_uni', mixF, lft_uni', lft_uni', rgt_uni']`. Use `split_ifs at hv with h1 h2`. Conclude with `absurd ⟨by push_cast at h1; omega, h2⟩ h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(Submodule.mem_bot _).1 hv`. Conclude with `(Submodule.mem_bot _).1 hv`. Establish `hcm : ∀ (I J : Finset (Fin (d + 1))) (L : Finset (Mi d)), I.card + J.card + L.card = d + 2 → I.Nonempty → J.Nonempty → c (uni (uni I J) L) ∈ ((sysZ K x a).M I J).map ((sysZ K x a).act ((∏ l ∈ L, (sysZ K x a).u n11 (pk I) (pk J) l : (K ⊗[ℂ] K)ˣ) : K ⊗[ℂ] K))`. Introduce `I J L h h1 h2`. Establish `hv` using `hcv (uni (uni I J) L)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hv` using `[card_uni', card_uni', mixF, lft_uni', lft_uni', rgt_uni', if_pos (by push_cast; omega), if_pos ⟨h1, h2⟩, rgt_uni']`. Conclude with `hv`. Establish `hαv : ∀ s, α s ∈ (if s.Nonempty ∧ (s.card : ℤ) = (p : ℤ) + 1 then omB ℂ K (rB ℂ K (xv x) s) a else ⊥)` using `fun s => (Submodule.mem_pi.1 hαC) s (Set.mem_univ _)`. Establish `hαz : ∀ s, ¬ (s.Nonempty ∧ s.card = p + 1) → α s = 0`. Introduce `s h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hv` using `hαv s`. Rewrite `hv` using `[if_neg (fun h' => h ⟨h'.1, by omega⟩)]`. Conclude with `(Submodule.mem_bot _).1 hv`. Establish `hαm : ∀ s, s.Nonempty → s.card = p + 1 → α s ∈ omB ℂ K (rB ℂ K (xv x) s) a`. Introduce `s h1 h2`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hv` using `hαv s`. Rewrite `hv` using `[if_pos ⟨h1, by omega⟩]`. Conclude with `hv`. Establish `hterm : ∀ (I J : Finset (Fin (d + 1))) (L : Finset (Mi d)) (i : Fin (d + 1)), i ∈ I → muP F K τ (c (uni (uni (I.filter (· ≤ i)) J) L)) (α (I.filter (i ≤ ·))) ∈ (if ((uni (uni I J) L).card : ℤ) = ↑d + ↑p + 2 then mixF (fun I J => Submodule.map ((sysP K x a).act ((∏ l ∈ L, (sysP K …`. Introduce `I J L i hi`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hfne : (I.filter (· ≤ i)).Nonempty` using `⟨i, Finset.mem_filter.2 ⟨hi, le_rfl⟩⟩`. Establish `hgne : (I.filter (i ≤ ·)).Nonempty` using `⟨i, Finset.mem_filter.2 ⟨hi, le_rfl⟩⟩`. Distinguish the cases in `h1 : (I.filter (· ≤ i)).card + J.card + L.card = d + 2 ∧ J.Nonempty`. Use `swap`. Rewrite using `[hcz _ _ _ (fun h => h1 ⟨h.1, h.2.2⟩), map_zero, LinearMap.zero_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Submodule.zero_mem _`. Distinguish the cases in `h2 : (I.filter (i ≤ ·)).card = p + 1`. Use `swap`. Rewrite using `[hαz _ (fun h => h2 h.2), map_zero]`. Conclude with `Submodule.zero_mem _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately.
 
-Establish `hsplit` using `card_split I i hi`. Establish `hIne : I.Nonempty` using `⟨i, hi⟩`. Rewrite using `[if_pos (by rw [card_uni', card_uni']; push_cast; omega), mixF, lft_uni', rgt_uni', if_pos ⟨hIne, h1.2⟩]`. Conclude with `term_mem x hfin τ hτ a had h6 hmono I _ _ J L hfne hgne (Finset.filter_subset _ _) (Finset.filter_subset _ _) (pk_filter I i hi) _ (hcm _ _ _ h1.1 hfne h1.2) _ (hαm _ hgne h2)`. Use `⟨Submodule.mem_inf.2 ⟨?_, ?_⟩, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Sys.cx, mem_acx_C]`. Introduce `s`. Take `⟨I, J, L, rfl⟩ : ∃ I J L, s = uni (uni I J) L` from `⟨lft (lft s), rgt (lft s), rgt s, by rw [uni_lft_rgt', uni_lft_rgt']⟩`. Establish `hsum` using `Submodule.sum_mem _ (fun i hi => hterm I J L i hi)`. Simplify using `only [rcup, lft_uni', rgt_uni']`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `first`. Consider the case `exact Submodule.smul_of_tower_mem _ _ hsum`. Consider the case `exact Submodule.smul_mem _ _ hsum`. Rewrite using `[LinearMap.mem_ker]`. Establish `hz : ∀ (l : Mi d) (m : DR ℂ K ⊗[ℂ] DR ℂ K) (y : DR ℂ K), muP F K τ ((sysZ K x a).act ((sysZ K x a).mu l) m) y = (sysP K x a).act ((sysP K x a).mu l) (muP F K τ m y)`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `l m y`. Use `h6 ((sysP K x a).mu l) m y` as an intermediate fact. Rewrite `this` using `[phi_mu]`. Conclude with `this`. Conclude with `hR d _ _ (sysZ K x a) _ _ _ (sysP K x a) (Mi d) _ _ (muP F K τ) p c α hz (LinearMap.mem_ker.1 hcD) (fun J L => hcz _ _ _ (fun h => Finset.not_nonempty_empty h.2.1)) (LinearMap.mem_ker.1 hαD) (fun I h => hαz I (fun h' => h h'.2))`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Introduce `b L hL`. Simplify using `only [rcup, lft_uni', rgt_uni']`. Rewrite using `[Finset.sum_eq_zero, smul_zero]`. Introduce `i hi`. Rewrite using `[hcz _ _ _ (fun h => ?_), map_zero, LinearMap.zero_apply]`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality.
 
-Establish `h1` using `h.2.1.card_pos`. Establish `h2` using `h.2.2.card_pos`. Use linear arithmetic over natural numbers and integers. Introduce `b L hL`. Simplify using `only [rcup, lft_uni', rgt_uni', edge1]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Generalize the expression as in `lft b = I`. Generalize the expression as in `rgt b = J`. Distinguish the cases in `hJ : J.card = 1`. Rewrite using `[if_pos hJ]`. Take `⟨j, rfl⟩` from `Finset.card_eq_one.1 hJ`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Establish `hαI : α I ∈ ⋀[K]^a Ω[K⁄ℂ]`. Distinguish the cases in `h : I.Nonempty ∧ I.card = p + 1`. Conclude with `omB_le_fixed _ a _ (hαm I h.1 h.2)`. Rewrite using `[hαz I h]`. Conclude with `Submodule.zero_mem _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Break down `I.eq_empty_or_nonempty with hI | hI` into its components or cases. Substitute `hI` using the available equality. Rewrite using `[Finset.sum_empty, smul_zero, map_zero, hαz ∅ (fun h => Finset.not_nonempty_empty h.1), smul_zero, smul_zero]`. Establish `hmin` using `Finset.min'_mem I hI`. Rewrite using `[Finset.sum_eq_single_of_mem _ hmin ?_]`.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hf1 : I.filter (· ≤ I.min' hI) = {I.min' hI}`. Use extensionality with `y`. Simplify using `only [Finset.mem_filter, Finset.mem_singleton]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hy, hle⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Conclude with `le_antisymm hle (Finset.min'_le _ _ hy)`. Introduce and unpack `rfl`. Conclude with `⟨hmin, le_rfl⟩`. Establish `hf2 : I.filter (I.min' hI ≤ ·) = I` using `Finset.filter_true_of_mem (fun y hy => Finset.min'_le _ _ hy)`. Rewrite using `[hf1, hf2]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hact` using `hdiag (I.min' hI) j L hL _ hαI`. Rewrite using `[LinearMap.map_smul_of_tower, hact, Finset.card_singleton, hL]`. Rewrite using `[← Int.cast_smul_eq_zsmul K, ← Int.cast_smul_eq_zsmul K, smul_smul, smul_smul]`. Use `congr 1`. Use `push_cast`.
-
-Expand and normalize the polynomial expressions, which then agree. Introduce `i hi hne`. Rewrite using `[hcz _ _ _ (fun h => ?_), map_zero, LinearMap.zero_apply]`. Establish `hsub : ({I.min' hI, i} : Finset (Fin (d + 1))) ⊆ I.filter (· ≤ i)`. Introduce `y hy`.
-
-Simplify using `only [Finset.mem_insert, Finset.mem_singleton] at hy`. Break down `hy with rfl | rfl` into its components or cases. Conclude with `Finset.mem_filter.2 ⟨hmin, Finset.min'_le _ _ hi⟩`. Conclude with `Finset.mem_filter.2 ⟨hi, le_rfl⟩`. Establish `hc2` using `Finset.card_le_card hsub`.
-
-Rewrite `hc2` using `[Finset.card_pair (Ne.symm hne)]`. Rewrite `h` using `[Finset.card_singleton]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[if_neg hJ, smul_zero, smul_zero, Finset.sum_eq_zero, smul_zero, map_zero]`. Introduce `i hi`.
-
-Rewrite using `[hcz _ _ _ (fun h => ?_), map_zero, LinearMap.zero_apply]`. Establish `h1` using `h.2.1.card_pos`. Establish `h2` using `h.2.2.card_pos`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.productCup_of_system.pCup_of :
     RCup → SysBasic → SysOk → ActsLin → GoodZ → PCup := by

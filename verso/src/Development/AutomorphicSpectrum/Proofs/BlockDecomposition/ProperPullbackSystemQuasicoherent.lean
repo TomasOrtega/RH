@@ -20,9 +20,9 @@ open CategoryTheory CategoryTheory.Limits AlgebraicGeometry GroundTheory.Arith.S
 namespace GlobalTheory.CompanionTheory.GE.Shift
 
 /- English proof (translation)
-Take `⟨k, hk⟩` from `J.exists_pow_inf_eq_pow_smul (LinearMap.range f)`. Use `⟨k, fun n y hy => ?_⟩` and prove the remaining obligations. Establish `h1 : f y ∈ J ^ (n + k) • (⊤ : Submodule R M) ⊓ LinearMap.range f` using `⟨hy, y, rfl⟩`. Rewrite `h1` using `[hk (n + k) (Nat.le_add_left k n), Nat.add_sub_cancel]`. Establish `h2 : J ^ n • (J ^ k • (⊤ : Submodule R M) ⊓ LinearMap.range f) ≤ (J ^ n • (⊤ : Submodule R N)).map f`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Submodule.map_smul'', Submodule.map_top]`. Conclude with `Submodule.smul_mono le_rfl inf_le_right`. Take `⟨i, hi, hfi⟩` from `h2 h1`. Conclude with `⟨i, hi, hfi⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_lift_pow_smul {R M N : Type*} [CommRing R] [IsNoetherianRing R]
     [AddCommGroup M] [Module R M] [Module.Finite R M] [AddCommGroup N] [Module R N]
@@ -41,7 +41,7 @@ theorem exists_lift_pow_smul {R M N : Type*} [CommRing R] [IsNoetherianRing R]
   exact ⟨i, hi, hfi⟩
 
 /- English proof (translation)
-Take `⟨k, hk⟩` from `kernel_ι_app_exact (adjMap φ B) V x hx`. Use `⟨(kernelSubobjectIso (adjMap φ B)).inv.app V k, ?_⟩` and prove the remaining obligations. Rewrite using `[← hk, ← kernelSubobject_arrow' (adjMap φ B)]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mem_secs_adjKer {X Z : Scheme.{0}} (φ : Z ⟶ X) {E : X.Modules}
     (B : Subobject ((Scheme.Modules.pullback φ).obj E)) (V : X.Opens) (x : Γ(E, V))
@@ -52,15 +52,15 @@ theorem mem_secs_adjKer {X Z : Scheme.{0}} (φ : Z ⟶ X) {E : X.Modules}
   rfl
 
 /- English proof (translation)
-Use `haveI := hE.1`. Establish `hG : IsCoherent (cokernel B.arrow)` using `isCoherent_cokernel B.arrow (isCoherent_pullback φ hE)`. Establish `hP` using `GlobalTheory.T.proper_pushforward_coherent φ hφ hG`. Take `⟨c₁, hc₁⟩` from `GlobalTheory.T.pushforward_ideal_power_shift I φ hφ hc hG V hV`. Use `haveI : IsNoetherianRing Γ(X, V) := IsLocallyNoetherian.component_noetherian ⟨V, hV⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `haveI := hP.2 V hV`. Set `f : Γ(E, V) →ₗ[Γ(X, V)] Γ((Scheme.Modules.pushforward φ).obj (cokernel B.arrow), V)` to `{ toFun := (adjMap φ B).app V map_add' := map_add _ map_smul' := Scheme.Modules.Hom.app_smul _ }`. Set `J : Ideal Γ(X, V)` to `Ideal.map (toFunctions (A := A) V) I`. Establish `hJ : ∀ m, Ideal.map (toFunctions (A` using `A) V) (I ^ m) = J ^ m := fun m => Ideal.map_pow _ _ _`. Take `⟨c₂, hc₂⟩` from `exists_lift_pow_smul J f`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨c₂ + c₁, fun e x hx => ?_⟩` and prove the remaining obligations. Establish `h1` using `GlobalTheory.T.cokernel_section_ideal_power I φ S B (e + (c₂ + c₁)) (hBS _) V x hx`. Rewrite `h1` using `[show e + (c₂ + c₁) + 1 = (e + 1 + c₂) + c₁ by omega]`. Establish `h2` using `hc₁ (e + 1 + c₂) _ h1`. Rewrite `h2` using `[hJ]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Take `⟨i, hi, hfi⟩` from `hc₂ (e + 1) x h2`. Establish `hker : x - i ∈ secs (adjKer φ B) V` using `mem_secs_adjKer φ B V _ (by`. Express the relevant statement in the definitionally equal form `f (x - i) = 0`. Rewrite using `[map_sub, hfi, sub_self])`. Establish `hpow : i ∈ secs (powSub I E (e + 1)) V`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.T.ideal_power_subobject_sections I E hE.1 (e + 1) V hV, hJ]`. Conclude with `hi`. Establish `hsup` using `(GlobalTheory.T.quasicoherent_sup_sections hE.1 (adjKer φ B) (powSub I E (e + 1)) hK ((closedSys_pow I E).qcoh e)).2 V hV`. Rewrite using `[hsup]`. Conclude with `⟨x - i, hker, i, hpow, by abel⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem local_shift {A : Type} [CommRing A] [IsNoetherianRing A] (I : Ideal A) {X Z : Scheme.{0}}
     [X.Over (Spec (.of A))] [Z.Over (Spec (.of A))] [IsLocallyNoetherian X] (φ : Z ⟶ X)
@@ -103,15 +103,13 @@ theorem local_shift {A : Type} [CommRing A] [IsNoetherianRing A] (I : Ideal A) {
   exact ⟨x - i, hker, i, hpow, by abel⟩
 
 /- English proof (translation)
-Introduce `A _ _ I X Z _ _ _ _ φ hφ hc E hE S hS B hB hBS`. Use `haveI := hE.1`. Establish `hG : IsCoherent (cokernel B.arrow)` using `isCoherent_cokernel B.arrow (isCoherent_pullback φ hE)`. Establish `hP` using `GlobalTheory.T.proper_pushforward_coherent φ hφ hG`. Use `haveI := hP.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hK : (adjKer φ B : X.Modules).IsQuasicoherent` using `(SheafOfModules.isQuasicoherent X.ringCatSheaf).prop_of_iso (kernelSubobjectIso (adjMap φ B)).symm (isQuasicoherent_kernel _)`. Establish `hloc : ∀ V : X.affineOpens, ∃ c : ℕ, ∀ e, secs (S (e + c)) (V : X.Opens) ⊆ secs (adjKer φ B ⊔ powSub I E (e + 1)) (V : X.Opens)` using `fun V => local_shift I φ hφ hc hE S B hB hBS hK V V.2`. Use `choose c hc' using hloc`. Take `⟨t, ht⟩` from `isCompact_univ.elim_finite_subcover (fun U : X.affineOpens => (U.1 : Set X)) (fun U => U.1.isOpen) (fun x _ => by`. Take `⟨U, hU, hx, -⟩` from `exists_isAffineOpen_mem_and_subset (show x ∈ (⊤ : X.Opens) from trivial)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `Set.mem_iUnion.2 ⟨⟨U, hU⟩, hx⟩)`. Establish `anti : Antitone S` using `antitone_nat_of_succ_le fun n => le_of_le_of_eq le_sup_left (hS.succ n).symm`. Use `⟨t.sup c, fun e => ?_⟩` and prove the remaining obligations. Establish `hsupq` using `(GlobalTheory.T.quasicoherent_sup_sections hE.1 (adjKer φ B) (powSub I E (e + 1)) hK ((closedSys_pow I E).qcoh e)).1`. Use `GlobalTheory.T.subobject_le_of_affine_cover (S (e + t.sup c)) _ (hS.qcoh _) hsupq (fun i : t => (i.1.1 : X.Opens)) (fun i => i.1.2) ?_ ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[eq_top_iff]`. Introduce `x _`. Take `⟨U, hU, hxU⟩` from `Set.mem_iUnion₂.1 (ht (Set.mem_univ x))`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨⟨U, hU⟩, hxU⟩`. Introduce `i`.
-
-Use `subset_trans ?_ (hc' i.1 e)` and prove the remaining obligations. Conclude with `(GlobalTheory.T.subobject_le_iff_affine_sections _ _).1 (anti (Nat.add_le_add_left (Finset.le_sup i.2) e)) i.1`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem shift : ∀ {A : Type} [CommRing A] [IsNoetherianRing A] (I : Ideal A) {X Z : Scheme.{0}} [X.Over (Spec (.of A))] [Z.Over (Spec (.of A))] [IsLocallyNoetherian X] [CompactSpace X] (φ : Z ⟶ X), IsProper φ → φ ≫ (X ↘ Spec (.of A)) = (Z ↘ Spec (.of A)) → ∀ {E : X.Modules}, IsCoherent E → ∀ {S : ℕ → Subobject E}, ClosedSys I E S → ∀ (B : Subobject ((Scheme.Modules.pullback φ).obj E)), (B : Z.Modules).IsQuasicoherent → (∀ e, B ⊔ powSub I _ (e + 1) = pullSys I φ E S e) → ∃ c : ℕ, ∀ e, S (e + c) ≤ adjKer φ B ⊔ powSub I E (e + 1) := by
   intro A _ _ I X Z _ _ _ _ φ hφ hc E hE S hS B hB hBS

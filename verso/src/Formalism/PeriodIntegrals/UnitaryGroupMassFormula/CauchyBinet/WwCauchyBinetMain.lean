@@ -15,11 +15,11 @@ instance fintypeColChoice {Lt : Type} [Fintype Lt] [DecidableEq Lt] (N : ℕ)
   inferInstanceAs (Fintype (∀ (s : Lt) (c : Fin ((nu s).rowLen 0)), Fin ((nu s).colLen c) ↪o Fin N))
 
 /- English proof (translation)
-Establish `hM : (Matrix.of fun i j : Fin h => ∑ a : Fin N, MvPolynomial.C (y a (j : ℕ)) * (MvPolynomial.X (s, (i : ℕ), a) : MvPolynomial (Lt × ℕ × Fin N) k)) = (Matrix.of fun (i : Fin h) (a : Fin N) => (MvPolynomial.X (s, (i : ℕ), a) : MvPolynomial (Lt × ℕ × Fin N) k)) * (Matrix.of fun (a : …`. Use extensionality with `i j`. Simplify using `[Matrix.mul_apply, mul_comm]`. Rewrite using `[hM, PI.IsoDerivBFintype.cauchyBinet]`. Use `Finset.sum_congr rfl fun I _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mul_comm]`. Use `congr 1`. Rewrite using `[RingHom.map_det]`. Use `congr 1`. Rewrite using `[RingHom.map_det]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use extensionality with `i j`. Simplify using the standard rewrite rules.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem factor_expand {Lt k : Type} [CommRing k] (N : ℕ) (s : Lt) (h : ℕ) (y : Fin N → ℕ → k) :
     Matrix.det (Matrix.of fun i j : Fin h =>
@@ -49,9 +49,9 @@ theorem factor_expand {Lt k : Type} [CommRing k] (N : ℕ) (s : Lt) (h : ℕ) (y
     simp
 
 /- English proof (translation)
-Introduce `Lt _ _ k _ N nu y`. Rewrite using `[finsum_eq_sum_of_fintype]`. Simplify using `only [DeX, factor_expand]`. Simplify using `only [Fintype.prod_sum]`. Use `Finset.sum_congr rfl fun J _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [minY, KM.nablaX, map_prod, Finset.prod_mul_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem wwCauchyBinet_main : WwCauchyBinet := by
   intro Lt _ _ k _ N nu y

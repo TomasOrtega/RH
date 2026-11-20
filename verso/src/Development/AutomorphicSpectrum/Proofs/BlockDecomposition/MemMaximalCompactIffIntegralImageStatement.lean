@@ -12,7 +12,7 @@ open GlobalTheory.CompanionTheory.Jp
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Jp.SplitK.mem_KUpFin_iff | exact GlobalTheory.CompanionTheory.Jp.SplitK.mem_KUpFin_iff | (intros; apply GlobalTheory.CompanionTheory.Jp.SplitK.mem_KUpFin_iff <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.mem_maximal_compact_iff_integral_image : ∀ (D : D7) (n : ℕ) (v : Pl D) (τ : D.host.E →ₐ[D.host.F] Fv D.host.F v) (g : GLoc D.sp.cm.sig (Jst D n) v), g ∈ GlobalTheory.LocIntw.KUpFin D.sp.cm.sig (Jst D n) v ↔ thU D n v τ g ∈ (inL (O := Ov D v) (L := Lv D v) (n := n)).range := by
   first | exact @GlobalTheory.CompanionTheory.Jp.SplitK.mem_KUpFin_iff | exact GlobalTheory.CompanionTheory.Jp.SplitK.mem_KUpFin_iff | (intros; apply GlobalTheory.CompanionTheory.Jp.SplitK.mem_KUpFin_iff <;> assumption)

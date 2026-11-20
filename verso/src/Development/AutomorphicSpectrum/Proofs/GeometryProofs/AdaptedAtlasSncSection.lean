@@ -23,57 +23,51 @@ namespace GlobalTheory.CompanionTheory.Ar.Adapt
 open ReciprocityTheory.AnForm.M.PLAux in
 
 /- English proof (translation)
-Introduce `e X _ _ _ A L s n m W hL hs hsnc _hle`. Establish `hgood : ∀ x : X, ∃ φ : OpenPartialHomeomorph X (Fin e → ℂ), IsCompatChart A φ ∧ x ∈ φ.source ∧ φ x = 0 ∧ Metric.closedBall (0 : Fin e → ℂ) 2 ⊆ φ.target ∧ ∃ (S : Finset (Fin e)) (μ : Fin e → ℕ) (M : ℝ), (∀ i ∈ S, 1 ≤ μ i) ∧ (∀ y ∈ φ.target, (φ.symm y ∈ bdry s ↔ ∃ i ∈ S, y i = 0)) …`. Introduce `x`. Take `⟨φ, S, μ, v, hφc, hxφ, hball, hφx, hsrcU, hμ, hv, hv0, hsv⟩` from `GlobalTheory.CompanionTheory.Ar.PB.LocalForm.exists_local_form e X A L s n m W hsnc x`. Use `⟨φ, hφc, hxφ, hφx, hball, S, μ, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hnorm : ∀ y ∈ φ.source, ‖s y y‖ * Real.exp (-L.φ y y) = ‖s x y‖ * Real.exp (-L.φ x y)` using `fun y hy => (hs.2 x y y ⟨hsrcU hy, L.mem_U y⟩).symm`. Establish `hzero : ∀ y ∈ φ.source, (s y y = 0 ↔ s x y = 0)`. Introduce `y hy`. Establish `h` using `hnorm y hy`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h0`. Rewrite `h` using `[h0, norm_zero, zero_mul]`. Use `(mul_eq_zero.1 h.symm).resolve_right (Real.exp_pos _).ne'` as an intermediate fact. Conclude with `norm_eq_zero.1 this`. Introduce `h0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[h0, norm_zero, zero_mul]`. Use `(mul_eq_zero.1 h).resolve_right (Real.exp_pos _).ne'` as an intermediate fact. Conclude with `norm_eq_zero.1 this`. Establish `hmono : ∀ y ∈ φ.source, (s x y = 0 ↔ ∃ i ∈ S, φ y i = 0)`. Introduce `y hy`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[hsv y hy, mul_eq_zero, Finset.prod_eq_zero_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `(h | ⟨i, hi, h⟩)`. Conclude with `absurd h (hv0 y hy)`. Conclude with `⟨i, hi, pow_eq_zero_iff (Nat.one_le_iff_ne_zero.1 (hμ i hi)) |>.1 h⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Prove the second alternative. Establish an intermediate fact.
 
-Introduce and unpack `⟨i, hi, h⟩`. Conclude with `Or.inr ⟨i, hi, by rw [h, zero_pow (Nat.one_le_iff_ne_zero.1 (hμ i hi))]⟩`. Establish `hbd : ∀ y ∈ φ.target, (φ.symm y ∈ bdry s ↔ ∃ i ∈ S, y i = 0)`. Introduce `y hy`. Establish `hp` using `φ.map_target hy`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show s (φ.symm y) (φ.symm y) = 0 ↔ _`. Rewrite using `[hzero _ hp, hmono _ hp, φ.right_inv hy]`. Establish `hK : IsCompact (Metric.closedBall (0 : Fin e → ℂ) 2)` using `isCompact_closedBall _ _`. Establish `hF : ContinuousOn (fun z => Real.log ‖v (φ.symm z)‖) (Metric.closedBall (0 : Fin e → ℂ) 2)`. Introduce `z hz`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hzt` using `hball hz`. Establish `han` using `analyticAt_compat_fun hφc hv hzt (φ.map_target hzt)`. Conclude with `(han.continuousAt.norm.log (by simpa using hv0 _ (φ.map_target hzt))).continuousWithinAt`. Establish `hG : ContinuousOn (fun z => L.φ x (φ.symm z)) (Metric.closedBall (0 : Fin e → ℂ) 2)`. Establish `h` using `contDiffOn_compat hφc (L.isOpen_U x) (hL.1 x)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `h.continuousOn.mono ?_` and prove the remaining obligations. Introduce `z hz`. Conclude with `⟨hball hz, hsrcU (φ.map_target (hball hz))⟩`. Take `⟨C₁, hC₁⟩` from `hK.exists_bound_of_continuousOn hF`. Take `⟨C₂, hC₂⟩` from `hK.exists_bound_of_continuousOn hG`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨2 * C₁ + 2 * C₂ + ∑ i ∈ S, (μ i : ℝ) * Real.log 4, hμ, hbd, ?_⟩` and prove the remaining obligations. Introduce `y hy hyb`. Establish `hyt` using `hball hy`. Establish `hp` using `φ.map_target hyt`. Use `set p := φ.symm y with hpdef`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hφp : φ p = y` using `φ.right_inv hyt`. Establish `hspp : s p p ≠ 0` using `hyb`. Establish `hsxp : s x p ≠ 0` using `fun h => hspp ((hzero p hp).2 h)`. Establish `hyi : ∀ i ∈ S, y i ≠ 0` using `fun i hi h0 => hsxp ((hmono p hp).2 ⟨i, hi, by rw [hφp]; exact h0⟩)`. Establish `hvp : v p ≠ 0` using `hv0 p hp`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hlogN : logNormSec L s p = Real.log ‖v p‖ + ∑ i ∈ S, (μ i : ℝ) * Real.log ‖y i‖ - L.φ x p`. Unfold `logNormSec`. Rewrite using `[hnorm p hp, Real.log_mul (norm_ne_zero_iff.2 hsxp) (Real.exp_pos _).ne', Real.log_exp, hsv p hp, norm_mul, Real.log_mul (norm_ne_zero_iff.2 hvp), norm_prod, Real.log_prod]`. Rewrite using `[hφp]`. Use `congr 2`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Rewrite using `[norm_pow, Real.log_pow]`. Introduce `i hi`. Rewrite using `[hφp, norm_pow]`. Conclude with `pow_ne_zero _ (norm_ne_zero_iff.2 (hyi i hi))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[norm_ne_zero_iff, Finset.prod_ne_zero_iff]`. Introduce `i hi`. Rewrite using `[hφp]`. Conclude with `pow_ne_zero _ (hyi i hi)`. Establish `hloc : rLoc S μ y = Real.exp 1 + ∑ i ∈ S, (μ i : ℝ) * (Real.log 4 - 2 * Real.log ‖y i‖)`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `rLoc`. Use `congr 1`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Rewrite using `[Real.log_div (by norm_num) (pow_ne_zero _ (norm_ne_zero_iff.2 (hyi i hi))), Real.log_pow]`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hdiff : rW L s p - rLoc S μ y = -2 * Real.log ‖v p‖ + 2 * L.φ x p - ∑ i ∈ S, (μ i : ℝ) * Real.log 4`. Unfold `rW`. Rewrite using `[hlogN, hloc]`. Simplify using `only [mul_sub, Finset.sum_sub_distrib]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[show ∑ i ∈ S, (μ i : ℝ) * (2 * Real.log ‖y i‖) = 2 * ∑ i ∈ S, (μ i : ℝ) * Real.log ‖y i‖ by`. Rewrite using `[Finset.mul_sum]; refine Finset.sum_congr rfl fun i _ => by ring]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hdiff]`. Establish `h1 : |Real.log ‖v p‖| ≤ C₁` using `by simpa [Real.norm_eq_abs] using hC₁ y hy`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : |L.φ x p| ≤ C₂` using `by simpa [Real.norm_eq_abs] using hC₂ y hy`. Establish `h3 : 0 ≤ ∑ i ∈ S, (μ i : ℝ) * Real.log 4` using `Finset.sum_nonneg fun i _ => mul_nonneg (Nat.cast_nonneg _) (Real.log_nonneg (by norm_num))`. Rewrite `h1`, `h2`, the goal using `[abs_le]`. Apply the tactic sequence `constructor <;> linarith [h1.1, h1.2, h2.1, h2.2]`. Use `choose φ hφc hφx hφ0 hφb hrest using hgood`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `choose S μ M hμ hbd hbnd using hrest`. Establish `hU : ∀ x, φ x ⁻¹' Metric.ball 0 1 ∩ (φ x).source ∈ nhds x`. Introduce `x`. Use `IsOpen.mem_nhds ?_ ⟨by simp [hφ0 x], hφx x⟩` and prove the remaining obligations. Rewrite using `[Set.inter_comm]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `(φ x).continuousOn.isOpen_inter_preimage (φ x).open_source Metric.isOpen_ball`. Take `⟨t, ht⟩` from `CompactSpace.elim_nhds_subcover _ hU`. Establish `hcov : ∀ x, ∃ y ∈ t, x ∈ φ y ⁻¹' Metric.ball 0 1 ∩ (φ y).source`. Introduce `x`. Establish `: x ∈ (⊤ : Set X)` using `trivial`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `this` using `[← ht]`. Simplify using `only [Set.mem_iUnion] at this`. Take `⟨y, hy, hx⟩` from `this`. Conclude with `⟨y, hy, hx⟩`. Take `⟨B, hAB, h1, h2⟩` from `ReciprocityTheory.AnForm.M.atlasOfCompat A (fun i => φ (t.equivFin.symm i)) (fun i => hφc _) (fun x => by`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Take `⟨y, hy, hx⟩` from `hcov x`. Conclude with `⟨t.equivFin ⟨y, hy⟩, by simpa using hx.2⟩)`. Use `⟨B, hAB, fun j => ?_, fun x => ?_, ∑ y ∈ t, |M y|, fun j => ?_⟩` and prove the remaining obligations. Take `⟨i, hi⟩` from `h2 j`. Rewrite using `[hi]`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hφb _`. Take `⟨y, hy, hx⟩` from `hcov x`. Take `⟨j, hj⟩` from `h1 (t.equivFin ⟨y, hy⟩)`. Use `⟨j, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hj]`.
-
-Simplify using `using hx.2`. Rewrite using `[hj]`. Simplify using `using hx.1`. Take `⟨i, hi⟩` from `h2 j set y : X := (t.equivFin.symm i : X) with hydef`. Establish `hyt : y ∈ t` using `(t.equivFin.symm i).2`.
-
-Use `⟨S y, μ y, hμ y, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hi]`. Conclude with `hbd y`. Introduce `z hz hzb`. Rewrite `hzb`, the goal using `[hi]`.
-
-Use `(hbnd y z hz hzb).trans ((le_abs_self _).trans ?_)` and prove the remaining obligations. Conclude with `Finset.single_le_sum (f := fun y => |M y|) (fun _ _ => abs_nonneg _) hyt`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_adaptedAtlas : ∀ {e : ℕ} {X : Type} [TopologicalSpace X] [CompactSpace X] [T2Space X] (A : FinHolAtlas e X) (L : LocPot X)
     (s : X → X → ℂ) {n : ℕ} (m : Fin n → ℕ) (W : Fin n → Set X), IsPotential A L → IsSection A L s → IsSNC A L s m W →

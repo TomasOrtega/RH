@@ -12,21 +12,19 @@ noncomputable section
 open PowerSeries GlobalTheory.BK Matrix GlobalTheory.LiftCoker
 
 /- English proof (translation)
-Introduce `O K _ _ _ _ _ _ l e a ι _ _ _ _ _ _ _ κ _ _ η H D₁ D₂ F hfin b hb hlb x hx`. Establish `hl2 : 2 ≤ l` using `(Fact.out : l.Prime).two_le`. Take `⟨n, hn⟩` from `GlobalTheory.T.exists_variable_pow_smul_eq_zero_of_finiteLength O K _ hfin`. Establish `hX : ∀ τ, (X : O⟦X⟧) ^ n ∈ colon O K (F.mat τ)`. Introduce `τ w hw`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hW : (Pi.single τ w : Vec K a κ) ∈ D₂.M` using `mem_tot.2 fun σ i => by`. Distinguish the cases in `h : σ = τ`. Substitute `h` using the available equality. Simplify using `using hw i`. Simplify using `[h]`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 
-Establish `h1` using `hn (Submodule.Quotient.mk ⟨_, hW⟩)`. Rewrite `h1` using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero, Submodule.submoduleOf, Submodule.mem_comap]`. Take `⟨m, hm, hm'⟩` from `h1`. Use `⟨m τ, fun j => mem_tot.1 hm τ j, ?_⟩` and prove the remaining obligations. Establish `h2` using `congrFun hm' τ`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [LinearMap.restrictScalars_apply, BK.Hom.app_apply] at h2`. Rewrite using `[h2]`. Simplify using `[Submodule.coe_smul, Subalgebra.smul_def]`. Establish `key` using `GlobalTheory.T.X_pow_mem_map_sup_span_pow_of_frobenius_bound (O := O) l hl2 (PowerSeries.expand l (Fact.out : l.Prime).ne_zero) (fun f m => PowerSeries.coeff_expand _ _ f) a e (H + η) b (fun τ => colon O K (F.mat τ)) hb hlb (fun τ => ⟨n, Ideal.mem_sup_left (hX τ)⟩) (fun τ α hα => …`. Establish `comp : ∀ τ, ∀ w : κ → K⟦X⟧, (∀ i, w i ∈ A O K) → ∃ m : ι → K⟦X⟧, (∀ j, m j ∈ A O K) ∧ ∃ w' : κ → K⟦X⟧, (∀ i, w' i ∈ A O K) ∧ ((X : K⟦X⟧) ^ e) ^ (H + η + b) • w = (F.mat (τ - 1)).map (frob K l) *ᵥ m + (l : K⟦X⟧) ^ b • w'`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `τ w hw`. Take `⟨p, hp, q, hq, hpq⟩` from `Submodule.mem_sup.1 (key (τ - 1))`. Take `⟨c, rfl⟩` from `Ideal.mem_span_singleton'.1 hq`. Take `⟨m, hm, hmeq⟩` from `GlobalTheory.T.colonIdeal_map_expand_le_frobenius O K l ι κ _ hp w hw`. Use `⟨m, hm, PowerSeries.map (algebraMap O K) c • w, fun i => ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Pi.smul_apply, smul_eq_mul]`. Conclude with `mul_mem (map_mem_A c) (hw i)`. Establish `h3` using `congrArg (PowerSeries.map (algebraMap O K)) hpq`. Rewrite `h3` using `[map_add, map_mul, map_pow, map_pow, map_X, map_natCast]`. Rewrite using `[← pow_mul, ← h3, add_smul, hmeq, smul_smul, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `choose w hw hxw using fun τ => D₂.mem_extc.1 (mem_tot.1 hx τ)`. Use `choose m hm w' hw' hmw using fun τ => comp τ (w τ) (hw τ)`. Use `⟨fun τ => D₁.mx τ *ᵥ m τ, mem_tot.2 fun τ => D₁.mem_extc.2 ⟨m τ, hm τ, rfl⟩, fun τ => D₂.mx τ *ᵥ w' τ, mem_tot.2 fun τ => D₂.mem_extc.2 ⟨w' τ, hw' τ, rfl⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `τ`. Establish `hsm : ∀ v : κ → K⟦X⟧, (l : K) ^ b • v = (l : K⟦X⟧) ^ b • v` using `fun v => by`.
-
-Rewrite using `[← algebraMap_smul K⟦X⟧ ((l : K) ^ b) v, map_pow, map_natCast]`. Rewrite using `[Pi.add_apply, Pi.smul_apply, Pi.smul_apply, hsm, BK.Hom.app_apply, Matrix.mulVec_mulVec, F.comm τ, hxw τ, ← Matrix.mulVec_smul, hmw τ, Matrix.mulVec_add, Matrix.mulVec_smul, Matrix.mulVec_mulVec]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.LiftCoker.vPow_mem_imL_add_lPow : ∀ (O K : Type) [CommRing O] [NormedField K] [IsUltrametricDist K] [CompleteSpace K] [Algebra O K] [IsUnitBall O K] (l e a : ℕ) (ι : Type) [Fintype ι] [DecidableEq ι] [Fact l.Prime] [NormedAlgebra ℚ_[l] K] [NeZero e] [NeZero a] [TameDescentExponentData K l e a] (κ : Type) [Fintype κ] [DecidableEq κ] (η H : ℕ) (D₁ : BKDat O K l e a ι η H) (D₂ : BKDat O K l e a κ η H) (F : BKHom D₁ D₂), IsFiniteLength (A O K) F.coker → ∀ b : ℕ, 1 ≤ b → H + η + b ≤ l → ∀ x ∈ D₂.L, ∃ y ∈ D₁.L, ∃ z ∈ D₂.L, ((X : K⟦X⟧) ^ e) ^ (H + η + b) • x = F.app y + (l : K) ^ b • z := by
   intro O K _ _ _ _ _ _ l e a ι _ _ _ _ _ _ _ κ _ _ η H D₁ D₂ F hfin b hb hlb x hx

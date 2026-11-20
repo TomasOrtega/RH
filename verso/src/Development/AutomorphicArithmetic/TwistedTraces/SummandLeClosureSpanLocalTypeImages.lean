@@ -6,9 +6,9 @@ open GroundTheory.Automorphic.CuspidalSpectrum GlobalTheory.IndefiniteRowSideFul
 open GroundTheory.Automorphic.AutomorphicForm
 
 /- English proof (translation)
-Take `⟨-, h2, -, -, h5⟩` from `UpperTheory.ConvolutionTheory.Tf.locEmb K n w`. Use `⟨finAt w (finEmb K n u), (AdelicGLn.localEmbedding w (finAt w (finEmb K n u)))⁻¹ * u, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_inv_cancel_left]`. Use `h5 _ ?_` and prove the remaining obligations. Establish `e : finAt w (finEmb K n (AdelicGLn.localEmbedding w (finAt w (finEmb K n u)))) * finAt w (finEmb K n ((AdelicGLn.localEmbedding w (finAt w (finEmb K n u)))⁻¹ * u)) = finAt w (finEmb K n u)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← finAt_mul, ← map_mul, mul_inv_cancel_left]`. Rewrite `e` using `[h2]`. Conclude with `mul_left_cancel (e.trans (mul_one _).symm)`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem adelicSplit {K : Type} [Field K] [NumberField K] {n : ℕ} (w : Pl K) (u : AdelicGLn.FiniteAdelicGL K n) :
     ∃ (a : Gw n w) (h : AdelicGLn.FiniteAdelicGL K n), u = AdelicGLn.localEmbedding w a * h ∧
@@ -25,9 +25,9 @@ private theorem adelicSplit {K : Type} [Field K] [NumberField K] {n : ℕ} (w : 
     exact mul_left_cancel (e.trans (mul_one _).symm)
 
 /- English proof (translation)
-Establish `hE : Eqv τ ρ D (((π c : H →L[ℂ] H) : H →ₗ[ℂ] H) ∘ₗ f)`. Use `⟨fun y => hD c _ (hf.mem y), fun g y => ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, ContinuousLinearMap.coe_coe]`. Rewrite using `[hf.map, hρ, hρ, ← UnitaryRep.map_mul_apply, ← UnitaryRep.map_mul_apply, hc g]`. Establish `hx : π (c * j a) (f y) = (((π c : H →L[ℂ] H) : H →ₗ[ℂ] H) ∘ₗ f) (τ a y)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [LinearMap.comp_apply, ContinuousLinearMap.coe_coe]`. Rewrite using `[hf.map, hρ, UnitaryRep.map_mul_apply]`. Rewrite using `[hx]`. Conclude with `Submodule.subset_span ⟨_, hE, _, rfl⟩`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem eqv_translate {L G H S : Type} [Group L] [TopologicalSpace L] [Group G] [TopologicalSpace G]
     [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] [AddCommGroup S] [Module ℂ S]
@@ -45,7 +45,7 @@ private theorem eqv_translate {L G H S : Type} [Group L] [TopologicalSpace L] [G
   exact Submodule.subset_span ⟨_, hE, _, rfl⟩
 
 /- English proof (translation)
-Take `⟨A, u, rfl⟩` from `MultiplicityOne.exists_archProj_mul_finProj x`. Take `⟨a, h, rfl, hc⟩` from `adelicSplit w u`. Use `⟨archProj K n A * MultiplicityOne.finProj K n h, a, ?_, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[hc a, map_mul, mul_assoc]`. Rewrite using `[mul_assoc, ← map_mul, ← hc g, map_mul, ← mul_assoc, ← mul_assoc, MultiplicityOne.finProj_mul_archProj_comm]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem exists_factor {K : Type} [Field K] [NumberField K] {n : ℕ} (w : Pl K) (x : normOneGL K n) :
     ∃ (c : normOneGL K n) (a : Gw n w), x = c * MultiplicityOne.finProj K n (AdelicGLn.localEmbedding w a) ∧
@@ -59,11 +59,11 @@ private theorem exists_factor {K : Type} [Field K] [NumberField K] {n : ℕ} (w 
       MultiplicityOne.finProj_mul_archProj_comm]
 
 /- English proof (translation)
-Establish `hle : spanAll τ ρ V ≤ V`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨f', hf', x, rfl⟩`. Conclude with `hf'.mem x`. Establish `hCle : (spanAll τ ρ V).topologicalClosure ≤ V` using `Submodule.topologicalClosure_minimal _ hle hV.closed`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hne : (spanAll τ ρ V).topologicalClosure ≠ ⊥`. Introduce `hbot`. Apply `hf0` to reduce the goal to its premises. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Establish `h1 : f x ∈ (spanAll τ ρ V).topologicalClosure` using `Submodule.le_topologicalClosure _ (Submodule.subset_span ⟨f, hf, x, rfl⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[hbot]`. Simplify using `using h1`. Break down `hV.irred _ hCle (Submodule.isClosed_topologicalClosure _) hinv.topologicalClosure with h | h` into its components or cases. Conclude with `absurd h hne`. Conclude with `h.ge`.
+Simplify to obtain the desired conclusion from the available facts. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 private theorem dense_of_invariant {G H S L : Type} [Group G] [TopologicalSpace G] [Group L] [TopologicalSpace L]
     [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] [AddCommGroup S] [Module ℂ S]
@@ -89,11 +89,9 @@ private theorem dense_of_invariant {G H S L : Type} [Group G] [TopologicalSpace 
   · exact h.ge
 
 /- English proof (translation)
-Introduce `x v hv`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem v hv`. Take `⟨f', hf', y, rfl⟩` from `hv`. Conclude with `h x f' hf' y`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately.
 
-Consider the case `zero => rw [map_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add a b _ _ ha hb => rw [map_add]`. Conclude with `Submodule.add_mem _ ha hb`. Consider the case `smul c a _ ha => rw [map_smul]`.
-
-Conclude with `Submodule.smul_mem _ c ha`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem invariant_of_translate {L G H S : Type} [Group L] [TopologicalSpace L] [Group G] [TopologicalSpace G]
     [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] [AddCommGroup S] [Module ℂ S]
@@ -109,7 +107,7 @@ private theorem invariant_of_translate {L G H S : Type} [Group L] [TopologicalSp
   | smul c a _ ha => rw [map_smul]; exact Submodule.smul_mem _ c ha
 
 /- English proof (translation)
-Rewrite using `[locU_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem locU_eq {K : Type} [Field K] [NumberField K] {n : ℕ} (μ : Measure (normOneGL K n)) [μ.IsHaarMeasure]
     (w : Pl K) (g : Gw n w) (v : LL μ) :
@@ -118,9 +116,9 @@ private theorem locU_eq {K : Type} [Field K] [NumberField K] {n : ℕ} (μ : Mea
   rfl
 
 /- English proof (translation)
-Introduce `K _ _ n μ _ V w σ hV hO`. Take `⟨f, hf0, hfm, hfe⟩` from `hO`. Establish `hf : Eqv σ.ρ (locU μ w) V f` using `⟨hfm, fun g x => by rw [hfe, locU_apply]⟩`. Use `dense_of_invariant (rightRegularRep (rationalGLOne K n) μ) (cuspidalL2 μ) V hV σ.ρ (locU μ w) f hf0 hf ?_` and prove the remaining obligations. Use `invariant_of_translate σ.ρ (locU μ w) _ V fun x f' hf' y => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨c, a, rfl, hc⟩` from `exists_factor w x`. Conclude with `eqv_translate σ.ρ (locU μ w) (rightRegularRep (rationalGLOne K n) μ) V (IsSummandOf.inv hV) (fun g => MultiplicityOne.finProj K n (AdelicGLn.localEmbedding w g)) (locU_eq μ w) c hc f' hf' a y`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem UpperTheory.summand_le_closure_span_local_type_images :
     ∀ (K : Type) [Field K] [NumberField K] (n : ℕ) (μ : Measure (normOneGL K n)) [μ.IsHaarMeasure] (V : Submodule ℂ (LL μ)) (w : Pl K) (σ : SmIrr (Gw n w)), IsSummand μ V → Occurs μ V w σ → V ≤ (spanAll σ.ρ (locU μ w) V).topologicalClosure := by

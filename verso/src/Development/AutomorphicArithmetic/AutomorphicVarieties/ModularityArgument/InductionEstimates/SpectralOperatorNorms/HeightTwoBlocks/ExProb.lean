@@ -17,21 +17,21 @@ namespace UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.KX
 variable {K : Type} [Field K] [NumberField K]
 
 /- English proof (translation)
-Take `⟨e, he, -⟩` from `adMeas a b t`. Conclude with `⟨e.symm X, by rw [he, e.apply_symm_apply]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem lv_nn (a b : G1 K 2) (t : ℝ) (X : UPos (2 + 2) 2 → 𝔸[K]) : ∃ Y, lv a b t * nn X = nn Y * lv a b t := by
   obtain ⟨e, he, -⟩ := adMeas a b t
   exact ⟨e.symm X, by rw [he, e.apply_symm_apply]⟩
 
 /- English proof (translation)
-Take `⟨C, hC⟩` from `h.decay 0`. Conclude with `⟨C, fun m => by simpa using hC m⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem rd_bdd {μ₂ : Measure (G1 K 2)} {τ : Submodule ℂ (L2 μ₂)} {φ : G1 K 2 → ℂ} (h : Rd τ φ) : ∃ C : ℝ, ∀ m, ‖φ m‖ ≤ C := by
   obtain ⟨C, hC⟩ := h.decay 0
   exact ⟨C, fun m => by simpa using hC m⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Measure.haarMeasure ⊤, ⟨by simpa using Measure.haarMeasure_self (G := U) (K₀ := ⊤)⟩, inferInstance⟩`.
+Supply the required witnesses or components.
 -/
 theorem ex_prob {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [MeasurableSpace G] [BorelSpace G] (U : Subgroup G)
     [CompactSpace U] : ∃ lam : Measure U, IsProbabilityMeasure lam ∧ lam.IsHaarMeasure :=
@@ -39,33 +39,29 @@ theorem ex_prob {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
 
 set_option maxHeartbeats 400000 in
 /- English proof (translation)
-Take `⟨S, π, hS, hπ, hmem, hval⟩` from `levProj (K := K)`. Establish `hK : IsCompact (KG K (2 + 2) : Set (G1 K (2 + 2)))` using `((blkLaws (K := K)).2.2.2.2.2.2.2.2.2.2.2 _).1`. Establish `hmul` using `(blkLaws (K := K)).2.1`. Use `haveI hc : CompactSpace (S ⊓ KG K (2 + 2) : Subgroup (G1 K (2 + 2))) := isCompact_iff_compactSpace.1 (hK.inter_left hS)`. Use `haveI : SecondCountableTopology (S ⊓ KG K (2 + 2) : Subgroup (G1 K (2 + 2))) := TopologicalSpace.Subtype.secondCountableTopology _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨lam, hp, hl⟩` from `ex_prob (S ⊓ KG K (2 + 2) : Subgroup (G1 K (2 + 2)))`. Establish `c₁` using `r₁.cont`. Establish `c₂` using `r₂.cont`. Take `⟨f, hf, hv⟩` from `indSec S (KG K (2 + 2)) hS hK (fun g => by`. Take `⟨X, a, b, t, k, hk, rfl⟩` from `iwa g`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨_, (hmem _).2 ⟨X, a, b, t, rfl⟩, k, hk, rfl⟩) π hπ (fun m => φ₁ m.1 * φ₂ m.2) (by fun_prop) ψ hψ lam`. Use `set x : (S ⊓ KG K (2 + 2) : Subgroup (G1 K (2 + 2))) → G1 K 2 × G1 K 2 := fun u => π ⟨u, u.2.1⟩ with hx`. Establish `hxc : Continuous x` using `hπ.comp (continuous_subtype_val.subtype_mk _)`. Establish `hv' : ∀ X a b t, ∀ k ∈ KG K (2 + 2), f (nn X * lv a b t * k) = ∫ u, φ₁ (a * (x u).1) * φ₂ (b * (x u).2) * ψ ((u : G1 K (2 + 2))⁻¹ * k) ∂lam`. Introduce `X a b t k hk`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `hv ⟨_, (hmem _).2 ⟨X, a, b, t, rfl⟩⟩ k hk` as an intermediate fact. Rewrite `this` using `[hval X a b t _ rfl]`. Conclude with `this`. Establish `hF : D.Fix f`. Introduce `g`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨X, a, b, t, k, hk, rfl⟩` from `iwa g`. Take `⟨hU, hle, -⟩` from `typeFin D`. Use `haveI := D.prob`. Establish `hH : Continuous fun z : G1 K (2 + 2) × (S ⊓ KG K (2 + 2) : Subgroup (G1 K (2 + 2))) => φ₁ (a * (x z.2).1) * φ₂ (b * (x z.2).2) * ψ ((z.2 : G1 K (2 + 2))⁻¹ * z.1)` using `((c₁.comp (continuous_const.mul (hxc.comp continuous_snd).fst)).mul (c₂.comp (continuous_const.mul (hxc.comp continuous_snd).snd))).mul (hψ.comp ((continuous_subtype_val.comp continuous_snd).inv.mul continuous_fst))`. Use `fix_swap D.ν _ hU D.supp D.e D.cont lam _ hH (fun C hC => by` as an intermediate fact.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨B, hB⟩` from `(hC.prod isCompact_univ).exists_bound_of_continuousOn hH.continuousOn`. Conclude with `⟨B, ae_of_all _ fun y z hz => hB (z, y) ⟨hz, trivial⟩⟩) k fun u => by`. Simplify using `only [← hfix ((u : G1 K (2 + 2))⁻¹ * k), ← integral_const_mul, mul_assoc]`. Conclude with `integral_congr_ae (ae_of_all _ fun h => by ring)`. Rewrite using `[hv' X a b t k hk, ← this]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [D.supp] with h hh`. Rewrite using `[mul_assoc, hv' X a b t _ (mul_mem hk (hle hh))]`. Take `⟨C₁, b₁⟩` from `rd_bdd r₁`. Take `⟨C₂, b₂⟩` from `rd_bdd r₂`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hsl : ∀ m₁ m₂ X a b t, ∀ k ∈ KG K (2 + 2), f (lv m₁ m₂ 0 * (nn X * lv a b t * k)) = ∫ u, φ₁ (m₁ * a * (x u).1) * φ₂ (m₂ * b * (x u).2) * ψ ((u : G1 K (2 + 2))⁻¹ * k) ∂lam`. Introduce `m₁ m₂ X a b t k hk`. Take `⟨Y, hY⟩` from `lv_nn m₁ m₂ 0 X`. Rewrite using `[← mul_assoc, ← mul_assoc, hY, mul_assoc (nn Y), hmul, hv' _ _ _ _ k hk]`. Use `⟨_, hc, lam, hp, x, f, inf_le_right, hxc, fun u => ?_, (secCrit μ₂ τ₁ τ₂ D h₁ h₂ f hF).2 ⟨hf, ?_, fun Y g => ?_, fun s g => ?_, fun g => ?_⟩, hF, hv'⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Establish an intermediate fact. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨X, a, b, t, e⟩` from `(hmem _).1 u.2.1`. Establish `h0` using `(hpSpec (K := K)).1 X a b t 1`. Rewrite `h0` using `[mul_one, ← e, ((hpSpec (K := K)).2.1 _ u.2.2).1, ((hpSpec (K := K)).2.1 _ (one_mem _)).1, add_zero]`. Substitute `h0` using the available equality. Establish `e2 : x u = (a, b)` using `hval X a b 0 _ e`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨X, by rw [e2]; exact e⟩`. Take `⟨B, hB⟩` from `hK.exists_bound_of_continuousOn hψ.continuousOn`. Use `⟨C₁ * C₂ * B * lam.real univ, fun g => ?_⟩` and prove the remaining obligations. Take `⟨X, a, b, t, k, hk, rfl⟩` from `iwa g`. Rewrite using `[hv' X a b t k hk]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `norm_integral_le_of_norm_le_const (ae_of_all _ fun u => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul, norm_mul]`. Establish `h1` using `(norm_nonneg _).trans (b₁ 1)`. Conclude with `mul_le_mul (mul_le_mul (b₁ _) (b₂ _) (norm_nonneg _) h1) (hB _ (mul_mem (inv_mem u.2.2) hk)) (norm_nonneg _) (mul_nonneg h1 ((norm_nonneg _).trans (b₂ 1)))`. Take `⟨X, a, b, t, k, hk, rfl⟩` from `iwa g`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← mul_assoc, ← mul_assoc, ← unipOne_add, hv' _ a b t k hk, hv' _ a b t k hk]`. Take `⟨X, a, b, t, k, hk, rfl⟩` from `iwa g`. Take `⟨Y, hY⟩` from `lv_nn 1 1 s X`. Rewrite using `[← mul_assoc, ← mul_assoc, hY, mul_assoc (nn Y), hmul, one_mul, one_mul, hv' _ _ _ _ k hk, hv' _ _ _ _ k hk]`. Take `⟨X, a, b, t, k, hk, rfl⟩` from `iwa g`.
-
-Use `⟨fun m₂ => ?_, fun m₁ => ?_⟩` and prove the remaining obligations. Take `⟨v, hv, hr⟩` from `sliceRep μ₂ τ₁ h₁ φ₁ c₁ ⟨C₁, b₁⟩ r₁.rat r₁.rep _ lam (fun u => φ₂ (m₂ * b * (x u).2) * ψ ((u : G1 K (2 + 2))⁻¹ * k)) (fun u => a * (x u).1) ((c₂.comp (continuous_const.mul hxc.snd)).mul (hψ.comp (continuous_subtype_val.inv.mul continuous_const))) (continuous_const.mul hxc.fst)`. Use `⟨v, hv, ?_⟩` and prove the remaining obligations. Simplify using `only [hsl _ _ X a b t k hk]`. Conclude with `hr.mono fun y hy => hy.trans (integral_congr_ae (ae_of_all _ fun u => by simp only [mul_assoc]; ring))`.
-
-Take `⟨v, hv, hr⟩` from `sliceRep μ₂ τ₂ h₂ φ₂ c₂ ⟨C₂, b₂⟩ r₂.rat r₂.rep _ lam (fun u => φ₁ (m₁ * a * (x u).1) * ψ ((u : G1 K (2 + 2))⁻¹ * k)) (fun u => b * (x u).2) ((c₁.comp (continuous_const.mul hxc.fst)).mul (hψ.comp (continuous_subtype_val.inv.mul continuous_const))) (continuous_const.mul hxc.snd)`. Use `⟨v, hv, ?_⟩` and prove the remaining obligations. Simplify using `only [hsl _ _ X a b t k hk]`. Conclude with `hr.mono fun y hy => hy.trans (integral_congr_ae (ae_of_all _ fun u => by simp only [mul_assoc]; ring))`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem secEx [IsTotallyComplex K] (μ₂ : Measure (G1 K 2)) [μ₂.IsHaarMeasure] (τ₁ τ₂ : Submodule ℂ (L2 μ₂)) (D : TypeDat K (2 + 2))
     (h₁ : CuspIrr μ₂ τ₁) (h₂ : CuspIrr μ₂ τ₂) (φ₁ φ₂ : G1 K 2 → ℂ) (r₁ : Rd τ₁ φ₁) (r₂ : Rd τ₂ φ₂)

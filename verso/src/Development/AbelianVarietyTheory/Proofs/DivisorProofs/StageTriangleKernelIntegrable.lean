@@ -23,9 +23,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.StageConv
 
 /- English proof (translation)
-Establish `h4 : D.R.m ^ 4 ≤ D.R.f` using `h.2.2.1`. Establish `hm : 44 ≤ D.R.m` using `h.2.2.2.1`. Establish `hfm : D.R.f * D.R.m ≤ (D.R.r + 1) ^ 3` using `h.2.2.2.2.2.2.1`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `h1 : (D.R.r + 1) ^ 3 < D.R.m ^ 3` using `Nat.pow_lt_pow_left hc (by norm_num)`. Establish `h2 : D.R.m ^ 3 ≤ D.R.m ^ 4 * D.R.m`. Combine the equalities or inequalities in the displayed calculation. Establish `h3 : D.R.m ^ 4 * D.R.m ≤ D.R.f * D.R.m` using `Nat.mul_le_mul_right _ h4`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem m_le_of_size {D : D7} {large₂ : SizeData₂ D} (h : GlobalTheory.IndefiniteRowSideFullHecke.LevelPlusSubgroup.SizeRows large₂) : D.R.m ≤ D.R.r + 1 := by
   have h4 : D.R.m ^ 4 ≤ D.R.f := h.2.2.1
@@ -41,9 +41,9 @@ theorem m_le_of_size {D : D7} {large₂ : SizeData₂ D} (h : GlobalTheory.Indef
   omega
 
 /- English proof (translation)
-Establish `e1 : rankV D ((i : ℕ) + 1) ((j : ℕ) + 1) = rankV D i j + D.R.t + sLen D`. Simplify using `only [rankV]`. Expand and normalize the polynomial expressions, which then agree. Establish `hpp : 2 * pp D j ≤ D.R.m - 1`. Simplify using `only [pp]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `j.2` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hs : sLen D = D.R.r + 6` using `rfl`. Rewrite `hA` using `[e1]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem rank_lt {D : D7} {i j : Fin D.R.m} {p q : ℕ} {A A' WW : HSp D} (hmr : D.R.m ≤ D.R.r + 1)
     (hp : p ≤ pp D j) (hq : q ≤ qq D j) (hA : A.rank + 2 * pp D j = rankV D (i + 1) (j + 1) + 2 * p)
@@ -58,11 +58,11 @@ theorem rank_lt {D : D7} {i j : Fin D.R.m} {p q : ℕ} {A A' WW : HSp D} (hmr : 
   omega
 
 /- English proof (translation)
-Introduce `hP _ _`. Establish `hW` using `GlobalTheory.T.weil_convergence_of_siegel_set hP.siegelSetUnitary hP`. Use `⟨0, fun ε CF _ => ⟨0, 0, fun C _ D large₂ _ _ hRec T Lc μ₀ _ G => ?_⟩⟩` and prove the remaining obligations. Introduce `W S _ _ i j p q A A' WW X hX t P h`. Take `⟨hp, hq, hA, hA', hnA, _, _, hXi⟩` from `hX`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨τ⟩ : Nonempty D.what₂.Tau` from `⟨D.eTau.symm (Classical.arbitrary _)⟩`. Establish `hrank : WW.rank < 2 * (A.rank - p)` using `rank_lt (m_le_of_size hRec.size) hp hq hA hA' hXi.rank`. Establish `hf` using `GlobalTheory.JointHarm.isThetaFunO_of_isThetaAt W.ψ_std W.θ_is (hXi.fst t) (GlobalTheory.OneMapRef.isThetaFunO_of_isVacO hXi.isVac)`. Establish `hΦ` using `GlobalTheory.Chain.InnerSteps.theta_pureTensorO (S := GlobalTheory.Grid.neg A) (T := WW) W.ψ_std W.θ_is (fun τ => -X.rA.s τ) X.rA.B X.rW.s X.rW.B hf P`. Take `⟨N, C', hint⟩` from `hW D W.ψ W.θ W.θ_is true A WW _ _ (X.ω t) (hXi.weil t) p ⟨τ, hnA τ⟩ hrank X.m X.fd hXi.meas _ hΦ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `(hint h).1`.
+A detailed English derivation is pending.
 -/
 theorem conv : GlobalTheory.FunPr.Hypotheses₂ → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching →
   GBig fun {D} T _ _ G μ₀ _ _ _ => ∀ (W : G.Weil) (S : GridChoice W Set.univ), IsStdChar D W.ψ (-1) →

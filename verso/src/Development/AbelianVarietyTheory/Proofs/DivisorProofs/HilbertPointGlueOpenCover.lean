@@ -16,14 +16,14 @@ section
 variable {S Z : Scheme.{0}} (z : Z ⟶ S)
 
 /- English proof (translation)
-Simplify using `only [bc, pullback.map, pullback.lift_fst, Category.comp_id]`.
+Simplify using the standard rewrite rules.
 -/
 theorem bc_fst {T T' : Scheme.{0}} (c : T' ⟶ T) (g : T ⟶ S) (k : T' ⟶ S) (w : c ≫ g = k) :
     bc z c g k w ≫ pullback.fst z g = pullback.fst z k := by
   simp only [bc, pullback.map, pullback.lift_fst, Category.comp_id]
 
 /- English proof (translation)
-Simplify using `only [bc, pullback.map, pullback.lift_snd]`.
+Simplify using the standard rewrite rules.
 -/
 theorem bc_snd {T T' : Scheme.{0}} (c : T' ⟶ T) (g : T ⟶ S) (k : T' ⟶ S) (w : c ≫ g = k) :
     bc z c g k w ≫ pullback.snd z g = pullback.snd z k ≫ c := by
@@ -32,11 +32,9 @@ theorem bc_snd {T T' : Scheme.{0}} (c : T' ⟶ T) (g : T ⟶ S) (k : T' ⟶ S) (
 end
 
 /- English proof (translation)
-Use `choose Q p q hP hq using h`. Establish `i1 : IsZariskiLocalAtTarget @IsFinite.{0}` using `by set_option backward.isDefEq.respectTransparency.types false in exact inferInstance`. Establish `i2 : IsZariskiLocalAtTarget @Flat.{0}` using `HasRingHomProperty.instIsZariskiLocalAtTarget (P := @Flat.{0})`. Establish `hq' : ∀ i, IsFinFlatRk (pullback.snd g (𝒰.f i)) r` using `fun i => by`. Rewrite using `[← (hP i).isoPullback_inv_snd]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(hq i).iso_comp _`. Establish `hF : IsFinite g` using `IsZariskiLocalAtTarget.of_openCover (P := @IsFinite) 𝒰 fun i => (hq' i).1`. Establish `hL : Flat g` using `IsZariskiLocalAtTarget.of_openCover (P := @Flat) 𝒰 fun i => (hq' i).2.1`. Use `⟨hF, hL, fun y => ?_⟩` and prove the remaining obligations. Take `⟨i, y', rfl⟩` from `𝒰.exists_eq y`.
-
-Rewrite using `[← Scheme.Hom.finrank_of_isPullback (p i) (q i) g (𝒰.f i) (hP i) y', (hq i).2.2]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isFinFlatRk_of_cover {V Y : Scheme.{0}} (g : V ⟶ Y) (𝒰 : Y.OpenCover) (r : ℕ)
     (h : ∀ i, ∃ (Q : Scheme.{0}) (p : Q ⟶ V) (q : Q ⟶ 𝒰.X i), IsPullback p q g (𝒰.f i) ∧ IsFinFlatRk q r) :
@@ -55,25 +53,25 @@ theorem isFinFlatRk_of_cover {V Y : Scheme.{0}} (g : V ⟶ Y) (𝒰 : Y.OpenCove
   rw [← Scheme.Hom.finrank_of_isPullback (p i) (q i) g (𝒰.f i) (hP i) y', (hq i).2.2]
 
 /- English proof (translation)
-Introduce `S Z z r Y 𝒰 x hx`. Take `⟨f, hf⟩ : ∃ f : Y ⟶ S, ∀ i, 𝒰.f i ≫ f = (x i).1` from `⟨𝒰.glueMorphisms (fun i => (x i).1) fun i j => congrArg Sigma.fst (hx i j _ _ _ pullback.condition), fun i => 𝒰.ι_glueMorphisms _ _ i⟩`. Set `e : ∀ i, pullback z (x i).1 ⟶ pullback z f` to `fun i => bc z (𝒰.f i) f (x i).1 (hf i)`. Establish `hP : ∀ i, IsPullback (e i) (pullback.snd z (x i).1) (pullback.snd z f) (𝒰.f i)` using `fun i => isPullback_bc z _ _ _ (hf i)`. Establish `he : ∀ i, IsOpenImmersion (e i)` using `fun i => MorphismProperty.of_isPullback (P := @IsOpenImmersion) (hP i).flip inferInstance`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcov : ∀ p : ↥(pullback z f), ∃ i, p ∈ Set.range (e i)`. Introduce `p`. Take `⟨i, y', hy'⟩` from `𝒰.exists_eq (pullback.snd z f p)`. Choose the witnesses or unpack the hypotheses as in `⟨q, hq⟩ : p ∈ Set.range (pullback.fst (pullback.snd z f) (𝒰.f i)) := by`. Rewrite using `[Scheme.Pullback.range_fst]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨y', hy'⟩`. Use `⟨i, (hP i).isoPullback.inv q, ?_⟩` and prove the remaining obligations. Rewrite using `[← hq, ← Scheme.Hom.comp_apply, (hP i).isoPullback_inv_fst]`. Establish `fi : ∀ i, e i ≫ pullback.fst z f = pullback.fst z (x i).1` using `fun i => by`. Simplify using `only [e, bc, pullback.map, pullback.lift_fst, Category.comp_id]`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hK : ∀ i j (Q : Scheme.{0}) (a : Q ⟶ pullback z (x i).1) (b : Q ⟶ pullback z (x j).1), a ≫ e i = b ≫ e j → (x i).2.1.comap a = (x j).2.1.comap b`. Introduce `i j Q a b hab`. Establish `hbc : (a ≫ pullback.snd z (x i).1) ≫ 𝒰.f i = (b ≫ pullback.snd z (x j).1) ≫ 𝒰.f j`. Rewrite using `[Category.assoc, Category.assoc, ← (hP i).w, ← (hP j).w, reassoc_of% hab]`. Establish `H` using `hx i j Q _ _ hbc`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `w : (a ≫ pullback.snd z (x i).1) ≫ (x i).1 = (b ≫ pullback.snd z (x j).1) ≫ (x j).1` using `congrArg Sigma.fst H`. Establish `H'` using `(HPt.map_eq_mk_iff _ (x i) w ((x j).2.pull _ rfl)).1 H`. Establish `hs : (a ≫ pullback.fst z (x i).1) ≫ z = 𝟙 Q ≫ (b ≫ pullback.snd z (x j).1) ≫ (x j).1`. Rewrite using `[Category.id_comp, ← w, Category.assoc, Category.assoc, pullback.condition]`. Take `⟨s, hs1, hs2⟩ : ∃ s : Q ⟶ pullback z ((b ≫ pullback.snd z (x j).1) ≫ (x j).1), s ≫ pullback.fst _ _ = a ≫ pullback.fst z (x i).1 ∧ s ≫ pullback.snd _ _ = 𝟙 Q` from `⟨pullback.lift _ _ hs, pullback.lift_fst _ _ _, pullback.lift_snd _ _ _⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hfst : a ≫ pullback.fst z (x i).1 = b ≫ pullback.fst z (x j).1`. Rewrite using `[← fi i, ← fi j, reassoc_of% hab]`. Establish `ha : a = s ≫ bc z (a ≫ pullback.snd z (x i).1) (x i).1 _ w`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, bc_fst, hs1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, bc_snd, reassoc_of% hs2]`. Establish `hb : b = s ≫ bc z (b ≫ pullback.snd z (x j).1) (x j).1 _ rfl`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, bc_fst, hs1, hfst]`. Rewrite using `[Category.assoc, bc_snd, reassoc_of% hs2]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : (x i).2.1.comap a = ((x i).2.1.comap (bc z (a ≫ pullback.snd z (x i).1) (x i).1 _ w)).comap s`. Rewrite using `[← Scheme.IdealSheafData.comap_comp, ← ha]`. Establish `e2 : (x j).2.1.comap b = ((x j).2.1.comap (bc z (b ≫ pullback.snd z (x j).1) (x j).1 _ rfl)).comap s`. Rewrite using `[← Scheme.IdealSheafData.comap_comp, ← hb]`. Rewrite using `[e1, e2, H']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Take `⟨I, hI⟩` from `GlobalTheory.T.exists_idealSheafData_glue_of_openImmersions GlobalTheory.T.exists_idealSheafData_of_compatible_ideals (ι := 𝒰.I₀) (fun i : 𝒰.I₀ => pullback z (x i).1) e he hcov (fun i : 𝒰.I₀ => (x i).2.1) hK`. Establish `hfr : IsFinFlatRk (I.subschemeι ≫ pullback.snd z f) r`. Use `isFinFlatRk_of_cover _ 𝒰 r fun i => ⟨(I.comap (e i)).subscheme, _, _, (isPullback_comap I (e i)).flip.paste_vert (hP i), ?_⟩` and prove the remaining obligations. Use `(x i).2.2` as an intermediate fact.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[← hI i]`. Conclude with `this`. Use `⟨⟨f, I, hfr⟩, fun i => ?_⟩` and prove the remaining obligations. Conclude with `(HPt.map_eq_mk_iff (𝒰.f i) ⟨f, I, hfr⟩ (hf i) (x i).2).2 (hI i)`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem HPt.exists_glue : ∀ {S Z : Scheme.{0}} (z : Z ⟶ S) (r : ℕ) (Y : Scheme.{0}) (𝒰 : Y.OpenCover) (x : ∀ i, GlobalTheory.HilbGlue.HPt z r (𝒰.X i)), (∀ i j (R : Scheme.{0}) (b : R ⟶ 𝒰.X i) (c : R ⟶ 𝒰.X j), b ≫ 𝒰.f i = c ≫ 𝒰.f j → GlobalTheory.HilbGlue.HPt.map b (x i) = GlobalTheory.HilbGlue.HPt.map c (x j)) → ∃ y : GlobalTheory.HilbGlue.HPt z r Y, ∀ i, GlobalTheory.HilbGlue.HPt.map (𝒰.f i) y = x i := by
   intro S Z z r Y 𝒰 x hx

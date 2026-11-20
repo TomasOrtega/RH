@@ -24,9 +24,9 @@ namespace GlobalTheory.BiKill
 open GlobalTheory.CechPic
 
 /- English proof (translation)
-Establish `e : ∀ h : T ⟶ A, pull h.left (lam (cls M hM) (𝟙 A) (𝟙 A)) = lam (cls M hM) h h` using `fun h => by rw [pull_lam, Category.comp_id]`. Establish `hr : ∀ x y z : T ⟶ A, lam (cls M hM) x (y * z) = lam (cls M hM) x y + lam (cls M hM) x z`. Introduce `x y z`. Rewrite using `[lam_comm, lam_mul_left hM hΘ, lam_comm _ y, lam_comm _ z]`. Express the relevant statement in the definitionally equal form `pull (a * b).left _ - pull a.left _ - pull b.left _ + pull (1 : T ⟶ A).left _ = _`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[e, e, e, e, lam_mul_left hM hΘ, hr, hr, lam_one_left, lam_comm _ b a, two_smul]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem lam_lam_diag {S : Scheme.{0}} {A T : Over S} [GrpObj A] [IsCommMonObj A] {M : LB A.left} (hM : M.IsLB)
     (hΘ : ∃ t : LB.Gen (Theta A M), t.IsGen) (a b : T ⟶ A) :
@@ -41,19 +41,19 @@ theorem lam_lam_diag {S : Scheme.{0}} {A T : Over S} [GrpObj A] [IsCommMonObj A]
   abel
 
 /- English proof (translation)
-Introduce `A _ _ g hA hg P hP h1 h2 hsw hamp n hn T x hx`. Take `⟨M, hM, hPM⟩` from `GlobalTheory.T.exists_mumford_bundle_iso_symmetric_birigidified_complex A g hA hg P hP h1 h2 hsw`. Establish `hΘ` using `GlobalTheory.exists_gen_theta_of_isAbelianScheme ℂ A hA M hM`. Establish `hcube : (cubeLB A ![fst A A, snd A A] M).IsLB` using `LB.isLB_linComb hM _ _`. Establish `hcP : cls P hP = lam (cls M hM) (fst A A) (snd A A)` using `((cls_eq_iff hP hcube).2 hPM).trans (cls_cube_two hM _ _ hcube)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpullP : ∀ {Y : Over (Sp ℂ)} (a b : Y ⟶ A) (h : (P.pull (lift a b).left).IsLB), cls _ h = lam (cls M hM) a b`. Introduce `Y a b h`. Rewrite using `[cls_pull hP, hcP, pull_lam, lift_fst, lift_snd]`. Establish `hL : (P.pull (lift (𝟙 A) (𝟙 A)).left).IsLB` using `pull_isLB hP _`. Establish `hcL : cls _ hL = lam (cls M hM) (𝟙 A) (𝟙 A)` using `hpullP _ _ hL`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨L₀, ⟨u₀⟩⟩` from `GlobalTheory.HomDescentQb.exists_holUnif A g hA hg`. Take `⟨u, Hm, χ, -, hF⟩` from `GlobalTheory.exists_isFactorAH_frame_of_unif A hA L₀ g u₀ _ hL`. Establish `hpos` using `GlobalTheory.AmpleHermPos.re_form_pos_of_relAmple A hA _ hL hamp g u Hm χ hF.1 hF.2.1 hF.2.2`. Establish `hAH` using `GlobalTheory.TorusRM.isAH_of_isFactorAH hF hpos`. Take `⟨Q, ψ, ρ, N, hN, hψ, hρ, e₁, e₂, e₃⟩` from `GlobalTheory.PosAHIsog.exists_isog_principal_lam g A hA _ u Hm χ hL hAH`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hlamM : (abelian₂ A M).IsLB` using `LB.isLB_linComb hM _ _`. Establish `hlamL : (abelian₂ A (P.pull (lift (𝟙 A) (𝟙 A)).left)).IsLB` using `LB.isLB_linComb hL _ _`. Establish `hker : ∀ {Y : Over (Sp ℂ)} (y : Y ⟶ A), (∃ t : (P.pull (lift (snd A Y ≫ y) (fst A Y)).left).Gen, t.IsGen) → GlobalTheory.RealMult.HasGen ((abelian₂ A M).pull (lift (fst A Y) (snd A Y ≫ y)).left) ∧ GlobalTheory.RealMult.HasGen ((abelian₂ A (P.pull (lift (𝟙 A) (𝟙 A)).left)).pull (l …`. Introduce `Y y ht`. Establish `h0 : lam (cls M hM) (fst A Y) (snd A Y ≫ y) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[lam_comm, ← hpullP _ _ (pull_isLB hP _)]`. Conclude with `(cls_eq_zero_iff _).2 ht`. Use `⟨(cls_eq_zero_iff (pull_isLB hlamM _)).1 ?_, (cls_eq_zero_iff (pull_isLB hlamL _)).1 ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.RealMult.Elliptic.cls_pull_lam hM]`. Conclude with `h0`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[GlobalTheory.RealMult.Elliptic.cls_pull_lam hL, hcL, lam_lam_diag hM hΘ, h0, smul_zero]`. Establish `hk : x ^ (N * N) = 1` using `GlobalTheory.KillSquare.pow_sq_eq_one_of_lam_trivial A hA _ hL Q ψ ρ N hψ hρ e₁ e₂ e₃ T x (hker x hx).2`. Establish `key` using `GlobalTheory.torsion_point_comp_eq_one A hA M ((𝟙 A) ^ n) (N * N) hM (Nat.mul_pos hN hN) (fun y hy => ?_) T x hk (hker x hx).1`. Rewrite `key` using `[MonObj.comp_pow, Category.comp_id]`. Then use the resulting hypothesis. Rewrite using `[MonObj.comp_pow, Category.comp_id]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `hn y ((cls_eq_zero_iff (pull_isLB hP _)).1 ?_)` and prove the remaining obligations. Rewrite using `[hpullP, lam_comm, ← GlobalTheory.RealMult.Elliptic.cls_pull_lam hM _ _ (pull_isLB hlamM _)]`. Conclude with `(cls_eq_zero_iff _).2 hy`.
+A detailed English derivation is pending.
 -/
 theorem kernel_pow_eq_one : ∀ (A : Over (Sp ℂ)) [GrpObj A] [IsCommMonObj A] (g : ℕ), IsAbelianScheme A → SmoothOfRelativeDimension g A.hom → ∀ P : LB (G2 A).left, P.IsLB → (∃ t : (P.pull (lift (1 : A ⟶ A) (𝟙 A)).left).Gen, t.IsGen) → (∃ t : (P.pull (lift (𝟙 A) (1 : A ⟶ A)).left).Gen, t.IsGen) → LBIso P (P.pull (lift (snd A A) (fst A A)).left) → Out.RelAmple A (P.pull (lift (𝟙 A) (𝟙 A)).left) → ∀ n : ℕ, (∀ x : 𝟙_ (Over (Sp ℂ)) ⟶ A, (∃ t : (P.pull (lift (snd A (𝟙_ (Over (Sp ℂ))) ≫ x) (fst A (𝟙_ (Over (Sp ℂ))))).left).Gen, t.IsGen) → x ^ n = 1) → ∀ (T : Over (Sp ℂ)) (x : T ⟶ A), (∃ t : (P.pull (lift (snd A T ≫ x) (fst A T)).left).Gen, t.IsGen) → x ^ n = 1 := by
   intro A _ _ g hA hg P hP h1 h2 hsw hamp n hn T x hx

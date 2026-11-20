@@ -14,7 +14,7 @@ section LimLists
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Introduce `N t`. Proceed by induction on `t with`. Consider the case `leaf V z => exact Iff.rfl`. Consider the case `node t₁ t₂ i₁ i₂ => exact and_congr i₁ i₂`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem limL_allLeaves_strip (P : ∀ M : ℕ, Submodule ℂ (Sm E M) → Prop) :
     ∀ {N : ℕ} (t : Tr E N), t.strip.AllLeaves P ↔ t.AllLeaves P := by
@@ -24,7 +24,7 @@ theorem limL_allLeaves_strip (P : ∀ M : ℕ, Submodule ℂ (Sm E M) → Prop) 
   | node t₁ t₂ i₁ i₂ => exact and_congr i₁ i₂
 
 /- English proof (translation)
-Introduce `N t`. Proceed by induction on `t with`. Consider the case `leaf V z' => exact Iff.rfl`. Consider the case `node t₁ t₂ i₁ i₂ => exact and_congr i₁ i₂`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem limL_allLeaves_shift (P : ∀ M : ℕ, Submodule ℂ (Sm E M) → Prop) (z : ℂ) :
     ∀ {N : ℕ} (t : Tr E N), (t.shift z).AllLeaves P ↔ t.AllLeaves P := by
@@ -34,7 +34,7 @@ theorem limL_allLeaves_shift (P : ∀ M : ℕ, Submodule ℂ (Sm E M) → Prop) 
   | node t₁ t₂ i₁ i₂ => exact and_congr i₁ i₂
 
 /- English proof (translation)
-Introduce `N t`. Proceed by induction on `t with`. Consider the case `leaf V z => exact h _ _`. Consider the case `node t₁ t₂ i₁ i₂ => exact fun a => ⟨i₁ a.1, i₂ a.2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem limL_allLeaves_mono {P Q : ∀ M : ℕ, Submodule ℂ (Sm E M) → Prop} (h : ∀ M V, P M V → Q M V) :
     ∀ {N : ℕ} {t : Tr E N}, t.AllLeaves P → t.AllLeaves Q := by
@@ -44,9 +44,9 @@ theorem limL_allLeaves_mono {P Q : ∀ M : ℕ, Submodule ℂ (Sm E M) → Prop}
   | node t₁ t₂ i₁ i₂ => exact fun a => ⟨i₁ a.1, i₂ a.2⟩
 
 /- English proof (translation)
-Introduce `N t`. Proceed by induction on `t with`. Consider the case `leaf V z'`. Introduce `hp h`. Break down `h with h | h` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `absurd h.1 (Nat.ne_of_gt (show 0 < _ from hp))`. Conclude with `Or.inr h`. Consider the case `node t₁ t₂ i₁ i₂ => exact fun hp h => ⟨i₁ hp.1 h.1, i₂ hp.2 h.2⟩`.
+Prove the second alternative. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem limL_disc_shift (z : ℂ) : ∀ {N : ℕ} {t : Tr E N}, t.AllLeaves (fun M _ => 0 < M) → t.Disc → (t.shift z).Disc := by
   intro N t
@@ -59,9 +59,9 @@ theorem limL_disc_shift (z : ℂ) : ∀ {N : ℕ} {t : Tr E N}, t.AllLeaves (fun
   | node t₁ t₂ i₁ i₂ => exact fun hp h => ⟨i₁ hp.1 h.1, i₂ hp.2 h.2⟩
 
 /- English proof (translation)
-Introduce `N t`. Proceed by induction on `t with`. Consider the case `leaf V z'`. Introduce `hp h`. Break down `h with h | h` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `absurd h.1 (Nat.ne_of_gt (show 0 < _ from hp))`. Conclude with `Or.inr ⟨h.1, h.2.1, by simp [h.2.2, hz]⟩`. Consider the case `node t₁ t₂ i₁ i₂ => exact fun hp h => ⟨i₁ hp.1 h.1, i₂ hp.2 h.2⟩`.
+Prove the second alternative. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem limL_good_shift {z : ℂ} (hz : z.re = 0) :
     ∀ {N : ℕ} {t : Tr E N}, t.AllLeaves (fun M _ => 0 < M) → t.Good → (t.shift z).Good := by
@@ -87,7 +87,7 @@ def LimDiscBody (E : Type) [Field E] [NumberField E] [IsCMField E] (M : ℕ) (W 
     ∀ k, Emb (V (φ k)) (· ∈ (t k).space)
 
 /- English proof (translation)
-Use `letI : MeasurableSpace (GA E M) := borel _`. Use `haveI : BorelSpace (GA E M) := ⟨rfl⟩`. Use `haveI := GlobalTheory.CuspRep.CuspidalL2GL.locallyCompactSpace_GA E M`. Conclude with `⟨_, inferInstance, Measure.haar, inferInstance⟩`.
+Equip the data with the indicated structure. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem limL_exists_haar (M : ℕ) : ∃ (_ : MeasurableSpace (GA E M)) (_ : BorelSpace (GA E M)) (μ : Measure (GA E M)),
     μ.IsHaarMeasure := by
@@ -97,11 +97,11 @@ theorem limL_exists_haar (M : ℕ) : ∃ (_ : MeasurableSpace (GA E M)) (_ : Bor
   exact ⟨_, inferInstance, Measure.haar, inferInstance⟩
 
 /- English proof (translation)
-Take `⟨_, _, μ, _⟩` from `limL_exists_haar (E := E) M`. Take `⟨φ, tt, t₀, hφ, hG, hDt, hst, hL, htw, hE⟩` from `hB μ R hM hR V hD hTy hI`. Take `⟨z₀, hz₀, ψ, hψ, hlim⟩` from `tendsto_subseq_of_bounded (x := fun k => z (φ k)) (Metric.isBounded_closedBall (x := (0 : ℂ)) (r := R)) (fun k => by simpa using hzR (φ k))`. Establish `hre : z₀.re = 0`. Establish `h1 : Tendsto (fun k => (z (φ (ψ k))).re) atTop (𝓝 z₀.re)` using `(Complex.continuous_re.tendsto z₀).comp hlim`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [hz, ] at h1`. Conclude with `(tendsto_nhds_unique h1 tendsto_const_nhds)`. Establish `hpos : t₀.AllLeaves (fun M _ => 0 < M)` using `limL_allLeaves_mono (fun _ _ h => h.1) hL`. Establish `hposk : ∀ k, (tt k).AllLeaves (fun M _ => 0 < M)` using `fun k => by`. Rewrite using `[← limL_allLeaves_strip, hst k, limL_allLeaves_strip]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hpos`. Establish `hconv : Conv tt t₀` using `(hS E M tt t₀).2 ⟨hst, htw⟩`. Establish `hconv' : Conv (fun k => (tt (ψ k)).shift (z (φ (ψ k)))) (t₀.shift z₀)` using `hSh E M _ t₀ _ z₀ (hC E M tt t₀ ψ hconv hψ) hlim`. Establish `hL' : (t₀.shift z₀).AllLeaves (fun M V => 0 < M ∧ ∃ K' ∈ Θ M, ∃ W' ∈ Ω M, HasType K' W' V)` using `(limL_allLeaves_shift _ _ _).2 hL`. Conclude with `⟨fun k => φ (ψ k), fun k => (tt (ψ k)).shift (z (φ (ψ k))), t₀.shift z₀, hφ.comp hψ, hconv', red_of_leaves hL', limL_good_shift hre hpos hG, hL', fun k => limL_disc_shift _ (hposk _) (hDt _), fun k => hT E M _ _ _ (hD _).stable (hE _)⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem limL_lim_one (hS : ConvStrip) (hSh : ConvShift) (hC : ConvComp) (hT : TwShift) {M : ℕ} (hM : 0 < M)
     {W : Submodule ℂ (Kinf E M → ℂ)} {K : Subgroup (GL (Fin M) (Af E))}
@@ -137,27 +137,25 @@ theorem limL_lim_one (hS : ConvStrip) (hSh : ConvShift) (hC : ConvComp) (hT : Tw
 end LimLists
 
 /- English proof (translation)
-Introduce `hS hSh hC h5 hT E _ _ _ N Ωs hΩs`. Establish `h1 : ∀ (M : ℕ) (W : Submodule ℂ (Kinf E M → ℂ)), ∃ Ω : ∀ M' : ℕ, Set (Submodule ℂ (Kinf E M' → ℂ)), KTypes E Ω ∧ (FiniteDimensional ℂ W → ∀ K : Subgroup (GL (Fin M) (Af E)), IsOpen (K : Set (GL (Fin M) (Af E))) → ∃ Θ : ∀ M' : ℕ, Set (Subgroup (GL (Fin M') (Af E))), Levels E Θ ∧ L …`. Introduce `M W`. Distinguish the cases in `hW : FiniteDimensional ℂ W`. Take `⟨Ω, hΩ, h⟩` from `h5 E M W hW`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨Ω, hΩ, fun _ K hK => h K hK⟩`. Conclude with `⟨fun _ => ∅, fun _ => ⟨Set.finite_empty, by simp⟩, fun h => absurd h hW⟩`. Use `choose Om hOm hOm' using h1`. Use `⟨fun M' => ⋃ M ∈ Set.Icc 1 N, ⋃ W ∈ Ωs M, Om M W M', ?_, ?_⟩` and prove the remaining obligations. Introduce `M'`.
+Supply the required witnesses or components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(Set.finite_Icc 1 N).biUnion fun M _ => (hΩs M).1.biUnion fun W _ => (hOm M W M').1, ?_⟩` and prove the remaining obligations. Introduce `W' hW'`. Simplify using `only [Set.mem_iUnion] at hW'`. Take `⟨M, _, W, _, h⟩` from `hW'`. Conclude with `(hOm M W M').2 W' h`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `Θs hΘs`. Establish `h2 : ∀ (M : ℕ) (W : Submodule ℂ (Kinf E M → ℂ)) (K : Subgroup (GL (Fin M) (Af E))), ∃ Θ : ∀ M' : ℕ, Set (Subgroup (GL (Fin M') (Af E))), Levels E Θ ∧ (FiniteDimensional ℂ W → IsOpen (K : Set (GL (Fin M) (Af E))) → LimDiscBody E M W K (Om M W) Θ)`. Introduce `M W K`. Distinguish the cases in `h : FiniteDimensional ℂ W ∧ IsOpen (K : Set (GL (Fin M) (Af E)))`. Take `⟨Θ, hΘ, hb⟩` from `hOm' M W h.1 K h.2`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `⟨Θ, hΘ, fun _ _ => hb⟩`. Conclude with `⟨fun _ => ∅, fun _ => ⟨Set.finite_empty, by simp⟩, fun a b => absurd ⟨a, b⟩ h⟩`. Use `choose Th hTh hTh' using h2`. Use `⟨fun M' => ⋃ M ∈ Set.Icc 1 N, ⋃ W ∈ Ωs M, ⋃ K ∈ Θs M, Th M W K M', ?_, ?_⟩` and prove the remaining obligations. Introduce `M'`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `⟨(Set.finite_Icc 1 N).biUnion fun M _ => (hΩs M).1.biUnion fun W _ => (hΘs M).1.biUnion fun K _ => (hTh M W K M').1, ?_⟩` and prove the remaining obligations. Introduce `K' hK'`. Simplify using `only [Set.mem_iUnion] at hK'`. Take `⟨M, _, W, _, K, _, h⟩` from `hK'`. Conclude with `(hTh M W K M').2 K' h`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `M hM hMN V z R hR hD hz hTy hI hzR`. Use `choose Kk hKk Wk hWk hty using hTy`. Establish `hfin : (Θs M ×ˢ Ωs M).Finite` using `(hΘs M).1.prod (hΩs M).1`. Use `haveI := hfin.to_subtype`. Take `⟨⟨⟨K, W⟩, hKW⟩, hinf⟩` from `Finite.exists_infinite_fiber (fun k : ℕ => (⟨(Kk k, Wk k), hKk k, hWk k⟩ : ↥(Θs M ×ˢ Ωs M)))`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Establish `hfr : ∃ᶠ k in atTop, Kk k = K ∧ Wk k = W`. Use `Nat.frequently_atTop_iff_infinite.2 ((Set.infinite_coe_iff.1 hinf).mono ?_)` and prove the remaining obligations. Introduce `k hk`. Establish `h` using `congrArg Subtype.val (Set.mem_singleton_iff.1 (Set.mem_preimage.1 hk))`. Conclude with `⟨congrArg Prod.fst h, congrArg Prod.snd h⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨a, ha, hak⟩` from `extraction_of_frequently_atTop hfr`. Establish `hK : K ∈ Θs M` using `hKW.1`. Establish `hW : W ∈ Ωs M` using `hKW.2`. Establish `hbody : LimDiscBody E M W K (Om M W) (Th M W K)` using `hTh' M W K ((hΩs M).2 W hW) ((hΘs M).2 K hK)`. Establish `htyp : ∀ k, HasType K W (V (a k))` using `fun k => by`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h` using `hty (a k)`. Rewrite `h` using `[(hak k).1, (hak k).2]`. Then use the resulting hypothesis. Take `⟨φ, t, s, hφ, hc, hr, hg, hl, hd, he⟩` from `limL_lim_one hS hSh hC hT hM hbody (fun k => V (a k)) (fun k => z (a k)) R hR (fun k => hD _) (fun k => hz _) htyp (fun k => hI _) (fun k => hzR _)`. Use `⟨fun k => a (φ k), t, s, ha.comp hφ, hc, hr, hg, limL_allLeaves_mono ?_ hl, hd, he⟩` and prove the remaining obligations. Introduce and unpack `M' V' ⟨-, K'', hK'', W'', hW'', h⟩`.
-
-Use `Or.inr ⟨K'', ?_, W'', ?_, h⟩` and prove the remaining obligations. Simplify using `only [Set.mem_iUnion]`. Conclude with `⟨M, ⟨hM, hMN⟩, W, hW, K, hK, hK''⟩`. Simplify using `only [Set.mem_iUnion]`. Conclude with `⟨M, ⟨hM, hMN⟩, W, hW, hW''⟩`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem limLists : ConvStrip → ConvShift → ConvComp → LimLists := by
   intro hS hSh hC h5 hT E _ _ _ N Ωs hΩs

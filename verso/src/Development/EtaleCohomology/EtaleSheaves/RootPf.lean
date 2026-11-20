@@ -6,7 +6,7 @@ open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC LateralTh
 namespace LateralTheory.E.RootPf
 
 /- English proof (translation)
-Set `f : CommRingCat.of A ⟶ Γ(Z, U)` to `(Scheme.ΓSpecIso (CommRingCat.of A)).inv ≫ p.appTop ≫ Z.presheaf.map (homOfLE le_top).op`. Use `hq.map f.hom` as an intermediate fact. Simplify using `using this`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma unit_sec {Z : Scheme.{0}} (q : ℕ) (A : Type) [CommRing A] (p : Z ⟶ Spec (CommRingCat.of A))
     (hq : IsUnit (q : A)) (U : Z.Opens) : IsUnit (q : Γ(Z, U)) := by
@@ -16,7 +16,7 @@ lemma unit_sec {Z : Scheme.{0}} (q : ℕ) (A : Type) [CommRing A] (p : Z ⟶ Spe
   simpa using this
 
 /- English proof (translation)
-Establish `: NeZero (q : T)` using `⟨hq.ne_zero⟩`. Take `⟨a, ha⟩` from `hT (Polynomial.cyclotomic q T) (Polynomial.cyclotomic.monic q T) (by rw [Polynomial.natDegree_cyclotomic]; exact Nat.totient_pos.2 (Nat.pos_of_ne_zero (NeZero.ne q)))`. Conclude with `⟨a, (Polynomial.isRoot_cyclotomic_iff (n := q) (μ := a)).1 ha⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 lemma prim_of_aic (q : ℕ) [NeZero q] (T : Type) [CommRing T] [IsDomain T] (hT : AIC T)
     (hq : IsUnit (q : T)) : ∃ a : T, IsPrimitiveRoot a q := by
@@ -26,7 +26,7 @@ lemma prim_of_aic (q : ℕ) [NeZero q] (T : Type) [CommRing T] [IsDomain T] (hT 
   exact ⟨a, (Polynomial.isRoot_cyclotomic_iff (n := q) (μ := a)).1 ha⟩
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `prim_of_aic q Γ(Z, V) (hZ V hV (by obtain ⟨x⟩ := hne; exact ⟨x.1, x.2⟩)) (hqU V)`. Establish `hb` using `ha.map_of_injective (f := (Z.germToFunctionField V).hom) (Z.germToFunctionField_injective V)`. Take `⟨i, -, hi⟩` from `hb.eq_pow_of_pow_eq_one hζ.pow_eq_one`. Conclude with `⟨a ^ i, by rw [map_pow]; exact hi⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 lemma local_root {Z : Scheme.{0}} [IsIntegral Z]
     (hZ : ∀ U : Z.Opens, IsAffineOpen U → (U : Set Z).Nonempty → AIC Γ(Z, U))
@@ -40,27 +40,25 @@ lemma local_root {Z : Scheme.{0}} [IsIntegral Z]
   exact ⟨a ^ i, by rw [map_pow]; exact hi⟩
 
 /- English proof (translation)
-Introduce `q A _ Z p hZ hq`. Take `⟨hI, hA⟩` from `hZ`. Establish `hqU : ∀ U : Z.Opens, IsUnit (q : Γ(Z, U))` using `fun U => unit_sec q A p hq U`. Take `⟨x⟩` from `(inferInstance : Nonempty Z)`. Establish `: Nonempty (⊤ : Z.Opens)` using `⟨⟨x, trivial⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hq0 : NeZero q` using `⟨by rintro rfl; exact not_isUnit_zero (M₀ := Γ(Z, ⊤)) (by simpa using hqU ⊤)⟩`. Establish `hbasis : ∀ {U : Z.Opens} {y : Z}, y ∈ U → ∃ U' ∈ Z.affineOpens, y ∈ U' ∧ U' ≤ U` using `TopologicalSpace.Opens.isBasis_iff_nbhd.mp Z.isBasis_affineOpens`. Establish `haff : ∀ y : Z, ∃ U : Z.Opens, IsAffineOpen U ∧ y ∈ U`. Introduce `y`. Take `⟨U, hU, hy, -⟩` from `hbasis (show y ∈ (⊤ : Z.Opens) from trivial)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨U, hU, hy⟩`. Take `⟨U₀, hU₀, hx⟩` from `haff x`. Establish `: Nonempty U₀` using `⟨⟨x, hx⟩⟩`. Take `⟨a₀, ha₀⟩` from `prim_of_aic q Γ(Z, U₀) (hA U₀ hU₀ ⟨x, hx⟩) (hqU U₀)`. Use `set ζ : Z.functionField := (Z.germToFunctionField U₀).hom a₀ with hζdef`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hζ : IsPrimitiveRoot ζ q` using `ha₀.map_of_injective (f := (Z.germToFunctionField U₀).hom) (Z.germToFunctionField_injective U₀)`. Set `ι` to `{V : Z.Opens // IsAffineOpen V ∧ Nonempty V}`. Set `U : ι → Z.Opens` to `fun i => i.1`. Establish `instU : ∀ i : ι, Nonempty (U i)` using `fun i => i.2.2`. Establish `hex : ∀ i : ι, ∃ s : Γ(Z, U i), (Z.germToFunctionField (U i)).hom s = ζ` using `fun i => @local_root Z hI hA q hq0 hqU ζ hζ i.1 i.2.1 i.2.2`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `sf : ∀ i : ι, Γ(Z, U i)` to `fun i => Classical.choose (hex i)`. Establish `hsf : ∀ i : ι, (Z.germToFunctionField (U i)).hom (sf i) = ζ` using `fun i => Classical.choose_spec (hex i)`. Establish `hcov : (⊤ : Z.Opens) ≤ iSup U`. Introduce `y _`. Take `⟨V, hV, hy⟩` from `haff y`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `TopologicalSpace.Opens.mem_iSup.mpr ⟨⟨V, hV, ⟨⟨y, hy⟩⟩⟩, hy⟩`. Establish `hcomp : TopCat.Presheaf.IsCompatible Z.sheaf.1 U sf`. Introduce `i j`. Establish `: Nonempty (U i ⊓ U j : Z.Opens)`. Take `⟨y, hy⟩` from `nonempty_preirreducible_inter (U i).isOpen (U j).isOpen (by obtain ⟨⟨y, hy⟩⟩ := i.2.2; exact ⟨y, hy⟩) (by obtain ⟨⟨y, hy⟩⟩ := j.2.2; exact ⟨y, hy⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `⟨⟨y, hy⟩⟩`. Apply `Z.germToFunctionField_injective (U i ⊓ U j)` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `Z.presheaf.germ _ _ _ (Z.presheaf.map _ (sf i)) = Z.presheaf.germ _ _ _ (Z.presheaf.map _ (sf j))`. Rewrite using `[TopCat.Presheaf.germ_res_apply, TopCat.Presheaf.germ_res_apply]`. Conclude with `(hsf i).trans (hsf j).symm`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition.
 
-Take `⟨s0, hs, -⟩` from `Z.sheaf.existsUnique_gluing' U ⊤ (fun i => homOfLE le_top) hcov sf hcomp`. Set `s : Γ(Z, ⊤)` to `s0`. Express the relevant statement in the definitionally equal form `∀ i : ι, Z.presheaf.map (homOfLE le_top).op s = sf i at hs`. Establish `hgs : (Z.germToFunctionField ⊤).hom s = ζ`. Establish `h1` using `hs ⟨U₀, hU₀, inferInstance⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `h2` using `hsf ⟨U₀, hU₀, inferInstance⟩`. Rewrite `h2` using `[← h1]`. Express the relevant statement in the definitionally equal form `Z.presheaf.germ _ _ _ (Z.presheaf.map _ s) = ζ at h2`. Rewrite `h2` using `[TopCat.Presheaf.germ_res_apply]`. Conclude with `h2`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hps : IsPrimitiveRoot s q`. Establish `h' : IsPrimitiveRoot ((Z.germToFunctionField ⊤).hom s) q` using `by rw [hgs]; exact hζ`. Conclude with `IsPrimitiveRoot.of_map_of_injective h' (Z.germToFunctionField_injective ⊤)`. Establish `: NeZero (q : Γ(Z, ⊤))` using `⟨(hqU ⊤).ne_zero⟩`. Use `⟨⟨s, hqU ⊤, ?_⟩⟩` and prove the remaining obligations.
-
-Establish `hr` using `(Polynomial.isRoot_cyclotomic_iff (n := q) (μ := s)).2 hps`. Rewrite using `[Polynomial.aeval_def, Polynomial.eval₂_eq_eval_map, Polynomial.map_cyclotomic]`. Conclude with `hr`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Root_of : LateralTheory.E.ChartSurjCut.Root := by
   intro q A _ Z p hZ hq

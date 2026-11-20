@@ -11,15 +11,15 @@ open Formalism.QuantumDeterminants Formalism.QuantumDeterminants.GBasic
 variable {k r : ℕ}
 
 /- English proof (translation)
-Rewrite using `[Hb_eq, mulVec_diagonal, ← mul_assoc, dd_sq, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma alg1 (v : Fin (k + 1) → ℂ) (j : Fin (k + 1)) : dd k j * (Hb k *ᵥ v) j = v j := by
   rw [Hb_eq, mulVec_diagonal, ← mul_assoc, dd_sq, one_mul]
 
 /- English proof (translation)
-Establish `h1 : ∀ v : Fin (k + 1) → ℂ, Hb k *ᵥ v = fun i => dd k i * v i` using `fun v => funext fun i => by rw [Hb_eq, mulVec_diagonal]`. Establish `h2 : μ *ᵥ Pi.single j 1 = fun i => μ i j`. Use function extensionality and compare the values at `fun i => by simp [Matrix.mulVec, dotProduct_single]`. Rewrite using `[← mulVec_mulVec, ← mulVec_mulVec, h2]`. Simplify using `only [h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [dotProduct, Matrix.mulVec, conjTranspose_apply, star_sum, Pi.star_apply, star_mul', star_star]`. Use `congr 1`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `i _`. Rewrite using `[dd_star]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/

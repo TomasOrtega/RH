@@ -97,7 +97,7 @@ def LimWU : Prop :=
       (∀ w, ((l : ℕ) : 𝓞 E) ∈ w.asIdeal → Apart w w₀ → (∃ B, SatU U w B) → CrysDRU U ι r w)
 
 /- English proof (translation)
-The claim follows from `apartAll_empty w`.
+A detailed English derivation is pending.
 -/
 example (w : HeightOneSpectrum (𝓞 E)) : ApartAll (∅ : Finset (HeightOneSpectrum (𝓞 E))) w := apartAll_empty w
 

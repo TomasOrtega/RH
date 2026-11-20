@@ -8,17 +8,17 @@ open GroundTheory.Automorphic.AutomorphicForm GroundTheory.Automorphic.CuspidalS
 open scoped TensorProduct InnerProductSpace ComplexConjugate Pointwise
 
 /- English proof (translation)
-Introduce `K _ _ n hn`. Establish `main : ∀ (μ : Measure (normOneGL K n)) [μ.IsHaarMeasure] (ν : Measure (archGroup K n)) [ν.IsHaarMeasure] (m : Measure (AdelicGLn.FiniteAdelicGL K n)) [m.IsHaarMeasure], ∃ c : NNReal, c ≠ 0 ∧ Compat μ (c • ν) m ∧ Compat μ ν (c • m) ∧ Compat (c⁻¹ • μ) ν m`. Introduce `μ _ ν _ m _`. Take `⟨c, hc, h⟩` from `UpperTheory.ConvolutionTheory.Tf.tensMeas K n hn μ ν m`. Use `lift c to NNReal using hc.le`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h' : ∀ (β : TI K n) (e : TF K n) (Θ : normOneGL K n → ℂ), Continuous Θ → ∫ x, tens β e x * Θ x ∂μ = ((c : ℝ) : ℂ) * ∫ a, ∫ y, β a * e y * Θ (archP K n a * MultiplicityOne.finProj K n y) ∂m ∂ν` using `fun β e Θ hΘ => by`. Rewrite using `[← h β e Θ hΘ]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[(UpperTheory.ConvolutionTheory.Tf.tensApply K n hn β e).1 x]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `hc0 : ((c : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast hc.ne'`. Use `⟨c, by exact_mod_cast hc.ne', fun β e Θ hΘ => ?_, fun β e Θ hΘ => ?_, fun β e Θ hΘ => ?_⟩` and prove the remaining obligations. Rewrite using `[h' β e Θ hΘ, integral_smul_nnreal_measure, NNReal.smul_def, Complex.real_smul]`. Rewrite using `[h' β e Θ hΘ, ← integral_const_mul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `integral_congr_ae (Filter.Eventually.of_forall fun a => ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[integral_smul_nnreal_measure, NNReal.smul_def, Complex.real_smul]`. Rewrite using `[integral_smul_nnreal_measure, h' β e Θ hΘ, NNReal.smul_def, Complex.real_smul, ← mul_assoc, NNReal.coe_inv, Complex.ofReal_inv, inv_mul_cancel₀ hc0, one_mul]`. Use `⟨fun μ _ m _ => ?_, fun μ _ ν _ => ?_, fun ν _ m _ => ?_⟩` and prove the remaining obligations.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc, h, -, -⟩` from `main μ Measure.haar m`. Conclude with `⟨_, Measure.IsHaarMeasure.nnreal_smul _ hc, h⟩`. Take `⟨c, hc, -, h, -⟩` from `main μ ν Measure.haar`. Conclude with `⟨_, Measure.IsHaarMeasure.nnreal_smul _ hc, h⟩`. Take `⟨c, hc, -, -, h⟩` from `main Measure.haar ν m`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨_, Measure.IsHaarMeasure.nnreal_smul _ (inv_ne_zero hc), h⟩`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.Tf.compatEx :
     ∀ (K : Type) [Field K] [NumberField K] (n : ℕ), 0 < n →

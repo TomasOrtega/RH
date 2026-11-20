@@ -13,15 +13,13 @@ open Classical
 namespace GlobalTheory.Poinc
 
 /- English proof (translation)
-Introduce `o' Ω _ _ _ M K _ y z h ι s f m hf`. Establish `hmem : ∀ i, f i ^ m i ∈ M.O z`. Introduce `i`. Break down `Int.eq_nat_or_neg (m i) with ⟨n, hn | hn⟩` into its components or cases. Rewrite using `[hn, zpow_natCast]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Conclude with `pow_mem (hf i).2.1 n`. Rewrite using `[hn, zpow_neg, zpow_natCast, ← inv_pow]`. Conclude with `pow_mem (hf i).2.2 n`. Establish `hval : ∀ i, M.val y (f i ^ m i) = M.val y (f i) ^ m i`. Introduce `i`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinv : M.val y (f i)⁻¹ = (M.val y (f i))⁻¹`. Establish `e` using `RatModel.val_mul h (hf i).2.1 (hf i).2.2`. Rewrite `e` using `[mul_inv_cancel₀ (hf i).1, RatModel.val_one]`. Conclude with `(eq_inv_of_mul_eq_one_right e.symm)`. Break down `Int.eq_nat_or_neg (m i) with ⟨n, hn | hn⟩` into its components or cases.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hn, zpow_natCast, zpow_natCast]`. Conclude with `map_pow (RatModel.valHomOf y z h) ⟨f i, (hf i).2.1⟩ n`. Rewrite using `[hn, zpow_neg, zpow_natCast, zpow_neg, zpow_natCast, ← inv_pow, ← inv_pow, ← hinv]`. Conclude with `map_pow (RatModel.valHomOf y z h) ⟨(f i)⁻¹, (hf i).2.2⟩ n`. Establish `e` using `map_prod (RatModel.valHomOf y z h) (fun i => (⟨f i ^ m i, hmem i⟩ : M.O z)) s`.
-
-Rewrite `e` using `[RatModel.valHomOf_apply, SubmonoidClass.coe_finset_prod]`. Rewrite using `[e]`. Conclude with `Finset.prod_congr rfl fun i _ => by rw [RatModel.valHomOf_apply]; exact hval i`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem RatModel.val_prod_zpow : ∀ {o' Ω : Type} [CommRing o'] [Field Ω] [Algebra o' Ω] (M : RatModel o' Ω) {K : Type} [Field K] (y : Sp K ⟶ M.Z) (z : M.Z), (∀ w, y w ⤳ z) → ∀ {ι : Type} (s : Finset ι) (f : ι → Ω) (m : ι → ℤ), (∀ i, f i ≠ 0 ∧ f i ∈ M.O z ∧ (f i)⁻¹ ∈ M.O z) → M.val y (∏ i ∈ s, f i ^ m i) = ∏ i ∈ s, M.val y (f i) ^ m i := by
   intro o' Ω _ _ _ M K _ y z h ι s f m hf

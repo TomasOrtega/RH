@@ -10,7 +10,7 @@ noncomputable section
 namespace GlobalTheory.AdicSpan.LeftBasis
 
 /- English proof (translation)
-Introduce `k`. Rewrite using `[eq_sum_tmul b' v y, map_sum, Finsupp.finset_sum_apply]`. Use `sum_mem fun k' _ => ?_` and prove the remaining obligations. Rewrite using `[repr_tmul_apply]`. Conclude with `mul_mem (hy k') (h k' k)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isIntB_of_isIntB_of_repr {M : Type} [Ring M] [Algebra ℚ M] {κ κ' : Type} [Fintype κ']
     (b : Module.Basis κ ℚ M) (b' : Module.Basis κ' ℚ M) (v : HeightOneSpectrum ℤ)
@@ -23,9 +23,9 @@ theorem isIntB_of_isIntB_of_repr {M : Type} [Ring M] [Algebra ℚ M] {κ κ' : T
   exact mul_mem (hy k') (h k' k)
 
 /- English proof (translation)
-Establish `h1 : ∀ᶠ v : HeightOneSpectrum ℤ in Filter.cofinite, ∀ t : κ' × κ, algebraMap ℚ (v.adicCompletion ℚ) (b.repr (b' t.1) t.2) ∈ v.adicCompletionIntegers ℚ` using `Filter.eventually_all.2 fun t => rat_mem_adicCompletionIntegers_eventually _`. Establish `h2 : ∀ᶠ v : HeightOneSpectrum ℤ in Filter.cofinite, ∀ t : κ × κ', algebraMap ℚ (v.adicCompletion ℚ) (b'.repr (b t.1) t.2) ∈ v.adicCompletionIntegers ℚ` using `Filter.eventually_all.2 fun t => rat_mem_adicCompletionIntegers_eventually _`. Establish `hfin` using `Filter.eventually_cofinite.1 (h1.and h2)`. Use `⟨hfin.toFinset, fun v hv y => ?_⟩` and prove the remaining obligations. Rewrite `hv` using `[Set.Finite.mem_toFinset, Set.mem_setOf_eq, not_not]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `⟨isIntB_of_isIntB_of_repr b' b v (fun k k' => hv.2 (k, k')) y, isIntB_of_isIntB_of_repr b b' v (fun k' k => hv.1 (k', k)) y⟩`.
+Supply the required witnesses or components.
 -/
 theorem isIntB_iff_eventually {M : Type} [Ring M] [Algebra ℚ M] {κ κ' : Type} [Fintype κ] [Fintype κ']
     (b : Module.Basis κ ℚ M) (b' : Module.Basis κ' ℚ M) :
@@ -43,29 +43,25 @@ theorem isIntB_iff_eventually {M : Type} [Ring M] [Algebra ℚ M] {κ κ' : Type
     isIntB_of_isIntB_of_repr b b' v (fun k' k => hv.1 (k', k)) y⟩
 
 /- English proof (translation)
-Introduce `L _ _ C _ _ ι r e he κ ℓ κ' b`. Set `Φl : (Fin r → L) →ₗ[ℚ] C` to `∑ i, (LinearMap.mulRight ℚ (e i)) ∘ₗ ι.toLinearMap ∘ₗ LinearMap.proj i`. Establish `hΦl : ∀ c, Φl c = ∑ i, ι (c i) * e i` using `fun c => by`. Simplify using `[Φl, LinearMap.sum_apply]`. Establish `hbij : Function.Bijective Φl`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `⟨fun c c' hcc => ?_, fun x => ?_⟩` and prove the remaining obligations. Take `⟨d, -, hd⟩` from `he (Φl c)`. Conclude with `(hd c (hΦl c)).trans (hd c' (hcc.trans (hΦl c'))).symm`. Take `⟨d, hd, -⟩` from `he x`. Conclude with `⟨d, (hΦl d).trans hd.symm⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Set `Φ` to `LinearEquiv.ofBijective Φl hbij`. Set `b' : Module.Basis (Σ _ : Fin r, κ) ℚ C` to `(Pi.basis fun _ : Fin r => ℓ).map Φ`. Use `haveI : Fintype κ := FiniteDimensional.fintypeBasisIndex ℓ`. Use `haveI : FiniteDimensional ℚ C := Module.Finite.of_basis b'`. Use `haveI : Fintype κ' := FiniteDimensional.fintypeBasisIndex b`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hsingle : ∀ (j : Fin r) (l : L), Φ (Pi.single j l) = ι l * e j`. Introduce `j l`. Use `show Φl _ = _`. Rewrite using `[hΦl, Finset.sum_eq_single j]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i _ hij`. Simplify using `[hij]`. Simplify using the standard rewrite rules. Establish `hrepr : ∀ (j : Fin r) (l : L) (i : Fin r) (a : κ), b'.repr (ι l * e j) ⟨i, a⟩ = ℓ.repr ((Pi.single j l : Fin r → L) i) a`. Introduce `j l i a`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Rewrite using `[← hsingle]`. Simplify using `[b', Module.Basis.map_repr, Pi.basis_repr]`. Establish `hcoord : ∀ (v : HeightOneSpectrum ℤ) (j : Fin r) (z : v.adicCompletion ℚ ⊗[ℚ] L) (i : Fin r) (a : κ), (Algebra.TensorProduct.basis (v.adicCompletion ℚ) b').repr (Algebra.TensorProduct.map (AlgHom.id ℚ (v.adicCompletion ℚ)) ι z * ((1 : v.adicCompletion ℚ) ⊗ₜ[ℚ] e j)) ⟨i, a⟩ = (Alg …`. Introduce `v j z i a`. Proceed by induction on `z using TensorProduct.induction_on with`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Consider the case `zero => simp`. Consider the case `tmul s l`. Rewrite using `[Algebra.TensorProduct.map_tmul, Algebra.TensorProduct.tmul_mul_tmul, mul_one, AlgHom.id_apply, repr_tmul_apply, hrepr]`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Simplify using `[repr_tmul_apply]`. Simplify using `[h]`. Consider the case `add x y hx hy`. Rewrite using `[map_add, add_mul, LinearEquiv.map_add, Finsupp.add_apply, hx, hy, Pi.single_add, Pi.add_apply, LinearEquiv.map_add, Finsupp.add_apply]`. Take `⟨S, hS⟩` from `isIntB_iff_eventually b b'`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Use `⟨S, fun v hv β => ?_⟩` and prove the remaining obligations. Establish `hy : ∀ (i : Fin r) (a : κ), (Algebra.TensorProduct.basis (v.adicCompletion ℚ) b').repr (∑ j, Algebra.TensorProduct.map (AlgHom.id ℚ (v.adicCompletion ℚ)) ι (β j) * ((1 : v.adicCompletion ℚ) ⊗ₜ[ℚ] e j)) ⟨i, a⟩ = (Algebra.TensorProduct.basis (v.adicCompletion ℚ) ℓ).repr (β i) a`. Introduce `i a`. Rewrite using `[map_sum, Finsupp.finset_sum_apply]`. Repeatedly rewrite using `[hcoord]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[← Finsupp.finset_sum_apply, ← map_sum]`. Use `congr 2`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Rewrite using `[hS v hv]`. Prove the components needed by the constructor for the conclusion.
-
-Introduce `h i a`. Rewrite using `[← hy]`. Conclude with `h ⟨i, a⟩`. Introduce and unpack `h ⟨i, a⟩`. Rewrite using `[hy]`.
-
-Conclude with `h i a`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isIntB_sum_leftBasis_iff_eventually : ∀ (L : Type) [Field L] [NumberField L] (C : Type) [Ring C] [Algebra ℚ C] (ι : L →ₐ[ℚ] C) (r : ℕ)
     (e : Fin r → C), (∀ x : C, ∃! c : Fin r → L, x = ∑ i, ι (c i) * e i) →

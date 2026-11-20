@@ -16,9 +16,9 @@ section Group
 variable {G : Type} [Group G] {K : Subgroup G} {α : G} {R : Finset G}
 
 /- English proof (translation)
-Take `⟨hR, hx⟩` from `h`. Use `⟨fun γ hγ => ?_, fun x hx' => hx x ?_⟩` and prove the remaining obligations. Take `⟨a, ha, b, hb, rfl⟩` from `hR γ hγ`. Conclude with `⟨a * k₁⁻¹, K.mul_mem ha (K.inv_mem h₁), k₂⁻¹ * b, K.mul_mem (K.inv_mem h₂) hb, by group⟩`. Take `⟨a, ha, b, hb, rfl⟩` from `hx'`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨a * k₁, K.mul_mem ha h₁, k₂ * b, K.mul_mem h₂ hb, by group⟩`.
+Supply the required witnesses or components.
 -/
 theorem isCosetRep_congr (h : IsCosetRep (K : Set G) α R) {k₁ k₂ : G} (h₁ : k₁ ∈ K) (h₂ : k₂ ∈ K) :
     IsCosetRep (K : Set G) (k₁ * α * k₂) R := by
@@ -30,13 +30,13 @@ theorem isCosetRep_congr (h : IsCosetRep (K : Set G) α R) {k₁ k₂ : G} (h₁
     exact ⟨a * k₁, K.mul_mem ha h₁, k₂ * b, K.mul_mem h₂ hb, by group⟩
 
 /- English proof (translation)
-Establish `hφs : ∀ g, φ.symm g ∈ K ↔ g ∈ K` using `fun g => by`. Rewrite using `[← hφ (φ.symm g), MulEquiv.apply_symm_apply]`. Take `⟨hR, hx⟩` from `h`. Use `⟨fun γ hγ => ?_, fun x hx' => ?_⟩` and prove the remaining obligations. Take `⟨γ₀, hγ₀, rfl⟩` from `Finset.mem_map.1 hγ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha, b, hb, rfl⟩` from `hR γ₀ hγ₀`. Conclude with `⟨φ a, (hφ a).2 ha, φ b, (hφ b).2 hb, by simp [map_mul]⟩`. Take `⟨a, ha, b, hb, rfl⟩` from `hx'`. Establish `hy : ∃ k₁ ∈ (K : Set G), ∃ k₂ ∈ (K : Set G), φ.symm (a * φ α * b) = k₁ * α * k₂` using `⟨φ.symm a, (hφs a).2 ha, φ.symm b, (hφs b).2 hb, by simp [map_mul]⟩`. Take `⟨γ₀, ⟨hγ₀, hγK⟩, huniq⟩` from `hx _ hy`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨φ γ₀, ⟨Finset.mem_map_of_mem _ hγ₀, ?_⟩, ?_⟩` and prove the remaining obligations. Use `(hφ (γ₀⁻¹ * φ.symm (a * φ α * b))).2 hγK` as an intermediate fact. Simplify `this` using `[map_mul, map_inv]`. Introduce and unpack `γ ⟨hγ, hγK'⟩`. Take `⟨γ₁, hγ₁, rfl⟩` from `Finset.mem_map.1 hγ`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Establish `h1 : γ₁⁻¹ * φ.symm (a * φ α * b) ∈ K`. Rewrite using `[← hφ]`. Simplify `hγK'` using `[map_mul, map_inv]`. Establish `: γ₁ = γ₀` using `huniq γ₁ ⟨hγ₁, h1⟩`. Rewrite using `[this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -67,13 +67,13 @@ theorem isCosetRep_map (h : IsCosetRep (K : Set G) α R) (φ : G ≃* G) (hφ : 
       rfl
 
 /- English proof (translation)
-Take `⟨hR, hx⟩` from `h`. Use `⟨fun γ hγ => ?_, fun x hx' => ?_⟩` and prove the remaining obligations. Take `⟨γ₀, hγ₀, rfl⟩` from `Finset.mem_map.1 hγ`. Take `⟨a, ha, b, hb, rfl⟩` from `hR γ₀ hγ₀`. Use `⟨a, ha, b, hb, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Equiv.coe_toEmbedding, Equiv.coe_mulLeft]`. Rewrite using `[← mul_assoc, ← mul_assoc, hz a, mul_assoc a z α]`. Take `⟨a, ha, b, hb, rfl⟩` from `hx'`. Establish `hy : ∃ k₁ ∈ (K : Set G), ∃ k₂ ∈ (K : Set G), z⁻¹ * (a * (z * α) * b) = k₁ * α * k₂`. Use `⟨a, ha, b, hb, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← mul_assoc a z α, ← hz a, mul_assoc z a α, mul_assoc z (a * α) b, inv_mul_cancel_left]`. Take `⟨γ₀, ⟨hγ₀, hγK⟩, huniq⟩` from `hx _ hy`. Use `⟨z * γ₀, ⟨Finset.mem_map_of_mem (Equiv.mulLeft z).toEmbedding hγ₀, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_inv_rev, mul_assoc]`. Conclude with `hγK`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `γ ⟨hγ, hγK'⟩`. Take `⟨γ₁, hγ₁, rfl⟩` from `Finset.mem_map.1 hγ`. Simplify using `only [Equiv.coe_toEmbedding, Equiv.coe_mulLeft] at hγK' ⊢`. Rewrite `hγK'` using `[mul_inv_rev, mul_assoc]`. Rewrite using `[huniq γ₁ ⟨hγ₁, hγK'⟩]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCosetRep_mul_central (h : IsCosetRep (K : Set G) α R) {z : G} (hz : ∀ g, z * g = g * z) :
     IsCosetRep (K : Set G) (z * α) (R.map (Equiv.mulLeft z).toEmbedding) := by
@@ -111,7 +111,7 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchim
 
 omit [TopologicalSpace F] [IsNonarchimedeanLocalField F] in
 /- English proof (translation)
-Rewrite using `[Matrix.one_apply]`. Use `split_ifs`. Conclude with `(𝒪[F]).one_mem`. Conclude with `(𝒪[F]).zero_mem`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem one_apply_mem_integer (i j : Fin n) : (1 : Matrix (Fin n) (Fin n) F) i j ∈ 𝒪[F] := by
   rw [Matrix.one_apply]
@@ -120,9 +120,9 @@ theorem one_apply_mem_integer (i j : Fin n) : (1 : Matrix (Fin n) (Fin n) F) i j
   · exact (𝒪[F]).zero_mem
 
 /- English proof (translation)
-Rewrite using `[mem_integralGL_iff]`. Use `⟨fun i j => ?_, fun i j => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(1 + cMat S c) i j ∈ 𝒪[F]`. Rewrite using `[Matrix.add_apply]`. Conclude with `(𝒪[F]).add_mem (one_apply_mem_integer i j) (cMat_mem c i j)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `(1 - cMat S c) i j ∈ 𝒪[F]`. Rewrite using `[Matrix.sub_apply]`. Conclude with `(𝒪[F]).sub_mem (one_apply_mem_integer i j) (cMat_mem c i j)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unipC_mem_integralGL (S : Finset (Fin n)) (c : Pairs S → 𝓀[F]) : unipC S c ∈ integralGL F n := by
   rw [mem_integralGL_iff]
@@ -135,7 +135,7 @@ theorem unipC_mem_integralGL (S : Finset (Fin n)) (c : Pairs S → 𝓀[F]) : un
     exact (𝒪[F]).sub_mem (one_apply_mem_integer i j) (cMat_mem c i j)
 
 /- English proof (translation)
-Take `⟨σ, hσ⟩` from `exists_perm_mem_iff h`. Use `⟨permGL F σ, GLnLocal.permGL_mem_integralGL F n σ, ?_⟩` and prove the remaining obligations. Rewrite using `[permGL_conj_torusPow, lamS_comp_of_mem_iff hσ]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_torusPow_lamS_eq {A B : Finset (Fin n)} (h : A.card = B.card) :
     ∃ P ∈ integralGL F n, torusPow F n (lamS A) = P⁻¹ * torusPow F n (lamS B) * P := by
@@ -148,9 +148,9 @@ def reps (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchim
   open Classical in (powersetCard r (univ : Finset (Fin n))).biUnion fun S => univ.image (gMat S)
 
 /- English proof (translation)
-Establish `hk : (gMat S c)⁻¹ * gMat S' c' ∈ integralGL F n` using `QuotientGroup.eq.1 h`. Establish `e : gMat S' c' = unipC S c * torusPow F n (lamS S) * ((gMat S c)⁻¹ * gMat S' c')`. Simplify using `only [gMat]`. Use `group`. Use `iwasawaExponent_eq F n (unipC_mem_unipotent S c) hk (l := lamS S)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[← e, iwasawaExponent_gMat]`. Conclude with `lamS_injective this.symm`.
+A detailed English derivation is pending.
 -/
 theorem mk_gMat_eq {S S' : Finset (Fin n)} {c : Pairs S → 𝓀[F]} {c' : Pairs S' → 𝓀[F]}
     (h : (QuotientGroup.mk (gMat S c) : GL (Fin n) F ⧸ integralGL F n) = QuotientGroup.mk (gMat S' c')) :
@@ -164,13 +164,13 @@ theorem mk_gMat_eq {S S' : Finset (Fin n)} {c : Pairs S → 𝓀[F]} {c' : Pairs
   exact lamS_injective this.symm
 
 /- English proof (translation)
-Introduce `_ _ h` and use `gMat_injective S (congrArg QuotientGroup.mk h)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem gMat_injective' (S : Finset (Fin n)) : Function.Injective (gMat (F := F) S) :=
   fun _ _ h => gMat_injective S (congrArg QuotientGroup.mk h)
 
 /- English proof (translation)
-Simplify using `only [reps, mem_biUnion, mem_image, mem_univ, true_and]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_reps {r : ℕ} {γ : GL (Fin n) F} :
     γ ∈ reps F n r ↔ ∃ S ∈ powersetCard r (univ : Finset (Fin n)), ∃ c, gMat S c = γ := by
@@ -178,9 +178,9 @@ theorem mem_reps {r : ℕ} {γ : GL (Fin n) F} :
   simp only [reps, mem_biUnion, mem_image, mem_univ, true_and]
 
 /- English proof (translation)
-Rewrite using `[reps, sum_biUnion]`. Use `sum_congr rfl fun S _ => ?_` and prove the remaining obligations. Rewrite using `[sum_image fun c _ c' _ h => gMat_injective' S h]`. Introduce `S _ S' _ hne`. Rewrite using `[Function.onFun, disjoint_left]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `x hx hx'`. Take `⟨c, -, rfl⟩` from `mem_image.1 hx`. Take `⟨c', -, hc'⟩` from `mem_image.1 hx'`. Conclude with `hne (mk_gMat_eq (congrArg QuotientGroup.mk hc'.symm))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem sum_reps {M : Type*} [AddCommMonoid M] (r : ℕ) (f : GL (Fin n) F → M) :
     ∑ γ ∈ reps F n r, f γ = ∑ S ∈ powersetCard r (univ : Finset (Fin n)), ∑ c : Pairs S → 𝓀[F], f (gMat S c) := by
@@ -196,17 +196,15 @@ theorem sum_reps {M : Type*} [AddCommMonoid M] (r : ℕ) (f : GL (Fin n) F → M
     exact hne (mk_gMat_eq (congrArg QuotientGroup.mk hc'.symm))
 
 /- English proof (translation)
-Establish `hI : (initSeg hr).card = r` using `card_initSeg hr`. Use `⟨fun γ hγ => ?_, fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨S, hS, c, rfl⟩` from `mem_reps.1 hγ`. Take `⟨P, hP, hPe⟩` from `exists_torusPow_lamS_eq (F := F) (A := S) (B := initSeg hr) (by rw [(mem_powersetCard.1 hS).2, hI])`. Use `⟨unipC S c * P⁻¹, (integralGL F n).mul_mem (unipC_mem_integralGL S c) ((integralGL F n).inv_mem hP), P, hP, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[gMat, hPe]`. Use `group`. Take `⟨a, ha, b, hb, rfl⟩` from `hx`. Set `c₀ : Pairs (initSeg hr) → 𝓀[F]` to `fun _ => 0`. Establish `hα : torusPow F n (lamS (initSeg hr)) = (unipC (initSeg hr) c₀)⁻¹ * gMat (initSeg hr) c₀`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[gMat, inv_mul_cancel_left]`. Establish `hm : a * torusPow F n (lamS (initSeg hr)) * b ∈ minusculeSet F n r`. Establish `h` using `mul_mem_minusculeSet (gMat_mem_minusculeSet _ c₀) ((integralGL F n).mul_mem ha ((integralGL F n).inv_mem (unipC_mem_integralGL _ c₀))) hb`. Rewrite `h` using `[hI]`. Rewrite using `[hα, ← mul_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `h`. Take `⟨S, hS, c, hc⟩` from `exists_gMat hm`. Use `⟨gMat S c, ⟨mem_reps.2 ⟨S, mem_powersetCard.2 ⟨subset_univ _, hS⟩, c, rfl⟩, QuotientGroup.eq.1 hc⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `γ ⟨hγ, hγK⟩`. Take `⟨S', -, c', rfl⟩` from `mem_reps.1 hγ`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h' : (QuotientGroup.mk (gMat S' c') : GL (Fin n) F ⧸ integralGL F n) = QuotientGroup.mk (gMat S c)`. Rewrite using `[hc]`. Conclude with `QuotientGroup.eq.2 hγK`. Establish `hSS` using `mk_gMat_eq h'`. Substitute `hSS` using the available equality.
-
-Rewrite using `[gMat_injective _ h']`.
+Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCosetRep_reps {r : ℕ} (hr : r ≤ n) :
     IsCosetRep (integralGL F n : Set (GL (Fin n) F)) (torusPow F n (lamS (initSeg hr))) (reps F n r) := by

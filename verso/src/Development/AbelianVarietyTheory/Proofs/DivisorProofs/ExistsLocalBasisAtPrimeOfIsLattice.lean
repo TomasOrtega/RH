@@ -6,11 +6,11 @@ open scoped Matrix
 namespace GlobalTheory
 
 /- English proof (translation)
-Take `⟨s, rfl⟩` from `hL`. Use `⟨(s ×ˢ (Finset.univ : Finset (Fin n))).sup fun p => w.valuation E (p.1 p.2), ?_⟩` and prove the remaining obligations. Introduce `x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `i`. Conclude with `Finset.le_sup (f := fun p : (Fin n → E) × Fin n => w.valuation E (p.1 p.2)) (b := (x, i)) (Finset.mem_product.2 ⟨hx, Finset.mem_univ _⟩)`. Consider the case `zero => intro i`. Simplify using the standard rewrite rules. Consider the case `add x y _ _ hx hy => intro i`.
+Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately.
 
-Conclude with `Valuation.map_add_le _ (hx i) (hy i)`. Consider the case `smul a x _ hx`. Introduce `i`. Rewrite using `[Pi.smul_apply, Algebra.smul_def, map_mul]`. Conclude with `(mul_le_of_le_one_left' (w.valuation_le_one a)).trans (hx i)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_valuation_bound_of_fg {E : Type} [Field E] [NumberField E]
     (w : HeightOneSpectrum (𝓞 E)) {n : ℕ} {L : Submodule (𝓞 E) (Fin n → E)} (hL : L.FG) :
@@ -32,9 +32,9 @@ theorem exists_valuation_bound_of_fg {E : Type} [Field E] [NumberField E]
     exact (mul_le_of_le_one_left' (w.valuation_le_one a)).trans (hx i)
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_apply']`. Use `Valuation.map_sum_le _ fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_prod]`. Establish `h1 : w.valuation E ((Equiv.Perm.sign σ : ℤ) : E) ≤ 1`. Apply the tactic sequence `rcases Int.units_eq_one_or (Equiv.Perm.sign σ) with h | h <;> simp [h]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `(mul_le_of_le_one_left' h1).trans ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 -/
 theorem valuation_det_le_pow_of_entry_le {E : Type} [Field E] [NumberField E]
     (w : HeightOneSpectrum (𝓞 E)) {n : ℕ} (X : Matrix (Fin n) (Fin n) E)
@@ -51,13 +51,13 @@ theorem valuation_det_le_pow_of_entry_le {E : Type} [Field E] [NumberField E]
     _ = C ^ n := by simp
 
 /- English proof (translation)
-Take `⟨t, htS, hspan, hli⟩` from `exists_linearIndependent E S`. Rewrite `hspan` using `[hS]`. Set `b : Module.Basis t E (Fin n → E)` to `Module.Basis.mk hli (by simp [hspan])`. Establish `hfin : Finite t` using `Module.Finite.finite_basis b`. Use `Fintype.ofFinite t` as an intermediate fact.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : Fintype.card t = n`. Rewrite using `[← Module.finrank_eq_card_basis b]`. Simplify using the standard rewrite rules. Set `e : t ≃ Fin n` to `Fintype.equivFinOfCardEq hc`. Set `b'` to `b.reindex e`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `⟨Matrix.of fun i j => b' j i, ?_, fun j => ?_⟩` and prove the remaining obligations. Establish `hli' : LinearIndependent E (Matrix.of fun i j => b' j i).col` using `b'.linearIndependent`. Use `Matrix.linearIndependent_cols_iff_isUnit.1 hli'` as an intermediate fact. Conclude with `((Matrix.isUnit_iff_isUnit_det _).1 this).ne_zero`. Establish `: (fun i => (Matrix.of fun i j => b' j i) i j) = (e.symm j : Fin n → E)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `i`. Simplify using `[b', b]`. Rewrite using `[this]`. Conclude with `htS (e.symm j).2`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_det_ne_zero_col_mem_of_span_eq_top {E : Type} [Field E] {n : ℕ}
     {S : Set (Fin n → E)} (hS : Submodule.span E S = ⊤) :
@@ -82,17 +82,15 @@ theorem exists_det_ne_zero_col_mem_of_span_eq_top {E : Type} [Field E] {n : ℕ}
     exact htS (e.symm j).2
 
 /- English proof (translation)
-Take `⟨C, hC⟩` from `exists_valuation_bound_of_fg w hL.fg`. Take `⟨X₀, hX₀, hX₀L⟩` from `exists_det_ne_zero_col_mem_of_span_eq_top hL.span_eq_top`. Establish `hbd : ∀ X : Matrix (Fin n) (Fin n) E, (∀ j, (fun i => X i j) ∈ L) → w.valuation E X.det ≤ C ^ n` using `fun X hX => valuation_det_le_pow_of_entry_le w X fun i j => hC _ (hX j) i`. Take `⟨m, ⟨X, hX, hXL, rfl⟩, hmax⟩` from `Int.exists_greatest_of_bdd (P := fun m => ∃ X : Matrix (Fin n) (Fin n) E, X.det ≠ 0 ∧ (∀ j, (fun i => X i j) ∈ L) ∧ WithZero.log (w.valuation E X.det) = m) ⟨WithZero.log (C ^ n), by`. Introduce and unpack `_ ⟨X, hX, hXL, rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components.
 
-Establish `h0 : w.valuation E X.det ≠ 0` using `by simpa using hX`. Establish `h1` using `hbd X hXL`. Establish `h2 : C ^ n ≠ 0` using `fun h => h0 (le_antisymm (h ▸ h1) zero_le')`. Conclude with `(WithZero.log_le_log h0 h2).2 h1⟩`. Use the proof step `⟨_, X₀, hX₀, hX₀L, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h0 : w.valuation E X.det ≠ 0` using `by simpa using hX`. Use `⟨X, hX.isUnit, hXL, fun x hx i => ?_⟩` and prove the remaining obligations. Establish `hcr : X.det * (X⁻¹ *ᵥ x) i = (X.updateCol i x).det`. Use `congrFun (Matrix.det_smul_inv_mulVec_eq_cramer X x hX.isUnit) i` as an intermediate fact. Simplify `this` using `[Matrix.cramer_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Establish `hle : w.valuation E (X.updateCol i x).det ≤ w.valuation E X.det`. Distinguish the cases in `hY : (X.updateCol i x).det = 0`. Simplify using `[hY]`. Establish `h1 : w.valuation E (X.updateCol i x).det ≠ 0` using `by simpa using hY`. Use `(WithZero.log_le_log h1 h0).1 (hmax _ ⟨_, hY, fun j => ?_, rfl⟩)` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality. Simplify using `using hx`. Simplify `hXL j` using `[Matrix.updateCol_ne hj]`. Rewrite `hle` using `[← hcr, map_mul]`.
-
-Establish `hpos : 0 < w.valuation E X.det` using `zero_lt_iff.2 h0`. Conclude with `(mul_le_iff_le_one_right hpos).1 hle`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_local_basis_of_isLattice (E : Type) [Field E] [NumberField E]
     (w : HeightOneSpectrum (𝓞 E)) (n : ℕ) (L : Submodule (𝓞 E) (Fin n → E))

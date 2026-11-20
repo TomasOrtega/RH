@@ -20,7 +20,7 @@ Both sides reduce to the same expression.
 theorem cu_val (M : Matrix (Fin a) (Fin a) (Cinf E)) (hM : M * M = 0) (t : ℝ) : (cu M hM t).val = 1 + t • M := rfl
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [Units.val_mul, cu_val, add_mul, mul_add, one_mul, mul_one, smul_mul_smul_comm, hM, smul_zero, add_zero, add_smul]`. Normalize the expressions using the abelian group laws.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem cu_add (M : Matrix (Fin a) (Fin a) (Cinf E)) (hM : M * M = 0) (s t : ℝ) :
     cu M hM (s + t) = cu M hM s * cu M hM t := by
@@ -30,14 +30,14 @@ theorem cu_add (M : Matrix (Fin a) (Fin a) (Cinf E)) (hM : M * M = 0) (s t : ℝ
   abel
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Simplify using `[cu_val]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 -/
 theorem cu_zero (M : Matrix (Fin a) (Fin a) (Cinf E)) (hM : M * M = 0) : cu M hM 0 = 1 := by
   apply Units.ext
   simp [cu_val]
 
 /- English proof (translation)
-Establish `h` using `((hasDerivAt_id t).smul_const (toL M)).const_add (toL (1 : Matrix (Fin a) (Fin a) (Cinf E)))`. Simplify using `only [one_smul] at h`. Conclude with `h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_cu (M : Matrix (Fin a) (Fin a) (Cinf E)) (hM : M * M = 0) (t : ℝ) :
     HasDerivAt (fun s => toL (cu M hM s).val) (toL M) t := by
@@ -47,7 +47,7 @@ theorem hasDerivAt_cu (M : Matrix (Fin a) (Fin a) (Cinf E)) (hM : M * M = 0) (t 
 
 variable (E a) in
 /- English proof (translation)
-Establish `hs : Continuous (sInf E)` using `((continuous_infEq E).prodMk continuous_const : Continuous fun x : Cinf E => ((infEq E x, 0) : InfiniteAdeleRing E × Af E))`. Conclude with `Continuous.units_map (corner (matN a (sInf E))) (continuous_const.add (continuous_id.matrix_map hs))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_infGL' : Continuous (infGL E a) := by
   have hs : Continuous (sInf E) := ((continuous_infEq E).prodMk continuous_const :
@@ -55,7 +55,7 @@ theorem continuous_infGL' : Continuous (infGL E a) := by
   exact Continuous.units_map (corner (matN a (sInf E))) (continuous_const.add (continuous_id.matrix_map hs))
 
 /- English proof (translation)
-The claim follows from `Units.continuous_iff.2 ⟨continuous_const.add (continuous_id.smul continuous_const), continuous_const.sub (continuous_id.smul continuous_const)⟩`.
+A detailed English derivation is pending.
 -/
 theorem continuous_cu (M : Matrix (Fin a) (Fin a) (Cinf E)) (hM : M * M = 0) : Continuous (cu M hM) :=
   Units.continuous_iff.2 ⟨continuous_const.add (continuous_id.smul continuous_const),

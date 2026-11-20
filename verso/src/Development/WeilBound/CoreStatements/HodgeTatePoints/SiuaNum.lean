@@ -5,9 +5,9 @@ namespace PositivityTheory.HtPt.Siua
 open Filter Topology
 
 /- English proof (translation)
-Establish `hsum` using `f.map_add_univ (fun i => x i • μ) (fun i => y i • e)`. Rewrite using `[show (fun i => x i • μ + y i • e) = (fun i => x i • μ) + (fun i => y i • e) from rfl, hsum]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Establish `hpw : s.piecewise (fun i => x i • μ) (fun i => y i • e) = fun i => (if i ∈ s then x i else y i) • (if i ∈ s then μ else e)`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Apply the tactic sequence `by_cases hi : i ∈ s <;> simp [Finset.piecewise, hi]`. Rewrite using `[hpw, f.map_smul_univ, smul_eq_mul]`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 -/
 theorem expand {M : Type} [AddCommGroup M] {n : ℕ} (f : MultilinearMap ℤ (fun _ : Fin n => M) ℤ) (μ e : M)
     (x y : Fin n → ℤ) :
@@ -27,7 +27,7 @@ noncomputable def form {M : Type} [AddCommGroup M] {n : ℕ} (f : MultilinearMap
   ∑ s : Finset (Fin n), (∏ i, if i ∈ s then x i else y i) * (f (fun i => if i ∈ s then μ else e) : ℚ)
 
 /- English proof (translation)
-Rewrite using `[PositivityTheory.HtPt.Siua.expand]`. Simplify using `only [PositivityTheory.HtPt.Siua.form]`. Use `push_cast`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem form_cast {M : Type} [AddCommGroup M] {n : ℕ} (f : MultilinearMap ℤ (fun _ : Fin n => M) ℤ) (μ e : M)
     (x y : Fin n → ℤ) :
@@ -39,7 +39,7 @@ theorem form_cast {M : Type} [AddCommGroup M] {n : ℕ} (f : MultilinearMap ℤ 
   congr 1
 
 /- English proof (translation)
-Simplify using `only [PositivityTheory.HtPt.Siua.form, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Establish `hprod : ∏ i, (if i ∈ s then a * x i else a * y i) = a ^ n * ∏ i, (if i ∈ s then x i else y i)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hprod, mul_assoc]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 -/
 theorem form_smul {M : Type} [AddCommGroup M] {n : ℕ} (f : MultilinearMap ℤ (fun _ : Fin n => M) ℤ) (μ e : M)
     (x y : Fin n → ℚ) (a : ℚ) :
@@ -55,9 +55,9 @@ theorem form_smul {M : Type} [AddCommGroup M] {n : ℕ} (f : MultilinearMap ℤ 
   rw [hprod, mul_assoc]
 
 /- English proof (translation)
-Simplify using `only [PositivityTheory.HtPt.Siua.form]`. Use `continuous_finsetSum _ fun s _ => ?_` and prove the remaining obligations. Use `Continuous.mul (continuous_finsetProd _ fun i _ => ?_) continuous_const` and prove the remaining obligations. Distinguish the cases in `hi : i ∈ s`. Simplify using `only [hi, ↓reduceIte]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Conclude with `continuous_const`. Simplify using `only [hi, ↓reduceIte]`. Conclude with `continuous_const.mul continuous_id`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem form_cont {M : Type} [AddCommGroup M] {n : ℕ} (f : MultilinearMap ℤ (fun _ : Fin n => M) ℤ) (μ e : M)
     (x : Fin n → ℚ) (y : Fin n → ℚ) : Continuous fun t : ℚ => form f μ e x (fun i => y i * t) := by
@@ -71,29 +71,29 @@ theorem form_cont {M : Type} [AddCommGroup M] {n : ℕ} (f : MultilinearMap ℤ 
     exact continuous_const.mul continuous_id
 
 /- English proof (translation)
-Introduce `M _ d f μ e hf`. Take `⟨x2, hx2⟩ : ∃ x2 : Fin (d + 1) → ℚ, x2 = Fin.snoc (α` from `fun _ => ℚ) (fun _ : Fin d => (1 : ℚ)) 0 := ⟨_, rfl⟩`. Take `⟨y2, hy2⟩ : ∃ y2 : Fin (d + 1) → ℚ, y2 = Fin.snoc (α` from `fun _ => ℚ) (fun _ : Fin d => (1 : ℚ)) 2 := ⟨_, rfl⟩`. Establish `hc1 : Continuous fun t : ℚ => PositivityTheory.HtPt.Siua.form f μ e (fun _ => (1 : ℚ)) (fun _ => 1 * t)` using `PositivityTheory.HtPt.Siua.form_cont f μ e _ (fun _ => 1)`. Establish `hc2 : Continuous fun t : ℚ => PositivityTheory.HtPt.Siua.form f μ e x2 (fun i => y2 i * t)` using `PositivityTheory.HtPt.Siua.form_cont f μ e x2 y2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : Continuous fun t : ℚ => PositivityTheory.HtPt.Siua.form f μ e (fun _ => (1 : ℚ)) (fun _ => 1 * t) - ((d : ℚ) + 1) * PositivityTheory.HtPt.Siua.form f μ e x2 (fun i => y2 i * t)` using `hc1.sub (continuous_const.mul hc2)`. Establish `h10 : PositivityTheory.HtPt.Siua.form f μ e (fun _ => (1 : ℚ)) (fun _ => 1 * 0) = (f (fun _ => μ) : ℚ)`. Establish `h` using `PositivityTheory.HtPt.Siua.form_cast f μ e (fun _ => 1) (fun _ => 0)`. Simplify using `only [one_smul, zero_smul, add_zero, Int.cast_one, Int.cast_zero] at h`. Simplify using `only [mul_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `h.symm`. Establish `h20 : PositivityTheory.HtPt.Siua.form f μ e x2 (fun i => y2 i * 0) = 0`. Simplify using `only [PositivityTheory.HtPt.Siua.form, mul_zero]`. Use `Finset.sum_eq_zero fun s _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_eq_zero (f := fun i => if i ∈ s then x2 i else 0) (Finset.mem_univ (Fin.last d)) (by simp [hx2]), zero_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hG0 : (0 : ℚ) < PositivityTheory.HtPt.Siua.form f μ e (fun _ => (1 : ℚ)) (fun _ => 1 * 0) - ((d : ℚ) + 1) * PositivityTheory.HtPt.Siua.form f μ e x2 (fun i => y2 i * 0)`. Rewrite using `[h10, h20]`. Simplify using `using hf`. Establish `hev` using `(hc.tendsto 0).eventually (lt_mem_nhds hG0)`. Take `⟨t, hGt, ht⟩` from `((hev.filter_mono nhdsWithin_le_nhds).and (self_mem_nhdsWithin : Set.Ioi (0 : ℚ) ∈ 𝓝[>] 0)).exists`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hGt' : (0 : ℚ) < PositivityTheory.HtPt.Siua.form f μ e (fun _ => (1 : ℚ)) (fun _ => 1 * t) - ((d : ℚ) + 1) * PositivityTheory.HtPt.Siua.form f μ e x2 (fun i => y2 i * t)` using `hGt`. Use `⟨t, ht, ?_⟩` and prove the remaining obligations. Introduce `a m ha hm`. Establish `hR : (f (fun _ => a • μ + m • e) : ℚ) = (a : ℚ) ^ (d + 1) * PositivityTheory.HtPt.Siua.form f μ e (fun _ => (1 : ℚ)) (fun _ => 1 * t)`. Establish `h` using `PositivityTheory.HtPt.Siua.form_cast f μ e (fun _ => (a : ℤ)) (fun _ => m)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← PositivityTheory.HtPt.Siua.form_smul]`. Simplify using `only [natCast_zsmul] at h`. Rewrite using `[h]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Use function extensionality and compare the values at `i`. Simplify using `[hm]`. Establish `hfun : (Fin.snoc (α` using `fun _ => M) (fun _ : Fin d => a • μ + m • e) ((2 * m) • e)) = fun i => (Fin.snoc (α := fun _ => ℤ) (fun _ : Fin d => (a : ℤ)) 0 i) • μ + (Fin.snoc (α := fun _ => ℤ) (fun _ : Fin d => m) (2 * m) i) • e := by`. Use function extensionality and compare the values at `i`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations.
 
-Use `Fin.lastCases ?_ (fun j => ?_) i` and prove the remaining obligations. Simplify using the standard rewrite rules. Simplify using `[natCast_zsmul]`. Establish `hL : (f (Fin.snoc (α` using `fun _ => M) (fun _ : Fin d => a • μ + m • e) ((2 * m) • e)) : ℚ) = (a : ℚ) ^ (d + 1) * PositivityTheory.HtPt.Siua.form f μ e x2 (fun i => y2 i * t) := by`. Establish `h` using `PositivityTheory.HtPt.Siua.form_cast f μ e (Fin.snoc (α := fun _ => ℤ) (fun _ : Fin d => (a : ℤ)) 0) (Fin.snoc (α := fun _ => ℤ) (fun _ : Fin d => m) (2 * m))`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← PositivityTheory.HtPt.Siua.form_smul, hfun, h]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Use `Fin.lastCases ?_ (fun j => ?_) i` and prove the remaining obligations. Simplify using `[hx2]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[hx2]`. Use function extensionality and compare the values at `i`. Use `Fin.lastCases ?_ (fun j => ?_) i` and prove the remaining obligations. Rewrite using `[hy2]`. Simplify using `only [Fin.snoc_last, Int.cast_mul, Int.cast_ofNat, hm]`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Simplify using `[hy2, hm]`. Establish `hpos : (0 : ℚ) < (a : ℚ) ^ (d + 1)` using `pow_pos (by exact_mod_cast (show 0 < a by omega)) _`. Establish `hlt : ((d : ℚ) + 1) * PositivityTheory.HtPt.Siua.form f μ e x2 (fun i => y2 i * t) < PositivityTheory.HtPt.Siua.form f μ e (fun _ => (1 : ℚ)) (fun _ => 1 * t)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Int.cast_lt (R := ℚ), Int.cast_mul, hL, hR]`. Combine the equalities or inequalities in the displayed calculation. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `_ < (a : ℚ) ^ (d + 1) * PositivityTheory.HtPt.Siua.form f μ e (fun _ => (1 : ℚ)) (fun _ => 1 * t) := mul_lt_mul_of_pos_left hlt hpos`.
+Chain the equalities or inequalities of the calculation. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem siu_num : ∀ (M : Type) [AddCommGroup M] (d : ℕ) (f : MultilinearMap ℤ (fun _ : Fin (d + 1) => M) ℤ) (μ e : M), 0 < f (fun _ => μ) → ∃ t : ℚ, 0 < t ∧ ∀ (a : ℕ) (m : ℤ), 1 ≤ a → (m : ℚ) = a * t → ((d + 1 : ℕ) : ℤ) * f (Fin.snoc (α := fun _ => M) (fun _ : Fin d => a • μ + m • e) ((2 * m) • e)) < f (fun _ => a • μ + m • e) := by
   intro M _ d f μ e hf

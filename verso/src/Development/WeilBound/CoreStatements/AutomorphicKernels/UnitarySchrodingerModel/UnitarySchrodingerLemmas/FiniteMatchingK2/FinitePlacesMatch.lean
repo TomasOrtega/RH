@@ -12,7 +12,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace PositivityTheory.PfSWUS.KFinMatch
 
 /- English proof (translation)
-Use `show ((1 : Matrix (Fin n) (Fin n) (AE D)).map (cA D))ᵀ = 1`. Rewrite using `[Matrix.map_one (cA D) (map_zero (cA D)) (map_one (cA D)), Matrix.transpose_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adj_one_k {D : D7} {n : ℕ} : adj (1 : Mx D n n) = 1 := by
   show ((1 : Matrix (Fin n) (Fin n) (AE D)).map (cA D))ᵀ = 1
@@ -21,9 +21,9 @@ theorem adj_one_k {D : D7} {n : ℕ} : adj (1 : Mx D n n) = 1 := by
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Introduce `D n M a d bs g gv hP lam L hlam hL hstd`. Establish `ha1 : a.1 * (a⁻¹).1 = 1` using `a.mul_inv`. Establish `ha2 : (a⁻¹).1 * a.1 = 1` using `a.inv_mul`. Establish `hadj1 : adj (D` using `D) a.1 * adj (D := D) (a⁻¹).1 = 1 := by rw [← adj_mul, ha2, adj_one_k]`. Establish `hadj2 : adj (D` using `D) (a⁻¹).1 * adj (D := D) a.1 = 1 := by rw [← adj_mul, ha1, adj_one_k]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨L₁, L₂, Φf, Φv, h1, h2, h3, h4, h5⟩` from `GlobalTheory.CompanionTheory.SwFinM.finMatchGen (F := D.host.F) (E := D.host.E) (M := M) a.1 (a⁻¹).1 (adj (D := D) a.1) (adj (D := D) (a⁻¹).1) ha1 ha2 hadj1 hadj2 bs g gv hP lam L hlam hL hstd`. Conclude with `⟨L₁, L₂, Φf, Φv, h1, h2, h3, fun x => h4 x, fun v b => h5 v b.1⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem finite_places_match : PositivityTheory.PfSWUS.SwMatch.FinMatch := by
   intro D n M a d bs g gv hP lam L hlam hL hstd

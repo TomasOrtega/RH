@@ -13,13 +13,13 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 namespace GlobalTheory.ThK.LevelCuspidalComponent
 
 /- English proof (translation)
-Introduce `hKP F E _ _ _ _ _ σ B a a' G X om om' R Rf hM hq d₁ H' i₀ i₁ sp pl hH hiso c h0 hj i hi f hf c₀ hc₀ hJ' φ' hφ' K hK _ r Xf Yf hW S hS`. Establish `hT` using `hM.triple`. Establish `hcm : IsCMExt F E σ` using `hT.base.cm`. Establish `hσ : ∀ x, σ (σ x) = x` using `GlobalTheory.SiegelSet.sigma_sigma hcm`. Establish `hsk` using `GlobalTheory.ThK.DescB.NextStep.skew_sp hσ B hT.geo.hW.skew hH hiso`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : ∀ j, j < G.p → ∀ f ∈ Lev B X a a' H' sp pl (Diffs B G X om om' R Rf c) j, ∀ c₀ : E, c₀ ≠ 0 → IsHermND σ (c₀ • (sp j).J.map σ) → ∀ φ' : GAd σ (c₀ • (sp j).J.map σ) → ℂ, (∀ (g : UA σ (sp j).J) (g' : GAd σ (c₀ • (sp j).J.map σ)), g.1 = g'.1 → φ' g' = f g) → ∀ K : Subgroup (GAd …`. Introduce `j`. Proceed by induction on `j with`. Consider the case `zero`. Introduce `_`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[lev_zero]`. Conclude with `GlobalTheory.T.hyperbolic_plane_form_hermitian hKP F E σ hcm (a + a') d₁ G.W (sp 0) H' hT.geo.hW.skew hH.rank hH.xx hH.yy hH.xy hH.orth hH.gram _ _ _ _ _ _ h0 (GlobalTheory.ThK.DescB.Nondeg.diffs_reg hKP hM c) (GlobalTheory.T.matched_diffs_hermitian_twist hKP F E σ B a a' G X om …`. Consider the case `succ j ih`. Introduce `hp`. Rewrite using `[lev_succ]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hI` using `hiso j (by omega)`. Conclude with `GlobalTheory.T.hyperbolic_plane_form_hermitian hKP F E σ hcm _ _ (sp j) (sp (j + 1)) (pl j) (hsk j (by omega)) hI.1 hI.2.1 hI.2.2.1 hI.2.2.2.1 hI.2.2.2.2.1 hI.2.2.2.2.2.1 _ _ _ _ _ _ (hj j (by omega)) (GlobalTheory.ThK.DescB.Nondeg.lev_reg hKP hM hH hiso c h0 hj j (by omega)) (ih …`. Conclude with `key i hi f hf c₀ hc₀ hJ' φ' hφ' K hK r Xf Yf hW S hS`.
+A detailed English derivation is pending.
 -/
 theorem cuspComp_eq_zero : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a a' : ℕ)
     (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W) (R : RealMaps F a a') (Rf : FinMaps F a a'),

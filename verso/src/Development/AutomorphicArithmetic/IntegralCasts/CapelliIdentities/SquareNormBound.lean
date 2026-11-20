@@ -1,9 +1,9 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `m n x`. Establish `hS0 : 0 ≤ ∑ a : Fin m, ∑ i : Fin n, ‖x a i‖ ^ (2 : ℕ)` using `Finset.sum_nonneg fun a _ => Finset.sum_nonneg fun i _ => by positivity`. Establish `h : ‖x‖ ≤ Real.sqrt (∑ a : Fin m, ∑ i : Fin n, ‖x a i‖ ^ (2 : ℕ))`. Use `(pi_norm_le_iff_of_nonneg (Real.sqrt_nonneg _)).2 fun a => (pi_norm_le_iff_of_nonneg (Real.sqrt_nonneg _)).2 fun i => ?_` and prove the remaining obligations. Apply `Real.le_sqrt_of_sq_le` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation.
 -/
 theorem UpperTheory.Reformulated.B.SquareNormBound.sq_norm_le :
     ∀ {m n : ℕ} (x : Fin m → Fin n → ℂ),

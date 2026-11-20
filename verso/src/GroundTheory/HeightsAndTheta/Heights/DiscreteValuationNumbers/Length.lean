@@ -9,13 +9,13 @@ namespace GroundTheory.Heights₂.Heights.NumbersDVR
 universe u v
 
 /- English proof (translation)
-The claim follows from `ReciprocityTheory.ChartRestriction.G.AI.dimOneFormula`.
+A detailed English derivation is pending.
 -/
 theorem lengthFormulaDimOne : LengthFormulaDimOne.Statement.{u, v} :=
   ReciprocityTheory.ChartRestriction.G.AI.dimOneFormula
 
 /- English proof (translation)
-The claim follows from `ReciprocityTheory.ChartRestriction.G.AI.length_two_generator_quotient`.
+A detailed English derivation is pending.
 -/
 theorem lengthFormulaDimTwo : LengthFormulaDimTwo.Statement.{u} :=
   ReciprocityTheory.ChartRestriction.G.AI.length_two_generator_quotient

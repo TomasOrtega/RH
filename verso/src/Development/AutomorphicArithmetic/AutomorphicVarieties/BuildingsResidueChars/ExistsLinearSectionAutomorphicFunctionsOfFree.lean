@@ -3,21 +3,21 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.HeckeAlgebras.Ordi
 open IsLocalRing Matrix UpperTheory.V.Hi
 
 /- English proof (translation)
-Introduce `Γ Ga Gp _ _ _ X A _ m τ θ U hF c N x hcov hsep tt htt`. Use `choose γ0 i0 u0 hu0 b0 hb0 hg using hcov`. Establish `hle : X.I.Iw c ≤ X.I.Iw 0` using `sup_le_sup_left (X.I.Nm_anti (Nat.zero_le c)) _`. Use `⟨{ toFun := fun v g => (((θ (tt (b0 g)))⁻¹ : Aˣ) : A) • ((τ (u0 g)⁻¹ : Matrix (Fin m) (Fin m) A) *ᵥ fun j => v (i0 g, j)) map_add' := fun v w => ?_ map_smul' := fun a v => ?_ }, fun v γ i u hu b hb => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `g`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Pi.add_apply, ← smul_add, ← mulVec_add]`. Both sides reduce to the same expression. Use function extensionality and compare the values at `g`. Rewrite using `[Pi.smul_apply, RingHom.id_apply, smul_comm a, ← mulVec_smul _ a]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `h` using `hg (X.glob γ * x i * ((u : Ga), b))`. Establish `hu1` using `hu0 (X.glob γ * x i * ((u : Ga), b))`. Establish `hb1` using `hb0 (X.glob γ * x i * ((u : Ga), b))`. Simplify using `only [LinearMap.coe_mk, AddHom.coe_mk]`. Generalize the expression as in `γ0 (X.glob γ * x i * ((u : Ga), b)) = γ1 at h`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `i0 (X.glob γ * x i * ((u : Ga), b)) = i1 at h ⊢`. Generalize the expression as in `u0 (X.glob γ * x i * ((u : Ga), b)) = u1 at h hu1 ⊢`. Generalize the expression as in `b0 (X.glob γ * x i * ((u : Ga), b)) = b1 at h hb1 ⊢`. Establish `hw : ((((u1 * u⁻¹ : X.Ub) : Ga), b1 * b⁻¹) : Ga × Gp) = ((u1 : Ga), b1) * ((u : Ga), b)⁻¹` using `rfl`. Establish `hwU : u1 * u⁻¹ ∈ U` using `mul_mem hu1 (inv_mem hu)`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hwI : b1 * b⁻¹ ∈ X.I.Iw c` using `mul_mem hb1 (inv_mem hb)`. Establish `hi : i1 = i`. Use `hsep i1 i (γ⁻¹ * γ1) _ hwU _ hwI ?_` and prove the remaining obligations. Rewrite using `[hw, map_mul, map_inv, ← mul_assoc, mul_assoc (X.glob γ)⁻¹, mul_assoc (X.glob γ)⁻¹, ← h]`. Use `group`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Extract witnesses or component facts from the available result.
 
-Substitute `hi` using the available equality. Take `⟨-, hs, he⟩` from `hF (x i1) (γ1⁻¹ * γ) _ hwU _ (hle hwI) (by`. Rewrite using `[hw, map_mul, map_inv, mul_assoc, inv_mul_eq_iff_eq_mul, ← mul_assoc, ← mul_assoc, ← h]`. Use the proof step `group)`. Establish `ht : tt b1 = ⟨b1 * b⁻¹, hs⟩ * tt b`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← htt b (hle hb) ⟨b1 * b⁻¹, hs⟩]`. Simplify using the standard rewrite rules. Establish `hτ : (τ u1⁻¹ : Matrix (Fin m) (Fin m) A) = (θ ⟨b1 * b⁻¹, hs⟩ : A) • (τ u⁻¹ : Matrix (Fin m) (Fin m) A)`. Establish `e : u⁻¹ = u1⁻¹ * (u1 * u⁻¹)` using `by group`. Rewrite using `[e, map_mul, Units.val_mul, ← Matrix.mul_smul, he, Matrix.mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ht, hτ, map_mul, smul_mulVec, smul_smul, ← Units.val_mul]`. Use `congr 2`. Rewrite using `[mul_inv, mul_right_comm, inv_mul_cancel, one_mul]`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.exists_linear_section_automorphicFunctions_of_free :
     ∀ (Γ Ga Gp : Type) [Group Γ] [Group Ga] [Group Gp] (X : Frame Γ Ga Gp) (A : Type) [CommRing A] (m : ℕ) (τ : X.Ub →* GL (Fin m) A) (θ : X.I.T →* Aˣ) (U : Subgroup X.Ub), X.Free τ θ U → ∀ (c N : ℕ) (x : Fin N → Ga × Gp), (∀ g, ∃ γ i, ∃ u ∈ U, ∃ b ∈ X.I.Iw c, g = X.glob γ * x i * ((u : Ga), b)) → (∀ i j γ, ∀ u ∈ U, ∀ b ∈ X.I.Iw c, x j = X.glob γ * x i * ((u : Ga), b) → i = j) → ∀ tt : Gp → X.I.T, (∀ b ∈ X.I.Iw 0, ∀ s : X.I.T, tt (s * b) = s * tt b) → ∃ s : (Fin N × Fin m → A) →ₗ[A] X.Fn A m, ∀ v γ i, ∀ u ∈ U, ∀ b ∈ X.I.Iw c, s v (X.glob γ * x i * ((u : Ga), b)) = (((θ (tt b))⁻¹ : Aˣ) : A) • ((τ u⁻¹ : Matrix (Fin m) (Fin m) A) *ᵥ fun j => v (i, j)) := by

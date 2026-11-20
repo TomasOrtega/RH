@@ -15,19 +15,19 @@ open Formalism.L2.DIV (fockL fockS)
 open scoped ComplexOrder Matrix
 
 /- English proof (translation)
-The claim follows from `hA.hadamard hB`.
+A detailed English derivation is pending.
 -/
 theorem psd_had {κ : Type} {A B : Matrix κ κ ℂ} (hA : A.PosSemidef) (hB : B.PosSemidef) :
     (Matrix.of fun i j => A i j * B i j).PosSemidef := hA.hadamard hB
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `h` using `Matrix.posSemidef_vecMulVec_self_star (fun _ : κ => (1 : ℂ))`. Use `h using 1` and compare the differences between its conclusion and the goal.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use extensionality with `i j`. Simplify using `[Matrix.vecMulVec]`. Simplify using `using Matrix.PosSemidef.zero`. Consider the case `insert τ s hτ ih`. Take `⟨h1, h2⟩` from `ih`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `psd_had (hB τ) h1 using 1` and compare the differences between its conclusion and the goal. Use extensionality with `i j`. Simplify using `[Finset.prod_insert hτ]`. Establish `h3` using `(psd_had (hAB τ) (h2.add h1)).add (psd_had (hB τ) h2)`.
+Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `h3 using 1` and compare the differences between its conclusion and the goal. Use extensionality with `i j`. Simplify using `[Finset.prod_insert hτ]`. Expand and normalize the polynomial expressions, which then agree.
+Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem psd_prod {ι κ : Type} [Fintype κ] (A B : ι → Matrix κ κ ℂ) (hB : ∀ τ, (B τ).PosSemidef)
     (hAB : ∀ τ, (A τ - B τ).PosSemidef) (s : Finset ι) :
@@ -54,7 +54,7 @@ theorem psd_prod {ι κ : Type} [Fintype κ] (A B : ι → Matrix κ κ ℂ) (hB
       ring
 
 /- English proof (translation)
-Establish `h` using `Formalism.L2.Col.map_fockS (RingHom.id ℂ) g f (fun _ => rfl)`. Simplify using `only [RingHom.id_apply, MvPolynomial.map_id] at h`. Rewrite using `[Formalism.L2.DIV.fockL_apply, h]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem fockF_eq {σ : Type} (f g : MvPolynomial σ ℂ) : fockF f g = fockL g f := by
   have h := Formalism.L2.Col.map_fockS (RingHom.id ℂ) g f (fun _ => rfl)
@@ -62,7 +62,7 @@ theorem fockF_eq {σ : Type} (f g : MvPolynomial σ ℂ) : fockF f g = fockL g f
   rw [Formalism.L2.DIV.fockL_apply, h]
 
 /- English proof (translation)
-Distinguish the cases in `hf : f = 0`. Simplify using `[hf]`. Rewrite using `[← fockF_eq]`. Conclude with `(Formalism.L2.DIV.ps_fockF_pos f hf).le`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fockL_nonneg {σ : Type} (f : MvPolynomial σ ℂ) : 0 ≤ fockL f f := by
   by_cases hf : f = 0
@@ -72,7 +72,7 @@ theorem fockL_nonneg {σ : Type} (f : MvPolynomial σ ℂ) : 0 ≤ fockL f f := 
 def gram {σ κ : Type} (v : κ → MvPolynomial σ ℂ) : Matrix κ κ ℂ := Matrix.of fun i j => fockL (v i) (v j)
 
 /- English proof (translation)
-Simplify using `only [gram, dotProduct, Matrix.mulVec, Matrix.of_apply, map_sum, LinearMap.sum_apply, LinearMap.map_smulₛₗ, LinearMap.smul_apply, map_smul, smul_eq_mul, Finset.mul_sum, Pi.star_apply, starRingEnd_apply]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem gram_dot {σ κ : Type} [Fintype κ] (v : κ → MvPolynomial σ ℂ) (x : κ → ℂ) :
     star x ⬝ᵥ (gram v) *ᵥ x = fockL (∑ i, x i • v i) (∑ i, x i • v i) := by
@@ -83,7 +83,7 @@ theorem gram_dot {σ κ : Type} [Fintype κ] (v : κ → MvPolynomial σ ℂ) (x
   ring
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [gram, Matrix.conjTranspose_apply, Matrix.of_apply]`. Conclude with `(Formalism.L2.DIV.fockL_symm _ _).symm`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gram_herm {σ κ : Type} (v : κ → MvPolynomial σ ℂ) : (gram v).IsHermitian := by
   ext i j
@@ -91,19 +91,19 @@ theorem gram_herm {σ κ : Type} (v : κ → MvPolynomial σ ℂ) : (gram v).IsH
   exact (Formalism.L2.DIV.fockL_symm _ _).symm
 
 /- English proof (translation)
-The claim follows from `Matrix.PosSemidef.of_dotProduct_mulVec_nonneg (gram_herm v) fun x => by rw [gram_dot]; exact fockL_nonneg _`.
+A detailed English derivation is pending.
 -/
 theorem gram_psd {σ κ : Type} [Fintype κ] (v : κ → MvPolynomial σ ℂ) : (gram v).PosSemidef :=
   Matrix.PosSemidef.of_dotProduct_mulVec_nonneg (gram_herm v) fun x => by rw [gram_dot]; exact fockL_nonneg _
 
 /- English proof (translation)
-Use `Matrix.PosSemidef.of_dotProduct_mulVec_nonneg ?_ fun x => ?_` and prove the remaining obligations. Use `Matrix.IsHermitian.sub ?_ (gram_herm _)` and prove the remaining obligations. Unfold `Matrix.IsHermitian`. Rewrite using `[Matrix.conjTranspose_smul, (gram_herm v).eq]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Matrix.sub_mulVec, dotProduct_sub, Matrix.smul_mulVec, dotProduct_smul, gram_dot, gram_dot]`. Establish `e : ∑ i, x i • F (v i) = F (∑ i, x i • v i)` using `by simp`. Rewrite using `[e]`. Establish `hm : ∑ i, x i • v i ∈ V` using `V.sum_mem fun i _ => V.smul_mem _ (hv i)`. Establish `h1` using `h _ hm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `(Complex.le_def.mp (fockL_nonneg (∑ i, x i • v i))).2`. Establish `h3` using `(Complex.le_def.mp (fockL_nonneg (F (∑ i, x i • v i)))).2`. Use `Complex.le_def.mpr ⟨?_, ?_⟩` and prove the remaining obligations. Simplify using `only [smul_eq_mul, Complex.zero_re, Complex.sub_re, Complex.re_ofReal_mul]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Simplify using `only [smul_eq_mul, Complex.zero_im, Complex.sub_im, Complex.im_ofReal_mul, ← h2, ← h3]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem gram_sub_psd {σ σ' κ : Type} [Fintype κ] (V : Submodule ℂ (MvPolynomial σ ℂ))
     (F : MvPolynomial σ ℂ →ₗ[ℂ] MvPolynomial σ' ℂ) (C : ℝ)
@@ -128,13 +128,13 @@ theorem gram_sub_psd {σ σ' κ : Type} [Fintype κ] (V : Submodule ℂ (MvPolyn
 def eN {n : ℕ} (l : DomWeight n) : ℝ := (fockF (extremal ℂ n l) (extremal ℂ n l)).re
 
 /- English proof (translation)
-The claim follows from `(Complex.lt_def.mp (Formalism.L2.DIV.ps_fockF_pos (extremal ℂ n l) (Formalism.GradedWeylDivisibility.hwNe ℂ n n le_rfl _))).1`.
+A detailed English derivation is pending.
 -/
 theorem eN_pos {n : ℕ} (l : DomWeight n) : 0 < eN l :=
   (Complex.lt_def.mp (Formalism.L2.DIV.ps_fockF_pos (extremal ℂ n l) (Formalism.GradedWeylDivisibility.hwNe ℂ n n le_rfl _))).1
 
 /- English proof (translation)
-Establish `h` using `(Complex.lt_def.mp (Formalism.L2.DIV.ps_fockF_pos (extremal ℂ n l) (Formalism.GradedWeylDivisibility.hwNe ℂ n n le_rfl _))).2`. Conclude with `Complex.ext (by simp [eN]) (by simpa using h.symm)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eN_eq {n : ℕ} (l : DomWeight n) : fockF (extremal ℂ n l) (extremal ℂ n l) = (eN l : ℂ) := by
   have h := (Complex.lt_def.mp (Formalism.L2.DIV.ps_fockF_pos (extremal ℂ n l) (Formalism.GradedWeylDivisibility.hwNe ℂ n n le_rfl _))).2

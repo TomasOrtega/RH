@@ -74,7 +74,7 @@ variable {k : Type} [Field k] {C C' : Scheme.{0}} [Algebra k Γ(C, ⊤)] [IsInte
   [Algebra k Γ(C', ⊤)] [IsIntegral C']
 
 /- English proof (translation)
-Take `⟨G, i, hi, rfl⟩` from `hP.exists_isCohSub`. Take `⟨h₁, h₂⟩` from `(h E r hE).2 G i hi`. Rewrite using `[← h₂]`. Conclude with `hP'.2 h₁.deg_mem`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ScalesDeg.mul_le {π : C' ⟶ C} {m : ℕ} (h : ScalesDeg k π m) {E : C.Modules} {r : ℕ}
     (hE : IsVB E r) {P P' : ℤ} (hP : IsMaxSubDeg k E P)
@@ -85,7 +85,7 @@ theorem ScalesDeg.mul_le {π : C' ⟶ C} {m : ℕ} (h : ScalesDeg k π m) {E : C
   exact hP'.2 h₁.deg_mem
 
 /- English proof (translation)
-The claim follows from `isSmoothProjCurve_line _`.
+A detailed English derivation is pending.
 -/
 example [Fact (Nat.Prime 3)] : IsSmoothProjCurve (AlgebraicClosure (ZMod 3))
     (PSpace (AlgebraicClosure (ZMod 3)) 1) := isSmoothProjCurve_line _

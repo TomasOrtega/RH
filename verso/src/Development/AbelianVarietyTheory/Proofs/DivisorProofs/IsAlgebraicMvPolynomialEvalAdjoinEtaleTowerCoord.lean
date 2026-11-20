@@ -15,7 +15,7 @@ noncomputable section
 namespace GlobalTheory.FieldPair.TowerTrdeg
 
 /- English proof (translation)
-Introduce `K L _ _ cK cL n r R T ι ψ τ x h hx`. Use `letI := cL.toAlgebra`. Introduce `a`. Establish `hy : IsTranscendenceBasis ℂ (Fin.append (fun i => (τ i : L)) (fun i => (ι (x i) : L)))` using `trBasis_append cK cL n r R T ι ψ τ x h hx`. Conclude with `hy.isAlgebraic.isAlgebraic _`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem image_isAlgebraic : ∀ {K L : Type} [Field K] [Field L] (cK : ℂ →+* K) (cL : ℂ →+* L) (n r : ℕ) (R : Subring K) (T : Subring L)
     (ι : R →+* T) (ψ : T →+* R) (τ : Fin r → T) (x : Fin n → R),

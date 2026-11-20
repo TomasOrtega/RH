@@ -25,9 +25,9 @@ def dg {ϖ : s.v.adicCompletion L⁺} (h0 : ϖ ≠ 0) (k : ℕ) : GL (Fin n) (s.
 variable {n}
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hx, a, ha, b, hb, e⟩`. Use `⟨s.loc n x, DoubleCoset.mem_doubleCoset.2 ⟨a, ha, b, hb, Units.ext ?_⟩, emb_loc s hx⟩` and prove the remaining obligations. Rewrite using `[Units.val_mul, Units.val_mul]`. Conclude with `e`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨h, hh, rfl⟩`. Take `⟨a, ha, b, hb, rfl⟩` from `DoubleCoset.mem_doubleCoset.1 hh`. Conclude with `⟨emb_triv s _, a, ha, b, hb, by rw [loc_emb]; rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem tSet_iff {ϖ : s.v.adicCompletion L⁺} (h0 : ϖ ≠ 0) (k : ℕ) (x : Formalism.AUTREP.GAf L n) :
     x ∈ Formalism.AUTREP.tSet L n s ϖ k ↔ ∃ h ∈ DoubleCoset.doubleCoset (dg n s h0 k) (KL s n : Set _) (KL s n), emb s n h = x := by
@@ -41,7 +41,7 @@ theorem tSet_iff {ϖ : s.v.adicCompletion L⁺} (h0 : ϖ ≠ 0) (k : ℕ) (x : F
     exact ⟨emb_triv s _, a, ha, b, hb, by rw [loc_emb]; rfl⟩
 
 /- English proof (translation)
-Introduce `w hw` and use `hx w fun h => hw (by rw [Set.mem_singleton_iff.1 h]; exact hs)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem triv_compl {B : Set (HeightOneSpectrum (𝓞 L⁺))} (hs : s.v ∉ B) {x : Formalism.AUTREP.GAf L n}
     (hx : TrivOutside {s.v} x) : TrivOutside Bᶜ x := fun w hw => hx w fun h => hw (by rw [Set.mem_singleton_iff.1 h]; exact hs)
@@ -49,7 +49,7 @@ theorem triv_compl {B : Set (HeightOneSpectrum (𝓞 L⁺))} (hs : s.v ∉ B) {x
 variable {s}
 
 /- English proof (translation)
-Rewrite using `[(hJ _ (triv_compl s hs (emb_triv s h))).1, mem_Umax_iff s (emb_triv s h), loc_emb]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem emb_mem_J {J : Subgroup (Formalism.AUTREP.GAf L n)} {χ : J →* ℂˣ} {B : Set (HeightOneSpectrum (𝓞 L⁺))}
     (hJ : NG.HypOutside J χ B) (hs : s.v ∉ B) (h : GL (Fin n) (s.v.adicCompletion L⁺)) :
@@ -57,7 +57,7 @@ theorem emb_mem_J {J : Subgroup (Formalism.AUTREP.GAf L n)} {χ : J →* ℂˣ} 
   rw [(hJ _ (triv_compl s hs (emb_triv s h))).1, mem_Umax_iff s (emb_triv s h), loc_emb]
 
 /- English proof (translation)
-The claim follows from `(hJ _ (triv_compl s hs (emb_triv s h))).2 hm`.
+A detailed English derivation is pending.
 -/
 theorem chi_emb {J : Subgroup (Formalism.AUTREP.GAf L n)} {χ : J →* ℂˣ} {B : Set (HeightOneSpectrum (𝓞 L⁺))}
     (hJ : NG.HypOutside J χ B) (hs : s.v ∉ B) {h : GL (Fin n) (s.v.adicCompletion L⁺)} (hm : emb s n h ∈ J) :
@@ -71,7 +71,7 @@ variable {ρ : Representation ℂ (GQ L n) W} {J : Subgroup (Formalism.AUTREP.GA
   {B : Set (HeightOneSpectrum (𝓞 (maximalRealSubfield L)))} {s : SplitPlace L}
 
 /- English proof (translation)
-Introduce `g k hk` and use `by have hm := (emb_mem_J hJ hs k).2 hk have h2 := congrFun (hf.2 ⟨_, hm⟩) g rw [chi_emb hJ hs hm, Units.val_one, one_smul] at h2 exact h2`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem inv_of_mem (hJ : NG.HypOutside J χ B) (hs : s.v ∉ B) {f : Formalism.AUTREP.GAf L n → W} (hf : f ∈ NG.TypeSp ρ J χ) :
     Inv (emb s n) (KL s n) f := fun g k hk => by
@@ -81,7 +81,7 @@ theorem inv_of_mem (hJ : NG.HypOutside J χ B) (hs : s.v ∉ B) {f : Formalism.A
   exact h2
 
 /- English proof (translation)
-The claim follows from `funext fun g => coset_sum_eq (emb s n) (KL s n) J (emb_mem_J hJ hs) d hf g hD`.
+A detailed English derivation is pending.
 -/
 theorem heckeD_eq (hJ : NG.HypOutside J χ B) (hs : s.v ∉ B) {f : Formalism.AUTREP.GAf L n → W} (hf : Inv (emb s n) (KL s n) f)
     (d : GL (Fin n) (s.v.adicCompletion L⁺)) {D : Set (Formalism.AUTREP.GAf L n)}
@@ -90,20 +90,20 @@ theorem heckeD_eq (hJ : NG.HypOutside J χ B) (hs : s.v ∉ B) {f : Formalism.AU
   funext fun g => coset_sum_eq (emb s n) (KL s n) J (emb_mem_J hJ hs) d hf g hD
 
 /- English proof (translation)
-The claim follows from `Final.GLintComm L⁺ s.v n`.
+A detailed English derivation is pending.
 -/
 theorem comm_KL (s : SplitPlace L) : IsCommensurated (KL s n) := Final.GLintComm L⁺ s.v n
 
 /- English proof (translation)
-The claim follows from `Final.DosetIndMem _ _ ℂ d`.
+A detailed English derivation is pending.
 -/
 theorem dosetInd_mem (s : SplitPlace L) (d : GL (Fin n) (s.v.adicCompletion L⁺)) : dosetInd ℂ (KL s n) d ∈ Hecke ℂ (KL s n) :=
   Final.DosetIndMem _ _ ℂ d
 
 /- English proof (translation)
-Take `⟨ϖ, hϖ⟩` from `hϖ`. Establish `hk : ∀ k ∈ KL s n, s.loc n κ * k * (s.loc n κ)⁻¹ ∈ KL s n` using `fun k hk => by`. Use `(emb_mem_J hJ hs _).1 ?_` and prove the remaining obligations. Rewrite using `[← conj_emb]`. Conclude with `J.mul_mem (J.mul_mem κ.2 ((emb_mem_J hJ hs k).2 hk)) (J.inv_mem κ.2)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨u, hu, hcu⟩` from `normaliser s hϖ _ hk`. Conclude with `op_conj (emb s n) (dosetInd_mem s d).1 (inv_of_mem hJ hs hf) hu (fun h => by rw [conj_emb, hcu]) (fun g => congrFun (hf.2 κ) g) (comm_KL s) (dosetInd_mem s d) g`.
+A detailed English derivation is pending.
 -/
 theorem op_equiv (hJ : NG.HypOutside J χ B) (hs : s.v ∉ B) (hϖ : ∃ ϖ : s.v.adicCompletion L⁺, Valued.v ϖ = WithZero.exp (-1 : ℤ))
     {f : Formalism.AUTREP.GAf L n → W} (hf : f ∈ NG.TypeSp ρ J χ) (d : GL (Fin n) (s.v.adicCompletion L⁺)) (κ : J) (g) :
@@ -118,9 +118,9 @@ theorem op_equiv (hJ : NG.HypOutside J χ B) (hs : s.v ∉ B) (hϖ : ∃ ϖ : s.
     (fun g => congrFun (hf.2 κ) g) (comm_KL s) (dosetInd_mem s d) g
 
 /- English proof (translation)
-Take `⟨S, hS⟩` from `exists_sum (W := W) (emb s n) (comm_KL s) (dosetInd_mem s d)`. Take `⟨N, hN0, hN⟩` from `hN`. Use `⟨⟨fun γ g => ?_, N, hN0, fun κ hκ g => ?_⟩, fun κ => funext fun g => op_equiv hJ hs hϖ hf d κ g⟩` and prove the remaining obligations. Rewrite using `[hS, hS, map_sum]`. Conclude with `Finset.sum_congr rfl fun c _ => by rw [mul_assoc, hf.1.1, map_smul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨hm, h1⟩` from `hN κ hκ`. Use `op_equiv hJ hs hϖ hf d ⟨κ, hm⟩ g` as an intermediate fact. Rewrite `this` using `[h1, Units.val_one, one_smul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem op_mem (hJ : NG.HypOutside J χ B) (hs : s.v ∉ B) (hϖ : ∃ ϖ : s.v.adicCompletion L⁺, Valued.v ϖ = WithZero.exp (-1 : ℤ))
     (hN : ∃ N : ℕ, 0 < N ∧ ∀ κ, NG.Cong L n N κ → ∃ h : κ ∈ J, χ ⟨κ, h⟩ = 1)
@@ -142,13 +142,13 @@ section Same
 variable {J : Subgroup (Formalism.AUTREP.GAf L n)} {χ : J →* ℂˣ} {B : Set (HeightOneSpectrum (𝓞 (maximalRealSubfield L)))}
 
 /- English proof (translation)
-Take `⟨v, i⟩` from `s'`. Take `rfl : v = s.v` from `hv`. Set `s' : SplitPlace L` to `⟨s.v, i⟩`. Establish `hK : ∀ a ∈ KL s' n, s.loc n (emb s' n a) ∈ KL s n` using `fun a ha => (mem_Umax_iff s (emb_triv s' a)).1 ((mem_Umax_iff s' (emb_triv s' a)).2 (by rwa [loc_emb]))`. Establish `hK' : ∀ a ∈ KL s n, s'.loc n (emb s n a) ∈ KL s' n` using `fun a ha => (mem_Umax_iff s' (emb_triv s a)).1 ((mem_Umax_iff s (emb_triv s a)).2 (by rwa [loc_emb]))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨s.loc n (emb s' n (dg n s' h0 k)), fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[tSet_iff s' h0]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h, hh, rfl⟩`. Take `⟨a, ha, b, hb, rfl⟩` from `DoubleCoset.mem_doubleCoset.1 hh`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Use `⟨_, DoubleCoset.mem_doubleCoset.2 ⟨_, hK a ha, _, hK b hb, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, map_mul, map_mul, emb_loc s (emb_triv s' a), emb_loc s (emb_triv s' _), emb_loc s (emb_triv s' b)]`. Introduce and unpack `⟨h, hh, rfl⟩`. Take `⟨a, ha, b, hb, rfl⟩` from `DoubleCoset.mem_doubleCoset.1 hh`. Use `⟨s'.loc n (emb s n a) * dg n s' h0 k * s'.loc n (emb s n b), DoubleCoset.mem_doubleCoset.2 ⟨_, hK' a ha, _, hK' b hb, rfl⟩, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_mul, map_mul, map_mul, map_mul, emb_loc s' (emb_triv s a), emb_loc s' (emb_triv s b), emb_loc s (emb_triv s' _)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem tSet_same (s s' : SplitPlace L) (hv : s'.v = s.v) {ϖ' : s'.v.adicCompletion L⁺} (h0 : ϖ' ≠ 0) (k : ℕ) :
     ∃ d : GL (Fin n) (s.v.adicCompletion L⁺), ∀ x, x ∈ Formalism.AUTREP.tSet L n s' ϖ' k ↔
@@ -182,7 +182,7 @@ section Int
 variable {R : Type} [CommRing R] [Algebra R ℂ]
 
 /- English proof (translation)
-The claim follows from `isIntegral_of_smul_mem_submodule N hN hfg ν hν`.
+A detailed English derivation is pending.
 -/
 theorem integral_of_module [Module R W] [IsScalarTower R ℂ W] [IsNoetherianRing R] (N : Submodule R W) (hN : N ≠ ⊥)
     (hfg : N.FG) (ν : ℂ) (hν : ∀ w ∈ N, ν • w ∈ N) : IsIntegral R ν :=

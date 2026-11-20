@@ -13,15 +13,15 @@ namespace GroundTheory.Heights₂.Heights.Model
 open CategoryTheory AlgebraicGeometry
 
 /- English proof (translation)
-Introduce `X f _ _ p U F G hF hG φ`. Take `⟨m₁, hm₁, hp₁, H₁⟩` from `h₂ X f p U G hG`. Take `⟨m₂, hm₂, hp₂, H₂⟩` from `h₃ X f p U F G hF hG φ`. Use `⟨m₁ * m₂, Nat.mul_pos hm₁ hm₂, fun h => ((Nat.Prime.dvd_mul p.2).1 h).elim hp₁ hp₂, fun n hn hmn hpn => ?_⟩` and prove the remaining obligations. Establish `hle : U ⊓ invOpen f n ≤ U` using `inf_le_left`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hunit : IsUnit (((n : ℤ) : ℤ) : ZLoc p)` using `isUnit_intCast_zLoc p n (by exact_mod_cast hpn)`. Establish `hrange : Set.range (baseChangeMap f (ZLoc p) ∣_ U) ⊆ Set.range (X.homOfLE hle)`. Introduce and unpack `_ ⟨y, rfl⟩`. Establish `hy : ((baseChangeMap f (ZLoc p) ∣_ U) y).1 ∈ invOpen f n`. Rewrite using `[morphismRestrict_base_coe]`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `range_baseChangeMap_subset f (ZLoc p) n hunit ⟨y.1, rfl⟩` as an intermediate fact. Rewrite `this` using `[Scheme.Opens.range_ι]`. Then use the resulting hypothesis. Conclude with `⟨⟨_, ((baseChangeMap f (ZLoc p) ∣_ U) y).2, hy⟩, Subtype.ext (Scheme.homOfLE_apply _ _)⟩`. Establish `e₂ : IsOpenImmersion.lift (X.homOfLE hle) _ hrange ≫ X.homOfLE hle = baseChangeMap f (ZLoc p) ∣_ U` using `IsOpenImmersion.lift_fac _ _ _`. Establish `hR : ∀ V : (U : Scheme.{0}).Opens, V ≤ (X.homOfLE hle).opensRange → V ≤ invOpen (U.ι ≫ f) n`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `V hV x hx`. Use `hV hx` as an intermediate fact. Rewrite `this` using `[Scheme.opensRange_homOfLE]`. Conclude with `this.2`. Take `⟨ψ, hψ⟩` from `h₁ _ _ _ (X.homOfLE hle) _ _ e₂ F G φ (fun V hV => H₁ n hn (dvd_of_mul_right_dvd hmn) hpn V (hR V hV)) (fun V hV => H₂ n hn (dvd_of_mul_left_dvd hmn) hpn V (hR V hV))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨ψ, ?_⟩` and prove the remaining obligations. Establish `eg : Scheme.homOfLE _ ((baseChangeMap f (ZLoc p)).preimage_mono hle) ≫ IsOpenImmersion.lift (X.homOfLE hle) _ hrange = baseChangeMap f (ZLoc p) ∣_ (U ⊓ invOpen f n)`. Rewrite using `[← cancel_mono (X.homOfLE hle), Category.assoc, e₂, morphismRestrict_homOfLE (baseChangeMap f (ZLoc p)) _ U hle]`. Rewrite using `[← hψ, pullbackHomAlong_trans e₂ (morphismRestrict_homOfLE (baseChangeMap f (ZLoc p)) _ U hle).symm eg rfl]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem SpreadHomLoc.proof (h₁ : DescendHom.Statement) (h₂ : PullInjLoc.Statement)
     (h₃ : SpreadHomSectionsLoc.Statement) : SpreadHomLoc.Statement := by

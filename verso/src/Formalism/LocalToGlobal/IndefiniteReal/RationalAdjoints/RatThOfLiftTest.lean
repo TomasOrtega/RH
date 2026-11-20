@@ -11,9 +11,9 @@ namespace Formalism.IndefR.Rat
 open Formalism.DivisionValues Formalism.L2.Indef Formalism.L2.DIV Formalism.IndefR.Cx Formalism.IndefR.Cx.CxData
 
 /- English proof (translation)
-Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `x hx`. Establish `h` using `Fintype.linearIndependent_iff.mp hv x`. Simplify using `only [lin, Fintype.linearCombination_apply] at hx`. Use function extensionality and compare the values at `i`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `h hx i`.
+A detailed English derivation is pending.
 -/
 theorem lin_injective {E : Type} [AddCommGroup E] [Module ℂ E] {n : ℕ} (v : Fin n → E) (hv : LinearIndependent ℂ v) :
     Function.Injective (lin v) := by
@@ -25,15 +25,13 @@ theorem lin_injective {E : Type} [AddCommGroup E] [Module ℂ E] {n : ℕ} (v : 
   exact h hx i
 
 /- English proof (translation)
-Introduce `K _ _ _ Bs A X fc cr b hT hH5 hKF hEW hnP j t i k`. Take `⟨N, ψ, hψ, hr, hbase⟩` from `hT j`. Establish `hinjW : Function.Injective (X.eW b j)`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h` using `hEW j x x`. Rewrite `h` using `[hx, inner_zero_left]`. Establish `hn : ((X.nP b : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast hnP.ne'`. Establish `h2 : ⟪x, x⟫_ℂ = 0`. Break down `mul_eq_zero.mp h.symm with h3 | h3` into its components or cases.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `absurd h3 hn`. Conclude with `h3`. Conclude with `inner_self_eq_zero.mp h2`. Establish `hinj : Function.Injective (X.w0C b j)`. Simplify using `only [CxData.w0C, LinearMap.coe_comp]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hinjW.comp (lin_injective _ (hKF j Bs.v0).1)`. Establish `hmem : X.tC cr b j t (Pi.single k 1) ∈ LinearMap.range (X.w0C b j)`. Rewrite using `[← (hH5 j t).2]`. Conclude with `LinearMap.mem_range_self _ _`. Establish `key` using `coord_rat Bs.v0.embedding ψ hψ (X.w0C b j) hinj (fun i l => hbase i l) (solve (X.w0C b j) (X.tC cr b j t (Pi.single k 1))) (fun i' => by rw [solve_spec _ _ hmem, CxData.tC, lin_single]; exact hr _ _ _) i`.
-
-Take `⟨a, ha⟩` from `key`. Conclude with `⟨a, by simpa [CxData.liftMatC, relMat] using ha⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem ratThOfLiftTest : RatThOfLiftTest := by
   intro K _ _ _ Bs A X fc cr b hT hH5 hKF hEW hnP j t i k

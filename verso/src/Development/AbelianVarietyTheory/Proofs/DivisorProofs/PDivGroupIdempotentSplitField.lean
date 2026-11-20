@@ -16,13 +16,13 @@ namespace GlobalTheory
 namespace PDivGroup
 
 /- English proof (translation)
-Take `⟨h₀, hrank⟩` from `@kerIdeal_finrank_eq_pow_of_idempotent p _ k _ G u v huv h1 h2`. Take `⟨K, i, hi⟩` from `@KerGrp.exists_kernel p _ k _ G u h₀ hrank`. Take `⟨hfac, hcan⟩` from `factor_closedImmersion p k K G i (fun n => (hi n).1)`. Establish `hvu : v + u = 𝟙 G` using `by rw [add_comm]; exact huv`. Establish `hker : ∀ n, RingHom.ker (i.app n) = RingHom.ker (v.app n)` using `fun n => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[(hi n).2, ker_app_eq_kerIdeal_of_idempotents p k G v u hvu h2 h1 n]`. Take `⟨q, hq⟩` from `hfac G v (fun n => (hker n).le)`. Establish `hiu : i ≫ u = 0`. Use `hom_ext fun n => BialgHom.ext fun b => ?_` and prove the remaining obligations. Establish `h` using `(kerIdeal_le_ker_iff (u.app n) (i.app n : G.A n →ₐ[k] K.A n)).1 (hi n).2.ge b`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `i.app n (u.app n b) = (1 : WithConv (G.A n →ₐc[k] K.A n)).ofConv b`. Use `Eq.trans h ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Establish `hiv : i ≫ v = i`. Establish `e` using `Preadditive.comp_add _ _ _ i u v`.
+Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e` using `[huv, hiu, zero_add, Category.comp_id]`. Conclude with `e.symm`. Use `⟨K, i, q, ?_, hq, hi⟩` and prove the remaining obligations. Apply `hcan K` to reduce the goal to its premises. Rewrite using `[Category.assoc, hq, hiv, Category.id_comp]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem idempotent_split (p : ℕ) [Fact p.Prime] (k : Type) [Field k] (G : PDivGroup p k)
     (u v : G ⟶ G) (huv : u + v = 𝟙 G) (h1 : u ≫ v = 0) (h2 : v ≫ u = 0) :

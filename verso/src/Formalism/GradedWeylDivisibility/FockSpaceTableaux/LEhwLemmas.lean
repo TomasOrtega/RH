@@ -10,17 +10,15 @@ noncomputable section
 namespace Formalism.GradedWeylDivisibility
 
 /- English proof (translation)
-Introduce `m hm k`. Set `N : ℕ` to `∏ d ∈ f.support, (coeff d f).den`. Set `u : MvPolynomial (Fin r × Fin n) ℤ` to `∑ d ∈ f.support, monomial d ((∏ d' ∈ f.support.erase d, ((coeff d' f).den : ℤ)) * (coeff d f).num)`. Establish `hu : map (Int.castRingHom ℚ) u = (N : ℚ) • f` using `by conv_rhs => rw [f.as_sum]`. Rewrite using `[Finset.smul_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [u, map_sum, map_monomial, smul_monomial]`. Use `Finset.sum_congr rfl fun d hd => ?_` and prove the remaining obligations. Use `congr 1`. Use `push_cast`. Establish `hN : (N : ℚ) = (∏ d' ∈ f.support.erase d, ((coeff d' f).den : ℚ)) * (coeff d f).den`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Establish an intermediate fact.
 
-Simplify using `only [N]`. Use `push_cast`. Rewrite using `[Finset.prod_erase_mul _ _ hd]`. Rewrite using `[smul_eq_mul, hN, mul_assoc, Rat.den_mul_eq_num]`. Simplify using `[eq_intCast]`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hN0 : (N : ℚ) ≠ 0`. Simplify using `only [N]`. Use `push_cast`. Conclude with `Finset.prod_ne_zero_iff.mpr fun d _ => Nat.cast_ne_zero.mpr (coeff d f).den_nz`. Establish `huD : u ∈ dualWeyl ℤ r n ν` using `(dualWeylIntRat r n ν u).mpr (by rw [hu]; exact (dualWeyl ℚ r n ν).smul_mem _ hf)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmu : m ∈ u.support`. Rewrite using `[mem_support_iff]`. Introduce `h0`. Establish `e` using `congrArg (coeff m) hu`. Rewrite `e` using `[coeff_map, h0, map_zero, coeff_smul, smul_eq_mul]`.
-
-Conclude with `(mem_support_iff.mp hm) ((mul_eq_zero.mp e.symm).resolve_left hN0)`. Conclude with `(dualWeylDominanceZ r n ν hnr hν u huD m hmu).1 k`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lehw_dom {r n : ℕ} (ν : Fin n → ℕ) (hnr : n ≤ r) (hν : Antitone ν)
     (f : MvPolynomial (Fin r × Fin n) ℚ) (hf : f ∈ dualWeyl ℚ r n ν) :
@@ -63,9 +61,9 @@ def LehwShift {R : Type*} [CommRing R] {r n : ℕ} (w : Fin r × Fin n → ℤ)
   ∀ k : ℕ, IsWeightedHomogeneous w (P.coeff k) (μ + k * δ)
 
 /- English proof (translation)
-Introduce `k`. Rewrite using `[Polynomial.coeff_mul]`. Use `(mem_weightedHomogeneousSubmodule _ _ _ _).mp (Submodule.sum_mem _ fun x hx => ?_)` and prove the remaining obligations. Rewrite `hx` using `[Finset.HasAntidiagonal.mem_antidiagonal]`. Use `(mem_weightedHomogeneousSubmodule _ _ _ _).mpr ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h` using `(hP x.1).mul (hQ x.2)`. Use `h using 1` and compare the differences between its conclusion and the goal. Rewrite using `[← hx]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem lehwShift_mul {R : Type*} [CommRing R] {r n : ℕ} {w : Fin r × Fin n → ℤ}
     {P Q : Polynomial (MvPolynomial (Fin r × Fin n) R)} {μ μ' δ : ℤ}
@@ -82,11 +80,11 @@ theorem lehwShift_mul {R : Type*} [CommRing R] {r n : ℕ} {w : Fin r × Fin n �
   ring
 
 /- English proof (translation)
-Introduce `k`. Distinguish the cases in `hk : k = 0`. Substitute `hk` using the available equality. Rewrite using `[Polynomial.coeff_one_zero]`. Introduce `d hd`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hd` using `[MvPolynomial.coeff_one]`. Use `split_ifs at hd with h`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Conclude with `(hd rfl).elim`.
+Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Polynomial.coeff_one, if_neg (by omega)]`. Introduce `d hd`. Conclude with `(hd (MvPolynomial.coeff_zero d)).elim`.
+A detailed English derivation is pending.
 -/
 theorem lehwShift_one {R : Type*} [CommRing R] {r n : ℕ} (w : Fin r × Fin n → ℤ) (δ : ℤ) :
     LehwShift w (1 : Polynomial (MvPolynomial (Fin r × Fin n) R)) 0 δ := by
@@ -105,7 +103,7 @@ theorem lehwShift_one {R : Type*} [CommRing R] {r n : ℕ} (w : Fin r × Fin n �
     exact (hd (MvPolynomial.coeff_zero d)).elim
 
 /- English proof (translation)
-Proceed by induction on `e with`. Consider the case `zero => simpa using lehwShift_one (R := R) w δ`. Consider the case `succ e ih`. Rewrite using `[pow_succ, succ_nsmul]`. Conclude with `lehwShift_mul ih hP`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lehwShift_pow {R : Type*} [CommRing R] {r n : ℕ} {w : Fin r × Fin n → ℤ}
     {P : Polynomial (MvPolynomial (Fin r × Fin n) R)} {μ δ : ℤ}
@@ -117,9 +115,9 @@ theorem lehwShift_pow {R : Type*} [CommRing R] {r n : ℕ} {w : Fin r × Fin n �
     exact lehwShift_mul ih hP
 
 /- English proof (translation)
-Use `revert h`. Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Introduce `_`. Simplify using `using lehwShift_one (R := R) w δ`. Introduce `i s hi ih h`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.prod_insert hi, Finset.sum_insert hi]`. Conclude with `lehwShift_mul (h i (Finset.mem_insert_self i s)) (ih fun j hj => h j (Finset.mem_insert_of_mem hj))`.
+A detailed English derivation is pending.
 -/
 theorem lehwShift_prod {R : Type*} [CommRing R] {r n : ℕ} {w : Fin r × Fin n → ℤ} {ι : Type*}
     (s : Finset ι) (P : ι → Polynomial (MvPolynomial (Fin r × Fin n) R)) (μ : ι → ℤ) (δ : ℤ)
@@ -135,7 +133,7 @@ theorem lehwShift_prod {R : Type*} [CommRing R] {r n : ℕ} {w : Fin r × Fin n 
       (ih fun j hj => h j (Finset.mem_insert_of_mem hj))
 
 /- English proof (translation)
-Introduce `k`. Establish `h1` using `lehwShift_one (R := R) w δ k`. Rewrite using `[Algebra.algebraMap_eq_smul_one, Polynomial.coeff_smul]`. Conclude with `(mem_weightedHomogeneousSubmodule _ _ _ _).mp (Submodule.smul_mem _ c ((mem_weightedHomogeneousSubmodule _ _ _ _).mpr h1))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lehwShift_algebraMap {R : Type*} [CommRing R] {r n : ℕ} (w : Fin r × Fin n → ℤ) (c : R) (δ : ℤ) :
     LehwShift w (algebraMap R (Polynomial (MvPolynomial (Fin r × Fin n) R)) c) 0 δ := by
@@ -146,15 +144,15 @@ theorem lehwShift_algebraMap {R : Type*} [CommRing R] {r n : ℕ} (w : Fin r × 
     (Submodule.smul_mem _ c ((mem_weightedHomogeneousSubmodule _ _ _ _).mpr h1))
 
 /- English proof (translation)
-Take `⟨c, s⟩` from `v`. Introduce `k`. Distinguish the cases in `hc : c = b`. Substitute `hc` using the available equality. Rewrite using `[if_pos (show (c, s).1 = c from rfl)]`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Break down `k with _ | _ | k` into its components or cases. Establish `e : (Polynomial.C (X (c, s)) + Polynomial.X * Polynomial.C (X (a, s)) : Polynomial (MvPolynomial (Fin r × Fin n) R)).coeff 0 = X (c, s)` using `by simp`. Rewrite using `[e]`. Simplify using `using isWeightedHomogeneous_X R w (c, s)`. Establish `e : (Polynomial.C (X (c, s)) + Polynomial.X * Polynomial.C (X (a, s)) : Polynomial (MvPolynomial (Fin r × Fin n) R)).coeff (0 + 1) = X (a, s)` using `by simp`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite using `[e]`. Use `isWeightedHomogeneous_X R w (a, s) using 1` and compare the differences between its conclusion and the goal. Rewrite using `[hstep s]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `e : (Polynomial.C (X (c, s)) + Polynomial.X * Polynomial.C (X (a, s)) : Polynomial (MvPolynomial (Fin r × Fin n) R)).coeff (k + 1 + 1) = 0`. Simplify using `[Polynomial.coeff_C]`. Rewrite using `[e]`. Introduce `d hd`. Conclude with `(hd (MvPolynomial.coeff_zero d)).elim`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg (show ¬ (c, s).1 = b from hc), add_zero, Polynomial.coeff_C] split_ifs with hk`. Substitute `hk` using the available equality. Simplify using `using isWeightedHomogeneous_X R w (c, s)`. Introduce `d hd`. Conclude with `(hd (MvPolynomial.coeff_zero d)).elim`.
+Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem lehwShift_gen {R : Type*} [CommRing R] {r n : ℕ} (w : Fin r × Fin n → ℤ) (δ : ℤ)
     (a b : Fin r) (hstep : ∀ s : Fin n, w (a, s) = w (b, s) + δ) (v : Fin r × Fin n) :
@@ -192,7 +190,7 @@ theorem lehwShift_gen {R : Type*} [CommRing R] {r n : ℕ} (w : Fin r × Fin n �
       exact (hd (MvPolynomial.coeff_zero d)).elim
 
 /- English proof (translation)
-Unfold `rowGen`. Rewrite using `[MvPolynomial.aeval_monomial, Finsupp.weight_apply]`. Establish `h` using `lehwShift_mul (lehwShift_algebraMap (R := R) w c δ) (lehwShift_prod d.support _ (fun v => d v • w v) δ (fun v _ => lehwShift_pow (lehwShift_gen (R := R) w δ a b hstep v) (d v)))`. Simplify `h` using `[Finsupp.prod, Finsupp.sum]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem lehwShift_rowGen_monomial (R : Type*) [CommRing R] {r n : ℕ} (w : Fin r × Fin n → ℤ) (δ : ℤ)
     (a b : Fin r) (hstep : ∀ s : Fin n, w (a, s) = w (b, s) + δ) (d : Fin r × Fin n →₀ ℕ) (c : R) :
@@ -205,9 +203,9 @@ theorem lehwShift_rowGen_monomial (R : Type*) [CommRing R] {r n : ℕ} (w : Fin 
   simpa [Finsupp.prod, Finsupp.sum] using h
 
 /- English proof (translation)
-Unfold `rowDiv`. Rewrite using `[f.as_sum, map_sum, Polynomial.finset_sum_coeff]`. Use `(mem_weightedHomogeneousSubmodule _ _ _ _).mp (Submodule.sum_mem _ fun d hd => ?_)` and prove the remaining obligations. Use `(mem_weightedHomogeneousSubmodule _ _ _ _).mpr ?_` and prove the remaining obligations. Establish `h` using `lehwShift_rowGen_monomial R w δ a b hstep d (coeff d f) k`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h` using `[hf (mem_support_iff.mp hd)]`. Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lehw_rowDiv_shift (R : Type*) [CommRing R] {r n : ℕ} (w : Fin r × Fin n → ℤ) (δ : ℤ)
     (a b : Fin r) (hstep : ∀ s : Fin n, w (a, s) = w (b, s) + δ) (H : ℤ) (k : ℕ)
@@ -224,7 +222,7 @@ theorem lehw_rowDiv_shift (R : Type*) [CommRing R] {r n : ℕ} (w : Fin r × Fin
 def lehwP {r n : ℕ} (a : Fin r) : Fin r × Fin n → ℤ := fun v => if v.1.val ≤ a.val then 1 else 0
 
 /- English proof (translation)
-Establish `h : a.val < b.val` using `hab`. Simplify using `[lehwP, show ¬ b.val ≤ a.val by omega]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem highestWeightCount_self_eq_succ_of_lt {r n : ℕ} {a b : Fin r} (hab : a < b) (s : Fin n) :
     lehwP (n := n) a (a, s) = lehwP a (b, s) + 1 := by
@@ -232,9 +230,9 @@ theorem highestWeightCount_self_eq_succ_of_lt {r n : ℕ} {a b : Fin r} (hab : a
   simp [lehwP, show ¬ b.val ≤ a.val by omega]
 
 /- English proof (translation)
-Rewrite using `[Finsupp.weight_apply, Finsupp.sum_fintype _ _ (by simp), Fintype.sum_prod_type]`. Use `push_cast`. Rewrite using `[Finset.sum_filter]`. Use `Finset.sum_congr rfl fun a' _ => ?_` and prove the remaining obligations. Simplify using `only [rowDeg, lehwP]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `h : a'.val ≤ a.val`. Simplify using `[h, show a'.val < a.val + 1 by omega]`. Simplify using `[h, show ¬ a'.val < a.val + 1 by omega]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem lehw_weight_P {r n : ℕ} (a : Fin r) (m : Fin r × Fin n →₀ ℕ) :
     Finsupp.weight (lehwP a) m = ((∑ a' : Fin r with a'.val < a.val + 1, rowDeg m a' : ℕ) : ℤ) := by
@@ -248,9 +246,9 @@ theorem lehw_weight_P {r n : ℕ} (a : Fin r) (m : Fin r × Fin n →₀ ℕ) :
   · simp [h, show ¬ a'.val < a.val + 1 by omega]
 
 /- English proof (translation)
-Rewrite using `[Finsupp.weight_apply, Finsupp.sum_fintype _ _ (by simp), Finset.sum_apply, Fintype.sum_prod_type]`. Simplify using `only [rowW, Pi.smul_apply, Pi.single_apply, smul_eq_mul, mul_ite, mul_one, mul_zero]`. Rewrite using `[Finset.sum_eq_single a]`. Simplify using `[rowDeg]`. Introduce `b _ hb`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[hb, Ne.symm hb]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem lehw_weight_rowW {r n : ℕ} (m : Fin r × Fin n →₀ ℕ) (a : Fin r) :
     Finsupp.weight (rowW r n) m a = rowDeg m a := by
@@ -264,11 +262,11 @@ theorem lehw_weight_rowW {r n : ℕ} (m : Fin r × Fin n →₀ ℕ) (a : Fin r)
   · simp
 
 /- English proof (translation)
-Establish `hH` using `rowDivStable ℚ r n ν a b k G hG`. Assume the negation of the conclusion as `hne`. Take `⟨m, hm⟩` from `MvPolynomial.ne_zero_iff.mp hne`. Establish `hGP : IsWeightedHomogeneous (lehwP (n` using `n) a) G ((∑ a' : Fin r with a'.val < a.val + 1, rowNu (r := r) ν a' : ℕ) : ℤ) := by`. Introduce `d hd`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[lehw_weight_P]`. Use `congr 1`. Use `Finset.sum_congr rfl fun a' _ => ?_` and prove the remaining obligations. Rewrite using `[← lehw_weight_rowW, hGh hd]`. Establish `hshift` using `lehw_rowDiv_shift ℚ (lehwP a) 1 a b (highestWeightCount_self_eq_succ_of_lt hab) _ k G hGP`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hmw` using `hshift hm`. Rewrite `hmw` using `[lehw_weight_P]`. Establish `hdom` using `lehw_dom ν hn hν _ hH m (mem_support_iff.mpr hm) (a.val + 1)`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem lehw_kill {r n : ℕ} (hn : n ≤ r) (ν : Fin n → ℕ) (hν : Antitone ν)
     (G : MvPolynomial (Fin r × Fin n) ℚ) (hG : G ∈ dualWeyl ℚ r n ν)

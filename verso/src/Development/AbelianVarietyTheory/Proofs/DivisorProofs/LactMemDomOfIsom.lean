@@ -17,7 +17,7 @@ namespace GlobalTheory.CuspEmb
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} {U C : Type} [Group U] [MulAction U C]
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.LevelCusp.hermC_of_herm (ε := 1) (fun v w => by rw [hγ, one_mul]), map_one, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hermC_of_isom (G : Matrix (Fin r) (Fin r) E) {γ : GL (Fin r) E}
     (hγ : ∀ v w, herm G ((γ : Matrix (Fin r) (Fin r) E) *ᵥ v) ((γ : Matrix (Fin r) (Fin r) E) *ᵥ w) = herm G v w)
@@ -26,7 +26,7 @@ theorem hermC_of_isom (G : Matrix (Fin r) (Fin r) E) {γ : GL (Fin r) E}
   rw [GlobalTheory.LevelCusp.hermC_of_herm (ε := 1) (fun v w => by rw [hγ, one_mul]), map_one, one_mul]
 
 /- English proof (translation)
-Introduce `τ` and use `by have hd : ∀ i, dmin M.Gm (lact γ x) τ i = dmin M.Gm x τ i := fun i => by unfold dmin congr 1 ext p q exact hermC_of_isom M.Gm hγ τ.1 (col (mat x τ) p) (col (mat x τ) q) refine ⟨?_, fun i => by rw [hd]; exact (hx τ).2 i⟩ have e : mat (lact γ x) τ = (γ : Matrix (Fin r) (Fin r) E …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem lact_mem_dom_of_isom (M : TwoLevels E r U C) {γ : GL (Fin r) E}
     (hγ : ∀ v w, herm M.Gm ((γ : Matrix (Fin r) (Fin r) E) *ᵥ v) ((γ : Matrix (Fin r) (Fin r) E) *ᵥ w) = herm M.Gm v w)
@@ -44,14 +44,14 @@ theorem lact_mem_dom_of_isom (M : TwoLevels E r U C) {γ : GL (Fin r) E}
   exact ((Matrix.isUnit_iff_isUnit_det _).1 γ.isUnit).ne_zero
 
 /- English proof (translation)
-The claim follows from `lact_mem_dom_of_isom M (M.tr_herm u c) hx`.
+A detailed English derivation is pending.
 -/
 theorem lact_tr_mem (M : TwoLevels E r U C) (u : U) (c : C) {x : Frame M.Ψ r} (hx : x ∈ M.dom) :
     lact (M.tr u c) x ∈ M.dom :=
   lact_mem_dom_of_isom M (M.tr_herm u c) hx
 
 /- English proof (translation)
-The claim follows from `lact_mem_dom_of_isom M (fun v w => by have := ((M.comp c).Γ_stab γ hγ).1 v w rwa [M.comp_Gm c] at this) hx`.
+A detailed English derivation is pending.
 -/
 theorem lact_Γ_mem (M : TwoLevels E r U C) (c : C) {γ : GL (Fin r) E} (hγ : γ ∈ (M.comp c).Γ)
     {x : Frame M.Ψ r} (hx : x ∈ M.dom) : lact γ x ∈ M.dom :=
@@ -105,11 +105,11 @@ def HA (M : TwoLevels E r U C) : Subalgebra ℂ (C → M.dom → ℂ) where
     refine ⟨fun c => ⟨fun _ => z, differentiableOn_const z, fun x => rfl⟩, fun c γ hγ x hx => rfl⟩
 
 /- English proof (translation)
-Take `⟨hf, hf'⟩` from `hf`. Use `⟨fun c => ?_, fun c γ hγ x hx => ?_⟩` and prove the remaining obligations. Take `⟨G, hG, hG'⟩` from `hf (u • c)`. Use `⟨fun y => G (lact (M.tr u c) y), hG.comp (ReciprocityTheory.ChartRestriction.G.AR.Up.PoinPf.differentiable_lact _).differentiableOn (fun y hy => lact_tr_mem M u c hy), fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[pb_apply, hG']`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hδ : M.tr u c * γ * (M.tr u c)⁻¹ ∈ (M.comp (u • c)).Γ` using `(M.tr_conj u c γ).1 hγ`. Establish `e : lact (M.tr u c) (lact γ x.1) = lact (M.tr u c * γ * (M.tr u c)⁻¹) (lact (M.tr u c) x.1)`. Simplify using `only [ReciprocityTheory.ChartRestriction.G.AR.Up.FundSetPf.lact_mul, ← ReciprocityTheory.ChartRestriction.G.AR.Up.FundSetPf.lact_mul (M.tr u c)⁻¹ (M.tr u c), inv_mul_cancel, ReciprocityTheory.ChartRestriction.G.AR.Up.FundSetPf.lact_one]`. Establish `hy : lact (M.tr u c * γ * (M.tr u c)⁻¹) (Lmap M u c x).1 ∈ M.dom` using `by show lact (M.tr u c * γ * (M.tr u c)⁻¹) (lact (M.tr u c) x.1) ∈ M.dom`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← e]`. Conclude with `lact_tr_mem M u c hx`. Rewrite using `[pb_apply, pb_apply, ← hf' (u • c) _ hδ (Lmap M u c x) hy]`. Use `congr 1`. Conclude with `Subtype.ext e`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem pb_mem (M : TwoLevels E r U C) (u : U) {f : C → M.dom → ℂ} (hf : f ∈ HA M) : pb M u f ∈ HA M := by
   obtain ⟨hf, hf'⟩ := hf
@@ -150,7 +150,7 @@ def tw (M : TwoLevels E r U C) (a : C → ℂ) (u : U) : Polynomial (HA M) →�
       simp }
 
 /- English proof (translation)
-Use `show Polynomial.eval₂ _ _ _ = _`. Rewrite using `[Polynomial.eval₂_C]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem tw_C (M : TwoLevels E r U C) (a : C → ℂ) (u : U) (f : HA M) :
     tw M a u (Polynomial.C f) = Polynomial.C (pbA M u f) := by
@@ -159,7 +159,7 @@ theorem tw_C (M : TwoLevels E r U C) (a : C → ℂ) (u : U) (f : HA M) :
   rfl
 
 /- English proof (translation)
-Use `show Polynomial.eval₂ _ _ _ = _`. Rewrite using `[Polynomial.eval₂_X]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tw_X (M : TwoLevels E r U C) (a : C → ℂ) (u : U) :
     tw M a u Polynomial.X = Polynomial.C (cst M a) * Polynomial.X := by
@@ -167,7 +167,7 @@ theorem tw_X (M : TwoLevels E r U C) (a : C → ℂ) (u : U) :
   rw [Polynomial.eval₂_X]
 
 /- English proof (translation)
-Rewrite using `[← Polynomial.C_mul_X_eq_monomial, map_mul, tw_C, tw_X, ← mul_assoc, ← Polynomial.C_mul, mul_comm (pbA M u f), Polynomial.C_mul_X_eq_monomial]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem tw_monomial_one (M : TwoLevels E r U C) (a : C → ℂ) (u : U) (f : HA M) :
     tw M a u (Polynomial.monomial 1 f) = Polynomial.monomial 1 (cst M a * pbA M u f) := by

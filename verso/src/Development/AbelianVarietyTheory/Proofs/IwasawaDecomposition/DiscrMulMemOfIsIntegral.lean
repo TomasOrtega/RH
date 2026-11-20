@@ -9,15 +9,15 @@ open TensorProduct Polynomial
 namespace GlobalTheory.DiscConductor
 
 /- English proof (translation)
-Set `b` to `Module.finBasis L Ω`. Set `A` to `AlgebraicClosure L`. Set `f : Ω →ₐ[U] Matrix (Fin (Module.finrank L Ω)) (Fin (Module.finrank L Ω)) A` to `(((Algebra.ofId L A).mapMatrix).comp (Algebra.leftMulMatrix b)).restrictScalars U`. Establish `hM : IsIntegral U (f ω)` using `h.map f`. Establish `htr : algebraMap L A (Algebra.trace L Ω ω) = (f ω).trace`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Algebra.trace_eq_matrix_trace b]`. Simplify using `only [Matrix.trace, Matrix.diag, map_sum]`. Both sides reduce to the same expression. Rewrite using `[← isIntegral_algebraMap_iff (A := L) (B := A) (algebraMap L A).injective, htr, Matrix.trace_eq_sum_roots_charpoly]`. Use `IsIntegral.multiset_sum fun μ hμ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hroot : IsRoot (f ω).charpoly μ` using `(mem_roots'.1 hμ).2`. Establish `hspec : μ ∈ spectrum A (f ω)` using `Matrix.mem_spectrum_iff_isRoot_charpoly.2 hroot`. Take `⟨p, hp, hp0⟩` from `hM`. Use `⟨p, hp, ?_⟩` and prove the remaining obligations. Establish `h1` using `spectrum.subset_polynomial_aeval (f ω) (p.map (algebraMap U A)) ⟨μ, hspec, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h2 : aeval (f ω) (p.map (algebraMap U A)) = 0`. Rewrite using `[aeval_map_algebraMap]`. Simplify `hp0` using `[aeval_def]`. Establish `: Nontrivial (Matrix (Fin (Module.finrank L Ω)) (Fin (Module.finrank L Ω)) A)`. Assume the negation of the conclusion as `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite `h` using `[not_nontrivial_iff_subsingleton]`. Rewrite `hspec` using `[spectrum.of_subsingleton]`. Conclude with `hspec`. Rewrite `h1` using `[h2, spectrum.zero_eq, Set.mem_singleton_iff]`. Simplify `h1` using `[eval_map]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem isIntegral_trace_of_isIntegral
     (U L Ω : Type) [CommRing U] [Field L] [CommRing Ω] [Algebra U L] [Algebra L Ω] [Algebra U Ω]
@@ -52,13 +52,13 @@ theorem isIntegral_trace_of_isIntegral
   simpa [eval_map] using h1
 
 /- English proof (translation)
-Use `choose g hg using hG`. Use `choose w hw using hω`. Establish `hG : (algebraMap U L).mapMatrix (Matrix.of g) = Algebra.traceMatrix L b`. Use extensionality with `i j`. Simplify using `[hg, Algebra.traceMatrix_apply, Algebra.traceForm_apply]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : (Algebra.traceMatrix L b).mulVec (b.equivFun ω) = fun i => algebraMap U L (w i)`. Rewrite using `[Algebra.traceMatrix_of_basis_mulVec]`. Use extensionality with `i`. Rewrite using `[hw]`. Establish `h2 : (Algebra.traceMatrix L b).det • b.equivFun ω = fun j => algebraMap U L ((Matrix.of g).adjugate.mulVec w j)`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3` using `congrArg ((Algebra.traceMatrix L b).adjugate.mulVec) h1`. Rewrite `h3` using `[Matrix.mulVec_mulVec, Matrix.adjugate_mul, Matrix.smul_mulVec, Matrix.one_mulVec]`. Rewrite using `[h3, ← hG, ← RingHom.map_adjugate]`. Use extensionality with `j`. Simplify using `[Matrix.mulVec, dotProduct]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(Matrix.of g).adjugate.mulVec w, ?_⟩` and prove the remaining obligations. Use `conv_lhs => rw [← b.sum_equivFun ω, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[smul_smul, ← congrFun h2 j]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem det_smul_eq_sum
     (U L Ω ι : Type) [CommRing U] [Field L] [CommRing Ω] [Algebra U L] [Algebra L Ω]
@@ -89,33 +89,31 @@ theorem det_smul_eq_sum
   rfl
 
 /- English proof (translation)
-Take `⟨n, b, hbC, hbT⟩` from `GlobalTheory.T.exists_basis_of_integral_with_trace_in_base T C F K`. Take `⟨φ, hφi, hφ⟩` from `GlobalTheory.T.exists_injective_tensor_into_tensor_fractionFields T U C F K L`. Establish `hφu` using `GlobalTheory.T.isUnit_map_of_mem_nonZeroDivisors_tensor' T U C F K L φ hφi hφ`. Use `choose t ht using hbT`. Use `choose e he using hbC`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `Gt : Matrix (Fin n) (Fin n) T` to `Matrix.of t`. Establish `hG : (algebraMap T F).mapMatrix Gt = Algebra.traceMatrix F b`. Use extensionality with `i j`. Simplify using `[Gt, ht, Algebra.traceMatrix_apply, Algebra.traceForm_apply]`. Use `haveI : FiniteDimensional F K := Module.Finite.of_basis b`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI : CharZero F := charZero_of_injective_algebraMap (IsFractionRing.injective T F)`. Establish `hd : algebraMap T F Gt.det = (Algebra.traceMatrix F b).det`. Rewrite using `[RingHom.map_det, hG]`. Use `⟨Gt.det, ?_, ?_⟩` and prove the remaining obligations. Introduce `h0`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Apply `Algebra.discr_not_zero_of_basis F b` to reduce the goal to its premises. Rewrite using `[Algebra.discr_def, ← hd, h0, map_zero]`. Introduce `c hc`. Set `B : Module.Basis (Fin n) L (L ⊗[F] K)` to `b.baseChange L`. Establish `hB : ∀ i, B i = 1 ⊗ₜ b i` using `fun i => Module.Basis.baseChange_apply L b i`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `haveI : Module.Finite L (L ⊗[F] K) := Module.Finite.of_basis B`. Establish `htr : ∀ x : K, Algebra.trace L (L ⊗[F] K) (1 ⊗ₜ x) = algebraMap F L (Algebra.trace F K x)`. Introduce `x`. Rewrite using `[Algebra.trace_apply, Algebra.trace_apply, ← Algebra.baseChange_lmul, LinearMap.trace_baseChange]`. Establish `htow : ∀ x : T, algebraMap F L (algebraMap T F x) = algebraMap U L (algebraMap T U x)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `x`. Rewrite using `[← IsScalarTower.algebraMap_apply, ← IsScalarTower.algebraMap_apply]`. Establish `hBB : ∀ i j, algebraMap U L (algebraMap T U (t i j)) = Algebra.trace L (L ⊗[F] K) (B i * B j)`. Introduce `i j`. Rewrite using `[hB, hB, Algebra.TensorProduct.tmul_mul_tmul, one_mul, htr, ← ht, htow]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `ψ : FractionRing (U ⊗[T] C) →+* L ⊗[F] K` to `IsLocalization.lift (M := nonZeroDivisors (U ⊗[T] C)) (g := φ) (fun s => hφu s.1 s.2)`. Establish `hψ : ∀ s, ψ (algebraMap (U ⊗[T] C) _ s) = φ s` using `fun s => IsLocalization.lift_eq _ s`. Establish `hψi : Function.Injective ψ`. Use `(RingHom.injective_iff_ker_eq_bot ψ).2 ((RingHom.ker_eq_bot_iff_eq_zero ψ).2 ?_)` and prove the remaining obligations. Introduce `x hx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨⟨s, r⟩, h⟩` from `IsLocalization.surj (nonZeroDivisors (U ⊗[T] C)) x`. Establish `h1` using `congrArg ψ h`. Rewrite `h1` using `[map_mul, hx, zero_mul, hψ]`. Establish `h2 : s = 0` using `hφi (by rw [map_zero]; exact h1.symm)`. Rewrite `h` using `[h2, map_zero]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(IsLocalization.map_units (FractionRing (U ⊗[T] C)) r).mul_left_eq_zero.1 h`. Establish `hω : IsIntegral U (ψ c)`. Take `⟨p, hp, hpc⟩` from `hc`. Use `GlobalTheory.T.isIntegral_of_monic_eval_tmul_map_eq_zero T U C F K L φ hφ (ψ c) p hp ?_` and prove the remaining obligations. Establish `h1` using `congrArg ψ hpc`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h1` using `[hom_eval₂, map_zero]`. Establish `h2 : ψ.comp (algebraMap (U ⊗[T] C) _) = φ` using `RingHom.ext hψ`. Rewrite `h1` using `[h2]`. Then use the resulting hypothesis. Establish `hBi : ∀ i, IsIntegral U (B i)`. Introduce `i`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `GlobalTheory.T.isIntegral_of_monic_eval_tmul_map_eq_zero T U C F K L φ hφ (B i) (X - Polynomial.C (1 ⊗ₜ e i)) (monic_X_sub_C _) ?_` and prove the remaining obligations. Rewrite using `[eval₂_sub, eval₂_X, eval₂_C, hφ, map_one, he, hB, sub_self]`. Take `⟨v, hv⟩` from `det_smul_eq_sum U L (L ⊗[F] K) (Fin n) B (ψ c) (fun i j => ⟨_, hBB i j⟩) (fun i => IsIntegrallyClosed.isIntegral_iff.1 (isIntegral_trace_of_isIntegral U L (L ⊗[F] K) _ (hω.mul (hBi i))))`. Establish `hdet : (Algebra.traceMatrix L B).det = algebraMap U L (algebraMap T U Gt.det)`. Rewrite using `[RingHom.map_det, RingHom.map_det]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `congr 1`. Use extensionality with `i j`. Simplify using `[Gt, hBB, Algebra.traceMatrix_apply, Algebra.traceForm_apply]`. Use `⟨∑ j, v j ⊗ₜ e j, hψi ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, hψ, hψ, map_sum, Algebra.TensorProduct.algebraMap_apply, hφ, map_one, ← hdet]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : ((Algebra.traceMatrix L B).det ⊗ₜ[F] (1 : K)) * ψ c = (Algebra.traceMatrix L B).det • ψ c`. Rewrite using `[Algebra.smul_def]`. Both sides reduce to the same expression. Rewrite using `[h1, hv]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[hφ, he, hB, smul_tmul', smul_eq_mul, mul_one]`.
+A detailed English derivation is pending.
 -/
 theorem exists_conductor_of_fractionFields
     (T U C F K L : Type) [CommRing T] [IsDomain T] [IsIntegrallyClosed T] [CharZero T]
@@ -206,7 +204,7 @@ theorem exists_conductor_of_fractionFields
 attribute [local instance] FractionRing.liftAlgebra FractionRing.isScalarTower_liftAlgebra in
 
 /- English proof (translation)
-Introduce `T U C _ _ _ _ _ _ _ _ _ _ _ _ _ hU hC`. Use `haveI : FaithfulSMul T U := (faithfulSMul_iff_algebraMap_injective _ _).2 hU`. Use `haveI : FaithfulSMul T C := (faithfulSMul_iff_algebraMap_injective _ _).2 hC`. Conclude with `exists_conductor_of_fractionFields T U C (FractionRing T) (FractionRing C) (FractionRing U)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem discr_mul_mem_of_isIntegral : ∀ (T U C : Type) [CommRing T] [IsDomain T] [IsIntegrallyClosed T] [CharZero T] [CommRing U] [IsDomain U] [IsIntegrallyClosed U] [Algebra T U] [Module.Flat T U] [CommRing C] [IsDomain C] [Algebra T C] [Module.Finite T C], Function.Injective (algebraMap T U) → Function.Injective (algebraMap T C) → ∃ d : T, d ≠ 0 ∧ ∀ c : FractionRing (U ⊗[T] C), IsIntegral (U ⊗[T] C) c → ∃ s : (U ⊗[T] C), algebraMap (U ⊗[T] C) (FractionRing (U ⊗[T] C)) s = algebraMap (U ⊗[T] C) (FractionRing (U ⊗[T] C)) (algebraMap T (U ⊗[T] C) d) * c := by
   intro T U C _ _ _ _ _ _ _ _ _ _ _ _ _ hU hC

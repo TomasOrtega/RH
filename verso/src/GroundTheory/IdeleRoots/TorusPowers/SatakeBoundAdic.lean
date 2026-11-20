@@ -20,9 +20,9 @@ attribute [local instance] GroundTheory.Automorphic.Spherical.fintypeResidue
 variable {K : Type} [Field K] [NumberField K] (w : HeightOneSpectrum (𝓞 K))
 
 /- English proof (translation)
-Establish `hS : (Valuation.integer (ValuativeRel.valuation (w.adicCompletion K))) = (w.adicCompletionIntegers K).toSubring`. Use extensionality with `x`. Conclude with `GroundTheory.Global.mem_valuationInteger_iff w x`. Set `e` to `RingEquiv.subringCongr hS`. Establish `hirr : Irreducible (e (uniformizer (w.adicCompletion K)))` using `(MulEquiv.irreducible_iff e).2 (irreducible_uniformizer _)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `GroundTheory.Global.valued_of_irreducible (v := w) (K := K) (ϖ := ⟨(e (uniformizer (w.adicCompletion K)) : w.adicCompletion K), (e _).2⟩) (by exact hirr)` as an intermediate fact. Simplify `this` using `[e]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem valued_uniformizer_eq :
     Valued.v (uniformizer (w.adicCompletion K) : w.adicCompletion K) = WithZero.exp (-1 : ℤ) := by
@@ -38,7 +38,7 @@ theorem valued_uniformizer_eq :
   simpa [e] using this
 
 /- English proof (translation)
-The claim follows from `(HeightOneSpectrum.mem_adicCompletionIntegers (R := 𝓞 K) K w).1 ((GroundTheory.Global.mem_valuationInteger_iff w x).1 hx)`.
+A detailed English derivation is pending.
 -/
 theorem valued_le_one_of_mem {x : w.adicCompletion K} (hx : x ∈ 𝒪[w.adicCompletion K]) :
     Valued.v x ≤ 1 :=
@@ -46,7 +46,7 @@ theorem valued_le_one_of_mem {x : w.adicCompletion K} (hx : x ∈ 𝒪[w.adicCom
     ((GroundTheory.Global.mem_valuationInteger_iff w x).1 hx)
 
 /- English proof (translation)
-The claim follows from `(GroundTheory.Global.mem_valuationInteger_iff w x).2 ((HeightOneSpectrum.mem_adicCompletionIntegers (R := 𝓞 K) K w).2 hx)`.
+A detailed English derivation is pending.
 -/
 theorem mem_of_valued_le_one {x : w.adicCompletion K} (hx : Valued.v x ≤ 1) :
     x ∈ 𝒪[w.adicCompletion K] :=

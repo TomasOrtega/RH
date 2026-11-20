@@ -11,15 +11,15 @@ namespace GlobalTheory.LatChain
 variable {K : Type} [Field K] {N : ℕ}
 
 /- English proof (translation)
-Set `h' : R` to `⟨h, hh.1⟩`. Set `F' : Matrix (Fin N) (Fin N) R` to `fun i j => ⟨F i j, hF i j⟩`. Establish `h1 : Ideal.Quotient.mk (Ideal.span {h'}) (1 - h' • F').det = Ideal.Quotient.mk (Ideal.span {h'}) 1`. Establish `h0 : Ideal.Quotient.mk (Ideal.span {h'}) h' = 0` using `Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mem_span_singleton_self _)`. Establish `: (Ideal.Quotient.mk (Ideal.span {h'})).mapMatrix (1 - h' • F') = 1`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[map_sub, map_one, sub_eq_self]`. Use extensionality with `i j`. Simplify using `[h0]`. Rewrite using `[RingHom.map_det, this, Matrix.det_one, map_one]`. Take `⟨r, hr⟩` from `Ideal.mem_span_singleton'.1 (Ideal.Quotient.eq.1 h1)`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hs, hs'⟩` from `hh.2 r r.2`. Establish `hu : IsUnit (1 - h' • F').det`. Use `IsUnit.of_mul_eq_one ⟨s, hs⟩ (Subtype.ext ?_)` and prove the remaining obligations. Establish `: (1 - h' • F').det = 1 + h' * r` using `by rw [mul_comm, hr]; ring`. Rewrite using `[this]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hs'`. Use `⟨R.subtype.mapMatrix (1 - h' • F')⁻¹, fun i j => ((1 - h' • F')⁻¹ i j).2, ?_⟩` and prove the remaining obligations. Establish `e : R.subtype.mapMatrix (1 - h' • F') = 1 - h • F`. Rewrite using `[map_sub, map_one]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← e, ← map_mul, Matrix.nonsing_inv_mul _ hu, map_one]`.
+A detailed English derivation is pending.
 -/
 theorem exists_mul_one_sub_smul {R : Subring K} {h : K} (hh : Small R h) {F : Matrix (Fin N) (Fin N) K}
     (hF : F ∈ R.matrix) : ∃ G ∈ R.matrix, G * (1 - h • F) = 1 := by
@@ -47,7 +47,7 @@ theorem exists_mul_one_sub_smul {R : Subring K} {h : K} (hh : Small R h) {F : Ma
   rw [← e, ← map_mul, Matrix.nonsing_inv_mul _ hu, map_one]
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_single i (fun j _ hj => ?_) (by simp)` and prove the remaining obligations. Break down `lt_or_gt_of_ne hj with h | h` into its components or cases. Rewrite using `[hA h, zero_mul]`. Rewrite using `[hB h, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem mul_apply_self_of_upper {A B : Matrix (Fin N) (Fin N) K} (hA : A.BlockTriangular id)
     (hB : B.BlockTriangular id) (i : Fin N) : (A * B) i i = A i i * B i i := by
@@ -58,15 +58,13 @@ theorem mul_apply_self_of_upper {A B : Matrix (Fin N) (Fin N) K} (hA : A.BlockTr
   · rw [hB h, mul_zero]
 
 /- English proof (translation)
-Take `⟨E, hE, h₁, h₂⟩` from `H`. Establish `hF : b • ((b • A⁻¹) * E) ∈ R.matrix` using `fun i j => R.mul_mem hb (mul_mem hi hE i j)`. Take `⟨G, hG, hGe⟩` from `exists_mul_one_sub_smul hh hF`. Establish `e₁ : (G * A⁻¹) * (A - (h * b * b) • E) = 1`. Rewrite using `[← hGe, mul_assoc, mul_sub, Matrix.nonsing_inv_mul _ hA.isUnit, Matrix.smul_mul, Matrix.mul_smul, smul_smul, smul_smul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e₂ : A⁻¹ - h • (-(G * ((b • A⁻¹) * E) * (b • A⁻¹))) = G * A⁻¹`. Establish `: A⁻¹ = G * (1 - h • b • ((b • A⁻¹) * E)) * A⁻¹` using `by rw [hGe, one_mul]`. Rewrite `this` using `[mul_sub, sub_mul, mul_one]`. Rewrite using `[smul_neg, sub_neg_eq_add, ← eq_sub_iff_add_eq]`. Use `this.trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Matrix.smul_mul, Matrix.mul_smul]`. Establish `t : (G * A⁻¹).BlockTriangular id`. Use `letI := invertibleOfLeftInverse _ _ e₁`. Rewrite using `[← Matrix.inv_eq_left_inv e₁]`. Conclude with `Matrix.blockTriangular_inv_of_blockTriangular h₁`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e₃ (i) : (G * A⁻¹) i i * d i = 1`. Rewrite using `[← h₂, ← mul_apply_self_of_upper t h₁, e₁, Matrix.one_apply_eq]`. Use `⟨fun i => right_ne_zero_of_mul_eq_one (e₃ i), -(G * ((b • A⁻¹) * E) * (b • A⁻¹)), neg_mem (mul_mem (mul_mem hG (mul_mem hi hE)) hi), ?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[e₂]` and apply the resulting hypothesis. Rewrite using `[e₂]`.
-
-Conclude with `eq_inv_of_mul_eq_one_left (e₃ i)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem triMod_inv (K : Type) [Field K] (N : ℕ) (R : Subring K) (h b : K) (A : Matrix (Fin N) (Fin N) K) (d : Fin N → K)
     (hh : Small R h) (hb : b ∈ R) (hA : A.det ≠ 0) (hi : b • A⁻¹ ∈ R.matrix) (H : TriMod R (h * b * b) A d) :

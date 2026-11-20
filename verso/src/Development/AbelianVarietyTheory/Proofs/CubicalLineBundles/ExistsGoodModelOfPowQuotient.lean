@@ -25,14 +25,14 @@ namespace GlobalTheory.PowQuotient
 variable {S S' : Scheme.{0}}
 
 /- English proof (translation)
-The claim follows from `Finset.prod_induction a (fun z => IsMonHom z) (fun x y _ _ => isMonHom_mul x y) isMonHom_one fun i _ => ha i`.
+A detailed English derivation is pending.
 -/
 theorem isMonHom_prod {G H : Over S} [GrpObj G] [GrpObj H] [IsCommMonObj H] {n : ℕ} (a : Fin n → (G ⟶ H))
     (ha : ∀ i, IsMonHom (a i)) : IsMonHom (∏ i, a i) :=
   Finset.prod_induction a (fun z => IsMonHom z) (fun x y _ _ => isMonHom_mul x y) isMonHom_one fun i _ => ha i
 
 /- English proof (translation)
-The claim follows from `map_prod (preHom (G := H) x) a Finset.univ`.
+A detailed English derivation is pending.
 -/
 theorem comp_prod {T G H : Over S} [GrpObj H] [IsCommMonObj H] {n : ℕ} (x : T ⟶ G) (a : Fin n → (G ⟶ H)) :
     x ≫ ∏ i, a i = ∏ i, x ≫ a i :=

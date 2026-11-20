@@ -17,25 +17,25 @@ namespace GlobalTheory.ChartField
 open GlobalTheory.FBMap in
 
 /- English proof (translation)
-Establish `hε1` using `(GlobalTheory.T.formalChartJetRel_unit_one_on_axes R d O m B B' φ φi ε hε).1`. Take `⟨lam, hl0, hle⟩` from `(GlobalTheory.T.jetEq_formalExp_iff_and_exists_log k 2 d m).2 (FB.toK k ε) (by simp [FB.toK, hε1])`. Establish `hbi` using `GlobalTheory.T.canonicalGauge_difference_biadditive_jet R d O m B B' φ φi ε hε k h h' lam hh hh' hl0 hle`. Take `⟨g', hg', hgg⟩` from `GlobalTheory.T.exists_biadditive_series_jetEq_of_biadditiveJet R d O B' k m (by omega) _ hbi`. Establish `hcan` using `GlobalTheory.T.isCanonicalGauge_sub_biadditive R d O B' k h' g' hh' hg'`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `c0 : ∀ {C : FB R d O} {g : PS k 2 d}, C.IsCanonGauge k g → MvPowerSeries.constantCoeff g = 0`. Introduce `C g hg`. Use `congrArg MvPowerSeries.constantCoeff hg.ax0` as an intermediate fact. Rewrite `this` using `[gt_const_ev_eq _ (pair_points_zero_constant gp_zero₂ (gp_pt 0)), map_zero]`. Then use the resulting hypothesis. Establish `hφ : NoConst φ` using `hε.inv.1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hφi : NoConst φi` using `hε.inv.2.1`. Establish `hinv : IsInvPair (mapPt (algebraMap R k) φ) (mapPt (algebraMap R k) φi)`. Use `⟨fun i => by simp [mapPt, hφ i], fun i => by simp [mapPt, hφi i], ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← mapPt_comp1 _ _ hφi, hε.inv.2.2.1, mapPt_pt]`. Rewrite using `[← mapPt_comp1 _ _ hφ, hε.inv.2.2.2, mapPt_pt]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hact : B'.actK k w0 = comp1 (mapPt (algebraMap R k) φi) (comp1 (B.actK k w0) (mapPt (algebraMap R k) φ))`. Express the relevant statement in the definitionally equal form `mapPt (algebraMap R k) (B'.A.act w0) = comp1 _ (comp1 (mapPt (algebraMap R k) (B.A.act w0)) _)`. Rewrite using `[hε.act w0, mapPt_comp1 _ _ (nc_comp1 (nc_act _ _) hφ), mapPt_comp1 _ _ hφ]`. Establish `hF : B'.FK k = transF (mapLaw (algebraMap R k) B.G).F (mapPt (algebraMap R k) φ) (mapPt (algebraMap R k) φi)`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Express the relevant statement in the definitionally equal form `MvPowerSeries.map (algebraMap R k) (B'.G.F i) = _`. Rewrite using `[hε.law i]`. Unfold `transF`. Rewrite using `[map_ev1 _ (nc_addOf (nc_law _) (nc_comp1 hφ (nc_pt _)) (nc_comp1 hφ (nc_pt _))), mapPt_addOf _ _ (nc_comp1 hφ (nc_pt _)) (nc_comp1 hφ (nc_pt _)), mapPt_comp1 _ _ (nc_pt _), mapPt_comp1 _ _ (nc_pt _), mapPt_pt, mapPt_pt]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hd : dLin (mapPt (algebraMap R k) φ) = (dLin φ).map (algebraMap R k)`. Use extensionality with `i j`. Simplify using `[dLin, mapPt]`. Establish `hj : JEq m (h' - g') (ev ![comp1 (mapPt (algebraMap R k) φ) (pt k (n` using `2) d 0), comp1 (mapPt (algebraMap R k) φ) (pt k (n := 2) d 1)] h + lam) := by`. Introduce `e he`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hgg e he` as an intermediate fact. Rewrite `this` using `[map_sub, map_sub]`. Rewrite using `[map_sub, map_add, ← this]`. Express the relevant statement in the definitionally equal form `_ - (_ - MvPowerSeries.coeff e (ev ![comp1 (mapPt (algebraMap R k) φ) (pt k (n := 2) d 0), comp1 (mapPt (algebraMap R k) φ) (pt k (n := 2) d 1)] h) - _) = _`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `haK : GP (B.actK k w0)` using `fun i => by simp [FB.actK, B.A.const w0 i]`. Establish `key` using `jeq_main (n := n) m q _ _ (B.actK k w0) hinv haK h (h' - g') lam (c0 hh) (c0 hcan) hl0 hj (MvPowerSeries.map (algebraMap R k) f')`. Rewrite using `[GlobalTheory.T.harmonicValueCopies_gauge_independent R d O k B' h' (h' - g') hh' hcan T r cc isX σ h1 h2 h3 h4 u' hu' n P hP w0 q]`. Establish `hmap : MvPowerSeries.map (algebraMap R k) (ev (n` using `n) (fun b => comp1 φi (pt R (n := n) d b)) (f' * ∏ b : Fin n, (ev ![pt R (n := n) d b, comp1 (B'.A.act w0) (pt R (n := n) d b)] ε) ^ q)) = ev (n := n) (fun b => comp1 (mapPt (algebraMap R k) φi) (pt k (n := n) d b)) (MvPowerSeries.map (algebraMap R k) f' * ∏ b : Fin n, (ev ![pt k …`. Rewrite using `[map_ev _ (fun b => nc_comp1 hφi (nc_pt b)), map_mul, map_prod]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `b`. Rewrite using `[mapPt_comp1 _ _ (nc_pt _), mapPt_pt]`. Use `congr 1`. Use `Finset.prod_congr rfl fun b _ => ?_` and prove the remaining obligations.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_pow, map_ev2 _ (nc_pt _) (nc_comp1 (nc_act _ _) (nc_pt _)), mapPt_comp1 _ _ (nc_pt _), mapPt_pt, hle]`. Both sides reduce to the same expression. Unfold `nabValN FB.hL`. Rewrite using `[hmap, hF, hact, GlobalTheory.T.constantCoeff_invariantPolyOperator_jetEq k d n _ _ _ _ P m _ _ (by omega) key, GlobalTheory.T.invariantPolyOperatorCopies_transportedLaw k d n (mapLaw (algebraMap R k) B.G) _ _ hinv, gt_const_ev_eq _ (fun b => gp_comp1 _ _ hinv.1 (gp_pt b)), hd]`. Simplify using `only [hu]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 Both sides reduce to the same expression.
 -/
@@ -121,9 +121,9 @@ section Box
 variable {k : Type} [CommRing k] {d n : ℕ}
 
 /- English proof (translation)
-Use `Finset.prod_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[MvPowerSeries.rename_eq_subst, sb_apply, ev]`. Use `congr 1`. Use function extensionality and compare the values at `p`. Take `⟨j, i⟩` from `p`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result.
 
-Use `fin_cases j`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem boxSer_eq (f : Fin n → PS k 1 d) : GlobalTheory.PowGerm.boxSer f = ∏ b, sb ![(gen b : Q k d n)] (f b) := by
   refine Finset.prod_congr rfl fun b _ => ?_
@@ -135,7 +135,7 @@ theorem boxSer_eq (f : Fin n → PS k 1 d) : GlobalTheory.PowGerm.boxSer f = ∏
   rfl
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using JEq.refl m _`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.prod_insert ha, Finset.prod_insert ha]`. Conclude with `((GlobalTheory.T.mvPowerSeriesJetEq_calculus k m).1 _ _ _ _ _ (h a) ih).2.2`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jeq_prod {σ J : Type} {m : ℕ} (s : Finset J) {f g : J → MvPowerSeries σ k} (h : ∀ i, JEq m (f i) (g i)) :
     JEq m (∏ i ∈ s, f i) (∏ i ∈ s, g i) := by
@@ -147,25 +147,23 @@ theorem jeq_prod {σ J : Type} {m : ℕ} (s : Finset J) {f g : J → MvPowerSeri
     exact ((GlobalTheory.T.mvPowerSeriesJetEq_calculus k m).1 _ _ _ _ _ (h a) ih).2.2
 
 /- English proof (translation)
-The claim follows from `(sb_apply _ _).trans (congrArg (ev · f) (funext fun j => by fin_cases j; rfl))`.
+A detailed English derivation is pending.
 -/
 theorem sb_one (u : Q k d n) (f : PS k 1 d) : sb ![u] f = ev ![u.1] f :=
   (sb_apply _ _).trans (congrArg (ev · f) (funext fun j => by fin_cases j; rfl))
 
 /- English proof (translation)
-The claim follows from `(sb_sb _ _ _).trans (congrArg (sb · f) (funext fun j => by fin_cases j; rfl))`.
+A detailed English derivation is pending.
 -/
 theorem sb_sb_one {l : ℕ} (b : Fin n → Q k d l) (u : Q k d n) (f : PS k 1 d) : sb b (sb ![u] f) = sb ![sq b u] f :=
   (sb_sb _ _ _).trans (congrArg (sb · f) (funext fun j => by fin_cases j; rfl))
 
 /- English proof (translation)
-Establish `e1 : ∀ g : PS k n d, ev (n` using `n) (fun b => comp1 Ψ.1 (pt k (n := n) d b)) g = sb (fun b => ac Ψ (gen b : Q k d n)) g := fun g => by`. Rewrite using `[sb_apply]`. Simplify using `only [ac_val, gen_val]`. Establish `e2 : ∀ b : Fin n, ev ![pt k (n` using `n) d b, comp1 A.1 (pt k (n := n) d b)] ε = sb ![(gen b : Q k d n)] (ev (n := 1) ![pt k d 0, comp1 A.1 (pt k d 0)] ε) := fun b => by`. Rewrite using `[← gen_val, ← gen_val, ← ac_val, ← ac_val, ← formalSeriesValueAtTwoPoints_eq_ev, ← formalSeriesValueAtTwoPoints_eq_ev, formalPointSubstitutionSeries_valueAtTwoPoints, sq_ac, sq_gen]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[e1, boxSer_eq, boxSer_eq, ← Finset.prod_mul_distrib, map_prod]`. Use `jeq_prod _ fun b => ?_` and prove the remaining obligations. Rewrite using `[e2, ← map_pow, ← map_mul, sb_sb_one, sq_gen]`. Establish `e3 : sb ![(gen b : Q k d n)] (f b) = sb ![ac Ψ (gen b : Q k d n)] (ev ![Φ.1] (f b))`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← sb_one, sb_sb_one]`. Express the relevant statement in the definitionally equal form `_ = sb ![ac Φ (ac Ψ (gen b))] (f b)`. Rewrite using `[← FrameRatioAdj.ac_ac, hΦΨ]`. Conclude with `congrArg (fun u => sb ![u] (f b)) (sq_gen ![gen b] 0).symm`. Rewrite using `[e3, sb_apply, sb_apply]`.
-
-Conclude with `(GlobalTheory.T.mvPowerSeriesJetEq_calculus k m).2.2.2.1 d 1 n _ _ _ _ (fun i j => (_ : Q k d n).2 j) (fun i j => (_ : Q k d n).2 j) (fun _ _ => JEq.refl _ _) (h b)`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jeq_box {m q : ℕ} (Φ Ψ A : Q k d 1) (hΦΨ : ac Φ Ψ = gen 0) (ε : PS k 2 d) (f f' : Fin n → PS k 1 d)
     (h : ∀ b, JEq m (ev ![Φ.1] (f b)) (f' b * ev (n := 1) ![pt k d 0, comp1 A.1 (pt k d 0)] ε ^ q)) :
@@ -191,27 +189,25 @@ theorem jeq_box {m q : ℕ} (Φ Ψ A : Q k d 1) (hΦΨ : ac Φ Ψ = gen 0) (ε :
     (fun _ _ => JEq.refl _ _) (h b)
 
 /- English proof (translation)
-The claim follows from `Subtype.ext ((ac_val _ _).trans (gt_comp1_pt_right _))`.
+A detailed English derivation is pending.
 -/
 theorem ac_gen (Φ : Q k d 1) : ac Φ (gen 0 : Q k d 1) = Φ := Subtype.ext ((ac_val _ _).trans (gt_comp1_pt_right _))
 
 /- English proof (translation)
-The claim follows from `sq_gen _ _`.
+A detailed English derivation is pending.
 -/
 theorem gen_ac (u : Q k d n) : ac (gen 0) u = u := sq_gen _ _
 
 /- English proof (translation)
-Establish `i1 : ∀ {l} (u : Q k d l), ac α (ac β u) = u` using `fun u => Subtype.ext (by`. Rewrite using `[ac_val, ac_val]`. Conclude with `gt_comp_inv h _ u.2)`. Establish `i2 : ∀ {l} (u : Q k d l), ac β (ac α u) = u` using `fun u => Subtype.ext (by`. Rewrite using `[ac_val, ac_val]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `gt_comp_inv' h _ u.2)`. Establish `i1' : ∀ {l} (u : Q k d l), ac α' (ac β' u) = u` using `fun u => Subtype.ext (by`. Rewrite using `[ac_val, ac_val]`. Conclude with `gt_comp_inv h' _ u.2)`. Establish `i2' : ∀ {l} (u : Q k d l), ac β' (ac α' u) = u` using `fun u => Subtype.ext (by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ac_val, ac_val]`. Conclude with `gt_comp_inv' h' _ u.2)`. Establish `j : ∀ {a b : Q k d 1}, (∀ u : Q k d 1, ac a (ac b u) = u) → ac a b = gen 0` using `fun {a b} e => by`. Rewrite using `[← e (gen 0), ac_gen]`. Use `⟨⟨(ac α β').2, (ac α' β).2, ?_, ?_⟩, ?_, fun F F' L e e' => ?_, fun A A' D e e' => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← ac_val, FrameRatioAdj.ac_ac, ← FrameRatioAdj.ac_ac β', j i2', gen_ac, j i1, gen_val]`. Rewrite using `[← ac_val, FrameRatioAdj.ac_ac, ← FrameRatioAdj.ac_ac β, j i2, gen_ac, j i1', gen_val]`. Rewrite using `[FrameRatioAdj.ac_ac, j i2', ac_gen]`. Establish `c` using `congrArg (sq ![ac β' (gen 0 : Q k d 2), ac β' (gen 1)]) e`. Establish `c'` using `congrArg (sq ![ac β' (gen 0 : Q k d 2), ac β' (gen 1)]) e'`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [sq_op, sq_ac, sq_gen, Matrix.cons_val, i1'] at c c'`. Establish `: F' = ac (ac α' β) (op F (ac (ac α β') (gen 0 : Q k d 2)) (ac (ac α β') (gen 1)))`. Simplify using `only [FrameRatioAdj.ac_ac, c, i2, ← c']`. Conclude with `Subtype.ext (funext fun i => (formalSeriesValueAtTwoPoints_genericPoints _).symm)`. Introduce `i`.
-
-Rewrite using `[this]`. Simplify using `only [ac_val (ac α' β), op_val, ac_val (ac α β'), gen_val]`. Both sides reduce to the same expression. Rewrite using `[← ac_val, ← ac_val, ← FrameRatioAdj.ac_ac A, e, FrameRatioAdj.ac_ac, FrameRatioAdj.ac_ac, i2, ← FrameRatioAdj.ac_ac, ← e', FrameRatioAdj.ac_ac, j i1', ac_gen]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coord_of_exp (α β α' β' : Q k d 1) (h : IsInvPair α.1 β.1) (h' : IsInvPair α'.1 β'.1) :
     IsInvPair (ac α β').1 (ac α' β).1 ∧ ac (ac α β') α' = α ∧
@@ -249,7 +245,7 @@ theorem coord_of_exp (α β α' β' : Q k d 1) (h : IsInvPair α.1 β.1) (h' : I
 end Box
 
 /- English proof (translation)
-Establish `key` using `nabValN_transport k d O k B B' Φ.1 Ψ.1 h h' hh hh' T r cc isX σ h1 h2 h3 h4 u u' hu' (fun l => by rw [hu l]; rfl) n P hP w0 q (GlobalTheory.PowGerm.boxSer f') _ rfl ε hε`. Rewrite `key` using `[gt_map_id, gt_map_id]`. Rewrite using `[← key]`. Establish `hb` using `jeq_box Φ Ψ (⟨B'.A.act w0, B'.A.const w0⟩ : Q k d 1) (Subtype.ext ((ac_val Φ Ψ).trans hε.inv.2.2.1)) ε f f' hf`. Conclude with `(GlobalTheory.PowGerm.nabJet k d O B k h w0 q n _ _ _).1 P _ _ fun e he => hb e (by omega)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem nabValN_box_eq (d : ℕ) (O : Type) [CommRing O] [StarRing O] [Module.Free ℤ O]
     [Module.Finite ℤ O] [IsReduced O] (k : Type) [Field k] [Algebra ℚ k] (B B' : FB k d O)

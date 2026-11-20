@@ -13,9 +13,9 @@ open scoped TensorProduct Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.Fam
 /- English proof (translation)
-Introduce `D L hT Gi Gl Kc Yd cX ex W h`. Use `haveI : Finite W.P.T := h.fin`. Establish `hU : {PP : Pl D.host.E | PP ∈ (_root_.GlobalTheory.Fam.pk_z W).Pg ∨ _root_.GlobalTheory.Fam.QAllAlt W PP} = ((_root_.GlobalTheory.Fam.pk_z W).Pg : Set (Pl D.host.E)) ∪ ⋃ t, ((_root_.GlobalTheory.Fam.pk_z W).Q t : Set (Pl D.host.E))`. Use extensionality with `PP`. Simplify using `[_root_.GlobalTheory.Fam.QAllAlt]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hU]`. Conclude with `(Finset.finite_toSet _).union (Set.finite_iUnion fun t => Finset.finite_toSet _)`.
+A detailed English derivation is pending.
 -/
 theorem finite_levelPlaces_or_tuplePlaces_alt : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX} (W : _root_.GlobalTheory.MiS.RealPackAlt ex), _root_.GlobalTheory.Fam.PackageHypotheses W → Set.Finite {PP : Pl D.host.E | PP ∈ (_root_.GlobalTheory.Fam.pk_z W).Pg ∨ _root_.GlobalTheory.Fam.QAllAlt W PP} := by
   intro D L hT Gi Gl Kc Yd cX ex W h

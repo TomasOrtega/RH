@@ -27,7 +27,7 @@ import PositivityTheory.AutomorphicForms.PublishedInputs.JacquetLanglands.RealAr
 namespace UpperTheory.Esk
 
 /- English proof (translation)
-The claim follows from `have m := aMem have iw := aIw m have row := aRow m iw have orb := aOrb m have bnf := aBnfH (aBnf m iw aCls (aAdd m)) orb have ht := dHt row have mul := dMul m iw aMono row dAx_of (dCount m bnf orb) ht mul (dProd m aMono row) (dMink m aMono row bnf aMink ht mul) (dNormal m bnf orb …`.
+A detailed English derivation is pending.
 -/
 theorem dAx : DAx :=
   have m := aMem
@@ -41,12 +41,12 @@ theorem dAx : DAx :=
     (dNormal m bnf orb aUnit aTrans ht mul) (dCnt (dScale m aCls aUnit) dBox dEntry)
 
 /- English proof (translation)
-The claim follows from `dTwo aMem`.
+A detailed English derivation is pending.
 -/
 theorem dTwo' : DTwo := dTwo aMem
 
 /- English proof (translation)
-The claim follows from `dGood aMem`.
+A detailed English derivation is pending.
 -/
 theorem dGood' : DGood := dGood aMem
 

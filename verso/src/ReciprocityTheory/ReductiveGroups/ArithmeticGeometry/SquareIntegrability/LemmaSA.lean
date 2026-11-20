@@ -10,9 +10,9 @@ noncomputable section
 variable {ι : Type} [Fintype ι]
 
 /- English proof (translation)
-Simplify using `only [Hf, PiLp.inner_apply, PiLp.smul_apply, smul_eq_mul, Complex.im_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `first`. Consider the case `rw [Complex.inner]`. Consider the case `rw [real_inner_eq_re_inner ℂ]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using `only [Complex.mul_re, Complex.mul_im, Complex.neg_re, Complex.neg_im, Complex.I_re, Complex.I_im, Complex.conj_re, Complex.conj_im, RCLike.re_to_complex, RCLike.inner_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 lemma lemS_Hf_im (x y : EuclideanSpace ℂ ι) :
     (Hf x y).im = inner ℝ y ((-I : ℂ) • x) := by
@@ -35,11 +35,11 @@ Both sides reduce to the same expression.
 lemma lemSJ_apply (x : EuclideanSpace ℂ ι) : (lemSJ : _ →ₗ[ℝ] _) x = (-I : ℂ) • x := rfl
 
 /- English proof (translation)
-Establish `h2 : ∀ x : EuclideanSpace ℂ ι, (lemSJ : EuclideanSpace ℂ ι →ₗ[ℝ] _) (lemSJ x) = -x`. Introduce `x`. Rewrite using `[lemSJ_apply, lemSJ_apply, smul_smul, neg_mul_neg, Complex.I_mul_I, neg_one_smul]`. Establish `hJJ : (lemSJ : EuclideanSpace ℂ ι →ₗ[ℝ] _) * lemSJ = -1` using `LinearMap.ext fun x => h2 x`. Establish `h4 : (lemSJ : EuclideanSpace ℂ ι →ₗ[ℝ] _) ^ 4 = 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : (lemSJ : EuclideanSpace ℂ ι →ₗ[ℝ] _) ^ 4 = (lemSJ * lemSJ) * (lemSJ * lemSJ)`. Simplify using `only [pow_succ, pow_zero, one_mul, mul_assoc]`. Rewrite using `[e, hJJ, neg_one_mul, neg_neg]`. Establish `hd : LinearMap.det (lemSJ : EuclideanSpace ℂ ι →ₗ[ℝ] _) ^ 4 = 1`. Rewrite using `[← map_pow, h4, map_one]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `ha : |LinearMap.det (lemSJ : EuclideanSpace ℂ ι →ₗ[ℝ] _)| ^ 4 = 1`. Rewrite using `[← abs_pow, hd, abs_one]`. Conclude with `(pow_eq_one_iff_of_nonneg (abs_nonneg _) (by norm_num)).1 ha`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma lemSJ_det : |LinearMap.det (lemSJ : EuclideanSpace ℂ ι →ₗ[ℝ] _)| = 1 := by
   have h2 : ∀ x : EuclideanSpace ℂ ι, (lemSJ : EuclideanSpace ℂ ι →ₗ[ℝ] _) (lemSJ x) = -x := by
@@ -58,7 +58,7 @@ lemma lemSJ_det : |LinearMap.det (lemSJ : EuclideanSpace ℂ ι →ₗ[ℝ] _)| 
   exact (pow_eq_one_iff_of_nonneg (abs_nonneg _) (by norm_num)).1 ha
 
 /- English proof (translation)
-Rewrite using `[lemS_Hf_im]`. Simplify using `only [lemS_Hf_im, Finset.smul_sum, inner_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[smul_comm, ← Int.cast_smul_eq_zsmul ℝ, real_inner_smul_right]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 lemma lemS_Hf_sum {n : ℕ} (c : Fin n → ℤ) (v : Fin n → EuclideanSpace ℂ ι) (y : EuclideanSpace ℂ ι) :
     (Hf (∑ i, c i • v i) y).im = ∑ i, (c i : ℝ) * (Hf (v i) y).im := by
@@ -71,13 +71,13 @@ def lemSG {n : ℕ} (b : Module.Basis (Fin n) ℝ (EuclideanSpace ℂ ι)) : Mat
   Matrix.of fun i k => (Hf (b i) (b k)).im
 
 /- English proof (translation)
-Establish `hG : lemSG b = (b₀.toBasis.toMatrix b)ᵀ * (LinearMap.toMatrix b₀.toBasis b₀.toBasis (lemSJ : EuclideanSpace ℂ ι →ₗ[ℝ] _))ᵀ * b₀.toBasis.toMatrix b`. Use extensionality with `i k`. Establish `e1 : lemSG b i k = inner ℝ (b k) ((lemSJ : EuclideanSpace ℂ ι →ₗ[ℝ] _) (b i))`. Simplify using `only [lemSG, Matrix.of_apply, lemS_Hf_im, lemSJ_apply]`. Establish `e2 : ∀ j, inner ℝ (b₀ j) ((lemSJ : EuclideanSpace ℂ ι →ₗ[ℝ] _) (b i)) = ∑ l, inner ℝ (b₀ j) ((lemSJ : EuclideanSpace ℂ ι →ₗ[ℝ] _) (b₀ l)) * inner ℝ (b₀ l) (b i)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `j`. Use `conv_lhs => rw [← b₀.sum_repr' (b i)]`. Rewrite using `[map_sum, inner_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, real_inner_smul_right, mul_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, ← b₀.sum_inner_mul_inner (b k) ((lemSJ : EuclideanSpace ℂ ι →ₗ[ℝ] _) (b i))]`. Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, Module.Basis.toMatrix_apply, LinearMap.toMatrix_apply, OrthonormalBasis.coe_toBasis_repr_apply, OrthonormalBasis.repr_apply_apply, OrthonormalBasis.coe_toBasis, e2]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_mul, Finset.mul_sum, real_inner_comm (b₀ j) (b k)]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hG, Matrix.det_mul, Matrix.det_mul, Matrix.det_transpose, Matrix.det_transpose, LinearMap.det_toMatrix, Module.Basis.det_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 lemma lemSG_det {n : ℕ} (b : Module.Basis (Fin n) ℝ (EuclideanSpace ℂ ι))
     (b₀ : OrthonormalBasis (Fin n) ℝ (EuclideanSpace ℂ ι)) :
@@ -111,13 +111,13 @@ lemma lemSG_det {n : ℕ} (b : Module.Basis (Fin n) ℝ (EuclideanSpace ℂ ι))
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Establish `hx : ∀ k, ∃ x ∈ lat Y.b, ∀ y : lat Y.b, ((((Y.b.restrictScalars ℤ).coord k).toAddMonoidHom y : ℤ) : ℝ) = (Hf x (y : EuclideanSpace ℂ ι)).im` using `fun k => Y.perfect _`. Use `choose x hxl hxφ using hx`. Use `⟨Matrix.of fun k i => (Y.b.restrictScalars ℤ).repr ⟨x k, hxl k⟩ i, ?_⟩` and prove the remaining obligations. Use extensionality with `k m`. Establish `hsum : x k = ∑ i, ((Y.b.restrictScalars ℤ).repr ⟨x k, hxl k⟩ i) • Y.b i`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `congrArg (fun v : lat Y.b => (v : EuclideanSpace ℂ ι)) ((Y.b.restrictScalars ℤ).sum_repr ⟨x k, hxl k⟩)`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul, Module.Basis.restrictScalars_apply] at h`. Conclude with `h.symm`. Establish `h2 : (Hf (x k) (Y.b m)).im = ∑ i, (((Y.b.restrictScalars ℤ).repr ⟨x k, hxl k⟩ i : ℤ) : ℝ) * (Hf (Y.b i) (Y.b m)).im` using `by conv_lhs => rw [hsum]`. Conclude with `lemS_Hf_sum _ _ _`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3 : (Hf (x k) (Y.b m)).im = ((((Y.b.restrictScalars ℤ).coord k) ((Y.b.restrictScalars ℤ) m) : ℤ) : ℝ)`. Establish `h` using `hxφ k ((Y.b.restrictScalars ℤ) m)`. Rewrite `h` using `[LinearMap.toAddMonoidHom_coe, Module.Basis.restrictScalars_apply]`. Conclude with `h.symm`. Simplify using `only [Matrix.mul_apply, Matrix.map_apply, Matrix.of_apply, lemSG, Matrix.one_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[← h2, h3, Module.Basis.coord_apply, Module.Basis.repr_self, Finsupp.single_apply]`. Break down `eq_or_ne k m with rfl | hkm` into its components or cases. Simplify using the standard rewrite rules. Simplify using `[hkm, Ne.symm hkm]`.
+A detailed English derivation is pending.
 -/
 lemma lemSG_inv (Y : GT ι) :
     ∃ C : Matrix (Fin (2 * Fintype.card ι)) (Fin (2 * Fintype.card ι)) ℤ,
@@ -151,7 +151,7 @@ lemma lemSG_inv (Y : GT ι) :
   · simp [hkm, Ne.symm hkm]
 
 /- English proof (translation)
-The claim follows from `|b₀.toBasis.det Y.b| ≤ 1 := by obtain ⟨C, hC⟩ := lemSG_inv Y have hdet := congrArg Matrix.det hC rw [Matrix.det_mul, Matrix.det_one, lemSG_det Y.b b₀, ← Int.cast_det] at hdet have hJ := lemSJ_det (ι := ι) have hC0 : C.det ≠ 0 := by rintro h rw [h] at hdet simp at hdet have h1 : ( …`.
+A detailed English derivation is pending.
 -/
 lemma lemS_detM_le (Y : GT ι) (b₀ : OrthonormalBasis (Fin (2 * Fintype.card ι)) ℝ (EuclideanSpace ℂ ι)) :
     |b₀.toBasis.det Y.b| ≤ 1 := by
@@ -172,9 +172,9 @@ lemma lemS_detM_le (Y : GT ι) (b₀ : OrthonormalBasis (Fin (2 * Fintype.card �
     (mul_self_nonneg |b₀.toBasis.det Y.b|)]
 
 /- English proof (translation)
-Establish `hr : Module.finrank ℝ (EuclideanSpace ℂ ι) = 2 * Fintype.card ι`. Rewrite using `[Module.finrank_eq_card_basis Y.b, Fintype.card_fin]`. Set `b₀ : OrthonormalBasis (Fin (2 * Fintype.card ι)) ℝ (EuclideanSpace ℂ ι)` to `(stdOrthonormalBasis ℝ (EuclideanSpace ℂ ι)).reindex (finCongr hr)`. Rewrite using `[ZSpan.measure_fundamentalDomain Y.b volume b₀.toBasis]`. Establish `h1 : volume (ZSpan.fundamentalDomain b₀.toBasis) = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[measure_congr (ZSpan.fundamentalDomain_ae_parallelepiped b₀.toBasis volume), OrthonormalBasis.coe_toBasis, b₀.volume_parallelepiped]`. Rewrite using `[h1, mul_one]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 lemma lemS_vol_le (Y : GT ι) : volume (ZSpan.fundamentalDomain Y.b) ≤ 1 := by
   classical

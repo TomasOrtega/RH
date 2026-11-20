@@ -16,21 +16,19 @@ namespace GlobalTheory.CuspCont
 open Metric
 
 /- English proof (translation)
-Establish `hmero : MeromorphicOn g Set.univ`. Introduce `s₁ _`. Take `⟨k, r, G, hr, -, hG, hGg⟩` from `hloc s₁`. Use `⟨k + 1, ?_⟩` and prove the remaining obligations. Establish `hGa : AnalyticAt ℂ G s₁` using `hG.analyticAt (ball_mem_nhds s₁ hr)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hA : AnalyticAt ℂ (fun z => (z - s₁) * G z) s₁` using `(analyticAt_id.sub analyticAt_const).mul hGa`. Use `hA.congr ?_` and prove the remaining obligations. Use `filter_upwards [ball_mem_nhds s₁ hr] with z hz`. Distinguish the cases in `hzs : z = s₁`. Substitute `hzs` using the available equality.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[hGg z hz (Or.inl hzs), smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hcl` using `hmero.isClopen_setOfPred_meromorphicOrderAt_eq_top`. Use `haveI : PreconnectedSpace (Set.univ : Set ℂ) := Subtype.preconnectedSpace isPreconnected_univ`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hne : (⟨((R₀ + 1 : ℝ) : ℂ), trivial⟩ : (Set.univ : Set ℂ)) ∈ {u : (Set.univ : Set ℂ) | meromorphicOrderAt g u = ⊤}` using `by show meromorphicOrderAt g ((R₀ + 1 : ℝ) : ℂ) = ⊤`. Rewrite using `[meromorphicOrderAt_eq_top_iff]`. Establish `hopen : IsOpen {s : ℂ | R₀ < s.re}` using `isOpen_lt continuous_const Complex.continuous_re`. Establish `hmem : {s : ℂ | R₀ < s.re} ∈ 𝓝 ((R₀ + 1 : ℝ) : ℂ)` using `hopen.mem_nhds (by simp)`. Use `filter_upwards [nhdsWithin_le_nhds hmem] with s hs using hvan s hs`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `huniv` using `(isClopen_iff.1 hcl).resolve_left (Set.nonempty_iff_ne_empty.1 ⟨_, hne⟩)`. Establish `h0 : meromorphicOrderAt g s₀ = ⊤`. Establish `hm : (⟨s₀, trivial⟩ : (Set.univ : Set ℂ)) ∈ {u : (Set.univ : Set ℂ) | meromorphicOrderAt g u = ⊤}`. Rewrite using `[huniv]`. Discharge the goal by the elementary cases of `trivial`.
+Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `hm`. Rewrite `h0` using `[meromorphicOrderAt_eq_top_iff]`. Take `⟨k, r, G, hr, hk, hG, hGg⟩` from `hloc s₀`. Establish `hk0` using `hk rfl`. Substitute `hk0` using the available equality.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hGc : ContinuousAt G s₀` using `(hG.differentiableAt (ball_mem_nhds s₀ hr)).continuousAt`. Establish `hGs : ∀ s ∈ ball s₀ r, G s = g s` using `fun s hs => by simpa using hGg s hs (Or.inr rfl)`. Establish `ht : Tendsto G (𝓝[≠] s₀) (𝓝 0)`. Apply `tendsto_const_nhds.congr'` to reduce the goal to its premises. Use `filter_upwards [h0, nhdsWithin_le_nhds (ball_mem_nhds s₀ hr)] with s hs hb`.
-
-Rewrite using `[hGs s hb, hs]`. Use `tendsto_nhds_unique (hGc.tendsto.mono_left nhdsWithin_le_nhds) ht` as an intermediate fact. Rewrite using `[← hGs s₀ (mem_ball_self hr), this]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_locally_holo (g : ℂ → ℂ) (s₀ : ℂ) (R₀ : ℝ)
     (hloc : ∀ s₁ : ℂ, ∃ (k : ℕ) (r : ℝ) (G : ℂ → ℂ), 0 < r ∧ (s₁ = s₀ → k = 0) ∧
@@ -75,9 +73,9 @@ theorem eq_zero_of_locally_holo (g : ℂ → ℂ) (s₀ : ℂ) (R₀ : ℝ)
   rw [← hGs s₀ (mem_ball_self hr), this]
 
 /- English proof (translation)
-Establish `hc2 : ∀ s ∈ U, Continuous fun p : X × Y => f p.2 * Hf s (φ p.1) p.2` using `fun s hs => (hf.comp continuous_snd).mul ((hcont s hs).comp ((hφ.comp continuous_fst).prodMk continuous_snd))`. Establish `hc3 : ∀ s ∈ U, ∀ x : X, Continuous fun y : Y => f y * Hf s (φ x) y` using `fun s hs x => (hc2 s hs).comp (continuous_const.prodMk continuous_id : Continuous fun y : Y => (x, y))`. Establish `hc4 : ∀ s ∈ U, ∀ y : Y, Continuous fun x : X => f y * Hf s (φ x) y` using `fun s hs y => (hc2 s hs).comp (continuous_id.prodMk continuous_const : Continuous fun x : X => (x, y))`. Establish `hinD : ∀ x : X, DifferentiableOn ℂ (fun s => ∫ y, f y * Hf s (φ x) y ∂μ) U` using `fun x => (GlobalTheory.differentiableOn_integral_of_holomorphic_of_locally_dominated (μ := μ) (F := fun y s => f y * Hf s (φ x) y) hU (fun s hs => (hc3 s hs x).aestronglyMeasurable) (Eventually.of_forall fun y => (hdiff (φ x) y).const_mul (f y)) (fun z hz => ⟨U, hU.mem_nhds hz, B …`. Establish `hinC : ∀ s ∈ U, Continuous fun x : X => ∫ y, f y * Hf s (φ x) y ∂μ` using `fun s hs => continuous_of_dominated (bound := B) (fun x => (hc3 s hs x).aestronglyMeasurable) (fun x => Eventually.of_forall fun y => hnorm s hs x y) hB (Eventually.of_forall fun y => hc4 s hs y)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(GlobalTheory.differentiableOn_integral_of_holomorphic_of_locally_dominated (μ := ν) (F := fun x s => ∫ y, f y * Hf s (φ x) y ∂μ) hU (fun s hs => (hinC s hs).aestronglyMeasurable) (Eventually.of_forall hinD) (fun z hz => ⟨U, hU.mem_nhds hz, fun _ => ∫ y, B y ∂μ, integrable_const …`.
+A detailed English derivation is pending.
 -/
 theorem differentiableOn_integral_integral {X Y : Type} [TopologicalSpace X] [FirstCountableTopology X] [MeasurableSpace X]
     [OpensMeasurableSpace X] [TopologicalSpace Y] [MeasurableSpace Y] [OpensMeasurableSpace Y]
@@ -114,19 +112,17 @@ local instance borelUAc {F E : Type} [Field F] [NumberField F] [Field E] [Number
     {n : ℕ} (J : Matrix (Fin n) (Fin n) E) : BorelSpace (UA σ J) := ⟨rfl⟩
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ d d₁ W H' μ hμ 𝓕 f Ez s₀ R₀ hf hint hbd hreg hvan`. Take `⟨hTG, -, hSC, -⟩` from `GlobalTheory.UnitaryAdelicTop.lcsc_UA F E σ d W.J`. Introduce `ν 𝓕N hν hfd h1 h`. Use `haveI : ContinuousMul (UA σ W.J) := inferInstance`. Use `haveI : SecondCountableTopology (unip σ W H') := inferInstance`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI : FirstCountableTopology (unip σ W H') := @TopologicalSpace.SecondCountableTopology.to_firstCountableTopology _ _ this`. Use `haveI : OpensMeasurableSpace (unip σ W H') := inferInstance`. Use `haveI : OpensMeasurableSpace (UA σ W.J) := inferInstance`. Establish `key : (fun s : ℂ => ∫ u in 𝓕N, ∫ h' in 𝓕, f h' * Ez s (u.1 * h) h' ∂μ ∂ν) s₀ = 0`. Use `eq_zero_of_locally_holo _ s₀ R₀ ?_ (fun s hs => (hvan s hs ν 𝓕N hν hfd h1 h).symm)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Introduce `s₁`. Take `⟨k, r, C, N, Hf, hr, hk, hEq, hdiff, hcont, hHb⟩` from `hreg s₁`. Take `⟨Ch, hCh⟩` from `hbd h`. Use `haveI : IsFiniteMeasure (ν.restrict 𝓕N) := ⟨by rw [Measure.restrict_apply_univ, h1]; exact ENNReal.one_lt_top⟩`. Establish `hCh0 : 0 ≤ Ch` using `le_trans (NNReal.coe_nonneg _) (hCh 1 (one_mem _))`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Set `B : UA σ W.J → ℝ` to `fun h' => |C| * Ch ^ N * (‖f h'‖ * (qht h' : ℝ) ^ N)`. Establish `hBi : IntegrableOn B 𝓕 μ` using `(hint N).const_mul _`. Establish `hnorm : ∀ s ∈ ball s₁ r, ∀ (u : unip σ W H') h', ‖f h' * Hf s (u.1 * h) h'‖ ≤ B h'`. Introduce `s hs u h'`. Rewrite using `[norm_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `h1'` using `hHb s hs (u.1 * h) h'`. Establish `hq0 : 0 ≤ (qht (u.1 * h) : ℝ) * qht h'` using `mul_nonneg (NNReal.coe_nonneg _) (NNReal.coe_nonneg _)`. Establish `hq : (qht (u.1 * h) : ℝ) * qht h' ≤ Ch * qht h'` using `mul_le_mul_of_nonneg_right (hCh u.1 u.2) (NNReal.coe_nonneg _)`. Establish `hp : ((qht (u.1 * h) : ℝ) * qht h') ^ N ≤ (Ch * qht h') ^ N` using `pow_le_pow_left₀ hq0 hq N`. Establish `hC : C * ((qht (u.1 * h) : ℝ) * qht h') ^ N ≤ |C| * (Ch * qht h') ^ N`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Establish `hGD` using `differentiableOn_integral_integral (ν.restrict 𝓕N) (μ.restrict 𝓕) (fun u : unip σ W H' => u.1 * h) (continuous_subtype_val.mul continuous_const) f hf Hf isOpen_ball hdiff hcont B hBi (fun s hs x y => hnorm s hs x y)`. Use `⟨k, r, _, hr, hk, hGD, fun s hs hsk => ?_⟩` and prove the remaining obligations. Establish `hE` using `hEq s hs hsk`.
-
-Simplify using `only [hE, mul_left_comm (f _), integral_const_mul]`. Conclude with `key.symm`.
+A detailed English derivation is pending.
 -/
 theorem isCT_integral_of_regFam : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) {d d₁ : ℕ}
     (W : Spc F E d) (H' : Plane E d d₁) (μ : Measure (UA σ W.J)), μ.IsHaarMeasure →

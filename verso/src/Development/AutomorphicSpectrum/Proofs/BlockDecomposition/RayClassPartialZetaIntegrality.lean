@@ -15,9 +15,9 @@ open NumberField Formalism.MainNotions.ShortIntervalPrimes GlobalTheory.RayZeta 
 namespace GlobalTheory.CompanionTheory.Hypotheses₂.Shintani.Integrality
 
 /- English proof (translation)
-Apply the tactic sequence `have hconn : IsPreconnected ({1}ᶜ : Set ℂ) := (isConnected_compl_singleton_of_one_lt_rank (by rw [Complex.rank_real_complex]; first | exact Cardinal.one_lt_two | norm_num | exact_mod_cast (show (1:ℕ) < 2 by norm_num)) 1).isPreconnected`. Establish `hmem : (2 : ℂ) ∈ ({1}ᶜ : Set ℂ)`. Rewrite using `[Set.mem_compl_singleton_iff]`. Evaluate the numerical expressions. Establish `hopen : IsOpen {s : ℂ | 1 < s.re}` using `isOpen_lt continuous_const Complex.continuous_re`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact.
 
-Establish `hnhds : {s : ℂ | 1 < s.re} ∈ nhds (2 : ℂ)` using `hopen.mem_nhds (by norm_num)`. Conclude with `(hH.analyticOnNhd isOpen_compl_singleton).eqOn_of_preconnected_of_eventuallyEq (hR.analyticOnNhd isOpen_compl_singleton) hconn hmem (Filter.eventually_of_mem hnhds fun s hs => h s hs)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eqOn_compl_one {H R : ℂ → ℂ} (hH : DifferentiableOn ℂ H {1}ᶜ) (hR : DifferentiableOn ℂ R {1}ᶜ)
     (h : ∀ s : ℂ, 1 < s.re → H s = R s) : Set.EqOn H R {1}ᶜ := by
@@ -31,7 +31,7 @@ theorem eqOn_compl_one {H R : ℂ → ℂ} (hH : DifferentiableOn ℂ H {1}ᶜ) 
     (hR.analyticOnNhd isOpen_compl_singleton) hconn hmem (Filter.eventually_of_mem hnhds fun s hs => h s hs)
 
 /- English proof (translation)
-Unfold `coneWeight`. Use `split_ifs`. Conclude with `⟨(l : ℤ) - 1, by push_cast; ring⟩`. Conclude with `⟨-1, by push_cast; ring⟩`.
+Replace the relevant objects with their definitions. Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem coneWeight_int {F : Type} [Field F] [NumberField F] {r : ℕ} (l : ℕ) (A : Ideal (𝓞 F)) (y : 𝓞 F)
     (v : Fin r → 𝓞 F) (m : Fin r → ℕ) : ∃ z : ℤ, coneWeight l A y v m = z := by
@@ -41,9 +41,9 @@ theorem coneWeight_int {F : Type} [Field F] [NumberField F] {r : ℕ} (l : ℕ) 
   · exact ⟨-1, by push_cast; ring⟩
 
 /- English proof (translation)
-Use `⟨∑ j ∈ S, K j, ∑ j ∈ S, (l : ℤ) ^ (∑ i ∈ S, K i - K j) * z j, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `push_cast`. Use `Finset.sum_congr rfl (fun j hj => ?_)` and prove the remaining obligations. Establish `hle : K j ≤ ∑ i ∈ S, K i` using `Finset.single_le_sum (fun _ _ => Nat.zero_le _) hj`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← h j, ← mul_assoc, ← pow_add, Nat.sub_add_cancel hle]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_pow_mul_sum {J : Type} (S : Finset J) (l : ℕ) (q : J → ℚ) (K : J → ℕ) (z : J → ℤ)
     (h : ∀ j, (l : ℚ) ^ K j * q j = z j) : ∃ (K' : ℕ) (Z : ℤ), (l : ℚ) ^ K' * ∑ j ∈ S, q j = Z := by
@@ -55,7 +55,7 @@ theorem exists_pow_mul_sum {J : Type} (S : Finset J) (l : ℕ) (q : J → ℚ) (
   rw [← h j, ← mul_assoc, ← pow_add, Nat.sub_add_cancel hle]
 
 /- English proof (translation)
-Break down `eq_or_ne Z 0 with rfl | hZ` into its components or cases. Simplify using the standard rewrite rules. Establish `hZ' : (Z : ℚ) ≠ 0` using `Int.cast_ne_zero.mpr hZ`. Establish `hD' : (D : ℚ) ≠ 0` using `Nat.cast_ne_zero.mpr hD`. Rewrite using `[padicValRat.div hZ' hD', padicValRat.of_int, padicValRat.of_nat, padicValNat.eq_zero_of_not_dvd h]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -69,39 +69,35 @@ theorem padicValRat_int_div_nonneg (l : ℕ) [Fact l.Prime] (Z : ℤ) (D : ℕ) 
   simp
 
 /- English proof (translation)
-Introduce `F _ _ _ 𝔣 𝔞 𝔟 𝔠 J _ r y v hP h𝔠 hN hv T hT hS k hk`. Take `⟨hb, hy, hvv, hr, e, he⟩` from `hP`. Use `letI : Fintype (F →+* ℝ) := Fintype.ofEquiv (F →+* ℂ) (realEmbeddingsEquiv F).symm`. Use `set l := Ideal.absNorm 𝔠 with hl_def`. Establish `hl0 : 0 < l` using `hN.pos`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcard : Fintype.card (F →+* ℝ) = Module.finrank ℚ F`. Rewrite using `[Fintype.card_congr (realEmbeddingsEquiv F)]`. Use `NumberField.Embeddings.card F ℂ` and compare the differences between its conclusion and the goal. Establish `hNb : Ideal.absNorm 𝔟 ≠ 0` using `fun h => hb (Ideal.absNorm_eq_zero_iff.mp h)`. Establish `hNbC : ((Ideal.absNorm 𝔟 : ℕ) : ℂ) ≠ 0` using `Nat.cast_ne_zero.mpr hNb`.
+Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hw : ∀ j, GoodWeight l (coneWeight l (𝔠 * 𝔟) (y j) (v j))` using `fun j => goodWeight_coneWeight hb hN (hy j).1 (fun i => (hvv j i).1) (hv j)`. Establish `hcont : ∀ j, ∃ Tj : ℂ → ℂ, Differentiable ℂ Tj ∧ (∀ s : ℂ, 1 < s.re → HasSum (fun m => (coneWeight l (𝔠 * 𝔟) (y j) (v j) m : ℂ) * coneTerm (fun (σ : F →+* ℝ) i => σ ((v j i : 𝓞 F) : F)) (fun (σ : F →+* ℝ) => σ ((y j : 𝓞 F) : F)) s m) (Tj s))`. Introduce `j`. Take `⟨Tj, hd, hs, -⟩` from `abelContinuation (F →+* ℝ) (r j) l (fun (σ : F →+* ℝ) i => σ ((v j i : 𝓞 F) : F)) (fun (σ : F →+* ℝ) => σ ((y j : 𝓞 F) : F)) (coneWeight l (𝔠 * 𝔟) (y j) (v j)) (by rw [hcard]; exact hr j) hl0 (fun σ i => (hvv j i).2 σ) (fun σ => (hy j).2 σ) (hw j)`. Conclude with `⟨Tj, hd, hs⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Use `choose Tc hTcd hTcs using hcont`. Establish `key : ∀ (s : ℂ) (p : (j : J) × (Fin (r j) → ℕ)), (classWeight l 𝔠 (e p).1 : ℂ) * ((Ideal.absNorm (e p).1 : ℕ) : ℂ) ^ (-s) = ((Ideal.absNorm 𝔟 : ℕ) : ℂ) ^ s * ((coneWeight l (𝔠 * 𝔟) (y p.1) (v p.1) p.2 : ℂ) * coneTerm (fun (σ : F →+* ℝ) i => σ ((v p.1 i : 𝓞 F) : F)) (fun (σ : F →+ …`. Introduce and unpack `s ⟨j, m⟩`. Simplify using `only`. Establish `hx : (e ⟨j, m⟩).1 * 𝔟 = Ideal.span {conePt (y j) (v j) m}` using `he ⟨j, m⟩`.
+Assume the hypotheses and unpack their components. Simplify by unfolding definitions. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hwt : classWeight l 𝔠 (e ⟨j, m⟩).1 = coneWeight l (𝔠 * 𝔟) (y j) (v j) m`. Unfold `classWeight coneWeight`. Rewrite using `[le_iff_mem_mul_of_span (𝔠 := 𝔠) hb hx]`. Establish `hnorm : Ideal.absNorm (Ideal.span {conePt (y j) (v j) m}) = Ideal.absNorm (e ⟨j, m⟩).1 * Ideal.absNorm 𝔟` using `by rw [← hx, map_mul]`. Rewrite using `[hwt, coneTerm_eq_absNorm_cpow (hy j).2 (fun i => (hvv j i).2) s m, hnorm, Nat.cast_mul, Complex.natCast_mul_natCast_cpow, mul_left_comm (((Ideal.absNorm 𝔟 : ℕ) : ℂ) ^ s), mul_left_comm (((Ideal.absNorm 𝔟 : ℕ) : ℂ) ^ s), ← Complex.cpow_add _ _ hNbC, add_neg_cancel, Complex.cpow_z …`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hRs : ∀ s : ℂ, 1 < s.re → T s = ((Ideal.absNorm 𝔟 : ℕ) : ℂ) ^ s * ∑ j, Tc j s`. Introduce `s hs`. Establish `h1` using `(e.hasSum_iff.mpr (hS s hs))`. Establish `h2 : HasSum (fun p : (j : J) × (Fin (r j) → ℕ) => ((Ideal.absNorm 𝔟 : ℕ) : ℂ) ^ s * ((coneWeight l (𝔠 * 𝔟) (y p.1) (v p.1) p.2 : ℂ) * coneTerm (fun (σ : F →+* ℝ) i => σ ((v p.1 i : 𝓞 F) : F)) (fun (σ : F →+* ℝ) => σ ((y p.1 : 𝓞 F) : F)) s p.2)) (T s)`. Use `h1 using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `p`. Conclude with `(key s p).symm`. Establish `h3` using `h2.sigma (fun j => (hTcs j s hs).mul_left (((Ideal.absNorm 𝔟 : ℕ) : ℂ) ^ s))`. Rewrite using `[Finset.mul_sum]`. Conclude with `h3.unique (hasSum_fintype _)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hRd : DifferentiableOn ℂ (fun s => ((Ideal.absNorm 𝔟 : ℕ) : ℂ) ^ s * ∑ j, Tc j s) {1}ᶜ`. Introduce `s _`. Apply `DifferentiableAt.differentiableWithinAt` to reduce the goal to its premises. Apply `DifferentiableAt.mul` to reduce the goal to its premises. Conclude with `differentiableAt_id.const_cpow (Or.inl hNbC)`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hsd` using `DifferentiableAt.sum (u := Finset.univ) (fun j _ => hTcd j s)`. Establish `hfun : (fun t => ∑ j, Tc j t) = ∑ j, Tc j`. Use function extensionality and compare the values at `t`. Simplify using `[Finset.sum_apply]`. Rewrite using `[hfun]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `hsd`. Establish `heq` using `eqOn_compl_one hT hRd (fun s hs => hRs s hs)`. Establish `hint : ∀ j, ∃ (qj : ℚ) (K : ℕ) (z : ℤ), Tc j (-((k - 1 : ℕ) : ℂ)) = qj ∧ (l : ℚ) ^ K * qj = z`. Introduce `j`. Use `GlobalTheory.T.cone_zeta_special_value_denominator_bound (F →+* ℝ) (r j) l (fun (σ : F →+* ℝ) i => σ ((v j i : 𝓞 F) : F)) (fun (σ : F →+* ℝ) => σ ((y j : 𝓞 F) : F)) (coneWeight l (𝔠 * 𝔟) (y j) (v j)) (by rw [hcard]; exact hr j) hl0 (fun σ i => (hvv j i).2 σ) (fun σ => (hy j).2 σ) …` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1 : ∏ σ : F →+* ℝ, (σ ((y j : 𝓞 F) : F) + ∑ i, σ ((v j i : 𝓞 F) : F) * (m i : ℝ)) = ((Ideal.absNorm (Ideal.span {conePt (y j) (v j) m}) : ℕ) : ℝ)`. Rewrite using `[← prod_real_embeddings_eq_absNorm _ (totPos_conePt (hy j).2 (fun i => (hvv j i).2) m)]`. Conclude with `Finset.prod_congr rfl fun σ _ => (embedding_conePt σ (y j) (v j) m).symm`. Use `⟨(Ideal.absNorm (Ideal.span {conePt (y j) (v j) m})) ^ (k - 1), ?_⟩` and prove the remaining obligations. Apply the tactic sequence `try beta_reduce`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions.
 
-Rewrite using `[Finset.prod_pow, h1]`. Apply the tactic sequence `first | norm_cast | (push_cast; ring) | simp`. Use `choose qj Kj zj hqj hzj using hint`. Take `⟨K', Z, hZ⟩` from `exists_pow_mul_sum Finset.univ l qj Kj zj hzj`. Establish `hs0 : (1 - (k : ℂ)) = -(((k - 1 : ℕ)) : ℂ)` using `by rw [Nat.cast_sub hk]; push_cast; ring`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmem : (1 - (k : ℂ)) ∈ ({1}ᶜ : Set ℂ)`. Rewrite using `[Set.mem_compl_singleton_iff, Ne, sub_eq_self]; exact_mod_cast (by omega : k ≠ 0)`. Establish `hval : T (1 - (k : ℂ)) = ((Ideal.absNorm 𝔟 : ℕ) : ℂ) ^ (1 - (k : ℂ)) * ∑ j, (qj j : ℂ)`. Rewrite using `[heq hmem]`. Simplify using `only`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `congr 1`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hs0]`. Conclude with `hqj j`. Establish `hlK : (l : ℚ) ^ K' ≠ 0` using `pow_ne_zero _ (Nat.cast_ne_zero.mpr hl0.ne')`.
+Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hsum : ∑ j, qj j = (Z : ℚ) / (l : ℚ) ^ K'`. Rewrite using `[eq_div_iff hlK, mul_comm]`. Conclude with `hZ`. Establish `hD : l ^ K' * Ideal.absNorm 𝔟 ^ (k - 1) ≠ 0` using `mul_ne_zero (pow_ne_zero _ hl0.ne') (pow_ne_zero _ hNb)`. Use `⟨(Z : ℚ) / ((l ^ K' * Ideal.absNorm 𝔟 ^ (k - 1) : ℕ) : ℚ), ?_, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[hval, hs0, Complex.cpow_neg, Complex.cpow_natCast, ← Rat.cast_sum, hsum]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Introduce `l' hl' hne hndvd haveI := Fact.mk hl'`. Apply `padicValRat_int_div_nonneg l' Z _ hD` to reduce the goal to its premises.
-
-Introduce `hdvd`. Break down `(Nat.Prime.dvd_mul hl').mp hdvd with h | h` into its components or cases. Conclude with `hne ((Nat.prime_dvd_prime_iff_eq hl' hN).mp (hl'.dvd_of_dvd_pow h))`. Conclude with `hndvd (hl'.dvd_of_dvd_pow h)`.
+A detailed English derivation is pending.
 -/
 theorem classTwist_value_int : ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (𝔣 𝔞 𝔟 𝔠 : Ideal (𝓞 F)) (J : Type) [Fintype J] (r : J → ℕ) (y : J → 𝓞 F) (v : ∀ j, Fin (r j) → 𝓞 F), ClassParam 𝔣 𝔞 𝔟 r y v → 𝔠.IsPrime → (Ideal.absNorm 𝔠).Prime → (∀ j i, v j i ∉ 𝔠 * 𝔟) → ∀ T : ℂ → ℂ, DifferentiableOn ℂ T {1}ᶜ → (∀ s : ℂ, 1 < s.re → HasSum (fun I : {I : Ideal (𝓞 F) // CoprimeTo F 𝔣 I ∧ RayRel F 𝔣 I 𝔞} => (classWeight (Ideal.absNorm 𝔠) 𝔠 I.1 : ℂ) * ((Ideal.absNorm I.1 : ℕ) : ℂ) ^ (-s)) (T s)) → ∀ k : ℕ, 1 ≤ k → ∃ q : ℚ, T (1 - (k : ℂ)) = (q : ℂ) ∧ ∀ l : ℕ, l.Prime → l ≠ Ideal.absNorm 𝔠 → ¬ l ∣ Ideal.absNorm 𝔟 → 0 ≤ padicValRat l q := by
   intro F _ _ _ 𝔣 𝔞 𝔟 𝔠 J _ r y v hP h𝔠 hN hv T hT hS k hk

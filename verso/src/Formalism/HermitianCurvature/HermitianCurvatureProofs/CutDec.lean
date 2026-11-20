@@ -17,29 +17,27 @@ def apx {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace �
   fun g => cutN k r n g • G g
 
 /- English proof (translation)
-Use `letI : NormedAddCommGroup (B.Mat P.k P.r) := Matrix.normedAddCommGroup`. Use `letI : NormedSpace ℝ (B.Mat P.k P.r) := Matrix.normedSpace`. Take `⟨hχs, ⟨δ, hδ, hχ0⟩, -⟩` from `hχ`. Use `⟨?_, ⟨2 * ((n : ℝ) + 1), ?_⟩, ⟨δ * ε, mul_pos hδ hε, ?_⟩⟩` and prove the remaining obligations. Introduce `g₀ hg₀`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨U, F', hU, hgU, hF', hFe⟩` from `hF g₀ hg₀`. Use `⟨U, fun g => cutN P.k P.r n g • (((χ (Gf P.k P.r Bs.z Bs.z' g / ε) : ℝ) : ℂ) • F' g), hU, hgU, ?_, ?_⟩` and prove the remaining obligations. Establish `hn2 : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun z : ℂ => Complex.normSq z)`. Establish `e : (fun z : ℂ => Complex.normSq z) = fun z => z.re * z.re + z.im * z.im`. Use function extensionality and compare the values at `z`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `Complex.normSq_apply z`. Rewrite using `[e]`. Conclude with `(Complex.reCLM.contDiff.mul Complex.reCLM.contDiff).add (Complex.imCLM.contDiff.mul Complex.imCLM.contDiff)`. Establish `hc : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun g : B.Mat P.k P.r => cutN P.k P.r n g)`. Unfold `cutN`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `Complex.ofRealCLM.contDiff.comp (Real.smoothTransition.contDiff.comp ?_)` and prove the remaining obligations. Use `(contDiff_const.sub ?_).div_const _` and prove the remaining obligations. Use `ContDiff.sum fun i _ => ContDiff.sum fun j _ => hn2.comp ?_` and prove the remaining obligations. Conclude with `(contDiff_apply_apply ℝ ℂ i j).comp (contDiff_id.const_smul (((n : ℝ) + 1)⁻¹))`. Conclude with `hc.contDiffOn.smul ((Complex.ofRealCLM.contDiff.comp (hχs.comp ((JCx1.contDiff_Gf Bs.z Bs.z').div_const ε))).contDiffOn.smul hF')`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g hg hgv`. Simplify using `only [apx, D.cutF]`. Rewrite using `[hFe g hg hgv]`. Introduce `g _ hne`. Establish `h1 : cutN P.k P.r n g ≠ 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Introduce `h0`. Apply `hne` to reduce the goal to its premises. Simplify using `only [apx, h0, zero_smul]`. Simplify using `only [cutN, ne_eq, Complex.ofReal_eq_zero, Real.smoothTransition.zero_iff_nonpos, not_le] at h1`. Establish `hs : ∑ i, ∑ j, Complex.normSq ((((n : ℝ) + 1)⁻¹ • g) i j) < 4`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `(div_pos_iff_of_pos_right (by norm_num : (0 : ℝ) < 3)).1 h1` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `heq : ∑ i, ∑ j, Complex.normSq ((((n : ℝ) + 1)⁻¹ • g) i j) = ((n : ℝ) + 1)⁻¹ ^ 2 * ∑ i, ∑ j, Complex.normSq (g i j)`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.smul_apply, Complex.real_smul, Complex.normSq_mul, Complex.normSq_ofReal]`. Expand and normalize the polynomial expressions, which then agree. Establish `hpos : (0 : ℝ) < (n : ℝ) + 1` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hS : ∑ i, ∑ j, Complex.normSq (g i j) ≤ (2 * ((n : ℝ) + 1)) ^ 2`. Rewrite `hs` using `[heq, inv_pow, inv_mul_lt_iff₀ (by positivity)]`. Establish `e2 : (2 * ((n : ℝ) + 1)) ^ 2 = ((n : ℝ) + 1) ^ 2 * 4` using `by ring`. Rewrite using `[e2]`. Conclude with `hs.le`.
+Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `B.gN`. Combine the equalities or inequalities in the displayed calculation. Introduce `g _ hne`. Establish `h1 : ((χ (Gf P.k P.r Bs.z Bs.z' g / ε) : ℝ) : ℂ) ≠ 0`. Introduce `h0`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Apply `hne` to reduce the goal to its premises. Simplify using `only [apx, D.cutF, h0, zero_smul, smul_zero]`. Establish `h2 : δ ≤ Gf P.k P.r Bs.z Bs.z' g / ε`. Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`.
-
-Conclude with `h1 (by rw [hχ0 _ hlt]; simp)`. Rewrite `h2` using `[le_div_iff₀ hε]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem cptCoef_apx {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
     [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq] (P : M.Par) (Bs : B.RealPlaceData P.k P.r Wp Wq)
@@ -114,9 +112,9 @@ section fpmCk
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 /- English proof (translation)
-Introduce `g₀ hg₀`. Take `⟨U, f', hU, hgU, hf', hfe⟩` from `ckOn_comp hf hA g₀ hg₀`. Use `⟨U, fun g => ((Gf P.k P.r p.T.base.z p.T.base.z' g ^ p₀ : ℝ) : ℂ) • f' g, hU, hgU, ?_, ?_⟩` and prove the remaining obligations. Establish `hs : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun g : B.Mat P.k P.r => ((Gf P.k P.r p.T.base.z p.T.base.z' g ^ p₀ : ℝ) : ℂ))` using `Complex.ofRealCLM.contDiff.comp ((JCx1.contDiff_Gf p.T.base.z p.T.base.z').pow p₀)`. Conclude with `hs.contDiffOn.smul hf'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g hg hgv`. Simplify using `only [TBBx4.fpm]`. Use `congr 1`. Conclude with `hfe g hg hgv`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem ckOn_fpm {P : M.Par} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
     [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] (p : KB.Pl P Wp Wq)
@@ -151,21 +149,17 @@ def LimZeroN (p : KB.Pl P Wp Wq) (nn : ℝ → ℝ) (G : B.Mat P.k P.r → (Wq �
     Tendsto (fun n : ℕ => TBB.Ew p nn (apx G n) 0 w []) atTop (𝓝 (TBB.Ew p nn G 0 w []))
 
 /- English proof (translation)
-Introduce `γ hγ`. Establish `h` using `fun n => hC n γ hγ`. Use `choose w hw hle using h`. Use `set A : Finset C.Letter := Y.image (fun y => ((true, y) : C.Letter)) ∪ Y.image (fun y => ((false, y + 1) : C.Letter)) with hA`. Establish `hmem : ∀ n, ∀ l ∈ w n, l ∈ A`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `n l hl`. Take `⟨-, -, L, hL, -, hLl⟩` from `hw n`. Rewrite `hl` using `[hL, List.append_nil]`. Take `⟨y, hy, h | h⟩` from `hLl l hl`. Conclude with `Finset.mem_union_left _ (Finset.mem_image.mpr ⟨y, hy, h.symm⟩)`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `Finset.mem_union_right _ (Finset.mem_image.mpr ⟨y, hy, h.symm⟩)`. Establish `hfin : (Set.range w).Finite`. Use `((List.finite_length_le (↥A) N).image (fun l => l.map Subtype.val)).subset ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨n, rfl⟩`. Use `⟨(w n).pmap Subtype.mk (hmem n), ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Simplify using `only [Set.mem_setOf_eq, List.length_pmap]`. Conclude with `(hw n).2.1`. Simplify using `[List.map_pmap]`. Choose the witnesses or unpack the hypotheses as in `⟨w0, hw0⟩ : ∃ w0, ∃ᶠ n in atTop, w n = w0 := by`. Assume the negation of the conclusion as `hcon`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `push_neg at hcon`. Establish `h2` using `(Filter.eventually_all_finite hfin).mpr fun i _ => hcon i`. Take `⟨n, hn⟩` from `h2.exists`. Conclude with `hn (w n) ⟨n, rfl⟩ rfl`. Establish `hw0' : TBB.IsExt P p.l0 Y N ((P.r + 1) * K) [] w0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Take `⟨n, rfl⟩` from `hw0.exists`. Conclude with `hw n`. Use `⟨w0, hw0', ?_⟩` and prove the remaining obligations. Establish `hadm : TBB.AdmW P p.l0 Y w0`. Take `⟨hcut, -, L, hL, -, hLl⟩` from `hw0'`.
-
-Use `⟨hcut, fun l hl => hLl l ?_⟩` and prove the remaining obligations. Rewrite `hl` using `[hL, List.append_nil]`. Then use the resulting hypothesis. Establish `hlim` using `(hZ w0 hadm hw0'.2.1).const_mul ((C₂ * Λ ^ 2) ^ (P.r + 1)) |>.sub (hT γ hγ)`. Establish `hfreq : ∃ᶠ n in atTop, (C₂ * Λ ^ 2) ^ (P.r + 1) * TBB.Ew p nn (apx G n) 0 w0 [] - TBB.Ew p nn (apx G n) (P.r + 1) [] γ ∈ Set.Ici (0 : ℝ)` using `hw0.mono fun n hn => by`. Rewrite using `[← hn]`.
-
-Conclude with `sub_nonneg.mpr (hle n)`. Conclude with `sub_nonneg.mp (isClosed_Ici.mem_of_frequently_of_tendsto hfreq hlim)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem corS_of_apx (p : KB.Pl P Wp Wq) (nn : ℝ → ℝ) (G : B.Mat P.k P.r → (Wq →L[ℂ] Wp)) (Y : Finset ℝ)
     (Λ : ℝ) (K N : ℕ) (C₂ : ℝ) (hC : ∀ n, TBB.CorS p nn (apx G n) Y Λ K N C₂) (hT : LimTopN p nn G)
@@ -213,9 +207,9 @@ theorem corS_of_apx (p : KB.Pl P Wp Wq) (nn : ℝ → ℝ) (G : B.Mat P.k P.r �
   exact sub_nonneg.mp (isClosed_Ici.mem_of_frequently_of_tendsto hfreq hlim)
 
 /- English proof (translation)
-Establish `hPS : KB.PStd` using `Formalism.FourierDecayAlt.P.standard_pairing_of_heads Formalism.FourierDecayAlt.P.radial_head Formalism.FourierDecayAlt.P.head_top`. Establish `hPos : TBB.PosAt p nn G Y N` using `posAt_of_cpt hA p nn G Y N (fun y => (hnn y).le) hG`. Establish `hI2` using `Formalism.FourierDecayAlt.P.head_continuity_at_zero_of_compact_coefficients hPS hA p nn G Y N Cb hCb hG`. Establish `hI3` using `Formalism.FourierDecayAlt.P.integral_three_at_place hA hPS Formalism.FourierDecayAlt.P.vector_isomorphism_levels Formalism.FourierDecayAlt.P.list_duality_level_group Formalism.FourierDecayAlt.P.degree_of_plane_wave (Formalism.FourierDecayAlt.P.pb_formPos : PBL.FormPos) p nn G Y Λ …`. Establish `hI4` using `Formalism.FourierDecayAlt.P.integral_four_at_place hA Formalism.FourierDecayAlt.P.list_duality_level_group Formalism.FourierDecayAlt.P.degree_of_lift_pairing (Formalism.FourierDecayAlt.P.pb_formPos : PBL.FormPos) p nn G Y Λ K N hG hnn hLG`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Formalism.FourierDecayAlt.P.corSOfLemmaS_statement Wp Wq P p nn G Y Λ K N C₂ hKN hC₂ hPos (hLS Wp Wq P p nn G Y Λ K N hK hΛ hPos hI2 hI3 hI4 hI5)`.
+A detailed English derivation is pending.
 -/
 theorem corS_of_cpt (hA : P5.ThmPActual) (p : KB.Pl P Wp Wq) (nn : ℝ → ℝ) (G : B.Mat P.k P.r → (Wq →L[ℂ] Wp))
     (Y : Finset ℝ) (Λ : ℝ) (K N : ℕ) (Cb C₂ : ℝ)
@@ -239,7 +233,7 @@ theorem corS_of_cpt (hA : P5.ThmPActual) (p : KB.Pl P Wp Wq) (nn : ℝ → ℝ) 
     (hLS Wp Wq P p nn G Y Λ K N hK hΛ hPos hI2 hI3 hI4 hI5)
 
 /- English proof (translation)
-Introduce `ε hε n`. Conclude with `block_growth_bound_of_positive_germ p nn _ Y K N (posAt_of_cpt hA p nn _ Y N hnn (cptCoef_apx P p.T.base hχ hF hε n)) (hG ε hε n)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem blockGrowthBound_apx_cutF_of_germAtPD (hA : P5.ThmPActual) (p : KB.Pl P Wp Wq) (nn : ℝ → ℝ) (χ : ℝ → ℝ)
     (F : B.Mat P.k P.r → (Wq →L[ℂ] Wp)) (Y : Finset ℝ) (K N : ℕ) (hχ : C6.IsCut0 χ)
@@ -253,9 +247,9 @@ theorem blockGrowthBound_apx_cutF_of_germAtPD (hA : P5.ThmPActual) (p : KB.Pl P 
 end place
 
 /- English proof (translation)
-Take `⟨C₂, hC₂, hLS⟩` from `Formalism.FourierDecayAlt.Final.tbb_lemmaSOfSteps Formalism.FourierDecayAlt.Final.tbb_stepOne Formalism.FourierDecayAlt.Final.tbb_stepUp`. Use `⟨C₂, hC₂, ?_⟩` and prove the remaining obligations. Introduce `Wp Wq _ _ _ _ _ _ P p F Λ κ₀ χ nn Y K N Cb hΛ hκ hK hKN hχ hnn hCb hF hWG hLG hI5 hT hZ hE hB`. Use `Formalism.FourierDecayAlt.Final.tbb_ptBoundOfCorS Wp Wq P p nn χ F Y Λ K N C₂ κ₀ hC₂.le hκ hnn ⟨1, one_pos, fun ε hε _ => ?_⟩ (TBBx3.vecCutAt_of_one p χ F hχ.2.2) (TBBx3.limZeroAt_of_limits p nn χ F Y N κ₀ hE hB)` and prove the remaining obligations. Use `corS_of_apx p nn _ Y Λ K N C₂ (fun n => ?_) (hT ε hε) (hZ ε hε)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `corS_of_cpt hA p nn _ Y Λ K N Cb C₂ hLS hC₂.le hK hKN hΛ hnn hCb (cptCoef_apx P p.T.base hχ hF hε n) hWG hLG (hI5 ε hε n)`.
+A detailed English derivation is pending.
 -/
 theorem ptBound_dec_all (hA : P5.ThmPActual) : ∃ C₂ : ℝ, 0 < C₂ ∧
     ∀ (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
@@ -280,9 +274,9 @@ theorem ptBound_dec_all (hA : P5.ThmPActual) : ∃ C₂ : ℝ, 0 < C₂ ∧
     (cptCoef_apx P p.T.base hχ hF hε n) hWG hLG (hI5 ε hε n)
 
 /- English proof (translation)
-Take `⟨C₂, hC₂, hPB⟩` from `ptBound_dec_all hA`. Take `⟨C₄, hC₄⟩` from `Formalism.FourierDecayAlt.Final.tbb_thmBpOfParts C₃ CΛ C₀ C₂ Cκ hC₃ hCΛ hC₀ hC₂`. Use `⟨C₄, ?_⟩` and prove the remaining obligations. Introduce `Wp Wq _ _ _ _ _ _ P p f Ap Am ApPt AmPt b Λ κ₀ n₀ p₀ χ nn Y K N Cb hb hΛ hΛb hκ hκb hTq hn₀ hp₀ hK hKN hχ hnn hCb hf hAp hAm hAm' hExp hWG hLG hI5p hI5m hTp hTm hZp hZm hEp hEm hBp hBm`. Take `⟨h1, h2, h3, h4, h5⟩` from `hAm'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `hC₄ Wp Wq P p f (TBBx4.fpm p f Ap p₀) (TBBx4.fpm p f Am p₀) b Λ κ₀ n₀ p₀ hb hΛ hΛb hκ hκb hTq hn₀ hp₀ (TBBx4.normAt_fpm p f Ap Am ApPt AmPt b n₀ p₀ h1 h2 h3 h4 h5) (hPB Wp Wq P p _ Λ κ₀ χ nn Y K N Cb hΛ hκ hK hKN hχ hnn hCb (ckOn_fpm p p₀ hf hAp) hWG hLG hI5p hTp hZp hEp hBp) (hP …`.
+A detailed English derivation is pending.
 -/
 theorem thmBpAt_of_leaves_dec (hA : P5.ThmPActual) (C₃ CΛ C₀ Cκ : ℝ) (hC₃ : 0 ≤ C₃) (hCΛ : 0 ≤ CΛ)
     (hC₀ : 1 / 2 ≤ C₀) :

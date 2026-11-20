@@ -5,19 +5,17 @@ open GlobalTheory.TriFrame
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `R _ r a l0 ha`. Use `set σ : Equiv.Perm (Fin (r+1)) := Equiv.swap 0 l0 with hσ`. Use `set b : Fin (r+1) → R := a ∘ σ with hb`. Use `set E : Matrix (Fin (r+1)) (Fin (r+1)) R := Matrix.of fun l j => if j = 0 then b l else if l = j then 1 else 0 with hEdef`. Establish `hlow : E.BlockTriangular OrderDual.toDual`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `i j hij`. Establish `hij' : i < j` using `hij`. Establish `hj : j ≠ 0`. Introduce and unpack `rfl`. Conclude with `absurd hij' (Fin.not_lt_zero i)`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hne : i ≠ j` using `ne_of_lt hij'`. Simplify using `[hEdef, hj, hne]`. Establish `hE : E.det = b 0`. Rewrite using `[Matrix.det_of_lowerTriangular E hlow, Fin.prod_univ_succ]`. Establish `: ∀ i : Fin r, E i.succ i.succ = 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `i`. Simplify using `[hEdef, Fin.succ_ne_zero]`. Simplify using `[this, hEdef]`. Use `set B : Matrix (Fin (r+1)) (Fin (r+1)) R := E.submatrix σ id with hBdef`. Establish `hBdet : IsUnit B.det`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[hBdef, Matrix.det_permute, hE]`. Establish `h0 : b 0 = a l0` using `by simp [hb, hσ]`. Rewrite using `[h0]`. Use `IsUnit.mul ?_ ha` and prove the remaining obligations. Apply the tactic sequence `rcases Int.units_eq_one_or (Equiv.Perm.sign σ) with h | h <;> simp [h]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hBcol : B.mulVec (Pi.single 0 1) = a`. Use function extensionality and compare the values at `i`. Simplify using `[hBdef, hEdef, Matrix.mulVec, dotProduct, Pi.single_apply, hb, hσ]`. Take `⟨u, hu⟩` from `(Matrix.isUnit_iff_isUnit_det B).mpr hBdet`. Use `⟨u⁻¹, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[← hBcol, Matrix.mulVec_mulVec, ← hu]`. Establish `: ((u⁻¹ : GL (Fin (r+1)) R) : Matrix (Fin (r+1)) (Fin (r+1)) R) * (u : Matrix _ _ R) = 1`. Rewrite using `[← Units.val_mul, inv_mul_cancel, Units.val_one]`. Rewrite using `[this, Matrix.one_mulVec]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem column_unit_entry_to_first_basis_vector :
     ∀ {R : Type} [CommRing R] {r : ℕ} (a : Fin (r+1) → R) (l0 : Fin (r+1)), IsUnit (a l0) →

@@ -36,16 +36,16 @@ theorem xi_eq_lin (Q : Finset (Pl D.host.E)) (M : ℕ) (P : PolF D (Wc D j).rank
     Y.Z.ρ.xi i j b D.nexp Q M h P a = xiLin Y.Z.ρ D.nexp i j b Q M h a P := rfl
 
 /- English proof (translation)
-Use `⟨0, fun Q M _ _ a => ⟨0, Fin.elim0, Fin.elim0, fun k => k.elim0, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[xi_eq_lin, map_zero, smul_zero, Finset.univ_eq_empty, Finset.sum_empty]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem good_zero : Good Y i j b s h u 0 := by
   refine ⟨0, fun Q M _ _ a => ⟨0, Fin.elim0, Fin.elim0, fun k => k.elim0, ?_⟩⟩
   rw [xi_eq_lin, map_zero, smul_zero, Finset.univ_eq_empty, Finset.sum_empty]
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `hP`. Use `⟨c, fun Q M hQ hs a => ?_⟩` and prove the remaining obligations. Take `⟨n, o', m, hm, he⟩` from `hc Q M hQ hs a`. Use `⟨n, fun k => o * o' k, m, hm, ?_⟩` and prove the remaining obligations. Rewrite using `[xi_eq_lin, map_smul, smul_comm, ← xi_eq_lin, he, Finset.smul_sum]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[smul_smul, map_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem good_smul {P : PolF D (Wc D j).rank (Vc D j).rank} (hP : Good Y i j b s h u P) (o : D.ntw.O i) :
     Good Y i j b s h u (Y.Z.ρ.eO i b o • P) := by
@@ -58,15 +58,15 @@ theorem good_smul {P : PolF D (Wc D j).rank (Vc D j).rank} (hP : Good Y i j b s 
   rw [smul_smul, map_mul]
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `hP`. Take `⟨c', hc'⟩` from `hP'`. Use `⟨c + c', fun Q M hQ hs a => ?_⟩` and prove the remaining obligations. Take `⟨n, o, m, hm, he⟩` from `hc Q M hQ hs a`. Take `⟨n', o', m', hm', he'⟩` from `hc' Q M hQ hs a`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hl : Y.Z.ρ.eO i b ((D.ntw.l i : ℕ) : D.ntw.O i) = ((D.ntw.l i : ℕ) : ℂ)` using `map_natCast _ _`. Use `⟨n + n', Fin.append (fun k => ((D.ntw.l i : ℕ) : D.ntw.O i) ^ c' * o k) (fun k => ((D.ntw.l i : ℕ) : D.ntw.O i) ^ c * o' k), Fin.append m m', fun k => ?_, ?_⟩` and prove the remaining obligations. Use `Fin.addCases (fun k => ?_) (fun k => ?_) k` and prove the remaining obligations. Rewrite using `[Fin.append_left]`. Conclude with `hm k`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Fin.append_right]`. Conclude with `hm' k`. Rewrite using `[Fin.sum_univ_add]`. Simplify using `only [Fin.append_left, Fin.append_right]`. Rewrite using `[xi_eq_lin, map_add, smul_add, ← xi_eq_lin, ← xi_eq_lin]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `congr 1`. Rewrite using `[show (((D.ntw.l i : ℕ) : ℂ) ^ (c + c') * u) = ((D.ntw.l i : ℕ) : ℂ) ^ c' * (((D.ntw.l i : ℕ) : ℂ) ^ c * u) by ring, mul_smul, he, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[smul_smul, map_mul, map_pow, hl]`. Rewrite using `[show (((D.ntw.l i : ℕ) : ℂ) ^ (c + c') * u) = ((D.ntw.l i : ℕ) : ℂ) ^ c * (((D.ntw.l i : ℕ) : ℂ) ^ c' * u) by ring, mul_smul, he', Finset.smul_sum]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[smul_smul, map_mul, map_pow, hl]`.
+A detailed English derivation is pending.
 -/
 theorem good_add {P P' : PolF D (Wc D j).rank (Vc D j).rank} (hP : Good Y i j b s h u P) (hP' : Good Y i j b s h u P') :
     Good Y i j b s h u (P + P') := by
@@ -98,17 +98,17 @@ end GlobalTheory.XiIntComb
 
 open GlobalTheory.XiIntComb in
 /- English proof (translation)
-Introduce `hAR hSR hSI D X E Y hF hFP i hi j b s h P hd`. Take `⟨u, hu0, hgen⟩` from `GlobalTheory.T.thetaSeries_integral_core_supLattice_combination hAR hSR hSI D X E Y hF hFP i hi j b s h ⟨hd.split, hd.off, hd.fin, hd.supp, zero_mem _⟩`. Establish `hB` using `Y.Z.good.base i j b`. Establish `hm : ∀ τ, (Y.Z.ρ.B i j b).w.p τ + (Y.Z.ρ.B i j b).w.q τ ≤ (Wc D j).rank` using `fun τ => by`. Establish `h1` using `hB.sig τ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `Formalism.BasicNotions.sig_sum _ hB.sigOK (tauE D τ)`. Rewrite `h2` using `[← h1]`. Conclude with `h2.le`. Establish `hinj` using `GlobalTheory.T.harmonic_polynomial_eq_zero_of_function D _ _ _ (Y.Z.ρ.B i j b).F.BS hB.wt hm`. Establish `key : ∀ φ ∈ coefLatFn (Formalism.L2.Host.embLL0 D) (labLL0 D) (Y.Z.ρ.eO i b).range (Y.Z.ρ.B i j b).w.lam ((Y.Z.ρ.B i j b).latAt (finPt _ h)), ∃ P' ∈ (Y.Z.ρ.B i j b).valSpace, harmFn (Wc D j).rank (Y.Z.ρ.B i j b).w (Y.Z.ρ.B i j b).F.BS P' = φ ∧ Good Y i j b s h u P'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `φ hφ`. Proceed by induction on `hφ using Submodule.span_induction with`. Consider the case `mem _ h1`. Take `⟨F, -, rfl⟩` from `h1`. Take `⟨P', h2, h3⟩` from `GlobalTheory.T.harmonic_polys_reach_small_field_coefficient_functions hAR hSR hSI D X E Y hF hFP i hi j b F`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨P', h2, h3, hgen P' h2 F h3⟩`. Consider the case `zero => exact ⟨0, zero_mem _, map_zero _, good_zero Y i j b s h u⟩`. Consider the case `add _ _ _ _ h1 h2`. Take `⟨P₁, a1, rfl, g1⟩` from `h1`. Take `⟨P₂, a2, rfl, g2⟩` from `h2`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨P₁ + P₂, add_mem a1 a2, map_add _ _ _, good_add Y i j b s h u g1 g2⟩`. Consider the case `smul c _ _ h1`. Take `⟨P₁, a1, rfl, g1⟩` from `h1`. Take `⟨_, o, rfl⟩` from `c`. Conclude with `⟨Y.Z.ρ.eO i b o • P₁, Submodule.smul_mem _ _ a1, map_smul _ _ _, good_smul Y i j b s h u g1 o⟩`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨P', h1, h2, ⟨c, hc⟩⟩` from `key _ hd.mem.2`. Take `rfl : P = P'` from `sub_eq_zero.1 (hinj (P - P') (sub_mem hd.mem.1 h1) (by rw [map_sub, h2]; exact sub_self _))`. Conclude with `⟨u, c, hu0, hc⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.XiIntComb.xi_int_comb : GlobalTheory.Published.GlobalArtinReciprocity → GlobalTheory.IndefiniteRowSideFullHecke.RationalRayLevels.SeriesRat → GlobalTheory.IndefiniteRowSideFullHecke.TwistSeries.SerInt → ∀ (D : D7) (X : RealSide D) (E : IntegralHeckeForms.XD D) (Y : SerSide X E), FieldOk X → (∀ (j : Fin D.R.m) hV, GlobalTheory.IndefiniteRowSideFullHecke.OrthonormalLatticeThetaValues.FramePin X.core X.R.toRealDat j X.core.σ₀ hV) → ∀ i, D.ntw.NonzeroIndexPlace i → ∀ (j : Fin D.R.m) b s h P, Y.Z.ρ.IsDatum i j b s h P → ∃ (u : ℂ) (c : ℕ), u ≠ 0 ∧ ∀ Q M, InRange D.ntw i Q → (∀ v ∈ Q, ((normProd s : ℕ) : 𝓞 D.host.E) ∉ v.asIdeal) → ∀ a, ∃ (n : ℕ) (o : Fin n → D.ntw.O i) (m : Fin n → NX.FmK Y.S ((j : ℕ) + 1)), (∀ k, Subtype.val (m k) ∈ (Y.S.A ((j : ℕ) + 1)).MK) ∧ (((D.ntw.l i : ℕ) : ℂ) ^ c * u) • Y.Z.ρ.xi i j b D.nexp Q M h P a = ∑ k, Y.Z.ρ.eO i b (o k) • evW Y.YS X.geo.v₀ j (Subtype.val (m k)) := by
   intro hAR hSR hSI D X E Y hF hFP i hi j b s h P hd

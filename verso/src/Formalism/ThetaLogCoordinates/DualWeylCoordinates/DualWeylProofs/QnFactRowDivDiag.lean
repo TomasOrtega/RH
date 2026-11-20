@@ -10,11 +10,11 @@ namespace Formalism.InvariantFactorPaths.ColumnFamilies
 open Formalism.GradedWeylDivisibility
 
 /- English proof (translation)
-Unfold `rowDiv`. Rewrite using `[Polynomial.coeff_zero_eq_eval_zero]`. Establish `h : (Polynomial.evalRingHom (0 : MvPolynomial (Fin n × Fin n) ℚ)).comp (rowGen ℚ (r` using `n) (n := n) a b).toRingHom = RingHom.id _ := by`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `c`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[rowGen]`. Introduce `v`. Simplify using `only [RingHom.comp_apply, AlgHom.toRingHom_eq_coe, AlgHom.coe_toRingHom, rowGen, aeval_X, Polynomial.coe_evalRingHom, Polynomial.eval_add, Polynomial.eval_C, RingHom.id_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `h2` using `RingHom.congr_fun h F`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Simplify using `using h2`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem qn_rowDiv_zero (n : ℕ) (a b : Fin n) (F : MvPolynomial (Fin n × Fin n) ℚ) :
     rowDiv ℚ a b 0 F = F := by
@@ -34,7 +34,7 @@ theorem qn_rowDiv_zero (n : ℕ) (a b : Fin n) (F : MvPolynomial (Fin n × Fin n
   simpa using h2
 
 /- English proof (translation)
-Rewrite using `[MvPolynomial.smul_eq_C_mul, mul_comm]`. Use `congr 1`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 -/
 theorem qn_natsmul (n : ℕ) (k : ℕ) (p : MvPolynomial (Fin n × Fin n) ℚ) :
     p * ((k : MvPolynomial (Fin n × Fin n) ℚ) + 1) = ((k + 1 : ℕ) : ℚ) • p := by
@@ -43,7 +43,7 @@ theorem qn_natsmul (n : ℕ) (k : ℕ) (p : MvPolynomial (Fin n × Fin n) ℚ) :
   simp
 
 /- English proof (translation)
-Unfold `rowDiv`. Rewrite using `[← qn_deriv_rowGen n a b hab f, Polynomial.coeff_derivative, qn_natsmul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem qn_rowDiv_succ (n : ℕ) (a b : Fin n) (hab : a ≠ b) (k : ℕ) (f : MvPolynomial (Fin n × Fin n) ℚ) :
     ((k + 1 : ℕ) : ℚ) • rowDiv ℚ a b (k + 1) (transposeVariables ℚ n f) = rowDiv ℚ a b k (transposeVariables ℚ n (qn_D n a b f)) := by
@@ -51,9 +51,9 @@ theorem qn_rowDiv_succ (n : ℕ) (a b : Fin n) (hab : a ≠ b) (k : ℕ) (f : Mv
   rw [← qn_deriv_rowGen n a b hab f, Polynomial.coeff_derivative, qn_natsmul]
 
 /- English proof (translation)
-Unfold `rowDiv`. Rewrite using `[map_sub, map_smul, map_sub, map_smul, ← qn_deriv_rowGen_diag n a f, Polynomial.coeff_sub, Polynomial.coeff_smul, add_mul, one_mul, Polynomial.coeff_add]`. Consider the cases of `k with`. Consider the case `zero`. Rewrite using `[Polynomial.coeff_X_mul_zero, Polynomial.coeff_derivative]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Consider the case `succ m`. Rewrite using `[Polynomial.coeff_X_mul, Polynomial.coeff_derivative, Polynomial.coeff_derivative]`. Simplify using `only [MvPolynomial.smul_eq_C_mul, map_natCast, Nat.cast_add, Nat.cast_one, map_add, map_one]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem qn_rowDiv_succ_diag (n : ℕ) (a : Fin n) (k : ℕ) (f : MvPolynomial (Fin n × Fin n) ℚ) :
     ((k + 1 : ℕ) : ℚ) • rowDiv ℚ a a (k + 1) (transposeVariables ℚ n f) =
@@ -71,9 +71,9 @@ theorem qn_rowDiv_succ_diag (n : ℕ) (a : Fin n) (k : ℕ) (f : MvPolynomial (F
     ring
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero`. Introduce `f`. Simplify using `[qn_rowDiv_zero]`. Consider the case `succ k ih`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Treat this case separately.
 
-Introduce `f`. Rewrite using `[Nat.factorial_succ, Nat.cast_mul, mul_comm ((k + 1 : ℕ) : ℚ), mul_smul, qn_rowDiv_succ n a b hab k f, ih, pow_succ, Module.End.mul_apply, qn_E_eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem qn_fact_rowDiv (n : ℕ) (a b : Fin n) (hab : a ≠ b) (k : ℕ) :
     ∀ f : MvPolynomial (Fin n × Fin n) ℚ,
@@ -89,7 +89,7 @@ theorem qn_fact_rowDiv (n : ℕ) (a b : Fin n) (hab : a ≠ b) (k : ℕ) :
       ih, pow_succ, Module.End.mul_apply, qn_E_eq]
 
 /- English proof (translation)
-Establish `hk : (k.factorial : ℚ) ≠ 0` using `Nat.cast_ne_zero.2 (Nat.factorial_ne_zero k)`. Rewrite using `[divPowE, LinearMap.smul_apply, map_smul, ← qn_fact_rowDiv n a b hab k f, smul_smul, inv_mul_cancel₀ hk, one_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem qn_T_divPowE (n : ℕ) (a b : Fin n) (hab : a ≠ b) (k : ℕ) (f : MvPolynomial (Fin n × Fin n) ℚ) :
     transposeVariables ℚ n (divPowE (glOps ℚ n (rowLetters n) Set.univ) a b k f) = rowDiv ℚ a b k (transposeVariables ℚ n f) := by
@@ -98,9 +98,9 @@ theorem qn_T_divPowE (n : ℕ) (a b : Fin n) (hab : a ≠ b) (k : ℕ) (f : MvPo
     inv_mul_cancel₀ hk, one_smul]
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero`. Introduce `f`. Simplify using `[qn_rowDiv_zero]`. Consider the case `succ k ih`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Treat this case separately.
 
-Introduce `f`. Rewrite using `[List.range_succ, List.map_append, List.prod_append, List.map_singleton, List.prod_singleton, Module.End.mul_apply, LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply, qn_E_eq, ← ih, Nat.factorial_succ, Nat.cast_mul, mul_comm ((k + 1 : ℕ) : ℚ), mul_smul, qn_rowDiv_su …`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem qn_fact_rowDiv_diag (n : ℕ) (a : Fin n) (k : ℕ) :
     ∀ f : MvPolynomial (Fin n × Fin n) ℚ,
@@ -118,7 +118,7 @@ theorem qn_fact_rowDiv_diag (n : ℕ) (a : Fin n) (k : ℕ) :
       Nat.factorial_succ, Nat.cast_mul, mul_comm ((k + 1 : ℕ) : ℚ), mul_smul, qn_rowDiv_succ_diag]
 
 /- English proof (translation)
-Establish `hk : (k.factorial : ℚ) ≠ 0` using `Nat.cast_ne_zero.2 (Nat.factorial_ne_zero k)`. Rewrite using `[binomE, LinearMap.smul_apply, map_smul, ← qn_fact_rowDiv_diag n a k f, smul_smul, inv_mul_cancel₀ hk, one_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem qn_T_binomE (n : ℕ) (a : Fin n) (k : ℕ) (f : MvPolynomial (Fin n × Fin n) ℚ) :
     transposeVariables ℚ n (binomE (glOps ℚ n (rowLetters n) Set.univ) a k f) = rowDiv ℚ a a k (transposeVariables ℚ n f) := by

@@ -45,15 +45,15 @@ def ComplMet (m t : ℕ) (b : Prop) : Prop :=
 end
 
 /- English proof (translation)
-Set `P : Matrix (Fin (t + t)) (Fin (t + t)) D.host.E` to `blk 1 (-((2 : D.host.E)⁻¹ • 1)) 1 ((2 : D.host.E)⁻¹ • 1)`. Establish `hP : P * blk ((2 : D.host.E)⁻¹ • 1) ((2 : D.host.E)⁻¹ • 1) (-1) 1 = 1`. Rewrite using `[WittModel.blk_mul, ← WittModel.blk_one]`. Apply the tactic sequence `congr 1 <;> simp only [Matrix.one_mul, Matrix.mul_one, Matrix.smul_mul, Matrix.mul_smul, Matrix.neg_mul, Matrix.mul_neg] <;> match_scalars <;> norm_num`. Set `f` to `(GlobalTheory.OrthSumSp.hypSp D t).frame`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Introduce a local definition for the expression.
 
-Set `b` to `f.map (Matrix.toLinearEquiv f P (Matrix.isUnit_det_of_right_inverse hP))`. Establish `hb : ∀ j, b j = ∑ i, P i j • f i` using `fun j => by`. Simplify using `only [b, Module.Basis.map_apply, Matrix.toLinearEquiv_apply, Matrix.toLin_self]`. Establish `hG : ∀ i j, (GlobalTheory.OrthSumSp.hypSp D t).hT (f i) (f j) = dblGram finSumFinEquiv (1 : Matrix (Fin t) (Fin t) D.host.E) i j` using `fun i j => by`. Use `gram_hdbl (GlobalTheory.OrthSumSp.posSp D t)` as an intermediate fact.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[GlobalTheory.OrthSumSp.posSp_gram D t]`. Conclude with `congrFun (congrFun this i) j`. Use `⟨b, fun i j => ?_⟩` and prove the remaining obligations. Establish `e : (GlobalTheory.OrthSumSp.hypSp D t).hT (b i) (b j) = (Pᴴ * dblGram finSumFinEquiv (1 : Matrix (Fin t) (Fin t) D.host.E) * P) i j`. Simplify using `only [hb, map_sum, LinearMap.sum_apply, LinearMap.map_smulₛₗ, LinearMap.smul_apply, hG, smul_eq_mul, Matrix.mul_apply, Matrix.conjTranspose_apply, Finset.sum_mul, Finset.mul_sum, RingHom.id_apply, starRingEnd_apply]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`. Establish `e1 : Pᴴ = blk 1 1 (-((2 : D.host.E)⁻¹ • 1)) ((2 : D.host.E)⁻¹ • 1)`. Simplify using `[P, blk, Matrix.fromBlocks_conjTranspose]`. Establish `e2 : dblGram finSumFinEquiv (1 : Matrix (Fin t) (Fin t) D.host.E) = blk 1 0 0 (-1)` using `rfl`. Establish `e3 : -blk (0 : Matrix (Fin t) (Fin t) D.host.E) 1 1 0 = blk 0 (-1) (-1) 0`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `(-Matrix.fromBlocks (0 : Matrix (Fin t) (Fin t) D.host.E) 1 1 0).submatrix _ _ = _`. Rewrite using `[Matrix.fromBlocks_neg, neg_zero, blk]`. Rewrite using `[e, ← Matrix.neg_apply, e3, e1, e2, WittModel.blk_mul, WittModel.blk_mul]`. Apply the tactic sequence `congr 1 <;> simp only [Matrix.one_mul, Matrix.mul_one, Matrix.smul_mul, Matrix.mul_smul, Matrix.neg_mul, Matrix.mul_neg, Matrix.mul_zero, add_zero, zero_add] <;> match_scalars <;> norm_num`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem exists_frame_hyp (D : D7) (t : ℕ) : ∃ b : Module.Basis (Fin (t + t)) D.host.E (GlobalTheory.OrthSumSp.hypSp D t).V,
     ∀ i j, (GlobalTheory.OrthSumSp.hypSp D t).hT (b i) (b j) = -blk (0 : Matrix (Fin t) (Fin t) D.host.E) 1 1 0 i j := by
@@ -89,9 +89,9 @@ theorem exists_frame_hyp (D : D7) (t : ℕ) : ∃ b : Module.Basis (Fin (t + t))
     match_scalars <;> norm_num
 
 /- English proof (translation)
-Take `⟨b, hb⟩` from `exists_frame_hyp D t`. Use `⟨b, ?_⟩` and prove the remaining obligations. Establish `e : HSpace.gram { GlobalTheory.OrthSumSp.hypSp D t with frame` using `b } = -blk (0 : Matrix (Fin t) (Fin t) D.host.E) 1 1 0 := Matrix.ext hb`. Rewrite using `[gram_hsum, e, complGram, inv_one, one_smul]`. Express the relevant statement in the definitionally equal form `(-Matrix.fromBlocks V.gram 0 0 (-blk (0 : Matrix (Fin t) (Fin t) D.host.E) 1 1 0)).submatrix _ _ = _`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[Matrix.fromBlocks_neg, neg_zero, neg_zero, neg_neg, blkMat]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_compl_space (D : D7) (V : HSp D) (t : ℕ) :
     ∃ b : Module.Basis (Fin (t + t)) D.host.E (GlobalTheory.OrthSumSp.hypSp D t).V,
@@ -107,23 +107,23 @@ theorem exists_compl_space (D : D7) (V : HSp D) (t : ℕ) :
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Set `n` to `V.rank + t`. Take `⟨-, ψ, χ, omh, -, -, -, -, hω, -, -, -⟩` from `GlobalTheory.SiegelFormula.Model.data_exist GlobalTheory.weilRepresentationUnitaryPair V V`. Take `⟨θ, hθ⟩` from `hω.std.2.1`. Establish `hxi : D.host.xi0 ≠ 0` using `GlobalTheory.DualPairCompare.embedding_xi_zero_ne_zero D`. Take `⟨lam, hlam, hψ, -⟩` from `GlobalTheory.StdUnn.shift_char_realPar D ψ hω.std θ hθ D.host.xi0 ⟨hxi, GlobalTheory.DualPairCheck.star_purely_imaginary_eq_neg D⟩`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hl : lam ≠ 0` using `fun h => by`. Rewrite `hlam` using `[h, map_zero]`. Conclude with `div_ne_zero (neg_ne_zero.2 hxi) hxi hlam.symm`. Establish `hCM` using `GlobalTheory.AdelicU.isCMExt_host D`. Take `⟨δ, hδ0, hδ⟩` from `skew_xi D`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `J : Matrix (Fin n) (Fin n) D.host.E` to `δ • 1`. Establish `hJ : ∀ i j, D.sp.cm.sig (J j i) = -J i j` using `fun i j => by`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using `[J, hδ]`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[J, h, Ne.symm h]`. Establish `hJ' : ∀ i j, D.sp.cm.sig (((1 : D.host.E)⁻¹ • J) j i) = -((1 : D.host.E)⁻¹ • J) i j`. Rewrite using `[inv_one, one_smul]`. Conclude with `hJ`. Establish `hJ0 : J.det ≠ 0` using `by simp [J, hδ0]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨T, K, hT, hK, -⟩` from `GlobalTheory.T.exists_witt_basis_compact_stabiliser D.host.F D.host.E D.sp.cm.sig hCM n 1 J _ one_ne_zero hJ0 rfl`. Establish `hG` using `gram_witt hJ hT`. Take `⟨κ, hκ⟩` from `GlobalTheory.T.witt_change_basis_unitary_iso D n _ T hG`. Take `⟨hP, ha⟩` from `GlobalTheory.T.siegel_parabolic_chart_levi_block D n _ T κ hκ J hT`. Establish `hK'` using `GlobalTheory.T.standard_compact_under_witt_chart D n _ T κ hκ K hK`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨H, hH⟩` from `GlobalTheory.StdUnn.exists_height D n`. Take `⟨hI, -⟩` from `height hH hP ha hK'`. Use `haveI : Module.Finite D.host.F D.host.E := Module.Finite.of_restrictScalars_finite ℚ _ _`. Set `ε` to `Module.finBasis D.host.F D.host.E`. Establish `key : ∀ B : HSp D, ResEta D χ B.rank → HasWeilModel D.sp.cm.sig (GlobalTheory.StdUnn.shift ψ lam) χ T K (-B.gram) fun R => False → R ≠ ⊥` using `fun B hB => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨μ, 𝓕, hμ⟩` from `GlobalTheory.MixModel.exists_isCovolOne D B.rank n`. Take `⟨ω, hW⟩` from `GlobalTheory.StdUnn.Inhab.weil_exists D n B ψ hω.std lam hl χ hω.hecT hB θ hθ μ 𝓕 hμ`. Take `⟨ι, hι, -⟩` from `GlobalTheory.T.unitary_group_conj_hermitian_automorphisms D B`. Take `⟨co, had, hco⟩` from `GlobalTheory.T.darboux_basis_adapted_coordinates D n B J _ T hT hG _ ε`. Use `letI : MeasurableSpace (Fin B.rank × Fin n × Fin (Module.finrank D.host.F D.host.E) → AF D.host.F) := borel _`.
+Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `haveI : BorelSpace (Fin B.rank × Fin n × Fin (Module.finrank D.host.F D.host.E) → AF D.host.F) := ⟨rfl⟩`. Take `⟨μ', hμ', hint⟩` from `GlobalTheory.T.tamagawa_measure_matrix_adeles D B.rank n _ ε μ 𝓕 hμ`. Take `⟨om, hom⟩` from `GlobalTheory.T.weil_representation_seesaw_schwartz D n B _ χ θ hθ μ 𝓕 hμ ω hW _ _ ε ι κ`. Conclude with `⟨_, inferInstance, co, had, inferInstance, inferInstance, μ', hμ', om, formulas hθ hW hT hG hκ hι hco hint hom, False.elim⟩`. Take `⟨b, hb⟩` from `exists_compl_space D V t`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hres : ResEta D χ (V.rank + (t + t))` using `resEta_parity hω.resT (by omega)`. Establish `h2` using `key (hsum V { GlobalTheory.OrthSumSp.hypSp D t with frame := b }) hres`. Rewrite `h2` using `[hb]`. Take `⟨w, -, hw⟩` from `exists_isWeylElt (GlobalTheory.SiegelSet.sigma_sigma hCM) one_ne_zero hJ' rfl hT`. Conclude with `⟨hCM, unramified_host D, _, hψ, 1, -V.gram, J, _, one_ne_zero, isHermND_neg_gram V, aniso_neg_gram han, hJ', rfl, T, hT, χ, hω.hecT, GlobalTheory.LFun.resEtaPow_of_resEta D.host.F D.host.E hCM.2.2.1 χ V.rank hω.resT, K, hK, hI, ⟨w, hw⟩, (existsUnique_isNormN hCM one_ne_zero hJ' h …`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem complMet_of (D : D7) (V : HSp D) (han : IsAniso V) (t : ℕ) : ComplMet D.sp.cm.sig V.rank t False := by
   let n := V.rank + t
@@ -177,7 +177,7 @@ theorem complMet_of (D : D7) (V : HSp D) (han : IsAniso V) (t : ℕ) : ComplMet 
     (existsUnique_isNormN hCM one_ne_zero hJ' hJ0 rfl).exists, key V hω.resT, h2⟩
 
 /- English proof (translation)
-Take `⟨D⟩` from `GlobalTheory.Mem.nonempty_record`. Use `⟨D.host.F, D.host.E, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, D.sp.cm.sig, fun m t => ?_⟩` and prove the remaining obligations. Take `⟨-, V, -, rfl, h⟩` from `GlobalTheory.AnisoStdModel.ranks D 0 m`. Conclude with `complMet_of D V h t`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_complMet : ∃ (F E : Type) (_ : Field F) (_ : NumberField F) (_ : Field E) (_ : NumberField E) (_ : Algebra F E)
     (σ : E →ₐ[F] E), ∀ m t, ComplMet σ m t False := by

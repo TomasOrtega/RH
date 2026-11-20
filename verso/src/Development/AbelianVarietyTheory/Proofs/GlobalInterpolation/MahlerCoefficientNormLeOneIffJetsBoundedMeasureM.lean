@@ -13,7 +13,7 @@ namespace GlobalTheory.MomCrit
 variable {q : ℕ} [Fact q.Prime] {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V]
 
 /- English proof (translation)
-The claim follows from `(continuous_algebraMap ℚ_[q] ℂ_[q]).comp continuous_subtype_val`.
+A detailed English derivation is pending.
 -/
 theorem continuous_zc' : Continuous (zc : ℤ_[q] → ℂ_[q]) :=
   (continuous_algebraMap ℚ_[q] ℂ_[q]).comp continuous_subtype_val
@@ -24,7 +24,7 @@ def evalFn (ι : ℂ ≃+* ℂ_[q]) {κ : Type} (P : MvPolynomial κ ℂ) : C(κ
       (continuous_pi fun i => continuous_zc'.comp (continuous_apply i))⟩
 
 /- English proof (translation)
-Use `show MvPolynomial.eval _ _ = _`. Rewrite using `[MvPolynomial.eval_map]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evalFn_apply (ι : ℂ ≃+* ℂ_[q]) {κ : Type} (P : MvPolynomial κ ℂ) (a : κ → ℤ_[q]) :
     evalFn ι P a = MvPolynomial.eval₂ (ι : ℂ →+* ℂ_[q]) (fun i => zc (a i)) P := by
@@ -32,29 +32,29 @@ theorem evalFn_apply (ι : ℂ ≃+* ℂ_[q]) {κ : Type} (P : MvPolynomial κ �
   rw [MvPolynomial.eval_map]
 
 /- English proof (translation)
-Use extensionality with `a`. Simplify using `[evalFn_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem evalFn_add (ι : ℂ ≃+* ℂ_[q]) {κ : Type} (P Q : MvPolynomial κ ℂ) :
     evalFn ι (P + Q) = evalFn ι P + evalFn ι Q := by
   ext a; simp [evalFn_apply]
 
 /- English proof (translation)
-Use extensionality with `a`. Simplify using `[evalFn_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem evalFn_zero (ι : ℂ ≃+* ℂ_[q]) {κ : Type} : evalFn ι (0 : MvPolynomial κ ℂ) = 0 := by
   ext a; simp [evalFn_apply]
 
 /- English proof (translation)
-Use extensionality with `a`. Simplify using `[evalFn_apply, MvPolynomial.smul_eq_C_mul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem evalFn_smul (ι : ℂ ≃+* ℂ_[q]) {κ : Type} (c : ℂ) (P : MvPolynomial κ ℂ) :
     evalFn ι (c • P) = ι c • evalFn ι P := by
   ext a; simp [evalFn_apply, MvPolynomial.smul_eq_C_mul]
 
 /- English proof (translation)
-Establish `h1 : ((Finsupp.toMultiset e).map F).prod = e.prod fun k n => F k ^ n`. Rewrite using `[Finsupp.toMultiset_map, Finsupp.prod_toMultiset, Finsupp.prod_mapDomain_index]`. Introduce `_`. Simplify using the standard rewrite rules. Introduce `_ _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[pow_add]`. Rewrite using `[← h1, hm, Multiset.map_coe, Multiset.prod_coe, List.map_ofFn, List.prod_ofFn]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem prod_pow_eq_list {σ M : Type} [CommMonoid M] (F : σ → M) (e : σ →₀ ℕ) {n : ℕ} (f : Fin n → σ)
     (hm : Finsupp.toMultiset e = (↑(List.ofFn f) : Multiset σ)) :
@@ -68,7 +68,7 @@ theorem prod_pow_eq_list {σ M : Type} [CommMonoid M] (F : σ → M) (e : σ →
   rfl
 
 /- English proof (translation)
-Rewrite using `[evalFn_apply, MvPolynomial.eval₂_monomial, map_one, one_mul]`. Conclude with `prod_pow_eq_list (fun i => zc (a i)) u j hu`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evalFn_monomial (ι : ℂ ≃+* ℂ_[q]) {κ : Type} (u : κ →₀ ℕ) {k : ℕ} (j : Fin k → κ)
     (hu : Finsupp.toMultiset u = (↑(List.ofFn j) : Multiset κ)) (a : κ → ℤ_[q]) :
@@ -80,7 +80,7 @@ def jetL {κ : Type} [Fintype κ] (v : κ → V) (G : V → ℂ) : MvPolynomial 
   (MvPolynomial.basisMonomials κ ℂ).constr ℂ (monoJet v G)
 
 /- English proof (translation)
-Use `(MvPolynomial.basisMonomials κ ℂ).constr_basis ℂ (monoJet v G) u` as an intermediate fact. Rewrite `this` using `[MvPolynomial.coe_basisMonomials]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem jetL_monomial {κ : Type} [Fintype κ] (v : κ → V) (G : V → ℂ) (u : κ →₀ ℕ) :
     jetL v G (MvPolynomial.monomial u 1) = monoJet v G u := by
@@ -88,9 +88,9 @@ theorem jetL_monomial {κ : Type} [Fintype κ] (v : κ → V) (G : V → ℂ) (u
   rwa [MvPolynomial.coe_basisMonomials] at this
 
 /- English proof (translation)
-Use `conv_lhs => rw [P.as_sum]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Establish `e : MvPolynomial.monomial m (P.coeff m) = P.coeff m • MvPolynomial.monomial m (1 : ℂ)`. Rewrite using `[MvPolynomial.smul_monomial, smul_eq_mul, mul_one]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, map_smul, jetL_monomial, smul_eq_mul]`.
+A detailed English derivation is pending.
 -/
 theorem jetL_apply {κ : Type} [Fintype κ] (v : κ → V) (G : V → ℂ) (P : MvPolynomial κ ℂ) :
     jetL v G P = ∑ m ∈ P.support, P.coeff m * monoJet v G m := by
@@ -109,14 +109,14 @@ def Bp {κ : Type} [Fintype κ] (n : κ → ℕ) : MvPolynomial κ ℂ :=
   ∏ i, Polynomial.aeval (MvPolynomial.X i : MvPolynomial κ ℂ) (descPochhammer ℂ (n i))
 
 /- English proof (translation)
-Rewrite using `[jetL_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mahler_eq_jetL {κ : Type} [Fintype κ] (v : κ → V) (G : V → ℂ) (n : κ → ℕ) :
     mahler v G n = jetL v G (Bm n) := by
   rw [jetL_apply]; rfl
 
 /- English proof (translation)
-Rewrite using `[Bm, Bp, Finset.prod_mul_distrib, MvPolynomial.smul_eq_C_mul, ← mul_assoc, ← map_prod, ← map_mul, ← Finset.prod_mul_distrib]`. Establish `: ∀ i, ((n i).factorial : ℂ) * ((n i).factorial : ℂ)⁻¹ = 1` using `fun i => mul_inv_cancel₀ (by exact_mod_cast (n i).factorial_ne_zero)`. Simplify using `[this]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem Bp_eq {κ : Type} [Fintype κ] (n : κ → ℕ) : Bp n = (∏ i, ((n i).factorial : ℂ)) • Bm n := by
   rw [Bm, Bp, Finset.prod_mul_distrib, MvPolynomial.smul_eq_C_mul, ← mul_assoc, ← map_prod, ← map_mul,
@@ -126,13 +126,13 @@ theorem Bp_eq {κ : Type} [Fintype κ] (n : κ → ℕ) : Bp n = (∏ i, ((n i).
   simp [this]
 
 /- English proof (translation)
-Establish `h1 : MvPolynomial.eval₂Hom (ι : ℂ →+* ℂ_[q]) (fun i => zc (a i)) (Polynomial.aeval (MvPolynomial.X i : MvPolynomial κ ℂ) (descPochhammer ℂ k)) = ∏ r ∈ Finset.range k, (zc (a i) - r)`. Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih => rw [descPochhammer_succ_right, map_mul, map_mul, ih, Finset.prod_range_succ]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Establish `h2 : ∀ k : ℕ, (descPochhammer ℤ k).smeval (a i) = ∏ r ∈ Finset.range k, (a i - r)`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[descPochhammer_succ_right, Polynomial.smeval_mul, ih, Finset.prod_range_succ]`. Simplify using `[Polynomial.smeval_sub, Polynomial.smeval_natCast]`. Establish `h3` using `Ring.descPochhammer_eq_factorial_smul_choose (a i) k`. Rewrite `h3` using `[h2]`. Establish `h4` using `congrArg ((algebraMap ℚ_[q] ℂ_[q]).comp PadicInt.Coe.ringHom) h3`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h1]`. Simplify using `only [map_prod, map_sub, map_natCast, map_nsmul] at h4`. Rewrite `h4` using `[nsmul_eq_mul]`. Conclude with `h4`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eval_descPochhammer (ι : ℂ ≃+* ℂ_[q]) {κ : Type} (a : κ → ℤ_[q]) (i : κ) (k : ℕ) :
     MvPolynomial.eval₂Hom (ι : ℂ →+* ℂ_[q]) (fun i => zc (a i))
@@ -160,9 +160,9 @@ theorem eval_descPochhammer (ι : ℂ ≃+* ℂ_[q]) {κ : Type} (a : κ → ℤ
   exact h4
 
 /- English proof (translation)
-Rewrite using `[evalFn_apply, ← MvPolynomial.coe_eval₂Hom, Bm, map_prod]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, eval_descPochhammer, MvPolynomial.eval₂Hom_C]`. Establish `: ((n i).factorial : ℂ_[q]) ≠ 0` using `by exact_mod_cast (n i).factorial_ne_zero`. Establish `e : (ι : ℂ →+* ℂ_[q]) (((n i).factorial : ℂ)⁻¹) = ((n i).factorial : ℂ_[q])⁻¹` using `by simp`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e, ← mul_assoc, inv_mul_cancel₀ this, one_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem evalFn_Bm (ι : ℂ ≃+* ℂ_[q]) {κ : Type} [Fintype κ] (n : κ → ℕ) (a : κ → ℤ_[q]) :
     evalFn ι (Bm n) a = ∏ i, GlobalTheory.MultiMahler.binomC (n i) (a i) := by
@@ -175,9 +175,9 @@ theorem evalFn_Bm (ι : ℂ ≃+* ℂ_[q]) {κ : Type} [Fintype κ] (n : κ → 
   rfl
 
 /- English proof (translation)
-Proceed by induction on `P using MvPolynomial.induction_on' with`. Consider the case `monomial u c`. Establish `e : MvPolynomial.monomial u c = c • MvPolynomial.monomial u (1 : ℂ)`. Rewrite using `[MvPolynomial.smul_monomial, smul_eq_mul, mul_one]`. Rewrite using `[e, map_smul, jetL_monomial, smul_eq_mul, map_mul, evalFn_smul, ContinuousLinearMap.map_smul, smul_eq_mul]`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Conclude with `h _ (fun l => u.toMultiset.toList.get l) _ (evalFn_monomial ι u _ (by rw [List.ofFn_get, Multiset.coe_toList]))`. Consider the case `add P Q hP hQ => rw [map_add, map_add, hP, hQ, evalFn_add, map_add]`.
+Reduce the equality to equality of the corresponding arguments. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem isMom_eval (ι : ℂ ≃+* ℂ_[q]) {κ : Type} [Fintype κ] {v : κ → V} {G : V → ℂ}
     {μ : C(κ → ℤ_[q], ℂ_[q]) →L[ℂ_[q]] ℂ_[q]} (h : IsMom ι v G μ) (P : MvPolynomial κ ℂ) :
@@ -194,13 +194,13 @@ theorem isMom_eval (ι : ℂ ≃+* ℂ_[q]) {κ : Type} [Fintype κ] {v : κ →
   | add P Q hP hQ => rw [map_add, map_add, hP, hQ, evalFn_add, map_add]
 
 /- English proof (translation)
-Proceed by induction on `k using Nat.strong_induction_on with`. Consider the case `_ k ih`. Establish `hd : descPochhammer ℂ k - Polynomial.X ^ k ∈ Polynomial.degreeLT ℂ k`. Rewrite using `[Polynomial.mem_degreeLT]`. Break down `Nat.eq_zero_or_pos k with rfl | hk` into its components or cases.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using the standard rewrite rules. Establish `h1` using `monic_descPochhammer ℂ k`. Establish `h2 : (descPochhammer ℂ k).degree = k`. Rewrite using `[Polynomial.degree_eq_natDegree h1.ne_zero, descPochhammer_natDegree]`. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite `hd` using `[Polynomial.degreeLT_eq_span_X_pow]`. Establish `hle : Submodule.span ℂ ↑(Finset.image (fun n => (Polynomial.X : Polynomial ℂ) ^ n) (Finset.range k)) ≤ Submodule.span ℂ (Set.range fun j => descPochhammer ℂ j)`. Rewrite using `[Submodule.span_le]`. Introduce `p hp`. Simplify using `only [Finset.coe_image, Finset.coe_range, Set.mem_image, Set.mem_Iio] at hp`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Take `⟨j, hj, rfl⟩` from `hp`. Conclude with `ih j hj`. Use `Submodule.sub_mem _ (Submodule.subset_span (Set.mem_range_self (f := fun j => descPochhammer ℂ j) k)) (hle hd)` as an intermediate fact. Simplify using `using this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem X_pow_mem_span (k : ℕ) :
     (Polynomial.X : Polynomial ℂ) ^ k ∈ Submodule.span ℂ (Set.range fun j => descPochhammer ℂ j) := by
@@ -229,13 +229,11 @@ theorem X_pow_mem_span (k : ℕ) :
     simpa using this
 
 /- English proof (translation)
-Establish `hX : ∀ k, ∃ c : ℕ →₀ ℂ, (c.sum fun j a => a • descPochhammer ℂ j) = Polynomial.X ^ k` using `fun k => (Finsupp.mem_span_range_iff_exists_finsupp).1 (X_pow_mem_span k)`. Use `choose c hc using hX`. Establish `e1 : MvPolynomial.monomial m (1 : ℂ) = ∏ i, ∑ j ∈ (c (m i)).support, c (m i) j • Polynomial.aeval (MvPolynomial.X i : MvPolynomial κ ℂ) (descPochhammer ℂ j)`. Rewrite using `[MvPolynomial.monomial_eq, MvPolynomial.C_1, one_mul, Finsupp.prod_fintype _ _ (fun i => pow_zero _)]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `congrArg (Polynomial.aeval (MvPolynomial.X i : MvPolynomial κ ℂ)) (hc (m i))` as an intermediate fact. Rewrite `this` using `[Polynomial.aeval_X_pow, Finsupp.sum, map_sum]`. Rewrite using `[← this]`. Simplify using `only [map_smul]`. Rewrite using `[e1, Finset.prod_univ_sum]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.sum_mem _ fun p _ => ?_` and prove the remaining obligations. Establish `e2 : ∏ i, c (m i) (p i) • Polynomial.aeval (MvPolynomial.X i : MvPolynomial κ ℂ) (descPochhammer ℂ (p i)) = (∏ i, c (m i) (p i)) • Bp p`. Repeatedly rewrite using `[MvPolynomial.smul_eq_C_mul]`. Rewrite using `[Finset.prod_mul_distrib, ← map_prod, Bp]`. Rewrite using `[e2]`.
-
-Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span (Set.mem_range_self p))`.
+Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem monomial_mem_span {κ : Type} [Fintype κ] (m : κ →₀ ℕ) :
     MvPolynomial.monomial m (1 : ℂ) ∈ Submodule.span ℂ (Set.range (Bp (κ := κ))) := by
@@ -261,9 +259,9 @@ theorem monomial_mem_span {κ : Type} [Fintype κ] (m : κ →₀ ℕ) :
   exact Submodule.smul_mem _ _ (Submodule.subset_span (Set.mem_range_self p))
 
 /- English proof (translation)
-Proceed by induction on `hP using Submodule.span_induction with`. Consider the case `mem x hx => obtain ⟨n, rfl⟩ := hx`. Conclude with `h n`. Consider the case `zero => simp [evalFn_zero]`. Consider the case `add x y _ _ hx hy => rw [evalFn_add, map_add, hx, hy, map_add, map_add]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `smul c x _ hx => rw [evalFn_smul, map_smul, hx, map_smul, smul_eq_mul, smul_eq_mul, map_mul]`.
+A detailed English derivation is pending.
 -/
 theorem eq_of_mem_span (ι : ℂ ≃+* ℂ_[q]) {κ : Type} [Fintype κ] {v : κ → V} {G : V → ℂ}
     (μ : C(κ → ℤ_[q], ℂ_[q]) →L[ℂ_[q]] ℂ_[q]) (h : ∀ n, μ (evalFn ι (Bp n)) = ι (jetL v G (Bp n)))
@@ -276,9 +274,9 @@ theorem eq_of_mem_span (ι : ℂ ≃+* ℂ_[q]) {κ : Type} [Fintype κ] {v : κ
   | smul c x _ hx => rw [evalFn_smul, map_smul, hx, map_smul, smul_eq_mul, smul_eq_mul, map_mul]
 
 /- English proof (translation)
-Establish `p : ((List.ofFn j).map v).Perm ((Finsupp.toMultiset m).toList.map v)`. Use `List.Perm.map _ ?_` and prove the remaining obligations. Rewrite using `[← Multiset.coe_eq_coe, Multiset.coe_toList, hm]`. Establish `h1` using `ReciprocityTheory.ChartRestriction.G.PullbackSections.lD_perm (hG.contDiffAt (x := 0)) p`. Rewrite `h1` using `[ReciprocityTheory.ChartRestriction.G.PullbackSections.lD_eq G 0 _ (n := k) (by simp), ReciprocityTheory.ChartRestriction.G.PullbackSections.lD_eq G 0 _ (n := (Finsupp.toMultiset m).toList.length) (by simp)]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Unfold `monoJet`. Use `Eq.trans (congrArg _ (funext fun i => ?_)) (h1.trans (congrArg _ (funext fun i => ?_)))` and prove the remaining obligations. Simplify using `[List.get_eq_getElem]`. Simplify using `[List.get_eq_getElem]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem jet_eq_monoJet {κ : Type} [Fintype κ] {v : κ → V} {G : V → ℂ} (hG : ContDiff ℂ ⊤ G) {k : ℕ}
     (j : Fin k → κ) (m : κ →₀ ℕ) (hm : Finsupp.toMultiset m = ↑(List.ofFn j)) :
@@ -299,21 +297,21 @@ end GlobalTheory.MomCrit
 namespace GlobalTheory.MomCrit
 
 /- English proof (translation)
-Introduce `q _ ι V _ _ κ _ v G hG`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨μ, hμ, h⟩ n`. Rewrite using `[mahler_eq_jetL, isMom_eval ι h]`. Use `(μ.le_opNorm _).trans (mul_le_one₀ hμ (norm_nonneg _) ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(ContinuousMap.norm_le _ zero_le_one).2 fun a => ?_` and prove the remaining obligations. Rewrite using `[evalFn_Bm, norm_prod]`. Conclude with `Finset.prod_le_one (fun _ _ => norm_nonneg _) fun i _ => GlobalTheory.MultiMahler.norm_binomC_le _ _`. Introduce `h`. Set `e` to `Fintype.equivFin κ`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `c : (Fin (Fintype.card κ) → ℕ) → ℂ_[q]` to `fun n' => ι (mahler v G (n' ∘ e))`. Take `⟨μ', hnorm, hsum⟩` from `GlobalTheory.MultiMahler.exists_measure_of_bounded_moments q (Fintype.card κ) c ⟨1, fun n' => h _⟩`. Establish `hμ' : ‖μ'‖ ≤ 1` using `(hnorm 1 zero_le_one).2 fun n' => h _`. Set `r : C(Fin (Fintype.card κ) → ℤ_[q], κ → ℤ_[q])` to `⟨fun a i => a (e i), by fun_prop⟩`. Set `T : C(κ → ℤ_[q], ℂ_[q]) →ₗ[ℂ_[q]] ℂ_[q]` to `{ toFun := fun F => μ' (F.comp r) map_add' := fun F F' => by rw [ContinuousMap.add_comp, map_add] map_smul' := fun s F => by rw [ContinuousMap.smul_comp, map_smul]; rfl }`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hT : ∀ F, ‖T F‖ ≤ 1 * ‖F‖` using `fun F => by`. Use `(μ'.le_opNorm _).trans (mul_le_mul hμ' ?_ (norm_nonneg _) zero_le_one)` and prove the remaining obligations. Conclude with `(ContinuousMap.norm_le _ (norm_nonneg _)).2 fun a => F.norm_coe_le_norm _`. Use `⟨T.mkContinuous 1 hT, LinearMap.mkContinuous_norm_le _ zero_le_one _, ?_⟩` and prove the remaining obligations. Establish `hB : ∀ n, T.mkContinuous 1 hT (evalFn ι (Bm n)) = ι (mahler v G n)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition.
 
-Introduce `n`. Express the relevant statement in the definitionally equal form `μ' ((evalFn ι (Bm n)).comp r) = _`. Establish `hF : ∀ a, ((evalFn ι (Bm n)).comp r) a = ∏ i', GlobalTheory.MultiMahler.binomC (n (e.symm i')) (a i')`. Introduce `a`. Rewrite using `[ContinuousMap.comp_apply, evalFn_Bm, ← Equiv.prod_comp e.symm]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[r]`. Use `(hsum _ _ hF).unique ?_` and prove the remaining obligations. Use `hasSum_single (f := fun m : Fin (Fintype.card κ) → ℕ => c m * ∏ i, (fwdDiff (1 : ℤ_[q]))^[m i] (GlobalTheory.MultiMahler.binomC (q := q) (n (e.symm i))) 0) (n ∘ e.symm) ?_ using 1` and compare the differences between its conclusion and the goal. Simplify using `[GlobalTheory.MultiMahler.fwdDiff_binomC, c, Function.comp_assoc]`. Introduce `m hm`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨i, hi⟩` from `Function.ne_iff.mp hm`. Rewrite using `[Finset.prod_eq_zero (Finset.mem_univ i) (by rw [GlobalTheory.MultiMahler.fwdDiff_binomC, if_neg (by simpa using hi)]), mul_zero]`. Establish `hP` using `eq_of_mem_span ι (v := v) (G := G) (T.mkContinuous 1 hT) (fun n => by`. Rewrite using `[Bp_eq, evalFn_smul, map_smul, hB, mahler_eq_jetL, map_smul, smul_eq_mul, smul_eq_mul, map_mul])`. Introduce `k j f hf`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmm : Finsupp.toMultiset (Multiset.toFinsupp (↑(List.ofFn j) : Multiset κ)) = ↑(List.ofFn j)` using `Multiset.toFinsupp_toMultiset _`. Establish `hfe : f = evalFn ι (MvPolynomial.monomial (Multiset.toFinsupp (↑(List.ofFn j) : Multiset κ)) 1)` using `ContinuousMap.ext fun a => by rw [hf, evalFn_monomial ι _ j hmm]`. Rewrite using `[hfe, hP _ (monomial_mem_span _), jetL_monomial, jet_eq_monoJet hG j _ hmm]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem momInt_iff_norm_mahler_le : ∀ (q : ℕ) [Fact q.Prime] (ι : ℂ ≃+* ℂ_[q]) (V : Type) [NormedAddCommGroup V]
     [NormedSpace ℂ V] (κ : Type) [Fintype κ] (v : κ → V) (G : V → ℂ), ContDiff ℂ ⊤ G →

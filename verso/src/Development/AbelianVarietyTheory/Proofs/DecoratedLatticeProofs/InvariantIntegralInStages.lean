@@ -22,11 +22,11 @@ variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Secon
   [MeasurableSpace G] [BorelSpace G]
 
 /- English proof (translation)
-Establish `hb : Measurable fun x => (β x : ℝ≥0∞)` using `hβ.1.coe_nnreal_ennreal`. Establish `hmul : Measurable fun p : G × T => (p.2 : G) * p.1` using `(measurable_subtype_coe.comp measurable_snd).mul measurable_fst`. Establish `hmul' : Measurable fun p : G × T => ((p.2⁻¹ : T) : G) * p.1` using `(measurable_subtype_coe.comp measurable_snd.inv).mul measurable_fst`. Establish `e1 : ∀ x, (β x : ℝ≥0∞) * ∫⁻ t : T, H (t * x) ∂μT = ∫⁻ t : T, β x * H (t * x) ∂μT` using `fun x => (lintegral_const_mul' _ _ ENNReal.coe_ne_top).symm`. Rewrite using `[lintegral_congr e1, lintegral_lintegral_swap ((hb.comp measurable_fst).mul (hH.comp hmul)).aemeasurable]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : ∀ t : T, ∫⁻ x, β x * H (t * x) ∂μ = ∫⁻ x, β ((t⁻¹ : T) * x) * H x ∂μ` using `fun t => by`. Rewrite using `[← lintegral_mul_left_eq_self (μ := μ) (fun x => β ((t⁻¹ : T) * x) * H x) t]`. Simplify using the standard rewrite rules. Rewrite using `[lintegral_congr e2, ← lintegral_lintegral_swap (f := fun x (t : T) => β ((t⁻¹ : T) * x) * H x) ((hb.comp hmul').mul (hH.comp measurable_fst)).aemeasurable]`. Use `lintegral_congr fun x => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[lintegral_mul_const _ (f := fun t : T => (β ((t⁻¹ : T) * x) : ℝ≥0∞)) (hb.comp (hmul'.comp measurable_prodMk_left)), lintegral_inv_eq_self (μ := μT) (fun t : T => (β (t * x) : ℝ≥0∞)), hβ.2, one_mul]`.
+Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem lintegral_eq_cutoff_inner {T : Subgroup G} {μ : Measure G} {μT : Measure T}
     [SFinite μ] [μ.IsMulLeftInvariant] [SFinite μT] [μT.IsInvInvariant]
@@ -51,9 +51,9 @@ theorem lintegral_eq_cutoff_inner {T : Subgroup G} {μ : Measure G} {μT : Measu
     lintegral_inv_eq_self (μ := μT) (fun t : T => (β (t * x) : ℝ≥0∞)), hβ.2, one_mul]
 
 /- English proof (translation)
-Establish `hm : Measurable (fun p : U × R₀ => (p.2 : G) * j p.1)` using `(measurable_subtype_coe.comp measurable_snd).mul (hj.comp measurable_fst)`. Establish `key : ∀ F : G → ℝ≥0∞, Measurable F → ∫⁻ y, F y ∂(μR.map Subtype.val) = ∫⁻ y, F y ∂((ν.prod μ₀).map (fun p : U × R₀ => (p.2 : G) * j p.1))`. Introduce `F hF`. Rewrite using `[lintegral_map hF measurable_subtype_coe, lintegral_map hF hm, lintegral_prod (f := fun p : U × R₀ => F ((p.2 : G) * j p.1)) (hF.comp hm).aemeasurable]`. Conclude with `hst F hF`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use extensionality with `A hA`. Rewrite using `[← lintegral_indicator_one hA, ← lintegral_indicator_one hA]`. Conclude with `key _ (measurable_one.indicator hA)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_val_eq_map_stages {R₀ R : Subgroup G} (μ₀ : Measure R₀) (μR : Measure R) [SFinite μ₀]
     {U : Type} [MeasurableSpace U] (ν : Measure U) {j : U → G} (hj : Measurable j)
@@ -73,31 +73,29 @@ theorem map_val_eq_map_stages {R₀ R : Subgroup G} (μ₀ : Measure R₀) (μR 
 end InductionInStages
 
 /- English proof (translation)
-Introduce `G _ _ _ _ _ _ _ _ μ _ R₀ R hR₀ hR μ₀ μR _ _ _ _ U _ ν _ j hj hst f hf hinv hint hz' z hz`. Take `⟨z', hz'⟩` from `hz'`. Establish `: LocallyCompactSpace R₀` using `hR₀.locallyCompactSpace`. Establish `: LocallyCompactSpace R` using `hR.locallyCompactSpace`. Establish `: SecondCountableTopology R₀` using `TopologicalSpace.Subtype.secondCountableTopology (R₀ : Set G)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: SecondCountableTopology R` using `TopologicalSpace.Subtype.secondCountableTopology (R : Set G)`. Take `⟨β₀, -, hβ₀⟩` from `exists_isCosetCutoff (μT := μ₀) hR₀`. Take `⟨β, -, hβ⟩` from `exists_isCosetCutoff (μT := μR) hR`. Take `⟨F, hF⟩ : ∃ F : G → ℂ, F = fun x => (β₀ x : ℝ) • f x` from `⟨_, rfl⟩`. Establish `hFm : Measurable F` using `by rw [hF]; exact hβ₀.1.coe_nnreal_real.smul hf`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hc0 : ∀ y, Integrable (fun r : R₀ => (β₀ (r * y) : ℝ)) μ₀ ∧ ∫ r : R₀, (β₀ (r * y) : ℝ) ∂μ₀ = 1` using `fun y => integrable_of_lintegral_eq_one (hβ₀.1.comp (measurable_subtype_coe.mul_const y)) (hβ₀.2 y)`. Establish `hFe : ∀ y, ∀ r : R₀, F (r * y) = (β₀ (r * y) : ℝ) • f y` using `fun y r => by`. Rewrite using `[hF]`. Use `show (β₀ (r * y) : ℝ) • f (r * y) = _`. Rewrite using `[hinv r r.2 y]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hFr : ∀ y, Integrable (fun r : R₀ => F (r * y)) μ₀ ∧ ∫ r : R₀, F (r * y) ∂μ₀ = f y` using `fun y => by`. Simplify using `only [hFe y]`. Conclude with `⟨(hc0 y).1.smul_const _, by rw [integral_smul_const, (hc0 y).2, one_smul]⟩`. Establish `hFn : ∀ y, ∫ r : R₀, ‖F (r * y)‖ ∂μ₀ = ‖f y‖` using `fun y => by`. Simplify using `only [hFe y, norm_smul, Real.norm_of_nonneg (NNReal.coe_nonneg _)]`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[integral_mul_const, (hc0 y).2, one_mul]`. Establish `hFn' : ∀ y, ∫⁻ r : R₀, ‖F (r * y)‖ₑ ∂μ₀ = ‖f y‖ₑ` using `fun y => by`. Establish `e : ∀ r : R₀, ‖F (r * y)‖ₑ = (β₀ (r * y) : ℝ≥0∞) * ‖f y‖ₑ` using `fun r => by`. Rewrite using `[hFe y r, enorm_smul]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[lintegral_congr e, lintegral_mul_const' _ _ enorm_ne_top, hβ₀.2, one_mul]`. Establish `hm : Measurable (fun p : U × R₀ => (p.2 : G) * j p.1)` using `(measurable_subtype_coe.comp measurable_snd).mul (hj.comp measurable_fst)`. Establish `hM` using `map_val_eq_map_stages μ₀ μR ν hj hst`. Establish `hP : ∀ h, Integrable ((fun y => F (y * h)) ∘ fun p : U × R₀ => (p.2 : G) * j p.1) (ν.prod μ₀)` using `fun h => by`. Use `(integrable_prod_iff ((hFm.comp (measurable_mul_const h)).comp hm).aestronglyMeasurable).2 ⟨?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `Eventually.of_forall fun u => ?_` and prove the remaining obligations. Simplify `(hFr (j u * h)).1` using `[Function.comp_def, mul_assoc]`. Establish `e : ∀ u, ∫ r : R₀, ‖((fun y => F (y * h)) ∘ fun p : U × R₀ => (p.2 : G) * j p.1) (u, r)‖ ∂μ₀ = ‖f (j u * h)‖` using `fun u => by simpa [Function.comp_def, mul_assoc] using hFn (j u * h)`. Conclude with `(hint h).norm.congr (Eventually.of_forall fun u => (e u).symm)`. Establish `hRint : ∀ h, Integrable (fun r : R => F (r * h)) μR` using `fun h => by`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hi : Integrable (fun y => F (y * h)) (μR.map Subtype.val)`. Rewrite using `[hM]`. Conclude with `(integrable_map_measure (hFm.comp (measurable_mul_const h)).aestronglyMeasurable hm.aemeasurable).2 (hP h)`. Conclude with `hi.comp_measurable measurable_subtype_coe`. Establish `hRval : ∀ h, ∫ r : R, F (r * h) ∂μR = ∫ u, f (j u * h) ∂ν` using `fun h => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e1 : ∫ r : R, F (r * h) ∂μR = ∫ y, F (y * h) ∂(μR.map Subtype.val)` using `(integral_map measurable_subtype_coe.aemeasurable (hFm.comp (measurable_mul_const h)).aestronglyMeasurable).symm`. Rewrite using `[e1, hM, integral_map (f := fun y => F (y * h)) hm.aemeasurable (hFm.comp (measurable_mul_const h)).aestronglyMeasurable]`. Establish `e2` using `integral_prod _ (hP h)`. Simplify using `only [Function.comp_def] at e2`. Rewrite using `[e2]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `integral_congr_ae (Eventually.of_forall fun u => ?_)` and prove the remaining obligations. Simplify `(hFr (j u * h)).2` using `[mul_assoc]`. Establish `hGint : Integrable F μ`. Use `⟨hFm.aestronglyMeasurable, ?_⟩` and prove the remaining obligations. Rewrite using `[hasFiniteIntegral_iff_enorm, lintegral_eq_cutoff_inner hβ hFm.enorm]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e : ∀ x, ∫⁻ r : R, ‖F (r * x)‖ₑ ∂μR = ∫⁻ u, ‖f (j u * x)‖ₑ ∂ν` using `fun x => by`. Rewrite using `[hst (fun y => ‖F (y * x)‖ₑ) (hFm.comp (measurable_mul_const x)).enorm]`. Use `lintegral_congr fun u => ?_` and prove the remaining obligations. Establish `h1` using `hFn' (j u * x)`. Simplify using `only [mul_assoc] at h1 ⊢`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h1`. Simplify using `only [e]`. Take `⟨hi, -⟩` from `hz'.cutoff hβ`. Use `lt_of_le_of_lt (le_of_eq (lintegral_congr fun x => ?_)) hi.2` and prove the remaining obligations. Rewrite using `[enorm_smul, ← ofReal_integral_norm_eq_lintegral_enorm (hint x)]`.
-
-Simplify using `[Real.enorm_of_nonneg (integral_nonneg fun _ => norm_nonneg _)]`. Rewrite using `[← ofReal_norm_eq_enorm, Complex.norm_real, Real.norm_of_nonneg (integral_nonneg fun _ => norm_nonneg _)]`. Establish `hq : IsQuotIntL1 μR μ (fun g => ∫ u, f (j u * g) ∂ν) (∫ x, F x ∂μ)` using `⟨F, hGint, hRint, fun h => (hRval h).symm, rfl⟩`. Conclude with `⟨F, hGint, fun h => (hFr h).1, fun h => (hFr h).2.symm, hz.unique hR hq⟩`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem invariant_integral_in_stages : ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [LocallyCompactSpace G] [SecondCountableTopology G] [T2Space G] [MeasurableSpace G] [BorelSpace G] (μ : Measure G) [μ.IsHaarMeasure] (R₀ R : Subgroup G), IsClosed (R₀ : Set G) → IsClosed (R : Set G) → ∀ (μ₀ : Measure R₀) (μR : Measure R), μ₀.IsHaarMeasure → μ₀.IsInvInvariant → μR.IsHaarMeasure → μR.IsInvInvariant → ∀ (U : Type) [MeasurableSpace U] (ν : Measure U) [SFinite ν] (j : U → G), Measurable j → (∀ F : G → ENNReal, Measurable F → ∫⁻ r : R, F r ∂μR = ∫⁻ u, ∫⁻ r : R₀, F (r * j u) ∂μ₀ ∂ν) → ∀ f : G → ℂ, Measurable f → (∀ r ∈ R₀, ∀ g, f (r * g) = f g) → (∀ g, Integrable (fun u => f (j u * g)) ν) → (∃ z', IsQuotIntL1 μR μ (fun g => ((∫ u, ‖f (j u * g)‖ ∂ν : ℝ) : ℂ)) z') → ∀ z, IsQuotIntL1 μR μ (fun g => ∫ u, f (j u * g) ∂ν) z → IsQuotIntL1 μ₀ μ f z := by
   intro G _ _ _ _ _ _ _ _ μ _ R₀ R hR₀ hR μ₀ μR _ _ _ _ U _ ν _ j hj hst f hf hinv hint hz' z hz

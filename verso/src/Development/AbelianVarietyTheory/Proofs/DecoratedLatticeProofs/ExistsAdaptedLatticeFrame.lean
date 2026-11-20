@@ -22,13 +22,11 @@ section Pure
 variable {R : Type} [CommRing R] (s : R →+* R) {n r m : ℕ} (J : Matrix (Fin n) (Fin n) R)
 
 /- English proof (translation)
-Use `set Δ : Matrix κ κ R := diagonal fun i => if ε i then (1 : R) else -1 with hΔ`. Establish `h1 : Δ * Δ = 1`. Rewrite using `[hΔ, diagonal_mul_diagonal, ← diagonal_one]`. Apply the tactic sequence `exact congrArg diagonal (funext fun i => by split_ifs <;> simp)`. Establish `h2 : Δ * (cT s A * J) * A = 1` using `by rw [Matrix.mul_assoc, hA, h1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : A * (Δ * (cT s A * J)) = 1` using `(Matrix.mul_eq_one_comm_of_card_eq _ _ _ (Fintype.card_congr e)).1 h2`. Generalize the expression as in `Δ * (cT s A * J) = B at h2 h3`. Establish `h4 : cT s B * cT s A = 1` using `by rw [← cT_mul, h3, cT_one]`. Use `⟨⟨A.submatrix id e.symm, B.submatrix e.symm id, ?_, ?_⟩, fun i => ε (e.symm i), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[submatrix_mul_equiv, h3, submatrix_id_id]`.
+Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(submatrix_mul _ _ _ id _ Function.bijective_id).symm.trans (by rw [h2, submatrix_one_equiv])`. Use `congrArg (fun y => y.submatrix e.symm e.symm) hA` as an intermediate fact. Simplify using `only [hΔ, submatrix_diagonal_equiv] at this`. Conclude with `this`. Express the relevant statement in the definitionally equal form `(cT s B).submatrix id e.symm * B.submatrix e.symm id * X = _`.
-
-Rewrite using `[submatrix_mul_equiv, submatrix_id_id, ← hM, Matrix.mul_assoc, ← Matrix.mul_assoc B, h2, Matrix.one_mul, ← h, ← hA, ← hN, Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc, h4, Matrix.one_mul]`.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_frame_of_sign {κ : Type} [Fintype κ] [DecidableEq κ] (e : κ ≃ Fin n) (A : Matrix (Fin n) κ R) (ε : κ → Bool)
     {X Z : Matrix (Fin n) (Fin r) R} (M N : Matrix κ (Fin r) R)
@@ -56,13 +54,13 @@ theorem exists_frame_of_sign {κ : Type} [Fintype κ] [DecidableEq κ] (e : κ �
       ← hN, Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc, h4, Matrix.one_mul]
 
 /- English proof (translation)
-Establish `hΔ : (diagonal fun i => if Sum.elim (Sum.elim (fun _ : Fin r => true) fun _ : Fin r => false) ε i then (1 : R) else -1) = fromBlocks (fromBlocks 1 0 0 (-1)) 0 0 (diagonal fun i => if ε i then 1 else -1)`. Rewrite using `[← diagonal_one, diagonal_neg, fromBlocks_diagonal, fromBlocks_diagonal]`. Apply the tactic sequence `exact congrArg diagonal (funext fun i => by rcases i with (i | i) | i <;> rfl)`. Establish `hp : cT s (X + t • Y) = cT s X + t • cT s Y` using `by ext i j; simp [cT, hs]`. Establish `hm : cT s (X - t • Y) = cT s X - t • cT s Y` using `by ext i j; simp [cT, hs]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : cT s (fromCols (fromCols (X + t • Y) (X - t • Y)) I) = fromRows (fromRows (cT s X + t • cT s Y) (cT s X - t • cT s Y)) (cT s I)`. Apply the tactic sequence `rw [← hp, ← hm]; ext ((i | i) | i) j <;> rfl`. Establish `h1 : (t • 1 + t • 1 : Matrix (Fin r) (Fin r) R) = 1` using `by rw [← add_smul, ht, one_smul]`. Rewrite using `[Matrix.mul_assoc J]`. Use `exists_frame_of_sign s J (Fintype.equivFinOfCardEq (by simp [← hn]; ring)) (fromCols (fromCols (X + t • Y) (X - t • Y)) I) (Sum.elim (Sum.elim (fun _ => true) fun _ => false) ε) (fromRows (fromRows (t • 1) (t • 1)) 0) (fromRows (fromRows (t • 1) (-(t • 1))) 0) ?_ ?_ ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hΔ, hc, fromRows_mul _ _ J, fromRows_mul _ _ J, fromRows_mul_fromCols, fromRows_mul_fromCols, fromRows_mul, mul_fromCols]`. Simplify using `only [Matrix.add_mul, Matrix.sub_mul, Matrix.mul_add, Matrix.mul_sub, Matrix.smul_mul, Matrix.mul_smul, XX, YY, YX, XY, IX, IY, XI, YI, II, smul_zero, add_zero, zero_add, sub_zero, zero_sub, fromRows_zero, fromCols_zero, h1, sub_self, neg_add_cancel, add_neg_cancel, ← neg_add', s …`. Rewrite using `[fromCols_mul_fromRows, fromCols_mul_fromRows, ← Matrix.add_mul]`. Simplify using `[← add_smul, smul_add, ht]`. Rewrite using `[fromCols_mul_fromRows, fromCols_mul_fromRows, ← smul_eq_mul_diagonal]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : t • Y = (t * t) • Y + (t * t) • Y` using `by rw [← add_smul, ← mul_add, ht, mul_one]`. Simplify using `only [Matrix.mul_neg, Matrix.mul_smul, Matrix.mul_one, Matrix.mul_zero, add_zero, smul_add, smul_sub, smul_smul]`. Rewrite using `[h2]`. Normalize the expressions using the abelian group laws. Rewrite using `[hΔ, fromBlocks_mul_fromRows, fromBlocks_mul_fromRows]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -101,9 +99,9 @@ theorem exists_frame_hyp (hn : m + 2 * r = n) {X Y : Matrix (Fin n) (Fin r) R} {
     simp
 
 /- English proof (translation)
-Use `exists_frame_hyp s J hn (I := I * c) ε ht hs XX YY YX XY ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Rewrite using `[cT_mul, Matrix.mul_assoc (cT s c), Matrix.mul_assoc (cT s c), IX, Matrix.mul_zero]`. Rewrite using `[cT_mul, Matrix.mul_assoc (cT s c), Matrix.mul_assoc (cT s c), IY, Matrix.mul_zero]`. Rewrite using `[← Matrix.mul_assoc, XI, Matrix.zero_mul]`. Rewrite using `[← Matrix.mul_assoc, YI, Matrix.zero_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Matrix.mul_assoc, cT_mul, Matrix.mul_assoc (cT s c), Matrix.mul_assoc (cT s c), II, hc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_frame_hyp' (hn : m + 2 * r = n) {X Y : Matrix (Fin n) (Fin r) R} {I : Matrix (Fin n) (Fin m) R}
     {G c : Matrix (Fin m) (Fin m) R} (ε : Fin m → Bool) {t : R} (ht : t + t = 1) (hs : s t = t)
@@ -131,7 +129,7 @@ def imLat (P : Matrix (Fin n) (Fin m) E) (L : Submodule (𝓞 E) (Fin m → E)) 
 
 omit [NumberField E] in
 /- English proof (translation)
-The claim follows from `Submodule.apply_mem_span_image_of_mem_span P.mulVecLin (hL.span_eq_top ▸ Submodule.mem_top : u ∈ Submodule.span E (L : Set _))`.
+A detailed English derivation is pending.
 -/
 theorem mulVec_mem_span_imLat (P : Matrix (Fin n) (Fin m) E) {L : Submodule (𝓞 E) (Fin m → E)} (hL : Submodule.IsLattice E L)
     (u : Fin m → E) : P *ᵥ u ∈ Submodule.span E (imLat P L : Set (Fin n → E)) :=
@@ -139,14 +137,14 @@ theorem mulVec_mem_span_imLat (P : Matrix (Fin n) (Fin m) E) {L : Submodule (�
 
 omit [NumberField F] [NumberField E] in
 /- English proof (translation)
-Simplify using `[hE, Formalism.UG.hform, dotProduct, mulVec, Finset.mul_sum, mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hE_eq (x y : Fin n → E) : hE σ J x y = (fun i => σ (x i)) ⬝ᵥ J *ᵥ y := by
   simp [hE, Formalism.UG.hform, dotProduct, mulVec, Finset.mul_sum, mul_assoc]
 
 omit [NumberField F] [NumberField E] in
 /- English proof (translation)
-Establish `e : (fun i => σ ((P *ᵥ u) i)) = (fun i => σ (u i)) ᵥ* cT (σ : E →+* E) P`. Use extensionality with `i`. Simplify using `[cT, mulVec, vecMul, dotProduct, mul_comm]`. Rewrite using `[hE_eq, hE_eq, mulVec_mulVec, h, e, ← dotProduct_mulVec, mulVec_mulVec]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem hE_mulVec {P : Matrix (Fin n) (Fin m) E} {G : Matrix (Fin m) (Fin m) E} {Q : Matrix (Fin m) (Fin n) E}
     (h : G * Q = cT (σ : E →+* E) P * J) (u : Fin m → E) (y : Fin n → E) : hE σ J (P *ᵥ u) y = hE σ G u (Q *ᵥ y) := by
@@ -156,16 +154,16 @@ theorem hE_mulVec {P : Matrix (Fin n) (Fin m) E} {G : Matrix (Fin m) (Fin m) E} 
 
 omit [NumberField F] [NumberField E] in
 /- English proof (translation)
-Simplify using `[hE, Formalism.UG.hform, add_mul, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hE_add (x x' y : Fin n → E) : hE σ J (x + x') y = hE σ J x y + hE σ J x' y := by
   simp [hE, Formalism.UG.hform, add_mul, Finset.sum_add_distrib]
 
 omit [NumberField E] in
 /- English proof (translation)
-Use `⟨Pi.single i (u i), fun j _ => ?_, ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Simplify using `using hu j trivial`. Simplify using `[h]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 
-Use extensionality with `j`. Simplify using `[mul_comm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem smul_col_mem {X : Matrix (Fin n) (Fin r) E} {u : Fin r → E} (hu : u ∈ stdLattice E r) (i : Fin r) :
     u i • Xᵀ i ∈ imLat X (stdLattice E r) := by
@@ -176,15 +174,15 @@ theorem smul_col_mem {X : Matrix (Fin n) (Fin r) E} {u : Fin r → E} (hu : u �
   · ext j; simp [mul_comm]
 
 /- English proof (translation)
-Use `set L := imLat X (stdLattice E r) ⊔ imLat I L₀ ⊔ imLat Y (stdLattice E r)`. Establish `l1 : imLat X (stdLattice E r) ≤ L` using `le_sup_left.trans le_sup_left`. Establish `l2 : imLat I L₀ ≤ L` using `le_sup_right.trans le_sup_left`. Establish `l3 : imLat Y (stdLattice E r) ≤ L` using `le_sup_right`. Establish `hz : ∀ z : Fin n → E, z = X *ᵥ ((cT (σ : E →+* E) Y * J) *ᵥ z) + I *ᵥ (Q *ᵥ z) + Y *ᵥ ((cT (σ : E →+* E) X * J) *ᵥ z)` using `fun z => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mulVec_mulVec, mulVec_mulVec, mulVec_mulVec, ← add_mulVec, ← add_mulVec, h1, one_mulVec]`. Establish `hm : ∀ z, z ∈ L ↔ (cT (σ : E →+* E) Y * J) *ᵥ z ∈ stdLattice E r ∧ Q *ᵥ z ∈ L₀ ∧ (cT (σ : E →+* E) X * J) *ᵥ z ∈ stdLattice E r` using `fun z => by`. Use `⟨fun h => ?_, fun h => hz z ▸ add_mem (add_mem (l1 ⟨_, h.1, rfl⟩) (l2 ⟨_, h.2.1, rfl⟩)) (l3 ⟨_, h.2.2, rfl⟩)⟩` and prove the remaining obligations. Take `⟨_, h', _, ⟨c, hc, rfl⟩, rfl⟩` from `Submodule.mem_sup.1 h`. Take `⟨_, ⟨a, ha, rfl⟩, _, ⟨b, hb, rfl⟩, rfl⟩` from `Submodule.mem_sup.1 h'`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Simplify using `only [LinearMap.restrictScalars_apply, mulVecLin_apply, mulVec_add, mulVec_mulVec, XX, YY, YX, XY, XI, YI, QX, QY, QI, zero_mulVec, one_mulVec, add_zero, zero_add]`. Conclude with `⟨ha, hb, hc⟩`. Establish `hs : Submodule.IsLattice E (stdLattice E r)` using `isLattice_stdLattice`. Establish `hl : Submodule.IsLattice E L` using `⟨((hs.fg.map _).sup (hL.fg.map _)).sup (hs.fg.map _), eq_top_iff.2 fun z _ => hz z ▸ add_mem (add_mem (Submodule.span_mono l1 (mulVec_mem_span_imLat X hs _)) (Submodule.span_mono l2 (mulVec_mem_span_imLat I hL _))) (Submodule.span_mono l3 (mulVec_mem_span_imLat Y hs _))⟩`. Establish `d0` using `(SelfDual.forall_isSelfDualAt_iff hG hL).1 hd`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `d1` using `(SelfDual.forall_isSelfDualAt_iff (by simp) hs).1 (isSelfDualAt_stdLattice_one σ)`. Establish `eX` using `hE_mulVec σ J (Matrix.one_mul (cT (σ : E →+* E) X * J))`. Establish `eY` using `hE_mulVec σ J (Matrix.one_mul (cT (σ : E →+* E) Y * J))`. Establish `eI` using `hE_mulVec σ J hQ`. Use `⟨L, hl, (SelfDual.forall_isSelfDualAt_iff hJ hl).2 fun y => ⟨fun hy x hx => ?_, fun h => (hm y).2 ⟨(d1 _).2 fun u hu => eY u y ▸ h _ (l3 ⟨u, hu, rfl⟩), (d0 _).2 fun u hu => eI u y ▸ h _ (l2 ⟨u, hu, rfl⟩), (d1 _).2 fun u hu => eX u y ▸ h _ (l1 ⟨u, hu, rfl⟩)⟩⟩, fun z h i => ⟨l1 (sm …` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hx`, `hy` using `[hm]`. Rewrite using `[hz x, hE_add, hE_add, eX, eI, eY]`. Conclude with `add_mem (add_mem ((d1 _).1 hy.2.2 _ hx.1) ((d0 _).1 hy.2.1 _ hx.2.1)) ((d1 _).1 hy.1 _ hx.2.2)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_lattice_hyp (hJ : J.det ≠ 0) {G : Matrix (Fin m) (Fin m) E} (hG : G.det ≠ 0)
     {L₀ : Submodule (𝓞 E) (Fin m → E)} (hL : Submodule.IsLattice E L₀) (hd : ∀ v, IsSelfDualAt σ G L₀ v)
@@ -228,9 +226,9 @@ theorem exists_lattice_hyp (hJ : J.det ≠ 0) {G : Matrix (Fin m) (Fin m) E} (hG
   exact add_mem (add_mem ((d1 _).1 hy.2.2 _ hx.1) ((d0 _).1 hy.2.1 _ hx.2.1)) ((d1 _).1 hy.1 _ hx.2.2)
 
 /- English proof (translation)
-Take `⟨c, ε, hc⟩` from `Frames.exists_arch_frame h hG w`. Establish `up : ∀ {k l : ℕ} {A : Matrix (Fin n) (Fin k) E} {B : Matrix (Fin n) (Fin l) E} {C : Matrix (Fin k) (Fin l) E}, cT (σ : E →+* E) A * J * B = C → (cT (sigR _ σ) (A.map (inclR (F` using `F) w.Completion)) * JR w.Completion J : Matrix (Fin k) (Fin n) (w.Completion ⊗[F] E)) * B.map (inclR (F := F) w.Completion) = C.map (inclR (F := F) w.Completion) := fun h => by`. Rewrite using `[← h, Matrix.map_mul, Matrix.map_mul]`. Both sides reduce to the same expression. Establish `z : ∀ {k l : ℕ}, (0 : Matrix (Fin k) (Fin l) E).map (inclR (F` using `F) w.Completion) = 0 := Matrix.map_zero _ (map_zero _)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `o : (1 : Matrix (Fin r) (Fin r) E).map (inclR (F` using `F) w.Completion) = 1 := Matrix.map_one _ (map_zero _) (map_one _)`. Use `exists_frame_hyp' _ _ hn (I := I.map (inclR (F := F) w.Completion)) ε (by rw [← map_add, ← map_one (inclR (F := F) w.Completion)]; norm_num) ?_ ((up XX).trans z) ((up YY).trans z) ((up YX).trans o) ((up XY).trans o) ((up IX).trans z) ((up IY).trans z) ((up XI).trans z) ((up YI).t …` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `inclR (F := F) w.Completion (σ (2⁻¹ : E)) = _`. Rewrite using `[map_inv₀, map_ofNat]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_arch_frame_hyp (h : IsCMExt F E σ) (hn : m + 2 * r = n) {G : Matrix (Fin m) (Fin m) E} (hG : IsHermND σ G)
     {X Y : Matrix (Fin n) (Fin r) E} {I : Matrix (Fin n) (Fin m) E}

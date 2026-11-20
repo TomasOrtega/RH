@@ -33,9 +33,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7}
 
 /- English proof (translation)
-Distinguish the cases in `hV : V.SigOK`. Take `⟨μ, hμ, -⟩` from `GlobalTheory.T.existsUnique_normalizedHaarMeasure_adelicUnitary D V hV`. Take `⟨-, 𝓕, h𝓕⟩` from `GlobalTheory.T.adelicUnitary_unimodular_exists_fundamentalDomain D V μ hμ.1`. Conclude with `⟨(μ, 𝓕), ⟨hμ.1, h𝓕⟩, fun _ => ⟨hμ, h𝓕⟩⟩`. Take `⟨i1, i2, i3, i4, i5, -, -⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D V`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨-, 𝓕, h𝓕⟩` from `GlobalTheory.T.adelicUnitary_unimodular_exists_fundamentalDomain D V Measure.haar inferInstance`. Conclude with `⟨(Measure.haar, 𝓕), ⟨inferInstance, h𝓕⟩, fun h => absurd h hV⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_pair (V : HSp D) : ∃ m : Measure (GA D V) × Set (GA D V), IsQuot V m.1 m.2 ∧ (V.SigOK → IsVolPair D V m.1 m.2) := by
   by_cases hV : V.SigOK
@@ -51,12 +51,12 @@ def mu (V : HSp D) : Measure (GA D V) := (exists_pair V).choose.1
 def dom (V : HSp D) : Set (GA D V) := (exists_pair V).choose.2
 
 /- English proof (translation)
-The claim follows from `(exists_pair V).choose_spec.1`.
+A detailed English derivation is pending.
 -/
 theorem quot_mu (V : HSp D) : IsQuot V (mu V) (dom V) := (exists_pair V).choose_spec.1
 
 /- English proof (translation)
-Take `⟨i1, i2, i3, i4, i5, -, i7⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D V`. Establish `h0 : IsVolPair D V (mu V) (dom V)` using `(exists_pair V).choose_spec.2 hV`. Take `rfl : μ = mu V` from `(GlobalTheory.T.existsUnique_normalizedHaarMeasure_adelicUnitary D V hV).unique h.1 h0.1`. Use `haveI := h.1.1`. Conclude with `h0.2.setIntegral_eq h.2 fun γ g => hf γ γ.2 g`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem integral_mu {V : HSp D} (hV : V.SigOK) {μ 𝓕} (h : IsVolPair D V μ 𝓕) (f : GA D V → ℂ)
     (hf : ∀ γ ∈ GQ V, ∀ g, f (γ * g) = f g) : ∫ g in dom V, f g ∂(mu V) = ∫ g in 𝓕, f g ∂μ := by
@@ -69,18 +69,18 @@ theorem integral_mu {V : HSp D} (hV : V.SigOK) {μ 𝓕} (h : IsVolPair D V μ �
 variable {θ : InfF D}
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.Mem.AutSpace.mem_AFs_iff D θ hθ V φ.1).1 φ.2`.
+A detailed English derivation is pending.
 -/
 theorem aut (hθ : IsInfFam θ) {V : HSp D} (φ : AFs θ V) : IsAutFunSm θ V φ.1 :=
   (GlobalTheory.Mem.AutSpace.mem_AFs_iff D θ hθ V φ.1).1 φ.2
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.Mem.AutSpace.mem_AFs_iff D`.
+A detailed English derivation is pending.
 -/
 theorem formSub (D : D7) : FormSub D := GlobalTheory.Mem.AutSpace.mem_AFs_iff D
 
 /- English proof (translation)
-The claim follows from `(mem_CuspS (formSub D) hθ).1 φ.2`.
+A detailed English derivation is pending.
 -/
 theorem cuspF (hθ : IsInfFam θ) {V : HSp D} (φ : CuspS θ V) : IsCuspForm θ V φ.1 := (mem_CuspS (formSub D) hθ).1 φ.2
 
@@ -111,9 +111,9 @@ theorem petForm_apply (hP : PetInt D) (hθ : IsInfFam θ) (V : HSp D) (φ F) :
     petForm hP hθ V φ F = ∫ g in dom V, star (φ.1 g) * F.1 g ∂(mu V) := rfl
 
 /- English proof (translation)
-Distinguish the cases in `hι : HSpace.IsIsomEmb B A ι`. Take `⟨s, -, hs, hq⟩` from `GlobalTheory.T.exists_continuous_adelicUnitaryEmbedding D A B ι hι`. Use `⟨intForm ((mu B).restrict (dom B)) _ _ s id fun φ F => hT θ hθ A B ι hι _ _ (quot_mu B) s (fun h => (hs h _).2 rfl) _ _ (aut hθ φ) (cuspF hθ F), ?_⟩` and prove the remaining obligations. Introduce `hB _ μ 𝓕 hμ s' hs' φ F`. Take `rfl : s' = s` from `funext fun h => (hs h _).1 (hs' h)`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `integral_mu hB hμ (fun h => star (φ.1 (s h)) * F.1 h) fun γ hγ g => ?_` and prove the remaining obligations. Rewrite using `[map_mul, (aut hθ φ).left _ (hq γ hγ), (cuspF hθ F).1.left γ hγ]`. Conclude with `⟨0, fun _ h => absurd h hι⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem exists_top (hT : TopInt D) (hθ : IsInfFam θ) (A B : HSp D) (ι : B.V →ₗ[D.host.E] A.V) :
     ∃ b : AFs θ A →ₗ⋆[ℂ] CuspS θ B →ₗ[ℂ] ℂ, B.SigOK → HSpace.IsIsomEmb B A ι → ∀ μ 𝓕, IsVolPair D B μ 𝓕 →
@@ -129,17 +129,17 @@ theorem exists_top (hT : TopInt D) (hθ : IsInfFam θ) (A B : HSp D) (ι : B.V �
   · exact ⟨0, fun _ h => absurd h hι⟩
 
 /- English proof (translation)
-Distinguish the cases in `h : admitted V W χ χ' ∧ V.SigOK`. Establish `k` using `fun Φ (F : CuspS θ V) => hL θ hθ ψ hψ Wf V W χ χ' h.1 _ _ (quot_mu V) Φ F.1 (cuspF hθ F)`. Use `⟨LinearMap.mk₂ ℂ (fun Φ F => ⟨_, Submodule.subset_span (k Φ F).2⟩) ?_ ?_ ?_ ?_, fun h' => absurd h h', ?_⟩` and prove the remaining obligations. Introduce `Φ Φ' F`. Use extensionality with `x`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Simplify using `only [Submodule.coe_add, Pi.add_apply]`. Rewrite using `[← integral_add ((k Φ F).1 x) ((k Φ' F).1 x)]`. Simplify using `[WeilFun.ker, add_mul]`. Introduce `c Φ F`. Use extensionality with `x`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Simplify using `only [Submodule.coe_smul, Pi.smul_apply]`. Rewrite using `[← integral_smul]`. Simplify using `[WeilFun.ker, mul_assoc]`. Introduce `Φ F F'`. Use extensionality with `x`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Simplify using `only [Submodule.coe_add, Pi.add_apply]`. Rewrite using `[← integral_add ((k Φ F).1 x) ((k Φ F').1 x)]`. Simplify using `[mul_add]`. Introduce `c Φ F`. Use extensionality with `x`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Simplify using `only [Submodule.coe_smul, Pi.smul_apply]`. Rewrite using `[← integral_smul]`. Simplify using `[mul_left_comm]`. Introduce `ha hV μ 𝓕 hμ Φ F x`. Use `integral_mu hV hμ (fun g => Wf.ker V W χ χ' Φ g x * F.1 g) fun γ hγ g => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `Wf.ker_left ha Φ hγ (one_mem (GQ W)) g x` as an intermediate fact. Rewrite `this` using `[one_mul]`. Rewrite using `[this, (cuspF hθ F).1.left γ hγ]`. Conclude with `⟨0, fun _ => rfl, fun h1 h2 => absurd ⟨h1, h2⟩ h⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem exists_lift (hL : LiftAut D) (hθ : IsInfFam θ) {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1))
     (Wf : WeilFun D ψ) (V W : HSp D) (χ χ' : IdC D) :
@@ -177,9 +177,9 @@ theorem exists_lift (hL : LiftAut D) (hθ : IsInfFam θ) {ψ : AddChar (AF D.hos
   · exact ⟨0, fun _ => rfl, fun h1 h2 => absurd ⟨h1, h2⟩ h⟩
 
 /- English proof (translation)
-Establish `e` using `Measure.isMulLeftInvariant_eq_smul μ μ'`. Use `set c := Measure.haarScalarFactor μ μ'`. Establish `k4 : IsFundamentalDomain Γ 𝓕' μ` using `k2.mono (by rw [e]; exact Measure.smul_absolutelyContinuous)`. Establish `h4 : μ 𝓕' = 1` using `(k4.measure_eq h2).trans h3`. Establish `hc : c = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h4` using `[e]`. Simplify `h4` using `[k3]`. Establish `: μ = μ'` using `by rw [e, hc, one_smul]`. Substitute `this` using the available equality. Conclude with `h2.setIntegral_eq k2 fun γ g => hf γ γ.2 g`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem integral_unit {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [MeasurableSpace G] [BorelSpace G]
     [LocallyCompactSpace G] [SecondCountableTopology G] (Γ : Subgroup G) [Countable Γ] {μ μ' : Measure G} {𝓕 𝓕' : Set G}
@@ -198,13 +198,13 @@ theorem integral_unit {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGr
   exact h2.setIntegral_eq k2 fun γ g => hf γ γ.2 g
 
 /- English proof (translation)
-Set `m : G ≃ᵐ G` to `c.toHomeomorph.toMeasurableEquiv`. Establish `k1 : (μ.map m).IsHaarMeasure` using `ContinuousMulEquiv.isHaarMeasure_map μ c`. Establish `hq : Measure.QuasiMeasurePreserving m.symm (μ.map m) μ` using `⟨m.symm.measurable, by rw [MeasurableEquiv.map_symm_map]⟩`. Set `e : Γ → Γ` to `fun γ => ⟨c.symm γ, (hc _).1 (by simpa using γ.2)⟩`. Establish `he : Function.Bijective e` using `⟨fun a b h => Subtype.ext (c.symm.injective (congrArg Subtype.val h)), fun b => ⟨⟨c b, (hc _).2 b.2⟩, Subtype.ext (by simp [e])⟩⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `k2 : IsFundamentalDomain Γ (m.symm ⁻¹' 𝓕) (μ.map m)`. Set `e'` to `Equiv.ofBijective e he`. Use `h2.preimage_of_equiv hq (e := e'.symm) e'.symm.bijective fun γ x => ?_` and prove the remaining obligations. Take `⟨δ, rfl⟩` from `e'.surjective γ`. Rewrite using `[Equiv.symm_apply_apply]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `map_mul c.symm (δ : G) x`. Establish `k3 : (μ.map m) (m.symm ⁻¹' 𝓕) = 1`. Rewrite using `[MeasurableEquiv.map_apply, ← h3]`. Use `congr 1`. Use extensionality with `x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[integral_unit Γ h1 h2 h3 k1 k2 k3 f hf, MeasurableEquiv.restrict_map, integral_map_equiv]`. Establish `: m ⁻¹' (m.symm ⁻¹' 𝓕) = 𝓕` using `by ext x; simp`. Rewrite using `[this]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem integral_aut {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [MeasurableSpace G] [BorelSpace G]
     [LocallyCompactSpace G] [SecondCountableTopology G] (Γ : Subgroup G) [Countable Γ] {μ : Measure G} {𝓕 : Set G}
@@ -233,11 +233,11 @@ theorem integral_aut {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGro
   rfl
 
 /- English proof (translation)
-Take `⟨i1, i2, i3, i4, i5, i6, i7⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D B`. Take `⟨K, hK, h⟩` from `(GlobalTheory.T.isotropic_unipotentRadicals_rational_cocompact D B ρ e he).1`. Use `haveI : DiscreteTopology (GQ B ⊓ NFlag B e : Subgroup (GA D B)) := DiscreteTopology.of_subset (s := (GQ B : Set (GA D B))) i6 (fun x hx => hx.1)`. Establish `h1 : IsClosed ((GQ B ⊓ NFlag B e : Subgroup (GA D B)) : Set (GA D B))` using `Subgroup.isClosed_of_discrete`. Establish `h2` using `h1.mul_right_of_isCompact (hK.image continuous_subtype_val)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `h2 using 1` and compare the differences between its conclusion and the goal. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Take `⟨γ, hγ, k, hk, e⟩` from `h ⟨x, hx⟩`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨γ, ⟨hγ, γ.2⟩, k, ⟨k, hk, rfl⟩, (congrArg Subtype.val e).symm⟩`. Introduce and unpack `⟨γ, hγ, _, ⟨k, -, rfl⟩, rfl⟩`. Conclude with `mul_mem hγ.2 k.2`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem isClosed_NFlag (B : HSp D) {ρ : ℕ} {e : Matrix (Fin B.rank) (Fin ρ) D.host.E} (he : IsIsoSub B e) :
     IsClosed (NFlag B e : Set (GA D B)) := by
@@ -257,7 +257,7 @@ theorem isClosed_NFlag (B : HSp D) {ρ : ℕ} {e : Matrix (Fin B.rank) (Fin ρ) 
     exact mul_mem hγ.2 k.2
 
 /- English proof (translation)
-Take `⟨i1, i2, i3, i4, i5, i6, i7⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D B`. Use `⟨(isClosed_NFlag B he).locallyCompactSpace, (inferInstance : SecondCountableTopology (NFlag B e : Set (GA D B))), inferInstance, ?_⟩` and prove the remaining obligations. Conclude with `Function.Injective.countable (f := fun γ : NFlagQ B e => (⟨γ.1.1, γ.2⟩ : GQ B)) fun a b h => Subtype.ext (Subtype.ext (congrArg (fun x : GQ B => (x : GA D B)) h))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem top_NFlag (B : HSp D) {ρ : ℕ} {e : Matrix (Fin B.rank) (Fin ρ) D.host.E} (he : IsIsoSub B e) :
     LocallyCompactSpace (NFlag B e) ∧ SecondCountableTopology (NFlag B e) ∧ BorelSpace (NFlag B e) ∧
@@ -280,7 +280,7 @@ variable {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) {A B : HSp
 include hψ hι
 
 /- English proof (translation)
-Introduce `γ hγ n` and use `by obtain ⟨h1, h2, -, -⟩ := GlobalTheory.T.besselCharacter_generic_character_laws D ψ hψ A B ι hι d rw [h1, h2 γ hγ, one_mul, Subgroup.coe_mul, mul_assoc, hF (γ : GA D B) hγ]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem inv_integrand {F : GA D B → ℂ} (hF : ∀ γ ∈ GQ B, ∀ g, F (γ * g) = F g) (g : GA D B) :
     ∀ γ ∈ NFlagQ B d.e, ∀ n : NFlag B d.e,
@@ -290,7 +290,7 @@ theorem inv_integrand {F : GA D B → ℂ} (hF : ∀ γ ∈ GQ B, ∀ g, F (γ *
   rw [h1, h2 γ hγ, one_mul, Subgroup.coe_mul, mul_assoc, hF (γ : GA D B) hγ]
 
 /- English proof (translation)
-Take `⟨-, -, -, -, i5, -, -⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D B`. Take `⟨j1, j2, j3, j4⟩` from `top_NFlag B d.e_iso`. Conclude with `integral_unit _ h1 h2 h3 k1 k2 k3 _ (inv_integrand hψ hι d hF g)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem coef_eq {ν ν' 𝓝 𝓝'} (h1 : ν.IsHaarMeasure) (h2 : IsFundamentalDomain (NFlagQ B d.e) 𝓝 ν) (h3 : ν 𝓝 = 1)
     (k1 : ν'.IsHaarMeasure) (k2 : IsFundamentalDomain (NFlagQ B d.e) 𝓝' ν') (k3 : ν' 𝓝' = 1)
@@ -301,11 +301,11 @@ theorem coef_eq {ν ν' 𝓝 𝓝'} (h1 : ν.IsHaarMeasure) (h2 : IsFundamentalD
   exact integral_unit _ h1 h2 h3 k1 k2 k3 _ (inv_integrand hψ hι d hF g)
 
 /- English proof (translation)
-Take `⟨-, -, -, -, i5, -, -⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D B`. Take `⟨j1, j2, j3, j4⟩` from `top_NFlag B d.e_iso`. Take `⟨-, -, -, h4⟩` from `GlobalTheory.T.besselCharacter_generic_character_laws D ψ hψ A B ι hι d`. Set `c : NFlag B d.e ≃ₜ* NFlag B d.e` to `{ toFun := fun n => ⟨δ⁻¹ * n * δ⁻¹⁻¹, (h4 _ _ e2 n n.2).1⟩ invFun := fun n => ⟨δ * n * δ⁻¹, (h4 _ _ e1 n n.2).1⟩ left_inv := fun n => Subtype.ext (by simp [mul_assoc]) right_inv := fun n => Subtype.ext (by simp [mul_assoc]) map_mul' := fun a b => Subtype.ext (by simp [mul_assoc]) …`. Establish `hc : ∀ n, c n ∈ NFlagQ B d.e ↔ n ∈ NFlagQ B d.e` using `fun n => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `δ⁻¹ * (n : GA D B) * δ⁻¹⁻¹ ∈ GQ B ↔ (n : GA D B) ∈ GQ B`. Rewrite using `[inv_inv, Subgroup.mul_mem_cancel_right _ hδ, Subgroup.mul_mem_cancel_left _ (inv_mem hδ)]`. Unfold `coef`. Use `Eq.trans ?_ (integral_aut _ h1 h2 h3 c hc _ (inv_integrand hψ hι d hF g))` and prove the remaining obligations. Use `congr 1`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `n`. Express the relevant statement in the definitionally equal form `_ = F (δ⁻¹ * (n : GA D B) * δ⁻¹⁻¹ * g) * star (besChar ψ d (δ⁻¹ * (n : GA D B) * δ⁻¹⁻¹))`. Rewrite using `[(h4 _ _ e2 n n.2).2, inv_inv, mul_assoc, mul_assoc, hF _ (inv_mem hδ)]`.
+Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem coef_left {ν 𝓝} (h1 : ν.IsHaarMeasure) (h2 : IsFundamentalDomain (NFlagQ B d.e) 𝓝 ν) (h3 : ν 𝓝 = 1)
     {F : GA D B → ℂ} (hF : ∀ γ ∈ GQ B, ∀ g, F (γ * g) = F g) {δ : GA D B} (hδ : δ ∈ GQ B) {γ γ' : GA D A}
@@ -335,23 +335,21 @@ theorem coef_left {ν 𝓝} (h1 : ν.IsHaarMeasure) (h2 : IsFundamentalDomain (N
 end Bessel
 
 /- English proof (translation)
-Distinguish the cases in `hι : HSpace.IsIsomEmb A B ι`. Use `swap`. Conclude with `⟨0, fun _ h => absurd h hι⟩`. Distinguish the cases in `hN : ∃ (ν : Measure (NFlag B d.e)) (𝓝 : Set (NFlag B d.e)), ν.IsHaarMeasure ∧ IsFundamentalDomain (NFlagQ B d.e) 𝓝 ν ∧ ν 𝓝 = 1`. Use `swap`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨0, fun _ _ _ _ _ _ _ _ _ _ ν 𝓝 h1 h2 h3 => absurd ⟨ν, 𝓝, h1, h2, h3⟩ hN⟩`. Take `⟨ν, 𝓝, h1, h2, h3⟩` from `hN`. Take `⟨s, -, hs, hq⟩` from `GlobalTheory.T.exists_continuous_adelicUnitaryEmbedding D B A ι hι`. Establish `k` using `fun (φ : CuspS θ A) (F : CuspS θ B) => hB θ hθ ψ hψ A B ι hι d _ _ (quot_mu A) ν 𝓝 h1 h2 s (fun h => (hs h _).2 rfl) φ.1 F.1 (cuspF hθ φ).1 (cuspF hθ F) (Or.inr (cuspF hθ φ).2)`. Set `b : CuspS θ A →ₗ⋆[ℂ] CuspS θ B →ₗ[ℂ] ℂ` to `LinearMap.mk₂'ₛₗ (starRingEnd ℂ) (RingHom.id ℂ) (fun φ F => ∫ h in dom A, ∫ n in 𝓝, star (φ.1 h) * F.1 ((n : GA D B) * s h * (d.y : GA D B)) * star (besChar ψ d (n : GA D B)) ∂ν ∂(mu A)) (fun φ φ' F => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← integral_add (k φ F).2 (k φ' F).2]`. Use `congr 1`. Use function extensionality and compare the values at `h`. Rewrite using `[← integral_add ((k φ F).1 h) ((k φ' F).1 h)]`. Simplify using `[add_mul])`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use the proof step `(fun c φ F => by`. Simplify using `only [← integral_smul]`. Simplify using `[mul_assoc])`. Use the proof step `(fun φ F F' => by`. Rewrite using `[← integral_add (k φ F).2 (k φ F').2]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Use function extensionality and compare the values at `h`. Rewrite using `[← integral_add ((k φ F).1 h) ((k φ F').1 h)]`. Simplify using `[add_mul, mul_add])`. Use the proof step `(fun c φ F => by`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [← integral_smul]`. Use `integral_congr_ae (.of_forall fun h => integral_congr_ae (.of_forall fun n => ?_))` and prove the remaining obligations. Simplify using `only [Submodule.coe_smul, Pi.smul_apply, smul_eq_mul, RingHom.id_apply]`. Use the proof step `ring)`. Take `⟨p, hp⟩` from `(Submodule.inclusion (CuspS_le θ A)).exists_leftInverse_of_injective (LinearMap.ker_eq_bot.2 (Submodule.inclusion_injective _))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨b.comp p, fun hA _ μ 𝓕 hμ s' hs' φ F hφ ν' 𝓝' k1 k2 k3 => ?_⟩` and prove the remaining obligations. Take `rfl : s' = s` from `funext fun h => (hs h _).1 (hs' h)`. Establish `hφ' : φ.1 ∈ CuspS θ A` using `hφ.elim (fun h => by rw [CuspS_eq_of_aniso θ h]; exact φ.2) id`. Establish `e : p φ = ⟨φ.1, hφ'⟩` using `LinearMap.congr_fun hp ⟨φ.1, hφ'⟩`. Establish `hF` using `(cuspF hθ F).1.left`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `f1 : ∀ (ν : Measure (NFlag B d.e)) 𝓝 h, ∫ n in 𝓝, star (φ.1 h) * F.1 ((n : GA D B) * s h * (d.y : GA D B)) * star (besChar ψ d (n : GA D B)) ∂ν = star (φ.1 h) * coef ψ d ν 𝓝 F.1 (s h * d.y)` using `fun ν 𝓝 h => by`. Simplify using `only [coef, mul_assoc, integral_const_mul]`. Rewrite using `[LinearMap.comp_apply, e, one_mul]`. Express the relevant statement in the definitionally equal form `∫ h in dom A, ∫ n in 𝓝, star (φ.1 h) * F.1 ((n : GA D B) * s h * (d.y : GA D B)) * star (besChar ψ d (n : GA D B)) ∂ν ∂(mu A) = _`. Simplify using `only [f1]`.
-
-Simplify using `only [← coef_eq hψ hι d h1 h2 h3 k1 k2 k3 hF]`. Use `integral_mu hA hμ (fun h => star (φ.1 h) * coef ψ d ν 𝓝 F.1 (s h * d.y)) fun γ hγ g => ?_` and prove the remaining obligations. Rewrite using `[(aut hθ φ).left _ hγ, map_mul, mul_assoc, coef_left hψ hι d h1 h2 h3 hF (hq γ hγ) ((hs γ _).2 rfl) ((hs γ⁻¹ _).2 (map_inv s γ).symm)]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_bes (hB : BesInt D) (hθ : IsInfFam θ) {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1))
     {A B : HSp D} {ι : A.V →ₗ[D.host.E] B.V} (d : BesDat A B ι) :

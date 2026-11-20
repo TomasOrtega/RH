@@ -4,11 +4,11 @@ open Formalism.BasicNotions Formalism.BasicNotions.Loc ValuativeRel GroundTheory
 namespace GlobalTheory.PMon.Ram
 
 /- English proof (translation)
-Establish `e1` using `h1 1 le_rfl (by norm_num)`. Establish `e2` using `h1 2 (by norm_num) (by norm_num)`. Establish `e3` using `h1 3 (by norm_num) (by norm_num)`. Establish `e4` using `h1 4 (by norm_num) (by norm_num)`. Establish `e5` using `h1 5 (by norm_num) (by norm_num)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e6` using `h1 6 (by norm_num) (by norm_num)`. Establish `e7` using `h1 7 (by norm_num) (by norm_num)`. Rewrite `e1` using `[show k + 1 + 1 = k + 2 by ring]`. Rewrite `e2` using `[show k + 2 + 1 = k + 3 by ring]`. Rewrite `e3` using `[show k + 3 + 1 = k + 4 by ring]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e4` using `[show k + 4 + 1 = k + 5 by ring]`. Rewrite `e5` using `[show k + 5 + 1 = k + 6 by ring]`. Rewrite `e6` using `[show k + 6 + 1 = k + 7 by ring]`. Rewrite `e7` using `[show k + 7 + 1 = k + 8 by ring]`. Rewrite `e1`, `e2`, `e3`, `e4`, `e5`, `e6`, `e7` using `[min_le_iff]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -35,11 +35,11 @@ theorem doublingArith_step (V : ℕ → ℕ → ℕ) (E k : ℕ) (hE : 0 < E)
   omega
 
 /- English proof (translation)
-Introduce `V E T g hE h1 h2 h3 hg`. Establish `step : ∀ k, k ≤ 2 * T → V k (k + 1) < E ∧ 2 * V k (k + 1) ≤ V (k + 2) (k + 3)` using `fun k hk => doublingArith_step V E k hE (h1 k hk) (h2 k hk) (h3 k)`. Establish `ind : ∀ i, i ≤ T → 2 ^ i * g ≤ V (2 * i) (2 * i + 1)`. Introduce `i`. Proceed by induction on `i with`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero => intro _`. Simplify using `using hg`. Consider the case `succ n ih`. Introduce `hn`. Establish `hs` using `(step (2 * n) (by omega)).2`.
+Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `ih'` using `ih (by omega)`. Rewrite using `[show 2 * (n + 1) = 2 * n + 2 by ring, show 2 * n + 2 + 1 = 2 * n + 3 by ring, pow_succ]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `lt_of_le_of_lt (ind T le_rfl) (step (2 * T) le_rfl).1`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem doublingArith : ∀ (V : ℕ → ℕ → ℕ) (E T g : ℕ), 0 < E →
     (∀ k ≤ 2 * T, ∀ j, 1 ≤ j → j + 1 ≤ 8 → min (2 * V k (k + j)) (V k (k + j) + E) ≤ V k (k + j + 1)) →

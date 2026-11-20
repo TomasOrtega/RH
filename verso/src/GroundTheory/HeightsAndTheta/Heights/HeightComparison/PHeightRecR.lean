@@ -17,11 +17,11 @@ variable {ι : Type} [Fintype ι] [DecidableEq ι] {n : ι → ℕ}
 omit [DecidableEq ι] in
 
 /- English proof (translation)
-Use `conv_lhs => rw [s.as_sum]`. Use `conv_rhs => rw [s.as_sum, eval₂_sum]`. Rewrite using `[map_sum, map_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun m hm ↦ ?_` and prove the remaining obligations. Establish `hmon : ∏ p ∈ m.support, (X p.1 : MvPolynomial ι Ω) ^ m p = ∏ k, X k ^ a k`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.prod_subset (Finset.subset_univ m.support) (fun p _ hp ↦ by`. Rewrite using `[Finsupp.notMem_support_iff.mp hp, pow_zero]), Fintype.prod_sigma]`. Use `Finset.prod_congr rfl fun k _ ↦ ?_` and prove the remaining obligations. Use `show ∏ i, (X k : MvPolynomial ι Ω) ^ m ⟨k, i⟩ = _`. Rewrite using `[Finset.prod_pow_eq_pow_sum, hs m hm k]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[Geo.mConeMap, aeval_monomial, eval₂_monomial, Finsupp.prod, Finsupp.prod]`. Simplify using `only [mul_pow, Finset.prod_mul_distrib, hmon, map_mul, map_prod, map_pow, eq_intCast, map_intCast]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem mConeMap_of_isMultiHomog {Ω : Type*} [Field Ω] (y : Coord n → Ω)
     (s : MvPolynomial (Coord n) ℤ) (a : ι → ℕ) (hs : Geo.IsMultiHomog (ι := blockIdx n) s a) :
@@ -43,9 +43,9 @@ theorem mConeMap_of_isMultiHomog {Ω : Type*} [Field Ω] (y : Coord n → Ω)
   ring
 
 /- English proof (translation)
-Introduce `h`. Apply `hW` to reduce the goal to its premises. Establish `e : eval₂ (Int.castRingHom (AlgebraicClosure ℚ)) (flatCone x) s = algebraMap (coordField x) (AlgebraicClosure ℚ) (evalCone (coordVec x) s)`. Rewrite using `[← evalCone_map]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[orbitIdeal, Geo.mCoordIdeal, RingHom.mem_ker, mConeMap_of_isMultiHomog _ s a hs, e, h, map_zero, map_zero, zero_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem evalCone_coordVec_ne_zero (x : Cone n (AlgebraicClosure ℚ)) (s : MvPolynomial (Coord n) ℤ)
     (a : ι → ℕ) (hs : Geo.IsMultiHomog (ι := blockIdx n) s a) (hW : s ∉ orbitIdeal x) :
@@ -60,15 +60,15 @@ theorem evalCone_coordVec_ne_zero (x : Cone n (AlgebraicClosure ℚ)) (s : MvPol
     map_zero, map_zero, zero_mul]
 
 /- English proof (translation)
-Introduce `ι _ _ _ n I A x s hx hs`. Take `⟨a, _, hsa, hsW⟩` from `id hs`. Establish `ht : evalCone (coordVec x) s ≠ 0` using `evalCone_coordVec_ne_zero x s a hsa hsW`. Establish `e1 : Geo.recR I (orbitIdeal x) (Fin.elim0 : Fin 0 → Geo.HermLine (blockIdx n)) A.toGeo s = (∑ᶠ V ∈ Geo.divSupp (orbitIdeal x) s, (Geo.multAt (orbitIdeal x ⊔ Ideal.span {s}) V : ℝ) * ((Geo.geoNum (ι` using `blockIdx n) 0 V Fin.elim0 : ℝ) * Real.log (Geo.charOf V))) - Geo.arInt (orbitIdeal x) s A.toGeo (Fin.elim0 : Fin 0 → Geo.HermLine (blockIdx n)) := by`. Unfold `Geo.recR`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `congr 1`. Use `finsum_mem_congr rfl fun V hV' ↦ ?_` and prove the remaining obligations. Rewrite using `[if_neg (hV ι n A x s hx hs V hV')]`. Use `congr 4`. Use function extensionality and compare the values at `j`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `j.elim0`. Establish `hpos : ∀ σ : coordField x →+* ℂ, 0 < A.metric (fun k i ↦ σ (coordVec x k i))` using `fun σ ↦ A.metric_pos _ (blockNonzero_sigma hx σ)`. Establish `e2 : ∀ σ : coordField x →+* ℂ, Real.log (‖evalCone (fun k i ↦ σ (coordVec x k i)) s‖ / A.metric (fun k i ↦ σ (coordVec x k i))) = Real.log ‖σ (evalCone (coordVec x) s)‖ - Real.log (A.metric (fun k i ↦ σ (coordVec x k i)))` using `fun σ ↦ by`. Rewrite using `[evalCone_map, Real.log_div (norm_ne_zero_iff.mpr ((map_ne_zero σ).mpr ht)) (hpos σ).ne']`. Establish `hsupp1 : (Function.support fun v : FinitePlace (coordField x) ↦ finiteTerm A v (coordVec x)).Finite` using `finite_support_height A x hx`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsupp2 : (Function.support fun v : FinitePlace (coordField x) ↦ Real.log (v (evalCone (coordVec x) s))).Finite`. Use `Set.Finite.subset (FinitePlace.hasFiniteMulSupport ht) fun v hv h ↦ hv ?_` and prove the remaining obligations. Simplify using `only [h, Real.log_one]`. Establish `hprod` using `sum_log_places_eq_zero ht`. Rewrite using `[e1, hF ι n A x s hx hs, hA ι n A x s hx hs, finsum_sub_distrib hsupp1 hsupp2, Finset.sum_congr rfl fun σ _ ↦ e2 σ, Finset.sum_sub_distrib, height]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [finiteTerm]`. Take the linear combination `(-((Geo.degC (ι := blockIdx n) (orbitIdeal x) : ℝ) / Module.finrank ℚ (coordField x))) * hprod`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem HeightRecR.proof (hV : OrbitDivVertical.Statement) (hF : OrbitFiniteSum.Statement)
     (hA : OrbitArchSum.Statement) : HeightRecR.Statement := by

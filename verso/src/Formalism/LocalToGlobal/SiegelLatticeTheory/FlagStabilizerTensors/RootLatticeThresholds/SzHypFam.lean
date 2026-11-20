@@ -18,9 +18,9 @@ namespace Formalism.L2.SG.Pf.SzHypFam
 variable [Fact Formalism.L2.SG.Pf.SzHypFD.DsigHC] in
 
 /- English proof (translation)
-Introduce `τ`. Rewrite using `[Formalism.L2.SG.Pf.SzHypFD.vv_eq_vand hT hH hCL τ]`. Establish `h0 : 0 ≤ vand (lamSH D.R (D.hc τ))` using `Formalism.MainNotions.BridgeLemma.szh_vand_nonneg _ (Formalism.MainNotions.BridgeLemma.szh_anti hH τ)`. Establish `hL` using `Formalism.MainNotions.BridgeLemma.one_le_L large₂`. Establish `hx : 0 ≤ CV * D.R.k * D.R.m * large₂.sc.L` using `by positivity`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : 1 ≤ Real.exp (CV * D.R.k * D.R.m * large₂.sc.L)` using `Real.one_le_exp hx`. Prove the components needed by the constructor for the conclusion. Use the polynomial consequences of the given equalities and inequalities. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Use the polynomial consequences of the given equalities and inequalities. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem midVolumeChain_of_standingHypotheses {D : D7} {large₂ : SizeData₂ D} {C' Cl Cg cb Cu cT CT ep0 CV : ℝ} (hT : Ties D)
     (hH : StandingHypotheses D large₂ C' Cl Cg cb Cu cT CT) (hCL : 1 ≤ Cl * large₂.sc.L) (he : 0 ≤ ep0) (hCV : 0 ≤ CV) :
@@ -38,7 +38,7 @@ theorem midVolumeChain_of_standingHypotheses {D : D7} {large₂ : SizeData₂ D}
 variable [Fact Formalism.L2.SG.Pf.SzHypFD.DsigHC] in
 
 /- English proof (translation)
-Use `⟨0, fun x _ i hh => ?_⟩` and prove the remaining obligations. Establish `hL` using `Formalism.MainNotions.BridgeLemma.one_le_L (Fm.L x i)`. Conclude with `midVolumeChain_of_standingHypotheses (Fm.ties x i) hh.2.1 (by nlinarith) he hCV`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem familyTopBound_of_one_le_sCl {eps : ℝ} (Fm : FamP eps) (h1 : 1 ≤ sCl Fm) (C0 Cg cb Cu cT CT ep0 CV : ℝ) (he : 0 ≤ ep0)
     (hCV : 0 ≤ CV) : LocalBesselAndTopKernel.FamilyTopBound Fm C0 Cg cb Cu cT CT ep0 CV := by
@@ -49,7 +49,7 @@ theorem familyTopBound_of_one_le_sCl {eps : ℝ} (Fm : FamP eps) (h1 : 1 ≤ sCl
 variable [Fact Formalism.L2.SG.Pf.SzHypFD.DsigHC] in
 
 /- English proof (translation)
-The claim follows from `Formalism.MainNotions.BridgeLemma.family_critical_level_lower_bound Fm (ep0 := 1 / 3) (CV := 0) h40 (by norm_num) le_rfl (familyTopBound_of_one_le_sCl Fm (by linarith) C0 Cg cb Cu cT CT (1 / 3) 0 (by norm_num) le_rfl)`.
+A detailed English derivation is pending.
 -/
 theorem localSplitExponents_of_forty_le_sCl {eps : ℝ} (Fm : FamP eps) (h40 : 40 ≤ sCl Fm) (C0 Cg cb Cu cT CT : ℝ) :
     LocalBesselAndTopKernel.LocalSplitExponents Fm C0 Cg cb Cu cT CT 1 :=
@@ -59,7 +59,7 @@ theorem localSplitExponents_of_forty_le_sCl {eps : ℝ} (Fm : FamP eps) (h40 : 4
 variable [Fact Formalism.HermitianLattices.Ext.L3.HermRepUnram] in
 
 /- English proof (translation)
-Introduce `x i` and use `Formalism.MainNotions.BridgeLemma.mass_ratio_of_siegel_cm_unramified Formalism.HermitianLattices.Ext.L3.siegelMassRatio (Fm.D x i)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem secondSizeStatement_of_famP {eps : ℝ} (Fm : FamP eps) : LocalBesselAndTopKernel.SecondSizeStatement Fm := fun x i =>
   Formalism.MainNotions.BridgeLemma.mass_ratio_of_siegel_cm_unramified Formalism.HermitianLattices.Ext.L3.siegelMassRatio (Fm.D x i)
@@ -67,7 +67,7 @@ theorem secondSizeStatement_of_famP {eps : ℝ} (Fm : FamP eps) : LocalBesselAnd
 variable [Fact Formalism.HermitianLattices.Ext.L3.HermRepUnram] in
 
 /- English proof (translation)
-The claim follows from `Formalism.MainNotions.BridgeLemma.level_formula_family Fm C0 Cg cb Cu cT CT (secondSizeStatement_of_famP Fm) (Formalism.MainNotions.BridgeLemma.mass_two_bound_family_holds Fm) hR`.
+A detailed English derivation is pending.
 -/
 theorem familyBesselBoundFirstPart_of_ranksF {eps : ℝ} (Fm : FamP eps) {C0 Cg cb Cu cT CT : ℝ} (hR : PX.RanksF Fm C0 Cg cb Cu cT CT) :
     LocalBesselAndTopKernel.FamilyBesselBoundFirstPart Fm C0 Cg cb Cu cT CT :=
@@ -77,7 +77,7 @@ theorem familyBesselBoundFirstPart_of_ranksF {eps : ℝ} (Fm : FamP eps) {C0 Cg 
 variable [Fact Formalism.L2.SG.Pf.SzHypFD.DsigHC] [Fact Formalism.HermitianLattices.Ext.L3.HermRepUnram] in
 
 /- English proof (translation)
-The claim follows from `Formalism.MainNotions.BridgeLemma.level_frame_of_sizes Fm Cg cb Cu cT CT C0 1 (by linarith) (familyBesselBoundFirstPart_of_ranksF Fm hR) (localSplitExponents_of_forty_le_sCl Fm h40 C0 Cg cb Cu cT CT)`.
+A detailed English derivation is pending.
 -/
 theorem tFrame_of_ranks {eps : ℝ} (Fm : FamP eps) (h40 : 40 ≤ sCl Fm) {C0 Cg cb Cu cT CT : ℝ}
     (hR : PX.RanksF Fm C0 Cg cb Cu cT CT) : PX.TFrame Fm Cg cb Cu cT CT C0 :=
@@ -87,7 +87,7 @@ theorem tFrame_of_ranks {eps : ℝ} (Fm : FamP eps) (h40 : 40 ≤ sCl Fm) {C0 Cg
 def aSz (C0 : ℝ) : List ℝ → ℝ := fun _ => Real.exp (3 / 4) * (C0 * Real.exp 1)
 
 /- English proof (translation)
-Unfold `aSz`. Establish `a` using `Real.one_le_exp (show (0 : ℝ) ≤ 3 / 4 by norm_num)`. Establish `b` using `Real.one_le_exp (show (0 : ℝ) ≤ 1 by norm_num)`. Establish `c : 1 ≤ C0 * Real.exp 1` using `by nlinarith`. Use the polynomial consequences of the given equalities and inequalities.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem one_le_aSz {C0 : ℝ} (h1 : 1 ≤ C0) (l : List ℝ) : 1 ≤ aSz C0 l := by
   unfold aSz
@@ -99,9 +99,9 @@ theorem one_le_aSz {C0 : ℝ} (h1 : 1 ≤ C0) (l : List ℝ) : 1 ≤ aSz C0 l :=
 variable [Fact Formalism.HermitianLattices.Ext.L3.HermRepUnram] in
 
 /- English proof (translation)
-Establish `hb : LocalBesselAndTopKernel.TheoremThreePassage Fm C0 Cg cb Cu cT CT (Real.exp (3 / 4))` using `Formalism.MainNotions.BridgeLemma.family_critical_level_ratio Fm h40 le_rfl`. Establish `hc : LocalBesselAndTopKernel.FamilyLowestKType Fm C0 Cg cb Cu cT CT (Real.exp (3 / 4) * (C0 * Real.exp 1))` using `Formalism.MainNotions.BridgeLemma.family_level_ratio_bound Fm C0 Cg cb Cu cT CT _ _ le_rfl (familyBesselBoundFirstPart_of_ranksF Fm hR) hb`. Establish `hA` using `one_le_aSz h1 Fm.cOut`. Establish `hC1 : Real.exp (3 / 4) ≤ aSz C0 Fm.cOut`. Unfold `aSz`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `b` using `Real.one_le_exp (show (0 : ℝ) ≤ 1 by norm_num)`. Establish `c : 1 ≤ C0 * Real.exp 1` using `by nlinarith`. Use `Real.exp_pos (3 / 4)` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Conclude with `Formalism.MainNotions.sizes3bF Fm C0 Cg cb Cu cT CT _ _ _ (Real.exp_pos _).le hC1 le_rfl hb hc`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem sizes3b_of_ranks {eps : ℝ} (Fm : FamP eps) (h40 : 40 ≤ sCl Fm) {C0 Cg cb Cu cT CT : ℝ} (h1 : 1 ≤ C0)
     (hR : PX.RanksF Fm C0 Cg cb Cu cT CT) :
@@ -122,7 +122,7 @@ theorem sizes3b_of_ranks {eps : ℝ} (Fm : FamP eps) (h40 : 40 ≤ sCl Fm) {C0 C
 variable [Fact Formalism.HermitianLattices.Ext.L3.HermRepUnram] [Fact Formalism.L2.SG.Pf.SzHypFD.DsigHC] in
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Formalism.MainNotions.BridgeLemma.mass_ratio_of_siegel_cm_unramified Formalism.HermitianLattices.Ext.L3.siegelMassRatio D, hR, Formalism.MainNotions.BridgeLemma.sza_spl_of_data hD, fun τ => Formalism.L2.SG.Pf.SzHypFD.fdl_of_ties hT hH hCL τ⟩`.
+Supply the required witnesses or components.
 -/
 theorem szRowsAt_of_ties {D : D7} {large₂ : SizeData₂ D} {C0 C' Cl Cg cb Cu cT CT : ℝ} (hT : Ties D) (hD : StandingNumericalData D C0)
     (hH : StandingHypotheses D large₂ C' Cl Cg cb Cu cT CT) (hCL : 1 ≤ Cl * large₂.sc.L) (hR : LocalBesselAndTopKernel.FamilyMidVolume D) :
@@ -142,7 +142,7 @@ def RanksRow (𝒞 : FamClass) : Prop :=
 variable [Fact Formalism.L2.SG.Pf.SzHypFD.DsigHC] [Fact Formalism.HermitianLattices.Ext.L3.HermRepUnram] in
 
 /- English proof (translation)
-The claim follows from `closed_with hRk (fun _ => 0) (fun _ => 40) fun Fm _ _ hR _ _ h2 => tFrame_of_ranks Fm h2 hR`.
+A detailed English derivation is pending.
 -/
 theorem hTF_of_ranks {𝒞 : FamClass} (hRk : RanksRow C0 𝒞) :
     Closed 𝒞 fun Fm _ => PX.TFrame Fm (Fm.CYL + 1) (1 / 4) 3 (1 / 2) Fm.CTu C0 :=
@@ -151,7 +151,7 @@ theorem hTF_of_ranks {𝒞 : FamClass} (hRk : RanksRow C0 𝒞) :
 variable [Fact Formalism.HermitianLattices.Ext.L3.HermRepUnram] in
 
 /- English proof (translation)
-The claim follows from `closed_with hRk (fun _ => 0) (fun _ => 40) fun Fm _ _ hR _ _ h2 => ⟨one_le_aSz h1 _, sizes3b_of_ranks Fm h2 h1 hR⟩`.
+A detailed English derivation is pending.
 -/
 theorem hA_of_ranks {𝒞 : FamClass} (h1 : 1 ≤ C0) (hRk : RanksRow C0 𝒞) :
     Closed 𝒞 fun Fm _ => 1 ≤ aSz C0 Fm.cOut ∧ OwnEv Fm fun C' Cl x i =>
@@ -163,7 +163,7 @@ theorem hA_of_ranks {𝒞 : FamClass} (h1 : 1 ≤ C0) (hRk : RanksRow C0 𝒞) :
 variable [Fact Formalism.HermitianLattices.Ext.L3.HermRepUnram] [Fact Formalism.L2.SG.Pf.SzHypFD.DsigHC] in
 
 /- English proof (translation)
-The claim follows from `closed_with hRk (fun _ => 0) (fun _ => 1) fun Fm _ _ hR _ _ h2 => by obtain ⟨x0, H⟩ := hR refine ⟨x0, fun x hx i hh => ?_⟩ have hL := Formalism.MainNotions.BridgeLemma.one_le_L (Fm.L x i) have h2' : 1 ≤ sCl Fm := h2 exact szRowsAt_of_ties (Fm.ties x i) hh.1 hh.2.1 (by nlinarith) …`.
+A detailed English derivation is pending.
 -/
 theorem hRw_of_ranks {𝒞 : FamClass} (hRk : RanksRow C0 𝒞) :
     Closed 𝒞 fun Fm _ => OwnEv Fm fun C' Cl x i =>

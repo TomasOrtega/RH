@@ -34,7 +34,7 @@ theorem cxSt_pn : (cxSt F).pn = Var.pn := rfl
 variable {Y : Var F} {σ : F →+* ℂ} {Δ Δ' : Y.Dv}
 
 /- English proof (translation)
-Establish `hy` using `(mSmooth_projMet F σ n).1 (mem_univ y)`. Establish `he : (projHyp F n).Eff` using `(proj F n).eff_hyp _`. Conclude with `⟨mSmooth_projMet F σ n, sum_pn_fsMet hy, ((pn_eq_zero_iff hy (secReg_cx_iff.2 (he _))).trans secZero_cx_iff).trans he.mem_supp_iff.symm⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 example (n : ℕ) (y : Pts (proj F n) σ) : (cxSt F).mSmooth _ σ _ (projMet F σ n) ∧
     ∑ j, (cxSt F).pn _ σ _ (projMet F σ n)
@@ -47,7 +47,7 @@ example (n : ℕ) (y : Pts (proj F n) σ) : (cxSt F).mSmooth _ σ _ (projMet F �
     ((pn_eq_zero_iff hy (secReg_cx_iff.2 (he _))).trans secZero_cx_iff).trans he.mem_supp_iff.symm⟩
 
 /- English proof (translation)
-Establish `hg : y ∈ eqnSet σ (0 : Y.Dv) 1` using `isEqn_zero _`. Establish `h₁ : HasVal y (Y.cx σ 1) 1` using `map_one (Y.cx σ) ▸ hasVal_one`. Express the relevant statement in the definitionally equal form `pn Y σ 0 (fsMet Y σ 0 fun _ : Unit => c • Y.cx σ 1) (Y.cx σ 1) y = _`. Rewrite using `[pn_fsMet (fun _ => ⟨1, hg, ((h₁.smul c).mul h₁).regC⟩) hg, fval_one, h₁.val_eq]`. Simplify using `only [fval_one, (h₁.smul c).val_eq]`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 Simplify using the standard rewrite rules.
 -/
@@ -62,7 +62,7 @@ example (c : ℂ) (y : Pts Y σ) :
   simp
 
 /- English proof (translation)
-Introduce `h` and use `have ⟨y⟩ := nonempty_pts (Y := Y) (σ := σ) have ⟨k, _⟩ := (mSmooth_fsMet_iff.1 h y).2 k.elim`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example : ¬ (cxSt F).mSmooth Y σ Δ ((cxSt F).fsMet Y σ Δ (k := Empty) Empty.elim) := fun h =>
   have ⟨y⟩ := nonempty_pts (Y := Y) (σ := σ)

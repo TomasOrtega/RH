@@ -4,7 +4,7 @@ import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCou
 namespace Formalism.L2.SG.LocalCountModules
 
 /- English proof (translation)
-The claim follows from `Formalism.L2.SG.LocalCountModules.UnramifiedPairingAlgebraic.locCnt0L_of_fwd Formalism.L2.SG.LocalCountModules.UnramifiedPairingAlgebraic.fwdEx`.
+A detailed English derivation is pending.
 -/
 theorem localCountZeroLocal_holds : Formalism.L2.SG.LocalCountModules.LocCnt0L.LocCnt0L :=
   Formalism.L2.SG.LocalCountModules.UnramifiedPairingAlgebraic.locCnt0L_of_fwd Formalism.L2.SG.LocalCountModules.UnramifiedPairingAlgebraic.fwdEx

@@ -27,11 +27,11 @@ def pairW (I : (GL (Fin m) k → ℂ) →ₗ[ℂ] ℂ) (W : GL (Fin m) k → ℂ
 
 include hψ in
 /- English proof (translation)
-Establish `e : (fun g => (delta ψ K : GL (Fin m) k → ℂ) g * Wf ψ hψ I B y g) = lam ψ hψ I B y • fun g => (starRingEnd ℂ) ((delta ψ K : GL (Fin m) k → ℂ) g) * (delta ψ K : GL (Fin m) k → ℂ) g`. Use function extensionality and compare the values at `g`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Distinguish the cases in `h : ∃ u ∈ unipB k (Fin m), ∃ κ ∈ K, g = u * κ`. Take `⟨u, hu, κ, hκ, rfl⟩` from `h`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Rewrite using `[delta_mul hK hu hκ, Wf_left hψ hI hB y hu, Wf_apply, hy κ hκ, conj_psi]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[delta_eq_zero h]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, map_smul, smul_eq_mul, ← formI_apply, lam_eq hψ hI hB hK hy, lamK]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Conclude with `div_mul_cancel₀ _ (cK_ne_zero hI hK)`.
+A detailed English derivation is pending.
 -/
 theorem repr_delta (hI : PosInt I) (hB : IsInvForm (rhoW ψ) B) {K : Subgroup (GL (Fin m) k)} (hK : Good ψ K)
     {y : WT (m := m) ψ} (hy : ∀ κ ∈ K, rhoW ψ κ y = y) :
@@ -52,13 +52,13 @@ theorem repr_delta (hI : PosInt I) (hB : IsInvForm (rhoW ψ) B) {K : Subgroup (G
 include hψ in
 
 /- English proof (translation)
-Take `⟨K, hK, hKf⟩` from `exists_good_fix hψ x y`. Establish `hspan` using `mem_span_delta hK.1 hK.2.1 x (fun κ hκ => (hKf κ hκ).1)`. Use `LinearMap.eqOn_span' (f := pairW I (Wf ψ hψ I B y)) (g := B y) ?_ hspan` and prove the remaining obligations. Introduce and unpack `_ ⟨g, hg, rfl⟩`. Establish `hfix : ∀ κ ∈ K.map (MulAut.conj g).toMonoidHom, rhoW ψ κ (rhoW ψ g y) = rhoW ψ g y`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce `κ hκ`. Establish `e : κ * g = g * (g⁻¹ * κ * g)` using `by group`. Rewrite using `[← Module.End.mul_apply, ← map_mul, e, map_mul, Module.End.mul_apply, (hKf _ (mem_conj.1 hκ)).2]`. Establish `hF` using `isTestFun_mul (delta ψ (K.map (MulAut.conj g).toMonoidHom)) (Wf ψ hψ I B (rhoW ψ g y)) (fun u hu h => Wf_left hψ hI hB _ hu h) (isLocallyConstant_Wf hψ _)`. Establish `h1` using `hI.1 _ hF g⁻¹`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `repr_delta hψ hI hB hg hfix`. Use `show whittakerPairingValue I (Wf ψ hψ I B y) _ = _`. Simplify using `only [whittakerPairingValue, rhoW_apply]`. Rewrite using `[← hB.2.2 g y, ← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply, ← h2, ← h1]`. Use `congr 1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `h`. Rewrite using `[Wf_right, ← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem repr (hI : PosInt I) (hB : IsInvForm (rhoW ψ) B) (y x : WT (m := m) ψ) :
     I (fun g => (x : GL (Fin m) k → ℂ) g * Wf ψ hψ I B y g) = B y x := by

@@ -14,7 +14,7 @@ def bumpR : ContDiffBump (0 : ℝ) := ⟨1, 2, one_pos, one_lt_two⟩
 def psiL (n : ℕ) (c : ℂ) : ℝ := if c = 0 then 0 else bumpR (Real.log ‖c‖ / ((n : ℝ) + 1))
 
 /- English proof (translation)
-Unfold `psiL`. Use `split_ifs`. Simplify using the standard rewrite rules. Rewrite using `[abs_of_nonneg bumpR.nonneg]`. Conclude with `bumpR.le_one`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psiL_le_one (n : ℕ) (c : ℂ) : |psiL n c| ≤ 1 := by
   unfold psiL
@@ -24,7 +24,7 @@ theorem psiL_le_one (n : ℕ) (c : ℂ) : |psiL n c| ≤ 1 := by
     exact bumpR.le_one
 
 /- English proof (translation)
-Use `filter_upwards [isOpen_ne.mem_nhds hc] with w hw`. Simplify using `[psiL, hw]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem psiL_eq_near (n : ℕ) (c : ℂ) (hc : c ≠ 0) :
     psiL n =ᶠ[𝓝 c] fun w => bumpR (Real.log ‖w‖ / ((n : ℝ) + 1)) := by
@@ -32,9 +32,9 @@ theorem psiL_eq_near (n : ℕ) (c : ℂ) (hc : c ≠ 0) :
   simp [psiL, hw]
 
 /- English proof (translation)
-Unfold `psiL`. Use `split_ifs with h`. Both sides reduce to the same expression. Apply `bumpR.zero_of_le_dist` to reduce the goal to its premises. Establish `hpos : (0:ℝ) < (n:ℝ) + 1` using `by positivity`.
+Replace the relevant objects with their definitions. Both sides reduce to the same expression. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Real.dist_eq, sub_zero, abs_div, abs_of_pos hpos, le_div_iff₀ hpos]`. Conclude with `hw`.
+A detailed English derivation is pending.
 -/
 theorem psiL_zero_of (n : ℕ) (w : ℂ) (hw : 2 * ((n : ℝ) + 1) ≤ |Real.log ‖w‖|) : psiL n w = 0 := by
   unfold psiL
@@ -46,9 +46,9 @@ theorem psiL_zero_of (n : ℕ) (w : ℂ) (hw : 2 * ((n : ℝ) + 1) ≤ |Real.log
     exact hw
 
 /- English proof (translation)
-Establish `hcont : ContinuousAt (fun w : ℂ => |Real.log ‖w‖|) c` using `((Real.continuousAt_log (norm_ne_zero_iff.2 hc)).comp continuous_norm.continuousAt).abs`. Establish `h1 : ∀ᶠ w in 𝓝 c, |Real.log ‖w‖| < (n:ℝ) + 1` using `hcont.eventually_lt continuousAt_const h`. Use `filter_upwards [isOpen_ne.mem_nhds hc, h1] with w hw hw1`. Simplify using `only [psiL, if_neg hw]`. Apply `bumpR.one_of_mem_closedBall` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `hpos : (0:ℝ) < (n:ℝ) + 1` using `by positivity`. Rewrite using `[Metric.mem_closedBall, Real.dist_eq, sub_zero, abs_div, abs_of_pos hpos, div_le_iff₀ hpos]`. Use `show |Real.log ‖w‖| ≤ 1 * ((n:ℝ) + 1)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem psiL_one_near (n : ℕ) (c : ℂ) (hc : c ≠ 0) (h : |Real.log ‖c‖| < (n : ℝ) + 1) :
     psiL n =ᶠ[𝓝 c] fun _ => 1 := by
@@ -64,11 +64,11 @@ theorem psiL_one_near (n : ℕ) (c : ℂ) (hc : c ≠ 0) (h : |Real.log ‖c‖|
   linarith
 
 /- English proof (translation)
-Establish `hε : (0:ℝ) < Real.exp (-(2 * ((n:ℝ) + 1)))` using `Real.exp_pos _`. Use `filter_upwards [Metric.ball_mem_nhds (0:ℂ) hε] with w hw`. Distinguish the cases in `h0 : w = 0`. Simplify using `[psiL, h0]`. Apply `psiL_zero_of` to reduce the goal to its premises.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hw` using `[Metric.mem_ball, dist_zero_right]`. Establish `hlog : Real.log ‖w‖ < -(2 * ((n:ℝ) + 1))`. Rewrite using `[Real.log_lt_iff_lt_exp (norm_pos_iff.2 h0)]`. Conclude with `hw`. Establish `h2 : (0:ℝ) < 2 * ((n:ℝ) + 1)` using `by positivity`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite using `[abs_of_neg (by linarith)]`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem psiL_zero_near0 (n : ℕ) : psiL n =ᶠ[𝓝 0] fun _ => 0 := by
   have hε : (0:ℝ) < Real.exp (-(2 * ((n:ℝ) + 1))) := Real.exp_pos _
@@ -85,9 +85,9 @@ theorem psiL_zero_near0 (n : ℕ) : psiL n =ᶠ[𝓝 0] fun _ => 0 := by
     linarith
 
 /- English proof (translation)
-Distinguish the cases in `hc : c = 0`. Substitute `hc` using the available equality. Conclude with `(contDiffAt_const (c := (0:ℝ))).congr_of_eventuallyEq (psiL_zero_near0 n)`. Use `ContDiffAt.congr_of_eventuallyEq ?_ (psiL_eq_near n c hc)` and prove the remaining obligations. Establish `h1 : ContDiffAt ℝ ∞ (fun w : ℂ => ‖w‖) c` using `contDiffAt_norm ℝ hc`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : ContDiffAt ℝ ∞ (fun w : ℂ => Real.log ‖w‖) c` using `(Real.contDiffAt_log.2 (norm_ne_zero_iff.2 hc)).comp c h1`. Establish `h3 : ContDiffAt ℝ ∞ (fun w : ℂ => Real.log ‖w‖ / ((n:ℝ) + 1)) c` using `h2.div_const _`. Conclude with `bumpR.contDiff.contDiffAt.comp c h3`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem psiL_contDiffAt (n : ℕ) (c : ℂ) : ContDiffAt ℝ ∞ (psiL n) c := by
   by_cases hc : c = 0
@@ -101,18 +101,16 @@ theorem psiL_contDiffAt (n : ℕ) (c : ℂ) : ContDiffAt ℝ ∞ (psiL n) c := b
     exact bumpR.contDiff.contDiffAt.comp c h3
 
 /- English proof (translation)
-The claim follows from `contDiff_iff_contDiffAt.2 (psiL_contDiffAt n)`.
+A detailed English derivation is pending.
 -/
 theorem psiL_contDiff (n : ℕ) : ContDiff ℝ ∞ (psiL n) := contDiff_iff_contDiffAt.2 (psiL_contDiffAt n)
 
 /- English proof (translation)
-Use `closure_minimal (fun c hc => ?_) ((isClosed_le continuous_const continuous_norm).inter (isClosed_le continuous_norm continuous_const))` and prove the remaining obligations. Establish `hc' : psiL n c ≠ 0` using `hc`. Establish `h0 : c ≠ 0`. Introduce and unpack `rfl`. Conclude with `hc' (by simp [psiL])`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hlog : |Real.log ‖c‖| < 2 * ((n:ℝ) + 1)`. Assume the negation of the conclusion as `hle`. Use `push_neg at hle`. Conclude with `hc' (psiL_zero_of n c hle)`. Establish `hpos` using `norm_pos_iff.2 h0`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hlog` using `[abs_lt]`. Prove the components needed by the constructor for the conclusion. Rewrite using `[← Real.exp_log hpos]`. Conclude with `Real.exp_le_exp.2 (by linarith [hlog.1])`. Rewrite using `[← Real.exp_log hpos]`.
-
-Conclude with `Real.exp_le_exp.2 (by linarith [hlog.2])`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tsupport_psiL (n : ℕ) : tsupport (psiL n) ⊆
     {c : ℂ | Real.exp (-(2 * ((n : ℝ) + 1))) ≤ ‖c‖ ∧ ‖c‖ ≤ Real.exp (2 * ((n : ℝ) + 1))} := by
@@ -135,7 +133,7 @@ theorem tsupport_psiL (n : ℕ) : tsupport (psiL n) ⊆
     exact Real.exp_le_exp.2 (by linarith [hlog.2])
 
 /- English proof (translation)
-Use `(isCompact_closedBall (0:ℂ) (Real.exp (2 * ((n:ℝ) + 1)))).of_isClosed_subset (isClosed_tsupport _) ?_` and prove the remaining obligations. Introduce `c hc`. Rewrite using `[Metric.mem_closedBall, dist_zero_right]`. Conclude with `(tsupport_psiL n hc).2`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psiL_hasCompactSupport (n : ℕ) : HasCompactSupport (psiL n) := by
   refine (isCompact_closedBall (0:ℂ) (Real.exp (2 * ((n:ℝ) + 1)))).of_isClosed_subset (isClosed_tsupport _) ?_
@@ -144,7 +142,7 @@ theorem psiL_hasCompactSupport (n : ℕ) : HasCompactSupport (psiL n) := by
   exact (tsupport_psiL n hc).2
 
 /- English proof (translation)
-Introduce `h`. Establish `h1` using `(tsupport_psiL n h).1`. Rewrite `h1` using `[norm_zero]`. Conclude with `absurd h1 (not_le.2 (Real.exp_pos _))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zero_notMem_tsupport_psiL (n : ℕ) : (0 : ℂ) ∉ tsupport (psiL n) := by
   intro h
@@ -153,22 +151,22 @@ theorem zero_notMem_tsupport_psiL (n : ℕ) : (0 : ℂ) ∉ tsupport (psiL n) :=
   exact absurd h1 (not_le.2 (Real.exp_pos _))
 
 /- English proof (translation)
-Establish `hc : Continuous (deriv bumpR)` using `(bumpR.contDiff (n := 1)).continuous_deriv le_rfl`. Conclude with `hc.bounded_above_of_compact_support bumpR.hasCompactSupport.deriv`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_deriv_bump_bound : ∃ C : ℝ, ∀ t, ‖deriv bumpR t‖ ≤ C := by
   have hc : Continuous (deriv bumpR) := (bumpR.contDiff (n := 1)).continuous_deriv le_rfl
   exact hc.bounded_above_of_compact_support bumpR.hasCompactSupport.deriv
 
 /- English proof (translation)
-Establish `hpos : 0 < ‖c‖` using `norm_pos_iff.2 hc`. Establish `hn1 : (0:ℝ) < (n:ℝ) + 1` using `by positivity`. Establish `hnd : DifferentiableAt ℝ (fun w : ℂ => ‖w‖) c` using `(contDiffAt_norm ℝ hc (n := 1)).differentiableAt one_ne_zero`. Establish `hN : ‖fderiv ℝ (fun w : ℂ => ‖w‖) c‖ ≤ 1`. Simplify using `using norm_fderiv_le_of_lipschitz ℝ (x₀ := c) lipschitzWith_one_norm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hl : HasFDerivAt (fun w : ℂ => Real.log ‖w‖) ((‖c‖)⁻¹ • fderiv ℝ (fun w : ℂ => ‖w‖) c) c` using `(Real.hasDerivAt_log hpos.ne').comp_hasFDerivAt c hnd.hasFDerivAt`. Establish `hφ : HasFDerivAt (fun w : ℂ => Real.log ‖w‖ / ((n:ℝ) + 1)) ((((n:ℝ) + 1)⁻¹) • ((‖c‖)⁻¹ • fderiv ℝ (fun w : ℂ => ‖w‖) c)) c`. Establish `h2` using `hl.mul_const (((n:ℝ) + 1)⁻¹)`. Simplify `h2` using `only [div_eq_mul_inv]`. Establish `hb : HasDerivAt (⇑bumpR) (deriv bumpR (Real.log ‖c‖ / ((n:ℝ) + 1))) (Real.log ‖c‖ / ((n:ℝ) + 1))` using `((bumpR.contDiff (n := 1)).differentiable one_ne_zero _).hasDerivAt`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hcomp` using `hb.comp_hasFDerivAt c hφ`. Establish `hf : fderiv ℝ (psiL n) c = deriv bumpR (Real.log ‖c‖ / ((n:ℝ) + 1)) • ((((n:ℝ) + 1)⁻¹) • ((‖c‖)⁻¹ • fderiv ℝ (fun w : ℂ => ‖w‖) c))` using `(psiL_eq_near n c hc).fderiv_eq.trans hcomp.fderiv`. Establish `e1 : ‖(((n:ℝ) + 1)⁻¹)‖ = ((n:ℝ) + 1)⁻¹` using `by rw [Real.norm_eq_abs, abs_of_pos (inv_pos.2 hn1)]`. Establish `e2 : ‖(‖c‖)⁻¹‖ = (‖c‖)⁻¹` using `by rw [Real.norm_eq_abs, abs_of_pos (inv_pos.2 hpos)]`. Rewrite using `[hf, norm_smul, norm_smul, norm_smul, e1, e2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hinv : ((n:ℝ) + 1)⁻¹ ≤ 1` using `inv_le_one_of_one_le₀ (by linarith [(n.cast_nonneg : (0:ℝ) ≤ n)])`. Establish `key : ∀ (t a b N : ℝ), 0 < t → a ≤ C → 0 ≤ a → 0 ≤ b → b ≤ 1 → 0 ≤ N → N ≤ 1 → t * (a * (b * (t⁻¹ * N))) ≤ C`. Introduce `t a b N ht ha ha0 hb0 hb1 hN0 hN1`. Rewrite using `[show t * (a * (b * (t⁻¹ * N))) = a * (b * N) * (t * t⁻¹) by ring, mul_inv_cancel₀ ht.ne', mul_one]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Conclude with `key _ _ _ _ hpos (hC _) (norm_nonneg _) (inv_nonneg.2 hn1.le) hinv (norm_nonneg _) hN`.
+A detailed English derivation is pending.
 -/
 theorem norm_mul_fderiv_psiL_le {C : ℝ} (hC : ∀ t, ‖deriv bumpR t‖ ≤ C) (n : ℕ) (c : ℂ) (hc : c ≠ 0) :
     ‖c‖ * ‖fderiv ℝ (psiL n) c‖ ≤ C := by

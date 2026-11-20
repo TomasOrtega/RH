@@ -6,13 +6,11 @@ open DividedPowers GlobalTheory.Cris GlobalTheory.PDA
 namespace GlobalTheory.DPQuot
 
 /- English proof (translation)
-Introduce `B _ J δ`. Use `⟨fun 𝔟 h𝔟 ↦ ?_, fun s hs ↦ ?_⟩` and prove the remaining obligations. Establish `hinf : δ.IsSubDPIdeal (𝔟 ⊓ J)`. Rewrite using `[inf_eq_left.mpr h𝔟.isSubideal]`. Conclude with `h𝔟`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Quotient.dividedPowers δ hinf, Quotient.isDPMorphism δ hinf, ?_⟩` and prove the remaining obligations. Introduce `C _ J'' δ'' g hg`. Use `⟨?_, fun {n} y hy ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.map_map]`. Conclude with `hg.1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨a, ha, rfl⟩` from `(Ideal.mem_map_iff_of_surjective _ Ideal.Quotient.mk_surjective).mp hy`. Rewrite using `[Quotient.dpow_apply δ hinf ha]`. Conclude with `hg.2 a ha`. Establish `hset : {y | ∃ n : ℕ, n ≠ 0 ∧ ∃ x ∈ s, y = δ.dpow n x} = {y : B | ∃ (n : ℕ) (_ : n ≠ 0) (x : B) (_ : x ∈ s), y = δ.dpow n x}`. Use extensionality with `y`.
-
-Simplify using `only [Set.mem_setOf_eq, exists_prop]`. Rewrite using `[hset, ← SubDPIdeal.span_carrier_eq_dpow_span δ hs]`. Conclude with `(SubDPIdeal.span δ s).toIsSubDPIdeal`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem quotient_subDPIdeal : ∀ (B : Type) [CommRing B] (J : Ideal B) (δ : DividedPowers J),
     (∀ 𝔟 : Ideal B, δ.IsSubDPIdeal 𝔟 → ∃ δ' : DividedPowers (J.map (Ideal.Quotient.mk 𝔟)),

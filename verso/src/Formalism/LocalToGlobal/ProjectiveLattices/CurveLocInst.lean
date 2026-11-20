@@ -12,16 +12,16 @@ variable {D : D7} {T : Top D} (h : LawsP T) (j : ℕ) (hj : InR D j) (hG : GenFr
   (hT : GenFromTest (T.Q.Xo j) T.Q.c hG)
 
 /- English proof (translation)
-The claim follows from `formsEvR_single j hG hT Z _ _`.
+A detailed English derivation is pending.
 -/
 theorem formsEvR_inc (Z : Comp (T.Q.Xo j) T.Q.c) (u : WeightFamilies.Wt D j) (F : (recB h.toLawsCore).Cusp j u) :
     formsEvR j hG hT Z ((recPlus h j hj).inc u F) = evC hG Z ((F : (recB h.toLawsCore).Cusp j u) : T.R j) :=
   formsEvR_single j hG hT Z _ _
 
 /- English proof (translation)
-Introduce `a`. Take `⟨k, g, Pw, hP, hne, he⟩` from `hB a`. Use `⟨k, g, Pw, hP, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [hev]`. Conclude with `hne`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [hev]`. Conclude with `he`.
+A detailed English derivation is pending.
 -/
 theorem birAt_of_ev {B : WeightFamilies.Prov D} {P : ModuliIntegralCharts.Prov D} (X : PJ D B P j) (N : ℕ) {wL : WeightFamilies.Wt D j}
     (w : Fin N → B.Cusp j wL) {Ω : Type} [Field Ω] [Algebra B.KO Ω] (gF : X.Forms →ₐ[B.KO] Ω)
@@ -39,7 +39,7 @@ theorem birAt_of_ev {B : WeightFamilies.Prov D} {P : ModuliIntegralCharts.Prov D
     exact he
 
 /- English proof (translation)
-The claim follows from `birAt_of_ev j (recPlus h j hj) G.N G.w (formsEvR j hG hT Z) (fun u F => evC hG Z ((F : (recB h.toLawsCore).Cusp j u) : T.R j)) (fun u F => formsEvR_inc h j hj hG hT Z u F) (hB Z)`.
+A detailed English derivation is pending.
 -/
 theorem birAt_of {ka wL wF : WeightFamilies.Wt D j} (G : GlobalFamilyData (recPlus h j hj) ka wL wF) (hB : BIRSt h j hj hG G)
     (Z : Comp (T.Q.Xo j) T.Q.c) : CurveLoc.BirAt (recPlus h j hj) G.N G.w (formsEvR j hG hT Z) :=
@@ -48,7 +48,7 @@ theorem birAt_of {ka wL wF : WeightFamilies.Wt D j} (G : GlobalFamilyData (recPl
     (fun u F => formsEvR_inc h j hj hG hT Z u F) (hB Z)
 
 /- English proof (translation)
-Take `⟨g', h1, h2⟩` from `hC Z wL (G.w k)`. Conclude with `⟨g', by rw [formsEvR_inc, formsEvR_inc, h1], fun Z' hZ' => by rw [formsEvR_inc, h2 Z' hZ']⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem split_of (hC : CompSplitSt h j hG) {ka wL wF : WeightFamilies.Wt D j} (G : GlobalFamilyData (recPlus h j hj) ka wL wF)
     (Z : Comp (T.Q.Xo j) T.Q.c) (k : Fin G.N) :
@@ -65,7 +65,7 @@ def CountQAtSt : Prop :=
       CurveLoc.CountQAt (recPlus h j hj) la G.N G.w (formsEvR j hG hT Z)
 
 /- English proof (translation)
-Introduce `ka wL wF G S g0 la _ Q hQ _ Z Z' hZ hZ'`. Conclude with `CurveLoc.one_of_split (recPlus h j hj) la G.N G.w (fun Z => Om Z) (fun Z => formsEvR j hG hT Z) (fun Z k => split_of h j hj hG hT hC G Z k) Q hQ Z Z' hZ hZ'`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem hone_of (hC : CompSplitSt h j hG) :
     ∀ ka wL wF G S g0 la, CurveHyp h j hj hG ka wL wF G S g0 →
@@ -76,7 +76,7 @@ theorem hone_of (hC : CompSplitSt h j hG) :
     (fun Z k => split_of h j hj hG hT hC G Z k) Q hQ Z Z' hZ hZ'
 
 /- English proof (translation)
-Introduce `ka wL wF G S g0 la hH Z r`. Conclude with `CurveLoc.loc_of_bir (recPlus h j hj) la G.N G.w (formsEvR j hG hT Z) (birAt_of h j hj hG hT G (hB ka wL wF G S g0 hH) Z) (hQ ka wL wF G S g0 la hH Z) r`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem hloc_of (hB : ∀ (ka wL wF : WeightFamilies.Wt D j) (G : GlobalFamilyData (recPlus h j hj) ka wL wF) (S : Scal (recB h.toLawsCore))
       (g0 : (recB h.toLawsCore).Cusp j wF), CurveHyp h j hj hG ka wL wF G S g0 → BIRSt h j hj hG G)
@@ -92,7 +92,7 @@ theorem hloc_of (hB : ∀ (ka wL wF : WeightFamilies.Wt D j) (G : GlobalFamilyDa
     (birAt_of h j hj hG hT G (hB ka wL wF G S g0 hH) Z) (hQ ka wL wF G S g0 la hH Z) r
 
 /- English proof (translation)
-Introduce `ka wL wF G S g0 la hH Z`. Take `⟨k₀, hk₀, htr⟩` from `hH.2.1.2 Z`. Conclude with `CurveLoc.countQAt_of (recPlus h j hj) la G.N G.w (formsEvR j hG hT Z) (fun i => evC hG Z ((G.w i : (recB h.toLawsCore).Cusp j wL) : T.R j)) (fun i => formsEvR_inc h j hj hG hT Z wL (G.w i)) ⟨k₀, hk₀, le_of_eq htr⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem countQAtSt_holds : CountQAtSt h j hj hG hT := by
   intro ka wL wF G S g0 la hH Z
@@ -102,7 +102,7 @@ theorem countQAtSt_holds : CountQAtSt h j hj hG hT := by
     (fun i => formsEvR_inc h j hj hG hT Z wL (G.w i)) ⟨k₀, hk₀, le_of_eq htr⟩
 
 /- English proof (translation)
-The claim follows from `hloc_of h j hj hG hT hB (countQAtSt_holds h j hj hG hT)`.
+A detailed English derivation is pending.
 -/
 theorem hloc_of_bir (hB : ∀ (ka wL wF : WeightFamilies.Wt D j) (G : GlobalFamilyData (recPlus h j hj) ka wL wF) (S : Scal (recB h.toLawsCore))
       (g0 : (recB h.toLawsCore).Cusp j wF), CurveHyp h j hj hG ka wL wF G S g0 → BIRSt h j hj hG G) :

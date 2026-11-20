@@ -20,20 +20,20 @@ Both sides reduce to the same expression.
 theorem smul_mk (g x : G) : g • (x : G ⧸ K) = ((g * x : G) : G ⧸ K) := rfl
 
 /- English proof (translation)
-Simplify using `[lam, Finsupp.lmapDomain_apply, Finsupp.mapDomain_single]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lam_single (g : G) (x : G ⧸ K) (c : ℂ) :
     lam K g (Finsupp.single x c) = Finsupp.single (g • x) c := by
   simp [lam, Finsupp.lmapDomain_apply, Finsupp.mapDomain_single]
 
 /- English proof (translation)
-Simplify using `[eps]`.
+Simplify using the standard rewrite rules.
 -/
 theorem eps_single (x : G ⧸ K) (c : ℂ) : eps K (Finsupp.single x c) = c := by
   simp [eps]
 
 /- English proof (translation)
-Proceed by induction on `v using Finsupp.induction_linear with`. Consider the case `zero => simp`. Consider the case `add f g hf hg => simp only [map_add, hf, hg]`. Consider the case `single x c => rw [lam_single, eps_single, eps_single]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem eps_lam (g : G) (v : (G ⧸ K) →₀ ℂ) : eps K (lam K g v) = eps K v := by
   induction v using Finsupp.induction_linear with
@@ -42,7 +42,7 @@ theorem eps_lam (g : G) (v : (G ⧸ K) →₀ ℂ) : eps K (lam K g v) = eps K v
   | single x c => rw [lam_single, eps_single, eps_single]
 
 /- English proof (translation)
-Establish `h : lam K g * A.1 = A.1 * lam K g` using `(Subalgebra.mem_centralizer_iff ℂ).1 A.2 _ ⟨g, rfl⟩`. Conclude with `(LinearMap.congr_fun h v).symm`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem hk_comm (A : Hk K) (g : G) (v : (G ⧸ K) →₀ ℂ) : A.1 (lam K g v) = lam K g (A.1 v) := by
   have h : lam K g * A.1 = A.1 * lam K g :=
@@ -50,13 +50,13 @@ theorem hk_comm (A : Hk K) (g : G) (v : (G ⧸ K) →₀ ℂ) : A.1 (lam K g v) 
   exact (LinearMap.congr_fun h v).symm
 
 /- English proof (translation)
-Rewrite using `[dd, lam_single, smul_mk, mul_one, QuotientGroup.out_eq']`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lam_out_dd (y : G ⧸ K) : lam K (Quotient.out y) (dd K) = Finsupp.single y 1 := by
   rw [dd, lam_single, smul_mk, mul_one, QuotientGroup.out_eq']
 
 /- English proof (translation)
-Rewrite using `[dd, lam_single, smul_mk, mul_one]`. Use `congr 1`. Conclude with `QuotientGroup.eq.2 (by simpa using K.inv_mem hk)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem lam_dd {k : G} (hk : k ∈ K) : lam K k (dd K) = dd K := by
   rw [dd, lam_single, smul_mk, mul_one]
@@ -64,17 +64,17 @@ theorem lam_dd {k : G} (hk : k ∈ K) : lam K k (dd K) = dd K := by
   exact QuotientGroup.eq.2 (by simpa using K.inv_mem hk)
 
 /- English proof (translation)
-Rewrite using `[← hk_comm, lam_dd hk]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hk_fixed (A : Hk K) {k : G} (hk : k ∈ K) : lam K k (A.1 (dd K)) = A.1 (dd K) := by
   rw [← hk_comm, lam_dd hk]
 
 /- English proof (translation)
-Use extensionality with `y`. Establish `hsum : (∑ x ∈ S, Finsupp.single x (1 : ℂ)) y = if y ∈ S then 1 else 0`. Rewrite using `[Finsupp.finsetSum_apply]`. Simplify using `[Finsupp.single_apply]`. Rewrite using `[Finsupp.smul_apply, hsum]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hy : y ∈ S`. Establish `hy' : y ∈ MulAction.orbit K (u : G ⧸ K)` using `by rw [← hS]; exact hy`. Take `⟨k, rfl⟩` from `hy'`. Establish `h1 : (lam K (k : G) w) ((k : G) • (u : G ⧸ K)) = w (u : G ⧸ K)` using `Finsupp.mapDomain_apply (MulAction.injective (k : G)) _ _`. Rewrite `h1` using `[hw k k.2]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[if_pos hy, smul_eq_mul, mul_one]`. Conclude with `h1`. Rewrite using `[if_neg hy, hsupp y hy]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fixed_eq_smul (w : (G ⧸ K) →₀ ℂ) (hw : ∀ k ∈ K, lam K k w = w) (u : G) (S : Finset (G ⧸ K))
     (hS : (↑S : Set (G ⧸ K)) = MulAction.orbit K (u : G ⧸ K))
@@ -103,7 +103,7 @@ variable (T : G → Hk K) (hp : IsHeckePair K)
 def q (hp : IsHeckePair K) (g : G) : ℂ := ((hp g).toFinset.card : ℂ)
 
 /- English proof (translation)
-Rewrite using `[q, Nat.cast_ne_zero, Finset.card_ne_zero]`. Conclude with `⟨(g : G ⧸ K), (hp g).mem_toFinset.2 (MulAction.mem_orbit_self _)⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem q_ne (g : G) : q hp g ≠ 0 := by
   rw [q, Nat.cast_ne_zero, Finset.card_ne_zero]
@@ -119,13 +119,13 @@ variable (h1 : ∀ (g : G) (S : Finset (G ⧸ K)), (↑S : Set (G ⧸ K)) = MulA
 include h1
 
 /- English proof (translation)
-The claim follows from `h1 g _ (by simp)`.
+A detailed English derivation is pending.
 -/
 theorem T_dd (g : G) : (T g).1 (dd K) = ∑ y ∈ (hp g).toFinset, Finsupp.single y (1 : ℂ) :=
   h1 g _ (by simp)
 
 /- English proof (translation)
-Rewrite using `[T_dd T hp h1, map_sum]`. Simplify using `[eps_single, q]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem augmentation_of_hecke_operator (g : G) : eps K ((T g).1 (dd K)) = q hp g := by
   rw [T_dd T hp h1, map_sum]
@@ -134,7 +134,7 @@ theorem augmentation_of_hecke_operator (g : G) : eps K ((T g).1 (dd K)) = q hp g
 include h3
 
 /- English proof (translation)
-Rewrite using `[← sub_eq_zero]`. Apply `h3` to reduce the goal to its premises. Use `show (A.1 - B.1) (dd K) = 0`. Rewrite using `[LinearMap.sub_apply, h, sub_self]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ext_dd {A B : Hk K} (h : A.1 (dd K) = B.1 (dd K)) : A = B := by
   rw [← sub_eq_zero]
@@ -143,25 +143,23 @@ theorem ext_dd {A B : Hk K} (h : A.1 (dd K) = B.1 (dd K)) : A = B := by
   rw [LinearMap.sub_apply, h, sub_self]
 
 /- English proof (translation)
-Establish `hw : (T g * T h).1 (dd K) = ∑ y ∈ (hp h).toFinset, lam K (Quotient.out y) ((T g).1 (dd K))` using `by show (T g).1 ((T h).1 (dd K)) = _`. Rewrite using `[T_dd T hp h1 h, map_sum]`. Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Rewrite using `[← lam_out_dd, hk_comm]`. Establish `key : ∀ y ∈ (hp h).toFinset, ∀ z ∈ (hp g).toFinset, (Quotient.out y) • z ∈ (hp u).toFinset`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `y hy z hz`. Take `⟨k1, rfl⟩` from `(hp h).mem_toFinset.1 hy`. Take `⟨k3, rfl⟩` from `(hp g).mem_toFinset.1 hz`. Use `set y0 : G ⧸ K := k1 • (h : G ⧸ K) with hy0`. Establish `hout : ((Quotient.out y0 : G) : G ⧸ K) = ((k1 * h : G) : G ⧸ K)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[QuotientGroup.out_eq']`. Both sides reduce to the same expression. Establish `hk2 : ((k1 : G) * h)⁻¹ * Quotient.out y0 ∈ K` using `QuotientGroup.eq.1 hout.symm`. Take `⟨a, ha, b, hb, hab⟩` from `H _ (K.mul_mem hk2 k3.2)`. Rewrite using `[(hp u).mem_toFinset]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨(k1 : G) * a, K.mul_mem k1.2 ha⟩, ?_⟩` and prove the remaining obligations. Use `show (((k1 : G) * a * u : G) : G ⧸ K) = (Quotient.out y0 * ((k3 : G) * g) : G)`. Rewrite using `[QuotientGroup.eq]`. Establish `e : Quotient.out y0 * ((k3 : G) * g) = (k1 : G) * (h * ((((k1 : G) * h)⁻¹ * Quotient.out y0) * k3) * g)` using `by group`. Rewrite using `[e, hab]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : ((k1 : G) * a * u)⁻¹ * ((k1 : G) * (a * u * b)) = b` using `by group`. Rewrite using `[e2]`. Conclude with `hb`. Establish `hsupp : ∀ y, y ∉ (hp u).toFinset → ((T g * T h).1 (dd K)) y = 0` using `by classical`. Introduce `y hy`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hw, Finsupp.finsetSum_apply]`. Use `Finset.sum_eq_zero fun x hx => ?_` and prove the remaining obligations. Rewrite using `[T_dd T hp h1 g, map_sum, Finsupp.finsetSum_apply]`. Use `Finset.sum_eq_zero fun z hz => ?_` and prove the remaining obligations. Rewrite using `[lam_single, Finsupp.single_apply, if_neg]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `e`. Conclude with `hy (e ▸ key x hx z hz)`. Establish `hfix` using `fixed_eq_smul ((T g * T h).1 (dd K)) (fun k hk => hk_fixed (T g * T h) hk) u (hp u).toFinset (by simp) hsupp`. Use `set c : ℂ := ((T g * T h).1 (dd K)) (u : G ⧸ K) with hc`. Establish `heq : T g * T h = c • T u`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `ext_dd T h1 h3` to reduce the goal to its premises. Rewrite using `[hfix, ← T_dd T hp h1 u]`. Both sides reduce to the same expression. Establish `hq : c * q hp u = q hp g * q hp h`. Establish `e1 : eps K ((T g * T h).1 (dd K)) = c * q hp u`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[hfix, map_smul, ← T_dd T hp h1 u, augmentation_of_hecke_operator T hp h1, smul_eq_mul]`. Establish `e2 : eps K ((T g * T h).1 (dd K)) = q hp g * q hp h`. Rewrite using `[hw, map_sum]`. Simplify using `only [eps_lam, augmentation_of_hecke_operator T hp h1]`. Simplify using `[q, mul_comm]`.
-
-Rewrite using `[← e1, e2]`. Rewrite using `[heq, eq_div_of_mul_eq (q_ne hp u) hq]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_of {g h u : G} (H : ∀ k ∈ K, ∃ a ∈ K, ∃ b ∈ K, h * k * g = a * u * b) :
     T g * T h = (q hp g * q hp h / q hp u) • T u := by
@@ -218,7 +216,7 @@ theorem mul_of {g h u : G} (H : ∀ k ∈ K, ∃ a ∈ K, ∃ b ∈ K, h * k * g
   rw [heq, eq_div_of_mul_eq (q_ne hp u) hq]
 
 /- English proof (translation)
-Establish `hg` using `q_ne hp g`. Establish `hh` using `q_ne hp h`. Establish `hu` using `q_ne hp u`. Rewrite using `[R, R, R, smul_mul_smul_comm, mul_of T hp h1 h3 H, smul_smul]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
 Clear the denominators using the available nonvanishing facts.
 -/
@@ -232,11 +230,11 @@ theorem R_mul {g h u : G} (H : ∀ k ∈ K, ∃ a ∈ K, ∃ b ∈ K, h * k * g 
   field_simp
 
 /- English proof (translation)
-Establish `e : ((k * g * k' : G) : G ⧸ K) = (⟨k, hk⟩ : K) • (g : G ⧸ K)` using `by show ((k * g * k' : G) : G ⧸ K) = ((k * g : G) : G ⧸ K)`. Rewrite using `[QuotientGroup.eq]`. Establish `: (k * g * k')⁻¹ * (k * g) = k'⁻¹` using `by group`. Rewrite using `[this]`. Conclude with `K.inv_mem hk'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `ho : MulAction.orbit K ((k * g * k' : G) : G ⧸ K) = MulAction.orbit K (g : G ⧸ K)`. Rewrite using `[e, MulAction.orbit_smul]`. Establish `hf : (hp (k * g * k')).toFinset = (hp g).toFinset`. Use extensionality with `x`. Simplify using `[ho]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨ext_dd T h1 h3 ?_, by simp only [q, hf]⟩` and prove the remaining obligations. Rewrite using `[T_dd T hp h1, T_dd T hp h1, hf]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem T_congr {g : G} {k k' : G} (hk : k ∈ K) (hk' : k' ∈ K) : T (k * g * k') = T g ∧ q hp (k * g * k') = q hp g := by
   have e : ((k * g * k' : G) : G ⧸ K) = (⟨k, hk⟩ : K) • (g : G ⧸ K) := by
@@ -252,18 +250,18 @@ theorem T_congr {g : G} {k k' : G} (hk : k ∈ K) (hk' : k' ∈ K) : T (k * g * 
   rw [T_dd T hp h1, T_dd T hp h1, hf]
 
 /- English proof (translation)
-Take `⟨a, b⟩` from `T_congr T hp h1 h3 (g := g) hk hk'`. Rewrite using `[R, R, a, b]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem R_congr {g : G} {k k' : G} (hk : k ∈ K) (hk' : k' ∈ K) : R T hp (k * g * k') = R T hp g := by
   obtain ⟨a, b⟩ := T_congr T hp h1 h3 (g := g) hk hk'
   rw [R, R, a, b]
 
 /- English proof (translation)
-Establish `hf : (hp 1).toFinset = {((1 : G) : G ⧸ K)}`. Use extensionality with `x`. Simplify using `only [Set.Finite.mem_toFinset, Finset.mem_singleton]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨k, rfl⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `QuotientGroup.eq.2 (by simp)`. Introduce and unpack `rfl`. Conclude with `MulAction.mem_orbit_self _`. Establish `hq : q hp (1 : G) = 1` using `by simp [q, hf]`. Rewrite using `[R, hq, inv_one, one_smul]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `ext_dd T h1 h3` to reduce the goal to its premises. Rewrite using `[T_dd T hp h1, hf, Finset.sum_singleton]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem R_one : R T hp 1 = 1 := by
   have hf : (hp 1).toFinset = {((1 : G) : G ⧸ K)} := by
@@ -282,25 +280,23 @@ theorem R_one : R T hp 1 = 1 := by
 end Main
 
 /- English proof (translation)
-Introduce `G _ K d l hp hcart`. Take `⟨c, t, hc, ht, hdec, hmon⟩` from `hcart`. Take `⟨T, h1, h2, h3⟩` from `GlobalTheory.CompanionTheory.HeckeBasis.heckeBasis G K hp`. Establish `hcinv : ∀ i, ∀ k ∈ K, (c i)⁻¹ * k * c i ∈ K`. Introduce `i k hk`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hc i]`. Establish `: c i * ((c i)⁻¹ * k * c i) * (c i)⁻¹ = k` using `by group`. Rewrite using `[this]` and apply the resulting hypothesis. Establish `hmul : ∀ s ∈ Submonoid.closure (Set.range t), ∀ s' ∈ Submonoid.closure (Set.range t), R T hp s' * R T hp s = R T hp (s * s')` using `fun s hs s' hs' => R_mul T hp h1 h3 (hmon s hs s' hs')`. Establish `hcomm : ∀ i j, Commute (R T hp (t i)) (R T hp (t j))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `i j`. Establish `mi : t i ∈ Submonoid.closure (Set.range t)` using `Submonoid.subset_closure (Set.mem_range_self i)`. Establish `mj : t j ∈ Submonoid.closure (Set.range t)` using `Submonoid.subset_closure (Set.mem_range_self j)`. Use `show R T hp (t i) * R T hp (t j) = R T hp (t j) * R T hp (t i)`. Rewrite using `[hmul _ mj _ mi, hmul _ mi _ mj, (ht i j).eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hadj : ∀ s ∈ Submonoid.closure (Set.range t), R T hp s ∈ Algebra.adjoin ℂ (Set.range (R T hp ∘ t))`. Introduce `s hs`. Proceed by induction on `hs using Submonoid.closure_induction with`. Consider the case `mem x hx`. Take `⟨i, rfl⟩` from `hx`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately.
 
-Conclude with `Algebra.subset_adjoin ⟨i, rfl⟩`. Consider the case `one => rw [R_one T hp h1 h3]`. Conclude with `Subalgebra.one_mem _`. Consider the case `mul x y hx hy ihx ihy`. Rewrite using `[← hmul x hx y hy]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `Subalgebra.mul_mem _ ihy ihx`. Establish `hprod : ∀ i j, ∀ s ∈ Submonoid.closure (Set.range t), R T hp (c i * s * c j) = R T hp (c j) * R T hp s * R T hp (c i)`. Introduce `i j s _`. Establish `e1 : R T hp s * R T hp (c i) = R T hp (c i * s)`. Use `R_mul T hp h1 h3 fun k hk => ⟨c i * k * (c i)⁻¹, (hc i k).1 hk, 1, K.one_mem, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `group`. Establish `e2 : R T hp (c j) * R T hp (c i * s) = R T hp (c i * s * c j)`. Use `R_mul T hp h1 h3 fun k hk => ⟨1, K.one_mem, (c j)⁻¹ * k * c j, hcinv j k hk, ?_⟩` and prove the remaining obligations. Use `group`. Rewrite using `[mul_assoc (R T hp (c j)), e1, e2]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨R T hp ∘ c, R T hp ∘ c, R T hp ∘ t, hcomm, ?_⟩` and prove the remaining obligations. Rewrite using `[eq_top_iff, ← h2, Submodule.span_le]`. Introduce and unpack `_ ⟨g, rfl⟩`. Take `⟨i, j, s, hs, k, hk, k', hk', rfl⟩` from `hdec g`. Establish `hT : T (k * c i * s * c j * k') = q hp (k * c i * s * c j * k') • R T hp (k * c i * s * c j * k')`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[R, smul_smul, mul_inv_cancel₀ (q_ne hp _), one_smul]`. Rewrite using `[hT]`. Use `Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, i, R T hp s, hadj s hs, ?_⟩)` and prove the remaining obligations. Establish `e : k * c i * s * c j * k' = k * (c i * s * c j) * k'` using `by group`. Rewrite using `[e, R_congr T hp h1 h3 hk hk', hprod i j s hs]`.
-
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem stHecke : StHecke := by
   intro G _ K d l hp hcart

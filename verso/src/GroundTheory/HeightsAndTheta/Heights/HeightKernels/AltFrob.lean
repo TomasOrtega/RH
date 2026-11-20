@@ -20,9 +20,9 @@ theorem frobDim_eq {r : ℕ} (la : Fin r → ℕ) :
       ∏ a : Fin r, ((la a + (r - 1 - a)).factorial : ℚ) := rfl
 
 /- English proof (translation)
-Unfold `frobDelta`. Use `prod_congr rfl fun a _ => prod_congr rfl fun b _ => ?_` and prove the remaining obligations. Use `split_ifs`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem frobDelta_add_const {r : ℕ} (s : ℕ) (ν : Fin r → ℕ) :
     frobDelta (fun a => s + ν a) = frobDelta ν := by
@@ -33,7 +33,7 @@ theorem frobDelta_add_const {r : ℕ} (s : ℕ) (ν : Fin r → ℕ) :
   · rfl
 
 /- English proof (translation)
-The claim follows from `| 0 => by simp | r + 1 => by have h0 : (∏ b : Fin (r + 1), if (0 : Fin (r + 1)) < b then (((b : ℕ) : ℚ) - (((0 : Fin (r + 1)) : ℕ) : ℚ)) else 1) = (r.factorial : ℚ) := by rw [Fin.prod_univ_succ] simp only [lt_self_iff_false, if_false, Fin.succ_pos, if_true, one_mul, Fin.val_succ, …`.
+A detailed English derivation is pending.
 -/
 theorem prod_sub_eq_prod_factorial : ∀ r : ℕ,
     (∏ a : Fin r, ∏ b : Fin r, if a < b then ((b : ℕ) : ℚ) - ((a : ℕ) : ℚ) else 1) =
@@ -69,11 +69,9 @@ theorem prod_sub_eq_prod_factorial : ∀ r : ℕ,
       | simp
 
 /- English proof (translation)
-Rewrite using `[← prod_sub_eq_prod_factorial r]`. Unfold `frobDelta`. Use `prod_congr rfl fun a _ => prod_congr rfl fun b _ => ?_` and prove the remaining obligations. Use `split_ifs with h`. Establish `ha` using `a.isLt`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb` using `b.isLt`. Establish `hab : (a : ℕ) < b` using `h`. Establish `: ((s + (r - 1 - (a : ℕ)) : ℕ) : ℚ) + ((a : ℕ) : ℚ) = ((s + (r - 1 - (b : ℕ)) : ℕ) : ℚ) + ((b : ℕ) : ℚ)`. Conclude with `(show s + (r - 1 - (a : ℕ)) + a = s + (r - 1 - (b : ℕ)) + b by omega)` after adjusting the coercions. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem frobDelta_const {r : ℕ} (s : ℕ) :
     frobDelta (fun _ : Fin r => s) = ∏ a : Fin r, (((r - 1 - (a : ℕ)).factorial : ℕ) : ℚ) := by
@@ -91,9 +89,9 @@ theorem frobDelta_const {r : ℕ} (s : ℕ) :
   · rfl
 
 /- English proof (translation)
-Unfold `frobDelta`. Use `prod_nonneg fun a _ => prod_nonneg fun b _ => ?_` and prove the remaining obligations. Use `split_ifs with h`. Establish `h1 : ν b ≤ ν a` using `hν h.le`. Establish `hab : (a : ℕ) < b` using `h`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb` using `b.isLt`. Establish `h2 : ν b + (r - 1 - (b : ℕ)) ≤ ν a + (r - 1 - (a : ℕ))` using `by omega`. Rewrite using `[sub_nonneg]`. Conclude with `h2` after adjusting the coercions. Conclude with `zero_le_one`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frobDelta_nonneg {r : ℕ} (ν : Fin r → ℕ) (hν : Antitone ν) : 0 ≤ frobDelta ν := by
   unfold frobDelta
@@ -108,7 +106,7 @@ theorem frobDelta_nonneg {r : ℕ} (ν : Fin r → ℕ) (hν : Antitone ν) : 0 
   · exact zero_le_one
 
 /- English proof (translation)
-Proceed by induction on `d with`. Consider the case `zero => simp [mul_comm]`. Consider the case `succ d ih`. Rewrite using `[show c + (d + 1) = (c + d) + 1 by ring, Nat.factorial_succ, show s + c + (d + 1) = (s + c + d) + 1 by ring, Nat.factorial_succ]`. Combine the equalities or inequalities in the displayed calculation.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem factorial_mul_le (s c d : ℕ) :
     (s + c).factorial * (c + d).factorial ≤ (s + c + d).factorial * c.factorial := by
@@ -124,9 +122,9 @@ theorem factorial_mul_le (s c d : ℕ) :
       _ = ((s + c + d + 1) * (s + c + d).factorial) * c.factorial := by ring
 
 /- English proof (translation)
-Rewrite using `[← prod_mul_distrib, ← prod_mul_distrib]`. Apply `prod_le_prod` to reduce the goal to its premises. Introduce `a _`. Check the signs of the components of the expression. Introduce `a _`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Check the signs of the components of the expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `factorial_mul_le s (r - 1 - (a : ℕ)) (ν a)` as an intermediate fact. Rewrite using `[show s + ν a + (r - 1 - (a : ℕ)) = s + (r - 1 - (a : ℕ)) + ν a by ring, show ν a + (r - 1 - (a : ℕ)) = (r - 1 - (a : ℕ)) + ν a by ring, mul_comm (((r - 1 - (a : ℕ)).factorial : ℕ) : ℚ)]`. Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prod_factorial_le {r : ℕ} (s : ℕ) (ν : Fin r → ℕ) :
     (∏ a : Fin r, ((s + (r - 1 - (a : ℕ))).factorial : ℚ)) *
@@ -146,17 +144,15 @@ theorem prod_factorial_le {r : ℕ} (s : ℕ) (ν : Fin r → ℕ) :
 end KAlt
 
 /- English proof (translation)
-Introduce `r s ν hν`. Simplify using `only [KAlt.frobDim_eq, KAlt.frobDelta_add_const, KAlt.frobDelta_const]`. Establish `hsum : (∑ a : Fin r, (s + ν a)) = r * s + ∑ a, ν a`. Rewrite using `[Finset.sum_add_distrib]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hsum' : (∑ _a : Fin r, s) = r * s` using `by simp`. Rewrite using `[hsum, hsum']`. Use `set k := ∑ a, ν a with hk`. Use `set A := ∏ a : Fin r, ((s + ν a + (r - 1 - (a : ℕ))).factorial : ℚ) with hA`. Use `set B := ∏ a : Fin r, ((s + (r - 1 - (a : ℕ))).factorial : ℚ) with hB`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set E := ∏ a : Fin r, ((ν a + (r - 1 - (a : ℕ))).factorial : ℚ) with hE`. Use `set F := ∏ a : Fin r, (((r - 1 - (a : ℕ)).factorial : ℕ) : ℚ) with hF`. Use `set D := KAlt.frobDelta ν with hD`. Establish `hA0 : 0 < A` using `prod_pos fun a _ => by positivity`. Establish `hB0 : 0 < B` using `prod_pos fun a _ => by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hE0 : 0 < E` using `prod_pos fun a _ => by positivity`. Establish `hD0 : 0 ≤ D` using `KAlt.frobDelta_nonneg ν hν`. Establish `key : B * E ≤ F * A` using `KAlt.prod_factorial_le s ν`. Establish `hch : ((r * s + k).choose k : ℚ) * ((r * s).factorial : ℚ) * (k.factorial : ℚ) = ((r * s + k).factorial : ℚ)`. Establish `h` using `Nat.choose_mul_factorial_mul_factorial (show k ≤ r * s + k by omega)`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h` using `[show r * s + k - k = r * s by omega]`. Rewrite using `[← h]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hrhs : ((r * s + k).choose k : ℚ) * ((r * s).factorial * F / B) * (k.factorial * D / E) = ((r * s + k).factorial : ℚ) * D * F / (B * E)`.
-
-Rewrite using `[← hch]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[hrhs, div_le_div_iff₀ hA0 (mul_pos hB0 hE0)]`. Combine the equalities or inequalities in the displayed calculation.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem FrobeniusRectangleBound.intersectionNumber_baseChange : FrobeniusRectangleBound.Statement := by
   intro r s ν hν

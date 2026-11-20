@@ -23,9 +23,9 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 variable {hc : HeisClosedF σ JS JT ξ₀ ψ} {Λ : Submodule (𝓞 E) (Matrix (Fin nT) (Fin nS) E)} {w : 𝓞 E}
   {lam : ℕ →* ℂ} {Om : GAF σ JS × GAF σ JT →* Module.End ℂ (GlobalTheory.WeilPartsF.thetaSubF σ JS JT ξ₀ ψ)}
 /- English proof (translation)
-Establish `H` using `isHeis_opFF hσ hS hT hξ hc hR.hw`. Establish `: Om p ∘ₗ L = L ∘ₗ Om p`. Use `LinearMap.ext_on hR.span ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, e, he, rfl⟩`. Establish `he' : Fixes (opFF hc w) (latF F E nS nT Λ) (L e)` using `fun a ha => by rw [← hL, he a ha]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite using `[LinearMap.comp_apply, LinearMap.comp_apply, hL, hR.op, hR.op, hL, hR.vac p e he, hR.vac p _ he', GlobalTheory.FinWeilO.normOp_comm H lam (hR.sd' p) (hR.fin p) L hL he]`. Conclude with `LinearMap.congr_fun this f`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comm_k (hσ : ∀ x, σ (σ x) = x) (hS : IsHermND σ JS) (hT : IsHermND σ JT) (hξ : σ ξ₀ = -ξ₀)
     (hR : _root_.UpperTheory.TP.W.IsLatRepL σ JS JT ξ₀ ψ hc Λ w lam Om)
@@ -41,7 +41,7 @@ theorem comm_k (hσ : ∀ x, σ (σ x) = x) (hS : IsHermND σ JS) (hT : IsHermND
       GlobalTheory.FinWeilO.normOp_comm H lam (hR.sd' p) (hR.fin p) L hL he]
   exact LinearMap.congr_fun this f
 /- English proof (translation)
-Establish `h1 : opFF hc w x f = phaseF σ JS JT ξ₀ ψ w x • f'` using `Subtype.ext (by rw [coe_opFF, Submodule.coe_smul, hf])`. Establish `h2` using `congrArg Subtype.val (hR.op p x f)`. Rewrite `h2` using `[h1, map_smul, Submodule.coe_smul, coe_opFF, phaseF_rhoFF hS, coe_rhoFF]`. Conclude with `smul_right_injective _ (phaseF_ne_zero w x) h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem heis_fin_k (hS : IsHermND σ JS) (hR : _root_.UpperTheory.TP.W.IsLatRepL σ JS JT ξ₀ ψ hc Λ w lam Om)
     (p : GAF σ JS × GAF σ JT) (x : XFF F E nS nT) (f f' : GlobalTheory.WeilPartsF.thetaSubF σ JS JT ξ₀ ψ)
@@ -54,15 +54,13 @@ theorem heis_fin_k (hS : IsHermND σ JS) (hR : _root_.UpperTheory.TP.W.IsLatRepL
 end GlobalTheory.FinLatHeis
 open GlobalTheory.FinLatF GlobalTheory.FinLatHeis in
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B hB nS nT JS JT hS hT ξ₀ _ hξ hc Λ w lam Om hR g hg h hh w₀ f f' hf`. Establish `hσ : ∀ x, σ (σ x) = x`. Introduce `x`. Set `τ : E →+* ℂ` to `(IsAlgClosed.lift (M := ℂ) (R := ℚ) (S := E)).toRingHom`. Apply `τ.injective` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hB.cm.2.2.2 τ, hB.cm.2.2.2 τ, star_star]`. Use `set r := realIdF F E`. Set `L : GlobalTheory.WeilPartsF.thetaSubF σ JS JT ξ₀ B.ψ →ₗ[ℂ] GlobalTheory.WeilPartsF.thetaSubF σ JS JT ξ₀ B.ψ` to `(heisLF σ JS JT ξ₀ B.ψ (r • w₀)).restrict fun f hf => hc _ f hf`. Establish `hL : ∀ m, (L m : WOF F E nS nT → ℂ) = heisOF σ JS JT ξ₀ B.ψ (r • w₀) m` using `fun _ => rfl`. Establish `hLop : ∀ x v, L (opFF hc w x v) = opFF hc w x (L v)` using `fun x v => Subtype.ext (by`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hL, coe_opFF, coe_opFF, hL, GlobalTheory.WeilPartsF.heisOF_smul, heisOF_heisOF', heisOF_heisOF', symplOHF_real_fin hσ ξ₀ w₀ x.fin, symplOHF_fin_real hσ hS hT hξ w₀ x.fin, add_comm])`. Set `f₁ : GlobalTheory.WeilPartsF.thetaSubF σ JS JT ξ₀ B.ψ` to `⟨_, hc ((1 - r) • w₀) f f.2⟩`. Establish `hf' : f' = L f₁` using `Subtype.ext (by`. Rewrite using `[hf, hL]`. Use `show heisOF σ JS JT ξ₀ B.ψ w₀ f = heisOF σ JS JT ξ₀ B.ψ (r • w₀) (heisOF σ JS JT ξ₀ B.ψ ((1 - r) • w₀) f)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[heisOF_heisOF', symplOHF_real_fin hσ ξ₀ w₀ (fin_part w₀), AddChar.map_zero_eq_one, one_smul, ← decomp])`. Establish `h1` using `_root_.GlobalTheory.FinLatHeis.heis_fin_k hS hR (g, h) (XFF.mk _ (fin_part w₀)) f f₁ rfl`. Rewrite `h1` using `[XFF.coe_mk]`. Rewrite using `[hf', _root_.GlobalTheory.FinLatHeis.comm_k hσ hS hT hξ hR L hLop, hL, h1, heisOF_heisOF', symplOHF_real_fin hσ ξ₀ w₀ (actOF_mem_finSubF g h (fin_part w₀)), AddChar.map_zero_eq_one, one_smul]`. Use `congr 1`.
-
-Use `conv_rhs => rw [decomp w₀, actOF_add, actOF_real hg hh]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.FinLatHeis.isLatRepF_heis_k : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
     _root_.UpperTheory.TP.W.GoodK σ B → ∀ (nS nT : ℕ) (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E),

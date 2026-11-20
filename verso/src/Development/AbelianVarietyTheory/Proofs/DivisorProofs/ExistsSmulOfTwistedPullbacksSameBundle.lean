@@ -17,13 +17,13 @@ open GlobalTheory.UU
 namespace GlobalTheory.TwistRatio
 
 /- English proof (translation)
-Introduce `K _ _ _ P m hm th α α' s₁ s₁' hα hα' h h'`. Establish `hG` using `GlobalTheory.allSixLaws.1.globalFns`. Take `⟨a, ha⟩` from `H1.exists_const P.L P.isLB (fst (baseOver (Sp K)) P.A).left (BoxTheta.surj_fst hG P.isAb _) (LB.mulGen P.L _ _ _ _ α' (LB.invGen P.L _ _ α)) (DVR.mulGen_isGen _ _ _ _ _ _ _ hα' (DVR.invGen_isGen _ _ _ _ hα)) (fun U _ h => by`. Simplify using `[Fintype.prod_sum_type, Fin.prod_univ_two])`. Take `⟨c, rfl⟩` from `(ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of K)).inv).2 a`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Use `⟨c, SecMod.ext_coord fun j => ?_⟩` and prove the remaining obligations. Use `sec_ext_val P.isLB (fun y J hJ => ?_) j` and prove the remaining obligations. Establish `e1` using `VVRank.sv_of_isTwistPull P.A h' (𝟙 _) y hJ`. Establish `e0` using `VVRank.sv_of_isTwistPull P.A h (𝟙 _) y hJ`. Establish `ev` using `ha _ (𝟙 _) y J hJ`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `ev` using `[val_mul hJ, val_inv]`. Establish `es` using `SecMod.value_smul hJ (𝟙 _) c (SecMod.mk (fst (baseOver (Sp K)) P.A).left s₁)`. Use `e1.trans (Eq.trans ?_ es.symm)` and prove the remaining obligations. Establish `eg : gs (𝟙 _) y ⊤ (scal (fst (baseOver (Sp K)) P.A).left c) = gs (𝟙 _ ≫ (fst (baseOver (Sp K)) P.A).left) y ⊤ ((ConcreteCategory.hom (Scheme.ΓSpecIso (CommRingCat.of K)).inv) c)` using `gs_pull _ _ y ⊤ trivial _`. Establish `eu : (val α' (𝟙 _) y J).val = (val α' (𝟙 _) y J * (val α (𝟙 _) y J)⁻¹).val * (val α (𝟙 _) y J).val`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Units.val_mul, inv_mul_cancel_right]`. Express the relevant statement in the definitionally equal form `_ = _ * VVRank.sv P.A s₁ (𝟙 _) y J`. Rewrite using `[e0, eg, ← ev, eu, _root_.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_smul_of_isTwistPull : ∀ (K : Type) [Field K] [IsAlgClosed K] [CharZero K] (P : PolAV (Sp K)) (m : ℕ), 1 ≤ m →
     ∀ (th : LB.Sec (LPow P.A P.L ((1 : ℕ) : ℤ) (baseOver (Sp K))))

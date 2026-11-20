@@ -14,7 +14,7 @@ namespace GlobalTheory.SBHaarDelta
 open scoped Topology
 
 /- English proof (translation)
-Establish `: U.indicator φ = U.indicator 1 * φ`. Apply the tactic sequence `funext x; by_cases hx : x ∈ U <;> simp [hx]`. Rewrite using `[this]`. Conclude with `⟨(LocallyConstant.indicator (1 : LocallyConstant X ℂ) hU).isLocallyConstant.mul hφ.1, hφ.2.mul_left⟩`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem indicator_mem {X : Type} [TopologicalSpace X] {U : Set X} (hU : IsClopen U) {φ : X → ℂ} (hφ : φ ∈ SB X) :
     U.indicator φ ∈ SB X := by
@@ -24,7 +24,7 @@ theorem indicator_mem {X : Type} [TopologicalSpace X] {U : Set X} (hU : IsClopen
   exact ⟨(LocallyConstant.indicator (1 : LocallyConstant X ℂ) hU).isLocallyConstant.mul hφ.1, hφ.2.mul_left⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(LocallyConstant.indicator (1 : LocallyConstant X ℂ) hU).isLocallyConstant, HasCompactSupport.intro' hK hU.1 fun _ hx => Set.indicator_of_notMem hx _⟩`.
+Supply the required witnesses or components.
 -/
 theorem indicator_one_mem {X : Type} [TopologicalSpace X] {U : Set X} (hU : IsClopen U) (hK : IsCompact U) :
     U.indicator (fun _ => (1 : ℂ)) ∈ SB X :=
@@ -32,15 +32,15 @@ theorem indicator_one_mem {X : Type} [TopologicalSpace X] {U : Set X} (hU : IsCl
     HasCompactSupport.intro' hK hU.1 fun _ hx => Set.indicator_of_notMem hx _⟩
 
 /- English proof (translation)
-Establish `h0 : Λ 0 = 0`. Use `hadd 0 (zero_mem _) 0 (zero_mem _)` as an intermediate fact. Simplify using `using this`. Establish `hc : IsCompact (Function.support f)` using `hf.2.of_isClosed_subset (hf.1.isClopen_fiber 0).2.isClosed_compl (subset_tsupport f)`. Establish `key : ∃ N : Set X, IsClopen N ∧ Function.support f ⊆ N ∧ ∀ g ∈ SB X, Function.support g ⊆ N → Λ g = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hc.induction_on (p := fun s => ∃ N : Set X, IsClopen N ∧ s ⊆ N ∧ ∀ g ∈ SB X, Function.support g ⊆ N → Λ g = 0) ?_ ?_ ?_ ?_` and prove the remaining obligations. Use `⟨∅, isClopen_empty, le_rfl, fun g _ hg => ?_⟩` and prove the remaining obligations. Rewrite using `[Function.support_eq_empty_iff.1 (Set.subset_empty_iff.1 hg), h0]`. Introduce and unpack `s t hst ⟨N, h1, h2, h3⟩`. Conclude with `⟨N, h1, hst.trans h2, h3⟩`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `s t ⟨N, h1, h2, h3⟩ ⟨M, k1, k2, k3⟩`. Use `⟨N ∪ M, h1.union k1, Set.union_subset_union h2 k2, fun g hg hs => ?_⟩` and prove the remaining obligations. Establish `e : g = N.indicator g + Nᶜ.indicator g` using `(Set.indicator_self_add_compl N g).symm`. Rewrite using `[e, hadd _ (indicator_mem h1 hg) _ (indicator_mem h1.compl hg), h3 _ (indicator_mem h1 hg), k3 _ (indicator_mem h1.compl hg), add_zero]`. Rewrite using `[Set.support_indicator]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `fun x hx => (hs hx.2).resolve_left hx.1`. Conclude with `Set.support_indicator_subset`. Introduce `x hx`. Take `⟨N, h1, h2, h3⟩` from `h x hx`. Conclude with `⟨N, mem_nhdsWithin_of_mem_nhds (h1.2.mem_nhds h2), N, h1, le_rfl, h3⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨N, -, h2, h3⟩` from `key`. Conclude with `h3 f hf h2`.
+A detailed English derivation is pending.
 -/
 theorem eq_zero_of_local {X : Type} [TopologicalSpace X] (Λ : (X → ℂ) → ℂ)
     (hadd : ∀ f ∈ SB X, ∀ g ∈ SB X, Λ (f + g) = Λ f + Λ g) {f : X → ℂ} (hf : f ∈ SB X)
@@ -77,19 +77,17 @@ section Group
 variable {G : Type} [AddCommGroup G] [TopologicalSpace G]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hf.1.comp_continuous (continuous_add_const a), hf.2.comp_homeomorph (Homeomorph.addRight a)⟩`.
+Supply the required witnesses or components.
 -/
 theorem translate_mem [IsTopologicalAddGroup G] {f : G → ℂ} (hf : f ∈ SB G) (a : G) : (fun x => f (x + a)) ∈ SB G :=
   ⟨hf.1.comp_continuous (continuous_add_const a), hf.2.comp_homeomorph (Homeomorph.addRight a)⟩
 
 /- English proof (translation)
-Establish `key : ∀ x ∈ tsupport f, ∀ᶠ z : G × G in 𝓝 ((0 : G), x), f (z.2 + z.1) = f z.2 ∧ f (z.2 - z.1) = f z.2`. Introduce `x _`. Establish `e3` using `(hf.1.comp_continuous (f := fun z : G × G => z.2 + z.1) (by fun_prop)).eventually_eq ((0 : G), x)`. Establish `e4` using `(hf.1.comp_continuous (f := fun z : G × G => z.2 - z.1) (by fun_prop)).eventually_eq ((0 : G), x)`. Establish `e5` using `(hf.1.comp_continuous (f := fun z : G × G => z.2) (by fun_prop)).eventually_eq ((0 : G), x)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `filter_upwards [e3, e4, e5] with z h3 h4 h5`. Simplify using `only [Function.comp_apply, add_zero, sub_zero] at h3 h4 h5`. Conclude with `⟨h3.trans h5.symm, h4.trans h5.symm⟩`. Establish `h` using `hf.2.eventually_forall_of_forall_eventually (x₀ := (0 : G)) (P := fun (w : G) (y : G) => f (y + w) = f y ∧ f (y - w) = f y) key`. Use `filter_upwards [h] with w hw x`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hx : x ∈ tsupport f`. Conclude with `(hw x hx).1`. Distinguish the cases in `hx' : x + w ∈ tsupport f`. Use `(hw _ hx').2` as an intermediate fact. Rewrite `this` using `[add_sub_cancel_right]`.
-
-Conclude with `this.symm`. Rewrite using `[image_eq_zero_of_notMem_tsupport hx', image_eq_zero_of_notMem_tsupport hx]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eventually_periodic [IsTopologicalAddGroup G] {f : G → ℂ} (hf : f ∈ SB G) :
     ∀ᶠ y in 𝓝 (0 : G), ∀ x, f (x + y) = f x := by
@@ -117,11 +115,11 @@ def IsInvForm (L : (G → ℂ) → ℂ) : Prop :=
     ∀ f ∈ SB G, ∀ a : G, L (fun x => f (x + a)) = L f
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Use `hL.1 0 (zero_mem _) 0 (zero_mem _)` as an intermediate fact. Use `⟨zero_mem _, ?_⟩` and prove the remaining obligations. Simplify using `only [Finset.sum_empty, zero_mul]`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `(by simpa using this : L 0 = 0)`. Consider the case `insert a s ha ih`. Establish `e1 : (fun t => ∑ b ∈ insert a s, c b * e (t - b)) = c a • (fun t => e (t + -a)) + fun t => ∑ b ∈ s, c b * e (t - b)`. Use function extensionality and compare the values at `t`. Simplify using `[Finset.sum_insert ha, sub_eq_add_neg]`.
+Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h1` using `translate_mem he (-a)`. Rewrite using `[e1]`. Use `⟨add_mem (Submodule.smul_mem _ _ h1) ih.1, ?_⟩` and prove the remaining obligations. Rewrite using `[hL.1 _ (Submodule.smul_mem _ _ h1) _ ih.1, hL.2.1 _ _ h1, hL.2.2 _ he, ih.2, Finset.sum_insert ha, add_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsInvForm.sum [IsTopologicalAddGroup G] {L : (G → ℂ) → ℂ} (hL : IsInvForm L) {e : G → ℂ} (he : e ∈ SB G)
     (c : G → ℂ) (s : Finset G) :
@@ -143,7 +141,7 @@ theorem IsInvForm.sum [IsTopologicalAddGroup G] {L : (G → ℂ) → ℂ} (hL : 
     rw [hL.1 _ (Submodule.smul_mem _ _ h1) _ ih.1, hL.2.1 _ _ h1, hL.2.2 _ he, ih.2, Finset.sum_insert ha, add_mul]
 
 /- English proof (translation)
-Take `⟨K, hK, hKU, hKc⟩` from `local_compact_nhds hU`. Take `⟨V, hV⟩` from `NonarchimedeanAddGroup.is_nonarchimedean K hK`. Conclude with `⟨V, V.isClopen, hKc.of_isClosed_subset V.isClosed hV, hV.trans hKU⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_compact_open [NonarchimedeanAddGroup G] [LocallyCompactSpace G] {U : Set G} (hU : U ∈ 𝓝 (0 : G)) :
     ∃ V : AddSubgroup G, IsClopen (V : Set G) ∧ IsCompact (V : Set G) ∧ (V : Set G) ⊆ U := by
@@ -152,11 +150,11 @@ theorem exists_compact_open [NonarchimedeanAddGroup G] [LocallyCompactSpace G] {
   exact ⟨V, V.isClopen, hKc.of_isClosed_subset V.isClosed hV, hV.trans hKU⟩
 
 /- English proof (translation)
-Take `⟨V, hV, hVc, hVU⟩` from `exists_compact_open ((eventually_periodic hf).and (eventually_periodic hg))`. Take `⟨s, hs⟩` from `GlobalTheory.RootEx.exists_finset_eq_sum_indicator_of_periodic hf.2 V hV.2 fun x y hy => (hVU hy).1 x`. Take `⟨u, hu⟩` from `GlobalTheory.RootEx.exists_finset_eq_sum_indicator_of_periodic hg.2 V hV.2 fun x y hy => (hVU hy).2 x`. Establish `he` using `indicator_one_mem hV hVc`. Establish `a1` using `(hL.sum he f s).2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a2` using `(hI.sum he f s).2`. Establish `a3` using `(hL.sum he g u).2`. Establish `a4` using `(hI.sum he g u).2`. Rewrite `a1`, `a2` using `[← funext hs]`. Rewrite `a3`, `a4` using `[← funext hu]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[a1, a2, a3, a4]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem IsInvForm.mul_comm [NonarchimedeanAddGroup G] [LocallyCompactSpace G] {L I : (G → ℂ) → ℂ}
     (hL : IsInvForm L) (hI : IsInvForm I) {f g : G → ℂ} (hf : f ∈ SB G) (hg : g ∈ SB G) :
@@ -174,11 +172,11 @@ theorem IsInvForm.mul_comm [NonarchimedeanAddGroup G] [LocallyCompactSpace G] {L
   rw [a1, a2, a3, a4]; ring
 
 /- English proof (translation)
-Establish `hint : ∀ f ∈ SB G, Integrable f μ` using `fun f hf => hf.1.continuous.integrable_of_hasCompactSupport hf.2`. Establish `hI : IsInvForm (fun f : G → ℂ => ∫ x, f x ∂μ)` using `⟨fun f hf g hg => integral_add (hint f hf) (hint g hg), fun z f _ => integral_const_mul z f, fun f _ a => integral_add_right_eq_self f a⟩`. Take `⟨V, hV, hVc, -⟩` from `exists_compact_open (G := G) Filter.univ_mem`. Establish `he` using `indicator_one_mem hV hVc`. Establish `hne : (∫ x, (V : Set G).indicator (fun _ => (1 : ℂ)) x ∂μ) ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[integral_indicator_const _ hV.2.measurableSet]`. Establish `h1 : μ V ≠ 0` using `(hV.2.measure_pos μ ⟨0, V.zero_mem⟩).ne'`. Establish `h2 : μ V ≠ ⊤` using `hVc.measure_lt_top.ne`. Simplify using `[Measure.real, ENNReal.toReal_eq_zero_iff, h1, h2]`. Use `⟨L ((V : Set G).indicator fun _ => 1) / ∫ x, (V : Set G).indicator (fun _ => (1 : ℂ)) x ∂μ, fun f hf => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `hL.mul_comm hI hf he` as an intermediate fact. Clear the denominators using the available nonvanishing facts. Take the linear combination `this`.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem IsInvForm.eq_integral [NonarchimedeanAddGroup G] [LocallyCompactSpace G] [MeasurableSpace G] [BorelSpace G]
     (μ : Measure G) [μ.IsAddHaarMeasure] {L : (G → ℂ) → ℂ} (hL : IsInvForm L) :
@@ -200,21 +198,19 @@ theorem IsInvForm.eq_integral [NonarchimedeanAddGroup G] [LocallyCompactSpace G]
   linear_combination this
 
 /- English proof (translation)
-Take `⟨V, hV, hVc, -⟩` from `exists_compact_open (G := X) Filter.univ_mem`. Establish `he` using `indicator_one_mem hV hVc`. Use `set e : X → ℂ := (V : Set X).indicator (fun _ => (1 : ℂ)) with hedef`. Set `E : (G → ℂ) → X → ℂ` to `fun h x => h (π x) * e (x - ι (π x))`. Establish `hE : ∀ h ∈ SB G, E h ∈ SB X`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h hh`. Use `⟨(hh.1.comp_continuous hπ).mul (he.1.comp_continuous (continuous_id.sub (hι.comp hπ))), ?_⟩` and prove the remaining obligations. Establish `hK : IsCompact ((fun p : G × X => ι p.1 + p.2) '' (tsupport h ×ˢ (V : Set X)))` using `(hh.2.isCompact.prod hVc).image (by fun_prop)`. Use `HasCompactSupport.intro hK fun x hx => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hne`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations.
 
-Use `hx ⟨(π x, x - ι (π x)), ⟨subset_tsupport _ (left_ne_zero_of_mul hne), ?_⟩, by simp⟩` and prove the remaining obligations. Conclude with `Set.support_indicator_subset (right_ne_zero_of_mul hne)`. Establish `hL : IsInvForm (fun h => Λ (E h))`. Use `⟨fun f hf g hg => ?_, fun z f hf => ?_, fun f hf a => ?_⟩` and prove the remaining obligations. Use `beta_reduce`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[← hadd _ (hE f hf) _ (hE g hg)]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Simplify using `[E, add_mul]`. Use `beta_reduce`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[← hsmul z _ (hE f hf)]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Simplify using `[E, mul_assoc]`. Use `beta_reduce`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← hinv _ (hE f hf) a]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Simplify using `[E, hπa, hιa, hπι]`. Take `⟨κ, hκ⟩` from `hL.eq_integral μ`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨κ, fun f hf => ?_⟩` and prove the remaining obligations. Establish `hce : Topology.IsClosedEmbedding ι` using `Function.LeftInverse.isClosedEmbedding (f := π) hπι hπ hι`. Establish `hr : (fun g => f (ι g)) ∈ SB G` using `⟨hf.1.comp_continuous hι, hf.2.comp_isClosedEmbedding hce⟩`. Use `⟨hr, ?_⟩` and prove the remaining obligations. Rewrite using `[← hκ _ hr]`.
-
-Establish `hd` using `sub_mem hf (hE _ hr)`. Establish `h0` using `hvan _ hd fun g => by simp [E, hπι, hedef]`. Use `hadd _ hd _ (hE _ hr)` as an intermediate fact. Rewrite `this` using `[sub_add_cancel, h0, zero_add]`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_integral_of_retract [NonarchimedeanAddGroup G] [LocallyCompactSpace G] [T2Space G] [MeasurableSpace G]
     [BorelSpace G] (μ : Measure G) [μ.IsAddHaarMeasure] {X : Type} [AddCommGroup X] [TopologicalSpace X]
@@ -264,7 +260,7 @@ theorem eq_integral_of_retract [NonarchimedeanAddGroup G] [LocallyCompactSpace G
 end Group
 
 /- English proof (translation)
-Rewrite `hU` using `[nhds_pi, Filter.mem_pi]`. Take `⟨I, -, t, ht, hs⟩` from `hU`. Use `choose K hK using fun i => NonarchimedeanAddGroup.is_nonarchimedean (G := G i) (t i) (ht i)`. Conclude with `⟨⟨AddSubgroup.pi Set.univ fun i => (K i : AddSubgroup (G i)), isOpen_set_pi Set.finite_univ fun i _ => (K i).isOpen⟩, fun x hx => hs fun i _ => hK i (hx i trivial)⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem nonarch_pi {ι : Type} [Finite ι] (G : ι → Type) [∀ i, AddCommGroup (G i)] [∀ i, TopologicalSpace (G i)]
     [∀ i, NonarchimedeanAddGroup (G i)] : NonarchimedeanAddGroup (∀ i, G i) where
@@ -283,7 +279,7 @@ def coords (Z : Matrix (Fin (b + 2)) (Fin (a + (b + 2))) R) : (Fin (a + (b + 2))
   (fun j => Z ⟨b + 1, by omega⟩ j, fun i => Z ⟨i.1 + 1, by omega⟩ ⟨a + b + 1, by omega⟩)
 
 /- English proof (translation)
-Unfold `insS`. Apply the tactic sequence `split_ifs <;> first | rfl | omega`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem insS_apply [Zero R] (r : Fin (a + (b + 2)) → R) (c : Fin b → R) (i : Fin (b + 2)) (j : Fin (a + (b + 2))) :
     insS (0 : Matrix (Fin b) (Fin (a + b)) R) r c 0 i j =
@@ -293,7 +289,7 @@ theorem insS_apply [Zero R] (r : Fin (a + (b + 2)) → R) (c : Fin b → R) (i :
   split_ifs <;> first | rfl | omega
 
 /- English proof (translation)
-Use `Prod.ext (funext fun j => ?_) (funext fun i => ?_)` and prove the remaining obligations. Simplify using `[coords, insS_apply]`. Use `i.2` as an intermediate fact. Simplify using `[coords, insS_apply, this.ne]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem coords_insS [Zero R] (r : Fin (a + (b + 2)) → R) (c : Fin b → R) :
     coords (insS (0 : Matrix (Fin b) (Fin (a + b)) R) r c 0) = (r, c) := by
@@ -303,7 +299,7 @@ theorem coords_insS [Zero R] (r : Fin (a + (b + 2)) → R) (c : Fin b → R) :
     simp [coords, insS_apply, this.ne]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Matrix.add_apply, insS_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem insS_add [AddMonoid R] (r r' : Fin (a + (b + 2)) → R) (c c' : Fin b → R) :
     insS (0 : Matrix (Fin b) (Fin (a + b)) R) (r + r') (c + c') 0 =
@@ -313,7 +309,7 @@ theorem insS_add [AddMonoid R] (r r' : Fin (a + (b + 2)) → R) (c c' : Fin b �
   split_ifs <;> simp
 
 /- English proof (translation)
-Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Simplify using `only [insS_apply]`. Apply the tactic sequence `split_ifs <;> fun_prop`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem continuous_insS [Zero R] [TopologicalSpace R] :
     Continuous fun p : (Fin (a + (b + 2)) → R) × (Fin b → R) => insS (0 : Matrix (Fin b) (Fin (a + b)) R) p.1 p.2 0 := by
@@ -322,13 +318,11 @@ theorem continuous_insS [Zero R] [TopologicalSpace R] :
   split_ifs <;> fun_prop
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hn`. Use `push_neg at hn`. Apply `h` to reduce the goal to its premises. Use extensionality with `i j`. Rewrite using `[insS_apply]`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `split_ifs with h1 h2`. Simplify using `only [coords]`. Use `congr 1`. Conclude with `Fin.ext h1`. Simplify using `only [coords]`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Use `congr 1`. Conclude with `Fin.ext (by simp only; omega)`. Conclude with `Fin.ext h2.2.2`. Assume the negation of the conclusion as `hz`. Take `⟨r, c, hrc⟩` from `hn i j hz`.
-
-Rewrite `hrc` using `[insS_apply, if_neg h1, dif_neg h2]`. Conclude with `hrc rfl`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_entry [Zero R] (Z : Matrix (Fin (b + 2)) (Fin (a + (b + 2))) R)
     (h : Z ≠ insS (0 : Matrix (Fin b) (Fin (a + b)) R) (coords Z).1 (coords Z).2 0) :
@@ -351,25 +345,19 @@ theorem exists_entry [Zero R] (Z : Matrix (Fin (b + 2)) (Fin (a + (b + 2))) R)
 end Coord
 
 /- English proof (translation)
-Introduce `F _ _ v a b ψ hψ hψ1 P Q hP hQ Λ hadd hsmul hinv hchar`. Use `haveI := haarO_isAddHaar v`. Use `haveI : LocallyCompactSpace (Fv F v) := (intPC v).locallyCompactSpace_of_addGroup`. Use `haveI : SecondCountableTopology (Fv F v) := by`. Establish `: Countable F` using `(Module.finBasis ℚ F).equivFun.injective.countable`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: TopologicalSpace.SeparableSpace (Fv F v)` using `⟨⟨Set.range (algebraMap F (Fv F v)), Set.countable_range _, IsDedekindDomain.HeightOneSpectrum.denseRange_algebraMap F v⟩⟩`. Conclude with `UniformSpace.secondCountable_of_separable (Fv F v)`. Use `haveI : ∀ p : ℕ, NonarchimedeanAddGroup (Fin p → Fv F v) := fun p => nonarch_pi (fun _ : Fin p => Fv F v)`. Use `haveI : NonarchimedeanAddGroup (Matrix (Fin (b + 2)) (Fin (a + (b + 2))) (Fv F v)) := nonarch_pi (fun _ : Fin (b + 2) => Fin (a + (b + 2)) → Fv F v)`. Use `haveI : LocallyCompactSpace (Matrix (Fin (b + 2)) (Fin (a + (b + 2))) (Fv F v)) := inferInstanceAs (LocallyCompactSpace (Fin (b + 2) → Fin (a + (b + 2)) → Fv F v))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `haveI : ∀ p : ℕ, (haarVec v p).IsAddHaarMeasure := fun p => by unfold haarVec; infer_instance`. Establish `hψl : IsLocallyConstant ψ` using `GlobalTheory.SchrSB.isLocallyConstant_addChar ψ hψ`. Establish `hc1 : ∀ Z : Matrix (Fin (b + 2)) (Fin (a + (b + 2))) (Fv F v), P⁻¹ * (P * Z * Q) * Q⁻¹ = Z` using `fun Z => by`. Rewrite using `[Matrix.mul_assoc P, Matrix.nonsing_inv_mul_cancel_left _ _ hP, Matrix.mul_nonsing_inv_cancel_right _ _ hQ]`. Establish `hc2 : ∀ Z : Matrix (Fin (b + 2)) (Fin (a + (b + 2))) (Fv F v), P * (P⁻¹ * Z * Q⁻¹) * Q = Z` using `fun Z => by`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[Matrix.mul_assoc P⁻¹, Matrix.mul_nonsing_inv_cancel_left _ _ hP, Matrix.nonsing_inv_mul_cancel_right _ _ hQ]`. Establish `hT : Continuous fun Z : Matrix (Fin (b + 2)) (Fin (a + (b + 2))) (Fv F v) => P⁻¹ * Z * Q⁻¹` using `(continuous_const.matrix_mul continuous_id).matrix_mul continuous_const`. Take `⟨κ, hκ⟩` from `eq_integral_of_retract ((haarVec v (a + (b + 2))).prod (haarVec v b)) (fun p => P * insS (0 : Matrix (Fin b) (Fin (a + b)) (Fv F v)) p.1 p.2 0 * Q) (fun Z => coords (P⁻¹ * Z * Q⁻¹)) ((continuous_const.matrix_mul continuous_insS).matrix_mul continuous_const) ((show Continuous (coo …`. Introduce `f hf hf0`. Use `eq_zero_of_local Λ hadd hf fun x hx => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Apply the tactic sequence `obtain ⟨i, j, hij, hz⟩ := exists_entry (P⁻¹ * x * Q⁻¹) fun h => hx (by`. Use `hf0 (coords (P⁻¹ * x * Q⁻¹))` as an intermediate fact. Rewrite using `[← h, hc2] at this)` and apply the resulting hypothesis. Choose the witnesses or unpack the hypotheses as in `⟨t, ht⟩ : ∃ t, ψ t ≠ 1 := by`. Assume the negation of the conclusion as `h`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Use `push_neg at h`. Conclude with `hψ1 (AddChar.ext _ _ h)`. Use `set s := t / (P⁻¹ * x * Q⁻¹) i j with hs`. Establish `hsum : ∀ Z : Matrix (Fin (b + 2)) (Fin (a + (b + 2))) (Fv F v), ∑ k, ∑ l, Matrix.single i j s k l * Z k l = s * Z i j` using `fun Z => by`. Simplify using `[Matrix.single_apply, ite_and, Finset.sum_ite_eq]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hχ : IsLocallyConstant fun Z : Matrix (Fin (b + 2)) (Fin (a + (b + 2))) (Fv F v) => ψ (s * (P⁻¹ * Z * Q⁻¹) i j)` using `hψl.comp_continuous (continuous_const.mul (hT.matrix_elem i j))`. Use `⟨_, hχ.isClopen_fiber (ψ t), ?_, fun g hg hs => ?_⟩` and prove the remaining obligations. Simplify using `only [Set.mem_setOf_eq, hs, div_mul_cancel₀ t hij]`. Establish `h1` using `hchar (Matrix.single i j s) (fun r c => by rw [hsum, hz, mul_zero]) g hg (ψ t • g) (Submodule.smul_mem _ _ hg) fun Z => by`. Distinguish the cases in `hZ : g (P * Z * Q) = 0`.
-
-Simplify using `[hZ]`. Use `hs hZ` as an intermediate fact. Simplify using `only [Set.mem_setOf_eq, hc1] at this`. Rewrite using `[hsum, this]`. Both sides reduce to the same expression.
-
-Rewrite `h1` using `[hsmul _ _ hg]`. Establish `: (ψ t - 1) * Λ g = 0` using `by rw [sub_mul, h1, one_mul, sub_self]`. Conclude with `(mul_eq_zero.1 this).resolve_left (sub_ne_zero.2 ht))`. Use `⟨κ, fun f hf => ?_⟩` and prove the remaining obligations. Take `⟨h1, h2⟩` from `hκ f hf`.
-
-Rewrite using `[h2, integral_prod _ (h1.1.continuous.integrable_of_hasCompactSupport h1.2)]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ {F : Type} [Field F] [NumberField F] (v : Pl F) {a b : ℕ} (ψ : AddChar (Fv F v) ℂ), Continuous ψ → ψ ≠ 1 →
     ∀ (P : Matrix (Fin (b + 2)) (Fin (b + 2)) (Fv F v)) (Q : Matrix (Fin (a + (b + 2))) (Fin (a + (b + 2))) (Fv F v)),

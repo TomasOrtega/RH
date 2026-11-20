@@ -20,9 +20,9 @@ section Norms
 variable (v : InfinitePlace K.1)
 
 /- English proof (translation)
-Use extensionality with `c`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩`. Conclude with `⟨e.symm y, Algebra.norm_eq_of_algEquiv e.symm y⟩`. Introduce and unpack `⟨y, rfl⟩`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨e y, Algebra.norm_eq_of_algEquiv e y⟩`.
+Supply the required witnesses or components.
 -/
 theorem range_norm_infAlgClosure_eq {F : FiniteSubfield} [Fact (K ≤ F)] (w : v.placesOver F.1)
     [(w : InfinitePlace F.1).LiesOver v]
@@ -37,9 +37,9 @@ theorem range_norm_infAlgClosure_eq {F : FiniteSubfield} [Fact (K ≤ F)] (w : v
     exact ⟨e y, Algebra.norm_eq_of_algEquiv e y⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy⟩`. Establish `hy0 : y ≠ 0`. Introduce and unpack `rfl`. Rewrite `hy` using `[Algebra.norm_zero]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `c.ne_zero hy.symm`. Conclude with `⟨Units.mk0 y hy0, Units.ext hy⟩`. Introduce and unpack `⟨y, hy⟩`. Conclude with `⟨y, congrArg Units.val hy⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_range_norm_iff_mem_normSubgroup {F : FiniteSubfield} [Fact (K ≤ F)] (w : v.placesOver F.1)
     [(w : InfinitePlace F.1).LiesOver v] (c : v.Completionˣ) :
@@ -56,7 +56,7 @@ theorem mem_range_norm_iff_mem_normSubgroup {F : FiniteSubfield} [Fact (K ≤ F)
     exact ⟨y, congrArg Units.val hy⟩
 
 /- English proof (translation)
-Introduce `hL`. Take `⟨z, hz⟩` from `IsAlgClosed.exists_eq_mul_self (-1 : L)`. Establish `h` using `congrArg f hz`. Rewrite `h` using `[map_neg, map_one, map_mul]`. Use polynomial arithmetic with `[mul_self_nonneg (f z)]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem not_isAlgClosed_of_ringHom_real {L : Type*} [Field L] (f : L →+* ℝ) : ¬ IsAlgClosed L := by
   intro hL
@@ -66,9 +66,9 @@ theorem not_isAlgClosed_of_ringHom_real {L : Type*} [Field L] (f : L →+* ℝ) 
   nlinarith [mul_self_nonneg (f z)]
 
 /- English proof (translation)
-Take `⟨F, _, w, ⟨e⟩⟩` from `exists_infCompletion_algEquiv v`. Establish `: (w : InfinitePlace F.1).LiesOver v` using `w.2`. Establish `hw : (w : InfinitePlace F.1).IsComplex`. Rewrite using `[← not_isReal_iff_isComplex]`. Introduce `hwr`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hc : IsAlgClosed (w : InfinitePlace F.1).Completion` using `IsAlgClosed.of_ringEquiv (AlgebraicClosure v.Completion) _ e.toRingEquiv.symm`. Conclude with `not_isAlgClosed_of_ringHom_real (Completion.extensionEmbeddingOfIsReal hwr) hc`. Rewrite using `[range_norm_infAlgClosure_eq v w e, mem_range_norm_iff_mem_normSubgroup v w, InfinitePlace.mem_normSubgroup_iff hv hw]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem infAlgClosure_mem_range_norm_iff_of_isReal (hv : v.IsReal) (c : v.Completionˣ) :
     (c : v.Completion) ∈ Set.range (Algebra.norm v.Completion : AlgebraicClosure v.Completion → v.Completion) ↔
@@ -85,7 +85,7 @@ theorem infAlgClosure_mem_range_norm_iff_of_isReal (hv : v.IsReal) (c : v.Comple
     InfinitePlace.mem_normSubgroup_iff hv hw]
 
 /- English proof (translation)
-Take `⟨F, _, w, ⟨e⟩⟩` from `exists_infCompletion_algEquiv v`. Establish `: (w : InfinitePlace F.1).LiesOver v` using `w.2`. Establish `h : ¬ (v.IsReal ∧ (w : InfinitePlace F.1).IsComplex)` using `fun h => (not_isReal_iff_isComplex.2 hv) h.1`. Rewrite using `[range_norm_infAlgClosure_eq v w e, mem_range_norm_iff_mem_normSubgroup v w, InfinitePlace.normSubgroup_eq_top (w : InfinitePlace F.1) h]`. Conclude with `Subgroup.mem_top c`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem infAlgClosure_mem_range_norm_of_isComplex (hv : v.IsComplex) (c : v.Completionˣ) :
     (c : v.Completion) ∈ Set.range (Algebra.norm v.Completion : AlgebraicClosure v.Completion → v.Completion) := by
@@ -98,9 +98,9 @@ theorem infAlgClosure_mem_range_norm_of_isComplex (hv : v.IsComplex) (c : v.Comp
   exact Subgroup.mem_top c
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Use `push Not at h`. Take `⟨z, hz⟩` from `(IsGalois.mem_range_algebraMap_iff_fixed s).2 h`. Establish `hz2 : z ^ 2 = -1`. Apply `(algebraMap v.Completion (AlgebraicClosure v.Completion)).injective` to reduce the goal to its premises.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_pow, hz, hs, map_neg, map_one]`. Establish `h2` using `congrArg (Completion.extensionEmbeddingOfIsReal hv) hz2`. Rewrite `h2` using `[map_pow, map_neg, map_one]`. Use polynomial arithmetic with `[sq_nonneg (Completion.extensionEmbeddingOfIsReal hv z)]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem exists_gal_ne_of_sq_eq_neg_one (hv : v.IsReal) {s : AlgebraicClosure v.Completion}
     (hs : s ^ 2 = -1) : ∃ σ : Gal(AlgebraicClosure v.Completion/v.Completion), σ s ≠ s := by
@@ -121,21 +121,21 @@ section IChar
 def sqrtNegOne : ℚ̄ := (IsAlgClosed.exists_eq_mul_self (-1 : ℚ̄)).choose
 
 /- English proof (translation)
-The claim follows from `(IsAlgClosed.exists_eq_mul_self (-1 : ℚ̄)).choose_spec.symm`.
+A detailed English derivation is pending.
 -/
 theorem sqrtNegOne_mul_self : sqrtNegOne * sqrtNegOne = -1 :=
   (IsAlgClosed.exists_eq_mul_self (-1 : ℚ̄)).choose_spec.symm
 
 /- English proof (translation)
-Rewrite using `[sq, sqrtNegOne_mul_self]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sqrtNegOne_sq : sqrtNegOne ^ 2 = -1 := by
   rw [sq, sqrtNegOne_mul_self]
 
 /- English proof (translation)
-Introduce `h`. Establish `h2 : (2 : ℚ̄) * sqrtNegOne = 0` using `by rw [two_mul]; nth_rw 2 [h]; exact add_neg_cancel _`. Break down `mul_eq_zero.1 h2 with h2 | h2` into its components or cases. Conclude with `two_ne_zero h2`. Use `sqrtNegOne_mul_self` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[h2, zero_mul, eq_comm, neg_eq_zero]`. Conclude with `one_ne_zero this`.
+A detailed English derivation is pending.
 -/
 theorem sqrtNegOne_ne_neg : sqrtNegOne ≠ -sqrtNegOne := by
   intro h
@@ -147,9 +147,9 @@ theorem sqrtNegOne_ne_neg : sqrtNegOne ≠ -sqrtNegOne := by
     exact one_ne_zero this
 
 /- English proof (translation)
-Establish `h : (σ sqrtNegOne - sqrtNegOne) * (σ sqrtNegOne + sqrtNegOne) = 0`. Establish `h1 : σ sqrtNegOne * σ sqrtNegOne = -1` using `by rw [← map_mul, sqrtNegOne_mul_self, map_neg, map_one]`. Take the linear combination `h1 - sqrtNegOne_mul_self`. Break down `mul_eq_zero.1 h with h | h` into its components or cases. Conclude with `Or.inl (sub_eq_zero.1 h)`.
+Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative.
 
-Conclude with `Or.inr (eq_neg_of_add_eq_zero_left h)`.
+Prove the second alternative.
 -/
 theorem apply_sqrtNegOne_eq_or (σ : ℚ̄ ≃ₐ[ℚ] ℚ̄) : σ sqrtNegOne = sqrtNegOne ∨ σ sqrtNegOne = -sqrtNegOne := by
   have h : (σ sqrtNegOne - sqrtNegOne) * (σ sqrtNegOne + sqrtNegOne) = 0 := by
@@ -166,14 +166,14 @@ def iCharFun (g : Additive K.1.fixingSubgroup) : QZ :=
   if ((Additive.toMul g : K.1.fixingSubgroup) : ℚ̄ ≃ₐ[ℚ] ℚ̄) sqrtNegOne = sqrtNegOne then 0 else QZ.mk (1 / 2)
 
 /- English proof (translation)
-Simplify using `[iCharFun, h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem iCharFun_of_fix {g : Additive K.1.fixingSubgroup}
     (h : ((Additive.toMul g : K.1.fixingSubgroup) : ℚ̄ ≃ₐ[ℚ] ℚ̄) sqrtNegOne = sqrtNegOne) : iCharFun K g = 0 := by
   simp [iCharFun, h]
 
 /- English proof (translation)
-Simplify using `[iCharFun, h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem iCharFun_of_not_fix {g : Additive K.1.fixingSubgroup}
     (h : ((Additive.toMul g : K.1.fixingSubgroup) : ℚ̄ ≃ₐ[ℚ] ℚ̄) sqrtNegOne ≠ sqrtNegOne) :
@@ -181,7 +181,7 @@ theorem iCharFun_of_not_fix {g : Additive K.1.fixingSubgroup}
   simp [iCharFun, h]
 
 /- English proof (translation)
-Unfold `iCharFun`. Rewrite using `[hgh]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem iCharFun_congr {g h : Additive K.1.fixingSubgroup}
     (hgh : ((Additive.toMul h : K.1.fixingSubgroup) : ℚ̄ ≃ₐ[ℚ] ℚ̄) sqrtNegOne =
@@ -190,13 +190,11 @@ theorem iCharFun_congr {g h : Additive K.1.fixingSubgroup}
   rw [hgh]
 
 /- English proof (translation)
-Use `IsLocallyConstant.continuous ?_` and prove the remaining obligations. Rewrite using `[IsLocallyConstant.iff_exists_open]`. Introduce `g`. Set `G` to `K.1.fixingSubgroup`. Set `g' : G` to `Additive.toMul g`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hstab : IsOpen (MulAction.stabilizer (ℚ̄ ≃ₐ[ℚ] ℚ̄) sqrtNegOne : Set (ℚ̄ ≃ₐ[ℚ] ℚ̄))` using `stabilizer_isOpen_of_isIntegral sqrtNegOne`. Establish `hopen : IsOpen ((fun h : G => g'⁻¹ * h) ⁻¹' ((G.subtype : G → ℚ̄ ≃ₐ[ℚ] ℚ̄) ⁻¹' (MulAction.stabilizer (ℚ̄ ≃ₐ[ℚ] ℚ̄) sqrtNegOne : Set (ℚ̄ ≃ₐ[ℚ] ℚ̄))))` using `(hstab.preimage continuous_subtype_val).preimage (continuous_const_mul _)`. Use `⟨(fun h : G => g'⁻¹ * h) ⁻¹' ((G.subtype : G → ℚ̄ ≃ₐ[ℚ] ℚ̄) ⁻¹' (MulAction.stabilizer (ℚ̄ ≃ₐ[ℚ] ℚ̄) sqrtNegOne : Set (ℚ̄ ≃ₐ[ℚ] ℚ̄))), hopen, ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(g'⁻¹ * g' : G).1 • sqrtNegOne = sqrtNegOne`. Rewrite using `[inv_mul_cancel]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `one_smul _ _`. Introduce `h hh`. Express the relevant statement in the definitionally equal form `(g'⁻¹ * Additive.toMul h : G).1 • sqrtNegOne = sqrtNegOne at hh`. Apply `iCharFun_congr` to reduce the goal to its premises. Rewrite `hh` using `[Subgroup.coe_mul, Subgroup.coe_inv, mul_smul, inv_smul_eq_iff]`.
-
-Conclude with `hh`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_iCharFun : Continuous (iCharFun K) := by
   refine IsLocallyConstant.continuous ?_
@@ -248,14 +246,14 @@ def iChar : Additive K.1.fixingSubgroup →ₜ+ QZ where
   continuous_toFun := continuous_iCharFun
 
 /- English proof (translation)
-The claim follows from `iCharFun_of_fix h`.
+A detailed English derivation is pending.
 -/
 theorem iChar_apply_of_fix (τ : K.1.fixingSubgroup) (h : (τ : ℚ̄ ≃ₐ[ℚ] ℚ̄) sqrtNegOne = sqrtNegOne) :
     iChar K (Additive.ofMul τ) = 0 :=
   iCharFun_of_fix h
 
 /- English proof (translation)
-The claim follows from `iCharFun_of_not_fix h`.
+A detailed English derivation is pending.
 -/
 theorem iChar_apply_of_not_fix (τ : K.1.fixingSubgroup) (h : (τ : ℚ̄ ≃ₐ[ℚ] ℚ̄) sqrtNegOne ≠ sqrtNegOne) :
     iChar K (Additive.ofMul τ) = QZ.mk (1 / 2) :=
@@ -268,7 +266,7 @@ section Invariants
 variable (ι : LocalEmbeddings K) (a : K.1ˣ)
 
 /- English proof (translation)
-Rewrite using `[placeInv_brauerLocal_globalCupClass_inl ι v (iChar K) a 1 (iff_of_true rfl ha), map_one, ofMul_one, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem placeInv_brauerLocal_globalCupClass_iChar_of_mem_range_norm (v : InfinitePlace K.1)
     (ha : algebraMap K.1 v.Completion (a : K.1) ∈
@@ -278,11 +276,11 @@ theorem placeInv_brauerLocal_globalCupClass_iChar_of_mem_range_norm (v : Infinit
     map_zero]
 
 /- English proof (translation)
-Establish `hs : (ι.inf v) sqrtNegOne ^ 2 = -1` using `by rw [← map_pow, sqrtNegOne_sq, map_neg, map_one]`. Take `⟨σ, hσ⟩` from `exists_gal_ne_of_sq_eq_neg_one v hv hs`. Establish `hnorm : algebraMap K.1 v.Completion (a : K.1) ∉ Set.range (Algebra.norm v.Completion : AlgebraicClosure v.Completion → v.Completion)`. Introduce `hmem`. Establish `hu` using `(infAlgClosure_mem_range_norm_iff_of_isReal v hv (Units.map (algebraMap K.1 v.Completion : K.1 →* v.Completion) a)).1 hmem`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `hu` using `[Units.coe_map, MonoidHom.coe_coe, extensionEmbeddingOfIsReal_algebraMap]`. Conclude with `lt_asymm ha hu`. Establish `hσ1 : σ ≠ 1` using `fun h => hσ (by rw [h]; rfl)`. Rewrite using `[placeInv_brauerLocal_globalCupClass_inl ι v (iChar K) a σ (iff_of_false hσ1 hnorm)]`. Apply `iChar_apply_of_not_fix` to reduce the goal to its premises.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hfix`. Apply `hσ` to reduce the goal to its premises. Rewrite using `[← globalDecomp_apply, hfix]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem placeInv_brauerLocal_globalCupClass_iChar_of_neg (v : InfinitePlace K.1) (hv : v.IsReal)
     (ha : embedding_of_isReal hv (a : K.1) < 0) :
@@ -304,7 +302,7 @@ theorem placeInv_brauerLocal_globalCupClass_iChar_of_neg (v : InfinitePlace K.1)
   rw [← globalDecomp_apply, hfix]
 
 /- English proof (translation)
-Use `placeInv_brauerLocal_globalCupClass_iChar_of_mem_range_norm ι a v ?_` and prove the remaining obligations. Establish `h` using `(infAlgClosure_mem_range_norm_iff_of_isReal v hv (Units.map (algebraMap K.1 v.Completion : K.1 →* v.Completion) a)).2 (by rw [Units.coe_map, MonoidHom.coe_coe, extensionEmbeddingOfIsReal_algebraMap]; exact ha)`. Rewrite `h` using `[Units.coe_map, MonoidHom.coe_coe]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem placeInv_brauerLocal_globalCupClass_iChar_of_pos (v : InfinitePlace K.1) (hv : v.IsReal)
     (ha : 0 < embedding_of_isReal hv (a : K.1)) :
@@ -316,7 +314,7 @@ theorem placeInv_brauerLocal_globalCupClass_iChar_of_pos (v : InfinitePlace K.1)
   rwa [Units.coe_map, MonoidHom.coe_coe] at h
 
 /- English proof (translation)
-Use `placeInv_brauerLocal_globalCupClass_iChar_of_mem_range_norm ι a v ?_` and prove the remaining obligations. Establish `h` using `infAlgClosure_mem_range_norm_of_isComplex v hv (Units.map (algebraMap K.1 v.Completion : K.1 →* v.Completion) a)`. Rewrite `h` using `[Units.coe_map, MonoidHom.coe_coe]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem placeInv_brauerLocal_globalCupClass_iChar_of_isComplex (v : InfinitePlace K.1) (hv : v.IsComplex) :
     placeInv (.inl v) (brauerLocal ι (globalCupClass (iChar K) a) (.inl v)) = 0 := by
@@ -328,9 +326,9 @@ theorem placeInv_brauerLocal_globalCupClass_iChar_of_isComplex (v : InfinitePlac
 open Classical in
 
 /- English proof (translation)
-Distinguish the cases in `hv : v.IsReal`. Rewrite using `[dif_pos hv]`. Distinguish the cases in `ha : embedding_of_isReal hv (a : K.1) < 0`. Rewrite using `[if_pos ha]`. Conclude with `placeInv_brauerLocal_globalCupClass_iChar_of_neg ι a v hv ha`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg ha]`. Establish `hpos : 0 < embedding_of_isReal hv (a : K.1)` using `lt_of_le_of_ne (not_lt.1 ha) (fun h => a.ne_zero ((map_eq_zero _).1 h.symm))`. Conclude with `placeInv_brauerLocal_globalCupClass_iChar_of_pos ι a v hv hpos`. Rewrite using `[dif_neg hv]`. Conclude with `placeInv_brauerLocal_globalCupClass_iChar_of_isComplex ι a v (not_isReal_iff_isComplex.1 hv)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem placeInv_brauerLocal_globalCupClass_iChar (v : InfinitePlace K.1) :
     placeInv (.inl v) (brauerLocal ι (globalCupClass (iChar K) a) (.inl v)) =
@@ -352,7 +350,7 @@ end Invariants
 section Bool
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `exists_units_neg_iff_mem {v | s v = true}`. Conclude with `⟨a, fun v => (ha v).1⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_units_neg_iff {L : Type*} [Field L] [NumberField L] (s : {v : InfinitePlace L // v.IsReal} → Bool) :
     ∃ a : Lˣ, ∀ v : {v : InfinitePlace L // v.IsReal}, (v.1.embedding_of_isReal v.2 (a : L) < 0 ↔ s v = true) := by
@@ -360,7 +358,7 @@ theorem exists_units_neg_iff {L : Type*} [Field L] [NumberField L] (s : {v : Inf
   exact ⟨a, fun v => (ha v).1⟩
 
 /- English proof (translation)
-The claim follows from `exists_units_neg_iff s`.
+A detailed English derivation is pending.
 -/
 example (s : {v : InfinitePlace K.1 // v.IsReal} → Bool) :
     ∃ a : K.1ˣ, ∀ v : {v : InfinitePlace K.1 // v.IsReal}, (v.1.embedding_of_isReal v.2 (a : K.1) < 0 ↔ s v = true) :=

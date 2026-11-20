@@ -5,11 +5,11 @@ open scoped TensorProduct
 namespace GlobalTheory.HeightCounting.FormsStep
 
 /- English proof (translation)
-Introduce `D T i b P hP σ hσ`. Establish `hA` using `D.nd.plOm.2 P`. Establish `key : ∀ τ : Formalism.ConjugateSelfDual.G D.host.E D.nd.Om, IsFrob (F` using `D.host.E) (D.nd.plOm.1 P) (normV P) τ → T.delta i τ = T.delta i σ := by`. Introduce `τ hτ`. Establish `hmem` using `inv_mul_mem_Ine_of_isFrob hσ hτ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1 : T.delta i (σ⁻¹ * τ) = 1`. Assume the negation of the conclusion as `hne`. Conclude with `hP (T.primes_subset_exceptional i ((T.delta_ram i P _ hA).1 ⟨_, hmem, hne⟩))`. Rewrite `h1` using `[map_mul, map_inv, inv_mul_eq_one]`. Conclude with `h1.symm`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `cHkT`. Rewrite using `[dif_pos ⟨σ, hσ⟩, key _ (Exists.choose_spec (⟨σ, hσ⟩ : ∃ τ : Formalism.ConjugateSelfDual.G D.host.E D.nd.Om, IsFrob (F := D.host.E) (D.nd.plOm.1 P) (normV P) τ))]`.
+A detailed English derivation is pending.
 -/
 theorem cHkT_eq_of_isFrob : ∀ (D : D7) (T : TwR D.LL0 D.nd) (i : T.Tw) (b : Bool) (P : PlE D.host), P ∉ T.S0 i →
     ∀ σ : Formalism.ConjugateSelfDual.G D.host.E D.nd.Om, IsFrob (F := D.host.E) (D.nd.plOm.1 P) (normV P) σ →

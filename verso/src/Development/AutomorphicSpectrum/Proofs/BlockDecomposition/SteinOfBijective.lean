@@ -16,7 +16,7 @@ namespace GlobalTheory.CompanionTheory.Hodge
 variable {R : Type} [CommRing R] {X : Scheme.{0}}
 
 /- English proof (translation)
-Rewrite using `[op_comp, Functor.map_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem res_res_lemma {A B C : X.Opens} (f : B ⟶ A) (g' : C ⟶ B) (s : Γ(X, A)) :
     X.presheaf.map g'.op (X.presheaf.map f.op s) = X.presheaf.map (g' ≫ f).op s := by
@@ -24,9 +24,9 @@ private theorem res_res_lemma {A B C : X.Opens} (f : B ⟶ A) (g' : C ⟶ B) (s 
   rfl
 
 /- English proof (translation)
-Apply `TopCat.Sheaf.eq_of_locally_eq' X.sheaf (fun i : {V : X.affineOpens // V.1 ≤ W} => i.1.1) W (fun i => homOfLE i.2)` to reduce the goal to its premises. Introduce `x hx`. Take `⟨V, hV, hxV, hVW⟩` from `TopologicalSpace.Opens.isBasis_iff_nbhd.mp (AlgebraicGeometry.Scheme.isBasis_affineOpens X) hx`. Rewrite using `[TopologicalSpace.Opens.mem_iSup]`. Conclude with `⟨⟨⟨V, hV⟩, hVW⟩, hxV⟩`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Introduce `i`. Conclude with `h i.1 i.2`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem eq_of_res_affine (W : X.Opens) (a b : Γ(X, W))
     (h : ∀ (V : X.affineOpens) (hV : V.1 ≤ W),
@@ -42,11 +42,11 @@ theorem eq_of_res_affine (W : X.Opens) (a b : Γ(X, W))
     exact h i.1 i.2
 
 /- English proof (translation)
-Establish `hcompat : TopCat.Presheaf.IsCompatible X.presheaf (fun i : X.affineOpens => i.1) g`. Introduce `i j`. Apply `eq_of_res_affine` to reduce the goal to its premises. Introduce `V hV`. Rewrite using `[res_res_lemma, res_res_lemma]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hg i V (hV.trans inf_le_left)).trans (hg j V (hV.trans inf_le_right)).symm`. Take `⟨t, ht, -⟩` from `TopCat.Sheaf.existsUnique_gluing' X.sheaf (fun i : X.affineOpens => i.1) ⊤ (fun i => homOfLE le_top) (by`. Introduce `x _`. Take `⟨V, hV, hxV, -⟩` from `TopologicalSpace.Opens.isBasis_iff_nbhd.mp (AlgebraicGeometry.Scheme.isBasis_affineOpens X) (show x ∈ (⊤ : X.Opens) from trivial)`. Rewrite using `[TopologicalSpace.Opens.mem_iSup]`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨⟨V, hV⟩, hxV⟩) g hcompat`. Conclude with `⟨t, ht⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_global (g : ∀ U : X.affineOpens, Γ(X, U.1))
     (hg : ∀ (U V : X.affineOpens) (h : V.1 ≤ U.1), X.presheaf.map (homOfLE h).op (g U) = g V) :
@@ -76,21 +76,19 @@ theorem algebraMap_sec (s : X ⟶ Sp R) (U : X.Opens) (r : R) :
       (s.appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom r)) := rfl
 
 /- English proof (translation)
-Establish `key : ∀ (r : R) (U : X.affineOpens), (algebraMap R (GlobalTheory.CatCoh.C0 (OAff s)) r) (op U) = X.presheaf.map (homOfLE (le_top : U.1 ≤ ⊤)).op (s.appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom r))`. Introduce `r U`. Conclude with `algebraMap_sec s U.1 r`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hy`. Establish `hg : ∀ (U V : X.affineOpens) (hUV : V.1 ≤ U.1), X.presheaf.map (homOfLE hUV).op (y (op U)) = y (op V)`. Introduce `U V hUV`. Establish `e` using `congrFun (congrFun (congrFun hy (op U)) (op V)) (homOfLE (show V ≤ U from hUV)).op`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e' : (show Γ(X, V.1) from y (op V)) - X.presheaf.map (homOfLE hUV).op (y (op U)) = 0` using `e`. Conclude with `(sub_eq_zero.mp e').symm`. Take `⟨t, ht⟩` from `exists_global (fun U => y (op U)) hg`. Take `⟨x, hx⟩` from `h.2 t`. Use `⟨(Scheme.ΓSpecIso (CommRingCat.of R)).hom.hom x, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `T`. Establish `hxinv : (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom ((Scheme.ΓSpecIso (CommRingCat.of R)).hom.hom x) = x` using `congrArg (fun f => CommRingCat.Hom.hom f x) (Scheme.ΓSpecIso (CommRingCat.of R)).hom_inv_id`. Establish `e1` using `key ((Scheme.ΓSpecIso (CommRingCat.of R)).hom.hom x) T.unop`. Rewrite `e1` using `[hxinv, hx]`. Conclude with `e1.trans (ht T.unop)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Introduce and unpack `⟨r, rfl⟩`. Use function extensionality and compare the values at `T T' φ`. Establish `hc : (GlobalTheory.CatCoh.mp (OAff s) φ) ((algebraMap R (GlobalTheory.CatCoh.C0 (OAff s)) r) T) = (algebraMap R (GlobalTheory.CatCoh.C0 (OAff s)) r) T'` using `(GlobalTheory.CatCoh.mp (OAff s) φ).commutes r`. Use `show (algebraMap R (GlobalTheory.CatCoh.C0 (OAff s)) r) T' - (GlobalTheory.CatCoh.mp (OAff s) φ) ((algebraMap R (GlobalTheory.CatCoh.C0 (OAff s)) r) T) = 0`. Rewrite using `[hc, sub_self]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `r hr`. Establish `e : s.appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom r) = 0`. Apply `eq_of_res_affine` to reduce the goal to its premises. Introduce `V hV`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_zero]`. Establish `e2` using `congrFun hr (op V)`. Rewrite `e2` using `[key]`. Conclude with `e2`. Establish `e3` using `h.1 (e.trans (map_zero _).symm)`.
-
-Establish `hr2 : (Scheme.ΓSpecIso (CommRingCat.of R)).hom.hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom r) = r` using `congrArg (fun f => CommRingCat.Hom.hom f r) (Scheme.ΓSpecIso (CommRingCat.of R)).inv_hom_id`. Rewrite `hr2` using `[e3, map_zero]`. Conclude with `hr2.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stein_of_bijective (s : X ⟶ Sp R) (h : Function.Bijective s.appTop.hom) : Stein (OAff s) := by
   have key : ∀ (r : R) (U : X.affineOpens),
@@ -142,7 +140,7 @@ theorem stein_of_bijective (s : X ⟶ Sp R) (h : Function.Bijective s.appTop.hom
     exact hr2.symm
 
 /- English proof (translation)
-Unfold `MainStatements.Hodge.SteinSt MainStatements.Hodge.AllAb`. Introduce `R _ A _ g hA _`. Conclude with `stein_of_bijective A.hom (GlobalTheory.globalFns_holds (Sp R) A hA)`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem stein_holds : SteinSt := by
   unfold MainStatements.Hodge.SteinSt MainStatements.Hodge.AllAb

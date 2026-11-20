@@ -17,7 +17,7 @@ open GlobalTheory.UAut GlobalTheory.SiegelSet GlobalTheory.ThK.SquareIntegrabili
 namespace GlobalTheory.LeviGenZFin
 
 /- English proof (translation)
-Introduce `hd`. Take `⟨v, hv, hMv⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 hd`. Establish `hs : star v ≠ 0` using `fun e => hv (by simpa using congrArg star e)`. Use `h.2.2 (star v) hs` as an intermediate fact. Simplify using `[star_star, hMv] at this`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem det_ne_zero_of_cartan {n : ℕ} {M θ : Matrix (Fin n) (Fin n) ℂ} (h : IsCartan M θ) : M.det ≠ 0 := by
   intro hd
@@ -27,9 +27,9 @@ theorem det_ne_zero_of_cartan {n : ℕ} {M θ : Matrix (Fin n) (Fin n) ℂ} (h :
   simp [star_star, hMv] at this
 
 /- English proof (translation)
-Introduce `hd`. Take `⟨w⟩ : Nonempty (InfinitePlace F)` from `inferInstance`. Apply `det_ne_zero_of_cartan (h w)` to reduce the goal to its premises. Establish `e : (Y.J.map (B.emb w).1).det = 0`. Rewrite using `[← RingHom.mapMatrix_apply, ← RingHom.map_det, hd, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.det_smul, e, mul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem det_J_ne_zero {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (B : Base F E) {n : ℕ} (Y : Spc F E n) (h : ∀ w, IsCartan (Complex.I • Y.J.map (B.emb w).1) (Y.θ w)) :
@@ -42,9 +42,9 @@ theorem det_J_ne_zero {F E : Type} [Field F] [NumberField F] [Field E] [NumberFi
   rw [Matrix.det_smul, e, mul_zero]
 
 /- English proof (translation)
-Use `⟨fun i j => ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Matrix.smul_apply, Matrix.map_apply, smul_eq_mul, map_mul, hσ, hcs]`. Use `congrArg σ (hJ i j)` as an intermediate fact. Rewrite `this` using `[hσ, map_neg]`. Rewrite using `[this]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Matrix.det_smul, ← AlgHom.coe_toRingHom, ← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Conclude with `mul_ne_zero (pow_ne_zero _ hc) (by simpa using fun e => hd (by simpa [hσ] using congrArg σ e))`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isHermND_smul {F E : Type} [Field F] [Field E] [Algebra F E] {σ : E →ₐ[F] E} (hσ : ∀ x, σ (σ x) = x)
     {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (hJ : ∀ i j, σ (J j i) = -J i j) (hd : J.det ≠ 0) {c : E} (hc : c ≠ 0)
@@ -62,15 +62,15 @@ end GlobalTheory.LeviGenZFin
 namespace GlobalTheory.LeviGenZFin
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hσ B hB n n₁ Y Y₁ P hY hP c hc hcs fa hfa h hh hlev g hg`. Take `⟨hn, hxx, hyy, hxy, hort, hι, hcY, hcY₁⟩` from `hP`. Establish `hdY : Y.J.det ≠ 0` using `det_J_ne_zero B Y hcY`. Establish `hdY₁ : Y₁.J.det ≠ 0` using `det_J_ne_zero B Y₁ fun w => hcY₁ w`. Establish `hY₁ : ∀ i j, σ (Y₁.J j i) = -Y₁.J i j`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `i j`. Rewrite using `[← hι]`. Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Finset.sum_mul]`. Use `conv_rhs => rw [Finset.sum_comm]`. Simplify using `only [map_sum, map_mul, hσ, ← Finset.sum_neg_distrib]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[hY]`. Expand and normalize the polynomial expressions, which then agree. Establish `hA` using `hfa ⊥ fun x hx => by`. Rewrite using `[Subgroup.mem_bot.1 hx, map_one]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨by simp [UAt, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.mat, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.At], fun w => by simp [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.mat]⟩`. Use `hHC Y Y₁ P hB.cm hY hn hxx hyy hxy hort hι hdY hdY₁ fa (fun u hu x => ?_) c hc (isHermND_smul hσ hY hdY hc hcs) (isHermND_smul hσ hY₁ hdY₁ hc hcs) (fun φ hφ => ?_) h g hg _ (fun g₁ g' e => ?_)` and prove the remaining obligations. Use `hA.left (toGAd hσ Y.J hc u) ⟨u, hu, rfl⟩ (toGAd hσ Y.J hc x)` as an intermediate fact. Simplify `this` using `only [← map_mul, MulEquiv.symm_apply_apply]`. Establish `e : φ = fun x => fa ((toGAd hσ Y.J hc).symm x)` using `funext fun x => hφ _ x rfl`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Substitute using the available equality.
 
-Substitute `e` using the available equality. Conclude with `⟨hA.smooth, hA.zfin⟩`. Use `show g ((toGAd hσ Y₁.J hc).symm g') = g g₁`. Use `congr 1`. Conclude with `Subtype.ext e.symm`.
+Supply the required witnesses or components. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem zfin_of_hc (hHC : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n n₁ : ℕ}
     (Y : Spc F E n) (Y₁ : Spc F E n₁) (H : Plane E n n₁), IsCMExt F E σ →
@@ -120,7 +120,7 @@ theorem zfin_of_hc (hHC : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [
     exact Subtype.ext e.symm
 
 /- English proof (translation)
-Introduce `hK` and use `zfin_of_hc hK.leviCentreFiniteUnitary`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem zfin : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (hσ : ∀ x, σ (σ x) = x) (B : Base F E), B.IsGood σ →

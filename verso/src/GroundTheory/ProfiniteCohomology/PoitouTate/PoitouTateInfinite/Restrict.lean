@@ -18,7 +18,7 @@ def gsAutExtend (S : Set (HeightOneSpectrum (𝓞 K))) (σ : galUnramifiedOutsid
   (AlgEquiv.restrictNormalHom_surjective (K₁ := maxUnramifiedOutside K Ω S) Ω σ).choose
 
 /- English proof (translation)
-Establish `h` using `(AlgEquiv.restrictNormalHom_surjective (K₁ := maxUnramifiedOutside K Ω S) Ω σ).choose_spec`. Use `conv_rhs => rw [← h]`. Conclude with `(AlgEquiv.restrictNormal_commutes (gsAutExtend S σ) (maxUnramifiedOutside K Ω S) y).symm`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem gsAutExtend_apply (σ : galUnramifiedOutside K Ω S) (y : maxUnramifiedOutside K Ω S) :
     gsAutExtend S σ (y : Ω) = ((σ y : maxUnramifiedOutside K Ω S) : Ω) := by
@@ -31,7 +31,7 @@ def gsResFun (T : Set (HeightOneSpectrum (𝓞 K))) (σ : galUnramifiedOutside K
   AlgEquiv.restrictNormalHom (maxUnramifiedOutside K Ω T) (gsAutExtend S σ)
 
 /- English proof (translation)
-Rewrite using `[gsResFun, AlgEquiv.restrictNormalHom_apply]`. Conclude with `gsAutExtend_apply σ ⟨x, maxUnramifiedOutside_mono h x.2⟩`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gsResFun_apply (h : T ⊆ S) (σ : galUnramifiedOutside K Ω S) (x : maxUnramifiedOutside K Ω T) :
     ((gsResFun T σ x : maxUnramifiedOutside K Ω T) : Ω) =
@@ -58,7 +58,7 @@ def gsRes (h : T ⊆ S) : galUnramifiedOutside K Ω S →* galUnramifiedOutside 
       gsResFun_apply h σ (gsResFun T τ x), e, AlgEquiv.mul_apply]
 
 /- English proof (translation)
-The claim follows from `gsResFun_apply h σ x`.
+A detailed English derivation is pending.
 -/
 theorem gsRes_apply (h : T ⊆ S) (σ : galUnramifiedOutside K Ω S) (x : maxUnramifiedOutside K Ω T) :
     ((gsRes h σ x : maxUnramifiedOutside K Ω T) : Ω) =
@@ -66,7 +66,7 @@ theorem gsRes_apply (h : T ⊆ S) (σ : galUnramifiedOutside K Ω S) (x : maxUnr
   gsResFun_apply h σ x
 
 /- English proof (translation)
-Apply `AlgEquiv.ext` to reduce the goal to its premises. Introduce `x`. Apply `Subtype.val_injective` to reduce the goal to its premises. Rewrite using `[gsRes_apply, AlgEquiv.restrictNormalHom_apply, AlgEquiv.restrictNormalHom_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem gsRes_restrictNormalHom (h : T ⊆ S) (σ : Gal(Ω/K)) :
     gsRes h (AlgEquiv.restrictNormalHom (maxUnramifiedOutside K Ω S) σ) =
@@ -77,7 +77,7 @@ theorem gsRes_restrictNormalHom (h : T ⊆ S) (σ : Gal(Ω/K)) :
   rw [gsRes_apply, AlgEquiv.restrictNormalHom_apply, AlgEquiv.restrictNormalHom_apply]
 
 /- English proof (translation)
-Introduce `τ` and use `⟨AlgEquiv.restrictNormalHom (maxUnramifiedOutside K Ω S) (gsAutExtend T τ), by rw [gsRes_restrictNormalHom] exact (AlgEquiv.restrictNormalHom_surjective (K₁ := maxUnramifiedOutside K Ω T) Ω τ).choose_spec⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem gsRes_surjective (h : T ⊆ S) : Function.Surjective (gsRes (Ω := Ω) h) := fun τ =>
   ⟨AlgEquiv.restrictNormalHom (maxUnramifiedOutside K Ω S) (gsAutExtend T τ), by
@@ -85,7 +85,7 @@ theorem gsRes_surjective (h : T ⊆ S) : Function.Surjective (gsRes (Ω := Ω) h
     exact (AlgEquiv.restrictNormalHom_surjective (K₁ := maxUnramifiedOutside K Ω T) Ω τ).choose_spec⟩
 
 /- English proof (translation)
-Apply `AlgEquiv.ext` to reduce the goal to its premises. Introduce `x`. Apply `Subtype.val_injective` to reduce the goal to its premises. Rewrite using `[gsRes_apply hUT, gsRes_apply hTS, gsRes_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem gsRes_gsRes (hTS : T ⊆ S) (hUT : U ⊆ T) (σ : galUnramifiedOutside K Ω S) :
     gsRes hUT (gsRes hTS σ) = gsRes (hUT.trans hTS) σ := by
@@ -95,11 +95,11 @@ theorem gsRes_gsRes (hTS : T ⊆ S) (hUT : U ⊆ T) (σ : galUnramifiedOutside K
   rw [gsRes_apply hUT, gsRes_apply hTS, gsRes_apply]
 
 /- English proof (translation)
-Rewrite using `[MonoidHom.mem_ker]`. Prove the components needed by the constructor for the conclusion. Introduce `hσ x`. Apply `Subtype.val_injective` to reduce the goal to its premises. Use `gsRes_apply h σ x` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Rewrite `this` using `[hσ]`. Conclude with `this.symm`. Introduce `hσ`. Apply `AlgEquiv.ext` to reduce the goal to its premises. Introduce `x`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Subtype.val_injective` to reduce the goal to its premises. Rewrite using `[gsRes_apply, hσ x, AlgEquiv.one_apply]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_ker_gsRes (h : T ⊆ S) (σ : galUnramifiedOutside K Ω S) :
     σ ∈ (gsRes (Ω := Ω) h).ker ↔
@@ -119,9 +119,9 @@ theorem mem_ker_gsRes (h : T ⊆ S) (σ : galUnramifiedOutside K Ω S) :
     rw [gsRes_apply, hσ x, AlgEquiv.one_apply]
 
 /- English proof (translation)
-Establish `hq : Topology.IsQuotientMap (AlgEquiv.restrictNormalHom (F` using `K) (K₁ := Ω) (maxUnramifiedOutside K Ω S)) := (InfiniteGalois.restrictNormalHom_continuous _).isClosedMap.isQuotientMap (InfiniteGalois.restrictNormalHom_continuous _) (AlgEquiv.restrictNormalHom_surjective Ω)`. Rewrite using `[hq.continuous_iff]`. Establish `e : ⇑(gsRes h) ∘ ⇑(AlgEquiv.restrictNormalHom (F` using `K) (K₁ := Ω) (maxUnramifiedOutside K Ω S)) = ⇑(AlgEquiv.restrictNormalHom (F := K) (K₁ := Ω) (maxUnramifiedOutside K Ω T)) :=`. Use function extensionality and compare the values at `(gsRes_restrictNormalHom h)`. Rewrite using `[e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Conclude with `InfiniteGalois.restrictNormalHom_continuous _`.
+A detailed English derivation is pending.
 -/
 theorem continuous_gsRes (h : T ⊆ S) : Continuous (gsRes (Ω := Ω) h) := by
   have hq : Topology.IsQuotientMap

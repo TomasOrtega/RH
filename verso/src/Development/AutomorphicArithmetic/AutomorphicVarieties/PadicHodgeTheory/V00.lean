@@ -4,21 +4,19 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ChebotarevDegr
 open Formalism.ConjugateSelfDual Formalism.BasicNotions Formalism.BasicNotions.Loc ReciprocityTheory.Gal Module UpperTheory.V.Loc Topology NumberField IsDedekindDomain
 
 /- English proof (translation)
-Introduce `F Ω _ _ _ _ _ _ U hU hUo g Sg M hM`. Use `set N : ℕ := M * (discr F).natAbs with hNdef`. Establish `hN0 : N ≠ 0` using `Nat.mul_ne_zero hM (Int.natAbs_ne_zero.mpr (discr_ne_zero F))`. Establish `hI : (Ideal.span {(N : 𝓞 F)} : Ideal (𝓞 F)) ≠ 0`. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hN0` after adjusting the coercions. Establish `hfin` using `Ideal.finite_factors hI`. Take `⟨v, hvA, hinert, hram, B, hB, hBU, σ, hσ, hσg⟩` from `GlobalTheory.Published.cheb_holds F Ω U hUo hU g (Sg ∪ hfin.toFinset)`. Establish `hnorm : normV v = Ideal.absNorm v.asIdeal`. Simplify using `[normV, Ideal.absNorm_apply, Submodule.cardQuot_apply]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hp : (normV v).Prime`. Rewrite using `[hnorm]`. Conclude with `((GlobalTheory.absNorm_prime_iff_inertiaDeg_eq_one_and_finite_ramified F).1 v).2 hinert`. Establish `hpv : ((normV v : ℕ) : 𝓞 F) ∈ v.asIdeal`. Rewrite using `[hnorm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `Ideal.absNorm_mem _`. Establish `hNv : (N : 𝓞 F) ∉ v.asIdeal`. Introduce `h`. Apply `hvA` to reduce the goal to its premises. Apply `Finset.mem_union_right` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[Set.Finite.mem_toFinset, Set.mem_setOf_eq, Ideal.dvd_iff_le, Ideal.span_le, Set.singleton_subset_iff]`. Conclude with `h`. Establish `hdvd : ∀ k : ℕ, normV v ∣ k → (k : 𝓞 F) ∈ v.asIdeal`. Introduce and unpack `k ⟨c, rfl⟩`. Use `push_cast`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `Ideal.mul_mem_right _ _ hpv`. Use `⟨v, B, normV v, σ, fun h => hvA (Finset.mem_union_left _ h), hp, ?_, ?_, hpv, rfl, ?_, hB, hBU, hσ, ?_⟩` and prove the remaining obligations. Introduce `h`. Conclude with `hNv (hdvd N (dvd_mul_of_dvd_left h _))`. Introduce `h`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Apply `hNv` to reduce the goal to its premises. Apply `hdvd` to reduce the goal to its premises. Apply `dvd_mul_of_dvd_right` to reduce the goal to its premises. Conclude with `Int.natCast_dvd.mp h`. Simplify using `[locDeg, hram, hinert]`.
-
-Establish `h1 : g * σ⁻¹ ∈ U`. Use `U.inv_mem hσg` as an intermediate fact. Simplify using `using this`. Establish `h2` using `hU.conj_mem _ h1 σ⁻¹`. Simplify `h2` using `[mul_assoc]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Loc.v00 :
     ∀ {F Ω : Type} [Field F] [NumberField F] [Field Ω] [CharZero Ω] [Algebra F Ω] [IsAlgClosure F Ω] (U : Subgroup (G F Ω)) [U.Normal], IsOpen (U : Set (G F Ω)) → ∀ (g : G F Ω) (Sg : Finset (HeightOneSpectrum (𝓞 F))) (M : ℕ), M ≠ 0 → ∃ (w : HeightOneSpectrum (𝓞 F)) (A : ValuationSubring Ω) (p : ℕ) (σ : G F Ω), w ∉ Sg ∧ p.Prime ∧ ¬ p ∣ M ∧ ¬ (p : ℤ) ∣ discr F ∧ ((p : ℕ) : 𝓞 F) ∈ w.asIdeal ∧ normV w = p ∧ locDeg w = 1 ∧ IsPlaceOver A w ∧ Ine (F := F) A ≤ U ∧ Formalism.ConjugateSelfDual.IsFrob (F := F) A p σ ∧ σ⁻¹ * g ∈ U := by

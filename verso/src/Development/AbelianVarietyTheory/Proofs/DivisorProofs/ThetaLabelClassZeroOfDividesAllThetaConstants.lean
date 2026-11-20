@@ -17,13 +17,11 @@ noncomputable section
 namespace GlobalTheory.Poinc.Sep.DivInt
 
 /- English proof (translation)
-Establish `sp : ∀ w, X₁.M.Z.fromSpecStalk z₁ w ⤳ z₁` using `fun w => by`. Establish `: X₁.M.Z.fromSpecStalk z₁ w ∈ Set.range (X₁.M.Z.fromSpecStalk z₁)` using `⟨w, rfl⟩`. Rewrite `this` using `[Scheme.range_fromSpecStalk]`. Then use the resulting hypothesis. Use `set yC : Sp V ⟶ X₁.M.Z := spMap ev ≫ X₁.M.Z.fromSpecStalk z₁ with hyC`. Establish `hC : yC (closedPoint V) ⤳ z₁` using `sp _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set y : Sp (FractionRing V) ⟶ X₁.M.Z := jK V ≫ spMap ev ≫ X₁.M.Z.fromSpecStalk z₁ with hy`. Use `set ξ := y (closedPoint (FractionRing V)) with hξ`. Establish `hyξ : ∀ w, y w ⤳ ξ` using `RatModel.specializes_of_range_eq (RatModel.range_eq_singleton y _)`. Establish `hξz : ξ ⤳ z₁` using `sp _`. Establish `hr : X₁.S.th b / X₁.S.th a ∈ X₁.M.O z₁` using `ha.2 b`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hrξ : X₁.S.th b / X₁.S.th a ∈ X₁.M.O ξ` using `RatModel.O_le_of_specializes hξz hr`. Establish `haξ : X₁.S.th a ∈ X₁.M.O ξ` using `𝔪.reg _ (X₁.S.th_mem a)`. Use `⟨RatModel.valLoc yC z₁ hC ⟨_, hr⟩, ?_⟩` and prove the remaining obligations. Establish `e1 : X₁.S.th b = X₁.S.th b / X₁.S.th a * X₁.S.th a` using `(div_mul_cancel₀ _ ha.1).symm`. Establish `e2 : X₁.M.val y (X₁.S.th b / X₁.S.th a) = algebraMap V (FractionRing V) (RatModel.valLoc yC z₁ hC ⟨_, hr⟩)` using `RatModel.val_spMap_comp (algebraMap V (FractionRing V)) yC hC ⟨_, hr⟩`.
-
-Rewrite using `[𝔪.yK_eq, 𝔪.yK_eq]`. Use `show X₁.M.val y (X₁.S.th b) = _ * X₁.M.val y (X₁.S.th a)`. Rewrite using `[← e2, ← RatModel.val_mul hyξ hrξ haξ, ← e1]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ratio {g n : ℕ} {F : SFam g n (zetaAway n)} {W : Matrix (Fin 8) (Fin 8) ℤ} {Z : Scheme.{0}} {i : F.X ⟶ Z}
     {X₁ : Setup F W i} {z₁ : X₁.M.Z} {act : Matrix (Fin 8) (Fin 8) ℤ → (X₁.ρ.P.A ⟶ X₁.ρ.P.A)}
@@ -52,15 +50,13 @@ theorem ratio {g n : ℕ} {F : SFam g n (zetaAway n)} {W : Matrix (Fin 8) (Fin 8
   rw [← e2, ← RatModel.val_mul hyξ hrξ haξ, ← e1]
 
 /- English proof (translation)
-Introduce `g n F W Z i X₁ z₁ act V _ _ _ ev X _ m t δ 𝔪 a ha`. Establish `ha' : X₁.M.Div X₁.S.th a z₁` using `ha`. Take `⟨b₀, hb₀⟩` from `GlobalTheory.T.exists_thetaConstant_value_ne_zero g n F W Z i X₁ z₁ act V ev X m t δ 𝔪`. Establish `hane : 𝔪.yK ⟨X₁.S.th a, X₁.S.th_mem a⟩ ≠ 0`. Introduce `h0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨v, hv⟩` from `ratio 𝔪 ha' b₀`. Rewrite `hv` using `[h0, mul_zero]`. Conclude with `hb₀ hv`. Take `⟨ν, hν1, hνm⟩` from `GlobalTheory.T.exists_discreteValuation_centred_completeNormal V 𝔪.cn`. Establish `hmax : ∀ b, ν (𝔪.yK ⟨X₁.S.th b, X₁.S.th_mem b⟩) ≤ ν (𝔪.yK ⟨X₁.S.th a, X₁.S.th_mem a⟩)` using `fun b => by`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨v, hv⟩` from `ratio 𝔪 ha' b`. Rewrite using `[hv, map_mul]`. Conclude with `mul_le_of_le_one_left' (hν1 v)`. Take `⟨w, hw, hle⟩` from `GlobalTheory.T.thetaConstant_le_commonBound_monomial g n F W Z i X₁ z₁ act V ev X m t δ 𝔪 ν hν1 hνm _ hmax a`. Establish `h0 : ν (𝔪.yK ⟨X₁.S.th a, X₁.S.th_mem a⟩) ^ ((X₁.S.r * X₁.S.N) ^ 2) ≠ 0` using `pow_ne_zero _ ((Valuation.ne_zero_iff ν).2 hane)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : 1 ≤ ν (algebraMap V (FractionRing V) (mono W t δ w))`. Use `mul_le_mul_of_nonneg_left hle (zero_le' : (0 : WithZero (Multiplicative ℤ)) ≤ (ν (𝔪.yK ⟨X₁.S.th a, X₁.S.th_mem a⟩) ^ ((X₁.S.r * X₁.S.N) ^ 2))⁻¹)` as an intermediate fact. Rewrite `this` using `[← _root_.mul_assoc, inv_mul_cancel₀ h0, _root_.one_mul]`. Then use the resulting hypothesis. Distinguish the cases in `hw0 : w = 0`. Conclude with `hw0 ▸ hw`.
-
-Conclude with `absurd h1 (not_le.2 (hνm _ (𝔪.mono_mem hw0)))`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Consider separately whether the proposition holds or fails. A detailed English derivation is pending.
 -/
 theorem label_zero_of_mem_supI : ∀ (g n : ℕ) (F : SFam g n (zetaAway n)) (W : Matrix (Fin 8) (Fin 8) ℤ) (Z : Scheme.{0}) (i : F.X ⟶ Z) (X₁ : Setup F W i) (z₁ : X₁.M.Z) (act : Matrix (Fin 8) (Fin 8) ℤ → (X₁.ρ.P.A ⟶ X₁.ρ.P.A)) (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V] (ev : X₁.M.Z.presheaf.stalk z₁ →+* V) (X : Type) [AddCommGroup X] (m : ℕ) (t : Fin m → V) (δ : Fin m → LinearMap.BilinForm ℤ X) (𝔪 : UMem X₁ z₁ act V ev X t δ) (a : X₁.S.Gam), a ∈ X₁.S.supI X₁.M z₁ → 𝔪.YY a 0 := by
   intro g n F W Z i X₁ z₁ act V _ _ _ ev X _ m t δ 𝔪 a ha

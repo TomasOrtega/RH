@@ -46,13 +46,13 @@ def splitE (σ : Equiv.Perm (Fin p)) : B.SS k ρ × U.Xi k p 0 ρ σ ≃ᵐ XL k
     fun_prop
 
 /- English proof (translation)
-Use `Formalism.FourierDecayAlt.P.B5.haar_sigmaFinite Bj.haarW` as an intermediate fact. Use `Formalism.FourierDecayAlt.P.B5.haar_sigmaFinite Bj.haarN` as an intermediate fact. Use `Formalism.FourierDecayAlt.P.B5.haar_sigmaFinite Bj.haarW'` as an intermediate fact. Use `Formalism.FourierDecayAlt.P.Dx2.SplitF.sf_RC (k := k) p ρ` as an intermediate fact. Establish `: SigmaFinite Bj.μSS` using `by unfold B.RealPlaceData.μSS; infer_instance`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hXi : U.muXi k p 0 ρ σ = ((U.muRC k p ρ).prod (U.muRC k p ρ)).prod ((volume : Measure ((Fin 0 → Fin p → ℂ) × (Fin p → Fin 0 → ℂ))).prod ((volume : Measure (U.LW σ → ℂ)).prod (volume : Measure (G.UT p → ℂ))))`. Unfold `U.muXi U.muXiH`. Rewrite using `[Measure.volume_eq_prod, Measure.volume_eq_prod (α := U.LW σ → ℂ)]`. Both sides reduce to the same expression. Establish `h1` using `(measurePreserving_prodAssoc (volume : Measure ((Fin 0 → Fin p → ℂ) × (Fin p → Fin 0 → ℂ))) (volume : Measure (U.LW σ → ℂ)) (volume : Measure (G.UT p → ℂ))).symm`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `h2` using `(MeasurePreserving.id ((U.muRC k p ρ).prod (U.muRC k p ρ))).prod h1`. Establish `h3` using `Formalism.FourierDecayAlt.P.Dx2.SplitM.middle_four_swap_measure_preserving (U.muRC k p ρ) (U.muRC k p ρ) ((volume : Measure ((Fin 0 → Fin p → ℂ) × (Fin p → Fin 0 → ℂ))).prod (volume : Measure (U.LW σ → ℂ))) (volume : Measure (G.UT p → ℂ))`. Establish `h4` using `(MeasurePreserving.id Bj.μSS).prod (h3.comp h2)`. Establish `h5` using `Formalism.FourierDecayAlt.P.Dx2.SplitM.middle_four_swap_measure_preserving (Bj.μW.prod Bj.μN) (Bj.μW'.prod Bj.μN) ((U.muRC k p ρ).prod ((volume : Measure ((Fin 0 → Fin p → ℂ) × (Fin p → Fin 0 → ℂ))).prod (volume : Measure (U.LW σ → ℂ)))) ((U.muRC k p ρ).prod (volume : Measure (G. …`. Rewrite using `[hXi]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hall` using `h5.comp h4`. Use `hall using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `q`. Both sides reduce to the same expression. Both sides reduce to the same expression.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. Both sides reduce to the same expression.
 -/
 theorem splitE_mp (Bj : B.RealPlaceData k ρ Wp Wq) (σ : Equiv.Perm (Fin p)) :
     MeasurePreserving (splitE σ) (Bj.μSS.prod (U.muXi k p 0 ρ σ)) ((muL Bj σ).prod (muR Bj)) := by
@@ -144,9 +144,9 @@ section djU
 variable {k p m : ℕ}
 
 /- English proof (translation)
-Establish `h` using `hn.2.1 ⟨b.val, by omega⟩ c hc`. Establish `e : eI k (p + m) ⟨b.val, by omega⟩ = ⟨b.val, by omega⟩` using `rfl`. Rewrite `h` using `[e]`. Rewrite using `[h]`. Distinguish the cases in `hcb : c.val = b.val`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[if_pos (Fin.ext hcb), if_pos hcb]`. Rewrite using `[if_neg (fun h' => hcb (congrArg Fin.val h')), if_neg hcb]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem n_col (nn : B.Mat k (p + m)) (hn : nn ∈ Nset k (p + m)) (b : Fin p) (c : Fin (2 * (p + m) + k + 1))
     (hc : b.val ≤ c.val) : nn c ⟨b.val, by omega⟩ = if c.val = b.val then 1 else 0 := by
@@ -159,11 +159,11 @@ theorem n_col (nn : B.Mat k (p + m)) (hn : nn ∈ Nset k (p + m)) (b : Fin p) (c
   · rw [if_neg (fun h' => hcb (congrArg Fin.val h')), if_neg hcb]
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [U.Zh, Matrix.mul_apply, Matrix.of_apply]`. Use `symm`. Use `Finset.sum_bij_ne_zero (fun c _ _ => (⟨c.val, by omega⟩ : Fin (2 * (p + m) + k + 1))) ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `c _ _`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Finset.mem_univ _`. Introduce `c₁ _ _ c₂ _ _ h; exact Fin.ext (by simpa using congrArg Fin.val h)`. Introduce `c _ hc`. Establish `hcp : c.val < p`. Assume the negation of the conclusion as `hcp`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hc` to reduce the goal to its premises. Rewrite using `[n_col nn hn b c (by omega), if_neg (by omega), mul_zero]`. Conclude with `⟨⟨c.val, hcp⟩, Finset.mem_univ _, by simpa using hc, rfl⟩`. Introduce `c _ _`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem zh_mul_N (g nn : B.Mat k (p + m)) (hn : nn ∈ Nset k (p + m)) :
     U.Zh k p m (g * nn) = U.Zh k p m g * Matrix.of (fun c b : Fin p => nn ⟨c.val, by omega⟩ ⟨b.val, by omega⟩) := by
@@ -182,9 +182,9 @@ theorem zh_mul_N (g nn : B.Mat k (p + m)) (hn : nn ∈ Nset k (p + m)) :
   · intro c _ _; rfl
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_of_upperTriangular]`. Use `Finset.prod_eq_one fun c _ => ?_` and prove the remaining obligations. Simplify using `only [Matrix.of_apply]`. Rewrite using `[n_col nn hn c _ le_rfl, if_pos rfl]`. Introduce `c b hcb`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hcb' : b.val < c.val` using `hcb`. Simplify using `only [Matrix.of_apply]`. Rewrite using `[n_col nn hn b _ (le_of_lt hcb'), if_neg (by simp only; omega)]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem det_N_block (nn : B.Mat k (p + m)) (hn : nn ∈ Nset k (p + m)) :
     (Matrix.of (fun c b : Fin p => nn ⟨c.val, by omega⟩ ⟨b.val, by omega⟩)).det = 1 := by
@@ -198,20 +198,20 @@ theorem det_N_block (nn : B.Mat k (p + m)) (hn : nn ∈ Nset k (p + m)) :
     rw [n_col nn hn b _ (le_of_lt hcb'), if_neg (by simp only; omega)]
 
 /- English proof (translation)
-Unfold `U.DjU`. Rewrite using `[zh_mul_N g nn hn, Matrix.det_mul, det_N_block nn hn, mul_one]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem djU_mul_N (g nn : B.Mat k (p + m)) (hn : nn ∈ Nset k (p + m)) : U.DjU k p m (g * nn) = U.DjU k p m g := by
   unfold U.DjU
   rw [zh_mul_N g nn hn, Matrix.det_mul, det_N_block nn hn, mul_one]
 
 /- English proof (translation)
-Unfold `U.DjU`. Use `congr 1`. Use extensionality with `a b`. Simplify using `only [U.Zh, Matrix.mul_apply]`. Establish `hcol : ∀ c : Fin (2 * (p + m) + k + 1), h c ⟨b.val, by omega⟩ = if c.val = b.val then 1 else 0`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `c`. Establish `h1` using `congrFun (hh.2.1 ⟨b.val, by omega⟩).1 c`. Establish `e : eI k (p + m) ⟨b.val, by omega⟩ = ⟨b.val, by omega⟩` using `rfl`. Rewrite `h1` using `[e]`. Rewrite using `[← Formalism.FourierDecayAlt.P.PBM.mulVec_bvec_apply h ⟨b.val, by omega⟩ c, h1]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Unfold `bvec`. Distinguish the cases in `hcb : c.val = b.val`. Rewrite using `[if_pos hcb, Pi.single_apply, if_pos (Fin.ext hcb)]`. Rewrite using `[if_neg hcb, Pi.single_apply, if_neg (fun h' => hcb (congrArg Fin.val h'))]`. Rewrite using `[Finset.sum_eq_single ⟨b.val, by omega⟩]`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hcol, if_pos rfl, mul_one]`. Introduce `c _ hc`. Rewrite using `[hcol, if_neg (fun h' => hc (Fin.ext h')), mul_zero]`. Introduce `h'`. Conclude with `absurd (Finset.mem_univ _) h'`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem djU_mul_UW (z : Fin (2 * (p + m) + k + 1) → ℂ) (g h : B.Mat k (p + m)) (hh : h ∈ UWset k (p + m) z) :
     U.DjU k p m (g * h) = U.DjU k p m g := by
@@ -243,26 +243,26 @@ variable {k p ρ : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpac
   [InnerProductSpace ℂ Wq]
 
 /- English proof (translation)
-Unfold `G.psi`. Rewrite using `[← Complex.exp_add, mul_add, Complex.add_re, Complex.ofReal_add, mul_add]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem gpsi_add (β a b : ℂ) : G.psi β (a + b) = G.psi β a * G.psi β b := by
   unfold G.psi
   rw [← Complex.exp_add, mul_add, Complex.add_re, Complex.ofReal_add, mul_add]
 
 /- English proof (translation)
-Unfold `U.cornerA`. Rewrite using `[dif_neg (fun h => absurd h.1 (lt_irrefl 0))]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem cornerA_zero {p : ℕ} (a : Fin 0 → Fin p → ℂ) : U.cornerA a = 0 := by
   unfold U.cornerA; rw [dif_neg (fun h => absurd h.1 (lt_irrefl 0))]
 
 /- English proof (translation)
-Unfold `U.cornerB`. Rewrite using `[dif_neg (fun h => absurd h.1 (lt_irrefl 0))]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem cornerB_zero {p : ℕ} (b : Fin p → Fin 0 → ℂ) : U.cornerB b = 0 := by
   unfold U.cornerB; rw [dif_neg (fun h => absurd h.1 (lt_irrefl 0))]
 
 /- English proof (translation)
-Unfold `Formalism.FourierDecayAlt.P.PBM.levMt`. Rewrite using `[Equiv.apply_symm_apply, Formalism.FourierDecayAlt.P.Dx2.MN.castM_rfl, Formalism.FourierDecayAlt.P.Dx2.Tower.lev_eq_embG]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem of_levMt (x : Mt k ρ) : (Matrix.of (Formalism.FourierDecayAlt.P.PBM.levMt p ρ rfl x) : B.Mat k (p + ρ)) =
     U.embG k p ρ (Matrix.of x) := by
@@ -270,17 +270,17 @@ theorem of_levMt (x : Mt k ρ) : (Matrix.of (Formalism.FourierDecayAlt.P.PBM.lev
   rw [Equiv.apply_symm_apply, Formalism.FourierDecayAlt.P.Dx2.MN.castM_rfl, Formalism.FourierDecayAlt.P.Dx2.Tower.lev_eq_embG]
 
 /- English proof (translation)
-Take `⟨hh, hν⟩` from `hx`. Take `⟨hh', hν'⟩` from `hy`. Establish `uh : IsUnit (Matrix.of x.1.1 : B.Mat k ρ).det` using `(Formalism.FourierDecayAlt.P.weyl_subgroup_closed k ρ Bj.z).unit _ hh`. Establish `uν : IsUnit (Matrix.of x.1.2 : B.Mat k ρ).det` using `(Formalism.FourierDecayAlt.P.unipotent_radical_closed k ρ).unit _ hν`. Establish `uh' : IsUnit (Matrix.of y.1.1 : B.Mat k ρ).det` using `(Formalism.FourierDecayAlt.P.weyl_subgroup_closed k ρ Bj.z').unit _ hh'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hH' : (Matrix.of y.1.1 : B.Mat k ρ)ᴴ * Hpk k ρ * Matrix.of y.1.1 = Hpk k ρ` using `hh'.1`. Establish `hpt : U.gaXi k ρ σ d ((splitE σ).symm (x, y)).2 (fun a => a.elim0) (B.sgs ((splitE σ).symm (x, y)).1 g) = sxL Bj σ x * U.mMap k p ρ (U.hMat σ d) g * Matrix.of (PsiR y).2 * Matrix.of (PsiR y).1`. Use `hGS k p ρ σ d ((splitE σ).symm (x, y)).2 (fun a => a.elim0) (Matrix.of x.1.1) (Matrix.of x.1.2) (Matrix.of y.1.1) (Matrix.of y.1.2) g uh uν hH'` as an intermediate fact. Rewrite using `[show B.sgs ((splitE σ).symm (x, y)).1 g = (Matrix.of x.1.1 : B.Mat k ρ)⁻¹ * (Matrix.of x.1.2 : B.Mat k ρ)⁻¹ * g * Matrix.of y.1.2 * Matrix.of y.1.1 from rfl]`. Use `this using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Simplify using `only [sxL, if_pos (show GoodL Bj σ x from ⟨hh, hν⟩), PsiR, NR, of_levMt, Equiv.apply_symm_apply]`. Both sides reduce to the same expression. Establish `hpi : B0.π' (Matrix.of (PsiR y).1)⁻¹ = Bj.π' (Matrix.of y.1.1)⁻¹`. Simplify using `only [PsiR, of_levMt]`. Rewrite using `[← Formalism.FourierDecayAlt.P.LeftFubiniLemmas.embG_inv uh', hπ']`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hN : psi k (p + ρ) B0.z' cStd (Matrix.of (PsiR y).2) = psi k ρ Bj.z' cStd (Matrix.of y.1.2) * psi k (p + ρ) (liftVec k p ρ Bj.z') cStd (U.muP k p ρ (G.upper y.2.2)) * psi k (p + ρ) (liftVec k p ρ Bj.z') cStd (U.Rn k p ρ y.2.1)`. Simplify using `only [PsiR, NR, Equiv.apply_symm_apply, hz']`. Rewrite using `[hPR k p ρ Bj.z' _ _ _ Bj.z'_mem hν', hPA k p ρ Bj.z' _ _ Bj.z'_mem hh']`. Establish `hM` using `hPM k p ρ Bj.z' y.2.2 Bj.z'_mem`. Establish `hS : U.psiStar k ρ σ (liftVec k p ρ Bj.z) (liftVec k p ρ Bj.z') ((splitE σ).symm (x, y)).2 = psi k (p + ρ) (liftVec k p ρ Bj.z) cStd (U.Rn k p ρ x.2.1) * star (psi k (p + ρ) (liftVec k p ρ Bj.z') cStd (U.Rn k p ρ y.2.1)) * (G.psi U.betaU (U.subS (lhOf σ x.2.2.2)) * G.psi U.betaU …`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [U.psiStar, U.psiH, splitE, MeasurableEquiv.symm_mk, MeasurableEquiv.coe_mk, Equiv.coe_fn_symm_mk, cornerA_zero, cornerB_zero, add_zero, gpsi_add]`. Both sides reduce to the same expression. Unfold `FL ellL KrI`. Rewrite using `[hpt, hpi, hS, hN]`. Simplify using `only [ContinuousLinearMap.smul_apply, ContinuousLinearMap.compL_apply, ContinuousLinearMap.comp_smul, ContinuousLinearMap.smul_comp, smul_smul, JF.xiP, cL, star_mul', ← hM]`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Simplify using `only [splitE, MeasurableEquiv.symm_mk, MeasurableEquiv.coe_mk, Equiv.coe_fn_symm_mk]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem fl_split (hGS : GaXiSplit) (hPR : PsiRight) (hPA : PsiRnAct) (hPM : PsiMuP)
     (Bj : B.RealPlaceData k ρ Wp Wq) (B0 : B.RealPlaceData k (p + ρ) Wp Wq) (hz' : B0.z' = liftVec k p ρ Bj.z')

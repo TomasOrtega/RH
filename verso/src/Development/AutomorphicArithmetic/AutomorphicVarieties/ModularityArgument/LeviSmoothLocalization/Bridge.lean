@@ -26,7 +26,7 @@ def SuppSmo1 : Prop :=
     ∀ (t : ℝ) v, WinAt π t v → WinAt π' t v
 
 /- English proof (translation)
-Introduce `K _ _ _ n hn π`. Take `⟨t, ht⟩` from `h K n hn π`. Conclude with `⟨t, fun v => ⟨fun a => ht v ((hp K n hn π v).1 a).1 ((hp K n hn π v).1 a).2, fun B hB => ht v (hs K n hn π v B hB).1 (hs K n hn π v B hB).2⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem winOfP_of (hp : PlainIff) (h : WinOf) (hs : SphUnl) : WinOfP := by
   intro K _ _ _ n hn π

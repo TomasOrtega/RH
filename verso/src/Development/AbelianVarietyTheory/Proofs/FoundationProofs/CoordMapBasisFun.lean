@@ -22,7 +22,7 @@ def stdHLat (n : ℕ) (L : Submodule (𝓞 K) (Fin n → K)) : HLat K where
   L := L
 
 /- English proof (translation)
-Use `show IsUnit (1 : Matrix (Fin n) (Fin n) ℂ).det`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem stdHLat_frames (n : ℕ) (L : Submodule (𝓞 K) (Fin n → K)) (v : InfinitePlace K) :
     IsUnit ((stdHLat K n L).X v).det := by
@@ -39,16 +39,16 @@ def coordMap (e : K →+* ℂ) {W : Type} [AddCommGroup W] [Module ℂ W] {n : �
 
 set_option linter.unusedSectionVars false in
 /- English proof (translation)
-Simplify using `[coordMap, Pi.single_apply, apply_ite e, ite_smul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem coordMap_basisFun (e : K →+* ℂ) {W : Type} [AddCommGroup W] [Module ℂ W] {n : ℕ} (c : Fin n → W)
     (i : Fin n) : coordMap e c (Pi.basisFun K (Fin n) i) = c i := by
   simp [coordMap, Pi.single_apply, apply_ite e, ite_smul]
 
 /- English proof (translation)
-Establish `h1 : coordMap e c x = c.repr.symm (WithLp.toLp 2 (fun i => e (x i)))`. Rewrite using `[← c.sum_repr_symm]`. Both sides reduce to the same expression. Rewrite using `[h1, LinearIsometryEquiv.norm_map, EuclideanSpace.norm_eq]`. Unfold `Formalism.HermitianLatticesTheory.normAt Formalism.HermitianLatticesTheory.cnorm Formalism.HermitianLatticesTheory.fcoord Formalism.HermitianLatticesTheory.vecAt`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Simplify using `[InfinitePlace.norm_embedding_eq, InfinitePlace.apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem normAt_one (e : K →+* ℂ) {W : Type} [NormedAddCommGroup W] [InnerProductSpace ℂ W] {n : ℕ}
     (c : OrthonormalBasis (Fin n) ℂ W) (x : Fin n → K) :
@@ -88,7 +88,7 @@ def withRRDef (S : RowSide D EE) : RowSide D EE :=
   { S with RR := { S.RR with L := rrLat S } }
 
 /- English proof (translation)
-The claim follows from `| 0 => rfl | j + 1 => by show ((withRRDef S).downTo μ j).comp (S.io μ j) = (S.downTo μ j).comp (S.io μ j) rw [downTo_withRRDef S μ j]; rfl`.
+A detailed English derivation is pending.
 -/
 theorem downTo_withRRDef (S : RowSide D EE) (μ : D.what₂.Tup) :
     ∀ j, (withRRDef S).downTo μ j = S.downTo μ j
@@ -98,18 +98,18 @@ theorem downTo_withRRDef (S : RowSide D EE) (μ : D.what₂.Tup) :
     rw [downTo_withRRDef S μ j]; rfl
 
 /- English proof (translation)
-Unfold `RowSide.iota`. Rewrite using `[downTo_withRRDef]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem iota_withRRDef (S : RowSide D EE) (μ : D.what₂.Tup) : (withRRDef S).iota μ = S.iota μ := by
   unfold RowSide.iota
   rw [downTo_withRRDef]; rfl
 
 /- English proof (translation)
-Establish `hQ : (withRRDef S).Qsp μ = S.Qsp μ`. Unfold `RowSide.Qsp RowSide.Usp`. Rewrite using `[iota_withRRDef]`. Both sides reduce to the same expression. Establish `key : ∀ (Q Q' : Submodule ℂ (S.Amb μ)) (i : Q.HasOrthogonalProjection) (i' : Q'.HasOrthogonalProjection), Q = Q' → @Submodule.starProjection ℂ _ _ _ _ Q i = @Submodule.starProjection ℂ _ _ _ _ Q' i'`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Introduce `Q Q' i i' h`. Substitute `h` using the available equality. Both sides reduce to the same expression. Establish `hL : (withRRDef S).LamSet μ = S.LamSet μ`. Unfold `RowSide.LamSet`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Both sides reduce to the same expression. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Conclude with `congrArg (fun f : S.Amb μ →L[ℂ] S.Amb μ => (fun x => f x) '' ((S.Mtilde μ).carrier ∩ (S.V0 μ : Set (S.Amb μ)))) (key _ _ _ _ hQ)`. Unfold `RowSide.RRset`. Rewrite using `[iota_withRRDef, hL]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem RRset_withRRDef (S : RowSide D EE) (μ : D.what₂.Tup) : (withRRDef S).RRset μ = S.RRset μ := by
   have hQ : (withRRDef S).Qsp μ = S.Qsp μ := by
@@ -126,7 +126,7 @@ theorem RRset_withRRDef (S : RowSide D EE) (μ : D.what₂.Tup) : (withRRDef S).
   rw [iota_withRRDef, hL]; rfl
 
 /- English proof (translation)
-Introduce `x`. Simplify using `only [RRset_withRRDef]`. Conclude with `Iff.rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem rrDef_withRRDef (S : RowSide D EE) : (withRRDef S).RRDef := by
   intro x
@@ -143,7 +143,7 @@ variable (D : D7) {EE : Type} [NormedAddCommGroup EE] [InnerProductSpace ℂ EE]
 def multDim (n j : ℕ) : ℕ := if j = 0 then n else 0
 
 /- English proof (translation)
-Use `D.R.two_le_m` as an intermediate fact. Unfold `multDim; rw [if_neg (by omega)]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions.
 -/
 theorem multDim_top (n : ℕ) : multDim n D.R.m = 0 := by
   have := D.R.two_le_m
@@ -204,7 +204,7 @@ end Small
 def smallLevelSide (D : D7) : BaseLevelRowSide D := ⟨withRRDef (smallSide D D.what₂.onb0)⟩
 
 /- English proof (translation)
-Introduce `D` and use `⟨smallLevelSide D, rrDef_withRRDef _, ⟨smallAmbForm D D.what₂.onb0⟩⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem exists_p0Side : ∀ D : D7, ∃ X : BaseLevelRowSide D, X.s.RRDef ∧ Nonempty (AmbForm D X.s) :=
   fun D => ⟨smallLevelSide D, rrDef_withRRDef _, ⟨smallAmbForm D D.what₂.onb0⟩⟩

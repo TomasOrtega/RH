@@ -5,25 +5,25 @@ open MeasureTheory
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `X _ μ d a b C hd hd0 hgrowth hab`. Use `set C' : ℝ := max C 0 with hC'`. Establish `hC'0 : 0 ≤ C'` using `le_max_right _ _`. Establish `hmeas : Measurable fun x => Real.exp (-(b * d x))` using `Real.measurable_exp.comp ((hd.const_mul b).neg)`. Use `⟨hmeas.aestronglyMeasurable, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hpos : 0 ≤ᵐ[μ] fun x => Real.exp (-(b * d x))` using `Filter.Eventually.of_forall fun x => (Real.exp_pos _).le`. Rewrite using `[hasFiniteIntegral_iff_ofReal hpos]`. Set `s : ℕ → Set X` to `fun n => {x | d x ≤ (n : ℝ) + 1}`. Establish `hs : ∀ n, MeasurableSet (s n)` using `fun n => measurableSet_le hd measurable_const`. Set `g : ℕ → X → ENNReal` to `fun n => (s n).indicator (fun _ => ENNReal.ofReal (Real.exp (|b| - b * n)))`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hpt : ∀ x, ENNReal.ofReal (Real.exp (-(b * d x))) ≤ ∑' n, g n x`. Introduce `x`. Use `set n := ⌊d x⌋₊ with hn`. Establish `h1 : (n : ℝ) ≤ d x` using `Nat.floor_le (hd0 x)`. Establish `h2 : d x < (n : ℝ) + 1` using `Nat.lt_floor_add_one (d x)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hxs : x ∈ s n` using `by show d x ≤ (n : ℝ) + 1`. Conclude with `h2.le`. Establish `hexp : Real.exp (-(b * d x)) ≤ Real.exp (|b| - b * n)`. Apply `Real.exp_le_exp.mpr` to reduce the goal to its premises. Establish `hdist : |d x - n| ≤ 1`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `rw [abs_le]; constructor <;> linarith`. Establish `: |b * (d x - n)| ≤ |b|`. Rewrite using `[abs_mul]`. Combine the equalities or inequalities in the displayed calculation. Establish `hlow` using `neg_abs_le (b * (d x - n))`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hy : -(b * d x) = |b| - b * n - (|b| + b * (d x - n))` using `by ring`. Rewrite using `[hy]`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation. Set `u : ℕ → ℝ` to `fun n => C' * Real.exp (|b| + a) * Real.exp (a - b) ^ n`.
+Chain the equalities or inequalities of the calculation. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu0 : ∀ n, 0 ≤ u n` using `fun n => by positivity`. Establish `hr0 : 0 ≤ Real.exp (a - b)` using `(Real.exp_pos _).le`. Establish `hr1 : Real.exp (a - b) < 1` using `Real.exp_lt_one_iff.mpr (by linarith)`. Establish `hsum : Summable u` using `(summable_geometric_of_lt_one hr0 hr1).mul_left _`. Establish `hterm : ∀ n, ∫⁻ x, g n x ∂μ ≤ ENNReal.ofReal (u n)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `n`. Simplify using `only [g]`. Rewrite using `[lintegral_indicator_const (hs n)]`. Establish `hμ : μ (s n) ≤ ENNReal.ofReal (C' * Real.exp (a * ((n : ℝ) + 1)))`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Combine the equalities or inequalities in the displayed calculation. Use `congr 1`. Simplify using `only [u]`. Rewrite using `[← Real.exp_nat_mul]`. Establish `hE : Real.exp (|b| - b * n) * Real.exp (a * ((n : ℝ) + 1)) = Real.exp (|b| + a) * Real.exp (n * (a - b))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite using `[← Real.exp_add, ← Real.exp_add]`. Put the polynomial expressions in normal form. Take the linear combination `C' * hE`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem integrable_exp_neg_mul_of_sublevel_growth :
     ∀ (X : Type) [MeasurableSpace X] (μ : Measure X) (d : X → ℝ) (a b C : ℝ), Measurable d →

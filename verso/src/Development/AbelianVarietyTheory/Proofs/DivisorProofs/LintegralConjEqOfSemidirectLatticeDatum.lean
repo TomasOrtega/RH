@@ -7,17 +7,15 @@ open scoped ENNReal NNReal
 namespace GlobalTheory.ResLine
 
 /- English proof (translation)
-Use `haveI : (ν.map φ).IsHaarMeasure := φ.isHaarMeasure_map ν`. Establish `hc` using `Measure.isMulLeftInvariant_eq_smul (ν.map φ) ν`. Use `set c := Measure.haarScalarFactor (ν.map φ) ν`. Establish `hφm : Measurable φ` using `φ.continuous.measurable`. Establish `hq : Measure.QuasiMeasurePreserving φ ν ν`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨hφm, ?_⟩` and prove the remaining obligations. Rewrite using `[hc]`. Conclude with `Measure.smul_absolutelyContinuous`. Establish `h' : IsFundamentalDomain Λ (φ ⁻¹' D) ν`. Use `hD.preimage_of_equiv hq (e := fun g : Λ => (⟨φ.symm g, h2 g g.2⟩ : Λ)) ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Prove the components needed by the constructor for the conclusion. Introduce `a b hab`. Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `φ.symm.injective (congrArg Subtype.val hab)`. Introduce `a`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `⟨⟨φ a, h1 a a.2⟩, Subtype.ext (φ.symm_apply_apply a)⟩`. Introduce `g x`. Simplify using `[Subgroup.smul_def]`. Establish `hm : ν (φ ⁻¹' D) = ν D` using `h'.measure_eq hD`. Establish `h0 : ν D ≠ 0` using `hD.measure_ne_zero (NeZero.ne ν)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hmap : (ν.map φ) D = ν (φ ⁻¹' D)` using `MeasurableEquiv.map_apply φ.toHomeomorph.toMeasurableEquiv D`. Establish `h3 : (c : ℝ≥0∞) * ν D = 1 * ν D`. Combine the equalities or inequalities in the displayed calculation. Establish `hc1 : c = 1`. Use `(ENNReal.mul_left_inj h0 hfin).1 h3` as an intermediate fact.
-
-Conclude with `this` after adjusting the coercions. Rewrite using `[hc, hc1, one_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_eq_self_of_normalises_lattice {B : Type} [Group B] [TopologicalSpace B] [IsTopologicalGroup B]
     [LocallyCompactSpace B] [SecondCountableTopology B] [MeasurableSpace B] [BorelSpace B]
@@ -55,15 +53,11 @@ theorem map_eq_self_of_normalises_lattice {B : Type} [Group B] [TopologicalSpace
   rw [hc, hc1, one_smul]
 
 /- English proof (translation)
-Introduce `G _ _ _ _ _ _ _ _ N M Λ _ ν π DN DM h m hm f hf`. Use `haveI := h.haarN`. Use `haveI : LocallyCompactSpace N := h.closedN.locallyCompactSpace`. Use `haveI : LocallyCompactSpace M := h.closedM.locallyCompactSpace`. Use `haveI : SecondCountableTopology N := TopologicalSpace.Subtype.secondCountableTopology (N : Set G)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : SecondCountableTopology M := TopologicalSpace.Subtype.secondCountableTopology (M : Set G)`. Establish `hcount : ∀ K : Subgroup G, Countable (Λ.subgroupOf K)` using `fun K => Function.Injective.countable (f := fun g : Λ.subgroupOf K => (⟨g.1.1, g.2⟩ : Λ)) fun a b hab => Subtype.ext (Subtype.ext (congrArg (fun g : Λ => (g : G)) hab))`. Use `haveI := hcount N`. Use `haveI := hcount M`. Establish `hB : ∀ x : M, ∀ b ∈ N, M.subtype x * b * (M.subtype x)⁻¹ ∈ N` using `fun x b hb => h.norm x x.2 b hb`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `key` using `GlobalTheory.ConjModulus.map_conj_eq_self_of_lattice M G M.subtype continuous_subtype_val N h.closedN hB ν h.haarN (Λ.subgroupOf M) π DM h.haarM h.domM h.finM (fun x hx => by`. Establish `hx' : (x : G) ∈ Λ` using `hx`. Use `map_eq_self_of_normalises_lattice (Λ.subgroupOf N) ν DN h.domN h.finN (GlobalTheory.ConjModulus.conjCME M.subtype N hB x) ?_ ?_` and prove the remaining obligations. Introduce `b hb`. Establish `hb' : (b : G) ∈ Λ` using `hb`.
-
-Conclude with `Λ.mul_mem (Λ.mul_mem hx' hb') (Λ.inv_mem hx')`. Introduce `b hb`. Establish `hb' : (b : G) ∈ Λ` using `hb`. Conclude with `Λ.mul_mem (Λ.mul_mem (Λ.inv_mem hx') hb') (Λ.inv_mem (Λ.inv_mem hx'))) ⟨m, hm⟩`. Establish `hφm : Measurable (fun b : N => (⟨M.subtype ⟨m, hm⟩ * b * (M.subtype ⟨m, hm⟩)⁻¹, hB ⟨m, hm⟩ b b.2⟩ : N))` using `(GlobalTheory.ConjModulus.conjCME M.subtype N hB ⟨m, hm⟩).continuous.measurable`.
-
-Use `lintegral_map (μ := ν) (hf.comp measurable_subtype_coe) hφm` as an intermediate fact. Rewrite `this` using `[key]`. Conclude with `this.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lintegral_conj_eq_of_semiLat : ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [LocallyCompactSpace G] [SecondCountableTopology G] [T2Space G] [MeasurableSpace G] [BorelSpace G] (N M Λ : Subgroup G) [Countable Λ] (ν : Measure N) (π : Measure M) (DN : Set N) (DM : Set M), SemiLat N M Λ ν π DN DM → ∀ m ∈ M, ∀ f : G → ℝ≥0∞, Measurable f → ∫⁻ u : N, f (m * u * m⁻¹) ∂ν = ∫⁻ u : N, f u ∂ν := by
   intro G _ _ _ _ _ _ _ _ N M Λ _ ν π DN DM h m hm f hf

@@ -4,7 +4,7 @@ import CompanionTheory.HarishChandraModules.BesselParameterIntegrals.SmoothCycli
 namespace CompanionTheory.D.Upq.Sm
 
 /- English proof (translation)
-The claim follows from `smoothCyc_of_kFinSmooth CompanionTheory.D.gk.admitted.k_finite_smooth`.
+A detailed English derivation is pending.
 -/
 theorem smooth_cyclic_vectors : PI.SmoothCyc := smoothCyc_of_kFinSmooth CompanionTheory.D.gk.admitted.k_finite_smooth
 

@@ -9,9 +9,9 @@ section Abstract
 variable {O : Type} [CommRing O] [IsLocalRing O] {R : Type} [CommRing R] [Algebra O R] [IsCO O R]
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `IsCO.res_surj (O := O) y`. Use `⟨a, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Use `letI : Algebra (ResidueField O) R := (Ideal.Quotient.lift (maximalIdeal O) (algebraMap O R) h0).toAlgebra`. Use `haveI : IsScalarTower O (ResidueField O) R := IsScalarTower.of_algebraMap_eq fun _ => rfl`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Establish `h1 : IsIntegral (ResidueField O) (y - algebraMap O R a)` using `(hy.sub isIntegral_algebraMap).tower_top`. Conclude with `ha (h1.isUnit (sub_ne_zero.2 hne))`.
+A detailed English derivation is pending.
 -/
 private theorem pf_const [IsDomain R] (h0 : ∀ a ∈ maximalIdeal O, algebraMap O R a = 0) {y : R} (hy : IsIntegral O y) :
     ∃ a, y = algebraMap O R a := by
@@ -24,7 +24,7 @@ private theorem pf_const [IsDomain R] (h0 : ∀ a ∈ maximalIdeal O, algebraMap
   exact ha (h1.isUnit (sub_ne_zero.2 hne))
 
 /- English proof (translation)
-Set `j : ResidueField O →ₐ[O] R` to `Ideal.Quotient.liftₐ (maximalIdeal O) (Algebra.ofId O R) h0`. Use `⟨j.comp (res O B), fun b hb => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[AlgHom.comp_apply, (res_eq_zero_iff O B b).2 hb, map_zero]`. Introduce and unpack `f b ⟨a, ha⟩`. Rewrite using `[AlgHom.comp_apply, ← res_map f, ha, AlgHom.commutes, AlgHom.commutes]`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 -/
 private theorem pf_sect (h0 : ∀ a ∈ maximalIdeal O, algebraMap O R a = 0) (B : Type) [CommRing B] [Algebra O B] [IsCO O B] :
     ∃ s : B →ₐ[O] R, (∀ b ∈ maximalIdeal B, s b = 0) ∧ ∀ (f : B →ₐ[O] R) (b : B), (∃ a, f b = algebraMap O R a) → f b = s b := by
@@ -35,7 +35,7 @@ private theorem pf_sect (h0 : ∀ a ∈ maximalIdeal O, algebraMap O R a = 0) (B
     rw [AlgHom.comp_apply, ← res_map f, ha, AlgHom.commutes, AlgHom.commutes]
 
 /- English proof (translation)
-Introduce `N` and use `by have hle : maximalIdeal B ^ N ≤ (maximalIdeal R ^ N).comap (f : B →+* R) := by refine le_trans (Ideal.pow_right_mono (fun y hy => ?_) N) (Ideal.le_comap_pow _ N) show f y ∈ maximalIdeal R rw [← res_eq_zero_iff O, res_map, res_eq_zero_iff] exact hy exact (hu N).comp (Ideal.quot …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem pf_cont {Γ B : Type} [TopologicalSpace Γ] [CommRing B] [Algebra O B] [IsCO O B] (f : B →ₐ[O] R) {u : Γ → B}
     (hu : AdicCont (maximalIdeal B) u) : AdicCont (maximalIdeal R) fun g => f (u g) := fun N => by
@@ -47,11 +47,11 @@ private theorem pf_cont {Γ B : Type} [TopologicalSpace Γ] [CommRing B] [Algebr
   exact (hu N).comp (Ideal.quotientMap _ (f : B →+* R) hle)
 
 /- English proof (translation)
-Take `⟨s, hs, hsf⟩` from `pf_sect h0 Λ.Λ`. Establish `hi : W.IsInert r fun v i => W.pushCh (f : Λ.Λ →+* R) (Λ.κ v i)` using `fun v i => by`. Take `⟨ψ, hψ, he⟩` from `Λ.inert v i`. Use `⟨W.pushCh (f : Λ.Λ →+* R) ψ, ⟨pf_cont f hψ.cont, fun g => (res_map f _).trans (hψ.red g), fun g => ?_⟩, ?_⟩` and prove the remaining obligations. Use `show f (ψ g) = _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hψ.mu g, f.commutes]`. Conclude with `congrArg (W.pushCh (f : Λ.Λ →+* R)) he`. Establish `he : f = s` using `(Λ.univ R _ hi).unique (fun _ _ => rfl) fun v i => MonoidHom.ext fun g => Units.ext (hsf f _ (hf v i g)).symm`. Take `⟨a, ha⟩` from `IsCO.res_surj (O := O) x`. Establish `h1` using `hs _ ha`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Rewrite `h1` using `[map_sub, AlgHom.commutes, sub_eq_zero]`. Conclude with `⟨a, he ▸ h1⟩`.
+A detailed English derivation is pending.
 -/
 private theorem pf_lam {l : ℕ} [Fact l.Prime] {F : W.GFrame l} [Algebra ℤ_[l] O] {n : ℕ} {r : W.Resid F O n} (Λ : W.LamObj r)
     (h0 : ∀ a ∈ maximalIdeal O, algebraMap O R a = 0) (f : Λ.Λ →ₐ[O] R)
@@ -71,11 +71,11 @@ private theorem pf_lam {l : ℕ} [Fact l.Prime] {F : W.GFrame l} [Algebra ℤ_[l
   exact ⟨a, he ▸ h1⟩
 
 /- English proof (translation)
-Take `⟨p, hp, hb⟩` from `hfin.to_isIntegral (Ideal.Quotient.mk J b)`. Establish `h1` using `congrArg (Ideal.Quotient.lift J (f : B →+* R) hJ) hb`. Rewrite `h1` using `[hom_eval₂, map_zero]`. Establish `hl : p.map ((f.comp t : Λ →ₐ[O] R) : Λ →+* R) ∈ lifts (algebraMap O R)`. Rewrite using `[lifts_iff_coeff_lifts]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `n`. Take `⟨a, ha⟩` from `hc (p.coeff n)`. Conclude with `⟨a, by rw [coeff_map]; exact ha.symm⟩`. Take `⟨q, hq, -, hm⟩` from `lifts_and_natDegree_eq_and_monic hl (hp.map _)`. Use `⟨q, hm, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← eval_map, hq, eval_map]`. Conclude with `h1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem pf_int {Λ B : Type} [CommRing Λ] [CommRing B] [Algebra O Λ] [Algebra O B] (t : Λ →ₐ[O] B) (J : Ideal B)
     (hfin : ((Ideal.Quotient.mk J).comp (t : Λ →+* B)).Finite) (f : B →ₐ[O] R) (hJ : ∀ b ∈ J, f b = 0)
@@ -96,15 +96,15 @@ private theorem pf_int {Λ B : Type} [CommRing Λ] [CommRing B] [Algebra O Λ] [
 variable {O₀ Γ : Type} [CommRing O₀] [Group Γ] [TopologicalSpace Γ] {Φ : Fr O₀ Γ} {a : O₀ →+* O} (X : Space Φ a)
 
 /- English proof (translation)
-Set `S₀ : Subring X.B` to `(integralClosure O R).toSubring.comap (f : X.B →+* R)`. Set `S : Subring X.A` to `S₀.map (algebraMap X.B X.A)`. Establish `h1` using `AlgebraTools.charpolyPowInt X.A (Fin 4) S (X.P.r g) 2 two_pos (fun i => by`. Rewrite using `[← map_pow, ← X.cp_map, coeff_map]`. Conclude with `⟨_, hg i, rfl⟩) n`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite `h1` using `[← X.cp_map, coeff_map]`. Take `⟨p, hp, hb⟩` from `h1`. Establish `hl : p.map S.subtype ∈ lifts ((algebraMap X.B X.A).comp S₀.subtype)`. Rewrite using `[lifts_iff_coeff_lifts]`. Introduce `m`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨y, hy, he⟩` from `(p.coeff m).2`. Conclude with `⟨⟨y, hy⟩, by rw [coeff_map]; exact he⟩`. Take `⟨q, hq, -, hm⟩` from `lifts_and_natDegree_eq_and_monic hl (hp.map _)`. Establish `h2 : q.eval₂ S₀.subtype ((X.cp g).coeff n) = 0`. Apply `X.inj` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hom_eval₂, map_zero, ← eval_map, hq, eval_map]`. Conclude with `hb`. Set `j : S₀ →+* integralClosure O R` to `((f : X.B →+* R).comp S₀.subtype).codRestrict _ fun y => y.2`. Establish `h3 : IsIntegral (integralClosure O R) (f ((X.cp g).coeff n))`. Use `⟨q.map j, hm.map j, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h4` using `congrArg (f : X.B →+* R) h2`. Rewrite `h4` using `[hom_eval₂, map_zero]`. Rewrite using `[eval₂_map]`. Conclude with `h4`. Conclude with `isIntegral_trans _ h3`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem pf_sq (f : X.B →ₐ[O] R) (g : Γ) (hg : ∀ n, IsIntegral O (f ((X.cp (g ^ 2)).coeff n))) (n : ℕ) :
     IsIntegral O (f ((X.cp g).coeff n)) := by
@@ -135,7 +135,7 @@ private theorem pf_sq (f : X.B →ₐ[O] R) (g : Γ) (hg : ∀ n, IsIntegral O (
   exact isIntegral_trans _ h3
 
 /- English proof (translation)
-Take `⟨s, hs, hsf⟩` from `pf_sect h0 X.B`. Rewrite using `[X.genB R f s (fun g n => hsf f _ (pf_const h0 (h1 g n))) fun v i g hg => hsf f _ (pf_const h0 (h2 v i g hg))]`. Conclude with `hs`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem pf_gen [IsDomain R] (h0 : ∀ a ∈ maximalIdeal O, algebraMap O R a = 0) (f : X.B →ₐ[O] R)
     (h1 : ∀ g n, IsIntegral O (f ((X.cp g).coeff n))) (h2 : ∀ v i, ∀ s ∈ Φ.Gv v, IsIntegral O (f (X.ψ v i s))) :
@@ -145,7 +145,7 @@ private theorem pf_gen [IsDomain R] (h0 : ∀ a ∈ maximalIdeal O, algebraMap O
   exact hs
 
 /- English proof (translation)
-Establish `h1` using `(isIntegral_algebraMap (R := O) (A := R) (x := (u⁻¹ : Oˣ))).mul h`. Rewrite `h1` using `[← mul_assoc, ← map_mul, Units.inv_mul, map_one, one_mul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 private theorem pf_unit {u : Oˣ} {y : R} (h : IsIntegral O (algebraMap O R u * y)) : IsIntegral O y := by
   have h1 := (isIntegral_algebraMap (R := O) (A := R) (x := (u⁻¹ : Oˣ))).mul h
@@ -158,9 +158,9 @@ section Galois
 variable {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} {D : Raw Ω c} (T : Tower D)
 
 /- English proof (translation)
-Establish `h1 : resQ T.F g ∈ T.F.fixingSubgroup`. Rewrite using `[IntermediateField.mem_fixingSubgroup_iff]`. Conclude with `fun x hx => g.commutes ⟨x, hx⟩`. Establish `h2 : resQ T.F g ∈ T.L.fixingSubgroup`. Rewrite using `[T.hL, IntermediateField.fixingSubgroup_sup]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨h1, hg⟩`. Rewrite `h2` using `[IntermediateField.mem_fixingSubgroup_iff]`. Conclude with `⟨{ g.toRingEquiv with commutes' := fun x => h2 x.1 x.2 }, AlgEquiv.ext fun _ => rfl⟩`.
+Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 private theorem pf_lift {g : G T.F Ω} (hg : resQ T.F g ∈ T.K.fixingSubgroup) : ∃ g' : G T.L Ω, resLe T.F_le g' = g := by
   have h1 : resQ T.F g ∈ T.F.fixingSubgroup := by
@@ -173,9 +173,7 @@ private theorem pf_lift {g : G T.F Ω} (hg : resQ T.F g ∈ T.K.fixingSubgroup) 
   exact ⟨{ g.toRingEquiv with commutes' := fun x => h2 x.1 x.2 }, AlgEquiv.ext fun _ => rfl⟩
 
 /- English proof (translation)
-Use `haveI : Algebra.IsAlgebraic ℚ Ω := IsAlgClosure.isAlgebraic`. Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ`. Use `haveI : IsGalois ℚ Ω := inferInstance`. Establish `hi : T.K.fixingSubgroup.index = 2`. Rewrite using `[← T.degK]`.
-
-Conclude with `(IntermediateField.finrank_eq_fixingSubgroup_index Ω T.K).symm`. Conclude with `Subgroup.sq_mem_of_index_two hi g`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem pf_sqK (g : G ℚ Ω) : g ^ 2 ∈ T.K.fixingSubgroup := by
   haveI : Algebra.IsAlgebraic ℚ Ω := IsAlgClosure.isAlgebraic

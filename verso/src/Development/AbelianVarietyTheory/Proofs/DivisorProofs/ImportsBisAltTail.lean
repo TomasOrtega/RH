@@ -16,17 +16,15 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.TorusEndChar
 
 /- English proof (translation)
-Introduce `k _ G _ _ E f hf`. Use `letI := E.addCommGroup`. Use `haveI := E.free`. Use `haveI := E.finite`. Use `letI := E.grpB`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI : IsMonHom E.q := E.q_hom`. Use `haveI : IsMonHom E.i := E.i_hom`. Use `haveI : IsProper E.B.hom := E.isAbelian.proper`. Use `haveI : ConnectedSpace (Sp k) := by`. Establish `: PreconnectedSpace (PrimeSpectrum k)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨isPreconnected_of_forall (IsLocalRing.closedPoint k) fun y _ => ⟨closure {y}, Set.subset_univ _, ?_, subset_closure rfl, isPreconnected_singleton.closure⟩⟩` and prove the remaining obligations. Conclude with `(IsLocalRing.specializes_closedPoint y).mem_closure`. Conclude with `(⟨inferInstance⟩ : ConnectedSpace (PrimeSpectrum k))`. Establish `hk : E.i ≫ f ≫ E.q = toUnit _ ≫ η[E.B]` using `splitTorus_hom_proper_trivial_local k E.X E.B (E.i ≫ f ≫ E.q) inferInstance`. Set `τ : splitTorus (Sp k) E.X ⟶ splitTorus (Sp k) E.X` to `E.isKernel.lift (E.i ≫ f) (toUnit _) (by rw [Category.assoc, hk])`.
+Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hτ : τ ≫ E.i = E.i ≫ f` using `E.isKernel.lift_fst _ _ _`. Establish `hmono : Mono E.i` using `E.isKernel.mono_fst_of_mono`. Establish `hτm : IsMonHom τ`. Prove the components needed by the constructor for the conclusion. Rewrite using `[← cancel_mono E.i, Category.assoc, hτ, IsMonHom.one_hom_assoc, IsMonHom.one_hom, IsMonHom.one_hom]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Substitute using the available equality. By extensionality, compare the relevant components.
 
-Rewrite using `[← cancel_mono E.i, Category.assoc, Category.assoc, hτ, IsMonHom.mul_hom_assoc (f := E.i), IsMonHom.mul_hom (f := f), IsMonHom.mul_hom (f := E.i), tensorHom_comp_tensorHom_assoc, tensorHom_comp_tensorHom_assoc, hτ]`. Take `⟨ρ, hρ⟩` from `SplitTorusHom.exists_addMonoidHom (S := Sp k) τ`. Use `⟨ρ, ⟨τ, hτ, fun χ => Units.ext ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[chV_val, hρ]`. Introduce and unpack `ρ' ⟨τ', hτ', hρ'⟩`.
-
-Establish `hττ : τ' = τ` using `by rw [← cancel_mono E.i, hτ', hτ]`. Substitute `hττ` using the available equality. Use extensionality with `χ`. Apply `SplitTorusHom.charUnit_injective (S := Sp k)` to reduce the goal to its premises. Rewrite using `[← hρ', chV_val, hρ]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ (k : Type) [Field k] (G : Over (Sp k)) [GrpObj G] [IsCommMonObj G] (E : TorusExtension G) (f : G ⟶ G), IsMonHom f → letI := E.addCommGroup; ∃! ρ : E.X →+ E.X, ∃ τ : splitTorus (Sp k) E.X ⟶ splitTorus (Sp k) E.X, τ ≫ E.i = E.i ≫ f ∧ ∀ χ, chV τ χ = charUnit (Sp k) E.X (ρ χ) := by
   intro k _ G _ _ E f hf

@@ -82,7 +82,7 @@ variable {σ J L} {S : Finset (HeightOneSpectrum (𝓞 F))} {μa : ∀ w, Measur
   {μf : ∀ v, Measure (GLoc σ J v)} {νf : ∀ v : {v // v ∉ S}, Measure (GLoc σ J v)}
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem isRestrictedProd_iff {μ : Measure (GAd σ J)} : IsRestrictedProd σ J L μa μf μ ↔
     (∀ w, (μa w).IsHaarMeasure) ∧ (∀ v, (μf v).IsHaarMeasure) ∧ μ.IsHaarMeasure ∧
@@ -94,7 +94,7 @@ theorem isRestrictedProd_iff {μ : Measure (GAd σ J)} : IsRestrictedProd σ J L
           ∀ v ∉ S, proj σ J v g ∈ stabLoc σ J L v} = (∏ w, μa w (A w)) * ∏ v ∈ S, μf v (B v) := Iff.rfl
 
 /- English proof (translation)
-The claim follows from `isHaarProdFin_iff`.
+A detailed English derivation is pending.
 -/
 theorem isRestrictedProdFin_iff {μ : Measure (GFin σ J)} : IsRestrictedProdFin σ J L μf μ ↔
     (∀ v, (μf v).IsHaarMeasure) ∧ μ.IsHaarMeasure ∧ (∀ᶠ v in cofinite, μf v (stabLoc σ J L v) = 1) ∧
@@ -104,7 +104,7 @@ theorem isRestrictedProdFin_iff {μ : Measure (GFin σ J)} : IsRestrictedProdFin
           ∏ v ∈ S, μf v (B v) := isHaarProdFin_iff
 
 /- English proof (translation)
-The claim follows from `isHaarProdFin_iff`.
+A detailed English derivation is pending.
 -/
 theorem isRestrictedProdFinPts_iff {μ : Measure (finPts σ J)} : IsRestrictedProdFinPts σ J L μf μ ↔
     (∀ v, (μf v).IsHaarMeasure) ∧ μ.IsHaarMeasure ∧ (∀ᶠ v in cofinite, μf v (stabLoc σ J L v) = 1) ∧
@@ -114,24 +114,24 @@ theorem isRestrictedProdFinPts_iff {μ : Measure (finPts σ J)} : IsRestrictedPr
           ∏ v ∈ S, μf v (B v) := isHaarProdFin_iff
 
 /- English proof (translation)
-The claim follows from `(isRestrictedProd_iff.1 h).1 w`.
+A detailed English derivation is pending.
 -/
 theorem IsRestrictedProd.haar_arch {μ : Measure (GAd σ J)} (h : IsRestrictedProd σ J L μa μf μ) (w : InfinitePlace F) :
     (μa w).IsHaarMeasure := (isRestrictedProd_iff.1 h).1 w
 
 /- English proof (translation)
-The claim follows from `(isRestrictedProd_iff.1 h).2.1 v`.
+A detailed English derivation is pending.
 -/
 theorem IsRestrictedProd.haar_loc {μ : Measure (GAd σ J)} (h : IsRestrictedProd σ J L μa μf μ)
     (v : HeightOneSpectrum (𝓞 F)) : (μf v).IsHaarMeasure := (isRestrictedProd_iff.1 h).2.1 v
 
 /- English proof (translation)
-The claim follows from `(isRestrictedProd_iff.1 h).2.2.1`.
+A detailed English derivation is pending.
 -/
 theorem IsRestrictedProd.haar {μ : Measure (GAd σ J)} (h : IsRestrictedProd σ J L μa μf μ) : μ.IsHaarMeasure := (isRestrictedProd_iff.1 h).2.2.1
 
 /- English proof (translation)
-Unfold `IsRestrictedProd IsHaarProd at h`. Conclude with `h.2.2.2`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem IsRestrictedProd.isCylProd {μ : Measure (GAd σ J)} (h : IsRestrictedProd σ J L μa μf μ) :
     IsCylProd (fun w => projArch σ J w) (fun v => proj σ J v) (fun v => (stabLoc σ J L v : Set (GLoc σ J v)))
@@ -140,15 +140,15 @@ theorem IsRestrictedProd.isCylProd {μ : Measure (GAd σ J)} (h : IsRestrictedPr
   exact h.2.2.2
 
 /- English proof (translation)
-The claim follows from `(isRestrictedProd_iff.1 h).2.2.2.1`.
+A detailed English derivation is pending.
 -/
 theorem IsRestrictedProd.eventually_eq_one {μ : Measure (GAd σ J)} (h : IsRestrictedProd σ J L μa μf μ) :
     ∀ᶠ v in cofinite, μf v (stabLoc σ J L v) = 1 := (isRestrictedProd_iff.1 h).2.2.2.1
 
 /- English proof (translation)
-Unfold `IsHaarProd IsCylProd`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨ha, hf, hμ, h1, hc⟩`. Conclude with `⟨ha, hf, h1, hμ, hc⟩`. Introduce `h`.
+Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨h.haar_inf, h.haar_fin, h.haar, h.vol_one, h.measure_cyl⟩`.
+Supply the required witnesses or components.
 -/
 theorem isHaarProd_iff_isRestrProd {X W V : Type} {Ya : W → Type} {Yf : V → Type} [Group X] [∀ w, Group (Ya w)]
     [∀ v, Group (Yf v)] [TopologicalSpace X] [∀ w, TopologicalSpace (Ya w)] [∀ v, TopologicalSpace (Yf v)] [Fintype W]
@@ -163,7 +163,7 @@ theorem isHaarProd_iff_isRestrProd {X W V : Type} {Ya : W → Type} {Yf : V → 
     exact ⟨h.haar_inf, h.haar_fin, h.haar, h.vol_one, h.measure_cyl⟩
 
 /- English proof (translation)
-The claim follows from `isHaarProd_iff_isRestrProd`.
+A detailed English derivation is pending.
 -/
 theorem isRestrictedProd_iff_isProdMeasure {μ : Measure (GAd σ J)} :
     IsRestrictedProd σ J L μa μf μ ↔ IsProdMeasure σ J L μa μf μ := isHaarProd_iff_isRestrProd
@@ -173,11 +173,9 @@ end Unfold
 variable [Submodule.IsLattice E L]
 
 /- English proof (translation)
-Use `{ continuous_pa := fun w => w.elim continuous_pf := continuous_projFinLoc σ J isOpen_K := isOpen_stabLoc σ J L isCompact_K := isCompact_stabLoc σ J L` and prove the remaining obligations. Use extensionality with `:= fun _ _ _ h => GFin_ext σ J h`. Use `eventually_mem := eventually_projFinLoc_mem_stabLoc σ J L`. Use `exists_eq := fun _ y hy => ?_`. Use `isOpen_level := ?_`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Use `isCompact_level := fun _ _ => ?_ }`. Take `⟨g, hg, -⟩` from `existsUnique_projFinLoc_eq σ J L y hy`. Conclude with `⟨g, fun w => w.elim, hg⟩`. Establish `e : {x : GFin σ J | ∀ v, projFinLoc σ J v x ∈ stabLoc σ J L v} = (levelOffFin σ J L ∅ : Set (GFin σ J))`. Use extensionality with `x`.
-
-Simplify using `[mem_levelOffFin]`. Rewrite using `[e]`. Conclude with `isOpen_levelOffFin_empty σ J L`. Conclude with `isCompact_of_ext (isCompact_levelOffFin σ J L ∅) fun x => by simp [mem_levelOffFin]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem restrGroup_GFin : RestrMeas.IsRestrGroup (noArch (GFin σ J)) (projFinLoc σ J) (stabLoc σ J L) := by
   refine
@@ -201,13 +199,11 @@ theorem restrGroup_GFin : RestrMeas.IsRestrGroup (noArch (GFin σ J)) (projFinLo
   · exact isCompact_of_ext (isCompact_levelOffFin σ J L ∅) fun x => by simp [mem_levelOffFin]
 
 /- English proof (translation)
-Use `{ continuous_pa := continuous_projArch σ J continuous_pf := continuous_proj σ J isOpen_K := isOpen_stabLoc σ J L isCompact_K := isCompact_stabLoc σ J L` and prove the remaining obligations. Use extensionality with `:= fun _ _ ha hf => GAd_ext σ J ha hf`. Use `eventually_mem := eventually_proj_mem_stabLoc σ J L`. Use `exists_eq := fun a y hy => ?_`. Use `isOpen_level := ?_`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `isCompact_level := fun C hC => ?_ }`. Take `⟨g, hg, -⟩` from `existsUnique_projFinLoc_eq σ J L y hy`. Use `⟨ofInf σ J (embArchPi σ J a) * ofFin σ J g, fun w => ?_, fun v => ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules. Simplify using `[hg]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `e : {x : GAd σ J | ∀ v, proj σ J v x ∈ stabLoc σ J L v} = (levelOpen σ J L : Set (GAd σ J))`. Use extensionality with `x`. Simplify using `[mem_levelOpen]`. Rewrite using `[e]`. Conclude with `isOpen_levelOpen σ J L`.
-
-Conclude with `isCompact_of_ext ((isRestrGroup_GAd σ J L).isCompact_cyl ∅ C (fun _ => ∅) hC (by simp)) fun x => by simp [GlobalTheory.AdelicU.cyl]`.
+A detailed English derivation is pending.
 -/
 theorem restrGroup_GAd : RestrMeas.IsRestrGroup (projArch σ J) (proj σ J) (stabLoc σ J L) := by
   refine
@@ -233,7 +229,7 @@ theorem restrGroup_GAd : RestrMeas.IsRestrGroup (projArch σ J) (proj σ J) (sta
       fun x => by simp [GlobalTheory.AdelicU.cyl]
 
 /- English proof (translation)
-Establish `h` using `(restrGroup_GAd σ J L).subgroup (i := (Empty.elim : Empty → InfinitePlace F)) (j := id) (fun a => a.elim) Function.injective_id (finPts σ J) fun x => by simp [mem_finPts_iff_forall]`. Conclude with `h.noArch`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem restrGroup_finPts :
     RestrMeas.IsRestrGroup (noArch (finPts σ J)) (fun v => (proj σ J v).comp (finPts σ J).subtype) (stabLoc σ J L) := by
@@ -242,7 +238,7 @@ theorem restrGroup_finPts :
   exact h.noArch
 
 /- English proof (translation)
-Conclude with `(restrGroup_GAd σ J L).subgroup (i := id) (j := Subtype.val) Function.injective_id Subtype.val_injective (awayPts σ J S) fun x => by simp [mem_awayPts]`.
+A detailed English derivation is pending.
 -/
 theorem restrGroup_awayPts (S : Finset (HeightOneSpectrum (𝓞 F))) :
     RestrMeas.IsRestrGroup (fun w => (projArch σ J w).comp (awayPts σ J S).subtype)
@@ -257,25 +253,25 @@ variable (S : Finset (HeightOneSpectrum (𝓞 F))) (μa : ∀ w, Measure (GArch 
   [∀ v, (νf v).IsHaarMeasure]
 
 /- English proof (translation)
-The claim follows from `(restrGroup_GAd σ J L).existsUnique_isHaarProd μa μf h`.
+A detailed English derivation is pending.
 -/
 theorem existsUnique_isRestrictedProd (h : ∀ᶠ v in cofinite, μf v (stabLoc σ J L v) = 1) :
     ∃! μ, IsRestrictedProd σ J L μa μf μ := (restrGroup_GAd σ J L).existsUnique_isHaarProd μa μf h
 
 /- English proof (translation)
-The claim follows from `(restrGroup_GFin σ J L).existsUnique_isHaarProd (fun w => w.elim) μf (ha := fun w => w.elim) h`.
+A detailed English derivation is pending.
 -/
 theorem existsUnique_isRestrictedProdFin (h : ∀ᶠ v in cofinite, μf v (stabLoc σ J L v) = 1) :
     ∃! μ, IsRestrictedProdFin σ J L μf μ := (restrGroup_GFin σ J L).existsUnique_isHaarProd (fun w => w.elim) μf (ha := fun w => w.elim) h
 
 /- English proof (translation)
-The claim follows from `(restrGroup_finPts σ J L).existsUnique_isHaarProd (fun w => w.elim) μf (ha := fun w => w.elim) h`.
+A detailed English derivation is pending.
 -/
 theorem existsUnique_isRestrictedProdFinPts (h : ∀ᶠ v in cofinite, μf v (stabLoc σ J L v) = 1) :
     ∃! μ, IsRestrictedProdFinPts σ J L μf μ := (restrGroup_finPts σ J L).existsUnique_isHaarProd (fun w => w.elim) μf (ha := fun w => w.elim) h
 
 /- English proof (translation)
-The claim follows from `(restrGroup_awayPts σ J L S).existsUnique_isHaarProd μa νf h`.
+A detailed English derivation is pending.
 -/
 theorem existsUnique_isRestrictedProdAway (h : ∀ᶠ v in cofinite, νf v (stabLoc σ J L v) = 1) :
     ∃! μ, IsRestrictedProdAway σ J L S μa νf μ := (restrGroup_awayPts σ J L S).existsUnique_isHaarProd μa νf h
@@ -283,13 +279,13 @@ theorem existsUnique_isRestrictedProdAway (h : ∀ᶠ v in cofinite, νf v (stab
 end Exist
 
 /- English proof (translation)
-The claim follows from `(existsUnique_isRestrictedProd σ J L (fun _ => haar) (haarLoc σ J L) (Filter.Eventually.of_forall fun v => haarLoc_stabLoc σ J L v)).exists`.
+A detailed English derivation is pending.
 -/
 theorem exists_isRestrictedProd : ∃ μ, IsRestrictedProd σ J L (fun _ => haar) (haarLoc σ J L) μ := (existsUnique_isRestrictedProd σ J L (fun _ => haar) (haarLoc σ J L)
     (Filter.Eventually.of_forall fun v => haarLoc_stabLoc σ J L v)).exists
 
 /- English proof (translation)
-Take `⟨μa, h⟩` from `exists_isProdMeasure_of_haar L μ`. Conclude with `⟨μa, isRestrictedProd_iff_isProdMeasure.2 h⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_isRestrictedProd_of_haar (μ : Measure (GAd σ J)) [μ.IsHaarMeasure] :
     ∃ μa, IsRestrictedProd σ J L μa (haarLoc σ J L) μ := by
@@ -302,7 +298,7 @@ variable {σ J L} {S : Finset (HeightOneSpectrum (𝓞 F))} {μa : ∀ w, Measur
   {μf : ∀ v, Measure (GLoc σ J v)} {νf : ∀ v : {v // v ∉ S}, Measure (GLoc σ J v)} {μ μ' : Measure (GAd σ J)}
 
 /- English proof (translation)
-The claim follows from `IsHaarProd.unique (isOpen_stabLoc σ J L) (isCompact_stabLoc σ J L) h h'`.
+A detailed English derivation is pending.
 -/
 theorem IsRestrictedProd.unique (h : IsRestrictedProd σ J L μa μf μ) (h' : IsRestrictedProd σ J L μa μf μ') :
     μ = μ' := IsHaarProd.unique (isOpen_stabLoc σ J L) (isCompact_stabLoc σ J L) h h'
@@ -314,7 +310,7 @@ variable (L' : Submodule (𝓞 E) (Fin n → E)) [Submodule.IsLattice E L']
 end Indep
 
 /- English proof (translation)
-The claim follows from `IsHaarProd.smul h (isOpen_stabLoc σ J L) c d hc hd0 T hd`.
+A detailed English derivation is pending.
 -/
 theorem IsRestrictedProd.smul (h : IsRestrictedProd σ J L μa μf μ) (c : InfinitePlace F → ℝ≥0)
     (d : HeightOneSpectrum (𝓞 F) → ℝ≥0) (hc : ∀ w, c w ≠ 0) (hd0 : ∀ v, d v ≠ 0)
@@ -322,7 +318,7 @@ theorem IsRestrictedProd.smul (h : IsRestrictedProd σ J L μa μf μ) (c : Infi
     IsRestrictedProd σ J L (fun w => c w • μa w) (fun v => d v • μf v) (((∏ w, c w) * ∏ v ∈ T, d v) • μ) := IsHaarProd.smul h (isOpen_stabLoc σ J L) c d hc hd0 T hd
 
 /- English proof (translation)
-The claim follows from `isRestrictedProd_iff_isProdMeasure.2 (IsRestrProd.smul_inf (isRestrictedProd_iff_isProdMeasure.1 h) w hx)`.
+A detailed English derivation is pending.
 -/
 theorem IsRestrictedProd.smul_arch [DecidableEq (InfinitePlace F)] (h : IsRestrictedProd σ J L μa μf μ)
     (w : InfinitePlace F) {x : ℝ≥0} (hx : x ≠ 0) :
@@ -330,7 +326,7 @@ theorem IsRestrictedProd.smul_arch [DecidableEq (InfinitePlace F)] (h : IsRestri
     (IsRestrProd.smul_inf (isRestrictedProd_iff_isProdMeasure.1 h) w hx)
 
 /- English proof (translation)
-Establish `e : {g | (∀ w, projArch σ J w g ∈ A w) ∧ g ∈ levelOpen σ J L} = {g | (∀ w, projArch σ J w g ∈ A w) ∧ ∀ v, proj σ J v g ∈ stabLoc σ J L v}` using `Set.ext fun g => and_congr Iff.rfl mem_levelOpen`. Rewrite using `[e]`. Conclude with `h.isCylProd.measure_level (fun v => (isOpen_stabLoc σ J L v).measurableSet) hA`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsRestrictedProd.measure_level (h : IsRestrictedProd σ J L μa μf μ) {A : ∀ w, Set (GArch σ J w)}
     (hA : ∀ w, MeasurableSet (A w)) :
@@ -343,9 +339,9 @@ theorem IsRestrictedProd.measure_level (h : IsRestrictedProd σ J L μa μf μ) 
   exact h.isCylProd.measure_level (fun v => (isOpen_stabLoc σ J L v).measurableSet) hA
 
 /- English proof (translation)
-Unfold `IsRestrictedProdFin IsHaarProdFin IsHaarProd at h`. Establish `hm` using `h.2.2.2.measure_level (fun v => (isOpen_stabLoc σ J L v).measurableSet) (A := fun w => w.elim) (fun w => w.elim)`. Simplify using `only [Finset.univ_eq_empty, Finset.prod_empty, one_mul] at hm`. Rewrite using `[← hm]`. Use `congr 1`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `g`. Simplify using `[mem_levelOffFin]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem IsRestrictedProdFin.measure_level {ν : Measure (GFin σ J)} (h : IsRestrictedProdFin σ J L μf ν) :
     ν (levelOffFin σ J L ∅) = ∏ᶠ v, μf v (stabLoc σ J L v) := by
@@ -359,11 +355,11 @@ theorem IsRestrictedProdFin.measure_level {ν : Measure (GFin σ J)} (h : IsRest
   simp [mem_levelOffFin]
 
 /- English proof (translation)
-Unfold `IsRestrictedProdFinAway IsHaarProdFin IsHaarProd at h`. Establish `hm` using `h.2.2.2.measure_level (fun v => (isOpen_stabLoc σ J L v.1).measurableSet) (A := fun w => w.elim) (fun w => w.elim)`. Simplify using `only [Finset.univ_eq_empty, Finset.prod_empty, one_mul] at hm`. Rewrite using `[← hm]`. Use `congr 1`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `g`. Establish `hg` using `mem_finAwayPts.1 g.2`. Simplify using `only [Set.mem_setOf_eq, mem_levelOff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, -, h3⟩`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨fun w => w.elim, fun v => h3 v v.2⟩`. Introduce and unpack `⟨-, h3⟩`. Conclude with `⟨hg.1, hg.2, fun v hv => h3 ⟨v, hv⟩⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem IsRestrictedProdFinAway.measure_level {ν : Measure (finAwayPts σ J S)}
     (h : IsRestrictedProdFinAway σ J L S νf ν) :
@@ -384,16 +380,16 @@ theorem IsRestrictedProdFinAway.measure_level {ν : Measure (finAwayPts σ J S)}
     exact ⟨hg.1, hg.2, fun v hv => h3 ⟨v, hv⟩⟩
 
 /- English proof (translation)
-The claim follows from `atAwayEquiv_symm_apply σ J S p`.
+A detailed English derivation is pending.
 -/
 private theorem atAwayContEquiv_symm_apply (p : (∀ v : S, GLoc σ J v) × awayPts σ J S) :
     (atAwayContEquiv σ J S).symm p = embAt σ J S p.1 * p.2 :=
   atAwayEquiv_symm_apply σ J S p
 
 /- English proof (translation)
-Unfold `IsRestrictedProdAway at h`. Unfold `IsRestrictedProd`. Establish `hat : ∀ p : (∀ v : S, GLoc σ J v) × awayPts σ J S, ∀ w, projArch σ J w (embAt σ J S p.1) = 1` using `fun p w => mem_finPts_iff_forall.1 (mem_atPts.1 (embAt_mem σ J S p.1)).1 w`. Use `IsHaarProd.prod_away (K := stabLoc σ J L) (μf := μf) h (isOpen_stabLoc σ J L) (atAwayContEquiv σ J S).symm (fun w p => ?_) (fun v p => ?_) (fun v p => ?_)` and prove the remaining obligations. Rewrite using `[atAwayContEquiv_symm_apply, map_mul, hat p w, one_mul]`.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[atAwayContEquiv_symm_apply, map_mul, proj_embAt, mem_awayPts.1 p.2.2 v v.2, mul_one]`. Rewrite using `[atAwayContEquiv_symm_apply, map_mul, (mem_atPts.1 (embAt_mem σ J S p.1)).2 v v.2, one_mul]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem IsRestrictedProdAway.prod [∀ v, (μf v).IsHaarMeasure] {ν : Measure (awayPts σ J S)}
     (h : IsRestrictedProdAway σ J L S μa (fun v => μf v) ν) :
@@ -412,7 +408,7 @@ theorem IsRestrictedProdAway.prod [∀ v, (μf v).IsHaarMeasure] {ν : Measure (
     rfl
 
 /- English proof (translation)
-Establish `h1 : Measurable (e : X → Y)` using `e.continuous.measurable`. Establish `h2 : Measurable (e.symm : Y → X)` using `e.symm.continuous.measurable`. Rewrite using `[Measure.map_map h1 h2]`. Establish `hid : (e ∘ e.symm) = id` using `funext fun y => e.apply_symm_apply y`. Rewrite using `[hid, Measure.map_id]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_map_symm {X Y : Type} [Group X] [Group Y] [TopologicalSpace X] [TopologicalSpace Y] [MeasurableSpace X]
     [MeasurableSpace Y] [BorelSpace X] [BorelSpace Y] (e : X ≃ₜ* Y) (m : Measure Y) :
@@ -424,7 +420,7 @@ theorem map_map_symm {X Y : Type} [Group X] [Group Y] [TopologicalSpace X] [Topo
   rw [hid, Measure.map_id]
 
 /- English proof (translation)
-Use `h.haar_loc` as an intermediate fact. Rewrite using `[h.unique (IsRestrictedProdAway.prod h')]`. Conclude with `map_map_symm (atAwayContEquiv σ J S) _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsRestrictedProd.map_atAway (h : IsRestrictedProd σ J L μa μf μ) {ν : Measure (awayPts σ J S)}
     (h' : IsRestrictedProdAway σ J L S μa (fun v => μf v) ν) :
@@ -434,7 +430,7 @@ theorem IsRestrictedProd.map_atAway (h : IsRestrictedProd σ J L μa μf μ) {ν
   exact map_map_symm (atAwayContEquiv σ J S) _
 
 /- English proof (translation)
-Use `h.haar_arch` as an intermediate fact. Use `h.haar_loc` as an intermediate fact. Take `⟨ν, hν, -⟩` from `existsUnique_isRestrictedProdAway σ J L S μa (fun v => μf v) (Subtype.val_injective.tendsto_cofinite.eventually (p := fun v => μf v (stabLoc σ J L v) = 1) h.eventually_eq_one)`. Conclude with `⟨ν, hν, h.map_atAway hν⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem IsRestrictedProd.exists_away (h : IsRestrictedProd σ J L μa μf μ) (S : Finset (HeightOneSpectrum (𝓞 F))) :
     ∃ ν, IsRestrictedProdAway σ J L S μa (fun v => μf v) ν ∧
@@ -449,9 +445,9 @@ theorem IsRestrictedProd.exists_away (h : IsRestrictedProd σ J L μa μf μ) (S
 omit [Submodule.IsLattice E L] in
 
 /- English proof (translation)
-Unfold `IsRestrictedProdFin at h`. Unfold `IsRestrictedProd`. Use `IsHaarProdFin.prod_arch h (archFinEquiv σ J).symm (fun w p => ?_) (fun v p => ?_)` and prove the remaining obligations. Rewrite using `[archFinEquiv_symm_apply]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[archFinEquiv_symm_apply]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem IsRestrictedProdFin.prod [∀ w, (μa w).IsHaarMeasure] {ν : Measure (GFin σ J)}
     (h : IsRestrictedProdFin σ J L μf ν) :
@@ -465,7 +461,7 @@ theorem IsRestrictedProdFin.prod [∀ w, (μa w).IsHaarMeasure] {ν : Measure (G
     simp
 
 /- English proof (translation)
-Use `h.haar_arch` as an intermediate fact. Rewrite using `[h.unique (IsRestrictedProdFin.prod h')]`. Conclude with `map_map_symm (archFinEquiv σ J) _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsRestrictedProd.map_archFin (h : IsRestrictedProd σ J L μa μf μ) {ν : Measure (GFin σ J)}
     (h' : IsRestrictedProdFin σ J L μf ν) : μ.map (archFinEquiv σ J) = (Measure.pi μa).prod ν := by
@@ -476,7 +472,7 @@ theorem IsRestrictedProd.map_archFin (h : IsRestrictedProd σ J L μa μf μ) {�
 omit [Submodule.IsLattice E L] in
 
 /- English proof (translation)
-Unfold `IsRestrictedProdFin IsHaarProdFin at h`. Unfold `IsRestrictedProdFinPts IsHaarProdFin`. Use `IsHaarProd.map h (finPtsEquiv σ J) (fun w _ => w.elim) (fun v y => ?_)` and prove the remaining obligations. Use `show proj σ J v (finPtsEquiv σ J y : GAd σ J) = projFinLoc σ J v y`. Rewrite using `[finPtsEquiv_apply, proj_ofFin]`.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsRestrictedProdFin.map_finPts {ν : Measure (GFin σ J)} (h : IsRestrictedProdFin σ J L μf ν) :
     IsRestrictedProdFinPts σ J L μf (ν.map (finPtsEquiv σ J)) := by
@@ -487,7 +483,7 @@ theorem IsRestrictedProdFin.map_finPts {ν : Measure (GFin σ J)} (h : IsRestric
   rw [finPtsEquiv_apply, proj_ofFin]
 
 /- English proof (translation)
-The claim follows from `IsHaarProd.isMulRightInvariant h (restrGroup_GAd σ J L)`.
+A detailed English derivation is pending.
 -/
 theorem IsRestrictedProd.isMulRightInvariant (h : IsRestrictedProd σ J L μa μf μ) [∀ w, (μa w).IsMulRightInvariant]
     [∀ v, (μf v).IsMulRightInvariant] : μ.IsMulRightInvariant := IsHaarProd.isMulRightInvariant h (restrGroup_GAd σ J L)
@@ -495,14 +491,14 @@ theorem IsRestrictedProd.isMulRightInvariant (h : IsRestrictedProd σ J L μa μ
 end Api
 
 /- English proof (translation)
-Take `⟨ν, hν⟩` from `(existsUnique_isRestrictedProdFin σ J L _ (Eventually.of_forall (haarLoc_stabLoc σ J L))).exists`. Conclude with `⟨ν, hν, by simp [hν.measure_level]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 example : ∃ ν, IsRestrictedProdFin σ J L (haarLoc σ J L) ν ∧ ν (levelOffFin σ J L ∅) = 1 := by
   obtain ⟨ν, hν⟩ := (existsUnique_isRestrictedProdFin σ J L _ (Eventually.of_forall (haarLoc_stabLoc σ J L))).exists
   exact ⟨ν, hν, by simp [hν.measure_level]⟩
 
 /- English proof (translation)
-Introduce `h'` and use `by have := h.haar let C : TopologicalSpace.PositiveCompacts (GAd σ J) := Classical.arbitrary _ have e := congrArg (fun m : Measure (GAd σ J) => m C) (h'.unique h) simp only [Measure.smul_apply, ENNReal.smul_def, smul_eq_mul] at e have := (ENNReal.mul_left_inj (measure_pos_of_none …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example {μa : ∀ w, Measure (GArch σ J w)} {μf : ∀ v, Measure (GLoc σ J v)} {μ : Measure (GAd σ J)}
     (h : IsRestrictedProd σ J L μa μf μ) : ¬ IsRestrictedProd σ J L μa μf ((2 : ℝ≥0) • μ) := fun h' => by
@@ -515,7 +511,7 @@ example {μa : ∀ w, Measure (GArch σ J w)} {μf : ∀ v, Measure (GLoc σ J v
   norm_num at this
 
 /- English proof (translation)
-The claim follows from `haveI := isLattice_stdLattice (E := E) (n := n) ⟨_, _, (exists_isRestrictedProd σ J _).choose, (exists_isRestrictedProd σ J _).choose_spec⟩`.
+A detailed English derivation is pending.
 -/
 example : ∃ μa μf μ, IsRestrictedProd σ J (stdLattice E n) μa μf μ :=
   haveI := isLattice_stdLattice (E := E) (n := n)

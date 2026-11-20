@@ -6,21 +6,19 @@ open scoped Kronecker ComplexOrder TensorProduct
 namespace GlobalTheory.ClassFin
 
 /- English proof (translation)
-Introduce `ι _ _ σ _ g hg C`. Establish `hmem : ∀ k l : ι, ∃ a : σ → ℂ, ∑ s, a s • g s = Matrix.single k l (1 : ℂ)`. Introduce `k l`. Establish `: Matrix.single k l (1 : ℂ) ∈ Submodule.span ℂ (Set.range g)`. Rewrite using `[hg]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Discharge the goal by the elementary cases of `trivial`. Conclude with `(Submodule.mem_span_range_iff_exists_fun ℂ).1 this`. Use `choose a ha using hmem`. Use `set C₁ : ℝ := ∑ k, ∑ l, ∑ s, ‖a k l s‖ * |C| with hC₁`. Use `⟨max 1 ((Nat.factorial (Fintype.card ι)) • C₁ ^ Fintype.card ι), ?_⟩` and prove the remaining obligations.
+Check the elementary cases of the proposition. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `P hP hb i k`. Establish `hent : ∀ l j, ‖P i k * P⁻¹ l j‖ ≤ C₁`. Introduce `l j`. Establish `h1 : P i k * P⁻¹ l j = ∑ s, a k l s * (P * g s * P⁻¹) i j`. Establish `h2 : (P * Matrix.single k l (1 : ℂ) * P⁻¹) i j = P i k * P⁻¹ l j`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[Matrix.mul_apply, Matrix.single, ite_and]`. Rewrite using `[← h2, ← ha k l, Finset.mul_sum, Finset.sum_mul, Matrix.sum_apply]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_smul, Matrix.smul_mul, Matrix.smul_apply, smul_eq_mul]`. Establish `h3 : ‖P i k * P⁻¹ l j‖ ≤ ∑ s, ‖a k l s‖ * |C|`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1]`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun s _ => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_le_mul_of_nonneg_left ((hb s i j).trans (le_abs_self C)) (norm_nonneg _)`. Use `h3.trans ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hdetinv : (P⁻¹).det = 1`. Rewrite using `[Matrix.det_nonsing_inv, hP]`. Simplify using the standard rewrite rules. Establish `hdet` using `Matrix.det_le (A := P i k • P⁻¹) (abv := NormedField.toAbsoluteValue ℂ) (x := C₁) (fun l j => hent l j)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hdet` using `[Matrix.det_smul, hdetinv, mul_one]`. Establish `hdet' : ‖P i k‖ ^ Fintype.card ι ≤ (Nat.factorial (Fintype.card ι)) • C₁ ^ Fintype.card ι`. Rewrite using `[← norm_pow]`. Conclude with `hdet`. Establish `hN : Fintype.card ι ≠ 0` using `(Fintype.card_pos_iff.2 ⟨i⟩).ne'`.
-
-Break down `le_total ‖P i k‖ 1 with h | h` into its components or cases. Conclude with `h.trans (le_max_left _ _)`. Conclude with `((le_self_pow₀ h hN).trans hdet').trans (le_max_right _ _)`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem entries_bounded_of_conj_spanning_bounded :
     ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (σ : Type) [Fintype σ] (g : σ → Matrix ι ι ℂ), Submodule.span ℂ (Set.range g) = ⊤ → ∀ C : ℝ, ∃ C' : ℝ, ∀ P : Matrix ι ι ℂ, P.det = 1 → (∀ s i j, ‖(P * g s * P⁻¹) i j‖ ≤ C) → ∀ i j, ‖P i j‖ ≤ C' := by

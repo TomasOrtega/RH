@@ -4,39 +4,33 @@ open NumberField IsDedekindDomain TensorProduct Polynomial
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `set A := K ⊗[E] E'`. Set `pb` to `Field.powerBasisOfFiniteOfSeparable E E'`. Use `set θ := pb.gen`. Set `T : A` to `Algebra.TensorProduct.includeRight θ`. Use `set α : K := ψ T`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `f : E[X]` to `minpoly E θ`. Set `fK : K[X]` to `f.map (algebraMap E K)`. Establish `hfT : aeval T fK = 0`. Rewrite using `[aeval_map_algebraMap]`. Establish `: aeval T f = Algebra.TensorProduct.includeRight (aeval θ f)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[aeval_algHom_apply]`. Rewrite using `[this, minpoly.aeval, map_zero]`. Establish `hroot : IsRoot fK α`. Establish `h1 : aeval α fK = ψ (aeval T fK)`. Rewrite using `[aeval_algHom_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite `h1` using `[hfT, map_zero]`. Simplify `h1` using `[IsRoot, aeval_def, eval₂_eq_eval_map]`. Establish `hsep : fK.Separable` using `Polynomial.Separable.map (p := f) (Algebra.IsSeparable.isSeparable E θ)`. Use `set g : K[X] := fK /ₘ (X - C α)`. Establish `hfac : (X - C α) * g = fK` using `(mul_divByMonic_eq_iff_isRoot).2 hroot`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hgα : g.eval α ≠ 0`. Establish `hd` using `hsep.eval₂_derivative_ne_zero (RingHom.id K) (x := α) (by simpa [eval₂_id] using hroot)`. Rewrite `hd` using `[eval₂_id, ← hfac]`. Simplify `hd` using `[derivative_mul]`. Set `e : A` to `algebraMap K A (g.eval α)⁻¹ * aeval T g`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hψg : ψ (aeval T g) = g.eval α`. Rewrite using `[← aeval_algHom_apply]`. Both sides reduce to the same expression. Establish `hψe : ψ e = 1`. Establish `hc : ψ (algebraMap K A (g.eval α)⁻¹) = (g.eval α)⁻¹` using `ψ.commutes _`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [e, map_mul, hc, hψg]`. Conclude with `inv_mul_cancel₀ hgα`. Establish `hTe : e * T = algebraMap K A (ψ T) * e`. Establish `h0 : (T - algebraMap K A α) * aeval T g = 0`. Establish `: aeval T ((X - C α) * g) = (T - algebraMap K A α) * aeval T g`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[map_mul, map_sub]`. Rewrite using `[← this, hfac, hfT]`. Establish `h1 : T * aeval T g = algebraMap K A α * aeval T g`. Rewrite `h0` using `[sub_mul]`. Conclude with `sub_eq_zero.1 h0`.
+Chain the equalities or inequalities of the calculation. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [e]`. Combine the equalities or inequalities in the displayed calculation. Set `Q : A → Prop` to `fun a => e * a = algebraMap K A (ψ a) * e`. Establish `Qmul : ∀ a b, Q a → Q b → Q (a * b)`. Introduce `a b ha hb`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `show e * (a * b) = algebraMap K A (ψ (a * b)) * e`. Rewrite using `[map_mul, map_mul, ← mul_assoc, ha, mul_assoc, hb]`. Expand and normalize the polynomial expressions, which then agree. Establish `Qadd : ∀ a b, Q a → Q b → Q (a + b)`. Introduce `a b ha hb`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `show e * (a + b) = algebraMap K A (ψ (a + b)) * e`. Rewrite using `[map_add, map_add, mul_add, ha, hb, add_mul]`. Establish `Qalg : ∀ k : K, Q (algebraMap K A k)`. Introduce `k`. Use `show e * algebraMap K A k = algebraMap K A (ψ (algebraMap K A k)) * e`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact.
 
-Rewrite using `[AlgHom.commutes, Algebra.algebraMap_self, RingHom.id_apply, mul_comm]`. Establish `Qright : ∀ x : E', Q (Algebra.TensorProduct.includeRight x)`. Introduce `x`. Establish `hx : x ∈ Algebra.adjoin E ({θ} : Set E')` using `by rw [pb.adjoin_gen_eq_top]; trivial`. Proceed by induction on `hx using Algebra.adjoin_induction with`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Consider the case `mem y hy`. Rewrite using `[Set.mem_singleton_iff.1 hy]`. Conclude with `hTe`. Consider the case `algebraMap r`. Establish `: (Algebra.TensorProduct.includeRight (algebraMap E E' r) : A) = algebraMap K A (algebraMap E K r)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[AlgHom.commutes, IsScalarTower.algebraMap_apply E K A]`. Rewrite using `[this]`. Conclude with `Qalg _`. Consider the case `add y z _ _ hy hz => rw [map_add]`. Conclude with `Qadd _ _ hy hz`.
-
-Consider the case `mul y z _ _ hy hz => rw [map_mul]`. Conclude with `Qmul _ _ hy hz`. Use `⟨e, hψe, fun a => ?_⟩` and prove the remaining obligations. Proceed by induction on `a using TensorProduct.induction_on with`. Consider the case `zero => simp`.
-
-Consider the case `tmul k x`. Establish `: (k ⊗ₜ[E] x : A) = algebraMap K A k * Algebra.TensorProduct.includeRight x`. Rewrite using `[Algebra.TensorProduct.algebraMap_apply, Algebra.TensorProduct.includeRight_apply, Algebra.TensorProduct.tmul_mul_tmul, mul_one, Algebra.algebraMap_self, RingHom.id_apply, one_mul]`. Rewrite using `[this]`. Conclude with `Qmul _ _ (Qalg k) (Qright x)`.
-
-Consider the case `add a b ha hb => exact Qadd _ _ ha hb`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_tensor_idem_of_algHom (E K E' : Type) [Field E] [CharZero E] [Field K] [Field E']
     [Algebra E K] [Algebra E E'] [FiniteDimensional E E'] (ψ : K ⊗[E] E' →ₐ[K] K) :

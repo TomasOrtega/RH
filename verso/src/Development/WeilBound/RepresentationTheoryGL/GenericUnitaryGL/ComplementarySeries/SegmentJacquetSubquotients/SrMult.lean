@@ -15,20 +15,20 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 namespace SrMult
 
 /- English proof (translation)
-Introduce `k _ _ _ _ n V _ _ π hs hi` and use `(GlobalTheory.CompanionTheory.Published.bernsteinZelevinskyFiniteness k).1 (Fin n) V π hs hi`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem irrAdm : GlobalTheory.Published.IrreducibleAdmissibleGL := fun k _ _ _ _ n V _ _ π hs hi =>
   (GlobalTheory.CompanionTheory.Published.bernsteinZelevinskyFiniteness k).1 (Fin n) V π hs hi
 
 /- English proof (translation)
-The claim follows from `isSmooth_twist σ.smooth (isSmoothChar_of_isUnram (isUnram_absPow k _)).detChar`.
+A detailed English derivation is pending.
 -/
 theorem isSmooth_segTerm' {d l : ℕ} (σ : IrrRep (GL (Fin d) k)) (a : Fin l) :
     IsSmooth (segTerm σ.ρ l a) :=
   isSmooth_twist σ.smooth (isSmoothChar_of_isUnram (isUnram_absPow k _)).detChar
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.LocGL.isIrreducible_twist σ.irr _`.
+A detailed English derivation is pending.
 -/
 theorem isIrreducible_segTerm' {d l : ℕ} (σ : IrrRep (GL (Fin d) k)) (a : Fin l) :
     (segTerm σ.ρ l a).IsIrreducible :=
@@ -38,7 +38,7 @@ def cl {d : ℕ} (σ : IrrRep (GL (Fin d) k)) (l : ℕ) (a : Fin l) : IrrGL k :=
   IrrGL.of (segTerm σ.ρ l a) (isSmooth_segTerm' σ a) (isIrreducible_segTerm' σ a)
 
 /- English proof (translation)
-Introduce `a b h`. Assume the negation of the conclusion as `hab`. Take `⟨φ⟩` from `IrrGL.of_eq_of.1 h`. Conclude with `(PositivityTheory.Pf1.SegRepC.Twist.not_equiv_segTerm hd σ l hab).false φ`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem cl_injective {d l : ℕ} (hd : 0 < d) (σ : IrrRep (GL (Fin d) k)) : Function.Injective (cl σ l) := by
   intro a b h
@@ -47,9 +47,9 @@ theorem cl_injective {d l : ℕ} (hd : 0 < d) (σ : IrrRep (GL (Fin d) k)) : Fun
   exact (PositivityTheory.Pf1.SegRepC.Twist.not_equiv_segTerm hd σ l hab).false φ
 
 /- English proof (translation)
-Establish `h0 : (IrrGL.of σ.ρ σ.smooth σ.irr).IsCusp` using `⟨hd, isCuspidal_of_equiv (IrrGL.equivOf _ _ _) hσ⟩`. Establish `h1` using `h0.nu ((a : ℕ) : ℂ)`. Establish `e : (IrrGL.of σ.ρ σ.smooth σ.irr).nu ((a : ℕ) : ℂ) = cl σ l a`. Unfold `IrrGL.nu cl segTerm`. Rewrite using `[IrrGL.tw_of]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h1` using `[e]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem cl_cusp {d l : ℕ} (hd : 0 < d) (σ : IrrRep (GL (Fin d) k)) (hσ : IsCuspidal σ.ρ) (a : Fin l) :
     (cl σ l a).IsCusp := by
@@ -82,15 +82,15 @@ set_option maxHeartbeats 800000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Establish `hx : ∑ a, (cl' σ l a).1 = l * d`. Simplify using `[cl', mul_comm]`. Establish `hinj : Function.Injective (cl' σ l)` using `fun a b h => cl_injective hd σ h`. Establish `hc : ∀ a, (cl' σ l a).IsCusp` using `fun a => cl_cusp hd σ hσ a`. Establish `key` using `GlobalTheory.T.jacquet_multiplicity_cuspidal_product irrAdm (cl' σ l) (cl' σ l) hx hx hc hc`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hset : {e : Fin l ≃ Fin l | ∀ a, cl' σ l a = cl' σ l (e a)} = {Equiv.refl _}`. Use extensionality with `e`. Simplify using `only [Set.mem_ofPred_eq, Set.mem_singleton_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Use extensionality with `a`. Conclude with `congrArg Fin.val (hinj (h a)).symm`. Introduce and unpack `rfl a`. Both sides reduce to the same expression. Rewrite `key` using `[hset, Set.ncard_singleton]`.
+By extensionality, compare the relevant components. Assume the hypotheses and unpack their components. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : jhMult (piTensor fun a => (cl' σ l a).rep) (jac (stdBlocks (fun _ : Fin l => d) hx) (multiProd (stdBlocks (fun _ : Fin l => d) hx) fun a => (cl' σ l a).rep)) = 1`. Establish `h` using `key`. Conclude with `h` after adjusting the coercions. Establish `hblk0 : ∀ h : ∑ _a : Fin l, d = l * d, stdBlocks (fun _ : Fin l => d) h = consecBlocks l d`. Introduce `h`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `⟨a, i⟩`. Rewrite using `[stdBlocks_val, consecBlocks_val]`. Simplify using `[mul_comm, add_comm]`. Rewrite `h1` using `[hblk0 hx]`. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem jhMult_jac_multiProd (hG : GeometricLemma) {d l : ℕ} (hd : 0 < d) (hl : 0 < l)
     (σ : IrrRep (GL (Fin d) k)) (hσ : IsCuspidal σ.ρ) :

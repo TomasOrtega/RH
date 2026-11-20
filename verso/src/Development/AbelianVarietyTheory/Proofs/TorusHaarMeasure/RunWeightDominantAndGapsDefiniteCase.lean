@@ -17,17 +17,17 @@ namespace GlobalTheory.RunWeightDomDef
 open GlobalTheory.RunWeightDom in
 
 /- English proof (translation)
-Introduce `D T h j hj large₂ H C2 A2 CR CT ka wL wF Tn nP nW h0 hP hjm _ k`. Take `⟨-, hS, -, -, -⟩` from `hP`. Take `⟨-, g1, g2, h4, -, h6, h7, -, -, -, -, -, -, -, hL, hF, -, -, -, h40, h21, -⟩` from `hS`. Take `⟨-, -, -, -, -, hp0, -, tt, hla⟩` from `GlobalTheory.Shares.WtDic.weights_dictionary D T h j hj k`. Establish `hk` using `D.R.m_add_three_le_k`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hj1` using `hj.1`. Establish `hp : 0 < (D.R.sigW j).1` using `by show 0 < D.R.k + j - 1; omega`. Establish `hq : (D.R.sigW j).2 = 0` using `by show D.R.m - j = 0; omega`. Establish `hpq : (D.R.sigW j).1 + 0 = D.R.r` using `by show D.R.k + j - 1 + 0 = D.R.k + D.R.m - 1; omega`. Establish `hz : ((T.U j T.σ₀).X k).p0 = 0` using `hp0.trans hq`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hTp : ((Tp D j Tn : ℕ) : ℤ) = (Tn : ℤ) + (WeightFamilies.dimY D j : ℤ) + 2` using `by unfold Tp; push_cast; ring`. Establish `h40' : 40 * ((WeightFamilies.dimY D j : ℤ) + 2) ≤ Tn` using `by exact_mod_cast h40`. Establish `h21' : ((WeightFamilies.dimY D j : ℤ) + 2) * nW + 2 * D.R.r ≤ Tn` using `by exact_mod_cast h21`. Establish `hn : (nW : ℤ) = 2 * ((wL.n / 2 : ℕ) : ℤ)`. Use `hL.1` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨c, hc⟩` from `wL.n_even`. Use linear arithmetic over natural numbers and integers. Establish `key` using `fun τ : ((T.U j T.σ₀).X k).Ψ => by`. Establish `bP` using `block hp (ka.aP (tt τ)) (wL.aP (tt τ)) (wF.aP (tt τ)) Tn (WeightFamilies.dimY D j) D.R.r (((WeightFamilies.dimY D j : ℤ) + 2) * nW + 2 * D.R.r) (Int.natCast_nonneg _) (Int.natCast_nonneg _) h40' h21' (fun i hi => by have := g1 (tt τ) i hi; push_cast at this; rwa [hTp] at this) (f …`. Establish `h1 : 2 * (Tn : ℝ) ^ 2 ≤ (ka.aP (tt τ) i : ℝ)` using `by have := h6 (tt τ) i hi; linarith`.
+Extract witnesses or component facts from the available result. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h1)` after adjusting the coercions. Use the proof step `(fun i => by have := hL.2.1 (tt τ) i; rwa [hTp, sub_sub] at this) (hF.2.1 (tt τ))`. Rewrite `bP` using `[hn]`. Conclude with `row hpq Tn (WeightFamilies.dimY D j) ((wL.n / 2 : ℕ) : ℤ) ((wF.n / 2 : ℕ) : ℤ) (Int.natCast_nonneg _) (Int.natCast_nonneg _) _ (fun _ => 2 * (Tn : ℤ)) _ (fun _ => ((WeightFamilies.dimY D j : ℤ) + 2) * (2 * (Tn : ℤ))) (laR T j wL k τ) (laR T j wF k τ) (Int.natCast_nonneg _) (fun a …`. Use `⟨hz, fun τ => ?_, fun τ a b hab => ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨-, k2, -, -, -⟩` from `key τ`. Conclude with `⟨fun a b _ hb => absurd hb (by omega), fun a b _ hab => k2 a b (Nat.zero_le _) hab, fun a b ha _ => absurd ha (by omega)⟩`. Take `⟨-, -, k3, -, -⟩` from `key τ`. Simplify using `only [Pi.sub_apply, nsmul_eq_mul, ReciprocityTheory.ChartRestriction.G.AR.Inst.kapW]`. Conclude with `k3 a b hab (by omega)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem run_weight_dom_definite : ∀ (D : D7) (T : Top D) (h : LawsP T) (j : ℕ) (hj : InR D j) (large₂ : SizeData₂ D) (H : KHyp) (C2 A2 CR CT : ℝ) (ka wL wF : WeightFamilies.Wt D j) (Tn nP nW : ℕ) (h0 : ℝ), FamilyHypotheses.HypPage large₂ (recPJ h j hj) H C2 A2 CR CT ka wL wF Tn nP nW h0 → j = D.R.m → 8 ≤ D.R.r → ∀ k : (T.U j T.σ₀).Comp, ((T.U j T.σ₀).X k).p0 = 0 ∧ IsStrictDom ((T.U j T.σ₀).X k) (laR T j wL k) ∧ ∀ (τ : ((T.U j T.σ₀).X k).Ψ) (a b : Fin D.R.r), (b : ℕ) = a + 1 → (laR T j wF k - kapW ((T.U j T.σ₀).X k) - WeightFamilies.dimY D j • laR T j wL k) τ b + 2 * (laR T j wL k τ a - laR T j wL k τ b) ≤ (laR T j wF k - kapW ((T.U j T.σ₀).X k) - WeightFamilies.dimY D j • laR T j wL k) τ a := by
   intro D T h j hj large₂ H C2 A2 CR CT ka wL wF Tn nP nW h0 hP hjm _ k

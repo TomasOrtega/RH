@@ -21,7 +21,7 @@ variable {O : Type} [CommRing O] {Ω : Type} [Field Ω] [Algebra O Ω]
 variable {K : Type} {ι : K → Type}
 
 /- English proof (translation)
-Rewrite using `[← h]`. Conclude with `Subfield.subset_closure (Or.inr ⟨⟨.inr k, (i, j)⟩, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ratio_mem {K' : Type} {ι' : K' → Type} (x : (Σ k, ι k) → Ω) (z : (Σ k, ι' k) → Ω)
     (h : fnField O (joinCoord x z) = fnField O x) (k : K') (i j : ι' k) :
@@ -30,11 +30,9 @@ theorem ratio_mem {K' : Type} {ι' : K' → Type} (x : (Σ k, ι k) → Ω) (z :
   exact Subfield.subset_closure (Or.inr ⟨⟨.inr k, (i, j)⟩, rfl⟩)
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Use `(Subfield.closure_le).2 ?_` and prove the remaining obligations. Introduce and unpack `_ (⟨a, rfl⟩ | ⟨⟨kk, i, j⟩, rfl⟩)`. Conclude with `Subfield.subset_closure (Or.inl ⟨a, rfl⟩)`. Break down `kk with k | k | k` into its components or cases.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Subfield.subset_closure (Or.inr ⟨⟨k, (i, j)⟩, rfl⟩)`. Conclude with `ratio_mem x z₁ h₁ k i j`. Conclude with `ratio_mem x z₂ h₂ k i j`. Use `(Subfield.closure_le).2 ?_` and prove the remaining obligations. Introduce and unpack `_ (⟨a, rfl⟩ | ⟨⟨k, i, j⟩, rfl⟩)`.
-
-Conclude with `Subfield.subset_closure (Or.inl ⟨a, rfl⟩)`. Conclude with `Subfield.subset_closure (Or.inr ⟨⟨.inl k, (i, j)⟩, rfl⟩)`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem fnField_join_two {K₁ : Type} {ι₁ : K₁ → Type} {K₂ : Type} {ι₂ : K₂ → Type} (x : (Σ k, ι k) → Ω)
     (z₁ : (Σ k, ι₁ k) → Ω) (z₂ : (Σ k, ι₂ k) → Ω) (h₁ : fnField O (joinCoord x z₁) = fnField O x)
@@ -60,7 +58,7 @@ section Model
 variable {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {Ω : Type} [Field Ω] [Algebra O Ω]
 
 /- English proof (translation)
-Rewrite `h` using `[BundleExamples.mcIdeal_eq_pointIdeal, BundleExamples.isModelOver_iff]`. Take `⟨j, hj⟩` from `h.2.multiProj.relevant k`. Use `⟨j, fun h0 => hj ?_⟩` and prove the remaining obligations. Rewrite using `[pointIdeal, RingHom.mem_ker]`. Simplify using `[pointConeMap, h0]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem exists_ne_zero {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] (y : (Σ k, ι k) → Ω)
     {d : ℕ} (h : IndefiniteRowSideFullHecke.NumbersDVR.Bundles.IsModelOver O (mcIdeal O y) d) (k : K) : ∃ i, y ⟨k, i⟩ ≠ 0 := by
@@ -78,27 +76,23 @@ end JoinTwoModels
 open JoinTwoModels in
 
 /- English proof (translation)
-Introduce `O _ _ _ Ω _ _ K _ ι _ x d hx K₁ _ ι₁ _ z₁ K₂ _ ι₂ _ z₂ h₁ hf₁ h₂ hf₂`. Establish `hf` using `fnField_join_two x z₁ z₂ hf₁ hf₂`. Use `⟨?_, hf⟩` and prove the remaining obligations. Establish `hy : ∀ k, ∃ i, joinCoord x (joinCoord z₁ z₂) ⟨k, i⟩ ≠ 0`. Introduce and unpack `(k | k | k)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `exists_ne_zero x hx k`. Conclude with `exists_ne_zero _ h₁ (.inr k)`. Conclude with `exists_ne_zero _ h₂ (.inr k)`. Establish `hx' : ∀ k, ∃ i, x ⟨k, i⟩ ≠ 0` using `exists_ne_zero x hx`. Establish `hxW` using `hx`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `hxW` using `[BundleExamples.mcIdeal_eq_pointIdeal, BundleExamples.isModelOver_iff]`. Take `⟨hK, hW⟩` from `hxW`. Establish `hinj : Function.Injective (algebraMap O Ω)`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `a ha`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hmem : a ∈ (pointIdeal O x).comap (C : O →+* MRing ι O)`. Simplify using `only [Ideal.mem_comap, pointIdeal, RingHom.mem_ker, pointConeMap, aeval_C, MvPolynomial.algebraMap_apply, ha, map_zero]`. Rewrite `hmem` using `[hW.noTorsion]`. Conclude with `hmem`. Rewrite using `[BundleExamples.mcIdeal_eq_pointIdeal, BundleExamples.isModelOver_iff]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hP` using `GenericProjClosureDim.isMultiProjPrime_pointIdeal (R := O) _ hy`. Establish `hPC : (pointIdeal O (joinCoord x (joinCoord z₁ z₂))).comap (C : O →+* MRing (Sum.elim ι (Sum.elim ι₁ ι₂)) O) = ⊥`. Rewrite using `[eq_bot_iff]`. Introduce `a ha`. Rewrite using `[← hW.noTorsion]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Ideal.mem_comap, pointIdeal, RingHom.mem_ker, pointConeMap, aeval_C, MvPolynomial.algebraMap_apply, C_eq_zero] at ha ⊢`. Conclude with `ha`. Use `⟨inferInstance, ⟨hP, hPC, ?_⟩⟩` and prove the remaining obligations. Establish `hdW` using `DvrConeDimTrdeg.proof O K ι (pointIdeal O x) hW.multiProj hW.noTorsion`. Establish `hdJ` using `DvrConeDimTrdeg.proof O (K ⊕ (K₁ ⊕ K₂)) (Sum.elim ι (Sum.elim ι₁ ι₂)) _ hP hPC`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `htW` using `hC O Ω hinj K ι x hx'`. Establish `htJ` using `hC O Ω hinj (K ⊕ (K₁ ⊕ K₂)) (Sum.elim ι (Sum.elim ι₁ ι₂)) _ hy`. Rewrite `htJ` using `[hf]`. Rewrite `htW`, `htJ` using `[BundleExamples.mcIdeal_eq_pointIdeal]`. Use `set T := Algebra.trdeg O (Algebra.adjoin O (fnField O x : Set Ω))`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hdW` using `[hW.dim]`. Use `erw [htW] at hdW`. Use `erw [hdJ, htJ]`. Rewrite `hdW`, the goal using `[map_add, map_natCast]`. Establish `hT : Cardinal.toENat T = d`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : ((Cardinal.toENat T + (Fintype.card K : ℕ∞) + 1 : ℕ∞) : WithBot ℕ∞) = ((d + 1 + Fintype.card K : ℕ) : WithBot ℕ∞)` using `by exact_mod_cast hdW.symm`. Establish `h2 : Cardinal.toENat T + ((Fintype.card K + 1 : ℕ) : ℕ∞) = (d : ℕ∞) + ((Fintype.card K + 1 : ℕ) : ℕ∞)`. Use `WithBot.coe_injective h1` as an intermediate fact. Move the coercions through the operations in `at this ⊢`. Rewrite using `[← add_assoc, this]`.
-
-Expand and normalize the polynomial expressions, which then agree. Conclude with `(WithTop.add_right_cancel (ENat.natCast_ne_top _) h2)`. Rewrite using `[hT, Fintype.card_sum, Fintype.card_sum]`. Establish `e : ((d : ℕ∞) + ((Fintype.card K + (Fintype.card K₁ + Fintype.card K₂) : ℕ) : ℕ∞) + 1) = ((d + 1 + (Fintype.card K + (Fintype.card K₁ + Fintype.card K₂)) : ℕ) : ℕ∞)` using `by push_cast; ring`. Rewrite using `[e]`.
-
-Use `norm_cast`.
+Rewrite the conclusion using the stated equalities. Put the expressions in a common number system so they can be compared. A detailed English derivation is pending.
 -/
 theorem JoinTwoModels.proof (hC : ConeTrdegFnField.Statement) : JoinTwoModels.Statement := by
   intro O _ _ _ Ω _ _ K _ ι _ x d hx K₁ _ ι₁ _ z₁ K₂ _ ι₂ _ z₂ h₁ hf₁ h₂ hf₂

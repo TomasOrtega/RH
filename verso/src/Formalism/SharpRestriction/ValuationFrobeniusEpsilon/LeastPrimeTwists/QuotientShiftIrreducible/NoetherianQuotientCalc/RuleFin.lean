@@ -11,9 +11,9 @@ section Len
 variable {B : Type} [CommRing B] [IsLocalRing B]
 
 /- English proof (translation)
-Establish `hM : Module.IsTorsionBySet B M (maximalIdeal B : Set B)`. Introduce `y b`. Conclude with `h b.1 b.2 y`. Set `: Module (B ⧸ maximalIdeal B) M` to `hM.module`. Establish `: IsScalarTower B (B ⧸ maximalIdeal B) M` using `hM.isScalarTower`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `: Field (B ⧸ maximalIdeal B)` to `Ideal.Quotient.field _`. Establish `: Module.Finite (B ⧸ maximalIdeal B) M` using `Module.Finite.of_restrictScalars_finite B _ M`. Rewrite using `[Module.length_eq_of_surjective (R := B ⧸ maximalIdeal B) Ideal.Quotient.mk_surjective]`. Conclude with `Module.length_ne_top`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem length_ne_top_of_max {M : Type} [AddCommGroup M] [Module B M] [Module.Finite B M]
     (h : ∀ b ∈ maximalIdeal B, ∀ y : M, b • y = 0) : Module.length B M ≠ ⊤ := by
@@ -28,19 +28,17 @@ theorem length_ne_top_of_max {M : Type} [AddCommGroup M] [Module B M] [Module.Fi
   exact Module.length_ne_top
 
 /- English proof (translation)
-Proceed by induction on `N with`. Consider the case `zero`. Introduce `M _ _ _ h`. Establish `: Subsingleton M` using `⟨fun x y => by`. Establish `hx` using `h 1 (by simp) x`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy` using `h 1 (by simp) y`. Rewrite `hx`, `hy` using `[one_smul]`. Rewrite using `[hx, hy]⟩`. Rewrite using `[Module.length_eq_zero]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Consider the case `succ N ih`. Introduce `M _ _ _ h`. Set `P : Submodule B M` to `maximalIdeal B • ⊤`. Establish `h1 : Module.length B P ≠ ⊤`. Apply `ih` to reduce the goal to its premises.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce and unpack `b hb ⟨y, hy⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show b • y = 0`. Use `Submodule.smul_induction_on hy ?_ ?_` and prove the remaining obligations. Introduce `a ha z _`.
+Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[smul_smul]`. Conclude with `h _ (by rw [pow_succ]; exact Ideal.mul_mem_mul hb ha) z`. Introduce `x y hx hy`. Rewrite using `[smul_add, hx, hy, add_zero]`. Establish `h2 : Module.length B (M ⧸ P) ≠ ⊤`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `length_ne_top_of_max` to reduce the goal to its premises. Introduce `b hb y`. Take `⟨z, rfl⟩` from `P.mkQ_surjective y`. Rewrite using `[← map_smul, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Conclude with `Submodule.smul_mem_smul hb trivial`.
-
-Rewrite using `[Module.length_eq_add_of_exact P.subtype P.mkQ P.injective_subtype P.mkQ_surjective (LinearMap.exact_subtype_mkQ P)]`. Simplify using `[h1, h2]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem length_ne_top_of_pow [IsNoetherianRing B] (N : ℕ) :
     ∀ {M : Type} [AddCommGroup M] [Module B M] [Module.Finite B M],
@@ -86,7 +84,7 @@ section Degs
 variable {k : ℕ}
 
 /- English proof (translation)
-Introduce `j`. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality. Simplify using `[e]`. Simplify using `[e, Pi.single_eq_of_ne hj]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem e_nonneg (i : Fin k) : (0 : Deg k) ≤ e i := by
   intro j
@@ -95,27 +93,25 @@ theorem e_nonneg (i : Fin k) : (0 : Deg k) ≤ e i := by
   · simp [e, Pi.single_eq_of_ne hj]
 
 /- English proof (translation)
-The claim follows from `Finset.univ_sum_single (fun _ : Fin k => (1 : ℤ))`.
+A detailed English derivation is pending.
 -/
 theorem sum_e : ∑ i, e i = (fun _ => 1 : Deg k) :=
   Finset.univ_sum_single (fun _ : Fin k => (1 : ℤ))
 
 /- English proof (translation)
-Establish `key : ∀ n : ℕ, ∀ m : Deg k, 0 ≤ m → ∑ i, m i = (n : ℤ) → P m`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `m hm hsum`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: m = 0`. Use function extensionality and compare the values at `i`. Conclude with `(Finset.sum_eq_zero_iff_of_nonneg (fun i _ => hm i)).1 (by simpa using hsum) i (Finset.mem_univ i)`. Rewrite using `[this]`. Conclude with `h0`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `succ n ih`. Introduce `m hm hsum`. Establish `hex : ∃ i, 0 < m i`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Establish `h1 : ∑ i, m i ≤ 0` using `Finset.sum_nonpos (fun i _ => hcon i)`. Rewrite `h1` using `[hsum]`. Move the coercions through the operations in `at h1`. Use linear arithmetic over natural numbers and integers. Take `⟨i, hi⟩` from `hex`.
+Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Establish `h1 : 0 ≤ m - e i`. Introduce `j`. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality. Simplify using `only [e, Pi.zero_apply, Pi.sub_apply, Pi.single_eq_same]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Simplify using `only [e, Pi.zero_apply, Pi.sub_apply, Pi.single_eq_of_ne hj, sub_zero]`. Conclude with `hm j`. Establish `h2 : ∑ j, (m - e i) j = (n : ℤ)`. Establish `h3 : ∑ j, (e i : Deg k) j = 1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `[e, Finset.sum_pi_single']`. Simplify using `only [Pi.sub_apply, Finset.sum_sub_distrib, hsum, h3]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `h4` using `hs (m - e i) i h1 (ih _ h1 h2)`.
-
-Rewrite `h4` using `[sub_add_cancel]`. Then use the resulting hypothesis. Introduce `m hm`. Establish `hnn : 0 ≤ ∑ i, m i` using `Finset.sum_nonneg (fun i _ => hm i)`. Conclude with `key (∑ i, m i).toNat m hm (by rw [Int.toNat_of_nonneg hnn])`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem deg_induction {P : Deg k → Prop} (h0 : P 0)
     (hs : ∀ m i, 0 ≤ m → P m → P (m + e i)) : ∀ m, 0 ≤ m → P m := by
@@ -168,9 +164,9 @@ variable {k : ℕ} {B R : Type} [CommRing B] [CommRing R] [Algebra B R]
 variable {𝒜 : Deg k → Submodule B R}
 
 /- English proof (translation)
-Distinguish the cases in `hm : 0 ≤ m`. Use `deg_induction (P := fun m => (𝒜 m).FG) ?_ ?_ m hm` and prove the remaining obligations. Rewrite using `[h.zero, LinearMap.range_eq_map]`. Conclude with `Submodule.FG.map _ Module.Finite.fg_top`. Introduce `m i hm ih`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h.gen m i hm]`. Conclude with `ih.mul (h.fg i)`. Rewrite using `[h.nonneg m hm]`. Conclude with `Submodule.fg_bot`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Std.fg_all [IsLocalRing B] (h : Std 𝒜) (m : Deg k) : (𝒜 m).FG := by
   by_cases hm : 0 ≤ m
@@ -184,9 +180,9 @@ theorem Std.fg_all [IsLocalRing B] (h : Std 𝒜) (m : Deg k) : (𝒜 m).FG := b
     exact Submodule.fg_bot
 
 /- English proof (translation)
-Rewrite using `[Ideal.span_le, h.gen m i hm]`. Introduce `x hx`. Use `Submodule.mul_induction_on hx ?_ ?_` and prove the remaining obligations. Introduce `a ha b hb`. Conclude with `Ideal.mul_mem_mul (Ideal.subset_span ha) (Ideal.subset_span hb)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a b ha hb`. Conclude with `Ideal.add_mem _ ha hb`.
+A detailed English derivation is pending.
 -/
 theorem Std.span_add_e [IsLocalRing B] (h : Std 𝒜) (m : Deg k) (i : Fin k) (hm : 0 ≤ m) :
     Ideal.span (𝒜 (m + e i) : Set R) ≤
@@ -200,9 +196,9 @@ theorem Std.span_add_e [IsLocalRing B] (h : Std 𝒜) (m : Deg k) (i : Fin k) (h
     exact Ideal.add_mem _ ha hb
 
 /- English proof (translation)
-Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => intro m _`. Simplify using the standard rewrite rules. Consider the case `insert i S hi ih`. Introduce `m hm`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Finset.sum_insert hi, Finset.prod_insert hi]`. Establish `h1 : m + (e i + ∑ j ∈ S, e j) = (m + ∑ j ∈ S, e j) + e i` using `by abel`. Rewrite using `[h1]`. Establish `hnn : 0 ≤ m + ∑ j ∈ S, e j` using `add_nonneg hm (Finset.sum_nonneg fun j _ => e_nonneg j)`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem Std.span_add_sum [IsLocalRing B] (h : Std 𝒜) (S : Finset (Fin k)) :
     ∀ m, 0 ≤ m → Ideal.span (𝒜 (m + ∑ i ∈ S, e i) : Set R) ≤
@@ -224,11 +220,11 @@ theorem Std.span_add_sum [IsLocalRing B] (h : Std 𝒜) (S : Finset (Fin k)) :
       _ = _ := by rw [mul_assoc, mul_comm (∏ j ∈ S, Ideal.span (𝒜 (e j) : Set R))]
 
 /- English proof (translation)
-Proceed by induction on `N with`. Consider the case `zero => intro m _`. Simplify using the standard rewrite rules. Consider the case `succ N ih`. Introduce `m hm`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : m + (N + 1) • ∑ i, e i = (m + N • ∑ i, e i) + ∑ i, e i`. Rewrite using `[succ_nsmul, add_assoc]`. Establish `hu : (0 : Deg k) ≤ ∑ i, e i` using `Finset.sum_nonneg fun j _ => e_nonneg j`. Establish `hnn : 0 ≤ m + N • ∑ i, e i` using `add_nonneg hm (nsmul_nonneg hu N)`. Rewrite using `[h1, pow_succ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(h.span_add_sum Finset.univ _ hnn).trans (Ideal.mul_mono_left (ih m hm))`.
+A detailed English derivation is pending.
 -/
 theorem Std.span_le_irr_pow [IsLocalRing B] (h : Std 𝒜) (N : ℕ) :
     ∀ m, 0 ≤ m → Ideal.span (𝒜 (m + N • ∑ i, e i) : Set R) ≤ Irr 𝒜 ^ N := by
@@ -244,9 +240,9 @@ theorem Std.span_le_irr_pow [IsLocalRing B] (h : Std 𝒜) (N : ℕ) :
     exact (h.span_add_sum Finset.univ _ hnn).trans (Ideal.mul_mono_left (ih m hm))
 
 /- English proof (translation)
-Establish `h0 : 0 ≤ n - N • ∑ i, e i`. Introduce `i`. Rewrite using `[sum_e]`. Rewrite using `[Pi.zero_apply, Pi.sub_apply, Pi.smul_apply, nsmul_eq_mul, mul_one]`. Conclude with `sub_nonneg.2 (hn i)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `h.span_le_irr_pow N _ h0`. Rewrite `h1` using `[sub_add_cancel]`. Conclude with `h1 (Ideal.subset_span ha)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Std.mem_irr_pow [IsLocalRing B] (h : Std 𝒜) (N : ℕ) (n : Deg k)
     (hn : ∀ i, (N : ℤ) ≤ n i) {a : R} (ha : a ∈ 𝒜 n) : a ∈ Irr 𝒜 ^ N := by
@@ -267,13 +263,13 @@ variable {k : ℕ} {B R : Type} [CommRing B] [CommRing R] [Algebra B R]
 variable {𝒜 : Deg k → Submodule B R}
 
 /- English proof (translation)
-Apply `le_antisymm (hle i)` to reduce the goal to its premises. Introduce `x hx`. Establish `h1 : x ∈ G i ⊔ ⨆ (j) (_ : j ≠ i), G j`. Establish `h2 : (⨆ j, G j) ≤ G i ⊔ ⨆ (j) (_ : j ≠ i), G j` using `iSup_le fun j => by`. Distinguish the cases in `h : j = i`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Substitute `h` using the available equality. Conclude with `le_sup_left`. Conclude with `le_sup_of_le_right (le_iSup₂_of_le j h le_rfl)`. Conclude with `h2 (htop ▸ trivial)`. Take `⟨g, hg, y, hy, rfl⟩` from `Submodule.mem_sup.1 h1`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : y ∈ ⨆ (j) (_ : j ≠ i), H j` using `(iSup₂_mono fun j _ => hle j) hy`. Establish `h3 : y ∈ H i`. Use `(H i).sub_mem hx (hle i hg)` as an intermediate fact. Simplify using `using this`. Establish `h4 : y = 0`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Use `(hind i).le_bot ⟨h3, h2⟩` as an intermediate fact. Simplify using `using this`. Rewrite using `[h4, add_zero]`. Conclude with `hg`.
+A detailed English derivation is pending.
 -/
 theorem eq_of_le_of_iSup_eq_top {ι M : Type} [AddCommGroup M] [Module B M]
     {G H : ι → Submodule B M} (hle : ∀ i, G i ≤ H i) (hind : iSupIndep H)
@@ -299,13 +295,11 @@ theorem eq_of_le_of_iSup_eq_top {ι M : Type} [AddCommGroup M] [Module B M]
   exact hg
 
 /- English proof (translation)
-Establish `htop : Submodule.span R {x : F.M | ∃ m, x ∈ F.gr m} = ⊤`. Rewrite using `[eq_top_iff]`. Introduce `y _`. Establish `hy : y ∈ ⨆ m, F.gr m`. Rewrite using `[hF.internal.submodule_iSup_eq_top]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Discharge the goal by the elementary cases of `trivial`. Use `Submodule.iSup_induction _ (motive := fun y => y ∈ Submodule.span R {x : F.M | ∃ m, x ∈ F.gr m}) hy ?_ ?_ ?_` and prove the remaining obligations. Introduce `m x hx`. Conclude with `Submodule.subset_span ⟨m, hx⟩`. Conclude with `zero_mem _`.
+Check the elementary cases of the proposition. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `a b ha hb`. Conclude with `add_mem ha hb`. Establish `hfg : (Submodule.span R {x : F.M | ∃ m, x ∈ F.gr m}).FG`. Rewrite using `[htop]`. Conclude with `hF.fin.fg_top`.
-
-Take `⟨T, hT, hspan⟩` from `(Submodule.fg_span_iff_fg_span_finset_subset _).1 hfg`. Conclude with `⟨T, fun x hx => hT hx, by rw [← hspan, htop]⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem GMod.IsGr.exists_gens {F : GMod B R k} (hF : F.IsGr 𝒜) :
     ∃ T : Finset F.M, (∀ x ∈ T, ∃ m, x ∈ F.gr m) ∧ Submodule.span R (T : Set F.M) = ⊤ := by
@@ -331,7 +325,7 @@ def genPiece (𝒜 : Deg k → Submodule B R) (F : GMod B R k) (T : Finset F.M) 
   ⨆ x ∈ T, (𝒜 (m - dg x)).map ((LinearMap.toSpanSingleton R F.M x).restrictScalars B)
 
 /- English proof (translation)
-Use `iSup₂_le fun x hx => ?_` and prove the remaining obligations. Rewrite using `[Submodule.map_le_iff_le_comap]`. Introduce `a ha`. Conclude with `h x hx a ha`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem genPiece_le {F : GMod B R k} {T : Finset F.M} {dg : F.M → Deg k} {m : Deg k}
     {W : Submodule B F.M} (h : ∀ x ∈ T, ∀ a ∈ 𝒜 (m - dg x), a • x ∈ W) :
@@ -342,26 +336,24 @@ theorem genPiece_le {F : GMod B R k} {T : Finset F.M} {dg : F.M → Deg k} {m : 
   exact h x hx a ha
 
 /- English proof (translation)
-The claim follows from `Submodule.mem_iSup_of_mem x (Submodule.mem_iSup_of_mem hx ⟨a, ha, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem mem_genPiece {F : GMod B R k} {T : Finset F.M} {dg : F.M → Deg k} {m : Deg k}
     {x : F.M} (hx : x ∈ T) {a : R} (ha : a ∈ 𝒜 (m - dg x)) : a • x ∈ genPiece 𝒜 F T dg m :=
   Submodule.mem_iSup_of_mem x (Submodule.mem_iSup_of_mem hx ⟨a, ha, rfl⟩)
 
 /- English proof (translation)
-Use `eq_of_le_of_iSup_eq_top (G := genPiece 𝒜 F T dg) (H := F.gr) ?_ hF.internal.submodule_iSupIndep ?_ m` and prove the remaining obligations. Introduce `m`. Use `genPiece_le fun x hx a ha => ?_` and prove the remaining obligations. Use `hF.smul_mem ha (hdg x hx)` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[eq_top_iff]`. Introduce `y _`. Establish `key : ∀ x ∈ T, ∀ a : R, a • x ∈ ⨆ m, genPiece 𝒜 F T dg m`. Introduce `x hx a`. Establish `ha : a ∈ ⨆ d, 𝒜 d` using `by rw [h𝒜]; trivial`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `Submodule.iSup_induction _ (motive := fun a => a • x ∈ ⨆ m, genPiece 𝒜 F T dg m) ha ?_ ?_ ?_` and prove the remaining obligations. Introduce `d a ha`. Use `Submodule.mem_iSup_of_mem (d + dg x) (mem_genPiece hx ?_)` and prove the remaining obligations. Rewrite using `[add_sub_cancel_right]` and apply the resulting hypothesis. Rewrite using `[zero_smul]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 
-Conclude with `zero_mem _`. Introduce `a b ha hb`. Rewrite using `[add_smul]`. Conclude with `add_mem ha hb`. Establish `hy : y ∈ Submodule.span R (T : Set F.M)` using `by rw [hspan]; trivial`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hall : ∀ a : R, a • y ∈ ⨆ m, genPiece 𝒜 F T dg m`. Use `Submodule.span_induction (p := fun y _ => ∀ a : R, a • y ∈ ⨆ m, genPiece 𝒜 F T dg m) ?_ ?_ ?_ ?_ hy` and prove the remaining obligations. Introduce `x hx a`. Conclude with `key x hx a`. Introduce `a`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[smul_zero]`. Conclude with `zero_mem _`. Introduce `x y _ _ hx hy a`. Rewrite using `[smul_add]`. Conclude with `add_mem (hx a) (hy a)`.
-
-Introduce `r x _ hx a`. Rewrite using `[smul_smul]`. Conclude with `hx _`. Simplify using `using hall 1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem GMod.IsGr.genPiece_eq {F : GMod B R k} (hF : F.IsGr 𝒜) (h𝒜 : ⨆ d, 𝒜 d = ⊤)
     {T : Finset F.M} {dg : F.M → Deg k} (hdg : ∀ x ∈ T, x ∈ F.gr (dg x))
@@ -401,14 +393,14 @@ theorem GMod.IsGr.genPiece_eq {F : GMod B R k} (hF : F.IsGr 𝒜) (h𝒜 : ⨆ d
     simpa using hall 1
 
 /- English proof (translation)
-The claim follows from `Submodule.fg_biSup T _ fun _ _ => (h.fg_all _).map _`.
+A detailed English derivation is pending.
 -/
 theorem genPiece_fg [IsLocalRing B] (h : Std 𝒜) (F : GMod B R k) (T : Finset F.M)
     (dg : F.M → Deg k) (m : Deg k) : (genPiece 𝒜 F T dg m).FG :=
   Submodule.fg_biSup T _ fun _ _ => (h.fg_all _).map _
 
 /- English proof (translation)
-Take `⟨T, hT, hspan⟩` from `hF.exists_gens`. Use `⟨T, fun x => if h : ∃ m, x ∈ F.gr m then h.choose else 0, fun x hx => ?_, hspan⟩` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[dif_pos (hT x hx)]`. Conclude with `(hT x hx).choose_spec`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GMod.IsGr.exists_gens_deg {F : GMod B R k} (hF : F.IsGr 𝒜) :
     ∃ (T : Finset F.M) (dg : F.M → Deg k), (∀ x ∈ T, x ∈ F.gr (dg x)) ∧
@@ -421,7 +413,7 @@ theorem GMod.IsGr.exists_gens_deg {F : GMod B R k} (hF : F.IsGr 𝒜) :
   exact (hT x hx).choose_spec
 
 /- English proof (translation)
-Take `⟨T, dg, hdg, hspan⟩` from `hF.exists_gens_deg`. Rewrite using `[Module.Finite.iff_fg, ← hF.genPiece_eq h𝒜 hdg hspan m]`. Conclude with `genPiece_fg h F T dg m`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GMod.IsGr.finite_gr [IsLocalRing B] (h : Std 𝒜) (h𝒜 : ⨆ d, 𝒜 d = ⊤) {F : GMod B R k}
     (hF : F.IsGr 𝒜) (m : Deg k) : Module.Finite B (F.gr m) := by
@@ -430,11 +422,11 @@ theorem GMod.IsGr.finite_gr [IsLocalRing B] (h : Std 𝒜) (h𝒜 : ⨆ d, 𝒜 
   exact genPiece_fg h F T dg m
 
 /- English proof (translation)
-Take `⟨T, dg, hdg, hspan⟩` from `hF.exists_gens_deg`. Establish `hev : ∀ᶠ m in atTop, ∀ x ∈ T, dg x + (fun _ => (N : ℤ)) ≤ m` using `(Filter.eventually_all_finset T).2 fun x _ => eventually_ge_atTop _`. Use `filter_upwards [hev] with m hm`. Establish `hle : genPiece 𝒜 F T dg m ≤ (Irr 𝒜 ^ N • (⊤ : Submodule R F.M)).restrictScalars B`. Use `genPiece_le fun x hx a ha => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `ha' : a ∈ Irr 𝒜 ^ N`. Use `h.mem_irr_pow N _ (fun i => ?_) ha` and prove the remaining obligations. Use `hm x hx i` as an intermediate fact. Simplify using `only [Pi.add_apply, Pi.sub_apply] at this ⊢`. Use linear arithmetic over natural numbers and integers.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Submodule.restrictScalars_mem]`. Conclude with `Submodule.smul_mem_smul ha' Submodule.mem_top`. Introduce `y hy`. Rewrite `hy` using `[← hF.genPiece_eq h𝒜 hdg hspan m]`. Conclude with `hle hy`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GMod.IsGr.eventually_gr_le [IsLocalRing B] (h : Std 𝒜) (h𝒜 : ⨆ d, 𝒜 d = ⊤)
     {F : GMod B R k} (hF : F.IsGr 𝒜) (N : ℕ) :
@@ -459,21 +451,21 @@ theorem GMod.IsGr.eventually_gr_le [IsLocalRing B] (h : Std 𝒜) (h𝒜 : ⨆ d
 end Gens
 
 /- English proof (translation)
-The claim follows from `(DirectSum.Decomposition.isInternal X.𝒜).submodule_iSup_eq_top`.
+A detailed English derivation is pending.
 -/
 theorem HidaSetting.iSup_eq_top {k : ℕ} (X : HidaSetting k) : ⨆ d, X.𝒜 d = ⊤ :=
   (DirectSum.Decomposition.isInternal X.𝒜).submodule_iSup_eq_top
 
 /- English proof (translation)
-Introduce `k X F hF`. Use `⟨fun m => hF.finite_gr X.std X.iSup_eq_top m, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨N, hN⟩`. Establish `hN' : ((maximalIdeal X.B).map (algebraMap X.B X.R) * Irr X.𝒜) ^ N ≤ F.Ann`. Use `hN.trans ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[secs]`. Use `X.std.noeth` as an intermediate fact. Use `filter_upwards [hF.eventually_gr_le X.std X.iSup_eq_top N] with m hm`. Use `hF.finite_gr X.std X.iSup_eq_top m` as an intermediate fact. Apply `length_ne_top_of_pow N` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `b hb ⟨y, hy⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show b • y = 0`. Use `Submodule.smul_induction_on (hm y hy) ?_ ?_` and prove the remaining obligations. Introduce `a ha z _`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h1 : algebraMap X.B X.R b * a ∈ F.Ann`. Apply `hN'` to reduce the goal to its premises. Rewrite using `[mul_pow, ← Ideal.map_pow]`. Conclude with `Ideal.mul_mem_mul (Ideal.mem_map_of_mem _ hb) ha`. Establish `h2` using `Module.mem_annihilator.1 h1 z`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h2` using `[mul_smul, algebraMap_smul]`. Then use the resulting hypothesis. Introduce `x y hx hy`. Rewrite using `[smul_add, hx, hy, add_zero]`.
+A detailed English derivation is pending.
 -/
 theorem ruleFin : RuleFin := by
   intro k X F hF

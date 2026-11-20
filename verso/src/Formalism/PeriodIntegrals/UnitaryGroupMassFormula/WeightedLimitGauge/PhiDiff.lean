@@ -15,14 +15,14 @@ attribute [local instance] Matrix.linftyOpNormedAddCommGroup Matrix.linftyOpNorm
 variable {k r : ℕ}
 
 /- English proof (translation)
-Simplify using `only [opBeta, PiLp.add_apply, Complex.ofReal_add]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma opBeta_add (q q' : TrE k) (a : Fin k) :
     opBeta k (q + q') a = opBeta k q a + opBeta k q' a := by
   simp only [opBeta, PiLp.add_apply, Complex.ofReal_add]; ring
 
 /- English proof (translation)
-Simplify using `only [opBeta, PiLp.smul_apply, smul_eq_mul, Complex.ofReal_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma opBeta_smul (c : ℝ) (q : TrE k) (a : Fin k) :
     opBeta k (c • q) a = (c : ℂ) * opBeta k q a := by
@@ -47,7 +47,7 @@ Both sides reduce to the same expression.
 @[simp] lemma opGenL_apply (q : TrE k) : opGenL k r q = opGen k r q := rfl
 
 /- English proof (translation)
-The claim follows from `(opGenLin k r).map_zero`.
+A detailed English derivation is pending.
 -/
 lemma opGen_zero : opGen k r (0 : TrE k) = 0 := (opGenLin k r).map_zero
 
@@ -66,40 +66,40 @@ def psiV (k r : ℕ) (T' : ℝ) (q : TrE k) : Fin (2 * r + k + 1) → ℂ :=
   NormedSpace.exp (opGen k r q) *ᵥ opBase k r T'
 
 /- English proof (translation)
-Simplify using `[psiV, opGen_zero, NormedSpace.exp_zero]`.
+Simplify using the standard rewrite rules.
 -/
 lemma psiV_zero (T' : ℝ) : psiV k r T' 0 = opBase k r T' := by
   simp [psiV, opGen_zero, NormedSpace.exp_zero]
 
 /- English proof (translation)
-Simplify using `[opBase, wLast, bvec]`.
+Simplify using the standard rewrite rules.
 -/
 lemma opBase_last (T' : ℝ) : opBase k r T' (wI k r (Fin.last k)) = (Real.sqrt T' : ℂ) := by
   simp [opBase, wLast, bvec]
 
 /- English proof (translation)
-Simplify using `[opBase, wLast, bvec, Matrix.mulVec_smul]`.
+Simplify using the standard rewrite rules.
 -/
 lemma mulVec_base (T' : ℝ) (M : Mat k r) (i : Fin (2 * r + k + 1)) :
     (M *ᵥ opBase k r T') i = (Real.sqrt T' : ℂ) * M i (wI k r (Fin.last k)) := by
   simp [opBase, wLast, bvec, Matrix.mulVec_smul]
 
 /- English proof (translation)
-Simplify using `[opGen, wI, a.isLt]`.
+Simplify using the standard rewrite rules.
 -/
 lemma opGen_y (q : TrE k) (a : Fin k) :
     opGen k r q (wI k r a.castSucc) (wI k r (Fin.last k)) = opBeta k q a := by
   simp [opGen, wI, a.isLt]
 
 /- English proof (translation)
-Simplify using `[opGen, wI]`.
+Simplify using the standard rewrite rules.
 -/
 lemma opGen_c (q : TrE k) :
     opGen k r q (wI k r (Fin.last k)) (wI k r (Fin.last k)) = (q none : ℂ) * Complex.I := by
   simp [opGen, wI]
 
 /- English proof (translation)
-Establish `h1 : ContDiffAt ℝ 1 (opGen k r) (0 : TrE k)` using `(opGenL k r).contDiff.contDiffAt`. Establish `h2 : ContDiffAt ℝ 1 (NormedSpace.exp : Mat k r → Mat k r) (opGen k r 0)` using `(exp_analytic (𝕂 := ℝ) (opGen k r 0)).contDiffAt`. Conclude with `(mvL k r (opBase k r T')).contDiff.contDiffAt.comp (0 : TrE k) (h2.comp (0 : TrE k) h1)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma psiV_contDiffAt (T' : ℝ) : ContDiffAt ℝ 1 (psiV k r T') 0 := by
   have h1 : ContDiffAt ℝ 1 (opGen k r) (0 : TrE k) := (opGenL k r).contDiff.contDiffAt
@@ -108,7 +108,7 @@ lemma psiV_contDiffAt (T' : ℝ) : ContDiffAt ℝ 1 (psiV k r T') 0 := by
   exact (mvL k r (opBase k r T')).contDiff.contDiffAt.comp (0 : TrE k) (h2.comp (0 : TrE k) h1)
 
 /- English proof (translation)
-Establish `h1 : HasStrictFDerivAt (opGen k r) (opGenL k r) (0 : TrE k)` using `(opGenL k r).hasStrictFDerivAt`. Establish `h2 : HasStrictFDerivAt (NormedSpace.exp : Mat k r → Mat k r) (1 : Mat k r →L[ℝ] Mat k r) (opGen k r 0)`. Rewrite using `[opGen_zero]`. Conclude with `hasStrictFDerivAt_exp_zero_of_radius_pos (expSeries_radius_pos ℝ (Mat k r))`. Conclude with `(mvL k r (opBase k r T')).hasStrictFDerivAt.comp (0 : TrE k) (h2.comp (0 : TrE k) h1)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma psiV_strict (T' : ℝ) : HasStrictFDerivAt (psiV k r T')
     ((mvL k r (opBase k r T')).comp ((1 : Mat k r →L[ℝ] Mat k r).comp (opGenL k r))) 0 := by
@@ -120,7 +120,7 @@ lemma psiV_strict (T' : ℝ) : HasStrictFDerivAt (psiV k r T')
   exact (mvL k r (opBase k r T')).hasStrictFDerivAt.comp (0 : TrE k) (h2.comp (0 : TrE k) h1)
 
 /- English proof (translation)
-Simplify using `only [ContinuousLinearMap.comp_apply, ContinuousLinearMap.one_apply, opGenL_apply, mvL_apply]`. Conclude with `mulVec_base T' _ i`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma dpsi_apply (T' : ℝ) (q : TrE k) (i : Fin (2 * r + k + 1)) :
     ((mvL k r (opBase k r T')).comp ((1 : Mat k r →L[ℝ] Mat k r).comp (opGenL k r))) q i
@@ -143,11 +143,11 @@ Both sides reduce to the same expression.
 @[simp] lemma DL_apply (T' : ℝ) (q : TrE k) (o : Option (Fin k × Bool)) : DL k T' q o = dgn T' o * q o := rfl
 
 /- English proof (translation)
-Use `show LinearMap.det (DL k T' : TrE k →ₗ[ℝ] TrE k) = _`. Rewrite using `[← LinearMap.det_toMatrix (EuclideanSpace.basisFun (Option (Fin k × Bool)) ℝ).toBasis]`. Establish `hm : LinearMap.toMatrix (EuclideanSpace.basisFun (Option (Fin k × Bool)) ℝ).toBasis (EuclideanSpace.basisFun (Option (Fin k × Bool)) ℝ).toBasis (DL k T' : TrE k →ₗ[ℝ] TrE k) = Matrix.diagonal (dgn T')`. Use extensionality with `i j`. Rewrite using `[LinearMap.toMatrix_apply, Matrix.diagonal_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [OrthonormalBasis.coe_toBasis, OrthonormalBasis.coe_toBasis_repr_apply, EuclideanSpace.basisFun_repr, EuclideanSpace.basisFun_apply, ContinuousLinearMap.coe_coe, DL_apply]`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hm, Matrix.det_diagonal, Fintype.prod_option]`. Simplify using `only [dgn, one_mul]`. Rewrite using `[Finset.prod_const, Finset.card_univ, Fintype.card_prod, Fintype.card_fin, Fintype.card_bool, mul_comm k 2, pow_mul, div_pow, Real.sq_sqrt hT.le, Real.sq_sqrt (by norm_num : (0:ℝ) ≤ 2)]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma DL_det (T' : ℝ) (hT : 0 < T') : (DL k T').det = (T' / 2) ^ k := by
   show LinearMap.det (DL k T' : TrE k →ₗ[ℝ] TrE k) = _
@@ -168,20 +168,20 @@ lemma DL_det (T' : ℝ) (hT : 0 < T') : (DL k T').det = (T' / 2) ^ k := by
     mul_comm k 2, pow_mul, div_pow, Real.sq_sqrt hT.le, Real.sq_sqrt (by norm_num : (0:ℝ) ≤ 2)]
 
 /- English proof (translation)
-Rewrite using `[Complex.log_im]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 lemma phiT_coord_c (T' : ℝ) (q : TrE k) :
     phiT k r T' q none = (Complex.log (psiV k r T' q (wI k r (Fin.last k)))).im := by
   rw [Complex.log_im]; rfl
 
 /- English proof (translation)
-Rewrite using `[psiV_zero, opBase_last]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma psiV_last_zero (T' : ℝ) : psiV k r T' 0 (wI k r (Fin.last k)) = (Real.sqrt T' : ℂ) := by
   rw [psiV_zero, opBase_last]
 
 /- English proof (translation)
-Establish `h2 : (Real.sqrt 2 : ℂ) ≠ 0`. Rewrite using `[Complex.ofReal_ne_zero]`. Check the signs of the components of the expression. Simplify using `only [opBeta]`. Use `push_cast`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
 Clear the denominators using the available nonvanishing facts.
 -/
@@ -196,11 +196,9 @@ lemma beta_re_im (T' : ℝ) (q : TrE k) (a : Fin k) :
   field_simp
 
 /- English proof (translation)
-Establish `hp` using `psiV_contDiffAt (k := k) (r := r) T'`. Use `(contDiffAt_piLp 2).2 fun o => ?_` and prove the remaining obligations. Break down `o with _ | ⟨a, b⟩` into its components or cases. Establish `hlog : ContDiffAt ℝ 1 Complex.log (psiV k r T' 0 (wI k r (Fin.last k)))`. Rewrite using `[psiV_last_zero]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Complex.contDiffAt_log (Complex.ofReal_mem_slitPlane.2 (Real.sqrt_pos.2 hT))).restrict_scalars ℝ`. Use `Complex.imCLM.contDiff.contDiffAt.comp (0 : TrE k) (hlog.comp (0 : TrE k) ((ContinuousLinearMap.proj (R := ℝ) (wI k r (Fin.last k))).contDiff.contDiffAt.comp (0 : TrE k) hp))` as an intermediate fact. Use `this.congr_of_eventuallyEq (Filter.Eventually.of_forall fun q => ?_)` and prove the remaining obligations. Conclude with `phiT_coord_c T' q`. Establish `hj` using `(ContinuousLinearMap.proj (R := ℝ) (φ := fun _ : Fin (2 * r + k + 1) => ℂ) (wI k r a.castSucc)).contDiff.contDiffAt.comp (0 : TrE k) hp`.
-
-Consider the cases of `b`. Conclude with `Complex.reCLM.contDiff.contDiffAt.comp (0 : TrE k) hj`. Conclude with `Complex.imCLM.contDiff.contDiffAt.comp (0 : TrE k) hj`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Split into cases according to the possible forms of the given data. A detailed English derivation is pending.
 -/
 theorem phiT_contDiffAt (T' : ℝ) (hT : 0 < T') : ContDiffAt ℝ 1 (phiT k r T') 0 := by
   have hp := psiV_contDiffAt (k := k) (r := r) T'
@@ -221,19 +219,19 @@ theorem phiT_contDiffAt (T' : ℝ) (hT : 0 < T') : ContDiffAt ℝ 1 (phiT k r T'
     · exact Complex.imCLM.contDiff.contDiffAt.comp (0 : TrE k) hj
 
 /- English proof (translation)
-Establish `hp` using `psiV_strict (k := k) (r := r) T'`. Use `(hasStrictFDerivAt_piLp 2).2 fun o => ?_` and prove the remaining obligations. Break down `o with _ | ⟨a, b⟩` into its components or cases. Establish `hs : ((Real.sqrt T' : ℝ) : ℂ) ∈ Complex.slitPlane` using `Complex.ofReal_mem_slitPlane.2 (Real.sqrt_pos.2 hT)`. Establish `hlog` using `((Complex.hasStrictDerivAt_log hs).hasStrictFDerivAt).restrictScalars ℝ`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hlog` using `[← psiV_last_zero (k := k) (r := r)]`. Establish `H` using `Complex.imCLM.hasStrictFDerivAt.comp (0 : TrE k) (hlog.comp (0 : TrE k) ((ContinuousLinearMap.proj (R := ℝ) (wI k r (Fin.last k))).hasStrictFDerivAt.comp (0 : TrE k) hp))`. Establish `hf : (fun x => phiT k r T' x none) = Complex.imCLM ∘ Complex.log ∘ (fun f : Fin (2 * r + k + 1) → ℂ => f (wI k r (Fin.last k))) ∘ psiV k r T'`. Use function extensionality and compare the values at `x`. Conclude with `phiT_coord_c T' x`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hf]`. Use `H.congr_fderiv (ContinuousLinearMap.ext fun q => ?_)` and prove the remaining obligations. Establish `hsq : (Real.sqrt T' : ℂ) ≠ 0` using `by rw [Complex.ofReal_ne_zero]; positivity`. Simplify using `only [ContinuousLinearMap.comp_apply, ContinuousLinearMap.coe_restrictScalars', ContinuousLinearMap.smulRight_apply, ContinuousLinearMap.one_apply, ContinuousLinearMap.proj_apply, opGenL_apply, mvL_apply, mulVec_base, opGen_c, psiV_last_zero, Complex.imCLM_apply, PiLp.proj_apply, …`. Establish `: (Real.sqrt T' : ℂ) * ((q none : ℂ) * Complex.I) * (Real.sqrt T' : ℂ)⁻¹ = (q none : ℂ) * Complex.I`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts. Rewrite using `[ContinuousLinearMap.toSpanSingleton_apply, smul_eq_mul, this]`. Simplify using the standard rewrite rules. Establish `Hj` using `(ContinuousLinearMap.proj (R := ℝ) (φ := fun _ : Fin (2 * r + k + 1) => ℂ) (wI k r a.castSucc)).hasStrictFDerivAt.comp (0 : TrE k) hp`. Consider the cases of `b`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Split into cases according to the possible forms of the given data. Establish an intermediate fact.
 
-Establish `H` using `Complex.reCLM.hasStrictFDerivAt.comp (0 : TrE k) Hj`. Use `H.congr_fderiv (ContinuousLinearMap.ext fun q => ?_)` and prove the remaining obligations. Simplify using `only [ContinuousLinearMap.comp_apply, ContinuousLinearMap.proj_apply, dpsi_apply, opGen_y, beta_re_im, Complex.reCLM_apply, PiLp.proj_apply, DL_apply, dgn]`. Express the relevant statement in the definitionally equal form `((opGen k r q *ᵥ opBase k r T') (wI k r a.castSucc)).re = _`. Rewrite using `[mulVec_base, opGen_y, beta_re_im]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `H` using `Complex.imCLM.hasStrictFDerivAt.comp (0 : TrE k) Hj`. Use `H.congr_fderiv (ContinuousLinearMap.ext fun q => ?_)` and prove the remaining obligations. Simplify using `only [ContinuousLinearMap.comp_apply, ContinuousLinearMap.proj_apply, dpsi_apply, opGen_y, beta_re_im, Complex.imCLM_apply, PiLp.proj_apply, DL_apply, dgn]`. Express the relevant statement in the definitionally equal form `((opGen k r q *ᵥ opBase k r T') (wI k r a.castSucc)).im = _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mulVec_base, opGen_y, beta_re_im]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem phiT_strict (T' : ℝ) (hT : 0 < T') : HasStrictFDerivAt (phiT k r T') (DL k T') 0 := by
   have hp := psiV_strict (k := k) (r := r) T'
@@ -278,7 +276,7 @@ theorem phiT_strict (T' : ℝ) (hT : 0 < T') : HasStrictFDerivAt (phiT k r T') (
       simp
 
 /- English proof (translation)
-Introduce `k r T' _ hT`. Use `⟨phiT_contDiffAt T' hT, ?_⟩` and prove the remaining obligations. Rewrite using `[(phiT_strict (r := r) T' hT).hasFDerivAt.fderiv]`. Conclude with `DL_det T' hT`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hermitianDefectAdd : PhiDiff := by
   intro k r T' _ hT

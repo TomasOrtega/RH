@@ -23,7 +23,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
   {Xo : Moduli Dw l} {c : Coeff l} [Fintype (Comp Xo c)]
 
 /- English proof (translation)
-The claim follows from `(dataOf h δ fn yP Dd N T i g0 cc uL uF uka ude uet uta1 uta2 wR jc np thpR n0 th0R uF0 nk thkR MR etR ta1R ta2R nu ip wsize DF PN PQ tableDegreeThreeBase PP0' Pd Gc PI4 Pet tableLineDegreeFive tableLineDegreeTwo Prw PO f r).heights (axHOf h δ fn yP Dd N T i g0 cc uL uF uka ude ue …`.
+A detailed English derivation is pending.
 -/
 theorem htConcl_dataOf (h : GenFrEx Xo c)
     (δ : ∀ Z : Comp Xo c, AddValuation (Om Z) (WithTop ℤ) → Ix Dw → ℤ)
@@ -65,7 +65,7 @@ open IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.Mai
 variable {D : D7} {Tc : Core D}
 
 /- English proof (translation)
-The claim follows from `htConcl_dataOf h δ fn yP (d + Nat.card (FlagVar (Tc.Q.Dw j))) N T i g0 cc uL uF uka ude uet uta1 uta2 wR jc np thpR n0 th0R uF0 nk thkR MR etR ta1R ta2R nu ip wsize DF PN PQ tableDegreeThreeBase PP0' Pd Gc PI4 Pet tableLineDegreeFive tableLineDegreeTwo Prw PO f r hne (fnFG_of (Tc …`.
+A detailed English derivation is pending.
 -/
 theorem htConcl_dataOf_of (hL : LawsCore Tc) (j : ℕ) [Fintype (Comp (Tc.Q.Xo j) Tc.Q.c)]
     [Nonempty (HeightOneSpectrum (𝓞 Tc.Q.c.F))] (h : GenFrEx (Tc.Q.Xo j) Tc.Q.c)

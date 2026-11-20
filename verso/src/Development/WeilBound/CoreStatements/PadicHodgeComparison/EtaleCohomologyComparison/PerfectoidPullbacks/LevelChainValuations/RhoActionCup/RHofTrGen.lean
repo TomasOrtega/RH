@@ -16,7 +16,7 @@ namespace CrystallineSemistableComparison.Pb.Kap
 
 variable {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicAlgCl l)}
 /- English proof (translation)
-Take `⟨c, rfl⟩` from `acris_level_surjective (l := l) (n + 1) x`. Rewrite using `[B.red_cris, h₂, h₁]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem tr_comp {m : ℕ} {L : Lev (per l K) m} {n : ℕ}
     (d₁ : RedIn (B.DD false (PAlg.base l) (n + 1)) (B.κb (okToOC l K) false (n + 1)) L.γ l (n + 1))
@@ -49,14 +49,14 @@ theorem basePt_snd {O : Type} [CommRing O] (F : B.Fn O) {k₁ k₂ : Type} [Comm
     ((B.basePt F τ h).app B' y).1.2 = y.1.2 := rfl
 
 /- English proof (translation)
-Conclude with `basePt_snd (B.schFn M.p) _ (B.red_κb (okToOC l K) false n.le_succ) B' y`.
+A detailed English derivation is pending.
 -/
 theorem pt_ok (M : Model l K) (n : ℕ) (B' : CommRingCat.{0}) (y : PtOver M.X M.p (B.κb (okToOC l K) false n) B') :
     (show PtOver M.X M.p (B.κb (okToOC l K) false (n + 1)) B' from (trMor M n).pt.app B' y).1.2 = y.1.2 := by
   exact basePt_snd (B.schFn M.p) _ (B.red_κb (okToOC l K) false n.le_succ) B' y
 
 /- English proof (translation)
-Conclude with `((congrArg (rHof d hc M s n j) (tr_eq M n j x)).trans (CrystallineSemistableComparison.Pb.red_tr (d (n + 1)) (d n) s {⊤} (trMor M n) ((PAlg.base l).cris (n + 1)) ((PAlg.base l).cris n) L.lam (hc (n + 1)) (hc n) (B.red_cris _ n.le_succ) (pt_ok M n) (tr_comp (d (n + 1)) (d n) (hc ( …`.
+A detailed English derivation is pending.
 -/
 theorem rHof_tr_gen {m : ℕ} {L : Lev (per l K) m}
     (d : ∀ n, RedIn (B.DD false (PAlg.base l) n) (B.κb (okToOC l K) false n) L.γ l n)

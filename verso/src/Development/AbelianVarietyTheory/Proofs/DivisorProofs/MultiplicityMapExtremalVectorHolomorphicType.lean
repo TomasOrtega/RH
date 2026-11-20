@@ -21,7 +21,7 @@ variable {n : ℕ} {ι : Type} [Fintype ι] [DecidableEq ι] {Hm : ι → Mt n}
 
 omit [Fintype ι] [DecidableEq ι] in
 /- English proof (translation)
-Introduce `τ` and use `by show (1 : Mt n)ᴴ * Hm τ * 1 = Hm τ simp`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem one_mem_UG : (1 : ι → Mt n) ∈ UG Hm := fun τ => by
   show (1 : Mt n)ᴴ * Hm τ * 1 = Hm τ
@@ -29,7 +29,7 @@ theorem one_mem_UG : (1 : ι → Mt n) ∈ UG Hm := fun τ => by
 
 omit [Fintype ι] [DecidableEq ι] in
 /- English proof (translation)
-Introduce `τ` and use `by have h1 : (u τ)ᴴ * Hm τ * u τ = Hm τ := hu τ have h2 : (u' τ)ᴴ * Hm τ * u' τ = Hm τ := hu' τ show (u τ * u' τ)ᴴ * Hm τ * (u τ * u' τ) = Hm τ calc _ = (u' τ)ᴴ * ((u τ)ᴴ * Hm τ * u τ) * u' τ := by simp only [conjTranspose_mul, Matrix.mul_assoc] _ = Hm τ := by rw [h1, h2]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mul_mem_UG {u u' : ι → Mt n} (hu : u ∈ UG Hm) (hu' : u' ∈ UG Hm) : u * u' ∈ UG Hm := fun τ => by
   have h1 : (u τ)ᴴ * Hm τ * u τ = Hm τ := hu τ
@@ -41,7 +41,7 @@ theorem mul_mem_UG {u u' : ι → Mt n} (hu : u ∈ UG Hm) (hu' : u' ∈ UG Hm) 
 
 omit [Fintype ι] in
 /- English proof (translation)
-Introduce `ρ` and use `by by_cases h : ρ = τ · subst h; simpa using hg · rw [Pi.mulSingle_eq_of_ne h]; exact one_mem_UG (Hm := Hm) ρ`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mulSingle_mem_UG (τ : ι) {g : Mt n} (hg : g ∈ Formalism.QuantumDeterminants.UH (Hm τ)) :
     (Pi.mulSingle τ g : ι → Mt n) ∈ UG Hm := fun ρ => by
@@ -51,11 +51,11 @@ theorem mulSingle_mem_UG (τ : ι) {g : Mt n} (hg : g ∈ Formalism.QuantumDeter
 
 omit [Fintype ι] [DecidableEq ι] in
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil`. Use `⟨one_mem_UG, ?_⟩` and prove the remaining obligations. Establish `h` using `hL 1 one_mem_UG 1 one_mem_UG`. Rewrite `h` using `[mul_one]`.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `using h`. Consider the case `cons a l ih`. Establish `ha` using `hl a (List.mem_cons_self ..)`. Take `⟨h1, h2⟩` from `ih fun u hu => hl u (List.mem_cons_of_mem _ hu)`. Rewrite using `[List.prod_cons, List.map_cons, List.prod_cons]`.
+Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨mul_mem_UG ha h1, by rw [hL a ha _ h1, h2]⟩`.
+Supply the required witnesses or components.
 -/
 theorem lift_prod {G : Type} [Group G] (L : (ι → Mt n) → G)
     (hL : ∀ u ∈ UG Hm, ∀ u' ∈ UG Hm, L (u * u') = L u * L u') (l : List (ι → Mt n)) (hl : ∀ u ∈ l, u ∈ UG Hm) :
@@ -73,13 +73,13 @@ theorem lift_prod {G : Type} [Group G] (L : (ι → Mt n) → G)
     exact ⟨mul_mem_UG ha h1, by rw [hL a ha _ h1, h2]⟩
 
 /- English proof (translation)
-Establish `hu : IsUnit G.det` using `isUnit_iff_ne_zero.2 hd`. Establish `e1 : G * conjH G Z = -(Zᴴ * G)`. Rewrite using `[conjH, Matrix.mul_neg, ← Matrix.mul_assoc, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hu, Matrix.one_mul]`. Establish `e2 : (conjH G Z)ᴴ * G = -(G * Z)`. Use `congrArg conjTranspose e1` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `this` using `only [conjTranspose_mul, conjTranspose_neg, conjTranspose_conjTranspose, hh.eq]`. Prove the components needed by the constructor for the conclusion. Use `show _ + _ = _`. Establish `s : star (1 / 2 : ℂ) = 1 / 2` using `by simp`. Rewrite using `[conjTranspose_smul, s, Matrix.smul_mul, Matrix.mul_smul, ← smul_add, conjTranspose_add, Matrix.add_mul, Matrix.mul_add, e1, e2]`.
+Simplify to obtain the desired conclusion from the available facts. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Use `show _ + _ = _`. Establish `s : star (1 / (2 * Complex.I) : ℂ) = -(1 / (2 * Complex.I))`. Simplify using the standard rewrite rules. Rewrite using `[conjTranspose_smul, s, Matrix.smul_mul, Matrix.mul_smul, neg_smul, ← smul_neg, ← smul_add, conjTranspose_sub, Matrix.sub_mul, Matrix.mul_sub, e1, e2]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: -(Zᴴ * G - -(G * Z)) + (G * Z - -(Zᴴ * G)) = 0` using `by abel`. Rewrite using `[this, smul_zero]`.
+A detailed English derivation is pending.
 -/
 theorem parts_mem_lieH {G : Mt n} (hh : G.IsHermitian) (hd : G.det ≠ 0) (Z : Mt n) :
     (1 / 2 : ℂ) • (Z + conjH G Z) ∈ lieH G ∧ (1 / (2 * Complex.I)) • (Z - conjH G Z) ∈ lieH G := by
@@ -106,21 +106,19 @@ theorem parts_mem_lieH {G : Mt n} (hh : G.IsHermitian) (hd : G.det ≠ 0) (Z : M
 end Local
 
 /- English proof (translation)
-Introduce `D θ V S M w v hθ hS hw hv J χ T hT g`. Take `⟨L, -, hmul, -, -, hinv, hat, -, -, hG⟩` from `GlobalTheory.RealLift.exists_real_lift D θ V hθ`. Establish `hexp : ∀ τ, ∀ X ∈ lieH (gramAt D V τ), ∀ t : ℝ, NormedSpace.exp (t • X) ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ)` using `fun τ X hX t => GlobalTheory.SmVec.exp_mem_UH ((Matrix.isUnit_iff_isUnit_det _).2 (isUnit_iff_ne_zero.2 (hG τ).2)) hX t`. Establish `hone : ∀ τ, ∀ X ∈ lieH (gramAt D V τ), ∀ t : ℝ, L (Pi.mulSingle τ (NormedSpace.exp (t • X))) = oneP θ V τ X t` using `fun τ X hX t => (hat τ _ (hexp τ X hX t)).symm`. Use `⟨fun u => T v (g * L u), ?_, fun u hu => by simp only [hinv u hu]⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `GlobalTheory.T.holomorphicType_of_smooth_borelKilled _ _ _ _ _ _ (fun τ => ((GlobalTheory.T.discreteSeriesModel_unitary_irreducible_orthonormal D V S M τ).2.2.2 hS).1) _ ?_ ?_` and prove the remaining obligations. Introduce `k τs Xs hX u hu`. Establish `h` using `(hT.aut v).smooth k τs Xs hX (g * L u)`. Use `h using 2 with t` and compare the differences between its conclusion and the goal. Take `⟨h1, h2⟩` from `lift_prod L hmul (List.ofFn fun i => (Pi.mulSingle (τs i) (NormedSpace.exp (t i • Xs i)) : D.what₂.Tau → Mt V.rank)) (by`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Extract witnesses or component facts from the available result.
 
-Introduce `x hx`. Take `⟨i, rfl⟩` from `(List.mem_ofFn' _ _).1 hx`. Conclude with `mulSingle_mem_UG _ (hexp _ _ (hX i) _))`. Use `show T v (g * L (u * _)) = _`. Rewrite using `[hmul u hu _ h1, h2, List.map_ofFn, mul_assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `congrArg (fun F : Fin k → GA D V => T v (g * (L u * (List.ofFn F).prod))) (funext fun i => hone _ _ (hX i) _)`. Introduce `τ a c hac u hu`. Establish `hder : ∀ X ∈ lieH (gramAt D V τ), der τ X (fun u => T v (g * L u)) u = Rder θ V τ X (T v) (g * L u)`. Introduce `X hX`. Unfold `der Rder`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `t`. Use `show T v (g * L (u * _)) = _`. Rewrite using `[hmul u hu _ (mulSingle_mem_UG _ (hexp _ _ hX _)), hone τ X hX, mul_assoc]`. Take `⟨p1, p2⟩` from `parts_mem_lieH (hG τ).1 (hG τ).2 (x0Mat M τ * Matrix.single a c 1 * (x0Mat M τ)⁻¹)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hk` using `(GlobalTheory.T.baseFrameBorel_acts_extremalVector_by_weight D θ V S M w v hθ hS hw hv τ).2 a c hac`. Apply the tactic sequence `have hd := GlobalTheory.T.multiplicityMap_complexRightDerivative_eq D θ V hθ S M J χ T hT v τ (x0Mat M τ * Matrix.single a c 1 * (x0Mat M τ)⁻¹) (if a = c then (w τ a : ℂ) • v τ else 0) (by rw [hk]; split_ifs <;> rfl)`. Establish `e : derC (gramAt D V) τ (x0Mat M τ * Matrix.single a c 1 * (x0Mat M τ)⁻¹) (fun u => T v (g * L u)) u = RderC θ V τ (x0Mat M τ * Matrix.single a c 1 * (x0Mat M τ)⁻¹) (T v) (g * L u)`. Unfold `derC`. Rewrite using `[hder _ p1, hder _ p2]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[e, hd]`. Use `split_ifs`. Rewrite using `[T.map_update_smul, Function.update_eq_self]`. Both sides reduce to the same expression.
-
-Rewrite using `[T.map_update_zero]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem holAd_of_isMultMap : ∀ (D : D7) (θ : InfFam D) (V : HSp D) (S : D.what₂.Tau → SPar) (M : DSModel V S) (w : D.what₂.Tau → Fin V.rank → ℤ) (v : M.Vec), IsInfFam θ → HolShape M → WtIs M w → IsExtVec M v → ∀ (J : Set (GA D V)) (χ : GA D V → ℂ) (T : MMap M), IsMultMap θ M J χ T → HolAd θ M w (T v) := by
   classical

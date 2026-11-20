@@ -11,7 +11,7 @@ def colMat {K : Type} [Field K] {r k : ℕ} (b : Fin k → Fin r → K) : Matrix
   Matrix.of fun a i => b i a
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [hGram, HermForm.h, colMat, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Matrix.of_apply, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem hGram_eq {K : Type} [Field K] [NumberField K] {r k : ℕ} (S : HermForm K r)
     (b : Fin k → Fin r → K) : hGram S b = ((colMat b).map S.c)ᵀ * S.G * colMat b := by
@@ -21,7 +21,7 @@ theorem hGram_eq {K : Type} [Field K] [NumberField K] {r k : ℕ} (S : HermForm 
   rw [Finset.sum_comm]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a`. Simplify using `[colMat, mulVec, dotProduct, Finset.sum_apply, mul_comm]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem colMat_mulVec {K : Type} [Field K] {r k : ℕ} (b : Fin k → Fin r → K) (t : Fin k → K) :
     colMat b *ᵥ t = ∑ j, t j • b j := by
@@ -29,9 +29,9 @@ theorem colMat_mulVec {K : Type} [Field K] {r k : ℕ} (b : Fin k → Fin r → 
   simp [colMat, mulVec, dotProduct, Finset.sum_apply, mul_comm]
 
 /- English proof (translation)
-Rewrite using `[hGram_eq, hermForm_h_eq]`. Simplify using `only [formM]`. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec, Matrix.vecMul_transpose]`. Use `congr 1`. Use function extensionality and compare the values at `a`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[RingHom.map_mulVec]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem form_colMat {K : Type} [Field K] [NumberField K] {r k : ℕ} (S : HermForm K r)
     (b : Fin k → Fin r → K) (t : Fin k → K) :
@@ -46,7 +46,7 @@ theorem form_colMat {K : Type} [Field K] [NumberField K] {r k : ℕ} (S : HermFo
   rfl
 
 /- English proof (translation)
-Simplify using `only [HermForm.h, map_sum, map_mul, S.c_invol]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[S.G_herm]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hermForm_swap {K : Type} [Field K] [NumberField K] {r : ℕ} (S : HermForm K r)
     (x y : Fin r → K) : S.c (S.h x y) = S.h y x := by
@@ -57,7 +57,7 @@ theorem hermForm_swap {K : Type} [Field K] [NumberField K] {r : ℕ} (S : HermFo
   ring
 
 /- English proof (translation)
-Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec, ← Matrix.star_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem quad_eq {r k : ℕ} (E : Matrix (Fin r) (Fin k) ℂ) (X : Matrix (Fin r) (Fin r) ℂ)
     (v : Fin k → ℂ) : star v ⬝ᵥ ((Eᴴ * X * E) *ᵥ v) = star (E *ᵥ v) ⬝ᵥ (X *ᵥ (E *ᵥ v)) := by
@@ -65,7 +65,7 @@ theorem quad_eq {r k : ℕ} (E : Matrix (Fin r) (Fin k) ℂ) (X : Matrix (Fin r)
     ← Matrix.star_mulVec]
 
 /- English proof (translation)
-Simplify using `only [dotProduct, Matrix.mulVec_diagonal, Pi.star_apply]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.ofReal_pow, ← Complex.conj_mul', Complex.star_def]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem quad_diag {r : ℕ} (d w : Fin r → ℂ) :
     star w ⬝ᵥ (diagonal d *ᵥ w) = ∑ a, d a * ((‖w a‖ ^ 2 : ℝ) : ℂ) := by

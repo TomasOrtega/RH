@@ -2,29 +2,29 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.T
 
 open NumberField Matrix UpperTheory.V.KT UpperTheory.V.Af.BA ComplexOrder in
 /- English proof (translation)
-Introduce `L _ _ N σ hσ k`. Set `A : InfinitePlace L → Matrix (Fin N) (Fin N) ℂ` to `fun w => Matrix.of fun i j => (((mat k w) i j).re : ℂ)`. Establish `hre : ∀ w i j, ((mat k w) j i).re = ((mat k w) i j).re`. Introduce `w i j`. Use `(mat_herm k w).apply i j` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[← this]`. Simplify using the standard rewrite rules. Establish `hA : ∀ w, (A w).IsHermitian`. Introduce `w`. Use extensionality with `i j`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Simplify using `[A, Matrix.conjTranspose_apply, hre w i j]`. Establish `hmat : ∀ w, mat (mkHS A hA) w = A w` using `fun w => rfl`. Establish `hAeq : ∀ w, A w = (1 / 2 : ℝ) • (mat k w + (mat k w).transpose)`. Introduce `w`. Use extensionality with `i j`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Establish `h1` using `(mat_herm k w).apply i j`. Establish `h2 : (mat k w) j i = star ((mat k w) i j)` using `by rw [← h1, star_star]`. Simplify using `only [A, Matrix.of_apply, Matrix.smul_apply, Matrix.add_apply, Matrix.transpose_apply, h2]`. Apply the tactic sequence `apply Complex.ext <;> simp <;> ring`. Use `⟨⟨mkHS A hA, ?_⟩, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `w i j show ((mat (mkHS A hA) w) i j).im = 0`. Rewrite using `[hmat]`. Simplify using `[A]`. Introduce `y show q (mkHS A hA) y = _`. Establish `hz : ∀ w i, toR (sLat σ y) w i = star (toR y w i)` using `fun w i => hσ w (y i)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [q, qR]`. Rewrite using `[← Finset.sum_add_distrib, Finset.sum_div]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[hmat]`. Simplify using `only [dotProduct, mulVec, Pi.star_apply, Finset.mul_sum, Complex.re_sum, ← Finset.sum_add_distrib, Finset.sum_div, hz]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [A, Matrix.of_apply, Complex.mul_re, Complex.mul_im, Complex.star_def, Complex.conj_re, Complex.conj_im, Complex.ofReal_re, Complex.ofReal_im]`. Expand and normalize the polynomial expressions, which then agree. Introduce `hk`. Establish `hpsd : ∀ w, (A w).PosSemidef`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `w`. Rewrite using `[hAeq w]`. Conclude with `((hk w).add (hk w).transpose).smul (by norm_num)`. Use `⟨fun w => by rw [hmat]; exact hpsd w, fun h0 => ?_⟩` and prove the remaining obligations. Apply `HS_ext` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `w`. Establish `hA0 : A w = 0`. Use `congrArg (fun x : HR L N => mat (x : HS L N) w) h0` as an intermediate fact. Simplify `this` using `[hmat, mat_zero]`. Rewrite using `[mat_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `((hk w).trace_eq_zero_iff).mp` to reduce the goal to its premises. Establish `hd : ∀ i, (mat k w) i i = (((mat k w) i i).re : ℂ)`. Introduce `i`. Apply `Complex.ext` to reduce the goal to its premises. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `(mat_herm k w).apply i i` as an intermediate fact. Establish `h3` using `congrArg Complex.im this`. Simplify using `at h3`. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.trace]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.diag_apply, hd i]`. Use `congrFun (congrFun hA0 i) i` as an intermediate fact. Simplify `this` using `[A]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem UpperTheory.adelicBaseChange_realPart :
     UpperTheory.V.Af.BA.RePart := by

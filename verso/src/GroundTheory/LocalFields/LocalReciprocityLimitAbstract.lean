@@ -10,7 +10,7 @@ variable {G H : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Gr
   [TopologicalSpace H] [IsTopologicalGroup H]
 
 /- English proof (translation)
-Use `Subgroup.topologicalClosure_minimal _ ?_ ((Subgroup.isClosed_topologicalClosure _).preimage hf)` and prove the remaining obligations. Rewrite using `[commutator, Subgroup.commutator_le]`. Introduce `a _ b _`. Rewrite using `[Subgroup.mem_comap, map_commutatorElement]`. Conclude with `Subgroup.le_topologicalClosure _ (Subgroup.commutator_mem_commutator (Subgroup.mem_top _) (Subgroup.mem_top _))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem topologicalClosure_commutator_le_comap (f : G →* H) (hf : Continuous f) :
     (commutator G).topologicalClosure ≤ (commutator H).topologicalClosure.comap f := by
@@ -36,7 +36,7 @@ theorem topologicalAbelianizationMap_mk (f : G →* H) (hf : Continuous f) (g : 
   rfl
 
 /- English proof (translation)
-Rewrite using `[(QuotientGroup.isQuotientMap_mk _).continuous_iff]`. Conclude with `(QuotientGroup.isQuotientMap_mk _).continuous.comp hf`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_topologicalAbelianizationMap (f : G →* H) (hf : Continuous f) :
     Continuous (topologicalAbelianizationMap f hf) := by
@@ -51,7 +51,7 @@ variable {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
 
 omit [IsTopologicalGroup G] in
 /- English proof (translation)
-The claim follows from `continuous_subtype_val.subtype_mk _`.
+A detailed English derivation is pending.
 -/
 theorem continuous_inclusion {K K' : Subgroup G} (hK : K' ≤ K) :
     Continuous (Subgroup.inclusion hK) :=
@@ -85,7 +85,7 @@ theorem coe_conjHom (σ : G) (K : OpenSubgroup G) (τ : (K : Subgroup G)) :
   rfl
 
 /- English proof (translation)
-The claim follows from `((continuous_const.mul continuous_subtype_val).mul continuous_const).subtype_mk _`.
+A detailed English derivation is pending.
 -/
 theorem continuous_conjHom (σ : G) (K : OpenSubgroup G) : Continuous (conjHom σ K) :=
   ((continuous_const.mul continuous_subtype_val).mul continuous_const).subtype_mk _
@@ -113,13 +113,13 @@ variable {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Comp
   (D : ClassFieldData G A) (hax : ClassFieldAxiom G A) [IsDiscreteModule G A]
 
 /- English proof (translation)
-Use `D.eq_reciprocityLimit hax fun L hL _ => ?_` and prove the remaining obligations. Establish `hmap : (commutator (K' : Subgroup G)).map (Subgroup.inclusion hK) ≤ commutator (K : Subgroup G)`. Rewrite using `[commutator, Subgroup.map_commutator]`. Conclude with `Subgroup.commutator_mono le_top le_top`. Establish `hL' : IsAbelianExtension K' (L ⊓ K')`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨inf_le_right, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[Subgroup.mem_subgroupOf]`. Use `⟨?_, x.2⟩` and prove the remaining obligations. Establish `h1` using `hL.commutator_le (hmap ⟨x, hx, rfl⟩)`. Rewrite `h1` using `[Subgroup.mem_subgroupOf]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h1`. Use `hL'.normal` as an intermediate fact. Take `⟨g, hg⟩` from `QuotientGroup.mk_surjective (D.reciprocityLimit hax K' a)`. Establish `e` using `D.reciprocity_abelianizationRestrict_reciprocityLimit hax hL' a`. Rewrite `e` using `[← hg, abelianizationRestrict_mk]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hg, limitRestrict_mk, abelianizationRestrict_mk]`. Establish `h` using `D.reciprocity_galRestrict hax hL.le hL'.le hK inf_le_left (g : (K' : Subgroup G) ⧸ ((L ⊓ K' : OpenSubgroup G) : Subgroup G).subgroupOf K')`. Rewrite `h` using `[galRestrict_mk, e, normTateZero_mk]`. Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem limitRestrict_reciprocityLimit {K K' : OpenSubgroup G} (hK : K' ≤ K)
     (a : fixedModule A (K' : Subgroup G)) :

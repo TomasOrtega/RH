@@ -6,7 +6,7 @@ open GlobalTheory.IndefiniteRowSideFullHecke.AppendedVectorData (cosetInd mainDa
 open GlobalTheory.FinPl.Comm (fpair)
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.FinPl.Comm.fpair_vecInd_dualInd_add_cosets` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FFourierPairingDualIndicatorAddNonzeroCosets.lean&line=77#L77)
 -/

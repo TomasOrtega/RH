@@ -19,7 +19,7 @@ variable {p : ℕ} [hp : Fact p.Prime] {L : Type*} [NontriviallyNormedField L] [
 variable (T) in
 
 /- English proof (translation)
-Establish `h1 : T.coeff (T.teich (T.red x)⁻¹ * x) 0 = 1`. Rewrite using `[T.coeff_teich_mul, T.coeff_zero, inv_mul_cancel₀ hx]`. Conclude with `isUnit_of_mul_isUnit_right (T.isUnit_of_coeff_zero_eq_one h1)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_of_red_ne_zero {x : Γ} (hx : T.red x ≠ 0) : IsUnit x := by
   have h1 : T.coeff (T.teich (T.red x)⁻¹ * x) 0 = 1 := by
@@ -27,13 +27,13 @@ theorem isUnit_of_red_ne_zero {x : Γ} (hx : T.red x ≠ 0) : IsUnit x := by
   exact isUnit_of_mul_isUnit_right (T.isUnit_of_coeff_zero_eq_one h1)
 
 /- English proof (translation)
-The claim follows from `(hx.map T.red).ne_zero`.
+A detailed English derivation is pending.
 -/
 theorem red_ne_zero_of_isUnit {x : Γ} (hx : IsUnit x) : T.red x ≠ 0 :=
   (hx.map T.red).ne_zero
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨0, 1, fun h => by have := congrArg T.red h; simp at this⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem nontrivial_Γ (T : TeichLift p L Γ) : Nontrivial Γ :=
   ⟨⟨0, 1, fun h => by have := congrArg T.red h; simp at this⟩⟩
@@ -41,11 +41,11 @@ theorem nontrivial_Γ (T : TeichLift p L Γ) : Nontrivial Γ :=
 variable (T) in
 
 /- English proof (translation)
-Use `T.nontrivial_B; exact ⟨0, 1, zero_ne_one⟩ mul_comm := mul_comm mul_inv_cancel := by` as an intermediate fact. Introduce `b hb`. Take `⟨N, x, hx⟩` from `IsLocalization.Away.surj T.π b`. Establish `hx0 : x ≠ 0`. Introduce and unpack `rfl`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Rewrite `hx` using `[map_zero]`. Conclude with `hb (T.eq_zero_of_mul_pow hx)`. Take `⟨m, x', hxx', hx'0, -⟩` from `T.exists_eq_π_pow_mul hx0`. Take `⟨y, hy⟩` from `(isUnit_of_red_ne_zero T hx'0).exists_right_inv`. Use `⟨algebraMap Γ T.B (T.π ^ N * y) * IsLocalization.Away.invSelf T.π ^ m, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hinv : algebraMap Γ T.B T.π * IsLocalization.Away.invSelf T.π = 1` using `IsLocalization.Away.mul_invSelf T.π`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [hx, hxx', map_mul, map_pow]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = 1 := by rw [hy, map_one, hinv, one_pow, one_mul]`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem isField_B : IsField T.B where
   exists_pair_ne := by have := T.nontrivial_B; exact ⟨0, 1, zero_ne_one⟩
@@ -85,9 +85,9 @@ structure FixedUnif (F : T.TeichFrob) where
   a_pos : 0 < F.a
 
 /- English proof (translation)
-Take `⟨v, hv, huv, hv1⟩` from `F.exists_inv_u`. Establish `hv0 : T.red v ≠ 0` using `norm_ne_zero_iff.1 (by rw [hv1]; exact one_ne_zero)`. Establish `hρ0 : (0 : ℝ) < 1 / 2` using `by norm_num`. Establish `hρ1 : (1 / 2 : ℝ) < 1` using `by norm_num`. Take `⟨y, hy0, hy, -⟩` from `F.exists_φ_eq_mul ha hv0 hρ0 hρ1 (T.convergesAt_of_mem_int hv hρ0 hρ1) zero_le_one (by rw [T.gaussNorm_eq_one_of_mem_int hv hv1 hρ0 hρ1, one_pow])`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨⟨y, isUnit_of_red_ne_zero T hy0, ?_, ha⟩⟩` and prove the remaining obligations. Rewrite using `[map_mul, F.φ_π, hy]`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem exists_fixedUnif [IsAlgClosed L] (F : T.TeichFrob) (ha : 0 < F.a) : Nonempty (FixedUnif F) := by
   obtain ⟨v, hv, huv, hv1⟩ := F.exists_inv_u
@@ -110,26 +110,26 @@ def ϖ0 : Γ := T.π * U.z
 def ϖ : T.B := algebraMap Γ T.B U.ϖ0
 
 /- English proof (translation)
-The claim follows from `U.φ_fix`.
+A detailed English derivation is pending.
 -/
 theorem φ_ϖ0 : F.φ U.ϖ0 = U.ϖ0 := U.φ_fix
 
 /- English proof (translation)
-Rewrite using `[ϖ0, mul_pow]`. Conclude with `Ideal.span_singleton_mul_right_unit (U.isUnit_alt₂.pow n) _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_ϖ0_pow (n : ℕ) : Ideal.span {U.ϖ0 ^ n} = Ideal.span {T.π ^ n} := by
   rw [ϖ0, mul_pow]
   exact Ideal.span_singleton_mul_right_unit (U.isUnit_alt₂.pow n) _
 
 /- English proof (translation)
-Simplify using `[ϖ0, T.red_π]`.
+Simplify using the standard rewrite rules.
 -/
 theorem red_ϖ0 : T.red U.ϖ0 = 0 := by simp [ϖ0, T.red_π]
 
 /- English proof (translation)
-Rewrite using `[T.red_eq_zero_iff]`. Take `⟨w, hw⟩` from `U.isUnit_alt₂.exists_right_inv`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩`. Conclude with `⟨w * y, by rw [ϖ0]; linear_combination (-(T.π * y)) * hw⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨y, rfl⟩`. Conclude with `⟨U.z * y, by rw [ϖ0]; ring⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem red_eq_zero_iff {x : Γ} : T.red x = 0 ↔ ∃ y, x = U.ϖ0 * y := by
   rw [T.red_eq_zero_iff]
@@ -141,20 +141,20 @@ theorem red_eq_zero_iff {x : Γ} : T.red x = 0 ↔ ∃ y, x = U.ϖ0 * y := by
     exact ⟨U.z * y, by rw [ϖ0]; ring⟩
 
 /- English proof (translation)
-The claim follows from `mul_mem T.π_mem_nonZeroDivisors U.isUnit_alt₂.mem_nonZeroDivisors`.
+A detailed English derivation is pending.
 -/
 theorem ϖ0_mem_nonZeroDivisors : U.ϖ0 ∈ nonZeroDivisors Γ :=
   mul_mem T.π_mem_nonZeroDivisors U.isUnit_alt₂.mem_nonZeroDivisors
 
 /- English proof (translation)
-Use `nontrivial_Γ T` as an intermediate fact. Conclude with `nonZeroDivisors.ne_zero U.ϖ0_mem_nonZeroDivisors`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ϖ0_ne_zero : U.ϖ0 ≠ 0 := by
   have := nontrivial_Γ T
   exact nonZeroDivisors.ne_zero U.ϖ0_mem_nonZeroDivisors
 
 /- English proof (translation)
-Introduce `h` and use `U.ϖ0_ne_zero (T.algebraMap_injective (by rw [map_zero]; exact h))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem ϖ_ne_zero : U.ϖ ≠ 0 := fun h =>
   U.ϖ0_ne_zero (T.algebraMap_injective (by rw [map_zero]; exact h))
@@ -165,14 +165,12 @@ Both sides reduce to the same expression.
 theorem algebraMap_ϖ0 : algebraMap Γ T.B U.ϖ0 = U.ϖ := rfl
 
 /- English proof (translation)
-Rewrite using `[ϖ, TeichFrob.toB_algebraMap, U.φ_ϖ0]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem frob_ϖ : F.toB U.ϖ = U.ϖ := by rw [ϖ, TeichFrob.toB_algebraMap, U.φ_ϖ0]
 
 /- English proof (translation)
-Use `pow_mem U.ϖ0_mem_nonZeroDivisors n` as an intermediate fact. Rewrite `this` using `[mem_nonZeroDivisors_iff_right]`. Conclude with `sub_eq_zero.1 (by`. Establish `h2` using `this (x - y)`. Rewrite `h2` using `[mul_comm]`.
-
-Conclude with `h2 (by rw [mul_sub, h, sub_self]))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ϖ0_pow_mul_cancel {n : ℕ} {x y : Γ} (h : U.ϖ0 ^ n * x = U.ϖ0 ^ n * y) : x = y := by
   have := pow_mem U.ϖ0_mem_nonZeroDivisors n
@@ -189,7 +187,7 @@ variable {F : T.TeichFrob} (U : FixedUnif F)
 open FixedUnif
 
 /- English proof (translation)
-Simplify using `only [Ideal.span_singleton_pow, smul_eq_mul, Ideal.mul_top, SModEq.sub_mem, U.span_ϖ0_pow]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sMod_iff (x y : Γ) (n : ℕ) :
     x ≡ y [SMOD ((Ideal.span {T.π}) ^ n • ⊤ : Submodule Γ Γ)] ↔
@@ -197,13 +195,13 @@ theorem sMod_iff (x y : Γ) (n : ℕ) :
   simp only [Ideal.span_singleton_pow, smul_eq_mul, Ideal.mul_top, SModEq.sub_mem, U.span_ϖ0_pow]
 
 /- English proof (translation)
-Use `T.isAdicComplete` as an intermediate fact. Establish `hmono : ∀ m n, m ≤ n → a n - a m ∈ Ideal.span {U.ϖ0 ^ m}`. Introduce `m n hmn`. Proceed by induction on `n, hmn using Nat.le_induction with`. Consider the case `base => simp`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `succ n hmn ih`. Establish `h1 : a (n + 1) - a n ∈ Ideal.span {U.ϖ0 ^ m}` using `Ideal.span_singleton_le_span_singleton.mpr (pow_dvd_pow _ hmn) (h n)`. Use `Ideal.add_mem _ ih h1` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Normalize the expressions using the abelian group laws.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Normalize the expressions using the abelian group laws.
 
-Take `⟨y, hy⟩` from `IsPrecomplete.prec' (I := Ideal.span {T.π}) a (fun {m n} hmn => by`. Rewrite using `[sMod_iff U, ← neg_sub]`. Conclude with `neg_mem (hmono m n hmn))`. Use `⟨y, fun n => ?_⟩` and prove the remaining obligations. Use `(sMod_iff U _ _ _).mp (hy n)` as an intermediate fact.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← neg_sub]`. Conclude with `neg_mem this`.
+A detailed English derivation is pending.
 -/
 theorem exists_limit (a : ℕ → Γ) (h : ∀ n, a (n + 1) - a n ∈ Ideal.span {U.ϖ0 ^ n}) :
     ∃ y : Γ, ∀ n, y - a n ∈ Ideal.span {U.ϖ0 ^ n} := by
@@ -227,7 +225,7 @@ theorem exists_limit (a : ℕ → Γ) (h : ∀ n, a (n + 1) - a n ∈ Ideal.span
   exact neg_mem this
 
 /- English proof (translation)
-Use `T.isAdicComplete` as an intermediate fact. Conclude with `IsHausdorff.haus' (I := Ideal.span {T.π}) x (fun n => by`. Rewrite using `[sMod_iff U, sub_zero]`. Conclude with `h n)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_forall_mem (x : Γ) (h : ∀ n, x ∈ Ideal.span {U.ϖ0 ^ n}) : x = 0 := by
   have := T.isAdicComplete
@@ -236,9 +234,9 @@ theorem eq_zero_of_forall_mem (x : Γ) (h : ∀ n, x ∈ Ideal.span {U.ϖ0 ^ n})
     exact h n)
 
 /- English proof (translation)
-Take `⟨m, x', hxx', hx'0, -⟩` from `T.exists_eq_π_pow_mul hx`. Take `⟨w, hw⟩` from `U.isUnit_alt₂.exists_right_inv`. Establish `hwu : IsUnit w` using `⟨⟨w, U.z, by rw [mul_comm]; exact hw, hw⟩, rfl⟩`. Use `⟨m, (hwu.pow m).unit * (isUnit_of_red_ne_zero T hx'0).unit, ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_mul, IsUnit.unit_spec, IsUnit.unit_spec, hxx', ϖ0]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem exists_eq_pow_mul_unit {x : Γ} (hx : x ≠ 0) : ∃ (m : ℕ) (u : Γˣ), x = U.ϖ0 ^ m * u := by
   obtain ⟨m, x', hxx', hx'0, -⟩ := T.exists_eq_π_pow_mul hx
@@ -255,28 +253,28 @@ def IsInt (n : ℤ) (a : T.B) : Prop :=
 variable {U}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨0, by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem isInt_zero (n : ℤ) : IsInt U n 0 := ⟨0, by simp⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨w, by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem isInt_algebraMap (w : Γ) : IsInt U 0 (algebraMap Γ T.B w) := ⟨w, by simp⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem isInt_one : IsInt U 0 1 := ⟨1, by simp⟩
 
 variable (U) in
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem isInt_pow (n : ℤ) : IsInt U n (U.ϖ ^ n) := ⟨1, by simp⟩
 
 /- English proof (translation)
-Take `⟨x, rfl⟩` from `ha`. Take `⟨y, rfl⟩` from `hb`. Conclude with `⟨x + y, by rw [map_add, mul_add]⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem IsInt.add {n : ℤ} {a b : T.B} (ha : IsInt U n a) (hb : IsInt U n b) :
     IsInt U n (a + b) := by
@@ -285,14 +283,14 @@ theorem IsInt.add {n : ℤ} {a b : T.B} (ha : IsInt U n a) (hb : IsInt U n b) :
   exact ⟨x + y, by rw [map_add, mul_add]⟩
 
 /- English proof (translation)
-Take `⟨x, rfl⟩` from `ha`. Conclude with `⟨-x, by rw [map_neg, mul_neg]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem IsInt.neg {n : ℤ} {a : T.B} (ha : IsInt U n a) : IsInt U n (-a) := by
   obtain ⟨x, rfl⟩ := ha
   exact ⟨-x, by rw [map_neg, mul_neg]⟩
 
 /- English proof (translation)
-Rewrite using `[sub_eq_add_neg]`. Conclude with `ha.add hb.neg`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsInt.sub {n : ℤ} {a b : T.B} (ha : IsInt U n a) (hb : IsInt U n b) :
     IsInt U n (a - b) := by
@@ -300,7 +298,7 @@ theorem IsInt.sub {n : ℤ} {a b : T.B} (ha : IsInt U n a) (hb : IsInt U n b) :
   exact ha.add hb.neg
 
 /- English proof (translation)
-Take `⟨x, rfl⟩` from `ha`. Take `⟨y, rfl⟩` from `hb`. Conclude with `⟨x * y, by rw [zpow_add₀ U.ϖ_ne_zero, map_mul]; ring⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem IsInt.mul {n m : ℤ} {a b : T.B} (ha : IsInt U n a) (hb : IsInt U m b) :
     IsInt U (n + m) (a * b) := by
@@ -309,7 +307,7 @@ theorem IsInt.mul {n m : ℤ} {a b : T.B} (ha : IsInt U n a) (hb : IsInt U m b) 
   exact ⟨x * y, by rw [zpow_add₀ U.ϖ_ne_zero, map_mul]; ring⟩
 
 /- English proof (translation)
-Take `⟨x, rfl⟩` from `ha`. Take `⟨t, ht⟩ : ∃ t : ℕ, n = m + t` from `⟨(n - m).toNat, by omega⟩`. Use `⟨U.ϖ0 ^ t * x, ?_⟩` and prove the remaining obligations. Rewrite using `[ht, zpow_add₀ U.ϖ_ne_zero, map_mul, map_pow, algebraMap_ϖ0, zpow_natCast]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem IsInt.mono {n m : ℤ} {a : T.B} (h : m ≤ n) (ha : IsInt U n a) : IsInt U m a := by
   obtain ⟨x, rfl⟩ := ha
@@ -319,14 +317,14 @@ theorem IsInt.mono {n m : ℤ} {a : T.B} (h : m ≤ n) (ha : IsInt U n a) : IsIn
   ring
 
 /- English proof (translation)
-The claim follows from `(isInt_pow U t).mul ha`.
+A detailed English derivation is pending.
 -/
 theorem IsInt.pow_mul {n : ℤ} {a : T.B} (ha : IsInt U n a) (t : ℤ) :
     IsInt U (t + n) (U.ϖ ^ t * a) :=
   (isInt_pow U t).mul ha
 
 /- English proof (translation)
-Use `ha.pow_mul (-t)` as an intermediate fact. Rewrite `this` using `[← mul_assoc, ← zpow_add₀ U.ϖ_ne_zero, neg_add_cancel, zpow_zero, one_mul, neg_add_eq_sub]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem IsInt.of_pow_mul {n t : ℤ} {a : T.B} (ha : IsInt U n (U.ϖ ^ t * a)) :
     IsInt U (n - t) a := by
@@ -335,14 +333,14 @@ theorem IsInt.of_pow_mul {n t : ℤ} {a : T.B} (ha : IsInt U n (U.ϖ ^ t * a)) :
     neg_add_eq_sub] at this
 
 /- English proof (translation)
-Take `⟨x, rfl⟩` from `ha`. Conclude with `⟨F.φ x, by rw [map_mul, map_zpow₀, U.frob_ϖ, TeichFrob.toB_algebraMap]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem IsInt.frob {n : ℤ} {a : T.B} (ha : IsInt U n a) : IsInt U n (F.toB a) := by
   obtain ⟨x, rfl⟩ := ha
   exact ⟨F.φ x, by rw [map_mul, map_zpow₀, U.frob_ϖ, TeichFrob.toB_algebraMap]⟩
 
 /- English proof (translation)
-Proceed by induction on `e with`. Consider the case `zero => exact ha`. Consider the case `succ e ih => rw [Function.iterate_succ_apply']`. Conclude with `ih.frob`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem IsInt.frob_iterate {n : ℤ} {a : T.B} (ha : IsInt U n a) (e : ℕ) :
     IsInt U n ((⇑F.toB)^[e] a) := by
@@ -351,7 +349,7 @@ theorem IsInt.frob_iterate {n : ℤ} {a : T.B} (ha : IsInt U n a) (e : ℕ) :
   | succ e ih => rw [Function.iterate_succ_apply']; exact ih.frob
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using isInt_zero n`. Consider the case `insert a s has ih`. Rewrite using `[Finset.sum_insert has]`. Conclude with `(h a (Finset.mem_insert_self a s)).add (ih fun i hi => h i (Finset.mem_insert_of_mem hi))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsInt.sum {n : ℤ} {ι : Type*} (s : Finset ι) (f : ι → T.B)
     (h : ∀ i ∈ s, IsInt U n (f i)) : IsInt U n (∑ i ∈ s, f i) := by
@@ -364,15 +362,13 @@ theorem IsInt.sum {n : ℤ} {ι : Type*} (s : Finset ι) (f : ι → T.B)
 
 variable (U) in
 /- English proof (translation)
-Take `⟨N, x, hx⟩` from `IsLocalization.Away.surj T.π a`. Establish `hx0 : x ≠ 0`. Introduce and unpack `rfl`. Rewrite `hx` using `[map_zero]`. Conclude with `ha (T.eq_zero_of_mul_pow hx)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨m, u, hxu⟩` from `exists_eq_pow_mul_unit U hx0`. Take `⟨w, hw⟩` from `U.isUnit_alt₂.exists_right_inv`. Establish `hπ : algebraMap Γ T.B T.π = U.ϖ * algebraMap Γ T.B w`. Rewrite using `[← algebraMap_ϖ0, ← map_mul, ϖ0, mul_assoc, hw, mul_one]`. Establish `hzw : algebraMap Γ T.B w * algebraMap Γ T.B U.z = 1` using `by rw [← map_mul, mul_comm, hw, map_one]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨m - N, u * (U.isUnit_alt₂.unit) ^ N, ?_⟩` and prove the remaining obligations. Rewrite `hx` using `[hπ, hxu, map_mul, map_pow, algebraMap_ϖ0, mul_pow]`. Establish `hϖN : U.ϖ ^ N ≠ 0` using `pow_ne_zero _ U.ϖ_ne_zero`. Establish `key : a * U.ϖ ^ N = U.ϖ ^ m * algebraMap Γ T.B u * algebraMap Γ T.B U.z ^ N`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hzw, one_pow, mul_one]`. Use `_ = (a * (U.ϖ ^ N * algebraMap Γ T.B w ^ N)) * algebraMap Γ T.B U.z ^ N := by ring`. Use `_ = _ := by rw [hx]`. Establish `ha' : a = U.ϖ ^ m * algebraMap Γ T.B u * algebraMap Γ T.B U.z ^ N * (U.ϖ ^ N)⁻¹`. Rewrite using `[← key, mul_inv_cancel_right₀ hϖN]`.
-
-Rewrite using `[ha', zpow_sub₀ U.ϖ_ne_zero, zpow_natCast, zpow_natCast, Units.val_mul, Units.val_pow_eq_pow_val, IsUnit.unit_spec, map_mul, map_pow, div_eq_mul_inv]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_unit_form (a : T.B) (ha : a ≠ 0) :
     ∃ (n : ℤ) (u : Γˣ), a = U.ϖ ^ n * algebraMap Γ T.B u := by
@@ -401,14 +397,14 @@ theorem exists_unit_form (a : T.B) (ha : a ≠ 0) :
   ring
 
 /- English proof (translation)
-The claim follows from `red_ne_zero_of_isUnit u.isUnit`.
+A detailed English derivation is pending.
 -/
 theorem unit_red_ne_zero (u : Γˣ) : T.red (u : Γ) ≠ 0 := red_ne_zero_of_isUnit u.isUnit
 
 /- English proof (translation)
-Take `⟨t, ht⟩ : ∃ t : ℕ, m = n + t` from `⟨(m - n).toNat, by omega⟩`. Establish `ht0 : 0 < t` using `by omega`. Rewrite `he` using `[ht, zpow_add₀ U.ϖ_ne_zero, mul_assoc]`. Establish `he'` using `mul_left_cancel₀ (zpow_ne_zero n U.ϖ_ne_zero) he`. Rewrite `he'` using `[zpow_natCast, ← algebraMap_ϖ0, ← map_pow, ← map_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `T.algebraMap_injective he'` as an intermediate fact. Establish `h0` using `unit_red_ne_zero (T := T) u`. Rewrite `h0` using `[this, map_mul, map_pow, U.red_ϖ0, zero_pow ht0.ne', zero_mul]`. Conclude with `h0 rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unit_form_lt_false {n m : ℤ} (h : n < m) (u u' : Γˣ)
     (he : U.ϖ ^ n * algebraMap Γ T.B u = U.ϖ ^ m * algebraMap Γ T.B u') : False := by
@@ -423,7 +419,7 @@ theorem unit_form_lt_false {n m : ℤ} (h : n < m) (u u' : Γˣ)
   exact h0 rfl
 
 /- English proof (translation)
-Break down `lt_trichotomy n m with h | h | h` into its components or cases. Conclude with `(unit_form_lt_false h u u' he).elim`. Conclude with `h`. Conclude with `(unit_form_lt_false h u' u he.symm).elim`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem unit_form_unique {n m : ℤ} (u u' : Γˣ)
     (he : U.ϖ ^ n * algebraMap Γ T.B u = U.ϖ ^ m * algebraMap Γ T.B u') : n = m := by
@@ -439,7 +435,7 @@ noncomputable def ord (a : T.B) : ℤ :=
   if h : a = 0 then 0 else Classical.choose (exists_unit_form U a h)
 
 /- English proof (translation)
-Rewrite using `[ord, dif_neg ha]`. Conclude with `Classical.choose_spec (exists_unit_form U a ha)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ord_spec {a : T.B} (ha : a ≠ 0) :
     ∃ u : Γˣ, a = U.ϖ ^ ord U a * algebraMap Γ T.B u := by
@@ -447,9 +443,9 @@ theorem ord_spec {a : T.B} (ha : a ≠ 0) :
   exact Classical.choose_spec (exists_unit_form U a ha)
 
 /- English proof (translation)
-Use `nontrivial_Γ T` as an intermediate fact. Establish `ha : a ≠ 0`. Rewrite using `[h]`. Use `mul_ne_zero (zpow_ne_zero _ U.ϖ_ne_zero) ?_` and prove the remaining obligations. Introduce `h0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `T.algebraMap_injective (h0.trans (map_zero _).symm)` as an intermediate fact. Conclude with `u.ne_zero this`. Take `⟨u', hu'⟩` from `ord_spec ha`. Conclude with `unit_form_unique u' u (hu'.symm.trans h)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem ord_eq {a : T.B} {n : ℤ} {u : Γˣ}
     (h : a = U.ϖ ^ n * algebraMap Γ T.B u) : ord U a = n := by
@@ -464,7 +460,7 @@ theorem ord_eq {a : T.B} {n : ℤ} {u : Γˣ}
   exact unit_form_unique u' u (hu'.symm.trans h)
 
 /- English proof (translation)
-Take `⟨u, rfl⟩` from `isUnit_of_red_ne_zero T hw`. Conclude with `ord_eq h`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem ord_eq_of_red {a : T.B} {n : ℤ} {w : Γ} (hw : T.red w ≠ 0)
     (h : a = U.ϖ ^ n * algebraMap Γ T.B w) : ord U a = n := by
@@ -472,9 +468,9 @@ theorem ord_eq_of_red {a : T.B} {n : ℤ} {w : Γ} (hw : T.red w ≠ 0)
   exact ord_eq h
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `ord_spec (U := U) ha`. Take `⟨u', hu'⟩` from `ord_spec (U := U) hb`. Use `ord_eq (u := u * u') ?_` and prove the remaining obligations. Rewrite using `[zpow_add₀ U.ϖ_ne_zero, Units.val_mul, map_mul]`. Use `conv_lhs => rw [hu, hu']`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem ord_mul {a b : T.B} (ha : a ≠ 0) (hb : b ≠ 0) :
     ord U (a * b) = ord U a + ord U b := by
@@ -486,7 +482,7 @@ theorem ord_mul {a b : T.B} (ha : a ≠ 0) (hb : b ≠ 0) :
   ring
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `ord_spec (U := U) ha`. Use `ord_eq (u := Units.map (F.φ : Γ →+* Γ).toMonoidHom u) ?_` and prove the remaining obligations. Use `conv_lhs => rw [hu]`. Rewrite using `[map_mul, map_zpow₀, U.frob_ϖ, TeichFrob.toB_algebraMap]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem ord_frob {a : T.B} (ha : a ≠ 0) : ord U (F.toB a) = ord U a := by
   obtain ⟨u, hu⟩ := ord_spec (U := U) ha
@@ -496,7 +492,7 @@ theorem ord_frob {a : T.B} (ha : a ≠ 0) : ord U (F.toB a) = ord U a := by
   rfl
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `ord_spec (U := U) ha`. Use `ord_eq (u := u) ?_` and prove the remaining obligations. Use `conv_lhs => rw [hu]`. Rewrite using `[zpow_add₀ U.ϖ_ne_zero]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem ord_pow_mul {a : T.B} (ha : a ≠ 0) (t : ℤ) :
     ord U (U.ϖ ^ t * a) = t + ord U a := by
@@ -507,19 +503,19 @@ theorem ord_pow_mul {a : T.B} (ha : a ≠ 0) (t : ℤ) :
   ring
 
 /- English proof (translation)
-The claim follows from `ord_eq (u := 1) (by simp)`.
+A detailed English derivation is pending.
 -/
 theorem ord_one : ord U (1 : T.B) = 0 :=
   ord_eq (u := 1) (by simp)
 
 /- English proof (translation)
-Simplify `ord_pow_mul (U := U) one_ne_zero t` using `[ord_one]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem ord_pow (t : ℤ) : ord U (U.ϖ ^ t) = t := by
   simpa [ord_one] using ord_pow_mul (U := U) one_ne_zero t
 
 /- English proof (translation)
-Distinguish the cases in `ha : a = 0`. Rewrite using `[ha]`. Conclude with `isInt_zero _`. Take `⟨u, hu⟩` from `ord_spec (U := U) ha`. Conclude with `⟨u, hu⟩`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isInt_ord (a : T.B) : IsInt U (ord U a) a := by
   by_cases ha : a = 0
@@ -528,11 +524,11 @@ theorem isInt_ord (a : T.B) : IsInt U (ord U a) a := by
     exact ⟨u, hu⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w, hw⟩`. Establish `hw0 : w ≠ 0` using `by rintro rfl; simp at hw; exact ha hw`. Take `⟨t, u, rfl⟩` from `exists_eq_pow_mul_unit U hw0`. Establish `: ord U a = n + t`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `ord_eq (u := u) ?_` and prove the remaining obligations. Rewrite using `[hw, map_mul, map_pow, algebraMap_ϖ0, zpow_add₀ U.ϖ_ne_zero, zpow_natCast]`. Expand and normalize the polynomial expressions, which then agree. Use linear arithmetic over natural numbers and integers. Introduce `h`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(isInt_ord a).mono h`.
+A detailed English derivation is pending.
 -/
 theorem isInt_iff {a : T.B} (ha : a ≠ 0) {n : ℤ} : IsInt U n a ↔ n ≤ ord U a := by
   constructor
@@ -554,9 +550,9 @@ noncomputable def res (a : T.B) : L :=
   if h : IsInt U 0 a then T.red (Classical.choose h) else 0
 
 /- English proof (translation)
-Establish `h` using `isInt_algebraMap (U := U) w`. Rewrite using `[res, dif_pos h]`. Establish `h1` using `Classical.choose_spec h`. Establish `h2 : algebraMap Γ T.B w = algebraMap Γ T.B (Classical.choose h)`. Simplify using `using h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `congrArg T.red (T.algebraMap_injective h2).symm`.
+A detailed English derivation is pending.
 -/
 theorem res_algebraMap (w : Γ) : res U (algebraMap Γ T.B w) = T.red w := by
   have h := isInt_algebraMap (U := U) w
@@ -567,13 +563,13 @@ theorem res_algebraMap (w : Γ) : res U (algebraMap Γ T.B w) = T.red w := by
   exact congrArg T.red (T.algebraMap_injective h2).symm
 
 /- English proof (translation)
-Rewrite using `[h, res_algebraMap]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem res_of_eq {a : T.B} {w : Γ} (h : a = algebraMap Γ T.B w) :
     res U a = T.red w := by rw [h, res_algebraMap]
 
 /- English proof (translation)
-Take `⟨w, hw⟩` from `h`. Conclude with `⟨w, by simpa using hw⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem IsInt.exists_eq {a : T.B} (h : IsInt U 0 a) :
     ∃ w : Γ, a = algebraMap Γ T.B w := by
@@ -581,7 +577,7 @@ theorem IsInt.exists_eq {a : T.B} (h : IsInt U 0 a) :
   exact ⟨w, by simpa using hw⟩
 
 /- English proof (translation)
-Take `⟨x, rfl⟩` from `ha.exists_eq`. Take `⟨y, rfl⟩` from `hb.exists_eq`. Rewrite using `[← map_add, res_algebraMap, res_algebraMap, res_algebraMap, map_add]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem res_add {a b : T.B} (ha : IsInt U 0 a) (hb : IsInt U 0 b) :
     res U (a + b) = res U a + res U b := by
@@ -590,7 +586,7 @@ theorem res_add {a b : T.B} (ha : IsInt U 0 a) (hb : IsInt U 0 b) :
   rw [← map_add, res_algebraMap, res_algebraMap, res_algebraMap, map_add]
 
 /- English proof (translation)
-Take `⟨x, rfl⟩` from `ha.exists_eq`. Take `⟨y, rfl⟩` from `hb.exists_eq`. Rewrite using `[← map_mul, res_algebraMap, res_algebraMap, res_algebraMap, map_mul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem res_mul {a b : T.B} (ha : IsInt U 0 a) (hb : IsInt U 0 b) :
     res U (a * b) = res U a * res U b := by
@@ -599,28 +595,28 @@ theorem res_mul {a b : T.B} (ha : IsInt U 0 a) (hb : IsInt U 0 b) :
   rw [← map_mul, res_algebraMap, res_algebraMap, res_algebraMap, map_mul]
 
 /- English proof (translation)
-Take `⟨x, rfl⟩` from `ha.exists_eq`. Rewrite using `[TeichFrob.toB_algebraMap, res_algebraMap, res_algebraMap, F.red_φ]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem res_frob {a : T.B} (ha : IsInt U 0 a) : res U (F.toB a) = res U a ^ p ^ F.a := by
   obtain ⟨x, rfl⟩ := ha.exists_eq
   rw [TeichFrob.toB_algebraMap, res_algebraMap, res_algebraMap, F.red_φ]
 
 /- English proof (translation)
-Simplify using `using res_algebraMap (U := U) 0`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem res_zero : res U (0 : T.B) = 0 := by
   simpa using res_algebraMap (U := U) 0
 
 /- English proof (translation)
-Simplify using `using res_algebraMap (U := U) 1`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem res_one : res U (1 : T.B) = 1 := by
   simpa using res_algebraMap (U := U) 1
 
 /- English proof (translation)
-Take `⟨x, rfl⟩` from `ha.exists_eq`. Rewrite using `[res_algebraMap, U.red_eq_zero_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩`. Conclude with `⟨y, by rw [map_mul, algebraMap_ϖ0, zpow_one]⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨y, hy⟩`. Rewrite `hy` using `[zpow_one, ← algebraMap_ϖ0, ← map_mul]`. Conclude with `⟨y, T.algebraMap_injective hy⟩`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem res_eq_zero_iff {a : T.B} (ha : IsInt U 0 a) : res U a = 0 ↔ IsInt U 1 a := by
   obtain ⟨x, rfl⟩ := ha.exists_eq
@@ -633,7 +629,7 @@ theorem res_eq_zero_iff {a : T.B} (ha : IsInt U 0 a) : res U a = 0 ↔ IsInt U 1
     exact ⟨y, T.algebraMap_injective hy⟩
 
 /- English proof (translation)
-Rewrite using `[Ne, res_eq_zero_iff ha, isInt_iff ha0]`. Use `(isInt_iff ha0).mp ha` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem res_ne_zero_iff {a : T.B} (ha : IsInt U 0 a) (ha0 : a ≠ 0) :
     res U a ≠ 0 ↔ ord U a = 0 := by
@@ -642,7 +638,7 @@ theorem res_ne_zero_iff {a : T.B} (ha : IsInt U 0 a) (ha0 : a ≠ 0) :
   omega
 
 /- English proof (translation)
-The claim follows from `(res_eq_zero_iff (ha.mono zero_le_one)).mpr ha`.
+A detailed English derivation is pending.
 -/
 theorem res_eq_zero_of_isInt_one {a : T.B} (ha : IsInt U 1 a) : res U a = 0 :=
   (res_eq_zero_iff (ha.mono zero_le_one)).mpr ha
@@ -654,23 +650,21 @@ variable {ι : Type*}
 variable (U) in
 
 /- English proof (translation)
-Use `choose X Y hXY using hmod`. Establish `hGpow : ∀ n x, G (U.ϖ0 ^ n • x) = U.ϖ0 ^ n • G x`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => simp`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `succ n ih => intro x`. Rewrite using `[pow_succ', mul_smul, hG, ih, mul_smul]`. Introduce `z`. Set `zs : ℕ → (ι → Γ)` to `fun n => Nat.rec z (fun _ w => Y w) n`. Set `s : ℕ → (ι → Γ)` to `fun n => ∑ j ∈ range n, U.ϖ0 ^ j • X (zs j)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hA : ∀ n, z - G (s n) = U.ϖ0 ^ n • zs n`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => simp [s, zs]`. Consider the case `succ n ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `e1 : s (n + 1) = s n + U.ϖ0 ^ n • X (zs n)` using `Finset.sum_range_succ _ _`. Establish `e2 : zs (n + 1) = Y (zs n)` using `rfl`. Establish `h' : zs n - G (X (zs n)) = U.ϖ0 • Y (zs n)`. Rewrite using `[sub_eq_iff_eq_add']`. Conclude with `hXY (zs n)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e1, map_add, hGpow, ← sub_sub, ih, ← smul_sub, h', smul_smul, ← pow_succ, e2]`. Establish `hstep : ∀ i n, s (n + 1) i - s n i ∈ Ideal.span {U.ϖ0 ^ n}`. Introduce `i n`. Establish `e1 : s (n + 1) = s n + U.ϖ0 ^ n • X (zs n)` using `Finset.sum_range_succ _ _`. Rewrite using `[e1, Pi.add_apply, add_sub_cancel_left, Pi.smul_apply, smul_eq_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `Ideal.mem_span_singleton.mpr (dvd_mul_right _ _)`. Use `choose y hy using fun i => exists_limit U (fun n => s n i) (hstep i)`. Use `choose u hu using fun n i => Ideal.mem_span_singleton'.mp (hy i n)`. Use `⟨y, ?_⟩` and prove the remaining obligations. Establish `hys : ∀ n, y - s n = U.ϖ0 ^ n • (fun i => u n i)`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Use symmetry to reverse the relation.
 
-Introduce `n`. Use function extensionality and compare the values at `i`. Simplify using `[← hu n i, mul_comm]`. Use function extensionality and compare the values at `i`. Use `symm`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← sub_eq_zero]`. Apply `eq_zero_of_forall_mem U` to reduce the goal to its premises. Introduce `n`. Establish `: z - G y = U.ϖ0 ^ n • (zs n - G (fun i => u n i))`. Rewrite using `[show y = s n + (y - s n) by abel, map_add, ← sub_sub, hA, hys, hGpow, smul_sub]`.
-
-Rewrite using `[← Pi.sub_apply, this, Pi.smul_apply, smul_eq_mul]`. Conclude with `Ideal.mem_span_singleton.mpr (dvd_mul_right _ _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem surjective_of_mod (G : (ι → Γ) →+ (ι → Γ))
     (hG : ∀ x, G (U.ϖ0 • x) = U.ϖ0 • G x)
@@ -737,7 +731,7 @@ theorem matOp_apply (A : Matrix ι ι Γ) (τ : Γ →+* Γ) (x : ι → Γ) :
     matOp A τ x = A *ᵥ (fun i => τ (x i)) := rfl
 
 /- English proof (translation)
-Rewrite using `[matOp_apply, matOp_apply, ← Matrix.mulVec_smul]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `[hc]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem matOp_smul_of_fix (A : Matrix ι ι Γ) {τ : Γ →+* Γ} {c : Γ} (hc : τ c = c) (x : ι → Γ) :
     matOp A τ (c • x) = c • matOp A τ x := by
@@ -774,7 +768,7 @@ theorem resOp_apply (A : Matrix ι ι Γ) (x : ι → L) :
     resOp T A e x = A.map T.red *ᵥ (fun i => x i ^ p ^ e) := rfl
 
 /- English proof (translation)
-Rewrite using `[resOp_apply, resOp_apply, ← Matrix.mulVec_smul]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `[mul_pow]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem resOp_smul (A : Matrix ι ι Γ) (c : L) (x : ι → L) :
     resOp T A e (c • x) = c ^ p ^ e • resOp T A e x := by
@@ -784,7 +778,7 @@ theorem resOp_smul (A : Matrix ι ι Γ) (c : L) (x : ι → L) :
   simp [mul_pow]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [redV, matOp_apply, resOp_apply, Matrix.mulVec, dotProduct, Matrix.map_apply, map_sum, map_mul, hτ]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem red_matOp (A : Matrix ι ι Γ) {τ : Γ →+* Γ}
     (hτ : ∀ y, T.red (τ y) = T.red y ^ p ^ e) (x : ι → Γ) :
@@ -794,7 +788,7 @@ theorem red_matOp (A : Matrix ι ι Γ) {τ : Γ →+* Γ}
     map_mul, hτ]
 
 /- English proof (translation)
-Proceed by induction on `N with`. Consider the case `zero => rfl`. Consider the case `succ N ih => rw [Function.iterate_succ_apply', Function.iterate_succ_apply', red_matOp A hτ, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem red_iterate_matOp (A : Matrix ι ι Γ) {τ : Γ →+* Γ}
     (hτ : ∀ y, T.red (τ y) = T.red y ^ p ^ e) (x : ι → Γ) (N : ℕ) :
@@ -805,7 +799,7 @@ theorem red_iterate_matOp (A : Matrix ι ι Γ) {τ : Γ →+* Γ}
 
 omit [Fintype ι] in
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[redV]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem redV_sub (x y : ι → Γ) : redV T (x - y) = redV T x - redV T y := by
   funext i
@@ -813,7 +807,7 @@ theorem redV_sub (x y : ι → Γ) : redV T (x - y) = redV T x - redV T y := by
 
 omit [Fintype ι] in
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[redV, U.red_ϖ0]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem redV_ϖ0_smul (x : ι → Γ) : redV T (U.ϖ0 • x) = 0 := by
   funext i
@@ -822,7 +816,7 @@ theorem redV_ϖ0_smul (x : ι → Γ) : redV T (U.ϖ0 • x) = 0 := by
 omit [Fintype ι] in
 variable (U) in
 /- English proof (translation)
-Establish `: ∀ i, ∃ y, x i = U.ϖ0 * y` using `fun i => U.red_eq_zero_iff.1 (congrFun h i)`. Use `choose y hy using this`. Conclude with `⟨y, funext fun i => by simp [hy i]⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_eq_ϖ0_smul_of_red (x : ι → Γ) (h : redV T x = 0) : ∃ y, x = U.ϖ0 • y := by
   have : ∀ i, ∃ y, x i = U.ϖ0 * y := fun i => U.red_eq_zero_iff.1 (congrFun h i)
@@ -831,7 +825,7 @@ theorem exists_eq_ϖ0_smul_of_red (x : ι → Γ) (h : redV T x = 0) : ∃ y, x 
 
 omit [Fintype ι] in
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun i => (T.red_surjective (x i)).choose, funext fun i => (T.red_surjective (x i)).choose_spec⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_lift (x : ι → L) : ∃ y : ι → Γ, redV T y = x :=
   ⟨fun i => (T.red_surjective (x i)).choose, funext fun i => (T.red_surjective (x i)).choose_spec⟩
@@ -841,9 +835,9 @@ variable [IsAlgClosed L]
 variable (U) in
 
 /- English proof (translation)
-Take `⟨x, hx⟩` from `surjective_of_mod U (matOp A τ - AddMonoidHom.id _) (fun x => by simp [matOp_smul_of_fix A hτϖ, smul_sub]) (fun z => by`. Take `⟨xb, hxb⟩` from `SemilinearResidue.exists_sub_eq (p := p) he (resOp_smul (T := T) (e := e) A) (redV T z)`. Take `⟨x, rfl⟩` from `exists_lift (T := T) xb`. Take `⟨y, hy⟩` from `exists_eq_ϖ0_smul_of_red U (z - (matOp A τ x - x)) (by`. Rewrite using `[redV_sub, redV_sub, red_matOp A hτ, hxb, sub_self])`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨x, y, by simp [← hy]⟩) z`. Conclude with `⟨x, by simpa using hx⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem matOp_sub_surjective (he : 0 < e) (A : Matrix ι ι Γ) {τ : Γ →+* Γ}
     (hτ : ∀ y, T.red (τ y) = T.red y ^ p ^ e) (hτϖ : τ U.ϖ0 = U.ϖ0) (z : ι → Γ) :
@@ -861,9 +855,9 @@ theorem matOp_sub_surjective (he : 0 < e) (A : Matrix ι ι Γ) {τ : Γ →+* �
 variable (U) in
 
 /- English proof (translation)
-Take `⟨yb, hyb0, hyb⟩` from `SemilinearResidue.exists_fixed_ne_zero (p := p) he (resOp_smul (T := T) (e := e) A) (redV T x₀) (fun N => by rw [← red_iterate_matOp A hτ]; exact hx₀ N)`. Take `⟨y₀, rfl⟩` from `exists_lift (T := T) yb`. Take `⟨w, hw⟩` from `exists_eq_ϖ0_smul_of_red U (matOp A τ y₀ - y₀) (by`. Rewrite using `[redV_sub, red_matOp A hτ, hyb, sub_self])`. Take `⟨x, hx⟩` from `matOp_sub_surjective U he A hτ hτϖ w`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨y₀ - U.ϖ0 • x, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_sub, matOp_smul_of_fix A hτϖ, sub_eq_sub_iff_sub_eq_sub, hw, ← smul_sub, hx]`. Rewrite using `[redV_sub, redV_ϖ0_smul, sub_zero]`. Conclude with `hyb0`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_fixed (he : 0 < e) (A : Matrix ι ι Γ) {τ : Γ →+* Γ}
     (hτ : ∀ y, T.red (τ y) = T.red y ^ p ^ e) (hτϖ : τ U.ϖ0 = U.ϖ0) (x₀ : ι → Γ)
@@ -888,7 +882,7 @@ section Lattice
 variable {H : Type*} [AddCommGroup H] [Module T.B H]
 
 /- English proof (translation)
-Proceed by induction on `e with`. Consider the case `zero => simp`. Consider the case `succ e ih`. Rewrite using `[Function.iterate_succ_apply', ih, TeichFrob.toB_algebraMap, RingHom.coe_pow, RingHom.coe_pow, Function.iterate_succ_apply']`. Both sides reduce to the same expression.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem frob_iterate_algebraMap (e : ℕ) (w : Γ) :
     (⇑F.toB)^[e] (algebraMap Γ T.B w) = algebraMap Γ T.B (((F.φ : Γ →+* Γ) ^ e) w) := by
@@ -900,7 +894,7 @@ theorem frob_iterate_algebraMap (e : ℕ) (w : Γ) :
     rfl
 
 /- English proof (translation)
-Proceed by induction on `e with`. Consider the case `zero => simp`. Consider the case `succ e ih`. Rewrite using `[RingHom.coe_pow, Function.iterate_succ_apply', ← RingHom.coe_pow, RingEquiv.coe_toRingHom, F.red_φ, ih, ← pow_mul, ← pow_add, mul_add, mul_one, add_comm]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem red_frob_pow (e : ℕ) (w : Γ) :
     T.red (((F.φ : Γ →+* Γ) ^ e) w) = T.red w ^ p ^ (F.a * e) := by
@@ -911,7 +905,7 @@ theorem red_frob_pow (e : ℕ) (w : Γ) :
       F.red_φ, ih, ← pow_mul, ← pow_add, mul_add, mul_one, add_comm]
 
 /- English proof (translation)
-Proceed by induction on `e with`. Consider the case `zero => simp`. Consider the case `succ e ih`. Rewrite using `[RingHom.coe_pow, Function.iterate_succ_apply', ← RingHom.coe_pow, ih, RingEquiv.coe_toRingHom, U.φ_ϖ0]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem frob_pow_ϖ0 (e : ℕ) : ((F.φ : Γ →+* Γ) ^ e) U.ϖ0 = U.ϖ0 := by
   induction e with
@@ -926,7 +920,7 @@ noncomputable def ofCoord {n : ℕ} (b : Fin n → H) (x : Fin n → Γ) : H :=
   ∑ i, algebraMap Γ T.B (x i) • b i
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Use `Fintype.linearIndependent_iff.mp hb (fun i => algebraMap Γ T.B (x i)) h i` as an intermediate fact. Conclude with `T.algebraMap_injective (this.trans (map_zero _).symm)`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ofCoord_eq_zero {n : ℕ} {b : Fin n → H} (hb : LinearIndependent T.B b)
     {x : Fin n → Γ} (h : ofCoord T b x = 0) : x = 0 := by
@@ -935,7 +929,7 @@ theorem ofCoord_eq_zero {n : ℕ} {b : Fin n → H} (hb : LinearIndependent T.B 
   exact T.algebraMap_injective (this.trans (map_zero _).symm)
 
 /- English proof (translation)
-Simplify using `only [ofCoord, map_sum, hg, frob_iterate_algebraMap, hA, Finset.smul_sum, smul_smul, matOp_apply, Matrix.mulVec, dotProduct, map_sum, map_mul, Finset.sum_smul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl (fun i _ => Finset.sum_congr rfl (fun j _ => ?_))` and prove the remaining obligations. Rewrite using `[mul_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_ofCoord (e : ℕ) (g : H →+ H)
     (hg : ∀ (a : T.B) (x : H), g (a • x) = (⇑F.toB)^[e] a • g x)
@@ -949,7 +943,7 @@ theorem map_ofCoord (e : ℕ) (g : H →+ H)
   rw [mul_comm]
 
 /- English proof (translation)
-Proceed by induction on `N with`. Consider the case `zero => rfl`. Consider the case `succ N ih`. Rewrite using `[Function.iterate_succ_apply', Function.iterate_succ_apply', ih, map_ofCoord e g hg b A hA]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_iterate_ofCoord (e : ℕ) (g : H →+ H)
     (hg : ∀ (a : T.B) (x : H), g (a • x) = (⇑F.toB)^[e] a • g x)
@@ -963,7 +957,7 @@ theorem map_iterate_ofCoord (e : ℕ) (g : H →+ H)
     rw [Function.iterate_succ_apply', Function.iterate_succ_apply', ih, map_ofCoord e g hg b A hA]
 
 /- English proof (translation)
-Take `⟨y, hy, hy0⟩` from `exists_fixed U (Nat.mul_pos U.a_pos he) A (red_frob_pow e) (frob_pow_ϖ0 (U := U) e) x₀ hx₀`. Use `⟨y, hy0, fun h => hy0 ?_, by rw [map_ofCoord e g hg b A hA, hy]⟩` and prove the remaining obligations. Rewrite using `[ofCoord_eq_zero hb h]`. Use function extensionality and compare the values at `i`. Simplify using `[redV]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem exists_fixed_of_lattice [IsAlgClosed L] (U : FixedUnif F) (e : ℕ) (he : 0 < e) (g : H →+ H)
     (hg : ∀ (a : T.B) (x : H), g (a • x) = (⇑F.toB)^[e] a • g x)

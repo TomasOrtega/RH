@@ -16,7 +16,7 @@ open ReciprocityTheory.AnForm.M Topology
 open GroundTheory.Heights₂.Heights.NumbersDVR (MRing)
 
 /- English proof (translation)
-Unfold `locDens ReciprocityTheory.AnForm.maDens`. Use `congr 3`. Use function extensionality and compare the values at `k`. Conclude with `ReciprocityTheory.AnForm.M.PLAux.hessC_congr_eventuallyEq (h k)`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem locDens_congr_germ {n : ℕ} {X : Type} [TopologicalSpace X] (A : FinHolAtlas n X)
     (Φ Ψ : Fin n → LocPot X) (j : Fin A.n) (y : Fin n → ℂ)
@@ -29,17 +29,15 @@ theorem locDens_congr_germ {n : ℕ} {X : Type} [TopologicalSpace X] (A : FinHol
   exact ReciprocityTheory.AnForm.M.PLAux.hessC_congr_eventuallyEq (h k)
 
 /- English proof (translation)
-Introduce `K _ _ ι _ P e L A B hP hR hL hA hB`. Unfold `zInt`. Rewrite using `[dif_pos hR, dif_pos hR, dif_pos hR]`. Use `set R := hR.some`. Unfold `Res.int`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `hpA` using `R.isPotential_pot (isSmoothPot_logH hA)`. Establish `hpB` using `R.isPotential_pot (isSmoothPot_logH hB)`. Establish `hpL : ∀ j, IsPotential R.atlas (R.pot (logH (L j)))` using `fun j => R.isPotential_pot (isSmoothPot_logH (hL j))`. Establish `hcons : ∀ Q : LocPot R.R.M, IsPotential R.atlas Q → ∀ i, IsPotential R.atlas ((Fin.cons Q fun j => R.pot (logH (L j)) : Fin (e + 1) → LocPot R.R.M) i)`. Introduce `Q hQ i`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data.
 
-Consider the cases of `i using Fin.cases`. Conclude with `hQ`. Conclude with `hpL _`. Establish `e1 : ∀ φ0 : MCone ι → ℝ, mInt R.atlas (fun j => R.pot ((Fin.cons φ0 fun j => logH (L j) : Fin (e + 1) → MCone ι → ℝ) j)) (fun x => (fun _ => (1 : ℝ)) (R.pt x)) = mInt R.atlas (Fin.cons (R.pot φ0) fun j => R.pot (logH (L j))) (fun _ => 1)`. Introduce `φ0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Use `ReciprocityTheory.AnForm.M.PLC.mInt_congr_phi _ _ _ (fun i a b => ?_) _` and prove the remaining obligations. Apply the tactic sequence `cases i using Fin.cases <;> rfl`. Rewrite using `[e1, e1, e1, ← mIntAdd R.atlas (R.pot (logH A)) (R.pot (logH B)) _ hpA hpB hpL _ (mIntegrableCont _ _ (hcons _ hpA) _ continuous_const) (mIntegrableCont _ _ (hcons _ hpB) _ continuous_const)]`. Use `ReciprocityTheory.AnForm.M.PLAux.mInt_congr fun j y hy => ?_` and prove the remaining obligations. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data. Establish an intermediate fact.
 
-Use `locDens_congr_germ _ _ _ j y fun k => ?_` and prove the remaining obligations. Consider the cases of `k using Fin.cases`. Use `set x0 := (R.atlas.chart j).symm y`. Establish `hopen : (R.atlas.chart j).target ∩ (R.atlas.chart j).symm ⁻¹' R.R.src (R.idx x0) ∈ 𝓝 y` using `((R.atlas.chart j).continuousOn_symm.isOpen_inter_preimage (R.atlas.chart j).open_target (R.R.isOpen_alt_bis _)).mem_nhds ⟨hy, R.mem_src_idx x0⟩`. Use `filter_upwards [hopen] with y' hy'`.
-
-Establish `hz : ∀ k, ∃ i, R.liftAt x0 ((R.atlas.chart j).symm y') ⟨k, i⟩ ≠ 0` using `(R.liftAt_mem hy'.2).1`. Use `show Real.log (A.h _ * B.h _) = Real.log (A.h _) + Real.log (B.h _)`. Conclude with `Real.log_mul (A.pos _ hz).ne' (B.pos _ hz).ne'`. Both sides reduce to the same expression.
+Establish an intermediate fact. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem ZIntAdd.proof : ZIntAdd.Statement := by
   intro K _ _ ι _ P e L A B hP hR hL hA hB

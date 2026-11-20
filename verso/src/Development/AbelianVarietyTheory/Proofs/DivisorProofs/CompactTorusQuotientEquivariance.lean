@@ -6,39 +6,33 @@ open scoped NNReal ENNReal
 namespace GlobalTheory.ParabolicCoord
 
 /- English proof (translation)
-Introduce `G _ _ _ _ _ _ _ _ K _ _ _ _ _ _ _ _ T _ _ _ _ _ _ _ _ Q κ m δ μK μT μQ hQ hκ hm hδ hμK hμT hμQ β hβ hβ1 f hf hfQ g hint`. Use `haveI : LocallyCompactSpace Q := hQ.locallyCompactSpace`. Use `haveI : SecondCountableTopology Q := TopologicalSpace.Subtype.secondCountableTopology (Q : Set G)`. Use `haveI : SigmaCompactSpace Q := inferInstance`. Use `haveI : IsLocallyFiniteMeasure μQ := inferInstance`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `haveI : SigmaFinite μQ := inferInstance`. Use `haveI : SigmaFinite μT := inferInstance`. Establish `hδm : Measurable (fun t => δ t)` using `hδ.measurable`. Establish `hmc : Continuous m` using `hm.continuous`. Use `set ν : Measure T := μT.withDensity fun t => ((δ t : ℝ≥0) : ℝ≥0∞) with hν`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : SFinite ν := inferInstance`. Use `set y : K → T → G := fun k t => (m t)⁻¹ * κ k * g with hy`. Establish `hyc : Continuous (fun p : K × T => y p.1 p.2)`. Simplify using `only [hy]`. Use `fun_prop`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hyc' : Continuous (fun p : K × (T × Q) => y p.1 p.2.1)` using `hyc.comp (continuous_fst.prodMk (continuous_fst.comp continuous_snd))`. Establish `hqy : Measurable (fun p : K × (T × Q) => (p.2.2 : G) * y p.1 p.2.1)` using `(continuous_subtype_val.comp (continuous_snd.comp continuous_snd)).mul hyc' |>.measurable`. Set `H : K × (T × Q) → ℂ` to `fun p => ((β ((p.2.2 : G) * y p.1 p.2.1) : ℝ) : ℂ) * f (y p.1 p.2.1)`. Establish `hHm : Measurable H` using `(Complex.measurable_ofReal.comp (measurable_coe_nnreal_real.comp (hβ.comp hqy))).mul (hf.comp hyc').measurable`. Establish `hφ : Continuous (fun p : K × (T × Q) => (p.2.2 : G) * (m p.2.1)⁻¹ * κ p.1)` using `by fun_prop`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hFm : Measurable (fun x : G => ((β (x * g) : ℝ) : ℂ) * f (x * g))` using `(Complex.measurable_ofReal.comp (measurable_coe_nnreal_real.comp (hβ.comp (measurable_mul_const g)))).mul (hf.measurable.comp (measurable_mul_const g))`. Establish `hcomp : ∀ p : K × (T × Q), ((β ((p.2.2 : G) * (m p.2.1)⁻¹ * κ p.1 * g) : ℝ) : ℂ) * f ((p.2.2 : G) * (m p.2.1)⁻¹ * κ p.1 * g) = H p`. Introduce `p`. Establish `e : (p.2.2 : G) * (m p.2.1)⁻¹ * κ p.1 * g = (p.2.2 : G) * y p.1 p.2.1`. Simplify using `only [hy]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `group`. Simplify using `only [H, e, hfQ _ p.2.2.2]`. Establish `hβlin : ∀ x : G, Measurable (fun q : Q => (β ((q : G) * x) : ℝ≥0∞))` using `fun x => measurable_coe_nnreal_ennreal.comp (hβ.comp (measurable_subtype_coe.mul_const x))`. Establish `hβint : ∀ x : G, ∫ q : Q, ((β ((q : G) * x) : ℝ) : ℂ) ∂μQ = 1`. Introduce `x`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[integral_complex_ofReal]`. Establish `: ∫ q : Q, (β ((q : G) * x) : ℝ) ∂μQ = (∫⁻ q : Q, (β ((q : G) * x) : ℝ≥0∞) ∂μQ).toReal`. Rewrite using `[← integral_toReal (hβlin x).aemeasurable (Filter.Eventually.of_forall fun _ => ENNReal.coe_lt_top)]`. Both sides reduce to the same expression. Rewrite using `[this, hβ1 x]`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion repeatedly using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `hHint : Integrable H (μK.prod (ν.prod μQ))`. Use `⟨hHm.aestronglyMeasurable, ?_⟩` and prove the remaining obligations. Establish `hn : ∀ p, ‖H p‖ₑ = (β ((p.2.2 : G) * y p.1 p.2.1) : ℝ≥0∞) * ‖f (y p.1 p.2.1)‖ₑ`. Introduce `p`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [H, enorm_eq_nnnorm, nnnorm_mul, ENNReal.coe_mul]`. Use `congr 2`. Simplify using the standard rewrite rules. Establish `hAm : Measurable fun p : K × (T × Q) => (β ((p.2.2 : G) * y p.1 p.2.1) : ℝ≥0∞) * ‖f (y p.1 p.2.1)‖ₑ` using `(measurable_coe_nnreal_ennreal.comp (hβ.comp hqy)).mul (hf.comp hyc').measurable.enorm`. Unfold `HasFiniteIntegral`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Repeatedly rewrite using `[hn]`. Rewrite using `[lintegral_prod _ hAm.aemeasurable]`. Establish `hin : ∀ k, ∫⁻ tq : T × Q, (β ((tq.2 : G) * y k tq.1) : ℝ≥0∞) * ‖f (y k tq.1)‖ₑ ∂(ν.prod μQ) = ∫⁻ t, ‖f (y k t) * ((δ t : ℝ) : ℂ)‖ₑ ∂μT`. Introduce `k`. Rewrite using `[lintegral_prod (fun tq : T × Q => (β ((tq.2 : G) * y k tq.1) : ℝ≥0∞) * ‖f (y k tq.1)‖ₑ) (hAm.comp measurable_prodMk_left).aemeasurable]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Establish `h2 : ∀ t, ∫⁻ q : Q, (β ((q : G) * y k t) : ℝ≥0∞) * ‖f (y k t)‖ₑ ∂μQ = ‖f (y k t)‖ₑ`. Introduce `t`. Rewrite using `[lintegral_mul_const _ (hβlin _), hβ1, one_mul]`. Repeatedly rewrite using `[h2]`. Establish `hgm : Measurable (fun t => ‖f (y k t)‖ₑ)` using `(hf.comp (hyc.comp (continuous_const.prodMk continuous_id))).measurable.enorm`.
+Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Replace the relevant objects with their definitions.
 
-Rewrite using `[hν, lintegral_withDensity_eq_lintegral_mul _ hδm.coe_nnreal_ennreal hgm]`. Use `lintegral_congr fun t => ?_` and prove the remaining obligations. Simplify using `only [Pi.mul_apply, enorm_eq_nnnorm, nnnorm_mul, ENNReal.coe_mul]`. Rewrite using `[mul_comm]`. Use `congr 2`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Repeatedly rewrite using `[hin]`. Establish `hB` using `hint.hasFiniteIntegral`. Unfold `HasFiniteIntegral at hB`. Rewrite `hB` using `[lintegral_prod _ (hint.aestronglyMeasurable.enorm)]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Unfold `coordMeasure`. Rewrite using `[integral_map hφ.measurable.aemeasurable hFm.aestronglyMeasurable]`. Repeatedly rewrite using `[hcomp]`. Rewrite using `[integral_prod H hHint]`. Use `integral_congr_ae ?_` and prove the remaining obligations.
-
-Use `filter_upwards [hHint.prod_right_ae] with k hk`. Rewrite using `[integral_prod _ hk]`. Establish `h3 : ∀ t, ∫ q : Q, H (k, (t, q)) ∂μQ = f (y k t)`. Introduce `t`. Simplify using `only [H]`.
-
-Rewrite using `[integral_mul_const, hβint, one_mul]`. Repeatedly rewrite using `[h3]`. Rewrite using `[hν, integral_withDensity_eq_integral_smul hδm]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Simplify using `only [NNReal.smul_def, Complex.real_smul, hy]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem integral_weight_mul_coordMeasure : ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [LocallyCompactSpace G]
     [SecondCountableTopology G] [T2Space G] [MeasurableSpace G] [BorelSpace G]

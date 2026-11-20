@@ -21,7 +21,7 @@ variable {V V' : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] [NormedA
   [InnerProductSpace ℂ V']
 
 /- English proof (translation)
-Use extensionality with `ξ`. Rewrite using `[_root_.smul_apply, ContinuousLinearMap.comp_apply, Formalism.L2.SG.TermOp.rankOneInnerOperator_apply, Formalism.L2.SG.TermOp.rankOneInnerOperator_apply, inner_smul_left, LinearIsometryEquiv.inner_map_eq_flip, smul_smul]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem rk1_smul_right (v : V) (b : ℂ) (B : V' ≃ₗᵢ[ℂ] V') (w : V') :
     rk1 v (b • B w) = conj b • (rk1 v w).comp (B.symm.toContinuousLinearEquiv : V' →L[ℂ] V') := by
@@ -33,9 +33,9 @@ theorem rk1_smul_right (v : V) (b : ℂ) (B : V' ≃ₗᵢ[ℂ] V') (w : V') :
 variable {G : Type*} [Group G] [MeasurableSpace G]
 
 /- English proof (translation)
-Establish `hx : ∀ x, rk1 (Ph x) (Ph' ((γ * t)⁻¹ * x)) = conj b • (ContinuousLinearEquiv.arrowCongr B.toContinuousLinearEquiv (ContinuousLinearEquiv.refl ℂ V)) (rk1 (Ph x) (Ph' (γ⁻¹ * x)))`. Introduce `x`. Rewrite using `[_root_.mul_inv_rev, mul_assoc, hB, rk1_smul_right]`. Both sides reduce to the same expression. Unfold `Formalism.L2.SG.TermOp.OO`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Replace the relevant objects with their definitions.
 
-Repeatedly rewrite using `[hx]`. Rewrite using `[integral_smul, ContinuousLinearEquiv.integral_comp_comm]`. Both sides reduce to the same expression.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem OO_right [CompleteSpace V] (μ : Measure G) (Ω : Set G) (Ph : G → V) (Ph' : G → V') (γ t : G) (b : ℂ)
     (B : V' ≃ₗᵢ[ℂ] V') (hB : ∀ x, Ph' (t⁻¹ * x) = b • B (Ph' x)) :
@@ -52,7 +52,7 @@ theorem OO_right [CompleteSpace V] (μ : Measure G) (Ω : Set G) (Ph : G → V) 
   rfl
 
 /- English proof (translation)
-Unfold `Formalism.L2.SG.TermOp.OO`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem OO_empty [CompleteSpace V] (μ : Measure G) (Ph : G → V) (Ph' : G → V') (γ : G) :
     OO μ ∅ Ph Ph' γ = 0 := by
@@ -62,14 +62,14 @@ theorem OO_empty [CompleteSpace V] (μ : Measure G) (Ph : G → V) (Ph' : G → 
 variable [FiniteDimensional ℂ V] [FiniteDimensional ℂ V']
 
 /- English proof (translation)
-Rewrite using `[PiLp.norm_sq_eq_of_L2]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem norm_hsEmb_sq' (A : V' →L[ℂ] V) : ‖Formalism.L2.SG.PackageTie.hsEmb A‖ ^ 2 = Formalism.L2.SG.RealObj.hs2 A := by
   rw [PiLp.norm_sq_eq_of_L2]
   rfl
 
 /- English proof (translation)
-Rewrite using `[← pow_left_inj₀ (norm_nonneg _) (norm_nonneg _) two_ne_zero, norm_hsEmb_sq', norm_hsEmb_sq', Formalism.L2.SG.RealObj.InfCut.hilbert_schmidt_smul, hb, one_pow, one_mul]`. Conclude with `Formalism.L2.SG.RealObj.InfCut.hilbert_schmidt_comp_right A B.symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_hsEmb_right (A : V' →L[ℂ] V) (b : ℂ) (hb : ‖b‖ = 1) (B : V' ≃ₗᵢ[ℂ] V') :
     ‖Formalism.L2.SG.PackageTie.hsEmb (b • A.comp (B.symm.toContinuousLinearEquiv : V' →L[ℂ] V'))‖ =
@@ -79,7 +79,7 @@ theorem norm_hsEmb_right (A : V' →L[ℂ] V) (b : ℂ) (hb : ‖b‖ = 1) (B : 
   exact Formalism.L2.SG.RealObj.InfCut.hilbert_schmidt_comp_right A B.symm
 
 /- English proof (translation)
-Rewrite using `[map_smul, norm_smul, hb, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_hsEmb_smul (A : V' →L[ℂ] V) (b : ℂ) (hb : ‖b‖ = 1) :
     ‖Formalism.L2.SG.PackageTie.hsEmb (b • A)‖ = ‖Formalism.L2.SG.PackageTie.hsEmb A‖ := by
@@ -92,7 +92,7 @@ section Amp
 variable {D : D7} {X : HidaSetting D} {Y : Full X} {u u' : D.what₂.Word}
 
 /- English proof (translation)
-Substitute `e` using the available equality. Conclude with `h`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem ratLink_congr {x : X.B.I.GA} {a b : (VS D).V ≃ₗ[D.host.E] (VS D).V} (h : RatLink X x a) (e : a = b) :
     RatLink X x b := by
@@ -100,7 +100,7 @@ theorem ratLink_congr {x : X.B.I.GA} {a b : (VS D).V ≃ₗ[D.host.E] (VS D).V} 
   exact h
 
 /- English proof (translation)
-Substitute `h1 h2 h3` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem roset_congr {F0 : FlagG (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E)}
     {F0' : FlagG (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E)} {Λ₁ Λ₂ Λ₁' Λ₂' : Submodule (𝓞 D.host.E) (VS D).V}
@@ -110,20 +110,20 @@ theorem roset_congr {F0 : FlagG (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E)}
   rfl
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `hS`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem isSFund_congr {S S' Ω : Set X.B.I.Ginf} (h : S = S') (hS : IsSFund X.B.I S Ω) : IsSFund X.B.I S' Ω := by
   subst h
   exact hS
 
 /- English proof (translation)
-Establish `hF : ∀ a, frame (lf D F0') a = c (frame (lf D F0') a)` using `fun a => by`. Rewrite using `[frame_lf, hfix a]`. Establish `hF' : ∀ a, frame (lf D F0') a = c⁻¹ (frame (lf D F0') a)` using `fun a => by`. Rewrite using `[frame_lf, inv_fix F0' hfix a]`. Establish `hA' : IsAutLam (VS D) Λ' c⁻¹` using `⟨inv_mem hA.1, gmap_inv_of hA.2⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use extensionality with `y`. Simplify using `only [Formalism.L2.SG.TermOp.ROset, Set.mem_ofPred_eq]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, n, hx, rfl, hn, hn'⟩`. Use `⟨x, n, hx, rfl, hn, ?_⟩` and prove the remaining obligations.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `Formalism.L2.SG.Pf.nlam_conj hA hF hn'` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use `group`. Introduce and unpack `⟨x, n, hx, rfl, hn, hn'⟩`. Use `⟨x, n, hx, rfl, hn, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Formalism.L2.SG.Pf.nlam_conj hA' hF' hn'` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use `group`.
+Apply an available result and prove the equalities needed to match it to the conclusion. A detailed English derivation is pending.
 -/
 theorem roset_c {F0 : FlagG (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E)}
     {F0' : FlagG (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E)} {Λ Λ' : Submodule (𝓞 D.host.E) (VS D).V}
@@ -150,15 +150,15 @@ theorem roset_c {F0 : FlagG (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E)}
     group
 
 /- English proof (translation)
-Take `⟨M, -, hM1, -, hM3⟩` from `hx`. Establish `hce : ∀ a, c (X.eX a) = X.eX a` using `fun a => by`. Use `hfix (Fin.castSucc a)` as an intermediate fact. Rewrite `this` using `[Formalism.MainNotions.S.FlagG.fvec, Fin.snoc_castSucc, X.Fu_e]`. Then use the resulting hypothesis. Establish `hcz : c (X.zu u') = X.zu u'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Use `hfix (Fin.last _)` as an intermediate fact. Rewrite `this` using `[Formalism.MainNotions.S.FlagG.fvec, Fin.snoc_last, X.flagZVector]`. Then use the resulting hypothesis. Establish `hfixM : ∀ y, c y = y → (M : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E) *ᵥ X.crd y = X.crd y` using `fun y hy => by`. Rewrite using `[← hM3, hy]`. Introduce `v`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key : ∀ w, (M : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E) *ᵥ w = w → (uMat (x.1 v) - 1) *ᵥ rv X.B.I v w = 0`. Introduce `w hw`. Establish `hP : IsUnit (X.B.I.P v).det` using `(Matrix.isUnit_iff_isUnit_det _).mp (X.B.I.P_unit v)`. Establish `hφ : (M : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E).map (X.B.I.φ v) *ᵥ (fun i => X.B.I.φ v (w i)) = fun i => X.B.I.φ v (w i)`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hi` using `RingHom.map_mulVec (X.B.I.φ v) (M : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E) w i`. Rewrite `hi` using `[hw]`. Conclude with `hi.symm`. Rewrite using `[Matrix.sub_mulVec, Matrix.one_mulVec, hM1 v, Formalism.L2.SG.HidaSetting.rv, Matrix.mulVec_mulVec, Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hP, Matrix.mul_one, ← Matrix.mulVec_mulVec, hφ, sub_self]`. Use `⟨fun a => ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key (X.eR a) (hfixM _ (hce a))]`. Conclude with `zero_mem _`. Rewrite using `[key (X.zR u') (hfixM _ hcz)]`. Conclude with `zero_mem _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sinf_of_fix {x : X.B.I.GA} {c : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hx : RatLink X x c)
     (hfix : ∀ a, c ((X.Fu u').fvec a) = (X.Fu u').fvec a) : x.1 ∈ X.SinfU u' := by
@@ -192,20 +192,20 @@ theorem sinf_of_fix {x : X.B.I.GA} {c : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hx 
     exact zero_mem _
 
 /- English proof (translation)
-Conclude with `Formalism.L2.SG.TermOp.KExpCut.psiUnit X _`.
+A detailed English derivation is pending.
 -/
 theorem norm_chiN (κ : X.B.I.Gf) : ‖chiN X κ‖ = 1 := by
   exact Formalism.L2.SG.TermOp.KExpCut.psiUnit X _
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Take `⟨c, hcI, hcg, hcfix, n, hn, ν, hν, hlin⟩` from `fib_c h`. Take `⟨hl, -⟩` from `fib_dec h`. Establish `hl'` using `lam'_eq h`. Take `⟨xn, hxn⟩` from `hR D X n (nlam_isom hn)`. Take `⟨Ω, hΩ⟩` from `hs`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `e1 : ROinf s' = ROset X (X.Fu u) (X.Fu u') s.lam s.lam' (n * s.lin * ν)`. Establish `hr` using `roset_c (X := X) (F0 := X.Fu u) (Λ := s.lam) (n * s.lin * ν) ⟨hcI, hcg⟩ hcfix`. Rewrite `hr` using `[← hlin]`. Conclude with `(roset_congr (F0 := X.Fu u) (F0' := X.Fu u') (γ₁ := s'.lin) hl.symm hl'.symm rfl).trans hr`. Establish `hS : ∀ σ, σ ∈ ROinf s' ↔ xn.1⁻¹ * σ * xn.1 ∈ ROinf s`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `σ`. Rewrite using `[e1]`. Establish `hc` using `Formalism.L2.SG.TermOp.Vanish.roset_conj (X := X) (γ := s.lin) hn hν hxn (xn.1⁻¹ * σ * xn.1)`. Establish `hsimp : xn.1 * (xn.1⁻¹ * σ * xn.1) * xn.1⁻¹ = σ` using `by group`. Rewrite `hc` using `[hsimp]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `hc.symm`. Conclude with `⟨_, Formalism.L2.SG.TermOp.Vanish.isSF_image_mul xn.1 hS hΩ⟩`.
+A detailed English derivation is pending.
 -/
 private theorem exists_isSFund_ROinf_of_toTerm_eq (hR : RatPt) {s s' : TT Y u u'} (h : s.toTerm = s'.toTerm)
     (hs : ∃ Ω, IsSFund X.B.I (ROinf s) Ω) : ∃ Ω, IsSFund X.B.I (ROinf s') Ω := by
@@ -228,21 +228,19 @@ private theorem exists_isSFund_ROinf_of_toTerm_eq (hR : RatPt) {s s' : TT Y u u'
   exact ⟨_, Formalism.L2.SG.TermOp.Vanish.isSF_image_mul xn.1 hS hΩ⟩
 
 /- English proof (translation)
-Take `⟨c, hcI, hcg, hcfix, n, hn, ν, hν, hlin⟩` from `fib_c h`. Take `⟨hl, -⟩` from `fib_dec h`. Establish `hl'` using `lam'_eq h`. Take `⟨xn, hxn⟩` from `hR D X n (nlam_isom hn)`. Take `⟨xν, hxν⟩` from `hR D X ν (nlam_isom hν)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨xc, hxc⟩` from `hR D X c hcI`. Establish `hl2 : RatLink X (xn * s.rep.1.1 * xν * xc) s'.lin`. Rewrite using `[hlin]`. Conclude with `Formalism.L2.SG.TermOp.Vanish.ratLink_mul (X := X) (Formalism.L2.SG.TermOp.Vanish.ratLink_mul (X := X) (Formalism.L2.SG.TermOp.Vanish.ratLink_mul (X := X) hxn s.rep.2.1) hxν) hxc`. Establish `hpt : s'.pt = xn * s.rep.1.1 * xν * xc` using `Formalism.L2.SG.TermOp.Vanish.ratLink_unique (X := X) s'.rep.2.1 hl2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsinv : xc.1⁻¹ ∈ X.SinfU u'` using `Formalism.L2.SG.RealObj.InfCut.sinfU_inv X u' (sinf_of_fix hxc hcfix)`. Establish `hΩp : IsSFund X.B.I (ROset X (X.Fu u) (X.Fu u') s.lam s.lam' s.rep.1.2) (FundOf s)`. Unfold `Formalism.L2.SG.TermOp.FundOf`. Rewrite using `[dif_pos hs]`. Conclude with `hs.choose_spec`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : ROinf s' = ROset X (X.Fu u) (X.Fu u') s.lam s.lam' (n * s.lin * ν)`. Establish `hr` using `roset_c (X := X) (F0 := X.Fu u) (Λ := s.lam) (n * s.lin * ν) ⟨hcI, hcg⟩ hcfix`. Rewrite `hr` using `[← hlin]`. Conclude with `(roset_congr (F0 := X.Fu u) (F0' := X.Fu u') (γ₁ := s'.lin) hl.symm hl'.symm rfl).trans hr`. Establish `hΩq : IsSFund X.B.I (ROset X (X.Fu u) (X.Fu u') s.lam s.lam' (n * s.rep.1.2 * ν)) (FundOf s')`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : IsSFund X.B.I (ROinf s') (FundOf s')`. Unfold `Formalism.L2.SG.TermOp.FundOf`. Rewrite using `[dif_pos hs']`. Conclude with `hs'.choose_spec`. Conclude with `isSFund_congr e1 h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `key` using `Formalism.L2.SG.TermOp.Vanish.oo_rel Formalism.L2.SG.Pf.nLamNinf_holds hC Y s.mem s.mem' s.rep hn hν hxn hxν hΩp hΩq`. Establish `hOO : OOt s' = conj (X.psiInfU u' xc.1⁻¹) • ((X.psiInfU u xn.1 * X.psiInfU u' xν.1) • OOt s).comp ((Formalism.L2.SG.RealObj.InfCut.piIso X u' xc.1⁻¹ hsinv).symm.toContinuousLinearEquiv : X.Vpi u' →L[ℂ] X.Vpi u')`. Use `FiniteDimensional.complete ℂ (X.Vpi u)` as an intermediate fact. Use `show OO (Formalism.L2.SG.ProjRows.muInf X.B.I) (FundOf s') (X.Wu u) (X.Wu u') s'.pt.1 = _`. Rewrite using `[hpt, Prod.fst_mul, OO_right _ _ _ _ _ xc.1 _ _ (fun x => by`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Formalism.L2.SG.RealObj.InfCut.piIso_apply]`. Conclude with `(X.Wu_spec u').1 _ hsinv x), key]`. Both sides reduce to the same expression. Establish `hb : ‖conj (X.psiInfU u' xc.1⁻¹)‖ = 1` using `(Complex.norm_conj _).trans (Formalism.L2.SG.TermOp.Vanish.psiInfU_norm X u' _)`. Establish `hk : ‖X.psiInfU u xn.1 * X.psiInfU u' xν.1‖ = 1`.
-
-Rewrite using `[norm_mul, Formalism.L2.SG.TermOp.Vanish.psiInfU_norm, Formalism.L2.SG.TermOp.Vanish.psiInfU_norm, one_mul]`. Rewrite using `[hOO, norm_hsEmb_right _ _ hb, norm_hsEmb_smul _ _ hk]`.
+A detailed English derivation is pending.
 -/
 private theorem norm_hsEmb_OOt_eq_of_toTerm_eq (hR : RatPt) (hC : ChiTrivialC) {s s' : TT Y u u'} (h : s.toTerm = s'.toTerm)
     (hs : ∃ Ω, IsSFund X.B.I (ROinf s) Ω) (hs' : ∃ Ω, IsSFund X.B.I (ROinf s') Ω) :
@@ -294,11 +292,9 @@ private theorem norm_hsEmb_OOt_eq_of_toTerm_eq (hR : RatPt) (hC : ChiTrivialC) {
   rw [hOO, norm_hsEmb_right _ _ hb, norm_hsEmb_smul _ _ hk]
 
 /- English proof (translation)
-Distinguish the cases in `hs : ∃ Ω, IsSFund X.B.I (ROinf s) Ω`. Conclude with `norm_hsEmb_OOt_eq_of_toTerm_eq hR hC h hs (exists_isSFund_ROinf_of_toTerm_eq hR h hs)`. Distinguish the cases in `hs' : ∃ Ω, IsSFund X.B.I (ROinf s') Ω`. Conclude with `absurd (exists_isSFund_ROinf_of_toTerm_eq hR h.symm hs') hs`. Establish `e : ∀ t : TT Y u u', ¬ (∃ Ω, IsSFund X.B.I (ROinf t) Ω) → OOt t = 0` using `fun t ht => by`.
+Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `FiniteDimensional.complete ℂ (X.Vpi u)` as an intermediate fact. Use `show OO (Formalism.L2.SG.ProjRows.muInf X.B.I) (FundOf t) (X.Wu u) (X.Wu u') t.pt.1 = 0`. Unfold `Formalism.L2.SG.TermOp.FundOf`. Rewrite using `[dif_neg ht]`. Conclude with `OO_empty _ _ _ _`.
-
-Rewrite using `[e s hs, e s' hs']`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem oot_norm (hR : RatPt) (hC : ChiTrivialC) {s s' : TT Y u u'} (h : s.toTerm = s'.toTerm) :
     ‖Formalism.L2.SG.PackageTie.hsEmb (OOt s')‖ = ‖Formalism.L2.SG.PackageTie.hsEmb (OOt s)‖ := by
@@ -315,7 +311,7 @@ theorem oot_norm (hR : RatPt) (hC : ChiTrivialC) {s s' : TT Y u u'} (h : s.toTer
       rw [e s hs, e s' hs']
 
 /- English proof (translation)
-Unfold `Formalism.L2.SG.LoopTieOf.AmpFibreConst`. Introduce `u u' t s s'`. Simplify using `only [Formalism.L2.SG.LoopTieOf.ampL, Formalism.L2.SG.TermOp.ampN, map_smul, norm_smul, norm_chiN, one_mul]`. Rewrite using `[oot_norm hR hC (s'.2.trans s.2.symm)]`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem ampFibreConst_of (hR : RatPt) (hC : ChiTrivialC) (Y : Full X) : Formalism.L2.SG.LoopTieOf.AmpFibreConst Y := by
   unfold Formalism.L2.SG.LoopTieOf.AmpFibreConst

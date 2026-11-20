@@ -8,7 +8,7 @@ open Formalism.BasicNotions.TH Formalism.MainNotions.SchurIrreducible GlobalTheo
 namespace GlobalTheory.FockAlg
 
 /- English proof (translation)
-Introduce `_ _ _ _ μ μ'` and use `(GlobalTheory.JointHarm.joint_harmonics μ μ').2`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem jointHarm_hw_eq_bot : ∀ (p q r s : ℕ) (μ : Ix p q → ℚ) (μ' : Ix r s → ℚ),
     ¬ JointShape p q r s μ μ' →

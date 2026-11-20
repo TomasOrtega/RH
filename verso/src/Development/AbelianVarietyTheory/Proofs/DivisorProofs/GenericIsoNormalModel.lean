@@ -20,7 +20,7 @@ open GlobalTheory.Vert GlobalTheory.Vert.Model
 variable {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
 
 /- English proof (translation)
-Establish `n₁` using `(GenIso.genPullIso hf).inv.naturality i'`. Establish `n₂` using `(GenIso.genPullIso hf).hom.naturality i`. Simplify using `only [Functor.comp_map] at n₁ n₂`. Simplify using `only [GenIso.pull, Iso.trans_hom, Iso.app_hom, Functor.mapIso_hom, Iso.symm_hom, Iso.app_inv, Category.assoc]`. Rewrite using `[← n₁, ← Functor.map_comp_assoc, h, Functor.map_comp_assoc, reassoc_of% n₂]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem pull_comm {Z Z₁ : Model O} {f : Z₁.X ⟶ Z.X} (hf : f ≫ Z.str = Z₁.str) {E E' K K' : Z.X.Modules}
     (φ : Z.GenIso E E') (ψ : Z.GenIso K K') (i : K ⟶ E) (i' : K' ⟶ E')
@@ -51,7 +51,7 @@ def pairZero {Z : Model O} {E E' : Z.X.Modules} (φ : Z.GenIso E E') (hE : IsVB 
   gen_ι _ := by simp [flagZero]
 
 /- English proof (translation)
-Unfold `Hom.relDim at *`. Use linear arithmetic over natural numbers and integers.
+Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers.
 -/
 theorem relDim_comp {Z Z₁ Z₂ : Model O} (f : Hom Z₁ Z) (g : Hom Z₂ Z₁) (hf : f.relDim = 0)
     (hg : g.relDim = 0) : (g.comp f).relDim = 0 := by
@@ -59,11 +59,11 @@ theorem relDim_comp {Z Z₁ Z₂ : Model O} (f : Hom Z₁ Z) (g : Hom Z₂ Z₁)
   omega
 
 /- English proof (translation)
-Introduce `r`. Proceed by induction on `r with`. Consider the case `zero`. Introduce `B hB E E' E'' φ φ' hE hE' hE''`. Conclude with `⟨B, Hom.id B, hB, Nat.sub_self _, pairZero _ (hE.pullback _) (hE'.pullback _), pairZero _ (hE'.pullback _) (hE''.pullback _), rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Consider the case `succ r ih`. Introduce `B hB E E' E'' φ φ' hE hE' hE''`. Take `⟨B₁, f₁, K, K', K'', i, i', i'', ψ, ψ', hB₁, hf₁, hi, hi', hi'', hK, hK', hK'', hc, hc'⟩` from `GlobalTheory.T.generic_isos_subbundle_modification O p B hB r E E' E'' φ φ' hE hE' hE''`. Take `⟨B₂, f₂, hB₂, hf₂, P, Q, hPQ⟩` from `ih B₁ hB₁ K K' K'' ψ ψ' hK hK' hK''`. Take `⟨P₁, Q₁, h₁⟩` from `GlobalTheory.T.subbundle_generic_iso_compatible O B₂ _ _ _ _ _ _ ((φ.pull f₁.comp_str).pull f₂.comp_str) ((φ'.pull f₁.comp_str).pull f₂.comp_str) ((Scheme.Modules.pullback f₂.f).map i) ((Scheme.Modules.pullback f₂.f).map i') ((Scheme.Modules.pullback f₂.f).map i'') (ψ.pull f₂.com …`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨P₂, Q₂, h₂⟩` from `GlobalTheory.T.flag_pair_composition_exists O B B₁ B₂ f₁ f₂ E E' E'' φ φ' (r + 1) P₁ Q₁ h₁`. Conclude with `⟨B₂, f₂.comp f₁, hB₂, relDim_comp f₁ f₂ hf₁ hf₂, P₂, Q₂, h₂⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem chain (p : ℕ) [Fact p.Prime] [CharZero O] [CharP (ResidueField O) p] :
     ∀ (r : ℕ) (B : Model O), IsNormalScheme B.X → ∀ (E E' E'' : B.X.Modules)
@@ -96,7 +96,7 @@ theorem chain (p : ℕ) [Fact p.Prime] [CharZero O] [CharP (ResidueField O) p] :
 end GlobalTheory.ThreeFlag
 
 /- English proof (translation)
-Introduce `O _ _ _ p _ _ _ B hB E E' E'' φ φ' r hE hE' hE''`. Conclude with `GlobalTheory.ThreeFlag.chain p r B hB E E' E'' φ φ' hE hE' hE''`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.ThreeFlag.exists_normal_modification_flagPair_chain : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (p : ℕ) [Fact p.Prime] [CharZero O] [CharP (ResidueField O) p] (B : GlobalTheory.Vert.Model O), GlobalTheory.IsNormalScheme B.X → ∀ (E E' E'' : B.X.Modules) (φ : B.GenIso E E') (φ' : B.GenIso E' E'') (r : ℕ), GlobalTheory.VB.IsVB E r → GlobalTheory.VB.IsVB E' r → GlobalTheory.VB.IsVB E'' r → ∃ (B' : GlobalTheory.Vert.Model O) (f : GlobalTheory.Vert.Model.Hom B' B), GlobalTheory.IsNormalScheme B'.X ∧ f.relDim = 0 ∧ ∃ (P : GlobalTheory.Vert.Model.FlagPair (GlobalTheory.Vert.Model.GenIso.pull f.comp_str φ) r) (P' : GlobalTheory.Vert.Model.FlagPair (GlobalTheory.Vert.Model.GenIso.pull f.comp_str φ') r), P'.fl = P.fl' := by
   intro O _ _ _ p _ _ _ B hB E E' E'' φ φ' r hE hE' hE''

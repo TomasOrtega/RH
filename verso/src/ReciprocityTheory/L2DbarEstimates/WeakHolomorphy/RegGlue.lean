@@ -6,7 +6,7 @@ open MeasureTheory Metric Set Filter Topology Complex
 open scoped ENNReal
 
 /- English proof (translation)
-Conclude with `Measure.eqOn_open_of_ae_eq h hΩ hU hU'`.
+A detailed English derivation is pending.
 -/
 theorem ae_eq_eqOn {n : ℕ} {Ω : Set (V n)} {U U' : V n → ℂ} (hΩ : IsOpen Ω)
     (hU : ContinuousOn U Ω) (hU' : ContinuousOn U' Ω) (h : U =ᵐ[volume.restrict Ω] U') :
@@ -14,19 +14,15 @@ theorem ae_eq_eqOn {n : ℕ} {Ω : Set (V n)} {U U' : V n → ℂ} (hΩ : IsOpen
   exact Measure.eqOn_open_of_ae_eq h hΩ hU hU'
 
 /- English proof (translation)
-Use `choose! r hr hsub U hU hae using hloc`. Establish `agree : ∀ x ∈ Ω, ∀ y ∈ Ω, EqOn (U x) (U y) (ball x (r x) ∩ ball y (r y))`. Introduce `x hx y hy`. Apply `ae_eq_eqOn (isOpen_ball.inter isOpen_ball)` to reduce the goal to its premises. Conclude with `((hU x hx).mono inter_subset_left).continuousOn`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `((hU y hy).mono inter_subset_right).continuousOn`. Establish `h1 : u =ᵐ[volume.restrict (ball x (r x) ∩ ball y (r y))] U x` using `ae_restrict_of_ae_restrict_of_subset inter_subset_left (hae x hx)`. Establish `h2 : u =ᵐ[volume.restrict (ball x (r x) ∩ ball y (r y))] U y` using `ae_restrict_of_ae_restrict_of_subset inter_subset_right (hae y hy)`. Conclude with `h1.symm.trans h2`. Establish `loc : ∀ y ∈ Ω, ∀ x ∈ ball y (r y), U x x = U y x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y hy x hx`. Establish `hxΩ : x ∈ Ω` using `hsub y hy hx`. Conclude with `agree x hxΩ y hy ⟨mem_ball_self (hr x hxΩ), hx⟩`. Use `⟨fun x => U x x, ?_, ?_⟩` and prove the remaining obligations. Introduce `y hy`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hnhds : ball y (r y) ∈ 𝓝 y` using `isOpen_ball.mem_nhds (mem_ball_self (hr y hy))`. Establish `hev : (fun x => U x x) =ᶠ[𝓝 y] U y` using `Filter.eventually_of_mem hnhds (fun x hx => loc y hy x hx)`. Conclude with `(((hU y hy).differentiableAt hnhds).congr_of_eventuallyEq hev).differentiableWithinAt`. Take `⟨T, hTc, hT⟩` from `TopologicalSpace.isOpen_iUnion_countable (fun x : Ω => ball (x : V n) (r x)) (fun _ => isOpen_ball)`. Establish `hcov : Ω = ⋃ x ∈ T, ball ((x : Ω) : V n) (r x)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Rewrite using `[hT]`. Use extensionality with `z`. Simplify using `only [mem_iUnion]`. Prove the components needed by the constructor for the conclusion. Introduce `hz`.
-
-Conclude with `⟨⟨z, hz⟩, mem_ball_self (hr z hz)⟩`. Introduce and unpack `⟨x, hx⟩`. Conclude with `hsub x x.2 hx`. Rewrite using `[hcov, Filter.EventuallyEq, ae_restrict_biUnion_iff _ hTc]`. Introduce `x _`.
-
-Use `filter_upwards [hae x x.2, self_mem_ae_restrict (measurableSet_ball (x := (x : V n)) (ε := r x))] with z hz hzb`. Rewrite using `[hz]`. Conclude with `(loc x x.2 z hzb).symm`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem reg_glue {n : ℕ} {Ω : Set (V n)} {u : V n → ℂ} (hΩ : IsOpen Ω)
     (hloc : ∀ x ∈ Ω, ∃ r > 0, ball x r ⊆ Ω ∧

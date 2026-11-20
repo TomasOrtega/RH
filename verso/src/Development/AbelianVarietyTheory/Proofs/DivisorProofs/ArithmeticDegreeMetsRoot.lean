@@ -12,9 +12,9 @@ open CategoryTheory
 namespace GlobalTheory.ShFam.GalRelab
 
 /- English proof (translation)
-Establish `key : (GlobalTheory.ShFam.Pad.numL num d).comp (MvPolynomial.rename f).toLinearMap = GlobalTheory.ShFam.Pad.numL (fun M => num (M.map f)) d`. Use `(MvPolynomial.basisMonomials A ℝ).ext fun m => ?_` and prove the remaining obligations. Establish `hdeg : (Finsupp.mapDomain f m).degree = m.degree`. Rewrite using `[Finsupp.degree_eq_weight_one, Finsupp.degree_eq_weight_one]`. Simplify using `[Finsupp.weight_apply, Finsupp.sum_mapDomain_index]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hb : (MvPolynomial.monomial (Finsupp.mapDomain f m) (1 : ℝ)) = MvPolynomial.basisMonomials B ℝ (Finsupp.mapDomain f m)`. Simplify using `[MvPolynomial.coe_basisMonomials]`. Rewrite using `[LinearMap.comp_apply, AlgHom.toLinearMap_apply, MvPolynomial.coe_basisMonomials, MvPolynomial.rename_monomial, hb, GlobalTheory.ShFam.Pad.numL, GlobalTheory.ShFam.Pad.numL, Module.Basis.constr_basis, ← MvPolynomial.coe_basisMonomials, Module.Basis.constr_basis, hdeg, Finsupp.toM …`. Conclude with `congrArg (fun L => L P) key`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem numL_rename {A B : Type} (num : Multiset B → ℝ) (d : ℕ) (f : A → B) (P : MvPolynomial A ℝ) :
     GlobalTheory.ShFam.Pad.numL num d (MvPolynomial.rename f P) =
@@ -36,7 +36,7 @@ theorem numL_rename {A B : Type} (num : Multiset B → ℝ) (d : ℕ) (f : A →
   exact congrArg (fun L => L P) key
 
 /- English proof (translation)
-Proceed by induction on `s using Multiset.induction_on with`. Consider the case `empty => simp`. Consider the case `cons a s ih => simp [Multiset.powerset_cons, ih, Multiset.map_map]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem powerset_map' {α β : Type} (f : α → β) (s : Multiset α) :
     (s.map f).powerset = s.powerset.map (Multiset.map f) := by
@@ -45,9 +45,9 @@ theorem powerset_map' {α β : Type} (f : α → β) (s : Multiset α) :
   | cons a s ih => simp [Multiset.powerset_cons, ih, Multiset.map_map]
 
 /- English proof (translation)
-Unfold `GlobalTheory.ShFam.Pad.polar`. Rewrite using `[Multiset.card_map, powerset_map', Multiset.map_map]`. Use `congr 2`. Use `Multiset.map_congr rfl fun T hT => ?_` and prove the remaining obligations. Simplify using `only [Function.comp, Multiset.card_map]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[← map_multiset_sum, h T (Multiset.mem_powerset.1 hT)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem polar_map {A B : Type} [AddCommMonoid A] [AddCommMonoid B] (top : A → ℝ) (top' : B → ℝ) (f : A →+ B)
     (M : Multiset A) (h : ∀ T ≤ M, top' (f T.sum) = top T.sum) :
@@ -71,7 +71,7 @@ section Roots
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} (Dw : Datum H)
 
 /- English proof (translation)
-Unfold `GlobalTheory.ShFam.Pad.rootSym`. Apply the tactic sequence `split_ifs <;> simp only [Finsupp.mapDomain_single] <;> rfl`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem mapDomain_rootSym (g : E →+* E) (a : ℕ → Bool) (R : Option ℝ) (τ : E →+* ℂ) (i : ℕ) :
     (GlobalTheory.ShFam.Pad.rootSym Dw a R τ i).mapDomain (relab g) = GlobalTheory.ShFam.Pad.rootSym Dw a R (τ.comp g) i := by
@@ -79,9 +79,9 @@ theorem mapDomain_rootSym (g : E →+* E) (a : ℕ → Bool) (R : Option ℝ) (�
   split_ifs <;> simp only [Finsupp.mapDomain_single] <;> rfl
 
 /- English proof (translation)
-Introduce `b hb`. Unfold `GlobalTheory.ShFam.Pad.rootSym at hb`. Apply the tactic sequence `split_ifs at hb <;>`. Use `Finsupp.support_single_subset hb` as an intermediate fact. Rewrite `this` using `[Finset.mem_singleton]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Substitute `this` using the available equality. Conclude with `⟨rfl, rfl⟩`.
+Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem support_rootSym (a : ℕ → Bool) (R : Option ℝ) (τ : E →+* ℂ) (i : ℕ) :
     ∀ b ∈ (GlobalTheory.ShFam.Pad.rootSym Dw a R τ i).support, b.2.2.isLeft = true ∧ b.2.1 = R := by
@@ -94,9 +94,9 @@ theorem support_rootSym (a : ℕ → Bool) (R : Option ℝ) (τ : E →+* ℂ) (
       exact ⟨rfl, rfl⟩
 
 /- English proof (translation)
-Proceed by induction on `T using Multiset.induction_on with`. Consider the case `empty => simp`. Consider the case `cons w T ih`. Introduce `b hb`. Rewrite `hb` using `[Multiset.sum_cons]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Break down `Finset.mem_union.1 (Finsupp.support_add hb) with h1 | h1` into its components or cases. Conclude with `h w (Multiset.mem_cons_self _ _) b h1`. Conclude with `ih (fun w' hw' => h w' (Multiset.mem_cons_of_mem hw')) b h1`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem support_sum {A : Type} (P : A → Prop) (T : Multiset (A →₀ ℤ)) (h : ∀ w ∈ T, ∀ b ∈ w.support, P b) :
     ∀ b ∈ T.sum.support, P b := by
@@ -112,7 +112,7 @@ theorem support_sum {A : Type} (P : A → Prop) (T : Multiset (A →₀ ℤ)) (h
 end Roots
 
 /- English proof (translation)
-Use extensionality with `y`. Simplify using `only [RingHom.comp_apply, Formalism.BasicNotions.DV.tauEmb, Equiv.symm_trans_apply, Equiv.symm_symm, Equiv.apply_symm_apply, Equiv.mulRight_symm, Equiv.coe_mulRight]`. Express the relevant statement in the definitionally equal form `D.host.φ₀ (D.host.sigmaOf _ (D.host.sigmaOf _ y)) = D.host.φ₀ (D.host.sigmaOf _ y)`. Establish `hm : ∀ a b : D.R.GG, D.host.sigmaOf (a * b) = D.host.sigmaOf a * D.host.sigmaOf b` using `fun a b => map_mul _ a b`. Rewrite using `[← AlgEquiv.mul_apply, ← hm, Subgroup.coe_mul, Subgroup.coe_inv, inv_mul_cancel_right]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem tauEmb_mulRight (D : D7) (g : D.R.Psi) (ρ : D.what₂.Tau) :
     (Formalism.BasicNotions.DV.tauEmb D (((D.eTau.trans (Equiv.mulRight g)).trans D.eTau.symm).symm ρ)).comp
@@ -133,19 +133,19 @@ namespace GlobalTheory.ShFam.GalRelab
 open GlobalTheory.ShFam.Pad in
 
 /- English proof (translation)
-Introduce `h2 hH D O hO τ τ'`. Set `g : D.R.Psi` to `(D.eTau τ)⁻¹ * D.eTau τ'`. Set `σ : Equiv.Perm D.what₂.Tau` to `(D.eTau.trans (Equiv.mulRight g)).trans D.eTau.symm`. Use `⟨σ, by simp [σ, g], fun x => ?_⟩` and prove the remaining obligations. Take `⟨x', e, hx⟩` from `GlobalTheory.T.exists_galois_twist_level_model h2 hH D O hO (g : D.R.GG) g.2 (fun g' hg' => GlobalTheory.T.exists_galois_twist_compatible_model h2 D O hO g' hg') x`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨x', fun B R u => ?_⟩` and prove the remaining obligations. Establish `hlin : linRoot (fun ρ i => u (σ ρ) i) = MvPolynomial.rename (fun y : D.what₂.Tau × Fin O.N => (σ.symm y.1, y.2)) (linRoot u)`. Unfold `linRoot`. Rewrite using `[map_neg, map_sum]`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `Fintype.sum_equiv (Equiv.prodCongr σ (Equiv.refl _)) _ _ fun y => ?_` and prove the remaining obligations. Simplify using `[MvPolynomial.rename_X, MvPolynomial.algebraMap_eq]`. Rewrite using `[hlin, ← map_pow]`. Rewrite using `[ArIn.arDeg, ArIn.arDeg, LinearMap.sum_apply, LinearMap.sum_apply]`. Use `Fintype.sum_equiv e _ _ fun k => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [LinearMap.comp_apply, AlgHom.toLinearMap_apply, MvPolynomial.rename_rename]`. Rewrite using `[numL_rename, numL_rename]`. Use `congrArg (fun f => numL f (Formalism.DegreeFormula.dimFl D.what₂.Tau O.N + 1) _) (funext fun M => ?_)` and prove the remaining obligations. Set `gg : D.host.E →+* D.host.E` to `((D.host.sigmaOf (g : D.R.GG) : D.host.E ≃ₐ[ℚ] D.host.E) : D.host.E →+* D.host.E)`. Set `rt : D.what₂.Tau × Fin O.N → Sym D.host.E →₀ ℤ` to `fun y => rootSym O.S.Dw (ArIn.ind (GlobalTheory.FlagAr.setB O.Y B)) (some R) (Formalism.BasicNotions.DV.tauEmb D y.1) y.2`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Express the relevant statement in the definitionally equal form `polar (fun w => (adlOf (O.Φ.C k) (metsOf x O.Φ k) w).arTop) (M.map (rt ∘ fun y => (σ.symm y.1, y.2))) = polar (fun w => (adlOf (O.Φ.C (e k)) (metsOf x' O.Φ (e k)) w).arTop) (M.map rt)`. Establish `hM : M.map rt = (M.map (rt ∘ fun y => (σ.symm y.1, y.2))).map (Finsupp.mapDomain.addMonoidHom (relab gg))`. Rewrite using `[Multiset.map_map]`. Use `Multiset.map_congr rfl fun y _ => ?_` and prove the remaining obligations. Simplify using `only [Function.comp, Finsupp.mapDomain.addMonoidHom_apply, rt]`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[mapDomain_rootSym, tauEmb_mulRight]`. Rewrite using `[hM, polar_map]`. Introduce `T hT`. Use `(hx k (some R) T.sum ?_).symm` and prove the remaining obligations. Use `support_sum _ T fun w hw => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨y, _, rfl⟩` from `Multiset.mem_map.1 (Multiset.mem_of_le hT hw)`. Conclude with `support_rootSym _ _ _ _ _`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem arDeg_relabel : Hypotheses2 → HypothesesH → ∀ (D : D7) (O : Setup D), O.Core → ∀ τ τ' : D.what₂.Tau, ∃ σ : Equiv.Perm D.what₂.Tau, σ τ = τ' ∧ ∀ x : GlobalTheory.ShFam.ToroidalCompactificationData O.s, ∃ x' : GlobalTheory.ShFam.ToroidalCompactificationData O.s, ∀ (B R : ℝ) (u : D.what₂.Tau → Fin O.N → ℝ), (GlobalTheory.ShFam.Pad.arIn O.s O.Φ (GlobalTheory.ShFam.metsOf x O.Φ)).arDeg (GlobalTheory.FlagAr.setB O.Y B) R (linRoot (fun ρ i => u (σ ρ) i) ^ (Formalism.DegreeFormula.dimFl D.what₂.Tau O.N + 1)) = (GlobalTheory.ShFam.Pad.arIn O.s O.Φ (GlobalTheory.ShFam.metsOf x' O.Φ)).arDeg (GlobalTheory.FlagAr.setB O.Y B) R (linRoot u ^ (Formalism.DegreeFormula.dimFl D.what₂.Tau O.N + 1)) := by
   intro h2 hH D O hO τ τ'

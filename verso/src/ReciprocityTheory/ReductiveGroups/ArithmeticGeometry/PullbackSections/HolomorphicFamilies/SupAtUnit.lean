@@ -12,11 +12,11 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Unfold `dmin`. Rewrite using `[hx τ]`. Use `clear hx`. Unfold `lminor`. Rewrite using `[Matrix.submatrix_diagonal _ _ (Fin.castLE_injective _), Matrix.det_diagonal, norm_prod]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Finset.prod_eq_one` to reduce the goal to its premises. Introduce and unpack `a -`. Simplify using `only [Function.comp_apply]`. Generalize the expression as in `(↑(Fin.castLE _ a) : ℕ) = b`. Use `clear a`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `clear x τ i`. Unfold `sgn`. Apply the tactic sequence `split_ifs <;> simp`.
+A detailed English derivation is pending.
 -/
 lemma dmin_ortho {r : ℕ} (X : Data E r) {x : Frame X.Ψ r} (hx : X.IsOrtho x) (τ : X.Ψ) (i : Fin (r + 1)) :
     ‖dmin X.Gm x τ i‖ = 1 := by
@@ -35,7 +35,7 @@ lemma dmin_ortho {r : ℕ} (X : Data E r) {x : Frame X.Ψ r} (hx : X.IsOrtho x) 
   split_ifs <;> simp
 
 /- English proof (translation)
-Unfold `Data.pnorm`. Simplify using `[norm_div, hu]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 lemma pnorm_unit {r : ℕ} (X : Data E r) (la : Wt X.Ψ r) (P : Frame X.Ψ r → ℂ) {x : Frame X.Ψ r}
     (hu : ∀ τ i, ‖dmin X.Gm x τ i‖ = 1) : X.pnorm la P x = ‖P x‖ := by
@@ -43,27 +43,25 @@ lemma pnorm_unit {r : ℕ} (X : Data E r) (la : Wt X.Ψ r) (P : Frame X.Ψ r →
   simp [norm_div, hu]
 
 /- English proof (translation)
-Introduce `D T h hGam large₂ j hj w hrows hL hrn hlast σ hσ f hf hpos`. Use `set X := (T.U j σ).X with hXdef`. Use `set la := laU (T.U j σ) (wtA w) w.n with hladef`. Use `set P := rdU (T.U j σ) f with hPdef`. Establish `hE : supE X la P ≠ ⊤`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `h0`. Rewrite `hpos` using `[supN, h0]`. Simplify using `at hpos`. Establish `hE0 : supE X la P ≠ 0`. Introduce `h0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `hpos` using `[supN, h0]`. Simplify using `at hpos`. Establish `hhalf` using `ENNReal.half_lt_self hE0 hE`. Establish `hhalf'` using `hhalf`. Unfold `supE at hhalf'`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨p, hp⟩` from `lt_iSup_iff.1 hhalf'`. Establish `hp' : supN X la P / 2 < (X p.1).pnorm (la p.1) (P p.1) p.2`. Use `ENNReal.toReal_lt_of_lt_ofReal hp` as an intermediate fact. Rewrite `this` using `[ENNReal.toReal_div]`. Simplify `this` using `[supN, supE]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hle : ∀ q : FPt X, (X q.1).pnorm (la q.1) (P q.1) q.2 ≤ supN X la P`. Introduce `q`. Establish `h1 : ENNReal.ofReal ((X q.1).pnorm (la q.1) (P q.1) q.2) ≤ supE X la P` using `le_iSup (fun q : FPt X => ENNReal.ofReal ((X q.1).pnorm (la q.1) (P q.1) q.2)) q`. Conclude with `(ENNReal.ofReal_le_iff_le_toReal hE).1 h1`. Take `⟨k, x, hx⟩` from `p`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hcusp` using `((mem_cusp (T.Q.Xo j) T.Q.c (T.U j) (wtA w) w.n f).1 hf).2 σ hσ`. Set `S : Submodule ℂ (FDSec X)` to `{ carrier := {Q | ∀ k, ∀ y ∈ (X k).dom, ∀ b ∈ Bor (X k).Ψ D.R.r, Q k (rmul y b) = bchar (la k) b * Q k y} add_mem' := by`. Introduce `Q R hQ hR k y hy b hb`. Simplify using `only [Pi.add_apply, hQ k y hy b hb, hR k y hy b hb]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Use the proof step `zero_mem' := by intro k y _ b _; simp`. Use the proof step `smul_mem' := by`. Introduce `c Q hQ k y hy b hb`. Simplify using `only [Pi.smul_apply, smul_eq_mul, hQ k y hy b hb]`. Use `ring }`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hS : holSub X la ≤ S` using `Submodule.span_le.2 (fun Q hQ k y hy b hb => (hQ k).1.1.2.1 y hy b hb)`. Establish `hPS : ∀ y ∈ (X k).dom, ∀ b ∈ Bor (X k).Ψ D.R.r, P k (rmul y b) = bchar (la k) b * P k y` using `hS hcusp k`. Establish `hb` using `ReciprocityTheory.ChartRestriction.G.FD.FrameDegreeData.bOf_mem (X k) hx`. Establish `hx'` using `ReciprocityTheory.ChartRestriction.G.FD.OrthogonalFrameDomain.rmul_mem_dom (X k) hx hb`. Establish `hort` using `ReciprocityTheory.ChartRestriction.G.FD.FrameDegreeData.ortho_bOf (X k) hx`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hunit` using `dmin_ortho (X k) hort`. Establish `hpn` using `ReciprocityTheory.ChartRestriction.G.FD.FrameDegreeData.pnorm_rmul (X k) (la k) (P k) hPS x hx _ hb`. Establish `hla` using `ReciprocityTheory.ChartRestriction.G.AR.Inst.firstMinimumSq_rightBorel (X k) hx hb`. Establish `h2 : supN X la P ≤ 2 * (X k).pnorm (la k) (P k) x` using `by linarith [hp']`. Establish `hposx : 0 < (X k).pnorm (la k) (P k) x` using `by linarith`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Take `⟨hl1, hl2⟩` from `hL1 D T h hGam large₂ j hj w hrows hL hrn hlast σ hσ f hf k x hx (fun y hy => le_trans (hle ⟨k, y, hy⟩) h2) hposx`. Use `⟨k, ⟨_, hx'⟩, hunit, hort, ?_, by rw [hla]; exact hl1, by rw [hla]; exact hl2⟩` and prove the remaining obligations. Establish `e : (X k).pnorm (la k) (P k) (rmul x (ReciprocityTheory.ChartRestriction.G.FD.FrameDegreeData.bOf (X k) x)) = ‖toC (evR (T.Q.Xo j) T.Q.c f ((T.U j σ).un k ⟨_, hx'⟩))‖`. Rewrite using `[pnorm_unit (X k) (la k) (P k) hunit, hPdef]`. Simplify using `[rdU]`.
-
-Rewrite using `[dif_pos hx']`. Rewrite using `[← e, hpn]`. Conclude with `h2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem supAtUnit (hL1 : Lam1RowSt) : SupAtUnitSt := by
   intro D T h hGam large₂ j hj w hrows hL hrn hlast σ hσ f hf hpos

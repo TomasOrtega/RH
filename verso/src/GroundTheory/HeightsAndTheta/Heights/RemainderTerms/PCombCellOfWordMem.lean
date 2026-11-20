@@ -7,9 +7,9 @@ namespace GroundTheory.Heights₂.Heights.RestTerms
 open Finset Comb
 
 /- English proof (translation)
-Unfold `pcnt`. Apply `Finset.card_lt_card` to reduce the goal to its premises. Rewrite using `[Finset.ssubset_iff_of_subset]`. Use `⟨t, ?_, ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Introduce `s hs`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hs ⊢`. Conclude with `⟨lt_trans hs.1 t.2, hs.2⟩`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem Comb.pcnt_lt_pcnt_of_eq {m n : ℕ} (w : Fin n → Fin m) (t : Fin n) :
     pcnt w t (w t) < pcnt w n (w t) := by
@@ -25,11 +25,11 @@ theorem Comb.pcnt_lt_pcnt_of_eq {m n : ℕ} (w : Fin n → Fin m) (t : Fin n) :
     exact ⟨lt_trans hs.1 t.2, hs.2⟩
 
 /- English proof (translation)
-Introduce `m lam w hw t`. Establish `hc : ∀ i, pcnt w (youngCells lam).card i = lam i`. Use `hw` as an intermediate fact. Simplify using `only [latticeWords, Finset.mem_filter, Finset.mem_univ, true_and] at this`. Conclude with `this.2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hlt : pcnt w t (w t) < lam (w t)`. Use `Comb.pcnt_lt_pcnt_of_eq w t` as an intermediate fact. Rewrite `this` using `[hc]`. Then use the resulting hypothesis. Establish `hle : lam (w t) ≤ ∑ i, lam i` using `Finset.single_le_sum (f := lam) (fun _ _ => Nat.zero_le _) (Finset.mem_univ _)`. Simplify using `only [youngCells, cellOfWord, Finset.mem_filter, Finset.mem_product, Finset.mem_univ, Finset.mem_range, true_and]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Conclude with `⟨lt_of_lt_of_le hlt hle, hlt⟩`.
+A detailed English derivation is pending.
 -/
 theorem CombCellOfWordMem.proof : CombCellOfWordMem.Statement := by
   intro m lam w hw t

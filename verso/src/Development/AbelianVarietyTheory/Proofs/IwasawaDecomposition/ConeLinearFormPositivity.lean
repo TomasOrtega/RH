@@ -20,9 +20,9 @@ def elemForm {ι : Type} (b : Module.Basis ι ℤ X) (i j : ι) : LinearMap.Bili
   (LinearMap.mul ℤ ℤ).compl₁₂ (b.coord i) (b.coord j)
 
 /- English proof (translation)
-Establish `hbe : be = ∑ i, ∑ j, be (b i) (b j) • elemForm b i j`. Use `LinearMap.ext_basis b b fun k l => ?_` and prove the remaining obligations. Simplify using `[elemForm, Finsupp.single_apply, Finset.sum_apply, LinearMap.sum_apply]`. Use `conv_lhs => rw [hbe]`. Simplify using `only [map_sum, map_zsmul, smul_eq_mul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => mul_comm _ _` and prove the remaining obligations.
+A detailed English derivation is pending.
 -/
 theorem linForm_eq_sum {ι : Type} [Fintype ι] [DecidableEq ι] (b : Module.Basis ι ℤ X)
     (ℓ : LinearMap.BilinForm ℤ X →ₗ[ℤ] ℤ) (be : LinearMap.BilinForm ℤ X) :
@@ -51,9 +51,9 @@ def denF {ι : Type} [Fintype ι] (r : Dg.X → R) (b : Module.Basis ι ℤ Dg.X
 variable {Dg}
 
 /- English proof (translation)
-Take `⟨r', n, hr', hn, ha⟩` from `hF y`. Take `⟨u, hu⟩` from `GlobalTheory.PsiCoordLocal.exists_unit_of_coord hr' hs`. Establish `hn' : (be y y / 2).toNat = n` using `by rw [hn]; omega`. Rewrite using `[hn']`. Use `⟨?_, hn⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hu, map_mul]`. Conclude with `(associated_unit_mul_left (g r') (g u) ((Units.map g.toMonoidHom u).isUnit)).trans ha`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coord_assoc {W : Type} [CommRing W] {g : R →+* W} {ϖ : W} {be : LinearMap.BilinForm ℤ Dg.X}
     (hF : FormAt Dg g ϖ be) {y : Dg.X} {s : R} (hs : PsiCoord Dg y s) :
@@ -67,17 +67,17 @@ theorem coord_assoc {W : Type} [CommRing W] {g : R →+* W} {ϖ : W} {be : Linea
   exact (associated_unit_mul_left (g r') (g u) ((Units.map g.toMonoidHom u).isUnit)).trans ha
 
 /- English proof (translation)
-Use `set n : Dg.X → ℕ := fun y => (be y y / 2).toNat with hn`. Establish `hA : ∀ y, Associated (g (r y)) (ϖ ^ n y)` using `fun y => (coord_assoc hF (hr y)).1`. Establish `hN : ∀ y, be y y = 2 * (n y : ℤ)` using `fun y => (coord_assoc hF (hr y)).2`. Use `⟨∑ i, ∑ j, ((c i j).toNat * n (b i + b j) + (-c i j).toNat * (n (b i) + n (b j))), ∑ i, ∑ j, ((c i j).toNat * (n (b i) + n (b j)) + (-c i j).toNat * n (b i + b j)), ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [numF, map_prod, map_mul, map_pow, ← Finset.prod_pow_eq_pow_sum]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `Associated.prod _ _ _ fun i _ => Associated.prod _ _ _ fun j _ => ?_` and prove the remaining obligations. Use `((hA (b i + b j)).pow_pow (n := (c i j).toNat)).mul_mul (((hA (b i)).mul_mul (hA (b j))).pow_pow (n := (-c i j).toNat))` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [denF, map_prod, map_mul, map_pow, ← Finset.prod_pow_eq_pow_sum]`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `Associated.prod _ _ _ fun i _ => Associated.prod _ _ _ fun j _ => ?_` and prove the remaining obligations. Use `(((hA (b i)).mul_mul (hA (b j))).pow_pow (n := (c i j).toNat)).mul_mul ((hA (b i + b j)).pow_pow (n := (-c i j).toNat))` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Use `push_cast`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `h1` using `hN (b i + b j)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `hN (b i)`. Establish `h3` using `hN (b j)`. Establish `h4` using `hsymm (b j) (b i)`. Simplify using `only [map_add, LinearMap.add_apply] at h1`. Establish `he : (n (b i + b j) : ℤ) - n (b i) - n (b j) = be (b i) (b j)` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : ((c i j).toNat : ℤ) - ((-c i j).toNat : ℤ) = c i j` using `by omega`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem trait_num_den {ι : Type} [Fintype ι] (r : Dg.X → R) (hr : ∀ y, PsiCoord Dg y (r y))
     (b : Module.Basis ι ℤ Dg.X) (c : ι → ι → ℤ) {W : Type} [CommRing W] {g : R →+* W} {ϖ : W}
@@ -123,11 +123,11 @@ end GlobalTheory.TorRef.ChartHFun
 namespace GlobalTheory.TorRef.ChartHFun
 
 /- English proof (translation)
-Break down `ValuationRing.dvd_total a b with ⟨w, hw⟩ | hba` into its components or cases. Distinguish the cases in `ha : a = 0`. Rewrite using `[ha]`. Conclude with `dvd_zero _`. Take `⟨z, hz⟩` from `h`.
+Separate the alternatives or extract the components of the hypothesis. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hia : i a ≠ 0` using `(map_ne_zero_iff i hi).2 ha`. Establish `h1 : i a * 1 = i a * (i w * z)`. Rewrite using `[mul_one, ← mul_assoc, ← map_mul, ← hw]`. Conclude with `hz`. Establish `hu : IsUnit (i w)` using `IsUnit.of_mul_eq_one z (mul_left_cancel₀ hia h1).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hw' : IsUnit w` using `isUnit_of_map_unit i w hu`. Rewrite using `[hw]`. Conclude with `(associated_mul_unit_right a w hw').symm.dvd`. Conclude with `hba`.
+A detailed English derivation is pending.
 -/
 theorem dvd_of_map_dvd {A B : Type} [CommRing A] [IsDomain A] [IsDiscreteValuationRing A] [CommRing B] [IsDomain B]
     (i : A →+* B) (hi : Function.Injective i) [IsLocalHom i] {a b : A} (h : i b ∣ i a) : b ∣ a := by
@@ -152,25 +152,21 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {R : Ty
   [IsLocalRing R]
 
 /- English proof (translation)
-Take `⟨hNoeth, hIC, hcpl, hch⟩` from `id hCN`. Use `haveI := hNoeth`. Use `haveI := hIC`. Use `haveI := hch`. Use `set c : ι → ι → ℤ := fun i j => ℓ (elemForm b i j) with hc`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Use `set num := numF P.D.toPre r b c`. Use `set den := denF P.D.toPre r b c`. Establish `hden : den ≠ 0`. Simplify using `only [den, denF, Finset.prod_ne_zero_iff]`. Introduce `i _ j _`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the argument to an intermediate assertion. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `mul_ne_zero (pow_ne_zero _ (mul_ne_zero (hr _).2 (hr _).2)) (pow_ne_zero _ (hr _).2)`. Set `K` to `FractionRing R`. Establish `hinjK : Function.Injective (algebraMap R K)` using `IsFractionRing.injective R K`. Establish `hdenK : algebraMap R K den ≠ 0` using `(map_ne_zero_iff _ hinjK).2 hden`. It suffices to establish `hloc : ∀ p : Ideal R, p.IsPrime → p.height = 1 → ∃ a s : R, s ∉ p ∧ algebraMap R K num / algebraMap R K den * algebraMap R K s = algebraMap R K a by`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Take `⟨h, hh⟩` from `ReciprocityTheory.ChartRestriction.G.T0.mem_of_mem_heightOne_localizations (R := R) (K := K) (algebraMap R K num / algebraMap R K den) hloc`. Use `⟨h, hinjK ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, hh, div_mul_cancel₀ _ hdenK]`. Introduce `p hp hp1`. Use `haveI := hp`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `Rp` to `Localization.AtPrime p`. Use `haveI : IsDiscreteValuationRing Rp := GlobalTheory.localizationAtPrime_isDiscreteValuationRing_of_height_eq_one R p hp1`. Establish `hinjp : Function.Injective (algebraMap R Rp)` using `IsLocalization.injective Rp (Ideal.primeCompl_le_nonZeroDivisors p)`. Use `haveI : CharZero Rp := charZero_of_injective_algebraMap hinjp`. Set `T` to `GlobalTheory.CountableCompletion.completionCDVR Rp`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Set `i : Rp →+* T.V` to `algebraMap Rp (AdicCompletion (maximalIdeal Rp) Rp)`. Establish `hi : Function.Injective i` using `GlobalTheory.algebraMap_adicCompletion_injective_of_dvr Rp`. Use `haveI : IsLocalHom i := (inferInstance : IsLocalHom (algebraMap Rp (AdicCompletion (maximalIdeal Rp) Rp)))`. Establish `hCD : CDvr T.V` using `⟨T.dvr, T.cpl, T.ch0⟩`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible T.V`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `ψ : R →+* T.V` to `i.comp (algebraMap R Rp)`. Establish `hψ : Function.Injective ψ` using `hi.comp hinjp`. Establish `hgi : Function.Injective ((algebraMap T.V (FractionRing T.V)).comp ψ)` using `(IsFractionRing.injective T.V (FractionRing T.V)).comp hψ`. Take `⟨be, hbeL, hF⟩` from `GlobalTheory.ChartForm.exists_balanced_formAt E H R t P hCN T.V hCD ϖ hϖ ψ (IsFractionRing.lift hgi) (fun x => IsFractionRing.lift_algebraMap hgi x)`. Establish `hsymm` using `(mem_levelForms.1 hbeL).1`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨cc, hcc0, hcc⟩` from `hIn T.V hCD ϖ hϖ ψ be hsymm hF`. Establish `hl` using `hpos be hsymm cc hcc0 hcc`. Take `⟨m', d, hm, hd, hmd⟩` from `trait_num_den r (fun y => (hr y).1) b c hsymm hF`. Establish `hlin : ∑ i, ∑ j, c i j * be (b i) (b j) = ℓ be` using `(linForm_eq_sum b ℓ be).symm`. Establish `hdm : d ≤ m'`.
-
-Establish `: (0 : ℤ) ≤ (m' : ℤ) - d` using `by rw [hmd, hlin]; exact hl`. Use linear arithmetic over natural numbers and integers. Establish `hdiv : ψ den ∣ ψ num` using `(hd.dvd_iff_dvd_left).2 ((pow_dvd_pow ϖ hdm).trans hm.symm.dvd)`. Take `⟨z, hz⟩` from `dvd_of_map_dvd i hi hdiv`. Take `⟨⟨a, s⟩, rfl⟩` from `IsLocalization.mk'_surjective p.primeCompl z`.
-
-Use `⟨a, s, s.2, ?_⟩` and prove the remaining obligations. Establish `key : num * s = den * a`. Apply `hinjp` to reduce the goal to its premises. Rewrite using `[map_mul, map_mul, hz, mul_assoc, IsLocalization.mk'_spec]`. Rewrite using `[div_mul_eq_mul_div, div_eq_iff hdenK, ← map_mul, ← map_mul, key, mul_comm]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_mul_den_eq_num (t : SAB H (Sp R)) (P : PELUnif (maximalIdeal R) t) {m : ℕ}
     (γ : Fin m → LinearMap.BilinForm ℤ P.D.toPre.X) (ℓ : LinearMap.BilinForm ℤ P.D.toPre.X →ₗ[ℤ] ℤ) (hCN : IsCN R)
@@ -243,17 +239,15 @@ namespace GlobalTheory.TorRef
 open ChartHFun in
 
 /- English proof (translation)
-Introduce `E _ _ _ H R _ _ _ t P m γ ℓ hCN _ hIn hpos`. Use `haveI : CharZero R := hCN.2.2.2`. Set `b` to `Module.Free.chooseBasis ℤ P.D.toPre.X`. Use `choose r hr using fun y => (GlobalTheory.PsiCoordLocal.main R P.D hCN.2.1 y).1`. Use `set c : _ → _ → ℤ := fun i j => ℓ (elemForm b i j) with hc`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨h, hh⟩` from `exists_mul_den_eq_num t P γ ℓ hCN hIn hpos b r (fun y => ⟨(hr y).1, (hr y).2.1⟩)`. Use `⟨h, ?_, ?_⟩` and prove the remaining obligations. Introduce `h0`. Rewrite `hh` using `[h0, zero_mul]`. Establish `hnum : numF P.D.toPre r b c ≠ 0`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [numF, Finset.prod_ne_zero_iff]`. Introduce `i _ j _`. Conclude with `mul_ne_zero (pow_ne_zero _ (hr _).2.1) (pow_ne_zero _ (mul_ne_zero (hr _).2.1 (hr _).2.1))`. Conclude with `hnum hh.symm`. Introduce `W _ _ _ hW ϖ hϖ g be hsymm hF`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨cc, hcc0, hcc⟩` from `hIn W hW ϖ hϖ g be hsymm hF`. Establish `hl` using `hpos be hsymm cc hcc0 hcc`. Take `⟨m', d, hm, hd, hmd⟩` from `trait_num_den r (fun y => (hr y).1) b c hsymm hF`. Establish `hlin : ∑ i, ∑ j, c i j * be (b i) (b j) = ℓ be` using `(linForm_eq_sum b ℓ be).symm`. Establish `hdm : d ≤ m'`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: (0 : ℤ) ≤ (m' : ℤ) - d` using `by rw [hmd, hlin]; exact hl`. Use linear arithmetic over natural numbers and integers. Use `⟨m' - d, by rw [Nat.cast_sub hdm, hmd, hlin], ?_⟩` and prove the remaining obligations. Establish `h1 : Associated (g h * g (denF P.D.toPre r b c)) (ϖ ^ (m' - d) * ϖ ^ d)`. Rewrite using `[← map_mul, hh, ← pow_add, Nat.sub_add_cancel hdm]`.
-
-Conclude with `hm`. Conclude with `h1.of_mul_right hd (hd.ne_zero_iff.2 (pow_ne_zero _ hϖ.ne_zero))`.
+A detailed English derivation is pending.
 -/
 theorem exists_monomial_order_linForm : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {R : Type} [CommRing R] [IsDomain R] [IsLocalRing R] (t : SAB H (Sp R)) (P : PELUnif (maximalIdeal R) t) {m : ℕ} (γ : Fin m → LinearMap.BilinForm ℤ P.D.toPre.X) (ℓ : LinearMap.BilinForm ℤ P.D.toPre.X →ₗ[ℤ] ℤ), IsCN R → P.TorsionIso → InCone P.D.toPre γ → (∀ be : LinearMap.BilinForm ℤ P.D.toPre.X, (∀ y z, be y z = be z y) → ∀ c : Fin m → ℝ, (∀ i, 0 ≤ c i) → toReal be = ∑ i, c i • toReal (γ i) → 0 ≤ ℓ be) → ∃ h : R, h ≠ 0 ∧ ∀ (W : Type) [CommRing W] [IsDomain W] [IsLocalRing W], CDvr W → ∀ ϖ : W, Irreducible ϖ → ∀ (g : R →+* W) (be : LinearMap.BilinForm ℤ P.D.toPre.X), (∀ y z, be y z = be z y) → FormAt P.D.toPre g ϖ be → ∃ n : ℕ, (n : ℤ) = ℓ be ∧ Associated (g h) (ϖ ^ n) := by
   intro E _ _ _ H R _ _ _ t P m γ ℓ hCN _ hIn hpos

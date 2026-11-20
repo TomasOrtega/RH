@@ -19,13 +19,11 @@ noncomputable def hermFormImPullback {g : ℕ} (Hm : Matrix (Fin g) (Fin g) ℂ)
       simp [hermForm, star_smul, Matrix.mulVec_smul, dotProduct_smul])
 
 /- English proof (translation)
-Introduce `g L _ P hsp Hm h h' hab`. Establish `hB : hermFormImPullback Hm h = hermFormImPullback Hm h'`. Use `LinearMap.ext_on hsp ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨a, rfl⟩`. Use `LinearMap.ext_on hsp ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨b, rfl⟩`. Conclude with `hab a b`. Establish `him : ∀ x y, (hermForm Hm (h x) (h y)).im = (hermForm Hm (h' x) (h' y)).im`. Introduce `x y`. Conclude with `LinearMap.congr_fun₂ hB x y`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `x y`. Establish `hI : ∀ (k : (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ)), (hermForm Hm (k (Complex.I • x)) (k y)).im = (hermForm Hm (k x) (k y)).re`. Introduce `k`. Simplify using `[hermForm, map_smul, smul_dotProduct]`. Apply `Complex.ext` to reduce the goal to its premises.
-
-Rewrite using `[← hI h, ← hI h']`. Conclude with `him _ _`. Conclude with `him x y`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hermForm_eq_of_im_eq_on_spanning_lattice :
     ∀ {g : ℕ} {L : Type} [AddCommGroup L] (P : L →+ (Fin g → ℂ)), Submodule.span ℝ (Set.range P) = ⊤ → ∀ (Hm : Matrix (Fin g) (Fin g) ℂ) (h h' : (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ)), (∀ a b, (ReciprocityTheory.ChartRestriction.G.Geo.Tor.hermForm Hm (h (P a)) (h (P b))).im = (ReciprocityTheory.ChartRestriction.G.Geo.Tor.hermForm Hm (h' (P a)) (h' (P b))).im) → ∀ x y, ReciprocityTheory.ChartRestriction.G.Geo.Tor.hermForm Hm (h x) (h y) = ReciprocityTheory.ChartRestriction.G.Geo.Tor.hermForm Hm (h' x) (h' y) := by

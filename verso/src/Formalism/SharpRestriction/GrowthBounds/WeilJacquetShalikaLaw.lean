@@ -37,13 +37,13 @@ def ColGe {D : D7} (T : TwForms D) (u : D.what₂.Word) (μ : D.what₂.Tup) (w 
 def Exc (D : D7) (p : ℕ) : Prop := p ∣ D.host.condN * D.host.g 0 * D.host.g 1
 
 /- English proof (translation)
-Conclude with `Or.inr (Or.inr (Or.inr ⟨w, rfl⟩))`.
+Prove the second alternative.
 -/
 theorem used_muAt (D : D7) (w : D.what₂.places.Pl) : DV.Used D (D.what₂.muAt w) := by
   exact Or.inr (Or.inr (Or.inr ⟨w, rfl⟩))
 
 /- English proof (translation)
-Conclude with `Or.inl rfl`.
+Prove the first alternative.
 -/
 theorem reference_tuple_used (D : D7) : DV.Used D D.what₂.mu0 := by
   exact Or.inl rfl
@@ -270,7 +270,7 @@ variable {X : Inst D L} {Y : LatInst D} {K : Consts} {c : LatCmp D} {Dx : DivX D
   {lev : LevelData D} {Xe : ErrX D} {ce : ErrC} {sp : ℝ}
 
 /- English proof (translation)
-Conclude with `Iff.rfl`.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem difference_bound_iff_forall_place : Formalism.MainNotions.AuxBlock8.UnitBoundDifferenceTerm D L X Y K ↔
     ∀ hT : GatTies D, LatTied hT X Y → ∀ (u : D.what₂.Word) (w : D.what₂.places.Pl)
@@ -278,7 +278,7 @@ theorem difference_bound_iff_forall_place : Formalism.MainNotions.AuxBlock8.Unit
   exact Iff.rfl
 
 /- English proof (translation)
-Conclude with `Iff.rfl`.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem unit_bound_iff_forall_place : Formalism.MainNotions.AuxBlock8.unitBoundAtTwistedPlaces D L X Y K ↔
     ∀ hT : GatTies D, LatTied hT X Y → ∀ (u : D.what₂.Word) (w : D.what₂.places.Pl)
@@ -286,19 +286,19 @@ theorem unit_bound_iff_forall_place : Formalism.MainNotions.AuxBlock8.unitBoundA
   exact Iff.rfl
 
 /- English proof (translation)
-Conclude with `fun hT hL u w hg => (h hT hL u w hg).2.2`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem lattice_valuation_of_growth (h : Formalism.MainNotions.AuxBlock8.admG1 D L X Y K) : BaseChangeDefiniteGood D L X Y K := by
   exact fun hT hL u w hg => (h hT hL u w hg).2.2
 
 /- English proof (translation)
-Conclude with `fun hF hE u w h1 h2 _ μ hμ hq x hx => h hF hE u w h1 h2 μ hμ hq x hx`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem zero_gain_of_no_served_orbit (h : ColumnValuationAwayFromTypePrimes D L K Dx T lev Xe ce sp) : ZeroGainValuation D L K Dx T lev Xe ce sp := by
   exact fun hF hE u w h1 h2 _ μ hμ hq x hx => h hF hE u w h1 h2 μ hμ hq x hx
 
 /- English proof (translation)
-Unfold `lowS lowFE ES`. Use `congr 1`. Use `Finset.sum_congr rfl fun j hj => ?_` and prove the remaining obligations. Rewrite using `[hE u j hj w]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem lowS_eq_lowFE (hE : L.EDef Xe K ce) (u : D.what₂.Word) (w : D.what₂.places.Pl) :
     lowS L Xe K ce sp u w = lowFE L u w + sp * vDG D u w := by
@@ -308,7 +308,7 @@ theorem lowS_eq_lowFE (hE : L.EDef Xe K ce) (u : D.what₂.Word) (w : D.what₂.
   rw [hE u j hj w]
 
 /- English proof (translation)
-Introduce `h`. Conclude with `hg.2.2.2.2.2 ⟨1, by rw [h, mul_one]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem residue_char_ne_level {u : D.what₂.Word} {w : D.what₂.places.Pl}
     (hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)) : D.what₂.places.resChar w ≠ (D.mem u).A.T := by
@@ -322,7 +322,7 @@ theorem NP_tw (W : TwLoc D Y) (μ : D.what₂.Tup) (u : D.what₂.Word) (w : D.w
     (hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)) : NP X (W.Yt μ) K u w hg = NP X Y K u w hg := rfl
 
 /- English proof (translation)
-Take `⟨v1, f1, l1, c1, r1⟩` from `Y1`. Take `⟨v2, f2, l2, c2, r2⟩` from `Y2`. Simplify using `only at h1 h2`. Substitute `h1 h2` using the available equality. Conclude with `Iff.rfl`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Substitute using the available equality. Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem LatTied_congr {Y1 Y2 : LatInst D} (hT : GatTies D) (h1 : Y1.vOf = Y2.vOf) (h2 : Y1.Fl = Y2.Fl) :
     LatTied hT X Y1 ↔ LatTied hT X Y2 := by
@@ -333,14 +333,14 @@ theorem LatTied_congr {Y1 Y2 : LatInst D} (hT : GatTies D) (h1 : Y1.vOf = Y2.vOf
   exact Iff.rfl
 
 /- English proof (translation)
-Conclude with `LatTied_congr hT rfl rfl`.
+A detailed English derivation is pending.
 -/
 theorem LatTied_tw (W : TwLoc D Y) (μ : D.what₂.Tup) (hT : GatTies D) :
     LatTied hT X (W.Yt μ) ↔ LatTied hT X Y := by
   exact LatTied_congr hT rfl rfl
 
 /- English proof (translation)
-Establish `key : ∀ s : (Σ Lv : Levels (Y.Fl u w hg), Chain Lv), s = ⟨Y.Lv u w hg, Y.Ch u w hg⟩ → (vGeLat (D.gat u w hg) (s.1.Int D.R.m) (s.2.chainK D.R.m F) g ↔ Y.vKge u w hg F g)`. Introduce and unpack `s rfl`. Conclude with `Iff.rfl`. Conclude with `key _ (W.LC_muAt u w hg)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Unfold both sides to obtain the same proposition, which implies itself. A detailed English derivation is pending.
 -/
 theorem vKge_muAt (W : TwLoc D Y) (u : D.what₂.Word) (w : D.what₂.places.Pl)
     (hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)) (F : (D.gat u w hg).Fn) (g : ℝ) :
@@ -352,7 +352,7 @@ theorem vKge_muAt (W : TwLoc D Y) (u : D.what₂.Word) (w : D.what₂.places.Pl)
   exact key _ (W.LC_muAt u w hg)
 
 /- English proof (translation)
-Introduce `hT hL u w hg F hF`. Establish `h1` using `h hE (D.what₂.muAt w) (used_muAt D w) hT ((LatTied_tw W _ hT).2 hL) u w hg (Dx.Qp_muAt w) F hF`. Rewrite `h1` using `[vKge_muAt, lowS_eq_lowFE hE.edef, zero_mul, add_zero]`. Conclude with `h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lattice_valuation_of_tuples (W : TwLoc D Y) (hE : ErrDefs D L Xe lev K ce) (h : TupleLatticeValuation D L X Y K Dx W lev Xe ce 0) :
     BaseChangeDefiniteGood D L X Y K := by
@@ -362,7 +362,7 @@ theorem lattice_valuation_of_tuples (W : TwLoc D Y) (hE : ErrDefs D L Xe lev K c
   exact h1
 
 /- English proof (translation)
-Take `⟨a, z, hz, hy, ha⟩` from `h`. Use `⟨a, z, hz, hy, ha.imp id fun h' => le_trans ?_ h'⟩` and prove the remaining obligations. Unfold `DV.ur`. Conclude with `mul_le_mul_of_nonneg_left hs (by positivity)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem VGe_mono {w : D.what₂.places.Pl} {V : Type} [AddCommGroup V] [Module D.what₂.LL V] [Module (𝓞 D.what₂.LL) V]
     {Λ : Submodule (𝓞 D.what₂.LL) V} {y : V} {s s' : ℝ} (hs : s' ≤ s) (h : VGe D w Λ y s) : VGe D w Λ y s' := by
@@ -372,7 +372,7 @@ theorem VGe_mono {w : D.what₂.places.Pl} {V : Type} [AddCommGroup V] [Module D
   exact mul_le_mul_of_nonneg_left hs (by positivity)
 
 /- English proof (translation)
-Use `⟨fun h0 => ?_, fun h1 => ?_⟩` and prove the remaining obligations. Take `⟨y, hy, hv⟩` from `h.1 h0`. Conclude with `⟨y, hy, VGe_mono hs hv⟩`. Take `⟨y, hy, hv⟩` from `h.2 h1`. Conclude with `⟨y, hy, VGe_mono hs hv⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem ColGe_mono {u : D.what₂.Word} {μ : D.what₂.Tup} {w : D.what₂.places.Pl} {x : ((D.fm u).lat 0).V} {s s' : ℝ}
     (hs : s' ≤ s) (h : ColGe T u μ w x s) : ColGe T u μ w x s' := by
@@ -383,7 +383,7 @@ theorem ColGe_mono {u : D.what₂.Word} {μ : D.what₂.Tup} {w : D.what₂.plac
     exact ⟨y, hy, VGe_mono hs hv⟩
 
 /- English proof (translation)
-Unfold `gainP`. Use `split_ifs`. Conclude with `le_rfl`. Use `add_nonneg (Finset.sum_nonneg fun t _ => ?_) (Finset.sum_nonneg fun t _ => le_max_right _ _)` and prove the remaining obligations. Conclude with `le_trans (le_max_right _ _) (le_max_right _ _)`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem gainP_nonneg' (X : Inst D L) (K : Consts) (a b : HH D → ℤ) (p j : ℕ) :
     0 ≤ gainP X K a b p j := by
@@ -394,11 +394,9 @@ private theorem gainP_nonneg' (X : Inst D L) (K : Consts) (a b : HH D → ℤ) (
     exact le_trans (le_max_right _ _) (le_max_right _ _)
 
 /- English proof (translation)
-Take `⟨hT, hL⟩` from `ht.tied`. Establish `h1` using `hG hE μ hUs hT ((LatTied_tw W μ hT).2 hL) u w hg hμ (c.cmp u w hg x) hx`. Use `ColGe_mono ?_ (hV u w hg μ hUs hμ x _ h1)` and prove the remaining obligations. Unfold `totS lowS`. Establish `hs : ∀ j, gainS X K (D.what₂.places.resChar w) j + L.F j w - ES L Xe K ce u j w = gainS X K (D.what₂.places.resChar w) j + (L.F j w - ES L Xe K ce u j w)` using `fun j => by ring`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Simplify using `only [hs, Finset.sum_add_distrib]`. Establish `hle : ∑ j ∈ SizeData₂.lifts D, gainS X K (D.what₂.places.resChar w) j ≤ ∑ j ∈ SizeData₂.lifts D, gainP X K (aL L) (bL L) (D.what₂.places.resChar w) j` using `Finset.sum_le_sum fun j _ => by`. Unfold `gainS`. Use `split_ifs`. Conclude with `gainP_nonneg' _ _ _ _ _ _`.
-
-Conclude with `le_rfl`. Conclude with `gainP_nonneg' _ _ _ _ _ _`. Combine the linear equalities and inequalities to obtain the conclusion.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem kernel_valuation_served (W : TwLoc D Y) (hV : CmpV c Dx T W) (hG : TupleLatticeValuation D L X Y K Dx W lev Xe ce sp) (ht : Ties9 D L X Y c)
     (hE : ErrDefs D L Xe lev K ce)
@@ -424,7 +422,7 @@ theorem kernel_valuation_served (W : TwLoc D Y) (hV : CmpV c Dx T W) (hG : Tuple
   linarith
 
 /- English proof (translation)
-Introduce `μ _ u w hg Xs Ys hXs hA`. Take `⟨std, vp, unif, eO, eO_spec, dG, dG_spec, om, rfl⟩` from `hXs`. Conclude with `(@h u w ⟨D.what₂.places.resChar_prime w⟩ hg _ Ys rfl hA).2.2.2.2.2.2.2.2.2.2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem local_theorem_of_statement (W : TwLoc D Y) (h : Formalism.MainNotions.FormalGroupSystem.ErrorExponentStatement D) : SmallInertPrimeSmallOrderLengthBound D W := by
   intro μ _ u w hg Xs Ys hXs hA
@@ -432,7 +430,7 @@ theorem local_theorem_of_statement (W : TwLoc D Y) (h : Formalism.MainNotions.Fo
   exact (@h u w ⟨D.what₂.places.resChar_prime w⟩ hg _ Ys rfl hA).2.2.2.2.2.2.2.2.2.2
 
 /- English proof (translation)
-Establish `h1` using `hS T W lev Xe ce hV 1 (by simp) hA`. Conclude with `⟨hZ, h1.1, h1.2.2.1⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem serv_of {C : ℝ} (hS : Stmt D L X Y K c Dx) (W : TwLoc D Y) (hV : CmpV c Dx T W)
     (hA : admitted D L X Y K Dx T W lev Xe ce 1) (hZ : TypePrimeSizeConds D L K ce C) : Serv D L X Y K c Dx T lev Xe ce C := by
@@ -454,7 +452,7 @@ def PairInt (D : D7) (Dx : DivX D) (T : TwForms D) : Prop :=
         (y = 0 ∨ -ur D w (vDG D u w) ≤ (vAdd (D.plEq w) y : ℝ))
 
 /- English proof (translation)
-Unfold `vAdd`. Rewrite using `[Valuation.map_mul, WithZero.log_mul ((Valuation.ne_zero_iff _).2 hx) ((Valuation.ne_zero_iff _).2 hy)]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem vAdd_mul' {Kk : Type} [Field Kk] [NumberField Kk] (w : HeightOneSpectrum (𝓞 Kk)) {x y : Kk} (hx : x ≠ 0)
     (hy : y ≠ 0) : vAdd w (x * y) = vAdd w x + vAdd w y := by
@@ -463,11 +461,11 @@ theorem vAdd_mul' {Kk : Type} [Field Kk] [NumberField Kk] (w : HeightOneSpectrum
   ring
 
 /- English proof (translation)
-Break down `ha with ha | ha` into its components or cases. Conclude with `Or.inl (by rw [ha, zero_mul])`. Break down `hy with hy | hy` into its components or cases. Conclude with `Or.inl (by rw [hy, mul_zero])`. Distinguish the cases in `ha0 : a = 0`.
+Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Consider separately whether the proposition holds or fails.
 
-Conclude with `Or.inl (by rw [ha0, zero_mul])`. Distinguish the cases in `hy0 : y0 = 0`. Conclude with `Or.inl (by rw [hy0, mul_zero])`. Use `right`. Rewrite using `[vAdd_mul' _ ha0 hy0]`.
+Prove the first alternative. Consider separately whether the proposition holds or fails. Prove the first alternative. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Unfold `DV.ur at *`. Rewrite using `[mul_sub]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem val_step (D : D7) (w : D.what₂.places.Pl) {a y0 : D.what₂.LL} {s v : ℝ}
     (ha : a = 0 ∨ ur D w s ≤ (vAdd (D.plEq w) a : ℝ)) (hy : y0 = 0 ∨ -ur D w v ≤ (vAdd (D.plEq w) y0 : ℝ)) :
@@ -488,11 +486,11 @@ theorem val_step (D : D7) (w : D.what₂.places.Pl) {a y0 : D.what₂.LL} {s v :
   linarith
 
 /- English proof (translation)
-Introduce `μ hUs hQ hc F hF hF0`. Distinguish the cases in `hμ : μ = D.what₂.mu0`. Substitute `hμ` using the available equality. Take `⟨y, hy, a, z, hz, rfl, ha⟩` from `hc.1 rfl`. Take `⟨y0, hy0, hv0⟩` from `(hP hD).1 u w hw z hz F hF hF0`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨a * y0, ?_, val_step D w ha hv0⟩` and prove the remaining obligations. Rewrite using `[D.perCol_base_eq_PtilCol, D.nuIn_jN, PeriodMap.PtilCol, ← hy, map_mul, hy0, LinearMap.map_smulₛₗ]`. Simplify using `[PeriodMap.Ptil]`. Take `⟨y, hy, a, z, hz, rfl, ha⟩` from `hc.2 hμ`. Take `⟨y0, hy0, hv0⟩` from `(hP hD).2 u μ hUs hμ w hw hQ z hz F hF hF0`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨a * y0, ?_, val_step D w ha hv0⟩` and prove the remaining obligations. Rewrite using `[D.perCol_tie u μ hμ, D.nuIn_jN, PeriodMap.PtilCol, ← hy, map_mul, hy0, LinearMap.map_smulₛₗ]`. Simplify using `[PeriodMap.Ptil]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem period_ge {D : D7} {Dx : DivX D} {T : TwForms D} (hP : PairInt D Dx T) (hD : DGamDef D) (u : D.what₂.Word)
     (w : D.what₂.places.Pl) (hw : D.what₂.places.resChar w ≠ (D.mem u).A.T) (φ : (D.div.Nu u).V) (s : ℝ) :
@@ -515,7 +513,7 @@ theorem period_ge {D : D7} {Dx : DivX D} {T : TwForms D} (hP : PairInt D Dx T) (
     simp [PeriodMap.Ptil]
 
 /- English proof (translation)
-Use `⟨Submodule.subset_span hφ, ?_⟩` and prove the remaining obligations. Establish `: D.nuIn u φ ∈ LinearMap.range (D.nuIn u)` using `⟨φ, rfl⟩`. Rewrite `this` using `[D.nuIn_range]`. Conclude with `this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nuIn_mem_Sram (D : D7) (u : D.what₂.Word) (w : D.what₂.places.Pl) (φ : (D.div.Nu u).V) (hφ : φ ∈ MramL D u) :
     D.nuIn u φ ∈ LT.Sram D u w := by
@@ -525,11 +523,11 @@ theorem nuIn_mem_Sram (D : D7) (u : D.what₂.Word) (w : D.what₂.places.Pl) (�
   exact this
 
 /- English proof (translation)
-Establish `hs0 : (s : D.what₂.LL) ≠ 0`. Introduce `h`. Apply `hs` to reduce the goal to its premises. Establish `: s = 0` using `by exact_mod_cast h`. Rewrite using `[this]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.zero_mem _`. Use `show (0 : WithTop ℤ) ≤ D.what₂.places.val w ((s : D.what₂.LL))⁻¹`. Rewrite using `[D.val_eq w _ (inv_ne_zero hs0)]`. Establish `h1 : (D.plEq w).valuation D.what₂.LL (s : D.what₂.LL) = 1`. Use `(D.plEq w).valuation_of_algebraMap (K := D.what₂.LL) s` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[show (s : D.what₂.LL) = algebraMap (𝓞 D.what₂.LL) D.what₂.LL s from rfl, this]`. Conclude with `(HeightOneSpectrum.intValuation_eq_one_iff).2 hs`. Unfold `vAdd`. Rewrite using `[map_inv₀, h1]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem inv_mem_intW_of (D : D7) (w : D.what₂.places.Pl) (s : 𝓞 D.what₂.LL) (hs : s ∉ (D.plEq w).asIdeal) :
     ((s : D.what₂.LL))⁻¹ ∈ intW D.what₂.places w := by
@@ -549,13 +547,13 @@ theorem inv_mem_intW_of (D : D7) (w : D.what₂.places.Pl) (s : 𝓞 D.what₂.L
   simp
 
 /- English proof (translation)
-Take `⟨s, hs, hm⟩` from `h φ hφ`. Rewrite `hm` using `[pow_zero, Ideal.one_eq_top, Submodule.top_smul]`. Establish `hs0 : (s : D.what₂.LL) ≠ 0`. Introduce `h0`. Apply `hs` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `: s = 0` using `by exact_mod_cast h0`. Rewrite using `[this]`. Conclude with `Ideal.zero_mem _`. Establish `h1 : D.nuIn u (s • φ) ∈ ((D.fm u).lat 0).L` using `hm`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h2 : D.nuIn u φ = (⟨((s : D.what₂.LL))⁻¹, inv_mem_intW_of D w s hs⟩ : intW D.what₂.places w) • D.nuIn u (s • φ)`. Rewrite using `[Subring.smul_def]`. Use `show D.nuIn u φ = ((s : D.what₂.LL))⁻¹ • D.nuIn u (s • φ)`. Rewrite using `[show s • φ = (s : D.what₂.LL) • φ from (algebraMap_smul D.what₂.LL s φ).symm, map_smul, smul_smul, inv_mul_cancel₀ hs0, one_smul]`. Rewrite using `[h2]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span h1)`. Establish `: D.nuIn u φ ∈ LinearMap.range (D.nuIn u)` using `⟨φ, rfl⟩`. Rewrite `this` using `[D.nuIn_range]`. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem nuIn_mem_Sram_of_locLe (D : D7) (L : SizeData₂ D) (u : D.what₂.Word) (w : D.what₂.places.Pl) (φ : (D.div.Nu u).V)
     (hφ : φ ∈ L.NuLat u) (h : LocLe (D.plEq w) 0 (L.NuLat u) (MramL D u)) : D.nuIn u φ ∈ LT.Sram D u w := by
@@ -581,9 +579,9 @@ theorem nuIn_mem_Sram_of_locLe (D : D7) (L : SizeData₂ D) (u : D.what₂.Word)
     exact this
 
 /- English proof (translation)
-Introduce `u w hT' hg' φ hφ Fv hFv hV0`. Establish `hc` using `h hF hE u w hT' hg' (D.what₂.muAt w) (used_muAt D w) (Dx.Qp_muAt w) (D.nuIn u φ) (nuIn_mem_Sram D u w φ hφ)`. Take `⟨y, hy1, hy2⟩` from `period_ge hP hE.dgam u w hT' φ _ (D.what₂.muAt w) (used_muAt D w) (Dx.Qp_muAt w) hc Fv hFv hV0`. Use `⟨y, hy1, ?_⟩` and prove the remaining obligations. Rewrite `hy2` using `[lowS_eq_lowFE hE.edef, one_mul, add_sub_cancel_right]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hy2`.
+A detailed English derivation is pending.
 -/
 theorem stable_lattice_of_no_served_orbit {K : Consts} {Dx : DivX D} {T : TwForms D} {lev : LevelData D} {Xe : ErrX D} {ce : ErrC}
     (hP : PairInt D Dx T) (hE : ErrDefs D L Xe lev K ce) (hF : L.FDef)
@@ -604,13 +602,13 @@ theorem stable_lattice_of_no_served_orbit {K : Consts} {Dx : DivX D} {T : TwForm
   exact hy2
 
 /- English proof (translation)
-Introduce `u w hTne hgne φ hφ Fv hFv hV0`. Establish `hIn : InNP X Y K c u w (D.nuIn u φ)`. Distinguish the cases in `hVV : VV X K (aL L) (bL L) (D.what₂.places.resChar w) = ∅`. Conclude with `Or.inr ⟨hVV, nuIn_mem_Sram_of_locLe D L u w φ hφ (hN u w hTne)⟩`. Establish `hg` using `hGI u w hTne hVV`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Prove the second alternative. Establish an intermediate fact.
 
-Use `Or.inl ⟨hg, (hS u w hg hVV φ).1 ⟨1, fun h1 => (D.plEq w).isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h1), by rw [one_smul]; exact hφ⟩⟩` and prove the remaining obligations. Establish `hc` using `h ht hE u w hTne hgne (D.what₂.muAt w) (used_muAt D w) (Dx.Qp_muAt w) _ hIn`. Take `⟨y, hy1, hy2⟩` from `period_ge hP hE.dgam u w hTne φ _ (D.what₂.muAt w) (used_muAt D w) (Dx.Qp_muAt w) hc Fv hFv hV0`. Use `⟨y, hy1, hy2.imp id fun h2 => le_trans ?_ h2⟩` and prove the remaining obligations. Unfold `DV.ur`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Use `mul_le_mul_of_nonneg_left ?_ (by positivity)` and prove the remaining obligations. Unfold `SizeData₂.sg totS`. Rewrite using `[one_mul, add_sub_cancel_right]`. Use `Finset.sum_le_sum fun j hj => ?_` and prove the remaining obligations. Establish `h3` using `hgain w j hj`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[show ES L Xe K ce u j w = L.E u j w from (hE.edef u j hj w).symm]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem off_level_bound {X : Inst D L} {Y : LatInst D} {K : Consts} {c : LatCmp D} {Dx : DivX D} {T : TwForms D}
     {lev : LevelData D} {Xe : ErrX D} {ce : ErrC}
@@ -647,7 +645,7 @@ theorem off_level_bound {X : Inst D L} {Y : LatInst D} {K : Consts} {c : LatCmp 
   linarith
 
 /- English proof (translation)
-Unfold `gainP`. Use `split_ifs`. Conclude with `le_rfl`. Use `add_nonneg (Finset.sum_nonneg fun t _ => ?_) (Finset.sum_nonneg fun t _ => le_max_right _ _)` and prove the remaining obligations. Conclude with `le_trans (le_max_right _ _) (le_max_right _ _)`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem pair_gain_nonneg {X : Inst D L} {K : Consts} (a b : HH D → ℤ) (p j : ℕ) : 0 ≤ gainP X K a b p j := by
   unfold gainP
@@ -657,7 +655,7 @@ theorem pair_gain_nonneg {X : Inst D L} {K : Consts} (a b : HH D → ℤ) (p j :
     exact le_trans (le_max_right _ _) (le_max_right _ _)
 
 /- English proof (translation)
-Unfold `gainS`. Use `split_ifs`. Conclude with `le_rfl`. Conclude with `pair_gain_nonneg _ _ p j`. Conclude with `le_rfl`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem served_gain_nonneg {X : Inst D L} {K : Consts} (p j : ℕ) : 0 ≤ gainS X K p j := by
   unfold gainS
@@ -667,15 +665,11 @@ theorem served_gain_nonneg {X : Inst D L} {K : Consts} (p j : ℕ) : 0 ≤ gainS
   · exact le_rfl
 
 /- English proof (translation)
-Unfold `SizeData₂.gainD`. Use `split_ifs with hd`. Conclude with `served_gain_nonneg _ _`. Distinguish the cases in `hs : w ∈ L.supp`. Use `swap`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[L.gain_supp j w hs]`. Conclude with `served_gain_nonneg _ _`. Distinguish the cases in `hin : IsResidueClassZero D (D.what₂.places.resChar w) ∨ IsSg D (D.what₂.places.resChar w)`. Use `swap`. Rewrite using `[(L.not_inert w (fun h => hin (Or.inr h)) (fun h => hin (Or.inl h))).1 j]`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Conclude with `served_gain_nonneg _ _`. Establish `hg : L.gain j w = gainP X K (aL L) (bL L) (D.what₂.places.resChar w) j` using `(hF w).2.2.2.1 hs hin j hj`. Distinguish the cases in `hE : Exc D (D.what₂.places.resChar w)`. Establish `hp` using `D.what₂.places.resChar_prime w`. Establish `hgz : L.gain j w = 0`.
-
-Unfold `Exc at hE`. Break down `(Nat.Prime.dvd_mul hp).1 hE with h | h` into its components or cases. Break down `(Nat.Prime.dvd_mul hp).1 h with h | h` into its components or cases. Conclude with `absurd hin (D.host.not_inert_of_dvd hp h)`. Conclude with `L.gain_g j w (by rw [(Nat.prime_dvd_prime_iff_eq hp (D.host.g_prime 0)).1 h]; simp)`.
-
-Conclude with `L.gain_g j w (by rw [(Nat.prime_dvd_prime_iff_eq hp (D.host.g_prime 1)).1 h]; simp)`. Rewrite using `[hgz]`. Conclude with `served_gain_nonneg _ _`. Rewrite using `[hg, gainS, if_pos ⟨hin, hE⟩, if_neg (fun h => hd (hcs _ (D.what₂.places.resChar_prime w) h))]`.
+Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gainD_le_gainS {X : Inst D L} {K : Consts} (hF : ∀ w, ParametersFill X K w)
     (hcs : ∀ p : ℕ, p.Prime → IsCs D p → p ∈ L.drop) (w : D.what₂.places.Pl) (j : ℕ)
@@ -703,7 +697,7 @@ theorem gainD_le_gainS {X : Inst D L} {K : Consts} (hF : ∀ w, ParametersFill X
   · rw [hg, gainS, if_pos ⟨hin, hE⟩, if_neg (fun h => hd (hcs _ (D.what₂.places.resChar_prime w) h))]
 
 /- English proof (translation)
-Apply `hC u _ _ hw` to reduce the goal to its premises. Unfold `VV at hVV`. Use `split_ifs at hVV with h1`. Conclude with `h1.1`. Conclude with `absurd rfl hVV`.
+Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem gIdx_of_served {X : Inst D L} {K : Consts}
     (hC : ∀ (u : D.what₂.Word) (p : ℕ), Cand D L K p → p ≠ (D.mem u).A.T → GIdx D.host (D.mem u).A.T p)
@@ -717,14 +711,14 @@ theorem gIdx_of_served {X : Inst D L} {K : Consts}
   · exact absurd rfl hVV
 
 /- English proof (translation)
-Conclude with `⟨⟨Fm.gatT x i, Fm.latTied x hx i⟩, (Fm.ex x hx i).lat.vram, (Fm.ex x hx i).fdef⟩`.
+Supply the required witnesses or components.
 -/
 theorem local_compatibility_family {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) (x : ℝ) (hx : Fm.x1 < x) (i : Fm.Ix x) :
     Ties9 (Fm.D x i) (Fm.L x i) (Fm.Gx x i) (Fm.Gy x i) (Fm.ex x hx i).cmp := by
   exact ⟨⟨Fm.gatT x i, Fm.latTied x hx i⟩, (Fm.ex x hx i).lat.vram, (Fm.ex x hx i).fdef⟩
 
 /- English proof (translation)
-Conclude with `stable_lattice_of_no_served_orbit hP (Fm.ex x hx i).err (Fm.ex x hx i).fdef h.2.2`.
+A detailed English derivation is pending.
 -/
 theorem stable_lattice_family {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) (x : ℝ) (hx : Fm.x1 < x) (i : Fm.Ix x) (C : ℝ)
     (hP : PairInt (Fm.D x i) (Fm.X x i) (Fm.ex x hx i).tw)
@@ -741,7 +735,7 @@ theorem stable_lattice_family {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) 
   exact stable_lattice_of_no_served_orbit hP (Fm.ex x hx i).err (Fm.ex x hx i).fdef h.2.2
 
 /- English proof (translation)
-Use `(Fm.drop_iff x hx i p hp).2 ⟨Or.inr (Or.inr (Or.inr h)), fun u hu => ?_⟩` and prove the remaining obligations. Establish `hs` using `(Fm.params x hx i).level_split _ ((Fm.D x i).T_level u)`. Establish `hc : (Fm.D x i).host.cls p = PrimeClass.inertClass` using `h.1`. Rewrite `hs` using `[← hu, hc]`. Consider the cases of `hs`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Split into cases according to the possible forms of the given data.
 -/
 theorem isCs_drop {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) (x : ℝ) (hx : Fm.x1 < x) (i : Fm.Ix x) (p : ℕ) (hp : p.Prime)
     (h : IsCs (Fm.D x i) p) : p ∈ (Fm.L x i).drop := by
@@ -752,7 +746,7 @@ theorem isCs_drop {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) (x : ℝ) (h
   cases hs
 
 /- English proof (translation)
-Conclude with `off_level_bound hP (Fm.ex x hx i).err (local_compatibility_family Fm x hx i) (Fm.ex x hx i).lat.served (Fm.nuDef x hx i).1 (fun u w hw hVV => gIdx_of_served hC u w hw hVV) (fun w j hj => gainD_le_gainS (Fm.fills x hx i) (fun p hp hc => isCs_drop Fm x hx i p hp hc) w j hj) h`.
+A detailed English derivation is pending.
 -/
 theorem off_level_bound_family {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) (x : ℝ) (hx : Fm.x1 < x) (i : Fm.Ix x)
     (hC : ∀ (u : (Fm.D x i).what₂.Word) (p : ℕ), Cand (Fm.D x i) (Fm.L x i) Fm.GK p → p ≠ ((Fm.D x i).mem u).A.T →

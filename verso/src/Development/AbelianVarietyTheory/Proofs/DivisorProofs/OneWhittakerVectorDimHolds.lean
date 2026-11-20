@@ -6,17 +6,17 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WhittakerSpaceDimPa
 namespace GlobalTheory.GenericProduct
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.whittakerSpaceDim_parabolicInduction_cuspidal_eq_one`.
+A detailed English derivation is pending.
 -/
 theorem oneGenericVector : OneGenericVector := GlobalTheory.T.whittakerSpaceDim_parabolicInduction_cuspidal_eq_one
 
 /- English proof (translation)
-The claim follows from `genericMultOne oneGenericVector`.
+A detailed English derivation is pending.
 -/
 theorem genericMultOne_holds : GlobalTheory.IndefiniteRowSideFullHecke.GenericMultiplicityOne.GenericMultOne := genericMultOne oneGenericVector
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CuspidalIdempotentCharacters.genericMultOne_iff.1 genericMultOne_holds`.
+A detailed English derivation is pending.
 -/
 theorem oneWhittakerVector_holds : GlobalTheory.IndefiniteRowSideFullHecke.CuspidalInducedCharacter.OneWhittakerVector :=
   GlobalTheory.CuspidalIdempotentCharacters.genericMultOne_iff.1 genericMultOne_holds

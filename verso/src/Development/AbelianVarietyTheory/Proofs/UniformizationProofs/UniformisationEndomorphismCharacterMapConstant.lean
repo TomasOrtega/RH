@@ -21,11 +21,11 @@ def Acts (g : GtCoord I D e G) (a : (thickObj R I e G).left ⟶ (thickObj R I e 
     ∀ x, val (g.t x) (r ≫ a) z J = val (g.t (f x)) r z J
 
 /- English proof (translation)
-Introduce `Z r z J hJ h x`. Set `FinalForm : Over (Spec (CommRingCat.of (R ⧸ I ^ (e + 1))))` to `Over.mk (r ≫ (thickObj R I e G).hom)`. Set `b : FinalForm ⟶ thickObj R I e G` to `Over.homMk r rfl`. Set `τ` to `g.isKernel.lift b (toUnit _) ((CharAgree.comp_q_eq_one_iff g b).2 h)`. Establish `hτ : τ ≫ g.i = b` using `g.isKernel.lift_fst _ _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hτ' : (τ ≫ t) ≫ g.i = b ≫ a` using `by rw [Category.assoc, ← hi, ← Category.assoc, hτ]`. Establish `k` using `(TorusCoord.val_torus_point_and_translate R I D e G g FinalForm (τ ≫ t) 1 z J hJ x).1`. Establish `k'` using `(TorusCoord.val_torus_point_and_translate R I D e G g FinalForm τ 1 z J hJ (f x)).1`. Rewrite `k` using `[hτ']`. Rewrite `k'` using `[hτ]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `k.trans (Eq.trans (Units.ext ?_) k'.symm)` and prove the remaining obligations. Rewrite using `[gm_val _ _ ⊤ trivial, gm_val _ _ ⊤ trivial]`. Use `congrArg (FinalForm.left.presheaf.germ ⊤ z trivial).hom ?_` and prove the remaining obligations. Conclude with `(SplitTorusHom.appTop_comp τ t _).trans (congrArg τ.left.appTop.hom ((EndTorus.torusEndOf_iff_appTop _ _).1 ht x))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem acts_of_torusEndOf (g : GtCoord I D e G) (a : thickObj R I e G ⟶ thickObj R I e G)
     {f : D.X → D.X} {t : splitTorus _ D.X ⟶ splitTorus _ D.X} (ht : TorusEndOf D.X f t)
@@ -48,9 +48,9 @@ theorem acts_of_torusEndOf (g : GtCoord I D e G) (a : thickObj R I e G ⟶ thick
     (congrArg τ.left.appTop.hom ((EndTorus.torusEndOf_iff_appTop _ _).1 ht x))
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Use `EndTorus.connectedSpace_thickening I e` as an intermediate fact. Use `SplitTorusHom.charUnit_injective (S := Spec (CommRingCat.of (R ⧸ I ^ (e + 1)))) (congrArg Units.val (unit_ext fun z _ => ?_))` and prove the remaining obligations. Use `choose J hJ using fun ψ : (splitTorus _ D.X).left ⟶ D.P.A.left => exists_chart D.P.isLB (ψ z)`. Establish `c` using `(CharAgree.comp_q_eq_one_iff g g.i).1 g.isKernel.w`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `k` using `fun χ => (TorusCoord.val_torus_point_and_translate R I D e G g _ (𝟙 _) 1 z J hJ χ).1`. Simplify using `only [Category.id_comp] at k`. Conclude with `(k _).symm.trans (((h _ _ z J hJ c x).symm.trans (h' _ _ z J hJ c x)).trans (k _))`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem acts_unique [IsAdicComplete I R] (g : GtCoord I D e G)
     {a : (thickObj R I e G).left ⟶ (thickObj R I e G).left} {f f' : D.X → D.X}
@@ -69,7 +69,7 @@ theorem acts_unique [IsAdicComplete I R] (g : GtCoord I D e G)
 omit [IsDomain R] [GrpObj G] [IsCommMonObj G] in
 
 /- English proof (translation)
-Apply the tactic sequence `apply pullback.hom_ext <;>`. Simplify using `[thickMap, pullback.map, pullback.lift_fst, pullback.lift_snd, pullback.lift_fst_assoc, pullback.lift_snd_assoc]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem thickMap_comm (aG : G ⟶ G) (e : ℕ) :
     thickMap R I e G ≫ ((Over.pullback (thick R I (e + 1))).map aG).left =
@@ -79,11 +79,9 @@ theorem thickMap_comm (aG : G ⟶ G) (e : ℕ) :
       pullback.lift_snd_assoc]
 
 /- English proof (translation)
-Introduce `Z r z J hJ c x`. Establish `t : thickMap R I e G ≫ (fstG I (e + 1) G).left = (fstG I e G).left` using `(pullback.lift_fst _ _ _).trans (Category.comp_id _)`. Establish `up : (r ≫ thickMap R I e G) ≫ (U.gt (e + 1)).pG.left = (r ≫ thickMap R I e G) ≫ (fstG I (e + 1) G).left ≫ G.hom ≫ eSec D.toPre.P.A`. Use `(Category.assoc _ _ _).trans ((congrArg (r ≫ ·) (U.gt_q e)).trans (c.trans ?_))` and prove the remaining obligations. Use `Eq.trans (congrArg (r ≫ ·) ?_) (Category.assoc _ _ _).symm` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(congrArg (· ≫ G.hom ≫ eSec D.toPre.P.A) t.symm).trans (Category.assoc _ _ _)`. Establish `k` using `h Z (r ≫ thickMap R I e G) z J hJ up x`. Establish `sq : (r ≫ thickMap R I e G) ≫ ((Over.pullback (thick R I (e + 1))).map aG).left = (r ≫ ((Over.pullback (thick R I e)).map aG).left) ≫ thickMap R I e G`. Rewrite using `[Category.assoc, Category.assoc, thickMap_comm]`. Rewrite `k` using `[sq]`.
-
-Conclude with `(val_corr hJ (U.gt_t e x) _).symm.trans ((val_pull hJ _ _ _).trans (k.trans ((val_pull hJ _ _ _).symm.trans (val_corr hJ (U.gt_t e (f x)) r))))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem acts_down {D : DegData R I} {A : PolAV (Spec (CommRingCat.of (FractionRing R)))}
     (U : UnifPre I D A G) (aG : G ⟶ G) {f : D.toPre.X → D.toPre.X}
@@ -110,11 +108,11 @@ end EndConst
 open EndConst in
 
 /- English proof (translation)
-Introduce `hL R _ _ I hR D A G _ _ U aG haG`. Establish `ex` using `fun e => (gtCoord_end_torus_abelian hL R I hR D.toPre e G (U.gt e) ((Over.pullback (thick R I e)).map aG) inferInstance).1.exists`. Use `choose h t ht hi using ex`. Take `⟨-, -, -, hC⟩` from `hR`. Establish `down : ∀ (e : ℕ) (f : D.toPre.X → D.toPre.X), Acts (U.gt e) ((Over.pullback (thick R I e)).map aG).left f → Acts (U.gt 0) ((Over.pullback (thick R I 0)).map aG).left f`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `e f`. Proceed by induction on `e with`. Consider the case `zero => exact id`. Consider the case `succ e ih => exact fun k => ih (acts_down U aG k)`. Use `⟨h 0, fun e => ⟨t e, ?_, hi e⟩⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← acts_unique _ (down e _ (acts_of_torusEndOf _ _ (ht e) (hi e))) (acts_of_torusEndOf _ _ (ht 0) (hi 0))]`. Conclude with `ht e`.
+A detailed English derivation is pending.
 -/
 theorem unifPre_end_character_const : LL → ∀ (R : Type) [CommRing R] [IsDomain R] (I : Ideal R), AdmBase R I → ∀ (D : DegData R I) (A : PolAV (Spec (CommRingCat.of (FractionRing R)))) (G : Over (Spec (CommRingCat.of R))) [GrpObj G] [IsCommMonObj G] (U : UnifPre I D A G) (aG : G ⟶ G), IsMonHom aG → ∃ h : D.toPre.X →+ D.toPre.X, ∀ e, ∃ t : splitTorus (Spec (CommRingCat.of (R ⧸ I ^ (e + 1)))) D.toPre.X ⟶ splitTorus _ D.toPre.X, TorusEndOf D.toPre.X h t ∧ (U.gt e).i ≫ (Over.pullback (thick R I e)).map aG = t ≫ (U.gt e).i := by
   intro hL R _ _ I hR D A G _ _ U aG haG

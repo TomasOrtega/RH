@@ -18,7 +18,7 @@ local notation "K" => HeightOneSpectrum.adicCompletion F w
 end Compl
 open Classical in
 /- English proof (translation)
-Use `⟨fun k v n π => if h : ∃ σ, Nonempty (π ≅ pull I k v σ) then (T.e _).symm (_root_.GlobalTheory.CuspRep.ParLawsT.locRecT hL (D.nd.plOm.2 (D.naut.plGw k v)) (GlobalTheory.LocLanglands.cls h.choose)) else D.naut.lpZero _, fun k v n σ π h => ?_⟩` and prove the remaining obligations. Establish `h' : ∃ σ, Nonempty (π ≅ pull I k v σ)` using `⟨σ, h⟩`. Use `beta_reduce`. Rewrite using `[dif_pos h', Equiv.apply_symm_apply, cls_eq_of_iso I k v _ σ ⟨h'.choose_spec.some.symm ≪≫ h.some⟩]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isRc_alt (hL : _root_.UpperTheory.Zero.LLC.RecTExists) {D : D7} (T : GlobalTheory.RowTie.WDTie D.nd D.naut) (I : Ident D) :
     ∃ rc, _root_.GlobalTheory.TypeRec.IsSeriesCorrespondence hL T I rc := by
@@ -29,9 +29,9 @@ theorem exists_isRc_alt (hL : _root_.UpperTheory.Zero.LLC.RecTExists) {D : D7} (
   beta_reduce
   rw [dif_pos h', Equiv.apply_symm_apply, cls_eq_of_iso I k v _ σ ⟨h'.choose_spec.some.symm ≪≫ h.some⟩]
 /- English proof (translation)
-Take `⟨s, hs, τ, h1, h2⟩` from `hc σ k v`. Apply `(T.e _).injective` to reduce the goal to its premises. Rewrite using `[h2, h k v _ τ _ ⟨CategoryTheory.Iso.refl _⟩]`. Establish `key : ∀ (w) (hs : s.w = w) (τ : GlobalTheory.SmGL.IrrRep (GL (Fin D.R.r) (w.adicCompletion D.host.E))), GlobalTheory.HeightCounting.IsLocS (rep σ).S s (hs ▸ τ) → T.e w (loc σ w) = _root_.GlobalTheory.CuspRep.ParLawsT.locRecT hL (D.nd.plOm.2 w) (GlobalTheory.LocLanglands.cls τ)`. Introduce and unpack `_ rfl τ h1`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `hr.1 σ s τ h1`. Conclude with `key _ hs τ h1`.
+A detailed English derivation is pending.
 -/
 theorem locR_eq_rc_of_isRc_and_true_reading {hL : _root_.UpperTheory.Zero.LLC.RecTExists} {D : D7} {T : GlobalTheory.RowTie.WDTie D.nd D.naut} {I : Ident D} {rc}
     (h : _root_.GlobalTheory.TypeRec.IsSeriesCorrespondence hL T I rc) {rep cp} (hc : IsComp I rep cp) {loc : D.what₂.FT → ∀ w, D.naut.LP w} {sat}

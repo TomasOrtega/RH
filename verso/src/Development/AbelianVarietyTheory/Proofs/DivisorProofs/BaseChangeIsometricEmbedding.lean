@@ -18,21 +18,21 @@ section
 variable {K : Type*} [Field K] {V : Type*} [AddCommGroup V] [Module K V] (h : HermFam K V)
 
 /- English proof (translation)
-Use `h.smul_right σ 0 x 0` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem form_zero_right (σ : K →+* ℂ) (x : V) : h.form σ x 0 = 0 := by
   have := h.smul_right σ 0 x 0
   simpa using this
 
 /- English proof (translation)
-The claim follows from `map_sum (AddMonoidHom.mk' (h.form σ x) (h.add_right σ x)) f s`.
+A detailed English derivation is pending.
 -/
 theorem form_sum_right (σ : K →+* ℂ) (x : V) {ι : Type*} (s : Finset ι) (f : ι → V) :
     h.form σ x (∑ i ∈ s, f i) = ∑ i ∈ s, h.form σ x (f i) :=
   map_sum (AddMonoidHom.mk' (h.form σ x) (h.add_right σ x)) f s
 
 /- English proof (translation)
-Rewrite using `[← h.conj_symm, form_sum_right, map_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => h.conj_symm σ y (f i)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem form_sum_left (σ : K →+* ℂ) (y : V) {ι : Type*} (s : Finset ι) (f : ι → V) :
     h.form σ (∑ i ∈ s, f i) y = ∑ i ∈ s, h.form σ (f i) y := by
@@ -40,14 +40,14 @@ theorem form_sum_left (σ : K →+* ℂ) (y : V) {ι : Type*} (s : Finset ι) (f
   exact Finset.sum_congr rfl fun i _ => h.conj_symm σ y (f i)
 
 /- English proof (translation)
-Rewrite using `[← h.conj_symm, h.smul_right, map_mul, h.conj_symm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem form_smul_left (σ : K →+* ℂ) (a : K) (x y : V) :
     h.form σ (a • x) y = starRingEnd ℂ (σ a) * h.form σ x y := by
   rw [← h.conj_symm, h.smul_right, map_mul, h.conj_symm]
 
 /- English proof (translation)
-Rewrite using `[form_sum_left]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[form_smul_left, form_sum_right, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[h.smul_right]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -64,14 +64,14 @@ theorem form_expand (σ : K →+* ℂ) {ι κ : Type*} (s : Finset ι) (t : Fins
 end
 
 /- English proof (translation)
-Use extensionality with `j`. Simplify using `[Finset.sum_apply, Pi.single_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem vec_eq_sum {R : Type*} [Semiring R] {n : ℕ} (y : Fin n → R) :
     y = ∑ i, y i • (Pi.single i 1 : Fin n → R) := by
   ext j; simp [Finset.sum_apply, Pi.single_apply]
 
 /- English proof (translation)
-Use `conv_lhs => rw [vec_eq_sum x, vec_eq_sum y]`. Conclude with `form_expand h σ _ _ _ _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem form_eq_sum {K : Type*} [Field K] {m : ℕ} (h : HermFam K (Fin m → K)) (σ : K →+* ℂ)
     (x y : Fin m → K) : h.form σ x y = ∑ k, ∑ l, starRingEnd ℂ (σ (x k)) * σ (y l) *
@@ -80,7 +80,7 @@ theorem form_eq_sum {K : Type*} [Field K] {m : ℕ} (h : HermFam K (Fin m → K)
   exact form_expand h σ _ _ _ _ _ _
 
 /- English proof (translation)
-Rewrite using `[form_eq_sum h', form_eq_sum h]`. Establish `hbσ` using `hb σ`. Simplify using `only [hbσ, RingHom.comp_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem bc_form {K K' : Type} [Field K] [Field K'] [NumberField K] [NumberField K'] [Algebra K K'] {m : ℕ}
     (h : HermFam K (Fin m → K)) (h' : HermFam K' (Fin m → K')) (hb : IsBC h h') (σ : K' →+* ℂ)
@@ -95,19 +95,19 @@ end GlobalTheory.BCIso
 
 open GlobalTheory.BCIso in
 /- English proof (translation)
-Introduce `K K' _ _ _ _ _ n m α h hW h' hW' hα hb hbW`. Set `β : (Fin n → K') →ₗ[K'] (Fin m → K')` to `Matrix.mulVecLin ((LinearMap.toMatrix' α).map (algebraMap K K'))`. Establish `h3 : ∀ y : Fin n → K, β (fun i => algebraMap K K' (y i)) = fun j => algebraMap K K' (α y j)`. Introduce `y`. Use extensionality with `j`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Use `RingHom.map_mulVec (algebraMap K K') (LinearMap.toMatrix' α) y j` as an intermediate fact. Rewrite `this` using `[LinearMap.toMatrix'_mulVec]`. Rewrite using `[this]`. Both sides reduce to the same expression. Establish `hiso : ∀ σ y z, h'.form σ (β y) (β z) = hW'.form σ y z`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Introduce `σ y z`. Use `conv_lhs => rw [vec_eq_sum y, vec_eq_sum z]`. Use `conv_rhs => rw [vec_eq_sum y, vec_eq_sum z]`. Simplify using `only [map_sum, map_smul]`. Rewrite using `[form_expand, form_expand]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `congr 1`. Establish `e : ∀ k, (Pi.single k 1 : Fin n → K') = fun i => algebraMap K K' ((Pi.single k 1 : Fin n → K) i)`. Apply the tactic sequence `intro k; ext i; by_cases hik : i = k <;> simp [Pi.single_apply, hik]`. Rewrite using `[e i, e j, h3, h3, bc_form h h' hb, ← hα, ← bc_form hW hW' hbW]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨β, ?_, hiso, h3⟩` and prove the remaining obligations. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `y hy`. Assume the negation of the conclusion as `hne`. Set `σ : K' →+* ℂ` to `(IsAlgClosed.lift : K' →ₐ[ℚ] ℂ).toRingHom`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hli : LinearIndependent K' ![y]`. Rewrite using `[linearIndependent_unique_iff]`. Simplify using `using hne`. Establish `hp` using `(hW'.posDef σ 1 ![y] hli).diag_pos (i := 0)`. Establish `h0 : hW'.form σ y y = 0`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← hiso, hy, form_zero_right]`. Simplify using `[h0] at hp`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.baseChange_isometry_injective : ∀ (K K' : Type) [Field K] [NumberField K] [Field K'] [NumberField K'] [Algebra K K'] (n m : ℕ) (α : (Fin n → K) →ₗ[K] (Fin m → K)) (h : HermFam K (Fin m → K)) (hW : HermFam K (Fin n → K)) (h' : HermFam K' (Fin m → K')) (hW' : HermFam K' (Fin n → K')), (∀ σ y z, hW.form σ y z = h.form σ (α y) (α z)) → IsBC h h' → IsBC hW hW' → ∃ β : (Fin n → K') →ₗ[K'] (Fin m → K'), Function.Injective β ∧ (∀ σ y z, h'.form σ (β y) (β z) = hW'.form σ y z) ∧ ∀ y : Fin n → K, β (fun i => algebraMap K K' (y i)) = fun j => algebraMap K K' (α y j) := by
   intro K K' _ _ _ _ _ n m α h hW h' hW' hα hb hbW

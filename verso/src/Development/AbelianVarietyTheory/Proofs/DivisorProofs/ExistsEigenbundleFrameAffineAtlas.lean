@@ -15,14 +15,14 @@ open MonoidalCategory CartesianMonoidalCategory MonObj
 attribute [local instance] Over.cartesianMonoidalCategory
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.Points.valR_eq w V hV f`.
+A detailed English derivation is pending.
 -/
 theorem valF_eq_ev {K : Type} [Field K] {X : Scheme.{0}} (w : Sp K ⟶ X) (V : X.Opens) (hV : ⊤ ≤ w ⁻¹ᵁ V)
     (f : Γ(X, V)) : valF w V f = ev w V hV f :=
   GlobalTheory.Points.valR_eq w V hV f
 
 /- English proof (translation)
-Use extensionality with `i j`. Conclude with `valF_eq_ev w V hV _`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem map_valF_eq_ev {K : Type} [Field K] {X : Scheme.{0}} (w : Sp K ⟶ X) (V : X.Opens) (hV : ⊤ ≤ w ⁻¹ᵁ V)
     {m n : Type} (A : Matrix m n Γ(X, V)) : A.map (valF w V) = A.map (ev w V hV) := by
@@ -41,9 +41,9 @@ def trC {k : ECh Y p} {M₀ : GChart Y} (hk : k.M = M₀) {U : Y.X.Opens} (hV : 
   (C₀.map (resG Y.X hV)).submatrix (finCongr (congrArg (fun M : GChart Y => M.n) hk)) id
 
 /- English proof (translation)
-Substitute `hk` using the available equality. Use extensionality with `i j`. Use `congrArg (fun A => resG Y.X hV (A i j)) h` as an intermediate fact. Simplify using `only [Matrix.mul_apply, map_sum, map_mul] at this`. Simplify using `only [trC, trA, Matrix.mul_apply, Matrix.submatrix_apply, Matrix.map_apply, finCongr_apply, Fin.cast_eq_self, id]`.
+Substitute using the available equality. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[this, Matrix.one_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem trC_mul_trA {k : ECh Y p} {M₀ : GChart Y} (hk : k.M = M₀) {U : Y.X.Opens} (hV : k.V ≤ U) {N : ℕ}
     (A₀ : Matrix (Fin (N + 1)) (Fin M₀.n) Γ(Y.X, U)) (C₀ : Matrix (Fin M₀.n) (Fin (N + 1)) Γ(Y.X, U))
@@ -57,15 +57,15 @@ theorem trC_mul_trA {k : ECh Y p} {M₀ : GChart Y} (hk : k.M = M₀) {U : Y.X.O
   split_ifs <;> simp
 
 /- English proof (translation)
-Substitute `hk hk'` using the available equality. Establish `key : ∀ r j, resG Y.X (inf_le_left : U ⊓ U' ≤ U) (A₀ r j) = g.val * ∑ t, resG Y.X inf_le_right (A₀' r t) * resG Y.X hUM (chg k'.M.toMChart k.M.toMChart t j)`. Introduce `r j`. Use `GlobalTheory.TwistEmb.eq_of_valR fun K _ w hw => ?_` and prove the remaining obligations. Establish `hw1` using `le_preimage_mono inf_le_left hw`.
+Substitute using the available equality. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hw2` using `le_preimage_mono inf_le_right hw`. Establish `hw3` using `le_preimage_mono hUM hw`. Establish `e` using `congrFun (congrFun (H K w hw1 hw2) r) j`. Simplify using `only [Matrix.map_apply, Matrix.smul_apply, Matrix.mul_apply, smul_eq_mul, valF_eq_ev w U hw1, valF_eq_ev w U' hw2, valF_eq_ev w _ hw, valF_eq_ev w _ hw3] at e`. Use `show valF w _ _ = valF w _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[valF_eq_ev w _ hw, valF_eq_ev w _ hw, ev_res w _ hw hw1, e, map_mul, map_sum]`. Use `congr 1`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, ev_res w _ hw hw2, ev_res w _ hw hw3]`. Establish `hx : ⊤ ≤ x ⁻¹ᵁ (U ⊓ U')` using `GlobalTheory.TwistEmb.le_inf' x (le_preimage_mono hV h) (le_preimage_mono hV' h')`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Units.map (ev x _ hx).toMonoidHom g, ?_⟩` and prove the remaining obligations. Use extensionality with `r j`. Simplify using `only [trA, Matrix.map_apply, Matrix.smul_apply, Matrix.mul_apply, Matrix.submatrix_apply, finCongr_apply, Fin.cast_eq_self, id, smul_eq_mul, Units.coe_map, RingHom.toMonoidHom_eq_coe, MonoidHom.coe_coe]`. Rewrite using `[ev_res x hV h (le_preimage_mono hV h), ← ev_res x inf_le_left hx (le_preimage_mono hV h), key, map_mul, map_sum]`. Use `congr 1`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, ev_res x inf_le_right hx (le_preimage_mono hV' h'), ev_res x hV' h' (le_preimage_mono hV' h'), ev_res x hUM hx hM]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tw_tr [IsReduced Y.X] {k k' : ECh Y p} {M₀ M₀' : GChart Y} (hk : k.M = M₀) (hk' : k'.M = M₀')
     {U U' : Y.X.Opens} (hV : k.V ≤ U) (hV' : k'.V ≤ U') (hUM : U ⊓ U' ≤ M₀'.U ⊓ M₀.U) {N : ℕ}
@@ -106,19 +106,15 @@ theorem tw_tr [IsReduced Y.X] {k k' : ECh Y p} {M₀ M₀' : GChart Y} (hk : k.M
     ev_res x hUM hx hM]
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c Y p hP`. Establish `: IsProper Y.s` using `projProper _ _ _ Y.proj`. Establish `: IsReduced Y.X`. Establish `: ∀ x : Y.X, _root_.IsReduced (Y.X.presheaf.stalk x)` using `fun x => by`. Use `(Y.normal x).1` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `infer_instance`. Conclude with `isReduced_of_isReduced_stalk _`. Take `⟨L, N, σ, A, C, haff, hle, hCA, htw⟩` from `GlobalTheory.TwistEmb.exists_twist_embedding c.F Y.X Y.s (GChart Y) (fun j => j.U) (fun j => j.n) (fun j j' => chg j.toMChart j'.toMChart) Y.proj (fun x => exists_gChart hP x) (fun K _ w j hw => by`. Establish `hh : ⊤ ≤ w ⁻¹ᵁ (j.U ⊓ j.U)` using `GlobalTheory.TwistEmb.le_inf' w hw hw`. Use `show (chg j.toMChart j.toMChart).map (valF w (j.U ⊓ j.U)) = 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_valF_eq_ev w _ hh, chg_map _ _ w hw hw hh, Module.Basis.toMatrix_self])`. Use the proof step `(fun K _ w j j' j'' h1 h2 h3 => by show (chg j.toMChart j'.toMChart).map (valF w (j.U ⊓ j'.U)) * (chg j'.toMChart j''.toMChart).map (valF w (j'.U ⊓ j''.U)) = (chg j.toMChart j''.toMChart).map (valF w (j.U ⊓ j''.U))`. Rewrite using `[map_valF_eq_ev w _ (GlobalTheory.TwistEmb.le_inf' w h1 h2), map_valF_eq_ev w _ (GlobalTheory.TwistEmb.le_inf' w h2 h3), map_valF_eq_ev w _ (GlobalTheory.TwistEmb.le_inf' w h1 h3), chg_map _ _ w h1 h2, chg_map _ _ w h2 h3, chg_map _ _ w h1 h3, Module.Basis.toMatrix_mul_toMatrix])`. Establish `hcovL : ∀ x : Y.X, ∃ i, x ∈ L.U i` using `fun x => exists_chart L.isLB x`. Establish `hk : ∀ x : Y.X, ∃ i, ∃ k : ECh Y p, k.M = σ i ∧ x ∈ k.V ∧ IsAffineOpen k.V ∧ k.V ≤ L.U i` using `fun x => by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Take `⟨i, hi⟩` from `hcovL x`. Take `⟨k, h1, h2, h3, h4⟩` from `GlobalTheory.T.exists_eigenChart_affineOpen_within E H Dw l Xo c Y p (σ i) x (hle i hi) (L.U i) hi`. Conclude with `⟨i, k, h1, h2, h3, h4⟩`. Use `choose ix kx hkM hxk haffk hlek using hk`. Establish `hc : IsCompact (Set.univ : Set Y.X)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 
-Establish `e : (Set.univ : Set Y.X) = ⋃ i, ((L.U i : Y.X.Opens) : Set Y.X)` using `(Set.eq_univ_of_forall fun x => Set.mem_iUnion.2 (hcovL x)).symm`. Rewrite using `[e]`. Conclude with `isCompact_iUnion fun i => (haff i).isCompact`. Take `⟨t, ht⟩` from `hc.elim_finite_subcover (fun x => ((kx x).V : Set Y.X)) (fun x => (kx x).V.isOpen) (fun x _ => Set.mem_iUnion.2 ⟨x, hxk x⟩)`. Establish `hUM : ∀ i i', L.U i ⊓ L.U i' ≤ (σ i').U ⊓ (σ i).U` using `fun i i' => le_inf (inf_le_right.trans (hle i')) (inf_le_left.trans (hle i))`.
-
-Conclude with `⟨{ B := t fin := inferInstance k := fun b => kx b.1 aff := fun b => haffk b.1 cov := fun x => by`. Take `⟨z, hz, hxz⟩` from `Set.mem_iUnion₂.1 (ht (Set.mem_univ x))`. Conclude with `⟨⟨z, hz⟩, hxz⟩`. Use `N := N`. Use `A := fun b => trA (hkM b.1) (hlek b.1) (A (ix b.1))`.
-
-Use `C := fun b => trC (hkM b.1) (hlek b.1) (C (ix b.1))`. Use `CA := fun b => trC_mul_trA _ _ _ _ (hCA _)`. Use `tw := fun S _ x b b' h h' hM => tw_tr (hkM b.1) (hkM b'.1) (hlek b.1) (hlek b'.1) (hUM _ _) (A (ix b.1)) (A (ix b'.1)) (L.g (ix b.1) (ix b'.1)) (fun K _ w hw hw' => htw K w _ _ hw hw') S x h h' hM }⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_atlas : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H)
     (Xo : Moduli Dw l) (c : Coeff l) (Y : Model Xo c (RingHom.id c.F)) (p : Proj (RingHom.id c.F)),

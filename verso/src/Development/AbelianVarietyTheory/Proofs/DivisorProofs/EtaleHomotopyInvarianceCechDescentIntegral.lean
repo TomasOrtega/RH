@@ -12,7 +12,7 @@ open scoped TensorProduct
 namespace GlobalTheory.EtC.CechDescHInv
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.spec_widePushout_iso_widePullback_yoneda A B T a k ι hι hu`.
+A detailed English derivation is pending.
 -/
 theorem yoneda_spec_widePullback (A B T : Type) [CommRing A] [CommRing B] [CommRing T] (a : A →+* B) (k : ℕ)
     (ι : Fin (k + 1) → (B →+* T)) (hι : ∀ j, (ι j).comp a = (ι 0).comp a)
@@ -24,13 +24,11 @@ theorem yoneda_spec_widePullback (A B T : Type) [CommRing A] [CommRing B] [CommR
   GlobalTheory.T.spec_widePushout_iso_widePullback_yoneda A B T a k ι hι hu
 
 /- English proof (translation)
-Use `letI : Algebra A R := ((g 0).comp (algebraMap A B)).toAlgebra`. Set `g' : Fin (k + 1) → (B →ₐ[A] R)` to `fun j => ⟨g j, fun r => RingHom.congr_fun (hg j) r⟩`. Use `⟨(GlobalTheory.piTensorLift g').toRingHom, fun j => ?_, fun ψ hψ => ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Conclude with `GlobalTheory.piTensorLift_single g' j x`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `hc : ∀ r : A, ψ (algebraMap A (PiTensorProduct A fun _ : Fin (k + 1) => B) r) = algebraMap A R r`. Introduce `r`. Establish `h1 : algebraMap A (PiTensorProduct A fun _ : Fin (k + 1) => B) r = PiTensorProduct.singleAlgHom (R` using `A) (A := fun _ : Fin (k + 1) => B) 0 (algebraMap A B r) := ((PiTensorProduct.singleAlgHom (R := A) (A := fun _ : Fin (k + 1) => B) 0).commutes r).symm`. Rewrite using `[h1]`. Conclude with `RingHom.congr_fun (hψ 0) (algebraMap A B r)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `ψ' : PiTensorProduct A (fun _ : Fin (k + 1) => B) →ₐ[A] R` to `⟨ψ, hc⟩`. Establish `: ψ' = GlobalTheory.piTensorLift g'` using `PiTensorProduct.algHom_ext fun j => by`. Use extensionality with `x`. Express the relevant statement in the definitionally equal form `ψ _ = _`. Rewrite using `[AlgHom.comp_apply, GlobalTheory.piTensorLift_single]`.
-
-Conclude with `RingHom.congr_fun (hψ j) x`. Conclude with `congrArg AlgHom.toRingHom this`.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tensor_univ (A B : Type) [CommRing A] [CommRing B] [Algebra A B] (k : ℕ) (R : Type) [CommRing R]
     (g : Fin (k + 1) → (B →+* R)) (hg : ∀ j, (g j).comp (algebraMap A B) = (g 0).comp (algebraMap A B)) :
@@ -58,13 +56,13 @@ theorem tensor_univ (A B : Type) [CommRing A] [CommRing B] [Algebra A B] (k : �
     exact congrArg AlgHom.toRingHom this
 
 /- English proof (translation)
-Establish `hX : ∀ j, g j Polynomial.X = g 0 Polynomial.X` using `fun j => by`. Use `RingHom.congr_fun (hg j) Polynomial.X` as an intermediate fact. Simplify using `using this`. Take `⟨ψ, hψ, hψu⟩` from `hu R (fun j => (g j).comp Polynomial.C) (fun j => by`. Use extensionality with `x`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. By extensionality, compare the relevant components.
 
-Use `RingHom.congr_fun (hg j) (Polynomial.C x)` as an intermediate fact. Simplify using `using this)`. Use `⟨Polynomial.eval₂RingHom ψ (g 0 Polynomial.X), fun j => ?_, fun φ hφ => ?_⟩` and prove the remaining obligations. Apply `Polynomial.ringHom_ext` to reduce the goal to its premises. Introduce `b`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `using RingHom.congr_fun (hψ j) b`. Simplify using `[hX j]`. Establish `hC : φ.comp Polynomial.C = ψ` using `hψu _ (fun j => by`. Use extensionality with `b`. Simplify using `using RingHom.congr_fun (hφ j) (Polynomial.C b))`.
+Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts.
 
-Apply `Polynomial.ringHom_ext` to reduce the goal to its premises. Introduce `t`. Simplify using `using RingHom.congr_fun hC t`. Simplify using `using RingHom.congr_fun (hφ 0) Polynomial.X`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem poly_univ (A B T : Type) [CommRing A] [CommRing B] [CommRing T] (a : A →+* B) (k : ℕ)
     (ι : Fin (k + 1) → (B →+* T))
@@ -94,9 +92,9 @@ theorem poly_univ (A B T : Type) [CommRing A] [CommRing B] [CommRing T] (a : A �
     · simpa using RingHom.congr_fun (hφ 0) Polynomial.X
 
 /- English proof (translation)
-Use `⟨IsIntegralHom.SpecMap_iff.2 hi, ⟨fun (x : PrimeSpectrum A) => ?_⟩⟩` and prove the remaining obligations. Use `letI := φ.toAlgebra`. Use `haveI : Algebra.IsIntegral A B := ⟨hi⟩`. Establish `hle : (⊥ : Ideal B).comap (algebraMap A B) ≤ x.asIdeal`. Rewrite using `[← RingHom.ker_eq_comap_bot]`.
+Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `hk.trans (nilradical_le_prime x.asIdeal)`. Take `⟨Q, -, hQ, hQx⟩` from `Ideal.exists_ideal_over_prime_of_isIntegral x.asIdeal ⊥ hle`. Establish `: x ∈ Set.range (PrimeSpectrum.comap φ)` using `⟨⟨Q, hQ⟩, PrimeSpectrum.ext hQx⟩`. Conclude with `this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem spec_integral_surj (A B : Type) [CommRing A] [CommRing B] (φ : A →+* B) (hi : φ.IsIntegral)
     (hk : RingHom.ker φ ≤ nilradical A) :
@@ -112,13 +110,13 @@ theorem spec_integral_surj (A B : Type) [CommRing A] [CommRing B] (φ : A →+* 
   exact this
 
 /- English proof (translation)
-Use `letI := (Polynomial.mapRingHom φ).toAlgebra`. Establish `hC : ∀ b : B, IsIntegral (Polynomial A) (Polynomial.C b)`. Introduce `b`. Take `⟨f, hf, hfb⟩` from `hi b`. Use `⟨f.map Polynomial.C, hf.map _, ?_⟩` and prove the remaining obligations.
+Equip the data with the indicated structure. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Polynomial.eval₂_map]`. Establish `e : (algebraMap (Polynomial A) (Polynomial B)).comp Polynomial.C = Polynomial.C.comp φ`. Apply the tactic sequence `ext x <;> simp [RingHom.algebraMap_toAlgebra]`. Rewrite using `[e, ← Polynomial.hom_eval₂, hfb, map_zero]`. Establish `hXi : IsIntegral (Polynomial A) (Polynomial.X : Polynomial B)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: (Polynomial.X : Polynomial B) = algebraMap (Polynomial A) (Polynomial B) Polynomial.X`. Simplify using `[RingHom.algebraMap_toAlgebra]`. Rewrite using `[this]`. Conclude with `isIntegral_algebraMap`. Introduce `p`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `IsIntegral (Polynomial A) p`. Proceed by induction on `p using Polynomial.induction_on with`. Consider the case `C b => exact hC b`. Consider the case `add p r hp hr => exact hp.add hr`. Consider the case `monomial n b _ => exact (hC b).mul (hXi.pow _)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem poly_isIntegral (A B : Type) [CommRing A] [CommRing B] (φ : A →+* B) (hi : φ.IsIntegral) :
     (Polynomial.mapRingHom φ).IsIntegral := by
@@ -143,9 +141,9 @@ theorem poly_isIntegral (A B : Type) [CommRing A] [CommRing B] (φ : A →+* B) 
   | monomial n b _ => exact (hC b).mul (hXi.pow _)
 
 /- English proof (translation)
-Introduce `p hp`. Rewrite using `[mem_nilradical, Polynomial.isNilpotent_iff]`. Introduce `n`. Rewrite using `[← mem_nilradical]`. Apply `hk` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite `hp`, the goal using `[RingHom.mem_ker]`. Use `congrArg (fun r => Polynomial.coeff r n) hp` as an intermediate fact. Simplify using `using this`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem poly_ker (A B : Type) [CommRing A] [CommRing B] (φ : A →+* B) (hk : RingHom.ker φ ≤ nilradical A) :
     RingHom.ker (Polynomial.mapRingHom φ) ≤ nilradical (Polynomial A) := by
@@ -159,7 +157,7 @@ theorem poly_ker (A B : Type) [CommRing A] [CommRing B] (φ : A →+* B) (hk : R
   simpa using this
 
 /- English proof (translation)
-Use `hq.map (Scheme.ΓSpecIso (CommRingCat.of A)).inv.hom` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isUnit_gamma (q : ℕ) (A : Type) [CommRing A] (hq : IsUnit (q : A)) :
     IsUnit (q : Γ(Spec (CommRingCat.of A), ⊤)) := by
@@ -167,29 +165,25 @@ theorem isUnit_gamma (q : ℕ) (A : Type) [CommRing A] (hq : IsUnit (q : A)) :
   simpa using this
 
 /- English proof (translation)
-Introduce `hint hker hq hT i`. Establish `hi : (algebraMap A B).IsIntegral` using `fun x => hint.isIntegral x`. Take `⟨hf1, hf2⟩` from `spec_integral_surj A B (algebraMap A B) hi hker`. Take `⟨hf1', hf2'⟩` from `spec_integral_surj _ _ (Polynomial.mapRingHom (algebraMap A B)) (poly_isIntegral A B _ hi) (poly_ker A B _ hker)`. Establish `hq' : IsUnit (q : Polynomial A)` using `by simpa using hq.map (Polynomial.C : A →+* Polynomial A)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `E` using `GlobalTheory.T.etaleCohomologyEquivalence_basic_properties (ZMod q) (tw q i)`. Establish `h1` using `GlobalTheory.EtC.b4 q (Spec.map (CommRingCat.ofHom (algebraMap A B))) (isUnit_gamma q A hq) i`. Establish `h1'` using `GlobalTheory.EtC.b4 q (Spec.map (CommRingCat.ofHom (Polynomial.mapRingHom (algebraMap A B)))) (isUnit_gamma q _ hq') i`. Set `F : Arrow.mk (yoneda.map (Spec.map (CommRingCat.ofHom (Polynomial.mapRingHom (algebraMap A B))))) ⟶ Arrow.mk (yoneda.map (Spec.map (CommRingCat.ofHom (algebraMap A B))))` to `Arrow.homMk (yoneda.map (Spec.map (CommRingCat.ofHom (Polynomial.C : B →+* Polynomial B)))) (yoneda.map (Spec.map (CommRingCat.ofHom (Polynomial.C : A →+* Polynomial A)))) (by`. Simplify using `only [Arrow.mk_hom, ← Functor.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Simplify using the standard rewrite rules.
 
-Use `congr 3`. Apply the tactic sequence `ext x <;> simp)`. Set `m : cech (Spec.map (CommRingCat.ofHom (Polynomial.mapRingHom (algebraMap A B)))) ⟶ cech (Spec.map (CommRingCat.ofHom (algebraMap A B)))` to `Arrow.mapCechNerve F`. Establish `hsq : m ≫ cechAug (Spec.map (CommRingCat.ofHom (algebraMap A B))) = cechAug (Spec.map (CommRingCat.ofHom (Polynomial.mapRingHom (algebraMap A B)))) ≫ spMap (Polynomial.C : A →+* Polynomial A)` using `by clear E h1 h1' hT hf1 hf2 hf1' hf2' hint hker hq hq' hi`. Use `NatTrans.ext (funext fun n => ?_)` and prove the remaining obligations.
+Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `WidePullback.lift _ _ _ ≫ WidePullback.base _ = WidePullback.base _ ≫ yoneda.map (Spec.map _)`. Apply `WidePullback.lift_base` to reduce the goal to its premises. Establish `hm : Eqv _ m (tw q i)`. Use `GlobalTheory.T.levelwiseEquivalence_isEquivalence _ m _ (fun n => ?_)` and prove the remaining obligations. Use `clear h1 h1' hf1 hf2 hf1' hf2' hint hker hq hq' hi hsq`.
+Express the relevant assertion in an equivalent form by its definition. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Use `set k := n.unop.len`. Set `T` to `PiTensorProduct A (fun _ : Fin (k + 1) => B)`. Set `ι : Fin (k + 1) → (B →+* T)` to `fun j => (PiTensorProduct.singleAlgHom (R := A) (A := fun _ : Fin (k + 1) => B) j).toRingHom`. Establish `hι : ∀ j, (ι j).comp (algebraMap A B) = (ι 0).comp (algebraMap A B)`. Introduce `j`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `x`. Simplify using `[ι]`. Establish `hu` using `tensor_univ A B k`. Take `⟨e, he⟩` from `yoneda_spec_widePullback A B T (algebraMap A B) k ι hι hu`. Establish `hι' : ∀ j, (Polynomial.mapRingHom (ι j)).comp (Polynomial.mapRingHom (algebraMap A B)) = (Polynomial.mapRingHom (ι 0)).comp (Polynomial.mapRingHom (algebraMap A B))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `j`. Rewrite using `[Polynomial.mapRingHom_comp, Polynomial.mapRingHom_comp, hι j]`. Take `⟨e', he'⟩` from `yoneda_spec_widePullback (Polynomial A) (Polynomial B) (Polynomial T) (Polynomial.mapRingHom (algebraMap A B)) k (fun j => Polynomial.mapRingHom (ι j)) hι' (poly_univ A B T (algebraMap A B) k ι (fun R _ g hg => hu R g hg))`. Set `mn : widePullback (yoneda.obj (Spec (CommRingCat.of (Polynomial A)))) (fun _ : Fin (k + 1) => yoneda.obj (Spec (CommRingCat.of (Polynomial B)))) (fun _ => yoneda.map (Spec.map (CommRingCat.ofHom (Polynomial.mapRingHom (algebraMap A B))))) ⟶ widePullback (yoneda.obj (Spec (CommRin …` to `WidePullback.lift (WidePullback.base _ ≫ yoneda.map (Spec.map (CommRingCat.ofHom (Polynomial.C : A →+* Polynomial A)))) (fun j => WidePullback.π _ j ≫ yoneda.map (Spec.map (CommRingCat.ofHom (Polynomial.C : B →+* Polynomial B)))) (fun j => by`. Rewrite using `[Category.assoc, ← Functor.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← WidePullback.π_arrow _ j, Category.assoc, ← Functor.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `congr 4`. Apply the tactic sequence `ext x <;> simp)`. Establish `hmn : m.app n = mn` using `rfl`. Establish `hπ : ∀ j, (e'.hom ≫ mn) ≫ WidePullback.π _ j = (yoneda.map (Spec.map (CommRingCat.ofHom (Polynomial.C : T →+* Polynomial T))) ≫ e.hom) ≫ WidePullback.π _ j`. Introduce `j`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[Category.assoc, WidePullback.lift_π, ← Category.assoc, he' j, Category.assoc, he j, ← Functor.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← Functor.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Use `congr 3`. Apply the tactic sequence `ext x <;> simp`. Establish `key : e'.hom ≫ mn = yoneda.map (Spec.map (CommRingCat.ofHom (Polynomial.C : T →+* Polynomial T))) ≫ e.hom`. Apply `WidePullback.hom_ext` to reduce the goal to its premises.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hπ`. Rewrite using `[← WidePullback.π_arrow _ 0, ← Category.assoc, ← Category.assoc, hπ 0]`. Establish `h3 : Eqv _ (disc.map e'.hom ≫ disc.map mn) (tw q i)`. Rewrite using `[← Functor.map_comp, key, Functor.map_comp]`. Conclude with `(E.2.1 _ _ _ _ _).1 (hT k i) (E.1 _ _ _ (disc.mapIso e).isIso_hom)`.
-
-Rewrite using `[hmn]`. Conclude with `(E.2.1 _ _ _ _ _).2.1 (E.1 _ _ _ (disc.mapIso e').isIso_hom) h3`. Establish `h2 : Eqv _ (cechAug (Spec.map (CommRingCat.ofHom (Polynomial.mapRingHom (algebraMap A B)))) ≫ spMap (Polynomial.C : A →+* Polynomial A)) (tw q i)`. Rewrite using `[← hsq]`. Conclude with `(E.2.1 _ _ _ _ _).1 hm h1`.
-
-Conclude with `(E.2.1 _ _ _ _ _).2.1 h1' h2`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hInv_of_integral (q : ℕ) [NeZero q] (A B : Type) [CommRing A] [CommRing B] [Algebra A B] :
     Algebra.IsIntegral A B → RingHom.ker (algebraMap A B) ≤ nilradical A → IsUnit (q : A) →

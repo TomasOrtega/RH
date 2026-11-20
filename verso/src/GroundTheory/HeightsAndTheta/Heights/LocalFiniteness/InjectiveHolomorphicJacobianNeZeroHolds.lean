@@ -125,121 +125,121 @@ import GroundTheory.HeightsAndTheta.Heights.ElementarySymmetric.PXiMetric
 set_option maxSynthPendingDepth 1
 
 /- English proof (translation)
-The claim follows from `@GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.BlockGenTransfer.proof GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.ChartKernel.proof`.
+A detailed English derivation is pending.
 -/
 theorem GroundTheory.Heights₂.Heights.AutoClose.block_generation_transfer_holds : GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.BlockGenTransfer.Statement :=
   @GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.BlockGenTransfer.proof GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.ChartKernel.proof
 
 /- English proof (translation)
-The claim follows from `@GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.TensorRealises.proof GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.ModelGenerated.proof GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.SpanSecs.proof`.
+A detailed English derivation is pending.
 -/
 theorem GroundTheory.Heights₂.Heights.AutoClose.tensor_product_realises_holds : GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.TensorRealises.Statement :=
   @GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.TensorRealises.proof GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.ModelGenerated.proof GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.SpanSecs.proof
 
 /- English proof (translation)
-The claim follows from `@GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.ModelTwistGenerated.proof GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.ChartSecGen.full`.
+A detailed English derivation is pending.
 -/
 theorem GroundTheory.Heights₂.Heights.AutoClose.model_twist_generated_holds : GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.ModelTwistGenerated.Statement :=
   @GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.ModelTwistGenerated.proof GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.ChartSecGen.full
 
 /- English proof (translation)
-The claim follows from `@GroundTheory.Heights₂.Heights.FrameJacobianGeneric.proof GroundTheory.Heights₂.Heights.JacobianRankGeneric.proof GroundTheory.Heights₂.Heights.ConormalGenerationGeneric.proof`.
+A detailed English derivation is pending.
 -/
 theorem GroundTheory.Heights₂.Heights.AutoClose.FrameJacobianGeneric : GroundTheory.Heights₂.Heights.FrameJacobianGeneric.Statement :=
   @GroundTheory.Heights₂.Heights.FrameJacobianGeneric.proof GroundTheory.Heights₂.Heights.JacobianRankGeneric.proof GroundTheory.Heights₂.Heights.ConormalGenerationGeneric.proof
 
 /- English proof (translation)
-The claim follows from `@GroundTheory.Heights₂.Heights.CurveNormalisationFinite.proof GroundTheory.Heights₂.Heights.FieldNumbers.NoetherIntegralClosureFinite.proof`.
+A detailed English derivation is pending.
 -/
 theorem GroundTheory.Heights₂.Heights.AutoClose.CurveNormalisationFinite : GroundTheory.Heights₂.Heights.CurveNormalisationFinite.Statement :=
   @GroundTheory.Heights₂.Heights.CurveNormalisationFinite.proof GroundTheory.Heights₂.Heights.FieldNumbers.NoetherIntegralClosureFinite.proof
 
 /- English proof (translation)
-The claim follows from `@GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.InjectiveHolomorphicJacobianNeZero.proof GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.HolomorphicKernelFibre.proof GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.Cr …`.
+A detailed English derivation is pending.
 -/
 theorem GroundTheory.Heights₂.Heights.AutoClose.injective_holomorphic_jacobian_ne_zero_holds : GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.InjectiveHolomorphicJacobianNeZero.Statement :=
   @GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.InjectiveHolomorphicJacobianNeZero.proof GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.HolomorphicKernelFibre.proof GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.CriticalFlatNotInjective.proof
 
 /- English proof (translation)
-The claim follows from `@GroundTheory.Heights₂.Heights.CMHeightAddDim.proof.{u} GroundTheory.Heights₂.Heights.CMRegularElement.proof`.
+A detailed English derivation is pending.
 -/
 theorem GroundTheory.Heights₂.Heights.AutoClose.CMHeightAddDim.{u} : GroundTheory.Heights₂.Heights.CMHeightAddDim.Statement.{u} :=
   @GroundTheory.Heights₂.Heights.CMHeightAddDim.proof.{u} GroundTheory.Heights₂.Heights.CMRegularElement.proof
 
 /- English proof (translation)
-The claim follows from `@GroundTheory.Heights₂.Heights.SliceLocalDimGeneral.proof GroundTheory.Heights₂.Heights.LocalDimDomain.proof GroundTheory.Heights₂.Heights.SliceLocalDimUpperZariski.proof`.
+A detailed English derivation is pending.
 -/
 theorem GroundTheory.Heights₂.Heights.AutoClose.SliceLocalDimGeneral : GroundTheory.Heights₂.Heights.SliceLocalDimGeneral.Statement :=
   @GroundTheory.Heights₂.Heights.SliceLocalDimGeneral.proof GroundTheory.Heights₂.Heights.LocalDimDomain.proof GroundTheory.Heights₂.Heights.SliceLocalDimUpperZariski.proof
 
 /- English proof (translation)
-The claim follows from `@GroundTheory.Heights₂.Heights.LengthCutLocalizedModule.proof.{u, v} GroundTheory.Heights₂.Heights.LengthCutGlobal.proof GroundTheory.Heights₂.Heights.LengthLocalizedLocalized.proof`.
+A detailed English derivation is pending.
 -/
 theorem GroundTheory.Heights₂.Heights.AutoClose.LengthCutLocalizedModule.{u, v} : GroundTheory.Heights₂.Heights.LengthCutLocalizedModule.Statement.{u, v} :=
   @GroundTheory.Heights₂.Heights.LengthCutLocalizedModule.proof.{u, v} GroundTheory.Heights₂.Heights.LengthCutGlobal.proof GroundTheory.Heights₂.Heights.LengthLocalizedLocalized.proof
 
 /- English proof (translation)
-The claim follows from `@GroundTheory.Heights₂.Heights.GenericFibreTor.proof GroundTheory.Heights₂.Heights.GenericFreeness.full`.
+A detailed English derivation is pending.
 -/
 theorem GroundTheory.Heights₂.Heights.AutoClose.GenericFibreTor : GroundTheory.Heights₂.Heights.GenericFibreTor.Statement :=
   @GroundTheory.Heights₂.Heights.GenericFibreTor.proof GroundTheory.Heights₂.Heights.GenericFreeness.full
 
 /- English proof (translation)
-The claim follows from `@GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.LocalUniversalDenominator.proof GroundTheory.Heights₂.Heights.ComplexSets.FiniteProjectionCluster.proof GroundTheory.Heights₂.Heights.ComplexSets.RootSumHolomorphic.proof`.
+A detailed English derivation is pending.
 -/
 theorem GroundTheory.Heights₂.Heights.AutoClose.local_universal_denominator_holds : GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.LocalUniversalDenominator.Statement :=
   @GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.LocalUniversalDenominator.proof GroundTheory.Heights₂.Heights.ComplexSets.FiniteProjectionCluster.proof GroundTheory.Heights₂.Heights.ComplexSets.RootSumHolomorphic.proof
 
 /- English proof (translation)
-The claim follows from `@GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.RegularLocusDense.proof GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.AnalyticImplicitChart.proof`.
+A detailed English derivation is pending.
 -/
 theorem GroundTheory.Heights₂.Heights.AutoClose.regular_locus_dense_holds : GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.RegularLocusDense.Statement :=
   @GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.RegularLocusDense.proof GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.AnalyticImplicitChart.proof
 
 /- English proof (translation)
-The claim follows from `@GroundTheory.Heights₂.Heights.CMParameterQuotient.proof GroundTheory.Heights₂.Heights.CMRegularElement.proof`.
+A detailed English derivation is pending.
 -/
 theorem GroundTheory.Heights₂.Heights.AutoClose.CMParameterQuotient : GroundTheory.Heights₂.Heights.CMParameterQuotient.Statement :=
   @GroundTheory.Heights₂.Heights.CMParameterQuotient.proof GroundTheory.Heights₂.Heights.CMRegularElement.proof
 
 /- English proof (translation)
-The claim follows from `@GroundTheory.Heights₂.Heights.ChartChangeSheetNull.proof GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.FiniteMapOpen.proof GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.CriticalImageNull.proof`.
+A detailed English derivation is pending.
 -/
 theorem GroundTheory.Heights₂.Heights.AutoClose.ChartChangeSheetNull : GroundTheory.Heights₂.Heights.ChartChangeSheetNull.Statement :=
   @GroundTheory.Heights₂.Heights.ChartChangeSheetNull.proof GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.FiniteMapOpen.proof GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.CriticalImageNull.proof
 
 /- English proof (translation)
-The claim follows from `@GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.UnbranchedProperCountConstant.proof GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.UnbranchedProperCountLocallyConstant.proof GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Compl …`.
+A detailed English derivation is pending.
 -/
 theorem GroundTheory.Heights₂.Heights.AutoClose.unbranched_proper_count_constant_holds : GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.UnbranchedProperCountConstant.Statement :=
   @GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.UnbranchedProperCountConstant.proof GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.UnbranchedProperCountLocallyConstant.proof GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.ManifoldZerosComplementConnected.proof
 
 /- English proof (translation)
-The claim follows from `@GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.SheetPieceProductAnalytic.proof GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.UnbranchedFibreSections.proof`.
+A detailed English derivation is pending.
 -/
 theorem GroundTheory.Heights₂.Heights.AutoClose.sheet_product_analytic_holds : GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.SheetPieceProductAnalytic.Statement :=
   @GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.SheetPieceProductAnalytic.proof GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.UnbranchedFibreSections.proof
 
 /- English proof (translation)
-The claim follows from `@GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.ProjectionInjectiveOffHypersurface.proof_of_rank GroundTheory.Heights₂.Heights.JacobianRankGeneric.proof GroundTheory.Heights₂.Heights.ConormalGenerationGeneric.proof`.
+A detailed English derivation is pending.
 -/
 theorem GroundTheory.Heights₂.Heights.AutoClose.projection_injective_off_hypersurface_holds : GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.ProjectionInjectiveOffHypersurface.Statement :=
   @GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.ProjectionInjectiveOffHypersurface.proof_of_rank GroundTheory.Heights₂.Heights.JacobianRankGeneric.proof GroundTheory.Heights₂.Heights.ConormalGenerationGeneric.proof
 
 /- English proof (translation)
-The claim follows from `@GroundTheory.Heights₂.Heights.BranchInCurveComponent.proof GroundTheory.Heights₂.Heights.BranchInComponent.proof`.
+A detailed English derivation is pending.
 -/
 theorem GroundTheory.Heights₂.Heights.AutoClose.BranchInCurveComponent : GroundTheory.Heights₂.Heights.BranchInCurveComponent.Statement :=
   @GroundTheory.Heights₂.Heights.BranchInCurveComponent.proof GroundTheory.Heights₂.Heights.BranchInComponent.proof
 
 /- English proof (translation)
-The claim follows from `@GroundTheory.Heights₂.Heights.NormalCurveJacobian.proof GroundTheory.Heights₂.Heights.NormalCurvePointDVR.proof`.
+A detailed English derivation is pending.
 -/
 theorem GroundTheory.Heights₂.Heights.AutoClose.NormalCurveJacobian : GroundTheory.Heights₂.Heights.NormalCurveJacobian.Statement :=
   @GroundTheory.Heights₂.Heights.NormalCurveJacobian.proof GroundTheory.Heights₂.Heights.NormalCurvePointDVR.proof
 
 /- English proof (translation)
-The claim follows from `@GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.BrouwerFixedPoint.proof GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.ChangeOfVariablesDegree.proof`.
+A detailed English derivation is pending.
 -/
 theorem GroundTheory.Heights₂.Heights.AutoClose.brouwer_fixed_point_holds : GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.BrouwerFixedPoint.Statement :=
   @GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.BrouwerFixedPoint.proof GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.ChangeOfVariablesDegree.proof

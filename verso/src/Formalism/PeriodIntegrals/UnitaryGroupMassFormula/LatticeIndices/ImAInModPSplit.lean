@@ -11,7 +11,7 @@ open scoped TensorProduct Matrix
 variable {D : D7} (X : HidaSetting D)
 
 /- English proof (translation)
-Unfold `InModP`. Rewrite using `[imA_span_Bg X p]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem imA_inModP_Bg (p : TypX X) (S : Set (Fin X.B.I.n → Fv X.B.I.F p.1 ⊗[X.B.I.F] X.B.I.E))
     (y : Fin X.B.I.n → Fv X.B.I.F p.1 ⊗[X.B.I.F] X.B.I.E) :
@@ -20,13 +20,13 @@ theorem imA_inModP_Bg (p : TypX X) (S : Set (Fin X.B.I.n → Fv X.B.I.F p.1 ⊗[
   rw [imA_span_Bg X p]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, Subring.one_mem _, map_one _⟩`.
+Supply the required witnesses or components.
 -/
 theorem imA_OEp_one (p : TypX X) : (1 : Fv X.B.I.F p.1 ⊗[X.B.I.F] X.B.I.E) ∈ OEp X p :=
   ⟨1, Subring.one_mem _, map_one _⟩
 
 /- English proof (translation)
-Take `⟨a, ha, rfl⟩` from `hs`. Take `⟨b, hb, rfl⟩` from `ht`. Conclude with `⟨a - b, Subring.sub_mem _ ha hb, map_sub _ _ _⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem imA_OEp_sub (p : TypX X) {s t : Fv X.B.I.F p.1 ⊗[X.B.I.F] X.B.I.E} (hs : s ∈ OEp X p)
     (ht : t ∈ OEp X p) : s - t ∈ OEp X p := by
@@ -37,23 +37,23 @@ theorem imA_OEp_sub (p : TypX X) {s t : Fv X.B.I.F p.1 ⊗[X.B.I.F] X.B.I.E} (hs
 abbrev epsP (p : TypX X) : Fv X.B.I.F p.1 ⊗[X.B.I.F] X.B.I.E := PI.FinKW.psiV X.B.I p.1 X.ew
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨X.ew, X.ew_int, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem imA_eps_mem (p : TypX X) : epsP X p ∈ OEp X p := ⟨X.ew, X.ew_int, rfl⟩
 
 /- English proof (translation)
-Unfold `epsP`. Rewrite using `[← map_mul, X.ew_idem]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem imA_eps_idem (p : TypX X) : epsP X p * epsP X p = epsP X p := by
   unfold epsP
   rw [← map_mul, X.ew_idem]
 
 /- English proof (translation)
-Unfold `latLoc at hu ⊢`. Proceed by induction on `hu using Submodule.span_induction with`. Consider the case `mem w hw`. Take `⟨l, hl, rfl⟩` from `hw`. Use `Submodule.subset_span ⟨x • l, X.B.I.L.smul_mem x hl, ?_⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `i`. Simplify using `[ratV, inclR, Algebra.smul_def, Algebra.TensorProduct.tmul_mul_tmul]`. Consider the case `zero => simp`. Consider the case `add a b _ _ ha hb => rw [smul_add]`. Conclude with `add_mem ha hb`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `smul c a _ ha => rw [smul_comm]`. Conclude with `Submodule.smul_mem _ c ha`.
+A detailed English derivation is pending.
 -/
 private theorem latLoc_ringOfIntegers_incl (p : TypX X) (x : 𝓞 X.B.I.E) {u : Fin X.B.I.n → Fv X.B.I.F p.1 ⊗[X.B.I.F] X.B.I.E}
     (hu : u ∈ latLoc (E := X.B.I.E) p.1 (X.B.I.L : Set (Fin X.B.I.n → X.B.I.E))) :
@@ -70,7 +70,7 @@ private theorem latLoc_ringOfIntegers_incl (p : TypX X) (x : 𝓞 X.B.I.E) {u : 
   | smul c a _ ha => rw [smul_comm]; exact Submodule.smul_mem _ c ha
 
 /- English proof (translation)
-Establish `h : ((c : Fv X.B.I.F p.1) ⊗ₜ[X.B.I.F] (1 : X.B.I.E)) • u = c • u`. Use function extensionality and compare the values at `i`. Simplify using `[Algebra.smul_def, Algebra.TensorProduct.algebraMap_apply]`. Rewrite using `[h]`. Conclude with `Submodule.smul_mem _ c hu`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem latLoc_adicIntegers_incl (p : TypX X) (c : p.1.adicCompletionIntegers X.B.I.F) {u : Fin X.B.I.n → Fv X.B.I.F p.1 ⊗[X.B.I.F] X.B.I.E}
     (hu : u ∈ latLoc (E := X.B.I.E) p.1 (X.B.I.L : Set (Fin X.B.I.n → X.B.I.E))) :
@@ -82,17 +82,15 @@ private theorem latLoc_adicIntegers_incl (p : TypX X) (c : p.1.adicCompletionInt
   exact Submodule.smul_mem _ c hu
 
 /- English proof (translation)
-Establish `key : ∀ b ∈ Formalism.MainNotions.S.IntAf X.B.I.F X.B.I.E, ∀ w ∈ latLoc (E` using `X.B.I.E) p.1 (X.B.I.L : Set (Fin X.B.I.n → X.B.I.E)), PI.FinKW.psiV X.B.I p.1 b • w ∈ latLoc (E := X.B.I.E) p.1 (X.B.I.L : Set (Fin X.B.I.n → X.B.I.E)) := by`. Introduce `b hb`. Unfold `Formalism.MainNotions.S.IntAf Formalism.UG.tensInt at hb`. Proceed by induction on `hb using Subring.closure_induction with`. Consider the case `mem z hz`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately.
 
-Introduce `w hw`. Break down `hz with ⟨⟨e, he⟩, rfl⟩ | ⟨⟨y, hy⟩, rfl⟩` into its components or cases. Take `⟨x, rfl⟩` from `RingHom.mem_range.mp he`. Use `latLoc_ringOfIntegers_incl X p x hw using 2` and compare the differences between its conclusion and the goal. Simplify using `[PI.FinKW.psiV]`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules.
 
-Establish `hy' : ∀ v, y v ∈ v.adicCompletionIntegers X.B.I.F` using `hy`. Use `latLoc_adicIntegers_incl X p ⟨y p.1, hy' p.1⟩ hw using 2` and compare the differences between its conclusion and the goal. Apply the tactic sequence `simp [PI.FinKW.psiV] <;> rfl`. Consider the case `zero => intro w _`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply the first step, then apply the next step to every resulting obligation. Treat this case separately. Simplify using the standard rewrite rules.
 
-Consider the case `one => intro w hw`. Simplify using `using hw`. Consider the case `add a b _ _ ha hb => intro w hw`. Rewrite using `[map_add, add_smul]`. Conclude with `add_mem (ha w hw) (hb w hw)`.
+Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `neg a _ ha => intro w hw`. Rewrite using `[map_neg, neg_smul]`. Conclude with `neg_mem (ha w hw)`. Consider the case `mul a b _ _ ha hb => intro w hw`. Rewrite using `[map_mul, mul_smul]`.
-
-Conclude with `ha _ (hb w hw)`. Take `⟨a, ha, rfl⟩` from `ht`. Conclude with `key a ha u hu`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem imA_lat_OEp (p : TypX X) {t : Fv X.B.I.F p.1 ⊗[X.B.I.F] X.B.I.E} (ht : t ∈ OEp X p)
     {u : Fin X.B.I.n → Fv X.B.I.F p.1 ⊗[X.B.I.F] X.B.I.E}
@@ -121,15 +119,13 @@ theorem imA_lat_OEp (p : TypX X) {t : Fv X.B.I.F p.1 ⊗[X.B.I.F] X.B.I.E} (ht :
   exact key a ha u hu
 
 /- English proof (translation)
-Unfold `InModP at h ⊢`. Take `⟨a, ha, b, hb, rfl⟩` from `Submodule.mem_sup.mp h`. Use `clear h`. Rewrite using `[smul_add]`. Apply `Submodule.add_mem_sup` to reduce the goal to its premises.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Proceed by induction.
 
-Proceed by induction on `ha using Submodule.span_induction with`. Consider the case `mem w hw`. Take `⟨t', ht', s, hs, rfl⟩` from `hw`. Conclude with `Submodule.subset_span ⟨t', ht', t • s, ⟨s, hs, rfl⟩, smul_comm t t' s⟩`. Consider the case `zero => simp`.
+Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `add a₁ a₂ _ _ ha₁ ha₂ => rw [smul_add]`. Conclude with `add_mem ha₁ ha₂`. Consider the case `smul c a₁ _ ha₁ => rw [smul_comm]`. Conclude with `Submodule.smul_mem _ c ha₁`. Use `Submodule.smul_induction_on (p := fun b => t • b ∈ _) hb ?_ ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `r hr n hn`. Rewrite using `[smul_comm]`. Conclude with `Submodule.smul_mem_smul hr (imA_lat_OEp X p ht hn)`. Introduce `a b ha hb`. Rewrite using `[smul_add]`.
-
-Conclude with `add_mem ha hb`.
+A detailed English derivation is pending.
 -/
 theorem inModP_smul (p : TypX X) (m : ℕ) (S : Set (Fin X.B.I.n → Fv X.B.I.F p.1 ⊗[X.B.I.F] X.B.I.E))
     {t : Fv X.B.I.F p.1 ⊗[X.B.I.F] X.B.I.E} (ht : t ∈ OEp X p)
@@ -156,9 +152,9 @@ theorem inModP_smul (p : TypX X) (m : ℕ) (S : Set (Fin X.B.I.n → Fv X.B.I.F 
       exact add_mem ha hb
 
 /- English proof (translation)
-Unfold `InModP at h ⊢`. Take `⟨a, ha, b, hb, rfl⟩` from `Submodule.mem_sup.mp h`. Use `Submodule.add_mem_sup ?_ hb` and prove the remaining obligations. Establish `hle : Submodule.span (p.1.adicCompletionIntegers X.B.I.F) {w | ∃ t' ∈ OEp X p, ∃ s ∈ (fun s => t • s) '' S, w = t' • s} ≤ Submodule.span (p.1.adicCompletionIntegers X.B.I.F) {w | ∃ t' ∈ OEp X p, ∃ s ∈ S, w = t' • s}`. Apply `Submodule.span_mono` to reduce the goal to its premises.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce and unpack `w ⟨t', ht', _, ⟨s, hs, rfl⟩, rfl⟩`. Conclude with `⟨t' * t, imA_OEp_mul X p ht' ht, s, hs, (mul_smul t' t s).symm⟩`. Conclude with `hle ha`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem inModP_of_inModP_smul_image (p : TypX X) (m : ℕ) (S : Set (Fin X.B.I.n → Fv X.B.I.F p.1 ⊗[X.B.I.F] X.B.I.E))
     {t : Fv X.B.I.F p.1 ⊗[X.B.I.F] X.B.I.E} (ht : t ∈ OEp X p)
@@ -176,11 +172,11 @@ theorem inModP_of_inModP_smul_image (p : TypX X) (m : ℕ) (S : Set (Fin X.B.I.n
   exact hle ha
 
 /- English proof (translation)
-Establish `h1 : (1 - epsP X p) ∈ OEp X p` using `imA_OEp_sub X p (imA_OEp_one X p) (imA_eps_mem X p)`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `⟨inModP_smul X p m S (imA_eps_mem X p) h, inModP_smul X p m S h1 h⟩`. Introduce and unpack `⟨h₁, h₂⟩`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Establish `e1` using `inModP_of_inModP_smul_image X p m S (imA_eps_mem X p) h₁`. Establish `e2` using `inModP_of_inModP_smul_image X p m S h1 h₂`. Establish `hy : epsP X p • y + (1 - epsP X p) • y = y`. Rewrite using `[sub_smul, one_smul]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Rewrite using `[← hy]`. Unfold `InModP at e1 e2 ⊢`. Conclude with `add_mem e1 e2`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem inModP_iff_split (p : TypX X) (m : ℕ) (S : Set (Fin X.B.I.n → Fv X.B.I.F p.1 ⊗[X.B.I.F] X.B.I.E))
     (y : Fin X.B.I.n → Fv X.B.I.F p.1 ⊗[X.B.I.F] X.B.I.E) :

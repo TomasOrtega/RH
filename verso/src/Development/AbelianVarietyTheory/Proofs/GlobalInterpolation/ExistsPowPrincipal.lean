@@ -5,7 +5,7 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.HermitianLatt
 namespace GlobalTheory.NormOneIdeal
 
 /- English proof (translation)
-Use `⟨⟨star (a : E), ?_⟩, rfl⟩` and prove the remaining obligations. Establish `h : IsIntegral ℤ (a : E)` using `a.isIntegral_coe`. Conclude with `h.map (starRingEnd E).toIntAlgHom`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem star_integer_smul {E : Type} [Field E] [NumberField E] [StarRing E] (a : 𝓞 E) :
     ∃ b : 𝓞 E, (b : E) = star (a : E) := by
@@ -14,9 +14,9 @@ theorem star_integer_smul {E : Type} [Field E] [NumberField E] [StarRing E] (a :
   exact h.map (starRingEnd E).toIntAlgHom
 
 /- English proof (translation)
-Introduce `x hx`. Use `Submodule.mul_induction_on hx ?_ ?_` and prove the remaining obligations. Introduce `m hm n hn`. Rewrite using `[star_mul']`. Conclude with `Submodule.mul_mem_mul (h1 m hm) (h2 n hn)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a b ha hb`. Rewrite using `[star_add]`. Conclude with `add_mem ha hb`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem star_mem_mul {E : Type} [Field E] [NumberField E] [StarRing E]
     {A B C D : Submodule (𝓞 E) E} (h1 : ∀ x ∈ A, star x ∈ C) (h2 : ∀ x ∈ B, star x ∈ D) :
@@ -31,7 +31,7 @@ theorem star_mem_mul {E : Type} [Field E] [NumberField E] [StarRing E]
     exact add_mem ha hb
 
 /- English proof (translation)
-Take `⟨a, rfl⟩` from `Submodule.mem_span_singleton.1 hx`. Take `⟨b, hb⟩` from `star_integer_smul a`. Use `Submodule.mem_span_singleton.2 ⟨b, ?_⟩` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, Algebra.smul_def, star_mul']`. Conclude with `congrArg (· * star z) hb`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem star_mem_span {E : Type} [Field E] [NumberField E] [StarRing E] (z x : E)
     (hx : x ∈ Submodule.span (𝓞 E) {z}) : star x ∈ Submodule.span (𝓞 E) {star z} := by
@@ -42,9 +42,9 @@ theorem star_mem_span {E : Type} [Field E] [NumberField E] [StarRing E] (z x : E
   exact congrArg (· * star z) hb
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Introduce `x hx`. Rewrite `hx`, the goal using `[pow_zero, Submodule.one_eq_span]`. Simplify using `using star_mem_span 1 x hx`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Consider the case `succ n ih`. Rewrite using `[pow_succ, pow_succ]`. Conclude with `star_mem_mul ih h1`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem star_mem_pow {E : Type} [Field E] [NumberField E] [StarRing E]
     {A C : Submodule (𝓞 E) E} (h1 : ∀ x ∈ A, star x ∈ C) (n : ℕ) :
@@ -59,9 +59,9 @@ theorem star_mem_pow {E : Type} [Field E] [NumberField E] [StarRing E]
     exact star_mem_mul ih h1
 
 /- English proof (translation)
-Set `e` to `FractionalIdeal.unitsMulEquivSubmodule (S := nonZeroDivisors (𝓞 E)) (P := E)`. Set `F` to `e.symm I`. Establish `hF : ClassGroup.mk E (F ^ Fintype.card (ClassGroup (𝓞 E))) = 1`. Rewrite using `[map_pow, pow_card_eq_one]`. Take `⟨z, hz⟩` from `ClassGroup.mk_eq_one_iff.1 hF`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨Fintype.card (ClassGroup (𝓞 E)), z, Fintype.card_pos, ?_⟩` and prove the remaining obligations. Rewrite using `[← hz]`. Establish `: e (F ^ Fintype.card (ClassGroup (𝓞 E))) = I ^ Fintype.card (ClassGroup (𝓞 E))`. Rewrite using `[map_pow, MulEquiv.apply_symm_apply]`. Rewrite using `[← Units.val_pow_eq_pow_val, ← this]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -81,19 +81,19 @@ theorem exists_pow_principal {E : Type} [Field E] [NumberField E]
   rfl
 
 /- English proof (translation)
-Introduce `E _ _ _ I J hJ hIJ`. Establish `h1 : ∀ (n : ℕ) (x : E), x ∈ J ^ n ↔ star x ∈ I ^ n`. Introduce `n x`. Use `⟨star_mem_pow (fun x hx => (hJ x).1 hx) n x, fun hx => ?_⟩` and prove the remaining obligations. Use `star_mem_pow (A := I) (C := J) (fun x hx => (hJ _).2 (by rwa [star_star])) n _ hx` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[star_star]`. Then use the resulting hypothesis. Use `⟨h1, ?_⟩` and prove the remaining obligations. Take `⟨h, z, hh, hz⟩` from `exists_pow_principal (E := E) ⟨I, J, hIJ, by rw [mul_comm, hIJ]⟩`. Express the relevant statement in the definitionally equal form `I ^ h = _ at hz`. Establish `hJh : J ^ h = Submodule.span (𝓞 E) {star z}`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Use extensionality with `x`. Rewrite using `[h1, hz]`. Use `⟨fun hx => ?_, fun hx => ?_⟩` and prove the remaining obligations. Simplify using `using star_mem_span _ _ hx`. Simplify using `using star_mem_span _ _ hx`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hm : I ^ h * J ^ h = 1` using `by rw [← mul_pow, hIJ, one_pow]`. Establish `hz0 : z ≠ 0`. Introduce and unpack `rfl`. Rewrite `hm` using `[hz]`. Simplify using `only [Submodule.span_zero_singleton, Submodule.bot_mul] at hm`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `: (1 : E) ∈ (⊥ : Submodule (𝓞 E) E)`. Rewrite using `[hm, Submodule.one_eq_span]`. Conclude with `Submodule.mem_span_singleton_self _`. Simplify using `at this`. Establish `hs0 : star z ≠ 0` using `star_ne_zero.2 hz0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinv : Submodule.span (𝓞 E) {(star z)⁻¹} = I ^ h`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_assoc, hJh, Submodule.span_mul_span, Set.singleton_mul_singleton, mul_inv_cancel₀ hs0, ← Submodule.one_eq_span, mul_one]`. Use `⟨h + h, z * (star z)⁻¹, by omega, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[star_mul', star_inv₀, star_star]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts. Rewrite using `[pow_add] nth_rewrite 1 [hz]`. Rewrite using `[← hinv, Submodule.span_mul_span, Set.singleton_mul_singleton]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_eq_span_norm_one : ∀ (E : Type) [Field E] [NumberField E] [StarRing E] (I J : Submodule (𝓞 E) E), (∀ x, x ∈ J ↔ star x ∈ I) → I * J = 1 → (∀ (n : ℕ) (x : E), x ∈ J ^ n ↔ star x ∈ I ^ n) ∧ ∃ (h : ℕ) (y : E), 0 < h ∧ star y * y = 1 ∧ Submodule.span (𝓞 E) {y} = I ^ h := by
   intro E _ _ _ I J hJ hIJ

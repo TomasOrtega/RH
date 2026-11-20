@@ -12,20 +12,20 @@ open PositivityTheory.Rg.Sw
 variable {m n : ℕ}
 
 /- English proof (translation)
-Simplify using `only [scal, aH, norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_pos (Real.exp_pos _), mul_pow]`.
+Simplify using the standard rewrite rules.
 -/
 theorem norm_scal_sq (X : Fin n → ℝ) (y : Fin m → Fin n → ℂ) (s : ℝ) (a : Fin m) (j : Fin n) :
     ‖scal (aH X s) y a j‖ ^ 2 = Real.exp (s * X j) ^ 2 * ‖y a j‖ ^ 2 := by
   simp only [scal, aH, norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_pos (Real.exp_pos _), mul_pow]
 
 /- English proof (translation)
-Establish `key : ∀ s : ℝ, gs c (scal (aH X s) y) = Complex.exp (-(((c * ∑ a, ∑ j, Real.exp (s * X j) ^ 2 * ‖y a j‖ ^ 2 : ℝ)) : ℂ))`. Introduce `s`. Simplify using `only [gs, norm_scal_sq]`. Establish `hF : HasDerivAt (fun s : ℝ => c * ∑ a, ∑ j, Real.exp (s * X j) ^ 2 * ‖y a j‖ ^ 2) (c * ∑ a, ∑ j, 2 * X j * (Real.exp (h * X j) ^ 2 * ‖y a j‖ ^ 2)) h`. Apply `HasDerivAt.const_mul` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `HasDerivAt.fun_sum` to reduce the goal to its premises. Introduce `a _`. Apply `HasDerivAt.fun_sum` to reduce the goal to its premises. Introduce `j _`. Establish `e : HasDerivAt (fun s : ℝ => Real.exp (s * X j)) (Real.exp (h * X j) * X j) h`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `using ((hasDerivAt_id h).mul_const (X j)).exp`. Conclude with `((e.pow 2).mul_const (‖y a j‖ ^ 2)).congr_deriv (by`. Rewrite using `[show (2 : ℕ) - 1 = 1 from rfl]`. Use `push_cast`. Use the proof step `ring)`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hc` using `(hF.ofReal_comp.neg).cexp`. Rewrite using `[show (fun s : ℝ => gs c (scal (aH X s) y)) = fun s : ℝ => Complex.exp (-(((c * ∑ a, ∑ j, Real.exp (s * X j) ^ 2 * ‖y a j‖ ^ 2 : ℝ)) : ℂ)) from funext key]`. Use `hc.congr_deriv ?_` and prove the remaining obligations. Rewrite using `[key h]`. Simplify using `only [norm_scal_sq, Pi.neg_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_gs (c : ℝ) (X : Fin n → ℝ) (y : Fin m → Fin n → ℂ) (h : ℝ) :
     HasDerivAt (fun s => gs c (scal (aH X s) y))
@@ -55,9 +55,7 @@ theorem hasDerivAt_gs (c : ℝ) (X : Fin n → ℝ) (y : Fin m → Fin n → ℂ
   simp only [norm_scal_sq, Pi.neg_apply]
 
 /- English proof (translation)
-Establish `h1 : HasDerivAt (fun s : ℝ => evX Q (scal (aH X s) y)) (∑ k, eval (ept (scal (aH X h) y)) (pderiv k Q) * ((X k.2.1 : ℂ) * ept (scal (aH X h) y) k)) h`. Simplify using `only [evX_eq]`. Conclude with `hasDerivAt_eval_curve Q (fun s => ept (scal (aH X s) y)) _ h (fun k => hasDerivAt_scal_coord X y h k)`. Conclude with `(h1.mul (hasDerivAt_gs c X y h)).congr_deriv (by`. Rewrite using `[evX_dil]`.
-
-Use `push_cast`. Use the proof step `ring)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_phi (c : ℝ) (X : Fin n → ℝ) (Q : PX m n) (y : Fin m → Fin n → ℂ) (h : ℝ) :
     HasDerivAt (fun s => evX Q (scal (aH X s) y) * gs c (scal (aH X s) y))
@@ -74,9 +72,9 @@ theorem hasDerivAt_phi (c : ℝ) (X : Fin n → ℝ) (Q : PX m n) (y : Fin m →
     ring)
 
 /- English proof (translation)
-Establish `hj : |X j| ≤ ∑ i, |X i|` using `Finset.single_le_sum (f := fun i => |X i|) (fun i _ => abs_nonneg _) (Finset.mem_univ j)`. Establish `hx : |h * X j| ≤ ∑ i, |X i|`. Rewrite using `[abs_mul]`. Combine the equalities or inequalities in the displayed calculation. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Prove the components needed by the constructor for the conclusion.
 
-Conclude with `Real.exp_le_exp.mpr (by linarith [neg_abs_le (h * X j)])`. Conclude with `Real.exp_le_exp.mpr (le_trans (le_abs_self _) hx)`.
+A detailed English derivation is pending.
 -/
 private theorem dom_bound_lemma (X : Fin n → ℝ) (h : ℝ) (hh : |h| < 1) (j : Fin n) :
     Real.exp (-(∑ i, |X i|)) ≤ Real.exp (h * X j) ∧ Real.exp (h * X j) ≤ Real.exp (∑ i, |X i|) := by
@@ -91,9 +89,9 @@ private theorem dom_bound_lemma (X : Fin n → ℝ) (h : ℝ) (hh : |h| < 1) (j 
   · exact Real.exp_le_exp.mpr (le_trans (le_abs_self _) hx)
 
 /- English proof (translation)
-Use `(pi_norm_le_iff_of_nonneg (by positivity)).mpr fun a => ?_` and prove the remaining obligations. Use `(pi_norm_le_iff_of_nonneg (by positivity)).mpr fun j => ?_` and prove the remaining obligations. Establish `e` using `(dom_bound_lemma X h hh j).2`. Establish `hy : ‖y a j‖ ≤ ‖y‖` using `(norm_le_pi_norm (y a) j).trans (norm_le_pi_norm y a)`. Establish `hn : ‖scal (aH X h) y a j‖ = Real.exp (h * X j) * ‖y a j‖`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [scal, aH, norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_pos (Real.exp_pos _)]`. Rewrite using `[hn]`. Conclude with `mul_le_mul e hy (norm_nonneg _) (Real.exp_pos _).le`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem dom_bound_lemma_2 (X : Fin n → ℝ) (h : ℝ) (hh : |h| < 1) (y : Fin m → Fin n → ℂ) :
     ‖scal (aH X h) y‖ ≤ Real.exp (∑ i, |X i|) * ‖y‖ := by
@@ -107,9 +105,7 @@ private theorem dom_bound_lemma_2 (X : Fin n → ℝ) (h : ℝ) (hh : |h| < 1) (
   exact mul_le_mul e hy (norm_nonneg _) (Real.exp_pos _).le
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation. Conclude with `sq_norm_le_sum y`. Use `_ = ∑ a, ∑ j, Real.exp (-(∑ i, |X i|)) ^ 2 * ‖y a j‖ ^ 2 := by`. Simplify using `only [Finset.mul_sum]`. Use `_ ≤ ∑ a, ∑ j, ‖scal (aH X h) y a j‖ ^ 2 := by gcongr with a _ j _`.
-
-Rewrite using `[norm_scal_sq]`. Use `gcongr`. Conclude with `Real.exp_le_exp.mp (dom_bound_lemma X h hh j).1`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem dom_bound_lemma_3 (X : Fin n → ℝ) (h : ℝ) (hh : |h| < 1) (y : Fin m → Fin n → ℂ) :
     Real.exp (-(∑ i, |X i|)) ^ 2 * ‖y‖ ^ 2 ≤ ∑ a, ∑ j, ‖scal (aH X h) y a j‖ ^ 2 := by
@@ -126,13 +122,13 @@ private theorem dom_bound_lemma_3 (X : Fin n → ℝ) (h : ℝ) (hh : |h| < 1) (
           exact Real.exp_le_exp.mp (dom_bound_lemma X h hh j).1
 
 /- English proof (translation)
-Take `⟨C, k, hC, hP⟩` from `poly_bound P`. Establish `hM0 : 0 ≤ ∑ i, |X i|` using `Finset.sum_nonneg fun i _ => abs_nonneg (X i)`. Establish `hκ : 0 < c * Real.exp (-(∑ i, |X i|)) ^ 2` using `by positivity`. Take `⟨D, hD, hdec⟩` from `decay k _ hκ ((Module.finrank ℝ (Fin m → Fin n → ℂ) : ℝ) + 1)`. Use `⟨C * Real.exp (∑ i, |X i|) ^ k * D, by positivity, fun h hh y => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hv` using `dom_bound_lemma_2 X h hh y`. Establish `hs` using `dom_bound_lemma_3 X h hh y`. Establish `hg : ‖gs c (scal (aH X h) y)‖ ≤ Real.exp (-(c * Real.exp (-(∑ i, |X i|)) ^ 2 * ‖y‖ ^ 2))`. Rewrite using `[gs, Complex.norm_exp]`. Simplify using `only [Complex.neg_re, Complex.ofReal_re]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Apply `Real.exp_le_exp.mpr` to reduce the goal to its premises. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left hs hc.le]`. Establish `hp : ‖evX P (scal (aH X h) y)‖ ≤ C * Real.exp (∑ i, |X i|) ^ k * (1 + ‖y‖) ^ k`. Combine the equalities or inequalities in the displayed calculation. Establish `: 1 ≤ Real.exp (∑ i, |X i|)` using `Real.one_le_exp hM0`.
+Reduce the claim to the hypotheses of an applicable result. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Use polynomial arithmetic with `[norm_nonneg y]`. Use `_ = C * Real.exp (∑ i, |X i|) ^ k * (1 + ‖y‖) ^ k := by`. Rewrite using `[mul_pow, mul_assoc]`. Combine the equalities or inequalities in the displayed calculation.
+Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem dom_bound (c : ℝ) (hc : 0 < c) (X : Fin n → ℝ) (P : PX m n) :
     ∃ K : ℝ, 0 ≤ K ∧ ∀ h : ℝ, |h| < 1 → ∀ y : Fin m → Fin n → ℂ,

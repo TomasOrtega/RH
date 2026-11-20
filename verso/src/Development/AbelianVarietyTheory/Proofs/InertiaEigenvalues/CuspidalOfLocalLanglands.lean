@@ -18,11 +18,9 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.CuspReadTrue
 
 /- English proof (translation)
-Introduce `hL D T C a P ha hP`. Use `haveI := host_isCMField D.host`. Establish `hu : (CG.mk P).IsUnitary` using `CsdUnitary.isUnitary_of_isCsd _ a (CG.mk P) hP`. Establish `hπ : C.e a ((C.equiv a ha).symm ⟨CG.mk P, hu⟩) = ⟨CG.mk P, hu⟩` using `(C.equiv a ha).apply_symm_apply _`. Use `⟨(C.equiv a ha).symm ⟨CG.mk P, hu⟩, (C.csd a _).2 (by rw [hπ]; exact hP), fun w σ hσ => ?_, fun τ m hm => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `(T.e w).injective` to reduce the goal to its premises. Rewrite using `[C.loc, hπ]`. Simplify using `only [recT, Equiv.apply_symm_apply]`. Conclude with `ParLaws.locPar_mk hL hσ _`. Rewrite using `[C.inf, hπ]`.
-
-Conclude with `CG.HasInfChar.infChar_eq (π := CG.mk P) hm`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cuspRead_recT : ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (D : D7) (T : GlobalTheory.RowTie.WDTie D.nd D.naut),
     CGTrue hL D T → CuspRead (recT T hL) := by

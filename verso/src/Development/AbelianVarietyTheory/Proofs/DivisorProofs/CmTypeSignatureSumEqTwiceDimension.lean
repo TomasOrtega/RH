@@ -16,23 +16,23 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.BalProj
 
 /- English proof (translation)
-Introduce `E _ _ _ H p q`. Establish `hdpos : (0 : ℝ) < H.d` using `by exact_mod_cast H.d_prime.pos`. Establish `h0` using `H.sqrt_neg_disc_sq`. Establish `hre : H.rt0.re = 0`. Establish `e1` using `congrArg Complex.re h0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2` using `congrArg Complex.im h0`. Establish `e3 : H.rt0.re * H.rt0.im = 0`. Simplify using `only [pow_two, Complex.mul_im, Complex.neg_im, Complex.natCast_im, neg_zero] at e2`. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using `only [pow_two, Complex.mul_re, Complex.neg_re, Complex.natCast_re] at e1`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using the standard rewrite rules.
 
-Break down `mul_eq_zero.mp e3 with h | h` into its components or cases. Conclude with `h`. It suffices to derive a contradiction. Rewrite `e1` using `[h]`. Use polynomial arithmetic with `[sq_nonneg H.rt0.re]`.
+Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Establish `hne : H.rt0 ≠ 0`. Introduce `h`. Rewrite `h0` using `[h]`. Establish `: (H.d : ℂ) = 0` using `by simpa using h0`. Conclude with `hdpos.ne' (by exact_mod_cast this)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hconj : (starRingEnd ℂ) H.rt0 = -H.rt0`. Apply the tactic sequence `apply Complex.ext <;> simp [hre]`. Establish `hnn : H.rt0 ≠ -H.rt0`. Introduce `h`. Apply `hne` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `: (2 : ℂ) * H.rt0 = 0` using `by rw [two_mul]; nth_rewrite 2 [h]; ring`. Simplify using `using this`. Establish `key : ∀ τ : E →+* ℂ, (if τ (H.rt : E) = H.rt0 then p else q) * (if NumberField.ComplexEmbedding.conjugate τ (H.rt : E) = H.rt0 then p else q) = p * q`. Introduce `τ`. Establish `hsq : (τ (H.rt : E)) ^ 2 = H.rt0 ^ 2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrtE : ((H.rt : E)) ^ 2 = -(H.d : E)`. Use `congrArg (fun x : 𝓞 E => (x : E)) H.rt_sq` as an intermediate fact. Simplify using `using this`. Rewrite using `[← map_pow, hrtE, h0]`. Simplify using the standard rewrite rules.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hor : τ (H.rt : E) = H.rt0 ∨ τ (H.rt : E) = -H.rt0` using `sq_eq_sq_iff_eq_or_eq_neg.mp hsq`. Rewrite using `[NumberField.ComplexEmbedding.conjugate_coe_eq]`. Break down `hor with h | h` into its components or cases. Rewrite using `[if_pos h, h, hconj, if_neg (Ne.symm hnn)]`. Rewrite using `[if_neg (by rw [h]; exact Ne.symm hnn), h, map_neg, hconj, neg_neg, if_pos rfl, mul_comm]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_congr rfl (fun τ _ => key τ), Finset.sum_const, Finset.card_univ, NumberField.Embeddings.card E ℂ, smul_eq_mul, NumberField.IsTotallyComplex.finrank]`. Rewrite using `[Nat.mul_div_cancel_left _ (by norm_num : 0 < 2)]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem signature_count : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (p q : ℕ),
     ∑ τ : E →+* ℂ, (if τ (H.rt : E) = H.rt0 then p else q) *

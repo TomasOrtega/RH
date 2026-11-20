@@ -12,19 +12,19 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.Hk3
 
 /- English proof (translation)
-Proceed by induction on `d with`. Consider the case `nil => rfl`. Consider the case `cons x t ih`. Rewrite `h` using `[List.pairwise_cons]`. Take `⟨hx, ht⟩` from `h`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `ih` using `ih ht`. Break down `lt_trichotomy 0 x with hpos | hzero | hneg` into its components or cases. Establish `h1 : ¬ x = 0` using `by omega`. Establish `h2 : ¬ x < 0` using `by omega`. Rewrite using `[List.filter_cons_of_pos (by simp [hpos]), List.filter_cons_of_neg (by simp [h1]), List.filter_cons_of_neg (by simp [h2]), List.cons_append, List.cons_append, ← ih]`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Substitute `hzero` using the available equality. Establish `e1 : t.filter (fun x => decide (0 < x)) = []`. Rewrite using `[List.filter_eq_nil_iff]`. Introduce `y hy`. Simplify using `using hx y hy`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `ih` using `[e1, List.nil_append]`. Rewrite using `[List.filter_cons_of_neg (by simp), List.filter_cons_of_pos (by simp), List.filter_cons_of_neg (by simp), e1, List.nil_append, List.cons_append, ← ih]`. Establish `e1 : t.filter (fun x => decide (0 < x)) = []`. Rewrite using `[List.filter_eq_nil_iff]`. Introduce `y hy`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hx y hy` as an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish `e2 : t.filter (fun x => decide (x = 0)) = []`. Rewrite using `[List.filter_eq_nil_iff]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `y hy`. Use `hx y hy` as an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish `h1 : ¬ 0 < x` using `by omega`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `h2 : ¬ x = 0` using `by omega`. Rewrite `ih` using `[e1, e2, List.nil_append, List.nil_append]`. Rewrite using `[List.filter_cons_of_neg (by simp [h1]), List.filter_cons_of_neg (by simp [h2]), List.filter_cons_of_pos (by simp [hneg]), e1, e2, List.nil_append, List.nil_append, ← ih]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem sorted_list_sign_split (d : List ℤ) (h : d.Pairwise (fun a b => b ≤ a)) :
     d = d.filter (fun x => decide (0 < x)) ++ d.filter (fun x => decide (x = 0)) ++ d.filter (fun x => decide (x < 0)) := by
@@ -56,7 +56,7 @@ private theorem sorted_list_sign_split (d : List ℤ) (h : d.Pairwise (fun a b =
         List.filter_cons_of_pos (by simp [hneg]), e1, e2, List.nil_append, List.nil_append, ← ih]
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => rfl`. Consider the case `cons a l ih => rw [List.flatMap_cons, List.map_cons, ih]`. Both sides reduce to the same expression.
+Proceed by induction. Treat this case separately. Treat this case separately. Both sides reduce to the same expression.
 -/
 private theorem flatMap_singleton_natCast (l : List ℕ) : List.flatMap (fun a : ℕ => [(a : ℤ)]) l = l.map (fun a : ℕ => (a : ℤ)) := by
   induction l with
@@ -64,7 +64,7 @@ private theorem flatMap_singleton_natCast (l : List ℕ) : List.flatMap (fun a :
   | cons a l ih => rw [List.flatMap_cons, List.map_cons, ih]; rfl
 
 /- English proof (translation)
-Unfold `labIn`. Use `show List.map _ (List.flatMap (fun a : ℕ => [(a : ℤ)]) s) ++ _ ++ List.map _ (List.flatMap (fun a : ℕ => [(a : ℤ)]) s.reverse) = _`. Rewrite using `[flatMap_singleton_natCast, flatMap_singleton_natCast]`. Simplify using `[List.map_map, Function.comp_def]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem label_list_eq_signed (n : ℕ) (s : List ℕ) : labIn n s =
     s.map (fun a : ℕ => (a : ℤ)) ++ List.replicate (n - 2 * s.length) 0 ++ (s.reverse.map fun a : ℕ => -(a : ℤ)) := by
@@ -75,41 +75,37 @@ private theorem label_list_eq_signed (n : ℕ) (s : List ℕ) : labIn n s =
   simp [List.map_map, Function.comp_def]
 
 /- English proof (translation)
-Introduce `n d`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hlen, hsort, hdual⟩`. Establish `hsplit` using `sorted_list_sign_split d hsort`. Use `set P := d.filter (fun x => decide (0 < x)) with hPdef`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set Z := d.filter (fun x => decide (x = 0)) with hZdef`. Use `set N := d.filter (fun x => decide (x < 0)) with hNdef`. Establish `hPN : P = (N.map Neg.neg).reverse`. Establish `e : P = (dualLab d).filter (fun x => decide (0 < x))` using `by rw [hdual]`. Rewrite using `[e, dualLab, List.filter_reverse, List.filter_map, hNdef]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `congr 2`. Apply `List.filter_congr` to reduce the goal to its premises. Introduce `x _`. Simplify using the standard rewrite rules. Establish `hN : N = P.reverse.map Neg.neg`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[hPN, List.reverse_reverse, List.map_map]`. Simplify using the standard rewrite rules. Establish `hZ : Z = List.replicate Z.length 0`. Rewrite using `[List.eq_replicate_iff]`. Use `⟨rfl, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `b hb`. Rewrite `hb` using `[hZdef]`. Simplify using `using (List.mem_filter.mp hb).2`. Establish `hlenPN : N.length = P.length` using `by rw [hN, List.length_map, List.length_reverse]`. Establish `hdlen : d.length = P.length + Z.length + N.length`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `congrArg List.length hsplit` as an intermediate fact. Simplify `this` using `only [List.length_append]`. Establish `hposP : ∀ x ∈ P, 0 < x`. Introduce `x hx`. Rewrite `hx` using `[hPdef]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using (List.mem_filter.mp hx).2`. Establish `hcast : (P.map Int.toNat).map (fun a : ℕ => (a : ℤ)) = P`. Rewrite using `[List.map_map]`. Use `conv_rhs => rw [← List.map_id P]`. Apply `List.map_congr_left` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Introduce `x hx`. Use `hposP x hx` as an intermediate fact. Simplify using `only [Function.comp_apply, id]`. Use linear arithmetic over natural numbers and integers. Use `⟨P.map Int.toNat, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[List.length_map]`. Use linear arithmetic over natural numbers and integers. Establish `hPs : P.Pairwise (fun a b => b ≤ a)` using `hsort.filter _`. Rewrite using `[List.pairwise_map]`. Conclude with `hPs.imp (fun h => Int.toNat_le_toNat h)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Introduce `a ha`. Take `⟨x, hx, rfl⟩` from `List.mem_map.mp ha`. Use `hposP x hx` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hneg : ((P.map Int.toNat).reverse.map fun a : ℕ => -(a : ℤ)) = N`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[hN]`. Use `conv_rhs => rw [← hcast]`. Simplify using `[List.map_reverse, List.map_map, Function.comp_def]`. Establish `hZ' : Z = List.replicate (n - 2 * P.length) 0`. Rewrite using `[hZ]`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr 1`. Use linear arithmetic over natural numbers and integers. Rewrite using `[label_list_eq_signed, hcast, List.length_map, hneg, ← hZ']`. Conclude with `hsplit`. Introduce and unpack `⟨s, hs, hsort, hpos, rfl⟩`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[label_list_eq_signed]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [List.length_append, List.length_map, List.length_replicate, List.length_reverse]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[List.pairwise_append, List.pairwise_append]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `⟨⟨?_, ?_, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[List.pairwise_map]`. Conclude with `hsort.imp (fun h => by exact_mod_cast h)`. Rewrite using `[List.pairwise_replicate] right`. Conclude with `le_refl _`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `a ha b hb`. Take `⟨x, hx, rfl⟩` from `List.mem_map.mp ha`. Rewrite using `[List.eq_of_mem_replicate hb]`. Conclude with `Nat.zero_le x` after adjusting the coercions. Rewrite using `[List.pairwise_map, List.pairwise_reverse]`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Use `hsort.imp (fun h => ?_)` and prove the remaining obligations. Simplify using `only [neg_le_neg_iff]`. Conclude with `h` after adjusting the coercions. Introduce `a ha b hb`. Take `⟨y, _, rfl⟩` from `List.mem_map.mp hb`.
-
-Establish `hb0 : -(y : ℤ) ≤ 0` using `by simp`. Break down `List.mem_append.mp ha with ha | ha` into its components or cases. Take `⟨x, _, rfl⟩` from `List.mem_map.mp ha`. Establish `: (0 : ℤ) ≤ x` using `by exact_mod_cast Nat.zero_le x`. Use linear arithmetic over natural numbers and integers.
-
-Rewrite using `[List.eq_of_mem_replicate ha]`. Conclude with `hb0`. Simplify using `[dualLab, List.map_append, List.reverse_append, List.map_reverse, List.map_map, Function.comp_def, List.map_replicate, List.reverse_replicate]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem labIn_selfDual_iff : ∀ (n : ℕ) (d : List ℤ), (d.length = n ∧ d.Pairwise (fun a b => b ≤ a) ∧ dualLab d = d) ↔
     ∃ s : List ℕ, 2 * s.length ≤ n ∧ s.Pairwise (fun a b => b ≤ a) ∧ (∀ a ∈ s, 0 < a) ∧ d = labIn n s := by

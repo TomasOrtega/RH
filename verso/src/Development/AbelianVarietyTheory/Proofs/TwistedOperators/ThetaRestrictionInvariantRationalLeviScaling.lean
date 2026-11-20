@@ -16,7 +16,7 @@ local infixl:70 " ⬝ " => HMul.hMul
 variable {D : D7}
 
 /- English proof (translation)
-Rewrite using `[← GlobalTheory.MixModel.cT_sig]`. Use extensionality with `i j`. Simplify using `[GlobalTheory.MixModel.adj, GlobalTheory.MixModel.rat, Formalism.UG.cT, Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR, Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.inclR]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem adj_rat {m n : ℕ} (M : Matrix (Fin m) (Fin n) D.host.E) :
     GlobalTheory.MixModel.adj (GlobalTheory.MixModel.rat M) = GlobalTheory.MixModel.rat Mᴴ := by
@@ -25,7 +25,7 @@ theorem adj_rat {m n : ℕ} (M : Matrix (Fin m) (Fin n) D.host.E) :
   simp [GlobalTheory.MixModel.adj, GlobalTheory.MixModel.rat, Formalism.UG.cT, Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR, Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.inclR]
 
 /- English proof (translation)
-Simplify using `only [GlobalTheory.MixModel.symplOH_eq, GlobalTheory.MixModel.hO_eq_trace, GlobalTheory.MixModel.adj_add, Matrix.add_mul, Matrix.mul_add, Matrix.trace_add, map_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem symplOH_add_right (S T : HSp D) (x y z : WO S T) :
     symplOH S T x (y + z) = symplOH S T x y + symplOH S T x z := by
@@ -33,9 +33,9 @@ theorem symplOH_add_right (S T : HSp D) (x y z : WO S T) :
     Matrix.mul_add, Matrix.trace_add, map_add]
 
 /- English proof (translation)
-Establish `hz : GlobalTheory.MixModel.rat X ⬝ GlobalTheory.MixModel.giA V ⬝ GlobalTheory.MixModel.rat Yᴴ = 0`. Rewrite using `[GlobalTheory.MixModel.giA, ← GlobalTheory.MixModel.rat_mul, ← GlobalTheory.MixModel.rat_mul, hXY, GlobalTheory.MixModel.rat_zero]`. Establish `hre : GlobalTheory.MixModel.giA V ⬝ (GlobalTheory.MixModel.adj (a ⬝ GlobalTheory.MixModel.rat Y) ⬝ (GlobalTheory.MixModel.gA W ⬝ (q ⬝ GlobalTheory.MixModel.rat X))) = (GlobalTheory.MixModel.giA V ⬝ GlobalTheory.MixModel.rat Yᴴ ⬝ (GlobalTheory.MixModel.adj a ⬝ GlobalTheory.MixMode …`. Rewrite using `[GlobalTheory.MixModel.adj_mul, adj_rat]`. Simplify using `only [Matrix.mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[GlobalTheory.MixModel.symplOH_eq, GlobalTheory.MixModel.hO_eq_trace, hre, Matrix.trace_mul_comm]`. Simplify using `only [← Matrix.mul_assoc, hz, Matrix.zero_mul, Matrix.trace_zero, map_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem symplOH_mul_rat (V W : HSp D) {s t : ℕ} (X : Matrix (Fin s) (Fin V.rank) D.host.E)
     (Y : Matrix (Fin t) (Fin V.rank) D.host.E) (hXY : X * V.gram⁻¹ * Yᴴ = 0) (q : Mx D W.rank s) (a : Mx D W.rank t) :
@@ -55,9 +55,9 @@ variable {V V' W : HSp D} {r : ℕ} {C : Matrix (Fin V.rank) (Fin r) D.host.E}
   {B : Matrix (Fin V.rank) (Fin V'.rank) D.host.E}
 
 /- English proof (translation)
-Establish `h0 : adj D C * V.gram * C = 0` using `hs.frame.2.2`. Establish `hcan : ∀ {n : ℕ} (Z : Matrix (Fin V.rank) (Fin n) D.host.E), V.gram * (V.gram⁻¹ * Z) = Z` using `fun Z => by`. Rewrite using `[← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ (GlobalTheory.MixModel.gram_isUnit_det V), Matrix.one_mul]`. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.adj, GlobalTheory.MixModel.cT_sig] at h0 ⊢`. Simplify using `only [Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, GlobalTheory.MixModel.gram_conjTranspose, Matrix.mul_assoc, hcan]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Matrix.mul_assoc, h0]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem iso_iso (hs : IsIsoSplit V V' C B) : (adj D C * V.gram) * V.gram⁻¹ * (adj D C * V.gram)ᴴ = 0 := by
   have h0 : adj D C * V.gram * C = 0 := hs.frame.2.2
@@ -69,9 +69,9 @@ theorem iso_iso (hs : IsIsoSplit V V' C B) : (adj D C * V.gram) * V.gram⁻¹ * 
   rw [← Matrix.mul_assoc, h0]
 
 /- English proof (translation)
-Establish `h0 : adj D C * V.gram * B = 0` using `hs.orth`. Establish `hcan : ∀ {n : ℕ} (Z : Matrix (Fin V.rank) (Fin n) D.host.E), V.gram * (V.gram⁻¹ * Z) = Z` using `fun Z => by`. Rewrite using `[← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ (GlobalTheory.MixModel.gram_isUnit_det V), Matrix.one_mul]`. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.adj, GlobalTheory.MixModel.cT_sig] at h0 ⊢`. Simplify using `only [Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, GlobalTheory.MixModel.gram_conjTranspose, Matrix.mul_assoc, hcan]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, h0, Matrix.zero_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem iso_mid (hs : IsIsoSplit V V' C B) :
     (adj D C * V.gram) * V.gram⁻¹ * (V'.gram⁻¹ * adj D B * V.gram)ᴴ = 0 := by
@@ -84,9 +84,9 @@ theorem iso_mid (hs : IsIsoSplit V V' C B) :
   rw [← Matrix.mul_assoc, ← Matrix.mul_assoc, h0, Matrix.zero_mul]
 
 /- English proof (translation)
-Introduce `γ hγ y`. Take `⟨γ0, rfl⟩` from `GlobalTheory.MixModel.mem_ratMx.1 hγ`. Establish `e1 : ∀ z : Mx D W.rank r, isoPart V W C z = z ⬝ GlobalTheory.MixModel.rat (adj D C * V.gram)` using `fun z => rfl`. Establish `e2 : midPart V V' W B x = (x : Mx D W.rank V'.rank) ⬝ GlobalTheory.MixModel.rat (V'.gram⁻¹ * adj D B * V.gram)` using `rfl`. Establish `h0 : symplOH V W (GlobalTheory.MixModel.rat γ0 ⬝ GlobalTheory.MixModel.rat (adj D C * V.gram)) (isoPart V W C y + midPart V V' W B x) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[symplOH_add_right, e1, e2, symplOH_mul_rat V W (adj D C * V.gram) (adj D C * V.gram) (iso_iso hs) (GlobalTheory.MixModel.rat γ0) y, symplOH_mul_rat V W (adj D C * V.gram) (V'.gram⁻¹ * adj D B * V.gram) (iso_mid hs) (GlobalTheory.MixModel.rat γ0) x, add_zero]`. Establish `hq : f (GlobalTheory.MixModel.rat (γ0 * (adj D C * V.gram)) + (isoPart V W C y + midPart V V' W B x)) = ψ (-(symplOH V W (GlobalTheory.MixModel.rat (γ0 * (adj D C * V.gram))) (isoPart V W C y + midPart V V' W B x))) * f (isoPart V W C y + midPart V V' W B x)` using `hf.quasi (γ0 * (adj D C * V.gram)) (isoPart V W C y + midPart V V' W B x)`. Rewrite using `[e1 (GlobalTheory.MixModel.rat γ0 + y), Matrix.add_mul, add_assoc, ← e1 y, ← GlobalTheory.MixModel.rat_mul, hq, GlobalTheory.MixModel.rat_mul, h0, neg_zero, AddChar.map_zero_eq_one, one_mul]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem periodic (hs : IsIsoSplit V V' C B) {ψ : AddChar (AF D.host.F) ℂ} {f : WO V W → ℂ}
     (hf : IsThetaFunO ψ V W f) (x : WO V' W) :
@@ -112,7 +112,7 @@ theorem periodic (hs : IsIsoSplit V V' C B) {ψ : AddChar (AF D.host.F) ℂ} {f 
 end Split
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_assoc]`. Conclude with `GlobalTheory.MixModel.mt_unitary V a`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mt_unitary (V : HSp D) (a : GA D V) :
     GlobalTheory.MixModel.adj (Formalism.L2.Theta.mt V a) ⬝ GlobalTheory.MixModel.gA V ⬝ Formalism.L2.Theta.mt V a = GlobalTheory.MixModel.gA V := by
@@ -120,20 +120,20 @@ theorem mt_unitary (V : HSp D) (a : GA D V) :
   exact GlobalTheory.MixModel.mt_unitary V a
 
 /- English proof (translation)
-Simplify using `only [Formalism.L2.Theta.mt, map_mul, Units.val_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mt_mul (V : HSp D) (a b : GA D V) :
     Formalism.L2.Theta.mt V (a * b) = Formalism.L2.Theta.mt V a * Formalism.L2.Theta.mt V b := by
   simp only [Formalism.L2.Theta.mt, map_mul, Units.val_mul]
 
 /- English proof (translation)
-Simplify using `only [Formalism.L2.Theta.mt, map_one, Units.val_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mt_one (V : HSp D) : Formalism.L2.Theta.mt V 1 = 1 := by
   simp only [Formalism.L2.Theta.mt, map_one, Units.val_one]
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.MixModel.actO_eq, mt_one, Matrix.one_mul, Matrix.mul_assoc, ← mt_mul, mul_inv_cancel, mt_one, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem actO_mul_mt (S T : HSp D) (g : GA D S) (w : WO S T) :
     actO S T g 1 (HMul.hMul (w : Matrix (Fin T.rank) (Fin S.rank) (AE D)) (Formalism.L2.Theta.mt S g)) = w := by
@@ -141,16 +141,14 @@ theorem actO_mul_mt (S T : HSp D) (g : GA D S) (w : WO S T) :
     Matrix.mul_one]
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.MixModel.rat_mul, adj_rat, GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.adj, GlobalTheory.MixModel.cT_sig, GlobalTheory.MixModel.gA]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private lemma rat_adj_mul_gram_eq (V : HSp D) {s : ℕ} (B : Matrix (Fin V.rank) (Fin s) D.host.E) :
     GlobalTheory.MixModel.rat (adj D B * V.gram) = GlobalTheory.MixModel.adj (GlobalTheory.MixModel.rat B) ⬝ GlobalTheory.MixModel.gA V := by
   rw [GlobalTheory.MixModel.rat_mul, adj_rat, GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.adj, GlobalTheory.MixModel.cT_sig, GlobalTheory.MixModel.gA]
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mt_unitary]`. Use `_ = GlobalTheory.MixModel.adj (Formalism.L2.Theta.mt V a⁻¹) ⬝ GlobalTheory.MixModel.gA V ⬝ (Formalism.L2.Theta.mt V a⁻¹ ⬝ Formalism.L2.Theta.mt V a) := by`. Rewrite using `[Matrix.mul_assoc]`. Use `_ = GlobalTheory.MixModel.adj (Formalism.L2.Theta.mt V a⁻¹) ⬝ GlobalTheory.MixModel.gA V := by`.
-
-Rewrite using `[← mt_mul, inv_mul_cancel, mt_one, Matrix.mul_one]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma gA_mul_mt_eq_adj_mt_inv_mul (V : HSp D) (a : GA D V) :
     GlobalTheory.MixModel.gA V ⬝ Formalism.L2.Theta.mt V a = GlobalTheory.MixModel.adj (Formalism.L2.Theta.mt V a⁻¹) ⬝ GlobalTheory.MixModel.gA V := by
@@ -163,7 +161,7 @@ private lemma gA_mul_mt_eq_adj_mt_inv_mul (V : HSp D) (a : GA D V) :
         rw [← mt_mul, inv_mul_cancel, mt_one, Matrix.mul_one]
 
 /- English proof (translation)
-Establish `hinv : Formalism.L2.Theta.mt V a⁻¹ ⬝ GlobalTheory.MixModel.rat B = GlobalTheory.MixModel.rat B` using `by conv_lhs => rw [← h]`. Rewrite using `[← Matrix.mul_assoc, ← mt_mul, inv_mul_cancel, mt_one, Matrix.one_mul]`. Rewrite using `[rat_adj_mul_gram_eq, Matrix.mul_assoc, gA_mul_mt_eq_adj_mt_inv_mul, ← Matrix.mul_assoc, ← GlobalTheory.MixModel.adj_mul, hinv]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem form_fix (V : HSp D) {s : ℕ} (a : GA D V) (B : Matrix (Fin V.rank) (Fin s) D.host.E)
     (h : Formalism.L2.Theta.mt V a ⬝ GlobalTheory.MixModel.rat B = GlobalTheory.MixModel.rat B) :
@@ -174,11 +172,9 @@ theorem form_fix (V : HSp D) {s : ℕ} (a : GA D V) (B : Matrix (Fin V.rank) (Fi
   rw [rat_adj_mul_gram_eq, Matrix.mul_assoc, gA_mul_mt_eq_adj_mt_inv_mul, ← Matrix.mul_assoc, ← GlobalTheory.MixModel.adj_mul, hinv]
 
 /- English proof (translation)
-Establish `h2 : incA D (1 / 2) * (2 : AE D) = 1`. Rewrite using `[← map_ofNat (incA D) 2, ← map_mul]`. Evaluate the numerical expressions. Establish `hinv : Formalism.L2.Theta.mt V a⁻¹ ⬝ GlobalTheory.MixModel.rat C = incA D (1 / 2) • GlobalTheory.MixModel.rat C`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[mul_smul, Matrix.mul_smul]`. Use `_ = incA D (1 / 2) • (Formalism.L2.Theta.mt V a⁻¹ ⬝ (Formalism.L2.Theta.mt V a ⬝ GlobalTheory.MixModel.rat C)) := by rw [h]`. Use `_ = incA D (1 / 2) • GlobalTheory.MixModel.rat C := by`. Rewrite using `[← Matrix.mul_assoc, ← mt_mul, inv_mul_cancel, mt_one, Matrix.one_mul]`. Establish `hc : cA D (incA D (1 / 2)) = incA D (1 / 2)` using `GlobalTheory.MixModel.cA_half`.
-
-Rewrite using `[rat_adj_mul_gram_eq, Matrix.mul_assoc, gA_mul_mt_eq_adj_mt_inv_mul, ← Matrix.mul_assoc, ← GlobalTheory.MixModel.adj_mul, hinv, GlobalTheory.MixModel.adj_smul, hc, Matrix.smul_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem form_scale (V : HSp D) {s : ℕ} (a : GA D V) (C : Matrix (Fin V.rank) (Fin s) D.host.E)
     (h : Formalism.L2.Theta.mt V a ⬝ GlobalTheory.MixModel.rat C = (2 : AE D) • GlobalTheory.MixModel.rat C) :
@@ -200,15 +196,15 @@ theorem form_scale (V : HSp D) {s : ℕ} (a : GA D V) (C : Matrix (Fin V.rank) (
     GlobalTheory.MixModel.adj_smul, hc, Matrix.smul_mul]
 
 /- English proof (translation)
-Introduce `D V V' W r C B hs a haQ haC haB ψ χS χT ω hω μ 𝓨 hcov`. Use `⟨1, fun f hf => ?_⟩` and prove the remaining obligations. Establish `hC' : Formalism.L2.Theta.mt V a ⬝ GlobalTheory.MixModel.rat C = (2 : AE D) • GlobalTheory.MixModel.rat C` using `haC`. Establish `hB' : Formalism.L2.Theta.mt V a ⬝ GlobalTheory.MixModel.rat B = GlobalTheory.MixModel.rat B` using `haB`. Establish `hsub : ∀ w : WO V W, ω (a, 1) f w = f (HMul.hMul (w : Matrix (Fin W.rank) (Fin V.rank) (AE D)) (Formalism.L2.Theta.mt V a))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `w`. Establish `h1` using `GlobalTheory.WeilRat.om_rat_actO D ψ hω.std V W χS χT ω hω a haQ 1 (one_mem _) f hf (HMul.hMul (w : Matrix (Fin W.rank) (Fin V.rank) (AE D)) (Formalism.L2.Theta.mt V a))`. Rewrite `h1` using `[actO_mul_mt]`. Then use the resulting hypothesis. Establish `hiso : ∀ y : Mx D W.rank r, HMul.hMul (isoPart V W C y : Matrix (Fin W.rank) (Fin V.rank) (AE D)) (Formalism.L2.Theta.mt V a) = isoPart V W C (incA D (1 / 2) • y)`. Introduce `y`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show y ⬝ GlobalTheory.MixModel.rat (adj D C * V.gram) ⬝ Formalism.L2.Theta.mt V a = (incA D (1 / 2) • y) ⬝ GlobalTheory.MixModel.rat (adj D C * V.gram)`. Rewrite using `[Matrix.mul_assoc, form_scale V a C hC', Matrix.mul_smul, Matrix.smul_mul]`. Rewrite using `[one_smul]`. Use function extensionality and compare the values at `x`. Establish `hmid : HMul.hMul (midPart V V' W B x : Matrix (Fin W.rank) (Fin V.rank) (AE D)) (Formalism.L2.Theta.mt V a) = midPart V V' W B x` using `by show (x : Mx D W.rank V'.rank) ⬝ GlobalTheory.MixModel.rat (V'.gram⁻¹ * adj D B * V.gram) ⬝ Formalism.L2.Theta.mt V a = (x : Mx D W.rank V'.rank) ⬝ GlobalTheory.MixModel.rat (V'.gram⁻¹ * adj D B * V.gram)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mul_assoc V'.gram⁻¹ (adj D B) V.gram, GlobalTheory.MixModel.rat_mul]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[form_fix V a B hB']`. Combine the equalities or inequalities in the displayed calculation. Use `congr 1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `y`. Rewrite using `[hsub, Matrix.add_mul, hiso, hmid]`. Use `_ = ∫ y in 𝓨, f (isoPart V W C y + midPart V V' W B x) ∂μ := GlobalTheory.UnipMean.mean_smul hcov (c := 1 / 2) (by norm_num) (fun y => f (isoPart V W C y + midPart V V' W B x)) (periodic hs hf x)`. Use `_ = res V V' W C B μ 𝓨 f x := rfl`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem res_levi : ∀ (D : D7) (V V' W : HSp D) (r : ℕ) (C : Matrix (Fin V.rank) (Fin r) D.host.E) (B : Matrix (Fin V.rank) (Fin V'.rank) D.host.E), IsIsoSplit V V' C B → ∀ a : GA D V, a ∈ GQ V → HMul.hMul (matHom V a).1 (C.map (incA D)) = (2 : AE D) • C.map (incA D) → HMul.hMul (matHom V a).1 (B.map (incA D)) = B.map (incA D) → ∀ (ψ : AddChar (AF D.host.F) ℂ) (χS χT : (AE D)ˣ →* Circle) (ω : GA D V × GA D W →* Module.End ℂ (WO V W → ℂ)), IsWeilDatumO ψ V W χS χT ω → ∀ (μ : Measure (Mx D W.rank r)) (𝓨 : Set (Mx D W.rank r)), IsCovolOne (ratMx D W.rank r) μ 𝓨 → ∃ l : ℂ, ∀ f, IsThetaFunO ψ V W f → res V V' W C B μ 𝓨 (ω (a, 1) f) = l • res V V' W C B μ 𝓨 f := by
   intro D V V' W r C B hs a haQ haC haB ψ χS χT ω hω μ 𝓨 hcov

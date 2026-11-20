@@ -8,9 +8,9 @@ namespace GlobalTheory
 open Polynomial
 
 /- English proof (translation)
-Take `⟨n, y, hy⟩` from `IsArtinian.exists_pow_succ_smul_dvd a (1 : A)`. Simplify using `only [smul_eq_mul, mul_one] at hy`. Establish `hy' : a ^ (n + 1) * y = a ^ n` using `hy`. Use `⟨y, ?_⟩` and prove the remaining obligations. Establish `hc : IsNilpotent (a - a * a * y)` using `⟨n + 1, by`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Use `_ = a ^ (n + 1) * (1 - a * y) ^ (n + 1) := mul_pow _ _ _`. Use `_ = (a ^ (n + 1) - a * (a ^ (n + 1) * y)) * (1 - a * y) ^ n := by rw [pow_succ (1 - a * y)]; ring`. Use `_ = 0 := by rw [hy', ← pow_succ', sub_self, zero_mul]⟩`. Conclude with `(sub_eq_zero.mp hc.eq_zero).symm`.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem exists_mul_mul_eq_self_of_isArtinian_isReduced {A : Type} [CommRing A] [IsArtinianRing A]
     [IsReduced A] (a : A) : ∃ y : A, a * a * y = a := by
@@ -26,7 +26,7 @@ theorem exists_mul_mul_eq_self_of_isArtinian_isReduced {A : Type} [CommRing A] [
   exact (sub_eq_zero.mp hc.eq_zero).symm
 
 /- English proof (translation)
-Simplify using `only [aeval_eq_sum_range, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[mul_smul_comm, mul_smul_comm, mul_pow, ← mul_assoc, ← pow_succ', hf.pow_succ_eq]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem idempotent_mul_aeval_mul {R A : Type} [CommRing R] [CommRing A] [Algebra R A] {f : A}
     (hf : IsIdempotentElem f) (x : A) (p : R[X]) : f * aeval (f * x) p = f * aeval x p := by
@@ -35,7 +35,7 @@ theorem idempotent_mul_aeval_mul {R A : Type} [CommRing R] [CommRing A] [Algebra
   rw [mul_smul_comm, mul_smul_comm, mul_pow, ← mul_assoc, ← pow_succ', hf.pow_succ_eq]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨X * (X - C 1), monic_X.mul (monic_X_sub_C 1), by simp only [eval₂_mul, eval₂_X, eval₂_sub, eval₂_C, eval₂_one, map_one, mul_sub, mul_one, he.eq, sub_self]⟩`.
+Supply the required witnesses or components.
 -/
 theorem isIntegral_of_isIdempotentElem {R A : Type} [CommRing R] [CommRing A] [Algebra R A] {e : A}
     (he : IsIdempotentElem e) : IsIntegral R e :=
@@ -44,55 +44,47 @@ theorem isIntegral_of_isIdempotentElem {R A : Type} [CommRing R] [CommRing A] [A
       he.eq, sub_self]⟩
 
 /- English proof (translation)
-Establish `hidem : ∀ e : A, IsIdempotentElem e → e ∈ integralClosure R A` using `fun e he => (show IsIntegral R e from isIntegral_of_isIdempotentElem he)`. Establish `hcompl : ∀ e : integralClosure R A, e ∈ Q → (1 - e) ∈ Q.primeCompl`. Introduce `e he h1`. Conclude with `(Ideal.IsPrime.ne_top inferInstance) ((Ideal.eq_top_iff_one _).mpr (by`. Simplify using `using Q.add_mem he h1))`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression.
 
-Set `T : Submonoid A` to `Algebra.algebraMapSubmonoid A Q.primeCompl`. Set `J : Ideal A` to `RingHom.ker (algebraMap A (Localization T))`. Establish `memJ : ∀ a : A, a ∈ J ↔ ∃ s ∈ Q.primeCompl, (s : A) * a = 0`. Introduce `a`. Rewrite using `[RingHom.mem_ker, IsLocalization.map_eq_zero_iff T]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨m, hm⟩, hma⟩`. Take `⟨s, hs, rfl⟩` from `Submonoid.mem_map.mp hm`. Conclude with `⟨s, hs, hma⟩`. Introduce and unpack `⟨s, hs, hsa⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨⟨(s : A), Submonoid.mem_map.mpr ⟨s, hs, rfl⟩⟩, hsa⟩`. Establish `hS : ∀ s ∈ Q.primeCompl, (s : A) ∉ J`. Introduce `s hs h`. Take `⟨t, ht, hts⟩` from `(memJ _).mp h`. Establish `h0 : t * s = 0` using `Subtype.ext (by simpa using hts)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(Q.primeCompl.mul_mem ht hs) (h0 ▸ Q.zero_mem)`. Establish `hJprime : J.IsPrime`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `htop`. Conclude with `hS 1 Q.primeCompl.one_mem (by simp [htop])`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `a c hac`. Take `⟨y, hy⟩` from `exists_mul_mul_eq_self_of_isArtinian_isReduced a`. Establish `hei : IsIdempotentElem (a * y)`. Unfold `IsIdempotentElem`. Combine the equalities or inequalities in the displayed calculation.
+Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. Introduce a local definition for the expression. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations.
 
-Use `_ = a * y := by rw [hy]`. Set `e : integralClosure R A` to `⟨a * y, hidem _ hei⟩`. Distinguish the cases in `he : e ∈ Q`. Use `left`. Use `(memJ a).mpr ⟨1 - e, hcompl e he, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [e, Subalgebra.coe_sub, OneMemClass.coe_one]`. Take the linear combination `-hy`. Use `right`. Take `⟨s, hs, hsac⟩` from `(memJ _).mp hac`. Use `(memJ c).mpr ⟨s * e, Q.primeCompl.mul_mem hs he, ?_⟩` and prove the remaining obligations.
+Take a linear combination of the given relations to obtain the conclusion. Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [e, MulMemClass.coe_mul]`. Take the linear combination `y * hsac`. Use `haveI : J.IsPrime := hJprime`. Use `haveI hJm : J.IsMaximal := IsArtinianRing.isMaximal_of_isPrime J`. Use `letI : Field (A ⧸ J) := Ideal.Quotient.field J`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Set `g : integralClosure R A →+* A ⧸ J` to `algebraMap (integralClosure R A) (A ⧸ J)`. Establish `g_eq : ∀ b, g b = Ideal.Quotient.mk J (b : A)` using `fun b => rfl`. Establish `hunit : ∀ s : Q.primeCompl, IsUnit (g s)`. Introduce `s`. Rewrite using `[isUnit_iff_ne_zero, g_eq, Ne, Ideal.Quotient.eq_zero_iff_mem]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `hS s.1 s.2`. Establish `hB0 : ∀ b : integralClosure R A, algebraMap (integralClosure R A) (Localization.AtPrime Q) b = 0 ↔ g b = 0`. Introduce `b`. Rewrite using `[IsLocalization.map_eq_zero_iff Q.primeCompl, g_eq, Ideal.Quotient.eq_zero_iff_mem, memJ]`. Prove the components needed by the constructor for the conclusion.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨⟨s, hs⟩, hsb⟩`. Conclude with `⟨s, hs, by simpa using congrArg Subtype.val hsb⟩`. Introduce and unpack `⟨s, hs, hsb⟩`. Conclude with `⟨⟨s, hs⟩, Subtype.ext (by simpa using hsb)⟩`. Set `ψ : Localization.AtPrime Q →+* A ⧸ J` to `IsLocalization.lift (M := Q.primeCompl) hunit`.
+Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hinj : Function.Injective ψ`. Rewrite using `[IsLocalization.lift_injective_iff]`. Introduce `x y`. Rewrite using `[← sub_eq_zero, ← map_sub, hB0, map_sub, sub_eq_zero]`. Use `haveI hdom : IsDomain (Localization.AtPrime Q) := Function.Injective.isDomain ψ hinj`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨hdom, ?_⟩` and prove the remaining obligations. Use `letI : Algebra (Localization.AtPrime Q) (A ⧸ J) := ψ.toAlgebra`. Use `haveI : IsScalarTower (integralClosure R A) (Localization.AtPrime Q) (A ⧸ J) := IsScalarTower.of_algebraMap_eq fun b => (IsLocalization.lift_eq hunit b).symm`. Establish `hclosed : ∀ z : A ⧸ J, IsIntegral (Localization.AtPrime Q) z → ∃ w, ψ w = z`. Introduce `z hz`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation.
 
-Take `⟨⟨s, hs⟩, hint⟩` from `IsIntegral.exists_multiple_integral_of_isLocalization Q.primeCompl z hz`. Establish `hint' : IsIntegral R ((⟨s, hs⟩ : Q.primeCompl) • z)` using `isIntegral_trans _ hint`. Take `⟨p, hpm, hp⟩` from `hint'`. Take `⟨a, ha⟩` from `Ideal.Quotient.mk_surjective ((⟨s, hs⟩ : Q.primeCompl) • z)`. Establish `hpa : aeval a p ∈ J`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, ← Ideal.Quotient.mkₐ_eq_mk R, ← aeval_algHom_apply, Ideal.Quotient.mkₐ_eq_mk, ha]`. Conclude with `hp`. Take `⟨t, ht, htp⟩` from `(memJ _).mp hpa`. Take `⟨w, hw⟩` from `exists_mul_mul_eq_self_of_isArtinian_isReduced (t : A)`. Establish `hfi : IsIdempotentElem ((t : A) * w)`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `IsIdempotentElem`. Combine the equalities or inequalities in the displayed calculation. Use `_ = (t : A) * w := by rw [hw]`. Set `f : integralClosure R A` to `⟨(t : A) * w, hidem _ hfi⟩`. Establish `hf : f ∈ Q.primeCompl`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `hfQ`. Apply `hS t ht` to reduce the goal to its premises. Use `(memJ _).mpr ⟨1 - f, hcompl f hfQ, ?_⟩` and prove the remaining obligations. Simplify using `only [f, Subalgebra.coe_sub, OneMemClass.coe_one]`. Take the linear combination `-hw`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hfp : (t : A) * w * aeval a p = 0` using `by linear_combination w * htp`. Establish `hfa : IsIntegral R ((t : A) * w * a)`. Use `⟨X * p, monic_X.mul hpm, ?_⟩` and prove the remaining obligations. Rewrite using `[← aeval_def, map_mul, aeval_X]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `_ = 0 := by rw [idempotent_mul_aeval_mul hfi, hfp, mul_zero]`. Set `c : integralClosure R A` to `⟨(t : A) * w * a, (show IsIntegral R ((t : A) * w * a) from hfa)⟩`. Use `⟨IsLocalization.mk' (Localization.AtPrime Q) c (⟨s, hs⟩ : Q.primeCompl), ?_⟩` and prove the remaining obligations. Rewrite using `[IsLocalization.lift_mk'_spec]`. Establish `hf1 : g f = 1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hne : g f ≠ 0`. Rewrite using `[g_eq, Ne, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `hS f hf`. Establish `hid : g f * g f = g f`. Rewrite using `[← map_mul]`.
-
-Conclude with `congrArg g (Subtype.ext hfi.eq)`. Establish `: g f * (g f - 1) = 0` using `by rw [mul_sub, hid, mul_one, sub_self]`. Conclude with `sub_eq_zero.mp ((mul_eq_zero.mp this).resolve_left hne)`. Establish `hsz : (⟨s, hs⟩ : Q.primeCompl) • z = g s * z`. Rewrite using `[Submonoid.smul_def, Algebra.smul_def]`.
-
-Establish `hgc : g c = g f * Ideal.Quotient.mk J a`. Rewrite using `[g_eq, g_eq, ← map_mul]`. Rewrite using `[hgc, hf1, one_mul, ha, hsz]`. Rewrite using `[isIntegrallyClosed_iff (FractionRing (Localization.AtPrime Q))]`. Introduce `x hx`.
-
-Establish `hinj' : Function.Injective (algebraMap (Localization.AtPrime Q) (A ⧸ J))` using `hinj`. Set `ι` to `IsFractionRing.liftAlgHom (R := Localization.AtPrime Q) (A := Localization.AtPrime Q) (K := FractionRing (Localization.AtPrime Q)) (L := A ⧸ J) (g := Algebra.ofId (Localization.AtPrime Q) (A ⧸ J)) hinj'`. Take `⟨w, hw⟩` from `hclosed (ι x) (hx.map ι)`. Use `⟨w, ι.toRingHom.injective ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `ι (algebraMap _ _ w) = ι x`.
-
-Rewrite using `[AlgHom.commutes]`. Conclude with `hw`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem localization_integralClosure_isDomain_isIntegrallyClosed
     (R A : Type) [CommRing R] [CommRing A] [Algebra R A] [IsArtinianRing A] [IsReduced A]

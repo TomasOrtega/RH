@@ -47,13 +47,13 @@ open scoped ContDiff
 variable {ε : Fin n → Bool}
 
 /- English proof (translation)
-Simplify using `[inUJ]`.
+Simplify using the standard rewrite rules.
 -/
 theorem smd_inUJ_one : inUJ ε (1 : Matrix (Fin n) (Fin n) ℂ) := by
   simp [inUJ]
 
 /- English proof (translation)
-Unfold `inUJ at *`. Rewrite using `[Matrix.conjTranspose_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem smd_inUJ_mul {g k : Matrix (Fin n) (Fin n) ℂ} (hg : inUJ ε g) (hk : inUJ ε k) :
     inUJ ε (g * k) := by
@@ -63,7 +63,7 @@ theorem smd_inUJ_mul {g k : Matrix (Fin n) (Fin n) ℂ} (hg : inUJ ε g) (hk : i
     _ = Jm ε := by rw [hg, hk]
 
 /- English proof (translation)
-Take `⟨hu, hc⟩` from `hk`. Establish `h1 : kᴴ * k = 1`. Simplify `Matrix.mem_unitaryGroup_iff'.mp hu` using `[Matrix.star_eq_conjTranspose]`. Unfold `inUJ`. Rewrite using `[Matrix.mul_assoc, ← hc, ← Matrix.mul_assoc, h1, Matrix.one_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem smd_inUJ_of_Kset {k : Matrix (Fin n) (Fin n) ℂ} (hk : k ∈ Kset ε) : inUJ ε k := by
   obtain ⟨hu, hc⟩ := hk
@@ -73,9 +73,9 @@ theorem smd_inUJ_of_Kset {k : Matrix (Fin n) (Fin n) ℂ} (hk : k ∈ Kset ε) :
   rw [Matrix.mul_assoc, ← hc, ← Matrix.mul_assoc, h1, Matrix.one_mul]
 
 /- English proof (translation)
-Establish `hs : star (r : ℂ) = (r : ℂ)` using `Complex.conj_ofReal r`. Establish `h0 : Xᴴ * Jm ε + Jm ε * X = 0` using `hX`. Establish `h1 : Yᴴ * Jm ε + Jm ε * Y = 0` using `hY`. Use `show (X + (r : ℂ) • Y)ᴴ * Jm ε + Jm ε * (X + (r : ℂ) • Y) = 0`. Rewrite using `[Matrix.conjTranspose_add, Matrix.conjTranspose_smul, hs, Matrix.add_mul, Matrix.mul_add, Matrix.smul_mul, Matrix.mul_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem smd_inG_add_smul {X Y : Matrix (Fin n) (Fin n) ℂ} (hX : inG ε X) (hY : inG ε Y) (r : ℝ) :
     inG ε (X + (r : ℂ) • Y) := by
@@ -91,7 +91,7 @@ theorem smd_inG_add_smul {X Y : Matrix (Fin n) (Fin n) ℂ} (hX : inG ε X) (hY 
 
 open scoped Matrix.Norms.Operator in
 /- English proof (translation)
-Establish `hE` using `hasDerivAt_exp_smul_const (𝕂 := ℝ) X (0 : ℝ)`. Rewrite `hE` using `[zero_smul, NormedSpace.exp_zero, one_mul]`. Set `L : Matrix (Fin n) (Fin n) ℂ →ₗ[ℝ] ℂ` to `{ toFun := fun M => M i j map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl }`. Establish `hL` using `(⟨L, L.continuous_of_finiteDimensional⟩ : Matrix (Fin n) (Fin n) ℂ →L[ℝ] ℂ).hasFDerivAt.comp_hasDerivAt (0 : ℝ) hE`. Conclude with `hL`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem smd_exp_entry (X : Matrix (Fin n) (Fin n) ℂ) (i j : Fin n) :
     HasDerivAt (fun t : ℝ => (NormedSpace.exp (t • X)) i j) (X i j) 0 := by
@@ -108,7 +108,7 @@ theorem smd_exp_entry (X : Matrix (Fin n) (Fin n) ℂ) (i j : Fin n) :
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 /- English proof (translation)
-Use `hasDerivAt_pi.2 fun i => hasDerivAt_pi.2 fun j => ?_` and prove the remaining obligations. Apply the tactic sequence `simpa [Complex.coe_smul] using smd_exp_entry X i j`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem smd_hasDerivAt_exp (X : Matrix (Fin n) (Fin n) ℂ) :
     HasDerivAt (fun t : ℝ => NormedSpace.exp ((t : ℂ) • X)) X 0 := by
@@ -121,7 +121,7 @@ def smdRmul (k : Matrix (Fin n) (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ →ₗ
   map_smul' c a := Matrix.smul_mul c a k
 
 /- English proof (translation)
-Establish `h` using `(⟨smdRmul k, (smdRmul k).continuous_of_finiteDimensional⟩ : Matrix (Fin n) (Fin n) ℂ →L[ℝ] Matrix (Fin n) (Fin n) ℂ).contDiff (n := ∞)`. Conclude with `h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem smd_contDiff_rmul (k : Matrix (Fin n) (Fin n) ℂ) :
     ContDiff ℝ ∞ (fun g : Matrix (Fin n) (Fin n) ℂ => g * k) := by
@@ -130,19 +130,19 @@ theorem smd_contDiff_rmul (k : Matrix (Fin n) (Fin n) ℂ) :
   exact h
 
 /- English proof (translation)
-The claim follows from `(smd_contDiff_rmul k).continuous`.
+A detailed English derivation is pending.
 -/
 theorem smd_continuous_rmul (k : Matrix (Fin n) (Fin n) ℂ) :
     Continuous (fun g : Matrix (Fin n) (Fin n) ℂ => g * k) := (smd_contDiff_rmul k).continuous
 
 /- English proof (translation)
-Establish `hJ : Jm ε * Jm ε = 1`. Unfold `Jm`. Rewrite using `[Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `a`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Apply the tactic sequence `split_ifs <;> norm_num`. Establish `h0 : Aᴴ * Jm ε + Jm ε * A = 0` using `hA`. Establish `h2 : Aᴴ * Jm ε = -(Jm ε * A)` using `eq_neg_of_add_eq_zero_left h0`. Establish `hAh : Aᴴ = Jm ε * -A * Jm ε`. Combine the equalities or inequalities in the displayed calculation.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hc : NormedSpace.exp (Jm ε * -A * Jm ε) = Jm ε * NormedSpace.exp (-A) * Jm ε` using `Matrix.exp_units_conj ⟨Jm ε, Jm ε, hJ, hJ⟩ (-A)`. Unfold `inUJ`. Rewrite using `[← Matrix.exp_conjTranspose, hAh, hc]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_assoc (Jm ε * _) (Jm ε) (Jm ε), hJ, Matrix.mul_one, Matrix.mul_assoc]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `_ = Jm ε := by`. Rewrite using `[← Matrix.exp_add_of_commute _ _ ((Commute.refl A).neg_left), neg_add_cancel, NormedSpace.exp_zero, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem smd_exp_inUJ_lemma {ε : Fin n → Bool} {A : Matrix (Fin n) (Fin n) ℂ}
     (hA : inG ε A) : inUJ ε (NormedSpace.exp A) := by
@@ -169,13 +169,11 @@ private theorem smd_exp_inUJ_lemma {ε : Fin n → Bool} {A : Matrix (Fin n) (Fi
           NormedSpace.exp_zero, Matrix.mul_one]
 
 /- English proof (translation)
-Unfold `IsSmoothVecU S7.SmoothOnGV at hv`. Take `⟨U, F, hU, h1U, hF, hE⟩` from `hv 1 smd_inUJ_one`. Establish `hFd : DifferentiableAt ℝ F 1` using `(hF.contDiffAt (hU.mem_nhds h1U)).differentiableAt (by simp)`. Use `⟨(fderiv ℝ F 1 : Matrix (Fin n) (Fin n) ℂ →L[ℝ] H).toLinearMap, fun X hX => ?_⟩` and prove the remaining obligations. Establish `hexp` using `smd_hasDerivAt_exp X`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h0 : NormedSpace.exp (((0 : ℝ) : ℂ) • X) = 1` using `by simp`. Establish `hFd' : HasFDerivAt F (fderiv ℝ F 1) (NormedSpace.exp (((0 : ℝ) : ℂ) • X))`. Rewrite using `[h0]`. Conclude with `hFd.hasFDerivAt`. Establish `hcomp` using `hFd'.comp_hasDerivAt (0 : ℝ) hexp`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hXt : ∀ t : ℝ, inG ε ((t : ℂ) • X)` using `fun t => by`. Establish `h` using `smd_inG_add_smul (ε := ε) (X := 0) (by simp [inG]) hX t`. Simplify using `using h`. Establish `hmem : ∀ᶠ t : ℝ in nhds (0 : ℝ), NormedSpace.exp ((t : ℂ) • X) ∈ U` using `hexp.continuousAt.preimage_mem_nhds (by rw [h0]; exact hU.mem_nhds h1U)`. Use `hcomp.congr_of_eventuallyEq ?_` and prove the remaining obligations.
-
-Use `filter_upwards [hmem] with t ht`. Conclude with `hE _ ht (smd_exp_inUJ_lemma (hXt t))`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem smd_orbit_deriv {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} {v : H}
     (hv : IsSmoothVecU ε σ v) :
@@ -209,7 +207,7 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 variable {ε : Fin n → Bool} {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)}
 
 /- English proof (translation)
-Unfold `IsSmoothVecU S7.SmoothOnGV`. Introduce `g₀ _`. Use `⟨Set.univ, fun _ => 0, isOpen_univ, Set.mem_univ _, contDiffOn_const, fun g _ _ => ?_⟩` and prove the remaining obligations. Conclude with `map_zero (σ g)`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isSmoothVecU_zero : IsSmoothVecU ε σ 0 := by
   unfold IsSmoothVecU S7.SmoothOnGV
@@ -218,9 +216,9 @@ theorem isSmoothVecU_zero : IsSmoothVecU ε σ 0 := by
   exact map_zero (σ g)
 
 /- English proof (translation)
-Unfold `IsSmoothVecU S7.SmoothOnGV at *`. Introduce `g₀ hg₀`. Take `⟨U1, F1, hU1, hg1, hF1, hE1⟩` from `hv g₀ hg₀`. Take `⟨U2, F2, hU2, hg2, hF2, hE2⟩` from `hw g₀ hg₀`. Use `⟨U1 ∩ U2, fun g => F1 g + F2 g, hU1.inter hU2, ⟨hg1, hg2⟩, (hF1.mono Set.inter_subset_left).add (hF2.mono Set.inter_subset_right), fun g hg hgJ => ?_⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `show σ g (v + w) = F1 g + F2 g`. Rewrite using `[map_add]`. Conclude with `congrArg₂ (· + ·) (hE1 g hg.1 hgJ) (hE2 g hg.2 hgJ)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsSmoothVecU.add {v w : H} (hv : IsSmoothVecU ε σ v) (hw : IsSmoothVecU ε σ w) :
     IsSmoothVecU ε σ (v + w) := by
@@ -235,9 +233,9 @@ theorem IsSmoothVecU.add {v w : H} (hv : IsSmoothVecU ε σ v) (hw : IsSmoothVec
   exact congrArg₂ (· + ·) (hE1 g hg.1 hgJ) (hE2 g hg.2 hgJ)
 
 /- English proof (translation)
-Unfold `IsSmoothVecU S7.SmoothOnGV at *`. Introduce `g₀ hg₀`. Take `⟨U, F, hU, hg, hF, hE⟩` from `hv g₀ hg₀`. Use `⟨U, fun g => c • F g, hU, hg, hF.const_smul c, fun g hgU hgJ => ?_⟩` and prove the remaining obligations. Use `show σ g (c • v) = c • F g`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_smul]`. Conclude with `congrArg (c • ·) (hE g hgU hgJ)`.
+A detailed English derivation is pending.
 -/
 theorem IsSmoothVecU.smul (c : ℂ) {v : H} (hv : IsSmoothVecU ε σ v) : IsSmoothVecU ε σ (c • v) := by
   unfold IsSmoothVecU S7.SmoothOnGV at *
@@ -249,7 +247,7 @@ theorem IsSmoothVecU.smul (c : ℂ) {v : H} (hv : IsSmoothVecU ε σ v) : IsSmoo
   exact congrArg (c • ·) (hE g hgU hgJ)
 
 /- English proof (translation)
-Take `⟨D, hD⟩` from `smd_orbit_deriv hv`. Conclude with `(hD X hX).differentiableAt.hasDerivAt`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_dS (hσ : IsURepOn (UJset ε) σ) {X : Matrix (Fin n) (Fin n) ℂ} (hX : inG ε X) {v : H}
     (hv : IsSmoothVecU ε σ v) :
@@ -258,9 +256,9 @@ theorem hasDerivAt_dS (hσ : IsURepOn (UJset ε) σ) {X : Matrix (Fin n) (Fin n)
   exact (hD X hX).differentiableAt.hasDerivAt
 
 /- English proof (translation)
-Unfold `IsSmoothVecU S7.SmoothOnGV at *`. Introduce `g₀ hg₀`. Establish `hkJ` using `smd_inUJ_of_Kset hk`. Take `⟨U, F, hU, hg, hF, hE⟩` from `hv (g₀ * k) (smd_inUJ_mul hg₀ hkJ)`. Use `⟨(fun g => g * k) ⁻¹' U, fun g => F (g * k), (smd_continuous_rmul k).isOpen_preimage U hU, hg, hF.comp (smd_contDiff_rmul k).contDiffOn (Set.mapsTo_preimage _ _), fun g hg' hgJ => ?_⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hmul` using `hσ.1.2 g hgJ k hkJ`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem IsSmoothVecU.kStable (hσ : IsURepOn (UJset ε) σ) {k : Matrix (Fin n) (Fin n) ℂ} (hk : k ∈ Kset ε)
     {v : H} (hv : IsSmoothVecU ε σ v) : IsSmoothVecU ε σ (σ k v) := by
@@ -276,9 +274,7 @@ theorem IsSmoothVecU.kStable (hσ : IsURepOn (UJset ε) σ) {k : Matrix (Fin n) 
     _ = F (g * k) := hE (g * k) hg' (smd_inUJ_mul hgJ hkJ)
 
 /- English proof (translation)
-Establish `h` using `(hasDerivAt_dS hσ hX hv).add (hasDerivAt_dS hσ hX hw)`. Use `show deriv (fun t : ℝ => σ (NormedSpace.exp ((t : ℂ) • X)) (v + w)) 0 = _`. Establish `hf : (fun t : ℝ => σ (NormedSpace.exp ((t : ℂ) • X)) (v + w)) = fun t : ℝ => σ (NormedSpace.exp ((t : ℂ) • X)) v + σ (NormedSpace.exp ((t : ℂ) • X)) w`. Use function extensionality and compare the values at `t`. Conclude with `map_add _ v w`.
-
-Rewrite using `[hf]`. Conclude with `h.deriv`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dS_add_vec (hσ : IsURepOn (UJset ε) σ) {X : Matrix (Fin n) (Fin n) ℂ} (hX : inG ε X) {v w : H}
     (hv : IsSmoothVecU ε σ v) (hw : IsSmoothVecU ε σ w) : dS σ X (v + w) = dS σ X v + dS σ X w := by
@@ -291,7 +287,7 @@ theorem dS_add_vec (hσ : IsURepOn (UJset ε) σ) {X : Matrix (Fin n) (Fin n) �
   exact h.deriv
 
 /- English proof (translation)
-Use `show deriv (fun t : ℝ => σ (NormedSpace.exp ((t : ℂ) • X)) (c • v)) 0 = c • deriv (fun t : ℝ => σ (NormedSpace.exp ((t : ℂ) • X)) v) 0`. Simplify using `only [map_smul]`. Conclude with `deriv_const_smul' (f := fun t : ℝ => σ (NormedSpace.exp ((t : ℂ) • X)) v) (x := 0) c`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dS_smul_vec (c : ℂ) (X : Matrix (Fin n) (Fin n) ℂ) (v : H) : dS σ X (c • v) = c • dS σ X v := by
   show deriv (fun t : ℝ => σ (NormedSpace.exp ((t : ℂ) • X)) (c • v)) 0 =
@@ -300,9 +296,9 @@ theorem dS_smul_vec (c : ℂ) (X : Matrix (Fin n) (Fin n) ℂ) (v : H) : dS σ X
   exact deriv_const_smul' (f := fun t : ℝ => σ (NormedSpace.exp ((t : ℂ) • X)) v) (x := 0) c
 
 /- English proof (translation)
-Take `⟨D, hD⟩` from `smd_orbit_deriv hv`. Establish `e : ∀ Z, inG ε Z → dS σ Z v = D Z` using `fun Z hZ => (hD Z hZ).deriv`. Rewrite using `[e _ (smd_inG_add_smul hX hY r), e X hX, e Y hY, map_add]`. Establish `hY' : ((r : ℂ) • Y) = r • Y`. Use extensionality with `a b`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[Complex.real_smul]`. Rewrite using `[hY', map_smul]`. Conclude with `congrArg (D X + ·) (Complex.coe_smul r (D Y)).symm`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dS_add_smul (hσ : IsURepOn (UJset ε) σ) {X Y : Matrix (Fin n) (Fin n) ℂ} (hX : inG ε X) (hY : inG ε Y)
     (r : ℝ) {v : H} (hv : IsSmoothVecU ε σ v) :

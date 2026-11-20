@@ -9,7 +9,7 @@ namespace PI.FJMD
 open PI.FJM
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_apply]`. Use `sum_mem fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[Units.smul_def]`. Conclude with `zsmul_mem (prod_mem fun i _ => h _ _) _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_mem_subalgebra {R A : Type*} [CommRing R] [CommRing A] [Algebra R A] (S : Subalgebra R A)
     {n : ℕ} (M : Matrix (Fin n) (Fin n) A) (h : ∀ i j, M i j ∈ S) : M.det ∈ S := by
@@ -19,11 +19,9 @@ theorem det_mem_subalgebra {R A : Type*} [CommRing R] [CommRing A] [Algebra R A]
   exact zsmul_mem (prod_mem fun i _ => h _ _) _
 
 /- English proof (translation)
-Unfold `PI.FJM.shapeProd`. Use `prod_mem fun t ht => pow_mem ?_ _` and prove the remaining obligations. Establish `ht' : t < α.length` using `Finset.mem_range.mp ht`. Unfold `PI.FJM.leadT`. Use `split_ifs with hc`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `det_mem_subalgebra S` to reduce the goal to its premises. Introduce `i j`. Establish `hi` using `i.isLt`. Establish `hj` using `j.isLt`. Rewrite using `[Matrix.submatrix_apply]`.
-
-Conclude with `h _ _ (show i.val < α.length by omega) (show j.val < α.length by omega)`. Conclude with `zero_mem _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem shapeProd_mem {R A : Type*} [CommRing R] [CommRing A] [Algebra R A] (S : Subalgebra R A)
     {m k : ℕ} (M : Matrix (Fin m) (Fin k) A) (α : List ℕ)
@@ -43,13 +41,13 @@ theorem shapeProd_mem {R A : Type*} [CommRing R] [CommRing A] [Algebra R A] (S :
   · exact zero_mem _
 
 /- English proof (translation)
-Introduce `h0`. Establish `hg : ∀ i j, (if ∃ i', f (i', i') = f (i, j) then (1 : ℂ) else 0) = if i = j then 1 else 0`. Introduce `i j`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[if_pos ⟨i, rfl⟩, if_pos rfl]`. Rewrite using `[if_neg hij, if_neg]`. Introduce and unpack `⟨i', hi'⟩`. Establish `hpair` using `hf hi'`. Simplify using `only [Prod.mk.injEq] at hpair`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `hij (hpair.1.symm.trans hpair.2)`. Establish `hmap : (MvPolynomial.eval (fun x : σ => if ∃ i', f (i', i') = x then (1 : ℂ) else 0)).mapMatrix (Matrix.of fun i j => (MvPolynomial.X (f (i, j)) : MvPolynomial σ ℂ)) = 1`. Use extensionality with `i j`. Simplify using `only [RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.of_apply, MvPolynomial.eval_X, Matrix.one_apply]`. Conclude with `hg i j`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hdet` using `RingHom.map_det (MvPolynomial.eval (fun x : σ => if ∃ i', f (i', i') = x then (1 : ℂ) else 0)) (Matrix.of fun i j => (MvPolynomial.X (f (i, j)) : MvPolynomial σ ℂ))`. Rewrite `hdet` using `[h0, map_zero, hmap, Matrix.det_one]`. Conclude with `zero_ne_one hdet`.
+A detailed English derivation is pending.
 -/
 theorem det_vars_ne_zero {σ : Type*} {n : ℕ} (f : Fin n × Fin n → σ) (hf : Function.Injective f) :
     (Matrix.of fun i j => (MvPolynomial.X (f (i, j)) : MvPolynomial σ ℂ)).det ≠ 0 := by
@@ -78,11 +76,11 @@ theorem det_vars_ne_zero {σ : Type*} {n : ℕ} (f : Fin n × Fin n → σ) (hf 
   exact zero_ne_one hdet
 
 /- English proof (translation)
-Unfold `PI.FJM.shapeProd`. Rewrite using `[Finset.prod_ne_zero_iff]`. Introduce `t ht`. Establish `ht' : t < α.length` using `Finset.mem_range.mp ht`. Apply `pow_ne_zero` to reduce the goal to its premises.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hc : t + 1 ≤ m ∧ t + 1 ≤ k` using `⟨by omega, by omega⟩`. Unfold `PI.FJM.leadT`. Rewrite using `[dif_pos hc]`. Establish `hinj : Function.Injective (fun x : Fin (t + 1) × Fin (t + 1) => (ρ (Fin.castLE hc.1 x.1), κ (Fin.castLE hc.2 x.2)))`. Introduce and unpack `⟨i, j⟩ ⟨i', j'⟩ hxy`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Simplify using `only [Prod.mk.injEq] at hxy ⊢`. Conclude with `⟨Fin.castLE_injective _ (hρ hxy.1), Fin.castLE_injective _ (hκ hxy.2)⟩`. Conclude with `det_vars_ne_zero (fun x : Fin (t + 1) × Fin (t + 1) => (ρ (Fin.castLE hc.1 x.1), κ (Fin.castLE hc.2 x.2))) hinj`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem shapeProd_varMat_ne_zero {p q r s m k : ℕ} (ρ : Fin m → Ix p q) (κ : Fin k → Ix r s)
     (hρ : Function.Injective ρ) (hκ : Function.Injective κ) (α : List ℕ)
@@ -104,9 +102,9 @@ theorem shapeProd_varMat_ne_zero {p q r s m k : ℕ} (ρ : Fin m → Ix p q) (κ
     (fun x : Fin (t + 1) × Fin (t + 1) => (ρ (Fin.castLE hc.1 x.1), κ (Fin.castLE hc.2 x.2))) hinj
 
 /- English proof (translation)
-Proceed by induction on `P using MvPolynomial.induction_on`. Use `next a =>`. Simplify using `only [MvPolynomial.pderiv_C, map_zero]`. Use `next P Q hP hQ =>`. Simplify using `only [map_add, hP, hQ]`.
+Proceed by induction. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `next P n hP =>`. Simplify using `only [Derivation.leibniz, map_add, smul_eq_mul, MvPolynomial.pderiv_X, Pi.single_apply]`. Apply the tactic sequence `split_ifs <;>`. Apply the tactic sequence `simp only [Derivation.map_one_eq_zero, map_zero, mul_zero, zero_mul, add_zero, zero_add, mul_one, one_mul, hP] <;> ring`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 private theorem pderiv_pderiv_comm_of_complex {σ : Type*} (i j : σ) (P : MvPolynomial σ ℂ) :
     MvPolynomial.pderiv i (MvPolynomial.pderiv j P) = MvPolynomial.pderiv j (MvPolynomial.pderiv i P) := by
@@ -123,7 +121,7 @@ private theorem pderiv_pderiv_comm_of_complex {σ : Type*} (i j : σ) (P : MvPol
         mul_one, one_mul, hP] <;> ring
 
 /- English proof (translation)
-Establish `hv : i ∉ P.vars` using `fun hmem => hi ((MvPolynomial.mem_supported.mp hP) (Finset.mem_coe.mpr hmem))`. Use `first`. Consider the case `exact MvPolynomial.pderiv_eq_zero_of_notMem_vars hv`. Consider the case `exact MvPolynomial.pderiv_eq_zero_of_not_mem_vars hv`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem pderiv_eq_zero_of_mem_supported_of_not_mem {σ : Type*} {S : Set σ} {P : MvPolynomial σ ℂ}
     (hP : P ∈ MvPolynomial.supported ℂ S) {i : σ} (hi : i ∉ S) : MvPolynomial.pderiv i P = 0 := by
@@ -133,9 +131,9 @@ private theorem pderiv_eq_zero_of_mem_supported_of_not_mem {σ : Type*} {S : Set
   | exact MvPolynomial.pderiv_eq_zero_of_not_mem_vars hv
 
 /- English proof (translation)
-Establish `key : PI.FJM.dd l l' P = MvPolynomial.pderiv l (MvPolynomial.pderiv l' P)` using `by first`. Consider the case `rfl`. Consider the case `simp [PI.FJM.dd]`. Rewrite using `[key]`. Break down `h with h | h` into its components or cases.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[pderiv_pderiv_comm_of_complex, pderiv_eq_zero_of_mem_supported_of_not_mem hP h, map_zero]`. Rewrite using `[pderiv_eq_zero_of_mem_supported_of_not_mem hP h, map_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem dd_eq_zero {p q r s : ℕ} {S : Set (Ln p q r s)} {P : Pol p q r s}
     (hP : P ∈ MvPolynomial.supported ℂ S) {l l' : Ln p q r s} (h : l ∉ S ∨ l' ∉ S) : dd l l' P = 0 := by
@@ -155,13 +153,13 @@ def inS {p q r s : ℕ} (la lb lc ld : ℕ) : Ln p q r s → Prop
   | (Sum.inr j, Sum.inl k) => q ≤ j.val + ld ∧ r ≤ k.val + ld
 
 /- English proof (translation)
-Simplify using `[PI.FJM.posPart]`.
+Simplify using the standard rewrite rules.
 -/
 theorem posPart_length (a : List ℤ) : (PI.FJM.posPart a).length = a.length := by
   simp [PI.FJM.posPart]
 
 /- English proof (translation)
-Simplify using `[PI.FJM.negPart]`.
+Simplify using the standard rewrite rules.
 -/
 theorem negPart_length (b : List ℤ) : (PI.FJM.negPart b).length = b.length := by
   simp [PI.FJM.negPart]
@@ -172,7 +170,7 @@ Both sides reduce to the same expression.
 private theorem fin_rev_val {n : ℕ} (i : Fin n) : (Fin.rev i).val = n - (i.val + 1) := rfl
 
 /- English proof (translation)
-Rewrite using `[show PI.FJM.varMat ρ κ i j = MvPolynomial.X (ρ i, κ j) from rfl]`. Use `first`. Consider the case `exact MvPolynomial.X_mem_supported.mpr h`. Consider the case `exact MvPolynomial.mem_supported.mpr (by rw [MvPolynomial.vars_X]; simpa using h)`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem varMat_apply_mem_supported {p q r s m k : ℕ} (ρ : Fin m → FockH1Action.Ix p q)
     (κ : Fin k → FockH1Action.Ix r s) (T : Set (FockH1Action.Ln p q r s)) (i : Fin m) (j : Fin k)
@@ -183,17 +181,17 @@ private theorem varMat_apply_mem_supported {p q r s m k : ℕ} (ρ : Fin m → F
   | exact MvPolynomial.mem_supported.mpr (by rw [MvPolynomial.vars_X]; simpa using h)
 
 /- English proof (translation)
-Unfold `PI.FJM.hwVec`. Use `mul_mem (mul_mem (mul_mem ?_ ?_) ?_) ?_` and prove the remaining obligations. Apply `shapeProd_mem` to reduce the goal to its premises. Introduce `i j hi hj`. Rewrite `hi`, `hj` using `[posPart_length]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply `varMat_apply_mem_supported` to reduce the goal to its premises. Simplify using `only [Set.mem_setOf_eq, inS]`. Conclude with `⟨hi, hj⟩`. Apply `shapeProd_mem` to reduce the goal to its premises. Introduce `i j hi hj`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Supply the required witnesses or components. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hi`, `hj` using `[negPart_length]`. Apply `varMat_apply_mem_supported` to reduce the goal to its premises. Simplify using `only [Set.mem_setOf_eq, inS, fin_rev_val]`. Use `i.isLt` as an intermediate fact. Use `j.isLt` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply the tactic sequence `constructor <;> omega`. Apply `shapeProd_mem` to reduce the goal to its premises. Introduce `i j hi hj`. Rewrite `hi`, `hj` using `[posPart_length]`. Apply `varMat_apply_mem_supported` to reduce the goal to its premises.
+Apply the first step, then apply the next step to every resulting obligation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [Set.mem_setOf_eq, inS]`. Conclude with `⟨hi, hj⟩`. Apply `shapeProd_mem` to reduce the goal to its premises. Introduce `i j hi hj`. Rewrite `hi`, `hj` using `[negPart_length]`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply `varMat_apply_mem_supported` to reduce the goal to its premises. Simplify using `only [Set.mem_setOf_eq, inS, fin_rev_val]`. Use `i.isLt` as an intermediate fact. Use `j.isLt` as an intermediate fact. Apply the tactic sequence `constructor <;> omega`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem hwVec_mem_supported (p q r s : ℕ) (a b c d : List ℤ) :
     hwVec p q r s a b c d ∈ MvPolynomial.supported ℂ
@@ -230,9 +228,7 @@ theorem hwVec_mem_supported (p q r s : ℕ) (a b c d : List ℤ) :
     constructor <;> omega
 
 /- English proof (translation)
-Introduce `p q r s a b c d h`. Take `⟨-, -, -, -, -, -, -, -, h1, h2, h3, h4⟩` from `h`. Unfold `PI.FJM.hwVec`. Use `mul_ne_zero (mul_ne_zero (mul_ne_zero ?_ ?_) ?_) ?_` and prove the remaining obligations. Conclude with `shapeProd_varMat_ne_zero _ _ (by intro x y hxy; exact Sum.inl_injective hxy) (by intro x y hxy; exact Sum.inl_injective hxy) _ (by rw [posPart_length]; omega) (by rw [posPart_length]; omega)`.
-
-Conclude with `shapeProd_varMat_ne_zero _ _ (by intro x y hxy; exact Fin.rev_injective (Sum.inl_injective hxy)) (by intro x y hxy; exact Fin.rev_injective (Sum.inr_injective hxy)) _ (by rw [negPart_length]; omega) (by rw [negPart_length]; omega)`. Conclude with `shapeProd_varMat_ne_zero _ _ (by intro x y hxy; exact Sum.inr_injective hxy) (by intro x y hxy; exact Sum.inr_injective hxy) _ (by rw [posPart_length]; omega) (by rw [posPart_length]; omega)`. Conclude with `shapeProd_varMat_ne_zero _ _ (by intro x y hxy; exact Fin.rev_injective (Sum.inr_injective hxy)) (by intro x y hxy; exact Fin.rev_injective (Sum.inl_injective hxy)) _ (by rw [negPart_length]; omega) (by rw [negPart_length]; omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem shapeVector_ne_zero : VecNe := by
   intro p q r s a b c d h
@@ -255,7 +251,7 @@ theorem shapeVector_ne_zero : VecNe := by
       (by rw [negPart_length]; omega) (by rw [negPart_length]; omega)
 
 /- English proof (translation)
-Use `first`. Consider the case `exact LinearMap.sum_apply t f v`. Consider the case `simp`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem moduleEnd_finset_sum_apply {V : Type*} [AddCommGroup V] [Module ℂ V] {ι : Type*}
     (t : Finset ι) (f : ι → Module.End ℂ V) (v : V) : (∑ x ∈ t, f x) v = ∑ x ∈ t, f x v := by
@@ -264,23 +260,23 @@ private theorem moduleEnd_finset_sum_apply {V : Type*} [AddCommGroup V] [Module 
   | simp
 
 /- English proof (translation)
-Introduce `p q r s a b c d h`. Establish `hsupp` using `hwVec_mem_supported p q r s a b c d`. Take `⟨-, -, -, -, -, -, -, -, h1, h2, h3, h4⟩` from `h`. Use `(hF p q r s (PI.FJM.hwVec p q r s a b c d)).mpr ⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `PI.FJM.lapA`. Rewrite using `[moduleEnd_finset_sum_apply]`. Use `Finset.sum_eq_zero fun l _ => dd_eq_zero hsupp ?_` and prove the remaining obligations. Use `not_and_or.mp ?_` and prove the remaining obligations. Introduce and unpack `⟨hx, hy⟩`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Simplify using `only [Set.mem_setOf_eq, inS] at hx hy`. Take `⟨hx1, hx2⟩` from `hx`. Take `⟨hy1, hy2⟩` from `hy`. Use linear arithmetic over natural numbers and integers. Introduce `i j`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `PI.FJM.lapB`. Rewrite using `[moduleEnd_finset_sum_apply]`. Use `Finset.sum_eq_zero fun k _ => dd_eq_zero hsupp ?_` and prove the remaining obligations. Use `not_and_or.mp ?_` and prove the remaining obligations. Introduce and unpack `⟨hx, hy⟩`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Simplify using `only [Set.mem_setOf_eq, inS] at hx hy`. Take `⟨hx1, hx2⟩` from `hx`. Take `⟨hy1, hy2⟩` from `hy`. Use linear arithmetic over natural numbers and integers. Introduce `k l`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `PI.FJM.lapC`. Rewrite using `[moduleEnd_finset_sum_apply]`. Use `Finset.sum_eq_zero fun i _ => dd_eq_zero hsupp ?_` and prove the remaining obligations. Use `not_and_or.mp ?_` and prove the remaining obligations. Introduce and unpack `⟨hx, hy⟩`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Simplify using `only [Set.mem_setOf_eq, inS] at hx hy`. Take `⟨hx1, hx2⟩` from `hx`. Take `⟨hy1, hy2⟩` from `hy`. Use linear arithmetic over natural numbers and integers. Introduce `k l`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `PI.FJM.lapD`. Rewrite using `[moduleEnd_finset_sum_apply]`. Use `Finset.sum_eq_zero fun j _ => dd_eq_zero hsupp ?_` and prove the remaining obligations. Use `not_and_or.mp ?_` and prove the remaining obligations. Introduce and unpack `⟨hx, hy⟩`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Simplify using `only [Set.mem_setOf_eq, inS] at hx hy`. Take `⟨hx1, hx2⟩` from `hx`. Take `⟨hy1, hy2⟩` from `hy`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Use linear arithmetic over natural numbers and integers.
 -/
 theorem vecJ_of (hF : FormJ) : VecJ := by
   intro p q r s a b c d h

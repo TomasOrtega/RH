@@ -4,9 +4,7 @@ import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.ThetaIn
 open Matrix IsLocalRing ReciprocityTheory.Gal UpperTheory.V.U3 UpperTheory.V.Alg UpperTheory.V.UnitaryThreeInertia
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use extensionality with `a b`. Conclude with `Ideal.Quotient.eq.2 (h a b)`. Introduce `h a b`.
-
-Conclude with `Ideal.Quotient.eq.1 (congrFun (congrFun h a) b)`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem entIn_sub_iff {C : Type} [CommRing C] (I : Ideal C) (X Y : Matrix (Fin 3) (Fin 3) C) :
     EntIn I (X - Y) ↔ X.map (Ideal.Quotient.mk I) = Y.map (Ideal.Quotient.mk I) := by
@@ -18,9 +16,9 @@ private theorem entIn_sub_iff {C : Type} [CommRing C] (I : Ideal C) (X Y : Matri
     exact Ideal.Quotient.eq.1 (congrFun (congrFun h a) b)
 
 /- English proof (translation)
-Unfold `CongOne`. Rewrite using `[entIn_sub_iff, Matrix.map_one _ (map_zero _) (map_one _)]`. Prove the components needed by the constructor for the conclusion. Introduce `e`. Conclude with `Units.ext e`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `e`. Conclude with `congrArg Units.val e`.
+A detailed English derivation is pending.
 -/
 private theorem congOne_iff {C : Type} [CommRing C] (I : Ideal C) (h : GL (Fin 3) C) :
     CongOne I h ↔ GeneralLinearGroup.map (Ideal.Quotient.mk I) h = 1 := by
@@ -45,14 +43,14 @@ private theorem conjBy_comp {C D E : Type} [CommRing C] [Group D] [Group E] (h :
     (f : E →* D) : (conjBy h r).comp f = conjBy h (r.comp f) := rfl
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.ThetaInvolution.conjBy_conjBy h h' r`.
+A detailed English derivation is pending.
 -/
 private theorem conjBy_conjBy {C D : Type} [CommRing C] [Group D] (h h' : GL (Fin 3) C) (r : D →* GG 3 C) :
     conjBy (h * h')⁻¹ (conjBy h r) = conjBy h'⁻¹ r :=
   _root_.UpperTheory.Reformulated.B.ThetaInvolution.conjBy_conjBy h h' r
 
 /- English proof (translation)
-Establish `e : GG.map (Ideal.Quotient.mk I) (GG.ofGL h) = 1`. Unfold `GG.map`. Rewrite using `[SemidirectProduct.map_inl, (congOne_iff I h).1 hh, map_one]`. Simplify using `only [conjBy, MonoidHom.comp_apply, MulEquiv.coe_toMonoidHom, MulAut.conj_apply, map_mul, map_inv, e, one_mul, inv_one, mul_one]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem map_conjBy {C D : Type} [CommRing C] [Group D] (I : Ideal C) (h : GL (Fin 3) C)
     (hh : CongOne I h) (r : D →* GG 3 C) (g : D) :
@@ -64,19 +62,15 @@ private theorem map_conjBy {C D : Type} [CommRing C] [Group D] (I : Ideal C) (h 
     one_mul, inv_one, mul_one]
 
 /- English proof (translation)
-Introduce `O _ _ G Γ ι _ _ F R _ _ _ h hh`. Establish `hmul : ∀ h' : GL (Fin 3) R, InHat h' → InHat (h * h')` using `fun h' hh' => by`. Use `(congOne_iff _ _).2 ?_` and prove the remaining obligations. Rewrite using `[map_mul, (congOne_iff _ _).1 hh, (congOne_iff _ _).1 hh', mul_one]`. Establish `hloc : ∀ v (r : F.D v →* GG 3 R), F.LocAt v r → F.LocAt v (conjBy h r)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `v r ⟨ht, hd, hu⟩`. Use `⟨fun e => ?_, fun e => ?_, fun e s hs => ?_⟩` and prove the remaining obligations. Take `⟨h', h1, h2, h3⟩` from `ht e`. Use `⟨h * h', hmul h' h1, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[conjBy_conjBy]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h2`. Rewrite using `[conjBy_conjBy]`. Conclude with `h3`. Take `⟨h', h1, ⟨h2, h3⟩, h4⟩` from `hd e`. Use `⟨h * h', hmul h' h1, ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[conjBy_conjBy]`. Conclude with `h2`. Rewrite using `[conjBy_conjBy]`. Conclude with `h3`. Rewrite using `[conjBy_conjBy]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h4`. Rewrite using `[conjBy_app, hu e s hs, mul_one, mul_inv_cancel]`. Use `⟨hloc, fun r hr => ⟨⟨fun g => ?_, fun g => ?_⟩, fun v => ?_⟩⟩` and prove the remaining obligations. Establish `e` using `congrArg SemidirectProduct.right (map_conjBy _ h hh r g)`. Rewrite `e` using `[GG.map_right, GG.map_right]`.
-
-Conclude with `e.trans (hr.mult g)`. Establish `e` using `congrArg GG.mat (map_conjBy _ h hh r g)`. Rewrite `e` using `[GG.map_mat, GG.map_mat]`. Rewrite using `[entIn_sub_iff, e, ← entIn_sub_iff]`. Conclude with `hr.red g`.
-
-Rewrite using `[conjBy_comp]`. Conclude with `hloc v _ (hr.loc v)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.UnitaryThreeInertia.cond_conj :
     ∀ {O : Type} [CommRing O] [IsLocalRing O] {G Γ ι : Type} [Group G] [Group Γ] (F : Frame O G Γ ι) {R : Type} [CommRing R] [IsLocalRing R] [Algebra O R] (h : GL (Fin 3) R), InHat h →

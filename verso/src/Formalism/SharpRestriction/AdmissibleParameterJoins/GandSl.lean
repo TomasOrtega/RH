@@ -11,27 +11,27 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.G
 variable {D : D7} {L : SizeData₂ D}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.1, h.2.1⟩`.
+Supply the required witnesses or components.
 -/
 theorem served_prime_lattices (Gi : Inst D L) (K : Consts) (C bo : ℝ) (h : LinkG_at Gi K C bo) : Formalism.MainNotions.LocalQuadraticParts.adm18 Gi K :=
   ⟨h.1, h.2.1⟩
 
 /- English proof (translation)
-Take `⟨C, x0, δ, _, H⟩` from `h`. Conclude with `⟨x0, fun x hx i => served_prime_lattices _ _ C _ (H x hx i)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem family_served_prime_lattices {eps : ℝ} (Fm : FamP eps) (h : LinkG Fm) : Formalism.MainNotions.LocalQuadraticParts.G1Family Fm := by
   obtain ⟨C, x0, δ, _, H⟩ := h
   exact ⟨x0, fun x hx i => served_prime_lattices _ _ C _ (H x hx i)⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨served_orbits_in_set Gi K _ _, h33.2.2.2.1, h32⟩`.
+Supply the required witnesses or components.
 -/
 theorem served_orbits_band_bad_probability (Gi : Inst D L) (K : Consts) (Cb : ℝ) (h33 : Formalism.MainNotions.CornerGLContinuity.OrdersLargePrimeBound D L K)
     (h32 : Formalism.MainNotions.CornerGLContinuity.BadPrimeBound D L Gi Cb) : Formalism.MainNotions.LocalQuadraticParts.adm20 Gi K Cb :=
   ⟨served_orbits_in_set Gi K _ _, h33.2.2.2.1, h32⟩
 
 /- English proof (translation)
-Take `⟨x0, h0⟩` from `h33`. Take `⟨Cb, _, x1, h1⟩` from `h32`. Conclude with `⟨Cb, max x0 x1, fun x hx i => served_orbits_band_bad_probability _ _ Cb (h0 x (le_trans (le_max_left _ _) hx) i) (h1 x (le_trans (le_max_right _ _) hx) i)⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem family_served_orbits_band {eps : ℝ} (Fm : FamP eps) (h33 : Formalism.MainNotions.CornerGLContinuity.FamilyOrdersLargePrimeBoundConstant Fm) (h32 : Formalism.MainNotions.CornerGLContinuity.FamilyBadPrimeBound Fm) :
     Formalism.MainNotions.LocalQuadraticParts.G3BoundFamily Fm := by
@@ -41,7 +41,7 @@ theorem family_served_orbits_band {eps : ℝ} (Fm : FamP eps) (h33 : Formalism.M
     (h1 x (le_trans (le_max_right _ _) hx) i)⟩
 
 /- English proof (translation)
-Take `⟨C, δ, _, x0, H⟩` from `h`. Conclude with `⟨x0, fun x hx i => (H x hx i).2.1⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem family_mean_shares_windows {eps : ℝ} (Fm : FamP eps) (h : Formalism.MainNotions.AuxBlock8.ConclusionOnFamily Fm Fm.GK Fm.Gx) : Formalism.MainNotions.LocalQuadraticParts.FontaineFormalPropertiesFamily Fm := by
   obtain ⟨C, δ, _, x0, H⟩ := h
@@ -51,14 +51,14 @@ def ExcSplit (L : SizeData₂ D) : Prop :=
   ∀ u p, p.Prime → Formalism.MainNotions.LocalQuadraticParts.Exc L u p → p = D.host.d ∨ ¬ InertK D p
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h1, h2, h3⟩`.
+Supply the required witnesses or components.
 -/
 theorem sizes_depths_thresholds (Gi : Inst D L) (K : Consts) (C bo : ℝ) (h1 : Formalism.MainNotions.CornerGLContinuity.CutSizes D L Gi K C)
     (h2 : Formalism.MainNotions.CornerGLContinuity.WeightSumBound D L C bo) (h3 : ExcSplit L) : Formalism.MainNotions.LocalQuadraticParts.HerrCocycleExtensionClass Gi K C bo :=
   ⟨h1, h2, h3⟩
 
 /- English proof (translation)
-Establish `hx` using `s.one_lt_alt`. Establish `hb : 1 ≤ s.b` using `Real.one_le_exp (Real.rpow_nonneg (by linarith) _)`. Unfold `Scale.a`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem sc_a_pos (s : Scale) : 1 < s.a := by
   have hx := s.one_lt_alt
@@ -67,15 +67,13 @@ theorem sc_a_pos (s : Scale) : 1 < s.a := by
   nlinarith
 
 /- English proof (translation)
-Establish `ha : 0 < L.sc.a` using `lt_trans one_pos (sc_a_pos L.sc)`. Introduce `p hp`. Take `⟨h1, h2⟩` from `h p hp`. Use `⟨fun t0 ht => ?_, fun hV => ?_⟩` and prove the remaining obligations. Establish `hn : 0 ≤ (Nv Gi p t0 : ℝ) * L.sc.a / (p : ℝ)` using `by positivity`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e : ∀ c : ℝ, c * (Nv Gi p t0 : ℝ) * L.sc.a / (p : ℝ) = c * ((Nv Gi p t0 : ℝ) * L.sc.a / (p : ℝ))` using `fun c => by ring`. Establish `hm` using `mul_le_mul_of_nonneg_right hC hn`. Establish `h1'` using `h1 t0 ht`. Rewrite using `[e C']`. Rewrite `h1'` using `[e C]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `⟨le_trans h1'.1 hm, le_trans h1'.2 hm⟩`. Establish `hl : 0 ≤ Real.logb p L.sc.a`. Break down `Nat.lt_or_ge 1 p with h1p | h1p` into its components or cases. Conclude with `Real.logb_nonneg (by exact_mod_cast h1p) (sc_a_pos L.sc).le`. Apply the tactic sequence `interval_cases p <;> simp [Real.logb]`.
+Supply the required witnesses or components. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `hn : 0 ≤ (D.R.f : ℝ) * (D.R.k : ℝ) ^ 2 * Real.logb p L.sc.a` using `by positivity`. Establish `e : ∀ c : ℝ, c * D.R.f * (D.R.k : ℝ) ^ 2 * Real.logb p L.sc.a = c * ((D.R.f : ℝ) * (D.R.k : ℝ) ^ 2 * Real.logb p L.sc.a)` using `fun c => by ring`. Rewrite using `[e C']`. Use `h2 hV` as an intermediate fact. Rewrite `this` using `[e C]`.
-
-Conclude with `le_trans this (mul_le_mul_of_nonneg_right hC hn)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tau_size_bound_mono (Gi : Inst D L) (K : Consts) {C C' : ℝ} (hC : C ≤ C')
     (h : Formalism.MainNotions.CornerGLContinuity.CutSizes D L Gi K C) : Formalism.MainNotions.CornerGLContinuity.CutSizes D L Gi K C' := by
@@ -104,11 +102,11 @@ theorem tau_size_bound_mono (Gi : Inst D L) (K : Consts) {C C' : ℝ} (hC : C �
     exact le_trans this (mul_le_mul_of_nonneg_right hC hn)
 
 /- English proof (translation)
-Establish `ha : 0 < L.sc.a` using `lt_trans one_pos (sc_a_pos L.sc)`. Establish `hX : 0 ≤ Real.log L.sc.X'`. Unfold `Scale.X'`. Rewrite using `[Real.log_exp]`. Conclude with `Real.rpow_nonneg (lt_trans one_pos L.sc.one_lt_alt).le _`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hn : 0 ≤ (D.R.m : ℝ) * (D.host.TT.card : ℝ) * L.sc.a * Real.log L.sc.X'` using `by positivity`. Establish `e : ∀ c : ℝ, c * D.R.m * (D.host.TT.card : ℝ) * L.sc.a * Real.log L.sc.X' = c * ((D.R.m : ℝ) * (D.host.TT.card : ℝ) * L.sc.a * Real.log L.sc.X')` using `fun c => by ring`. Unfold `Formalism.MainNotions.CornerGLContinuity.WeightSumBound at h ⊢`. Rewrite using `[e C']`. Rewrite `h` using `[e C]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear relations using `[mul_le_mul_of_nonneg_right hC hn]`.
+A detailed English derivation is pending.
 -/
 theorem tau_sum_bound_mono {C C' bo : ℝ} (hC : C ≤ C') (h : Formalism.MainNotions.CornerGLContinuity.WeightSumBound D L C bo) : Formalism.MainNotions.CornerGLContinuity.WeightSumBound D L C' bo := by
   have ha : 0 < L.sc.a := lt_trans one_pos (sc_a_pos L.sc)
@@ -125,9 +123,9 @@ theorem tau_sum_bound_mono {C C' bo : ℝ} (hC : C ≤ C') (h : Formalism.MainNo
   linarith [mul_le_mul_of_nonneg_right hC hn]
 
 /- English proof (translation)
-Take `⟨C1, x1, H1⟩` from `h1`. Take `⟨C2, x2, δ, hδ, H2⟩` from `h2`. Take `⟨x3, H3⟩` from `h3`. Use `⟨max C1 C2, max x1 (max x2 x3), δ, hδ, fun x hx i => ?_⟩` and prove the remaining obligations. Establish `a1 : x1 ≤ x` using `le_trans (le_max_left _ _) hx`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `a2 : x2 ≤ x` using `le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) hx`. Establish `a3 : x3 ≤ x` using `le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) hx`. Conclude with `sizes_depths_thresholds _ _ _ _ (tau_size_bound_mono _ _ (le_max_left _ _) (H1 x a1 i)) (tau_sum_bound_mono (le_max_right _ _) (H2 x a2 i)) (H3 x a3 i)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem family_sizes_depths_thresholds {eps : ℝ} (Fm : FamP eps) (h1 : Formalism.MainNotions.CornerGLContinuity.FamilyCutSizes Fm) (h2 : Formalism.MainNotions.CornerGLContinuity.FamilyWeightSumBound Fm)
     (h3 : ∃ x0 : ℝ, ∀ x ≥ x0, ∀ i : Fm.Ix x, ExcSplit (Fm.L x i)) : Formalism.MainNotions.LocalQuadraticParts.AddedTermFamily Fm := by

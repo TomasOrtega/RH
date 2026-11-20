@@ -58,23 +58,23 @@ def RowJ (R : RealDat D A Ks) (eE : D.what₂.EE →ₗ[ℂ] R.HE.H) (X : HidaSe
     ((j x : EEC X G) : L2X X) =ᵐ[muX X] fun g => (a : ℂ) * ev (MP R) v₀ (R.HE.e (eE x)) ((iotaX X h).symm g * t)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_conjRows_iff (X : HidaSetting D) (f : L2X X) : f ∈ conjRows X ↔ conjL (muX X) f ∈ HHX X := Iff.rfl
 
 /- English proof (translation)
-Introduce `_ hF` and use `hF.1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem EEC_le_conjRows (X : HidaSetting D) (G : GoodOp X) : EEC X G ≤ conjRows X := fun _ hF => hF.1
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨rfl, hk⟩, rfl⟩`.
+Supply the required witnesses or components.
 -/
 example (X : HidaSetting D) (k : X.B.I.Gf) (hk : k ∈ X.K2) :
     ((1, k) : X.B.I.GA) ∈ concreteLevelAdelicSubset X ∧ adelicCharacterOfHidaSetting X (1, k) = star (X.chi2 k) := ⟨⟨rfl, hk⟩, rfl⟩
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem evalTieT_iff_evalOn (R : RealDat D A Ks) (X : HidaSetting D) (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D) (G : GoodOp X)
     (t : GA D (D.sp.Y 0)) (c : ℝ) (E : Submodule ℂ (MMap (MP R))) :
@@ -82,16 +82,16 @@ theorem evalTieT_iff_evalOn (R : RealDat D A Ks) (X : HidaSetting D) (h : X.B.I 
       ∃ v₀ : (MP R).Vec, (∀ τ, ‖(v₀ τ : (MP R).H τ)‖ = 1) ∧ EvalOn R X h t v₀ c E (EEC X G) := Iff.rfl
 
 /- English proof (translation)
-Rewrite using `[map_zero]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 example (R : RealDat D A Ks) (X : HidaSetting D) (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D) (t : GA D (D.sp.Y 0))
     (v₀ : (MP R).Vec) (x : X.B.I.GA) : ev (MP R) v₀ 0 ((iotaX X h).symm x * t) = 0 := by
   rw [map_zero]; rfl
 
 /- English proof (translation)
-Introduce `k hk`. Establish `e : (t⁻¹⁻¹ * (t⁻¹ * (iotaX X h).symm (1, k) * t) * t⁻¹ : GA D (D.sp.Y 0)) = (iotaX X h).symm (1, k)` using `by group`. Take `⟨h1, h2⟩` from `hs.conj (t⁻¹ * (iotaX X h).symm (1, k) * t)`. Rewrite `h1`, `h2` using `[e]`. Establish `hm` using `h1.2 (by simp [concreteLevelAdelicSubset, hk])`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `⟨hm, ?_⟩` and prove the remaining obligations. Use `h2 hm` as an intermediate fact. Simplify using `only [adelicCharacterOfHidaSetting, ContinuousMulEquiv.apply_symm_apply] at this`. Conclude with `this.symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem SeeAt.levelMatchA {R : RealDat D A Ks} {F : Face D A} {X : HidaSetting D}
     {h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D} {t : GA D (D.sp.Y 0)} (hs : SeeAt R F X h t) : LevelMatchA R F X h t := by
@@ -106,27 +106,23 @@ theorem SeeAt.levelMatchA {R : RealDat D A Ks} {F : Face D A} {X : HidaSetting D
   exact this.symm
 
 /- English proof (translation)
-Take `⟨J2, hJ2⟩` from `hJ2`. Take `⟨he_inj, he_range, he_ip⟩` from `hE`. Establish `hnP : 0 < RealDat.nP F true`. Unfold `RealDat.nP`. Conclude with `Nat.card_pos` after adjusting the coercions.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `heE_inj : Function.Injective eE`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `x hx`. Establish `h1` using `hnorm x`. Rewrite `h1` using `[hx, norm_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : RealDat.nP F true * ‖x‖ ^ 2 = 0` using `by rw [← h1]; ring`. Break down `mul_eq_zero.mp h2 with h3 | h3` into its components or cases. Conclude with `absurd h3 hnP.ne'`. Conclude with `norm_eq_zero.mp ((pow_eq_zero_iff two_ne_zero).mp h3)`. Establish `hmem : ∀ x, (R.HE.e ∘ₗ eE) x ∈ EP R F` using `fun x => by`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `: eE x ∈ (R.EEat (R.levR F true)).comap R.HE.e` using `hrange ▸ LinearMap.mem_range_self eE x`. Conclude with `this`. Set `k : D.what₂.EE →ₗ[ℂ] EP R F` to `LinearMap.codRestrict (EP R F) (R.HE.e ∘ₗ eE) hmem`. Establish `hk : Function.Bijective k`. Prove the components needed by the constructor for the conclusion.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Introduce `x y hxy`. Conclude with `heE_inj (he_inj (congrArg Subtype.val hxy))`. Introduce and unpack `⟨y, hy⟩`. Establish `hy' : y ∈ LinearMap.range R.HE.e` using `he_range ▸ hle hy`. Take `⟨z, rfl⟩` from `hy'`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hz : z ∈ LinearMap.range eE` using `by rw [hrange]; exact hy`. Take `⟨x, rfl⟩` from `hz`. Conclude with `⟨x, rfl⟩`. Set `L : D.what₂.EE ≃ₗ[ℂ] EEC X G` to `(LinearEquiv.ofBijective k hk).trans J2`. Establish `hLn : ∀ x, ‖L x‖ ^ 2 = (c * RealDat.nP F true) * ‖x‖ ^ 2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Introduce `x`. Establish `h1` using `(hJ2 (k x)).2`. Establish `h2 : ((k x : EP R F) : MMap (MP R)) = R.HE.e (eE x)` using `rfl`. Establish `h3 : (ipM (MP R) R.ν0 R.fd0 (R.HE.e (eE x)) (R.HE.e (eE x))).re = ‖eE x‖ ^ 2`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show ‖((J2 (k x) : EEC X G) : L2X X)‖ ^ 2 = _`. Rewrite using `[h1, h2, h3, hnorm x]`. Expand and normalize the polynomial expressions, which then agree. Use `set a : ℝ := (Real.sqrt (c * RealDat.nP F true))⁻¹ with ha_def`. Establish `hs : 0 < Real.sqrt (c * RealDat.nP F true)` using `Real.sqrt_pos.mpr (mul_pos hc hnP)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `ha : 0 < a` using `inv_pos.mpr hs`. Establish `haC : (a : ℂ) ≠ 0` using `by exact_mod_cast ha.ne'`. Set `j : D.what₂.EE ≃ₗᵢ[ℂ] EEC X G` to `{ toLinearEquiv := L.trans (LinearEquiv.smulOfNeZero ℂ (EEC X G) (a : ℂ) haC) norm_map' := fun x => by show ‖(a : ℂ) • L x‖ = ‖x‖`. Establish `hL : ‖L x‖ = Real.sqrt (c * RealDat.nP F true) * ‖x‖`. Rewrite using `[← Real.sqrt_sq (norm_nonneg (L x)), hLn x, Real.sqrt_mul' _ (sq_nonneg _), Real.sqrt_sq (norm_nonneg x)]`.
-
-Rewrite using `[norm_smul, Complex.norm_real, Real.norm_of_nonneg ha.le, hL, ← mul_assoc, ha_def, inv_mul_cancel₀ hs.ne', one_mul] }`. Use `⟨j, v₀, hv₀, a, ha, fun x => ?_⟩` and prove the remaining obligations. Establish `h1 : ((j x : EEC X G) : L2X X) = (a : ℂ) • ((J2 (k x) : EEC X G) : L2X X)` using `rfl`. Rewrite using `[h1]`. Use `filter_upwards [Lp.coeFn_smul (a : ℂ) ((J2 (k x) : EEC X G) : L2X X), (hJ2 (k x)).1] with g h2 h3`.
-
-Rewrite using `[h2, Pi.smul_apply, h3, smul_eq_mul]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_rowJ_of_evalOn {R : RealDat D A Ks} {F : Face D A} {X : HidaSetting D}
     {h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D} {G : GoodOp X} {t : GA D (D.sp.Y 0)} {v₀ : (MP R).Vec} {c : ℝ}

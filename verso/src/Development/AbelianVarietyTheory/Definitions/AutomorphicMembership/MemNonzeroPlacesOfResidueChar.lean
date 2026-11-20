@@ -12,9 +12,9 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.Inhab Fo
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Establish `h : p ∈ L.gTypes ↔ ∃ i, p = D.host.g i`. Simplify using `[SizeData₂.gTypes, Fin.exists_fin_two]`. Unfold `FvalP FK`. Distinguish the cases in `hp : p ∈ L.gTypes`. Rewrite using `[if_pos hp, if_pos (h.1 hp)]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg hp, if_neg (fun x => hp (h.2 x))]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem fvalP_eq {D : D7} (L : SizeData₂ D) (j p : ℕ) : FvalP L j p = FK L.sc D j p := by
   have h : p ∈ L.gTypes ↔ ∃ i, p = D.host.g i := by
@@ -27,9 +27,9 @@ theorem fvalP_eq {D : D7} (L : SizeData₂ D) (j p : ℕ) : FvalP L j p = FK L.s
 variable {K : Ctx} {B : Base} {f : Fr B.toPre} {T : TwDat B} {w : ColW B f T} {Z : w.Lt} {Wt : Set B.places.Pl} {p0 : BaseLevelRowSide (w.D Z)}
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Apply `hv` to reduce the goal to its premises. Rewrite using `[t.exact]`. Use `⟨j, _, Or.inl rfl, Or.inr (Or.inr ?_)⟩` and prove the remaining obligations. Establish `e : (w.D Z).plEq.symm ((w.D Z).plEq v) = v` using `Equiv.symm_apply_apply _ _`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `show FK K.s (w.D Z) (j.1 + 1) ((w.D Z).what₂.places.resChar ((w.D Z).plEq.symm ((w.D Z).plEq v))) ≠ 0`. Rewrite using `[e]`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fk_zero (t : RowsT K w Z Wt p0) (v : B.places.Pl) (hv : v ∉ Wt) (j : Fin B.R.m) :
     FK K.s (w.D Z) (j.1 + 1) (B.places.resChar v) = 0 := by
@@ -43,7 +43,7 @@ theorem fk_zero (t : RowsT K w Z Wt p0) (v : B.places.Pl) (hv : v ∉ Wt) (j : F
   exact h
 
 /- English proof (translation)
-Unfold `Fval`. Rewrite using `[fvalP_eq, hL]`. Conclude with `fk_zero t v hv j`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fval_zero (t : RowsT K w Z Wt p0) (L : SizeData₂ (w.D Z)) (hL : L.sc = K.s) (v : B.places.Pl) (hv : v ∉ Wt)
     (j : Fin B.R.m) : Fval L (j.1 + 1) v = 0 := by
@@ -60,11 +60,11 @@ variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T' : Type} {A3 : FamI
   {Y : R3.Read (A3 := A3) R.toRealDat F.lv2 X0}
 
 /- English proof (translation)
-Take `⟨J, hJ⟩` from `h`. Take `⟨J', hJ'⟩` from `h'`. Use `⟨(J.eW i).symm.trans (J'.eW i), fun x => ?_, fun x => ?_⟩` and prove the remaining obligations. Take `⟨y, rfl⟩` from `(J.eW i).surjective x`. Rewrite using `[LinearEquiv.trans_apply, LinearEquiv.symm_apply_apply, hJ.j_eq, hJ'.j_eq]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨y, rfl⟩` from `(J.eW i).surjective x`. Rewrite using `[LinearEquiv.trans_apply, LinearEquiv.symm_apply_apply, (hJ.hlat i).lat, (hJ'.hlat i).lat]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz, e⟩`. Conclude with `⟨z, hz, congrArg (J.eW i) ((J'.eW i).injective e)⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨z, hz, e⟩`. Conclude with `⟨z, hz, congrArg (J'.eW i) ((J.eW i).injective e)⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem mj_same (Z : R3.ReadL R F X0 Y) {X X' : DivX D} (h : MjAre Z X) (h' : MjAre Z X') (i : Fin D.R.m) :
     ∃ e : (X.MjH (i.1 + 1)).V ≃ₗ[D.what₂.LL] (X'.MjH (i.1 + 1)).V, (∀ x, X'.jM _ (e x) = X.jM _ x) ∧
@@ -83,13 +83,13 @@ theorem mj_same (Z : R3.ReadL R F X0 Y) {X X' : DivX D} (h : MjAre Z X) (h' : Mj
       exact ⟨z, hz, congrArg (J'.eW i) ((J.eW i).injective e)⟩
 
 /- English proof (translation)
-Take `⟨e, h1, h2⟩` from `mj_same Z h h' i`. Establish `a : (X'.MjH (i.1 + 1)).L = (X.MjH (i.1 + 1)).L.map ((e : (X.MjH (i.1 + 1)).V →ₗ[D.what₂.LL] _).restrictScalars (𝓞 D.what₂.LL))`. Use extensionality with `y`. Take `⟨x, rfl⟩` from `e.surjective y`. Rewrite using `[h2]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨fun hx => ⟨x, hx, rfl⟩, fun ⟨z, hz, q⟩ => e.injective q ▸ hz⟩`. Establish `b : Idx.thTj X' μ (i.1 + 1) = (Idx.thTj X μ (i.1 + 1)).map ((e : (X.MjH (i.1 + 1)).V →ₗ[D.what₂.LL] _).restrictScalars (𝓞 D.what₂.LL))`. Use extensionality with `y`. Take `⟨x, rfl⟩` from `e.surjective y`. Prove the components needed by the constructor for the conclusion.
+Supply the required witnesses or components. Establish an intermediate fact. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨t, ht, q⟩`. Conclude with `⟨x, ⟨t, ht, (h1 x).symm.trans q⟩, rfl⟩`. Introduce and unpack `⟨z, ⟨t, ht, q⟩, q'⟩`. Establish `: z = x` using `e.injective q'`. Substitute `this` using the available equality.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Substitute using the available equality.
 
-Conclude with `⟨t, ht, (h1 z).trans q⟩`. Unfold `Idx.IjIdx`. Rewrite using `[a, b, SkeletonIndexLemmas.lidx_map _ _ e.injective]`.
+Supply the required witnesses or components. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem ijIdx_same (Z : R3.ReadL R F X0 Y) {X X' : DivX D} (h : MjAre Z X) (h' : MjAre Z X') (i : Fin D.R.m) (μ : D.what₂.Tup)
     (v : D.what₂.places.Pl) : Idx.IjIdx X' μ (i.1 + 1) v = Idx.IjIdx X μ (i.1 + 1) v := by
@@ -116,13 +116,13 @@ theorem ijIdx_same (Z : R3.ReadL R F X0 Y) {X X' : DivX D} (h : MjAre Z X) (h' :
 end Idx
 
 /- English proof (translation)
-Establish `hk : 5 ≤ D.R.k` using `by have := D.R.m_add_three_le_k; have := D.R.two_le_m; omega`. Establish `hf : 0 < Fintype.card D.what₂.Tau` using `by rw [D.what₂.card_Tau]; exact GaloisStage.f_pos D.R`. Take `⟨τ⟩` from `Fintype.card_pos_iff.1 hf`. Establish `hs : (D.R.sigW j).1 = D.R.k + j - 1` using `rfl`. Set `i : Fin (D.R.sigW j).1` to `⟨D.R.k + j - 1 - 1, by rw [hs]; omega⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `e` using `(h j h1 h2 τ).1 i`. Establish `l` using `DV.aPlusQ_last D j h1 h2 τ`. Establish `p : (1 : ℤ) ≤ D.what₂.kaBig j τ i`. Establish `: (1 : ℚ) ≤ (D.what₂.kaBig j τ i : ℚ)` using `e ▸ l`. Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `q : 0 < fockDeg D j`. Unfold `fockDeg`. Use `Finset.sum_pos' (fun t _ => add_nonneg (Finset.sum_nonneg fun _ _ => abs_nonneg _) (Finset.sum_nonneg fun _ _ => abs_nonneg _)) ⟨τ, Finset.mem_univ _, ?_⟩` and prove the remaining obligations. Use `add_pos_of_pos_of_nonneg (Finset.sum_pos' (fun _ _ => abs_nonneg _) ⟨i, Finset.mem_univ _, ?_⟩) (Finset.sum_nonneg fun _ _ => abs_nonneg _)` and prove the remaining obligations. Conclude with `abs_pos.2 (by omega)`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Unfold `FTypeG`. Establish `: (0 : ℝ) < (fockDeg D j : ℝ)` using `by exact_mod_cast q`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem fTypeG_ne {D : D7} (h : DV.KapDef D) (j : ℕ) (h1 : 1 ≤ j) (h2 : j ≤ D.R.m) : FTypeG D j ≠ 0 := by
   have hk : 5 ≤ D.R.k := by have := D.R.m_add_three_le_k; have := D.R.two_le_m; omega
@@ -147,9 +147,9 @@ theorem fTypeG_ne {D : D7} (h : DV.KapDef D) (j : ℕ) (h1 : 1 ≤ j) (h2 : j �
   linarith
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Establish `hm : 0 < B.R.m` using `by have := B.R.two_le_m; omega`. Establish `z` using `fk_zero t v h ⟨0, hm⟩`. Unfold `FK at z`. Rewrite `z` using `[if_pos ⟨i, hv⟩]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `fTypeG_ne t.r.Y.kap 1 le_rfl hm z`.
+A detailed English derivation is pending.
 -/
 theorem type_mem (t : RowsT K w Z Wt p0) (v : B.places.Pl) (i : Fin 2) (hv : B.places.resChar v = B.host.g i) : v ∈ Wt := by
   by_contra h
@@ -160,9 +160,7 @@ theorem type_mem (t : RowsT K w Z Wt p0) (v : B.places.Pl) (i : Fin 2) (hv : B.p
   exact fTypeG_ne t.r.Y.kap 1 le_rfl hm z
 
 /- English proof (translation)
-Use `h _ (B.places.resChar_prime v) ?_` and prove the remaining obligations. Unfold `FK at hv`. Use `split_ifs at hv with a b c`. Conclude with `.inl a`. Conclude with `.inr (.inl (cls_ramD b))`.
-
-Conclude with `.inr (.inr c.2)`. Conclude with `absurd rfl hv`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem fk_forced (h : Forced K B T) (Z : w.Lt) (j : ℕ) (v : B.places.Pl) (hv : FK K.s (w.D Z) j (B.places.resChar v) ≠ 0) :
     B.places.resChar v ∈ T.pl := by
@@ -175,7 +173,7 @@ theorem fk_forced (h : Forced K B T) (Z : w.Lt) (j : ℕ) (v : B.places.Pl) (hv 
   · exact absurd rfl hv
 
 /- English proof (translation)
-Use `(((Step.of_all fun _ _ _ _ _ _ _ _ => trivial).trans (step_colW_pinned h2b)).and (Step.of_all fun _ _ _ _ _ _ _ h => h)).trans (Step.of_all ?_)` and prove the remaining obligations. Introduce and unpack `K B f T - - - ⟨⟨w, hw⟩, h⟩`. Conclude with `⟨w, hw, supp_of_untw w h, coh_of_untw h⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem step_start (h2b : StandardLattice.SiegelMassRatioCM) :
     Step KPx (fun _ B _ T => T = TwDat.untw B T.pl) fun K B f T => ∃ w : ColW B f T, Start K B f T w := by
@@ -185,9 +183,9 @@ theorem step_start (h2b : StandardLattice.SiegelMassRatioCM) :
   exact ⟨w, hw, supp_of_untw w h, coh_of_untw h⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Apply `D.plEq.injective` to reduce the goal to its premises. Conclude with `HeightOneSpectrum.ext (Ideal.ext fun x => h x x rfl)`. Introduce and unpack `rfl x x' e`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `: x = x'` using `Subtype.ext (D.what₂.embLL.injective e)`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem below_iff (D : D7) (v v' : D.what₂.places.Pl) : Below D D v v' ↔ v = v' := by
   constructor
@@ -202,32 +200,32 @@ def trivialDecorations : Slots := ⟨fun _ _ _ _ _ _ _ _ _ => PUnit, fun _ _ _ _
   fun _ _ _ _ _ _ _ _ _ => PUnit⟩
 
 /- English proof (translation)
-The claim follows from `let ⟨b⟩ := h ⟨{ b with rx := PUnit.unit, nx := PUnit.unit, sx := PUnit.unit, ox := PUnit.unit }⟩`.
+A detailed English derivation is pending.
 -/
 theorem builtC_forget (𝒮 : Slots) (c : V4.Core K (w.st Z) f T) (h : BuiltC 𝒮 K B f T w Z c) : BuiltC trivialDecorations K B f T w Z c :=
   let ⟨b⟩ := h
   ⟨{ b with rx := PUnit.unit, nx := PUnit.unit, sx := PUnit.unit, ox := PUnit.unit }⟩
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Establish `hp` using `B.places.resChar_prime v`. Establish `hp'` using `B.places.resChar_prime v'`. Establish `neg : ∀ u : B.places.Pl, ¬ 0 ≤ B.places.val u ((B.places.resChar u : B.LL)⁻¹)`. Introduce `u`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[AddValuation.map_inv, B.places.val_resChar]`. Use `B.places.ramIdx_pos u` as an intermediate fact. Rewrite using `[← WithTop.LinearOrderedAddCommGroup.coe_neg]`. Introduce `h`. Establish `h' : (0 : ℤ) ≤ -(B.places.ramIdx u : ℤ)` using `by exact_mod_cast h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Establish `nat : ∀ (u : B.places.Pl) (n : ℕ), 0 ≤ B.places.val u (n : B.LL)`. Introduce `u n`. Proceed by induction on `n with`. Consider the case `zero => simp`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `succ n ih => push_cast; exact AddValuation.map_le_add _ ih (by simp)`. Apply `neg v` to reduce the goal to its premises. Use `(h _ (inv_mem (natCast_mem _ _))).2 ?_` and prove the remaining obligations. Choose the witnesses or unpack the hypotheses as in `⟨a, b, hab⟩ : ∃ a b : ℕ, a * B.places.resChar v = 1 + b * B.places.resChar v' := by`. Establish `hc : Nat.Coprime (B.places.resChar v) (B.places.resChar v')` using `(Nat.coprime_primes hp hp').2 hne`.
+Treat this case separately. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨a, -, ha⟩` from `Nat.exists_mul_mod_eq_one_of_coprime hc hp'.one_lt`. Use `⟨a, (B.places.resChar v * a) / B.places.resChar v', ?_⟩` and prove the remaining obligations. Use `Nat.mod_add_div (B.places.resChar v * a) (B.places.resChar v')` as an intermediate fact. Rewrite `this` using `[ha]`. Rewrite using `[mul_comm a, mul_comm _ (B.places.resChar v')]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this.symm`. Establish `hK : ((B.places.resChar v : B.LL))⁻¹ = a - b * B.places.resChar v' * ((B.places.resChar v : B.LL))⁻¹`. Establish `h0 : (B.places.resChar v : B.LL) ≠ 0` using `Nat.cast_ne_zero.2 hp.ne_zero`. Use `congrArg (Nat.cast : ℕ → B.LL) hab` as an intermediate fact. Move the coercions through the operations in `at this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts. Take the linear combination `-this`. Assume the negation of the conclusion as `hlt`. Rewrite `hlt` using `[not_le]`. Establish `h0 : (B.places.resChar v : B.LL) ≠ 0` using `Nat.cast_ne_zero.2 hp.ne_zero`.
+Take a linear combination of the given relations to obtain the conclusion. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨n, hn⟩` from `WithTop.ne_top_iff_exists.1 (hlt.trans (WithTop.coe_lt_top 0)).ne`. Establish `h1 : B.places.val v' ((B.places.resChar v : B.LL))⁻¹ < B.places.val v' (a : B.LL)` using `hlt.trans_le (nat v' a)`. Establish `h2 : B.places.val v' ((B.places.resChar v : B.LL))⁻¹ < B.places.val v' (b * B.places.resChar v' * ((B.places.resChar v : B.LL))⁻¹)`. Rewrite using `[AddValuation.map_mul, AddValuation.map_mul, B.places.val_resChar, ← hn]`. Establish `r` using `B.places.ramIdx_pos v'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb` using `nat v' b`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[zero_add, ← WithTop.coe_add, WithTop.coe_lt_coe]`. Use linear arithmetic over natural numbers and integers. Use `_ ≤ _ := by gcongr`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h2` using `[← AddValuation.map_neg _ ((b : B.LL) * _ * _)]`. Establish `h3` using `AddValuation.map_lt_add _ h1 h2`. Rewrite `h3` using `[← sub_eq_add_neg, ← hK]`. Conclude with `lt_irrefl _ h3`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem resChar_eq_of_same (B : Base) (v v' : B.places.Pl) (h : ∀ x ∈ B.LL0, 0 ≤ B.places.val v x ↔ 0 ≤ B.places.val v' x) :
     B.places.resChar v = B.places.resChar v' := by
@@ -282,16 +280,16 @@ theorem resChar_eq_of_same (B : Base) (v v' : B.places.Pl) (h : ∀ x ∈ B.LL0,
   exact lt_irrefl _ h3
 
 /- English proof (translation)
-The claim follows from `let ⟨Z, _, _, g, _⟩ := h ⟨Z, (g Z.W Z.V Z.S Z.N).1⟩`.
+A detailed English derivation is pending.
 -/
 theorem datGood_vol (h : DatGood K B f T w) : ∃ Z : w.Lt, Formalism.L2.Theta.VolTieG (w.D Z) :=
   let ⟨Z, _, _, g, _⟩ := h
   ⟨Z, (g Z.W Z.V Z.S Z.N).1⟩
 
 /- English proof (translation)
-Establish `hm : 0 < B.R.m` using `by have := B.R.two_le_m; omega`. Use `⟨⟨0, hm⟩, _, Or.inl rfl, Or.inr (Or.inr ?_)⟩` and prove the remaining obligations. Establish `e : (w.D Z).plEq.symm ((w.D Z).plEq v) = v` using `Equiv.symm_apply_apply _ _`. Use `show FK K.s (w.D Z) (0 + 1) ((w.D Z).what₂.places.resChar ((w.D Z).plEq.symm ((w.D Z).plEq v))) ≠ 0`. Rewrite using `[e]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `FK`. Rewrite using `[if_pos ⟨i, hv⟩]`. Conclude with `fTypeG_ne hk 1 le_rfl hm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_nonzero_places_of_residue_char {hX : B.fields.Ok} (z : R3.Dat (w.st Z) w.I hX T Wt) (hk : DV.KapDef (w.D Z)) (v : B.places.Pl) (i : Fin 2)
     (hv : B.places.resChar v = B.host.g i) : v ∈ z.W1 (F0K K.s (w.D Z)) := by
@@ -305,7 +303,7 @@ theorem mem_nonzero_places_of_residue_char {hX : B.fields.Ok} (z : R3.Dat (w.st 
   exact fTypeG_ne hk 1 le_rfl hm
 
 /- English proof (translation)
-Take `⟨Z, hX, z, -, -, -, hk, -, -, -, -, hs, -⟩` from `h`. Conclude with `hv ▸ hs v (mem_nonzero_places_of_residue_char z hk v i hv)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem datGood_g (h : DatGood K B f T w) (v : B.places.Pl) (i : Fin 2) (hv : B.places.resChar v = B.host.g i) : B.host.g i ∈ T.pl := by
   obtain ⟨Z, hX, z, -, -, -, hk, -, -, -, -, hs, -⟩ := h
@@ -319,9 +317,7 @@ def expTw (B : Base) (pl : Finset ℕ) (n : ℕ) (hc : ∀ v, B.places.resChar (
     conj := fun v => ⟨rfl, by simp only [hc]⟩ }
 
 /- English proof (translation)
-Use `⟨fun v v' h => ⟨rfl, ?_, rfl⟩, fun v => ?_⟩` and prove the remaining obligations. Use `show (if _ then n else 0) = if _ then n else 0`. Rewrite using `[resChar_eq_of_same B v v' h]`. Use `show ∃ z : B.LL, IsPrimitiveRoot z (_ ^ (if B.places.resChar v ∈ pl then n else 0)) split_ifs with h`. Conclude with `hr _ h`.
-
-Conclude with `⟨1, by rw [pow_zero]; exact IsPrimitiveRoot.one⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem coh_expTw (pl : Finset ℕ) (n : ℕ) (hc) (hr : ∀ p ∈ pl, ∃ z : B.LL, IsPrimitiveRoot z (p ^ n)) : Coh B (expTw B pl n hc) := by
   refine ⟨fun v v' h => ⟨rfl, ?_, rfl⟩, fun v => ?_⟩
@@ -333,11 +329,11 @@ theorem coh_expTw (pl : Finset ℕ) (n : ℕ) (hc) (hr : ∀ p ∈ pl, ∃ z : B
     · exact ⟨1, by rw [pow_zero]; exact IsPrimitiveRoot.one⟩
 
 /- English proof (translation)
-Introduce `h`. Take `⟨z, hz⟩` from `h.roots v`. Establish `hp` using `B.places.resChar_prime v`. Establish `hz' : IsPrimitiveRoot z (B.places.resChar v ^ (Module.finrank ℚ B.LL + 1))`. Establish `e : (expTw B {B.places.resChar v} (Module.finrank ℚ B.LL + 1) hc).k v = Module.finrank ℚ B.LL + 1` using `if_pos (Finset.mem_singleton_self _)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hz` using `[e]`. Then use the resulting hypothesis. Establish `hpos : 0 < B.places.resChar v ^ (Module.finrank ℚ B.LL + 1)` using `pow_pos hp.pos _`. Establish `l` using `IsPrimitiveRoot.lcm_totient_le_finrank hz' hz' (by`. Rewrite using `[Nat.lcm_self]`. Conclude with `Polynomial.cyclotomic.irreducible_rat hpos)`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `l` using `[Nat.lcm_self, Nat.totient_prime_pow_succ hp]`. Establish `a : Module.finrank ℚ B.LL < B.places.resChar v ^ Module.finrank ℚ B.LL` using `Nat.lt_pow_self hp.one_lt`. Establish `b : 1 ≤ B.places.resChar v - 1` using `by have := hp.two_le; omega`. Use `Nat.mul_le_mul_left (B.places.resChar v ^ Module.finrank ℚ B.LL) b` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem not_coh_expTw (hc) (v : B.places.Pl) :
     ¬ Coh B (expTw B {B.places.resChar v} (Module.finrank ℚ B.LL + 1) hc) := by
@@ -358,7 +354,7 @@ theorem not_coh_expTw (hc) (v : B.places.Pl) :
   omega
 
 /- English proof (translation)
-The claim follows from `Formalism.BasicNotions.resChar_conj (w.D Z) v`.
+A detailed English derivation is pending.
 -/
 theorem resChar_conj_base (Z : w.Lt) (v : B.places.Pl) : B.places.resChar (B.places.conj v) = B.places.resChar v :=
   Formalism.BasicNotions.resChar_conj (w.D Z) v

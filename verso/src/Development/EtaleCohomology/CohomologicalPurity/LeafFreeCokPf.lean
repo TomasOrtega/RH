@@ -10,11 +10,11 @@ def pcok (R : Type) [CommRing R] {A' B' A B : PSh} (i' : A' ⟶ B') (i : A ⟶ B
   cokernel.map _ _ ((freeP R).map a) ((freeP R).map b) (by rw [← Functor.map_comp, ← Functor.map_comp, w])
 
 /- English proof (translation)
-Rewrite `hW` using `[GrothendieckTopology.W_iff]`. Set `G` to `presheafToSheaf Scheme.etaleTopology.{0} (ModuleCat.{1} (ULift.{1} R))`. Establish `w' : (freeP R).map i' ≫ (freeP R).map b = (freeP R).map a ≫ (freeP R).map i`. Rewrite using `[← Functor.map_comp, ← Functor.map_comp, w]`. Establish `key` using `cokernel_map_comp_cokernelComparison ((freeP R).map i') G ((freeP R).map i) ((freeP R).map a) ((freeP R).map b) w'`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : IsIso (cokernelComparison ((freeP R).map i') G ≫ G.map (pcok R i' i a b w))`. Establish `: IsIso (G.map (pcok R i' i a b w))` using `hW`. Use `infer_instance`. Establish `h3 : IsIso (cokernel.map (G.map ((freeP R).map i')) (G.map ((freeP R).map i)) (G.map ((freeP R).map a)) (G.map ((freeP R).map b)) (by rw [← G.map_comp, w', G.map_comp]))`. Establish `h4 : IsIso (cokernel.map (G.map ((freeP R).map i')) (G.map ((freeP R).map i)) (G.map ((freeP R).map a)) (G.map ((freeP R).map b)) (by rw [← G.map_comp, w', G.map_comp]) ≫ cokernelComparison _ G)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key]`. Conclude with `h2`. Conclude with `IsIso.of_isIso_comp_right _ (cokernelComparison ((freeP R).map i) G)`. Conclude with `h3`.
+A detailed English derivation is pending.
 -/
 theorem isIso_cokernel_map_of_etale_local_iso (R : Type) [CommRing R] {A' B' A B : PSh} (i' : A' ⟶ B') (i : A ⟶ B) (a : A' ⟶ A)
     (b : B' ⟶ B) (w : i' ≫ b = a ≫ i) (hW : Scheme.etaleTopology.W (pcok R i' i a b w)) :
@@ -53,7 +53,7 @@ def LeafFreeCokInj : Prop := ∀ (R : Type) [CommRing R] {A' B' A B : PSh} (i' :
   Presheaf.IsLocallyInjective Scheme.etaleTopology (pcok R i' i a b w)
 
 /- English proof (translation)
-Introduce `R _ A' B' A B i' i a b w h1 h2 h3`. Apply `isIso_cokernel_map_of_etale_local_iso` to reduce the goal to its premises. Use `hS R i' i a b w h2` as an intermediate fact. Use `hI R i' i a b w h1 h3` as an intermediate fact. Conclude with `GrothendieckTopology.W_of_isLocallyBijective _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem LeafFreeCok_of (hS : LeafFreeCokSurj) (hI : LeafFreeCokInj) : LeafFreeCok := by
   intro R _ A' B' A B i' i a b w h1 h2 h3

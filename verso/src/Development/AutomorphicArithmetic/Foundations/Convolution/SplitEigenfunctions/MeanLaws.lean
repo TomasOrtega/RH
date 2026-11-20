@@ -9,15 +9,13 @@ open UpperTheory.V.Af.Smo (Eig EigAt)
 open UpperTheory.ConvolutionTheory.RankTwoDescent
 
 /- English proof (translation)
-Introduce `E _ _ N Ψ hΨ`. Establish `hgl : Continuous (gl : G1 E → GL (Fin 2) (A E))` using `by fun_prop`. Use `haveI : IsFiniteMeasure (N.μ.restrict N.D) := ⟨by simpa using volE E N⟩`. Establish `hc : ∀ y, Continuous fun h : G1 E => Ψ (gl h * y)` using `fun y => hΨ.cont.comp (hgl.mul continuous_const)`. Establish `hL : ∀ y, UpperTheory.ConvolutionTheory.R2.Ff.LRat fun x => Ψ (x * y)` using `fun y γ g => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `hΨ.left γ (g * y)` using `only [mul_assoc]`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `y`. Take `⟨B, hB⟩` from `hΨ.bdd {y} isCompact_singleton`. Conclude with `Integrable.of_bound (hc y).aestronglyMeasurable B (Eventually.of_forall fun h => hB h y rfl)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[continuous_iff_continuousAt]`. Introduce `y`. Take `⟨C, hCc, hCn⟩` from `exists_compact_mem_nhds y`. Take `⟨B, hB⟩` from `hΨ.bdd C hCc`. Use `continuousAt_of_dominated (bound := fun _ => B) ?_ ?_ (integrable_const B) ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `Eventually.of_forall fun z => (hc z).aestronglyMeasurable`. Use `filter_upwards [hCn] with z hz`. Conclude with `Eventually.of_forall fun h => hB h z hz`. Conclude with `Eventually.of_forall fun h => (hΨ.cont.comp (continuous_const.mul continuous_id)).continuousAt`. Introduce `h y`.
-
-Simplify `((invE E N).2 _ (hL y)).1 h` using `only [mul_assoc]`. Introduce `γ y`. Simplify `((invE E N).2 _ (hL y)).2 γ` using `only [mul_assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.RankTwoDescent.meanLaws :
     MeanLaws := by

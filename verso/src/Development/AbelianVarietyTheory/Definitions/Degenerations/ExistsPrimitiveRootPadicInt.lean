@@ -15,17 +15,17 @@ namespace DimZero
 open Inh
 
 /- English proof (translation)
-The claim follows from `map_one _`.
+A detailed English derivation is pending.
 -/
 theorem res_one {X : Scheme.{0}} {U V : X.Opens} (h : V ≤ U) : res h (1 : Γ(X, U)ˣ) = 1 := map_one _
 
 /- English proof (translation)
-The claim follows from `map_one _`.
+A detailed English derivation is pending.
 -/
 theorem pullU_one {X Y : Scheme.{0}} (f : Y ⟶ X) (U : X.Opens) : pullU f U (1 : Γ(X, U)ˣ) = 1 := map_one _
 
 /- English proof (translation)
-Use `ext`. Simplify using `only [res, Units.coe_map, MonoidHom.coe_coe]`. Rewrite using `[← CommRingCat.comp_apply, ← Functor.map_comp]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem res_res {X : Scheme.{0}} {U V W : X.Opens} (h : V ≤ U) (h' : W ≤ V) (u : Γ(X, U)ˣ) :
     res h' (res h u) = res (h'.trans h) u := by
@@ -38,7 +38,7 @@ def oneG {X Y : Scheme.{0}} {K : Type} [Fintype K] (φ : K → (Y ⟶ X)) (ε : 
     LB.Gen (LB.LinComb (trivLB X) φ ε) := ⟨fun _ => 1⟩
 
 /- English proof (translation)
-Introduce `i j`. Rewrite using `[linComb_triv_g, _root_.one_mul]`. Conclude with `(res_one _).trans (res_one _).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem oneG_gen {X Y : Scheme.{0}} {K : Type} [Fintype K] (φ : K → (Y ⟶ X)) (ε : K → ℤ) :
     (oneG φ ε).IsGen := by
@@ -49,7 +49,7 @@ def oneS {X Y : Scheme.{0}} {K : Type} [Fintype K] (φ : K → (Y ⟶ X)) (ε : 
   intro i j; rw [linComb_triv_g, Units.val_one, _root_.one_mul]; exact (map_one _).trans (map_one _).symm⟩
 
 /- English proof (translation)
-Apply `top_unique` to reduce the goal to its premises. Introduce `x _`. Conclude with `Set.mem_iInter.2 fun _ => trivial`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem wchart_triv {X Y : Scheme.{0}} {K : Type} [Fintype K] (φ : K → (Y ⟶ X)) (j : K → (trivLB X).ι) :
     LB.wchart (trivLB X) φ j = ⊤ := by
@@ -58,7 +58,7 @@ theorem wchart_triv {X Y : Scheme.{0}} {K : Type} [Fintype K] (φ : K → (Y ⟶
   exact Set.mem_iInter.2 fun _ => trivial
 
 /- English proof (translation)
-Introduce `j j' _ _ _`. Conclude with `((congrArg _ (h j)).trans (res_one _)).trans ((congrArg _ (h' j')).trans (res_one _)).symm`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem corr_of_one {X Y : Scheme.{0}} (L : LB X) {K K' : Type} [Fintype K] [Fintype K'] (φ : K → (Y ⟶ X)) (ε : K → ℤ)
     (φ' : K' → (Y ⟶ X)) (ε' : K' → ℤ) (t : LB.Gen (LB.LinComb L φ ε)) (t' : LB.Gen (LB.LinComb L φ' ε'))
@@ -67,7 +67,7 @@ theorem corr_of_one {X Y : Scheme.{0}} (L : LB X) {K K' : Type} [Fintype K] [Fin
   exact ((congrArg _ (h j)).trans (res_one _)).trans ((congrArg _ (h' j')).trans (res_one _)).symm
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨fun _ => 1⟩, by intro i j have : (LB.div M L).g i j = 1 := by simp only [LB.div, hL, hM] erw [res_one, res_one]; simp; rfl rw [this, _root_.one_mul]; exact (res_one _).trans (res_one _).symm⟩`.
+Supply the required witnesses or components.
 -/
 theorem isoOne {X : Scheme.{0}} (L M : LB X) (hL : ∀ i j, L.g i j = 1) (hM : ∀ i j, M.g i j = 1) : LBIso L M :=
   ⟨⟨fun _ => 1⟩, by
@@ -80,7 +80,7 @@ theorem isoOne {X : Scheme.{0}} (L M : LB X) (hL : ∀ i j, L.g i j = 1) (hM : �
 variable (B : Scheme.{0})
 
 /- English proof (translation)
-Use `⟨𝟙 _, 𝟙 _, inferInstance, inferInstance, toUnit_unique _ _, ?_, ?_⟩` and prove the remaining obligations. Conclude with `isoOne _ _ (fun _ _ => rfl) (fun _ _ => linComb_triv_g _ _ _ _)`. Conclude with `isoOne _ _ (fun _ _ => linComb_triv_g _ _ _ _) (fun _ _ => linComb_triv_g _ _ _ _)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem hypS_zero : HypS (zeroPolAV B).A (zeroPolAV B).L := by
   refine ⟨𝟙 _, 𝟙 _, inferInstance, inferInstance, toUnit_unique _ _, ?_, ?_⟩
@@ -88,11 +88,11 @@ theorem hypS_zero : HypS (zeroPolAV B).A (zeroPolAV B).L := by
   · exact isoOne _ _ (fun _ _ => linComb_triv_g _ _ _ _) (fun _ _ => linComb_triv_g _ _ _ _)
 
 /- English proof (translation)
-Substitute `hW` using the available equality. Use `haveI : IsIso (fst T (zeroPolAV B).A) := by show IsIso (fst T (𝟙_ (Over B)))`. Rewrite using `[← rightUnitor_hom]`. Use `infer_instance`. Use `haveI : IsIso (fst T (zeroPolAV B).A).left := inferInstanceAs (IsIso ((Over.forget B).map (fst T (zeroPolAV B).A)))`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `h` using `ConcreteCategory.bijective_of_isIso ((fst T (zeroPolAV B).A).left.app ⊤)`. Establish `e : liftFun (zeroPolAV B).A (T` using `T) ⊤ = (fst T (zeroPolAV B).A).left.appTop.hom := by`. Use function extensionality and compare the values at `r`. Simplify using `only [liftFun]`. Establish `: (homOfLE (le_top : (⊤ : (T ⊗ (zeroPolAV B).A).left.Opens) ≤ ⊤)).op = 𝟙 _` using `rfl`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, CategoryTheory.Functor.map_id]`. Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem liftFun_bij (T : Over B) (W : (T ⊗ (zeroPolAV B).A).left.Opens) (hW : W = ⊤) :
     Function.Bijective (liftFun (zeroPolAV B).A (T := T) W) := by
@@ -110,9 +110,9 @@ theorem liftFun_bij (T : Over B) (W : (T ⊗ (zeroPolAV B).A).left.Opens) (hW : 
   rw [e]; exact h
 
 /- English proof (translation)
-Establish `: translT (zeroPolAV B).A x = 𝟙 _`. Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises. Simplify using `[translT]`. Conclude with `toUnit_unique _ _`. Rewrite using `[this]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem translT_id {T : Over B} (x : T ⟶ (zeroPolAV B).A) : (translT (zeroPolAV B).A x).left = 𝟙 _ := by
   have : translT (zeroPolAV B).A x = 𝟙 _ := by
@@ -122,11 +122,11 @@ theorem translT_id {T : Over B} (x : T ⟶ (zeroPolAV B).A) : (translT (zeroPolA
   rw [this]; rfl
 
 /- English proof (translation)
-Substitute `hh hh'` using the available equality. Introduce `j j' _ _ _`. Set `d : K → (trivLB X).ι` to `fun _ => PUnit.unit`. Establish `ha : ⊤ ≤ LB.wchart (trivLB X) φ d` using `by rw [wchart_triv]`. Establish `hb : ⊤ ≤ LB.wchart (trivLB X) φ' d` using `by rw [wchart_triv]`.
+Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : ∀ (V W : Y.Opens) (h1 : V ≤ W) (U U' : Y.Opens) (h2 : W ≤ U) (h3 : W ≤ U') (u : Γ(Y, U)ˣ) (v : Γ(Y, U')ˣ), res h1 (res h2 u * res h3 v) = res (h1.trans h2) u * res (h1.trans h3) v` using `by intros; rw [map_mul, res_res, res_res]`. Use `(e1 _ _ _ _ _ _ _ _ _).trans (Eq.trans ?_ (e1 _ _ _ _ _ _ _ _ _).symm)` and prove the remaining obligations. Use `Eq.trans ?_ (congrArg₂ (· * ·) (e1 _ _ _ _ _ _ _ _ _) ((congrArg _ (hc _)).trans (res_one _))).symm` and prove the remaining obligations. Rewrite using `[_root_.mul_one, _root_.mul_comm]`. Use `congrArg₂ (· * ·) ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(res_res _ _ _)`. Conclude with `(res_res _ _ _).symm`.
+A detailed English derivation is pending.
 -/
 theorem corr_comm {X Y : Scheme.{0}} {K : Type} [Fintype K] (φ φ' : K → (Y ⟶ X)) (ε : K → ℤ)
     (a : LB.Gen (LB.LinComb (trivLB X) φ ε)) (b : LB.Gen (LB.LinComb (trivLB X) φ' ε)) (h h' : Y ⟶ Y)
@@ -150,9 +150,9 @@ theorem corr_comm {X Y : Scheme.{0}} {K : Type} [Fintype K] (φ φ' : K → (Y �
   · exact (res_res _ _ _).symm
 
 /- English proof (translation)
-Introduce `p`. Use `⟨⊤, trivial, ⟨⟨_, oneG _ _, oneG_gen _ _⟩, ⟨_, oneG _ _, oneG_gen _ _⟩, rfl, rfl⟩, ?_⟩` and prove the remaining obligations. Introduce `θx θy _ _`. Establish `hc : unitRes (T` using `T) ⊤ 1 = 1 := map_one _`. Rewrite using `[hc]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `corr_comm _ _ _ _ _ _ _ (translT_id B _) (translT_id B _) _ (fun j => (congrArg _ (map_one _)).trans (res_one _))`.
+A detailed English derivation is pending.
 -/
 theorem weil_zero (k : ℤ) {T : Over B} (x y : T ⟶ (zeroPolAV B).A) :
     WeilIs (zeroPolAV B).A (zeroPolAV B).L k x y 1 := by
@@ -192,22 +192,20 @@ def sys0 (ζ : o) (hζ : IsPrimitiveRoot ζ ((3 * 81) ^ 2)) (hu : IsUnit ((3 * 8
   th_ne := ⟨0, one_ne_zero⟩
 
 /- English proof (translation)
-The claim follows from `map_one _`.
+A detailed English derivation is pending.
 -/
 theorem fn_one {R : Type} [CommRing R] : fn (1 : R) = 1 := map_one _
 
 /- English proof (translation)
-Simplify using `only [liftFun, map_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem liftFun_one {T : Over B} (A : Over B) (W : (T ⊗ A).left.Opens) : liftFun A (T := T) W 1 = 1 := by
   simp only [liftFun, map_one]
 
 /- English proof (translation)
-Set `d : (LPow (zeroPolAV B).A (zeroPolAV B).L k T).ι` to `fun _ => PUnit.unit`. Establish `hb` using `liftFun_bij B T ((LPow (zeroPolAV B).A (zeroPolAV B).L k T).U d) (wchart_triv _ _)`. Take `⟨c, hc⟩` from `hb.2 (σ.f d)`. Use `⟨fun _ => c, fun j => ?_, fun c' h' => ?_⟩` and prove the remaining obligations. Rewrite using `[Fintype.sum_unique]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hc.symm.trans (_root_.mul_one _).symm`. Use function extensionality and compare the values at `i`. Use `h' d` as an intermediate fact. Rewrite `this` using `[Fintype.sum_unique]`. Rewrite using `[Subsingleton.elim i default]`.
-
-Conclude with `hb.1 (((_root_.mul_one _).symm.trans this.symm).trans hc.symm)`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem basis_zero (T : Over B) (k : ℤ) (J : Type) [Fintype J] [Unique J] (σ : LB.Sec (LPow (zeroPolAV B).A (zeroPolAV B).L k T)) :
     ∃! c : J → Γ(T.left, ⊤), ∀ j, σ.f j = ∑ i, liftFun (zeroPolAV B).A _ (c i) *
@@ -224,7 +222,7 @@ theorem basis_zero (T : Over B) (k : ℤ) (J : Type) [Fintype J] [Unique J] (σ 
     exact hb.1 (((_root_.mul_one _).symm.trans this.symm).trans hc.symm)
 
 /- English proof (translation)
-Introduce `j`. Use `((congrArg _ (map_one _)).trans (map_one _)).trans ?_` and prove the remaining obligations. Rewrite using `[map_one, _root_.one_mul]`. Conclude with `(congrArg Units.val (hτ j)).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem value_one (k : ℤ) {T : Over B} (z : T ⟶ (zeroPolAV B).A)
     (τ : LB.Gen (LB.LinComb (zeroPolAV B).L (Y := T.left) (K := Fin 1) (fun _ => z.left) (fun _ => k))) (hτ : ∀ j, τ.s j = 1) :
@@ -235,7 +233,7 @@ theorem value_one (k : ℤ) {T : Over B} (z : T ⟶ (zeroPolAV B).A)
   exact (congrArg Units.val (hτ j)).symm
 
 /- English proof (translation)
-The claim follows from `(congrArg₂ (· * ·) ((congrArg _ (h _)).trans (res_one _)) ((congrArg _ (h' _)).trans (res_one _))).trans (_root_.one_mul _)`.
+A detailed English derivation is pending.
 -/
 theorem mul_s_one {X Y : Scheme.{0}} (L : LB X) {K K' : Type} [Fintype K] [Fintype K'] (φ : K → (Y ⟶ X)) (ε : K → ℤ)
     (φ' : K' → (Y ⟶ X)) (ε' : K' → ℤ) (t : LB.Gen (LB.LinComb L φ ε)) (t' : LB.Gen (LB.LinComb L φ' ε'))
@@ -243,27 +241,27 @@ theorem mul_s_one {X Y : Scheme.{0}} (L : LB X) {K K' : Type} [Fintype K] [Finty
   (congrArg₂ (· * ·) ((congrArg _ (h _)).trans (res_one _)) ((congrArg _ (h' _)).trans (res_one _))).trans (_root_.one_mul _)
 
 /- English proof (translation)
-The claim follows from `(congrArg _ ((congrArg _ (h _)).trans (pullU_one _ _))).trans (res_one _)`.
+A detailed English derivation is pending.
 -/
 theorem pull_s_one {X Y Z : Scheme.{0}} (L : LB X) {K : Type} [Fintype K] (φ : K → (Y ⟶ X)) (ε : K → ℤ)
     (t : LB.Gen (LB.LinComb L φ ε)) (f : Z ⟶ Y) (h : ∀ j, t.s j = 1) (j) : (LB.pullGen L φ ε t f).s j = 1 :=
   (congrArg _ ((congrArg _ (h _)).trans (pullU_one _ _))).trans (res_one _)
 
 /- English proof (translation)
-The claim follows from `(congrArg (·⁻¹) (h j)).trans inv_one`.
+A detailed English derivation is pending.
 -/
 theorem inv_s_one {X Y : Scheme.{0}} (L : LB X) {K : Type} [Fintype K] (φ : K → (Y ⟶ X)) (ε : K → ℤ)
     (t : LB.Gen (LB.LinComb L φ ε)) (h : ∀ j, t.s j = 1) (j) : (LB.invGen L φ ε t).s j = 1 :=
   (congrArg (·⁻¹) (h j)).trans inv_one
 
 /- English proof (translation)
-The claim follows from `(congrArg (· ^ k) ((congrArg _ (pullU_one _ _)).trans (res_one _))).trans (one_zpow _)`.
+A detailed English derivation is pending.
 -/
 theorem rigT_one (T : Over B) (k : ℤ) (j) : (rigT (zeroPolAV B).A (zeroPolAV B).L (oneG _ _) T k).s j = 1 :=
   (congrArg (· ^ k) ((congrArg _ (pullU_one _ _)).trans (res_one _))).trans (one_zpow _)
 
 /- English proof (translation)
-Use `⟨toUnit_unique _ _, oneG_gen _ _, oneG _ _, oneG_gen _ _, ?_, ?_⟩` and prove the remaining obligations. Conclude with `corr_of_one _ _ _ _ _ _ _ (pull_s_one _ _ _ _ _ fun _ => rfl) (mul_s_one _ _ _ _ _ _ _ (fun _ => one_zpow _) (inv_s_one _ _ _ _ fun _ => rfl))`. Conclude with `corr_of_one _ _ _ _ _ _ _ (fun _ => one_zpow _) (mul_s_one _ _ _ _ _ _ _ (pull_s_one _ _ _ _ _ fun _ => rfl) (rigT_one B _ _))`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem tors_zero (n : ℕ) {T : Over B} (x : T ⟶ (zeroPolAV B).A) :
     IsTorsFrame (zeroPolAV B) (oneG _ _) n x (oneG _ _) := by
@@ -274,7 +272,7 @@ theorem tors_zero (n : ℕ) {T : Over B} (x : T ⟶ (zeroPolAV B).A) :
       (mul_s_one _ _ _ _ _ _ _ (pull_s_one _ _ _ _ _ fun _ => rfl) (rigT_one B _ _))
 
 /- English proof (translation)
-Use `⟨rfl, corr_of_one _ _ _ _ _ _ _ (fun j => ?_) (fun _ => rfl), oneG _ _, oneG_gen _ _, corr_of_one _ _ _ _ _ _ _ ?_ (fun _ => rfl)⟩` and prove the remaining obligations. Use `show (∏ j₀ : Fin n, (_ : Γ((T ⊗ (zeroPolAV B).A).left, LB.wchart (zeroPolAV B).L (powφ (zeroPolAV B).A x n) j)ˣ)) = 1`. Use `Finset.prod_eq_one fun j₀ _ => ?_` and prove the remaining obligations. Conclude with `(congrArg _ ((congrArg _ (pullU_one _ _)).trans (res_one _))).trans (res_one _)`. Conclude with `mul_s_one _ _ _ _ _ _ _ (mul_s_one _ _ _ _ _ _ _ (pull_s_one _ _ _ _ _ fun _ => rfl) fun _ => rfl) (mul_s_one _ _ _ _ _ _ _ (pull_s_one _ _ _ _ _ fun _ => rfl) (inv_s_one _ _ _ _ (pull_s_one _ _ _ _ _ fun _ => rfl)))`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem symLift_zero (k : ℤ) (n : ℕ) {T : Over B} (x : T ⟶ (zeroPolAV B).A) :
     SymLift (zeroPolAV B).A (zeroPolAV B).L k n x ⟨x, oneG _ _, oneG_gen _ _⟩ := by
@@ -288,7 +286,7 @@ theorem symLift_zero (k : ℤ) (n : ℕ) {T : Over B} (x : T ⟶ (zeroPolAV B).A
         (inv_s_one _ _ _ _ (pull_s_one _ _ _ _ _ fun _ => rfl)))
 
 /- English proof (translation)
-Introduce `j`. Use `(map_one _).trans ?_` and prove the remaining obligations. Conclude with `((congrArg₂ (· * ·) rfl ((congrArg _ (map_one _)).trans (map_one _))).trans (_root_.one_mul _)).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem twist_one {T : Over B} (ψ : T ⊗ (zeroPolAV B).A ⟶ T ⊗ (zeroPolAV B).A) (m) (hm : ψ ≫ snd T _ = m) (a b : ℤ) :
     IsTwistPull (zeroPolAV B).A (zeroPolAV B).L ψ m hm a b (oneG _ _) (oneS _ _) (oneS _ _) := by
@@ -297,9 +295,9 @@ theorem twist_one {T : Over B} (ψ : T ⊗ (zeroPolAV B).A ⟶ T ⊗ (zeroPolAV 
   exact ((congrArg₂ (· * ·) rfl ((congrArg _ (map_one _)).trans (map_one _))).trans (_root_.one_mul _)).symm
 
 /- English proof (translation)
-Establish `h1` using `(h (fun _ => PUnit.unit)).trans ((congrArg₂ (· * ·) rfl ((congrArg _ (map_one _)).trans (map_one _))).trans (_root_.one_mul _))`. Establish `key : ∀ (Y : Scheme.{0}) (U V : Y.Opens) (hle : V ≤ U) (_ : U = ⊤) (_ : V = ⊤) (f : Γ(Y, U)), (Y.presheaf.map (homOfLE hle).op).hom f = 1 → f = 1`. Introduce `Y U V hle hU hV f hf`. Substitute `hU hV` using the available equality. Establish `: (homOfLE hle).op = 𝟙 _` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact.
 
-Rewrite `hf` using `[this, CategoryTheory.Functor.map_id]`. Conclude with `hf`. Conclude with `key _ _ _ _ (wchart_triv _ _) (wchart_triv _ _) _ h1`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem act_one {T : Over B} (x : T ⟶ (zeroPolAV B).A) (k : ℤ) (σ : LB.Sec (LPow (zeroPolAV B).A (zeroPolAV B).L k T))
     (h : IsActOf (zeroPolAV B).A (zeroPolAV B).L k ⟨x, oneG _ _, oneG_gen _ _⟩ (oneS _ _) σ) (j) : σ.f j = 1 := by
@@ -378,9 +376,9 @@ def fracToCl : FractionRing ℤ_[p] →+* PadicAlgCl p :=
   (algebraMap ℚ_[p] (PadicAlgCl p)).comp (FractionRing.algEquiv ℤ_[p] ℚ_[p]).toRingEquiv.toRingHom
 
 /- English proof (translation)
-Establish `h : ‖fracToCl p x‖ = ‖FractionRing.algEquiv ℤ_[p] ℚ_[p] x‖` using `PadicAlgCl.norm_extends _ _`. Rewrite using `[h]`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Use `⟨⟨_, hx⟩, (FractionRing.algEquiv ℤ_[p] ℚ_[p]).injective ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `AlgEquiv.commutes _ _`. Introduce and unpack `⟨a, rfl⟩`. Rewrite using `[AlgEquiv.commutes]`. Conclude with `a.2`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_fracToCl_le (x : FractionRing ℤ_[p]) :
     ‖fracToCl p x‖ ≤ 1 ↔ x ∈ Set.range (algebraMap ℤ_[p] (FractionRing ℤ_[p])) := by
@@ -447,7 +445,7 @@ def labOfZero {S : ThetaSys o Ω} {ρ : S.Real} {p : ℕ} [Fact p.Prime] {y₀ :
     rw [h0, map_zero]; rfl
 
 /- English proof (translation)
-Substitute `hU hf` using the available equality. Rewrite using `[valF, dif_pos (by simp), map_one, map_one]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 -/
 theorem valF_one {F : Type} [Field F] {X : Scheme.{0}} (x : Sp F ⟶ X) (U : X.Opens) (hU : U = ⊤) (f : Γ(X, U))
     (hf : f = 1) : valF x U f = 1 := by
@@ -455,7 +453,7 @@ theorem valF_one {F : Type} [Field F] {X : Scheme.{0}} (x : Sp F ⟶ X) (U : X.O
   rw [valF, dif_pos (by simp), map_one, map_one]
 
 /- English proof (translation)
-Introduce `j _`. Use `(congrArg (fun z => ‖fracToCl p z‖) (valF_one _ _ (wchart_triv _ _) _ ?_)).trans (by simp)` and prove the remaining obligations. Conclude with `congrArg Units.val (((ToricData.psi_isConst (K := ℤ_[p]) (X := PUnit) (fun _ => 1) χ).of_eq ToricData.unitOn_one j).trans (UnifZero.gv_one _))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem psiNorm_utest0 (χ) : (utest0 ζ hζ hu R fg frac p yK).PsiNorm χ 1 := by
   intro j _
@@ -465,7 +463,7 @@ theorem psiNorm_utest0 (χ) : (utest0 ζ hζ hu R fg frac p yK).PsiNorm χ 1 := 
       (UnifZero.gv_one _))
 
 /- English proof (translation)
-Use `⟨𝟙 _, pullback.lift (jK ℤ_[p]) (𝟙 _) ((Category.comp_id _).trans (Category.id_comp _).symm), Category.comp_id _, (pullback.lift_fst _ _ _).trans (Category.comp_id _).symm, pullback.lift_snd _ _ _, ?_⟩` and prove the remaining obligations. Establish `h1 : (utest0 ζ hζ hu R fg frac p yK).U.gen.hom.left = pullback.snd (𝟙 (Sp ℤ_[p])) (jK ℤ_[p])` using `(Category.comp_id _).symm.trans (Over.w (utest0 ζ hζ hu R fg frac p yK).U.gen.hom)`. Establish `h2 : ((real0 ζ hζ hu R fg frac).pt a).left = 𝟙 _` using `(Category.comp_id _).symm.trans (Over.w ((real0 ζ hζ hu R fg frac).pt a))`. Rewrite using `[h1, h2]`. Conclude with `((Category.assoc _ _ _).symm.trans ((congrArg (· ≫ spMap yK) (pullback.lift_snd _ _ _)).trans (Category.id_comp _))).trans (Category.comp_id _).symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_utest0 (a) : (utest0 ζ hζ hu R fg frac p yK).Integral a := by
   refine ⟨𝟙 _, pullback.lift (jK ℤ_[p]) (𝟙 _) ((Category.comp_id _).trans (Category.id_comp _).symm),
@@ -491,7 +489,7 @@ abbrev intAway (K : Type) [Field K] [NumberField K] : Subalgebra (𝓞 K) K :=
     (powers_le_nonZeroDivisors_of_noZeroDivisors (by norm_num))
 
 /- English proof (translation)
-The claim follows from `IsLocalization.isDedekindDomain (𝓞 K) (M := Submonoid.powers (3 : 𝓞 K)) (powers_le_nonZeroDivisors_of_noZeroDivisors (by norm_num)) _ ft := by haveI : Algebra.FinitePresentation (𝓞 K) (intAway K) := IsLocalization.Away.finitePresentation (3 : 𝓞 K) exact Algebra.FiniteType.trans ( …`.
+A detailed English derivation is pending.
 -/
 theorem arithBase_intAway (K : Type) [Field K] [NumberField K] : ArithBase (intAway K) K where
   ded := IsLocalization.isDedekindDomain (𝓞 K) (M := Submonoid.powers (3 : 𝓞 K))
@@ -503,7 +501,7 @@ theorem arithBase_intAway (K : Type) [Field K] [NumberField K] : ArithBase (intA
   inj := Subtype.val_injective
 
 /- English proof (translation)
-Use `IsLocalization.Away.algebraMap_isUnit (S := intAway K) (3 : 𝓞 K)` as an intermediate fact. Rewrite `this` using `[map_ofNat]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem isUnit_three_intAway (K : Type) [Field K] [NumberField K] : IsUnit (3 : intAway K) := by
   have := IsLocalization.Away.algebraMap_isUnit (S := intAway K) (3 : 𝓞 K)
@@ -512,7 +510,7 @@ theorem isUnit_three_intAway (K : Type) [Field K] [NumberField K] : IsUnit (3 : 
 end Arith
 
 /- English proof (translation)
-Establish `: ∀ x, ‖y₀ ⟨(sys0 ζ hζ hu R fg frac).th x, (sys0 ζ hζ hu R fg frac).th_mem x⟩‖ = 1` using `fun x => (congrArg _ (map_one y₀)).trans norm_one`. Conclude with `(iSup_congr this).trans ciSup_const`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 example {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] (ζ : o) (hζ) (hu) (R : Subalgebra o Ω) (fg) (frac)
     (p : ℕ) [Fact p.Prime] (y₀ : R →+* PadicAlgCl p) : (sys0 ζ hζ hu R fg frac).delta y₀ = 1 := by
@@ -521,9 +519,9 @@ example {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] (ζ : o) (hζ) (hu)
   exact (iSup_congr this).trans ciSup_const
 
 /- English proof (translation)
-Establish `h1 : (2 : ℝ) ^ ((1 : ℝ) / 2) ≤ 2 ^ (1 : ℝ)` using `Real.rpow_le_rpow_of_exponent_le (by norm_num) (by norm_num)`. Establish `h2 : (2 : ℝ) ^ ((1 : ℝ) / 2 - 1) < 1` using `Real.rpow_lt_one_of_one_lt_of_neg (by norm_num) (by norm_num)`. Rewrite `h1` using `[Real.rpow_one]`. Simplify using `only [ThetaSys.Big, hg, hN, hr]`. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Use `⟨by linarith, by simp only [Nat.factorial_one, Nat.cast_one]; linarith, by norm_num⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations.
 -/
 example {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] (S : ThetaSys o Ω) (hg : S.g = 1) (hN : S.N = 81)
     (hr : S.r = 243) : S.Big := by
@@ -535,9 +533,9 @@ example {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] (S : ThetaSys o Ω)
   refine ⟨by linarith, by simp only [Nat.factorial_one, Nat.cast_one]; linarith, by norm_num⟩
 
 /- English proof (translation)
-Establish `h2 : (2 : ℝ) ^ (-1 : ℝ) ≤ (2 : ℝ) ^ ((1 : ℝ) / 2 - 1)` using `Real.rpow_le_rpow_of_exponent_le (by norm_num) (by norm_num)`. Rewrite `h2` using `[Real.rpow_neg_one]`. Simplify using `only [ThetaSys.Big, hg, hN, hr]`. Use `push_cast`. Introduce and unpack `⟨-, h, -⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Assume the hypotheses and unpack their components.
 
-Simplify using `only [Nat.factorial_one, Nat.cast_one] at h`. Combine the linear equalities and inequalities to obtain the conclusion.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 example {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] (S : ThetaSys o Ω) (hg : S.g = 1) (hN : S.N = 81)
     (hr : S.r = 81) : ¬ S.Big := by

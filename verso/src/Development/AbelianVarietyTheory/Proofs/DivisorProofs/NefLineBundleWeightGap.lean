@@ -31,19 +31,17 @@ noncomputable section
 namespace GlobalTheory.NefWt
 
 /- English proof (translation)
-Introduce `hPr hNN hSA E _ _ _ H Dw l Xo c TF Z hF la hla`. Use `letI := algebraΓOfHom (str₀ TF.X Z)`. Take `⟨-, hproj, -⟩` from `GlobalTheory.T.flagSpace_component_smooth_projective_connected E H Dw l Xo c TF Z hF`. Take `⟨A, hA⟩` from `exists_isAmpleLB_of_isProjOver hproj`. Set `C` to `common₀ TF.X Z`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `φ` to `AddMonoidHom.mk' (fun a => cls (L₀ TF.X Z a) (C.isLB a)) (cls_common_add C)`. Establish `hφ : ∀ a, cls (L₀ TF.X Z a) (C.isLB a) = φ a` using `fun _ => rfl`. Establish `nef0 : ∀ a, φ a = 0 → IsNef c.F (L₀ TF.X Z a)` using `fun a h => (isNef_triv c.F _).of_cls_eq (C.isLB a) (by rw [hφ, h]; rfl)`. Distinguish the cases in `hN : 0 < Dw.p + Dw.q`. Use `swap`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations.
 
-Use `nef0 la ?_` and prove the remaining obligations. Establish `: la = 0` using `funext fun τ => funext fun i => absurd i.2 (by omega)`. Rewrite using `[this, map_zero]`. Establish `key : la = _` using `decomp la hla hN`. Set `cτ : Psi H → ℤ` to `fun τ => la τ ⟨Dw.p + Dw.q - 1, by omega⟩ + ∑ k ∈ Finset.range (Dw.p + Dw.q - 1), if Dw.p ≤ k then gap (la τ) k else 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `W : (Psi H × ℕ) ⊕ (Psi H × Bool) → AllWt.Weight Dw` to `Sum.elim (fun y : Psi H × ℕ => piece Dw y.1 y.2) (fun y : Psi H × Bool => unitWt y.1 (if y.2 then 1 else -1))`. Establish `hP : ∀ x, IsNef c.F (L₀ TF.X Z (W x))`. Introduce and unpack `(⟨τ, k⟩ | ⟨τ, b⟩)`. Use `show IsNef c.F (L₀ TF.X Z (piece Dw τ k))`. Unfold `piece`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Replace the relevant objects with their definitions. Split into cases according to the possible forms of the given data. Reduce the conclusion to the remaining proof obligations.
 
-Use `split_ifs with h1 h2`. Conclude with `GlobalTheory.T.head_weight_line_nef hSA hPr hNN E H Dw l Xo c TF Z hF τ k h2`. Conclude with `GlobalTheory.T.tail_weight_line_nef hSA hPr hNN E H Dw l Xo c TF Z hF τ k (not_lt.1 h2) h1`. Conclude with `nef0 0 (map_zero φ)`. Consider the cases of `b`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Conclude with `(GlobalTheory.T.torus_flag_unit_weight_bundles_nef hPr hNN E H Dw l Xo c TF Z hF τ).2`. Conclude with `(GlobalTheory.T.torus_flag_unit_weight_bundles_nef hPr hNN E H Dw l Xo c TF Z hF τ).1`. Use `IsNef.of_cls_eq_sum ((Finset.univ ×ˢ Finset.range (Dw.p + Dw.q - 1)).disjSum Finset.univ) hP (Sum.elim (fun y : Psi H × ℕ => (gap (la y.1) y.2).toNat) (fun y : Psi H × Bool => if y.2 then (cτ y.1).toNat else (-cτ y.1).toNat)) hA (C.isLB la) ?_` and prove the remaining obligations. Rewrite using `[hφ]`. Use `conv_lhs => rw [key]`.
-
-Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[map_nsmul]`. Apply the tactic sequence `rcases x with ⟨τ, k⟩ | ⟨τ, b⟩ <;> rfl`.
+A detailed English derivation is pending.
 -/
 theorem isNef_L₀ : GlobalTheory.CovTop.Hypotheses₂ → GlobalTheory.Published.NefNumerics → GlobalTheory.Published.SemiAbelianLieSeminegative → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (TF : TorFlag Xo c) (Z : Comp Xo c), FnAlgClosed Xo c → ∀ la : AllWt.Weight Dw, GapGe 0 la → letI := algebraΓOfHom (str₀ TF.X Z); IsNef c.F (L₀ TF.X Z la) := by
   intro hPr hNN hSA E _ _ _ H Dw l Xo c TF Z hF la hla

@@ -20,7 +20,7 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.TypeBlockConj
 
 /- English proof (translation)
-Introduce `w hw`. Establish `: ((x * y).1 : Matrix (Fin n) (Fin n) (AL L)) = (x.1 : Matrix (Fin n) (Fin n) (AL L)) * (y.1 : Matrix (Fin n) (Fin n) (AL L))` using `rfl`. Rewrite using `[this, Matrix.map_mul, hx w hw, hy w hw, mul_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem trivOutside_mul {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ}
     {T : Set (HeightOneSpectrum (𝓞 (maximalRealSubfield L)))} {x y : GA L n}
@@ -31,9 +31,9 @@ theorem trivOutside_mul {L : Type} [Field L] [NumberField L] [IsCMField L] {n : 
   rw [this, Matrix.map_mul, hx w hw, hy w hw, mul_one]
 
 /- English proof (translation)
-Introduce `w hw`. Establish `h1 : (((x⁻¹ : GA L n).1 : GL (Fin n) (AL L)) : Matrix (Fin n) (Fin n) (AL L)) * (x.1 : Matrix (Fin n) (Fin n) (AL L)) = 1`. Rewrite using `[← Units.val_mul, ← Subgroup.coe_mul, inv_mul_cancel]`. Both sides reduce to the same expression. Establish `h2` using `congrArg (fun M => M.map (compAt L w)) h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Simplify using `only [Matrix.map_mul, hx w hw, mul_one] at h2`. Rewrite using `[h2, Matrix.map_one _ (map_zero _) (map_one _)]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem trivOutside_inv {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ}
     {T : Set (HeightOneSpectrum (𝓞 (maximalRealSubfield L)))} {x : GA L n}
@@ -60,35 +60,33 @@ namespace GlobalTheory.TypeBlockConj
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `hL D P S hS i k v s hw hs hμt c hc hcs Q`. Take `⟨hj1, hj2⟩` from `D.nd.j_range i`. Set `j : Fin D.R.m` to `⟨D.nd.j i - 1, by omega⟩`. Establish `hj : j.1 + 1 = D.nd.j i` using `by simp only [j]; omega`. Establish `hconj : IsConjPl D.host (D.naut.plGw k v) s.w`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hs]`. Conclude with `GlobalTheory.DimPartsCompare.isConjPl_cPl _`. Take `⟨hw₀, hi₀⟩` from `GlobalTheory.T.conjugateSplitPlace_eq_conjugatePlace_and_embedding D s _ hconj`. Take `⟨ψ₀, ξ, hψ, hξ, hU⟩` from `P.H.level.uni i j hj k v (GlobalTheory.TypeTame.conjSP s) hw₀`. Establish `hcc : ∀ x : D.host.E, D.host.conj (D.host.conj x) = x` using `fun x => by`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Equip the data with the indicated structure.
 
-Use `letI := Formalism.BasicNotions.Host.cmStar D.host`. Rewrite using `[← GlobalTheory.DimPartsCompare.star_conj, ← GlobalTheory.DimPartsCompare.star_conj, star_star]`. Establish `hcsd : IsCSD D.host (P.tp.tup (D.nd.mu i) j)`. Use `(P.chr.csd _).1 (D.naut.muC_csd i)` as an intermediate fact. Rewrite `this` using `[P.chr.muC i j hj]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hconj' : IsConjPl D.host s.w (D.naut.plGw k v)`. Use `GlobalTheory.DimPartsCompare.isConjPl_cPl (GlobalTheory.DimPartsCompare.cPl (D.naut.plGw k v))` as an intermediate fact. Rewrite `this` using `[GlobalTheory.DimPartsCompare.cPl_cPl, ← hs]`. Then use the resulting hypothesis. Establish `hμ` using `hS.mu i s.w hw j hj`. Establish `hrel : ∀ u, ξ⁻¹ u = (S i s.w hw).mu (Units.map c.toMonoidHom u)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `GlobalTheory.T.splitPlace_unitsCharacter_eq_of_agree_on_field s c hc hcs _ _ hμ.1 ?_ ?_` and prove the remaining obligations. Take `⟨N, hN⟩` from `hξ.1`. Conclude with `⟨N, fun u hu => by rw [MonoidHom.inv_apply, hN u hu, inv_one]⟩`. Introduce `x`. Establish `e1 : Units.map (s.i : D.host.E →* s.v.adicCompletion (maximalRealSubfield D.host.E)) x = Units.map ((GlobalTheory.TypeTame.conjSP s).i : D.host.E →* s.v.adicCompletion (maximalRealSubfield D.host.E)) (Units.map (MonoidHomClass.toMonoidHom D.host.conj) x)` using `by ext; simp [hi₀, hcc]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MonoidHom.inv_apply, e1, hξ.2, hw₀, hcsd.1 _ _ hconj' x, inv_inv, hμ.2]`. Take `⟨π, hπ⟩` from `HeightOneSpectrum.valuation_exists_uniformizer (maximalRealSubfield D.host.E) s.v`. Use `set ϖ : s.v.adicCompletion (maximalRealSubfield D.host.E) := (π : s.v.adicCompletion (maximalRealSubfield D.host.E)) with hϖdef`. Establish `hϖ : Valued.v ϖ = WithZero.exp (-1)`. Rewrite using `[hϖdef, HeightOneSpectrum.valuedAdicCompletion_eq_valuation']`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hπ`. Establish `hϖ0 : ϖ ≠ 0`. Introduce `h0`. Rewrite `hϖ` using `[h0, map_zero]`. Conclude with `WithZero.zero_ne_coe hϖ`.
+Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Apply the tactic sequence `let d : GL (Fin D.R.nV) (s.v.adicCompletion (maximalRealSubfield D.host.E)) := ⟨Matrix.diagonal (fun a : Fin D.R.nV => if (a : ℕ) < D.R.r then 1 else ϖ), Matrix.diagonal (fun a : Fin D.R.nV => if (a : ℕ) < D.R.r then 1 else ϖ⁻¹), by rw [Matrix.diagonal_mul_diagonal, ← Matrix.diag …`. Take `⟨y, hyT, hyd⟩` from `GlobalTheory.SplitLift.exists_trivOutside_loc_eq D.R.nV (GlobalTheory.TypeTame.conjSP s) d⁻¹`. Take `⟨y0, hy0, hy00⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot (D.naut.typeV_ne i Q)`. Use `set f₀ := (P.M.loc i).real y0 with hf₀`. Establish `hf0iso : f₀ ∈ NG.isoTyp (P.M.loc i).wt.ρ (P.H.av.S i Q)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hy0` using `[P.H.av.typeV]`. Conclude with `hy0`. Establish `hf0type : f₀ ∈ NG.TypeSp (P.M.loc i).wt.ρ (P.M.loc i).J (P.M.loc i).χ`. Rewrite using `[← (P.M.loc i).real_range]`. Conclude with `LinearMap.mem_range_self _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hf0ne : f₀ ≠ 0` using `fun h0 => hy00 ((P.M.loc i).real_inj (h0.trans (map_zero _).symm))`. Use `⟨NG.rt D.host.E D.R.nV y f₀, GlobalTheory.CompRed.isoTyp_stable _ _ _ hf0iso, ?_, ?_⟩` and prove the remaining obligations. Introduce `h0`. Apply `hf0ne` to reduce the goal to its premises. Use function extensionality and compare the values at `g`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `congrFun h0 (g * y⁻¹)` as an intermediate fact. Simplify `this` using `[NG.rt]`. Introduce `x hxT hxB`. Establish `hv` using `GlobalTheory.T.splitPlace_completionIso_preserves_valuation s c hc hcs`. Establish `hab` using `GlobalTheory.T.conjugateSplitPlace_unitaryLoc_eq_transpose_inv D.R.nV s x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨κ, hκ⟩ : ∃ κ : GAf D.host.E D.R.nV, κ = y⁻¹ * x * y` from `⟨_, rfl⟩`. Establish `hκT : TrivOutside {s.v} κ` using `hκ ▸ GlobalTheory.TypeBlockConj.trivOutside_mul (GlobalTheory.TypeBlockConj.trivOutside_mul (GlobalTheory.TypeBlockConj.trivOutside_inv hyT) hxT) hyT`. Establish `hκloc : (GlobalTheory.TypeTame.conjSP s).loc D.R.nV κ = d * (GlobalTheory.TypeTame.conjSP s).loc D.R.nV x * d⁻¹`. Rewrite using `[hκ, map_mul, map_mul, map_inv, hyd, inv_inv]`. Take `⟨hUni, hsup⟩` from `GlobalTheory.T.diagUniformiserConj_transposeInv_mem_upperParahoric s D.R.r D.R.t c hv (s.loc D.R.nV x) ((GlobalTheory.TypeTame.conjSP s).loc D.R.nV x) hab hxB ϖ hϖ d rfl`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨u, hu, hbc⟩` from `GlobalTheory.T.blockCharacter_eq_inv_at_transposeInv_lowerBlockDet s D.R.r D.R.t c hv (s.loc D.R.nV x) ((GlobalTheory.TypeTame.conjSP s).loc D.R.nV x) hab hxB ϖ hϖ d rfl`. Establish `hκJ : κ ∈ (P.M.loc i).J` using `(hU.mem κ hκT).2 (by rw [hκloc]; exact hUni)`. Establish `hchr` using `hU.chr κ hκJ hκT u (by rw [hu, hκloc]; rfl)`. Rewrite `hchr` using `[hψ.1 _ (by rw [hκloc]; exact hsup), one_mul]`. Establish `hty` using `hf0type.2 ⟨κ, hκJ⟩`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hval : blockChar (S i s.w hw).mu (Matrix.GeneralLinearGroup.map c.toRingHom (s.loc D.R.nV x)) = (((P.M.loc i).χ ⟨κ, hκJ⟩ : ℂˣ) : ℂ)`. Rewrite using `[hbc _ hμt, hchr, ← hrel u, MonoidHom.inv_apply, inv_inv]`. Rewrite using `[hval]`. Use function extensionality and compare the values at `g`. Establish `e` using `congrFun hty (g * y)`.
-
-Establish `e2 : g * y * κ = g * x * y` using `by rw [hκ]; group`. Rewrite using `[GlobalTheory.TypeBlockConj.rt_rt, Pi.smul_apply, ← e2]`. Conclude with `e`.
+A detailed English derivation is pending.
 -/
 theorem main : ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (D : D7) (P : Pin hL D) (S : Reading P.T), IsTrue P S → ∀ (i : D.nd.Loc) (k : Fin 2) (v : D.nd.PlG k) (s : SplitPlace D.host.E) (hw : IsSplitPl D.host s.w), s.w = GlobalTheory.DimPartsCompare.cPl (D.naut.plGw k v) → IsTame (S i s.w hw).mu → ∀ c : s.v.adicCompletion (maximalRealSubfield D.host.E) ≃+* s.w.adicCompletion D.host.E, Continuous c → (∀ x : D.host.E, c (s.i x) = algebraMap D.host.E (s.w.adicCompletion D.host.E) x) → ∀ Q, ∃ f ∈ NG.isoTyp (P.M.loc i).wt.ρ (P.H.av.S i Q), f ≠ 0 ∧ ∀ x : GAf D.host.E D.R.nV, TrivOutside {s.v} x → Matrix.GeneralLinearGroup.map c.toRingHom (s.loc D.R.nV x) ∈ blockGrp (s.w.adicCompletion D.host.E) D.R.r D.R.t → NG.rt D.host.E D.R.nV x f = blockChar (S i s.w hw).mu (Matrix.GeneralLinearGroup.map c.toRingHom (s.loc D.R.nV x)) • f := by
   intro hL D P S hS i k v s hw hs hμt c hc hcs Q

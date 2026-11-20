@@ -16,17 +16,17 @@ attribute [local instance] GlobalTheory.ThK.Dbl.St.ae_ring GlobalTheory.ThK.Dbl.
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n : ℕ}
 
 /- English proof (translation)
-Establish `hZ : (⊤ : Submodule ℤ (𝓞 E)).FG` using `Module.Finite.fg_top`. Take `⟨m, s, hs⟩` from `Submodule.fg_iff_exists_fin_generating_family.1 hZ`. Establish `: CompactSpace (GlobalTheory.ThK.Dbl.St.intF F)` using `isCompact_iff_compactSpace.1 GlobalTheory.ThK.Dbl.St.isCompact_intF`. Set `f : (Fin m → GlobalTheory.ThK.Dbl.St.intF F) →+ AE F E` to `AddMonoidHom.mk' (fun a => ∑ j, (a j : AF F) • inclR (F := F) (AF F) ((s j : 𝓞 E) : E)) fun a b => by`. Rewrite using `[← Finset.sum_add_distrib]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `: ((a + b) j : AF F) = a j + b j` using `rfl`. Rewrite using `[this, add_smul]`. Establish `hf : Continuous f`. Express the relevant statement in the definitionally equal form `Continuous fun a : Fin m → GlobalTheory.ThK.Dbl.St.intF F => ∑ j, (a j : AF F) • inclR (F := F) (AF F) ((s j : 𝓞 E) : E)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Use `continuous_finsetSum _ fun j _ => ?_` and prove the remaining obligations. Establish `h1 : Continuous fun a : Fin m → GlobalTheory.ThK.Dbl.St.intF F => (a j : AF F)` using `Continuous.subtype_val (continuous_apply j)`. Conclude with `h1.fun_smul continuous_const`. Establish `e : intHat F E = f.range`. Use `le_antisymm ((AddSubgroup.closure_le _).2 ?_) ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨a, ha, ha', o, rfl⟩`. Establish `ho : o ∈ Submodule.span ℤ (Set.range s)` using `by rw [hs]; trivial`. Take `⟨c, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun ℤ).1 ho`. Use `⟨fun j => c j • ⟨a, ha, ha'⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `∑ j, (c j • a) • inclR (F := F) (AF F) ((s j : 𝓞 E) : E) = a • inclR (F := F) (AF F) (((∑ j, c j • s j : 𝓞 E)) : E)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Establish `hc : (((∑ j, c j • s j : 𝓞 E)) : E) = ∑ j, c j • ((s j : 𝓞 E) : E)` using `by push_cast; rfl`. Rewrite using `[hc, map_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul, smul_assoc, smul_comm]`. Introduce and unpack `_ ⟨a, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `(∑ j, (a j : AF F) • inclR (F := F) (AF F) ((s j : 𝓞 E) : E)) ∈ intHat F E`. Conclude with `sum_mem fun j _ => AddSubgroup.subset_closure ⟨a j, (a j).2.1, (a j).2.2, s j, rfl⟩`. Rewrite using `[e, AddMonoidHom.coe_range]`. Conclude with `isCompact_range hf`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCompact_intHat : IsCompact (intHat F E : Set (AE F E)) := by
   have hZ : (⊤ : Submodule ℤ (𝓞 E)).FG := Module.Finite.fg_top
@@ -63,19 +63,17 @@ theorem isCompact_intHat : IsCompact (intHat F E : Set (AE F E)) := by
   exact isCompact_range hf
 
 /- English proof (translation)
-Take `⟨Φ, hΦ, eΦ⟩` from `GlobalTheory.ThK.Dbl.St.exists_section hB.cm B.emb`. Establish `hI : IsCompact (intHat F E : Set (AE F E))` using `isCompact_intHat`. Establish `hfe : finOne F = GlobalTheory.ThK.Dbl.St.eF F` using `rfl`. Use `set T : Set (AE F E) := Φ '' Set.univ.pi (fun _ => Metric.closedBall (0 : ℂ) 1) + (intHat F E : Set (AE F E)) with hTdef`. Establish `hT : IsCompact T` using `((isCompact_univ_pi fun _ => isCompact_closedBall _ _).image hΦ).add hI`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply the tactic sequence `have hentry : ∀ k ∈ K, ∀ i j, inFrame b k i j ∈ T := by`. Introduce `k hk i j`. Take `⟨h1, h2⟩` from `(hK k).1 hk`. Rewrite using `[eΦ (inFrame b k i j)]`. Use `Set.add_mem_add ⟨_, fun w _ => ?_, rfl⟩ ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mem_closedBall_zero_iff]`. Establish `hu : (inFrame b k).map (piInf (B.emb w)) ∈ Matrix.unitaryGroup (Fin n ⊕ Fin n) ℂ` using `Matrix.mem_unitaryGroup_iff.2 (by rw [Matrix.star_eq_conjTranspose]; exact h1 w)`. Conclude with `entry_norm_bound_of_unitary hu i j`. Rewrite using `[← hfe]`. Conclude with `h2 k (Set.mem_insert _ _) i j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `set S : Set (Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) (AE F E)) := (fun M : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) (AE F E) => incM F b.1 * M * incM F (b⁻¹).1) '' Set.univ.pi (fun _ => Set.univ.pi fun _ => T) with hSdef`. Establish `hS : IsCompact S` using `(isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => hT).image ((continuous_const.matrix_mul continuous_id).matrix_mul continuous_const)`. Apply the tactic sequence `have hmat : ∀ k ∈ K, mat2 k ∈ S := fun k hk => ⟨inFrame b k, fun i _ j _ => hentry k hk i j, by show incM F b.1 * (incM F (b⁻¹).1 * mat2 k * incM F b.1) * incM F (b⁻¹).1 = mat2 k`. Simplify using `only [Matrix.mul_assoc, GlobalTheory.EisBL.DoubledParabolic.incM_mul_inv, Matrix.mul_one]`. Rewrite using `[← Matrix.mul_assoc, GlobalTheory.EisBL.DoubledParabolic.incM_mul_inv, Matrix.one_mul]⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp : ∀ w, Continuous (piInf (B.emb w))` using `fun w => GlobalTheory.Grow.continuous_infEmb_compInf F w (B.emb w)`. Establish `hIc` using `hI.isClosed`. Establish `hfr` using `GlobalTheory.EisBL.DoubledParabolic.continuous_inFrame (σ := σ) (Y := Y) b`. Establish `hKset : (K : Set (G2 σ Y)) = (⋂ w, {k | (inFrame b k).map (piInf (B.emb w)) * ((inFrame b k).map (piInf (B.emb w)))ᴴ = 1}) ∩ ((⋂ i, ⋂ j, {k : G2 σ Y | finOne F • inFrame b k i j ∈ intHat F E}) ∩ (⋂ i, ⋂ j, {k : G2 σ Y | finOne F • inFrame b k⁻¹ i j ∈ intHat F E}))`. Use extensionality with `k`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [SetLike.mem_coe, hK k, Set.mem_inter_iff, Set.mem_iInter, Set.mem_setOf_eq, Set.forall_mem_insert, Set.mem_singleton_iff, forall_eq]`. Establish `hKc : IsClosed (K : Set (G2 σ Y))`. Rewrite using `[hKset]`. Use `(isClosed_iInter fun w => isClosed_eq ?_ continuous_const).inter ((isClosed_iInter fun i => isClosed_iInter fun j => hIc.preimage ?_).inter (isClosed_iInter fun i => isClosed_iInter fun j => hIc.preimage ?_))` and prove the remaining obligations. Conclude with `(hfr.matrix_map (hp w)).matrix_mul (hfr.matrix_map (hp w)).matrix_conjTranspose`.
-
-Conclude with `(hfr.matrix_elem i j).const_smul (finOne F)`. Conclude with `((hfr.comp continuous_inv).matrix_elem i j).const_smul (finOne F)`. Conclude with `GlobalTheory.ThK.Dbl.St.isCompact_of_units (UG (cA σ) (dbl (incM F Y.J))) (GlobalTheory.EisBL.DoubledGroupTopology.isClosed_doubled_group σ Y) K hKc S hS fun k hk => ⟨hmat k hk, hmat k⁻¹ (K.inv_mem hk)⟩`.
+A detailed English derivation is pending.
 -/
 theorem isCompact_stdK_pf (B : Base F E) (Y : Spc F E n) (r s : _) (hB : B.IsGood σ)
     (hY : Y.IsHerm σ B r s ∨ Y.IsSkew σ B r s) (b : GL (Fin n ⊕ Fin n) E) (K : Subgroup (G2 σ Y))

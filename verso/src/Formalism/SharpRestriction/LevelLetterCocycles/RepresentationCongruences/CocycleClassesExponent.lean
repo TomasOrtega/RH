@@ -21,21 +21,19 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     {PD : PeriodData G Qp K₀ K B BdR}
 
 /- English proof (translation)
-Establish `hrep : ∀ z ∈ Zc, ∃ a : ↥(latticeCocycles T₂.L), (a : G → T₂.V) ∈ latticeFiniteCocycles PD T₂.L ∧ Submodule.mkQ _ a = z`. Introduce `z hz`. Take `⟨a, ha, rfl⟩` from `Submodule.mem_map.mp (hZc z hz)`. Conclude with `⟨a, ha, rfl⟩`. Use `choose! r hr1 hr2 using hrep`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Zc.image (fun z => (r z : G → T₂.V)), Finset.card_image_le, ?_, ?_⟩` and prove the remaining obligations. Introduce `w hw`. Take `⟨z, hz, rfl⟩` from `Finset.mem_image.mp hw`. Conclude with `hr1 z hz`. Introduce `c hc`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc' : c ∈ latticeCocycles T₂.L ⊓ _` using `hc`. Establish `hcZ : c ∈ latticeCocycles T₂.L` using `(Submodule.mem_inf.mp hc').1`. Establish `hx : Submodule.mkQ _ (⟨c, hcZ⟩ : ↥(latticeCocycles T₂.L)) ∈ latticeFiniteCohomology PD T₂.L` using `Submodule.mem_map_of_mem (p := (latticeFiniteCocycles PD T₂.L).comap (latticeCocycles T₂.L).subtype) hc`. Take `⟨y, hy, w, hw, hyw⟩` from `Submodule.mem_sup.mp (h _ hx)`. Take `⟨y0, hy0, rfl⟩` from `Submodule.mem_map.mp hy`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨a, ha, rfl⟩` from `Submodule.mem_map.mp hy0`. Establish `ha' : (a : G → T₁.V) ∈ latticeFiniteCocycles PD T₁.L` using `ha`. Establish `hspan : Submodule.span O (Zc : Set (LatticeCohomology T₂.L)) = (Submodule.span O (r '' (Zc : Set (LatticeCohomology T₂.L)))).map (Submodule.mkQ _)`. Rewrite using `[Submodule.map_span, Set.image_image, Set.image_congr (g := fun z => z) (fun z hz => hr2 z hz), Set.image_id']`. Rewrite `hw` using `[hspan]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨s, hs, rfl⟩` from `Submodule.mem_map.mp hw`. Establish `e1 : F.H1map (Submodule.mkQ _ a) = Submodule.mkQ _ (⟨F.post a, F.post_Z1T _ a.2⟩ : ↥(latticeCocycles T₂.L))` using `rfl`. Establish `hker : ((PD.p : ℕ) : O) ^ e • (⟨c, hcZ⟩ : ↥(latticeCocycles T₂.L)) - ⟨F.post a, F.post_Z1T _ a.2⟩ - s ∈ (latticeCoboundaries T₂.L).comap (latticeCocycles T₂.L).subtype`. Rewrite using `[← Submodule.ker_mkQ ((latticeCoboundaries T₂.L).comap (latticeCocycles T₂.L).subtype), LinearMap.mem_ker, map_sub, map_sub, map_smul, ← hyw, e1]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb : ((PD.p : ℕ) : O) ^ e • c - F.post a - (s : G → T₂.V) ∈ latticeCoboundaries T₂.L` using `hker`. Establish `hs' : (s : G → T₂.V) ∈ Submodule.span O ((Zc.image fun z => (r z : G → T₂.V) : Finset (G → T₂.V)) : Set (G → T₂.V))`. Establish `hm` using `Submodule.mem_map_of_mem (f := (latticeCocycles T₂.L).subtype) hs`. Rewrite `hm` using `[Submodule.map_span]`. Use `Submodule.span_mono ?_ hm` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨_, ⟨z, hz, rfl⟩, rfl⟩`. Conclude with `Finset.mem_coe.mpr (Finset.mem_image_of_mem _ hz)`. Establish `hpa : F.post a ∈ F.ImF PD` using `Submodule.mem_sup_left (Submodule.mem_map_of_mem ha')`. Establish `hbI : ((PD.p : ℕ) : O) ^ e • c - F.post a - (s : G → T₂.V) ∈ F.ImF PD` using `Submodule.mem_sup_right hb`. Establish `key : ((PD.p : ℕ) : O) ^ e • c = (F.post a + (((PD.p : ℕ) : O) ^ e • c - F.post a - (s : G → T₂.V))) + s` using `by abel`.
-
-Rewrite using `[key]`. Conclude with `Submodule.add_mem _ (Submodule.mem_sup_left (Submodule.add_mem _ hpa hbI)) (Submodule.mem_sup_right hs')`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cocycle_classes_exponent {T₁ T₂ : LocLat G Qp LL O} (F : LatHom T₁.L T₂.L) (e : ℕ)
     (Zc : Finset (LatticeCohomology T₂.L))

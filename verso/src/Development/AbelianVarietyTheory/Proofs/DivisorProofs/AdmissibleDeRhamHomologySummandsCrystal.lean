@@ -21,7 +21,7 @@ section Lin
 variable {S : Type*} [CommRing S] {M N : Type*} [AddCommGroup M] [Module S M] [AddCommGroup N] [Module S N]
 
 /- English proof (translation)
-The claim follows from `Submodule.smul_le.2 fun r hr n _ ↦ by rw [Submodule.mem_comap, map_smul]; exact Submodule.smul_mem_smul hr trivial`.
+A detailed English derivation is pending.
 -/
 theorem smul_top_le_comap (f : M →ₗ[S] N) (J : Ideal S) :
     J • (⊤ : Submodule S M) ≤ (J • (⊤ : Submodule S N)).comap f :=
@@ -29,7 +29,7 @@ theorem smul_top_le_comap (f : M →ₗ[S] N) (J : Ideal S) :
     rw [Submodule.mem_comap, map_smul]; exact Submodule.smul_mem_smul hr trivial
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h ↦ by simpa using smul_top_le_comap (e.symm : N →ₗ[S] M) J h, fun h ↦ smul_top_le_comap (e : M →ₗ[S] N) J h⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_smul_top_equiv (e : M ≃ₗ[S] N) (J : Ideal S) (x : M) :
     e x ∈ J • (⊤ : Submodule S N) ↔ x ∈ J • (⊤ : Submodule S M) :=
@@ -37,11 +37,11 @@ theorem mem_smul_top_equiv (e : M ≃ₗ[S] N) (J : Ideal S) (x : M) :
    fun h ↦ smul_top_le_comap (e : M →ₗ[S] N) J h⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨a, ha, b, hb, rfl⟩` from `Submodule.mem_sup.1 h`. Rewrite using `[map_add]`. Conclude with `Submodule.add_mem_sup ha ((mem_smul_top_equiv e J b).2 hb)`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Take `⟨a, ha, b, hb, hab⟩` from `Submodule.mem_sup.1 h`. Establish `hx : x = e.symm a + e.symm b` using `by rw [← map_add, hab, LinearEquiv.symm_apply_apply]`. Rewrite using `[hx]`. Use `Submodule.add_mem_sup ?_ ((mem_smul_top_equiv e J _).1 (by simpa using hb))` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using ha`.
+A detailed English derivation is pending.
 -/
 theorem mem_sup_smul_top_equiv (e : M ≃ₗ[S] N) (J : Ideal S) (K : Submodule S N) (x : M) :
     x ∈ K.comap (e : M →ₗ[S] N) ⊔ J • ⊤ ↔ e x ∈ K ⊔ J • ⊤ := by
@@ -58,9 +58,9 @@ theorem mem_sup_smul_top_equiv (e : M ≃ₗ[S] N) (J : Ideal S) (K : Submodule 
     simpa using ha
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨L, h⟩`. Conclude with `⟨L.comap (e : M →ₗ[S] N), (Submodule.orderIsoMapComap e).symm.isCompl h⟩`. Introduce and unpack `⟨L, h⟩`. Use `⟨L.map (e : M →ₗ[S] N), ?_⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `(Submodule.orderIsoMapComap e).isCompl h` as an intermediate fact. Simplify `this` using `[Submodule.orderIsoMapComap, Submodule.map_comap_eq_of_surjective e.surjective]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem exists_isCompl_comap_iff (e : M ≃ₗ[S] N) (K : Submodule S N) :
     (∃ L, IsCompl K L) ↔ ∃ L, IsCompl (K.comap (e : M →ₗ[S] N)) L := by
@@ -75,39 +75,35 @@ theorem exists_isCompl_comap_iff (e : M ≃ₗ[S] N) (K : Submodule S N) :
 end Lin
 
 /- English proof (translation)
-Introduce `H1 H2 R R₀ _ _ I hI π hπ hk g A₀ _ A' _ i' h' hA hg`. Take `⟨-, -, pc, bij, fin, proj, hA₀, hg₀⟩` from `abelianLift_facts H1 H2 R R₀ I hI π hπ hk g A₀ A' i' h' hA hg`. Take `⟨rs, rk⟩` from `GlobalTheory.T.abelianScheme_crystal_reduces_to_deRham_sqZero H1 H2 R R₀ I hI π hπ hk g A₀ A' i' h' hA hg`. Take `⟨-, ⟨N₀, hN₀⟩, -⟩` from `GlobalTheory.AbelianHodge.abelianDeRham_hodge H1 H2 R₀ A₀ g hA₀ hg₀`. Set `P` to `prim (divided₂ hI) (spMap π) A₀`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `Ψ : primDR A' ≃ₗ[R] P` to `LinearEquiv.ofBijective (liftMor (divided₂ hI) h').pull bij`. Set `Φ : primDR A' ≃ₗ[R] Cr hI π A₀.hom` to `Ψ.trans (LinearEquiv.ofTop _ pc)`. Establish `hΦ : ∀ c, Φ c = ((Ψ c : P) : Cr hI π A₀.hom)` using `fun _ ↦ rfl`. Set `ρ` to `(GrothendieckMessing.redMor h').pull`. Establish `mT : IsMor (dp0 R₀) (A₀.hom ≫ 𝟙 _) (dp0 R₀) A₀.hom (RingHom.id R₀) (𝟙 _)` using `IsMor.of_over _ (by simp)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `mT' : IsMor (dp0 R₀) A₀.hom (dp0 R₀) (A₀.hom ≫ 𝟙 _) (RingHom.id R₀) (𝟙 _)` using `IsMor.of_over _ (by simp)`. Establish `back : ∀ x, mT'.pull1 (mT.pull1 x) = x` using `fun x ↦ (IsMor.pullback1_comp mT mT' (IsMor.id _ _) (fun _ ↦ rfl) (Category.id_comp _) x).trans (IsMor.pullCohomologyOne_id _ x)`. Establish `inj : Function.Injective mT.pull1` using `Function.LeftInverse.injective back`. Establish `mD : IsMor (dp0 R) (A'.hom ≫ 𝟙 _) (dp0 R₀) A₀.hom π i'` using `IsMor.of_dividedPowersZeroIdeal _ (by rw [Category.comp_id]; exact h'.1.w)`. Establish `key : ∀ c : primDR A', mT.pull1 ((ρ c : primDR A₀) : FirstDeRham (A₀.hom ≫ 𝟙 _)) = rho hI hk A₀.hom (Φ c)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `c`. Rewrite using `[hΦ]`. Conclude with `(IsMor.pullback1_comp _ mT mD (fun _ ↦ rfl) (Category.id_comp _) c.1).trans (IsMor.pullback1_comp _ (redMor hI hk A₀.hom) mD (fun _ ↦ rfl) (Category.id_comp _) c.1).symm`. Establish `F1iff : ∀ c : primDR A', ρ c ∈ PrimitiveSubmodule A₀ ↔ rho hI hk A₀.hom (Φ c) ∈ F1 A₀.hom`. Introduce `c`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← key]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `mT.pullback1_mem_hodgeFiltration h`. Introduce `h`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `mT'.pullback1_mem_hodgeFiltration h` as an intermediate fact. Rewrite `this` using `[back]`. Conclude with `this`. Establish `ρker : ∀ c, ρ c = 0 ↔ c ∈ RingHom.ker π • (⊤ : Submodule R (primDR A'))`. Introduce `c`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hk, ← mem_smul_top_equiv Φ, ← rk, ← key, map_eq_zero_iff _ inj, Submodule.coe_eq_zero]`. Establish `ρsurj : Function.Surjective ρ`. Introduce `y`. Take `⟨d, hd⟩` from `rs (mT.pull1 y.1)`. Use `⟨Φ.symm d, Subtype.ext (inj ?_)⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[key, LinearEquiv.apply_symm_apply, hd]`. Take `⟨D1, D2⟩` from `GlobalTheory.T.summand_dualAnnihilator_reduction_projective R R₀ π hπ (primDR A') (primDR A₀) (Module.Finite.equiv Φ.symm) (Module.Projective.of_equiv Φ.symm) ρ ρsurj ρker (PrimitiveSubmodule A₀) ⟨N₀, hN₀⟩`. Establish `cond : ∀ K : Submodule R (Cr hI π A₀.hom), (∀ c, c ∈ K ⊔ I • ⊤ ↔ rho hI hk A₀.hom c ∈ F1 A₀.hom) ↔ ∀ c, c ∈ K.comap (Φ : primDR A' →ₗ[R] Cr hI π A₀.hom) ⊔ RingHom.ker π • ⊤ ↔ ρ c ∈ PrimitiveSubmodule A₀`. Introduce `K`. Rewrite using `[hk]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce `H c`. Rewrite using `[mem_sup_smul_top_equiv, F1iff]`. Conclude with `H (Φ c)`. Introduce `H c`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `H (Φ.symm c)` as an intermediate fact. Rewrite `this` using `[mem_sup_smul_top_equiv, F1iff, LinearEquiv.apply_symm_apply]`. Then use the resulting hypothesis. Establish `crysSurj : Function.Surjective (crysToDR (divided₂ hI) h')` using `fun y ↦ ⟨y.comp (Ψ.symm : P →ₗ[R] primDR A'), LinearMap.ext fun c ↦ by`. Rewrite using `[crysToDR_apply]`. Conclude with `congrArg y (Ψ.symm_apply_apply c)⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Establish `ann : ∀ K : Submodule R (Cr hI π A₀.hom), (K.comap P.subtype).dualAnnihilator = (K.comap (Φ : primDR A' →ₗ[R] Cr hI π A₀.hom)).dualAnnihilator.comap (crysToDR (divided₂ hI) h')`. Introduce `K`. Use extensionality with `d`. Simplify using `only [Submodule.mem_comap, Submodule.mem_dualAnnihilator, crysToDR_apply]`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `H c hc`. Conclude with `H _ hc`. Introduce `H p hp`. Establish `e : (liftMor (divided₂ hI) h').pull (Ψ.symm p) = p` using `Ψ.apply_symm_apply p`. Establish `hm : Φ (Ψ.symm p) ∈ K`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hΦ, Ψ.apply_symm_apply]`. Conclude with `hp`. Use `H (Ψ.symm p) hm` as an intermediate fact. Rewrite `this` using `[crysToDR_apply, e]`. Then use the resulting hypothesis. Establish `eqiff : ∀ (K : Submodule R (Cr hI π A₀.hom)) (F : Submodule R (HdR A')), (K.comap P.subtype).dualAnnihilator = F.comap (crysToDR (divided₂ hI) h') ↔ (K.comap (Φ : primDR A' →ₗ[R] Cr hI π A₀.hom)).dualAnnihilator = F`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `K F`. Rewrite using `[ann]`. Conclude with `(Submodule.comap_injective_of_surjective crysSurj).eq_iff`. Use `⟨fun K hK hc ↦ ?_, fun F hF ↦ ?_, fun K K' hK hK' he ↦ ?_⟩` and prove the remaining obligations. Take `⟨c1, -, c3⟩` from `D1 _ ((exists_isCompl_comap_iff Φ K).1 hK)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨_, ⟨c1, c3.1 ((cond K).1 hc)⟩, (eqiff K _).2 rfl⟩`. Take `⟨K', hK', rfl⟩` from `D2 F hF.1`. Establish `hKK : (K'.map (Φ : primDR A' →ₗ[R] Cr hI π A₀.hom)).comap (Φ : primDR A' →ₗ[R] Cr hI π A₀.hom) = K'` using `Submodule.comap_map_eq_of_injective Φ.injective K'`. Take `⟨-, -, c3⟩` from `D1 K' hK'`. Use `⟨K'.map (Φ : primDR A' →ₗ[R] Cr hI π A₀.hom), (exists_isCompl_comap_iff Φ _).2 (by rw [hKK]; exact hK'), (cond _).2 (by rw [hKK]; exact c3.2 hF.2), (eqiff _ _).2 (by rw [hKK])⟩` and prove the remaining obligations.
-
-Rewrite `he` using `[ann, ann]`. Establish `e` using `Submodule.comap_injective_of_surjective crysSurj he`. Take `⟨-, c2, -⟩` from `D1 _ ((exists_isCompl_comap_iff Φ K).1 hK)`. Take `⟨-, c2', -⟩` from `D1 _ ((exists_isCompl_comap_iff Φ K').1 hK')`. Use `Submodule.comap_injective_of_surjective Φ.surjective ?_` and prove the remaining obligations.
-
-Rewrite using `[← c2, ← c2', e]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem admissible_classification : CrystallineSmoothLift → AbelianHodgeDeRham → ∀ (R R₀ : Type) [CommRing R] [CommRing R₀] (I : Ideal R) (hI : I ^ 2 = 0) (π : R →+* R₀) (hπ : Function.Surjective π) (hk : RingHom.ker π = I) (g : ℕ) (A₀ : Over (Sp R₀)) [GrpObj A₀] (A' : Over (Sp R)) [GrpObj A'] (i' : A₀.left ⟶ A'.left) (h' : IsGrpPullback A₀ A' (spMap π) i'), IsAbelianScheme A' → SmoothOfRelativeDimension g A'.hom → (∀ K : Submodule R (Cr hI π A₀.hom), (∃ N, IsCompl K N) → (∀ c, c ∈ K ⊔ I • ⊤ ↔ rho hI hk A₀.hom c ∈ F1 A₀.hom) → ∃ F : Submodule R (HdR A'), GrothendieckMessing.IsAdmissible h' F ∧ (K.comap (prim (divided₂ hI) (spMap π) A₀).subtype).dualAnnihilator = F.comap (crysToDR (divided₂ hI) h')) ∧ (∀ F : Submodule R (HdR A'), GrothendieckMessing.IsAdmissible h' F → ∃ K : Submodule R (Cr hI π A₀.hom), (∃ N, IsCompl K N) ∧ (∀ c, c ∈ K ⊔ I • ⊤ ↔ rho hI hk A₀.hom c ∈ F1 A₀.hom) ∧ (K.comap (prim (divided₂ hI) (spMap π) A₀).subtype).dualAnnihilator = F.comap (crysToDR (divided₂ hI) h')) ∧ ∀ K K' : Submodule R (Cr hI π A₀.hom), (∃ N, IsCompl K N) → (∃ N, IsCompl K' N) → (K.comap (prim (divided₂ hI) (spMap π) A₀).subtype).dualAnnihilator = (K'.comap (prim (divided₂ hI) (spMap π) A₀).subtype).dualAnnihilator → K = K' := by
   intro H1 H2 R R₀ _ _ I hI π hπ hk g A₀ _ A' _ i' h' hA hg

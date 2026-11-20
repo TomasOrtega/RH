@@ -10,39 +10,37 @@ open scoped IntermediateField BigOperators Topology
 namespace GlobalTheory.CMModel
 
 /- English proof (translation)
-Introduce `p F L t hp _ _ D`. Establish `hsq : sqrtNegNat p ^ 2 = -(p : ℂ)` using `sqrtNegNat_sq p`. Establish `hz : ∀ (n : ℤ) (x : ℂ), x ∈ L.lattice → (n : ℂ) * x ∈ L.lattice` using `fun n x hx => by`. Simplify `L.lattice.smul_mem n hx` using `[zsmul_eq_mul]`. Establish `hpt : (p : ℂ) * t ∈ L.lattice`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `h` using `L.lattice.neg_mem (D.mul _ D.ker)`. Establish `e : -(sqrtNegNat p * (sqrtNegNat p * t)) = (p : ℂ) * t`. Take the linear combination `(-t) * hsq`. Rewrite `h` using `[e]`. Then use the resulting hypothesis. Establish `h1 : ∀ k : ℤ, (k : ℂ) * t ∈ L.lattice ↔ (p : ℤ) ∣ k`.
+Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Introduce `k`. Prove the components needed by the constructor for the conclusion. Introduce `hk`. Assume the negation of the conclusion as `hnd`. Establish `hc : IsCoprime (p : ℤ) k` using `(Nat.prime_iff_prime_int.mp hp).irreducible.coprime_iff_not_dvd.mpr hnd`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Take `⟨a, b, hab⟩` from `hc`. Apply `D.notMem` to reduce the goal to its premises. Establish `h` using `L.lattice.add_mem (hz a _ hpt) (hz b _ hk)`. Establish `hab' : (a : ℂ) * (p : ℂ) + (b : ℂ) * (k : ℂ) = 1` using `by exact_mod_cast congrArg (Int.cast (R := ℂ)) hab`. Establish `e : (a : ℂ) * ((p : ℂ) * t) + (b : ℂ) * ((k : ℂ) * t) = t`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take the linear combination `t * hab'`. Rewrite `h` using `[e]`. Then use the resulting hypothesis. Introduce and unpack `⟨c, rfl⟩`. Establish `h` using `hz c _ hpt`. Establish `e : (c : ℂ) * ((p : ℂ) * t) = (((p : ℤ) * c : ℤ) : ℂ) * t` using `by push_cast; ring`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[e]`. Then use the resulting hypothesis. Establish `hker : ∀ k : ℕ, sqrtNegNat p * ((k : ℂ) * t) ∈ L.lattice` using `fun k => by`. Establish `h` using `hz k _ D.ker`. Establish `e : ((k : ℤ) : ℂ) * (sqrtNegNat p * t) = sqrtNegNat p * ((k : ℂ) * t)` using `by push_cast; ring`. Rewrite `h` using `[e]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hnot : ∀ k ∈ Finset.Ico 1 p, (k : ℂ) * t ∉ L.lattice` using `fun k hk h => by`. Rewrite `hk` using `[Finset.mem_Ico]`. Establish `h' : (p : ℤ) ∣ (k : ℤ)` using `(h1 k).mp (by exact_mod_cast h)`. Use `Nat.le_of_dvd hk.1 (Int.natCast_dvd_natCast.mp h')` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Establish `hinj : ∀ k ∈ Finset.Ico 1 p, ∀ l ∈ Finset.Ico 1 p, (k : ℂ) * t - (l : ℂ) * t ∈ L.lattice → k = l`. Introduce `k hk l hl h`. Rewrite `hk`, `hl` using `[Finset.mem_Ico]`. Establish `e : (k : ℂ) * t - (l : ℂ) * t = (((k : ℤ) - (l : ℤ) : ℤ) : ℂ) * t` using `by push_cast; ring`. Rewrite `h` using `[e, h1]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply the tactic sequence `have := Int.eq_zero_of_abs_lt_dvd h (by rw [abs_lt]; constructor <;> omega)`. Use linear arithmetic over natural numbers and integers. Establish `hp0 : (0 : ℝ) < p` using `by exact_mod_cast hp.pos`. Establish `hn : Complex.normSq (sqrtNegNat p) = p`. Establish `h` using `congrArg Complex.normSq hsq`.
+Apply the first step, then apply the next step to every resulting obligation. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[map_pow, Complex.normSq_neg, Complex.normSq_natCast, ← sq]`. Conclude with `(pow_left_inj₀ (Complex.normSq_nonneg _) hp0.le two_ne_zero).mp h`. Establish `hα : sqrtNegNat p ≠ 0` using `fun h => by`. Rewrite `hn` using `[h, map_zero]`. Conclude with `hp0.ne hn`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨S, hS⟩` from `kerRepsExist L _ hα D.mul`. Establish `hcard : S.card + 1 = p`. Establish `h` using `kerRepsCard L _ S hα D.mul hS`. Rewrite `h` using `[hn]`. Conclude with `h` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `choose f hfS hf using fun k (hk : k ∈ Finset.Ico 1 p) => hS.2.2 _ (hker k) (hnot k hk)`. Establish `hsurj` using `Finset.surj_on_of_inj_on_of_card_le f hfS (fun k l hk hl h => hinj k hk l hl (by`. Establish `h'` using `L.lattice.sub_mem (hf k hk) (hf l hl)`. Rewrite `h'` using `[h]`. Simplify using `using h'))`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use the proof step `(by rw [Nat.card_Ico]; omega)`. Establish `h3 : ∀ z, sqrtNegNat p * z ∈ L.lattice → z ∉ L.lattice → ∃ k ∈ Finset.Ico 1 p, z - (k : ℂ) * t ∈ L.lattice`. Introduce `z hz1 hz2`. Take `⟨P, hP, hzP⟩` from `hS.2.2 z hz1 hz2`. Take `⟨k, hk, rfl⟩` from `hsurj P hP`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Supply the required witnesses or components.
 
-Use `⟨k, hk, ?_⟩` and prove the remaining obligations. Simplify using `using L.lattice.sub_mem hzP (hf k hk)`. Use `⟨h1, fun z hz1 => ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hz2 : z ∈ L.lattice`. Conclude with `⟨0, hp.pos, by simpa using hz2⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨k, hk, h⟩` from `h3 z hz1 hz2`. Conclude with `⟨k, (Finset.mem_Ico.mp hk).2, h⟩`. Introduce `P hP`. Take `⟨k, hk, rfl⟩` from `Finset.mem_image.mp hP`. Conclude with `⟨hker k, hnot k hk⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `P hP Q hQ h`. Take `⟨k, hk, rfl⟩` from `Finset.mem_image.mp hP`. Take `⟨l, hl, rfl⟩` from `Finset.mem_image.mp hQ`. Rewrite using `[hinj k hk l hl h]`. Introduce `z hz1 hz2`.
-
-Take `⟨k, hk, h⟩` from `h3 z hz1 hz2`. Conclude with `⟨_, Finset.mem_image_of_mem _ hk, h⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem ker_sqrtNegNat_cyclic : ∀ (p : ℕ) (F : IntermediateField ℚ ℂ) (L : PeriodPair) (t : ℂ), p.Prime → p % 4 = 3 → 3 < p → Datum p F L t → (∀ k : ℤ, (k : ℂ) * t ∈ L.lattice ↔ (p : ℤ) ∣ k) ∧ (∀ z, sqrtNegNat p * z ∈ L.lattice → ∃ k : ℕ, k < p ∧ z - (k : ℂ) * t ∈ L.lattice) ∧ IsKerReps L (sqrtNegNat p) ((Finset.Ico 1 p).image fun k : ℕ => (k : ℂ) * t) := by
   intro p F L t hp _ _ D

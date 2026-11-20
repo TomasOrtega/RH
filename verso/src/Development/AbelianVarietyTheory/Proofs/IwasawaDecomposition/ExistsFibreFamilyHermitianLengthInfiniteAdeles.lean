@@ -15,7 +15,7 @@ variable {R : Type} [CommRing R] [TopologicalSpace R] [IsTopologicalRing R]
 
 omit [TopologicalSpace R] [IsTopologicalRing R] in
 /- English proof (translation)
-Assume the negation of the conclusion as `ha`. Rewrite `h` using `[Ring.inverse_non_unit a ha, mul_zero, isUnit_zero_iff]`. Use `haveI := subsingleton_of_zero_eq_one h`. Conclude with `ha (isUnit_of_subsingleton a)`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_of_mul_inverse {t a : R} (h : IsUnit (t * Ring.inverse a)) : IsUnit a := by
   by_contra ha
@@ -25,23 +25,23 @@ theorem isUnit_of_mul_inverse {t a : R} (h : IsUnit (t * Ring.inverse a)) : IsUn
 
 omit [TopologicalSpace R] [IsTopologicalRing R] in
 /- English proof (translation)
-The claim follows from `IsUnit.of_mul_eq_one a (Ring.inverse_mul_cancel a h)`.
+A detailed English derivation is pending.
 -/
 theorem isUnit_inv {a : R} (h : IsUnit a) : IsUnit (Ring.inverse a) :=
   IsUnit.of_mul_eq_one a (Ring.inverse_mul_cancel a h)
 
 omit [IsTopologicalRing R] in
 /- English proof (translation)
-The claim follows from `h.isOpenEmbedding_unitsVal.isOpen_range`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_isUnit (h : IsOpenUnits R) : IsOpen {a : R | IsUnit a} :=
   h.isOpenEmbedding_unitsVal.isOpen_range
 
 omit [IsTopologicalRing R] in
 /- English proof (translation)
-Introduce and unpack `_ ⟨u, rfl⟩`. Use `ContinuousAt.continuousWithinAt ?_` and prove the remaining obligations. Rewrite using `[← h.isOpenEmbedding_unitsVal.continuousAt_iff]`. Establish `: (Ring.inverse : R → R) ∘ Units.val = fun u : Rˣ => ((u⁻¹ : Rˣ) : R)`. Use extensionality with `u`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using the standard rewrite rules. Rewrite using `[this]`. Conclude with `Units.continuous_coe_inv.continuousAt`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuousOn_inverse (h : IsOpenUnits R) :
     ContinuousOn (Ring.inverse : R → R) {a | IsUnit a} := by
@@ -54,7 +54,7 @@ theorem continuousOn_inverse (h : IsOpenUnits R) :
   exact Units.continuous_coe_inv.continuousAt
 
 /- English proof (translation)
-Conclude with `⟨U.piecewise f fun _ => y, hf.measurable_piecewise continuousOn_const hU.measurableSet, fun x hx => Set.piecewise_eq_of_mem _ _ _ hx, fun x hx => Set.piecewise_eq_of_notMem _ _ _ hx⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_measurable_eqOn {X Y : Type} [TopologicalSpace X] [MeasurableSpace X] [BorelSpace X]
     [TopologicalSpace Y] [MeasurableSpace Y] [BorelSpace Y] (y : Y) {U : Set X} (hU : IsOpen U)
@@ -70,9 +70,9 @@ variable [T2Space R] [LocallyCompactSpace R] [SecondCountableTopology R] [Measur
 
 omit [IsTopologicalRing R] [T2Space R] [LocallyCompactSpace R] [SecondCountableTopology R] in
 /- English proof (translation)
-Take `⟨g, h1, h2, h3⟩` from `exists_measurable_eqOn (0 : R) (isOpen_isUnit h) (continuousOn_inverse h)`. Use `h1 using 1` and compare the differences between its conclusion and the goal. Use extensionality with `a`. Distinguish the cases in `ha : IsUnit a`. Conclude with `(h2 a ha).symm`.
+Extract witnesses or component facts from the available result. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h3 a ha, Ring.inverse_non_unit a ha]`.
+A detailed English derivation is pending.
 -/
 theorem measurable_inverse (h : IsOpenUnits R) : Measurable (Ring.inverse : R → R) := by
   obtain ⟨g, h1, h2, h3⟩ := exists_measurable_eqOn (0 : R) (isOpen_isUnit h) (continuousOn_inverse h)
@@ -90,7 +90,7 @@ omit [IsTopologicalRing R] [T2Space R] [LocallyCompactSpace R] [SecondCountableT
   [MeasurableSpace R] [BorelSpace R] [T2Space V] in
 
 /- English proof (translation)
-Set `e : V ≃ₜ+ V` to `{ toFun := fun x => c • x invFun := fun x => Ring.inverse c • x left_inv := fun x => by simp [smul_smul, Ring.inverse_mul_cancel _ hc] right_inv := fun x => by simp [smul_smul, Ring.mul_inverse_cancel _ hc] map_add' := fun x y => smul_add c x y continuous_toFun := continuous_cons …`. Use `haveI : (μ.map (fun x : V => c • x)).IsAddHaarMeasure := e.isAddHaarMeasure_map μ`. Conclude with `⟨_, (Measure.addHaarScalarFactor_pos_of_isAddHaarMeasure _ μ).ne', Measure.isAddLeftInvariant_eq_smul _ μ⟩`.
+Introduce a local definition for the expression. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_map_smul (μ : Measure V) [μ.IsAddHaarMeasure] {c : R} (hc : IsUnit c) :
     ∃ d : ℝ≥0, d ≠ 0 ∧ μ.map (fun x : V => c • x) = d • μ := by
@@ -111,7 +111,7 @@ omit [IsTopologicalRing R] [T2Space R] [LocallyCompactSpace R] [SecondCountableT
   [SecondCountableTopology V] [T2Space V] [MeasurableSpace V] [BorelSpace V] in
 
 /- English proof (translation)
-Use `⟨(fun p : R × V => p.1 • p.2) '' (((fun u => Ring.inverse (s u)) '' S) ×ˢ K), ((hS.image_of_continuousOn ((continuousOn_inverse ho).comp hs hu)).prod hK).image continuous_smul, fun u hu' x hx => ⟨(_, s u • x), ⟨⟨u, hu', rfl⟩, hx⟩, ?_⟩⟩` and prove the remaining obligations. Use `show Ring.inverse (s u) • s u • x = x`. Rewrite using `[smul_smul, Ring.inverse_mul_cancel _ (hu u hu'), one_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_compact_pull (ho : IsOpenUnits R) {S : Set R} (hS : IsCompact S) {s : R → R}
     (hs : ContinuousOn s S) (hu : ∀ u ∈ S, IsUnit (s u)) {K : Set V} (hK : IsCompact K) :
@@ -125,21 +125,21 @@ theorem exists_compact_pull (ho : IsOpenUnits R) {S : Set R} (hS : IsCompact S) 
 omit [IsTopologicalRing R] [LocallyCompactSpace R] in
 
 /- English proof (translation)
-Take `⟨K, hK, hK0⟩` from `exists_compact_mem_nhds (0 : V)`. Establish `hKpos : μ K ≠ 0` using `(Measure.measure_pos_of_mem_nhds μ hK0).ne'`. Establish `hKfin : μ K ≠ ⊤` using `hK.measure_lt_top.ne`. Set `D : R → ℝ≥0∞` to `fun u => μ {x | s u • x ∈ K} / μ K`. Establish `hDm : Measurable D`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `: MeasurableSet {p : R × V | s p.1 • p.2 ∈ K}` using `((hsm.comp measurable_fst).smul measurable_snd) hK.measurableSet`. Conclude with `(measurable_measure_prodMk_left (ν := μ) this).div_const _`. Establish `hD : ∀ u ∈ S, D u ≠ 0 ∧ μ.map (fun x : V => s u • x) = D u • μ`. Introduce `u hu'`. Take `⟨d, hd, h⟩` from `exists_map_smul μ (hu u hu')`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1` using `Measure.map_apply (μ := μ) (continuous_const_smul (s u)).measurable hK.measurableSet`. Rewrite `h1` using `[h]`. Establish `h2 : D u = d`. Establish `h3 : μ {x | s u • x ∈ K} = d * μ K` using `by simpa [Set.preimage] using h1.symm`. Simplify using `only [D, h3]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ENNReal.mul_div_cancel_right hKpos hKfin]`. Rewrite using `[h2, h]`. Conclude with `⟨by exact_mod_cast hd, rfl⟩`. Establish `hm : Measurable fun u => (ψ u : ℝ≥0∞) * D u` using `hψ.measurable.coe_nnreal_ennreal.mul hDm`. Use `⟨∫⁻ u, ψ u * D u ∂ν, ?_, ?_, fun φ hφ => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `((lintegral_pos_iff_support hm).2 ?_).ne'` and prove the remaining obligations. Use `lt_of_lt_of_le ((isOpen_ne_fun hψ continuous_zero).measure_pos ν ⟨1, hψ0⟩) (measure_mono fun u hu' => mul_ne_zero (by exact_mod_cast hu') (hD u (hψS u hu')).1)` and prove the remaining obligations. Take `⟨K', hK', h⟩` from `exists_compact_pull ho hS hs hu hK`. Establish `: ∫⁻ u, ψ u * D u ∂ν ≤ ∫⁻ u, S.indicator (fun _ => μ K' / μ K) u ∂ν`. Use `lintegral_mono fun u => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h0 : ψ u = 0`. Simplify using `[h0]`. Rewrite using `[Set.indicator_of_mem (hψS u h0), ← one_mul (μ K' / μ K)]`. Use `mul_le_mul' (ENNReal.coe_le_one_iff.2 (hψ1 u)) ?_` and prove the remaining obligations. Conclude with `ENNReal.div_le_div_right (measure_mono fun x hx => h u (hψS u h0) x hx) _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `ne_top_of_le_ne_top ?_ this` and prove the remaining obligations. Rewrite using `[lintegral_indicator_const hS.measurableSet]`. Conclude with `ENNReal.mul_ne_top (ENNReal.div_ne_top hK'.measure_lt_top.ne hKpos) hS.measure_lt_top.ne`. Rewrite using `[← lintegral_mul_const _ hm]`. Use `lintegral_congr fun u => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h0 : ψ u = 0`. Simplify using `[h0]`. Rewrite using `[← lintegral_map hφ (continuous_const_smul (s u)).measurable, (hD u (hψS u h0)).2, lintegral_smul_measure, smul_eq_mul, mul_assoc]`.
+A detailed English derivation is pending.
 -/
 theorem exists_avg_const (ho : IsOpenUnits R) (μ : Measure V) [μ.IsAddHaarMeasure]
     (ν : Measure R) [ν.IsOpenPosMeasure] [IsFiniteMeasureOnCompacts ν]
@@ -191,51 +191,45 @@ theorem exists_avg_const (ho : IsOpenUnits R) (μ : Measure V) [μ.IsAddHaarMeas
       lintegral_smul_measure, smul_eq_mul, mul_assoc]
 
 /- English proof (translation)
-Take `⟨-, -, ho, U₀, hU₀, h1, s₀, hs₀, -, hss₀⟩` from `hR`. Establish `hUn` using `isOpen_isUnit ho`. Establish `hic` using `continuousOn_inverse ho`. Establish `him` using `measurable_inverse ho`. Take `⟨hm1, -, -, hm4⟩` from `modu_basic R`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Choose the witnesses or unpack the hypotheses as in `⟨U, hU, h1U, hUu, s, hsm, hs, hss⟩ : ∃ U : Set R, IsOpen U ∧ (1 : R) ∈ U ∧ (∀ u ∈ U, IsUnit u) ∧ ∃ s : R → R, Measurable s ∧ ContinuousOn s U ∧ ∀ u ∈ U, s u ^ 2 = u := by`. Take `⟨s, hsm, hs, -⟩` from `exists_measurable_eqOn (0 : R) hU₀ hs₀`. Use `⟨U₀ ∩ {a | IsUnit a}, hU₀.inter hUn, ⟨h1, isUnit_one⟩, fun u hu => hu.2, s, hsm, (hs₀.congr hs).mono Set.inter_subset_left, fun u hu => ?_⟩` and prove the remaining obligations. Rewrite using `[hs u hu.1, sq, hss₀ u hu.1]`. Take `⟨S, hS, h1S, hSU⟩` from `exists_compact_subset hU h1U`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hsu : ∀ u ∈ S, IsUnit (s u)` using `fun u hu => (isUnit_pow_iff two_ne_zero).1 (by rw [hss u (hSU hu)]; exact hUu u (hSU hu))`. Choose the witnesses or unpack the hypotheses as in `⟨ψ, hψ, hψS, hψ1, hψ0⟩ : ∃ ψ : R → ℝ≥0, Continuous ψ ∧ (∀ u, ψ u ≠ 0 → u ∈ S) ∧ (∀ u, ψ u ≤ 1) ∧ ψ 1 ≠ 0 := by`. Take `⟨f, f1, f0, -, f01⟩` from `exists_continuous_one_zero_of_isCompact (isCompact_singleton (x := (1 : R))) (isOpen_interior (s := S)).isClosed_compl (Set.disjoint_singleton_left.2 fun h => h h1S)`. Use `⟨fun u => (f u).toNNReal, continuous_real_toNNReal.comp f.continuous, fun u hu => ?_, fun u => Real.toNNReal_le_one.2 (f01 u).2, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `hu (by show (f u).toNNReal = 0; rw [f0 (fun h' => h (interior_subset h'))]; simp)`. Use `show (f 1).toNNReal ≠ 0`. Rewrite using `[f1 rfl]`. Simplify using the standard rewrite rules. Establish `hωc : ContinuousOn (fun a : R => modu R (Ring.inverse a)) {a | IsUnit a}` using `(hm4 ho).comp hic fun a ha => isUnit_inv ha`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨ω, hωm, hω, -⟩` from `exists_measurable_eqOn (0 : ℝ≥0) hUn hωc`. Establish `hωc' : ContinuousOn ω {a | IsUnit a}` using `hωc.congr hω`. Take `⟨C, hC0, hCt, hC⟩` from `exists_avg_const ho μ ν hS hsm (hs.mono hSU) hsu hψ hψS hψ1 hψ0`. Set `r : R → V → R` to `fun t x => t * Ring.inverse (q x)`. Establish `hrm : Measurable fun p : R × V => r p.1 p.2` using `measurable_fst.mul (him.comp (hq.measurable.comp measurable_snd))`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `k : R → V → ℝ≥0` to `fun t x => ψ (r t x) * ω (q x)`. Establish `hkm : Measurable fun p : R × V => k p.1 p.2` using `(hψ.measurable.comp hrm).mul (hωm.comp (hq.measurable.comp measurable_snd))`. Set `g : R → V → V` to `fun t x => s (r t x) • x`. Establish `hgm : Measurable fun p : R × V => g p.1 p.2` using `(hsm.comp hrm).smul measurable_snd`. Establish `hkt : ∀ t, Measurable (k t)` using `fun t => hkm.comp measurable_prodMk_left`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgt : ∀ t, Measurable (g t)` using `fun t => hgm.comp measurable_prodMk_left`. Establish `hkS : ∀ t x, k t x ≠ 0 → r t x ∈ S` using `fun t x h => hψS _ (left_ne_zero_of_mul h)`. Establish `hqu : ∀ t x, r t x ∈ S → IsUnit (q x)` using `fun t x h => isUnit_of_mul_inverse (hUu _ (hSU h))`. Establish `hrq : ∀ t x, r t x ∈ S → r t x * q x = t` using `fun t x h => by`. Simplify using `only [r]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mul_assoc, Ring.inverse_mul_cancel _ (hqu t x h), mul_one]`. Use `⟨fun t => C⁻¹ • (μ.withDensity fun x => k t x).map (g t), fun t => ?_, fun φ hφ => ?_, fun φ hφ hc _ => ?_⟩` and prove the remaining obligations. Establish `hA : MeasurableSet (q ⁻¹' {id t} ∩ Set.univ)ᶜ` using `(((isClosed_singleton.preimage hq).measurableSet).inter MeasurableSet.univ).compl`. Rewrite using `[Measure.smul_apply, Measure.map_apply (hgt t) hA, withDensity_apply _ (hgt t hA), setLIntegral_congr_fun (g := fun _ => 0) (hgt t hA), lintegral_zero, smul_zero]`. Introduce `x hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `h`. Establish `h'` using `hkS t x (fun h2 => h (by simp [h2]))`. Use `hx ⟨?_, trivial⟩` and prove the remaining obligations. Use `show q (s (r t x) • x) = t`. Rewrite using `[hq2, hss _ (hSU h'), hrq t x h']`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hj : Measurable fun p : R × V => (k p.1 p.2 : ℝ≥0∞) * φ (g p.1 p.2)` using `hkm.coe_nnreal_ennreal.mul (hφ.comp hgm)`. Establish `inner : ∀ t, ∫⁻ v, φ v ∂(C⁻¹ • (μ.withDensity fun x => k t x).map (g t)) = C⁻¹ * ∫⁻ x, k t x * φ (g t x) ∂μ` using `fun t => by`. Rewrite using `[lintegral_smul_measure, lintegral_map hφ (hgt t), smul_eq_mul]`. Conclude with `congrArg _ (lintegral_withDensity_eq_lintegral_mul _ (hkt t).coe_nnreal_ennreal (hφ.comp (hgt t)))`. Simplify using `only [inner]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hj2 : Measurable fun p : V × R => (ψ p.2 : ℝ≥0∞) * φ (s p.2 • p.1)` using `(hψ.measurable.comp measurable_snd).coe_nnreal_ennreal.mul (hφ.comp ((hsm.comp measurable_snd).smul measurable_fst))`. Establish `step : ∀ᵐ x ∂μ, ∫⁻ t, k t x * φ (g t x) ∂ν = ∫⁻ u, ψ u * φ (s u • x) ∂ν` using `by filter_upwards [h0] with x hx`. Establish `hgx : Measurable fun u => (ψ u : ℝ≥0∞) * φ (s u • x)` using `hj2.comp measurable_prodMk_left`. Establish `hmul : Measurable fun z : R => Ring.inverse (q x) * z` using `measurable_const.mul measurable_id`. Use `conv_rhs => rw [(hm1 _ (isUnit_inv hx)).2 ν hν]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[lintegral_smul_measure, lintegral_map hgx hmul, ← hω _ hx, ENNReal.smul_def, smul_eq_mul, ← lintegral_const_mul' _ _ ENNReal.coe_ne_top]`. Use `lintegral_congr fun t => ?_` and prove the remaining obligations. Simplify using `only [k, g, r, mul_comm t, ENNReal.coe_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Measure.restrict_univ, lintegral_const_mul _ hj.lintegral_prod_right', lintegral_lintegral_swap hj.aemeasurable, lintegral_congr_ae step, lintegral_lintegral_swap hj2.aemeasurable]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `e : ∀ u, ∫⁻ x, ψ u * φ (s u • x) ∂μ = ψ u * ∫⁻ x, φ (s u • x) ∂μ` using `fun u => lintegral_const_mul _ (hφ.comp (continuous_const_smul (s u)).measurable)`. Simplify using `only [e]`. Rewrite using `[hC φ hφ, ← mul_assoc, ENNReal.inv_mul_cancel hC0 hCt, one_mul]`. Take `⟨K, hK, hKp⟩` from `exists_compact_pull ho hS (hs.mono hSU) hsu hc.isCompact`. Take `⟨c, hcb⟩` from `hφ.bounded_above_of_compact_support hc`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hFm : ∀ t, AEStronglyMeasurable (fun x => k t x • φ (g t x)) μ` using `fun t => ((hkt t).coe_nnreal_real.mul (hφ.measurable.comp (hgt t))).aestronglyMeasurable`. Establish `hbound : ∀ T : Set R, IsCompact T → T ⊆ {a | IsUnit a} → ∃ b : V → ℝ, Integrable b μ ∧ ∀ t ∈ T, ∀ x, ‖k t x • φ (g t x)‖ ≤ b x`. Introduce `T hT hTu`. Establish `hA : IsCompact ((fun p : R × R => p.1 * p.2) '' ((Ring.inverse '' S) ×ˢ T))` using `((hS.image_of_continuousOn (hic.mono fun u hu => hUu u (hSU hu))).prod hT).image continuous_mul`. Take `⟨B, hB⟩` from `(hA.image_of_continuousOn (hωc'.mono (by`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Introduce and unpack `_ ⟨⟨_, t⟩, ⟨⟨u, hu, rfl⟩, ht⟩, rfl⟩`. Conclude with `(isUnit_inv (hUu u (hSU hu))).mul (hTu ht)))).bddAbove`. Establish `hc0 : 0 ≤ c` using `(norm_nonneg _).trans (hcb 0)`. Use `⟨K.indicator fun _ => B * c, ?_, fun t ht x => ?_⟩` and prove the remaining obligations. Rewrite using `[integrable_indicator_iff hK.measurableSet]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `integrableOn_const hK.measure_lt_top.ne`. Distinguish the cases in `hk : k t x = 0`. Rewrite using `[hk, zero_smul, norm_zero]`. Conclude with `Set.indicator_nonneg (fun _ _ => by positivity) x`. Establish `h'` using `hkS t x hk`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hx : x ∈ K`. Rewrite using `[Set.indicator_of_mem hx, NNReal.smul_def, smul_eq_mul, norm_mul]`. Use `mul_le_mul ?_ (hcb _) (norm_nonneg _) B.coe_nonneg` and prove the remaining obligations. Establish `hωB : ω (q x) ≤ B`. Use `hB ⟨_, ⟨(Ring.inverse (r t x), t), ⟨⟨_, h', rfl⟩, ht⟩, ?_⟩, rfl⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `show Ring.inverse (r t x) * t = q x`. Use `nth_rewrite 2 [← hrq t x h']`. Rewrite using `[← mul_assoc, Ring.inverse_mul_cancel _ (hUu _ (hSU h')), one_mul]`. Rewrite using `[NNReal.norm_eq, NNReal.coe_le_coe, ← one_mul B]`. Conclude with `mul_le_mul' (hψ1 _) hωB`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Set.indicator_of_notMem hx, image_eq_zero_of_notMem_tsupport (f := φ) (fun h => hx (hKp _ h' x h))]`. Simplify using the standard rewrite rules. Use `⟨fun t ht => ?_, fun t₀ ht₀ => ?_⟩` and prove the remaining obligations. Use `Integrable.smul_measure ?_ (ENNReal.inv_ne_top.2 hC0)` and prove the remaining obligations. Rewrite using `[integrable_map_measure hφ.aestronglyMeasurable (hgt t).aemeasurable, integrable_withDensity_iff_integrable_smul (hkt t)]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨b, hb, hb'⟩` from `hbound {t} isCompact_singleton (Set.singleton_subset_iff.2 ht)`. Conclude with `Integrable.mono' hb (hFm t) (Filter.Eventually.of_forall (hb' t rfl))`. Establish `e : ∀ t, ∫ v, φ v ∂(C⁻¹ • (μ.withDensity fun x => k t x).map (g t)) = C⁻¹.toReal * ∫ x, k t x • φ (g t x) ∂μ` using `fun t => by`. Rewrite using `[integral_smul_measure, integral_map (hgt t).aemeasurable hφ.aestronglyMeasurable, integral_withDensity_eq_integral_smul (hkt t), smul_eq_mul]`. Simplify using `only [e]`.
-
-Take `⟨T, hT, htT, hTu⟩` from `exists_compact_subset hUn ht₀`. Take `⟨b, hb, hb'⟩` from `hbound T hT hTu`. Use `(ContinuousAt.const_mul ?_ _).continuousWithinAt` and prove the remaining obligations. Use `continuousAt_of_dominated (bound := b) (Filter.Eventually.of_forall hFm) ?_ hb ?_` and prove the remaining obligations. Use `filter_upwards [mem_interior_iff_mem_nhds.1 htT] with t ht`.
-
-Conclude with `Filter.Eventually.of_forall (hb' t ht)`. Use `Filter.Eventually.of_forall fun x => ?_` and prove the remaining obligations. Establish `hcu : Continuous fun u : R => ((ψ u * ω (q x) : ℝ≥0) : ℝ) * φ (s u • x)`. Use `ContinuousOn.continuous_of_tsupport_subset (s := U) ?_ hU ?_` and prove the remaining obligations. Conclude with `(NNReal.continuous_coe.comp (hψ.mul continuous_const)).continuousOn.mul (hφ.comp_continuousOn (hs.smul continuousOn_const))`.
-
-Use `Set.Subset.trans (closure_minimal (fun u hu => hψS u fun h => ?_) hS.isClosed) hSU` and prove the remaining obligations. Conclude with `(Function.mem_support.1 hu) (by simp [h])`. Conclude with `(hcu.comp (continuous_id.mul continuous_const)).continuousAt`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_fibreFamily (hR : Nice R) (μ : Measure V) [μ.IsAddHaarMeasure]
     (ν : Measure R) [hν : ν.IsAddHaarMeasure] (q : V → R) (hq : Continuous q)
@@ -394,9 +388,9 @@ omit [TopologicalSpace R] [IsTopologicalRing R] [T2Space R] [LocallyCompactSpace
   [SecondCountableTopology R] [MeasurableSpace R] [BorelSpace R] [ContinuousSMul R V] [T2Space V] in
 
 /- English proof (translation)
-Establish `hc : Continuous (fun p : V × ℝ => p.1 + L p.2)` using `by fun_prop`. Establish `hS : MeasurableSet {p : V × ℝ | p.1 + L p.2 ∈ Z}` using `hc.measurable hZ`. Establish `h1 : (μ.prod volume) {p : V × ℝ | p.1 + L p.2 ∈ Z} = 0`. Rewrite using `[Measure.measure_prod_null hS]`. Conclude with `Filter.Eventually.of_forall fun x => (h x).measure_zero volume`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[Measure.prod_apply_symm hS]`. Establish `h2 : ∀ t : ℝ, μ ((fun x => (x, t)) ⁻¹' {p : V × ℝ | p.1 + L p.2 ∈ Z}) = μ Z` using `fun t => measure_preimage_add_right μ (L t) Z`. Simplify `h1` using `only [h2, lintegral_const, mul_eq_zero, Real.volume_univ, ENNReal.top_ne_zero, or_false]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem null_of_finite_curve (μ : Measure V) [μ.IsAddHaarMeasure] {Z : Set V} (hZ : MeasurableSet Z)
     {L : ℝ → V} (hL : Continuous L) (h : ∀ x : V, {t : ℝ | x + L t ∈ Z}.Finite) : μ Z = 0 := by
@@ -419,7 +413,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   (R : Type) [CommRing R] [Algebra F R] (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E)
 
 /- English proof (translation)
-Establish `h1 : Continuous (Algebra.trace R (R ⊗[F] E))` using `IsModuleTopology.continuous_of_linearMap _`. Establish `h2` using `GlobalTheory.AdelicUnitaryTop.continuous_sigR R σ`. Unfold `qR hR Formalism.UG.hform`. Use `continuous_const.mul (h1.comp ?_)` and prove the remaining obligations. Use `fun_prop`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_qR [TopologicalSpace R] [IsTopologicalRing R] :
     Continuous fun X : Fin 1 → Fin M → R ⊗[F] E => qR R σ J (X 0) := by
@@ -431,7 +425,7 @@ theorem continuous_qR [TopologicalSpace R] [IsTopologicalRing R] :
 
 omit [NumberField F] [NumberField E] in
 /- English proof (translation)
-Establish `h : ∀ z : R ⊗[F] E, sigR R σ (c • z) = c • sigR R σ z` using `fun z => (Algebra.TensorProduct.map (AlgHom.id R R) σ).toLinearMap.map_smul c z`. Establish `h2 : hR R σ J ((c • X) 0) ((c • X) 0) = c ^ 2 • hR R σ J (X 0) (X 0)`. Simplify using `only [hR, Formalism.UG.hform, Pi.smul_apply, h, Finset.smul_sum, smul_mul_assoc, mul_smul_comm, smul_smul, sq]`. Unfold `qR`. Rewrite using `[h2, map_smul, smul_eq_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -447,17 +441,17 @@ theorem qR_smul (c : R) (X : Fin 1 → Fin M → R ⊗[F] E) :
   ring
 
 /- English proof (translation)
-Take `⟨y0, a, ha, hy0⟩` from `GlobalTheory.HermLineZeros.exists_anisotropic h hM hJ`. Set `y : Fin M → R ⊗[F] E` to `fun i => inclR R (y0 i)`. Establish `hs : ∀ e : E, sigR R σ (inclR R e) = inclR R (σ e)` using `fun e => rfl`. Establish `hyy : hR R σ J y y = algebraMap R (R ⊗[F] E) (algebraMap F R a)`. Establish `: hR R σ J y y = inclR R (hE σ J y0 y0)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [hR, hE, Formalism.UG.hform, map_sum, map_mul, y, hs, JR, Matrix.map_apply, RingHom.coe_coe]`. Rewrite using `[this, hy0, ← IsScalarTower.algebraMap_apply]`. Conclude with `(Algebra.TensorProduct.includeRight : E →ₐ[F] R ⊗[F] E).commutes a`. Establish `hrk : Module.finrank R (R ⊗[F] E) = 2`. Rewrite using `[Module.finrank_baseChange, h.2.2.1]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hq : qR R σ J y = algebraMap F R a`. Rewrite using `[qR, hyy, Algebra.trace_algebraMap, hrk, ← map_nsmul, ← map_mul]`. Use `congr 1`. Rewrite using `[nsmul_eq_mul]`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hst : ∀ t : R, sigR R σ (algebraMap R (R ⊗[F] E) t) = algebraMap R (R ⊗[F] E) t`. Introduce `t`. Use `show t ⊗ₜ[F] σ 1 = _`. Rewrite using `[map_one]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Both sides reduce to the same expression. Use `⟨y, a, ha, fun x => ⟨algebraMap F R (1 / 2) * Algebra.trace R (R ⊗[F] E) (hR R σ J x y + hR R σ J y x), fun t => ?_⟩⟩` and prove the remaining obligations. Establish `e : t • y = algebraMap R (R ⊗[F] E) t • y`. Rewrite using `[algebraMap_smul]`. Rewrite using `[← hq]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Replace the chosen expression with an arbitrary variable.
 
-Unfold `qR hR`. Generalize the expression as in `algebraMap F R (1 / 2) = u`. Rewrite using `[e, GlobalTheory.HermLineZeros.hform_expand, hst, mul_assoc (algebraMap R (R ⊗[F] E) t)]`. Simplify using `only [← Algebra.smul_def, map_add, map_smul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_line [Nontrivial R] (h : IsCMExt F E σ) (hM : 1 ≤ M) (hJ : IsHermND σ J) :
     ∃ (y : Fin M → R ⊗[F] E) (a : F), a ≠ 0 ∧ ∀ x : Fin M → R ⊗[F] E, ∃ c : R, ∀ t : R,
@@ -498,9 +492,9 @@ theorem exists_line [Nontrivial R] (h : IsCMExt F E σ) (hM : 1 ≤ M) (hJ : IsH
 end Herm
 
 /- English proof (translation)
-Establish `hne : (Polynomial.C a * Polynomial.X ^ 2 + Polynomial.C c * Polynomial.X + Polynomial.C d : Polynomial K) ≠ 0`. Introduce `h0`. Use `congrArg (fun p => Polynomial.coeff p 2) h0` as an intermediate fact. Simplify using `[Polynomial.coeff_X, Polynomial.coeff_C] at this`. Conclude with `ha this`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `(Polynomial.finite_setOf_isRoot hne).subset fun t ht => ?_` and prove the remaining obligations. Simplify `ht` using `[Polynomial.IsRoot]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem finite_quadratic_zeros {K : Type} [Field K] {a : K} (ha : a ≠ 0) (c d : K) :
     {t : K | a * t ^ 2 + c * t + d = 0}.Finite := by
@@ -514,7 +508,7 @@ theorem finite_quadratic_zeros {K : Type} [Field K] {a : K} (ha : a ≠ 0) (c d 
   simpa [Polynomial.IsRoot] using ht
 
 /- English proof (translation)
-Use `Pi.isUnit_iff (x := (c : ∀ w : InfinitePlace F, w.Completion))` as an intermediate fact. Simplify using `only [isUnit_iff_ne_zero] at this`. Conclude with `this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isUnit_ainf_iff {F : Type} [Field F] [NumberField F] (c : Ainf F) :
     IsUnit c ↔ ∀ w, c w ≠ 0 := by
@@ -523,17 +517,15 @@ theorem isUnit_ainf_iff {F : Type} [Field F] [NumberField F] (c : Ainf F) :
   exact this
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hσ M J μ ν hM hJ hμ hν`. Establish `hq` using `continuous_qR (Ainf F) σ J`. Establish `e : {c : Ainf F | ∀ w, c w ≠ 0} = {c | IsUnit c}`. Use extensionality with `c`. Conclude with `(isUnit_ainf_iff c).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Use `exists_fibreFamily (nice_ainf_fv F).1 μ ν _ hq (qR_smul _ σ J) ?_` and prove the remaining obligations. Simplify using `only [isUnit_ainf_iff]`. Use `ae_all_iff.2 fun w => ?_` and prove the remaining obligations. Use `haveI := hσ.1`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hw : w.IsReal` using `IsTotallyReal.isReal w`. Take `⟨y, a, ha, hy⟩` from `exists_line (Ainf F) σ J hσ hM hJ`. Set `i` to `(InfinitePlace.Completion.isometryEquivRealOfIsReal hw).symm`. Set `j : ℝ → Ainf F` to `fun t => Pi.single (M := fun w : InfinitePlace F => w.Completion) w (i t)`. Establish `hj : Continuous j` using `(continuous_single (A := fun w : InfinitePlace F => w.Completion) w).comp i.continuous`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hev : Continuous fun c : Ainf F => c w` using `continuous_apply w`. Rewrite using `[ae_iff]`. Simplify using `only [ne_eq, not_not]`. Use `null_of_finite_curve μ (isClosed_eq (hev.comp hq) continuous_const).measurableSet (L := fun t => j t • fun _ => y) (hj.smul continuous_const) fun x => ?_` and prove the remaining obligations. Take `⟨c, hc⟩` from `hy (x 0)`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `ha' : algebraMap F w.Completion a ≠ 0` using `(map_ne_zero _).2 ha`. Use `((finite_quadratic_zeros ha' (c w) (qR (Ainf F) σ J (x 0) w)).preimage i.injective.injOn).subset fun t ht => ?_` and prove the remaining obligations. Establish `h1 : qR (Ainf F) σ J (x 0 + j t • y) w = 0` using `ht`. Rewrite `h1` using `[hc]`. Establish `h2 : j t w = i t` using `Pi.single_eq_same _ _`.
-
-Rewrite using `[Set.mem_preimage, Set.mem_setOf_eq, ← h2]`. Conclude with `h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_fibreFamily_ainf : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E) (μ : Measure (Fin 1 → Fin M → Ainf F ⊗[F] E)) (ν : Measure (Ainf F)), 1 ≤ M → IsHermND σ J → μ.IsAddHaarMeasure → ν.IsAddHaarMeasure → ∃ fib : Ainf F → Measure (Fin 1 → Fin M → Ainf F ⊗[F] E), IsFibreFamily μ (fun X => qR (Ainf F) σ J (X 0)) id Set.univ ν {c : Ainf F | ∀ w, c w ≠ 0} fib := by
   intro F E _ _ _ _ _ σ hσ M J μ ν hM hJ hμ hν

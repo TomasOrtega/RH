@@ -13,17 +13,15 @@ namespace GlobalTheory.BSP.LevH
 open CategoryTheory
 
 /- English proof (translation)
-Establish `hw : p.comp (algebraMap A B) = q.comp (algebraMap A B)`. Use `congrArg CommRingCat.Hom.hom hpo1.w` as an intermediate fact. Simplify using `using this`. Establish `hr : ∀ c, p (algebraMap A B c) = q (algebraMap A B c)` using `fun c => RingHom.congr_fun hw c`. Set `N : Submodule A (Fin d → B)` to `{ carrier := {z | (fun i => p (z i)) = ε.mulVec fun i => q (z i)} add_mem' := by`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Introduce `a b ha hb`. Simplify using `only [Set.mem_setOf_eq] at ha hb ⊢`. Establish `e : (fun i => q ((a + b) i)) = (fun i => q (a i)) + fun i => q (b i)`. Use function extensionality and compare the values at `i`. Simplify using `[map_add]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[e, Matrix.mulVec_add, ← ha, ← hb]`. Use function extensionality and compare the values at `i`. Simplify using `[map_add]`. Use the proof step `zero_mem' := by`. Simplify using `only [Set.mem_setOf_eq, Pi.zero_apply, map_zero]`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(Matrix.mulVec_zero ε).symm`. Use the proof step `smul_mem' := by`. Introduce `c z hz`. Simplify using `only [Set.mem_setOf_eq] at hz ⊢`. Establish `e1 : (fun i => p ((c • z) i)) = q (algebraMap A B c) • fun i => p (z i)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i`. Simplify using `[Algebra.smul_def, map_mul, hr]`. Establish `e2 : (fun i => q ((c • z) i)) = q (algebraMap A B c) • fun i => q (z i)`. Use function extensionality and compare the values at `i`. Simplify using `[Algebra.smul_def, map_mul]`.
-
-Rewrite using `[e1, e2, Matrix.mulVec_smul, hz] }`. Conclude with `⟨N, fun z => Iff.rfl, GlobalTheory.T.descent_free_module_cocycle A B D T p q q₁₂ q₂₃ q₁₃ q₃ hff hpo1 hpo2 e1 e2 e3 e4 d ε hε hc N fun z => Iff.rfl⟩`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem lev_ring {A B D T : Type} [CommRing A] [CommRing B] [CommRing D] [CommRing T] [Algebra A B]
     (p q : B →+* D) (q₁₂ q₂₃ q₁₃ : D →+* T) (q₃ : B →+* T)
@@ -66,19 +64,19 @@ theorem lev_ring {A B D T : Type} [CommRing A] [CommRing B] [CommRing D] [CommRi
 variable {l : ℕ} {R : Type} [CommRing R]
 
 /- English proof (translation)
-The claim follows from `Hom.ext' rfl`.
+A detailed English derivation is pending.
 -/
 theorem hom_comp_assoc {B C D E : Obj l R} (h : Hom D E) (g : Hom C D) (f : Hom B C) :
     (h.comp g).comp f = h.comp (g.comp f) := Hom.ext' rfl
 
 /- English proof (translation)
-Use `letI := (qmap h m).toAlgebra`. Establish `c1 : p.comp h = q.comp h` using `hpo.comm`. Use `Exists.elim (hc.stable.po D (p.comp h)) fun T hT => Exists.elim hT fun q₃ hT => Exists.elim hT fun q₁₂ hT => ?_` and prove the remaining obligations. Establish `c2 : q₃.comp h = q₁₂.comp (p.comp h)` using `hT.comm`. Use `Exists.elim (GlobalTheory.T.prismPushoutModAdicPow_universal l R B C C D h h p q hpo T (q₁₂.comp q) q₃ (by` and prove the remaining obligations.
+Equip the data with the indicated structure. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hom_comp_assoc, ← c1, c2])) fun q₂₃ h23 => ?_`. Use `Exists.elim (GlobalTheory.T.prismPushoutModAdicPow_universal l R B C C D h h p q hpo T (q₁₂.comp p) q₃ (by` and prove the remaining obligations. Rewrite using `[hom_comp_assoc, c2])) fun q₁₃ h13 => ?_`. Establish `hpo2` using `hT.po m`. Establish `hq : qmap (p.comp h) m = (qmap p m).comp (qmap h m)` using `Ideal.Quotient.ringHom_ext (RingHom.ext fun _ => rfl)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hpo2` using `[hq]`. Establish `hq2 : ∀ (k k' : Hom D T) (k'' : Hom C T), k.comp p = k'.comp q → (qmap k m).comp (qmap p m) = (qmap k' m).comp (qmap q m)` using `fun k k' k'' e => Ideal.Quotient.ringHom_ext (RingHom.ext fun x => congrArg (fun H : Hom C T => Ideal.Quotient.mk (adI T ^ m) (H.f x)) e)`. Establish `hq3 : ∀ (k : Hom D T) (k' : Hom C T), k.comp q = k' → (qmap k m).comp (qmap q m) = qmap k' m` using `fun k k' e => Ideal.Quotient.ringHom_ext (RingHom.ext fun x => congrArg (fun H : Hom C T => Ideal.Quotient.mk (adI T ^ m) (H.f x)) e)`. Establish `hq4 : ∀ (k : Hom D T) (k' : Hom D T), k.comp p = k'.comp p → (qmap k m).comp (qmap p m) = (qmap k' m).comp (qmap p m)` using `fun k k' e => Ideal.Quotient.ringHom_ext (RingHom.ext fun x => congrArg (fun H : Hom C T => Ideal.Quotient.mk (adI T ^ m) (H.f x)) e)`. Use `lev_ring (qmap p m) (qmap q m) (qmap q₁₂ m) (qmap q₂₃ m) (qmap q₁₃ m) (qmap q₃ m) (hc.ff m) (hpo.po m) hpo2 (hq2 q₂₃ q₁₂ q₃ h23.1.1) (hq3 q₂₃ q₃ h23.1.2) (hq4 q₁₃ q₁₂ h13.1.1) (hq3 q₁₃ q₃ h13.1.2) d _ (hε.map (Ideal.Quotient.mk (adI D ^ m)).mapMatrix) ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `congrArg (fun M : Matrix (Fin d) (Fin d) T.A => M.map (Ideal.Quotient.mk (adI T ^ m))) (hcoc T q₁₂ q₂₃ q₁₃ q₃ h23.1.1 h23.1.2 h13.1.1 h13.1.2)` as an intermediate fact. Simplify using `only [Matrix.map_mul] at this`. Conclude with `this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lev_prism [Fact l.Prime] {B C D : Obj l R} (h : Hom B C) (p q : Hom C D) (hc : Cover h) (hpo : IsPO h h p q)
     (m : ℕ) (d : ℕ) (ε : Matrix (Fin d) (Fin d) D.A) (hε : IsUnit ε)
@@ -122,9 +120,9 @@ end GlobalTheory.BSP.LevH
 namespace GlobalTheory.BSP.LevH
 
 /- English proof (translation)
-Introduce `l _ K bk d S B C D h f p q hc hpo m`. Use `lev_prism h p q hc hpo m d (S.ε (p.comp f) (q.comp f)) ⟨⟨S.ε (p.comp f) (q.comp f), S.ε (q.comp f) (p.comp f), by rw [S.ε_trans, S.ε_refl], by rw [S.ε_trans, S.ε_refl]⟩, rfl⟩ ?_` and prove the remaining obligations. Introduce `T q₁₂ q₂₃ q₁₃ q₃ e1 e2 e3 e4`. Establish `a1 : q₂₃.comp (p.comp f) = q₁₂.comp (q.comp f)` using `by rw [← hom_comp_assoc, e1, hom_comp_assoc]`. Establish `a2 : q₂₃.comp (q.comp f) = q₃.comp f` using `by rw [← hom_comp_assoc, e2]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a3 : q₁₃.comp (p.comp f) = q₁₂.comp (p.comp f)` using `by rw [← hom_comp_assoc, e3, hom_comp_assoc]`. Establish `a4 : q₁₃.comp (q.comp f) = q₃.comp f` using `by rw [← hom_comp_assoc, e4]`. Rewrite using `[S.ε_nat, S.ε_nat, S.ε_nat, a1, a2, a3, a4, S.ε_trans]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem descent_at_level : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (d : ℕ) (S : Strat bk d) (B C D : Obj l ↥(OL K)) (h : Hom B C) (f : Hom bk.prism C) (p q : Hom C D), Cover h → IsPO h h p q → ∀ m : ℕ, letI := (qmap h m).toAlgebra; ∃ N : Submodule (B.A ⧸ adI B ^ m) (Fin d → C.A ⧸ adI C ^ m), (∀ z, z ∈ N ↔ (fun i => qmap p m (z i)) = ((S.ε (p.comp f) (q.comp f)).map (Ideal.Quotient.mk (adI D ^ m))).mulVec fun i => qmap q m (z i)) ∧ Module.Finite (B.A ⧸ adI B ^ m) ↥N ∧ Module.Projective (B.A ⧸ adI B ^ m) ↥N ∧ IsBaseChange (C.A ⧸ adI C ^ m) N.subtype := by
   intro l _ K bk d S B C D h f p q hc hpo m

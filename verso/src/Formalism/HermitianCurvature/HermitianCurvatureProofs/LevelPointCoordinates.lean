@@ -20,9 +20,9 @@ section cell
 variable {k ρ : ℕ}
 
 /- English proof (translation)
-Apply `List.ext_getElem` to reduce the goal to its premises. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Introduce `i h1 h2`. Break down `i with _ | i` into its components or cases.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using the standard rewrite rules. Simplify using `[PBH.shS]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem finRange_one_add (ρ : ℕ) :
     List.finRange (1 + ρ) = (⟨0, by omega⟩ : Fin (1 + ρ)) :: (List.finRange ρ).map PBH.shS := by
@@ -34,7 +34,7 @@ theorem finRange_one_add (ρ : ℕ) :
     · simp [PBH.shS]
 
 /- English proof (translation)
-Use extensionality with `⟨p, hp⟩ ⟨q, hq⟩`. Establish `ha` using `a.isLt`. Unfold `w1 ιLev`. Simplify using `only [eI, esI, PBH.shS, Fin.mk.injEq]`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega) | (simp_all; done) | (simp_all; omega)`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem weyl_cell_shift_eq_level_embedding (a : Fin ρ) (x : ℂ) : w1 k (1 + ρ) (PBH.shS a) x = ιLev k 1 ρ (w1 k ρ a x) := by
   ext ⟨p, hp⟩ ⟨q, hq⟩
@@ -44,7 +44,7 @@ theorem weyl_cell_shift_eq_level_embedding (a : Fin ρ) (x : ℂ) : w1 k (1 + ρ
   split_ifs <;> first | rfl | (exfalso; omega) | (simp_all; done) | (simp_all; omega)
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => simpa using Formalism.FourierDecayAlt.P.Dx2.Tower.lev_one (k := k) 1 ρ`. Consider the case `cons a l ih => rw [List.prod_cons, Formalism.FourierDecayAlt.P.Dx2.Tower.lev_mul, ih, List.map_cons, List.prod_cons]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem iota_list_prod (l : List (Mx k ρ)) : ιLev k 1 ρ l.prod = (l.map (ιLev k 1 ρ)).prod := by
   induction l with
@@ -52,9 +52,9 @@ theorem iota_list_prod (l : List (Mx k ρ)) : ιLev k 1 ρ l.prod = (l.map (ιLe
   | cons a l ih => rw [List.prod_cons, Formalism.FourierDecayAlt.P.Dx2.Tower.lev_mul, ih, List.map_cons, List.prod_cons]
 
 /- English proof (translation)
-Unfold `wCell`. Rewrite using `[List.filter_eq_self.2 (fun a _ => by simp), List.filter_eq_self.2 (fun a _ => by simp), finRange_one_add, iota_list_prod]`. Rewrite using `[List.map_cons, List.prod_cons, PBH.consC_zero, List.map_map, List.map_map]`. Use `congr 2`. Use `List.map_congr_left (fun a _ => ?_)` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Function.comp, PBH.consC_sh, weyl_cell_shift_eq_level_embedding]`.
+Simplify using the standard rewrite rules.
 -/
 theorem wCell_consC (t : ℂ) (c : Fin ρ → ℂ) :
     wCell k (1 + ρ) (Fin.last (1 + ρ)) (PBH.consC t c) =
@@ -68,13 +68,13 @@ theorem wCell_consC (t : ℂ) (c : Fin ρ → ℂ) :
   simp only [Function.comp, PBH.consC_sh, weyl_cell_shift_eq_level_embedding]
 
 /- English proof (translation)
-Establish `hinv : ((Matrix.of fun _ _ : Fin 1 => t)ᴴ)⁻¹ = Matrix.of fun _ _ : Fin 1 => (star t)⁻¹`. Use `Matrix.inv_eq_left_inv ?_` and prove the remaining obligations. Use extensionality with `a b`. Use `fin_cases a`. Use `fin_cases b`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. By extensionality, compare the relevant components.
 
-Simplify using `[Matrix.mul_apply, ht]`. Use extensionality with `i l`. Take `⟨x, rfl⟩` from `(U.eB k 1 ρ).surjective i`. Take `⟨y, rfl⟩` from `(U.eB k 1 ρ).surjective l`. Rewrite using `[U.mMap, PBH.weyl_lift_eq_pair, Matrix.mul_one, Matrix.one_mul, hinv, Ux3.block3_apply]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hX : ∀ x : Fin 1, U.eB k 1 ρ (Sum.inl (Sum.inl x)) = ⟨0, by omega⟩` using `fun x => Fin.ext (by rw [Ux3.block_index_first_val]; simp)`. Establish `hV : ∀ v : Fin (2 * ρ + k + 1), U.eB k 1 ρ (Sum.inl (Sum.inr v)) = ⟨1 + v.val, by omega⟩` using `fun v => Fin.ext (by rw [Ux3.block_index_middle_val])`. Establish `hS : ∀ x : Fin 1, U.eB k 1 ρ (Sum.inr x) = ⟨2 * (1 + ρ) + k, by omega⟩` using `fun x => Fin.ext (by rw [Ux3.block_index_last_val]; have := x.isLt; simp; omega)`. Apply the tactic sequence `rcases x with ((x | x) | x) <;> rcases y with ((y | y) | y) <;>`. Apply the tactic sequence `simp only [Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₁₂, Matrix.fromBlocks_apply₂₁, Matrix.fromBlocks_apply₂₂, Matrix.fromRows_apply_inl, Matrix.fromRows_apply_inr, Matrix.fromCols_apply_inl, Matrix.fromCols_apply_inr, Matrix.zero_apply, Matrix.of_apply, Matrix.one_apply, …`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `unfold w1 <;>`. Apply the tactic sequence `simp only [eI, esI, Fin.ext_iff] <;>`. Apply the tactic sequence `(have hx := x.isLt; have hy := y.isLt; split_ifs <;> first | rfl | (exfalso; omega) | (simp_all; done) | (simp_all; omega))`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem weyl_cell_zero_eq_embedding {t : ℂ} (ht : t ≠ 0) :
     w1 k (1 + ρ) ⟨0, by omega⟩ t = U.mMap k 1 ρ (Matrix.of fun _ _ => t) 1 := by
@@ -102,7 +102,7 @@ theorem weyl_cell_zero_eq_embedding {t : ℂ} (ht : t ≠ 0) :
     (have hx := x.isLt; have hy := y.isLt; split_ifs <;> first | rfl | (exfalso; omega) | (simp_all; done) | (simp_all; omega))
 
 /- English proof (translation)
-Rewrite using `[wCell_consC, Matrix.mul_assoc, ← Formalism.FourierDecayAlt.P.Dx2.Tower.lev_mul, weyl_cell_zero_eq_embedding ht, ← Formalism.FourierDecayAlt.P.Dx2.MN.embG_eq, Formalism.FourierDecayAlt.P.Ux4.mMap_mul_embG, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cell_iota {t : ℂ} (ht : t ≠ 0) (c : Fin ρ → ℂ) (g : Mx k ρ) :
     wCell k (1 + ρ) (Fin.last (1 + ρ)) (PBH.consC t c) * ιLev k 1 ρ g =
@@ -111,11 +111,11 @@ theorem cell_iota {t : ℂ} (ht : t ≠ 0) (c : Fin ρ → ℂ) (g : Mx k ρ) :
     ← Formalism.FourierDecayAlt.P.Dx2.MN.embG_eq, Formalism.FourierDecayAlt.P.Ux4.mMap_mul_embG, Matrix.one_mul]
 
 /- English proof (translation)
-Rewrite using `[Finset.prod_congr rfl (fun a _ => if_pos (by rw [Fin.val_last]; exact a.isLt)), Finset.prod_congr rfl (fun (a : Fin ρ) _ => if_pos (by rw [Fin.val_last]; exact a.isLt))]`. Rewrite using `[← Fintype.prod_equiv (finCongr (Nat.add_comm ρ 1)) (fun a : Fin (ρ + 1) => ‖PBH.consC t c (finCongr (Nat.add_comm ρ 1) a)‖ ^ (Mdim k (1 + ρ) (finCongr (Nat.add_comm ρ 1) a) - 1)) _ (fun _ => rfl)]`. Rewrite using `[Fin.prod_univ_succ]`. Use `congrArg₂ (· * ·) ?_ ?_` and prove the remaining obligations. Establish `h0 : finCongr (Nat.add_comm ρ 1) (0 : Fin (ρ + 1)) = ⟨0, by omega⟩` using `Fin.ext rfl`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[h0, PBH.consC_zero]`. Use `congr 1`. Use `Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations. Establish `hs : finCongr (Nat.add_comm ρ 1) a.succ = PBH.shS a` using `Fin.ext (by simp [PBH.shS])`. Rewrite using `[hs, PBH.consC_sh]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Simplify using `only [Mdim, PBH.shS]`. Use linear arithmetic over natural numbers and integers.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem gauge_consC (t : ℂ) (c : Fin ρ → ℂ) :
     (∏ a : Fin (1 + ρ), (if a.val < (Fin.last (1 + ρ)).val then ‖PBH.consC t c a‖ ^ (Mdim k (1 + ρ) a - 1)
@@ -140,7 +140,7 @@ theorem gauge_consC (t : ℂ) (c : Fin ρ → ℂ) :
     omega
 
 /- English proof (translation)
-Unfold `resG`. Rewrite using `[cell_iota ht, smul_smul, gauge_consC, ← Complex.ofReal_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem resG_consC {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] {t : ℂ} (ht : t ≠ 0)
     (J : Mx k (1 + ρ) → E) (c : Fin ρ → ℂ) (g : Mx k ρ) :
@@ -151,7 +151,7 @@ theorem resG_consC {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] {t : �
   rw [cell_iota ht, smul_smul, gauge_consC, ← Complex.ofReal_mul]
 
 /- English proof (translation)
-Substitute `hn` using the available equality. Simplify using `only [Fin.cast_eq_self, Formalism.FourierDecayAlt.P.Dx2.MN.castM_rfl]`. Conclude with `resG_consC ht J c g`.
+Substitute using the available equality. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem resG_cast {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] {n : ℕ} (hn : n = 1 + ρ) {t : ℂ} (ht : t ≠ 0)
     (J : Mx k n → E) (c : Fin ρ → ℂ) (g : Mx k ρ) :
@@ -171,7 +171,7 @@ namespace Formalism.FourierDecayAlt.P
 open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt Formalism.FourierDecayAlt.Q Formalism.FourierDecayAlt.P5 Formalism.FourierDecayAlt.P.PBP
 
 /- English proof (translation)
-The claim follows from `pb_radHead_of module_form_eq_radial_form_one exists_zeta_normalized_haar hHP`.
+A detailed English derivation is pending.
 -/
 theorem pb_radHead_of_headPic (hHP : HeadPic) : KB.RadHead :=
   pb_radHead_of module_form_eq_radial_form_one exists_zeta_normalized_haar hHP

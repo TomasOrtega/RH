@@ -21,7 +21,7 @@ namespace GlobalTheory.TypeAsm.FramePf
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.exists_isometry_hermFrame_unipotent`.
+A detailed English derivation is pending.
 -/
 theorem L_ratIso : ∀ {K V : Type} [Field K] [StarRing K] [AddCommGroup V] [Module K V] [FiniteDimensional K V]
     (H : Formalism.HermitianLatticeCounting.S6.HermSpace K V) {r : ℕ} (e f e' f' : Fin r → V) (z z' : V),
@@ -40,7 +40,7 @@ theorem L_ratIso : ∀ {K V : Type} [Field K] [StarRing K] [AddCommGroup V] [Mod
       (∀ y, (∀ a, H.B (e a) y = 0) → m.symm y - y ∈ Submodule.span K (Set.range e)) := GlobalTheory.T.exists_isometry_hermFrame_unipotent
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.realMatrix_mem_besselUnipotent_of_frame`.
+A detailed English derivation is pending.
 -/
 theorem L_nset : ∀ {K V : Type} [Field K] [StarRing K] [AddCommGroup V] [Module K V]
     (H : Formalism.HermitianLatticeCounting.S6.HermSpace K V) {k r : ℕ} (σ : K →+* ℂ) (Φ : V → Fin (2 * r + k + 1) → ℂ),
@@ -55,13 +55,13 @@ theorem L_nset : ∀ {K V : Type} [Field K] [StarRing K] [AddCommGroup V] [Modul
     n ∈ Formalism.QuantumDeterminants.Nset k r := GlobalTheory.T.realMatrix_mem_besselUnipotent_of_frame
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.besselModel_linearMap_matrix_exists`.
+A detailed English derivation is pending.
 -/
 theorem L_mat : ∀ (D : D7) (X : HidaSetting D) (C : Choice X 1) (τ : D.what₂.Tau) (m : (VS D).V →ₗ[D.host.E] (VS D).V),
     ∃ n : MatKR D.R.k D.R.rS, ∀ y, n *ᵥ GlobalTheory.TypeAsm.phiV C τ y = GlobalTheory.TypeAsm.phiV C τ (m y) := GlobalTheory.T.besselModel_linearMap_matrix_exists
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.besselModel_hyperbolicBasis_scaled`.
+A detailed English derivation is pending.
 -/
 theorem L_frame : ∀ (D : D7) (X : HidaSetting D) (C : Choice X 1) (τ : D.what₂.Tau) (a : Fin D.R.rS),
     GlobalTheory.TypeAsm.phiV C τ (X.eX a) =
@@ -70,7 +70,7 @@ theorem L_frame : ∀ (D : D7) (X : HidaSetting D) (C : Choice X 1) (τ : D.what
                  ((((2 * D.host.v) ^ (D.R.rS - a.val))⁻¹ : ℝ) : ℂ) • Formalism.QuantumDeterminants.bvec (Formalism.QuantumDeterminants.esI D.R.k D.R.rS a) := GlobalTheory.T.besselModel_hyperbolicBasis_scaled
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.dualVectors_normalForm_mem_secondFlag`.
+A detailed English derivation is pending.
 -/
 theorem L_duals : ∀ {K V : Type} [Field K] [StarRing K] [AddCommGroup V] [Module K V]
     (H : Formalism.HermitianLatticeCounting.S6.HermSpace K V) {r j : ℕ} (hj : j ≤ r) (e e' s : Fin r → V),
@@ -86,7 +86,7 @@ theorem L_duals : ∀ {K V : Type} [Field K] [StarRing K] [AddCommGroup V] [Modu
       (∀ a, a.val < j → e' a ∈ Submodule.span K (f '' {b | b.val < j})) := GlobalTheory.T.dualVectors_normalForm_mem_secondFlag
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.exists_blockAntidiagonal_scaled_pairing_matrix`.
+A detailed English derivation is pending.
 -/
 theorem L_block : ∀ {K : Type} [Field K] {j r : ℕ} (hj : j ≤ r) (w : Formalism.MainNotions.S.Loc.Pt K j),
     ∃ β : Fin r → ℕ, Monotone β ∧ (∀ a b : Fin r, j ≤ b.val → (β a = β b ↔ j ≤ a.val)) ∧
@@ -96,13 +96,13 @@ theorem L_block : ∀ {K : Type} [Field K] {j r : ℕ} (hj : j ≤ r) (w : Forma
           σ (w.mat b a * ((sgn a : ℤ) : K))) := GlobalTheory.T.exists_blockAntidiagonal_scaled_pairing_matrix
 
 /- English proof (translation)
-Unfold `Formalism.QuantumDeterminants.herm Formalism.QuantumDeterminants.bvec`. Establish `hs : star (Pi.single (Formalism.QuantumDeterminants.eI k r a) (1 : ℂ) : Fin (2 * r + k + 1) → ℂ) = (Pi.single (Formalism.QuantumDeterminants.eI k r a) (1 : ℂ) : Fin (2 * r + k + 1) → ℂ)`. Apply the tactic sequence `ext j; by_cases h : j = Formalism.QuantumDeterminants.eI k r a <;> simp [Pi.single_apply, h]`. Rewrite using `[hs, single_one_dotProduct, Matrix.mulVec, dotProduct]`. Rewrite using `[Finset.sum_eq_single (Formalism.QuantumDeterminants.esI k r a)]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Formalism.QuantumDeterminants.Hpk, Formalism.QuantumDeterminants.eI, Formalism.QuantumDeterminants.esI]`. Use linear arithmetic over natural numbers and integers. Introduce `b _ hb`. Establish `: Formalism.QuantumDeterminants.Hpk k r (Formalism.QuantumDeterminants.eI k r a) b = 0`. Unfold `Formalism.QuantumDeterminants.Hpk`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hb' : b.val ≠ 2 * r + k - a.val` using `fun h => hb (Fin.ext (by simp [Formalism.QuantumDeterminants.esI, h]))`. Establish `ha` using `a.isLt`. Establish `hbl` using `b.isLt`. Establish `hv : (Formalism.QuantumDeterminants.eI k r a).val = a.val` using `rfl`. Apply the tactic sequence `split_ifs with h1 h2 h3 <;> first | rfl | (exfalso; simp only [hv] at *; omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[this, zero_mul]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem herm_eI {k r : ℕ} (v : Fin (2 * r + k + 1) → ℂ) (a : Fin r) :
     Formalism.QuantumDeterminants.herm (Formalism.QuantumDeterminants.Hpk k r) v (Formalism.QuantumDeterminants.bvec (Formalism.QuantumDeterminants.eI k r a)) = v (Formalism.QuantumDeterminants.esI k r a) := by
@@ -126,7 +126,7 @@ theorem herm_eI {k r : ℕ} (v : Fin (2 * r + k + 1) → ℂ) (a : Fin r) :
   · simp
 
 /- English proof (translation)
-Unfold `Formalism.QuantumDeterminants.UH at *`. Simplify using `only [Set.mem_setOf_eq] at *`. Rewrite using `[Matrix.conjTranspose_mul, show Bᴴ * Aᴴ * H * (A * B) = Bᴴ * (Aᴴ * H * A) * B by simp only [Matrix.mul_assoc], hA, hB]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem uh_mul {n : ℕ} {H A B : Matrix (Fin n) (Fin n) ℂ} (hA : A ∈ Formalism.QuantumDeterminants.UH H) (hB : B ∈ Formalism.QuantumDeterminants.UH H) :
     A * B ∈ Formalism.QuantumDeterminants.UH H := by
@@ -135,7 +135,7 @@ theorem uh_mul {n : ℕ} {H A B : Matrix (Fin n) (Fin n) ℂ} (hA : A ∈ Formal
   rw [Matrix.conjTranspose_mul, show Bᴴ * Aᴴ * H * (A * B) = Bᴴ * (Aᴴ * H * A) * B by simp only [Matrix.mul_assoc], hA, hB]
 
 /- English proof (translation)
-Unfold `Formalism.QuantumDeterminants.UH at *`. Simplify using `only [Set.mem_setOf_eq] at *`. Combine the equalities or inequalities in the displayed calculation.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 -/
 theorem uh_inv {n : ℕ} {H A B : Matrix (Fin n) (Fin n) ℂ} (hA : A ∈ Formalism.QuantumDeterminants.UH H) (hAB : A * B = 1) :
     B ∈ Formalism.QuantumDeterminants.UH H := by
@@ -146,9 +146,7 @@ theorem uh_inv {n : ℕ} {H A B : Matrix (Fin n) (Fin n) ℂ} (hA : A ∈ Formal
     _ = H := by rw [hAB]; simp
 
 /- English proof (translation)
-Establish `: Matrix.toLin' A = Matrix.toLin' B`. Apply `LinearMap.ext_on hsp` to reduce the goal to its premises. Introduce and unpack `_ ⟨y, rfl⟩`. Simplify using `only [Matrix.toLin'_apply]`. Conclude with `h y`.
-
-Conclude with `Matrix.toLin'.injective this`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mat_ext_of {V : Type} {n : ℕ} (Φ : V → Fin n → ℂ) (hsp : Submodule.span ℂ (Set.range Φ) = ⊤)
     (A B : Matrix (Fin n) (Fin n) ℂ) (h : ∀ y, A *ᵥ Φ y = B *ᵥ Φ y) : A = B := by
@@ -160,11 +158,9 @@ theorem mat_ext_of {V : Type} {n : ℕ} (Φ : V → Fin n → ℂ) (hsp : Submod
   exact Matrix.toLin'.injective this
 
 /- English proof (translation)
-Establish `h0 : Φ 0 = 0`. Use `hsm 0 0` as an intermediate fact. Rewrite `this` using `[zero_smul, map_zero, zero_smul]`. Conclude with `this`. Introduce `y hy`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx => exact hS x hx`. Consider the case `zero => rw [h0]`. Conclude with `T.zero_mem`. Consider the case `add x y _ _ hx hy => rw [hadd]`.
-
-Conclude with `T.add_mem hx hy`. Consider the case `smul c x _ hx => rw [hsm]`. Conclude with `T.smul_mem _ hx`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem span_map_mem {K V : Type} [Field K] [AddCommGroup V] [Module K V] {n : ℕ} (σ : K →+* ℂ)
     (Φ : V → Fin n → ℂ) (hadd : ∀ x y, Φ (x + y) = Φ x + Φ y) (hsm : ∀ (c : K) x, Φ (c • x) = σ c • Φ x)
@@ -182,21 +178,21 @@ theorem span_map_mem {K V : Type} [Field K] [AddCommGroup V] [Module K V] {n : �
   | smul c x _ hx => rw [hsm]; exact T.smul_mem _ hx
 
 /- English proof (translation)
-Simplify using `[Formalism.QuantumDeterminants.herm, Matrix.mulVec_smul, dotProduct_smul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem herm_smul_l {n : ℕ} (H : Matrix (Fin n) (Fin n) ℂ) (v w : Fin n → ℂ) (α : ℂ) :
     Formalism.QuantumDeterminants.herm H (α • v) w = α * Formalism.QuantumDeterminants.herm H v w := by
   simp [Formalism.QuantumDeterminants.herm, Matrix.mulVec_smul, dotProduct_smul]
 
 /- English proof (translation)
-Simplify using `[Formalism.QuantumDeterminants.herm, star_smul, smul_dotProduct]`.
+Simplify using the standard rewrite rules.
 -/
 theorem herm_smul_r {n : ℕ} (H : Matrix (Fin n) (Fin n) ℂ) (v w : Fin n → ℂ) (α : ℂ) :
     Formalism.QuantumDeterminants.herm H v (α • w) = star α * Formalism.QuantumDeterminants.herm H v w := by
   simp [Formalism.QuantumDeterminants.herm, star_smul, smul_dotProduct]
 
 /- English proof (translation)
-Unfold `Formalism.QuantumDeterminants.herm`. Establish `hg' : gᴴ * H * g = H` using `hg`. Rewrite using `[Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hg']`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem herm_uh {n : ℕ} {H g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ Formalism.QuantumDeterminants.UH H) (v w : Fin n → ℂ) :
     Formalism.QuantumDeterminants.herm H (g *ᵥ v) (g *ᵥ w) = Formalism.QuantumDeterminants.herm H v w := by
@@ -206,7 +202,7 @@ theorem herm_uh {n : ℕ} {H g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ Formali
     hg']
 
 /- English proof (translation)
-Simplify using `[Formalism.QuantumDeterminants.bvec, Matrix.mulVec_single]`.
+Simplify using the standard rewrite rules.
 -/
 theorem entry_eq {n : ℕ} (g : Matrix (Fin n) (Fin n) ℂ) (i j : Fin n) :
     g i j = (g *ᵥ Formalism.QuantumDeterminants.bvec j) i := by
@@ -220,117 +216,101 @@ open FramePf
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Introduce `D large₂ X Y u C hStd t N hAd`. Take `⟨-, hG0, hG1⟩` from `hAd`. Establish `hherm : ∀ x y : (VS D).V, star ((HV D).B x y) = (HV D).B y x` using `(HV D).herm`. Establish `hBdef : ∀ x y : (VS D).V, (HV D).B x y = (VS D).hT y x` using `fun _ _ => rfl`. Establish `hF0e : ∀ a : Fin D.R.rS, (F0 X u).e a.castSucc = X.eX a` using `fun a => by show (lf D (X.Fu u)).fl.fvec a.castSucc = _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[fv_cast]`. Conclude with `congrFun (X.Fu_e u) a`. Establish `hF0z : (F0 X u).e (Fin.last _) = X.zu u` using `by show (lf D (X.Fu u)).fl.fvec (Fin.last _) = _`. Rewrite using `[fv_last]`. Conclude with `X.flagZVector u`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hFte : ∀ a : Fin D.R.rS, (Ft t).e a.castSucc = t.lin (X.eX a)` using `fun a => by show (frq X t.rep).fl.fvec a.castSucc = _`. Rewrite using `[GramPf.frq_fvec, fv_cast, X.Fu_e u]`. Establish `hFtz : (Ft t).e (Fin.last _) = t.lin (X.zu u)` using `by show (frq X t.rep).fl.fvec (Fin.last _) = _`. Rewrite using `[GramPf.frq_fvec, fv_last, X.flagZVector u]`. Establish `hF0Xa : ∀ l : ℕ, (F0 X u).Xa l = Submodule.span D.host.E (X.eX '' {b | b.val < l})` using `fun l => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `Formalism.HermitianLatticeCounting.S6.FlagD.Xa`. Rewrite using `[show (fun b : Fin D.R.rS => (F0 X u).e b.castSucc) = X.eX from funext hF0e]`. Establish `hFtXa : ∀ l : ℕ, (Ft t).Xa l = (Submodule.span D.host.E (X.eX '' {b | b.val < l})).map (t.lin : (VS D).V →ₗ[D.host.E] (VS D).V)` using `fun l => by`. Unfold `Formalism.HermitianLatticeCounting.S6.FlagD.Xa`. Rewrite using `[Submodule.map_span, show (fun b : Fin D.R.rS => (Ft t).e b.castSucc) = t.lin ∘ X.eX from funext hFte, Set.image_comp]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `hlinI : ∀ x y, (HV D).B (t.lin x) (t.lin y) = (HV D).B x y` using `fun x y => t.rep.2.2.1 y x`. Establish `hlinI' : ∀ x y, (HV D).B (t.lin.symm x) (t.lin.symm y) = (HV D).B x y` using `fun x y => by`. Rewrite using `[← hlinI, LinearEquiv.apply_symm_apply, LinearEquiv.apply_symm_apply]`. Establish `hc1 : N.c * star N.c = 1` using `N.c_norm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc0 : N.c ≠ 0` using `fun h => by simp [h] at hc1`. Establish `hsame : ∀ a : Fin D.R.rS, N.j ≤ a.val → N.F'.e a.castSucc = N.c • N.F.e a.castSucc` using `fun a ha => N.same a.castSucc ha`. Establish `hsamez : N.F'.e (Fin.last _) = N.c • N.F.e (Fin.last _)` using `N.same (Fin.last _) (by simpa using N.j_le)`. Establish `hXX : ∀ x y : (VS D).V, ∀ a b : D.host.E, (HV D).B (a • x) (b • y) = a * star b * (HV D).B x y`. Introduce `x y a b`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[LinearMap.map_smul, LinearMap.smul_apply, LinearMap.map_smulₛₗ, smul_eq_mul, smul_eq_mul, starRingEnd_apply]`. Expand and normalize the polynomial expressions, which then agree. Establish `hP : (Matrix.of fun a b : Fin N.j => (HV D).B (N.F.e (Fin.castLE N.j_le a).castSucc) (N.F'.e (Fin.castLE N.j_le b).castSucc)).det ≠ 0`. Establish `e1 : (Matrix.of fun a b : Fin N.j => (HV D).B (N.F.e (Fin.castLE N.j_le a).castSucc) (N.F'.e (Fin.castLE N.j_le b).castSucc)) = N.w.mat * Matrix.diagonal fun b => ((N.sgn b : ℤ) : D.host.E)`. Use `Matrix.ext fun a b => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[Matrix.mul_diagonal, Matrix.of_apply, ← N.pair a b]`. Both sides reduce to the same expression. Rewrite using `[e1, Matrix.det_mul, Matrix.det_diagonal]`. Use `mul_ne_zero (GlobalTheory.SgLoc.PtAlg.isUnit_det N.w).ne_zero (Finset.prod_ne_zero_iff.2 fun b _ => ?_)` and prove the remaining obligations. Apply the tactic sequence `rcases Int.units_eq_one_or (N.sgn b) with h | h <;> simp [h]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hBl : ∀ (x y : (VS D).V) (a : D.host.E), (HV D).B (a • x) y = a * (HV D).B x y` using `fun x y a => by`. Use `hXX x y a 1` as an intermediate fact. Simplify using `using this`. Establish `hBr : ∀ (x y : (VS D).V) (b : D.host.E), (HV D).B x (b • y) = star b * (HV D).B x y` using `fun x y b => by`. Use `hXX x y 1 b` as an intermediate fact.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Simplify using `using this`. Take `⟨fN, hfN1, hfN2, hfN3, hfN4, hfN5⟩` from `L_duals (HV D) N.j_le (fun a => N.F.e a.castSucc) (fun a => N.F'.e a.castSucc) N.ist hP (fun a b => N.F'.iso a b) (fun a b ha _ => by`. Use `N.F'.iso a b` as an intermediate fact. Rewrite `this` using `[hsame a ha, hBl]`. Conclude with `(mul_eq_zero.1 this).resolve_left hc0)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use the proof step `(fun a b hb => N.ist_e a b hb) (fun a b ha hb => N.ist_e' a b ha hb) (fun a b ha hb => N.ist_iso a b ha hb)`. Establish `hP' : (Matrix.of fun a b : Fin N.j => (HV D).B (N.F'.e (Fin.castLE N.j_le a).castSucc) (N.F.e (Fin.castLE N.j_le b).castSucc)).det ≠ 0`. Establish `e1 : (Matrix.of fun a b : Fin N.j => (HV D).B (N.F'.e (Fin.castLE N.j_le a).castSucc) (N.F.e (Fin.castLE N.j_le b).castSucc)) = (Matrix.of fun a b : Fin N.j => (HV D).B (N.F.e (Fin.castLE N.j_le a).castSucc) (N.F'.e (Fin.castLE N.j_le b).castSucc))ᴴ`. Use `Matrix.ext fun a b => ?_` and prove the remaining obligations. Rewrite using `[Matrix.conjTranspose_apply, Matrix.of_apply, Matrix.of_apply, hherm]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, Matrix.det_conjTranspose]`. Conclude with `fun h => hP (star_eq_zero.1 h)`. Take `⟨fM, hfM1, hfM2, hfM3, hfM4, hfM5⟩` from `L_duals (HV D) N.j_le (fun a => N.F'.e a.castSucc) (fun a => N.F.e a.castSucc) (fun b => N.c • N.ist b) hP' (fun a b => N.F.iso a b) (fun a b ha _ => by show (HV D).B (N.F'.e a.castSucc) (N.F.e b.castSucc) = 0`. Rewrite using `[hsame a ha, hBl, N.F.iso a b, mul_zero])`. Use the proof step `(fun a b hb => by show (HV D).B (N.F'.e a.castSucc) (N.c • N.ist b) = _`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hBr]`. Distinguish the cases in `ha : N.j ≤ a.val`. Rewrite using `[hsame a ha, hBl, N.ist_e a b hb, ← mul_assoc, mul_comm (star N.c), hc1, one_mul]`. Rewrite using `[N.ist_e' a b (by omega) hb, mul_zero, if_neg (fun h : a = b => ha (h ▸ hb))])`. Use the proof step `(fun a b ha hb => by show (HV D).B (N.F.e a.castSucc) (N.c • N.ist b) = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Rewrite using `[hBr, N.ist_e a b hb, if_neg (fun h => by subst h; omega), mul_zero])`. Use the proof step `(fun a b ha hb => by show (HV D).B (N.c • N.ist a) (N.c • N.ist b) = 0`. Rewrite using `[hBl, hBr, N.ist_iso a b ha hb, mul_zero, mul_zero])`. Establish `hspanB : ∀ (S : Set (VS D).V) (z : (VS D).V), (∀ x ∈ S, (HV D).B x z = 0) → ∀ y ∈ Submodule.span D.host.E S, (HV D).B y z = 0`. Introduce `S z hS y hy`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx => exact hS x hx`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [LinearMap.map_add, LinearMap.add_apply, hx, hy, add_zero]`. Consider the case `smul c x _ hx => rw [hBl, hx, mul_zero]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hset : ∀ a : Fin D.R.rS, {b : Fin D.R.rS | b < a} = {b | b.val < a.castSucc.val}` using `fun a => rfl`. Establish `hsetU : {b : Fin D.R.rS | b.val < (Fin.last D.R.rS).val} = Set.univ`. Use extensionality with `b`. Simplify using `[b.isLt]`. Establish `hzz0 : (HV D).B (X.zu u) (X.zu u) ≠ 0`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hBdef, X.zu_norm u]`. Conclude with `neg_ne_zero.2 (tu_ne D u)`. Establish `hXef : ∀ a b, (HV D).B (X.eX a) (X.fY b) = if a = b then 1 else 0` using `fun a b => by`. Rewrite using `[← hherm]`. Use `show star ((VS D).hT (X.eX a) (X.fY b)) = _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply the tactic sequence `rw [X.ef]; split_ifs <;> simp`. Establish `hXez : ∀ a, (HV D).B (X.eX a) (X.zu u) = 0` using `fun a => by`. Rewrite using `[← hherm]`. Use `show star ((VS D).hT (X.eX a) (X.zu u)) = _`. Rewrite using `[(X.zu_orth u a).1, star_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Establish `hXfz : ∀ a, (HV D).B (X.fY a) (X.zu u) = 0` using `fun a => by`. Rewrite using `[← hherm]`. Use `show star ((VS D).hT (X.fY a) (X.zu u)) = _`. Rewrite using `[(X.zu_orth u a).2, star_zero]`. Establish `hiz : ∀ a : Fin D.R.rS, N.j ≤ a.val → (HV D).B (N.F.e (Fin.last _)) (N.ist a) = 0` using `fun a ha => N.normalForm_dual_orthogonal_last a ha`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Establish `hfNz : ∀ a, (HV D).B (fN a) (N.F.e (Fin.last _)) = 0`. Introduce `a`. Distinguish the cases in `ha : N.j ≤ a.val`. Rewrite using `[hfN1 a ha, ← hherm, hiz a ha, star_zero]`. Use `hspanB _ _ ?_ _ (hfN2 a (by omega))` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `_ ⟨b, -, rfl⟩`. Use `N.F'.zperp b` as an intermediate fact. Rewrite `this` using `[hsamez, hBr]`. Conclude with `(mul_eq_zero.1 this).resolve_left (star_ne_zero.2 hc0)`. Establish `hfMz : ∀ a, (HV D).B (fM a) (N.F'.e (Fin.last _)) = 0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `a`. Distinguish the cases in `ha : N.j ≤ a.val`. Rewrite using `[hfM1 a ha, hsamez, hBl, hBr, ← hherm, hiz a ha, star_zero, mul_zero, mul_zero]`. Use `hspanB _ _ ?_ _ (hfM2 a (by omega))` and prove the remaining obligations. Introduce and unpack `_ ⟨b, -, rfl⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `show (HV D).B (N.F.e b.castSucc) (N.F'.e (Fin.last _)) = 0`. Rewrite using `[hsamez, hBr, N.F.zperp b, mul_zero]`. Take `⟨m2, hm2I, hm2e, hm2f, hm2z, hm2l, hm2p, hm2l', hm2p'⟩` from `L_ratIso (HV D) X.eX X.fY (fun a => N.F.e a.castSucc) fN (X.zu u) (N.F.e (Fin.last _)) (fun a b => X.ee b a) (fun a b => X.ff b a) hXef hXez hXfz hzz0 (fun a b => N.F.iso a b) hfN4 hfN3 (fun a => N.F.zperp a) hfNz (fun a => by`. Use `hG0 a.castSucc` as an intermediate fact. Rewrite `this` using `[hF0e, hF0Xa]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hset a]`. Conclude with `this)`. Use the proof step `(by`. Use `hG0 (Fin.last _)` as an intermediate fact. Rewrite `this` using `[hF0z, hF0Xa, hsetU, Set.image_univ]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `this)`. Establish `hlowT : ∀ (y w : (VS D).V) (l : ℕ), y - t.lin w ∈ (Ft t).Xa l → t.lin.symm y - w ∈ Submodule.span D.host.E (X.eX '' {b | b.val < l})`. Introduce `y w l h`. Rewrite `h` using `[hFtXa]`. Take `⟨x, hx, hxe⟩` from `Submodule.mem_map.1 h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `e1 : t.lin.symm y - w = x`. Rewrite using `[← t.lin.symm_apply_apply x]`. Use `erw [hxe]`. Rewrite using `[map_sub, LinearEquiv.symm_apply_apply]`. Rewrite using `[e1]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hx`. Take `⟨mA, hmAI, hmAe, hmAf, hmAz, hmAl, hmAp, hmAl', hmAp'⟩` from `L_ratIso (HV D) X.eX X.fY (fun a => t.lin.symm (N.F'.e a.castSucc)) (fun a => t.lin.symm (fM a)) (X.zu u) (t.lin.symm (N.F'.e (Fin.last _))) (fun a b => X.ee b a) (fun a b => X.ff b a) hXef hXez hXfz hzz0 (fun a b => by rw [hlinI']; exact N.F'.iso a b) (fun a b => by rw [hlinI']; …`. Use `hG1 a.castSucc` as an intermediate fact. Rewrite `this` using `[hFte]`. Rewrite using `[hset a]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hlowT _ _ _ this)`. Use the proof step `(by`. Use `hlowT _ _ _ (hFtz ▸ hG1 (Fin.last _))` as an intermediate fact. Rewrite `this` using `[hsetU, Set.image_univ]`. Conclude with `this)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨β, hβm, hβj, hβB⟩` from `L_block N.j_le N.w`. Establish `hmat` using `L_mat D X C`. Use `choose nOf hnOf using hmat`. Establish `hρ : 0 < 2 * D.host.v`. Use `GramPf.rdE_pos' D` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Formalism.BasicNotions.Host.v]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨β, fun τ => nOf τ mA.symm.toLinearMap, fun τ => nOf τ mA.toLinearMap * nOf τ t.lin.symm.toLinearMap * nOf τ m2.symm.toLinearMap, fun τ => nOf τ m2.toLinearMap, fun τ => ?_⟩` and prove the remaining obligations. Establish `hR : GlobalTheory.DegVol.IsReal (HV D) D.R.k D.R.rS (embS D τ) (phiV C τ)` using `⟨GramPf.phiV_add C τ, GramPf.phiV_smul C τ, GramPf.phiV_herm C τ, GramPf.phiV_span C τ⟩`. Establish `hρa : ∀ a : Fin D.R.rS, ((((2 * D.host.v) ^ (D.R.rS - a.val) : ℝ)) : ℂ) ≠ 0` using `fun a => by`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `(pow_pos hρ _).ne'` after adjusting the coercions. Establish `hρa' : ∀ a : Fin D.R.rS, (((((2 * D.host.v) ^ (D.R.rS - a.val))⁻¹ : ℝ)) : ℂ) ≠ 0` using `fun a => by`. Conclude with `(inv_pos.2 (pow_pos hρ _)).ne'` after adjusting the coercions. Establish `hNs : ∀ m : (VS D).V ≃ₗ[D.host.E] (VS D).V, (∀ x y, (HV D).B (m x) (m y) = (HV D).B x y) → (∀ a, m (X.eX a) - X.eX a ∈ Submodule.span D.host.E (X.eX '' {b | b < a})) → (∀ y, (∀ a, (HV D).B (X.eX a) y = 0) → m y - y ∈ Submodule.span D.host.E (Set.range X.eX)) → nOf τ m.toLinearMap …` using `fun m hI hl hp => L_nset (HV D) (embS D τ) (phiV C τ) hR X.eX X.fY _ _ hρa hρa' (fun a => (L_frame D X C τ a).1) (fun a => (L_frame D X C τ a).2) hXef m.toLinearMap hI hl hp _ (hnOf τ _)`. Establish `hsymI : ∀ m : (VS D).V ≃ₗ[D.host.E] (VS D).V, (∀ x y, (HV D).B (m x) (m y) = (HV D).B x y) → ∀ x y, (HV D).B (m.symm x) (m.symm y) = (HV D).B x y` using `fun m hI x y => by`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hI, LinearEquiv.apply_symm_apply, LinearEquiv.apply_symm_apply]`. Establish `hN2` using `hNs m2 hm2I hm2l hm2p`. Establish `hN2'` using `hNs m2.symm (hsymI m2 hm2I) hm2l' hm2p'`. Establish `hN1` using `hNs mA.symm (hsymI mA hmAI) hmAl' hmAp'`. Establish `hN1'` using `hNs mA hmAI hmAl hmAp`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hinv : ∀ m : (VS D).V ≃ₗ[D.host.E] (VS D).V, nOf τ m.toLinearMap * nOf τ m.symm.toLinearMap = 1 ∧ nOf τ m.symm.toLinearMap * nOf τ m.toLinearMap = 1`. Introduce `m`. Prove the components needed by the constructor for the conclusion. Use `mat_ext_of (phiV C τ) (GramPf.phiV_span C τ) _ _ fun y => ?_` and prove the remaining obligations. Rewrite using `[← Matrix.mulVec_mulVec, hnOf, hnOf, Matrix.one_mulVec]`.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Use `mat_ext_of (phiV C τ) (GramPf.phiV_span C τ) _ _ fun y => ?_` and prove the remaining obligations. Rewrite using `[← Matrix.mulVec_mulVec, hnOf, hnOf, Matrix.one_mulVec]`. Simplify using the standard rewrite rules. Establish `hγ1 : gamT C t τ * nOf τ t.lin.symm.toLinearMap = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `mat_ext_of (phiV C τ) (GramPf.phiV_span C τ) _ _ fun y => ?_` and prove the remaining obligations. Rewrite using `[← Matrix.mulVec_mulVec, hnOf, GramPf.gamT_act, Matrix.one_mulVec]`. Simplify using the standard rewrite rules. Establish `hγ2 : nOf τ t.lin.symm.toLinearMap * gamT C t τ = 1`. Use `mat_ext_of (phiV C τ) (GramPf.phiV_span C τ) _ _ fun y => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Matrix.mulVec_mulVec, GramPf.gamT_act, hnOf, Matrix.one_mulVec]`. Simplify using the standard rewrite rules. Establish `hm2e' : ∀ a, m2 (N.F.e a.castSucc) = X.eX a` using `hm2e`. Establish `hm2f' : ∀ a, m2 (fN a) = X.fY a` using `hm2f`. Establish `hmAe' : ∀ a, mA (t.lin.symm (N.F'.e a.castSucc)) = X.eX a` using `hmAe`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hmAf' : ∀ a, mA (t.lin.symm (fM a)) = X.fY a` using `hmAf`. Establish `hΦ : ∀ y, nOf τ m2.toLinearMap *ᵥ phiV C τ y = phiV C τ (m2 y)` using `fun y => hnOf τ _ y`. Establish `hgΦ : ∀ y, (nOf τ mA.toLinearMap * nOf τ t.lin.symm.toLinearMap * nOf τ m2.symm.toLinearMap) *ᵥ (nOf τ m2.toLinearMap *ᵥ phiV C τ y) = phiV C τ (mA (t.lin.symm y))` using `fun y => by`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mul_assoc (nOf τ mA.toLinearMap * nOf τ t.lin.symm.toLinearMap), (hinv m2).2, Matrix.mul_one, ← Matrix.mulVec_mulVec, hnOf, hnOf]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨hN1, hN2, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.inv_eq_right_inv hγ1]`. Rewrite using `[show nOf τ mA.symm.toLinearMap * (nOf τ mA.toLinearMap * nOf τ t.lin.symm.toLinearMap * nOf τ m2.symm.toLinearMap) * nOf τ m2.toLinearMap = (nOf τ mA.symm.toLinearMap * nOf τ mA.toLinearMap) * nOf τ t.lin.symm.toLinearMap * (nOf τ m2.symm.toLinearMap * nOf τ m2.toLinearMap) by s …`. Establish `hnL : nOf τ t.lin.symm.toLinearMap ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk D.R.k D.R.rS)` using `uh_inv (GramPf.gamT_mem C t τ) hγ1`. Establish `hgU : nOf τ mA.toLinearMap * nOf τ t.lin.symm.toLinearMap * nOf τ m2.symm.toLinearMap ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk D.R.k D.R.rS)` using `uh_mul (uh_mul hN1'.1 hnL) hN2'.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hn2U : nOf τ m2.toLinearMap ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk D.R.k D.R.rS)` using `hN2.1`. Use `set g := nOf τ mA.toLinearMap * nOf τ t.lin.symm.toLinearMap * nOf τ m2.symm.toLinearMap with hgdef`. Use `set n2 := nOf τ m2.toLinearMap with hn2def`. Establish `hGi : g * (n2 * gamT C t τ * nOf τ mA.symm.toLinearMap) = 1`. Rewrite using `[hgdef, show nOf τ mA.toLinearMap * nOf τ t.lin.symm.toLinearMap * nOf τ m2.symm.toLinearMap * (n2 * gamT C t τ * nOf τ mA.symm.toLinearMap) = nOf τ mA.toLinearMap * (nOf τ t.lin.symm.toLinearMap * ((nOf τ m2.symm.toLinearMap * n2) * gamT C t τ) * nOf τ mA.symm.toLinearMap) by si …`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hGinv : g⁻¹ = n2 * gamT C t τ * nOf τ mA.symm.toLinearMap` using `Matrix.inv_eq_right_inv hGi`. Establish `hGl : g⁻¹ * g = 1` using `by rw [hGinv]; exact mul_eq_one_comm.1 hGi`. Establish `hσc : embS D τ N.c * starRingEnd ℂ (embS D τ N.c) = 1`. Rewrite using `[← Formalism.L2.SG.LoopTerm.embS_star', ← map_mul, hc1, map_one]`. Establish `hσc0 : embS D τ N.c ≠ 0` using `fun h => by rw [h, zero_mul] at hσc; exact zero_ne_one hσc`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hsm : ∀ (c : D.host.E) (y : (VS D).V), n2 *ᵥ phiV C τ (c • y) = embS D τ c • (n2 *ᵥ phiV C τ y)`. Introduce `c y`. Rewrite using `[GramPf.phiV_smul, Matrix.mulVec_smul]`. Establish `hA1 : ∀ a : Fin D.R.rS, n2 *ᵥ phiV C τ (N.F.e a.castSucc) = (((2 * D.host.v) ^ (D.R.rS - a.val) : ℝ) : ℂ) • Formalism.QuantumDeterminants.bvec (Formalism.QuantumDeterminants.eI D.R.k D.R.rS a)` using `fun a => by`. Rewrite using `[hΦ, hm2e']`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(L_frame D X C τ a).1`. Establish `hA2 : ∀ a : Fin D.R.rS, g *ᵥ (n2 *ᵥ phiV C τ (N.F'.e a.castSucc)) = (((2 * D.host.v) ^ (D.R.rS - a.val) : ℝ) : ℂ) • Formalism.QuantumDeterminants.bvec (Formalism.QuantumDeterminants.eI D.R.k D.R.rS a)` using `fun a => by`. Rewrite using `[hgΦ, hmAe']`. Conclude with `(L_frame D X C τ a).1`. Establish `hA3 : ∀ b : Fin D.R.rS, N.j ≤ b.val → n2 *ᵥ phiV C τ (N.ist b) = ((((2 * D.host.v) ^ (D.R.rS - b.val))⁻¹ : ℝ) : ℂ) • Formalism.QuantumDeterminants.bvec (Formalism.QuantumDeterminants.esI D.R.k D.R.rS b)` using `fun b hb => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hΦ, ← hfN1 b hb, hm2f']`. Conclude with `(L_frame D X C τ b).2`. Establish `hA4 : ∀ b : Fin D.R.rS, N.j ≤ b.val → g *ᵥ (n2 *ᵥ phiV C τ (N.c • N.ist b)) = ((((2 * D.host.v) ^ (D.R.rS - b.val))⁻¹ : ℝ) : ℂ) • Formalism.QuantumDeterminants.bvec (Formalism.QuantumDeterminants.esI D.R.k D.R.rS b)` using `fun b hb => by`. Rewrite using `[hgΦ, show N.c • N.ist b = fM b from (hfM1 b hb).symm, hmAf']`. Conclude with `(L_frame D X C τ b).2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hZ1 : n2 *ᵥ phiV C τ (N.F.e (Fin.last _)) = zB X (C.Qi τ) u τ` using `by rw [hΦ, hm2z]; rfl`. Establish `hZ2 : g *ᵥ (n2 *ᵥ phiV C τ (N.F'.e (Fin.last _))) = zB X (C.Qi τ) u τ` using `by rw [hgΦ, hmAz]; rfl`. Establish `hXst : ∀ b : Fin D.R.rS, b.val < N.j → phiV C τ (X.fY b) ∈ GlobalTheory.Amp.XstJ D.R.k D.R.rS N.j` using `fun b hb => by`. Rewrite using `[(L_frame D X C τ b).2]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨⟨b, hb⟩, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hfun : (fun y => n2 *ᵥ phiV C τ y) = fun y => phiV C τ (m2 y)` using `funext hΦ`. Establish `hzT` using `Formalism.L2.SG.Pf.zTr C u τ`. Use `⟨?_, hzT.1, hzT.1, ?_, ⟨(embS D τ N.c)⁻¹, ?_⟩, fun a => ⟨hA1 a, hA2 a⟩, fun b hb => hA3 b hb, hZ1, hZ2⟩` and prove the remaining obligations. Rewrite using `[hfun]`. Use `⟨fun x y => by beta_reduce; rw [map_add, GramPf.phiV_add], fun c x => by beta_reduce; rw [map_smul, GramPf.phiV_smul], fun x y => by beta_reduce; rw [GramPf.phiV_herm, hm2I], ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[show (Set.range fun y => phiV C τ (m2 y)) = Set.range (phiV C τ) from m2.surjective.range_comp (phiV C τ)]`. Conclude with `GramPf.phiV_span C τ`. Rewrite using `[hzT.2] show (0 : ℝ) < ((D.mem u).A.T : ℝ)`. Conclude with `(D.mem u).A.T_prime.pos` after adjusting the coercions. Establish `hcancel : ∀ (v : Fin (2 * D.R.rS + D.R.k + 1) → ℂ) (α : ℂ), α ≠ 0 → embS D τ N.c • α • (g *ᵥ v) = α • v → g *ᵥ v = (embS D τ N.c)⁻¹ • v`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `v α hα h`. Establish `h3 : (embS D τ N.c * α) • (g *ᵥ v) = α • v` using `by rw [mul_smul]; exact h`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[smul_smul, inv_mul_cancel₀ (mul_ne_zero hσc0 hα), one_smul]`. Use `_ = _ := by rw [h3, smul_smul, mul_inv, mul_assoc, inv_mul_cancel₀ hα, mul_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `⟨hgU, ?_, ?_, hβm, hβj, fun a ha => ⟨?_, ?_⟩, fun a ha => ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Establish `h1 : (Complex.normSq (embS D τ N.c) : ℂ) = 1` using `by rw [← Complex.mul_conj]; exact hσc`. Establish `h2 : Complex.normSq (embS D τ N.c) = 1` using `by exact_mod_cast h1`. Rewrite `h2` using `[Complex.normSq_eq_norm_sq]`. Rewrite using `[norm_inv, (pow_eq_one_iff_of_nonneg (norm_nonneg _) two_ne_zero).1 h2, inv_one]`.
-
-Establish `h1` using `hZ2`. Rewrite `h1` using `[hsamez, hsm, Matrix.mulVec_smul, hZ1]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[smul_smul, inv_mul_cancel₀ hσc0, one_smul]`. Use `_ = _ := by rw [h1]`.
-
-Establish `hE : Formalism.QuantumDeterminants.bvec (Formalism.QuantumDeterminants.eI D.R.k D.R.rS a) = ((((2 * D.host.v) ^ (D.R.rS - a.val) : ℝ) : ℂ))⁻¹ • (g *ᵥ (n2 *ᵥ phiV C τ (N.F'.e a.castSucc)))`. Rewrite using `[hA2, smul_smul, inv_mul_cancel₀ (hρa a), one_smul]`. Rewrite using `[hE, Matrix.mulVec_smul, Matrix.mulVec_mulVec, hGl, Matrix.one_mulVec, hΦ]`. Use `Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Conclude with `span_map_mem (embS D τ) (fun y => phiV C τ (m2 y)) (fun x y => by beta_reduce; rw [map_add, GramPf.phiV_add]) (fun c x => by beta_reduce; rw [map_smul, GramPf.phiV_smul]) (fN '' {b | b.val < N.j}) _ (by rintro _ ⟨b, hb, rfl⟩; beta_reduce; rw [hm2f']; exact hXst b hb) _ (hfN5 a ha …`.
-
-Establish `hE : Formalism.QuantumDeterminants.bvec (Formalism.QuantumDeterminants.eI D.R.k D.R.rS a) = ((((2 * D.host.v) ^ (D.R.rS - a.val) : ℝ) : ℂ))⁻¹ • (n2 *ᵥ phiV C τ (N.F.e a.castSucc))`. Rewrite using `[hA1, smul_smul, inv_mul_cancel₀ (hρa a), one_smul]`. Rewrite using `[hE, Matrix.mulVec_smul, hgΦ]`. Use `Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Conclude with `span_map_mem (embS D τ) (fun y => phiV C τ (mA (t.lin.symm y))) (fun x y => by beta_reduce; rw [map_add, map_add, GramPf.phiV_add]) (fun c x => by beta_reduce; rw [map_smul, map_smul, GramPf.phiV_smul]) (fM '' {b | b.val < N.j}) _ (by rintro _ ⟨b, hb, rfl⟩; beta_reduce; rw [hmAf' …`.
-
-Use `hcancel _ _ (hρa a) ?_` and prove the remaining obligations. Establish `h1` using `hA2 a`. Rewrite `h1` using `[hsame a ha, hsm, Matrix.mulVec_smul, hA1, Matrix.mulVec_smul]`. Conclude with `h1`. Use `hcancel _ _ (hρa' a) ?_` and prove the remaining obligations.
-
-Establish `h1` using `hA4 a ha`. Rewrite `h1` using `[hsm, Matrix.mulVec_smul, hA3 a ha, Matrix.mulVec_smul]`. Conclude with `h1`. Establish `hM : (GlobalTheory.Amp.Zr D.R.k D.R.rS g).submatrix (Fin.castLE N.j_le) (Fin.castLE N.j_le) = Matrix.of fun a b : Fin N.j => ((((2 * D.host.v) ^ (D.R.rS - b.val))⁻¹ * ((2 * D.host.v) ^ (D.R.rS - a.val))⁻¹ : ℝ) : ℂ) * embS D τ (N.w.mat b a * ((N.sgn a : ℤ) : D.host.E))`. Use `Matrix.ext fun a b => ?_` and prove the remaining obligations.
-
-Rewrite using `[Matrix.submatrix_apply, Matrix.of_apply]`. Rewrite using `[show GlobalTheory.Amp.Zr D.R.k D.R.rS g (Fin.castLE N.j_le a) (Fin.castLE N.j_le b) = Formalism.QuantumDeterminants.herm (Formalism.QuantumDeterminants.Hpk D.R.k D.R.rS) (g *ᵥ Formalism.QuantumDeterminants.bvec (Formalism.QuantumDeterminants.eI D.R.k D.R.rS (Fin.castLE N.j_le b) …`. Rewrite using `[herm_eI, ← entry_eq]`. Use the proof step `rfl]`. Establish `hEb : Formalism.QuantumDeterminants.bvec (Formalism.QuantumDeterminants.eI D.R.k D.R.rS (Fin.castLE N.j_le b)) = ((((2 * D.host.v) ^ (D.R.rS - (Fin.castLE N.j_le b).val) : ℝ) : ℂ))⁻¹ • (n2 *ᵥ phiV C τ (N.F.e (Fin.castLE N.j_le b).castSucc))`.
-
-Rewrite using `[hA1, smul_smul, inv_mul_cancel₀ (hρa _), one_smul]`. Establish `hEa : Formalism.QuantumDeterminants.bvec (Formalism.QuantumDeterminants.eI D.R.k D.R.rS (Fin.castLE N.j_le a)) = ((((2 * D.host.v) ^ (D.R.rS - (Fin.castLE N.j_le a).val) : ℝ) : ℂ))⁻¹ • (g *ᵥ (n2 *ᵥ phiV C τ (N.F'.e (Fin.castLE N.j_le a).castSucc)))`. Rewrite using `[hA2, smul_smul, inv_mul_cancel₀ (hρa _), one_smul]`. Rewrite using `[hEb, hEa, Matrix.mulVec_smul, herm_smul_l, herm_smul_r, herm_uh hgU, hΦ, hΦ, GramPf.phiV_herm, hm2I, show (HV D).B (N.F.e (Fin.castLE N.j_le b).castSucc) (N.F'.e (Fin.castLE N.j_le a).castSucc) = N.w.mat b a * ((N.sgn a : ℤ) : D.host.E) from N.pair b a]`. Simplify using `only [Fin.coe_castLE, ← Complex.ofReal_inv, Complex.star_def, Complex.conj_ofReal]`.
-
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hM]`. Conclude with `hβB (embS D τ) N.sgn (2 * D.host.v) hρ`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frameC_holds : FrameC := by
   intro D large₂ X Y u C hStd t N hAd

@@ -16,21 +16,19 @@ noncomputable section
 namespace GlobalTheory.HeckeTwo.TermDecay
 
 /- English proof (translation)
-Establish `i0` using `GlobalTheory.T.integrable_heckeTermDecayIntegrand σ hσ a b m hab y hy`. Establish `i1` using `GlobalTheory.T.integrable_heckeTermDecayIntegrand σ hσ (a + 1) b m (by omega) y hy`. Establish `i2` using `GlobalTheory.T.integrable_heckeTermDecayIntegrand σ hσ (a - 1) (b + 1) m (by push_cast; omega) y hy`. Establish `i3` using `GlobalTheory.T.integrable_heckeTermDecayIntegrand σ hσ a (b + 1) (m + 1) (by push_cast; omega) y hy`. Establish `hd : deriv (qZ σ a b m y) = fun t => -(a : ℂ) * qZ σ (a + 1) b m y t + 2 * (-σ - (b : ℂ)) * (qZ σ (a - 1) (b + 1) m y t - I * qZ σ a (b + 1) (m + 1) y t)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `t`. Conclude with `(GlobalTheory.T.hasDerivAt_heckeTermDecayIntegrand σ a b m y hy t).deriv`. Establish `hdiff : Differentiable ℝ (qZ σ a b m y)` using `fun t => (GlobalTheory.T.hasDerivAt_heckeTermDecayIntegrand σ a b m y hy t).differentiableAt`. Establish `hi : MeasureTheory.Integrable (deriv (qZ σ a b m y))`. Rewrite using `[hd]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(i1.const_mul _).add ((i2.sub (i3.const_mul _)).const_mul _)`. Establish `key` using `congrFun (Real.fourier_deriv i0 hdiff hi) ν`. Rewrite `key` using `[← intZ_eq_fourier, smul_eq_mul]`. Rewrite using `[← key, hd, Real.fourier_real_eq_integral_exp_smul]`. Unfold `intZ`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set E : ℝ → ℂ := fun t => Complex.exp (-(2 * (Real.pi : ℂ) * I * (ν : ℂ) * (t : ℂ))) with hE`. Establish `hEc : Continuous E` using `by rw [hE]; fun_prop`. Establish `hEn : ∀ t, ‖E t‖ = 1`. Introduce `t`. Rewrite using `[hE, Complex.norm_exp]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using the standard rewrite rules. Establish `e : ∀ (f : ℝ → ℂ), MeasureTheory.Integrable f → MeasureTheory.Integrable (fun t : ℝ => f t * E t)`. Introduce `f hf`. Use `hf.norm.mono' (hf.aestronglyMeasurable.mul hEc.aestronglyMeasurable) (MeasureTheory.ae_of_all _ fun t => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul, hEn, mul_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hpt : ∀ t : ℝ, Complex.exp (((-2 * Real.pi * t * ν : ℝ) : ℂ) * I) • (-(a : ℂ) * qZ σ (a + 1) b m y t + 2 * (-σ - (b : ℂ)) * (qZ σ (a - 1) (b + 1) m y t - I * qZ σ a (b + 1) (m + 1) y t)) = -(a : ℂ) * (qZ σ (a + 1) b m y t * E t) + 2 * (-σ - (b : ℂ)) * (qZ σ (a - 1) (b + 1) m y t …`. Introduce `t`. Rewrite using `[smul_eq_mul, hE]`. Establish `: (((-2 * Real.pi * t * ν : ℝ) : ℂ) * I) = -(2 * (Real.pi : ℂ) * I * (ν : ℂ) * (t : ℂ))` using `by push_cast; ring`. Rewrite using `[this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Repeatedly rewrite using `[hpt]`. Establish `j1 : MeasureTheory.Integrable (fun v => -(a : ℂ) * (qZ σ (a + 1) b m y v * E v))` using `(e _ i1).const_mul _`. Establish `j2 : MeasureTheory.Integrable (fun v => qZ σ (a - 1) (b + 1) m y v * E v)` using `e _ i2`. Establish `j3 : MeasureTheory.Integrable (fun v => I * (qZ σ a (b + 1) (m + 1) y v * E v))` using `(e _ i3).const_mul _`.
-
-Establish `j23 : MeasureTheory.Integrable (fun v => 2 * (-σ - (b : ℂ)) * (qZ σ (a - 1) (b + 1) m y v * E v - I * (qZ σ a (b + 1) (m + 1) y v * E v)))` using `(j2.sub j3).const_mul _`. Rewrite using `[MeasureTheory.integral_add j1 j23, MeasureTheory.integral_const_mul, MeasureTheory.integral_const_mul, MeasureTheory.integral_sub j2 j3, MeasureTheory.integral_const_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intZ_ibp (σ : ℂ) (hσ : σ ∈ halfPlane) (ν : ℝ) (a : ℤ) (b m : ℕ) (hab : 2 ≤ a + 2 * b) {y : ℝ}
     (hy : y ≠ 0) :
@@ -81,11 +79,11 @@ end GlobalTheory.HeckeTwo.TermDecay
 namespace GlobalTheory.HeckeTwo.TermDecay
 
 /- English proof (translation)
-Establish `hp : 0 < (1 + x) ^ (N + 1)` using `by positivity`. Rewrite using `[le_div_iff₀ hp]`. Break down `le_or_gt x 1 with h | h` into its components or cases. Establish `h2 : (1 + x) ^ (N + 1) ≤ 2 ^ (N + 1)` using `pow_le_pow_left₀ (by linarith) (by linarith) _`. Break down `le_or_gt q 0 with hq | hq` into its components or cases.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `: 0 ≤ (2 ^ (N + 1) * A + 2 * B) * Y` using `by positivity`. Use polynomial arithmetic with `[hp]`. Combine the equalities or inequalities in the displayed calculation. Establish `hpN : 0 < (1 + x) ^ N` using `by positivity`. Establish `h1' : x * q * (1 + x) ^ N ≤ B * Y` using `by rwa [le_div_iff₀ hpN] at h1`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx2 : 1 + x ≤ 2 * x` using `by linarith`. Break down `le_or_gt q 0 with hq | hq` into its components or cases. Establish `: 0 ≤ (2 ^ (N + 1) * A + 2 * B) * Y` using `by positivity`. Use polynomial arithmetic with `[hp]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem le_div_one_add_pow_succ_of_mul_le (x : ℝ) (hx : 0 ≤ x) (N : ℕ) (A B Y : ℝ) (hY : 0 ≤ Y) (hA : 0 ≤ A) (hB : 0 ≤ B) (q : ℝ)
     (h0 : q ≤ A * Y) (h1 : x * q ≤ B * Y / (1 + x) ^ N) :
@@ -112,33 +110,31 @@ theorem le_div_one_add_pow_succ_of_mul_le (x : ℝ) (hx : 0 ≤ x) (N : ℕ) (A 
         _ ≤ (2 ^ (N + 1) * A + 2 * B) * Y := by nlinarith [mul_nonneg (mul_nonneg (pow_nonneg (by norm_num : (0:ℝ) ≤ 2) (N + 1)) hA) hY]
 
 /- English proof (translation)
-Take `⟨R, hR⟩` from `hK.isBounded.exists_norm_le`. Proceed by induction on `N with`. Consider the case `zero`. Introduce `a b m hab`. Take `⟨C, hC⟩` from `GlobalTheory.T.norm_heckeTermDecayFourierIntegral_le K hK hKH a b m hab`.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨C, fun σ hσ ν y _ hy => by simpa using hC σ hσ ν y hy⟩`. Consider the case `succ N ih`. Introduce `a b m hab`. Take `⟨C0, hC0⟩` from `GlobalTheory.T.norm_heckeTermDecayFourierIntegral_le K hK hKH a b m hab`. Take `⟨C1, hC1⟩` from `ih (a + 1) b m (by omega)`.
+Supply the required witnesses or components. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨C2, hC2⟩` from `ih (a - 1) (b + 1) m (by push_cast; omega)`. Take `⟨C3, hC3⟩` from `ih a (b + 1) (m + 1) (by push_cast; omega)`. Use `set B : ℝ := (|(a : ℝ)| * |C1| + 2 * (|R| + b) * (|C2| + |C3|)) / (2 * Real.pi) with hB`. Use `⟨2 ^ (N + 1) * |C0| + 2 * B, fun σ hσ ν y hν hy => ?_⟩` and prove the remaining obligations. Use `set E : ℝ := (m : ℝ) + 1 - a - 2 * b - 2 * σ.re with hE`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hyp : 0 < |y|` using `abs_pos.2 hy`. Establish `hnp : 0 < |ν|` using `abs_pos.2 hν`. Establish `hx : |ν * y| = |ν| * |y|` using `abs_mul ν y`. Establish `hpN : 0 < (1 + |ν * y|) ^ N` using `by positivity`. Establish `hB0 : 0 ≤ B` using `by rw [hB]; have := Real.pi_pos; positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Use `le_trans ?_ (le_of_eq (by ring : (2 ^ (N + 1) * |C0| + 2 * B) * |y| ^ E / (1 + |ν * y|) ^ (N + 1) = (2 ^ (N + 1) * |C0| + 2 * B) * |y| ^ E / (1 + |ν * y|) ^ (N + 1)))` and prove the remaining obligations. Apply `le_div_one_add_pow_succ_of_mul_le |ν * y| (abs_nonneg _) N |C0| B (|y| ^ E) (by positivity) (abs_nonneg _) hB0` to reduce the goal to its premises. Conclude with `(hC0 σ hσ ν y hy).trans (mul_le_mul_of_nonneg_right (le_abs_self _) (by positivity))`. Establish `hibp` using `intZ_ibp σ (hKH hσ) ν a b m hab hy`. Establish `e1` using `hC1 σ hσ ν y hν hy`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2` using `hC2 σ hσ ν y hν hy`. Establish `e3` using `hC3 σ hσ ν y hν hy`. Establish `hE1 : ((m : ℝ) + 1 - ((a + 1 : ℤ) : ℝ) - 2 * b - 2 * σ.re) = E - 1` using `by rw [hE]; push_cast; ring`. Establish `hE2 : ((m : ℝ) + 1 - ((a - 1 : ℤ) : ℝ) - 2 * ((b + 1 : ℕ) : ℝ) - 2 * σ.re) = E - 1` using `by rw [hE]; push_cast; ring`. Establish `hE3 : (((m + 1 : ℕ) : ℝ) + 1 - (a : ℝ) - 2 * ((b + 1 : ℕ) : ℝ) - 2 * σ.re) = E - 1` using `by rw [hE]; push_cast; ring`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e1` using `[hE1]`. Rewrite `e2` using `[hE2]`. Rewrite `e3` using `[hE3]`. Use `set X : ℝ := |y| ^ (E - 1) / (1 + |ν * y|) ^ N with hX`. Establish `hX0 : 0 ≤ X` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hσb : ‖-σ - (b : ℂ)‖ ≤ |R| + b`. Combine the equalities or inequalities in the displayed calculation. Establish `key : 2 * Real.pi * |ν| * ‖intZ σ ν a b m y‖ ≤ (|(a : ℝ)| * |C1| + 2 * (|R| + b) * (|C2| + |C3|)) * X`. Establish `hn : ‖2 * (Real.pi : ℂ) * I * ν * intZ σ ν a b m y‖ = 2 * Real.pi * |ν| * ‖intZ σ ν a b m y‖`. Simplify using `[norm_mul, Complex.norm_real, abs_of_pos Real.pi_pos]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hn, hibp]`. Establish `f1 : ‖intZ σ ν (a + 1) b m y‖ ≤ |C1| * X`. Rewrite using `[hX, ← mul_div_assoc]; exact e1.trans (by gcongr; exact le_abs_self _)`. Establish `f2 : ‖intZ σ ν (a - 1) (b + 1) m y‖ ≤ |C2| * X`. Rewrite using `[hX, ← mul_div_assoc]; exact e2.trans (by gcongr; exact le_abs_self _)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Establish `f3 : ‖intZ σ ν a (b + 1) (m + 1) y‖ ≤ |C3| * X`. Rewrite using `[hX, ← mul_div_assoc]; exact e3.trans (by gcongr; exact le_abs_self _)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[norm_mul, norm_mul, norm_neg, norm_mul]`. Establish `ha : ‖(a : ℂ)‖ = |(a : ℝ)|` using `by rw [← Complex.ofReal_intCast, Complex.norm_real, Real.norm_eq_abs]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ha]`. Establish `hs : ‖intZ σ ν (a - 1) (b + 1) m y - I * intZ σ ν a (b + 1) (m + 1) y‖ ≤ |C2| * X + |C3| * X`. Use `(norm_sub_le _ _).trans (add_le_add f2 ?_)` and prove the remaining obligations. Rewrite using `[norm_mul, Complex.norm_I, one_mul]`. Conclude with `f3`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `gcongr`. Simplify using the standard rewrite rules. Use `_ = _ := by ring`. Establish `hyE : |y| ^ (E - 1) = |y| ^ E / |y|` using `by rw [Real.rpow_sub_one hyp.ne']`. Establish `h2p : 0 < 2 * Real.pi * |ν|` using `by have := Real.pi_pos; positivity`.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[hx]`. Establish `: |ν| * |y| * ‖intZ σ ν a b m y‖ = |y| / (2 * Real.pi) * (2 * Real.pi * |ν| * ‖intZ σ ν a b m y‖)`. Clear the denominators using the available nonvanishing facts. Rewrite using `[this]`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[hB, hX, hyE, ← hx]`. Clear the denominators using the available nonvanishing facts.
+A detailed English derivation is pending.
 -/
 theorem intZ_decay (K : Set ℂ) (hK : IsCompact K) (hKH : K ⊆ halfPlane) (N : ℕ) :
     ∀ (a : ℤ) (b m : ℕ), 2 ≤ a + 2 * b → ∃ C : ℝ, ∀ σ ∈ K, ∀ ν y : ℝ, ν ≠ 0 → y ≠ 0 →
@@ -220,9 +216,9 @@ end GlobalTheory.HeckeTwo.TermDecay
 open GlobalTheory.HeckeTwo.TermDecay in
 
 /- English proof (translation)
-Introduce `K hK hKH a b m hab N`. Take `⟨C, hC⟩` from `intZ_decay K hK hKH N (a : ℤ) b m (by exact_mod_cast hab)`. Use `⟨C, fun σ hσ ν y hν hy => ?_⟩` and prove the remaining obligations. Rewrite using `[intT_eq_intZ]`. Use `hC σ hσ ν y hν hy` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem GlobalTheory.HeckeTwo.TermDecay.intT_bound : ∀ K : Set ℂ, IsCompact K → K ⊆ halfPlane → ∀ a b m : ℕ, 2 ≤ a + 2 * b → ∀ N : ℕ, ∃ C : ℝ,
     ∀ σ ∈ K, ∀ ν y : ℝ, ν ≠ 0 → y ≠ 0 →

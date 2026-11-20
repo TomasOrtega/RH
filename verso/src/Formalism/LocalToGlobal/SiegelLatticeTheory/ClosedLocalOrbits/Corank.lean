@@ -21,7 +21,7 @@ def s0T (Λ : Submodule (𝓞 E) S.V) (g k : ℕ) {T T' : E} (F : LFlag S r T) (
   if h : ∃ β : S.V ≃ₗ[E] S.V, IsPair Λ F F' F'' β g then s0 Λ F F' F'' (Classical.choose h) k else 0
 
 /- English proof (translation)
-Use `⟨⟨fun x y => rfl, ?_⟩, fun j => ?_, rfl, fun x' _ l _ => Iff.rfl⟩` and prove the remaining obligations. Simplify using `[Formalism.HermitianLatticesTheory.gmap]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem isPair_refl (Λ : Submodule (𝓞 E) S.V) (g : ℕ) {T T' : E} (F : LFlag S r T) (F' : LFlag S r T') :
     IsPair Λ F F' F' (LinearEquiv.refl E S.V) g := by
@@ -52,9 +52,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable (D : D7)
 
 /- English proof (translation)
-Establish `h1` using `(D.sp.Y 0).rank_eq`. Establish `h2` using `D.sp.Y_rank 0 (Nat.zero_le _)`. Take `⟨j, hj⟩` from `D.R.m_even`. Establish `h3` using `D.R.two_le_m`. Simplify using `only [VS] at *`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[h1, h2]`. Simplify using `only [Ranks.rankY, Ranks.r, Ranks.rS]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem finrank_VS : finrank D.host.E (VS D).V = D.R.k + 2 * D.R.rS + 1 := by
   have h1 := (D.sp.Y 0).rank_eq
@@ -97,7 +97,7 @@ def Pair.isScalar (p : Pair D u u' F0 what₂) : Prop :=
   IsScalar p.lam (lf D F0) p.fst.1 p.snd.1 p.beta
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem Pair.scalarPair_iff (p : Pair D u u' F0 what₂) : p.scalarPair ↔ p.s0 = 1 ∧ p.isScalar :=
   Iff.rfl
@@ -107,7 +107,7 @@ def reflPair (Λ : Submodule (𝓞 D.host.E) (VS D).V) (hΛ : Λ ∈ what₂)
   ⟨Λ, hΛ, x, x, hx, hx, LinearEquiv.refl _ _, isPair_refl _ _ _ _⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨rfl, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem reflPair_terms (Λ : Submodule (𝓞 D.host.E) (VS D).V) (hΛ : Λ ∈ what₂)
     (x : Carrier (PD D Λ (lf D F0) u')) (hx : Gval (lf D F0) x.1 ≠ 0) :
@@ -172,7 +172,7 @@ def ScalarDr (u u' : D.what₂.Word) : Prop :=
 variable {D}
 
 /- English proof (translation)
-Introduce `F0 what₂ hrows p`. Establish `hΛ` using `hrows.1 p.lam p.mem`. Conclude with `h D.host.E (VS D) D.R.rS D.R.k (finrank_VS D) p.lam hΛ.2.1.1 _ _ (lf D F0) p.fst.1 p.snd.1 p.beta hΛ.2.1.2.2.1 p.fst.2.1 p.G_fst`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem corankPos_of_G (h : CorankPosG) (u u' : D.what₂.Word) : CorankPos D u u' := by
   intro F0 what₂ hrows p
@@ -181,15 +181,15 @@ theorem corankPos_of_G (h : CorankPosG) (u u' : D.what₂.Word) : CorankPos D u 
     hΛ.2.1.2.2.1 p.fst.2.1 p.G_fst
 
 /- English proof (translation)
-The claim follows from `Nat.cast_ne_zero.2 (D.mem u).A.T_prime.ne_zero`.
+A detailed English derivation is pending.
 -/
 theorem tu_ne_zero (u : D.what₂.Word) : ((Tu D u : ℕ) : D.host.E) ≠ 0 :=
   Nat.cast_ne_zero.2 (D.mem u).A.T_prime.ne_zero
 
 /- English proof (translation)
-Introduce `F0 Λ hΛ`. Establish `hlat : Submodule.IsLattice D.host.E Λ` using `hΛ.2.1.1`. Establish `hlift : IsLift Λ (lf D F0)` using `hΛ.2.1.2.2.1`. Establish `e` using `h D.host.E (VS D) D.R.rS D.R.k (gS D) (finrank_VS D) Λ hlat ((Tu D u : ℕ) : D.host.E) ((Tu D u' : ℕ) : D.host.E) (tu_ne_zero u) (tu_ne_zero u') (lf D F0) hlift`. Use `⟨fun x => ?_, fun {x y} hxy => ?_, fun {x y z} h1 h2 => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `e.refl ⟨x.1.1, x.1.2.1, x.2⟩`. Conclude with `e.symm (x := ⟨x.1.1, x.1.2.1, x.2⟩) (y := ⟨y.1.1, y.1.2.1, y.2⟩) hxy`. Conclude with `e.trans (x := ⟨x.1.1, x.1.2.1, x.2⟩) (y := ⟨y.1.1, y.1.2.1, y.2⟩) (z := ⟨z.1.1, z.1.2.1, z.2⟩) h1 h2`.
+A detailed English derivation is pending.
 -/
 theorem scalarEquiv_of_G (h : ScalarEquivG) (u u' : D.what₂.Word) : ScalarEquiv D u u' := by
   intro F0 Λ hΛ
@@ -203,19 +203,19 @@ theorem scalarEquiv_of_G (h : ScalarEquivG) (u u' : D.what₂.Word) : ScalarEqui
   · exact e.trans (x := ⟨x.1.1, x.1.2.1, x.2⟩) (y := ⟨y.1.1, y.1.2.1, y.2⟩) (z := ⟨z.1.1, z.1.2.1, z.2⟩) h1 h2
 
 /- English proof (translation)
-Introduce `F0 what₂ hrows`. Use `⟨fun t => ?_, fun {t₁ t₂} h => ?_, fun {t₁ t₂ t₃} h₁ h₂ => ?_⟩` and prove the remaining obligations. Take `⟨⟨lam, mem, cls⟩, hG⟩` from `t`. Establish `hΛ` using `hrows.1 lam mem`. Establish `hx : Gval (lf D F0) (Quot.out cls).1 ≠ 0` using `hG`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨β, hp, hs, hsc⟩` from `(hE F0 lam hΛ).refl ⟨Quot.out cls, hx⟩`. Use `⟨⟨lam, mem, Quot.out cls, Quot.out cls, hx, hx, β, hp⟩, ?_, ?_, hs, hsc⟩` and prove the remaining obligations. Simplify using `only [Pair.pfst]`. Use `congr 1`. Conclude with `Quot.out_eq cls`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Simplify using `only [Pair.psnd]`. Use `congr 1`. Conclude with `Quot.out_eq cls`. Take `⟨p, h1, h2, hs, hsc⟩` from `h`. Establish `hΛ` using `hrows.1 p.lam p.mem`.
+Reduce the equality to equality of the corresponding arguments. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨β, hp, hs', hsc'⟩` from `(hE F0 p.lam hΛ).symm (x := ⟨p.fst, p.G_fst⟩) (y := ⟨p.snd, p.G_snd⟩) ⟨p.beta, p.isPair, hs, hsc⟩`. Conclude with `⟨⟨p.lam, p.mem, p.snd, p.fst, p.G_snd, p.G_fst, β, hp⟩, h2, h1, hs', hsc'⟩`. Take `⟨p, hp1, hp2, hps, hpsc⟩` from `h₁`. Take `⟨q, hq1, hq2, hqs, hqsc⟩` from `h₂`. Establish `hpq : p.psnd = q.pfst` using `hp2.trans hq1.symm`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨lp, mp, p1, p2, gp1, gp2, bp, ip⟩` from `p`. Take `⟨lq, mq, q1, q2, gq1, gq2, bq, iq⟩` from `q`. Simplify using `only [Pair.psnd, Pair.pfst, Term.mk.injEq] at hpq`. Take `⟨rfl, hcls⟩` from `hpq`. Establish `hcls' : TermDef.mk lp (lf D F0) (PD D lp (lf D F0) u') p2 = TermDef.mk lp (lf D F0) (PD D lp (lf D F0) u') q1` using `eq_of_heq hcls`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hΛ` using `hrows.1 lp mp`. Establish `hrel` using `(hEq F0 lp hΛ p2 q1).1 hcls'`. Establish `a1 : ScalRelD D u' F0 lp ⟨p1, gp1⟩ ⟨p2, gp2⟩` using `⟨bp, ip, hps, hpsc⟩`. Establish `a2 : ScalRelD D u' F0 lp ⟨p1, gp1⟩ ⟨q1, gq1⟩` using `hR F0 lp hΛ ⟨p1, gp1⟩ ⟨p2, gp2⟩ ⟨q1, gq1⟩ hrel a1`. Establish `a3 : ScalRelD D u' F0 lp ⟨q1, gq1⟩ ⟨q2, gq2⟩` using `⟨bq, iq, hqs, hqsc⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨β, hb, hs, hsc⟩` from `(hE F0 lp hΛ).trans a2 a3`. Conclude with `⟨⟨lp, mp, p1, q2, gp1, gq2, β, hb⟩, hp1, hq2, hs, hsc⟩`.
+A detailed English derivation is pending.
 -/
 theorem scalarEquivT_of {D : D7} {u u' : D.what₂.Word} (hEq : TermEqIff D u u') (hE : ScalarEquiv D u u')
     (hR : ScalarRepFree D u u') : ScalarEquivT D u u' := by

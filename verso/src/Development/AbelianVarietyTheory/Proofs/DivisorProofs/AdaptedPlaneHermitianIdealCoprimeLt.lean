@@ -16,7 +16,7 @@ open GlobalTheory.AdelicU
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Take `⟨y, hy, hy0, he⟩` from `PI.UnitaryGroupMassFormula.CntFormula.R6.exists_exact w hI`. Rewrite using `[← he, ReciprocityTheory.Neutral.Bridge.HCFR.count_spanSingleton E w hy0]`. Establish `h1` using `h y hy`. Establish `h0 : w.valuation E y ≠ 0` using `(map_ne_zero _).2 hy0`. Rewrite `h1` using `[← WithZero.exp_log h0, ← WithZero.exp_zero, WithZero.exp_le_exp]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -30,15 +30,15 @@ theorem count_nonneg_of_forall {I : FractionalIdeal (𝓞 E)⁰ E} (hI : I ≠ 0
   omega
 
 /- English proof (translation)
-Establish `hz : z ∈ Submodule.span E (L : Set (Fin n → E))` using `by rw [hL.span_eq_top]; trivial`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem z hz => exact ⟨1, one_ne_zero, by simpa using hz⟩`. Consider the case `zero => exact ⟨1, one_ne_zero, by simp⟩`. Consider the case `add a b _ _ ha hb`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Take `⟨d, hd, ha⟩` from `ha`. Take `⟨e, he, hb⟩` from `hb`. Use `⟨d * e, mul_ne_zero hd he, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add]`. Conclude with `add_mem (by rw [mul_comm, mul_smul]; exact L.smul_mem e ha) (by rw [mul_smul]; exact L.smul_mem d hb)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `smul c a _ ha`. Take `⟨d, hd, ha⟩` from `ha`. Take `⟨p, q, hq, rfl⟩` from `IsFractionRing.div_surjective (A := 𝓞 E) c`. Establish `hq0 : q ≠ 0` using `nonZeroDivisors.ne_zero hq`. Use `⟨q * d, mul_ne_zero hq0 hd, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hQ : algebraMap (𝓞 E) E q ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective (𝓞 E) E)).2 hq0`. Establish `e : (q * d) • ((algebraMap (𝓞 E) E p / algebraMap (𝓞 E) E q) • a) = p • (d • a)`. Rewrite using `[← algebraMap_smul E (q * d), ← algebraMap_smul E p, ← algebraMap_smul E d, smul_smul, smul_smul, map_mul]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `L.smul_mem p ha`.
+A detailed English derivation is pending.
 -/
 theorem exists_smul_mem {n : ℕ} {L : Submodule (𝓞 E) (Fin n → E)} (hL : L.IsLattice E) (z : Fin n → E) :
     ∃ d : 𝓞 E, d ≠ 0 ∧ d • z ∈ L := by
@@ -66,7 +66,7 @@ theorem exists_smul_mem {n : ℕ} {L : Submodule (𝓞 E) (Fin n → E)} (hL : L
     exact L.smul_mem p ha
 
 /- English proof (translation)
-Establish `herm' : ∀ i j, σ (J i j) = J j i` using `fun i j => herm j i`. Simplify using `only [form, dotProduct, Matrix.mulVec, map_sum, map_mul, hσ, herm', Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem form_swap {σ : E →ₐ[F] E} (hσ : ∀ x, σ (σ x) = x) {n : ℕ} {J : Matrix (Fin n) (Fin n) E}
     (herm : ∀ i j, σ (J j i) = J i j) (a b : Fin n → E) : form σ J b a = σ (form σ J a b) := by
@@ -76,21 +76,21 @@ theorem form_swap {σ : E →ₐ[F] E} (hσ : ∀ x, σ (σ x) = x) {n : ℕ} {J
   exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring
 
 /- English proof (translation)
-Simplify using `[form, smul_dotProduct]`.
+Simplify using the standard rewrite rules.
 -/
 theorem form_smul_left (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (c : E) (a b : Fin n → E) :
     form σ J (c • a) b = c * form σ J a b := by
   simp [form, smul_dotProduct]
 
 /- English proof (translation)
-Simplify using `[form, add_dotProduct]`.
+Simplify using the standard rewrite rules.
 -/
 theorem form_add_left (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (a a' b : Fin n → E) :
     form σ J (a + a') b = form σ J a b + form σ J a' b := by
   simp [form, add_dotProduct]
 
 /- English proof (translation)
-Unfold `form`. Rewrite using `[show (fun i => σ ((c • b) i)) = σ c • fun i => σ (b i) from funext fun i => by simp, Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem form_smul_right (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (c : E) (a b : Fin n → E) :
     form σ J a (c • b) = σ c * form σ J a b := by
@@ -99,7 +99,7 @@ theorem form_smul_right (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin 
     dotProduct_smul, smul_eq_mul]
 
 /- English proof (translation)
-Simplify using `only [form, dotProduct, Matrix.mulVec, Matrix.map_apply, Matrix.transpose_apply, map_sum, map_mul, AlgHom.comp_apply, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pair_eq {v : HeightOneSpectrum (𝓞 F)} (τ : E →ₐ[F] Fv F v) (σ : E →ₐ[F] E) {n : ℕ}
     (J : Matrix (Fin n) (Fin n) E) (z z' : Fin n → E) :
@@ -116,41 +116,35 @@ namespace GlobalTheory.PlaneIdeal
 open GlobalTheory.AdelicU
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n n₁ H Y Y₁ i₀ i₁ r s hB hY hA h01 h1n`. Establish `hcm` using `hB.cm`. Establish `hσ : ∀ x, σ (σ x) = x` using `cm_conj_conj hcm`. Establish `hb0 : H.𝔟 ≠ 0`. Take `⟨d, hd0, hd⟩` from `exists_smul_mem hY.lat H.x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Introduce `h`. Establish `hm : algebraMap (𝓞 E) E d ∈ H.𝔟` using `(hA.ideal _).2 (by rw [algebraMap_smul]; exact hd)`. Rewrite `hm` using `[h, FractionalIdeal.mem_zero_iff]`. Conclude with `hd0 ((map_eq_zero_iff _ (IsFractionRing.injective (𝓞 E) E)).1 hm)`. Use `⟨hb0, fun v hv w hw => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `set τ := B.τ ⟨v, hv⟩ with hτ`. Establish `hbas` using `hY.bas ⟨v, hv⟩`. Establish `hadb` using `hA.bas ⟨v, hv⟩`. Establish `hcol : ∀ (i : Fin n) (z : Fin n → E), (∀ r, (Y.bas v).1 r i = τ (z r)) → ∀ c : Fv F v, (c • (fun r => τ (z r)) ∈ splitLat τ Y.L ↔ c ∈ v.adicCompletionIntegers F)`. Introduce `i z hz c`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `e : (Y.bas v).1 *ᵥ Pi.single i c = c • (fun r => τ (z r))`. Use function extensionality and compare the values at `r`. Simplify using `[Matrix.mulVec, dotProduct, Pi.single_apply, hz, mul_comm]`. Express the relevant statement in the definitionally equal form `_ ↔ c ∈ v.adicCompletionIntegers F`. Rewrite using `[← e, ← hbas]`.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun h => by simpa using h i, fun h j => ?_⟩` and prove the remaining obligations. Rewrite using `[Pi.single_apply]`. Use `split_ifs`. Conclude with `h`. Conclude with `zero_mem _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx` using `hcol ⟨i₀, h01.trans h1n⟩ H.x ((hadb ⟨i₀, h01.trans h1n⟩).1 rfl)`. Establish `hy` using `hcol ⟨i₁, h1n⟩ H.y ((hadb ⟨i₁, h1n⟩).2.1 rfl)`. Establish `hx1 : (fun r => τ (H.x r)) ∈ splitLat τ Y.L` using `by simpa using (hx 1).2 (one_mem _)`. Establish `hy1 : (fun r => τ (H.y r)) ∈ splitLat τ Y.L` using `by simpa using (hy 1).2 (one_mem _)`. Establish `glob : ∀ (ρ : E →ₐ[F] Fv F v) (z : Fin n → E), z ∈ Y.L → (fun r => ρ (z r)) ∈ splitLat ρ Y.L` using `fun ρ z hz => ⟨_, tmul_mem_latLoc (one_mem _) hz, funext fun r => by simp [splitVec]⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hJT : IsHermND σ Y.Jᵀ` using `⟨fun i j => by simpa using hY.herm j i, by`. Rewrite using `[Matrix.det_transpose]`. Conclude with `GlobalTheory.HermSelfDualLoc.det_ne_zero_of_isHerm σ B hY⟩`. Establish `hsd` using `GlobalTheory.HermSelfDualLoc.isSelfDualAt_transpose F E σ B n Y r s hB hY v`. Establish `hdual : ∀ z z' : Fin n → E, (fun r => (τ.comp σ) (z r)) ∈ splitLat (τ.comp σ) Y.L → (fun r => τ (z' r)) ∈ splitLat τ Y.L → τ (form σ Y.J z' z) ∈ v.adicCompletionIntegers F`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `z z' hz hz'`. Rewrite using `[← pair_eq τ σ Y.J z z']`. Conclude with `(mem_splitLat_comp_iff hcm hJT hsd).1 hz _ hz'`. Establish `toVal : ∀ (ρ : E →ₐ[F] Fv F v) (t : E), ρ t ∈ v.adicCompletionIntegers F → (splitPrime ρ).valuation E t ≤ 1` using `fun ρ t h => by`. Rewrite using `[← valued_apply_eq_valuation]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h`. Establish `hyx : form σ Y.J H.y H.x = 1` using `by rw [form_swap hσ hY.herm, hA.xy, map_one]`. Establish `hxy' : form σ Y.J H.x H.y = 1` using `hA.xy`. Establish `b1 : ∀ t ∈ H.𝔟, (splitPrime τ).valuation E t ≤ 1` using `fun t ht => by`. Establish `h1` using `glob τ _ ((hA.ideal t).1 ht)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `e : (fun r => τ ((t • H.x) r)) = τ t • (fun r => τ (H.x r))` using `funext fun r => by simp`. Rewrite `h1` using `[e, hx]`. Conclude with `toVal τ t h1`. Establish `b2 : ∀ t ∈ H.𝔟, (splitPrime (τ.comp σ)).valuation E t ≤ 1` using `fun t ht => by`. Establish `h1` using `hdual _ _ (glob (τ.comp σ) _ ((hA.ideal t).1 ht)) hy1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `h1` using `[form_smul_right, hyx, mul_one]`. Conclude with `toVal (τ.comp σ) t h1`. Establish `hinv : ∀ t ∈ H.𝔟⁻¹, σ t • H.y ∈ Y.L`. Introduce `t ht`. Rewrite using `[hY.dual]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `z hz`. Take `⟨a, b, u, ha, _, _, rfl⟩` from `hA.split z hz`. Establish `hab : t * a ∈ (1 : FractionalIdeal (𝓞 E)⁰ E)`. Rewrite using `[← inv_mul_cancel₀ hb0]`. Conclude with `FractionalIdeal.mul_mem_mul ht ((hA.ideal a).2 ha)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨o, ho⟩` from `(FractionalIdeal.mem_one_iff _).1 hab`. Establish `e : form σ Y.J (σ t • H.y) (a • H.x + H.ι *ᵥ u + b • H.y) = σ (t * a)`. Rewrite using `[form_smul_left, form_swap hσ hY.herm, form_add_left, form_add_left, form_smul_left, form_smul_left, hxy', (hA.orth u).2, hA.yy, map_mul]`. Simplify using the standard rewrite rules. Rewrite using `[e, ← ho]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `IsIntegral.map (σ : E →+* E).toIntAlgHom o.isIntegral_coe`. Establish `c2 : ∀ t ∈ H.𝔟⁻¹, (splitPrime (τ.comp σ)).valuation E t ≤ 1` using `fun t ht => by`. Establish `h1` using `glob τ _ (hinv t ht)`. Establish `e : (fun r => τ ((σ t • H.y) r)) = τ (σ t) • (fun r => τ (H.y r))` using `funext fun r => by simp`. Rewrite `h1` using `[e, hy]`.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `toVal (τ.comp σ) t h1`. Establish `c1 : ∀ t ∈ H.𝔟⁻¹, (splitPrime τ).valuation E t ≤ 1` using `fun t ht => by`. Establish `h1` using `hdual _ _ (glob (τ.comp σ) _ (hinv t ht)) hx1`. Rewrite `h1` using `[form_smul_right, hxy', mul_one, hσ]`. Conclude with `toVal τ t h1`.
-
-Establish `cnt : ∀ w' : HeightOneSpectrum (𝓞 E), (∀ t ∈ H.𝔟, w'.valuation E t ≤ 1) → (∀ t ∈ H.𝔟⁻¹, w'.valuation E t ≤ 1) → FractionalIdeal.count E w' H.𝔟 = 0`. Introduce `w' h1 h2`. Establish `e1` using `count_nonneg_of_forall hb0 w' h1`. Establish `e2` using `count_nonneg_of_forall (inv_ne_zero hb0) w' h2`. Rewrite `e2` using `[FractionalIdeal.count_inv]`.
-
-Use linear arithmetic over natural numbers and integers. Use `haveI := v.isMaximal`. Establish `hm : w.asIdeal ∈ v.asIdeal.primesOver (𝓞 E)` using `⟨w.isPrime, ⟨hw ▸ rfl⟩⟩`. Rewrite `hm` using `[primesOver_eq_split hcm τ]`. Break down `hm with e | e` into its components or cases.
-
-Rewrite using `[HeightOneSpectrum.ext e]`. Conclude with `cnt _ b1 c1`. Rewrite using `[HeightOneSpectrum.ext e]`. Conclude with `cnt _ b2 c2`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem plane_ideal_trivial : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (B : Base F E) {n n₁ : ℕ} (H : Plane E n n₁) (Y : Spc F E n) (Y₁ : Spc F E n₁)

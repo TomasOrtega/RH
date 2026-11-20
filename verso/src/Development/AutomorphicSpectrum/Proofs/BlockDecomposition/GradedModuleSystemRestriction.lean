@@ -25,9 +25,9 @@ namespace GlobalTheory.CompanionTheory.FormalAlg.Lift.Glue
 open MvPolynomial in
 
 /- English proof (translation)
-Take `⟨r, d, g, hg, hsat⟩` from `exists_homogeneous_family_saturating ι R G 𝒢 h`. Establish `hhom : (Submodule.span (MvPolynomial ι R) (Set.range g)).IsHomogeneous 𝒢` using `isHomogeneous_span_gr 𝒢 (by`. Introduce and unpack `_ ⟨l, rfl⟩`. Conclude with `⟨d l, hg l⟩)`. Use `⟨_, hhom, Module.Finite.span_of_finite _ (Set.finite_range g), fun t I ⟨i, hi⟩ => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Use `letI := grSubDecomposition 𝒢 hhom`. Conclude with `homLocMap_bijective_of_X _ hi (fun m hm => ⟨0, by`. Rewrite using `[(map_eq_zero_iff _ (Submodule.injective_subtype _)).1 hm, smul_zero]⟩)`. Use the proof step `(fun y => by simpa using hsat i y) t`.
+Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_finite_sub (ι : Type) [LinearOrder ι] [Fintype ι] (R : Type)
     [CommRing R] (G : Type) [AddCommGroup G] [Module R G] [Module (MvPolynomial ι R) G]
@@ -51,9 +51,9 @@ theorem exists_finite_sub (ι : Type) [LinearOrder ι] [Fintype ι] (R : Type)
     (fun y => by simpa using hsat i y) t
 
 /- English proof (translation)
-Establish `n2 (i j : ι) : ({i, j} : Finset ι).Nonempty` using `Finset.insert_nonempty _ _`. Establish `n1 (i : ι) : ({i} : Finset ι).Nonempty` using `Finset.singleton_nonempty i`. Establish `n3 (i j k : ι) : ({i, j, k} : Finset ι).Nonempty` using `Finset.insert_nonempty _ _`. Use `choose c' hc' using fun i j => (hb {i, j} (n2 i j)).2 ⟨c i j, hc i j⟩`. Establish `hv (i j : ι) : (ψ _ (n2 i j) (c' i j) : P {i, j}) = c i j` using `congrArg Subtype.val (hc' i j)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨b', hb'⟩` from `hpairs c' fun i j k => by`. Use `(hb _ (n3 i j k)).1 (Subtype.ext ?_)` and prove the remaining obligations. Rewrite using `[map_add, Submodule.coe_add, hr _ _ (n2 i j) (n3 i j k), hr _ _ (n2 j k) (n3 i j k), hr _ _ (n2 i k) (n3 i j k), hv, hv, hv, hcoc]`. Use `⟨fun i => ψ _ (n1 i) (b' i), fun i => (ψ _ (n1 i) (b' i)).2, fun i j => ?_⟩` and prove the remaining obligations. Rewrite using `[← hv i j, hb' i j, map_sub, Submodule.coe_sub, hr _ _ (n1 i) (n2 i j), hr _ _ (n1 j) (n2 i j)]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pairs_of_cube {ι : Type} [LinearOrder ι] {A : Type} [CommRing A] (C : Cube.{0} ι A)
     (hpairs : ∀ c : ∀ i j : ι, C.obj {i, j}, (∀ i j k, Cube.res C (sub_triple_ij i j k) (c i j) +
@@ -93,15 +93,15 @@ end GlobalTheory.CompanionTheory.FormalAlg.Lift.Glue
 namespace GlobalTheory.CompanionTheory.FormalAlg.Lift
 
 /- English proof (translation)
-Introduce `ι _ _ A _ _ P _ _ _ _ 𝒢 _ _ res hgr hid hcomp hbij hinj hsurj hfin`. Establish `iI` using `GlobalTheory.CompanionTheory.FormalAlg.IterInj.iter_localisation_injective ι A P res hid hcomp hinj`. Establish `iS` using `GlobalTheory.CompanionTheory.FormalAlg.Lift.Glue.xProd_pow_smul_mem_range_res_iter ι A P res hid hcomp hsurj`. Establish `g1` using `GlobalTheory.CompanionTheory.FormalAlg.Lift.Glue.exists_compatible_family_of_singleton ι A P res hid hcomp hinj hsurj`. Establish `K1` using `GlobalTheory.CompanionTheory.FormalAlg.Lift.Glue.smul_eq_zero_of_ev_eq_zero ι A P res hcomp iI`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `K2` using `GlobalTheory.CompanionTheory.FormalAlg.Lift.Glue.exists_xProd_pow_smul_eq_ev ι A P res hcomp iS g1`. Use `letI : DirectSum.Decomposition (glueGr res 𝒢) := glueDec 𝒢 hgr`. Establish `sat : ∀ i : ι, ∃ T : Finset (glue res), ∀ y : glue res, ∃ k : ℕ, (MvPolynomial.X i : MvPolynomial ι A) ^ k • y ∈ Submodule.span (MvPolynomial ι A) (T : Set (glue res))`. Introduce `i`. Use `GlobalTheory.CompanionTheory.FormalAlg.Lift.SerreSat.saturated_fg_of_powerTorsion_ker_coker (MvPolynomial ι A) (MvPolynomial.X i) (glue res) (P {i}) (ev res {i} (Finset.singleton_nonempty i)) (fun m hm => ?_) (fun f => ?_) (hfin i)` and prove the remaining obligations.
+Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Simplify `K1 {i} _ m hm` using `[xProd]`. Simplify `K2 {i} (Finset.singleton_nonempty i) f` using `[xProd]`. Take `⟨K, hK, hKf, hb⟩` from `exists_finite_sub ι A (glue res) (glueGr res 𝒢) sat`. Use `letI := grSubDecomposition (glueGr res 𝒢) hK`. Take `⟨t₀, ht₀⟩` from `cubeComplex_grCube_exactAt_of_finite ι A K (grSub (glueGr res 𝒢) K) hKf`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Extract witnesses or component facts from the available result.
 
-Use `⟨t₀, fun t ht c hc hcoc => ?_⟩` and prove the remaining obligations. Establish `hex` using `(cechComplex_exactAt_succ_iff _ 0).1 ((cechComplex_exactAt_succ_iff_cube _ 0).2 (ht₀ t ht 2))`. Take `⟨φ, hφb, hφr⟩` from `GlobalTheory.CompanionTheory.FormalAlg.Lift.Glue.exists_homLoc_pieces_compatible ι A (glue res) (glueGr res 𝒢) P 𝒢 res (ev res) (isGradedMap_ev 𝒢 hgr) (fun I J hI hJ h m => res_ev hcomp hI hJ h m) hbij K1 K2 t`. Use `pairs_of_cube (grCube ι (grSub (glueGr res 𝒢) K) t) (GlobalTheory.CompanionTheory.FormalAlg.Lift.Glue.exists_coboundary_of_pairs_cocycle ι A _ hex) (fun S => 𝒢 S t) res (fun I hI => φ I hI ∘ₗ homLocMap (isGradedMap_subtype _ K) I t) (fun I hI => (hφb I hI).comp (hb t I hI)) (fun …` and prove the remaining obligations. Establish `e : homLocMap (isGradedMap_subtype (glueGr res 𝒢) K) J t (Cube.res _ h z) = homLocRes _ h t (homLocMap (isGradedMap_subtype (glueGr res 𝒢) K) I t z)` using `homLocMap_homLocRes _ h t z`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `(congrArg (fun w => ((φ J hJ w : 𝒢 J t) : P J)) e).trans (hφr I J hI hJ h _)`.
+A detailed English derivation is pending.
 -/
 theorem serre_cech_pairs : ∀ (ι : Type) [LinearOrder ι] [Fintype ι] (A : Type) [CommRing A] [IsNoetherianRing A] (P : Finset ι → Type) [∀ S, AddCommGroup (P S)] [∀ S, Module A (P S)] [∀ S, Module (MvPolynomial ι A) (P S)] [∀ S, IsScalarTower A (MvPolynomial ι A) (P S)] (𝒢 : ∀ S, ℤ → Submodule A (P S)) [∀ S, PolyGradedSMul ι (𝒢 S)] [∀ S, DirectSum.Decomposition (𝒢 S)] (res : ∀ S S' : Finset ι, S ⊆ S' → P S →ₗ[MvPolynomial ι A] P S'), (∀ S S' (h : S ⊆ S'), IsGradedMap (𝒢 S) (𝒢 S') (res S S' h)) → (∀ S (h : S ⊆ S) a, res S S h a = a) → (∀ S S' S'' (h : S ⊆ S') (h' : S' ⊆ S'') a, res S' S'' h' (res S S' h a) = res S S'' (h.trans h') a) → (∀ (i : ι) (S : Finset ι), i ∈ S → Function.Bijective fun m : P S => (MvPolynomial.X i : MvPolynomial ι A) • m) → (∀ (S : Finset ι) (j : ι) (a : P S), S.Nonempty → res S (insert j S) (Finset.subset_insert j S) a = 0 → ∃ k : ℕ, (MvPolynomial.X j : MvPolynomial ι A) ^ k • a = 0) → (∀ (S : Finset ι) (j : ι) (b : P (insert j S)), S.Nonempty → ∃ k : ℕ, (MvPolynomial.X j : MvPolynomial ι A) ^ k • b ∈ LinearMap.range (res S (insert j S) (Finset.subset_insert j S))) → (∀ i : ι, ∃ s : Finset (P {i}), ∀ m : P {i}, ∃ k : ℕ, (MvPolynomial.X i : MvPolynomial ι A) ^ k • m ∈ Submodule.span (MvPolynomial ι A) (s : Set (P {i}))) → ∃ t₀ : ℤ, ∀ t, t₀ ≤ t → ∀ c : ∀ i j : ι, P {i, j}, (∀ i j, c i j ∈ 𝒢 {i, j} t) → (∀ i j k, res {i, j} {i, j, k} (sub_triple_ij i j k) (c i j) + res {j, k} {i, j, k} (sub_triple_jk i j k) (c j k) = res {i, k} {i, j, k} (sub_triple_ik i j k) (c i k)) → ∃ b : ∀ i : ι, P {i}, (∀ i, b i ∈ 𝒢 {i} t) ∧ ∀ i j, c i j = res {i} {i, j} (sub_pair_left i j) (b i) - res {j} {i, j} (sub_pair_right i j) (b j) := by
   intro ι _ _ A _ _ P _ _ _ _ 𝒢 _ _ res hgr hid hcomp hbij hinj hsurj hfin

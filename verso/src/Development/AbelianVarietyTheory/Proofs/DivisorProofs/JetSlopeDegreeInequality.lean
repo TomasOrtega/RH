@@ -16,7 +16,7 @@ open scoped ComplexOrder
 namespace GlobalTheory.SlopeFilt
 
 /- English proof (translation)
-Establish `hpd` using `h.posDef σ 1 ![x] (linearIndependent_unique_iff.2 (by simpa using hx))`. Establish `h0` using `hpd.diag_pos (i := 0)`. Simplify using `only [Matrix.diag_apply, Matrix.of_apply, Matrix.cons_val_fin_one] at h0`. Unfold `HermFam.nrm`. Conclude with `Real.sqrt_pos.2 (by simpa using (Complex.lt_def.1 h0).1)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem nrm_pos {K : Type} [Field K] {m : ℕ} (h : HermFam K (Fin m → K)) (σ : K →+* ℂ) {x : Fin m → K}
     (hx : x ≠ 0) : 0 < h.nrm σ x := by
@@ -27,51 +27,47 @@ theorem nrm_pos {K : Type} [Field K] {m : ℕ} (h : HermFam K (Fin m → K)) (σ
   exact Real.sqrt_pos.2 (by simpa using (Complex.lt_def.1 h0).1)
 
 /- English proof (translation)
-Introduce `K _ _ m h L x n ν β hL hx hβ hJS`. Take `⟨r, hE, E, Vf, j, hEfull, hmu, hdeg, hV0, hst⟩` from `hJS`. Establish `hd : (0 : ℝ) < Module.finrank ℚ K` using `by exact_mod_cast Module.finrank_pos`. Establish `fgle : ∀ {p : ℕ} {M N : Submodule (𝓞 K) (Fin p → K)}, N.FG → M ≤ N → M.FG`. Introduce `p M N hN hMN`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `haveI : IsNoetherian (𝓞 K) N := isNoetherian_of_fg_of_noetherian N hN`. Conclude with `isNoetherian_submodule.1 inferInstance M hMN`. Establish `hmemJ : ∀ b : K, b ∈ L.comap ((LinearMap.toSpanSingleton K (Fin m → K) x).restrictScalars (𝓞 K)) ↔ b • x ∈ L` using `fun b => by simp`. Choose the witnesses or unpack the hypotheses as in `⟨a, haL, ha0⟩ : ∃ a : K, a • x ∈ L ∧ a ≠ 0 := by`. Assume the negation of the conclusion as `hno`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `push_neg at hno`. Establish `hsp` using `GlobalTheory.T.lattice_span_intersection_subspace K m L (Submodule.span K {x}) hL.2`. Establish `hbot : Submodule.span K ((L ⊓ (Submodule.span K {x}).restrictScalars (𝓞 K) : Submodule (𝓞 K) (Fin m → K)) : Set (Fin m → K)) = ⊥`. Rewrite using `[Submodule.span_eq_bot]`. Introduce `y hy`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨b, rfl⟩` from `Submodule.mem_span_singleton.1 hy.2`. Rewrite using `[hno b hy.1, zero_smul]`. Rewrite `hbot` using `[hsp]`. Conclude with `hx (by simpa using hbot)`. Establish `hJfg : (L.comap ((LinearMap.toSpanSingleton K (Fin m → K) x).restrictScalars (𝓞 K))).FG`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hinj : Function.Injective ((LinearMap.toSpanSingleton K (Fin m → K) x).restrictScalars (𝓞 K))` using `fun b b' hbb => smul_left_injective K hx (by simpa using hbb)`. Conclude with `Submodule.fg_of_fg_map_injective _ hinj (fgle hL.1 (Submodule.map_comap_le _ _))`. Establish `hnrm : ∀ σ, 0 < h.nrm σ x` using `fun σ => nrm_pos h σ hx`. Establish `step : ∀ i ≤ n, deg hE (E ⊓ (Vf i).restrictScalars (𝓞 K)) - deg hE (E ⊓ (Vf (i + 1)).restrictScalars (𝓞 K)) ≤ -(i : ℝ) * deg h (lineLat L x) + meanLog K (β i)`. Introduce `i hi`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hVs, ⟨v, hvV, hjv⟩, hint, hbd⟩` from `hst i hi`. Choose the witnesses or unpack the hypotheses as in `⟨u, huE, huV, hu⟩ : ∃ u ∈ E, u ∈ Vf i ∧ j i u ≠ 0 := by`. Assume the negation of the conclusion as `hno`. Use `push_neg at hno`. Establish `hsp` using `GlobalTheory.T.lattice_span_intersection_subspace K r E (Vf i) hEfull.2`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hle : Submodule.span K ((E ⊓ (Vf i).restrictScalars (𝓞 K) : Submodule (𝓞 K) (Fin r → K)) : Set (Fin r → K)) ≤ LinearMap.ker (j i)`. Rewrite using `[Submodule.span_le]`. Introduce `w hw`. Conclude with `LinearMap.mem_ker.2 (hno w hw.1 hw.2)`. Rewrite `hle` using `[hsp]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `hjv (LinearMap.mem_ker.1 (hle hvV))`. Establish `hB : ∀ σ, 0 < β i σ * h.nrm σ x ^ i` using `fun σ => mul_pos (hβ i σ hi) (pow_pos (hnrm σ) i)`. Establish `hs` using `GlobalTheory.T.siegel_lemma_small_vector K r hE E (Vf i) (j i) u (fun σ => β i σ * h.nrm σ x ^ i) hEfull.1 hEfull.2 huE huV hu hB (fun σ q w c hw => hbd σ q w c hw)`. Rewrite `hs` using `[← hVs]`. Establish `hIfg : ((E ⊓ (Vf i).restrictScalars (𝓞 K)).map ((j i).restrictScalars (𝓞 K))).FG` using `(fgle hEfull.1 inf_le_left).map _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hcI : j i u ∈ (E ⊓ (Vf i).restrictScalars (𝓞 K)).map ((j i).restrictScalars (𝓞 K))` using `⟨u, ⟨huE, huV⟩, rfl⟩`. Establish `hIint : ∀ y ∈ (E ⊓ (Vf i).restrictScalars (𝓞 K)).map ((j i).restrictScalars (𝓞 K)), ∀ b ∈ L.comap ((LinearMap.toSpanSingleton K (Fin m → K) x).restrictScalars (𝓞 K)), IsIntegral ℤ (b ^ i * y)`. Introduce and unpack `y ⟨w, ⟨hwE, hwV⟩, rfl⟩ b hb`. Conclude with `hint w hwE hwV b ((hmemJ b).1 hb)`. Establish `hI0 : (E ⊓ (Vf i).restrictScalars (𝓞 K)).map ((j i).restrictScalars (𝓞 K)) ≠ ⊥`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `h0; rw [h0] at hcI; exact hu (by simpa using hcI)`. Establish `haJ` using `(hmemJ a).2 haL`. Establish `hJ0 : L.comap ((LinearMap.toSpanSingleton K (Fin m → K) x).restrictScalars (𝓞 K)) ≠ ⊥`. Introduce `h0; rw [h0] at haJ; exact ha0 (by simpa using haJ)`. Establish `e1` using `GlobalTheory.T.log_index_sub_log_norm_eq K _ hIfg (j i u) hcI hu`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2` using `GlobalTheory.T.log_index_sub_log_norm_eq K _ hJfg a haJ ha0`. Establish `n2` using `GlobalTheory.T.one_le_norm_mul_pow_ideal K _ _ hIfg hJfg i hI0 hJ0 hIint`. Establish `hl` using `GlobalTheory.T.degree_line_lattice_eq_log_index K m h L x a hL.1 hx ha0 haL`. Establish `n2' : (1 : ℝ) ≤ (FractionalIdeal.absNorm (⟨_, FractionalIdeal.isFractional_of_fg hIfg⟩ : FractionalIdeal (nonZeroDivisors (𝓞 K)) K) : ℝ) * (FractionalIdeal.absNorm (⟨_, FractionalIdeal.isFractional_of_fg hJfg⟩ : FractionalIdeal (nonZeroDivisors (𝓞 K)) K) : ℝ) ^ i`. Conclude with `n2` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Generalize the expression as in `(FractionalIdeal.absNorm (⟨_, FractionalIdeal.isFractional_of_fg hIfg⟩ : FractionalIdeal (nonZeroDivisors (𝓞 K)) K) : ℝ) = NI at e1 n2'`. Generalize the expression as in `(FractionalIdeal.absNorm (⟨_, FractionalIdeal.isFractional_of_fg hJfg⟩ : FractionalIdeal (nonZeroDivisors (𝓞 K)) K) : ℝ) = NJ at e2 n2'`. Establish `hlog : 0 ≤ Real.log NI + i * Real.log NJ`. Establish `hpos : 0 < NI * NJ ^ i` using `lt_of_lt_of_le one_pos n2'`. Establish `h1 : NI ≠ 0` using `by rintro rfl; simp at hpos`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions.
 
-Establish `h2 : NJ ^ i ≠ 0` using `by intro h0; rw [h0] at hpos; simp at hpos`. Use `Real.log_nonneg n2'` as an intermediate fact. Rewrite `this` using `[Real.log_mul h1 h2, Real.log_pow]`. Then use the resulting hypothesis. Establish `hsumB : ∑ σ : K →+* ℂ, Real.log (β i σ * h.nrm σ x ^ i) = ∑ σ : K →+* ℂ, Real.log (β i σ) + i * ∑ σ : K →+* ℂ, Real.log (h.nrm σ x)`. Rewrite using `[Finset.mul_sum, ← Finset.sum_add_distrib]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[Real.log_mul (hβ i σ hi).ne' (pow_ne_zero _ (hnrm σ).ne'), Real.log_pow]`. Rewrite `hs` using `[hsumB, e1]`. Rewrite `hl` using `[e2]`. Unfold `meanLog`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hl' : (i : ℝ) * ((Module.finrank ℚ K : ℝ) * deg h (lineLat L x)) + i * ∑ σ : K →+* ℂ, Real.log (h.nrm σ x) = -(i * Real.log NJ)`. Rewrite using `[← mul_add, hl]`. Expand and normalize the polynomial expressions, which then agree. Establish `key : (-Real.log NI + (∑ σ : K →+* ℂ, Real.log (β i σ) + i * ∑ σ : K →+* ℂ, Real.log (h.nrm σ x))) / (Module.finrank ℚ K : ℝ) ≤ -(i : ℝ) * deg h (lineLat L x) + (∑ σ : K →+* ℂ, Real.log (β i σ)) / (Module.finrank ℚ K : ℝ)`. Rewrite using `[div_le_iff₀ hd, add_mul, div_mul_cancel₀ _ hd.ne']`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately.
 
-Establish `: -(i : ℝ) * deg h (lineLat L x) * (Module.finrank ℚ K : ℝ) = -((i : ℝ) * ((Module.finrank ℚ K : ℝ) * deg h (lineLat L x)))` using `by ring`. Rewrite using `[this]`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `hs.trans key`. Establish `hrank : ∀ i ≤ n + 1, Module.finrank K (Vf i) + i = r`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `i`. Proceed by induction on `i with`. Consider the case `zero => intro _`. Rewrite using `[hV0]`. Simplify using the standard rewrite rules.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Consider the case `succ k ih`. Introduce `hk`. Take `⟨hVs, ⟨v, hvV, hjv⟩, -, -⟩` from `hst k (by omega)`. Establish `h1` using `GlobalTheory.T.finrank_inf_ker_add_one_of_exists_ne_zero K r (Vf k) (j k) ⟨v, hvV, hjv⟩`. Rewrite `h1` using `[← hVs]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `ih (by omega)`. Use linear arithmetic over natural numbers and integers. Establish `hlast : deg hE (E ⊓ (Vf (n + 1)).restrictScalars (𝓞 K)) ≤ ((r : ℝ) - (n + 1)) * ν`. Establish `h1` using `hmu (E ⊓ (Vf (n + 1)).restrictScalars (𝓞 K)) inf_le_left`. Establish `h2 : latRank K (E ⊓ (Vf (n + 1)).restrictScalars (𝓞 K)) = Module.finrank K (Vf (n + 1))`.
+Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `latRank`. Rewrite using `[GlobalTheory.T.lattice_span_intersection_subspace K r E (Vf (n + 1)) hEfull.2]`. Establish `h3` using `hrank (n + 1) le_rfl`. Rewrite `h1` using `[h2]`. Establish `h4 : (Module.finrank K (Vf (n + 1)) : ℝ) = r - (n + 1)`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h5 : ((Module.finrank K (Vf (n + 1)) + (n + 1) : ℕ) : ℝ) = r` using `by rw [h3]`. Move the coercions through the operations in `at h5`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite `h1` using `[h4]`. Then use the resulting hypothesis. Establish `htel` using `Finset.sum_range_sub' (fun i => deg hE (E ⊓ (Vf i).restrictScalars (𝓞 K))) (n + 1)`.
-
-Establish `hsum_le : ∑ i ∈ Finset.range (n + 1), (deg hE (E ⊓ (Vf i).restrictScalars (𝓞 K)) - deg hE (E ⊓ (Vf (i + 1)).restrictScalars (𝓞 K))) ≤ ∑ i ∈ Finset.range (n + 1), (-(i : ℝ) * deg h (lineLat L x) + meanLog K (β i))` using `Finset.sum_le_sum fun i hi => step i (by simp at hi; omega)`. Rewrite `hsum_le` using `[htel]`. Simplify using `only [hV0, Submodule.restrictScalars_top, inf_top_eq] at hsum_le`. Rewrite `hsum_le` using `[hdeg]`. Establish `e : ((n : ℝ) + 1) * ν = r * ν - ((r : ℝ) - (n + 1)) * ν` using `by ring`.
-
-Rewrite using `[e]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem slope_filt : ∀ (K : Type) [Field K] [NumberField K] (m : ℕ) (h : HermFam K (Fin m → K))
     (L : Submodule (𝓞 K) (Fin m → K)) (x : Fin m → K) (n : ℕ) (ν : ℝ) (β : ℕ → (K →+* ℂ) → ℝ),

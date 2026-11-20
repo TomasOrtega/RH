@@ -8,13 +8,13 @@ open scoped ComplexOrder
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hR0 : 0 < R` using `by linarith`. Establish `hr0 : 0 ≤ r` using `by linarith`. Establish `hκ0 : 0 ≤ κ` using `by linarith`. Rewrite `hrR` using `[Real.sqrt_eq_rpow]`. Establish `h1 : r / R ≤ R ^ (-(1 / 2) : ℝ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[div_le_iff₀ hR0]`. Establish `: R ^ (-(1 / 2) : ℝ) * R = R ^ (1 / 2 : ℝ)`. Rewrite using `[← Real.rpow_add_one hR0.ne']`. Evaluate the numerical expressions. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hrR`. Establish `h2 : (r / R) ^ κ ≤ R ^ (-(1 / 2) * κ)`. Rewrite using `[Real.rpow_mul hR0.le]`. Conclude with `Real.rpow_le_rpow (div_nonneg hr0 hR0.le) h1 hκ0`. Establish `h3 : r ^ c ≤ R ^ (1 / 2 * c)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[Real.rpow_mul hR0.le]`. Conclude with `Real.rpow_le_rpow hr0 hrR hc`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem interp_weight_mul_rpow_le_inv (t r R κ c : ℝ) (hr : 1 ≤ r) (hrR : r ≤ Real.sqrt R)
     (hR : 1 ≤ R) (hc : 0 ≤ c) (hκ : 2 * c + 2 < κ) (ht : t ≤ (r / R) ^ κ) :
@@ -41,13 +41,13 @@ theorem interp_weight_mul_rpow_le_inv (t r R κ c : ℝ) (hr : 1 ≤ r) (hrR : r
     _ = R⁻¹ := Real.rpow_neg_one R
 
 /- English proof (translation)
-Introduce `n h h₀ s r R κ c hh hh₀ hr hrR hR hc hκ hs ht hle`. Establish `key` using `interp_weight_mul_rpow_le_inv (1 - s) r R κ c hr hrR hR hc hκ ht`. Establish `h1 : 1 ≤ r ^ c` using `Real.one_le_rpow hr hc`. Establish `key2 : 1 - s ≤ R⁻¹` using `le_trans (le_mul_of_one_le_right hs h1) key`. Establish `hs' : (0 : ℂ) ≤ ((1 - s : ℝ) : ℂ)` using `Complex.zero_le_real.mpr hs`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Establish `e : (((1 + R⁻¹ : ℝ)) : ℂ) • h - (((s : ℝ) : ℂ) • h + (((1 - s : ℝ)) : ℂ) • h₀) = (((1 - s : ℝ)) : ℂ) • (((r ^ c : ℝ) : ℂ) • h - h₀) + ((R⁻¹ + (1 - s) - (1 - s) * r ^ c : ℝ) : ℂ) • h`. Generalize the expression as in `r ^ c = a`. Generalize the expression as in `R⁻¹ = b`. Use `push_cast`.
+Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Move the embeddings inside the algebraic operations.
 
-Use `module`. Rewrite using `[e]`. Conclude with `(hle.smul hs').add (hh.posSemidef.smul (Complex.zero_le_real.mpr (by linarith)))`. Establish `e : (((s : ℝ) : ℂ) • h + (((1 - s : ℝ)) : ℂ) • h₀) - (((1 - R⁻¹ : ℝ)) : ℂ) • h = (((1 - s : ℝ)) : ℂ) • h₀ + ((R⁻¹ - (1 - s) : ℝ) : ℂ) • h`. Generalize the expression as in `R⁻¹ = b`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Use `module`. Rewrite using `[e]`. Conclude with `(hh₀.smul hs').add (hh.posSemidef.smul (Complex.zero_le_real.mpr (by linarith)))`.
+A detailed English derivation is pending.
 -/
 theorem interp_metric_close : ∀ (n : ℕ) (h h₀ : Matrix (Fin n) (Fin n) ℂ) (s r R κ c : ℝ), h.PosDef → h₀.PosSemidef → 1 ≤ r → r ≤ Real.sqrt R → 1 ≤ R → 0 ≤ c → 2 * c + 2 < κ → 0 ≤ 1 - s → 1 - s ≤ (r / R) ^ κ → (((r ^ c : ℝ) : ℂ) • h - h₀).PosSemidef → ((((1 + R⁻¹ : ℝ)) : ℂ) • h - (((s : ℝ) : ℂ) • h + (((1 - s : ℝ)) : ℂ) • h₀)).PosSemidef ∧ ((((s : ℝ) : ℂ) • h + (((1 - s : ℝ)) : ℂ) • h₀) - (((1 - R⁻¹ : ℝ)) : ℂ) • h).PosSemidef := by
   intro n h h₀ s r R κ c hh hh₀ hr hrR hR hc hκ hs ht hle

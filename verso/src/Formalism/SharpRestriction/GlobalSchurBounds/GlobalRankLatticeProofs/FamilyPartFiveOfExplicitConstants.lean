@@ -14,31 +14,29 @@ section
 open Formalism.FrobeniusOrbits
 
 /- English proof (translation)
-Establish `hx0 : 0 < L.sc.x` using `by linarith`. Establish `hQD` using `S.2.2.2.2.2.2.1`. Establish `hT` using `S.2.2.2.2.1`. Establish `h5` using `S.2.2.2.2.2.1`. Simplify using `only [SizeCond, szCond] at h5`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [SizeQD] at hQD`. Take `⟨hq1, -, -, hd1, -, -, hr1, hr2⟩` from `hQD`. Establish `hq : (1 : ℝ) ≤ D.host.q`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `h6 : Real.log (D.host.q : ℝ) ≤ 0` using `Real.log_nonpos (Nat.cast_nonneg _) hc.le`. Establish `h7 : 0 < L.sc.x ^ (L.sc.ez / 6)` using `Real.rpow_pos_of_pos hx0 _`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hd : (1 : ℝ) ≤ D.host.d`. Assume the negation of the conclusion as `hc`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Use `push_neg at hc`. Establish `h6 : Real.log (D.host.d : ℝ) ≤ 0` using `Real.log_nonpos (Nat.cast_nonneg _) hc.le`. Establish `h7 : 0 < L.sc.x ^ (L.sc.ez / 5 - L.sc.ez / 100)` using `Real.rpow_pos_of_pos hx0 _`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hQS : (1 : ℝ) ≤ D.host.QS`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities.
 
-Break down `Nat.eq_zero_or_pos D.host.QS with h0 | h0` into its components or cases. Rewrite `hr2` using `[h0]`. Evaluate the numerical expressions using `at hr2`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `h0` after adjusting the coercions.
+Evaluate the numerical expressions. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `hqd : (1 : ℝ) ≤ (D.host.q : ℝ) * D.host.d` using `by nlinarith`. Establish `hsq : Real.sqrt ((D.host.q : ℝ) * D.host.d) ≤ (D.host.q : ℝ) * D.host.d`. Use polynomial arithmetic with `[Real.sq_sqrt (by linarith : (0 : ℝ) ≤ (D.host.q : ℝ) * D.host.d), Real.sqrt_nonneg ((D.host.q : ℝ) * D.host.d), sq_nonneg (Real.sqrt ((D.host.q : ℝ) * D.host.d) - 1)]`. Establish `hc1 : (1 : ℝ) ≤ (D.host.QS : ℝ) * D.host.q * D.host.d` using `by nlinarith`. Establish `hc36 : (D.host.QS : ℝ) * D.host.q * D.host.d ≤ ((D.host.QS : ℝ) * D.host.q * D.host.d) ^ 36` using `le_self_pow₀ hc1 (by norm_num)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL : 0 < L.sc.L` using `by show 0 < L.sc.x ^ L.sc.eps`. Conclude with `Real.rpow_pos_of_pos hx0 _`. Establish `hb : 1 ≤ L.sc.b`. Establish `h8` using `Real.add_one_le_exp L.sc.L`. Simplify using `only [Formalism.BasicNotions.Scale.b]`.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hsb : Real.sqrt L.sc.b ≤ L.sc.b`. Use polynomial arithmetic with `[Real.sq_sqrt (by linarith : (0 : ℝ) ≤ L.sc.b), Real.sqrt_nonneg L.sc.b, sq_nonneg (Real.sqrt L.sc.b - 1)]`. Establish `htk : (D.R.k : ℝ) + 6 ≤ D.R.t`. Establish `h9` using `D.R.rank_add_five_le`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `h10` using `D.R.two_le_m`. Conclude with `(by omega : D.R.k + 6 ≤ D.R.t)` after adjusting the coercions. Establish `ht1 : (1 : ℝ) ≤ D.R.t`. Establish `: (0 : ℝ) ≤ D.R.k` using `Nat.cast_nonneg _`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `ht2 : (D.R.t : ℝ) ^ 2 ≤ (D.R.t : ℝ) ^ 150` using `pow_le_pow_right₀ ht1 (by norm_num)`. Establish `ht150 : (1 : ℝ) ≤ (D.R.t : ℝ) ^ 150` using `one_le_pow₀ ht1`. Establish `hc36' : (1 : ℝ) ≤ ((D.host.QS : ℝ) * D.host.q * D.host.d) ^ 36` using `le_trans hc1 hc36`. Establish `hv : 2 * D.host.v = D.host.rdE`. Simplify using `only [Formalism.BasicNotions.Host.v]`.
+Expand and normalize the polynomial expressions, which then agree. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Prove the components needed by the constructor for the conclusion. Rewrite using `[hv]`. Establish `h11 : D.host.rdE ≤ (D.host.QS : ℝ) * D.host.q * D.host.d`. Establish `h12 : (D.host.QS : ℝ) / 2 * Real.sqrt ((D.host.q : ℝ) * D.host.d) ≤ (D.host.QS : ℝ) * ((D.host.q : ℝ) * D.host.d)`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Use the polynomial consequences of the given equalities and inequalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Establish `: (0 : ℝ) ≤ D.host.QS` using `Nat.cast_nonneg _`. Use polynomial arithmetic with `[Real.sqrt_nonneg ((D.host.q : ℝ) * D.host.d)]`. Use the polynomial consequences of the given equalities and inequalities. Use the polynomial consequences of the given equalities and inequalities. Establish `h13 : 2 * (D.R.k : ℝ) ≤ (D.R.t : ℝ) ^ 2` using `by nlinarith`.
-
-Use the polynomial consequences of the given equalities and inequalities.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem ra_cond {D : D7} (L : SizeData₂ D) (S : SizesAt L) (hx : 3 ≤ L.sc.x) :
     2 * D.host.v ≤ L.sc.b ∧ 2 * (D.R.k : ℝ) ≤ L.sc.b := by
@@ -112,11 +110,11 @@ theorem ra_cond {D : D7} (L : SizeData₂ D) (S : SizesAt L) (hx : 3 ≤ L.sc.x)
     nlinarith
 
 /- English proof (translation)
-Establish `hx1 : 1 ≤ L.sc.x` using `L.sc.one_lt_alt.le`. Establish `hx0 : 0 < L.sc.x` using `by linarith [L.sc.one_lt_alt]`. Establish `he` using `L.sc.eps_pos`. Establish `he2` using `L.sc.eps_lt`. Establish `h1` using `S.2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [SizeM, szTh] at h1`. Establish `hd : L.sc.delta1 ≤ 1`. Simplify using `only [Formalism.BasicNotions.Scale.delta1]`. Conclude with `Real.rpow_le_one_of_one_le_of_nonpos hx1 (by linarith)`. Establish `hs : Real.sqrt (L.sc.x * L.sc.delta1) ≤ Real.sqrt L.sc.x` using `Real.sqrt_le_sqrt (mul_le_of_le_one_right hx0.le hd)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp : L.sc.x ^ (L.sc.eps / 100) ≤ Real.sqrt L.sc.x`. Rewrite using `[Real.sqrt_eq_rpow]`. Conclude with `Real.rpow_le_rpow_of_exponent_le hx1 (by linarith)`. Establish `hsn` using `Real.sqrt_nonneg (L.sc.x * L.sc.delta1)`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem rank_m_le_x {D : D7} (L : SizeData₂ D) (S : SizesAt L) : (D.R.m : ℝ) ≤ L.sc.x := by
 
@@ -140,13 +138,13 @@ theorem rank_m_le_x {D : D7} (L : SizeData₂ D) (S : SizesAt L) : (D.R.m : ℝ)
     _ = L.sc.x := Real.mul_self_sqrt hx0.le
 
 /- English proof (translation)
-Establish `hx1 : 1 ≤ L.sc.x` using `L.sc.one_lt_alt.le`. Establish `hx0 : 0 < L.sc.x` using `by linarith [L.sc.one_lt_alt]`. Establish `he` using `L.sc.eps_pos`. Establish `he2` using `L.sc.eps_lt`. Establish `h1` using `S.2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [SizeM, szTh] at h1`. Establish `hkey : L.sc.x ^ (-(L.sc.eps / 100)) * Real.sqrt (L.sc.x * L.sc.delta1) = L.sc.x ^ (-(L.sc.eps / 100) + (1 + -(L.sc.eps / 8)) * (1 / 2))`. Simplify using `only [Formalism.BasicNotions.Scale.delta1]`. Rewrite using `[Real.sqrt_eq_rpow, show L.sc.x * L.sc.x ^ (-(L.sc.eps / 8)) = L.sc.x ^ (1 + -(L.sc.eps / 8)) by`. Rewrite using `[Real.rpow_add hx0, Real.rpow_one], ← Real.rpow_mul hx0.le, ← Real.rpow_add hx0]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hge : L.sc.x ^ ((1 : ℝ) / 4) ≤ L.sc.x ^ (-(L.sc.eps / 100) + (1 + -(L.sc.eps / 8)) * (1 / 2))` using `Real.rpow_le_rpow_of_exponent_le hx1 (by linarith)`. Establish `h44 : (44 : ℝ) ≤ L.sc.x ^ ((1 : ℝ) / 4)`. Establish `h2` using `Real.rpow_le_rpow (by norm_num : (0 : ℝ) ≤ 44 ^ 4) hx (by norm_num : (0 : ℝ) ≤ 1 / 4)`. Rewrite `h2` using `[← Real.rpow_natCast, ← Real.rpow_mul (by norm_num : (0 : ℝ) ≤ 44)]`. Evaluate the numerical expressions using `at h2 ⊢`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `h3 : (44 : ℝ) ≤ D.R.m` using `by linarith [h1.1]`. Conclude with `h3` after adjusting the coercions.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ra_44 {D : D7} (L : SizeData₂ D) (S : SizesAt L) (hx : (44 : ℝ) ^ 4 ≤ L.sc.x) : 44 ≤ D.R.m := by
 
@@ -172,31 +170,29 @@ theorem ra_44 {D : D7} (L : SizeData₂ D) (S : SizesAt L) (hx : (44 : ℝ) ^ 4 
   exact_mod_cast h3
 
 /- English proof (translation)
-Establish `hx1 : 1 ≤ L.sc.x` using `L.sc.one_lt_alt.le`. Establish `hx0 : 0 < L.sc.x` using `by linarith [L.sc.one_lt_alt]`. Establish `he` using `L.sc.eps_pos`. Establish `he2` using `L.sc.eps_lt`. Establish `hx100 : (100 : ℝ) ≤ L.sc.x` using `by norm_num at hx; linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb0 : 0 < L.sc.b` using `by simp only [Formalism.BasicNotions.Scale.b]; exact Real.exp_pos _`. Establish `hb'0 : 0 ≤ L.sc.b'`. Simplify using `only [Formalism.BasicNotions.Scale.b', Formalism.BasicNotions.Scale.a, Formalism.BasicNotions.Scale.X']`. Check the signs of the components of the expression. Establish `h1` using `S.2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Check the signs of the components of the expression. Establish an intermediate fact.
 
-Simplify using `only [SizeM, szTh] at h1`. Establish `hDel` using `S.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.1`. Simplify using `only [SizeDel, szTh] at hDel`. Take `⟨hD1, -, hD3, hD4, -⟩` from `hDel`. Establish `hk5 : (5 : ℝ) ≤ D.R.k`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h2` using `D.R.m_add_three_le_k`. Establish `h3` using `D.R.two_le_m`. Conclude with `(by omega : 5 ≤ D.R.k)` after adjusting the coercions. Establish `hn1 : (1 : ℝ) ≤ D.R.n`. Establish `h4 : 1 ≤ D.R.n` using `by show 1 ≤ D.R.ord`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `D.R.two_le_m`. Establish `h3` using `D.R.m_le_f`. Use linear arithmetic over natural numbers and integers. Conclude with `h4` after adjusting the coercions. Establish `hScp` using `L.Sc_pos`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hw'' : L.sc.w'' D.R.n ≤ L.sc.b'`. Simplify using `only [Formalism.BasicNotions.Scale.w'']`. Conclude with `div_le_self hb'0 (by nlinarith)`. Establish `hkey : L.sc.x ^ (-(L.sc.eps / 100)) * Real.sqrt (L.sc.x * L.sc.delta1) = L.sc.x ^ (-(L.sc.eps / 100) + (1 + -(L.sc.eps / 8)) * (1 / 2))`. Simplify using `only [Formalism.BasicNotions.Scale.delta1]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Real.sqrt_eq_rpow, show L.sc.x * L.sc.x ^ (-(L.sc.eps / 8)) = L.sc.x ^ (1 + -(L.sc.eps / 8)) by`. Rewrite using `[Real.rpow_add hx0, Real.rpow_one], ← Real.rpow_mul hx0.le, ← Real.rpow_add hx0]`. Establish `hge : L.sc.x ^ ((1 : ℝ) / 4) ≤ L.sc.x ^ (-(L.sc.eps / 100) + (1 + -(L.sc.eps / 8)) * (1 / 2))` using `Real.rpow_le_rpow_of_exponent_le hx1 (by linarith)`. Establish `hm4 : L.sc.x ^ ((1 : ℝ) / 4) ≤ (D.R.m : ℝ)` using `by linarith [h1.1]`. Establish `hq0 : 0 < L.sc.x ^ ((1 : ℝ) / 4)` using `Real.rpow_pos_of_pos hx0 _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm0 : (0 : ℝ) < D.R.m` using `lt_of_lt_of_le hq0 hm4`. Establish `hN1 : (1 : ℝ) ≤ (D.R.N D.R.m : ℝ)`. Establish `h5 : 1 ≤ D.R.N D.R.m`. Simplify using `only [Formalism.BasicNotions.Ranks.N]`. Establish `h2` using `D.R.m_add_three_le_k`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Conclude with `h5` after adjusting the coercions. Establish `hm10 : (D.R.m : ℝ) ^ 10 ≤ (D.s.Del : ℝ)`. Establish `h6 : (0 : ℝ) ≤ (D.R.m : ℝ) ^ 10` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlogm : Real.log ((D.R.m : ℝ) ^ 10) ≤ Real.log (D.s.Del : ℝ)` using `Real.log_le_log (by positivity) hm10`. Rewrite `hlogm` using `[Real.log_pow]`. Establish `hlm : 1 / 4 * Real.log L.sc.x ≤ Real.log (D.R.m : ℝ)`. Establish `h7` using `Real.log_le_log hq0 hm4`. Rewrite `h7` using `[Real.log_rpow hx0]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `hex : L.sc.x ^ (L.sc.eps / 4) ≤ L.sc.x ^ (L.sc.eps / 3)` using `Real.rpow_le_rpow_of_exponent_le hx1 (by linarith)`. Establish `hlx : Real.log L.sc.x ≤ L.sc.x ^ (L.sc.eps / 3)`. Move the coercions through the operations in `at hlogm`. Use polynomial arithmetic with `[Real.log_nonneg hx1]`. Establish `hxe : L.sc.x ≤ Real.exp (L.sc.x ^ (L.sc.eps / 3))`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Use the polynomial consequences of the given equalities and inequalities. Simplify using the standard rewrite rules.
 
-Combine the equalities or inequalities in the displayed calculation. Use `⟨hScp.le, ?_, ?_, ?_⟩` and prove the remaining obligations. Use the polynomial consequences of the given equalities and inequalities. Simplify using `only [Formalism.BasicNotions.Scale.b', Formalism.BasicNotions.Scale.a, Formalism.BasicNotions.Scale.X']`. Rewrite using `[div_le_iff₀ (Real.exp_pos _)]`.
-
-Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right hxe hb0.le]`. Simplify using `only [Formalism.BasicNotions.Scale.a]`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right hx100 hb0.le]`.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Simplify using the standard rewrite rules. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem ra_Sc {D : D7} (L : SizeData₂ D) (P : ParameterChoice' D L) (S : SizesAt L) (hx : (44 : ℝ) ^ 4 ≤ L.sc.x) :
     0 ≤ L.Sc ∧ L.Sc ≤ L.sc.b' ∧ L.sc.b' ≤ L.sc.b ∧ 100 * L.sc.b ≤ L.sc.a := by
@@ -273,27 +269,27 @@ theorem ra_Sc {D : D7} (L : SizeData₂ D) (P : ParameterChoice' D L) (S : Sizes
     nlinarith [mul_le_mul_of_nonneg_right hx100 hb0.le]
 
 /- English proof (translation)
-Establish `hx3 : 3 ≤ L.sc.x` using `le_trans (by norm_num) hx`. Take `⟨hk3, hm2, hkt, hkr, hn1, hf, hmk⟩` from `db_rk D`. Take `⟨hL1, hLx, hb2, hkb, hvb, hlx⟩` from `db_basic L S hx3`. Take `⟨h2v, h2k⟩` from `ra_cond L S hx3`. Take `⟨hS0, hSb', hb'b, ha100⟩` from `ra_Sc L P S hx`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨c8, c9, c10, c12⟩` from `db_cloud L P`. Establish `hpiv` using `db_pi_le_v D`. Establish `hkN` using `D.R.m_add_three_le_k`. Establish `hk0 : 0 < D.R.k` using `by omega`. Establish `hx1 : 1 ≤ L.sc.x` using `by linarith`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbexp : L.sc.b = Real.exp L.sc.L` using `rfl`. Establish `hSc` using `L.Sc_eq`. Establish `top : ∀ (u : D.what₂.Word) ρ, StandardLattice.IsTop D ρ → ∃ t : D.host.TT, StandardLattice.uN D u ρ 0 = L.aT t + ((D.R.k : ℝ) - 1) / 2 ∧ StandardLattice.uN D u ρ (D.R.k - 1) = -(L.bT t : ℝ) - ((D.R.k : ℝ) - 1) / 2`. Introduce `u ρ htop`. Establish `htop' : (D.eTau ρ : D.R.GG) ∈ D.host.topPlaces` using `htop`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Unfold `Host.topPlaces at htop'`. Take `⟨t, ht, heq⟩` from `Finset.mem_image.mp htop'`. Take `⟨a1, a2⟩` from `L.top_u ρ ⟨t, ht⟩ hk0 heq.symm`. Use `⟨⟨t, ht⟩, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[db_uN u ρ 0 hk0, D.hcW_first u ρ hk0, a1]`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[db_uN u ρ (D.R.k - 1) (by omega), D.hcW_last u ρ hk0, a2]`. Use `⟨?_, hg, ra_44 L S hx, by omega, rank_m_le_x L S, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `h1` using `Real.log_le_log (by linarith [Real.pi_pos]) h2v`. Rewrite `h1` using `[hbexp, Real.log_exp]`. Then use the resulting hypothesis. Establish `h1` using `Real.log_le_log (by linarith) h2k`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite `h1` using `[hbexp, Real.log_exp]`. Then use the resulting hypothesis. Introduce `u ρ`. Distinguish the cases in `htop : StandardLattice.IsTop D ρ`. Take `⟨t, e1, e2⟩` from `top u ρ htop`. Rewrite using `[e1, e2]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨w1, w2⟩` from `L.aT_win t`. Establish `ha0 : 0 < L.sc.a` using `by linarith`. Establish `hxa : 1 ≤ L.sc.x ^ (Scale.A / 2)` using `Real.one_le_rpow hx1 (by unfold Scale.A; norm_num)`. Establish `hden : 3 ≤ (D.R.k : ℝ) * L.sc.x ^ (Scale.A / 2)` using `by nlinarith`. Establish `h3 : L.sc.a / ((D.R.k : ℝ) * L.sc.x ^ (Scale.A / 2)) ≤ L.sc.a / 3` using `div_le_div_of_nonneg_left ha0.le (by norm_num) hden`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbT` using `db_bT L S hx3 t`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨d1, d2, d3⟩` from `c12 u ρ htop`. Establish `v0` using `(c8 ρ 0 (by omega)).2`. Establish `vk` using `(c8 ρ (D.R.k - 2) (by omega)).1`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[d3]`. Rewrite `v0` using `[← hSc]`. Establish `d2' : StandardLattice.uN D u ρ 0 - StandardLattice.vN D ρ 0 ≤ 2 * L.Sc` using `by rw [hSc]; linarith`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `u ρ htop`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨t, e1, e2⟩` from `top u ρ htop`. Rewrite using `[e1, e2, ← hSc]`. Take `⟨w1, w2⟩` from `L.aT_win t`. Establish `hb` using `L.bT_ge t`. Establish `v0` using `(c8 ρ 0 (by omega)).2`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `v0` using `[← hSc]`. Apply the tactic sequence `constructor <;> linarith`.
+Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem rowsA_of' {D : D7} (L : SizeData₂ D) (P : ParameterChoice' D L) (S : SizesAt L) (hx : (44 : ℝ) ^ 4 ≤ L.sc.x) (CY : ℝ)
     (hg : ∀ i : Fin 2, Real.log (D.host.g i : ℝ) ≤ CY * L.sc.L) :
@@ -356,17 +352,15 @@ theorem rowsA_of' {D : D7} (L : SizeData₂ D) (P : ParameterChoice' D L) (S : S
     constructor <;> linarith
 
 /- English proof (translation)
-Establish `hx3 : (3 : ℝ) ≤ L.sc.x` using `by norm_num at hx; linarith`. Take `⟨Y, hY1, -, hY3, hY4⟩` from `P.g_Y`. Establish `hx0 : 0 < L.sc.x` using `by linarith`. Establish `hx1 : 1 ≤ L.sc.x` using `by linarith`. Establish `hL : 0 < L.sc.L` using `by show 0 < L.sc.x ^ L.sc.eps`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Real.rpow_pos_of_pos hx0 _`. Establish `hL1 : 1 ≤ L.sc.L` using `by show 1 ≤ L.sc.x ^ L.sc.eps`. Conclude with `Real.one_le_rpow hx1 L.sc.eps_pos.le`. Establish `hb : 1 ≤ L.sc.b`. Establish `h8` using `Real.add_one_le_exp L.sc.L`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Simplify using `only [Formalism.BasicNotions.Scale.b]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hk : (1 : ℝ) ≤ D.R.k`. Establish `h2` using `D.R.m_add_three_le_k`. Conclude with `(by omega : 1 ≤ D.R.k)` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hY0 : 0 < Y`. Establish `h9 : (1 : ℝ) ≤ ((D.R.k : ℝ) * L.sc.b) ^ 8` using `one_le_pow₀ (by nlinarith)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hl2` using `Real.log_two_lt_d9`. Establish `hg : ∀ i : Fin 2, Real.log (D.host.g i : ℝ) ≤ max 5 (P.CYL + 1) * L.sc.L`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `i`. Take `⟨hg1, hg2⟩` from `hY4 i`. Establish `hg0 : (0 : ℝ) < D.host.g i` using `by linarith`. Establish `h1 : Real.log (D.host.g i : ℝ) ≤ Real.log (2 * Y)` using `Real.log_le_log hg0 hg2`. Rewrite `h1` using `[Real.log_mul (by norm_num) hY0.ne']`.
-
-Establish `h2 : (P.CYL + 1) * L.sc.L ≤ max 5 (P.CYL + 1) * L.sc.L` using `mul_le_mul_of_nonneg_right (le_max_right _ _) hL.le`. Use the polynomial consequences of the given equalities and inequalities. Conclude with `rowsA_of' L P S hx (max 5 (P.CYL + 1)) hg`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem rowsA_of {D : D7} (L : SizeData₂ D) (P : ParameterChoice' D L) (S : SizesAt L) (hx : (44 : ℝ) ^ 4 ≤ L.sc.x) :
     StandardLattice.RowsA D L.sc (max 5 (P.CYL + 1)) ((D.s.Del : ℚ) : ℝ) := by
@@ -403,16 +397,16 @@ theorem rowsA_of {D : D7} (L : SizeData₂ D) (P : ParameterChoice' D L) (S : Si
   exact rowsA_of' L P S hx (max 5 (P.CYL + 1)) hg
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨dataB_of L P S (le_trans (by norm_num) hx), rowsA_of L P S hx⟩`.
+Supply the required witnesses or components.
 -/
 theorem dataA_of {D : D7} (L : SizeData₂ D) (P : ParameterChoice' D L) (S : SizesAt L) (hx : (44 : ℝ) ^ 4 ≤ L.sc.x) :
     StandardLattice.DataA D L.sc (max 5 (P.CYL + 1)) (max 5 (P.CYL + 1)) ((D.s.Del : ℚ) : ℝ) (fun j ρ => wj D (j + 1) ρ) :=
   ⟨dataB_of L P S (le_trans (by norm_num) hx), rowsA_of L P S hx⟩
 
 /- English proof (translation)
-Establish `hLx` using `Fm.L_x x i hx`. Establish `h3' : (44 : ℝ) ^ 4 ≤ (Fm.L x i).sc.x` using `by rw [hLx]; exact h3`. Establish `hC : (Fm.params x hx i).CYL = Fm.CYL`. Simplify using `only [Formalism.MainNotions.FamP.CYL]`. Rewrite using `[← Fm.params_K x hx i]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `h4` using `dataA_of (Fm.L x i) (Fm.params x hx i) (Fm.sizes x hx i) h3'`. Rewrite `h4` using `[hC]`. Conclude with `h4`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dataA_fam {eps : ℝ} (Fm : FamP eps) (x : ℝ) (h3 : (44 : ℝ) ^ 4 ≤ x) (hx : Fm.x1 < x) (i : Fm.Ix x) :
     StandardLattice.DataA (Fm.D x i) (Fm.L x i).sc (max 5 (Fm.CYL + 1)) (max 5 (Fm.CYL + 1)) (((Fm.D x i).s.Del : ℚ) : ℝ)
@@ -429,9 +423,9 @@ theorem dataA_fam {eps : ℝ} (Fm : FamP eps) (x : ℝ) (h3 : (44 : ℝ) ^ 4 ≤
   exact h4
 
 /- English proof (translation)
-Take `⟨-, -, -, -, -, h6, -, -, h9, -⟩` from `hB`. Take `⟨c8, c9, c10, c12⟩` from `db_cloud L P`. Establish `hk` using `D.R.k_ge`. Take `⟨ρ⟩ : Nonempty D.what₂.Tau` from `⟨D.eTau.symm (Classical.arbitrary _)⟩`. Establish `e1` using `h9 ρ 0 (by omega)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e2` using `c9 ρ 0 (by omega)`. Establish `hΔ : Δ = ((D.s.Del : ℚ) : ℝ)` using `by linarith`. Rewrite using `[hΔ]`. Conclude with `rowsA_of' L P S hx C0 fun i => (h6 i).2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rowsA_of_dataB {D : D7} (L : SizeData₂ D) (P : ParameterChoice' D L) (S : SizesAt L) (hx : (44 : ℝ) ^ 4 ≤ L.sc.x)
     (C0 Δ : ℝ) (w : ℕ → D.what₂.Tau → ℝ) (hB : StandardLattice.DataB D L.sc C0 Δ w) : StandardLattice.RowsA D L.sc C0 Δ := by
@@ -446,7 +440,7 @@ theorem rowsA_of_dataB {D : D7} (L : SizeData₂ D) (P : ParameterChoice' D L) (
   exact rowsA_of' L P S hx C0 fun i => (h6 i).2
 
 /- English proof (translation)
-Establish `hLx` using `Fm.L_x x i hx`. Establish `h3' : (44 : ℝ) ^ 4 ≤ (Fm.L x i).sc.x` using `by rw [hLx]; exact h3`. Conclude with `rowsA_of_dataB (Fm.L x i) (Fm.params x hx i) (Fm.sizes x hx i) h3' C0 Δ w hB`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem rowsA_of_dataB_fam {eps : ℝ} (Fm : FamP eps) (x : ℝ) (h3 : (44 : ℝ) ^ 4 ≤ x) (hx : Fm.x1 < x) (i : Fm.Ix x)
     (C0 Δ : ℝ) (w : ℕ → (Fm.D x i).what₂.Tau → ℝ) (hB : StandardLattice.DataB (Fm.D x i) (Fm.L x i).sc C0 Δ w) :
@@ -456,15 +450,15 @@ theorem rowsA_of_dataB_fam {eps : ℝ} (Fm : FamP eps) (x : ℝ) (h3 : (44 : ℝ
   exact rowsA_of_dataB (Fm.L x i) (Fm.params x hx i) (Fm.sizes x hx i) h3' C0 Δ w hB
 
 /- English proof (translation)
-Take `⟨Y, hY1, -, hY3, hY4⟩` from `P.g_Y`. Establish `hx0 : 0 < L.sc.x` using `by linarith`. Establish `hx1 : 1 ≤ L.sc.x` using `by linarith`. Establish `hL : 0 < L.sc.L` using `by show 0 < L.sc.x ^ L.sc.eps`. Conclude with `Real.rpow_pos_of_pos hx0 _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL1 : 1 ≤ L.sc.L` using `by show 1 ≤ L.sc.x ^ L.sc.eps`. Conclude with `Real.one_le_rpow hx1 L.sc.eps_pos.le`. Establish `hb : 1 ≤ L.sc.b`. Establish `h8` using `Real.add_one_le_exp L.sc.L`. Simplify using `only [Formalism.BasicNotions.Scale.b]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hk : (1 : ℝ) ≤ D.R.k`. Establish `h2` using `D.R.m_add_three_le_k`. Conclude with `(by omega : 1 ≤ D.R.k)` after adjusting the coercions. Establish `hY0 : 0 < Y`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `h9 : (1 : ℝ) ≤ ((D.R.k : ℝ) * L.sc.b) ^ 8` using `one_le_pow₀ (by nlinarith)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hl2` using `Real.log_two_lt_d9`. Take `⟨hg1, hg2⟩` from `hY4 i`. Establish `hg0 : (0 : ℝ) < D.host.g i` using `by linarith`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `h1 : Real.log (D.host.g i : ℝ) ≤ Real.log (2 * Y)` using `Real.log_le_log hg0 hg2`. Rewrite `h1` using `[Real.log_mul (by norm_num) hY0.ne']`. Use the polynomial consequences of the given equalities and inequalities.
+A detailed English derivation is pending.
 -/
 theorem ra_logg {D : D7} (L : SizeData₂ D) (P : ParameterChoice' D L) (S : SizesAt L) (hx : 3 ≤ L.sc.x) (i : Fin 2) :
     Real.log (D.host.g i : ℝ) ≤ (P.CYL + 1) * L.sc.L := by
@@ -496,9 +490,9 @@ theorem ra_logg {D : D7} (L : SizeData₂ D) (P : ParameterChoice' D L) (S : Siz
   nlinarith
 
 /- English proof (translation)
-Establish `hLx` using `Fm.L_x x i hx`. Establish `h3' : (44 : ℝ) ^ 4 ≤ (Fm.L x i).sc.x` using `by rw [hLx]; exact h3`. Establish `hC : (Fm.params x hx i).CYL = Fm.CYL`. Simplify using `only [Formalism.MainNotions.FamP.CYL]`. Rewrite using `[← Fm.params_K x hx i]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hx3 : (3 : ℝ) ≤ (Fm.L x i).sc.x` using `by norm_num at h3'; linarith`. Use `⟨(dataA_fam Fm x h3 hx i).1, ?_⟩` and prove the remaining obligations. Conclude with `rowsA_of' (Fm.L x i) (Fm.params x hx i) (Fm.sizes x hx i) h3' (Fm.CYL + 1) (fun j => by rw [← hC]; exact ra_logg (Fm.L x i) (Fm.params x hx i) (Fm.sizes x hx i) hx3 j)`.
+Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem dataA_fam' {eps : ℝ} (Fm : FamP eps) (x : ℝ) (h3 : (44 : ℝ) ^ 4 ≤ x) (hx : Fm.x1 < x) (i : Fm.Ix x) :
     StandardLattice.DataA (Fm.D x i) (Fm.L x i).sc (max 5 (Fm.CYL + 1)) (Fm.CYL + 1) (((Fm.D x i).s.Del : ℚ) : ℝ)
@@ -516,11 +510,11 @@ theorem dataA_fam' {eps : ℝ} (Fm : FamP eps) (x : ℝ) (h3 : (44 : ℝ) ^ 4 �
     (fun j => by rw [← hC]; exact ra_logg (Fm.L x i) (Fm.params x hx i) (Fm.sizes x hx i) hx3 j)
 
 /- English proof (translation)
-Establish `hn : 0 < D.R.n` using `by show 0 < D.R.ord`. Establish `h1` using `D.R.two_le_m`. Establish `h2` using `D.R.m_le_f`. Use linear arithmetic over natural numbers and integers. Establish `hnR : (0 : ℝ) < (D.R.n : ℝ)` using `by exact_mod_cast hn`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `hx : (0 : ℝ) < L.sc.x` using `by linarith [L.sc.one_lt_alt]`. Establish `hw : L.sc.w'' D.R.n = Real.exp (L.sc.L - L.sc.x ^ (L.sc.eps / 3)) / (D.R.n : ℝ)`. Simplify using `only [Formalism.BasicNotions.Scale.w'', Formalism.BasicNotions.Scale.b', Formalism.BasicNotions.Scale.a, Formalism.BasicNotions.Scale.X', Formalism.BasicNotions.Scale.b]`. Rewrite using `[Real.exp_sub]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[hw, Real.log_div (Real.exp_pos _).ne' hnR.ne', Real.log_exp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ra_w_eq {D : D7} (L : SizeData₂ D) :
     Real.log (L.sc.w'' D.R.n) = L.sc.L - L.sc.x ^ (L.sc.eps / 3) - Real.log (D.R.n : ℝ) := by
@@ -540,25 +534,25 @@ theorem ra_w_eq {D : D7} (L : SizeData₂ D) :
   rw [hw, Real.log_div (Real.exp_pos _).ne' hnR.ne', Real.log_exp]
 
 /- English proof (translation)
-Establish `hx1 : 1 ≤ L.sc.x` using `L.sc.one_lt_alt.le`. Establish `hx0 : 0 < L.sc.x` using `by linarith [L.sc.one_lt_alt]`. Establish `he` using `L.sc.eps_pos`. Establish `he2` using `L.sc.eps_lt`. Establish `hw` using `ra_w_eq L`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hN` using `S.1`. Simplify using `only [SizeN, szTh] at hN`. Establish `hn0 : (0 : ℝ) < D.R.n`. Establish `h1 : 0 < D.R.n` using `by show 0 < D.R.ord`. Establish `h2` using `D.R.two_le_m`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `D.R.m_le_f`. Use linear arithmetic over natural numbers and integers. Conclude with `h1` after adjusting the coercions. Establish `hlogn : Real.log (D.R.n : ℝ) ≤ (2 + 8 * L.sc.eps + L.sc.eps / 100) * Real.log L.sc.x`. Establish `h4` using `Real.log_le_log hn0 hN.2`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `h4` using `[Real.log_rpow hx0]`. Then use the resulting hypothesis. Establish `hlx : 0 ≤ Real.log L.sc.x` using `Real.log_nonneg hx1`. Take `⟨y, hyd⟩ : ∃ y, y = L.sc.x ^ (L.sc.eps / 3)` from `⟨_, rfl⟩`. Establish `hy0 : 0 < y` using `by rw [hyd]; exact Real.rpow_pos_of_pos hx0 _`. Establish `hly : Real.log y = L.sc.eps / 3 * Real.log L.sc.x` using `by rw [hyd, Real.log_rpow hx0]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hly2 : Real.log y ≤ y - 1` using `Real.log_le_sub_one_of_pos hy0`. Establish `hL3 : L.sc.L = y ^ 3`. Rewrite using `[hyd, ← Real.rpow_natCast, ← Real.rpow_mul hx0.le]`. Use `show L.sc.x ^ L.sc.eps = _`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hy`, `hw` using `[← hyd]`. Establish `hey : 4 * L.sc.eps + 36 ≤ L.sc.eps * y`. Establish `h5 : 4 * (1 + 9 / L.sc.eps) * L.sc.eps = 4 * L.sc.eps + 36`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Use the polynomial consequences of the given equalities and inequalities. Establish `hy4 : 4 ≤ y`. Establish `: 0 ≤ 9 / L.sc.eps` using `by positivity`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hel : L.sc.eps * Real.log L.sc.x ≤ 3 * y` using `by nlinarith`. Establish `hen : L.sc.eps * Real.log (D.R.n : ℝ) ≤ 7 * y`. Establish `h6 : L.sc.eps * Real.log (D.R.n : ℝ) ≤ (2 + 8 * L.sc.eps + L.sc.eps / 100) * (L.sc.eps * Real.log L.sc.x)`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left hlogn he.le]`.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `h7 : (2 + 8 * L.sc.eps + L.sc.eps / 100) * (L.sc.eps * Real.log L.sc.x) ≤ (2 + 8 * L.sc.eps + L.sc.eps / 100) * (3 * y)` using `mul_le_mul_of_nonneg_left hel (by linarith)`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right (show 2 + 8 * L.sc.eps + L.sc.eps / 100 ≤ (7 : ℝ) / 3 by linarith) hy0.le]`. Establish `h8 : 36 * y ^ 2 ≤ L.sc.eps * y * y ^ 2` using `by nlinarith [sq_nonneg y]`. Establish `hgoal : L.sc.eps * (Real.log (D.R.n : ℝ) + y) ≤ L.sc.eps * (y ^ 3 / 4)`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right he2.le hy0.le, mul_le_mul_of_nonneg_right hy4 hy0.le]`.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h9 : Real.log (D.R.n : ℝ) + y ≤ y ^ 3 / 4` using `le_of_mul_le_mul_left hgoal he`. Rewrite using `[hw, hL3]`. Use the polynomial consequences of the given equalities and inequalities.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem ra_logw {D : D7} (L : SizeData₂ D) (S : SizesAt L)
     (hy : 4 * (1 + 9 / L.sc.eps) ≤ L.sc.x ^ (L.sc.eps / 3)) :
@@ -618,11 +612,9 @@ theorem ra_logw {D : D7} (L : SizeData₂ D) (S : SizesAt L)
   nlinarith
 
 /- English proof (translation)
-Establish `heps : 0 < eps`. Take `⟨i⟩` from `Fm.Ix_zero`. Rewrite using `[← Fm.L_eps 0 i]`. Conclude with `(Fm.L 0 i).sc.eps_pos`. Take `⟨x0, hx0⟩` from `Filter.eventually_atTop.1 ((tendsto_rpow_atTop (by positivity : 0 < eps / 3)).eventually_ge_atTop (4 * (1 + 9 / eps)))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨max x0 3, fun x hx hx1 i => ?_⟩` and prove the remaining obligations. Establish `h3 : 3 ≤ (Fm.L x i).sc.x` using `by rw [Fm.L_x x i hx1]; exact le_trans (le_max_right _ _) hx`. Use `⟨(db_w (Fm.L x i)).1, fun ρ j hj => (db_win (Fm.L x i) (Fm.sizes x hx1 i) h3 ρ j hj).1, ?_⟩` and prove the remaining obligations. Apply `ra_logw (Fm.L x i) (Fm.sizes x hx1 i)` to reduce the goal to its premises. Rewrite using `[Fm.L_eps x i, Fm.L_x x i hx1]`.
-
-Conclude with `hx0 x (le_trans (le_max_left _ _) hx)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wpp_fam {eps : ℝ} (Fm : FamP eps) : ∃ x0 : ℝ, ∀ x, x0 ≤ x → Fm.x1 < x → ∀ i : Fm.Ix x,
     0 < (Fm.L x i).sc.w'' (Fm.D x i).R.n ∧
@@ -651,27 +643,27 @@ namespace Formalism.MainNotions.GlobalTheoryTheory
 open Formalism.BasicNotions Formalism.MainNotions
 
 /- English proof (translation)
-Introduce `C0` and use `⟨(44 : ℝ) ^ 4, fun x h3 hx i Δ w hB => JDB.rowsA_of_dataB_fam Fm x h3 hx i C0 Δ w hB⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem rowsAF_fam {eps : ℝ} (Fm : FamP eps) : StandardLattice.RowsAF Fm :=
     fun C0 => ⟨(44 : ℝ) ^ 4, fun x h3 hx i Δ w hB => JDB.rowsA_of_dataB_fam Fm x h3 hx i C0 Δ w hB⟩
 
 /- English proof (translation)
-The claim follows from `StandardLattice.part_five_family_of_explicit Fm h (rowsAF_fam Fm)`.
+A detailed English derivation is pending.
 -/
 theorem family_part_five_of_explicit_constants {eps : ℝ} (Fm : FamP eps) (h : StandardLattice.FamilyVandermondeCountExplicit Fm) : StandardLattice.PartFiveFamilyBounds Fm :=
     StandardLattice.part_five_family_of_explicit Fm h (rowsAF_fam Fm)
 
 /- English proof (translation)
-Establish `hB : ∃ x0 : ℝ, ∀ x, x0 ≤ x → Fm.x1 < x → ∀ i : Fm.Ix x, ∃ (Δ : ℝ) (w : ℕ → (Fm.D x i).what₂.Tau → ℝ), StandardLattice.DataB (Fm.D x i) (Fm.L x i).sc (max 5 (Fm.CYL + 1)) Δ w` using `⟨(44 : ℝ) ^ 4, fun x h3 hx i => ⟨_, _, (JDB.dataA_fam Fm x h3 hx i).1⟩⟩`. Use `ShortIntervalPrimes.log_height_family_of_data Fm (max 5 (Fm.CYL + 1)) (family_part_five_of_explicit_constants Fm h) hB ?_` and prove the remaining obligations. Introduce `K`. Use `⟨max ((44 : ℝ) ^ 4) ((max K 44) ^ 4), fun x hxK hx1 i => ?_⟩` and prove the remaining obligations. Establish `hK' : (0 : ℝ) ≤ max K 44` using `le_trans (by norm_num) (le_max_right _ _)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `S` using `Fm.sizes x hx1 i`. Establish `hxx : (Fm.L x i).sc.x = x` using `Fm.L_x x i hx1`. Establish `hx : (max K 44) ^ 4 ≤ (Fm.L x i).sc.x` using `by rw [hxx]; exact le_trans (le_max_right _ _) hxK`. Establish `hx1' : 1 ≤ (Fm.L x i).sc.x` using `(Fm.L x i).sc.one_lt_alt.le`. Establish `hx0 : 0 < (Fm.L x i).sc.x` using `by linarith [(Fm.L x i).sc.one_lt_alt]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he` using `(Fm.L x i).sc.eps_pos`. Establish `he2` using `(Fm.L x i).sc.eps_lt`. Establish `h1` using `S.2.1`. Simplify using `only [SizeM, szTh] at h1`. Establish `hkey : (Fm.L x i).sc.x ^ (-((Fm.L x i).sc.eps / 100)) * Real.sqrt ((Fm.L x i).sc.x * (Fm.L x i).sc.delta1) = (Fm.L x i).sc.x ^ (-((Fm.L x i).sc.eps / 100) + (1 + -((Fm.L x i).sc.eps / 8)) * (1 / 2))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [Formalism.BasicNotions.Scale.delta1]`. Rewrite using `[Real.sqrt_eq_rpow, show (Fm.L x i).sc.x * (Fm.L x i).sc.x ^ (-((Fm.L x i).sc.eps / 8)) = (Fm.L x i).sc.x ^ (1 + -((Fm.L x i).sc.eps / 8)) by`. Rewrite using `[Real.rpow_add hx0, Real.rpow_one], ← Real.rpow_mul hx0.le, ← Real.rpow_add hx0]`. Establish `hge : (Fm.L x i).sc.x ^ ((1 : ℝ) / 4) ≤ (Fm.L x i).sc.x ^ (-((Fm.L x i).sc.eps / 100) + (1 + -((Fm.L x i).sc.eps / 8)) * (1 / 2))` using `Real.rpow_le_rpow_of_exponent_le hx1' (by linarith)`. Establish `hK4 : max K 44 ≤ (Fm.L x i).sc.x ^ ((1 : ℝ) / 4)`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `Real.rpow_le_rpow (by positivity : (0 : ℝ) ≤ (max K 44) ^ 4) hx (by norm_num : (0 : ℝ) ≤ 1 / 4)`. Rewrite `h2` using `[← Real.rpow_natCast, ← Real.rpow_mul hK']`. Evaluate the numerical expressions using `at h2`. Conclude with `max_le h2.1 h2.2`. Combine the linear relations using `[h1.1, le_max_left K 44]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem _root_.Formalism.MainNotions.ShortIntervalPrimes.log_X_lower_of_corollary_five_six {eps : ℝ} (Fm : FamP eps) (h : StandardLattice.FamilyVandermondeCountExplicit Fm) : ShortIntervalPrimes.proportionalityInputFamily Fm := by
   have hB : ∃ x0 : ℝ, ∀ x, x0 ≤ x → Fm.x1 < x → ∀ i : Fm.Ix x,
@@ -710,11 +702,11 @@ theorem _root_.Formalism.MainNotions.ShortIntervalPrimes.log_X_lower_of_corollar
   linarith [h1.1, le_max_left K 44]
 
 /- English proof (translation)
-Introduce `x hx i u`. Take `⟨-, -, -, ⟨-, hG, -⟩, -⟩` from `Fm.sizes x hx i`. Establish `hk3 : (3 : ℝ) ≤ (Fm.D x i).R.k`. Use `(Fm.D x i).R.m_add_three_le_k` as an intermediate fact. Conclude with `(by omega : 3 ≤ (Fm.D x i).R.k)` after adjusting the coercions.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hf1 : (1 : ℝ) ≤ (Fm.D x i).R.f`. Establish `: 1 ≤ (Fm.D x i).R.f`. Establish `h1 : (Fm.D x i).R.f = 2 * (Fm.D x i).R.ord` using `rfl`. Establish `h2` using `(Fm.D x i).R.ord_pos`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this` after adjusting the coercions. Rewrite using `[div_le_one (by nlinarith), (Fm.L x i).Gam_eq u]`. Use the polynomial consequences of the given equalities and inequalities.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem family_log_gamma_bound {eps : ℝ} (Fm : FamP eps) : StandardLattice.FamilyLogGammaBound Fm := by
   intro x hx i u

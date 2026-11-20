@@ -21,15 +21,15 @@ noncomputable section
 namespace GlobalTheory.HkFam.Swap
 
 /- English proof (translation)
-Establish `hw : φ ≫ G.hom = G'.hom ≫ f` using `h.1.w`. Set `Φ : Over.mk (G'.hom ≫ f) ⟶ G` to `Over.homMk φ hw`. Establish `key : ∀ m : ℕ, (Φ ^ m).left = (𝟙 G' ^ m).left ≫ φ`. Introduce `m`. Proceed by induction on `m with`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero`. Set `Ψ : Over.mk (G'.hom ≫ f) ⟶ G` to `Over.homMk ((1 : G' ⟶ G').left ≫ φ) (by`. Rewrite using `[Category.assoc, hw, ← Category.assoc, Over.w]`. Use the proof step `rfl)`. Establish `hΨ : Ψ * Ψ = Ψ * 1`.
+Treat this case separately. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[_root_.mul_one]`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Use `h.2 G' 1 1 Ψ Ψ rfl rfl` as an intermediate fact. Rewrite using `[this, _root_.mul_one]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `h1 : Ψ = 1` using `mul_left_cancel hΨ`. Simplify using `only [pow_zero]`. Rewrite using `[← h1]`. Both sides reduce to the same expression. Consider the case `succ m ih`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pow_succ, pow_succ]`. Conclude with `h.2 G' (𝟙 G' ^ m) (𝟙 G') (Φ ^ m) Φ ih (by simp [Φ])`. Establish `hc : Φ ≫ 𝟙 G ^ n = Φ ^ n` using `by rw [MonObj.comp_pow, Category.comp_id]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem id_pow_left_comp {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} [GrpObj G] [GrpObj G'] {f : S' ⟶ S}
     {φ : G'.left ⟶ G.left} (h : IsGrpPullback G' G f φ) (n : ℕ) :
@@ -64,9 +64,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Da
   {Xo : Moduli D l} {P P' : Ideal (𝓞 E)} {p i : ℕ}
 
 /- English proof (translation)
-Take `⟨hmax, hcop, hp, hpP, hl⟩` from `h`. Use `⟨?_, ?_, hp, ?_, hl⟩` and prove the remaining obligations. Conclude with `Ideal.map_isMaximal_of_equiv H.bar (p := P)`. Rewrite using `[GlobalTheory.HeckeDual.map_bar_map_bar, sup_comm]`. Conclude with `hcop`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `Ideal.mem_map_of_mem (H.bar : 𝓞 E →+* 𝓞 E) hpP` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem isAdmissibleSplitHeckePrime_conj (h : admitted l P p) : admitted l (P.map (H.bar : 𝓞 E →+* 𝓞 E)) p := by
   obtain ⟨hmax, hcop, hp, hpP, hl⟩ := h
@@ -78,7 +78,7 @@ theorem isAdmissibleSplitHeckePrime_conj (h : admitted l P p) : admitted l (P.ma
     rwa [map_natCast] at this
 
 /- English proof (translation)
-Establish `: Etale Z.π₁` using `Z.et₁`. Establish `: SmoothOfRelativeDimension D.dim Xo.s` using `Xo.smooth`. Establish `: Smooth Xo.s` using `SmoothOfRelativeDimension.smooth D.dim Xo.s`. Conclude with `(GlobalTheory.isReduced_isNormalScheme_isLocallyNoetherian_of_smooth_over_field (KA l) Z.Hk (Z.π₁ ≫ Xo.s) inferInstance).1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isReduced_Hk (Z : Corr Xo P p i) : IsReduced Z.Hk := by
   have : Etale Z.π₁ := Z.et₁
@@ -88,14 +88,14 @@ theorem isReduced_Hk (Z : Corr Xo P p i) : IsReduced Z.Hk := by
     (Z.π₁ ≫ Xo.s) inferInstance).1
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Z.isog, Z.K, Z.ker, Z.hecke⟩`.
+Supply the required witnesses or components.
 -/
 theorem isHecke (Z : Corr Xo P p i) : IsHecke Z.o₁ Z.o₂ P p i Z.ψ := ⟨Z.isog, Z.K, Z.ker, Z.hecke⟩
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Establish `h0` using `A.5 0 0`. Rewrite `h0` using `[add_zero]`. Establish `h1 : A.act 0 * A.act 0 = A.act 0 * 1` using `by rw [_root_.mul_one]; exact h0.symm`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Nat.cast_zero, pow_zero]`. Conclude with `mul_left_cancel h1`. Consider the case `succ n ih => rw [Nat.cast_succ, A.5, ih, A.3, pow_succ]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem oAct_act_natCast {S : Scheme.{0}} {G : Over S} [GrpObj G] (A : OAct (𝓞 E) G) (n : ℕ) :
     A.act (n : 𝓞 E) = 𝟙 G ^ n := by
@@ -109,11 +109,11 @@ private theorem oAct_act_natCast {S : Scheme.{0}} {G : Over S} [GrpObj G] (A : O
   | succ n ih => rw [Nat.cast_succ, A.5, ih, A.3, pow_succ]
 
 /- English proof (translation)
-Establish `hh` using `h`. Take `⟨-, -, hp, -, hl⟩` from `hh`. Use `isReduced_Hk Z` as an intermediate fact. Establish `hpb : (p : 𝓞 E) ∈ P.map (H.bar : 𝓞 E →+* 𝓞 E)` using `(isAdmissibleSplitHeckePrime_conj h).2.2.2.1`. Establish `hker : ∀ (k : Type) [Field k] [IsAlgClosed k] (x : Sp k ⟶ Z.Hk) (z : Over.mk x ⟶ Z.o₁.t.G), z ≫ Z.ψ = 1 → z ^ p ^ 2 = 1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `k _ _ x z hz`. Take `⟨C, hC, hK⟩` from `Z.hecke k x`. Establish `hzC : z ∈ C` using `(hC z).2 ((Z.ker k x z).1 hz)`. Establish `hmem : ((p : 𝓞 E) * p) ∈ Ideal.span {(p : 𝓞 E)} * P.map (H.bar : 𝓞 E →+* 𝓞 E)` using `Ideal.mul_mem_mul (Ideal.mem_span_singleton_self _) hpb`. Establish `h1 : z ≫ Z.o₁.t.act.act ((p : 𝓞 E) * p) = 1` using `hK.2.2.1 hzC _ hmem`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[← Nat.cast_mul, oAct_act_natCast, MonObj.comp_pow, Category.comp_id, ← sq]`. Conclude with `h1`. Take `⟨χ, h1, h2, h3⟩` from `exists_dual_isogeny E H D l p Z.Hk (Z.π₁ ≫ Xo.s) Z.o₁ Z.o₂ Z.ψ hp hl Z.isog hker`. Conclude with `⟨χ, h1, h2, GlobalTheory.isHecke_dual E H D l P p i Z.Hk _ Z.o₁ Z.o₂ Z.ψ χ h (isHecke Z) h3 h1⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_dual (Z : Corr Xo P p i) (h : admitted l P p) : ∃ χ : Z.o₂.t.G ⟶ Z.o₁.t.G,
     Z.ψ ≫ χ = 𝟙 Z.o₁.t.G ^ p ^ 2 ∧ χ ≫ Z.ψ = 𝟙 Z.o₂.t.G ^ p ^ 2 ∧
@@ -142,9 +142,9 @@ def Exch (Z : Corr Xo P p i) (Z' : Corr Xo P' p i) (χ : Z.o₂.t.G ⟶ Z.o₁.t
     χ.left ≫ n₂.toSABMap.φ = n₁.toSABMap.φ ≫ Z'.ψ.left ∧ Z.ψ.left ≫ n₁.toSABMap.φ = n₂.toSABMap.φ ≫ χ'.left
 
 /- English proof (translation)
-Use `isReduced_Hk Z` as an intermediate fact. Take `⟨a, ⟨ha1, n₁, n₂, hn⟩, -⟩` from `Z'.univ Z.Hk (Z.π₁ ≫ Xo.s) inferInstance Z.o₂ Z.o₁ χ hχ`. Use `⟨a, ha1, n₁, n₂, hn, ?_⟩` and prove the remaining obligations. Take `⟨⟨⟨-, hfin, het, hsurj, -⟩, -⟩, -⟩` from `hχ`. Establish `: Epi χ.left` using `Flat.epi_of_flat_of_surjective _`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← cancel_epi χ.left]`. Establish `hp1 : IsGrpPullback Z.o₂.t.G Z'.o₁.t.G a n₁.toSABMap.φ` using `n₁.toSABMap.2`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem exists_exch (Z : Corr Xo P p i) (Z' : Corr Xo P' p i) (χ : Z.o₂.t.G ⟶ Z.o₁.t.G) (χ' : Z'.o₂.t.G ⟶ Z'.o₁.t.G)
     (h : χ ≫ Z.ψ = 𝟙 Z.o₂.t.G ^ p ^ 2) (h' : Z'.ψ ≫ χ' = 𝟙 Z'.o₁.t.G ^ p ^ 2) (hχ : IsHecke Z.o₂ Z.o₁ P' p i χ) :
@@ -163,11 +163,11 @@ theorem exists_exch (Z : Corr Xo P p i) (Z' : Corr Xo P' p i) (χ : Z.o₂.t.G �
     _ = χ.left ≫ n₂.toSABMap.φ ≫ χ'.left := by rw [Over.comp_left, ← Category.assoc, ← hn, Category.assoc]
 
 /- English proof (translation)
-Take `⟨ha1, n₁, n₂, -, hn2⟩` from `ha`. Take `⟨hb1, m₁, m₂, hm1, -⟩` from `hb`. Use `isReduced_Hk Z` as an intermediate fact. Take `⟨_, -, huniq⟩` from `Z.univ Z.Hk (Z.π₁ ≫ Xo.s) inferInstance Z.o₁ Z.o₂ Z.ψ (isHecke Z)`. Take `⟨c₁, hc₁⟩` from `((GlobalTheory.ObjMaps.id_comp_cancel _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ Z.o₁ Z'.o₂ Z.o₁).2 b a m₁).1 n₂`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨c₂, hc₂⟩` from `((GlobalTheory.ObjMaps.id_comp_cancel _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ Z.o₂ Z'.o₁ Z.o₂).2 b a m₂).1 n₁`. Take `⟨i₁, hi₁⟩` from `(GlobalTheory.ObjMaps.id_comp_cancel _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ Z.o₁ Z.o₁ Z.o₁).1`. Take `⟨i₂, hi₂⟩` from `(GlobalTheory.ObjMaps.id_comp_cancel _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ Z.o₂ Z.o₂ Z.o₂).1`. Establish `e1` using `huniq (a ≫ b) ⟨by rw [Category.assoc, hb1, ha1], c₁, c₂, by`. Rewrite using `[hc₁, hc₂, ← Category.assoc, hn2, Category.assoc, hm1, Category.assoc]⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2` using `huniq (𝟙 _) ⟨by rw [Category.id_comp], i₁, i₂, by rw [hi₁, hi₂, Category.id_comp, Category.comp_id]⟩`. Conclude with `e1.trans e2.symm`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem Exch.comp_eq_id {Z : Corr Xo P p i} {Z' : Corr Xo P' p i} {χ : Z.o₂.t.G ⟶ Z.o₁.t.G}
     {χ' : Z'.o₂.t.G ⟶ Z'.o₁.t.G} {a : Z.Hk ⟶ Z'.Hk} {b : Z'.Hk ⟶ Z.Hk} (ha : Exch Z Z' χ χ' a)
@@ -188,9 +188,9 @@ theorem Exch.comp_eq_id {Z : Corr Xo P p i} {Z' : Corr Xo P' p i} {χ : Z.o₂.t
   exact e1.trans e2.symm
 
 /- English proof (translation)
-Take `⟨ha1, n₁, n₂, -, -⟩` from `ha`. Use `isReduced_Hk Z` as an intermediate fact. Take `⟨_, -, huniq⟩` from `Xo.rep Z.Hk (Z.π₁ ≫ Xo.s) inferInstance Z.o₂`. Take `⟨c, -⟩` from `((GlobalTheory.ObjMaps.id_comp_cancel _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ Xo.univ Z'.o₁ Z.o₂).2 Z'.π₁ a Z'.m₁).1 n₁`. Establish `e1` using `huniq (a ≫ Z'.π₁) ⟨by rw [Category.assoc]; exact ha1, ⟨c⟩⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e2` using `huniq Z.π₂ ⟨Z.base₂, ⟨Z.m₂⟩⟩`. Conclude with `e1.trans e2.symm`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem Exch.comp_π₁ {Z : Corr Xo P p i} {Z' : Corr Xo P' p i} {χ : Z.o₂.t.G ⟶ Z.o₁.t.G}
     {χ' : Z'.o₂.t.G ⟶ Z'.o₁.t.G} {a : Z.Hk ⟶ Z'.Hk} (ha : Exch Z Z' χ χ' a) : a ≫ Z'.π₁ = Z.π₂ := by
@@ -210,11 +210,11 @@ namespace GlobalTheory.HkFam
 open Swap
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo P p i Z hpq h`. Establish `h' : admitted l (P.map (H.bar : 𝓞 E →+* 𝓞 E)) p` using `isAdmissibleSplitHeckePrime_conj h`. Take `⟨Z'⟩` from `GlobalTheory.T.nonempty_heckeCorrespondenceScheme E H D l Xo (P.map (H.bar : 𝓞 E →+* 𝓞 E)) p i hpq h'`. Take `⟨χ, hχ1, hχ2, hχ3⟩` from `exists_dual Z h`. Take `⟨χ', hχ'1, hχ'2, hχ'3⟩` from `exists_dual Z' h'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite `hχ'3` using `[GlobalTheory.HeckeDual.map_bar_map_bar]`. Take `⟨a, ha⟩` from `exists_exch Z Z' χ χ' hχ2 hχ'1 hχ3`. Take `⟨b, hb⟩` from `exists_exch Z' Z χ' χ hχ'2 hχ1 hχ'3`. Establish `: IsIso a` using `⟨b, Exch.comp_eq_id ha hb, Exch.comp_eq_id hb ha⟩`. Use `Z'.fin₁` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Z'.et₁` as an intermediate fact. Rewrite using `[← Exch.comp_π₁ ha]`. Use `⟨inferInstance, inferInstance, fun hi => ?_⟩` and prove the remaining obligations. Use `(GlobalTheory.T.heckeKernelScheme_geometric_points_eq_kernels E H D l Xo _ p i Z'.toKerScheme h').2 hi` as an intermediate fact. Use `infer_instance`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem second_projection_finite_etale : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (𝔓 : Ideal (𝓞 E)) (p i : ℕ) (Z : Corr Xo 𝔓 p i), 1 ≤ D.p + D.q → admitted l 𝔓 p → IsFinite Z.π₂ ∧ Etale Z.π₂ ∧ (i ≤ D.p + D.q → Surjective Z.π₂) := by
   intro E _ _ _ H D l Xo P p i Z hpq h

@@ -7,27 +7,25 @@ open GlobalTheory.SupMeas
 namespace GlobalTheory.SupMeas
 
 /- English proof (translation)
-Introduce `G _ _ _ _ _ _ _ _ N Q hdec _ hnorm νN _ hR hC`. Establish `hmeasD : ∀ h : ↥(Q ⊔ N), Measurable (fun n : N => Subgroup.inclusion (le_sup_right : N ≤ Q ⊔ N) n * h)`. Introduce `h`. Establish `: Measurable (fun n : N => ((n : G) * (h : G)))` using `measurable_subtype_coe.mul_const _`. Conclude with `this.subtype_mk`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `step1 : ∀ (h : ↥(Q ⊔ N)) (n' : N), νN.map (fun n => Subgroup.inclusion (le_sup_right : N ≤ Q ⊔ N) n * (h * Subgroup.inclusion (le_sup_right : N ≤ Q ⊔ N) n')) = νN.map (fun n => Subgroup.inclusion (le_sup_right : N ≤ Q ⊔ N) n * h)`. Introduce `h n'`. Set `c : N` to `⟨h * n' * (h : G)⁻¹, hnorm h h.2 n' n'.2⟩`. Establish `hfun : (fun n : N => Subgroup.inclusion (le_sup_right : N ≤ Q ⊔ N) n * (h * Subgroup.inclusion (le_sup_right : N ≤ Q ⊔ N) n')) = (fun n => Subgroup.inclusion (le_sup_right : N ≤ Q ⊔ N) n * h) ∘ (· * c)`. Use function extensionality and compare the values at `n`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[c, mul_assoc]`. Rewrite using `[hfun, ← Measure.map_map (hmeasD h) (hR c).measurable, (hR c).map_eq]`. Establish `step2 : ∀ g h : ↥(Q ⊔ N), (νN.map (fun n => Subgroup.inclusion (le_sup_right : N ≤ Q ⊔ N) n * h)).map (g * ·) = νN.map (fun n => Subgroup.inclusion (le_sup_right : N ≤ Q ⊔ N) n * (g * h))`. Introduce `g h`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Set `f : N → N` to `fun n => ⟨g * n * (g : G)⁻¹, hnorm g g.2 n n.2⟩`. Establish `hf` using `hC g g.2 f (fun n => rfl)`. Rewrite using `[Measure.map_map (by fun_prop) (hmeasD h)]`. Establish `: (g * ·) ∘ (fun n : N => Subgroup.inclusion (le_sup_right : N ≤ Q ⊔ N) n * h) = (fun n => Subgroup.inclusion (le_sup_right : N ≤ Q ⊔ N) n * (g * h)) ∘ f`. Use function extensionality and compare the values at `n`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[f, mul_assoc]`. Rewrite using `[this, ← Measure.map_map (hmeasD _) hf.measurable, hf.map_eq]`. Establish `step3 : ∀ (g : ↥(Q ⊔ N)) (k : ↥(Q ⊔ N) ⧸ N.subgroupOf (Q ⊔ N)), νN.map (fun n => Subgroup.inclusion (le_sup_right : N ≤ Q ⊔ N) n * Quotient.out (g • k)) = νN.map (fun n => Subgroup.inclusion (le_sup_right : N ≤ Q ⊔ N) n * (g * Quotient.out k))`. Introduce `g k`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hk : (QuotientGroup.mk (g * Quotient.out k) : ↥(Q ⊔ N) ⧸ N.subgroupOf (Q ⊔ N)) = QuotientGroup.mk (Quotient.out (g • k))`. Rewrite using `[QuotientGroup.out_eq']`. Use `conv_rhs => rw [← QuotientGroup.out_eq' k]`. Both sides reduce to the same expression. Rewrite `hk` using `[QuotientGroup.eq]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `n' : N` to `⟨_, Subgroup.mem_subgroupOf.mp hk⟩`. Establish `hout : Quotient.out (g • k) = (g * Quotient.out k) * Subgroup.inclusion (le_sup_right : N ≤ Q ⊔ N) n'`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[n', mul_assoc]`. Rewrite using `[hout, step1]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, fun g => ⟨by fun_prop, ?_⟩⟩` and prove the remaining obligations. Use `haveI : Countable (↥(Q ⊔ N) ⧸ N.subgroupOf (Q ⊔ N)) := by`. Use `Function.Surjective.countable (f := fun q : Q => (QuotientGroup.mk (⟨(q : G)⁻¹, (Q ⊔ N).inv_mem (le_sup_left (a := Q) (b := N) q.2)⟩ : ↥(Q ⊔ N)) : ↥(Q ⊔ N) ⧸ N.subgroupOf (Q ⊔ N))) ?_` and prove the remaining obligations. Introduce `k`. Proceed by induction on `k using QuotientGroup.induction_on with`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Consider the case `H h`. Take `⟨n, hn, q, hq, hnq⟩` from `hdec ((h : G)⁻¹) ((Q ⊔ N).inv_mem h.2)`. Use `⟨⟨q, hq⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[QuotientGroup.eq, Subgroup.mem_subgroupOf]`. Establish `e : (h : G) = (n * q)⁻¹` using `by rw [hnq, inv_inv]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions.
 
-Use `show ((q : G)⁻¹)⁻¹ * (h : G) ∈ N`. Rewrite using `[inv_inv, e, mul_inv_rev, ← mul_assoc, mul_inv_cancel, one_mul]`. Conclude with `N.inv_mem hn`. Unfold `supMeas`. Use `infer_instance`.
-
-Unfold `supMeas`. Rewrite using `[Measure.map_sum (by fun_prop : Measurable (fun x : ↥(Q ⊔ N) => g * x)).aemeasurable]`. Repeatedly rewrite using `[step2, ← step3]`. Use `Eq.trans ?_ (Measure.sum_comp_equiv (MulAction.toPerm g : Equiv.Perm (↥(Q ⊔ N) ⧸ N.subgroupOf (Q ⊔ N))) (fun k : ↥(Q ⊔ N) ⧸ N.subgroupOf (Q ⊔ N) => νN.map (fun n => Subgroup.inclusion (le_sup_right : N ≤ Q ⊔ N) n * Quotient.out k)))` and prove the remaining obligations. Use `congr 1`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem supMeas_sfinite_invariant : ∀ {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [LocallyCompactSpace G] [SecondCountableTopology G] [T2Space G] [MeasurableSpace G] [BorelSpace G] (N Q : Subgroup G), (∀ h ∈ Q ⊔ N, ∃ n ∈ N, ∃ q ∈ Q, n * q = h) → ∀ [Countable Q], (∀ h ∈ Q ⊔ N, ∀ n ∈ N, h * n * h⁻¹ ∈ N) → ∀ (νN : Measure N) [SFinite νN], (∀ n : N, MeasurePreserving (· * n) νN νN) → (∀ h ∈ Q ⊔ N, ∀ f : N → N, (∀ n, (f n : G) = h * n * h⁻¹) → MeasurePreserving f νN νN) → SFinite (supMeas N Q νN) ∧ ∀ h : ↥(Q ⊔ N), MeasurePreserving (h * ·) (supMeas N Q νN) (supMeas N Q νN) := by
   intro G _ _ _ _ _ _ _ _ N Q hdec _ hnorm νN _ hR hC

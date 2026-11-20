@@ -27,9 +27,9 @@ open GlobalTheory.IdemSupport
 variable {D : D7}
 
 /- English proof (translation)
-Use `⟨by rw [add_mul, one_mul]; have := ht.pos; omega, ?_⟩` and prove the remaining obligations. Establish `hr' : ¬ Even r` using `Nat.not_even_iff_odd.2 hr`. Establish `ht' : ¬ Even t` using `Nat.not_even_iff_odd.2 ht`. Break down `Nat.even_or_odd j with hj | hj` into its components or cases. Use `right`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Simplify using `[Nat.even_add, Nat.even_mul, Nat.even_add_one, hr', ht', hj]`. Use `left`. Simplify using `[Nat.even_add, Nat.even_mul, hr', ht', Nat.not_even_iff_odd.2 hj]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem parity_step {r t j : ℕ} (hr : Odd r) (ht : Odd t) :
     r + j * t ≠ r + (j + 1) * t ∧ (Even (r + j * t) ∨ Even (r + (j + 1) * t)) := by
@@ -41,7 +41,7 @@ theorem parity_step {r t j : ℕ} (hr : Odd r) (ht : Odd t) :
   · left; simp [Nat.even_add, Nat.even_mul, hr', ht', Nat.not_even_iff_odd.2 hj]
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `D.R.k_even`. Take `⟨b, hb⟩` from `D.R.m_even`. Establish `h2` using `D.R.two_le_m`. Conclude with `⟨a + b - 1, by simp only [Ranks.r]; omega⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem r_odd : Odd D.R.r := by
   obtain ⟨a, ha⟩ := D.R.k_even
@@ -50,13 +50,13 @@ theorem r_odd : Odd D.R.r := by
   exact ⟨a + b - 1, by simp only [Ranks.r]; omega⟩
 
 /- English proof (translation)
-Rewrite using `[D.sp.Y_rank _ (min_le_right _ _), min_eq_left hj]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem rank_Yc' {j : ℕ} (hj : j ≤ D.R.m) : (Yc D j).rank = D.R.r + j * D.R.t := by
   rw [D.sp.Y_rank _ (min_le_right _ _), min_eq_left hj]; rfl
 
 /- English proof (translation)
-Introduce `e f he x h1 h2 h3` and use `by show χ x * (η x)⁻¹ = 1 rw [h e f he x h1 h2 h3, h' e f he x h1 h2 h3, inv_one, mul_one]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem unrPl_mul_inv' {P : Pl D.host.E} {χ η : (AE D)ˣ →* Circle} (h : UnrPl P χ) (h' : UnrPl P η) :
     UnrPl P (χ * η⁻¹) := fun e f he x h1 h2 h3 => by
@@ -64,7 +64,7 @@ theorem unrPl_mul_inv' {P : Pl D.host.E} {χ η : (AE D)ˣ →* Circle} (h : Unr
   rw [h e f he x h1 h2 h3, h' e f he x h1 h2 h3, inv_one, mul_one]
 
 /- English proof (translation)
-Unfold `Lift.chrStep`. Use `split_ifs`. Conclude with `⟨unrPl_mul_inv' h h', h⟩`. Conclude with `⟨h, unrPl_mul_inv' h h'⟩`.
+Replace the relevant objects with their definitions. Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem unrPl_step' {P : Pl D.host.E} {μ : ℕ → (AE D)ˣ →* Circle} {η : (AE D)ˣ →* Circle} {j : ℕ} (h : UnrPl P (μ j))
     (h' : UnrPl P η) : UnrPl P (Lift.chrStep μ η j).1 ∧ UnrPl P (Lift.chrStep μ η j).2 := by
@@ -74,17 +74,15 @@ theorem unrPl_step' {P : Pl D.host.E} {μ : ℕ → (AE D)ˣ →* Circle} {η : 
   · exact ⟨h, unrPl_mul_inv' h h'⟩
 
 /- English proof (translation)
-Take `⟨Φ, hΦ⟩` from `exists_comp D`. Establish `hc : P = cP P`. Use `(isConjPl_iff P P).1 fun c hc => ⟨cO D c, ?_, rfl⟩` and prove the remaining obligations. Establish `h1 : cO D c ∈ (Formalism.DivisionValues.conjPl P).asIdeal` using `Ideal.mem_map_of_mem _ hc`. Rewrite `h1` using `[hP]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Take `⟨ε, hε⟩` from `exists_placeIdem (D := D) (P.under (𝓞 D.host.F))`. Take `⟨h0, h1, h2⟩` from `place_comp hΦ hε`. Establish `hd : IsDelta Φ P (algebraMap (AF D.host.F) (AE D) ε)` using `⟨h0, h1 P rfl, fun Q hQ => h2 Q fun h => (eq_or_eq_cP h).elim hQ fun h => hQ (h.trans hc.symm)⟩`. Use `⟨ε, hε, ?_, hc, fun e f h => ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨e, ⟨e1, e2, -⟩, e3⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Establish `key : ∀ a : AE D, a * a = a → algebraMap (AF D.host.F) (AE D) ε * a = a → Φ a P ≠ 0 → IsDelta Φ P a` using `fun a a1 a2 a3 => ⟨by rw [← a2, RingHom.map_mul, h0, zero_mul], mul_left_cancel₀ a3 (by rw [← ev_mul, a1, mul_one]), fun Q hQ => by rw [← a2, ev_mul, hd.2.2 Q hQ, zero_mul]⟩`. Establish `e1' : cA D e * cA D e = cA D e` using `by rw [← RingHom.map_mul, e1]`. Establish `hz : Φ e P * Φ (cA D e) P = 0` using `by rw [← ev_mul, e2, ev_zero]`. Establish `hs : Φ e P + Φ (cA D e) P = 1` using `by rw [← ev_add, e3, hd.2.1]`. Distinguish the cases in `h : Φ e P = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Establish `a` using `key (cA D e) e1' (by rw [← e3]; linear_combination e1' + e2) (by rw [h, zero_add] at hs; rw [hs]; exact one_ne_zero)`. Establish `b` using `delta_conj hΦ a`. Rewrite `b` using `[cA_cA, ← hc]`. Conclude with `zero_ne_one (h.symm.trans b.2.1)`. Establish `a` using `key e e1 (by rw [← e3]; linear_combination e1 + e2) h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `b` using `delta_conj hΦ a`. Rewrite `b` using `[← hc]`. Rewrite `hz` using `[a.2.1, b.2.1, one_mul]`. Conclude with `one_ne_zero hz`. Take `⟨k1, ε', k2, k3⟩` from `of_isPrimeIdem hΦ h`.
-
-Conclude with `⟨delta_unique hΦ k1 hd, by rw [k3, placeIdem_unique k2 hε]⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem inert_data {P : Pl D.host.E} (hP : Formalism.DivisionValues.conjPl P = P) :
     ∃ ε, IsPlaceIdem D (P.under (𝓞 D.host.F)) ε ∧
@@ -123,9 +121,9 @@ theorem inert_data {P : Pl D.host.E} (hP : Formalism.DivisionValues.conjPl P = P
     exact ⟨delta_unique hΦ k1 hd, by rw [k3, placeIdem_unique k2 hε]⟩
 
 /- English proof (translation)
-Take `⟨Φ, hΦ⟩` from `exists_comp D`. Introduce and unpack `e ⟨he1, he2, v', ε', hε', hs⟩`. Distinguish the cases in `hv : v' = v`. Substitute `hv` using the available equality. Rewrite `hs` using `[placeIdem_unique hε' hε]`.
+Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(hns ⟨e, ⟨he1, he2, v', ε, hε, hs⟩, hs⟩).elim`. Establish `h1 : e = e * algebraMap (AF D.host.F) (AE D) ε'` using `by rw [← hs, mul_add, he1, he2, add_zero]`. Rewrite using `[h1, mul_assoc, place_orth hΦ hε' hε hv, mul_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem split_mul_eq_zero {v : HeightOneSpectrum (𝓞 D.host.F)} {ε : AF D.host.F} (hε : IsPlaceIdem D v ε)
     (hns : ¬ ∃ e : AE D, IsSplitIdem D e ∧ e + cA D e = algebraMap (AF D.host.F) (AE D) ε) :
@@ -140,11 +138,11 @@ theorem split_mul_eq_zero {v : HeightOneSpectrum (𝓞 D.host.F)} {ε : AF D.hos
     rw [h1, mul_assoc, place_orth hΦ hε' hε hv, mul_zero]
 
 /- English proof (translation)
-Introduce `h2`. Establish `h : ((2 : ℕ) : 𝓞 D.host.E) ∈ P.asIdeal`. Use `Ideal.mem_comap.1 h2` as an intermediate fact. Rewrite `this` using `[map_ofNat]`. Rewrite using `[Nat.cast_ofNat]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this`. Use `Formalism.MainNotions.KudlaSiegelWeil.InertConditionsOfHost.not_fixed_ram D P 2 (Or.inl rfl) h (Ideal.ext fun x => ?_)` and prove the remaining obligations. Rewrite using `[Ideal.mem_comap]`. Establish `: Formalism.MainNotions.KudlaSiegelWeil.InertConditionsOfHost.sgO D x = cO D x`. Apply `RingOfIntegers.ext` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[cO_coe]`. Use `show D.host.conj (x : D.host.E) = _`. Conclude with `(Formalism.BasicNotions.Examples₂.star_eq_conj D.host _).symm`. Rewrite using `[this, ← mem_cP, ← hc]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem two_not_mem {P : Pl D.host.E} (hc : P = cP P) : (2 : 𝓞 D.host.F) ∉ (P.under (𝓞 D.host.F)).asIdeal := by
   intro h2
@@ -163,7 +161,7 @@ theorem two_not_mem {P : Pl D.host.E} (hc : P = cP P) : (2 : 𝓞 D.host.F) ∉ 
   rw [this, ← mem_cP, ← hc]
 
 /- English proof (translation)
-Introduce `x hx a b`. Use `h e f he x ?_ a b` and prove the remaining obligations. Rewrite using `[hf]`. Take the linear combination `(-1 : AE D) * hx`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem unrAtV_of {P : Pl D.host.E} {ε : AF D.host.F} {χ : (AE D)ˣ →* Circle} {e f : AE D} (he : IsPrimeIdem P e f)
     (hf : f = algebraMap (AF D.host.F) (AE D) ε) (h : UnrPl P χ) : Formalism.IndefR.WeilFull.UnrAtV ε χ := by
@@ -173,13 +171,13 @@ theorem unrAtV_of {P : Pl D.host.E} {ε : AF D.host.F} {χ : (AE D)ˣ →* Circl
   linear_combination (-1 : AE D) * hx
 
 /- English proof (translation)
-Take `⟨β, rfl, h1, h0⟩` from `hε`. Introduce `i j`. Proceed by induction on `hu using AddSubgroup.closure_induction with`. Consider the case `mem w hw`. Take `⟨α, hα, hP, a, ha, s, hs, t, ht, rfl⟩` from `hw`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Establish `hβα : β * α = α` using `FiniteAdeleRing.ext _ fun w => by`. Express the relevant statement in the definitionally equal form `evalV D.host.F w (β * α) = evalV D.host.F w α`. Rewrite using `[map_mul]`. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[h1, one_mul]`. Rewrite using `[hP w hw, mul_zero]`. Express the relevant statement in the definitionally equal form `(pairA D.host.F 0 β ⊗ₜ[D.host.F] (1 : D.host.E)) * (_ ⊗ₜ _) = _ ⊗ₜ _`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, one_mul]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `Prod.ext (mul_zero _) hβα`. Consider the case `zero => exact mul_zero _`. Consider the case `add x x' _ _ h h' => rw [Matrix.add_apply, mul_add, h, h']`. Consider the case `neg x _ h => rw [Matrix.neg_apply, mul_neg, h]`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem isHalf_of_mem' {S T : HSp D} {LS : Set (Fin S.rank → D.host.E)} {LT : Set (Fin T.rank → D.host.E)}
     {v : HeightOneSpectrum (𝓞 D.host.F)} {ε : AF D.host.F} (hε : IsPlaceIdem D v ε) {u : WO S T}
@@ -204,13 +202,11 @@ theorem isHalf_of_mem' {S T : HSp D} {LS : Set (Fin S.rank → D.host.E)} {LT : 
   | neg x _ h => rw [Matrix.neg_apply, mul_neg, h]
 
 /- English proof (translation)
-Take `⟨Φ, hΦ⟩` from `exists_comp D`. Take `⟨ε, hε, hns, hc, hpi⟩` from `inert_data hP`. Take `⟨e0, f0, h0⟩` from `exists_isPrimeIdem hΦ P`. Establish `eS : GlobalTheory.PlaceModel.latFrame S = GlobalTheory.LevSplit.L0sub S` using `SetLike.coe_injective (GlobalTheory.PlaceModel.coe_latFrame S)`. Establish `eT : GlobalTheory.PlaceModel.latFrame T = GlobalTheory.LevSplit.L0sub T` using `SetLike.coe_injective (GlobalTheory.PlaceModel.coe_latFrame T)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsS : IsSelfDualC S (GlobalTheory.LevSplit.L0sub S)` using `eS ▸ GlobalTheory.PlaceModel.isSelfDualC_latFrame S`. Establish `hsT : IsSelfDualC T (GlobalTheory.LevSplit.L0sub T)` using `eT ▸ GlobalTheory.PlaceModel.isSelfDualC_latFrame T`. Take `⟨βS, hβS⟩` from `GlobalTheory.latticeFrame.exists_frame D.host.F D.host.E _ _ hsS.1`. Take `⟨βT, hβT⟩` from `GlobalTheory.latticeFrame.exists_frame D.host.F D.host.E _ _ hsT.1`. Introduce and unpack `f hf k ⟨hk, a, a', ha, sk⟩ k' ⟨hk', b, b', hb, sk'⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components.
 
-Rewrite `sk` using `[(hpi a a' ha).2]`. Rewrite `sk'` using `[(hpi b b' hb).2]`. Establish `key : ∀ u ∈ latO S T (GlobalTheory.LevSplit.L0sub S : Set (Fin S.rank → D.host.E)) (GlobalTheory.LevSplit.L0sub T : Set (Fin T.rank → D.host.E)) (fun w => w = P.under (𝓞 D.host.F)), heisO ψ S T u f = f` using `fun u hu => hf.2 e0 f0 h0 u (GlobalTheory.PlaceModel.latO_le_top _ hu) (Or.inl (by rw [(hpi e0 f0 h0).1]; exact isHalf_of_mem' hε hu))`. Use `hI hrk hev _ _ hsS hsT βS βT hβS hβT _ ε hε (two_not_mem hc) (split_mul_eq_zero hε hns) (unrAtV_of h0 (hpi e0 f0 h0).2 uS) (unrAtV_of h0 (hpi e0 f0 h0).2 uT) k k' sk sk' ?_ ?_ f hf.1 ⟨fun u hu => key _ (AddSubgroup.nsmul_mem _ hu 2), fun e _ u hu _ => key u hu⟩` and prove the remaining obligations. Conclude with `(GlobalTheory.LevSplit.mem_St_iff βS _ hβS _).2 ((GlobalTheory.LevSplit.ksph_iff S k).1 hk).2`.
-
-Conclude with `(GlobalTheory.LevSplit.mem_St_iff βT _ hβT _).2 ((GlobalTheory.LevSplit.ksph_iff T k').1 hk').2`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem vacFix_of_inert (ψ : AddChar (AF D.host.F) ℂ) {S T : HSp D} {χS χT : (AE D)ˣ →* Circle}
     (om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)) (P : Pl D.host.E)
@@ -243,19 +239,19 @@ end GlobalTheory.VacFixInert
 namespace GlobalTheory.VacFixInert
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 I0 T A3 Ks _ _ _ R F hC t P hG hP`. Establish `hU` using `GlobalTheory.T.splittingCharacters_unramified_offLevels R.toRealDat F.lv2 hC.base.lev t P hG`. Establish `hη` using `hU.1`. Establish `hμ` using `hU.2`. Establish `hr : Odd D.R.r` using `r_odd`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht : Odd D.R.t` using `D.R.t_odd`. Establish `hm2` using `D.R.two_le_m`. Use `⟨fun k hk => ?_, ?_, fun i => ?_⟩` and prove the remaining obligations. Establish `hW` using `hC.fullY t k hk`. Establish `u` using `unrPl_step' (hμ (k + 1) (by omega) hk.le) hη`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp` using `parity_step (j := k) hr ht`. Use `vacFix_of_inert _ _ P hW.inert ?_ ?_ hP u.1 u.2` and prove the remaining obligations. Rewrite using `[rank_Yc' (by omega), rank_Yc' (by omega)]; exact hp.1`. Rewrite using `[rank_Yc' (by omega), rank_Yc' (by omega)]; exact hp.2`. Establish `hW` using `hC.fullX t`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `u` using `unrPl_step' (hμ D.R.m (by omega) le_rfl) hη`. Establish `hp` using `parity_step (j := D.R.m - 1) hr ht`. Establish `hm : D.R.m - 1 + 1 = D.R.m` using `by omega`. Rewrite `hp` using `[hm]`. Establish `hX : D.sp.X'.rank = D.R.r + D.R.m * D.R.t` using `D.sp.X'_rank`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `vacFix_of_inert _ _ P hW.inert ?_ ?_ hP u.1 u.2` and prove the remaining obligations. Rewrite using `[rank_Yc' (by omega), hX]; exact hp.1`. Rewrite using `[rank_Yc' (by omega), hX]; exact hp.2`. Establish `hW` using `hC.fullP i t`. Establish `u1 : UnrPl P (R.toLevCh.mu t ((i : ℕ) + 1))` using `hμ ((i : ℕ) + 1) (by omega) i.2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hV : (Vc D i).rank = D.R.r + D.R.t` using `D.sp.V_rank _ (Nat.le_add_left _ _) i.2`. Establish `hWr : (Wc D i).rank = D.R.r` using `D.sp.W_rank _ (Nat.le_add_left _ _) i.2`. Use `vacFix_of_inert _ _ P hW.inert ?_ ?_ hP u1 (unrPl_mul_inv' u1 hη)` and prove the remaining obligations. Rewrite using `[hV, hWr]`. Use `ht.pos` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Use `left`. Rewrite using `[hV]`. Conclude with `hr.add_odd ht`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fixAll_inert : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type}
     {A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]

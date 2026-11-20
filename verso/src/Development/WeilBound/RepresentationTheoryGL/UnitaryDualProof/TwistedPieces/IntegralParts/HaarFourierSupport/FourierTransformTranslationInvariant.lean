@@ -15,14 +15,14 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 def Tm (m : ℕ) (t : kˣ) : GL (Fin m) k := Units.map (Matrix.scalar (Fin m) : k →+* Matrix (Fin m) (Fin m) k) t
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[Tm, Matrix.scalar_apply, mulVec_diagonal]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem Tm_mulVec {m : ℕ} (t : kˣ) (u : Fin m → k) : (Tm m t).val *ᵥ u = (t : k) • u := by
   funext i
   simp [Tm, Matrix.scalar_apply, mulVec_diagonal]
 
 /- English proof (translation)
-Use `ext`. Simplify using `[Tm, Matrix.scalar_apply, Matrix.GeneralLinearGroup.val_det_apply, det_diagonal]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem Tm_det {m : ℕ} (t : kˣ) : Matrix.GeneralLinearGroup.det (Tm m t) = t ^ m := by
   ext
@@ -38,7 +38,7 @@ def phi0 (f : Sp k n → ℂ) : Sp k n → ℂ :=
   fun p => GlobalTheory.SplitDict.pf ψ (Measure.pi fun _ : Fin (dd Z) => ν) (fun q => f (F1 h q)) (Hb h p)
 
 /- English proof (translation)
-Simplify using `only [phi0, GlobalTheory.SplitDict.pf, real_test_function_apply]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem characteristic_function_integral_apply (f : Sp k n → ℂ) (p : Sp k n) :
     phi0 ψ ν h f p = ∫ u, f (p.1 - Pr τ Z p.1 + E Z u, p.2) * (ψ (u ⬝ᵥ D τ Z p.1) : ℂ) ∂(Measure.pi fun _ => ν) := by
@@ -46,7 +46,7 @@ theorem characteristic_function_integral_apply (f : Sp k n → ℂ) (p : Sp k n)
   rfl
 
 /- English proof (translation)
-Rewrite using `[characteristic_function_integral_apply]`. Simplify using `only [Pr_of_mem h hx, sub_self, zero_add]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem fourier_transform_on_base (f : Sp k n → ℂ) {x : Matrix (Fin n) (Fin n) k} (hx : x ∈ Bz Z) (v : Fin n → k) :
     phi0 ψ ν h f (x, v) = ∫ u, f (E Z u, v) * (ψ (u ⬝ᵥ D τ Z x) : ℂ) ∂(Measure.pi fun _ => ν) := by
@@ -54,7 +54,7 @@ theorem fourier_transform_on_base (f : Sp k n → ℂ) {x : Matrix (Fin n) (Fin 
   simp only [Pr_of_mem h hx, sub_self, zero_add]
 
 /- English proof (translation)
-Establish `h1 : (fun q => f (F1 h q)) ∈ SB (TT τ Z × (Fin (dd Z) → k))` using `(GlobalTheory.SplitDict.bijOn_comp (F1 h)).1 hf.1`. Establish `h2` using `GlobalTheory.SplitDict.pf_mem_SB (Measure.pi fun _ : Fin (dd Z) => ν) hc h1`. Conclude with `⟨(GlobalTheory.SplitDict.bijOn_comp (Hb h)).1 h2, Set.subset_univ _⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem test_vector_mem_schwartz_bruhat {c : kˣ} (hc : HasConductor ψ c) {f : Sp k n → ℂ} (hf : f ∈ supportedIn (Set.univ : Set (Sp k n))) :
     phi0 ψ ν h f ∈ supportedIn (Set.univ : Set (Sp k n)) := by
@@ -64,11 +64,11 @@ theorem test_vector_mem_schwartz_bruhat {c : kˣ} (hc : HasConductor ψ c) {f : 
   exact ⟨(GlobalTheory.SplitDict.bijOn_comp (Hb h)).1 h2, Set.subset_univ _⟩
 
 /- English proof (translation)
-Take `⟨⟨hl, hcs⟩, -⟩` from `hf`. Establish `hf' : f ∈ SB (Sp k n)` using `⟨hl, hcs⟩`. Establish `h1 : (fun q => f (F1 h q)) ∈ SB (TT τ Z × (Fin (dd Z) → k))` using `(GlobalTheory.SplitDict.bijOn_comp (F1 h)).mapsTo hf'`. Establish `h2 : (fun u : Fin (dd Z) → k => f (p.1 - Pr τ Z p.1 + E Z u, p.2)) ∈ SB (Fin (dd Z) → k)`. Use `GlobalTheory.SplitDict.slice_mem_SB h1 (Hb h p).1` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `u`. Simplify using `only [real_test_function_apply]`. Both sides reduce to the same expression. Take `⟨hl2, hcs2⟩` from `h2`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Establish `hc2 : Continuous fun u : Fin (dd Z) → k => (ψ (u ⬝ᵥ D τ Z p.1) : ℂ)` using `continuous_subtype_val.comp (hψ.comp (continuous_id.dotProduct continuous_const))`. Conclude with `(hl2.continuous.mul hc2).integrable_of_hasCompactSupport hcs2.mul_right`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem integrable_slice (hψ : Continuous ψ) {f : Sp k n → ℂ} (hf : f ∈ supportedIn (Set.univ : Set (Sp k n)))
     (p : Sp k n) :
@@ -100,7 +100,7 @@ def phiS (hψ : Continuous ψ) : (supportedIn (Set.univ : Set (Sp k n))) →ₗ[
     exact integral_const_mul _ _
 
 /- English proof (translation)
-Take `⟨x, v⟩` from `p`. Establish `hx : x ∈ Bz Z` using `hp.1`. Rewrite using `[fourier_transform_on_base ψ ν h f hx]`. Establish `h0 : ∀ u, f (E Z u, v) = 0` using `fun u => hf0 _ ⟨E_mem Z u, Set.mem_univ _⟩`. Simplify using `[h0]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem fourier_transform_support (f : Sp k n → ℂ) (hf0 : ∀ q ∈ Bz Z ×ˢ (Set.univ : Set (Fin n → k)), f q = 0) {p : Sp k n}
     (hp : p ∈ Bz Z ×ˢ (Set.univ : Set (Fin n → k))) : phi0 ψ ν h f p = 0 := by
@@ -111,13 +111,13 @@ theorem fourier_transform_support (f : Sp k n → ℂ) (hf0 : ∀ q ∈ Bz Z ×�
   simp [h0]
 
 /- English proof (translation)
-Take `⟨x, v⟩` from `p`. Establish `hx : x ∈ Bz Z` using `hp`. Take `⟨u0, rfl⟩` from `exists_E Z hx`. Establish `hy : (g : Matrix (Fin n) (Fin n) k) * E Z u0 * ((g⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) ∈ Bz Z`. Rewrite using `[← E_adL hg]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `E_mem Z _`. Express the relevant statement in the definitionally equal form `_ = phi0 ψ ν h f ((g : Matrix (Fin n) (Fin n) k) * E Z u0 * ((g⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k), (g : Matrix (Fin n) (Fin n) k) *ᵥ v)`. Rewrite using `[fourier_transform_on_base ψ ν h _ (E_mem Z u0), fourier_transform_on_base ψ ν h f hy]`. Establish `key` using `GlobalTheory.SplitWeil.integral_comp_mulVec_eq_smul ν (adU h hg) (fun u => f (E Z u, (g : Matrix (Fin n) (Fin n) k) *ᵥ v) * (ψ (u ⬝ᵥ D τ Z ((g : Matrix (Fin n) (Fin n) k) * E Z u0 * ((g⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k))) : ℂ))`. Establish `hn : nabs k (Matrix.GeneralLinearGroup.det (adU h hg)) = 1`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[nabs, distribHaarChar_adU h hg]`. Rewrite `key` using `[hn, inv_one, one_smul]`. Rewrite using `[← key]`. Use `congr 1`. Use function extensionality and compare the values at `u`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `hv : ((adU h hg : GL (Fin (dd Z)) k) : Matrix (Fin (dd Z)) (Fin (dd Z)) k) *ᵥ u = adL hg u` using `adM_mulVec hg u`. Simplify using `only [hv, E_adL hg, dot_conj h hg u (E_mem Z u0)]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem fourier_transform_equivariant {g : GL (Fin n) k} (hg : g ∈ Gz Z) (f : Sp k n → ℂ) {p : Sp k n} (hp : p.1 ∈ Bz Z) :
     phi0 ψ ν h (fun q => f (act g q)) p = phi0 ψ ν h f (act g p) := by
@@ -144,9 +144,9 @@ theorem fourier_transform_equivariant {g : GL (Fin n) k} (hg : g ∈ Gz Z) (f : 
   rfl
 
 /- English proof (translation)
-Use `⟨(test_vector_mem_schwartz_bruhat ψ ν h hc ⟨hf.1, Set.subset_univ _⟩).1, fun p hp => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h0`. Establish `h0' : p.2 = 0` using `by simpa [UU] using h0`. Apply `hp` to reduce the goal to its premises. Rewrite using `[characteristic_function_integral_apply]`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `: ∀ u, f (p.1 - Pr τ Z p.1 + E Z u, p.2) = 0` using `fun u => by`. Assume the negation of the conclusion as `hne`. Conclude with `(hf.2 hne) h0'`. Simplify using `[this]`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fourier_transform_preserves_compact {c : kˣ} (hc : HasConductor ψ c) {f : Sp k n → ℂ} (hf : f ∈ supportedIn (UU : Set (Sp k n))) :
     phi0 ψ ν h f ∈ supportedIn (UU : Set (Sp k n)) := by
@@ -167,9 +167,9 @@ def Refl (τ : Matrix (Fin n) (Fin n) k →ₗ[k] k) (Z : Subalgebra k (Matrix (
 
 omit [MeasurableSpace k] [BorelSpace k] [ν.IsAddHaarMeasure] in
 /- English proof (translation)
-Take `⟨x, v⟩` from `p`. Establish `hP : Pr τ Z (Pr τ Z x) = Pr τ Z x` using `Pr_E h _`. Establish `hs : Pr τ Z (x - (2 : k) • Pr τ Z x) = Pr τ Z x - (2 : k) • Pr τ Z (Pr τ Z x)`. Rewrite using `[sub_eq_add_neg, Pr_add, ← neg_smul, Pr_smul, neg_smul, ← sub_eq_add_neg]`. Simplify using `only [Refl, Prod.mk.injEq, and_true]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hs, hP]`. Use `module`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Refl_Refl (p : Sp k n) : Refl τ Z (Refl τ Z p) = p := by
   obtain ⟨x, v⟩ := p
@@ -181,15 +181,13 @@ theorem Refl_Refl (p : Sp k n) : Refl τ Z (Refl τ Z p) = p := by
   module
 
 /- English proof (translation)
-Take `⟨⟨hl, hcs⟩, -⟩` from `hf`. Establish `hf' : f ∈ SB (Sp k n)` using `⟨hl, hcs⟩`. Establish `h1 : (fun q => f (F1 h q)) ∈ SB (TT τ Z × (Fin (dd Z) → k))` using `(GlobalTheory.SplitDict.bijOn_comp (F1 h)).mapsTo hf'`. Establish `e1 : ∀ q, phi0 ψ ν h f (F1 h q) = GlobalTheory.SplitDict.pf ψ (Measure.pi fun _ : Fin (dd Z) => ν) (fun q => f (F1 h q)) (q.1, G τ Z *ᵥ q.2)`. Introduce `q`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [phi0, partial_fourier_first_coordinates]`. Establish `e2` using `pf_G h ψ ν (GlobalTheory.SplitDict.pf ψ (Measure.pi fun _ : Fin (dd Z) => ν) (fun q => f (F1 h q))) (Hb h p)`. Establish `e3` using `GlobalTheory.SplitDict.pf_pf (ψ := ψ) ν hc h1 ((Hb h p).1, (G τ Z)⁻¹ *ᵥ (Hb h p).2)`. Establish `e4 : F1 h ((Hb h p).1, -((G τ Z)⁻¹ *ᵥ (Hb h p).2)) = Refl τ Z p`. Rewrite using `[real_test_function_apply]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show (p.1 - Pr τ Z p.1 + E Z (-((G τ Z)⁻¹ *ᵥ D τ Z p.1)), p.2) = (p.1 - (2 : k) • Pr τ Z p.1, p.2)`. Rewrite using `[E_neg]`. Use `show (p.1 - Pr τ Z p.1 + -Pr τ Z p.1, p.2) = _`. Use `congr 1`. Use `module`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `show GlobalTheory.SplitDict.pf ψ _ (fun q => phi0 ψ ν h f (F1 h q)) (Hb h p) = _`. Simplify using `only [e1]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[e3]`. Simplify using `only [e4, Fintype.card_fin]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem fourier_transform_involution {c : kˣ} (hc : HasConductor ψ c) {f : Sp k n → ℂ}
     (hf : f ∈ supportedIn (Set.univ : Set (Sp k n))) (p : Sp k n) :
@@ -222,13 +220,13 @@ theorem fourier_transform_involution {c : kˣ} (hc : HasConductor ψ c) {f : Sp 
       ring
 
 /- English proof (translation)
-Take `⟨x, v⟩` from `p`. Establish `hx : x ∈ Bz Z` using `hp`. Establish `htx : (t : k) • x ∈ Bz Z`. Introduce `a ha`. Rewrite using `[mul_smul_comm, smul_mul_assoc, hx a ha]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `phi0 ψ ν h f ((t : k) • x, v) = _`. Rewrite using `[fourier_transform_on_base ψ ν h f htx, fourier_transform_on_base ψ ν h _ hx]`. Establish `key` using `GlobalTheory.SplitWeil.integral_comp_mulVec_eq_smul ν (Tm (dd Z) t) (fun u => f (PositivityTheory.RgUd.TP.Nil.hom t⁻¹ (E Z u, v)) * (ψ (u ⬝ᵥ D τ Z x) : ℂ))`. Rewrite `key` using `[Tm_det]`. Simplify using `only [Tm_mulVec] at key`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hn : nabs k (t ^ dd Z) = nabs k t ^ dd Z`. Simplify using `[nabs, map_pow]`. Establish `hl : ∀ u : Fin (dd Z) → k, f (PositivityTheory.RgUd.TP.Nil.hom t⁻¹ (E Z ((t : k) • u), v)) * (ψ (((t : k) • u) ⬝ᵥ D τ Z x) : ℂ) = f (E Z u, v) * (ψ (u ⬝ᵥ D τ Z ((t : k) • x)) : ℂ)`. Introduce `u`. Simplify using `only [PositivityTheory.RgUd.TP.Nil.hom, E_smul, smul_smul, Units.inv_mul, one_smul, D_smul, smul_dotProduct, dotProduct_smul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [hl] at key`. Rewrite using `[key, hn, Complex.real_smul, inv_pow]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem fourier_transform_homothety (t : kˣ) (f : Sp k n → ℂ) {p : Sp k n} (hp : p.1 ∈ Bz Z) :
     phi0 ψ ν h f (PositivityTheory.RgUd.TP.Nil.hom t p) =
@@ -255,9 +253,9 @@ theorem fourier_transform_homothety (t : kˣ) (f : Sp k n → ℂ) {p : Sp k n} 
   rw [key, hn, Complex.real_smul, inv_pow]
 
 /- English proof (translation)
-Establish `hzB : z ∈ Bz Z` using `fun a ha => hZ.1 a ha z hz`. Take `⟨uz, rfl⟩` from `exists_E Z hzB`. Rewrite using `[fourier_transform_on_base ψ ν h _ hx, fourier_transform_on_base ψ ν h f hx]`. Establish `h0 : uz ⬝ᵥ D τ Z x = 0`. Rewrite using `[dot_D]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hzx`. Establish `key` using `MeasureTheory.integral_add_right_eq_self (μ := Measure.pi fun _ : Fin (dd Z) => ν) (fun w => f (E Z w, v) * (ψ ((w - uz) ⬝ᵥ D τ Z x) : ℂ)) uz`. Simplify using `only [add_sub_cancel_right, sub_dotProduct, h0, sub_zero, E_add] at key`. Conclude with `key`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fourier_transform_translation_invariant (hZ : CR Z) (f : Sp k n → ℂ) {z : Matrix (Fin n) (Fin n) k} (hz : z ∈ Z)
     {x : Matrix (Fin n) (Fin n) k} (hx : x ∈ Bz Z) (hzx : τ (z * x) = 0) (v : Fin n → k) :

@@ -18,16 +18,16 @@ def HasFactors (M : Type) [AddCommGroup M] [Module R M] {ι : Type} (F : ι → 
 variable {M N : Type} [AddCommGroup M] [Module R M] [AddCommGroup N] [Module R N] {ι κ : Type}
 
 /- English proof (translation)
-Take `⟨r, h1, h2, -⟩` from `h`. Conclude with `isFiniteLength_of_exists_compositionSeries ⟨r, h1, h2⟩`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem HasFactors.finiteLength {F : ι → ModuleCat.{0} R} (h : HasFactors M F) : IsFiniteLength R M := by
   obtain ⟨r, h1, h2, -⟩ := h
   exact isFiniteLength_of_exists_compositionSeries ⟨r, h1, h2⟩
 
 /- English proof (translation)
-Take `⟨r, h1, h2, e, he⟩` from `h`. Take `⟨s, t, h3, h4, h5, h6, e', he'⟩` from `h'`. Take `⟨c, hc⟩` from `CompositionSeries.jordan_holder r s (h1.trans h3.symm) (h2.trans h4.symm)`. Use `⟨t, h5, h6, (e.trans c).trans e', fun i => ?_⟩` and prove the remaining obligations. Take `⟨f⟩` from `he i`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨g⟩` from `he' (c (e i))`. Conclude with `⟨(f.trans (JordanHolderLattice.Iso.linearEquiv (hc (e i)))).trans g⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem HasFactors.of_same {F : ι → ModuleCat.{0} R} (h : HasFactors M F) (h' : SameFactors R M N) :
     HasFactors N F := by
@@ -40,17 +40,17 @@ theorem HasFactors.of_same {F : ι → ModuleCat.{0} R} (h : HasFactors M F) (h'
   exact ⟨(f.trans (JordanHolderLattice.Iso.linearEquiv (hc (e i)))).trans g⟩
 
 /- English proof (translation)
-The claim follows from `h.of_same (SameFactors.of_equiv h.finiteLength e)`.
+A detailed English derivation is pending.
 -/
 theorem HasFactors.of_equiv {F : ι → ModuleCat.{0} R} (h : HasFactors M F) (e : M ≃ₗ[R] N) :
     HasFactors N F := h.of_same (SameFactors.of_equiv h.finiteLength e)
 
 /- English proof (translation)
-Take `⟨r, h1, h2, e, he⟩` from `h`. Take `⟨s, h3, h4, e', he'⟩` from `h'`. Take `⟨c, hc⟩` from `CompositionSeries.jordan_holder r s (h1.trans h3.symm) (h2.trans h4.symm)`. Use `⟨(e.trans c).trans e'.symm, fun i => ?_⟩` and prove the remaining obligations. Take `⟨j, hj⟩` from `e'.surjective (c (e i))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hj' : ((e.trans c).trans e'.symm) i = j`. Simplify using `[← hj]`. Rewrite using `[hj']`. Take `⟨f⟩` from `he i`. Take `⟨g⟩` from `he' j`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite `g` using `[hj]`. Conclude with `⟨(f.trans (JordanHolderLattice.Iso.linearEquiv (hc (e i)))).trans g.symm⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem HasFactors.unique {F : ι → ModuleCat.{0} R} {F' : κ → ModuleCat.{0} R} (h : HasFactors M F)
     (h' : HasFactors M F') : ∃ e : ι ≃ κ, ∀ i, Nonempty (F i ≃ₗ[R] F' (e i)) := by
@@ -68,7 +68,7 @@ theorem HasFactors.unique {F : ι → ModuleCat.{0} R} {F' : κ → ModuleCat.{0
   exact ⟨(f.trans (JordanHolderLattice.Iso.linearEquiv (hc (e i)))).trans g.symm⟩
 
 /- English proof (translation)
-Take `⟨r, h1, h2, e, he⟩` from `h`. Use `⟨r, h1, h2, c.symm.trans e, fun j => ?_⟩` and prove the remaining obligations. Take `⟨i, rfl⟩` from `c.surjective j`. Rewrite using `[hc, Equiv.trans_apply, Equiv.symm_apply_apply]`. Conclude with `he i`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem HasFactors.reindex {F : ι → ModuleCat.{0} R} {F' : κ → ModuleCat.{0} R} (h : HasFactors M F)
     (c : ι ≃ κ) (hc : ∀ i, F' (c i) = F i) : HasFactors M F' := by
@@ -79,7 +79,7 @@ theorem HasFactors.reindex {F : ι → ModuleCat.{0} R} {F' : κ → ModuleCat.{
   exact he i
 
 /- English proof (translation)
-Set `r : CompositionSeries (Submodule R M)` to `{ length := 1 toFun := ![⊥, ⊤] step := fun i => by fin_cases i`. Conclude with `bot_covBy_top }`. Use `⟨r, rfl, rfl, Equiv.ofUnique Unit (Fin 1), fun i => ⟨?_⟩⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `M ≃ₗ[R] (↥(⊤ : Submodule R M) ⧸ (⊥ : Submodule R M).comap (⊤ : Submodule R M).subtype)`. Conclude with `Submodule.topEquiv.symm.trans (Submodule.quotEquivOfEqBot _ (by simp)).symm`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem HasFactors.simple [IsSimpleModule R M] : HasFactors M (fun _ : Unit => ModuleCat.of R M) := by
   let r : CompositionSeries (Submodule R M) :=
@@ -93,11 +93,11 @@ theorem HasFactors.simple [IsSimpleModule R M] : HasFactors M (fun _ : Unit => M
   exact Submodule.topEquiv.symm.trans (Submodule.quotEquivOfEqBot _ (by simp)).symm
 
 /- English proof (translation)
-Take `⟨t, h1, h2, a, ha⟩` from `h`. Take `⟨s, h3, h4, c, hc⟩` from `h'`. Take `⟨r, h5, h6, e, he1, he2⟩` from `exists_series_of_exact (R := R) (A := M) (C := N) LinearMap.inl_injective LinearMap.snd_surjective .inl_snd t h1 h2 s h3 h4`. Use `⟨r, h5, h6, (a.sumCongr c).trans e, ?_⟩` and prove the remaining obligations. Introduce and unpack `(i | j)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Take `⟨u⟩` from `ha i`. Take `⟨v⟩` from `he1 (a i)`. Conclude with `⟨u.trans v⟩`. Take `⟨u⟩` from `hc j`. Take `⟨v⟩` from `he2 (c j)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨u.trans v⟩`.
+Supply the required witnesses or components.
 -/
 theorem HasFactors.prod {F : ι → ModuleCat.{0} R} {F' : κ → ModuleCat.{0} R} (h : HasFactors M F)
     (h' : HasFactors N F') : HasFactors (M × N) (Sum.elim F F') := by
@@ -115,7 +115,7 @@ theorem HasFactors.prod {F : ι → ModuleCat.{0} R} {F' : κ → ModuleCat.{0} 
     exact ⟨u.trans v⟩
 
 /- English proof (translation)
-Use `⟨RelSeries.singleton _ ⊥, rfl, Subsingleton.elim _ _, Equiv.equivOfIsEmpty ι (Fin 0), fun i => ?_⟩` and prove the remaining obligations. Conclude with `isEmptyElim i`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem HasFactors.zero [Subsingleton M] [IsEmpty ι] (F : ι → ModuleCat.{0} R) : HasFactors M F := by
   refine ⟨RelSeries.singleton _ ⊥, rfl, Subsingleton.elim _ _, Equiv.equivOfIsEmpty ι (Fin 0), fun i => ?_⟩
@@ -130,7 +130,7 @@ def succEquiv (m : ℕ) (ι : Type) : ι ⊕ (Fin m × ι) ≃ Fin (m + 1) × ι
     induction j using Fin.cases <;> simp
 
 /- English proof (translation)
-The claim follows from `| 0, _, _, _, _, _ => HasFactors.zero _ | m + 1, N, _, _, F, h => (((h 0).prod (HasFactors.pi (F := fun j => F j.succ) fun j => h (Fin.succ j))).of_equiv (Fin.consLinearEquiv R N)).reindex (succEquiv m ι) (by rintro (i | ⟨j, i⟩) <;> rfl)`.
+A detailed English derivation is pending.
 -/
 theorem HasFactors.pi : ∀ {m : ℕ} {N : Fin m → Type} [∀ j, AddCommGroup (N j)] [∀ j, Module R (N j)]
     {F : Fin m → ι → ModuleCat.{0} R}, (∀ j, HasFactors (N j) (F j)) →
@@ -146,7 +146,7 @@ section Rep
 variable {k G : Type} [Field k] [Group G]
 
 /- English proof (translation)
-Set `u` to `(Representation.IntertwiningMap.equivLinearMapAsModule π π').symm f`. Conclude with `⟨u.toLinearMap, fun g x => LinearMap.congr_fun (u.isIntertwining' g) x, fun _ => rfl⟩`.
+Introduce a local definition for the expression. Supply the required witnesses or components.
 -/
 theorem equivariant_of_linear {M N : Type} [AddCommGroup M] [Module k M] [AddCommGroup N] [Module k N]
     {π : Representation k G M} {π' : Representation k G N}
@@ -157,9 +157,9 @@ theorem equivariant_of_linear {M N : Type} [AddCommGroup M] [Module k M] [AddCom
   exact ⟨u.toLinearMap, fun g x => LinearMap.congr_fun (u.isIntertwining' g) x, fun _ => rfl⟩
 
 /- English proof (translation)
-Establish `h : IsSimpleModule k (chr χ).ρ.asModule`. Rewrite using `[isSimpleModule_iff_finrank_eq_one, (chr χ).ρ.asModuleEquiv.finrank_eq]`. Simplify using the standard rewrite rules. Use `IsSimpleModule.nontrivial k (chr χ).ρ.asModule` as an intermediate fact. Use `{ eq_bot_or_eq_top := fun S => ?_ }` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Break down `eq_bot_or_eq_top (S.restrictScalars k) with h | h` into its components or cases. Conclude with `Or.inl (by simpa using h)`. Conclude with `Or.inr (by simpa using h)`.
+Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative.
 -/
 theorem chr_simple (χ : G →* kˣ) : IsSimpleModule (MonoidAlgebra k G) (chr χ).ρ.asModule := by
   have h : IsSimpleModule k (chr χ).ρ.asModule := by
@@ -180,11 +180,11 @@ def prodAsModule {M N : Type} [AddCommGroup M] [Module k M] [AddCommGroup N] [Mo
     (Function.bijective_id (α := M × N))
 
 /- English proof (translation)
-Establish `: Module.Finite k T.ρ.asModule` using `Module.Finite.equiv T.ρ.asModuleEquiv.symm`. Establish `: Module.Finite k Y` using `Module.Finite.of_injective (Y.subtype.restrictScalars k) Y.subtype_injective`. Take `⟨A, e, he⟩` from `exists_ob (Representation.ofModule' (k := k) (G := G) Y)`. Establish `key : ∀ g x, e.symm (A.ρ g x) = MonoidAlgebra.of k G g • e.symm x` using `fun g x => by`. Apply `e.injective` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[e.apply_symm_apply]`. Use `he g (e.symm x)` as an intermediate fact. Rewrite `this` using `[e.apply_symm_apply]`. Rewrite using `[← this]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `⟨A, T.ρ.asModuleEquiv.toLinearMap ∘ₗ Y.subtype.restrictScalars k ∘ₗ e.symm.toLinearMap, C.ρ.asModuleEquiv.toLinearMap ∘ₗ q.restrictScalars k ∘ₗ e.symm.toLinearMap, fun g x => ?_, T.ρ.asModuleEquiv.injective.comp (Y.subtype_injective.comp e.symm.injective), fun g x => ?_, C.ρ.asMo …` and prove the remaining obligations. Simplify using `[key, Representation.asModuleEquiv_map_smul]`. Both sides reduce to the same expression. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe, LinearMap.restrictScalars_apply, key, map_smul]`. Simplify using `[Representation.asModuleEquiv_map_smul]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
 Both sides reduce to the same expression.
 -/
@@ -214,23 +214,23 @@ theorem exists_subquot (T C : Ob k G) (Y : Submodule (MonoidAlgebra k G) T.ρ.as
     rfl
 
 /- English proof (translation)
-Introduce `k G _ _ T ω t μ s C hC h`. Establish `hT : IsFiniteLength (MonoidAlgebra k G) T.ρ.asModule` using `finiteLength_asModule T.ρ (isFiniteLength_iff_isNoetherian_isArtinian.mpr ⟨inferInstance, inferInstance⟩)`. Take `⟨r, hr1, hr2⟩` from `isFiniteLength_iff_exists_compositionSeries.mp hT`. Establish `fT : HasFactors T.ρ.asModule (fun i : Fin r.length => ModuleCat.of (MonoidAlgebra k G) (factor r i))` using `⟨r, hr1, hr2, Equiv.refl _, fun _ => ⟨LinearEquiv.refl _ _⟩⟩`. Establish `fL` using `(HasFactors.pi (N := fun e : Fin t => (chr (ω ^ (-(e.val : ℤ)))).ρ.asModule) fun e => @HasFactors.simple _ _ _ _ _ (chr_simple (ω ^ (-(e.val : ℤ))))).of_equiv (piAsModule fun e : Fin t => (chr (ω ^ (-(e.val : ℤ)))).ρ).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `fR` using `(fT.prod fL).of_equiv (prodAsModule _ _).symm`. Establish `fS` using `(HasFactors.pi (N := fun _ : Fin μ => (refSum T ω t).asModule) fun _ => fR).of_equiv (piAsModule fun _ : Fin μ => refSum T ω t).symm`. Establish `fC` using `((HasFactors.pi (N := fun a => (C a).ρ.asModule) fun a => @HasFactors.simple _ _ _ _ _ (hC a)).of_equiv (piAsModule fun a => (C a).ρ).symm).of_same h`. Take `⟨e, he⟩` from `fC.unique fS`. Use `⟨fun a => Sum.elim (fun _ => none) (fun p => some p.1) (e (a, ())).2, fun a x hx => ?_, fun a hx => ?_, fun x => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨u⟩` from `he (a, ()) beta_reduce at hx`. Generalize the expression as in `e (a, ()) = z at hx u`. Break down `z with ⟨b, i | ⟨y, w⟩⟩` into its components or cases. Simplify using `at hx`. Take `rfl : y = x` from `by simpa using hx`.
+Extract witnesses or component facts from the available result. Replace the chosen expression with an arbitrary variable. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨f, hf1, hf2⟩` from `equivariant_of_linear (π := (C a).ρ) (π' := (chr (ω ^ (-(y.val : ℤ)))).ρ) u.toLinearMap`. Use `⟨f, hf1, ?_⟩` and prove the remaining obligations. Establish `: ⇑f ∘ (C a).ρ.asModuleEquiv = (chr (ω ^ (-(y.val : ℤ)))).ρ.asModuleEquiv ∘ u` using `funext hf2`. Rewrite using `[← Function.Bijective.of_comp_iff _ (C a).ρ.asModuleEquiv.bijective, this]`. Conclude with `(LinearEquiv.bijective _).comp u.bijective`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨u⟩` from `he (a, ()) beta_reduce at hx`. Generalize the expression as in `e (a, ()) = z at hx u`. Break down `z with ⟨b, i | ⟨y, w⟩⟩` into its components or cases. Set `u' : (C a).ρ.asModule ≃ₗ[MonoidAlgebra k G] factor r i` to `u`. Conclude with `exists_subquot T (C a) (r i.succ) (u'.symm.toLinearMap ∘ₗ Submodule.mkQ _) (u'.symm.surjective.comp (Submodule.mkQ_surjective _))`.
+Replace the chosen expression with an arbitrary variable. Separate the alternatives or extract the components of the hypothesis. Introduce a local definition for the expression. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `at hx`. Use `Eq.trans ?_ (Finset.card_fin μ)` and prove the remaining obligations. Use `symm`. Use `Finset.card_bij (fun b _ => (e.symm (b, Sum.inr (x, ()))).1) (fun b _ => ?_) (fun b _ b' _ hb => ?_) (fun a ha => ?_)` and prove the remaining obligations. Establish `: ((e.symm (b, Sum.inr (x, ()))).1, ()) = e.symm (b, Sum.inr (x, ()))` using `rfl`.
+Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[this]`. Establish `: e.symm (b, Sum.inr (x, ())) = e.symm (b', Sum.inr (x, ()))` using `Prod.ext hb rfl`. Simplify using `using this`. Use `⟨(e (a, ())).1, Finset.mem_univ _, ?_⟩` and prove the remaining obligations. Establish `h2 : (e (a, ())).2 = Sum.inr (x, ())`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable.
 
-Use `(Finset.mem_filter.mp ha).2` as an intermediate fact. Use `beta_reduce at this`. Generalize the expression as in `(e (a, ())).2 = z at this`. Break down `z with i | ⟨y, w⟩` into its components or cases. Simplify using `at this`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `using this`. Rewrite using `[← h2]`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem jh_match : ∀ {k G : Type} [Field k] [Group G] (T : Ob k G) (ω : G →* kˣ) (t μ s : ℕ) (C : Fin s → Ob k G), (∀ a, IsSimpleModule (MonoidAlgebra k G) (C a).ρ.asModule) → SameSS (piRep fun a => (C a).ρ) (piRep fun _ : Fin μ => refSum T ω t) → ∃ c : Fin s → Option (Fin t), (∀ a e, c a = some e → ∃ f, IsHom (C a) (chr (ω ^ (-(e.val : ℤ)))) f ∧ Function.Bijective f) ∧ (∀ a, c a = none → ∃ (A₁ : Ob k G) (j : (Fin A₁.m → k) →ₗ[k] (Fin T.m → k)) (p : (Fin A₁.m → k) →ₗ[k] (Fin (C a).m → k)), IsHom A₁ T j ∧ Function.Injective j ∧ IsHom A₁ (C a) p ∧ Function.Surjective p) ∧ ∀ e, (Finset.univ.filter fun a => c a = some e).card = μ := by
   intro k G _ _ T ω t μ s C hC h

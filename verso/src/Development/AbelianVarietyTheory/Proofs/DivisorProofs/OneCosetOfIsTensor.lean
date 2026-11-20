@@ -12,9 +12,9 @@ open GlobalTheory.SplitWeil GlobalTheory.SplitFlip GlobalTheory.RootEx GlobalThe
 variable {k : Type} [Field k]
 
 /- English proof (translation)
-Use extensionality with `r s`. Simplify using `only [stepPt, Matrix.add_apply, Matrix.of_apply]`. Distinguish the cases in `h : Free (c / 2 + 1) (r, s) ∨ Kept (r, s)`. Rewrite using `[dif_pos h, dif_pos h]`. Simplify using `only [Pi.add_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[dif_neg h, dif_neg h, hY r s (fun hf => h (Or.inl hf))]`. Simplify using the standard rewrite rules.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem stepPt_add {n n' : Type} {c : ℕ} (x₀ : Matrix n n' k) (e : StepVar n c n' → k)
     (Y : Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k) (hY : ∀ r s, ¬ Free (c / 2 + 1) (r, s) → Y r s = 0) :
@@ -29,16 +29,16 @@ theorem stepPt_add {n n' : Type} {c : ℕ} (x₀ : Matrix n n' k) (e : StepVar n
     simp
 
 /- English proof (translation)
-Simplify using `only [ch, Matrix.add_apply]`. Conclude with `Finset.sum_add_distrib`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ch_add {n n' : Type} {c : ℕ} (X Y : Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k) : ch (X + Y) = ch X + ch Y := by
   simp only [ch, Matrix.add_apply]
   exact Finset.sum_add_distrib
 
 /- English proof (translation)
-Rewrite using `[← map_inv]`. Use extensionality with `i j`. Simplify using `only [frameGL, Units.coe_mapEquiv, Matrix.reindex_apply, Matrix.submatrix_apply, Matrix.mul_apply]`. Simplify using `only [Finset.sum_mul]`. Rewrite using `[← (frame h').sum_comp]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[← (frame h).sum_comp]`. Simplify using `[Matrix.submatrix_apply, Equiv.symm_apply_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem frame_mul {a c b a' c' b' : ℕ} (h : a + c = b) (h' : a' + c' = b') (g : GL (Fin b) k) (g' : GL (Fin b') k)
     (X : Matrix (Fin a ⊕ Fin c) (Fin a' ⊕ Fin c') k) :
@@ -61,7 +61,7 @@ abbrev Shift (G : Grid k) : Type :=
 def Shift.vars (Y : Shift G) : Vars G := fun j rs => Y j rs.1.1 rs.1.2
 
 /- English proof (translation)
-Conclude with `stepPt_add (x j) (e j) (Y j) (hY j)`.
+A detailed English derivation is pending.
 -/
 theorem stepPt_shift (x : ColArgs G) (e : Vars G) (Y : Shift G)
     (hY : ∀ j r s, ¬ Free ((G.m - 2 - j.val) / 2 + 1) (r, s) → Y j r s = 0) (j : Fin (G.m - 1)) :
@@ -69,7 +69,7 @@ theorem stepPt_shift (x : ColArgs G) (e : Vars G) (Y : Shift G)
   exact stepPt_add (x j) (e j) (Y j) (hY j)
 
 /- English proof (translation)
-Unfold `colVar`. Rewrite using `[stepPt_shift x e Y hY j, Matrix.add_apply, hY j _ _ (by simp [Free]), add_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 private lemma colVar_add_shift_eq_of_not_free (x : ColArgs G) (e : Vars G) (Y : Shift G)
     (hY : ∀ j r s, ¬ Free ((G.m - 2 - j.val) / 2 + 1) (r, s) → Y j r s = 0) (j : Fin (G.m - 1))
@@ -78,9 +78,9 @@ private lemma colVar_add_shift_eq_of_not_free (x : ColArgs G) (e : Vars G) (Y : 
   rw [stepPt_shift x e Y hY j, Matrix.add_apply, hY j _ _ (by simp [Free]), add_zero]
 
 /- English proof (translation)
-Unfold `rowVar`. Use `split_ifs with h`. Use `Finset.sum_congr rfl fun l _ => ?_ split_ifs` and prove the remaining obligations. Rewrite using `[show stepPt (x j) ((e + Y.vars) ⟨j, h⟩) = stepPt (x j) (e ⟨j, h⟩) + Y ⟨j, h⟩ from stepPt_shift x e Y hY ⟨j, h⟩, Matrix.add_apply, hX, add_zero]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 private lemma rowVar_add_shift_eq_of_not_free (x : ColArgs G) (e : Vars G) (Y : Shift G)
     (hY : ∀ j r s, ¬ Free ((G.m - 2 - j.val) / 2 + 1) (r, s) → Y j r s = 0) (hX : ∀ j r s, Y j r (.inl s) = 0)
@@ -95,7 +95,7 @@ private lemma rowVar_add_shift_eq_of_not_free (x : ColArgs G) (e : Vars G) (Y : 
   · rfl
 
 /- English proof (translation)
-Unfold `phase`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[stepPt_shift x e Y hY j, ch_add]`. Simplify using `only [colVar_add_shift_eq_of_not_free x e Y hY, rowVar_add_shift_eq_of_not_free x e Y hY hX]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -110,7 +110,7 @@ theorem phase_shift (x : ColArgs G) (e : Vars G) (Y : Shift G)
   ring
 
 /- English proof (translation)
-Simplify using `only [Grid.moveArgs, Assignment.read, invT_inv_val, invT_val, Edge.src, Edge.tgt]`. Simplify using `[Matrix.transpose_mul, Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem moveArgs_theta (g : G.VertexGroup) (z : G.Args) (i j : ℕ) : G.moveArgs .one g z (.theta i j) =
     (((g (i, j + 1))⁻¹).val * (z (.theta i j))ᵀ * (g (i, j)).val)ᵀ := by
@@ -118,7 +118,7 @@ theorem moveArgs_theta (g : G.VertexGroup) (z : G.Args) (i j : ℕ) : G.moveArgs
   simp [Matrix.transpose_mul, Matrix.mul_assoc]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `b`. Simplify using `[Grid.moveArgs, Matrix.mul_add, Matrix.add_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem moveArgs_add (g : G.VertexGroup) (z z' : G.Args) :
     G.moveArgs .one g (z + z') = G.moveArgs .one g z + G.moveArgs .one g z' := by
@@ -126,7 +126,7 @@ theorem moveArgs_add (g : G.VertexGroup) (z z' : G.Args) :
   simp [Grid.moveArgs, Matrix.mul_add, Matrix.add_mul]
 
 /- English proof (translation)
-Establish `h1` using `topRank_add hs ((j : ℕ) + 1)`. Establish `h2` using `j.isLt`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem tgt_eq (hs : 1 ≤ G.s) (j : Fin (G.m - 1)) :
     topRank G (j + 1) + (G.m - 2 - j) = G.rank (G.m, j + 1) := by
@@ -135,7 +135,7 @@ theorem tgt_eq (hs : 1 ≤ G.s) (j : Fin (G.m - 1)) :
   omega
 
 /- English proof (translation)
-Establish `h1` using `topRank_add hs (j : ℕ)`. Establish `h2` using `j.isLt`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem src_eq (hs : 1 ≤ G.s) (j : Fin (G.m - 1)) :
     topRank G j + (G.m - 2 - j + 1) = G.rank (G.m, j) := by
@@ -144,7 +144,7 @@ theorem src_eq (hs : 1 ≤ G.s) (j : Fin (G.m - 1)) :
   omega
 
 /- English proof (translation)
-Unfold `downMap`. Rewrite using `[dif_pos j.isLt]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem downMap_eq (hs : 1 ≤ G.s) (x : ColArgs G) (e : Vars G) (j : Fin (G.m - 1)) : downMap hs x e j =
     (stepPt (x j) (e j)).reindex (frame (tgt_eq hs j)) (frame (src_eq hs j)) := by
@@ -155,11 +155,11 @@ variable [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 variable {ϖ : kˣ} {e : ℕ} {T : G.Args → ℂ}
 
 /- English proof (translation)
-Establish `hb : Edge.theta G.m (j : ℕ) ∈ oppositePath G.m`. Simplify using `only [oppositePath, List.mem_append, List.mem_map, List.mem_range, List.mem_reverse]`. Use `right`. Conclude with `⟨j, by have := j.isLt; omega, rfl⟩`. Establish `hT' : T (G.moveArgs .one g (fill hs x y v)) ≠ 0`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[moved_false]`. Conclude with `right_ne_zero_of_mul h`. Establish `hm : G.moveArgs .one g (fill hs x y v) (.theta G.m j) ∈ matLat _ (stdLat k _)`. Assume the negation of the conclusion as `hc`. Conclude with `hT' (hT.2.1 _ _ hb hc)`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `hm` using `[moveArgs_theta, fill_theta, Matrix.transpose_transpose, downMap_eq hs, frame_mul, mem_matLat_stdLat]`. Use `hm (frame (src_eq hs j) s) (frame (tgt_eq hs j) r)` as an intermediate fact. Simplify `this` using `[Matrix.reindex_apply, Matrix.submatrix_apply]`.
+A detailed English derivation is pending.
 -/
 theorem support_step (hs : 1 ≤ G.s) (hT : G.IsTensor ϖ e (oppositePath G.m) T) (g : G.VertexGroup) (x : ColArgs G)
     (y : RowArgs G) (v : Vars G) (h : moved G false g T (fill hs x y v) ≠ 0) (j : Fin (G.m - 1)) (r s) :
@@ -180,7 +180,7 @@ theorem support_step (hs : 1 ≤ G.s) (hT : G.IsTensor ϖ e (oppositePath G.m) T
   simpa [Matrix.reindex_apply, Matrix.submatrix_apply] using this
 
 /- English proof (translation)
-Rewrite using `[Units.smul_def, smul_eq_mul, Valuation.mem_integer_iff, map_mul, Units.val_inv_eq_inv_val, map_inv₀]`. Establish `hu : valuation k (u : k) ≠ 0` using `by simp`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 private theorem inv_smul_mem_integers_of_valuation_le (u : kˣ) (q : k) (hq : valuation k q ≤ valuation k (u : k)) :
     u⁻¹ • q ∈ 𝒪[k] := by
@@ -191,19 +191,19 @@ private theorem inv_smul_mem_integers_of_valuation_le (u : kˣ) (q : k) (hq : va
     _ = 1 := inv_mul_cancel₀ hu
 
 /- English proof (translation)
-Establish `hfill : fill hs x y (v + Y.vars) = fill hs x y v + (fill hs x y (v + Y.vars) - fill hs x y v)`. Normalize the expressions using the abelian group laws. Rewrite using `[moved_false, moved_false, hfill, moveArgs_add, hT.2.2]`. Introduce `b`. Consider the cases of `b with`.
+Establish an intermediate fact. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data.
 
-Consider the case `ex i j'`. Establish `h0 : (fill hs x y (v + Y.vars) - fill hs x y v) (.ex i j') = 0`. Simplify using `[fill]`. Simplify using `only [Grid.moveArgs, h0, Matrix.mul_zero, Matrix.zero_mul]`. Conclude with `zero_mem _`.
+Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `theta i j'`. Distinguish the cases in `hi : i = G.m`. Substitute `hi` using the available equality. Distinguish the cases in `hj : j' < G.m - 1`. Take `⟨jj, rfl⟩ : ∃ jj : Fin (G.m - 1), (jj : ℕ) = j'` from `⟨⟨j', hj⟩, rfl⟩`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hD : (fill hs x y (v + Y.vars) - fill hs x y v) (.theta G.m jj) = ((Y jj).reindex (frame (tgt_eq hs jj)) (frame (src_eq hs jj)))ᵀ`. Rewrite using `[Pi.sub_apply, fill_theta, fill_theta, downMap_eq hs, downMap_eq hs, stepPt_shift x v Y hY jj]`. Use extensionality with `a b`. Simplify using `[Matrix.reindex_apply, Matrix.submatrix_apply]`. Rewrite using `[moveArgs_theta, hD, Matrix.transpose_transpose, frame_mul, mem_matLat]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a`. Rewrite using `[mem_smul_lat, mem_stdLat]`. Introduce `b`. Establish `hv` using `hL jj ((frame (tgt_eq hs jj)).symm b) ((frame (src_eq hs jj)).symm a)`. Conclude with `inv_smul_mem_integers_of_valuation_le _ _ hv`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h0 : (fill hs x y (v + Y.vars) - fill hs x y v) (.theta G.m j') = 0`. Rewrite using `[Pi.sub_apply, fill_theta, fill_theta]`. Simplify using `only [downMap, dif_neg hj, sub_self]`. Simplify using `only [Grid.moveArgs, h0, Matrix.mul_zero, Matrix.zero_mul]`. Conclude with `zero_mem _`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `h0 : (fill hs x y (v + Y.vars) - fill hs x y v) (.theta i j') = 0`. Simplify using `[fill, hi]`. Simplify using `only [Grid.moveArgs, h0, Matrix.mul_zero, Matrix.zero_mul]`. Conclude with `zero_mem _`.
+A detailed English derivation is pending.
 -/
 theorem moved_shift (hs : 1 ≤ G.s) (hT : G.IsTensor ϖ e (oppositePath G.m) T) (g : G.VertexGroup) (x : ColArgs G)
     (y : RowArgs G) (v : Vars G) (Y : Shift G)
@@ -250,19 +250,17 @@ theorem moved_shift (hs : 1 ≤ G.s) (hT : G.IsTensor ϖ e (oppositePath G.m) T)
 variable [MeasurableSpace k] [BorelSpace k] {ψ : AddChar k Circle} {ν : Measure k}
 
 /- English proof (translation)
-Use `set s := ∑ j, ch (Y j) with hs_def`. Establish `key : ∀ v : Vars G, flatIntegrand hs ψ (moved G false g T) x y (v + Y.vars) = (ψ (-s) : ℂ) * flatIntegrand hs ψ (moved G false g T) x y v`. Introduce `v`. Unfold `flatIntegrand`. Rewrite using `[moved_shift hs hT g x y v Y hY hL, phase_shift x v Y hY hX, neg_add, AddChar.map_add_eq_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `i0 : SigmaCompactSpace k`. Establish `hZ : Countable ℤ` using `Countable.of_equiv _ Equiv.intEquivNat.symm`. Establish `hz : Countable (WithZero (Multiplicative ℤ))` using `@Option.instCountable ℤ hZ`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : Countable (ValueGroupWithZero k)` using `Countable.of_equiv _ (IsNonarchimedeanLocalField.valueGroupWithZeroIsoInt k).toMulEquiv.toEquiv.symm`. Establish `hu : (⋃ γ : ValueGroupWithZero k, {x : k | valuation k x ≤ γ}) = Set.univ` using `Set.eq_univ_of_forall fun x => Set.mem_iUnion.mpr ⟨valuation k x, show valuation k x ≤ valuation k x from le_rfl⟩`. Establish `hsig : IsSigmaCompact (Set.univ : Set k)`. Rewrite using `[← hu]`. Conclude with `isSigmaCompact_iUnion_of_isCompact _ fun γ => IsNonarchimedeanLocalField.isCompact_closedBall k γ`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `isSigmaCompact_univ_iff.mp hsig`. Establish `i1 : SigmaFinite ν` using `inferInstance`. Establish `i2 : ν.IsAddRightInvariant` using `inferInstance`. Establish `: (varsVol G ν).IsAddRightInvariant`. Unfold `varsVol`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the indicated hypotheses repeatedly using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `infer_instance`. Establish `hint` using `MeasureTheory.integral_add_right_eq_self (μ := varsVol G ν) (flatIntegrand hs ψ (moved G false g T) x y) Y.vars`. Rewrite `hint` using `[key]`. Rewrite `hint` using `[MeasureTheory.integral_const_mul]`. Unfold `flatTensor at h`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : ((ψ (-s) : Circle) : ℂ) = 1`. Use `mul_right_cancel₀ h ?_` and prove the remaining obligations. Rewrite using `[one_mul]`. Conclude with `hint`. Establish `h2 : ψ (-s) = 1`.
-
-Conclude with `Circle.coe_eq_one.mp h1`. Rewrite `h2` using `[AddChar.map_neg_eq_inv, inv_eq_one]`. Conclude with `h2`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psi_shift [ν.IsAddHaarMeasure] (hs : 1 ≤ G.s) (hT : G.IsTensor ϖ e (oppositePath G.m) T) (g : G.VertexGroup)
     (x : ColArgs G) (y : RowArgs G) (h : flatTensor hs ψ ν (moved G false g T) x y ≠ 0) (Y : Shift G)
@@ -309,51 +307,49 @@ theorem psi_shift [ν.IsAddHaarMeasure] (hs : 1 ≤ G.s) (hT : G.IsTensor ϖ e (
   exact h2
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨v₀, hv₀⟩ : ∃ v₀ : Vars G, moved G false g T (fill hs x y v₀) ≠ 0 := by`. Assume the negation of the conclusion as `hne`. Use `push Not at hne`. Apply `h` to reduce the goal to its premises. Simplify using `[flatTensor, flatIntegrand, hne]`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hsupp` using `support_step hs hT g x y v₀ hv₀ j`. Rewrite `hsupp` using `[hj]`. Use `DiagLattice.exists_symR_diag k _ _ (fun p => ϖ ^ (e * (p.val + 1))) _ ?_ ?_` and prove the remaining obligations. Introduce `i`. Use `⟨fun r => stepPt (x j) (v₀ j) r (.inr i.castSucc), ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `[stepPt, basePt, Free, Kept]`. Introduce `l hl`. Establish `hl' : i.val < l.val` using `hl`. Simplify using `only [stepPt, basePt, Matrix.add_apply, Matrix.of_apply, Matrix.fromBlocks_apply₂₂, Fin.val_castSucc]`. Rewrite using `[dif_neg]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[hl'.ne']`. Introduce and unpack `(hF | hK)`. Simplify using `[Free] at hF`. Use linear arithmetic over natural numbers and integers. Simplify using `[Kept] at hK`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hi r`. Simplify using `only [stepPt, basePt, Matrix.add_apply, Matrix.of_apply, Matrix.fromBlocks_apply₁₂, Matrix.zero_apply, zero_add]`. Rewrite using `[dif_neg]`. Introduce and unpack `(hF | hK)`. Simplify using `[Free] at hF`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Simplify using `only [Kept, Fin.val_castSucc] at hK`. Take `⟨hE, hEq⟩` from `hK`. Rewrite `hE` using `[Nat.even_iff]`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `t`. Use `hsupp t (.inr i.castSucc)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Rewrite using `[Matrix.mulVec_smul, diagGL_val, Matrix.mul_diagonal]`. Simplify using `only [Pi.smul_apply, smul_eq_mul, Matrix.mulVec, dotProduct, Matrix.mul_apply, Sum.elim_inr, Fin.val_castSucc, Units.val_pow_eq_pow_val]`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Introduce `i y' hy hl hlow`. Establish `hinv : ∀ r, ∑ q, ((frameGL (tgt_eq hs j) (g (G.m, ↑j + 1)))⁻¹).val r q * ((frameGL (tgt_eq hs j) (g (G.m, ↑j + 1))).val *ᵥ y') q = y' r`. Introduce `r`. Use `congrFun (Matrix.mulVec_mulVec y' ((frameGL (tgt_eq hs j) (g (G.m, ↑j + 1)))⁻¹).val (frameGL (tgt_eq hs j) (g (G.m, ↑j + 1))).val) r` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]`. Simplify `this` using `[Matrix.mulVec, dotProduct]`. Distinguish the cases in `ha0 : ((frameGL (tgt_eq hs j) (g (G.m, ↑j + 1))).val *ᵥ y') (.inr i) = 0`. Rewrite using `[ha0, map_zero]`. Conclude with `zero_le`.
+Simplify to obtain the desired conclusion from the available facts. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd : (((ϖ ^ (e * (i.val + 1)) : kˣ) : k)) ≠ 0` using `Units.ne_zero _`. Establish `key : valuation k (((frameGL (tgt_eq hs j) (g (G.m, ↑j + 1))).val *ᵥ y') (.inr i) * (((ϖ ^ (e * (i.val + 1)) : kˣ) : k))⁻¹) ≤ valuation k ((1 : kˣ) : k)`. Use `(hψ _).mp fun y'' hy'' => ?_` and prove the remaining obligations. Set `M : Matrix (Fin (topRank G (↑j + 1)) ⊕ Fin (G.m - 2 - ↑j)) (Fin (topRank G ↑j) ⊕ Fin (G.m - 2 - ↑j + 1)) k` to `Matrix.of fun r s => if s = .inr i.succ then y'' / ((frameGL (tgt_eq hs j) (g (G.m, ↑j + 1))).val *ᵥ y') (.inr i) * ((frameGL (tgt_eq hs j) (g (G.m, ↑j + 1))).val *ᵥ y') r else 0`. Establish `hps` using `psi_shift hs hT g x y h (Pi.single j M) ?_ ?_ ?_`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Rewrite `hps` using `[Finset.sum_eq_single j (fun b _ hb => by simp [Pi.single_eq_of_ne hb, ch]) (fun hj' => absurd (Finset.mem_univ _) hj'), Pi.single_eq_same]`. Use `hps using 2` and compare the differences between its conclusion and the goal. Simplify using `[ch, M, Finset.sum_ite_eq', div_mul_cancel₀ _ ha0]`. Introduce `j' r s hF`. Distinguish the cases in `hjj : j' = j`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Substitute `hjj` using the available equality. Rewrite using `[Pi.single_eq_same]`. Simplify using `only [M, Matrix.of_apply]`. Use `split_ifs with hs'`. Substitute `hs'` using the available equality.
+Simplify using the standard rewrite rules. Substitute using the available equality. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Break down `r with r | l` into its components or cases. Establish `hi : i.val < (G.m - 2 - j'.val) / 2`. Assume the negation of the conclusion as `hc`. Apply `hF` to reduce the goal to its premises. Simplify using `only [Free, Fin.val_succ]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Simplify using `[hlow hi r]`. Establish `hil : i < l`. Assume the negation of the conclusion as `hc`. Apply `hF` to reduce the goal to its premises.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Simplify using `only [Free, Fin.val_succ]`. Rewrite `hc` using `[Fin.lt_def]`. Use linear arithmetic over natural numbers and integers. Simplify using `[hl l hil]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Pi.single_eq_of_ne hjj]`. Both sides reduce to the same expression. Introduce `j' r s`. Distinguish the cases in `hjj : j' = j`. Substitute `hjj` using the available equality.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Simplify using `[M]`. Rewrite using `[Pi.single_eq_of_ne hjj]`. Both sides reduce to the same expression. Introduce `j' r s`. Distinguish the cases in `hjj : j' = j`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Substitute `hjj` using the available equality. Rewrite using `[Pi.single_eq_same, hj, diagGL_val, Matrix.mul_diagonal]`. Break down `s with s | s` into its components or cases. Simplify using `[M, Matrix.mul_apply]`. Distinguish the cases in `hsi : s = i.succ`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact.
 
-Substitute `hsi` using the available equality. Establish `hx1 : ((frameGL (tgt_eq hs j') (g (G.m, ↑j' + 1))).val *ᵥ y') (.inr i) * (((ϖ ^ (e * (i.val + 1)) : kˣ) : k))⁻¹ ≠ 0` using `mul_ne_zero ha0 (inv_ne_zero hd)`. Establish `hent : ((((frameGL (tgt_eq hs j') (g (G.m, ↑j' + 1)))⁻¹).val * M) r (.inr i.succ)) * ((Sum.elim (fun _ : Fin (topRank G ↑j') => (1 : kˣ)) (fun p : Fin (G.m - 2 - ↑j' + 1) => ϖ ^ (e * (p.val + 1))) (.inr i.succ) : kˣ) : k) = (y'' / (((frameGL (tgt_eq hs j') (g (G.m, ↑j' + 1))).val …`. Simplify using `only [M, Matrix.mul_apply, Matrix.of_apply, if_true, Sum.elim_inr, Fin.val_succ]`. Rewrite using `[← hinv r, Finset.mul_sum, Finset.sum_mul, Finset.sum_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 
-Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Simplify using `only [Units.val_pow_eq_pow_val]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hent, map_mul, map_mul]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : valuation k (y'' / (((frameGL (tgt_eq hs j') (g (G.m, ↑j' + 1))).val *ᵥ y') (.inr i) * (((ϖ ^ (e * (i.val + 1)) : kˣ) : k))⁻¹)) ≤ 1`. Rewrite using `[map_div₀]`. Conclude with `div_le_one_of_le₀ hy'' zero_le`. Establish `h2 : valuation k (y' r) ≤ 1` using `hy r`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `[M, Matrix.mul_apply, hsi]`. Rewrite using `[Pi.single_eq_of_ne hjj]`. Simplify using the standard rewrite rules. Rewrite `key` using `[map_mul, map_inv₀, Units.val_one, map_one]`. Establish `hpos : 0 < valuation k (((ϖ ^ (e * (i.val + 1)) : kˣ) : k))` using `zero_lt_iff.mpr ((map_ne_zero _).mpr hd)`.
-
-Establish `hfin` using `(mul_inv_le_iff₀ hpos).mp key`. Rewrite `hfin` using `[one_mul]`. Conclude with `hfin`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem step_form [ν.IsAddHaarMeasure] (hs : 1 ≤ G.s) (hψ : HasConductor ψ 1)
     (hT : G.IsTensor ϖ e (oppositePath G.m) T) (g : G.VertexGroup)
@@ -485,7 +481,7 @@ theorem step_form [ν.IsAddHaarMeasure] (hs : 1 ≤ G.s) (hψ : HasConductor ψ 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] in
 
 /- English proof (translation)
-Establish `hc : c = G.m - 1 - j`. Use `topRank_add hs j` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Substitute `hc` using the available equality. Conclude with `toFrame_stair (hs := hs) ϖ e hj`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem frameGL_stair (hs : 1 ≤ G.s) (ϖ : kˣ) (e : ℕ) {j c : ℕ} (hj : j < G.m)
     (h : topRank G j + c = G.rank (G.m, j)) :
@@ -499,7 +495,7 @@ theorem frameGL_stair (hs : 1 ≤ G.s) (ϖ : kˣ) (e : ℕ) {j c : ℕ} (hj : j 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] in
 
 /- English proof (translation)
-Establish `hc : c = G.m - 1 - j`. Use `topRank_add hs j` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Substitute `hc` using the available equality. Conclude with `hg`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem mem_rowR (hs : 1 ≤ G.s) {j c : ℕ} (hj : j < G.m) (h : topRank G j + c = G.rank (G.m, j))
     {g : GL (Fin (G.rank (G.m, j))) k} (hg : frameGL h g ∈ symR k _ c) : g ∈ rowR hs hj := by
@@ -512,7 +508,7 @@ theorem mem_rowR (hs : 1 ≤ G.s) {j c : ℕ} (hj : j < G.m) (h : topRank G j + 
 omit [MeasurableSpace k] [BorelSpace k] in
 
 /- English proof (translation)
-Take `⟨y, hy⟩` from `hg`. Use `⟨Units.map (Matrix.reindexAlgEquiv 𝒪[k] 𝒪[k] (frame h)).toMonoidHom y, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Use `congrArg (fun u : GL (Fin a ⊕ Fin c) k => u.val ((frame h).symm i) ((frame h).symm j)) hy` as an intermediate fact. Simplify `this` using `[frameGL, Matrix.coe_reindexAlgEquiv, Matrix.reindex_apply]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mem_KO_of_frameGL {a c b : ℕ} (h : a + c = b) {g : GL (Fin b) k} (hg : frameGL h g ∈ KO k _) :
     g ∈ KO k _ := by
@@ -523,23 +519,23 @@ theorem mem_KO_of_frameGL {a c b : ℕ} (h : a + c = b) {g : GL (Fin b) k} (hg :
   simpa [frameGL, Matrix.coe_reindexAlgEquiv, Matrix.reindex_apply] using this
 
 /- English proof (translation)
-Introduce `β hβ`. Establish `hne : flatTensor hs ψ ν (moved G false ((Reps.through hs J (stair G ϖ e)).elt β) T) ≠ 0` using `hβ`. Take `⟨x, hx⟩` from `Function.ne_iff.mp hne`. Take `⟨y, hxy⟩` from `Function.ne_iff.mp hx`. Establish `hEltAt : ∀ n : ℕ, (Reps.through hs J (stair G ϖ e)).elt β (G.m, n + 1) = if h : n < G.m - 2 then (Reps.through hs J (stair G ϖ e)).rep ⟨n, h⟩ (β ⟨n, h⟩) else 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `n`. Simplify using `only [Reps.elt, onColumn_apply]`. Establish `h0 : (Reps.through hs J (stair G ϖ e)).elt β (G.m, 0) = stair G ϖ e 0`. Simplify using `only [Reps.elt, onColumn_apply]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Establish `key : ∀ n : ℕ, n + 2 ≤ G.m → (Reps.through hs J (stair G ϖ e)).elt β (G.m, n) = stair G ϖ e n`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro _`. Conclude with `h0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `succ n ih`. Introduce `hn`. Establish `hn1 : n < G.m - 1` using `by omega`. Establish `hn2 : n < G.m - 2` using `by omega`. Establish `hj` using `frameGL_stair hs ϖ e (j := n) (by omega) (src_eq hs ⟨n, hn1⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hj` using `[← ih (by omega)]`. Take `⟨r, hr, w, hw, hrw⟩` from `step_form hs hψ hT _ x y hxy ⟨n, hn1⟩ hj`. Establish `hD` using `frameGL_stair hs ϖ e (j := n + 1) (by omega) (tgt_eq hs ⟨n, hn1⟩)`. Rewrite `hrw` using `[← hD]`. Establish `hg' : (Reps.through hs J (stair G ϖ e)).elt β (G.m, n + 1) = (frameGL (tgt_eq hs ⟨n, hn1⟩)).symm r * stair G ϖ e (n + 1) * (frameGL (tgt_eq hs ⟨n, hn1⟩)).symm w`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `(frameGL (tgt_eq hs ⟨n, hn1⟩)).injective` to reduce the goal to its premises. Rewrite using `[map_mul, map_mul, MulEquiv.apply_symm_apply, MulEquiv.apply_symm_apply]`. Conclude with `hrw`. Establish `hr' : (frameGL (tgt_eq hs ⟨n, hn1⟩)).symm r ∈ rowR hs (j` using `n + 1) (by omega) := mem_rowR hs (by omega) (tgt_eq hs ⟨n, hn1⟩) (by rw [MulEquiv.apply_symm_apply]; exact hr)`. Establish `hw' : (frameGL (tgt_eq hs ⟨n, hn1⟩)).symm w ∈ KO k _` using `mem_KO_of_frameGL (tgt_eq hs ⟨n, hn1⟩) (by rw [MulEquiv.apply_symm_apply]; exact hw)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hJn : J (G.m, n + 1) = KO k _` using `hJ (n + 1) (by omega) (by omega)`. Establish `hmk : DoubleCoset.mk (rowR hs (j` using `n + 1) (by omega)) (J (G.m, n + 1)) (stair G ϖ e (n + 1)) = DoubleCoset.mk (rowR hs (j := n + 1) (by omega)) (J (G.m, n + 1)) ((Reps.through hs J (stair G ϖ e)).elt β (G.m, n + 1)) := by`. Rewrite using `[DoubleCoset.eq]`. Conclude with `⟨_, hr', _, hJn ▸ hw', hg'⟩`. Rewrite `hmk`, the goal using `[hEltAt n, dif_pos hn2]`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Simplify by unfolding definitions.
 
-Establish `hb` using `(Reps.through hs J (stair G ϖ e)).mk_rep ⟨n, hn2⟩ (β ⟨n, hn2⟩)`. Simplify using `only [Reps.through]`. Rewrite using `[if_pos (hmk.trans hb)]`. Introduce `i`. Establish `hi` using `key (i + 1) (by have := i.isLt; omega)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hi` using `[hEltAt i, dif_pos i.isLt]`. Rewrite using `[← (Reps.through hs J (stair G ϖ e)).mk_rep i (β i)]`. Conclude with `congrArg _ hi`.
+A detailed English derivation is pending.
 -/
 theorem oneCoset_of_isTensor [ν.IsAddHaarMeasure] (hs : 1 ≤ G.s) {J : G.Level} (hψ : HasConductor ψ 1)
     (hT : G.IsTensor ϖ e (oppositePath G.m) T) (hJ : ∀ j, 0 < j → j < G.m → J (G.m, j) = KO k _) :
@@ -599,7 +595,7 @@ namespace GlobalTheory.FunObj
 open GlobalTheory.SplitWeil GlobalTheory.SplitFlip
 
 /- English proof (translation)
-Introduce `_ _ hψ hT hJ`. Conclude with `OneCosetProof.oneCoset_of_isTensor hs hψ hT hJ`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem oneCoset {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     [MeasurableSpace k] [BorelSpace k] {G : Grid k} (hs : 1 ≤ G.s) (ψ : AddChar k Circle) (ν : Measure k)

@@ -29,7 +29,7 @@ def derPt {o R : Type} [CommRing o] [CommRing R] [Algebra o R] [Algebra o ℂ] [
   map_add' a b := by ext <;> simp
 
 /- English proof (translation)
-Use `show Spec.map _ ≫ Spec.map _ = Spec.map _`. Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem spMap_comp {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRing R''] (f : R →+* R') (f' : R' →+* R'') :
     spMap f' ≫ spMap f = spMap (f'.comp f) := by
@@ -37,32 +37,30 @@ theorem spMap_comp {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRing R''] (
   rw [← Spec.map_comp]; rfl
 
 /- English proof (translation)
-Use `Spec.map_injective h` as an intermediate fact. Conclude with `congrArg CommRingCat.Hom.hom this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem spMap_inj {R R' : Type} [CommRing R] [CommRing R'] {f f' : R →+* R'} (h : spMap f = spMap f') : f = f' := by
   have := Spec.map_injective h
   exact congrArg CommRingCat.Hom.hom this
 
 /- English proof (translation)
-Introduce `h₁ h₂ h₃ o _ g k J b R _ _ _ _ _ t s₀ t₀ m u Hm χ hu hm hun D s hs`. Take `⟨hm₁, hm₂, hm₃, hm₄⟩` from `hm`. Establish `hfst : spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom ≫ spMap (derPt D) = spMap (algebraMap R ℂ)`. Rewrite using `[spMap_comp]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `r`. Simplify using `[derPt]`. Take `⟨t', ht'⟩` from `GlobalTheory.T.exists_thetaLevelAbelianScheme_pullback o g k J b _ _ _ _ (spMap (derPt D)) t rfl`. Take `⟨φ, hφ₁, hφ₂, hφ₃, hφ₄⟩` from `id ht'`. Establish `hp` using `hφ₁.1`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Set `j : t₀.A.left ⟶ t'.A.left` to `hp.lift m (t₀.A.hom ≫ spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom) (by rw [hm₁.1.w, Category.assoc, hfst])`. Establish `hj : j ≫ φ = m` using `hp.lift_fst _ _ _`. Establish `hw : j ≫ t'.A.hom = t₀.A.hom ≫ spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom` using `hp.lift_snd _ _ _`. Establish `hj₁ : IsGrpPullback t₀.A t'.A (spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom) j` using `hφ₁.cancel (hm₁.congr hfst.symm hj.symm) hw`. Establish `hj₂ : LBIso t₀.L (t'.L.pull j)` using `LBIso.trans t₀.isLB (pull_isLB t.isLB m) (pull_isLB t'.isLB j) hm₂ (LBIso.chartPull (chartPullPull t'.L j j rfl) (chartPullSame t.L _ _ _ j fun _ => hj.symm) hφ₂).symm`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hj₃ : ∀ i, (t₀.pt i).left ≫ j = (spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom) ≫ (t'.pt i).left`. Introduce `i`. Apply `hp.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, hj, hm₃, Category.assoc, hφ₃, ← Category.assoc, hfst]`. Establish `a₁ : (t₀.pt i).left ≫ t₀.A.hom = 𝟙 _` using `Over.w (t₀.pt i)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `a₂ : (t'.pt i).left ≫ t'.A.hom = 𝟙 _` using `Over.w (t'.pt i)`. Rewrite using `[Category.assoc, hw, ← Category.assoc, a₁, Category.assoc, a₂]`. Conclude with `(Category.id_comp _).trans (Category.comp_id _).symm`. Establish `hj₄ : ∀ jj, (t₀.act jj).left ≫ j = j ≫ (t'.act jj).left`. Introduce `a`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hp.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, hj, hm₄, Category.assoc, hφ₄, ← Category.assoc, hj]`. Rewrite using `[Category.assoc, hw, ← Category.assoc, Over.w, Category.assoc, Over.w, hw]`. Take `⟨ρ, hρ⟩` from `GlobalTheory.T.exists_isConst_of_ksRel_zero' h₁ t₀.pol u Hm χ hu R (derPt D) t.A t'.A φ j s t.ab t'.ab hφ₁ hj₁ (by`. Establish `e : (fun r => (derPt D r).snd) = fun r => D r` using `by funext r; simp [derPt]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `hj ▸ hs)`. Establish `hc` using `GlobalTheory.T.thetaObject_constantFamily_dualNumbers_isPullback h₁ h₂ h₃ o g k J b s₀ _ t₀ t' ρ j hρ ⟨hj₁, hj₂, hj₃, hj₄⟩`. Establish `hcp : constPt (spMap (derPt D)) = spMap (algebraMap ℂ (DualNumber ℂ)) ≫ spMap (algebraMap R ℂ)`. Rewrite using `[constPt, hfst]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hc' : TMap t' t (constPt (spMap (derPt D)))`. Rewrite using `[hcp]`. Conclude with `((GlobalTheory.T.thetaLevelPullback_id_comp_cancel o g k J b _ _ _ _ _ _ t t₀ t').2 _ _ ⟨m, hm₁, hm₂, hm₃, hm₄⟩).1 hc`. Establish `hx` using `hun (spMap (derPt D)) t' (by`. Rewrite using `[hcp, spMap_comp, spMap_comp, spMap_comp]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `congr 1`. Apply the tactic sequence `ext r <;> simp [derPt, TrivSqZeroExt.algebraMap_eq_inl]) ht' hc'`. Rewrite `hx` using `[hcp, spMap_comp]`. Establish `hx'` using `spMap_inj hx`. Use extensionality with `r`.
-
-Use `congrArg (fun f : R →+* DualNumber ℂ => (f r).snd) hx'` as an intermediate fact. Simplify `this` using `[derPt, TrivSqZeroExt.algebraMap_eq_inl]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem derivation_eq_zero_of_ks_zero : Out.Laws → Out.Laws2 → ThetaUnifAV → ∀ (o : Type) [CommRing o] (g k : ℕ) (J : Type) (b : TBase o k) (R : Type) [CommRing R] [Algebra o R] [Algebra o ℂ] [Algebra R ℂ] [IsScalarTower o R ℂ] (t : TObj g k J b (spMap (algebraMap o R))) (s₀ : Sp ℂ ⟶ Sp o) (t₀ : TObj g k J b s₀) (m : t₀.A.left ⟶ t.A.left) (u : HolUnif t₀.pol.A t₀.pol.L t₀.pol.g) (Hm : Matrix (Fin t₀.pol.g) (Fin t₀.pol.g) ℂ) (χ : u.Λ → ℂ), GoodU u Hm χ → (IsGrpPullback t₀.A t.A (spMap (algebraMap R ℂ)) m ∧ LBIso t₀.L (t.L.pull m) ∧ (∀ i, (t₀.pt i).left ≫ m = (spMap (algebraMap R ℂ)) ≫ (t.pt i).left) ∧ ∀ jj, (t₀.act jj).left ≫ m = m ≫ (t.act jj).left) → (∀ (x : Sp (DualNumber ℂ) ⟶ Sp R) (t' : TObj g k J b (x ≫ spMap (algebraMap o R))), x ≫ spMap (algebraMap o R) = constPt x ≫ spMap (algebraMap o R) → TMap t' t x → TMap t' t (constPt x) → x = constPt x) → ∀ (D : Derivation o R ℂ) s, KSRel u t.A.hom m (fun r => D r) 0 s → D = 0 := by
   intro h₁ h₂ h₃ o _ g k J b R _ _ _ _ _ t s₀ t₀ m u Hm χ hu hm hun D s hs

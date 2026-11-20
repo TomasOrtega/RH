@@ -32,7 +32,7 @@ noncomputable section
 namespace FunctorialResolution.EmbeddedResolution
 
 /- English proof (translation)
-Introduce `hb`. Establish `hb' : Order.krullDim (IrreducibleCloseds ↥X) = ⊥` using `hb`. Establish `hE : IsEmpty (IrreducibleCloseds ↥X)` using `Order.krullDim_eq_bot_iff.mp hb'`. Take `⟨x⟩` from `‹Nonempty ↥X›`. Conclude with `hE.false ⟨closure {x}, isIrreducible_singleton.closure, isClosed_closure⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem topologicalKrullDim_ne_bot_of_nonempty (X : Scheme.{u}) [Nonempty ↥X] :
     topologicalKrullDim ↥X ≠ ⊥ := by
@@ -43,7 +43,7 @@ private theorem topologicalKrullDim_ne_bot_of_nonempty (X : Scheme.{u}) [Nonempt
   exact hE.false ⟨closure {x}, isIrreducible_singleton.closure, isClosed_closure⟩
 
 /- English proof (translation)
-Rewrite using `[krullDimSucc_eq_withBotSuccToNat_topologicalKrullDim]`. Take `⟨n, hn⟩` from `WithBot.ne_bot_iff_exists.mp (topologicalKrullDim_ne_bot_of_nonempty X)`. Rewrite using `[← hn, withBotSuccToNat_coe]`. Conclude with `Nat.le_add_left 1 _`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem one_le_krullDimSucc (X : Scheme.{u}) [Nonempty ↥X] : 1 ≤ krullDimSucc X := by
   rw [krullDimSucc_eq_withBotSuccToNat_topologicalKrullDim]
@@ -52,9 +52,9 @@ theorem one_le_krullDimSucc (X : Scheme.{u}) [Nonempty ↥X] : 1 ≤ krullDimSuc
   exact Nat.le_add_left 1 _
 
 /- English proof (translation)
-Establish `hE : IsEmpty (IrreducibleCloseds ↥X)`. Prove the components needed by the constructor for the conclusion. Introduce `C`. Take `⟨x, -⟩` from `C.2.1`. Conclude with `isEmptyElim x`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h : topologicalKrullDim ↥X = ⊥` using `Order.krullDim_eq_bot_iff.mpr hE`. Rewrite using `[krullDimSucc_eq_withBotSuccToNat_topologicalKrullDim, h, withBotSuccToNat_bot]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem krullDimSucc_eq_zero_of_isEmpty (X : Scheme.{u}) [IsEmpty ↥X] : krullDimSucc X = 0 := by
   have hE : IsEmpty (IrreducibleCloseds ↥X) := by
@@ -66,25 +66,23 @@ theorem krullDimSucc_eq_zero_of_isEmpty (X : Scheme.{u}) [IsEmpty ↥X] : krullD
   rw [krullDimSucc_eq_withBotSuccToNat_topologicalKrullDim, h, withBotSuccToNat_bot]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(Scheme.Hom.isClosedEmbedding D.subschemeι).toIsEmbedding.toHomeomorph⟩`.
+Supply the required witnesses or components.
 -/
 private theorem nonempty_homeomorph_subscheme_range_subschemeι {X : Scheme.{u}} (D : X.IdealSheafData) :
     Nonempty (↥D.subscheme ≃ₜ ↥(Set.range ⇑D.subschemeι)) :=
   ⟨(Scheme.Hom.isClosedEmbedding D.subschemeι).toIsEmbedding.toHomeomorph⟩
 
 /- English proof (translation)
-The claim follows from `(Scheme.Hom.isClosedEmbedding D.subschemeι).isClosed_range`.
+A detailed English derivation is pending.
 -/
 private theorem isClosed_range_subschemeι {X : Scheme.{u}} (D : X.IdealSheafData) :
     IsClosed (Set.range ⇑D.subschemeι) :=
   (Scheme.Hom.isClosedEmbedding D.subschemeι).isClosed_range
 
 /- English proof (translation)
-Break down `isEmpty_or_nonempty ↥D.subscheme with hem | hne` into its components or cases. Use `hem` as an intermediate fact. Rewrite using `[krullDimSucc_eq_zero_of_isEmpty D.subscheme]`. Conclude with `lt_of_lt_of_le Nat.zero_lt_one (one_le_krullDimSucc X)`. Use `hne` as an intermediate fact.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨e⟩` from `nonempty_homeomorph_subscheme_range_subschemeι D`. Establish `hrange : Set.range ⇑D.subschemeι = (D.support : Set ↥X)` using `Scheme.IdealSheafData.range_subschemeι D`. Use `krullDimSucc_lt_of_homeomorph_isClosed X D.subscheme (Set.range ⇑D.subschemeι) (isClosed_range_subschemeι D) ?_ ?_ hfin e` and prove the remaining obligations. Conclude with `Set.range_nonempty _`. Introduce `C hC hsub`.
-
-Rewrite `hsub` using `[hrange]`. Conclude with `hD.not_irreducibleComponent_subset_support hC hsub`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem krullDimSucc_subscheme_lt_of_isLocallyGeneratedByNonZeroDivisor (X : Scheme.{u}) [Nonempty ↥X]
     (hfin : topologicalKrullDim ↥X < ⊤) (D : X.IdealSheafData) (hD : Blowup.IsLocallyGeneratedByNonZeroDivisor D) :
@@ -105,9 +103,9 @@ theorem krullDimSucc_subscheme_lt_of_isLocallyGeneratedByNonZeroDivisor (X : Sch
       exact hD.not_irreducibleComponent_subset_support hC hsub
 
 /- English proof (translation)
-Rewrite using `[isOpen_iff_forall_mem_open]`. Introduce `x hx`. Use `⟨connectedComponent x, ?_, Blowup.isOpen_connectedComponent_of_noetherianSpace X x, mem_connectedComponent⟩` and prove the remaining obligations. Introduce `y hy`. Use `show connectedComponent y ⊆ P`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← connectedComponent_eq hy]`. Conclude with `hx`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_setOf_connectedComponent_subset {X : Type u} [TopologicalSpace X]
     [NoetherianSpace X] (P : Set X) : IsOpen {x : X | connectedComponent x ⊆ P} := by
@@ -121,14 +119,14 @@ theorem isOpen_setOf_connectedComponent_subset {X : Type u} [TopologicalSpace X]
   exact hx
 
 /- English proof (translation)
-The claim follows from `MarkedSequenceOfBlowups.centersContainNoComponent_ofMarkedSequence effectiveCartierSupportContainsNoComponent hV s`.
+A detailed English derivation is pending.
 -/
 theorem centersContainNoComponent_of_isAdmissible (T : MarkedIdealWithBoundary.{u}) (hV : T.IsAdmissible) (_hm : 1 ≤ T.mult)
     (s : T.SequenceOfBlowups) : (MarkedBlowupSequenceData.ofMarkedSequence s).toBlowupSequenceData.CentersContainNoComponent :=
   MarkedSequenceOfBlowups.centersContainNoComponent_ofMarkedSequence effectiveCartierSupportContainsNoComponent hV s
 
 /- English proof (translation)
-Use `hV.isNoetherian` as an intermediate fact. Establish `hN : NoetherianSpace ↥T.scheme` using `inferInstance`. Take `⟨e⟩` from `nonempty_homeomorph_subscheme_range_subschemeι (T.boundary.get ⟨j, hj⟩)`. Establish `: NoetherianSpace ↥(T.boundary.get ⟨j, hj⟩).subscheme` using `noetherianSpace_of_surjective _ e.symm.continuous e.symm.surjective`. Conclude with `isOpen_setOf_connectedComponent_subset _`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isOpen_setOf_connectedComponent_subset_orderAtLeastLocus (T : MarkedIdealWithBoundary.{u}) (hV : T.IsAdmissible) (j : ℕ)
     (hj : j < T.boundary.length) :
@@ -150,7 +148,7 @@ private theorem get_mem_boundary (T : MarkedIdealWithBoundary.{u}) (j : ℕ) (hj
   simp
 
 /- English proof (translation)
-Take `⟨x, -⟩` from `hne`. Establish `: Nonempty ↥T.scheme` using `⟨x⟩`. Establish `hsd : IsSmoothDivisor T.structMap (T.boundary.get ⟨j, hj⟩)` using `hV.snc.1 _ (get_mem_boundary T j hj)`. Establish `hcart : Blowup.IsLocallyGeneratedByNonZeroDivisor (T.boundary.get ⟨j, hj⟩)` using `hsd.1`. Conclude with `krullDimSucc_subscheme_lt_of_isLocallyGeneratedByNonZeroDivisor T.scheme hV.topologicalKrullDim_lt_top (T.boundary.get ⟨j, hj⟩) hcart`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem dim_restrictToBoundaryDivisor_lt (T : MarkedIdealWithBoundary.{u}) (hV : T.IsAdmissible)
     (hne : (orderAtLeastLocus T.ideal T.mult).Nonempty) (j : ℕ) (hj : j < T.boundary.length)
@@ -335,7 +333,7 @@ structure DivisorReductionStepProperties (hres : FunctorialResolution.Blowup.Str
         orderAtLeastLocus T.ideal T.mult
 
 /- English proof (translation)
-The claim follows from `h.exists_ideal_mul_preIdeal_pow isMarked_pushedTop := h.isMarked_pushedTop isMarked_pushedPre := h.isMarked_pushedPre isBlowup_id_preIdeal := h.isBlowup_id_preIdeal lowerTriple_dim_lt := fun T hV hne j hj I₀ E₀ => dim_restrictToBoundaryDivisor_lt T hV hne j hj I₀ E₀ valid_lowerTo …`.
+A detailed English derivation is pending.
 -/
 theorem DivisorReductionStepProperties.toDivisorReductionTerminationProperties {hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u}}
     {hno : BlowupPreservesNoetherian.{u}} (h : DivisorReductionStepProperties hres hno) :

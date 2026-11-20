@@ -6,9 +6,9 @@ open CategoryTheory Limits
 namespace LateralTheory.E.SepTensorPf
 
 /- English proof (translation)
-Introduce `A X B Z x b u v hp _ hX _ hb _ hZ`. Take `⟨_, hXs⟩` from `hX`. Establish `hu : u.hom.IsIntegral` using `LateralTheory.E.SHTensorPf.intPush hp hb`. Set `f : X →+* IsLocalRing.ResidueField Z` to `(IsLocalRing.residue Z).comp u.hom`. Establish `hf : f.IsIntegral` using `RingHom.IsIntegral.trans u.hom (IsLocalRing.residue Z) hu (RingHom.isIntegral_of_surjective _ IsLocalRing.residue_surjective)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `_ : Algebra X (IsLocalRing.ResidueField Z)` to `f.toAlgebra`. Establish `: Algebra.IsIntegral X (IsLocalRing.ResidueField Z)` using `⟨hf⟩`. Establish `: Algebra.IsIntegral (IsLocalRing.ResidueField X) (IsLocalRing.ResidueField Z)` using `Algebra.IsIntegral.tower_top X`. Conclude with `Algebra.IsAlgebraic.isSepClosed (F := IsLocalRing.ResidueField X)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem SepTensor_of : LateralTheory.E.SHTensorPf.SepTensor := by
   intro A X B Z x b u v hp _ hX _ hb _ hZ

@@ -5,37 +5,33 @@ open GlobalTheory.CuspRep GlobalTheory.HeckeGal GlobalTheory.GalOfCusp UpperTheo
 open UpperTheory.V UpperTheory.V.Af UpperTheory.V.Af.Bc
 
 /- English proof (translation)
-Establish `hmul : ∀ (a b : Γ) (v : V), ρ a (ρ b v) = ρ (a * b) v`. Introduce `a b v`. Rewrite using `[map_mul]`. Both sides reduce to the same expression. Take `⟨W', ⟨hW's, hW'd⟩, hmax⟩` from `exists_maximal_of_wellFoundedGT (fun U : Submodule K V => (∀ g ∈ N, ∀ v ∈ U, ρ g v ∈ U) ∧ Disjoint W U) ⟨⊥, by intro g _ v hv; rw [Submodule.mem_bot] at hv ⊢; rw [hv, map_zero], disjoint_bot_right⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Use `⟨W', hW's, hW'd, ?_⟩` and prove the remaining obligations. Rewrite using `[codisjoint_iff]`. Take `⟨C, hCs, hC⟩` from `hss (⨅ g : Γ, (W ⊔ W').comap (ρ g)) (by`. Introduce `g v hv`. Simplify using `only [Submodule.mem_iInf, Submodule.mem_comap] at hv ⊢`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `h`. Rewrite using `[hmul]`. Conclude with `hv _)`. Distinguish the cases in `hC0 : C = ⊥`. Establish `hU` using `hC.sup_eq_top`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hU` using `[hC0, sup_bot_eq]`. Rewrite using `[eq_top_iff]`. Introduce `v _`. Establish `hv : v ∈ (⨅ g : Γ, (W ⊔ W').comap (ρ g))` using `hU ▸ Submodule.mem_top`. Simplify using `only [Submodule.mem_iInf, Submodule.mem_comap] at hv`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using hv 1`. It suffices to derive a contradiction. Take `⟨S, ⟨hSs, hS0, hSC⟩, hmin⟩` from `exists_minimal_of_wellFoundedLT (fun U : Submodule K V => (∀ g ∈ N, ∀ v ∈ U, ρ g v ∈ U) ∧ U ≠ ⊥ ∧ U ≤ C) ⟨C, fun g _ v hv => hCs g v hv, hC0, le_rfl⟩`. Establish `hsup : ∀ n ∈ N, ∀ v ∈ W ⊔ W', ρ n v ∈ W ⊔ W'`. Introduce `n hn v hv`.
+It suffices to derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha, b, hb, rfl⟩` from `Submodule.mem_sup.mp hv`. Rewrite using `[map_add]`. Conclude with `Submodule.add_mem_sup (hW n hn a ha) (hW's n hn b hb)`. Establish `key : ∀ g : Γ, ∀ s ∈ S, ρ g s ∈ W ⊔ W'`. Introduce `g`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Distinguish the cases in `hA : S ⊓ (W ⊔ W').comap (ρ g) = ⊥`. Establish `hle : W' ⊔ S.map (ρ g) ≤ W'`. Use `hmax ⟨?_, ?_⟩ le_sup_left` and prove the remaining obligations. Introduce `n hn v hv`. Take `⟨a, ha, b, hb, rfl⟩` from `Submodule.mem_sup.mp hv`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨s, hs, rfl⟩` from `Submodule.mem_map.mp hb`. Rewrite using `[map_add]`. Use `Submodule.add_mem_sup (hW's n hn a ha) ?_` and prove the remaining obligations. Use `Submodule.mem_map.mpr ⟨ρ (g⁻¹ * n * g) s, hSs _ (hN.conj_mem' n hn g) s hs, ?_⟩` and prove the remaining obligations. Rewrite using `[hmul, hmul]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Use `group`. Rewrite using `[Submodule.disjoint_def]`. Introduce `v hvW hv`. Take `⟨a, ha, b, hb, rfl⟩` from `Submodule.mem_sup.mp hv`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨s, hs, rfl⟩` from `Submodule.mem_map.mp hb`. Establish `h1 : ρ g s ∈ W ⊔ W'`. Use `(W ⊔ W').sub_mem (Submodule.mem_sup_left hvW) (Submodule.mem_sup_right ha)` as an intermediate fact. Simplify using `using this`. Establish `h2 : s ∈ S ⊓ (W ⊔ W').comap (ρ g)` using `⟨hs, h1⟩`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `h2` using `[hA, Submodule.mem_bot]`. Substitute `h2` using the available equality. Rewrite `hvW`, the goal using `[map_zero, add_zero]`. Conclude with `Submodule.disjoint_def.mp hW'd a hvW ha`. Introduce `s hs`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Submodule.mem_sup_right (hle (Submodule.mem_sup_right (Submodule.mem_map_of_mem hs)))`. Establish `hle : S ≤ S ⊓ (W ⊔ W').comap (ρ g)`. Use `hmin ⟨?_, hA, inf_le_left.trans hSC⟩ inf_le_left` and prove the remaining obligations. Introduce `n hn v hv`. Use `⟨hSs n hn v hv.1, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h1 : ρ g v ∈ W ⊔ W'` using `hv.2`. Establish `h2` using `hsup _ (hN.conj_mem n hn g) _ h1`. Use `show ρ g (ρ n v) ∈ W ⊔ W'`. Rewrite `h2`, the goal using `[hmul]`. Establish `: g * n * g⁻¹ * g = g * n` using `by group`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h2` using `[this]`. Then use the resulting hypothesis. Introduce `s hs`. Conclude with `(hle hs).2`. Apply `hS0` to reduce the goal to its premises. Rewrite using `[eq_bot_iff, ← hC.inf_eq_bot]`.
-
-Introduce `s hs`. Use `⟨?_, hSC hs⟩` and prove the remaining obligations. Establish `: s ∈ (⨅ g : Γ, (W ⊔ W').comap (ρ g))`. Simplify using `only [Submodule.mem_iInf, Submodule.mem_comap]`. Conclude with `fun g => key g s hs`.
-
-Conclude with `this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.V.Af.Cr.semisimple_restriction_normal {K Γ V : Type} [Field K] [Group Γ] [AddCommGroup V] [Module K V]
     [FiniteDimensional K V] (ρ : Representation K Γ V) (N : Subgroup Γ) (hN : N.Normal)
@@ -120,9 +116,9 @@ private theorem UpperTheory.V.Af.Cr.semisimple_restriction_normal {K Γ V : Type
   exact this
 
 /- English proof (translation)
-Introduce `Γ Γ' k _ _ _ n r φ hN hss W hW`. Set `ρ : Representation k Γ (Fin n → k)` to `{ toFun := fun g => Matrix.toLin' (r g : Matrix (Fin n) (Fin n) k) map_one' := by simp; rfl map_mul' := fun a b => by rw [map_mul, Units.val_mul, Matrix.toLin'_mul]; rfl }`. Take `⟨W', h1, h2⟩` from `UpperTheory.V.Af.Cr.semisimple_restriction_normal ρ φ.range hN (fun U hU => hss U hU) W (by`. Introduce and unpack `_ ⟨g, rfl⟩ v hv`. Conclude with `hW g v hv)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨W', fun g v hv => h1 (φ g) ⟨g, rfl⟩ v hv, h2⟩`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.semisimple_restriction_to_normal_subgroup :
     UpperTheory.V.Af.Cr.SSRes := by

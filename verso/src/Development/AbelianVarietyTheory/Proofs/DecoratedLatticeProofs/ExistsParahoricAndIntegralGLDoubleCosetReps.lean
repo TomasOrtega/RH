@@ -9,7 +9,7 @@ open MeasureTheory ValuativeRel Matrix GlobalTheory.PRep GlobalTheory.SplitWeil 
 namespace GlobalTheory.ParHeckeReps
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _ _ _ _ _` and use `⟨fun g => Model.exists_isReps g, fun g => Model.exists_isRepsK g⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem exists_reps_both : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (A D : Type) [Fintype A] [DecidableEq A] [Fintype D] [DecidableEq D],

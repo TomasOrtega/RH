@@ -22,29 +22,27 @@ noncomputable section
 namespace GlobalTheory.KTypeProj
 
 /- English proof (translation)
-Introduce `x hx`. Establish `hzero : ∀ d ∈ G, b d d = 0 → d = 0`. Introduce `d hd h`. Assume the negation of the conclusion as `hne`. Use `hpos d hd hne` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Rewrite `this` using `[h]`. Simplify using `at this`. Take `⟨π, hπY, hπ⟩` from `hproj Y hYG hYf`. Establish `hcomm : ∀ i, ∀ z ∈ G, π (ρ i z) = ρ i (π z)`. Introduce `i z hz`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hdY : π (ρ i z) - ρ i (π z) ∈ Y` using `Y.sub_mem (hπY _) (hYρ i _ (hπY z))`. Establish `hpair : ∀ y ∈ Y, b (π (ρ i z) - ρ i (π z)) y = 0`. Introduce `y hy`. Establish `h1 : b (π (ρ i z)) y = b (ρ i z) y` using `hπ _ y hy`. Establish `h2 : b (ρ i z) y = b z (ρ (inv i) y)` using `hadj i z hz y (hYG hy)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : b z (ρ (inv i) y) = b (π z) (ρ (inv i) y)` using `(hπ z _ (hYρ (inv i) y hy)).symm`. Establish `h4 : b (ρ i (π z)) y = b (π z) (ρ (inv i) y)` using `hadj i (π z) (hYG (hπY z)) y (hYG hy)`. Rewrite using `[map_sub, LinearMap.sub_apply, h1, h2, h3, h4, sub_self]`. Conclude with `sub_eq_zero.mp (hzero _ (hYG hdY) (hpair _ hdY))`. Establish `hSG : typeSpan ρ Y₀ G ≤ G` using `typeSpan_le ρ Y₀ G`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hY1f : FiniteDimensional ℂ (typeSpan ρ Y₀ G ⊓ Y : Submodule ℂ M)` using `Submodule.finiteDimensional_of_le inf_le_right`. Take `⟨π₁, hπ₁Y, hπ₁⟩` from `hproj (typeSpan ρ Y₀ G ⊓ Y) (inf_le_left.trans hSG) hY1f`. Establish `hpS : π₁ x ∈ typeSpan ρ Y₀ G` using `(hπ₁Y x).1`. Establish `hpY : π₁ x ∈ Y` using `(hπ₁Y x).2`. Establish `hxp : x - π₁ x ∈ Y` using `Y.sub_mem hx hpY`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hle : typeSpan ρ Y₀ G ≤ LinearMap.ker (b (x - π₁ x))`. Use `iSup₂_le fun T hT => ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨w, hw, rfl⟩`. Rewrite using `[LinearMap.mem_ker]`. Establish `hTw : T w ∈ G` using `hT.1 ⟨w, hw, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hπT : π (T w) ∈ typeSpan ρ Y₀ G ⊓ Y`. Use `⟨?_, hπY _⟩` and prove the remaining obligations. Establish `hm` using `map_le_typeSpan ρ (Y₀ := Y₀) (G := G) (π ∘ₗ T) ?_ ?_`. Conclude with `hm ⟨w, hw, rfl⟩`. Introduce and unpack `_ ⟨v, -, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `hYG (hπY _)`. Introduce `i v hv`. Simplify using `only [LinearMap.comp_apply]`. Rewrite using `[hT.2 i v hv, hcomm i _ (hT.1 ⟨v, hv, rfl⟩)]`. Establish `e1 : b (x - π₁ x) (π (T w)) = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sub, LinearMap.sub_apply, hπ₁ x _ hπT, sub_self]`. Establish `e2 : b (T w - π (T w)) (x - π₁ x) = 0`. Rewrite using `[map_sub b (T w) (π (T w)), LinearMap.sub_apply, hπ (T w) _ hxp, sub_self]`. Establish `e3 : b (x - π₁ x) (T w - π (T w)) = 0`. Rewrite using `[← hherm _ (G.sub_mem hTw (hYG (hπY _))) _ (hYG hxp), e2, star_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hsplit : T w = π (T w) + (T w - π (T w))` using `by abel`. Rewrite using `[hsplit, map_add, e1, e3, add_zero]`. Establish `hd : e x - π₁ x ∈ typeSpan ρ Y₀ G` using `Submodule.sub_mem _ (he x) hpS`. Establish `hdd : b (e x - π₁ x) (e x - π₁ x) = 0`. Establish `h1` using `he' x _ hd`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h2` using `LinearMap.mem_ker.mp (hle hd)`. Rewrite `h2` using `[map_sub b x (π₁ x), LinearMap.sub_apply]`. Rewrite using `[map_sub b (e x) (π₁ x), LinearMap.sub_apply]`. Rewrite using `[h1, sub_eq_zero.mp h2, sub_self]`. Establish `h0` using `hzero _ (hSG hd) hdd`.
-
-Rewrite using `[sub_eq_zero.mp h0]`. Conclude with `hpY`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem typeSpan_proj_mem {M ι : Type} [AddCommGroup M] [Module ℂ M] (b : M →ₗ⋆[ℂ] M →ₗ[ℂ] ℂ) (G : Submodule ℂ M)
     (ρ : ι → M →ₗ[ℂ] M) (inv : ι → ι) (hpos : ∀ x ∈ G, x ≠ 0 → 0 < (b x x).re)

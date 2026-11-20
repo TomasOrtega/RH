@@ -7,11 +7,9 @@ open Formalism.FourierDecayAlt Formalism.REAL Formalism.QuantumDeterminants Filt
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `Wp Wq _ _ _ _ _ _ P0 p Cb w e F hDD hw hF`. Take `⟨nf, fib, o, κ, Dop, -, hIn, -, -, hEq⟩` from `hDD w hw e`. Establish `hsub : B.GPos p.T.base ⊆ C6.domL p.T.base ∅` using `fun g hg => ⟨hg.1, hg.2, fun l hl => by simp at hl⟩`. Establish `hGPG : B.GPos p.T.base ⊆ B.GV P0.k P0.r` using `fun g hg => hg.1`. Establish `hcont : ContinuousOn (B.opApply Dop F) (B.GPos p.T.base)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `Formalism.FourierDecayAlt.P.PBE.opApply_continuousOn` to reduce the goal to its premises. Introduce `T hT`. Establish `h1 : ContinuousOn T.coef (B.GPos p.T.base)` using `(Formalism.FourierDecayAlt.P.PBE.ckOn_continuousOn' (fun g hg => hg.1) (hIn.1 T hT).1).mono hsub`. Establish `h2 : ContinuousOn (B.Rw T.word F) (B.GPos p.T.base)` using `(Formalism.FourierDecayAlt.P.B5.ckOn_continuousOn (Formalism.FourierDecayAlt.P.JFxG.ckOn_Rw_top hF T.word T.word_lie)).mono hGPG`. Conclude with `h1.clm_apply h2`.
-
-Conclude with `hcont.congr (fun g hg => hEq F g (hsub hg))`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem liftedWord_continuousOn_GPos : ∀ (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] (P : M.Par) (p : KB.Pl P Wp Wq) (Cb : ℝ) (w : List C.Letter) (e : Wd.Ix (Fin w.length)) (F : B.Mat P.k P.r → (Wq →L[ℂ] Wp)), KB.InDDplus2 P p.l0 p.T.base Cb p.Θ → KB.CutWord P p.l0 w → B.CkOn ⊤ (B.GV P.k P.r) F → ContinuousOn (p.Θ.Θ w e F) (B.GPos p.T.base) := by
   intro Wp Wq _ _ _ _ _ _ P0 p Cb w e F hDD hw hF

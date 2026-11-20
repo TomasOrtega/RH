@@ -41,21 +41,19 @@ def split : (κ → AF F) ≃ₜ+ ((κ → mixedEmbedding.mixedSpace F) × (κ �
 open scoped Classical in
 
 /- English proof (translation)
-Establish `: BorelSpace (κ → AF F)` using `⟨rfl⟩`. Proceed by induction on `hΦ using Submodule.span_induction with`. Consider the case `mem Φ h`. Take `⟨f, g, hg, rfl⟩` from `h`. Use `GlobalTheory.AdelicUnitaryTop.locallyCompact_finiteAdele F` as an intermediate fact.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `GlobalTheory.AdelicUnitaryTop.secondCountable_finiteAdele F` as an intermediate fact. Use `GlobalTheory.AdelicUnitaryTop.t2Space_finiteAdeleRing_of_numberField F` as an intermediate fact. Set `_ : MeasurableSpace (κ → mixedEmbedding.mixedSpace F)` to `borel _`. Establish `: BorelSpace (κ → mixedEmbedding.mixedSpace F)` using `⟨rfl⟩`. Set `_ : MeasurableSpace (κ → FiniteAdeleRing (𝓞 F) F)` to `borel _`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `: BorelSpace (κ → FiniteAdeleRing (𝓞 F) F)` using `⟨rfl⟩`. Establish `e : pureA F f g = (fun p => f p.1 * g p.2) ∘ split F κ` using `rfl`. Establish `hc : Continuous fun p : (κ → mixedEmbedding.mixedSpace F) × (κ → FiniteAdeleRing (𝓞 F) F) => f p.1 * g p.2` using `(f.continuous.comp continuous_fst).mul (hg.1.continuous.comp continuous_snd)`. Take `⟨C, hC⟩` from `hg.1.continuous.bounded_above_of_compact_support hg.2`. Use `⟨e ▸ hc.comp (split F κ).continuous, ⟨SchwartzMap.seminorm ℂ 0 0 f * C, fun x => ?_⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e, Function.comp_apply, norm_mul]`. Conclude with `mul_le_mul (SchwartzMap.norm_le_seminorm ℂ f _) (hC _) (norm_nonneg _) (apply_nonneg _ _)`. Set `ν : Measure ((κ → mixedEmbedding.mixedSpace F) × (κ → FiniteAdeleRing (𝓞 F) F))` to `(Measure.addHaar).prod Measure.addHaar`. Establish `hi : Integrable (fun p : (κ → mixedEmbedding.mixedSpace F) × (κ → FiniteAdeleRing (𝓞 F) F) => f p.1 * g p.2) ν` using `f.integrable.mul_prod (hg.1.continuous.integrable_of_hasCompactSupport hg.2)`. Establish `: (μ.map (split F κ)).IsAddHaarMeasure` using `(split F κ).isAddHaarMeasure_map μ`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: ν.IsAddHaarMeasure` using `Measure.prod.instIsAddHaarMeasure _ _`. Establish `h2` using `Measure.isAddLeftInvariant_eq_smul (μ.map (split F κ)) ν`. Rewrite using `[e]`. Use `Integrable.comp_measurable ?_ (split F κ).continuous.measurable` and prove the remaining obligations. Rewrite using `[h2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `hi.smul_measure_nnreal`. Consider the case `zero => exact ⟨continuous_const, ⟨0, fun x => by simp⟩, integrable_zero _ _ _⟩`. Consider the case `add Φ Ψ _ _ h1 h2`. Take `⟨a1, ⟨C, hC⟩, a2⟩` from `h1`. Take `⟨b1, ⟨D, hD⟩, b2⟩` from `h2`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Conclude with `⟨a1.add b1, ⟨C + D, fun x => (norm_add_le _ _).trans (add_le_add (hC x) (hD x))⟩, a2.add b2⟩`. Consider the case `smul c Φ _ h`. Take `⟨a1, ⟨C, hC⟩, a2⟩` from `h`. Use `⟨a1.const_smul c, ⟨‖c‖ * C, fun x => ?_⟩, a2.smul c⟩` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, norm_smul]`.
-
-Conclude with `mul_le_mul_of_nonneg_left (hC x) (norm_nonneg _)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sch_props (μ : Measure (κ → AF F)) [μ.IsAddHaarMeasure] {Φ : (κ → AF F) → ℂ} (hΦ : Φ ∈ schA F κ) :
     Continuous Φ ∧ (∃ C : ℝ, ∀ x, ‖Φ x‖ ≤ C) ∧ Integrable Φ μ := by
@@ -101,15 +99,13 @@ theorem sch_props (μ : Measure (κ → AF F)) [μ.IsAddHaarMeasure] {Φ : (κ �
     exact mul_le_mul_of_nonneg_left (hC x) (norm_nonneg _)
 
 /- English proof (translation)
-Use `set n : ℕ := Module.finrank ℝ (mixedEmbedding.mixedSpace F)`. Establish `hn : 0 < n` using `Module.finrank_pos`. Establish `hn' : (n : ℝ) ≠ 0` using `by exact_mod_cast hn.ne'`. Establish `hat : At (evI F) (realAd F (1 / (2 * n)))`. Introduce `u hu`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1 : u.1 = 0` using `(InfiniteAdeleRing.ringEquiv_mixedSpace F).injective (by rw [map_zero]; exact hu)`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use `show u.1 * _ = 0`. Rewrite using `[h1, zero_mul]`. Use `show u.2 * 0 = 0`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mul_zero]`. Establish `hev : evI F (realAd F (1 / (2 * n))) = algebraMap ℝ _ (1 / (2 * n) : ℝ)` using `RingEquiv.apply_symm_apply _ _`. Use `⟨realAd F (1 / (2 * n)), ?_⟩` and prove the remaining obligations. Rewrite using `[hψ.2.2 _ hat, hev, Algebra.trace_algebraMap]`. Establish `eR : (n • (1 / (2 * n) : ℝ) : ℝ) = 1 / 2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[nsmul_eq_mul]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[eR]`. Establish `: -(2 * (Real.pi : ℂ) * Complex.I) * ((1 / 2 : ℝ) : ℂ) = -(Real.pi * Complex.I)` using `by push_cast; ring`. Rewrite using `[this, Complex.exp_neg, Complex.exp_pi_mul_I]`.
-
-Evaluate the numerical expressions.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. A detailed English derivation is pending.
 -/
 theorem exists_ne_one {ψ : AddChar (AF F) ℂ} (hψ : IsStd ψ) : ∃ x, ψ x ≠ 1 := by
   set n : ℕ := Module.finrank ℝ (mixedEmbedding.mixedSpace F)
@@ -135,7 +131,7 @@ theorem exists_ne_one {ψ : AddChar (AF F) ℂ} (hψ : IsStd ψ) : ∃ x, ψ x �
   norm_num
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `exists_ne_one hψ`. Establish `hne : ψ ≠ 1` using `fun h1 => hs (by rw [h1]; rfl)`. Conclude with `(GlobalTheory.CompanionTheory.AdeleAnn.unitary_and_annihilator_eq F ψ hψ.1 hne hψ.2.1).1 x`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem norm_psi {ψ : AddChar (AF F) ℂ} (hψ : IsStd ψ) (x : AF F) : ‖ψ x‖ = 1 := by
   obtain ⟨s, hs⟩ := exists_ne_one hψ
@@ -143,9 +139,9 @@ theorem norm_psi {ψ : AddChar (AF F) ℂ} (hψ : IsStd ψ) (x : AF F) : ‖ψ x
   exact (GlobalTheory.CompanionTheory.AdeleAnn.unitary_and_annihilator_eq F ψ hψ.1 hne hψ.2.1).1 x
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `exists_ne_one hψ`. Establish `hne : ψ ≠ 1` using `fun h1 => hs (by rw [h1]; rfl)`. Take `⟨b, rfl⟩` from `(GlobalTheory.CompanionTheory.AdeleAnn.unitary_and_annihilator_eq F ψ hψ.1 hne hψ.2.1).2 x fun a => h _`. Distinguish the cases in `hb : b = 0`. Rewrite using `[hb, map_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Use `absurd ?_ hs` and prove the remaining obligations. Rewrite using `[← h (algebraMap F (AF F) b⁻¹ * s), ← mul_assoc, ← map_mul, mul_inv_cancel₀ hb, map_one, one_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem nondeg {ψ : AddChar (AF F) ℂ} (hψ : IsStd ψ) (x : AF F) (h : ∀ y, ψ (x * y) = 1) : x = 0 := by
   obtain ⟨s, hs⟩ := exists_ne_one hψ
@@ -157,15 +153,15 @@ theorem nondeg {ψ : AddChar (AF F) ℂ} (hψ : IsStd ψ) (x : AF F) (h : ∀ y,
     rw [← h (algebraMap F (AF F) b⁻¹ * s), ← mul_assoc, ← map_mul, mul_inv_cancel₀ hb, map_one, one_mul]
 
 /- English proof (translation)
-Establish `: BorelSpace (κ → AF F)` using `⟨rfl⟩`. Use `GlobalTheory.AdelicUnitaryTop.secondCountable_adele F` as an intermediate fact. Use `GlobalTheory.AdelicUnitaryTop.t2Space_adeleRing_numberField F` as an intermediate fact. Establish `: PolishSpace (κ → AF F)` using `polish_of_lc _`. Establish `hn` using `norm_psi hψ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hne : ∀ t, ψ t ≠ 0` using `fun t h => by simpa [h] using hn t`. Set `e : (κ → AF F) → (κ → AF F) →ᵇ ℂ` to `fun y => BoundedContinuousFunction.ofNormedAddCommGroup (fun u => ψ (u ⬝ᵥ y)) (hψ.1.comp (continuous_id.dotProduct continuous_const)) 1 fun u => (hn _).le`. Establish `he : ∀ y u, e y u = ψ (u ⬝ᵥ y)` using `fun _ _ => rfl`. Establish `hae : H =ᵐ[μ] 0`. Use `complex_ae_zero μ e ⟨0, ?_⟩ (fun a b => ⟨a + b, ?_⟩) (fun a => ⟨-a, ?_⟩) (fun x x' hxx => ?_) hi h0` and prove the remaining obligations.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use extensionality with `u`. Simplify using `[he]`. Use extensionality with `u`. Simplify using `[he, AddChar.map_add_eq_mul]`. Use extensionality with `u`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. By extensionality, compare the relevant components.
 
-Establish `h1 : ψ (-(u ⬝ᵥ a)) * ψ (u ⬝ᵥ a) = 1`. Rewrite using `[← AddChar.map_add_eq_mul, neg_add_cancel, AddChar.map_zero_eq_one]`. Establish `h2 : (starRingEnd ℂ) (ψ (u ⬝ᵥ a)) * ψ (u ⬝ᵥ a) = 1` using `by simp [Complex.conj_mul', hn]`. Simplify `mul_right_cancel₀ (hne _) (h1.trans h2.symm)` using `[he]`. Assume the negation of the conclusion as `hcon push Not at hcon`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Assume the negation of the conclusion and derive a contradiction.
 
-Use `hxx (funext fun i => sub_eq_zero.1 (nondeg hψ _ fun t => ?_))` and prove the remaining obligations. Establish `h1` using `hcon (Pi.single i t)`. Rewrite `h1` using `[he, he, dotProduct_single, dotProduct_single]`. Rewrite using `[sub_mul, AddChar.map_sub_eq_div, h1, div_self (hne _)]`. Conclude with `(hc.ae_eq_iff_eq μ continuous_const).1 hae`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero {ψ : AddChar (AF F) ℂ} (hψ : IsStd ψ) (μ : Measure (κ → AF F)) [μ.IsAddHaarMeasure]
     {H : (κ → AF F) → ℂ} (hc : Continuous H) (hi : Integrable H μ) (h0 : ∀ y, ∫ u, ψ (u ⬝ᵥ y) * H u ∂μ = 0) :
@@ -203,17 +199,17 @@ end FourInj
 open FourInj in
 
 /- English proof (translation)
-Introduce `F _ _ κ _ ψ hψ μ hμ Φ₁ h₁ Φ₂ h₂ Ψ₁ k₁ Ψ₂ k₂ hco x u`. Establish `: BorelSpace (κ → AF F)` using `⟨rfl⟩`. Use `GlobalTheory.AdelicUnitaryTop.secondCountable_adele F` as an intermediate fact. Establish `hn` using `norm_psi hψ`. Establish `hne : ∀ t, ψ t ≠ 0` using `fun t h => by simpa [h] using hn t`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcont : ∀ {A B : (κ → AF F) → ℂ}, A ∈ schA F κ → B ∈ schA F κ → ∀ w, Continuous fun v => A (v + w) * (starRingEnd ℂ) (B v)` using `fun hA hB w => ((sch_props μ hA).1.comp (continuous_id.add continuous_const)).mul (Complex.continuous_conj.comp (sch_props μ hB).1)`. Establish `hint : ∀ {A B : (κ → AF F) → ℂ}, A ∈ schA F κ → B ∈ schA F κ → ∀ w, Integrable (fun v => A (v + w) * (starRingEnd ℂ) (B v)) μ`. Introduce `A B hA hB w`. Take `⟨C, hC⟩` from `(sch_props μ hA).2.1`. Establish `hic : Integrable (fun v => (starRingEnd ℂ) (B v)) μ` using `(Complex.conjCLE : ℂ →L[ℝ] ℂ).integrable_comp (sch_props μ hB).2.2`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `hic.bdd_mul (c := C) ((sch_props μ hA).1.comp (continuous_id.add continuous_const)).aestronglyMeasurable (Eventually.of_forall fun v => hC _)`. Establish `hint' : ∀ {A B : (κ → AF F) → ℂ}, A ∈ schA F κ → B ∈ schA F κ → ∀ w y, Integrable (fun v => ψ (v ⬝ᵥ y) * (A (v + w) * (starRingEnd ℂ) (B v))) μ` using `fun hA hB w y => (hint hA hB w).bdd_mul (c := 1) (hψ.1.comp (continuous_id.dotProduct continuous_const)).aestronglyMeasurable (Eventually.of_forall fun v => (hn _).le)`. Establish `hcoef : ∀ (A B : (κ → AF F) → ℂ) w y, coef F ψ μ A B (w, y) = ψ (⅟(2 : AF F) * (w ⬝ᵥ y)) * ∫ v, ψ (v ⬝ᵥ y) * (A (v + w) * (starRingEnd ℂ) (B v)) ∂μ`. Introduce `A B w y`. Rewrite using `[coef, ← integral_const_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `integral_congr_ae (Eventually.of_forall fun v => ?_)` and prove the remaining obligations. Simplify using `only [schr, AddChar.map_add_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `key` using `eq_zero hψ μ ((hcont h₁ h₂ (x - u)).sub (hcont k₁ k₂ (x - u))) ((hint h₁ h₂ (x - u)).sub (hint k₁ k₂ (x - u))) fun y => by`. Establish `h3` using `congrFun hco (x - u, y)`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h3` using `[hcoef, hcoef]`. Establish `h4` using `mul_left_cancel₀ (hne _) h3`. Simplify using `only [Pi.sub_apply, mul_sub]`. Rewrite using `[integral_sub (hint' h₁ h₂ _ y) (hint' k₁ k₂ _ y), h4, sub_self]`. Establish `h5` using `congrFun key u`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Pi.sub_apply, add_sub_cancel, Pi.zero_apply] at h5`. Conclude with `sub_eq_zero.1 h5`.
+A detailed English derivation is pending.
 -/
 theorem fourierInj_of : FourierInj := by
   intro F _ _ κ _ ψ hψ μ hμ Φ₁ h₁ Φ₂ h₂ Ψ₁ k₁ Ψ₂ k₂ hco x u

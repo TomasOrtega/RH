@@ -7,9 +7,9 @@ open scoped TensorProduct Classical
 namespace UpperTheory.Gal.W2.Seed.HeckeRelations
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Use `show ∑ᶠ x : X ⧸ K, f x.out * (c • f') (x.out⁻¹ * g) = c • ∑ᶠ x : X ⧸ K, f x.out * f' (x.out⁻¹ * g)`. Rewrite using `[smul_finsum]`. Use `finsum_congr fun x => ?_` and prove the remaining obligations. Simplify using `only [Pi.smul_apply, smul_eq_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 private theorem conv_smul_right {X : Type} [Group X] (K : Subgroup X) (f f' : X → ℂ) (c : ℂ) :
     conv K f (c • f') = c • conv K f f' := by

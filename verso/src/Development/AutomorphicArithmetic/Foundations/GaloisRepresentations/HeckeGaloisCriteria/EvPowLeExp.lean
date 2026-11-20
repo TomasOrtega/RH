@@ -8,7 +8,7 @@ namespace UpperTheory.GalC
 open Formalism Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N NumberField
 
 /- English proof (translation)
-Use `mul_nonneg ?_ (Nat.cast_nonneg _)` and prove the remaining obligations. Unfold `SizeData₂.lwP lw`. Conclude with `div_nonneg (Real.log_natCast_nonneg _) (Nat.cast_nonneg _)`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem lw_ram_nonneg (D : D7) (w : D.what₂.places.Pl) : 0 ≤ SizeData₂.lwP w * (D.what₂.places.ramIdx w : ℝ) := by
   refine mul_nonneg ?_ (Nat.cast_nonneg _)
@@ -17,17 +17,17 @@ theorem lw_ram_nonneg (D : D7) (w : D.what₂.places.Pl) : 0 ≤ SizeData₂.lwP
 
 open Classical in
 /- English proof (translation)
-Establish `h1 : Real.log N = ∑ l ∈ N.primeFactors, (padicValNat l N : ℝ) * Real.log l`. Rewrite using `[Real.log_nat_eq_sum_factorization, Finsupp.sum, Nat.support_factorization]`. Use `Finset.sum_congr rfl fun l hl => ?_` and prove the remaining obligations. Rewrite using `[Nat.factorization_def _ (Nat.prime_of_mem_primeFactors hl)]`. Rewrite using `[h1, ← Finset.sum_filter_add_sum_filter_not _ (fun w => D.what₂.places.resChar w ∈ N.primeFactors)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h0 : ∑ w ∈ (L.supp.filter (fun w => D.what₂.muAt w ≠ D.what₂.mu0)).filter (fun w => ¬ D.what₂.places.resChar w ∈ N.primeFactors), SizeData₂.lwP w * (D.what₂.places.ramIdx w : ℝ) * (padicValNat (D.what₂.places.resChar w) N : ℝ) = 0`. Use `Finset.sum_eq_zero fun w hw => ?_` and prove the remaining obligations. Establish `h2` using `(Finset.mem_filter.1 hw).2`. Establish `h3 : ¬ D.what₂.places.resChar w ∣ N` using `fun h => h2 (Nat.mem_primeFactors.2 ⟨D.what₂.places.resChar_prime w, h, hN⟩)`. Rewrite using `[padicValNat.eq_zero_of_not_dvd h3]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[h0, add_zero, ← Finset.sum_fiberwise_of_maps_to (g := fun w => D.what₂.places.resChar w) (t := N.primeFactors) (fun w hw => (Finset.mem_filter.1 hw).2)]`. Use `Finset.sum_le_sum fun l hl => ?_` and prove the remaining obligations. Establish `hm` using `TwistedPlaces.admissibleMeanCondition_holds L l (Nat.prime_of_mem_primeFactors hl)`. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr ?_ fun w hw => ?_` and prove the remaining obligations. Use extensionality with `w`. Simplify using `only [Finset.mem_filter, TwistedPlaces.mem_twAt, TwistedPlaces.TwPl]`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨⟨⟨a, b⟩, -⟩, e⟩`. Conclude with `⟨a, b, e⟩`. Introduce and unpack `⟨a, b, e⟩`. Conclude with `⟨⟨⟨a, b⟩, e ▸ hl⟩, e⟩`. Rewrite using `[(TwistedPlaces.mem_twAt.1 hw).2.2]`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ _ := mul_le_mul_of_nonneg_left hm (Nat.cast_nonneg _)`.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem sum_val_le {D : D7} (L : SizeData₂ D) (N : ℕ) (hN : N ≠ 0) :
     ∑ w ∈ L.supp.filter (fun w => D.what₂.muAt w ≠ D.what₂.mu0),
@@ -62,7 +62,7 @@ theorem sum_val_le {D : D7} (L : SizeData₂ D) (N : ℕ) (hN : N ≠ 0) :
 
 open Classical in
 /- English proof (translation)
-Use `le_trans ?_ (add_le_add_right (mul_le_mul_of_nonneg_left (sum_val_le L N hN) hd) _)` and prove the remaining obligations. Rewrite using `[Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_le_sum fun w hw => ?_` and prove the remaining obligations. Use `mul_le_mul_of_nonneg_left (h w (Finset.mem_filter.1 hw).2) (lw_ram_nonneg D w)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem etaSum_le_add {D : D7} (L : SizeData₂ D) (j : ℕ) (η : D.what₂.places.Pl → ℝ) (d : ℝ) (hd : 0 ≤ d) (N : ℕ) (hN : N ≠ 0)
     (h : ∀ w, D.what₂.muAt w ≠ D.what₂.mu0 →
@@ -76,9 +76,9 @@ theorem etaSum_le_add {D : D7} (L : SizeData₂ D) (j : ℕ) (η : D.what₂.pla
   linarith
 
 /- English proof (translation)
-Establish `h2` using `((isLittleO_log_rpow_atTop he).const_mul_left C).bound one_pos`. Take `⟨x0, h⟩` from `Filter.eventually_atTop.1 (h2.and (Filter.eventually_ge_atTop 1))`. Use `⟨x0, fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨a, b⟩` from `h x hx`. Establish `x0' : 0 < x` using `by linarith`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨?_, Real.one_le_rpow b he.le⟩` and prove the remaining obligations. Rewrite `a` using `[one_mul, Real.norm_of_nonneg (Real.rpow_nonneg x0'.le _), Real.norm_eq_abs]`. Rewrite using `[Real.rpow_def_of_pos x0', mul_comm]`. Conclude with `Real.exp_le_exp.2 ((le_abs_self _).trans a)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ev_pow_le_exp (C eps : ℝ) (he : 0 < eps) : ∃ x0 : ℝ, ∀ x ≥ x0, x ^ C ≤ Real.exp (x ^ eps) ∧ 1 ≤ x ^ eps := by
   have h2 := ((isLittleO_log_rpow_atTop he).const_mul_left C).bound one_pos

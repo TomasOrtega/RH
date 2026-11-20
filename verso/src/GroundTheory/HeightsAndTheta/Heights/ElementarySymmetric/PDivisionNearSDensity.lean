@@ -15,7 +15,7 @@ namespace DivisionNearS
 variable {D : ℕ}
 
 /- English proof (translation)
-Take `⟨a, rfl⟩ : ∃ a, g₂ = Real.exp a` from `⟨_, (Real.exp_log hg₂).symm⟩`. Take `⟨b, rfl⟩ : ∃ b, G = Real.exp b` from `⟨_, (Real.exp_log hG).symm⟩`. Rewrite using `[Real.log_exp, Real.log_exp, ← Real.rpow_natCast, ← Real.exp_mul, ← Real.exp_mul, ← Real.exp_add, ← Real.exp_add, ← Real.exp_add]`. Use `congr 1`. Use `push_cast`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -33,11 +33,11 @@ theorem exp_identity (T : ℕ) (t G g₂ E φc : ℝ) (hG : 0 < G) (hg₂ : 0 < 
   ring
 
 /- English proof (translation)
-Establish `hG : 0 < ‖X.L.g j c x‖ ^ 2`. Use `X.L.ne_zero j c x hx` as an intermediate fact. Check the signs of the components of the expression. Establish `hg₂ : 0 < ‖X.L₂.g j c x‖ ^ 2`. Use `X.L₂.ne_zero j c x hx` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Check the signs of the components of the expression. Establish `hE` using `esum_pos X c x hx.2`. Establish `hS : 0 ≤ ∑ i, ‖Z.s i c x‖ ^ 2` using `by positivity`. Establish `hFj : ‖F j x‖ ^ 2 = ‖jac X.A j c x‖ ^ 2 * ‖X.L₂.g j c x‖ ^ 2 * (‖X.L.g j c x‖ ^ 2) ^ (D + T) * ‖F c x‖ ^ 2`. Rewrite using `[hF.2.1 j c x hx, norm_mul, norm_mul, norm_mul, norm_pow]`.
+Check the signs of the components of the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `key` using `exp_identity (D := D) T t _ _ (∑ k, ‖X.e k c x‖ ^ 2) (φA.φ c x) hG hg₂`. Rewrite using `[hFj, ssum_transform X Z j c x hx, Real.mul_rpow hG.le hS, φA.compat j c x hx]`. Unfold `fsWeight`. Rewrite using `[esum_transform X j c x hx, Real.log_mul hG.ne' hE.ne', ← key]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -64,9 +64,9 @@ theorem dens_transform (X : EmbDatum D) (Z : ZeroDatum X) (φA : TwistWeight X.A
   ring
 
 /- English proof (translation)
-Establish `hE` using `esum_pos X j x hx`. Rewrite using `[Real.rpow_def_of_pos hE (t + 1)]`. Unfold `fsWeight`. Establish `: Real.exp (-(φA.φ j x + ((T : ℝ) - 1 - t) * Real.log (∑ k, ‖X.e k j x‖ ^ 2))) = Real.exp (-(φA.φ j x + (T : ℝ) * Real.log (∑ k, ‖X.e k j x‖ ^ 2))) * Real.exp (Real.log (∑ k, ‖X.e k j x‖ ^ 2) * (t + 1))`. Rewrite using `[← Real.exp_add]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem dens_eq (X : EmbDatum D) (φA : TwistWeight X.A X.L₂ X.L D) (T : ℕ) (t : ℝ)
     (j : Fin X.A.n) (x : X.U) (hx : x ∈ (X.A.chart j).source) (a S : ℝ) :
@@ -83,7 +83,7 @@ theorem dens_eq (X : EmbDatum D) (φA : TwistWeight X.A X.L₂ X.L D) (T : ℕ) 
   rw [this]; ring
 
 /- English proof (translation)
-Establish `h1 : S ^ (-(t + 1)) ≤ (r * E) ^ (-(t + 1))` using `Real.rpow_le_rpow hS hSE (by linarith)`. Rewrite `h1` using `[Real.mul_rpow hr hE.le]`. Establish `hEp : 0 < E ^ (t + 1)` using `Real.rpow_pos_of_pos hE _`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Real.rpow_neg hE.le, mul_assoc, inv_mul_cancel₀ hEp.ne', mul_one]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 -/
 theorem ratio_le_of_nonpos (t S E r : ℝ) (ht : t + 1 ≤ 0) (hE : 0 < E) (hS : 0 ≤ S)
     (hr : 0 ≤ r) (hSE : S ≤ r * E) :
@@ -96,7 +96,7 @@ theorem ratio_le_of_nonpos (t S E r : ℝ) (ht : t + 1 ≤ 0) (hE : 0 < E) (hS :
       rw [Real.rpow_neg hE.le, mul_assoc, inv_mul_cancel₀ hEp.ne', mul_one]
 
 /- English proof (translation)
-Establish `h1 : E / S ≤ C` using `(div_le_iff₀ hS).mpr hSE`. Establish `h2 : (E / S) ^ (t + 1) ≤ C ^ (t + 1)` using `Real.rpow_le_rpow (by positivity) h1 ht`. Rewrite `h2` using `[Real.div_rpow hE.le hS.le, div_eq_mul_inv, ← Real.rpow_neg hS.le, mul_comm]`. Conclude with `h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ratio_le_of_nonneg (t S E C : ℝ) (ht : 0 ≤ t + 1) (hE : 0 < E) (hS : 0 < S)
     (hSE : E ≤ C * S) :
@@ -107,29 +107,25 @@ theorem ratio_le_of_nonneg (t S E C : ℝ) (ht : 0 ≤ t + 1) (hE : 0 < E) (hS :
   exact h2
 
 /- English proof (translation)
-Substitute `hc` using the available equality. Use `set c := chartIdx X.A x₀`. Use `set w₀ := X.A.chart c x₀`. Establish `hx₀s : x₀ ∈ (X.A.chart c).source` using `mem_source_chartIdx X.A x₀`. Establish `hw₀t : w₀ ∈ (X.A.chart c).target` using `(X.A.chart c).map_source hx₀s`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsymm : (X.A.chart c).symm w₀ = x₀` using `(X.A.chart c).left_inv hx₀s`. Establish `hmem : w₀ ∈ (X.A.chart c).target ∩ (X.A.chart c).symm ⁻¹' (X.A.chart c).source` using `⟨hw₀t, by simpa [hsymm] using hx₀s⟩`. Establish `hnhd : (X.A.chart c).target ∩ (X.A.chart c).symm ⁻¹' (X.A.chart c).source ∈ 𝓝 w₀` using `((X.A.chart c).continuousOn_symm.isOpen_inter_preimage (X.A.chart c).open_target (X.A.chart c).open_source).mem_nhds hmem`. Establish `hfan : AnalyticAt ℂ (F c ∘ (X.A.chart c).symm) w₀` using `hF.1 c c w₀ hmem`. Take `⟨C₁, hC₁⟩` from `exists_bound_of_iteratedFDeriv_eq_zero hfan (T - D) (fun k hk => hfil x₀ hx₀ k hk)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set σ : (Fin D → ℂ) → (Fin D → ℂ) := fun z i => Z.s i c ((X.A.chart c).symm z)`. Establish `hσd : DifferentiableAt ℂ σ w₀` using `differentiableAt_pi.mpr fun i => ((s_mem X Z i).1 c c w₀ hmem).differentiableAt`. Establish `hdet : LinearMap.det (fderiv ℂ σ w₀ : (Fin D → ℂ) →ₗ[ℂ] (Fin D → ℂ)) ≠ 0` using `Z.nondeg x₀ hx₀`. Establish `hσ0 : σ w₀ = 0` using `funext fun i => by simp only [σ, hsymm]; exact hx₀ i`. Take `⟨κ, hκ, hκb⟩` from `exists_lowerBound_of_det_ne_zero hσd.hasFDerivAt hdet hσ0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set h : (Fin D → ℂ) → ℝ := fun w => Real.exp (-(φA.φ c ((X.A.chart c).symm w) + ((T : ℝ) - 1 - t) * fsWeight X.e c ((X.A.chart c).symm w)))`. Establish `hφc : ContinuousAt (fun w => φA.φ c ((X.A.chart c).symm w)) w₀` using `((φA.smooth c c).continuousOn).continuousAt hnhd`. Establish `hEc : ContinuousAt (fun w => ∑ k, ‖X.e k c ((X.A.chart c).symm w)‖ ^ 2) w₀`. Establish `hk : ∀ k, ContinuousAt (fun w => X.e k c ((X.A.chart c).symm w)) w₀` using `fun k => ((X.e_mem k).1 c c w₀ hmem).continuousAt`. Conclude with `tendsto_finsetSum Finset.univ fun k _ => (hk k).norm.pow 2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hE0 : (∑ k, ‖X.e k c ((X.A.chart c).symm w₀)‖ ^ 2) ≠ 0`. Rewrite using `[hsymm]`. Conclude with `(esum_pos X c x₀ hx₀s).ne'`. Establish `hcont : ContinuousAt h w₀` using `(hφc.add (continuousAt_const.mul (hEc.log hE0))).neg.rexp`. Establish `hev : ∀ᶠ w in 𝓝 w₀, h w < h w₀ + 1` using `hcont.eventually (gt_mem_nhds (lt_add_one _))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hall` using `(show ∀ᶠ w in 𝓝 w₀, w ∈ (X.A.chart c).target from (X.A.chart c).open_target.mem_nhds hw₀t).and (hC₁.and (hκb.and hev))`. Take `⟨ε, hε, hball⟩` from `Metric.eventually_nhds_iff_ball.mp hall`. Establish `hh0 : 0 < h w₀` using `Real.exp_pos _`. Use `⟨ε, hε, 2 ^ D * C₁ ^ 2 * (κ ^ 2) ^ (-(t + 1)) * (h w₀ + 1), fun w hw => (hball w hw).1, fun w hw => ?_⟩` and prove the remaining obligations. Take `⟨-, h1, h2, h3⟩` from `hball w hw`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises. Establish `hK : 0 ≤ 2 ^ D * C₁ ^ 2 * (κ ^ 2) ^ (-(t + 1)) * (h w₀ + 1)` using `by positivity`. Distinguish the cases in `hw0 : w = w₀`. Establish `hS0 : ∑ i, ‖Z.s i c ((X.A.chart c).symm w)‖ ^ 2 = 0`. Rewrite using `[hw0, hsymm]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[show ∀ i, Z.s i c x₀ = 0 from hx₀]`. Rewrite using `[hS0, Real.zero_rpow (by linarith)]`. Simplify using `only [mul_zero, zero_mul]`. Conclude with `mul_nonneg hK (Real.rpow_nonneg (norm_nonneg _) _)`. Use `set r := ‖w - w₀‖ with hr`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hr0 : 0 < r` using `norm_pos_iff.mpr (sub_ne_zero.mpr hw0)`. Use `set S := ∑ i, ‖Z.s i c ((X.A.chart c).symm w)‖ ^ 2`. Establish `hσS : ‖σ w‖ ≤ Real.sqrt S`. Use `(pi_norm_le_iff_of_nonneg (Real.sqrt_nonneg _)).mpr fun i => ?_` and prove the remaining obligations. Use `Real.le_sqrt_of_sq_le ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
-Conclude with `Finset.single_le_sum (f := fun i => ‖Z.s i c ((X.A.chart c).symm w)‖ ^ 2) (fun _ _ => by positivity) (Finset.mem_univ i)`. Establish `hS : κ ^ 2 * r ^ 2 ≤ S`. Establish `: (κ * r) ^ 2 ≤ (Real.sqrt S) ^ 2` using `pow_le_pow_left₀ (by positivity) (h2.trans hσS) 2`. Rewrite `this` using `[Real.sq_sqrt (by positivity), mul_pow]`. Then use the resulting hypothesis. Establish `hSr : S ^ (-(t + 1)) ≤ (κ ^ 2 * r ^ 2) ^ (-(t + 1))` using `Real.rpow_le_rpow_of_nonpos (by positivity) hS (by linarith)`.
-
-Establish `hF2 : ‖F c ((X.A.chart c).symm w)‖ ^ 2 ≤ (C₁ * r ^ (T - D)) ^ 2` using `pow_le_pow_left₀ (norm_nonneg _) h1 2`. Establish `hra : r ^ (2 * ((T : ℝ) - D) - 2 * (t + 1)) = (r ^ (T - D)) ^ 2 * (r ^ 2) ^ (-(t + 1))`. Rewrite using `[← pow_mul, ← Real.rpow_natCast r ((T - D) * 2), ← Real.rpow_two r, ← Real.rpow_mul hr0.le, ← Real.rpow_add hr0]`. Use `congr 1`. Move the coercions through the operations in `[Nat.cast_sub hDT]`.
-
-Expand and normalize the polynomial expressions, which then agree. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hra, Real.mul_rpow (by positivity) (by positivity)]; ring`.
+Expand and normalize the polynomial expressions, which then agree. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem local_bound (X : EmbDatum D) (Z : ZeroDatum X) (φA : TwistWeight X.A X.L₂ X.L D)
     (T : ℕ) (hDT : D ≤ T) (F : Fin X.A.n → X.U → ℂ) (hF : F ∈ topSections X.A X.L₂ X.L (D + T))

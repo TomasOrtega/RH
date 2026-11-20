@@ -23,7 +23,7 @@ def obj (k : Fin (r₁ + r₃ + 1)) : X.Modules :=
   if h : (k : ℕ) ≤ r₁ then fl₁.F ⟨k, by omega⟩ else pullback b (fl₃.ι ⟨k - r₁, by have := k.2; omega⟩)
 
 /- English proof (translation)
-Take `⟨i, hi⟩` from `i`. Simplify using `only at h`. Substitute `h` using the available equality. Conclude with `dif_pos (by omega)`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem obj_of_le {k : Fin (r₁ + r₃ + 1)} {i : Fin (r₁ + 1)} (h : (k : ℕ) = i) :
     obj b fl₁ fl₃ k = fl₁.F i := by
@@ -33,7 +33,7 @@ theorem obj_of_le {k : Fin (r₁ + r₃ + 1)} {i : Fin (r₁ + 1)} (h : (k : ℕ
   exact dif_pos (by omega)
 
 /- English proof (translation)
-Take `⟨j, hj'⟩` from `j`. Simplify using `only at h hj`. Take `rfl : j = k - r₁` from `by omega`. Conclude with `dif_neg (by omega)`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem obj_of_gt {k : Fin (r₁ + r₃ + 1)} {j : Fin (r₃ + 1)} (h : (k : ℕ) = r₁ + j)
     (hj : 0 < (j : ℕ)) : obj b fl₁ fl₃ k = pullback b (fl₃.ι j) := by
@@ -50,7 +50,7 @@ def incl (k : Fin (r₁ + r₃ + 1)) : obj b fl₁ fl₃ k ⟶ E₂ :=
       (by simp only; omega)) ≫ pullback.fst b (fl₃.ι _)
 
 /- English proof (translation)
-Take `⟨i, hi⟩` from `i`. Simplify using `only at h`. Substitute `h` using the available equality. Conclude with `dif_pos (by omega)`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem incl_of_le {k : Fin (r₁ + r₃ + 1)} {i : Fin (r₁ + 1)} (h : (k : ℕ) = i) :
     incl a b fl₁ fl₃ k = eqToHom (obj_of_le b fl₁ fl₃ h) ≫ fl₁.ι i ≫ a := by
@@ -60,7 +60,7 @@ theorem incl_of_le {k : Fin (r₁ + r₃ + 1)} {i : Fin (r₁ + 1)} (h : (k : �
   exact dif_pos (by omega)
 
 /- English proof (translation)
-Take `⟨j, hj'⟩` from `j`. Simplify using `only at h hj`. Take `rfl : j = k - r₁` from `by omega`. Conclude with `dif_neg (by omega)`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem incl_of_gt {k : Fin (r₁ + r₃ + 1)} {j : Fin (r₃ + 1)} (h : (k : ℕ) = r₁ + j)
     (hj : 0 < (j : ℕ)) :
@@ -78,7 +78,7 @@ def proj (k : Fin (r₁ + r₃ + 1)) : obj b fl₁ fl₃ k ⟶ fl₃.F ⟨k - r�
 include hab in
 
 /- English proof (translation)
-Unfold `incl proj`. Use `split_ifs with h`. Simplify using `[hab]`. Simplify using `[pullback.condition]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem incl_comp (k : Fin (r₁ + r₃ + 1)) :
     incl a b fl₁ fl₃ k ≫ b = proj b fl₁ fl₃ k ≫ fl₃.ι ⟨k - r₁, by have := k.2; omega⟩ := by
@@ -100,7 +100,7 @@ def step (i : Fin (r₁ + r₃)) : obj b fl₁ fl₃ i.castSucc ⟶ obj b fl₁ 
         (by simp only [Fin.val_succ]; omega) (by simp)).symm
 
 /- English proof (translation)
-The claim follows from `dif_pos h`.
+A detailed English derivation is pending.
 -/
 theorem step_of_le (i : Fin (r₁ + r₃)) (h : (i : ℕ) + 1 ≤ r₁) :
     step a b hab fl₁ fl₃ i =
@@ -110,7 +110,7 @@ theorem step_of_le (i : Fin (r₁ + r₃)) (h : (i : ℕ) + 1 ≤ r₁) :
   dif_pos h
 
 /- English proof (translation)
-The claim follows from `dif_neg (by omega)`.
+A detailed English derivation is pending.
 -/
 theorem step_of_ge (i : Fin (r₁ + r₃)) (h : r₁ ≤ (i : ℕ)) :
     step a b hab fl₁ fl₃ i =
@@ -122,9 +122,9 @@ theorem step_of_ge (i : Fin (r₁ + r₃)) (h : r₁ ≤ (i : ℕ)) :
   dif_neg (by omega)
 
 /- English proof (translation)
-Unfold `step`. Use `split_ifs with h`. Rewrite using `[incl_of_le a b fl₁ fl₃ (i := (⟨i, by omega⟩ : Fin r₁).succ) rfl, incl_of_le a b fl₁ fl₃ (i := (⟨i, by omega⟩ : Fin r₁).castSucc) rfl]`. Simplify using `only [Category.assoc, eqToHom_trans_assoc, eqToHom_refl, Category.id_comp, Flag.step_ι_assoc]`. Rewrite using `[incl_of_gt a b fl₁ fl₃ (k := i.succ) (j := (⟨i - r₁, by omega⟩ : Fin r₃).succ) (by simp only [Fin.val_succ]; omega) (by simp)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Category.assoc, eqToHom_trans_assoc, eqToHom_refl, Category.id_comp]`. Conclude with `pullback.lift_fst _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem step_ι (i : Fin (r₁ + r₃)) :
     step a b hab fl₁ fl₃ i ≫ incl a b fl₁ fl₃ i.succ = incl a b fl₁ fl₃ i.castSucc := by
@@ -145,7 +145,7 @@ namespace GlobalTheory.Vert.Flag.Concat
 open GlobalTheory.VB
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.short_exact_cokernel_compose`.
+A detailed English derivation is pending.
 -/
 theorem short_exact_zero_concat : ∀ (X : Scheme.{0}) {A E₁ E₂ E₃ F : X.Modules} (a : E₁ ⟶ E₂) (b : E₂ ⟶ E₃) (h : a ≫ b = 0),
     (ShortComplex.mk a b h).ShortExact → ∀ (f : A ⟶ E₂) (e : A ⟶ E₁) [IsIso e], f = e ≫ a →
@@ -153,14 +153,14 @@ theorem short_exact_zero_concat : ∀ (X : Scheme.{0}) {A E₁ E₂ E₃ F : X.M
       (ShortComplex.mk f (b ≫ cokernel.π ι) hz).ShortExact := GlobalTheory.T.short_exact_cokernel_compose
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.shortExact_of_pullback_cokernel`.
+A detailed English derivation is pending.
 -/
 theorem short_exact_pullback_fst_concat : ∀ (X : Scheme.{0}) {A E₂ E₃ F : X.Modules} (b : E₂ ⟶ E₃) (ι : F ⟶ E₃) [Epi b] [Mono ι]
     (f : A ⟶ E₂) (e : A ⟶ pullback b ι) [IsIso e], f = e ≫ pullback.fst b ι →
     ∃ hz : f ≫ b ≫ cokernel.π ι = 0, (ShortComplex.mk f (b ≫ cokernel.π ι) hz).ShortExact := GlobalTheory.T.shortExact_of_pullback_cokernel
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.shortExact_pullback_compatible_sub`.
+A detailed English derivation is pending.
 -/
 theorem short_exact_lift_concat : ∀ (X : Scheme.{0}) {A E₂ E₃ F F' : X.Modules} (b : E₂ ⟶ E₃) [Epi b] (ιF : F ⟶ E₃)
     (ι' : F' ⟶ E₃) [Mono ι'] (s : F ⟶ F'), s ≫ ι' = ιF → ∀ (f : A ⟶ E₂)
@@ -170,7 +170,7 @@ theorem short_exact_lift_concat : ∀ (X : Scheme.{0}) {A E₂ E₃ F F' : X.Mod
       (ShortComplex.mk t (pullback.snd b ι' ≫ cokernel.π s) hz').ShortExact := GlobalTheory.T.shortExact_pullback_compatible_sub
 
 /- English proof (translation)
-Use `hS.mono_f` as an intermediate fact. Conclude with `VBExt.isVB_X₂_of_shortExact X _ m n (shortExact_cokernel_comp g a) hg (h₃.of_iso (hS.gIsCokernel.coconePointUniqueUpToIso (colimit.isColimit _)))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isVB_cokernel_comp {X : Scheme.{0}} {E₁ E₂ E₃ G : X.Modules} {a : E₁ ⟶ E₂} {b : E₂ ⟶ E₃}
     {h : a ≫ b = 0} (hS : (ShortComplex.mk a b h).ShortExact) (g : G ⟶ E₁) {m n : ℕ}
@@ -180,7 +180,7 @@ theorem isVB_cokernel_comp {X : Scheme.{0}} {E₁ E₂ E₃ G : X.Modules} {a : 
     (h₃.of_iso (hS.gIsCokernel.coconePointUniqueUpToIso (colimit.isColimit _)))
 
 /- English proof (translation)
-Take `⟨_, s, hs⟩` from `hf`. Conclude with `⟨inferInstance, s, hs.of_iso (cokernelEpiComp e f).symm⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isSubbundle_iso_comp {X : Scheme.{0}} {A B E : X.Modules} (e : A ⟶ B) [IsIso e] {f : B ⟶ E}
     (hf : IsSubbundle f) : IsSubbundle (e ≫ f) := by
@@ -193,9 +193,9 @@ variable {X : Scheme.{0}} {E₁ E₂ E₃ : X.Modules} {a : E₁ ⟶ E₂} {b : 
 include hS in
 
 /- English proof (translation)
-Use `hS.epi_g` as an intermediate fact. Break down `Nat.eq_zero_or_pos (j : ℕ) with hj | hj` into its components or cases. Establish `hk : (k : ℕ) = (Fin.last r₁ : ℕ)` using `by simp; omega`. Establish `hz : IsZero (fl₃.F j)`. Establish `h0` using `fl₃.isVB j`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h0` using `[hj]`. Conclude with `VB.isVB_zero_iff.1 h0`. Conclude with `short_exact_zero_concat X a b hab hS _ (eqToHom (obj_of_le b fl₁ fl₃ hk) ≫ fl₁.ι (Fin.last r₁)) (by rw [incl_of_le a b fl₁ fl₃ hk, Category.assoc]) _ hz`. Conclude with `short_exact_pullback_fst_concat X b (fl₃.ι j) _ (eqToHom (obj_of_gt b fl₁ fl₃ h hj)) (incl_of_gt a b fl₁ fl₃ h hj)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem shortExact_incl {k : Fin (r₁ + r₃ + 1)} {j : Fin (r₃ + 1)} (h : (k : ℕ) = r₁ + j) :
     ∃ hz : incl a b fl₁ fl₃ k ≫ b ≫ cokernel.π (fl₃.ι j) = 0,
@@ -214,16 +214,16 @@ theorem shortExact_incl {k : Fin (r₁ + r₃ + 1)} {j : Fin (r₃ + 1)} (h : (k
 include hS fl₁ fl₃ in
 
 /- English proof (translation)
-The claim follows from `VBExt.isVB_X₂_of_shortExact X _ r₁ r₃ hS fl₁.isVB_self fl₃.isVB_self`.
+A detailed English derivation is pending.
 -/
 theorem isVB_E₂ : IsVB E₂ (r₁ + r₃) :=
   VBExt.isVB_X₂_of_shortExact X _ r₁ r₃ hS fl₁.isVB_self fl₃.isVB_self
 
 include hS in
 /- English proof (translation)
-Distinguish the cases in `hk : (k : ℕ) ≤ r₁`. Conclude with `(fl₁.isVB ⟨k, by omega⟩).of_iso (eqToIso (obj_of_le b fl₁ fl₃ (i := ⟨k, by omega⟩) rfl)).symm`. Establish `hkj : (k : ℕ) = r₁ + ((⟨k - r₁, by have` using `k.2; omega⟩ : Fin (r₃ + 1)) : ℕ) := by simp; omega`. Take `⟨_, hS'⟩` from `shortExact_incl hS fl₁ fl₃ hkj`. Establish `h₂` using `isVB_E₂ hS fl₁ fl₃`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h₂` using `[show r₁ + r₃ = k + (r₃ - ((⟨k - r₁, by have := k.2; omega⟩ : Fin (r₃ + 1)) : ℕ)) by simp; omega]`. Conclude with `VB.isVB_X₁_of_shortExact X _ _ _ hS' h₂ (fl₃.isVB_cokernel _)`.
+A detailed English derivation is pending.
 -/
 theorem isVB_obj (k : Fin (r₁ + r₃ + 1)) : IsVB (obj b fl₁ fl₃ k) k := by
   by_cases hk : (k : ℕ) ≤ r₁
@@ -236,9 +236,9 @@ theorem isVB_obj (k : Fin (r₁ + r₃ + 1)) : IsVB (obj b fl₁ fl₃ k) k := b
 
 include hS in
 /- English proof (translation)
-Distinguish the cases in `hk : (k : ℕ) < r₁`. Use `hS.mono_f` as an intermediate fact. Rewrite using `[incl_of_le a b fl₁ fl₃ (i := ⟨k, by omega⟩) rfl]`. Use `isSubbundle_iso_comp _ ⟨inferInstance, _, isVB_cokernel_comp hS _ (fl₁.isVB_cokernel _) fl₃.isVB_self⟩` and prove the remaining obligations. Establish `hkj : (k : ℕ) = r₁ + ((⟨k - r₁, by have` using `k.2; omega⟩ : Fin (r₃ + 1)) : ℕ) := by simp; omega`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨_, hS'⟩` from `shortExact_incl hS fl₁ fl₃ hkj`. Conclude with `isSubbundle_of_shortExact hS' (fl₃.isVB_cokernel _)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isSubbundle_incl (k : Fin (r₁ + r₃ + 1)) : IsSubbundle (incl a b fl₁ fl₃ k) := by
   by_cases hk : (k : ℕ) < r₁
@@ -252,9 +252,9 @@ theorem isSubbundle_incl (k : Fin (r₁ + r₃ + 1)) : IsSubbundle (incl a b fl�
 
 include hS in
 /- English proof (translation)
-Break down `Nat.eq_zero_or_pos r₃ with h3 | h3` into its components or cases. Establish `hk : ((Fin.last (r₁ + r₃) : Fin _) : ℕ) = (Fin.last r₁ : ℕ)` using `by simp [h3]`. Rewrite using `[incl_of_le a b fl₁ fl₃ hk]`. Establish `h0` using `fl₃.isVB_self`. Rewrite `h0` using `[h3]`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `: IsIso a` using `hS.isIso_f_iff.2 (VB.isVB_zero_iff.1 h0)`. Use `infer_instance`. Rewrite using `[incl_of_gt a b fl₁ fl₃ (j := Fin.last r₃) (by simp) (by simpa using h3)] infer_instance`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isIso_incl_last : IsIso (incl a b fl₁ fl₃ (Fin.last (r₁ + r₃))) := by
   rcases Nat.eq_zero_or_pos r₃ with h3 | h3
@@ -283,17 +283,15 @@ open ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestrictio
 open GlobalTheory GlobalTheory.QCoh GlobalTheory.CechPic GlobalTheory.Vert GlobalTheory.ShFam GlobalTheory.ShFam.Pad GlobalTheory.Mean4O GlobalTheory.MixedLocalChains
 
 /- English proof (translation)
-Introduce `X E₁ E₂ E₃ a b h hS r₁ r₃ fl₁ fl₃`. Use `open GlobalTheory.Vert.Flag.Concat in`. Use `⟨concat hS fl₁ fl₃, fun k i hki => ⟨eqToIso (obj_of_le b fl₁ fl₃ hki), incl_of_le a b fl₁ fl₃ hki⟩, fun k j hkj => shortExact_incl hS fl₁ fl₃ hkj, fun k i hki => ?_, fun k j hkj => ?_⟩` and prove the remaining obligations. Take `⟨i, hi⟩` from `i`. Simplify using `only at hki`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Substitute using the available equality.
 
-Substitute `hki` using the available equality. Simplify using `only [concat, Flag.gr, Flag.π]`. Establish `hs` using `Concat.step_of_le a b h fl₁ fl₃ k (by omega)`. Use `⟨eqToIso (Concat.obj_of_le b fl₁ fl₃ (k := k.succ) (i := (⟨k, hi⟩ : Fin r₁).succ) (by simp)), cokernel.mapIso _ _ (eqToIso (Concat.obj_of_le b fl₁ fl₃ (k := k.castSucc) (i := (⟨k, hi⟩ : Fin r₁).castSucc) rfl)) (eqToIso (Concat.obj_of_le b fl₁ fl₃ (k := k.succ) (i := (⟨k, hi⟩ : Fi …` and prove the remaining obligations. Rewrite using `[hs]`.
+Simplify by unfolding definitions. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [eqToIso.hom, Category.assoc, eqToHom_trans, eqToHom_refl, Category.comp_id]`. Conclude with `cokernel.π_desc _ _ _`. Take `⟨j, hj⟩` from `j`. Simplify using `only at hkj`. Take `rfl : j = k - r₁` from `by omega`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Establish an intermediate fact.
 
-Simplify using `only [concat, Flag.gr, Flag.π]`. Establish `hs` using `Concat.step_of_ge a b h fl₁ fl₃ k (by omega)`. Use `hS.epi_g` as an intermediate fact. Take `⟨hz, hS₁⟩` from `Concat.shortExact_incl hS fl₁ fl₃ (k := k.castSucc) (j := (⟨k - r₁, hj⟩ : Fin r₃).castSucc) (by simp; omega)`. Take `⟨hz', hS₂⟩` from `Concat.short_exact_lift_concat X b (fl₃.ι (⟨k - r₁, hj⟩ : Fin r₃).castSucc) (fl₃.ι (⟨k - r₁, hj⟩ : Fin r₃).succ) (fl₃.step ⟨k - r₁, hj⟩) (fl₃.step_ι _) _ hz hS₁ (pullback.lift (Concat.incl a b fl₁ fl₃ k.castSucc) (Concat.proj b fl₁ fl₃ k.castSucc ≫ fl₃.step ⟨k - r₁, hj⟩) (by rw [ …`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `E` using `Concat.obj_of_gt b fl₁ fl₃ (k := k.succ) (j := (⟨k - r₁, hj⟩ : Fin r₃).succ) (by simp; omega) (by simp)`. Use `⟨eqToHom E ≫ pullback.snd b _, cokernelIsoOfEq hs ≪≫ cokernelCompIsIso _ _ ≪≫ (cokernelIsCokernel _).coconePointUniqueUpToIso hS₂.gIsCokernel, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Concat.incl_of_gt a b fl₁ fl₃ (k := k.succ) (j := (⟨k - r₁, hj⟩ : Fin r₃).succ) (by simp; omega) (by simp)]`. Simplify using `[pullback.condition]`. Simplify using `erw [(cokernelIsCokernel _).comp_coconePointUniqueUpToIso_hom hS₂.gIsCokernel WalkingParallelPair.one]`.
-
-Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Vert.Flag.concat_spec : ∀ (X : Scheme.{0}) (E₁ E₂ E₃ : X.Modules) (a : E₁ ⟶ E₂) (b : E₂ ⟶ E₃)
     (h : a ≫ b = 0), (ShortComplex.mk a b h).ShortExact → ∀ (r₁ r₃ : ℕ)

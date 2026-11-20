@@ -9,17 +9,17 @@ open scoped LaurentPolynomial
 namespace GlobalTheory.CompanionTheory.BMid
 
 /- English proof (translation)
-Introduce `p _ K _ K₁ _ K₂ _ K₃ _ f g i₁ i₂ i₃ ρ₁ ρ₂ hK h₁ h₂ h₃ hρ₁ hρ₂ b₁ b₂ hb`. Take `⟨k₁, α₁, hα₁⟩` from `h₁.2 b₁`. Take `⟨k₂, α₂, hα₂⟩` from `h₂.2 b₂`. Establish `e₁ : b₁ ^ p ^ (k₁ + k₂) = i₁ (α₁ ^ p ^ k₂)`. Rewrite using `[pow_add, pow_mul, hα₁, map_pow]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e₂ : b₂ ^ p ^ (k₁ + k₂) = i₂ (α₂ ^ p ^ k₁)`. Rewrite using `[add_comm, pow_add, pow_mul, hα₂, map_pow]`. Generalize the expression as in `α₁ ^ p ^ k₂ = α at e₁`. Generalize the expression as in `α₂ ^ p ^ k₁ = β at e₂`. Generalize the expression as in `k₁ + k₂ = m at e₁ e₂`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Establish `h30 : i₃ (Polynomial.toLaurent α - LaurentPolynomial.invert (Polynomial.toLaurent β)) = 0`. Rewrite using `[map_sub, ← hρ₁, ← hρ₂, ← e₁, ← e₂, map_pow, map_pow, hb, sub_self]`. Take `⟨k, hk⟩` from `(h₃.3 _).1 h30`. Establish `hchar : (p : K[T;T⁻¹]) = 0`. Rewrite using `[← map_natCast (LaurentPolynomial.C : K →+* K[T;T⁻¹]) p, hK.1, map_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Take `⟨Fr, hFr⟩` from `GlobalTheory.CompanionTheory.Frobenius.exists_ringHom_pow_prime_pow p (K[T;T⁻¹]) hchar k`. Establish `hx : (Polynomial.toLaurent α - LaurentPolynomial.invert (Polynomial.toLaurent β)) ^ p ^ k = Polynomial.toLaurent (α ^ p ^ k) - LaurentPolynomial.invert (Polynomial.toLaurent (β ^ p ^ k))`. Rewrite using `[← hFr, map_sub, hFr, hFr, map_pow, map_pow, map_pow]`. Rewrite `hk` using `[hx]`. Take `⟨c, hc₁, hc₂⟩` from `GlobalTheory.CompanionTheory.LaurSplit.exists_const_of_mem_span K f g _ _ hk`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hz₁ : i₁ (α ^ p ^ k - Polynomial.C c) = 0` using `(h₁.3 _).2 ⟨0, by simpa using hc₁⟩`. Establish `hz₂ : i₂ (β ^ p ^ k - Polynomial.C c) = 0` using `(h₂.3 _).2 ⟨0, by simpa using hc₂⟩`. Rewrite `hz₁` using `[map_sub, sub_eq_zero, map_pow, ← e₁, ← pow_mul, ← pow_add]`. Rewrite `hz₂` using `[map_sub, sub_eq_zero, map_pow, ← e₂, ← pow_mul, ← pow_add]`. Take `⟨a, ha⟩` from `(GlobalTheory.CompanionTheory.PerfectRing.pf_facts p K hK).2.2.1 (m + k) c`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `inj₁` using `(GlobalTheory.CompanionTheory.PerfectRing.pf_facts p K₁ h₁.1).2.2.2.1`. Establish `inj₂` using `(GlobalTheory.CompanionTheory.PerfectRing.pf_facts p K₂ h₂.1).2.2.2.1`. Use `⟨a, inj₁ (m + k) _ _ ?_, inj₂ (m + k) _ _ ?_⟩` and prove the remaining obligations. Rewrite using `[← map_pow, ← map_pow, ha, hz₁]`. Rewrite using `[← map_pow, ← map_pow, ha, hz₂]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_const_of_rho_eq : ∀ (p : ℕ) [Fact p.Prime] (K : Type) [CommRing K] (K₁ : Type) [CommRing K₁] (K₂ : Type) [CommRing K₂] (K₃ : Type) [CommRing K₃] (f g : K) (i₁ : Polynomial K →+* K₁) (i₂ : Polynomial K →+* K₂) (i₃ : K[T;T⁻¹] →+* K₃) (ρ₁ : K₁ →+* K₃) (ρ₂ : K₂ →+* K₃), Pf p K → PQ p i₁ (Ideal.span {Polynomial.C f - Polynomial.X * Polynomial.C g}) → PQ p i₂ (Ideal.span {Polynomial.C g - Polynomial.X * Polynomial.C f}) → PQ p i₃ (Ideal.span {LaurentPolynomial.C f - LaurentPolynomial.T 1 * LaurentPolynomial.C g}) → (∀ α, ρ₁ (i₁ α) = i₃ (Polynomial.toLaurent α)) → (∀ β, ρ₂ (i₂ β) = i₃ (LaurentPolynomial.invert (Polynomial.toLaurent β))) → ∀ (b₁ : K₁) (b₂ : K₂), ρ₁ b₁ = ρ₂ b₂ → ∃ a : K, i₁ (Polynomial.C a) = b₁ ∧ i₂ (Polynomial.C a) = b₂ := by
   intro p _ K _ K₁ _ K₂ _ K₃ _ f g i₁ i₂ i₃ ρ₁ ρ₂ hK h₁ h₂ h₃ hρ₁ hρ₂ b₁ b₂ hb

@@ -31,9 +31,9 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {w : InfinitePlace F}
 
 /- English proof (translation)
-Establish `hadd` using `GlobalTheory.SiegelSet.isRealLine_add F E σ h _ J δ (hδ.isRealLine h)`. Establish `hc` using `GlobalTheory.RealLineCont.continuous_of_isRealLine F E σ h _ J δ (hδ.isRealLine h)`. Establish `h0 : δ 0 = 1`. Use `hadd 0 0` as an intermediate fact. Rewrite `this` using `[add_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `left_eq_mul.1 this`. Take `⟨Z, hZ⟩` from `GlobalTheory.OneParamMatrix.eq_exp_of_continuous_oneParameter (fun t => GlobalTheory.Orb.archMat σ J τ (projArch σ J w (δ t))) ((GlobalTheory.Orb.continuous_archMat σ J τ).comp ((continuous_projArch σ J w).comp hc)) (by simp only [h0, map_one]) (fun s t => by simp only [hadd, map …`. Use `⟨Z, fun t => ⟨projArch σ J w (δ t), ?_, hZ t⟩⟩` and prove the remaining obligations. Take `⟨y, e, -⟩` from `hδ t`. Rewrite using `[e, projArch_embArch_self]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isLineOf_emb (h : IsCMExt F E σ) {τ' : EmbOver E w} {Z' : Matrix (Fin n) (Fin n) ℂ} {δ : ℝ → GAd σ J}
     (hδ : IsLineOf σ J τ' Z' δ) (τ : EmbOver E w) : ∃ Z, IsLineOf σ J τ Z δ := by
@@ -52,13 +52,13 @@ theorem exists_isLineOf_emb (h : IsCMExt F E σ) {τ' : EmbOver E w} {Z' : Matri
   rw [e, projArch_embArch_self]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ h n J hJ γ δ ⟨w, τ, X, hX, hγ⟩ ⟨w', τ', Z', _, hδ'⟩`. Use `replace hγ : IsLineOf σ J τ X γ := hγ`. Use `replace hδ' : IsLineOf σ J τ' Z' δ := hδ'`. Distinguish the cases in `hw : w = w'`. Substitute `hw` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨X', hδ⟩` from `exists_isLineOf_emb h hδ' τ`. Establish `hX'` using `hδ.skew h`. Take `⟨ε, hε⟩` from `exists_isLineOf (τ := τ) (Z := X * X' - X' * X) h hJ (by`. Establish `e1` using `eq_neg_of_add_eq_zero_left hX`. Establish `e2` using `eq_neg_of_add_eq_zero_left hX'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Matrix.conjTranspose_sub, Matrix.conjTranspose_mul, Matrix.conjTranspose_mul, Matrix.sub_mul, Matrix.mul_assoc, Matrix.mul_assoc, e1, e2, Matrix.mul_neg, Matrix.mul_neg, ← Matrix.mul_assoc, ← Matrix.mul_assoc, e1, e2, Matrix.mul_sub]`. Simplify using `[Matrix.mul_assoc])`. Use `⟨ε, hε.isRealLine h, fun f hf => ?_⟩` and prove the remaining obligations. Rewrite using `[(LineLie.lineDer_add_bracket F E σ h n J hJ w τ f hf X X' γ δ ε hγ hδ).2 hε, add_sub_cancel]`. Establish `h1 : IsLineOf σ J τ 0 fun _ => 1` using `fun t => ⟨1, (map_one _).symm, by`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_one, smul_zero, NormedSpace.exp_zero]⟩`. Use `⟨fun _ => 1, h1.isRealLine h, fun f hf => ?_⟩` and prove the remaining obligations. Rewrite using `[PlaceComm.lineDer_comm h hw hγ hδ' hf]`. Use function extensionality and compare the values at `g`. Simplify using `[GlobalTheory.SiegelSet.lineDer]`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_line_bracket : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ →
     ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J →

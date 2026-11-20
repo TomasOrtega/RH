@@ -24,16 +24,16 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     (W : LocWach PD LL O v n)
 
 /- English proof (translation)
-Rewrite using `[← AlgHom.mul_apply, ← map_mul, mul_comm, map_mul, AlgHom.mul_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem u2ringPfB_γ₀_comm (g h : W.Gam) (x : PowerSeries O) :
     W.γ₀ g (W.γ₀ h x) = W.γ₀ h (W.γ₀ g x) := by
   rw [← AlgHom.mul_apply, ← map_mul, mul_comm, map_mul, AlgHom.mul_apply]
 
 /- English proof (translation)
-Use `show ∀ δ ∈ W.DelF, W.γA δ (Pi.single c x : LetA O n) = Pi.single c x`. Introduce `δ hδ`. Use function extensionality and compare the values at `j`. Use `show W.γ₀ δ ((Pi.single c x : LetA O n) j) = (Pi.single c x : LetA O n) j`. Distinguish the cases in `hj : j = c`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Substitute `hj` using the available equality. Simplify using `only [Pi.single_eq_same]`. Conclude with `hx δ hδ`. Simplify using `only [Pi.single_eq_of_ne hj, map_zero]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem u2ringPfB_single_mem (c : ZMod n) (x : PowerSeries O) (hx : ∀ δ ∈ W.DelF, W.γ₀ δ x = x) :
     (Pi.single c x : LetA O n) ∈ W.AΔ := by
@@ -48,7 +48,7 @@ theorem u2ringPfB_single_mem (c : ZMod n) (x : PowerSeries O) (hx : ∀ δ ∈ W
   · simp only [Pi.single_eq_of_ne hj, map_zero]
 
 /- English proof (translation)
-Introduce `δ hδ`. Establish `h : W.γA δ a = a` using `ha δ hδ`. Conclude with `congrFun h i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem u2ringPfB_letter_mem {a : LetA O n} (ha : a ∈ W.AΔ) (i : ZMod n) :
     ∀ δ ∈ W.DelF, W.γ₀ δ (a i) = a i := by
@@ -57,9 +57,9 @@ theorem u2ringPfB_letter_mem {a : LetA O n} (ha : a ∈ W.AΔ) (i : ZMod n) :
   exact congrFun h i
 
 /- English proof (translation)
-Introduce `h0`. Establish `h` using `W.q₀_def`. Rewrite `h` using `[h0, mul_zero]`. Establish `h1` using `congrArg (PowerSeries.coeff 1) h.symm`. Establish `e : ((1 + PowerSeries.X : PowerSeries O) ^ PD.p - 1) = ((((Polynomial.X + 1) ^ PD.p - 1 : Polynomial O)) : PowerSeries O)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h1` using `[e, Polynomial.coeff_coe, map_zero]`. Simplify using `[Polynomial.coeff_X_add_one_pow, Polynomial.coeff_one, hp] at h1`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem u2ringPfB_q₀_ne_zero [IsDomain O] [CharZero O] (hp : PD.p ≠ 0) : W.q₀ ≠ 0 := by
   intro h0

@@ -16,7 +16,7 @@ def phiBil (e : C →ₗ[Ks] WL) : ℂ →+ C →+ ℂ ⊗[LL] WL :=
     (fun a b => by ext f; exact TensorProduct.add_tmul a b (e f))
 
 /- English proof (translation)
-Use `show (r • z) ⊗ₜ[LL] e f = z ⊗ₜ[LL] e (r • f)`. Rewrite using `[map_smul, ← algebraMap_smul LL r (e f), TensorProduct.tmul_smul, TensorProduct.smul_tmul', algebraMap_smul LL r z]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem phiBil_compat (e : C →ₗ[Ks] WL) (r : Ks) (z : ℂ) (f : C) :
     phiBil (LL := LL) e (r • z) f = phiBil (LL := LL) e z (r • f) := by
@@ -37,15 +37,15 @@ def phi (e : C →ₗ[Ks] WL) : ℂ ⊗[Ks] C →ₗ[ℂ] ℂ ⊗[LL] WL where
     | add x y hx hy => rw [smul_add, map_add, map_add, hx, hy, smul_add]
 
 /- English proof (translation)
-The claim follows from `TensorProduct.liftAddHom_tmul (phiBil (LL := LL) e) (phiBil_compat e) z f`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem phi_tmul (e : C →ₗ[Ks] WL) (z : ℂ) (f : C) : phi e (z ⊗ₜ[Ks] f) = z ⊗ₜ[LL] e f :=
   TensorProduct.liftAddHom_tmul (phiBil (LL := LL) e) (phiBil_compat e) z f
 
 /- English proof (translation)
-Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul z f => simp [h]`. Consider the case `add x y hx hy => simp only [LinearMap.comp_apply, map_add] at hx hy ⊢`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Rewrite using `[hx, hy]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem phi_comm (e : C →ₗ[Ks] WL) (a : C →ₗ[Ks] C) (r : WL →ₗ[LL] WL) (h : ∀ f, e (a f) = r (e f)) :
     phi e ∘ₗ a.baseChange ℂ = r.baseChange ℂ ∘ₗ phi e := by
@@ -56,11 +56,11 @@ theorem phi_comm (e : C →ₗ[Ks] WL) (a : C →ₗ[Ks] C) (r : WL →ₗ[LL] W
   | add x y hx hy => simp only [LinearMap.comp_apply, map_add] at hx hy ⊢; rw [hx, hy]
 
 /- English proof (translation)
-Set `bW : Module.Basis (Fin n) Ks (Submodule.span Ks (Set.range b))` to `Module.Basis.span hliK`. Set `bK : Module.Basis (Fin n) Ks WK` to `bW.map (LinearEquiv.ofEq _ _ hspK)`. Set `bC : Module.Basis (Fin n) Ks C` to `bK.map e.symm`. Set `bL : Module.Basis (Fin n) LL WL` to `Module.Basis.mk hliL (by rw [hspL])`. Set `cC` to `Algebra.TensorProduct.basis ℂ bC`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `cL` to `Algebra.TensorProduct.basis ℂ bL`. Establish `key : phi (LL` using `LL) (WK.subtype ∘ₗ e.toLinearMap) = (cC.equiv cL (Equiv.refl _)).toLinearMap := by`. Use `cC.ext fun j => ?_` and prove the remaining obligations. Use `show _ = (cC.equiv cL (Equiv.refl _)) (cC j)`. Rewrite using `[Module.Basis.equiv_apply, Equiv.refl_apply]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[cC, cL, bC, bK, bW, bL, Module.Basis.span_apply]`. Rewrite using `[key]`. Conclude with `(cC.equiv cL (Equiv.refl _)).bijective`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem phi_bijective (WK : Submodule Ks WL) (n : ℕ) (b : Fin n → WL) (hliK : LinearIndependent Ks b)
     (hspK : Submodule.span Ks (Set.range b) = WK) (hliL : LinearIndependent LL b)
@@ -81,11 +81,11 @@ theorem phi_bijective (WK : Submodule Ks WL) (n : ℕ) (b : Fin n → WL) (hliK 
   exact (cC.equiv cL (Equiv.refl _)).bijective
 
 /- English proof (translation)
-Set `Ψ` to `LinearEquiv.ofBijective (phi (LL := LL) (WK.subtype ∘ₗ e.toLinearMap)) (phi_bijective WK n b hliK hspK hliL hspL e)`. Set `o` to `Submodule.orderIsoMapComap Ψ`. Use `⟨fun y => o (A y), ?_, ?_⟩` and prove the remaining obligations. Rewrite `hA`, the goal using `[DirectSum.isInternal_submodule_iff_iSupIndep_and_iSup_eq_top]`. Use `⟨iSupIndep.map_orderIso o hA.1, ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← o.map_iSup, hA.2, o.map_top]`. Introduce `h y v hv`. Take `⟨u, hu, rfl⟩` from `(Submodule.mem_map).1 hv`. Establish `hc` using `LinearMap.congr_fun (phi_comm (WK.subtype ∘ₗ e.toLinearMap) (act (φ h)) (ρ0 (φ h)) (fun f => he _ f)) u`. Use `Submodule.mem_map.2 ⟨s (φ h) • (act (φ h)).baseChange ℂ u, (A (h • y)).smul_mem _ (hinv h y u hu), ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [LinearMap.comp_apply] at hc`. Simplify using `only [LinearMap.smul_apply, map_smul]`. Use `show s (φ h) • phi (LL := LL) (WK.subtype ∘ₗ e.toLinearMap) _ = s (φ h) • (ρ0 (φ h)).baseChange ℂ (phi (LL := LL) (WK.subtype ∘ₗ e.toLinearMap) u)`. Rewrite using `[hc]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem transport_general {H G X : Type} [Group G] [Group H] [DecidableEq X] [MulAction H X]
     (WK : Submodule Ks WL) (n : ℕ) (b : Fin n → WL) (hliK : LinearIndependent Ks b)
@@ -118,9 +118,9 @@ end General
 open GlobalTheory.DefRead in
 
 /- English proof (translation)
-Introduce `Ks LL WL C H G X _ _ _ _ _ _ _ _ _ _ _ _ _ _ σ WK n b _ hliK hspK hliL hspL e ρ0 χ act he φ A hA hinv`. Use `letI : Algebra Ks ℂ := (σ.comp (algebraMap Ks LL)).toAlgebra`. Use `letI : Algebra LL ℂ := σ.toAlgebra`. Use `haveI : IsScalarTower Ks LL ℂ := IsScalarTower.of_algebraMap_eq (fun _ => rfl)`. Take `⟨A', h1, h2⟩` from `transport_general (X := X) WK n b hliK hspK hliL hspL e (fun g => ρ0 g) act he (fun g => σ (((χ g)⁻¹ : LLˣ) : LL)) φ A hA hinv`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨A', h1, fun h y v hv => by rw [twBC_apply]; exact h2 h y v hv⟩`.
+A detailed English derivation is pending.
 -/
 theorem transport : ∀ (Ks LL WL C H G X : Type) [Field Ks] [Field LL] [Algebra Ks LL] [AddCommGroup WL] [Module LL WL] [Module Ks WL]
     [IsScalarTower Ks LL WL] [AddCommGroup C] [Module Ks C] [Group G] [Group H] [Fintype X] [DecidableEq X] [MulAction H X]

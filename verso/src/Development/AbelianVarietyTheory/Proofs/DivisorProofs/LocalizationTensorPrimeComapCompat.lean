@@ -14,37 +14,33 @@ namespace GlobalTheory.Mum
 open KaehlerDifferential TensorProduct in
 
 /- English proof (translation)
-Introduce `A C B Ω _ _ _ _ _ _ _ _ _ Q _ Q' _ f hQ hf het`. Use `letI : Algebra C (TensorProduct A Ω C) := Algebra.TensorProduct.rightAlgebra`. Use `letI : Algebra B (TensorProduct A Ω B) := Algebra.TensorProduct.rightAlgebra`. Use `set ψ := ((algebraMap (TensorProduct A Ω B) (Localization.Away f)).comp (Algebra.TensorProduct.map (AlgHom.id A Ω) (IsScalarTower.toAlgHom A C B)).toRingHom) with hψ`. Use `letI : Algebra (TensorProduct A Ω C) (Localization.Away f) := ψ.toAlgebra`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Express the relevant assertion in an equivalent form by its definition.
 
-Use `haveI : Algebra.Etale (TensorProduct A Ω C) (Localization.Away f) := het`. Use `haveI : IsScalarTower Ω (TensorProduct A Ω C) (Localization.Away f) := IsScalarTower.of_algebraMap_eq fun w => by`. Express the relevant statement in the definitionally equal form `_ = ψ _`. Simplify using `[hψ, Algebra.TensorProduct.algebraMap_apply, IsScalarTower.algebraMap_apply Ω (TensorProduct A Ω B) (Localization.Away f)]`. Establish `hunit : IsUnit (algebraMap (TensorProduct A Ω B) Q'.ResidueField f)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Rewrite using `[isUnit_iff_ne_zero, Ne, Ideal.algebraMap_residueField_eq_zero]`. Conclude with `hf`. Use `letI : Algebra (Localization.Away f) Q'.ResidueField := (Localization.awayLift (algebraMap (TensorProduct A Ω B) Q'.ResidueField) f hunit).toAlgebra`. Establish `hlift : ∀ s, algebraMap (Localization.Away f) Q'.ResidueField (algebraMap (TensorProduct A Ω B) (Localization.Away f) s) = algebraMap (TensorProduct A Ω B) Q'.ResidueField s` using `fun s => IsLocalization.Away.lift_eq f hunit s`. Establish `hBK : ∀ b : B, algebraMap B Q'.ResidueField b = algebraMap (TensorProduct A Ω B) Q'.ResidueField (algebraMap B (TensorProduct A Ω B) b)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Extract witnesses or component facts from the available result.
 
-Introduce `b`. Rewrite using `[IsScalarTower.algebraMap_apply B (Localization.AtPrime Q') Q'.ResidueField, IsScalarTower.algebraMap_apply B (TensorProduct A Ω B) (Localization.AtPrime Q'), ← IsScalarTower.algebraMap_apply]`. Use `letI : Algebra C Q'.ResidueField := ((algebraMap B Q'.ResidueField).comp (algebraMap C B)).toAlgebra`. Use `haveI : IsScalarTower C B Q'.ResidueField := IsScalarTower.of_algebraMap_eq fun _ => rfl`. Take `⟨eB, heB⟩` from `GlobalTheory.kaehler_fibre_equiv_pushout_formallyEtale A Ω B (TensorProduct A Ω B) (Localization.Away f) Q'.ResidueField (fun x => by rw [hlift, hBK])`.
+Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Introduce a local definition for the expression.
 
-Take `⟨eC, heC⟩` from `GlobalTheory.kaehler_fibre_equiv_pushout_formallyEtale A Ω C (TensorProduct A Ω C) (Localization.Away f) Q'.ResidueField (fun x => by`. Express the relevant statement in the definitionally equal form `algebraMap B Q'.ResidueField (algebraMap C B x) = algebraMap (Localization.Away f) Q'.ResidueField (ψ ((1 : Ω) ⊗ₜ[A] x))`. Rewrite using `[hBK, hψ, RingHom.comp_apply, hlift]`. Use `congr 1)`. Use `set K := Q'.ResidueField`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Set `E` to `eC.trans eB.symm`. Establish `hE : ∀ c : C, E ((1 : K) ⊗ₜ[C] KaehlerDifferential.D A C c) = (1 : K) ⊗ₜ[B] KaehlerDifferential.D A B (algebraMap C B c)`. Introduce `c`. Simplify using `only [E, LinearEquiv.trans_apply, heC, LinearEquiv.symm_apply_eq, heB]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Proceed by induction.
 
-Establish `hE' : ∀ ω : Ω[C⁄A], E ((1 : K) ⊗ₜ[C] ω) = (1 : K) ⊗ₜ[B] KaehlerDifferential.map A A C B ω`. Introduce `ω`. Establish `hω : ω ∈ Submodule.span C (Set.range (KaehlerDifferential.D A C))`. Rewrite using `[KaehlerDifferential.span_range_derivation]`. Discharge the goal by the elementary cases of `trivial`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Proceed by induction on `hω using Submodule.span_induction with`. Consider the case `mem x hx => obtain ⟨c, rfl⟩ := hx`. Rewrite using `[hE, KaehlerDifferential.map_D]`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [TensorProduct.tmul_add, map_add, hx, hy, map_add, TensorProduct.tmul_add]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Consider the case `smul c x _ hx`. Establish `h1 : (1 : K) ⊗ₜ[C] (c • x) = algebraMap C K c • ((1 : K) ⊗ₜ[C] x)`. Rewrite using `[TensorProduct.tmul_smul]`. Conclude with `(algebraMap_smul K c _).symm`. Rewrite using `[h1, map_smul, hx, LinearMap.map_smul_of_tower, ← algebraMap_smul B c, TensorProduct.tmul_smul, ← algebraMap_smul K (algebraMap C B c)]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hE'' : ∀ (k : K) (ω : Ω[C⁄A]), E (k ⊗ₜ[C] ω) = k ⊗ₜ[B] KaehlerDifferential.map A A C B ω`. Introduce `k ω`. Establish `h1 : k ⊗ₜ[C] ω = k • ((1 : K) ⊗ₜ[C] ω)` using `by rw [TensorProduct.smul_tmul', smul_eq_mul, _root_.mul_one]`. Rewrite using `[h1, map_smul, hE', TensorProduct.smul_tmul', smul_eq_mul, _root_.mul_one]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `letI : Algebra Q.ResidueField K := (Ideal.ResidueField.map Q Q' (algebraMap B (TensorProduct A Ω B)) (by rw [← hQ]; rfl)).toAlgebra`. Use `haveI : IsScalarTower B Q.ResidueField K := IsScalarTower.of_algebraMap_eq fun b => by`. Rewrite using `[RingHom.algebraMap_toAlgebra, Ideal.ResidueField.map_algebraMap, hBK]`. Rewrite using `[← LinearMap.baseChange_eq_ltensor, ← Module.FaithfullyFlat.lTensor_bijective_iff_bijective Q.ResidueField K]`. Set `cM` to `TensorProduct.AlgebraTensorModule.cancelBaseChange B Q.ResidueField K K (TensorProduct C B Ω[C⁄A])`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Set `cN` to `TensorProduct.AlgebraTensorModule.cancelBaseChange B Q.ResidueField K K Ω[B⁄A]`. Set `cC` to `TensorProduct.AlgebraTensorModule.cancelBaseChange C B K K Ω[C⁄A]`. Establish `key : ∀ z, ((KaehlerDifferential.mapBaseChange A C B).baseChange Q.ResidueField).lTensor K z = cN.symm (E (cC (cM z)))`. Introduce `z`. Rewrite using `[LinearEquiv.eq_symm_apply]`.
+Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul k y`. Proceed by induction on `y using TensorProduct.induction_on with`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Consider the case `zero => simp`. Consider the case `add y₁ y₂ h₁ h₂ => simp only [TensorProduct.tmul_add, map_add, h₁, h₂]`. Consider the case `tmul l m`. Proceed by induction on `m using TensorProduct.induction_on with`. Consider the case `zero => simp`.
-
-Consider the case `add m₁ m₂ h₁ h₂ => simp only [TensorProduct.tmul_add, map_add, h₁, h₂]`. Consider the case `tmul b ω`. Simplify using `only [cM, cN, cC, LinearMap.lTensor_tmul, LinearMap.baseChange_tmul, TensorProduct.AlgebraTensorModule.cancelBaseChange_tmul, KaehlerDifferential.mapBaseChange_tmul, hE'', TensorProduct.smul_tmul]`. Establish `hfun : ⇑(((KaehlerDifferential.mapBaseChange A C B).baseChange Q.ResidueField).lTensor K) = ⇑cN.symm ∘ ⇑E ∘ ⇑cC ∘ ⇑cM` using `funext key`. Rewrite using `[hfun]`.
-
-Conclude with `cN.symm.bijective.comp (E.bijective.comp (cC.bijective.comp cM.bijective))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mapBaseChange_residueField_bijective_of_etale_fibre :
     ∀ (A C B Ω : Type) [CommRing A] [CommRing C] [CommRing B] [Algebra A C] [Algebra A B] [Algebra C B] [IsScalarTower A C B] [Field Ω] [Algebra A Ω] (Q : Ideal B) [Q.IsPrime] (Q' : Ideal (TensorProduct A Ω B)) [Q'.IsPrime] (f : TensorProduct A Ω B), Q'.comap (Algebra.TensorProduct.includeRight : B →ₐ[A] TensorProduct A Ω B) = Q → f ∉ Q' → ((algebraMap (TensorProduct A Ω B) (Localization.Away f)).comp (Algebra.TensorProduct.map (AlgHom.id A Ω) (IsScalarTower.toAlgHom A C B)).toRingHom).Etale → Function.Bijective ((KaehlerDifferential.mapBaseChange A C B).lTensor Q.ResidueField) := by

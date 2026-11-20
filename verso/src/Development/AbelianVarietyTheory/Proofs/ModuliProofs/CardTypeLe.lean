@@ -13,14 +13,14 @@ open GlobalTheory.ZM
 namespace GlobalTheory.SymSignature
 
 /- English proof (translation)
-The claim follows from `Finite.of_injective (fun τ : 𝓞 E →+* K => τ.toIntAlgHom) RingHom.toIntAlgHom_injective`.
+A detailed English derivation is pending.
 -/
 theorem finite_hom (E : Type) [Field E] [NumberField E] (K : Type) [Field K] :
     Finite (𝓞 E →+* K) :=
   Finite.of_injective (fun τ : 𝓞 E →+* K => τ.toIntAlgHom) RingHom.toIntAlgHom_injective
 
 /- English proof (translation)
-Rewrite using `[← RingOfIntegers.rank E]`. Conclude with `(Nat.card_le_card_of_injective (fun τ : 𝓞 E →+* K => τ.toIntAlgHom) RingHom.toIntAlgHom_injective).trans (card_algHom_le_finrank ℤ (𝓞 E) K)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_hom_le (E : Type) [Field E] [NumberField E] (K : Type) [Field K] :
     Nat.card (𝓞 E →+* K) ≤ Module.finrank ℚ E := by
@@ -31,7 +31,7 @@ theorem card_hom_le (E : Type) [Field E] [NumberField E] (K : Type) [Field K] :
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Introduce `h`. Establish `h0 : ρ = 0` using `by linear_combination (-1 / 2 : K) * h`. Rewrite `hρ` using `[h0]`. Establish `: (H.d : K) = 0` using `by linear_combination hρ`. Conclude with `H.d_prime.ne_zero (by exact_mod_cast this)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem root_ne_neg (H : Host E) {K : Type} [Field K] [CharZero K] {ρ : K}
     (hρ : ρ ^ 2 = -(H.d : K)) : -ρ ≠ ρ := by
@@ -42,7 +42,7 @@ theorem root_ne_neg (H : Host E) {K : Type} [Field K] [CharZero K] {ρ : K}
   exact H.d_prime.ne_zero (by exact_mod_cast this)
 
 /- English proof (translation)
-Use `congrArg τ H.rt_sq` as an intermediate fact. Rewrite `this` using `[map_pow, map_neg, map_natCast, ← hρ]`. Conclude with `sq_eq_sq_iff_eq_or_eq_neg.mp this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_rt (H : Host E) {K : Type} [Field K] {ρ : K} (hρ : ρ ^ 2 = -(H.d : K))
     (τ : 𝓞 E →+* K) : τ H.rt = ρ ∨ τ H.rt = -ρ := by
@@ -51,13 +51,13 @@ theorem map_rt (H : Host E) {K : Type} [Field K] {ρ : K} (hρ : ρ ^ 2 = -(H.d 
   exact sq_eq_sq_iff_eq_or_eq_neg.mp this
 
 /- English proof (translation)
-Use `haveI := finite_hom E K`. Establish `hne` using `root_ne_neg H hρ`. Set `f : {τ : 𝓞 E →+* K // τ H.rt = ρ} ⊕ {τ : 𝓞 E →+* K // τ H.rt = ρ} → (𝓞 E →+* K)` to `Sum.elim (fun τ => τ.1) (fun τ => τ.1.comp (H.bar : 𝓞 E →+* 𝓞 E))`. Establish `hf : Function.Injective f`. Introduce and unpack `(a | a) (b | b) h`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. It suffices to derive a contradiction.
 
-Conclude with `congrArg Sum.inl (Subtype.ext h)`. It suffices to derive a contradiction. Use `RingHom.congr_fun h H.rt` as an intermediate fact. Simplify using `[f, HostModel.bar_rt, a.2, b.2] at this`. Conclude with `hne this.symm`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. It suffices to derive a contradiction. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-It suffices to derive a contradiction. Use `RingHom.congr_fun h H.rt` as an intermediate fact. Simplify using `[f, HostModel.bar_rt, a.2, b.2] at this`. Conclude with `hne this`. Use `congrArg Sum.inr (Subtype.ext (RingHom.ext fun x => ?_))` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `RingHom.congr_fun h (H.bar x)` as an intermediate fact. Simplify `this` using `[f, HostModel.bar_bar]`. Establish `h1` using `(Nat.card_le_card_of_injective f hf).trans (card_hom_le E K)`. Rewrite `h1` using `[Nat.card_sum]`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem card_type_le (H : Host E) {K : Type} [Field K] [CharZero K] {ρ : K}
     (hρ : ρ ^ 2 = -(H.d : K)) :
@@ -85,21 +85,17 @@ theorem card_type_le (H : Host E) {K : Type} [Field K] [CharZero K] {ρ : K}
   omega
 
 /- English proof (translation)
-Introduce `E _ _ _ H p q g K _ _ ρ ty V hρ hty hV`. Use `haveI := finite_hom E K`. Establish `hne` using `root_ne_neg H hρ`. Set `S : Type` to `Σ τ : {τ : 𝓞 E →+* K // τ H.rt = ρ}, {i // ty i = τ.1} × {j // ty j = τ.1.comp (H.bar : 𝓞 E →+* 𝓞 E)}`. Use `haveI : Fintype S := Fintype.ofFinite S`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `haveI : Fintype {τ : 𝓞 E →+* K // τ H.rt = ρ} := Fintype.ofFinite _`. Establish `hS : Nat.card S = Nat.card {τ : 𝓞 E →+* K // τ H.rt = ρ} * p * q`. Rewrite using `[Nat.card_sigma, Finset.sum_congr rfl (g := fun _ => p * q)]`. Rewrite using `[Finset.sum_const, Finset.card_univ, smul_eq_mul, Nat.card_eq_fintype_card, Nat.mul_assoc]`. Introduce `τ _`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression.
 
-Rewrite using `[Nat.card_prod, (hty τ.1).1 τ.2, (hty _).2]`. Simplify `hne` using `[HostModel.bar_rt, τ.2]`. Set `f : V →ₗ[K] (S → K)` to `{ toFun := fun Θ s => Θ.1 s.2.1.1 s.2.2.1 map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl }`. Establish `hf : Function.Injective f`. Rewrite using `[injective_iff_map_eq_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `Θ h0`. Take `⟨hs, hc⟩` from `hV Θ.1 Θ.2`. Establish `key : ∀ i j, ty i H.rt = ρ → Θ.1 i j = 0`. Introduce `i j hi`. Assume the negation of the conclusion as `hij`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `hij (congrFun h0 ⟨⟨ty i, hi⟩, ⟨i, rfl⟩, ⟨j, RingHom.ext fun a => ?_⟩⟩)` and prove the remaining obligations. Use `congrFun (congrFun (hc (H.bar a)) i) j` as an intermediate fact. Rewrite `this` using `[Matrix.diagonal_transpose, Matrix.diagonal_mul, Matrix.mul_diagonal, HostModel.bar_bar, mul_comm]`. Conclude with `(mul_left_cancel₀ hij this).symm`. Use `Subtype.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `show Θ.1 i j = 0`. Break down `map_rt H hρ (ty i) with hi | hi` into its components or cases. Conclude with `key i j hi`. Assume the negation of the conclusion as `hij`. Use `congrFun (congrFun (hc H.rt) i) j` as an intermediate fact.
-
-Rewrite `this` using `[Matrix.diagonal_transpose, Matrix.diagonal_mul, Matrix.mul_diagonal, HostModel.bar_rt, mul_comm, map_neg, hi]`. Establish `hj : ty j H.rt = ρ` using `(neg_injective (mul_left_cancel₀ hij this)).symm`. Conclude with `hij ((hs.apply j i).trans (key j i hj))`. Establish `h1` using `LinearMap.finrank_le_finrank_of_injective hf`. Rewrite `h1` using `[Module.finrank_fintype_fun_eq_card, ← Nat.card_eq_fintype_card, hS]`.
-
-Conclude with `h1.trans (Nat.mul_le_mul_right _ (Nat.mul_le_mul_right _ (card_type_le H hρ)))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_le : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (p q g : ℕ) (K : Type) [Field K] [CharZero K] (ρ : K) (ty : Fin g → (𝓞 E →+* K)) (V : Submodule K (Matrix (Fin g) (Fin g) K)), ρ ^ 2 = -(H.d : K) → (∀ τ : 𝓞 E →+* K, (τ H.rt = ρ → Nat.card {i // ty i = τ} = p) ∧ (τ H.rt ≠ ρ → Nat.card {i // ty i = τ} = q)) → (∀ Θ ∈ V, Θ.IsSymm ∧ ∀ a : 𝓞 E, Matrix.diagonal (fun i => ty i a) * Θ = Θ * (Matrix.diagonal (fun i => ty i (H.bar a))).transpose) → Module.finrank K V ≤ Module.finrank ℚ E / 2 * p * q := by
   intro E _ _ _ H p q g K _ _ ρ ty V hρ hty hV

@@ -15,31 +15,29 @@ open scoped ComplexOrder
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hpi` using `Real.pi_pos`. Establish `hn0 : (1 : ℝ) ≤ n'` using `by exact_mod_cast hn`. Use `set a : ℝ := (√Real.pi / 2 * ρ)⁻¹ with ha`. Use `set b : ℝ := √((4 * n' : ℕ) : ℝ) with hb`. Establish `ha0 : 0 < a` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb1 : 1 ≤ b` using `by rw [hb, Real.one_le_sqrt]; push_cast; linarith`. Use `set c := max a 1 with hc`. Establish `hc1 : 1 ≤ c` using `le_max_right _ _`. Establish `hA : Real.log (√(Real.exp 1 * ((4 * n' : ℕ) : ℝ) * i) ^ i) ≤ (i : ℝ) / 2 * Real.log (Real.exp 1 * (4 * n') * n')`. Break down `Nat.eq_zero_or_pos i with h0 | hpos` into its components or cases.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Substitute `h0` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[Real.log_pow, Real.log_sqrt (by positivity)]`. Establish `hi' : (1:ℝ) ≤ i` using `by exact_mod_cast hpos`. Establish `hi2 : (i:ℝ) ≤ n'` using `by exact_mod_cast hi`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Move the embeddings inside the algebraic operations.
 
-Establish `: Real.log (Real.exp 1 * ((4 * n' : ℕ) : ℝ) * i) ≤ Real.log (Real.exp 1 * (4 * n') * n')`. Apply `Real.log_le_log (by positivity)` to reduce the goal to its premises. Use `push_cast`. Use `gcongr`. Use the polynomial consequences of the given equalities and inequalities.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hB : Real.log (√(Real.exp 1 * (Nat.factorial g : ℝ))) = 1 / 2 + Real.log (Nat.factorial g) / 2`. Rewrite using `[Real.log_sqrt (by positivity), Real.log_mul (by positivity) (by positivity), Real.log_exp]; ring`. Establish `hlb : Real.log b = Real.log (4 * n') / 2`. Rewrite using `[hb, Real.log_sqrt (by positivity)]; push_cast; ring`. Establish `ha2 : a ^ 2 = 4 / Real.pi * (ρ ^ 2)⁻¹`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[ha, inv_pow, mul_pow, div_pow, Real.sq_sqrt hpi.le]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `hc2 : c ^ 2 ≤ 4 / Real.pi * (1 + (ρ ^ 2)⁻¹)`. Establish `h4 : 1 ≤ 4 / Real.pi` using `by rw [le_div_iff₀ hpi]; linarith [Real.pi_le_four]`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `hr : 0 ≤ (ρ ^ 2)⁻¹` using `by positivity`. Break down `le_total a 1 with h | h` into its components or cases. Rewrite using `[hc, max_eq_right h]`. Use the polynomial consequences of the given equalities and inequalities. Rewrite using `[hc, max_eq_left h, ha2]`.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use the polynomial consequences of the given equalities and inequalities. Establish `hlc : Real.log c ≤ (Real.log (4 / Real.pi) + Real.log (1 + (ρ ^ 2)⁻¹)) / 2`. Establish `h1 : Real.log (c ^ 2) ≤ Real.log (4 / Real.pi * (1 + (ρ ^ 2)⁻¹))` using `Real.log_le_log (by positivity) hc2`. Rewrite `h1` using `[Real.log_pow, Real.log_mul (by positivity) (by positivity)]`. Move the coercions through the operations in `at h1`.
+Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hMle : max (a ^ g) (b ^ g) ≤ (b * c) ^ g`. Establish `hb0 : 0 ≤ b` using `by linarith`. Apply `max_le` to reduce the goal to its premises. Apply `pow_le_pow_left₀ ha0.le` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Conclude with `pow_le_pow_left₀ hb0 (le_mul_of_one_le_right hb0 hc1) g`. Establish `hM0 : 0 < max (a ^ g) (b ^ g)` using `lt_max_of_lt_left (pow_pos ha0 g)`. Establish `hM : Real.log (max (a ^ g) (b ^ g)) ≤ (g / 2) * Real.log (4 * n') + g * (Real.log (4 / Real.pi) / 2) + (g / 2) * Real.log (1 + (ρ ^ 2)⁻¹)`. Establish `h1` using `Real.log_le_log hM0 hMle`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[Real.log_pow, Real.log_mul (by positivity) (by positivity), hlb]`. Establish `hg : (0 : ℝ) ≤ g` using `by positivity`. Establish `h2 : (g : ℝ) * Real.log c ≤ g * ((Real.log (4 / Real.pi) + Real.log (1 + (ρ ^ 2)⁻¹)) / 2)` using `mul_le_mul_of_nonneg_left hlc hg`. Use the polynomial consequences of the given equalities and inequalities. Establish `hpos1 : 0 < √(Real.exp 1 * ((4 * n' : ℕ) : ℝ) * i) ^ i`.
+Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Check the signs of the components of the expression.
 
-Break down `Nat.eq_zero_or_pos i with h0 | hpos` into its components or cases. Substitute `h0` using the available equality. Simplify using the standard rewrite rules. Establish `: (0:ℝ) < i` using `by exact_mod_cast hpos`. Check the signs of the components of the expression.
-
-Unfold `jetBd`. Rewrite using `[Real.log_mul (by positivity) hM0.ne', Real.log_mul hpos1.ne' (by positivity), hB]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem jetBd_log_le_pt (g n' i : ℕ) (ρ : ℝ) (hρ : 0 < ρ) (hn : 1 ≤ n') (hi : i ≤ n') :
     Real.log (jetBd g (4 * n') i ρ) ≤ (i : ℝ) / 2 * Real.log (Real.exp 1 * (4 * n') * n') +
@@ -112,19 +110,17 @@ end GlobalTheory
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `g K _ _ ρ H n' i hH hρ hmean hn hi`. Establish `hcardN : Fintype.card (K →+* ℂ) = Module.finrank ℚ K` using `NumberField.Embeddings.card K ℂ`. Establish `hNpos : 0 < Module.finrank ℚ K` using `Module.finrank_pos`. Use `haveI : Nonempty (K →+* ℂ) := Fintype.card_pos_iff.mp (hcardN ▸ hNpos)`. Use `set N : ℝ := (Module.finrank ℚ K : ℝ) with hNdef`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hN : 0 < N` using `by rw [hNdef]; exact_mod_cast hNpos`. Use `set L : ℝ := Real.log (Nat.factorial g) with hL`. Establish `hL0 : 0 ≤ L` using `Real.log_nonneg (by exact_mod_cast Nat.one_le_iff_ne_zero.mpr (Nat.factorial_ne_zero g))`. Use `set C : ℝ := (i : ℝ) / 2 * Real.log (Real.exp 1 * (4 * n') * n') + (1 / 2 + L / 2 + (g / 2) * Real.log (4 * n') + g * (Real.log (4 / Real.pi) / 2)) with hC`. Use `set t : (K →+* ℂ) → ℝ := fun σ => (ρ σ ^ 2)⁻¹ with ht`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `ht0 : ∀ σ, 0 ≤ t σ` using `fun σ => by simp only [ht]; positivity`. Establish `hpt : ∀ σ, Real.log (jetBd g (4 * n') i (ρ σ)) ≤ C + (g / 2) * Real.log (1 + t σ)` using `fun σ => jetBd_log_le_pt g n' i (ρ σ) (hρ σ) hn hi`. Establish `hsum : ∑ σ, Real.log (jetBd g (4 * n') i (ρ σ)) ≤ N * C + (g / 2) * ∑ σ, Real.log (1 + t σ)`. Use `(Finset.sum_le_sum fun σ _ => hpt σ).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[Finset.sum_add_distrib, Finset.sum_const, Finset.card_univ, nsmul_eq_mul, ← Finset.mul_sum, hcardN]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hjen` using `ReciprocityTheory.GeometryOfNumbersTheory.wma_sum_log_le t ht0`. Rewrite `hjen` using `[hcardN]`. Establish `hlog : Real.log (1 + (∑ σ, t σ) / N) ≤ Real.log (15 + 14 * L) + Real.log (2 + H)`. Rewrite using `[← Real.log_mul (by positivity) (by positivity)]`. Establish `h0 : 0 ≤ (∑ σ, t σ) / N` using `div_nonneg (Finset.sum_nonneg fun σ _ => ht0 σ) hN.le`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `Real.log_le_log (by positivity)` to reduce the goal to its premises. Establish `: (∑ σ, t σ) / N ≤ 14 * (1 + H + L)` using `hmean`. Use the polynomial consequences of the given equalities and inequalities. Establish `hg : (0 : ℝ) ≤ g / 2` using `by positivity`. Establish `h3 : (g / 2 : ℝ) * ∑ σ, Real.log (1 + t σ) ≤ (g / 2) * (N * (Real.log (15 + 14 * L) + Real.log (2 + H)))`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Apply `mul_le_mul_of_nonneg_left _ hg` to reduce the goal to its premises. Conclude with `hjen.trans (mul_le_mul_of_nonneg_left hlog hN.le)`. Rewrite using `[div_le_iff₀ hN]`. Establish `h4` using `hsum.trans (add_le_add le_rfl h3)`. Use `h4.trans (le_of_eq ?_)` and prove the remaining obligations.
-
-Rewrite using `[hC]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem jetBd_log_mean_le : ∀ (g : ℕ) (K : Type) [Field K] [NumberField K] (ρ : (K →+* ℂ) → ℝ) (H : ℝ) (n' i : ℕ), 0 ≤ H → (∀ σ, 0 < ρ σ) → (∑ σ, (ρ σ ^ 2)⁻¹) / (Module.finrank ℚ K : ℝ) ≤ 14 * (1 + H + Real.log (Nat.factorial g)) → 1 ≤ n' → i ≤ n' → (∑ σ, Real.log (jetBd g (4 * n') i (ρ σ))) / (Module.finrank ℚ K : ℝ) ≤ (i : ℝ) / 2 * Real.log (Real.exp 1 * (4 * n') * n') + (1 / 2 + Real.log (Nat.factorial g) / 2 + (g / 2) * Real.log (4 * n') + g * ((Real.log (4 / Real.pi) + Real.log (15 + 14 * Real.log (Nat.factorial g))) / 2) + (g / 2) * Real.log (2 + H)) := by
   intro g K _ _ ρ H n' i hH hρ hmean hn hi

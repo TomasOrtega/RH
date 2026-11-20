@@ -16,14 +16,14 @@ namespace GlobalTheory.CompanionTheory.Ar.LieFinGlue
 variable {R : Type} [CommRing R]
 
 /- English proof (translation)
-Use `RingHom.ext fun x => ?_` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp [dualMap, ReciprocityTheory.ChartRestriction.G.Chart.dualMapR]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dualMap_algebraMap_eq_dAway (s : R) : dualMap (algebraMap R (Localization.Away s)) = dAway s := by
   refine RingHom.ext fun x => ?_
   ext <;> simp [dualMap, ReciprocityTheory.ChartRestriction.G.Chart.dualMapR]
 
 /- English proof (translation)
-Use `RingHom.ext fun x => ?_` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp [dualMap]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dualMap_comp_dualMap {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (p : B →+* C) (q : A →+* B) :
     (dualMap p).comp (dualMap q) = dualMap (p.comp q) := by
@@ -31,7 +31,7 @@ theorem dualMap_comp_dualMap {A B C : Type} [CommRing A] [CommRing B] [CommRing 
   ext <;> simp [dualMap]
 
 /- English proof (translation)
-Use `congrArg (Ideal.map (TrivSqZeroExt.inlHom R R)) hf` as an intermediate fact. Rewrite `this` using `[Ideal.map_span, Ideal.map_top, ← Set.range_comp]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_range_inl {J : Type} (f : J → R) (hf : Ideal.span (Set.range f) = ⊤) :
     Ideal.span (Set.range fun k => (TrivSqZeroExt.inl (f k) : DualNumber R)) = ⊤ := by
@@ -40,14 +40,14 @@ theorem span_range_inl {J : Type} (f : J → R) (hf : Ideal.span (Set.range f) =
   exact this
 
 /- English proof (translation)
-Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp, toL_comp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem spMap_algebraMap_eq (s : R) :
     spMap (algebraMap (DualNumber R) (Ld s)) = spMap (toL s) ≫ spMap (dAway s) := by
   rw [← Spec.map_comp, ← CommRingCat.ofHom_comp, toL_comp]
 
 /- English proof (translation)
-The claim follows from `Scheme.Cover.hom_ext (Scheme.affineOpenCoverOfSpanRangeEqTop (R := CommRingCat.of R) _ hf).openCover _ _ fun (k : J) => h k`.
+A detailed English derivation is pending.
 -/
 theorem sep_base {X : Scheme.{0}} {J : Type} (f : J → R) (hf : Ideal.span (Set.range f) = ⊤)
     (a b : Sp R ⟶ X)
@@ -57,7 +57,7 @@ theorem sep_base {X : Scheme.{0}} {J : Type} (f : J → R) (hf : Ideal.span (Set
     fun (k : J) => h k
 
 /- English proof (translation)
-Use `Scheme.Cover.hom_ext (Scheme.affineOpenCoverOfSpanRangeEqTop (R := CommRingCat.of (DualNumber R)) _ (span_range_inl f hf)).openCover _ _ fun (k : J) => ?_` and prove the remaining obligations. Establish `hk` using `h k`. Rewrite `hk` using `[dualMap_algebraMap_eq_dAway]`. Use `show spMap (algebraMap (DualNumber R) (Ld (f k))) ≫ a = spMap (algebraMap (DualNumber R) (Ld (f k))) ≫ b`. Rewrite using `[spMap_algebraMap_eq, Category.assoc, Category.assoc, hk]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sep_dual {X : Scheme.{0}} {J : Type} (f : J → R) (hf : Ideal.span (Set.range f) = ⊤)
     (a b : Sp (DualNumber R) ⟶ X)
@@ -72,15 +72,15 @@ theorem sep_dual {X : Scheme.{0}} {J : Type} (f : J → R) (hf : Ideal.span (Set
   rw [spMap_algebraMap_eq, Category.assoc, Category.assoc, hk]
 
 /- English proof (translation)
-Establish `hi : IsUnit ((α.comp (dAway (f i))) (TrivSqZeroExt.inl (f i)))` using `(isUnit_dAway (f i)).map α`. Establish `hj : IsUnit ((α.comp (dAway (f i))) (TrivSqZeroExt.inl (f j)))`. Rewrite using `[h]`. Conclude with `(isUnit_dAway (f j)).map β`. Establish `hij : IsUnit ((α.comp (dAway (f i))) (TrivSqZeroExt.inl (f i * f j)))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[TrivSqZeroExt.inl_mul, map_mul]`. Conclude with `hi.mul hj`. Take `⟨χ, hχ⟩` from `dAway_lift (f i * f j) (α.comp (dAway (f i))) hij`. Establish `hu : IsUnit (algebraMap R (Localization.Away (f i * f j)) (f i * f j))` using `IsLocalization.Away.algebraMap_isUnit (f i * f j)`. Rewrite `hu` using `[map_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ui : IsUnit (algebraMap R (Localization.Away (f i * f j)) (f i))` using `isUnit_of_mul_isUnit_left hu`. Establish `uj : IsUnit (algebraMap R (Localization.Away (f i * f j)) (f j))` using `isUnit_of_mul_isUnit_right hu`. Set `a : Localization.Away (f i) →+* Localization.Away (f i * f j)` to `IsLocalization.Away.lift (f i) ui`. Set `b : Localization.Away (f j) →+* Localization.Away (f i * f j)` to `IsLocalization.Away.lift (f j) uj`. Establish `ha : a.comp (algebraMap R _) = algebraMap R _` using `IsLocalization.Away.lift_comp _ ui`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb : b.comp (algebraMap R _) = algebraMap R _` using `IsLocalization.Away.lift_comp _ uj`. Establish `hα : χ.comp (dualMap a) = α` using `dAway_ext (f i) (by`. Rewrite using `[RingHom.comp_assoc, ← dualMap_algebraMap_eq_dAway (f i), dualMap_comp_dualMap, ha, dualMap_algebraMap_eq_dAway, hχ, dualMap_algebraMap_eq_dAway])`. Establish `hβ : χ.comp (dualMap b) = β` using `dAway_ext (f j) (by`. Rewrite using `[RingHom.comp_assoc, ← dualMap_algebraMap_eq_dAway (f j), dualMap_comp_dualMap, hb, dualMap_algebraMap_eq_dAway, hχ, dualMap_algebraMap_eq_dAway, h])`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e` using `hw i j a b ha hb`. Rewrite using `[← hα, ← hβ, CommRingCat.ofHom_comp, CommRingCat.ofHom_comp, Spec.map_comp, Spec.map_comp, Category.assoc, Category.assoc]`. Conclude with `congrArg (Spec.map (CommRingCat.ofHom χ) ≫ ·) e`.
+A detailed English derivation is pending.
 -/
 theorem compat_of_pair {X : Scheme.{0}} {J : Type} (f : J → R)
     (w : ∀ i, Sp (DualNumber (Localization.Away (f i))) ⟶ X)
@@ -122,17 +122,15 @@ theorem compat_of_pair {X : Scheme.{0}} {J : Type} (f : J → R)
 set_option backward.isDefEq.respectTransparency false in
 
 /- English proof (translation)
-Set `𝒰` to `(Scheme.affineOpenCoverOfSpanRangeEqTop (R := CommRingCat.of (DualNumber R)) _ (span_range_inl f hf)).openCover`. Set `g : ∀ k, 𝒰.X k ⟶ X` to `fun k => Spec.map (CommRingCat.ofHom (toL (f k))) ≫ w k`. Establish `hg : ∀ k l, pullback.fst (𝒰.f k) (𝒰.f l) ≫ g k = pullback.snd (𝒰.f k) (𝒰.f l) ≫ g l`. Use `fun (k : J) (l : J) => Scheme.Cover.hom_ext (pullback (𝒰.f k) (𝒰.f l)).affineOpenCover.openCover _ _ fun (i : (pullback (𝒰.f k) (𝒰.f l)).affineOpenCover.I₀) => ?_` and prove the remaining obligations. Set `a : Spec ((pullback (𝒰.f k) (𝒰.f l)).affineOpenCover.X i) ⟶ pullback (𝒰.f k) (𝒰.f l)` to `(pullback (𝒰.f k) (𝒰.f l)).affineOpenCover.f i`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Set `A : CommRingCat.of (Ld (f k)) ⟶ (pullback (𝒰.f k) (𝒰.f l)).affineOpenCover.X i` to `Spec.preimage (a ≫ pullback.fst (𝒰.f k) (𝒰.f l))`. Set `B : CommRingCat.of (Ld (f l)) ⟶ (pullback (𝒰.f k) (𝒰.f l)).affineOpenCover.X i` to `Spec.preimage (a ≫ pullback.snd (𝒰.f k) (𝒰.f l))`. Establish `ea : Spec.map A = a ≫ pullback.fst (𝒰.f k) (𝒰.f l)` using `Spec.map_preimage _`. Establish `eb : Spec.map B = a ≫ pullback.snd (𝒰.f k) (𝒰.f l)` using `Spec.map_preimage _`. Establish `e1 : Spec.map (CommRingCat.ofHom (algebraMap (DualNumber R) (Ld (f k))) ≫ A) = Spec.map (CommRingCat.ofHom (algebraMap (DualNumber R) (Ld (f l))) ≫ B)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Spec.map_comp, Spec.map_comp, ea, eb, Category.assoc, Category.assoc]`. Conclude with `congrArg (a ≫ ·) pullback.condition`. Establish `key : A.hom.comp (algebraMap (DualNumber R) (Ld (f k))) = B.hom.comp (algebraMap (DualNumber R) (Ld (f l)))` using `congrArg CommRingCat.Hom.hom (Spec.map_injective e1)`. Establish `hkey : (A.hom.comp (toL (f k))).comp (dAway (f k)) = (B.hom.comp (toL (f l))).comp (dAway (f l))`. Rewrite using `[RingHom.comp_assoc, RingHom.comp_assoc, toL_comp, toL_comp]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `key`. Establish `h` using `hc k l _ (A.hom.comp (toL (f k))) (B.hom.comp (toL (f l))) hkey`. Use `show a ≫ pullback.fst (𝒰.f k) (𝒰.f l) ≫ Spec.map (CommRingCat.ofHom (toL (f k))) ≫ w k = a ≫ pullback.snd (𝒰.f k) (𝒰.f l) ≫ Spec.map (CommRingCat.ofHom (toL (f l))) ≫ w l`. Rewrite using `[← Category.assoc a, ← Category.assoc a, ← ea, ← eb, ← Category.assoc, ← Category.assoc, ← Spec.map_comp, ← Spec.map_comp]`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨𝒰.glueMorphisms g hg, fun k => ?_⟩` and prove the remaining obligations. Establish `hι : 𝒰.f k ≫ 𝒰.glueMorphisms g hg = g k` using `Scheme.Cover.ι_glueMorphisms 𝒰 g hg k`. Establish `e : spMap (dAway (f k)) = Spec.map (CommRingCat.ofHom (fromL (f k))) ≫ 𝒰.f k` using `by show _ = _ ≫ Spec.map (CommRingCat.ofHom (algebraMap (DualNumber R) (Ld (f k))))`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp, fromL_comp]`. Rewrite using `[e, Category.assoc, hι]`.
-
-Use `show Spec.map (CommRingCat.ofHom (fromL (f k))) ≫ Spec.map (CommRingCat.ofHom (toL (f k))) ≫ w k = _`. Rewrite using `[← Category.assoc, ← Spec.map_comp, ← CommRingCat.ofHom_comp, fromL_toL, CommRingCat.ofHom_id, Spec.map_id, Category.id_comp]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem glue_of_compat {X : Scheme.{0}} {J : Type} (f : J → R) (hf : Ideal.span (Set.range f) = ⊤)
     (w : ∀ i, Sp (DualNumber (Localization.Away (f i))) ⟶ X)
@@ -181,7 +179,7 @@ theorem glue_of_compat {X : Scheme.{0}} {J : Type} (f : J → R) (hf : Ideal.spa
     Category.id_comp]
 
 /- English proof (translation)
-Introduce `X R _ J _ f hf`. Use `⟨sep_base f hf, sep_dual f hf, fun w hw => ?_⟩` and prove the remaining obligations. Take `⟨v, hv⟩` from `glue_of_compat f hf w (compat_of_pair f w hw)`. Conclude with `⟨v, fun i => by rw [dualMap_algebraMap_eq_dAway]; exact hv i⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem dual_glue : ∀ (X : Scheme.{0}) (R : Type) [CommRing R] (J : Type) [Finite J] (f : J → R),
     Ideal.span (Set.range f) = ⊤ →

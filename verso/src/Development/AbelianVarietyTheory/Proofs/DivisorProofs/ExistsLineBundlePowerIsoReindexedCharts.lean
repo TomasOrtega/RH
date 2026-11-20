@@ -10,7 +10,7 @@ open GlobalTheory.HomFixMat
 namespace GlobalTheory.PowIsoRe
 
 /- English proof (translation)
-Use `ext1`. Simplify using `only [res, Units.coe_map, MonoidHom.coe_coe]`. Rewrite using `[← CommRingCat.comp_apply, ← Functor.map_comp]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem res_res {X : Scheme.{0}} {U V W : X.Opens} (e1 : W ≤ V) (e2 : V ≤ U) (x : Γ(X, U)ˣ) :
     res e1 (res e2 x) = res (e1.trans e2) x := by
@@ -20,7 +20,7 @@ theorem res_res {X : Scheme.{0}} {U V W : X.Opens} (e1 : W ≤ V) (e2 : V ≤ U)
   rfl
 
 /- English proof (translation)
-Introduce `x hx`. Conclude with `e hx`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem preimage_comp_le {X Y Z : Scheme.{0}} (h : X ⟶ Y) (φ : Y ⟶ Z) {W : Z.Opens} {V : Y.Opens}
     (e : V ≤ φ ⁻¹ᵁ W) : h ⁻¹ᵁ V ≤ (h ≫ φ) ⁻¹ᵁ W := by
@@ -28,9 +28,9 @@ theorem preimage_comp_le {X Y Z : Scheme.{0}} (h : X ⟶ Y) (φ : Y ⟶ Z) {W : 
   exact e hx
 
 /- English proof (translation)
-Establish `key : φ.app W ≫ Y.presheaf.map (homOfLE e).op ≫ h.app V = (h ≫ φ).app W ≫ X.presheaf.map (homOfLE (preimage_comp_le h φ e)).op`. Rewrite using `[Scheme.Hom.naturality, Scheme.Hom.comp_app]`. Both sides reduce to the same expression. Use `ext1`. Simplify using `only [res, pullU, Units.coe_map, MonoidHom.coe_coe]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← CommRingCat.comp_apply, ← CommRingCat.comp_apply, ← CommRingCat.comp_apply, key]`.
+A detailed English derivation is pending.
 -/
 theorem pullU_res_pullU {X Y Z : Scheme.{0}} (h : X ⟶ Y) (φ : Y ⟶ Z) {W : Z.Opens} {V : Y.Opens}
     (e : V ≤ φ ⁻¹ᵁ W) (u : Γ(Z, W)ˣ) :
@@ -48,7 +48,7 @@ end GlobalTheory.PowIsoRe
 namespace GlobalTheory.PowIsoRe
 
 /- English proof (translation)
-Rewrite using `[pullU_res_pullU, res_res, res_res, res_res]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem res_pull_comp {X Y Z : Scheme.{0}} (h : X ⟶ Y) (m : Y ⟶ Z) {W : Z.Opens} {V1 : Y.Opens}
     {V2 V3 T : X.Opens} (u : Γ(Z, W)ˣ) (e1 : V1 ≤ m ⁻¹ᵁ W) (e2 : V2 ≤ h ⁻¹ᵁ V1) (e3 : T ≤ V2)
@@ -57,7 +57,7 @@ theorem res_pull_comp {X Y Z : Scheme.{0}} (h : X ⟶ Y) (m : Y ⟶ Z) {W : Z.Op
   rw [pullU_res_pullU, res_res, res_res, res_res]
 
 /- English proof (translation)
-Rewrite using `[res_res, res_res]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem res_res' {X : Scheme.{0}} {U V V' W : X.Opens} (x : Γ(X, U)ˣ) (e1 : W ≤ V) (e2 : V ≤ U)
     (e3 : W ≤ V') (e4 : V' ≤ U) : res e1 (res e2 x) = res e3 (res e4 x) := by
@@ -68,7 +68,7 @@ end GlobalTheory.PowIsoRe
 namespace GlobalTheory.PowIsoRe
 
 /- English proof (translation)
-Introduce `x hx`. Establish `hx0` using `Set.mem_iInter.1 hx 0`. Use `Set.mem_iInter.2 fun _ => ?_` and prove the remaining obligations. Use `Set.mem_iInter.2 fun _ => ?_` and prove the remaining obligations. Simplify using `using hx0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem wchart_le_M {X Y Z : Scheme.{0}} (M : LB Z) (h : X ⟶ Y) (m : Y ⟶ Z) (j : Fin 1 → M.ι) :
     LB.wchart M (fun _ : Fin 1 => h ≫ m) j ≤
@@ -80,7 +80,7 @@ theorem wchart_le_M {X Y Z : Scheme.{0}} (M : LB Z) (h : X ⟶ Y) (m : Y ⟶ Z) 
   simpa using hx0
 
 /- English proof (translation)
-Introduce `x hx`. Conclude with `Set.mem_iInter.2 fun _ => Set.mem_iInter.1 hx 0`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem wchart_le_L {X Z : Scheme.{0}} (L : LB Z) (f : X ⟶ Z) (j : Fin 1 → L.ι) :
     LB.wchart L (fun _ : Fin 1 => f) j ≤ LB.wchart L (fun _ : PUnit => f) (fun _ => j 0) := by
@@ -88,11 +88,11 @@ theorem wchart_le_L {X Z : Scheme.{0}} (L : LB Z) (f : X ⟶ Z) (j : Fin 1 → L
   exact Set.mem_iInter.2 fun _ => Set.mem_iInter.1 hx 0
 
 /- English proof (translation)
-Simplify using `only [LB.Gen.IsGen, LB.div, LB.LinComb, LB.pull, powPull] at w hw ⊢`. Establish `hle : ∀ p : (Fin 1 → M.ι) × (Fin 1 → L.ι), LB.wchart M (fun _ : Fin 1 => h ≫ m) p.1 ⊓ LB.wchart L (fun _ : Fin 1 => f) p.2 ≤ LB.wchart (M.pull m) (fun _ : PUnit => h) (fun _ _ => p.1 0) ⊓ LB.wchart L (fun _ : PUnit => f) (fun _ => p.2 0)` using `fun p => inf_le_inf (wchart_le_M M h m p.1) (wchart_le_L L f p.2)`. Simplify using `only [LB.pull, LB.LinComb] at hle`. Use `⟨⟨fun p => (res (hle p) (w.s (fun _ _ => p.1 0, fun _ => p.2 0))) ^ k⟩, ?_⟩` and prove the remaining obligations. Simplify using `only`.
+Simplify by unfolding definitions. Establish an intermediate fact. Simplify by unfolding definitions. Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions.
 
-Introduce `p p'`. Establish `e` using `congrArg (fun x => (res (inf_le_inf (hle p) (hle p')) x) ^ k) (hw (fun _ _ => p.1 0, fun _ => p.2 0) (fun _ _ => p'.1 0, fun _ => p'.2 0))`. Simplify using `only [map_mul, map_inv, map_pow, map_zpow, map_prod, res_res, pullU_res_pullU, Fin.prod_univ_one, Fintype.prod_unique, Fin.default_eq_zero, zpow_one, zpow_natCast, mul_pow, inv_pow] at e ⊢`. Use `e using 5` and compare the differences between its conclusion and the goal. Conclude with `(res_pull_comp h m (W := M.U (p.1 0) ⊓ M.U (p'.1 0)) (V1 := LB.wchart M (fun _ : PUnit.{1} => m) (fun _ => p.1 0) ⊓ LB.wchart M (fun _ : PUnit.{1} => m) (fun _ => p'.1 0)) (M.g (p.1 0) (p'.1 0)) _ _ _ _ _).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply an available result and prove the equalities needed to match it to the conclusion. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Conclude with `res_res' (U := f ⁻¹ᵁ (L.U (p.2 0) ⊓ L.U (p'.2 0))) (pullU f _ (L.g (p.2 0) (p'.2 0))) _ _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem exists_powIso {X Y Z₁ Z₂ : Scheme.{0}} (L : LB Z₁) (M : LB Z₂) (f : X ⟶ Z₁) (h : X ⟶ Y) (m : Y ⟶ Z₂)
     (k : ℕ) (w : LB.Gen (LB.div ((M.pull m).pull h) (L.pull f))) (hw : w.IsGen) :

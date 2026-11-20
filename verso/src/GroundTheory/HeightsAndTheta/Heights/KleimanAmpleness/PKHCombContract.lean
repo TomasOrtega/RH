@@ -21,7 +21,7 @@ def rem (T : ∀ k, Finset (ι k)) (l : K) (i : ι l) : ∀ k, Finset (ι k) :=
   Function.update T l ((T l).erase i)
 
 /- English proof (translation)
-Rewrite using `[← Finset.add_sum_erase s _ hl, ← Finset.add_sum_erase s (fun x => (T x).card - 1) hl, Function.update_self]`. Establish `: ∑ x ∈ s.erase l, ((Function.update T l A x).card - 1) = ∑ x ∈ s.erase l, ((T x).card - 1)` using `Finset.sum_congr rfl fun x hx => by rw [Function.update_of_ne (Finset.ne_of_mem_erase hx)]`. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem sum_card_update_of_mem (T : ∀ k, Finset (ι k)) (l : K) (A : Finset (ι l)) (s : Finset K) (hl : l ∈ s) :
     (∑ x ∈ s, ((Function.update T l A x).card - 1)) + ((T l).card - 1) =
@@ -32,14 +32,14 @@ theorem sum_card_update_of_mem (T : ∀ k, Finset (ι k)) (l : K) (A : Finset (�
   rw [this]; ring
 
 /- English proof (translation)
-The claim follows from `Finset.sum_congr rfl fun x hx => by rw [Function.update_of_ne (by rintro rfl; exact hl hx)]`.
+A detailed English derivation is pending.
 -/
 theorem sum_card_update_of_notMem (T : ∀ k, Finset (ι k)) (l : K) (A : Finset (ι l)) (s : Finset K) (hl : l ∉ s) :
     ∑ x ∈ s, ((Function.update T l A x).card - 1) = ∑ x ∈ s, ((T x).card - 1) :=
   Finset.sum_congr rfl fun x hx => by rw [Function.update_of_ne (by rintro rfl; exact hl hx)]
 
 /- English proof (translation)
-Rewrite using `[KH.faceSign, pow_add]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem faceSign_eq (T : ∀ k, Finset (ι k)) (l : K) (i : ι l) :
     KH.faceSign T l i = (-1) ^ ((T l).filter (· < i)).card *
@@ -47,18 +47,18 @@ theorem faceSign_eq (T : ∀ k, Finset (ι k)) (l : K) (i : ι l) :
   rw [KH.faceSign, pow_add]
 
 /- English proof (translation)
-Rewrite using `[KH.faceSign, ← mul_pow]`. Evaluate the numerical expressions.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 theorem faceSign_mul_self (T : ∀ k, Finset (ι k)) (l : K) (i : ι l) :
     KH.faceSign T l i * KH.faceSign T l i = 1 := by
   rw [KH.faceSign, ← mul_pow]; norm_num
 
 /- English proof (translation)
-Establish `hne : k ≠ l` using `hlk.ne'`. Prove the components needed by the constructor for the conclusion. Establish `hmem : l ∈ Finset.univ.filter (· < k)` using `by simp [hlk]`. Establish `hk : k ∉ Finset.univ.filter (· < k)` using `by simp`. Establish `h1` using `sum_card_update_of_mem T l ((T l).erase i) _ hmem`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[Finset.card_erase_of_mem hi]`. Rewrite using `[faceSign_eq, faceSign_eq, ins, ins, rem, Function.update_self, Function.update_self, Function.update_of_ne hne, sum_card_update_of_notMem _ _ _ _ hk, sum_card_update_of_notMem _ _ _ _ hk]`. Establish `h2 : ∑ x ∈ Finset.univ.filter (· < k), ((T x).card - 1) = (∑ x ∈ Finset.univ.filter (· < k), ((Function.update T l ((T l).erase i) x).card - 1)) + 1` using `by omega`. Rewrite using `[h2, pow_succ]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hk : k ∉ Finset.univ.filter (· < l)` using `by simp [hlk.le]`. Rewrite using `[faceSign_eq, faceSign_eq, ins, Function.update_of_ne hne.symm, sum_card_update_of_notMem _ _ _ _ hk]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem sign_lt (T : ∀ k, Finset (ι k)) (k : K) (i₀ : ι k) (l : K) (i : ι l) (hlk : l < k)
     (hi : i ∈ T l) (hcard : 2 ≤ (T l).card) :
@@ -79,11 +79,11 @@ theorem sign_lt (T : ∀ k, Finset (ι k)) (k : K) (i₀ : ι k) (l : K) (i : ι
     rw [faceSign_eq, faceSign_eq, ins, Function.update_of_ne hne.symm, sum_card_update_of_notMem _ _ _ _ hk]
 
 /- English proof (translation)
-Establish `hne : l ≠ k` using `hkl.ne'`. Prove the components needed by the constructor for the conclusion. Establish `hl : l ∉ Finset.univ.filter (· < k)` using `by simp [hkl.le]`. Establish `hk : k ∉ Finset.univ.filter (· < k)` using `by simp`. Rewrite using `[faceSign_eq, faceSign_eq, ins, ins, rem, Function.update_self, Function.update_self, Function.update_of_ne hne.symm, sum_card_update_of_notMem _ _ _ _ hk, sum_card_update_of_notMem _ _ _ _ hk, sum_card_update_of_notMem _ _ _ _ hl]`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hmem : k ∈ Finset.univ.filter (· < l)` using `by simp [hkl]`. Establish `h1` using `sum_card_update_of_mem T k (insert i₀ (T k)) _ hmem`. Rewrite `h1` using `[Finset.card_insert_of_notMem hk0]`. Establish `hpos` using `hkne.card_pos`. Rewrite using `[faceSign_eq, faceSign_eq, ins, Function.update_of_ne hne]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : ∑ x ∈ Finset.univ.filter (· < l), ((Function.update T k (insert i₀ (T k)) x).card - 1) = (∑ x ∈ Finset.univ.filter (· < l), ((T x).card - 1)) + 1` using `by omega`. Rewrite using `[h2, pow_succ]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem sign_gt (T : ∀ k, Finset (ι k)) (k : K) (i₀ : ι k) (l : K) (i : ι l) (hkl : k < l)
     (hk0 : i₀ ∉ T k) (hkne : (T k).Nonempty) :
@@ -106,15 +106,15 @@ theorem sign_gt (T : ∀ k, Finset (ι k)) (k : K) (i₀ : ι k) (l : K) (i : ι
     rw [h2, pow_succ]; ring
 
 /- English proof (translation)
-Establish `hne : i ≠ i₀` using `fun h => hk0 (h ▸ hi)`. Establish `hk : k ∉ Finset.univ.filter (· < k)` using `by simp`. Rewrite using `[faceSign_eq, faceSign_eq, faceSign_eq, faceSign_eq, ins, ins, rem, Function.update_self, Function.update_self, Function.update_self, sum_card_update_of_notMem _ _ _ _ hk, sum_card_update_of_notMem _ _ _ _ hk, sum_card_update_of_notMem _ _ _ _ hk]`. Use `set C := ∑ x ∈ Finset.univ.filter (· < k), ((T x).card - 1)`. Establish `hb : (insert i₀ (T k)).filter (· < i₀) = (T k).filter (· < i₀)` using `by simp [Finset.filter_insert]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb2 : (insert i₀ ((T k).erase i)).filter (· < i₀) = ((T k).filter (· < i₀)).erase i`. Simplify using `[Finset.filter_insert, Finset.filter_erase]`. Rewrite using `[hb, hb2]`. Break down `lt_or_gt_of_ne hne with h | h` into its components or cases. Establish `ha : (insert i₀ (T k)).filter (· < i) = (T k).filter (· < i)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[Finset.filter_insert, not_lt.mpr h.le]`. Rewrite using `[ha]`. Establish `hm : i ∈ (T k).filter (· < i₀)` using `Finset.mem_filter.mpr ⟨hi, h⟩`. Establish `hc` using `Finset.card_erase_of_mem hm`. Establish `hp` using `Finset.card_pos.mpr ⟨i, hm⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: ((T k).filter (· < i₀)).card = (((T k).filter (· < i₀)).erase i).card + 1` using `by omega`. Rewrite using `[this, pow_succ]`. Expand and normalize the polynomial expressions, which then agree. Establish `ha : (insert i₀ (T k)).filter (· < i) = insert i₀ ((T k).filter (· < i))`. Simplify using `[Finset.filter_insert, h]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ha, Finset.card_insert_of_notMem (fun hm => hk0 (Finset.mem_filter.mp hm).1)]`. Establish `hm : i ∉ (T k).filter (· < i₀)` using `fun hm => absurd (Finset.mem_filter.mp hm).2 (not_lt.mpr h.le)`. Rewrite using `[Finset.erase_eq_of_notMem hm, pow_succ]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem sign_eq (T : ∀ k, Finset (ι k)) (k : K) (i₀ i : ι k) (hi : i ∈ T k) (hk0 : i₀ ∉ T k) :
     KH.faceSign T k i * KH.faceSign (ins k i₀ (rem T k i)) k i₀ =
@@ -155,16 +155,16 @@ def tH (k : K) (i₀ : ι k) (F : (∀ k, Finset (ι k)) → S) (T : ∀ k, Fins
   if i₀ ∈ T k then 0 else KH.faceSign (ins k i₀ T) k i₀ • F (ins k i₀ T)
 
 /- English proof (translation)
-Simplify using `only [tD, smul_add, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem tD_add (F₁ F₂ : (∀ k, Finset (ι k)) → S) (T : ∀ k, Finset (ι k)) :
     tD (fun T' => F₁ T' + F₂ T') T = tD F₁ T + tD F₂ T := by
   simp only [tD, smul_add, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Use extensionality with `⟨l, i⟩`. Simplify using `only [Finset.mem_sigma, Finset.mem_univ, true_and, Finset.mem_insert]`. Distinguish the cases in `h : l = k`. Substitute `h` using the available equality. Simplify using `[ins]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[ins, h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sigma_ins (T : ∀ k, Finset (ι k)) (k : K) (i₀ : ι k) :
     Finset.univ.sigma (ins k i₀ T) = insert ⟨k, i₀⟩ (Finset.univ.sigma T) := by
@@ -175,21 +175,21 @@ theorem sigma_ins (T : ∀ k, Finset (ι k)) (k : K) (i₀ : ι k) :
   · simp [ins, h]
 
 /- English proof (translation)
-Rewrite using `[rem, ins, Function.update_self, Finset.erase_insert h, Function.update_idem, Function.update_eq_self]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem rem_ins_self (T : ∀ k, Finset (ι k)) (k : K) (i₀ : ι k) (h : i₀ ∉ T k) :
     rem (ins k i₀ T) k i₀ = T := by
   rw [rem, ins, Function.update_self, Finset.erase_insert h, Function.update_idem, Function.update_eq_self]
 
 /- English proof (translation)
-Rewrite using `[ins, rem, Function.update_self, Finset.insert_erase h, Function.update_idem, Function.update_eq_self]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ins_rem_self (T : ∀ k, Finset (ι k)) (k : K) (i₀ : ι k) (h : i₀ ∈ T k) :
     ins k i₀ (rem T k i₀) = T := by
   rw [ins, rem, Function.update_self, Finset.insert_erase h, Function.update_idem, Function.update_eq_self]
 
 /- English proof (translation)
-Distinguish the cases in `h : l = k`. Substitute `h` using the available equality. Establish `hne : i₀ ≠ i` using `fun e => h0 (e ▸ hi)`. Rewrite using `[rem, ins, ins, rem, Function.update_self, Function.update_self, Function.update_idem, Function.update_idem, Finset.erase_insert_of_ne hne]`. Rewrite using `[rem, ins, ins, rem, Function.update_of_ne h, Function.update_of_ne (Ne.symm h), Function.update_comm (Ne.symm h)]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem rem_ins_comm (T : ∀ k, Finset (ι k)) (k : K) (i₀ : ι k) (l : K) (i : ι l) (hi : i ∈ T l)
     (h0 : i₀ ∉ T k) : rem (ins k i₀ T) l i = ins k i₀ (rem T l i) := by
@@ -202,7 +202,7 @@ theorem rem_ins_comm (T : ∀ k, Finset (ι k)) (k : K) (i₀ : ι k) (l : K) (i
       Function.update_comm (Ne.symm h)]
 
 /- English proof (translation)
-Distinguish the cases in `h : l = k`. Substitute `h` using the available equality. Simplify using `only [rem, Function.update_self, Finset.mem_erase, ne_eq, Sigma.mk.inj_iff, heq_eq_eq, true_and]`. The claim follows by propositional logic. Simplify using `only [rem, Function.update_of_ne (Ne.symm h), ne_eq, Sigma.mk.inj_iff, h, false_and, not_false_eq_true, and_true]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. The claim follows by propositional logic. Simplify using the standard rewrite rules.
 -/
 theorem mem_rem_iff (T : ∀ k, Finset (ι k)) (k : K) (i₀ : ι k) (l : K) (i : ι l) :
     i₀ ∈ rem T l i k ↔ i₀ ∈ T k ∧ (⟨l, i⟩ : Σ k, ι k) ≠ ⟨k, i₀⟩ := by
@@ -214,21 +214,21 @@ theorem mem_rem_iff (T : ∀ k, Finset (ι k)) (k : K) (i₀ : ι k) (l : K) (i 
       and_true]
 
 /- English proof (translation)
-Distinguish the cases in `h0 : i₀ ∈ T k`. Establish `hH : tH k i₀ (tD F) T = 0` using `if_pos h0`. Rewrite using `[hH, add_zero, tD, Finset.sum_eq_single_of_mem (⟨k, i₀⟩ : Σ k, ι k) (by simp [h0])]`. Establish `hn : i₀ ∉ rem T k i₀ k` using `by simp [mem_rem_iff]`. Rewrite using `[tH, if_neg hn, ins_rem_self T k i₀ h0, smul_smul, faceSign_mul_self, one_smul]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨l, i⟩ - hne`. Establish `hm : i₀ ∈ rem T l i k` using `(mem_rem_iff T k i₀ l i).mpr ⟨h0, hne⟩`. Rewrite using `[tH, if_pos hm, smul_zero]`. Establish `hkne` using `hT k`. Establish `hH : tH k i₀ (tD F) T = KH.faceSign (ins k i₀ T) k i₀ • tD F (ins k i₀ T)` using `if_neg h0`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hD : tD F (ins k i₀ T) = ∑ p ∈ Finset.univ.sigma (ins k i₀ T), KH.faceSign (ins k i₀ T) p.1 p.2 • F (rem (ins k i₀ T) p.1 p.2)` using `rfl`. Rewrite using `[hH, hD, sigma_ins, Finset.sum_insert (by simp [h0]), rem_ins_self T k i₀ h0, smul_add, smul_smul, faceSign_mul_self, one_smul]`. Establish `key : tD (tH k i₀ F) T + KH.faceSign (ins k i₀ T) k i₀ • ∑ p ∈ Finset.univ.sigma T, KH.faceSign (ins k i₀ T) p.1 p.2 • F (rem (ins k i₀ T) p.1 p.2) = 0`. Rewrite using `[tD, Finset.smul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_eq_zero fun p hp => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨l, i⟩` from `p`. Establish `hi : i ∈ T l` using `(Finset.mem_sigma.mp hp).2`. Establish `hn : i₀ ∉ rem T l i k` using `fun hm => h0 ((mem_rem_iff T k i₀ l i).mp hm).1`. Rewrite using `[tH, if_neg hn, rem_ins_comm T k i₀ l i hi h0, smul_smul, smul_smul, ← add_smul]`. Distinguish the cases in `hz : F (ins k i₀ (rem T l i)) = 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[hz, smul_zero]`. Establish `hne : ∀ l', (ins k i₀ (rem T l i) l').Nonempty`. Introduce `l'`. Assume the negation of the conclusion as `hc`. Conclude with `hz (hF _ ⟨l', Finset.not_nonempty_iff_eq_empty.mp hc⟩)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `lt_trichotomy l k with hlk | rfl | hkl` into its components or cases. Establish `hcard : 2 ≤ (T l).card`. Establish `h1` using `(hne l).card_pos`. Rewrite `h1` using `[ins, Function.update_of_ne hlk.ne, rem, Function.update_self, Finset.card_erase_of_mem hi]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result.
 
-Take `⟨h1, h2⟩` from `sign_lt T k i₀ l i hlk hi hcard`. Rewrite using `[h1, h2, show KH.faceSign T l i * -KH.faceSign (ins k i₀ T) k i₀ + KH.faceSign (ins k i₀ T) k i₀ * KH.faceSign T l i = 0 by ring, zero_smul]`. Rewrite using `[sign_eq T l i₀ i hi h0, neg_add_cancel, zero_smul]`. Take `⟨h1, h2⟩` from `sign_gt T k i₀ l i hkl h0 hkne`. Rewrite using `[h1, h2, show KH.faceSign T l i * KH.faceSign (ins k i₀ T) k i₀ + KH.faceSign (ins k i₀ T) k i₀ * -KH.faceSign T l i = 0 by ring, zero_smul]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[add_left_comm, key, add_zero]`.
+A detailed English derivation is pending.
 -/
 theorem tD_tH (k : K) (i₀ : ι k) (F : (∀ k, Finset (ι k)) → S) (hF : ∀ T, (∃ l, T l = ∅) → F T = 0)
     (T : ∀ k, Finset (ι k)) (hT : ∀ l, (T l).Nonempty) :
@@ -287,9 +287,9 @@ def ext (J : ∀ k, Finset (ι k)) (n : ℕ) (φ : CombC S J n) (T : ∀ k, Fins
   if h : ((∀ l, (T l).Nonempty) ∧ ∑ l, ((T l).card - 1) = n) ∧ ∀ l, J l ⊆ T l then φ ⟨⟨T, h.1⟩, h.2⟩ else 0
 
 /- English proof (translation)
-Take `⟨l, hl⟩` from `hT`. Rewrite using `[ext, dif_neg]`. Introduce `h`. Use `h.1.1 l` as an intermediate fact. Rewrite `this` using `[hl]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Finset.not_nonempty_empty this`.
+A detailed English derivation is pending.
 -/
 theorem ext_of_empty (J : ∀ k, Finset (ι k)) (n : ℕ) (φ : CombC S J n) (T : ∀ k, Finset (ι k))
     (hT : ∃ l, T l = ∅) : ext J n φ T = 0 := by
@@ -301,7 +301,7 @@ theorem ext_of_empty (J : ∀ k, Finset (ι k)) (n : ℕ) (φ : CombC S J n) (T 
   exact Finset.not_nonempty_empty this
 
 /- English proof (translation)
-Rewrite using `[ext, dif_pos ⟨I.1.2, I.2⟩]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ext_cell (J : ∀ k, Finset (ι k)) (n : ℕ) (φ : CombC S J n) (I : CombCell ι J n) :
     ext J n φ I.1.1 = φ I := by
@@ -309,7 +309,7 @@ theorem ext_cell (J : ∀ k, Finset (ι k)) (n : ℕ) (φ : CombC S J n) (I : Co
   rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `T`. Rewrite using `[ext]`. Apply the tactic sequence `split_ifs <;> rfl`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem ext_zero (J : ∀ k, Finset (ι k)) (n : ℕ) : ext J n (0 : CombC S J n) = 0 := by
   funext T
@@ -317,9 +317,9 @@ theorem ext_zero (J : ∀ k, Finset (ι k)) (n : ℕ) : ext J n (0 : CombC S J n
   split_ifs <;> rfl
 
 /- English proof (translation)
-Rewrite using `[tD, Finset.sum_sigma]`. Simplify using `only [combD, LinearMap.pi_apply, LinearMap.sum_apply, rem]`. Use `Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : ((∀ l', (Function.update I.1.1 l ((I.1.1 l).erase i) l').Nonempty) ∧ ∑ l', ((Function.update I.1.1 l ((I.1.1 l).erase i) l').card - 1) = n) ∧ ∀ l', J l' ⊆ Function.update I.1.1 l ((I.1.1 l).erase i) l'`. Rewrite using `[dif_pos h, ext, dif_pos h]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[dif_neg h, ext, dif_neg h]`. Simplify using the standard rewrite rules.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem combD_apply (J : ∀ k, Finset (ι k)) (n : ℕ) (φ : CombC S J n) (I : CombCell ι J (n + 1)) :
     combD S J n φ I = tD (ext J n φ) I.1.1 := by
@@ -333,13 +333,13 @@ theorem combD_apply (J : ∀ k, Finset (ι k)) (n : ℕ) (φ : CombC S J n) (I :
   · rw [dif_neg h, ext, dif_neg h]; simp
 
 /- English proof (translation)
-Take `⟨⟨hne, hsum⟩, hJ⟩` from `h`. Use `⟨⟨fun l => ?_, ?_⟩, fun l => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hl : l = k`. Substitute `hl` using the available equality. Rewrite using `[ins, Function.update_self]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.insert_nonempty _ _`. Rewrite using `[ins, Function.update_of_ne hl]`. Conclude with `hne l`. Establish `h1` using `sum_card_update_of_mem T k (insert i₀ (T k)) Finset.univ (Finset.mem_univ _)`. Rewrite `h1` using `[Finset.card_insert_of_notMem h0]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `(hne k).card_pos` as an intermediate fact. Rewrite using `[ins]`. Use linear arithmetic over natural numbers and integers. Distinguish the cases in `hl : l = k`. Substitute `hl` using the available equality.
+Use linear arithmetic over natural numbers and integers. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ins, Function.update_self]`. Conclude with `(hJ l).trans (Finset.subset_insert _ _)`. Rewrite using `[ins, Function.update_of_ne hl]`. Conclude with `hJ l`.
+A detailed English derivation is pending.
 -/
 theorem cond_ins (J : ∀ k, Finset (ι k)) (d : ℕ) (k : K) (i₀ : ι k) (T : ∀ k, Finset (ι k)) (h0 : i₀ ∉ T k)
     (h : ((∀ l, (T l).Nonempty) ∧ ∑ l, ((T l).card - 1) = d) ∧ ∀ l, J l ⊆ T l) :
@@ -358,13 +358,13 @@ theorem cond_ins (J : ∀ k, Finset (ι k)) (d : ℕ) (k : K) (i₀ : ι k) (T :
     · rw [ins, Function.update_of_ne hl]; exact hJ l
 
 /- English proof (translation)
-Take `⟨⟨hne, hsum⟩, hJ⟩` from `h`. Use `⟨⟨fun l => ?_, ?_⟩, fun l => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hl : l = k`. Substitute `hl` using the available equality. Conclude with `hk`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact.
 
-Use `hne l` as an intermediate fact. Rewrite `this` using `[ins, Function.update_of_ne hl]`. Then use the resulting hypothesis. Establish `h1` using `sum_card_update_of_mem T k (insert i₀ (T k)) Finset.univ (Finset.mem_univ _)`. Rewrite `h1` using `[Finset.card_insert_of_notMem h0]`. Use `hk.card_pos` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hsum` using `[ins]`. Use linear arithmetic over natural numbers and integers. Distinguish the cases in `hl : l = k`. Substitute `hl` using the available equality. Use `hJ l` as an intermediate fact.
+Use linear arithmetic over natural numbers and integers. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[ins, Function.update_self]`. Conclude with `(Finset.subset_insert_iff_of_notMem hJ0).mp this`. Use `hJ l` as an intermediate fact. Rewrite `this` using `[ins, Function.update_of_ne hl]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem cond_of_ins (J : ∀ k, Finset (ι k)) (d : ℕ) (k : K) (i₀ : ι k) (hJ0 : i₀ ∉ J k) (T : ∀ k, Finset (ι k))
     (h0 : i₀ ∉ T k) (hk : (T k).Nonempty)
@@ -390,7 +390,7 @@ def hh (J : ∀ k, Finset (ι k)) (k : K) (i₀ : ι k) (m : ℕ) (φ : CombC S 
   fun I => tH k i₀ (ext J (m + 1) φ) I.1.1
 
 /- English proof (translation)
-Use function extensionality and compare the values at `I`. Rewrite using `[hh, ext_zero, tH]`. Apply the tactic sequence `split_ifs <;> simp`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem hh_zero (J : ∀ k, Finset (ι k)) (k : K) (i₀ : ι k) (m : ℕ) : hh J k i₀ m (0 : CombC S J (m + 1)) = 0 := by
   funext I
@@ -398,9 +398,9 @@ theorem hh_zero (J : ∀ k, Finset (ι k)) (k : K) (i₀ : ι k) (m : ℕ) : hh 
   split_ifs <;> simp
 
 /- English proof (translation)
-Distinguish the cases in `hc : ((∀ l, (T l).Nonempty) ∧ ∑ l, ((T l).card - 1) = m) ∧ ∀ l, J l ⊆ T l`. Rewrite using `[ext, dif_pos hc]`. Both sides reduce to the same expression. Rewrite using `[ext, dif_neg hc, tH] split_ifs with h0`. Both sides reduce to the same expression.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[ext, dif_neg (fun h => hc (cond_of_ins J m k i₀ hJ0 T h0 hk h)), smul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ext_hh (J : ∀ k, Finset (ι k)) (k : K) (i₀ : ι k) (hJ0 : i₀ ∉ J k) (m : ℕ) (φ : CombC S J (m + 1))
     (T : ∀ k, Finset (ι k)) (hk : (T k).Nonempty) :
@@ -413,9 +413,7 @@ theorem ext_hh (J : ∀ k, Finset (ι k)) (k : K) (i₀ : ι k) (hJ0 : i₀ ∉ 
     · rw [ext, dif_neg (fun h => hc (cond_of_ins J m k i₀ hJ0 T h0 hk h)), smul_zero]
 
 /- English proof (translation)
-Rewrite using `[hh, tH, tH]`. Use `split_ifs with h0`. Both sides reduce to the same expression. Rewrite using `[ext, dif_pos (cond_ins J m k i₀ I.1.1 h0 ⟨I.1.2, I.2⟩)]`. Use `congr 1`.
-
-Conclude with `combD_apply J m φ _`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem hh_combD (J : ∀ k, Finset (ι k)) (k : K) (i₀ : ι k) (m : ℕ) (φ : CombC S J m) (I : CombCell ι J m) :
     hh J k i₀ m (combD S J m φ) I = tH k i₀ (tD (ext J m φ)) I.1.1 := by
@@ -430,9 +428,9 @@ def corr (J : ∀ k, Finset (ι k)) (k : K) (i₀ : ι k) (d : ℕ) (φ : CombC 
   if T k = ∅ then tH k i₀ (ext J d φ) T else 0
 
 /- English proof (translation)
-Establish `: tH k i₀ (ext J (m + 1) φ) = fun T => ext J m (hh J k i₀ m φ) T + corr J k i₀ (m + 1) φ T`. Use function extensionality and compare the values at `T`. Rewrite using `[corr]`. Distinguish the cases in `hT : T k = ∅`. Rewrite using `[if_pos hT, ext_of_empty J m _ T ⟨k, hT⟩, zero_add]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg hT, add_zero, ext_hh J k i₀ hJ0 m φ T (Finset.nonempty_iff_ne_empty.mpr hT)]`. Rewrite using `[this, tD_add, combD_apply]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem tD_tH_succ (J : ∀ k, Finset (ι k)) (k : K) (i₀ : ι k) (hJ0 : i₀ ∉ J k) (m : ℕ) (φ : CombC S J (m + 1))
     (I : CombCell ι J (m + 1)) :
@@ -447,7 +445,7 @@ theorem tD_tH_succ (J : ∀ k, Finset (ι k)) (k : K) (i₀ : ι k) (hJ0 : i₀ 
   rw [this, tD_add, combD_apply]
 
 /- English proof (translation)
-Establish `h` using `I.2.2`. Rewrite `h` using `[Finset.sum_eq_zero_iff]`. Establish `h1` using `h l (Finset.mem_univ _)`. Establish `h2` using `(I.2.1 l).card_pos`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem cell_card_eq_one_of_degree_zero (I : KH.Cell K ι 0) (l : K) : (I.1 l).card = 1 := by
   have h := I.2.2
@@ -457,13 +455,11 @@ theorem cell_card_eq_one_of_degree_zero (I : KH.Cell K ι 0) (l : K) : (I.1 l).c
   omega
 
 /- English proof (translation)
-Use `Finset.sum_congr rfl fun p hp => ?_` and prove the remaining obligations. Take `⟨l, i⟩` from `p`. Establish `hi : i ∈ I.1.1 l` using `(Finset.mem_sigma.mp hp).2`. Establish `hemp : (I.1.1 l).erase i = ∅`. Rewrite using `[← Finset.card_eq_zero, Finset.card_erase_of_mem hi, cell_card_eq_one_of_degree_zero I.1 l]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Rewrite using `[corr]`. Use `split_ifs with hT`. Both sides reduce to the same expression. Establish `hl : l ≠ k`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `rfl`. Conclude with `hT (by rw [rem, Function.update_self, hemp])`. Rewrite using `[tH]`. Use `split_ifs`. Both sides reduce to the same expression.
-
-Rewrite using `[ext_of_empty J 0 φ _ ⟨l, by rw [ins, Function.update_of_ne hl, rem, Function.update_self, hemp]⟩, smul_zero]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tD_tH_zero (J : ∀ k, Finset (ι k)) (k : K) (i₀ : ι k) (φ : CombC S J 0) (I : CombCell ι J 0) :
     tD (tH k i₀ (ext J 0 φ)) I.1.1 = tD (corr J k i₀ 0 φ) I.1.1 := by
@@ -507,15 +503,15 @@ def repl (J : ∀ k, Finset (ι k)) (k : K) (i₀ : ι k) (d : ℕ) (I : CombCel
     · rw [Function.update_of_ne hl]; exact I.2 l⟩
 
 /- English proof (translation)
-Take `⟨i, hi⟩` from `Finset.card_eq_one.mp h1`. Rewrite using `[tD, Finset.sum_eq_single_of_mem (⟨k, i⟩ : Σ k, ι k) (by simp [hi])]`. Establish `hrem : rem I.1.1 k i = Function.update I.1.1 k ∅` using `by rw [rem, hi, Finset.erase_singleton]`. Establish `hins : ins k i₀ (Function.update I.1.1 k ∅) = Function.update I.1.1 k {i₀}`. Rewrite using `[ins, Function.update_self, Function.update_idem, Finset.insert_empty]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hk : k ∉ Finset.univ.filter (· < k)` using `by simp`. Establish `hs : KH.faceSign I.1.1 k i * KH.faceSign (Function.update I.1.1 k {i₀}) k i₀ = 1`. Rewrite using `[faceSign_eq, faceSign_eq, hi, Function.update_self, sum_card_update_of_notMem _ _ _ _ hk, Finset.filter_singleton, Finset.filter_singleton, if_neg (lt_irrefl i), if_neg (lt_irrefl i₀)]`. Rewrite using `[Finset.card_empty, pow_zero, one_mul, ← mul_pow]`. Evaluate the numerical expressions.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Rewrite using `[hrem, corr, if_pos (Function.update_self _ _ _), tH, if_neg (by simp), hins, smul_smul, hs, one_smul, ext, dif_pos ⟨(repl J k i₀ d I hJk h1).1.2, (repl J k i₀ d I hJk h1).2⟩]`. Both sides reduce to the same expression. Introduce and unpack `⟨l, j⟩ hp hne`. Establish `hj : j ∈ I.1.1 l` using `(Finset.mem_sigma.mp hp).2`. Rewrite using `[corr, if_neg, smul_zero]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hl : l = k`. Substitute `hl` using the available equality. Rewrite `hj` using `[hi, Finset.mem_singleton]`. Substitute `hj` using the available equality. Conclude with `absurd rfl hne`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[rem, Function.update_of_ne (Ne.symm hl)]`. Conclude with `(I.1.2.1 k).ne_empty`.
+A detailed English derivation is pending.
 -/
 theorem corr_single (J : ∀ k, Finset (ι k)) (k : K) (i₀ : ι k) (d : ℕ) (φ : CombC S J d) (I : CombCell ι J d)
     (hJk : J k = ∅) (h1 : (I.1.1 k).card = 1) :
@@ -546,17 +542,15 @@ theorem corr_single (J : ∀ k, Finset (ι k)) (k : K) (i₀ : ι k) (d : ℕ) (
       exact (I.1.2.1 k).ne_empty
 
 /- English proof (translation)
-Use `Finset.sum_eq_zero fun p hp => ?_` and prove the remaining obligations. Take `⟨l, j⟩` from `p`. Establish `hj : j ∈ I.1.1 l` using `(Finset.mem_sigma.mp hp).2`. Rewrite using `[corr]`. Use `split_ifs with hT`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `swap`. Conclude with `smul_zero _`. Establish `hl : l = k`. Assume the negation of the conclusion as `hl`. Rewrite `hT` using `[rem, Function.update_of_ne (Ne.symm hl)]`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(I.1.2.1 k).ne_empty hT`. Substitute `hl` using the available equality. Establish `hT' : (I.1.1 l).erase j = ∅` using `by rw [rem, Function.update_self] at hT; exact hT`. Establish `h1 : (I.1.1 l).card = 1`. Use `Finset.card_erase_of_mem hj` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Rewrite `this` using `[hT', Finset.card_empty]`. Use `(I.1.2.1 l).card_pos` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hJne : ¬ J l = ∅` using `fun e => h ⟨e, h1⟩`. Rewrite using `[tH, if_neg (by rw [hT]; exact Finset.notMem_empty _), ext, dif_neg]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using the standard rewrite rules. Introduce and unpack `⟨-, hJ⟩`. Establish `hsub` using `hJ l`. Rewrite `hsub` using `[ins, Function.update_self, hT, Finset.insert_empty]`. Break down `Finset.subset_singleton_iff.mp hsub with e | e` into its components or cases.
-
-Conclude with `hJne e`. Conclude with `hJ0 (e ▸ Finset.mem_singleton_self _)`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem corr_zero (J : ∀ k, Finset (ι k)) (k : K) (i₀ : ι k) (hJ0 : i₀ ∉ J k) (d : ℕ) (φ : CombC S J d)
     (I : CombCell ι J d) (h : ¬ (J k = ∅ ∧ (I.1.1 k).card = 1)) :
@@ -590,7 +584,7 @@ theorem corr_zero (J : ∀ k, Finset (ι k)) (k : K) (i₀ : ι k) (hJ0 : i₀ �
   · exact hJ0 (e ▸ Finset.mem_singleton_self _)
 
 /- English proof (translation)
-Establish `h` using `tD_tH k i₀ (ext J (m + 1) φ) (fun T hT => ext_of_empty J (m + 1) φ T hT) I.1.1 I.1.2.1`. Rewrite `h` using `[tD_tH_succ J k i₀ hJ0 m φ I, ← hh_combD, ext_cell]`. Rewrite using `[← h]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem homotopy_succ (J : ∀ k, Finset (ι k)) (k : K) (i₀ : ι k) (hJ0 : i₀ ∉ J k) (m : ℕ)
     (φ : CombC S J (m + 1)) (I : CombCell ι J (m + 1)) :
@@ -601,7 +595,7 @@ theorem homotopy_succ (J : ∀ k, Finset (ι k)) (k : K) (i₀ : ι k) (hJ0 : i�
   rw [← h]; abel
 
 /- English proof (translation)
-Establish `h` using `tD_tH k i₀ (ext J 0 φ) (fun T hT => ext_of_empty J 0 φ T hT) I.1.1 I.1.2.1`. Rewrite `h` using `[tD_tH_zero, ← hh_combD, ext_cell]`. Rewrite using `[← h]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem homotopy_zero (J : ∀ k, Finset (ι k)) (k : K) (i₀ : ι k) (φ : CombC S J 0) (I : CombCell ι J 0) :
     hh J k i₀ 0 (combD S J 0 φ) I + tD (corr J k i₀ 0 φ) I.1.1 = φ I := by
@@ -612,15 +606,13 @@ theorem homotopy_zero (J : ∀ k, Finset (ι k)) (k : K) (i₀ : ι k) (φ : Com
 end Final
 
 /- English proof (translation)
-Introduce `S _ K _ _ ι _ _ J n k i₀ hJ0 f hf`. It suffices to establish `H : ∃ g : CombC S J n, f - g ∈ combB S J n ∧ ∀ I, g I = tD (corr J k i₀ n f) I.1.1 by`. Take `⟨g, hg, hgI⟩` from `H`. Use `⟨g, hg, fun I => ⟨fun h => ⟨repl J k i₀ n I h.1 h.2, Function.update_self _ _ _, fun l hl => Function.update_of_ne hl _ _, ?_⟩, fun h => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[hgI, corr_single]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the argument to an intermediate assertion. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hgI, corr_zero J k i₀ hJ0 n f I h]`. Consider the cases of `n with`. Consider the case `zero`. Use `⟨f, ?_, fun I => ?_⟩` and prove the remaining obligations. Use `show f - f ∈ (⊥ : Submodule S (CombC S J 0))`.
+Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sub_self]`. Conclude with `Submodule.zero_mem _`. Establish `h` using `homotopy_zero J k i₀ f I`. Rewrite `h` using `[hf, hh_zero, Pi.zero_apply, zero_add]`. Conclude with `h.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Consider the case `succ m`. Use `⟨f - combD S J m (hh J k i₀ m f), ?_, fun I => ?_⟩` and prove the remaining obligations. Use `show _ ∈ LinearMap.range (combD S J m)`. Rewrite using `[sub_sub_cancel]`. Conclude with `LinearMap.mem_range_self _ _`.
-
-Establish `h` using `homotopy_succ J k i₀ hJ0 m f I`. Rewrite `h` using `[hf, hh_zero, Pi.zero_apply, add_zero]`. Rewrite using `[Pi.sub_apply, ← h]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem full : KHCombContract.Statement := by
   intro S _ K _ _ ι _ _ J n k i₀ hJ0 f hf

@@ -21,7 +21,7 @@ set_option synthInstance.maxHeartbeats 200000
 namespace UpperTheory.V.Z.J.D
 
 /- English proof (translation)
-The claim follows from `le_antisymm (le_inf inf_le_left (inf_le_right.trans (inf_le_left.trans inf_le_right))) (le_inf inf_le_left (le_inf (le_inf (le_inf (inf_le_left.trans h1) (inf_le_left.trans h2)) inf_le_right) (inf_le_left.trans h3)))`.
+A detailed English derivation is pending.
 -/
 private theorem lat {α : Type*} [Lattice α] {Y B f z E : α} (h1 : Y ≤ B) (h2 : Y ≤ f) (h3 : Y ≤ E) :
     Y ⊓ (B ⊓ f ⊓ z ⊓ E) = Y ⊓ z :=
@@ -30,11 +30,11 @@ private theorem lat {α : Type*} [Lattice α] {Y B f z E : α} (h1 : Y ≤ B) (h
       (inf_le_left.trans h3)))
 
 /- English proof (translation)
-Take `⟨k, hk⟩` from `(Module.End.mem_maxGenEigenspace T b F).1 hF`. Establish `h1 : (T - b • (1 : Module.End ℂ M)) F = (a - b) • F`. Simplify using `[hT, sub_smul]`. Establish `h : ∀ i : ℕ, ((T - b • (1 : Module.End ℂ M)) ^ i) F = (a - b) ^ i • F` using `fun i => by`. Proceed by induction on `i with`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `succ i ih`. Rewrite using `[pow_succ, Module.End.mul_apply, h1, map_smul, ih, smul_smul, pow_succ']`. Rewrite `hk` using `[h k]`. Assume the negation of the conclusion as `hne`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `smul_ne_zero (pow_ne_zero k (sub_ne_zero.2 hne)) h0 hk`.
+A detailed English derivation is pending.
 -/
 private theorem eig_eq {M : Type*} [AddCommGroup M] [Module ℂ M] (T : Module.End ℂ M) {a b : ℂ} {F : M} (h0 : F ≠ 0)
     (hT : T F = a • F) (hF : F ∈ T.maxGenEigenspace b) : a = b := by
@@ -51,14 +51,14 @@ private theorem eig_eq {M : Type*} [AddCommGroup M] [Module ℂ M] (T : Module.E
   exact smul_ne_zero (pow_ne_zero k (sub_ne_zero.2 hne)) h0 hk
 
 /- English proof (translation)
-The claim follows from `(Module.End.mem_maxGenEigenspace T b F).2 ⟨1, by simp [hT]⟩`.
+A detailed English derivation is pending.
 -/
 private theorem eig_mem {M : Type*} [AddCommGroup M] [Module ℂ M] (T : Module.End ℂ M) {b : ℂ} {F : M}
     (hT : T F = b • F) : F ∈ T.maxGenEigenspace b :=
   (Module.End.mem_maxGenEigenspace T b F).2 ⟨1, by simp [hT]⟩
 
 /- English proof (translation)
-Take `⟨F, hF, hF0⟩` from `(Submodule.ne_bot_iff _).1 hne`. Establish `hFe : F ∈ (T i).maxGenEigenspace (ev i)` using `(Submodule.mem_iInf _).1 (Submodule.mem_inf.1 (Submodule.mem_inf.1 hF).2).2 i`. Establish `hae : a = ev i` using `eig_eq _ hF0 (h1 F (Submodule.mem_inf.1 hF).1) hFe`. Introduce `F' hF'`. Conclude with `eig_mem _ (hae ▸ h2 F' hF')`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem eig_le {M I : Type*} [AddCommGroup M] [Module ℂ M] (T : I → Module.End ℂ M) (ev : I → ℂ) (i : I) (a : ℂ)
     (O Y Y' : Submodule ℂ M) (hne : Y ⊓ (O ⊓ ⨅ i, (T i).maxGenEigenspace (ev i)) ≠ ⊥)
@@ -71,9 +71,9 @@ private theorem eig_le {M I : Type*} [AddCommGroup M] [Module ℂ M] (T : I → 
   exact eig_mem _ (hae ▸ h2 F' hF')
 
 /- English proof (translation)
-Distinguish the cases in `h : GlobalTheory.LGrp.IsSpherical τ.ρ (GlobalTheory.LFun.KGL w n)`. Take `⟨B, hB⟩` from `GlobalTheory.SatInd.exists_hasSatGL_of_isIrreducible τ.smooth τ.irred h`. Take `⟨-, a, -, ha, -⟩` from `UpperTheory.V.Hi.satT L n w τ B hB`. Conclude with `⟨a j, ha j⟩`. Use `⟨0, fun v hv => ?_⟩` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hv0 : v = 0`. Assume the negation of the conclusion as `h0`. Rewrite `hv` using `[GlobalTheory.SmGL.SphCompletion.KO_completion w n]`. Conclude with `h ((Submodule.ne_bot_iff _).2 ⟨v, GlobalTheory.LGrp.mem_fixed.2 hv, h0⟩)`. Simplify using `[hv0]`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem scalar (L : Type) [Field L] [NumberField L] (n : ℕ) (w : Plc L) (τ : SmIrr (GLw n w)) (j : ℕ) :
     ∃ a : ℂ, ∀ v ∈ fixd τ.ρ (KO (w.adicCompletion L) (Fin n)), sphOp τ.ρ j v = a • v := by
@@ -89,13 +89,13 @@ private theorem scalar (L : Type) [Field L] [NumberField L] (n : ℕ) (w : Plc L
     simp [hv0]
 
 /- English proof (translation)
-Introduce `hZ hLit l _ L Ω _ _ _ _ _ _ s n hn V hV Q c ι m τ₀ lam d e ξ hξ A _ _ _ θ x c0 sp hWt hSp K ev hev σ σ' hσ hσ' hcp hne`. Establish `hAx` using `UpperTheory.V.Hi.axU hLit l L Ω s n hn V Q c m τ₀`. Establish `hYB : YOf Q ι τ₀ e ξ σ' ≤ (hset Q τ₀).Big ι ξ` using `inf_le_left`. Rewrite using `[hZ L Ω l n c (hset Q τ₀) hAx A θ hWt ι x lam d ξ c0 sp hSp K ev hev]`. Use `lat hYB ?_ ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI : IsEmpty (hset Q τ₀).Q := ⟨fun q => Q.notS q (by`. Establish `h : (Q.wq q).under (𝓞 (Lp L)) ∈ V.S'`. Rewrite using `[Q.range]`. Conclude with `Or.inr ⟨q, rfl⟩`. Rewrite using `[hV] at h)⟩` and apply the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the second alternative. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hl : (hset Q τ₀).lev K = (hset Q τ₀).UQ`. Simplify using `only [HSet.lev, iSup_of_empty]`. Conclude with `sup_bot_eq _`. Rewrite using `[hl]`. Conclude with `hYB.trans inf_le_right`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `le_iInf fun p => ?_` and prove the remaining obligations. Take `⟨τ, h1, h2⟩` from `hcp p.1.1 p.1.2.2`. Take `⟨a, ha⟩` from `scalar L n p.1.1 τ ((p.2 : ℕ) + 1)`. Establish `hs` using `fun (σ₁ : Submodule ℂ (UA L n → ℂ)) (hσ₁ : IsAutRepU σ₁) (hτ₁ : Cp σ₁ p.1.1 τ) => UpperTheory.V.Hi.partUR2Sph l L Ω s n hn V Q c ι m τ₀ lam d e ξ hξ σ₁ hσ₁ hAx p.1.1 p.1.2.1 p.1.2.2 τ hτ₁ _ a ha`. Conclude with `eig_le ((hset Q τ₀).opC ι lam d) ev (.inl p) a ((hset Q τ₀).OrdAt θ ι x.toRingHom lam ξ K c0) _ _ hne (hs σ hσ h1) (hs σ' hσ' h2)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem sphSame : ZEq → SphSame := by
   intro hZ hLit l _ L Ω _ _ _ _ _ _ s n hn V hV Q c ι m τ₀ lam d e ξ hξ A _ _ _ θ x c0 sp hWt hSp K ev hev σ σ' hσ hσ' hcp hne

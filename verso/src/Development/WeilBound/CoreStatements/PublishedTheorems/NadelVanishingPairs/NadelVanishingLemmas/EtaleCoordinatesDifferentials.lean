@@ -2,7 +2,7 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaleCoordinatesDifferentials
 open scoped TensorProduct Polynomial
 /- English proof (citation)
-Apply `GlobalTheory.EtaleCoordRank.finrank_and_linearIndependent_D_unit_mul` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FEtaleCoordinatesDifferentials.lean&line=9#L9)
 -/

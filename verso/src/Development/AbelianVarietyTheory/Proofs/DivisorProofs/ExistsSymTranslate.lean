@@ -24,11 +24,11 @@ noncomputable section
 namespace GlobalTheory.RiemannExists
 
 /- English proof (translation)
-Introduce `K _ _ B _ hB L hL ha hk`. Use `hB.comm` as an intermediate fact. Take `⟨c, hc⟩` from `exists_gen_theta_of_isAbelianScheme K B hB L hL`. Establish `hΘ : ∃ t : LB.Gen (Theta B L), t.IsGen` using `⟨c, hc⟩`. Take `⟨O, hO, eO⟩` from `CechPic.cls_surj (CechPic.pull (GrpObj.inv : B ⟶ B).left (cls L hL) - cls L hL)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hlam : lam (cls O hO) (fst B B) (snd B B) = 0`. Rewrite using `[eO, PrimitiveOverField.lam_sub, CechPic.lam_pull, ← Hom.inv_def, ← Hom.inv_def, FormPoly.lam_inv_left hL hΘ, FormPoly.lam_inv_right hL hΘ, neg_neg, sub_self]`. Take `⟨b, hb⟩` from `GlobalTheory.T.exists_point_picardClass_eq_translate_of_trivial_lambda K B hB L hL hk O hO hlam`. Take `⟨a, hab⟩` from `SS.SemiDivisible.pow_surj_abelian K B hB (n := 2) (by norm_num) b`. Establish `hL' : (RigidTranslate.rigTransl L a).IsLB` using `DVR.linComb_isLB _ hL _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨_, hL', RigidTranslate.rigidified_rigTransl hL, GlobalTheory.T.symmetric_rigidTranslateLineBundle_of_square_defect K B L hL hΘ a (by rw [← eO, hb, hab]), GlobalTheory.T.relAmple_rigidTranslateLineBundle_rationalPoint K B hB L hL a ha, GlobalTheory.T.kernelTrivial_rigidTranslateL …` and prove the remaining obligations. Establish `e` using `(CechPic.cls_eq_iff (LB.isLB_linComb hL' _ _) (pull_isLB (LB.isLB_linComb hL _ _) _)).2 (RigidTranslate.lam_rigTransl (t := a) hL c hc)`. Rewrite `e` using `[CechPic.cls_pull (LB.isLB_linComb hL _ _), CechPic.pull_id]`. Conclude with `(CechPic.cls_cube_two hL' _ _ _).symm.trans (e.trans (CechPic.cls_cube_two hL _ _ _))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_sym_translate : ∀ (K : Type) [Field K] [IsAlgClosed K] (B : Over (Sp K)) [GrpObj B], IsAbelianScheme B → ∀ (L : LB B.left) (hL : L.IsLB), Out.RelAmple B L → Out.KTriv B L → ∃ (L' : LB B.left) (hL' : L'.IsLB), Out.Rigidified B L' ∧ Out.Sym B L' ∧ Out.RelAmple B L' ∧ Out.KTriv B L' ∧ lam (cls L' hL') (fst B B) (snd B B) = lam (cls L hL) (fst B B) (snd B B) := by
   intro K _ _ B _ hB L hL ha hk
@@ -50,9 +50,9 @@ theorem exists_sym_translate : ∀ (K : Type) [Field K] [IsAlgClosed K] (B : Ove
   exact (CechPic.cls_cube_two hL' _ _ _).symm.trans (e.trans (CechPic.cls_cube_two hL _ _ _))
 
 /- English proof (translation)
-Introduce `S P y`. Establish `h` using `isGrpPullback_pullback P.A y`. Take `⟨L, hL, ha, hk, hc⟩` from `P.isPol.2.2 ℂ y`. Establish `hB : IsAbelianScheme ((Over.pullback y).obj P.A)` using `PolPull.isAbelianScheme_of_isGrpPullback P.isAb h`. Take `⟨L', hL', hr, hs, ha', hk', hl⟩` from `exists_sym_translate ℂ _ hB L hL ha hk`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Set `Q' : Out.PolAV (Sp ℂ)` to `⟨(Over.pullback y).obj P.A, hB, P.g, (smoothOfRelativeDimension_isStableUnderBaseChange _).of_isPullback h.1 P.smoothDim, L', hL', hr, hs, ha', hk'⟩`. Take `⟨rig, hrg⟩` from `Q'.rigid`. Take `⟨u, H, χ, -, hH, -⟩` from `thetaUnifAV_all Q' rig hrg`. Conclude with `⟨⟨(Over.pullback y).obj P.A, _, h, L', hL', hc.trans hl.symm, u, H, χ, hH⟩⟩`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem nonempty_riemannData : ∀ (S : Scheme.{0}) (P : PPAS S) (y : Sp ℂ ⟶ S), Nonempty (P.RiemannData y) := by
   intro S P y

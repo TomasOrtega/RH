@@ -31,11 +31,11 @@ section
 variable {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type} [∀ k, Fintype (ι k)] {m : ℕ}
 
 /- English proof (translation)
-Proceed by induction on `s using MvPolynomial.induction_on with`. Consider the case `C c => simp [chartSection]`. Consider the case `add p q hp hq`. Establish `: chartSection σ i (p + q) = chartSection σ i p + chartSection σ i q`. Simplify using `[chartSection]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[this, map_add, map_add, hp, hq]`. Consider the case `mul_X p q hp`. Establish `: chartSection σ i (p * X q) = chartSection σ i p * X (σ.symm (Function.update i q.1 q.2))`. Simplify using `[chartSection]`. Rewrite using `[this, map_mul, map_mul, hp]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[chartLift]`.
+Simplify using the standard rewrite rules.
 -/
 theorem eval_chartSection (σ : Fin m ≃ ((k : K) → ι k)) (i : (k : K) → ι k) (s : MRingOver ℂ ι)
     (x : Fin m → ℂ) : MvPolynomial.eval x (chartSection σ i s) = MvPolynomial.eval (chartLift σ i x) s := by
@@ -53,9 +53,9 @@ theorem eval_chartSection (σ : Fin m ≃ ((k : K) → ι k)) (i : (k : K) → �
     simp [chartLift]
 
 /- English proof (translation)
-Take `⟨z, -, hzi, rfl⟩` from `hx`. Rewrite using `[mem_closedBall_zero_iff, pi_norm_le_iff_of_nonneg zero_le_one]`. Introduce `a`. Establish `h` using `hd (σ a)`. Rewrite `h` using `[segre_chartLift σ i z hzi, hzi, norm_one]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem mem_closedBall_of_lift_mem_domCell {S : Set ((Σ k, ι k) → ℂ)} {σ : Fin m ≃ ((k : K) → ι k)}
     {i : (k : K) → ι k} {x : Fin m → ℂ} (hx : x ∈ chartSet S σ i) (hd : chartLift σ i x ∈ domCell i) :
@@ -68,7 +68,7 @@ theorem mem_closedBall_of_lift_mem_domCell {S : Set ((Σ k, ι k) → ℂ)} {σ 
   exact h
 
 /- English proof (translation)
-The claim follows from `|Real.log (t / h)| ≤ |Real.log t| + c := by rcases ht.eq_or_lt with rfl | ht · simpa using hc0 · rw [Real.log_div ht.ne' hh.ne'] exact (abs_sub _ _).trans (by gcongr)`.
+A detailed English derivation is pending.
 -/
 theorem abs_log_div_le {t h c : ℝ} (ht : 0 ≤ t) (hh : 0 < h) (hc : |Real.log h| ≤ c) (hc0 : 0 ≤ c) :
     |Real.log (t / h)| ≤ |Real.log t| + c := by
@@ -80,23 +80,19 @@ theorem abs_log_div_le {t h c : ℝ} (ht : 0 ≤ t) (hh : 0 < h) (hc : |Real.log
 end
 
 /- English proof (translation)
-Introduce `K _ _ ι _ Q e m σ i Ψ N A s a J hA _ _ hmeas hzero hJ hproj hint`. Use `set T : Set (Fin m → ℂ) := Metric.closedBall 0 1 ∩ {x | x (σ.symm i) = 1} with hT`. Establish `hTc : IsCompact T` using `(isCompact_closedBall (0 : Fin m → ℂ) 1).inter_right (isClosed_eq (continuous_apply _) continuous_const)`. Establish `hcont : ContinuousOn (fun x => Real.log (A.h (chartLift σ i x))) T`. Establish `h1 : ContinuousOn (fun x => A.h (chartLift σ i x)) T` using `hA.continuousOn.comp (contDiff_chartLift σ i (n := 0)).continuous.continuousOn fun x hx => chartLift_blockNonzero σ i hx.2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `h1.log fun x hx => (A.pos _ (chartLift_blockNonzero σ i hx.2)).ne'`. Take `⟨C, hC⟩` from `hTc.exists_bound_of_continuousOn hcont`. Establish `hchart : ∀ x ∈ GroundTheory.Heights₂.Heights.ComplexSets.zeroSet J, x ∈ chartSet (conePts Q) σ i`. Introduce `x hx`. Rewrite using `[← hzero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `q hq`. Conclude with `hx q ((mem_chartComponents.1 hJ).1.2 hq)`. Establish `hcoord : ∀ x ∈ chartSet (conePts Q) σ i, x (σ.symm i) = 1`. Introduce and unpack `_ ⟨z, -, hzi, rfl⟩`. Simplify using `using hzi`.
+Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `hmeasW : Measurable (chartWeight σ i ((domCell i).indicator (absLogNorm A s)))`. Unfold `chartWeight`. Conclude with `(hmeas.comp (contDiff_chartLift σ i (n := 0)).continuous.measurable).piecewise (GroundTheory.Heights₂.Heights.isOpen_chartLiftDom σ i).measurableSet measurable_const`. Establish `hmeasD : Measurable (chartAbsDens J (chartProjMatrix σ Ψ) (chartWeight σ i ((domCell i).indicator (absLogNorm A s))) (chartPot σ i N))` using `GroundTheory.Heights₂.Heights.SheetSumMeasurable.measurable_sheetSum hproj (fun a b => |a * b|) ((continuous_mul.comp continuous_id).abs.measurable) hmeasW _`. Use `(hint 1 (max C 0)).mono' hmeasD.aestronglyMeasurable (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[Real.norm_eq_abs, abs_of_nonneg (GroundTheory.Heights₂.Heights.chartAbsDens_nonneg _ _ _ _ _)]`. Establish `key : ∀ x ∈ GroundTheory.Heights₂.Heights.ComplexSets.zeroSet J, |chartWeight σ i ((domCell i).indicator (absLogNorm A s)) x| ≤ |(Metric.closedBall (0 : Fin m → ℂ) 1).indicator (fun x => |Real.log ‖MvPolynomial.eval x (chartSection σ i s)‖| + max C 0) x|`. Introduce `x hx`. Establish `hxc` using `hchart x hx`. Establish `h1` using `hcoord x hxc`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[chartWeight_of_coord _ h1]`. Distinguish the cases in `hd : chartLift σ i x ∈ domCell i`. Establish `hb` using `mem_closedBall_of_lift_mem_domCell hxc hd`. Establish `hC' : |Real.log (A.h (chartLift σ i x))| ≤ max C 0` using `(hC x ⟨hb, h1⟩).trans (le_max_left _ _)`. Establish `hnz` using `chartLift_blockNonzero σ i h1`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `habs : absLogNorm A s (chartLift σ i x) = |logNormC A s (chartLift σ i x)|`. Simplify using `only [absLogNorm]`. Rewrite using `[if_pos hnz]`. Rewrite using `[Set.indicator_of_mem hd, Set.indicator_of_mem hb, habs, abs_abs, logNormC, ← eval_chartSection]`. Conclude with `(abs_log_div_le (norm_nonneg _) (A.pos _ hnz) hC' (le_max_right _ _)).trans (le_abs_self _)`.
-
-Rewrite using `[Set.indicator_of_notMem hd, abs_zero]`. Conclude with `abs_nonneg _`. Establish `h` using `GroundTheory.Heights₂.Heights.sheetSum_le_mul (J := J) (A := chartProjMatrix σ Ψ) (y := y) (GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.fibre_finite hproj y) 1 (fun x t => |chartWeight σ i ((domCell i).indicator (absLogNorm A s)) x * ReciprocityTheory.AnF …`. Rewrite using `[one_mul, abs_mul, abs_mul]`. Conclude with `mul_le_mul_of_nonneg_right (key x hx.1) (abs_nonneg _))`.
-
-Conclude with `h.trans_eq (one_mul _)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integrable_chartAbsDens_cellWeight : ∀ (K : Type) [Fintype K] [DecidableEq K] (ι : K → Type) [∀ k, Fintype (ι k)]
     (Q : Ideal (MRingOver ℂ ι)) (e m : ℕ) (σ : Fin m ≃ ((k : K) → ι k)) (i : (k : K) → ι k)

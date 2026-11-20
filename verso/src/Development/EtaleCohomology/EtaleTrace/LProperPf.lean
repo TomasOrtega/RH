@@ -9,11 +9,11 @@ namespace LateralTheory.EtaleTrace.LProperPf
 open LateralTheory.EtaleTrace
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `a b h`. Use `congrArg Subtype.val h` as an intermediate fact. Simplify using `using this`. Introduce and unpack `⟨p, hp⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components.
 
-Use `⟨p.coeff 0, Subtype.ext ?_⟩` and prove the remaining obligations. Establish `hp2` using `hp`. Rewrite `hp2` using `[MvPolynomial.mem_homogeneousSubmodule, ← MvPolynomial.totalDegree_zero_iff_isHomogeneous, MvPolynomial.totalDegree_eq_zero_iff_eq_C]`. Express the relevant statement in the definitionally equal form `_ = p`. Use `conv_rhs => rw [hp2]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem bij (k : Type) [Field k] (N : ℕ) :
     Function.Bijective (algebraMap k (MvPolynomial.homogeneousSubmodule (Fin (N + 1)) k 0)) := by
@@ -39,7 +39,7 @@ instance ft (k : Type) [Field k] (N : ℕ) :
   Algebra.FiniteType.of_restrictScalars_finiteType k _ _
 
 /- English proof (translation)
-Introduce `k _ N`. Establish `hi : IsIso (CommRingCat.ofHom (algebraMap k (MvPolynomial.homogeneousSubmodule (Fin (N + 1)) k 0)))` using `(ConcreteCategory.isIso_iff_bijective _).mpr (bij k N)`. Unfold `PNto`. Use `infer_instance`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem LProper_of : LPdCut.LProper := by
   intro k _ N

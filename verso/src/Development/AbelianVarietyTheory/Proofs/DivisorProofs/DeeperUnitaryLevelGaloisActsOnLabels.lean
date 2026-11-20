@@ -15,9 +15,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
   {Xo : Moduli Dw l} {cf : Coeff l} {C : UCompact Xo cf}
 
 /- English proof (translation)
-Establish `hN` using `X₁.ρ.N_eq`. Establish `hn` using `X₁.ρ.n_prime.two_le`. Establish `hk` using `X₁.ρ.two_le`. Establish `hr` using `X₁.S.r_pos`. Establish `h4 : 4 ≤ X₁.S.N`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hN]`. Combine the equalities or inequalities in the displayed calculation. Use the polynomial consequences of the given equalities and inequalities.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem three_le_level (X₁ : USetup C) : 3 ≤ X₁.S.r * X₁.S.N := by
   have hN := X₁.ρ.N_eq
@@ -32,7 +32,7 @@ theorem three_le_level (X₁ : USetup C) : 3 ≤ X₁.S.r * X₁.S.N := by
   nlinarith
 
 /- English proof (translation)
-Take `⟨c₀, hc, R', fg, frac, hth, hev, ρ', u', -, -, -, -, G, _, α, β, -, -, -, y₀, -, u, lb, j, -, hyy, -⟩` from `h`. Take `⟨a, ha⟩` from `lb.yy_onto (QuotientAddGroup.mk (j.symm μ))`. Conclude with `⟨a, by rw [hyy a _ ha, AddEquiv.apply_symm_apply]⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem uIsLab_onto (X : USetup C) {p : ℕ} [Fact p.Prime] {z : X.M.Z} (ct : UCTrait X p z)
     (yy : X.S.Gam →+ ModN (X.S.r * X.S.N) ct.T.P.D.toPre.X) (h : UIsLab X ct yy) (μ : ct.T.P.D.toPre.X) :
@@ -42,7 +42,7 @@ theorem uIsLab_onto (X : USetup C) {p : ℕ} [Fact p.Prime] {z : X.M.Z} (ct : UC
   exact ⟨a, by rw [hyy a _ ha, AddEquiv.apply_symm_apply]⟩
 
 /- English proof (translation)
-Take `⟨j, hj⟩` from `IsMonomial.exists_pos (IsLocalRing.maximalIdeal.isMaximal T.V).ne_top T.mono hx`. Use `fin_cases j`. Simplify using `using hj`.
+Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem be_pos (T : UTrait Xo cf) (x : T.P.D.toPre.X) (hx : x ≠ 0) : 0 < T.be x x := by
   obtain ⟨j, hj⟩ := IsMonomial.exists_pos (IsLocalRing.maximalIdeal.isMaximal T.V).ne_top T.mono hx
@@ -50,9 +50,9 @@ theorem be_pos (T : UTrait Xo cf) (x : T.P.D.toPre.X) (hx : x ≠ 0) : 0 < T.be 
   simpa using hj
 
 /- English proof (translation)
-Take `⟨w, hw⟩` from `QuotientAddGroup.eq.1 h`. Simplify using `only [nsmulAddMonoidHom_apply, map_nsmul] at hw`. Use `⟨w, ?_⟩` and prove the remaining obligations. Establish `key : (d : ℤ) • ((L₁ : ℤ) • w) = (d : ℤ) • (κ x - x)`. Rewrite using `[← mul_smul, ← Nat.cast_mul, ← hm, natCast_zsmul, hw, smul_sub, natCast_zsmul, natCast_zsmul]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Normalize the expressions using the abelian group laws. Use `smul_right_injective X (show (d : ℤ) ≠ 0 by exact_mod_cast hd) key` as an intermediate fact. Rewrite using `[← natCast_zsmul, this]`. Normalize the expressions using the abelian group laws.
+Normalize the expressions using the abelian group laws. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem congMod_of_mk_eq {X : Type} [AddCommGroup X] [Module.Free ℤ X] (κ : X ≃+ X) (m d L₁ : ℕ) (hm : m = d * L₁)
     (hd : d ≠ 0) (x : X)
@@ -73,13 +73,13 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
   {Xo : Moduli Dw l} {cf : Coeff l} {C : UCompact Xo cf}
 
 /- English proof (translation)
-Set `β : LinearMap.BilinForm ℤ T.P.D.toPre.X` to `T.be + T.be.flip`. Establish `hβ : ∀ u v, β u v = T.be u v + T.be v u` using `fun u v => rfl`. Set `e : T.P.D.toPre.X ≃ₗ[ℤ] T.P.D.toPre.X` to `κ.toIntLinearEquiv`. Establish `hiso : ∀ u v, β (e u) (e v) = β u v`. Introduce `u v`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `huv` using `hd (u + v)`. Simplify using `only [map_add, LinearMap.add_apply] at huv`. Rewrite `huv` using `[hd u, hd v]`. Rewrite using `[hβ, hβ]`. Use `show T.be (κ u) (κ v) + T.be (κ v) (κ u) = _`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hpos : ∀ u, u ≠ 0 → 0 < β u u` using `fun u hu => by`. Rewrite using `[hβ]`. Use `be_pos T u hu` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `he` using `eq_refl_of_isometry_congMod _ β hpos e hiso L hL hc`. Use `congrArg (fun f : T.P.D.toPre.X ≃ₗ[ℤ] T.P.D.toPre.X => f x) he` as an intermediate fact. Simplify `this` using `[e]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem eq_of_diag_congMod (T : UTrait Xo cf) (κ : T.P.D.toPre.X ≃+ T.P.D.toPre.X)
     (hd : ∀ x, T.be (κ x) (κ x) = T.be x x) (L : ℕ) (hL : 3 ≤ L) (hc : ∀ x, CongMod L (κ x) x) (x : T.P.D.toPre.X) :
@@ -109,15 +109,15 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
   {Xo : Moduli Dw l} {cf : Coeff l} {C : UCompact Xo cf}
 
 /- English proof (translation)
-Take `⟨κ, hκβ, hκ⟩` from `GlobalTheory.T.exists_periodForm_automorphism_unitary_labellings E H Dw hpq l Xo cf C D.X p (y (cPt p)) (D.lift ct y h) yy yy' hl hl'`. Establish `hdvd : X₁.S.r * X₁.S.N ∣ D.X.S.r * D.X.S.N`. Rewrite using `[D.sq]`. Conclude with `D.dvd.trans ((dvd_pow_self D.m two_ne_zero).mul_left _)`. Establish `hdL : D.X.S.r * D.X.S.N = D.X.S.r * D.X.S.N / (X₁.S.r * X₁.S.N) * (X₁.S.r * X₁.S.N)` using `(Nat.div_mul_cancel hdvd).symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd0 : D.X.S.r * D.X.S.N / (X₁.S.r * X₁.S.N) ≠ 0`. Introduce `h0`. Establish `h3` using `three_le_level D.X`. Rewrite `h3` using `[hdL, h0, zero_mul]`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `hcong : ∀ x, CongMod (X₁.S.r * X₁.S.N) (κ x) x`. Introduce `x`. Take `⟨a, ha⟩` from `uIsLab_onto X₁ ct yy₁ h₁ x`. Establish `e1` using `hc a _ ha`. Establish `e2` using `hc' a _ ha`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e3` using `hκ (D.lab a) _ e1`. Rewrite `e3` using `[e2]`. Conclude with `congMod_of_mk_eq κ _ _ _ hdL hd0 x e3`. Establish `hκ1 : ∀ x, κ x = x` using `eq_of_diag_congMod ct.T κ hκβ _ (three_le_level X₁) hcong`. Use `AddMonoidHom.ext fun x => ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨μ, hμ⟩` from `QuotientAddGroup.mk_surjective (yy x)`. Rewrite using `[hκ x μ hμ.symm, ← hμ, hκ1]`.
+A detailed English derivation is pending.
 -/
 theorem rigid (hpq : 1 ≤ Dw.p + Dw.q) {X₁ : USetup C} (D : UDeep X₁) {p : ℕ} [Fact p.Prime] {z₁ : X₁.M.Z}
     (ct : UCTrait X₁ p z₁) (yy₁ : X₁.S.Gam →+ ModN (X₁.S.r * X₁.S.N) ct.T.P.D.toPre.X) (h₁ : UIsLab X₁ ct yy₁)
@@ -152,9 +152,9 @@ theorem rigid (hpq : 1 ≤ Dw.p + Dw.q) {X₁ : USetup C} (D : UDeep X₁) {p : 
 end GlobalTheory.UPoinc.UGalLab
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw hpq l Xo cf C X₁ D σ s hs`. Take `⟨a, hfix, htr⟩` from `GlobalTheory.T.unitary_labelling_galois_transport_deeper_level E H Dw hpq l Xo cf C X₁ D σ s hs`. Use `⟨a, hfix, ?_⟩` and prove the remaining obligations. Introduce `p _ z₁ ct yy₁ h₁ y h h' yy yy' hl hc hl' hc' x`. Establish `hl2` using `htr p z₁ ct y h h' yy hl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hc2 : D.Compat yy₁ (yy.comp a.toAddMonoidHom)` using `fun b μ hb => by`. Simplify using `only [AddMonoidHom.comp_apply, AddEquiv.coe_toAddMonoidHom, hfix]`. Conclude with `hc b μ hb`. Use `GlobalTheory.UPoinc.UGalLab.rigid hpq D ct yy₁ h₁ (y ≫ s) h' (yy.comp a.toAddMonoidHom) yy' hl2 hc2 hl' hc'` as an intermediate fact. Conclude with `DFunLike.congr_fun this x`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.UPoinc.UGalLab.main : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H), 1 ≤ Dw.p + Dw.q → ∀ (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (cf : Coeff l) (C : UCompact Xo cf), ∀ (X₁ : USetup C) (D : UDeep X₁) (σ : D.X.Ω₁ ≃ₐ[X₁.Ω₁] D.X.Ω₁) (s : D.X.M.Z ⟶ D.X.M.Z), D.X.M.pt ≫ s = spMap (σ : D.X.Ω₁ →+* D.X.Ω₁) ≫ D.X.M.pt → ∃ a : D.X.S.Gam ≃+ D.X.S.Gam, (∀ x, a (D.lab x) = D.lab x) ∧ ∀ (p : ℕ) [Fact p.Prime] (z₁ : X₁.M.Z) (ct : UCTrait X₁ p z₁) (yy₁ : X₁.S.Gam →+ ModN (X₁.S.r * X₁.S.N) ct.T.P.D.toPre.X), UIsLab X₁ ct yy₁ → ∀ (y : Sp (OO p) ⟶ D.X.M.Z) (h : y ≫ D.q = ct.y) (h' : (y ≫ s) ≫ D.q = ct.y) (yy yy' : D.X.S.Gam →+ ModN (D.X.S.r * D.X.S.N) ct.T.P.D.toPre.X), UIsLab D.X (D.lift ct y h) yy → D.Compat yy₁ yy → UIsLab D.X (D.lift ct (y ≫ s) h') yy' → D.Compat yy₁ yy' → ∀ x, yy' x = yy (a x) := by
   intro E _ _ _ H Dw hpq l Xo cf C X₁ D σ s hs

@@ -10,11 +10,11 @@ namespace GlobalTheory
 open Pointwise in
 
 /- English proof (translation)
-Introduce `R A _ _ _ _ _ _ f hf _ hreg n hd`. Establish `h1 : ReciprocityTheory.CA.ModDepthGE R (QuotSMulTop f A) n` using `ReciprocityTheory.CA.ModDepthGE.quotSMulTop hf hreg hd`. Establish `heq : (f • (⊤ : Submodule R A)) = ((Ideal.span {f}).map (algebraMap R A)).restrictScalars R`. Use extensionality with `x`. Simplify using `[Submodule.mem_smul_pointwise_iff_exists, Ideal.map_span, Ideal.mem_span_singleton', Algebra.smul_def, mul_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Set `e : QuotSMulTop f A ≃ₗ[R] (A ⧸ (Ideal.span {f}).map (algebraMap R A))` to `(Submodule.quotEquivOfEq _ _ heq).trans (Submodule.Quotient.restrictScalarsEquiv R ((Ideal.span {f}).map (algebraMap R A)))`. Take `⟨rs, hl, hm, hr⟩` from `(ReciprocityTheory.CA.modDepthGE_congr e n).mp h1`. Use `⟨rs.map (algebraMap R (R ⧸ Ideal.span {f})), by simp [hl], ?_, ?_⟩` and prove the remaining obligations. Introduce `r hr'`. Take `⟨a, ha, rfl⟩` from `List.mem_map.mp hr'`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `ReciprocityTheory.CA.mk_mem_maximalIdeal_quot _ (hm a ha)`. Conclude with `(ReciprocityTheory.CA.isRegular_map_algebraMap_iff' rs).mpr hr`.
+A detailed English derivation is pending.
 -/
 theorem modDepthGE_quotient_map_span_singleton :
     ∀ (R A : Type) [CommRing R] [IsLocalRing R] [IsNoetherianRing R] [CommRing A] [Algebra R A]

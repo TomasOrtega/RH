@@ -11,7 +11,7 @@ namespace Formalism.NG
 namespace IdempotentNormalFormsRhoFacts
 
 /- English proof (translation)
-The claim follows from `Module.length_eq_add_of_exact (LinearMap.ker φ).subtype φ.rangeRestrict Subtype.val_injective φ.surjective_rangeRestrict (LinearMap.exact_iff.mpr (by rw [LinearMap.ker_rangeRestrict, Submodule.range_subtype]))`.
+A detailed English derivation is pending.
 -/
 lemma length_eq_ker_add_range {R M P : Type*} [Ring R] [AddCommGroup M] [Module R M]
     [AddCommGroup P] [Module R P] (φ : M →ₗ[R] P) :
@@ -22,14 +22,14 @@ lemma length_eq_ker_add_range {R M P : Type*} [Ring R] [AddCommGroup M] [Module 
     (LinearMap.exact_iff.mpr (by rw [LinearMap.ker_rangeRestrict, Submodule.range_subtype]))
 
 /- English proof (translation)
-The claim follows from `Module.length_le_of_injective (Submodule.inclusion h) (Submodule.inclusion_injective h)`.
+A detailed English derivation is pending.
 -/
 lemma length_mono {R M : Type*} [Ring R] [AddCommGroup M] [Module R M] {A B : Submodule R M}
     (h : A ≤ B) : Module.length R A ≤ Module.length R B :=
   Module.length_le_of_injective (Submodule.inclusion h) (Submodule.inclusion_injective h)
 
 /- English proof (translation)
-Simplify using `[annih, Submodule.mem_iInf, LinearMap.flip_apply]`.
+Simplify using the standard rewrite rules.
 -/
 lemma mem_annih {O Cw Cs P : Type*} [CommRing O] [AddCommGroup Cw] [Module O Cw]
     [AddCommGroup Cs] [Module O Cs] [AddCommGroup P] [Module O P] (pr : Cw →ₗ[O] Cs →ₗ[O] P)
@@ -37,7 +37,7 @@ lemma mem_annih {O Cw Cs P : Type*} [CommRing O] [AddCommGroup Cw] [Module O Cw]
   simp [annih, Submodule.mem_iInf, LinearMap.flip_apply]
 
 /- English proof (translation)
-Introduce `c hc` and use `(mem_annih pr U c).2 fun x hx => (mem_annih pr V c).1 hc x (h hx)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 lemma annih_anti {O Cw Cs P : Type*} [CommRing O] [AddCommGroup Cw] [Module O Cw]
     [AddCommGroup Cs] [Module O Cs] [AddCommGroup P] [Module O P] (pr : Cw →ₗ[O] Cs →ₗ[O] P)
@@ -50,7 +50,7 @@ variable {O C ι : Type*} [CommRing O] [AddCommGroup C] [Module O C]
   {Cw : ι → Type*} [∀ w, AddCommGroup (Cw w)] [∀ w, Module O (Cw w)]
 
 /- English proof (translation)
-Simplify using `[Submodule.mem_inf, Submodule.mem_iInf]`.
+Simplify using the standard rewrite rules.
 -/
 lemma mem_sel (what₂ : Finset ι) (res : ∀ w, C →ₗ[O] Cw w) (G : ∀ w, Submodule O (Cw w))
     (Q : Submodule O C) (x : C) :
@@ -70,13 +70,11 @@ end Sel
 end IdempotentNormalFormsRhoFacts
 
 /- English proof (translation)
-Introduce `O H Zc C _ _ _ _ _ _ _ Ψ cl S hS`. Set `φ : LinearMap.range Ψ →ₗ[O] C` to `cl ∘ₗ (LinearMap.range Ψ).subtype`. Establish `h1` using `IdempotentNormalFormsRhoFacts.length_eq_ker_add_range Ψ`. Establish `h2` using `IdempotentNormalFormsRhoFacts.length_eq_ker_add_range φ`. Establish `hk : Module.length O (LinearMap.ker φ) ≤ Module.length O ↥(LinearMap.range Ψ ⊓ LinearMap.ker cl)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Module.length_le_of_injective (((LinearMap.range Ψ).subtype ∘ₗ (LinearMap.ker φ).subtype).codRestrict _ fun x => Submodule.mem_inf.mpr ⟨x.1.2, LinearMap.mem_ker.mpr (LinearMap.mem_ker.mp x.2)⟩) ?_` and prove the remaining obligations. Introduce `x y hxy`. Use `congrArg Subtype.val hxy` as an intermediate fact. Conclude with `Subtype.ext (Subtype.ext this)`. Establish `hr : Module.length O (LinearMap.range φ) ≤ Module.length O S`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `le_trans ?_ (IdempotentNormalFormsRhoFacts.length_mono (A := LinearMap.range φ) ?_)` and prove the remaining obligations. Conclude with `le_rfl`. Introduce and unpack `_ ⟨⟨z, hz⟩, rfl⟩`. Take `⟨h, rfl⟩` from `LinearMap.mem_range.mp hz`. Conclude with `hS ⟨h, rfl⟩`.
-
-Rewrite using `[h1, h2, add_assoc]`. Use `gcongr`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lenChain : StatLenChain := by
   intro O H Zc C _ _ _ _ _ _ _ Ψ cl S hS
@@ -118,7 +116,7 @@ lemma relaxMap_apply (x : ↥(Q ⊓ ⨅ w ∈ what₂, (F' w).comap (res w))) (w
   rfl
 
 /- English proof (translation)
-Use `(mem_sel what₂ res F Q x.1).mpr ⟨((mem_sel what₂ res F' Q x.1).mp x.2).1, fun w hw => ?_⟩` and prove the remaining obligations. Establish `h0` using `congrFun hx ⟨w, hw⟩`. Rewrite `h0` using `[relaxMap_apply, Pi.zero_apply, Submodule.Quotient.mk_eq_zero, Submodule.mem_comap]`. Conclude with `h0`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma mem_of_relaxMap (x : ↥(Q ⊓ ⨅ w ∈ what₂, (F' w).comap (res w)))
     (hx : relaxMap what₂ res F F' Q x = 0) : x.1 ∈ Q ⊓ ⨅ w ∈ what₂, (F w).comap (res w) := by
@@ -128,7 +126,7 @@ lemma mem_of_relaxMap (x : ↥(Q ⊓ ⨅ w ∈ what₂, (F' w).comap (res w)))
   exact h0
 
 /- English proof (translation)
-Rewrite using `[(Submodule.equivMapOfInjective _ (Submodule.injective_subtype _) (LinearMap.ker (relaxMap what₂ res F F' Q))).length_eq]`. Apply `length_mono` to reduce the goal to its premises. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `mem_of_relaxMap what₂ res F F' Q x (LinearMap.mem_ker.mp hx)`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 lemma length_ker_relaxMap_le :
     Module.length O (LinearMap.ker (relaxMap what₂ res F F' Q)) ≤
@@ -140,7 +138,7 @@ lemma length_ker_relaxMap_le :
   exact mem_of_relaxMap what₂ res F F' Q x (LinearMap.mem_ker.mp hx)
 
 /- English proof (translation)
-Rewrite using `[Module.length_pi_of_fintype (R := O) (fun w : what₂ => (F' w.1 ⧸ (F w.1).comap (F' w.1).subtype))]`. Conclude with `Finset.sum_coe_sort what₂ (fun w => Module.length O (F' w ⧸ (F w).comap (F' w).subtype))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma length_pi_rows :
     Module.length O ((w : what₂) → (F' w.1 ⧸ (F w.1).comap (F' w.1).subtype)) =
@@ -154,7 +152,7 @@ end Sel2
 end IdempotentNormalFormsRhoFacts
 
 /- English proof (translation)
-Introduce `O C ι _ _ _ what₂ Cw _ _ res F F' Q _`. Rewrite using `[IdempotentNormalFormsRhoFacts.length_eq_ker_add_range (IdempotentNormalFormsRhoFacts.relaxMap what₂ res F F' Q), ← IdempotentNormalFormsRhoFacts.length_pi_rows]`. Use `gcongr`. Conclude with `IdempotentNormalFormsRhoFacts.length_ker_relaxMap_le what₂ res F F' Q`. Conclude with `Module.length_le_of_injective (Submodule.subtype _) Subtype.val_injective`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem selRelax : StatSelRelax := by
   intro O C ι _ _ _ what₂ Cw _ _ res F F' Q _
@@ -164,15 +162,15 @@ theorem selRelax : StatSelRelax := by
   · exact Module.length_le_of_injective (Submodule.subtype _) Subtype.val_injective
 
 /- English proof (translation)
-Introduce `O Cw Cs _ _ _ _ _ _ _ pr Fs Im hle`. Set `I' : Submodule O Fs` to `Im.comap Fs.subtype`. Set `Φ : annih pr Im →ₗ[O] ((Fs ⧸ I') →ₗ[O] KO O)` to `{ toFun := fun c => I'.liftQ (pr c.1 ∘ₗ Fs.subtype) (fun x hx => by`. Simplify using `only [LinearMap.mem_ker, LinearMap.comp_apply, Submodule.subtype_apply]`. Conclude with `(IdempotentNormalFormsRhoFacts.mem_annih pr Im c.1).1 c.2 x.1 hx)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use the proof step `map_add' := fun a b => by ext x; simp`. Use the proof step `map_smul' := fun r a => by ext x; simp }`. Establish `hker : LinearMap.ker Φ ≤ (annih pr Fs).comap (annih pr Im).subtype`. Introduce `c hc`. Rewrite using `[Submodule.mem_comap, Submodule.subtype_apply, IdempotentNormalFormsRhoFacts.mem_annih]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `x hx`. Use `LinearMap.congr_fun (LinearMap.mem_ker.mp hc) (Submodule.Quotient.mk ⟨x, hx⟩)` as an intermediate fact. Simplify `this` using `[Φ]`. Establish `hle' : (annih pr Fs).comap (annih pr Im).subtype ≤ LinearMap.ker Φ`. Introduce `c hc`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Rewrite `hc` using `[Submodule.mem_comap, Submodule.subtype_apply, IdempotentNormalFormsRhoFacts.mem_annih]`. Rewrite using `[LinearMap.mem_ker]`. Use extensionality with `x`. Simplify using `[Φ, hc x.1 x.2]`. Establish `hinj` using `LinearMap.ker_eq_bot.mp (Submodule.ker_liftQ_eq_bot _ Φ hle' hker)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Distinguish the cases in `hfinQ : IsFiniteLength O (Fs ⧸ I')`. Use `swap`. Rewrite `hfinQ` using `[← Module.length_ne_top_iff, ne_eq, not_not]`. Conclude with `hfinQ ▸ le_top`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem annColength : StatAnnColength := by
   intro O Cw Cs _ _ _ _ _ _ _ pr Fs Im hle
@@ -204,7 +202,7 @@ theorem annColength : StatAnnColength := by
     _ = _ := matlis O (Fs ⧸ I') hfinQ
 
 /- English proof (translation)
-Introduce `O _ _ _ d _ δ`. Establish `hmap : DistribSMul.toLinearMap O (d → KO O) (δ * δ) = matQ O (Matrix.diagonal fun _ : d => δ * δ)`. Use `LinearMap.ext fun v => funext fun i => ?_` and prove the remaining obligations. Simplify using `[matQ, relMap, Matrix.diagonal_apply, ite_smul]`. Rewrite using `[hmap, lenKer, Matrix.det_diagonal, Finset.prod_const, Finset.card_univ, AddValuation.map_pow, AddValuation.map_mul, two_mul, nsmul_eq_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem torsLen : StatTorsLen := by
   classical
@@ -219,13 +217,11 @@ theorem torsLen : StatTorsLen := by
 namespace IdempotentNormalFormsRhoFacts
 
 /- English proof (translation)
-Use `set T := LinearMap.ker (DistribSMul.toLinearMap O (d → KO O) (δ * δ))`. Establish `hle : ∀ z : ↥(LinearMap.range Ψ ⊓ LinearMap.ker ((coB1 ρM).comap (coZ1s ρM).subtype).mkQ), (z.1 : G → (d → KO O)) ∈ T.map (coD0 ρM)`. Introduce and unpack `⟨z, hz⟩`. Take `⟨hz1, hz2⟩` from `Submodule.mem_inf.mp hz`. Take `⟨h, rfl⟩` from `LinearMap.mem_range.mp hz1`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h3 : Ψ h ∈ (coB1 ρM).comap (coZ1s ρM).subtype`. Rewrite `hz2` using `[LinearMap.mem_ker, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Conclude with `hz2`. Rewrite `h3` using `[Submodule.mem_comap, Submodule.subtype_apply, coB1, LinearMap.mem_range]`. Take `⟨v, hv⟩` from `h3`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Use `Submodule.mem_map.mpr ⟨v, LinearMap.mem_ker.mpr ?_, hv⟩` and prove the remaining obligations. Simplify using `using hcob h v hv.symm`. Combine the equalities or inequalities in the displayed calculation. Use `Module.length_le_of_injective (((coZ1s ρM).subtype ∘ₗ Submodule.subtype _).codRestrict _ hle) ?_` and prove the remaining obligations. Introduce `x y hxy`.
-
-Use `congrArg Subtype.val hxy` as an intermediate fact. Conclude with `Subtype.ext (Subtype.ext this)`. Use `_ ≤ Module.length O T := Module.length_le_of_surjective _ (LinearMap.submoduleMap_surjective _ _)`. Use `_ = _ := torsLen O d δ`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma mid_bound {O : Type*} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {G : Type*}
     [Group G] {d : Type} [Fintype d] (ρM : Representation O G (d → KO O)) {H : Type*}
@@ -259,7 +255,7 @@ lemma mid_bound {O : Type*} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O
     _ = _ := torsLen O d δ
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 lemma final_arith (R X Y Z s k : ℕ∞) (c N vδ : ℕ∞) (hk : k ≤ X + c * N * vδ)
     (hm : Y ≤ N * (2 * vδ)) (hs : Z ≤ s + R) :

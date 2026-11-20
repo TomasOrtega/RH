@@ -12,11 +12,9 @@ open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.SG.S
 open scoped TensorProduct
 
 /- English proof (translation)
-Introduce `hJ hσσ r P T hP`. Establish `H : (datR (Af F) σ J P T).Hyp` using `datR_hyp (R := Af F) hσσ hJ hP`. Establish `hh : Half (datR (Af F) σ J P T) (algebraMap F (Af F ⊗[F] E) (1 / 2))`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_add, add_halves, map_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show (Algebra.TensorProduct.map (AlgHom.id F (Af F)) σ) (algebraMap F (Af F ⊗[F] E) (1 / 2)) = algebraMap F (Af F ⊗[F] E) (1 / 2)`. Conclude with `AlgHom.commutes _ _`. Establish `hcy : Continuous fun y : Fin r → PI.LevelKSplit.W.NC.Wp (Af F) σ J P => fun a => (y a : Fin M → Af F ⊗[F] E)` using `continuous_pi fun a => continuous_subtype_val.comp (continuous_apply a)`. Use `⟨fun y => sHG hJ H hh (y := fun a => (y a : Fin M → Af F ⊗[F] E)) (fun a => (y a).2), ?_, continuous_yH P, fun y => sHG_mem hJ H hh _, fun g hg => ?_, fun y z hz a => ?_, centre_le_unipotent_radical hJ H hh, fun z hz g hg => Z_comm hJ H hh hz hg, fun y y' => ?_, fun g hg z hz => …` and prove the remaining obligations. Conclude with `Md.continuous_into_HA hJ (continuous_sLmat P T _ hcy)`.
-
-Conclude with `⟨fun a => ⟨_, isWp_yH hJ H hh g a⟩, fun a => rfl, inv_mul_mem_Z hJ H hh hg⟩`. Conclude with `(yH_mul_Z hJ H hh (sHG_mem hJ H hh _) hz a).trans (yH_sHG hJ H hh _ a)`. Conclude with `heisenberg_cocycle_mem_centre hJ H hh (y := fun a => (y a : Fin M → Af F ⊗[F] E)) (y' := fun a => (y' a : Fin M → Af F ⊗[F] E)) (fun a => (y a).2) (fun a => (y' a).2) (fun a => ((y + y') a).2)`. Conclude with `⟨fun a => ⟨lin (Af F) σ J g (y a), H_isWp hJ H hh hg (y a).2⟩, fun a => rfl, H_conj_sHG hJ H hh hg _ _⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem heisenberg_parabolic (F E : Type) [Field F] [NumberField F] [Field E] [Algebra F E]
     [FiniteDimensional F E] (σ : E →ₐ[F] E) (M : ℕ) (J : Matrix (Fin M) (Fin M) E) :
@@ -46,7 +44,7 @@ theorem heisenberg_parabolic (F E : Type) [Field F] [NumberField F] [Field E] [A
       H_conj_sHG hJ H hh hg _ _⟩
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hσ M J _`. Establish `: FiniteDimensional F E` using `Module.finite_of_finrank_pos (by rw [hσ.2.2.1]; norm_num)`. Conclude with `heisenberg_parabolic F E σ M J`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem heisenberg_parabolic_all : PI.LevelKSplit.W.NC.HeisPAll := by
   intro F E _ _ _ _ _ σ hσ M J _

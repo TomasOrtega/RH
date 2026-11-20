@@ -11,49 +11,43 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.PB.WSq.Sec
 
 /- English proof (translation)
-Establish `hA' : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) A.h {z | ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0}` using `hA`. Establish `hol : ∀ (x : R.X) (p : (k : κ) × ρ k) (j : Fin R.A.n) (t : Fin e → ℂ), t ∈ (R.A.chart j).target → (R.A.chart j).symm t ∈ R.U x → AnalyticAt ℂ (fun s => R.lift x ((R.A.chart j).symm s) p) t` using `fun x p j t ht hu => R.holo x p j t ⟨ht, hu⟩`. Establish `memNZ : ∀ (z0 y0 : R.X), y0 ∈ R.U z0 → ∀ k, ∃ i, R.lift z0 y0 ⟨k, i⟩ ≠ 0`. Introduce `z0 y0 h`. Establish `h'` using `R.mem z0 y0 h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [ReciprocityTheory.ChartRestriction.G.Geo.mcPts, Set.mem_ofPred_eq] at h'`. Conclude with `h'.1`. Unfold `ReciprocityTheory.AnForm.M.IsPotential ReciprocityTheory.AnForm.M.FinHolAtlas.SmoothOn ReciprocityTheory.AnForm.M.FinHolAtlas.HoloOn`. Simplify using `only [secPot]`. Use `⟨fun x j => ?_, fun x x' y hy => ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Simplify by unfolding definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hlift : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun t => R.lift x ((R.A.chart j).symm t)) ((R.A.chart j).target ∩ (R.A.chart j).symm ⁻¹' V x)`. Rewrite using `[contDiffOn_pi]`. Introduce `p`. Establish `h1 : ContDiffOn ℂ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun t => R.lift x ((R.A.chart j).symm t) p) ((R.A.chart j).target ∩ (R.A.chart j).symm ⁻¹' V x)` using `fun t ht => (hol x p j t ht.1 (hVU x ht.2)).contDiffAt.contDiffWithinAt`. Conclude with `h1.restrict_scalars ℝ`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmem : ∀ t ∈ (R.A.chart j).target ∩ (R.A.chart j).symm ⁻¹' V x, (∀ k, ∃ i, R.lift x ((R.A.chart j).symm t) ⟨k, i⟩ ≠ 0)` using `fun t ht => memNZ x _ (hVU x ht.2)`. Establish `hh` using `hA'.comp hlift (fun t ht => hmem t ht)`. Establish `hne : ∀ t ∈ (R.A.chart j).target ∩ (R.A.chart j).symm ⁻¹' V x, A.h (R.lift x ((R.A.chart j).symm t)) ≠ 0` using `fun t ht => (A.pos _ (hmem t ht)).ne'`. Conclude with `(hh.log hne).add contDiffOn_const`. Take `⟨hyx, hyx'⟩` from `hy`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hyU : y ∈ R.U x` using `hVU x hyx`. Establish `hyU' : y ∈ R.U x'` using `hVU x' hyx'`. Use `choose i hi using memNZ x' y hyU'`. Take `⟨r, hr⟩ : ∃ r : κ → R.X → ℂ, ∀ k z, r k z = R.lift x z ⟨k, i k⟩ / R.lift x' z ⟨k, i k⟩` from `⟨fun k z => R.lift x z ⟨k, i k⟩ / R.lift x' z ⟨k, i k⟩, fun _ _ => rfl⟩`. Establish `hry : ∀ k, r k y ≠ 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `k`. Take `⟨cy, hcy, hly⟩` from `R.compat x x' y ⟨hyU, hyU'⟩`. Establish `h1` using `congrFun hly ⟨k, i k⟩`. Rewrite using `[hr, h1]`. Conclude with `div_ne_zero (mul_ne_zero (hcy k) (hi k)) (hi k)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨j, hj⟩` from `R.A.cover y`. Establish `hD : IsOpen ((R.A.chart j).target ∩ (R.A.chart j).symm ⁻¹' (R.U x ∩ R.U x'))` using `(R.A.chart j).isOpen_inter_preimage_symm ((R.isOpen_U x).inter (R.isOpen_U x'))`. Take `⟨O, hOdef⟩ : ∃ O : Set (Fin e → ℂ), O = {t | t ∈ (R.A.chart j).target ∧ (R.A.chart j).symm t ∈ R.U x ∩ R.U x' ∧ (∀ k, R.lift x' ((R.A.chart j).symm t) ⟨k, i k⟩ ≠ 0) ∧ ∀ k, r k ((R.A.chart j).symm t) / r k y ∈ Complex.slitPlane}` from `⟨_, rfl⟩`. Establish `memO : ∀ t, t ∈ O ↔ (t ∈ (R.A.chart j).target ∧ (R.A.chart j).symm t ∈ R.U x ∩ R.U x' ∧ (∀ k, R.lift x' ((R.A.chart j).symm t) ⟨k, i k⟩ ≠ 0) ∧ ∀ k, r k ((R.A.chart j).symm t) / r k y ∈ Complex.slitPlane)`. Introduce `t`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hOdef]`. Both sides reduce to the same expression. Establish `hO : IsOpen O`. Rewrite using `[isOpen_iff_mem_nhds]`. Introduce `t ht`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨htT, htU, htne, htsl⟩` from `(memO t).1 ht`. Establish `hDn : (R.A.chart j).target ∩ (R.A.chart j).symm ⁻¹' (R.U x ∩ R.U x') ∈ 𝓝 t` using `hD.mem_nhds ⟨htT, htU⟩`. Establish `hca : ∀ (z0 : R.X) (p : (k : κ) × ρ k), (R.A.chart j).symm t ∈ R.U z0 → ContinuousAt (fun s => R.lift z0 ((R.A.chart j).symm s) p) t` using `fun z0 p hz => (hol z0 p j t htT hz).continuousAt`. Establish `e1 : ∀ᶠ s in 𝓝 t, ∀ k, R.lift x' ((R.A.chart j).symm s) ⟨k, i k⟩ ≠ 0`. Rewrite using `[Filter.eventually_all]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `k`. Conclude with `(hca x' _ htU.2).eventually_ne (htne k)`. Establish `e2 : ∀ᶠ s in 𝓝 t, ∀ k, r k ((R.A.chart j).symm s) / r k y ∈ Complex.slitPlane`. Rewrite using `[Filter.eventually_all]`. Introduce `k`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc0 : ContinuousAt (fun s => r k ((R.A.chart j).symm s)) t`. Simplify using `only [hr]`. Conclude with `(hca x _ htU.1).div (hca x' _ htU.2) (htne k)`. Establish `hc : ContinuousAt (fun s => r k ((R.A.chart j).symm s) / r k y) t` using `hc0.div_const _`. Conclude with `hc.preimage_mem_nhds (Complex.isOpen_slitPlane.mem_nhds (htsl k))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `filter_upwards [hDn, e1, e2] with s hs1 hs2 hs3`. Conclude with `(memO s).2 ⟨hs1.1, hs1.2, hs2, hs3⟩`. Establish `hWopen : IsOpen ((R.A.chart j).source ∩ (R.A.chart j) ⁻¹' O)` using `(R.A.chart j).isOpen_inter_preimage hO`. Establish `hsy : (R.A.chart j).symm ((R.A.chart j) y) = y` using `(R.A.chart j).left_inv hj`. Establish `hyW : y ∈ (R.A.chart j).source ∩ (R.A.chart j) ⁻¹' O`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hj, (memO _).2 ?_⟩` and prove the remaining obligations. Rewrite using `[hsy]`. Use `⟨(R.A.chart j).map_source hj, ⟨hyU, hyU'⟩, hi, fun k => ?_⟩` and prove the remaining obligations. Rewrite using `[div_self (hry k)]`. Conclude with `Complex.one_mem_slitPlane`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `condW : ∀ z ∈ (R.A.chart j).source ∩ (R.A.chart j) ⁻¹' O, z ∈ R.U x ∧ z ∈ R.U x' ∧ (∀ k, R.lift x' z ⟨k, i k⟩ ≠ 0) ∧ ∀ k, r k z / r k y ∈ Complex.slitPlane`. Introduce `z hz`. Establish `h2` using `(memO ((R.A.chart j) z)).1 hz.2`. Rewrite `h2` using `[(R.A.chart j).left_inv hz.1]`. Conclude with `⟨h2.2.1.1, h2.2.1.2, h2.2.2.1, h2.2.2.2⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨(R.A.chart j).source ∩ (R.A.chart j) ⁻¹' O, hWopen, hyW, fun z => (∑ k, ((A.a k : ℝ) : ℂ) * Complex.log (r k z / r k y)) + ((∑ k, (A.a k : ℝ) * Real.log ‖r k y‖ : ℝ) : ℂ), ?_, ?_⟩` and prove the remaining obligations. Introduce `j' t ht`. Take `⟨hUx, hUx', hne, hsl⟩` from `condW _ ht.2`. Establish `hra : ∀ k, AnalyticAt ℂ (fun s => r k ((R.A.chart j').symm s)) t`. Introduce `k`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hr]`. Conclude with `(hol x _ j' t ht.1 hUx).div (hol x' _ j' t ht.1 hUx') (hne k)`. Use `show AnalyticAt ℂ (fun s => (∑ k, ((A.a k : ℝ) : ℂ) * Complex.log (r k ((R.A.chart j').symm s) / r k y)) + ((∑ k, (A.a k : ℝ) * Real.log ‖r k y‖ : ℝ) : ℂ)) t`. Use `AnalyticAt.add ?_ analyticAt_const` and prove the remaining obligations. Establish `hs : ∀ k ∈ (Finset.univ : Finset κ), AnalyticAt ℂ (fun s => ((A.a k : ℝ) : ℂ) * Complex.log (r k ((R.A.chart j').symm s) / r k y)) t` using `fun k _ => analyticAt_const.mul (((hra k).div analyticAt_const (hry k)).clog (hsl k))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h3` using `Finset.analyticAt_sum Finset.univ hs`. Rewrite `h3` using `[Finset.sum_fn]`. Conclude with `h3`. Introduce `z hz`. Take `⟨hUx, hUx', hne, -⟩` from `condW z hz.1.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨cz, hcz, hlz⟩` from `R.compat x x' z ⟨hUx, hUx'⟩`. Establish `hrz : ∀ k, r k z = cz k`. Introduce `k`. Rewrite using `[hr]`. Establish `h1` using `congrFun hlz ⟨k, i k⟩`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[h1]`. Conclude with `mul_div_cancel_right₀ _ (hne k)`. Establish `hhz : A.h (R.lift x z) = (∏ k, ‖cz k‖ ^ A.a k) * A.h (R.lift x' z)`. Rewrite using `[hlz]`. Conclude with `A.smul cz _ hcz`.
-
-Establish `hhpos : 0 < A.h (R.lift x' z)` using `A.pos _ (memNZ x' z hUx')`. Establish `hczn : ∀ k, ‖cz k‖ ≠ 0` using `fun k => norm_ne_zero_iff.2 (hcz k)`. Establish `hryn : ∀ k, ‖r k y‖ ≠ 0` using `fun k => norm_ne_zero_iff.2 (hry k)`. Establish `lhs : (Real.log (A.h (R.lift x z)) + c) - (Real.log (A.h (R.lift x' z)) + c) = ∑ k, (A.a k : ℝ) * Real.log ‖cz k‖`. Rewrite using `[hhz, Real.log_mul (Finset.prod_ne_zero_iff.2 fun k _ => zpow_ne_zero _ (hczn k)) hhpos.ne', Real.log_prod (fun k _ => zpow_ne_zero _ (hczn k))]`.
-
-Simplify using `only [Real.log_zpow]`. Expand and normalize the polynomial expressions, which then agree. Use `show (Real.log (A.h (R.lift x z)) + c) - (Real.log (A.h (R.lift x' z)) + c) = ((∑ k, ((A.a k : ℝ) : ℂ) * Complex.log (r k z / r k y)) + ((∑ k, (A.a k : ℝ) * Real.log ‖r k y‖ : ℝ) : ℂ)).re`. Rewrite using `[lhs]`. Simplify using `only [Complex.add_re, Complex.re_sum, Complex.re_ofReal_mul, Complex.ofReal_re, Complex.log_re, norm_div, hrz]`.
-
-Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Real.log_div (hczn k) (hryn k)]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private theorem isPotential_secPot_of_isSmoothHerm {κ : Type} [Fintype κ] {ρ : κ → Type} [∀ k, Fintype (ρ k)]
     {P J : Ideal (ReciprocityTheory.ChartRestriction.G.Geo.MRing ρ)} {e : ℕ} (R : ReciprocityTheory.ChartRestriction.G.Geo.AnLogRes P J e)
@@ -205,7 +199,7 @@ private theorem isPotential_secPot_of_isSmoothHerm {κ : Type} [Fintype κ] {ρ 
       ring
 
 /- English proof (translation)
-Introduce `K _ ι _ Φ _ y Ψ _ _ N j M n e Rb τ a k₀ ca cb RW pr ψ kb σ i₀ V u hL c`. Establish `hS : ReciprocityTheory.ChartRestriction.G.Geo.IsSmoothHerm (potA M τ a k₀)`. Unfold `GlobalTheory.CompanionTheory.Ar.PB.WSq.Sec.potA`. Conclude with `GlobalTheory.CompanionTheory.Ar.PB.StepW.fsHerm_isSmoothHerm _ _ _`. Conclude with `isPotential_secPot_of_isSmoothHerm RW (potA M τ a k₀) hS V _ _ (fun x => (hL x).2.2.2.2.1) c`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem isPotential_secPot : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Φ : Type) [Field Φ] (y : (Σ k, ι k) → Φ) (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N j : ℕ) (M : FlagModel y Ψ N j) (n e : ℕ) (Rb : AnLogRes (mCoordIdeal M.x) ⊤ n) (τ : Ψ) (a : Fin N) (k₀ : K) (ca cb : Fin N) (RW : AnLogRes (mCoordIdeal (M.wCo (τ, a) k₀ ca cb RatFunc.X)) ⊤ e) (pr : RW.X → Rb.X) (ψ : RW.X → OpenPartialHomeomorph RW.X (Fin e → ℂ)) (kb : RW.X → Fin Rb.A.n) (σ : RW.X → Fin n ↪ Fin e) (i₀ : RW.X → Fin e) (V : RW.X → Set RW.X) (u : RW.X → RW.X → ℂ) (hL : ∀ x, IsLocSec M Rb τ a k₀ ca cb RW pr x (ψ x) (kb x) (σ x) (i₀ x) (V x) (u x)), ∀ c : ℝ, IsPotential RW.A (secPot RW (potA M τ a k₀) V (fun x => (hL x).2.1) (fun x => (hL x).2.2.1) c) := by
   intro K _ ι _ Φ _ y Ψ _ _ N j M n e Rb τ a k₀ ca cb RW pr ψ kb σ i₀ V u hL c

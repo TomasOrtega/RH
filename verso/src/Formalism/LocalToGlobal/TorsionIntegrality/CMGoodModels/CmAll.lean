@@ -7,19 +7,19 @@ import ReciprocityTheory.ReductiveGroups.UnramifiedIntegrals.CmAllOf
 namespace Formalism.L2.Th1.CM
 
 /- English proof (translation)
-The claim follows from `ReciprocityTheory.ChartRestriction.L1.cm1`.
+A detailed English derivation is pending.
 -/
 theorem cm1 : JInvariantIntegrality := ReciprocityTheory.ChartRestriction.L1.cm1
 /- English proof (translation)
-The claim follows from `ReciprocityTheory.ChartRestriction.L1.cm4`.
+A detailed English derivation is pending.
 -/
 theorem cm4 : CM4 := ReciprocityTheory.ChartRestriction.L1.cm4
 /- English proof (translation)
-The claim follows from `ReciprocityTheory.ChartRestriction.L1.cmIntegralityThree`.
+A detailed English derivation is pending.
 -/
 theorem cm3 : CM3 := ReciprocityTheory.ChartRestriction.L1.cmIntegralityThree
 /- English proof (translation)
-The claim follows from `h.out`.
+A detailed English derivation is pending.
 -/
 theorem cm2 [h : Fact CM2] : CM2 := h.out
 

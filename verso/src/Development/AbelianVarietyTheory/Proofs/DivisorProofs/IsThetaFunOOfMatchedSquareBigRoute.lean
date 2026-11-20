@@ -14,11 +14,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.Local
 namespace GlobalTheory.RouteSeesaw
 
 /- English proof (translation)
-Introduce `D T L sc G μ₀ _hL W B ρ t i j Θ Θ' hM d hd`. Take `⟨a, b, τ, τ', n, Φ, -, -, hF, rfl, -⟩` from `hM`. Take `⟨e, -, -, φ₁, φ₂, hφ, -⟩` from `hF`. Unfold `tensT at hd`. Take `⟨P, -, hd⟩` from `Finset.mem_biUnion.1 (Finsupp.support_sum hd)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result.
 
-Take `⟨d', hd', hd⟩` from `Finset.mem_biUnion.1 (Finsupp.support_sum hd)`. Establish `hd` using `Finsupp.support_single_subset hd`. Rewrite `hd` using `[Finset.mem_singleton]`. Substitute `hd` using the available equality. Take `⟨h₁, h₂⟩` from `hφ d' hd'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Extract witnesses or component facts from the available result.
 
-Establish `v₁` using `(ρ.vX_is i (j + 1) i.2 j.2).2.2`. Establish `v₂` using `(ρ.vT_is t (i + 1) j i.2 j.2).2.2`. Conclude with `⟨GlobalTheory.FockTheta.ptStable D _ _ W.ψ_std W.θ_is _ _ _ _ _ _ _ _ (GlobalTheory.JointHarm.isThetaFunO_of_isThetaAt W.ψ_std W.θ_is h₁.2 v₁), GlobalTheory.FockTheta.ptStable D _ _ W.ψ_std W.θ_is _ _ _ _ _ _ _ _ (GlobalTheory.JointHarm.isThetaFunO_of_isThetaAt W.ψ_std W.θ_is h₂. …`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem isThetaFunO_of_isMatched : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {μ₀ : T} (_hL : L.Is μ₀)
     (W : G.Weil) (B : Frames G) (ρ : RealMatch W) (t : T) (i j : Fin D.R.m)

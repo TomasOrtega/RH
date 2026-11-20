@@ -9,13 +9,13 @@ open GlobalTheory.UnitLemma GlobalTheory.UnitLemma.Desc Polynomial Filter Topolo
 namespace GlobalTheory.UnitLemma.Desc
 
 /- English proof (translation)
-Establish `hU : (⋃ p ∈ (P : Set β), s ∩ Function.support (f p)).Finite` using `Set.Finite.biUnion P.finite_toSet fun p hp => hf p (Finset.mem_coe.1 hp)`. Establish `key : ∀ g : α → ℚ, (∀ x ∈ s, g x ≠ 0 → x ∈ ⋃ p ∈ (P : Set β), s ∩ Function.support (f p)) → ∑ᶠ x ∈ s, g x = ∑ x ∈ hU.toFinset, g x`. Introduce `g hg`. Apply `finsum_mem_eq_sum_of_inter_support_eq` to reduce the goal to its premises. Use extensionality with `x`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Simplify using `only [Set.mem_inter_iff, Function.mem_support, Set.Finite.coe_toFinset]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hx, hgx⟩`. Conclude with `⟨hg x hx hgx, hgx⟩`. Introduce and unpack `⟨hx, hgx⟩`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Take `⟨p, _, hxs, _⟩` from `Set.mem_iUnion₂.1 hx`. Conclude with `⟨hxs, hgx⟩`. Rewrite using `[key]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun p hp => (key _ ?_).symm` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `x hx h`. Conclude with `Set.mem_iUnion₂.2 ⟨p, Finset.mem_coe.2 hp, hx, h⟩`. Introduce `x hx h`. Take `⟨p, hp, hpx⟩` from `Finset.exists_ne_zero_of_sum_ne_zero h`. Conclude with `Set.mem_iUnion₂.2 ⟨p, Finset.mem_coe.2 hp, hx, hpx⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem finsum_mem_finset_sum_comm {α β : Type} (s : Set α) (P : Finset β) (f : β → α → ℚ)
     (hf : ∀ p ∈ P, (s ∩ Function.support (f p)).Finite) :
@@ -44,53 +44,49 @@ theorem finsum_mem_finset_sum_comm {α β : Type} (s : Set α) (P : Finset β) (
     exact Set.mem_iUnion₂.2 ⟨p, Finset.mem_coe.2 hp, hx, hpx⟩
 
 /- English proof (translation)
-Introduce `K B ι _ _ e π S hL hF I hI u hu`. Establish `hPlus : ∀ J ⊆ S, B.Plus (∏ j ∈ J, π j)` using `fun J hJ => Finset.prod_induction _ B.Plus (fun a b ha hb => ⟨ha.1.mul hb.1, by rw [map_mul, ha.2, hb.2]⟩) ⟨isUnit_one, map_one _⟩ (fun j hj => (hF.2 j (hJ hj)).1)`. Establish `heta1 : K.eta 1 = 1`. Establish `h` using `eta_mul (K := K) (x := 1) (y := 1) one_ne_zero one_ne_zero`. Establish `h2` using `eta_sq (K := K) 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[mul_one]`. Rewrite `h2` using `[← h]`. Conclude with `h2`. Establish `heta : ∀ J : Finset ι, J ⊆ S → K.eta (Algebra.norm K.E (∏ j ∈ J, π j)) = (-1 : ℚ) ^ J.card`. Introduce `J`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `J using Finset.induction_on with`. Consider the case `empty => intro _`. Simplify using `[heta1]`. Consider the case `insert a J ha ih`. Introduce `hJ`.
+Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `haS : a ∈ S` using `hJ (Finset.mem_insert_self a J)`. Establish `hJS : J ⊆ S` using `(Finset.subset_insert a J).trans hJ`. Rewrite using `[Finset.prod_insert ha, map_mul, eta_mul ((hF.2 a haS).1.1.map (Algebra.norm K.E)).ne_zero ((hPlus J hJS).1.map (Algebra.norm K.E)).ne_zero, ih hJS, (hF.2 a haS).2.2, Finset.card_insert_of_notMem ha, pow_succ]`. Expand and normalize the polynomial expressions, which then agree. Establish `hterm0 : ∀ w s M, term B π ∅ ∅ w s M = indM B M w * indD B M s`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `w s M`. Simplify using `[term, dlt]`. Establish `hHG : ∀ v, HH B π ∅ ∅ v 1 = B.GG v`. Introduce `v`. Unfold `HH InvAlg.GG`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[finsum_mem_def, finsum_mem_def]`. Use `finsum_congr fun M => ?_` and prove the remaining obligations. Establish `hD : InDual B 1 M ↔ ∀ z ∈ M, Algebra.trace K.E B.A z ∈ (algebraMap K.O K.E).range`. Simplify using `only [InDual, one_mul]`. Simplify using `only [Set.indicator, Set.mem_setOf_eq, hterm0, indM, indD, ← hD]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h1 : M ∈ B.Lin`. Distinguish the cases in `h2 : v ∈ M`. Distinguish the cases in `h3 : InDual B 1 M`. Rewrite using `[if_pos h1, if_pos h2, if_pos h3, if_pos ⟨h1, h2, hD.1 h3⟩]`. Expand and normalize the polynomial expressions, which then agree.
+Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_pos h1, if_pos h2, if_neg h3, if_neg (fun h => h3 (hD.2 h.2.2))]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_pos h1, if_neg h2, zero_mul, mul_zero]`. Conclude with `(if_neg (fun h => h2 h.2.1)).symm`. Rewrite using `[if_neg h1, if_neg (fun h => h1 h.1)]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hexp : HH B π I (S \ I) u 1 = ∑ p ∈ I.powerset ×ˢ (S \ I).powerset, (-1 : ℚ) ^ p.1.card * (-1 : ℚ) ^ p.2.card * HH B π ∅ ∅ ((∏ j ∈ p.1, π j) * u) ((∏ j ∈ p.2, π j) * 1)`. Establish `h1 : ∀ M, B.sgnLat M * term B π I (S \ I) u 1 M = ∑ p ∈ I.powerset ×ˢ (S \ I).powerset, (-1 : ℚ) ^ p.1.card * (-1 : ℚ) ^ p.2.card * (B.sgnLat M * term B π ∅ ∅ ((∏ j ∈ p.1, π j) * u) ((∏ j ∈ p.2, π j) * 1) M)`. Introduce `M`. Rewrite using `[Finset.sum_product, term, dlt, dlt, Finset.sum_mul_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun J _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun J' _ => ?_` and prove the remaining obligations. Rewrite using `[hterm0]`. Expand and normalize the polynomial expressions, which then agree. Unfold `HH`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Replace the relevant objects with their definitions. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Repeatedly rewrite using `[h1]`. Rewrite using `[finsum_mem_finset_sum_comm]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[mul_finsum_mem]`. Introduce `p hp`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hp` using `[Finset.mem_product, Finset.mem_powerset, Finset.mem_powerset]`. Use `(GlobalTheory.T.finite_stableLattices_differenceTerm_ne_zero K B ι e π S hL.2 hF ∅ ∅ (Finset.empty_subset _) (Finset.empty_subset _) _ _ ((hPlus p.1 (hp.1.trans hI)).1.mul hu) ((hPlus p.2 (hp.2.trans Finset.sdiff_subset)).1.mul isUnit_one)).subset ?_` and prove the remaining obligations. Introduce and unpack `M ⟨hM, hne⟩`. Use `⟨hM, fun h => hne ?_⟩` and prove the remaining obligations. Simplify using `only [h, mul_zero]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hexp]`. Establish `hstep : ∀ p ∈ I.powerset ×ˢ (S \ I).powerset, (-1 : ℚ) ^ p.1.card * (-1 : ℚ) ^ p.2.card * HH B π ∅ ∅ ((∏ j ∈ p.1, π j) * u) ((∏ j ∈ p.2, π j) * 1) = (-1 : ℚ) ^ ((p.1 ∪ p.2) ∩ I).card * B.GG ((∏ j ∈ p.1 ∪ p.2, π j) * u)`. Introduce `p hp`. Rewrite `hp` using `[Finset.mem_product, Finset.mem_powerset, Finset.mem_powerset]`. Establish `hdisj : Disjoint p.1 p.2` using `Finset.disjoint_left.2 fun x h1 h2 => (Finset.mem_sdiff.1 (hp.2 h2)).2 (hp.1 h1)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hcap : (p.1 ∪ p.2) ∩ I = p.1`. Use extensionality with `x`. Simplify using `only [Finset.mem_inter, Finset.mem_union]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h | h, hx⟩`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Conclude with `h`. Conclude with `absurd hx (Finset.mem_sdiff.1 (hp.2 h)).2`. Introduce `h`. Conclude with `⟨Or.inl h, hp.1 h⟩`. Establish `hy` using `hPlus p.2 (hp.2.trans Finset.sdiff_subset)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hm` using `GlobalTheory.T.signedInvolutionStableLatticeSum_mul_fixed_unit K B ι π ∅ ∅ ((∏ j ∈ p.1, π j) * u) 1 (∏ j ∈ p.2, π j) hL hy`. Establish `hsq` using `eta_sq (K := K) (Algebra.norm K.E (∏ j ∈ p.2, π j))`. Establish `hm' : HH B π ∅ ∅ ((∏ j ∈ p.1, π j) * u) ((∏ j ∈ p.2, π j) * 1) = K.eta (Algebra.norm K.E (∏ j ∈ p.2, π j)) * HH B π ∅ ∅ ((∏ j ∈ p.2, π j) * ((∏ j ∈ p.1, π j) * u)) 1`. Rewrite using `[hm, ← mul_assoc, hsq, one_mul]`. Rewrite using `[hm', heta p.2 (hp.2.trans Finset.sdiff_subset), hHG, hcap, Finset.prod_union hdisj]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h11 : ((-1 : ℚ) ^ p.2.card) * ((-1 : ℚ) ^ p.2.card) = 1` using `by rw [← mul_pow]; norm_num`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_congr rfl hstep]`. Use `Finset.sum_nbij' (fun p => p.1 ∪ p.2) (fun J => (J ∩ I, J \ I)) ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `p hp`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hp` using `[Finset.mem_product, Finset.mem_powerset, Finset.mem_powerset]`. Rewrite using `[Finset.mem_powerset]`. Conclude with `Finset.union_subset (hp.1.trans hI) (hp.2.trans Finset.sdiff_subset)`. Introduce `J hJ`. Rewrite `hJ` using `[Finset.mem_powerset]`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Finset.mem_product, Finset.mem_powerset, Finset.mem_powerset]`. Conclude with `⟨Finset.inter_subset_right, Finset.sdiff_subset_sdiff hJ le_rfl⟩`. Introduce `p hp`. Rewrite `hp` using `[Finset.mem_product, Finset.mem_powerset, Finset.mem_powerset]`. Establish `h2 : ∀ x ∈ p.2, x ∉ I` using `fun x hx => (Finset.mem_sdiff.1 (hp.2 hx)).2`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use extensionality with `x`. Simplify using `only [Finset.mem_inter, Finset.mem_union]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h | h, hx⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Conclude with `h`. Conclude with `absurd hx (h2 x h)`. Introduce `h`. Conclude with `⟨Or.inl h, hp.1 h⟩`. Use extensionality with `x`.
+Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Simplify using `only [Finset.mem_sdiff, Finset.mem_union]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h | h, hx⟩`. Conclude with `absurd (hp.1 h) hx`. Conclude with `h`.
-
-Introduce `h`. Conclude with `⟨Or.inr h, h2 x h⟩`. Introduce `J _`. Use extensionality with `x`. Simplify using `only [Finset.mem_union, Finset.mem_inter, Finset.mem_sdiff]`.
-
-The claim follows by propositional logic. Introduce `p _`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. The claim follows by propositional logic. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem HH_eq_alternating_GG : ∀ (K : UQ) (B : InvAlg K) (ι : Type) [Fintype ι] [DecidableEq ι] (e π : ι → B.A)
     (S : Finset ι), B.LieReg → IsFrame B e π S → ∀ I ⊆ S, ∀ u : B.A, IsUnit u →

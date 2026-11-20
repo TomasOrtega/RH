@@ -8,19 +8,17 @@ open NumberField IsDedekindDomain MeasureTheory Formalism.L2.Host GlobalTheory.C
 namespace GlobalTheory.CuspRep.LocSph
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `Submodule.mem_iSup_iff_exists_finset.1 hφ`. Establish `key : ∀ s : Finset ι, ∀ W : Submodule ℂ V, (∀ g, ∀ x ∈ W, ρ g x ∈ W) → φ ∉ W → φ ∈ W ⊔ ⨆ i ∈ s, LinearMap.range (f i) → ∃ v : U, v ≠ 0 ∧ ∀ k ∈ K, σ k v = v`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => intro W _ h1 h2; exact absurd (by simpa using h2) h1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `insert i s _ ih`. Introduce `W hW h1 h2`. Rewrite `h2` using `[Finset.iSup_insert, ← sup_assoc]`. Distinguish the cases in `h3 : φ ∈ W ⊔ LinearMap.range (f i)`. Take `⟨x, hx, _, ⟨v, rfl⟩, e⟩` from `Submodule.mem_sup.1 h3`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Establish `hv : f i v ∉ W` using `fun h => h1 (e ▸ add_mem hx h)`. Establish `hc : W.comap (f i) = ⊥`. Use `(((isIrreducible_iff σ).1 hσ).2 _ fun g u hu => ?_).resolve_right fun h => hv ?_` and prove the remaining obligations. Rewrite using `[Submodule.mem_comap, hf]`. Conclude with `hW g _ hu`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: v ∈ W.comap (f i)` using `h ▸ Submodule.mem_top`. Conclude with `this`. Use `⟨v, fun h => hv (by rw [h, map_zero]; exact zero_mem _), fun k hk => ?_⟩` and prove the remaining obligations. Establish `h4 : σ k v - v ∈ W.comap (f i)`. Establish `h5` using `hK k hk`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h5` using `[← e, map_add]`. Establish `h6 : f i (σ k v - v) = x - ρ k x`. Rewrite using `[map_sub, hf]`. Take the linear combination `(norm := module) h5`. Rewrite using `[Submodule.mem_comap, h6]`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `sub_mem hx (hW k x hx)`. Rewrite `h4` using `[hc, Submodule.mem_bot]`. Conclude with `sub_eq_zero.1 h4`. Use `ih _ (fun g y hy => ?_) h3 h2` and prove the remaining obligations. Take `⟨x, hx, _, ⟨v, rfl⟩, rfl⟩` from `Submodule.mem_sup.1 hy`.
-
-Rewrite using `[map_add, ← hf]`. Conclude with `Submodule.add_mem_sup (hW g x hx) ⟨_, rfl⟩`. Conclude with `key s ⊥ (fun g x hx => by simp_all) (by simpa using h0) (by simpa using hs)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_fixed_of_mem_iSup {G V U ι : Type} [Group G] [AddCommGroup V] [Module ℂ V] [AddCommGroup U] [Module ℂ U]
     (ρ : Representation ℂ G V) (σ : Representation ℂ G U) (hσ : σ.IsIrreducible) (f : ι → U →ₗ[ℂ] V)
@@ -63,7 +61,7 @@ theorem exists_fixed_of_mem_iSup {G V U ι : Type} [Group G] [AddCommGroup V] [M
 variable {E : Type} [Field E] [NumberField E] {a : ℕ}
 
 /- English proof (translation)
-Use `Units.ext (Matrix.ext fun i j => FiniteAdeleRing.ext _ fun v => ?_)` and prove the remaining obligations. Conclude with `congrArg (fun g : GL (Fin a) (v.adicCompletion E) => g.val i j) (h v)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem gl_ext {x y : GL (Fin a) (Af E)}
     (h : ∀ v, GeneralLinearGroup.map (pLoc E v) x = GeneralLinearGroup.map (pLoc E v) y) : x = y := by
@@ -71,9 +69,9 @@ theorem gl_ext {x y : GL (Fin a) (Af E)}
   exact congrArg (fun g : GL (Fin a) (v.adicCompletion E) => g.val i j) (h v)
 
 /- English proof (translation)
-Use `gl_ext fun v => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_mul]`. Distinguish the cases in `h : v = w`. Substitute `h` using the available equality. Rewrite using `[hk, one_mul, mul_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pLoc_locGL_of_ne h, one_mul, mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem comm_locGL (w : HeightOneSpectrum (𝓞 E)) (k : GL (Fin a) (Af E))
     (hk : GeneralLinearGroup.map (pLoc E w) k = 1) (g : GL (Fin a) (w.adicCompletion E)) :
@@ -85,9 +83,9 @@ theorem comm_locGL (w : HeightOneSpectrum (𝓞 E)) (k : GL (Fin a) (Af E))
   · rw [pLoc_locGL_of_ne h, one_mul, mul_one]
 
 /- English proof (translation)
-Establish `h` using `(GlobalTheory.Mem.UnrAe.tendsto_finSingle y hy).sub (GlobalTheory.Mem.UnrAe.tendsto_finSingle (L := E) (fun _ => 0) fun _ => by simp)`. Rewrite `h` using `[sub_self]`. Use `h.congr fun w => ?_` and prove the remaining obligations. Use `FiniteAdeleRing.ext _ fun v => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Function.update (fun v : HeightOneSpectrum (𝓞 E) => (1 : v.adicCompletion E)) w (y w) v - Function.update (fun v : HeightOneSpectrum (𝓞 E) => (1 : v.adicCompletion E)) w 0 v = (Pi.single w (y w) : ∀ v : HeightOneSpectrum (𝓞 E), v.adicCompletion E) v`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Distinguish the cases in `h : v = w`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem tendsto_sLoc (y : ∀ v : HeightOneSpectrum (𝓞 E), v.adicCompletion E)
     (hy : ∀ v, y v ∈ v.adicCompletionIntegers E) : Tendsto (fun v => sLoc E v (y v)) cofinite (𝓝 0) := by
@@ -105,9 +103,7 @@ theorem tendsto_sLoc (y : ∀ v : HeightOneSpectrum (𝓞 E), v.adicCompletion E
   · simp [h]
 
 /- English proof (translation)
-Use `tendsto_pi_nhds.2 fun i => tendsto_pi_nhds.2 fun j => ?_` and prove the remaining obligations. Establish `h` using `((tendsto_const_nhds (x := (1 : Matrix (Fin a) (Fin a) (Af E)) i j)).sub (tendsto_sLoc (E := E) (fun v => (1 : Matrix (Fin a) (Fin a) (v.adicCompletion E)) i j) fun v => by`. Rewrite using `[Matrix.one_apply]`. Use `split_ifs`. Use `exacts [one_mem _, zero_mem _])).add`.
-
-Use the proof step `(tendsto_sLoc (fun v => (y v i j : v.adicCompletion E)) fun v => (y v i j).2)`. Rewrite `h` using `[sub_zero, add_zero]`. Conclude with `h`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tendsto_corner (y : ∀ v : HeightOneSpectrum (𝓞 E), Matrix (Fin a) (Fin a) (v.adicCompletionIntegers E)) :
     Tendsto (fun v => corner (matN a (sLoc E v)) ((y v).map (v.adicCompletionIntegers E).subtype)) cofinite (𝓝 1) := by
@@ -120,7 +116,7 @@ theorem tendsto_corner (y : ∀ v : HeightOneSpectrum (𝓞 E), Matrix (Fin a) (
   exact h
 
 /- English proof (translation)
-Rewrite using `[Units.isEmbedding_embedProduct.tendsto_nhds_iff]`. Conclude with `(tendsto_corner fun v => (y v).val).prodMk_nhds ((MulOpposite.continuous_op.tendsto _).comp (tendsto_corner fun v => ((y v)⁻¹).val))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tendsto_locGL (y : ∀ v : HeightOneSpectrum (𝓞 E), GL (Fin a) (v.adicCompletionIntegers E)) :
     Tendsto (fun v => locGL E a v (GeneralLinearGroup.map (v.adicCompletionIntegers E).subtype (y v))) cofinite (𝓝 1) := by
@@ -129,9 +125,7 @@ theorem tendsto_locGL (y : ∀ v : HeightOneSpectrum (𝓞 E), GL (Fin a) (v.adi
     ((MulOpposite.continuous_op.tendsto _).comp (tendsto_corner fun v => ((y v)⁻¹).val))
 
 /- English proof (translation)
-Establish `h : ∀ w : HeightOneSpectrum (𝓞 E), ∃ y : GL (Fin a) (w.adicCompletionIntegers E), locGL E a w (GeneralLinearGroup.map (w.adicCompletionIntegers E).subtype y) ∈ U → ∀ g : GL (Fin a) (w.adicCompletionIntegers E), locGL E a w (GeneralLinearGroup.map (w.adicCompletionIntegers E).subt …` using `fun w => by`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Take `⟨-, g, hg⟩` from `hc 1`. Conclude with `hg (hc g).1`.
-
-Use `choose y hy using h`. Conclude with `((tendsto_locGL y).eventually_mem hU).mono fun w hw => hy w hw`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem eventually_mem {U : Set (GL (Fin a) (Af E))} (hU : U ∈ 𝓝 1) :
     ∀ᶠ w : HeightOneSpectrum (𝓞 E) in cofinite, ∀ g : GL (Fin a) (w.adicCompletionIntegers E),
@@ -153,19 +147,17 @@ def Maps (π : CuspSub E a) (w : HeightOneSpectrum (𝓞 E)) (σ : SmIrr (GL (Fi
   {f : σ.V →ₗ[ℂ] Sm E a // (∀ v, f v ∈ π.V) ∧ ∀ g v, f (σ.ρ g v) = finRep E a (locGL E a w g) (f v)}
 
 /- English proof (translation)
-Establish `comm : ∀ o : Op E a, (∀ g, act o * finRep E a (locGL E a w g) = finRep E a (locGL E a w g) * act o) → ∀ (f : Maps π w σ) v, act o (f.1 v) ∈ ⨆ f : Maps π w σ, LinearMap.range f.1` using `fun o ho f v => Submodule.mem_iSup_of_mem (⟨act o ∘ₗ f.1, fun v => π.stable o _ (f.2.1 v), fun g v => by`. Rewrite using `[LinearMap.comp_apply, f.2.2]`. Conclude with `LinearMap.congr_fun (ho g) _⟩ : Maps π w σ) ⟨v, rfl⟩`. Use `(π.irred _ (iSup_le fun f => ?_) fun o φ hφ => ?_).resolve_left fun hb => ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨v, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Conclude with `f.2.1 v`. Establish `: (⨆ f : Maps π w σ, LinearMap.range f.1) ≤ (⨆ f : Maps π w σ, LinearMap.range f.1).comap (act o)`. Use `iSup_le fun f => ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨v, rfl⟩`. Rewrite using `[Submodule.mem_comap]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Consider the cases of `o with`. Consider the case `fin k`. Set `g` to `GeneralLinearGroup.map (pLoc E w) k`. Establish `h1` using `comm (.fin (k * (locGL E a w g)⁻¹)) (fun g' => by`. Express the relevant statement in the definitionally equal form `finRep E a _ * _ = _ * finRep E a _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← map_mul, ← map_mul, comm_locGL w _ (by rw [map_mul, map_inv, pLoc_locGL, mul_inv_cancel])]) f (σ.ρ g v)`. Establish `h2 : act (.fin (k * (locGL E a w g)⁻¹)) (f.1 (σ.ρ g v)) = act (.fin k) (f.1 v)`. Rewrite using `[f.2.2, act, act, ← Module.End.mul_apply, ← map_mul, inv_mul_cancel_right]`. Rewrite `h1` using `[h2]`. Then use the resulting hypothesis. Consider the case `cpt k`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `comm (.cpt k) (fun g => ?_) f v` and prove the remaining obligations. Establish `h2` using `congrArg (rt E a) (infGL_comm (Unitary.toUnits k) (locGL E a w g))`. Rewrite `h2` using `[map_mul, map_mul]`. Conclude with `h2`. Consider the case `lie X => exact comm (.lie X) (fun g => lie_rt_fin X (locGL E a w g)) f v`.
+Rewrite the indicated hypotheses using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `this hφ`. Take `⟨f, h0, hf⟩` from `h`. Use `h0 (LinearMap.ext fun v => Subtype.ext ?_)` and prove the remaining obligations. Establish `: (f v).1 ∈ ⨆ f : Maps π w σ, LinearMap.range f.1` using `Submodule.mem_iSup_of_mem (⟨π.V.subtype ∘ₗ f, fun v => (f v).2, fun g v => congrArg Subtype.val (hf g v)⟩ : Maps π w σ) ⟨v, rfl⟩`. Rewrite `this` using `[hb]`.
-
-Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iSup_range_eq (π : CuspSub E a) (w : HeightOneSpectrum (𝓞 E)) (σ : SmIrr (GL (Fin a) (w.adicCompletion E)))
     (h : π.IsLocComp w σ) : ⨆ f : Maps π w σ, LinearMap.range f.1 = π.V := by
@@ -204,7 +196,7 @@ theorem iSup_range_eq (π : CuspSub E a) (w : HeightOneSpectrum (𝓞 E)) (σ : 
     exact this
 
 /- English proof (translation)
-Introduce `E _ _ _ a π`. Take `⟨φ, hφ, h0⟩` from `(Submodule.ne_bot_iff _).1 π.ne_bot`. Use `filter_upwards [eventually_mem ((π.cusp φ hφ).1.level.mem_nhds (by simp))] with w hw σ hσ`. Take `⟨v, h1, h2⟩` from `exists_fixed_of_mem_iSup ((finRep E a).comp (locGL E a w)) σ.ρ σ.irred (fun f : Maps π w σ => f.1) (fun f => f.2.2) (Set.range (GeneralLinearGroup.map (w.adicCompletionIntegers E).subtype)) φ h0 (by rintro _ ⟨g, rfl⟩; exact hw g) (by rw [iSup_range_eq π w σ hσ]; exact hφ)`. Conclude with `⟨v, h1, fun g => h2 _ ⟨g, rfl⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem locComp_spherical : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (π : CuspSub E a), ∀ᶠ w : HeightOneSpectrum (𝓞 E) in Filter.cofinite, ∀ σ : SmIrr (GL (Fin a) (w.adicCompletion E)), π.IsLocComp w σ → ∃ v : σ.V, v ≠ 0 ∧ ∀ g : GL (Fin a) (w.adicCompletionIntegers E), σ.ρ (Matrix.GeneralLinearGroup.map (w.adicCompletionIntegers E).subtype g) v = v := by
   intro E _ _ _ a π

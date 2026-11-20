@@ -18,7 +18,7 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     {hR : Ring9 W}
 
 /- English proof (translation)
-Establish `h : e = ((latOf C).N (c - (ell : ZMod n))).subtype ∘ hBasis` using `funext fun k => (hBasis_e k).symm`. Rewrite using `[h, Set.range_comp, Submodule.span_image, hBasis.span_eq, Submodule.map_top, Submodule.range_subtype]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem span_holds {T : LocLat G Qp LL O} {C : Coord W (baseIdOf hR) T} {c : ZMod n} {ell : ℕ}
     {r : ℕ} {e : Fin r → C.V}
@@ -30,7 +30,7 @@ theorem span_holds {T : LocLat G Qp LL O} {C : Coord W (baseIdOf hR) T} {c : ZMo
     Submodule.range_subtype]
 
 /- English proof (translation)
-Establish `h : e = ((latOf C).N (c - (ell : ZMod n))).subtype ∘ hBasis` using `funext fun k => (hBasis_e k).symm`. Rewrite using `[h]`. Conclude with `hBasis.linearIndependent.map' _ (Submodule.ker_subtype _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ind_holds {T : LocLat G Qp LL O} {C : Coord W (baseIdOf hR) T} {c : ZMod n} {ell : ℕ}
     {r : ℕ} {e : Fin r → C.V}
@@ -46,7 +46,7 @@ section abelian₂
 variable {T : LocLat G Qp LL O} {C : Coord W (baseIdOf hR) T} {i : ZMod n} {r : ℕ} {e : Fin r → C.V}
 
 /- English proof (translation)
-Rewrite using `[← hBasis_e k]`. Conclude with `(hBasis k).2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lvBasis_e_mem (hBasis : Module.Basis (Fin r) (PowerSeries O) ↥((latOf C).N i))
     (hBasis_e : ∀ k, (hBasis k : C.V) = e k) (k : Fin r) : C.t i (e k) ∈ W.N T := by
@@ -54,14 +54,14 @@ theorem lvBasis_e_mem (hBasis : Module.Basis (Fin r) (PowerSeries O) ↥((latOf 
   exact (hBasis k).2
 
 /- English proof (translation)
-Establish `h : ∀ y, C.t i y = ((DDl W T i).subtype.comp (C.θ i).toAddMonoidHom) y` using `fun _ => rfl`. Simplify using `only [h, map_sum]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem lvBasis_t_sum (x : Fin r → C.V) : C.t i (∑ l, x l) = ∑ l, C.t i (x l) := by
   have h : ∀ y, C.t i y = ((DDl W T i).subtype.comp (C.θ i).toAddMonoidHom) y := fun _ => rfl
   simp only [h, map_sum]
 
 /- English proof (translation)
-Establish `h : (⟨∑ l, f l, hs⟩ : ↥(W.N T)) = ∑ l, ⟨f l, hf l⟩` using `Subtype.ext (by simp)`. Rewrite using `[h, map_sum]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem lvBasis_cmp_sum {m : ℕ} (f : Fin m → W.DD T) (hf : ∀ l, f l ∈ W.N T) (hs : ∑ l, f l ∈ W.N T) :
     W.cmp T ⟨∑ l, f l, hs⟩ = ∑ l, W.cmp T ⟨f l, hf l⟩ := by
@@ -69,9 +69,9 @@ theorem lvBasis_cmp_sum {m : ℕ} (f : Fin m → W.DD T) (hf : ∀ l, f l ∈ W.
   rw [h, map_sum]
 
 /- English proof (translation)
-Establish `e : a * letE i = a' * letE i`. Use function extensionality and compare the values at `m`. Distinguish the cases in `hm : m = i`. Substitute `hm` using the available equality. Simplify using `[letE, h]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[letE, hm]`. Rewrite using `[← hx, smul_smul, smul_smul, e]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem lvBasis_smul_letter {a a' : LetA O n} (h : a i = a' i) {x : W.DD T}
     (hx : (letE i : LetA O n) • x = x) : a • x = a' • x := by
@@ -84,11 +84,9 @@ theorem lvBasis_smul_letter {a a' : LetA O n} (h : a i = a' i) {x : W.DD T}
   rw [← hx, smul_smul, smul_smul, e]
 
 /- English proof (translation)
-Take `⟨z, hz⟩` from `C.t_surj i w hwl hwΔ`. Establish `hzN : z ∈ (latOf C).N i` using `by show C.t i z ∈ W.N T`. Rewrite using `[hz]`. Conclude with `hw`. Use `⟨fun l => hBasis.repr ⟨z, hzN⟩ l, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hz' : ∑ l, hBasis.repr ⟨z, hzN⟩ l • e l = z`. Establish `h` using `congrArg Subtype.val (hBasis.sum_repr ⟨z, hzN⟩)`. Simplify `h` using `only [Submodule.coe_sum, Submodule.coe_smul, hBasis_e]`. Rewrite using `[← hz]`. Use `conv_lhs => rw [← hz']`.
-
-Rewrite using `[lvBasis_t_sum]`. Conclude with `Finset.sum_congr rfl fun l _ => C.t_smul i _ _`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lvBasis_expand (hBasis : Module.Basis (Fin r) (PowerSeries O) ↥((latOf C).N i))
     (hBasis_e : ∀ k, (hBasis k : C.V) = e k) {w : W.DD T} (hw : w ∈ W.N T)
@@ -109,7 +107,7 @@ theorem lvBasis_expand (hBasis : Module.Basis (Fin r) (PowerSeries O) ↥((latOf
   exact Finset.sum_congr rfl fun l _ => C.t_smul i _ _
 
 /- English proof (translation)
-Simplify using `only [Finset.smul_sum, smul_comm (letE i : LetA O n) (α _), hg, smul_smul, Finset.sum_smul]`. Conclude with `Finset.sum_comm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lvBasis_regroup {m : ℕ} (b : Fin m → W.DD T) (g : Fin m → Fin r → PowerSeries O)
     (hg : ∀ j, (letE i : LetA O n) • b j = ∑ l, (baseIdOf hR).d (g j l) • C.t i (e l))
@@ -120,7 +118,7 @@ theorem lvBasis_regroup {m : ℕ} (b : Fin m → W.DD T) (g : Fin m → Fin r �
   exact Finset.sum_comm
 
 /- English proof (translation)
-Establish `e1 : ((letE i : LetA O n) • (⟨C.t i (e k), lvBasis_e_mem hBasis hBasis_e k⟩ : ↥(W.N T))) = ⟨C.t i (e k), lvBasis_e_mem hBasis hBasis_e k⟩` using `Subtype.ext (C.t_letter i (e k))`. Rewrite using `[← e1]`. Conclude with `W.cmp_letter T i _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lvBasis_cmp_e_letter (hBasis : Module.Basis (Fin r) (PowerSeries O) ↥((latOf C).N i))
     (hBasis_e : ∀ k, (hBasis k : C.V) = e k) (k : Fin r) :
@@ -131,13 +129,11 @@ theorem lvBasis_cmp_e_letter (hBasis : Module.Basis (Fin r) (PowerSeries O) ↥(
   exact W.cmp_letter T i _
 
 /- English proof (translation)
-Take `⟨⟨m, b, hbN, huniq, -⟩, -⟩` from `hP9`. Establish `hb : ∀ j, ∃ g : Fin r → PowerSeries O, (letE i : LetA O n) • b j = ∑ l, (baseIdOf hR).d (g l) • C.t i (e l)` using `fun j => lvBasis_expand hBasis hBasis_e ((W.N T).smul_mem _ (hbN j).1) (lvBasis_letE_idem i _) (fun δ hδ => by rw [γD_smulA W, γA_letE W, (hbN j).2 δ hδ])`. Use `choose g hg using hb`. Establish `hm` using `lvBasis_e_mem hBasis hBasis_e`. Use `Submodule.span_le.2 ?_ (lvBasis_letter_span hP3.2.1 i hd)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨x, rfl⟩`. Take `⟨α, hα, -⟩` from `huniq _ x.2`. Establish `hy : (letE i : LetA O n) • (x : W.DD T) = ∑ l, (∑ j, α j * (baseIdOf hR).d (g j l)) • C.t i (e l)`. Rewrite using `[hα]`. Conclude with `lvBasis_regroup b g hg α`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmem : ∀ l, (∑ j, α j * (baseIdOf hR).d (g j l)) • C.t i (e l) ∈ W.N T` using `fun l => (W.N T).smul_mem _ (hm l)`. Establish `e0 : W.cmp T ((letE i : LetA O n) • x) = W.cmp T ⟨(letE i : LetA O n) • (x : W.DD T), (W.N T).smul_mem _ x.2⟩` using `rfl`. Simplify using `only`. Rewrite using `[SetLike.mem_coe, e0, lvBasis_cmp_congr _ (Submodule.sum_mem _ fun l _ => hmem l) hy, lvBasis_cmp_sum _ hmem]`. Use `Submodule.sum_mem _ fun l _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[lvBasis_cmp_smul_letter (hm l) i (C.t_letter i (e l))]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨l, rfl⟩)`.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lvBasis_letter_le {π' : LetA O n} (hP3 : Formalism.MainNotions.DeltaInvariantLattices.p3 W T) (hP9 : Formalism.MainNotions.DeltaInvariantLattices.wachModuleOverLetters W T π')
     (hBasis : Module.Basis (Fin r) (PowerSeries O) ↥((latOf C).N i))
@@ -170,33 +166,29 @@ theorem lvBasis_letter_le {π' : LetA O n} (hP3 : Formalism.MainNotions.DeltaInv
   exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨l, rfl⟩)
 
 /- English proof (translation)
-Take `⟨⟨m, b, hbN, huniq, hΔ⟩, -⟩` from `hP9`. Establish `hm` using `lvBasis_e_mem hBasis hBasis_e`. Establish `hoN : ∀ k, o k • C.t i (e k) ∈ W.N T` using `fun k => (W.N T).smul_of_tower_mem (o k) (hm k)`. Establish `hwN : ∑ k, o k • C.t i (e k) ∈ W.N T` using `Submodule.sum_mem _ fun k _ => hoN k`. Establish `hcw : W.cmp T ⟨_, hwN⟩ = 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[lvBasis_cmp_sum _ hoN, ← h0]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← W.cmp_smul]`. Both sides reduce to the same expression. Take `⟨y, hyN, hy⟩` from `Submodule.mem_map.1 (hP3.1 ⟨_, hwN⟩ hcw)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Establish `hy' : (letπ : LetA O n) • y = ∑ k, o k • C.t i (e k)` using `hy`. Establish `hxΔ : ∀ k, ∃ a : Fin m → LetA O n, (∀ j, Formalism.MainNotions.DeltaInvariantLattices.InAΔ W (a j)) ∧ C.t i (e k) = ∑ j, a j • b j` using `fun k => hΔ _ ⟨hm k, fun δ hδ => C.t_Δ i (e k) δ hδ⟩`. Use `choose β hβΔ hβ using hxΔ`. Take `⟨αy, hαy, -⟩` from `huniq y hyN`. Take `⟨αw, -, huw⟩` from `huniq _ hwN`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hw1 : ∑ k, o k • C.t i (e k) = ∑ j, (∑ k, o k • β k j) • b j`. Simplify using `only [hβ, Finset.smul_sum, ← smul_assoc, Finset.sum_smul]`. Conclude with `Finset.sum_comm`. Establish `hw2 : ∑ k, o k • C.t i (e k) = ∑ j, ((letπ : LetA O n) * αy j) • b j`. Rewrite using `[← hy', hαy, Finset.smul_sum]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [smul_smul]`. Establish `hcoef : ∀ j, ∑ k, o k * PowerSeries.constantCoeff (β k j i) = 0`. Introduce `j`. Establish `h1` using `congrFun (congrFun ((huw _ hw1).trans (huw _ hw2).symm) j) i`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, Pi.mul_apply, letπ] at h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h2` using `congrArg PowerSeries.constantCoeff h1`. Simplify `h2` using `[map_sum, PowerSeries.smul_eq_C_mul]`. Establish `hG : ∀ j, ∃ g : Fin r → PowerSeries O, (letE i : LetA O n) • b j = ∑ l, (baseIdOf hR).d (g l) • C.t i (e l)` using `fun j => lvBasis_expand hBasis hBasis_e ((W.N T).smul_mem _ (hbN j).1) (lvBasis_letE_idem i _) (fun δ hδ => by rw [γD_smulA W, γA_letE W, (hbN j).2 δ hδ])`. Use `choose g hg using hG`. Establish `hid : ∀ k l, ∑ j, PowerSeries.constantCoeff (β k j i) * PowerSeries.constantCoeff (g j l) = if k = l then 1 else 0`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `k l`. Establish `hc : ∀ l', (∑ j, β k j * (baseIdOf hR).d (g j l')) ∈ W.AΔ` using `fun l' => Subalgebra.sum_mem _ fun j _ => Subalgebra.mul_mem _ (hβΔ k j) (diag_mem_AΔ (ιOf_inv hR (g j l')))`. Establish `hinv : ∀ l', Inv1 W ((∑ j, β k j * (baseIdOf hR).d (g j l')) i)`. Introduce `l' δ hδ`. Establish `hA : ∀ δ ∈ W.DelF, W.γA δ (∑ j, β k j * (baseIdOf hR).d (g j l')) = ∑ j, β k j * (baseIdOf hR).d (g j l')` using `hc l'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `h` using `congrFun (hA δ hδ) i`. Simplify `h` using `[LocWach.γA, letγ]`. Use `choose h hh using fun l' => ιOf_full hR _ (hinv l')`. Establish `hx : C.t i (e k) = C.t i (∑ l', h l' • e l')`. Rewrite using `[lvBasis_t_sum]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `conv_lhs => rw [← C.t_letter i (e k), hβ k, lvBasis_regroup b g hg (β k)]`. Use `Finset.sum_congr rfl fun l' _ => ?_` and prove the remaining obligations. Rewrite using `[C.t_smul]`. Use `lvBasis_smul_letter ?_ (C.t_letter i (e l'))` and prove the remaining obligations. Rewrite using `[← hh l']`.
+Both sides reduce to the same expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `he : hBasis k = ∑ l', h l' • hBasis l'`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul, hBasis_e]`. Conclude with `C.t_inj i hx`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Establish `hrep` using `congrArg (fun z => hBasis.repr z l) he`. Simplify using `only [hBasis.repr_self, hBasis.repr_sum_self] at hrep`. Establish `hcc : PowerSeries.constantCoeff ((∑ j, β k j * (baseIdOf hR).d (g j l)) i) = if k = l then 1 else 0`. Rewrite using `[← hh l, ιOf_const, ← hrep, Finsupp.single_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[← hcc]`. Simplify using `only [Finset.sum_apply, Pi.mul_apply, map_sum, map_mul, BaseId.d_apply]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[show (baseIdOf hR).ι = ιOf hR from rfl, ιOf_const]`. Introduce `l`.
-
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [hid]`. Use `_ = ∑ j, (∑ k, o k * PowerSeries.constantCoeff (β k j i)) * PowerSeries.constantCoeff (g j l) := by`. Simplify using `only [Finset.mul_sum, Finset.sum_mul, mul_assoc]`. Conclude with `Finset.sum_comm`.
-
-Use `_ = 0 := by simp [hcoef]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lvBasis_kernel {π' : LetA O n} (hP3 : Formalism.MainNotions.DeltaInvariantLattices.p3 W T) (hP9 : Formalism.MainNotions.DeltaInvariantLattices.wachModuleOverLetters W T π')
     (hBasis : Module.Basis (Fin r) (PowerSeries O) ↥((latOf C).N i))
@@ -281,11 +273,11 @@ theorem lvBasis_kernel {π' : LetA O n} (hP3 : Formalism.MainNotions.DeltaInvari
     _ = 0 := by simp [hcoef]
 
 /- English proof (translation)
-Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `a ha k`. Use `choose y o hy0 hyo using fun k => hFrac (a k)`. Establish `hY : algebraMap O LL (∏ l, y l) ≠ 0`. Rewrite using `[map_prod]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Finset.prod_ne_zero_iff.2 fun l _ => hy0 l`. Establish `hYa : ∀ k, algebraMap O LL (∏ l, y l) * a k = algebraMap O LL (o k * ∏ l ∈ Finset.univ.erase k, y l)`. Introduce `k`. Rewrite using `[← Finset.mul_prod_erase _ _ (Finset.mem_univ k), map_mul, map_mul, ← hyo k]`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h0 : ∑ k, algebraMap O LL (o k * ∏ l ∈ Finset.univ.erase k, y l) • W.cmp T ⟨C.t i (e k), lvBasis_e_mem hBasis hBasis_e k⟩ = 0`. Simplify using `only [← hYa, mul_smul, ← Finset.smul_sum, ha, smul_zero]`. Establish `h1` using `hYa k`. Rewrite `h1` using `[lvBasis_kernel hP3 hP9 hBasis hBasis_e _ h0 k, map_zero]`. Conclude with `(mul_eq_zero.1 h1).resolve_left hY`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lvBasis_cmp_ind {π' : LetA O n} (hP3 : Formalism.MainNotions.DeltaInvariantLattices.p3 W T) (hP9 : Formalism.MainNotions.DeltaInvariantLattices.wachModuleOverLetters W T π')
     (hFrac : ∀ a : LL, ∃ y o : O, algebraMap O LL y ≠ 0 ∧ algebraMap O LL y * a = algebraMap O LL o)
@@ -312,7 +304,7 @@ theorem lvBasis_cmp_ind {π' : LetA O n} (hP3 : Formalism.MainNotions.DeltaInvar
   exact (mul_eq_zero.1 h1).resolve_left hY
 
 /- English proof (translation)
-Establish `h'` using `lvBasis_φpow_letter _ ell (lvBasis_cmp_e_letter hBasis hBasis_e k)`. Rewrite `h'` using `[sub_add_cancel]`. Unfold `lamOf`. Rewrite using `[dif_pos (lvBasis_e_mem hBasis hBasis_e k), dif_pos h']`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem lvBasis_lamOf_val {c : ZMod n} {ell : ℕ}
     (hBasis : Module.Basis (Fin r) (PowerSeries O) ↥((latOf C).N (c - (ell : ZMod n))))
@@ -327,9 +319,9 @@ theorem lvBasis_lamOf_val {c : ZMod n} {ell : ℕ}
 end abelian₂
 
 /- English proof (translation)
-Substitute `hLam` using the available equality. Apply `LinearIndependent.of_comp (DcrisL PD T.ρ (W.emb c)).subtype` to reduce the goal to its premises. Establish `hval : ⇑(DcrisL PD T.ρ (W.emb c)).subtype ∘ lamOf C c ell e = ⇑((φVB PD (LL` using `LL) (V := T.V)) ^ ell) ∘ fun k => W.cmp T ⟨_, lvBasis_e_mem hBasis hBasis_e k⟩ :=`. Use function extensionality and compare the values at `fun k => lvBasis_lamOf_val hBasis hBasis_e k`. Rewrite using `[hval]`.
+Substitute using the available equality. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(lvBasis_cmp_ind hP3 hP9 hFrac hBasis hBasis_e).map' _ (LinearMap.ker_eq_bot.2 (lvBasis_φpow_inj PD (LL := LL) (V := T.V) ell))`.
+A detailed English derivation is pending.
 -/
 theorem lamInd_holds {T : LocLat G Qp LL O} {C : Coord W (baseIdOf hR) T} {c : ZMod n} {ell : ℕ}
     {r : ℕ} {e : Fin r → C.V} {lam : Fin r → Dc W T c} {π' : LetA O n}
@@ -349,11 +341,11 @@ theorem lamInd_holds {T : LocLat G Qp LL O} {C : Coord W (baseIdOf hR) T} {c : Z
     (LinearMap.ker_eq_bot.2 (lvBasis_φpow_inj PD (LL := LL) (V := T.V) ell))
 
 /- English proof (translation)
-Substitute `hLam` using the available equality. Rewrite using `[Submodule.eq_top_iff']`. Introduce `x`. Take `⟨d', hd', hdx⟩` from `lvBasis_φpow_pre hP3.2.1 hP3.2.2 c ell x.2`. Take `⟨a, ha⟩` from `(Submodule.mem_span_range_iff_exists_fun LL).1 (lvBasis_letter_le hP3 hP9 hBasis hBasis_e hd')`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hx : x = ∑ k, a k • lamOf C c ell e k`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul, lvBasis_lamOf_val hBasis hBasis_e]`. Rewrite using `[← hdx, ← ha, map_sum]`. Simplify using `only [map_smul]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hx]`. Conclude with `Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨k, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lamSpan_holds {T : LocLat G Qp LL O} {C : Coord W (baseIdOf hR) T} {c : ZMod n} {ell : ℕ}
     {r : ℕ} {e : Fin r → C.V} {lam : Fin r → Dc W T c} {π' : LetA O n}

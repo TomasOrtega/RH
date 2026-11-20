@@ -19,7 +19,7 @@ end JKillPoly
 
 open JKillPoly in
 /- English proof (translation)
-The claim follows from `KillingPolynomialDegreeFour.killPoly4`.
+A detailed English derivation is pending.
 -/
 theorem killPoly_holds : KillPoly := KillingPolynomialDegreeFour.killPoly4
 

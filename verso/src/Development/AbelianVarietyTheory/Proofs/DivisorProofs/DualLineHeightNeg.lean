@@ -20,7 +20,7 @@ open Formalism.BasicNotions Formalism.MainNotions GlobalTheory GlobalTheory.Cart
 namespace GlobalTheory.DualLineHt
 
 /- English proof (translation)
-Establish `hP1 : P1 ≠ 0` using `left_ne_zero_of_mul_eq_one k`. Establish `hP2 : P2 = P1⁻¹` using `eq_inv_of_mul_eq_one_right k`. Establish `hn : ‖V‖ ≠ 0` using `norm_ne_zero_iff.2 hV`. Rewrite using `[hP2, Real.log_mul (pow_ne_zero _ (norm_ne_zero_iff.2 (inv_ne_zero hV))) (inv_ne_zero hP1), norm_inv, inv_pow, Real.log_inv, Real.log_inv, Real.log_pow]`. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -38,19 +38,17 @@ section
 variable {D : D7} (O : Setup D) (x : ToroidalCompactificationData O.s) (c : O.s.Comp)
 
 /- English proof (translation)
-Establish `hu` using `GlobalTheory.CombInd.DualComb.unitAt_eqn_mul (O.Φ.C c) w (under p)`. Establish `hn` using `GlobalTheory.CombInd.DualComb.expo_neg O.S.Dw w`. Unfold `refMet`. Generalize the expression as in `expo O.S.Dw (-w) = n' at hn hu ⊢`. Generalize the expression as in `expo O.S.Dw w = n at hn hu ⊢`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Substitute `hn` using the available equality. Use `set G := x.eigMet (embOf O.κ.e σ)`. Use `set g := eqn (divOf (O.Φ.C c) n) (under p) with hgdef`. Use `set g' := eqn (divOf (O.Φ.C c) (-n)) (under p) with hg'def`. Establish `hg : (divOf (O.Φ.C c) n).IsEqn (under p) g` using `Base.isEqn_eqn _ _`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hf : (divOf (O.Φ.C c) n).GeneratesAt (under p) (((g⁻¹ : (O.var c).Fnˣ) : (O.var c).Fn))`. Rewrite using `[Units.val_inv_eq_inv_val]`. Conclude with `CartierDiv.isEqn_iff_generatesAt_inv.1 hg`. Establish `key` using `pn_met_mul_neg G n hf`. Establish `key' : (cxSt D.what₂.LL).pn _ σ _ ((O.Φ.C c).met G n) ((cxSt D.what₂.LL).cx _ σ ((g⁻¹ : (O.var c).Fnˣ) : (O.var c).Fn)) p * (cxSt D.what₂.LL).pn _ σ _ ((O.Φ.C c).met G (-n)) ((cxSt D.what₂.LL).cx _ σ (g : (O.var c).Fn)) p = 1`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `key using 4` and compare the differences between its conclusion and the goal. Rewrite using `[Units.val_inv_eq_inv_val, inv_inv]`. Establish `hgn : (divOf (O.Φ.C c) (-n)).IsEqn (under p) g⁻¹`. Rewrite using `[GlobalTheory.CombInd.DualComb.divOf_neg]`. Conclude with `hg.neg`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hreg : (divOf (O.Φ.C c) (-n)).RegularAt (under p) (g : (O.var c).Fn)`. Use `(CartierDiv.isEqn_iff_generatesAt_inv.1 hgn).regularAt` as an intermediate fact. Simplify `this` using `[Units.val_inv_eq_inv_val]`. Establish `hsplit : (((g')⁻¹ : (O.var c).Fnˣ) : (O.var c).Fn) = (((g * g')⁻¹ : (O.var c).Fnˣ) : (O.var c).Fn) * (g : (O.var c).Fn)`. Rewrite using `[← Units.val_mul, mul_inv_rev, mul_assoc, inv_mul_cancel, mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hreg' : RegAt (under p) (((g * g')⁻¹ : (O.var c).Fnˣ) : (O.var c).Fn)`. Rewrite using `[Units.val_inv_eq_inv_val]`. Conclude with `hu.inv.regAt`. Establish `hmul` using `(cxSt D.what₂.LL).pn_mul _ σ _ ((O.Φ.C c).met G (-n)) _ _ p hreg' hreg`. Establish `hv0 : valAt p.1 ((g * g' : (O.var c).Fnˣ) : (O.var c).Fn) ≠ 0` using `(Base.valAt_zpow p.1 hu).1`.
-
-Establish `hinv : valAt p.1 (((g * g')⁻¹ : (O.var c).Fnˣ) : (O.var c).Fn) = (valAt p.1 ((g * g' : (O.var c).Fnˣ) : (O.var c).Fn))⁻¹`. Use `(Base.valAt_zpow p.1 hu).2 (-1)` as an intermediate fact. Simplify `this` using `[Units.val_inv_eq_inv_val]`. Rewrite using `[hsplit, hmul, TrivNef.ratVal_eq_valAt, hinv]`. Conclude with `log_norm_inverse key' hv0`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem log_pn_neg (w : Sym D.host.E →₀ ℤ) {σ : D.what₂.LL →+* ℂ} (p : Pts (O.var c) σ) :
     Real.log ((cxSt D.what₂.LL).pn _ σ _ (refMet x O.Φ c σ (expo O.S.Dw (-w)))
@@ -98,7 +96,7 @@ theorem log_pn_neg (w : Sym D.host.E →₀ ℤ) {σ : D.what₂.LL →+* ℂ} (
 end
 
 /- English proof (translation)
-Use `(Base.valAt_zpow p hu).2 (-1)` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem valAt_inv_unit {F : Type} [Field F] {Y : Var F} {K : Type} [Field K] (p : Sp K ⟶ Y.X) {u : Y.Fn}
     (hu : UnitAt (below p) u) : valAt p u⁻¹ = (valAt p u)⁻¹ := by
@@ -108,15 +106,13 @@ theorem valAt_inv_unit {F : Type} [Field F] {Y : Var F} {K : Type} [Field K] (p 
 open Classical in
 
 /- English proof (translation)
-Take `⟨x, P, h⟩` from `hO`. Establish `hu` using `GlobalTheory.CombInd.DualComb.unitAt_eqn_mul (O.Φ.C c) w z`. Take `⟨hGs, hPF⟩` from `GlobalTheory.HtAdd.ProdFormulaPts.main D.what₂.LL (O.var c) z hz _ hu.inv`. Establish `key` using `GlobalTheory.HtAdd.ht_comb ({()} : Finset Unit) (fun _ => -1) (O.adl0 c (-w)) (fun _ => O.adl0 c w) rfl (fun _ => rfl) hz _ (fun σ p hp => ?_) (fun v ε y hy => ?_) (fun _ _ => hS) hGs hPF`. Simplify using `using key`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Substitute `hp` using the available equality. Establish `e₁ : ∀ w, (O.adl0 c w).ci = 0` using `fun _ => rfl`. Establish `e₂ : ∀ w σ, (O.adl0 c w).m σ = refMet x O.Φ c σ (expo O.S.Dw w)` using `fun w σ => by`. Rewrite using `[← h.h0_eq]`. Both sides reduce to the same expression.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `e₃` using `log_pn_neg O x c w p`. Establish `e₄` using `valAt_inv_unit p.1 hu`. Simplify using `only [e₁, e₂, Pi.zero_apply, mul_zero, sub_zero, Finset.sum_singleton, Int.cast_neg, Int.cast_one, neg_one_mul]`. Rewrite using `[TrivNef.ratVal_eq_valAt, e₄, norm_inv, Real.log_inv, ← sub_eq_add_neg]`. Conclude with `e₃`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Substitute using the available equality.
 
-Substitute `hy` using the available equality. Establish `e₃` using `GlobalTheory.CombInd.DualComb.lgOf_neg (O.Φ.C c) w v ε y`. Establish `e₄` using `valAt_inv_unit y.1 hu`. Simplify using `only [Finset.sum_singleton, Int.cast_neg, Int.cast_one, neg_one_mul]`. Rewrite using `[e₄, map_inv₀, Real.log_inv, ← sub_eq_add_neg]`.
-
-Conclude with `e₃`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ht_neg {D : D7} (O : Setup D) (hO : O.Core) (c : O.s.Comp) (z : (O.var c).X)
     (hz : IsClosed ({z} : Set (O.var c).X)) (w : Sym D.host.E →₀ ℤ)
@@ -147,7 +143,7 @@ theorem ht_neg {D : D7} (O : Setup D) (hO : O.Core) (c : O.s.Comp) (z : (O.var c
     exact e₃
 
 /- English proof (translation)
-Introduce `D O hO c z hz τ m hm`. Take `⟨W⟩` from `ReadsEx.nonempty_latModel hO ∅ c`. Establish `hs : (letterOf O.S.Dw (.inl (τ, m))).isSome` using `by simp [letterOf, hm]`. Rewrite using `[Finsupp.single_neg]`. Conclude with `ht_neg O hO c z hz _ (CoverFinSupp.finite_support _ _ _ _ _ _ _ one_ne_zero (W.line_spec ∅ subset_rfl _ hs) z hz)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ (D : D7) (O : Setup D), O.Core → ∀ (c : O.s.Comp) (z : (O.var c).X), IsClosed ({z} : Set (O.var c).X) →
     ∀ (τ : D.host.E →+* ℂ) (m : ℕ), m < O.S.Dw.mult τ →
@@ -166,6 +162,6 @@ end
 
 open NumberField Formalism.BasicNotions Formalism.MainNotions GlobalTheory.ShFam GlobalTheory.ShFam.Pad GlobalTheory.Mean4O
 /- English proof (translation)
-The claim follows from `GlobalTheory.DualLineHt.main`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.T.dual_line_height_neg : ∀ (D : D7) (O : Setup D), O.Core → ∀ (c : O.s.Comp) (z : (O.var c).X), IsClosed ({z} : Set (O.var c).X) → ∀ (τ : D.host.E →+* ℂ) (m : ℕ), m < O.S.Dw.mult τ → (O.adl0 c (Finsupp.single (ArIn.ind ∅, none, Sum.inl (τ, m)) (-1))).ht z = -(O.adl0 c (Finsupp.single (ArIn.ind ∅, none, Sum.inl (τ, m)) 1)).ht z := GlobalTheory.DualLineHt.main

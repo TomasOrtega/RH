@@ -10,7 +10,7 @@ open Formalism.FourierDecayAlt Formalism.FourierDecayAlt.R Formalism.FourierDeca
 variable {P : M.Par} {A : Type} [Ring A] [StarRing A] [Algebra ℂ A]
 
 /- English proof (translation)
-The claim follows from `Submodule.subset_span ⟨b, hb, H, hl, hT, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem gen_mem (d : Q.NFData P A) (T : Set A) (i j n : ℕ) {b : A} (hb : b ∈ bmon d) (H : List A)
     (hl : H.length = n) (hT : ∀ h ∈ H, h ∈ T) :
@@ -18,7 +18,7 @@ theorem gen_mem (d : Q.NFData P A) (T : Set A) (i j n : ℕ) {b : A} (hb : b ∈
   Submodule.subset_span ⟨b, hb, H, hl, hT, rfl⟩
 
 /- English proof (translation)
-Establish `: nfSpan d T i j n ≤ S.comap f`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `x ⟨b, hb, H, hl, hT, rfl⟩`. Conclude with `h b hb H hl hT`. Conclude with `fun x hx => this hx`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem map_mem (d : Q.NFData P A) (T : Set A) (i j n : ℕ) (f : A →ₗ[ℂ] A) (S : Submodule ℂ A)
     (h : ∀ b ∈ bmon d, ∀ H : List A, H.length = n → (∀ h ∈ H, h ∈ T) →
@@ -31,7 +31,7 @@ theorem map_mem (d : Q.NFData P A) (T : Set A) (i j n : ℕ) (f : A →ₗ[ℂ] 
   exact fun x hx => this hx
 
 /- English proof (translation)
-Use `map_mem d T i j n (LinearMap.mulLeft ℂ b) _ ?_` and prove the remaining obligations. Introduce `b' hb' H hl hT`. Use `gen_mem d T i j n ((bmon d).mul_mem hb hb') H hl hT` as an intermediate fact. Simplify `this` using `only [LinearMap.mulLeft_apply, mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem bdd_mul (d : Q.NFData P A) (T : Set A) (i j n : ℕ) {b : A} (hb : b ∈ bmon d) :
     ∀ x ∈ nfSpan d T i j n, b * x ∈ nfSpan d T i j n := by
@@ -41,7 +41,7 @@ theorem bdd_mul (d : Q.NFData P A) (T : Set A) (i j n : ℕ) {b : A} (hb : b ∈
   simpa only [LinearMap.mulLeft_apply, mul_assoc] using this
 
 /- English proof (translation)
-Use `map_mem d T i j n (LinearMap.mulLeft ℂ d.L.Di) _ ?_` and prove the remaining obligations. Introduce `b hb H hl hT`. Use `gen_mem d T (i + 1) j n hb H hl hT` as an intermediate fact. Rewrite `this` using `[pow_succ', ← mul_assoc b, (hD b hb).eq]`. Simplify `this` using `only [LinearMap.mulLeft_apply, mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem di_mul (d : Q.NFData P A) (hD : ∀ b ∈ bmon d, Commute b d.L.Di) (T : Set A) (i j n : ℕ) :
     ∀ x ∈ nfSpan d T i j n, d.L.Di * x ∈ nfSpan d T (i + 1) j n := by
@@ -52,7 +52,7 @@ theorem di_mul (d : Q.NFData P A) (hD : ∀ b ∈ bmon d, Commute b d.L.Di) (T :
   simpa only [LinearMap.mulLeft_apply, mul_assoc] using this
 
 /- English proof (translation)
-Use `map_mem d T i j n (LinearMap.mulLeft ℂ (TL.gI d.L)) _ ?_` and prove the remaining obligations. Introduce `b hb H hl hT`. Use `gen_mem d T i (j + 1) n hb H hl hT` as an intermediate fact. Rewrite `this` using `[pow_succ', ← mul_assoc (b * _), ((hG b hb).mul_left (hDG.pow_left i)).eq]`. Simplify `this` using `only [LinearMap.mulLeft_apply, mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem gi_mul (d : Q.NFData P A) (hG : ∀ b ∈ bmon d, Commute b (TL.gI d.L))
     (hDG : Commute d.L.Di (TL.gI d.L)) (T : Set A) (i j n : ℕ) :
@@ -64,9 +64,9 @@ theorem gi_mul (d : Q.NFData P A) (hG : ∀ b ∈ bmon d, Commute b (TL.gI d.L))
   simpa only [LinearMap.mulLeft_apply, mul_assoc] using this
 
 /- English proof (translation)
-Introduce `x hx`. Proceed by induction on `k with`. Consider the case `zero => simpa using hx`. Consider the case `succ k ih`. Rewrite using `[pow_succ', mul_assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `di_mul d hD T _ j n _ ih`.
+A detailed English derivation is pending.
 -/
 theorem di_pow_mul (d : Q.NFData P A) (hD : ∀ b ∈ bmon d, Commute b d.L.Di) (T : Set A) (i j n k : ℕ) :
     ∀ x ∈ nfSpan d T i j n, d.L.Di ^ k * x ∈ nfSpan d T (i + k) j n := by
@@ -78,9 +78,9 @@ theorem di_pow_mul (d : Q.NFData P A) (hD : ∀ b ∈ bmon d, Commute b d.L.Di) 
     exact di_mul d hD T _ j n _ ih
 
 /- English proof (translation)
-Introduce `x hx`. Proceed by induction on `k with`. Consider the case `zero => simpa using hx`. Consider the case `succ k ih`. Rewrite using `[pow_succ', mul_assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `gi_mul d hG hDG T i _ n _ ih`.
+A detailed English derivation is pending.
 -/
 theorem gi_pow_mul (d : Q.NFData P A) (hG : ∀ b ∈ bmon d, Commute b (TL.gI d.L))
     (hDG : Commute d.L.Di (TL.gI d.L)) (T : Set A) (i j n k : ℕ) :
@@ -93,7 +93,7 @@ theorem gi_pow_mul (d : Q.NFData P A) (hG : ∀ b ∈ bmon d, Commute b (TL.gI d
     exact gi_mul d hG hDG T i _ n _ ih
 
 /- English proof (translation)
-Use `map_mem d T' i j 1 (LinearMap.mulRight ℂ u) _ ?_` and prove the remaining obligations. Introduce `b hb H hl hT`. Take `⟨X, rfl⟩` from `List.length_eq_one_iff.1 hl`. Use `bdd_mul d T _ _ n hb _ (di_pow_mul d hD T _ _ n i _ (gi_pow_mul d hG hDG T _ _ n j _ (hu X (hT X (by simp)))))` as an intermediate fact. Simplify `this` using `only [LinearMap.mulRight_apply, mul_assoc, List.prod_cons, List.prod_nil, mul_one]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem one_letter_mul (d : Q.NFData P A) (hD : ∀ b ∈ bmon d, Commute b d.L.Di)
     (hG : ∀ b ∈ bmon d, Commute b (TL.gI d.L)) (hDG : Commute d.L.Di (TL.gI d.L)) (T T' : Set A)
@@ -107,9 +107,9 @@ theorem one_letter_mul (d : Q.NFData P A) (hD : ∀ b ∈ bmon d, Commute b d.L.
   simpa only [LinearMap.mulRight_apply, mul_assoc, List.prod_cons, List.prod_nil, mul_one] using this
 
 /- English proof (translation)
-Use `map_mem d T i j m (LinearMap.mulRight ℂ H.prod) _ ?_` and prove the remaining obligations. Introduce `b hb H' hl hT'`. Use `gen_mem d T i j (H.length + m) hb (H' ++ H) (by simp [hl, add_comm]) (by` as an intermediate fact. Introduce `h hh`. Break down `List.mem_append.1 hh with h1 | h1` into its components or cases.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `hT' h h1`. Conclude with `hT h h1)`. Simplify `this` using `only [LinearMap.mulRight_apply, mul_assoc, List.prod_append]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem mul_prod (d : Q.NFData P A) (T : Set A) (i j m : ℕ) (H : List A) (hT : ∀ h ∈ H, h ∈ T) :
     ∀ x ∈ nfSpan d T i j m, x * H.prod ∈ nfSpan d T i j (H.length + m) := by
@@ -123,17 +123,17 @@ theorem mul_prod (d : Q.NFData P A) (T : Set A) (i j m : ℕ) (H : List A) (hT :
   simpa only [LinearMap.mulRight_apply, mul_assoc, List.prod_append] using this
 
 /- English proof (translation)
-Introduce `P A _ _ _ _ d hd T`. Establish `h1` using `GlobalTheory.T.hatLetter_mul_boundedFactor_mem_normalFormSpan P A d hd`. Take `⟨h2, h3, hDG⟩` from `GlobalTheory.T.hatLetters_pass_Di_gI_boundedFactors P A d hd`. Establish `hD : ∀ b ∈ bmon d, Commute b d.L.Di` using `fun b hb => (h3 b hb).2.1`. Establish `hG : ∀ b ∈ bmon d, Commute b (TL.gI d.L)` using `fun b hb => (h3 b hb).2.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨fun i j n x hx => ⟨fun b hb => bdd_mul d T i j n hb x hx, di_mul d hD T i j n x hx, gi_mul d hG hDG T i j n x hx⟩, ?_⟩` and prove the remaining obligations. Introduce `a ha i j n X hX`. Use `map_mem d T i j n (LinearMap.mulLeft ℂ X) _ ?_` and prove the remaining obligations. Introduce `b hb H hl hT`. Establish `e1 : ∀ k, X * b * d.L.Di ^ k ∈ nfSpan d (hats d.L) k 0 1`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => simpa using h1 X hX b hb`. Consider the case `succ k ih`. Use `one_letter_mul d hD hG hDG _ _ 1 0 1 k 0 _ (fun Y hY => (h2 Y hY).1) _ ih` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Rewrite using `[pow_succ, ← mul_assoc, add_comm k 1]`. Conclude with `this`. Establish `e2 : ∀ k, X * b * d.L.Di ^ i * TL.gI d.L ^ k ∈ nfSpan d (hats d.L) i k 1`. Introduce `k`. Proceed by induction on `k with`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => simpa using e1 i`. Consider the case `succ k ih`. Use `one_letter_mul d hD hG hDG _ _ 0 1 1 i k _ (fun Y hY => (h2 Y hY).2) _ ih` as an intermediate fact. Rewrite `this` using `[zero_add]`. Rewrite using `[pow_succ, ← mul_assoc, add_comm k 1]`.
+Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `this`. Establish `e3` using `one_letter_mul d hD hG hDG T _ 0 a (H.length + 1) i j H.prod (fun Y hY => mul_prod d T 0 a 1 H hT Y (ha Y hY)) _ (e2 j)`. Rewrite `e3` using `[zero_add, hl, add_comm a j]`. Simplify `e3` using `only [LinearMap.mulLeft_apply, mul_assoc]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem span_mul : ∀ (P : M.Par) (A : Type) [Ring A] [StarRing A] [Algebra ℂ A] [StarModule ℂ A] (d : Q.NFData P A), HatHyp d → ∀ T : Set A, (∀ i j n, ∀ x ∈ nfSpan d T i j n, (∀ b ∈ bmon d, b * x ∈ nfSpan d T i j n) ∧ d.L.Di * x ∈ nfSpan d T (i + 1) j n ∧ TL.gI d.L * x ∈ nfSpan d T i (j + 1) n) ∧ ∀ a : ℕ, (∀ X ∈ hats d.L, X ∈ nfSpan d T 0 a 1) → ∀ i j n, ∀ X ∈ hats d.L, ∀ x ∈ nfSpan d T i j n, X * x ∈ nfSpan d T i (j + a) (n + 1) := by
   intro P A _ _ _ _ d hd T

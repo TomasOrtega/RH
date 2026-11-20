@@ -12,11 +12,11 @@ open NumberField Formalism.MainNotions.ShortIntervalPrimes GlobalTheory.RayZeta 
 namespace GlobalTheory.CompanionTheory.Hypotheses₂.Shintani.Abel
 
 /- English proof (translation)
-Proceed by induction on `cs with`. Consider the case `nil => exact hg`. Consider the case `cons c cs ih`. Introduce `m`. Take `⟨z1, h1⟩` from `ih (m + Pi.single c 1)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨z2, h2⟩` from `ih m`. Use `⟨z1 - z2, ?_⟩` and prove the remaining obligations. Use `show DL cs g (m + Pi.single c 1) - DL cs g m = ((z1 - z2 : ℤ) : ℂ)`. Rewrite using `[h1, h2]`. Use `push_cast`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem DL_int_valued {r : ℕ} (g : (Fin r → ℕ) → ℂ) (hg : ∀ m, ∃ z : ℤ, g m = (z : ℂ))
     (cs : List (Fin r)) : ∀ m, ∃ z : ℤ, DL cs g m = (z : ℂ) := by
@@ -33,7 +33,7 @@ theorem DL_int_valued {r : ℕ} (g : (Fin r → ℕ) → ℂ) (hg : ∀ m, ∃ z
     ring
 
 /- English proof (translation)
-Unfold `coneTerm`. Rewrite using `[Complex.ofReal_prod]`. Use `Finset.prod_congr rfl (fun j _ => ?_)` and prove the remaining obligations. Rewrite using `[neg_neg, Complex.cpow_natCast, Complex.ofReal_pow]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem coneTerm_neg_nat {ι : Type} [Fintype ι] {r : ℕ} (a : ι → Fin r → ℝ) (b : ι → ℝ) (p : ℕ)
     (m : Fin r → ℕ) :
@@ -44,13 +44,13 @@ theorem coneTerm_neg_nat {ι : Type} [Fintype ι] {r : ℕ} (a : ι → Fin r �
   rw [neg_neg, Complex.cpow_natCast, Complex.ofReal_pow]
 
 /- English proof (translation)
-Establish `hmem : ((l : ℂ) ^ K) * ∑' m, f m ∈ Set.range (Int.cast : ℤ → ℂ)`. Distinguish the cases in `hs : Summable f`. Rewrite using `[← tsum_mul_left]`. Establish `hs' : Summable (fun m => (l : ℂ) ^ K * f m)` using `hs.mul_left _`. Apply `Complex.isClosed_range_intCast.mem_of_tendsto hs'.hasSum` to reduce the goal to its premises.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Use `Filter.Eventually.of_forall (fun S => ?_)` and prove the remaining obligations. Use `choose x hx using hf`. Conclude with `⟨∑ b ∈ S, x b, by push_cast; exact Finset.sum_congr rfl (fun b _ => (hx b).symm)⟩`. Rewrite using `[tsum_eq_zero_of_not_summable hs, mul_zero]`. Conclude with `⟨0, by simp⟩`.
+Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨z, hz⟩` from `hmem`. Establish `hlC : ((l : ℂ) ^ K) ≠ 0` using `pow_ne_zero _ (Nat.cast_ne_zero.mpr hl.ne')`. Establish `hlQ : ((l : ℚ) ^ K) ≠ 0` using `pow_ne_zero _ (Nat.cast_ne_zero.mpr hl.ne')`. Use `⟨(z : ℚ) / (l : ℚ) ^ K, z, ?_, ?_⟩` and prove the remaining obligations. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hz]`. Conclude with `(mul_div_cancel_left₀ (∑' m, f m) hlC).symm`. Rewrite using `[mul_div_assoc']`. Conclude with `mul_div_cancel_left₀ _ hlQ`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tsum_mem_of_denominator {α : Type} (f : α → ℂ) (K l : ℕ) (hl : 0 < l)
     (hf : ∀ m, ∃ x : ℤ, ((l : ℂ) ^ K) * f m = (x : ℂ)) :
@@ -76,11 +76,11 @@ theorem tsum_mem_of_denominator {α : Type} (f : α → ℂ) (K l : ℕ) (hl : 0
     exact mul_div_cancel_left₀ _ hlQ
 
 /- English proof (translation)
-Introduce `ι _ r a b u cs p K l hl hu hprod`. Apply `tsum_mem_of_denominator _ K l hl` to reduce the goal to its premises. Introduce `m`. Take `⟨z2, h2⟩` from `DL_int_valued (coneTerm a b (-(p : ℂ))) (fun m' => by`. Take `⟨z, hz⟩` from `hprod m'`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨z, by rw [coneTerm_neg_nat, hz, Complex.ofReal_intCast]⟩) cs m`. Take `⟨z1, h1⟩` from `hu m`. Use `⟨z1 * z2, ?_⟩` and prove the remaining obligations. Rewrite using `[h2, ← mul_assoc]`. Establish `h1' : ((l : ℂ) ^ K) * (u m : ℂ) = (z1 : ℂ)` using `by exact_mod_cast h1`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h1']`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem value_neg_nat_mem : ∀ (ι : Type) [Fintype ι] (r : ℕ) (a : ι → Fin r → ℝ) (b : ι → ℝ) (u : (Fin r → ℕ) → ℚ) (cs : List (Fin r)) (p K l : ℕ), 0 < l → (∀ m, ∃ z : ℤ, (l : ℚ) ^ K * u m = z) → (∀ m : Fin r → ℕ, ∃ z : ℤ, ∏ j, (b j + ∑ i, a j i * (m i : ℝ)) ^ p = (z : ℝ)) → ∃ (q : ℚ) (z : ℤ), ∑' m, (u m : ℂ) * DL cs (coneTerm a b (-(p : ℂ))) m = (q : ℂ) ∧ (l : ℚ) ^ K * q = z := by
   intro ι _ r a b u cs p K l hl hu hprod

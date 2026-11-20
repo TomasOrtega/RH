@@ -20,9 +20,7 @@ Both sides reduce to the same expression.
 lemma toK_eq_map {σ : Type} (f : MvPolynomial σ O) : toK O K f = map (algebraMap O K) f := rfl
 
 /- English proof (translation)
-Use `Module.IsTorsionFree.of_smul_eq_zero fun a f h => ?_` and prove the remaining obligations. Rewrite `h` using `[← algebraMap_smul K a f, smul_eq_zero]`. Break down `h with h | h` into its components or cases. Use the proof step `left; exact (IsFractionRing.injective O K) (by rw [h, map_zero])`. Use `right`.
-
-Conclude with `h`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 lemma polyK_torsionFree {σ : Type} : Module.IsTorsionFree O (MvPolynomial σ K) := by
   refine Module.IsTorsionFree.of_smul_eq_zero fun a f h => ?_
@@ -32,11 +30,11 @@ lemma polyK_torsionFree {σ : Type} : Module.IsTorsionFree O (MvPolynomial σ K)
   · right; exact h
 
 /- English proof (translation)
-Establish `hM : ((dualWeyl O n n ν).map (toK O K)).FG`. Apply `Submodule.FG.map` to reduce the goal to its premises. Take `⟨b, hb, -⟩` from `sSBasis O n n ν`. Rewrite using `[← hb.2.1]`. Use `(sSIdxFinite n n ν).to_subtype` as an intermediate fact.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Submodule.fg_span (Set.finite_range b)`. Establish `hle : (weyl O n n le_rfl ν).map (toK O K) ≤ (dualWeyl O n n ν).map (toK O K)` using `Submodule.map_mono (weylLeDual O n n le_rfl ν hν)`. Use `isNoetherian_of_fg_of_noetherian _ hM` as an intermediate fact. Establish `h` using `IsNoetherian.noetherian (((weyl O n n le_rfl ν).map (toK O K)).comap ((dualWeyl O n n ν).map (toK O K)).subtype)`. Establish `h2` using `h.map ((dualWeyl O n n ν).map (toK O K)).subtype`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `h2` using `[Submodule.map_comap_subtype, inf_eq_right.mpr hle]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 lemma weylK_fg {n : ℕ} (ν : Fin n → ℕ) (hν : Antitone ν) :
     ((weyl O n n le_rfl ν).map (toK O K)).FG := by
@@ -57,35 +55,31 @@ lemma weylK_fg {n : ℕ} (ν : Fin n → ℕ) (hν : Antitone ν) :
 end dual
 
 /- English proof (translation)
-Introduce `O K _ _ _ _ _ _ _ n ν hν`. Use `set c := fockR (hw K (le_rfl : n ≤ n) ν) (hw K le_rfl ν) with hc`. Use `set D := (weyl O n n le_rfl ν).map (toK O K) with hD`. Establish `: Module.IsTorsionFree O (MvPolynomial (Fin n × Fin n) K)` using `polyK_torsionFree`. Establish `: Module.Finite O D` using `Module.Finite.iff_fg.mpr (weylK_fg ν hν)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨N, bD⟩` from `Module.basisOfFiniteTypeTorsionFree' (R := O) (M := D)`. Use `set e : Fin N → MvPolynomial (Fin n × Fin n) K := fun i => (bD i : MvPolynomial (Fin n × Fin n) K) with he_def`. Establish `he : ∀ i, e i ∈ D` using `fun i => (bD i).2`. Establish `hDV : ∀ x ∈ D, x ∈ dualWeyl K n n ν`. Introduce `x hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨y, hy, rfl⟩` from `Submodule.mem_map.mp hx`. Rewrite using `[toK_eq_map]`. Conclude with `weylLeDual K n n le_rfl ν hν (sw_weyl_map (algebraMap O K) le_rfl ν y hy)`. Establish `hrep : ∀ x (hx : x ∈ D), x = ∑ i, bD.repr ⟨x, hx⟩ i • e i`. Introduce `x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `h` using `congrArg Subtype.val (bD.sum_repr ⟨x, hx⟩)`. Rewrite `h` using `[Submodule.coe_sum]`. Simplify `h.symm` using `[he_def]`. Establish `hsm : ∀ (a : O) (f : MvPolynomial (Fin n × Fin n) K), a • f = algebraMap O K a • f` using `fun a f => (algebraMap_smul K a f).symm`. Establish `hDspan : ∀ x ∈ D, x ∈ Submodule.span K (Set.range e)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `x hx`. Rewrite using `[hrep x hx]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hsm]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Establish `hspan : dualWeyl K n n ν ≤ Submodule.span K (Set.range e)`. Rewrite using `[← sw_weyl_eq K n n le_rfl ν hν]`. Unfold `weyl`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨w, rfl⟩`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `hDspan` to reduce the goal to its premises. Use `Submodule.mem_map.mpr ⟨applyWord O w (hw O le_rfl ν), Submodule.subset_span ⟨w, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[toK_eq_map, ← lclosedeq_applyWord_map, lclosedeq_hw_map]`. Establish `hliO : LinearIndependent O e` using `bD.linearIndependent.map' D.subtype (Submodule.ker_subtype D)`. Establish `hli : LinearIndependent K e` using `(LinearIndependent.iff_fractionRing O K).mp hliO`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Introduce a local definition for the expression.
 
-Use `set W := Submodule.span K (Set.range e) with hW`. Establish `hWV : W = dualWeyl K n n ν`. Use `le_antisymm ?_ hspan` and prove the remaining obligations. Rewrite using `[hW, Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Conclude with `hDV _ (he i)`. Set `bW : Module.Basis (Fin N) K W` to `Module.Basis.span hli`. Establish `hbW : ∀ i, (bW i : MvPolynomial (Fin n × Fin n) K) = e i` using `fun i => congrArg Subtype.val (Module.Basis.span_apply hli i)`. Set `Bf : LinearMap.BilinForm K W` to `LinearMap.mk₂ K (fun x y : W => fockR (x : MvPolynomial (Fin n × Fin n) K) y) (fun x x' y => by simp [fockR_add_left]) (fun a x y => by simp [fockR_smul_left]) (fun x y y' => by simp [fockR_add_right]) (fun a x y => by simp [fockR_smul_right])`. Establish `hBf : ∀ x y : W, Bf x y = fockR (x : MvPolynomial (Fin n × Fin n) K) y` using `fun _ _ => rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hnd : Bf.Nondegenerate`. Prove the components needed by the constructor for the conclusion. Introduce `x hx`. Apply `Subtype.ext` to reduce the goal to its premises. Use `Top.nondegK K n n le_rfl ν hν x.1 (hWV ▸ x.2) fun P hP => ?_` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[fockR_symm]`. Conclude with `hx ⟨P, hWV ▸ hP⟩`. Introduce `y hy`. Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `Top.nondegK K n n le_rfl ν hν y.1 (hWV ▸ y.2) fun P hP => hy ⟨P, hWV ▸ hP⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Set `d` to `Bf.dualBasis hnd bW`. Establish `hd : ∀ i k, fockR (e i) (d k : MvPolynomial (Fin n × Fin n) K) = if i = k then 1 else 0`. Introduce `i k`. Establish `h` using `LinearMap.BilinForm.apply_dualBasis_left hnd bW k i`. Rewrite `h` using `[hBf, hbW, fockR_symm]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h`. Use `⟨Fin N, inferInstance, inferInstance, e, fun k => c • (d k : MvPolynomial (Fin n × Fin n) K), he, ?_, ?_, hspan⟩` and prove the remaining obligations. Introduce `k`. Establish `hkV : c • (d k : MvPolynomial (Fin n × Fin n) K) ∈ dualWeyl K n n ν` using `Submodule.smul_mem _ _ (hWV ▸ (d k).2)`. Use `Top.dualWeylIn O K n n le_rfl ν hν _ hkV fun P hP => ⟨bD.repr ⟨P, hP⟩ k, ?_⟩` and prove the remaining obligations.
-
-Use `show fockR P (c • (d k : MvPolynomial (Fin n × Fin n) K)) = _`. Use `conv_lhs => rw [hrep P hP]`. Rewrite using `[fockR_sum_left]`. Repeatedly rewrite using `[hsm, fockR_smul_left, fockR_smul_right, hd]`. Simplify using `[hc]`.
-
-Introduce `i k`. Rewrite using `[fockR_smul_right, hd]`. Apply the tactic sequence `split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem dual_bases_holds : DualBases := by
   intro O K _ _ _ _ _ _ _ n ν hν

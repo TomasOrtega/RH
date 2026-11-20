@@ -11,11 +11,11 @@ open Module IntermediateField IntermediateField.algebraAdjoinAdjoin
 namespace RankAdjoinFrac
 
 /- English proof (translation)
-Distinguish the cases in `hT : ∀ x ∈ T, IsAlgebraic K x`. Rewrite using `[← IntermediateField.finrank_eq_finrank_subalgebra, adjoin_toSubalgebra_of_isAlgebraic hT]`. Use `push Not at hT`. Take `⟨x, hx, hnx⟩` from `hT`. Establish `h1 : finrank K (Algebra.adjoin K T) = 0`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `h0`. Use `Module.finite_of_finrank_pos (Nat.pos_of_ne_zero h0)` as an intermediate fact. Conclude with `hnx ((Algebra.IsAlgebraic.isAlgebraic (⟨x, Algebra.subset_adjoin hx⟩ : Algebra.adjoin K T)).algHom (Algebra.adjoin K T).val)`. Establish `h2 : finrank K (IntermediateField.adjoin K T) = 0`. Assume the negation of the conclusion as `h0`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Module.finite_of_finrank_pos (Nat.pos_of_ne_zero h0)` as an intermediate fact. Conclude with `hnx ((Algebra.IsAlgebraic.isAlgebraic (⟨x, subset_adjoin K T hx⟩ : IntermediateField.adjoin K T)).algHom (IntermediateField.adjoin K T).val)`. Rewrite using `[h1, h2]`.
+A detailed English derivation is pending.
 -/
 theorem finrank_algebraAdjoin_eq_finrank_adjoin {K Ω : Type*} [Field K] [Field Ω] [Algebra K Ω] (T : Set Ω) :
     finrank K (Algebra.adjoin K T) = finrank K (IntermediateField.adjoin K T) := by
@@ -36,17 +36,17 @@ theorem finrank_algebraAdjoin_eq_finrank_adjoin {K Ω : Type*} [Field K] [Field 
     rw [h1, h2]
 
 /- English proof (translation)
-Establish `hST` using `Algebra.adjoin_mono (R := F) h`. Proceed by induction on `hy using Algebra.adjoin_induction with`. Consider the case `mem x hx => exact ⟨1, one_mem _, one_ne_zero, by rw [one_mul]; exact Algebra.subset_adjoin hx⟩`. Consider the case `algebraMap k`. Take `⟨r, hr, s, hs, hk⟩` from `mem_adjoin_iff_div.mp k.2`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `hs0 : s = 0`. Use `⟨1, one_mem _, one_ne_zero, ?_⟩` and prove the remaining obligations. Establish `: (algebraMap (IntermediateField.adjoin F S) Ω k) = 0`. Express the relevant statement in the definitionally equal form `(k : Ω) = 0`. Rewrite using `[hk, hs0, div_zero]`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, mul_zero]`. Conclude with `zero_mem _`. Use `⟨s, hs, hs0, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `s * (k : Ω) ∈ _`. Rewrite using `[hk, mul_div_cancel₀ _ hs0]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `hST hr`. Consider the case `add x y _ _ hx hy`. Take `⟨a, ha, ha0, hax⟩` from `hx`. Take `⟨b, hb, hb0, hby⟩` from `hy`. Use `⟨a * b, mul_mem ha hb, mul_ne_zero ha0 hb0, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: a * b * (x + y) = b * (a * x) + a * (b * y)` using `by ring`. Rewrite using `[this]`. Conclude with `add_mem (mul_mem (hST hb) hax) (mul_mem (hST ha) hby)`. Consider the case `mul x y _ _ hx hy`. Take `⟨a, ha, ha0, hax⟩` from `hx`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨b, hb, hb0, hby⟩` from `hy`. Use `⟨a * b, mul_mem ha hb, mul_ne_zero ha0 hb0, ?_⟩` and prove the remaining obligations. Establish `: a * b * (x * y) = (a * x) * (b * y)` using `by ring`. Rewrite using `[this]`. Conclude with `mul_mem hax hby`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_mul_mem_of_mem {F Ω : Type*} [Field F] [Field Ω] [Algebra F Ω] {S T : Set Ω} (h : S ⊆ T) {y : Ω}
     (hy : y ∈ Algebra.adjoin (IntermediateField.adjoin F S) T) :
@@ -83,17 +83,17 @@ theorem exists_mul_mem_of_mem {F Ω : Type*} [Field F] [Field Ω] [Algebra F Ω]
     exact mul_mem hax hby
 
 /- English proof (translation)
-Set `_` to `adjoinInclAlgebra F h`. Set `_ : Algebra (Algebra.adjoin F S) (Algebra.adjoin (IntermediateField.adjoin F S) T)` to `((algebraMap (IntermediateField.adjoin F S) (Algebra.adjoin (IntermediateField.adjoin F S) T)).comp (algebraMap (Algebra.adjoin F S) (IntermediateField.adjoin F S))).toAlgebra`. Establish `: IsScalarTower (Algebra.adjoin F S) (IntermediateField.adjoin F S) (Algebra.adjoin (IntermediateField.adjoin F S) T)` using `IsScalarTower.of_algebraMap_eq' rfl`. Establish `hle : Algebra.adjoin F T ≤ (Algebra.adjoin (IntermediateField.adjoin F S) T).restrictScalars F` using `Algebra.adjoin_le (Algebra.subset_adjoin (R := IntermediateField.adjoin F S))`. Set `f : Algebra.adjoin F T →ₗ[Algebra.adjoin F S] Algebra.adjoin (IntermediateField.adjoin F S) T` to `{ toFun := fun m => ⟨m.1, hle m.2⟩ map_add' := fun _ _ => rfl map_smul' := fun r m => by`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [Algebra.smul_def, RingHom.id_apply, Subalgebra.coe_mul, RingHom.algebraMap_toAlgebra, RingHom.comp_apply, Subalgebra.coe_algebraMap, IntermediateField.algebraMap_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, Subalgebra.coe_inclusion] }`. Establish `: IsLocalizedModule (nonZeroDivisors (Algebra.adjoin F S)) f`. Use `⟨fun x => ?_, fun y => ?_, fun {x₁ x₂} hx => ?_⟩` and prove the remaining obligations. Rewrite using `[Module.End.isUnit_iff]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hx0 : algebraMap (Algebra.adjoin F S) (IntermediateField.adjoin F S) x ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective (Algebra.adjoin F S) (IntermediateField.adjoin F S))).mpr (nonZeroDivisors.coe_ne_zero x)`. Use `⟨fun u v huv => ?_, fun v => ?_⟩` and prove the remaining obligations. Rewrite `huv` using `[Module.algebraMap_end_apply, Module.algebraMap_end_apply, ← algebraMap_smul (IntermediateField.adjoin F S) (x : Algebra.adjoin F S) u, ← algebraMap_smul (IntermediateField.adjoin F S) (x : Algebra.adjoin F S) v]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[smul_smul, inv_mul_cancel₀ hx0, one_smul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `_ = v := by rw [huv, smul_smul, inv_mul_cancel₀ hx0, one_smul]`. Use `⟨(algebraMap (Algebra.adjoin F S) (IntermediateField.adjoin F S) x)⁻¹ • v, ?_⟩` and prove the remaining obligations. Rewrite using `[Module.algebraMap_end_apply, ← algebraMap_smul (IntermediateField.adjoin F S), smul_smul, mul_inv_cancel₀ hx0, one_smul]`. Take `⟨a, ha, ha0, hay⟩` from `exists_mul_mem_of_mem h y.2`. Use `⟨(⟨a * y, hay⟩, ⟨⟨a, ha⟩, mem_nonZeroDivisors_of_ne_zero ?_⟩), ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Conclude with `fun h0 => ha0 (congrArg Subtype.val h0)`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [Submonoid.smul_def, Algebra.smul_def, Subalgebra.coe_mul, RingHom.algebraMap_toAlgebra, RingHom.comp_apply, Subalgebra.coe_algebraMap, IntermediateField.algebraMap_apply]`. Both sides reduce to the same expression. Use `⟨1, ?_⟩` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[one_smul, one_smul]`. Conclude with `Subtype.ext (congrArg (fun z : Algebra.adjoin (IntermediateField.adjoin F S) T => (z : Ω)) hx)`. Rewrite using `[← IsLocalizedModule.finrank_eq (nonZeroDivisors (Algebra.adjoin F S)) f le_rfl, IsLocalization.finrank_eq (IntermediateField.adjoin F S) (nonZeroDivisors (Algebra.adjoin F S)) le_rfl]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_eq_finrank_algebraAdjoin {F Ω : Type*} [Field F] [Field Ω] [Algebra F Ω] {S T : Set Ω}
     (h : S ⊆ T) :
@@ -148,9 +148,9 @@ theorem finrank_eq_finrank_algebraAdjoin {F Ω : Type*} [Field F] [Field Ω] [Al
     IsLocalization.finrank_eq (IntermediateField.adjoin F S) (nonZeroDivisors (Algebra.adjoin F S)) le_rfl]
 
 /- English proof (translation)
-Introduce `F Ω _ _ _ S T h`. Establish `hKL : IntermediateField.adjoin F S ≤ IntermediateField.adjoin F T` using `adjoin.mono F S T h`. Establish `hE : extendScalars hKL = IntermediateField.adjoin (IntermediateField.adjoin F S) T` using `restrictScalars_injective F (by`. Rewrite using `[extendScalars_restrictScalars, adjoin_adjoin_left, Set.union_eq_self_of_subset_left h])`. Establish `key : IntermediateField.relfinrank (IntermediateField.adjoin F S) (IntermediateField.adjoin F T) = finrank (IntermediateField.adjoin F S) (Algebra.adjoin (IntermediateField.adjoin F S) T)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[relfinrank_eq_finrank_of_le hKL, hE, finrank_algebraAdjoin_eq_finrank_adjoin]`. Conclude with `(finrank_eq_finrank_algebraAdjoin h).trans key.symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem proof : RankAdjoinFrac.Statement := by
   intro F Ω _ _ _ S T h

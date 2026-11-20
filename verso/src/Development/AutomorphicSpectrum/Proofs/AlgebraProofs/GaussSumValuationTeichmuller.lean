@@ -8,7 +8,7 @@ open Matrix
 namespace GlobalTheory.CompanionTheory.Ar.GR
 
 /- English proof (translation)
-Establish `h : 1 - x ^ i = (1 - x) * ∑ j ∈ Finset.range i, x ^ j` using `(mul_neg_geom_sum x i).symm`. Rewrite using `[h, map_mul]`. Use `mul_le_of_le_one_right' ?_` and prove the remaining obligations. Conclude with `v.map_sum_le (fun j _ => by rw [map_pow, hx, one_pow])`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem val_one_sub_pow_le {K : Type} [Field K] (v : Valuation K NNReal) {x : K} (hx : v x = 1)
     (i : ℕ) : v (1 - x ^ i) ≤ v (1 - x) := by
@@ -18,7 +18,7 @@ theorem val_one_sub_pow_le {K : Type} [Field K] (v : Valuation K NNReal) {x : K}
   exact v.map_sum_le (fun j _ => by rw [map_pow, hx, one_pow])
 
 /- English proof (translation)
-Establish `h : v x ^ n = 1` using `by rw [← map_pow, hx, map_one]`. Conclude with `(pow_left_inj₀ zero_le zero_le_one hn).mp (by simpa using h)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem val_eq_one_of_pow_eq_one {K : Type} [Field K] (v : Valuation K NNReal) {x : K} {n : ℕ}
     (hn : n ≠ 0) (hx : x ^ n = 1) : v x = 1 := by
@@ -26,11 +26,11 @@ theorem val_eq_one_of_pow_eq_one {K : Type} [Field K] (v : Valuation K NNReal) {
   exact (pow_left_inj₀ zero_le zero_le_one hn).mp (by simpa using h)
 
 /- English proof (translation)
-Establish `hp : p.Prime` using `Fact.out`. Establish `hprod : (p : K) = ∏ μ ∈ primitiveRoots p K, (1 - μ)`. Rewrite using `[← Polynomial.eval_one_cyclotomic_prime (R := K) (p := p), Polynomial.cyclotomic_eq_prod_X_sub_primitiveRoots hζ, Polynomial.eval_prod]`. Simplify using the standard rewrite rules. Establish `hval : ∀ μ ∈ primitiveRoots p K, v (1 - μ) = v (1 - ζ)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `μ hμ`. Establish `hμ' : IsPrimitiveRoot μ p` using `(mem_primitiveRoots hp.pos).mp hμ`. Take `⟨i, -, rfl⟩` from `hζ.eq_pow_of_pow_eq_one hμ'.pow_eq_one`. Take `⟨j, -, hj⟩` from `hμ'.eq_pow_of_pow_eq_one hζ.pow_eq_one`. Use `le_antisymm (val_one_sub_pow_le v (val_eq_one_of_pow_eq_one v hp.ne_zero hζ.pow_eq_one) i) ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `conv_lhs => rw [← hj]`. Conclude with `val_one_sub_pow_le v (val_eq_one_of_pow_eq_one v hp.ne_zero hμ'.pow_eq_one) j`. Rewrite using `[hprod, map_prod, Finset.prod_congr rfl hval, Finset.prod_const, hζ.card_primitiveRoots, Nat.totient_prime hp, Valuation.map_sub_swap]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_sub_one_pow {K : Type} [Field K] (v : Valuation K NNReal) (p : ℕ) [Fact p.Prime]
     {ζ : K} (hζ : IsPrimitiveRoot ζ p) : v (ζ - 1) ^ (p - 1) = v (p : K) := by
@@ -52,7 +52,7 @@ theorem val_sub_one_pow {K : Type} [Field K] (v : Valuation K NNReal) (p : ℕ) 
     Nat.totient_prime hp, Valuation.map_sub_swap]
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.Yde4.main ψ₀ ψ h₀`.
+A detailed English derivation is pending.
 -/
 theorem exists_mulShift_eq {F K : Type} [Field F] [Fintype F] [Field K] (ψ₀ ψ : AddChar F K)
     (h₀ : ψ₀ ≠ 1) : ∃ c, ψ = AddChar.mulShift ψ₀ c :=
@@ -70,18 +70,18 @@ def ltOneIdeal {C : Type} [Field C] (v : Valuation C NNReal) (R : Type) [CommRin
     exact lt_of_le_of_lt (mul_le_of_le_one_left' (hv.map_le_one c)) hx
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_ltOneIdeal {C : Type} [Field C] (v : Valuation C NNReal) (R : Type) [CommRing R]
     [Algebra R C] (hv : v.Integers R) (r : R) :
     r ∈ ltOneIdeal v R hv ↔ v (algebraMap R C r) < 1 := Iff.rfl
 
 /- English proof (translation)
-Rewrite using `[Ideal.isPrime_iff]`. Use `⟨fun h => ?_, fun {a b} hab => ?_⟩` and prove the remaining obligations. Establish `h1 : (1 : R) ∈ ltOneIdeal v R hv` using `h ▸ Submodule.mem_top`. Rewrite `h1` using `[mem_ltOneIdeal]`. Simplify using `at h1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `hab` using `[mem_ltOneIdeal, map_mul, map_mul]`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Simplify using `only [mem_ltOneIdeal, not_lt] at hcon`. Establish `ha : v (algebraMap R C a) = 1` using `le_antisymm (hv.map_le_one a) hcon.1`.
+Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb : v (algebraMap R C b) = 1` using `le_antisymm (hv.map_le_one b) hcon.2`. Simplify using `[ha, hb] at hab`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ltOneIdeal_isPrime {C : Type} [Field C] (v : Valuation C NNReal) (R : Type) [CommRing R]
     [Algebra R C] (hv : v.Integers R) : (ltOneIdeal v R hv).IsPrime := by
@@ -99,29 +99,25 @@ theorem ltOneIdeal_isPrime {C : Type} [Field C] (v : Valuation C NNReal) (R : Ty
     simp [ha, hb] at hab
 
 /- English proof (translation)
-Introduce `p _ C _ _ _ v R _ _ hv hp F _ _ _ _ f hcard hF σ hσ ψ hψ`. Establish `hpp : p.Prime` using `Fact.out`. Use `haveI : NeZero p := ⟨hpp.ne_zero⟩`. Use `haveI : IsDomain R := hv.hom_inj.isDomain (algebraMap R C)`. Use `haveI hprime : (ltOneIdeal v R hv).IsPrime := ltOneIdeal_isPrime v R hv`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hpm : (p : R) ∈ ltOneIdeal v R hv`. Rewrite using `[mem_ltOneIdeal, map_natCast]`. Conclude with `hp`. Establish `hspan : Ideal.span {(p : R)} ≤ ltOneIdeal v R hv` using `(Ideal.span_singleton_le_iff_mem _).mpr hpm`. Set `ι : F →+* R ⧸ ltOneIdeal v R hv` to `{ toFun := fun a => Ideal.Quotient.mk _ (σ a) map_one' := by simp map_mul' := fun a b => by simp map_zero' := by simp [MulChar.map_zero] map_add' := fun a b => by`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← map_add, Ideal.Quotient.eq]`. Use `hspan (hσ a b)` as an intermediate fact. Rewrite using `[sub_sub] at this }` and apply the resulting hypothesis. Take `⟨ζ, hζ⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot C p`. Establish `hvζ : v ζ = 1` using `val_eq_one_of_pow_eq_one v hpp.ne_zero hζ.pow_eq_one`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Equip the data with the indicated structure. Extract witnesses or component facts from the available result.
 
-Take `⟨z, rfl⟩` from `hv.exists_of_le_one hvζ.le`. Establish `hzp : z ^ p = 1` using `hv.hom_inj (by rw [map_pow, hζ.pow_eq_one, map_one])`. Use `letI : Algebra (ZMod p) F := ZMod.algebra F p`. Take `⟨y, hym, hy⟩` from `ReciprocityTheory.PGsh.gaussCongruence p F R (ltOneIdeal v R hv) ι σ z hF hzp (fun a => rfl)`. Set `ψ₀ : AddChar F C` to `(AddChar.zmodChar p hζ.pow_eq_one).compAddMonoidHom (Algebra.trace (ZMod p) F).toAddMonoidHom`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hψ₀ : ∀ a, ψ₀ a = algebraMap R C z ^ (Algebra.trace (ZMod p) F a).val` using `fun a => rfl`. Establish `hψ₀1 : ψ₀ ≠ 1` using `by haveI : Module.Finite (ZMod p) F := Module.Finite.of_finite`. Take `⟨b, hb⟩` from `Algebra.trace_surjective (ZMod p) F 1`. Introduce `h`. Establish `h1 : ψ₀ b = 1` using `by rw [h]; simp`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `h1` using `[hψ₀]`. Establish `hb0 : (Algebra.trace (ZMod p) F b).val ≠ 0`. Rewrite using `[hb, Ne, ZMod.val_eq_zero]`. Conclude with `one_ne_zero`. Conclude with `hζ.pow_ne_one_of_pos_of_lt hb0 (ZMod.val_lt _) h1`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨c, rfl⟩` from `exists_mulShift_eq ψ₀ ψ hψ₀1`. Establish `hc : c ≠ 0`. Introduce and unpack `rfl`. Conclude with `hψ (AddChar.mulShift_zero _)`. Establish `hσc : σ c * σ⁻¹ c = 1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[MulChar.inv_apply', ← map_mul, mul_inv_cancel₀ hc, map_one]`. Establish `hsum : ∑ a, algebraMap R C (σ⁻¹ a) * AddChar.mulShift ψ₀ c a = algebraMap R C (σ c) * ∑ b, algebraMap R C (σ⁻¹ b) * ψ₀ b`. Rewrite using `[Finset.mul_sum]`. Use `Fintype.sum_equiv (Equiv.mulLeft₀ c hc) _ _ (fun a => ?_)` and prove the remaining obligations. Simplify using `only [Equiv.mulLeft₀_apply, AddChar.mulShift_apply, map_mul, ← mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Rewrite using `[← map_mul, hσc, map_one, one_mul]`. Establish `hvσ : v (algebraMap R C (σ c)) = 1`. Establish `h1 : v (algebraMap R C (σ c)) * v (algebraMap R C (σ⁻¹ c)) = 1`. Rewrite using `[← map_mul, ← map_mul, hσc, map_one, map_one]`. Use `le_antisymm (hv.map_le_one _) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hG : ∑ b, algebraMap R C (σ⁻¹ b) * ψ₀ b = (algebraMap R C z - 1) * (algebraMap R C y - 1)`. Use `congrArg (algebraMap R C) hy` as an intermediate fact. Simplify using `only [map_sum, map_mul, map_pow, map_sub, map_one] at this`. Rewrite using `[← this]`.
-
-Conclude with `Finset.sum_congr rfl fun a _ => by rw [hψ₀]`. Establish `hvy : v (algebraMap R C y - 1) = 1`. Establish `h : v (algebraMap R C y) < v (1 : C)`. Rewrite using `[map_one]`. Conclude with `hym`.
-
-Rewrite using `[Valuation.map_sub_swap, Valuation.map_sub_eq_of_lt_left v h, map_one]`. Rewrite using `[hsum, hG, map_mul, map_mul, hvσ, hvy, one_mul, mul_one]`. Conclude with `val_sub_one_pow v p hζ`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gauss_value : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (R : Type) [CommRing R] [Algebra R C], v.Integers R → v (p : C) < 1 → ∀ (F : Type) [Field F] [Fintype F] [DecidableEq F] [CharP F p] (f : ℕ), Fintype.card F = p ^ f → Fintype.card F ≠ 2 → ∀ σ : MulChar F R, (∀ a b, σ (a + b) - σ a - σ b ∈ Ideal.span {(p : R)}) → ∀ ψ : AddChar F C, ψ ≠ 1 → v (∑ a, algebraMap R C (σ⁻¹ a) * ψ a) ^ (p - 1) = v (p : C) := by
   intro p _ C _ _ _ v R _ _ hv hp F _ _ _ _ f hcard hF σ hσ ψ hψ

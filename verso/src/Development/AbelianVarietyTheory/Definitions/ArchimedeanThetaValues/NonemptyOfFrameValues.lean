@@ -15,7 +15,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {l : Le
   (bF : c.F →+* ℂ) [Algebra (FractionRing ℂ) ℂ] [IsScalarTower ℂ (FractionRing ℂ) ℂ]
 
 /- English proof (translation)
-The claim follows from `nonempty_gtAn_of_toric _ (𝓞 E) (arcIn_D₀ c ℂ bF)`.
+A detailed English derivation is pending.
 -/
 theorem nonempty_toric : Nonempty (GtAn (arcIn c ℂ bF)) :=
   nonempty_gtAn_of_toric _ (𝓞 E) (arcIn_D₀ c ℂ bF)
@@ -28,7 +28,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Da
   {b : O →+* ℂ} {a : ArcIn D l β ℂ b} (Λ : GtAn₀ a)
 
 /- English proof (translation)
-Introduce `la h`. Take `⟨q, hq, -⟩` from `TorusExt.existsUnique_qkExt a.bimult (algebraMap (FractionRing ℂ) ℂ) (RingHom.comp_id _) p`. Take `⟨z, hz, -⟩` from `h q hq`. Conclude with `⟨z, hq.1.symm.trans hz⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem y_of_lifts {k : ℕ} [NeZero k] (p : Out.QkPt a.D₀ (FractionRing ℂ) k) : letI := H.starRing
     ∀ la : Λ.A.La, Λ.Lifts p la → ∃ z, p.y = Λ.y la + k • z := by
@@ -40,7 +40,7 @@ theorem y_of_lifts {k : ℕ} [NeZero k] (p : Out.QkPt a.D₀ (FractionRing ℂ) 
 end
 
 /- English proof (translation)
-The claim follows from `letI := FractionRing.liftAlgebra ℂ ℂ haveI := FractionRing.isScalarTower_liftAlgebra ℂ ℂ ⟨_, this, nonempty_toric _ _⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_closed : ∃ (_ : Algebra (FractionRing ℂ) ℂ) (_ : IsScalarTower ℂ (FractionRing ℂ) ℂ),
     Nonempty (GtAn (arcIn (coeff (level host 5 (by norm_num))) ℂ (coeff _).F.val.toRingHom)) :=
@@ -54,9 +54,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Da
   {b : O →+* ℂ} {a : ArcIn D l β ℂ b}
 
 /- English proof (translation)
-Use `letI := H.starRing`. Establish `h` using `fun (j : ℕ) (hj : NeZero j) (α : Λ.A.X) => TwistedTheta.sections_equiv_anArc_theta Λ.A a.D₀ Λ.u _ Λ.lam (fun _ _ e => congrArg Λ.A.chi (Subtype.ext e)) Λ.ah j (Nat.one_le_iff_ne_zero.2 hj.out) (fun θ hθ => ((Λ.pow j).2 θ hθ).exists) (Λ.ε α) α (Λ.ct α)`. Use `choose e _ he using h`. Use `⟨⟨⟨GtAnModel.toDict Λ, fun x y => (Λ.be_eq x y).symm⟩, ⟨fun j hj α => (e j hj α).toEquiv, ?_⟩⟩⟩` and prove the remaining obligations. Introduce `j hj α s z i hi`.
+Equip the data with the indicated structure. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `(he j hj α s z i hi).trans (congrArg (_ * ·) ?_)` and prove the remaining obligations. Use `Eq.trans ?_ (Fin.prod_univ_four _).symm` and prove the remaining obligations. Conclude with `congrArg₂ (· * ·) (congrArg₂ (· * ·) (congrArg₂ (· * ·) rfl (zpow_one _).symm) (zpow_neg_one _).symm) (zpow_one _).symm`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem nonempty_of_frameValues (Λ : letI := H.starRing; ArcPts.GtAn a) : Nonempty (GtAn a) := by
   letI := H.starRing
@@ -78,7 +78,7 @@ variable {O : Type} [CommRing O] [StarRing O] [Algebra (FractionRing ℂ) ℂ] [
   {D₀ : Out.DegPre ℂ} [Module O D₀.X] {oa : D₀.OAct O} (d : GtDict D₀ oa)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun ⟨f, hf⟩ ⟨g, hg⟩ => by obtain rfl : @f = @g := by funext j hj α exact Equiv.ext fun s => Subtype.ext (GtDict.IsFamFn.unique d (hf j α s) (hg j α s)) rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem subsingleton_secFn : Subsingleton d.SecFn := ⟨fun ⟨f, hf⟩ ⟨g, hg⟩ => by
   obtain rfl : @f = @g := by
@@ -87,7 +87,7 @@ theorem subsingleton_secFn : Subsingleton d.SecFn := ⟨fun ⟨f, hf⟩ ⟨g, hg
   rfl⟩
 
 /- English proof (translation)
-Take `⟨i, hi⟩` from `exists_chart_complexPoint D₀.P.isLB (d.u.ex (d.A.ct x)).left`. Use `⟨fun _ => i, ?_⟩` and prove the remaining obligations. Rewrite using `[d.psi_val x (fun _ => i) hi, inv_mul_cancel_right₀ (d.u.fr_ne i _ hi)]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem psi_eq (x : d.A.X) : ∃ j : PUnit → D₀.P.L.ι, (d.A.psi x : ℂ) =
     valAt' (Out.jFK (R := ℂ) ℂ) _ ((D₀.psi (d.eX x)).s j).val * d.u.fr (j PUnit.unit) (d.A.ct x) := by
@@ -96,9 +96,9 @@ theorem psi_eq (x : d.A.X) : ∃ j : PUnit → D₀.P.L.ι, (d.A.psi x : ℂ) =
   rw [d.psi_val x (fun _ => i) hi, inv_mul_cancel_right₀ (d.u.fr_ne i _ hi)]
 
 /- English proof (translation)
-Rewrite using `[d.ker]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨la, hy, e⟩`. Establish `hl : la.l = 0` using `Subtype.ext (by simpa [hy] using (congrArg Prod.snd e).symm)`. Conclude with `⟨la.n, fun x => by simpa [hy, hl] using congrArg (fun v : d.A.V => v.1 x) e⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Supply the required witnesses or components.
 
-Introduce and unpack `⟨n, hn⟩`. Conclude with `⟨AnArc.La.mk 0 n 0, rfl, Prod.ext (AddMonoidHom.ext fun x => by simp [hn]) (by simp)⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem isZero_torus_iff (w : d.A.X →+ ℂ) : (d.ex₀ (w, 0)).IsZero ↔ ∃ n : d.A.X →+ ℤ, ∀ x, w x = n x := by
   rw [d.ker]
@@ -112,9 +112,9 @@ theorem isZero_torus_iff (w : d.A.X →+ ℂ) : (d.ex₀ (w, 0)).IsZero ↔ ∃ 
 end Determined
 
 /- English proof (translation)
-Use `letI := H.starRing`. Use `haveI := a.nontriv`. Use `haveI : Nontrivial Λ.A.X := Λ.eX.toEquiv.nontrivial`. Take `⟨y, hy⟩` from `exists_ne (0 : Λ.A.X)`. Use `⟨(Complex.I • (Int.castAddHom ℂ).comp (Λ.A.be y).toAddMonoidHom, 0), fun h => ?_⟩` and prove the remaining obligations.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨n, hn⟩` from `(isZero_torus_iff Λ.toGtDict _).1 h`. Establish `h1` using `congrArg Complex.im (hn y)`. Establish `h2` using `Λ.A.be_pos y hy`. Simplify using `at h1`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem exists_not_isZero {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {l : Level H}
     {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F} [Algebra (FractionRing ℂ) ℂ]

@@ -13,7 +13,7 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.AvgLevel
 
 /- English proof (translation)
-Introduce `H _ S u hS hfin`. Establish `hmul` using `Subgroup.relIndex_mul_index hS`. Establish `hm : S.relIndex (rStab u) ≠ 0` using `fun h0 => hfin (by rw [← hmul, h0, zero_mul])`. Establish `hmC : ((S.relIndex (rStab u) : ℕ) : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hm`. Rewrite using `[GlobalTheory.CompanionTheory.HintLevel.finsum_out_of_le u hS le_rfl hm, ← hmul, avg, Nat.cast_mul, mul_inv, mul_mul_mul_comm, inv_mul_cancel₀ hmC, one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem avg_eq_level : ∀ {H : Type} [Group H] (S : Subgroup H) (u : H → ℂ), S ≤ rStab u →
     S.index ≠ 0 → avg u = ((S.index : ℂ))⁻¹ * ∑ᶠ q : H ⧸ S, u q.out := by

@@ -10,11 +10,11 @@ open CategoryTheory GlobalTheory.CatCoh GlobalTheory.AnPer GlobalTheory.AnPer.Ch
 namespace GlobalTheory.AnPer.Charts
 
 /- English proof (translation)
-Set `a : ∀ k, Hol (K.W k)` to `fun k ↦ G (K.triv k)`. Establish `h1 : ∀ k k' (e : K.le 0 k' k), sh e (a k) = a k'` using `fun k k' e ↦ (hG (K.triv k) (K.triv k') (ptHom (K.triv k') e) rfl).symm`. Establish `h2 : ∀ k i, dw i (a k) = 0` using `fun k i ↦ by`. Establish `e0 : G (K.jet k) = TrivSqZeroExt.inl (sh (K.le_refl k) (a k))` using `hG _ _ (jet0 k) rfl`. Establish `e1 : G (K.jet k) = tszeSec dw (a k)` using `hG _ _ (jet1 k) rfl`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2` using `congrArg (fun x : TrivSqZeroExt (Hol (K.W k)) (Fin g → Hol (K.W k)) ↦ x.snd i) (e1.symm.trans e0)`. Conclude with `(snd_tszeSec dw (a k) i).symm.trans e2`. Take `⟨p, hp⟩` from `GlobalTheory.T.exists_parameter_function_of_fibreDeriv_zero K hK a h1 h2`. Use `⟨p, fun T ↦ ?_⟩` and prove the remaining obligations. Establish `e : G T = T.ρ (sh (K.le_refl T.k) (a T.k))` using `hG _ _ (ptHom T (K.le_refl T.k)) rfl`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, sh_refl, hp, T.ρ_cst]`.
+A detailed English derivation is pending.
 -/
 theorem exists_param_of_deg_zero {I : Type} [Fintype I] {g : ℕ} {Λ : Type} [AddCommGroup Λ] {F : Fam I g Λ}
     (K : Charts F) (hK : K.Rich) (G : C0 K.Oc)

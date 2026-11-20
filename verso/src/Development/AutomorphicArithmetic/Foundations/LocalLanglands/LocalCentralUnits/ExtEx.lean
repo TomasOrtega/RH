@@ -5,11 +5,9 @@ import Development.AutomorphicArithmetic.Foundations.LocalLanglands.LocalCentral
 open NumberField IsDedekindDomain
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ A w h g _ i hi n hn`. Take `⟨E', fE, nE, _, aE, aΩ, tE, cE, w', h', hg, unr, card, _, _⟩` from `GlobalTheory.T.exists_unramified_totallyComplex_ext_with_unity_roots E Ω g A w h i hi n hn`. Take `⟨a', ha', _⟩` from `UpperTheory.Zero.LLC.artEx E' Ω A w' h'`. Use `haveI : w'.asIdeal.IsMaximal := w'.isMaximal`. Use `letI : Field (𝓞 E' ⧸ w'.asIdeal) := Ideal.Quotient.field _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : CharP (𝓞 E' ⧸ w'.asIdeal) g := by`. Rewrite using `[CharP.charP_iff_prime_eq_zero (Fact.out : Nat.Prime g)]`. Rewrite using `[← map_natCast (Ideal.Quotient.mk w'.asIdeal), Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `hg`. Use `letI : Algebra (ZMod g) (𝓞 E' ⧸ w'.asIdeal) := ZMod.algebra _ g`.
-
-Conclude with `⟨UpperTheory.Zero.LLC.Ext.mk E' w' h' unr card a' ha' (𝓞 E' ⧸ w'.asIdeal) (Ideal.Quotient.mk w'.asIdeal) Ideal.Quotient.mk_surjective (Ideal.mk_ker)⟩`.
+Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Zero.LLC.extEx :
     UpperTheory.Zero.LLC.ExtEx := by

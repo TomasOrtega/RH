@@ -6,13 +6,13 @@ namespace Formalism.HermitianLattices.IntegralLatticeDensity
 open Finset
 
 /- English proof (translation)
-Introduce `K _ _ x hx`. Establish `hx' : (x : K) ≠ 0` using `by exact_mod_cast hx`. Establish `hne : ∀ φ : K →+* ℂ, ‖φ (x : K)‖ ≠ 0` using `fun φ => by`. Rewrite using `[norm_ne_zero_iff]`. Conclude with `(map_ne_zero φ).mpr hx'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Real.log_prod (fun φ _ => hne φ)]`. Apply `Real.log_nonneg` to reduce the goal to its premises. Rewrite using `[← norm_prod]`. Establish `key : (∏ φ : K →+* ℂ, φ (x : K)) = algebraMap ℚ ℂ (Algebra.norm ℚ (x : K))`. Rewrite using `[Algebra.norm_eq_prod_embeddings ℚ ℂ]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Fintype.prod_equiv (RingHom.equivRatAlgHom K ℂ) _ _ (fun φ => rfl)`. Rewrite using `[key, ← Algebra.coe_norm_int x]`. Establish `hN0 : Algebra.norm ℤ x ≠ 0`. Introduce `h0`. Establish `h5 : Algebra.norm ℚ (x : K) ≠ 0` using `Algebra.norm_ne_zero_iff.mpr hx'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `h5` to reduce the goal to its premises. Rewrite using `[← Algebra.coe_norm_int x, h0, Int.cast_zero]`. Rewrite using `[eq_ratCast, Rat.cast_intCast, Complex.norm_intCast]`. Conclude with `Int.one_le_abs hN0` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integer_mean_log_bound : IntegerMeanLog := by
   intro K _ _ x hx
@@ -36,15 +36,15 @@ theorem integer_mean_log_bound : IntegerMeanLog := by
   exact_mod_cast Int.one_le_abs hN0
 
 /- English proof (translation)
-Introduce `x j s hs hj hx`. Apply the tactic sequence `have hs0 : (s : ℂ) ≠ 0 := by rcases hs with rfl | rfl <;> norm_num`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Set `R` to `integralClosure ℤ ℂ`. Set `jR : R` to `⟨j, hj⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `q : Polynomial R` to `(Polynomial.X - Polynomial.C (s : R)) ^ 3 - Polynomial.C jR * Polynomial.X`. Establish `hq : q.Monic`. Apply `Polynomial.Monic.sub_of_left ((Polynomial.monic_X_sub_C _).pow 3)` to reduce the goal to its premises. Rewrite using `[Polynomial.degree_pow, Polynomial.degree_X_sub_C]`. Use `lt_of_le_of_lt (Polynomial.degree_C_mul_X_le _) ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Evaluate the numerical expressions. Establish `hxR : IsIntegral R x`. Use `⟨q, hq, ?_⟩` and prove the remaining obligations. Simplify using `only [q, Polynomial.eval₂_sub, Polynomial.eval₂_pow, Polynomial.eval₂_X, Polynomial.eval₂_C, Polynomial.eval₂_mul]`. Simplify using `only [map_intCast]`.
+Evaluate the numerical expressions. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `hjR : algebraMap R ℂ jR = j` using `rfl`. Rewrite using `[hjR]`. Take the linear combination `hx`. Conclude with `isIntegral_trans x hxR`. Introduce `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hx` using `[h]`. Apply `hs0` to reduce the goal to its premises. Establish `h3 : (s : ℂ) ^ 3 = 0` using `by linear_combination -hx`. Conclude with `(pow_eq_zero_iff (by norm_num)).mp h3`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem weber_function_root : WeberRoot := by
   intro x j s hs hj hx

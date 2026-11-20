@@ -4,7 +4,7 @@ open NumberField IsDedekindDomain Neutral.B1 Formalism.L2.Host Formalism.Conjuga
 open GlobalTheory.CuspRep GlobalTheory.HeckeGal GlobalTheory.GalOfCusp UpperTheory.V UpperTheory.V.Af UpperTheory.V.Base UpperTheory.V.Sd
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [aff]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem map_aff {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) (y : Rˣ) :
     Matrix.GeneralLinearGroup.map f (aff y 0) = aff (Units.map (f : R →* S) y) 0 := by
@@ -12,7 +12,7 @@ private theorem map_aff {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) (
   fin_cases i <;> fin_cases j <;> simp [aff]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `Matrix.vecMul _ _ = _`. Use extensionality with `i`. Apply the tactic sequence `fin_cases i <;> simp [aff, Matrix.vecMul, dotProduct, Fin.sum_univ_succ]`.
+Express the relevant assertion in an equivalent form by its definition. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem aff_mem {R : Type} [CommRing R] (y : Rˣ) : aff y 0 ∈ mirab R := by
   change Matrix.vecMul _ _ = _
@@ -21,23 +21,23 @@ private theorem aff_mem {R : Type} [CommRing R] (y : Rˣ) : aff y 0 ∈ mirab R 
 
 open UpperTheory.V.Af.GlobalFixedVectors Matrix in
 /- English proof (translation)
-Introduce `F _ _ _ φ hop c hc u hu g`. Establish `key : ∀ S : Finset (Pl F), (∀ k ∈ KAway 2 1 S, (∀ w, GeneralLinearGroup.map (pLoc F w) k ∈ K1 w (c w)) → TR.finRep F 2 k φ = φ) → (∀ k ∈ KAway 2 1 ∅, (∀ w, GeneralLinearGroup.map (pLoc F w) k ∈ K1 w (c w)) → TR.finRep F 2 k φ = φ)`. Introduce `S`. Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => exact id`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `insert w S hw ih`. Introduce `h`. Use `ih fun k hk hl => ?_` and prove the remaining obligations. Establish `h1` using `loc_mem w (mem_KAway.1 hk).1`. Establish `h2 : k * (locGL F 2 w (GeneralLinearGroup.map (pLoc F w) k))⁻¹ ∈ KAway 2 1 (insert w S)`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `mem_KAway.2 ⟨mul_mem (mem_KAway.1 hk).1 (inv_mem h1), fun u hu => ?_⟩` and prove the remaining obligations. Distinguish the cases in `huw : u = w`. Substitute `huw` using the available equality. Simplify using `[pLoc_locGL]`. Simplify using `[pLoc_locGL_of_ne huw, (mem_KAway.1 hk).2 u ((Finset.mem_insert.1 hu).resolve_left huw)]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `h3 : TR.finRep F 2 (locGL F 2 w (GeneralLinearGroup.map (pLoc F w) k)) φ = φ` using `hc w _ (hl w)`. Establish `h4` using `h _ h2 fun v => by`. Distinguish the cases in `hv : v = w`. Substitute `hv` using the available equality. Simplify using `[pLoc_locGL]`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify `hl v` using `[pLoc_locGL_of_ne hv]`. Rewrite `h4` using `[← h3, ← Module.End.mul_apply, ← map_mul, inv_mul_cancel_right, h3]`. Then use the resulting hypothesis. Take `⟨S, hS⟩` from `exists_KAway_subset (M := 1) (hop.mem_nhds (by simp))`. Establish `hi : ∀ w, Valued.v (pLoc F w ((u⁻¹ : (Af F)ˣ) : Af F)) = 1` using `fun w => by`. Establish `: Valued.v (pLoc F w ((u⁻¹ : (Af F)ˣ) : Af F)) * Valued.v (pLoc F w (u : Af F)) = 1`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← map_mul, ← map_mul, Units.inv_mul, map_one, map_one]`. Rewrite `this` using `[hu, mul_one]`. Then use the resulting hypothesis. Establish `m1 : ∀ w, pLoc F w (u : Af F) ∈ w.adicCompletionIntegers F` using `fun w => (hu w).le`. Establish `m2 : ∀ w, pLoc F w ((u⁻¹ : (Af F)ˣ) : Af F) ∈ w.adicCompletionIntegers F` using `fun w => (hi w).le`. Set `u0 : (Ohat F)ˣ` to `⟨⟨u, mem_Ohat.2 m1⟩, ⟨((u⁻¹ : (Af F)ˣ) : Af F), mem_Ohat.2 m2⟩, Subtype.ext u.mul_inv, Subtype.ext u.inv_mul⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `e` using `key S (fun k hk _ => hS hk) (aff u 0) (mem_KAway.2 ⟨⟨aff u0 0, ?_, ?_⟩, by simp⟩) fun w => ?_`. Conclude with `congrFun (congrArg Subtype.val e) g`. Use `haveI : Subsingleton (Ohat F ⧸ Ideal.span {((1 : ℕ) : ↥(Ohat F))}) := Ideal.Quotient.subsingleton_iff.2 (by simp)`. Use extensionality with `i j`. Conclude with `Subsingleton.elim _ _`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression.
 
-Rewrite using `[map_aff]`. Both sides reduce to the same expression. Set `u1 : (w.adicCompletionIntegers F)ˣ` to `⟨⟨_, m1 w⟩, ⟨_, m2 w⟩, Subtype.ext (by change pLoc F w _ * pLoc F w _ = 1; rw [← map_mul, Units.mul_inv, map_one]), Subtype.ext (by change pLoc F w _ * pLoc F w _ = 1; rw [← map_mul, Units.inv_mul, map_one])⟩`. Use `⟨aff u1 0, ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `GeneralLinearGroup.map _ (aff u1 0) ∈ mirab _`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[map_aff]`. Conclude with `aff_mem _`. Rewrite using `[map_aff, map_aff]`. Use `congr 1`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Sd.Hm.fixunit :
     ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (φ : TR.Sm F 2), IsOpen {k | TR.finRep F 2 k φ = φ} →

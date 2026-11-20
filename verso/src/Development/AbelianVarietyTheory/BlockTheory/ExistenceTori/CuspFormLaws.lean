@@ -64,7 +64,7 @@ def FinVol (V : HSpace E r) : Prop := ∃ ν, IsAutProb F V ν
 def onQ (V : HSpace E r) (φ : GA F V → ℂ) (q : AutQ F V) : ℂ := φ (Quotient.out q)
 
 /- English proof (translation)
-Establish `e : (QuotientGroup.rightRel (ratG F V)) g (Quotient.out (autMk F V g))` using `Quotient.exact (Quotient.out_eq (autMk F V g)).symm`. Rewrite `e` using `[QuotientGroup.rightRel_apply]`. Rewrite using `[← h _ e g, inv_mul_cancel_right, onQ]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem onQ_mk (V : HSpace E r) (φ : GA F V → ℂ) (h : ∀ γ ∈ ratG F V, ∀ g, φ (γ * g) = φ g) (g : GA F V) :
     onQ F V φ (autMk F V g) = φ g := by
@@ -74,9 +74,9 @@ theorem onQ_mk (V : HSpace E r) (φ : GA F V → ℂ) (h : ∀ γ ∈ ratG F V, 
   rw [← h _ e g, inv_mul_cancel_right, onQ]
 
 /- English proof (translation)
-Use `⟨Measure.dirac (autMk F _ 1), inferInstanceAs (IsProbabilityMeasure (Measure.dirac _)), fun h s _ => ?_⟩` and prove the remaining obligations. Establish `: autRt F (HSpace.std E 0) h = id`. Use function extensionality and compare the values at `q`. Take `⟨g, rfl⟩` from `Quotient.exists_rep q`. Establish `e : g * h = g` using `Prod.ext (Subtype.ext (Units.ext (Subsingleton.elim _ _))) (Subtype.ext (Units.ext (Subsingleton.elim _ _)))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `congrArg (autMk F _) e`. Rewrite using `[this, Set.preimage_id]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 example : FinVol F (HSpace.std E 0) := by
   refine ⟨Measure.dirac (autMk F _ 1), inferInstanceAs (IsProbabilityMeasure (Measure.dirac _)), fun h s _ => ?_⟩

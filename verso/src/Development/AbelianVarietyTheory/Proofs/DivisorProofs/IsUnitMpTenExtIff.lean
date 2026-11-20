@@ -14,7 +14,7 @@ namespace GlobalTheory.Obs.TenExt
 variable {R : Type} [CommRing R] (N : Type) [AddCommGroup N] [Module R N]
 
 /- English proof (translation)
-Proceed by induction on `m using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x y => simp [TensorProduct.smul_tmul']`. Consider the case `add x y hx hy => simp only [smul_add, map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem rTensor_smul {B B' : Type} [CommRing B] [Algebra R B] [CommRing B'] [Algebra R B'] (f : B →ₐ[R] B')
     (a : B) (m : B ⊗[R] N) :
@@ -39,13 +39,13 @@ def tenMap {T T' : C} (φ : T ⟶ T') :
   commutes' r := by ext <;> simp [TrivSqZeroExt.algebraMap_eq_inl']
 
 /- English proof (translation)
-Simplify using `[tenMap]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem fst_tenMap {T T' : C} (φ : T ⟶ T') (c : TrivSqZeroExt (F.obj T) (F.obj T ⊗[R] N)) :
     (tenMap N F φ c).fst = mp F φ c.fst := by simp [tenMap]
 
 /- English proof (translation)
-Simplify using `[tenMap]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem snd_tenMap {T T' : C} (φ : T ⟶ T') (c : TrivSqZeroExt (F.obj T) (F.obj T ⊗[R] N)) :
     (tenMap N F φ c).snd = LinearMap.rTensor N (mp F φ).toLinearMap c.snd := by simp [tenMap]
@@ -73,14 +73,14 @@ theorem mp_tenExt {T T' : C} (φ : T ⟶ T') (c : (tenExt N F).obj T) :
     mp (tenExt N F) φ c = tenMap N F φ c := rfl
 
 /- English proof (translation)
-The claim follows from `TrivSqZeroExt.isUnit_iff_isUnit_fst.trans (iff_of_eq (congrArg IsUnit (fst_tenMap N F u c)))`.
+A detailed English derivation is pending.
 -/
 theorem isUnit_mp_tenExt_iff {T S : C} (u : T ⟶ S) (c : (tenExt N F).obj T) :
     IsUnit (mp (tenExt N F) u c) ↔ IsUnit (mp F u c.fst) :=
   TrivSqZeroExt.isUnit_iff_isUnit_fst.trans (iff_of_eq (congrArg IsUnit (fst_tenMap N F u c)))
 
 /- English proof (translation)
-Use `congrArg (Ideal.map (TrivSqZeroExt.inlHom (F.obj S) (F.obj S ⊗[R] N))) hb` as an intermediate fact. Rewrite `this` using `[Ideal.map_span, Ideal.map_top, ← Set.range_comp]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_inl_eq_top {S : C} {n : ℕ} {b : Fin n → F.obj S} (hb : Ideal.span (Set.range b) = ⊤) :
     Ideal.span (Set.range fun i ↦ (TrivSqZeroExt.inl (b i) : (tenExt N F).obj S)) = ⊤ := by
@@ -96,9 +96,9 @@ variable {R : Type} [CommRing R] (N : Type) [AddCommGroup N] [Module R N]
 variable {C : Type} [Category.{0} C] (F : C ⥤ CommAlgCat.{0} R)
 
 /- English proof (translation)
-Apply `TrivSqZeroExt.ext` to reduce the goal to its premises. Rewrite using `[TrivSqZeroExt.fst_mul, TrivSqZeroExt.fst_pow, fst_tenMap, fst_tenMap]`. Simplify using `only [TrivSqZeroExt.fst_add, TrivSqZeroExt.fst_inl, TrivSqZeroExt.fst_inr, add_zero, map_mul, map_pow] at ha ⊢`. Take the linear combination `(mp F l c.fst) ^ (k₂ + 1) * ha`. Rewrite using `[TrivSqZeroExt.snd_mul, TrivSqZeroExt.snd_pow_of_smul_comm _ _ (op_smul_eq_smul _ _), TrivSqZeroExt.fst_pow, snd_tenMap, fst_tenMap, snd_tenMap]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [TrivSqZeroExt.fst_add, TrivSqZeroExt.fst_inl, TrivSqZeroExt.fst_inr, add_zero, TrivSqZeroExt.snd_add, TrivSqZeroExt.snd_inl, TrivSqZeroExt.snd_inr, zero_add, map_add, map_nsmul, rTensor_smul, map_mul, map_pow, op_smul_eq_smul, Nat.pred_succ] at ha hη ⊢`. Rewrite using `[← hη, ← ha]`. Use `module`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem surj_key {T T' : C} (l : T ⟶ T') (c : TrivSqZeroExt (F.obj T) (F.obj T ⊗[R] N))
     (y : TrivSqZeroExt (F.obj T') (F.obj T' ⊗[R] N)) (a₀ : F.obj T)
@@ -120,7 +120,7 @@ theorem surj_key {T T' : C} (l : T ⟶ T') (c : TrivSqZeroExt (F.obj T) (F.obj T
     module
 
 /- English proof (translation)
-Apply `TrivSqZeroExt.ext` to reduce the goal to its premises. Rewrite using `[TrivSqZeroExt.fst_mul, TrivSqZeroExt.fst_pow, TrivSqZeroExt.fst_zero]`. Take the linear combination `c.fst ^ (m₂ + 1) * h₁`. Rewrite using `[TrivSqZeroExt.snd_mul, TrivSqZeroExt.snd_pow_of_smul_comm _ _ (op_smul_eq_smul _ _), TrivSqZeroExt.fst_pow, TrivSqZeroExt.snd_zero, op_smul_eq_smul, Nat.pred_succ]`. Take the linear combination `(norm := module) c.fst ^ (m₁ + 1) • h₂ + h₁ • ((m₁ + m₂ + 1) • c.fst ^ m₂ • c.snd)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem ker_key {T : C} (c x : TrivSqZeroExt (F.obj T) (F.obj T ⊗[R] N)) (m₁ m₂ : ℕ)
     (h₁ : c.fst ^ m₁ * x.fst = 0) (h₂ : c.fst ^ m₂ • x.snd = 0) : c ^ (m₁ + m₂ + 1) * x = 0 := by
@@ -132,15 +132,15 @@ theorem ker_key {T : C} (c x : TrivSqZeroExt (F.obj T) (F.obj T ⊗[R] N)) (m₁
     linear_combination (norm := module) c.fst ^ (m₁ + 1) • h₂ + h₁ • ((m₁ + m₂ + 1) • c.fst ^ m₂ • c.snd)
 
 /- English proof (translation)
-Introduce `T c`. Take `⟨T', l, h1, h2, h3, h4⟩` from `H T c.fst`. Use `letI : Algebra (F.obj T) (F.obj T') := (mp F l : F.obj T →+* F.obj T').toAlgebra`. Use `haveI : IsScalarTower R (F.obj T) (F.obj T') := IsScalarTower.of_algebraMap_eq fun r ↦ ((mp F l).commutes r).symm`. Use `haveI := GlobalTheory.CechDR.FormExt.isLocalization_of_data F l c.fst h1 h2 h3`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hp : ∀ m, LinearMap.rTensor N (mp F l).toLinearMap m = TensorProduct.AlgebraTensorModule.rTensor R N (Algebra.linearMap (F.obj T) (F.obj T')) m`. Introduce `m`. Proceed by induction on `m using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x y => rfl`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`. Establish `hs : ∀ (a : F.obj T) (η : F.obj T' ⊗[R] N), a • η = mp F l a • η` using `fun a η ↦ (algebraMap_smul (F.obj T') a η).symm`. Use `⟨T', l, (isUnit_mp_tenExt_iff N F l c).2 h1, fun y ↦ ?_, fun x hx ↦ ?_, fun S u hu ↦ h4 S u ((isUnit_mp_tenExt_iff N F u c).1 hu)⟩` and prove the remaining obligations. Take `⟨⟨a₀, _, k₁, rfl⟩, ha⟩` from `IsLocalization.surj (Submonoid.powers c.fst) y.fst`. Take `⟨⟨η₀, _, k₂, rfl⟩, hη⟩` from `IsLocalizedModule.surj (Submonoid.powers c.fst) (TensorProduct.AlgebraTensorModule.rTensor R N (Algebra.linearMap (F.obj T) (F.obj T'))) y.snd`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `y.fst * mp F l (c.fst ^ k₁) = mp F l a₀ at ha`. Express the relevant statement in the definitionally equal form `(c.fst ^ k₂) • y.snd = _ at hη`. Rewrite `hη` using `[hs, ← hp]`. Conclude with `⟨k₁ + k₂ + 1, _, surj_key N F l c y a₀ η₀ k₁ k₂ ha hη⟩`. Establish `e1 : mp F l x.fst = 0` using `(fst_tenMap N F l x).symm.trans (congrArg TrivSqZeroExt.fst hx)`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `e2 : TensorProduct.AlgebraTensorModule.rTensor R N (Algebra.linearMap (F.obj T) (F.obj T')) x.snd = 0` using `(hp _).symm.trans ((snd_tenMap N F l x).symm.trans (congrArg TrivSqZeroExt.snd hx))`. Take `⟨m₁, h₁⟩` from `h3 _ e1`. Take `⟨⟨_, m₂, rfl⟩, h₂⟩` from `IsLocalizedModule.exists_of_eq (S := Submonoid.powers c.fst) (f := TensorProduct.AlgebraTensorModule.rTensor R N (Algebra.linearMap (F.obj T) (F.obj T'))) (x₁ := x.snd) (x₂ := 0) (by rw [e2, map_zero])`. Rewrite `h₂` using `[smul_zero, Submonoid.smul_def]`. Conclude with `⟨m₁ + m₂ + 1, ker_key N F c x m₁ m₂ h₁ h₂⟩`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem hasLoc_tenExt (H : Desc.HasLoc F) : Desc.HasLoc (tenExt N F) := by
   intro T c

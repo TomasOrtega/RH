@@ -28,7 +28,7 @@ Both sides reduce to the same expression.
 lemma toMK_one' : toMK (1 : KG ε) = 1 := rfl
 
 /- English proof (translation)
-Use `show ((T.τ (k * k') : unitary (T.V →L[ℂ] T.V)) : T.V →L[ℂ] T.V) = _`. Rewrite using `[map_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 lemma op_mul' (T : KType ε Λ) (k k' : KG ε) : T.op (k * k') = T.op k * T.op k' := by
   show ((T.τ (k * k') : unitary (T.V →L[ℂ] T.V)) : T.V →L[ℂ] T.V) = _
@@ -36,7 +36,7 @@ lemma op_mul' (T : KType ε Λ) (k k' : KG ε) : T.op (k * k') = T.op k * T.op k
   rfl
 
 /- English proof (translation)
-Use `show ((T.τ 1 : unitary (T.V →L[ℂ] T.V)) : T.V →L[ℂ] T.V) = 1`. Rewrite using `[map_one]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 lemma op_one' (T : KType ε Λ) : T.op 1 = 1 := by
   show ((T.τ 1 : unitary (T.V →L[ℂ] T.V)) : T.V →L[ℂ] T.V) = 1
@@ -44,17 +44,17 @@ lemma op_one' (T : KType ε Λ) : T.op 1 = 1 := by
   rfl
 
 /- English proof (translation)
-Rewrite using `[← toMK_mul', mul_inv_cancel, toMK_one']`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma toMK_mul_inv' (k : KG ε) : toMK k * toMK k⁻¹ = 1 := by rw [← toMK_mul', mul_inv_cancel, toMK_one']
 
 /- English proof (translation)
-Rewrite using `[← toMK_mul', inv_mul_cancel, toMK_one']`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma toMK_inv_mul' (k : KG ε) : toMK k⁻¹ * toMK k = 1 := by rw [← toMK_mul', inv_mul_cancel, toMK_one']
 
 /- English proof (translation)
-Establish `h : ∃ (k' : KG ε) (X' : Matrix (Fin n) (Fin n) ℂ), inP ε X' ∧ toMK k * NormedSpace.exp X = toMK k' * NormedSpace.exp X'` using `⟨k, X, hX, rfl⟩`. Take `⟨hk, hXX⟩` from `polar_unique hX h.choose_spec.choose_spec.1 h.choose_spec.choose_spec.2`. Rewrite using `[PsiM, dif_pos h, ← hXX, ← hk]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem psiM_kexp (T : KType ε Λ) (μ : Fin n → ℤ) (k : KG ε) {X : Matrix (Fin n) (Fin n) ℂ} (hX : inP ε X) :
     PsiM T μ (toMK k * NormedSpace.exp X) = T.op k * psM T μ (NormedSpace.exp X) := by
@@ -64,11 +64,11 @@ theorem psiM_kexp (T : KType ε Λ) (μ : Fin n → ℤ) (k : KG ε) {X : Matrix
   rw [PsiM, dif_pos h, ← hXX, ← hk]
 
 /- English proof (translation)
-Take `⟨k, X, hX, rfl⟩` from `polar_exists hg`. Take `⟨hX', hexp⟩` from `inP_conj k₂⁻¹ hX`. Rewrite `hX'`, `hexp` using `[inv_inv]`. Establish `hc` using `psM_conj T μ k₂⁻¹ (NormedSpace.exp X)`. Rewrite `hc` using `[inv_inv]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hg' : toMK k₁ * (toMK k * NormedSpace.exp X) * toMK k₂ = toMK (k₁ * k * k₂) * NormedSpace.exp (toMK k₂⁻¹ * X * toMK k₂)`. Rewrite using `[hexp, toMK_mul', toMK_mul']`. Simplify using `only [_root_.mul_assoc]`. Rewrite using `[← _root_.mul_assoc (toMK k₂) (toMK k₂⁻¹), toMK_mul_inv', _root_.one_mul]`. Rewrite using `[hg', psiM_kexp T μ _ hX', psiM_kexp T μ k hX, hexp, hc, op_mul', op_mul']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [_root_.mul_assoc]`. Rewrite using `[← _root_.mul_assoc (T.op k₂) (T.op k₂⁻¹), ← op_mul', mul_inv_cancel, op_one', _root_.one_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem psiM_equiv (T : KType ε Λ) (μ : Fin n → ℤ) (k₁ k₂ : KG ε) {g : Matrix (Fin n) (Fin n) ℂ} (hg : inUJ ε g) :
     PsiM T μ (toMK k₁ * g * toMK k₂) = T.op k₁ * PsiM T μ g * T.op k₂ := by
@@ -87,7 +87,7 @@ theorem psiM_equiv (T : KType ε Λ) (μ : Fin n → ℤ) (k₁ k₂ : KG ε) {g
   rw [← _root_.mul_assoc (T.op k₂) (T.op k₂⁻¹), ← op_mul', mul_inv_cancel, op_one', _root_.one_mul]
 
 /- English proof (translation)
-Apply the tactic sequence `have h0 : inP ε (0 : Matrix (Fin n) (Fin n) ℂ) := by first | exact ⟨by simp [inG], by simp⟩ | exact ⟨by first | exact inG_zero ε | exact inG_zero, by simp⟩`. Establish `h1 : (1 : Matrix (Fin n) (Fin n) ℂ) = toMK (1 : KG ε) * NormedSpace.exp (0 : Matrix (Fin n) (Fin n) ℂ)`. Rewrite using `[toMK_one', NormedSpace.exp_zero, one_mul]`. Rewrite using `[h1, psiM_kexp T μ 1 h0, op_one', one_mul, NormedSpace.exp_zero]`. Apply the tactic sequence `first | exact psM_one T μ | exact psM_one | simp [psM_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psiM_one (T : KType ε Λ) (μ : Fin n → ℤ) : PsiM T μ 1 = 1 := by
   have h0 : inP ε (0 : Matrix (Fin n) (Fin n) ℂ) := by

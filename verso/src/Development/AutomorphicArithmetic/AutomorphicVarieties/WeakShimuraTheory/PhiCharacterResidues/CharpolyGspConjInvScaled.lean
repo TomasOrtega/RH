@@ -5,13 +5,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws GlobalTheory.GalOfCusp
 
 /- English proof (translation)
-Establish `h1 : IsGSp (s * s * ν) (s • r x)`. Establish `ha : adj (s • r x) = s • adj (r x)`. Use extensionality with `i j`. Simplify using `only [adj_apply, Matrix.smul_apply]`. Rewrite using `[smul_comm]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Unfold `IsGSp at hr ⊢`. Rewrite using `[ha, Matrix.smul_mul, Matrix.mul_smul, hr, smul_smul, smul_smul]`. Establish `h2 : (s • r x) * (s' • r x⁻¹) = 1`. Rewrite using `[Matrix.smul_mul, Matrix.mul_smul, smul_smul, hs, one_smul, ← map_mul, mul_inv_cancel, map_one]`. Establish `h3` using `phiAdj _ _ _ h1 h2`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← h3, smul_smul]`. Establish `h4 : s * s * ν * s' = t` using `by rw [ht]; linear_combination (s * ν) * hs`. Rewrite using `[h4]`. Establish `h5 : t • r (y * x * y⁻¹)⁻¹ = r y * ((t • r x⁻¹) * r y⁻¹)`. Rewrite using `[Matrix.smul_mul, Matrix.mul_smul, ← map_mul, ← map_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Use `group`. Rewrite using `[h5, Matrix.charpoly_mul_comm, Matrix.mul_assoc, ← map_mul, inv_mul_cancel, map_one, Matrix.mul_one]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem charpoly_gsp_conj_inv_scaled {R Γ : Type} [CommRing R] [Group Γ] (r : Γ →* M4 R) (x y : Γ) (ν s s' t : R)
     (hr : IsGSp ν (r x)) (hs : s * s' = 1) (ht : t = s * ν) :
@@ -36,21 +36,21 @@ private theorem charpoly_gsp_conj_inv_scaled {R Γ : Type} [CommRing R] [Group �
   rw [h5, Matrix.charpoly_mul_comm, Matrix.mul_assoc, ← map_mul, inv_mul_cancel, map_one, Matrix.mul_one]
 
 /- English proof (translation)
-Introduce `Ω _ _ _ l _ c D T c' h K X n g`. Take `⟨cF, hc⟩` from `phiConj T K.s`. Take `⟨g₂, h1, h2⟩` from `hc g`. Use `⟨g₂⁻¹, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_inv]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `toGS Ω K.V.S' (W.resP T.L Ω g₂) = toGS Ω K.V.S' K.s.c * toGS Ω K.V.S' (W.resP T.L Ω g) * (toGS Ω K.V.S' K.s.c)⁻¹`. Rewrite using `[h1, map_mul, map_mul, map_inv]`. Take `⟨k1, k2, -⟩` from `K.conj g g₂ h1`.
+Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `he : K.V.frame.eps c'.O X.A (K.V.pr g) = Units.map (algebraMap c'.O X.A : c'.O →* X.A) (chiO T.L Ω l c'.O g)`. Establish `: K.V.ε (toGS Ω K.V.S' (W.resP T.L Ω g)) = cycZ T.L Ω l g` using `DFunLike.congr_fun K.V.hε (W.resP T.L Ω g)`. Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `algebraMap c'.O X.A (algebraMap ℤ_[l] c'.O (K.V.ε (toGS Ω K.V.S' (W.resP T.L Ω g)) : ℤ_[l]ˣ)) = _`. Rewrite using `[this]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[Link.rho_apply, Link.rho_apply, smul_smul, map_inv, h2, he]`. Use `charpoly_gsp_conj_inv_scaled X.P.r _ _ _ _ (algebraMap c'.O X.A (K.sc n g⁻¹)) _ (X.pair.mult (resLe T.F_le g)) ?_ ?_` and prove the remaining obligations. Rewrite using `[← map_mul, ← Link.sc_mul, mul_inv_cancel, Link.sc_one, map_one]`. Establish `hb : K.β g₂⁻¹ = K.β g` using `by rw [map_inv]; exact (eq_inv_of_mul_eq_one_left k2).symm`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← map_zpow, Units.coe_map]`. Express the relevant statement in the definitionally equal form `algebraMap c'.O X.A _ * _ = _ * algebraMap c'.O X.A (inc h (D.th (resQ T.L g)))`. Rewrite using `[← map_mul, ← map_mul]`. Use `congr 1`. Simplify using `only [Link.sc, hb]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Use `set e := chiO T.L Ω l c'.O g`. Establish `e1 : ((e ^ (1 - ((4 : ℕ) : ℤ)) : c'.Oˣ) : c'.O) * (e : c'.O) ^ 3 = 1`. Rewrite using `[← Units.val_pow_eq_pow_val, ← Units.val_mul, ← zpow_natCast, ← zpow_add]`. Evaluate the numerical expressions. Establish `e2 : ((K.κ g₂⁻¹ : c'.Oˣ) : c'.O) * K.κ g₂ = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Units.val_mul, ← map_mul, inv_mul_cancel, map_one, Units.val_one]`. Generalize the expression as in `((e ^ (1 - ((4 : ℕ) : ℤ)) : c'.Oˣ) : c'.O) = u at e1 ⊢`. Generalize the expression as in `((K.κ g₂⁻¹ : c'.Oˣ) : c'.O) = v at e2 ⊢`. Generalize the expression as in `(inc h (D.th (resQ T.L g)) : c'.O) = θ at k1 ⊢`. Generalize the expression as in `((K.β g : c'.Oˣ) : c'.O) ^ n = b`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `(-u * v * b) * k1 + (b * (K.κ g : c'.O) * θ * u * (e : c'.O) ^ 3) * e2 + (b * (K.κ g : c'.O) * θ) * e1`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.phiPol :
     ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} {D : Raw Ω c} {T : Tower D} {c' : Coef l} {h : c.O ≤ c'.O} (K : Link T c' h) (X : Space (T.fr ∅) (inc h)) (n : ℕ), ∀ g, ∃ g', K.V.pr g' = (K.V.frame.conj (K.V.pr g))⁻¹ ∧ (((K.V.frame.eps c'.O X.A (K.V.pr g) ^ (1 - ((4 : ℕ) : ℤ)) : X.Aˣ) : X.A) • K.rho X n g').charpoly = (K.rho X n g).charpoly := by

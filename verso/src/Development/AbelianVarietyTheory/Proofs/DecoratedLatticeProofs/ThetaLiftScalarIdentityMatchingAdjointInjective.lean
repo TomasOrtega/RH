@@ -33,9 +33,9 @@ noncomputable section
 namespace GlobalTheory.ScalAll
 
 /- English proof (translation)
-Introduce `hDS hHCF hHCM hCW hCRD hHowe hWS hSWU hSEC hUD hBZ D G _ _ Pl0 T A Ks _ _ _ R F hG hcc hSb hfix SF hSF hTR`. Establish `hA : AForm R SF` using `GlobalTheory.T.thetaInnerProduct_eq_const_mul_LValue hDS hHCM hCRD hWS hSEC hUD hBZ R F hG hcc SF hSF`. Take `⟨hB, hUp⟩` from `GlobalTheory.T.thetaLift_adjoint_scalarFormula_injective hDS hHCF hHCM hCW hCRD hHowe hWS hSWU hSEC hUD R F hG hcc hSb hfix SF hSF`. Establish `hM : MatchUp R SF` using `GlobalTheory.MatchUpProof.matchUp_of_tr R F hG.core SF hTR`. Establish `hS : Scal R SF` using `scal_of_aForm_bForm R SF hA hB hM`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨hS, hM, hUp, (upInj_of_scal R F hG.core (GlobalTheory.Hk3.schurAll_of_cuspRapidDecay hCRD R) hG.irr SF hSF hS).2⟩`.
+Supply the required witnesses or components.
 -/
 theorem scal_matchUp_upInj : GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.HarishChandraFinite → GlobalTheory.Published.HarishChandraModules → GlobalTheory.Published.CasselmanWallach → GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Hk3.HoweUnram → GlobalTheory.Published.WeilSiegelFormulaUnitary → (∀ D' : Formalism.BasicNotions.D7, GlobalTheory.Core.Rk.SW.HeckeFormNS D') → GlobalTheory.Published.SiegelEisensteinContinuation → GlobalTheory.Published.UnramifiedDoublingGL → GlobalTheory.Published.BernsteinZelevinskyFiniteness → ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), Given R F → D.host.ccK = ⊤ → R.Sb = R.Pg → (∀ t P, GlobalTheory.Hk3.Good R t P → Formalism.DivisionValues.conjPl P = P → GlobalTheory.Hk3.FixAll R t P) → ∀ SF, GlobalTheory.Hk3.IsSF R SF → GlobalTheory.TrCopy.TRLev R F SF → Scal R SF ∧ MatchUp R SF ∧ UpInj R ∧ UpInjW R := by
   intro hDS hHCF hHCM hCW hCRD hHowe hWS hSWU hSEC hUD hBZ D G _ _ Pl0 T A Ks _ _ _ R F hG hcc hSb hfix SF hSF hTR

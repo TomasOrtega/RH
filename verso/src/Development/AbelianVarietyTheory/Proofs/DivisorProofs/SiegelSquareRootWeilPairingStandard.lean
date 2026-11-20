@@ -14,7 +14,7 @@ open GlobalTheory.ZM GlobalTheory.KeyFam
 namespace GlobalTheory.SqRootPairing
 
 /- English proof (translation)
-Take `⟨m, rfl⟩` from `hk`. Rewrite `ha`, `hb` using `[pow_succ, pow_mul]`. Rewrite `ha` using `[h]`. Conclude with `mul_left_cancel (ha.trans hb.symm)`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_of_sq_eq_of_odd {G : Type} [CommGroup G] {k : ℕ} (hk : Odd k) {a b : G} (ha : a ^ k = 1) (hb : b ^ k = 1)
     (h : a ^ 2 = b ^ 2) : a = b := by
@@ -24,7 +24,7 @@ theorem eq_of_sq_eq_of_odd {G : Type} [CommGroup G] {k : ℕ} (hk : Odd k) {a b 
   exact mul_left_cancel (ha.trans hb.symm)
 
 /- English proof (translation)
-Substitute `hg` using the available equality. Conclude with `(weilIs_grpPullback_of_comm _ _ _ _ _ _ _ _ hL hL' hp hw T k x y x₀ y₀ c ex ey).2 h`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem weilIs_down {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} [GrpObj G] [GrpObj G'] [IsCommMonObj G]
     {f : S' ⟶ S} {φ : G'.left ⟶ G.left} {L : LB G.left} {L' : LB G'.left} (hL : L.IsLB) (hL' : L'.IsLB)
@@ -35,9 +35,9 @@ theorem weilIs_down {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} [GrpObj G] [
   exact (weilIs_grpPullback_of_comm _ _ _ _ _ _ _ _ hL hL' hp hw T k x y x₀ y₀ c ex ey).2 h
 
 /- English proof (translation)
-Establish `key : ∀ l : ℕ, Out.WeilIs P.A P.L k (x ^ (l + 1)) y (c ^ (l + 1))` using `fun l => by`. Proceed by induction on `l with`. Consider the case `zero => rw [zero_add, pow_one, pow_one]`. Conclude with `H`. Consider the case `succ l ih => rw [pow_succ, pow_succ c]`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Conclude with `(hL.weil S P k T).2.1 _ _ _ _ _ ih H`. Use `key n` as an intermediate fact. Rewrite `this` using `[pow_succ, hx, _root_.one_mul]`. Establish `e` using `CommutatorPairing.weilIs_unique hL.globalFns P.isAb P.isLB this H`. Rewrite `e` using `[pow_succ, mul_eq_right]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem pow_eq_one (hL : Out.Laws) {S : Scheme.{0}} [IsLocallyNoetherian S] (P : Out.PolAV S) {k n : ℕ} {T : Over S}
     {x y : T ⟶ P.A} {c : Γ(T.left, ⊤)ˣ} (H : Out.WeilIs P.A P.L k x y c) (hx : x ^ n = 1) : c ^ n = 1 := by
@@ -51,19 +51,17 @@ theorem pow_eq_one (hL : Out.Laws) {S : Scheme.{0}} [IsLocallyNoetherian S] (P :
   rwa [pow_succ, mul_eq_right] at e
 
 /- English proof (translation)
-Introduce `h k K _ ζ σ S s c p P φ lev hk3 hk hζ hp hsq hlev _ tors a b e he`. Take `⟨hpb, -, φ₂, sq, iso⟩` from `hsq`. Establish `hL : Out.Laws` using `GlobalTheory.abelianSchemeLaws_all.1`. Establish `hk0 : (k : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 (by omega)`. Set `z : ℂˣ` to `Units.mk0 (σ ζ) (by rw [hζ]; exact Complex.exp_ne_zero _)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hz : (z : ℂ) = σ ζ` using `rfl`. Establish `hzk : z ^ k = 1` using `Units.ext (by`. Rewrite using `[Units.val_pow_eq_pow_val, hz, hζ, ← Complex.exp_nat_mul, mul_div_cancel₀ _ hk0, Complex.exp_neg, Complex.exp_two_pi_mul_I, inv_one, Units.val_one])`. Establish `hez : e = z ^ omegaStd a b` using `Units.ext (by`. Rewrite using `[Units.val_zpow_eq_zpow_val, hz, hζ, ← Complex.exp_int_mul, he]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use the proof step `ring)`. Establish `lam : (abelian₂ P.A P.L).IsLB` using `LB.isLB_linComb P.isLB _ _`. Establish `dg : ((abelian₂ P.A P.L).pull (lift (𝟙 P.A) (𝟙 P.A)).left).IsLB` using `LB.isLB_linComb lam _ _`. Establish `dc : (c.P.pull (lift (𝟙 c.A) (𝟙 c.A)).left).IsLB` using `LB.isLB_linComb c.isLB _ _`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `w₀` using `(c.geom ℂ p σ z hp hz).2.2 a b`. Establish `pt : ∀ a, (toUnit (Over.mk p) ≫ c.lev a).left = (lev a).left ≫ φ` using `fun a => by`. Rewrite using `[hlev, Over.comp_left, Over.toUnit_left]`. Both sides reduce to the same expression. Establish `w₁` using `weilIs_down dc dg hpb (SiegelPull.diag_iso sq iso) (𝟙_ (Over (Sp ℂ))) p (Category.id_comp p).symm k (lev a) (lev b) _ _ _ (pt a) (pt b) w₀`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨c₀, hc₀, -⟩` from `(hL.weil _ P k (𝟙_ (Over (Sp ℂ)))).1 (lev a) (lev b) (tors a) (tors b)`. Establish `w₂` using `SiegelOfPolarised.weilIs_of_lbIso_pow hL.globalFns P.isAb P.isLB dg (SiegelOfPolarised.lbIso_diag hL P) hc₀`. Establish `e₂` using `CommutatorPairing.weilIs_unique hL.globalFns P.isAb dg w₂ w₁`. Establish `up : ∀ (u : ℂˣ) (n : ℕ), unitOn (u ^ n) = unitOn u ^ n` using `fun u n => map_pow _ _ _`. Establish `e₁ : c₀ = unitOn e`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `eq_of_sq_eq_of_odd hk (pow_eq_one hL P hc₀ (tors a)) ?_ (e₂.trans ?_)` and prove the remaining obligations. Use `(up e k).symm.trans ?_` and prove the remaining obligations. Rewrite using `[hez, ← zpow_natCast, ← zpow_mul, mul_comm, zpow_mul, zpow_natCast, hzk, one_zpow]`. Conclude with `map_one _`. Use `Eq.trans ?_ (up e 2)` and prove the remaining obligations.
-
-Rewrite using `[hez, mul_comm, zpow_mul, zpow_ofNat]`. Conclude with `e₁ ▸ hc₀`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem weilIs_lev_of_sqOf : ∀ (h k : ℕ) (K : Type) [Field K] (ζ : K) (σ : K →+* ℂ) (S : Scheme.{0}) (s : S ⟶ Sp K) (c : SiegPre h k ζ s) (p : Sp ℂ ⟶ S) (P : Out.PolAV (Sp ℂ)) (φ : P.A.left ⟶ c.A.left) (lev : (Fin h ⊕ Fin h → ℤ) → (𝟙_ (Over (Sp ℂ)) ⟶ P.A)), 3 ≤ k → Odd k → σ ζ = Complex.exp (-(2 * Real.pi * Complex.I) / k) → p ≫ s = spMap σ → SqOf P c p φ → (∀ a, (lev a).left ≫ φ = p ≫ (c.lev a).left) → (∀ a b, lev (a + b) = lev a * lev b) → (∀ a, lev a ^ k = 1) → ∀ (a b : Fin h ⊕ Fin h → ℤ) (e : ℂˣ), (e : ℂ) = Complex.exp (-(2 * Real.pi * Complex.I) * (omegaStd a b : ℂ) / k) → Out.WeilIs P.A P.L k (lev a) (lev b) (unitOn e) := by
   intro h k K _ ζ σ S s c p P φ lev hk3 hk hζ hp hsq hlev _ tors a b e he

@@ -14,9 +14,9 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.Cusp.Dict.LatBas
 
 /- English proof (translation)
-Establish `hz : z = z.re • (1 : ℂ) + z.im • Complex.I`. Apply the tactic sequence `apply Complex.ext <;> simp`. Use `conv_lhs => rw [hz]`. Rewrite using `[map_add, map_smul, map_smul]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem apply_eq_re (l : ℂ →ₗ[ℝ] ℝ) (z : ℂ) :
     l z = (((l 1 : ℂ) - Complex.I * (l Complex.I : ℂ)) * z).re := by
@@ -28,17 +28,17 @@ theorem apply_eq_re (l : ℂ →ₗ[ℝ] ℝ) (z : ℂ) :
   ring
 
 /- English proof (translation)
-Set `m : Ψ ⊕ Ψ → (E →* ℂ)` to `Sum.elim (fun τ => (s τ : E →* ℂ)) (fun τ => (((starRingEnd ℂ).comp (s τ) : E →+* ℂ) : E →* ℂ))`. Establish `hm : Function.Injective m`. Introduce and unpack `(a | a) (b | b) hab`. Establish `: s a = s b` using `RingHom.ext fun x => DFunLike.congr_fun hab x`. Rewrite using `[hs this]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `absurd (RingHom.ext fun x => DFunLike.congr_fun hab x) (hc a b)`. Conclude with `absurd (RingHom.ext fun x => (DFunLike.congr_fun hab x).symm) (hc b a)`. Establish `h1 : (starRingEnd ℂ).comp (s a) = (starRingEnd ℂ).comp (s b)` using `RingHom.ext fun x => DFunLike.congr_fun hab x`. Establish `: s a = s b`. Use extensionality with `x`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `RingHom.injective (starRingEnd ℂ) (DFunLike.congr_fun h1 x)`. Rewrite using `[hs this]`. Establish `hli` using `(linearIndependent_monoidHom E ℂ).comp m hm`. Rewrite `hli` using `[Fintype.linearIndependent_iff]`. Establish `key` using `hli (Sum.elim c (fun τ => (starRingEnd ℂ) (c τ))) (by`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `x`. Rewrite using `[Fintype.sum_sum_type]`. Establish `h2 : ∑ τ, ((c τ * s τ x) + (starRingEnd ℂ) (c τ * s τ x)) = 0`. Establish `: ∀ τ, (c τ * s τ x) + (starRingEnd ℂ) (c τ * s τ x) = 2 * (((c τ * s τ x).re : ℝ) : ℂ)`. Introduce `τ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[Complex.add_conj]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Repeatedly rewrite using `[this]`. Rewrite using `[← Finset.mul_sum, ← Complex.ofReal_sum, h x]`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using the standard rewrite rules. Rewrite `h2` using `[Finset.sum_add_distrib]`. Simplify `h2)` using `[m, Finset.sum_apply, map_mul]`. Simplify using `using key (Sum.inl τ)`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem coeff_eq_zero {E : Type} [Field E] {Ψ : Type} [Fintype Ψ] (s : Ψ → (E →+* ℂ))
     (hs : Function.Injective s) (hc : ∀ τ τ', s τ ≠ (starRingEnd ℂ).comp (s τ'))
@@ -77,19 +77,17 @@ theorem coeff_eq_zero {E : Type} [Field E] {Ψ : Type} [Fintype Ψ] (s : Ψ → 
   simpa using key (Sum.inl τ)
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Take `⟨L, hL0, hL⟩` from `Submodule.exists_le_ker_of_lt_top _ (lt_top_iff_ne_top.2 hne)`. Apply `hL0` to reduce the goal to its premises. Set `l : Fin N → Ψ → (ℂ →ₗ[ℝ] ℝ)` to `fun i τ => L ∘ₗ LinearMap.single ℝ (fun _ : Ψ => Fin N → ℂ) τ ∘ₗ LinearMap.single ℝ (fun _ : Fin N => ℂ) i`. Establish `hl : ∀ i τ, l i τ = 0`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `i τ`. Establish `hc0` using `coeff_eq_zero s hs hc (fun τ => ((l i τ 1 : ℝ) : ℂ) - Complex.I * ((l i τ Complex.I : ℝ) : ℂ)) (by`. Introduce `x`. Repeatedly rewrite using `[← apply_eq_re]`. Establish `hmem : (fun τ j => s τ ((Pi.single i x : Fin N → E) j) : Ψ → Fin N → ℂ) ∈ LinearMap.ker L` using `hL (Submodule.subset_span ⟨_, rfl⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact.
 
-Establish `hsum : (fun τ j => s τ ((Pi.single i x : Fin N → E) j) : Ψ → Fin N → ℂ) = ∑ τ, LinearMap.single ℝ (fun _ : Ψ => Fin N → ℂ) τ (LinearMap.single ℝ (fun _ : Fin N => ℂ) i (s τ x))`. Use function extensionality and compare the values at `τ' j`. Rewrite using `[Finset.sum_apply, Finset.sum_apply, Finset.sum_eq_single τ' (fun b _ hb => by simp [Pi.single_apply, hb.symm]) (by simp)]`. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, hj]`. Rewrite `hmem` using `[LinearMap.mem_ker, hsum, map_sum]`. Conclude with `hmem) τ`. Establish `h1 : l i τ 1 = 0`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrArg Complex.re hc0` as an intermediate fact. Simplify using `using this`. Establish `h2 : l i τ Complex.I = 0`. Use `congrArg Complex.im hc0` as an intermediate fact. Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `z`. Rewrite using `[apply_eq_re, h1, h2]`. Simplify using the standard rewrite rules. Use `LinearMap.pi_ext' fun τ => LinearMap.pi_ext' fun i => ?_` and prove the remaining obligations.
-
-Conclude with `hl i τ`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem span_eq_top {E : Type} [Field E] {Ψ : Type} [Fintype Ψ] (N : ℕ) (s : Ψ → (E →+* ℂ))
     (hs : Function.Injective s) (hc : ∀ τ τ', s τ ≠ (starRingEnd ℂ).comp (s τ')) :
@@ -139,15 +137,15 @@ def vecOf {E : Type} [Field E] {Ψ : Type} (N : ℕ) (s : Ψ → (E →+* ℂ)) 
   map_add' a b := by funext τ i; simp
 
 /- English proof (translation)
-Establish `hlat : ∀ x : Λ, vecOf N s (e x) ∈ Submodule.span ℝ (Set.range fun k => vecOf N s (e (lam k)))`. Introduce `x`. Rewrite using `[← lam.sum_repr x, map_sum, map_sum]`. Use `Submodule.sum_mem _ fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul, map_zsmul, ← Int.cast_smul_eq_zsmul ℝ]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨k, rfl⟩)`. Establish `hall : ∀ v, vecOf N s v ∈ Submodule.span ℝ (Set.range fun k => vecOf N s (e (lam k)))`. Introduce `v`. Take `⟨k, x, hk, hx⟩` from `hspan v`. Establish `h2` using `hlat x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[hx, map_nsmul, ← Nat.cast_smul_eq_nsmul ℝ]`. Conclude with `(Submodule.smul_mem_iff _ (Nat.cast_ne_zero.2 hk)).1 h2`. Establish `htop : (⊤ : Submodule ℝ (Ψ → Fin N → ℂ)) ≤ Submodule.span ℝ (Set.range fun k => vecOf N s (e (lam k)))`. Rewrite using `[← span_eq_top N s hs hc]`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨v, rfl⟩`. Conclude with `hall v`. Establish `hcard : Fintype.card (Fin (2 * g)) = Module.finrank ℝ (Ψ → Fin N → ℂ)`. Rewrite using `[Fintype.card_fin, Module.finrank_pi_fintype]`. Simplify using `[Module.finrank_pi_fintype, Complex.finrank_real_complex, hg]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Use `⟨basisOfTopLeSpanOfCardEqFinrank _ htop hcard, fun k τ i => ?_⟩` and prove the remaining obligations. Rewrite using `[coe_basisOfTopLeSpanOfCardEqFinrank]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_basis {E : Type} [Field E] {Ψ : Type} [Fintype Ψ] {g N : ℕ} (s : Ψ → (E →+* ℂ))
     (hs : Function.Injective s) (hc : ∀ τ τ', s τ ≠ (starRingEnd ℂ).comp (s τ'))
@@ -189,13 +187,11 @@ end GlobalTheory.CompanionTheory.Ar.Cusp.Dict.LatBas
 namespace GlobalTheory.CompanionTheory.Ar.Cusp.Dict
 
 /- English proof (translation)
-Introduce `E _ _ _ Ψ _ g N σ hσ hg Λ _ e hspan lam`. Establish `hres : ∀ τ a, embOf (σ τ) (algebraMap (𝓞 E) E a) = σ τ a` using `fun τ a => IsFractionRing.lift_algebraMap (intEmb_injective (σ τ)) a`. Establish `hs : Function.Injective fun τ => embOf (σ τ)`. Introduce `a b hab`. Apply `hσ.1` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use extensionality with `x`. Rewrite using `[← hres a x, ← hres b x]`. Conclude with `DFunLike.congr_fun hab _`. Establish `hc : ∀ τ τ', embOf (σ τ) ≠ (starRingEnd ℂ).comp (embOf (σ τ'))`. Introduce `τ τ' h`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1 : σ τ = (starRingEnd ℂ).comp (σ τ')`. Use extensionality with `x`. Rewrite using `[RingHom.comp_apply, ← hres τ x, ← hres τ' x]`. Conclude with `DFunLike.congr_fun h _`. Conclude with `((hσ.2 (σ τ')).1 ⟨τ', rfl⟩) ⟨τ, h1⟩`.
-
-Conclude with `LatBas.exists_basis (fun τ => embOf (σ τ)) hs hc hg e hspan lam`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_realBasis_of_latBasis : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (Ψ : Type) [Fintype Ψ] (g N : ℕ) (σ : Ψ → (𝓞 E →+* ℂ)), IsCMFam σ → g = Fintype.card Ψ * N → ∀ (Λ : Type) [AddCommGroup Λ] (e : Λ →+ (Fin N → E)), (∀ v : Fin N → E, ∃ (k : ℕ) (x : Λ), k ≠ 0 ∧ e x = k • v) → ∀ lam : Module.Basis (Fin (2 * g)) ℤ Λ, ∃ bas : Module.Basis (Fin (2 * g)) ℝ (Ψ → Fin N → ℂ), ∀ k τ i, bas k τ i = embOf (σ τ) (e (lam k) i) := by
   intro E _ _ _ Ψ _ g N σ hσ hg Λ _ e hspan lam

@@ -28,9 +28,9 @@ def ZuckDualG : Prop :=
       ∃ X : PI.ZuckTensor.TensorDSd n ε μ H σ, ∀ s, s ∈ X.Sm ↔ PI.UpqRep.IsHCParam (μ - Pi.single s 1)
 
 /- English proof (translation)
-Introduce `n ε μ H _ _ _ σ hμ hd h hG hth`. Distinguish the cases in `hq : 1 ≤ S7.q0 ε`. Conclude with `cns_zuck_nc hq hμ hd hG hth`. Establish `h0 : S7.q0 ε = 0` using `by omega`. Establish `hpq : pOf ε = 0 ∨ qOf ε = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [S7.q0] at h0`. Use linear arithmetic over natural numbers and integers. Conclude with `cns_zuck_cpt hpq hμ hd`.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem zuckG : ZuckG := by
   intro n ε μ H _ _ _ σ hμ hd h hG hth
@@ -43,9 +43,9 @@ theorem zuckG : ZuckG := by
     exact cns_zuck_cpt hpq hμ hd
 
 /- English proof (translation)
-Introduce `n ε μ H _ _ _ σ hμ hd h hG hth`. Distinguish the cases in `hq : 1 ≤ S7.q0 ε`. Conclude with `cns_zuckd_nc hq hμ hd hG hth`. Establish `h0 : S7.q0 ε = 0` using `by omega`. Establish `hpq : pOf ε = 0 ∨ qOf ε = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [S7.q0] at h0`. Use linear arithmetic over natural numbers and integers. Conclude with `cns_zuckd_cpt hpq hμ hd`.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem zuckDualG : ZuckDualG := by
   intro n ε μ H _ _ _ σ hμ hd h hG hth

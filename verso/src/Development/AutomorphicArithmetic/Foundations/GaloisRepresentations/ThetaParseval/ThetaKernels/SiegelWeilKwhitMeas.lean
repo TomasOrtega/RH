@@ -19,31 +19,31 @@ namespace PositivityTheory.SiegelWeilFormula.KWhit
 open PositivityTheory.SiegelWeilFormula
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 /- English proof (translation)
-The claim follows from `_root_.PositivityTheory.SiegelWeilFormula.KWhit.meas_herm_top'_k d`.
+A detailed English derivation is pending.
 -/
 theorem meas_herm_top_k (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) : IsTopologicalAddGroup (HeckeCharacterZeroLocus.SiegelWeilU.HermR (AF F) σ d.n) ∧
     LocallyCompactSpace (HeckeCharacterZeroLocus.SiegelWeilU.HermR (AF F) σ d.n) ∧ SecondCountableTopology (HeckeCharacterZeroLocus.SiegelWeilU.HermR (AF F) σ d.n) ∧
     BorelSpace (HeckeCharacterZeroLocus.SiegelWeilU.HermR (AF F) σ d.n) ∧ Countable (MeasP.ratHerm F E σ d.n) := _root_.PositivityTheory.SiegelWeilFormula.KWhit.meas_herm_top'_k d
 /- English proof (translation)
-The claim follows from `_root_.PositivityTheory.SiegelWeilFormula.KWhit.meas_mx_top'_k d`.
+A detailed English derivation is pending.
 -/
 theorem meas_mx_top_k (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) : IsTopologicalAddGroup (Mx F E d.m d.n) ∧ LocallyCompactSpace (Mx F E d.m d.n) ∧
     SecondCountableTopology (Mx F E d.m d.n) ∧ BorelSpace (Mx F E d.m d.n) ∧ Countable d.ratM := _root_.PositivityTheory.SiegelWeilFormula.KWhit.meas_mx_top'_k d
 /- English proof (translation)
-The claim follows from `d.ok.good.cm`.
+A detailed English derivation is pending.
 -/
 theorem meas_cm_k (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) : HeckeCharacterZeroLocus.SiegelWeilU.IsCMExt F E σ := d.ok.good.cm
 /- English proof (translation)
-The claim follows from `GlobalTheory.StdCharFromIsStd.isCharAF d.ok.good.std`.
+A detailed English derivation is pending.
 -/
 theorem meas_char_k (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) : HeckeCharacterZeroLocus.SiegelWeilU.IsCharAF F d.B.ψ := GlobalTheory.StdCharFromIsStd.isCharAF d.ok.good.std
 /- English proof (translation)
-The claim follows from `_root_.PositivityTheory.SiegelWeilFormula.KWhit.meas_hermND'_k d hη hh`.
+A detailed English derivation is pending.
 -/
 theorem meas_hermND_k (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) {η : E} (hη : η ≠ 0) (hh : ∀ i j, σ (η * d.A.J j i) = η * d.A.J i j) :
     HeckeCharacterZeroLocus.SiegelWeilU.IsHermND σ (_root_.PositivityTheory.SiegelWeilFormula.KWhit.Jd_k d η) := _root_.PositivityTheory.SiegelWeilFormula.KWhit.meas_hermND'_k d hη hh
 /- English proof (translation)
-The claim follows from `_root_.PositivityTheory.SiegelWeilFormula.MeasD.meas_hOf_k hR hc`.
+A detailed English derivation is pending.
 -/
 theorem meas_hOf_k {d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ} {R : _root_.PositivityTheory.SiegelWeilFormula.RD_k d} {x : d.G} {t u : GL (Fin d.n) (AE F E)} {T : nF σ d.Y d.b} {η : E}
     {T₀ : Matrix (Fin d.n) (Fin d.n) E} {hOf : nA σ d.Y d.b → HeckeCharacterZeroLocus.SiegelWeilU.HermR (AF F) σ d.n}
@@ -55,7 +55,7 @@ theorem meas_hOf_k {d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ} {R : 
       IsAddFundamentalDomain (MeasP.ratHerm F E σ d.n) (hOf '' 𝓖) (lam.map hOf) ∧ lam.map hOf (hOf '' 𝓖) = 1 :=
   _root_.PositivityTheory.SiegelWeilFormula.MeasD.meas_hOf_k hR hc
 /- English proof (translation)
-The claim follows from `_root_.PositivityTheory.SiegelWeilFormula.MeasD.meas_toMx_k d μ 𝓕 hμ hF h1`.
+A detailed English derivation is pending.
 -/
 theorem meas_toMx_k (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) (μ : Measure (Fin d.n → Fin d.m → AF F ⊗[F] E)) (𝓕 : Set (Fin d.n → Fin d.m → AF F ⊗[F] E))
     (hμ : μ.IsAddHaarMeasure) (hF : IsAddFundamentalDomain (MeasP.ratTupA F E d.n d.m) 𝓕 μ) (h1 : μ 𝓕 = 1) :
@@ -63,17 +63,11 @@ theorem meas_toMx_k (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) (μ 
       IsAddFundamentalDomain d.ratM (toMx '' 𝓕) (μ.map toMx) ∧ μ.map toMx (toMx '' 𝓕) = 1 :=
   _root_.PositivityTheory.SiegelWeilFormula.MeasD.meas_toMx_k d μ 𝓕 hμ hF h1
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ d R x t u T η T₀ hOf θ fr g hR`. Prove the components needed by the constructor for the conclusion. Introduce `nb lam 𝓖 hc ν hν`. Take `⟨i1, i2, i3, i4, i5⟩` from `_root_.PositivityTheory.SiegelWeilFormula.KWhit.meas_herm_top_k d`. Use `haveI := i1`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI := i2`. Use `haveI := i3`. Use `haveI := i4`. Use `haveI := i5`. Take `⟨hemb, hH', hfd, h1⟩` from `_root_.PositivityTheory.SiegelWeilFormula.KWhit.meas_hOf_k hR hc`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI := hH'`. Take `⟨𝓕, hF, hF1⟩` from `hH F E σ (_root_.PositivityTheory.SiegelWeilFormula.KWhit.meas_cm_k d) d.B.ψ (_root_.PositivityTheory.SiegelWeilFormula.KWhit.meas_char_k d) d.n ν hν`. Use `haveI := hν.1`. Conclude with `⟨hemb, hemb.measurable, @MeasG.covol_unique _ _ _ _ _ _ _ _ (MeasP.ratHerm F E σ d.n) _ _ _ hν.1 hH' _ _ hF hfd hF1 h1⟩`. Introduce `μ νc hμ hνc`.
-
-Take `⟨i1, i2, i3, i4, i5⟩` from `_root_.PositivityTheory.SiegelWeilFormula.KWhit.meas_mx_top_k d`. Use `haveI := i1`. Use `haveI := i2`. Use `haveI := i3`. Use `haveI := i4`.
-
-Use `haveI := i5`. Take `⟨𝓕, hF, hF1⟩` from `hT F E σ (_root_.PositivityTheory.SiegelWeilFormula.KWhit.meas_cm_k d) d.m (_root_.PositivityTheory.SiegelWeilFormula.KWhit.Jd_k d η) (_root_.PositivityTheory.SiegelWeilFormula.KWhit.meas_hermND_k d hR.ne hR.herm) d.B.ψ (_root_.PositivityTheory.SiegelWeilFormula.KWhit.meas_char_k …`. Take `⟨hemb, hH', hfd, h1⟩` from `_root_.PositivityTheory.SiegelWeilFormula.KWhit.meas_toMx_k d μ 𝓕 hμ.1 hF hF1`. Take `⟨hνH, 𝓖, hG, hG1⟩` from `hνc`. Use `haveI := hνH`.
-
-Use `haveI := hH'`. Conclude with `⟨hemb, hemb.measurable, @MeasG.covol_unique _ _ _ _ _ _ _ _ d.ratM _ _ _ hνH hH' _ _ hG hfd hG1 h1⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem measDict_of_k (hH : MeasP.HermCovol) (hT : MeasP.TupCovol) : _root_.PositivityTheory.SiegelWeilFormula.KWhit.MeasDict_k := by
   intro F E _ _ _ _ _ σ d R x t u T η T₀ hOf θ fr g hR
@@ -95,7 +89,7 @@ theorem measDict_of_k (hH : MeasP.HermCovol) (hT : MeasP.TupCovol) : _root_.Posi
     haveI := hνH; haveI := hH'
     exact ⟨hemb, hemb.measurable, @MeasG.covol_unique _ _ _ _ _ _ _ _ d.ratM _ _ _ hνH hH' _ _ hG hfd hG1 h1⟩
 /- English proof (translation)
-The claim follows from `_root_.PositivityTheory.SiegelWeilFormula.KWhit.measDict_of_k GlobalTheory.T.hermitian_covolume_formula GlobalTheory.T.tuple_space_covolume_formula`.
+A detailed English derivation is pending.
 -/
 theorem measDict_k : _root_.PositivityTheory.SiegelWeilFormula.KWhit.MeasDict_k := _root_.PositivityTheory.SiegelWeilFormula.KWhit.measDict_of_k GlobalTheory.T.hermitian_covolume_formula GlobalTheory.T.tuple_space_covolume_formula
 end PositivityTheory.SiegelWeilFormula.KWhit

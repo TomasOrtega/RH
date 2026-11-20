@@ -146,7 +146,7 @@ def arith (g : GL (Fin n) (Af F)) (U : Subgroup (GL (Fin n) (Af F))) : Subgroup 
 
 variable {F n} in
 /- English proof (translation)
-Simplify using `[arith]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_arith {g : GL (Fin n) (Af F)} {U : Subgroup (GL (Fin n) (Af F))} {γ : GL (Fin n) F} :
     γ ∈ arith g U ↔ g⁻¹ * ratAf F n γ * g ∈ U := by

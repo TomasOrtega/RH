@@ -49,7 +49,7 @@ def rd (ψ : AddChar (AF D.host.F) ℂ) (σ : (D.what₂.Tau → ℂ) →+ AE D)
   (Real.exp (gq (fw D) z / 2) : ℂ) * heisO ψ S T (fockPt σ A B z) f x
 
 /- English proof (translation)
-Unfold `fw`. Establish `h : tauE D τ D.host.xi0 ≠ 0` using `(map_ne_zero _).2 GlobalTheory.ChiGrid.cmHost_imaginaryGenerator_ne_zero`. Check the signs of the components of the expression.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Check the signs of the components of the expression.
 -/
 theorem fw_pos (D : D7) (τ : D.what₂.Tau) : 0 < fw D τ := by
   unfold fw

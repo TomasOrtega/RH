@@ -5,7 +5,7 @@ import Formalism.HermitianCurvature.HermitianCurvatureProofs.BlockTwoDiagonalZer
 namespace Formalism.FourierDecayAlt.P
 
 /- English proof (translation)
-The claim follows from `PBJ.Asm.kloosterman_density_of_parts PBJ.fubini_head_last_part PBJ.freeze_last_entry PBJ.long_orbital_integral_multiple PBJ.block_orbital_integral_multiple`.
+A detailed English derivation is pending.
 -/
 theorem kloosterman_density : Formalism.FourierDecayAlt.KB.KloostDens :=
   PBJ.Asm.kloosterman_density_of_parts PBJ.fubini_head_last_part PBJ.freeze_last_entry PBJ.long_orbital_integral_multiple PBJ.block_orbital_integral_multiple

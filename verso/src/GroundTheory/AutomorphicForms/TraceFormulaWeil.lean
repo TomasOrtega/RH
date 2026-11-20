@@ -18,9 +18,9 @@ variable {H : Type*} [Group H] [TopologicalSpace H] [IsTopologicalGroup H] [Loca
 omit [LocallyCompactSpace H] [T2Space H] in
 
 /- English proof (translation)
-Use `IsFundamentalDomain.mk' ((measurableSet_fundamentalDomain L).preimage (measurable_mul_const g)).nullMeasurableSet fun h => ?_` and prove the remaining obligations. Take `⟨l, hl, hlu⟩` from `existsUnique_smul_mem_fundamentalDomain L (h * g)`. Use `⟨l, ?_, fun l' hl' => hlu l' ?_⟩` and prove the remaining obligations. Use `show (l • h) * g ∈ fundamentalDomain L`. Rewrite using `[smul_mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hl`. Establish `hl'' : (l' • h) * g ∈ fundamentalDomain L` using `hl'`. Rewrite `hl''` using `[smul_mul_assoc]`. Conclude with `hl''`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isFundamentalDomain_preimage_mul_right (L : Subgroup H) [DiscreteTopology L]
     (ν : Measure H) (g : H) :
@@ -37,13 +37,13 @@ theorem isFundamentalDomain_preimage_mul_right (L : Subgroup H) [DiscreteTopolog
     exact hl''
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `g`. Establish `hD` using `isFundamentalDomain_fundamentalDomain L ν`. Establish `h0 : ν (fundamentalDomain L) ≠ 0` using `hD.measure_ne_zero (NeZero.ne ν)`. Establish `htop : ν (fundamentalDomain L) ≠ ∞`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← quotientMeasure_univ ν hD]`. Conclude with `measure_ne_top _ _`. Use `set c : ℝ≥0 := Measure.haarScalarFactor (Measure.map (· * g) ν) ν`. Establish `hc : Measure.map (· * g) ν = c • ν` using `Measure.isMulLeftInvariant_eq_smul _ _`. Establish `h2 : Measure.map (· * g) ν (fundamentalDomain L) = ν (fundamentalDomain L)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Measure.map_apply (measurable_mul_const g) (measurableSet_fundamentalDomain L)]`. Conclude with `(isFundamentalDomain_preimage_mul_right L ν g).measure_eq hD`. Establish `hc1 : c = 1`. Rewrite `h2` using `[hc, Measure.smul_apply, ENNReal.smul_def, smul_eq_mul]`. Establish `: (c : ℝ≥0∞) * ν (fundamentalDomain L) = 1 * ν (fundamentalDomain L)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2, one_mul]`. Rewrite `this` using `[ENNReal.mul_left_inj h0 htop, ENNReal.coe_eq_one]`. Then use the resulting hypothesis. Rewrite using `[hc, hc1, one_smul]`.
+A detailed English derivation is pending.
 -/
 theorem isMulRightInvariant_of_compactSpace (L : Subgroup H) [DiscreteTopology L]
     [CompactSpace (RightCosetSpace L)] (ν : Measure H) [ν.IsHaarMeasure] :
@@ -70,11 +70,11 @@ theorem isMulRightInvariant_of_compactSpace (L : Subgroup H) [DiscreteTopology L
 omit [T2Space H] in
 
 /- English proof (translation)
-Use `set c : ℝ≥0 := Measure.haarScalarFactor ν.inv ν`. Establish `hc : ν.inv = c • ν` using `Measure.isMulLeftInvariant_eq_smul _ _`. Establish `h2 : Measure.map Inv.inv (Measure.map Inv.inv ν) = (c ^ 2 : ℝ≥0) • ν`. Rewrite using `[← Measure.inv_def ν, hc, Measure.map_smul, ← Measure.inv_def ν, hc, smul_smul, pow_two]`. Establish `hν : ν = (c ^ 2 : ℝ≥0) • ν`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[Measure.map_map continuous_inv.measurable continuous_inv.measurable]`. Simplify `h2` using `only [inv_involutive, Involutive.comp_self, Measure.map_id]`. Establish `K : TopologicalSpace.PositiveCompacts H` using `Classical.arbitrary _`. Establish `h3 : ((c ^ 2 : ℝ≥0) : ℝ≥0∞) * ν K = 1 * ν K` using `by conv_rhs => rw [hν]`. Simplify using the standard rewrite rules.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h4 : ((c ^ 2 : ℝ≥0) : ℝ≥0∞) = 1` using `(ENNReal.mul_left_inj ((isOpen_interior.measure_pos ν K.interior_nonempty).trans_le (measure_mono interior_subset)).ne' K.isCompact.measure_lt_top.ne).1 h3`. Establish `h5 : c = 1`. Rewrite `h4` using `[ENNReal.coe_eq_one]`. Conclude with `(pow_eq_one_iff_of_nonneg (zero_le : (0 : ℝ≥0) ≤ c) two_ne_zero).1 h4`. Rewrite using `[hc, h5, one_smul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inv_eq_self_of_isMulRightInvariant (ν : Measure H) [ν.IsHaarMeasure]
     [ν.IsMulRightInvariant] : ν.inv = ν := by
@@ -107,7 +107,7 @@ variable {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Loca
   (Γ : Subgroup G) [DiscreteTopology Γ] [CompactSpace (RightCosetSpace Γ)]
 
 /- English proof (translation)
-The claim follows from `have := compactSpace_centralizerLattice Γ γ isMulRightInvariant_of_compactSpace (centralizerLattice Γ (γ : G)) ν`.
+A detailed English derivation is pending.
 -/
 theorem isMulRightInvariant_centralizer (γ : Γ)
     (ν : Measure (Subgroup.centralizer {(γ : G)})) [ν.IsHaarMeasure] : ν.IsMulRightInvariant :=
@@ -115,7 +115,7 @@ theorem isMulRightInvariant_centralizer (γ : Γ)
   isMulRightInvariant_of_compactSpace (centralizerLattice Γ (γ : G)) ν
 
 /- English proof (translation)
-Use `compactSpace_centralizerLattice Γ γ` as an intermediate fact. Establish `hD` using `isFundamentalDomain_fundamentalDomain (centralizerLattice Γ (γ : G)) ν`. Use `⟨?_, measure_ne_top _ _⟩` and prove the remaining obligations. Rewrite using `[quotientMeasure_univ ν hD]`. Conclude with `hD.measure_ne_zero (NeZero.ne ν)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem quotientMeasure_centralizerLattice_univ_ne_zero_ne_top (γ : Γ)
     (ν : Measure (Subgroup.centralizer {(γ : G)})) [ν.IsHaarMeasure] :
@@ -134,25 +134,25 @@ def weilMeasure (μ : Measure G) (γ : Γ) (ν : Measure (Subgroup.centralizer {
       (quotientMeasure (centralizerIn Γ γ) μ)
 
 /- English proof (translation)
-Introduce `φ F hφ hF`. Use `isMulRightInvariant_centralizer Γ γ ν` as an intermediate fact. Establish `hinv` using `inv_eq_self_of_isMulRightInvariant ν`. Take `⟨hv0, hvtop⟩` from `quotientMeasure_centralizerLattice_univ_ne_zero_ne_top Γ γ ν`. Use `set vol := quotientMeasure (centralizerLattice Γ (γ : G)) ν univ with hvol`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set E := fundamentalDomain (centralizerIn Γ (γ : G)) with hE`. Establish `hEm : MeasurableSet E` using `measurableSet_fundamentalDomain _`. Establish `hm2 : Measurable fun p : G × Subgroup.centralizer {(γ : G)} => φ ((p.2 : G) * p.1)` using `hφ.comp ((continuous_subtype_val.comp continuous_snd).mul continuous_fst).measurable`. Establish `hFm : Measurable F`. Use `measurable_from_quotient.2 ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: F ∘ Quotient.mk'' = fun x => ∫⁻ h, φ ((h : G) * x) ∂ν` using `funext hF`. Rewrite using `[this]`. Conclude with `hm2.lintegral_prod_right'`. Establish `hS : ∀ y : G, ν {h : Subgroup.centralizer {(γ : G)} | (h : G)⁻¹ * y ∈ E} = vol`. Introduce `y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `h1 : {h : Subgroup.centralizer {(γ : G)} | (h : G)⁻¹ * y ∈ E} = {k : Subgroup.centralizer {(γ : G)} | (k : G) * y ∈ E}⁻¹`. Use extensionality with `h`. Simplify using the standard rewrite rules. Rewrite using `[h1, ← Measure.inv_apply, hinv]`. Conclude with `(quotientMeasure_univ ν (isFundamentalDomain_centralizerLattice Γ (γ : G) ν y)).symm`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[weilMeasure, lintegral_smul_measure, lintegral_map hFm (measurable_mapOfLe _), lintegral_quotientMeasure]`. Simplify using `only [mapOfLe_mk, hF]`. Rewrite using `[← hvol, ← hE]`. Rewrite using `[smul_eq_mul, lintegral_lintegral_swap (f := fun (g : G) (h : Subgroup.centralizer {(γ : G)}) => φ ((h : G) * g)) hm2.aemeasurable]`. Establish `key : ∀ h : Subgroup.centralizer {(γ : G)}, ∫⁻ x in E, φ ((h : G) * x) ∂μ = ∫⁻ y, E.indicator 1 ((h : G)⁻¹ * y) * φ y ∂μ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Rewrite using `[← lintegral_indicator hEm, ← lintegral_mul_left_eq_self (fun y => E.indicator 1 ((h : G)⁻¹ * y) * φ y) (h : G)]`. Use `lintegral_congr fun x => ?_` and prove the remaining obligations. Use `show E.indicator (fun x => φ ((h : G) * x)) x = E.indicator 1 ((h : G)⁻¹ * ((h : G) * x)) * φ ((h : G) * x)`. Rewrite using `[inv_mul_cancel_left]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact.
 
-Distinguish the cases in `hx : x ∈ E`. Rewrite using `[Set.indicator_of_mem hx, Set.indicator_of_mem hx, Pi.one_apply, one_mul]`. Rewrite using `[Set.indicator_of_notMem hx, Set.indicator_of_notMem hx, zero_mul]`. Repeatedly rewrite using `[key]`. Establish `hm3 : Measurable fun p : Subgroup.centralizer {(γ : G)} × G => E.indicator 1 ((p.1 : G)⁻¹ * p.2) * φ p.2` using `((measurable_one.indicator hEm).comp (((continuous_subtype_val.comp continuous_fst).inv.mul continuous_snd).measurable)).mul (hφ.comp measurable_snd)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[lintegral_lintegral_swap hm3.aemeasurable]`. Establish `inner : ∀ y : G, ∫⁻ h : Subgroup.centralizer {(γ : G)}, E.indicator 1 ((h : G)⁻¹ * y) * φ y ∂ν = vol * φ y`. Introduce `y`. Establish `hmy : Measurable fun h : Subgroup.centralizer {(γ : G)} => E.indicator (1 : G → ℝ≥0∞) ((h : G)⁻¹ * y)` using `(measurable_one.indicator hEm).comp ((continuous_subtype_val.inv.mul continuous_const).measurable)`. Rewrite using `[lintegral_mul_const _ hmy]`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Establish `: (fun h : Subgroup.centralizer {(γ : G)} => E.indicator (1 : G → ℝ≥0∞) ((h : G)⁻¹ * y)) = {h : Subgroup.centralizer {(γ : G)} | (h : G)⁻¹ * y ∈ E}.indicator 1`. Use function extensionality and compare the values at `h`. Distinguish the cases in `hh : (h : G)⁻¹ * y ∈ E`. Simplify using `[hh]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[hh]`. Establish `hSm : MeasurableSet {h : Subgroup.centralizer {(γ : G)} | (h : G)⁻¹ * y ∈ E}` using `hEm.preimage (continuous_subtype_val.inv.mul continuous_const).measurable`. Rewrite using `[this, lintegral_indicator_one hSm, hS y]`. Repeatedly rewrite using `[inner]`. Rewrite using `[lintegral_const_mul _ hφ, ← mul_assoc, ENNReal.inv_mul_cancel hv0 hvtop, one_mul]`.
+A detailed English derivation is pending.
 -/
 theorem isWeilMeasure_weilMeasure (μ : Measure G) [μ.IsHaarMeasure] (γ : Γ)
     (ν : Measure (Subgroup.centralizer {(γ : G)})) [ν.IsHaarMeasure] :
@@ -227,7 +227,7 @@ theorem isWeilMeasure_weilMeasure (μ : Measure G) [μ.IsHaarMeasure] (γ : Γ)
   rw [lintegral_const_mul _ hφ, ← mul_assoc, ENNReal.inv_mul_cancel hv0 hvtop, one_mul]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨_, isWeilMeasure_weilMeasure Γ μ γ ν⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_isWeilMeasure (μ : Measure G) [μ.IsHaarMeasure] (γ : Γ)
     (ν : Measure (Subgroup.centralizer {(γ : G)})) [ν.IsHaarMeasure] :

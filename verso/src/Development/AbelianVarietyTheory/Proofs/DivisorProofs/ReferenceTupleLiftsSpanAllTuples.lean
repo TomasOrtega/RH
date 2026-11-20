@@ -31,23 +31,21 @@ open GlobalTheory.PinnedClassSum GlobalTheory.GeoLevel GlobalTheory.Member Forma
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T0 A T _ R κ v₀ hL hF ⟨tie⟩ _ i Tp tup O hLL hO t x _`. Establish `hT` using `tie.laws`. Establish `hj : InR D ((i : ℕ) + 1)` using `⟨Nat.le_add_left _ _, i.2⟩`. Establish `hr : 1 ≤ D.R.r`. Establish `h1` using `D.R.m_add_three_le_k`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `Ranks.r`. Use linear arithmetic over natural numbers and integers. Establish `hpq` using `(exists_iotaOK D T.Q hT.pins _ hj).2.1`. Establish `hpos : 1 ≤ (T.Q.Dw ((i : ℕ) + 1)).p + (T.Q.Dw ((i : ℕ) + 1)).q` using `by omega`. Establish `hσ : GoodEmb T.Q.c O.s0` using `rfl`.
+Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hio, hx₀⟩` from `GlobalTheory.TupleCover.iotaOK_and_frame T hT _ hj _ hσ (Wc D i) (hT.spaceW _ hj _ hσ) (rank_Wc i)`. Take `⟨hd, hA₂, hnab⟩` from `hO.cov t`. Take `⟨-, -, hxi, ⟨e, -, hφ⟩, hMb, hQ, -⟩` from `hO.tuple t`. Take `⟨c0, ⟨m, hm, hc0⟩, hv⟩` from `hO.cxi`. Take `⟨n, hn, ho⟩` from `hL.xi_fin (tup t)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨xi', hx1, -, hx3, hx4⟩` from `GlobalTheory.TupleCover.exists_xi D (Wc D i) (R.xi (tup t)) (R.xiH (tup t)) (hL.xi _) n hn ho (hL.xi_triv _) (hL.xi_tame _)`. Establish `hxx : ∀ g : GA D (Wc D i), O.xi t (Matrix.GeneralLinearGroup.det (finHom (Wc D i) g)) = xi' (Matrix.GeneralLinearGroup.det (finHom (Wc D i) g))` using `fun g => by`. Take `⟨z, hz⟩` from `(GlobalTheory.Member.isDetRoot_laws D (Wc D i)).1 g`. Conclude with `Units.ext ((hxi g z hz).trans (hx1 g z hz).symm)`. Establish `hxN : ∀ g : GA D (Wc D i), O.xi t (Matrix.GeneralLinearGroup.det (finHom (Wc D i) g)) ^ (m * n) = 1` using `fun g => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hxx, mul_comm, pow_mul, hx4, one_pow]`. Establish `hcN : c0 ^ (m * n) = 1` using `by rw [pow_mul, hc0, one_pow]`. Take `⟨gramR, c0R, c0L, hfam⟩` from `hF.tie`. Take `⟨ψ, hψ⟩` from `exists_psi (Wc D i) (O.dδ t) (iotaW T i) hio.emb (hpq.trans (rank_Wc i).symm) hpos hd (R.Q (tup t)) hQ (R.xiR (tup t)) fun P hP z => hLL (GlobalTheory.RationalValues.xiR_mem R hL hF.pl_onto hF.muVal hfam.ok i (tup t) P hP z)`. Establish `htie : (O.dδ t).PsiTie ψ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `psiTie_of_values (Wc D i) (O.dδ t) (rank_Wc i) _ hio hpos _ hx₀ hd hA₂ (O.xi t) _ (Nat.mul_pos hm hn) hxN (fun γ hγ => (hxx γ).trans (hx3 γ hγ)) _ _ c0 hcN (hv t) ψ fun k s u hu₀ hu hk hlift => ?_` and prove the remaining obligations. Take `⟨y, -, hdet⟩` from `exists_int_matrix (hL.βW i) hu`. Establish `hres : ∀ P : R.Q (tup t), ((Matrix.GeneralLinearGroup.det (Formalism.UG.bc (resS D.host.F P.1) y) : (kP P.1)ˣ) : kP P.1) = resS D.host.F P.1 y.1.det` using `fun P => ((resS D.host.F P.1).map_det _).symm`. Take `⟨z, hz, hval⟩` from `exists_root_value (O.dδ t).l₂ hu₀ (hL.xi (tup t)) (hL.xi_tame _) (R.Q (tup t)) (R.xiR (tup t)) (hL.xiR _) (fun P hP => (hd.2.2.2.1.le.trans Ideal.mul_le_right).trans (hQ P hP)) (fun P => (hL.Q_ram _ P).1) _ hdet _ hres`. Conclude with `(hψ k s u _ hk hlift hdet _ hres).trans (hval.symm.trans (hxi u z hz).symm)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hτ : Nonempty D.what₂.Tau` using `Fintype.card_pos_iff.1 (by`. Rewrite using `[D.what₂.card_Tau]`. Unfold `Ranks.f Ranks.n`. Use the proof step `positivity)`. Take `⟨τ₀⟩` from `hτ`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hnV : (κ i).n = (Vc D i).rank` using `(tie.kap i τ₀).2.2.trans (D.sp.V_rank _ hj.1 hj.2).symm`. Establish `hlast : (κ i).LastPos` using `fun τ k hk => by`. Rewrite using `[(tie.kap i τ).1 k, show (Wc D i).sig (tauE D τ) = D.R.sigW ((i : ℕ) + 1) from D.sp.W_sigval _ hj.1 hj.2 _]`. Use `GlobalTheory.LiftWeight.one_le_aPl_last D i τ _ _ ?_ hk` and prove the remaining obligations. Simplify using `only [Ranks.sigW]`.
-
-Use linear arithmetic over natural numbers and integers. Take `⟨-, cga, -, -, hrange, -⟩` from `hO.io`. Conclude with `GlobalTheory.ClsVal.exists_cusp_isThClsD_unique GlobalTheory.ChartFree.chartIndep _ _ _ _ _ O.c' _ (O.dδ t) _ _ hr (fun σ hσ' => GlobalTheory.OneMapAll.isUnf_unfExt O.hle σ (fun _ => rfl) (hT.unf _ hj (σ.comp (incF T.Q.c O.c' O.hle)) hσ')) hT.pins.2.1.2 (fun _ => ⟨hd, hA₂, hnab⟩) …`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem clsEx_of_core : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : FamIn D.what₂.LL G Pl0 T0 D.R.m) (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F) (κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)) (v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec), R.toLevCh.Is A.μ0 → R.IsFam → Nonempty (FWTie T R κ v₀) → T.pb = R.C.P.pb → ∀ (i : Fin D.R.m) (Tp : Type) (tup : Tp → T0) (O : OMDat T.toCore R i Tp tup), D.what₂.embLL.toRatAlgHom.fieldRange ≤ O.c'.F → O.Pins (κ i) (v₀ i (sg0 D A)) (iotaW T i) (T.x₀ ((i : ℕ) + 1) O.s0) → GlobalTheory.OneMapTuples.ClsEx O (κ i) := by
   intro D G _ _ Pl0 T0 A T _ R κ v₀ hL hF ⟨tie⟩ _ i Tp tup O hLL hO t x _
@@ -116,7 +114,7 @@ section Retie
 variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m}
 
 /- English proof (translation)
-Take `⟨_, _, _, hT, hc⟩` from `hP.c0`. Conclude with `GlobalTheory.RationalValues.placeEx R i jL σ' t h c0' hR.models.jV hT hc hR.lev hR.grp.chiW hR.fam.pl_onto hR.fam.muVal`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem placeEx_core {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A)
     (hR : GlobalTheory.Hk3.Core R F) (i : Fin D.R.m) {K' : Type} [Field K'] (jL : D.what₂.LL →+* K') (σ' : K' →+* ℂ)
@@ -135,11 +133,11 @@ variable {C : Formalism.L2.Pj.Core D} [Algebra C.Q.c.F D.what₂.LL] {R : RealDa
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Take `⟨c1, hc1⟩` from `exists_coef_ext (W := (R.cV i).W) O.jL hP.lift.field (lamV D i) (c0L i)`. Use `choose h J' h1 h2 h3 h4 using fun t => (hP.tuple t).reps`. Establish `hL : ThPinsR R i O.jL (inC O.c') v₀ c1 ι C.Q.l.M (Mfr C.Q.l) lev` using `⟨hP.lift.field, hP.lift.std, hP.lift.v0, ⟨_, _, _, hT, hc1⟩, hlev⟩`. Establish `h0 : ∀ t y, (∀ k, (R.HV i (tup t)).e y (fin _ (h t k)) = 0) → onQ (Wc D i) (R.thF i (tup t) y v₀) = 0` using `fun t y hy => by`. Establish `e1` using `h3 t y 0 fun k => (hy k).trans (map_zero _).symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2` using `h3 t 0 0 fun k => by rw [map_zero]; exact (map_zero _).symm`. Rewrite using `[← e1, e2, map_zero]`. Both sides reduce to the same expression. Use `⟨{ O with c0' := c1, lev := lev thAd := fun t x => if hx : ∃ y, Place R i (tup t) (h t) c1 y x then onQ (Wc D i) (R.thF i (tup t) hx.choose v₀) else 0 Plc := fun t x => ∃ x₀, Place R i (tup t) (h t) c1 (jVx R i (tup t) x₀) x }, rfl, ⟨hL, fun t => ⟨⟨h t, J' t, h1 t, placeEx_core R …` and prove the remaining obligations. Establish `hx : ∃ y, Place R i (tup t) (h t) c1 y x` using `⟨y, hy⟩`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(dif_pos hx).trans ?_` and prove the remaining obligations. Establish `h5` using `h0 t (hx.choose - y) fun k => by`. Rewrite using `[map_sub, Pi.sub_apply, hx.choose_spec k, hy k, sub_self]`. Rewrite `h5` using `[map_sub]`. Conclude with `sub_eq_zero.1 h5`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_retie_core {F : Face D A} (hR : GlobalTheory.Hk3.Core R F) (hP : O.Pins κ v₀ ι x₀)
     (lev : G → (C.Q.Dw ((i : ℕ) + 1)).La →ₗ[𝓞 D.host.E] (C.Q.Dw ((i : ℕ) + 1)).La)
@@ -186,9 +184,9 @@ variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Establish `hP : (O i).Pins (κ i) (v₀ i (sg0 D A)) (iotaW T i) (T.x₀ ((i : ℕ) + 1) T.σ₀)` using `hO.2`. Take `⟨gramR, c0R, c0L, hFT, hc⟩` from `hP.lift.c0`. Take `⟨lam, z₀, -, hU⟩` from `hPI D G Pl0 T0 A T R F κ v₀ hR h1 h2 hW hpb hio i (O i).lev gramR c0R c0L hFT`. Take `⟨O₀, hle₀, hP₀⟩` from `hex hG`. Take `⟨O₁, e₁, hP₁, hlev₁, hc₁⟩` from `exists_retie_core O₀ hR (show O₀.Pins (κ i) (v₀ i (sg0 D A)) (iotaW T i) (T.x₀ ((i : ℕ) + 1) T.σ₀) from hP₀) (O i).lev hP.lift.lev hP.act.1 hFT`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hle₁ : D.what₂.embLL.toRatAlgHom.fieldRange ≤ O₁.c'.F` using `e₁ ▸ hle₀`. Take `⟨c0, -, hx⟩` from `hP.cxi`. Take `⟨c1, hr₁, hx₁⟩` from `hP₁.cxi`. Conclude with `liftsSpan_of_ptIdent hP hspan hP₁ hlev₁ (clsEx_of_core D G Pl0 T0 A T R κ v₀ hR.lev hR.fam hW hpb i _ _ O₁ hle₁ hP₁) (ne_zero_of_root hr₁) (hU _ _ (O i) hO.1.ge hP rfl hc c0 hx) (hU _ _ O₁ hle₁ hP₁ hlev₁ hc₁ c1 hx₁)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem liftsSpan_of_guard_core (hPI : PointIdentCore) (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F) (F : Face D A)
     (κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)) (v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec)
@@ -218,9 +216,9 @@ open scoped TensorProduct InnerProductSpace
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T0 A T _ R F κ v₀ O i hsz hC h1 h2 hW hio hO h0 hG`. Take `⟨fw⟩` from `id hW`. Establish `hpb : T.pb = R.C.P.pb` using `GlobalTheory.CoverHalf.primes_eq_of_halfIs T.toCore R fw.laws.toLawsM hC.lev (hO.2.tuple ()).half`. Establish `hex : GlobalTheory.OneMapTuples.PinsExist T R κ v₀ i` using `fun hG' => by`. Take `⟨O', a, b, -⟩` from `GlobalTheory.PinnedTuples.exists_pins_of_base D G Pl0 T0 A T R κ v₀ O hC.lev hC.grp.chiW hC.fam hC.models hC.thP.vP h1 h2 hW i hO hG'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨O', a, b⟩`. Conclude with `liftsSpan_of_guard_core GlobalTheory.T.adelicLift_eq_factor_mul_geometricClassSum T R F κ v₀ O i hC h1 h2 hW hpb hio hO hex hG (GlobalTheory.ClassSumSpanCore.classSumsSpan_core D G Pl0 T0 A T R F κ v₀ O hsz hC hW hio i hO h0)`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem liftsSpan_all_clauses : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : FamIn D.what₂.LL G Pl0 T0 D.R.m) (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F) (F : Face D A) (κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)) (v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec) (O : ∀ i, OMDat T.toCore R i Unit (fun _ => A.μ0)) (i : Fin D.R.m), 8 * D.R.f * D.R.r + 4 ≤ D.R.nV → GlobalTheory.Hk3.Core R F → R.tup_mu_off → R.tup_mu_used → Nonempty (FWTie T R κ v₀) → IoExt R → OMPins T R κ v₀ O i → OneMapRow0 T R κ v₀ O i → QGuard R → GlobalTheory.OneMapTuples.LiftsSpan R i (v₀ i (sg0 D A)) := by
   intro D G _ _ Pl0 T0 A T _ R F κ v₀ O i hsz hC h1 h2 hW hio hO h0 hG

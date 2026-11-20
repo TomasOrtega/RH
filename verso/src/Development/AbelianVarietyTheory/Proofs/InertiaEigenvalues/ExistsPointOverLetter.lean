@@ -13,17 +13,15 @@ namespace GlobalTheory.LevelClauseOdd
 open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.BasicNotions.Loc
 
 /- English proof (translation)
-Establish `: Algebra.IsAlgebraic ↥(K0 K) (Om l)` using `Algebra.IsAlgebraic.tower_top (K := ℚ_[l]) _`. Take `⟨σ, hσ⟩` from `IsAlgClosed.surjective_domRestrict_of_isAlgebraic (K := ℚ_[l]) (L := ↥(K0 K)) (M := Om l) (E := Om l) ((LL.1.val).comp (((HW l).W K 1 LL hA.2.2).emb c))`. Establish `hσx : ∀ x : ↥(K0 K), σ (x : Om l) = ((((HW l).W K 1 LL hA.2.2).emb c x : ↥LL.1) : Om l)` using `fun x => by`. Use `congrArg (fun f => f x) hσ` as an intermediate fact. Simplify `this` using `[AlgHom.domRestrict]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hζ₁` using `Formalism.MainNotions.UnusedSlot80.LevR.root_of_unity_primitive D l`. Establish `hσinj : Function.Injective σ` using `σ.toRingHom.injective`. Establish `hζO : IsPrimitiveRoot ((ζ : ↥LL.1) : Om l) l` using `hζ.map_of_injective (f := LL.1.val) Subtype.val_injective`. Establish `hσζ₁ : IsPrimitiveRoot (σ ((D.loc l).ζQ 1)) l` using `hζ₁.map_of_injective hσinj`. Establish `: NeZero l` using `⟨(Fact.out : l.Prime).ne_zero⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨b, -, hb⟩` from `hσζ₁.eq_pow_of_pow_eq_one hζO.pow_eq_one`. Establish `hβ : IsPrimitiveRoot ((D.loc l).ζQ 1 ^ b) l`. Apply `IsPrimitiveRoot.of_map_of_injective (f := σ) _ hσinj` to reduce the goal to its premises. Rewrite using `[map_pow, hb]`. Conclude with `hζO`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨g, hg⟩` from `Formalism.MainNotions.UnusedSlot80.LevR.trans_prim (D.loc l) ((HW l).W K 1 LL hA.2.2) (Formalism.MainNotions.UnusedSlot80.LevR.card_delF D HW F h9 l K LL hA) hζ₁ _ hβ`. Establish `hmem : ∀ y, ((σ.comp (g : GQ l).toAlgHom).comp (Ks K 1).val) y ∈ LL.1` using `hA.2.2.2.2.2 _`. Set `τs : ↥(Ks K 1) →ₐ[ℚ_[l]] ↥LL.1` to `((σ.comp (g : GQ l).toAlgHom).comp (Ks K 1).val).codRestrict LL.1.toSubalgebra hmem`. Use `⟨τs.comp (IntermediateField.inclusion hA.2.2.2.2.1), τs, ⟨fun x y hxy => ?_, fun y hy => ?_⟩, fun x y hxy => ?_⟩` and prove the remaining obligations. Apply `Subtype.ext show σ ((g : GQ l) (y : Om l)) = _` to reduce the goal to its premises.
+Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `hgx : (g : GQ l) (x : Om l) = x` using `(IntermediateField.mem_fixingSubgroup_iff K.1 (g : GQ l)).mp g.2 _ ((inf_le_left : K0 K ≤ K.1) x.2)`. Rewrite using `[hxy, hgx, hσx]`. Apply `Subtype.ext show σ ((g : GQ l) (y : Om l)) = _` to reduce the goal to its premises. Rewrite using `[hy, hg, map_pow, hb]`. Use `show τs _ = τs y`.
-
-Use `congr 1`. Conclude with `Subtype.ext hxy.symm`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem exists_point_over_letter (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW)
     (h9 : Formalism.MainNotions.DeltaInvariantLattices.P9 D HW F) (l : ℕ) [Fact l.Prime] (K LL : FinExt l) (hA : Loc.CaseA K LL)
@@ -69,13 +67,13 @@ theorem exists_point_over_letter (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.l
     exact Subtype.ext hxy.symm
 
 /- English proof (translation)
-Establish `tie` using `((Cm l).C K 1 LL hA.2.2).tie`. Establish `hs` using `(HW l).W_s K 1 LL hA.2.2`. Establish `hp : ((((D.loc l).PD K).p : ℕ) : ↥LL.1) ≠ 0`. Introduce `h`. Establish `hv` using `((HW l).W K 1 LL hA.2.2).v_l`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `hv` using `[h, AddValuation.map_zero]`. Conclude with `WithTop.top_ne_one hv`. Establish `hsurj : Function.Surjective (algebraMap ↥(K0 K) ↥K.1)` using `fun x => ⟨⟨x, x.2, hA.1 x.2⟩, rfl⟩`. Use `Formalism.MainNotions.UnusedSlot80.LevR.level_condition_of_level_zero _ ((Cm l).C K 1 LL hA.2.2).tie.levB hs ((Cm l).C K 1 LL hA.2.2).tie.levN_eq ((Cm l).C K 1 LL hA.2.2).tie.levB_φ hp ?_` and prove the remaining obligations. Introduce `T hT c ζ hζ`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hζl : IsPrimitiveRoot ζ l` using `by rwa [(D.loc l).PD_p] at hζ`. Take `⟨τ, hτ⟩` from `exists_point_over_letter D HW F h9 l K LL hA c ζ hζl`. Establish `hover : ∀ x : ↥(K0 K), τ (algebraMap ↥(K0 K) ↥K.1 x) = ((HW l).W K 1 LL hA.2.2).emb c x`. Take `⟨τs, ⟨hemb, -⟩, hres⟩` from `hτ`. Introduce `x`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hy : (x : Om l) ∈ Ks K 1` using `(le_sup_left : K0 K ≤ Ks K 1) x.2`. Rewrite using `[hres (algebraMap ↥(K0 K) ↥K.1 x) ⟨x, hy⟩ rfl]`. Conclude with `hemb x ⟨x, hy⟩ rfl`. Establish `h4'` using `((h4 l K 1 LL hA.2.2 T hT).2 c ζ τ hτ).2`. Conclude with `Formalism.MainNotions.UnusedSlot80.LevR.lev0 _ T c ζ τ (Formalism.MainNotions.UnusedSlot80.LevR.ιDi_le _ T c τ hover hsurj) h4'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem clause_at_levels (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW)
     (Cm : CmpOf D.loc D.locA HW F) (h4 : Formalism.MainNotions.DeltaInvariantLattices.P4 D HW F Cm) (h9 : Formalism.MainNotions.DeltaInvariantLattices.P9 D HW F)
@@ -107,65 +105,57 @@ theorem clause_at_levels (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW)
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Establish `hl3' : 3 ≤ l`. Establish `h2` using `(Fact.out : l.Prime).two_le`. Establish `hodd : l ≠ 2` using `hA.2.1`. Use linear arithmetic over natural numbers and integers. Use `set W := (HW l).W K 1 LL hA.2.2 with hW`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `ζ ζ' hζ hζ'`. Establish `hpl : ((D.loc l).PD K).p = l` using `(D.loc l).PD_p K`. Rewrite `hζ`, `hζ'` using `[hpl]`. Establish `hcard` using `Formalism.MainNotions.UnusedSlot80.LevR.card_delF D HW F h9 l K LL hA`. Establish `hv : (D.loc l).v LL ((l : ℕ) : ↥LL.1) = 1` using `(D.loc l).v_l LL`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hvO` using `(D.loc l).v_O LL`. Establish `hl0 : ((l : ℕ) : ↥LL.1) ≠ 0`. Introduce `h`. Rewrite `hv` using `[h, AddValuation.map_zero]`. Conclude with `WithTop.top_ne_coe hv`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hcong : ∀ δ : ↥W.DelF, ∃ a : ℕ, ((1 : ℕ) : WithTop ℚ) ≤ (D.loc l).v LL (algebraMap ↥(OL LL) ↥LL.1 (W.χΓ δ : ↥(OL LL)) - (a : ↥LL.1))`. Introduce `δ`. Take `⟨g, hg⟩` from `W.resΓ_onto δ`. Take `⟨a, ha, -⟩` from `(D.loc l).χQ_cyc (g : GQ l) 1 ((D.loc l).ζQ 1) (by rw [pow_one]; exact (Formalism.MainNotions.UnusedSlot80.LevR.root_of_unity_primitive D l).pow_eq_one)`. Use `⟨a, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hres` using `W.χΓ_res g`. Establish `hPD` using `(D.loc l).PD_χ K g`. Rewrite using `[← hg, hres, hPD]`. Use `set t : ℚ_[l] := ((D.loc l).χQ (g : GQ l) : ℚ_[l]) - (a : ℚ_[l]) with ht`. Establish `hlQ : ((l : ℕ) : ℚ_[l]) ≠ 0` using `by exact_mod_cast (Fact.out : l.Prime).ne_zero`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e : algebraMap ℚ_[l] ↥LL.1 ((D.loc l).χQ (g : GQ l) : ℚ_[l]) - (a : ↥LL.1) = ((l : ℕ) : ↥LL.1) * algebraMap ℚ_[l] ↥LL.1 (t / (l : ℚ_[l]))`. Rewrite using `[map_div₀, map_natCast, mul_div_cancel₀ _ hl0, ht, map_sub, map_natCast]`. Rewrite using `[e, AddValuation.map_mul, hv]`. Establish `hz : ‖t / (l : ℚ_[l])‖ ≤ 1`. Rewrite using `[norm_div, Padic.norm_p, div_le_one (by first`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `positivity`. Consider the case `exact inv_pos.mpr (by exact_mod_cast (Fact.out : l.Prime).pos))]`. Use `ha` as an intermediate fact. Simplify `this` using `[zpow_neg, zpow_one]`. Establish `hint : algebraMap ℚ_[l] ↥LL.1 (t / (l : ℚ_[l])) ∈ OL LL`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e2 : algebraMap ℚ_[l] ↥LL.1 (t / (l : ℚ_[l])) = algebraMap ℤ_[l] ↥LL.1 (⟨t / (l : ℚ_[l]), hz⟩ : ℤ_[l])` using `(IsScalarTower.algebraMap_apply ℤ_[l] ℚ_[l] ↥LL.1 (⟨t / (l : ℚ_[l]), hz⟩ : ℤ_[l])).symm`. Rewrite using `[e2]`. Conclude with `(algebraMap ℤ_[l] ↥(OL LL) (⟨t / (l : ℚ_[l]), hz⟩ : ℤ_[l])).2`. Conclude with `le_add_of_nonneg_right ((hvO _).2 hint)`. Use `choose aδ haδ using hcong`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hvunit : ∀ w : (↥(OL LL))ˣ, (D.loc l).v LL (algebraMap ↥(OL LL) ↥LL.1 (w : ↥(OL LL))) = 0`. Introduce `w`. Establish `h1` using `(hvO (algebraMap ↥(OL LL) ↥LL.1 (w : ↥(OL LL)))).2 (w : ↥(OL LL)).2`. Establish `h2` using `(hvO (algebraMap ↥(OL LL) ↥LL.1 ((w⁻¹ : (↥(OL LL))ˣ) : ↥(OL LL)))).2 ((w⁻¹ : (↥(OL LL))ˣ) : ↥(OL LL)).2`. Establish `h3 : (D.loc l).v LL (algebraMap ↥(OL LL) ↥LL.1 (w : ↥(OL LL))) + (D.loc l).v LL (algebraMap ↥(OL LL) ↥LL.1 ((w⁻¹ : (↥(OL LL))ˣ) : ↥(OL LL))) = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← AddValuation.map_mul, ← map_mul, Units.mul_inv, map_one, AddValuation.map_one]`. Conclude with `le_antisymm (le_trans (le_add_of_nonneg_right h2) h3.le) h1`. Establish `hne : ∀ δ, ((aδ δ : ℕ) : ZMod l) ≠ 0`. Introduce `δ h`. Rewrite `h` using `[ZMod.natCast_eq_zero_iff]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨c, hc⟩` from `h`. Establish `hva : (1 : WithTop ℚ) ≤ (D.loc l).v LL ((aδ δ : ℕ) : ↥LL.1)`. Rewrite using `[hc, Nat.cast_mul, AddValuation.map_mul, hv]`. Conclude with `le_add_of_nonneg_right (Formalism.MainNotions.N.Pv.LocalLengthBound.Val.v_natCast_nonneg _ c)`. Establish `hsum` using `AddValuation.map_add ((D.loc l).v LL) (algebraMap ↥(OL LL) ↥LL.1 (W.χΓ δ : ↥(OL LL)) - (aδ δ : ↥LL.1)) ((aδ δ : ℕ) : ↥LL.1)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hsum` using `[sub_add_cancel, hvunit]`. Establish `h1` using `haδ δ`. Rewrite `h1` using `[Nat.cast_one]`. Conclude with `absurd hsum (not_le.2 (lt_of_lt_of_le (by exact_mod_cast zero_lt_one) (le_min h1 hva)))`. Set `U : ↥W.DelF → (ZMod l)ˣ` to `fun δ => Units.mk0 _ (hne δ)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hUinj : Function.Injective U`. Introduce `δ δ' h`. Establish `h1 : ((aδ δ : ℕ) : ZMod l) = ((aδ δ' : ℕ) : ZMod l)` using `congrArg Units.val h`. Rewrite `h1` using `[ZMod.natCast_eq_natCast_iff']`. Use `set χd := algebraMap ↥(OL LL) ↥LL.1 (W.χΓ δ : ↥(OL LL))`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `set χd' := algebraMap ↥(OL LL) ↥LL.1 (W.χΓ δ' : ↥(OL LL))`. Establish `hdiff : (1 : WithTop ℚ) ≤ (D.loc l).v LL (χd - χd')`. Establish `e : χd - χd' = (χd - (aδ δ : ↥LL.1)) - (χd' - (aδ δ' : ↥LL.1)) + ((aδ δ : ↥LL.1) - (aδ δ' : ↥LL.1))` using `by ring`. Rewrite using `[e]`. Establish `hA1` using `haδ δ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hA2` using `haδ δ'`. Rewrite `hA1`, `hA2` using `[Nat.cast_one]`. Use `le_trans (le_min (le_trans (le_min hA1 hA2) (AddValuation.map_sub ((D.loc l).v LL) _ _)) ?_) (AddValuation.map_add ((D.loc l).v LL) _ _)` and prove the remaining obligations. Break down `le_total (aδ δ') (aδ δ) with hle | hle` into its components or cases. Establish `hd : l ∣ aδ δ - aδ δ'` using `(Nat.modEq_iff_dvd' hle).1 h1.symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨c, hc⟩` from `hd`. Establish `e2 : ((aδ δ : ℕ) : ↥LL.1) - ((aδ δ' : ℕ) : ↥LL.1) = ((aδ δ - aδ δ' : ℕ) : ↥LL.1)`. Rewrite using `[Nat.cast_sub hle]`. Rewrite using `[e2, hc, Nat.cast_mul, AddValuation.map_mul, hv]`. Conclude with `le_add_of_nonneg_right (Formalism.MainNotions.N.Pv.LocalLengthBound.Val.v_natCast_nonneg _ c)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hd : l ∣ aδ δ' - aδ δ` using `(Nat.modEq_iff_dvd' hle).1 h1`. Take `⟨c, hc⟩` from `hd`. Establish `e2 : ((aδ δ : ℕ) : ↥LL.1) - ((aδ δ' : ℕ) : ↥LL.1) = -((aδ δ' - aδ δ : ℕ) : ↥LL.1)`. Rewrite using `[Nat.cast_sub hle]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[e2, AddValuation.map_neg, hc, Nat.cast_mul, AddValuation.map_mul, hv]`. Conclude with `le_add_of_nonneg_right (Formalism.MainNotions.N.Pv.LocalLengthBound.Val.v_natCast_nonneg _ c)`. Use `set g := (δ : W.Gam) * (δ' : W.Gam)⁻¹`. Establish `hξ : algebraMap ↥(OL LL) ↥LL.1 (W.χΓ g : ↥(OL LL)) = χd * χd'⁻¹`. Establish `hχ'0 : χd' ≠ 0`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `h0`. Use `hvunit (W.χΓ δ')` as an intermediate fact. Express the relevant statement in the definitionally equal form `(D.loc l).v LL χd' = 0 at this`. Rewrite `this` using `[h0, AddValuation.map_zero]`. Conclude with `WithTop.top_ne_coe this`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[eq_mul_inv_iff_mul_eq₀ hχ'0]`. Simplify using `only [χd, χd', g, ← map_mul, ← Units.val_mul, ← map_mul (W.χΓ), inv_mul_cancel_right]`. Establish `hξ1 : (1 : WithTop ℚ) ≤ (D.loc l).v LL (algebraMap ↥(OL LL) ↥LL.1 (W.χΓ g : ↥(OL LL)) - 1)`. Establish `hχ'0 : χd' ≠ 0`. Introduce `h0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `hvunit (W.χΓ δ')` as an intermediate fact. Express the relevant statement in the definitionally equal form `(D.loc l).v LL χd' = 0 at this`. Rewrite `this` using `[h0, AddValuation.map_zero]`. Conclude with `WithTop.top_ne_coe this`. Establish `e : χd * χd'⁻¹ - 1 = (χd - χd') * χd'⁻¹` using `by field_simp`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[hξ, e, AddValuation.map_mul]`. Establish `hinv : (D.loc l).v LL χd'⁻¹ = 0`. Use `hvunit (W.χΓ δ')⁻¹` as an intermediate fact. Simplify `this` using `[χd', map_inv₀]`. Rewrite using `[hinv, add_zero]`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hdiff`. Take `⟨k, hk, hδk⟩` from `(W.DelF_def δ).1 δ.2`. Take `⟨k', hk', hδk'⟩` from `(W.DelF_def δ').1 δ'.2`. Establish `hgk : g ^ (k * k') = 1`. Simplify using `only [g, mul_pow, inv_pow]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pow_mul, hδk, one_pow, one_mul, mul_comm k k', pow_mul, hδk', one_pow, inv_one]`. Establish `hξk : (algebraMap ↥(OL LL) ↥LL.1 (W.χΓ g : ↥(OL LL))) ^ (k * k') = 1`. Rewrite using `[← map_pow, ← Units.val_pow_eq_pow_val, ← map_pow, hgk, map_one, Units.val_one, map_one]`. Establish `hl3 : 3 ≤ l`. Establish `h2` using `(Fact.out : l.Prime).two_le`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hodd : l ≠ 2` using `hA.2.1`. Use linear arithmetic over natural numbers and integers. Establish `hξeq : algebraMap ↥(OL LL) ↥LL.1 (W.χΓ g : ↥(OL LL)) = 1`. Assume the negation of the conclusion as `hne1`. Conclude with `Formalism.MainNotions.N.Pv.LocalLengthBound.Val.pow_ne_one_of_close ((D.loc l).v LL) (Fact.out : l.Prime) hv hl3 (k * k') _ (Nat.mul_pos hk hk') hξ1 hne1 hξk`.
+Establish an intermediate fact. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hg1 : g = 1`. Apply `W.χΓ_inj` to reduce the goal to its premises. Rewrite using `[map_one]`. Apply `Units.ext` to reduce the goal to its premises. Apply `Subtype.val_injective` to reduce the goal to its premises.
-
-Simplify using `using hξeq`. Conclude with `Subtype.ext (mul_inv_eq_one.1 hg1)`. Establish `hUbij : Function.Bijective U`. Rewrite using `[Fintype.bijective_iff_injective_and_card]`. Conclude with `⟨hUinj, by rw [Fintype.card_coe, hcard, ZMod.card_units]⟩`.
-
-Take `⟨b, hb, hζb⟩` from `hζ.eq_pow_of_pow_eq_one hζ'.pow_eq_one`. Establish `hb0 : ((b : ℕ) : ZMod l) ≠ 0`. Rewrite using `[Ne, ZMod.natCast_eq_zero_iff]`. Introduce `hd`. Establish `: b = 0` using `Nat.eq_zero_of_dvd_of_lt hd hb`.
-
-Substitute `this` using the available equality. Rewrite `hζb` using `[pow_zero]`. Conclude with `hζ'.ne_one (Fact.out : l.Prime).one_lt hζb.symm`. Take `⟨δ, hδ⟩` from `hUbij.2 (Units.mk0 _ hb0)`. Establish `h1 : ((aδ δ : ℕ) : ZMod l) = ((b : ℕ) : ZMod l)` using `congrArg Units.val hδ`.
-
-Rewrite `h1` using `[ZMod.natCast_eq_natCast_iff]`. Establish `hpowmod : ∀ m : ℕ, ζ ^ m = ζ ^ (m % l)` using `fun m => by conv_lhs => rw [← Nat.mod_add_div m l, pow_add, pow_mul, hζ.pow_eq_one, one_pow, mul_one]`. Use `⟨δ, δ.2, aδ δ, ?_, haδ δ⟩` and prove the remaining obligations. Rewrite using `[hpowmod, h1, ← hpowmod, hζb]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem torsion_transitive (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW)
     (h9 : Formalism.MainNotions.DeltaInvariantLattices.P9 D HW F) (l : ℕ) [Fact l.Prime] (K LL : FinExt l) (hA : Loc.CaseA K LL) :
@@ -340,7 +330,7 @@ theorem torsion_transitive (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW
   rw [hpowmod, h1, ← hpowmod, hζb]
 
 /- English proof (translation)
-Introduce `D HW F Cm h4 h9 l _ K LL hA` and use `⟨clause_at_levels D HW F Cm h4 h9 l K LL hA, torsion_transitive D HW F h9 l K LL hA⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem main : ∀ (D : Formalism.BasicNotions.D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW)
     (Cm : CmpOf D.loc D.locA HW F), Formalism.MainNotions.DeltaInvariantLattices.P4 D HW F Cm → Formalism.MainNotions.DeltaInvariantLattices.P9 D HW F →

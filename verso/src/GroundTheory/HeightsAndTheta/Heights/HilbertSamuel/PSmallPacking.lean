@@ -12,29 +12,29 @@ open ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction
 noncomputable section
 
 /- English proof (translation)
-Introduce `K _ ι _ Ω _ y D A La hX hB hA hLa`. Take `⟨hfin, C₁, hC₁, hrank⟩` from `hR K ι Ω y D A.a hX hB`. Take `⟨C, hC, hsep⟩` from `hS K ι Ω y D A hX hB hA`. Establish `key : ∀ (τ : ℕ) (T : Finset (La τ)), (∀ s ∈ T, IsSmallH (mCoordIdeal y) y A τ (s : Ω)) → Real.log T.card ≤ C₁ * ((τ : ℝ) + 1) ^ D * (C * ((τ : ℝ) + 1) + Real.log 3)`. Introduce `τ T hT`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨Z, ev, hZ, hrep, hsepτ⟩` from `hsep τ`. Establish `hpos : ∀ z : Z, 0 < A.h z` using `fun z => A.pos _ (hZ z z.2).1`. Set `φ : chartLatNm y A.a τ →+ (Z → ℂ)` to `{ toFun := fun s z => ev s z / ((A.h z : ℂ) ^ τ) map_zero' := by funext z; simp map_add' := by intro s t; funext z; simp [add_div] }`. Establish `hφ : ∀ s z, ‖φ s z‖ = ‖ev s z‖ / A.h z ^ τ` using `fun s z => by`. Simplify using `[φ, norm_pow, abs_of_pos (hpos z)]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hnorm : ∀ s : chartLatNm y A.a τ, IsSmallH (mCoordIdeal y) y A τ (s : Ω) → ‖φ s‖ ≤ 1`. Introduce `s hs`. Use `(pi_norm_le_iff_of_nonneg zero_le_one).2 fun z => ?_` and prove the remaining obligations. Take `⟨dg, dh, g, h, hg, hh, hdeg, heq, hz0, hev⟩` from `hrep s z`. Establish `hle` using `hs dg dh g h z hg hh hdeg heq (hZ z z.2)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `hle` using `[← hev, norm_mul]`. Rewrite using `[hφ, div_le_one (pow_pos (hpos z) τ)]`. Conclude with `le_of_mul_le_mul_right (by linarith) (norm_pos_iff.2 hz0)`. Establish `hdist : ∀ s t : chartLatNm y A.a τ, IsSmallH (mCoordIdeal y) y A τ (s : Ω) → IsSmallH (mCoordIdeal y) y A τ (t : Ω) → s ≠ t → Real.exp (-(C * ((τ : ℝ) + 1))) ≤ ‖φ s - φ t‖`. Introduce `s t hs ht hst`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨z, hz⟩` from `hsepτ s t hs ht hst`. Use `le_trans ?_ (norm_le_pi_norm (φ s - φ t) z)` and prove the remaining obligations. Rewrite using `[← map_sub φ, hφ, map_sub ev, Pi.sub_apply, le_div_iff₀ (pow_pos (hpos z) τ)]`. Conclude with `hz`. Set `ι' : La τ →+ chartLatNm y A.a τ` to `AddSubgroup.inclusion (hLa τ)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `hfin τ` as an intermediate fact. Set `L : Submodule ℤ (Z → ℂ)` to `LinearMap.range φ.toIntLinearMap`. Establish `hsmall : ∀ s ∈ T, IsSmallH (mCoordIdeal y) y A τ ((ι' s : chartLatNm y A.a τ) : Ω)` using `hT`. Establish `hinj : Set.InjOn (fun s => φ (ι' s)) T`. Introduce `s hs t ht hst`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hne`. Establish `hne' : ι' s ≠ ι' t` using `fun h => hne (Subtype.ext (by simpa [ι'] using congrArg Subtype.val h))`. Use `hdist _ _ (hsmall s hs) (hsmall t ht) hne'` as an intermediate fact. Simplify using `only at hst`. Rewrite `this` using `[hst, sub_self, norm_zero]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `absurd this (not_le.2 (Real.exp_pos _))`. Establish `hP` using `Packing.proof (Z → ℂ) L (T.image fun s => φ (ι' s)) (C * ((τ : ℝ) + 1)) (by positivity) (by intro v hv; obtain ⟨s, -, rfl⟩ := Finset.mem_image.1 hv; exact ⟨ι' s, rfl⟩) (by intro v hv; obtain ⟨s, hs, rfl⟩ := Finset.mem_image.1 hv; exact hnorm _ (hsmall s hs)) (by`. Introduce `v hv w hw hvw`. Take `⟨s, hs, rfl⟩` from `Finset.mem_image.1 hv`. Take `⟨t, ht, rfl⟩` from `Finset.mem_image.1 hw`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hdist _ _ (hsmall s hs) (hsmall t ht) fun h => hvw (by rw [h]))`. Rewrite `hP` using `[Finset.card_image_of_injOn hinj]`. Establish `hL : (Module.finrank ℤ L : ℝ) ≤ Module.finrank ℤ (chartLatNm y A.a τ)`. Conclude with `LinearMap.finrank_range_le φ.toIntLinearMap` after adjusting the coercions. Use `hP.trans (mul_le_mul_of_nonneg_right (hL.trans (hrank τ)) (by positivity))` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hfinite : ∀ τ, {s : La τ | IsSmallH (mCoordIdeal y) y A τ (s : Ω)}.Finite`. Introduce `τ`. Assume the negation of the conclusion as `hinf`. Take `⟨T, hTsub, hTcard⟩` from `Set.Infinite.exists_subset_card_eq hinf (⌈Real.exp (C₁ * ((τ : ℝ) + 1) ^ D * (C * ((τ : ℝ) + 1) + Real.log 3))⌉₊ + 1)`. Establish `h1` using `key τ T (fun s hs => hTsub hs)`.
+Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Rewrite `h1` using `[hTcard, Real.log_le_iff_le_exp (by positivity)]`. Move the coercions through the operations in `at h1`. Combine the linear relations using `[Nat.le_ceil (Real.exp (C₁ * ((τ : ℝ) + 1) ^ D * (C * ((τ : ℝ) + 1) + Real.log 3)))]`. Use `⟨hfinite, C₁ * (C + Real.log 3), fun τ => ?_⟩` and prove the remaining obligations. Unfold `smallSectionCount`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[show Nat.card {s : La τ // IsSmallH (mCoordIdeal y) y A τ (s : Ω)} = (hfinite τ).toFinset.card from Nat.card_eq_card_finite_toFinset (hfinite τ)]`. Use `(key τ _ fun s hs => (hfinite τ).mem_toFinset.1 hs).trans ?_` and prove the remaining obligations. Establish `h1 : (1 : ℝ) ≤ (τ : ℝ) + 1` using `by linarith [(Nat.cast_nonneg τ : (0 : ℝ) ≤ τ)]`. Establish `hl : 0 ≤ Real.log 3` using `Real.log_nonneg (by norm_num)`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem SmallPacking.proof (hR : NmSectionsRankBound.Statement) (hS : SmallSectionsSeparated.Statement) :
     SmallPacking.Statement := by

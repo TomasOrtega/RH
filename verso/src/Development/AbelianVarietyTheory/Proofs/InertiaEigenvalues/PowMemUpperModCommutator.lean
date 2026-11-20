@@ -7,7 +7,7 @@ open Formalism.BasicNotions Formalism.BasicNotions.Loc ValuativeRel GroundTheory
 namespace GlobalTheory.PMon.Ram
 
 /- English proof (translation)
-The claim follows from `Subgroup.commutator_le.2 fun a _ b _ => by rw [commutatorElement_def] exact hC a b`.
+A detailed English derivation is pending.
 -/
 private lemma commutator_le_of_forall_commutator_mem {G : Type*} [Group G] (C : Subgroup G)
     (hC : ∀ σ τ : G, σ * τ * σ⁻¹ * τ⁻¹ ∈ C) : ⁅(⊤ : Subgroup G), ⊤⁆ ≤ C :=
@@ -16,17 +16,17 @@ private lemma commutator_le_of_forall_commutator_mem {G : Type*} [Group G] (C : 
     exact hC a b
 
 /- English proof (translation)
-Introduce `F L _ _ _ _ _ _ _ _ _ _ _ _ p e v C hC hv hpe σ hσ`. Set `H : Subgroup (L ≃ₐ[F] L)` to `⁅(⊤ : Subgroup (L ≃ₐ[F] L)), ⊤⁆`. Set `Q : IntermediateField F L` to `IntermediateField.fixedField H`. Use `haveI : IsGalois F Q := IsGalois.of_fixedField_normal_subgroup H`. Establish `hker : (AlgEquiv.restrictNormalHom Q).ker = H`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[IntermediateField.restrictNormalHom_ker]`. Conclude with `IntermediateField.fixingSubgroup_fixedField H`. Establish `hab : ∀ s t : Q ≃ₐ[F] Q, s * t = t * s`. Introduce `s t`. Take `⟨a, rfl⟩` from `AlgEquiv.restrictNormalHom_surjective (E := L) s`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨b, rfl⟩` from `AlgEquiv.restrictNormalHom_surjective (E := L) t`. Establish `hmem : a * b * a⁻¹ * b⁻¹ ∈ (AlgEquiv.restrictNormalHom Q).ker`. Rewrite using `[hker]`. Establish `h` using `Subgroup.commutator_mem_commutator (Subgroup.mem_top a) (Subgroup.mem_top b)`. Rewrite `h` using `[commutatorElement_def]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `hmem` using `[MonoidHom.mem_ker]`. Simplify using `only [map_mul, map_inv] at hmem`. Rewrite `hmem` using `[mul_inv_eq_one, mul_inv_eq_iff_eq_mul]`. Conclude with `hmem`. Establish `hσQ : AlgEquiv.restrictNormalHom Q σ ∈ upperRamificationGroup F Q v`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← GroundTheory.LocalField.map_upperRamificationGroup Q v]`. Conclude with `Subgroup.mem_map_of_mem _ hσ`. Establish `hpow` using `GlobalTheory.T.pow_mem_upperRamificationGroup_of_comm' F Q p e v hab hv hpe _ hσQ`. Rewrite `hpow` using `[← map_pow, ← GroundTheory.LocalField.map_upperRamificationGroup Q]`. Take `⟨τ, hτ, hτσ⟩` from `Subgroup.mem_map.1 hpow`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨τ, hτ, commutator_le_of_forall_commutator_mem C hC ?_⟩` and prove the remaining obligations. Establish `hk : τ⁻¹ * σ ^ p ∈ (AlgEquiv.restrictNormalHom Q).ker`. Rewrite using `[MonoidHom.mem_ker, map_mul, map_inv, hτσ, inv_mul_cancel]`. Rewrite `hk` using `[hker]`. Conclude with `hk`.
+A detailed English derivation is pending.
 -/
 theorem pow_mem_upper_mod_commutator : ∀ (F L : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [Field L] [ValuativeRel L] [TopologicalSpace L] [IsNonarchimedeanLocalField L] [Algebra F L] [ValuativeExtension F L] [FiniteDimensional F L] [IsGalois F L] (p e : ℕ) (v : ℝ) (C : Subgroup (L ≃ₐ[F] L)), (∀ σ τ : L ≃ₐ[F] L, σ * τ * σ⁻¹ * τ⁻¹ ∈ C) → 0 ≤ v → OrdIs F p e → ∀ σ ∈ upperRamificationGroup F L v, ∃ τ ∈ upperRamificationGroup F L (min (2 * v) (v + e)), τ⁻¹ * σ ^ p ∈ C := by
   intro F L _ _ _ _ _ _ _ _ _ _ _ _ p e v C hC hv hpe σ hσ

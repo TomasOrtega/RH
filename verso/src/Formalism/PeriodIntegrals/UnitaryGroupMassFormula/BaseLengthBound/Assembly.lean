@@ -16,7 +16,7 @@ open Formalism.MainNotions Formalism.MainNotions.WeightAlgebra Formalism.BasicNo
 namespace PoleLengthBounds
 
 /- English proof (translation)
-Introduce `R W _ _ _ F a hF h0 ha V _ _ φ hker M N P Q hNM hP hQ`. Use `filtration_length_bound R W F a hF h0 ha V φ hker M N P Q hNM (fun k hk => Submodule.map_le_iff_le_comap.2 fun x hx => hP k hk x hx) (fun k hk v hv => ?_)` and prove the remaining obligations. Take `⟨x, hx, rfl⟩` from `hQ k hk v hv`. Conclude with `Submodule.mem_map_of_mem hx`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem filtLenGr_holds : FiltLenGr := by
   intro R W _ _ _ F a hF h0 ha V _ _ φ hker M N P Q hNM hP hQ
@@ -26,12 +26,12 @@ theorem filtLenGr_holds : FiltLenGr := by
   exact Submodule.mem_map_of_mem hx
 
 /- English proof (translation)
-The claim follows from `sum_antidiagonalTuple`.
+A detailed English derivation is pending.
 -/
 theorem monoCount_holds : MonoCount := sum_antidiagonalTuple
 
 /- English proof (translation)
-The claim follows from `lenBase_of filtLenGr_holds monoCount_holds fkFilt_holds (grBound_of hTR hTH hHS hHV hUI hUB hAR)`.
+A detailed English derivation is pending.
 -/
 theorem lenBase_of_steps (hTR : TaylorRep) (hTH : TaylorHasse) (hHS : HasseSmul) (hHV : HasseVan) (hUI : UInj)
     (hUB : UBall) (hAR : AARep) :
@@ -40,7 +40,7 @@ theorem lenBase_of_steps (hTR : TaylorRep) (hTH : TaylorHasse) (hHS : HasseSmul)
   lenBase_of filtLenGr_holds monoCount_holds fkFilt_holds (grBound_of hTR hTH hHS hHV hUI hUB hAR)
 
 /- English proof (translation)
-The claim follows from `lenBase_of_steps taylorRep_holds hTH hasseSmul_holds hasseVan_holds (uInj_of_column column_holds) (uBall_of_column column_holds) aaRep_holds`.
+A detailed English derivation is pending.
 -/
 theorem lenBase_of_taylorHasse (hTH : TaylorHasse) :
     ∀ {D : D7} {B : WeightFamilies.Prov D} {P : ModuliIntegralCharts.Prov D} {j : ℕ} {X : PJ D B P j} {ka wL wF : WeightFamilies.Wt D j},

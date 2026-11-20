@@ -15,14 +15,14 @@ open scoped nonZeroDivisors
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-The claim follows from `Filter.eventually_cofinite.1 (FractionalIdeal.finite_factors 𝔞)`.
+A detailed English derivation is pending.
 -/
 theorem finite_count (𝔞 : FractionalIdeal (𝓞 E)⁰ E) :
     {w : HeightOneSpectrum (𝓞 E) | FractionalIdeal.count E w 𝔞 ≠ 0}.Finite :=
   Filter.eventually_cofinite.1 (FractionalIdeal.finite_factors 𝔞)
 
 /- English proof (translation)
-The claim follows from `(finite_count 𝔞).subset fun w hw h0 => hw (by simp only [h0, zpow_zero])`.
+A detailed English derivation is pending.
 -/
 theorem hasFiniteMulSupport_zpow {M : Type} [DivInvMonoid M] (x : HeightOneSpectrum (𝓞 E) → M)
     (𝔞 : FractionalIdeal (𝓞 E)⁰ E) :
@@ -30,7 +30,7 @@ theorem hasFiniteMulSupport_zpow {M : Type} [DivInvMonoid M] (x : HeightOneSpect
   (finite_count 𝔞).subset fun w hw h0 => hw (by simp only [h0, zpow_zero])
 
 /- English proof (translation)
-Unfold `idealVal`. Simplify using `only [FractionalIdeal.count_mul E _ h𝔟 h𝔠, zpow_add]`. Conclude with `finprod_mul_distrib (hasFiniteMulSupport_zpow _ _) (hasFiniteMulSupport_zpow _ _)`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem idealVal_mul (χ : Chr F E) {𝔟 𝔠 : FractionalIdeal (𝓞 E)⁰ E} (h𝔟 : 𝔟 ≠ 0) (h𝔠 : 𝔠 ≠ 0) :
     idealVal χ (𝔟 * 𝔠) = idealVal χ 𝔟 * idealVal χ 𝔠 := by
@@ -39,7 +39,7 @@ theorem idealVal_mul (χ : Chr F E) {𝔟 𝔠 : FractionalIdeal (𝓞 E)⁰ E} 
   exact finprod_mul_distrib (hasFiniteMulSupport_zpow _ _) (hasFiniteMulSupport_zpow _ _)
 
 /- English proof (translation)
-Unfold `idealVal`. Simplify using `only [FractionalIdeal.count_inv, zpow_neg]`. Conclude with `finprod_inv_distrib _`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem idealVal_inv (χ : Chr F E) (𝔟 : FractionalIdeal (𝓞 E)⁰ E) : idealVal χ 𝔟⁻¹ = (idealVal χ 𝔟)⁻¹ := by
   unfold idealVal

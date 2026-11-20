@@ -11,7 +11,7 @@ section
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Set `B : Matrix n n 𝒪[k]` to `fun i j => ⟨A i j, h i j⟩`. Establish `hB : A = (algebraMap 𝒪[k] k).mapMatrix B` using `by ext i j; rfl`. Introduce `i j`. Rewrite using `[hB, ← RingHom.map_adjugate]`. Conclude with `(B.adjugate i j).2`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intM_adjugate {n : Type} [Fintype n] [DecidableEq n] {A : Matrix n n k} (h : IntM A) : IntM A.adjugate := by
   let B : Matrix n n 𝒪[k] := fun i j => ⟨A i j, h i j⟩
@@ -21,9 +21,9 @@ theorem intM_adjugate {n : Type} [Fintype n] [DecidableEq n] {A : Matrix n n k} 
   exact (B.adjugate i j).2
 
 /- English proof (translation)
-Use `mem_KO.2 ⟨h, ?_⟩` and prove the remaining obligations. Establish `: (g⁻¹).val = g.val.adjugate`. Rewrite using `[Matrix.coe_units_inv, Matrix.inv_def, hd]`. Simplify using the standard rewrite rules. Rewrite using `[this]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `intM_adjugate h`.
+A detailed English derivation is pending.
 -/
 theorem mem_KO_of_intM_det {n : Type} [Fintype n] [DecidableEq n] {g : GL n k} (h : IntM g.val) (hd : g.val.det = 1) :
     g ∈ KO k n := by
@@ -39,22 +39,22 @@ variable {k : Type} [Field k] {ι n : Type} [Fintype n] [DecidableEq n] {c : ℕ
 def dg (ϖ : kˣ) : n ⊕ Fin c → k := Sum.elim (fun _ => 1) (fun i => (ϖ : k) ^ (i.val + 1))
 
 /- English proof (translation)
-Apply the tactic sequence `rcases r with r | r <;> simp [dg]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dg_ne_zero (ϖ : kˣ) (r : n ⊕ Fin c) : dg ϖ r ≠ 0 := by
   rcases r with r | r <;> simp [dg]
 
 /- English proof (translation)
-Apply the tactic sequence `ext (i | i) (j | j) <;> simp [typeFrame, embA, SplitFlip.diagGL, dg, diagonal, fromBlocks, Matrix.one_apply]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem typeFrame_bas_val (ϖ : kˣ) (ord : ι ≃ n ⊕ Fin c) :
     (typeFrame ϖ ord).bas.val = diagonal (dg ϖ) := by
   ext (i | i) (j | j) <;> simp [typeFrame, embA, SplitFlip.diagGL, dg, diagonal, fromBlocks, Matrix.one_apply]
 
 /- English proof (translation)
-Use `Units.inv_eq_of_mul_eq_one_right ?_` and prove the remaining obligations. Rewrite using `[typeFrame_bas_val, diagonal_mul_diagonal]`. Rewrite using `[← diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `r`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `mul_inv_cancel₀ (dg_ne_zero ϖ r)`.
+A detailed English derivation is pending.
 -/
 theorem typeFrame_bas_inv_val (ϖ : kˣ) (ord : ι ≃ n ⊕ Fin c) :
     ((typeFrame ϖ ord).bas⁻¹).val = diagonal fun r => (dg ϖ r)⁻¹ := by
@@ -63,7 +63,7 @@ theorem typeFrame_bas_inv_val (ϖ : kˣ) (ord : ι ≃ n ⊕ Fin c) :
   rw [← diagonal_one]; congr 1; funext r; exact mul_inv_cancel₀ (dg_ne_zero ϖ r)
 
 /- English proof (translation)
-Rewrite using `[LatFrame.conj_apply, Units.val_mul, Units.val_mul, typeFrame_bas_inv_val, typeFrame_bas_val, mul_diagonal, diagonal_mul, reGL_val]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem conj_entry [Fintype ι] [DecidableEq ι] (ϖ : kˣ) (ord : ι ≃ n ⊕ Fin c) (g : GL ι k) (r s : n ⊕ Fin c) :
     ((typeFrame ϖ ord).conj g).val r s = dg ϖ r * g.val (ord.symm r) (ord.symm s) * (dg ϖ s)⁻¹ := by
@@ -84,7 +84,7 @@ Both sides reduce to the same expression.
 theorem ordZ_inl (hc : 0 + c = c) (i : Fin κ) : ordZ t hc (Sum.inl i) = Sum.inl (Sum.inl (Sum.inl i)) := rfl
 
 /- English proof (translation)
-Establish `h` using `standardOrderExtendedBasis_apply_low_block (Fin κ) t 0 c hc i`. Simplify using `only [Fin.eta] at h`. Conclude with `h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ordZ_inr (hc : 0 + c = c) (i : Fin c) : ordZ (κ := κ) t hc (Sum.inr i) = Sum.inr i := by
   have h := standardOrderExtendedBasis_apply_low_block (Fin κ) t 0 c hc i
@@ -95,9 +95,9 @@ def epsZ : Fin κ ≃ XIx (Fin κ) t 0 :=
   (Equiv.sumEmpty (Fin κ) (Fin 0)).symm.trans (Equiv.sumEmpty (Fin κ ⊕ Fin 0) (Fin 0 × t)).symm
 
 /- English proof (translation)
-Take `⟨w, rfl⟩` from `(ordZ t hc).surjective z`. Rewrite using `[Equiv.symm_apply_apply]`. Break down `w with i | i` into its components or cases. Rewrite using `[ordZ_inl]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[ordZ_inr]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem lev_ordZ_symm (hc : 0 + c = c) (p : ℕ) (z : XIx (Fin κ) t 0 ⊕ Fin c) :
     lev p ((ordZ t hc).symm z) = lev p z := by
@@ -110,7 +110,7 @@ theorem lev_ordZ_symm (hc : 0 + c = c) (p : ℕ) (z : XIx (Fin κ) t 0 ⊕ Fin c
 variable [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Rewrite using `[conj_entry, reGL_val]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem conj_reGL_val (ϖ : kˣ) (hc : 0 + c = c) (g : GL (Fin κ ⊕ Fin c) k) (r s : XIx (Fin κ) t 0 ⊕ Fin c) :
     ((typeFrame ϖ (stdOrd (Fin κ) t 0 c hc)).conj (reGL (ixZero (Fin κ ⊕ Fin c) t) g)).val r s =
@@ -118,9 +118,9 @@ theorem conj_reGL_val (ϖ : kˣ) (hc : 0 + c = c) (g : GL (Fin κ ⊕ Fin c) k) 
   rw [conj_entry, reGL_val]; rfl
 
 /- English proof (translation)
-Introduce `r s hrs`. Rewrite using `[conj_reGL_val, hg _ _ (by rw [lev_ordZ_symm, lev_ordZ_symm]; exact hrs)]`. Distinguish the cases in `h : r = s`. Substitute `h` using the available equality. Simplify using `[Matrix.one_apply, mul_inv_cancel₀ (dg_ne_zero ϖ r)]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Establish `h' : (ordZ t hc).symm r ≠ (ordZ t hc).symm s` using `fun e => h ((ordZ t hc).symm.injective e)`. Simplify using `[Matrix.one_apply, h, h']`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem conj_inN (ϖ : kˣ) (hc : 0 + c = c) (p : ℕ) {g : GL (Fin κ ⊕ Fin c) k} (hg : InN p g) :
     InN p ((typeFrame ϖ (stdOrd (Fin κ) t 0 c hc)).conj (reGL (ixZero (Fin κ ⊕ Fin c) t) g)) := by
@@ -132,15 +132,13 @@ theorem conj_inN (ϖ : kˣ) (hc : 0 + c = c) (p : ℕ) {g : GL (Fin κ ⊕ Fin c
     simp [Matrix.one_apply, h, h']
 
 /- English proof (translation)
-Establish `hs1 : ∀ i : Fin κ, (ordZ t hc).symm (Sum.inl (Sum.inl (Sum.inl i))) = Sum.inl i` using `fun i => (ordZ t hc).symm_apply_eq.2 (ordZ_inl t hc i).symm`. Establish `hs2 : ∀ i : Fin c, (ordZ t hc).symm (Sum.inr i) = Sum.inr i` using `fun i => (ordZ t hc).symm_apply_eq.2 (ordZ_inr (κ := κ) t hc i).symm`. Use extensionality with `r s`. Rewrite using `[conj_reGL_val, Radical.embX_val, Radical.embX_val, reGL_val]`. Break down `r with ((i | i) | ⟨i, _⟩) | i` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `s with ((j | j) | ⟨j, _⟩) | j` into its components or cases. Rewrite using `[hs1, hs1]`. Simplify using `[dg]`. Both sides reduce to the same expression. Conclude with `j.elim0`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Conclude with `j.elim0`. Rewrite using `[hs1, hs2]`. Simplify using `[dg]`. Conclude with `i.elim0`. Conclude with `i.elim0`.
+Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Break down `s with ((j | j) | ⟨j, _⟩) | j` into its components or cases. Rewrite using `[hs2, hs1]`. Simplify using `[dg]`. Conclude with `j.elim0`. Conclude with `j.elim0`.
-
-Rewrite using `[hs2, hs2]`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using `[dg, Matrix.one_apply]`. Simplify using `[dg, Matrix.one_apply, h]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem conj_embX (ϖ : kˣ) (hc : 0 + c = c) (γ : GL (Fin κ) k) :
     (typeFrame ϖ (stdOrd (Fin κ) t 0 c hc)).conj (reGL (ixZero (Fin κ ⊕ Fin c) t) (embX c γ)) =
@@ -174,27 +172,23 @@ end GlobalTheory.SymDec
 open GlobalTheory.SplitWeil GlobalTheory.RootEx GlobalTheory.StepData GlobalTheory.SymChain
 
 /- English proof (translation)
-Introduce `k _ _ _ _ s κ S t _ _ hc x`. Establish `hx` using `(SymData.mem_J_iff_pattern k s κ S x).1 x.2`. Set `M : Matrix (Fin κ ⊕ Fin (s + 1)) (Fin κ ⊕ Fin (s + 1)) k` to `fun a b => if FreeTop S.ρ a b then (x : GL _ k).val a b else (1 : Matrix _ _ k) a b`. Establish `hM : MaxM (M - (x : GL _ k).val)`. Introduce `a b`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Matrix.sub_apply]`. Simplify using `only [M]`. Use `split_ifs with h`. Simplify using the standard rewrite rules. Rewrite using `[← neg_sub, Valuation.map_neg]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `hx.2 a b h`. Take `⟨x', hx'J, hx'M⟩` from `S.P.exists_of_congr x.2 hM`. Take `⟨u, hu, γ₀, hγ₀, e⟩` from `GlobalTheory.SymPattern.exists_of_pat S.ρ x' (fun a b hab => by`. Rewrite using `[hx'M]`. Simplify using `[M, hab])`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hγv : ∀ i j, γ₀.val i j = x'.val (Sum.inl i) (Sum.inl j)`. Introduce `i j`. Rewrite using `[e, Units.val_mul, Radical.embX_val, GlobalTheory.SymPattern.mul_fromBlocks_inl]`. Establish `e1 : ∀ t, u.val (Sum.inl i) (Sum.inl t) = (1 : Matrix (Fin κ) (Fin κ) k) i t`. Introduce `t; rw [hu _ _ (by simp [lev])]; simp [Matrix.one_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [e1]`. Rewrite using `[← Matrix.mul_apply, Matrix.one_mul]`. Establish `hxInt` using `intM_of_mem_KO hx.1`. Establish `hγInt : IntM γ₀.val`. Introduce `i j`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hγv, hx'M]`. Simplify using `only [M]`. Use `split_ifs`. Conclude with `hxInt _ _`. Conclude with `intM_one _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hdet : γ₀.val.det = 1` using `Radical.Uni.det (b := Fin.val) hγ₀`. Establish `hbKO : embX (s + 1) γ₀ ∈ KO k (Fin κ ⊕ Fin (s + 1))`. Use `GlobalTheory.SymDec.mem_KO_of_intM_det ?_ ?_` and prove the remaining obligations. Rewrite using `[Radical.embX_val]`. Conclude with `intM_fromBlocks.2 ⟨hγInt, intM_zero, intM_zero, intM_one⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Radical.embX_val, det_fromBlocks_zero₂₁, det_one, mul_one, hdet]`. Establish `hbJ : embX (s + 1) γ₀ ∈ S.P.J`. Use `(SymData.mem_J_iff_pattern k s κ S _).2 ⟨hbKO, fun a b hab => ?_⟩` and prove the remaining obligations. Establish `h1 : InN (S.ρ + 1) (1 : GL (Fin κ ⊕ Fin (s + 1)) k)` using `fun r s _ => rfl`. Use `GlobalTheory.SymPattern.pat_of_mul S.ρ 1 h1 γ₀ hγ₀ a b hab` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite `this` using `[one_mul]`. Rewrite using `[this, sub_self, map_zero]`. Conclude with `zero_lt_one`. Establish `hue : u = x' * (embX (s + 1) γ₀)⁻¹` using `by rw [e]; group`. Establish `huJ : u ∈ S.P.J` using `by rw [hue]; exact S.P.J.mul_mem hx'J (S.P.J.inv_mem hbJ)`.
-
-Use `⟨⟨u, huJ⟩, ⟨embX (s + 1) γ₀, hbJ⟩, reGL (GlobalTheory.SymDec.epsZ t) γ₀, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(Radical.mem_N_iff _).2 (GlobalTheory.SymDec.conj_inN t S.ϖ hc (S.ρ + 1) hu)`. Conclude with `GlobalTheory.SymDec.conj_embX t S.ϖ hc γ₀`. Express the relevant statement in the definitionally equal form `MaxM ((u * embX (s + 1) γ₀).val - (x : GL _ k).val)`. Rewrite using `[← e, hx'M]`.
-
-Conclude with `hM`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.SymChain.SymData.exists_N_mul_embX_congr : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (s κ : ℕ) (S : GlobalTheory.SymChain.SymData k s κ) (t : Type) [Fintype t] [DecidableEq t]

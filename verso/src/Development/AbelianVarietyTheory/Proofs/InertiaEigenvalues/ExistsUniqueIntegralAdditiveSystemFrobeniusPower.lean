@@ -6,9 +6,9 @@ open GlobalTheory.PMonE Finset
 namespace GlobalTheory.PMonE
 
 /- English proof (translation)
-Unfold `gsum`. Rewrite using `[← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun n _ => ?_` and prove the remaining obligations. Rewrite using `[← Matrix.mulVec_sub]`. Use `congr 1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `i`. Simplify using `only [Pi.sub_apply, ← pow_mul]`. Conclude with `sub_pow_char_pow _ _ _`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gsum_sub_of_charP {F : Type*} [NormedField F] (p : ℕ) [Fact p.Prime] [CharP F p] {m : Type*} [Fintype m]
     (e D : ℕ) (M : ℕ → Matrix m m F) (x y : m → F) :
@@ -23,11 +23,11 @@ theorem gsum_sub_of_charP {F : Type*} [NormedField F] (p : ℕ) [Fact p.Prime] [
   exact sub_pow_char_pow _ _ _
 
 /- English proof (translation)
-Establish `h0 : 0 ≤ δ * ‖z‖` using `mul_nonneg hδ (norm_nonneg _)`. Rewrite using `[pi_norm_le_iff_of_nonneg h0]`. Introduce `i`. Unfold `gsum`. Rewrite using `[Finset.sum_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg h0 fun n hn => ?_` and prove the remaining obligations. Simplify using `only [Matrix.mulVec, dotProduct]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg h0 fun j _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul, norm_pow]`. Establish `hj : ‖z j‖ ≤ ‖z‖` using `norm_le_pi_norm z j`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `mul_le_mul (hM n (Nat.lt_succ_iff.mp (Finset.mem_range.mp hn)) i j) ?_ (by positivity) hδ` and prove the remaining obligations. Conclude with `(pow_le_of_le_one (norm_nonneg _) (hj.trans hz) (pow_pos hq n).ne').trans hj`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem norm_gsum_le_of_small {F : Type*} [NormedField F] [IsUltrametricDist F] {m : Type*} [Fintype m]
     (q D : ℕ) (hq : 0 < q) (M : ℕ → Matrix m m F) (δ : ℝ) (hδ : 0 ≤ δ)
@@ -47,7 +47,7 @@ theorem norm_gsum_le_of_small {F : Type*} [NormedField F] [IsUltrametricDist F] 
   exact (pow_le_of_le_one (norm_nonneg _) (hj.trans hz) (pow_pos hq n).ne').trans hj
 
 /- English proof (translation)
-Unfold `gsum`. Rewrite using `[Finset.sum_range_succ', Finset.sum_range_succ']`. Simplify using `[Matrix.sub_mulVec]`. Normalize the expressions using the abelian group laws.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem gsum_eq_add_gsum_update {F : Type*} [NormedField F] {m : Type*} [Fintype m] [DecidableEq m]
     (q D : ℕ) (U : ℕ → Matrix m m F) (y : m → F) :
@@ -58,31 +58,29 @@ theorem gsum_eq_add_gsum_update {F : Type*} [NormedField F] {m : Type*} [Fintype
   abel
 
 /- English proof (translation)
-Use `set V : ℕ → Matrix m m F := fun n => if n = 0 then U 0 - 1 else U n with hV`. Establish `hVs : ∀ n i j, ‖V n i j‖ < 1`. Introduce `n i j`. Distinguish the cases in `hn : n = 0`. Simplify `h0 i j` using `[hV, hn]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `h1 n (Nat.one_le_iff_ne_zero.mpr hn) i j` using `[hV, hn]`. Choose the witnesses or unpack the hypotheses as in `⟨δ, hδ1, hδ⟩ : ∃ δ : NNReal, δ < 1 ∧ ∀ n, n ≤ D → ∀ i j, ‖V n i j‖ ≤ δ := by`. Use `⟨((range (D + 1)) ×ˢ (univ : Finset (m × m))).sup fun t => ‖V t.1 t.2.1 t.2.2‖₊, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.sup_lt_iff (by simp)]`. Introduce `t _`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hVs t.1 t.2.1 t.2.2` after adjusting the coercions. Introduce `n hn i j`. Use `Finset.le_sup (f := fun t : ℕ × m × m => ‖V t.1 t.2.1 t.2.2‖₊) (s := (range (D + 1)) ×ˢ (univ : Finset (m × m))) (b := (n, i, j)) (by simp [Nat.lt_succ_iff, hn])` as an intermediate fact. Conclude with `this` after adjusting the coercions. Establish `hq : 0 < p ^ e` using `pow_pos (Fact.out : p.Prime).pos e`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hint : ∀ y : m → F, Integral y ↔ ‖y‖ ≤ 1` using `fun y => (pi_norm_le_iff_of_nonneg zero_le_one).symm`. Establish `hbound` using `norm_gsum_le_of_small (p ^ e) D hq V δ δ.2 hδ`. Establish `hδ1' : (δ : ℝ) < 1` using `by exact_mod_cast hδ1`. Establish `hsub : ∀ x y : m → F, ‖x‖ ≤ 1 → ‖y‖ ≤ 1 → ‖x - y‖ ≤ 1`. Introduce `x y hx hy`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite `*` using `[← hint]`. Introduce `i`. Rewrite using `[Pi.sub_apply, sub_eq_add_neg]`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le (hx i) ?_)` and prove the remaining obligations. Rewrite using `[norm_neg]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `hy i`. Set `T : (m → F) → (m → F)` to `fun y => b - gsum (p ^ e) D V y`. Set `S : Set (m → F)` to `Metric.closedBall 0 1`. Establish `hS : ∀ y, y ∈ S ↔ ‖y‖ ≤ 1` using `fun y => mem_closedBall_zero_iff`. Establish `hT : ∀ x y : m → F, ‖x‖ ≤ 1 → ‖y‖ ≤ 1 → ‖T x - T y‖ ≤ δ * ‖x - y‖`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `x y hx hy`. Establish `: T x - T y = - gsum (p ^ e) D V (x - y)`. Rewrite using `[gsum_sub_of_charP]`. Simplify using `only [T]`. Normalize the expressions using the abelian group laws.
+Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[this, norm_neg]`. Conclude with `hbound _ (hsub x y hx hy)`. Establish `hmaps : Set.MapsTo T S S`. Introduce `y hy`. Rewrite `hy`, the goal using `[hS]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `hsub _ _ ((hint b).mp hb) ((hbound y hy).trans ?_)` and prove the remaining obligations. Conclude with `mul_le_one₀ hδ1'.le (norm_nonneg _) hy`. Establish `hc : ContractingWith δ (hmaps.restrict T S S)`. Use `⟨hδ1, LipschitzWith.of_dist_le_mul fun x y => ?_⟩` and prove the remaining obligations. Rewrite using `[Subtype.dist_eq, Subtype.dist_eq, dist_eq_norm, dist_eq_norm]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hT x y ((hS _).mp x.2) ((hS _).mp y.2)`. Establish `hfix : ∀ y, gsum (p ^ e) D U y = b ↔ T y = y`. Introduce `y`. Rewrite using `[gsum_eq_add_gsum_update]`. Simplify using `only [T]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[← h]`. Simplify using `[hV]`. Introduce `h`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h` using `[sub_eq_iff_eq_add]`. Conclude with `h.symm`. Take `⟨y, hyS, hy, -⟩` from `hc.exists_fixedPoint' Metric.isClosed_closedBall.isComplete hmaps (x := 0) ((hS 0).mpr (by simp)) (edist_ne_top _ _)`. Use `⟨y, ⟨(hint y).mpr ((hS y).mp hyS), (hfix y).mpr hy⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `x ⟨hx, hx'⟩`.
-
-Establish `h` using `hT x y ((hint x).mp hx) ((hS y).mp hyS)`. Rewrite `h` using `[(hfix x).mp hx', show T y = y from hy]`. Establish `hn` using `norm_nonneg (x - y)`. Establish `: ‖x - y‖ = 0` using `by nlinarith`. Conclude with `sub_eq_zero.mp (norm_eq_zero.mp this)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem existsUnique_integral_gsum_eq (F : Type) [NontriviallyNormedField F] [IsUltrametricDist F] [CompleteSpace F]
     (p : ℕ) [Fact p.Prime] [CharP F p] (m : Type) [Fintype m] [DecidableEq m] (e D : ℕ) (_he : 0 < e)

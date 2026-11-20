@@ -6,7 +6,7 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SchrodingerInvarian
 open MeasureTheory
 
 /- English proof (translation)
-Introduce `V _ _ _ P hP g hg l hl`. Conclude with `GlobalTheory.SchrIrred.eq_zero_of_schrF P hP l g hg hl`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.schrodinger_functional_eq_zero :
     ∀ {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V] (P : V → V → ℝ),

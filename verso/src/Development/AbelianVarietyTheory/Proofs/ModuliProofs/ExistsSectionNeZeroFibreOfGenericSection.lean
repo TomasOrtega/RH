@@ -17,21 +17,21 @@ namespace GlobalTheory.GenericSection
 open GlobalTheory.AbLaw GlobalTheory.AbLaw.SecBC
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hno`. Use `push Not at hno`. Establish `hind : LinearIndependent K' (fun j : Fin a => fun i : Fin b => (D.map g') i j)`. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `c hc`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hc0`. Use `push Not at hc0`. Establish `hc' : c ≠ 0` using `fun h0 => by`. Take `⟨j, hj⟩` from `hc0`. Conclude with `hj (by rw [h0]; rfl)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Apply `hno c hc'` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Use `congrFun hc i` as an intermediate fact. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul] at this`. Simplify using `only [Matrix.mulVec, dotProduct, Pi.zero_apply]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `this` using `[Pi.zero_apply]`. Rewrite using `[← this]`. Conclude with `Finset.sum_congr rfl fun j _ => mul_comm _ _`. Take `⟨e, -, he⟩` from `GlobalTheory.exists_maximal_minor_ne_zero_of_linearIndependent K' b (Fin a) _ hind`. Establish `hdet : (D.submatrix e id).det ≠ 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Introduce `h0`. Apply `he` to reduce the goal to its premises. Establish `: (Matrix.of fun k j => (D.map g') (e k) j) = (D.submatrix e id).map g'`. Use extensionality with `k j`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hm` using `RingHom.map_det g' (D.submatrix e id)`. Rewrite `hm` using `[RingHom.mapMatrix_apply]`. Rewrite using `[this, ← hm, h0, map_zero]`. Establish `hdetK : ((D.map g).submatrix e id).det ≠ 0`. Establish `: (D.map g).submatrix e id = (D.submatrix e id).map g` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Establish `hm` using `RingHom.map_det g (D.submatrix e id)`. Rewrite `hm` using `[RingHom.mapMatrix_apply]`. Rewrite using `[this, ← hm]`. Conclude with `fun h0 => hdet (hg (by rw [h0, map_zero]))`. Apply `hv` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Apply `Matrix.eq_zero_of_mulVec_eq_zero hdetK` to reduce the goal to its premises. Use function extensionality and compare the values at `k`. Use `congrFun h (e k)` as an intermediate fact. Simplify `this` using `[Matrix.mulVec, dotProduct, Matrix.submatrix]`.
+A detailed English derivation is pending.
 -/
 theorem exists_ker_ne_zero {R K K' : Type} [CommRing R] [Field K] [Field K'] (g : R →+* K) (g' : R →+* K')
     (hg : Function.Injective g) {a b : ℕ} (D : Matrix (Fin b) (Fin a) R) (v : Fin a → K) (hv : v ≠ 0)
@@ -81,15 +81,15 @@ def zeroSec {X : Scheme.{0}} (M : LB X) : LB.Sec M where
   compat := fun _ _ => by rw [map_zero, map_zero, mul_zero]
 
 /- English proof (translation)
-Substitute `e` using the available equality. Unfold `LB.pull at F ⊢`. Set `c : R' →+* Γ(X', ⊤)` to `f'.appTop.hom.comp (Scheme.ΓSpecIso (CommRingCat.of R')).inv.hom`. Take `⟨h1, h2, h3⟩` from `SecBC.rep_main (F := F) (ψ := fun _ => π ≫ p) (fun _ => rfl) g f' H c (fun _ => rfl)`. Establish `h0 : SecBC.Rep π (fun _ => π ≫ p) F c 0 (zeroSec (L.LinComb (fun _ : PUnit.{1} => π ≫ p) (fun _ => 1))).f`.
+Substitute using the available equality. Replace the relevant objects with their definitions. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hs` using `SecBC.Rep.sum (F := F) (ψ := fun _ => π ≫ p) (c := c) (fun _ => rfl) (I := Empty) (w := Empty.elim) (b := Empty.elim) (fun l => l.elim) Empty.elim`. Simplify using `only [Finset.univ_eq_empty, Finset.sum_empty] at hs`. Conclude with `hs`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, j, hs⟩`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨v, hv, hrep⟩` from `h2 s`. Use `⟨v, fun hv0 => hs ?_, hv⟩` and prove the remaining obligations. Substitute `hv0` using the available equality. Rewrite using `[SecBC.Rep.sec_eq (fun _ => rfl) hrep h0]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨v, hv0, hv⟩`. Take `⟨s, hs⟩` from `h1 v hv`. Assume the negation of the conclusion as `hno`. Use `push Not at hno`. Apply `hv0` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hz : s = zeroSec _` using `SecBC.sec_ext (fun j => hno s j)`. Rewrite `hs` using `[hz]`. Conclude with `h3 v 0 (zeroSec (L.LinComb (fun _ : PUnit.{1} => π ≫ p) (fun _ => 1))) hv (Matrix.mulVec_zero _) hs h0`.
+A detailed English derivation is pending.
 -/
 theorem exists_sec_iff {X X' Y : Scheme.{0}} {L : LB Y} {p : X ⟶ Y} {R R' : Type} [CommRing R] [CommRing R']
     {f : X ⟶ Spec (CommRingCat.of R)} (F : Perf f (L.pull p)) (g : R →+* R') {π : X' ⟶ X}
@@ -122,7 +122,7 @@ theorem exists_sec_iff {X X' Y : Scheme.{0}} {L : LB Y} {p : X ⟶ Y} {R R' : Ty
     exact h3 v 0 (zeroSec (L.LinComb (fun _ : PUnit.{1} => π ≫ p) (fun _ => 1))) hv (Matrix.mulVec_zero _) hs h0
 
 /- English proof (translation)
-Use `⟨(Spec.preimage (IsOpenImmersion.lift t x h)).hom, ?_⟩` and prove the remaining obligations. Rewrite using `[CommRingCat.ofHom_hom, Spec.map_preimage]`. Conclude with `IsOpenImmersion.lift_fac t x h`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_ringHom {S : Scheme.{0}} {R K : Type} [CommRing R] [Field K] (t : Sp R ⟶ S) [IsOpenImmersion t]
     (x : Sp K ⟶ S) (h : Set.range x ⊆ Set.range t) :
@@ -132,9 +132,9 @@ theorem exists_ringHom {S : Scheme.{0}} {R K : Type} [CommRing R] [Field K] (t :
   exact IsOpenImmersion.lift_fac t x h
 
 /- English proof (translation)
-Substitute `h` using the available equality. Establish `hc : pullback.fst a (u ≫ t) ≫ a = (pullback.snd a (u ≫ t) ≫ u) ≫ t`. Rewrite using `[pullback.condition, Category.assoc]`. Use `⟨pullback.lift _ _ hc, ?_, (pullback.lift_fst _ _ hc).symm⟩` and prove the remaining obligations. Use `IsPullback.of_right ?_ (pullback.lift_snd _ _ hc) (IsPullback.of_hasPullback a t)` and prove the remaining obligations.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[pullback.lift_fst]`. Conclude with `IsPullback.of_hasPullback a (u ≫ t)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isPullback {A S T T' : Scheme.{0}} (a : A ⟶ S) (t : T ⟶ S) (u : T' ⟶ T) (x : T' ⟶ S)
     (h : u ≫ t = x) : ∃ π : pullback a x ⟶ pullback a t,
@@ -148,27 +148,25 @@ theorem exists_isPullback {A S T T' : Scheme.{0}} (a : A ⟶ S) (t : T ⟶ S) (u
   exact IsPullback.of_hasPullback a (u ≫ t)
 
 /- English proof (translation)
-Introduce `hLaws S _ P N K K' _ _ x y s hN hx hs`. Take `⟨W, hW, hyW, -⟩` from `exists_isAffineOpen_mem_and_subset (show y (IsLocalRing.closedPoint K') ∈ (⊤ : S.Opens) from trivial)`. Set `t : Sp Γ(S, W) ⟶ S` to `hW.fromSpec`. Establish `hrange : Set.range t = W` using `hW.range_fromSpec`. Establish `hgen : genericPoint S ∈ (W : Set S)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[(genericPoint_spec S).mem_open_set_iff W.isOpen]`. Conclude with `⟨_, trivial, hyW⟩`. Establish `: Nonempty W` using `⟨⟨_, hyW⟩⟩`. Establish `hxr : Set.range x ⊆ Set.range t`. Rewrite using `[hx, hrange]`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using hgen`. Establish `hyr : Set.range y ⊆ Set.range t`. Introduce and unpack `_ ⟨z, rfl⟩`. Rewrite using `[hrange, Subsingleton.elim z (IsLocalRing.closedPoint K')]`. Conclude with `hyW`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨gx, hgx⟩` from `exists_ringHom t x hxr`. Take `⟨gy, hgy⟩` from `exists_ringHom t y hyr`. Establish `hinj : Function.Injective gx`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `r hr`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hr0`. Establish `hne : (PrimeSpectrum.basicOpen r : Set (PrimeSpectrum Γ(S, W))).Nonempty` using `⟨⟨⊥, Ideal.isPrime_bot⟩, by simpa [PrimeSpectrum.mem_basicOpen] using hr0⟩`. Establish `hop : IsOpen (t '' (PrimeSpectrum.basicOpen r : Set (PrimeSpectrum Γ(S, W))))` using `t.isOpenEmbedding.isOpenMap _ (PrimeSpectrum.basicOpen r).isOpen`. Establish `hg2 : genericPoint S ∈ t '' (PrimeSpectrum.basicOpen r : Set (PrimeSpectrum Γ(S, W)))`. Rewrite using `[(genericPoint_spec S).mem_open_set_iff hop]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨q, hq⟩` from `hne`. Conclude with `⟨_, trivial, q, hq, rfl⟩`. Take `⟨q, hq, hqe⟩` from `hg2`. Establish `hxpt : x (IsLocalRing.closedPoint K) = genericPoint S`. Establish `hm : x (IsLocalRing.closedPoint K) ∈ Set.range x` using `⟨_, rfl⟩`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hm` using `[hx]`. Conclude with `hm`. Establish `hq2 : q = Spec.map (CommRingCat.ofHom gx) (IsLocalRing.closedPoint K)`. Apply `t.isOpenEmbedding.injective` to reduce the goal to its premises. Rewrite using `[hqe, ← hxpt, ← hgx]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite `hq` using `[hq2]`. Apply `(PrimeSpectrum.mem_basicOpen _ _).1 hq` to reduce the goal to its premises. Use `show r ∈ (PrimeSpectrum.comap gx (IsLocalRing.closedPoint K)).asIdeal`. Rewrite using `[PrimeSpectrum.comap_asIdeal, Ideal.mem_comap, hr]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `zero_mem _`. Establish `H0 : IsPullback (pullback.fst P.A.hom t) (pullback.snd P.A.hom t) P.A.hom t` using `IsPullback.of_hasPullback _ _`. Take `⟨n, -, m, σ, hlb, hva⟩` from `polAV_veryAmpleBy hLaws.polBaseChange S P Γ(S, W) t _ _ _ H0`. Establish `: Smooth P.A.hom`. Use `P.smoothDim` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `SmoothOfRelativeDimension.smooth P.g P.A.hom`. Establish `hproj : IsProjBy (pullback.snd P.A.hom t)` using `⟨_, hlb, m, σ, hva⟩`. Take `⟨F⟩` from `GlobalTheory.T.nonempty_perfectSectionsComplex_of_smooth_proj Γ(S, W) _ (pullback.snd P.A.hom t) inferInstance hproj (N.pull (pullback.fst P.A.hom t)) (LB.isLB_pull hN _)`. Take `⟨πx, hπx, hex⟩` from `exists_isPullback P.A.hom t (Spec.map (CommRingCat.ofHom gx)) x hgx`. Take `⟨πy, hπy, hey⟩` from `exists_isPullback P.A.hom t (Spec.map (CommRingCat.ofHom gy)) y hgy`.
-
-Take `⟨v, hv, hker⟩` from `(exists_sec_iff F gx hπx hex).1 ⟨s, hs⟩`. Take `⟨v', hv', hker'⟩` from `exists_ker_ne_zero gx gy hinj F.D₀ v hv hker`. Conclude with `(exists_sec_iff F gy hπy hey).2 ⟨v', hv', hker'⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_sec_ne_zero_of_generic : Out.Laws → ∀ (S : Scheme.{0}) [IsIntegral S] (P : Out.PolAV S) (N : LB P.A.left) (K K' : Type) [Field K] [Field K'] (x : Sp K ⟶ S) (y : Sp K' ⟶ S) (s : (N.pull (pullback.fst P.A.hom x)).Sec), N.IsLB → Set.range x = {genericPoint S} → (∃ j, s.f j ≠ 0) → ∃ (s' : (N.pull (pullback.fst P.A.hom y)).Sec) (j : _), s'.f j ≠ 0 := by
   intro hLaws S _ P N K K' _ _ x y s hN hx hs

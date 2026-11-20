@@ -15,7 +15,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 variable {R : Type} [CommRing R]
 
 /- English proof (translation)
-Use `show (aeval fun i => if i = ℓ then (DualNumber.eps : DualNumber R) else 0) (X j) = _`. Rewrite using `[aeval_X]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jetTan_alt {κ : Type} [DecidableEq κ] (ℓ j : κ) :
     (jetTan ℓ : Jet R κ (0 + 1) →ₐ[R] DualNumber R) (zz (0 + 1) j) = if j = ℓ then DualNumber.eps else 0 := by
@@ -23,11 +23,11 @@ theorem jetTan_alt {κ : Type} [DecidableEq κ] (ℓ j : κ) :
   rw [aeval_X]
 
 /- English proof (translation)
-Use `MvPolynomial.induction_on (motive := fun r => r - C (constantCoeff r) ∈ orig R κ) r ?_ ?_ ?_` and prove the remaining obligations. Introduce `a`. Simplify using the standard rewrite rules. Introduce `p q hp hq`. Establish `e : p + q - C (constantCoeff (p + q)) = (p - C (constantCoeff p)) + (q - C (constantCoeff q))`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[map_add, map_add]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `add_mem hp hq`. Introduce `p i _`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e : p * X i - C (constantCoeff (p * X i)) = p * X i` using `by simp`. Rewrite using `[e]`. Apply the tactic sequence `exact Ideal.mul_mem_left _ _ (by first | exact Ideal.subset_span ⟨i, rfl⟩ | (unfold orig; exact Ideal.subset_span ⟨i, rfl⟩))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem sub_C_mem_lemma {κ : Type} (r : MvPolynomial κ R) : r - C (constantCoeff r) ∈ orig R κ := by
   refine MvPolynomial.induction_on (motive := fun r => r - C (constantCoeff r) ∈ orig R κ) r ?_ ?_ ?_
@@ -45,9 +45,9 @@ private theorem sub_C_mem_lemma {κ : Type} (r : MvPolynomial κ R) : r - C (con
     exact Ideal.mul_mem_left _ _ (by first | exact Ideal.subset_span ⟨i, rfl⟩ | (unfold orig; exact Ideal.subset_span ⟨i, rfl⟩))
 
 /- English proof (translation)
-Apply the tactic sequence `have e : (jetAug : Jet R κ (0 + 1) →ₐ[R] R) (Ideal.Quotient.mk (orig R κ ^ (0 + 1 + 1)) r) = (aeval fun _ : κ => (0 : R)) r := by first | rfl | simp [jetAug, liftJet]`. Rewrite using `[e]`. Use `MvPolynomial.induction_on (motive := fun r => (aeval fun _ : κ => (0 : R)) r = constantCoeff r) r ?_ ?_ ?_` and prove the remaining obligations. Introduce `a`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `p q hp hq`. Simplify using `only [map_add, hp, hq]`. Introduce `p i _`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 private theorem aug_mk_lemma_2 {κ : Type} (r : MvPolynomial κ R) :
     (jetAug : Jet R κ (0 + 1) →ₐ[R] R) (Ideal.Quotient.mk (orig R κ ^ (0 + 1 + 1)) r) = constantCoeff r := by
@@ -64,13 +64,13 @@ private theorem aug_mk_lemma_2 {κ : Type} (r : MvPolynomial κ R) :
     simp
 
 /- English proof (translation)
-Apply the tactic sequence `first | exact pow_two _ | rw [pow_succ, pow_succ, pow_zero, one_mul]`.
+A detailed English derivation is pending.
 -/
 private theorem orig_sq_lemma_3 {κ : Type} : orig R κ ^ (0 + 1 + 1) = orig R κ * orig R κ := by
   first | exact pow_two _ | rw [pow_succ, pow_succ, pow_zero, one_mul]
 
 /- English proof (translation)
-Take `⟨r, rfl⟩` from `Ideal.Quotient.mk_surjective c`. Rewrite using `[aug_mk_lemma_2]`. Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk (orig R κ ^ (0 + 1 + 1)) r * Ideal.Quotient.mk (orig R κ ^ (0 + 1 + 1)) (X i) = Ideal.Quotient.mk (orig R κ ^ (0 + 1 + 1)) (C (constantCoeff r)) * Ideal.Quotient.mk (orig R κ ^ (0 + 1 + 1)) (X i)`. Rewrite using `[← map_mul, ← map_mul, Ideal.Quotient.eq, ← sub_mul, orig_sq_lemma_3]`. Apply the tactic sequence `exact Ideal.mul_mem_mul (sub_C_mem_lemma r) (by first | exact Ideal.subset_span ⟨i, rfl⟩ | (unfold orig; exact Ideal.subset_span ⟨i, rfl⟩))`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mul_zz_lemma_4 {κ : Type} (c : Jet R κ (0 + 1)) (i : κ) :
     c * zz (0 + 1) i = algebraMap R (Jet R κ (0 + 1)) ((jetAug : Jet R κ (0 + 1) →ₐ[R] R) c) * zz (0 + 1) i := by
@@ -82,9 +82,9 @@ private theorem mul_zz_lemma_4 {κ : Type} (c : Jet R κ (0 + 1)) (i : κ) :
   exact Ideal.mul_mem_mul (sub_C_mem_lemma r) (by first | exact Ideal.subset_span ⟨i, rfl⟩ | (unfold orig; exact Ideal.subset_span ⟨i, rfl⟩))
 
 /- English proof (translation)
-Take `⟨r, rfl⟩` from `Ideal.Quotient.mk_surjective p`. Rewrite `h` using `[aug_mk_lemma_2]`. Establish `hr0 : r ∈ orig R κ` using `by simpa [h] using sub_C_mem_lemma r`. Establish `hr : r ∈ Ideal.span (Set.range (X : κ → MvPolynomial κ R))` using `hr0`. Establish `h2` using `Ideal.mem_map_of_mem (Ideal.Quotient.mk (orig R κ ^ (0 + 1 + 1))) hr`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[Ideal.map_span, ← Set.range_comp]`. Conclude with `h2`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem aug_zero_mem_lemma_5 {κ : Type} (p : Jet R κ (0 + 1)) (h : (jetAug : Jet R κ (0 + 1) →ₐ[R] R) p = 0) :
     p ∈ Ij R κ (0 + 1) := by
@@ -97,11 +97,11 @@ private theorem aug_zero_mem_lemma_5 {κ : Type} (p : Jet R κ (0 + 1)) (h : (je
   exact h2
 
 /- English proof (translation)
-Apply the tactic sequence `have e : RingHom.ker (jetAug : Jet R κ (0 + 1) →ₐ[R] R) ^ (1 + 1) = RingHom.ker (jetAug : Jet R κ (0 + 1) →ₐ[R] R) * RingHom.ker (jetAug : Jet R κ (0 + 1) →ₐ[R] R) := by first | exact pow_two _ | rw [pow_succ, pow_one]`. Rewrite using `[e, eq_bot_iff, Ideal.mul_le]`. Introduce `r hr s hs`. Rewrite `hr`, `hs` using `[RingHom.mem_ker]`. Rewrite using `[Ideal.mem_bot]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective r`. Take `⟨b, rfl⟩` from `Ideal.Quotient.mk_surjective s`. Rewrite `hr`, `hs` using `[aug_mk_lemma_2]`. Establish `ha : a ∈ orig R κ` using `by simpa [hr] using sub_C_mem_lemma a`. Establish `hb : b ∈ orig R κ` using `by simpa [hs] using sub_C_mem_lemma b`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← map_mul, Ideal.Quotient.eq_zero_iff_mem, orig_sq_lemma_3]`. Conclude with `Ideal.mul_mem_mul ha hb`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem ker_aug_sq_lemma_6 {κ : Type} :
     RingHom.ker (jetAug : Jet R κ (0 + 1) →ₐ[R] R) ^ (1 + 1) = ⊥ := by
@@ -121,11 +121,11 @@ private theorem ker_aug_sq_lemma_6 {κ : Type} :
   exact Ideal.mul_mem_mul ha hb
 
 /- English proof (translation)
-Establish `hp' : p ∈ Ideal.span (Set.range (zz (R` using `R) (κ := κ) (0 + 1))) := hp`. Take `⟨c, rfl⟩` from `Ideal.mem_span_range_iff_exists_fun.1 hp'`. Establish `e : ∑ i, c i * zz (0 + 1) i = ∑ i, algebraMap R (Jet R κ (0 + 1)) ((jetAug : Jet R κ (0 + 1) →ₐ[R] R) (c i)) * zz (0 + 1) i` using `Finset.sum_congr rfl fun i _ => mul_zz_lemma_4 (c i) i`. Rewrite `ht`, the goal using `[e]`. Establish `ha : ∀ i, (jetAug : Jet R κ (0 + 1) →ₐ[R] R) (c i) = 0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `ℓ`. Establish `h` using `ht ℓ`. Simplify using `only [map_sum, map_mul, AlgHom.commutes, jetTan_alt, mul_ite, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true] at h`. Use `first`. Consider the case `(rw [← Algebra.smul_def] at h; simpa using congrArg TrivSqZeroExt.snd h)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately.
 
-Consider the case `simpa using congrArg TrivSqZeroExt.snd h`. Simplify using `only [ha, map_zero, zero_mul, Finset.sum_const_zero]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_tan {κ : Type} [Fintype κ] [DecidableEq κ] (p : Jet R κ (0 + 1)) (hp : p ∈ Ij R κ (0 + 1))
     (ht : ∀ ℓ, (jetTan ℓ : Jet R κ (0 + 1) →ₐ[R] DualNumber R) p = 0) : p = 0 := by
@@ -148,9 +148,9 @@ theorem eq_zero_of_tan {κ : Type} [Fintype κ] [DecidableEq κ] (p : Jet R κ (
 abbrev fstA : DualNumber R →ₐ[R] R := TrivSqZeroExt.fstHom R R R
 
 /- English proof (translation)
-Apply `Ideal.Quotient.algHom_ext` to reduce the goal to its premises. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `i`. Express the relevant statement in the definitionally equal form `fstA (R := R) ((jetTan ℓ : Jet R κ (0 + 1) →ₐ[R] DualNumber R) (zz (0 + 1) i)) = (jetAug : Jet R κ (0 + 1) →ₐ[R] R) (Ideal.Quotient.mk (orig R κ ^ (0 + 1 + 1)) (X i))`. Rewrite using `[jetTan_alt, aug_mk_lemma_2]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `split_ifs <;> simp [fstA]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem fst_tan_lemma_7 {κ : Type} [DecidableEq κ] (ℓ : κ) :
     (fstA (R := R)).comp (jetTan ℓ : Jet R κ (0 + 1) →ₐ[R] DualNumber R) = (jetAug : Jet R κ (0 + 1) →ₐ[R] R) := by
@@ -163,9 +163,9 @@ private theorem fst_tan_lemma_7 {κ : Type} [DecidableEq κ] (ℓ : κ) :
   split_ifs <;> simp [fstA]
 
 /- English proof (translation)
-Apply the tactic sequence `have e : RingHom.ker (fstA (R := R)) ^ (1 + 1) = RingHom.ker (fstA (R := R)) * RingHom.ker (fstA (R := R)) := by first | exact pow_two _ | rw [pow_succ, pow_one]`. Rewrite using `[e, eq_bot_iff, Ideal.mul_le]`. Introduce `r hr s hs`. Rewrite `hr`, `hs` using `[RingHom.mem_ker]`. Rewrite using `[Ideal.mem_bot]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hr' : r.fst = 0` using `by simpa [fstA] using hr`. Establish `hs' : s.fst = 0` using `by simpa [fstA] using hs`. Apply the tactic sequence `first | (ext <;> simp [hr', hs']) | exact TrivSqZeroExt.ext (by simp [hr', hs']) (by simp [hr', hs'])`.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem ker_fst_sq : RingHom.ker (fstA (R := R)) ^ (1 + 1) = ⊥ := by
   have e : RingHom.ker (fstA (R := R)) ^ (1 + 1) = RingHom.ker (fstA (R := R)) * RingHom.ker (fstA (R := R)) := by
@@ -185,9 +185,9 @@ variable {G : Over (Spec (CommRingCat.of R))} [GrpObj G] {n : ℕ} {x : ∀ m : 
 include hx
 
 /- English proof (translation)
-Establish `e : (Algebra.ofId R A).comp (ReciprocityTheory.ChartRestriction.G.Chart.jetAug R (Fin n) 1) = ((Algebra.ofId R A).comp (ReciprocityTheory.ChartRestriction.G.Chart.jetAug R (Fin n) 0)).comp (ReciprocityTheory.ChartRestriction.G.Chart.jetZeroR R (Fin n) 1)`. Apply `Ideal.Quotient.algHom_ext` to reduce the goal to its premises. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `i`. Apply the tactic sequence `first | rfl | simp [ReciprocityTheory.ChartRestriction.G.Chart.jetAug, ReciprocityTheory.ChartRestriction.G.Chart.jetZeroR]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, ← spMap_comp, Category.assoc, hx.2.1 1, comp_one']`.
+A detailed English derivation is pending.
 -/
 private theorem one_eq_lemma_8 {A : Type} [CommRing A] [Algebra R A] :
     (1 : sp (R₀ := R) A ⟶ G) = spMap ((Algebra.ofId R A).comp (ReciprocityTheory.ChartRestriction.G.Chart.jetAug R (Fin n) 1)) ≫ x 1 := by
@@ -201,7 +201,7 @@ private theorem one_eq_lemma_8 {A : Type} [CommRing A] [Algebra R A] :
   rw [e, ← spMap_comp, Category.assoc, hx.2.1 1, comp_one']
 
 /- English proof (translation)
-Take `⟨_, _, hu⟩` from `hx.2.2 A aug 1 hk 1 (comp_one' _)`. Use `(hu ψ ⟨h1, h2.symm⟩).trans (hu _ ⟨?_, one_eq_lemma_8 hx⟩).symm` and prove the remaining obligations. Conclude with `AlgHom.ext fun z => by simp`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem eq_triv_lemma_9 {A : Type} [CommRing A] [Algebra R A] (aug : A →ₐ[R] R)
     (hk : RingHom.ker aug ^ (1 + 1) = ⊥) (ψ : JetR R (Fin n) 1 →ₐ[R] A)
@@ -212,17 +212,17 @@ private theorem eq_triv_lemma_9 {A : Type} [CommRing A] [Algebra R A] (aug : A �
   exact AlgHom.ext fun z => by simp
 
 /- English proof (translation)
-Take `⟨ψ, ⟨hψ1, hψ2⟩, -⟩` from `hx.2.2 (Jet R κ (0 + 1)) jetAug 1 ker_aug_sq_lemma_6 δ hu`. Establish `htan : ∀ ℓ, (jetTan ℓ : Jet R κ (0 + 1) →ₐ[R] DualNumber R).comp ψ = (Algebra.ofId R (DualNumber R)).comp (ReciprocityTheory.ChartRestriction.G.Chart.jetAug R (Fin n) 1)`. Introduce `ℓ`. Use `eq_triv_lemma_9 hx (fstA (R := R)) ker_fst_sq _ ?_ ?_` and prove the remaining obligations. Rewrite using `[← AlgHom.comp_assoc, fst_tan_lemma_7, hψ1]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← spMap_comp, Category.assoc, ← hψ2, ht ℓ]`. Establish `hψ : ψ = (Algebra.ofId R (Jet R κ (0 + 1))).comp (ReciprocityTheory.ChartRestriction.G.Chart.jetAug R (Fin n) 1)`. Apply `Ideal.Quotient.algHom_ext` to reduce the goal to its premises. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `k`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hJ : ReciprocityTheory.ChartRestriction.G.Chart.jetAug R (Fin n) 1 (Ideal.Quotient.mk (Ideal.span (Set.range (X : Fin n → MvPolynomial (Fin n) R)) ^ (1 + 1)) (X k)) = 0` using `aeval_X (fun _ : Fin n => (0 : R)) k`. Establish `hz : ψ (Ideal.Quotient.mk (Ideal.span (Set.range (X : Fin n → MvPolynomial (Fin n) R)) ^ (1 + 1)) (X k)) = 0`. Apply `eq_zero_of_tan` to reduce the goal to its premises. Apply `aug_zero_mem_lemma_5` to reduce the goal to its premises. Establish `h` using `congrArg (fun f : JetR R (Fin n) 1 →ₐ[R] R => f (Ideal.Quotient.mk (Ideal.span (Set.range (X : Fin n → MvPolynomial (Fin n) R)) ^ (1 + 1)) (X k))) hψ1`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Simplify using `only [AlgHom.comp_apply] at h`. Rewrite using `[h, hJ]`. Introduce `ℓ`. Establish `h` using `congrArg (fun f : JetR R (Fin n) 1 →ₐ[R] DualNumber R => f (Ideal.Quotient.mk (Ideal.span (Set.range (X : Fin n → MvPolynomial (Fin n) R)) ^ (1 + 1)) (X k))) (htan ℓ)`. Simplify using `only [AlgHom.comp_apply] at h`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[h, hJ, map_zero]`. Express the relevant statement in the definitionally equal form `ψ (Ideal.Quotient.mk (Ideal.span (Set.range (X : Fin n → MvPolynomial (Fin n) R)) ^ (1 + 1)) (X k)) = _`. Rewrite using `[hz]`. Express the relevant statement in the definitionally equal form `0 = Algebra.ofId R (Jet R κ (0 + 1)) (ReciprocityTheory.ChartRestriction.G.Chart.jetAug R (Fin n) 1 (Ideal.Quotient.mk (Ideal.span (Set.range (X : Fin n → MvPolynomial (Fin n) R)) ^ (1 + 1)) (X k)))`. Rewrite using `[hJ, map_zero]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hψ2, hψ, ← one_eq_lemma_8 hx]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem one_of_tan {κ : Type} [Fintype κ] [DecidableEq κ] (δ : sp (R₀ := R) (Jet R κ (0 + 1)) ⟶ G)
     (hu : spMap (jetAug : Jet R κ (0 + 1) →ₐ[R] R) ≫ δ = 1)
@@ -256,9 +256,9 @@ theorem one_of_tan {κ : Type} [Fintype κ] [DecidableEq κ] (δ : sp (R₀ := R
   rw [hψ2, hψ, ← one_eq_lemma_8 hx]
 
 /- English proof (translation)
-Use `triv hx δ htr hhom ?_` and prove the remaining obligations. Establish `hu : spMap (jetAug : Jet R (Fin 1 × Fin d) 1 →ₐ[R] R) ≫ δ 1 = 1`. Establish `e` using `congrArg (fun f => spMap (jetAug : Jet R (Fin 2 × Fin d) 1 →ₐ[R] R) ≫ f) (hhom 1)`. Simplify using `only [MonObj.comp_mul, ← Category.assoc, spMap_comp, aug_comp_sum, aug_comp_cpy] at e`. Conclude with `_root_.mul_eq_left.1 e.symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `one_of_tan hx (δ 1) hu fun ℓ => ?_` and prove the remaining obligations. Establish `hℓ : ℓ = ((0 : Fin 1), ℓ.2)` using `(fin_one_pair_eq_local d ℓ).symm`. Rewrite using `[hℓ]`. Conclude with `ht ℓ.2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trivT [Algebra ℚ R] {d : ℕ} (δ : ∀ m, sp (R₀ := R) (Jet R (Fin 1 × Fin d) m) ⟶ G)
     (htr : ∀ m, spMap (jetTrunc : Jet R (Fin 1 × Fin d) (m + 1) →ₐ[R] Jet R (Fin 1 × Fin d) m) ≫ δ (m + 1) = δ m)

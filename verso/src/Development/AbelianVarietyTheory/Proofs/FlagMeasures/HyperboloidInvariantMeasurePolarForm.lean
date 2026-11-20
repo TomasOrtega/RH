@@ -24,7 +24,7 @@ open PI.RhsWLim PI.RhsWLim.W
 variable {k r : ℕ}
 
 /- English proof (translation)
-Introduce `i hi`. Unfold `opVec`. Rewrite using `[dif_neg (by omega), if_neg (by omega)]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem opVec_inWb (p : (Fin k → ℂ) × ℂ) : inWb k r (opVec k r p) := by
   intro i hi
@@ -32,9 +32,9 @@ theorem opVec_inWb (p : (Fin k → ℂ) × ℂ) : inWb k r (opVec k r p) := by
   rw [dif_neg (by omega), if_neg (by omega)]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `m`. Use `m.isLt` as an intermediate fact. Unfold `wbPart opVec toW wI`. Distinguish the cases in `h : m.val < k`. Rewrite using `[dif_pos (by simp only; omega), dif_pos h]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg p.1 (Fin.ext (by simp))`. Rewrite using `[dif_neg (by simp only; omega), dif_neg h, if_pos (by simp only; omega)]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wbPart_opVec (p : (Fin k → ℂ) × ℂ) : wbPart k r (opVec k r p) = toW k p := by
   funext m
@@ -51,15 +51,15 @@ Both sides reduce to the same expression.
 theorem opCo_eq (v : Fin (2 * r + k + 1) → ℂ) : opCo k r v = ofW k (wbPart k r v) := rfl
 
 /- English proof (translation)
-Rewrite using `[opCo_eq, wbPart_opVec, ofW_toW]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem opCo_opVec (p : (Fin k → ℂ) × ℂ) : opCo k r (opVec k r p) = p := by
   rw [opCo_eq, wbPart_opVec, ofW_toW]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Distinguish the cases in `hi : i.val < r ∨ r + k < i.val`. Rewrite using `[hv i hi, hw i hi]`. Apply the tactic sequence `have hm : MB.mid k r i := by constructor <;> omega`. Use `congrFun h (MB.midx hm)` as an intermediate fact.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Simplify `this` using `only [wbPart, MB.wI_midx]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem eq_of_wbPart {v w : Fin (2 * r + k + 1) → ℂ} (hv : inWb k r v) (hw : inWb k r w)
     (h : wbPart k r v = wbPart k r w) : v = w := by
@@ -71,13 +71,13 @@ theorem eq_of_wbPart {v w : Fin (2 * r + k + 1) → ℂ} (hv : inWb k r v) (hw :
     simpa only [wbPart, MB.wI_midx] using this
 
 /- English proof (translation)
-The claim follows from `eq_of_wbPart (opVec_inWb _) hv (by rw [wbPart_opVec, opCo_eq, toW_ofW])`.
+A detailed English derivation is pending.
 -/
 theorem opVec_opCo {v : Fin (2 * r + k + 1) → ℂ} (hv : inWb k r v) : opVec k r (opCo k r v) = v :=
   eq_of_wbPart (opVec_inWb _) hv (by rw [wbPart_opVec, opCo_eq, toW_ofW])
 
 /- English proof (translation)
-Rewrite using `[op_uwb_eq_emb hs]`. Conclude with `RI.inWb_emb _ hv`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inWb_uwb {s : Mat k r} (hs : s ∈ UWb k r) {v : Fin (2 * r + k + 1) → ℂ} (hv : inWb k r v) :
     inWb k r (s *ᵥ v) := by
@@ -85,11 +85,9 @@ theorem inWb_uwb {s : Mat k r} (hs : s ∈ UWb k r) {v : Fin (2 * r + k + 1) →
   exact RI.inWb_emb _ hv
 
 /- English proof (translation)
-Use `continuous_pi fun i => ?_` and prove the remaining obligations. Unfold `opVec`. Distinguish the cases in `h : r ≤ i.val ∧ i.val < r + k`. Simplify using `only [dif_pos h]`. Conclude with `(continuous_apply _).comp continuous_fst`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [dif_neg h]`. Distinguish the cases in `h' : i.val = r + k`. Simplify using `only [if_pos h']`. Conclude with `continuous_snd`. Simplify using `only [if_neg h']`.
-
-Conclude with `continuous_const`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuous_opVec : Continuous (opVec k r) := by
   refine continuous_pi fun i => ?_
@@ -105,14 +103,14 @@ theorem continuous_opVec : Continuous (opVec k r) := by
       exact continuous_const
 
 /- English proof (translation)
-The claim follows from `(continuous_pi fun i => continuous_apply (wI k r (Fin.castSucc i))).prodMk (continuous_apply (wI k r (Fin.last k)))`.
+A detailed English derivation is pending.
 -/
 theorem continuous_opCo : Continuous (opCo k r) :=
   (continuous_pi fun i => continuous_apply (wI k r (Fin.castSucc i))).prodMk
     (continuous_apply (wI k r (Fin.last k)))
 
 /- English proof (translation)
-Rewrite using `[herm_wb _ _ (opVec_inWb p), wbPart_opVec, qf_eq]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem herm_opVec (p : (Fin k → ℂ) × ℂ) :
     herm (Hpk k r) (opVec k r p) (opVec k r p) = (qf k p : ℂ) := by
@@ -120,7 +118,7 @@ theorem herm_opVec (p : (Fin k → ℂ) × ℂ) :
   rfl
 
 /- English proof (translation)
-Unfold `Tz`. Rewrite using `[neg_neg, herm_wb _ _ hz, hermHb_self, Complex.ofReal_re]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem herm_self_eq {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) :
     herm (Hpk k r) z z = ((-Tz k r z : ℝ) : ℂ) := by
@@ -130,9 +128,9 @@ theorem herm_self_eq {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) :
 def hypAmb (k r : ℕ) (T' : ℝ) : Measure (Fin (2 * r + k + 1) → ℂ) := (hypM k T').map (opVec k r)
 
 /- English proof (translation)
-Establish `: IsFiniteMeasureOnCompacts (hypAmb k r T')`. Use `⟨fun C hC => ?_⟩` and prove the remaining obligations. Rewrite using `[hypAmb, Measure.map_apply continuous_opVec.measurable hC.measurableSet]`. Use `lt_of_le_of_lt (measure_mono ?_) ((hypLF k T' hT').2 _ (hC.image continuous_opCo))` and prove the remaining obligations. Introduce `p hp`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨_, hp, opCo_opVec p⟩`. Use `infer_instance`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem hypAmb_sigmaFinite {T' : ℝ} (hT' : 0 < T') : SigmaFinite (hypAmb k r T') := by
   have : IsFiniteMeasureOnCompacts (hypAmb k r T') := by
@@ -144,9 +142,9 @@ theorem hypAmb_sigmaFinite {T' : ℝ} (hT' : 0 < T') : SigmaFinite (hypAmb k r T
   infer_instance
 
 /- English proof (translation)
-Establish `hI` using `hypInv_of lebInvB (coneForm_of hypTh coneVol) k r T' hk hT' s hs`. Establish `hm : Continuous (fun v : Fin (2 * r + k + 1) → ℂ => s *ᵥ v)` using `continuous_const.matrix_mulVec continuous_id`. Establish `hA : Continuous (opAct k r s)` using `continuous_opCo.comp (hm.comp continuous_opVec)`. Establish `e : (fun v => s *ᵥ v) ∘ opVec k r = opVec k r ∘ opAct k r s`. Use function extensionality and compare the values at `p`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `(opVec_opCo (inWb_uwb hs (opVec_inWb p))).symm`. Rewrite using `[hypAmb, Measure.map_map hm.measurable continuous_opVec.measurable, e, ← Measure.map_map continuous_opVec.measurable hA.measurable, hI]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hypAmb_inv (hk : 1 ≤ k) {T' : ℝ} (hT' : 0 < T') {s : Mat k r} (hs : s ∈ UWb k r) :
     (hypAmb k r T').map (fun v => s *ᵥ v) = hypAmb k r T' := by
@@ -161,13 +159,13 @@ theorem hypAmb_inv (hk : 1 ≤ k) {T' : ℝ} (hT' : 0 < T') {s : Mat k r} (hs : 
     ← Measure.map_map continuous_opVec.measurable hA.measurable, hI]
 
 /- English proof (translation)
-Establish `hc : IsClosed {v : Fin (2 * r + k + 1) → ℂ | inWb k r v ∧ herm (Hpk k r) v v = herm (Hpk k r) z' z'}`. Use `IsClosed.inter ?_ (isClosed_eq ?_ continuous_const)` and prove the remaining obligations. Establish `: {v : Fin (2 * r + k + 1) → ℂ | inWb k r v} = ⋂ i : Fin (2 * r + k + 1), ⋂ _ : (i.val < r ∨ r + k < i.val), {v | v i = 0}`. Use extensionality with `v`. Simplify using `only [inWb, Set.mem_iInter]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Use `show IsClosed {v : Fin (2 * r + k + 1) → ℂ | inWb k r v}`. Rewrite using `[this]`. Conclude with `isClosed_iInter fun i => isClosed_iInter fun _ => isClosed_eq (continuous_apply i) continuous_const`. Unfold `herm`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `continuous_id.star.dotProduct (continuous_const.matrix_mulVec continuous_id)`. Establish `hm : MeasurableSet {v : Fin (2 * r + k + 1) → ℂ | ¬ (inWb k r v ∧ herm (Hpk k r) v v = herm (Hpk k r) z' z')}` using `hc.measurableSet.compl`. Rewrite using `[hypAmb, Measure.map_apply continuous_opVec.measurable hm]`. Use `measure_mono_null ?_ (hypLF k _ hT').1` and prove the remaining obligations. Introduce `p hp hS`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Apply `hp` to reduce the goal to its premises. Use `⟨opVec_inWb p, ?_⟩` and prove the remaining obligations. Rewrite using `[herm_opVec, herm_self_eq hz', (hypS_iff _ p).1 hS]`.
+A detailed English derivation is pending.
 -/
 theorem hypAmb_conc {z' : Fin (2 * r + k + 1) → ℂ} (hz' : inWb k r z') (hT' : 0 < Tz k r z') :
     hypAmb k r (Tz k r z') {v | ¬ (inWb k r v ∧ herm (Hpk k r) v v = herm (Hpk k r) z' z')} = 0 := by
@@ -194,19 +192,15 @@ theorem hypAmb_conc {z' : Fin (2 * r + k + 1) → ℂ} (hz' : inWb k r z') (hT' 
   rw [herm_opVec, herm_self_eq hz', (hypS_iff _ p).1 hS]
 
 /- English proof (translation)
-Take `⟨p, hp, hpz⟩` from `transW k r z hz hT`. Use `set s := Real.sqrt (Tz k r z) with hs`. Establish `hs0 : (s : ℂ) ≠ 0`. Rewrite using `[Complex.ofReal_ne_zero]`. Conclude with `(Real.sqrt_pos.2 hT).ne'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set zs := ((s : ℂ) • wLast k r) with hzs`. Establish `hgm : Measurable fun v => g (herm (Hpk k r) v zs)` using `hg.comp (RI.cont_herm zs).measurable`. Establish `hm : Measurable (fun v : Fin (2 * r + k + 1) → ℂ => p⁻¹ *ᵥ v)` using `(continuous_const.matrix_mulVec continuous_id).measurable`. Establish `step1 : ∫⁻ v, g (herm (Hpk k r) v z) ∂hypAmb k r T' = ∫⁻ v, g (herm (Hpk k r) v zs) ∂hypAmb k r T'`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `lintegral_congr fun v => ?_` and prove the remaining obligations. Rewrite using `[← hpz, herm_mulVec_right hp.1]`. Use `_ = ∫⁻ y, g (herm (Hpk k r) y zs) ∂((hypAmb k r T').map (fun v => p⁻¹ *ᵥ v)) := (lintegral_map hgm hm).symm`. Use `_ = _ := by rw [hypAmb_inv hk hT' (HU.uwb_inv hp)]`. Use `set f : (Fin k → ℂ) × ℂ → ℝ≥0∞ := fun v => g (-((s : ℂ) * v.2)) with hf`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hfm : Measurable f` using `hg.comp (continuous_const.mul continuous_snd).neg.measurable`. Establish `step2 : ∫⁻ v, g (herm (Hpk k r) v zs) ∂hypAmb k r T' = hypMeas k T' f`. Rewrite using `[hypMeas_eq k T' hfm, hypAmb, lintegral_map hgm continuous_opVec.measurable]`. Use `lintegral_congr fun q => ?_` and prove the remaining obligations. Establish `e : opVec k r q (wI k r (Fin.last k)) = q.2` using `congrArg Prod.snd (opCo_opVec (r := r) q)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hzs, herm_wLast, e]`. Use `set G : ℝ → ℂ → ℝ≥0∞ := fun _ c => g (-((s : ℂ) * c)) with hGdef`. Establish `hGm : Measurable (Function.uncurry G)` using `hg.comp (continuous_const.mul continuous_snd).neg.measurable`. Establish `step3` using `polarHyp k (Tz k r z) T' hk hT hT' G hGm`. Rewrite `step3` using `[← hs]`.
-
-Establish `hcancel : ∀ ζ : ℂ, -((s : ℂ) * -(ζ / (s : ℂ))) = ζ`. Introduce `ζ`. Clear the denominators using the available nonvanishing facts. Establish `e3 : hypMeas k T' f = hypMeas k T' (fun v => G ‖(WithLp.equiv 2 (Fin k → ℂ)).symm v.1‖ v.2)` using `rfl`. Rewrite using `[step1, step2, e3, step3]`.
-
-Simplify using `only [hGdef, hcancel]`.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hypAmb_polar (hk : 1 ≤ k) {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (hT : 0 < Tz k r z)
     {T' : ℝ} (hT' : 0 < T') (g : ℂ → ℝ≥0∞) (hg : Measurable g) :
@@ -249,7 +243,7 @@ theorem hypAmb_polar (hk : 1 ≤ k) {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb
   simp only [hGdef, hcancel]
 
 /- English proof (translation)
-Introduce `k r z z' hk hz hz' hT hT'`. Use `⟨hypAmb k r (Tz k r z'), hypAmb_sigmaFinite hT', fun s hs => hypAmb_inv hk hT' hs, hypAmb_conc hz' hT', ENNReal.ofReal (2 * Real.pi ^ k / (k - 1).factorial / (2 * Tz k r z ^ k)), ?_, ENNReal.ofReal_ne_top, fun g hg => hypAmb_polar hk hz hT hT' g hg⟩` and prove the remaining obligations. Use `Real.pi_pos` as an intermediate fact. Conclude with `(ENNReal.ofReal_pos.2 (by positivity)).ne'`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem hypQ : RI.HypQ := by
   intro k r z z' hk hz hz' hT hT'

@@ -21,7 +21,7 @@ variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 omit [Fintype K'] [∀ k, Fintype (ι' k)] in
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ => 1, fun _ => one_ne_zero, by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem sameOrbit_self (z : (Σ k', ι' k') → ℂ) : SameOrbit z z :=
   ⟨fun _ => 1, fun _ => one_ne_zero, by simp⟩
@@ -29,7 +29,7 @@ theorem sameOrbit_self (z : (Σ k', ι' k') → ℂ) : SameOrbit z z :=
 omit [Fintype K'] [∀ k, Fintype (ι' k)] in
 
 /- English proof (translation)
-Take `⟨s, hs, rfl⟩` from `h1`. Take `⟨t, ht, rfl⟩` from `h2`. Conclude with `⟨fun k => s k * t k, fun k => mul_ne_zero (hs k) (ht k), by funext p; simp [mul_assoc]⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem sameOrbit_comp {a b c : (Σ k', ι' k') → ℂ} (h1 : SameOrbit a b) (h2 : SameOrbit b c) :
     SameOrbit a c := by
@@ -40,7 +40,7 @@ theorem sameOrbit_comp {a b c : (Σ k', ι' k') → ℂ} (h1 : SameOrbit a b) (h
 omit [Fintype K'] [∀ k, Fintype (ι' k)] in
 
 /- English proof (translation)
-Take `⟨s, hs, rfl⟩` from `h`. Use `⟨fun k => (s k)⁻¹, fun k => inv_ne_zero (hs k), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `p`. Simplify using `[← mul_assoc, inv_mul_cancel₀ (hs p.1)]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem sameOrbit_flip {a b : (Σ k', ι' k') → ℂ} (h : SameOrbit a b) : SameOrbit b a := by
   obtain ⟨s, hs, rfl⟩ := h
@@ -51,9 +51,9 @@ theorem sameOrbit_flip {a b : (Σ k', ι' k') → ℂ} (h : SameOrbit a b) : Sam
 omit [Fintype K'] [∀ k, Fintype (ι' k)] in
 
 /- English proof (translation)
-Take `⟨c, hc, rfl⟩` from `h`. Establish `h1 : (fun p => c (v p).1 * z₂ (v p)) = fun p : Σ k, ι k => (c ∘ κ) p.1 * z₂ (v p)`. Use function extensionality and compare the values at `p`. Rewrite using `[hv.2.2.1 p]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hne : ∏ k, (c ∘ κ) k ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun k _ => hc (κ k)`. Rewrite using `[h1, segre_smul, map_smul, Pi.smul_apply, smul_eq_mul, smul_smul, mul_inv_rev, mul_assoc, inv_mul_cancel₀ hne, mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem normSegre_sameOrbit {κ : K → K'} {v : (Σ k, ι k) → (Σ k', ι' k')} (hv : IsBlockMap κ v) {n : ℕ}
     (Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (n + 1) → ℂ)) {z₁ z₂ : (Σ k', ι' k') → ℂ} (h : SameOrbit z₁ z₂) :
@@ -71,13 +71,11 @@ theorem normSegre_sameOrbit {κ : K → K'} {v : (Σ k, ι k) → (Σ k', ι' k'
 omit [Fintype K'] in
 
 /- English proof (translation)
-Use `Set.ncard_congr (fun x _ => {z'' | SameOrbit z'' (R.lift x x)}) ?_ ?_ ?_` and prove the remaining obligations. Introduce `x hx`. Conclude with `⟨R.lift x x, R.mem x x (R.mem_U x), rfl, hx⟩`. Introduce `x x' hx hx' h`. Establish `hxB : R.lift x x ∉ mcPts J'` using `fun hJ => hB _ (R.mem x x (R.mem_U x)) hJ hx`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hmem : R.lift x x ∈ {z'' | SameOrbit z'' (R.lift x' x')}` using `h ▸ sameOrbit_self _`. Conclude with `R.inj x x' hxB hmem`. Introduce and unpack `O ⟨z', hz', rfl, hw⟩`. Establish `hzB : z' ∉ mcPts J'` using `fun hJ => hB z' hz' hJ hw`. Take `⟨x, hx⟩` from `R.surj z' hz' hzB`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨x, ?_, ?_⟩` and prove the remaining obligations. Use `show (Ψ (segre fun p => R.lift x x (v p)) 0)⁻¹ • segre (fun p => R.lift x x (v p)) = w`. Rewrite using `[← hw]`. Conclude with `normSegre_sameOrbit hv Ψ hx`. Use extensionality with `z''`.
-
-Conclude with `⟨fun h => sameOrbit_comp h hx, fun h => sameOrbit_comp h (sameOrbit_flip hx)⟩`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem ncard_pullW_eq {κ : K → K'} {v : (Σ k, ι k) → (Σ k', ι' k')} (hv : IsBlockMap κ v)
     {P' J' : Ideal (MRing ι')} {n : ℕ} (R : AnLogRes P' J' n) (Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (n + 1) → ℂ))
@@ -107,19 +105,17 @@ end PullbackDegreeCount
 open PullbackDegreeCount in
 
 /- English proof (translation)
-Introduce `K _ ι _ K' _ ι' _ κ v P' J' n G J R Ψ hv hP' hP hJ hΨ`. Establish `hfib : IsProjVarF (fibreIdeal κ G) 0` using `hDim K ι K' ι' κ v P' (n + 1) 0 G hv hP' hP`. Use `choose i hi using hfib.1.2.2`. Establish `hz : ∀ k : FibreBlock κ, G.x' ⟨k.1, i k⟩ ≠ 0`. Introduce `k h0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hi k` to reduce the goal to its premises. Rewrite using `[fibreIdeal, RingHom.mem_ker, aeval_X]`. Conclude with `h0`. Establish `he : J (fibreIdeal κ G) 0 Fin.elim0 = (Module.finrank G.Φ (IntermediateField.adjoin G.Φ (Set.range fun q : Σ k : FibreBlock κ, ι' k.1 => G.x' ⟨q.1.1, q.2⟩ / G.x' ⟨q.1.1, i q.1⟩)) : ℤ)`. Rewrite using `[hJ.1 _ Fin.elim0 i hfib hi]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `congrArg _ (hRank (FibreBlock κ) (fibreIdx ι' κ) G.Φ G.Φ' (fun q => G.x' ⟨q.1.1, q.2⟩) i hz hfib.1.2.1)`. Establish `hN` using `measure_union_null (hB K ι K' ι' κ v P' J' n Ψ hv hP' hP hΨ R.homog R.nondeg) (hBad K ι K' ι' κ v P' J' n R Ψ hv hP' hP hΨ)`. Use `filter_upwards [measure_eq_zero_iff_ae_notMem.mp hN, hCount K ι K' ι' κ v P' n G i Ψ hv hP' hP hΨ hz] with y hy hc`. Introduce `w hw`. Take `⟨-, -, -, hΨw⟩` from `id hw`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hset : ({x | pullQ R v Ψ x = y ∧ pullW R v Ψ x = w} \ pullBad R v Ψ) = {x | pullW R v Ψ x = w}`. Use extensionality with `x`. Use `⟨fun h => h.1.2, fun hx => ?_⟩` and prove the remaining obligations. Establish `hx' : pullW R v Ψ x = w` using `hx`. Establish `h0 : Ψ (segre (pullPt R v x)) 0 ≠ 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `h0`. Establish `h1` using `congrFun hΨw 0`. Rewrite `h1` using `[← hx', pullW, h0, inv_zero, zero_smul, map_zero]`. Simplify using `at h1`. Establish `hq : pullQ R v Ψ x = y`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `m`. Establish `h1` using `congrFun hΨw m.succ`. Rewrite `h1` using `[← hx', pullW, map_smul, Pi.smul_apply, smul_eq_mul, Fin.cons_succ]`. Rewrite using `[pullQ, ← h1, div_eq_inv_mul]`. Conclude with `⟨⟨hq, hx'⟩, fun hbad => hy (Or.inr ⟨x, ⟨hbad, h0⟩, hq⟩)⟩`.
-
-Rewrite using `[hset, ncard_pullW_eq hv R Ψ w fun z' hz' hJ' hzw => hy (Or.inl ⟨z', hz', hJ', hzw ▸ hw⟩), hc w hw, he]`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem PullbackDegreeCount.proof (hDim : FibreDimStatement) (hRank : ChartRankAdjoin.Statement)
     (hCount : GenericPointsCount.Statement) (hB : PullbackVanishingOfNullCycle.Statement) (hBad : pullbackBadImage_holds.Statement) :

@@ -10,9 +10,9 @@ namespace GlobalTheory.CoefCoord
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Establish `hi : IsIntegral ℚ_[l] x` using `Algebra.IsIntegral.isIntegral x`. Express the relevant statement in the definitionally equal form `spectralValue (minpoly ℚ_[l] x) ≤ 1`. Rewrite using `[spectralValue_le_one_iff (minpoly.monic hi)]`. Introduce `n`. Rewrite using `[minpoly.isIntegrallyClosed_eq_field_fractions' ℚ_[l] h, Polynomial.coeff_map]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `PadicInt.norm_le_one _`.
+A detailed English derivation is pending.
 -/
 theorem norm_le_one_of_isIntegral (x : PadicAlgCl l) (h : IsIntegral ℤ_[l] x) : ‖x‖ ≤ 1 := by
   have hi : IsIntegral ℚ_[l] x := Algebra.IsIntegral.isIntegral x
@@ -23,16 +23,16 @@ theorem norm_le_one_of_isIntegral (x : PadicAlgCl l) (h : IsIntegral ℤ_[l] x) 
   exact PadicInt.norm_le_one _
 
 /- English proof (translation)
-The claim follows from `norm_le_one_of_isIntegral _ ((isIntegral_algHom_iff c.O.val Subtype.val_injective).2 (Algebra.IsIntegral.isIntegral x))`.
+A detailed English derivation is pending.
 -/
 theorem norm_le_one (c : Coef l) (x : c.O) : ‖(x : PadicAlgCl l)‖ ≤ 1 :=
   norm_le_one_of_isIntegral _
     ((isIntegral_algHom_iff c.O.val Subtype.val_injective).2 (Algebra.IsIntegral.isIntegral x))
 
 /- English proof (translation)
-Establish `h1` using `norm_le_one c u`. Establish `h2` using `norm_le_one c (↑u⁻¹ : c.O)`. Establish `h3 : ((u : c.O) : PadicAlgCl l) * ((↑u⁻¹ : c.O) : PadicAlgCl l) = 1`. Rewrite using `[← Subalgebra.coe_mul, Units.mul_inv]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `h4` using `congrArg norm h3`. Rewrite `h4` using `[norm_mul, norm_one]`. Establish `h5 : ‖((u : c.O) : PadicAlgCl l)‖ * ‖((↑u⁻¹ : c.O) : PadicAlgCl l)‖ ≤ ‖((u : c.O) : PadicAlgCl l)‖` using `mul_le_of_le_one_right (norm_nonneg _) h2`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem norm_unit (c : Coef l) (u : c.Oˣ) : ‖((u : c.O) : PadicAlgCl l)‖ = 1 := by
   have h1 := norm_le_one c u
@@ -46,35 +46,33 @@ theorem norm_unit (c : Coef l) (u : c.Oˣ) : ‖((u : c.O) : PadicAlgCl l)‖ = 
   linarith
 
 /- English proof (translation)
-Rewrite using `[← map_natCast (algebraMap ℚ_[l] (PadicAlgCl l)) l, PadicAlgCl.norm_extends, Padic.norm_p]`. Conclude with `inv_lt_one_of_one_lt₀ (by exact_mod_cast (Fact.out : l.Prime).one_lt)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_natCast_lt_one : ‖((l : ℕ) : PadicAlgCl l)‖ < 1 := by
   rw [← map_natCast (algebraMap ℚ_[l] (PadicAlgCl l)) l, PadicAlgCl.norm_extends, Padic.norm_p]
   exact inv_lt_one_of_one_lt₀ (by exact_mod_cast (Fact.out : l.Prime).one_lt)
 
 /- English proof (translation)
-Use `show ‖algebraMap ℚ_[l] (PadicAlgCl l) (a : ℚ_[l])‖ = ‖a‖`. Rewrite using `[PadicAlgCl.norm_extends]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem norm_algebraMap_padicInt (a : ℤ_[l]) : ‖algebraMap ℤ_[l] (PadicAlgCl l) a‖ = ‖a‖ := by
   show ‖algebraMap ℚ_[l] (PadicAlgCl l) (a : ℚ_[l])‖ = ‖a‖
   rw [PadicAlgCl.norm_extends]; rfl
 
 /- English proof (translation)
-Distinguish the cases in `h0 : x = 0`. Conclude with `⟨0, by simp [h0]⟩`. Take `⟨π, hπ⟩` from `IsDiscreteValuationRing.exists_irreducible c.O`. Take `⟨k, u, rfl⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible h0 hπ`. Establish `hl0 : ((l : ℕ) : c.O) ≠ 0`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `h`. Establish `h'` using `congrArg (fun y : c.O => (y : PadicAlgCl l)) h`. Simplify using `only [SubringClass.coe_natCast, ZeroMemClass.coe_zero] at h'`. Conclude with `(Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero) h'`. Take `⟨e, w, hw⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hl0 hπ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set q := ‖(π : PadicAlgCl l)‖ with hqdef`. Establish `hlq : ‖((l : ℕ) : PadicAlgCl l)‖ = q ^ e`. Establish `h'` using `congrArg (fun y : c.O => ‖(y : PadicAlgCl l)‖) hw`. Simplify using `only [SubringClass.coe_natCast, Subalgebra.coe_mul, SubmonoidClass.coe_pow, norm_mul, norm_pow, norm_unit, one_mul] at h'`. Conclude with `h'`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hq0 : 0 < q`. Rewrite using `[hqdef, norm_pos_iff]`. Introduce `h`. Conclude with `hπ.ne_zero (Subtype.ext h)`. Establish `hq1 : q < 1`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Break down `(norm_le_one c π).lt_or_eq with h | h` into its components or cases. Conclude with `h`. It suffices to derive a contradiction. Use `(norm_natCast_lt_one (l := l))` as an intermediate fact. Rewrite `this` using `[hlq, hqdef, h, one_pow]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `lt_irrefl _ this`. Establish `hxq : ‖(((u : c.O) * π ^ k : c.O) : PadicAlgCl l)‖ = q ^ k`. Simplify using `only [Subalgebra.coe_mul, SubmonoidClass.coe_pow, norm_mul, norm_pow, norm_unit, one_mul]`. Both sides reduce to the same expression. Rewrite `hx` using `[hxq, norm_pow, hlq, ← pow_mul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `hk : e * m ≤ k` using `(pow_le_pow_iff_right_of_lt_one₀ hq0 hq1).1 hx`. Take `⟨r, rfl⟩` from `Nat.exists_eq_add_of_le hk`. Use `⟨(u : c.O) * (↑w⁻¹ : c.O) ^ m * π ^ r, ?_⟩` and prove the remaining obligations. Rewrite using `[hw]`. Establish `h2 : ((w : c.O) * (↑w⁻¹ : c.O)) ^ m = 1` using `by rw [Units.mul_inv, one_pow]`.
-
-Take the linear combination `(-((u : c.O) * π ^ (e * m + r))) * h2`.
+A detailed English derivation is pending.
 -/
 theorem exists_eq_pow_mul (c : Coef l) (m : ℕ) (x : c.O)
     (hx : ‖(x : PadicAlgCl l)‖ ≤ ‖((l : ℕ) : PadicAlgCl l) ^ m‖) : ∃ z : c.O, x = (l : c.O) ^ m * z := by
@@ -117,9 +115,9 @@ theorem exists_eq_pow_mul (c : Coef l) (m : ℕ) (x : c.O)
   linear_combination (-((u : c.O) * π ^ (e * m + r))) * h2
 
 /- English proof (translation)
-Establish `hk : a - (((PadicInt.toZModPow m a).val : ℕ) : ℤ_[l]) ∈ RingHom.ker (PadicInt.toZModPow (p` using `l) m) := by`. Rewrite using `[RingHom.mem_ker, map_sub, map_natCast, ZMod.natCast_zmod_val, sub_self]`. Rewrite `hk` using `[PadicInt.ker_toZModPow, Ideal.mem_span_singleton']`. Take `⟨t, ht⟩` from `hk`. Establish `e : algebraMap ℤ_[l] (PadicAlgCl l) a - (((PadicInt.toZModPow m a).val : ℕ) : PadicAlgCl l) = algebraMap ℤ_[l] (PadicAlgCl l) t * ((l : ℕ) : PadicAlgCl l) ^ m`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `congrArg (algebraMap ℤ_[l] (PadicAlgCl l)) ht` as an intermediate fact. Simplify using `only [map_mul, map_pow, map_natCast, map_sub] at this`. Rewrite using `[this]`. Rewrite using `[e, norm_mul, norm_algebraMap_padicInt]`. Conclude with `mul_le_of_le_one_left (norm_nonneg _) (PadicInt.norm_le_one t)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_sub_val_le (m : ℕ) (a : ℤ_[l]) :
     ‖algebraMap ℤ_[l] (PadicAlgCl l) a - (((PadicInt.toZModPow m a).val : ℕ) : PadicAlgCl l)‖
@@ -137,7 +135,7 @@ theorem norm_sub_val_le (m : ℕ) (a : ℤ_[l]) :
   exact mul_le_of_le_one_left (norm_nonneg _) (PadicInt.norm_le_one t)
 
 /- English proof (translation)
-Use `conv_lhs => rw [← b.sum_repr y]`. Rewrite using `[AddSubmonoidClass.coe_finset_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Subalgebra.coe_smul, Algebra.smul_def, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coe_eq_sum {ι : Type} [Fintype ι] (c : Coef l) (b : Module.Basis ι ℤ_[l] c.O) (y : c.O) :
     (y : PadicAlgCl l) = ∑ i, ((b i : c.O) : PadicAlgCl l) * algebraMap ℤ_[l] (PadicAlgCl l) (b.repr y i) := by
@@ -147,21 +145,21 @@ theorem coe_eq_sum {ι : Type} [Fintype ι] (c : Coef l) (b : Module.Basis ι �
   rw [Subalgebra.coe_smul, Algebra.smul_def, mul_comm]
 
 /- English proof (translation)
-Introduce `l _ c m`. Set `b` to `Module.Free.chooseBasis ℤ_[l] c.O`. Set `crd : Qbar l → Module.Free.ChooseBasisIndex ℤ_[l] c.O → ZMod (l ^ m)` to `fun x i => if hx : x ∈ c.O then PadicInt.toZModPow m (b.repr ⟨x, hx⟩ i) else 0`. Establish `hcrd : ∀ (x : Qbar l) (hx : x ∈ c.O) i, crd x i = PadicInt.toZModPow m (b.repr ⟨x, hx⟩ i)` using `fun x hx i => dif_pos hx`. Establish `hkill : ∀ x ∈ c.O, Cg m x 0 → crd x = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `x hx h`. Unfold `Cg at h`. Rewrite `h` using `[sub_zero]`. Take `⟨z, hz⟩` from `exists_eq_pow_mul c m ⟨x, hx⟩ h`. Use function extensionality and compare the values at `i`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[hcrd x hx i, hz]`. Establish `e : ((l : c.O) ^ m * z) = ((l : ℤ_[l]) ^ m) • z`. Rewrite using `[Algebra.smul_def, map_pow, map_natCast]`. Rewrite using `[e, map_smul, Finsupp.smul_apply, smul_eq_mul, map_mul, map_pow, map_natCast, ← Nat.cast_pow, ZMod.natCast_self, zero_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `⟨Module.Free.ChooseBasisIndex ℤ_[l] c.O, inferInstance, fun i => ((b i : c.O) : PadicAlgCl l), crd, fun i => ⟨(b i).2, norm_le_one c (b i)⟩, ?_, hkill, ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx y hy`. Use function extensionality and compare the values at `i`. Rewrite using `[hcrd _ (add_mem hx hy), Pi.add_apply, hcrd x hx, hcrd y hy, show (⟨x + y, add_mem hx hy⟩ : c.O) = ⟨x, hx⟩ + ⟨y, hy⟩ from rfl, map_add, Finsupp.add_apply, map_add]`. Introduce `x hx`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `Cg`. Establish `hx'` using `coe_eq_sum c b ⟨x, hx⟩`. Express the relevant statement in the definitionally equal form `x = _ at hx'`. Simplify using `only [hcrd x hx]`. Rewrite using `[congrArg (fun t => t - _) hx', ← Finset.sum_sub_distrib]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (norm_nonneg _) fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_sub, norm_mul]`. Conclude with `(mul_le_mul (norm_le_one c (b i)) (norm_sub_val_le m _) (norm_nonneg _) zero_le_one).trans (by rw [one_mul])`. Introduce `n hn set y : Qbar l := ∑ i, ((b i : c.O) : PadicAlgCl l) * (((n i).val : ℕ) : Qbar l) with hydef`. Establish `hy : y ∈ c.O` using `Subalgebra.sum_mem _ fun i _ => Subalgebra.mul_mem _ (b i).2 (Subalgebra.natCast_mem _ _)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hyb : (⟨y, hy⟩ : c.O) = ∑ i, (((n i).val : ℕ) : ℤ_[l]) • b i`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[AddSubmonoidClass.coe_finset_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Subalgebra.coe_smul, Algebra.smul_def, map_natCast, mul_comm]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h0` using `hkill y hy hn`. Use function extensionality and compare the values at `i`. Use `congrFun h0 i` as an intermediate fact. Rewrite `this` using `[hcrd y hy i, hyb, b.repr_sum_self, map_natCast, ZMod.natCast_zmod_val]`. Conclude with `this`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coord_mod_pow : ∀ (l : ℕ) [Fact l.Prime] (c : Coef l) (m : ℕ), ∃ (ι : Type) (_ : Fintype ι) (o : ι → Qbar l)
     (crd : Qbar l → ι → ZMod (l ^ m)), (∀ i, o i ∈ c.O ∧ ‖o i‖ ≤ 1) ∧

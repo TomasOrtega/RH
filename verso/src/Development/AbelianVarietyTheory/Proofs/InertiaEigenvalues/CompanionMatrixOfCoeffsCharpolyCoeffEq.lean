@@ -6,7 +6,7 @@ open GlobalTheory.JR Matrix
 namespace GlobalTheory.JR.CompanionCharpoly
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, companion, Matrix.of_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem companion_map {k k' : Type} [CommRing k] [CommRing k'] (f : k →+* k') {r : ℕ} (p : Fin r → k) :
     (companion p).map f = companion (fun i => f (p i)) := by
@@ -15,9 +15,7 @@ theorem companion_map {k k' : Type} [CommRing k] [CommRing k'] (f : k →+* k') 
   split_ifs <;> simp
 
 /- English proof (translation)
-Use `set R := MvPolynomial (Fin r) ℤ`. Use `set K := FractionRing R`. Establish `hinj : Function.Injective (algebraMap R K)` using `IsFractionRing.injective R K`. Apply `hinj` to reduce the goal to its premises. Establish `h` using `GlobalTheory.JR.NormalFormL.charpoly_companion_coeff (fun j : Fin r => algebraMap R K (MvPolynomial.X j)) i`.
-
-Rewrite `h` using `[← companion_map, Matrix.charpoly_map, Polynomial.coeff_map]`. Conclude with `h`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coeff_universal (r : ℕ) (i : Fin r) :
     (companion (fun j : Fin r => (MvPolynomial.X j : MvPolynomial (Fin r) ℤ))).charpoly.coeff (i : ℕ) =
@@ -32,9 +30,9 @@ theorem coeff_universal (r : ℕ) (i : Fin r) :
   exact h
 
 /- English proof (translation)
-Introduce `k _ r p i`. Set `f : MvPolynomial (Fin r) ℤ →+* k` to `MvPolynomial.eval₂Hom (Int.castRingHom k) p`. Establish `hp : companion p = (companion (fun j : Fin r => (MvPolynomial.X j : MvPolynomial (Fin r) ℤ))).map f`. Rewrite using `[companion_map]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `j`. Simplify using `[f]`. Rewrite using `[hp, Matrix.charpoly_map, Polynomial.coeff_map, coeff_universal]`. Simplify using `[f]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem charpoly_companion_coeff_ring :
     ∀ (k : Type) [CommRing k] (r : ℕ) (p : Fin r → k) (i : Fin r), (companion p).charpoly.coeff (i : ℕ) = p i := by

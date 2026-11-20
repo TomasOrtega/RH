@@ -9,9 +9,9 @@ open ContinuousLinearMap
 noncomputable section
 
 /- English proof (translation)
-Break down `eq_or_ne a ∞ with rfl | ha` into its components or cases. Simplify using the standard rewrite rules. Break down `eq_or_ne b ∞ with rfl | hb` into its components or cases. Simplify using the standard rewrite rules. Use `lift a to NNReal using ha`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Put the expressions in a common number system so they can be compared.
 
-Use `lift b to NNReal using hb`. Use `norm_cast`. Rewrite using `[← NNReal.coe_le_coe]`. Use `push_cast`. Use polynomial arithmetic with `[sq_nonneg ((a : ℝ) - b)]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem ennreal_two_mul_le_sq_add_sq (a b : ℝ≥0∞) : 2 * (a * b) ≤ a ^ 2 + b ^ 2 := by
   rcases eq_or_ne a ∞ with rfl | ha
@@ -30,21 +30,21 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteS
 section Abs
 
 /- English proof (translation)
-The claim follows from `((nonneg_iff_isPositive A).1 hA).isSelfAdjoint`.
+A detailed English derivation is pending.
 -/
 theorem isSelfAdjoint_of_nonneg {A : H →L[ℂ] H} (hA : 0 ≤ A) : IsSelfAdjoint A :=
   ((nonneg_iff_isPositive A).1 hA).isSelfAdjoint
 
 /- English proof (translation)
-The claim follows from `(isSelfAdjoint_of_nonneg hA).adjoint_eq`.
+A detailed English derivation is pending.
 -/
 theorem adjoint_eq_of_nonneg {A : H →L[ℂ] H} (hA : 0 ≤ A) : A† = A :=
   (isSelfAdjoint_of_nonneg hA).adjoint_eq
 
 /- English proof (translation)
-Establish `hs : (CFC.sqrt A)† = CFC.sqrt A` using `adjoint_eq_of_nonneg (CFC.sqrt_nonneg A)`. Establish `hA' : A = CFC.sqrt A * CFC.sqrt A` using `(CFC.sqrt_mul_sqrt_self A hA).symm`. Use `conv_lhs => rw [hA', mul_def, comp_apply, ← hs, adjoint_inner_right, hs]`. Rewrite using `[inner_self_eq_norm_sq_to_K]`. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem inner_apply_eq_norm_sqrt_sq {A : H →L[ℂ] H} (hA : 0 ≤ A) (x : H) :
     ⟪x, A x⟫_ℂ = ((‖CFC.sqrt A x‖ ^ 2 : ℝ) : ℂ) := by
@@ -56,9 +56,9 @@ theorem inner_apply_eq_norm_sqrt_sq {A : H →L[ℂ] H} (hA : 0 ≤ A) (x : H) :
   rfl
 
 /- English proof (translation)
-Establish `hR : (CFC.abs T)† = CFC.abs T` using `adjoint_eq_of_nonneg (CFC.abs_nonneg T)`. Establish `h : ‖CFC.abs T x‖ ^ 2 = ‖T x‖ ^ 2`. Rewrite using `[@norm_sq_eq_re_inner ℂ, @norm_sq_eq_re_inner ℂ]`. Use `congr 1`. Use `conv_lhs => rw [← adjoint_inner_right (CFC.abs T), hR, ← comp_apply, ← mul_def, CFC.abs_mul_abs, star_eq_adjoint, mul_def, comp_apply, adjoint_inner_right]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Use `congrArg Real.sqrt h` as an intermediate fact. Rewrite `this` using `[Real.sqrt_sq (norm_nonneg _), Real.sqrt_sq (norm_nonneg _)]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem norm_abs_apply (T : H →L[ℂ] H) (x : H) : ‖CFC.abs T x‖ = ‖T x‖ := by
   have hR : (CFC.abs T)† = CFC.abs T := adjoint_eq_of_nonneg (CFC.abs_nonneg T)
@@ -71,19 +71,17 @@ theorem norm_abs_apply (T : H →L[ℂ] H) (x : H) : ‖CFC.abs T x‖ = ‖T x�
   rwa [Real.sqrt_sq (norm_nonneg _), Real.sqrt_sq (norm_nonneg _)] at this
 
 /- English proof (translation)
-Use `set R := CFC.abs T with hRdef`. Use `set M : Submodule ℂ H := (LinearMap.range R.toLinearMap).topologicalClosure with hM`. Establish `: CompleteSpace M` using `(Submodule.isClosed_topologicalClosure _).completeSpace_coe`. Set `e : H →ₗ[ℂ] M` to `R.toLinearMap.codRestrict M (fun x => Submodule.le_topologicalClosure _ (LinearMap.mem_range_self _ x))`. Establish `he : ∀ x, (e x : H) = R x` using `fun x => rfl`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hdense : DenseRange e`. Rewrite using `[DenseRange, Subtype.dense_iff, ← Set.range_comp]`. Introduce `y hy`. Express the relevant statement in the definitionally equal form `y ∈ ((LinearMap.range R.toLinearMap).topologicalClosure : Set H) at hy`. Rewrite `hy` using `[Submodule.topologicalClosure_coe, LinearMap.coe_range]`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hy`. Establish `hnorm : ∀ x, ‖T.toLinearMap x‖ ≤ 1 * ‖e x‖`. Introduce `x`. Rewrite using `[one_mul, Submodule.coe_norm, he, norm_abs_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `W : M →L[ℂ] H` to `T.toLinearMap.extendOfNorm e`. Establish `hW : ∀ x, W (e x) = T x` using `fun x => LinearMap.extendOfNorm_eq hdense ⟨1, hnorm⟩ x`. Establish `hWiso : ∀ m, ‖W m‖ = ‖m‖`. Introduce `m`. Use `hdense.induction_on m (isClosed_eq W.continuous.norm continuous_norm) fun x => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[hW, Submodule.coe_norm, he, norm_abs_apply]`. Set `Wi : M →ₗᵢ[ℂ] H` to `{ W.toLinearMap with norm_map' := hWiso }`. Establish `hWinner : ∀ m m' : M, ⟪W m, W m'⟫_ℂ = ⟪m, m'⟫_ℂ` using `fun m m' => Wi.inner_map_map m m'`. Use `⟨W.comp M.orthogonalProjectionOnto, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `(opNorm_comp_le _ _).trans ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. By extensionality, compare the relevant components.
 
-Establish `h1 : ‖W‖ ≤ 1` using `opNorm_le_bound _ zero_le_one fun m => by rw [hWiso, one_mul]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `Submodule.orthogonalProjectionOnto_norm_le M`. Use `_ = 1 := one_mul 1`. Use extensionality with `x show W (M.orthogonalProjectionOnto ((e x : M) : H)) = T x`.
-
-Rewrite using `[Submodule.orthogonalProjectionOnto_mem_subspace_eq_self, hW]`. Use extensionality with `x`. Use `ext_inner_right ℂ fun y => ?_` and prove the remaining obligations. Rewrite using `[comp_apply, adjoint_inner_left, comp_apply, ← hW x, hWinner, Submodule.inner_orthogonalProjectionOnto_eq_of_mem_left, he]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_polar (T : H →L[ℂ] H) :
     ∃ V : H →L[ℂ] H, ‖V‖ ≤ 1 ∧ V.comp (CFC.abs T) = T ∧ (V†).comp T = CFC.abs T := by
@@ -135,7 +133,7 @@ def traceNorm (T : H →L[ℂ] H) : ℝ≥0∞ :=
     ⟪stdHilbertBasis ℂ H i, CFC.abs T (stdHilbertBasis ℂ H i)⟫_ℂ)
 
 /- English proof (translation)
-Rewrite using `[inner_apply_eq_norm_sqrt_sq (CFC.abs_nonneg T), RCLike.re_to_complex, Complex.ofReal_re, ENNReal.ofReal_pow (norm_nonneg _), ofReal_norm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ofReal_re_inner_abs (T : H →L[ℂ] H) (x : H) :
     ENNReal.ofReal (RCLike.re ⟪x, CFC.abs T x⟫_ℂ) = ‖CFC.sqrt (CFC.abs T) x‖ₑ ^ 2 := by
@@ -143,7 +141,7 @@ theorem ofReal_re_inner_abs (T : H →L[ℂ] H) (x : H) :
     ENNReal.ofReal_pow (norm_nonneg _), ofReal_norm]
 
 /- English proof (translation)
-Simplify using `only [traceNorm, ofReal_re_inner_abs]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem traceNorm_eq_hsNormSq (T : H →L[ℂ] H) :
     traceNorm T = hsNormSq (CFC.sqrt (CFC.abs T)) := by
@@ -151,7 +149,7 @@ theorem traceNorm_eq_hsNormSq (T : H →L[ℂ] H) :
   rfl
 
 /- English proof (translation)
-Simplify using `only [traceNorm_eq_hsNormSq, ofReal_re_inner_abs, hsNormSq_eq_tsum b]`.
+Simplify using the standard rewrite rules.
 -/
 theorem traceNorm_eq_tsum {ι : Type*} (b : HilbertBasis ι ℂ H) (T : H →L[ℂ] H) :
     traceNorm T = ∑' i, ENNReal.ofReal (RCLike.re ⟪b i, CFC.abs T (b i)⟫_ℂ) := by
@@ -160,14 +158,14 @@ theorem traceNorm_eq_tsum {ι : Type*} (b : HilbertBasis ι ℂ H) (T : H →L[�
 def IsTraceClass (T : H →L[ℂ] H) : Prop := traceNorm T < ∞
 
 /- English proof (translation)
-Rewrite using `[IsTraceClass, traceNorm_eq_hsNormSq, IsHilbertSchmidt]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem isTraceClass_iff_isHilbertSchmidt_sqrt (T : H →L[ℂ] H) :
     IsTraceClass T ↔ IsHilbertSchmidt (CFC.sqrt (CFC.abs T)) := by
   rw [IsTraceClass, traceNorm_eq_hsNormSq, IsHilbertSchmidt]
 
 /- English proof (translation)
-Rewrite using `[traceNorm_eq_tsum b]`. Use `ENNReal.tsum_le_tsum fun i => ?_` and prove the remaining obligations. Rewrite using `[← hV, comp_apply, adjoint_inner_right, ← ofReal_norm]`. Conclude with `ENNReal.ofReal_le_ofReal (RCLike.re_le_norm _)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem traceNorm_le_of_adjoint_comp {ι : Type*} (b : HilbertBasis ι ℂ H) {T V : H →L[ℂ] H}
     (hV : (V†).comp T = CFC.abs T) : traceNorm T ≤ ∑' i, ‖⟪V (b i), T (b i)⟫_ℂ‖ₑ := by
@@ -177,24 +175,20 @@ theorem traceNorm_le_of_adjoint_comp {ι : Type*} (b : HilbertBasis ι ℂ H) {T
   exact ENNReal.ofReal_le_ofReal (RCLike.re_le_norm _)
 
 /- English proof (translation)
-Rewrite using `[← ofReal_norm]`. Conclude with `ENNReal.ofReal_le_one.2 hA`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem enorm_le_one_of_norm_le_one {A : H →L[ℂ] H} (hA : ‖A‖ ≤ 1) : ‖A‖ₑ ≤ 1 := by
   rw [← ofReal_norm]
   exact ENNReal.ofReal_le_one.2 hA
 
 /- English proof (translation)
-Take `⟨V, hV1, hVT, -⟩` from `exists_polar T`. Use `set s := CFC.sqrt (CFC.abs T) with hsdef`. Establish `hs : s† = s` using `adjoint_eq_of_nonneg (CFC.sqrt_nonneg _)`. Establish `hss : s.comp s = CFC.abs T` using `CFC.sqrt_mul_sqrt_self _ (CFC.abs_nonneg T)`. Establish `hpt : ∀ x y, ⟪U x, T (W y)⟫_ℂ = ⟪s ((V†) (U x)), s (W y)⟫_ℂ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x y`. Use `conv_lhs => rw [← hVT, ← hss, comp_apply, comp_apply, ← adjoint_inner_left V, ← hs, adjoint_inner_right, hs]`. Establish `hVU : ‖(V†).comp U‖ ≤ 1`. Use `(opNorm_comp_le _ _).trans ?_` and prove the remaining obligations. Rewrite using `[adjoint.norm_map]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `key : 2 * ∑' i, ‖⟪U (b i), T (W (b i))⟫_ℂ‖ₑ ≤ 2 * traceNorm T`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← ENNReal.tsum_mul_left]`. Use `ENNReal.tsum_le_tsum fun i => ?_` and prove the remaining obligations.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[hpt]`. Combine the equalities or inequalities in the displayed calculation. Use `_ = hsNormSq (s.comp ((V†).comp U)) + hsNormSq (s.comp W) := by`. Rewrite using `[ENNReal.tsum_add, hsNormSq_eq_tsum b, hsNormSq_eq_tsum b]`. Both sides reduce to the same expression.
-
-Use `_ ≤ ‖(V†).comp U‖ₑ ^ 2 * hsNormSq s + ‖W‖ₑ ^ 2 * hsNormSq s := add_le_add (hsNormSq_comp_right_le _ _) (hsNormSq_comp_right_le _ _)`. Use `_ ≤ 1 ^ 2 * hsNormSq s + 1 ^ 2 * hsNormSq s := by gcongr`. Conclude with `enorm_le_one_of_norm_le_one hVU`. Conclude with `enorm_le_one_of_norm_le_one hW`. Use `_ = 2 * traceNorm T := by rw [traceNorm_eq_hsNormSq, one_pow, one_mul, two_mul]`.
-
-Conclude with `(ENNReal.mul_le_mul_iff_right two_ne_zero ENNReal.ofNat_ne_top).1 key`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem tsum_enorm_inner_le_traceNorm {ι : Type*} (b : HilbertBasis ι ℂ H) (T : H →L[ℂ] H)
     {U W : H →L[ℂ] H} (hU : ‖U‖ ≤ 1) (hW : ‖W‖ ≤ 1) :
@@ -239,22 +233,20 @@ end TraceNorm
 section Ideal
 
 /- English proof (translation)
-The claim follows from `norm_id_le`.
+A detailed English derivation is pending.
 -/
 theorem norm_id_le_one : ‖ContinuousLinearMap.id ℂ H‖ ≤ 1 := norm_id_le
 
 /- English proof (translation)
-Break down `eq_or_ne U 0 with rfl | hU` into its components or cases. Simplify using the standard rewrite rules. Break down `eq_or_ne W 0 with rfl | hW` into its components or cases. Simplify using the standard rewrite rules. Establish `hu : 0 < ‖U‖` using `norm_pos_iff.2 hU`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hw : 0 < ‖W‖` using `norm_pos_iff.2 hW`. Use `set U₀ : H →L[ℂ] H := ((‖U‖⁻¹ : ℝ) : ℂ) • U with hU₀def`. Use `set W₀ : H →L[ℂ] H := ((‖W‖⁻¹ : ℝ) : ℂ) • W with hW₀def`. Establish `hU₀ : ‖U₀‖ ≤ 1`. Rewrite using `[hU₀def, norm_smul, Complex.norm_real, Real.norm_eq_abs, abs_inv, abs_norm, inv_mul_cancel₀ hu.ne']`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hW₀ : ‖W₀‖ ≤ 1`. Rewrite using `[hW₀def, norm_smul, Complex.norm_real, Real.norm_eq_abs, abs_inv, abs_norm, inv_mul_cancel₀ hw.ne']`. Establish `hUx : ∀ x, U x = ((‖U‖ : ℝ) : ℂ) • U₀ x` using `fun x => by`. Rewrite using `[hU₀def, smul_apply, smul_smul, ← Complex.ofReal_mul, mul_inv_cancel₀ hu.ne', Complex.ofReal_one, one_smul]`. Establish `hWx : ∀ x, W x = ((‖W‖ : ℝ) : ℂ) • W₀ x` using `fun x => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hW₀def, smul_apply, smul_smul, ← Complex.ofReal_mul, mul_inv_cancel₀ hw.ne', Complex.ofReal_one, one_smul]`. Establish `hpt : ∀ i, ‖⟪U (b i), T (W (b i))⟫_ℂ‖ₑ = ‖U‖ₑ * ‖W‖ₑ * ‖⟪U₀ (b i), T (W₀ (b i))⟫_ℂ‖ₑ`. Introduce `i`. Establish `h : ⟪U (b i), T (W (b i))⟫_ℂ = ((‖U‖ * ‖W‖ : ℝ) : ℂ) * ⟪U₀ (b i), T (W₀ (b i))⟫_ℂ`. Rewrite using `[hUx, hWx, map_smul, inner_smul_left, inner_smul_right, Complex.conj_ofReal, Complex.ofReal_mul, mul_assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[h, enorm_mul]`. Use `congr 1`. Rewrite using `[← ofReal_norm, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (by positivity), ENNReal.ofReal_mul (norm_nonneg _), ofReal_norm, ofReal_norm]`. Repeatedly rewrite using `[hpt, ENNReal.tsum_mul_left]`. Use `gcongr`.
-
-Conclude with `tsum_enorm_inner_le_traceNorm b T hU₀ hW₀`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tsum_enorm_inner_le {ι : Type*} (b : HilbertBasis ι ℂ H) (T U W : H →L[ℂ] H) :
     ∑' i, ‖⟪U (b i), T (W (b i))⟫_ℂ‖ₑ ≤ ‖U‖ₑ * ‖W‖ₑ * traceNorm T := by
@@ -294,17 +286,15 @@ theorem tsum_enorm_inner_le {ι : Type*} (b : HilbertBasis ι ℂ H) (T U W : H 
   exact tsum_enorm_inner_le_traceNorm b T hU₀ hW₀
 
 /- English proof (translation)
-Simplify using `[traceNorm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem traceNorm_zero : traceNorm (0 : H →L[ℂ] H) = 0 := by
   simp [traceNorm]
 
 /- English proof (translation)
-Take `⟨V, hV1, -, hV⟩` from `exists_polar (S + T)`. Set `b` to `stdHilbertBasis ℂ H`. Establish `hV1' : ‖V‖ₑ ≤ 1` using `enorm_le_one_of_norm_le_one hV1`. Establish `hI : ‖ContinuousLinearMap.id ℂ H‖ₑ ≤ 1` using `enorm_le_one_of_norm_le_one norm_id_le_one`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Use `ENNReal.tsum_le_tsum fun i => ?_` and prove the remaining obligations. Rewrite using `[add_apply, inner_add_right, id_apply]`. Conclude with `enorm_add_le _ _`. Use `_ = _ := ENNReal.tsum_add`. Use `_ ≤ ‖V‖ₑ * ‖ContinuousLinearMap.id ℂ H‖ₑ * traceNorm S + ‖V‖ₑ * ‖ContinuousLinearMap.id ℂ H‖ₑ * traceNorm T := add_le_add (tsum_enorm_inner_le b S _ _) (tsum_enorm_inner_le b T _ _)`.
-
-Use `_ ≤ 1 * 1 * traceNorm S + 1 * 1 * traceNorm T := by gcongr`. Use `_ = traceNorm S + traceNorm T := by simp only [one_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem traceNorm_add_le (S T : H →L[ℂ] H) : traceNorm (S + T) ≤ traceNorm S + traceNorm T := by
   obtain ⟨V, hV1, -, hV⟩ := exists_polar (S + T)
@@ -326,11 +316,11 @@ theorem traceNorm_add_le (S T : H →L[ℂ] H) : traceNorm (S + T) ≤ traceNorm
     _ = traceNorm S + traceNorm T := by simp only [one_mul]
 
 /- English proof (translation)
-Take `⟨V, hV1, -, hV⟩` from `exists_polar (C.comp T)`. Set `b` to `stdHilbertBasis ℂ H`. Establish `hI : ‖ContinuousLinearMap.id ℂ H‖ₑ ≤ 1` using `enorm_le_one_of_norm_le_one norm_id_le_one`. Establish `hCV : ‖(C†).comp V‖ₑ ≤ ‖C‖ₑ`. Rewrite using `[← ofReal_norm, ← ofReal_norm]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `ENNReal.ofReal_le_ofReal ((opNorm_comp_le _ _).trans ?_)` and prove the remaining obligations. Rewrite using `[adjoint.norm_map]`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `i`. Rewrite using `[comp_apply, comp_apply, adjoint_inner_left, id_apply]`. Use `_ ≤ ‖(C†).comp V‖ₑ * ‖ContinuousLinearMap.id ℂ H‖ₑ * traceNorm T := tsum_enorm_inner_le b T _ _`. Use `_ ≤ ‖C‖ₑ * 1 * traceNorm T := by gcongr`. Use `_ = ‖C‖ₑ * traceNorm T := by rw [mul_one]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem traceNorm_comp_left_le (C T : H →L[ℂ] H) : traceNorm (C.comp T) ≤ ‖C‖ₑ * traceNorm T := by
   obtain ⟨V, hV1, -, hV⟩ := exists_polar (C.comp T)
@@ -352,7 +342,7 @@ theorem traceNorm_comp_left_le (C T : H →L[ℂ] H) : traceNorm (C.comp T) ≤ 
     _ = ‖C‖ₑ * traceNorm T := by rw [mul_one]
 
 /- English proof (translation)
-Take `⟨V, hV1, -, hV⟩` from `exists_polar (T.comp C)`. Set `b` to `stdHilbertBasis ℂ H`. Establish `hV1' : ‖V‖ₑ ≤ 1` using `enorm_le_one_of_norm_le_one hV1`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem traceNorm_comp_right_le (T C : H →L[ℂ] H) :
     traceNorm (T.comp C) ≤ ‖C‖ₑ * traceNorm T := by
@@ -367,11 +357,9 @@ theorem traceNorm_comp_right_le (T C : H →L[ℂ] H) :
     _ = ‖C‖ₑ * traceNorm T := by rw [one_mul]
 
 /- English proof (translation)
-Take `⟨V, hV1, -, hV⟩` from `exists_polar (T†)`. Set `b` to `stdHilbertBasis ℂ H`. Establish `hV1' : ‖V‖ₑ ≤ 1` using `enorm_le_one_of_norm_le_one hV1`. Establish `hI : ‖ContinuousLinearMap.id ℂ H‖ₑ ≤ 1` using `enorm_le_one_of_norm_le_one norm_id_le_one`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Use `congr 1`. Use extensionality with `i`. Rewrite using `[adjoint_inner_right, enorm_inner_comm, id_apply]`. Use `_ ≤ ‖ContinuousLinearMap.id ℂ H‖ₑ * ‖V‖ₑ * traceNorm T := tsum_enorm_inner_le b T _ _`. Use `_ ≤ 1 * 1 * traceNorm T := by gcongr`.
-
-Use `_ = traceNorm T := by simp only [one_mul]`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem traceNorm_adjoint_le (T : H →L[ℂ] H) : traceNorm (T†) ≤ traceNorm T := by
   obtain ⟨V, hV1, -, hV⟩ := exists_polar (T†)
@@ -387,15 +375,15 @@ theorem traceNorm_adjoint_le (T : H →L[ℂ] H) : traceNorm (T†) ≤ traceNor
     _ = traceNorm T := by simp only [one_mul]
 
 /- English proof (translation)
-The claim follows from `le_antisymm (traceNorm_adjoint_le T) (by simpa using traceNorm_adjoint_le (T†))`.
+A detailed English derivation is pending.
 -/
 theorem traceNorm_adjoint (T : H →L[ℂ] H) : traceNorm (T†) = traceNorm T :=
   le_antisymm (traceNorm_adjoint_le T) (by simpa using traceNorm_adjoint_le (T†))
 
 /- English proof (translation)
-Establish `h : c • T = (c • ContinuousLinearMap.id ℂ H).comp T` using `by ext x; simp`. Rewrite using `[h]`. Use `(traceNorm_comp_left_le _ _).trans ?_` and prove the remaining obligations. Use `gcongr`. Rewrite using `[← ofReal_norm, ← ofReal_norm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `ENNReal.ofReal_le_ofReal ((norm_smul_le _ _).trans ?_)` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem traceNorm_smul_le (c : ℂ) (T : H →L[ℂ] H) : traceNorm (c • T) ≤ ‖c‖ₑ * traceNorm T := by
   have h : c • T = (c • ContinuousLinearMap.id ℂ H).comp T := by ext x; simp
@@ -408,40 +396,40 @@ theorem traceNorm_smul_le (c : ℂ) (T : H →L[ℂ] H) : traceNorm (c • T) �
     _ = ‖c‖ := mul_one _
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem isTraceClass_iff (T : H →L[ℂ] H) : IsTraceClass T ↔ traceNorm T < ∞ := Iff.rfl
 
 /- English proof (translation)
-The claim follows from `(traceNorm_add_le S T).trans_lt (ENNReal.add_lt_top.2 ⟨hS, hT⟩)`.
+A detailed English derivation is pending.
 -/
 theorem IsTraceClass.add {S T : H →L[ℂ] H} (hS : IsTraceClass S) (hT : IsTraceClass T) :
     IsTraceClass (S + T) :=
   (traceNorm_add_le S T).trans_lt (ENNReal.add_lt_top.2 ⟨hS, hT⟩)
 
 /- English proof (translation)
-The claim follows from `(traceNorm_smul_le c T).trans_lt (ENNReal.mul_lt_top (by simp) hT)`.
+A detailed English derivation is pending.
 -/
 theorem IsTraceClass.smul {T : H →L[ℂ] H} (hT : IsTraceClass T) (c : ℂ) :
     IsTraceClass (c • T) :=
   (traceNorm_smul_le c T).trans_lt (ENNReal.mul_lt_top (by simp) hT)
 
 /- English proof (translation)
-The claim follows from `(traceNorm_comp_left_le C T).trans_lt (ENNReal.mul_lt_top (by simp) hT)`.
+A detailed English derivation is pending.
 -/
 theorem IsTraceClass.comp_left {T : H →L[ℂ] H} (hT : IsTraceClass T) (C : H →L[ℂ] H) :
     IsTraceClass (C.comp T) :=
   (traceNorm_comp_left_le C T).trans_lt (ENNReal.mul_lt_top (by simp) hT)
 
 /- English proof (translation)
-The claim follows from `(traceNorm_comp_right_le T C).trans_lt (ENNReal.mul_lt_top (by simp) hT)`.
+A detailed English derivation is pending.
 -/
 theorem IsTraceClass.comp_right {T : H →L[ℂ] H} (hT : IsTraceClass T) (C : H →L[ℂ] H) :
     IsTraceClass (T.comp C) :=
   (traceNorm_comp_right_le T C).trans_lt (ENNReal.mul_lt_top (by simp) hT)
 
 /- English proof (translation)
-Rewrite using `[IsTraceClass, traceNorm_adjoint]`. Conclude with `hT`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsTraceClass.adjoint {T : H →L[ℂ] H} (hT : IsTraceClass T) : IsTraceClass (T†) := by
   rw [IsTraceClass, traceNorm_adjoint]; exact hT
@@ -457,11 +445,9 @@ def traceClass : Submodule ℂ (H →L[ℂ] H) where
   smul_mem' c _ hT := hT.smul c
 
 /- English proof (translation)
-Take `⟨V, hV1, -, hV⟩` from `exists_polar (A.comp B)`. Set `b` to `stdHilbertBasis ℂ H`. Establish `hV1' : ‖V‖ₑ ≤ 1` using `enorm_le_one_of_norm_le_one hV1`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← ENNReal.tsum_mul_left]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `ENNReal.tsum_le_tsum fun i => ?_` and prove the remaining obligations. Rewrite using `[← adjoint_inner_left, ← comp_apply (A†) V]`. Combine the equalities or inequalities in the displayed calculation. Use `_ = hsNormSq ((A†).comp V) + hsNormSq B := by`. Rewrite using `[ENNReal.tsum_add, hsNormSq_eq_tsum b, hsNormSq_eq_tsum b]`.
-
-Use `_ ≤ ‖V‖ₑ ^ 2 * hsNormSq (A†) + hsNormSq B := by gcongr; exact hsNormSq_comp_right_le _ _`. Use `_ ≤ 1 ^ 2 * hsNormSq (A†) + hsNormSq B := by gcongr`. Use `_ = hsNormSq A + hsNormSq B := by rw [one_pow, one_mul, hsNormSq_adjoint]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem two_mul_traceNorm_comp_le (A B : H →L[ℂ] H) :
     2 * traceNorm (A.comp B) ≤ hsNormSq A + hsNormSq B := by
@@ -484,9 +470,9 @@ theorem two_mul_traceNorm_comp_le (A B : H →L[ℂ] H) :
     _ = hsNormSq A + hsNormSq B := by rw [one_pow, one_mul, hsNormSq_adjoint]
 
 /- English proof (translation)
-Establish `h` using `(two_mul_traceNorm_comp_le A B).trans_lt (ENNReal.add_lt_top.2 ⟨hA, hB⟩)`. Rewrite using `[IsTraceClass]`. Assume the negation of the conclusion as `hc`. Rewrite `hc` using `[not_lt, top_le_iff]`. Rewrite `h` using `[hc, ENNReal.mul_top two_ne_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `lt_irrefl _ h`.
+A detailed English derivation is pending.
 -/
 theorem isTraceClass_comp {A B : H →L[ℂ] H} (hA : IsHilbertSchmidt A) (hB : IsHilbertSchmidt B) :
     IsTraceClass (A.comp B) := by
@@ -498,7 +484,7 @@ theorem isTraceClass_comp {A B : H →L[ℂ] H} (hA : IsHilbertSchmidt A) (hB : 
   exact lt_irrefl _ h
 
 /- English proof (translation)
-Take `⟨V, -, hVT, -⟩` from `exists_polar T`. Establish `hs : IsHilbertSchmidt (CFC.sqrt (CFC.abs T))` using `(isTraceClass_iff_isHilbertSchmidt_sqrt T).1 hT`. Use `⟨V.comp (CFC.sqrt (CFC.abs T)), CFC.sqrt (CFC.abs T), hs.comp_left V, hs, ?_⟩` and prove the remaining obligations. Establish `hss : (CFC.sqrt (CFC.abs T)).comp (CFC.sqrt (CFC.abs T)) = CFC.abs T` using `CFC.sqrt_mul_sqrt_self _ (CFC.abs_nonneg T)`. Rewrite using `[comp_assoc, hss, hVT]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem IsTraceClass.exists_comp {T : H →L[ℂ] H} (hT : IsTraceClass T) :
     ∃ A B : H →L[ℂ] H, IsHilbertSchmidt A ∧ IsHilbertSchmidt B ∧ T = A.comp B := by
@@ -518,14 +504,14 @@ def trace (T : H →L[ℂ] H) : ℂ :=
   ∑' i, ⟪stdHilbertBasis ℂ H i, T (stdHilbertBasis ℂ H i)⟫_ℂ
 
 /- English proof (translation)
-The claim follows from `(hasSum_inner_comp_comm (stdHilbertBasis ℂ H) (stdHilbertBasis ℂ H) hA hB).tsum_eq`.
+A detailed English derivation is pending.
 -/
 theorem trace_comp_comm_of_isHilbertSchmidt {A B : H →L[ℂ] H} (hA : IsHilbertSchmidt A)
     (hB : IsHilbertSchmidt B) : trace (A.comp B) = trace (B.comp A) :=
   (hasSum_inner_comp_comm (stdHilbertBasis ℂ H) (stdHilbertBasis ℂ H) hA hB).tsum_eq
 
 /- English proof (translation)
-Take `⟨A, B, hA, hB, rfl⟩` from `hT.exists_comp`. Establish `h1` using `hasSum_inner_comp_comm b (stdHilbertBasis ℂ H) hA hB`. Rewrite using `[trace_comp_comm_of_isHilbertSchmidt hA hB]`. Conclude with `h1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsTraceClass.hasSum_trace {T : H →L[ℂ] H} (hT : IsTraceClass T) {ι : Type*}
     (b : HilbertBasis ι ℂ H) : HasSum (fun i => ⟪b i, T (b i)⟫_ℂ) (trace T) := by
@@ -535,9 +521,7 @@ theorem IsTraceClass.hasSum_trace {T : H →L[ℂ] H} (hT : IsTraceClass T) {ι 
   exact h1
 
 /- English proof (translation)
-Establish `hI : ‖ContinuousLinearMap.id ℂ H‖ₑ ≤ 1` using `enorm_le_one_of_norm_le_one norm_id_le_one`. Combine the equalities or inequalities in the displayed calculation. Both sides reduce to the same expression. Use `_ ≤ ‖ContinuousLinearMap.id ℂ H‖ₑ * ‖ContinuousLinearMap.id ℂ H‖ₑ * traceNorm T := tsum_enorm_inner_le b T _ _`. Use `_ ≤ 1 * 1 * traceNorm T := by gcongr`.
-
-Use `_ = traceNorm T := by simp only [one_mul]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem tsum_enorm_inner_self_le {ι : Type*} (b : HilbertBasis ι ℂ H) (T : H →L[ℂ] H) :
     ∑' i, ‖⟪b i, T (b i)⟫_ℂ‖ₑ ≤ traceNorm T := by
@@ -551,7 +535,7 @@ theorem tsum_enorm_inner_self_le {ι : Type*} (b : HilbertBasis ι ℂ H) (T : H
     _ = traceNorm T := by simp only [one_mul]
 
 /- English proof (translation)
-Establish `h` using `ENNReal.summable_toReal ((tsum_enorm_inner_self_le b T).trans_lt hT).ne`. Simplify using `using h`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem IsTraceClass.summable_norm_inner {T : H →L[ℂ] H} (hT : IsTraceClass T) {ι : Type*}
     (b : HilbertBasis ι ℂ H) : Summable fun i => ‖⟪b i, T (b i)⟫_ℂ‖ := by
@@ -559,9 +543,9 @@ theorem IsTraceClass.summable_norm_inner {T : H →L[ℂ] H} (hT : IsTraceClass 
   simpa using h
 
 /- English proof (translation)
-Distinguish the cases in `hT : IsTraceClass T`. Set `b` to `stdHilbertBasis ℂ H`. Establish `hs` using `hT.summable_norm_inner b`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[ENNReal.ofReal_tsum_of_nonneg (fun _ => norm_nonneg _) hs]`.
+Consider separately whether the proposition holds or fails. Introduce a local definition for the expression. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [ofReal_norm]`. Use `_ ≤ traceNorm T := tsum_enorm_inner_self_le b T`. Rewrite `hT` using `[IsTraceClass, not_lt, top_le_iff]`. Rewrite using `[hT]`. Conclude with `le_top`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem enorm_trace_le (T : H →L[ℂ] H) : ‖trace T‖ₑ ≤ traceNorm T := by
   by_cases hT : IsTraceClass T
@@ -578,7 +562,7 @@ theorem enorm_trace_le (T : H →L[ℂ] H) : ‖trace T‖ₑ ≤ traceNorm T :=
     rw [hT]; exact le_top
 
 /- English proof (translation)
-Set `b` to `stdHilbertBasis ℂ H`. Use `((hS.add hT).hasSum_trace b).unique ?_` and prove the remaining obligations. Use `(hS.hasSum_trace b).add (hT.hasSum_trace b) using 1` and compare the differences between its conclusion and the goal. Use extensionality with `i`. Rewrite using `[add_apply, inner_add_right]`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem trace_add {S T : H →L[ℂ] H} (hS : IsTraceClass S) (hT : IsTraceClass T) :
     trace (S + T) = trace S + trace T := by
@@ -589,9 +573,9 @@ theorem trace_add {S T : H →L[ℂ] H} (hS : IsTraceClass S) (hT : IsTraceClass
   rw [add_apply, inner_add_right]
 
 /- English proof (translation)
-Set `b` to `stdHilbertBasis ℂ H`. Use `((hT.smul c).hasSum_trace b).unique ?_` and prove the remaining obligations. Establish `hfun : (fun i => ⟪b i, (c • T) (b i)⟫_ℂ) = fun i => c * ⟪b i, T (b i)⟫_ℂ`. Use extensionality with `i`. Rewrite using `[smul_apply, inner_smul_right]`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hfun]`. Conclude with `(hT.hasSum_trace b).mul_left c`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trace_smul (c : ℂ) {T : H →L[ℂ] H} (hT : IsTraceClass T) :
     trace (c • T) = c * trace T := by
@@ -603,7 +587,7 @@ theorem trace_smul (c : ℂ) {T : H →L[ℂ] H} (hT : IsTraceClass T) :
   exact (hT.hasSum_trace b).mul_left c
 
 /- English proof (translation)
-Take `⟨A, B, hA, hB, rfl⟩` from `hT.exists_comp`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Chain the equalities or inequalities of the calculation.
 -/
 theorem trace_comp_comm {T : H →L[ℂ] H} (hT : IsTraceClass T) (C : H →L[ℂ] H) :
     trace (C.comp T) = trace (T.comp C) := by
@@ -615,9 +599,9 @@ theorem trace_comp_comm {T : H →L[ℂ] H} (hT : IsTraceClass T) (C : H →L[�
     _ = trace ((A.comp B).comp C) := by rw [comp_assoc]
 
 /- English proof (translation)
-Set `b` to `stdHilbertBasis ℂ H`. Use `(hT.adjoint.hasSum_trace b).unique ?_` and prove the remaining obligations. Establish `hfun : (fun i => ⟪b i, (T†) (b i)⟫_ℂ) = fun i => star ⟪b i, T (b i)⟫_ℂ`. Use extensionality with `i`. Rewrite using `[adjoint_inner_right, ← inner_conj_symm]`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[hfun, starRingEnd_apply]`. Conclude with `(hT.hasSum_trace b).star`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trace_adjoint {T : H →L[ℂ] H} (hT : IsTraceClass T) :
     trace (T†) = starRingEnd ℂ (trace T) := by

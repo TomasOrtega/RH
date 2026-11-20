@@ -25,11 +25,9 @@ noncomputable section
 namespace GlobalTheory.CechFinGen
 
 /- English proof (translation)
-Use `haveI : IsLocalization.Away f (R ⧸ Ideal.span {1 - f}) := IsLocalization.Away.quotient_of_isIdempotentElem hf`. Use `haveI : Module.Flat R (R ⧸ Ideal.span {1 - f}) := IsLocalization.flat (R ⧸ Ideal.span {1 - f}) (Submonoid.powers f)`. Set `B : Over (Sp (R ⧸ Ideal.span {1 - f}))` to `(Over.pullback (spMap (algebraMap R (R ⧸ Ideal.span {1 - f})))).obj A`. Use `letI : GrpObj B := Functor.grpObjObj`. Establish `hB : IsAbelianScheme B` using `isAbelianScheme_pullback_obj _ A hA`.
+Introduce a local definition for the expression. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hBg : SmoothOfRelativeDimension g B.hom` using `hg`. Take `⟨hfp, -, -, -⟩` from `hO _ B g hB hBg`. Use `haveI := hA.proper`. Take `⟨⟨e, -⟩, -⟩` from `GlobalTheory.AbCoh.flat_baseChange_HO R (R ⧸ Ideal.span {1 - f}) A.left B.left A.hom B.hom (pullback.fst _ _) (IsPullback.of_hasPullback _ _) inferInstance inferInstance`. Use `haveI := hfp.1`.
-
-Conclude with `Module.Finite.equiv e.symm`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem finite_piece (hO : GlobalTheory.AbCoh.OStr) {R : Type} [CommRing R] (A : Over (Sp R)) [GrpObj A]
     (hA : IsAbelianScheme A) (f : R) (hf : IsIdempotentElem f) (g : ℕ)
@@ -52,11 +50,9 @@ theorem finite_piece (hO : GlobalTheory.AbCoh.OStr) {R : Type} [CommRing R] (A :
   exact Module.Finite.equiv e.symm
 
 /- English proof (translation)
-Take `⟨n, e, he, hsm⟩` from `GlobalTheory.DimSplit.exists_idempotents_smoothOfRelativeDimension R A hA`. Establish `hspan : Ideal.span (Set.range e) = ⊤`. Rewrite using `[eq_top_iff, ← Ideal.span_singleton_one, Ideal.span_le, Set.singleton_subset_iff, ← he.complete]`. Conclude with `Ideal.sum_mem _ (fun k _ ↦ Ideal.subset_span ⟨k, rfl⟩)`. Establish `hidem : ∀ g : Set.range e, IsIdempotentElem g.val`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨_, k, rfl⟩`. Conclude with `he.idem k`. Use `haveI : ∀ g : Set.range e, IsLocalization.Away g.val (R ⧸ Ideal.span {1 - g.val}) := fun g ↦ IsLocalization.Away.quotient_of_isIdempotentElem (hidem g)`. Use `haveI : ∀ g : Set.range e, IsLocalizedModule.Away g.val (TensorProduct.mk R (R ⧸ Ideal.span {1 - g.val}) (HO1 A.hom) 1) := fun g ↦ (isLocalizedModule_iff_isBaseChange (Submonoid.powers g.val) (R ⧸ Ideal.span {1 - g.val}) _).2 (TensorProduct.isBaseChange R (HO1 A.hom) (R ⧸ Ideal.s …`. Use `Module.Finite.of_localizationSpan' (Set.range e) hspan (Rₚ := fun g ↦ R ⧸ Ideal.span {1 - g.val}) (Mₚ := fun g ↦ (R ⧸ Ideal.span {1 - g.val}) ⊗[R] HO1 A.hom) (fun g ↦ TensorProduct.mk R (R ⧸ Ideal.span {1 - g.val}) (HO1 A.hom) 1) (fun g ↦ ?_)` and prove the remaining obligations.
-
-Take `⟨_, k, rfl⟩` from `g`. Take `⟨d, hd⟩` from `hsm k`. Conclude with `finite_piece hO A hA (e k) (he.idem k) d hd`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem finite_HO1 (hO : GlobalTheory.AbCoh.OStr) {R : Type} [CommRing R] (A : Over (Sp R)) [GrpObj A]
     (hA : IsAbelianScheme A) : Module.Finite R (HO1 A.hom) := by
@@ -83,7 +79,7 @@ theorem finite_HO1 (hO : GlobalTheory.AbCoh.OStr) {R : Type} [CommRing R] (A : O
 end GlobalTheory.CechFinGen
 
 /- English proof (translation)
-Introduce `E _ _ _ H X t hp U`. Use `letI : GrpObj (GlobalTheory.DeRhamSheaf.onAff t.G U.2) := Functor.grpObjObj`. Establish `hA : IsAbelianScheme t.G` using `GlobalTheory.AbelianLocusNormalisation.isAbelianScheme_of_isProper t hp`. Conclude with `GlobalTheory.CechFinGen.finite_HO1 GlobalTheory.AbCoh.oStr (GlobalTheory.DeRhamSheaf.onAff t.G U.2) (GlobalTheory.DeRhamSheaf.isAbelianScheme_onAff hA U.2)`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CechFinGen.finite_HO1_onAff : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E)
     (X : Scheme.{0}) (t : SAB H X), IsProper t.G.hom → ∀ U : X.affineOpens,

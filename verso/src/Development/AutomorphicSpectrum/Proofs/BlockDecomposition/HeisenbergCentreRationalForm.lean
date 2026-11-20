@@ -26,11 +26,11 @@ open GlobalTheory.CompanionTheory.PcB
 variable {D : D7} {n ρ p : ℕ} {hn : ρ + p = n}
 
 /- English proof (translation)
-Establish `h1 : HMul.hMul (bl hn z 0 0 0) (bl hn 0 0 0 c) = 0`. Rewrite using `[blockMatrix_multiply]`. Simplify using `[bl]`. Establish `h2 : HMul.hMul (bl hn z 0 0 0) (bl hn 1 0 0 d) = bl hn z 0 0 0`. Rewrite using `[blockMatrix_multiply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `h3 : HMul.hMul (bl hn 1 0 0 a) (bl hn z 0 0 0) = bl hn z 0 0 0`. Rewrite using `[blockMatrix_multiply]`. Simplify using the standard rewrite rules. Establish `h4 : HMul.hMul (bl hn 0 0 0 c) (bl hn z 0 0 0) = 0`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[blockMatrix_multiply]`. Simplify using `[bl]`. Rewrite using `[submatrix_fromBlocks_mul, submatrix_fromBlocks_mul, h1, h2, h3, h4]`. Apply the tactic sequence `congr 1 <;> simp [add_comm]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem centre_commutes_embedded_block {R : Type} [CommRing R] (hn : ρ + p = n) (z : Matrix (Fin ρ) (Fin ρ) R)
     (a b c d : Matrix (Fin p) (Fin p) R) :
@@ -54,13 +54,13 @@ theorem centre_commutes_embedded_block {R : Type} [CommRing R] (hn : ρ + p = n)
   congr 1 <;> simp [add_comm]
 
 /- English proof (translation)
-Rewrite using `[nzx_mul, add_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem nzx_add (M : Maps D hn) (a b : hermA D ρ) : M.nzx (a + b) 0 = M.nzx a 0 * M.nzx b 0 := by
   rw [nzx_mul, add_zero]
 
 /- English proof (translation)
-Establish `h : tw z 0 y = z`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[tw]`. Establish `e` using `nzx_sh M z 0 y`. Rewrite `e` using `[h]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem nzx_comm_sh (M : Maps D hn) (z : hermA D ρ) (y : Mx D ρ p) :
     M.nzx z 0 * M.sh y = M.sh y * M.nzx z 0 := by
@@ -71,7 +71,7 @@ theorem nzx_comm_sh (M : Maps D hn) (z : hermA D ρ) (y : Mx D ρ p) :
   rwa [h] at e
 
 /- English proof (translation)
-Take `⟨b, d, hb⟩` from `SmallCell.exists_blocks (mat h)`. Apply `GlobalTheory.CompanionTheory.FourierN.mat_injective` to reduce the goal to its premises. Rewrite using `[mat_mul', mat_mul', M.nzx_mat, M.emb_mat h _ _ _ _ hb, adj_zero]`. Conclude with `centre_commutes_embedded_block hn z.1 _ _ _ _`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nzx_comm_emb (M : Maps D hn) (z : hermA D ρ) (h : G D p) :
     M.nzx z 0 * M.emb h = M.emb h * M.nzx z 0 := by
@@ -81,7 +81,7 @@ theorem nzx_comm_emb (M : Maps D hn) (z : hermA D ρ) (h : G D p) :
   exact centre_commutes_embedded_block hn z.1 _ _ _ _
 
 /- English proof (translation)
-Take `⟨b, hb⟩` from `BigCell.exists_hermQ l`. Establish `e : ∀ {a c : ℕ}, (0 : Matrix (Fin a) (Fin c) D.host.E).map (incA D) = 0` using `rat_zero'`. Use `⟨b.1, hb, ?_⟩` and prove the remaining obligations. Rewrite using `[blockMatrix_map₂, hb, e, e, e, M.nzx_mat, adj_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem nzx_rat_mat (M : Maps D hn) (l : ratHerm D ρ) :
     ∃ ζ : Matrix (Fin ρ) (Fin ρ) D.host.E,
@@ -92,7 +92,7 @@ theorem nzx_rat_mat (M : Maps D hn) (l : ratHerm D ρ) :
   rw [blockMatrix_map₂, hb, e, e, e, M.nzx_mat, adj_zero]
 
 /- English proof (translation)
-Establish `h` using `nzx_rat M l.1 l.2 0`. Rewrite `h` using `[rat_zero']`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem nzx_mem_GF (M : Maps D hn) (l : ratHerm D ρ) : M.nzx l.1 0 ∈ GF D n := by
   have h := nzx_rat M l.1 l.2 0
@@ -103,7 +103,7 @@ end GlobalTheory.CompanionTheory.ZUnf.Centre
 namespace GlobalTheory.CompanionTheory.ZUnf
 
 /- English proof (translation)
-Introduce `M` and use `⟨Centre.nzx_add M, Centre.nzx_comm_sh M, Centre.nzx_comm_emb M, fun l => ⟨Centre.nzx_mem_GF M l, Centre.nzx_rat_mat M l⟩⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem centre_nzx : ∀ {D : D7} {n ρ p : ℕ} {hn : ρ + p = n} (M : Maps D hn),
     (∀ a b, M.nzx (a + b) 0 = M.nzx a 0 * M.nzx b 0) ∧ (∀ z y, M.nzx z 0 * M.sh y = M.sh y * M.nzx z 0) ∧

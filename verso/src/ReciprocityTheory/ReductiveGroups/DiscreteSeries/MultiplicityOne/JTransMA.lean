@@ -30,33 +30,31 @@ abbrev TE (S : Type) [Fintype S] [DecidableEq S] :
   Matrix.toEuclideanCLM (n := S) (𝕜 := ℂ)
 
 /- English proof (translation)
-Establish `hH : (m + mᴴ).IsHermitian`. Unfold `Matrix.IsHermitian`. Rewrite using `[Matrix.conjTranspose_add, Matrix.conjTranspose_conjTranspose, add_comm]`. Take `⟨r, ⟨hr1, hr2⟩, hr⟩` from `((Set.Ioo_infinite (show (-1 : ℝ) < 1 by norm_num)).diff (Finset.univ.image fun j => -hH.eigenvalues j / 2).finite_toSet).nonempty`. Take `⟨s, hs2⟩ : ∃ s : ℝ, s ^ 2 = 1 - r ^ 2` from `⟨Real.sqrt (1 - r ^ 2), Real.sq_sqrt (by nlinarith)⟩`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨ζ, hζ⟩ : ∃ ζ : ℂ, ζ = (r : ℂ) + (s : ℂ) * Complex.I` from `⟨_, rfl⟩`. Establish `hζ1 : starRingEnd ℂ ζ * ζ = 1`. Substitute `hζ` using the available equality. Apply the tactic sequence `apply Complex.ext <;> simp <;> nlinarith [hs2]`. Establish `hζ2 : ζ + starRingEnd ℂ ζ = 2 * (r : ℂ)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Substitute `hζ` using the available equality. Apply the tactic sequence `apply Complex.ext <;> simp <;> ring`. Use `⟨ζ, hζ1, ?_⟩` and prove the remaining obligations. Rewrite using `[isUnit_iff_ne_zero]`. Introduce `h0`.
+Substitute using the available equality. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨v, hv0, hv⟩` from `Matrix.exists_mulVec_eq_zero_iff.mpr h0`. Establish `ha : m *ᵥ v = (-starRingEnd ℂ ζ) • v`. Use function extensionality and compare the values at `i`. Establish `h1` using `congrFun hv i`. Establish `hsm : (ζ • m) *ᵥ v = ζ • (m *ᵥ v)` using `by first`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Consider the case `exact Matrix.smul_mulVec ζ m v`. Consider the case `exact Matrix.smul_mulVec_assoc ζ m v`. Consider the case `(funext k; simp [Matrix.mulVec, dotProduct, Finset.mul_sum, mul_assoc])`. Simplify using `only [Matrix.add_mulVec, Matrix.one_mulVec, hsm, Pi.add_apply, Pi.smul_apply, smul_eq_mul, Pi.zero_apply] at h1`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Take the linear combination `(starRingEnd ℂ ζ) * h1 - (m *ᵥ v) i * hζ1`. Establish `hb : mᴴ *ᵥ v = (-ζ) • v`. Establish `h2 : mᴴ *ᵥ (m *ᵥ v) = v` using `by rw [Matrix.mulVec_mulVec, hm, Matrix.one_mulVec]`. Rewrite `h2` using `[ha, Matrix.mulVec_smul]`. Use function extensionality and compare the values at `i`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `h3` using `congrFun h2 i`. Simplify using `only [Pi.smul_apply, smul_eq_mul] at h3 ⊢`. Take the linear combination `(-ζ) * h3 - (mᴴ *ᵥ v) i * hζ1`. Establish `hsum : (m + mᴴ) *ᵥ v = ((-2 * r : ℝ) : ℂ) • v`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[Matrix.add_mulVec, Pi.add_apply, ha, hb]`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Use `push_cast`. Take the linear combination `(-(v i)) * hζ2`. Take `⟨W, hW⟩ : ∃ W : Matrix S S ℂ, W = (hH.eigenvectorUnitary : Matrix S S ℂ)` from `⟨_, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result.
 
-Establish `hW1 : Wᴴ * W = 1`. Rewrite using `[hW, ← Matrix.star_eq_conjTranspose (hH.eigenvectorUnitary : Matrix S S ℂ)]`. Use `first`. Consider the case `exact Unitary.star_mul_self_of_mem hH.eigenvectorUnitary.2`. Consider the case `exact unitary.star_mul_self_of_mem hH.eigenvectorUnitary.2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `hW2 : W * Wᴴ = 1`. Rewrite using `[hW, ← Matrix.star_eq_conjTranspose (hH.eigenvectorUnitary : Matrix S S ℂ)]`. Use `first`. Consider the case `exact Unitary.mul_star_self_of_mem hH.eigenvectorUnitary.2`. Consider the case `exact unitary.mul_star_self_of_mem hH.eigenvectorUnitary.2`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hsp : m + mᴴ = W * Matrix.diagonal (fun j => (hH.eigenvalues j : ℂ)) * Wᴴ`. Rewrite using `[hW]`. Use `conv_lhs => rw [hH.spectral_theorem]`. Use `first`. Consider the case `rfl`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `simp [Unitary.conjStarAlgAut_apply, Matrix.star_eq_conjTranspose, Function.comp_def]`. Take `⟨y, hy⟩ : ∃ y : S → ℂ, y = Wᴴ *ᵥ v` from `⟨_, rfl⟩`. Establish `hy0 : y ≠ 0`. Introduce `h`. Apply `hv0` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← Matrix.one_mulVec v, ← hW2, ← Matrix.mulVec_mulVec, ← hy, h, Matrix.mulVec_zero]`. Establish `h4 : Wᴴ *ᵥ ((m + mᴴ) *ᵥ v) = Wᴴ *ᵥ (((-2 * r : ℝ) : ℂ) • v)` using `by rw [hsum]`. Rewrite `h4` using `[Matrix.mulVec_smul, ← hy, Matrix.mulVec_mulVec, hsp, ← Matrix.mul_assoc, ← Matrix.mul_assoc, hW1, Matrix.one_mul, ← Matrix.mulVec_mulVec, ← hy]`. Take `⟨j, hj⟩` from `Function.ne_iff.mp hy0`. Establish `h5` using `congrFun h4 j`.
-
-Rewrite `h5` using `[Matrix.mulVec_diagonal, Pi.smul_apply, smul_eq_mul]`. Establish `h6 : (hH.eigenvalues j : ℂ) = ((-2 * r : ℝ) : ℂ)` using `mul_right_cancel₀ hj h5`. Establish `h7 : hH.eigenvalues j = -2 * r` using `by exact_mod_cast h6`. Conclude with `hr (Finset.mem_coe.mpr (Finset.mem_image.mpr ⟨j, Finset.mem_univ _, by rw [h7]; ring⟩))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem unitary_exists_unit_scalar_isUnit_det_one_add (m : Matrix S S ℂ) (hm : mᴴ * m = 1) :
     ∃ ζ : ℂ, starRingEnd ℂ ζ * ζ = 1 ∧ IsUnit (1 + ζ • m).det := by
@@ -135,51 +133,47 @@ private theorem unitary_exists_unit_scalar_isUnit_det_one_add (m : Matrix S S �
   exact hr (Finset.mem_coe.mpr (Finset.mem_image.mpr ⟨j, Finset.mem_univ _, by rw [h7]; ring⟩))
 
 /- English proof (translation)
-Take `⟨ζ, hζ1, hQ⟩` from `unitary_exists_unit_scalar_isUnit_det_one_add m hm`. Establish `hζ0 : ζ ≠ 0` using `by rintro rfl; simp at hζ1`. Establish `hζ0' : starRingEnd ℂ ζ ≠ 0` using `by rintro h; rw [h, zero_mul] at hζ1; exact zero_ne_one hζ1`. Take `⟨u, hu⟩ : ∃ u : Matrix S S ℂ, u = ζ • m` from `⟨_, rfl⟩`. Establish `hu1 : uᴴ * u = 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hu, Matrix.conjTranspose_smul, Matrix.smul_mul, Matrix.mul_smul, hm, smul_smul]`. Use `show (starRingEnd ℂ ζ * ζ) • (1 : Matrix S S ℂ) = 1`. Rewrite using `[hζ1, one_smul]`. Take `⟨Q, hQd⟩ : ∃ Q : Matrix S S ℂ, Q = 1 + u` from `⟨_, rfl⟩`. Rewrite `hQ` using `[← hu, ← hQd]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨X, hX⟩ : ∃ X : Matrix S S ℂ, X = (1 - u) * Q⁻¹` from `⟨_, rfl⟩`. Establish `hQQ : Q * Q⁻¹ = 1` using `Matrix.mul_nonsing_inv Q hQ`. Establish `hQQ' : Q⁻¹ * Q = 1` using `Matrix.nonsing_inv_mul Q hQ`. Establish `hXQ : X * Q = 1 - u` using `by rw [hX, Matrix.mul_assoc, hQQ', Matrix.mul_one]`. Establish `key : u * (1 + X) = 1 - X`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : u * (1 + X) * Q = (1 - X) * Q`. Rewrite using `[Matrix.mul_assoc, add_mul, sub_mul, Matrix.one_mul, hXQ, hQd]`. Use `noncomm_ring`. Combine the equalities or inequalities in the displayed calculation. Establish `hQH : (Q⁻¹)ᴴ * Qᴴ = 1` using `by rw [← Matrix.conjTranspose_mul, hQQ, Matrix.conjTranspose_one]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `canc : ∀ Y : Matrix S S ℂ, Y = (Q⁻¹)ᴴ * (Qᴴ * Y * Q) * Q⁻¹`. Introduce `Y`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[hQQ, Matrix.mul_one, ← Matrix.mul_assoc, hQH, Matrix.one_mul]`. Establish `e : Qᴴ * Xᴴ * Q = Qᴴ * (-X) * Q`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Matrix.conjTranspose_mul, hXQ, Matrix.mul_neg, Matrix.neg_mul, Matrix.mul_assoc, hXQ, hQd, Matrix.conjTranspose_sub, Matrix.conjTranspose_add, Matrix.conjTranspose_one]`. Simplify using `only [add_mul, sub_mul, mul_add, mul_sub, Matrix.one_mul, Matrix.mul_one, hu1]`. Normalize the expressions using the abelian group laws. Establish `hXs : Xᴴ = -X` using `by rw [canc Xᴴ, e, ← canc]`. Establish `hH : (Complex.I • X).IsHermitian`.
+Normalize the expressions using the abelian group laws. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `Matrix.IsHermitian`. Rewrite using `[Matrix.conjTranspose_smul, hXs, smul_neg, ← neg_smul]`. Use `congr 1`. Use `show -(starRingEnd ℂ Complex.I) = Complex.I`. Rewrite using `[Complex.conj_I, neg_neg]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨W, hW⟩ : ∃ W : Matrix S S ℂ, W = (hH.eigenvectorUnitary : Matrix S S ℂ)` from `⟨_, rfl⟩`. Establish `hW1 : Wᴴ * W = 1`. Rewrite using `[hW, ← Matrix.star_eq_conjTranspose (hH.eigenvectorUnitary : Matrix S S ℂ)]`. Use `first`. Consider the case `exact Unitary.star_mul_self_of_mem hH.eigenvectorUnitary.2`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `exact unitary.star_mul_self_of_mem hH.eigenvectorUnitary.2`. Establish `hW2 : W * Wᴴ = 1`. Rewrite using `[hW, ← Matrix.star_eq_conjTranspose (hH.eigenvectorUnitary : Matrix S S ℂ)]`. Use `first`. Consider the case `exact Unitary.mul_star_self_of_mem hH.eigenvectorUnitary.2`.
+Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `exact unitary.mul_star_self_of_mem hH.eigenvectorUnitary.2`. Take `⟨ev, hev⟩ : ∃ ev : S → ℝ, ev = hH.eigenvalues` from `⟨_, rfl⟩`. Establish `hsp : Complex.I • X = W * Matrix.diagonal (fun j => (ev j : ℂ)) * Wᴴ`. Rewrite using `[hW, hev]`. Use `conv_lhs => rw [hH.spectral_theorem]`.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `first`. Consider the case `rfl`. Consider the case `simp [Unitary.conjStarAlgAut_apply, Matrix.star_eq_conjTranspose, Function.comp_def]`. Establish `hY : Wᴴ * X * W = Matrix.diagonal (fun j => -Complex.I * (ev j : ℂ))`. Establish `h` using `congrArg (fun M => Wᴴ * M * W) hsp`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `try simp only at h`. Rewrite `h` using `[Matrix.mul_smul, Matrix.smul_mul]`. Rewrite using `[show Wᴴ * (W * Matrix.diagonal (fun j => (ev j : ℂ)) * Wᴴ) * W = Matrix.diagonal (fun j => (ev j : ℂ)) by`. Simplify using `only [Matrix.mul_assoc]`. Rewrite `h` using `[hW1, Matrix.mul_one, ← Matrix.mul_assoc, hW1, Matrix.one_mul]]`.
+Take a linear combination of the given relations to obtain the conclusion. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `i j`. Establish `h8` using `congrFun (congrFun h i) j`. Simplify using `only [Matrix.smul_apply, smul_eq_mul, Matrix.diagonal_apply] at h8 ⊢`. Use `split_ifs at h8 ⊢ with hij`. Take the linear combination `(-Complex.I) * h8 + (Wᴴ * X * W) i j * Complex.I_sq`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take the linear combination `(-Complex.I) * h8 + (Wᴴ * X * W) i j * Complex.I_sq`. Establish `eL : Wᴴ * (u * (1 + X)) * W = (Wᴴ * u * W) * (1 + Wᴴ * X * W)`. Simplify using `only [Matrix.mul_add, Matrix.add_mul, Matrix.mul_one, Matrix.one_mul, Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc W Wᴴ, hW2, Matrix.one_mul]`. Establish `eR : Wᴴ * (1 - X) * W = 1 - Wᴴ * X * W`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Substitute using the available equality.
 
-Simplify using `only [Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, Matrix.mul_assoc]`. Rewrite using `[hW1]`. Establish `h` using `congrArg (fun M => Wᴴ * M * W) key`. Apply the tactic sequence `try simp only at h`. Rewrite `h` using `[eL, eR, hY, hu, Matrix.mul_smul, Matrix.smul_mul, Matrix.smul_mul]`.
+Take a linear combination of the given relations to obtain the conclusion. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hent : ∀ i j, ζ * (Wᴴ * m * W) i j * (1 - Complex.I * (ev j : ℂ)) = if i = j then 1 + Complex.I * (ev i : ℂ) else 0`. Introduce `i j`. Establish `h9` using `congrFun (congrFun h i) j`. Simplify using `only [Matrix.mul_add, Matrix.mul_one, Matrix.add_apply, Matrix.mul_diagonal, Matrix.sub_apply, Matrix.one_apply, Matrix.diagonal_apply, Matrix.smul_apply, smul_eq_mul] at h9`. Use `split_ifs at h9 ⊢ with hij`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Substitute `hij` using the available equality. Take the linear combination `h9`. Take the linear combination `h9`. Establish `hc : ∀ i, (1 - Complex.I * (ev i : ℂ)) ≠ 0`. Introduce `i h0`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `congrArg Complex.re h0` as an intermediate fact. Simplify using `at this`. Establish `hc' : ∀ i, (1 + Complex.I * (ev i : ℂ)) ≠ 0`. Introduce `i h0`. Use `congrArg Complex.re h0` as an intermediate fact.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `at this`. Use `⟨W, fun i => (1 + Complex.I * (ev i : ℂ)) / (ζ * (1 - Complex.I * (ev i : ℂ))), hW1, hW2, fun i => ?_, ?_⟩` and prove the remaining obligations. Establish `ha : starRingEnd ℂ (1 + Complex.I * (ev i : ℂ)) = 1 - Complex.I * (ev i : ℂ)`. Apply the tactic sequence `simp [Complex.conj_ofReal] <;> ring`. Establish `hb : starRingEnd ℂ (1 - Complex.I * (ev i : ℂ)) = 1 + Complex.I * (ev i : ℂ)`.
+Rewrite the conclusion using the stated equalities. Substitute using the available equality. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `simp [Complex.conj_ofReal] <;> ring`. Simplify using `only [map_div₀, map_mul, ha, hb]`. Rewrite using `[div_mul_div_comm, div_eq_one_iff_eq (mul_ne_zero (mul_ne_zero hζ0' (hc' i)) (mul_ne_zero hζ0 (hc i)))]`. Take the linear combination `(-((1 - Complex.I * (ev i : ℂ)) * (1 + Complex.I * (ev i : ℂ)))) * hζ1`. Establish `hm' : Wᴴ * m * W = Matrix.diagonal (fun i => (1 + Complex.I * (ev i : ℂ)) / (ζ * (1 - Complex.I * (ev i : ℂ))))`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Chain the equalities or inequalities of the calculation.
 
-Use extensionality with `i j`. Rewrite using `[Matrix.diagonal_apply]`. Use `split_ifs with hij`. Substitute `hij` using the available equality. Establish `h10` using `hent i i`.
-
-Rewrite `h10` using `[if_pos rfl]`. Rewrite using `[eq_div_iff (mul_ne_zero hζ0 (hc i))]`. Take the linear combination `h10`. Establish `h10` using `hent i j`. Rewrite `h10` using `[if_neg hij]`.
-
-Simplify `h10` using `[hζ0, hc j]`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 private theorem unitary_exists_diagonalization (m : Matrix S S ℂ) (hm : mᴴ * m = 1) :
     ∃ V : Matrix S S ℂ, ∃ d : S → ℂ, Vᴴ * V = 1 ∧ V * Vᴴ = 1 ∧
@@ -307,29 +301,29 @@ private theorem unitary_exists_diagonalization (m : Matrix S S ℂ) (hm : mᴴ *
       _ = _ := by rw [hm']
 
 /- English proof (translation)
-Take `⟨V, d, hV1, hV2, hd, rfl⟩` from `unitary_exists_diagonalization m hm`. Take `⟨x, hx⟩ : ∃ x : S → ℂ, x = Vᴴ *ᵥ w` from `⟨_, rfl⟩`. Choose the witnesses or unpack the hypotheses as in `⟨p, hp, hpx⟩ : ∃ p : S → ℂ, (∀ i, starRingEnd ℂ (p i) * p i = 1) ∧ ∀ i, p i * (‖x i‖ : ℂ) = x i := by`. Use `⟨fun i => Complex.exp (Complex.arg (x i) * Complex.I), fun i => ?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[← Complex.exp_conj, ← Complex.exp_add]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[mul_comm] first`. Consider the case `exact Complex.norm_mul_exp_arg_mul_I (x i)`. Consider the case `exact Complex.abs_mul_exp_arg_mul_I (x i)`. Take `⟨e, he⟩ : ∃ e : S → ℂ, ∀ i, e i = starRingEnd ℂ (p i) ^ 2` from `⟨_, fun _ => rfl⟩`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Establish `he1 : ∀ i, e i * x i = starRingEnd ℂ (x i)`. Introduce `i`. Establish `hcx : starRingEnd ℂ (x i) = starRingEnd ℂ (p i) * (‖x i‖ : ℂ)` using `by conv_lhs => rw [← hpx i]`. Rewrite using `[map_mul, Complex.conj_ofReal]`. Rewrite using `[hcx, he i]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `(-(starRingEnd ℂ (p i)) ^ 2) * hpx i + (starRingEnd ℂ (p i) * (‖x i‖ : ℂ)) * hp i`. Establish `he2 : ∀ i, starRingEnd ℂ (e i) * e i = 1`. Introduce `i`. Rewrite using `[he i]`. Simplify using `only [map_pow, starRingEnd_self_apply]`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take the linear combination `(starRingEnd ℂ (p i) * p i + 1) * hp i`. Establish `hVT : Vᴴ.map (starRingEnd ℂ) = Vᵀ`. Use extensionality with `i j`. Simplify using `[Matrix.conjTranspose_apply]`. Establish `hcVH : (V.map (starRingEnd ℂ))ᴴ = Vᵀ`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use extensionality with `i j`. Simplify using `[Matrix.conjTranspose_apply]`. Establish `hcV : Vᵀ * V.map (starRingEnd ℂ) = 1`. Establish `h : (Vᴴ * V).map (starRingEnd ℂ) = 1`. Rewrite using `[hV1]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`. Rewrite `h` using `[Matrix.map_mul, hVT]`. Then use the resulting hypothesis. Establish `hEE : (Matrix.diagonal e)ᴴ * Matrix.diagonal e = 1`. Rewrite using `[Matrix.diagonal_conjTranspose, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `i`. Conclude with `he2 i`. Establish `hVx : V *ᵥ x = w` using `by rw [hx, Matrix.mulVec_mulVec, hV2, Matrix.one_mulVec]`. Establish `hEx : Matrix.diagonal e *ᵥ x = fun i => starRingEnd ℂ (x i)`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Matrix.mulVec_diagonal]`. Conclude with `he1 i`. Establish `hmv : ∀ (M : Matrix S S ℂ) (v : S → ℂ), M.map (starRingEnd ℂ) *ᵥ (fun i => starRingEnd ℂ (v i)) = fun i => starRingEnd ℂ ((M *ᵥ v) i)`. Introduce `M v`. Use function extensionality and compare the values at `i`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Use `first`. Consider the case `simp [Matrix.mulVec, dotProduct, map_sum]`. Consider the case `simp [Matrix.mulVec, Matrix.dotProduct, map_sum]`. Use `⟨V.map (starRingEnd ℂ) * Matrix.diagonal e * Vᴴ, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.conjTranspose_mul, Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, hcVH]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc Vᵀ, hcV, Matrix.one_mul, ← Matrix.mul_assoc (Matrix.diagonal e)ᴴ, hEE, Matrix.one_mul, hV2]`. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, ← hx, hEx, hmv, hVx]`. Use function extensionality and compare the values at `i`. Conclude with `hw i`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[Matrix.map_mul, Matrix.map_mul, hVT, Matrix.diagonal_map (map_zero _)]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc Vᵀ, hcV, Matrix.one_mul, ← Matrix.mul_assoc Vᴴ V, hV1, Matrix.one_mul, ← Matrix.mul_assoc (Matrix.diagonal e) (Matrix.diagonal d), Matrix.diagonal_mul_diagonal, ← Matrix.mul_assoc (Matrix.diagonal _) (Matrix.diagonal _), Matrix.diagonal_mul_diagonal]`. Establish `hde : ∀ i, starRingEnd ℂ (d i) * (e i * d i) = e i` using `fun i => by linear_combination e i * hd i`. Simplify using `only [hde]`.
+A detailed English derivation is pending.
 -/
 theorem exists_transpose_mat (m : Matrix S S ℂ) (hm : mᴴ * m = 1) (w : S → ℂ) (hw : ∀ s, conj (w s) = w s) :
     ∃ U : Matrix S S ℂ, Uᴴ * U = 1 ∧ U *ᵥ w = w ∧ m.map (starRingEnd ℂ) * U * m = U := by

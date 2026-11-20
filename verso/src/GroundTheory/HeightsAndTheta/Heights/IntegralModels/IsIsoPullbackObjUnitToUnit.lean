@@ -26,9 +26,9 @@ def IsVectorBundle (E : X.Modules) : Prop :=
     ∃ (n : ℕ) (s : Fin n → ((preMod X).obj E).obj (op U)), IsFreeBasisOn ((preMod X).obj E) U s
 
 /- English proof (translation)
-Introduce `V h`. Establish `e : (fun r : Fin 1 → ringOn X V => ∑ i, r i • resM P h ((fun _ : Fin 1 => s) i)) = (fun c : ringOn X V => c • resM P h s) ∘ (fun r : Fin 1 → ringOn X V => r 0)`. Use function extensionality and compare the values at `r`. Simplify using the standard rewrite rules. Rewrite using `[e]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hs V h).comp (Equiv.funUnique (Fin 1) (ringOn X V)).bijective`.
+A detailed English derivation is pending.
 -/
 theorem isFreeBasisOn_of_isBasisOn {P : PMod X} {U : X.Opens} {s : P.obj (op U)}
     (hs : IsBasisOn P U s) : IsFreeBasisOn P U (fun _ : Fin 1 => s) := by
@@ -41,7 +41,7 @@ theorem isFreeBasisOn_of_isBasisOn {P : PMod X} {U : X.Opens} {s : P.obj (op U)}
   exact (hs V h).comp (Equiv.funUnique (Fin 1) (ringOn X V)).bijective
 
 /- English proof (translation)
-Introduce `x`. Take `⟨U, hxU, s, hs⟩` from `hE x`. Take `⟨V, hV, hxV, hVU⟩` from `exists_isAffineOpen_mem_and_subset hxU`. Conclude with `⟨V, hV, hxV, 1, fun _ => resM _ (homOfLE hVU).le s, isFreeBasisOn_of_isBasisOn (hs.restrict _)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem IsInvertibleSheaf.isVectorBundle {E : X.Modules} (hE : IsInvertibleSheaf E) :
     IsVectorBundle E := by
@@ -52,7 +52,7 @@ theorem IsInvertibleSheaf.isVectorBundle {E : X.Modules} (hE : IsInvertibleSheaf
     isFreeBasisOn_of_isBasisOn (hs.restrict _)⟩
 
 /- English proof (translation)
-The claim follows from `IsInvertibleSheaf.isVectorBundle isInvertibleSheaf_unit`.
+A detailed English derivation is pending.
 -/
 theorem isVectorBundle_unit (X : Scheme.{u}) : IsVectorBundle (𝟙_ X.Modules) :=
   IsInvertibleSheaf.isVectorBundle isInvertibleSheaf_unit
@@ -64,7 +64,7 @@ section OverZ
 def toSpecZ (X : Scheme.{0}) : X ⟶ Spec (.of ℤ) := specZIsTerminal.from X
 
 /- English proof (translation)
-The claim follows from `specZIsTerminal.hom_ext f g`.
+A detailed English derivation is pending.
 -/
 theorem specZ_hom_ext {X : Scheme.{0}} (f g : X ⟶ Spec (.of ℤ)) : f = g :=
   specZIsTerminal.hom_ext f g
@@ -76,14 +76,14 @@ def invOpen (X : Scheme.{0}) (m : ℕ) : X.Opens :=
   toSpecZ X ⁻¹ᵁ (PrimeSpectrum.basicOpen (m : ℤ) : (Spec (.of ℤ)).Opens)
 
 /- English proof (translation)
-Simplify using `only [invOpen, Nat.cast_one, PrimeSpectrum.basicOpen_one]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem invOpen_one (X : Scheme.{0}) : invOpen X 1 = ⊤ := by
   simp only [invOpen, Nat.cast_one, PrimeSpectrum.basicOpen_one]
   rfl
 
 /- English proof (translation)
-Simplify using `only [invOpen, Nat.cast_mul, PrimeSpectrum.basicOpen_mul]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem invOpen_mul (X : Scheme.{0}) (a b : ℕ) :
     invOpen X (a * b) = invOpen X a ⊓ invOpen X b := by
@@ -120,7 +120,7 @@ def genToAtP (X : Scheme.{0}) (p : Nat.Primes) : genFib X ⟶ atP X p :=
     (specZ_hom_ext _ _) (specZ_hom_ext _ _)
 
 /- English proof (translation)
-The claim follows from `(pullback.lift_fst _ _ _).trans (Category.comp_id _)`.
+A detailed English derivation is pending.
 -/
 theorem genToAtP_atPTo (X : Scheme.{0}) (p : Nat.Primes) :
     genToAtP X p ≫ atPTo X p = genTo X :=
@@ -187,14 +187,14 @@ def subRes (X : Scheme.{0}) (a m' : ℕ) :
   genRes X a ∣_ subOpen X a m'
 
 /- English proof (translation)
-The claim follows from `morphismRestrict_ι _ _`.
+A detailed English derivation is pending.
 -/
 theorem subRes_square (X : Scheme.{0}) (a m' : ℕ) :
     subRes X a m' ≫ (subOpen X a m').ι = (genRes X a ⁻¹ᵁ subOpen X a m').ι ≫ genRes X a :=
   morphismRestrict_ι _ _
 
 /- English proof (translation)
-Establish `h` using `morphismRestrict_ι (genTo X) (invOpen X m)`. Rewrite using `[Category.assoc, genToAtP_atPTo]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem glue_square (X : Scheme.{0}) (m : ℕ) (p : Nat.Primes) :
     genRes X m ≫ (invOpen X m).ι = ((genOpen X m).ι ≫ genToAtP X p) ≫ atPTo X p := by
@@ -209,7 +209,7 @@ section Generic
 variable {X : Scheme.{u}} [IrreducibleSpace X]
 
 /- English proof (translation)
-Take `⟨W, hW, i, j, hst⟩` from `TopCat.Presheaf.germ_eq E.presheaf _ hU hU s t h`. Rewrite `hst` using `[show j = i from Subsingleton.elim _ _]`. Rewrite using `[← E.presheaf.germ_res_apply i _ hW, ← E.presheaf.germ_res_apply i _ hW, Scheme.Modules.map_smul, Scheme.Modules.map_smul, hst]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem germ_smul_eq {E : X.Modules} {U : X.Opens} (hU : genericPoint X ∈ U) (r : Γ(X, U))
     {s t : Γ(E, U)} (h : E.presheaf.germ U _ hU s = E.presheaf.germ U _ hU t) :
@@ -236,9 +236,9 @@ instance final_opensMap (f : X ⟶ Y) : (Opens.map f.base).Final :=
 set_option backward.isDefEq.respectTransparency.types false in
 
 /- English proof (translation)
-Rewrite using `[isIso_iff_coyoneda_map_bijective]`. Introduce `M`. Rewrite using `[← ((SheafOfModules.pullbackPushforwardAdjunction f.toRingCatSheafHom).homEquiv _ _).bijective.of_comp_iff', ← (SheafOfModules.unitHomEquiv _).bijective.of_comp_iff']`. Use `convert! (SheafOfModules.bijective_pushforwardSections f.toRingCatSheafHom M).comp (SheafOfModules.unitHomEquiv _).bijective`. Use extensionality with `g : 1`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify by unfolding definitions.
 
-Use `dsimp`. Rewrite using `[SheafOfModules.pushforwardSections_unitHomEquiv, EmbeddingLike.apply_eq_iff_eq, Adjunction.homEquiv_naturality_right, SheafOfModules.pullbackPushforwardAdjunction_homEquiv_pullbackObjUnitToUnit]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isIso_pullbackObjUnitToUnit (f : X ⟶ Y)
     [(SheafOfModules.pushforward f.toRingCatSheafHom).IsRightAdjoint] :
@@ -430,12 +430,12 @@ section Inhabitants
 abbrev specInt : Scheme.{0} := Spec (.of ℤ)
 
 /- English proof (translation)
-The claim follows from `specZ_hom_ext _ _`.
+A detailed English derivation is pending.
 -/
 theorem toSpecZ_specInt : toSpecZ specInt = 𝟙 _ := specZ_hom_ext _ _
 
 /- English proof (translation)
-Unfold `IsFiniteTypeOverZ`. Rewrite using `[toSpecZ_specInt]`. Conclude with `⟨inferInstance, inferInstance⟩`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem isFiniteTypeOverZ_specInt : IsFiniteTypeOverZ specInt := by
   unfold IsFiniteTypeOverZ
@@ -443,14 +443,14 @@ theorem isFiniteTypeOverZ_specInt : IsFiniteTypeOverZ specInt := by
   exact ⟨inferInstance, inferInstance⟩
 
 /- English proof (translation)
-Rewrite using `[toSpecZ_specInt]`. Use `infer_instance`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem flat_toSpecZ_specInt : Flat (toSpecZ specInt) := by
   rw [toSpecZ_specInt]
   infer_instance
 
 /- English proof (translation)
-The claim follows from `inferInstance isIntegrallyClosed_stalk x := by have : x.asIdeal.IsPrime := x.isPrime let k : Algebra ℤ (specInt.presheaf.stalk x) := StructureSheaf.stalkAlgebra ℤ x have : IsLocalization.AtPrime (specInt.presheaf.stalk x) x.asIdeal := StructureSheaf.IsLocalization.to_stalk ℤ x ex …`.
+A detailed English derivation is pending.
 -/
 theorem isNormalScheme_specInt : IsNormalScheme specInt where
   isDomain_stalk _ := inferInstance
@@ -470,9 +470,9 @@ def primePt (p : Nat.Primes) : PrimeSpectrum ℤ := ⟨Ideal.span {((p : ℕ) : 
 def closedPt (p : Nat.Primes) : specInt := primePt p
 
 /- English proof (translation)
-Introduce `h`. Establish `hs : genericPoint specInt ⤳ closedPt prime3` using `genericPoint_specializes _`. Rewrite `hs` using `[← h]`. Establish `hle : primePt prime2 ≤ primePt prime3` using `(PrimeSpectrum.le_iff_specializes (primePt prime2) (primePt prime3)).mpr hs`. Establish `h2 : ((2 : ℕ) : ℤ) ∈ Ideal.span {((3 : ℕ) : ℤ)}` using `((PrimeSpectrum.asIdeal_le_asIdeal _ _).mpr hle) (Ideal.subset_span rfl)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[Ideal.mem_span_singleton]`. Evaluate the numerical expressions using `at h2`.
+Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions.
 -/
 theorem closedPt_two_ne_generic : closedPt prime2 ≠ genericPoint specInt := by
   intro h
@@ -486,7 +486,7 @@ theorem closedPt_two_ne_generic : closedPt prime2 ≠ genericPoint specInt := by
   norm_num at h2
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨inferInstance, inferInstance, inferInstance, inferInstance, IsDiscreteValuationRing.not_isField ℤ_[2]⟩, ⟨inferInstance, inferInstance, closedPt_two_ne_generic⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem DominatingDVR.hyps :
     (IsDomain ℤ_[2] ∧ IsLocalRing ℤ_[2] ∧ IsNoetherianRing ℤ_[2] ∧ IsFractionRing ℤ_[2] ℚ_[2] ∧
@@ -497,7 +497,7 @@ theorem DominatingDVR.hyps :
     ⟨inferInstance, inferInstance, closedPt_two_ne_generic⟩⟩
 
 /- English proof (translation)
-Use `⟨inferInstance, inferInstance, ?_, ⟨0, by simp⟩⟩` and prove the remaining obligations. Rewrite using `[PadicInt.maximalIdeal_eq_span_p]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem BlowUpChart.hyps :
     IsNoetherianRing ℤ_[2] ∧ IsFractionRing ℤ_[2] ℚ_[2] ∧
@@ -508,7 +508,7 @@ theorem BlowUpChart.hyps :
   simp
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨inferInstance, inferInstance, inferInstance, inferInstance, IsPrincipalIdealRing.ringKrullDim_eq_one ℤ Int.not_isField⟩`.
+Supply the required witnesses or components.
 -/
 theorem KrullAkizuki.hyps :
     IsNoetherianRing ℤ ∧ IsFractionRing ℤ ℚ ∧ FiniteDimensional ℚ ℚ ∧ IsScalarTower ℤ ℚ ℚ ∧
@@ -517,7 +517,7 @@ theorem KrullAkizuki.hyps :
     IsPrincipalIdealRing.ringKrullDim_eq_one ℤ Int.not_isField⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨inferInstance, inferInstance, inferInstance⟩`.
+Supply the required witnesses or components.
 -/
 theorem HeightOneIntersection.hyps :
     IsNoetherianRing ℤ ∧ IsIntegrallyClosed ℤ ∧ IsFractionRing ℤ ℚ :=
@@ -526,9 +526,9 @@ theorem HeightOneIntersection.hyps :
 abbrev intLattice : Submodule ℤ ℚ := Submodule.span ℤ {1}
 
 /- English proof (translation)
-Establish `: Module.Finite ℤ intLattice` using `inferInstance`. Establish `: Module.Free ℤ intLattice` using `Module.free_of_finite_type_torsion_free'`. Use `⟨inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, ?_, fun _ _ _ => rfl⟩` and prove the remaining obligations. Rewrite using `[Submodule.span_span_of_tower]`. Use `eq_top_iff.mpr fun y _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify `Submodule.smul_mem (Submodule.span ℚ {(1 : ℚ)}) y (Submodule.subset_span (Set.mem_singleton 1))` using `only [smul_eq_mul, mul_one]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem LatticesAgree.hyps :
     IsIntegrallyClosed ℤ ∧ FiniteDimensional ℚ ℚ ∧ IsScalarTower ℤ ℚ ℚ ∧
@@ -547,11 +547,11 @@ theorem LatticesAgree.hyps :
 open GroundTheory.Heights₂.Heights.NumbersDVR MvPolynomial in
 
 /- English proof (translation)
-Use `⟨isMultiProjPrime_bot, ?_, Or.inl ⟨X ⟨(), 0⟩, ?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[ringKrullDim_eq_of_ringEquiv (RingEquiv.quotientBot _), MvPolynomial.ringKrullDim_of_isNoetherianRing, ringKrullDim_eq_zero_of_isField (Field.toIsField ℚ)]`. Establish `hc : Nat.card ((_ : Unit) × Fin 2) = 2`. Rewrite using `[Nat.card_eq_fintype_card, Fintype.card_sigma]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hc, Fintype.card_unit]`. Both sides reduce to the same expression. Establish `h` using `isWeightedHomogeneous_X ℚ (blockWeight (fun _ : Unit => Fin 2)) ⟨(), 0⟩`. Establish `e : blockWeight (fun _ : Unit => Fin 2) ⟨(), 0⟩ = fun _ => 1`. Use function extensionality and compare the values at `k`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[blockWeight]`. Rewrite `h` using `[e]`. Conclude with `h`. Rewrite using `[Ideal.mem_bot]`. Conclude with `X_ne_zero _`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem SectionNef.hyps :
     IsMultiProjPrime (⊥ : Ideal (MRing (fun _ : Unit => Fin 2) ℚ)) ∧
@@ -579,9 +579,9 @@ theorem SectionNef.hyps :
     exact X_ne_zero _
 
 /- English proof (translation)
-Use `⟨one_ne_zero, by norm_num, ?_⟩` and prove the remaining obligations. Introduce `p hp`. Simplify using `only [Finset.mem_insert, Finset.mem_singleton] at hp`. Break down `hp with rfl | rfl` into its components or cases. Conclude with `⟨Nat.prime_two, by norm_num⟩`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components.
 
-Conclude with `⟨Nat.prime_three, by norm_num⟩`.
+Supply the required witnesses or components.
 -/
 theorem SumCp.hyps : (1 : ℤ) ≠ 0 ∧ (2 : ℝ) ≤ 3 ∧ ∀ p ∈ ({2, 3} : Finset ℕ), p.Prime ∧ (p : ℝ) ≤ 3 := by
   refine ⟨one_ne_zero, by norm_num, ?_⟩
@@ -592,7 +592,7 @@ theorem SumCp.hyps : (1 : ℤ) ≠ 0 ∧ (2 : ℝ) ≤ 3 ∧ ∀ p ∈ ({2, 3} :
   · exact ⟨Nat.prime_three, by norm_num⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨inferInstance, inferInstance, inferInstance, inferInstance⟩, ⟨inferInstance, isFiniteTypeOverZ_specInt, inferInstance, isAffineOpen_top _, ⟨⟨closedPt prime2, trivial⟩⟩⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem FiniteIntegralClosure.hyps :
     (Algebra.FiniteType ℤ ℤ ∧ IsFractionRing ℤ ℚ ∧ FiniteDimensional ℚ ℚ ∧ IsScalarTower ℤ ℚ ℚ) ∧
@@ -604,7 +604,7 @@ theorem FiniteIntegralClosure.hyps :
       ⟨⟨closedPt prime2, trivial⟩⟩⟩⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨inferInstance, isNormalScheme_specInt, inferInstance, isVectorBundle_unit _, fun _ _ => Set.image_id _⟩`.
+Supply the required witnesses or components.
 -/
 theorem BundlesAgree.hyps :
     IsIntegral specInt ∧ IsNormalScheme specInt ∧ IsLocallyNoetherian specInt ∧
@@ -616,14 +616,14 @@ theorem BundlesAgree.hyps :
     fun _ _ => Set.image_id _⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨isFiniteTypeOverZ_specInt, isVectorBundle_unit _⟩`.
+Supply the required witnesses or components.
 -/
 theorem SpreadBundle.hyps :
     IsFiniteTypeOverZ specInt ∧ IsVectorBundle (𝟙_ (atP specInt prime2).Modules) :=
   ⟨isFiniteTypeOverZ_specInt, isVectorBundle_unit _⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨isFiniteTypeOverZ_specInt, two_pos, isVectorBundle_unit _, ⟨Iso.refl _⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem SpreadIso.hyps :
     IsFiniteTypeOverZ specInt ∧ 0 < 2 ∧ IsVectorBundle (𝟙_ (invOpen specInt 2).toScheme.Modules) ∧
@@ -632,11 +632,11 @@ theorem SpreadIso.hyps :
   ⟨isFiniteTypeOverZ_specInt, two_pos, isVectorBundle_unit _, ⟨Iso.refl _⟩⟩
 
 /- English proof (translation)
-Establish `h23 : prime2 ≠ prime3`. Introduce `h`. Use `congrArg Subtype.val h` as an intermediate fact. Simplify using `[prime2, prime3] at this`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce `p hp`. Simplify using `only [Finset.mem_insert, Finset.mem_singleton] at hp`. Apply the tactic sequence `rcases hp with rfl | rfl <;> simp [prime2, prime3]`. Introduce `p hp q hq hqp`. Simplify using `only [Finset.mem_insert, Finset.mem_singleton] at hp hq`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `rcases hp with rfl | rfl <;> rcases hq with rfl | rfl`. Conclude with `absurd rfl hqp`. Simplify using `[prime2, prime3]`. Simplify using `[prime2, prime3]`. Conclude with `absurd rfl hqp`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem PrimeOpensCover.hyps :
     (∀ p ∈ ({prime2, prime3} : Finset Nat.Primes), ¬ (p : ℕ) ∣ 5 - (p : ℕ)) ∧
@@ -666,12 +666,12 @@ def GlueBundles.dataSpecInt : GlueBundles.Data specInt {prime2} where
   γ _ := pullbackUnitIso _ ≪≫ (pullbackUnitIso _).symm
 
 /- English proof (translation)
-The claim follows from `isFiniteTypeOverZ_specInt`.
+A detailed English derivation is pending.
 -/
 theorem GlueBundles.hyps : IsFiniteTypeOverZ specInt := isFiniteTypeOverZ_specInt
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨inferInstance, inferInstance, flat_toSpecZ_specInt, isVectorBundle_unit _⟩`.
+Supply the required witnesses or components.
 -/
 theorem ClearDenominators.hyps :
     CompactSpace specInt ∧ QuasiSeparatedSpace specInt ∧ Flat (toSpecZ specInt) ∧

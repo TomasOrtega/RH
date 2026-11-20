@@ -23,7 +23,7 @@ namespace GlobalTheory.ZarhinUniqBundle
 variable {S : Scheme.{0}} {h M : ℕ} {B : Type} [CommRing B] {ζ : B} {s : S ⟶ Sp B}
 
 /- English proof (translation)
-Establish `hs : (swap o.P).IsLB` using `pull_isLB o.isLB _`. Establish `c : cls o.P o.isLB = cls (swap o.P) hs` using `(cls_eq_iff o.isLB hs).2 o.symm`. Rewrite using `[← evc_swap o.isLB hs b a]`. Simplify using `only [evc, c]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem evc_symm (o : SiegPre h M ζ s) {Y : Over S} (a b : Y ⟶ o.A) :
     evc o.isLB a b = evc o.isLB b a := by
@@ -33,29 +33,29 @@ theorem evc_symm (o : SiegPre h M ζ s) {Y : Over S} (a b : Y ⟶ o.A) :
   simp only [evc, c]
 
 /- English proof (translation)
-The claim follows from `additive_of_cube GlobalTheory.CubeTop.cubeTheorem o.ab o.ab o.isLB o.rig₁ o.rig₂`.
+A detailed English derivation is pending.
 -/
 theorem additive (o : SiegPre h M ζ s) : IsAdditive o.P ∧ IsAdditive (swap o.P) :=
   additive_of_cube GlobalTheory.CubeTop.cubeTheorem o.ab o.ab o.isLB o.rig₁ o.rig₂
 
 /- English proof (translation)
-The claim follows from `(isAdditive_iff o.isLB).1 (additive o).1 Y a a' b`.
+A detailed English derivation is pending.
 -/
 theorem evc_mul_left (o : SiegPre h M ζ s) {Y : Over S} (a a' b : Y ⟶ o.A) :
     evc o.isLB (a * a') b = evc o.isLB a b + evc o.isLB a' b :=
   (isAdditive_iff o.isLB).1 (additive o).1 Y a a' b
 
 /- English proof (translation)
-Rewrite using `[evc_symm o a, evc_symm o a, evc_symm o a]`. Conclude with `evc_mul_left o _ _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evc_mul_right (o : SiegPre h M ζ s) {Y : Over S} (a b b' : Y ⟶ o.A) :
     evc o.isLB a (b * b') = evc o.isLB a b + evc o.isLB a b' := by
   rw [evc_symm o a, evc_symm o a, evc_symm o a]; exact evc_mul_left o _ _ _
 
 /- English proof (translation)
-Use `⟨o.isLB, o.rig₁, o.rig₂, fun T x hx ↦ hp.2 T x ?_, fun T x hx ↦ hp.2 T x ?_⟩` and prove the remaining obligations. Establish `e` using `congrArg (pull (lift (snd o.A T) (fst o.A T)).left) ((triv_ev_iff o.isLB _ _).1 hx)`. Rewrite `e` using `[pull_evc, map_zero, lift_fst_assoc, lift_snd]`. Conclude with `(triv_ev_iff o.isLB _ _).2 e`. Establish `e` using `(triv_ev_iff o.isLB _ _).1 hx`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e` using `[evc_symm o]`. Conclude with `(triv_ev_iff o.isLB _ _).2 e`.
+A detailed English derivation is pending.
 -/
 theorem isPerfect (o : SiegPre h M ζ s) (hp : o.Principal) : IsPerfect o.A o.A o.P := by
   refine ⟨o.isLB, o.rig₁, o.rig₂, fun T x hx ↦ hp.2 T x ?_, fun T x hx ↦ hp.2 T x ?_⟩
@@ -79,11 +79,11 @@ def rowU (d : ℕ) (k : Fin 4 ⊕ Fin 4) : ord d :=
   ⟨single (Sum.inl 0) k 1, fun i j ↦ by simp [single]⟩
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Establish `hs : ((∑ k, colU d k * idem d * rowU d k : ord d) : Matrix (Fin 4 ⊕ Fin 4) (Fin 4 ⊕ Fin 4) ℤ) = ∑ k, (colU d k : Matrix _ _ ℤ) * (idem d : Matrix _ _ ℤ) * (rowU d k : Matrix _ _ ℤ)`. Simplify using `only [AddSubmonoidClass.coe_finset_sum, Subring.coe_mul]`. Rewrite using `[hs]`. Use extensionality with `i j`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Simplify using `only [colU, rowU, idem, Matrix.smul_mul, single_mul_single_same, _root_.mul_one, Matrix.sum_apply, Matrix.smul_apply, smul_eq_mul, SubringClass.coe_natCast, Matrix.natCast_apply, single_apply]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using the standard rewrite rules. Establish `hx : ∀ x : Fin 4 ⊕ Fin 4, ¬ (x = i ∧ x = j)` using `fun x hx ↦ hij (hx.1.symm.trans hx.2)`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[hij, hx]`.
+Simplify using the standard rewrite rules.
 -/
 theorem natCast_eq_sum (d : ℕ) : ((d : ℕ) : ord d) = ∑ k, colU d k * idem d * rowU d k := by
   apply Subtype.ext
@@ -106,9 +106,9 @@ namespace GlobalTheory.ZarhinUniqBundle
 open ReciprocityTheory.ChartRestriction.G.Out in
 
 /- English proof (translation)
-Introduce `S A B _ _ hA d hd f g hfg`. Establish `hc` using `hA.comm`. Take `⟨hfin, hfl⟩` from `GlobalTheory.AbTorsionAnyBase.isFinite_and_flat_mulA S A hA d hd`. Establish `gi` using `GlobalTheory.forall_geometricallyIntegral_of_smooth_of_geometricallyConnected`. Establish `hm` using `GlobalTheory.AbLaw.MulN.isMonHom_mulA A d`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsurj : Surjective (ReciprocityTheory.ChartRestriction.G.Out.mulA A d).left` using `GlobalTheory.AbLaw.MulN.surjective_of_geomFibres _ fun K _ _ t ↦ by`. Use `letI : GrpObj ((Over.pullback t).obj A) := Functor.grpObjObj`. Conclude with `(GlobalTheory.flat_and_surjective_of_isFinite_abelianEnd gi K _ (ReciprocityTheory.ChartRestriction.G.Out.TLinPf.isAb_pullback t A hA) _ inferInstance (MorphismProperty.of_isPullback (P := @IsFinite) (GlobalTheory.AbLaw.MulN.isPullback_baseChange t _) hfin)).2`. Conclude with `GlobalTheory.DivisibleHom.cancel_of_flat_surjective (ReciprocityTheory.ChartRestriction.G.Out.mulA A d) hfg`.
+Establish an intermediate fact. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem cancel_pow : ∀ (S : Scheme.{0}) (A B : Over S) [GrpObj A] [GrpObj B], IsAbelianScheme A → ∀ d : ℕ, 0 < d →
     ∀ f g : A ⟶ B, (𝟙 A ^ d) ≫ f = (𝟙 A ^ d) ≫ g → f = g := by
@@ -130,15 +130,13 @@ end GlobalTheory.ZarhinUniqBundle
 namespace GlobalTheory.ZarhinUniqBundle
 
 /- English proof (translation)
-Introduce `S A _ hA P hP a₁ a₂`. Take `⟨D, _, Q, hD', -, q, q'⟩` from `GlobalTheory.dualAbelianScheme S A hA`. Take `⟨x, hx, e⟩` from `GlobalTheory.BirigidLift.exists_hom q q'.additive hP.isLB a₁ a₂`. Establish `ix : IsIso x` using `isIso_of_isIso_pullback hA hD' x fun Ω _ _ s ↦ by`. Use `letI : GrpObj ((Over.pullback s).obj A) := Functor.grpObjObj`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Equip the data with the indicated structure.
 
-Use `letI : GrpObj ((Over.pullback s).obj D) := Functor.grpObjObj`. Establish `f` using `isGrpPullback_pullback A s`. Establish `d` using `isGrpPullback_pullback D s`. Establish `hA₀` using `GlobalTheory.PolPull.isAbelianScheme_of_isGrpPullback hA f`. Use `hA₀.comm` as an intermediate fact.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨g, hg⟩` from `GlobalTheory.AbelianDim.exists_relDim Ω _ hA₀`. Take `⟨m', m'₁, m'₂⟩` from `exists_prod_pullback f f`. Establish `hP₀` using `pull_isLB hP.isLB m'`. Establish `p₀` using `GlobalTheory.PerfectDual.isDual_of_isPerfect GlobalTheory.dualAbelianScheme _ _ hA₀ hA₀ hg hg (hP.baseChange f f m'₁ m'₂ hP₀ ((cls_eq_iff hP₀ hP₀).1 rfl))`. Take `⟨m, m₁, m₂⟩` from `exists_prod_pullback f d`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hQ` using `pull_isLB q.isLB m`. Establish `q₀` using `q.baseChange f d m₁ m₂ hQ ((cls_eq_iff hQ hQ).1 rfl)`. Use `p₀.isIso_of_cls q₀ ?_` and prove the remaining obligations. Rewrite using `[cls_pull hP.isLB _ hP₀, e]`. Conclude with `GlobalTheory.BirigidLift.pull_evc_eq m'₁ m'₂ m₁ m₂ q.isLB hQ (x := x) (pullback.lift_fst _ _ _).symm`.
-
-Conclude with `isDual_of_iso S A A D P Q q hP.isLB x ix hx ((cls_eq_iff hP.isLB (pull_isLB q.isLB _)).1 e)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isDual_of_isPerfect : ∀ (S : Scheme.{0}) (A : Over S) [GrpObj A], IsAbelianScheme A →
     ∀ (P : LB (A ⊗ A).left), IsPerfect A A P → IsAdditive P → IsAdditive (swap P) → IsDual A A P := by
@@ -176,7 +174,7 @@ section Act
 variable {S : Scheme.{0}} {O : Type} [Ring O] {A : Over S} [GrpObj A] [IsCommMonObj A] {act : O → (A ⟶ A)}
 
 /- English proof (translation)
-Establish `e` using `hr.2.2.2 0 0`. Rewrite `e` using `[add_zero]`. Conclude with `(mul_eq_left.1 e.symm)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem act_zero (hr : IsRAct A act) : act 0 = 1 := by
   have e := hr.2.2.2 0 0
@@ -184,7 +182,7 @@ theorem act_zero (hr : IsRAct A act) : act 0 = 1 := by
   exact (mul_eq_left.1 e.symm)
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => rw [Nat.cast_zero, act_zero hr, pow_zero]`. Consider the case `succ n ih => rw [Nat.cast_succ, hr.2.2.2, ih, hr.2.1, pow_succ]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem act_natCast (hr : IsRAct A act) (n : ℕ) : act (n : O) = 𝟙 A ^ n := by
   induction n with
@@ -192,7 +190,7 @@ theorem act_natCast (hr : IsRAct A act) (n : ℕ) : act (n : O) = 𝟙 A ^ n := 
   | succ n ih => rw [Nat.cast_succ, hr.2.2.2, ih, hr.2.1, pow_succ]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => rw [Finset.sum_empty, Finset.prod_empty, act_zero hr]`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.prod_insert ha, hr.2.2.2, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem act_sum (hr : IsRAct A act) {κ : Type} (s : Finset κ) (f : κ → O) :
     act (∑ i ∈ s, f i) = ∏ i ∈ s, act (f i) := by
@@ -204,7 +202,7 @@ theorem act_sum (hr : IsRAct A act) {κ : Type} (s : Finset κ) (f : κ → O) :
 end Act
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => rw [Finset.prod_empty, Finset.prod_empty, MonObj.one_comp]`. Consider the case `insert a s ha ih => rw [Finset.prod_insert ha, Finset.prod_insert ha, MonObj.mul_comp, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem prod_comp {S : Scheme.{0}} {A B : Over S} [GrpObj A] [IsCommMonObj A] [GrpObj B] [IsCommMonObj B]
     {κ : Type} (s : Finset κ) (f : κ → (A ⟶ A)) (u : A ⟶ B) [IsMonHom u] :
@@ -215,9 +213,9 @@ theorem prod_comp {S : Scheme.{0}} {A B : Over S} [GrpObj A] [IsCommMonObj A] [G
   | insert a s ha ih => rw [Finset.prod_insert ha, Finset.prod_insert ha, MonObj.mul_comp, ih]
 
 /- English proof (translation)
-Establish `h1` using `pull_isLB o.isLB (lift (fst o.A o.A ≫ act a) (snd o.A o.A)).left`. Establish `h2` using `pull_isLB o.isLB (lift (fst o.A o.A) (snd o.A o.A ≫ act (bar' a))).left`. Establish `c` using `(cls_eq_iff h1 h2).2 (ha a)`. Establish `k` using `congrArg (pull (lift x y).left) c`. Rewrite `k` using `[cls_pull o.isLB _ h1, cls_pull o.isLB _ h2, ← pull_comp, ← pull_comp, ← Over.comp_left, ← Over.comp_left, comp_lift, comp_lift, lift_fst_assoc, lift_snd, lift_fst, lift_snd_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `k`.
+A detailed English derivation is pending.
 -/
 theorem evc_adj {S : Scheme.{0}} {h M : ℕ} {B : Type} [CommRing B] {ζ : B} {s : S ⟶ Sp B} {O : Type} [Ring O]
     (o : SiegPre h M ζ s) {bar' : O → O} {act : O → (o.A ⟶ o.A)} (ha : Adj o.A o.P bar' act) (a : O)
@@ -231,37 +229,33 @@ theorem evc_adj {S : Scheme.{0}} {h M : ℕ} {B : Type} [CommRing B] {ζ : B} {s
   exact k
 
 /- English proof (translation)
-Introduce `h M d hd S t c z₁ z₂ act₁ act₂ inc₁ pr₁ inc₂ e hdu hker hp₁ hp₂ hr₁ hr₂ ha₁ ha₂ hi hpr hip hpi hc₁ hc₂ he hinc hact`. Establish `hL₁` using `z₁.isLB`. Establish `hL₂` using `z₂.isLB`. Establish `hD : IsDual z₁.A z₁.A z₁.P` using `isDual_of_isPerfect S z₁.A z₁.ab z₁.P (isPerfect z₁ hp₁) (additive z₁).1 (additive z₁).2`. Establish `hP' : (z₂.P.pull (e.hom ⊗ₘ e.hom).left).IsLB` using `pull_isLB hL₂ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `K' : ∀ (Y : Over S) (a b : Y ⟶ z₁.A), evc hP' a b = evc hL₂ (a ≫ e.hom) (b ≫ e.hom)`. Introduce `Y a b`. Rewrite using `[evc, evc, cls_pull hL₂ _ hP', ← pull_comp, ← Over.comp_left, lift_map]`. Establish `hs' : (swap (z₂.P.pull (e.hom ⊗ₘ e.hom).left)).IsLB` using `pull_isLB hP' _`. Establish `addP' : IsAdditive (z₂.P.pull (e.hom ⊗ₘ e.hom).left)` using `(isAdditive_iff hP').2 fun Y a a' b ↦ by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[K', K', K', MonObj.mul_comp]`. Conclude with `evc_mul_left z₂ _ _ _`. Establish `addP's : IsAdditive (swap (z₂.P.pull (e.hom ⊗ₘ e.hom).left))` using `(isAdditive_iff hs').2 fun Y b b' a ↦ by`. Rewrite using `[evc_swap hP' hs', evc_swap hP' hs', evc_swap hP' hs', K', K', K', MonObj.mul_comp]`. Conclude with `evc_mul_right z₂ _ _ _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨u, hu, -⟩` from `hD.univ z₁.A _ hP' addP'`. Establish `hE : (ev z₁.P (fst z₁.A z₁.A) (snd z₁.A z₁.A ≫ u)).IsLB` using `pull_isLB hL₁ _`. Establish `Ku : ∀ (Y : Over S) (a b : Y ⟶ z₁.A), evc hP' a b = evc hL₁ a (b ≫ u)`. Introduce `Y a b`. Establish `cc : cls _ hP' = cls _ hE` using `(cls_eq_iff hP' hE).2 hu`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `k` using `evc_ev hL₁ (fst z₁.A z₁.A) (snd z₁.A z₁.A ≫ u) hE a b`. Rewrite `k` using `[lift_fst, lift_snd_assoc]`. Rewrite using `[← k, evc, evc, cc]`. Use `haveI hum : IsMonHom u := isMonHom_of_classifying S z₁.A z₁.A z₁.A _ z₁.P hD (additive z₁).2 hP' addP's u hu`. Establish `adj' : ∀ (a : ord d) (Y : Over S) (x y : Y ⟶ z₁.A), evc hP' (x ≫ act₁ a) y = evc hP' x (y ≫ act₁ (bar d a))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `a Y x y`. Rewrite using `[K', K']`. Simplify using `only [Category.assoc, hact]`. Rewrite using `[← Category.assoc x, evc_adj z₂ ha₂, Category.assoc]`. Establish `comm : ∀ N, act₁ N ≫ u = u ≫ act₁ N`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Introduce `N`. Apply `hD.eq_of_evc (T := z₁.A)` to reduce the goal to its premises. Establish `step : ∀ (Y : Over S) (x y : Y ⟶ z₁.A), evc hL₁ x (y ≫ act₁ N ≫ u) = evc hL₁ x (y ≫ u ≫ act₁ N)`. Introduce `Y x y`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Conclude with `step _ _ _`. Use `haveI := hi`. Use `haveI := hpr`. Use `haveI := he`. Take `⟨ψ, hψdef⟩ : ∃ ψ : c.A ⟶ c.A, ψ = inc₁ ≫ u ≫ pr₁` from `⟨_, rfl⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hincu : inc₁ ≫ u = ψ ≫ inc₁`. Combine the equalities or inequalities in the displayed calculation. Establish `hγ : ∀ (z : SiegPre (8 * h) M (zetaAway M) t) (inc : c.A ⟶ z.A), LBIso c.P (z.P.pull (inc ⊗ₘ inc).left) → ∀ (Y : Over S) (a b : Y ⟶ c.A), evc c.isLB a b = evc z.isLB (a ≫ inc) (b ≫ inc)`. Introduce `z inc hc Y a b`. Establish `h1` using `pull_isLB z.isLB (inc ⊗ₘ inc).left`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `cc` using `(cls_eq_iff c.isLB h1).2 hc`. Rewrite using `[evc, evc, cc, cls_pull z.isLB _ h1, ← pull_comp, ← Over.comp_left, lift_map]`. Establish `hψ : ∀ (Y : Over S) (a b : Y ⟶ c.A), evc c.isLB a (b ≫ ψ) = evc c.isLB a b`. Introduce `Y a b`. Rewrite using `[hγ z₁ inc₁ hc₁ _ a (b ≫ ψ), hγ z₂ inc₂ hc₂ _ a b, Category.assoc b ψ, ← hincu, ← Category.assoc, ← Ku, K', ← hinc]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Simplify using `only [Category.assoc]`. Establish `hw : (ψ * (𝟙 c.A)⁻¹) ^ d = 1`. Use `hker.2 c.A _ ((triv_ev_iff c.isLB _ _).2 ?_)` and prove the remaining obligations. Rewrite using `[evc_symm c]`. Establish `e1` using `evc_mul_right c (fst c.A c.A) (snd c.A c.A ≫ (ψ * (𝟙 c.A)⁻¹)) (snd c.A c.A)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e2 : (snd c.A c.A ≫ (ψ * (𝟙 c.A)⁻¹)) * snd c.A c.A = snd c.A c.A ≫ ψ` using `by conv_rhs => rw [← inv_mul_cancel_right ψ (𝟙 c.A)]`. Rewrite using `[MonObj.comp_mul (snd c.A c.A) (ψ * (𝟙 c.A)⁻¹) (𝟙 c.A), Category.comp_id]`. Rewrite `e1` using `[e2, hψ]`. Conclude with `left_eq_add.1 (e1.trans (add_comm _ _))`. Use `haveI : IsMonHom ψ := by rw [hψdef]; infer_instance`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hψd : (𝟙 c.A ^ d) ≫ ψ = (𝟙 c.A ^ d) ≫ 𝟙 c.A`. Rewrite using `[MonObj.pow_comp, Category.id_comp, Category.comp_id]`. Rewrite `hw` using `[mul_pow, inv_pow, mul_inv_eq_one]`. Conclude with `hw`. Establish `hψ1 : ψ = 𝟙 c.A` using `cancel_pow S c.A c.A c.ab d hd ψ (𝟙 _) hψd`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hincu' : inc₁ ≫ u = inc₁` using `by rw [hincu, hψ1, Category.id_comp]`. Establish `hsum` using `act_sum hr₁ Finset.univ (fun k ↦ colU d k * idem d * rowU d k)`. Rewrite `hsum` using `[← natCast_eq_sum, act_natCast hr₁]`. Establish `key : (𝟙 z₁.A ^ d) ≫ u = (𝟙 z₁.A ^ d) ≫ 𝟙 _`. Rewrite using `[hsum, prod_comp, Category.comp_id]`.
-
-Use `Finset.prod_congr rfl fun k _ ↦ ?_` and prove the remaining obligations. Rewrite using `[hr₁.2.2.1, hr₁.2.2.1, ← hpi]`. Simplify using `only [Category.assoc]`. Rewrite using `[comm, ← Category.assoc inc₁ u, hincu']`. Establish `hu1 : u = 𝟙 _` using `cancel_pow S z₁.A z₁.A z₁.ab d hd u (𝟙 _) key`.
-
-Establish `cc : cls _ hP' = cls z₁.P hL₁`. Rewrite using `[(cls_eq_iff hP' hE).2 hu, cls_pull hL₁ _ hE, hu1, Category.comp_id, lift_fst_snd, Over.id_left, pull_id]`. Conclude with `(cls_eq_iff hL₁ hP').1 cc.symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lbIso_of_ordLinear : ∀ (h M d : ℕ), 0 < d → ∀ (S : Scheme.{0}) (t : S ⟶ Sp (cycAway M)) (c : SiegPre h M (zetaAway M) t) (z₁ z₂ : SiegPre (8 * h) M (zetaAway M) t) (act₁ : GlobalTheory.ZarhinFam.ord d → (z₁.A ⟶ z₁.A)) (act₂ : GlobalTheory.ZarhinFam.ord d → (z₂.A ⟶ z₂.A)) (inc₁ : c.A ⟶ z₁.A) (pr₁ : z₁.A ⟶ c.A) (inc₂ : c.A ⟶ z₂.A) (e : z₁.A ≅ z₂.A), IsUnit ((d : ℕ) : Γ(S, ⊤)) → SiegKerBy c d → z₁.Principal → z₂.Principal → IsRAct z₁.A act₁ → IsRAct z₂.A act₂ → Adj z₁.A z₁.P (GlobalTheory.ZarhinFam.bar d) act₁ → Adj z₂.A z₂.P (GlobalTheory.ZarhinFam.bar d) act₂ → IsMonHom inc₁ → IsMonHom pr₁ → inc₁ ≫ pr₁ = 𝟙 c.A → pr₁ ≫ inc₁ = act₁ (GlobalTheory.ZarhinFam.idem d) → LBIso c.P (z₁.P.pull (inc₁ ⊗ₘ inc₁).left) → LBIso c.P (z₂.P.pull (inc₂ ⊗ₘ inc₂).left) → IsMonHom e.hom → inc₁ ≫ e.hom = inc₂ → (∀ o, act₁ o ≫ e.hom = e.hom ≫ act₂ o) → LBIso z₁.P (z₂.P.pull (e.hom ⊗ₘ e.hom).left) := by
   intro h M d hd S t c z₁ z₂ act₁ act₂ inc₁ pr₁ inc₂ e hdu hker hp₁ hp₂ hr₁ hr₂ ha₁ ha₂ hi hpr hip hpi hc₁ hc₂

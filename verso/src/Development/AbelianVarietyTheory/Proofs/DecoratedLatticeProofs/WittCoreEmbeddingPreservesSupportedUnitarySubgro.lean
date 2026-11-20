@@ -17,11 +17,11 @@ def IsSDAt (S : HSp D) (v : Pl D) (Λ : AddSubgroup (Fin S.rank → AE D)) : Pro
     ∀ y : Fin S.rank → AE D, (∀ i, y i ∈ idAt D (· = v)) → (y ∈ Λ ↔ ∀ x ∈ Λ, hermAt S y x ∈ intAt D (· = v))
 
 /- English proof (translation)
-Unfold `congGrp`. Rewrite using `[MonoidHom.mem_ker]`. Establish `e1 : ((1 : Mx D V.rank V.rank).map (Ideal.Quotient.mk I)) = 1` using `Matrix.map_one _ (map_zero _) (map_one _)`. Establish `e2 : ((Matrix.GeneralLinearGroup.map (Ideal.Quotient.mk I)).comp (matHom V) g).1 = (mt V g).map (Ideal.Quotient.mk I)` using `rfl`. Prove the components needed by the constructor for the conclusion.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h i j`. Rewrite using `[← Ideal.Quotient.eq]`. Use `congrArg (fun u : GL (Fin V.rank) (AE D ⧸ I) => u.1 i j) h` as an intermediate fact. Simplify using `only [e2, Units.val_one] at this`. Rewrite `this` using `[← e1]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`. Introduce `h`. Use extensionality with `i j`. Rewrite using `[e2, Units.val_one, ← e1]`. Conclude with `Ideal.Quotient.eq.2 (h i j)`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_congGrp_iff (V : HSp D) (I : Ideal (AE D)) (g : GA D V) :
     g ∈ congGrp V I ↔ ∀ i j, mt V g i j - (1 : Mx D V.rank V.rank) i j ∈ I := by
@@ -42,7 +42,7 @@ theorem mem_congGrp_iff (V : HSp D) (I : Ideal (AE D)) (g : GA D V) :
     exact Ideal.Quotient.eq.2 (h i j)
 
 /- English proof (translation)
-Simplify using `only [Matrix.mulVec, dotProduct]`. Conclude with `Ideal.sum_mem _ fun j _ => Ideal.mul_mem_left _ _ (hy j)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mulVec_mem_idAt {P : Pl D → Prop} {m n : ℕ} (M : Matrix (Fin m) (Fin n) (AE D)) {y : Fin n → AE D}
     (hy : ∀ i, y i ∈ idAt D P) (i : Fin m) : (M *ᵥ y) i ∈ idAt D P :=
@@ -51,9 +51,9 @@ theorem mulVec_mem_idAt {P : Pl D → Prop} {m n : ℕ} (M : Matrix (Fin m) (Fin
   exact Ideal.sum_mem _ fun j _ => Ideal.mul_mem_left _ _ (hy j)
 
 /- English proof (translation)
-Establish `hγ'` using `(mem_congGrp_iff S₀ (idAt D P) γ).1 hγ`. Use `(mem_congGrp_iff S (idAt D P) _).2 fun i j => ?_` and prove the remaining obligations. Establish `e : mt S (d.emb0 γ) - 1 = d.j0 ⬝ (mt S₀ γ - 1) ⬝ d.p0`. Rewrite using `[d.unitaryMatrix_wittCoreEmbedding, ← d.sum_eq_one, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Rewrite using `[← Matrix.sub_apply, e, Matrix.mul_apply]`. Use `Ideal.sum_mem _ fun k _ => Ideal.mul_mem_right _ _ ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply]`. Conclude with `Ideal.sum_mem _ fun l _ => Ideal.mul_mem_left _ _ (by rw [Matrix.sub_apply]; exact hγ' l k)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wittCoreEmbedding_preserves_supportedUnitarySubgroup {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) {P : Pl D → Prop} {γ : GA D S₀}
     (hγ : γ ∈ grpAt S₀ P) : d.emb0 γ ∈ grpAt S P := by

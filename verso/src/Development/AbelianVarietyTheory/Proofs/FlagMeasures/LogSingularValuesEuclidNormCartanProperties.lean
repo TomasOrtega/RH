@@ -13,15 +13,15 @@ namespace GlobalTheory.Count.CartanSize
 open GlobalTheory.Count.Cartan
 
 /- English proof (translation)
-Introduce `n ε`. Establish `hU : ∀ g : UJ ε, Formalism.REAL.inUJ ε (uMat g)` using `fun g => g.2`. Establish `hnn : ∀ g : Matrix (Fin n) (Fin n) ℂ, 0 ≤ dHS g` using `fun g => Real.sqrt_nonneg _`. Take `⟨-, hB, -, hC, -⟩` from `GlobalTheory.Count.Cartan.cartan_distances n ε`. Use `⟨hC, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `g`. Use `⟨hnn _, ?_⟩` and prove the remaining obligations. Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Rewrite using `[GlobalTheory.Dec.dOp_fin_zero]`. Conclude with `hnn _`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨h0, -, -, h2, -⟩` from `hB g g (by omega)`. Establish `h1 : (1 : ℝ) ≤ Real.sqrt 2`. Rewrite using `[show (1 : ℝ) = Real.sqrt 1 by simp]`. Conclude with `Real.sqrt_le_sqrt (by norm_num)`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Introduce `g`. Conclude with `⟨uMat g * NormedSpace.exp (-Formalism.REAL.polarLog (uMat g)), Formalism.REAL.mul_exp_neg_polarLog_mem_compact (hU g), Formalism.REAL.polarLog (uMat g), Formalism.REAL.polarLog_mem_hermitian_part (hU g), Formalism.REAL.polar_decomposition_eq, GlobalTheory.Count.Cartan.dHS_eq_log …`. Introduce `hr g`. Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Simplify using `[dHS]`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Take `⟨-, -, -, -, h3⟩` from `hB g g (by omega)`. Simplify using `only [hr, Nat.cast_zero, mul_zero, Real.sqrt_zero, zero_mul] at h3`. Conclude with `le_antisymm h3 (hnn _)`.
+A detailed English derivation is pending.
 -/
 theorem cartan_size : ∀ (n : ℕ) (ε : Fin n → Bool), Continuous (fun g : UJ ε => dHS (uMat g)) ∧ (∀ g : UJ ε, 0 ≤ dHS (uMat g) ∧ dOp (uMat g) ≤ dHS (uMat g)) ∧ (∀ g : UJ ε, ∃ k ∈ Kset ε, ∃ X, inP ε X ∧ uMat g = k * NormedSpace.exp X ∧ dHS (uMat g) = Real.sqrt (hs X)) ∧ (rkR ε = 0 → ∀ g : UJ ε, dHS (uMat g) = 0) := by
   intro n ε

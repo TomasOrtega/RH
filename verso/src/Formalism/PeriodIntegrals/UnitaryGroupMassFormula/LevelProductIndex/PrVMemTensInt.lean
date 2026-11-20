@@ -16,9 +16,9 @@ theorem prV_tmul' {F E : Type} [Field F] [NumberField F] [CommRing E] [Algebra F
     prV (E := E) v (e ⊗ₜ[F] a) = e ⊗ₜ[F] (a v) := rfl
 
 /- English proof (translation)
-Establish `hle : tensInt (F` using `F) (FiniteAdeleRing (𝓞 F) F) (intOE E) (intAd F) ≤ (tensInt (F := F) (v.adicCompletion F) (intOE E) (v.adicCompletionIntegers F).toSubring).comap (prV (E := E) v) := by`. Use `Subring.closure_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ (⟨x, rfl⟩ | ⟨a, rfl⟩)`. Express the relevant statement in the definitionally equal form `prV (E := E) v ((x : E) ⊗ₜ[F] (1 : FiniteAdeleRing (𝓞 F) F)) ∈ tensInt (F := F) (v.adicCompletion F) (intOE E) (v.adicCompletionIntegers F).toSubring`. Rewrite using `[prV_tmul']`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Subring.subset_closure (Or.inl ⟨x, rfl⟩)`. Express the relevant statement in the definitionally equal form `prV (E := E) v ((1 : E) ⊗ₜ[F] (a : FiniteAdeleRing (𝓞 F) F)) ∈ tensInt (F := F) (v.adicCompletion F) (intOE E) (v.adicCompletionIntegers F).toSubring`. Rewrite using `[prV_tmul']`. Conclude with `Subring.subset_closure (Or.inr ⟨⟨(a : FiniteAdeleRing (𝓞 F) F) v, a.2 v⟩, rfl⟩)`. Conclude with `hle hs`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prV_mem_tensInt {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (v : HeightOneSpectrum (𝓞 F)) (s : E ⊗[F] FiniteAdeleRing (𝓞 F) F)
@@ -39,15 +39,15 @@ theorem prV_mem_tensInt {F E : Type} [Field F] [NumberField F] [Field E] [Number
   exact hle hs
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ n Lb v y hy`. Establish `hy' : y ∈ Submodule.span (tensInt (F` using `F) (FiniteAdeleRing (𝓞 F) F) (intOE E) (intAd F)) ((fun x : Fin n → E => fun i => inclE (F := F) (FiniteAdeleRing (𝓞 F) F) (x i)) '' (Lb : Set (Fin n → E))) := hy`. Use `clear hy`. Proceed by induction on `hy' using Submodule.span_induction with`. Consider the case `mem x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨l, hl, rfl⟩` from `hx`. Apply `Submodule.subset_span` to reduce the goal to its premises. Conclude with `⟨l, hl, rfl⟩`. Consider the case `zero`. Use `(latV v Lb).zero_mem using 1` and compare the differences between its conclusion and the goal.
+Reduce the claim to the hypotheses of an applicable result. Supply the required witnesses or components. Treat this case separately. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `j`. Simplify using the standard rewrite rules. Consider the case `add x y _ _ hx hy`. Establish `h : (fun j => prV (E` using `E) v ((x + y) j)) = (fun j => prV (E := E) v (x j)) + (fun j => prV (E := E) v (y j)) := by`. Use function extensionality and compare the values at `j`.
+Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[h]`. Conclude with `add_mem hx hy`. Consider the case `smul s x _ hx`. Establish `h : (fun j => prV (E` using `E) v ((s • x) j)) = (⟨prV (E := E) v s, prV_mem_tensInt (E := E) v s s.2⟩ : tensInt (F := F) (v.adicCompletion F) (intOE E) (v.adicCompletionIntegers F).toSubring) • (fun j => prV (E := E) v (x j)) := by`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `j`. Use `show prV (E := E) v ((s : E ⊗[F] FiniteAdeleRing (𝓞 F) F) * x j) = prV (E := E) v s * prV (E := E) v (x j)`. Conclude with `map_mul _ _ _`. Rewrite using `[h]`. Conclude with `Submodule.smul_mem _ _ hx`.
+A detailed English derivation is pending.
 -/
 theorem plDown : PLDown := by
   intro F E _ _ _ _ _ n Lb v y hy

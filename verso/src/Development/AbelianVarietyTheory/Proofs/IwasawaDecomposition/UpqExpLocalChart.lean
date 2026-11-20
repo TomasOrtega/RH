@@ -14,14 +14,14 @@ noncomputable def sumAbs (M : Matrix n n ℂ) : ℝ := ∑ i, ∑ j, ‖M i j‖
 
 omit [DecidableEq n] in
 /- English proof (translation)
-Unfold `sumAbs`. Check the signs of the components of the expression.
+Replace the relevant objects with their definitions. Check the signs of the components of the expression.
 -/
 theorem sumAbs_nonneg (M : Matrix n n ℂ) : 0 ≤ sumAbs M := by
   unfold sumAbs; positivity
 
 omit [DecidableEq n] in
 /- English proof (translation)
-Unfold `sumAbs`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_add_distrib]`. Conclude with `Finset.sum_le_sum fun j _ => norm_add_le _ _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sumAbs_add_le (A B : Matrix n n ℂ) : sumAbs (A + B) ≤ sumAbs A + sumAbs B := by
   unfold sumAbs
@@ -32,16 +32,16 @@ theorem sumAbs_add_le (A B : Matrix n n ℂ) : sumAbs (A + B) ≤ sumAbs A + sum
 
 omit [DecidableEq n] in
 /- English proof (translation)
-Simplify using `[sumAbs]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sumAbs_neg (A : Matrix n n ℂ) : sumAbs (-A) = sumAbs A := by
   simp [sumAbs]
 
 omit [DecidableEq n] in
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.EntrySumMulBound.entrySum_mul_le`. Consider the case `exact _root_.GlobalTheory.EntrySumMulBound.entrySum_mul_le`. Consider the case `(apply _root_.GlobalTheory.EntrySumMulBound.entrySum_mul_le <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.EntrySumMulBound.entrySum_mul_le <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.EntrySumMulBound.entrySum_mul_le <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.EntrySumMulBound.entrySum_mul_le ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem sumAbs_mul_le (A B : Matrix n n ℂ) : sumAbs (A * B) ≤ sumAbs A * sumAbs B := by
   first
@@ -56,7 +56,7 @@ section Op
 open scoped Matrix.Norms.Operator
 
 /- English proof (translation)
-Rewrite using `[Matrix.linfty_opNorm_def]`. Use `Finset.le_sup (f := fun i : n => ∑ j, ‖M i j‖₊) (Finset.mem_univ i)` as an intermediate fact. Establish `h2 : ((∑ j, ‖M i j‖₊ : NNReal) : ℝ) ≤ _` using `NNReal.coe_le_coe.2 this`. Simplify using `using h2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem row_le_op (M : Matrix n n ℂ) (i : n) : ∑ j, ‖M i j‖ ≤ ‖M‖ := by
   rw [Matrix.linfty_opNorm_def]
@@ -65,7 +65,7 @@ theorem row_le_op (M : Matrix n n ℂ) (i : n) : ∑ j, ‖M i j‖ ≤ ‖M‖ 
   simpa using h2
 
 /- English proof (translation)
-Rewrite using `[Matrix.linfty_opNorm_def]`. Establish `: (Finset.univ.sup fun i : n => ∑ j, ‖M i j‖₊) ≤ ∑ i, ∑ j, ‖M i j‖₊` using `Finset.sup_le fun i _ => Finset.single_le_sum (f := fun l => ∑ j, ‖M l j‖₊) (fun l _ => by positivity) (Finset.mem_univ i)`. Establish `h2` using `NNReal.coe_le_coe.2 this`. Simplify `h2` using `[sumAbs]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem op_le_sumAbs (M : Matrix n n ℂ) : ‖M‖ ≤ sumAbs M := by
   rw [Matrix.linfty_opNorm_def]
@@ -76,7 +76,7 @@ theorem op_le_sumAbs (M : Matrix n n ℂ) : ‖M‖ ≤ sumAbs M := by
   simpa [sumAbs] using h2
 
 /- English proof (translation)
-Unfold `sumAbs`. Combine the equalities or inequalities in the displayed calculation.
+Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation.
 -/
 theorem sumAbs_le_op (M : Matrix n n ℂ) : sumAbs M ≤ (Fintype.card n : ℝ) * ‖M‖ := by
   unfold sumAbs
@@ -84,13 +84,11 @@ theorem sumAbs_le_op (M : Matrix n n ℂ) : sumAbs M ≤ (Fintype.card n : ℝ) 
     _ = _ := by simp
 
 /- English proof (translation)
-Establish `h` using `(hasStrictFDerivAt_exp_zero (𝕂 := ℂ) (𝔸 := Matrix n n ℂ)).isLittleO`. Establish `hc : 0 < η / ((Fintype.card n : ℝ) + 1)` using `by positivity`. Establish `h2` using `h.def hc`. Rewrite `h2` using `[Metric.eventually_nhds_iff]`. Take `⟨ρ, hρ, h3⟩` from `h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨ρ, hρ, fun A B hA hB => ?_⟩` and prove the remaining obligations. Establish `h4` using `@h3 (A, B) (by`. Rewrite using `[Prod.dist_eq, dist_zero_right, dist_zero_right]`. Conclude with `max_lt ((op_le_sumAbs A).trans_lt hA) ((op_le_sumAbs B).trans_lt hB))`. Simplify using `only [ContinuousLinearMap.one_apply] at h4`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h5` using `op_le_sumAbs (A - B)`. Establish `h6` using `sumAbs_nonneg (A - B)`. Combine the equalities or inequalities in the displayed calculation. Use `mul_le_mul_of_nonneg_left (h4.trans ?_) (by positivity)` and prove the remaining obligations. Conclude with `mul_le_mul_of_nonneg_left h5 hc.le`.
-
-Use `_ ≤ ((Fintype.card n : ℝ) + 1) * (η / ((Fintype.card n : ℝ) + 1) * sumAbs (A - B)) := by gcongr; linarith`. Use `_ = _ := by field_simp`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exp_strict (η : ℝ) (hη : 0 < η) : ∃ ρ : ℝ, 0 < ρ ∧ ∀ A B : Matrix n n ℂ,
     sumAbs A < ρ → sumAbs B < ρ →
@@ -118,17 +116,17 @@ theorem exp_strict (η : ℝ) (hη : 0 < η) : ∃ ρ : ℝ, 0 < ρ ∧ ∀ A B 
 end Op
 
 /- English proof (translation)
-Take `⟨ρ, hρ, h⟩` from `exp_strict (n := n) η hη`. Use `⟨min ρ (η / 2), by positivity, fun X Y Z hX hY hZ he => ?_⟩` and prove the remaining obligations. Rewrite `hX`, `hY`, `hZ` using `[lt_min_iff]`. Establish `h0 : sumAbs (0 : Matrix n n ℂ) < ρ` using `by simpa [sumAbs] using hρ`. Establish `key : ∀ W : Matrix n n ℂ, sumAbs W < ρ → sumAbs (NormedSpace.exp W - 1 - W) ≤ η * sumAbs W ∧ sumAbs (NormedSpace.exp W - 1) ≤ 2 * sumAbs W`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `W hW`. Establish `h1` using `h W 0 hW h0`. Rewrite `h1` using `[NormedSpace.exp_zero, sub_zero]`. Use `⟨h1, ?_⟩` and prove the remaining obligations. Establish `h2` using `sumAbs_add_le (NormedSpace.exp W - 1 - W) W`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h2` using `[sub_add_cancel]`. Use `sumAbs_nonneg W` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish `e : Y - X - Z = -(NormedSpace.exp Y - NormedSpace.exp X - (Y - X)) + ((NormedSpace.exp Z - 1 - Z) + (NormedSpace.exp X - 1) * (NormedSpace.exp Z - 1))`. Rewrite using `[he]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `noncomm_ring`. Establish `a1` using `h Y X hY.1 hX.1`. Establish `a2` using `(key Z hZ.1).1`. Establish `a3` using `(key Z hZ.1).2`. Establish `a4 : sumAbs (NormedSpace.exp X - 1) ≤ η` using `by linarith [(key X hX.1).2, hX.2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a5 : sumAbs ((NormedSpace.exp X - 1) * (NormedSpace.exp Z - 1)) ≤ η * (2 * sumAbs Z)` using `(sumAbs_mul_le _ _).trans (mul_le_mul a4 a3 (sumAbs_nonneg _) hη.le)`. Rewrite using `[e]`. Use `(sumAbs_add_le _ _).trans ?_` and prove the remaining obligations. Rewrite using `[sumAbs_neg]`. Establish `a6` using `sumAbs_add_le (NormedSpace.exp Z - 1 - Z) ((NormedSpace.exp X - 1) * (NormedSpace.exp Z - 1))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem defect_le (η : ℝ) (hη : 0 < η) (hη1 : η ≤ 1) : ∃ ρ : ℝ, 0 < ρ ∧ ∀ X Y Z : Matrix n n ℂ,
     sumAbs X < ρ → sumAbs Y < ρ → sumAbs Z < ρ →

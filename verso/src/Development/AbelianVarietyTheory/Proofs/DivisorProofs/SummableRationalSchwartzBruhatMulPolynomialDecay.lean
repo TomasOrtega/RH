@@ -20,21 +20,19 @@ namespace GlobalTheory.LatSumSB
 open GlobalTheory.WeilM GlobalTheory.ThetaTrCont
 
 /- English proof (translation)
-Introduce `F _ _ κ _ g hg a`. Take `⟨B, hB⟩` from `hg.1.continuous.bounded_above_of_compact_support hg.2`. Establish `hK : IsCompact ((fun z => z - a) '' tsupport g)` using `hg.2.isCompact.image (continuous_id.sub continuous_const)`. Take `⟨N, hN, hKN⟩` from `exists_nat_mul_integral_of_isCompact F hK`. Use `haveI := discreteTopology_denomLattice F κ hN`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Module.finrank ℤ (denomLattice F κ N) + 1, fun c => ?_⟩` and prove the remaining obligations. Use `set M := Module.finrank ℤ (denomLattice F κ N) + 1`. Set `S : Set (κ → F)` to `{ξ | (fun i => mixedEmbedding F (ξ i)) ∈ denomLattice F κ N}`. Use `((Subtype.val_injective (p := fun ξ => ξ ∈ S)).summable_iff ?_).1 ?_` and prove the remaining obligations. Introduce `ξ hξ`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `mul_eq_zero_of_left ?_ _` and prove the remaining obligations. Rewrite using `[norm_eq_zero]`. Assume the negation of the conclusion as `h0`. Apply `hξ` to reduce the goal to its premises. Establish `hy : (fun i => algebraMap F (FiniteAdeleRing (𝓞 F) F) (ξ i)) ∈ (fun z => z - a) '' tsupport g` using `⟨_, subset_tsupport _ h0, by funext i; simp⟩`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨⟨ξ, fun i => ?_⟩, rfl⟩` and prove the remaining obligations. Take `⟨y, hy'⟩` from `(IntegralFinAdele.integral_finiteAdele_properties F).2.2.2.1 ((N : F) * ξ i) fun v => by`. Rewrite using `[map_mul, map_natCast]`. Conclude with `hKN _ hy i v`. Use `⟨y, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Establish `h2` using `congrArg (mixedEmbedding F) hy'`. Rewrite `h2` using `[← nsmul_eq_mul, map_nsmul, ← Nat.cast_smul_eq_nsmul ℝ]`. Conclude with `h2.symm`. Set `j : S → denomLattice F κ N` to `fun ξ => ⟨_, ξ.2⟩`. Establish `hj : Function.Injective j` using `fun a b h => Subtype.ext (funext fun i => mixedEmbedding_injective F (congrFun (congrArg Subtype.val h) i))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `Summable.of_norm_bounded ((((summable_one_add_norm_inv (denomLattice F κ N) (Nat.lt_succ_self _)).comp_injective hj).mul_left ((1 + ‖c‖) ^ M)).mul_left B) fun ξ => ?_` and prove the remaining obligations. Use `set z : κ → mixedEmbedding.mixedSpace F := fun i => mixedEmbedding F (ξ.1 i)`. Establish `hz : ‖(j ξ : denomLattice F κ N)‖ = ‖z‖` using `rfl`. Simplify using `only [Function.comp_apply, hz]`. Establish `hpos1 : 0 < (1 + ‖z + c‖) ^ M` using `pow_pos (add_pos_of_pos_of_nonneg one_pos (norm_nonneg _)) M`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Establish `hpos2 : 0 < (1 + ‖z‖) ^ M` using `pow_pos (add_pos_of_pos_of_nonneg one_pos (norm_nonneg _)) M`. Establish `hw : ((1 + ‖z + c‖) ^ M)⁻¹ ≤ (1 + ‖c‖) ^ M * ((1 + ‖z‖) ^ M)⁻¹`. Rewrite using `[← div_eq_mul_inv, le_div_iff₀ hpos2, ← div_eq_inv_mul, div_le_iff₀ hpos1, ← mul_pow, mul_comm (1 + ‖c‖)]`. Conclude with `pow_le_pow_left₀ (add_pos_of_pos_of_nonneg one_pos (norm_nonneg _)).le (one_add_norm_le z c) M`. Rewrite using `[norm_mul, norm_norm, Real.norm_of_nonneg (inv_nonneg.2 hpos1.le)]`.
-
-Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem summable_sb_mul_decay : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ]
     (g : (κ → FiniteAdeleRing (𝓞 F) F) → ℂ), g ∈ GlobalTheory.WeilM.SB (κ → FiniteAdeleRing (𝓞 F) F) →

@@ -25,9 +25,9 @@ def Active (g : ℕ) : Prop :=
     IsRegSurf p ∧ P.g = g ∧ P.HasTheta ∧ P.degOmega p ≠ 0
 
 /- English proof (translation)
-Introduce `k _ S p _ hS P hg hT`. Establish `h0 : P.degOmega p = 0`. Assume the negation of the conclusion as `hne`. Conclude with `ha ⟨k, inferInstance, S, p, inferInstance, P, hS, hg, hT, hne⟩`. Use `h k S p hS P hg hT` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this` using `[h0]`.
+A detailed English derivation is pending.
 -/
 theorem thetaReg_of_not_active {g : ℕ} {r : ℝ} (h : ThetaReg g r) (ha : ¬ Active g) (r' : ℝ) :
     ThetaReg g r' := by
@@ -39,13 +39,13 @@ theorem thetaReg_of_not_active {g : ℕ} {r : ℝ} (h : ThetaReg g r) (ha : ¬ A
   simpa [h0] using this
 
 /- English proof (translation)
-Use `choose rr hrr using hT`. Distinguish the cases in `hA : ∃ g, Active g`. Take `⟨k, _, S, p, _, P, hS, hg, hth, hne⟩` from `Nat.find_spec hA`. Use `⟨rr (Nat.find hA), fun g => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hg' : Active g`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Take `⟨k', _, S', p', _, P', n, hS', hg'', hth', hn, hdeg, hch⟩` from `hP _ g (Nat.find_min' hA hg') k S p hS P hg hth`. Establish `e` using `(hch _ (hrr _ k S p hS P hg hth)).unique (hrr g k' S' p' hS' P' hg'' hth')`. Rewrite `e` using `[hdeg]`. Move the coercions through the operations in `at e`. Establish `hn' : (n : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 hn.ne'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd : (P.degOmega p : ℝ) ≠ 0` using `Int.cast_ne_zero.2 hne`. Establish `e' : ((n : ℝ) * (P.degOmega p : ℝ)) * (rr (Nat.find hA) - rr g) = 0`. Take the linear combination `2 * e`. Establish `hr : rr (Nat.find hA) = rr g` using `sub_eq_zero.1 ((mul_eq_zero.1 e').resolve_left (mul_ne_zero hn' hd))`. Rewrite using `[hr]`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `hrr g`. Conclude with `thetaReg_of_not_active (hrr g) hg' _`. Use `push_neg at hA`. Conclude with `⟨0, fun g => thetaReg_of_not_active (hrr g) (hA g) 0⟩`.
+A detailed English derivation is pending.
 -/
 theorem uniform (hT : ∀ g : ℕ, ∃ r : ℝ, ThetaReg g r)
     (hP : ∀ g₁ g : ℕ, g₁ ≤ g → ∀ (k : Type) [CommRing k] (S : Scheme.{0}) (p : S ⟶ Sp k) [IsIntegral S],
@@ -77,11 +77,11 @@ theorem uniform (hT : ∀ g : ℕ, ∃ r : ℝ, ThetaReg g r)
     exact ⟨0, fun g => thetaReg_of_not_active (hrr g) (hA g) 0⟩
 
 /- English proof (translation)
-Introduce `h2 hRA hARR`. Take `⟨r, hr⟩` from `uniform ((GlobalTheory.T.theta_chern_class_bound · hRA) h2 hARR) (GlobalTheory.T.theta_chern_class_base_change h2 hRA)`. Use `⟨r, fun k _ X p _ hX P => ?_⟩` and prove the remaining obligations. Take `⟨C, P', φ, hpull, hg, hth⟩` from `GlobalTheory.T.abelian_scheme_regular_cover_pullback h2 hRA k X p hX P`. Establish `e` using `hr P'.g k C.Y (C.ρ ≫ p) C.reg P' rfl hth`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨hdeg, hdesc⟩` from `GlobalTheory.T.regular_cover_degree_omega h2 hRA k X p hX P C P' φ hpull`. Establish `h` using `hdesc _ e`. Establish `hd : (C.deg : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 C.deg_pos.ne'`. Use `h using 1` and compare the differences between its conclusion and the goal. Rewrite using `[hdeg]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 -/
 theorem exists_ch2Const : GlobalTheory.CovTop.Hypotheses2 → GlobalTheory.Published.RegularAlteration → GlobalTheory.Published.ArithRiemannRoch →
     ∃ r, GlobalTheory.CovTest.Ch2Const r := by

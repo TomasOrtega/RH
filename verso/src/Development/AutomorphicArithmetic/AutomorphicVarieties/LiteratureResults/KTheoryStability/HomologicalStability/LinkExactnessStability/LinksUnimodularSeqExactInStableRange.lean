@@ -9,15 +9,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.LiteratureResults.
 open GlobalTheory.SeqCx Matrix UpperTheory.V.KL
 
 /- English proof (translation)
-Introduce `c hc _`. Establish `hc'` using `(Finsupp.mem_supported _ _).mp hc`. Use `⟨Finsupp.single [x] (c []), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[chains, Finsupp.mem_supported]`. Introduce `l hl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hl'` using `Finsupp.support_single_subset hl`. Simplify using `only [Finset.mem_singleton] at hl'`. Substitute `hl'` using the available equality. Conclude with `⟨hx, rfl⟩`. Establish `hcs : c = Finsupp.single [] (c [])`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Substitute using the available equality. Supply the required witnesses or components. Establish an intermediate fact.
 
-Use extensionality with `l`. Distinguish the cases in `hl : l = []`. Substitute `hl` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[Finsupp.single_apply, if_neg (Ne.symm hl)]`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Assume the negation of the conclusion as `hne`. Establish `hmem` using `hc' (Finsupp.mem_support_iff.mpr hne)`. Conclude with `hl (List.length_eq_zero_iff.mp hmem.2)`. Rewrite using `[bd, Finsupp.linearCombination_single]`. Use `conv_rhs => rw [hcs]`.
-
-Simplify using the standard rewrite rules.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem exactAt_zero_of_singleton_mem' {V : Type} (F : Set (List V)) (x : V) (hx : [x] ∈ F) :
     ExactAt F 0 := by
@@ -44,19 +42,19 @@ private theorem exactAt_zero_of_singleton_mem' {V : Type} (F : Set (List V)) (x 
     simp
 
 /- English proof (translation)
-Introduce `R _ s h hs n`. Proceed by induction on `n with`. Consider the case `zero`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `τ _ p hp`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use linear arithmetic over natural numbers and integers. Introduce `j hj τ hτ p hp`. Consider the cases of `τ with`. Consider the case `nil`. Conclude with `GlobalTheory.T.exactAt_link_nil_coordSubspace_union_translate R s 0 (fun τ _ p hp => by omega) j hj p (by simpa using hp)`.
+Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 
-Consider the case `cons v τ`. Simplify using `at hp`. Use linear arithmetic over natural numbers and integers. Consider the case `succ n ih`. Take `⟨_, hA⟩` from `ih`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hL' : LinkExactLow R s (n + 1)` using `GlobalTheory.T.linkExactLow_add_one_of_linkExactAff R s n hA`. Use `⟨hL', ?_⟩` and prove the remaining obligations. Introduce `j hj τ hτ p hp`. Consider the cases of `τ with`. Consider the case `nil`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 
-Conclude with `GlobalTheory.T.exactAt_link_nil_coordSubspace_union_translate R s (n + 1) hL' j hj p (by simpa using hp)`. Consider the case `cons v τ`. Distinguish the cases in `hsn : s ≤ n`. Conclude with `GlobalTheory.T.exactAt_linkIn_succ_union_translate_of_ne_nil R s h n hsn hA j hj (v :: τ) hτ (List.cons_ne_nil _ _) p hp`. Simplify using `only [List.length_cons] at hp`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality.
 
-Establish `hp0 : p = 0` using `by omega`. Establish `hτ0 : τ = []` using `List.length_eq_zero_iff.mp (by omega)`. Substitute `hp0` using the available equality. Substitute `hτ0` using the available equality. Take `⟨x, hx, hvx⟩` from `GlobalTheory.T.exists_mem_translate_unimodular_pair_of_stableRangeLe R s h (n + 1) j (by omega) hj v hτ`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Substitute using the available equality. Prove the second alternative.
 
-Conclude with `exactAt_zero_of_singleton_mem' _ x ⟨fun y hy => by`. Simplify using `only [List.mem_singleton] at hy`. Substitute `hy` using the available equality. Conclude with `Or.inr hx, by simpa using hvx⟩`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.SeqCx.linkExact_of_stableRangeLe : ∀ (R : Type) [CommRing R] (s : ℕ), StableRangeLe R s → 1 ≤ s →
     ∀ n : ℕ, LinkExactLow R s n ∧ LinkExactAff R s n := by

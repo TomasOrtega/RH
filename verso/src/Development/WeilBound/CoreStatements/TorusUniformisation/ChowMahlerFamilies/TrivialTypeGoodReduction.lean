@@ -39,13 +39,13 @@ noncomputable def fibPol {X : Scheme.{0}} (P : Out.PolAV X) {z : Sp ℂ ⟶ X} {
     sym := PolBaseChange.sym_pull h P.sym, ample := H.2.1 P.ample, ktriv := H.2.2 P.ktriv }
 
 /- English proof (translation)
-Establish `hab` using `P.isAb`. Use `hab.comm` as an intermediate fact. Establish `hφ` using `isGrpPullback_pullback P.A y`. Take `⟨rig, hr⟩` from `(fibPol P hφ).rigid`. Take `⟨u, Hm, χ, Ef, -, -, h1, h2, hF, -⟩` from `thetaUnifAV_all (fibPol P hφ) rig hr`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨Φ, hΦ⟩` from `GlobalTheory.LiePull.exists_pushEquiv hφ (𝟙_ _) y (Category.id_comp _).symm`. Establish `he` using `isExp_push hφ u h1 h2 Φ hΦ`. Establish `hker : ∀ z, Φ (u.ex z) = 1 ↔ z ∈ u.Λ` using `fun z => (map_eq_one_iff Φ Φ.injective).trans (u.ker z)`. Take `⟨ρ, hρ⟩` from `he.exists_rep act u.Λ u.discrete hker fun a => by`. Take `⟨F, hF⟩` from `hF ((OAct.pullback y P.A act).act a) ((OAct.pullback y P.A act).hom a)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hact : ((OAct.pullback y P.A act).act a).left ≫ pullback.fst P.A.hom y = pullback.fst P.A.hom y ≫ (act.act a).left` using `pullback.lift_fst _ _ _`. Use `⟨F, fun z => Over.OverMorphism.ext ?_⟩` and prove the remaining obligations. Use `(hΦ _).trans ((congrArg (fun q => q.left ≫ pullback.fst P.A.hom y) (hF z)).trans ?_)` and prove the remaining obligations. Use `(Category.assoc _ _ _).trans ((congrArg ((u.ex z).left ≫ ·) hact).trans ?_)` and prove the remaining obligations. Conclude with `(Category.assoc _ _ _).symm.trans (congrArg (· ≫ (act.act a).left) (hΦ _).symm)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h0` using `(eigenEquiv (isSplitting_embeddings (E := E)) ρ).finrank_eq`. Rewrite `h0` using `[Module.finrank_fin_fun, Module.finrank_pi_fintype]`. Conclude with `h0.trans (Finset.sum_eq_zero fun i _ => he.finrank_eigenSub act ρ hρ (hy _))`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dim_eq_zero {E : Type} [Field E] [NumberField E] {X : Scheme.{0}} (P : Out.PolAV X)
     (act : OAct (𝓞 E) P.A) (y : Sp ℂ ⟶ X) (hy : ∀ τ : 𝓞 E →+* ℂ, LieMult act y τ 0) : P.g = 0 := by
@@ -71,11 +71,11 @@ theorem dim_eq_zero {E : Type} [Field E] [NumberField E] {X : Scheme.{0}} (P : O
   exact h0.trans (Finset.sum_eq_zero fun i _ => he.finrank_eigenSub act ρ hρ (hy _))
 
 /- English proof (translation)
-Use `hB.proper` as an intermediate fact. Use `hB.geomConnected` as an intermediate fact. Use `hB.smooth` as an intermediate fact. Establish `: Etale B.hom` using `(Etale.iff_smoothOfRelativeDimension_zero _).2 hg`. Establish `hs : eSec B ≫ B.hom = 𝟙 (Sp k)` using `Models.RankZero.section_w η[B]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨ho, hcl⟩` from `isOpenImmersion_and_isClosedImmersion_of_section_of_etale B.hom (eSec B) hs`. Establish `: ConnectedSpace B.left` using `(GroupConn.connectedSpace_group _ B).1`. Establish `hne : (Set.range (eSec B)).Nonempty` using `⟨_, (default : PrimeSpectrum k), rfl⟩`. Establish `hsurj : Function.Surjective (eSec B)` using `Set.range_eq_univ.1 (IsClopen.eq_univ ⟨(eSec B).isClosedEmbedding.isClosed_range, (eSec B).isOpenEmbedding.isOpen_range⟩ hne)`. Establish `: Epi (eSec B).base` using `(TopCat.epi_iff_surjective _).2 hsurj`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsIso (eSec B)` using `IsOpenImmersion.isIso _`. Establish `: IsIso (eSec B ≫ B.hom)`. Rewrite using `[hs]`. Conclude with `inferInstanceAs (IsIso (𝟙 (Sp k)))`. Conclude with `IsIso.of_isIso_comp_left (eSec B) B.hom`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isIso_of_dim_zero {k : Type} [Field k] (B : Over (Sp k)) [GrpObj B] (hB : IsAbelianScheme B)
     (hg : SmoothOfRelativeDimension 0 B.hom) : IsIso B.hom := by
@@ -100,9 +100,9 @@ theorem isIso_of_dim_zero {k : Type} [Field k] (B : Over (Sp k)) [GrpObj B] (hB 
 end PositivityTheory.Xgn.TrivialTypeGoodReduction
 
 /- English proof (translation)
-Introduce `E _ _ _ H L _ _ t ⟨hp, hA, hK⟩ hL`. Establish `hab : IsAbelianScheme t.G` using `⟨t.semi.comm, t.semi.smooth, hp, t.semi.geomConnected⟩`. Take `⟨g, hg⟩` from `GlobalTheory.AbelianDim.exists_relDim L t.G hab`. Take `⟨σ⟩ : Nonempty (L →+* ℂ)` from `inferInstance`. Take `rfl : g = 0` from `PositivityTheory.Xgn.TrivialTypeGoodReduction.dim_eq_zero (GlobalTheory.GenericPol.toPolAV t g hg hp hA hK) t.act (spMap σ) (hL σ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨GlobalTheory.Models.Inhab.zeroTriple H _, GlobalTheory.Models.RankZero.nonempty_sabMap (PositivityTheory.Xgn.TrivialTypeGoodReduction.isIso_of_dim_zero t.G hab hg) (GlobalTheory.Models.RankZero.isIso_zeroTriple _) _⟩`.
+Supply the required witnesses or components.
 -/
 theorem PositivityTheory.Xgn.trivial_type_good_reduction : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (L : Type) [Field L] [NumberField L] (t : SAB H (Sp L)), IsPrincipal t → (∀ (σ : L →+* ℂ) (τ : 𝓞 E →+* ℂ), LieMult t.act (spMap σ) τ 0) → ∃ t' : SAB H (Sp (𝓞 L)), Nonempty (SABMap t t' (spMap (algebraMap (𝓞 L) L))) := by
   intro E _ _ _ H L _ _ t ⟨hp, hA, hK⟩ hL

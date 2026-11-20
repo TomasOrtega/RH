@@ -6,7 +6,7 @@ open GlobalTheory.K5
 namespace GlobalTheory.CuspCup
 
 /- English proof (translation)
-Substitute `hb hq hz` using the available equality. Take the linear combination `(P * bh) * h₁ + (A * qg + B * zg) * h₂ - (A * A' * (qg * qh) + B * B' * (zg * zh)) * hi`.
+Substitute using the available equality. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem cup_identity {R : Type*} [CommRing R]
     (N P A B A' B' i m ag bg bh bgh qg qh qgh zg zh zgh x gx gy ghy e₁ e₂ tb tq tz : R)
@@ -31,9 +31,9 @@ theorem cup_identity {R : Type*} [CommRing R]
     - (A * A' * (qg * qh) + B * B' * (zg * zh)) * hi
 
 /- English proof (translation)
-Use `haveI : NeZero (p ^ n) := ⟨pow_ne_zero n hp⟩`. Use `⟨(u.val + v.val) / p ^ n, ?_⟩` and prove the remaining obligations. Establish `h` using `Nat.mod_add_div (u.val + v.val) (p ^ n)`. Rewrite `h` using `[← ZMod.val_add]`. Establish `h'` using `congrArg (Nat.cast : ℕ → R) h`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h'` using `[Nat.cast_add, Nat.cast_mul, Nat.cast_pow, Nat.cast_add]`. Take the linear combination `h'`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_val_add {R : Type*} [CommRing R] (p n : ℕ) (hp : p ≠ 0) (u v : ZMod (p ^ n)) :
     ∃ t : ℕ, (((u + v).val : ℕ) : R) = (u.val : R) + (v.val : R) - (p : R) ^ n * (t : R) := by
@@ -46,7 +46,7 @@ theorem exists_val_add {R : Type*} [CommRing R] (p n : ℕ) (hp : p ≠ 0) (u v 
   linear_combination h'
 
 /- English proof (translation)
-Take `⟨k, hk⟩` from `(hp.odd_of_ne_two h2).pow (n := n)`. Use `⟨k + 1, 1, ?_⟩` and prove the remaining obligations. Use `congrArg (Nat.cast : ℕ → ℤ) hk` as an intermediate fact. Move the coercions through the operations in `at this`. Rewrite using `[this]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -59,33 +59,31 @@ theorem exists_half (p n : ℕ) (hp : p.Prime) (h2 : p ≠ 2) :
   rw [this]; ring
 
 /- English proof (translation)
-Introduce `p hp h2 Ω _ _ H n c a b lz lq A B A' B' _ hb hz hq hfix iA iB iA' iB' hlc ⟨x, ix, hx⟩ ⟨y, iy, hy⟩`. Take `⟨i, m, him⟩` from `exists_half p n hp.out h2`. Establish `him' : 2 * (i : Ω) = 1 + (p : Ω) ^ n * (m : Ω)` using `by exact_mod_cast congrArg (Int.cast : ℤ → Ω) him`. Set `R` to `integralClosure (O0 p) Ω`. Establish `key : ∀ v : Ω, IsInt p v ↔ v ∈ R` using `fun v => Iff.rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hmap : ∀ (g : Gal p Ω) (v : Ω), v ∈ R → g v ∈ R` using `fun g v hv => IsIntegral.map g.toAlgHom hv`. Rewrite `iA`, `iB`, `iA'`, `iB'`, `ix`, `iy` using `[key]`. Establish `iP : (p : Ω) ^ c ∈ R` using `pow_mem (natCast_mem R p) c`. Establish `iN : (p : Ω) ^ n ∈ R` using `pow_mem (natCast_mem R p) n`. Establish `i2 : (2 : Ω) ∈ R` using `ofNat_mem R 2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨fun k => ((p : Ω) ^ c) ^ 2 * (x * ((p : Ω) ^ c * ((b k).val : Ω)) - ((p : Ω) ^ c * A * ((lq k).val : Ω) + (p : Ω) ^ c * B * ((lz k).val : Ω)) * k y - (i : Ω) * (((p : Ω) ^ c * A) * ((p : Ω) ^ c * A')) * ((lq k).val : Ω) ^ 2 - ((p : Ω) ^ c * A) * ((p : Ω) ^ c * B') * (((lq k).val …` and prove the remaining obligations. Introduce `k`. Rewrite using `[key]`. Establish `h1` using `hmap k y iy`. Generalize the expression as in `(p : Ω) ^ c * A = A₁ at *`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `(p : Ω) ^ c * B = B₁ at *`. Generalize the expression as in `(p : Ω) ^ c * A' = A₂ at *`. Generalize the expression as in `(p : Ω) ^ c * B' = B₂ at *`. Generalize the expression as in `(p : Ω) ^ c = P at *`. Use the proof step `repeat' first`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Treat this case separately.
 
-Consider the case `assumption`. Consider the case `exact natCast_mem R _`. Consider the case `exact intCast_mem R _`. Consider the case `apply mul_mem`. Consider the case `apply sub_mem`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `apply add_mem`. Consider the case `apply pow_mem`. Introduce `k`. Take `⟨S, hS⟩` from `hlc k`. Use `⟨insert y S, fun h hh => ⟨0, (key _).2 (zero_mem R), ?_⟩⟩` and prove the remaining obligations.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨-, e1, e2, e3⟩` from `hS h (fun x hx => hh x (Finset.mem_insert_of_mem hx))`. Establish `e4` using `hh y (Finset.mem_insert_self _ _)`. Simplify using `only [e1, e2, e3, e4, sub_self, mul_zero]`. Introduce `g hg h hh`. Take `⟨e₁, ie₁, h₁⟩` from `hx g hg`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨e₂, ie₂, h₂⟩` from `hy h hh`. Take `⟨fA, fB, fA', fB'⟩` from `hfix g hg`. Establish `h₂'` using `congrArg g h₂`. Simplify using `only [map_sub, map_mul, map_pow, map_natCast, fA', fB'] at h₂'`. Take `⟨tb, htb⟩` from `exists_val_add (R := Ω) p n hp.out.ne_zero (b g) (b h)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨tq, htq⟩` from `exists_val_add (R := Ω) p n hp.out.ne_zero (lq g) (lq h)`. Take `⟨tz, htz⟩` from `exists_val_add (R := Ω) p n hp.out.ne_zero (lz g) (lz h)`. Rewrite `htb` using `[← hb g hg h hh]`. Rewrite `htq` using `[← hq g hg h hh]`. Rewrite `htz` using `[← hz g hg h hh]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `main` using `cup_identity _ _ _ _ _ _ _ _ _ ((b g).val : Ω) _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ h₁ h₂' htb htq htz him'`. Use `⟨_, ?_, Eq.trans ?_ ((congrArg (fun t => ((p : Ω) ^ c) ^ 2 * t) main).trans (mul_left_comm _ _ _))⟩` and prove the remaining obligations. Use `swap`. Simplify using `only [map_sub, map_add, map_mul, map_pow, map_natCast, map_intCast, fA, fB, fA', fB', AlgEquiv.mul_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `ie₁`, `ie₂`, the goal using `[key]`. Establish `h1` using `hmap g _ (hmap h y iy)`. Establish `h3` using `hmap g _ ie₂`. Use `clear main h₁ h₂ h₂' hx hy htb htq htz him'`. Generalize the expression as in `(p : Ω) ^ c * A = A₁ at *`.
+Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `(p : Ω) ^ c * B = B₁ at *`. Generalize the expression as in `(p : Ω) ^ c * A' = A₂ at *`. Generalize the expression as in `(p : Ω) ^ c * B' = B₂ at *`. Generalize the expression as in `(p : Ω) ^ c = P at *`. Generalize the expression as in `(p : Ω) ^ n = N at *`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Use the proof step `repeat' first`. Consider the case `assumption`. Consider the case `exact natCast_mem R _`. Consider the case `exact intCast_mem R _`. Consider the case `apply mul_mem`.
-
-Consider the case `apply sub_mem`. Consider the case `apply add_mem`. Consider the case `apply pow_mem`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem cup_congruence : ∀ (p : ℕ) [Fact p.Prime], p ≠ 2 → ∀ (Ω : Type) [Field Ω] [Algebra (O0 p) Ω] (H : Subgroup (Gal p Ω)) (n c : ℕ)
   (a b lz lq : Gal p Ω → ZMod (p ^ n)) (A B A' B' : Ω),

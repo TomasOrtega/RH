@@ -10,9 +10,9 @@ open PositivityTheory.Rg.BcB PositivityTheory.Rg.BcB.G8
 namespace GlobalTheory.CompanionTheory.LocalThetaTranslation
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Matrix.transpose_apply, Matrix.smul_apply, GlobalTheory.Tw.Phi, Matrix.of_apply, smul_eq_mul]`. Distinguish the cases in `h : (i : ℕ) + j + 1 = n`. Establish `h' : (j : ℕ) + i + 1 = n` using `by omega`. Rewrite using `[if_pos h, if_pos h', ← pow_add]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : n + 1 + (i : ℕ) = j + 2 * ((i : ℕ) + 1)` using `by omega`. Rewrite using `[e, pow_add, pow_mul]`. Simplify using the standard rewrite rules. Establish `h' : ¬ (j : ℕ) + i + 1 = n` using `by omega`. Rewrite using `[if_neg h, if_neg h']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -31,7 +31,7 @@ theorem phi_transpose (n : ℕ) (R : Type) [CommRing R] :
     simp
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, GlobalTheory.Tw.Phi, Matrix.of_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem phi_map (n : ℕ) {R : Type} [CommRing R] (c : R →+* R) : (GlobalTheory.Tw.Phi n R).map c = GlobalTheory.Tw.Phi n R := by
   ext i j
@@ -39,9 +39,9 @@ theorem phi_map (n : ℕ) {R : Type} [CommRing R] (c : R →+* R) : (GlobalTheor
   split_ifs <;> simp
 
 /- English proof (translation)
-Establish `h` using `Phi_mul_transpose n R`. Rewrite `h` using `[phi_transpose, Matrix.mul_smul]`. Establish `e : ((-1 : R) ^ (n + 1)) * ((-1 : R) ^ (n + 1)) = 1`. Rewrite using `[← mul_pow]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← h, smul_smul, e, one_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem phi_mul_self (n : ℕ) (R : Type) [CommRing R] :
     GlobalTheory.Tw.Phi n R * GlobalTheory.Tw.Phi n R = ((-1 : R) ^ (n + 1)) • (1 : Matrix (Fin n) (Fin n) R) := by
@@ -54,11 +54,9 @@ theorem phi_mul_self (n : ℕ) (R : Type) [CommRing R] :
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Break down `neg_one_pow_eq_or E (n + 1) with h | h` into its components or cases. Conclude with `⟨1, one_ne_zero, by rw [h, map_one, one_mul]⟩`. Establish `hx : ∃ x : E, conjE E x ≠ x`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Conclude with `IsCMField.complexConj_ne_one E (AlgEquiv.ext hc)`. Take `⟨x, hx⟩` from `hx`. Establish `hcc : conjE E (conjE E x) = x` using `IsCMField.complexConj_apply_apply E x`. Use `⟨x - conjE E x, sub_ne_zero.2 hx.symm, ?_⟩` and prove the remaining obligations. Rewrite using `[h, map_sub, hcc]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_conj_eq_sign (n : ℕ) : ∃ s : E, s ≠ 0 ∧ conjE E s = (-1 : E) ^ (n + 1) * s := by
   rcases neg_one_pow_eq_or E (n + 1) with h | h
@@ -76,7 +74,7 @@ theorem exists_conj_eq_sign (n : ℕ) : ∃ s : E, s ≠ 0 ∧ conjE E s = (-1 :
 omit [NumberField E] [IsCMField E] in
 
 /- English proof (translation)
-Use extensionality with `i j`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using `[GeneralLinearGroup.scalar]`. Simplify using `[GeneralLinearGroup.scalar, h]`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem scalar_val {n : ℕ} (t : Eˣ) :
     (GeneralLinearGroup.scalar (Fin n) t).val = (t : E) • (1 : Matrix (Fin n) (Fin n) E) := by
@@ -89,7 +87,7 @@ theorem scalar_val {n : ℕ} (t : Eˣ) :
 omit [NumberField E] [IsCMField E] in
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [Units.val_mul, scalar_val]`. Rewrite using `[Matrix.smul_mul, Matrix.mul_smul, Matrix.one_mul, Matrix.mul_one]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem scalar_commute {n : ℕ} (t : Eˣ) (g : GL (Fin n) E) :
     GeneralLinearGroup.scalar (Fin n) t * g = g * GeneralLinearGroup.scalar (Fin n) t := by
@@ -98,16 +96,16 @@ theorem scalar_commute {n : ℕ} (t : Eˣ) (g : GL (Fin n) E) :
   rw [Matrix.smul_mul, Matrix.mul_smul, Matrix.one_mul, Matrix.mul_one]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `((((PhiU n E)⁻¹).val).map (conjE E))ᵀ = _`. Rewrite using `[phiU_inv_val, Matrix.transpose_map, Matrix.transpose_transpose, phi_map]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem thetaE_phiU (n : ℕ) : (thetaE E n (PhiU n E)).val = GlobalTheory.Tw.Phi n E := by
   change ((((PhiU n E)⁻¹).val).map (conjE E))ᵀ = _
   rw [phiU_inv_val, Matrix.transpose_map, Matrix.transpose_transpose, phi_map]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `((((GeneralLinearGroup.scalar (Fin n) t)⁻¹).val).map (conjE E))ᵀ = _`. Rewrite using `[← map_inv, scalar_val]`. Use extensionality with `i j`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Establish `h' : j ≠ i` using `fun e => h e.symm`. Simplify using `[h, h']`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem thetaE_scalar {n : ℕ} (t : Eˣ) :
     (thetaE E n (GeneralLinearGroup.scalar (Fin n) t)).val =
@@ -122,13 +120,13 @@ theorem thetaE_scalar {n : ℕ} (t : Eˣ) :
     simp [h, h']
 
 /- English proof (translation)
-Introduce `E _ _ _ n`. Take `⟨s, hs, hc⟩` from `exists_conj_eq_sign (E := E) n`. Establish `hcs : conjE E s ≠ 0`. Rewrite using `[hc]`. Conclude with `mul_ne_zero (pow_ne_zero _ (neg_ne_zero.2 one_ne_zero)) hs`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨GeneralLinearGroup.scalar (Fin n) (Units.mk0 s hs) * PhiU n E, ?_, ?_⟩` and prove the remaining obligations. Introduce `g`. Establish `h1 : thE E n g = PhiU n E * thetaE E n g * (PhiU n E)⁻¹` using `thetaGL_eq n E _ g`. Rewrite using `[h1]`. Establish `h2` using `scalar_commute (Units.mk0 s hs) (PhiU n E * thetaE E n g * (PhiU n E)⁻¹)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : GeneralLinearGroup.scalar (Fin n) (Units.mk0 s hs) * PhiU n E * thetaE E n g * (GeneralLinearGroup.scalar (Fin n) (Units.mk0 s hs) * PhiU n E)⁻¹ = GeneralLinearGroup.scalar (Fin n) (Units.mk0 s hs) * (PhiU n E * thetaE E n g * (PhiU n E)⁻¹) * (GeneralLinearGroup.scalar (Fin …` using `by group`. Rewrite using `[h3, h2, mul_inv_cancel_right]`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[map_mul, Units.val_mul, Units.val_mul, Units.val_mul, thetaE_phiU, thetaE_scalar, scalar_val, phiU_val]`. Simplify using `only [Units.val_mk0, Units.val_one]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.smul_mul, Matrix.one_mul, Matrix.smul_mul, Matrix.smul_mul, Matrix.one_mul, Matrix.mul_smul, phi_mul_self, smul_smul, smul_smul, hc]`. Establish `hp : ((-1 : E) ^ (n + 1)) ≠ 0` using `pow_ne_zero _ (neg_ne_zero.2 one_ne_zero)`. Establish `: s * (((-1 : E) ^ (n + 1)) * s)⁻¹ * ((-1 : E) ^ (n + 1)) = 1`. Clear the denominators using the available nonvanishing facts. Rewrite using `[this, one_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem translEx : TranslEx := by
   intro E _ _ _ n

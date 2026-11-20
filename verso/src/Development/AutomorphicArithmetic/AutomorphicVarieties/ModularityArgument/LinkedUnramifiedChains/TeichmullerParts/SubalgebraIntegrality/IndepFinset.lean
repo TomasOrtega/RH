@@ -9,9 +9,7 @@ section SlopeTestRemainingChoices
 variable {G W W' : Type} [Group G] [AddCommGroup W] [Module ℂ W] [AddCommGroup W'] [Module ℂ W']
 
 /- English proof (translation)
-Use `haveI : IsSimpleOrder (Subrepresentation τ) := hτ`. Break down `eq_bot_or_eq_top (⟨P, fun g _ hv => hP g _ hv⟩ : Subrepresentation τ) with h | h` into its components or cases. Use `left`. Conclude with `congrArg Subrepresentation.toSubmodule h`. Use `right`.
-
-Conclude with `congrArg Subrepresentation.toSubmodule h`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 private lemma stable_eq {τ : Representation ℂ G W'} (hτ : τ.IsIrreducible) (P : Submodule ℂ W')
     (hP : ∀ g, ∀ v ∈ P, τ g v ∈ P) : P = ⊥ ∨ P = ⊤ := by
@@ -23,31 +21,27 @@ private lemma stable_eq {τ : Representation ℂ G W'} (hτ : τ.IsIrreducible) 
     exact congrArg Subrepresentation.toSubmodule h
 
 /- English proof (translation)
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro b _ _ u _`. Conclude with `Subsingleton.elim _ _`. Consider the case `succ n ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `b hb hli u hu`. Establish `hli' : LinearIndependent ℂ fun i : Fin n => b i.succ` using `hli.comp _ (Fin.succ_injective n)`. Establish `ih'` using `ih (fun i => b i.succ) (fun i => hb i.succ) hli'`. Set `A : (Fin n → W') →ₗ[ℂ] W` to `∑ i, (b i.succ) ∘ₗ LinearMap.proj i`. Establish `hA : ∀ v, A v = ∑ i, b i.succ (v i)` using `fun v => by simp [A, LinearMap.sum_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hAinj : Function.Injective A`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `v hv`. Conclude with `ih' v (by rw [← hA]; exact hv)`. Establish `hAeq : ∀ g v, A (fun i => τ g (v i)) = ρ g (A v)` using `fun g v => by`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hA, hA, map_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => hb i.succ g (v i)`. Establish `hsum : b 0 (u 0) + A (fun i => u i.succ) = 0`. Rewrite using `[hA, ← hu, Fin.sum_univ_succ]`. Set `P : Submodule ℂ W'` to `(LinearMap.range A).comap (b 0)`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hP : ∀ g, ∀ v ∈ P, τ g v ∈ P`. Introduce and unpack `g v ⟨y, hy⟩`. Use `⟨fun i => τ g (y i), ?_⟩` and prove the remaining obligations. Rewrite using `[hAeq, hy]`. Conclude with `(hb 0 g v).symm`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Break down `stable_eq hτ.1 P hP with h | h` into its components or cases. Establish `h0 : u 0 = 0`. Establish `: u 0 ∈ P` using `⟨-fun i => u i.succ, by`. Rewrite using `[map_neg]`. Conclude with `(eq_neg_of_add_eq_zero_left hsum |>.symm ▸ rfl)⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[h]`. Simplify using `using this`. Establish `h1 : (fun i : Fin n => u i.succ) = 0`. Apply `ih'` to reduce the goal to its premises. Rewrite using `[← hA, ← hsum, h0]`.
+Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. It suffices to derive a contradiction. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Use function extensionality and compare the values at `i`. Use `Fin.cases h0 (fun j => ?_) i` and prove the remaining obligations. Conclude with `congrFun h1 j`. It suffices to derive a contradiction.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hall : ∀ v, ∃ y, A y = b 0 v` using `fun v => by`. Establish `: v ∈ P` using `h ▸ Submodule.mem_top`. Conclude with `this`. Use `choose T hT using hall`. Establish `hTadd : ∀ v v', T (v + v') = T v + T v'` using `fun v v' => hAinj (by rw [map_add, hT, hT, hT, map_add])`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hTsmul : ∀ (a : ℂ) v, T (a • v) = a • T v` using `fun a v => hAinj (by rw [map_smul, hT, hT, map_smul])`. Establish `hTg : ∀ g v i, T (τ g v) i = τ g (T v i)` using `fun g v i => by`. Establish `: T (τ g v) = fun i => τ g (T v i)` using `hAinj (by rw [hAeq, hT, hT]; exact hb 0 g v)`. Conclude with `congrFun this i`. Establish `hc : ∀ i : Fin n, ∃ a : ℂ, ∀ v, T v i = a • v` using `fun i => by`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Take `⟨a, ha⟩` from `hτ.2 { toFun := fun v => T v i map_add' := fun v v' => by rw [hTadd]; rfl map_smul' := fun a v => by rw [hTsmul]; rfl } (fun g v => hTg g v i)`. Conclude with `⟨a, fun v => by simpa using LinearMap.congr_fun ha v⟩`. Use `choose c hc using hc`. Establish `hrel : ∑ i, (Fin.cons (1 : ℂ) (fun j => -c j) : Fin (n + 1) → ℂ) i • b i = 0`. Rewrite using `[Fin.sum_univ_succ]`.
-
-Use extensionality with `v`. Simplify using `only [Fin.cons_zero, Fin.cons_succ, one_smul, LinearMap.add_apply, LinearMap.sum_apply, LinearMap.smul_apply, LinearMap.zero_apply, neg_smul, Finset.sum_neg_distrib]`. Rewrite using `[← hT v, hA]`. Simplify using `only [hc, map_smul]`. Simplify using the standard rewrite rules.
-
-Use `Fintype.linearIndependent_iff.1 hli _ hrel 0` as an intermediate fact. Simplify using `at this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma indep_fin {τ : Representation ℂ G W'} {ρ : Representation ℂ G W} (hτ : AbsIrr τ) :
     ∀ (n : ℕ) (b : Fin n → (W' →ₗ[ℂ] W)), (∀ i, Intw τ ρ (b i)) → LinearIndependent ℂ b →
@@ -122,9 +116,9 @@ private lemma indep_fin {τ : Representation ℂ G W'} {ρ : Representation ℂ 
       simp at this
 
 /- English proof (translation)
-Set `e : Fin s.card ≃ s` to `s.equivFin.symm`. Establish `h` using `indep_fin hτ s.card (fun j => b (e j)) (fun j => hb _) (hli.comp _ (Subtype.val_injective.comp e.injective)) (fun j => u (e j)) (by`. Rewrite using `[e.sum_comp (fun i : s => b i (u i)), Finset.sum_coe_sort s fun i => b i (u i)]`. Conclude with `hu)`. Introduce `i hi`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `congrFun h (e.symm ⟨i, hi⟩)` as an intermediate fact. Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private lemma indep_finset {τ : Representation ℂ G W'} {ρ : Representation ℂ G W} (hτ : AbsIrr τ)
     {κ : Type} (b : κ → (W' →ₗ[ℂ] W)) (hb : ∀ i, Intw τ ρ (b i)) (hli : LinearIndependent ℂ b)
@@ -151,7 +145,7 @@ private def intwSub (τ : Representation ℂ G W') (ρ : Representation ℂ G W)
   smul_mem' a f h g v := by simp [h g v]
 
 /- English proof (translation)
-Rewrite using `[← Module.End.mul_apply, ← Module.End.mul_apply, ← map_mul, ← map_mul]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private lemma comm_inl (ρ : Representation ℂ (G × H) W) (g : G) (h : H) (w : W) :
     ρ (g, 1) (ρ (1, h) w) = ρ (1, h) (ρ (g, 1) w) := by
@@ -182,20 +176,20 @@ private def evl (τ : Representation ℂ G W') (ρ : Representation ℂ G W) :
   TensorProduct.lift (LinearMap.flip (Submodule.subtype (intwSub τ ρ)))
 
 /- English proof (translation)
-Simplify using `[evl]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma evl_tmul (τ : Representation ℂ G W') (ρ : Representation ℂ G W) (w : W') (φ : intwSub τ ρ) :
     evl τ ρ (w ⊗ₜ φ) = φ.1 w := by
   simp [evl]
 
 /- English proof (translation)
-Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `z hz`. Set `B` to `Module.Basis.ofVectorSpace ℂ (intwSub τ ρ)`. Set `e` to `TensorProduct.equivFinsuppOfBasisRight (M := W') B`. Establish `hz' : z = (e z).sum fun i w => w ⊗ₜ B i`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `TensorProduct.equivFinsuppOfBasisRight_symm_apply B (e z)` as an intermediate fact. Rewrite using `[← this, e.symm_apply_apply]`. Establish `hsum : ∑ i ∈ (e z).support, (B i).1 (e z i) = 0`. Rewrite using `[← hz]`. Use `conv_rhs => rw [hz']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finsupp.sum, map_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => (evl_tmul τ ρ _ _).symm`. Establish `hli : LinearIndependent ℂ fun i => (B i).1` using `B.linearIndependent.map' (intwSub τ ρ).subtype (Submodule.ker_subtype _)`. Establish `h0` using `indep_finset hτ (fun i => (B i).1) (fun i => (B i).2) hli _ (e z) hsum`. Establish `: e z = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails.
 
-Use extensionality with `i`. Distinguish the cases in `hi : i ∈ (e z).support`. Simplify using `using h0 i hi`. Simplify using `using hi`. Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private lemma evl_inj {τ : Representation ℂ G W'} {ρ : Representation ℂ G W} (hτ : AbsIrr τ) :
     Function.Injective (evl τ ρ) := by
@@ -223,7 +217,7 @@ private lemma evl_inj {τ : Representation ℂ G W'} {ρ : Representation ℂ G 
   simpa using this
 
 /- English proof (translation)
-Rewrite using `[← LinearMap.range_eq_top, eq_top_iff]`. Use `hI.trans (iSup_le fun f => ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨w, rfl⟩`. Conclude with `⟨w ⊗ₜ ⟨f.1, f.2⟩, evl_tmul τ ρ w ⟨f.1, f.2⟩⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 private lemma evl_surj {τ : Representation ℂ G W'} {ρ : Representation ℂ G W} (hI : Isot ρ τ) :
     Function.Surjective (evl τ ρ) := by
@@ -235,11 +229,11 @@ private lemma evl_surj {τ : Representation ℂ G W'} {ρ : Representation ℂ G
 end Main
 
 /- English proof (translation)
-Introduce `G H W W' _ _ _ _ _ _ ρ τ hτ hI`. Use `⟨intwSub τ (ρ.comp (MonoidHom.inl G H)), inferInstance, inferInstance, kap ρ τ, LinearEquiv.ofBijective (evl τ _) ⟨evl_inj hτ, evl_surj hI⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨g, h⟩ z`. Use `show evl τ _ (box τ (kap ρ τ) (g, h) z) = ρ (g, h) (evl τ _ z)`. Proceed by induction on `z using TensorProduct.induction_on with`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul w φ`. Use `φ.2 g w` as an intermediate fact. Simplify using `only [MonoidHom.comp_apply, MonoidHom.inl_apply] at this`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `show evl τ _ (τ g w ⊗ₜ kap ρ τ h φ) = _`. Rewrite using `[evl_tmul, evl_tmul]`. Use `show ρ (1, h) (φ.1 (τ g w)) = _`. Rewrite using `[this, ← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, one_mul, mul_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem step :
     Step := by

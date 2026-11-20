@@ -11,17 +11,15 @@ noncomputable section
 namespace GlobalTheory.MaxPt
 
 /- English proof (translation)
-Introduce `X p _ U hU m hm`. Establish `h1` using `LocallyOfFiniteType.finiteType_of_affine_subset p (isAffineOpen_top (Sp ℂ)) hU (by simp)`. Establish `h2 : ((Scheme.ΓSpecIso (CommRingCat.of ℂ)).inv).hom.FiniteType` using `RingHom.FiniteType.of_surjective _ (Scheme.ΓSpecIso (CommRingCat.of ℂ)).commRingCatIsoToRingEquiv.symm.surjective`. Establish `hft : (algX p U).FiniteType` using `h1.comp h2`. Use `letI : Algebra ℂ Γ(X, U) := (algX p U).toAlgebra`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure.
 
-Use `haveI : Algebra.FiniteType ℂ Γ(X, U) := hft`. Use `haveI : m.IsMaximal := hm`. Use `letI : Field (Γ(X, U) ⧸ m) := Ideal.Quotient.field m`. Use `haveI : Module.Finite ℂ (Γ(X, U) ⧸ m) := finite_of_finite_type_of_isJacobsonRing ℂ (Γ(X, U) ⧸ m)`. Establish `hbij : Function.Bijective (algebraMap ℂ (Γ(X, U) ⧸ m))` using `IsAlgClosed.algebraMap_bijective_of_isIntegral`.
+Equip the data with the indicated structure. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `e : ℂ ≃+* (Γ(X, U) ⧸ m)` to `RingEquiv.ofBijective _ hbij`. Set `φ : Γ(X, U) →+* ℂ` to `(e.symm : (Γ(X, U) ⧸ m) →+* ℂ).comp (Ideal.Quotient.mk m)`. Establish `hφ : ∀ a, φ (algX p U a) = (RingHom.id ℂ) a`. Introduce `a`. Use `show e.symm (Ideal.Quotient.mk m (algebraMap ℂ Γ(X, U) a)) = a`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[← Ideal.Quotient.algebraMap_eq, ← IsScalarTower.algebraMap_apply]`. Conclude with `e.symm_apply_apply a`. Use `⟨CxPts.ofHom hU φ hφ, CxPts.ofHom_mem hU φ hφ, ?_⟩` and prove the remaining obligations. Establish `hev : CxPts.evHom (CxPts.ofHom_mem hU φ hφ) = φ`. Use extensionality with `f`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← CxPts.ev_eq, CxPts.ev_ofHom]`. Rewrite using `[hev]`. Use extensionality with `f`. Rewrite using `[RingHom.mem_ker]`. Use `show f ∈ m ↔ e.symm (Ideal.Quotient.mk m f) = 0`.
-
-Rewrite using `[RingEquiv.symm_apply_eq, map_zero, Ideal.Quotient.eq_zero_iff_mem]`.
+A detailed English derivation is pending.
 -/
 theorem exists_cxPts_ker_eq : ∀ (X : Scheme.{0}) (p : X ⟶ Sp ℂ) [LocallyOfFiniteType p] (U : X.Opens), IsAffineOpen U →
     ∀ m : Ideal Γ(X, U), m.IsMaximal → ∃ (y : CxPts p (RingHom.id ℂ)) (hy : y ∈ CxPts.ptsIn p (RingHom.id ℂ) U),

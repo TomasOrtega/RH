@@ -8,19 +8,19 @@ open scoped Classical
 namespace GlobalTheory.LogDerivHigher
 
 /- English proof (translation)
-Proceed by induction on `Z using Finset.induction_on with`. Consider the case `empty => intro g h1 h2; exact ⟨g, by simpa using h1, fun _ _ => rfl, by simpa using h2⟩`. Consider the case `insert a Z ha ih`. Introduce `g h1 h2`. Establish `hset : U \ (↑(insert a Z) : Set ℂ) = (U \ Z) \ {a}`.
+Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use extensionality with `z`. Simplify using the standard rewrite rules. The claim follows by propositional logic. Rewrite `h1`, `h2` using `[hset]`. Distinguish the cases in `haU : a ∈ U`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. The claim follows by propositional logic. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Establish `ho : IsOpen (U \ (Z : Set ℂ))` using `hU.sdiff Z.finite_toSet.isClosed`. Establish `hn : U \ (Z : Set ℂ) ∈ 𝓝 a` using `ho.mem_nhds ⟨haU, by simpa using ha⟩`. Establish `hd` using `Complex.differentiableOn_update_limUnder_of_bddAbove hn h1 ⟨K, by rintro _ ⟨z, hz, rfl⟩; exact h2 z hz⟩`. Take `⟨G, g1, g2, g3⟩` from `ih _ hd (fun z hz => by`. Distinguish the cases in `hza : z = a`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Substitute `hza` using the available equality. Establish `hc : Tendsto (fun w => ‖Function.update g z (limUnder (𝓝[≠] z) g) w‖) (𝓝[≠] z) (𝓝 ‖Function.update g z (limUnder (𝓝[≠] z) g) z‖)` using `((hd.differentiableAt hn).continuousAt.norm.tendsto).mono_left nhdsWithin_le_nhds`. Use `le_of_tendsto hc ?_` and prove the remaining obligations. Use `filter_upwards [self_mem_nhdsWithin, mem_nhdsWithin_of_mem_nhds hn] with w hw hw'`. Rewrite using `[Function.update_of_ne hw]`.
+Substitute using the available equality. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h2 w ⟨hw', hw⟩`. Rewrite using `[Function.update_of_ne hza]`. Conclude with `h2 z ⟨hz, hza⟩)`. Use `⟨G, g1, fun z hz => ?_, g3⟩` and prove the remaining obligations. Rewrite `hz` using `[Finset.mem_insert, not_or]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[g2 z hz.2, Function.update_of_ne hz.1]`. Establish `: (U \ (Z : Set ℂ)) \ {a} = U \ Z`. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Conclude with `fun h => h.1`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `fun h => ⟨h, fun e => haU (by rw [← Set.mem_singleton_iff.1 e]; exact h.1)⟩`. Rewrite `h1`, `h2` using `[this]`. Take `⟨G, g1, g2, g3⟩` from `ih g h1 h2`. Conclude with `⟨G, g1, fun z hz => g2 z fun h => hz (Finset.mem_insert_of_mem h), g3⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 lemma extend (K : ℝ) (U : Set ℂ) (hU : IsOpen U) (Z : Finset ℂ) :
     ∀ g : ℂ → ℂ, DifferentiableOn ℂ g (U \ Z) → (∀ z ∈ U \ (Z : Set ℂ), ‖g z‖ ≤ K) →
@@ -60,9 +60,9 @@ lemma extend (K : ℝ) (U : Set ℂ) (hU : IsOpen U) (Z : Finset ℂ) :
       exact ⟨G, g1, fun z hz => g2 z fun h => hz (Finset.mem_insert_of_mem h), g3⟩
 
 /- English proof (translation)
-Take `⟨G, g1, g2, g3⟩` from `extend K U hU Z g h1 h2`. Establish `hev : g =ᶠ[𝓝 s] G` using `by filter_upwards [Z.finite_toSet.isClosed.isOpen_compl.mem_nhds hs] with z hz`. Conclude with `(g2 z hz).symm`. Rewrite using `[hev.iteratedDeriv_eq]`. Use `Complex.norm_iteratedDeriv_le_of_forall_mem_sphere_norm_le k hR ?_ fun z hz => g3 z (hsub (Metric.sphere_subset_closedBall hz))` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `DifferentiableOn.diffContOnCl ?_` and prove the remaining obligations. Rewrite using `[closure_ball s hR.ne']`. Conclude with `g1.mono hsub`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma cauchy (K : ℝ) (U : Set ℂ) (hU : IsOpen U) (Z : Finset ℂ) (g : ℂ → ℂ)
     (h1 : DifferentiableOn ℂ g (U \ Z)) (h2 : ∀ z ∈ U \ (Z : Set ℂ), ‖g z‖ ≤ K)
@@ -80,9 +80,9 @@ lemma cauchy (K : ℝ) (U : Set ℂ) (hU : IsOpen U) (Z : Finset ℂ) (g : ℂ �
   exact g1.mono hsub
 
 /- English proof (translation)
-Establish `h0 : s - w ≠ 0` using `sub_ne_zero.2 h`. Establish `h1` using `(hasDerivAt_const s c).fun_div (((hasDerivAt_id' s).sub_const w).fun_pow (k + 1)) (pow_ne_zero _ h0)`. Use `h1.congr_deriv ?_` and prove the remaining obligations. Simplify using `only [Nat.add_sub_cancel]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma hasDerivAt_pole (c w s : ℂ) (k : ℕ) (h : s ≠ w) :
     HasDerivAt (fun z => c / (z - w) ^ (k + 1)) (-((k + 1 : ℕ) : ℂ) * (c / (s - w) ^ (k + 1 + 1))) s := by
@@ -96,13 +96,13 @@ lemma hasDerivAt_pole (c w s : ℂ) (k : ℕ) (h : s ≠ w) :
   ring
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => intro s hs`. Simplify using `[hg s hs]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `succ k ih`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Treat this case separately.
 
-Introduce `s hs`. Establish `hev : iteratedDeriv k g =ᶠ[𝓝 s] fun s => (-1) ^ (k + 1) * (LSeries (LSeries.logMul^[k] f) s + k.factorial * (- (e / (s - 1) ^ (k + 1)) + ∑ w ∈ Z, m w / (s - w) ^ (k + 1)))` using `by filter_upwards [(isOpen_lt continuous_const continuous_re).mem_nhds hs] with z hz`. Conclude with `ih z hz`. Rewrite using `[iteratedDeriv_succ, hev.deriv_eq]`. Establish `a1 : LSeries.abscissaOfAbsConv (LSeries.logMul^[k] f) < s.re`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LSeries.absicssaOfAbsConv_logPowMul]`. Conclude with `hf.trans_lt (by exact_mod_cast hs)`. Establish `d1` using `LSeries_hasDerivAt a1`. Establish `d2` using `hasDerivAt_pole e 1 s k (by rintro rfl; simp at hs)`. Establish `d3` using `HasDerivAt.fun_sum (u := Z) fun w hw => hasDerivAt_pole (m w) w s k (by rintro rfl; linarith [hZ _ hw])`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `d4` using `(d1.fun_add ((d2.fun_neg.fun_add d3).const_mul (k.factorial : ℂ))).const_mul ((-1 : ℂ) ^ (k + 1))`. Rewrite using `[d4.deriv, Function.iterate_succ', ← Finset.mul_sum, Nat.factorial_succ]`. Simplify using `only [Function.comp_apply]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 lemma iter (f : ℕ → ℂ) (hf : LSeries.abscissaOfAbsConv f ≤ 1) (e : ℂ) (Z : Finset ℂ) (m : ℂ → ℂ)
     (hZ : ∀ w ∈ Z, w.re ≤ 1) (g : ℂ → ℂ)
@@ -135,11 +135,11 @@ lemma iter (f : ℕ → ℂ) (hf : LSeries.abscissaOfAbsConv f ≤ 1) (e : ℂ) 
     ring
 
 /- English proof (translation)
-Establish `h : ∀ (f : ℕ → ℂ) (k n : ℕ), (LSeries.logMul^[k] f) n = (Complex.log n) ^ k * f n`. Introduce `f k n`. Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih => rw [Function.iterate_succ_apply', LSeries.logMul, ih]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hk : (k.factorial : ℂ) ≠ 0` using `by exact_mod_cast k.factorial_ne_zero`. Rewrite using `[derSeries, LSeries, ← tsum_mul_left]`. Use `tsum_congr fun n => ?_` and prove the remaining obligations. Break down `eq_or_ne n 0 with rfl | hn` into its components or cases.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using the standard rewrite rules. Rewrite using `[LSeries.term_of_ne_zero hn, h, cpow_neg, ← Complex.natCast_log, Pi.mul_apply]`. Clear the denominators using the available nonvanishing facts.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 -/
 lemma derSeries_eq (c : ℕ → ℂ) (k : ℕ) (s : ℂ) :
     LSeries (LSeries.logMul^[k] (c * fun n : ℕ => ((Λ n : ℝ) : ℂ))) s
@@ -158,19 +158,17 @@ lemma derSeries_eq (c : ℕ → ℂ) (k : ℕ) (s : ℂ) :
     field_simp
 
 /- English proof (translation)
-Take `⟨B, hB, G⟩` from `ZetaLeft.norm_sub_one_mul_riemannZeta_le`. Use `⟨B + 1, by positivity, fun q _ z hz => ?_⟩` and prove the remaining obligations. Establish `hq : (1 : ℝ) ≤ q` using `by exact_mod_cast Nat.pos_of_ne_zero (NeZero.ne q)`. Establish `hP : ∀ s : ℂ, -(7 / 4 : ℝ) ≤ s.re → ‖∏ p ∈ q.primeFactors, (1 - (p : ℂ) ^ (-s))‖ ≤ (q : ℝ) ^ 5`. Introduce `s hs`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[norm_prod]`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.prod_le_prod (fun _ _ => norm_nonneg _) fun p hp => ?_` and prove the remaining obligations. Establish `hp'` using `Nat.prime_of_mem_primeFactors hp`. Establish `h2 : (2 : ℝ) ≤ p` using `by exact_mod_cast hp'.two_le`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(norm_sub_le _ _).trans ?_` and prove the remaining obligations. Rewrite using `[norm_one, Complex.norm_natCast_cpow_of_pos hp'.pos]`. Establish `: (p : ℝ) ^ (-s).re ≤ (p : ℝ) ^ ((2 : ℕ) : ℝ)` using `Real.rpow_le_rpow_of_exponent_le (by linarith) (by rw [neg_re]; push_cast; linarith)`. Rewrite `this` using `[Real.rpow_natCast]`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right h2 (sq_nonneg (p : ℝ))]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Use `_ = ((∏ p ∈ q.primeFactors, p : ℕ) : ℝ) ^ 3 := by rw [Finset.prod_pow, Nat.cast_prod]`. Use `_ ≤ (q : ℝ) ^ 3 := by gcongr`. Conclude with `Nat.le_of_dvd (NeZero.pos q) (Nat.prod_primeFactors_dvd q)`. Use `_ ≤ _ := pow_le_pow_right₀ hq (by norm_num)`. Establish `h5 : (1 : ℝ) ≤ (‖z‖ + 2) ^ 5` using `one_le_pow₀ (by linarith [norm_nonneg z])`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hq5 : (0 : ℝ) ≤ (q : ℝ) ^ 5` using `by positivity`. Distinguish the cases in `h1 : z = 1`. Use `hP 1 (by norm_num)` as an intermediate fact. Simplify using `only [cpow_neg_one] at this`. Establish `e : LFunctionTrivChar₁ q z = ∏ p ∈ q.primeFactors, (1 - (p : ℂ)⁻¹)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[h1, LFunctionTrivChar₁, Function.update_self]`. Rewrite using `[e]`. Use `this.trans ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[LFunctionTrivChar₁, Function.update_of_ne h1, LFunctionTrivChar_eq_mul_riemannZeta h1, mul_left_comm, norm_mul]`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 lemma growth_triv : ∃ B : ℝ, 0 < B ∧ ∀ (q : ℕ) [NeZero q] (z : ℂ), -(7 / 4 : ℝ) ≤ z.re →
     ‖LFunctionTrivChar₁ q z‖ ≤ B * (q : ℝ) ^ 5 * (‖z‖ + 2) ^ 5 := by
@@ -215,23 +213,23 @@ lemma growth_triv : ∃ B : ℝ, 0 < B ∧ ∀ (q : ℕ) [NeZero q] (z : ℂ), -
       _ ≤ _ := by gcongr; linarith
 
 /- English proof (translation)
-Take `⟨B, hB, G⟩` from `growth_triv`. Take `⟨B', hB', G'⟩` from `norm_LFunction_le_poly_left`. Use `⟨B + B', by positivity, fun q _ χ => ?_⟩` and prove the remaining obligations. Establish `hq : (1 : ℝ) ≤ q` using `by exact_mod_cast Nat.pos_of_ne_zero (NeZero.ne q)`. Distinguish the cases in `hχ : χ = 1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Substitute `hχ` using the available equality. Establish `hF : ∀ z, z ≠ 1 → LFunctionTrivChar₁ q z = (z - 1) * LFunction (1 : DirichletCharacter ℂ q) z` using `fun z hz => by`. Rewrite using `[LFunctionTrivChar₁, Function.update_of_ne hz]`. Establish `hne : ∀ z, LFunctionTrivChar₁ q z = 0 → z ≠ 1` using `fun z hz h => LFunctionTrivChar₁_apply_one_ne_zero q (h ▸ hz)`. Use `⟨LFunctionTrivChar₁ q, differentiable_LFunctionTrivChar₁ q, fun z hz => ?_, fun z hz => ?_, fun z => ?_, fun z hz => ?_, fun s hs => ?_⟩` and prove the remaining obligations.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(G q z hz).trans ?_ gcongr` and prove the remaining obligations. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[hF z (by rintro rfl; norm_num at hz), norm_mul]`. Use `le_mul_of_one_le_left (norm_nonneg _) ?_` and prove the remaining obligations. Use `Complex.re_le_norm (z - 1)` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[sub_re, hz, one_re]`. Combine the linear equalities and inequalities to obtain the conclusion. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h1` using `hne z h`.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h` using `[hF z h1]`. Conclude with `⟨Or.inr h1, (mul_eq_zero.1 h).resolve_left (sub_ne_zero.2 h1)⟩`. Introduce and unpack `⟨h1, h2⟩`. Rewrite using `[hF z (h1.resolve_left (by simp)), h2, mul_zero]`. Establish `h1` using `hne z hz`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hev : LFunctionTrivChar₁ q =ᶠ[𝓝 z] (fun z => z - 1) * LFunction (1 : DirichletCharacter ℂ q)` using `by filter_upwards [isOpen_ne.mem_nhds h1] with w hw`. Conclude with `hF w hw`. Establish `a1 : AnalyticAt ℂ (fun z : ℂ => z - 1) z` using `by fun_prop`. Establish `a2 : AnalyticAt ℂ (LFunction (1 : DirichletCharacter ℂ q)) z`. Use `DifferentiableOn.analyticAt (s := {1}ᶜ) (fun w hw => ?_) (isOpen_ne.mem_nhds h1)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Conclude with `(differentiableAt_LFunction _ w (Or.inl hw)).differentiableWithinAt`. Unfold `ord analyticOrderNatAt`. Rewrite using `[analyticOrderAt_congr hev, analyticOrderAt_mul a1 a2, a1.analyticOrderAt_eq_zero.2 (sub_ne_zero.2 h1), zero_add]`. Establish `h1 : s ≠ 1` using `by rintro rfl; simp at hs`. Establish `h2 : LFunction (1 : DirichletCharacter ℂ q) s ≠ 0` using `LFunction_ne_zero_of_one_le_re _ (Or.inr h1) hs.le`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h3` using `sub_ne_zero.2 h1`. Rewrite using `[deriv_LFunctionTrivChar₁_apply_of_ne_one q h1, hF s h1, if_pos rfl, LFunctionTrivChar]`. Clear the denominators using the available nonvanishing facts. Use `⟨LFunction χ, differentiable_LFunction hχ, fun z hz => ?_, fun _ _ => le_rfl, fun z => by simp [hχ], fun _ _ => rfl, fun s _ => by simp [hχ]⟩` and prove the remaining obligations. Use `(G' q χ hχ z hz).trans ?_` and prove the remaining obligations.
+Clear the denominators using the available nonvanishing facts. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `h2 : (1 : ℝ) ≤ ‖z‖ + 2` using `by linarith [norm_nonneg z]`. Use `gcongr`. Combine the linear equalities and inequalities to obtain the conclusion. Apply the tactic sequence `all_goals first | assumption | norm_num`.
+A detailed English derivation is pending.
 -/
 lemma exists_entire : ∃ B : ℝ, 0 < B ∧ ∀ (q : ℕ) [NeZero q] (χ : DirichletCharacter ℂ q),
     ∃ F : ℂ → ℂ, Differentiable ℂ F ∧
@@ -295,43 +293,39 @@ lemma exists_entire : ∃ B : ℝ, 0 < B ∧ ∀ (q : ℕ) [NeZero q] (χ : Diri
     all_goals first | assumption | norm_num
 
 /- English proof (translation)
-Take `⟨C, hC, H⟩` from `LWide.disc (2 / 3) (4 / 5) (by norm_num) (by norm_num) (by norm_num)`. Take `⟨B, hB, G⟩` from `exists_entire`. Use `⟨C * (2 * (1 + |Real.log (2048 * B)|) + 5), by positivity, ?_⟩` and prove the remaining obligations. Introduce `q _ χ σ t k hs1 hs2`. Take `⟨F, hF, f1, f2, f3, f4, f5⟩` from `G q χ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hq : (1 : ℝ) ≤ q` using `by exact_mod_cast Nat.pos_of_ne_zero (NeZero.ne q)`. Use `set c : ℂ := 2 + t * I with hc`. Use `set s : ℂ := σ + t * I with hs`. Establish `hsre : s.re = σ` using `by simp [hs]`. Establish `hcre : c.re = 2` using `by simp [hc]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hcn : ‖c‖ ≤ 2 + |t|`. Use `(norm_add_le _ _).trans (le_of_eq ?_)` and prove the remaining obligations. Simplify using the standard rewrite rules. Establish `hlow : 1 / 2 ≤ ‖F c‖`. Use `LLower.norm_LFunction_ge q χ c (by rw [hcre]; norm_num)` as an intermediate fact.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite `this` using `[hcre]`. Combine the linear relations using `[f2 c hcre]`. Establish `ht` using `abs_nonneg t`. Use `set X : ℝ := q * (|t| + 2) with hX`. Establish `hX2 : 2 ≤ X` using `by nlinarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hlX : 1 / 2 ≤ Real.log X`. Use `Real.log_le_log (by norm_num) hX2` as an intermediate fact. Combine the linear relations using `[Real.log_two_gt_d9]`. Establish `hpos : 0 < ‖F c‖` using `by linarith`. Take `⟨h1, h2, h3⟩` from `H F c (15 / 4) (1024 * B * X ^ 5) (by norm_num) hF (norm_pos_iff.1 hpos) (fun z hz => by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hre : -(7 / 4 : ℝ) ≤ z.re`. Use `(abs_le.1 ((Complex.abs_re_le_norm (z - c)).trans hz)).1` as an intermediate fact. Rewrite `this` using `[sub_re, hcre]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `(f1 z hre).trans ?_` and prove the remaining obligations.
+Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hzn : ‖z‖ + 2 ≤ 4 * (|t| + 2)`. Use `norm_le_norm_sub_add z c` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation. Establish `e : (4 / 5 : ℝ) * (15 / 4) = 3` using `by norm_num`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1`, `h2`, `h3` using `[e]`. Establish `hlog : Real.log (1024 * B * X ^ 5 / ‖F c‖) ≤ Real.log (2048 * B) + 5 * Real.log X`. Establish `hX0 : 0 < X` using `by linarith`. Establish `: 1024 * B * X ^ 5 / ‖F c‖ ≤ 2048 * B * X ^ 5`. Rewrite using `[div_le_iff₀ hpos]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: 0 < B * X ^ 5` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities. Use `(Real.log_le_log (by positivity) this).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[Real.log_mul (by positivity) (by positivity), Real.log_pow]`. Evaluate the numerical expressions.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hfin : C * (1 + Real.log (1024 * B * X ^ 5 / ‖F c‖)) ≤ C * (2 * (1 + |Real.log (2048 * B)|) + 5) * Real.log X`. Rewrite using `[mul_assoc C]`. Use `mul_le_mul_of_nonneg_left ?_ hC.le` and prove the remaining obligations. Establish `h5` using `le_abs_self (Real.log (2048 * B))`. Establish `h6` using `abs_nonneg (Real.log (2048 * B))`.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use the polynomial consequences of the given equalities and inequalities. Use `set K := C * (2 * (1 + |Real.log (2048 * B)|) + 5) * Real.log X with hK`. Establish `hset : zerosDisc χ c 3 = {w : ℂ | ‖w - c‖ ≤ 3 ∧ F w = 0}`. Use extensionality with `w`. Simplify using `only [zerosDisc, Set.mem_setOf_eq, f3]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hset]`. Simplify using `only [finsum_mem_eq_finite_toFinset_sum _ h1] at h2 h3 ⊢`. Use `set Z := h1.toFinset with hZ`. Establish `hZm : ∀ w, w ∈ Z ↔ ‖w - c‖ ≤ 3 ∧ F w = 0` using `fun w => h1.mem_toFinset`. Establish `hord : ∀ w ∈ Z, analyticOrderNatAt F w = ord χ w` using `fun w hw => f4 w ((hZm w).1 hw).2`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hZre : ∀ w ∈ Z, w.re < 1` using `fun w hw => by`. Take `⟨a, b⟩` from `(f3 w).1 ((hZm w).1 hw).2`. Assume the negation of the conclusion as `hh`. Conclude with `LFunction_ne_zero_of_one_le_re χ a (not_lt.1 hh) b`. Use `⟨h1, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← Finset.sum_congr rfl fun w hw => congrArg (Nat.cast : ℕ → ℝ) (hord w hw)]`. Conclude with `h2.trans hfin`. Use `set g : ℂ → ℂ := fun z => deriv F z / F z - ∑ w ∈ Z, (ord χ w : ℂ) / (z - w) with hg`. Establish `hnz : ∀ z ∈ Metric.ball c (5 / 2) \ (Z : Set ℂ), F z ≠ 0` using `fun z hz h0 => hz.2 ((hZm z).2 ⟨by linarith [mem_ball_iff_norm.1 hz.1], h0⟩)`. Establish `hcau` using `cauchy K (Metric.ball c (5 / 2)) Metric.isOpen_ball Z g (fun z hz => by`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Use `DifferentiableAt.differentiableWithinAt ?_` and prove the remaining obligations. Use `((hF.deriv z).div (hF z) (hnz z hz)).sub (DifferentiableAt.fun_sum fun w hw => ?_)` and prove the remaining obligations. Conclude with `(differentiableAt_const _).div (differentiableAt_id.sub_const w) (sub_ne_zero.2 (by rintro rfl; exact hz.2 hw)))`. Use the proof step `(fun z hz => by`. Establish `h4` using `(h3 z (by linarith [mem_ball_iff_norm.1 hz.1]) (hnz z hz)).trans hfin`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h4` using `[Finset.sum_congr rfl fun w hw => by rw [hord w hw]]`. Conclude with `le_trans (le_mul_of_one_le_left (norm_nonneg _) (by norm_num)) h4)`. Use `s σ (by linarith) (fun h => by linarith [hZre s h])`. Use the proof step `(fun z hz => by`. Establish `hsc : ‖s - c‖ = 2 - σ`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Establish `: s - c = ((σ - 2 : ℝ) : ℂ)` using `by rw [hs, hc]; push_cast; ring`. Rewrite using `[this, Complex.norm_real, Real.norm_eq_abs, abs_of_nonpos (by linarith)]`. Expand and normalize the polynomial expressions, which then agree. Use `norm_sub_le_norm_sub_add_norm_sub z s c` as an intermediate fact. Rewrite using `[mem_ball_iff_norm]`.
-
-Combine the linear relations using `[mem_closedBall_iff_norm.1 hz]) k`. Establish `hit` using `iter ((fun n : ℕ => χ (n : ZMod q)) * fun n : ℕ => ((Λ n : ℝ) : ℂ)) (LSeries.abscissaOfAbsConv_le_of_forall_lt_LSeriesSummable fun y hy => LSeriesSummable_twist_vonMangoldt χ (by simpa using hy)) (if χ = 1 then 1 else 0) Z (fun w => (ord χ w : ℂ)) (fun w hw => (hZre w hw).le) g ( …`. Rewrite using `[LSeries_twist_vonMangoldt_eq χ hz, ← deriv_LFunction_eq_deriv_LSeries χ hz, ← LFunction_eq_LSeries χ hz, hg]`. Simplify using `only [f5 z hz]`. Use the proof step `ring) k s (by rw [hsre]; exact hs1)`.
-
-Rewrite `hcau` using `[hit, derSeries_eq, ← mul_add, norm_mul, norm_mul, norm_pow, norm_neg, norm_one, one_pow, one_mul, Complex.norm_natCast, mul_div_assoc]`. Establish `hk : (0 : ℝ) < k.factorial` using `by exact_mod_cast k.factorial_pos`. Use `le_trans (le_of_eq ?_) (le_of_mul_le_mul_left hcau hk)` and prove the remaining obligations. Use `congr 1`. Apply the tactic sequence `split_ifs <;> ring`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem main : ∃ C : ℝ, 0 < C ∧ ∀ (q : ℕ) [NeZero q] (χ : DirichletCharacter ℂ q) (σ t : ℝ) (k : ℕ), 1 < σ → σ ≤ 2 → (zerosDisc χ (2 + t * I) 3).Finite ∧ (∑ᶠ w ∈ zerosDisc χ (2 + t * I) 3, (ord χ w : ℝ)) ≤ C * Real.log (q * (|t| + 2)) ∧ ‖derSeries (fun n : ℕ => χ (n : ZMod q)) k (σ + t * I) - (if χ = 1 then 1 / ((σ : ℂ) + t * I - 1) ^ (k + 1) else 0) + ∑ᶠ w ∈ zerosDisc χ (2 + t * I) 3, (ord χ w : ℂ) / ((σ : ℂ) + t * I - w) ^ (k + 1)‖ ≤ C * Real.log (q * (|t| + 2)) / σ ^ k := by
   obtain ⟨C, hC, H⟩ := LWide.disc (2 / 3) (4 / 5) (by norm_num) (by norm_num) (by norm_num)

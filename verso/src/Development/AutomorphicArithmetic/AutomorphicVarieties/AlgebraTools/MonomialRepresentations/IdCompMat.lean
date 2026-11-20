@@ -8,9 +8,9 @@ private noncomputable def UpperTheory.V.AlgebraTools.icmPt {K ι : Type} [Field 
   ⟨RingHom.ker (MvPolynomial.eval (fun p : ι × ι => A p.1 p.2)), RingHom.ker_isPrime _⟩
 
 /- English proof (translation)
-Use `⟨(MvPolynomial.aeval fun p : ι × ι => ∑ k, MvPolynomial.C (A p.1 k) * MvPolynomial.X (k, p.2)).toRingHom, fun B => ?_⟩` and prove the remaining obligations. Establish `key : (MvPolynomial.eval fun p : ι × ι => (A * B) p.1 p.2) = (MvPolynomial.eval fun p : ι × ι => B p.1 p.2).comp (MvPolynomial.aeval fun p : ι × ι => ∑ k, MvPolynomial.C (A p.1 k) * MvPolynomial.X (k, p.2)).toRingHom`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `a`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `p`. Simplify using `[Matrix.mul_apply]`. Apply `PrimeSpectrum.ext` to reduce the goal to its premises. Use `show RingHom.ker _ = Ideal.comap _ (RingHom.ker _)`. Rewrite using `[key, RingHom.comap_ker]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.V.AlgebraTools.icmPt_left {K ι : Type} [Field K] [Fintype ι] (A : Matrix ι ι K) :
     ∃ ψ : MvPolynomial (ι × ι) K →+* MvPolynomial (ι × ι) K, ∀ B : Matrix ι ι K,
@@ -31,9 +31,9 @@ private theorem UpperTheory.V.AlgebraTools.icmPt_left {K ι : Type} [Field K] [F
   rw [key, RingHom.comap_ker]
 
 /- English proof (translation)
-Use `⟨(MvPolynomial.aeval fun p : ι × ι => ∑ k, MvPolynomial.X (p.1, k) * MvPolynomial.C (A k p.2)).toRingHom, fun B => ?_⟩` and prove the remaining obligations. Establish `key : (MvPolynomial.eval fun p : ι × ι => (B * A) p.1 p.2) = (MvPolynomial.eval fun p : ι × ι => B p.1 p.2).comp (MvPolynomial.aeval fun p : ι × ι => ∑ k, MvPolynomial.X (p.1, k) * MvPolynomial.C (A k p.2)).toRingHom`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `a`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `p`. Simplify using `[Matrix.mul_apply]`. Apply `PrimeSpectrum.ext` to reduce the goal to its premises. Use `show RingHom.ker _ = Ideal.comap _ (RingHom.ker _)`. Rewrite using `[key, RingHom.comap_ker]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.V.AlgebraTools.icmPt_right {K ι : Type} [Field K] [Fintype ι] (A : Matrix ι ι K) :
     ∃ ψ : MvPolynomial (ι × ι) K →+* MvPolynomial (ι × ι) K, ∀ B : Matrix ι ι K,
@@ -54,37 +54,31 @@ private theorem UpperTheory.V.AlgebraTools.icmPt_right {K ι : Type} [Field K] [
   rw [key, RingHom.comap_ker]
 
 /- English proof (translation)
-Introduce `K G ι _ _ _ _ r`. Set `f : G → PrimeSpectrum (MvPolynomial (ι × ι) K)` to `fun g => UpperTheory.V.AlgebraTools.icmPt (r g)`. Use `letI tG : TopologicalSpace G := TopologicalSpace.induced f inferInstance`. Establish `hind : Topology.IsInducing f` using `⟨rfl⟩`. Use `haveI : TopologicalSpace.NoetherianSpace G := hind.noetherianSpace`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hf : Continuous f` using `continuous_induced_dom`. Establish `hL : ∀ g : G, Continuous fun x => g * x`. Introduce `g`. Take `⟨ψ, hψ⟩` from `UpperTheory.V.AlgebraTools.icmPt_left (r g)`. Use `continuous_induced_rng.2 ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: (f ∘ fun x => g * x) = PrimeSpectrum.comap ψ ∘ f`. Use function extensionality and compare the values at `x`. Simplify using `only [Function.comp_apply, f, map_mul]`. Conclude with `hψ (r x)`. Rewrite using `[this]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(PrimeSpectrum.continuous_comap ψ).comp hf`. Establish `hR : ∀ g : G, Continuous fun x => x * g`. Introduce `g`. Take `⟨ψ, hψ⟩` from `UpperTheory.V.AlgebraTools.icmPt_right (r g)`. Use `continuous_induced_rng.2 ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `: (f ∘ fun x => x * g) = PrimeSpectrum.comap ψ ∘ f`. Use function extensionality and compare the values at `x`. Simplify using `only [Function.comp_apply, f, map_mul]`. Conclude with `hψ (r x)`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(PrimeSpectrum.continuous_comap ψ).comp hf`. Take `⟨N, hNn, hNf, hNc, hNi, hNd⟩` from `UpperTheory.V.AlgebraTools.idComp G hL hR`. Establish `hmemZ : ∀ (S : Set (MvPolynomial (ι × ι) K)) (g : G), f g ∈ PrimeSpectrum.zeroLocus S ↔ ∀ q ∈ S, MvPolynomial.eval (fun p => r g p.1 p.2) q = 0`. Introduce `S g`. Rewrite using `[PrimeSpectrum.mem_zeroLocus]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h q hq`. Conclude with `(RingHom.mem_ker).1 (h hq)`. Introduce `h q hq`. Conclude with `(RingHom.mem_ker).2 (h q hq)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨N, hNn, hNf, ?_, ?_⟩` and prove the remaining obligations. Take `⟨t, ht, hNt⟩` from `isClosed_induced_iff.1 hNc`. Take `⟨S, rfl⟩` from `(PrimeSpectrum.isClosed_iff_zeroLocus t).1 ht`. Use `⟨S, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[← hmemZ S g]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hg`. Establish `h' : g ∈ (N : Set G)` using `hg`. Rewrite `h'` using `[← hNt]`. Conclude with `h'`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `hg`. Establish `h' : g ∈ f ⁻¹' PrimeSpectrum.zeroLocus S` using `hg`. Rewrite `h'` using `[hNt]`. Conclude with `h'`. Introduce `U hU σ s hs`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Set `W : MvPolynomial (ι × ι) K → Set G` to `fun q => {g | MvPolynomial.eval (fun p => r (σ * g) p.1 p.2) q ≠ 0}`. Establish `hWo : ∀ q, IsOpen (W q)`. Introduce `q`. Establish `h1 : IsOpen (f ⁻¹' (PrimeSpectrum.basicOpen q : Set _))` using `(PrimeSpectrum.isOpen_basicOpen).preimage hf`. Establish `h2` using `h1.preimage (hL σ)`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `h2 using 1` and compare the differences between its conclusion and the goal. Use extensionality with `g`. Simplify using `only [W, Set.mem_setOf_eq, Set.mem_preimage, f, SetLike.mem_coe, PrimeSpectrum.mem_basicOpen]`. Use `show _ ↔ q ∉ RingHom.ker _`. Rewrite using `[RingHom.mem_ker]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨x, hxN, hxO⟩` from `(isIrreducible_iff_sInter.1 hNi) (s.image W) (by`. Introduce `u hu`. Take `⟨q, -, rfl⟩` from `Finset.mem_image.1 hu`. Conclude with `hWo q)`. Use the proof step `(by`.
-
-Introduce `u hu`. Take `⟨q, hq, rfl⟩` from `Finset.mem_image.1 hu`. Take `⟨g, hgN, hg⟩` from `hs q hq`. Conclude with `⟨g, hgN, hg⟩)`. Establish `hOo : IsOpen (⋂₀ (↑(s.image W) : Set (Set G)))`.
-
-Apply `Set.Finite.isOpen_sInter (Finset.finite_toSet _)` to reduce the goal to its premises. Introduce `u hu`. Take `⟨q, -, rfl⟩` from `Finset.mem_image.1 hu`. Conclude with `hWo q`. Take `⟨g, hgO, hgUN⟩` from `mem_closure_iff.1 (hNd U hU hxN) _ hOo hxO`.
-
-Use `⟨g, hgUN, fun q hq => ?_⟩` and prove the remaining obligations. Establish `: g ∈ W q` using `hgO _ (Finset.mem_image_of_mem W hq)`. Conclude with `this`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.AlgebraTools.idCompMat :
     ∀ (K G ι : Type) [Field K] [Group G] [Fintype ι] [DecidableEq ι] (r : G →* Matrix ι ι K),

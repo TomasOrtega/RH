@@ -20,7 +20,7 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     (W : LocWach PD LL O v n)
 
 /- English proof (translation)
-Use `W.γD_smul T g (algebraMap (LetA O n) W.EE a) x` as an intermediate fact. Rewrite `this` using `[algebraMap_smul, W.γE_ext, algebraMap_smul]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem γD_smulA (T : LocLat G Qp LL O) (g : W.Gam) (a : LetA O n) (x : W.DD T) :
     W.γD T g (a • x) = W.γA g a • W.γD T g x := by
@@ -29,7 +29,7 @@ theorem γD_smulA (T : LocLat G Qp LL O) (g : W.Gam) (a : LetA O n) (x : W.DD T)
   exact this
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih => rw [pow_succ', AlgHom.mul_apply, AlgHom.mul_apply, ih, W.φA_γA]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem φpow_γA (k : ℕ) (g : W.Gam) (a : LetA O n) :
     (W.φA ^ k) (W.γA g a) = W.γA g ((W.φA ^ k) a) := by
@@ -38,9 +38,9 @@ theorem φpow_γA (k : ℕ) (g : W.Gam) (a : LetA O n) :
   | succ k ih => rw [pow_succ', AlgHom.mul_apply, AlgHom.mul_apply, ih, W.φA_γA]
 
 /- English proof (translation)
-Take `⟨c, hc⟩ : (PowerSeries.X : PowerSeries O) ∣ W.γ₀ g PowerSeries.X` from `PowerSeries.X_dvd_iff.2 (W.γ₀_X g).1`. Establish `h1 : W.γA g letπ = letπ * (fun _ => c)`. Use function extensionality and compare the values at `i`. Simplify using `[LocWach.γA, letγ, letπ, hc]`. Use `⟨(W.φA ^ (W.s - 1)) (fun _ => c), ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[LocWach.X, ← φpow_γA, h1, map_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem X_dvd_γX (g : W.Gam) : W.X ∣ W.γA g W.X := by
   obtain ⟨c, hc⟩ : (PowerSeries.X : PowerSeries O) ∣ W.γ₀ g PowerSeries.X :=
@@ -52,7 +52,7 @@ theorem X_dvd_γX (g : W.Gam) : W.X ∣ W.γA g W.X := by
   rw [LocWach.X, ← φpow_γA, h1, map_mul]
 
 /- English proof (translation)
-Take `⟨y, hy, rfl⟩` from `hx`. Take `⟨c, hc⟩` from `X_dvd_γX W δ`. Use `⟨c • W.γD T δ y, (W.N T).smul_mem _ (W.N_Γ T δ y hy), ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `W.X • c • W.γD T δ y = W.γD T δ (W.X • y)`. Rewrite using `[γD_smulA, hc, mul_smul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem γD_mem_aN_X (T : LocLat G Qp LL O) (δ : W.Gam) (x : W.DD T) (hx : x ∈ aN W T W.X) :
     W.γD T δ x ∈ aN W T W.X := by
@@ -65,7 +65,7 @@ theorem γD_mem_aN_X (T : LocLat G Qp LL O) (δ : W.Gam) (x : W.DD T) (hx : x �
 end Generic
 
 /- English proof (translation)
-Introduce `_ HW l _ K s LL h T δ x hx` and use `γD_mem_aN_X ((HW l).W K s LL h) T δ x hx`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem xstab : ∀ (D : Formalism.BasicNotions.D7) (HW : HWOf D.loc) (l : ℕ) [Fact l.Prime] (K : FinExt l) (s : ℕ) (LL : FinExt l) (h : Good K s LL) (T : Lt K LL) (δ : ((HW l).W K s LL h).Gam) (x : ((HW l).W K s LL h).DD T), x ∈ aN ((HW l).W K s LL h) T ((HW l).W K s LL h).X → ((HW l).W K s LL h).γD T δ x ∈ aN ((HW l).W K s LL h) T ((HW l).W K s LL h).X :=
   fun _ HW l _ K s LL h T δ x hx => γD_mem_aN_X ((HW l).W K s LL h) T δ x hx

@@ -26,7 +26,7 @@ def KronHolStatement : Prop :=
       ∀ γ ∈ X.Γ, ∀ j', (γ ≠ γ0 ∨ j' ≠ j) → P (lact γ (Fl.xs j')) = 0
 
 /- English proof (translation)
-Take `⟨n, hn, h⟩` from `X.χ_fin la`. Introduce `h0`. Establish `h1` using `h γ hγ`. Rewrite `h1` using `[h0, zero_pow hn.ne']`. Conclude with `zero_ne_one h1`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chi_ne_zero {r : ℕ} (X : Data E r) (la : Wt X.Ψ r) {γ : GL (Fin r) E} (hγ : γ ∈ X.Γ) :
     X.χ la γ ≠ 0 := by
@@ -37,7 +37,7 @@ theorem chi_ne_zero {r : ℕ} (X : Data E r) (la : Wt X.Ψ r) {γ : GL (Fin r) E
   exact zero_ne_one h1
 
 /- English proof (translation)
-Unfold `poin`. Rewrite using `[tsum_eq_single ⟨γ0, h0⟩ fun γ hγ => by`. Rewrite using `[hz γ.1 γ.2 fun h => hγ (Subtype.ext h), mul_zero]]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem poin_single {r : ℕ} (X : Data E r) (la : Wt X.Ψ r) (P : Frame X.Ψ r → ℂ) (x : Frame X.Ψ r)
     {γ0 : GL (Fin r) E} (h0 : γ0 ∈ X.Γ) (hz : ∀ γ ∈ X.Γ, γ ≠ γ0 → P (lact γ x) = 0) :
@@ -47,7 +47,7 @@ theorem poin_single {r : ℕ} (X : Data E r) (la : Wt X.Ψ r) (P : Frame X.Ψ r 
     rw [hz γ.1 γ.2 fun h => hγ (Subtype.ext h), mul_zero]]
 
 /- English proof (translation)
-Unfold `poin`. Conclude with `(tsum_congr fun γ => by rw [hz γ.1 γ.2, mul_zero]).trans tsum_zero`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem poin_zero {r : ℕ} (X : Data E r) (la : Wt X.Ψ r) (P : Frame X.Ψ r → ℂ) (x : Frame X.Ψ r)
     (hz : ∀ γ ∈ X.Γ, P (lact γ x) = 0) : poin X la P x = 0 := by
@@ -55,7 +55,7 @@ theorem poin_zero {r : ℕ} (X : Data E r) (la : Wt X.Ψ r) (P : Frame X.Ψ r �
   exact (tsum_congr fun γ => by rw [hz γ.1 γ.2, mul_zero]).trans tsum_zero
 
 /- English proof (translation)
-Establish `h0 : ∀ k, wdb (nd X) k (fun _ : V (nd X) => (0 : ℂ)) = fun _ => 0` using `fun k => by`. Use function extensionality and compare the values at `y`. Simplify using `[wdb]`. Simplify using `[leviO, leviM, leviV, wd, h0]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem leviO_zero {r : ℕ} (X : Data E r) (x0 : Frame X.Ψ r) (z : V (nd X)) (ξ : Fin (nd X) → ℂ) :
     leviO X x0 (fun _ => (0 : ℝ)) z ξ = 0 := by
@@ -65,11 +65,11 @@ theorem leviO_zero {r : ℕ} (X : Data E r) (x0 : Frame X.Ψ r) (z : V (nd X)) (
   simp [leviO, leviM, leviV, wd, h0]
 
 /- English proof (translation)
-Introduce `r X Xa Fl hPD hm hL j`. Take `⟨bb, m, hb1, hb2, hb3⟩` from `hm`. Take `⟨η, hη, hpos⟩` from `Xa.posF`. Establish `hmarg : ∃ bb m : ℝ, 4 * (X.Ψ.card : ℝ) * (r : ℝ) ^ 2 < bb ∧ bb < m ∧ ∀ x0, IsOrth X x0 → ∀ z ∈ OmF X x0, ∀ ξ : Fin (nd X) → ℂ, m * leviRh X x0 z ξ ≤ leviO X x0 (phla X Xa.Fp) z ξ - leviDens X x0 z ξ - (nd X : ℝ) * leviO X x0 (phla X Xa.L) z ξ + leviO X x0 (fun _ => (0 : ℝ)) z ξ` using `⟨bb, m, hb1, hb2, fun x0 hx z hz ξ => by`. Rewrite using `[ReciprocityTheory.ChartRestriction.G.AR.Up.leviO_zero, add_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hb3 x0 hx z hz ξ⟩`. Establish `heta : ∃ η : ℝ, 0 < η ∧ ∀ x0, IsOrth X x0 → ∀ z ∈ OmF X x0, ∀ ξ : Fin (nd X) → ℂ, 2 * η * leviO X x0 (phla X Xa.L) z ξ ≤ leviO X x0 (phla X Xa.Fp) z ξ - leviDens X x0 z ξ - (nd X : ℝ) * leviO X x0 (phla X Xa.L) z ξ + leviO X x0 (fun _ => (0 : ℝ)) z ξ` using `⟨η, hη, fun x0 hx z hz ξ => by`. Rewrite using `[ReciprocityTheory.ChartRestriction.G.AR.Up.leviO_zero, add_zero]`. Establish `h1` using `hpos 0 le_rfl (by rw [zero_mul]; positivity) x0 (ReciprocityTheory.ChartRestriction.G.AR.Up.IW.orth_mem_dom X x0 hx) z hz ξ`. Rewrite `h1` using `[zero_mul, zero_mul, sub_zero, ReciprocityTheory.ChartRestriction.G.AR.Up.IW.leviM_comb X x0 hx hz]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `h1⟩`. Take `⟨x0, W, bb', F, P, γ0, h1, h2, h3, -, h5, h6, h7, h8, h9, h10, h11, h12⟩` from `hK r X Xa Fl hPD (fun _ => 0) (fun _ _ _ _ _ _ => rfl) (fun _ _ => contDiffOn_const) ⟨0, fun _ _ => le_rfl⟩ hmarg heta hL j`. Conclude with `⟨x0, W, bb', F, P, γ0, h1, h2, h3, h5, h6, h7, h8, h9, h10, h11, h12⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem kronHol_of_psi (hK : KronHolPsiStatement (E := E)) : KronHolStatement (E := E) := by
   intro r X Xa Fl hPD hm hL j
@@ -98,15 +98,13 @@ theorem kronHol_of_psi (hK : KronHolPsiStatement (E := E)) : KronHolStatement (E
   exact ⟨x0, W, bb', F, P, γ0, h1, h2, h3, h5, h6, h7, h8, h9, h10, h11, h12⟩
 
 /- English proof (translation)
-Introduce `r X Xa Fl hPD hm hL hSS`. Establish `hK` using `ReciprocityTheory.ChartRestriction.G.AR.Up.kronHol_of_psi hK'`. Use `ReciprocityTheory.ChartRestriction.G.AR.Up.interp_of_kron X Xa.Fp Fl.xs fun j => ?_` and prove the remaining obligations. Take `⟨x0, W, bb, F, P, γ0, hO, hW, hWL, hbb, hF, hIn, hBE, hPF, hγ0, hne, hzero⟩` from `hK r X Xa Fl hPD hm hL j`. Establish `hIn' : InAt X x0 W bb (fun z => X.χ Xa.Fp γ0 / P (lact γ0 (Fl.xs j)) * F z)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Unfold `InAt at hIn ⊢`. Establish `h1 : ∀ z, ENNReal.ofReal (‖X.χ Xa.Fp γ0 / P (lact γ0 (Fl.xs j)) * F z‖ ^ 2 / kaF X x0 bb z) * W (cpt X x0 z) = ENNReal.ofReal (‖X.χ Xa.Fp γ0 / P (lact γ0 (Fl.xs j))‖ ^ 2) * (ENNReal.ofReal (‖F z‖ ^ 2 / kaF X x0 bb z) * W (cpt X x0 z))` using `fun z => by`. Rewrite using `[norm_mul, mul_pow, mul_div_assoc, ENNReal.ofReal_mul (by positivity), mul_assoc]`. Repeatedly rewrite using `[h1]`. Rewrite using `[lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ENNReal.mul_lt_top ENNReal.ofReal_lt_top hIn`. Establish `hBE' : IsBEq X Xa.Fp (fun x => X.χ Xa.Fp γ0 / P (lact γ0 (Fl.xs j)) * P x)` using `⟨(differentiableOn_const _).mul hBE.1, fun x hx b hb => by dsimp only; rw [hBE.2 x hx b hb]; ring⟩`. Take `⟨-, hbdd, -⟩` from `hP r X x0 hO hPD Xa.Fp W bb hW hWL hbb (fun z => X.χ Xa.Fp γ0 / P (lact γ0 (Fl.xs j)) * F z) (fun x => X.χ Xa.Fp γ0 / P (lact γ0 (Fl.xs j)) * P x) ((differentiableOn_const _).mul hF) hIn' hBE' fun z hz => by simp only [hPF z hz]`. Use `⟨_, ReciprocityTheory.ChartRestriction.G.AR.Up.ss_sub_ssgt0 X Xa.Fp (hSS _ hbdd), fun j' => ?_⟩` and prove the remaining obligations. Use `split_ifs with hj`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Substitute `hj` using the available equality. Rewrite using `[ReciprocityTheory.ChartRestriction.G.AR.Up.poin_single X Xa.Fp _ (Fl.xs j') hγ0 fun γ hγ hγ' => by`. Simplify using `only [hzero γ hγ j' (Or.inl hγ'), mul_zero]]`. Rewrite using `[div_mul_cancel₀ _ hne, inv_mul_cancel₀ (ReciprocityTheory.ChartRestriction.G.AR.Up.chi_ne_zero X Xa.Fp hγ0)]`. Conclude with `ReciprocityTheory.ChartRestriction.G.AR.Up.poin_zero X Xa.Fp _ (Fl.xs j') fun γ hγ => by`.
-
-Simplify using `only [hzero γ hγ j' (Or.inr hj), mul_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem interp_of (hP : PoinStatement (E := E)) (hK' : KronHolPsiStatement (E := E)) :
     InterpStatement (E := E) := by

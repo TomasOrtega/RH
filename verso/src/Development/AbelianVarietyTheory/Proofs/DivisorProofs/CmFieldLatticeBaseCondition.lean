@@ -21,9 +21,9 @@ open scoped Classical
 namespace GlobalTheory.LatModel
 
 /- English proof (translation)
-Introduce `h1 h2 h3 h4 h5 E _ _ _ _ I _ d φ hfd 𝔣 Λ h𝔣 hΛ l _ Q hQ hQl y hy lam Ω hΩ`. Take `⟨𝔠, R, hR, X₀, X, U, p, cm, hp, hrm, hα, hb⟩` from `GlobalTheory.T.cm_field_lattice_integrality h1 h2 h3 h4 h5 E I d φ hfd 𝔣 Λ h𝔣 hΛ l Q hQ hQl y hy lam Ω hΩ`. Establish `hcm : IsCMType φ` using `hfd.2.2.2.2.2.2.1`. Use `⟨𝔠, R, hR, X₀, X, U, p, cm, hp, hrm, hα, fun i ↦ ?_⟩` and prove the remaining obligations. Take `⟨e, a, ha, hg, hgen⟩` from `GlobalTheory.T.place_ring_model_pullback h3 E I φ hcm l lam 𝔠 R hR X₀ X _ U p hp i`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨e, a, ha, hb i e a hg ha, hg, hgen⟩`.
+Supply the required witnesses or components.
 -/
 theorem hasLatModel : GlobalTheory.Published.PeriodComparison → GlobalTheory.Published.SerreTateGoodReductionSt → GlobalTheory.Published.AbelianDeRham → GlobalTheory.Published.AbelianDualCrystal →
   GlobalTheory.IndefiniteRowSideFullHecke.PolarisationModuleIndex.PolarisationModule →

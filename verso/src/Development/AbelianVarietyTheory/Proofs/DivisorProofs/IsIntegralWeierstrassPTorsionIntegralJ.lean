@@ -21,7 +21,7 @@ noncomputable section
 namespace GlobalTheory.WpInt
 
 /- English proof (translation)
-Use `set R : Subring ℂ := (integralClosure ℤ ℂ).toSubring`. Use `haveI : Algebra.IsIntegral ℤ R := ⟨fun r => by`. Establish `h : IsIntegral ℤ (r : ℂ)` using `r.2`. Conclude with `(isIntegral_algHom_iff (R.subtype.toIntAlgHom) Subtype.coe_injective).mp h⟩`. Conclude with `isIntegral_trans (R := ℤ) (A := R) y hy`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isIntegral_int_of_closure (y : ℂ)
     (hy : IsIntegral (integralClosure ℤ ℂ).toSubring y) : IsIntegral ℤ y := by
@@ -32,13 +32,13 @@ theorem isIntegral_int_of_closure (y : ℂ)
   exact isIntegral_trans (R := ℤ) (A := R) y hy
 
 /- English proof (translation)
-Introduce `N _ τ ω hj hω x`. Use `set R : Subring ℂ := (integralClosure ℤ ℂ).toSubring with hR`. Establish `hjR : IsIntegral R (jT τ)` using `hj.tower_top`. Establish `hbij : ActBij (vact N)` using `(GlobalTheory.T.modularGroup_rowVec_and_conj_rightActions N).1.actBij`. Establish `hfam` using `GlobalTheory.T.weierstrassP_torsion_isModularFamily N`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `halg` using `GlobalTheory.T.isSLTwoPermutedModularFamily_algebra_closure (Fin 2 → ZMod N) (vact N)`. Establish `hlin` using `GlobalTheory.T.hasQExpansionOfLevel_linear_operations N`. Establish `hN : 0 < N` using `Nat.pos_of_ne_zero (NeZero.ne N)`. Establish `hNx : ∀ y : Fin 2 → ZMod N, N • y = 0` using `fun y => by`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `[nsmul_eq_mul]`. Prove the components needed by the constructor for the conclusion. Establish `hF : IsFam (vact N) ((2 : ℕ) : ℤ) (fun y t => (12 * (N : ℂ) ^ 2) * wp N y t)` using `halg.2.2.1 2 _ (wp N) hfam.1`. Establish `hQ : ∀ y, QAll (· ∈ R) N ((fun y t => (12 * (N : ℂ) ^ 2) * wp N y t) y)` using `fun y => ⟨fun k => 12 * (N : ℂ) ^ 2 * cP N y k, hlin.2.2.1 _ _ _ (GlobalTheory.T.hasQExpansion_normalizedWeierstrassPTorsion N y), fun k => (GlobalTheory.T.isIntegral_weierstrassTorsion_qCoefficients N N y k hN (hNx y)).2.2.1⟩`. Establish `h` using `GlobalTheory.T.isIntegral_modularFamily_value_div_period_pow _ (vact N) 2 N _ R τ ω hN hbij hF hQ hjR hω x`.
+Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `isIntegral_int_of_closure _ h`. Establish `hF : IsFam (vact N) ((3 : ℕ) : ℤ) (fun y t => ((N : ℂ) ^ 3) * wpd N y t)` using `halg.2.2.1 3 _ (wpd N) hfam.2`. Establish `hQ : ∀ y, QAll (· ∈ R) N ((fun y t => ((N : ℂ) ^ 3) * wpd N y t) y)` using `fun y => ⟨fun k => (N : ℂ) ^ 3 * cD N y k, hlin.2.2.1 _ _ _ (GlobalTheory.T.hasQExpansion_normalizedDerivWeierstrassPTorsion N y), fun k => (GlobalTheory.T.isIntegral_weierstrassTorsion_qCoefficients N N y k hN (hNx y)).2.1⟩`. Establish `h` using `GlobalTheory.T.isIntegral_modularFamily_value_div_period_pow _ (vact N) 3 N _ R τ ω hN hbij hF hQ hjR hω x`. Conclude with `isIntegral_int_of_closure _ h`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem main : ∀ (N : ℕ) [NeZero N] (τ : ℍ) (ω : ℂ), IsIntegral ℤ (jT τ) → ω ^ 12 = DD τ →
     ∀ x : Fin 2 → ZMod N, IsIntegral ℤ (12 * (N : ℂ) ^ 2 * wp N x τ / ω ^ 2) ∧

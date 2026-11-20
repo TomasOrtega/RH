@@ -8,7 +8,7 @@ open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.Fo
 open scoped Classical
 
 /- English proof (translation)
-Apply `Prod.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `x.1 * u.1 = x.1 * u'.1`. Rewrite using `[hx, zero_mul, zero_mul]`. Express the relevant statement in the definitionally equal form `x.2 * u.2 = x.2 * u'.2`. Rewrite using `[h]`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 private theorem mul_eq_of_inf_zero {F : Type} [Field F] [NumberField F] (x u u' : A F) (hx : x.1 = 0)
     (h : u.2 = u'.2) : x * u = x * u' := by
@@ -19,7 +19,7 @@ private theorem mul_eq_of_inf_zero {F : Type} [Field F] [NumberField F] (x u u' 
     rw [h]
 
 /- English proof (translation)
-Establish `e : ∀ i j, a i * v j = a i * v' j` using `fun i j => mul_eq_of_inf_zero _ _ _ (ha i) (congrFun h j)`. Simplify using `only [B4, e]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 private theorem quaternaryForm_eq_of_finitePart {F : Type} [Field F] [NumberField F] (δ : F) (a v v' : V4 F)
     (ha : ∀ i, (a i).1 = 0) (h : finPartPi v = finPartPi v') : B4 δ a v = B4 δ a v' := by
@@ -28,19 +28,19 @@ private theorem quaternaryForm_eq_of_finitePart {F : Type} [Field F] [NumberFiel
   simp only [B4, e]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ _ D W y Λ φ hφ`. Establish `hφ' : ∀ a : V4 F, (∀ i, (a i).1 = 0 ∧ (a i).2 ∈ Λ) → ∀ v, φ.1 (v + a) = φ.1 v ∧ ψ (B4 D.δ a v) * φ.1 v = φ.1 v` using `hφ`. Take `⟨ρ, hρ, -, -⟩` from `UpperTheory.ConvolutionTheory.R2.D.actMat F E D`. Establish `hinv : (infGL E 2 y)⁻¹ = infGL E 2 y⁻¹` using `(map_inv (infGL E 2) y).symm`. Establish `hfin` using `UpperTheory.ConvolutionTheory.R2.Fo.actFin F E D y⁻¹`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : ∀ a : V4 F, (∀ i, (a i).1 = 0) → D.act (infGL E 2 y⁻¹) a = a`. Introduce `a ha`. Set `e : A F` to `(0, 1)`. Establish `hea : e • a = a`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Apply `Prod.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(0 : _) * (a i).1 = (a i).1`. Rewrite using `[ha i, mul_zero]`. Express the relevant statement in the definitionally equal form `(1 : _) * (a i).2 = (a i).2`. Rewrite using `[one_mul]`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `hinf : D.act (infGL E 2 y⁻¹) a = e • D.act (infGL E 2 y⁻¹) a`. Rewrite using `[hρ, ← Matrix.mulVec_smul, hea]`. Use function extensionality and compare the values at `i`. Apply `Prod.ext` to reduce the goal to its premises. Rewrite using `[hinf, ha i]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `(0 : _) * _ = 0`. Rewrite using `[zero_mul]`. Conclude with `congrFun (hfin a) i`. Express the relevant statement in the definitionally equal form `∀ a : V4 F, (∀ i, (a i).1 = 0 ∧ (a i).2 ∈ Λ) → ∀ v, (W.L (infGL E 2 y) φ).1 (v + a) = (W.L (infGL E 2 y) φ).1 v ∧ ψ (B4 D.δ a v) * (W.L (infGL E 2 y) φ).1 v = (W.L (infGL E 2 y) φ).1 v`. Introduce `a ha v`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hfix` using `key a fun i => (ha i).1`. Establish `hact : D.act (infGL E 2 y⁻¹) (v + a) = D.act (infGL E 2 y⁻¹) v + a`. Rewrite using `[hρ, Matrix.mulVec_add, ← hρ, ← hρ, hfix]`. Establish `hB : B4 D.δ a v = B4 D.δ a (D.act (infGL E 2 y⁻¹) v)` using `quaternaryForm_eq_of_finitePart _ _ _ _ (fun i => (ha i).1) (hfin v).symm`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[W.L_apply, W.L_apply, hinv, hact, (hφ' a ha _).1]`. Rewrite using `[W.L_apply, hinv, mul_left_comm, hB, (hφ' a ha _).2]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.Fo.lFix :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyReal F] [IsTotallyComplex E] (D : Dat F E) (W : Weil D) (y : GL (Fin 2) (Cinf E)) Λ, ∀ φ ∈ Fix D.δ Λ, W.L (infGL E 2 y) φ ∈ Fix D.δ Λ := by

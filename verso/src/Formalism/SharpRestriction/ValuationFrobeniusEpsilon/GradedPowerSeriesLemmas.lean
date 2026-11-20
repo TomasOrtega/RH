@@ -36,7 +36,7 @@ def comp (j : ℤ) (f : MvPowerSeries (Fin a) O) : MvPowerSeries (Fin a) O :=
   Formalism.MainNotions.UnusedSlot38.comp (W wt) (cj j) f
 
 /- English proof (translation)
-The claim follows from `Formalism.MainNotions.UnusedSlot38.Pj_le_P (W wt) (W wt v) (Formalism.MainNotions.UnusedSlot38.X_mem_Pj (W wt) v)`.
+A detailed English derivation is pending.
 -/
 theorem X_mem (v : Fin a) : (X v : MvPowerSeries (Fin a) O) ∈ Pring O wt :=
   Formalism.MainNotions.UnusedSlot38.Pj_le_P (W wt) (W wt v) (Formalism.MainNotions.UnusedSlot38.X_mem_Pj (W wt) v)
@@ -205,14 +205,14 @@ def toA : PT O wt →ₐ[O] Formalism.MainNotions.UnusedSlot38.Asub (W wt) Jh :=
   ((Formalism.MainNotions.UnusedSlot38.mk Jh).comp (Pring O wt).val).codRestrict _ (fun f => ⟨f, f.2, rfl⟩)
 
 /- English proof (translation)
-Introduce and unpack `⟨y, f, hf, rfl⟩`. Conclude with `⟨⟨f, hf⟩, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem toA_surj : Function.Surjective (toA wt Jh) := by
   rintro ⟨y, f, hf, rfl⟩
   exact ⟨⟨f, hf⟩, rfl⟩
 
 /- English proof (translation)
-Use extensionality with `f`. Rewrite using `[RingHom.mem_ker, Subtype.ext_iff]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ker_toA : RingHom.ker (toA wt Jh) = PofJ wt Jh := by
   ext f

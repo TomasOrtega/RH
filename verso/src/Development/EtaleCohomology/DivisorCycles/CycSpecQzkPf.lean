@@ -7,7 +7,7 @@ open LateralTheory.DivDb
 variable {C : Type} [Field C] {N n : ℕ}
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => simp`. Consider the case `succ m ih`. Establish `e1 : (π ^ (m + 1)) r = π ((π ^ m) r)` using `by rw [pow_succ', Equiv.Perm.mul_apply]`. Rewrite using `[e1, pow_succ' y, mul_assoc, ih, ← mul_assoc, h, mul_assoc]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 lemma iter {p : Fin n → Mat C N} {y : Mat C N} {π : Equiv.Perm (Fin n)}
     (h : ∀ j, y * p j = p (π j) * y) (m : ℕ) (r : Fin n) : y ^ m * p r = p ((π ^ m) r) * y ^ m := by
@@ -18,13 +18,13 @@ lemma iter {p : Fin n → Mat C N} {y : Mat C N} {π : Equiv.Perm (Fin n)}
     rw [e1, pow_succ' y, mul_assoc, ih, ← mul_assoc, h, mul_assoc]
 
 /- English proof (translation)
-Set `W` to `LinearMap.range (Matrix.toLin' P)`. Establish `hW : ∀ x ∈ W, Matrix.toLin' A x ∈ W`. Introduce and unpack `_ ⟨u, rfl⟩`. Conclude with `⟨A *ᵥ u, by simp [Matrix.toLin'_apply, Matrix.mulVec_mulVec, hA]⟩`. Use `haveI : Nontrivial W := by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Submodule.nontrivial_iff_ne_bot]`. Introduce `h`. Apply `hP0` to reduce the goal to its premises. Establish `h2` using `LinearMap.range_eq_bot.mp h`. Conclude with `Matrix.toLin'.injective (by rw [h2, map_zero])`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨β, hβ⟩` from `Module.End.exists_eigenvalue ((Matrix.toLin' A).restrict hW)`. Take `⟨x, hx⟩` from `hβ.exists_hasEigenvector`. Use `⟨β, x.1, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `h`. Conclude with `hx.2 (Subtype.ext h)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨u, hu⟩` from `x.2`. Rewrite using `[← hu]`. Simplify using `[Matrix.toLin'_apply, Matrix.mulVec_mulVec, hP]`. Establish `h3` using `congrArg Subtype.val (Module.End.mem_eigenspace_iff.mp hx.1)`. Simplify `h3` using `[LinearMap.restrict_apply, Matrix.toLin'_apply]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 lemma eig [IsAlgClosed C] (A P : Mat C N) (hP : P * P = P) (hP0 : P ≠ 0) (hA : A * P = P * A) :
     ∃ (β : C) (v : Fin N → C), v ≠ 0 ∧ P *ᵥ v = v ∧ A *ᵥ v = β • v := by
@@ -48,9 +48,9 @@ lemma eig [IsAlgClosed C] (A P : Mat C N) (hP : P * P = P) (hP0 : P ≠ 0) (hA :
     simpa [LinearMap.restrict_apply, Matrix.toLin'_apply] using h3
 
 /- English proof (translation)
-Establish `hu : y ^ m *ᵥ v = p ((π ^ m) r) *ᵥ (y ^ m *ᵥ v)` using `by conv_lhs => rw [← hv]`. Rewrite using `[Matrix.mulVec_mulVec, iter h, ← Matrix.mulVec_mulVec]`. Rewrite using `[hu, Matrix.mulVec_mulVec]`. Use `split_ifs with hq`. Substitute `hq` using the available equality.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(hp.1.idem _).eq]`. Rewrite using `[hp.1.ortho hq, Matrix.zero_mulVec]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma comp {p : Fin n → Mat C N} {y : Mat C N} {π : Equiv.Perm (Fin n)} (hp : Sys p)
     (h : ∀ j, y * p j = p (π j) * y) (r : Fin n) (v : Fin N → C) (hv : p r *ᵥ v = v) (m : ℕ) (q : Fin n) :
@@ -64,23 +64,23 @@ lemma comp {p : Fin n → Mat C N} {y : Mat C N} {π : Equiv.Perm (Fin n)} (hp :
   · rw [hp.1.ortho hq, Matrix.zero_mulVec]
 
 /- English proof (translation)
-Use `set k := Function.minimalPeriod π r with hk`. Establish `kpos : 0 < k`. Apply `Function.IsPeriodicPt.minimalPeriod_pos (orderOf_pos π)` to reduce the goal to its premises. Use `show (⇑π)^[orderOf π] r = r`. Rewrite using `[← Equiv.Perm.coe_pow, pow_orderOf_eq_one]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression.
 
-Both sides reduce to the same expression. Set `S : ℕ → Fin N → C` to `fun m => (l ^ m)⁻¹ • (y ^ m *ᵥ v)`. Use `⟨∑ m ∈ Finset.range k, S m, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `h0`. Apply `hv0` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : p r *ᵥ (∑ m ∈ Finset.range k, S m) = v`. Rewrite using `[Matrix.mulVec_sum, Finset.sum_eq_single 0]`. Simplify using `[S, hv]`. Introduce `m hm hm0`. Simplify using `only [S, Matrix.mulVec_smul, comp hp h r v hv]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[if_neg, smul_zero]`. Introduce `hr`. Establish `hper : Function.IsPeriodicPt π m r` using `by show (⇑π)^[m] r = r`. Rewrite using `[← Equiv.Perm.coe_pow]`. Conclude with `hr.symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use `hper.minimalPeriod_le (Nat.pos_of_ne_zero hm0)` as an intermediate fact. Use `Finset.mem_range.mp hm` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Introduce `h0`. Conclude with `absurd (Finset.mem_range.mpr kpos) h0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← e, h0, Matrix.mulVec_zero]`. Establish `shift : ∑ m ∈ Finset.range k, S (m + 1) = ∑ m ∈ Finset.range k, S m`. Establish `a1` using `Finset.sum_range_succ' S k`. Establish `a2` using `Finset.sum_range_succ S k`. Establish `s0 : S 0 = v` using `by simp [S]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `sk : S k = v`. Simplify using `only [S, hβ, hl, smul_smul]`. Rewrite using `[inv_mul_cancel₀ (by rw [← hl]; exact pow_ne_zero _ hl0), one_smul]`. Rewrite `a1` using `[s0]`. Rewrite `a2` using `[sk]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `add_right_cancel (a1.symm.trans a2)`. Rewrite using `[Matrix.mulVec_sum, ← shift, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Simplify using `only [S, Matrix.mulVec_smul, Matrix.mulVec_mulVec, ← pow_succ', smul_smul]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[pow_succ, mul_inv, ← mul_assoc, mul_comm l, mul_assoc, mul_inv_cancel₀ hl0, mul_one]`. Introduce `q hq`. Rewrite using `[Matrix.mulVec_sum]`. Use `Finset.sum_eq_zero fun m _ => ?_` and prove the remaining obligations. Simplify using `only [S, Matrix.mulVec_smul, comp hp h r v hv, if_neg (hq m), smul_zero]`.
+A detailed English derivation is pending.
 -/
 lemma key {p : Fin n → Mat C N} {y : Mat C N} {π : Equiv.Perm (Fin n)} (hp : Sys p)
     (h : ∀ j, y * p j = p (π j) * y) (r : Fin n) (v : Fin N → C) (β l : C) (hv : p r *ᵥ v = v) (hv0 : v ≠ 0)
@@ -130,33 +130,29 @@ lemma key {p : Fin n → Mat C N} {y : Mat C N} {π : Equiv.Perm (Fin n)} (hp : 
     simp only [S, Matrix.mulVec_smul, comp hp h r v hv, if_neg (hq m), smul_zero]
 
 /- English proof (translation)
-Introduce `C _ _ _ N n p y π hp hy hyp hd`. Set `s` to `Equiv.Perm.SameCycle.setoid π`. Set `R : Fin n → Fin n` to `fun j => (Quotient.mk s j).out`. Establish `hR : ∀ j, π.SameCycle (R j) j` using `fun j => Quotient.mk_out (s := s) j`. Establish `hR2 : ∀ i j, π.SameCycle i j → R i = R j` using `fun i j h => by show (Quotient.mk s i).out = (Quotient.mk s j).out`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Quotient.sound (s := s) h]`. Set `k : Fin n → ℕ` to `fun r => Function.minimalPeriod π r`. Establish `kpos : ∀ r, 0 < k r` using `fun r => by`. Apply `Function.IsPeriodicPt.minimalPeriod_pos (orderOf_pos π)` to reduce the goal to its premises. Use `show (⇑π)^[orderOf π] r = r`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Equiv.Perm.coe_pow, pow_orderOf_eq_one]`. Both sides reduce to the same expression. Establish `hE : ∀ r, ∃ (β : C) (v : Fin N → C), v ≠ 0 ∧ p r *ᵥ v = v ∧ y ^ k r *ᵥ v = β • v` using `fun r => by`. Use `eig _ _ (hp.1.idem r).eq (hp.2 r) ?_` and prove the remaining obligations. Rewrite using `[iter hyp]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 2`. Use `show (⇑(π ^ k r)) r = r`. Rewrite using `[Equiv.Perm.coe_pow]`. Conclude with `Function.iterate_minimalPeriod`. Use `choose β v hv0 hvp hvb using hE`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `β0 : ∀ r, β r ≠ 0` using `fun r h0 => by`. Take `⟨u, hu⟩` from `hy.pow (k r)`. Apply `hv0 r` to reduce the goal to its premises. Establish `e : ((u⁻¹ : (Mat C N)ˣ) : Mat C N) *ᵥ (y ^ k r *ᵥ v r) = v r`. Rewrite using `[Matrix.mulVec_mulVec, ← hu, Units.inv_mul, Matrix.one_mulVec]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← e, hvb, h0, zero_smul, Matrix.mulVec_zero]`. Establish `hZ : ∀ r, ∃ z : C, z ^ k r = β r` using `fun r => IsAlgClosed.exists_pow_nat_eq _ (kpos r)`. Use `choose ζ hζ using hZ`. Establish `hO : ∀ r, ∃ ω : C, IsPrimitiveRoot ω (k r)` using `fun r => by haveI : NeZero ((k r : ℕ) : C) := ⟨Nat.cast_ne_zero.mpr (kpos r).ne'⟩`. Conclude with `HasEnoughRootsOfUnity.exists_primitiveRoot C (k r)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `choose ω hω using hO`. Establish `hM : ∀ j, ∃ m, m < k (R j) ∧ (π ^ m) (R j) = j` using `fun j => by`. Take `⟨i, -, hi⟩` from `(hR j).exists_pow_eq'`. Use `⟨i % k (R j), Nat.mod_lt _ (kpos _), ?_⟩` and prove the remaining obligations. Rewrite using `[Equiv.Perm.coe_pow, Function.iterate_mod_minimalPeriod_eq, ← Equiv.Perm.coe_pow, hi]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `choose m hmk hm using hM`. Set `l : Fin n → C` to `fun j => ζ (R j) * ω (R j) ^ m j`. Establish `hlk : ∀ j, l j ^ k (R j) = β (R j)` using `fun j => by`. Simplify using `only [l, mul_pow, hζ]`. Rewrite using `[← pow_mul, mul_comm (m j), pow_mul, (hω _).pow_eq_one, one_pow, mul_one]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hl0 : ∀ j, l j ≠ 0` using `fun j => by`. Use `mul_ne_zero ?_ (pow_ne_zero _ ((hω _).ne_zero (kpos _).ne'))` and prove the remaining obligations. Introduce `h0`. Apply `β0 (R j)` to reduce the goal to its premises. Rewrite using `[← hζ, h0, zero_pow (kpos _).ne']`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `hW : ∀ j, ∃ w : Fin N → C, w ≠ 0 ∧ y *ᵥ w = l j • w ∧ ∀ q, ¬ π.SameCycle j q → p q *ᵥ w = 0` using `fun j => by`. Take `⟨w, hw0, hwy, hwq⟩` from `key hp hyp (R j) (v (R j)) (β (R j)) (l j) (hvp _) (hv0 _) (hvb _) (hlk j) (hl0 j)`. Use `⟨w, hw0, hwy, fun q hq => hwq q fun i hi => hq ?_⟩` and prove the remaining obligations. Rewrite using `[hi]`. Conclude with `((hR j).symm.trans (Equiv.Perm.SameCycle.refl π (R j))).trans (Equiv.Perm.sameCycle_pow_right.mpr (Equiv.Perm.SameCycle.refl π (R j)))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `⟨l, ?_, fun j => ⟨?_, hW j⟩⟩` and prove the remaining obligations. Introduce `i j hij`. Distinguish the cases in `hs : π.SameCycle i j`. Establish `e` using `hR2 i j hs`. Establish `h1 : ω (R j) ^ m i = ω (R j) ^ m j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. It suffices to derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `h2 : ζ (R i) * ω (R i) ^ m i = ζ (R j) * ω (R j) ^ m j` using `hij`. Rewrite `h2` using `[e]`. Conclude with `mul_left_cancel₀ (fun h0 => by`. Apply `β0 (R j)` to reduce the goal to its premises. Rewrite using `[← hζ, h0, zero_pow (kpos _).ne']) h2`.
-
-Establish `h3 : m i = m j` using `(hω (R j)).pow_inj (e ▸ hmk i) (hmk j) h1`. Rewrite using `[← hm i, ← hm j, h3, e]`. It suffices to derive a contradiction. Take `⟨wi, hi0, hiy, hiq⟩` from `hW i`. Take `⟨wj, hj0, hjy, hjq⟩` from `hW j`.
-
-Conclude with `hd i j hs (l i) wi wj hi0 hj0 hiy (by rw [hij]; exact hjy) hiq hjq`. Take `⟨w, hw0, hwy, -⟩` from `hW j`. Rewrite using `[← Matrix.charpoly_toLin', ← Module.End.hasEigenvalue_iff_isRoot_charpoly]`. Conclude with `Module.End.hasEigenvalue_of_hasEigenvector ⟨Module.End.mem_eigenspace_iff.mpr (by rw [Matrix.toLin'_apply]; exact hwy), hw0⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem CycSpec_of : LateralTheory.DivDb.CycleCountPf.CycSpec := by
   intro C _ _ _ N n p y π hp hy hyp hd

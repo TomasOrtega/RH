@@ -48,13 +48,13 @@ def gI {R : Type} [CommRing R] {m : ℕ} (J₁ : Matrix (Fin m) (Fin m) R) : Mat
     (Matrix.of fun _ j => Sum.elim (fun _ => -1) 0 j) 0
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun v => by simp, fun w τ => by simp⟩`.
+Supply the required witnesses or components.
 -/
 example (S : Finset (Pl F)) (c : ℝ≥0) : (0 : AE F E) ∈ bddA E S c :=
   ⟨fun v => by simp, fun w τ => by simp⟩
 
 /- English proof (translation)
-Apply the tactic sequence `ext ((i | i) | i) ((j | j) | j) <;> simp [Heisenberg₂, Matrix.one_apply, Matrix.fromBlocks]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem heis_zero {R : Type} [CommRing R] {m : ℕ} : Heisenberg₂ (0 : Fin m → R) 0 0 = 1 := by
   ext ((i | i) | i) ((j | j) | j) <;> simp [Heisenberg₂, Matrix.one_apply, Matrix.fromBlocks]

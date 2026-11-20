@@ -4,9 +4,9 @@ open Matrix Topology Filter
 namespace GlobalTheory.CompanionTheory.MatrixComm
 
 /- English proof (translation)
-Use extensionality with `i j`. Establish `hij` using `congrFun (congrFun hZ i) j`. Rewrite `hij` using `[Matrix.diagonal_mul, Matrix.mul_diagonal]`. Rewrite using `[Matrix.diagonal_mul, Matrix.mul_diagonal]`. Distinguish the cases in `hz : Z i j = 0`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Simplify using `[hz]`. Establish `hd : d i = d j`. Establish `: Z i j * d i = Z i j * d j` using `by rw [mul_comm (Z i j) (d i)]; exact hij`. Conclude with `mul_left_cancel₀ hz this`. Rewrite using `[hde i j hd, mul_comm]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem commute_diagonal_of_dominated {n : ℕ} (d e : Fin n → ℂ)
     (Z : Matrix (Fin n) (Fin n) ℂ) (hZ : Matrix.diagonal d * Z = Z * Matrix.diagonal d)
@@ -24,15 +24,15 @@ theorem commute_diagonal_of_dominated {n : ℕ} (d e : Fin n → ℂ)
     rw [hde i j hd, mul_comm]
 
 /- English proof (translation)
-Establish `h2 : U * Uᴴ = 1`. Use `Matrix.mem_unitaryGroup_iff.mp hU` as an intermediate fact. Simplify `this` using `[Matrix.star_eq_conjTranspose]`. Establish `conj_mul : ∀ P Q : Matrix (Fin n) (Fin n) ℂ, (Uᴴ * P * U) * (Uᴴ * Q * U) = Uᴴ * (P * Q) * U`. Introduce `P Q`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = Uᴴ * (P * Q) * U := by`. Rewrite using `[h2]`. Simplify using `only [Matrix.mul_one, Matrix.mul_assoc]`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `back : ∀ P : Matrix (Fin n) (Fin n) ℂ, U * (Uᴴ * P * U) * Uᴴ = P`. Introduce `P`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = P := by rw [h2]; simp`.
+Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hcomm : (Uᴴ * H * U) * (Uᴴ * Y * U) = (Uᴴ * Y * U) * (Uᴴ * H * U)`. Rewrite using `[conj_mul, conj_mul, hHY]`. Establish `hdH : Matrix.diagonal (fun i => (Uᴴ * H * U) i i) = Uᴴ * H * U` using `hH.diagonal_diag`. Establish `hdA : Matrix.diagonal (fun i => (Uᴴ * A * U) i i) = Uᴴ * A * U` using `hA.diagonal_diag`. Establish `key` using `commute_diagonal_of_dominated (fun i => (Uᴴ * H * U) i i) (fun i => (Uᴴ * A * U) i i) (Uᴴ * Y * U) (by rw [hdH]; exact hcomm) hdom`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `key` using `[hdA, conj_mul, conj_mul]`. Use `congrArg (fun M => U * M * Uᴴ) key` as an intermediate fact. Simplify `this` using `only [back]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem commute_of_dominated_diag {n : ℕ} (U H A Y : Matrix (Fin n) (Fin n) ℂ)
     (hU : U ∈ Matrix.unitaryGroup (Fin n) ℂ)

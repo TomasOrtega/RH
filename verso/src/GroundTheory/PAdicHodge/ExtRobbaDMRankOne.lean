@@ -15,13 +15,13 @@ section Roots
 variable {L : Type*} [NontriviallyNormedField L] [IsUltrametricDist L]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hlt'`. Establish `hlt` using `not_le.1 hlt'`. Establish `ht0 : 0 < ‖t‖` using `hY.trans_lt hlt`. Establish `hq1 : q - 1 ≠ 0` using `by omega`. Establish `hpow : Y ^ (q - 1) < ‖t‖ ^ (q - 1)` using `pow_lt_pow_left₀ hlt hY hq1`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `htq : ‖t‖ ^ q = ‖t‖ ^ (q - 1) * ‖t‖`. Rewrite using `[← pow_succ]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers. Establish `h1 : ‖b * t‖ < ‖t‖ ^ q`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Rewrite using `[norm_mul, htq]`. Conclude with `mul_lt_mul_of_pos_right (hb.trans_lt hpow) ht0`. Establish `h2 : ‖e‖ < ‖t‖ ^ q` using `he.trans_lt (pow_lt_pow_left₀ hlt hY (by omega))`. Establish `heq : c * t ^ q = b * t - e` using `by linear_combination h`. Establish `h3 : ‖c * t ^ q‖ = ‖t‖ ^ q` using `by rw [norm_mul, hc, one_mul, norm_pow]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : ‖b * t - e‖ ≤ max ‖b * t‖ ‖e‖`. Use `IsUltrametricDist.norm_add_le_max (b * t) (-e)` as an intermediate fact. Rewrite `this` using `[norm_neg, ← sub_eq_add_neg]`. Then use the resulting hypothesis. Rewrite `h4` using `[← heq, h3]`. Conclude with `absurd h4 (not_le.2 (max_lt h1 h2))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_le_of_root {q : ℕ} (hq : 2 ≤ q) {c b e t : L} (hc : ‖c‖ = 1)
     (h : c * t ^ q - b * t + e = 0) {Y : ℝ} (hY : 0 ≤ Y) (he : ‖e‖ ≤ Y ^ q)
@@ -46,17 +46,17 @@ theorem norm_le_of_root {q : ℕ} (hq : 2 ≤ q) {c b e t : L} (hc : ‖c‖ = 1
   exact absurd h4 (not_le.2 (max_lt h1 h2))
 
 /- English proof (translation)
-Distinguish the cases in `hbe : e = 0 ∧ b ≠ 0`. Take `⟨he, hb⟩` from `hbe`. Establish `hdeg : (C c * X ^ (q - 1) - C b).degree ≠ 0`. Establish `: (C c * X ^ (q - 1) - C b).natDegree = q - 1` using `by compute_degree!`. Simplify using `[hc, show q - 1 ≠ 0 by omega]`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[Polynomial.degree_eq_natDegree]`. Rewrite using `[this]; exact_mod_cast (show q - 1 ≠ 0 by omega)`. Introduce `h0`. Rewrite `this` using `[h0, natDegree_zero]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Take `⟨t, ht⟩` from `IsAlgClosed.exists_root _ hdeg`. Simplify using `only [IsRoot, eval_sub, eval_mul, eval_C, eval_pow, eval_X] at ht`. Use `⟨t, ?_, fun _ _ => ?_⟩` and prove the remaining obligations. Establish `: t ^ q = t ^ (q - 1) * t` using `by rw [← pow_succ]; congr 1; omega`. Rewrite using `[he, this]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `t * ht`. Introduce and unpack `rfl`. Rewrite `ht` using `[zero_pow (by omega), mul_zero, zero_sub, neg_eq_zero]`. Conclude with `hb ht`. Establish `hdeg : (C c * X ^ q - C b * X + C e).degree ≠ 0`.
+Take a linear combination of the given relations to obtain the conclusion. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply the tactic sequence `have : (C c * X ^ q - C b * X + C e).natDegree = q := by compute_degree! all_goals first | omega | simp [hc, show q ≠ 1 by omega, show q ≠ 0 by omega]`. Rewrite using `[Polynomial.degree_eq_natDegree]`. Rewrite using `[this]; exact_mod_cast (show q ≠ 0 by omega)`. Introduce `h0`. Rewrite `this` using `[h0, natDegree_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Take `⟨t, ht⟩` from `IsAlgClosed.exists_root _ hdeg`. Simplify using `only [IsRoot, eval_add, eval_sub, eval_mul, eval_C, eval_pow, eval_X] at ht`. Conclude with `⟨t, ht, fun he hb => absurd ⟨he, hb⟩ hbe⟩`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_root_of_isAlgClosed [IsAlgClosed L] {q : ℕ} (hq : 2 ≤ q) {c : L} (hc : c ≠ 0)
     (b e : L) : ∃ t : L, c * t ^ q - b * t + e = 0 ∧ (e = 0 → b ≠ 0 → t ≠ 0) := by
@@ -96,9 +96,9 @@ variable {p : ℕ} [hp : Fact p.Prime] {L : Type*} [NontriviallyNormedField L] [
   [CharP L p] [PerfectRing L p] {Γ : Type*} [CommRing Γ] (T : TeichLift p L Γ)
 
 /- English proof (translation)
-Use `gaussNorm_le fun n => ?_` and prove the remaining obligations. Break down `lt_or_ge n 0 with hn | hn` into its components or cases. Rewrite using `[T.zcoeff_of_neg _ hn, norm_zero, zero_mul]`. Conclude with `gaussNorm_nonneg (hσ0.trans_le hσρ)`. Use `lift n to ℕ using hn`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `le_trans ?_ (hx.le_gaussNorm n)` and prove the remaining obligations. Rewrite using `[zpow_natCast, zpow_natCast]`. Conclude with `mul_le_mul_of_nonneg_left (pow_le_pow_left₀ hσ0.le hσρ n) (norm_nonneg _)`.
+A detailed English derivation is pending.
 -/
 theorem gaussNorm_zcoeff_mono {x : Γ} {σ ρ : ℝ} (hσ0 : 0 < σ) (hσρ : σ ≤ ρ)
     (hx : ConvergesAt (T.zcoeff x) ρ) : gaussNorm (T.zcoeff x) σ ≤ gaussNorm (T.zcoeff x) ρ := by
@@ -111,7 +111,7 @@ theorem gaussNorm_zcoeff_mono {x : Γ} {σ ρ : ℝ} (hσ0 : 0 < σ) (hσρ : σ
     exact mul_le_mul_of_nonneg_left (pow_le_pow_left₀ hσ0.le hσρ n) (norm_nonneg _)
 
 /- English proof (translation)
-Use `T.gaussNorm_sum_terms_le (one_mem _) (by simp) hρ0 hρ1 a hY n fun m hm => by` as an intermediate fact. Rewrite using `[mul_comm]`. Conclude with `h m hm`. Simplify `this` using `[finSum]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem finSum_gaussNorm_le {ρ : ℝ} (hρ0 : 0 < ρ) (hρ1 : ρ < 1) (a : ℕ → L) {Y : ℝ} (hY : 0 ≤ Y)
     (n : ℕ) (h : ∀ i < n, ‖a i‖ * ρ ^ i ≤ Y) :
@@ -121,13 +121,11 @@ theorem finSum_gaussNorm_le {ρ : ℝ} (hρ0 : 0 < ρ) (hρ1 : ρ < 1) (a : ℕ 
   simpa [finSum] using this
 
 /- English proof (translation)
-Establish `hρ0 : 0 < ρ` using `hσ0.trans hσρ`. Establish `hY : 0 ≤ Y` using `(mul_nonneg (norm_nonneg _) (pow_pos hρ0 0).le).trans (h 0)`. Establish `hsr0 : 0 ≤ σ / ρ` using `by positivity`. Establish `hsr1 : σ / ρ < 1` using `by rwa [div_lt_one hρ0]`. Use `convergesAt_of_eventually hσ0 (T.zcoeff_neg_exists x) fun ε hε => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨K, hK⟩` from `exists_pow_lt_of_lt_one (show 0 < ε / (Y + 1) by positivity) hsr1`. Use `⟨K, fun n hn => ?_⟩` and prove the remaining obligations. Use `lift n to ℕ using (by omega)`. Rewrite using `[zcoeff_natCast, zpow_natCast]`. Establish `hn' : K ≤ n` using `by exact_mod_cast hn`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[div_pow]`. Clear the denominators using the available nonvanishing facts. Use `_ ≤ Y * (σ / ρ) ^ K := mul_le_mul (h n) (pow_le_pow_of_le_one hsr0 hsr1.le hn') (by positivity) hY`. Use `_ ≤ (Y + 1) * (ε / (Y + 1)) := mul_le_mul (by linarith) hK.le (by positivity) (by linarith)`.
-
-Use `_ = ε := by field_simp`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem convergesAt_of_forall_weight_le {x : Γ} {ρ σ Y : ℝ} (hσ0 : 0 < σ) (hσρ : σ < ρ)
     (h : ∀ n : ℕ, ‖T.coeff x n‖ * ρ ^ n ≤ Y) : ConvergesAt (T.zcoeff x) σ := by
@@ -153,20 +151,20 @@ namespace TeichFrob
 variable {T} (F : T.TeichFrob)
 
 /- English proof (translation)
-The claim follows from `hp.out.two_le.trans (Nat.le_self_pow ha.ne' p)`.
+A detailed English derivation is pending.
 -/
 theorem two_le_q (ha : 0 < F.a) : 2 ≤ p ^ F.a :=
   hp.out.two_le.trans (Nat.le_self_pow ha.ne' p)
 
 /- English proof (translation)
-Rewrite using `[map_mul, map_pow, F.φ_π, F.φ_teich]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem φ_π_pow_mul_teich (n : ℕ) (c : L) :
     F.φ (T.π ^ n * T.teich c) = T.π ^ n * (F.u ^ n * T.teich (c ^ p ^ F.a)) := by
   rw [map_mul, map_pow, F.φ_π, F.φ_teich]; ring
 
 /- English proof (translation)
-Take `⟨y, rfl⟩` from `T.mem_span_pow.1 hx`. Rewrite using `[map_mul, map_pow, F.φ_π, mul_pow, mul_assoc]`. Conclude with `T.π_pow_mul_mem le_rfl _`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem φ_mem_span_pow {x : Γ} {n : ℕ} (hx : x ∈ Ideal.span {T.π ^ n}) :
     F.φ x ∈ Ideal.span {T.π ^ n} := by
@@ -175,11 +173,11 @@ theorem φ_mem_span_pow {x : Γ} {n : ℕ} (hx : x ∈ Ideal.span {T.π ^ n}) :
   exact T.π_pow_mul_mem le_rfl _
 
 /- English proof (translation)
-Take `⟨z, hz⟩` from `T.mem_span_pow.1 hy`. Establish `he : T.coeff (F.φ y - w * y) n = T.red z`. Rewrite using `[hz]`. Simplify using `using T.coeff_π_pow_mul_add n z 0`. Establish `hred : T.red (z + F.u ^ n * T.teich (t ^ p ^ F.a) - w * T.teich t) = 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite using `[map_sub, map_add, map_mul, map_mul, map_pow, T.red_teich, T.red_teich, ← he]`. Take the linear combination `ht`. Take `⟨z', hz'⟩` from `T.red_eq_zero_iff.1 hred`. Establish `: F.φ (y + T.π ^ n * T.teich t) - w * (y + T.π ^ n * T.teich t) = T.π ^ (n + 1) * z'`. Rewrite using `[map_add, F.φ_π_pow_mul_teich, pow_succ, mul_assoc, ← hz']`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `hz`. Rewrite using `[this]`. Conclude with `T.π_pow_mul_mem le_rfl _`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem step_mem {w y : Γ} {n : ℕ} (hy : F.φ y - w * y ∈ Ideal.span {T.π ^ n}) {t : L}
     (ht : T.red F.u ^ n * t ^ p ^ F.a - T.red w * t + T.coeff (F.φ y - w * y) n = 0) :
@@ -206,7 +204,7 @@ def approxCoeff (w : Γ) (r : ℕ → L → L) (n : ℕ) : L :=
   r n (T.coeff (F.φ (F.approx w r n) - w * F.approx w r n) n)
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp [approx]`. Consider the case `succ n ih => rw [T.finSum_succ, ← ih]`. Both sides reduce to the same expression.
+Proceed by induction. Treat this case separately. Treat this case separately. Both sides reduce to the same expression.
 -/
 theorem approx_eq_finSum (w : Γ) (r : ℕ → L → L) (n : ℕ) :
     F.approx w r n = T.finSum (F.approxCoeff w r) n := by
@@ -217,7 +215,7 @@ theorem approx_eq_finSum (w : Γ) (r : ℕ → L → L) (n : ℕ) :
 variable {F}
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp [approx]`. Consider the case `succ n ih => exact F.step_mem ih (hr n _)`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem approx_mem {w : Γ} {r : ℕ → L → L}
     (hr : ∀ n e, T.red F.u ^ n * r n e ^ p ^ F.a - T.red w * r n e + e = 0) (n : ℕ) :
@@ -227,25 +225,21 @@ theorem approx_mem {w : Γ} {r : ℕ → L → L}
   | succ n ih => exact F.step_mem ih (hr n _)
 
 /- English proof (translation)
-Establish `hq` using `F.two_le_q ha`. Use `set q := p ^ F.a with hqdef`. Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Take `⟨hs, hsY⟩` from `T.finSum_gaussNorm_le hρ0 hρ1 (F.approxCoeff w r) hY n ih`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hs`, `hsY` using `[← F.approx_eq_finSum]`. Use `set s := F.approx w r n`. Use `set σ := ρ ^ q`. Establish `hσ0 : 0 < σ` using `pow_pos hρ0 _`. Establish `hσ1 : σ < 1` using `pow_lt_one₀ hρ0.le hρ1 (by omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hσρ : σ ≤ ρ` using `pow_le_of_le_one hρ0.le hρ1.le (by omega)`. Take `⟨hφ, hφn⟩` from `F.gaussNorm_zcoeff_map hρ0 hρ1 hs`. Establish `hwσ : ConvergesAt (T.zcoeff w) σ` using `convergesAt_of_le (T.zcoeff_neg_exists w) hw hσ0 hσρ`. Establish `hsσ : ConvergesAt (T.zcoeff s) σ` using `convergesAt_of_le (T.zcoeff_neg_exists s) hs hσ0 hσρ`. Establish `hws` using `T.convergesAt_zcoeff_mul hσ0 hσ1 hwσ hsσ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hwsn : gaussNorm (T.zcoeff (w * s)) σ ≤ Y ^ q`. Combine the equalities or inequalities in the displayed calculation. Establish `hneg` using `T.convergesAt_zcoeff_neg hσ0 hσ1 hws`. Establish `hG : gaussNorm (T.zcoeff (F.φ s - w * s)) σ ≤ Y ^ q`. Rewrite using `[sub_eq_add_neg]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `(T.gaussNorm_zcoeff_add_le hσ0 hσ1.le hφ hneg).trans (max_le ?_ ?_)` and prove the remaining obligations. Rewrite using `[hφn]`. Conclude with `pow_le_pow_left₀ (gaussNorm_nonneg hρ0) hsY _`. Conclude with `(T.gaussNorm_zcoeff_neg_le hσ0 hσ1.le hws).trans hwsn`. Establish `hconv : ConvergesAt (T.zcoeff (F.φ s - w * s)) σ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[sub_eq_add_neg]`. Conclude with `T.convergesAt_zcoeff_add hσ0 hσ1 hφ hneg`. Use `set e := T.coeff (F.φ s - w * s) n`. Establish `hen : ‖e‖ * σ ^ n ≤ Y ^ q`. Use `T.weight_natCast_le hconv n` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[zpow_natCast]`. Conclude with `this.trans hG`. Establish `hρn0 : 0 < ρ ^ n` using `pow_pos hρ0 n`. Establish `hρn1 : ρ ^ n ≤ 1` using `pow_le_one₀ hρ0.le hρ1.le`. Use `set Y' := Y / ρ ^ n`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hYY' : Y ≤ Y'` using `(le_div_iff₀ hρn0).2 (mul_le_of_le_one_right hY hρn1)`. Establish `hY' : 0 ≤ Y'` using `hY.trans hYY'`. Establish `he' : ‖e‖ ≤ Y' ^ q`. Rewrite using `[div_pow, le_div_iff₀ (pow_pos hρn0 _), ← pow_mul, mul_comm n q, pow_mul]`. Conclude with `hen`.
-
-Establish `hb : ‖T.red w‖ ≤ Y' ^ (q - 1)`. Establish `h0` using `T.weight_natCast_le hw 0`. Simplify using `only [Nat.cast_zero, zpow_zero, mul_one, coeff_zero] at h0`. Conclude with `h0.trans (hW.trans (pow_le_pow_left₀ hY hYY' _))`. Establish `hc : ‖T.red F.u ^ n‖ = 1` using `by rw [norm_pow, F.norm_red_u, one_pow]`.
-
-Establish `ht` using `norm_le_of_root hq hc (hr n e) hY' he' hb`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem approxCoeff_weight_le (ha : 0 < F.a) {w : Γ} {r : ℕ → L → L}
     (hr : ∀ n e, T.red F.u ^ n * r n e ^ p ^ F.a - T.red w * r n e + e = 0)
@@ -307,15 +301,11 @@ theorem approxCoeff_weight_le (ha : 0 < F.a) {w : Γ} {r : ℕ → L → L}
 variable (F)
 
 /- English proof (translation)
-Establish `hq` using `F.two_le_q ha`. Establish `hu0 : ∀ n : ℕ, T.red F.u ^ n ≠ 0` using `fun n => pow_ne_zero _ (norm_ne_zero_iff.1 (by rw [F.norm_red_u]; exact one_ne_zero))`. Use `choose r hr hr0 using fun (n : ℕ) (e : L) => exists_root_of_isAlgClosed hq (hu0 n) (T.red w) e`. Use `⟨T.ofCoeff (F.approxCoeff w r), ?_, ?_, fun n => ?_⟩` and prove the remaining obligations. Rewrite using `[← T.coeff_zero, T.coeff_ofCoeff]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hr0 0 _ (by simp [approx]) hw0`. Use `set y := T.ofCoeff (F.approxCoeff w r)`. Establish `hall : ∀ n, F.φ y - w * y ∈ Ideal.span {T.π ^ n}` using `fun n => by`. Establish `h1 : y - F.approx w r n ∈ Ideal.span {T.π ^ n}`. Rewrite using `[F.approx_eq_finSum]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Conclude with `T.mk_sub_finSum_mem _ n`. Establish `: F.φ y - w * y = (F.φ (F.approx w r n) - w * F.approx w r n) + (F.φ (y - F.approx w r n) - w * (y - F.approx w r n))`. Rewrite using `[map_sub]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`.
-
-Conclude with `add_mem (approx_mem hr n) (sub_mem (F.φ_mem_span_pow h1) (Ideal.mul_mem_left _ _ h1))`. Establish `h0 : F.φ y - w * y = 0` using `T.eq_of_coeff_eq (funext fun n => by`. Rewrite using `[T.coeff_zero_elem]`. Conclude with `T.coeff_of_mem_span (hall (n + 1)) n le_rfl)`. Conclude with `sub_eq_zero.1 h0`.
-
-Rewrite using `[T.coeff_ofCoeff]`. Conclude with `approxCoeff_weight_le ha hr hρ0 hρ1 hw hY hW n`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_φ_eq_mul [IsAlgClosed L] (ha : 0 < F.a) {w : Γ} (hw0 : T.red w ≠ 0) {ρ : ℝ}
     (hρ0 : 0 < ρ) (hρ1 : ρ < 1) (hw : ConvergesAt (T.zcoeff w) ρ) {Y : ℝ} (hY : 0 ≤ Y)
@@ -344,9 +334,9 @@ theorem exists_φ_eq_mul [IsAlgClosed L] (ha : 0 < F.a) {w : Γ} (hw0 : T.red w 
     exact approxCoeff_weight_le ha hr hρ0 hρ1 hw hY hW n
 
 /- English proof (translation)
-Take `⟨ρ, hρ⟩` from `hw`. Use `set Y := max (gaussNorm (T.zcoeff w) ρ) 1`. Establish `hY1 : 1 ≤ Y` using `le_max_right _ _`. Establish `hW : gaussNorm (T.zcoeff w) ρ ≤ Y ^ (p ^ F.a - 1)` using `(le_max_left _ _).trans (le_self_pow₀ hY1 (by have := F.two_le_q ha; omega))`. Take `⟨y, hy0, hy, hyw⟩` from `F.exists_φ_eq_mul ha hw0 ρ.2.1 ρ.2.2 hρ (zero_le_one.trans hY1) hW`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨y, ⟨⟨(ρ : ℝ) / 2, by linarith [ρ.2.1], by linarith [ρ.2.2, ρ.2.1]⟩, ?_⟩, hy0, hy⟩` and prove the remaining obligations. Conclude with `T.convergesAt_of_forall_weight_le (by linarith [ρ.2.1]) (by linarith [ρ.2.1]) hyw`.
+A detailed English derivation is pending.
 -/
 theorem exists_φ_eq_mul_of_mem_Gcon [IsAlgClosed L] (ha : 0 < F.a) {w : Γ} (hw : w ∈ T.Gcon)
     (hw0 : T.red w ≠ 0) : ∃ y ∈ T.Gcon, T.red y ≠ 0 ∧ F.φ y = w * y := by
@@ -369,13 +359,11 @@ variable {p : ℕ} [hp : Fact p.Prime] {L : Type*} [NontriviallyNormedField L] [
   [CharP L p] [PerfectRing L p] {Γ : Type*} [CommRing Γ] (T : TeichLift p L Γ)
 
 /- English proof (translation)
-Establish `hex : ∃ n, T.coeff x n ≠ 0`. Assume the negation of the conclusion as `h`. Simplify using `only [not_exists, not_not] at h`. Conclude with `hx (T.eq_of_coeff_eq (funext fun n => by rw [h n, coeff_zero_elem]))`. Use `set m := Nat.find hex`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlt : ∀ i < m, T.coeff x i = 0` using `fun i hi => not_not.1 (Nat.find_min hex hi)`. Establish `hps : T.partialSum x m = 0`. Simplify using `only [partialSum, finSum]`. Conclude with `Finset.sum_eq_zero fun i hi => by rw [hlt i (Finset.mem_range.1 hi), map_zero, mul_zero]`. Establish `heq : x = T.π ^ m * T.tail^[m] x`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations.
 
-Use `T.sub_partialSum x m` as an intermediate fact. Rewrite `this` using `[hps, sub_zero]`. Then use the resulting hypothesis. Use `⟨m, T.tail^[m] x, heq, Nat.find_spec hex, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `j`. Use `conv_rhs => rw [heq]`.
-
-Conclude with `(T.zcoeff_π_pow_mul m _ j).symm`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem exists_eq_π_pow_mul {x : Γ} (hx : x ≠ 0) :
     ∃ (m : ℕ) (x' : Γ), x = T.π ^ m * x' ∧ T.red x' ≠ 0 ∧
@@ -402,15 +390,13 @@ namespace TeichFrob
 variable {T} (F : T.TeichFrob)
 
 /- English proof (translation)
-Take `⟨ρ, hρ⟩` from `hb`. Take `⟨N, x, hx⟩` from `IsLocalization.Away.surj T.π b`. Establish `hx0 : x ≠ 0`. Introduce and unpack `rfl`. Rewrite `hx` using `[map_zero]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hb0 (T.eq_zero_of_mul_pow hx)`. Establish `hxc : ConvergesAt (T.zcoeff x) ρ`. Rewrite `hρ` using `[T.coeffB_eq hx, convergesAt_shift_iff ρ.2.1]`. Conclude with `hρ`. Take `⟨m, x', hxx', hx'0, hz⟩` from `T.exists_eq_π_pow_mul hx0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hx'c : x' ∈ T.Gcon` using `⟨ρ, by rw [hz, convergesAt_shift_iff ρ.2.1]; exact hxc⟩`. Take `⟨y, hyc, hy0, hy⟩` from `F.exists_φ_eq_mul_of_mem_Gcon ha hx'c hx'0`. Take `⟨σ, hσ⟩` from `hyc`. Use `⟨algebraMap Γ T.B y, ⟨σ, ?_⟩, ?_, m, N, ?_⟩` and prove the remaining obligations. Rewrite using `[T.coeffB_algebraMap]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `hσ`. Introduce `h`. Establish `: y = 0` using `T.algebraMap_injective (by rw [h, map_zero])`. Conclude with `hy0 (by rw [this, map_zero])`. Rewrite using `[F.toB_algebraMap, hy, mul_comm (algebraMap Γ T.B T.π ^ N) b, hx, ← map_pow, ← map_mul, ← map_mul, hxx']`.
-
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_toB_eq_mul [IsAlgClosed L] (ha : 0 < F.a) {b : T.B} (hb : b ∈ T.Edag)
     (hb0 : b ≠ 0) : ∃ y ∈ T.Edag, y ≠ 0 ∧ ∃ m N : ℕ,

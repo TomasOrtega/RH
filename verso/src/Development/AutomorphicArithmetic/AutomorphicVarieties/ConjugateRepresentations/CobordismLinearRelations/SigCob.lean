@@ -4,11 +4,11 @@ open UpperTheory.V.Af UpperTheory.V.AlgRepEndIrreducible UpperTheory.V.Lit Upper
 open scoped TensorProduct
 
 /- English proof (translation)
-Consider the cases of `q with`. Consider the case `zero`. Introduce `x hx`. Express the relevant statement in the definitionally equal form `T (c x) = 0`. Rewrite using `[hc x hx, map_zero]`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Consider the case `succ k`. Take `⟨b, b1, b2⟩` from `hc`. Use `⟨fun x => T (b x), fun γ x hx => ?_, fun x hx => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `T (b _) = _`. Rewrite using `[b1 γ x hx, hT]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `T (c x) = _`. Rewrite using `[b2 x hx]`. Simplify using `only [hd, map_sum, map_zsmul]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem hcob_map {Γ M M' : Type} [Group Γ] [AddCommGroup M] [Module ℂ M] [AddCommGroup M'] [Module ℂ M']
     (ρ : Representation ℂ Γ M) (ρ' : Representation ℂ Γ M') (T : M →+ M') (hT : ∀ γ m, T (ρ γ m) = ρ' γ (T m))
@@ -28,9 +28,9 @@ private theorem hcob_map {Γ M M' : Type} [Group Γ] [AddCommGroup M] [Module �
       simp only [hd, map_sum, map_zsmul]
 
 /- English proof (translation)
-Set `T : ((GL (Fin a) (Af E) ⧸ U) → Fin Ξ.d → ℂ) →+ ((GL (Fin a) (Af E) ⧸ U) → Fin Ξ'.d → ℂ)` to `{ toFun := fun f y i => σ (f y (Fin.cast h.symm i)) map_zero' := by ext y i; simp map_add' := fun f g => by ext y i; simp }`. Use `hcob_map _ _ T (fun γ f => ?_) q c hc` and prove the remaining obligations. Use function extensionality and compare the values at `y i`. Express the relevant statement in the definitionally equal form `σ ((ratC Ξ γ *ᵥ f _) (Fin.cast h.symm i)) = (ratC Ξ' γ *ᵥ fun j => σ (f _ (Fin.cast h.symm j))) i`. Simplify using `only [Matrix.mulVec, dotProduct, map_sum, map_mul, ← hσ _ _ _]`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Conclude with `Fintype.sum_equiv (finCongr h) _ _ fun j => rfl`.
+A detailed English derivation is pending.
 -/
 private theorem sigCob_one {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
     (U : Subgroup (GL (Fin a) (Af E))) (σ : ℂ ≃+* ℂ) {Ξ Ξ' : AlgRep E a} (h : Ξ.d = Ξ'.d) (hσ : ConjMat σ h) (q : ℕ)
@@ -47,9 +47,9 @@ private theorem sigCob_one {E : Type} [Field E] [NumberField E] [IsTotallyComple
   exact Fintype.sum_equiv (finCongr h) _ _ fun j => rfl
 
 /- English proof (translation)
-Introduce `E _ _ _ a U σ Ξ Ξ' h hσ q c`. Use `⟨fun hc => ?_, sigCob_one U σ h hσ q c⟩` and prove the remaining obligations. Establish `hσ' : ConjMat σ.symm h.symm` using `fun γ i j => by`. Rewrite using `[RingEquiv.eq_symm_apply, ← hσ]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `e : sigC σ.symm h.symm (sigC σ h c) = c`. Use function extensionality and compare the values at `z y i`. Conclude with `σ.symm_apply_apply _`. Use `sigCob_one U σ.symm h.symm hσ' q _ hc` as an intermediate fact. Rewrite `this` using `[e]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Cj.sigCob :
     UpperTheory.V.Cj.SigCob := by

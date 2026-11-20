@@ -1,15 +1,15 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `Λ A R S _ _ _ _ _ I _ e y hex huniq`. Use `choose f hf using hex`. Establish `hc : ∀ {m n : ℕ} (hle : m + 1 ≤ n + 1), (Ideal.Quotient.factorₐ Λ (Ideal.pow_le_pow_right hle)).comp (f n) = f m`. Introduce `m n hle`. Use `huniq m _ _ fun s => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[AlgHom.comp_apply, hf, hf]`. Both sides reduce to the same expression. Set `g : (n : ℕ) → A →ₐ[Λ] R ⧸ I ^ n` to `fun n => (Ideal.Quotient.factorₐ Λ (Ideal.pow_le_pow_right (Nat.le_succ n))).comp (f n)`. Establish `hg : ∀ {m n : ℕ} (hle : m ≤ n), (Ideal.Quotient.factorₐ Λ (Ideal.pow_le_pow_right hle)).comp (g n) = g m`. Introduce `m n hle`.
+Both sides reduce to the same expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `AlgHom.ext fun a => ?_` and prove the remaining obligations. Simplify using `only [g, ← hc (Nat.succ_le_succ hle), AlgHom.comp_apply]`. Take `⟨r, hr⟩` from `Ideal.Quotient.mk_surjective (f n a)`. Rewrite using `[← hr]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨IsAdicComplete.liftAlgHom I g hg, fun s => ?_⟩` and prove the remaining obligations. Establish `key : (fun s => IsAdicComplete.liftAlgHom I g hg (e s)) = y`. Apply `IsHausdorff.funext' I` to reduce the goal to its premises. Introduce `n t`. Establish `h1` using `IsAdicComplete.mk_liftAlgHom I g hg n (e t)`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `h1.trans ?_` and prove the remaining obligations. Simplify using `only [g, AlgHom.comp_apply, hf]`. Both sides reduce to the same expression. Conclude with `congrFun key s`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Qg4.sxLimPt :
     ∀ {Λ A R S : Type} [inst : CommRing Λ] [inst_1 : CommRing A] [inst_2 : Algebra Λ A]

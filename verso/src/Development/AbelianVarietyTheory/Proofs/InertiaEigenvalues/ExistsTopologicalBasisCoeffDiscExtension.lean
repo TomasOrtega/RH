@@ -9,7 +9,7 @@ noncomputable section
 namespace GlobalTheory.BSP.DiscCoeff
 
 /- English proof (translation)
-Establish `h : Algebra.algebraMapSubmonoid B (Submonoid.powers (l : ℤ)) = Submonoid.powers (l : B)`. Simplify using `[Algebra.algebraMapSubmonoid, Submonoid.map_powers]`. Rewrite using `[h]`. Use `infer_instance`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLocalization_int (l : ℕ) {B : Type} [CommRing B] (u : B) (ρ : ℝ≥0) :
     IsLocalization (Algebra.algebraMapSubmonoid B (Submonoid.powers (l : ℤ))) (PreDisc l u ρ) := by
@@ -24,7 +24,7 @@ instance (l : ℕ) {B : Type} [CommRing B] (u : B) (ρ : ℝ≥0) :
 variable {l : ℕ}
 
 /- English proof (translation)
-Take `⟨n, a, h⟩` from `IsLocalization.Away.surj (l : B) y`. Use `⟨a, n, ?_⟩` and prove the remaining obligations. Rewrite using `[← h, mul_assoc, ← mul_pow, IsLocalization.Away.mul_invSelf, one_pow, mul_one]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_eq {B : Type} [CommRing B] {u : B} {ρ : ℝ≥0} (y : PreDisc l u ρ) :
     ∃ (a : B) (n : ℕ), y = algebraMap B (PreDisc l u ρ) a * IsLocalization.Away.invSelf (l : B) ^ n := by
@@ -33,14 +33,14 @@ theorem exists_eq {B : Type} [CommRing B] {u : B} {ρ : ℝ≥0} (y : PreDisc l 
   rw [← h, mul_assoc, ← mul_pow, IsLocalization.Away.mul_invSelf, one_pow, mul_one]
 
 /- English proof (translation)
-Rewrite using `[← map_natCast (algebraMap B (PreDisc l u ρ)), IsLocalization.Away.mul_invSelf]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem natCast_mul_invSelf {B : Type} [CommRing B] {u : B} {ρ : ℝ≥0} :
     (l : PreDisc l u ρ) * IsLocalization.Away.invSelf (l : B) = 1 := by
   rw [← map_natCast (algebraMap B (PreDisc l u ρ)), IsLocalization.Away.mul_invSelf]
 
 /- English proof (translation)
-Rewrite using `[mul_left_comm, ← mul_pow, natCast_mul_invSelf, one_pow, mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pow_mul_mono {B : Type} [CommRing B] {u : B} {ρ : ℝ≥0} (a : B) (n : ℕ) :
     (l : PreDisc l u ρ) ^ n * (algebraMap B (PreDisc l u ρ) a * IsLocalization.Away.invSelf (l : B) ^ n) =
@@ -57,18 +57,18 @@ def preCoeff : PreDisc l (s u) ρ →ₗ[ℤ] PreDisc l u ρ :=
 variable {l s u ρ c}
 
 /- English proof (translation)
-The claim follows from `IsLocalizedModule.lift_apply _ _ _ _ a`.
+A detailed English derivation is pending.
 -/
 theorem preCoeff_alg (a : A) :
     preCoeff l s u ρ c (algebraMap A _ a) = algebraMap S (PreDisc l u ρ) (c a) :=
   IsLocalizedModule.lift_apply _ _ _ _ a
 
 /- English proof (translation)
-Establish `hl : IsUnit (l : PreDisc l u ρ)`. Use `IsLocalization.Away.algebraMap_isUnit (S := PreDisc l u ρ) (l : S)` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis. Use `(hl.pow n).mul_left_cancel ?_` and prove the remaining obligations. Rewrite using `[pow_mul_mono]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `e : ((l : ℤ) ^ n) • (algebraMap A (PreDisc l (s u) ρ) a * IsLocalization.Away.invSelf (l : A) ^ n) = algebraMap A _ a`. Rewrite using `[zsmul_eq_mul]`. Use `push_cast`. Conclude with `pow_mul_mono a n`. Establish `e2` using `congrArg (preCoeff l s u ρ c) e`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e2` using `[LinearMap.map_smul, zsmul_eq_mul, preCoeff_alg]`. Move the coercions through the operations in `at e2`. Conclude with `e2`.
+Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem preCoeff_mono (a : A) (n : ℕ) :
     preCoeff l s u ρ c (algebraMap A _ a * IsLocalization.Away.invSelf (l : A) ^ n) =
@@ -90,17 +90,15 @@ variable (hc : ∀ a x, c (s a * x) = a * c x)
 include hc
 
 /- English proof (translation)
-Use `le_of_forall_gt_imp_ge_of_dense fun r hr => ?_` and prove the remaining obligations. Establish `hr0 : 0 < r` using `(norm_nonneg y).trans_lt hr`. Establish `hy` using `mem_ball_of_gauge_lt l (s u) ρ hr`. It suffices to establish `h : ∀ x ∈ ball l (s u) ρ r, ∀ a : A, preCoeff l s u ρ c (a • x) ∈ ball l u ρ r by`. Establish `h1` using `h y hy 1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the argument to an intermediate assertion. Establish an intermediate fact.
 
-Rewrite `h1` using `[one_smul]`. Conclude with `gauge_le l u ρ hr0 h1`. Introduce `x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨a, b, k, h1, rfl⟩` from `hx`. Introduce `a'`. Establish `e : a' • (algebraMap A (PreDisc l (s u) ρ) ((l : A) ^ a * s u ^ b) * IsLocalization.Away.invSelf (l : A) ^ k) = algebraMap A _ (s ((l : S) ^ a * u ^ b) * a') * IsLocalization.Away.invSelf (l : A) ^ k`. Simplify using `only [Algebra.smul_def, map_mul, map_pow, map_natCast]`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `e2 : algebraMap S (PreDisc l u ρ) (c (s ((l : S) ^ a * u ^ b) * a')) * IsLocalization.Away.invSelf (l : S) ^ k = c a' • (algebraMap S (PreDisc l u ρ) ((l : S) ^ a * u ^ b) * IsLocalization.Away.invSelf (l : S) ^ k)`. Rewrite using `[hc, Algebra.smul_def, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, preCoeff_mono, e2]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, b, k, h1, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `zero => intro a'`. Rewrite using `[smul_zero, map_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => intro a'`. Rewrite using `[smul_add, map_add]`.
-
-Conclude with `add_mem (hx a') (hy a')`. Consider the case `smul a x _ hx => intro a'`. Rewrite using `[smul_smul]`. Conclude with `hx _`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_preCoeff_le (y : PreDisc l (s u) ρ) : ‖preCoeff l s u ρ c y‖ ≤ ‖y‖ := by
   refine le_of_forall_gt_imp_ge_of_dense fun r hr => ?_
@@ -128,16 +126,16 @@ theorem norm_preCoeff_le (y : PreDisc l (s u) ρ) : ‖preCoeff l s u ρ c y‖ 
   | smul a x _ hx => intro a'; rw [smul_smul]; exact hx _
 
 /- English proof (translation)
-The claim follows from `AddMonoidHomClass.continuous_of_bound (preCoeff l s u ρ c).toAddMonoidHom 1 fun y => (norm_preCoeff_le hc y).trans (one_mul _).ge`.
+A detailed English derivation is pending.
 -/
 theorem continuous_preCoeff : Continuous (preCoeff l s u ρ c).toAddMonoidHom :=
   AddMonoidHomClass.continuous_of_bound (preCoeff l s u ρ c).toAddMonoidHom 1
     fun y => (norm_preCoeff_le hc y).trans (one_mul _).ge
 
 /- English proof (translation)
-Take `⟨w, m, rfl⟩` from `exists_eq p`. Take `⟨a, n, rfl⟩` from `exists_eq q`. Establish `e : preMap l u ρ (s u) ρ s (algebraMap S _ w * IsLocalization.Away.invSelf (l : S) ^ m) * (algebraMap A _ a * IsLocalization.Away.invSelf (l : A) ^ n) = algebraMap A (PreDisc l (s u) ρ) (s w * a) * IsLocalization.Away.invSelf (l : A) ^ (m + n)`. Rewrite using `[map_mul, map_pow, preMap_alg, preMap_inv, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[e, preCoeff_mono, preCoeff_mono, hc, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem preCoeff_mul (p : PreDisc l u ρ) (q : PreDisc l (s u) ρ) :
     preCoeff l s u ρ c (preMap l u ρ (s u) ρ s p * q) = p * preCoeff l s u ρ c q := by
@@ -157,27 +155,27 @@ def discCoeff : Disc l (s u) ρ →+ Disc l u ρ :=
 variable {l s u ρ c}
 
 /- English proof (translation)
-The claim follows from `AddMonoidHom.completion_coe _ _ y`.
+A detailed English derivation is pending.
 -/
 theorem discCoeff_ofPre (y : PreDisc l (s u) ρ) :
     discCoeff l s u ρ c hc (ofPre l (s u) ρ y) = ofPre l u ρ (preCoeff l s u ρ c y) :=
   AddMonoidHom.completion_coe _ _ y
 
 /- English proof (translation)
-The claim follows from `AddMonoidHom.continuous_completion _ _`.
+A detailed English derivation is pending.
 -/
 theorem continuous_discCoeff : Continuous (discCoeff l s u ρ c hc) :=
   AddMonoidHom.continuous_completion _ _
 
 /- English proof (translation)
-The claim follows from `(discCoeff_ofPre hc _).trans (congrArg (ofPre l u ρ) (preCoeff_alg a))`.
+A detailed English derivation is pending.
 -/
 theorem discCoeff_toDisc (a : A) :
     discCoeff l s u ρ c hc (toDisc l (s u) ρ a) = toDisc l u ρ (c a) :=
   (discCoeff_ofPre hc _).trans (congrArg (ofPre l u ρ) (preCoeff_alg a))
 
 /- English proof (translation)
-Use `(denseRange_ofPre l (s u) ρ).induction_on y (isClosed_le (continuous_norm.comp (continuous_discCoeff hc)) continuous_norm) fun q => ?_` and prove the remaining obligations. Rewrite using `[discCoeff_ofPre, norm_ofPre, norm_ofPre]`. Conclude with `norm_preCoeff_le hc q`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_discCoeff_le (y : Disc l (s u) ρ) : ‖discCoeff l s u ρ c hc y‖ ≤ ‖y‖ := by
   refine (denseRange_ofPre l (s u) ρ).induction_on y
@@ -186,9 +184,9 @@ theorem norm_discCoeff_le (y : Disc l (s u) ρ) : ‖discCoeff l s u ρ c hc y�
   exact norm_preCoeff_le hc q
 
 /- English proof (translation)
-Establish `hjc : Continuous j` using `AddMonoidHomClass.continuous_of_bound j 1 fun x => (hj.norm_le x).trans (one_mul _).ge`. Establish `hdc : Continuous (discCoeff l s u ρ c hc)` using `continuous_discCoeff hc`. Establish `e : j.comp (ofPre l u ρ) = (ofPre l (s u) ρ).comp (preMap l u ρ (s u) ρ s)` using `IsLocalization.ringHom_ext (Submonoid.powers (l : S)) (RingHom.ext fun a => by`. Simplify using `only [RingHom.comp_apply]`. Rewrite using `[preMap_alg]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hj.ext a)`. Use `(denseRange_ofPre l u ρ).induction_on x (isClosed_eq (hdc.comp (hjc.mul continuous_const)) (continuous_id.mul continuous_const)) fun p => ?_` and prove the remaining obligations. Use `(denseRange_ofPre l (s u) ρ).induction_on y (isClosed_eq (hdc.comp (continuous_const.mul continuous_id)) (continuous_const.mul hdc)) fun q => ?_` and prove the remaining obligations. Rewrite using `[show j (ofPre l u ρ p) = ofPre l (s u) ρ (preMap l u ρ (s u) ρ s p) from RingHom.congr_fun e p, ← map_mul, discCoeff_ofPre, discCoeff_ofPre, ← map_mul, preCoeff_mul hc]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem discCoeff_mul {j : Disc l u ρ →+* Disc l (s u) ρ} (hj : IsDiscMap s j) (x : Disc l u ρ)
     (y : Disc l (s u) ρ) : discCoeff l s u ρ c hc (j x * y) = x * discCoeff l s u ρ c hc y := by
@@ -212,7 +210,7 @@ end GlobalTheory.BSP.DiscCoeff
 open GlobalTheory.BSP.DiscCoeff in
 
 /- English proof (translation)
-Introduce `l _ K bk A _ s ι TB ρ _ _ j hj`. Conclude with `⟨fun i => discCoeff l s X ρ (TB.c i) (TB.c_mul i), fun i a => discCoeff_toDisc (TB.c_mul i) a, fun i x y => discCoeff_mul (TB.c_mul i) hj x y, fun i y => norm_discCoeff_le (TB.c_mul i) y⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem GlobalTheory.BSP.exists_discCoeff : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (A : Type) [CommRing A] (s : bk.S →+* A) (ι : Type) (TB : TopBasis s bk.J ι) (ρ : ℝ≥0), 0 < ρ → ρ < 1 → ∀ j : bk.DS ρ →+* Disc l (s X) ρ, IsDiscMap s j → ∃ cD : ι → (Disc l (s X) ρ →+ bk.DS ρ), (∀ i a, cD i (toDisc l (s X) ρ a) = toDisc l (X : bk.S) ρ (TB.c i a)) ∧ (∀ i x y, cD i (j x * y) = x * cD i y) ∧ (∀ i y, ‖cD i y‖ ≤ ‖y‖) := by
   intro l _ K bk A _ s ι TB ρ _ _ j hj

@@ -11,9 +11,9 @@ open PositivityTheory.ThKW PositivityTheory.ThKW.AutEtaA
 open UpperTheory.TP.W
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (f.comp R.subtype)`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Conclude with `Subtype.ext (hf x x.2 hx)`. Establish `h1` using `AddSubgroup.relIndex_map_map_of_injective (H.addSubgroupOf R) (K.addSubgroupOf R) hinj`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `AddSubgroup.relIndex_map_map_of_injective (H.addSubgroupOf R) (K.addSubgroupOf R) R.subtype_injective`. Rewrite `h2` using `[AddSubgroup.map_addSubgroupOf_eq_of_le hH, AddSubgroup.map_addSubgroupOf_eq_of_le hK]`. Rewrite `h1` using `[← AddSubgroup.map_map, ← AddSubgroup.map_map, AddSubgroup.map_addSubgroupOf_eq_of_le hH, AddSubgroup.map_addSubgroupOf_eq_of_le hK]`. Conclude with `h1.trans h2.symm`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem relIndex_map_of_injOn {G G' : Type} [AddGroup G] [AddGroup G'] (f : G →+ G') (R H K : AddSubgroup G)
     (hH : H ≤ R) (hK : K ≤ R) (hf : ∀ x ∈ R, f x = 0 → x = 0) :
@@ -30,29 +30,27 @@ private theorem relIndex_map_of_injOn {G G' : Type} [AddGroup G] [AddGroup G'] (
   exact h1.trans h2.symm
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ nS nT JS JT e he P hev hinj Λ L hL g h T hT`. Set `φ : XFF F E nS nT →+ Matrix (Fin nT) (Fin nS) (P.adicCompletion E)` to `AddMonoidHom.mk' (fun x => (x : WOF F E nS nT).map (ev F E P)) (fun x y => by`. Rewrite using `[XFF.coe_add]`. Use extensionality with `i j`. Simplify using `[Matrix.map_apply, map_add])`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hφ : ∀ x, φ x = (x : WOF F E nS nT).map (ev F E P)` using `fun _ => rfl`. Establish `hφe : ∀ x, φ (mulFF e x) = φ x`. Introduce `x`. Rewrite using `[hφ, hφ, coe_mulFF]`. Use extensionality with `i j`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Simplify using `[Matrix.map_apply, Matrix.smul_apply, map_mul, hev]`. Establish `hφr : ∀ x, φ (rhoFF σ JS JT (g, h) x) = T (φ x)`. Introduce `x`. Rewrite using `[hT, hφ, hφ, coe_rhoFF]`. Use `show ((mtF σ JT h * (x : WOF F E nS nT)) * mtF σ JS g⁻¹).map (ev F E P) = _`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.map_mul, Matrix.map_mul]`. Set `R : AddSubgroup (XFF F E nS nT)` to `(LinearMap.range (mulFF e : XFF F E nS nT →ₗ[𝓞 E] XFF F E nS nT)).toAddSubgroup`. Establish `hR : ∀ x ∈ R, φ x = 0 → x = 0`. Introduce and unpack `_ ⟨y, rfl⟩ h0`. Apply `XFF.ext` to reduce the goal to its premises.
+Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[XFF.coe_zero]`. Use extensionality with `i j`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[coe_mulFF]`. Simplify using `[Matrix.smul_apply, ← mul_assoc, he]`.
+By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `congrFun (congrFun h0 i) j`. Establish `hmapA : ((latF F E nS nT Λ).map (mulFF e)).toAddSubgroup.map φ = L.toAddSubgroup`. Use extensionality with `v`. Simplify using `only [AddSubgroup.mem_map, Submodule.mem_toAddSubgroup, Submodule.mem_map]`. Rewrite using `[hL]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨x, hx, rfl⟩, rfl⟩`. Conclude with `⟨x, hx, (hφe x).symm⟩`. Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `⟨_, ⟨x, hx, rfl⟩, hφe x⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hmapB : (((latF F E nS nT Λ).map (rhoFF σ JS JT (g, h))).map (mulFF e)).toAddSubgroup.map φ = (L.map (T.restrictScalars (P.adicCompletionIntegers E))).toAddSubgroup`. Use extensionality with `v`. Simplify using `only [AddSubgroup.mem_map, Submodule.mem_toAddSubgroup, Submodule.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨_, ⟨x, hx, rfl⟩, rfl⟩, rfl⟩`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨φ x, (hL _).2 ⟨x, hx, rfl⟩, ?_⟩` and prove the remaining obligations. Use `show T (φ x) = _`. Rewrite using `[hφe, hφr]`. Introduce and unpack `⟨_, hu, rfl⟩`. Take `⟨x, hx, rfl⟩` from `(hL _).1 hu`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Use `⟨_, ⟨_, ⟨x, hx, rfl⟩, rfl⟩, ?_⟩` and prove the remaining obligations. Conclude with `(hφe _).trans (hφr x)`. Establish `hleA : ((latF F E nS nT Λ).map (mulFF e)).toAddSubgroup ≤ R`. Introduce and unpack `_ ⟨x, _, rfl⟩`. Conclude with `⟨x, rfl⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Prove the components needed by the constructor for the conclusion.
 
-Establish `hleB : (((latF F E nS nT Λ).map (rhoFF σ JS JT (g, h))).map (mulFF e)).toAddSubgroup ≤ R`. Introduce and unpack `_ ⟨x, _, rfl⟩`. Conclude with `⟨x, rfl⟩`. Prove the components needed by the constructor for the conclusion. Unfold `idx`.
-
-Rewrite using `[← hmapA, ← hmapB]`. Conclude with `(relIndex_map_of_injOn φ R _ _ hleA hleB hR).symm`. Unfold `idx`. Rewrite using `[← hmapA, ← hmapB]`. Conclude with `(relIndex_map_of_injOn φ R _ _ hleB hleA hR).symm`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.lattice_determinant_comparison_at_split_place :
     ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) {nS nT : ℕ}

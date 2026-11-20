@@ -10,21 +10,21 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 namespace GlobalTheory.ExpTie.Lift
 
 /- English proof (translation)
-Introduce `D L P5 j τ hv a ha hcase`. Establish `hn` using `rank_eq j`. Establish `hk` using `D.R.m_add_three_le_k`. Establish `hjm` using `j.2`. Express the relevant statement in the definitionally equal form `a < (Vc D j).rank at ha`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `(D.R.k - 1 ≤ a ∧ a < D.R.k - 1 + ((j : ℕ) + 1)) ∨ D.R.k - 1 + ((j : ℕ) + 1) + D.R.t ≤ a at hcase`. Choose the witnesses or unpack the hypotheses as in `⟨i, hval⟩ : ∃ i : Fin D.R.m, ((wts L j).U (parOf L j) τ a : ℝ) - (wts L j).c τ = -(((D.hc τ).b i : ℚ) : ℝ) := by`. Break down `hcase with ⟨h1, h2⟩ | h1` into its components or cases. Use `⟨⟨a - (D.R.k - 1), by omega⟩, ?_⟩` and prove the remaining obligations. Establish `h` using `hv.2.1 ⟨a - (D.R.k - 1), by omega⟩ (by simp only [Fin.le_def]; omega)`.
+Express the relevant assertion in an equivalent form by its definition. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `ha' : D.R.k - 1 + (a - (D.R.k - 1)) = a` using `by omega`. Simplify using `only [ha'] at h`. Conclude with `h`. Use `⟨⟨a - (D.R.k - 1) - D.R.t, by omega⟩, ?_⟩` and prove the remaining obligations. Establish `h` using `hv.2.2.2 ⟨a - (D.R.k - 1) - D.R.t, by omega⟩ (by simp only [Fin.lt_def]; omega)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha' : D.R.k - 1 + (a - (D.R.k - 1) - D.R.t) + D.R.t = a` using `by omega`. Simplify using `only [ha'] at h`. Conclude with `h`. Establish `he : (wts L j).e τ = (((D.hc τ).e j : ℚ) : ℝ)` using `by show wj D ((j : ℕ) + 1) τ = _`. Unfold `wj`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[dif_pos (by omega)]`. Use `congr 3`. Establish `habs : |((wts L j).U (parOf L j) τ a : ℝ) - (wts L j).c τ + (wts L j).e τ| = |(((D.hc τ).b i - (D.hc τ).e j : ℚ) : ℝ)|`. Rewrite using `[hval, he, ← abs_neg]`. Use `push_cast`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Put the polynomial expressions in normal form. Rewrite the conclusion using the stated equalities.
 
-Put the polynomial expressions in normal form. Rewrite using `[habs]`. Use `⟨?_, L.be_close τ i j⟩` and prove the remaining obligations. Establish `hN : ((D.R.N D.R.m : ℕ) : ℝ) = (D.R.k : ℝ) + (D.R.m : ℝ) * ((D.R.t : ℝ) + 1)`. Unfold `Ranks.N`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hls : (parOf L j).lstar = LevelStarExponents.lStar L`. Unfold `Formalism.CohomologicalDescent.LogSmallConstantBounds.Par.lstar LevelStarExponents.lStar`. Rewrite using `[hN]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `hb : (parOf L j).b = L.sc.b` using `rfl`. Rewrite using `[hls, hb]`. Conclude with `P5.lows_far τ i j`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem low_dist : ∀ {D : Formalism.BasicNotions.D7} (L : Formalism.BasicNotions.SizeData₂ D) (P5 : Formalism.BasicNotions.ParameterChoice' D L) (j : Fin D.R.m) (τ : D.what₂.Tau), GlobalTheory.ExpTie.Lift.ValsAt L j τ → ∀ a, a < (GlobalTheory.ExpTie.parOf L j).Nr → ((Formalism.CohomologicalDescent.ShortWeightBounds.kc (GlobalTheory.ExpTie.parOf L j) ≤ a ∧ a < Formalism.CohomologicalDescent.ShortWeightBounds.kc (GlobalTheory.ExpTie.parOf L j) + (GlobalTheory.ExpTie.Lift.wts L j).j τ) ∨ Formalism.CohomologicalDescent.ShortWeightBounds.kc (GlobalTheory.ExpTie.parOf L j) + (GlobalTheory.ExpTie.Lift.wts L j).j τ + (GlobalTheory.ExpTie.parOf L j).t ≤ a) → 2 * (GlobalTheory.ExpTie.parOf L j).b / (GlobalTheory.ExpTie.parOf L j).lstar + ((GlobalTheory.ExpTie.parOf L j).t : ℝ) / 2 + 3 ≤ |((GlobalTheory.ExpTie.Lift.wts L j).U (GlobalTheory.ExpTie.parOf L j) τ a : ℝ) - (GlobalTheory.ExpTie.Lift.wts L j).c τ + (GlobalTheory.ExpTie.Lift.wts L j).e τ| ∧ |((GlobalTheory.ExpTie.Lift.wts L j).U (GlobalTheory.ExpTie.parOf L j) τ a : ℝ) - (GlobalTheory.ExpTie.Lift.wts L j).c τ + (GlobalTheory.ExpTie.Lift.wts L j).e τ| ≤ (GlobalTheory.ExpTie.parOf L j).η := by
   intro D L P5 j τ hv a ha hcase

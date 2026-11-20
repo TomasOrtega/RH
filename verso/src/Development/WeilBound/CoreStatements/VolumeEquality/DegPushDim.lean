@@ -17,11 +17,11 @@ variable (k : Type) [Field k] {Ω : Type} [Field Ω] [Algebra k Ω] {K : Type} [
 
 omit [Fintype K] [∀ b, Fintype (ι b)] in
 /- English proof (translation)
-Rewrite using `[fnField, IntermediateField.adjoin_toSubfield]`. Unfold `IndefiniteRowSideFullHecke.NumbersDVR.Bundles.fnField`. Use `congr 2`. Use extensionality with `t`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨p, q, hpq, rfl⟩`. Take `⟨a, i⟩` from `p`. Take `⟨b, j⟩` from `q`. Simplify using `only at hpq`. Substitute `hpq` using the available equality.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Substitute using the available equality.
 
-Conclude with `⟨⟨a, i, j⟩, rfl⟩`. Introduce and unpack `⟨⟨a, i, j⟩, rfl⟩`. Conclude with `⟨⟨a, i⟩, ⟨a, j⟩, rfl, rfl⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem fnField_toSubfield (y : (Σ b, ι b) → Ω) :
     (fnField k y).toSubfield = IndefiniteRowSideFullHecke.NumbersDVR.Bundles.fnField k y := by
@@ -40,19 +40,19 @@ theorem fnField_toSubfield (y : (Σ b, ι b) → Ω) :
     exact ⟨⟨a, i⟩, ⟨a, j⟩, rfl, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[← trdeg_add_eq k A (A := Ω), trdeg_eq_zero (R := A) (A := Ω), add_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem trdeg_eq_of_finite (A : IntermediateField k Ω) [FiniteDimensional A Ω] : Algebra.trdeg k A = Algebra.trdeg k Ω := by
   rw [← trdeg_add_eq k A (A := Ω), trdeg_eq_zero (R := A) (A := Ω), add_zero]
 
 /- English proof (translation)
-Take `⟨hnz, hfin, htr⟩` from `h`. Establish `hcone` using `ConeTrdegFnField.proof k Ω (algebraMap k Ω).injective K ι y hnz`. Establish `hset : ((IndefiniteRowSideFullHecke.NumbersDVR.Bundles.fnField k y : Subfield Ω) : Set Ω) = ((fnField k y : IntermediateField k Ω) : Set Ω)`. Rewrite using `[← fnField_toSubfield k y]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hadj : Algebra.trdeg k (Algebra.adjoin k ((IndefiniteRowSideFullHecke.NumbersDVR.Bundles.fnField k y : Subfield Ω) : Set Ω)) = Algebra.trdeg k (fnField k y)`. Rewrite using `[hset]`. Establish `: Algebra.adjoin k ((fnField k y : IntermediateField k Ω) : Set Ω) = (fnField k y).toSubalgebra` using `Algebra.adjoin_eq (fnField k y).toSubalgebra`. Rewrite using `[this]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `haveI : FiniteDimensional (fnField k y) Ω := hfin`. Establish `htr' : Algebra.trdeg k (MRing ι k ⧸ pointIdeal k y) = ((d + Fintype.card K : ℕ) : Cardinal)`. Establish `e : Algebra.trdeg k (MRing ι k ⧸ pointIdeal k y) = Algebra.trdeg k (Algebra.adjoin k ((IndefiniteRowSideFullHecke.NumbersDVR.Bundles.fnField k y : Subfield Ω) : Set Ω)) + (Fintype.card K : Cardinal)` using `hcone`. Rewrite using `[e, hadj, trdeg_eq_of_finite k (fnField k y), htr]`. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Conclude with `ReciprocityTheory.CA.ringKrullDim_eq_of_trdeg_eq_field (d + Fintype.card K) htr'`.
+A detailed English derivation is pending.
 -/
 theorem krull_pointIdeal (y : (Σ b, ι b) → Ω) (d : ℕ) (h : IsPt k y d) [(pointIdeal k y).IsPrime] :
     ringKrullDim (MRing ι k ⧸ pointIdeal k y) = ((d + Fintype.card K : ℕ) : WithBot ℕ∞) := by
@@ -78,11 +78,11 @@ theorem krull_pointIdeal (y : (Σ b, ι b) → Ω) (d : ℕ) (h : IsPt k y d) [(
 end
 
 /- English proof (translation)
-Introduce `k _ Ω _ _ K _ ι _ y d h`. Establish `hmp : IsMultiProjPrime (pointIdeal k y)` using `PointIdealMultiProj.proof k Ω K ι y h.1`. Establish `hdim` using `krull_pointIdeal k y d h`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Use `hmp` and compare the differences between its conclusion and the goal.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Unfold `FieldNumbers.relDim`. Rewrite using `[hdim]`. Establish `e : (((d + Fintype.card K : ℕ) : ℤ) - (Fintype.card K : ℤ)) = (d : ℤ)`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Express the relevant statement in the definitionally equal form `(WithBot.some (WithTop.some (((d + Fintype.card K : ℕ) : ℤ) - (Fintype.card K : ℤ))) : WithBot (WithTop ℤ)) = ((d : ℤ) : WithBot (WithTop ℤ))`. Rewrite using `[e]`. Both sides reduce to the same expression. Use `⟨?_, hdim⟩` and prove the remaining obligations. Conclude with `(Bridge.isMultiProjPrime_iff _).1 hmp`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem ptDim : PtDim := by
   intro k _ Ω _ _ K _ ι _ y d h

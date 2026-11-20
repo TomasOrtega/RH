@@ -5,7 +5,7 @@ set_option maxSynthPendingDepth 1
 namespace GroundTheory.Heights₂.Heights
 
 /- English proof (translation)
-Simplify using `only [Finsupp.mem_support_iff, cycleSection, Finsupp.finsetSum_apply, Finsupp.smul_apply, smul_eq_mul, ne_eq, Finset.sum_eq_zero_iff, not_forall, mul_eq_zero, not_or, exists_prop]`. Apply the tactic sequence `constructor <;> rintro ⟨W, h⟩ <;> exact ⟨W, by tauto⟩`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem mem_support_cycleSection_iff {n : ℕ} (Z : ProjCycle ℂ n) (u : Fin n → ℂ)
     (W' : Ideal (MvPolynomial (Fin n) ℂ)) :
@@ -15,7 +15,7 @@ theorem mem_support_cycleSection_iff {n : ℕ} (Z : ProjCycle ℂ n) (u : Fin n 
   constructor <;> rintro ⟨W, h⟩ <;> exact ⟨W, by tauto⟩
 
 /- English proof (translation)
-Introduce `n Z u`. Use `⟨fun W hW W' hW' => (mem_support_cycleSection_iff Z u W').mpr ⟨W, hW, hW'⟩, fun W' hW' => (mem_support_cycleSection_iff Z u W').mp hW'⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem SupportCycleSection.proof : SupportCycleSection.Statement := by
   intro n Z u

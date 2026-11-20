@@ -7,9 +7,9 @@ noncomputable section
 namespace UpperTheory.Gal.crystallineComparison.Mod
 
 /- English proof (translation)
-Use `haveI : IsArtinianRing B := IsArtinianRing.of_finite κ B`. Use `haveI : p.asIdeal.IsMaximal := Ideal.isMaximal_of_isPrime p.asIdeal`. Use `letI : Field (B ⧸ p.asIdeal) := Ideal.Quotient.field _`. Establish `hb : Function.Bijective (algebraMap κ (B ⧸ p.asIdeal))` using `IsAlgClosed.algebraMap_bijective_of_isIntegral`. Set `e` to `AlgEquiv.ofBijective (Algebra.ofId κ (B ⧸ p.asIdeal)) hb`.
+Equip the data with the indicated structure. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Use `⟨(e.symm : (B ⧸ p.asIdeal) →ₐ[κ] κ).comp (Ideal.Quotient.mkₐ κ p.asIdeal), ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Express the relevant statement in the definitionally equal form `x ∈ RingHom.ker _ ↔ x ∈ p.asIdeal`. Simplify using `[RingHom.mem_ker, Ideal.Quotient.eq_zero_iff_mem]`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem exists_algHom_ker (κ B : Type) [Field κ] [IsAlgClosed κ] [CommRing B] [Algebra κ B]
     [Module.Finite κ B] (p : PrimeSpectrum B) :
@@ -26,15 +26,13 @@ private theorem exists_algHom_ker (κ B : Type) [Field κ] [IsAlgClosed κ] [Com
   simp [RingHom.mem_ker, Ideal.Quotient.eq_zero_iff_mem]
 
 /- English proof (translation)
-Introduce `κ B _ _ _ _ _ ε₀ _ hτ`. Use `haveI : IsArtinianRing B := IsArtinianRing.of_finite κ B`. Use `haveI hfin : Module.Finite κ (Localization.AtPrime (RingHom.ker ε₀.toRingHom)) := Module.Finite.of_surjective (Algebra.algHom κ B (Localization.AtPrime (RingHom.ker ε₀.toRingHom))).toLinearMap (IsArtinianRing.localization_surjective (RingHom.ker ε₀.toRingHom).primeCompl (Localiza …`. Establish `hm : ∀ p : PrimeSpectrum B, Module.length (Localization.AtPrime p.asIdeal) (Localization.AtPrime p.asIdeal) = (Module.finrank κ (Localization.AtPrime (RingHom.ker ε₀.toRingHom)) : ℕ∞)`. Introduce `p`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨ε, hε⟩` from `exists_algHom_ker κ B p`. Take `⟨τ, hτε⟩` from `hτ ε`. Rewrite using `[GlobalTheory.FinSchemeRank.finrank_eq_length_of_isLocalRing κ]`. Establish `hmap : p.asIdeal.primeCompl.map τ.toRingEquiv.toMonoidHom = (RingHom.ker ε₀.toRingHom).primeCompl`. Use extensionality with `y`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Simplify using `only [Submonoid.mem_map, Ideal.mem_primeCompl_iff, ← hε, RingHom.mem_ker, ← hτε]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `hx`. Introduce `hy`.
+Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 
-Use `⟨τ.symm y, ?_, ?_⟩` and prove the remaining obligations. Simplify using `using hy`. Simplify using the standard rewrite rules. Conclude with `GlobalTheory.FinSchemeRank.length_self_eq_of_ringEquiv (IsLocalization.ringEquivOfRingEquiv (Localization.AtPrime p.asIdeal) (Localization.AtPrime (RingHom.ker ε₀.toRingHom)) τ.toRingEquiv hmap)`. Establish `h` using `GlobalTheory.FinSchemeRank.finrank_eq_card_mul κ B _ hm`.
-
-Rewrite `h` using `[← GlobalTheory.FinSchemeRank.card_algHom_eq_card_primeSpectrum κ B]`. Conclude with `h` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ringHomog_of : RingHomog := by
   intro κ B _ _ _ _ _ ε₀ _ hτ

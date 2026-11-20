@@ -26,9 +26,9 @@ end UpperTheory.Reformulated.B.EvaluationMap.Helpers
 
 open UpperTheory.Reformulated.B.EvaluationMap.Helpers in
 /- English proof (translation)
-Introduce `K W _ _ _ _ ρ`. Establish `hle : UpperTheory.Reformulated.B.EvaluationMap.coeffSpan ρ ≤ LinearMap.range (Φ ρ)`. Unfold `UpperTheory.Reformulated.B.EvaluationMap.coeffSpan`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `f ⟨ℓ, w, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨evw ℓ w, rfl⟩`. Conclude with `Submodule.finiteDimensional_of_le hle`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.EvaluationMap.main :
     ∀ {K W : Type} [inst : Group K] [inst_1 : AddCommGroup W] [inst_2 : _root_.Module ℂ W] [FiniteDimensional ℂ W]

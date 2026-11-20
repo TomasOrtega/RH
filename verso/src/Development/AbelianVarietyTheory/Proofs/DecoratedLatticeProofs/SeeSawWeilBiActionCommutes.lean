@@ -15,7 +15,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.SeeSaw
 
 /- English proof (translation)
-Introduce `D ψ A S A' χA χS χS' χA' oma omb ha hb C hC`. Conclude with `⟨GlobalTheory.T.isJointlySmoothBiTheta_weilRep_first_variable D ψ A S A' χA χS oma ha C hC, GlobalTheory.T.isBiTheta_weilRep_second_variable D ψ A S A' χS' χA' omb hb C hC, GlobalTheory.T.weilActions_biTheta_twoVariables_commute D ψ A S A' χA χS χS' χA' oma omb ha hb C hC, Global …`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem biAct_all : ∀ D : D7, BiAct D := by
   intro D ψ A S A' χA χS χS' χA' oma omb ha hb C hC

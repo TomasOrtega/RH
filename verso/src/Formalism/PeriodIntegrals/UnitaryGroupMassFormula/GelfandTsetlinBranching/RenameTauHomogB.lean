@@ -10,9 +10,9 @@ def swapM {n : ℕ} (σ : Equiv.Perm (Fin n)) : Matrix (Fin n) (Fin n) ℂ :=
   Matrix.of fun i j => if σ i = j then 1 else 0
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [swapM, Matrix.mul_apply, Matrix.of_apply, Matrix.one_apply]`. Rewrite using `[Finset.sum_eq_single (σ i)]`. Simplify using `[hσ]`. Introduce `b _ hb`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[if_neg (Ne.symm hb), zero_mul]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem swapM_sq {n : ℕ} (σ : Equiv.Perm (Fin n)) (hσ : ∀ j, σ (σ j) = j) : swapM σ * swapM σ = 1 := by
   ext i j
@@ -30,23 +30,23 @@ def tauB {n N : ℕ} (h : n + 1 = N) (σ : Equiv.Perm (Fin n)) (a : Fin N) : Fin
   if ha : a.1 < n then ⟨(σ ⟨a.1, ha⟩).1, by have := (σ ⟨a.1, ha⟩).isLt; omega⟩ else a
 
 /- English proof (translation)
-Unfold `tauB`. Rewrite using `[dif_pos ha]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem tauB_val {n N : ℕ} (h : n + 1 = N) (σ : Equiv.Perm (Fin n)) (a : Fin N) (ha : a.1 < n) :
     (tauB h σ a).1 = (σ ⟨a.1, ha⟩).1 := by
   unfold tauB; rw [dif_pos ha]
 
 /- English proof (translation)
-Unfold `tauB`. Rewrite using `[dif_neg ha]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem tauB_of_not {n N : ℕ} (h : n + 1 = N) (σ : Equiv.Perm (Fin n)) (a : Fin N) (ha : ¬ a.1 < n) :
     tauB h σ a = a := by
   unfold tauB; rw [dif_neg ha]
 
 /- English proof (translation)
-Distinguish the cases in `ha : a.1 < n`. Establish `h2 : (tauB h σ a).1 < n` using `by rw [tauB_val h σ a ha]; exact (σ _).isLt`. Apply `Fin.ext` to reduce the goal to its premises. Rewrite using `[tauB_val h σ _ h2]`. Establish `e : (⟨(tauB h σ a).1, h2⟩ : Fin n) = σ ⟨a.1, ha⟩` using `Fin.ext (tauB_val h σ a ha)`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e, hσ]`. Rewrite using `[tauB_of_not h σ a ha, tauB_of_not h σ a ha]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem tauB_invol {n N : ℕ} (h : n + 1 = N) (σ : Equiv.Perm (Fin n)) (hσ : ∀ j, σ (σ j) = j) (a : Fin N) :
     tauB h σ (tauB h σ a) = a := by
@@ -59,17 +59,17 @@ theorem tauB_invol {n N : ℕ} (h : n + 1 = N) (σ : Equiv.Perm (Fin n)) (hσ : 
   · rw [tauB_of_not h σ a ha, tauB_of_not h σ a ha]
 
 /- English proof (translation)
-Establish `ha2` using `a.2`. Establish `hb2` using `b.2`. Rewrite using `[embGL_apply_B]`. Apply the tactic sequence `by_cases hb : b.1 < n <;> by_cases ha : a.1 < n`. Rewrite using `[dif_pos hb, dif_pos ha] show swapM σ ⟨b.1, hb⟩ ⟨a.1, ha⟩ = _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [swapM, Matrix.of_apply]`. Establish `key : σ ⟨b.1, hb⟩ = ⟨a.1, ha⟩ ↔ b = tauB h σ a`. Prove the components needed by the constructor for the conclusion. Introduce `e`. Apply `Fin.ext` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[tauB_val h σ a ha, ← e, hσ]`. Introduce `e`. Establish `e2 : (⟨b.1, hb⟩ : Fin n) = σ ⟨a.1, ha⟩` using `Fin.ext (by show b.1 = (σ ⟨a.1, ha⟩).1`. Rewrite using `[← tauB_val h σ a ha, e])`. Rewrite using `[e2, hσ]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hk : b = tauB h σ a`. Rewrite using `[if_pos hk, if_pos (key.mpr hk)]`. Rewrite using `[if_neg hk, if_neg (fun e => hk (key.mp e))]`. Rewrite using `[dif_pos hb, dif_neg ha, tauB_of_not h σ a ha, if_neg (fun e : b = a => ha (e ▸ hb))]`. Establish `hne : b ≠ tauB h σ a`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `e`. Apply `hb` to reduce the goal to its premises. Rewrite using `[e, tauB_val h σ a ha]`. Conclude with `(σ _).isLt`. Rewrite using `[dif_neg hb, if_pos ha, if_neg hne]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hab : b = a` using `Fin.ext (by omega)`. Rewrite using `[dif_neg hb, if_neg ha, tauB_of_not h σ a ha, if_pos hab]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem swap_entry_B {n N : ℕ} (h : n + 1 = N) (σ : Equiv.Perm (Fin n)) (hσ : ∀ j, σ (σ j) = j) (a b : Fin N) :
     ((embGL ℂ n N h (swapGL σ hσ) : GL (Fin N) ℂ) : Matrix (Fin N) (Fin N) ℂ) b a =
@@ -105,9 +105,9 @@ theorem swap_entry_B {n N : ℕ} (h : n + 1 = N) (σ : Equiv.Perm (Fin n)) (hσ 
     rw [dif_neg hb, if_neg ha, tauB_of_not h σ a ha, if_pos hab]
 
 /- English proof (translation)
-Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `v`. Rewrite using `[rowAct_X_B, rename_X]`. Rewrite using `[Finset.sum_eq_single (tauB h σ v.1)]`. Rewrite using `[Matrix.transpose_apply, swap_entry_B, if_pos rfl, map_one, one_mul]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `b _ hb`. Rewrite using `[Matrix.transpose_apply, swap_entry_B, if_neg hb, map_zero, zero_mul]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem rowAct_swap_B {n N : ℕ} (h : n + 1 = N) (σ : Equiv.Perm (Fin n)) (hσ : ∀ j, σ (σ j) = j) :
     Formalism.GradedWeylDivisibility.rowAct ℂ (n := N)
@@ -123,11 +123,11 @@ theorem rowAct_swap_B {n N : ℕ} (h : n + 1 = N) (σ : Equiv.Perm (Fin n)) (hσ
   · simp
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Distinguish the cases in `ha : v.1.1 < n`. Establish `h2 : (tauB h σ v.1).1 < n` using `by rw [tauB_val h σ _ ha]; exact (σ _).isLt dsimp only [wnB]`. Rewrite using `[dif_pos h2, dif_pos ha]`. Establish `e : (⟨(tauB h σ v.1).1, h2⟩ : Fin n) = σ ⟨v.1.1, ha⟩` using `Fin.ext (tauB_val h σ _ ha)`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, Pi.single_apply, Pi.single_apply]`. Distinguish the cases in `hj : σ j = ⟨v.1.1, ha⟩`. Rewrite using `[if_pos hj, if_pos (by rw [← hj, hσ])]`. Rewrite using `[if_neg hj, if_neg (fun e => hj (by rw [e, hσ]))]`. Establish `h2 : ¬ (tauB h σ v.1).1 < n` using `by rw [tauB_of_not h σ _ ha]; exact ha dsimp only [wnB]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_neg h2, dif_neg ha]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem wnB_tau {n N : ℕ} (h : n + 1 = N) (σ : Equiv.Perm (Fin n)) (hσ : ∀ j, σ (σ j) = j)
     (v : Fin N × Fin N) : wnB n N (tauB h σ v.1, v.2) = fun j => wnB n N v (σ j) := by
@@ -147,7 +147,7 @@ theorem wnB_tau {n N : ℕ} (h : n + 1 = N) (σ : Equiv.Perm (Fin n)) (hσ : ∀
     rfl
 
 /- English proof (translation)
-Rewrite using `[Finsupp.weight_apply, Finsupp.sum_mapDomain_index (h := fun i (c : ℕ) => c • wnB n N i) (fun _ => zero_smul _ _) (fun _ _ _ => add_smul _ _ _)]`. Use function extensionality and compare the values at `j`. Rewrite using `[Finsupp.weight_apply, Finsupp.sum, Finsupp.sum, Finset.sum_apply, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations. Simplify using `only [Pi.smul_apply, wnB_tau h σ hσ]`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem weight_tau_B {n N : ℕ} (h : n + 1 = N) (σ : Equiv.Perm (Fin n)) (hσ : ∀ j, σ (σ j) = j)
     (u : Fin N × Fin N →₀ ℕ) :
@@ -161,7 +161,7 @@ theorem weight_tau_B {n N : ℕ} (h : n + 1 = N) (σ : Equiv.Perm (Fin n)) (hσ 
   simp only [Pi.smul_apply, wnB_tau h σ hσ]
 
 /- English proof (translation)
-Introduce `d hd`. Take `⟨u, rfl, hu⟩` from `coeff_rename_ne_zero _ _ _ hd`. Rewrite using `[weight_tau_B h σ hσ, hg hu]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem rename_tau_homog_B {n N : ℕ} (h : n + 1 = N) (σ : Equiv.Perm (Fin n)) (hσ : ∀ j, σ (σ j) = j)
     (g : MvPolynomial (Fin N × Fin N) ℂ) (m : Fin n → ℕ) (hg : IsWeightedHomogeneous (wnB n N) g m) :
@@ -172,9 +172,9 @@ theorem rename_tau_homog_B {n N : ℕ} (h : n + 1 = N) (σ : Equiv.Perm (Fin n))
   rw [weight_tau_B h σ hσ, hg hu]
 
 /- English proof (translation)
-Apply `rename_injective` to reduce the goal to its premises. Introduce `v w e`. Establish `e1` using `congrArg Prod.fst e`. Establish `e2` using `congrArg Prod.snd e`. Simplify using `only at e1 e2`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e3 : v.1 = w.1`. Rewrite using `[← tauB_invol h σ hσ v.1, e1, tauB_invol h σ hσ w.1]`. Conclude with `Prod.ext e3 e2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rename_tau_inj_B {n N : ℕ} (h : n + 1 = N) (σ : Equiv.Perm (Fin n)) (hσ : ∀ j, σ (σ j) = j) :
     Function.Injective (rename (R := ℂ) (fun v : Fin N × Fin N => (tauB h σ v.1, v.2))) := by
@@ -188,9 +188,9 @@ theorem rename_tau_inj_B {n N : ℕ} (h : n + 1 = N) (σ : Equiv.Perm (Fin n)) (
   exact Prod.ext e3 e2
 
 /- English proof (translation)
-Establish `h1` using `hW (swapGL σ hσ) g hg`. Unfold `sqAct at h1`. Rewrite `h1` using `[rowAct_swap_B]`. Establish `hu : detPow ℂ N (embGL ℂ n N h (swapGL σ hσ)) lam.detShift ≠ 0` using `Units.ne_zero _`. Use `W.smul_mem (detPow ℂ N (embGL ℂ n N h (swapGL σ hσ)) lam.detShift)⁻¹ h1` as an intermediate fact.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[smul_smul, inv_mul_cancel₀ hu, one_smul]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem swap_mem_B {n N : ℕ} (h : n + 1 = N) (lam : DomWeight N) (W : Submodule ℂ (MvPolynomial (Fin N × Fin N) ℂ))
     (hW : IsStable h lam W) (σ : Equiv.Perm (Fin n)) (hσ : ∀ j, σ (σ j) = j) (g : MvPolynomial (Fin N × Fin N) ℂ)
@@ -203,13 +203,13 @@ theorem swap_mem_B {n N : ℕ} (h : n + 1 = N) (lam : DomWeight N) (W : Submodul
   rwa [smul_smul, inv_mul_cancel₀ hu, one_smul] at this
 
 /- English proof (translation)
-Use `set a : Fin n := ⟨i, by omega⟩ with ha`. Use `set b : Fin n := ⟨i + 1, hi⟩ with hb`. Establish `hab : a ≠ b`. Introduce `e`. Use `congrArg Fin.val e` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[ha, hb] at this`. Establish `split : ∀ f : Fin n → ℕ, ∑ j, f j = f a + f b + ∑ j ∈ (Finset.univ.erase a).erase b, f j`. Introduce `f`. Rewrite using `[← Finset.add_sum_erase _ _ (Finset.mem_univ a), ← Finset.add_sum_erase _ _ (Finset.mem_erase.mpr ⟨Ne.symm hab, Finset.mem_univ b⟩)]`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[PsiB_apply, PsiB_apply, split, split]`. Establish `hrest : ∑ j ∈ (Finset.univ.erase a).erase b, (n - j.1) * m (Equiv.swap a b j) = ∑ j ∈ (Finset.univ.erase a).erase b, (n - j.1) * m j`. Use `Finset.sum_congr rfl fun j hj => ?_` and prove the remaining obligations. Establish `hjb` using `Finset.ne_of_mem_erase hj`. Establish `hja` using `Finset.ne_of_mem_erase (Finset.mem_of_mem_erase hj)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Equiv.swap_apply_of_ne_of_ne hja hjb]`. Rewrite using `[hrest, Equiv.swap_apply_left, Equiv.swap_apply_right]`. Establish `e1 : n - a.1 = (n - b.1) + 1` using `by simp only [ha, hb]; omega`. Rewrite using `[e1]`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem PsiB_swap_B {n : ℕ} (m : Fin n → ℕ) (i : ℕ) (hi : i + 1 < n)
     (hlt : m ⟨i, by omega⟩ < m ⟨i + 1, hi⟩) :
@@ -238,11 +238,9 @@ theorem PsiB_swap_B {n : ℕ} (m : Fin n → ℕ) (i : ℕ) (hi : i + 1 < n)
   nlinarith
 
 /- English proof (translation)
-Set `M : ℕ → ℕ` to `fun k => if hk : k < n then m ⟨k, hk⟩ else 0`. Establish `hM : Antitone M`. Use `antitone_nat_of_succ_le fun k => ?_` and prove the remaining obligations. Distinguish the cases in `hk1 : k + 1 < n`. Simplify using `only [M, dif_pos hk1, dif_pos (show k < n by omega)]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Conclude with `hdom k hk1`. Simplify using `only [M, dif_neg hk1]`. Conclude with `Nat.zero_le _`. Introduce `a b hab`. Use `hM (Fin.le_def.mp hab)` as an intermediate fact.
-
-Simplify using `only [M, dif_pos a.2, dif_pos b.2] at this`. Conclude with `this`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem antitone_of_succ_B {n : ℕ} (m : Fin n → ℕ)
     (hdom : ∀ (i : ℕ) (hi : i + 1 < n), m ⟨i + 1, hi⟩ ≤ m ⟨i, by omega⟩) : Antitone m := by
@@ -260,13 +258,13 @@ theorem antitone_of_succ_B {n : ℕ} (m : Fin n → ℕ)
   exact this
 
 /- English proof (translation)
-Unfold `sqAct`. Rewrite using `[embGL_diag_B, Matrix.diagonal_transpose, rowAct_diag_homog _ _ _ hm, smul_smul]`. Use `congr 1`. Establish `hdet : Matrix.GeneralLinearGroup.det (embGL ℂ n N h (diagGL ℂ n t)) = ∏ j, t j`. Use `ext`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply, embGL_diag_B, Matrix.det_diagonal, Units.coe_prod]`. Substitute `h` using the available equality. Rewrite using `[Fin.prod_univ_castSucc]`. Simplify using `[dB]`. Unfold `detPow`.
+Rewrite the conclusion using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Rewrite using `[hdet]`. Establish `hchi : chiB (fun j => ((t j : ℂˣ) : ℂ)) m = ((∏ j, t j ^ (m j) : ℂˣ) : ℂ)`. Simplify using `[chiB, Units.coe_prod]`. Rewrite using `[hchi, ← Units.val_mul]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [zpow_add, Finset.prod_mul_distrib, zpow_natCast, Finset.prod_zpow]`. Rewrite using `[mul_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem torus_fix_B {n N : ℕ} (h : n + 1 = N) (lam : DomWeight N) (g : MvPolynomial (Fin N × Fin N) ℂ)
     (m : Fin n → ℕ) (hm : IsWeightedHomogeneous (wnB n N) g m) (t : Fin n → ℂˣ) :
@@ -291,27 +289,23 @@ theorem torus_fix_B {n N : ℕ} (h : n + 1 = N) (lam : DomWeight N) (g : MvPolyn
   rw [mul_comm]
 
 /- English proof (translation)
-Introduce `n N h lam W hWle hW hne`. Set `Pk : ℕ → Prop` to `fun k => ∃ g ∈ W, g ≠ 0 ∧ ∃ m, IsWeightedHomogeneous (wnB n N) g m ∧ PsiB n m = k`. Establish `hex : ∃ k, Pk k`. Take `⟨f, hfW, hf0⟩` from `(Submodule.ne_bot_iff W).mp hne`. Assume the negation of the conclusion as `hno`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Use `push_neg at hno`. Apply `hf0` to reduce the goal to its premises. Rewrite using `[← comp_sum_B (wnB n N) f (f.support.image (Finsupp.weight (wnB n N))) (fun e he => Finset.mem_image_of_mem _ he)]`. Use `Finset.sum_eq_zero fun m _ => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hc`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Conclude with `hno _ ⟨_, graded_B h lam W hW f hfW m, hc, m, weightedHomogeneousComponent_isWeightedHomogeneous _ _, rfl⟩`. Take `⟨k0, hk0⟩` from `hex`. Establish `hPb : ∀ k, Pk k → k ≤ n * ∑ s, lam.natW s`. Introduce and unpack `k ⟨g, hgW, hg0, m, hm, rfl⟩`. Conclude with `bound_B lam g (hWle hgW) hg0 m hm`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hK : Pk (Nat.findGreatest Pk (n * ∑ s, lam.natW s))` using `Nat.findGreatest_spec (hPb k0 hk0) hk0`. Establish `hmax : ∀ g ∈ W, g ≠ 0 → ∀ m, IsWeightedHomogeneous (wnB n N) g m → PsiB n m ≤ Nat.findGreatest Pk (n * ∑ s, lam.natW s)`. Introduce `g hgW hg0 m hm`. Conclude with `Nat.le_findGreatest (hPb _ ⟨g, hgW, hg0, m, hm, rfl⟩) ⟨g, hgW, hg0, m, hm, rfl⟩`. Take `⟨g, hgW, hg0, m, hm, hmK⟩` from `hK`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hfix : ∀ u : GL (Fin n) ℂ, (∀ i j, j < i → u i j = 0) → (∀ i, u i i = 1) → sqAct ℂ N lam (embGL ℂ n N h u) g = g`. Introduce `u hl hd`. Take `⟨h1, h2, _⟩` from `embGL_unitri_B h u hl hd`. Establish `hs : sqAct ℂ N lam (embGL ℂ n N h u) g = Formalism.GradedWeylDivisibility.rowAct ℂ (n` using `N) (((embGL ℂ n N h u : GL (Fin N) ℂ) : Matrix (Fin N) (Fin N) ℂ).transpose) g := by`. Unfold `sqAct`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[detPow_unitri_B h u hl hd, one_smul]`. Rewrite using `[hs]`. Establish `hR : Formalism.GradedWeylDivisibility.rowAct ℂ (n` using `N) (((embGL ℂ n N h u : GL (Fin N) ℂ) : Matrix (Fin N) (Fin N) ℂ).transpose) g - g = 0 := by`. Use `high_zero_B h lam W hW _ hmax _ ?_ ?_` and prove the remaining obligations. Use `W.sub_mem ?_ hgW` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite using `[← hs]`. Conclude with `hW u g hgW`. Use `GoodB_homog (Formalism.GradedWeylDivisibility.rowAct ℂ (n := N) (((embGL ℂ n N h u : GL (Fin N) ℂ) : Matrix (Fin N) (Fin N) ℂ).transpose)) (psiB n N) (fun v => GoodB_X_tri _ (fun a => by rw [Matrix.transpose_apply]; exact h1 a) (fun a b hab hne => h2 a b hab (by rwa [Matrix.trans …` as an intermediate fact. Rewrite `this` using `[hmK]`. Then use the resulting hypothesis. Conclude with `sub_eq_zero.mp hR`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdom : ∀ (i : ℕ) (hi : i + 1 < n), m ⟨i + 1, hi⟩ ≤ m ⟨i, by omega⟩`. Introduce `i hi`. Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`. Set `σ` to `Equiv.swap (⟨i, by omega⟩ : Fin n) ⟨i + 1, hi⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hσ : ∀ j, σ (σ j) = j` using `fun j => Equiv.swap_apply_self _ _ j`. Establish `hgt` using `PsiB_swap_B m i hi hlt`. Establish `hle` using `hmax _ (swap_mem_B h lam W hW σ hσ g hgW) (fun e => hg0 (rename_tau_inj_B h σ hσ (by rw [e, map_zero]))) _ (rename_tau_homog_B h σ hσ g m hm)`. Rewrite `hle` using `[← hmK]`. Conclude with `absurd hle (not_le.mpr hgt)`.
-
-Establish `hanti : Antitone m` using `antitone_of_succ_B m hdom`. Set `mu : DomWeight n` to `⟨fun j => (m j : ℤ) + lam.detShift, fun a b hab => by`. Use `hanti hab` as an intermediate fact. Simplify using `only`. Use the proof step `omega⟩`.
-
-Conclude with `⟨g, hgW, hg0, mu, hfix, fun t => torus_fix_B h lam g m hm t⟩`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem highestVec_B : HighestVec := by
   classical

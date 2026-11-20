@@ -38,7 +38,7 @@ def zp (Ω : Type) [Field Ω] [CharZero Ω] (p : ℕ) [Fact p.Prime] : Subring �
     exact ⟨-a, b, hb, by push_cast; rw [neg_div]⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, rfl⟩`. Conclude with `z.2`. Introduce `hx`. Conclude with `⟨⟨x, hx⟩, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_range_zp (Ω : Type) [Field Ω] [CharZero Ω] (p : ℕ) [Fact p.Prime] (x : Ω) :
     x ∈ (algebraMap (zp Ω p) Ω).range ↔ ∃ (a : ℤ) (b : ℕ), ¬ p ∣ b ∧ x = (a : Ω) / (b : Ω) := by
@@ -49,9 +49,9 @@ theorem mem_range_zp (Ω : Type) [Field Ω] [CharZero Ω] (p : ℕ) [Fact p.Prim
     exact ⟨⟨x, hx⟩, rfl⟩
 
 /- English proof (translation)
-Proceed by induction on `hw using Algebra.adjoin_induction with`. Consider the case `mem w hw => exact Algebra.subset_adjoin hw`. Consider the case `algebraMap r`. Take `⟨a, ha⟩` from `hr r`. Rewrite using `[← ha]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Subalgebra.algebraMap_mem _ a`. Consider the case `add _ _ _ _ h1 h2 => exact add_mem h1 h2`. Consider the case `mul _ _ _ _ h1 h2 => exact mul_mem h1 h2`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem mem_adjoin_of_range_le {o o' : Type} [CommRing o] [CommRing o'] {Ω : Type} [Field Ω] [Algebra o Ω]
     [Algebra o' Ω] (hr : ∀ a : o, algebraMap o Ω a ∈ (algebraMap o' Ω).range) (T : Set Ω)
@@ -66,18 +66,16 @@ theorem mem_adjoin_of_range_le {o o' : Type} [CommRing o] [CommRing o'] {Ω : Ty
   | mul _ _ _ _ h1 h2 => exact mul_mem h1 h2
 
 /- English proof (translation)
-The claim follows from `mem_adjoin_of_range_le (o := ℤ) (o' := o) (fun n => ⟨(n : o), by simp⟩) T hw`.
+A detailed English derivation is pending.
 -/
 theorem mem_adjoin_of_int (o : Type) [CommRing o] {Ω : Type} [Field Ω] [Algebra o Ω] (T : Set Ω)
     {w : Ω} (hw : w ∈ Algebra.adjoin ℤ T) : w ∈ Algebra.adjoin o T :=
   mem_adjoin_of_range_le (o := ℤ) (o' := o) (fun n => ⟨(n : o), by simp⟩) T hw
 
 /- English proof (translation)
-Establish `hbm : (b : A) ∉ m`. Introduce `hbm`. Establish `hcop : IsCoprime (b : ℤ) (p : ℤ)` using `Nat.isCoprime_iff_coprime.2 ((Nat.Prime.coprime_iff_not_dvd (Fact.out : p.Prime)).2 hb).symm`. Take `⟨u, v, huv⟩` from `hcop.map (Int.castRingHom A)`. Establish `h1 : (1 : A) ∈ m`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← huv]`. Simplify using `only [eq_intCast, Int.cast_natCast]`. Conclude with `add_mem (m.mul_mem_left _ hbm) (m.mul_mem_left _ hpm)`. Conclude with `(Ideal.IsPrime.ne_top inferInstance) ((Ideal.eq_top_iff_one _).2 h1)`. Use `IsLocalization.map_units O (⟨(b : A), hbm⟩ : m.primeCompl)` as an intermediate fact.
-
-Simplify using `using this`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem isUnit_natCast {A O : Type} [CommRing A] [CommRing O] [Algebra A O]
     (m : Ideal A) [m.IsPrime] [IsLocalization.AtPrime O m] (p : ℕ) [Fact p.Prime] (hpm : (p : A) ∈ m) (b : ℕ)
@@ -96,15 +94,15 @@ theorem isUnit_natCast {A O : Type} [CommRing A] [CommRing O] [Algebra A O]
   simpa using this
 
 /- English proof (translation)
-Proceed by induction on `hw using Algebra.adjoin_induction with`. Consider the case `mem x hx => exact ⟨1, by simpa using Algebra.subset_adjoin hx⟩`. Consider the case `algebraMap r`. Take `⟨⟨a, s⟩, e⟩` from `IsLocalization.surj M r`. Use `⟨s, ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[IsScalarTower.algebraMap_apply A O Ω, ← map_mul, e, ← IsScalarTower.algebraMap_apply]`. Conclude with `hA _`. Consider the case `add x y _ _ hx hy`. Take `⟨b, hx⟩` from `hx`. Take `⟨b', hy⟩` from `hy`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨b * b', ?_⟩` and prove the remaining obligations. Establish `: (x + y) * algebraMap A Ω ((b * b' : M) : A) = x * algebraMap A Ω b * algebraMap A Ω b' + y * algebraMap A Ω b' * algebraMap A Ω b`. Rewrite using `[Submonoid.coe_mul, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `add_mem (mul_mem hx (hA _)) (mul_mem hy (hA _))`. Consider the case `mul x y _ _ hx hy`. Take `⟨b, hx⟩` from `hx`. Take `⟨b', hy⟩` from `hy`. Use `⟨b * b', ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: (x * y) * algebraMap A Ω ((b * b' : M) : A) = x * algebraMap A Ω b * (y * algebraMap A Ω b')`. Rewrite using `[Submonoid.coe_mul, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `mul_mem hx hy`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_denom {o A O Ω : Type} [CommRing o] [CommRing A] [CommRing O] [Field Ω] [Algebra o Ω] [Algebra A Ω]
     [Algebra A O] [Algebra O Ω] [IsScalarTower A O Ω] (M : Submonoid A) [IsLocalization M O] (T : Set Ω)
@@ -136,13 +134,11 @@ theorem exists_denom {o A O Ω : Type} [CommRing o] [CommRing A] [CommRing O] [F
     exact mul_mem hx hy
 
 /- English proof (translation)
-Set `ψ : B →+* B'` to `(algebraMap B Ω).codRestrict _ fun s => hle _ s.2`. Use `letI : Algebra B B' := ψ.toAlgebra`. Set `M : Submonoid B` to `(IsUnit.submonoid B').comap ψ`. Use `haveI hloc : IsLocalization M B' := by`. Use `⟨fun s => s.2, fun a => ?_, fun {r s} h => ⟨1, ?_⟩⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Equip the data with the indicated structure. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hs, ⟨t, ht, e⟩, hws⟩` from `hden a a.2`. Establish `hu : IsUnit (ψ ⟨s, hs⟩)` using `IsUnit.of_mul_eq_one (⟨t, ht⟩ : B') (Subtype.ext e)`. Conclude with `⟨⟨⟨_, hws⟩, ⟨⟨s, hs⟩, hu⟩⟩, Subtype.ext rfl⟩`. Establish `h' : (r : Ω) = s` using `congrArg (fun z : B' => (z : Ω)) h`. Rewrite using `[Subtype.ext h']`.
+Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hM : M ≤ nonZeroDivisors B`. Introduce `s hs`. Use `mem_nonZeroDivisors_of_ne_zero fun h => ?_` and prove the remaining obligations. Establish `hu : IsUnit (ψ s)` using `hs`. Rewrite `hu` using `[h, map_zero]`.
-
-Conclude with `not_isUnit_zero hu`. Conclude with `isIntegrallyClosed_of_isLocalization B' M hM`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isIntegrallyClosed_of_denom {o O Ω : Type} [CommRing o] [CommRing O] [Field Ω] [Algebra o Ω] [Algebra O Ω]
     (B : Subalgebra o Ω) (B' : Subalgebra O Ω) [IsIntegrallyClosed B] (hle : ∀ w ∈ B, w ∈ B')
@@ -166,21 +162,19 @@ theorem isIntegrallyClosed_of_denom {o O Ω : Type} [CommRing o] [CommRing O] [F
   exact isIntegrallyClosed_of_isLocalization B' M hM
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c O₀ _ β Y S Ω _ K _ _ J _ y 𝔐 d hV p _ hpS A _ _ _ m _ hpm O _ _ _ _ _ _ _ c' hc'`. Use `haveI hch : CharZero Ω := GlobalTheory.CompanionTheory.Ar.Num.ConstClosure.charZero_of_isArithVar hV`. Take `⟨-, -, -, -, -, -, hchart⟩` from `GlobalTheory.T.hodge_tate_free_integral_models E H D l Xo c O₀ β Y S Ω K J y 𝔐 p hpS (zp Ω p) (mem_range_zp Ω p)`. Take `⟨-, hic, hfr, -⟩` from `hchart c' hc'`. Take `⟨-, -, -, hconst, -⟩` from `GlobalTheory.T.arith_variety_coord_ideal E H D l Xo c O₀ β Y S Ω K J y 𝔐 d hV A`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `eO` using `PositivityTheory.HtPt.Hcptgen.chartRing_mseg (o := O) y c' hc'`. Establish `eo` using `PositivityTheory.HtPt.Hcptgen.chartRing_mseg (o := zp Ω p) y c' hc'`. Establish `eZ` using `PositivityTheory.HtPt.Hcptgen.chartRing_mseg (o := ℤ) y c' hc'`. Establish `hr : ∀ a : zp Ω p, algebraMap (zp Ω p) Ω a ∈ (algebraMap O Ω).range`. Introduce `a`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨a₁, b, hb, hab⟩` from `(mem_range_zp Ω p _).1 ⟨a, rfl⟩`. Establish `hu` using `isUnit_natCast (O := O) m p hpm b hb`. Use `⟨(a₁ : O) * ↑hu.unit⁻¹, ?_⟩` and prove the remaining obligations. Rewrite using `[hab, map_mul, map_intCast, div_eq_mul_inv]`. Use `congr 1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `eq_inv_of_mul_eq_one_left ?_` and prove the remaining obligations. Rewrite using `[← map_natCast (algebraMap O Ω) b, ← map_mul, hu.val_inv_mul, map_one]`. Establish `hle : ∀ w ∈ chartRing (zp Ω p) (mseg y) c', w ∈ CR O y c'`. Introduce `w hw`. Conclude with `eO.ge (mem_adjoin_of_range_le hr _ (eo.le hw))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hA : ∀ a : A, algebraMap A Ω a ∈ Algebra.adjoin (zp Ω p) (Set.range fun j => mseg y j / mseg y c')`. Introduce `a`. Establish `h1 : algebraMap A Ω a ∈ chartRing ℤ (mseg y) c'` using `hconst c' hc' a`. Rewrite `h1` using `[eZ]`. Conclude with `mem_adjoin_of_int _ _ h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨hch, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `haveI : Algebra.FiniteType O (CR O y c') := by`. Use `(Subalgebra.fg_iff_finiteType _).1 ⟨(Set.finite_range fun j => mseg y j / mseg y c').toFinset, ?_⟩` and prove the remaining obligations. Rewrite using `[Set.Finite.coe_toFinset]`. Conclude with `eO.symm`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Algebra.FiniteType.isNoetherianRing O _`. Use `isIntegrallyClosed_of_denom (chartRing (zp Ω p) (mseg y) c') (CR O y c') hle fun w hw => ?_` and prove the remaining obligations. Take `⟨s, hs⟩` from `exists_denom m.primeCompl _ hA (eO.le hw)`. Establish `hu` using `IsLocalization.map_units O s`. Use `⟨algebraMap A Ω s, eo.ge (hA _), ⟨algebraMap O Ω ↑hu.unit⁻¹, Subalgebra.algebraMap_mem _ _, ?_⟩, eo.ge hs⟩` and prove the remaining obligations.
-
-Rewrite using `[IsScalarTower.algebraMap_apply A O Ω, ← map_mul, hu.mul_val_inv, map_one]`. Use `IsFractionRing.of_field _ _ fun a => ?_` and prove the remaining obligations. Take `⟨g, h, -, e⟩` from `IsFractionRing.div_surjective (A := chartRing (zp Ω p) (mseg y) c') a`. Conclude with `⟨⟨g, hle _ g.2⟩, ⟨h, hle _ h.2⟩, e.symm⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem chart_facts : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O₀ : Type) [CommRing O₀] (β : O₀ →+* c.F) (Y : Model Xo c β) (S : Finset ℕ) (Ω : Type) [Field Ω] (K : Type) [Fintype K] [DecidableEq K] (J : K → Type) [∀ k, Fintype (J k)] (y : (Σ k, J k) → Ω) (𝔐 : HodgeCpt Y S y) (d : ℕ), IsArithVar (mCoordIdeal y) (d + 1) → ∀ (p : ℕ) [Fact p.Prime], p ∈ S → ∀ (A : Type) [CommRing A] [Algebra A Ω] [IsIntegralClosure A ℤ Ω] (m : Ideal A) [m.IsPrime], (p : A) ∈ m → ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Algebra A O] [IsLocalization.AtPrime O m] [Algebra O Ω] [IsScalarTower A O Ω] (c' : ∀ k, J k), mseg y c' ≠ 0 → CharZero Ω ∧ IsNoetherianRing (CR O y c') ∧ IsIntegrallyClosed (CR O y c') ∧ IsFractionRing (CR O y c') Ω := by
   intro E _ _ _ H D l Xo c O₀ _ β Y S Ω _ K _ _ J _ y 𝔐 d hV p _ hpS A _ _ _ m _ hpm O _ _ _ _ _ _ _ c' hc'
@@ -254,11 +248,9 @@ noncomputable def scalePt (P : HTPoint C O c κ N V Ω) (a : Oˣ) : HTPoint C O 
 end Scale
 
 /- English proof (translation)
-Rewrite using `[hv.isUnit_iff_valuation_eq_one]`. Assume the negation of the conclusion as `hne`. Establish `h1 : v (algebraMap O C (a : O)) < 1` using `lt_of_le_of_ne (hv.map_le_one _) hne`. Take `⟨r, s, hrs⟩` from `Nat.Coprime.cast (R := O) h`. Establish `h2 : v (algebraMap O C (r * a + s * p)) < 1`.
+Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[map_add, map_mul, map_mul]`. Apply the tactic sequence `refine Valuation.map_add_lt v ?_ ?_ <;> rw [map_mul]`. Conclude with `mul_lt_one_of_nonneg_of_lt_one_right (hv.map_le_one _) zero_le h1`. Conclude with `mul_lt_one_of_nonneg_of_lt_one_right (hv.map_le_one _) zero_le hp`. Rewrite `h2` using `[hrs, map_one, map_one]`.
-
-Conclude with `lt_irrefl _ h2`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_of_coprime {C O : Type} [Field C] [CommRing O] [Algebra O C] {v : Valuation C NNReal}
     (hv : v.Integers O) {p a : ℕ} (hp : v (algebraMap O C (p : O)) < 1) (h : a.Coprime p) : IsUnit (a : O) := by
@@ -288,13 +280,13 @@ def withE (D : HTChart A K c p R N Ω) (e : (Fin N → 𝓞 E) →+ (Fin N → �
   { D with e := e, alt := alt, adj := adj, e_surj := hs, e_inj := hi }
 
 /- English proof (translation)
-Introduce `𝔮 hq hh hpq`. Take `⟨C, O, i1, i2, i3, i4, i5, v, φ, V, Ω', j1, j2, j3, j4, j5, j6, j7, j8, P, io, hv, hφ, hc, hr⟩` from `h 𝔮 hq hh hpq`. Establish `hp : v (algebraMap O C (p : O)) < 1`. Use `(hc _).1 hpq` as an intermediate fact. Rewrite `this` using `[map_natCast φ]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Take `⟨b, hb⟩` from `isUnit_of_coprime hv hp ha`. Use `⟨C, O, i1, i2, i3, i4, i5, v, φ, V, Ω', j1, j2, j3, j4, j5, j6, j7, j8, scalePt P b, io, hv, hφ, hc, ⟨hr.span_eq, hr.rank_eq, hr.lin, hr.ht_eq, fun x y => ?_⟩⟩` and prove the remaining obligations. Take `⟨z, hz⟩` from `hr.e_eq x y`. Establish `h1 : ((D.e x y).val : O) + (p : O) ^ R * ((a * (e x y).val / p ^ R : ℕ) : O) = (a : O) * ((e x y).val : O)`. Establish `h0 : (D.e x y).val = (a * (e x y).val) % p ^ R`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[he, ← ZMod.val_natCast, Nat.cast_mul, ZMod.natCast_zmod_val]`. Rewrite using `[h0]`. Conclude with `congrArg (Nat.cast : ℕ → O) (Nat.mod_add_div (a * (e x y).val) (p ^ R))` after adjusting the coercions. Use `⟨((a * (e x y).val / p ^ R : ℕ) : O) + a * z, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `algebraMap O C (b : O) • P.e (P.tate x) (P.tate y) = _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hz, smul_eq_mul, ← map_mul, hb]`. Use `congr 1`. Express the relevant statement in the definitionally equal form `(a : O) * (((e x y).val : O) + (p : O) ^ R * z) = _`. Take the linear combination `-h1`.
+Reduce the equality to equality of the corresponding arguments. Express the relevant assertion in an equivalent form by its definition. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem hasTestPoints_of_withE [NeZero (p ^ R)] (D : HTChart A K c p R N Ω)
     (e : (Fin N → 𝓞 E) →+ (Fin N → 𝓞 E) →+ ZMod (p ^ R)) (alt adj hs hi) (a : ℕ) (ha : a.Coprime p)
@@ -335,7 +327,7 @@ noncomputable def relabel {R : Type} [CommRing R] [IsDomain R] {T T' : Type} [Co
       exact ⟨s, x, h⟩ }
 
 /- English proof (translation)
-Establish `hk : f.ker = g.ker` using `Subgroup.ext h`. Use `⟨(QuotientGroup.quotientKerEquivOfSurjective f hf).symm.trans ((QuotientGroup.quotientMulEquivOfEq hk).trans (QuotientGroup.quotientKerEquivOfSurjective g hg)), fun a => ?_⟩` and prove the remaining obligations. Establish `: (QuotientGroup.quotientKerEquivOfSurjective f hf).symm (f a) = (a : A ⧸ f.ker)` using `(MulEquiv.symm_apply_eq _).2 rfl`. Rewrite using `[MulEquiv.trans_apply, this]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem exists_mulEquiv {A B C : Type} [Group A] [Group B] [Group C] (f : A →* B) (g : A →* C)
     (hf : Function.Surjective f) (hg : Function.Surjective g) (h : ∀ a, f a = 1 ↔ g a = 1) :
@@ -349,7 +341,7 @@ theorem exists_mulEquiv {A B C : Type} [Group A] [Group B] [Group C] (f : A →*
   rfl
 
 /- English proof (translation)
-Establish `h0 : ((a : ZMod n) * e).val = (a * e.val) % n`. Rewrite using `[← ZMod.val_natCast, Nat.cast_mul, ZMod.natCast_zmod_val]`. Rewrite using `[h0, ← pow_mul, ← pow_eq_pow_mod _ hg]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem pow_val_mul {G : Type} [Monoid G] (g : G) (n : ℕ) [NeZero n] (hg : g ^ n = 1) (a : ℕ) (e : ZMod n) :
     g ^ ((a : ZMod n) * e).val = (g ^ a) ^ e.val := by
@@ -358,7 +350,7 @@ theorem pow_val_mul {G : Type} [Monoid G] (g : G) (n : ℕ) [NeZero n] (hg : g ^
   rw [h0, ← pow_mul, ← pow_eq_pow_mod _ hg]
 
 /- English proof (translation)
-Establish `h : (((j : ZMod N).val : ℕ) : ℤ) = j % N` using `ZMod.val_intCast j`. Rewrite using `[← zpow_natCast, h, ← zpow_eq_zpow_emod' j hg]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem pow_val_intCast {G : Type} [Group G] (g : G) (N : ℕ) [NeZero N] (hg : g ^ N = 1) (j : ℤ) :
     g ^ (j : ZMod N).val = g ^ j := by
@@ -366,9 +358,7 @@ theorem pow_val_intCast {G : Type} [Group G] (g : G) (N : ℕ) [NeZero N] (hg : 
   rw [← zpow_natCast, h, ← zpow_eq_zpow_emod' j hg]
 
 /- English proof (translation)
-Unfold `IsCp at h`. Use `split_ifs at h ⊢`. Conclude with `hinj (by rw [h, map_ofNat])`. Take `⟨ζ, h1, h2⟩` from `h`. Use `⟨κ + 1, IsPrimitiveRoot.of_map_of_injective (f := algebraMap A Ω) ?_ hinj, by ring⟩` and prove the remaining obligations.
-
-Rewrite using `[map_add, map_one, h2, sub_add_cancel]` and apply the resulting hypothesis.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem cp_descend {A Ω : Type} [CommRing A] [Field Ω] [Algebra A Ω] (hinj : Function.Injective (algebraMap A Ω))
     (p : ℕ) (κ : A) (h : IsCp p (algebraMap A Ω κ)) :
@@ -381,7 +371,7 @@ theorem cp_descend {A Ω : Type} [CommRing A] [Field Ω] [Algebra A Ω] (hinj : 
     rwa [map_add, map_one, h2, sub_add_cancel]
 
 /- English proof (translation)
-Introduce `t`. Use `choose z hz using fun i => Ideal.Quotient.mk_surjective (Multiplicative.toAdd t i)`. Conclude with `⟨Multiplicative.ofAdd z, congrArg Multiplicative.ofAdd (funext hz)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem qhom_surj {E : Type} [Field E] [NumberField E] (N n : ℕ) : Function.Surjective (qhom (E := E) N n) := by
   intro t
@@ -389,9 +379,9 @@ theorem qhom_surj {E : Type} [Field E] [NumberField E] (N n : ℕ) : Function.Su
   exact ⟨Multiplicative.ofAdd z, congrArg Multiplicative.ofAdd (funext hz)⟩
 
 /- English proof (translation)
-Establish `: qhom N n (Multiplicative.ofAdd y) = 1 ↔ ∀ i, Ideal.Quotient.mk (Ideal.span {(n : 𝓞 E)}) (y i) = 0` using `⟨fun h i => congrFun (congrArg Multiplicative.toAdd h) i, fun h => congrArg Multiplicative.ofAdd (funext h)⟩`. Rewrite using `[this]`. Simplify using `only [Ideal.Quotient.eq_zero_iff_mem, Ideal.mem_span_singleton]`. Prove the components needed by the constructor for the conclusion. Introduce `h choose y' hy' using h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨y', funext fun i => by rw [hy' i]; simp⟩`. Introduce and unpack `⟨y', rfl⟩ i`. Conclude with `⟨y' i, by simp⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem qhom_eq_one {E : Type} [Field E] [NumberField E] (N n : ℕ) (y : Fin N → 𝓞 E) :
     qhom N n (Multiplicative.ofAdd y) = 1 ↔ ∃ y', y = n • y' := by
@@ -409,17 +399,15 @@ theorem qhom_eq_one {E : Type} [Field E] [NumberField E] (N n : ℕ) (y : Fin N 
 open PositivityTheory.HtPt.Htat in
 
 /- English proof (translation)
-Establish `hu : ∀ k, ∃ a, ev a = pt (qmk _ (Pi.single k 1))` using `fun k => (hev.onto _).1 ((onto _).2 ⟨_, rfl⟩)`. Use `choose u hu using hu`. Establish `ev0 : ev 0 = 1` using `(hev.ker 0).2 ⟨0, by simp⟩`. Establish `hadd : ∀ x y : Fin (D.p + D.q) → 𝓞 E, pt (qmk _ (x + y)) = pt (qmk _ x) * pt (qmk _ y)` using `fun x y => (pt.comp (qhom _ _)).map_mul (Multiplicative.ofAdd x) (Multiplicative.ofAdd y)`. Establish `hz : ∀ z : Fin (D.p + D.q) → 𝓞 E, ev (∑ k, z k • u k) = pt (qmk _ z)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `z`. Establish `: ∀ s : Finset (Fin (D.p + D.q)), ev (∑ k ∈ s, z k • u k) = pt (qmk _ (∑ k ∈ s, z k • (Pi.single k 1 : Fin (D.p + D.q) → 𝓞 E)))`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_empty, Finset.sum_empty, ev0]`. Conclude with `(pt.comp (qhom _ _)).map_one.symm`. Consider the case `insert k s hk ih => rw [Finset.sum_insert hk, Finset.sum_insert hk, hev.add, hadd, ih, hev.lin, hu, lin]`. Rewrite using `[this, ← pi_eq_sum_univ' z]`. Take `⟨u', hu'⟩` from `pol_lattice E H D p`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨u, ⟨hu'.free, hu'.finite, hu'.alt, hu'.unimod, hu'.adj, hu'.rank, fun x => ?_⟩, hz⟩` and prove the remaining obligations. Take `⟨s, hs⟩` from `(onto (ev x)).1 ((hev.onto _).2 ⟨x, rfl⟩)`. Take `⟨z, rfl⟩` from `qhom_surj _ _ s`. Establish `h1 : ev (∑ k, z.toAdd k • u k) = ev x` using `(hz _).trans hs`. Establish `h2 : ev (x - ∑ k, z.toAdd k • u k) = 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `hev.add (x - ∑ k, z.toAdd k • u k) (∑ k, z.toAdd k • u k)` as an intermediate fact. Rewrite `this` using `[sub_add_cancel, h1]`. Conclude with `(mul_eq_right.1 this.symm)`. Take `⟨b, hb⟩` from `(hev.ker _).1 h2`. Use `⟨z.toAdd, p ^ (m - 1) • b, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[← mul_smul, ← pow_succ', Nat.sub_add_cancel hm, ← hb, add_sub_cancel]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_coords {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} (D : Datum H) {S : Scheme.{0}}
     (t : SAB H S) {Ω : Type} [Field Ω] (ξ : Sp Ω ⟶ S) (p m : ℕ) [Fact p.Prime] (hm : 1 ≤ m)
@@ -460,7 +448,7 @@ theorem exists_coords {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Ho
   rw [← mul_smul, ← pow_succ', Nat.sub_add_cancel hm, ← hb, add_sub_cancel]
 
 /- English proof (translation)
-Rewrite using `[← Category.assoc, ← Tor.spMap_comp]`. Use `congr 2`. Use extensionality with `a`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem spMap_cancel {F Ω k : Type} [Field F] [Field Ω] [Field k] (κ : F ≃+* Ω) (f : F →+* k) {Z : Scheme.{0}}
     (g : Sp F ⟶ Z) : spMap (f.comp κ.symm.toRingHom) ≫ spMap κ.toRingHom ≫ g = spMap f ≫ g := by
@@ -473,33 +461,29 @@ end PositivityTheory.Xgn.SequenceTestFunction
 
 open PositivityTheory.Xgn.SequenceTestFunction PositivityTheory.HtPt.Htat in
 /- English proof (translation)
-Introduce `hF E _ _ _ H D l Xo c O₀ _ β Y S Ω _ K _ _ J _ y 𝔐 d hV hpq p _ hpS _ A _ _ _ m _ hpm O _ _ _ _ _ _ _ w hw G c' hc' P`. Take `⟨h0, hNoe, hIC, hFr⟩` from `chart_facts E H D l Xo c O₀ β Y S Ω K J y 𝔐 d hV p hpS A m hpm O c' hc'`. Take `⟨-, hN, hprop, hT, hrk, -, -⟩` from `GlobalTheory.T.hodge_tate_free_integral_models E H D l Xo c O₀ β Y S Ω K J y 𝔐 p hpS (zp Ω p) (mem_range_zp Ω p)`. Establish `hp` using `(Fact.out : p.Prime)`. Establish `hn : p ^ 𝔐.R p ≠ 0` using `pow_ne_zero _ hp.ne_zero`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : NeZero (p ^ 𝔐.R p) := ⟨hn⟩`. Establish `hR : 1 ≤ 𝔐.R p` using `le_trans (by norm_num) (𝔐.R_ge p hpS)`. Establish `hinj : Function.Injective (algebraMap (CR O y c') Ω)` using `IsFractionRing.injective _ _`. Use `haveI : CharZero (CR O y c') := (algebraMap (CR O y c') Ω).charZero`. Take `⟨ev, ζ₀, hev⟩` from `exists_isParam D 𝔐.t 𝔐.ξ GlobalTheory.T.torsion_points_defined_generic (p ^ 𝔐.R p) (Nat.pos_of_ne_zero hn) hpq hprop (𝔐.tors p hpS) hT`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨u, hu, huz⟩` from `exists_coords D 𝔐.t 𝔐.ξ p (𝔐.R p) hR hev G.t₂.pt G.t₂.onto G.t₂.lin`. Take `⟨π, e, hπ, he, hdec, hsurj, hker, halt, hadj, hes, hei⟩` from `exists_levPairing (HT.cmConj E) p (𝔐.R p) D.EF u hu`. Take `⟨b, hb⟩` from `exists_mulEquiv π (qhom (D.p + D.q) (p ^ 𝔐.R p)) hsurj (qhom_surj _ _) (fun z => (hker z.toAdd).trans (qhom_eq_one _ _ z.toAdd).symm)`. Establish `hζ₀ : IsPrimitiveRoot (ζ₀ : Ω) (p ^ 𝔐.R p)` using `IsPrimitiveRoot.coe_units_iff.2 hev.prim`. Take `⟨a, -, hac, haζ⟩` from `(G.ζ_prim.isPrimitiveRoot_iff).1 hζ₀`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hap : a.Coprime p` using `Nat.Coprime.coprime_dvd_right (dvd_pow_self p (by omega)) hac`. Establish `hee : ∀ x x', G.e x x' = (a : ZMod (p ^ 𝔐.R p)) * e x x'`. Introduce `x x'`. Set `i : Ω →+* AlgebraicClosure Ω` to `algebraMap Ω _`. Set `ψ` to `bcPt 𝔐.ξ i _ rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `cc : (AlgebraicClosure Ω)ˣ` to `Units.map i.toMonoidHom (ζ₀ ^ D.EF (∑ k, x k • u k) (∑ k, x' k • u k))`. Establish `h1` using `(hev.weil (∑ k, x k • u k) (∑ k, x' k • u k) _ i (ψ ≫ ev _) (ψ ≫ ev _) cc rfl rfl).2 rfl`. Establish `h2` using `(G.weil x x' _ i _ _ cc (by rw [← huz]; rfl) (by rw [← huz]; rfl)).1 h1`. Establish `h3 : ((ζ₀ ^ D.EF (∑ k, x k • u k) (∑ k, x' k • u k) : Ωˣ) : Ω) = G.ζ ^ (G.e x x').val` using `i.injective h2`. Rewrite `h3` using `[← pow_val_intCast ζ₀ _ hev.prim.pow_eq_one, ← he, Units.val_pow_eq_pow_val, ← haζ, ← pow_val_mul _ _ G.ζ_prim.pow_eq_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `ZMod.val_injective _ (G.ζ_prim.pow_inj (ZMod.val_lt _) (ZMod.val_lt _) h3.symm)`. Use `hasTestPoints_of_withE P.Dh e halt hadj hes hei a hap (fun x x' => by rw [P.Dh_e, hee]) _ ?_` and prove the remaining obligations. Establish `hζ1 : P.ζ ^ (p ^ 𝔐.R p) = 1` using `Units.ext (hinj (by`. Rewrite using `[Units.val_pow_eq_pow_val, map_pow, Units.val_one, map_one]`. Conclude with `(congrArg (· ^ (p ^ 𝔐.R p)) P.ζ_eq).trans G.ζ_prim.pow_eq_one))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hζa : algebraMap (CR O y c') Ω ((P.ζ ^ a : (CR O y c')ˣ) : CR O y c') = ζ₀`. Rewrite using `[Units.val_pow_eq_pow_val, map_pow, ← haζ]`. Conclude with `congrArg (· ^ a) P.ζ_eq`. Set `κ : FractionRing (CR O y c') ≃+* Ω` to `(FractionRing.algEquiv (CR O y c') Ω).toRingEquiv`. Establish `hκ : ∀ r, κ (algebraMap (CR O y c') _ r) = algebraMap (CR O y c') Ω r` using `(FractionRing.algEquiv (CR O y c') Ω).commutes`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hκf : fracToField (CR O y c') = κ.toRingHom`. Apply `IsLocalization.ringHom_ext (nonZeroDivisors (CR O y c'))` to reduce the goal to its premises. Use extensionality with `r`. Conclude with `(IsFractionRing.lift_algebraMap (g := algebraMap (CR O y c') Ω) hinj r).trans (hκ r).symm`. Establish `hq : spMap κ.symm.toRingHom ≫ 𝔐.ξ = (BT.genPt (CR O y c')).hom ≫ P.x`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← P.x_gen, ← Category.assoc, ← HTTie.spec_comp]`. Use `congr 3`. Use extensionality with `r`. Conclude with `(RingEquiv.symm_apply_eq κ).2 (hκ r).symm`. Use `haveI := P.fin`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `GlobalTheory.T.hodge_tate_chart_integral (PositivityTheory.HtPt.Ge.pointHT_of_fargues hF) E H D p (CR O y c') Ω (𝔐.R p) _ _ u hu 𝔐.X 𝔐.t P.x (relabel P.Γ₂ b) P.i₂ ⟨P.tors₂.isOver, P.tors₂.mul, P.tors₂.inj, P.tors₂.kernel⟩ P.L P.M P.ρ P.act P.j P.j_bc π (P.ζ ^ a) _ ⟨P.isHT.1, P.is …` and prove the remaining obligations. Take `⟨χ, w₀, hχ, hh, s, hs, hHT⟩` from `P.isHT.2.2 z`. Use `⟨χ.comp b.toMonoidHom, w₀, fun z' => ?_, hh, s, fun t => hs (b t), hHT⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `χ (b (π _)) = (P.ζ ^ a) ^ (e z z').val`. Rewrite using `[hb, hχ, P.Dh_e, hee, pow_val_mul _ _ hζ1]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← hrk, P.toLi_bc.finrank_eq]`. Establish `hk : spMap (f.comp κ.symm.toRingHom) ≫ 𝔐.ξ = spMap f ≫ (BT.genPt (CR O y c')).hom ≫ P.x`. Rewrite using `[← hq, Tor.spMap_comp, Category.assoc]`. Take `⟨I, hz, hI⟩` from `hev.tate' D 𝔐.t 𝔐.ξ k _ _ hk`. Use `⟨I, ?_, fun x => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hz, ← hζa, ← hκ]`. Conclude with `congrArg f (κ.symm_apply_apply _)`. Take `⟨z, r, rfl⟩` from `hdec x`. Establish `e1 : HT.lev p (𝔐.R p) (∑ k, z k • u k + (p ^ 𝔐.R p) • r) = π (Multiplicative.ofAdd z)`. Rewrite using `[hπ]`.
-
-Use `congrArg Multiplicative.ofAdd ((Submodule.Quotient.eq _).2 ⟨r, ?_⟩)` and prove the remaining obligations. Conclude with `(add_sub_cancel_left _ _).symm`. Rewrite using `[hI, hev.add, (hev.ker _).2 ⟨r, rfl⟩, _root_.mul_one, huz, P.pts₂, e1, hκf]`. Express the relevant statement in the definitionally equal form `_ = spMap f ≫ (P.Γ₂.pt (b (π _))).left ≫ P.i₂`. Rewrite using `[hb]`.
-
-Conclude with `spMap_cancel κ f _`.
+A detailed English derivation is pending.
 -/
 theorem PositivityTheory.Xgn.sequence_test_function : GlobalTheory.CompanionTheory.Ar.HT.FarguesHodgeTate → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O₀ : Type) [CommRing O₀] (β : O₀ →+* c.F) (Y : Model Xo c β) (S : Finset ℕ) (Ω : Type) [Field Ω] (K : Type) [Fintype K] [DecidableEq K] (J : K → Type) [∀ k, Fintype (J k)] (y : (Σ k, J k) → Ω) (𝔐 : HodgeCpt Y S y) (d : ℕ), IsArithVar (mCoordIdeal y) (d + 1) → 0 < D.p + D.q → ∀ (p : ℕ) [Fact p.Prime], p ∈ S → p ≠ 2 → ∀ (A : Type) [CommRing A] [Algebra A Ω] [IsIntegralClosure A ℤ Ω] (m : Ideal A) [m.IsPrime], (p : A) ∈ m → ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Algebra A O] [IsLocalization.AtPrime O m] [Algebra O Ω] [IsScalarTower A O Ω], ∀ w : O, HT.IsCp p (algebraMap O Ω w) → ∀ (G : GenTors 𝔐 p) (c' : ∀ k, J k), mseg y c' ≠ 0 → ∀ (P : ChartPack G O c'), P.Dh.HasTestPoints (algebraMap O (CR O y c') w) := by
   intro hF E _ _ _ H D l Xo c O₀ _ β Y S Ω _ K _ _ J _ y 𝔐 d hV hpq p _ hpS _ A _ _ _ m _ hpm O _ _ _ _ _ _ _ w hw G c' hc' P

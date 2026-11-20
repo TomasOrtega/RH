@@ -11,13 +11,13 @@ open PositivityTheory.RgUd.Form PositivityTheory.RgUd.Form.U
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Use `set b := B x y with hb`. Establish `hr0 : 0 ≤ (B y y).re` using `hB.2 y`. Establish `hyx : B y x = starRingEnd ℂ b` using `hB.1 x y`. Use `set t : ℝ := 1 / ((B y y).re + 1) with ht`. Establish `ht0 : 0 < t` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key` using `hB.2 (x - ((t : ℂ) * b) • y)`. Establish `e : B (x - ((t : ℂ) * b) • y) (x - ((t : ℂ) * b) • y) = B x x - starRingEnd ℂ ((t : ℂ) * b) * b - ((t : ℂ) * b) * B y x + ((t : ℂ) * b) * starRingEnd ℂ ((t : ℂ) * b) * B y y`. Simplify using `only [map_sub, map_smul, map_smulₛₗ, LinearMap.sub_apply, LinearMap.smul_apply, smul_eq_mul, ← hb]`. Expand and normalize the polynomial expressions, which then agree. Establish `e2 : (B (x - ((t : ℂ) * b) • y) (x - ((t : ℂ) * b) • y)).re = (-2 * t + t ^ 2 * (B y y).re) * Complex.normSq b`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[e, hx, hyx]`. Simplify using `only [map_mul, Complex.conj_ofReal, Complex.sub_re, Complex.add_re, Complex.mul_re, Complex.mul_im, Complex.ofReal_re, Complex.ofReal_im, Complex.conj_re, Complex.conj_im, Complex.zero_re, Complex.normSq_apply]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `key` using `[e2]`. Establish `htr : t * (B y y).re < 1`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite using `[ht, div_mul_eq_mul_div, one_mul, div_lt_one (by linarith)]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hlt : -2 * t + t ^ 2 * (B y y).re < 0` using `by nlinarith`. Establish `hN : Complex.normSq b = 0` using `le_antisymm (by nlinarith [Complex.normSq_nonneg b]) (Complex.normSq_nonneg b)`. Conclude with `Complex.normSq_eq_zero.1 hN`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem psd_left_zero {V : Type} [AddCommGroup V] [Module ℂ V] {B : V →ₗ[ℂ] V →ₗ⋆[ℂ] ℂ} (hB : IsPsd B) {x : V}
     (hx : B x x = 0) (y : V) : B x y = 0 := by
@@ -48,49 +48,45 @@ theorem psd_left_zero {V : Type} [AddCommGroup V] [Module ℂ V] {B : V →ₗ[�
   exact Complex.normSq_eq_zero.1 hN
 
 /- English proof (translation)
-Introduce `ψ _ _ m N h V _ _ π hπ s B hLvl hAtom z c v hz hzv hv`. Take `⟨hpsd, hkill, hmir⟩` from `hLvl`. Use `set lam : ℝ := nabs k z ^ (((m : ℝ) + 1) * s) with hlam`. Establish `hlam0 : 0 < lam` using `Real.rpow_pos_of_pos (nabs_pos k z) _`. Assume the negation of the conclusion as `hcon`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Use `push Not at hcon`. Establish `hzv1 : valuation k (z : k) < 1`. Assume the negation of the conclusion as `hge`. Use `push Not at hge`. Establish `h1` using `(nabs_le_iff (1 : kˣ) z).2 (by simpa using hge)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result.
 
-Establish `h2 : nabs k (1 : kˣ) = 1` using `by simp [nabs]`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨w1, hw1, w2, hw2, hw12⟩` from `Submodule.mem_sup.1 (derKer_le ψ h π hzv)`. Establish `hgv : π (scalAt k (m + 1) N (by omega) z) v = c • v + (w1 + w2)` using `by rw [hw12]; abel`. Establish `hP : ∀ y ∈ Submodule.span ℂ {w | ∃ (x : Fin (m + 1) → k) (u : V), w = π (colEl k m N h x) u - u}, ∃ n : ℕ, ∃ H₀ : AddSubgroup (Fin (m + 1) → k), IsOpen (H₀ : Set (Fin (m + 1) → k)) ∧ ∀ t, n ≤ t → ∀ H T, IsTr (ball m (z⁻¹ ^ t * 1)) H T → H ≤ H₀ → ∑ a ∈ T, π (colEl k m N h a) y = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `y hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨a, u, rfl⟩` from `hx`. Take `⟨n, hn⟩` from `exists_mem_ball m z hzv1 1 a`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨n, stab h π u, isOpen_stab h π hπ u, fun t ht H T hT hH => ?_⟩` and prove the remaining obligations. Establish `hfix : FixH h π H u` using `fun b hb => hH hb`. Establish `ha : a ∈ ball m (z⁻¹ ^ t * 1)` using `ball_pow_mono m z hzv1 1 ht hn`. Simplify using `only [map_sub, Finset.sum_sub_distrib]`. Rewrite using `[← sum_translate hT hfix ha]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [pi_colEl_add, sub_self]`. Consider the case `zero`. Use `⟨0, ⊤, by rw [AddSubgroup.coe_top]; exact isOpen_univ, fun _ _ _ _ _ _ => by simp⟩` and prove the remaining obligations. Consider the case `add x y _ _ hx hy`. Take `⟨n, H₀, hH₀, hx⟩` from `hx`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Take `⟨n', H₀', hH₀', hy⟩` from `hy`. Use `⟨max n n', H₀ ⊓ H₀', by rw [AddSubgroup.coe_inf]; exact hH₀.inter hH₀', fun t ht H T hT hH => ?_⟩` and prove the remaining obligations. Simplify using `only [map_add, Finset.sum_add_distrib]`. Rewrite using `[hx t (le_of_max_le_left ht) H T hT (hH.trans inf_le_left), hy t (le_of_max_le_right ht) H T hT (hH.trans inf_le_right), add_zero]`. Consider the case `smul a x _ hx`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Take `⟨n, H₀, hH₀, hx⟩` from `hx`. Use `⟨n, H₀, hH₀, fun t ht H T hT hH => ?_⟩` and prove the remaining obligations. Simplify using `only [map_smul, ← Finset.smul_sum]`. Rewrite using `[hx t ht H T hT hH, smul_zero]`. Take `⟨n₂, H₂, hH₂, hw2P⟩` from `hP w2 hw2`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `A : ℕ → AddSubgroup (Fin (m + 1) → k)` to `fun t => ball m (z⁻¹ ^ (t + n₂) * 1)`. Establish `hA : ∀ t, IsLat (A t)` using `fun t => isLat_ball m _`. Establish `hAs : ∀ t, scl z (A (t + 1)) = A t`. Introduce `t`. Use `show scl z (ball m (z⁻¹ ^ (t + 1 + n₂) * 1)) = ball m (z⁻¹ ^ (t + n₂) * 1)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[scl_ball]`. Use `congr 1`. Rewrite using `[show t + 1 + n₂ = (t + n₂) + 1 by omega, pow_succ]`. Use `group`. Establish `hR1 : ∀ t, B (avg (1 : AddChar k Circle) h π 0 (A t) (π (scalAt k (m + 1) N (by omega) z) v)) (π (scalAt k (m + 1) N (by omega) z) v) = ((‖c‖ ^ 2 : ℝ) : ℂ) * B (avg (1 : AddChar k Circle) h π 0 (A t) v) v`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `t`. Establish `hopen : IsOpen ((stab h π v ⊓ stab h π w1 ⊓ stab h π w2 ⊓ H₂ : AddSubgroup (Fin (m + 1) → k)) : Set (Fin (m + 1) → k))`. Simplify using `only [AddSubgroup.coe_inf]`. Conclude with `(((isOpen_stab h π hπ v).inter (isOpen_stab h π hπ w1)).inter (isOpen_stab h π hπ w2)).inter hH₂`. Take `⟨H, T, hT, hH⟩` from `exists_tr (hA t) hopen`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `fv : FixH h π H v` using `fun b hb => (hH hb).1.1.1`. Establish `fw1 : FixH h π H w1` using `fun b hb => (hH hb).1.1.2`. Establish `fw2 : FixH h π H w2` using `fun b hb => (hH hb).1.2`. Establish `fw : FixH h π H (w1 + w2)` using `fun b hb => by rw [map_add, fw1 b hb, fw2 b hb]`. Establish `fgv : FixH h π H (π (scalAt k (m + 1) N (by omega) z) v)` using `fun b hb => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hgv, map_add, map_smul, fv b hb, fw b hb]`. Establish `h2 : avgL h π T w2 = 0`. Rewrite using `[avgL_apply, hw2P (t + n₂) (by omega) H T hT (fun b hb => (hH hb).2), smul_zero]`. Establish `h1 : avgL h π T w1 ∈ twKer π (derUnip k N (m + 2)) (lvlChar k ψ N (m + 2))`. Rewrite using `[avgL_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Submodule.smul_mem _ _ (Submodule.sum_mem _ fun b _ => colEl_twKer ψ h π b hw1)`. Establish `hB1 : ∀ y, B (avgL h π T w1) y = 0` using `fun y => hkill _ h1 y`. Establish `hB2 : B (avgL h π T v) (w1 + w2) = 0`. Rewrite using `[B_avgL hmir hT fw, map_add, h2, add_zero, hpsd.1 (avgL h π T w1) v, hB1, map_zero]`. Establish `hQ : avgL h π T (π (scalAt k (m + 1) N (by omega) z) v) = c • avgL h π T v + avgL h π T w1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hgv, map_add, map_smul, map_add, h2, add_zero]`. Establish `hBs : B (c • avgL h π T v + avgL h π T w1) = c • B (avgL h π T v) + B (avgL h π T w1)`. Rewrite using `[map_add, map_smul]`. Rewrite using `[avg_eq hT fgv, avg_eq hT fv, hQ, hgv, hBs, LinearMap.add_apply, hB1, add_zero, LinearMap.smul_apply, map_add, hB2, add_zero, map_smulₛₗ, smul_eq_mul, smul_eq_mul, ← mul_assoc, Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Establish `hR2 : ∀ t, B (avg (1 : AddChar k Circle) h π 0 (A t) (π (scalAt k (m + 1) N (by omega) z) v)) (π (scalAt k (m + 1) N (by omega) z) v) = (lam : ℂ) * B (avg (1 : AddChar k Circle) h π 0 (A (t + 1)) v) v`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `t`. Take `⟨H, T, hT, hH⟩` from `exists_tr (hA (t + 1)) (isOpen_stab h π hπ v)`. Establish `fv : FixH h π H v` using `fun b hb => hH hb`. Rewrite using `[← hAs t, avg_eq (hT.smul z) (fv.smul z), avgL_smul, avg_eq hT fv]`. Conclude with `B_scalAt h hmir z _ _`.
+Proceed by induction. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hrec : ∀ t, (lam : ℂ) * B (avg (1 : AddChar k Circle) h π 0 (A (t + 1)) v) v = ((‖c‖ ^ 2 : ℝ) : ℂ) * B (avg (1 : AddChar k Circle) h π 0 (A t) v) v` using `fun t => (hR2 t).symm.trans (hR1 t)`. Establish `hgrow : ∀ t, ‖B (avg (1 : AddChar k Circle) h π 0 (A 0) v) v‖ ≤ ‖B (avg (1 : AddChar k Circle) h π 0 (A t) v) v‖`. Introduce `t`. Proceed by induction on `t with`. Consider the case `zero => exact le_rfl`.
+Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Consider the case `succ t ih`. Use `ih.trans ?_` and prove the remaining obligations. Establish `e` using `congrArg norm (hrec t)`. Rewrite `e` using `[norm_mul, norm_mul, Complex.norm_real, Complex.norm_real, Real.norm_of_nonneg hlam0.le, Real.norm_of_nonneg (by positivity)]`. Use polynomial arithmetic with `[norm_nonneg (B (avg (1 : AddChar k Circle) h π 0 (A t) v) v), norm_nonneg (B (avg (1 : AddChar k Circle) h π 0 (A (t + 1)) v) v), mul_nonneg (sub_nonneg.2 hcon) (norm_nonneg (B (avg (1 : AddChar k Circle) h π 0 (A t) v) v))]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `htend : Filter.Tendsto (fun t => B (avg (1 : AddChar k Circle) h π 0 (A t) v) v) Filter.atTop (nhds 0)`. Use `(hAtom v v).comp ((tendsto_ball m z hzv1 1).comp (Filter.tendsto_add_atTop_nat n₂))` as an intermediate fact. Conclude with `this`. Establish `ha0 : B (avg (1 : AddChar k Circle) h π 0 (A 0) v) v = 0`. Establish `hn` using `htend.norm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hn` using `[norm_zero]`. Conclude with `norm_le_zero_iff.1 (ge_of_tendsto' hn hgrow)`. Take `⟨H, T, hT, hH⟩` from `exists_tr (hA 0) (isOpen_stab h π hπ v)`. Establish `fv : FixH h π H v` using `fun b hb => hH hb`. Rewrite `ha0` using `[avg_eq hT fv]`.
-
-Establish `finv : ∀ b ∈ A 0, π (colEl k m N h b) (avgL h π T v) = avgL h π T v` using `fun b hb => colEl_avgL hT fv hb`. Establish `fQ : FixH h π H (avgL h π T v)` using `fun b hb => finv b (hT.1 hb)`. Establish `hQQ : B (avgL h π T v) (avgL h π T v) = 0`. Establish `e1` using `B_avgL hmir hT (v := v) fQ`. Rewrite `e1` using `[avgL_of_inv hT finv]`.
-
-Rewrite using `[e1, hpsd.1 (avgL h π T v) v, ha0, map_zero]`. Establish `hker : avgL h π T v ∈ LinearMap.ker B` using `LinearMap.mem_ker.2 (LinearMap.ext fun y => psd_left_zero hpsd hQQ y)`. Conclude with `hv (Submodule.mem_sup.2 ⟨v - avgL h π T v, avgL_sub_mem ψ hT v, avgL h π T v, hker, sub_add_cancel v _⟩)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem uShell : UShell k := by
   intro ψ _ _ m N h V _ _ π hπ s B hLvl hAtom z c v hz hzv hv

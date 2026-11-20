@@ -11,18 +11,18 @@ namespace GlobalTheory.PZ.LTModel
 def Kb : FinExt 2 := ⟨⊥, inferInstance⟩
 
 /- English proof (translation)
-Establish `: K0 Kb = ⊥` using `by simp [K0, Kb]`. Rewrite using `[resCard, this, IntermediateField.finrank_bot, pow_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem resCard_Kb : resCard Kb = 2 := by
   have : K0 Kb = ⊥ := by simp [K0, Kb]
   rw [resCard, this, IntermediateField.finrank_bot, pow_one]
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (algebraMap ℤ_[2] ↥Kb.1)`. Rewrite using `[IsScalarTower.algebraMap_eq ℤ_[2] ℚ_[2] ↥Kb.1]`. Conclude with `(algebraMap ℚ_[2] ↥Kb.1).injective.comp (IsFractionRing.injective ℤ_[2] ℚ_[2])`. Prove the components needed by the constructor for the conclusion. Introduce `a b h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components.
 
-Conclude with `hinj (congrArg Subtype.val h)`. Introduce and unpack `⟨⟨x, hx⟩, hi⟩`. Take `⟨y, rfl⟩` from `IntermediateField.mem_bot.1 hx`. Establish `hi' : IsIntegral ℤ_[2] (algebraMap ℚ_[2] ↥Kb.1 y)` using `hi`. Establish `hy : IsIntegral ℤ_[2] y` using `(isIntegral_algebraMap_iff (algebraMap ℚ_[2] ↥Kb.1).injective).1 hi'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨a, rfl⟩` from `IsIntegrallyClosed.isIntegral_iff.1 hy`. Conclude with `⟨a, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem bij : Function.Bijective (algebraMap ℤ_[2] ↥(OL Kb)) := by
   have hinj : Function.Injective (algebraMap ℤ_[2] ↥Kb.1) := by
@@ -39,7 +39,7 @@ theorem bij : Function.Bijective (algebraMap ℤ_[2] ↥(OL Kb)) := by
     exact ⟨a, rfl⟩
 
 /- English proof (translation)
-Establish `h` using `(MulEquiv.irreducible_iff (x := ((2 : ℕ) : ℤ_[2])) (RingEquiv.ofBijective (algebraMap ℤ_[2] ↥(OL Kb)) bij).toMulEquiv).2 (PadicInt.irreducible_p (p := 2))`. Establish `e : (RingEquiv.ofBijective (algebraMap ℤ_[2] ↥(OL Kb)) bij).toMulEquiv ((2 : ℕ) : ℤ_[2]) = 2` using `map_natCast (algebraMap ℤ_[2] ↥(OL Kb)) 2`. Rewrite `h` using `[e]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem irr : Irreducible (2 : ↥(OL Kb)) := by
   have h := (MulEquiv.irreducible_iff (x := ((2 : ℕ) : ℤ_[2]))
@@ -49,7 +49,7 @@ theorem irr : Irreducible (2 : ↥(OL Kb)) := by
   rwa [e] at h
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.Cyc.cyc, map_sub, PowerSeries.coeff_map, PowerSeries.binomialSeries_coeff, PowerSeries.coeff_one, if_neg hk, sub_zero, smul_eq_mul, mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem coeff_cyc (k : ℕ) (hk : k ≠ 0) (c : ℤ_[2]) :
     PowerSeries.coeff k (GlobalTheory.Cyc.cyc 2 ↥(OL Kb) c) = algebraMap ℤ_[2] ↥(OL Kb) (Ring.choose c k) := by
@@ -57,9 +57,9 @@ theorem coeff_cyc (k : ℕ) (hk : k ≠ 0) (c : ℤ_[2]) :
     if_neg hk, sub_zero, smul_eq_mul, mul_one]
 
 /- English proof (translation)
-Establish `h` using `GlobalTheory.Cyc.Series.phi_act 2 O c PowerSeries.X`. Rewrite `h` using `[GlobalTheory.Cyc.Series.phi_X, GlobalTheory.Cyc.Series.act_X, map_sub, map_pow, map_add, map_one, GlobalTheory.Cyc.Series.act_X]`. Establish `e : (PowerSeries.C 2 * PowerSeries.X + PowerSeries.X ^ 2 : PowerSeries O) = GlobalTheory.Cyc.cyc 2 O ((2 : ℕ) : ℤ_[2])`. Rewrite using `[GlobalTheory.Cyc.Series.cyc_natCast, map_ofNat]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[e, map_ofNat, ← PowerSeries.coe_substAlgHom (PowerSeries.HasSubst.of_constantCoeff_zero' (GlobalTheory.Cyc.cyc_const 2 O _))]`. Express the relevant statement in the definitionally equal form `_ = GlobalTheory.Cyc.phi 2 O _`. Rewrite using `[h]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem commGroup_mul_eq_mul_mul_div (O : Type) [CommRing O] [Algebra ℤ_[2] O] (c : ℤ_[2]) :
     PowerSeries.C 2 * GlobalTheory.Cyc.cyc 2 O c + GlobalTheory.Cyc.cyc 2 O c ^ 2 =
@@ -75,7 +75,7 @@ theorem commGroup_mul_eq_mul_mul_div (O : Type) [CommRing O] [Algebra ℤ_[2] O]
   rw [h]; ring
 
 /- English proof (translation)
-Use `⟨GlobalTheory.Cyc.cyc_const _ _ _, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[coeff_cyc 1 one_ne_zero, Ring.choose_one_right]`. Rewrite using `[ltSeries, resCard_Kb]`. Conclude with `commGroup_mul_eq_mul_mul_div _ c`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem endo (c : ℤ_[2]) : IsLTEndo Kb 2 (algebraMap ℤ_[2] ↥(OL Kb) c) (GlobalTheory.Cyc.cyc 2 ↥(OL Kb) c) := by
   refine ⟨GlobalTheory.Cyc.cyc_const _ _ _, ?_, ?_⟩
@@ -87,13 +87,11 @@ section
 variable {R : Type} [NormedField R] [NormedAlgebra ℚ_[2] R] [IsUltrametricDist R]
 
 /- English proof (translation)
-Proceed by induction on `n generalizing ζ with`. Consider the case `zero => simp at h`. Simplify using `[h]`. Consider the case `succ n ih`. Establish `h2` using `ih (ζ := ζ ^ 2) (by rw [← pow_mul, ← pow_succ']; exact h)`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Establish `e : (ζ - 1) ^ 2 = (ζ ^ 2 - 1) + (-2) * (ζ - 1)` using `by ring`. Establish `h22 : ‖(-2 : R)‖ < 1`. Rewrite using `[norm_neg, show (2 : R) = algebraMap ℚ_[2] R ((2 : ℕ) : ℚ_[2]) from (map_natCast (algebraMap ℚ_[2] R) 2).symm, norm_algebraMap']`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Padic.norm_p_lt_one`. Establish `h3` using `IsUltrametricDist.norm_add_le_max (ζ ^ 2 - 1) ((-2) * (ζ - 1))`. Rewrite `h3` using `[← e, norm_pow, norm_mul]`. Break down `le_max_iff.1 h3 with h4 | h4` into its components or cases. Use the polynomial consequences of the given equalities and inequalities.
-
-Use polynomial arithmetic with `[norm_nonneg (-2 : R)]`.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Use the polynomial consequences of the given equalities and inequalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem norm_lt {ζ : R} {n : ℕ} (h : ζ ^ 2 ^ n = 1) : ‖ζ - 1‖ < 1 := by
   induction n generalizing ζ with
@@ -113,17 +111,17 @@ theorem norm_lt {ζ : R} {n : ℕ} (h : ζ ^ 2 ^ n = 1) : ‖ζ - 1‖ < 1 := by
     · nlinarith [norm_nonneg (-2 : R)]
 
 /- English proof (translation)
-Use `letI : Algebra ℤ_[2] R := ((algebraMap ℚ_[2] R).comp PadicInt.Coe.ringHom).toAlgebra`. Use `haveI : IsBoundedSMul ℤ_[2] R := IsBoundedSMul.of_norm_smul_le fun a x => by`. Rewrite using `[Algebra.smul_def, norm_mul]`. Express the relevant statement in the definitionally equal form `‖algebraMap ℚ_[2] R (a : ℚ_[2])‖ * _ ≤ _`. Rewrite using `[norm_algebraMap']`.
+Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `hr : Tendsto (fun k : ℕ => (ζ - 1) ^ k) atTop (𝓝 0)` using `tendsto_pow_atTop_nhds_zero_of_norm_lt_one (norm_lt h)`. Set `κ` to `PadicInt.addChar_of_value_at_one (p := 2) (ζ - 1) hr`. Establish `hκ : Continuous κ` using `PadicInt.continuous_addChar_of_value_at_one hr`. Establish `h1 : κ 1 = ζ` using `by simp [κ]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn : ∀ m : ℕ, κ m = ζ ^ m` using `fun m => by`. Rewrite using `[← nsmul_one, AddChar.map_nsmul_eq_pow, h1]`. Establish `hk : ∀ b : ℤ_[2], κ (2 ^ n * b) = 1` using `fun b => congr_fun (PadicInt.denseRange_natCast.equalizer (g := fun b => κ (2 ^ n * b)) (h := fun _ => 1) (by fun_prop) continuous_const (funext fun m => by`. Use `hn (2 ^ n * m)` as an intermediate fact. Move the coercions through the operations in `at this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules.
 
-Simplify using `only [Function.comp]`. Rewrite using `[this, pow_mul, h, one_pow])) b`. Establish `hm : c - ((PadicInt.toZModPow n c).val : ℤ_[2]) ∈ Ideal.span {((2 : ℕ) : ℤ_[2]) ^ n}`. Rewrite using `[← PadicInt.ker_toZModPow, RingHom.mem_ker, map_sub, map_natCast, ZMod.natCast_zmod_val, sub_self]`. Take `⟨b, hb⟩` from `Ideal.mem_span_singleton.1 hm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hc : κ c = ζ ^ (PadicInt.toZModPow n c).val`. Establish `: c = ((PadicInt.toZModPow n c).val : ℤ_[2]) + 2 ^ n * b`. Move the coercions through the operations in `at hb`. Take the linear combination `hb`. Use `conv_lhs => rw [this]`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[AddChar.map_add_eq_mul, hk, hn, mul_one]`. Rewrite using `[← hc]`. Establish `hs` using `ContinuousMap.hasSum_apply (PadicInt.hasSum_mahlerSeries (p := 2) hr) c`. Simplify using `only [PadicInt.mahlerTerm_apply, mahler_apply, Algebra.smul_def] at hs`. Conclude with `hs`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hasSum_C [CompleteSpace R] {ζ : R} {n : ℕ} (h : ζ ^ 2 ^ n = 1) (c : ℤ_[2]) :
     HasSum (fun k => algebraMap ℚ_[2] R ((Ring.choose c k : ℤ_[2]) : ℚ_[2]) * (ζ - 1) ^ k)
@@ -163,9 +161,9 @@ theorem hasSum_C [CompleteSpace R] {ζ : R} {n : ℕ} (h : ζ ^ 2 ^ n = 1) (c : 
 end
 
 /- English proof (translation)
-Set `f : Om 2 →+* ℂ_[2]` to `algebraMap (Om 2) ℂ_[2]`. Apply the tactic sequence `have hf : Isometry f := AddMonoidHomClass.isometry_of_norm f (PadicComplex.norm_extends 2)`. Establish `h' : (f ζ) ^ 2 ^ n = 1` using `by rw [← map_pow, h, map_one]`. Establish `hs` using `hasSum_C h' c`. Use `(hf.isEmbedding.isInducing.hasSum_iff _ _).1 ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_pow]`. Use `hs using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `k`. Simplify using `only [Function.comp, map_mul, map_pow, map_sub, map_one]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem hasSum_Om {ζ : Om 2} {n : ℕ} (h : ζ ^ 2 ^ n = 1) (c : ℤ_[2]) :
     HasSum (fun k => algebraMap ℚ_[2] (Om 2) ((Ring.choose c k : ℤ_[2]) : ℚ_[2]) * (ζ - 1) ^ k)
@@ -182,9 +180,9 @@ theorem hasSum_Om {ζ : Om 2} {n : ℕ} (h : ζ ^ 2 ^ n = 1) (c : ℤ_[2]) :
   rfl
 
 /- English proof (translation)
-Use `choose s hs using fun x : Om 2 => IsAlgClosed.exists_pow_nat_eq x (n := 2) two_pos`. Use `⟨fun n => Nat.rec 1 (fun m _ => s^[m] (-1)) n, rfl, rfl, fun n => ?_⟩` and prove the remaining obligations. Consider the cases of `n with`. Consider the case `zero => simp`. Consider the case `succ n`.
+Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `s^[n + 1] (-1) ^ 2 = s^[n] (-1)`. Rewrite using `[Function.iterate_succ_apply', hs]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_roots : ∃ ζ : ℕ → Om 2, ζ 0 = 1 ∧ ζ 1 = -1 ∧ ∀ n, ζ (n + 1) ^ 2 = ζ n := by
   choose s hs using fun x : Om 2 => IsAlgClosed.exists_pow_nat_eq x (n := 2) two_pos
@@ -201,15 +199,15 @@ def cycZ : ↥(GK Kb) →* ℤ_[2]ˣ :=
 def cycK : ↥(GK Kb) →* (↥Kb.1)ˣ := (Units.map (algebraMap ℤ_[2] ↥Kb.1).toMonoidHom).comp cycZ
 
 /- English proof (translation)
-Take `⟨ζ, h0, h1, hs⟩` from `exists_roots`. Establish `hp : ∀ n, ζ n ^ 2 ^ n = 1` using `fun n => by`. Proceed by induction on `n with`. Consider the case `zero => simp [h0]`. Consider the case `succ n ih => rw [pow_succ', pow_mul, hs, ih]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Use `⟨fun n => ζ n - 1, irr, by simp [h0], by simp only [h1]; norm_num, fun n => ?_, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[resCard_Kb]`. Express the relevant statement in the definitionally equal form `(2 : Om 2) * (ζ (n + 1) - 1) + (ζ (n + 1) - 1) ^ 2 = ζ n - 1`. Rewrite using `[← hs n]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Use `⟨algebraMap ℤ_[2] ↥(OL Kb) (cycZ g : ℤ_[2]), rfl, _, endo _, fun n => ?_⟩` and prove the remaining obligations. Establish `h` using `hasSum_Om (hp n) (cycZ g : ℤ_[2])`. Establish `hg` using `cyclotomicCharacter.spec 2 (MulSemiringAction.toRingAut (GQ 2) (Om 2) (g : GQ 2)) (ζ n) (hp n)`. Establish `hg' : (g : GQ 2) (ζ n) = ζ n ^ (PadicInt.toZModPow n (cycZ g : ℤ_[2])).val` using `hg`. Rewrite using `[map_sub, map_one, hg']`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2` using `h.sub (hasSum_ite_eq (0 : ℕ) (1 : Om 2))`. Use `(congrArg (fun u : ℕ → Om 2 => HasSum u _) (funext fun k => ?_)).mpr h2` and prove the remaining obligations. Distinguish the cases in `hk : k = 0`. Substitute `hk` using the available equality. Rewrite using `[PowerSeries.coeff_zero_eq_constantCoeff_apply, GlobalTheory.Cyc.cyc_const]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[coeff_cyc k hk, if_neg hk, sub_zero]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ltData : ∃ z, LTData Kb cycK 2 z := by
   obtain ⟨ζ, h0, h1, hs⟩ := exists_roots
@@ -240,7 +238,7 @@ section General
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Use `haveI := K.2`. Use `haveI : FiniteDimensional ℚ_[l] ↥(K0 K) := FiniteDimensional.of_injective (IntermediateField.inclusion (inf_le_left : K0 K ≤ K.1)).toLinearMap (IntermediateField.inclusion_injective (inf_le_left : K0 K ≤ K.1))`. Conclude with `(Fact.out : l.Prime).two_le.trans (Nat.le_self_pow Module.finrank_pos.ne' l)`.
+A detailed English derivation is pending.
 -/
 theorem two_le_resCard (K : FinExt l) : 2 ≤ resCard K := by
   haveI := K.2
@@ -250,23 +248,23 @@ theorem two_le_resCard (K : FinExt l) : 2 ≤ resCard K := by
   exact (Fact.out : l.Prime).two_le.trans (Nat.le_self_pow Module.finrank_pos.ne' l)
 
 /- English proof (translation)
-Take `⟨p, rfl⟩ : ∃ p, q = p + 2` from `⟨q - 2, by omega⟩`. Use `set e : PowerSeries O := PowerSeries.C π * PowerSeries.X + PowerSeries.X ^ (p + 2) with he`. Establish `hs : PowerSeries.HasSubst e` using `PowerSeries.HasSubst.of_constantCoeff_zero' (by simp [he])`. Set `F : PowerSeries O →ₐ[O] PowerSeries O` to `PowerSeries.substAlgHom hs`. Establish `hF : ∀ f : PowerSeries O, PowerSeries.subst e f = F f` using `fun f => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← PowerSeries.coe_substAlgHom hs]`. Establish `hX : F PowerSeries.X = PowerSeries.X * (PowerSeries.C π + PowerSeries.X ^ (p + 1))`. Rewrite using `[show F PowerSeries.X = e from PowerSeries.substAlgHom_X hs, he]`. Expand and normalize the polynomial expressions, which then agree. Establish `hC : ∀ a : O, F (PowerSeries.C a) = PowerSeries.C a` using `fun a => F.commutes a`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h`, `h'` using `[hF]`. Establish `key : ∀ k : ℕ, PowerSeries.X ^ (k + 2) ∣ φ - ψ`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[PowerSeries.X_pow_dvd_iff]`. Introduce `m hm`. Use `interval_cases m`. Simplify using `[h0, h0']`. Simplify using `[h1]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Consider the case `succ k ih`. Take `⟨u, hu⟩` from `ih`. Choose the witnesses or unpack the hypotheses as in `⟨S, hS, hS0⟩ : ∃ S : PowerSeries O, S * (φ - ψ) = φ ^ (p + 2) - ψ ^ (p + 2) ∧ PowerSeries.constantCoeff S = 0 := by`. Use `⟨_, (Commute.all φ ψ).geom_sum₂_mul (p + 2), ?_⟩` and prove the remaining obligations. Rewrite using `[map_sum]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_pow, map_pow, h0, h0', ← pow_add, zero_pow (by omega)]`. Establish `e1 : PowerSeries.C π * (φ - ψ) + S * (φ - ψ) = F (φ - ψ)`. Rewrite using `[hS, map_sub F]`. Take the linear combination `h - h'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `e1` using `[hu, map_mul F, map_pow F, hX, mul_pow]`. Establish `e2 : PowerSeries.C π * u + S * u = (PowerSeries.C π + PowerSeries.X ^ (p + 1)) ^ (k + 2) * F u` using `mul_left_cancel₀ (pow_ne_zero (k + 2) (PowerSeries.X_ne_zero (R := O))) (by linear_combination e1)`. Establish `e3 : PowerSeries.constantCoeff (F u) = PowerSeries.constantCoeff u` using `by conv_lhs => rw [PowerSeries.eq_X_mul_shift_add_const u, map_add F, map_mul F, hX, hC]`. Simplify using the standard rewrite rules. Establish `e4` using `congrArg PowerSeries.constantCoeff e2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [map_add, map_mul, map_pow, hS0, e3, PowerSeries.constantCoeff_C, PowerSeries.constantCoeff_X, zero_pow (Nat.succ_ne_zero p), add_zero, zero_mul] at e4`. Establish `e5 : π * (1 - π ^ (k + 1)) * PowerSeries.constantCoeff u = 0` using `by linear_combination e4`. Establish `hne : (1 - π ^ (k + 1)) ≠ 0` using `fun h1 => hπ.not_isUnit (IsUnit.of_pow_eq_one (n := k + 1) (by linear_combination -h1) (Nat.succ_ne_zero k))`. Establish `e6 : PowerSeries.constantCoeff u = 0` using `(mul_eq_zero.1 e5).resolve_left (mul_ne_zero hπ.ne_zero hne)`. Take `⟨v, hv⟩` from `PowerSeries.X_dvd_iff.2 e6`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨v, by rw [hu, hv]; ring⟩`. Rewrite using `[← sub_eq_zero]`. Use extensionality with `n`. Conclude with `PowerSeries.X_pow_dvd_iff.1 (key n) n (by omega)`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem lubinTateSeries_eq_of_coeff_one_eq {O : Type} [CommRing O] [IsDomain O] {π : O} (hπ : Irreducible π) {q : ℕ} (hq : 2 ≤ q)
     {φ ψ : PowerSeries O} (h0 : PowerSeries.constantCoeff φ = 0) (h0' : PowerSeries.constantCoeff ψ = 0)
@@ -325,14 +323,14 @@ theorem lubinTateSeries_eq_of_coeff_one_eq {O : Type} [CommRing O] [IsDomain O] 
   exact PowerSeries.X_pow_dvd_iff.1 (key n) n (by omega)
 
 /- English proof (translation)
-The claim follows from `lubinTateSeries_eq_of_coeff_one_eq hπ (two_le_resCard K) h.1 h'.1 (h.2.1.trans h'.2.1.symm) h.2.2 h'.2.2`.
+A detailed English derivation is pending.
 -/
 theorem IsLTEndo_unique {K : FinExt l} {π a : ↥(OL K)} (hπ : Irreducible π) {φ ψ : PowerSeries ↥(OL K)}
     (h : IsLTEndo K π a φ) (h' : IsLTEndo K π a ψ) : φ = ψ :=
   lubinTateSeries_eq_of_coeff_one_eq hπ (two_le_resCard K) h.1 h'.1 (h.2.1.trans h'.2.1.symm) h.2.2 h'.2.2
 
 /- English proof (translation)
-Use `⟨by simp, by simp, ?_⟩` and prove the remaining obligations. Establish `hs : PowerSeries.HasSubst (ltSeries K π)` using `PowerSeries.HasSubst.of_constantCoeff_zero' (by`. Use `two_le_resCard K` as an intermediate fact. Rewrite using `[ltSeries, map_add, map_mul, map_pow, PowerSeries.constantCoeff_X, mul_zero, zero_pow (by omega), add_zero])`. Rewrite using `[PowerSeries.subst_X hs, ltSeries]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem IsLTEndo_one (K : FinExt l) (π : ↥(OL K)) : IsLTEndo K π 1 PowerSeries.X := by
   refine ⟨by simp, by simp, ?_⟩
@@ -342,9 +340,9 @@ theorem IsLTEndo_one (K : FinExt l) (π : ↥(OL K)) : IsLTEndo K π 1 PowerSeri
   rw [PowerSeries.subst_X hs, ltSeries]
 
 /- English proof (translation)
-Take `⟨a, ha, φ, hφ, hs⟩` from `h.2.2.2.2 g`. Establish `ha1 : a = 1` using `Subtype.ext (by rw [ha, hg]; rfl)`. Substitute `ha1` using the available equality. Take `rfl` from `IsLTEndo_unique h.1 hφ (IsLTEndo_one K π)`. Use `(hs n).unique ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `hasSum_single (f := fun k => (((PowerSeries.coeff k (PowerSeries.X : PowerSeries ↥(OL K)) : ↥(OL K)) : ↥K.1) : Om l) * z n ^ k) 1 (fun k hk => by rw [PowerSeries.coeff_X, if_neg hk]; simp)` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem fixed_of_chi_eq_one {K : FinExt l} {χ : ↥(GK K) →* (↥K.1)ˣ} {π : ↥(OL K)} {z : ℕ → Om l}
     (h : LTData K χ π z) (g : ↥(GK K)) (hg : χ g = 1) (n : ℕ) : (g : GQ l) (z n) = z n := by
@@ -360,17 +358,15 @@ theorem fixed_of_chi_eq_one {K : FinExt l} {χ : ↥(GK K) →* (↥K.1)ˣ} {π 
 end General
 
 /- English proof (translation)
-Introduce `h`. Establish `hfix : ∀ g : GQ 2, g (z 2) = z 2` using `fun g => fixed_of_chi_eq_one h ⟨g, by simp [GK, Kb]⟩ rfl 2`. Establish `e0 : (2 : Om 2) * z 1 + z 1 ^ resCard Kb = z 0` using `h.2.2.2.1 0`. Establish `e1 : (2 : Om 2) * z 2 + z 2 ^ resCard Kb = z 1` using `h.2.2.2.1 1`. Rewrite `e0`, `e1` using `[resCard_Kb]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e0` using `[h.2.1]`. Establish `hz1 : z 1 = -2`. Establish `: z 1 * (z 1 + 2) = 0` using `by linear_combination e0`. Conclude with `eq_neg_of_add_eq_zero_left ((mul_eq_zero.1 this).resolve_left h.2.2.1)`. Establish `hmem : z 2 ∈ (⊥ : IntermediateField ℚ_[2] (Om 2))` using `(InfiniteGalois.mem_bot_iff_fixed (z 2)).2 hfix`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy⟩` from `IntermediateField.mem_bot.1 hmem`. Establish `hy2 : (y + 1) ^ 2 = -1` using `(algebraMap ℚ_[2] (Om 2)).injective (by`. Rewrite using `[map_pow, map_add, map_one, map_neg, map_one, hy]`. Take the linear combination `e1 + hz1)`. Establish `hn : ‖y + 1‖ ≤ 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrArg norm hy2` as an intermediate fact. Rewrite `this` using `[norm_pow, norm_neg, norm_one]`. Use polynomial arithmetic with `[norm_nonneg (y + 1)]`. Take `⟨w, hw⟩ : ∃ w : ℤ_[2], (w : ℚ_[2]) = y + 1` from `⟨⟨y + 1, hn⟩, rfl⟩`. Establish `h3 : w ^ 2 = -1` using `Subtype.ext (by push_cast; rw [hw, hy2])`.
+Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4` using `congrArg (PadicInt.toZModPow (p := 2) 2) h3`. Rewrite `h4` using `[map_pow, map_neg, map_one]`. Use `revert h4`. Generalize the expression as in `PadicInt.toZModPow (p := 2) 2 w = t`. Use `revert t`.
-
-Evaluate the decidable proposition.
+Rewrite the indicated hypotheses using the stated equalities. Replace the chosen expression with an arbitrary variable. Evaluate the decidable proposition. A detailed English derivation is pending.
 -/
 theorem not_ltData_one (z : ℕ → Om 2) : ¬ LTData Kb 1 2 z := by
   intro h
@@ -401,7 +397,7 @@ theorem not_ltData_one (z : ℕ → Om 2) : ¬ LTData Kb 1 2 z := by
   decide
 
 /- English proof (translation)
-Introduce `h` and use `by obtain ⟨z, hz⟩ := ltData exact not_ltData_one z (h ▸ hz)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem cycK_ne_one : cycK ≠ 1 := fun h => by
   obtain ⟨z, hz⟩ := ltData

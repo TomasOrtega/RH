@@ -15,13 +15,13 @@ open scoped CategoryTheory.Obj
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `W L _ _ _ _ _ _ k _ _ x`. Use `set j' : W →+* AlgebraicClosure L := (algebraMap L (AlgebraicClosure L)).comp (algebraMap W L) with hj'`. Establish `hinj : Function.Injective j'` using `(algebraMap L (AlgebraicClosure L)).injective.comp (IsFractionRing.injective W L)`. Use `set g : W →+* k := (Spec.preimage x).hom with hg`. Take `⟨U, hU, h, hh⟩` from `GlobalTheory.T.exists_valuationSubring_extending_ringHom W (AlgebraicClosure L) k j' hinj g`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Use `⟨U, j'.codRestrict U.toSubring hU, h, ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `w`. Both sides reduce to the same expression. Establish `hcomp : h.comp (j'.codRestrict U.toSubring hU) = g`. Use extensionality with `w`.
+Both sides reduce to the same expression. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hh w`. Establish `hx : x = Spec.map (Spec.preimage x)` using `(Spec.map_preimage x).symm`. Rewrite using `[hx]`. Simplify using `only [spMap, Sp]`. Rewrite using `[← Spec.map_comp]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition.
 
-Use `congr 1`. Use extensionality with `w`. Express the relevant statement in the definitionally equal form `g w = h (j'.codRestrict U.toSubring hU w)`. Rewrite using `[← hcomp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem geomPoint_factors_valuationSubring_algClosure :
     ∀ (W L : Type) [CommRing W] [IsDomain W] [IsDiscreteValuationRing W] [Field L] [Algebra W L]

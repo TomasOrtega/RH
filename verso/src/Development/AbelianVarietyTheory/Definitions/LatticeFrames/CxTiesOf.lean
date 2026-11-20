@@ -68,9 +68,9 @@ def TiesRest (W : RealPack ex) : Prop :=
   (W.Q.F.fc (cxW W).zs).Df1.WF ∧ (cxW W).H2 W.Q.F.cr true ∧ (cxW W).RATmu W.Q.F.cr true ∧ (cxW W).CoordinatesInGoodPart W.Q.F.cr W.Q.F.cv true
 
 /- English proof (translation)
-Take `⟨-, -, -, hC, -⟩` from `hH`. Take `⟨hok, hRZ, gE, hU, hG, h2, hl0, hl1⟩` from `hLv`. Take `⟨s, hs⟩` from `hok`. Take `⟨hW, h2', hr, hcv⟩` from `hR`. Establish `hK` using `RealDat3.kFormR_of (R := W.Q.Rl) (F := W.Q.F) hC.models`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hJ` using `RealDat3.jIsoR_of (R := W.Q.Rl) (F := W.Q.F) hC.models`. Conclude with `⟨hW, h2', hr, hJ, rationality_at_level_of_equivariance hs hK hJ hRZ hU hG true, descent_of_types hs hK hJ hRZ hU hG h2 hl0 hl1 true, upper_level_of_types hs hK hJ hU hG hl0 hl1 true, hcv, Formalism.IndefR.Links.EvTie.evTie_real ⟨s, hs⟩ W.Q.Rl W.Q.F⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem cxTies_of {W : RealPack ex} (hH : HypAt W) (hLv : LevHyp W) (hR : TiesRest W) :
     CxTies (cxW W) W.Q.F.cr W.Q.F.cv (W.Q.F.eV (cxW W).zs) := by

@@ -14,7 +14,7 @@ noncomputable section
 namespace GlobalTheory.FunObj.SqNum.RepSum
 
 /- English proof (translation)
-Introduce `i j`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem congOne_one {D : D7} {a : ℕ} {𝔪 : Ideal (𝓞 D.host.E)} : CongOne D 𝔪 (1 : GA D a) := by
   intro i j

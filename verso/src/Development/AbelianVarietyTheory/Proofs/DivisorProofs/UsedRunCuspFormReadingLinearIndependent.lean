@@ -8,7 +8,7 @@ namespace GlobalTheory.ShareOn.Reading
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Substitute `hΨ` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem castFrame_castFrame_symm {E : Type} [Field E] {r : ℕ} {Ψ Ψ' : Finset (E →+* ℂ)} (hΨ : Ψ = Ψ')
     (x : Frame Ψ' r) : castFrame hΨ (castFrame hΨ.symm x) = x := by
@@ -17,17 +17,17 @@ theorem castFrame_castFrame_symm {E : Type} [Field E] {r : ℕ} {Ψ Ψ' : Finset
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Introduce `hb`. Establish `hJ` using `(GlobalTheory.ReadingTieCheck.tieRead_holds (h.laws v).p ((i : ℕ) + 1) ⟨Nat.le_add_left _ _, i.2⟩).2 (p.κ i)`. Set `b' : Fin n → cusp ((r.used v).full.Q.Xo ((i : ℕ) + 1)) (r.used v).full.Q.c ((r.used v).full.U ((i : ℕ) + 1)) (wtA (p.κ i)) (p.κ i).n` to `fun k => ⟨(b k).1, cutR_le (r.used v).full.C ((i : ℕ) + 1) (p.κ i) (b k).2⟩`. Establish `hb' : LinearIndependent (r.used v).full.Q.c.F b'`. Rewrite `hb`, the goal using `[Fintype.linearIndependent_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Introduce `g hg`. Apply `hb g` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Establish `h1` using `congrArg Subtype.val hg`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul, Submodule.coe_zero] at h1 ⊢`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `h1`. Establish `hR` using `hJ n b' hb'`. Rewrite `hR`, the goal using `[Fintype.linearIndependent_iff]`. Introduce `g hg`. Apply `hR g` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `hoff : ∀ k, rdC ((r.used v).full.U ((i : ℕ) + 1)) (r.used v).full.σ₀ (wtA (p.κ i)) (p.κ i).n (b' k) ∈ offZero ((r.used v).full.U ((i : ℕ) + 1) (r.used v).full.σ₀).X` using `fun k => rdU_mem_offZero _ _`. Establish `claim : ∀ c, (∑ k, g k • rdC ((r.used v).full.U ((i : ℕ) + 1)) (r.used v).full.σ₀ (wtA (p.κ i)) (p.κ i).n (b' k)) (e c) = 0`. Introduce `c`. Use function extensionality and compare the values at `x`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Pi.zero_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hx : x ∈ (((r.used v).full.U ((i : ℕ) + 1) (r.used v).full.σ₀).X (e c)).dom`. Establish `hy : castFrame (psi_eq ha c).symm x ∈ M.dom` using `(mem_dom_iff ha c _).1 (by rw [castFrame_castFrame_symm]; exact hx)`. Use `congrFun (congrFun hg c) ⟨_, hy⟩` as an intermediate fact. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Pi.zero_apply, rdLin_apply, rdFun, castFrame_castFrame_symm] at this`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Conclude with `Finset.sum_eq_zero fun k _ => by rw [hoff k (e c) x hx, mul_zero]`. Use function extensionality and compare the values at `k'`. Use `claim (e.symm k')` as an intermediate fact. Rewrite `this` using `[e.apply_symm_apply]`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rdLin_linearIndependent {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L}
     {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Y : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y cX}

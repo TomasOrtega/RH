@@ -5,7 +5,7 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 open UpperTheory.V.Af UpperTheory.V.Ws UpperTheory.V.Sd UpperTheory.V.Cu
 
 /- English proof (translation)
-Introduce `hp` and use `by obtain ⟨a, b, hab⟩ := Nat.isCoprime_iff_coprime.2 h have hv : ∀ n : ℤ, A.valuation (n : Ω) ≤ 1 := fun n => (A.valuation_le_one_iff _).mpr (intCast_mem A n) have h1 : A.valuation ((a : Ω) * (p : Ω) + (b : Ω) * (q : Ω)) < 1 := by refine Valuation.map_add_lt _ ?_ ?_ · rw [map_mul …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem gd_val {Ω : Type} [Field Ω] (A : ValuationSubring Ω) {p q : ℕ} (h : p.Coprime q)
     (hq : A.valuation (q : Ω) < 1) : ¬ A.valuation (p : Ω) < 1 := fun hp => by
@@ -24,7 +24,7 @@ section
 variable {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l}
 
 /- English proof (translation)
-Establish `e : chi D T.pr 0 (resQ T.F g) * (chi D T.pr 1 (resQ T.F g))⁻¹ = D.al (resQ T.F g)`. Generalize the expression as in `resQ T.F g = s`. Apply the tactic sequence `cases T.pr <;> simp [chi, lab, Raw.ps, Raw.th, mul_comm]`. Use `show residue c.O (((chi D T.pr 0 (resQ T.F g) * (chi D T.pr 1 (resQ T.F g))⁻¹) ^ (1 : ℤ) * (chi D T.pr 0 (resQ T.F g) * (chi D T.pr 2 (resQ T.F g))⁻¹) ^ (0 : ℤ) : c.Oˣ) : c.O) = _`. Rewrite using `[zpow_one, zpow_zero, mul_one, e]`.
+Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem gd_rb {D : Raw Ω c} (T : Tower D) (g : G T.F Ω) :
     T.rb wAl g = residue c.O (D.al (resQ T.F g) : c.O) := by
@@ -36,9 +36,9 @@ private theorem gd_rb {D : Raw Ω c} (T : Tower D) (g : G T.F Ω) :
   rw [zpow_one, zpow_zero, mul_one, e]
 
 /- English proof (translation)
-Establish `e : D.al g * D.om g = chiO ℚ Ω l c.O g`. Simplify using `only [Raw.al, MonoidHom.mul_apply, MonoidHom.inv_apply, hg, mul_one, inv_mul_cancel_right]`. Establish `e2` using `congrArg (fun u : c.Oˣ => residue c.O (u : c.O)) e`. Simplify using `only [Units.val_mul, map_mul] at e2`. Establish `e3 : residue c.O (D.om g : c.O) = residue c.O (chiO ℚ Ω l c.O g : c.O)` using `hD.om_bar g`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `e2` using `[← e3]`. Establish `hu : IsUnit (residue c.O (D.om g : c.O))` using `(D.om g).isUnit.map _`. Conclude with `(mul_eq_right₀ hu.ne_zero).1 e2`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem gd_al (D : Raw Ω c) (hD : D.Good) (g : G ℚ Ω) (hg : D.ξ g = 1) :
     residue c.O (D.al g : c.O) = 1 := by
@@ -52,7 +52,7 @@ private theorem gd_al (D : Raw Ω c) (hD : D.Good) (g : G ℚ Ω) (hg : D.ξ g =
   exact (mul_eq_right₀ hu.ne_zero).1 e2
 
 /- English proof (translation)
-Establish `key : D.rbar g 2 2 = residue c.O (Matrix.diagonal (fun i => (D.ps i g : c.O)) 2 2)` using `rfl`. Rewrite `key` using `[h, Matrix.one_apply_eq, Matrix.diagonal_apply_eq]`. Conclude with `key.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem gd_rbar (D : Raw Ω c) (g : G ℚ Ω) (h : D.rbar g = 1) : residue c.O (D.al g : c.O) = 1 := by
   have key : D.rbar g 2 2 = residue c.O (Matrix.diagonal (fun i => (D.ps i g : c.O)) 2 2) := rfl
@@ -60,7 +60,7 @@ private theorem gd_rbar (D : Raw Ω c) (g : G ℚ Ω) (h : D.rbar g = 1) : resid
   exact key.symm
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨AlgEquiv.ofRingEquiv (f := g.toRingEquiv) fun x => (F.mem_fixingSubgroup_iff g).1 hg x.1 x.2, rfl⟩`.
+Supply the required witnesses or components.
 -/
 private theorem gd_up {F : IntermediateField ℚ Ω} {g : G ℚ Ω} (hg : g ∈ F.fixingSubgroup) : ∃ g' : G F Ω, resQ F g' = g :=
   ⟨AlgEquiv.ofRingEquiv (f := g.toRingEquiv) fun x => (F.mem_fixingSubgroup_iff g).1 hg x.1 x.2, rfl⟩
@@ -68,23 +68,21 @@ private theorem gd_up {F : IntermediateField ℚ Ω} {g : G ℚ Ω} (hg : g ∈ 
 end
 
 /- English proof (translation)
-Introduce `Ω _ _ _ l _ c D T₀ T hD hT K' hS hoff w θ hw hsp hθ k g0 ρ c₁ h ρ₁ x hM p hp`. Establish `hK : ∀ g : G T₀.F Ω, residue c.O (D.al (resQ T₀.F g) : c.O) = 1 → resQ T₀.F g ∈ K'.fixingSubgroup`. Introduce `g hg`. Assume the negation of the conclusion as `hn`. Use `(UpperTheory.V.Ws.P1.coefRes c).2.1` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Conclude with `Ring.neg_one_ne_one_of_char_ne_two (by rw [ringChar.eq (ResidueField c.O) l]; exact hD.l_odd) ((hoff g hn).symm.trans ((gd_rb T₀ g).trans hg))`. Distinguish the cases in `hpS : p ∈ D.S`. Conclude with `Or.inl (hS p hpS)`. Distinguish the cases in `hpw : p = w`. Substitute `hpw` using the available equality.
+Consider separately whether the proposition holds or fails. Prove the first alternative. Consider separately whether the proposition holds or fails. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations.
 
-Use `Or.inl fun A hA g hg => ?_` and prove the remaining obligations. Take `⟨⟨h1, h2⟩, -⟩` from `hsp A hA hg`. Take `⟨g', rfl⟩` from `gd_up h1`. Conclude with `hK g' (gd_rbar D _ h2)`. Use `Or.inr ⟨fun e => hpS (e ▸ hD.l_mem), fun A hA s hs => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hAS : Raw.Away D.S A` using `fun q hq => gd_val A ((Nat.coprime_primes (hD.S_prime q hq) hp).2 fun e => hpS (e ▸ hq)) hA`. Establish `hAw : Raw.Away {w} A` using `fun q hq => by`. Rewrite using `[Finset.mem_singleton.1 hq]`. Conclude with `gd_val A ((Nat.coprime_primes hw hp).2 fun e => hpw e.symm) hA`. Establish `hI : resQ T.L s ∈ Ine (F` using `ℚ) A := ⟨hs.1, hs.2⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hξ : D.ξ (resQ T.L s) = 1` using `hD.xi_unr A hAS hI`. Establish `hψ : D.ψ (resQ T.L s) = 1` using `hD.psi_unr A hAS hI`. Establish `hres : resQ T₀.F (resLe (hT.le.trans T.F_le) s) = resQ T.L s` using `AlgEquiv.ext fun _ => rfl`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hres]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Replace the relevant objects with their definitions.
 
-Conclude with `hK _ (by rw [hres]; exact gd_al D hD _ hξ)`. Establish `hφ : phi D T₀.pr (resQ T.L s) = 1`. Generalize the expression as in `resQ T.L s = g at hξ hψ`. Unfold `phi`. Apply the tactic sequence `split_ifs <;> simp [hξ, hψ]`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `hM.away A (hAS l hD.l_mem) _ hI hφ (hθ A hAw hI)`. Take `⟨u, hu⟩` from `hM.iso`. Establish `h2` using `hu (resQ T.L s)`. Establish `h3 : (mapRep (algebraMap c₁.O (PadicAlgCl l)) ρ₁).toHomUnits (resQ T.L s) = 1`. Use `Units.ext ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show (ρ₁ (resQ T.L s)).map (algebraMap c₁.O (PadicAlgCl l)) = 1`. Rewrite using `[h1]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`. Rewrite `h2` using `[h3]`. Establish `h4 : ρ (resQ T.L s) = u⁻¹ * (u * ρ (resQ T.L s) * u⁻¹) * u` using `by group`.
-
-Rewrite using `[h4, ← h2, mul_one, inv_mul_cancel]`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Cu.goodOf4 :
     UpperTheory.V.Cu.GoodOf4 := by

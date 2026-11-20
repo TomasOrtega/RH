@@ -10,23 +10,21 @@ open ModularForm (E₄ E₆)
 namespace GlobalTheory.FNProd
 
 /- English proof (translation)
-Introduce `Ω _ ε C φ ψ h h' H H' z hz`. Use `set e : ℚ → ℂ := fun r => Complex.exp (2 * Real.pi * Complex.I * (r : ℂ) * z) with he`. Use `set a : ℚ → ℂ := fun r => ε (h.coeff r) * e r with ha`. Use `set b : ℚ → ℂ := fun r => ε (h'.coeff r) * e r with hb`. Establish `hA : HasSum a (φ z)` using `H z hz`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB : HasSum b (ψ z)` using `H' z hz`. Establish `hAn : Summable fun r => ‖a r‖` using `summable_norm_iff.2 hA.summable`. Establish `hBn : Summable fun r => ‖b r‖` using `summable_norm_iff.2 hB.summable`. Establish `hP : HasSum (fun p : ℚ × ℚ => a p.1 * b p.2) (φ z * ψ z)` using `hA.mul hB (summable_mul_of_summable_norm hAn hBn)`. Establish `hF` using `hP.tsum_fiberwise (fun p : ℚ × ℚ => p.1 + p.2)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `hF.congr_fun ?_` and prove the remaining obligations. Introduce `s`. Establish `hexp : ∀ p : ℚ × ℚ, p.1 + p.2 = s → a p.1 * b p.2 = ε (h.coeff p.1) * ε (h'.coeff p.2) * e s`. Introduce `p hp`. Simplify using `only [ha, hb, he, ← hp]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `: Complex.exp (2 * Real.pi * Complex.I * ((p.1 + p.2 : ℚ) : ℂ) * z) = Complex.exp (2 * Real.pi * Complex.I * (p.1 : ℂ) * z) * Complex.exp (2 * Real.pi * Complex.I * (p.2 : ℂ) * z)`. Rewrite using `[← Complex.exp_add]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[tsum_subtype (f := fun p : ℚ × ℚ => a p.1 * b p.2)]`. Rewrite using `[tsum_eq_sum (s := Finset.antidiagonal h.isPWO_support h'.isPWO_support s)]`. Simplify using `only [HahnSeries.coeff_mul, map_sum, map_mul, Finset.sum_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun p hp => ?_` and prove the remaining obligations. Rewrite `hp` using `[Finset.mem_antidiagonal]`. Rewrite using `[Set.indicator_of_mem (by simpa using hp.2.2)]`. Conclude with `(hexp p hp.2.2).symm`. Introduce `p hp`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hs : p.1 + p.2 = s`. Rewrite using `[Set.indicator_of_mem (by simpa using hs), hexp p hs]`. Rewrite `hp` using `[Finset.mem_antidiagonal]`. Simplify using `only [HahnSeries.mem_support, not_and] at hp`. Distinguish the cases in `h1 : h.coeff p.1 = 0`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules.
 
-Simplify using `[h1]`. Establish `h2 : h'.coeff p.2 = 0`. Assume the negation of the conclusion as `h2`. Conclude with `hp h1 h2 hs`. Simplify using `[h2]`.
-
-Conclude with `Set.indicator_of_notMem (by simpa using hs) _`.
+A detailed English derivation is pending.
 -/
 theorem hs_mul : ∀ (Ω : Type) [Field Ω] (ε : Ω →+* ℂ) (C : ℝ) (φ ψ : ℂ → ℂ) (h h' : HahnSeries ℚ Ω),
     HS ε C φ h → HS ε C ψ h' → HS ε C (φ * ψ) (h * h') := by

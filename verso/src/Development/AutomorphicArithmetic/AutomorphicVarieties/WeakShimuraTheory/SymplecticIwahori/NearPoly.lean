@@ -4,9 +4,9 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.FiniteMaximalSpe
 open IsLocalRing Polynomial UpperTheory.V.Alg UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws UpperTheory.V.Ws.Pp
 
 /- English proof (translation)
-Take `⟨q, hq⟩` from `Ideal.exists_maximal S`. Take `⟨e, he, H⟩` from `GlobalTheory.exists_idempotent_notMem_iff_of_henselian B q`. Use `.of_unique_max_ideal ⟨q, hq, fun n hn => (H n hn).1 ?_⟩` and prove the remaining obligations. Break down `IsIdempotentElem.iff_eq_zero_or_one.1 he with h | h` into its components or cases. Conclude with `absurd (h ▸ q.zero_mem) ((H q hq).2 rfl)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h]`. Conclude with `(Ideal.ne_top_iff_one _).1 hn.ne_top`.
+A detailed English derivation is pending.
 -/
 private theorem nearPoly_local (B S : Type) [CommRing B] [HenselianLocalRing B] [CommRing S] [IsDomain S]
     [Algebra B S] [Module.Finite B S] : IsLocalRing S := by
@@ -19,15 +19,13 @@ private theorem nearPoly_local (B S : Type) [CommRing B] [HenselianLocalRing B] 
     exact (Ideal.ne_top_iff_one _).1 hn.ne_top
 
 /- English proof (translation)
-Introduce `O B _ _ _ _ _ _ x d t v hd ht hv h`. Set `S` to `Algebra.adjoin B ({v} : Set (FractionRing B))`. Use `haveI : Module.Finite B S := Module.Finite.iff_fg.2 hv.fg_adjoin_singleton`. Use `haveI : IsLocalRing S := nearPoly_local B S`. Set `w : S` to `⟨v, Algebra.self_mem_adjoin_singleton B v⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hw : w ∈ maximalIdeal S`. Introduce `hu`. Take `⟨u, hu⟩` from `hu.exists_right_inv`. Establish `h1 : algebraMap B S (algebraMap O B d) * w = algebraMap B S t` using `Subtype.ext h`. Establish `h2 : algebraMap B S (algebraMap O B d) = algebraMap B S t * u`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← h1, mul_assoc, hu, mul_one]`. Use `haveI : (RingHom.ker x).IsPrime := RingHom.ker_isPrime x`. Establish `hinj : Function.Injective (algebraMap B S)` using `fun a b e => IsFractionRing.injective B (FractionRing B) (congrArg Subtype.val e)`. Take `⟨Q, _, hQ⟩` from `Ideal.exists_ideal_over_prime_of_isIntegral_of_isDomain (S := S) (RingHom.ker x) (by rw [(RingHom.injective_iff_ker_eq_bot _).1 hinj]; exact bot_le)`. Establish `h3 : t ∈ Q.comap (algebraMap B S)` using `by rw [hQ]; exact ht`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h4 : algebraMap O B d ∈ Q.comap (algebraMap B S)`. Rewrite using `[Ideal.mem_comap, h2]`. Conclude with `Q.mul_mem_right _ h3`. Rewrite `h4` using `[hQ, RingHom.mem_ker, x.commutes]`. Conclude with `hd h4`.
-
-Take `⟨p, hp, h0⟩` from `nilPoly (B := B) w hw`. Use `⟨p, hp, ?_⟩` and prove the remaining obligations. Use `aeval_algHom_apply S.val w p` as an intermediate fact. Rewrite `this` using `[h0, map_zero]`. Conclude with `this`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.Pp.nearPoly :
     ∀ {O B : Type} [CommRing O] [IsDomain O] [CommRing B] [IsDomain B] [HenselianLocalRing B] [Algebra O B] (x : B →ₐ[O] O) (d : O) (t : B) (v : FractionRing B), d ≠ 0 → x t = 0 → IsIntegral B v → algebraMap B (FractionRing B) (algebraMap O B d) * v = algebraMap B (FractionRing B) t → ∃ p : B[X], Dist (maximalIdeal B) p ∧ aeval v p = 0 := by

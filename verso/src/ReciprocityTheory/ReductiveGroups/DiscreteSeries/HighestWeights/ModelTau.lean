@@ -26,7 +26,7 @@ Both sides reduce to the same expression.
     (tauC ε m k f).fn = rtr ε k f.fn := rfl
 
 /- English proof (translation)
-Use `ContinuousLinearMap.ext fun f => MV.ext ?_` and prove the remaining obligations. Rewrite using `[tauC_fn, rtr_one]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem tauC_one (ε : Fin n → Bool) (m : Fin n → ℤ) : tauC ε m 1 = 1 := by
   refine ContinuousLinearMap.ext fun f => MV.ext ?_
@@ -34,7 +34,7 @@ theorem tauC_one (ε : Fin n → Bool) (m : Fin n → ℤ) : tauC ε m 1 = 1 := 
   rfl
 
 /- English proof (translation)
-Use `ContinuousLinearMap.ext fun f => MV.ext ?_` and prove the remaining obligations. Rewrite using `[tauC_fn, rtr_mul, ContinuousLinearMap.mul_apply, tauC_fn, tauC_fn]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem tauC_mul (ε : Fin n → Bool) (m : Fin n → ℤ) (k₁ k₂ : KG ε) :
     tauC ε m (k₁ * k₂) = tauC ε m k₁ * tauC ε m k₂ := by
@@ -42,7 +42,7 @@ theorem tauC_mul (ε : Fin n → Bool) (m : Fin n → ℤ) (k₁ k₂ : KG ε) :
   rw [tauC_fn, rtr_mul, ContinuousLinearMap.mul_apply, tauC_fn, tauC_fn]
 
 /- English proof (translation)
-Use `show mvInner _ _ = mvInner _ _`. Unfold `mvInner`. Simplify using `only [tauC_fn]`. Use `haveI := muK_rightInvariant ε`. Conclude with `MeasureTheory.integral_mul_right_eq_self (fun x => starRingEnd ℂ (f.fn x) * g.fn x) k`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tauC_inner (ε : Fin n → Bool) (m : Fin n → ℤ) (k : KG ε) (f g : MV ε m) :
     inner ℂ (tauC ε m k f) (tauC ε m k g) = inner ℂ f g := by
@@ -53,15 +53,15 @@ theorem tauC_inner (ε : Fin n → Bool) (m : Fin n → ℤ) (k : KG ε) (f g : 
   exact MeasureTheory.integral_mul_right_eq_self (fun x => starRingEnd ℂ (f.fn x) * g.fn x) k
 
 /- English proof (translation)
-Establish `hinv : ∀ f, tauC ε m k (tauC ε m k⁻¹ f) = f`. Introduce `f`. Rewrite using `[← ContinuousLinearMap.mul_apply, ← tauC_mul, mul_inv_cancel, tauC_one]`. Both sides reduce to the same expression. Establish `hinv' : ∀ f, tauC ε m k⁻¹ (tauC ε m k f) = f`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Introduce `f`. Rewrite using `[← ContinuousLinearMap.mul_apply, ← tauC_mul, inv_mul_cancel, tauC_one]`. Both sides reduce to the same expression. Establish `hadj : star (tauC ε m k) = tauC ε m k⁻¹`. Rewrite using `[ContinuousLinearMap.star_eq_adjoint]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `symm`. Rewrite using `[ContinuousLinearMap.eq_adjoint_iff]`. Introduce `x y`. Rewrite using `[← tauC_inner ε m k (tauC ε m k⁻¹ x) y, hinv]`. Use `first`.
+Use symmetry to reverse the relation. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `rw [Unitary.mem_iff, hadj]`. Consider the case `rw [unitary.mem_iff, hadj]`. Prove the components needed by the constructor for the conclusion. Use extensionality with `f`. Rewrite using `[ContinuousLinearMap.mul_apply, hinv', ContinuousLinearMap.one_apply]`.
+Treat this case separately. Prove the components needed by the constructor for the conclusion. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use extensionality with `f`. Rewrite using `[ContinuousLinearMap.mul_apply, hinv, ContinuousLinearMap.one_apply]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tauC_mem_unitary (ε : Fin n → Bool) (m : Fin n → ℤ) (k : KG ε) : tauC ε m k ∈ unitary (MV ε m →L[ℂ] MV ε m) := by
   have hinv : ∀ f, tauC ε m k (tauC ε m k⁻¹ f) = f := by
@@ -93,16 +93,14 @@ def mvFnL (ε : Fin n → Bool) (m : Fin n → ℤ) : MV ε m →ₗ[ℂ] (KG ε
   map_smul' _ _ := rfl
 
 /- English proof (translation)
-Introduce `_ _ h` and use `MV.ext h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mvFnL_injective (ε : Fin n → Bool) (m : Fin n → ℤ) : Function.Injective (mvFnL ε m) := fun _ _ h => MV.ext h
 
 /- English proof (translation)
-Set `e` to `(LinearEquiv.ofInjective (mvFnL ε m) (mvFnL_injective ε m)).toContinuousLinearEquiv`. Establish `h : Continuous fun k : KG ε => e (tauC ε m k f)`. Use `continuous_induced_rng.2 ?_` and prove the remaining obligations. Establish `hfun : (fun k : KG ε => ((e (tauC ε m k f) : LinearMap.range (mvFnL ε m)) : KG ε → ℂ)) = fun k x => f.fn (x * k)` using `rfl`. Rewrite using `[Function.comp_def, hfun]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `continuous_pi fun x => (continuous_of_mem_Vsp ε m f.mem).comp (continuous_const.mul continuous_id)`. Establish `h2 : (fun k : KG ε => tauC ε m k f) = fun k => e.symm (e (tauC ε m k f))`. Use function extensionality and compare the values at `k`. Simplify using the standard rewrite rules. Rewrite using `[h2]`.
-
-Conclude with `e.symm.continuous.comp h`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_tauC_apply (ε : Fin n → Bool) (m : Fin n → ℤ) (f : MV ε m) :
     Continuous fun k : KG ε => tauC ε m k f := by
@@ -119,7 +117,7 @@ theorem continuous_tauC_apply (ε : Fin n → Bool) (m : Fin n → ℤ) (f : MV 
   exact e.symm.continuous.comp h
 
 /- English proof (translation)
-The claim follows from `continuous_clm_apply.2 (continuous_tauC_apply ε m)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_tauC (ε : Fin n → Bool) (m : Fin n → ℤ) : Continuous (tauC ε m) :=
   continuous_clm_apply.2 (continuous_tauC_apply ε m)
@@ -136,16 +134,16 @@ theorem tauM_coe (ε : Fin n → Bool) (m : Fin n → ℤ) (k : KG ε) :
     ((tauM ε m k : unitary (MV ε m →L[ℂ] MV ε m)) : MV ε m →L[ℂ] MV ε m) = tauC ε m k := rfl
 
 /- English proof (translation)
-The claim follows from `continuous_induced_rng.2 (continuous_tauC ε m)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_tauM (ε : Fin n → Bool) (m : Fin n → ℤ) : Continuous (tauM ε m) := continuous_induced_rng.2 (continuous_tauC ε m)
 
 /- English proof (translation)
-Distinguish the cases in `hX : inK ε X`. Establish `h` using `derOp_hasDeriv ε (tauM ε m) (continuous_tauM ε m) X hX (kcurve ε X) (kcurve_spec ε hX).2.1`. Set `evx : MV ε m →ₗ[ℂ] ℂ` to `{ toFun := fun g => g.fn x map_add' := fun a b => by simp map_smul' := fun c a => by simp }`. Set `E : (MV ε m →L[ℂ] MV ε m) →L[ℂ] ℂ` to `(LinearMap.toContinuousLinearMap evx).comp (ContinuousLinearMap.apply ℂ (MV ε m) f)`. Establish `h2` using `(E.restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt (0 : ℝ) h`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h3 : HasDerivAt (fun t : ℝ => f.fn (x * kcurve ε X t)) ((derOp ε (tauM ε m) X f).fn x) 0` using `h2`. Conclude with `h3.deriv.symm`. Establish `hk : kcurve ε X = fun _ => 1`. Unfold `kcurve`. Rewrite using `[dif_neg hX]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[derOp, hk]`.
+A detailed English derivation is pending.
 -/
 private theorem derOp_fn_eq_deriv_kcurve (ε : Fin n → Bool) (m : Fin n → ℤ) (X : Matrix (Fin n) (Fin n) ℂ) (f : MV ε m)
     (x : KG ε) : (derOp ε (tauM ε m) X f).fn x = deriv (fun t : ℝ => f.fn (x * kcurve ε X t)) 0 := by
@@ -166,16 +164,16 @@ private theorem derOp_fn_eq_deriv_kcurve (ε : Fin n → Bool) (m : Fin n → �
     simp [derOp, hk]
 
 /- English proof (translation)
-Conclude with `derOp_fn_eq_deriv_kcurve ε m X f x`.
+A detailed English derivation is pending.
 -/
 theorem derOp_fn (ε : Fin n → Bool) (m : Fin n → ℤ) {X : Matrix (Fin n) (Fin n) ℂ} (hX : inK ε X) (f : MV ε m)
     (x : KG ε) : (derOp ε (tauM ε m) X f).fn x = deriv (fun t : ℝ => f.fn (x * kcurve ε X t)) 0 := by
   exact derOp_fn_eq_deriv_kcurve ε m X f x
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `hX`. Take `⟨h3, h4⟩` from `hY`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Unfold `inG at h1 h3 ⊢`. Rewrite using `[Matrix.conjTranspose_add, Matrix.add_mul, Matrix.mul_add]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.add_mul, Matrix.mul_add, h2, h4]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 -/
 theorem inK_add' (ε : Fin n → Bool) {X Y : Matrix (Fin n) (Fin n) ℂ} (hX : inK ε X) (hY : inK ε Y) :
     inK ε (X + Y) := by
@@ -190,7 +188,7 @@ theorem inK_add' (ε : Fin n → Bool) {X Y : Matrix (Fin n) (Fin n) ℂ} (hX : 
   · rw [Matrix.add_mul, Matrix.mul_add, h2, h4]
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `hX`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Unfold `inG at h1 ⊢`. Rewrite using `[Matrix.conjTranspose_smul, Complex.star_def, Complex.conj_ofReal, Matrix.smul_mul, Matrix.mul_smul, ← smul_add, h1, smul_zero]`. Rewrite using `[Matrix.smul_mul, Matrix.mul_smul, h2]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem inK_rsmul' (ε : Fin n → Bool) {X : Matrix (Fin n) (Fin n) ℂ} (hX : inK ε X) (r : ℝ) :
     inK ε ((r : ℂ) • X) := by
@@ -202,7 +200,7 @@ theorem inK_rsmul' (ε : Fin n → Bool) {X : Matrix (Fin n) (Fin n) ℂ} (hX : 
   · rw [Matrix.smul_mul, Matrix.mul_smul, h2]
 
 /- English proof (translation)
-Rewrite using `[derOp_fn ε m hX f x]`. Conclude with `(hasDerivAt_of_mem_Vsp ε m f.mem hF hfF hX x).deriv`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem derOp_fn_eq (ε : Fin n → Bool) (m : Fin n → ℤ) {X : Matrix (Fin n) (Fin n) ℂ} (hX : inK ε X)
     (f : MV ε m) (x : KG ε) {F : Matrix (Fin n) (Fin n) ℂ → ℂ} (hF : Differentiable ℂ F)
@@ -212,9 +210,9 @@ theorem derOp_fn_eq (ε : Fin n → Bool) (m : Fin n → ℤ) {X : Matrix (Fin n
   exact (hasDerivAt_of_mem_Vsp ε m f.mem hF hfF hX x).deriv
 
 /- English proof (translation)
-Introduce `X Y r hX hY`. Prove the components needed by the constructor for the conclusion. Use `ContinuousLinearMap.ext fun f => MV.ext (funext fun x => ?_)` and prove the remaining obligations. Take `⟨F, hF, hfF⟩` from `Vsp_holo ε m f.mem`. Rewrite using `[_root_.add_apply, MV.fn_add, Pi.add_apply, derOp_fn_eq ε m (inK_add' ε hX hY) f x hF hfF, derOp_fn_eq ε m hX f x hF hfF, derOp_fn_eq ε m hY f x hF hfF, Matrix.mul_add, map_add]`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `ContinuousLinearMap.ext fun f => MV.ext (funext fun x => ?_)` and prove the remaining obligations. Take `⟨F, hF, hfF⟩` from `Vsp_holo ε m f.mem`. Rewrite using `[_root_.smul_apply, MV.fn_smul, Pi.smul_apply, smul_eq_mul, derOp_fn_eq ε m (inK_rsmul' ε hX r) f x hF hfF, derOp_fn_eq ε m hX f x hF hfF, Matrix.mul_smul, map_smul, smul_eq_mul]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem rLinOnK_derOp (ε : Fin n → Bool) (m : Fin n → ℤ) : RLinOnK ε (derOp ε (tauM ε m)) := by
   intro X Y r hX hY
@@ -233,7 +231,7 @@ def dTau (ε : Fin n → Bool) (m : Fin n → ℤ) : Matrix (Fin n) (Fin n) ℂ 
   cextL ε (derOp ε (tauM ε m)) (rLinOnK_derOp ε m)
 
 /- English proof (translation)
-Unfold `dTau`. Rewrite using `[cextL_apply]`. Unfold `cext`. Simplify using `only [ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, MV.fn_add, MV.fn_smul, Pi.add_apply, Pi.smul_apply, smul_eq_mul, derOp_fn_eq_deriv_kcurve]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem dTau_fn (ε : Fin n → Bool) (m : Fin n → ℤ) (Z : Matrix (Fin n) (Fin n) ℂ) (f : MV ε m) (x : KG ε) :
     (dTau ε m Z f).fn x = rdc ε Z f.fn x := by
@@ -245,9 +243,9 @@ theorem dTau_fn (ε : Fin n → Bool) (m : Fin n → ℤ) (Z : Matrix (Fin n) (F
   rfl
 
 /- English proof (translation)
-Establish `h` using `derOp_hasDeriv ε (tauM ε m) (continuous_tauM ε m) X hX γ hγ`. Establish `he : dTau ε m X = derOp ε (tauM ε m) X`. Unfold `dTau`. Rewrite using `[cextL_apply, cext_of_inK _ (rLinOnK_derOp ε m) hX]`. Rewrite using `[he]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem hasDeriv_dTau (ε : Fin n → Bool) (m : Fin n → ℤ) (X : Matrix (Fin n) (Fin n) ℂ) (hX : inK ε X)
     (γ : ℝ → KG ε) (hγ : ∀ t : ℝ, toMK (γ t) = NormedSpace.exp ((t : ℂ) • X)) :
@@ -265,9 +263,9 @@ def w0 (ε : Fin n → Bool) (m : Fin n → ℤ) : MV ε m := MV.mk (f0K ε m) (
 def wN (ε : Fin n → Bool) (m : Fin n → ℤ) : MV ε m := ((‖w0 ε m‖⁻¹ : ℝ) : ℂ) • w0 ε m
 
 /- English proof (translation)
-Introduce `h`. Establish `h1` using `congrArg (fun f : MV ε m => f.fn 1) h`. Simplify using `only [MV.fn_zero, Pi.zero_apply] at h1`. Establish `h2 : (w0 ε m).fn 1 = 1` using `highest_weight_fn_K_one ε m`. Rewrite `h1` using `[h2]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `one_ne_zero h1`.
+A detailed English derivation is pending.
 -/
 theorem highest_weight_vector_ne_zero (ε : Fin n → Bool) (m : Fin n → ℤ) : w0 ε m ≠ 0 := by
   intro h
@@ -278,7 +276,7 @@ theorem highest_weight_vector_ne_zero (ε : Fin n → Bool) (m : Fin n → ℤ) 
   exact one_ne_zero h1
 
 /- English proof (translation)
-Establish `h0 : ‖w0 ε m‖ ≠ 0` using `norm_ne_zero_iff.mpr (highest_weight_vector_ne_zero ε m)`. Unfold `wN`. Rewrite using `[norm_smul, Complex.norm_real, Real.norm_of_nonneg (inv_nonneg.mpr (norm_nonneg _)), inv_mul_cancel₀ h0]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_wN (ε : Fin n → Bool) (m : Fin n → ℤ) : ‖wN ε m‖ = 1 := by
   have h0 : ‖w0 ε m‖ ≠ 0 := norm_ne_zero_iff.mpr (highest_weight_vector_ne_zero ε m)
@@ -287,9 +285,9 @@ theorem norm_wN (ε : Fin n → Bool) (m : Fin n → ℤ) : ‖wN ε m‖ = 1 :=
     inv_mul_cancel₀ h0]
 
 /- English proof (translation)
-Apply `MV.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `x`. Rewrite using `[dTau_fn, MV.fn_smul, Pi.smul_apply, smul_eq_mul]`. Establish `h` using `rdc_f0K_wt ε hm a x`. Rewrite using `[show (w0 ε m).fn = f0K ε m from rfl, h]`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem derived_action_weight_vector (ε : Fin n → Bool) {m : Fin n → ℤ} (hm : NonnegDom ε m) (a : Fin n) :
     dTau ε m (Matrix.single a a 1) (w0 ε m) = (((m a : ℝ)) : ℂ) • w0 ε m := by
@@ -302,7 +300,7 @@ theorem derived_action_weight_vector (ε : Fin n → Bool) {m : Fin n → ℤ} (
   ring
 
 /- English proof (translation)
-Apply `MV.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `x`. Rewrite using `[dTau_fn, MV.fn_zero, Pi.zero_apply]`. Conclude with `rdc_f0K_hw ε hm hab he x`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem derived_action_highest_vector (ε : Fin n → Bool) {m : Fin n → ℤ} (hm : NonnegDom ε m) (a b : Fin n) (hab : a < b)
     (he : ε a = ε b) : dTau ε m (Matrix.single a b 1) (w0 ε m) = 0 := by
@@ -312,7 +310,7 @@ theorem derived_action_highest_vector (ε : Fin n → Bool) {m : Fin n → ℤ} 
   exact rdc_f0K_hw ε hm hab he x
 
 /- English proof (translation)
-Unfold `wN`. Rewrite using `[map_smul, derived_action_weight_vector ε hm a, smul_comm]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem dTau_wt (ε : Fin n → Bool) {m : Fin n → ℤ} (hm : NonnegDom ε m) (a : Fin n) :
     dTau ε m (Matrix.single a a 1) (wN ε m) = (((m a : ℝ)) : ℂ) • wN ε m := by
@@ -320,7 +318,7 @@ theorem dTau_wt (ε : Fin n → Bool) {m : Fin n → ℤ} (hm : NonnegDom ε m) 
   rw [map_smul, derived_action_weight_vector ε hm a, smul_comm]
 
 /- English proof (translation)
-Unfold `wN`. Rewrite using `[map_smul, derived_action_highest_vector ε hm a b hab he, smul_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem dTau_hw (ε : Fin n → Bool) {m : Fin n → ℤ} (hm : NonnegDom ε m) (a b : Fin n) (hab : a < b)
     (he : ε a = ε b) : dTau ε m (Matrix.single a b 1) (wN ε m) = 0 := by
@@ -328,13 +326,11 @@ theorem dTau_hw (ε : Fin n → Bool) {m : Fin n → ℤ} (hm : NonnegDom ε m) 
   rw [map_smul, derived_action_highest_vector ε hm a b hab he, smul_zero]
 
 /- English proof (translation)
-Establish `hn : ‖w0 ε m‖ ≠ 0` using `norm_ne_zero_iff.mpr (highest_weight_vector_ne_zero ε m)`. Establish `hw0 : w0 ε m ∈ W`. Establish `h : w0 ε m = ((‖w0 ε m‖ : ℝ) : ℂ) • wN ε m`. Unfold `wN`. Rewrite using `[smul_smul, ← Complex.ofReal_mul, mul_inv_cancel₀ hn, Complex.ofReal_one, one_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h]`. Conclude with `W.smul_mem _ hw`. Establish `htr : ∀ k : KG ε, rtr ε k (f0K ε m) ∈ W.map (mvFnL ε m)` using `fun k => ⟨tauC ε m k (w0 ε m), hW k _ hw0, rfl⟩`. Establish `hle : Vsp ε m ≤ W.map (mvFnL ε m)`. Rewrite using `[Vsp, Submodule.span_le]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `htr k`. Rewrite using `[eq_top_iff]`. Introduce `x _`. Take `⟨y, hy, hyx⟩` from `hle x.mem`.
-
-Rewrite using `[← mvFnL_injective ε m hyx]`. Conclude with `hy`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gen_wN (ε : Fin n → Bool) (m : Fin n → ℤ) (W : Submodule ℂ (MV ε m))
     (hW : ∀ k : KG ε, ∀ v ∈ W, ((tauM ε m k : unitary (MV ε m →L[ℂ] MV ε m)) : MV ε m →L[ℂ] MV ε m) v ∈ W)
@@ -363,7 +359,7 @@ def modelKType (ε : Fin n → Bool) {m : Fin n → ℤ} (hm : NonnegDom ε m) :
     (dTau_wt ε hm) (dTau_hw ε hm) (gen_wN ε m)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨modelKType ε hm⟩`.
+Supply the required witnesses or components.
 -/
 theorem model_exists (ε : Fin n → Bool) {m : Fin n → ℤ} (hm : NonnegDom ε m) :
     Nonempty (KType ε (fun a => (m a : ℝ))) := ⟨modelKType ε hm⟩

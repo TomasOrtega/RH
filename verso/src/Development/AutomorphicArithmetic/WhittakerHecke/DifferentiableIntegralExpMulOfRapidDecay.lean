@@ -8,35 +8,33 @@ open scoped Classical
 open UpperTheory.ConvolutionTheory.R2.G (FS2 Rw nE row)
 
 /- English proof (translation)
-Introduce `I hI hdec s₀`. Establish `hexp : Integrable (fun t : ℝ => Real.exp (-|t|))`. Rewrite using `[← integrableOn_univ, ← Set.Iic_union_Ioi (a := (0 : ℝ))]`. Use `IntegrableOn.union ?_ ?_` and prove the remaining obligations. Use `(integrableOn_exp_Iic (0 : ℝ)).congr_fun (fun t ht => ?_) measurableSet_Iic` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[abs_of_nonpos (Set.mem_Iic.mp ht)]`. Use `(exp_neg_integrableOn_Ioi 0 (zero_lt_one (α := ℝ))).congr_fun (fun t ht => ?_) measurableSet_Ioi` and prove the remaining obligations. Simplify using `[abs_of_pos (Set.mem_Ioi.mp ht)]`. Take `⟨n, hn⟩` from `exists_nat_gt (2 * (|s₀.re| + 1) + 2)`. Take `⟨B, hB⟩` from `hdec n`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hB0 : 0 ≤ B`. Establish `h` using `hB 0`. Simplify using `only [abs_zero, mul_zero, neg_zero, Real.exp_zero, mul_one] at h`. Conclude with `(norm_nonneg _).trans h`. Establish `key : ∀ s : ℂ, s ∈ Metric.ball s₀ 1 → ∀ t : ℝ, ‖Complex.exp (2 * s * t)‖ * ‖I t‖ ≤ B * Real.exp (-(2 * |t|))`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s hs t`. Establish `hre : |s.re| ≤ |s₀.re| + 1`. Establish `h1 : |(s - s₀).re| ≤ ‖s - s₀‖` using `Complex.abs_re_le_norm (s - s₀)`. Establish `h2 : ‖s - s₀‖ < 1` using `by simpa [dist_eq_norm] using hs`. Establish `h3` using `abs_sub_abs_le_abs_sub s.re s₀.re`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[Complex.sub_re]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hn1 : ‖Complex.exp (2 * s * t)‖ = Real.exp (2 * s.re * t)`. Rewrite using `[Complex.norm_exp]`. Simplify using the standard rewrite rules.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `ht : 2 * s.re * t ≤ 2 * (|s₀.re| + 1) * |t|`. Establish `h1 : s.re * t ≤ |s.re| * |t|`. Rewrite using `[← abs_mul]`. Conclude with `le_abs_self _`. Establish `h2 : |s.re| * |t| ≤ (|s₀.re| + 1) * |t|` using `mul_le_mul_of_nonneg_right hre (abs_nonneg t)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hnt : (2 * (|s₀.re| + 1) + 2) * |t| ≤ (n : ℝ) * |t|` using `mul_le_mul_of_nonneg_right hn.le (abs_nonneg t)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hn1]`. Conclude with `mul_le_mul (Real.exp_le_exp.mpr ht) (hB t) (norm_nonneg _) (Real.exp_pos _).le`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations.
 
-Use `_ = B * Real.exp (2 * (|s₀.re| + 1) * |t| + -((n : ℝ) * |t|)) := by`. Rewrite using `[Real.exp_add]`. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ B * Real.exp (-(2 * |t|)) := by`. Use `mul_le_mul_of_nonneg_left (Real.exp_le_exp.mpr ?_) hB0` and prove the remaining obligations.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hcont : ∀ s : ℂ, Continuous fun t : ℝ => Complex.exp (2 * s * t)` using `fun s => by fun_prop`. Establish `hmeas : ∀ s : ℂ, AEStronglyMeasurable (fun t : ℝ => Complex.exp (2 * s * t) * I t) volume` using `fun s => (hcont s).aestronglyMeasurable.mul hI`. Establish `hmeas' : AEStronglyMeasurable (fun t : ℝ => (2 * (t : ℂ)) * Complex.exp (2 * s₀ * t) * I t) volume`. Establish `hc : Continuous fun t : ℝ => (2 * (t : ℂ)) * Complex.exp (2 * s₀ * t)` using `by fun_prop`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Conclude with `hc.aestronglyMeasurable.mul hI`. Establish `hF_int : Integrable (fun t : ℝ => Complex.exp (2 * s₀ * t) * I t) volume`. Use `(hexp.const_mul B).mono' (hmeas s₀) (ae_of_all _ fun t => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul]`. Use `(key s₀ (Metric.mem_ball_self one_pos) t).trans (mul_le_mul_of_nonneg_left (Real.exp_le_exp.mpr ?_) hB0)` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the linear relations using `[abs_nonneg t]`. Establish `h_bound : ∀ᵐ t : ℝ ∂volume, ∀ s ∈ Metric.ball s₀ 1, ‖(2 * (t : ℂ)) * Complex.exp (2 * s * t) * I t‖ ≤ 2 * B * Real.exp (-|t|)`. Use `ae_of_all _ fun t s hs => ?_` and prove the remaining obligations. Establish `hk` using `key s hs t`. Establish `hnorm : ‖(2 * (t : ℂ)) * Complex.exp (2 * s * t) * I t‖ = 2 * |t| * (‖Complex.exp (2 * s * t)‖ * ‖I t‖)`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[norm_mul, norm_mul, norm_mul, Complex.norm_real, Real.norm_eq_abs]`. Simplify using `only [Complex.norm_ofNat]`. Expand and normalize the polynomial expressions, which then agree. Establish `habs : |t| ≤ Real.exp |t|`. Combine the linear relations using `[Real.add_one_le_exp |t|]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[hnorm]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Real.exp_add]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h_diff : ∀ᵐ t : ℝ ∂volume, ∀ s ∈ Metric.ball s₀ 1, HasDerivAt (fun x : ℂ => Complex.exp (2 * x * t) * I t) ((2 * (t : ℂ)) * Complex.exp (2 * s * t) * I t) s`. Use `ae_of_all _ fun t s _ => ?_` and prove the remaining obligations. Establish `h1 : HasDerivAt (fun x : ℂ => 2 * x * (t : ℂ)) (2 * (t : ℂ)) s`. Simplify using `using ((hasDerivAt_id s).const_mul (2 : ℂ)).mul_const (t : ℂ)`. Establish `h2` using `h1.cexp.mul_const (I t)`.
-
-Rewrite `h2` using `[show Complex.exp (2 * s * t) * (2 * (t : ℂ)) * I t = (2 * (t : ℂ)) * Complex.exp (2 * s * t) * I t by ring]`. Then use the resulting hypothesis. Conclude with `(hasDerivAt_integral_of_dominated_loc_of_deriv_le (bound := fun t : ℝ => 2 * B * Real.exp (-|t|)) (F := fun (s : ℂ) (t : ℝ) => Complex.exp (2 * s * t) * I t) (F' := fun (s : ℂ) (t : ℝ) => (2 * (t : ℂ)) * Complex.exp (2 * s * t) * I t) (Metric.ball_mem_nhds s₀ one_pos) (Eventually …`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.differentiable_integral_exp_mul_of_rapid_decay :
     ∀ I : ℝ → ℂ, AEStronglyMeasurable I volume → (∀ n : ℕ, ∃ B : ℝ, ∀ t, ‖I t‖ ≤ B * Real.exp (-((n : ℝ) * |t|))) →

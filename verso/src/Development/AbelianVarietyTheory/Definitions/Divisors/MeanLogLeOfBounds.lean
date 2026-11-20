@@ -27,7 +27,7 @@ def PointRes (X : Data F) (b J : ℝ) : Prop :=
           -meanLog E γ ≤ J + ((X.D : ℝ) + 3) * x.ht
 
 /- English proof (translation)
-Take `⟨m, θ, B, h₁, h₂, h₃, h₄, h₅⟩` from `h`. Use `⟨m, θ, B, h₁, h₂, h₃, fun i => (h₄ i).trans hb, fun E _ _ _ s hm hs x => ?_⟩` and prove the remaining obligations. Take `⟨γ, g₁, g₂, g₃⟩` from `h₅ E s hm hs x`. Conclude with `⟨γ, g₁, g₂, by linarith⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem PointRes.mono {X : Data F} {b b' J J' : ℝ} (h : PointRes X b J) (hb : b ≤ b') (hJ : J ≤ J') : PointRes X b' J' := by
   obtain ⟨m, θ, B, h₁, h₂, h₃, h₄, h₅⟩ := h
@@ -36,9 +36,9 @@ theorem PointRes.mono {X : Data F} {b b' J J' : ℝ} (h : PointRes X b J) (hb : 
   exact ⟨γ, g₁, g₂, by linarith⟩
 
 /- English proof (translation)
-Take `⟨m, θ, B, h₁, h₂, h₃, h₄, h₅⟩` from `h`. Use `⟨m, θ, B, h₁, h₂, h₃, h₄, fun E _ _ _ s hm hs hsp => ?_⟩` and prove the remaining obligations. Take `⟨x, Co, hCo, e⟩` from `Split.exists_coord (G := X.toGeo) hsp hs`. Use `⟨Co, e.trans (Finset.sum_congr rfl fun p _ => (hCo.vecHt_eq p).symm), fun p => ?_⟩` and prove the remaining obligations. Take `⟨γ, g₁, g₂, g₃⟩` from `h₅ E s hm hs (x p)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨γ, g₁, fun i τ => (hCo.norm_ev p τ _).trans_le (g₂ i τ), g₃.trans_eq (congrArg (J + _ * ·) (hCo.vecHt_eq p).symm)⟩`.
+Supply the required witnesses or components.
 -/
 theorem PointRes.exists_coord {X : Data F} {b J : ℝ} (h : PointRes X b J) :
     ∃ (m : ℕ) (θ : Fin m → X.V 0) (B : Fin m → (F →+* ℂ) → ℝ), (∀ i, θ i ∈ X.M 0) ∧ Submodule.span F (Set.range θ) = ⊤ ∧
@@ -67,7 +67,7 @@ def linePt : RatPt ((Proj.geo ℚ (M := 1) le_rfl).baseChange ℚ) fun _ => ![1,
   ⟨inv _, (IsIso.inv_hom_id _).trans (Spec.map_id _).symm⟩
 
 /- English proof (translation)
-Take `⟨x, Co, h, -⟩` from `Split.exists_coord (G := Proj.geo ℚ (M := 1) le_rfl) (E := ℚ) (s := fun _ => ![1, 0]) (fun _ hx => ⟨@inv _ _ _ _ _ projTuple.isIso_cut_line, (@IsIso.eq_comp_inv _ _ _ _ _ _ projTuple.isIso_cut_line _ _).2 hx⟩) (Geo.isGood_baseChange_iff.2 projTuple.isGoodSection_line.1)`. Conclude with `⟨_, x, Co, (x.symm linePt).pos, h⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 example : ∃ (δ : ℕ) (x : Fin δ ≃ RatPt ((Proj.geo ℚ (M := 1) le_rfl).baseChange ℚ) fun _ => ![1, 0])
     (Co : Coord ((Proj.geo ℚ (M := 1) le_rfl).baseChange ℚ)
@@ -78,7 +78,7 @@ example : ∃ (δ : ℕ) (x : Fin δ ≃ RatPt ((Proj.geo ℚ (M := 1) le_rfl).b
   exact ⟨_, x, Co, (x.symm linePt).pos, h⟩
 
 /- English proof (translation)
-Simplify using `[x.nrm_eq, (x.c₂_pos τ).ne']`.
+Simplify using the standard rewrite rules.
 -/
 example {K : Type} [Field K] [NumberField K] {G : Geo K} {s : Fin G.D → Fin G.N → K} (x : RatPt G s) (τ : K →+* ℂ)
     (g : G.SecOn s 0) : x.nrm 0 τ g = 0 ↔ x.val 0 g = 0 := by

@@ -8,19 +8,19 @@ import Formalism.LocalToGlobal.TorsionIntegrality.FrobeniusFibreCurves.Logarithm
 namespace Formalism.L2.Th1.B
 
 /- English proof (translation)
-The claim follows from `Iso.theta_zero_isogeny_holds`.
+A detailed English derivation is pending.
 -/
 theorem th0Isogeny : Th0Isogeny := Iso.theta_zero_isogeny_holds
 /- English proof (translation)
-The claim follows from `Nrm.PhENorm_of th0Isogeny`.
+A detailed English derivation is pending.
 -/
 theorem phENorm : PhENorm := Nrm.PhENorm_of th0Isogeny
 /- English proof (translation)
-The claim follows from `Van.Th0Vanish_of cubeE phENorm`.
+A detailed English derivation is pending.
 -/
 theorem th0Vanish : ThetaZeroVanishing := Van.Th0Vanish_of cubeE phENorm
 /- English proof (translation)
-The claim follows from `Van.two_adic_scalar_conditions`.
+A detailed English derivation is pending.
 -/
 theorem twoAdicScalars : TwoAdicScalars := Van.two_adic_scalar_conditions
 

@@ -18,7 +18,7 @@ noncomputable section
 namespace GlobalTheory.ConstLat.CramerFrame
 
 /- English proof (translation)
-Take `⟨A, rfl⟩` from `CramerValues.exists_germ_matrix P hP`. Rewrite using `[CramerValues.minorAt_map_ringHom]`. Conclude with `⟨_, rfl⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem regAt_minorAt {Z : Scheme.{0}} [IsIntegral Z] {x : Z} {n g : ℕ} (P : Matrix (Fin n) (Fin g) Z.functionField)
     (hP : ∀ a b, RegAt x (P a b)) (k : ℕ) (hk : k ≤ g) (τ : Fin k → Fin n) : RegAt x (minorAt P k hk τ) := by
@@ -27,7 +27,7 @@ theorem regAt_minorAt {Z : Scheme.{0}} [IsIntegral Z] {x : Z} {n g : ℕ} (P : M
   exact ⟨_, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[RingHom.map_det]`. Use `congr 1`. Use extensionality with `l k`. Simplify using `[Matrix.mul_apply, rowSel]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem det_rowSel_mul_map {R S : Type} [CommRing R] [CommRing S] (ψ : R →+* S) {g : ℕ} (τ : Fin g → Fin (g + g))
     (M : Matrix (Fin (g + g)) (Fin g) R) :
@@ -39,19 +39,17 @@ theorem det_rowSel_mul_map {R S : Type} [CommRing R] [CommRing S] (ψ : R →+* 
   simp [Matrix.mul_apply, rowSel]
 
 /- English proof (translation)
-Introduce `F _ _ Y V W p hp hW g U' H d T σ hT hreg hne hunit hmax`. Establish `htri : ∀ y, cramerCol H σ = cramerCol (H * ((T y).map V.φ)⁻¹) σ` using `fun y => (triChange H ((T y).map V.φ) (fun i j hij => by`. Rewrite using `[Matrix.map_apply, (hT y).1 hij, map_zero]) (fun i => by`. Rewrite using `[Matrix.map_apply, (hT y).2 i]`. Conclude with `(map_ne_zero _).2 (d y i).ne_zero) σ).2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hfn : ∀ r k, fnEquiv V (frameUm V H σ r k) = cramerCol H σ r k` using `fun r k => (fnEquiv V).apply_symm_apply _`. Establish `hgen : ∀ r k, ∀ z : V.G, V.j z ∈ U' → RegAt (V.j z) (frameUm V H σ r k)`. Introduce `r k z hz`. Rewrite using `[← ((fnEquiv_transport V).1 z _).1, hfn, htri (V.π z)]`. Simplify using `only [cramerCol, Matrix.of_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[div_eq_mul_inv]`. Conclude with `(regAt_minorAt _ (hreg z hz) _ _ _).mul (hunit z hz _ _).inv.regAt`. Use `⟨?_, fun x hx hpx r k => ?_⟩` and prove the remaining obligations. Take `⟨B, -, -, -, hdet⟩` from `cramerCol_tri_det H σ hne`. Establish `h` using `det_rowSel_mul_map ((fnEquiv V).symm : V.G.functionField →+* V.X.functionField) (σ g) (cramerCol H σ)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `h.trans ((congrArg _ hdet).trans (map_one _))`. Use `GlobalTheory.Mean4O.Cover.RegOverP.regAt_of_values_over F Y V p hp W hW U' _ (hgen r k) ?_ x hx hpx` and prove the remaining obligations. Introduce `v hv e y hy z yt hz hyt hU`. Establish `hj : V.j (below z) ∈ U'`. Express the relevant statement in the definitionally equal form `(z ≫ V.j) (IsLocalRing.closedPoint (AlgebraicClosure F)) ∈ U'`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hyt]`. Conclude with `hU (x := spMap e.O.subtype (IsLocalRing.closedPoint (AlgebraicClosure F))) trivial`. Establish `hb : below y.1 = V.π (below z)`. Rewrite using `[← hz]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hm` using `hmax v hv e y hy z yt hz hyt hU ((k : ℕ) + 1) k.2 (Fin.snoc (σ k) r)`. Rewrite `hm` using `[hb]`. Take `⟨-, hv2, hv3⟩` from `CramerValues.values_regular z`. Establish `hu` using `hunit (below z) hj ((k : ℕ) + 1) k.2`. Establish `hne'` using `GlobalTheory.TrueGeo.SmallSec.valAt_ne_zero hu`.
-
-Rewrite using `[← (fnEquiv_transport V).2 z _ (hgen r k _ hj), hfn, htri (V.π (below z))]`. Simplify using `only [cramerCol, Matrix.of_apply]`. Rewrite using `[(hv3 _ _ (regAt_minorAt _ (hreg _ hj) _ _ _) hu).2, map_div₀, div_le_one (e.w.pos hne'), (hv2 _ (hreg _ hj) _ _ _).2, (hv2 _ (hreg _ hj) _ _ _).2]`. Conclude with `hm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frameUm_det_regAt : ∀ {F : Type} [Field F] [NumberField F] {Y : Var F} (V : Cover Y) (W : Y.X.Opens) (p : ℕ), p.Prime → genericPoint Y.X ∈ W → ∀ {g : ℕ} (U' : V.X.Opens) (H : Matrix (Fin (g + g)) (Fin g) V.G.functionField) (d : Y.X → Fin g → Y.Fnˣ) (T : Y.X → Matrix (Fin g) (Fin g) Y.Fn) (σ : ∀ k : ℕ, Fin k → Fin (g + g)), (∀ y, (T y).BlockTriangular id ∧ ∀ i, T y i i = (d y i : Y.Fn)) → ChartReg V U' H T → (∀ (k : ℕ) (hk : k ≤ g), minorAt H k hk (σ k) ≠ 0) → (∀ z : V.G, V.j z ∈ U' → ∀ (k : ℕ) (hk : k ≤ g), UnitAt z (minorAt (H * ((T (V.π z)).map V.φ)⁻¹) k hk (σ k))) → (AtTest V W p fun _ e y z yt => ⊤ ≤ yt ⁻¹ᵁ U' → ∀ (k : ℕ) (hk : k ≤ g) (τ : Fin k → Fin (g + g)), e.w (minorAt (valMat V H (T (below y.1)) z) k hk τ) ≤ e.w (minorAt (valMat V H (T (below y.1)) z) k hk (σ k))) → (rowSel (σ g) * frameUm V H σ).det = 1 ∧ ∀ x ∈ U', ¬ IsUnit (p : V.X.presheaf.stalk x) → ∀ r k, RegAt x (frameUm V H σ r k) := by
   intro F _ _ Y V W p hp hW g U' H d T σ hT hreg hne hunit hmax

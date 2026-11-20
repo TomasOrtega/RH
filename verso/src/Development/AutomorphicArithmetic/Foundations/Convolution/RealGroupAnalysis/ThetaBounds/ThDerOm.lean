@@ -11,17 +11,17 @@ open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.Ff
 open scoped Classical
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ _ D W φ φ' hφ' G hG hD g h t`. Establish `hcomm : ∀ (g : G1 F) (x : S4 F), W.Om g (W.L h x) = W.L h (W.Om (cD (nu F h)⁻¹ g) x)`. Introduce `g x`. Establish `e` using `W.comm h (cD (nu F h)⁻¹ g)`. Rewrite `e` using `[← cD_mul_left, mul_inv_cancel, cD_one_left]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e'` using `congrArg (fun T : Module.End ℂ (S4 F) => T x) e`. Simplify `e'.symm` using `only [Module.End.mul_apply]`. Establish `hmul : ∀ (a b : G1 F) (x : S4 F), W.Om (a * b) x = W.Om a (W.Om b x)`. Introduce `a b x`. Rewrite using `[map_mul, Module.End.mul_apply]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hDL : Der (fun s => W.L h (W.Om (G s) φ)) (fun s => W.L h (W.Om (G s) φ'))`. Introduce `s v`. Simplify using `only [W.L_apply]`. Conclude with `(hD s _).const_mul _`. Establish `hdom : ∀ (g : G1 F) (t : ℝ), Dom (Metric.ball t 1) fun s => (W.Om g (W.L h (W.Om (G s) φ'))).1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g t`. Set `c : ℝ → G1 F` to `fun s => cD (nu F h)⁻¹ g * G s`. Establish `hc : Continuous c` using `continuous_const.mul hG`. Establish `hC : IsCompact (c '' Metric.closedBall t 1)` using `(isCompact_closedBall t 1).image hc`. Take `⟨K, hK, hB⟩` from `lDom F E D W (G1 F) (c '' Metric.closedBall t 1) (fun k => W.Om k φ') (omCpt F E D W φ' hφ' _ hC) {h} isCompact_singleton`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨K, hK, fun N => ?_⟩` and prove the remaining obligations. Take `⟨B, hB⟩` from `hB N`. Use `⟨B, fun s hs v => ?_⟩` and prove the remaining obligations. Establish `hmem : ((h, c s) : GL (Fin 2) (A E) × G1 F) ∈ ({h} : Set _) ×ˢ (c '' Metric.closedBall t 1)` using `⟨rfl, s, Metric.ball_subset_closedBall hs, rfl⟩`. Use `hB _ hmem v` as an intermediate fact.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this` using `only [hcomm, hmul, c]`. Conclude with `thDer F _ _ (omDer F E D W _ _ hDL hdom g) t (hdom g t)`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.Ff.thDerOm :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyReal F] [IsTotallyComplex E] (D : Dat F E) (W : Weil D), ThDerOm W := by

@@ -29,7 +29,7 @@ theorem conjEnd_apply {g : ℕ} (f : Module.End ℂ (Fin g → ℂ)) (x : Fin g 
     conjEnd g f x = star (f (star x)) := rfl
 
 /- English proof (translation)
-Simplify using `only [eigSp, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, sub_eq_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_eigSp_iff {g : ℕ} {O : Type} [CommRing O] (ρ : O →+* Module.End ℂ (Fin g → ℂ)) (σ : O →+* ℂ)
     (x : Fin g → ℂ) : x ∈ eigSp ρ σ ↔ ∀ a, ρ a x = σ a • x := by
@@ -37,7 +37,7 @@ theorem mem_eigSp_iff {g : ℕ} {O : Type} [CommRing O] (ρ : O →+* Module.End
     LinearMap.id_apply, sub_eq_zero]
 
 /- English proof (translation)
-Rewrite `hx`, the goal using `[mem_eigSp_iff]`. Introduce `a`. Use `congrArg star (hx a)` as an intermediate fact. Simplify `this` using `[conjEnd_apply, star_smul]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem star_mem_of_conj {g : ℕ} {O : Type} [CommRing O] {ρ : O →+* Module.End ℂ (Fin g → ℂ)} {σ : O →+* ℂ}
     {x : Fin g → ℂ} (hx : x ∈ eigSp ((conjEnd g).comp ρ) σ) : star x ∈ eigSp ρ ((starRingEnd ℂ).comp σ) := by
@@ -47,7 +47,7 @@ theorem star_mem_of_conj {g : ℕ} {O : Type} [CommRing O] {ρ : O →+* Module.
   simpa [conjEnd_apply, star_smul] using this
 
 /- English proof (translation)
-Rewrite `hy`, the goal using `[mem_eigSp_iff]`. Introduce `a`. Simplify using `[conjEnd_apply, hy a, star_smul]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem star_mem_conj {g : ℕ} {O : Type} [CommRing O] {ρ : O →+* Module.End ℂ (Fin g → ℂ)} {σ : O →+* ℂ}
     {y : Fin g → ℂ} (hy : y ∈ eigSp ρ ((starRingEnd ℂ).comp σ)) : star y ∈ eigSp ((conjEnd g).comp ρ) σ := by
@@ -56,7 +56,7 @@ theorem star_mem_conj {g : ℕ} {O : Type} [CommRing O] {ρ : O →+* Module.End
   simp [conjEnd_apply, hy a, star_smul]
 
 /- English proof (translation)
-Set `j : eigSp ((conjEnd g).comp ρ) σ ≃+ eigSp ρ ((starRingEnd ℂ).comp σ)` to `{ toFun := fun x => ⟨star x.1, star_mem_of_conj x.2⟩ invFun := fun y => ⟨star y.1, star_mem_conj y.2⟩ left_inv := fun x => Subtype.ext (star_star _) right_inv := fun y => Subtype.ext (star_star _) map_add' := fun x y => Subtype.ext (star_add _ _) }`. Establish `hr` using `rank_eq_of_equiv_equiv (R := ℂ) (R' := ℂ) (starRingEnd ℂ) j (Function.Involutive.bijective (f := starRingEnd ℂ) (fun z => by simp)) (fun r m => Subtype.ext (by simp [j, star_smul]))`. Conclude with `congrArg Cardinal.toNat hr`.
+Introduce a local definition for the expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finrank_eigSp_conj {g : ℕ} {O : Type} [CommRing O] (ρ : O →+* Module.End ℂ (Fin g → ℂ)) (σ : O →+* ℂ) :
     Module.finrank ℂ (eigSp ((conjEnd g).comp ρ) σ) = Module.finrank ℂ (eigSp ρ ((starRingEnd ℂ).comp σ)) := by
@@ -71,25 +71,25 @@ theorem finrank_eigSp_conj {g : ℕ} {O : Type} [CommRing O] (ρ : O →+* Modul
   exact congrArg Cardinal.toNat hr
 
 /- English proof (translation)
-Simplify using `[dotProduct, mulVec, star_sum]`.
+Simplify using the standard rewrite rules.
 -/
 theorem star_herm {g : ℕ} (Hm : Matrix (Fin g) (Fin g) ℂ) (z w : Fin g → ℂ) :
     star z ⬝ᵥ Hm.map (starRingEnd ℂ) *ᵥ star (star w) = star (z ⬝ᵥ Hm *ᵥ star w) := by
   simp [dotProduct, mulVec, star_sum]
 
 /- English proof (translation)
-Use extensionality with `a`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem conj_conj_comp {O : Type} [Semiring O] (s : O →+* ℂ) :
     (starRingEnd ℂ).comp ((starRingEnd ℂ).comp s) = s := by
   ext a; simp
 
 /- English proof (translation)
-Introduce `t ht`. Take `⟨L, hL⟩` from `hf (star t) (hU t ht)`. Set `L' : (Fin n → ℂ) →L[ℂ] (Fin g → ℂ)` to `{ toFun := fun v => star (L (star v)) map_add' := fun x y => by simp only [star_add, map_add] map_smul' := fun c x => by simp only [star_smul, map_smul, star_star, RingHom.id_apply] cont := continuous_star.comp (L.continuous.comp continuous_star) }`. Use `⟨L', ?_⟩` and prove the remaining obligations. Rewrite `hL`, the goal using `[hasFDerivWithinAt_iff_tendsto]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hs : Tendsto (star : (Fin n → ℂ) → (Fin n → ℂ)) (𝓝[U'] t) (𝓝[U] (star t))` using `tendsto_nhdsWithin_iff.2 ⟨(continuous_star.tendsto t).mono_left nhdsWithin_le_nhds, eventually_mem_nhdsWithin.mono hU⟩`. Use `(hL.comp hs).congr (fun x => ?_)` and prove the remaining obligations. Establish `h1 : star (f (star x)) - star (f (star t)) - L' (x - t) = star (f (star x) - f (star t) - L (star x - star t))` using `by show _ - _ - star (L (star (x - t))) = _`. Simplify using `only [star_sub]`. Establish `h2 : ‖star x - star t‖ = ‖x - t‖` using `by rw [← star_sub, norm_star]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [Function.comp]`. Rewrite using `[h1, norm_star, h2]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem differentiableOn_conj {n g : ℕ} {U U' : Set (Fin n → ℂ)} {f : (Fin n → ℂ) → Fin g → ℂ}
     (hf : DifferentiableOn ℂ f U) (hU : ∀ t ∈ U', star t ∈ U) :
@@ -158,9 +158,7 @@ def conjLat {g : ℕ} {Λ : Type} [AddCommGroup Λ] [Module (𝓞 E) Λ] (R : Ri
 variable {g : ℕ} {Λ : Type} [AddCommGroup Λ] [Module (𝓞 E) Λ] {Ψ : Type} [Fintype Ψ] {j j' n : ℕ}
 
 /- English proof (translation)
-Introduce `τ`. Prove the components needed by the constructor for the conclusion. Use `show Module.finrank ℂ (eigSp ((conjEnd g).comp R.B) _) = j'`. Rewrite using `[finrank_eigSp_conj, conj_conj_comp]`. Conclude with `(h τ).1`.
-
-Use `show Module.finrank ℂ (eigSp ((conjEnd g).comp R.B) _) = j`. Rewrite using `[finrank_eigSp_conj, conj_conj_comp]`. Conclude with `(h τ).2`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasSig_conjLat {R : RiemLat E g Λ} {σ : Ψ → (𝓞 E →+* ℂ)} (h : R.HasSig σ j j') :
     (conjLat R).HasSig (fun τ => (starRingEnd ℂ).comp (σ τ)) j j' := by
@@ -174,9 +172,9 @@ theorem hasSig_conjLat {R : RiemLat E g Λ} {σ : Ψ → (𝓞 E →+* ℂ)} (h 
     exact (h τ).2
 
 /- English proof (translation)
-Establish `e : ∀ a b : 𝓞 E →+* ℂ, (starRingEnd ℂ).comp a = b ↔ a = (starRingEnd ℂ).comp b` using `fun a b => ⟨fun hab => by rw [← hab, conj_conj_comp], fun hab => by rw [hab, conj_conj_comp]⟩`. Use `⟨fun a b hab => h.1 ?_, fun s => ?_⟩` and prove the remaining obligations. Use `congrArg (fun c : 𝓞 E →+* ℂ => (starRingEnd ℂ).comp c) hab` as an intermediate fact. Simplify `this` using `only [conj_conj_comp]`. Establish `key` using `h.2 ((starRingEnd ℂ).comp s)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite `key` using `[conj_conj_comp]`. Simplify using `only [e, conj_conj_comp]`. Conclude with `key`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isCMFam_conj {σ : Ψ → (𝓞 E →+* ℂ)} (h : IsCMFam σ) :
     IsCMFam (fun τ => (starRingEnd ℂ).comp (σ τ)) := by
@@ -191,7 +189,7 @@ theorem isCMFam_conj {σ : Ψ → (𝓞 E →+* ℂ)} (h : IsCMFam σ) :
     exact key
 
 /- English proof (translation)
-Take `⟨e, he⟩` from `h`. Set `e' : (Fin g → ℂ) ≃ₗ[ℂ] (Fin g → ℂ)` to `{ toFun := fun x => star (e (star x)) invFun := fun x => star (e.symm (star x)) map_add' := fun x y => by simp only [star_add, map_add] map_smul' := fun c x => by simp only [star_smul, map_smul, star_star, RingHom.id_apply] left_inv := fun x => by simp right_inv := fun x => by si …`. Use `⟨e', fun x => ?_⟩` and prove the remaining obligations. Use `show R₂'.P (γ x) = star (e (star (R₁'.P x)))`. Rewrite using `[h₂, he, h₁, star_star]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eqvBy_conj {R₁ R₂ R₁' R₂' : RiemLat E g Λ} {γ : Λ ≃ₗ[𝓞 E] Λ} (h₁ : ∀ x, R₁'.P x = star (R₁.P x))
     (h₂ : ∀ x, R₂'.P x = star (R₂.P x)) (h : R₁.EqvBy R₂ γ) : R₁'.EqvBy R₂' γ := by
@@ -208,14 +206,14 @@ theorem eqvBy_conj {R₁ R₂ R₁' R₂' : RiemLat E g Λ} {γ : Λ ≃ₗ[𝓞
   rw [h₂, he, h₁, star_star]
 
 /- English proof (translation)
-The claim follows from `star_herm R.Hm y x`.
+A detailed English derivation is pending.
 -/
 theorem ip_conj (R : RiemLat E g Λ) (x y : Fin g → ℂ) :
     (conjLat R).ip (star x) (star y) = star (R.ip x y) :=
   star_herm R.Hm y x
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [RiemLat.gram, Matrix.of_apply, Matrix.map_apply, ip_conj]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem gram_conj (R : RiemLat E g Λ) {m : ℕ} (u : Fin m → Fin g → ℂ) :
     (conjLat R).gram (fun a => star (u a)) = (R.gram u).map (starRingEnd ℂ) := by
@@ -224,7 +222,7 @@ theorem gram_conj (R : RiemLat E g Λ) {m : ℕ} (u : Fin m → Fin g → ℂ) :
   rfl
 
 /- English proof (translation)
-Use `RingHom.map_det (starRingEnd ℂ) M` as an intermediate fact. Rewrite `this` using `[RingHom.mapMatrix_apply]`. Rewrite using `[← this, Complex.conj_re]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem det_conj_re {m : Type} [Fintype m] [DecidableEq m] (M : Matrix m m ℂ) :
     (M.map (starRingEnd ℂ)).det.re = M.det.re := by
@@ -233,7 +231,7 @@ theorem det_conj_re {m : Type} [Fintype m] [DecidableEq m] (M : Matrix m m ℂ) 
   rw [← this, Complex.conj_re]
 
 /- English proof (translation)
-Simplify using `only [RiemLat.logDet]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[gram_conj, det_conj_re]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem logDet_conj (R : RiemLat E g Λ) {m : ℕ} (b : Ψ → Fin m → Fin g → ℂ) :
     (conjLat R).logDet (fun τ i => star (b τ i)) = R.logDet b := by
@@ -242,7 +240,7 @@ theorem logDet_conj (R : RiemLat E g Λ) {m : ℕ} (b : Ψ → Fin m → Fin g �
   rw [gram_conj, det_conj_re]
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `[ballMat]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem ballMat_star (q : Ψ × Fin j × Fin j' ≃ Fin n) (t : Fin n → ℂ) (τ : Ψ) :
     ballMat q (star t) τ = (ballMat q t τ).map (starRingEnd ℂ) := by
@@ -250,7 +248,7 @@ theorem ballMat_star (q : Ψ × Fin j × Fin j' ≃ Fin n) (t : Fin n → ℂ) (
   simp [ballMat]
 
 /- English proof (translation)
-Rewrite using `[ballMat_star]`. Use extensionality with `a b`. Simplify using `[Matrix.mul_apply, Matrix.one_apply, Matrix.sub_apply, Matrix.conjTranspose_apply, map_sum, apply_ite]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem one_sub_star (q : Ψ × Fin j × Fin j' ≃ Fin n) (t : Fin n → ℂ) (τ : Ψ) :
     1 - (ballMat q (star t) τ)ᴴ * ballMat q (star t) τ =
@@ -260,9 +258,9 @@ theorem one_sub_star (q : Ψ × Fin j × Fin j' ≃ Fin n) (t : Fin n → ℂ) (
   simp [Matrix.mul_apply, Matrix.one_apply, Matrix.sub_apply, Matrix.conjTranspose_apply, map_sum, apply_ite]
 
 /- English proof (translation)
-Introduce `τ`. Establish `h` using `ht τ`. Rewrite using `[one_sub_star]`. Establish `he : (1 - (ballMat q t τ)ᴴ * ballMat q t τ).map (starRingEnd ℂ) = (1 - (ballMat q t τ)ᴴ * ballMat q t τ)ᵀ`. Use extensionality with `a b`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Conclude with `h.1.apply b a`. Rewrite using `[he]`. Conclude with `h.transpose`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem star_mem_ballDom {q : Ψ × Fin j × Fin j' ≃ Fin n} {t : Fin n → ℂ} (ht : t ∈ ballDom q) :
     star t ∈ ballDom q := by
@@ -277,15 +275,15 @@ theorem star_mem_ballDom {q : Ψ × Fin j × Fin j' ≃ Fin n} {t : Fin n → �
   exact h.transpose
 
 /- English proof (translation)
-Simplify using `only [ballPot, one_sub_star, det_conj_re]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ballPot_star (q : Ψ × Fin j × Fin j' ≃ Fin n) (t : Fin n → ℂ) : ballPot q (star t) = ballPot q t := by
   simp only [ballPot, one_sub_star, det_conj_re]
 
 /- English proof (translation)
-Rewrite `h`, the goal using `[Fintype.linearIndependent_iff]`. Introduce `c hc i`. Establish `h0 : ∑ k, star (c k) • v k = 0`. Use `congrArg star hc` as an intermediate fact. Simplify `this` using `[star_sum, star_smul]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using h (fun k => star (c k)) h0 i`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem linearIndependent_star {m : ℕ} {v : Fin m → Fin g → ℂ} (h : LinearIndependent ℂ v) :
     LinearIndependent ℂ (fun i => star (v i)) := by
@@ -297,9 +295,9 @@ theorem linearIndependent_star {m : ℕ} {v : Fin m → Fin g → ℂ} (h : Line
   simpa using h (fun k => star (c k)) h0 i
 
 /- English proof (translation)
-Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨i, rfl⟩` from `hx`. Conclude with `Submodule.subset_span ⟨i, rfl⟩`. Consider the case `zero => simp`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy => rw [star_add]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul c x _ hx => rw [star_smul]`. Conclude with `Submodule.smul_mem _ _ hx`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem star_mem_span {m : ℕ} {v : Fin m → Fin g → ℂ} {y : Fin g → ℂ}
     (hy : y ∈ Submodule.span ℂ (Set.range v)) :
@@ -313,9 +311,9 @@ theorem star_mem_span {m : ℕ} {v : Fin m → Fin g → ℂ} {y : Fin g → ℂ
   | smul c x _ hx => rw [star_smul]; exact Submodule.smul_mem _ _ hx
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Establish `hv : v i ∈ eigSp ρ s` using `h ▸ Submodule.subset_span ⟨i, rfl⟩`. Use `star_mem_conj ?_` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[conj_conj_comp]` and apply the resulting hypothesis. Introduce `x hx`. Establish `h1` using `star_mem_of_conj hx`. Rewrite `h1` using `[conj_conj_comp, ← h]`. Simplify using `using star_mem_span h1`.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem span_star {m : ℕ} {O : Type} [CommRing O] {ρ : O →+* Module.End ℂ (Fin g → ℂ)} {s : O →+* ℂ}
     {v : Fin m → Fin g → ℂ} (h : Submodule.span ℂ (Set.range v) = eigSp ρ s) :
@@ -378,7 +376,7 @@ end GlobalTheory.CompanionTheory.Ar.Cusp.ConjFam
 namespace GlobalTheory.CompanionTheory.Ar.Cusp
 
 /- English proof (translation)
-Introduce `E _ _ _ Ψ _ j j' n g Λ _ _ F`. Conclude with `⟨ConjFam.conjFam F, rfl, fun _ => rfl, rfl, fun t => ⟨fun _ => rfl, rfl, fun _ _ => rfl⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem exists_conj_univFam : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (Ψ : Type) [Fintype Ψ] (j j' n g : ℕ) (Λ : Type) [AddCommGroup Λ] [Module (𝓞 E) Λ] (F : UnivFam E Ψ j j' n g Λ), ∃ F' : UnivFam E Ψ j j' n g Λ, F'.q = F.q ∧ (∀ τ, F'.σ τ = (starRingEnd ℂ).comp (F.σ τ)) ∧ F'.form = -F.form ∧ ∀ t, (∀ x, (F'.R t).P x = star ((F.R (star t)).P x)) ∧ (F'.R t).Hm = (F.R (star t)).Hm.map (starRingEnd ℂ) ∧ ∀ a x, (F'.R t).B a x = star ((F.R (star t)).B a (star x)) := by
   intro E _ _ _ Ψ _ j j' n g Λ _ _ F

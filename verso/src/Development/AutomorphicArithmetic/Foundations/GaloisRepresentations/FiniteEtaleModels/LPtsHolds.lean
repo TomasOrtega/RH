@@ -9,53 +9,49 @@ open UpperTheory.Gal.G3 (sp)
 open UpperTheory.Gal.FiniteEtaleModels
 
 /- English proof (translation)
-Introduce `hLG E _ Γ _ X O _ _ K K₀ K₁ KN M N Y Y' pY π π' s a b hKN hNK hN0 h10 hπ hQ0 hQ1 hcomm hcov b₀ hb₀ Ω _ _ z y' hy'`. Substitute `hKN` using the available equality. Establish `hMN : X.K M ≤ X.K N` using `fun v hv => by simpa using b v hv`. Establish `hM1 : X.K M ≤ K₁` using `hQ1.le`. Establish `ad` using `hQ0.adm`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnorm : ∀ g ∈ K₀, ∀ v ∈ X.K M, g * v * g⁻¹ ∈ X.K M` using `fun g hg => (ad g hg).2`. Establish `trc : ∀ g g' (e : g = g') a b a' b', X.tr M M g a b = X.tr M M g' a' b'`. Introduce `g g' e a b a' b'`. Substitute `e` using the available equality. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Both sides reduce to the same expression.
 
-Establish `trm : ∀ g g' (hg : g ∈ K₀) (hg' : g' ∈ K₀) a b a' b', X.tr M M g a b ≫ X.tr M M g' a' b' = X.tr M M (g' * g) (ad _ (K₀.mul_mem hg' hg)).1 (ad _ (K₀.mul_mem hg' hg)).2` using `fun g g' hg hg' a b a' b' => X.tr_mul _ _ _ _ _ _ _ _ _ _ _`. Use `haveI := X.onto M N a b`. Use `haveI := X.fin M N a b`. Use `haveI := X.etale M N a b`. Take `⟨x₀, hx₀⟩` from `GlobalTheory.GeomSurj.exists_lift_of_surjective (X.tr M N 1 a b) z`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨x₁, hx₁⟩` from `hQ1.onto Ω y' (z ≫ X.q N) (by rw [← Category.assoc, hy', Category.assoc, hπ, ← Category.assoc])`. Take `⟨u, hu, au, bu, hx₁u⟩` from `hQ0.fib Ω x₀ x₁ (by`. Establish `e1 : x₀ ≫ π' ≫ s = z ≫ π` using `by rw [← hcomm, ← Category.assoc, ← hx₀]`. Establish `e2 : x₁ ≫ π' ≫ s = z ≫ π` using `by rw [← Category.assoc, hx₁, hy']`. Rewrite using `[e1, e2])`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion.
 
-Establish `cond : ∀ h (hh : h ∈ K₀) a' b', x₀ ≫ X.tr M M h a' b' ≫ π' = y' ↔ h * u⁻¹ ∈ K₁`. Introduce `h hh a' b'`. Prove the components needed by the constructor for the conclusion. Introduce `hy`. Establish `e : x₀ ≫ X.tr M M u au bu ≫ π' = x₀ ≫ X.tr M M h a' b' ≫ π'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hy, ← hx₁, hx₁u, Category.assoc]`. Take `⟨w, hw, aw, bw, hw'⟩` from `hQ1.fib Ω (x₀ ≫ X.tr M M u au bu) (x₀ ≫ X.tr M M h a' b') (by simpa only [Category.assoc] using e)`. Establish `hwu : w * u ∈ K₀` using `K₀.mul_mem (h10 hw) hu`. Establish `e2 : x₀ ≫ X.tr M M h a' b' = x₀ ≫ X.tr M M (w * u) (ad _ hwu).1 (ad _ hwu).2`. Rewrite using `[hw', Category.assoc, trm _ _ hu (h10 hw)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hk : h * (w * u)⁻¹ ∈ K₀` using `K₀.mul_mem hh (K₀.inv_mem hwu)`. Establish `e3 : (x₀ ≫ X.tr M M (w * u) (ad _ hwu).1 (ad _ hwu).2) ≫ X.tr M M (h * (w * u)⁻¹) (ad _ hk).1 (ad _ hk).2 = x₀ ≫ X.tr M M (w * u) (ad _ hwu).1 (ad _ hwu).2`. Rewrite using `[Category.assoc, trm _ _ hwu hk, ← e2]`. Use `congr 1`. Conclude with `trc _ _ (by group) _ _ _ _`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hin` using `hQ0.free _ hk _ _ Ω _ e3`. Establish `h2 : h * u⁻¹ = (h * (w * u)⁻¹) * w` using `by group`. Rewrite using `[h2]`. Conclude with `K₁.mul_mem (hM1 hin) hw`. Introduce `hw`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hw0 : h * u⁻¹ ∈ K₀` using `h10 hw`. Establish `e : X.tr M M u au bu ≫ X.tr M M (h * u⁻¹) (ad _ hw0).1 (ad _ hw0).2 ≫ π' = X.tr M M h a' b' ≫ π'`. Rewrite using `[← Category.assoc, trm _ _ hu hw0]`. Use `congr 1`. Conclude with `trc _ _ (by group) _ _ _ _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Both sides reduce to the same expression.
 
-Rewrite `e` using `[hQ1.inv _ hw]`. Rewrite using `[← hx₁, hx₁u, Category.assoc, e]`. Establish `trg : ∀ i j (g g' : Γ) (e : g = g') a b a' b', X.tr i j g a b = X.tr i j g' a' b'`. Introduce `i j g g' e a b a' b'`. Substitute `e` using the available equality.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `fibk : ∀ k ∈ X.K N, ∀ a' b', X.tr M M k a' b' ≫ X.tr M N 1 a b = X.tr M N 1 a b`. Introduce `k hk a' b'`. Establish `ak : k ∈ X.Δ` using `X.K_le N k hk`. Establish `bk : ∀ v ∈ X.K N, k * v * k⁻¹ ∈ X.K N` using `fun v hv => (X.K N).mul_mem ((X.K N).mul_mem hk hv) ((X.K N).inv_mem hk)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `a1 : 1 * k ∈ X.Δ` using `by simpa using ak`. Establish `b1 : ∀ v ∈ X.K M, 1 * k * v * (1 * k)⁻¹ ∈ X.K N` using `fun v hv => hMN (by simpa using hnorm k (hN0 hk) v hv)`. Establish `a2 : k * 1 ∈ X.Δ` using `by simpa using ak`. Establish `b2 : ∀ v ∈ X.K M, k * 1 * v * (k * 1)⁻¹ ∈ X.K N` using `fun v hv => hMN (by simpa using hnorm k (hN0 hk) v hv)`. Rewrite using `[X.tr_mul M M N k 1 a' b' a b a1 b1, trg M N _ _ (by group) a1 b1 a2 b2, ← X.tr_mul M N N 1 k a b ak bk a2 b2, X.tr_self N k ak bk hk, Category.comp_id]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `kN : ∀ n : ↥(X.K N) ⧸ (X.K M).subgroupOf (X.K N), ((Quotient.out n : X.K N) : Γ) ∈ K₀` using `fun n => hN0 (Quotient.out n).2`. Take `⟨φ, hφdef⟩ : ∃ φ : (↥(X.K N) ⧸ (X.K M).subgroupOf (X.K N)) → (sp Ω ⟶ X.Z M), ∀ n, φ n = x₀ ≫ X.tr M M ((Quotient.out n : X.K N) : Γ) (ad _ (kN n)).1 (ad _ (kN n)).2` from `⟨_, fun n => rfl⟩`. Establish `hF : ∀ (c : ↥K ⧸ (X.K N).subgroupOf K) (n : ↥(X.K N) ⧸ (X.K M).subgroupOf (X.K N)), b₀⁻¹ * ↑(Quotient.out c) * ↑(Quotient.out n) * u⁻¹ ∈ K₁ → φ n ≫ X.tr M N 1 a b = z ∧ b₀⁻¹ * ↑(Quotient.out c) ∈ K₀ ∧ ∀ (a' : b₀⁻¹ * ↑(Quotient.out c) ∈ X.Δ) (b' : ∀ v ∈ X.K M, b₀⁻¹ * ↑(Quotient.ou …`. Introduce `c n hcn`. Establish `hn0` using `kN n`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hg : b₀⁻¹ * ↑(Quotient.out c) ∈ K₀`. Establish `e : b₀⁻¹ * ↑(Quotient.out c) = (b₀⁻¹ * ↑(Quotient.out c) * ↑(Quotient.out n) * u⁻¹) * u * (↑(Quotient.out n))⁻¹` using `by group`. Rewrite using `[e]`. Conclude with `K₀.mul_mem (K₀.mul_mem (h10 hcn) hu) (K₀.inv_mem hn0)`. Use `⟨?_, hg, fun a' b' => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Rewrite using `[hφdef, Category.assoc, fibk _ (Quotient.out n).2, hx₀]`. Rewrite using `[hφdef, Category.assoc, ← Category.assoc (X.tr M M _ _ _), trm _ _ hn0 hg]`. Conclude with `(cond _ (K₀.mul_mem hg hn0) _ _).2 hcn`. Rewrite using `[← hLG Γ K K₀ K₁ (X.K N) (X.K M) hMN hNK hN0 hM1 h10 hnorm hcov b₀ hb₀ u hu]`. Use `symm`.
+Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `Nat.card_congr` to reduce the goal to its premises. Use `Equiv.ofBijective (fun cn => ⟨(cn.1.1, φ cn.1.2), hF cn.1.1 cn.1.2 cn.2⟩) ⟨?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨⟨c1, n1⟩, h1⟩ ⟨⟨c2, n2⟩, h2⟩ hE`. Establish `hc : c1 = c2` using `congrArg (fun t => t.1.1) hE`. Establish `hx : φ n1 = φ n2` using `congrArg (fun t => t.1.2) hE`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Substitute `hc` using the available equality. Establish `hn : n1 = n2`. Establish `hk1` using `kN n1`. Establish `hk2` using `kN n2`. Establish `hd : ((Quotient.out n2 : X.K N) : Γ) * ((Quotient.out n1 : X.K N) : Γ)⁻¹ ∈ K₀` using `K₀.mul_mem hk2 (K₀.inv_mem hk1)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Establish `e3 : φ n1 ≫ X.tr M M _ (ad _ hd).1 (ad _ hd).2 = φ n1` using `by conv_rhs => rw [hx]`. Rewrite using `[hφdef, hφdef, Category.assoc, trm _ _ hk1 hd]`. Use `congr 1`. Conclude with `trc _ _ (by group) _ _ _ _`. Establish `hdM` using `hQ0.free _ hd _ _ Ω _ e3`.
+Substitute using the available equality. Both sides reduce to the same expression. Assume the hypotheses and unpack their components. Simplify by unfolding definitions. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← QuotientGroup.out_eq' n1, ← QuotientGroup.out_eq' n2, QuotientGroup.eq, Subgroup.mem_subgroupOf]`. Establish `e4 : (((Quotient.out n1)⁻¹ * Quotient.out n2 : X.K N) : Γ) = ((Quotient.out n1 : X.K N) : Γ)⁻¹ * (((Quotient.out n2 : X.K N) : Γ) * ((Quotient.out n1 : X.K N) : Γ)⁻¹) * ((Quotient.out n1 : X.K N) : Γ)⁻¹⁻¹`. Use `push_cast`. Use `group`. Rewrite using `[e4]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hnorm _ (K₀.inv_mem hk1) _ hdM`. Substitute `hn` using the available equality. Both sides reduce to the same expression. Introduce and unpack `⟨⟨c, x⟩, hx, hg, hy⟩ dsimp only at hx hg hy`. Take `⟨k, hk, ak, bk, hxk⟩` from `X.trans M N a b (fun k hk v hv => hnorm k (hN0 hk) v hv) Ω x₀ x (by rw [hx, hx₀])`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Take `⟨m, hm⟩` from `QuotientGroup.mk_out_eq_mul ((X.K M).subgroupOf (X.K N)) (⟨k, hk⟩ : X.K N)`. Establish `hφ : φ (QuotientGroup.mk ⟨k, hk⟩) = x`. Rewrite using `[hxk, hφdef]`. Establish `hmM : ((m : X.K N) : Γ) ∈ X.K M` using `Subgroup.mem_subgroupOf.mp m.2`. Establish `hmK0 : ((m : X.K N) : Γ) ∈ K₀` using `hN0 (hMN hmM)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : ((Quotient.out (QuotientGroup.mk ⟨k, hk⟩ : ↥(X.K N) ⧸ (X.K M).subgroupOf (X.K N)) : X.K N) : Γ) = k * ((m : X.K N) : Γ)`. Rewrite using `[hm]`. Both sides reduce to the same expression. Use `congr 1`. Rewrite using `[trc _ _ e _ _ (ad _ (K₀.mul_mem (hN0 hk) hmK0)).1 (ad _ (K₀.mul_mem (hN0 hk) hmK0)).2, ← trm _ _ hmK0 (hN0 hk) (ad _ hmK0).1 (ad _ hmK0).2 ak bk, X.tr_self M _ _ _ hmM, Category.id_comp]`.
-
-Establish `hn0` using `kN (QuotientGroup.mk ⟨k, hk⟩ : ↥(X.K N) ⧸ (X.K M).subgroupOf (X.K N))`. Establish `hyy` using `hy (ad _ hg).1 (ad _ hg).2`. Rewrite `hyy` using `[← hφ, hφdef]`. Establish `hmem` using `(cond _ (K₀.mul_mem hg hn0) (ad _ (K₀.mul_mem hg hn0)).1 (ad _ (K₀.mul_mem hg hn0)).2).1 (by`. Rewrite using `[← trm _ _ hn0 hg]`.
-
-Simplify `hyy)` using `only [Category.assoc]`. Use `⟨⟨(c, QuotientGroup.mk ⟨k, hk⟩), hmem⟩, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `Prod.ext rfl hφ`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.FiniteEtaleModels.lPts_holds :
     LGrp → LPts := by

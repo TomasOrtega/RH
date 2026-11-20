@@ -5,13 +5,13 @@ universe u_1
 namespace GlobalTheory.NatCastUnitNorm
 
 /- English proof (translation)
-Establish `hle : ‖(m : K)‖ ≤ 1` using `IsUltrametricDist.norm_natCast_le_one K m`. Assume the negation of the conclusion as `hne`. Establish `hmlt : ‖(m : K)‖ < 1` using `lt_of_le_of_ne hle hne`. Establish `hcop : Nat.Coprime l m` using `(Nat.Prime.coprime_iff_not_dvd hl).2 hm`. Take `⟨a, b, hab⟩ : IsCoprime (l : ℤ) (m : ℤ)` from `Nat.isCoprime_iff_coprime.2 hcop`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hK : (a : K) * (l : K) + (b : K) * (m : K) = 1`. Establish `h` using `congrArg (fun z : ℤ => (z : K)) hab`. Simplify using `using h`. Establish `key : ∀ (c : ℤ) (x : K), ‖x‖ < 1 → ‖(c : K) * x‖ < 1`. Introduce `c x hx`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[norm_mul]`. Establish `hc : ‖(c : K)‖ ≤ 1` using `IsUltrametricDist.norm_intCast_le_one K c`. Combine the equalities or inequalities in the displayed calculation. Establish `h1` using `IsUltrametricDist.norm_add_le_max ((a : K) * (l : K)) ((b : K) * (m : K))`. Rewrite `h1` using `[hK, norm_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `absurd h1 (not_le.2 (max_lt (key a _ hlt) (key b _ hmlt)))`.
+A detailed English derivation is pending.
 -/
 theorem norm_natCast_eq_one_of_not_dvd {K : Type u_1} [inst : NormedField K] [IsUltrametricDist K]
     {l m : ℕ} (hl : Nat.Prime l) (hlt : ‖(l : K)‖ < (1 : ℝ)) (hm : ¬ l ∣ m) :

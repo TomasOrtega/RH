@@ -11,17 +11,15 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 namespace GlobalTheory.SchGlue
 
 /- English proof (translation)
-Introduce `S X₀ I V X κ g B a b j jB hκ ha hb hred hsep hdom hja hjb`. Establish `oa : ∀ i k, IsOpenImmersion (a i k)` using `fun i k => MorphismProperty.of_isPullback (P := @IsOpenImmersion) (ha i k).flip (hκ k)`. Establish `w : ∀ i k, a i k ≫ g i ≫ κ i = b i k ≫ g k ≫ κ k` using `fun i k => by`. Simplify using `using (ha i k).w`. Use `GlobalTheory.CocycleGlue.exists_glue V X κ hκ g B a b ha hb ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `i j' k T x y z hxy hxz`. Set `P` to `pullback (a i j') (a i k)`. Use `haveI : IsReduced P := isReduced_of_isOpenImmersion (pullback.fst (a i j') (a i k) ≫ a i j')`. Take `⟨u, hu⟩ : ∃ u : P ⟶ B j' k, u ≫ a j' k = pullback.fst _ _ ≫ b i j'` from `⟨(ha j' k).lift (pullback.fst _ _ ≫ b i j') (pullback.snd _ _ ≫ b i k ≫ g k) (by simp only [Category.assoc, ← w]; rw [pullback.condition_assoc]), (ha j' k).lift_fst _ _ _⟩`. Set `e : X₀ ⟶ P` to `pullback.lift (jB i j') (jB i k) (by rw [hja, hja])`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `haveI : IsDominant (e ≫ pullback.fst (a i j') (a i k) ≫ a i j') := by`. Establish `: e ≫ pullback.fst (a i j') (a i k) ≫ a i j' = j i`. Simplify using `only [e, pullback.lift_fst_assoc, hja]`. Rewrite using `[this]`. Conclude with `hdom i`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `haveI : IsDominant e := IsDominant.of_comp_of_isOpenImmersion e (pullback.fst (a i j') (a i k) ≫ a i j')`. Establish `heu : e ≫ u = jB j' k`. Rewrite using `[← cancel_mono (a j' k), Category.assoc, hu, hja]`. Simplify using `only [e, pullback.lift_fst_assoc, hjb]`. Establish `hub : u ≫ b j' k = pullback.snd _ _ ≫ b i k` using `by haveI := hsep k`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `ext_of_isDominant e ?_` and prove the remaining obligations. Rewrite using `[← Category.assoc, heu, hjb]`. Simplify using `only [e, pullback.lift_snd_assoc, hjb]`. Establish `hy : y = pullback.lift x z hxz ≫ u`. Rewrite using `[← cancel_mono (a j' k), Category.assoc, hu, ← hxy, pullback.lift_fst_assoc]`.
-
-Rewrite using `[hy, Category.assoc, hub, pullback.lift_snd_assoc]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_glue_of_dense : ∀ {S X₀ : Scheme.{0}} {I : Type} (V X : I → Scheme.{0}) (κ : ∀ i, V i ⟶ S) (g : ∀ i, X i ⟶ V i)
     (B : I → I → Scheme.{0}) (a : ∀ i k, B i k ⟶ X i) (b : ∀ i k, B i k ⟶ X k) (j : ∀ i, X₀ ⟶ X i)

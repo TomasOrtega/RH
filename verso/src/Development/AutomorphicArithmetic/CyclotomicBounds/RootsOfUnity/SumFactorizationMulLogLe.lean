@@ -9,11 +9,11 @@ import Development.AutomorphicArithmetic.CyclotomicBounds.RootsOfUnity.NuQDUnit
 open NumberField Formalism.HC KStar.Tree
 
 /- English proof (translation)
-Rewrite using `[Real.log_nat_eq_sum_factorization, Finsupp.sum]`. Combine the equalities or inequalities in the displayed calculation. Use `(Finset.sum_filter_of_ne ?_).symm` and prove the remaining obligations. Introduce `l _ h`. Assume the negation of the conclusion as `hs`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite `h` using `[Finsupp.notMem_support_iff.mp hs]`. Simplify using `at h`. Use `_ ≤ ∑ l ∈ m.factorization.support, (m.factorization l : ℝ) * Real.log l := by`. Apply `Finset.sum_le_sum_of_subset_of_nonneg` to reduce the goal to its premises. Introduce `l hl`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(Finset.mem_filter.mp hl).2`. Introduce `l hl _`. Establish `hp : l.Prime` using `Nat.prime_of_mem_primeFactors (by simpa using hl)`. Apply `mul_nonneg (Nat.cast_nonneg _)` to reduce the goal to its premises. Conclude with `Real.log_nonneg (by exact_mod_cast hp.one_lt.le)`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 private theorem sum_factorization_mul_log_le (m : ℕ) (S : Finset ℕ) :
     ∑ l ∈ S, (m.factorization l : ℝ) * Real.log l ≤ Real.log m := by
@@ -36,13 +36,13 @@ private theorem sum_factorization_mul_log_le (m : ℕ) (S : Finset ℕ) :
           exact Real.log_nonneg (by exact_mod_cast hp.one_lt.le)
 
 /- English proof (translation)
-Introduce `φ H Ω _ _ _ n hn hq hd ν hν S hS`. Establish `key : ∀ l ∈ S, (ν l : ℝ) * Real.log l ≤ (H.QS.factorization l : ℝ) * Real.log l + (n.factorization l : ℝ) * Real.log l`. Introduce `l hl`. Establish `hp : l.Prime` using `hS l hl`. Use `haveI : Fact l.Prime := ⟨hp⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlog : 0 ≤ Real.log l` using `Real.log_nonneg (by exact_mod_cast hp.one_lt.le)`. Establish `hnat : ν l ≤ H.QS.factorization l + n.factorization l`. Rewrite using `[hν l]`. Distinguish the cases in `hlq : l = H.q`. Rewrite using `[UpperTheory.Mu.nuQD φ H l Ω n (Or.inl hlq) (hlq ▸ hq)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Conclude with `Nat.zero_le _`. Distinguish the cases in `hld : l = H.d`. Rewrite using `[UpperTheory.Mu.nuQD φ H l Ω n (Or.inr hld) (hld ▸ hd)]`. Conclude with `Nat.zero_le _`. Use `UpperTheory.Mu.nuLe φ H l Ω n hn hlq hld` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply the tactic sequence `split_ifs at this <;> omega`. Rewrite using `[← add_mul]`. Apply `mul_le_mul_of_nonneg_right _ hlog` to reduce the goal to its premises. Conclude with `hnat` after adjusting the coercions. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Mu.nuSum :
     ∀ (φ : Frame) (H : HostRaw φ) (Ω : Type) [Field Ω] [Algebra H.E Ω] [IsAlgClosure H.E Ω] (n : ℕ), Odd n → ¬ (H.q - 1) / 2 ∣ n → ¬ (H.d - 1) / 2 ∣ n → ∀ ν : ℕ → ℕ, (∀ (l : ℕ) [Fact l.Prime], ν l = nuOf l (cyc l H.E Ω) n) → ∀ S : Finset ℕ, (∀ l ∈ S, l.Prime) → ∑ l ∈ S, (ν l : ℝ) * Real.log l ≤ Real.log H.QS + Real.log n := by

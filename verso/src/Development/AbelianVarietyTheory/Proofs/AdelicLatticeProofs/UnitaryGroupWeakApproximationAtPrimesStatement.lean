@@ -5,7 +5,7 @@ open NumberField IsDedekindDomain GlobalTheory.AdLat GlobalTheory.UnRep
 open scoped TensorProduct Matrix
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.UnRep.WeakApprox.weak_approximation` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FAdelicLatticeProofs%2FUnitaryGroupWeakApproximationAtPrimes.lean&line=252#L252)
 -/

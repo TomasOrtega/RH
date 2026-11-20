@@ -21,21 +21,21 @@ def pu (W : Z.Opens) (i j : L.ι) (hi : W ≤ f ⁻¹ᵁ L.U i) (hj : W ≤ f �
 variable {f L} {W V : Z.Opens} {i j k : L.ι}
 
 /- English proof (translation)
-The claim follows from `Units.ext (resG_appLE f _ h _)`.
+A detailed English derivation is pending.
 -/
 theorem res_pu (h : V ≤ W) (hi : W ≤ f ⁻¹ᵁ L.U i) (hj : W ≤ f ⁻¹ᵁ L.U j) :
     res h (pu f L W i j hi hj) = pu f L V i j (h.trans hi) (h.trans hj) :=
   Units.ext (resG_appLE f _ h _)
 
 /- English proof (translation)
-Establish `h` using `congrArg (fun u : Γ(X, L.U i)ˣ => (f.appLE (L.U i) W hi).hom u.val) (hL.g_self i)`. Conclude with `Units.ext ((appLE_resG f _ hi _).symm.trans (h.trans (map_one _)))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem pu_self (hL : L.IsLB) (hi hi' : W ≤ f ⁻¹ᵁ L.U i) : pu f L W i i hi hi' = 1 := by
   have h := congrArg (fun u : Γ(X, L.U i)ˣ => (f.appLE (L.U i) W hi).hom u.val) (hL.g_self i)
   exact Units.ext ((appLE_resG f _ hi _).symm.trans (h.trans (map_one _)))
 
 /- English proof (translation)
-Establish `hW : W ≤ f ⁻¹ᵁ (L.U i ⊓ L.U j ⊓ L.U k)` using `le_inf (le_inf hi hj) hk`. Establish `h` using `congrArg (fun u : Γ(X, L.U i ⊓ L.U j ⊓ L.U k)ˣ => (f.appLE _ W hW).hom u.val) (hL.cocycle i j k)`. Simplify using `only [Units.val_mul, map_mul] at h`. Use `Units.ext (Eq.trans ?_ (h.trans (appLE_resG f _ hW _)))` and prove the remaining obligations. Conclude with `congrArg₂ (· * ·) (appLE_resG f _ hW _).symm (appLE_resG f _ hW _).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem pu_mul (hL : L.IsLB) (hi : W ≤ f ⁻¹ᵁ L.U i) (hj hj' : W ≤ f ⁻¹ᵁ L.U j) (hk : W ≤ f ⁻¹ᵁ L.U k) :
     pu f L W i j hi hj * pu f L W j k hj' hk = pu f L W i k hi hk := by
@@ -46,14 +46,14 @@ theorem pu_mul (hL : L.IsLB) (hi : W ≤ f ⁻¹ᵁ L.U i) (hj hj' : W ≤ f ⁻
   exact congrArg₂ (· * ·) (appLE_resG f _ hW _).symm (appLE_resG f _ hW _).symm
 
 /- English proof (translation)
-The claim follows from `valR_appLE w f _ hw _`.
+A detailed English derivation is pending.
 -/
 theorem valR_pu {C : Type} [CommRing C] (w : Sp C ⟶ Z) (hw : ⊤ ≤ w ⁻¹ᵁ W) (hi : W ≤ f ⁻¹ᵁ L.U i)
     (hj : W ≤ f ⁻¹ᵁ L.U j) : valR w W (pu f L W i j hi hj).val = valR (w ≫ f) _ (L.g i j).val :=
   valR_appLE w f _ hw _
 
 /- English proof (translation)
-Establish `h` using `congrArg (fun u : Γ(Sp C, ⊤)ˣ => valR (𝟙 _) ⊤ u.val) (pu_mul (f := x) hL hi hj hj hk)`. Simplify using `only [Units.val_mul] at h`. Rewrite `h` using `[valR_mul _ _ (le_preimage_top _), valR_pu _ (le_preimage_top _), valR_pu _ (le_preimage_top _), valR_pu _ (le_preimage_top _), Category.id_comp]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem valR_cocycle (hL : L.IsLB) {C : Type} [CommRing C] (x : Sp C ⟶ X) (hi : ⊤ ≤ x ⁻¹ᵁ L.U i)
     (hj : ⊤ ≤ x ⁻¹ᵁ L.U j) (hk : ⊤ ≤ x ⁻¹ᵁ L.U k) :
@@ -64,7 +64,7 @@ theorem valR_cocycle (hL : L.IsLB) {C : Type} [CommRing C] (x : Sp C ⟶ X) (hi 
     valR_pu _ (le_preimage_top _), Category.id_comp] at h
 
 /- English proof (translation)
-The claim follows from `Opens.mem_iSup.1 (hL.cover.ge (Set.mem_univ x))`.
+A detailed English derivation is pending.
 -/
 theorem exists_mem (hL : L.IsLB) (x : X) : ∃ i, x ∈ L.U i :=
   Opens.mem_iSup.1 (hL.cover.ge (Set.mem_univ x))
@@ -81,18 +81,18 @@ def cov (i : I) : Z.Opens := f ⁻¹ᵁ L.U (a i) ⊓ (f₀ ⁻¹ᵁ L₀.U (b i
 variable {f f₀ f₁ L L₀ L₁ a b c}
 
 /- English proof (translation)
-The claim follows from `h.trans inf_le_left`.
+A detailed English derivation is pending.
 -/
 theorem le_a {W : Z.Opens} {i : I} (h : W ≤ cov f f₀ f₁ L L₀ L₁ a b c i) : W ≤ f ⁻¹ᵁ L.U (a i) := h.trans inf_le_left
 
 /- English proof (translation)
-The claim follows from `h.trans (inf_le_right.trans inf_le_left)`.
+A detailed English derivation is pending.
 -/
 theorem le_b {W : Z.Opens} {i : I} (h : W ≤ cov f f₀ f₁ L L₀ L₁ a b c i) : W ≤ f₀ ⁻¹ᵁ L₀.U (b i) :=
   h.trans (inf_le_right.trans inf_le_left)
 
 /- English proof (translation)
-The claim follows from `h.trans (inf_le_right.trans inf_le_right)`.
+A detailed English derivation is pending.
 -/
 theorem le_c {W : Z.Opens} {i : I} (h : W ≤ cov f f₀ f₁ L L₀ L₁ a b c i) : W ≤ f₁ ⁻¹ᵁ L₁.U (c i) :=
   h.trans (inf_le_right.trans inf_le_right)
@@ -101,16 +101,16 @@ def tr (W : Z.Opens) (i j : I) (hi : W ≤ cov f f₀ f₁ L L₀ L₁ a b c i) 
   pu f L W _ _ (le_a hi) (le_a hj) * pu f₀ L₀ W _ _ (le_b hi) (le_b hj) * pu f₁ L₁ W _ _ (le_c hj) (le_c hi)
 
 /- English proof (translation)
-Simplify using `only [tr, map_mul, res_pu]`.
+Simplify using the standard rewrite rules.
 -/
 theorem res_tr {W V : Z.Opens} (h : V ≤ W) {i j : I} (hi : W ≤ cov f f₀ f₁ L L₀ L₁ a b c i)
     (hj : W ≤ cov f f₀ f₁ L L₀ L₁ a b c j) : res h (tr W i j hi hj) = tr V i j (h.trans hi) (h.trans hj) := by
   simp only [tr, map_mul, res_pu]
 
 /- English proof (translation)
-Use `eq_top_iff.2 fun t _ => ?_` and prove the remaining obligations. Take `⟨x, hx⟩` from `exists_mem hL (f t)`. Take `⟨y, hy⟩` from `exists_mem hL₀ (f₀ t)`. Take `⟨z, hz⟩` from `exists_mem hL₁ (f₁ t)`. Take `⟨i, rfl, rfl, rfl⟩` from `hs x y z`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `Opens.mem_iSup.2 ⟨i, hx, hy, hz⟩`. Use `g_self i := by`. Rewrite using `[res_tr, tr, pu_self hL, pu_self hL₀, pu_self hL₁, one_mul, one_mul]`. Use `cocycle i j k := by`. Rewrite using `[res_tr, res_tr, res_tr, tr, tr, tr, mul_mul_mul_comm, mul_mul_mul_comm (pu f L _ _ _ _ _), pu_mul hL, pu_mul hL₀, mul_comm (pu f₁ L₁ _ _ _ _ _), pu_mul hL₁]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLB_tr (hL : L.IsLB) (hL₀ : L₀.IsLB) (hL₁ : L₁.IsLB) (hs : ∀ x y z, ∃ i, a i = x ∧ b i = y ∧ c i = z) :
     LB.IsLB ⟨I, cov f f₀ f₁ L L₀ L₁ a b c, fun i j => tr _ i j inf_le_left inf_le_right⟩ where
@@ -128,7 +128,7 @@ theorem isLB_tr (hL : L.IsLB) (hL₀ : L₀.IsLB) (hL₁ : L₁.IsLB) (hs : ∀ 
       mul_comm (pu f₁ L₁ _ _ _ _ _), pu_mul hL₁]
 
 /- English proof (translation)
-Simplify using `only [tr, Units.val_mul]`. Rewrite using `[valR_mul _ _ hw, valR_mul _ _ hw, valR_pu _ hw, valR_pu _ hw, valR_pu _ hw]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem valR_tr {C : Type} [CommRing C] {W : Z.Opens} (w : Sp C ⟶ Z) (hw : ⊤ ≤ w ⁻¹ᵁ W) {i j : I}
     (hi : W ≤ cov f f₀ f₁ L L₀ L₁ a b c i) (hj : W ≤ cov f f₀ f₁ L L₀ L₁ a b c j) :
@@ -144,16 +144,16 @@ section Val
 variable {Z : Scheme.{0}} {U W : Z.Opens} (hU : IsAffineOpen U)
 
 /- English proof (translation)
-Establish `h` using `le_preimage_specMap_fromSpec hU (CommRingCat.ofHom φ)`. Conclude with `(valR_eq _ U h s).trans (congrArg (fun t => t.hom s) (valMap_specMap_fromSpec hU (CommRingCat.ofHom φ) h))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem valR_chart {C : Type} [CommRing C] (φ : Γ(Z, U) →+* C) (s : Γ(Z, U)) : valR (spMap φ ≫ hU.fromSpec) U s = φ s := by
   have h := le_preimage_specMap_fromSpec hU (CommRingCat.ofHom φ)
   exact (valR_eq _ U h s).trans (congrArg (fun t => t.hom s) (valMap_specMap_fromSpec hU (CommRingCat.ofHom φ) h))
 
 /- English proof (translation)
-Use `isUnit_of_basicOpen_eq _ ?_` and prove the remaining obligations. Use `(Scheme.basicOpen_res _ _ _).trans (inf_eq_left.2 fun t ht => ?_)` and prove the remaining obligations. Choose the witnesses or unpack the hypotheses as in `⟨y, rfl⟩ : t ∈ Set.range hU.fromSpec := by`. Rewrite using `[hU.range_fromSpec]`. Conclude with `h ht`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : y ∈ (hU.fromSpec ≫ g) ⁻¹ᵁ chart O N q` using `hq ht`. Rewrite `h1` using `[e, pt_preimage_chart]`. Express the relevant statement in the definitionally equal form `y ∈ hU.fromSpec ⁻¹ᵁ Z.basicOpen (v q)`. Rewrite using `[hU.fromSpec_preimage_basicOpen]`. Conclude with `h1`.
+Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_coord {O : Type} [CommRing O] {N : ℕ} {g : Z ⟶ PSpace O N} {c : O →+* Γ(Z, U)} {v : Fin (N + 1) → Γ(Z, U)}
     {hv} (e : hU.fromSpec ≫ g = pt c v hv) (q : Fin (N + 1)) (h : W ≤ U) (hq : W ≤ g ⁻¹ᵁ chart O N q) :
@@ -170,9 +170,9 @@ theorem isUnit_coord {O : Type} [CommRing O] {N : ℕ} {g : Z ⟶ PSpace O N} {c
   exact h1
 
 /- English proof (translation)
-Substitute `e` using the available equality. Establish `hu` using `(le_pt_preimage_chart_iff c v hv i).1 hi`. Use `⟨hu.ne_zero, ?_⟩` and prove the remaining obligations. Establish `h` using `valR_res (pt c v hv) (inf_le_left : chart O N i ⊓ chart O N j ≤ _) (le_inf hi hj) (ratio O N i j)`. Rewrite `h` using `[valR_pt_ratio c v hv hu]`.
+Substitute using the available equality. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `(congrArg (· * v i) h).trans ?_` and prove the remaining obligations. Rewrite using `[mul_assoc, Ring.inverse_mul_cancel _ hu, mul_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem valR_O1 {O k : Type} [CommRing O] [Field k] {N : ℕ} {c : O →+* k} {v : Fin (N + 1) → k} {hv}
     {x : Sp k ⟶ PSpace O N} (e : x = pt c v hv) (i j : Fin (N + 1)) (hi : ⊤ ≤ x ⁻¹ᵁ chart O N i)
@@ -186,7 +186,7 @@ theorem valR_O1 {O k : Type} [CommRing O] [Field k] {N : ℕ} {c : O →+* k} {v
   rw [mul_assoc, Ring.inverse_mul_cancel _ hu, mul_one]
 
 /- English proof (translation)
-Use `mul_right_cancel₀ (mul_ne_zero n n') (t'.trans ?_)` and prove the remaining obligations. Rewrite using `[← s₀, ← t, ← s, ← s₁]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem trans_alg {k : Type} [Field k] {r r' γ γ' g a a' b b' u v : k} (n : γ' ≠ 0) (n' : b' ≠ 0)
     (t : r * (γ * b) = a) (t' : r' * (γ' * b') = a') (s : g * γ' = γ) (s₀ : u * a = a') (s₁ : v * b' = b) :
@@ -198,21 +198,21 @@ theorem trans_alg {k : Type} [Field k] {r r' γ γ' g a a' b b' u v : k} (n : γ
 end Val
 
 /- English proof (translation)
-Use `choose h₀ e₀ using e₀`. Use `choose h₁ e₁ using e₁`. Set `e` to `(Fintype.equivFin (Fin L.n × Fin (N₀ + 1) × Fin (N₁ + 1))).symm`. Set `ix` to `fun i => (e i).1`. Set `q₀` to `fun i => (e i).2.1`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `q₁` to `fun i => (e i).2.2`. Set `C` to `cov π g₀ g₁ L.lb (O1 O N₀) (O1 O N₁) ix q₀ q₁`. Set `L' : FinLB Z` to `⟨_, C, fun i j => tr _ i j inf_le_left inf_le_right, isLB_tr L.isLB (O1_isLB _ _) (O1_isLB _ _) fun x y z => ⟨e.symm (x, y, z), by simp [ix, q₀, q₁]⟩⟩`. Establish `u₀` using `fun a i => isUnit_coord (U a).2 (W := (U a).1 ⊓ C i) (e₀ a) (q₀ i) inf_le_left (le_b inf_le_right)`. Establish `u₁` using `fun a i => isUnit_coord (U a).2 (W := (U a).1 ⊓ C i) (e₁ a) (q₁ i) inf_le_left (le_c inf_le_right)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `r : ∀ (a : A) i, Γ(Z, (U a).1 ⊓ C i)ˣ` to `fun a i => (u₀ a i).unit * (pu π L.lb _ (ix i) (ι a) (le_a inf_le_right) (inf_le_left.trans (hU a)) * (u₁ a i).unit)⁻¹`. Establish `val : ∀ (k : Type) [Field k] a i (φ : Γ(Z, (U a).1) →+* k), ⊤ ≤ (spMap φ ≫ (U a).2.fromSpec) ⁻¹ᵁ C i → valR (spMap φ ≫ (U a).2.fromSpec) _ (r a i).val * (valR ((spMap φ ≫ (U a).2.fromSpec) ≫ π) _ (L.g (ix i) (ι a)).val * φ (v₁ a (q₁ i))) = φ (v₀ a (q₀ i))`. Introduce `k _ a i φ h`. Establish `hw : ⊤ ≤ (spMap φ ≫ (U a).2.fromSpec) ⁻¹ᵁ ((U a).1 ⊓ C i)` using `le_inf (le_preimage_specMap_fromSpec (U a).2 (CommRingCat.ofHom φ)) h`. Establish `h1 : r a i * (pu π L.lb _ (ix i) (ι a) (le_a inf_le_right) (inf_le_left.trans (hU a)) * (u₁ a i).unit) = (u₀ a i).unit` using `inv_mul_cancel_right _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h2` using `congrArg (fun u : Γ(Z, (U a).1 ⊓ C i)ˣ => valR (spMap φ ≫ (U a).2.fromSpec) _ u.val) h1`. Simplify using `only [Units.val_mul, IsUnit.unit_spec] at h2`. Rewrite `h2` using `[valR_mul _ _ hw, valR_mul _ _ hw, valR_pu _ hw, valR_res _ _ hw, valR_res _ _ hw, valR_chart (U a).2 φ, valR_chart (U a).2 φ]`. Then use the resulting hypothesis. Use `⟨L', ix, q₀, q₁, r, fun i => le_rfl, fun k _ w a i i' h => ?_, val⟩` and prove the remaining obligations. Establish `ha : ⊤ ≤ w ⁻¹ᵁ (U a).1` using `le_preimage_mono w inf_le_left h`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨φ, rfl⟩ : ∃ φ : Γ(Z, (U a).1) →+* k, spMap φ ≫ (U a).2.fromSpec = w` from `⟨(valMap w _ ha).hom, specMap_valMap_fromSpec (U a).2 w ha⟩`. Establish `hh : ⊤ ≤ (spMap φ ≫ (U a).2.fromSpec) ⁻¹ᵁ (C i ⊓ C i')` using `le_preimage_mono _ inf_le_right h`. Establish `hi : ⊤ ≤ (spMap φ ≫ (U a).2.fromSpec) ⁻¹ᵁ C i` using `le_preimage_mono _ inf_le_left hh`. Establish `hi' : ⊤ ≤ (spMap φ ≫ (U a).2.fromSpec) ⁻¹ᵁ C i'` using `le_preimage_mono _ inf_le_right hh`. Establish `p₀ : (spMap φ ≫ (U a).2.fromSpec) ≫ g₀ = pt (φ.comp (c a)) (φ ∘ v₀ a) (span_range_comp_eq_top _ (h₀ a) φ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Category.assoc, e₀, GlobalTheory.ProjSpace.spMap_pt]`. Establish `p₁ : (spMap φ ≫ (U a).2.fromSpec) ≫ g₁ = pt (φ.comp (c a)) (φ ∘ v₁ a) (span_range_comp_eq_top _ (h₁ a) φ)`. Rewrite using `[Category.assoc, e₁, GlobalTheory.ProjSpace.spMap_pt]`. Take `⟨n₀, s₀⟩` from `valR_O1 p₀ (q₀ i) (q₀ i') (le_preimage_comp _ g₀ (le_b le_rfl) hi) (le_preimage_comp _ g₀ (le_b le_rfl) hi')`. Take `⟨n₁, s₁⟩` from `valR_O1 p₁ (q₁ i') (q₁ i) (le_preimage_comp _ g₁ (le_c le_rfl) hi') (le_preimage_comp _ g₁ (le_c le_rfl) hi)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ga` using `le_preimage_comp _ π (hU a) ha`. Establish `gi'` using `le_preimage_comp _ π (le_a (L := L.lb) le_rfl) hi'`. Establish `s` using `valR_cocycle L.isLB _ (le_preimage_comp _ π (le_a (L := L.lb) le_rfl) hi) gi' ga`. Establish `n : valR ((spMap φ ≫ (U a).2.fromSpec) ≫ π) _ (L.g (ix i') (ι a)).val ≠ 0`. Rewrite using `[valR_eq _ _ (le_inf gi' ga)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `((Units.isUnit _).map _).ne_zero`. Establish `t` using `val k a i φ hi`. Establish `t'` using `val k a i' φ hi'`. Express the relevant statement in the definitionally equal form `valR _ _ (r a i').val = valR _ _ (tr (C i ⊓ C i') i i' inf_le_left inf_le_right).val * valR _ _ (r a i).val`. Conclude with `(trans_alg n n₁ t t' s s₀ s₁).trans (congrArg (· * _) (valR_tr _ hh _ _).symm)`.
+Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem exists_line {X Z : Scheme.{0}} (π : Z ⟶ X) (L : FinLB X) {O : Type} [CommRing O] {N₀ N₁ : ℕ}
     (g₀ : Z ⟶ PSpace O N₀) (g₁ : Z ⟶ PSpace O N₁) {A : Type} (U : A → Z.affineOpens) (ι : A → Fin L.n)
@@ -279,7 +279,7 @@ theorem exists_line {X Z : Scheme.{0}} (π : Z ⟶ X) (L : FinLB X) {O : Type} [
   exact (trans_alg n n₁ t t' s s₀ s₁).trans (congrArg (· * _) (valR_tr _ hh _ _).symm)
 
 /- English proof (translation)
-Establish `h` using `Matrix.det_smul (Matrix.of fun l l' => c (e l) (plE M k q l')) γ`. Rewrite `h` using `[Fintype.card_fin]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem plk_scale {S ι : Type} [CommRing S] {M k : ℕ} (γ : S) (c : ι → Fin (M + 1) → S) (e : Fin k → ι) (q) :
     plk (fun z => γ • c z) e q = γ ^ k * plk c e q := by
@@ -288,7 +288,7 @@ theorem plk_scale {S ι : Type} [CommRing S] {M k : ℕ} (γ : S) (c : ι → Fi
   exact h
 
 /- English proof (translation)
-Establish `: dualMap (RingHom.id R) = RingHom.id _`. Use `RingHom.ext fun x => ?_` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp [dualMap]`. Rewrite using `[this]`. Conclude with `Spec.map_id _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem spMap_dual_id (R : Type) [CommRing R] : spMap (dualMap (RingHom.id R)) = 𝟙 _ := by
   have : dualMap (RingHom.id R) = RingHom.id _ := by
@@ -298,19 +298,17 @@ theorem spMap_dual_id (R : Type) [CommRing R] : spMap (dualMap (RingHom.id R)) =
   exact Spec.map_id _
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw Xo p W Y i₀ Z L aff M crd ι ρ g T en₀ en₁ hen`. Establish `hU : ∀ a, (Z.U a).1 ≤ Z.π ⁻¹ᵁ L.U (ι a)` using `fun a t ht => by`. Choose the witnesses or unpack the hypotheses as in `⟨y, rfl⟩ : t ∈ Set.range (Z.U a).2.fromSpec := by`. Rewrite using `[(Z.U a).2.range_fromSpec]`. Conclude with `ht`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h` using `le_preimage_specMap_fromSpec (aff (ι a)) (CommRingCat.ofHom (ρ a))`. Establish `h' : ⊤ ≤ (Z.chart a ≫ Z.π) ⁻¹ᵁ L.U (ι a)` using `T.res a ▸ h`. Conclude with `h' (Set.mem_univ y)`. Take `⟨L', ix, q₀, q₁, r, h1, h2, h3⟩` from `exists_line Z.π L (g en₀) (g en₁) Z.U ι hU _ _ _ (fun a => T.plk a en₀) (fun a => T.plk a en₁)`. Use `⟨L', ix, q₀, q₁, r, h1, h2, fun k _ a i φ ψ hψ h => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hφ : spMap (φ.comp (ρ a)) ≫ (aff (ι a)).fromSpec = spMap φ ≫ Z.chart a ≫ Z.π`. Rewrite using `[← T.res a, ← Category.assoc]`. Use `congr 1`. Conclude with `Spec.map_comp _ _`. Establish `tan : ∀ z : Let Dw.mult, IsTanAtG (Y Z.i).t (spMap (ρ a) ≫ (aff (ι a)).fromSpec) (Z.fr a z.1 z.2)`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `z`. Establish `h1` using `((T.frame a _ (RingHom.id _)).1 z.1 z.2).1`. Establish `h2 : spMap (RingHom.id Γ(Z.X, (Z.U a).1)) = 𝟙 _` using `Spec.map_id _`. Rewrite `h1` using `[h2, Category.id_comp, Vecs.bc, spMap_dual_id, Category.id_comp]`. Rewrite using `[T.res a]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Conclude with `h1`. Establish `nat : (fun z : Let Dw.mult => φ ∘ crd (ι a) _ (ρ a) (Z.fr a z.1 z.2)) = fun z : Let Dw.mult => crd (ι a) k (φ.comp (ρ a)) ((Z.fr a).bc φ z.1 z.2)`. Use function extensionality and compare the values at `fun z => (T.emb.nat (ι a) _ k (ρ a) φ _ (tan z)).symm`. Establish `tr : (fun z : Let Dw.mult => crd (ix i) k ψ ((Z.fr a).bc φ z.1 z.2)) = fun z : Let Dw.mult => valF ((spMap φ ≫ Z.chart a) ≫ Z.π) _ (L.g (ix i) (ι a)).val • crd (ι a) k (φ.comp (ρ a)) ((Z.fr a).bc φ z.1 z.2)`. Rewrite using `[Category.assoc, ← hψ]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `funext fun z => T.emb.trans (ix i) (ι a) k ψ (φ.comp (ρ a)) _ (hψ.trans hφ.symm) (by rw [hψ]; exact ((T.frame a k φ).1 z.1 z.2).1)`. Establish `t : valF (spMap φ ≫ Z.chart a) _ (r a i).val * (valF ((spMap φ ≫ Z.chart a) ≫ Z.π) _ (L.g (ix i) (ι a)).val * (φ ∘ plk (fun z : Let Dw.mult => crd (ι a) _ (ρ a) (Z.fr a z.1 z.2)) en₁.2.1) (q₁ i)) = (φ ∘ plk (fun z : Let Dw.mult => crd (ι a) _ (ρ a) (Z.fr a z.1 z.2)) en₀.2.1) (q₀ …` using `h3 k a i φ h`. Rewrite `t` using `[map_plk, map_plk, nat]`. Rewrite using `[tr, plk_scale, plk_scale, ← t]`. Establish `hp : ∀ γ : k, γ ^ en₁.1 = γ ^ en₀.1 * γ` using `fun γ => by rw [hen, pow_succ]`.
-
-Rewrite using `[hp]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_isLine : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (Xo : ∀ l : Level H, Moduli Dw l) (p : ℕ) (W : ValuationSubring ℂ) (Y : LocalSystem Xo p W) (i₀ : Idx H p) (Z : Pre Y i₀) (L : FinLB (Y Z.i).X) (aff : ∀ i, IsAffineOpen (L.U i)) (M : ℕ) (crd : Crd (Y Z.i).t L M) (ι : Fin Z.m → Fin L.n) (ρ : ∀ a, Γ((Y Z.i).X, L.U (ι a)) →+* Γ(Z.X, (Z.U a).1)) (g : ∀ en : En Dw.mult, Z.X ⟶ PSpace (Z.i.c.V W) (plN M en.1)), Comparison₂ Z L aff crd ι ρ g → ∀ en₀ en₁ : En Dw.mult, en₁.1 = en₀.1 + 1 → ∃ (L' : FinLB Z.X) (ix : Fin L'.n → Fin L.n) (q₀ : Fin L'.n → Fin (plN M en₀.1 + 1)) (q₁ : Fin L'.n → Fin (plN M en₁.1 + 1)) (r : ∀ (a : Fin Z.m) (i : Fin L'.n), Γ(Z.X, (Z.U a).1 ⊓ L'.U i)ˣ), IsLine Z L aff crd g en₀ en₁ L' ix q₀ q₁ r := by
   intro E _ _ _ H Dw Xo p W Y i₀ Z L aff M crd ι ρ g T en₀ en₁ hen

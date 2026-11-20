@@ -12,13 +12,13 @@ def cEv {N : ℕ} (F : (Fin N → H) → V) (A B : Fin N → H) : V :=
   ∑ S : Fin N → Bool, (∏ k, if S k then (1 : ℂ) else -I) • F (fun k => if S k then A k else B k)
 
 /- English proof (translation)
-Simplify using `[cEv]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cEv_zero {N : ℕ} (A B : Fin N → H) : cEv (fun _ => (0 : V)) A B = 0 := by
   simp [cEv]
 
 /- English proof (translation)
-Unfold `cEv`. Simplify using `only [Finset.smul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun S _ => ?_` and prove the remaining obligations. Conclude with `smul_comm _ _ _`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem cEv_sum {N : ℕ} {ι : Type*} (s : Finset ι) (c : ι → ℤ) (F : ι → (Fin N → H) → V) (A B : Fin N → H) :
     cEv (fun v => ∑ i ∈ s, c i • F i v) A B = ∑ i ∈ s, c i • cEv (F i) A B := by
@@ -29,7 +29,7 @@ theorem cEv_sum {N : ℕ} {ι : Type*} (s : Finset ι) (c : ι → ℤ) (F : ι 
   exact smul_comm _ _ _
 
 /- English proof (translation)
-Unfold `cEv`. Use `Fintype.sum_equiv ⟨fun S => S ∘ σ, fun T => T ∘ σ.symm, fun S => by funext x; simp, fun T => by funext x; simp⟩ _ _ fun S => ?_` and prove the remaining obligations. Simplify using `only [Equiv.coe_fn_mk, Function.comp_apply]`. Use `congr 1`. Conclude with `(Equiv.prod_comp σ (fun k => if S k then (1 : ℂ) else -I)).symm`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem cEv_perm {N : ℕ} (F : (Fin N → H) → V) (σ : Equiv.Perm (Fin N)) (A B : Fin N → H) :
     cEv (fun v => F (fun i => v (σ i))) A B = cEv F (fun i => A (σ i)) (fun i => B (σ i)) := by
@@ -41,11 +41,11 @@ theorem cEv_perm {N : ℕ} (F : (Fin N → H) → V) (σ : Equiv.Perm (Fin N)) (
   exact (Equiv.prod_comp σ (fun k => if S k then (1 : ℂ) else -I)).symm
 
 /- English proof (translation)
-Unfold `cEv`. Simplify using `only [Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_smul]`. Use `congr 1`. Repeatedly rewrite using `[← Finset.prod_mul_distrib]`. Establish `e : ∀ k, f x y k (A k) - I * f x y k (B k) = ∑ b : Bool, (if b then (1 : ℂ) else -I) * f x y k (if b then A k else B k)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact.
 
-Introduce `k`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Repeatedly rewrite using `[e]`. Rewrite using `[Fintype.prod_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem cEv_prod2 {N : ℕ} {ι κ : Type*} [Fintype ι] [Fintype κ] (f : ι → κ → Fin N → H → ℂ) (c : ι → κ → V)
     (A B : Fin N → H) :
@@ -67,7 +67,7 @@ theorem cEv_prod2 {N : ℕ} {ι κ : Type*} [Fintype ι] [Fintype κ] (f : ι �
   rw [Fintype.prod_sum]
 
 /- English proof (translation)
-Rewrite using `[Fintype.prod_sum]`. Use `Finset.sum_congr rfl fun A _ => ?_` and prove the remaining obligations. Rewrite using `[Fintype.prod_sum]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_sum_prod {N : ℕ} {α β R : Type*} [Fintype α] [Fintype β] [CommSemiring R] (g : Fin N → α → β → R) :
     ∑ A : Fin N → α, ∑ B : Fin N → β, ∏ k, g k (A k) (B k) = ∏ k, ∑ a, ∑ b, g k a b := by

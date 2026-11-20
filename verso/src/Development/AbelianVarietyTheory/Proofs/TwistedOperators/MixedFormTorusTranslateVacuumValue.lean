@@ -26,9 +26,9 @@ def ex (n' : ℕ) (k : Fin (n' / 2)) (i : Fin n') : ℤ :=
   if i = lo n' k then 1 else if i = (lo n' k).rev then -1 else 0
 
 /- English proof (translation)
-Unfold `tMat`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `only [ex, lo, Fin.ext_iff, Fin.val_rev, Pi.single_apply]`. Establish `hk` using `k.2`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hi` using `i.2`. Apply the tactic sequence `split_ifs <;> first | (exfalso; omega) | simp_all`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem tMat_single (ϖ : L) (n' : ℕ) (k : Fin (n' / 2)) :
     tMat ϖ n' (n' / 2) (Pi.single k 1) = Matrix.diagonal (fun i => ϖ ^ ex n' k i) := by
@@ -43,13 +43,13 @@ theorem tMat_single (ϖ : L) (n' : ℕ) (k : Fin (n' / 2)) :
 variable {σ : L →+* L} {δ : L} {ψ : AddChar L ℂ} {n n' : ℕ}
 
 /- English proof (translation)
-Establish `hu : cT σ h.1.1 * antiJ L n' * h.1.1 = antiJ L n'` using `h.2`. Establish `hl : locH σ δ (antiG L n) (antiG L n') (h.1.1 * x) (h.1.1 * y) = locH σ δ (antiG L n) (antiG L n') x y`. Unfold `locH`. Use `congr 1`. Establish `e1 : ((h.1.1 * y).map σ)ᵀ = (y.map σ)ᵀ * cT σ h.1.1`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Rewrite using `[Matrix.map_mul, Matrix.transpose_mul]`. Both sides reduce to the same expression. Establish `e2 : ((antiG L n' : GL (Fin n') L) : Matrix (Fin n') (Fin n') L) = antiJ L n'` using `rfl`. Rewrite using `[e1, e2]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = _ := by rw [hu]`. Establish `e3 : ∀ a b : Matrix (Fin n') (Fin n) L, pairing σ δ ψ a b = ψ (locH σ δ (antiG L n) (antiG L n') a b + σ (locH σ δ (antiG L n) (antiG L n') a b))`. Introduce `a b`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[locH_antiG]`. Both sides reduce to the same expression. Rewrite using `[e3, e3, hl]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pairing_unitary (h : GU σ n') (x y : Matrix (Fin n') (Fin n) L) :
     pairing σ δ ψ (h.1.1 * x) (h.1.1 * y) = pairing σ δ ψ x y := by
@@ -71,17 +71,17 @@ theorem pairing_unitary (h : GU σ n') (x y : Matrix (Fin n') (Fin n) L) :
   rw [e3, e3, hl]
 
 /- English proof (translation)
-Rewrite using `[show t.1.1 * (t⁻¹).1.1 = (t * t⁻¹).1.1 from rfl, mul_inv_cancel]`. Both sides reduce to the same expression.
+Rewrite the hypotheses and the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mul_inv_val (t : GU σ n') : t.1.1 * (t⁻¹).1.1 = 1 := by
   rw [show t.1.1 * (t⁻¹).1.1 = (t * t⁻¹).1.1 from rfl, mul_inv_cancel]; rfl
 
 /- English proof (translation)
-Introduce `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩ _ ⟨b, hb, rfl⟩ show pairing σ δ ψ (t.1.1 * y) (t.1.1 * b) = 1`. Rewrite using `[pairing_unitary]`. Conclude with `(hA y).1 hy b hb`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `H`. Establish `hy : (t⁻¹).1.1 * x ∈ A`. Use `(hA _).2 fun b hb => ?_` and prove the remaining obligations. Rewrite using `[← pairing_unitary t, ← Matrix.mul_assoc, mul_inv_val, Matrix.one_mul]`. Conclude with `H _ ⟨b, hb, rfl⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨_, hy, ?_⟩` and prove the remaining obligations. Use `show t.1.1 * ((t⁻¹).1.1 * x) = x`. Rewrite using `[← Matrix.mul_assoc, mul_inv_val, Matrix.one_mul]`.
+A detailed English derivation is pending.
 -/
 theorem selfDual_map (t : GU σ n') {A : Submodule (intL L) (Matrix (Fin n') (Fin n) L)}
     (hA : SelfDual (pairing σ δ ψ) A) : SelfDual (pairing σ δ ψ) (A.map (lmulI t.1.1)) := by
@@ -101,9 +101,9 @@ theorem selfDual_map (t : GU σ n') {A : Submodule (intL L) (Matrix (Fin n') (Fi
     rw [← Matrix.mul_assoc, mul_inv_val, Matrix.one_mul]
 
 /- English proof (translation)
-Establish `h` using `GlobalTheory.LatIdx.relIndex_intMat_translate ϖ σ q hU n' n d t ht 1 (one_mem _) 1 (one_mem _)`. Simplify using `only [one_mul, mul_one] at h`. Establish `e1 : (intMat L (Fin n') (Fin n)).toAddSubgroup = GlobalTheory.InertHomIdx.intMat L n' n` using `AddSubgroup.ext fun _ => Iff.rfl`. Establish `e2 : ((intMat L (Fin n') (Fin n)).map (lmulI (n` using `n) t.1.1)).toAddSubgroup = AddSubgroup.map (GlobalTheory.InertHomIdx.lmul t.1.1) (GlobalTheory.InertHomIdx.intMat L n' n) := AddSubgroup.ext fun _ => Iff.rfl`. Unfold `idx`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[e1, e2, h]`. Conclude with `pow_ne_zero _ (pow_ne_zero _ (by have := hU.2.2.2.2.2.1; omega))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem idx_translate_ne {ϖ : L} {q : ℕ} (hU : IsUnramInv ϖ σ q) (t : GU σ n') (d : Fin n' → ℤ)
     (ht : t.1.1 = Matrix.diagonal fun i => ϖ ^ d i) :
@@ -120,13 +120,11 @@ theorem idx_translate_ne {ϖ : L} {q : ℕ} (hU : IsUnramInv ϖ σ q) (t : GU σ
   exact pow_ne_zero _ (pow_ne_zero _ (by have := hU.2.2.2.2.2.1; omega))
 
 /- English proof (translation)
-Take `⟨y, hy, rfl⟩` from `hx`. Introduce `r c`. Distinguish the cases in `hr : r = (lo n' k).rev`. Establish `hk` using `k.2`. Establish `h0 : a r c = 0` using `(ha r c).1 (Or.inl (by subst hr; simp only [lo, Fin.val_rev]; omega))`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hxa r c` as an intermediate fact. Rewrite `this` using `[Matrix.sub_apply, h0, sub_zero]`. Then use the resulting hypothesis. Use `show (t.1.1 * y) r c ∈ intL L`. Rewrite using `[hT, Matrix.diagonal_mul]`. Establish `hp : ϖ ^ ex n' k r ∈ intL L`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he : ex n' k r = 1 ∨ ex n' k r = 0`. Apply the tactic sequence `unfold ex; split_ifs <;> simp_all`. Apply the tactic sequence `rcases he with he | he <;> rw [he]`. Simplify using `using mem_intL.2 hϖ`. Simplify using `using one_mem (intL L)`.
-
-Conclude with `mul_mem hp (hy r c)`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem mem_of_mixLat {ϖ : L} (hϖ : Valued.v ϖ ≤ 1) (k : Fin (n' / 2)) (t : GU σ n')
     (hT : t.1.1 = Matrix.diagonal fun i => ϖ ^ ex n' k i) {x a : Matrix (Fin n') (Fin n) L}
@@ -154,23 +152,23 @@ end GlobalTheory.SphTheta.TorusVac
 open GlobalTheory.SphTheta.TorusVac in
 
 /- English proof (translation)
-Introduce `L _ _ ϖ σ q δ ψ n n' M _ _ ρ ω s hS hC ℓ hℓs hℓmix hℓzero k t ht`. Establish `hU` using `hS.1.unr`. Establish `hH` using `hS.isHeis`. Establish `hΛ` using `hS.selfDual`. Establish `hϖle : Valued.v ϖ ≤ 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hU.2.2.2.1]; exact_mod_cast (by decide : (Multiplicative.ofAdd (-1:ℤ)) ≤ 1)`. Establish `hT : t.1.1 = Matrix.diagonal (fun i => ϖ ^ ex n' k i)` using `ht.trans (tMat_single ϖ n' k)`. Establish `hΛ'` using `selfDual_map (n := n) (δ := δ) (ψ := ψ) t hΛ`. Establish `hidx` using `idx_translate_ne (n := n) hU t _ hT`. Take `⟨e, he1, heinv⟩` from `GlobalTheory.T.exists_heisenbergInvariant_linearForm_isotropic_vacuum hH _ hΛ s hS.2.1 hS.fixes hS.2.2.2 _ (fun a ha b hb => hH.iso hΛ ha hb)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hv : Fixes ρ ((intMat L (Fin n') (Fin n)).map (lmulI t.1.1)) (ω (1, t) s)`. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Establish `h1` using `congrArg (fun F : Module.End ℂ M => F s) (hS.1.norm 1 t y)`. Simplify using `only [Module.End.mul_apply] at h1`. Rewrite `h1` using `[hS.fixes y hy]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `at h1`. Conclude with `h1.symm`. Establish `hsum : ℓ (sumOp ρ (intMat L (Fin n') (Fin n)) ((intMat L (Fin n') (Fin n)).map (lmulI t.1.1)) s) = 1`. Take `⟨N, f, hf, hu⟩` from `((GlobalTheory.T.sumOp_transversal_fixes_linear_and_of_le hH _ _ hΛ').2.1 hidx).1`. Rewrite using `[((GlobalTheory.T.sumOp_transversal_fixes_linear_and_of_le hH _ _ hΛ').1 s hS.fixes (Fin N) f hf hu).1, map_sum]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨i0, hi0, huniq⟩` from `hu 0 (zero_mem _)`. Establish `key : ∀ i, ℓ (ρ (f i) s) = if i = i0 then 1 else 0`. Introduce `i`. Distinguish the cases in `hfi : f i ∈ intMat L (Fin n') (Fin n)`. Establish `: i = i0` using `huniq i (by show 0 - f i ∈ _; rw [zero_sub]; exact neg_mem hfi)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_pos this, hS.fixes _ hfi, hℓs]`. Establish `hne : i ≠ i0`. Introduce and unpack `rfl`. Apply `hfi` to reduce the goal to its premises. Use `neg_mem hi0` as an intermediate fact.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[zero_sub, neg_neg]`. Then use the resulting hypothesis. Rewrite using `[if_neg hne]`. Apply `hℓzero` to reduce the goal to its premises. Introduce and unpack `⟨a, ha, hxa⟩`. Conclude with `hfi (mem_of_mixLat hϖle k t hT (hf i) ha hxa)`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Simplify using `only [key, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Take `⟨hd, hint, hord⟩` from `GlobalTheory.T.cayley_unitaryTorus_inv_det_integral_order L ϖ σ q hU hS.v_two n' k t ht`. Establish `hev` using `hC e heinv t⁻¹ hd hint`. Rewrite `hev` using `[inv_inv, hord, he1, mul_one]`. Establish `hco` using `(GlobalTheory.T.heisenbergQuotientOpSum_vacuum_commensurable_selfDualLattice hH _ hΛ s hS.2.1 hS.fixes hS.2.2.2 _ hΛ' hidx).2 e he1 heinv _ hv`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hco, map_smul, hsum, smul_eq_mul, mul_one]`. Simplify using `only [MonoidHom.comp_apply, MonoidHom.inr_apply] at hev`. Rewrite using `[hev, _root_.zpow_neg, zpow_one, mul_inv, _root_.zpow_neg, zpow_natCast, ← inv_pow, inv_neg, inv_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.SphTheta.mixed_torus_value : ∀ (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))] (ϖ : L) (σ : L →+* L) (q : ℕ) (δ : L) (ψ : AddChar L ℂ) (n n' : ℕ) (M : Type) [AddCommGroup M] [Module ℂ M] (ρ : Matrix (Fin n') (Fin n) L → Module.End ℂ M) (ω : GU σ n × GU σ n' →* Module.End ℂ M) (s : M), IsStd ϖ σ q δ ψ ρ ω s → CayleyRule q n ρ (ω.comp (MonoidHom.inr _ _)) s → ∀ ℓ : M →ₗ[ℂ] ℂ, ℓ s = 1 → (∀ a ∈ mixLat L n' n, ∀ v, ℓ (ρ a v) = ℓ v) → (∀ x, (¬ ∃ a ∈ mixLat L n' n, x - a ∈ intMat L (Fin n') (Fin n)) → ℓ (ρ x s) = 0) → ∀ (k : Fin (n' / 2)) (t : GU σ n'), t.1.1 = tMat ϖ n' (n' / 2) (Pi.single k 1) → ℓ (ω (1, t) s) = (-1) ^ n * (q : ℂ) ^ (-(n : ℤ)) := by
   intro L _ _ ϖ σ q δ ψ n n' M _ _ ρ ω s hS hC ℓ hℓs hℓmix hℓzero k t ht

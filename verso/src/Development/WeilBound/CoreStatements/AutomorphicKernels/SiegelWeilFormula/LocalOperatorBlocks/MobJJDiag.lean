@@ -13,41 +13,39 @@ def mob (M : M2 n) (Z : Matrix (Fin n) (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ
   (M.toBlocks₁₁ * Z + M.toBlocks₁₂) * (M.toBlocks₂₁ * Z + M.toBlocks₂₂)⁻¹
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Matrix.toBlocks₁₁, Matrix.toBlocks₁₂, Matrix.toBlocks₂₁, Matrix.mul_apply, Fintype.sum_sum_type]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem toBlocks₁₁_mul (M N : M2 n) : (M * N).toBlocks₁₁ = M.toBlocks₁₁ * N.toBlocks₁₁ + M.toBlocks₁₂ * N.toBlocks₂₁ := by
   ext i j
   simp [Matrix.toBlocks₁₁, Matrix.toBlocks₁₂, Matrix.toBlocks₂₁, Matrix.mul_apply, Fintype.sum_sum_type]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Matrix.toBlocks₁₁, Matrix.toBlocks₁₂, Matrix.toBlocks₂₂, Matrix.mul_apply, Fintype.sum_sum_type]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem toBlocks₁₂_mul (M N : M2 n) : (M * N).toBlocks₁₂ = M.toBlocks₁₁ * N.toBlocks₁₂ + M.toBlocks₁₂ * N.toBlocks₂₂ := by
   ext i j
   simp [Matrix.toBlocks₁₁, Matrix.toBlocks₁₂, Matrix.toBlocks₂₂, Matrix.mul_apply, Fintype.sum_sum_type]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Matrix.toBlocks₁₁, Matrix.toBlocks₂₂, Matrix.toBlocks₂₁, Matrix.mul_apply, Fintype.sum_sum_type]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem toBlocks₂₁_mul (M N : M2 n) : (M * N).toBlocks₂₁ = M.toBlocks₂₁ * N.toBlocks₁₁ + M.toBlocks₂₂ * N.toBlocks₂₁ := by
   ext i j
   simp [Matrix.toBlocks₁₁, Matrix.toBlocks₂₂, Matrix.toBlocks₂₁, Matrix.mul_apply, Fintype.sum_sum_type]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Matrix.toBlocks₁₂, Matrix.toBlocks₂₂, Matrix.toBlocks₂₁, Matrix.mul_apply, Fintype.sum_sum_type]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem toBlocks₂₂_mul (M N : M2 n) : (M * N).toBlocks₂₂ = M.toBlocks₂₁ * N.toBlocks₁₂ + M.toBlocks₂₂ * N.toBlocks₂₂ := by
   ext i j
   simp [Matrix.toBlocks₁₂, Matrix.toBlocks₂₂, Matrix.toBlocks₂₁, Matrix.mul_apply, Fintype.sum_sum_type]
 
 /- English proof (translation)
-Use `set V := N.toBlocks₂₁ * Z + N.toBlocks₂₂ with hVdef`. Use `set W := N.toBlocks₁₁ * Z + N.toBlocks₁₂ with hWdef`. Establish `h1 : (M * N).toBlocks₁₁ * Z + (M * N).toBlocks₁₂ = M.toBlocks₁₁ * W + M.toBlocks₁₂ * V`. Rewrite using `[toBlocks₁₁_mul, toBlocks₁₂_mul, hVdef, hWdef]`. Use `noncomm_ring`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : (M * N).toBlocks₂₁ * Z + (M * N).toBlocks₂₂ = M.toBlocks₂₁ * W + M.toBlocks₂₂ * V`. Rewrite using `[toBlocks₂₁_mul, toBlocks₂₂_mul, hVdef, hWdef]`. Use `noncomm_ring`. Use `clear_value V W`. Establish `hVV : V * V⁻¹ = 1` using `Matrix.mul_nonsing_inv V hV`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hVV' : V⁻¹ * V = 1` using `Matrix.nonsing_inv_mul V hV`. Establish `e1 : M.toBlocks₁₁ * (W * V⁻¹) + M.toBlocks₁₂ = (M.toBlocks₁₁ * W + M.toBlocks₁₂ * V) * V⁻¹`. Rewrite using `[Matrix.add_mul, Matrix.mul_assoc, Matrix.mul_assoc, hVV, Matrix.mul_one]`. Establish `e2 : M.toBlocks₂₁ * (W * V⁻¹) + M.toBlocks₂₂ = (M.toBlocks₂₁ * W + M.toBlocks₂₂ * V) * V⁻¹`. Rewrite using `[Matrix.add_mul, Matrix.mul_assoc, Matrix.mul_assoc, hVV, Matrix.mul_one]`.
-
-Unfold `mob`. Rewrite using `[h1, h2, ← hWdef, ← hVdef, e1, e2, Matrix.mul_inv_rev, Matrix.nonsing_inv_nonsing_inv V hV, Matrix.mul_assoc, ← Matrix.mul_assoc V⁻¹, hVV', Matrix.one_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mob_mul (M N : M2 n) (Z : Matrix (Fin n) (Fin n) ℂ) (hV : IsUnit (N.toBlocks₂₁ * Z + N.toBlocks₂₂).det) :
     mob (M * N) Z = mob M (mob N Z) := by
@@ -69,22 +67,22 @@ theorem mob_mul (M N : M2 n) (Z : Matrix (Fin n) (Fin n) ℂ) (hV : IsUnit (N.to
     ← Matrix.mul_assoc V⁻¹, hVV', Matrix.one_mul]
 
 /- English proof (translation)
-Simplify using `[mob, nU]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mob_nU (b Z : Matrix (Fin n) (Fin n) ℂ) : mob (nU b) Z = Z + b := by
   simp [mob, nU]
 
 /- English proof (translation)
-Establish `h : IsUnit (aᴴ).det` using `by rw [Matrix.det_conjTranspose]; exact ha.star`. Simplify using `[mob, mLc, Matrix.nonsing_inv_nonsing_inv _ h]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem mob_mLc (a Z : Matrix (Fin n) (Fin n) ℂ) (ha : IsUnit a.det) : mob (mLc a) Z = a * Z * aᴴ := by
   have h : IsUnit (aᴴ).det := by rw [Matrix.det_conjTranspose]; exact ha.star
   simp [mob, mLc, Matrix.nonsing_inv_nonsing_inv _ h]
 
 /- English proof (translation)
-Simplify using `only [mob, JJ, Matrix.toBlocks_fromBlocks₁₁, Matrix.toBlocks_fromBlocks₁₂, Matrix.toBlocks_fromBlocks₂₁, Matrix.toBlocks_fromBlocks₂₂, Matrix.zero_mul, zero_add, add_zero, Matrix.one_mul, Matrix.neg_mul]`. Rewrite using `[Matrix.diagonal_neg]`. Apply `Matrix.inv_eq_left_inv` to reduce the goal to its premises. Rewrite using `[Matrix.diagonal_mul_diagonal]`. Use extensionality with `i j`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using `[hz i]`. Simplify using `[Matrix.diagonal_apply_ne _ h, Matrix.one_apply_ne h]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem mob_JJ_diag (z : Fin n → ℂ) (hz : ∀ j, z j ≠ 0) :
     mob (JJ n) (Matrix.diagonal z) = Matrix.diagonal fun j => (-z j)⁻¹ := by
@@ -101,19 +99,19 @@ theorem mob_JJ_diag (z : Fin n → ℂ) (hz : ∀ j, z j ≠ 0) :
 abbrev Z0 (sg : ℤˣ) : Matrix (Fin n) (Fin n) ℂ := (Complex.I * ((sg : ℤ) : ℂ)) • 1
 
 /- English proof (translation)
-Apply the tactic sequence `rcases Int.units_eq_one_or sg with h | h <;> simp [h]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sg_sq (sg : ℤˣ) : ((sg : ℤ) : ℂ) * ((sg : ℤ) : ℂ) = 1 := by
   rcases Int.units_eq_one_or sg with h | h <;> simp [h]
 
 /- English proof (translation)
-Take `⟨hG, hU⟩` from `hM`. Establish `hU' : M * Mᴴ = 1` using `mul_eq_one_comm.mp hU`. Establish `hc : JJ n * M = M * JJ n`. Combine the equalities or inequalities in the displayed calculation. Establish `hM'` using `Matrix.fromBlocks_toBlocks M`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Rewrite `hc` using `[← hM']`. Simplify using `only [JJ, Matrix.fromBlocks_multiply] at hc`. Simplify using `only [Matrix.zero_mul, Matrix.one_mul, zero_add, add_zero, Matrix.mul_zero, Matrix.mul_one, Matrix.mul_neg, Matrix.neg_mul, neg_zero] at hc`. Take `⟨e1, e2, -, -⟩` from `Matrix.fromBlocks_inj.mp hc`. Use `set σ : ℂ := ((sg : ℤ) : ℂ)`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hσ` using `sg_sq sg`. Use `set X := M.toBlocks₂₁ * Z0 sg + M.toBlocks₂₂ with hX`. Establish `hnum : M.toBlocks₁₁ * Z0 sg + M.toBlocks₁₂ = (Complex.I * σ) • X`. Rewrite using `[hX, e1, e2]`. Simplify using `only [Z0, Matrix.mul_smul, Matrix.mul_one, smul_add, Matrix.neg_mul, smul_neg, smul_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[show Complex.I * σ * (Complex.I * σ) = -1 by rw [mul_mul_mul_comm, Complex.I_mul_I, hσ]; ring]`. Simplify using `[neg_smul]`. Normalize the expressions using the abelian group laws. Unfold `mob`. Rewrite using `[hnum, ← hX, Matrix.smul_mul, Matrix.mul_nonsing_inv X hV]`.
+Normalize the expressions using the abelian group laws. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mob_K (sg : ℤˣ) (M : M2 n) (hM : InK M) (hV : IsUnit (M.toBlocks₂₁ * Z0 sg + M.toBlocks₂₂).det) :
     mob M (Z0 sg) = Z0 sg := by

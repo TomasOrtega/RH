@@ -14,9 +14,9 @@ open GlobalTheory.TopForm GlobalTheory.Adelic GlobalTheory.TangentOrigin
 open GlobalTheory.FlagTan (IsDef)
 
 /- English proof (translation)
-Use `letI := α.toAlgebra`. Use `haveI : Algebra.IsStandardSmoothOfRelativeDimension D k A := h`. Take `⟨ι, σ, _, _, P, hP⟩` from `‹Algebra.IsStandardSmoothOfRelativeDimension D k A›.out`. Use `letI := Fintype.ofFinite ι`. Use `letI := Fintype.ofFinite σ`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Establish `hc : Fintype.card ((Set.range P.map)ᶜ : Set ι) = D`. Rewrite using `[Fintype.card_compl_set, Set.card_range_of_injective P.map_inj, ← hP]`. Simplify using `[Algebra.Presentation.dimension]`. Set `e` to `Fintype.equivFinOfCardEq hc`. Conclude with `⟨fun i => P.val (e.symm i), isFreeGen_dForm _ (P.basisKaehler.reindex e) fun i => by simp⟩`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_isFreeGen_dForm {k A : Type} [CommRing k] [CommRing A] {α : k →+* A} {D : ℕ}
     (h : α.IsStandardSmoothOfRelativeDimension D) : ∃ f : Fin D → A, IsFreeGen A (dForm α f) := by
@@ -34,11 +34,11 @@ theorem exists_isFreeGen_dForm {k A : Type} [CommRing k] [CommRing A] {α : k �
     simp⟩
 
 /- English proof (translation)
-Take `⟨V, hV, hx, -⟩` from `Opens.isBasis_iff_nbhd.1 Y.isBasis_affineOpens (Opens.mem_top x)`. Establish `h` using `HasRingHomProperty.appLE (@SmoothOfRelativeDimension D) p ‹_› ⟨⊤, isAffineOpen_top _⟩ ⟨V, hV⟩ le_top`. Take `⟨s, hs, h⟩` from `(RingHom.locally_iff_isLocalization RingHom.isStandardSmoothOfRelativeDimension_respectsIso _).1 h`. Take `⟨t, hxt⟩ : ∃ t : (s : Set Γ(Y, V)), x ∈ Y.basicOpen (t : Γ(Y, V))` from `Opens.mem_iSup.1 (((IsAffineOpen.iSup_basicOpen_eq_self_iff hV).2 hs).ge hx)`. Use `IsAffineOpen.isLocalization_basicOpen hV (t : Γ(Y, V))` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h₁` using `RingHom.isStandardSmoothOfRelativeDimension_respectsIso.2 _ (Scheme.ΓSpecIso (CommRingCat.of k)).symm.commRingCatIsoToRingEquiv (h t t.2 Γ(Y, Y.basicOpen (t : Γ(Y, V))))`. Establish `h₂ : (ReciprocityTheory.ChartRestriction.G.DVR.FlatBC.algX p (Y.basicOpen (t : Γ(Y, V)))).IsStandardSmoothOfRelativeDimension D`. Rewrite using `[← resG_comp_algX p (Y.basicOpen_le (t : Γ(Y, V)))]`. Conclude with `h₁`. Take `⟨f, hf⟩` from `exists_isFreeGen_dForm h₂`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨_, f, hxt, IsAffineOpen.basicOpen hV _, hf⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_isFrame_dOn {k : Type} [CommRing k] {Y : Scheme.{0}} (p : Y ⟶ Sp k) (D : ℕ)
     [SmoothOfRelativeDimension D p] (x : Y) :
@@ -61,11 +61,9 @@ theorem exists_isFrame_dOn {k : Type} [CommRing k] {Y : Scheme.{0}} (p : Y ⟶ S
   exact ⟨_, f, hxt, IsAffineOpen.basicOpen hV _, hf⟩
 
 /- English proof (translation)
-Establish `h : ∀ z : PrimeSpectrum (DualNumber L), ∀ a, a ∈ z.asIdeal ↔ a.fst = 0` using `fun z a => by`. Prove the components needed by the constructor for the conclusion. Introduce `ha`. Assume the negation of the conclusion as `h0`. Conclude with `z.2.ne_top (z.asIdeal.eq_top_of_isUnit_mem ha (TrivSqZeroExt.isUnit_iff_isUnit_fst.2 (Ne.isUnit h0)))`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `ha`. Use `z.2.mem_of_pow_mem 2 ?_` and prove the remaining obligations. Apply the tactic sequence `rw [show a ^ 2 = 0 by ext <;> simp [pow_two, ha]]`. Conclude with `z.asIdeal.zero_mem`. Use extensionality with `a`.
-
-Rewrite using `[h, h]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem primeSpectrum_dualNumber_eq {L : Type} [Field L] (x y : PrimeSpectrum (DualNumber L)) : x = y := by
   have h : ∀ z : PrimeSpectrum (DualNumber L), ∀ a, a ∈ z.asIdeal ↔ a.fst = 0 := fun z a => by
@@ -81,7 +79,7 @@ theorem primeSpectrum_dualNumber_eq {L : Type} [Field L] (x y : PrimeSpectrum (D
   rw [h, h]
 
 /- English proof (translation)
-Introduce `s _`. Establish `hp : (spMap φ) (IsLocalRing.closedPoint L) = s` using `primeSpectrum_dualNumber_eq _ _`. Establish `h₁ : (spMap φ ≫ x) (IsLocalRing.closedPoint L) ∈ V` using `h (Set.mem_univ _)`. Conclude with `hp ▸ h₁`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem le_preimage_of_dualNumber {L : Type} [Field L] {T : Scheme.{0}} (φ : DualNumber L →+* L)
     (x : Sp (DualNumber L) ⟶ T) (V : T.Opens) (h : ⊤ ≤ (spMap φ ≫ x) ⁻¹ᵁ V) : ⊤ ≤ x ⁻¹ᵁ V := by
@@ -95,13 +93,13 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
   (M : Modif (str₀ X Z) (U₀ X Z) (GlobalTheory.FlagTan.dimFlag Dw))
 
 /- English proof (translation)
-Establish `e` using `(X.ptY_frMap hd).trans hz.symm`. Establish `hU : ⊤ ≤ (z ≫ M.σ) ⁻¹ᵁ U₀ X Z` using `fun s _ => by`. Use `ho (Set.mem_univ s)` as an intermediate fact. Rewrite `this` using `[M.off_eq]`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hb : ⊤ ≤ X.ptY v ⁻¹ᵁ (inc₀ X Z).opensRange` using `le_preimage_of_dualNumber _ _ _ (by`. Rewrite using `[e]`. Introduce and unpack `s -`. Conclude with `⟨(z ≫ M.σ) s, rfl⟩)`. Establish `hr : Set.range (X.ptY v) ⊆ Set.range (inc₀ X Z)`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨s, rfl⟩`. Conclude with `hb (Set.mem_univ s)`. Take `⟨w, hw⟩ : ∃ w, w ≫ inc₀ X Z = X.ptY v` from `⟨_, IsOpenImmersion.lift_fac _ _ hr⟩`. Establish `ered : spMap (GlobalTheory.FlagTan.red c L).toRingHom ≫ w = z ≫ M.σ`. Rewrite using `[← cancel_mono (inc₀ X Z), Category.assoc, hw, e, Category.assoc]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hwU : ⊤ ≤ w ⁻¹ᵁ U₀ X Z` using `le_preimage_of_dualNumber _ _ _ (by rw [ered]; exact hU)`. Take `⟨zv, hzv, -⟩` from `M.existsUnique_lift w hwU`. Establish `hred : spMap (GlobalTheory.FlagTan.red c L).toRingHom ≫ zv = z` using `(M.existsUnique_lift (z ≫ M.σ) hU).unique (by rw [Category.assoc, hzv, ered]) rfl`. Use `⟨zv, ?_, fun O hO => le_preimage_of_dualNumber _ _ _ (by rw [hred]; exact hO)⟩` and prove the remaining obligations. Rewrite using `[toFlag, ← Category.assoc, hzv, hw]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_tanLift {L : Type} [Field L] [Algebra c.F L] {Q : FrPt Xo c L} {v : FrPt Xo c (DualNumber L)}
     (hd : IsDef Q v) {z : Sp L ⟶ M.X} (hz : z ≫ toFlag M = X.ptY Q) (ho : ⊤ ≤ z ⁻¹ᵁ M.off) :
@@ -129,17 +127,15 @@ theorem exists_tanLift {L : Type} [Field L] [Algebra c.F L] {Q : FrPt Xo c L} {v
   rw [toFlag, ← Category.assoc, hzv, hw]
 
 /- English proof (translation)
-Establish `hU : ⊤ ≤ (z ≫ M.σ) ⁻¹ᵁ U₀ X Z` using `fun s _ => by`. Use `ho (Set.mem_univ s)` as an intermediate fact. Rewrite `this` using `[M.off_eq]`. Conclude with `this`. Establish `hF : ⊤ ≤ (z ≫ toFlag M) ⁻¹ᵁ flagOpen X` using `hU`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hk : ⊤ ≤ (z ≫ toFlag M) ⁻¹ᵁ X.F.U k` using `fun s _ => (((common₀ X Z).pull M.σ).mem _ _ _).1 (hi (Set.mem_univ s)).2`. Take `⟨_, hch⟩` from `exists_chartFr _ hF`. Take `⟨Q, hQ⟩` from `hch k hk`. Establish `hb` using `(GlobalTheory.Reg.BorelGroupoid.frBor_groupoid E H Dw l Xo c L).1 Q`. Take `⟨v, hv⟩` from `(hKS L Q).exists_isTanFrame`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e : z ≫ toFlag M = X.ptY Q` using `GlobalTheory.FlagMod.FlagCover.eq_ptY hQ.lies`. Use `choose zv hzv hzO using fun b => exists_tanLift M (hv.isDef b) e ho`. Establish `hpi : ptOf z ∈ M.K.bundle.U i` using `((le_iff_ptOf_mem z _).1 hi).1`. Take `⟨V, f, hx, hf⟩` from `exists_isFrame_dOn M.str (GlobalTheory.FlagTan.dimFlag Dw) (ptOf z)`. Take `⟨O, hO, hxO, hOV⟩` from `Opens.isBasis_iff_nbhd.1 M.X.isBasis_affineOpens (show ptOf z ∈ V ⊓ M.K.bundle.U i from ⟨hx, hpi⟩)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hOV' : O ≤ V` using `hOV.trans inf_le_left`. Establish `hOi : O ≤ M.K.bundle.U i` using `hOV.trans inf_le_right`. Set `g : Fin (GlobalTheory.FlagTan.dimFlag Dw) → Γ(M.X, O)` to `fun a => resG M.X hOV' (f a)`. Establish `hu : IsUnit (M.K.jacobian i hOi g)` using `(M.K.isUnit_jacobian_iff i hO hOi g).2 (by`. Use `hf.res hO hOV'` as an intermediate fact.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite using `[resForm_dOn] at this)` and apply the resulting hypothesis. Establish `hzO' : ⊤ ≤ z ⁻¹ᵁ O` using `(le_iff_ptOf_mem z _).2 hxO`. Establish `a` using `h L Q Q 1 v z zv i k O hOi g hzO' (fun b => hzO b O hzO') hk ho hi hQ hb hv hzv`. Establish `hd : (Matrix.of fun a b => (evalPt (zv (tanOrd Dw b)) O (hzO _ O hzO') (g a)).snd).det ≠ 0` using `fun h0 => by`. Rewrite `a` using `[h0, mul_zero]`.
-
-Conclude with `mul_ne_zero (Units.ne_zero _) (hu.map (evalPt z O hzO')).ne_zero a.symm`. Conclude with `IsKS.val_eq M h h' hOi hzO' (hzv := fun b => hzO b O hzO') ho hi hQ hb hv hzv hd`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsKS.val_eq_of_ksIso
     (hKS : ∀ (K : Type) [Field K] [Algebra c.F K] (y : FrPt Xo c K), GlobalTheory.FlagTan.KSIso (GlobalTheory.FlagTan.psiSet H) y)
@@ -178,13 +174,11 @@ theorem IsKS.val_eq_of_ksIso
   exact IsKS.val_eq M h h' hOi hzO' (hzv := fun b => hzO b O hzO') ho hi hQ hb hv hzv hd
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c Y X Z M hKS ω ω'`. Use `haveI : Smooth M.str := SmoothOfRelativeDimension.smooth (GlobalTheory.FlagTan.dimFlag Dw) M.str`. Use `haveI : IsReduced M.X := ReciprocityTheory.ChartRestriction.G.Geo.Tor.isReduced_of_smooth M.str`. Establish `e : ω.ω = ω'.ω`. Use `H0.ext_germ fun y hy => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨k, hk⟩` from `Opens.mem_iSup.1 (X.F.cover.ge (Set.mem_univ (toFlag M y)))`. Take `⟨i, hi⟩` from `exists_chart M.K.isLB y`. Establish `hm : y ∈ ((L₀ X Z (GlobalTheory.FlagTan.kap Dw)).pull M.σ).U (flagIdx M _ k)` using `(((common₀ X Z).pull M.σ).mem _ _ _).2 hk`. Use `⟨(i, flagIdx M _ k), ⟨hi, hm⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `ger y _ (H0.loc ω.ω _) = ger y _ (H0.loc ω'.ω _)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data.
 
-Use `congrArg _ (GlobalTheory.FlagMod.ext_ev_field fun L _ z hz => ?_)` and prove the remaining obligations. Conclude with `IsKS.val_eq_of_ksIso M hKS ω.isKS ω'.isKS z i k (GlobalTheory.FlagMod.le_preimage_mono inf_le_left hz) (GlobalTheory.FlagMod.le_preimage_mono inf_le_right hz)`. Consider the cases of `ω`. Consider the cases of `ω'`. Consider the cases of `e`.
-
-Both sides reduce to the same expression.
+Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem CanId.eq_of_ksIso : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (Y : Model Xo c (RingHom.id c.F)) (X : GlobalTheory.FlagMod.FlagCover Y) (Z : Comp Xo c) (M : Modif (str₀ X Z) (U₀ X Z) (GlobalTheory.FlagTan.dimFlag Dw)), (∀ (K : Type) [Field K] [Algebra c.F K] (y : FrPt Xo c K), GlobalTheory.FlagTan.KSIso (GlobalTheory.FlagTan.psiSet H) y) → ∀ ω ω' : CanId M, ω = ω' := by
   intro E _ _ _ H Dw l Xo c Y X Z M hKS ω ω'

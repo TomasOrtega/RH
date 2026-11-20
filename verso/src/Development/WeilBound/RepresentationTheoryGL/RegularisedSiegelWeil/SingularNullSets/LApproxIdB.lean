@@ -19,25 +19,19 @@ namespace PositivityTheory.Rg.Rsw.L.LApproxId
 open GlobalTheory.CompanionTheory.Hypotheses₂.OneV.Coef (testT boxA fouA intF)
 
 /- English proof (translation)
-Introduce `F _ _ hF ψ hψ S ε hε ν hν`. Use `haveI : BorelSpace (AF F) := ⟨rfl⟩`. Take `⟨db, hdb⟩` from `GlobalTheory.T.exists_adelic_haar_covolume_one F`. Take `⟨⟨laminf, hinf⟩, hlamex⟩` from `GlobalTheory.T.exists_standard_local_measures F`. Use `choose lam hlam using hlamex`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨S₁, hS₁⟩` from `GlobalTheory.T.exists_local_approximate_identity F hF ψ hψ db hdb laminf lam hinf hlam`. Take `⟨ρ, U, hρ, hρt, hU, hUt, hinv, hint, -, hlim⟩` from `hS₁ (S ∪ S₁) Finset.subset_union_right`. Use `haveI : db.IsAddHaarMeasure := hdb.1`. Establish `hεε` using `idF_mul hε`. Establish `hp : Continuous (AddMonoidHom.mulLeft ε)` using `continuous_mul_left ε`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hpp : ∀ x, AddMonoidHom.mulLeft ε (AddMonoidHom.mulLeft ε x) = AddMonoidHom.mulLeft ε x` using `fun x => by`. Simplify using `only [AddMonoidHom.coe_mulLeft, ← mul_assoc, hεε]`. Establish `hcY : IsClosed (((AddMonoidHom.mulLeft ε).ker : Set (AF F)))` using `isClosed_eq hp continuous_const`. Use `haveI : LocallyCompactSpace (AddMonoidHom.mulLeft ε).ker := hcY.locallyCompactSpace`. Use `haveI : LocallyCompactSpace (fixE ε) := (isClosed_eq hp continuous_id).locallyCompactSpace`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `haveI := hν`. Use `haveI : SecondCountableTopology (fixE ε) := TopologicalSpace.Subtype.secondCountableTopology _`. Use `haveI : SecondCountableTopology (AddMonoidHom.mulLeft ε).ker := TopologicalSpace.Subtype.secondCountableTopology _`. Use `haveI : SigmaCompactSpace (fixE ε) := inferInstance`. Use `haveI : SigmaCompactSpace (AddMonoidHom.mulLeft ε).ker := inferInstance`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `haveI : SigmaFinite ν := inferInstance`. Take `⟨c, hc, hdec⟩` from `decomp (AddMonoidHom.mulLeft ε) hp hpp db ν (Measure.addHaar)`. Establish `hloc` using `fun v => GlobalTheory.CompanionTheory.SW.LocFv.isLocR_Fv F v`. Use `haveI : ∀ v : HeightOneSpectrum (𝓞 F), IsTopologicalRing (Fv F v) := fun v => (hloc v).1`. Use `haveI : ∀ v : HeightOneSpectrum (𝓞 F), BorelSpace (Fv F v) := fun v => ⟨rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `haveI : ∀ v, (lam v).IsAddHaarMeasure := fun v => (hlam v).1`. Establish `hne : ∀ k, ∫ y, testT (ρ k) (S ∪ S₁) (U k) y ∂db ≠ 0`. Introduce `k`. Rewrite using `[hint k]`. Use `mul_ne_zero (by exact_mod_cast (hρ k).2.2.2.ne') (Finset.prod_ne_zero_iff.2 fun v _ => ?_)` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Supply the required witnesses or components.
 
-Establish `h1 : 0 < (lam v) (U k v)` using `(hU k v).2.1.measure_pos (lam v) ⟨0, (hU k v).2.2⟩`. Establish `h2 : (lam v) (U k v) ≠ ⊤` using `(hU k v).1.measure_lt_top.ne`. Conclude with `(ENNReal.toReal_pos h1.ne' h2).ne'` after adjusting the coercions. Use `choose g Gc hGc hgI hgb hgint hgeq using fun k => kdata ψ hψ Finset.subset_union_left hε db ν Measure.addHaar c hc hdec (ρ k) (hρ k).1 (hρ k).2.1 (hρ k).2.2.1 (U k) (fun v => (hU k v).2.2) (hinv k).1 (hinv k).2 (hne k)`. Use `⟨g, fun k s => Gc k * tR (ρ k) (S ∪ S₁) (U k) (-(ε * s)), fun k => {a | ε * a = a ∧ fstA F a ∈ tsupport (ρ k) ∧ ∀ v ∈ S, (sndA F a) v ∈ U k v}, fun k => ⟨hgI k, hgb k, fun s => ⟨mul_nonneg (hGc k) (tR_nonneg (hρ k).2.2.1 _ _ _), hgint k s⟩⟩, fun h => ?_, fun k s hs => ?_, top1 S …` and prove the remaining obligations.
-
-Establish `hl` using `hlim h.1`. Establish `hm : sndA F h.1 ∈ intF (S ∪ S₁)` using `fun v hv => by`. Rewrite using `[snd_eq, fix_snd hε (memH h) (fun h' => hv (Finset.mem_union_left _ h'))]`. Conclude with `zero_mem _`. Rewrite `hl` using `[Set.indicator_of_mem hm]`.
-
-Simplify using `only [hgeq]`. Conclude with `hl`. Establish `ht : tR (ρ k) (S ∪ S₁) (U k) (-(ε * s)) ≠ 0` using `fun h0 => hs (by simp only [h0, mul_zero])`. Unfold `tR at ht`. Establish `hρne : ρ k (fstA F (-(ε * s))) ≠ 0` using `fun h0 => ht (by rw [h0, zero_mul])`.
-
-Establish `hbox : sndA F (-(ε * s)) ∈ boxA (S ∪ S₁) (U k)`. Assume the negation of the conclusion as `hn`. Conclude with `ht (by rw [Set.indicator_of_notMem hn, mul_zero])`. Conclude with `⟨by rw [mul_neg, ← mul_assoc, hεε], subset_tsupport _ hρne, fun v hv => hbox.1 v (Finset.mem_union_left _ hv)⟩`.
+A detailed English derivation is pending.
 -/
 theorem oneD : OneD := by
   intro F _ _ hF ψ hψ S ε hε ν hν

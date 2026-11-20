@@ -5,15 +5,15 @@ namespace GlobalTheory.EsymmOfPowerSums
 open MvPolynomial
 
 /- English proof (translation)
-Introduce `k`. Proceed by induction on `k using Nat.strong_induction_on with`. Consider the case `_ k ih`. Introduce `hk`. Break down `Nat.eq_zero_or_pos k with rfl | hpos` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using the standard rewrite rules. Establish `hk0 : (k : ℂ) ≠ 0` using `Nat.cast_ne_zero.mpr hpos.ne'`. Apply `mul_left_cancel₀ hk0` to reduce the goal to its premises. Establish `key` using `MvPolynomial.mul_esymm_eq_sum (Fin d) ℂ k`. Establish `ha` using `congrArg (MvPolynomial.aeval a) key`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb` using `congrArg (MvPolynomial.aeval b) key`. Simplify using `only [map_mul, map_natCast, map_pow, map_neg, map_one, map_sum] at ha hb`. Rewrite using `[ha, hb]`. Use `congr 1`. Use `Finset.sum_congr rfl ?_` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `p hp`. Rewrite `hp` using `[Finset.mem_filter, Finset.HasAntidiagonal.mem_antidiagonal]`. Take `⟨h1, h2⟩` from `hp`. Rewrite using `[ih p.1 h2 (by omega)]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `h p.2 (by omega) (by omega)` as an intermediate fact. Simplify `this` using `[MvPolynomial.psum]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem esymm_eq_of_psum_eq {d : ℕ} (a b : Fin d → ℂ)
     (h : ∀ k : ℕ, 1 ≤ k → k ≤ d → ∑ i : Fin d, a i ^ k = ∑ i : Fin d, b i ^ k) :

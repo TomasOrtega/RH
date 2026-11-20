@@ -12,7 +12,7 @@ open UpperTheory.V UpperTheory.V.Af UpperTheory.Gal.SV
 namespace UpperTheory.V.Z.Win.RR
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ A w h rc hrc a σ hp` and use `Gu.plainGd E Ω A w h rc hrc a σ hp`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem gd : GdOf := fun E Ω _ _ _ _ _ A w h rc hrc a σ hp => Gu.plainGd E Ω A w h rc hrc a σ hp
 

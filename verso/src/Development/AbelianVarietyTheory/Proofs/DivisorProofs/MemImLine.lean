@@ -27,7 +27,7 @@ def imLine (σ : E →ₐ[F] E) : AddSubgroup (AE F E) where
     rw [← neg_add, ha, neg_zero]
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_imLine {σ : E →ₐ[F] E} {t : AE F E} : t ∈ imLine σ ↔ t + cA σ t = 0 := Iff.rfl
 

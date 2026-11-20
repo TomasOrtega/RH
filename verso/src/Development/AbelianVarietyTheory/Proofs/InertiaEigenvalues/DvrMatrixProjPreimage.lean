@@ -5,23 +5,21 @@ open scoped InnerProductSpace BigOperators
 namespace GlobalTheory
 
 /- English proof (translation)
-Set `f : (n → O) →ₗ[O] (n → K)` to `LinearMap.compLeft (Algebra.linearMap O K) n`. Set `U : Submodule O (n → O)` to `(S.restrictScalars O).comap f`. Establish `hmem : ∀ v : n → O, v ∈ U ↔ (fun i => algebraMap O K (v i)) ∈ S` using `fun v => Iff.rfl`. Establish `htf : NoZeroSMulDivisors O ((n → O) ⧸ U)`. Prove the components needed by the constructor for the conclusion.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Introduce `c x hcx`. Take `⟨v, rfl⟩` from `Submodule.Quotient.mk_surjective U x`. Distinguish the cases in `hc : c = 0`. Use `left`. Conclude with `hc`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `right`. Rewrite `hcx` using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`. Rewrite using `[Submodule.Quotient.mk_eq_zero]`. Rewrite `hcx`, the goal using `[hmem]`. Establish `e : (fun i => algebraMap O K ((c • v) i)) = algebraMap O K c • (fun i => algebraMap O K (v i))`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Use function extensionality and compare the values at `i`. Simplify using `[Algebra.smul_def]`. Rewrite `hcx` using `[e]`. Establish `hc' : algebraMap O K c ≠ 0`. Introduce `h; exact hc ((IsFractionRing.injective O K) (by rw [h, map_zero]))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Use `S.smul_mem (algebraMap O K c)⁻¹ hcx` as an intermediate fact. Rewrite `this` using `[smul_smul, inv_mul_cancel₀ hc', one_smul]`. Then use the resulting hypothesis. Use `haveI : Module.Free O ((n → O) ⧸ U) := Module.free_of_finite_type_torsion_free'`. Use `haveI : Module.Projective O ((n → O) ⧸ U) := Module.Projective.of_free`. Take `⟨s, hs⟩` from `Module.projective_lifting_property U.mkQ LinearMap.id (Submodule.mkQ_surjective U)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Set `π : (n → O) →ₗ[O] (n → O)` to `LinearMap.id - s ∘ₗ U.mkQ`. Establish `hπU : ∀ v, π v ∈ U`. Introduce `v`. Rewrite using `[← Submodule.Quotient.mk_eq_zero]`. Use `LinearMap.congr_fun hs (U.mkQ v)` as an intermediate fact.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [LinearMap.comp_apply, LinearMap.id_apply] at this`. Simplify using `only [π, LinearMap.sub_apply, LinearMap.id_apply, LinearMap.comp_apply, Submodule.Quotient.mk_sub]`. Rewrite using `[← Submodule.mkQ_apply U (s _), this, Submodule.mkQ_apply, sub_self]`. Establish `hπfix : ∀ u ∈ U, π u = u`. Introduce `u hu`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `h0 : U.mkQ u = 0` using `(Submodule.Quotient.mk_eq_zero U).mpr hu`. Simplify using `only [π, LinearMap.sub_apply, LinearMap.id_apply, LinearMap.comp_apply, h0, map_zero, sub_zero]`. Use `⟨LinearMap.toMatrix' π, ?_, ?_⟩` and prove the remaining obligations. Introduce `v`. Rewrite using `[LinearMap.toMatrix'_mulVec]`.
-
-Conclude with `hπU v`. Introduce `u hu`. Rewrite using `[LinearMap.toMatrix'_mulVec]`. Conclude with `hπfix u hu`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dvr_matrix_proj_preimage (O K : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     [Field K] [Algebra O K] [IsFractionRing O K] (n : Type) [Fintype n] [DecidableEq n]

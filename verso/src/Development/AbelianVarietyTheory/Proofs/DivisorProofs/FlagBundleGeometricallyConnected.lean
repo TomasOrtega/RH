@@ -10,7 +10,7 @@ set_option autoImplicit false
 namespace GlobalTheory.FlagOverField
 
 /- English proof (translation)
-Introduce `F _ G s ι _ E r fl hE H`. Use `⟨fun K _ y Z fst snd h => ?_⟩` and prove the remaining obligations. Establish `hirr : IrreducibleSpace ↥(Limits.pullback s y)` using `GlobalTheory.T.flag_bundle_over_field_irreducible K _ (Limits.pullback.snd s y) ι _ r _ (fun a => (hE a).pullback y) (GlobalTheory.FlagBaseChange.isFlagBundle_pullFlag _ _ _ s y ι E r fl H)`. Establish `hc : ConnectedSpace ↥(Limits.pullback s y)` using `inferInstance`. Conclude with `h.isoPullback.hom.homeomorph.connectedSpace_iff.mpr hc`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem geometricallyConnected_of_isFlagBundle : ∀ (F : Type) [Field F] (G : Scheme.{0}) (s : G ⟶ Sp F) (ι : Type) [Fintype ι] (E : ι → (Sp F).Modules) (r : ι → ℕ) (fl : ∀ a, Vert.Flag ((Scheme.Modules.pullback s).obj (E a)) (r a)), (∀ a, IsVB (E a) (r a)) → IsFlagBundle s E r fl → GeometricallyConnected s := by
   intro F _ G s ι _ E r fl hE H

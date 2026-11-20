@@ -6,15 +6,15 @@ open CrystallineSemistableComparison.Pb.Kap
 namespace GlobalTheory.CompanionTheory.KapRho
 
 /- English proof (translation)
-Take `⟨e, z, hz⟩` from `hC.lift j x hx`. Use `haveI := hC.fin j`. Establish `hunit : IsUnit (C.ℓ : B)` using `by first`. Consider the case `exact hC.unit`. Consider the case `simpa using hC.unit.map C.ι`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `simpa using hC.unit.map C.o`. Consider the case `simpa using (hC.unit.map C.lam).map C.ι`. Take `⟨u, hu⟩` from `hunit`. Set `w : C.W j` to `((u⁻¹ : Bˣ) : B) ^ e • C.b j z`. Set `bs₀` to `Module.finBasis K (C.V j)`.
+Treat this case separately. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Take `⟨g, hg, -⟩` from `hC.basis j bs₀ w`. Set `f : Module.Dual K (C.V j) →+ B` to `{ toFun := fun φ => ∑ t, C.o (φ (bs₀ t)) * g t map_zero' := by simp map_add' := fun φ ψ => by simp [add_mul, Finset.sum_add_distrib] }`. Use `⟨f, fun k φ => ?_, e, z, hz, fun {m} bs => ?_⟩` and prove the remaining obligations. Simplify using `[f, Finset.mul_sum, mul_assoc]`. Establish `key : ∑ s, f (bs.coord s) • C.μ j (bs s) = w`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [f, AddMonoidHom.coe_mk, ZeroHom.coe_mk, Finset.sum_smul]`. Rewrite using `[Finset.sum_comm, hg]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Use `conv_rhs => rw [← bs.sum_repr (bs₀ t)]`. Rewrite using `[map_sum, Finset.smul_sum]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.map_smulₛₗ, smul_smul, Module.Basis.coord_apply, mul_comm]`. Rewrite using `[key, ← hu, smul_smul, ← mul_pow, Units.mul_inv, one_pow, one_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_rho {Λ A B K : Type} [CommRing Λ] [CommRing A] [CommRing B] [Field K]
     (C : Chain.{1} Λ A B K) (hC : C.Good) {j : ℕ} (x : ∀ n, C.S n j) (hx : C.Comp x) :

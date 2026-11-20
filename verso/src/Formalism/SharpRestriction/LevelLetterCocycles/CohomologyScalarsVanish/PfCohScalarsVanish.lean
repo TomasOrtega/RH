@@ -7,19 +7,17 @@ namespace Formalism.MainNotions.N.CohomologyScalarsVanish
 open ReciprocityTheory.Gal
 
 /- English proof (translation)
-Introduce `n k _ G _ _ M _ _ _ _ _ _ _ rho rho' hrr hyp`. Take `⟨h0, h1, h2⟩` from `hyp`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite `h0`, the goal using `[eq_bot_iff]`. Introduce `m hm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hm' : m ∈ H0 rho'` using `by show m ∈ rho'.invariants`. Rewrite using `[Representation.mem_invariants]`. Introduce `g`. Rewrite using `[hrr]`. Conclude with `(Representation.mem_invariants _ _).1 hm g`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Conclude with `h0 hm'`. Rewrite `h1`, the goal using `[Submodule.Quotient.subsingleton_iff]`. Rewrite `h1`, the goal using `[eq_top_iff]`. Introduce and unpack `⟨f, hf⟩ -`. Establish `hf' : f ∈ Z1 rho'` using `⟨hf.1, fun g h => by rw [hrr]; exact hf.2 g h⟩`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨m, hm⟩` from `h1 (Submodule.mem_top (x := (⟨f, hf'⟩ : Z1 rho')))`. Use `⟨m, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `g`. Establish `h3` using `congrFun hm g`. Simplify using `only [d0, LinearMap.pi_apply, LinearMap.sub_apply, LinearMap.id_apply] at h3 ⊢`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[← hrr]`. Conclude with `h3`. Rewrite `h2`, the goal using `[Submodule.Quotient.subsingleton_iff]`. Rewrite `h2`, the goal using `[eq_top_iff]`. Introduce and unpack `⟨f, hf⟩ -`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hf' : f ∈ Z2 rho'` using `⟨hf.1, fun g h l => by rw [hrr]; exact hf.2 g h l⟩`. Take `⟨c, hc, hcf⟩` from `h2 (Submodule.mem_top (x := (⟨f, hf'⟩ : Z2 rho')))`. Use `⟨c, hc, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `p`. Establish `h3` using `congrFun hcf p`.
-
-Simplify using `only [d1, LinearMap.coe_mk, AddHom.coe_mk] at h3 ⊢`. Rewrite using `[← hrr]`. Conclude with `h3`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cohScalarsVanish : CohScalarsVanish := by
   intro n k _ G _ _ M _ _ _ _ _ _ _ rho rho' hrr hyp

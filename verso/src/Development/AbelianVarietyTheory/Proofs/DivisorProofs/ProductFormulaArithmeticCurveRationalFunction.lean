@@ -19,51 +19,47 @@ noncomputable section
 namespace GlobalTheory.CurveProd
 
 /- English proof (translation)
-Introduce `k _ Y _ _ q hq f hf`. Take `⟨hAff, hFin⟩` from `GlobalTheory.T.arithmeticCurve_isAffine_and_finite_int k Y q hq`. Use `hAff` as an intermediate fact. Use `hFin` as an intermediate fact. Establish `: Module.Finite ℤ k` using `hq.finite`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgen : genericPoint Y ∈ (⊤ : Y.Opens)` using `trivial`. Establish `: Nonempty (⊤ : Y.Opens)` using `⟨⟨genericPoint Y, trivial⟩⟩`. Establish `: CharZero Γ(Y, ⊤)` using `(flat_int_iff_charZero (q ≫ spMap (Int.castRingHom k))).1 hq.flat`. Establish `: IsFractionRing Γ(Y, ⊤) Y.functionField` using `functionField_isFractionRing_of_isAffineOpen Y ⊤ (isAffineOpen_top Y)`. Establish `finHom : ∀ (B : Type) [CommRing B] [Module.Finite ℤ B], Finite (B →+* ℂ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `B _ _`. Take `⟨s, hs⟩` from `Module.Finite.fg_top (R := ℤ) (M := B)`. Establish `hint : ∀ x : B, IsIntegral ℤ x` using `fun x => Algebra.IsIntegral.isIntegral x`. Use `choose p hpm hp using hint`. Set `T : Set (s → ℂ)` to `Set.pi Set.univ fun x => {z : ℂ | ((p x).map (Int.castRingHom ℂ)).IsRoot z}`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hT : T.Finite` using `Set.Finite.pi fun x => Polynomial.finite_setOfPred_isRoot ((hpm x).map _).ne_zero`. Establish `hmem : ∀ φ : B →+* ℂ, (fun x : s => φ x) ∈ T`. Introduce `φ x _`. Use `show Polynomial.eval (φ (x : B)) ((p x).map (Int.castRingHom ℂ)) = 0`. Rewrite using `[Polynomial.eval_map]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[← show φ.comp (algebraMap ℤ B) = Int.castRingHom ℂ from RingHom.ext_int _ _, ← Polynomial.hom_eval₂, hp x, map_zero]`. Set `F : (B →+* ℂ) → T` to `fun φ => ⟨fun x => φ x, hmem φ⟩`. Establish `hF : Function.Injective F`. Introduce `φ ψ h`. Establish `h' : Set.EqOn φ.toAddMonoidHom.toIntLinearMap ψ.toAddMonoidHom.toIntLinearMap (s : Set B)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `x hx`. Use `congrArg (fun t : T => t.1 ⟨x, hx⟩) h` as an intermediate fact. Simplify `this` using `[F]`. Establish `hl` using `LinearMap.ext_on hs h'`. Use extensionality with `x`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `LinearMap.congr_fun hl x`. Establish `: Finite T` using `hT.to_subtype`. Conclude with `Finite.of_injective F hF`. Establish `finZero : ∀ c : Γ(Y, ⊤), Finite (Γ(Y, ⊤) ⧸ Ideal.span {c}) → {z : Y | z ∉ Y.basicOpen c}.Finite`. Introduce `c _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hS : (Set.range (PrimeSpectrum.comap (Ideal.Quotient.mk (Ideal.span {c})))).Finite` using `Set.finite_range _`. Use `(hS.preimage fun _ _ _ _ h => Y.toSpecΓ.isOpenEmbedding.injective h).subset ?_` and prove the remaining obligations. Introduce `z hz`. Establish `h1 : Y.toSpecΓ z ∉ PrimeSpectrum.basicOpen c`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Apply `hz` to reduce the goal to its premises. Rewrite using `[← Scheme.toSpecΓ_preimage_basicOpen]`. Conclude with `h`. Use `show Y.toSpecΓ z ∈ Set.range _`. Apply `(Set.ext_iff.1 (range_comap_of_surjective _ (Ideal.Quotient.mk (Ideal.span {c})) Ideal.Quotient.mk_surjective) _).2` to reduce the goal to its premises.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `h2 : c ∈ (Y.toSpecΓ z).asIdeal`. Assume the negation of the conclusion as `h`. Conclude with `h1 h`. Rewrite using `[Ideal.mk_ker, PrimeSpectrum.zeroLocus_span]`. Conclude with `Set.singleton_subset_iff.2 h2`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hgb : ∀ c : Γ(Y, ⊤), c ≠ 0 → genericPoint Y ∈ Y.basicOpen c`. Introduce `c hc`. Assume the negation of the conclusion as `h`. Apply `hc` to reduce the goal to its premises. Rewrite using `[← basicOpen_eq_bot_iff (X := Y) (U := ⊤) c, ← TopologicalSpace.Opens.not_nonempty_iff_eq_bot]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce and unpack `⟨x, hx⟩`. Conclude with `h (gen_mem hx)`. Establish `hsupp : ∀ c : Γ(Y, ⊤), c ≠ 0 → (Function.support fun z => (Scheme.ord (algebraMap Γ(Y, ⊤) Y.functionField c) z : ℝ) * Real.log (Nat.card (Y.residueField z))).Finite`. Introduce `c hc`. Use `(finZero c (GlobalTheory.T.log_card_quot_span_eq_finsum_log_norm_embeddings Γ(Y, ⊤) c hc).1).subset ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `z hz hzc`. Apply `hz` to reduce the goal to its premises. Establish `hu : UnitAt z (algebraMap Γ(Y, ⊤) Y.functionField c)` using `(unitAt_fnOf_iff (U := ⊤) trivial hgen c).2 hzc`. Simplify using `only`. Rewrite using `[hu.ord_eq_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `key : ∀ c : Γ(Y, ⊤), c ≠ 0 → ∑ᶠ z, (Scheme.ord (algebraMap Γ(Y, ⊤) Y.functionField c) z : ℝ) * Real.log (Nat.card (Y.residueField z)) = ∑ᶠ σ : k →+* ℂ, ∑ᶠ y : CxPts q σ, Real.log ‖ratVal (algebraMap Γ(Y, ⊤) Y.functionField c) y‖`. Introduce `c hc`. Take `⟨hfq, hlog⟩` from `GlobalTheory.T.log_card_quot_span_eq_finsum_log_norm_embeddings Γ(Y, ⊤) c hc`. Use `hfq` as an intermediate fact.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[GlobalTheory.T.affineArithmeticCurve_finsum_ord_log_eq_localLengths k Y q hq c hc, ← GlobalTheory.T.log_card_eq_finsum_length_localized_maximal Γ(Y, ⊤) (Γ(Y, ⊤) ⧸ Ideal.span {c}), hlog, GlobalTheory.T.affineArithmeticCurve_sum_complexPoints_log_eq_ringHoms k Y q hq c]`. Take `⟨a, b, hb, rfl⟩` from `IsFractionRing.div_surjective Γ(Y, ⊤) f`. Establish `hb0 : b ≠ 0` using `nonZeroDivisors.ne_zero hb`. Establish `ha0 : a ≠ 0`. Introduce and unpack `rfl`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Simplify using `at hf`. Establish `hinj` using `IsFractionRing.injective Γ(Y, ⊤) Y.functionField`. Establish `ha'0 : algebraMap Γ(Y, ⊤) Y.functionField a ≠ 0` using `(map_ne_zero_iff _ hinj).2 ha0`. Establish `hb'0 : algebraMap Γ(Y, ⊤) Y.functionField b ≠ 0` using `(map_ne_zero_iff _ hinj).2 hb0`. Establish `hord : ∀ z, Scheme.ord (algebraMap Γ(Y, ⊤) Y.functionField a / algebraMap Γ(Y, ⊤) Y.functionField b) z = Scheme.ord (algebraMap Γ(Y, ⊤) Y.functionField a) z - Scheme.ord (algebraMap Γ(Y, ⊤) Y.functionField b) z`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `z`. Establish `h` using `Scheme.ord_mul (x := z) (div_ne_zero ha'0 hb'0) hb'0`. Rewrite `h` using `[div_mul_cancel₀ _ hb'0]`. Use linear arithmetic over natural numbers and integers. Establish `hpt : ∀ (σ : k →+* ℂ) (y : CxPts q σ), Real.log ‖ratVal (algebraMap Γ(Y, ⊤) Y.functionField a / algebraMap Γ(Y, ⊤) Y.functionField b) y‖ = Real.log ‖ratVal (algebraMap Γ(Y, ⊤) Y.functionField a) y‖ - Real.log ‖ratVal (algebraMap Γ(Y, ⊤) Y.functionField b) y‖`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `σ y`. Establish `hg : under y = genericPoint Y` using `GlobalTheory.TwistTop.under_eq_genericPoint hq y`. Establish `hua : UnitAt (under y) (algebraMap Γ(Y, ⊤) Y.functionField a)`. Rewrite using `[hg]`. Conclude with `(unitAt_fnOf_iff (U := ⊤) hgen hgen a).2 (hgb a ha0)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hub : UnitAt (under y) (algebraMap Γ(Y, ⊤) Y.functionField b)`. Rewrite using `[hg]`. Conclude with `(unitAt_fnOf_iff (U := ⊤) hgen hgen b).2 (hgb b hb0)`. Establish `huq : UnitAt (under y) (algebraMap Γ(Y, ⊤) Y.functionField a / algebraMap Γ(Y, ⊤) Y.functionField b)`. Rewrite using `[div_eq_mul_inv]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Conclude with `hua.mul hub.inv`. Establish `hm : ratVal (algebraMap Γ(Y, ⊤) Y.functionField a) y = ratVal (algebraMap Γ(Y, ⊤) Y.functionField a / algebraMap Γ(Y, ⊤) Y.functionField b) y * ratVal (algebraMap Γ(Y, ⊤) Y.functionField b) y`. Rewrite using `[← ratVal_mul huq.regAt hub.regAt, div_mul_cancel₀ _ hb'0]`. Rewrite using `[hm, norm_mul, Real.log_mul (norm_ne_zero_iff.2 (ratVal_ne_zero huq)) (norm_ne_zero_iff.2 (ratVal_ne_zero hub))]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hL : ∑ᶠ z, (Scheme.ord (algebraMap Γ(Y, ⊤) Y.functionField a / algebraMap Γ(Y, ⊤) Y.functionField b) z : ℝ) * Real.log (Nat.card (Y.residueField z)) = (∑ᶠ z, (Scheme.ord (algebraMap Γ(Y, ⊤) Y.functionField a) z : ℝ) * Real.log (Nat.card (Y.residueField z))) - ∑ᶠ z, (Scheme.ord (a …`. Rewrite using `[← finsum_sub_distrib (hsupp a ha0) (hsupp b hb0)]`. Use `finsum_congr fun z => ?_` and prove the remaining obligations. Rewrite using `[hord z]`. Use `push_cast`.
-
-Expand and normalize the polynomial expressions, which then agree. Establish `hR : ∑ᶠ σ : k →+* ℂ, ∑ᶠ y : CxPts q σ, Real.log ‖ratVal (algebraMap Γ(Y, ⊤) Y.functionField a / algebraMap Γ(Y, ⊤) Y.functionField b) y‖ = (∑ᶠ σ : k →+* ℂ, ∑ᶠ y : CxPts q σ, Real.log ‖ratVal (algebraMap Γ(Y, ⊤) Y.functionField a) y‖) - ∑ᶠ σ : k →+* ℂ, ∑ᶠ y : CxPts q σ, Real.log ‖ …`. Establish `: Finite (k →+* ℂ)` using `finHom k`. Rewrite using `[← finsum_sub_distrib (Set.toFinite _) (Set.toFinite _)]`. Use `finsum_congr fun σ => ?_` and prove the remaining obligations.
-
-Use `GlobalTheory.ArchDimZero.finite_cxPts hq σ` as an intermediate fact. Rewrite using `[← finsum_sub_distrib (Set.toFinite _) (Set.toFinite _)]`. Conclude with `finsum_congr fun y => hpt σ y`. Rewrite using `[hL, hR, key a ha0, key b hb0]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem product_formula_curve : ∀ (k : Type) [CommRing k] (Y : Scheme.{0}) [IsIntegral Y] [IsLocallyNoetherian Y] (q : Y ⟶ Sp k), IsArithVar q 0 → ∀ f : Y.functionField, f ≠ 0 → ∑ᶠ z, (Scheme.ord f z : ℝ) * Real.log (Nat.card (Y.residueField z)) = ∑ᶠ σ : k →+* ℂ, ∑ᶠ y : CxPts q σ, Real.log ‖ratVal f y‖ := by
   intro k _ Y _ _ q hq f hf

@@ -6,9 +6,9 @@ open Classical
 namespace GlobalTheory.ScaledRestr
 
 /- English proof (translation)
-Establish `: IsLocalizedModule (nonZeroDivisors O) (TensorProduct.mk O K H 1)` using `inferInstance`. Unfold `inK`. Rewrite using `[IsLocalizedModule.injective_iff_isRegular (nonZeroDivisors O)]`. Introduce `c`. Introduce `x y hxy`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `smul_right_injective H (nonZeroDivisors.coe_ne_zero c) hxy`.
+A detailed English derivation is pending.
 -/
 theorem inK_injective {O : Type} [CommRing O] [IsDomain O] (K : Type) [Field K] [Algebra O K] [IsFractionRing O K]
     (H : Type) [AddCommGroup H] [Module O H] [Module.Free O H] : Function.Injective (inK K H : H →ₗ[O] K ⊗[O] H) := by
@@ -20,15 +20,15 @@ theorem inK_injective {O : Type} [CommRing O] [IsDomain O] (K : Type) [Field K] 
   exact smul_right_injective H (nonZeroDivisors.coe_ne_zero c) hxy
 
 /- English proof (translation)
-Establish `key : ∀ x ∈ ⨆ σ : E →+* K, eigLat ρ σ, ∃ m : H, inK K H m = N (inK K H x)`. Introduce `x hx`. Use `Submodule.iSup_induction (fun σ : E →+* K => eigLat ρ σ) (motive := fun x => ∃ m : H, inK K H m = N (inK K H x)) hx ?_ ?_ ?_` and prove the remaining obligations. Introduce `σ x hx`. Distinguish the cases in `hσ : σ = φ i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Substitute `hσ` using the available equality. Rewrite `hx` using `[(hG i).1, Submodule.mem_span_singleton]`. Take `⟨u, rfl⟩` from `hx`. Use `⟨u • f i, ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.map_smul, LinearMap.map_smul, LinearMap.map_smul_of_tower, hN.1]`.
+Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨0, ?_⟩` and prove the remaining obligations. Establish `hx' : inK K H x ∈ eigK ρ σ` using `hx`. Rewrite using `[hN.2 σ hσ _ hx', LinearMap.map_zero]`. Conclude with `⟨0, by simp⟩`. Introduce `x y hx hy`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨a, ha⟩` from `hx`. Take `⟨b, hb⟩` from `hy`. Conclude with `⟨a + b, by rw [LinearMap.map_add, LinearMap.map_add, LinearMap.map_add, ha, hb]⟩`. Take `⟨m, hm⟩` from `key _ (hD h)`. Use `⟨m, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hm, LinearMap.map_smul, LinearMap.map_smul_of_tower, algebraMap_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_scaled_image {E : Type} [Field E] [NumberField E] [IsCMField E] {c : Ideal (OF E)}
     {O : Type} [CommRing O] {K : Type} [Field K] [Algebra O K]
@@ -65,15 +65,15 @@ end GlobalTheory.ScaledRestr
 namespace GlobalTheory.ScaledRestr
 
 /- English proof (translation)
-Introduce `E _ _ _ c _ l _ O _ _ _ _ K _ _ _ _ _ D _ _ I _ φ _ H _ _ ρ Fil B hlat hEig e f hG N hN i`. Use `haveI : Module.Free O H := hlat.1`. Establish `hinj` using `inK_injective (O := O) K H`. Establish `hD : ∀ h : H, D • h ∈ ⨆ σ : E →+* K, eigLat ρ σ` using `hEig.2.2.1.2`. Set `g : H →ₗ[O] K ⊗[O] H` to `(algebraMap O K D) • ((N i).restrictScalars O ∘ₗ inK K H)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hg : ∀ h, g h ∈ LinearMap.range (inK K H)`. Introduce `h`. Take `⟨m, hm⟩` from `exists_scaled_image φ ρ D e f hD hG (N i) i (hN i) h`. Conclude with `⟨m, hm⟩`. Use `⟨(LinearEquiv.ofInjective (inK K H) hinj).symm.toLinearMap ∘ₗ (g.codRestrict _ hg), ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Use `(LinearEquiv.ofInjective (inK K H) hinj).apply_symm_apply (g.codRestrict _ hg h)` as an intermediate fact. Rewrite `this` using `[Subtype.ext_iff, LinearEquiv.ofInjective_apply]`. Simplify `this` using `[g]`. Introduce `M hM`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Use extensionality with `h`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[hM h]`. Use `(LinearEquiv.ofInjective (inK K H) hinj).apply_symm_apply (g.codRestrict _ hg h)` as an intermediate fact. Rewrite `this` using `[Subtype.ext_iff, LinearEquiv.ofInjective_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this.symm` using `[g]`.
+A detailed English derivation is pending.
 -/
 theorem scaledRestr_existsUnique : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (c : Ideal (OF E)), c ≠ ⊥ → ∀ (l : ℕ), l.Prime → ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [CharZero O] (K : Type) [Field K] [Algebra O K] [IsFractionRing O K], (l : O) ∈ IsLocalRing.maximalIdeal O → Nat.card (E →+* K) = Module.finrank ℚ E → ∀ (D : O), D ≠ 0 → ClearsIdem K c D → ∀ (I : Type) [Fintype I] (φ : I → E →+* K), IsCMTypeIn φ → ∀ (H : Type) [AddCommGroup H] [Module O H] (ρ : orderC c →+* Module.End O H) (Fil : Submodule O H) (B : LinearMap.BilinForm O H), IsCMLattice φ ρ Fil B → EigenClaims φ ρ Fil B D → ∀ e f : I → H, IsGens φ ρ e f → ∀ N : I → Module.End K (K ⊗[O] H), (∀ i, IsLower ρ (φ i) (e i) (f i) (N i)) → ∀ i, ∃! M : Module.End O H, IsScaledRestr D (N i) M := by
   intro E _ _ _ c _ l _ O _ _ _ _ K _ _ _ _ _ D _ _ I _ φ _ H _ _ ρ Fil B hlat hEig e f hG N hN i

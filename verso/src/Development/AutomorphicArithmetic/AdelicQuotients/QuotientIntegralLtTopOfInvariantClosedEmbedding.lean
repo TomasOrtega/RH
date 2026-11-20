@@ -6,11 +6,11 @@ open PositivityTheory.Rg.Tf.Core PositivityTheory.Rg.Tf.Loc PositivityTheory.Rg.
 open scoped ENNReal NumberField.AdeleRing TensorProduct
 
 /- English proof (translation)
-Introduce `q1 q2 G T _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ H _ hH μ _ ν _ _ _ i hi Φ hΦ hinv hfin`. Use `haveI : SecondCountableTopology H := TopologicalSpace.Subtype.secondCountableTopology _`. Take `⟨ρ, hρc, hρ, -⟩` from `q2 H T ν i hi`. Establish `hemb : MeasurableEmbedding (Subtype.val : H → G)` using `MeasurableEmbedding.subtype_coe hH.measurableSet`. Establish `hex : ∃ ρ', IsNormAlong (fun x : H => (x : G)) (fun t => ((i t : H) : G)) ν ρ'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Function.extend (Subtype.val : H → G) (fun x => (ρ x : ℝ≥0∞)) 0, hemb.measurable_extend hρ.1 measurable_zero, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[← hρ.2 x]`. Use `lintegral_congr fun t => ?_` and prove the remaining obligations. Conclude with `Subtype.val_injective.extend_apply (fun x => (ρ x : ℝ≥0∞)) 0 (i t * x)`. Establish `hn : IsNormAlong id i ν (fun x : H => hex.choose (x : G))` using `⟨hex.choose_spec.1.comp measurable_subtype_coe, fun x => hex.choose_spec.2 x⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1` using `q1 H H T μ ν (MonoidHom.id H) i measurable_id hi.continuous Φ (fun x : H => hex.choose (x : G)) hΦ.measurable hinv hn (hfin _ hn)`. Use `Eq.trans ?_ h1.symm` and prove the remaining obligations. Unfold `quotInt`. Rewrite using `[dif_pos hex]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem UpperTheory.quotientIntegral_lt_top_of_invariant_closedEmbedding :
     Q1 → Q2 → ∀ (G T : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [LocallyCompactSpace G] [T2Space G] [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G] [Group T] [TopologicalSpace T] [IsTopologicalGroup T] [LocallyCompactSpace T] [T2Space T] [SecondCountableTopology T] [MeasurableSpace T] [BorelSpace T] (H : Subgroup G) [LocallyCompactSpace H], IsClosed (H : Set G) →

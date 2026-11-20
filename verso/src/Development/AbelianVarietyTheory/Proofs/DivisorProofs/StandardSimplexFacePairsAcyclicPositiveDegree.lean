@@ -27,7 +27,7 @@ theorem cone_succ {p N : ℕ} (a : SimplexCategory.mk p ⟶ SimplexCategory.mk N
     (cone a).toOrderHom k.succ = a.toOrderHom k := rfl
 
 /- English proof (translation)
-Use extensionality with `k`. Simplify using `[SimplexCategory.δ, cone_succ]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem δ_zero_cone {p N : ℕ} (a : SimplexCategory.mk p ⟶ SimplexCategory.mk N) :
     SimplexCategory.δ 0 ≫ cone a = a := by
@@ -35,7 +35,7 @@ theorem δ_zero_cone {p N : ℕ} (a : SimplexCategory.mk p ⟶ SimplexCategory.m
   simp [SimplexCategory.δ, cone_succ]
 
 /- English proof (translation)
-Use `SimplexCategory.Hom.ext _ _ (OrderHom.ext _ _ (funext fun k => ?_))` and prove the remaining obligations. Proceed by induction on `k using Fin.cases with`. Consider the case `zero => rfl`. Consider the case `succ k => show (cone a).toOrderHom (i.succ.succAbove k.succ) = (cone (SimplexCategory.δ i ≫ a)).toOrderHom k.succ`. Rewrite using `[Fin.succ_succAbove_succ, cone_succ, cone_succ]`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -52,7 +52,7 @@ theorem δ_succ_cone {p N : ℕ} (a : SimplexCategory.mk (p + 1) ⟶ SimplexCate
 abbrev v0 (N : ℕ) : SimplexCategory.mk 0 ⟶ SimplexCategory.mk N := SimplexCategory.const _ _ 0
 
 /- English proof (translation)
-Use extensionality with `k`. Use `fin_cases k`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem δ_one_cone {N : ℕ} (a : SimplexCategory.mk 0 ⟶ SimplexCategory.mk N) :
     SimplexCategory.δ 1 ≫ cone a = v0 N := by
@@ -73,7 +73,7 @@ theorem d₂_zero {N p : ℕ} (a : SimplexCategory.mk p ⟶ SimplexCategory.mk N
     Pr.d₂ (⟨p, 0, a, b⟩ : Pr N) = 0 := rfl
 
 /- English proof (translation)
-Use `show ∑ i : Fin (p + 2), Finsupp.single _ _ = _`. Simplify using `only [Finsupp.smul_single_one]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem d₁_succ {N p r : ℕ} (a : SimplexCategory.mk (p + 1) ⟶ SimplexCategory.mk N) (b : SimplexCategory.mk r ⟶ SimplexCategory.mk N) :
     Pr.d₁ (⟨p + 1, r, a, b⟩ : Pr N) =
@@ -82,7 +82,7 @@ theorem d₁_succ {N p r : ℕ} (a : SimplexCategory.mk (p + 1) ⟶ SimplexCateg
   simp only [Finsupp.smul_single_one]
 
 /- English proof (translation)
-Use `show ∑ j : Fin (r + 2), Finsupp.single _ _ = _`. Simplify using `only [Finsupp.smul_single_one]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem d₂_succ {N p r : ℕ} (a : SimplexCategory.mk p ⟶ SimplexCategory.mk N) (b : SimplexCategory.mk (r + 1) ⟶ SimplexCategory.mk N) :
     Pr.d₂ (⟨p, r + 1, a, b⟩ : Pr N) =
@@ -95,7 +95,7 @@ end GlobalTheory.PrAcyc
 namespace GlobalTheory.PrAcyc
 
 /- English proof (translation)
-Rewrite using `[d₁_succ, Fin.sum_univ_succ, sub_eq_add_neg, ← Finset.sum_neg_distrib]`. Use `congr 1`. Rewrite using `[δ_zero_cone, Fin.val_zero, pow_zero, one_smul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Fin.val_succ, pow_succ, mul_neg_one, neg_smul, δ_succ_cone]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem d₁_cone_succ {N q r : ℕ} (a : SimplexCategory.mk (q + 1) ⟶ SimplexCategory.mk N) (b : SimplexCategory.mk r ⟶ SimplexCategory.mk N) :
     Pr.d₁ (⟨q + 1 + 1, r, cone a, b⟩ : Pr N) = Finsupp.single (⟨q + 1, r, a, b⟩ : Pr N) 1 -
@@ -107,7 +107,7 @@ theorem d₁_cone_succ {N q r : ℕ} (a : SimplexCategory.mk (q + 1) ⟶ Simplex
     rw [Fin.val_succ, pow_succ, mul_neg_one, neg_smul, δ_succ_cone]
 
 /- English proof (translation)
-Rewrite using `[d₁_succ, Fin.sum_univ_two, δ_zero_cone, δ_one_cone]`. Simplify using `[sub_eq_add_neg]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem d₁_cone_zero {N r : ℕ} (a : SimplexCategory.mk 0 ⟶ SimplexCategory.mk N) (b : SimplexCategory.mk r ⟶ SimplexCategory.mk N) :
     Pr.d₁ (⟨0 + 1, r, cone a, b⟩ : Pr N) = Finsupp.single (⟨0, r, a, b⟩ : Pr N) 1 - Finsupp.single (⟨0, r, v0 N, b⟩ : Pr N) 1 := by
@@ -115,7 +115,7 @@ theorem d₁_cone_zero {N r : ℕ} (a : SimplexCategory.mk 0 ⟶ SimplexCategory
   simp [sub_eq_add_neg]
 
 /- English proof (translation)
-Rewrite using `[d₂_succ, Fin.sum_univ_succ, sub_eq_add_neg, ← Finset.sum_neg_distrib]`. Use `congr 1`. Rewrite using `[δ_zero_cone, Fin.val_zero, pow_zero, one_smul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Fin.val_succ, pow_succ, mul_neg_one, neg_smul, δ_succ_cone]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem d₂_cone_succ {N p s : ℕ} (a : SimplexCategory.mk p ⟶ SimplexCategory.mk N) (b : SimplexCategory.mk (s + 1) ⟶ SimplexCategory.mk N) :
     Pr.d₂ (⟨p, s + 1 + 1, a, cone b⟩ : Pr N) = Finsupp.single (⟨p, s + 1, a, b⟩ : Pr N) 1 -
@@ -133,19 +133,19 @@ def hz {N : ℕ} (z : Pr N) : Pr N →₀ ℤ :=
 def H (N : ℕ) : (Pr N →₀ ℤ) →ₗ[ℤ] (Pr N →₀ ℤ) := Finsupp.linearCombination ℤ hz
 
 /- English proof (translation)
-Simplify using `[H, Finsupp.linearCombination_single]`.
+Simplify using the standard rewrite rules.
 -/
 theorem H_single {N : ℕ} (z : Pr N) : H N (Finsupp.single z 1) = hz z := by
   simp [H, Finsupp.linearCombination_single]
 
 /- English proof (translation)
-Simplify using `[Pr.d, Finsupp.linearCombination_single]`.
+Simplify using the standard rewrite rules.
 -/
 theorem d_single {N : ℕ} (z : Pr N) : Pr.d N (Finsupp.single z 1) = z.d₁ + (-1 : ℤ) ^ z.1 • z.d₂ := by
   simp [Pr.d, Finsupp.linearCombination_single]
 
 /- English proof (translation)
-Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [map_smul, H_single]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem H_sum {N n : ℕ} (f : Fin n → Pr N) :
     H N (∑ i : Fin n, ((-1 : ℤ) ^ (i : ℕ)) • Finsupp.single (f i) 1) = ∑ i : Fin n, ((-1 : ℤ) ^ (i : ℕ)) • hz (f i) := by
@@ -153,17 +153,17 @@ theorem H_sum {N n : ℕ} (f : Fin n → Pr N) :
   exact Finset.sum_congr rfl fun i _ => by rw [map_smul, H_single]
 
 /- English proof (translation)
-Break down `z with ⟨p, r, a, b⟩` into its components or cases. Rewrite using `[H_single, d_single]`. Consider the cases of `p with`. Consider the case `zero`. Consider the cases of `r with`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data. Treat this case separately. Split into cases according to the possible forms of the given data.
 
-Consider the case `zero => simp at hpos`. Consider the case `succ s`. Simplify using `only [hz, if_pos rfl, if_true, map_add, d_single]`. Rewrite using `[d₁_cone_zero, d₂_succ, d₁_zero, d₂_cone_succ, d₁_zero, d₂_succ, map_zero, map_smul, H_sum]`. Simplify using `only [hz, if_true, ↓reduceIte, Finset.sum_add_distrib, smul_add]`.
+Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `module`. Consider the case `succ q`. Simplify using `only [hz, Nat.succ_ne_zero, if_false, ↓reduceIte, add_zero, map_add, d_single, map_smul]`. Rewrite using `[d₁_cone_succ, d₁_succ, H_sum]`. Establish `hX : ∑ i : Fin (q + 2), ((-1 : ℤ) ^ (i : ℕ)) • hz (⟨q, r, SimplexCategory.δ i ≫ a, b⟩ : Pr N) = ∑ i : Fin (q + 2), ((-1 : ℤ) ^ (i : ℕ)) • Finsupp.single (⟨q + 1, r, cone (SimplexCategory.δ i ≫ a), b⟩ : Pr N) 1`.
+Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [hz, smul_add, Finset.sum_add_distrib]`. Break down `q with _ | t` into its components or cases. Simplify using `[Fin.sum_univ_two]`. Simplify using the standard rewrite rules. Rewrite using `[hX]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data.
 
-Consider the cases of `r with`. Consider the case `zero => rw [d₂_zero, d₂_zero, map_zero]`. Use `module`. Consider the case `succ s`. Rewrite using `[d₂_succ, d₂_succ, H_sum]`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hz, Nat.succ_ne_zero, if_false, ↓reduceIte, add_zero]`. Rewrite using `[pow_succ]`. Use `module`.
+A detailed English derivation is pending.
 -/
 theorem key {N : ℕ} (z : Pr N) (hpos : 0 < z.1 + z.2.1) :
     Pr.d N (H N (Finsupp.single z 1)) + H N (Pr.d N (Finsupp.single z 1)) = Finsupp.single z 1 := by
@@ -201,11 +201,11 @@ end GlobalTheory.PrAcyc
 namespace GlobalTheory.PrAcyc
 
 /- English proof (translation)
-Break down `w with ⟨p, r, a, b⟩` into its components or cases. Establish `h'` using `Finsupp.support_add h`. Break down `Finset.mem_union.1 h' with h1 | h1` into its components or cases. Rewrite `h1`, `with`, `he` using `[Finsupp.mem_support_iff, Finsupp.single_apply] at h1 split_ifs`. Substitute `he` using the available equality.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using `at h1`. Use `split_ifs at h1 with hp`. Rewrite `h1`, `with`, `he` using `[Finsupp.mem_support_iff, Finsupp.single_apply] at h1 split_ifs`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality.
 
-Substitute `he` using the available equality. Simplify using `at hp ⊢`. Use linear arithmetic over natural numbers and integers. Simplify using `at h1`. Simplify using `at h1`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hz_deg {N : ℕ} (w z : Pr N) (h : z ∈ (hz w).support) : z.1 + z.2.1 = w.1 + w.2.1 + 1 := by
   rcases w with ⟨p, r, a, b⟩
@@ -223,7 +223,7 @@ theorem hz_deg {N : ℕ} (w z : Pr N) (h : z ∈ (hz w).support) : z.1 + z.2.1 =
     · simp at h1
 
 /- English proof (translation)
-Introduce `z hz'`. Rewrite `hz'` using `[H, Finsupp.linearCombination_apply]`. Take `⟨w, hw, hzw⟩` from `Finset.mem_biUnion.1 (Finsupp.support_sum hz')`. Use `hz_deg w z (Finsupp.support_smul hzw)` as an intermediate fact. Rewrite using `[this, hc w hw]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem deg_H {N k : ℕ} (c : Pr N →₀ ℤ) (hc : Pr.Deg (k + 1) c) : Pr.Deg (k + 2) (H N c) := by
   intro z hz'
@@ -233,9 +233,9 @@ theorem deg_H {N k : ℕ} (c : Pr N →₀ ℤ) (hc : Pr.Deg (k + 1) c) : Pr.Deg
   rw [this, hc w hw]
 
 /- English proof (translation)
-Establish `step : ∀ z ∈ c.support, Pr.d N (H N (Finsupp.single z (c z))) + H N (Pr.d N (Finsupp.single z (c z))) = Finsupp.single z (c z)`. Introduce `z hz'`. Use `key z (by rw [hc z hz']; omega)` as an intermediate fact. Rewrite using `[← Finsupp.smul_single_one, map_smul, map_smul, map_smul, map_smul, ← smul_add, this]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Simplify using `only [Finsupp.sum, map_sum, ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl step`. Use `_ = c := Finsupp.sum_single c`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem homotopy {N k : ℕ} (c : Pr N →₀ ℤ) (hc : Pr.Deg (k + 1) c) :
     Pr.d N (H N c) + H N (Pr.d N c) = c := by
@@ -252,7 +252,7 @@ theorem homotopy {N k : ℕ} (c : Pr N →₀ ℤ) (hc : Pr.Deg (k + 1) c) :
     _ = c := Finsupp.sum_single c
 
 /- English proof (translation)
-Introduce `N k c hc hd`. Use `⟨H N c, deg_H c hc, ?_⟩` and prove the remaining obligations. Use `homotopy c hc` as an intermediate fact. Rewrite `this` using `[hd, map_zero, add_zero]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem pr_acyclic : ∀ N k (c : Pr N →₀ ℤ), Pr.Deg (k + 1) c → Pr.d N c = 0 → ∃ e, Pr.Deg (k + 2) e ∧ Pr.d N e = c := by
   intro N k c hc hd

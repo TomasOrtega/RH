@@ -42,13 +42,13 @@ def IsCls {L : ℕ} (ψ : DirichletCharacter ℂ L) (F : ℍ → ℂ) (G : (Fin 
   ∀ (n : ℕ) (γ : SL(2, ℤ)) (z : ℍ), G (cls L ((n : ℤ) • row γ)) z = ψ (n : ZMod L) * F (γ • z)
 
 /- English proof (translation)
-Introduce `_ _ _` and use `by rw [MulChar.one_apply (isUnit_of_subsingleton _)]; simp`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example : IsCls (1 : DirichletCharacter ℂ 1) 1 1 := fun _ _ _ => by
   rw [MulChar.one_apply (isUnit_of_subsingleton _)]; simp
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨continuous_const, 0, fun _ _ _ => by simp⟩`.
+Supply the required witnesses or components.
 -/
 example : Nice 0 := ⟨continuous_const, 0, fun _ _ _ => by simp⟩
 

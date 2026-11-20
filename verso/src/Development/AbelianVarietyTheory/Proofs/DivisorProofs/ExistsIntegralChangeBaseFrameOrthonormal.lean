@@ -36,7 +36,7 @@ theorem ev_tmul (v : HeightOneSpectrum (𝓞 𝔽)) (x : E) (a : Formalism.L2.He
 
 omit [IsCMField E] in
 /- English proof (translation)
-The claim follows from `(Algebra.TensorProduct.comm 𝔽 E (Formalism.L2.Herm.Af 𝔽)).injective (GlobalTheory.LatticeLocalGlobal.ext_components _ _ h)`.
+A detailed English derivation is pending.
 -/
 theorem ev_ext {z z' : 𝔸} (h : ∀ v, ev v z = ev v z') : z = z' :=
   (Algebra.TensorProduct.comm 𝔽 E (Formalism.L2.Herm.Af 𝔽)).injective
@@ -50,7 +50,7 @@ theorem ev_inclE (v : HeightOneSpectrum (𝓞 𝔽)) (x : E) :
     ev v (Formalism.UG.inclE (F := 𝔽) (Formalism.L2.Herm.Af 𝔽) x) = locEmb v x := rfl
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul x a => rfl`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem ev_sigR (hc : CMData 𝔽 E) (v : HeightOneSpectrum (𝓞 𝔽)) (z : 𝔸) :
     ev v (Formalism.UG.sigR hc.sig (Formalism.L2.Herm.Af 𝔽) z) = locConj v (ev v z) := by
@@ -60,9 +60,7 @@ theorem ev_sigR (hc : CMData 𝔽 E) (v : HeightOneSpectrum (𝓞 𝔽)) (z : �
   | tmul x a => rfl
 
 /- English proof (translation)
-Establish `: 𝕆 ≤ (locOrder v).toSubring.comap (ev v)`. Use `Subring.closure_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ (⟨⟨_, a, rfl⟩, rfl⟩ | ⟨a, rfl⟩)`. Conclude with `locEmb_mem_locOrder v a`. Conclude with `(locOrder v).algebraMap_mem ⟨a.1 v, a.2 v⟩`.
-
-Conclude with `this hz`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem ev_mem (v : HeightOneSpectrum (𝓞 𝔽)) {z : 𝔸} (hz : z ∈ 𝕆) : ev v z ∈ locOrder v := by
   have : 𝕆 ≤ (locOrder v).toSubring.comap (ev v) := by
@@ -74,7 +72,7 @@ theorem ev_mem (v : HeightOneSpectrum (𝓞 𝔽)) {z : 𝔸} (hz : z ∈ 𝕆) 
 
 omit [IsCMField E] in
 /- English proof (translation)
-Establish `e : ((x : E) ⊗ₜ a : 𝔸) = ((x : E) ⊗ₜ 1) * (1 ⊗ₜ a)`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul]`. Rewrite using `[e]`. Conclude with `Subring.mul_mem _ (Subring.subset_closure (Or.inl ⟨⟨x, x, rfl⟩, rfl⟩)) (Subring.subset_closure (Or.inr ⟨⟨a, ha⟩, rfl⟩))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tmul_mem (x : 𝓞 E) (a : Formalism.L2.Herm.Af 𝔽) (ha : a ∈ Formalism.UG.intAd 𝔽) : ((x : E) ⊗ₜ a : 𝔸) ∈ 𝕆 := by
   have e : ((x : E) ⊗ₜ a : 𝔸) = ((x : E) ⊗ₜ 1) * (1 ⊗ₜ a) := by
@@ -84,23 +82,21 @@ theorem tmul_mem (x : 𝓞 E) (a : Formalism.L2.Herm.Af 𝔽) (ha : a ∈ Formal
     (Subring.subset_closure (Or.inr ⟨⟨a, ha⟩, rfl⟩))
 
 /- English proof (translation)
-Set `M : Submodule (v.adicCompletionIntegers 𝔽) (LocAlg v)` to `Submodule.span _ (Set.range fun j => locEmb v (x j : E))`. Establish `h1 : ∀ y : 𝓞 E, locEmb v (y : E) ∈ M`. Introduce `y`. Establish `: y ∈ Submodule.span ℤ (Set.range x)` using `hx ▸ Submodule.mem_top`. Take `⟨n, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun ℤ).1 this`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `e : ((∑ j, n j • x j : 𝓞 E) : E) = ∑ j, n j • (x j : E)`. Rewrite using `[RingOfIntegers.coe_eq_algebraMap, map_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => map_zsmul _ _ _`. Rewrite using `[e, map_sum]`. Use `Submodule.sum_mem _ fun j _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_zsmul]`. Conclude with `zsmul_mem (Submodule.subset_span (Set.mem_range_self (f := fun j => locEmb v (x j : E)) j)) _`. Establish `h2 : ∀ w ∈ M, z * w ∈ M`. Proceed by induction on `hz using Algebra.adjoin_induction with`. Consider the case `mem y hy`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨y, rfl⟩` from `hy`. Introduce `w hw`. Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem w hw`. Take `⟨j, rfl⟩` from `hw`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `h1 (y * x j)` as an intermediate fact. Rewrite `this` using `[RingOfIntegers.coe_eq_algebraMap, map_mul, map_mul]`. Then use the resulting hypothesis. Consider the case `zero => simp`. Consider the case `add a b _ _ ha hb => rw [mul_add]`. Conclude with `add_mem ha hb`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `smul c a _ ha => rw [mul_smul_comm]`. Conclude with `Submodule.smul_mem _ c ha`. Consider the case `algebraMap r => intro w hw`. Rewrite using `[← Algebra.smul_def]`. Conclude with `Submodule.smul_mem _ r hw`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Consider the case `add a b _ _ ha hb => intro w hw`. Rewrite using `[add_mul]`. Conclude with `add_mem (ha w hw) (hb w hw)`. Consider the case `mul a b _ _ ha hb => intro w hw`. Rewrite using `[mul_assoc]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ha _ (hb w hw)`. Establish `h3 : z ∈ M`. Use `h2 _ (h1 1)` as an intermediate fact. Rewrite `this` using `[RingOfIntegers.coe_eq_algebraMap, map_one, map_one, mul_one]`. Then use the resulting hypothesis. Take `⟨a, ha⟩` from `(Submodule.mem_span_range_iff_exists_fun _).1 h3`.
-
-Use `⟨a, ha.symm.trans (Finset.sum_congr rfl fun j _ => ?_)⟩` and prove the remaining obligations. Rewrite using `[locEmb_apply, TensorProduct.smul_tmul']`. Use `congr 1`. Conclude with `mul_one _`.
+Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem exists_coeff {k : ℕ} (x : Fin k → 𝓞 E) (hx : Submodule.span ℤ (Set.range x) = ⊤)
     (v : HeightOneSpectrum (𝓞 𝔽)) {z : LocAlg v} (hz : z ∈ locOrder v) :
@@ -144,9 +140,7 @@ theorem exists_coeff {k : ℕ} (x : Fin k → 𝓞 E) (hx : Submodule.span ℤ (
   exact mul_one _
 
 /- English proof (translation)
-Take `⟨k, x, hx⟩` from `Module.Finite.exists_fin (R := ℤ) (M := 𝓞 E)`. Use `choose a ha using fun v => exists_coeff x hx v (hz v)`. Set `A : Fin k → Formalism.L2.Herm.Af 𝔽` to `fun j => ⟨fun v => a v j, Filter.Eventually.of_forall fun v => (a v j).2⟩`. Use `⟨⟨∑ j, (x j : E) ⊗ₜ A j, Subring.sum_mem _ fun j _ => tmul_mem _ _ fun v => (a v j).2⟩, fun v => ?_⟩` and prove the remaining obligations. Rewrite using `[ha v]`.
-
-Conclude with `map_sum (ev v) (fun j => (x j : E) ⊗ₜ A j) Finset.univ`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_of_components (z : ∀ v : HeightOneSpectrum (𝓞 𝔽), LocAlg v) (hz : ∀ v, z v ∈ locOrder v) :
     ∃ Z : 𝕆, ∀ v, ev v Z = z v := by
@@ -161,11 +155,9 @@ theorem exists_of_components (z : ∀ v : HeightOneSpectrum (𝓞 𝔽), LocAlg 
 variable {n : ℕ}
 
 /- English proof (translation)
-Use `Submodule.span_induction (p := fun x _ => (fun i => ev v (x i)) ∈ locLattice v Λ) ?_ ?_ ?_ ?_ hx` and prove the remaining obligations. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Conclude with `Submodule.subset_span ⟨y, hy, rfl⟩`. Simplify using `only [Pi.zero_apply, map_zero]`. Conclude with `zero_mem _`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `a b _ _ ha hb`. Simplify using `only [Pi.add_apply, map_add]`. Conclude with `add_mem ha hb`. Introduce `c a _ ha`. Use `smul_mem_locLattice v (ev_mem v c.2) ha` as an intermediate fact.
-
-Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Conclude with `map_mul (ev v) _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem ev_mem_locLattice (v : HeightOneSpectrum (𝓞 𝔽)) {Λ : Submodule (𝓞 E) (Fin n → E)} {x : Fin n → 𝔸}
     (hx : x ∈ Formalism.L2.Herm.hatL (F := 𝔽) Λ) : (fun i => ev v (x i)) ∈ locLattice v Λ := by
@@ -184,9 +176,9 @@ theorem ev_mem_locLattice (v : HeightOneSpectrum (𝓞 𝔽)) {Λ : Submodule (�
     exact map_mul (ev v) _ _
 
 /- English proof (translation)
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨y, hy, rfl⟩` from `hx`. Use `ev_mem v ((hβ _).1 (Submodule.subset_span ⟨y, hy, rfl⟩) i)` as an intermediate fact. Rewrite `this` using `[RingHom.map_mulVec]`. Then use the resulting hypothesis.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [Matrix.mulVec_add]`. Conclude with `add_mem hx hy`. Consider the case `smul c x _ hx => rw [Matrix.mulVec_smul]`. Conclude with `Subalgebra.smul_mem _ hx c`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem frame_loc (v : HeightOneSpectrum (𝓞 𝔽)) {Λ : Submodule (𝓞 E) (Fin n → E)} {β : GL (Fin n) 𝔸}
     (hβ : Formalism.L2.DIV.IsFrame β Λ) {x : Fin n → LocAlg v} (hx : x ∈ locLattice v Λ) (i : Fin n) :
@@ -201,7 +193,7 @@ theorem frame_loc (v : HeightOneSpectrum (𝓞 𝔽)) {Λ : Submodule (𝓞 E) (
   | smul c x _ hx => rw [Matrix.mulVec_smul]; exact Subalgebra.smul_mem _ hx c
 
 /- English proof (translation)
-Rewrite using `[Matrix.one_apply]`. Use `split_ifs`. Conclude with `one_mem _`. Conclude with `zero_mem _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem one_entry_mem {R : Type} [CommRing R] {σ : Type} [SetLike σ R] [SubringClass σ R] (S : σ) (i j : Fin n) :
     (1 : Matrix (Fin n) (Fin n) R) i j ∈ S := by
@@ -211,19 +203,17 @@ theorem one_entry_mem {R : Type} [CommRing R] {σ : Type} [SetLike σ R] [Subrin
   · exact zero_mem _
 
 /- English proof (translation)
-Use `GlobalTheory.PlaceComp.unramified hc` as an intermediate fact. Use `choose h h1 h2 using exists_orthonormal_frame (G := Gᵀ) (fun a b => hG b a) (by rwa [Matrix.det_transpose]) hL hsd`. Establish `ha : ∀ i j v, ((β⁻¹).1.map (ev v) * (h v).1) i j ∈ locOrder v` using `fun i j v => frame_loc v hβ (x := fun k => (h v).1 k j) ((h2 v _).2 fun k => by`. Use `one_entry_mem (locOrder v) k j` as an intermediate fact. Rewrite using `[← Units.inv_mul (h v)] at this) i` and apply the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hb : ∀ i j v, (((h v)⁻¹).1 * β.1.map (ev v)) i j ∈ locOrder v` using `fun i j v => (h2 v _).1 (ev_mem_locLattice v (x := fun k => β.1 k j) ((hβ _).2 fun k => by`. Use `one_entry_mem 𝕆 k j` as an intermediate fact. Rewrite using `[← Units.inv_mul β] at this)) i` and apply the resulting hypothesis. Use `choose A hA using fun i j => exists_of_components _ (ha i j)`. Use `choose B hB using fun i j => exists_of_components _ (hb i j)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `ext : ∀ M M' : Matrix (Fin n) (Fin n) 𝔸, (∀ v, M.map (ev v) = M'.map (ev v)) → M = M'` using `fun M M' H => Matrix.ext fun i j => ev_ext fun v => congrFun (congrFun (H v) i) j`. Set `A' : Matrix (Fin n) (Fin n) 𝕆` to `A`. Set `B' : Matrix (Fin n) (Fin n) 𝕆` to `B`. Establish `eA : ∀ v, (A'.map (Subring.subtype 𝕆)).map (ev v) = (β⁻¹).1.map (ev v) * (h v).1` using `fun v => Matrix.ext fun i j => hA i j v`. Establish `eB : ∀ v, (B'.map (Subring.subtype 𝕆)).map (ev v) = ((h v)⁻¹).1 * β.1.map (ev v)` using `fun v => Matrix.ext fun i j => hB i j v`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `o : ∀ v, (1 : Matrix (Fin n) (Fin n) 𝔸).map (ev v) = 1` using `fun v => Matrix.map_one _ (map_zero _) (map_one _)`. Establish `p1 : A' * B' = 1`. Apply `Matrix.map_injective (f := Subring.subtype 𝕆) Subtype.val_injective` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(A' * B').map _ = Matrix.map 1 _`. Rewrite using `[Matrix.map_mul, Matrix.map_one _ (map_zero _) (map_one _)]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `ext _ _ fun v => ?_` and prove the remaining obligations. Rewrite using `[Matrix.map_mul, eA, eB, Matrix.mul_assoc, ← Matrix.mul_assoc (h v).1, Units.mul_inv, Matrix.one_mul, ← Matrix.map_mul, Units.inv_mul]`. Use `⟨⟨A', B', p1, mul_eq_one_comm.1 p1⟩, ext _ _ fun v => ?_⟩` and prove the remaining obligations. Establish `e : (β * Formalism.L2.DIV.intGL 𝔽 E n ⟨A', B', p1, mul_eq_one_comm.1 p1⟩).val.map (ev v) = (h v).1`. Express the relevant statement in the definitionally equal form `(β.1 * A'.map (Subring.subtype 𝕆)).map (ev v) = _`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Matrix.map_mul, eA, ← Matrix.mul_assoc, ← Matrix.map_mul, Units.mul_inv, o, Matrix.one_mul]`. Establish `e2 : ∀ M : Matrix (Fin n) (Fin n) 𝔸, (Formalism.UG.cT (Formalism.UG.sigR hc.sig (Formalism.L2.Herm.Af 𝔽)) M).map (ev v) = ((M.map (ev v)).map (locConj v))ᵀ` using `fun M => Matrix.ext fun i j => ev_sigR hc v _`. Establish `h3` using `congrArg Matrix.transpose (h1 v)`. Rewrite `h3` using `[Matrix.transpose_mul, Matrix.transpose_mul, Matrix.transpose_transpose, ← Matrix.mul_assoc, Matrix.transpose_one]`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, e2, e, o]`.
-
-Conclude with `h3`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_orth (hc : CMData 𝔽 E) {G : Matrix (Fin n) (Fin n) E} (hG : ∀ a b, cc (G a b) = G b a) (hd : G.det ≠ 0)
     {Λ : Submodule (𝓞 E) (Fin n → E)} (hL : ReciprocityTheory.MultiplicativeHeights.IsLattice Λ)
@@ -271,13 +261,13 @@ theorem exists_orth (hc : CMData 𝔽 E) {G : Matrix (Fin n) (Fin n) E} (hG : �
   exact h3
 
 /- English proof (translation)
-Take `⟨hfg, hsp⟩` from `GlobalTheory.LocalConjugacy.isLattice_coordLat V V.L0 V.standardTuple_isLattice`. Establish `hN' : (N : E) ≠ 0` using `Nat.cast_ne_zero.2 hN.ne'`. Establish `mem : ∀ x : Fin V.rank → E, x ∈ GlobalTheory.LocalConjugacy.coordLat V V.L0 ↔ ∑ i, x i • V.frame i ∈ V.L0`. Introduce `x`. Rewrite using `[← Module.Basis.equivFun_symm_apply]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Establish `: V.frame.equivFun.symm (V.frame.equivFun y) = y` using `V.frame.equivFun.symm_apply_apply y`. Conclude with `this.symm ▸ hy`. Conclude with `fun hx => ⟨_, hx, V.frame.equivFun.apply_symm_apply x⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Set `f : (Fin V.rank → E) →ₗ[𝓞 E] (Fin V.rank → E)` to `(((N : E)⁻¹ • LinearMap.id : (Fin V.rank → E) →ₗ[E] (Fin V.rank → E))).restrictScalars (𝓞 E)`. Use `(hfg.map f).of_le fun x hx => ⟨_, (mem _).2 (h2 x hx), ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(N : E)⁻¹ • (N : E) • x = x`. Rewrite using `[smul_smul, inv_mul_cancel₀ hN', one_smul]`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eq_top_iff, ← hsp]`. Use `Submodule.span_le.2 fun x hx => ?_` and prove the remaining obligations. Use `Submodule.smul_mem (Submodule.span E (Λ : Set (Fin V.rank → E))) (N : E)⁻¹ (Submodule.subset_span (h1 x ((mem x).1 hx)))` as an intermediate fact. Rewrite `this` using `[smul_smul, inv_mul_cancel₀ hN', one_smul]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem isLattice_of_commensurable (V : HSpace E) {Λ : Submodule (𝓞 E) (Fin V.rank → E)} {N : ℕ} (hN : 0 < N)
     (h1 : ∀ x : Fin V.rank → E, ∑ i, x i • V.frame i ∈ V.L0 → (N : E) • x ∈ Λ)
@@ -305,17 +295,15 @@ theorem isLattice_of_commensurable (V : HSpace E) {Λ : Submodule (𝓞 E) (Fin 
     rwa [smul_smul, inv_mul_cancel₀ hN', one_smul] at this
 
 /- English proof (translation)
-Establish `e : ∀ x y, herm V.gramᵀ x y = Formalism.UG.hform (hc.sig : E →+* E) V.gram y x`. Introduce `x y`. Rewrite using `[herm, Formalism.UG.hform, Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `x j * V.gram i j * star (y i) = star (y i) * V.gram i j * x j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Expand and normalize the polynomial expressions, which then agree. Prove the components needed by the constructor for the conclusion. Introduce `hx y hy`. Rewrite `hx` using `[← h]`. Proceed by induction on `hx using Submodule.span_induction with`.
+Expand and normalize the polynomial expressions, which then agree. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction.
 
-Consider the case `mem x hx`. Take `⟨a, ha⟩` from `hx y hy`. Rewrite using `[e, ← ha]`. Conclude with `a.2`. Consider the case `zero => simpa [herm] using isIntegral_zero`.
+Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Consider the case `add a b _ _ ha hb`. Establish `: herm V.gramᵀ (a + b) y = herm V.gramᵀ a y + herm V.gramᵀ b y`. Simplify using `only [herm, Pi.add_apply, add_mul, Finset.sum_add_distrib]`. Rewrite using `[this]`. Conclude with `ha.add hb`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `smul c a _ ha`. Establish `: herm V.gramᵀ (c • a) y = (c : E) * herm V.gramᵀ a y`. Simplify using `only [herm, Pi.smul_apply, Finset.mul_sum, Algebra.smul_def, mul_assoc]`. Rewrite using `[this]`. Conclude with `IsIntegral.mul c.2 ha`.
-
-Introduce `H`. Rewrite using `[← h]`. Conclude with `Submodule.subset_span fun y hy => ⟨⟨_, H y hy⟩, e x y⟩`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem selfDual_iff (hc : CMData 𝔽 E) (V : HSpace E) {Λ : Submodule (𝓞 E) (Fin V.rank → E)}
     (h : Formalism.L2.Herm.dualL hc V Λ = Λ) (x : Fin V.rank → E) :
@@ -348,7 +336,7 @@ theorem selfDual_iff (hc : CMData 𝔽 E) (V : HSpace E) {Λ : Submodule (𝓞 E
     exact Submodule.subset_span fun y hy => ⟨⟨_, H y hy⟩, e x y⟩
 
 /- English proof (translation)
-The claim follows from `exists_orth hc (fun a b => V.herm.eq (V.frame a) (V.frame b)) (GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.gram_det_isUnit V).ne_zero (isLattice_of_commensurable V hN h1 h2) (selfDual_iff hc V h) hβ`.
+A detailed English derivation is pending.
 -/
 theorem exists_orth_space (hc : CMData 𝔽 E) (V : HSpace E) {β : GL (Fin V.rank) 𝔸}
     {Λ : Submodule (𝓞 E) (Fin V.rank → E)} {N : ℕ} (hβ : Formalism.L2.DIV.IsFrame β Λ)
@@ -370,7 +358,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.CuspMult
 
 /- English proof (translation)
-Introduce `{D} V _ _ _ h` and use `haveI : IsCMField D.host.E := D.host.isCMField_hostE exists_orth_space (E := D.host.E) D.sp.cm V h.1 h.2.1 h.2.2.1 h.2.2.2.1 h.2.2.2.2`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_orthonormal_baseFrame : ∀ {D : D7} (V : HSp D) (β : GL (Fin V.rank) (EAf D)) (Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)) (N : ℕ), IsBaseFrame V β Λ N → ∃ u : GL (Fin V.rank) (Formalism.L2.Herm.intAf D.host.F D.host.E), Formalism.UG.cT (Formalism.UG.sigR D.sp.cm.sig (Formalism.L2.Herm.Af D.host.F)) (β * intGL D.host.F D.host.E V.rank u).val * V.gram.map (Formalism.UG.inclE (F := D.host.F) (Formalism.L2.Herm.Af D.host.F)) * (β * intGL D.host.F D.host.E V.rank u).val = 1 :=
   fun {D} V _ _ _ h =>

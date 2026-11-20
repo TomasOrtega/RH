@@ -7,17 +7,15 @@ namespace GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets
 open Topology MvPolynomial
 
 /- English proof (translation)
-Use `set P : MvPolynomial σ ℂ := ∏ m, ∑ i, X i * C (v m i) with hP`. Establish `hlin : ∀ m, ∑ i, X i * C (v m i) ≠ (0 : MvPolynomial σ ℂ)`. Introduce `m h`. Take `⟨i, hi⟩` from `Function.ne_iff.1 (hv m)`. Use `congrArg (eval (Pi.single i 1)) h` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[Pi.single_apply] at this`. Conclude with `hi this`. Establish `hP0 : P ≠ 0` using `Finset.prod_ne_zero_iff.2 fun m _ => hlin m`. Set `S : σ → Finset ℂ` to `fun _ => Finset.univ.image fun j : Fin (N + 1) => ((j : ℕ) : ℂ)`. Establish `hS : ∀ i, (S i).card = N + 1` using `fun i => by`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [S]`. Rewrite using `[Finset.card_image_of_injective _ fun a b h => Fin.ext (by exact_mod_cast h)]`. Simplify using the standard rewrite rules. Establish `htot : P.totalDegree ≤ k`. Use `(totalDegree_finsetProd _ _).trans ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hdeg : ∀ i, P.degreeOf i < (S i).card` using `fun i => by`. Rewrite using `[hS i]`. Conclude with `Nat.lt_succ_of_le (((degreeOf_le_totalDegree _ _).trans htot).trans hk)`. Assume the negation of the conclusion as `hne`.
+Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `push Not at hne`. Use `hP0 (eq_zero_of_eval_zero_at_prod_finset P S hdeg fun x hx => ?_)` and prove the remaining obligations. Use `choose u _ hu using fun i => Finset.mem_image.1 (hx i)`. Use `hne u` as an intermediate fact. Simplify using `only [hu] at this`.
-
-Simplify `this` using `[hP, map_prod]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem GridProductLowerBound.exists_grid_prod_ne_zero {σ : Type} [Fintype σ] {N k : ℕ} (hk : k ≤ N)
     (v : Fin k → σ → ℂ) (hv : ∀ m, v m ≠ 0) :
@@ -54,25 +52,23 @@ theorem GridProductLowerBound.exists_grid_prod_ne_zero {σ : Type} [Fintype σ] 
   simpa [hP, map_prod] using this
 
 /- English proof (translation)
-Introduce `σ _ N Z z₀ hZ hz₀`. Choose the witnesses or unpack the hypotheses as in `⟨ε, hε, hεZ⟩ : ∃ ε > 0, ∀ x ∈ Z, ε ≤ dist z₀ x := by`. Rewrite `hz₀` using `[Metric.mem_closure_iff]`. Use `push Not at hz₀`. Conclude with `hz₀`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨R, hR⟩` from `hZ.subset_closedBall z₀`. Use `set K : Set (σ → ℂ) := Metric.closedBall 0 (R + ε / 2) \ Metric.ball 0 (ε / 2) with hK`. Establish `hKc : IsCompact K` using `(isCompact_closedBall _ _).diff Metric.isOpen_ball`. Establish `hK0 : ∀ w ∈ K, w ≠ 0`. Introduce and unpack `w hw rfl`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Simplify using `[hK, hε] at hw`. Set `g : (k : ℕ) → (Fin k → σ → ℂ) → ℝ` to `fun k v => Finset.univ.sup' Finset.univ_nonempty fun u : σ → Fin (N + 1) => ‖∏ m, ∑ i, ((u i : ℕ) : ℂ) * v m i‖`. Establish `hbd : ∀ k, ∃ μ > (0 : ℝ), k ≤ N → ∀ v ∈ Set.univ.pi (fun _ : Fin k => K), μ ≤ g k v`. Introduce `k`. Distinguish the cases in `hk : k ≤ N`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Establish an intermediate fact.
 
-Break down `(Set.univ.pi fun _ : Fin k => K).eq_empty_or_nonempty with he | hne` into its components or cases. Conclude with `⟨1, one_pos, fun _ v hv => by simp [he] at hv⟩`. Establish `hgc : Continuous (g k)` using `Continuous.finset_sup'_apply (f := fun (u : σ → Fin (N + 1)) (v : Fin k → σ → ℂ) => ‖∏ m, ∑ i, ((u i : ℕ) : ℂ) * v m i‖) _ fun u _ => continuous_norm.comp (continuous_finsetProd _ fun m _ => continuous_finsetSum _ fun i _ => continuous_const.mul ((continuous_apply i).comp (contin …`. Take `⟨v₀, hv₀, hmin⟩` from `(isCompact_univ_pi fun _ => hKc).exists_isMinOn hne hgc.continuousOn`. Take `⟨u, hu⟩` from `GridProductLowerBound.exists_grid_prod_ne_zero hk v₀ fun m => hK0 _ (hv₀ m (Set.mem_univ _))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨g k v₀, (norm_pos_iff.2 hu).trans_le (Finset.le_sup' (fun u : σ → Fin (N + 1) => ‖∏ m, ∑ i, ((u i : ℕ) : ℂ) * v₀ m i‖) (Finset.mem_univ u)), fun _ v hv => isMinOn_iff.1 hmin v hv⟩`. Conclude with `⟨1, one_pos, fun h => absurd h hk⟩`. Use `choose μf hμf0 hμf using hbd`. Use `⟨(Finset.range (N + 1)).inf' ⟨0, Finset.mem_range.2 N.succ_pos⟩ μf, (Finset.lt_inf'_iff _).2 fun k _ => hμf0 k, Metric.ball z₀ (ε / 2), Metric.ball_mem_nhds _ (by positivity), ?_⟩` and prove the remaining obligations. Introduce `z hz s hs hcard`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set e := s.equivFin`. Use `set v : Fin s.card → σ → ℂ := fun m => z - (e.symm m : σ → ℂ) with hvdef`. Establish `hv : v ∈ Set.univ.pi fun _ : Fin s.card => K`. Introduce `m _`. Establish `hx` using `hs (e.symm m).2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `hεZ _ hx`. Establish `h2` using `Metric.mem_closedBall.1 (hR hx)`. Establish `h3` using `Metric.mem_ball.1 hz`. Establish `h4` using `dist_triangle z₀ z (e.symm m : σ → ℂ)`. Establish `h5` using `dist_triangle z z₀ (e.symm m : σ → ℂ)`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h4` using `[dist_comm z₀ z]`. Rewrite `h2` using `[dist_comm]`. Simplify using `only [hK, Set.mem_sdiff, Metric.mem_closedBall, Metric.mem_ball, dist_zero_right, hvdef, ← dist_eq_norm, not_lt]`. Apply the tactic sequence `constructor <;> linarith`. Take `⟨u, -, hu⟩` from `Finset.exists_mem_eq_sup' Finset.univ_nonempty (fun u : σ → Fin (N + 1) => ‖∏ m, ∑ i, ((u i : ℕ) : ℂ) * v m i‖)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨u, ?_⟩` and prove the remaining obligations. Establish `hprod : ∏ x ∈ s, ∑ i, ((u i : ℕ) : ℂ) * (z i - x i) = ∏ m, ∑ i, ((u i : ℕ) : ℂ) * v m i`. Rewrite using `[← Finset.prod_coe_sort, ← e.symm.prod_comp]`. Both sides reduce to the same expression. Rewrite using `[hprod]`.
-
-Establish `hle` using `(Finset.inf'_le μf (Finset.mem_range_succ_iff.2 hcard)).trans (hμf _ hcard v hv)`. Simplify using `only [g] at hle`. Rewrite `hle` using `[hu]`. Then use the resulting hypothesis.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem GridProductLowerBound.proof : GridProductLowerBound.Statement := by
   classical

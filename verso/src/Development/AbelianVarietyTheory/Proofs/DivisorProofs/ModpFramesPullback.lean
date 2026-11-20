@@ -18,9 +18,9 @@ namespace GlobalTheory.FrameGlue.Pull
 open GlobalTheory.Cartier GlobalTheory.TrueGeo.SmallSec
 
 /- English proof (translation)
-Rewrite using `[Matrix.inv_def, Matrix.inv_def]`. Establish `h1 : (A.map f).det = f A.det` using `(RingHom.map_det f A).symm`. Establish `h2 : (A.map f).adjugate = A.adjugate.map f` using `(RingHom.map_adjugate f A).symm`. Rewrite using `[h1, h2, Ring.inverse_eq_inv', Ring.inverse_eq_inv', ← map_inv₀]`. Use extensionality with `i k`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Simplify using `[Matrix.smul_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem matrix_map_inv {K L : Type} [Field K] [Field L] (f : K →+* L) {N : ℕ}
     (A : Matrix (Fin N) (Fin N) K) : (A.map f)⁻¹ = A⁻¹.map f := by
@@ -36,7 +36,7 @@ variable {X Y : Scheme.{0}} [IsIntegral X] [IsIntegral Y] (j : Y ⟶ X)
   (hη : j (genericPoint Y) ⤳ genericPoint X)
 
 /- English proof (translation)
-Take `⟨U, hx, s, rfl⟩` from `X.presheaf.exists_germ_eq a`. Establish `hy : y ∈ j ⁻¹ᵁ U` using `hx`. Rewrite using `[algebraMap_germ hx s, fnMap_fnOf j hη _ (gen_mem hy), ← algebraMap_germ hy]`. Conclude with `congrArg _ (Scheme.Hom.germ_stalkMap_apply j U _ _ s).symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fnMap_algebraMap (y : Y) (a : X.presheaf.stalk (j y)) :
     fnMap j hη (algebraMap _ X.functionField a) = algebraMap _ Y.functionField (j.stalkMap y a) := by
@@ -46,21 +46,21 @@ theorem fnMap_algebraMap (y : Y) (a : X.presheaf.stalk (j y)) :
   exact congrArg _ (Scheme.Hom.germ_stalkMap_apply j U _ _ s).symm
 
 /- English proof (translation)
-Take `⟨a, rfl⟩` from `h`. Conclude with `⟨_, (fnMap_algebraMap j hη y a).symm⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem regAt_fnMap {y : Y} {t : X.functionField} (h : RegAt (j y) t) : RegAt y (fnMap j hη t) := by
   obtain ⟨a, rfl⟩ := h
   exact ⟨_, (fnMap_algebraMap j hη y a).symm⟩
 
 /- English proof (translation)
-Take `⟨a, ha, rfl⟩` from `h`. Conclude with `⟨_, ha.map _, (fnMap_algebraMap j hη y a).symm⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem unitAt_fnMap {y : Y} {t : X.functionField} (h : UnitAt (j y) t) : UnitAt y (fnMap j hη t) := by
   obtain ⟨a, ha, rfl⟩ := h
   exact ⟨_, ha.map _, (fnMap_algebraMap j hη y a).symm⟩
 
 /- English proof (translation)
-Take `⟨a, ha, rfl⟩` from `h`. Use `⟨_, ?_, (fnMap_algebraMap j hη y a).symm⟩` and prove the remaining obligations. Rewrite `ha`, the goal using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Conclude with `fun hu => ha (isUnit_of_map_unit (j.stalkMap y).hom a hu)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem zeroAt_fnMap {y : Y} {t : X.functionField} (h : ZeroAt (j y) t) : ZeroAt y (fnMap j hη t) := by
   obtain ⟨a, ha, rfl⟩ := h
@@ -69,7 +69,7 @@ theorem zeroAt_fnMap {y : Y} {t : X.functionField} (h : ZeroAt (j y) t) : ZeroAt
   exact fun hu => ha (isUnit_of_map_unit (j.stalkMap y).hom a hu)
 
 /- English proof (translation)
-Introduce `hu`. Apply `h` to reduce the goal to its premises. Use `hu.map (j.stalkMap y).hom` as an intermediate fact. Simplify using `using this`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem not_isUnit_natCast (p : ℕ) {y : Y} (h : ¬ IsUnit (p : Y.presheaf.stalk y)) :
     ¬ IsUnit (p : X.presheaf.stalk (j y)) := by
@@ -83,15 +83,13 @@ end
 end GlobalTheory.FrameGlue.Pull
 
 /- English proof (translation)
-Introduce `X X' _ _ π hπ p ι N U M c hF`. Take `⟨h1, h2, h3⟩` from `hF`. Use `open GlobalTheory.FrameGlue.Pull in`. Use `⟨fun x hx => ?_, fun a x hx hp => ?_, fun a b x hxa hxb hp i => ?_⟩` and prove the remaining obligations. Take `⟨a, ha⟩` from `h1 (π x) (not_isUnit_natCast π p hx)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨a, ha⟩`. Take `⟨hr, hd⟩` from `h2 a (π x) hx (not_isUnit_natCast π p hp)`. Use `⟨fun i k => regAt_fnMap π hπ (hr i k), ?_⟩` and prove the remaining obligations. Establish `e : ((M a).map (GlobalTheory.TrueGeo.SmallSec.fnMap π hπ)).det = GlobalTheory.TrueGeo.SmallSec.fnMap π hπ (M a).det` using `(RingHom.map_det _ _).symm`. Use `show UnitAt x ((M a).map (GlobalTheory.TrueGeo.SmallSec.fnMap π hπ)).det`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[e]`. Conclude with `unitAt_fnMap π hπ hd`. Take `⟨hu, hz, hd⟩` from `h3 a b (π x) hxa hxb (not_isUnit_natCast π p hp) i`. Establish `hm : ((M a).map (GlobalTheory.TrueGeo.SmallSec.fnMap π hπ))⁻¹ * (M b).map (GlobalTheory.TrueGeo.SmallSec.fnMap π hπ) = ((M a)⁻¹ * M b).map (GlobalTheory.TrueGeo.SmallSec.fnMap π hπ)`. Rewrite using `[matrix_map_inv, Matrix.map_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hc : ((Units.map (GlobalTheory.TrueGeo.SmallSec.fnMap π hπ).toMonoidHom (c a i) / Units.map (GlobalTheory.TrueGeo.SmallSec.fnMap π hπ).toMonoidHom (c b i) : X'.functionFieldˣ) : X'.functionField) = GlobalTheory.TrueGeo.SmallSec.fnMap π hπ ((c a i / c b i : X.functionFieldˣ) : X.f …`. Rewrite using `[← map_div]`. Both sides reduce to the same expression. Use `⟨hc ▸ unitAt_fnMap π hπ hu, fun k hk => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hm]`.
-
-Conclude with `zeroAt_fnMap π hπ (hz k hk)`. Rewrite using `[hm, hc, Matrix.map_apply, ← map_sub]`. Conclude with `zeroAt_fnMap π hπ hd`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.FrameGlue.modPFrames_pull : ∀ (X X' : Scheme.{0}) [IsIntegral X] [IsIntegral X'] (π : X' ⟶ X) (hπ : π (genericPoint X') ⤳ genericPoint X) (p : ℕ)
     (ι : Type) (N : ℕ) (U : ι → X.Opens) (M : ι → Matrix (Fin N) (Fin N) X.functionField) (c : ι → Fin N → X.functionFieldˣ),

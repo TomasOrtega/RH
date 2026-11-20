@@ -23,12 +23,12 @@ variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
   {K' : Type} [Fintype K'] {ι' : K' → Type} [∀ k, Fintype (ι' k)]
 
 /- English proof (translation)
-The claim follows from `contDiffOn_const`.
+A detailed English derivation is pending.
 -/
 theorem smooth_trivLine : IsSmoothHerm (trivLine ι) := contDiffOn_const
 
 /- English proof (translation)
-Use `⟨?_, fun _ => rfl⟩` and prove the remaining obligations. Use function extensionality and compare the values at `k`. Simplify using `[trivLine, pullDeg]`. Rewrite using `[Function.extend_def]`. Apply the tactic sequence `split_ifs <;> rfl`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem pull_trivLine (κ : K → K') (v : (Σ k, ι k) → (Σ k', ι' k')) :
     IsPullHerm κ v (trivLine ι) (trivLine ι') := by
@@ -40,7 +40,7 @@ theorem pull_trivLine (κ : K → K') (v : (Σ k, ι k) → (Σ k', ι' k')) :
   split_ifs <;> rfl
 
 /- English proof (translation)
-Use `⟨?_, fun _ => rfl⟩` and prove the remaining obligations. Use function extensionality and compare the values at `k`. Simplify using `[ReciprocityTheory.ChartRestriction.G.Geo.oneLine, HermLine.ofWeight, pullDeg]`. Rewrite using `[Function.extend_def]`. Apply the tactic sequence `split_ifs <;> rfl`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem pull_oneLine (κ : K → K') (v : (Σ k, ι k) → (Σ k', ι' k')) :
     IsPullHerm κ v (ReciprocityTheory.ChartRestriction.G.Geo.oneLine : HermLine ι) (ReciprocityTheory.ChartRestriction.G.Geo.oneLine : HermLine ι') := by
@@ -52,7 +52,7 @@ theorem pull_oneLine (κ : K → K') (v : (Σ k, ι k) → (Σ k', ι' k')) :
   split_ifs <;> rfl
 
 /- English proof (translation)
-Unfold `monoLines`. Use `split_ifs`. Conclude with `h _`. Conclude with `smooth_trivLine`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem smooth_monoLines {J : Type} {ℓ : J → HermLine ι} (h : ∀ j, IsSmoothHerm (ℓ j)) (m : J →₀ ℕ) (d : ℕ)
     (k : Fin d) : IsSmoothHerm (monoLines ℓ m d k) := by
@@ -62,7 +62,7 @@ theorem smooth_monoLines {J : Type} {ℓ : J → HermLine ι} (h : ∀ j, IsSmoo
   · exact smooth_trivLine
 
 /- English proof (translation)
-Unfold `monoLines`. Use `split_ifs`. Conclude with `h _`. Conclude with `pull_trivLine κ v`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem pull_monoLines {J : Type} {κ : K → K'} {v : (Σ k, ι k) → (Σ k', ι' k')} {ℓ : J → HermLine ι}
     {ℓ' : J → HermLine ι'} (h : ∀ j, IsPullHerm κ v (ℓ j) (ℓ' j)) (m : J →₀ ℕ) (d : ℕ) (k : Fin d) :
@@ -73,9 +73,9 @@ theorem pull_monoLines {J : Type} {κ : K → K'} {v : (Σ k, ι k) → (Σ k', 
   · exact pull_trivLine κ v
 
 /- English proof (translation)
-Establish `h1 : (1 : ReciprocityTheory.ChartRestriction.G.Geo.MRing ι) ∉ P` using `fun h => hP.2.1.1.ne_top ((Ideal.eq_top_iff_one P).mpr h)`. Rewrite using `[hI.2.2 P n L ReciprocityTheory.ChartRestriction.G.Geo.oneLine 1 (fun _ => 0) hP hL ReciprocityTheory.ChartRestriction.G.Geo.isSmoothHerm_oneLine (fun k => by simp [ReciprocityTheory.ChartRestriction.G.Geo.oneLine, HermLine.ofWeight]) ReciprocityTheory.ChartRestriction.G.Geo.isMu …`. Establish `hint : arInt P 1 ReciprocityTheory.ChartRestriction.G.Geo.oneLine L = ptsIntegral P (fun j z => Real.log ((L j).h z)) (fun _ => 1)`. Unfold `arInt`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `z`. Conclude with `ReciprocityTheory.ChartRestriction.G.Geo.logNorm_oneLine z`. Unfold `recR`. Rewrite using `[ReciprocityTheory.ChartRestriction.G.Geo.divSupp_one, finsum_mem_empty, hint]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem snoc_oneLine {I : Ideal (ReciprocityTheory.ChartRestriction.G.Geo.MRing ι) → (n : ℕ) → (Fin n → HermLine ι) → ℝ}
     (hI : IsIntersectionFamily I) {P : Ideal (ReciprocityTheory.ChartRestriction.G.Geo.MRing ι)} {n : ℕ} (L : Fin n → HermLine ι)
@@ -102,7 +102,7 @@ end Lines
 variable {Ψ : Type} [Fintype Ψ] {N : ℕ}
 
 /- English proof (translation)
-Consider the cases of `r with`. Consider the case `none => exact M.A_smooth`. Consider the case `some r => exact M.x_smooth t r`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 -/
 theorem smooth_line (M : RootModel Ψ N) (t : ℝ) (r : Option (Ψ × Fin N)) : IsSmoothHerm (M.line t r) := by
   cases r with
@@ -118,7 +118,7 @@ abbrev coverDeg (M M' : RootModel Ψ N) [CharZero M'.Ω] (v : (Σ k, M.ι k) →
   IntermediateField.relfinrank (blockFnField (M'.y ∘ v)) (blockFnField M'.y)
 
 /- English proof (translation)
-Introduce `h`. Use `M'.δ_pos` as an intermediate fact. Rewrite `this` using `[hδ, h, zero_mul]`. Conclude with `lt_irrefl _ this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coverDeg_ne_zero (hδ : M'.δ = coverDeg M M' v * M.δ) : coverDeg M M' v ≠ 0 := by
   intro h
@@ -127,11 +127,11 @@ theorem coverDeg_ne_zero (hδ : M'.δ = coverDeg M M' v * M.δ) : coverDeg M M' 
   exact lt_irrefl _ this
 
 /- English proof (translation)
-Establish `hP' : imageZ v (mCoordIdeal M'.y) = M.P` using `hP`. Establish `he : (coverDeg M M' v : ℝ) ≠ 0` using `Nat.cast_ne_zero.mpr (coverDeg_ne_zero hδ)`. Establish `hδ0 : (M.δ : ℝ) ≠ 0` using `Nat.cast_ne_zero.mpr M.δ_pos.ne'`. Establish `hk0 : (M.kA : ℝ) ≠ 0` using `Nat.cast_ne_zero.mpr M.kA_pos.ne'`. Establish `hpf` using `hII.2.2.1 M.K M.ι M'.K M'.ι κ v M'.Ω M'.y (dimFl Ψ N + 1) (monoLines (M.line t) m (dimFl Ψ N + 1)) (monoLines (M'.line t) m (dimFl Ψ N + 1)) hb M'.arith (by rw [hP']; exact M.arith) (smooth_monoLines (smooth_line M t) m _) (pull_monoLines (hl t) m _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hpf` using `[hP']`. Unfold `RootModel.arMono`. Use `split_ifs`. Express the relevant statement in the definitionally equal form `ReciprocityTheory.ChartRestriction.G.Geo.IntersectionSystem at II`. Establish `hpf' : II M'.K M'.ι M'.P (dimFl Ψ N + 1) (monoLines (M'.line t) m (dimFl Ψ N + 1)) = _` using `hpf`.
+Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hpf', hk, hδ]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Both sides reduce to the same expression.
+Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem arMono_eq (hII : ReciprocityTheory.ChartRestriction.G.Geo.IsFullIntersectionSystem II) (hb : IsBlockMap κ v)
     (hP : imageZ v M'.P = M.P) (hl : ∀ t r, IsPullHerm κ v (M.line t r) (M'.line t r))
@@ -155,17 +155,17 @@ theorem arMono_eq (hII : ReciprocityTheory.ChartRestriction.G.Geo.IsFullIntersec
   · rfl
 
 /- English proof (translation)
-Establish `hP' : imageZ v (mCoordIdeal M'.y) = M.P` using `hP`. Establish `he : (coverDeg M M' v : ℝ) ≠ 0` using `Nat.cast_ne_zero.mpr (coverDeg_ne_zero hδ)`. Establish `hδ0 : (M.δ : ℝ) ≠ 0` using `Nat.cast_ne_zero.mpr M.δ_pos.ne'`. Establish `hk0 : (M.kA : ℝ) ≠ 0` using `Nat.cast_ne_zero.mpr M.kA_pos.ne'`. Unfold `RootModel.geoMono`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `split_ifs`. Use `set L := monoLines (M.line 1) m (dimFl Ψ N) with hLdef set L' := monoLines (M'.line 1) m (dimFl Ψ N) with hL'def`. Establish `hLs : ∀ j, IsSmoothHerm (L j)` using `smooth_monoLines (smooth_line M 1) m _`. Establish `hL's : ∀ j, IsSmoothHerm (L' j)` using `smooth_monoLines (smooth_line M' 1) m _`. Establish `hLp : ∀ j, IsPullHerm κ v (L j) (L' j)` using `pull_monoLines (hl 1) m _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hpf` using `hII.2.2.1 M.K M.ι M'.K M'.ι κ v M'.Ω M'.y (dimFl Ψ N + 1) (Fin.snoc (α := fun _ => HermLine M.ι) L ReciprocityTheory.ChartRestriction.G.Geo.oneLine) (Fin.snoc (α := fun _ => HermLine M'.ι) L' ReciprocityTheory.ChartRestriction.G.Geo.oneLine) hb M'.arith (by rw [hP']; exact M.arit …`. Use `Fin.lastCases ?_ (fun i => ?_) j` and prove the remaining obligations. Simplify using `using ReciprocityTheory.ChartRestriction.G.Geo.isSmoothHerm_oneLine`. Simplify using `using hLs i)`. Use the proof step `(fun j => by`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Use `Fin.lastCases ?_ (fun i => ?_) j` and prove the remaining obligations. Simplify using `using pull_oneLine κ v`. Simplify using `using hLp i)`. Rewrite `hpf` using `[hP']`. Establish `e1` using `snoc_oneLine (hII.1 M'.K M'.ι) L' M'.arith hL's`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e2 : II M.K M.ι M.P (dimFl Ψ N + 1) (Fin.snoc (α` using `fun _ => HermLine M.ι) L ReciprocityTheory.ChartRestriction.G.Geo.oneLine) = -ptsIntegral M.P (fun j z => Real.log ((L j).h z)) (fun _ => 1) := snoc_oneLine (hII.1 M.K M.ι) L M.arith hLs`. Establish `hpf'` using `hpf`. Rewrite `hpf'` using `[e1, e2]`. Establish `hpts : ptsIntegral (mCoordIdeal M'.y) (fun j z => Real.log ((L' j).h z)) (fun _ => 1) = (coverDeg M M' v : ℝ) * ptsIntegral M.P (fun j z => Real.log ((L j).h z)) (fun _ => 1)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Express the relevant statement in the definitionally equal form `ptsIntegral (mCoordIdeal M'.y) (fun j z => Real.log ((L' j).h z)) (fun _ => 1) / _ = _`. Rewrite using `[hpts, hk, hδ]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Both sides reduce to the same expression.
+Clear the denominators using the available nonvanishing facts. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem geoMono_eq (hII : ReciprocityTheory.ChartRestriction.G.Geo.IsFullIntersectionSystem II) (hb : IsBlockMap κ v)
     (hP : imageZ v M'.P = M.P) (hl : ∀ t r, IsPullHerm κ v (M.line t r) (M'.line t r))
@@ -216,13 +216,13 @@ end Cover
 end
 
 /- English proof (translation)
-Introduce `Ψ _ _ N M M' _ II hII κ v hb hP hl hk hδ`. Establish `hm : ∀ t, M'.arMono II t = M.arMono II t` using `fun t => funext fun m => arMono_eq hII hb hP hl hk hδ t m`. Establish `hg : M'.geoMono = M.geoMono` using `funext fun m => geoMono_eq hII hb hP hl hk hδ m`. Use `⟨fun t => ?_, ?_, fun hc m => ?_, ?_⟩` and prove the remaining obligations. Unfold `RootModel.arFun`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Rewrite using `[hm t]`. Unfold `RootModel.PP`. Use `congr 2`. Use function extensionality and compare the values at `m`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `t`. Conclude with `congrFun (hm t) m`. Take `⟨L, hL⟩` from `hc m`. Conclude with `⟨L, by simpa only [hm] using hL⟩`. Unfold `RootModel.geoFun`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hg]`.
+A detailed English derivation is pending.
 -/
 theorem numbers_of_cover : ∀ (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N : ℕ) (M M' : RootModel Ψ N) [CharZero M'.Ω] (II : IntersectionSystem), ReciprocityTheory.ChartRestriction.G.Geo.IsFullIntersectionSystem II → ∀ (κ : M.K → M'.K) (v : (Σ k, M.ι k) → (Σ k, M'.ι k)), ReciprocityTheory.ChartRestriction.G.AI.I1.IsBlockMap κ v → ReciprocityTheory.ChartRestriction.G.AI.I4.imageZ v M'.P = M.P → (∀ t r, ReciprocityTheory.ChartRestriction.G.AI.I4.IsPullHerm κ v (M.line t r) (M'.line t r)) → M'.kA = M.kA → M'.δ = IntermediateField.relfinrank (ReciprocityTheory.ChartRestriction.G.AI.I4.blockFnField (M'.y ∘ v)) (ReciprocityTheory.ChartRestriction.G.AI.I4.blockFnField M'.y) * M.δ → (∀ t, M'.arFun II t = M.arFun II t) ∧ M'.PP II = M.PP II ∧ (M.Converges II → M'.Converges II) ∧ M'.geoFun = M.geoFun := by
   intro Ψ _ _ N M M' _ II hII κ v hb hP hl hk hδ

@@ -6,31 +6,27 @@ open Matrix Finset Real
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `ι _ w y R hR hw hs hm hb`. Take `⟨hexp, hlog⟩` from `GlobalTheory.T.exp_quadratic_lower_and_log_linear_lower'`. Use `set t : ℝ := min 1 (1 / R) with ht`. Use `set V : ℝ := ∑ J, w J * y J ^ 2 with hV`. Use `set S : ℝ := ∑ J, w J * Real.exp (y J) with hS`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht0 : 0 < t` using `lt_min one_pos (by positivity)`. Establish `ht1 : t ≤ 1` using `min_le_left _ _`. Establish `htR : t * R ≤ 1`. Establish `: t ≤ 1 / R` using `min_le_right _ _`. Rewrite `this` using `[le_div_iff₀ hR]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hty : ∀ J, w J ≠ 0 → |t * y J| ≤ 1`. Introduce `J hJ`. Rewrite using `[abs_mul, abs_of_pos ht0]`. Conclude with `(mul_le_mul_of_nonneg_left (hb J hJ) ht0.le).trans htR`. Establish `hV0 : 0 ≤ V` using `Finset.sum_nonneg fun J _ => mul_nonneg (hw J) (sq_nonneg _)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Establish `htV : t ^ 2 * V ≤ 1`. Rewrite using `[hV, Finset.mul_sum, ← hs]`. Use `Finset.sum_le_sum fun J _ => ?_` and prove the remaining obligations. Distinguish the cases in `hJ : w J = 0`. Simplify using `[hJ]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Establish `h1 : (t * y J) ^ 2 ≤ 1` using `(sq_le_one_iff_abs_le_one _).2 (hty J hJ)`. Use `mul_le_mul_of_nonneg_left h1 (hw J)` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish `hlow : 1 + t ^ 2 * V / 3 ≤ ∑ J, w J * Real.exp (t * y J)`. Establish `e : 1 + t ^ 2 * V / 3 = ∑ J, w J * (1 + t * y J + (t * y J) ^ 2 / 3)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `e2 : ∀ J, w J * (1 + t * y J + (t * y J) ^ 2 / 3) = w J + t * (w J * y J) + t ^ 2 / 3 * (w J * y J ^ 2)` using `fun J => by ring`. Simplify using `only [e2, Finset.sum_add_distrib, ← Finset.mul_sum, hs, hm]`. Rewrite using `[← hV]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `Finset.sum_le_sum fun J _ => ?_` and prove the remaining obligations. Distinguish the cases in `hJ : w J = 0`. Simplify using `[hJ]`. Conclude with `mul_le_mul_of_nonneg_left (hexp _ (hty J hJ)) (hw J)`. Establish `hS1 : 1 ≤ S`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: ∑ J, w J * (y J + 1) = 1`. Simplify using `only [mul_add, mul_one, Finset.sum_add_distrib, hs, hm, zero_add]`. Rewrite using `[← this]`. Conclude with `Finset.sum_le_sum fun J _ => mul_le_mul_of_nonneg_left (Real.add_one_le_exp _) (hw J)`. Establish `hS0 : 0 < S` using `by linarith`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `set F : ℝ := Real.log S with hF`. Establish `hEF : Real.exp F = S` using `Real.exp_log hS0`. Establish `hpt : ∀ J, Real.exp (t * y J) ≤ Real.exp (t * F) * (t * (Real.exp (y J) / S) + (1 - t))`. Introduce `J`. Establish `h` using `convexOn_exp.2 (Set.mem_univ (y J - F)) (Set.mem_univ 0) ht0.le (sub_nonneg.2 ht1) (by ring)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [smul_eq_mul, mul_zero, add_zero, Real.exp_zero, mul_one] at h`. Rewrite `h` using `[Real.exp_sub, hEF]`. Establish `e : t * y J = t * F + t * (y J - F)` using `by ring`. Rewrite using `[e, Real.exp_add]`. Conclude with `mul_le_mul_of_nonneg_left h (Real.exp_pos _).le`.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hup : ∑ J, w J * Real.exp (t * y J) ≤ Real.exp (t * F)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_add_distrib, ← Finset.mul_sum, ← Finset.mul_sum, hs, ← hS]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
-
-Establish `hu0 : 0 ≤ t ^ 2 * V / 3` using `by positivity`. Establish `h1` using `hlog (t ^ 2 * V / 3) hu0 (by linarith)`. Establish `h2 : Real.log (1 + t ^ 2 * V / 3) ≤ t * F`. Rewrite using `[Real.log_le_iff_le_exp (by linarith)]`. Conclude with `hlow.trans hup`.
-
-Establish `h3 : t * (t * V / 4) ≤ t * F` using `by nlinarith`. Conclude with `le_of_mul_le_mul_left h3 ht0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cumulant_lower_bound_of_bounded_centred :
     ∀ (ι : Type) [Fintype ι] (w y : ι → ℝ) (R : ℝ), 0 < R → (∀ J, 0 ≤ w J) → ∑ J, w J = 1 →

@@ -15,41 +15,39 @@ variable {K K' : Type} [Field K] [NumberField K] [StarRing K] [Field K'] [Number
   {G G' : Type} [Group G] [Fintype G] [Group G'] [Fintype G'] {Pl0 Pl0' : Type}
 
 /- English proof (translation)
-Set `v : Fin B.S.dim → B'.S.Forms` to `fun k => L (B.S.basis k)`. Set `bv : Basis (Fin B.S.dim) K' B'.S.Forms` to `Basis.mk hli hsp`. Establish `hbv : ∀ k, bv k = L (B.S.basis k)` using `fun k => Basis.mk_apply hli hsp k`. Set `C : Matrix (Fin B'.S.dim) (Fin B.S.dim) K'` to `B'.S.basis.toMatrix v`. Establish `hCe : ∀ a i, C a i = B'.S.basis.equivFun (L (B.S.basis i)) a`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `a i`. Simplify using `[C, v, Basis.toMatrix_apply]`. Establish `hC : ∀ x, C *ᵥ x = B'.S.basis.equivFun (bv.equivFun.symm x)`. Introduce `x`. Use extensionality with `i`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Simplify using `only [Matrix.mulVec, dotProduct, hCe, Basis.equivFun_symm_apply, hbv, map_sum, map_smul, Basis.equivFun_apply, Finsupp.coe_finset_sum, Finset.sum_apply, Finsupp.smul_apply, Pi.smul_apply, smul_eq_mul, mul_comm]`. Establish `hL : ∀ f, L f = bv.equivFun.symm (fun k => φ (B.S.basis.equivFun f k))`. Introduce `f`. Use `conv_lhs => rw [← B.S.basis.sum_equivFun f]`. Rewrite using `[map_sum, Basis.equivFun_symm_apply]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[hsm, hbv]`. Establish `hψ : ∀ x : Fin B.S.dim → K, C *ᵥ (fun k => φ (x k)) = B'.S.basis.equivFun (L (B.S.basis.equivFun.symm x))`. Introduce `x`. Simplify using `only [hL, LinearEquiv.apply_symm_apply, hC]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hbc : ∀ f, GlobalTheory.Mem.R3.LiftLatBC.bcF φ B B' C f = L f`. Introduce `f`. Simplify using `only [GlobalTheory.Mem.R3.LiftLatBC.bcF]`. Rewrite using `[hC, LinearEquiv.symm_apply_apply, hL]`. Establish `hbij : Function.Bijective C.mulVec`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he : C.mulVec = ⇑(bv.equivFun.symm.trans B'.S.basis.equivFun)` using `funext fun x => by`. Rewrite using `[hC]`. Both sides reduce to the same expression. Rewrite using `[he]`. Conclude with `LinearEquiv.bijective _`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hH : Cᴴ * B'.S.H * C = B.S.H.map φ`. Use extensionality with `i j`. Establish `h1` using `csum_coords B'.S (B'.S.basis.equivFun (L (B.S.basis i))) (B'.S.basis.equivFun (L (B.S.basis j)))`. Simplify using `only [LinearEquiv.symm_apply_apply, hcs] at h1`. Simplify using `only [Matrix.mul_apply, Matrix.conjTranspose_apply, Matrix.map_apply, Formalism.L2.DIV.CSD.H, Matrix.of_apply, hCe]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[h1]`. Simplify using `only [Finset.sum_mul]`. Conclude with `Finset.sum_comm`. Establish `hrep : ∀ (T : Module.End K B.S.Forms) (f : B.S.Forms), LinearMap.toMatrix B.S.basis B.S.basis T *ᵥ B.S.basis.equivFun f = B.S.basis.equivFun (T f)` using `fun T f => LinearMap.toMatrix_mulVec_repr _ _ _ _`. Establish `hrep' : ∀ (T : Module.End K' B'.S.Forms) (f : B'.S.Forms), LinearMap.toMatrix B'.S.basis B'.S.basis T *ᵥ B'.S.basis.equivFun f = B'.S.basis.equivFun (T f)` using `fun T f => LinearMap.toMatrix_mulVec_repr _ _ _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hact' : ∀ g : G, B'.S.actMat B'.r (e g) * C = C * (B.S.actMat B.r g).map φ`. Introduce `g`. Apply `Matrix.ext_of_mulVec_single` to reduce the goal to its premises. Introduce `k`. Establish `hs : (Pi.single k 1 : Fin B.S.dim → K') = fun j => φ ((Pi.single k 1 : Fin B.S.dim → K) j)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `j`. Apply the tactic sequence `by_cases h : j = k <;> simp [Pi.single_apply, h]`. Establish `hk : (Pi.single k 1 : Fin B.S.dim → K) = B.S.basis.equivFun (B.S.basis k)`. Use function extensionality and compare the values at `j`. Rewrite using `[Basis.equivFun_self, Pi.single_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `h : j = k`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h, Ne.symm h]`. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hs]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Establish `hm : (B.S.actMat B.r g).map φ *ᵥ (fun j => φ ((Pi.single k 1 : Fin B.S.dim → K) j)) = fun i => φ (((B.S.actMat B.r g) *ᵥ Pi.single k 1) i)`. Use function extensionality and compare the values at `i`. Conclude with `(RingHom.map_mulVec φ _ _ i).symm`. Rewrite using `[hm, hψ, hψ, hk]`. Simplify using `only [Formalism.L2.DIV.CSD.actMat, hrep, hrep', LinearEquiv.symm_apply_apply, hact]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Establish `hnab' : B'.S.nabLat = Submodule.span (𝓞 K') ((fun x : Fin B.S.dim → K => C *ᵥ (fun k => φ (x k))) '' (B.S.nabLat : Set (Fin B.S.dim → K)))`. Establish `hset : (fun x : Fin B.S.dim → K => C *ᵥ (fun k => φ (x k))) '' (B.S.nabLat : Set (Fin B.S.dim → K)) = (fun f => B'.S.basis.equivFun (L f)) '' {f : B.S.Forms | ∀ c, (f : B.S.Cl → B.S.V) c ∈ B.S.Nab c}`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `⟨B.S.basis.equivFun.symm x, (mem_nabLat_iff B.S x).mp hx, (hψ x).symm⟩`. Introduce and unpack `⟨f, hf, rfl⟩`. Use `⟨B.S.basis.equivFun f, (mem_nabLat_iff B.S _).mpr (by simpa using hf), ?_⟩` and prove the remaining obligations. Simplify using `only [hψ, LinearEquiv.symm_apply_apply]`. Rewrite using `[hset]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use extensionality with `y`. Rewrite using `[mem_nabLat_iff, hnab (B'.S.basis.equivFun.symm y)]`. Set `E` to `B'.S.basis.equivFun.restrictScalars (𝓞 K')`. Establish `hE : (fun f => B'.S.basis.equivFun (L f)) '' {f : B.S.Forms | ∀ c, (f : B.S.Cl → B.S.V) c ∈ B.S.Nab c} = (E : B'.S.Forms →ₗ[𝓞 K'] (Fin B'.S.dim → K')) '' (L '' {f : B.S.Forms | ∀ c, (f : B.S.Cl → B.S.V) c ∈ B.S.Nab c})`. Rewrite using `[Set.image_image]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Unfold both sides to obtain the same proposition, which implies itself. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Rewrite using `[hE, ← Submodule.map_span, Submodule.mem_map_equiv]`. Conclude with `Iff.rfl`. Establish `hcoord : B'.coord Z' = Submodule.span K' ((fun x : Fin B.S.dim → K => C *ᵥ (fun k => φ (x k))) '' (B.coord Z : Set (Fin B.S.dim → K)))`. Rewrite using `[hZ]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Formalism.L2.DIV.BlockDat.coord, Submodule.map_span, Submodule.map_coe, LinearEquiv.coe_coe]`. Use `congr 1`. Rewrite using `[Set.image_image, Set.image_image]`. Use `Set.image_congr fun f _ => ?_` and prove the remaining obligations. Rewrite using `[hψ, LinearEquiv.symm_apply_apply]`.
-
-Conclude with `⟨C, hbc, hbij, hH, hact', hnab', hcoord⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem forms_of_semilinear_at (φ : K →+* K') (e : G ≃* G') (B : BlockDat K G Pl0) (B' : BlockDat K' G' Pl0')
     (Z : Submodule K B.S.Forms) (Z' : Submodule K' B'.S.Forms) (L : B.S.Forms →+ B'.S.Forms)

@@ -20,9 +20,9 @@ set_option autoImplicit false
 namespace GlobalTheory.CodimOneDim
 
 /- English proof (translation)
-Substitute `ha` using the available equality. Proceed by induction on `r using WithBot.recBotCoe with`. Consider the case `bot => simp at h`. Consider the case `coe r`. Proceed by induction on `r using ENat.recTopCoe with`.
+Substitute using the available equality. Proceed by induction. Treat this case separately. Treat this case separately. Proceed by induction.
 
-Consider the case `top => exact WithBot.coe_le_coe.2 le_top`. Consider the case `coe r`. Establish `: D + 1 ≤ 1 + r` using `by exact_mod_cast h`. Conclude with `(show D ≤ r by omega)` after adjusting the coercions.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem le_of_add (D : ℕ) (a : ℕ∞) (r : WithBot ℕ∞) (ha : a = 1)
     (h : (((D + 1 : ℕ) : ℕ∞) : WithBot ℕ∞) ≤ (a : WithBot ℕ∞) + r) : (D : WithBot ℕ∞) ≤ r := by
@@ -37,23 +37,23 @@ theorem le_of_add (D : ℕ) (a : ℕ∞) (r : WithBot ℕ∞) (ha : a = 1)
       exact_mod_cast (show D ≤ r by omega)
 
 /- English proof (translation)
-Introduce `k _ Y p D h Z i _ _ hz`. Use `h.isDomain` as an intermediate fact. Use `h.finite` as an intermediate fact. Use `h.charZero_base` as an intermediate fact. Use `h.isIntegral` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨d, hd⟩` from `h.exists_dim_eq i`. Rewrite using `[hd]`. Establish `hup : topologicalKrullDim Z + 1 ≤ topologicalKrullDim Y` using `GlobalTheory.DimCodim.dim_add_le_of_le_coheight (S := Y) (W := Z) i.continuous i.isClosedEmbedding.injective 1 fun w => by`. Rewrite using `[← hz]`. Conclude with `Order.coheight_anti (genericPoint_specializes w |>.map i.continuous)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hup` using `[hd, h.dim_eq]`. Establish `hdD : d ≤ D`. Establish `: ((d + 1 : ℕ) : WithBot ℕ∞) ≤ ((D + 1 : ℕ) : WithBot ℕ∞)` using `by exact_mod_cast hup`. Establish `: d + 1 ≤ D + 1` using `by exact_mod_cast this`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result.
 
-Take `⟨A, _, _, j, _, q, hq, hj⟩` from `exists_affine_chart_over p (i (genericPoint Z))`. Establish `: Nontrivial A` using `PrimeSpectrum.nonempty_iff_nontrivial.1 ⟨q⟩`. Take `⟨_, _, _⟩` from `RegGenSmooth.chart_props h j hj`. Establish `: Algebra.FiniteType ℤ A` using `Algebra.FiniteType.trans (S := k) inferInstance inferInstance`. Establish `hst : ringKrullDim (Y.presheaf.stalk (j q)) = 1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ringKrullDim_stalk_eq_coheight, hq, hz]`. Both sides reduce to the same expression. Set `x : Spec (.of A)` to `q`. Establish `: IsIso (j.stalkMap x)` using `inferInstance`. Establish `e` using `(asIso (j.stalkMap x) ≪≫ Spec.stalkIso (.of A) x).commRingCatIsoToRingEquiv`.
+Both sides reduce to the same expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq1 : (q.asIdeal.height : WithBot ℕ∞) = 1`. Rewrite using `[← IsLocalization.AtPrime.ringKrullDim_eq_height q.asIdeal (Localization.AtPrime q.asIdeal), ← ringKrullDim_eq_of_ringEquiv e, hst]`. Take `⟨_, hKA⟩` from `RegGenSmooth.ringKrullDim_chart h (IsPullback.of_hasPullback p (spMap (algebraMap k (FractionRing k)))) j hj`. Take `⟨M, _, hM⟩` from `GlobalTheory.T.exists_maximal_height_succ_dim k A D hKA`. Establish `h2` using `GlobalTheory.T.height_maximal_le_prime_add_dim A q.asIdeal M`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hM' : (((D + 1 : ℕ) : ℕ∞) : WithBot ℕ∞) ≤ (q.asIdeal.height : WithBot ℕ∞) + ringKrullDim (A ⧸ q.asIdeal)` using `(WithBot.coe_le_coe.2 hM).trans h2`. Establish `hq1' : q.asIdeal.height = 1` using `by exact_mod_cast hq1`. Establish `hDq` using `le_of_add D _ _ hq1' hM'`. Establish `hsub : (Set.range j ∩ closure {j q} : Set Y) ⊆ Set.range i` using `fun y hy => closure_minimal (s := {j q}) (Set.singleton_subset_iff.2 (⟨genericPoint Z, hq.symm⟩ : j q ∈ Set.range i)) i.isClosedEmbedding.isClosed_range hy.2`. Establish `e₁` using `topologicalKrullDim_eq_of_isEmbedding i.isClosedEmbedding.isEmbedding (rfl : Set.range i = Set.range i)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : topologicalKrullDim (Set.range j ∩ closure {j q} : Set Y) ≤ topologicalKrullDim Z`. Rewrite using `[← e₁]`. Conclude with `(Topology.IsEmbedding.inclusion hsub).isInducing.topologicalKrullDim_le`. Rewrite `h3` using `[topologicalKrullDim_range_inter_closure_eq j q, hd]`. Establish `h4 : (D : WithBot ℕ∞) ≤ (d : WithBot ℕ∞)` using `hDq.trans h3`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h5 : D ≤ d` using `by exact_mod_cast h4`. Rewrite using `[show d = D by omega]`.
+A detailed English derivation is pending.
 -/
 theorem topologicalKrullDim_eq_of_coheight_eq_one : ∀ (k : Type) [CommRing k] (Y : Scheme.{0}) (p : Y ⟶ Sp k) (D : ℕ), IsArithVar p D →
     ∀ (Z : Scheme.{0}) (i : Z ⟶ Y) [IsClosedImmersion i] [IsIntegral Z],

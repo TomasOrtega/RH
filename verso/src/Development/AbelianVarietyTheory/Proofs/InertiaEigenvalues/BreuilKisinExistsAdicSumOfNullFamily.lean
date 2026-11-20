@@ -9,17 +9,15 @@ noncomputable section
 namespace GlobalTheory.BSP
 
 /- English proof (translation)
-Set `F : ℕ → Finset ι` to `fun n => (hσ n).toFinset`. Establish `memF : ∀ n i, i ∈ F n ↔ σ i ∉ I ^ n` using `fun n i => by simp [F]`. Establish `tail : ∀ m (G : Finset ι), F m ⊆ G → ∑ i ∈ G, s (σ i) * TB.b i - ∑ i ∈ F m, s (σ i) * TB.b i ∈ (I ^ m).map s`. Introduce `m G hG`. Rewrite using `[← Finset.sum_sdiff_eq_sub hG]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `Ideal.sum_mem _ fun i hi => Ideal.mul_mem_right _ _ (Ideal.mem_map_of_mem _ ?_)` and prove the remaining obligations. Establish `h : i ∉ F m` using `(Finset.mem_sdiff.1 hi).2`. Rewrite `h` using `[memF]`. Conclude with `not_not.1 h`. Establish `mono : ∀ {m n : ℕ}, m ≤ n → F m ⊆ F n` using `fun {m n} h i hi => by`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `hi`, the goal using `[memF]`. Conclude with `fun h' => hi (Ideal.pow_le_pow_right h h')`. Establish `key : ∀ (n : ℕ) (x : A), x ∈ ((I.map s) ^ n • ⊤ : Submodule A A) ↔ x ∈ (I ^ n).map s`. Introduce `n x`. Rewrite using `[smul_eq_mul, Ideal.mul_top, Ideal.map_pow]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨L, hL⟩` from `TB.complete.toIsPrecomplete.prec (f := fun n => ∑ i ∈ F n, s (σ i) * TB.b i) (fun {m n} hmn => by`. Rewrite using `[SModEq.sub_mem, key, ← neg_sub]`. Conclude with `neg_mem (tail m (F n) (mono hmn)))`. Use `⟨L, fun n => ⟨F n, fun G hG => ?_⟩⟩` and prove the remaining obligations. Establish `h1` using `hL n`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[SModEq.sub_mem, key]`. Establish `h2` using `tail n G hG`. Establish `e : L - ∑ i ∈ G, s (σ i) * TB.b i = -((∑ i ∈ F n, s (σ i) * TB.b i - L) + (∑ i ∈ G, s (σ i) * TB.b i - ∑ i ∈ F n, s (σ i) * TB.b i))`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
-
-Conclude with `neg_mem (add_mem h1 h2)`.
+Establish an intermediate fact. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem TopBasis.exists_sum_of_null {S A : Type} [CommRing S] [CommRing A] {s : S →+* A} {I : Ideal S}
     {ι : Type} (TB : TopBasis s I ι) (σ : ι → S) (hσ : ∀ n : ℕ, {i | σ i ∉ I ^ n}.Finite) :
@@ -57,7 +55,7 @@ theorem TopBasis.exists_sum_of_null {S A : Type} [CommRing S] [CommRing A] {s : 
   exact neg_mem (add_mem h1 h2)
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ TB σ hσ` and use `TB.exists_sum_of_null σ hσ`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_sum_null_ev : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (ι : Type)
     (TB : TopBasis bk.ev bk.J ι) (σ : ι → bk.S), (∀ n : ℕ, {i | σ i ∉ bk.J ^ n}.Finite) →

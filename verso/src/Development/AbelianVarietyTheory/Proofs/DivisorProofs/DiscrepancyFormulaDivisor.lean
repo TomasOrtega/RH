@@ -14,9 +14,9 @@ set_option autoImplicit false
 namespace GlobalTheory.Discrepancy
 
 /- English proof (translation)
-Introduce `k _ _ Y _ _ q n _ η hη K G m hm hK E w g hE hg`. Take `⟨c, hc⟩` from `K.exists_isEqn w`. Establish `h1` using `(hg.sub (hc.nsmul m)).mult_eq`. Rewrite `h1` using `[← hE.ord_eq, div_eq_mul_inv, E.ord_mul, E.ord_inv, E.ord_pow]`. Establish `h2` using `GlobalTheory.T.formOrd_eq_mult_of_isCartierDivisorOfRationalForm k Y q n η hη K hK E w hE`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h2` using `[hc.mult_eq, ← hE.ord_eq]`. Establish `: (m : ℚ) ≠ 0` using `by exact_mod_cast hm.ne'`. Rewrite using `[discrep, h1, h2]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/

@@ -11,17 +11,15 @@ section SlopeTestRemainingChoices
 variable {O : Type} [CommRing O]
 
 /- English proof (translation)
-Establish `m10` using `hM 1 0 (by decide)`. Establish `m20` using `hM 2 0 (by decide)`. Establish `m21` using `hM 2 1 (by decide)`. Establish `E : ∀ a b, h a 0 * M 0 b + h a 1 * M 1 b + h a 2 * M 2 b = d a * h a b` using `fun a b => by`. Use `congrFun (congrFun e a) b` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[Matrix.diagonal_mul, Matrix.mul_apply, Fin.sum_univ_three]`. Then use the resulting hypothesis. Establish `e00 : M 0 0 = d 0`. Use `E 0 0` as an intermediate fact. Rewrite `this` using `[m10, m20]`. Conclude with `(hu 0).mul_left_cancel (by linear_combination this)`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `a10 : h 1 0 = 0`. Use `E 1 0` as an intermediate fact. Rewrite `this` using `[m10, m20, e00]`. Conclude with `h10.mul_right_eq_zero.1 (by linear_combination -this)`. Establish `a20 : h 2 0 = 0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `E 2 0` as an intermediate fact. Rewrite `this` using `[m10, m20, e00]`. Conclude with `h20.mul_right_eq_zero.1 (by linear_combination -this)`. Establish `e11 : M 1 1 = d 1`. Use `E 1 1` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[a10, m21]`. Conclude with `(hu 1).mul_left_cancel (by linear_combination this)`. Use `⟨a10, a20, ?_⟩` and prove the remaining obligations. Use `E 2 1` as an intermediate fact. Rewrite `this` using `[a20, m21, e11]`.
-
-Conclude with `h21.mul_right_eq_zero.1 (by linear_combination -this)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem triangular_eigen_lower_zero (h M : Matrix (Fin 3) (Fin 3) O) (d : Fin 3 → O)
     (e : h * M = Matrix.diagonal d * h) (hM : ∀ a b, wt a b < 0 → M a b = 0) (hu : ∀ a, IsUnit (h a a))
@@ -55,19 +53,17 @@ private theorem triangular_eigen_lower_zero (h M : Matrix (Fin 3) (Fin 3) O) (d 
   exact h21.mul_right_eq_zero.1 (by linear_combination -this)
 
 /- English proof (translation)
-Establish `m10` using `hM 1 0 (by decide)`. Establish `m20` using `hM 2 0 (by decide)`. Establish `m21` using `hM 2 1 (by decide)`. Take `⟨a10, a20, a21⟩` from `hh`. Establish `E : ∀ a b, U a 0 * h 0 b + U a 1 * h 1 b + U a 2 * h 2 b = h a 0 * M 0 b + h a 1 * M 1 b + h a 2 * M 2 b` using `fun a b => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `congrFun (congrFun e a) b` as an intermediate fact. Rewrite `this` using `[Matrix.mul_apply, Matrix.mul_apply, Fin.sum_univ_three, Fin.sum_univ_three]`. Then use the resulting hypothesis. Establish `u00 : U 0 0 = M 0 0`. Use `E 0 0` as an intermediate fact. Rewrite `this` using `[m10, m20, a10, a20]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(hu 0).mul_left_cancel (by linear_combination this)`. Establish `u10 : U 1 0 = 0`. Use `E 1 0` as an intermediate fact. Rewrite `this` using `[m10, m20, a10, a20]`. Conclude with `(hu 0).mul_right_eq_zero.1 (by linear_combination this)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `u20 : U 2 0 = 0`. Use `E 2 0` as an intermediate fact. Rewrite `this` using `[m10, m20, a10, a20]`. Conclude with `(hu 0).mul_right_eq_zero.1 (by linear_combination this)`. Establish `u11 : U 1 1 = M 1 1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `E 1 1` as an intermediate fact. Rewrite `this` using `[m21, a10, a21, u10]`. Conclude with `(hu 1).mul_left_cancel (by linear_combination this)`. Establish `u21 : U 2 1 = 0`. Use `E 2 1` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[m21, a20, a21, u20]`. Conclude with `(hu 1).mul_right_eq_zero.1 (by linear_combination this)`. Establish `u22 : U 2 2 = M 2 2`. Use `E 2 2` as an intermediate fact. Rewrite `this` using `[a20, a21, u20, u21]`.
-
-Conclude with `(hu 2).mul_left_cancel (by linear_combination this)`. Use `⟨fun a b hab => ?_, fun a => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `fin_cases a <;> fin_cases b <;> first | assumption | exact absurd hab (by decide)`. Apply the tactic sequence `fin_cases a <;> assumption`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 private theorem conjugate_preserves_weight_filtration (h M U : Matrix (Fin 3) (Fin 3) O)
     (e : U * h = h * M) (hM : ∀ a b, wt a b < 0 → M a b = 0) (hu : ∀ a, IsUnit (h a a))
@@ -113,14 +109,14 @@ private def mf (X : Matrix (Fin 3) (Fin 3) (DualNumber O)) : Matrix (Fin 3) (Fin
 private def ms (X : Matrix (Fin 3) (Fin 3) (DualNumber O)) : Matrix (Fin 3) (Fin 3) O := fun a b => (X a b).snd
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `[mf, Matrix.mul_apply, Fin.sum_univ_three]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem mf_mul (X Y : Matrix (Fin 3) (Fin 3) (DualNumber O)) : mf (X * Y) = mf X * mf Y := by
   ext a b
   simp [mf, Matrix.mul_apply, Fin.sum_univ_three]
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `[mf, ms, Matrix.mul_apply, Fin.sum_univ_three]`. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem ms_mul (X Y : Matrix (Fin 3) (Fin 3) (DualNumber O)) :
     ms (X * Y) = mf X * ms Y + ms X * mf Y := by
@@ -129,20 +125,18 @@ private theorem ms_mul (X Y : Matrix (Fin 3) (Fin 3) (DualNumber O)) :
   ring
 
 /- English proof (translation)
-Use extensionality with `a b`. Apply the tactic sequence `by_cases h : a = b <;> simp [mf, Matrix.one_apply, h]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem mf_one : mf (1 : Matrix (Fin 3) (Fin 3) (DualNumber O)) = 1 := by
   ext a b
   by_cases h : a = b <;> simp [mf, Matrix.one_apply, h]
 
 /- English proof (translation)
-Establish `h0 : ∀ x ∈ maximalIdeal (DualNumber O), x.fst ∈ maximalIdeal O` using `fun x hx hu => hx (TrivSqZeroExt.isUnit_iff_isUnit_fst.2 hu)`. Proceed by induction on `N with`. Consider the case `zero => intro x hx; rw [zero_add, pow_one] at *; exact ⟨h0 x hx, by simp⟩`. Consider the case `succ N ih`. Introduce `x hx`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hx` using `[pow_succ]`. Use `Submodule.mul_induction_on hx (fun y hy z hz => ?_) (fun y z hy hz => ?_)` and prove the remaining obligations. Take `⟨h1, h2⟩` from `ih y hy`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[TrivSqZeroExt.fst_mul, pow_succ]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.mul_mem_mul h1 (h0 z hz)`. Rewrite using `[DualNumber.snd_mul]`. Use `Ideal.add_mem _ (Ideal.mul_mem_right _ _ h1) ?_` and prove the remaining obligations. Rewrite using `[pow_succ]`. Conclude with `Ideal.mul_mem_mul h2 (h0 z hz)`.
-
-Conclude with `⟨by rw [TrivSqZeroExt.fst_add]; exact Ideal.add_mem _ hy.1 hz.1, by rw [TrivSqZeroExt.snd_add]; exact Ideal.add_mem _ hy.2 hz.2⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem dual_number_maximal_ideal_pow [IsLocalRing O] [IsLocalRing (DualNumber O)] (N : ℕ) :
     ∀ x ∈ maximalIdeal (DualNumber O) ^ (N + 1),
@@ -165,29 +159,27 @@ private theorem dual_number_maximal_ideal_pow [IsLocalRing O] [IsLocalRing (Dual
         by rw [TrivSqZeroExt.snd_add]; exact Ideal.add_mem _ hy.2 hz.2⟩
 
 /- English proof (translation)
-Establish `hc : ∀ g, η g = 1 → h.val * (conjBy h⁻¹ r g).mat = (r g).mat * h` using `fun g hg => by`. Establish `: (r g).right = 1` using `(hm g).trans hg`. Simplify using `[conjBy, GG.mat, this, ← Matrix.mul_assoc]`. Establish `hu : ∀ a, IsUnit (mf h.val a a)` using `fun a => by`. Establish `h1` using `(dual_number_maximal_ideal_pow 0 _ (by rw [zero_add, pow_one]; exact hh a a)).1`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[zero_add, pow_one, Matrix.sub_apply, Matrix.one_apply_eq]`. Assume the negation of the conclusion as `hn`. Establish `h2 : mf h.val a a ∈ maximalIdeal O` using `hn`. Establish `h3` using `Ideal.sub_mem _ h2 (show mf h.val a a - 1 ∈ maximalIdeal O from h1)`. Rewrite `h3` using `[sub_sub_cancel]`.
+Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h3 isUnit_one`. Establish `hup : mf h.val 1 0 = 0 ∧ mf h.val 2 0 = 0 ∧ mf h.val 2 1 = 0`. Establish `e` using `congrArg mf (hc x hx)`. Rewrite `e` using `[mf_mul, mf_mul, hf]`. Establish `p0 : psi Ψ 0 x = Ψ x` using `by simp [psi, wt1]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `p1 : psi Ψ 1 x = 1` using `by simp [psi, wt1]`. Establish `p2 : psi Ψ 2 x = ((Ψ x)⁻¹ : Oˣ)` using `by simp [psi, wt1]`. Establish `hi : (Ψ x : O) * ((Ψ x)⁻¹ : Oˣ) = 1` using `Units.mul_inv _`. Establish `u1 : IsUnit ((Ψ x : O) - 1)` using `isUnit_of_mul_isUnit_left (y := (Ψ x : O) + 1) (by convert hx2 using 1; ring)`. Use `triangular_eigen_lower_zero _ _ _ e (fun a b hab => ?_) hu ?_ ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show ((conjBy h⁻¹ r x).mat a b).fst = 0`. Rewrite using `[ht.tri x hx a b hab]`. Both sides reduce to the same expression. Rewrite using `[p0, p1]`. Use `u1.neg using 1` and compare the differences between its conclusion and the goal.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[p0, p2]`. Use `(hx2.mul (Units.isUnit (Ψ x)⁻¹)).neg using 1` and compare the differences between its conclusion and the goal. Take the linear combination `((Ψ x : O)) * hi`. Rewrite using `[p1, p2]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Take a linear combination of the given relations to obtain the conclusion.
 
-Use `(u1.mul (Units.isUnit (Ψ x)⁻¹)).neg using 1` and compare the differences between its conclusion and the goal. Take the linear combination `hi`. Use `set h0 := mf h.val with h0d`. Use `set h1 := ms h.val with h1d`. Use `set k0 := mf (h⁻¹).val with k0d`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hk : h0 * k0 = 1` using `by rw [h0d, k0d, ← mf_mul, Units.mul_inv, mf_one]`. Establish `kh : k0 * h0 = 1` using `by rw [h0d, k0d, ← mf_mul, Units.inv_mul, mf_one]`. Establish `key : ∀ g, η g = 1 → ∀ U, U = ms (r g).mat + (Matrix.diagonal fun a => psi Ψ a g) * (h1 * k0) - (h1 * k0) * (Matrix.diagonal fun a => psi Ψ a g) → (∀ a b, wt a b < 0 → U a b = 0) ∧ ∀ a, U a a = ms (conjBy h⁻¹ r g).mat a a` using `fun g hg U hU => by`. Establish `e0` using `congrArg mf (hc g hg)`. Establish `e1` using `congrArg ms (hc g hg)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `e0` using `[mf_mul, mf_mul, hf, ← h0d]`. Rewrite `e1` using `[ms_mul, ms_mul, hf, ← h0d, ← h1d]`. Use `conjugate_preserves_weight_filtration h0 _ U ?_ (fun a b hab => ?_) hu hup` and prove the remaining obligations. Rewrite using `[hU, Matrix.sub_mul, Matrix.add_mul, Matrix.mul_assoc, Matrix.mul_assoc h1, kh, Matrix.mul_one, Matrix.mul_assoc (h1 * k0), ← e0, Matrix.mul_assoc h1, ← Matrix.mul_assoc k0, kh, Matrix.one_mul, sub_eq_iff_eq_add, e1, add_comm]`. Use `show ((conjBy h⁻¹ r g).mat a b).snd = 0`.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[ht.tri g hg a b hab]`. Both sides reduce to the same expression. Use `⟨fun s hs hs1 a => ?_, h1 * k0, fun g hg a b hab => ?_⟩` and prove the remaining obligations. Use `(key s hs1 _ rfl).2 a` as an intermediate fact. Rewrite `this` using `[Matrix.sub_apply, Matrix.add_apply, Matrix.diagonal_mul, Matrix.mul_diagonal]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : ms (conjBy h⁻¹ r s).mat a a = 0` using `by show ((conjBy h⁻¹ r s).mat a a).snd = 0`. Rewrite using `[ht.ine s hs hs1 a]`. Both sides reduce to the same expression. Use `show ms (r s).mat a a = 0`. Take the linear combination `this + h2`.
-
-Use `(key g hg _ rfl).1 a b hab` as an intermediate fact. Rewrite `this` using `[Matrix.sub_apply, Matrix.add_apply, Matrix.diagonal_mul, Matrix.mul_diagonal]`. Use `show ms (r g).mat a b = _`. Take the linear combination `this`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 private theorem triangular_dual_number_diagonal [IsLocalRing O] [IsLocalRing (DualNumber O)] {D : Type} [Group D] (η : D →* ℤˣ)
     (Ψ : D →* Oˣ) (I : Subgroup D) (r : D →* GG 3 (DualNumber O)) (hm : HasMult η r)
@@ -257,23 +249,21 @@ private theorem triangular_dual_number_diagonal [IsLocalRing O] [IsLocalRing (Du
     linear_combination this
 
 /- English proof (translation)
-Set `Ψ' : Γ →* (DualNumber O)ˣ` to `(Units.map (algebraMap O (DualNumber O)).toMonoidHom).comp Ψ`. Establish `hp : ∀ g (n : ℤ), ((Ψ' g ^ n : (DualNumber O)ˣ) : DualNumber O) = algebraMap O _ ((Ψ g ^ n : Oˣ) : O)` using `fun g n => by show ((Units.map _ (Ψ g) ^ n : (DualNumber O)ˣ) : DualNumber O) = _`. Rewrite using `[← map_zpow]`. Both sides reduce to the same expression. Establish `h0 : ∀ g a b, (r0 η Ψ' g).mat a b = algebraMap O _ ((r0 η Ψ g).mat a b)` using `fun g a b => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Simplify using `only [GG.mat, unitaryThreeReflection_left, tor_val, Matrix.diagonal_apply, hp]`. Apply the tactic sequence `split_ifs <;> simp`. Set `I : Ideal (DualNumber O)` to `RingHom.ker (TrivSqZeroExt.fstHom O O O)`. Establish `hI : ∀ x, x ∈ I ↔ x.fst = 0` using `fun x => Iff.rfl`. Take `⟨γ, h1, h2, h3⟩` from `exists_isCoc I (r0 η Ψ') r (by`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[eq_bot_iff, Ideal.mul_le]`. Introduce `x hx y hy`. Rewrite `hx`, `hy` using `[hI]`. Rewrite using `[Ideal.mem_bot]`. Apply the tactic sequence `ext <;> simp [hx, hy]) (by`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `MonoidHom.ext fun g => SemidirectProduct.ext (Units.ext ?_) (hm g)` and prove the remaining obligations. Use extensionality with `a b`. Use `show Ideal.Quotient.mk I ((r g).mat a b) = Ideal.Quotient.mk I ((r0 η Ψ' g).mat a b)`. Rewrite using `[Ideal.Quotient.eq, hI, TrivSqZeroExt.fst_sub, hf, h0, sub_eq_zero]`. Use the proof step `rfl)`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Use `⟨fun g => ms (γ g), fun g h => ?_, fun g => ?_⟩` and prove the remaining obligations. Use extensionality with `a b`. Use `congrArg TrivSqZeroExt.snd (congrFun (congrFun (h2 g h) a) b)` as an intermediate fact. Rewrite `this` using `[Matrix.add_apply, adRep_baseLift_apply, hp]`. Rewrite using `[Matrix.add_apply, adRep_baseLift_apply]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `this.trans ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp [ms, TrivSqZeroExt.algebraMap_eq_inl]`. Establish `a1 : mf (r0 η Ψ' g).mat = (r0 η Ψ g).mat`. Use extensionality with `a b`. Use `show ((r0 η Ψ' g).mat a b).fst = _`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[h0]`. Both sides reduce to the same expression. Establish `a2 : ms (r0 η Ψ' g).mat = 0`. Use extensionality with `a b`. Use `show ((r0 η Ψ' g).mat a b).snd = _`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[h0]`. Both sides reduce to the same expression. Establish `a3 : ms (1 + γ g) = ms (γ g)`. Use extensionality with `a b`. Apply the tactic sequence `by_cases h : a = b <;> simp [ms, Matrix.one_apply, h]`.
-
-Rewrite using `[(h3 g).2, ms_mul, a1, a2, a3, Matrix.mul_zero, zero_add]`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_cocycle_of_dual_lift {Γ : Type} [Group Γ] (η : Γ →* ℤˣ) (Ψ : Γ →* Oˣ) (r : Γ →* GG 3 (DualNumber O))
     (hm : HasMult η r) (hf : ∀ g a b, ((r g).mat a b).fst = (r0 η Ψ g).mat a b) :
@@ -319,43 +309,39 @@ private theorem exists_cocycle_of_dual_lift {Γ : Type} [Group Γ] (η : Γ →*
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Introduce `O _ _ _ _ _ _ G Γ ι _ _ _ _ _ _ _ _ _ _ _ _ _ F ok van g₁ mk _ j hj r pt hf hw`. Take `⟨γ, hcoc, hγ⟩` from `exists_cocycle_of_dual_lift F.η F.Ψ r pt.mult hf`. Establish `hd : ∀ g, (r0 F.η F.Ψ g).mat = Matrix.diagonal fun a => psi F.Ψ a g` using `fun g => rfl`. Establish `hs : ∀ g a b, ((r g).mat a b).snd = γ g a b * psi F.Ψ b g` using `fun g a b => by`. Use `congrFun (congrFun (hγ g) a) b` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[hd, Matrix.mul_diagonal]`. Then use the resulting hypothesis. Establish `hpu : ∀ b g, IsUnit (psi F.Ψ b g)` using `fun b g => Units.isUnit _`. Establish `hz : ∀ g a b, ((r g).mat a b).snd = 0 → γ g a b = 0` using `fun g a b h => (hpu b g).mul_left_eq_zero.1 ((hs g a b).symm.trans h)`. Establish `hone : ∀ g, (r g).mat = 1 → γ g = 0` using `fun g h => by`. Use extensionality with `a b`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use `hz g a b ?_` and prove the remaining obligations. Rewrite using `[h]`. Apply the tactic sequence `by_cases e : a = b <;> simp [Matrix.one_apply, e]`. Establish `hc : γ F.c = 0` using `hone _ pt.norm.atc`. Establish `hgw : ∀ g, γ g ∈ gw O j` using `fun g => by`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Break down `Int.units_eq_one_or (F.η g) with hg | hg` into its components or cases. Conclude with `fun a b hab => hz g a b (hw g a b hg hab)`. Establish `h1 : F.η (g * F.c) = 1` using `by rw [map_mul, hg, ok.ηc]; simp`. Establish `h2` using `hcoc g F.c`. Rewrite `h2` using `[hc, map_zero, add_zero]`.
+Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← h2]`. Conclude with `fun a b hab => hz _ a b (hw _ a b h1 hab)`. Establish `hinv : ∀ g a b, γ g a b = ((r g).mat a b).snd * ((r g⁻¹).mat b b).fst` using `fun g a b => by`. Rewrite using `[hs, hf, hd, Matrix.diagonal_apply_eq, mul_assoc, psi, psi, ← Units.val_mul, ← mul_zpow, ← map_mul]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hcont : ∀ a b, Alg.AdicCont (maximalIdeal O) fun g => γ g a b` using `fun a b N => by`. Establish `c1` using `pt.cont (N + 1)`. Establish `c2` using `c1.comp_continuous (continuous_inv (G := Γ))`. Rewrite `c1`, `c2`, the goal using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `filter_upwards [c1 x, c2 x] with y e1 e2`. Establish `f1` using `(dual_number_maximal_ideal_pow N _ (Ideal.Quotient.eq.1 (congrFun (congrFun e1 a) b))).2`. Establish `f2` using `Ideal.pow_le_pow_right (Nat.le_succ N) (dual_number_maximal_ideal_pow N _ (Ideal.Quotient.eq.1 (congrFun (congrFun e2 b) b))).1`. Rewrite `f1` using `[TrivSqZeroExt.snd_sub]`. Rewrite `f2` using `[TrivSqZeroExt.fst_sub]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hinv, hinv, map_mul, map_mul, Ideal.Quotient.eq.2 f1, Ideal.Quotient.eq.2 f2]`. Establish `htri : ∀ v ∈ F.Tb, (∀ s ∈ F.Iv v, F.ηv v s = 1 → ∀ a, ((r (F.loc v s)).mat a a).snd = 0) ∧ ∃ Z : Matrix (Fin 3) (Fin 3) O, ∀ g, F.ηv v g = 1 → ∀ a b, wt a b < 0 → ((r (F.loc v g)).mat a b).snd = Z a b * (psi F.Ψ b (F.loc v g) - psi F.Ψ a (F.loc v g))` using `fun v hv => by`. Choose the witnesses or unpack the hypotheses as in `⟨h, hh, ht⟩ : CondT (F.ηv v) (F.Ψv v) (F.Iv v) (r.comp (F.loc v)) := by`. Break down `hv with hv | hv` into its components or cases. Conclude with `(pt.loc v).1 hv`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨h, hh, ht⟩` from `(pt.loc v).2.1 hv`. Conclude with `⟨h, hh, ht.toTriIn⟩`. Take `⟨x, hx, hx2⟩` from `ok.x v hv`. Conclude with `triangular_dual_number_diagonal (F.ηv v) (F.Ψv v) (F.Iv v) (r.comp (F.loc v)) (fun g => pt.mult _) (fun g => by ext a b; exact hf _ a b) x hx hx2 h hh ht`. Take `⟨t, ht, X, hX⟩` from `van j hj γ hgw hcoc hcont (fun v hv s hs => hone _ (by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Establish `: r (F.loc v s) = 1` using `(pt.loc v).2.2 hv s hs`. Rewrite using `[this]`. Use the proof step `rfl))`. Use the proof step `(fun e v hv s hs => by`. Use extensionality with `a b`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Conclude with `hz _ _ _ ((htri v hv).1 s hs (ok.η_I v hv s hs) a)`. Use `hgw _ a b ?_` and prove the remaining obligations. Rewrite using `[e]`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Use `revert a b`. Use the proof step `decide)`. Use the proof step `(fun e => by`. Take `⟨Z, hZ⟩` from `(htri F.vl (Set.mem_insert _ _)).2`. Use `⟨Matrix.of fun a b => if wt a b = j then Z a b else 0, fun a b hab => if_neg hab, fun g hg => ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `a b`. Establish `hg' : F.η (F.loc _ g) = 1` using `hg`. Rewrite using `[cob, Matrix.sub_apply, adRep_baseLift_apply, if_pos hg', Matrix.of_apply]`. Distinguish the cases in `hab : wt a b = j`. Simplify using `only [if_pos hab]`.
+Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `hZ g hg a b (hab ▸ e)`. Rewrite `h1` using `[hs]`. Establish `h2 : ((F.Ψ (F.loc _ g) ^ wt a b : Oˣ) : O) * psi F.Ψ b (F.loc _ g) = psi F.Ψ a (F.loc _ g)`. Rewrite using `[psi, psi, ← Units.val_mul, ← _root_.zpow_add, wt, sub_add_cancel]`. Use `(hpu b (F.loc _ g)).mul_right_cancel ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take the linear combination `h1 + Z a b * h2`. Simplify using `only [if_neg hab]`. Rewrite using `[hgw _ a b hab]`. Use the proof step `simp)`. Establish `hcob : cob (r0 F.η F.Ψ) X = fun g => t • γ g` using `funext fun g => (hX g).symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Establish `hzv : zvar F.c g₁ (r0 F.η F.Ψ) (fun g => t • γ g) = t • (ms (r g₁).mat - ms (r (gstar F.c g₁)).mat)`. Rewrite using `[zvar, hγ, hγ, smul_sub, Matrix.smul_mul, Matrix.smul_mul]`. Establish `hzz : ∀ a b, zmat F.c g₁ r a b = 0 → zvar F.c g₁ (r0 F.η F.Ψ) (fun g => t • γ g) a b = 0` using `fun a b h => by`. Establish `h1` using `congrArg TrivSqZeroExt.snd h`. Rewrite `h1` using `[zmat, Matrix.sub_apply, TrivSqZeroExt.snd_sub]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[hzv, Matrix.smul_apply, Matrix.sub_apply]`. Conclude with `(congrArg (t • ·) h1).trans (smul_zero _)`. Establish `hlie : X ∈ unitaryThreeTorusLieAlgebra O` using `(normCoc_cob_iff (r0 F.η F.Ψ) F.c g₁ X ok.two ok.ηc mk.1 (baseRepGL3_normalised_of_psi_eq_one _ _ _ ok.Ψc) (zeta_reducible_rep_eq_sub_inv_and_isUnit _ _ _ _ ⟨ok.csq, ok.ηc, ok.Ψc, mk.1, mk.2⟩).2).1 (by`. Rewrite using `[hcob]`. Conclude with `⟨by simp [hc], hzz _ _ pt.norm.z12, hzz _ _ pt.norm.z21⟩)`.
-
-Take `⟨u, rfl⟩` from `Submodule.mem_span_singleton.1 hlie`. Establish `hγ0 : ∀ g, γ g = 0` using `fun g => by`. Use `(smul_eq_zero.1 ((hX g).trans ?_)).resolve_left ht` and prove the remaining obligations. Use extensionality with `a b`. Rewrite using `[cob, Matrix.sub_apply, adRep_baseLift_apply]`.
-
-Apply the tactic sequence `split_ifs <;> fin_cases a <;> fin_cases b <;> simp [wt, wt1, Fin.rev] <;> ring`. Use `MonoidHom.ext fun g => SemidirectProduct.ext (Units.ext ?_) (pt.mult g)` and prove the remaining obligations. Use extensionality with `a b`. Conclude with `hf g a b`. Conclude with `(hs g a b).trans (by rw [hγ0]; exact zero_mul _)`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.UnitaryThreeInertia.eq_rz_of_vanE :
     ∀ {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsAdicComplete (maximalIdeal O) O] [CharZero O] [Finite (ResidueField O)]

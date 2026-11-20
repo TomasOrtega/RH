@@ -23,7 +23,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
   {Xo : Moduli Dw l}
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil => simp [MonObj.comp_one]`. Consider the case `cons b L ih => simp [List.prod_cons, MonObj.comp_mul, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem comp_listProd {X Y : Over Xo.X} (f : X ⟶ Y) (L : List (Y ⟶ Xo.univ.t.G)) :
     f ≫ L.prod = (L.map (f ≫ ·)).prod := by
@@ -32,15 +32,13 @@ theorem comp_listProd {X Y : Over Xo.X} (f : X ⟶ Y) (L : List (Y ⟶ Xo.univ.t
   | cons b L ih => simp [List.prod_cons, MonObj.comp_mul, ih]
 
 /- English proof (translation)
-Use `choose a ha hpa using fun k => (hv k).2.2`. Set `b : Fin m → (tEps x' ⟶ Xo.univ.t.G)` to `fun k => Over.homMk (v' k) (hv k).2.1.1`. Establish `hb : ∀ k, tanMap h (a k) = scaleAt x' p ≫ b k` using `fun k => Over.OverMorphism.ext (by`. Rewrite using `[tanMap_left, Over.comp_left, ← hpa k]`. Use the proof step `rfl)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `W : tEps x ⟶ Xo.univ.t.G` to `Over.homMk w ht.1`. Set `W' : tEps x' ⟶ Xo.univ.t.G` to `Over.homMk w' ht'.1`. Establish `eW : (List.ofFn fun k => scaleAt x (cf k) ≫ a k).prod = W`. Rewrite using `[← isCombAt_iff]`. Establish `: v = fun k => (a k).left` using `funext fun k => (ha k).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
 
-Substitute `this` using the available equality. Conclude with `hw`. Establish `eW' : (List.ofFn fun k => scaleAt x' (cf k) ≫ b k).prod = W'` using `(isCombAt_iff b cf W').1 hw'`. Use `⟨ht, ht', W, rfl, ?_⟩` and prove the remaining obligations. Establish `key : scaleAt x' p ≫ W' = tanMap h W`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[← eW, ← eW', comp_listProd, map_list_prod, List.map_ofFn, List.map_ofFn]`. Use `congr 2`. Use function extensionality and compare the values at `k`. Simplify using `only [Function.comp_apply]`. Rewrite using `[tanMap_scale, hb, ← Category.assoc, ← Category.assoc, scaleAt_comm]`.
-
-Use `congrArg (·.left) key` as an intermediate fact. Simplify using `only [Over.comp_left, tanMap_left] at this`. Conclude with `this`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isLieImg_comb {Ω : Type} [Field Ω] {x x' : Sp Ω ⟶ Xo.X} {ψ : Gx x ⟶ Gx x'} (h : IsLinHom ψ) (p : ℕ)
     {m : ℕ} {v v' : Fin m → (Sp (DualNumber Ω) ⟶ Xo.univ.t.G.left)} (hv : ∀ k, IsLieImg p ψ (v k) (v' k))
@@ -72,21 +70,19 @@ theorem isLieImg_comb {Ω : Type} [Field Ω] {x x' : Sp Ω ⟶ Xo.X} {ψ : Gx x 
 open GlobalTheory.IndefiniteRowSideFullHecke.HeckePrimeDetection (TotalAt FunAt) in
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c P p i a n hA hT hF f hf Ω _ _ _ t y y' hB`. Establish `hS : GlobalTheory.IndefiniteRowSideFullHecke.FibrePushforwardExistenceTori.IsSplitOff l P p` using `hA`. Take `⟨g, hgt, hgd, hch⟩` from `(frBor_iff_frChg y y' t).1 hB`. Establish `hdet : ∀ τ, IsUnit (g τ).det` using `fun τ => by`. Rewrite using `[Matrix.det_of_lowerTriangular _ (fun i j hij => hgt τ i j hij)]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `isUnit_iff_ne_zero.2 (Finset.prod_ne_zero_iff.2 fun j _ => by rw [hgd]; exact Units.ne_zero _)`. Take `⟨x', xo', u', tan', eig', bas', s', gen'⟩` from `y'`. Take `rfl : x' = y.x` from `hch.1`. Establish `hw0 : wchar (ex Dw a n) t ≠ (0 : Ω)`. Unfold `wchar`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Conclude with `Finset.prod_ne_zero_iff.2 fun j _ => pow_ne_zero _ (t j).ne_zero`. Establish `key : ∀ C : hkKer (Xo` using `Xo) P p i Ω y, hkTerm (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) (fun Ω _ _ _ y => hkKer (Xo := Xo) P p i Ω y) (fun Ω _ _ _ y C z => hkRelFr P p i (hkTr Xo c p) Ω y C z) f (⟨y.x, xo', u', tan', eig', bas', s', gen'⟩ : FrPt Xo c Ω) C = wchar (ex Dw a n) t * h …`. Introduce `C`. Establish `ex'` using `hT Ω (⟨y.x, xo', u', tan', eig', bas', s', gen'⟩ : FrPt Xo c Ω) C`. Establish `ex` using `hT Ω y C`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `hkTerm`. Rewrite using `[dif_pos ex', dif_pos ex]`. Establish `hz'` using `ex'.choose_spec`. Establish `hz` using `ex.choose_spec`. Generalize the expression as in `ex'.choose = z' at hz' ⊢`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result.
 
-Generalize the expression as in `ex.choose = z at hz ⊢`. Take `⟨ψ, hψ, hL, hθ⟩` from `(GlobalTheory.HeckeFrCompare.hkPt_iff hS _ y C.1 z).1 hz`. Rewrite `hθ` using `[hkTr, Equiv.apply_symm_apply]`. Take `⟨z'', hz'', -⟩` from `existsUnique_frChg E H Dw l Xo c Ω z g (t none) hdet`. Establish `hB' : FrBor t z z''` using `(frBor_iff_frChg _ _ t).2 ⟨g, hgt, hgd, hz''⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨x'', xo'', u'', tan'', eig'', bas'', s'', gen''⟩` from `z''`. Take `rfl : x'' = z.x` from `hz''.1`. Establish `hP : hkRelFr P p i (hkTr Xo c p) Ω (⟨y.x, xo', u', tan', eig', bas', s', gen'⟩ : FrPt Xo c Ω) C ⟨z.x, xo'', u'', tan'', eig'', bas'', s'', gen''⟩` using `by show HkPt p (hkTr Xo c p Ω) (⟨y.x, xo', u', tan', eig', bas', s', gen'⟩ : FrPt Xo c Ω) C.1 ⟨z.x, xo'', u'', tan'', eig'', bas'', s'', gen''⟩`. Use `(GlobalTheory.HeckeFrCompare.hkPt_iff hS (hkTr Xo c p Ω) (⟨y.x, xo', u', tan', eig', bas', s', gen'⟩ : FrPt Xo c Ω) C.1 ⟨z.x, xo'', u'', tan'', eig'', bas'', s'', gen''⟩).2 ⟨ψ, hψ, fun τ j => ?_, ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.HeckeWeight.isLieImg_comb hψ.2.1 p (hL τ) (hch.2.1 τ j) (hz''.2.1 τ j) (tan' τ j) (tan'' τ j)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions.
 
-Rewrite using `[hkTr, Equiv.apply_symm_apply]`. Conclude with `hθ.smul (toΓ Ω (t none : Ω)) ((ChgOf.secBC_id_iff _ _ _ _).1 hch.2.2) ((ChgOf.secBC_id_iff _ _ _ _).1 hz''.2.2)`. Take `rfl` from `(frMap_unique_refl_iff E H Dw l Xo c Ω Ω (AlgHom.id c.F Ω) z').1 _ _ (frMap_unique_refl_iff E H Dw l Xo c Ω Ω (AlgHom.id c.F Ω) z').2.1 (hF Ω (⟨y.x, xo', u', tan', eig', bas', s', gen'⟩ : FrPt Xo c Ω) C z' _ hz' hP)`. Conclude with `(algebraic_laws lawsFieldsSeparately.2.1 E H Dw l Xo c).2.2.2.2.2.2 Ω inferInstance a n f hf t z _ hB'`. Unfold `hkVal`.
-
-Use `(finsum_congr key).trans ?_` and prove the remaining obligations. Conclude with `(mul_finsum _ _).symm`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem hkVal_frBor : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (P : Ideal (𝓞 E)) (p i : ℕ) (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ), admitted l P p → GlobalTheory.IndefiniteRowSideFullHecke.HeckePrimeDetection.TotalAt Xo c P p i → GlobalTheory.IndefiniteRowSideFullHecke.HeckePrimeDetection.FunAt Xo c P p i → ∀ f ∈ sec Xo c a n, ∀ (Ω : Type) [Field Ω] [IsAlgClosed Ω] [Algebra c.F Ω] (t : Ix Dw → Ωˣ) (y y' : FrPt Xo c Ω), FrBor t y y' → hkVal (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) (fun Ω _ _ _ y => hkKer (Xo := Xo) P p i Ω y) (fun Ω _ _ _ y C z => hkRelFr P p i (hkTr Xo c p) Ω y C z) f y' = wchar (ex Dw a n) t * hkVal (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) (fun Ω _ _ _ y => hkKer (Xo := Xo) P p i Ω y) (fun Ω _ _ _ y C z => hkRelFr P p i (hkTr Xo c p) Ω y C z) f y := by
   intro E _ _ _ H Dw l Xo c P p i a n hA hT hF f hf Ω _ _ _ t y y' hB

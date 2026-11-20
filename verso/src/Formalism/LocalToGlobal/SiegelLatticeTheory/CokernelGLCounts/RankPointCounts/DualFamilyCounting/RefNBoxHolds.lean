@@ -5,7 +5,7 @@ import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCou
 namespace Formalism.L2.SG.Pf.NcReal.JX
 
 /- English proof (translation)
-The claim follows from `refNBox_of FR.frameRow_holds`.
+A detailed English derivation is pending.
 -/
 theorem refNBox_holds : RefNBox := refNBox_of FR.frameRow_holds
 

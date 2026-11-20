@@ -6,7 +6,7 @@ open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.U3 UpperTheory.V.Fr Uppe
 namespace UpperTheory.V.Z.J
 
 /- English proof (translation)
-Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Apply the tactic sequence `simp [Matrix.mul_apply, Fin.sum_univ_three, Jmat, Matrix.transpose_apply] <;> decide`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem jtj {R : Type} [CommRing R] (X : Matrix (Fin 3) (Fin 3) R) (i j : Fin 3) :
     (Jmat R 3 * Xᵀ * Jmat R 3) i j = X j.rev i.rev := by
@@ -14,13 +14,11 @@ private theorem jtj {R : Type} [CommRing R] (X : Matrix (Fin 3) (Fin 3) R) (i j 
     simp [Matrix.mul_apply, Fin.sum_univ_three, Jmat, Matrix.transpose_apply] <;> decide
 
 /- English proof (translation)
-Substitute `hH` using the available equality. Use `haveI : Finite H := hS.to_subtype`. Establish `hTf : T.Finite` using `hS.subset hT`. Use `haveI : Finite T := hTf.to_subtype`. Set `g : H →+ Q` to `f.comp H.subtype`.
+Substitute using the available equality. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `AddSubgroup.card_eq_card_quotient_mul_card_addSubgroup g.ker`. Establish `h2 : Nat.card (H ⧸ g.ker) = Nat.card g.range` using `Nat.card_congr (QuotientAddGroup.quotientKerEquivRange g).toEquiv`. Establish `h3 : Nat.card g.range ≤ Nat.card Q` using `Nat.card_le_card_of_injective (fun x => x.1) Subtype.val_injective`. Establish `h4 : Nat.card g.ker ≤ Nat.card T`. Use `Nat.card_le_card_of_injective (fun x => ⟨x.1.1, hf x.1.1 x.1.2 (AddMonoidHom.mem_ker.mp x.2)⟩) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `x y hxy`. Simplify using `only [Subtype.mk.injEq] at hxy`. Conclude with `Subtype.ext (Subtype.ext hxy)`. Rewrite using `[← Nat.card_coe_set_eq, ← Nat.card_coe_set_eq T]`. Express the relevant statement in the definitionally equal form `Nat.card H ≤ _`.
-
-Rewrite using `[h1, h2, mul_comm]`. Conclude with `Nat.mul_le_mul h4 h3`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem count {A Q : Type} [AddCommGroup A] [AddCommGroup Q] [Finite Q] (S T : Set A) (H : AddSubgroup A)
     (hH : (H : Set A) = S) (hS : S.Finite) (hT : T ⊆ S) (f : A →+ Q) (hf : ∀ x ∈ S, f x = 0 → x ∈ T) :
@@ -46,33 +44,33 @@ private theorem count {A Q : Type} [AddCommGroup A] [AddCommGroup Q] [Finite Q] 
   exact Nat.mul_le_mul h4 h3
 
 /- English proof (translation)
-Establish `hne : (-1 : ℤˣ) ≠ 1` using `by decide`. Establish `hleft : (r c).left = 1` using `Units.ext hc1`. Establish `ad1 : ∀ (x : GG 3 R) X, x.right = 1 → x.adFun X = x.mat * X * ((x.left⁻¹ : GL (Fin 3) R) : Matrix (Fin 3) (Fin 3) R)`. Introduce `x X hx`. Unfold `GG.adFun`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Rewrite using `[if_pos hx]`. Establish `adc : ∀ X, (r c).adFun X = thetaLie X`. Introduce `X`. Unfold `GG.adFun`. Rewrite using `[if_neg (by rw [hc2]; exact hne), hc1, hleft, inv_one, Units.val_one, one_mul, mul_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `ad0 : ∀ (x : GG 3 R), x.adFun 0 = 0`. Introduce `x`. Unfold `GG.adFun thetaLie`. Simplify using the standard rewrite rules. Establish `z1 : z 1 = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h` using `hz 1 1`. Rewrite `h` using `[mul_one, map_one, ad1 _ _ (by simp)]`. Simplify `h` using `[GG.mat]`. Establish `hsym : ∀ i j, z c i j = z c j.rev i.rev`. Establish `h` using `hz c c`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[hc, z1, adc]`. Introduce `i j`. Establish `h2 : z c = Jmat R 3 * (z c)ᵀ * Jmat R 3`. Unfold `thetaLie at h`. Rewrite `h` using `[eq_comm, add_neg_eq_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h`. Establish `h3` using `congrFun (congrFun h2 i) j`. Rewrite `h3` using `[jtj]`. Then use the resulting hypothesis. Establish `r0 : (0 : Fin 3).rev = 2` using `rfl`. Establish `r1 : (1 : Fin 3).rev = 1` using `rfl`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `r2 : (2 : Fin 3).rev = 0` using `rfl`. Establish `hzc : z c = 0`. Take `⟨e00, e01, e10, e02, e20, e11⟩` from `e`. Establish `s22` using `hsym 2 2`. Establish `s12` using `hsym 1 2`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `s21` using `hsym 2 1`. Simplify using `only [r1, r2] at s22 s12 s21`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp only [Matrix.zero_apply] <;> first | exact e00 | exact e01 | exact e10 | exact e02 | exact e20 | exact e11 | exact s22.trans e00 | exact s12.trans e01 | exact s21.trans e10`. Use `⟨hzc, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `set A : GL (Fin 3) R := (r g).left with hA`. Establish `hgi : (r g⁻¹).right = 1` using `by rw [map_inv, SemidirectProduct.inv_right, hg, inv_one]`. Establish `hgil : (r g⁻¹).left = A⁻¹`. Rewrite using `[map_inv, SemidirectProduct.inv_left, hg, inv_one, map_one, MulAut.one_apply]`. Establish `zgi : z g⁻¹ = -(((A⁻¹ : GL (Fin 3) R) : Matrix (Fin 3) (Fin 3) R) * z g * (A : Matrix (Fin 3) (Fin 3) R))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h` using `hz g⁻¹ g`. Rewrite `h` using `[inv_mul_cancel, z1, ad1 _ _ hgi, GG.mat, hgil, inv_inv]`. Rewrite `h` using `[eq_comm, ← eq_neg_iff_add_eq_zero]`. Conclude with `h`. Establish `zh : z (c * g⁻¹ * c) = -(Jmat R 3 * (z g⁻¹)ᵀ * Jmat R 3)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[hz, hzc, ad0, add_zero, hz, hzc, zero_add, adc]`. Both sides reduce to the same expression. Establish `Mh : (r (c * g⁻¹ * c)).mat = Jmat R 3 * (A : Matrix (Fin 3) (Fin 3) R)ᵀ * Jmat R 3`. Rewrite using `[GG.mat, map_mul, map_mul, SemidirectProduct.mul_left, hleft, map_one, mul_one, SemidirectProduct.mul_left, hleft, one_mul, hc2, hgil, map_inv, sgnAct_neg_one, theta_inv_val]`. Establish `hD : z g * (r g).mat - z (c * g⁻¹ * c) * (r (c * g⁻¹ * c)).mat = z g * (A : Matrix (Fin 3) (Fin 3) R) - Jmat R 3 * (z g * (A : Matrix (Fin 3) (Fin 3) R))ᵀ * Jmat R 3`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[zh, Mh, zgi]`. Establish `hJ` using `Jmat_mul_Jmat (R := R) 3`. Establish `hAA : ((A⁻¹ : GL (Fin 3) R) : Matrix (Fin 3) (Fin 3) R)ᵀ * (A : Matrix (Fin 3) (Fin 3) R)ᵀ = 1`. Rewrite using `[← Matrix.transpose_mul, Units.mul_inv, Matrix.transpose_one]`. Simplify using `only [Matrix.transpose_neg, Matrix.transpose_mul, neg_neg, Matrix.mul_neg, Matrix.neg_mul, GG.mat, Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← Matrix.mul_assoc (Jmat R 3) (Jmat R 3), hJ, Matrix.one_mul, ← Matrix.mul_assoc ((A⁻¹ : GL (Fin 3) R) : Matrix (Fin 3) (Fin 3) R)ᵀ (A : Matrix (Fin 3) (Fin 3) R)ᵀ, hAA, Matrix.one_mul]`. Establish `hDe : ∀ i j, (z g * (r g).mat - z (c * g⁻¹ * c) * (r (c * g⁻¹ * c)).mat) i j = (z g * (A : Matrix (Fin 3) (Fin 3) R)) i j - (z g * (A : Matrix (Fin 3) (Fin 3) R)) j.rev i.rev`. Introduce `i j`. Rewrite using `[hD, Matrix.sub_apply, jtj]`. Introduce `i j hij`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite `e1`, `e2`, the goal using `[hDe]`. Rewrite `e1`, `e2` using `[r0, r1]`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> first | exact absurd rfl hij | exact sub_self _ | exact e1 | exact e2 | exact (show (z g * (A : Matrix (Fin 3) (Fin 3) R)) 1 2 - (z g * (A : Matrix (Fin 3) (Fin 3) R)) 0 1 = 0 by linear_combination -e1) | exact (show (z g * (A : Matrix (Fin 3) (Fin …`.
+A detailed English derivation is pending.
 -/
 private theorem core {R Γ : Type} [CommRing R] [Group Γ] (r : Γ →* GG 3 R) (c g : Γ)
     (hc : c * c = 1) (hc1 : (r c).mat = 1) (hc2 : (r c).right = -1) (hg : (r g).right = 1)
@@ -183,11 +181,11 @@ private def ent {R Γ : Type} [CommRing R] (c g h : Γ) (P Q : Matrix (Fin 3) (F
 end UpperTheory.V.Z.J
 
 /- English proof (translation)
-Introduce `l _ O _ _ _ _ _ F C₀ hF hl ρ B _ hB _ k _ hZ hfin`. Use `haveI : Finite (Ok l O k) := (okFin l O hl).1 k`. Use `choose Z hZ using hZ`. Establish `hc : F.c⁻¹ = F.c` using `inv_eq_of_mul_eq_one_right hF.c_sq`. Establish `hs : ((F.star F.g0 : F.G0) : F.Γ) = F.c * (F.g0 : F.Γ)⁻¹ * F.c`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[Frame.star, Frame.conj, hc, mul_assoc]`. Establish `h` using `count (ZL F (adK B k) (Zv B k)) (ZN B k) (zlGrp F (adK B k) Z) (congrArg (ZL F (adK B k)) (funext hZ)) hfin (fun z hz => hz.1) (ent F.c F.g0 (F.star F.g0) ((boxK B k).r F.g0).mat ((boxK B k).r (F.star F.g0)).mat) (fun z hz h0 => by`. Use `⟨hz, ?_⟩` and prove the remaining obligations. Establish `e6` using `congrFun h0 6`. Establish `e7` using `congrFun h0 7`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `e6`, `e7`, the goal using `[hs]`. Conclude with `core (boxK B k).r F.c F.g0 hF.c_sq (hB.map _).atc (((boxK B k).nu _).trans hF.del_c) (((boxK B k).nu _).trans F.g0.2) z hz.1.2 ⟨congrFun h0 0, congrFun h0 1, congrFun h0 2, congrFun h0 3, congrFun h0 4, congrFun h0 5⟩ e6 e7)`. Rewrite `h` using `[Nat.card_fun, Nat.card_eq_fintype_card (α := Fin 8), Fintype.card_fin]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.J.normCnt :
     ∀ (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsCoef l O] [Algebra ℤ_[l] O] (F : Frame l (ResidueField O)) (C₀ : ℕ), F.Ok C₀ → (l : O) ≠ 0 → ∀ (ρ : NRep F 3 O) (B : Box F 3 O), UpperTheory.V.Fr.IsLift O ρ → B.Of ρ → B.Cont (maximalIdeal O) → ∀ k, 0 < k → (∀ v, ∃ Z : AddSubgroup (F.Gv v → Matrix (Fin 3) (Fin 3) (Ok l O k)), (Z : Set _) = Zv B k v) → (ZL F (adK B k) (Zv B k)).Finite → (ZL F (adK B k) (Zv B k)).ncard ≤ (ZN B k).ncard * Nat.card (Ok l O k) ^ 8 := by

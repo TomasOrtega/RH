@@ -33,7 +33,7 @@ def stdSub : AddSubgroup (ι → FinAdele K ⊗[K] E) where
     exact neg_mem (((mem_stdLattice_iff b _ _).1 hx) a)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_stdSub {x : ι → FinAdele K ⊗[K] E} :
     x ∈ stdSub ι b ↔ x ∈ stdLattice ι (FinAdele K) b (intAdeles K) := Iff.rfl
@@ -53,13 +53,13 @@ def integralCore : AddSubgroup (ι → FinAdele K ⊗[K] E) where
     exact neg_mem (hu β)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_integralCore {u : ι → FinAdele K ⊗[K] E} :
     u ∈ integralCore ι b ↔ ∀ β : 𝓞 E, ((1 : FinAdele K) ⊗ₜ[K] (β : E)) • u ∈ stdSub ι b := Iff.rfl
 
 /- English proof (translation)
-Introduce `u hu`. Use `hu 1` as an intermediate fact. Rewrite `this` using `[RingOfIntegers.coe_eq_algebraMap, map_one, ← Algebra.TensorProduct.one_def, one_smul]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem integralCore_le : integralCore ι b ≤ stdSub ι b := by
   intro u hu
@@ -67,7 +67,7 @@ theorem integralCore_le : integralCore ι b ≤ stdSub ι b := by
   rwa [RingOfIntegers.coe_eq_algebraMap, map_one, ← Algebra.TensorProduct.one_def, one_smul] at this
 
 /- English proof (translation)
-Introduce `β'`. Rewrite using `[smul_smul, Algebra.TensorProduct.tmul_mul_tmul, mul_one]`. Use `hu (β' * β)` as an intermediate fact. Rewrite `this` using `[RingOfIntegers.coe_eq_algebraMap, map_mul]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem smul_mem_integralCore {u : ι → FinAdele K ⊗[K] E} (hu : u ∈ integralCore ι b) (β : 𝓞 E) :
     ((1 : FinAdele K) ⊗ₜ[K] (β : E)) • u ∈ integralCore ι b := by
@@ -77,7 +77,7 @@ theorem smul_mem_integralCore {u : ι → FinAdele K ⊗[K] E} (hu : u ∈ integ
   rwa [RingOfIntegers.coe_eq_algebraMap, map_mul] at this
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [Pi.smul_apply, smul_eq_mul, zsmul_eq_mul, mul_assoc]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem zsmul_smul_vec {R : Type*} [CommRing R] (n : ℤ) (z : R) (u : ι → R) :
     (n • z) • u = n • (z • u) := by
@@ -85,9 +85,9 @@ theorem zsmul_smul_vec {R : Type*} [CommRing R] (n : ℤ) (z : R) (u : ι → R)
   simp only [Pi.smul_apply, smul_eq_mul, zsmul_eq_mul, mul_assoc]
 
 /- English proof (translation)
-Use `⟨fun h s => h _, fun h β => ?_⟩` and prove the remaining obligations. Establish `hβ : (β : E) = ∑ s, ((RingOfIntegers.basis E).repr β s) • ((RingOfIntegers.basis E s : 𝓞 E) : E)`. Use `congrArg (algebraMap (𝓞 E) E) ((RingOfIntegers.basis E).sum_repr β)` as an intermediate fact. Rewrite `this` using `[map_sum]`. Simplify using `only [map_zsmul] at this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `this.symm`. Rewrite using `[hβ, tmul_sum, Finset.sum_smul]`. Use `AddSubgroup.sum_mem _ fun s _ => ?_` and prove the remaining obligations. Rewrite using `[tmul_smul, zsmul_smul_vec]`. Conclude with `zsmul_mem (h s) _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_integralCore_iff_basis {u : ι → FinAdele K ⊗[K] E} :
     u ∈ integralCore ι b ↔ ∀ s, ((1 : FinAdele K) ⊗ₜ[K]
@@ -105,9 +105,7 @@ theorem mem_integralCore_iff_basis {u : ι → FinAdele K ⊗[K] E} :
   exact zsmul_mem (h s) _
 
 /- English proof (translation)
-Establish `: (integralCore ι b : Set (ι → FinAdele K ⊗[K] E)) = ⋂ s, (fun u => ((1 : FinAdele K) ⊗ₜ[K] ((RingOfIntegers.basis E s : 𝓞 E) : E)) • u) ⁻¹' stdLattice ι (FinAdele K) b (intAdeles K)`. Use extensionality with `u`. Simplify using `only [Set.mem_iInter, Set.mem_preimage, SetLike.mem_coe]`. Conclude with `mem_integralCore_iff_basis b`. Rewrite using `[this]`.
-
-Conclude with `isOpen_iInter_of_finite fun s => (isOpen_stdLattice (FinAdele K) b (isOpen_integralFiniteAdeles (R := 𝓞 K) (K := K))).preimage (continuous_const_smul _)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_integralCore :
     IsOpen (integralCore ι b : Set (ι → FinAdele K ⊗[K] E)) := by
@@ -122,9 +120,9 @@ theorem isOpen_integralCore :
       (continuous_const_smul _)
 
 /- English proof (translation)
-Establish `: T2Space (FinAdele K)` using `t2Space_finiteAdeleRing K`. Establish `: T2Space (FinAdele K ⊗[K] E)` using `t2Space_tensor (FinAdele K)`. Establish `: (integralCore ι b : Set (ι → FinAdele K ⊗[K] E)) = ⋂ β : 𝓞 E, (fun u => ((1 : FinAdele K) ⊗ₜ[K] (β : E)) • u) ⁻¹' stdLattice ι (FinAdele K) b (intAdeles K)`. Use extensionality with `u`. Simplify using `only [Set.mem_iInter, Set.mem_preimage, SetLike.mem_coe]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Conclude with `mem_integralCore b`. Rewrite using `[this]`. Conclude with `isClosed_iInter fun β => (isCompact_stdLattice (FinAdele K) b (isCompact_integralFiniteAdeles K)).isClosed.preimage (continuous_const_smul _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isClosed_integralCore :
     IsClosed (integralCore ι b : Set (ι → FinAdele K ⊗[K] E)) := by
@@ -141,7 +139,7 @@ theorem isClosed_integralCore :
       (continuous_const_smul _)
 
 /- English proof (translation)
-The claim follows from `(isCompact_stdLattice (FinAdele K) b (isCompact_integralFiniteAdeles K)).of_isClosed_subset (isClosed_integralCore b) (integralCore_le b)`.
+A detailed English derivation is pending.
 -/
 theorem isCompact_integralCore :
     IsCompact (integralCore ι b : Set (ι → FinAdele K ⊗[K] E)) :=
@@ -149,11 +147,9 @@ theorem isCompact_integralCore :
     (isClosed_integralCore b) (integralCore_le b)
 
 /- English proof (translation)
-Establish `hW : {t : FinAdele K | t • stdVec (FinAdele K) b a ∈ integralCore ι b} ∈ 𝓝 (0 : FinAdele K)`. Use `((isOpen_integralCore b).preimage (continuous_id.smul continuous_const)).mem_nhds ?_` and prove the remaining obligations. Use `show (0 : FinAdele K) • stdVec (FinAdele K) b a ∈ integralCore ι b`. Rewrite using `[zero_smul]`. Conclude with `zero_mem _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨d, hd0, hd⟩` from `exists_forall_mul_mem_of_mem_nhds hW`. Use `⟨algebraMap (𝓞 K) K d, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Ne, ← RingOfIntegers.coe_eq_algebraMap, RingOfIntegers.coe_eq_zero_iff]`. Conclude with `hd0`. Use `hd 1 (one_mem _)` as an intermediate fact.
-
-Rewrite `this` using `[mul_one]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_smul_stdVec_mem_integralCore (a : ι × κ) :
     ∃ d : K, d ≠ 0 ∧ algebraMap K (FinAdele K) d • stdVec (FinAdele K) b a ∈ integralCore ι b := by
@@ -198,15 +194,15 @@ variable {H}
 variable (H)
 
 /- English proof (translation)
-Establish `hΛo` using `isOpen_integralCore (ι := ι) b`. Establish `hΛc` using `isCompact_integralCore (ι := ι) b`. Establish `hA` using `continuous_unitaryMat_mulVec (K := K) H (FinAdele K) (ι := ι)`. Establish `hsub : ({1} : Set (unitaryPoints K E H (FinAdele K))) ×ˢ (integralCore ι b : Set (ι → FinAdele K ⊗[K] E)) ⊆ (fun p : unitaryPoints K E H (FinAdele K) × (ι → FinAdele K ⊗[K] E) => unitaryMat p.1 *ᵥ p.2) ⁻¹' (integralCore ι b : Set (ι → FinAdele K ⊗[K] E))`. Introduce and unpack `⟨g, x⟩ ⟨hg, hx⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Rewrite `hg` using `[Set.mem_singleton_iff]`. Substitute `hg` using the available equality. Use `show unitaryMat (1 : unitaryPoints K E H (FinAdele K)) *ᵥ x ∈ integralCore ι b`. Rewrite using `[show unitaryMat (1 : unitaryPoints K E H (FinAdele K)) = 1 from rfl, Matrix.one_mulVec]`. Conclude with `hx`.
+Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨u, v, hu, -, h1u, hΛv, huv⟩` from `generalized_tube_lemma isCompact_singleton hΛc (hΛo.preimage hA) hsub`. Establish `h1 : (1 : unitaryPoints K E H (FinAdele K)) ∈ u` using `h1u rfl`. Establish `hmem : ∀ g ∈ u, ∀ x ∈ integralCore ι b, unitaryMat g *ᵥ x ∈ integralCore ι b`. Introduce `g hg x hx`. Use `huv (Set.mk_mem_prod hg (hΛv hx))` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[Set.mem_preimage]`. Conclude with `this`. Establish `h1' : (1 : unitaryPoints K E H (FinAdele K)) ∈ (fun g => g⁻¹) ⁻¹' u` using `by show (1 : unitaryPoints K E H (FinAdele K))⁻¹ ∈ u`. Rewrite using `[inv_one]`. Conclude with `h1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Establish `hW : u ∩ (fun g => g⁻¹) ⁻¹' u ∈ 𝓝 (1 : unitaryPoints K E H (FinAdele K))` using `Filter.inter_mem (hu.mem_nhds h1) ((hu.preimage continuous_inv).mem_nhds h1')`. Use `Subgroup.isOpen_of_mem_nhds _ (Filter.mem_of_superset hW ?_)` and prove the remaining obligations. Introduce and unpack `g ⟨hg, hg'⟩ x hx`. Conclude with `⟨hmem g hg x hx, hmem g⁻¹ hg' x hx⟩`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_coreStabilizer :
     IsOpen (coreStabilizer b H : Set (unitaryPoints K E H (FinAdele K))) := by
@@ -242,9 +238,9 @@ theorem isOpen_coreStabilizer :
   exact ⟨hmem g hg x hx, hmem g⁻¹ hg' x hx⟩
 
 /- English proof (translation)
-Establish `hΛ` using `isClosed_integralCore (ι := ι) b`. Establish `hA` using `continuous_unitaryMat_mulVec (K := K) H (FinAdele K) (ι := ι)`. Establish `: (coreStabilizer b H : Set (unitaryPoints K E H (FinAdele K))) = ⋂ x ∈ (integralCore ι b : Set (ι → FinAdele K ⊗[K] E)), ({g | unitaryMat g *ᵥ x ∈ integralCore ι b} ∩ {g | unitaryMat g⁻¹ *ᵥ x ∈ integralCore ι b})`. Use extensionality with `g`. Simplify using `only [SetLike.mem_coe, Set.mem_iInter, Set.mem_inter_iff, Set.mem_setOf_eq]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Conclude with `Iff.rfl`. Rewrite using `[this]`. Use `isClosed_biInter fun x _ => IsClosed.inter ?_ ?_` and prove the remaining obligations. Conclude with `hΛ.preimage (hA.comp (continuous_id.prodMk continuous_const))`. Conclude with `hΛ.preimage (hA.comp (continuous_inv.prodMk continuous_const))`.
+Unfold both sides to obtain the same proposition, which implies itself. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isClosed_coreStabilizer :
     IsClosed (coreStabilizer b H : Set (unitaryPoints K E H (FinAdele K))) := by
@@ -262,17 +258,15 @@ theorem isClosed_coreStabilizer :
   · exact hΛ.preimage (hA.comp (continuous_inv.prodMk continuous_const))
 
 /- English proof (translation)
-Establish `: T2Space (FinAdele K)` using `t2Space_finiteAdeleRing K`. Use `choose d hd0 hd using exists_smul_stdVec_mem_integralCore (ι := ι) b`. Use `set C : ι → Set (FinAdele K) := fun j => (fun y : κ → FinAdele K => ∑ k, algebraMap K (FinAdele K) (b.repr 1 k * (d (j, k))⁻¹) * y k) '' Set.pi Set.univ fun _ => (intAdeles K : Set (FinAdele K)) with hCdef`. Establish `hC : ∀ j, IsCompact (C j)` using `fun j => (isCompact_univ_pi fun _ => isCompact_integralFiniteAdeles K).image (continuous_finsetSum _ fun k _ => continuous_const.mul (continuous_apply k))`. Establish `hbig : IsCompact (unitaryCoords H (FinAdele K) b ⁻¹' Set.pi Set.univ fun p : ι × ι × κ => C p.2.1)` using `(isClosedEmbedding_unitaryCoords H (FinAdele K) b hH).isCompact_preimage (isCompact_univ_pi fun p => hC _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `hbig.of_isClosed_subset (isClosed_coreStabilizer b H) ?_` and prove the remaining obligations. Introduce and unpack `g hg ⟨i, j, m⟩ -`. Use `set B := Algebra.TensorProduct.basis (FinAdele K) b`. Establish `hcol : ∀ k, algebraMap K (FinAdele K) (d (j, k)) * B.repr (unitaryMat g i j * ((1 : FinAdele K) ⊗ₜ b k)) m ∈ intAdeles K`. Introduce `k`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `integralCore_le b ((hg _ (hd (j, k))).1)`. Rewrite `h1` using `[mem_stdSub, mulVec_smul, mem_stdLattice_iff]`. Establish `h2` using `h1 (i, m)`. Rewrite `h2` using `[vecCoords_smul]`. Use `h2 using 2` and compare the differences between its conclusion and the goal.
+Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [vecCoords, stdVec, Matrix.mulVec_single, Pi.smul_apply, MulOpposite.smul_eq_mul_unop, MulOpposite.unop_op, Matrix.col_apply, B]`. Use `⟨fun k => algebraMap K (FinAdele K) (d (j, k)) * B.repr (unitaryMat g i j * ((1 : FinAdele K) ⊗ₜ b k)) m, fun k _ => hcol k, ?_⟩` and prove the remaining obligations. Establish `hone : (1 : FinAdele K ⊗[K] E) = ∑ k, algebraMap K (FinAdele K) (b.repr 1 k) • ((1 : FinAdele K) ⊗ₜ b k)` using `by conv_lhs => rw [Algebra.TensorProduct.one_def, ← b.sum_repr 1]`. Rewrite using `[TensorProduct.tmul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[TensorProduct.tmul_smul, algebraMap_smul]`. Use `show _ = unitaryCoords H (FinAdele K) b g (i, j, m)`. Rewrite using `[unitaryCoords_apply]`. Use `conv_rhs => rw [← mul_one (unitaryMat g i j), hone]`. Simplify using `only [Finset.mul_sum, mul_smul_comm, map_sum, map_smul, Finsupp.coe_finsetSum, Finset.sum_apply, Finsupp.smul_apply, smul_eq_mul]`.
-
-Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_assoc, ← map_mul, mul_assoc, inv_mul_cancel₀ (hd0 (j, k)), mul_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCompact_coreStabilizer (hH : IsUnit H.det) :
     IsCompact (coreStabilizer b H : Set (unitaryPoints K E H (FinAdele K))) := by
@@ -342,15 +336,15 @@ def coreLattice (g : unitaryPoints K E H (FinAdele K)) : AddSubgroup (ι → K �
 variable {H}
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_coreLattice {g : unitaryPoints K E H (FinAdele K)} {x : ι → K ⊗[K] E} :
     x ∈ coreLattice b H g ↔ unitaryMat g⁻¹ *ᵥ toFinAdele K E ι x ∈ integralCore ι b := Iff.rfl
 
 /- English proof (translation)
-Establish `key : ∀ β : 𝓞 E, unitaryMat g⁻¹ *ᵥ toFinAdele K E ι (((1 : K) ⊗ₜ[K] (β : E)) • x) = ((1 : FinAdele K) ⊗ₜ[K] (β : E)) • (unitaryMat g⁻¹ *ᵥ toFinAdele K E ι x)`. Introduce `β`. Rewrite using `[toFinAdele_mul_smul, tensorMap_tmul, map_one, mulVec_smul]`. Rewrite using `[mem_coreLattice, mem_integralCore]`. Use `forall_congr' fun β => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mem_adelicLattice, key]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mem_coreLattice_iff {g : unitaryPoints K E H (FinAdele K)} {x : ι → K ⊗[K] E} :
     x ∈ coreLattice b H g ↔ ∀ β : 𝓞 E, ((1 : K) ⊗ₜ[K] (β : E)) • x ∈ adelicLattice b H g := by
@@ -364,7 +358,7 @@ theorem mem_coreLattice_iff {g : unitaryPoints K E H (FinAdele K)} {x : ι → K
   rfl
 
 /- English proof (translation)
-Rewrite using `[mem_coreLattice, toFinAdele_mul_smul, tensorMap_tmul, map_one, mulVec_smul]`. Conclude with `smul_mem_integralCore b hx β`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smul_mem_coreLattice {g : unitaryPoints K E H (FinAdele K)} {x : ι → K ⊗[K] E}
     (hx : x ∈ coreLattice b H g) (β : 𝓞 E) : ((1 : K) ⊗ₜ[K] (β : E)) • x ∈ coreLattice b H g := by
@@ -372,13 +366,13 @@ theorem smul_mem_coreLattice {g : unitaryPoints K E H (FinAdele K)} {x : ι → 
   exact smul_mem_integralCore b hx β
 
 /- English proof (translation)
-Introduce `_ hx` and use `integralCore_le b hx`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem coreLattice_le_adelicLattice (g : unitaryPoints K E H (FinAdele K)) :
     coreLattice b H g ≤ adelicLattice b H g := fun _ hx => integralCore_le b hx
 
 /- English proof (translation)
-Rewrite using `[mem_coreLattice, mem_coreLattice, toFinAdele_mulVec, _root_.mul_inv_rev, unitaryMat_mul, mulVec_mulVec, Matrix.mul_assoc, unitaryMat_inv_mul, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mulVec_mem_coreLattice_iff (γ : unitaryPoints K E H K) (g : unitaryPoints K E H (FinAdele K))
     (x : ι → K ⊗[K] E) :
@@ -392,23 +386,21 @@ def transCore (g : unitaryPoints K E H (FinAdele K)) : Set (ι → FinAdele K �
   {z | unitaryMat g⁻¹ *ᵥ z ∈ integralCore ι b}
 
 /- English proof (translation)
-The claim follows from `(isOpen_integralCore b).preimage (continuous_const.matrix_mulVec continuous_id)`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_transCore (g : unitaryPoints K E H (FinAdele K)) : IsOpen (transCore b H g) :=
   (isOpen_integralCore b).preimage (continuous_const.matrix_mulVec continuous_id)
 
 /- English proof (translation)
-The claim follows from `(isClosed_integralCore b).preimage (continuous_const.matrix_mulVec continuous_id)`.
+A detailed English derivation is pending.
 -/
 theorem isClosed_transCore (g : unitaryPoints K E H (FinAdele K)) : IsClosed (transCore b H g) :=
   (isClosed_integralCore b).preimage (continuous_const.matrix_mulVec continuous_id)
 
 /- English proof (translation)
-Establish `himage : toFinAdele K E ι '' (coreLattice b H g : Set (ι → K ⊗[K] E)) = transCore b H g ∩ Set.range (toFinAdele K E ι)`. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `⟨hx, x, rfl⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨hz, x, rfl⟩`. Conclude with `⟨x, hz, rfl⟩`. Apply `le_antisymm` to reduce the goal to its premises. Conclude with `closure_minimal (by rw [himage]; exact Set.inter_subset_left) (isClosed_transCore b g)`. Rewrite using `[himage]`.
-
-Conclude with `denseRange_toFinAdele.open_subset_closure_inter (isOpen_transCore b g)`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem closure_image_coreLattice (g : unitaryPoints K E H (FinAdele K)) :
     closure (toFinAdele K E ι '' (coreLattice b H g : Set (ι → K ⊗[K] E))) = transCore b H g := by
@@ -426,13 +418,13 @@ theorem closure_image_coreLattice (g : unitaryPoints K E H (FinAdele K)) :
     exact denseRange_toFinAdele.open_subset_closure_inter (isOpen_transCore b g)
 
 /- English proof (translation)
-Establish `hT : transCore b H g = transCore b H g'`. Rewrite using `[← closure_image_coreLattice, ← closure_image_coreLattice, h]`. Introduce `u hu`. Prove the components needed by the constructor for the conclusion. Establish `: unitaryMat g' *ᵥ u ∈ transCore b H g'` using `by show unitaryMat g'⁻¹ *ᵥ (unitaryMat g' *ᵥ u) ∈ integralCore ι b`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact.
 
-Rewrite using `[mulVec_mulVec, unitaryMat_inv_mul, one_mulVec]`. Conclude with `hu`. Rewrite `this` using `[← hT]`. Express the relevant statement in the definitionally equal form `unitaryMat g⁻¹ *ᵥ (unitaryMat g' *ᵥ u) ∈ integralCore ι b at this`. Rewrite `this` using `[mulVec_mulVec]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[unitaryMat_mul]`. Conclude with `this`. Establish `: unitaryMat g *ᵥ u ∈ transCore b H g` using `by show unitaryMat g⁻¹ *ᵥ (unitaryMat g *ᵥ u) ∈ integralCore ι b`. Rewrite using `[mulVec_mulVec, unitaryMat_inv_mul, one_mulVec]`. Conclude with `hu`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[hT]`. Express the relevant statement in the definitionally equal form `unitaryMat g'⁻¹ *ᵥ (unitaryMat g *ᵥ u) ∈ integralCore ι b at this`. Rewrite `this` using `[mulVec_mulVec]`. Rewrite using `[_root_.mul_inv_rev, inv_inv, unitaryMat_mul]`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_coreStabilizer_of_coreLattice_eq {g g' : unitaryPoints K E H (FinAdele K)}
     (h : coreLattice b H g = coreLattice b H g') : g⁻¹ * g' ∈ coreStabilizer b H := by
@@ -460,9 +452,9 @@ theorem mem_coreStabilizer_of_coreLattice_eq {g g' : unitaryPoints K E H (FinAde
     exact this
 
 /- English proof (translation)
-Take `⟨k, hk, rfl⟩ : ∃ k ∈ coreStabilizer b H, g' = g * k` from `⟨g⁻¹ * g', h, by group⟩`. Use extensionality with `x`. Rewrite using `[mem_coreLattice, mem_coreLattice, _root_.mul_inv_rev, unitaryMat_mul, ← mulVec_mulVec]`. Prove the components needed by the constructor for the conclusion. Introduce `hx`.
+Extract witnesses or component facts from the available result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(hk _ hx).2`. Introduce `hx`. Use `(hk _ hx).1` as an intermediate fact. Rewrite `this` using `[mulVec_mulVec, unitaryMat_mul_inv, one_mulVec]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem coreLattice_eq_of_mem_coreStabilizer {g g' : unitaryPoints K E H (FinAdele K)}
     (h : g⁻¹ * g' ∈ coreStabilizer b H) : coreLattice b H g = coreLattice b H g' := by
@@ -477,7 +469,7 @@ theorem coreLattice_eq_of_mem_coreStabilizer {g g' : unitaryPoints K E H (FinAde
     rwa [mulVec_mulVec, unitaryMat_mul_inv, one_mulVec] at this
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨mem_coreStabilizer_of_coreLattice_eq b, coreLattice_eq_of_mem_coreStabilizer b⟩`.
+Supply the required witnesses or components.
 -/
 theorem coreLattice_eq_iff {g g' : unitaryPoints K E H (FinAdele K)} :
     coreLattice b H g = coreLattice b H g' ↔ g⁻¹ * g' ∈ coreStabilizer b H :=
@@ -486,15 +478,15 @@ theorem coreLattice_eq_iff {g g' : unitaryPoints K E H (FinAdele K)} :
 variable (H) in
 
 /- English proof (translation)
-Use `choose D hD0 hD using fun s => exists_int_smul_includeRight_mem b H ((RingOfIntegers.basis E s : 𝓞 E) : E)`. Use `⟨∏ s, D s, Finset.prod_ne_zero_iff.2 fun s _ => hD0 s, fun g x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[mem_coreLattice_iff]`. Introduce `β`. Establish `hβ : (β : E) = ∑ s, ((RingOfIntegers.basis E).repr β s) • ((RingOfIntegers.basis E s : 𝓞 E) : E)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrArg (algebraMap (𝓞 E) E) ((RingOfIntegers.basis E).sum_repr β)` as an intermediate fact. Rewrite `this` using `[map_sum]`. Simplify using `only [map_zsmul] at this`. Conclude with `this.symm`. Rewrite using `[hβ, tmul_sum, Finset.sum_smul]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `AddSubgroup.sum_mem _ fun s _ => ?_` and prove the remaining obligations. Rewrite using `[tmul_smul, zsmul_smul_vec]`. Use `zsmul_mem ?_ _` and prove the remaining obligations. Establish `hN : ((∏ s, D s : ℤ) : K) = ((∏ t ∈ Finset.univ.erase s, D t : ℤ) : K) * (D s : K)`. Rewrite using `[← Int.cast_mul, Finset.prod_erase_mul _ _ (Finset.mem_univ s)]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hcomm : ∀ (z : K ⊗[K] E) (c : K) (y : ι → K ⊗[K] E), z • (c • y) = c • (z • y)`. Introduce `z c y`. Use function extensionality and compare the values at `i`. Simplify using `only [Pi.smul_apply, smul_eq_mul, mul_smul_comm]`. Rewrite using `[hN, hcomm, mul_smul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `hD s g x hx`. Rewrite `h1` using `[Algebra.TensorProduct.includeRight_apply]`. Establish `h2` using `intSmul_mem_adelicLattice h1 ((∏ t ∈ Finset.univ.erase s, D t : ℤ) : 𝓞 K)`. Rewrite `h2` using `[RingOfIntegers.coe_eq_algebraMap, map_intCast]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_int_smul_mem_coreLattice : ∃ N : ℤ, N ≠ 0 ∧
     ∀ (g : unitaryPoints K E H (FinAdele K)) (x : ι → K ⊗[K] E), x ∈ adelicLattice b H g →

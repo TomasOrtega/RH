@@ -11,9 +11,9 @@ open Polynomial
 namespace GlobalTheory.UnitLemma.PrincipalLat
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.IntegralPi.main`. Consider the case `exact _root_.GlobalTheory.IntegralPi.main`. Consider the case `(apply _root_.GlobalTheory.IntegralPi.main <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.IntegralPi.main <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.IntegralPi.main <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.IntegralPi.main ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem isIntegral_pi' {O : Type} [CommRing O] {ι : Type} [Finite ι] {R : ι → Type}
     [∀ i, CommRing (R i)] [∀ i, Algebra O (R i)] (x : ∀ i, R i) (hx : ∀ i, IsIntegral O (x i)) :
@@ -35,7 +35,7 @@ variable (E) in
 include E in
 
 /- English proof (translation)
-Establish `: Algebra.IsAlgebraic O A` using `(IsFractionRing.comap_isAlgebraic_iff (A := O) (K := E) (C := A)).mpr inferInstance`. Take `⟨c, hc, h⟩` from `(Algebra.IsAlgebraic.isAlgebraic (R := O) y).exists_integral_multiple`. Conclude with `⟨c, hc, by rwa [Algebra.smul_def] at h⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_mul_isIntegral (y : A) : ∃ c : O, c ≠ 0 ∧ IsIntegral O (algebraMap O A c * y) := by
   have : Algebra.IsAlgebraic O A :=
@@ -54,11 +54,9 @@ variable (E) in
 include E in
 
 /- English proof (translation)
-Take `⟨s, rfl⟩` from `hJ`. Use `choose f hf0 hf using fun y : A => exists_mul_isIntegral (O := O) E y`. Use `⟨∏ y ∈ s, f y, Finset.prod_ne_zero_iff.2 fun y _ => hf0 y, fun z hz => ?_⟩` and prove the remaining obligations. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem y hy`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Finset.mul_prod_erase s f hy, map_mul, mul_comm (algebraMap O A (f y)), mul_assoc]`. Conclude with `isIntegral_algebraMap.mul (hf y)`. Consider the case `zero => rw [mul_zero]`. Conclude with `isIntegral_zero`. Consider the case `add x y _ _ hx hy => rw [mul_add]`.
-
-Conclude with `hx.add hy`. Consider the case `smul o x _ hx => rw [mul_smul_comm]`. Conclude with `hx.smul o`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_mul_le_integral (J : Submodule O A) (hJ : J.FG) :
     ∃ c : O, c ≠ 0 ∧ ∀ z ∈ J, IsIntegral O (algebraMap O A c * z) := by
@@ -75,29 +73,25 @@ theorem exists_mul_le_integral (J : Submodule O A) (hJ : J.FG) :
   | smul o x _ hx => rw [mul_smul_comm]; exact hx.smul o
 
 /- English proof (translation)
-Take `⟨c, hc0, hc⟩` from `exists_mul_le_integral E J hJ.1`. Use `set Λ := integralClosure O A`. Establish `hcu : IsUnit (algebraMap O A c)`. Rewrite using `[IsScalarTower.algebraMap_apply O E A]`. Use `(IsUnit.mk0 _ ?_).map _` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Conclude with `(IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors (mem_nonZeroDivisors_of_ne_zero hc0))`. Use `set C := algebraMap O A c`. Set `I : Ideal Λ` to `{ carrier := {l | ∃ z ∈ J, (l : A) = C * z} add_mem' := by`. Introduce and unpack `a b ⟨x, hx, hax⟩ ⟨y, hy, hby⟩`. Conclude with `⟨x + y, J.add_mem hx hy, by rw [Subalgebra.coe_add, hax, hby, mul_add]⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `zero_mem' := ⟨0, J.zero_mem, by simp⟩`. Use the proof step `smul_mem' := by`. Introduce and unpack `a b ⟨x, hx, hbx⟩`. Use `⟨(a : A) * x, hst _ a.2 _ hx, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_eq_mul, Subalgebra.coe_mul, hbx]`.
+Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `ring }`. Take `⟨b, hb⟩` from `(IsPrincipalIdealRing.principal I).principal`. Establish `hmemI : ∀ l : Λ, l ∈ I ↔ ∃ m : Λ, m * b = l`. Introduce `l`. Rewrite using `[hb]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `Ideal.mem_span_singleton'`. Establish `key : ∀ z, z ∈ J ↔ ∃ l ∈ Λ, C * z = b * l`. Introduce `z`. Prove the components needed by the constructor for the conclusion. Introduce `hz`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨m, hm⟩` from `(hmemI ⟨C * z, hc z hz⟩).1 ⟨z, hz, rfl⟩`. Establish `h2` using `congrArg Subtype.val hm`. Simplify using `only [Subalgebra.coe_mul] at h2`. Conclude with `⟨m, m.2, by rw [← h2, mul_comm]⟩`. Introduce and unpack `⟨l, hl, hzl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨z0, hz0, hbz0⟩ : b ∈ I` from `by rw [hb]; exact Ideal.mem_span_singleton_self b`. Establish `: C * z = C * (l * z0)` using `by rw [hzl, hbz0]; ring`. Rewrite using `[hcu.mul_left_cancel this]`. Conclude with `hst l hl z0 hz0`. Establish `hbu : IsUnit (b : A)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hle : (J : Set A) ⊆ LinearMap.range (LinearMap.mulLeft E (b : A))`. Introduce `z hz`. Take `⟨l, _, hzl⟩` from `(key z).1 hz`. Use `⟨hcu.unit⁻¹ * l, ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.mulLeft_apply]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `h1 : (1 : A) ∈ LinearMap.range (LinearMap.mulLeft E (b : A))`. Use `Submodule.span_le.2 hle` as an intermediate fact. Rewrite `this` using `[hJ.2]`. Conclude with `this Submodule.mem_top`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨w, hw⟩` from `h1`. Conclude with `isUnit_iff_exists_inv.2 ⟨w, by simpa using hw⟩`. Use `⟨hcu.unit⁻¹ * hbu.unit, ?_⟩` and prove the remaining obligations. Use extensionality with `z`. Rewrite using `[key z]`.
-
-Simplify using `only [mulLat, Submodule.mem_map, LinearMap.mulLeft_apply, Subalgebra.mem_toSubmodule, Units.val_mul, IsUnit.unit_spec]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨l, hl, hzl⟩`. Use `⟨l, hl, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_assoc, ← hzl, ← mul_assoc, IsUnit.val_inv_mul, one_mul]`.
-
-Introduce and unpack `⟨l, hl, hzl⟩`. Use `⟨l, hl, ?_⟩` and prove the remaining obligations. Rewrite using `[← hzl, ← mul_assoc, ← mul_assoc, IsUnit.mul_val_inv, one_mul]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_mulLat_of_isPrincipalIdealRing [IsPrincipalIdealRing (integralClosure O A)]
     (J : Submodule O A) (hJ : IsLat O E J) (hst : ∀ a ∈ integralClosure O A, ∀ y ∈ J, a * y ∈ J) :
@@ -167,13 +161,11 @@ theorem eq_mulLat_of_isPrincipalIdealRing [IsPrincipalIdealRing (integralClosure
 end General2
 
 /- English proof (translation)
-Use `haveI : IsArtinianRing A := IsArtinianRing.of_finite E A`. Set `ψ : A ≃ₐ[O] (∀ I : MaximalSpectrum A, A ⧸ I.asIdeal)` to `(IsArtinianRing.equivPi A).restrictScalars O`. Use `haveI hpir : ∀ I : MaximalSpectrum A, IsPrincipalIdealRing (integralClosure O (A ⧸ I.asIdeal)) := by`. Introduce `I`. Use `haveI := I.isMaximal`.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `letI : Field (A ⧸ I.asIdeal) := Ideal.Quotient.field I.asIdeal`. Use `haveI : FiniteDimensional E (A ⧸ I.asIdeal) := Module.Finite.of_surjective (Ideal.Quotient.mkₐ E I.asIdeal).toLinearMap Ideal.Quotient.mk_surjective`. Use `haveI := GlobalTheory.FormalIsogeny.isDiscreteValuationRing_integralClosure O E (A ⧸ I.asIdeal)`. Use `infer_instance`. Use `haveI : Finite (MaximalSpectrum A) := inferInstance`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition.
 
-Set `G : (∀ I : MaximalSpectrum A, integralClosure O (A ⧸ I.asIdeal)) →ₐ[O] (∀ I : MaximalSpectrum A, A ⧸ I.asIdeal)` to `Pi.algHom O _ fun I => (integralClosure O (A ⧸ I.asIdeal)).val.comp (Pi.evalAlgHom O _ I)`. Set `F` to `(ψ.symm.toAlgHom.comp G).codRestrict (integralClosure O A) fun l => (isIntegral_pi' (G l) fun I => (l I).2).map ψ.symm`. Use `IsPrincipalIdealRing.of_surjective F ?_` and prove the remaining obligations. Introduce `x`. Use `⟨fun I => ⟨ψ x I, x.2.map ((Pi.evalAlgHom O _ I).comp ψ.toAlgHom)⟩, ?_⟩` and prove the remaining obligations.
-
-Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `ψ.symm (G _) = (x : A)`. Establish `: G (fun I => ⟨ψ x I, x.2.map ((Pi.evalAlgHom O _ I).comp ψ.toAlgHom)⟩) = ψ x` using `rfl`. Rewrite using `[this, AlgEquiv.symm_apply_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isPrincipalIdealRing_integralClosure {O E A : Type} [CommRing O] [IsDomain O]
     [IsDiscreteValuationRing O] [IsAdicComplete (IsLocalRing.maximalIdeal O) O] [Field E]
@@ -208,7 +200,7 @@ theorem isPrincipalIdealRing_integralClosure {O E A : Type} [CommRing O] [IsDoma
   rw [this, AlgEquiv.symm_apply_apply]
 
 /- English proof (translation)
-Introduce `K B hsep J hJ hst`. Use `haveI : IsReduced B.A := ⟨fun a ha => Centraliser.eq_zero_of_isNilpotent B hsep a ha⟩`. Use `haveI := isPrincipalIdealRing_integralClosure (O := K.O) (E := K.E) (A := B.A)`. Conclude with `eq_mulLat_of_isPrincipalIdealRing J hJ hst`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem eq_mulLat_integralClosure : ∀ (K : UQ) (B : InvAlg K), B.P.Separable →
     ∀ J : Submodule K.O B.A, IsLat K.O K.E J → (∀ a ∈ integralClosure K.O B.A, ∀ y ∈ J, a * y ∈ J) →

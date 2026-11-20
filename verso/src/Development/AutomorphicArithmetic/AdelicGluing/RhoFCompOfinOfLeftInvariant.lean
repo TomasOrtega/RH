@@ -8,9 +8,9 @@ open UpperTheory.ConvolutionTheory UpperTheory.ConvolutionTheory.GM
 open scoped ComplexConjugate
 
 /- English proof (translation)
-Use `ContinuousLinearMap.ext fun v => ext_inner_left ℂ fun w => ?_` and prove the remaining obligations. Rewrite using `[ContinuousLinearMap.comp_apply, UnitaryRep.inner_map_right, CuspidalProjection.inner_integrated_ccToL1, CuspidalProjection.inner_integrated_ccToL1, ← integral_mul_left_eq_self (μ := μ) _ u⁻¹]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Simplify using `only`. Establish `h : f (u⁻¹ * x) = f x` using `by rw [← hf (u⁻¹ * x), mul_inv_cancel_left]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions. Establish an intermediate fact.
 
-Rewrite using `[h, UnitaryRep.inner_map_left, inv_inv, UnitaryRep.map_mul_apply, ← UnitaryRep.map_mul_apply π u, mul_inv_cancel, UnitaryRep.map_one_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem comp_integrated_of_left_inv {G H : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [LocallyCompactSpace G] [T2Space G] [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G]
@@ -27,7 +27,7 @@ private theorem comp_integrated_of_left_inv {G H : Type*} [Group G] [Topological
     mul_inv_cancel, UnitaryRep.map_one_apply]
 
 /- English proof (translation)
-Introduce `K _ _ n μ _ m _ e u hu`. Conclude with `comp_integrated_of_left_inv m ((rightRegularRep (rationalGLOne K n) μ).compHom (MultiplicityOne.finProj K n) MultiplicityOne.continuous_finProj) u e hu`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.rhoF_comp_Ofin_of_left_invariant :
     ∀ (K : Type) [Field K] [NumberField K] (n : ℕ) (μ : Measure (normOneGL K n)) [μ.IsHaarMeasure] (m : Measure (AdelicGLn.FiniteAdelicGL K n)) [m.IsHaarMeasure]

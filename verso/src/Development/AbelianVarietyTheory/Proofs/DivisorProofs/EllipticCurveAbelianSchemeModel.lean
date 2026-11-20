@@ -31,15 +31,15 @@ namespace GlobalTheory.LatticeFibre
 open GlobalTheory.HolUnifScale in
 
 /- English proof (translation)
-Substitute `hn` using the available equality. Establish `h0 : w₀ 0 ≠ 0` using `fun h ↦ hw0 (funext fun j ↦ by rw [Subsingleton.elim j 0]; exact h)`. Establish `h : ∀ j : Fin 1, (fun _ : Fin 1 ↦ w₀ 0 / c) j ≠ 0` using `fun _ ↦ div_ne_zero h0 hc`. Use `⟨rescale u _ h, fun w ↦ ?_, ?_⟩` and prove the remaining obligations. Use `(mem_latPull u _ h w).trans ?_` and prove the remaining obligations.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hL, scale_apply]`. Establish `e : (fun j : Fin 1 ↦ w₀ 0 / c * w j) = (c⁻¹ * w 0) • w₀`. Use function extensionality and compare the values at `j`. Rewrite using `[Subsingleton.elim j 0, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[e]`. Establish `key : ∀ W, (rescale u _ h).IsDiff W v ↔ u.IsDiff (fun j ↦ w₀ 0 / c * W j) v`. Introduce `W`. Unfold `HolUnif.IsDiff`. Establish `hf : ∀ (U : A.left.Opens) (f : Γ(A.left, U)), (fun z ↦ valAt' ((rescale u _ h).ex z).left U f) = (fun z ↦ valAt' (u.ex z).left U f) ∘ scale _ h` using `fun _ _ ↦ rfl`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Simplify using `only [hf, ContinuousLinearEquiv.comp_right_fderiv, map_zero]`. Both sides reduce to the same expression. Rewrite using `[key]`. Establish `e : (fun _ : Fin 1 ↦ w₀ 0 / c * c) = w₀`. Use function extensionality and compare the values at `j`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[Subsingleton.elim j 0, div_mul_cancel₀ _ hc]`. Rewrite using `[e]`. Conclude with `hw`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_holUnif_rescale {A : Over (Sp ℂ)} [GrpObj A] {Lb : LB A.left} {n : ℕ} (u : HolUnif A Lb n)
     (w₀ : Fin n → ℂ) (hn : n = 1) (v : epsR ℂ ⟶ A) (hw : u.IsDiff w₀ v) (hw0 : w₀ ≠ 0) (Λ : PeriodPair) {c : ℂ}
@@ -72,15 +72,15 @@ theorem exists_holUnif_rescale {A : Over (Sp ℂ)} [GrpObj A] {Lb : LB A.left} {
     exact hw
 
 /- English proof (translation)
-Introduce `R₁ W hΔ Λ c hc h4 h6`. Take `⟨P, v, Lf, ⟨hg, hv, -, hs⟩, hinv⟩` from `GlobalTheory.exists_polAV_latticeFamily GlobalTheory.thetaUnifAV_all GlobalTheory.polBaseChange_holds R₁ W hΔ`. Take `⟨P', φ', h⟩` from `GlobalTheory.exists_isPolFibre GlobalTheory.polBaseChange_holds R₁.subtype P`. Take `⟨v', hv', -⟩` from `GlobalTheory.existsUnique_isVecOver h.2.1.1 v`. Establish `ht : IsTangent v` using `hv.1 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `ht' : IsTangent v'` using `hv'.isTangent h.2.1 ht`. Take `⟨rig, hrig⟩` from `P'.rigid`. Take `⟨u, Hm, χ, -, -, -, hd, -⟩` from `GlobalTheory.thetaUnifAV_all P' rig hrig`. Take `⟨w, hw, -⟩` from `hd v' ht'`. Take `⟨hw0, hL⟩` from `hs R₁.subtype P' φ' v' u w h hv' hw`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨e4, e6, -⟩` from `hinv R₁.subtype`. Establish `H` using `GlobalTheory.isHomothetic_scalePeriods Λ c⁻¹ (inv_ne_zero hc)`. Establish `e : (Lf R₁.subtype).lattice = (GlobalTheory.scalePeriods Λ c⁻¹ (inv_ne_zero hc)).lattice`. Use `GlobalTheory.lattice_eq_of_g₂_eq_of_g₃_eq ?_ ?_` and prove the remaining obligations. Use `mul_left_cancel₀ (by norm_num : (12 : ℂ) ≠ 0) ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← e4, H.g₂_eq, inv_pow, inv_inv, ← _root_.mul_assoc]`. Conclude with `h4`. Use `mul_left_cancel₀ (by norm_num : (216 : ℂ) ≠ 0) ?_` and prove the remaining obligations. Rewrite using `[← e6, H.g₃_eq, inv_pow, inv_inv, ← _root_.mul_assoc]`. Conclude with `h6`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hg' : P'.g = 1` using `h.1.trans hg`. Take `⟨u', hu', hd'⟩` from `exists_holUnif_rescale u w hg' v' hw hw0 Λ hc (fun z ↦ by rw [← hL, e]; exact (H z).symm)`. Conclude with `⟨P, P'.A, inferInstance, φ', P'.L, u', v, v', P'.isAb, hg' ▸ P'.smoothDim, h.2.1, hu', ht, ht', hv', hd'⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_fibre_holUnif : ∀ (R₁ : Subring ℂ) (W : WeierstrassCurve R₁), IsUnit W.Δ → ∀ (Λ : PeriodPair) (c : ℂ), c ≠ 0 →
     ((W.c₄ : R₁) : ℂ) = 12 * c ^ 4 * Λ.g₂ → ((W.c₆ : R₁) : ℂ) = 216 * c ^ 6 * Λ.g₃ →

@@ -20,21 +20,19 @@ open Classical
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `M _ _ b F hF hpos hherm`. Use `set n := Module.finrank ℂ F`. Set `v : Module.Basis (Fin n) ℂ F` to `Module.finBasis ℂ F`. Set `A : F →ₗ[ℂ] (Fin n → ℂ)` to `LinearMap.pi (fun i => (b (v i : M)).comp F.subtype)`. Set `B : M →ₗ[ℂ] (Fin n → ℂ)` to `{ toFun := fun x i => star (b x (v i : M)) map_add' := by intro x y; funext i; simp [map_add] map_smul' := by intro c x; funext i; simp [mul_comm] }`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `key : ∀ (y : F) (x : M), (∀ i, b (v i : M) (y : M) = star (b x (v i : M))) → ∀ f ∈ F, b (y : M) f = b x f`. Introduce `y x h f hf`. Establish `hc : (b (y : M)).comp F.subtype = (b x).comp F.subtype`. Use `v.ext (fun i => ?_)` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, Submodule.coe_subtype]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hherm _ (v i).2 _ y.2, h i, star_star]`. Use `LinearMap.congr_fun hc ⟨f, hf⟩` as an intermediate fact. Simplify using `using this`. Establish `hinj : Function.Injective A`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y hy`. Establish `h0 : ∀ i, b (v i : M) (y : M) = star (b (0 : M) (v i : M))`. Introduce `i`. Use `congrFun hy i` as an intermediate fact. Simplify `this` using `[A]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hyy` using `key y 0 h0 y y.2`. Assume the negation of the conclusion as `hne`. Establish `hne' : (y : M) ≠ 0` using `by simpa using hne`. Use `hpos y y.2 hne'` as an intermediate fact. Rewrite `this` using `[hyy]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `at this`. Establish `hdim : Module.finrank ℂ F = Module.finrank ℂ (Fin n → ℂ)` using `by simp [n]`. Set `Aeq` to `LinearMap.linearEquivOfInjective A hinj hdim`. Use `⟨F.subtype.comp (Aeq.symm.toLinearMap.comp B), fun x => (Aeq.symm (B x)).2, ?_⟩` and prove the remaining obligations. Introduce `x f hf`.
+Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `show b ((Aeq.symm (B x) : F) : M) f = b x f`. Use `key (Aeq.symm (B x)) x ?_ f hf` and prove the remaining obligations. Introduce `i`. Establish `h1 : A (Aeq.symm (B x)) = B x`. Conclude with `Aeq.apply_symm_apply (B x)`.
-
-Use `congrFun h1 i` as an intermediate fact. Simplify `this` using `[A, B]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_proj_sesq_posDef_finiteDim : ∀ {M : Type} [AddCommGroup M] [Module ℂ M] (b : M →ₗ⋆[ℂ] M →ₗ[ℂ] ℂ) (F : Submodule ℂ M), FiniteDimensional ℂ F →
     (∀ x ∈ F, x ≠ 0 → 0 < (b x x).re) → (∀ x ∈ F, ∀ y ∈ F, star (b x y) = b y x) →

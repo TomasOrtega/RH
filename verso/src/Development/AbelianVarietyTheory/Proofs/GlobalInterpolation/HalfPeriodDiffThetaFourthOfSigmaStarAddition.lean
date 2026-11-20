@@ -11,53 +11,53 @@ noncomputable section
 namespace GlobalTheory.ThetaWeberRoad
 
 /- English proof (translation)
-Rewrite using `[show (π : ℂ) * I / 2 = π / 2 * I by ring]`. Conclude with `Complex.exp_pi_div_two_mul_I`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exp_half_pi_I : cexp ((π : ℂ) * I / 2) = I := by
   rw [show (π : ℂ) * I / 2 = π / 2 * I by ring]
   exact Complex.exp_pi_div_two_mul_I
 
 /- English proof (translation)
-Rewrite using `[show -((π : ℂ) * I / 2) = -π / 2 * I by ring]`. Conclude with `Complex.exp_neg_pi_div_two_mul_I`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exp_neg_half_pi_I : cexp (-((π : ℂ) * I / 2)) = -I := by
   rw [show -((π : ℂ) * I / 2) = -π / 2 * I by ring]
   exact Complex.exp_neg_pi_div_two_mul_I
 
 /- English proof (translation)
-Rewrite using `[Complex.exp_add, Complex.exp_pi_mul_I, neg_one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem neg_cexp (x : ℂ) : -cexp x = cexp ((π : ℂ) * I + x) := by
   rw [Complex.exp_add, Complex.exp_pi_mul_I, neg_one_mul]
 
 /- English proof (translation)
-Rewrite using `[Complex.exp_add, exp_half_pi_I]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem I_mul_cexp (x : ℂ) : I * cexp x = cexp ((π : ℂ) * I / 2 + x) := by
   rw [Complex.exp_add, exp_half_pi_I]
 
 /- English proof (translation)
-Rewrite using `[Complex.exp_add, exp_neg_half_pi_I]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem negI_mul_cexp (x : ℂ) : -I * cexp x = cexp (-((π : ℂ) * I / 2) + x) := by
   rw [Complex.exp_add, exp_neg_half_pi_I]
 
 /- English proof (translation)
-Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.ThetaConstantWeber.thetaConst]`.
+Simplify using the standard rewrite rules.
 -/
 theorem thetaConst_zero_zero (τ : UpperHalfPlane) :
     GlobalTheory.IndefiniteRowSideFullHecke.ThetaConstantWeber.thetaConst 0 0 τ = jacobiTheta₂ 0 τ := by
   simp [GlobalTheory.IndefiniteRowSideFullHecke.ThetaConstantWeber.thetaConst]
 
 /- English proof (translation)
-Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.ThetaConstantWeber.thetaConst]`.
+Simplify using the standard rewrite rules.
 -/
 theorem thetaConst_zero_one (τ : UpperHalfPlane) :
     GlobalTheory.IndefiniteRowSideFullHecke.ThetaConstantWeber.thetaConst 0 1 τ = jacobiTheta₂ (1 / 2) τ := by
   simp [GlobalTheory.IndefiniteRowSideFullHecke.ThetaConstantWeber.thetaConst]
 
 /- English proof (translation)
-Unfold `GlobalTheory.IndefiniteRowSideFullHecke.ThetaConstantWeber.thetaConst`. Use `push_cast`. Apply the tactic sequence `congr 2 <;> ring`.
+Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem thetaConst_one_zero (τ : UpperHalfPlane) :
     GlobalTheory.IndefiniteRowSideFullHecke.ThetaConstantWeber.thetaConst 1 0 τ =
@@ -67,7 +67,7 @@ theorem thetaConst_one_zero (τ : UpperHalfPlane) :
   congr 2 <;> ring
 
 /- English proof (translation)
-Unfold `oddTheta`. Rewrite using `[h, ← mul_assoc, ← Complex.exp_add]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem oddTheta_eq_of (τ : UpperHalfPlane) (z w k : ℂ)
     (h : jacobiTheta₂ (z + ((τ : ℂ) + 1) / 2) τ = cexp k * jacobiTheta₂ w τ) :
@@ -76,7 +76,7 @@ theorem oddTheta_eq_of (τ : UpperHalfPlane) (z w k : ℂ)
   rw [h, ← mul_assoc, ← Complex.exp_add]
 
 /- English proof (translation)
-Establish `h : jacobiTheta₂ (1 / 2 + ((τ : ℂ) + 1) / 2) τ = cexp 0 * jacobiTheta₂ ((τ : ℂ) / 2) τ`. Rewrite using `[show (1 : ℂ) / 2 + ((τ : ℂ) + 1) / 2 = (τ : ℂ) / 2 + 1 by ring, jacobiTheta₂_add_left, Complex.exp_zero, one_mul]`. Rewrite using `[oddTheta_eq_of τ _ _ _ h, thetaConst_one_zero, ← neg_mul, neg_cexp]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem oddTheta_half (τ : UpperHalfPlane) :
     oddTheta τ (1 / 2) = -GlobalTheory.IndefiniteRowSideFullHecke.ThetaConstantWeber.thetaConst 1 0 τ := by
@@ -88,7 +88,7 @@ theorem oddTheta_half (τ : UpperHalfPlane) :
   ring
 
 /- English proof (translation)
-Establish `h : jacobiTheta₂ ((τ : ℂ) / 2 + ((τ : ℂ) + 1) / 2) τ = cexp (-π * I * ((τ : ℂ) + 2 * (1 / 2))) * jacobiTheta₂ (1 / 2) τ`. Rewrite using `[show (τ : ℂ) / 2 + ((τ : ℂ) + 1) / 2 = 1 / 2 + (τ : ℂ) by ring, jacobiTheta₂_add_left']`. Rewrite using `[oddTheta_eq_of τ _ _ _ h, thetaConst_zero_one, negI_mul_cexp]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem oddTheta_tau_half (τ : UpperHalfPlane) :
     oddTheta τ ((τ : ℂ) / 2) =
@@ -101,9 +101,9 @@ theorem oddTheta_tau_half (τ : UpperHalfPlane) :
   ring
 
 /- English proof (translation)
-Establish `h : jacobiTheta₂ ((1 + (τ : ℂ)) / 2 + ((τ : ℂ) + 1) / 2) τ = cexp (-π * I * (τ : ℂ)) * jacobiTheta₂ 0 τ`. Rewrite using `[show (1 + (τ : ℂ)) / 2 + ((τ : ℂ) + 1) / 2 = (0 + 1) + (τ : ℂ) by ring, jacobiTheta₂_add_left', jacobiTheta₂_add_left]`. Use `congr 1`. Rewrite using `[show -(π : ℂ) * I * ((τ : ℂ) + 2 * (0 + 1)) = -π * I * (τ : ℂ) - 2 * π * I by ring, Complex.exp_sub, Complex.exp_two_pi_mul_I, div_one]`. Rewrite using `[oddTheta_eq_of τ _ _ _ h, thetaConst_zero_zero, neg_cexp]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem oddTheta_one_add_tau_half (τ : UpperHalfPlane) :
     oddTheta τ ((1 + (τ : ℂ)) / 2) =
@@ -120,7 +120,7 @@ theorem oddTheta_one_add_tau_half (τ : UpperHalfPlane) :
   ring
 
 /- English proof (translation)
-Establish `h : jacobiTheta₂ (1 / 2 - (τ : ℂ) / 2 + ((τ : ℂ) + 1) / 2) τ = cexp 0 * jacobiTheta₂ 0 τ`. Rewrite using `[show (1 : ℂ) / 2 - (τ : ℂ) / 2 + ((τ : ℂ) + 1) / 2 = 0 + 1 by ring, jacobiTheta₂_add_left, Complex.exp_zero, one_mul]`. Rewrite using `[oddTheta_eq_of τ _ _ _ h, thetaConst_zero_zero, neg_cexp]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem oddTheta_one_sub_tau_half (τ : UpperHalfPlane) :
     oddTheta τ (1 / 2 - (τ : ℂ) / 2) =
@@ -133,7 +133,7 @@ theorem oddTheta_one_sub_tau_half (τ : UpperHalfPlane) :
   ring
 
 /- English proof (translation)
-Establish `h : jacobiTheta₂ (1 + (τ : ℂ) / 2 + ((τ : ℂ) + 1) / 2) τ = cexp (-π * I * ((τ : ℂ) + 2 * (1 / 2))) * jacobiTheta₂ (1 / 2) τ`. Rewrite using `[show 1 + (τ : ℂ) / 2 + ((τ : ℂ) + 1) / 2 = (1 / 2 + (τ : ℂ)) + 1 by ring, jacobiTheta₂_add_left, jacobiTheta₂_add_left']`. Rewrite using `[oddTheta_eq_of τ _ _ _ h, thetaConst_zero_one, I_mul_cexp]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem oddTheta_one_add_tau_half' (τ : UpperHalfPlane) :
     oddTheta τ (1 + (τ : ℂ) / 2) =
@@ -147,7 +147,7 @@ theorem oddTheta_one_add_tau_half' (τ : UpperHalfPlane) :
   ring
 
 /- English proof (translation)
-Establish `h : jacobiTheta₂ (-((τ : ℂ) / 2) + ((τ : ℂ) + 1) / 2) τ = cexp 0 * jacobiTheta₂ (1 / 2) τ`. Rewrite using `[show -((τ : ℂ) / 2) + ((τ : ℂ) + 1) / 2 = 1 / 2 by ring, Complex.exp_zero, one_mul]`. Rewrite using `[oddTheta_eq_of τ _ _ _ h, thetaConst_zero_one, I_mul_cexp]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem oddTheta_neg_tau_half (τ : UpperHalfPlane) :
     oddTheta τ (-((τ : ℂ) / 2)) =
@@ -159,7 +159,7 @@ theorem oddTheta_neg_tau_half (τ : UpperHalfPlane) :
   ring
 
 /- English proof (translation)
-Establish `h : jacobiTheta₂ (1 / 2 + (τ : ℂ) + ((τ : ℂ) + 1) / 2) τ = cexp (-π * I * ((τ : ℂ) + 2 * ((τ : ℂ) / 2))) * jacobiTheta₂ ((τ : ℂ) / 2) τ`. Rewrite using `[show 1 / 2 + (τ : ℂ) + ((τ : ℂ) + 1) / 2 = ((τ : ℂ) / 2 + (τ : ℂ)) + 1 by ring, jacobiTheta₂_add_left, jacobiTheta₂_add_left']`. Rewrite using `[oddTheta_eq_of τ _ _ _ h, thetaConst_one_zero, ← mul_assoc, ← Complex.exp_add, ← neg_mul, neg_cexp]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem oddTheta_half_add_tau (τ : UpperHalfPlane) :
     oddTheta τ (1 / 2 + (τ : ℂ)) =
@@ -173,9 +173,9 @@ theorem oddTheta_half_add_tau (τ : UpperHalfPlane) :
   ring
 
 /- English proof (translation)
-Establish `h0 : E z ^ 2 * E w ^ 2 ≠ 0` using `mul_ne_zero (pow_ne_zero _ hz) (pow_ne_zero _ hw)`. Apply `mul_left_cancel₀ h0` to reduce the goal to its premises. Establish `h1` using `hI (z + w)`. Establish `h2` using `hI (z - w)`. Establish `h3` using `hI z`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4` using `hI w`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 private theorem g_add_mul_g_sub_of_addition_laws (E g σ : ℂ → ℂ) (c Δ z w : ℂ)
     (hE : E (z + w) * E (z - w) = E z ^ 2 * E w ^ 2) (hz : E z ≠ 0) (hw : E w ≠ 0)
@@ -195,9 +195,9 @@ private theorem g_add_mul_g_sub_of_addition_laws (E g σ : ℂ → ℂ) (c Δ z 
     _ = E z ^ 2 * E w ^ 2 * -(g z ^ 2 * g w ^ 2 * Δ) := by ring
 
 /- English proof (translation)
-Establish `hσ` using `hSA (GlobalTheory.periodPairOfTau τ) z w hz hw`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.ThetaConstantWeber.wp`. Use `g_add_mul_g_sub_of_addition_laws (fun u => Complex.exp ((Real.pi : ℂ) * u ^ 2 / (2 * ((τ.im : ℝ) : ℂ)))) (oddTheta τ) (Formalism.L2.Th1.F.sgStar (GlobalTheory.periodPairOfTau τ)) _ _ z w ?_ (Complex.exp_ne_zero _) (Complex.exp_ne_zero _) hI hσ` and prove the remaining obligations. Simplify using `only [← Complex.exp_add, ← Complex.exp_nat_mul]`. Use `congr 1`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem oddTheta_addition (hSA : Formalism.L2.Th1.F.SgStarAdd) (τ : UpperHalfPlane)
     (hI : ∀ z : ℂ, Complex.exp ((Real.pi : ℂ) * z ^ 2 / (2 * ((τ.im : ℝ) : ℂ))) * oddTheta τ z =
@@ -217,11 +217,11 @@ theorem oddTheta_addition (hSA : Formalism.L2.Th1.F.SgStarAdd) (τ : UpperHalfPl
   ring
 
 /- English proof (translation)
-Rewrite `e1`, `e2`, `e3` using `[hg]`. Rewrite `e3` using `[← hc4]`. Establish `hI2 : I ^ 2 = -1` using `Complex.I_sq`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Establish `h : (c ^ 2 * B ^ 2 * C ^ 2) * d1 = (c ^ 2 * B ^ 2 * C ^ 2) * (p ^ 2 * A ^ 4)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take the linear combination `(-1 : ℂ) * e1 + C ^ 2 * c ^ 2 * B ^ 2 * d1 * hI2`. Conclude with `mul_left_cancel₀ (by simp [hc, hB, hC]) h`. Establish `h : (c ^ 2 * A ^ 2 * C ^ 2) * d2 = (c ^ 2 * A ^ 2 * C ^ 2) * (p ^ 2 * B ^ 4)`. Take the linear combination `e2 - p ^ 2 * A ^ 2 * B ^ 4 * C ^ 2 * c ^ 2 * hI2`. Conclude with `mul_left_cancel₀ (by simp [hc, hA, hC]) h`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `h : (c ^ 4 * A ^ 2 * B ^ 2) * d3 = (c ^ 4 * A ^ 2 * B ^ 2) * (p ^ 2 * C ^ 4)`. Take the linear combination `(-1 : ℂ) * e3 + c ^ 4 * A ^ 2 * B ^ 2 * d3 * hI2`. Conclude with `mul_left_cancel₀ (by simp [hc, hA, hB]) h`.
+A detailed English derivation is pending.
 -/
 private theorem d_eq_sq_mul_pow_four_of_relations (p A B C g c e d1 d2 d3 : ℂ) (hA : A ≠ 0) (hB : B ≠ 0) (hC : C ≠ 0)
     (hc : c ≠ 0) (hg : g ^ 2 = p ^ 2 * (A * B * C) ^ 2) (hc4 : c ^ 4 = e)
@@ -244,17 +244,17 @@ private theorem d_eq_sq_mul_pow_four_of_relations (p A B C g c e d1 d2 d3 : ℂ)
     exact mul_left_cancel₀ (by simp [hc, hA, hB]) h
 
 /- English proof (translation)
-Introduce `hSA hI hD hJ τ`. Take `⟨n1, n2, n3⟩` from `GlobalTheory.IndefiniteRowSideFullHecke.ThetaConstantWeber.halfPeriods_notMem τ`. Establish `hd : deriv (oddTheta τ) 0 = -2 * (Real.pi : ℂ) * ModularForm.eta (τ : ℂ) ^ 3` using `(hD τ).deriv`. Establish `hJ' : GlobalTheory.IndefiniteRowSideFullHecke.ThetaConstantWeber.thetaConst 0 0 τ * GlobalTheory.IndefiniteRowSideFullHecke.ThetaConstantWeber.thetaConst 0 1 τ * GlobalTheory.IndefiniteRowSideFullHecke.ThetaConstantWeber.thetaConst 1 0 τ = 2 * ModularForm.eta (τ : ℂ) ^ 3` using `hJ τ`. Establish `hη : ModularForm.eta (τ : ℂ) ≠ 0` using `ModularForm.eta_ne_zero τ.2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hABC : GlobalTheory.IndefiniteRowSideFullHecke.ThetaConstantWeber.thetaConst 0 0 τ * GlobalTheory.IndefiniteRowSideFullHecke.ThetaConstantWeber.thetaConst 0 1 τ * GlobalTheory.IndefiniteRowSideFullHecke.ThetaConstantWeber.thetaConst 1 0 τ ≠ 0`. Rewrite using `[hJ']`. Conclude with `mul_ne_zero two_ne_zero (pow_ne_zero _ hη)`. Establish `hA : GlobalTheory.IndefiniteRowSideFullHecke.ThetaConstantWeber.thetaConst 0 0 τ ≠ 0` using `fun h => hABC (by rw [h]; ring)`. Establish `hB : GlobalTheory.IndefiniteRowSideFullHecke.ThetaConstantWeber.thetaConst 0 1 τ ≠ 0` using `fun h => hABC (by rw [h]; ring)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hC : GlobalTheory.IndefiniteRowSideFullHecke.ThetaConstantWeber.thetaConst 1 0 τ ≠ 0` using `fun h => hABC (by rw [h]; ring)`. Establish `hg : deriv (oddTheta τ) 0 ^ 2 = (π : ℂ) ^ 2 * (GlobalTheory.IndefiniteRowSideFullHecke.ThetaConstantWeber.thetaConst 0 0 τ * GlobalTheory.IndefiniteRowSideFullHecke.ThetaConstantWeber.thetaConst 0 1 τ * GlobalTheory.IndefiniteRowSideFullHecke.ThetaConstantWeber.thetaConst 1 0 τ) …`. Rewrite using `[hd, hJ']`. Expand and normalize the polynomial expressions, which then agree. Establish `hc4 : cexp (-((π : ℂ) * I * (τ : ℂ) / 4)) ^ 4 = cexp (-((π : ℂ) * I * (τ : ℂ)))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Complex.exp_nat_mul]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `e1` using `oddTheta_addition hSA τ (hI τ) (1 / 2) ((τ : ℂ) / 2) n1 n2`.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2` using `oddTheta_addition hSA τ (hI τ) (1 / 2) ((1 + (τ : ℂ)) / 2) n1 n3`. Establish `e3` using `oddTheta_addition hSA τ (hI τ) ((1 + (τ : ℂ)) / 2) ((τ : ℂ) / 2) n3 n2`. Rewrite `e1` using `[show (1 : ℂ) / 2 + (τ : ℂ) / 2 = (1 + (τ : ℂ)) / 2 by ring]`. Rewrite `e2` using `[show (1 : ℂ) / 2 + (1 + (τ : ℂ)) / 2 = 1 + (τ : ℂ) / 2 by ring, show (1 : ℂ) / 2 - (1 + (τ : ℂ)) / 2 = -((τ : ℂ) / 2) by ring]`. Rewrite `e3` using `[show (1 + (τ : ℂ)) / 2 + (τ : ℂ) / 2 = 1 / 2 + (τ : ℂ) by ring, show (1 + (τ : ℂ)) / 2 - (τ : ℂ) / 2 = 1 / 2 by ring]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e1` using `[oddTheta_one_add_tau_half, oddTheta_one_sub_tau_half, oddTheta_half, oddTheta_tau_half]`. Rewrite `e2` using `[oddTheta_one_add_tau_half', oddTheta_neg_tau_half, oddTheta_half, oddTheta_one_add_tau_half]`. Rewrite `e3` using `[oddTheta_half_add_tau, oddTheta_half, oddTheta_one_add_tau_half, oddTheta_tau_half]`. Conclude with `d_eq_sq_mul_pow_four_of_relations _ _ _ _ _ _ _ _ _ _ hA hB hC (Complex.exp_ne_zero _) hg hc4 e1 e2 e3`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem halfPeriodDiff_of : Formalism.L2.Th1.F.SgStarAdd →
     (∀ (τ : UpperHalfPlane) (z : ℂ), Complex.exp ((Real.pi : ℂ) * z ^ 2 / (2 * ((τ.im : ℝ) : ℂ))) *

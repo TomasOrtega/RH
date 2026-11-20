@@ -25,13 +25,13 @@ namespace GlobalTheory.SiegelNearby
 open GlobalTheory.ZM.SiegPull GlobalTheory.RigidTranslate
 
 /- English proof (translation)
-The claim follows from `(Category.comp_id _).symm.trans (Over.w (toUnit T))`.
+A detailed English derivation is pending.
 -/
 theorem toUnit_left {S : Scheme.{0}} (T : Over S) : (toUnit T).left = T.hom :=
   (Category.comp_id _).symm.trans (Over.w (toUnit T))
 
 /- English proof (translation)
-Take `⟨P', φ, hφ, hg, hm, t, ht⟩` from `hB _ _ f P`. Use `⟨P', φ, ⟨hφ, fun T x y x₀ y₀ hx hy => ?_⟩, hg, LBIso.symm ⟨t, ht⟩⟩` and prove the remaining obligations. Rewrite using `[(Over.OverMorphism.ext hx : x₀ = Out.toBase hφ.w x), (Over.OverMorphism.ext hy : y₀ = Out.toBase hφ.w y), ← hm]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem exists_polPB (hB : Out.PolBaseChangeSt) {S S' : Scheme.{0}} (P : Out.PolAV S) (f : S' ⟶ S) :
     ∃ (P' : Out.PolAV S') (φ : P'.A.left ⟶ P.A.left), PolPB P' P f φ := by
@@ -41,9 +41,9 @@ theorem exists_polPB (hB : Out.PolBaseChangeSt) {S S' : Scheme.{0}} (P : Out.Pol
   rfl
 
 /- English proof (translation)
-Establish `h₁` using `h.2 G' (toUnit G' ≫ t') (𝟙 G') (toUnit _ ≫ t) (pushPt h.1.w (𝟙 G')) (by`. Rewrite using `[Over.comp_left, Over.comp_left, toUnit_left, toUnit_left, Category.assoc, e]`. Conclude with `Category.assoc _ _ _) rfl`. Establish `h₂ : pushPt h.1.w (𝟙 G') ≫ ((toUnit G ≫ t) * 𝟙 G) = (toUnit _ ≫ t) * pushPt h.1.w (𝟙 G')`. Rewrite using `[MonObj.comp_mul, Category.comp_id, ← Category.assoc, comp_toUnit]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h₁, ← h₂, Over.comp_left]`. Conclude with `congrArg (· ≫ _) (Category.id_comp φ)`.
+A detailed English derivation is pending.
 -/
 theorem transl_comm {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} [GrpObj G] [GrpObj G'] {f : S' ⟶ S}
     {φ : G'.left ⟶ G.left} (h : IsGrpPullback G' G f φ) (t : 𝟙_ (Over S) ⟶ G) (t' : 𝟙_ (Over S') ⟶ G')
@@ -58,11 +58,9 @@ theorem transl_comm {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} [GrpObj G] [
   exact congrArg (· ≫ _) (Category.id_comp φ)
 
 /- English proof (translation)
-Establish `w : (f ≫ t.left) ≫ G.hom = 𝟙 S' ≫ f`. Rewrite using `[Category.assoc, Over.w t]`. Conclude with `(Category.comp_id _).trans (Category.id_comp _).symm`. Set `t' : 𝟙_ (Over S') ⟶ G'` to `Over.homMk (h.1.lift (f ≫ t.left) (𝟙 S') w) (h.1.lift_snd _ _ _)`. Establish `e : t'.left ≫ φ = f ≫ t.left` using `h.1.lift_fst _ _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e₁ : pushHom h _ t' = toUnit _ ≫ t` using `Over.OverMorphism.ext (by`. Rewrite using `[Over.comp_left, toUnit_left]`. Conclude with `e.trans (congrArg (· ≫ t.left) (Category.id_comp f).symm))`. Establish `e₂ : pushHom h _ (t' ^ n) = pushHom h _ 1`. Rewrite using `[map_pow, e₁, map_one, ← MonObj.comp_pow, ht, MonObj.comp_one]`.
-
-Use `⟨t', Over.OverMorphism.ext (h.1.hom_ext (congrArg (fun q => q.left) e₂) ?_), e⟩` and prove the remaining obligations. Conclude with `(Over.w _).trans (Over.w _).symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_section_pull {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} [GrpObj G] [GrpObj G'] {f : S' ⟶ S}
     {φ : G'.left ⟶ G.left} (h : IsGrpPullback G' G f φ) (t : 𝟙_ (Over S) ⟶ G) (n : ℕ) (ht : t ^ n = 1) :
@@ -83,17 +81,17 @@ theorem exists_section_pull {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} [Grp
 variable {h k : ℕ} {o : Type} [CommRing o] {ζ : o} {S : Scheme.{0}} {s : S ⟶ Sp o}
 
 /- English proof (translation)
-Take `⟨Q₀, ψ₀, hpb⟩` from `exists_polPB hL.polBaseChange Q p`. Establish `h₀` using `(sqOf_calculus h k o ζ S _ _ s c f).1 p Q Q₀ φ ψ₀ hQ hpb`. Take `⟨e, he, heφ, hlam⟩` from `(sqOf_calculus h k o ζ S _ S s c (p ≫ f)).2.1 Q₀ P₀ _ _ h₀ hP`. Take `⟨t₀, ht₀, i₀⟩` from `GlobalTheory.T.exists_twoTorsion_translate_same_lambdaBundle hL ℂ Q₀ P₀ e he hlam`. Take `⟨t, ht, hy⟩` from `hT ℂ ((𝟙_ (Over (Sp ℂ))).hom ≫ p) (pushHom hpb.1 _ t₀) (by rw [← map_pow, ht₀, map_one])`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `et : t₀.left ≫ ψ₀ = p ≫ t.left`. Use `(congrArg (fun q => q.left) hy).trans ?_` and prove the remaining obligations. Rewrite using `[Over.comp_left, toUnit_left]`. Conclude with `congrArg (· ≫ t.left) (Category.id_comp p)`. Take `⟨Q', e', he', hg', hlam', i'⟩` from `exists_rigid_translate hL R Q t ht`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `ee : e'.inv.left ≫ e'.hom.left = 𝟙 _` using `by rw [← Over.comp_left, e'.inv_hom_id, Over.id_left]`. Establish `: IsMonHom e'.symm.hom` using `inferInstanceAs (IsMonHom e'.inv)`. Establish `gp : IsGrpPullback P₀.A Q'.A p (e.hom.left ≫ ψ₀ ≫ e'.inv.left)` using `((isGrpPullback_of_iso e).comp (hpb.1.comp (isGrpPullback_of_iso e'.symm))).congr ((Category.id_comp _).trans (Category.comp_id _)) rfl`. Establish `hQ'` using `(sqOf_calculus h k o ζ S _ S s c f).2.2 Q Q' φ e' he' hg' hlam' hQ`. Use `⟨Q', e'.hom.left ≫ φ, e.hom.left ≫ ψ₀ ≫ e'.inv.left, hQ', ⟨gp, hP.2.1.trans hQ'.2.1.symm, ?_⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨i, hi⟩` from `exists_chart Q.isLB ((p ≫ t.left) (default : PrimeSpectrum ℂ))`. Establish `j₁` using `lbIso_diff_pull Q.isLB (e'.hom ≫ ((toUnit Q.A ≫ t) * 𝟙 Q.A)).left (toUnit Q'.A ≫ t).left (e.hom.left ≫ ψ₀ ≫ e'.inv.left) i fun z => by`. Establish `: (e.hom.left ≫ ψ₀ ≫ e'.inv.left) ≫ (toUnit Q'.A ≫ t).left = P₀.A.hom ≫ p ≫ t.left`. Rewrite using `[Over.comp_left, toUnit_left, ← Category.assoc, gp.1.w, Category.assoc]`. Rewrite using `[this, Scheme.Hom.comp_apply, Subsingleton.elim (α := PrimeSpectrum ℂ) (P₀.A.hom z) default]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hi`. Establish `E : (e.hom.left ≫ ψ₀ ≫ e'.inv.left) ≫ (e'.hom ≫ ((toUnit Q.A ≫ t) * 𝟙 Q.A)).left = (e.hom ≫ ((toUnit Q₀.A ≫ t₀) * 𝟙 Q₀.A)).left ≫ ψ₀`. Rewrite using `[Over.comp_left, Over.comp_left, Category.assoc, Category.assoc, Category.assoc, transl_comm hpb.1 t t₀ et, ← Category.assoc e'.inv.left, ee, Category.id_comp]`. Rewrite `j₁` using `[E]`. Establish `j₂` using `LBIso.chartPull (Geo.Tor.chartPullPull _ _ (e.hom.left ≫ ψ₀ ≫ e'.inv.left) rfl) (Geo.Tor.chartPullPull _ _ _ rfl) i'`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `j₃` using `LBIso.trans P₀.isLB (pull_isLB Q₀.isLB _) (pull_isLB Q.isLB _) i₀ (lbIso_pull_comp hpb.2.2 _)`. Conclude with `LBIso.trans P₀.isLB (pull_isLB Q.isLB _) (pull_isLB Q'.isLB _) j₃ (LBIso.trans (pull_isLB Q'.isLB _) (pull_isLB (DVR.linComb_isLB _ Q.isLB _ _) _) (pull_isLB Q.isLB _) j₂ j₁).symm`. Rewrite using `[Category.assoc, Category.assoc, ← Category.assoc e'.inv.left, ee, Category.id_comp, heφ]`.
+A detailed English derivation is pending.
 -/
 theorem exists_sqOf_polPB (hL : Out.Laws) {R : Type} [CommRing R] {c : SiegPre h k ζ s} {f : Sp R ⟶ S}
     {Q : Out.PolAV (Sp R)} {φ : Q.A.left ⟶ c.A.left} (hQ : SqOf Q c f φ) (hT : TorsConst Q.A 2) (p : Sp ℂ ⟶ Sp R)
@@ -137,7 +135,7 @@ theorem exists_sqOf_polPB (hL : Out.Laws) {R : Type} [CommRing R] {c : SiegPre h
   · rw [Category.assoc, Category.assoc, ← Category.assoc e'.inv.left, ee, Category.id_comp, heφ]
 
 /- English proof (translation)
-Establish `: CompactSpace ↥(pullback f x)` using `QuasiCompact.compactSpace_of_compactSpace (pullback.snd f x)`. Take `⟨p, -⟩` from `(pullback.snd f x).surjective (default : PrimeSpectrum F)`. Take `⟨q, -, hq⟩` from `isClosed_univ.exists_closed_singleton (X := ↥(pullback f x)) ⟨p, trivial⟩`. Use `⟨pointOfClosedPoint (pullback.snd f x) q hq ≫ pullback.fst f x, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, pointOfClosedPoint_comp, Category.id_comp]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_point_lift {F : Type} [Field F] [IsAlgClosed F] {X Y : Scheme.{0}} (f : X ⟶ Y) [IsFinite f]
     [Surjective f] (x : Sp F ⟶ Y) : ∃ b : Sp F ⟶ X, b ≫ f = x := by
@@ -148,13 +146,13 @@ theorem exists_point_lift {F : Type} [Field F] [IsAlgClosed F] {X Y : Scheme.{0}
   rw [Category.assoc, pullback.condition, ← Category.assoc, pointOfClosedPoint_comp, Category.id_comp]
 
 /- English proof (translation)
-Use `F.smooth` as an intermediate fact. Establish `: Smooth F.s` using `SmoothOfRelativeDimension.smooth (h * (h + 1) / 2) F.s`. Establish `: IsLocallyNoetherian F.X` using `LocallyOfFiniteType.isLocallyNoetherian F.s`. Take `⟨U, hU, hp, -⟩` from `exists_isAffineOpen_mem_and_subset (X := F.X) (x := p₀ (default : PrimeSpectrum ℂ)) (U := ⊤) trivial`. Establish `: IsNoetherianRing Γ(F.X, U)` using `IsLocallyNoetherian.component_noetherian ⟨U, hU⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: CharZero K` using `σ.charZero`. Set `f : Sp Γ(F.X, U) ⟶ F.X` to `hU.fromSpec`. Establish `: IsOpenImmersion f` using `inferInstanceAs (IsOpenImmersion hU.fromSpec)`. Take `⟨β, -⟩` from `Spec.map_surjective (f ≫ F.s)`. Use `letI : Algebra ℚ Γ(F.X, U) := (β.hom.comp (algebraMap ℚ K)).toAlgebra`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Equip the data with the indicated structure.
 
-Take `⟨R, _, _, Q, φ, ⟨h₁, h₂, h₃⟩, hQ, hT⟩` from `GlobalTheory.T.exists_symmetric_sqrt_principal_siegel_finite_etale hL h k K ζ Γ(F.X, U) F.X F.s F.univ f hk hζ F.princ`. Establish `: IsFinite (spMap (algebraMap Γ(F.X, U) R))` using `(IsFinite.SpecMap_iff _).2 (RingHom.finite_algebraMap.2 h₁)`. Establish `: Surjective (spMap (algebraMap Γ(F.X, U) R))` using `⟨PrimeSpectrum.comap_surjective_of_faithfullyFlat⟩`. Establish `: Etale (spMap (algebraMap Γ(F.X, U) R))` using `HasRingHomProperty.Spec_iff.2 (RingHom.etale_algebraMap.2 h₂)`. Establish `hr : Set.range p₀ ⊆ Set.range f`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨z, rfl⟩`. Rewrite using `[Subsingleton.elim (α := PrimeSpectrum ℂ) z default]`. Conclude with `hU.range_fromSpec.ge hp`. Take `⟨p, hp⟩` from `exists_point_lift (spMap (algebraMap Γ(F.X, U) R)) (IsOpenImmersion.lift f p₀ hr)`. Conclude with `⟨R, _, _, p, Q, φ, inferInstance, by rw [← Category.assoc, hp, IsOpenImmersion.lift_fac], hQ, hT⟩`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_etale_sqrt (hL : Out.Laws) {K : Type} [Field K] {ζ : K} (σ : K →+* ℂ) (F : SFam h k ζ) (hk : 2 ≤ k)
     (hζ : IsUnit ζ) (p₀ : Sp ℂ ⟶ F.X) :
@@ -185,19 +183,17 @@ theorem exists_etale_sqrt (hL : Out.Laws) {K : Type} [Field K] {ζ : K} (σ : K 
   exact ⟨R, _, _, p, Q, φ, inferInstance, by rw [← Category.assoc, hp, IsOpenImmersion.lift_fac], hQ, hT⟩
 
 /- English proof (translation)
-Introduce `hL _ hU h k K _ ζ σ F hh hk ho hζ τ₀ p₀ hs ⟨P₀, lev₀, φ₀, hper, hsq, hlev⟩`. Establish `hζ' : IsUnit ζ` using `IsUnit.mk0 _ fun e => Complex.exp_ne_zero _ (by rw [← hζ, e, map_zero])`. Take `⟨R, _, π, p₁, Q₁, φ₁, het, rfl, hQ₁, hT⟩` from `exists_etale_sqrt hL σ F (by omega) hζ' p₀`. Take `⟨Q, φ, ψ, hQ, hpb, rfl⟩` from `exists_sqOf_polPB hL hQ₁ hT p₁ hsq`. Use `choose l hl hl' using fun a => exists_section_pull hQ.1 (F.univ.lev a) k (F.univ.lev_tors a)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `F.smooth` as an intermediate fact. Establish `sm : SmoothOfRelativeDimension (h * (h + 1) / 2) (π ≫ F.s)`. Use `smoothOfRelativeDimension_comp 0 (h * (h + 1) / 2) π F.s` as an intermediate fact. Rewrite `this` using `[zero_add]`. Then use the resulting hypothesis. Establish `: Smooth (π ≫ F.s)` using `SmoothOfRelativeDimension.smooth (h * (h + 1) / 2) _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨B, y, -, -, -, -, hB, hB0, hy0, hys, hyh, hyi, -⟩` from `SubfieldChart.exists_holomorphic_chart K σ _ (π ≫ F.s) _ p₁ sm (by rw [← Category.assoc, hs])`. Substitute `hy0` using the available equality. Take `⟨B₁, τ, hB₁, hB₁0, hB₁B, hτ0, hτd, hτ⟩` from `PeriodLift.exists_local_period_matrix hL hU K σ _ (π ≫ F.s) Q h k _ l B y 0 P₀ ψ τ₀ lev₀ inferInstance (by omega) hl hB hB0 hys hyh hpb hper fun a => by`. Apply `hQ.1.1.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, hlev, Category.assoc, Category.assoc, hl']`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, hpb.1.1.w, ← Category.assoc, Over.w, Category.assoc, Over.w]`. Conclude with `(Category.id_comp _).trans (Category.comp_id _).symm`. Establish `hpt : ∀ b ∈ B₁, PtAt F.univ (y b ≫ π) (τ b)` using `fun b hb => by`. Take `⟨P, χ, lev, h₁, h₂, h₃⟩` from `hτ b hb`. Conclude with `⟨P, lev, χ ≫ φ, h₂, (sqOf_calculus h k K ζ _ _ _ F.s F.univ π).1 _ Q P φ χ hQ h₁, fun a => by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Category.assoc, h₃, Category.assoc, hl', Category.assoc]⟩`. Establish `hys' : ∀ b ∈ B, (y b ≫ π) ≫ F.s = spMap σ` using `fun b hb => by rw [Category.assoc, hys b hb]`. Take `⟨B₂, hB₂, hB₂0, hB₂B, hinj⟩` from `EtaleLocInj.exists_open_injOn _ _ π _ B y 0 het hB hB0 hyh`. Take `⟨ε, hε, hball⟩` from `Metric.isOpen_iff.1 (hB₁.inter hB₂) 0 ⟨hB₁0, hB₂0⟩`. Establish `hbB : Metric.ball 0 ε ⊆ B` using `fun b hb => hB₁B (hball hb).1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨N, hN, hNτ⟩` from `SiegelOpen.exists_nhds_subset_image h (Metric.ball 0 ε) τ 0 Metric.isOpen_ball (Metric.mem_ball_self hε) (fun i j => (hτd i j).mono fun b hb => (hball hb).1) (fun b hb => let ⟨_, _, _, H, _⟩ := hpt b (hball hb).1; ⟨H.2.1, H.2.2.1⟩) fun b hb b' hb' e => hyi (hbB hb) (hbB hb') (hin …`. Use `⟨N, hτ0 ▸ hN, fun t ht p hp hpt' => ?_⟩` and prove the remaining obligations. Establish `H` using `hpt'`. Take `⟨_, _, _, H, _⟩` from `H`. Take `⟨b, hb, rfl⟩` from `hNτ t ht H.2.1 H.2.2.1`.
-
-Rewrite using `[GlobalTheory.T.siegelFamily_complexPoint_eq_of_same_periodMatrix hL hU h k K ζ σ F hh hk ho hζ (τ b) p _ hp (hys' b (hbB hb)) hpt' (hpt b (hball hb).1)]`. Conclude with `sameComp_of_isHolTo K σ _ F.s _ (Metric.ball 0 ε) (fun b => y b ≫ π) Metric.isOpen_ball (convex_ball _ _).isPreconnected (fun b hb => hys' b (hbB hb)) (LocLift.isHolTo_comp_hom (LocLift.isHolTo_mono hyh Metric.isOpen_ball hbB) π) b hb 0 (Metric.mem_ball_self hε)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_nhds_sameComp : Out.Laws → Out.Laws2 → ThetaUnifAV → ∀ (h k : ℕ) (K : Type) [Field K] (ζ : K) (σ : K →+* ℂ) (F : SFam h k ζ), 1 ≤ h → 3 ≤ k → Odd k → σ ζ = Complex.exp (-(2 * Real.pi * Complex.I) / k) → ∀ (τ₀ : Matrix (Fin h) (Fin h) ℂ) (p₀ : Sp ℂ ⟶ F.X), p₀ ≫ F.s = spMap σ → PtAt F.univ p₀ τ₀ → ∃ N ∈ nhds τ₀, ∀ τ ∈ N, ∀ p : Sp ℂ ⟶ F.X, p ≫ F.s = spMap σ → PtAt F.univ p τ → SameComp F.s σ p p₀ := by
   intro hL _ hU h k K _ ζ σ F hh hk ho hζ τ₀ p₀ hs ⟨P₀, lev₀, φ₀, hper, hsq, hlev⟩

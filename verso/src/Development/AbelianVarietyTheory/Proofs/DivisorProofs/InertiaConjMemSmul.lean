@@ -8,17 +8,17 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `K Ω _ _ _ V g σ hσ`. Rewrite `hσ`, the goal using `[mem_inertia_iff]`. Take `⟨h1, h2⟩` from `hσ`. Establish `hn : ∀ z : Ω, V.valuation z < 1 → (g • V).valuation (g z) < 1`. Introduce `z hz`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hz`, the goal using `[← ValuationSubring.mem_nonunits_iff, ValuationSubring.mem_nonunits_iff_or]`. Break down `hz with hz | hz` into its components or cases. Use `left`. Simplify using `[hz]`. Use `right`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem]`. Introduce `h`. Apply `hz` to reduce the goal to its premises. Establish `: (g⁻¹ • (g z)⁻¹) = z⁻¹`. Express the relevant statement in the definitionally equal form `g⁻¹ ((g z)⁻¹) = z⁻¹`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[map_inv₀]`. Simplify using the standard rewrite rules. Rewrite `h` using `[this]`. Then use the resulting hypothesis. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_smul, mul_smul, inv_smul_smul, h1]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `x hx`. Rewrite `hx` using `[ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem]`. Use `set y := g⁻¹ • x with hy`. Establish `hxy : x = g y` using `by simp [hy]`. Establish `: (g * σ * g⁻¹) x - x = g (σ y - y)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sub, hxy]`. Simplify using the standard rewrite rules. Rewrite using `[this]`. Conclude with `hn _ (h2 y hx)`.
+A detailed English derivation is pending.
 -/
 theorem inertia_conj_mem_smul : ∀ (K Ω : Type) [Field K] [Field Ω] [Algebra K Ω] (V : ValuationSubring Ω)
     (g σ : Ω ≃ₐ[K] Ω), σ ∈ inertia K V → g * σ * g⁻¹ ∈ inertia K (g • V) := by

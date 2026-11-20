@@ -14,21 +14,21 @@ variable {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Sp Ω ⟶ X} {R : Type} [
   {z : Sp R ⟶ X}
 
 /- English proof (translation)
-Take `⟨hz, s, hs, -⟩` from `h`. Conclude with `⟨hz, s, hs⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem val_spec {a : Ω} {r : R} (h : ValAt ξ z a r) : ∃ hz : genPt ξ ⤳ centre z, a ∈ regAt ξ ⟨centre z, hz⟩ := by
   obtain ⟨hz, s, hs, -⟩ := h
   exact ⟨hz, s, hs⟩
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `h`. Conclude with `⟨_, hz, s, hs, rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem val_exists {a : Ω} {hz : genPt ξ ⤳ centre z} (h : a ∈ regAt ξ ⟨centre z, hz⟩) : ∃ r : R, ValAt ξ z a r := by
   obtain ⟨s, hs⟩ := h
   exact ⟨_, hz, s, hs, rfl⟩
 
 /- English proof (translation)
-Take `⟨hz, s, hs, rfl⟩` from `h`. Take `⟨hz', s', hs', rfl⟩` from `h'`. Establish `: s = s'` using `hξ.inj ⟨centre z, hz⟩ (hs.trans hs'.symm)`. Rewrite using `[this]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem val_unique (hξ : IsCptGen ξ) {a : Ω} {r r' : R} (h : ValAt ξ z a r) (h' : ValAt ξ z a r') : r = r' := by
   obtain ⟨hz, s, hs, rfl⟩ := h
@@ -37,7 +37,7 @@ theorem val_unique (hξ : IsCptGen ξ) {a : Ω} {r r' : R} (h : ValAt ξ z a r) 
   rw [this]
 
 /- English proof (translation)
-Take `⟨hz, t, ht, rfl⟩` from `h`. Take `⟨hz', t', ht', rfl⟩` from `h'`. Conclude with `⟨hz, t * t', by rw [map_mul, ht]; rw [← ht'], map_mul _ _ _⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem val_mul {a b : Ω} {r s : R} (h : ValAt ξ z a r) (h' : ValAt ξ z b s) : ValAt ξ z (a * b) (r * s) := by
   obtain ⟨hz, t, ht, rfl⟩ := h
@@ -45,7 +45,7 @@ theorem val_mul {a b : Ω} {r s : R} (h : ValAt ξ z a r) (h' : ValAt ξ z b s) 
   exact ⟨hz, t * t', by rw [map_mul, ht]; rw [← ht'], map_mul _ _ _⟩
 
 /- English proof (translation)
-Take `⟨hz, t, ht, rfl⟩` from `h`. Take `⟨hz', t', ht', rfl⟩` from `h'`. Conclude with `⟨hz, t + t', by rw [map_add, ht]; rw [← ht'], map_add _ _ _⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem val_add {a b : Ω} {r s : R} (h : ValAt ξ z a r) (h' : ValAt ξ z b s) : ValAt ξ z (a + b) (r + s) := by
   obtain ⟨hz, t, ht, rfl⟩ := h
@@ -53,27 +53,27 @@ theorem val_add {a b : Ω} {r s : R} (h : ValAt ξ z a r) (h' : ValAt ξ z b s) 
   exact ⟨hz, t + t', by rw [map_add, ht]; rw [← ht'], map_add _ _ _⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hz, (n : X.presheaf.stalk (centre z)), map_natCast _ n, map_natCast _ n⟩`.
+Supply the required witnesses or components.
 -/
 theorem val_nat (hz : genPt ξ ⤳ centre z) (n : ℕ) : ValAt ξ z (n : Ω) (n : R) :=
   ⟨hz, (n : X.presheaf.stalk (centre z)), map_natCast _ n, map_natCast _ n⟩
 
 /- English proof (translation)
-Simplify using `using val_nat (ξ := ξ) (z := z) hz 1`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem val_one (hz : genPt ξ ⤳ centre z) : ValAt ξ z (1 : Ω) (1 : R) := by
   simpa using val_nat (ξ := ξ) (z := z) hz 1
 
 /- English proof (translation)
-Simplify using `using val_nat (ξ := ξ) (z := z) hz 0`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem val_zero (hz : genPt ξ ⤳ centre z) : ValAt ξ z (0 : Ω) (0 : R) := by
   simpa using val_nat (ξ := ξ) (z := z) hz 0
 
 /- English proof (translation)
-Take `⟨hz, s, hs, hr⟩` from `h`. Establish `hu : IsUnit s` using `(Scheme.isLocalHom_stalkClosedPointTo' z).map_nonunit s (hr ▸ r.isUnit)`. Take `⟨u, rfl⟩` from `hu`. Use `⟨hz, ↑u⁻¹, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hs, map_units_inv]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `: (Units.map (Scheme.stalkClosedPointTo z).hom.toMonoidHom u) = r` using `Units.ext hr`. Rewrite using `[← this]`. Conclude with `congrArg Units.val (map_inv (Units.map (Scheme.stalkClosedPointTo z).hom.toMonoidHom) u)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_inv {a : Ω} {r : Rˣ} (h : ValAt ξ z a r) : ValAt ξ z a⁻¹ (↑r⁻¹ : R) := by
   obtain ⟨hz, s, hs, hr⟩ := h
@@ -86,7 +86,7 @@ theorem val_inv {a : Ω} {r : Rˣ} (h : ValAt ξ z a r) : ValAt ξ z a⁻¹ (↑
     exact congrArg Units.val (map_inv (Units.map (Scheme.stalkClosedPointTo z).hom.toMonoidHom) u)
 
 /- English proof (translation)
-Introduce and unpack `rfl`. Take `⟨hz, -⟩` from `val_spec h`. Use `val_unique hξ h (val_zero hz)` as an intermediate fact. Conclude with `r.ne_zero this`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem val_ne_zero (hξ : IsCptGen ξ) [Nontrivial R] {a : Ω} {r : Rˣ} (h : ValAt ξ z a r) : a ≠ 0 := by
   rintro rfl
@@ -95,7 +95,7 @@ theorem val_ne_zero (hξ : IsCptGen ξ) [Nontrivial R] {a : Ω} {r : Rˣ} (h : V
   exact r.ne_zero this
 
 /- English proof (translation)
-Use `val_inv (r := Units.mk0 r hr) h` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem val_inv₀ {F : Type} [Field F] {z : Sp F ⟶ X} {a : Ω} {r : F} (hr : r ≠ 0) (h : ValAt ξ z a r) :
     ValAt ξ z a⁻¹ r⁻¹ := by
@@ -103,9 +103,9 @@ theorem val_inv₀ {F : Type} [Field F] {z : Sp F ⟶ X} {a : Ω} {r : F} (hr : 
   simpa using this
 
 /- English proof (translation)
-Take `⟨hz, -⟩` from `val_spec h`. Establish `hp : ∀ k : ℕ, ∀ {b : Ω} {s : F}, ValAt ξ z b s → ValAt ξ z (b ^ k) (s ^ k)`. Introduce `k b s hb`. Proceed by induction on `k with`. Consider the case `zero => simpa using val_one hz`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `succ k ih => rw [pow_succ, pow_succ]`. Conclude with `val_mul ih hb`. Break down `n with k | k` into its components or cases. Simplify using `using hp k h`. Simplify `val_inv₀ (pow_ne_zero _ hr) (hp (k + 1) h)` using `[zpow_negSucc]`.
+Treat this case separately. Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem val_zpow {F : Type} [Field F] {z : Sp F ⟶ X} {a : Ω} {r : F} (hr : r ≠ 0) (h : ValAt ξ z a r) (n : ℤ) :
     ValAt ξ z (a ^ n) (r ^ n) := by
@@ -120,9 +120,9 @@ theorem val_zpow {F : Type} [Field F] {z : Sp F ⟶ X} {a : Ω} {r : F} (hr : r 
   · simpa [zpow_negSucc] using val_inv₀ (pow_ne_zero _ hr) (hp (k + 1) h)
 
 /- English proof (translation)
-Establish `h1` using `fun k => hw.2 k (c k) (isUnit_iff_ne_zero.2 (hc k))`. Use `⟨Finset.prod_ne_zero_iff.2 fun k _ => (h1 k).1, fun c' => ?_⟩` and prove the remaining obligations. Simplify using `only`. Rewrite using `[← Finset.prod_div_distrib]`. Use `prod_mem fun k _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨r, hr, -⟩` from `(h1 k).2 (c' k)`. Take `⟨hz', s, hs, -⟩` from `hr`. Conclude with `⟨s, hs⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem in_chart {K : Type} [Fintype K] {J : K → Type} {y : (Σ k, J k) → Ω} {z : Sp ℂ ⟶ X} {w : (Σ k, J k) → ℂ}
     {c : (k : K) → J k} (hz : genPt ξ ⤳ centre z) (hw : CoordsAt ξ y z w) (hc : ∀ k, w ⟨k, c k⟩ ≠ 0) :
@@ -137,11 +137,11 @@ theorem in_chart {K : Type} [Fintype K] {J : K → Type} {y : (Σ k, J k) → Ω
   exact ⟨s, hs⟩
 
 /- English proof (translation)
-Use `⟨fun k => ?_, fun k c' hu => ?_⟩` and prove the remaining obligations. Take `⟨c', h'⟩` from `hw.1 k`. Conclude with `⟨c', (isUnit_iff_ne_zero.2 (hc k)).mul h'⟩`. Establish `hu' : IsUnit (w ⟨k, c'⟩)` using `isUnit_iff_ne_zero.2 (right_ne_zero_of_mul hu.ne_zero)`. Take `⟨h1, h2⟩` from `hw.2 k c' hu'`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨h1, fun i => ?_⟩` and prove the remaining obligations. Take `⟨r, hr, hr'⟩` from `h2 i`. Use `⟨r, hr, ?_⟩` and prove the remaining obligations. Use `show c k * w ⟨k, i⟩ = r * (c k * w ⟨k, c'⟩)`. Rewrite using `[hr']`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem coordsAt_smul {K : Type} {J : K → Type} {y : (Σ k, J k) → Ω} {z : Sp ℂ ⟶ X} {w : (Σ k, J k) → ℂ}
     (c : K → ℂ) (hc : ∀ k, c k ≠ 0) (hw : CoordsAt ξ y z w) : CoordsAt ξ y z (fun p => c p.1 * w p) := by

@@ -37,13 +37,13 @@ def RowLatExists : Prop :=
 
 variable [Fact Formalism.HermitianLattices.Ext.L3.HermRepUnram] in
 /- English proof (translation)
-Take `⟨hK, hF, -⟩` from `field_dictionary_holds D`. Establish `hk : D.R.m + 3 ≤ D.R.k` using `D.R.m_add_three_le_k`. Establish `hc` using `(Formalism.L2.SG.Pf.Asm.cMass_spec hK hF (D.R.k - 1) (by omega)).1`. Establish `hd : 0 < |(NumberField.discr D.host.F : ℝ)| ^ (-((2 * D.R.rS * (D.R.rS + 1) * (D.R.k - 1) : ℕ) : ℤ))`. Apply `zpow_pos` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `abs_pos.mpr (by exact_mod_cast NumberField.discr_ne_zero D.host.F)`. Establish `hL : 0 < ∏ i ∈ Finset.Icc D.R.k D.R.r, lValEtaF D.host.E D.host.F i`. Apply `Finset.prod_pos` to reduce the goal to its premises. Introduce `i hi`. Establish `hi2 : 2 ≤ i` using `by simp only [Finset.mem_Icc] at hi; omega`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← lValEta_eq_lValEtaF hK hF i hi2]`. Conclude with `lValEta_pos hK i hi2`. Establish `hA : Formalism.L2.SG.PairVal.AutFin D F0 what₂`. Introduce `Λ hΛ`. Conclude with `_root_.automorphism_lattice_finite D (D.sp.Y_sig 0) (D.mem u).A.T (D.mem u).A.T_prime.pos F0 Λ (hR.1 Λ hΛ)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Check the signs of the components of the expression.
 
-Establish `hm` using `Formalism.L2.SG.PairVal.massRows_pos D F0 what₂ hA hne`. Unfold `cExpl`. Check the signs of the components of the expression.
+A detailed English derivation is pending.
 -/
 theorem cExpl_pos' (D : Formalism.BasicNotions.D7) (u : D.what₂.Word) (F0 : FlagG (VS D) D.R.rS (Tn u))
     (what₂ : Finset (Submodule (𝓞 D.host.E) (VS D).V)) (hR : IsRowReps D F0 what₂) (hne : what₂.Nonempty) :
@@ -70,11 +70,11 @@ theorem cExpl_pos' (D : Formalism.BasicNotions.D7) (u : D.what₂.Word) (F0 : Fl
 
 variable [Fact Formalism.HermitianLattices.Ext.L3.HermRepUnram] in
 /- English proof (translation)
-Introduce `D T u u' Lsp _ _ hT`. Establish `hR` using `T.Y.rowsOK u`. Take `⟨Λ0, hΛ0⟩` from `hEx D T u`. Establish `hne : (T.Y.what₂ u).Nonempty`. Take `⟨Λ', ⟨hΛ', -⟩, -⟩` from `hR.2 Λ0 hΛ0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨Λ', hΛ'⟩`. Establish `hDA : DensAll` using `densAll_of h1 h2 h3 h5 h6`. Establish `hFE : FormulaExplicit` using `Formalism.L2.SG.Pf.formulaExplicit_of field_dictionary_holds rational_pair_holds perpendicular_definition_holds (mmChar_of local_unimodular_holds) lattice_groupoid_holds hDA PI.UnitaryGroupMassFormula.CntFormula.R6.norm_mass_of_jordan glueExists_holds gluing_mass_holds`. Use `⟨cExpl_pos' D u (T.X.Fu u) (T.Y.what₂ u) hR hne, fun ϖ hϖ Z => ⟨hOF D T.Y.δ T.Y.M T.Y.agree Lsp u u' hT (T.X.Fu u) (T.Y.what₂ u) hR Z, fun hP => ⟨?_, ?_⟩⟩⟩` and prove the remaining obligations. Take `⟨F', hz, hZ⟩` from `rational_pair_holds D u u' hT (T.X.Fu u) (T.Y.what₂ u) hR Z hP`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `hI : Formalism.HermitianLatticesTheory.IsIntegralLat (VS D).hT (MMof D (T.X.Fu u) F')`. Conclude with `h6 D T.Y.δ T.Y.M T.Y.agree Lsp u u' hT (T.X.Fu u) (T.Y.what₂ u) hR ϖ hϖ Z F' hz hZ hP hI`. Take `⟨p, hp⟩` from `h3 D T.Y.δ T.Y.M T.Y.agree Lsp u u' hT (T.X.Fu u) (T.Y.what₂ u) hR ϖ hϖ Z F' hz hZ hP hI`. Conclude with `(hasProd_zero_of_exists_eq_zero ⟨p, hp⟩).multipliable`. Conclude with `hFE D T.Y.δ T.Y.M T.Y.agree Lsp u u' hT (T.X.Fu u) (T.Y.what₂ u) hR ϖ hϖ Z hP`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem formulaC_of (h1 : LocSelfDual) (h2 : GaPlusDiag) (h3 : NotIntDens) (h5 : DensProdVal)
     (h6 : DensMultInt) (hOF : OrbitFiniteR) (hEx : RowLatExists) : Formalism.L2.SG.PoincareAmplitudeLowerBounds.FormulaC := by

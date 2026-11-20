@@ -12,7 +12,7 @@ open Formalism.UG
 variable {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F))
 
 /- English proof (translation)
-Introduce `h0`. Substitute `h0` using the available equality. Unfold `IsUnifV at h`. Apply the tactic sequence `first | simp at h | done`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem satake_unif_ne_zero {ϖ : v.adicCompletion F} (h : IsUnifV F v ϖ) : ϖ ≠ 0 := by
   intro h0
@@ -21,9 +21,9 @@ theorem satake_unif_ne_zero {ϖ : v.adicCompletion F} (h : IsUnifV F v ϖ) : ϖ 
   first | simp at h | done
 
 /- English proof (translation)
-Consider the cases of `x using WithZero.recZeroCoe with`. Consider the case `zero => exact WithZero.zero_le _`. Consider the case `coe a`. Establish `h1 : a < 1` using `by exact_mod_cast hx`. Establish `h2 : a ≤ Multiplicative.ofAdd (-1 : ℤ)`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `Multiplicative.toAdd a ≤ -1`. Establish `h3 : Multiplicative.toAdd a < 0` using `h1`. Use linear arithmetic over natural numbers and integers. Conclude with `WithZero.coe_le_coe.mpr h2`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem satake_lt_one_le {x : WithZero (Multiplicative ℤ)} (hx : x < 1) :
     x ≤ ((Multiplicative.ofAdd (-1 : ℤ) : Multiplicative ℤ) : WithZero (Multiplicative ℤ)) := by
@@ -38,7 +38,7 @@ theorem satake_lt_one_le {x : WithZero (Multiplicative ℤ)} (hx : x < 1) :
     exact WithZero.coe_le_coe.mpr h2
 
 /- English proof (translation)
-Unfold `Ov`. Use `first`. Consider the case `exact Iff.rfl`. Consider the case `exact mem_adicCompletionIntegers`. Consider the case `simp [mem_adicCompletionIntegers]`.
+Replace the relevant objects with their definitions. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem mem_Ov_iff' (x : v.adicCompletion F) : x ∈ Ov F v ↔ Valued.v x ≤ 1 := by
   unfold Ov
@@ -48,9 +48,9 @@ private theorem mem_Ov_iff' (x : v.adicCompletion F) : x ∈ Ov F v ↔ Valued.v
     | simp [mem_adicCompletionIntegers]
 
 /- English proof (translation)
-Unfold `IsUnifV at h`. Introduce `hm`. Establish `hm' : Valued.v ϖ⁻¹ ≤ 1` using `(mem_Ov_iff' v _).mp hm`. Rewrite `hm'` using `[map_inv₀, h]`. Establish `h4 : ((Multiplicative.ofAdd (-1 : ℤ))⁻¹ : Multiplicative ℤ) ≤ 1`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← WithZero.coe_le_coe, WithZero.coe_inv]`. Apply the tactic sequence `first | exact_mod_cast hm' | simpa using hm'`. Establish `h5 : Multiplicative.toAdd ((Multiplicative.ofAdd (-1 : ℤ))⁻¹) ≤ Multiplicative.toAdd (1 : Multiplicative ℤ)` using `h4`. Simplify using `at h5`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem satake_unif_inv_not_mem {ϖ : v.adicCompletion F} (h : IsUnifV F v ϖ) : ϖ⁻¹ ∉ Ov F v := by
   unfold IsUnifV at h
@@ -64,13 +64,13 @@ theorem satake_unif_inv_not_mem {ϖ : v.adicCompletion F} (h : IsUnifV F v ϖ) :
   simp at h5
 
 /- English proof (translation)
-Establish `h0` using `satake_unif_ne_zero v h`. Rewrite using `[Ideal.mem_span_singleton']`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, rfl⟩`. Establish `hz : Valued.v ((z : Ov F v) : v.adicCompletion F) ≤ 1` using `z.2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use `show Valued.v ((z : v.adicCompletion F) * ϖ) < 1`. Rewrite using `[Valuation.map_mul, h]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[one_mul, ← WithZero.coe_one, WithZero.coe_lt_coe]`. Use `show (-1 : ℤ) < 0`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses.
 
-Use linear arithmetic over natural numbers and integers. Introduce `hy`. Establish `hle` using `satake_lt_one_le hy`. Establish `hm : (y : v.adicCompletion F) * ϖ⁻¹ ∈ Ov F v` using `by show Valued.v ((y : v.adicCompletion F) * ϖ⁻¹) ≤ 1`. Rewrite using `[Valuation.map_mul, Valuation.map_inv, h]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Combine the equalities or inequalities in the displayed calculation. Use `⟨⟨_, hm⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Use `show (y : v.adicCompletion F) * ϖ⁻¹ * ϖ = y`. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem satake_mem_span_iff {ϖ : v.adicCompletion F} (hϖ : ϖ ∈ Ov F v) (h : IsUnifV F v ϖ)
     (y : Ov F v) : y ∈ Ideal.span {(⟨ϖ, hϖ⟩ : Ov F v)} ↔ Valued.v (y : v.adicCompletion F) < 1 := by
@@ -105,25 +105,25 @@ theorem satake_mem_span_iff {ϖ : v.adicCompletion F} (hϖ : ϖ ∈ Ov F v) (h :
 def satakeIota : 𝓞 F →+* Ov F v := algebraMap (𝓞 F) (v.adicCompletionIntegers F)
 
 /- English proof (translation)
-Apply the tactic sequence `first | rfl | simp [satakeIota] | (unfold satakeIota Ov; done)`.
+A detailed English derivation is pending.
 -/
 theorem satakeIota_coe (r : 𝓞 F) :
     ((satakeIota v r : Ov F v) : v.adicCompletion F) = algebraMap (𝓞 F) (v.adicCompletion F) r := by first | rfl | simp [satakeIota] | (unfold satakeIota Ov; done)
 
 /- English proof (translation)
-Use `set I := Ideal.span {(⟨ϖ, hϖ⟩ : Ov F v)}`. Set `φ : 𝓞 F →+* Ov F v ⧸ I` to `(Ideal.Quotient.mk I).comp (satakeIota v)`. Establish `hker : ∀ r ∈ v.asIdeal, φ r = 0`. Introduce `r hr`. Simplify using `only [φ, RingHom.comp_apply, Ideal.Quotient.eq_zero_iff_mem]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[satake_mem_span_iff v hϖ h]`. Unfold `satakeIota`. Rewrite using `[algebraMap_adicCompletionIntegers_apply, adicCompletion.valued_coe (K := F) (v := v), valuation_of_algebraMap]`. Conclude with `(intValuation_lt_one_iff_mem v r).2 hr`. Use `v.isMaximal` as an intermediate fact.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `_` to `Ideal.Quotient.field v.asIdeal`. Set `ψ` to `Ideal.Quotient.lift v.asIdeal φ hker`. Establish `hne : I ≠ ⊤`. Introduce `htop`. Establish `h1 : (1 : Ov F v) ∈ I` using `htop ▸ Submodule.mem_top`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `h1` using `[satake_mem_span_iff v hϖ h]`. Simplify using `at h1`. Establish `: Nontrivial (Ov F v ⧸ I)` using `Ideal.Quotient.nontrivial_iff.2 hne`. Establish `hinj : Function.Injective ψ` using `RingHom.injective ψ`. Establish `hsurj : Function.Surjective ψ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `y`. Take `⟨x, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Take `⟨r, hr⟩` from `glint_exists_approx v x`. Use `⟨Ideal.Quotient.mk _ r, ?_⟩` and prove the remaining obligations. Use `show φ r = _`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [φ, RingHom.comp_apply]`. Rewrite using `[Ideal.Quotient.eq, satake_mem_span_iff v hϖ h]`. Establish `e : ((satakeIota v r - x : Ov F v) : v.adicCompletion F) = -((x : v.adicCompletion F) - algebraMap (𝓞 F) (v.adicCompletion F) r)`. Rewrite using `[AddSubgroupClass.coe_sub, satakeIota_coe, neg_sub]`. Rewrite using `[e, Valuation.map_neg]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hr`. Rewrite using `[← Nat.card_congr (Equiv.ofBijective ψ ⟨hinj, hsurj⟩)]`. Unfold `qV`. Rewrite using `[Ideal.absNorm_apply, Submodule.cardQuot_apply]`.
+A detailed English derivation is pending.
 -/
 theorem satake_card_res {ϖ : v.adicCompletion F} (hϖ : ϖ ∈ Ov F v) (h : IsUnifV F v ϖ) :
     Nat.card (Ov F v ⧸ Ideal.span {(⟨ϖ, hϖ⟩ : Ov F v)}) = qV F v := by
@@ -165,9 +165,9 @@ theorem satake_card_res {ϖ : v.adicCompletion F} (hϖ : ϖ ∈ Ov F v) (h : IsU
   rw [Ideal.absNorm_apply, Submodule.cardQuot_apply]
 
 /- English proof (translation)
-Unfold `ordV IsUnifV at *`. Establish `h0 : Valued.v ϖ ≠ 0` using `by rw [h]; exact WithZero.coe_ne_zero`. Rewrite using `[dif_neg h0]`. Establish `e : ((WithZero.unzero h0 : Multiplicative ℤ) : WithZero (Multiplicative ℤ)) = ((Multiplicative.ofAdd (-1 : ℤ) : Multiplicative ℤ) : WithZero (Multiplicative ℤ))`. Rewrite using `[WithZero.coe_unzero, h]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[WithZero.coe_injective e]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem satake_ordV_unif {ϖ : v.adicCompletion F} (h : IsUnifV F v ϖ) : ordV F v ϖ = 1 := by
   unfold ordV IsUnifV at *
@@ -180,9 +180,9 @@ theorem satake_ordV_unif {ϖ : v.adicCompletion F} (h : IsUnifV F v ϖ) : ordV F
   simp
 
 /- English proof (translation)
-Unfold `ordV`. Establish `h0 : Valued.v (1 : v.adicCompletion F) ≠ 0` using `by simp`. Rewrite using `[dif_neg h0]`. Establish `e : ((WithZero.unzero h0 : Multiplicative ℤ) : WithZero (Multiplicative ℤ)) = ((1 : Multiplicative ℤ) : WithZero (Multiplicative ℤ))`. Rewrite using `[WithZero.coe_unzero, map_one, WithZero.coe_one]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[WithZero.coe_injective e]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem satake_ordV_one : ordV F v 1 = 0 := by
   unfold ordV
@@ -195,9 +195,9 @@ theorem satake_ordV_one : ordV F v 1 = 0 := by
   simp
 
 /- English proof (translation)
-Unfold `qV`. Establish `h1 : Ideal.absNorm v.asIdeal ≠ 0`. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff]`. Conclude with `v.ne_bot`. Establish `h2 : Ideal.absNorm v.asIdeal ≠ 1`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ne, Ideal.absNorm_eq_one_iff]`. Conclude with `v.isPrime.ne_top`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem satake_two_le_qV : 2 ≤ qV F v := by
   unfold qV

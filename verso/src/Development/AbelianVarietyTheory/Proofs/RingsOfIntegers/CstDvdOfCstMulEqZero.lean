@@ -16,17 +16,17 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory
 
 /- English proof (translation)
-Set `ψ : S →+* (Spec (CommRingCat.of S)).presheaf.stalk (p x)` to `((Scheme.ΓSpecIso (CommRingCat.of S)).inv ≫ (Spec (CommRingCat.of S)).presheaf.germ ⊤ (p x) trivial).hom`. Establish `hψ : ψ.Flat`. Establish `e` using `Spec.algebraMap_stalkIso_inv (R := CommRingCat.of S) (p x)`. Rewrite using `[show ψ = _ from congrArg CommRingCat.Hom.hom e.symm, CommRingCat.hom_comp, CommRingCat.hom_ofHom]`. Use `RingHom.Flat.comp ?_ ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `RingHom.flat_algebraMap_iff.mpr inferInstance`. Conclude with `RingHom.Flat.of_bijective (Spec.stalkIso (CommRingCat.of S) (p x)).symm.commRingCatIsoToRingEquiv.bijective`. Set `φ : S →+* X.presheaf.stalk x` to `(p.stalkMap x).hom.comp ψ`. Establish `hφ : ∀ c, cst p x c = φ c`. Introduce `c`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Simplify using `only [φ, ψ, RingHom.comp_apply, CommRingCat.hom_comp]`. Unfold `cst`. Rewrite using `[gs_eq p x ⊤ trivial]`. Conclude with `(Scheme.Hom.germ_stalkMap_apply (f := p) ⊤ x trivial _).symm`. Establish `hfl : φ.Flat` using `RingHom.Flat.comp hψ (AlgebraicGeometry.Flat.stalkMap p x)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Set `_ : Algebra S (X.presheaf.stalk x)` to `φ.toAlgebra`. Establish `: Module.Flat S (X.presheaf.stalk x)` using `hfl`. Rewrite `ht` using `[hφ]`. Rewrite using `[hφ]`. Establish `h0 : ∑ _i : Unit, a • t = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify `ht` using `[Algebra.smul_def, RingHom.algebraMap_toAlgebra]`. Take `⟨k, c, y, hy, hc⟩` from `Module.Flat.isTrivialRelation_of_sum_smul_eq_zero (f := fun _ : Unit => a) (x := fun _ => t) h0`. Establish `hd : ∀ j, b ∣ c () j` using `fun j => hab _ (by simpa using hc j)`. Use `choose d hd using hd`. Use `⟨∑ j, φ (d j) * y j, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hy' : t = ∑ j, c () j • y j` using `hy ()`. Rewrite using `[hy', Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hd j, Algebra.smul_def, RingHom.algebraMap_toAlgebra, map_mul, _root_.mul_assoc]`.
+A detailed English derivation is pending.
 -/
 theorem cst_dvd_of_cst_mul_eq_zero {S : Type} [CommRing S] {X : Scheme.{0}} (p : X ⟶ Sp S) [Flat p] (x : X) {a b : S}
     (hab : ∀ c, a * c = 0 → b ∣ c) {t : X.presheaf.stalk x} (ht : cst p x a * t = 0) : cst p x b ∣ t := by
@@ -65,7 +65,7 @@ theorem cst_dvd_of_cst_mul_eq_zero {S : Type} [CommRing S] {X : Scheme.{0}} (p :
   rw [hd j, Algebra.smul_def, RingHom.algebraMap_toAlgebra, map_mul, _root_.mul_assoc]
 
 /- English proof (translation)
-Unfold `cst`. Establish `e1 : gs q (τ z) ⊤ ((Scheme.ΓSpecIso (CommRingCat.of V)).inv.hom a) = gs (𝟙 Y) (τ z) (q ⁻¹ᵁ ⊤) ((q.app ⊤).hom ((Scheme.ΓSpecIso (CommRingCat.of V)).inv.hom a))`. Rewrite using `[gs_pull (𝟙 Y) q (τ z) ⊤ (by simp) _, Category.id_comp]`. Rewrite using `[e1, ← gs_stalkMap τ z (q ⁻¹ᵁ ⊤) (by simp), gs_pull τ q z ⊤ (by simp)]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem stalkMap_cst_eq_cst_comp {V : Type} [CommRing V] {Y Z : Scheme.{0}} (τ : Z ⟶ Y) (q : Y ⟶ Sp V) (z : Z)
     (a : V) : (τ.stalkMap z).hom (cst q (τ z) a) = cst (τ ≫ q) z a := by
@@ -76,7 +76,7 @@ private theorem stalkMap_cst_eq_cst_comp {V : Type} [CommRing V] {Y Z : Scheme.{
   rw [e1, ← gs_stalkMap τ z (q ⁻¹ᵁ ⊤) (by simp), gs_pull τ q z ⊤ (by simp)]
 
 /- English proof (translation)
-Establish `e` using `congrArg (fun g => g.hom a) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom π))`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply, CommRingCat.hom_ofHom] at e`. Unfold `cst`. Rewrite using `[e]`. Conclude with `(gs_pull q _ z ⊤ (by simp) _).symm`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem cst_comp_specMap_eq_cst_apply {V Q : Type} [CommRing V] [CommRing Q] (π : V →+* Q) {Z : Scheme.{0}}
     (q : Z ⟶ Sp Q) (z : Z) (a : V) :
@@ -88,7 +88,7 @@ private theorem cst_comp_specMap_eq_cst_apply {V Q : Type} [CommRing V] [CommRin
   exact (gs_pull q _ z ⊤ (by simp) _).symm
 
 /- English proof (translation)
-Unfold `cst`. Rewrite using `[map_zero]`. Conclude with `gs_zero q z ⊤ (by simp)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem cst_zero_rings_of_integers {V : Type} [CommRing V] {Z : Scheme.{0}} (q : Z ⟶ Sp V) (z : Z) : cst q z 0 = 0 := by
   unfold cst
@@ -96,15 +96,15 @@ private theorem cst_zero_rings_of_integers {V : Type} [CommRing V] {Z : Scheme.{
   exact gs_zero q z ⊤ (by simp)
 
 /- English proof (translation)
-Establish `hm : maximalIdeal V = Ideal.span {ϖ}` using `(IsDiscreteValuationRing.irreducible_iff_uniformizer ϖ).mp hϖ`. Establish `hc : fGl (maximalIdeal V) G (e + 1) ≫ G.hom = pullback.snd G.hom (thick V (maximalIdeal V) (e + 1)) ≫ thick V (maximalIdeal V) (e + 1)` using `pullback.condition`. Establish `hc0 : fGl (maximalIdeal V) G e ≫ G.hom = pullback.snd G.hom (thick V (maximalIdeal V) e) ≫ thick V (maximalIdeal V) e` using `pullback.condition`. Establish `e3 : cst (fGl (maximalIdeal V) G (e + 1) ≫ G.hom) (thickMap V (maximalIdeal V) e G y) ϖ = cst (pullback.snd G.hom (thick V (maximalIdeal V) (e + 1))) (thickMap V (maximalIdeal V) e G y) (Ideal.Quotient.mk (maximalIdeal V ^ (e + 1 + 1)) ϖ)`. Rewrite using `[hc]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `cst_comp_specMap_eq_cst_apply _ _ _ _`. Rewrite `ht` using `[e3]`. Establish `hab : ∀ c : V ⧸ maximalIdeal V ^ (e + 1 + 1), Ideal.Quotient.mk (maximalIdeal V ^ (e + 1 + 1)) ϖ * c = 0 → Ideal.Quotient.mk (maximalIdeal V ^ (e + 1 + 1)) (ϖ ^ (e + 1)) ∣ c`. Introduce `c hc1`. Take `⟨c', rfl⟩` from `Ideal.Quotient.mk_surjective c`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hc1` using `[← map_mul, Ideal.Quotient.eq_zero_iff_mem, hm, Ideal.span_singleton_pow, Ideal.mem_span_singleton]`. Take `⟨d, hd⟩` from `hc1`. Establish `h2 : ϖ * c' = ϖ * (ϖ ^ (e + 1) * d)` using `by rw [hd, pow_succ', _root_.mul_assoc]`. Use `⟨Ideal.Quotient.mk _ d, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_left_cancel₀ hϖ.ne_zero h2, map_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨u, rfl⟩` from `cst_dvd_of_cst_mul_eq_zero _ _ hab ht`. Rewrite using `[map_mul]`. Establish `e4 : ((thickMap V (maximalIdeal V) e G).stalkMap y).hom (cst (pullback.snd G.hom (thick V (maximalIdeal V) (e + 1))) (thickMap V (maximalIdeal V) e G y) (Ideal.Quotient.mk (maximalIdeal V ^ (e + 1 + 1)) (ϖ ^ (e + 1)))) = 0`. Rewrite using `[stalkMap_cst_eq_cst_comp]`. Establish `e5 : cst (thickMap V (maximalIdeal V) e G ≫ pullback.snd G.hom (thick V (maximalIdeal V) (e + 1))) y (Ideal.Quotient.mk (maximalIdeal V ^ (e + 1 + 1)) (ϖ ^ (e + 1))) = cst ((thickMap V (maximalIdeal V) e G ≫ pullback.snd G.hom (thick V (maximalIdeal V) (e + 1))) ≫ thick V (maxima …` using `(cst_comp_specMap_eq_cst_apply _ _ _ _).symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e6 : cst (pullback.snd G.hom (thick V (maximalIdeal V) e) ≫ thick V (maximalIdeal V) e) y (ϖ ^ (e + 1)) = cst (pullback.snd G.hom (thick V (maximalIdeal V) e)) y (Ideal.Quotient.mk (maximalIdeal V ^ (e + 1)) (ϖ ^ (e + 1)))` using `cst_comp_specMap_eq_cst_apply _ _ _ _`. Establish `hmem : ϖ ^ (e + 1) ∈ maximalIdeal V ^ (e + 1)` using `Ideal.pow_mem_pow ((IsLocalRing.mem_maximalIdeal _).mpr hϖ.not_isUnit) _`. Rewrite using `[e5, Category.assoc, ← hc, ← Category.assoc, thickMap_comp_fGl, hc0, e6, Ideal.Quotient.eq_zero_iff_mem.mpr hmem, cst_zero_rings_of_integers]`. Rewrite using `[e4, zero_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem thickMap_stalkMap_eq_zero {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] {ϖ : V}
     (hϖ : Irreducible ϖ) (G : Over (Spec (CommRingCat.of V))) [Flat G.hom] (e : ℕ)
@@ -168,7 +168,7 @@ def ExpandsAtUpTo (e k : ℕ) (σ : H0 U.LG.L k) (f : ∀ α : D.toPre.X, D.toPr
         ∑ α ∈ S, sval (f α) (pGl U e) y J * (val (tG U e α) (𝟙 _) y J).val) = 0
 
 /- English proof (translation)
-Establish `e1 : gs q (r z) W a = gs (𝟙 Y) (r z) (q ⁻¹ᵁ W) ((q.app W).hom a)`. Rewrite using `[gs_pull (𝟙 Y) q (r z) W (by simpa using h) a, Category.id_comp]`. Rewrite using `[e1, ← gs_stalkMap r z (q ⁻¹ᵁ W) h, gs_pull r q z W h a]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem stalkMap_gs {X Y Z : Scheme.{0}} (r : Z ⟶ Y) (q : Y ⟶ X) (z : Z) (W : X.Opens) (h : q (r z) ∈ W)
     (a : Γ(X, W)) : (r.stalkMap z).hom (gs q (r z) W a) = gs (r ≫ q) z W a := by
@@ -177,14 +177,14 @@ theorem stalkMap_gs {X Y Z : Scheme.{0}} (r : Z ⟶ Y) (q : Y ⟶ X) (z : Z) (W 
   rw [e1, ← gs_stalkMap r z (q ⁻¹ᵁ W) h, gs_pull r q z W h a]
 
 /- English proof (translation)
-Rewrite using `[← gs_unit (𝟙 Y) (r z) W (by simpa using h) a, ← gs_stalkMap r z W h, gs_unit r z W h a]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem stalkMap_gm {Y Z : Scheme.{0}} (r : Z ⟶ Y) (z : Z) (W : Y.Opens) (h : r z ∈ W)
     (a : Γ(Y, W)ˣ) : (r.stalkMap z).hom (gm (𝟙 Y) (r z) W a).val = (gm r z W a).val := by
   rw [← gs_unit (𝟙 Y) (r z) W (by simpa using h) a, ← gs_stalkMap r z W h, gs_unit r z W h a]
 
 /- English proof (translation)
-Distinguish the cases in `hm : q (τ z) ∈ W`. Conclude with `stalkMap_gs τ q z W hm a`. Establish `hm' : (τ ≫ q) z ∉ W` using `by simpa using hm`. Unfold `gs`. Rewrite using `[dif_neg hm, dif_neg hm', map_zero]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem stalkMap_gs_eq_gs_comp {X Y Z : Scheme.{0}} (τ : Z ⟶ Y) (q : Y ⟶ X) (z : Z) (W : X.Opens)
     (a : Γ(X, W)) : (τ.stalkMap z).hom (gs q (τ z) W a) = gs (τ ≫ q) z W a := by
@@ -195,7 +195,7 @@ private theorem stalkMap_gs_eq_gs_comp {X Y Z : Scheme.{0}} (τ : Z ⟶ Y) (q : 
     rw [dif_neg hm, dif_neg hm', map_zero]
 
 /- English proof (translation)
-Unfold `cst`. Rewrite using `[map_mul]`. Conclude with `gs_mul q z ⊤ (by simp) _ _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem cst_mul_rings_of_integers {V : Type} [CommRing V] {Z : Scheme.{0}} (q : Z ⟶ Sp V) (z : Z) (a b : V) :
     cst q z (a * b) = cst q z a * cst q z b := by
@@ -204,7 +204,7 @@ private theorem cst_mul_rings_of_integers {V : Type} [CommRing V] {Z : Scheme.{0
   exact gs_mul q z ⊤ (by simp) _ _
 
 /- English proof (translation)
-Rewrite using `[sval_of s r (τ z) _ (fun k => J (τ ≫ r ≫ φ k)) (fun k => rfl), sval_of s (τ ≫ r) z J (fun k => J (τ ≫ r ≫ φ k)) (fun k => by rw [Category.assoc])]`. Conclude with `stalkMap_gs_eq_gs_comp τ r z _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem stalkMap_sval_eq_sval_comp {X Y Y' Z : Scheme.{0}} {L : LB X} {K : Type} [Fintype K] {φ : K → (Y ⟶ X)}
     {ε : K → ℤ} (s : LB.Sec (LB.LinComb L φ ε)) (r : Y' ⟶ Y) (τ : Z ⟶ Y') (z : Z) (J : (Z ⟶ X) → L.ι) :
@@ -214,9 +214,9 @@ private theorem stalkMap_sval_eq_sval_comp {X Y Y' Z : Scheme.{0}} {L : LB X} {K
   exact stalkMap_gs_eq_gs_comp τ r z _ _
 
 /- English proof (translation)
-Rewrite using `[← wv_thickMap U e y jM jL hM hL]`. Unfold `wv`. Use `stalkMap_gm _ _ _ ?_ _` and prove the remaining obligations. Establish `hq : thickMap R I e G ≫ pGl U (e + 1) = pGl U e` using `U.gt_q e`. Establish `hf : thickMap R I e G ≫ fGl I G (e + 1) = fGl I G e` using `thickMap_comp_fGl I e G`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `h1 : (thickMap R I e G ≫ pGl U (e + 1)) y ∈ D.toPre.P.L.U jM` using `by rw [hq]; exact hM`. Conclude with `Set.mem_iInter.2 fun _ => h1`. Establish `h1 : (thickMap R I e G ≫ fGl I G (e + 1)) y ∈ U.LG.L.U jL` using `by rw [hf]; exact hL`. Conclude with `Set.mem_iInter.2 fun _ => h1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem stalkMap_thickMap_wv_succ_eq_wv {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D : DegData R I}
     {A : PolAV (Spec (CommRingCat.of (FractionRing R)))} {G : Over (Spec (CommRingCat.of R))} [GrpObj G]
@@ -236,7 +236,7 @@ private theorem stalkMap_thickMap_wv_succ_eq_wv {R : Type} [CommRing R] [IsDomai
     exact Set.mem_iInter.2 fun _ => h1
 
 /- English proof (translation)
-Establish `hm` using `hJ.mem φ (τ ≫ r)`. Simplify using `only [Category.assoc] at hm`. Establish `hm2 : r (τ z) ∈ LB.wchart L φ (fun k => J (τ ≫ r ≫ φ k))` using `by simpa using hm`. Rewrite using `[val_of t r (τ z) _ (fun k => J (τ ≫ r ≫ φ k)) (fun k => rfl), val_of t (τ ≫ r) z J (fun k => J (τ ≫ r ≫ φ k)) (fun k => by rw [Category.assoc])]`. Conclude with `((congrArg _ (gs_unit r (τ z) _ hm2 _).symm).trans (stalkMap_gs τ r z _ hm2 _)).trans (gs_unit (τ ≫ r) z _ hm _)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem stalkMap_val_eq_val_comp_of_good {X Y Y' Z : Scheme.{0}} {L : LB X} {K : Type} [Fintype K] {φ : K → (Y ⟶ X)}
     {ε : K → ℤ} (t : LB.Gen (LB.LinComb L φ ε)) (r : Y' ⟶ Y) (τ : Z ⟶ Y') (z : Z) {J : (Z ⟶ X) → L.ι}
@@ -253,19 +253,19 @@ private theorem stalkMap_val_eq_val_comp_of_good {X Y Y' Z : Scheme.{0}} {L : LB
 end
 
 /- English proof (translation)
-Introduce `y J hJ`. Establish `: Smooth G.hom` using `U.smooth`. Establish `: Flat G.hom` using `inferInstance`. Establish `hq : thickMap V (maximalIdeal V) e G ≫ pGl U (e + 1) = pGl U e` using `U.gt_q e`. Establish `hf : thickMap V (maximalIdeal V) e G ≫ fGl (maximalIdeal V) G (e + 1) = fGl (maximalIdeal V) G e` using `thickMap_comp_fGl _ e G`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hJ' : Good D.toPre.P.L (thickMap V (maximalIdeal V) e G y) (fun ψ => J (thickMap V (maximalIdeal V) e G ≫ ψ))` using `fun ψ => by`. Simplify using `using hJ (thickMap V (maximalIdeal V) e G ≫ ψ)`. Take `⟨h1, h2⟩` from `h _ _ hJ'`. Establish `key : ∀ t, cst (fGl (maximalIdeal V) G (e + 1) ≫ G.hom) (thickMap V (maximalIdeal V) e G y) (ϖ * c) * t = 0 → cst (fGl (maximalIdeal V) G e ≫ G.hom) y c * ((thickMap V (maximalIdeal V) e G).stalkMap y).hom t = 0`. Introduce `t ht`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h0` using `thickMap_stalkMap_eq_zero hϖ G e y (t := cst (fGl (maximalIdeal V) G (e + 1) ≫ G.hom) (thickMap V (maximalIdeal V) e G y) c * t) (by rw [← _root_.mul_assoc, ← cst_mul_rings_of_integers]; exact ht)`. Rewrite `h0` using `[map_mul, stalkMap_cst_eq_cst_comp, ← Category.assoc, hf]`. Then use the resulting hypothesis. Establish `hT : ∀ α, val (tG U (e + 1) α) (thickMap V (maximalIdeal V) e G) y J = val (tG U e α) (𝟙 _) y J` using `fun α => by`. Use `(val_pull hJ (tG U (e + 1) α) (thickMap V (maximalIdeal V) e G) (𝟙 _)).symm.trans (val_corr hJ (U.gt_t e α) (𝟙 _))` as an intermediate fact. Rewrite `this` using `[Category.id_comp]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `⟨fun α hα => ?_, fun jL hL => ?_⟩` and prove the remaining obligations. Use `key _ (h1 α hα)` as an intermediate fact. Rewrite `this` using `[stalkMap_sval_eq_sval_comp, hq]`. Then use the resulting hypothesis. Establish `hL' : fGl (maximalIdeal V) G (e + 1) (thickMap V (maximalIdeal V) e G y) ∈ U.LG.L.U jL`. Rewrite `hL` using `[← hf]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `using hL`. Establish `hM : pGl U e y ∈ D.toPre.P.L.U (J (pGl U e))` using `hJ (pGl U e)`. Use `key _ (h2 jL hL')` as an intermediate fact. Use `this using 2` and compare the differences between its conclusion and the goal. Use `symm`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Use symmetry to reverse the relation.
 
-Rewrite using `[map_sub, map_mul, map_sum, Units.val_pow_eq_pow_val, Units.val_pow_eq_pow_val, map_pow]`. Use `congrArg₂ (· - ·) (congrArg₂ (· * ·) ?_ ?_) (Finset.sum_congr rfl fun α _ => ?_)` and prove the remaining obligations. Establish `hj : J (thickMap V (maximalIdeal V) e G ≫ pGl U (e + 1)) = J (pGl U e)` using `by rw [hq]`. Simplify using `only [hj]`. Conclude with `congrArg (· ^ k) (stalkMap_thickMap_wv_succ_eq_wv U e y _ jL hM hL)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [sv]`. Conclude with `(stalkMap_gs_eq_gs_comp (thickMap V (maximalIdeal V) e G) (fGl (maximalIdeal V) G (e + 1)) y _ _).trans (by rw [hf])`. Rewrite using `[map_mul, stalkMap_sval_eq_sval_comp, stalkMap_val_eq_val_comp_of_good _ _ _ _ hJ, Category.comp_id, hT, hq]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem expandsAtUpTo_succ {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] {ϖ : V}
     (hϖ : Irreducible ϖ) {D : DegData V (maximalIdeal V)} {A : PolAV (Spec (CommRingCat.of (FractionRing V)))}
@@ -310,7 +310,7 @@ theorem expandsAtUpTo_succ {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValua
     · rw [map_mul, stalkMap_sval_eq_sval_comp, stalkMap_val_eq_val_comp_of_good _ _ _ _ hJ, Category.comp_id, hT, hq]
 
 /- English proof (translation)
-Unfold `sval`. Conclude with `secIsMul_gs h r z _ (hJ.mem φ r)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private theorem sval_eq_cst_mul_sval_of_secIsMul {R : Type} [CommRing R] {X Y Z : Scheme.{0}} {L : LB X} {K : Type} [Fintype K]
     {φ : K → (Y ⟶ X)} {ε : K → ℤ} {p : Y ⟶ Spec (CommRingCat.of R)} {a : R} {s s' : LB.Sec (LB.LinComb L φ ε)}
@@ -320,28 +320,28 @@ private theorem sval_eq_cst_mul_sval_of_secIsMul {R : Type} [CommRing R] {X Y Z 
   exact secIsMul_gs h r z _ (hJ.mem φ r)
 
 /- English proof (translation)
-Unfold `cst`. Rewrite using `[map_one, gs_eq q z ⊤ (by simp), map_one, map_one]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 private theorem cst_one_rings_of_integers {V : Type} [CommRing V] {Z : Scheme.{0}} (q : Z ⟶ Sp V) (z : Z) : cst q z 1 = 1 := by
   unfold cst
   rw [map_one, gs_eq q z ⊤ (by simp), map_one, map_one]
 
 /- English proof (translation)
-Introduce `V _ _ _ ϖ hϖ D A G _ _ U e n k σ σ' f f' hσ hf hE`. Establish `hA : ∀ e', pGl U e' ≫ D.toPre.P.A.hom = fGl (maximalIdeal V) G e' ≫ G.hom` using `fun e' => (U.gt e').pG.w.trans pullback.condition.symm`. Take `⟨S, hS⟩` from `expandsAt_val U (e + n) k σ' f' hE`. Establish `hstep : ∀ m c, ExpandsAtUpTo U (e + m) k σ f S (ϖ ^ m * c) → ExpandsAtUpTo U e k σ f S c`. Introduce `m`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `m with`. Consider the case `zero => intro c h`. Simplify using `using h`. Consider the case `succ m ih`. Introduce `c h`.
+Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `ih c (expandsAtUpTo_succ hϖ U (e + m) k σ f S (ϖ ^ m * c) ?_)` and prove the remaining obligations. Rewrite `h` using `[pow_succ', _root_.mul_assoc]`. Conclude with `h`. Establish `h0 : ExpandsAtUpTo U (e + n) k σ f S (ϖ ^ n * 1)`. Introduce `y J hJ`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨h1, h2⟩` from `hS _ (𝟙 _) y J hJ`. Simplify using `only [Category.id_comp] at h1 h2`. Establish `hsval : ∀ α, sval (f' α) (pGl U (e + n)) y J = cst (fGl (maximalIdeal V) G (e + n) ≫ G.hom) y (ϖ ^ n) * sval (f α) (pGl U (e + n)) y J` using `fun α => by`. Rewrite using `[sval_eq_cst_mul_sval_of_secIsMul (hf α) _ _ hJ, hA]`. Use `⟨fun α hα => ?_, fun jL hL => ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `h1 α hα` as an intermediate fact. Rewrite `this` using `[hsval α]`. Rewrite using `[_root_.mul_one]` and apply the resulting hypothesis. Use `h2 jL (by simpa using hL)` as an intermediate fact. Establish `hsv : sv U k σ' (fGl (maximalIdeal V) G (e + n)) y jL = cst (fGl (maximalIdeal V) G (e + n) ≫ G.hom) y (ϖ ^ n) * sv U k σ (fGl (maximalIdeal V) G (e + n)) y jL` using `secIsMul_gs hσ _ y _ (Set.mem_iInter.2 fun _ => by simpa using hL)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e8 : ∑ α ∈ S, sval (f' α) (pGl U (e + n)) y J * (val (tG U (e + n) α) (𝟙 _) y J).val = ∑ α ∈ S, cst (fGl (maximalIdeal V) G (e + n) ≫ G.hom) y (ϖ ^ n) * (sval (f α) (pGl U (e + n)) y J * (val (tG U (e + n) α) (𝟙 _) y J).val)` using `Finset.sum_congr rfl fun α _ => by rw [hsval α, _root_.mul_assoc]`. Rewrite `this` using `[hsv, e8]`. Rewrite using `[_root_.mul_one, mul_sub, Finset.mul_sum, sub_eq_zero, ← this]`. Expand and normalize the polynomial expressions, which then agree. Establish `h1'` using `hstep n 1 h0`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `expandsAt_of_val U e k σ f S (fun y J hJ => ?_)` and prove the remaining obligations. Take `⟨a1, a2⟩` from `h1' y J hJ`. Use `⟨fun α hα => ?_, fun jL hL => ?_⟩` and prove the remaining obligations. Use `a1 α hα` as an intermediate fact. Rewrite `this` using `[cst_one_rings_of_integers, _root_.one_mul]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Use `a2 jL hL` as an intermediate fact. Rewrite `this` using `[cst_one_rings_of_integers, _root_.one_mul, sub_eq_zero]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem expandsAt_cancel_pow : ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] (ϖ : V), Irreducible ϖ → ∀ (D : DegData V (maximalIdeal V)) (A : PolAV (Spec (CommRingCat.of (FractionRing V)))) (G : Over (Spec (CommRingCat.of V))) [GrpObj G] [IsCommMonObj G] (U : UnifPre (maximalIdeal V) D A G) (e n k : ℕ) (σ σ' : H0 U.LG.L k) (f f' : ∀ α : D.toPre.X, D.toPre.SecB k α), SecIsMul G.hom (ϖ ^ n) σ' σ → (∀ α, SecIsMul D.toPre.P.A.hom (ϖ ^ n) (f' α) (f α)) → U.ExpandsAt (e + n) k σ' f' → U.ExpandsAt e k σ f := by
   intro V _ _ _ ϖ hϖ D A G _ _ U e n k σ σ' f f' hσ hf hE

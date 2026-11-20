@@ -16,13 +16,11 @@ set_option autoImplicit false
 namespace GlobalTheory.LogKSDiv
 
 /- English proof (translation)
-Take `⟨⟨σ, k⟩, rfl⟩` from `e'.surjective c`. Distinguish the cases in `h : τ = σ`. Substitute `h` using the available equality. Rewrite using `[Finset.sum_eq_single k]`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `j _ hj`. Rewrite using `[if_neg, mul_zero]`. Introduce `h`. Conclude with `hj (eq_of_heq (Sigma.mk.inj (e'.injective h)).2).symm`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hB _ _ _ _ h]`. Use `symm`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Rewrite using `[if_neg, mul_zero]`. Introduce `h'`.
-
-Conclude with `h (Sigma.mk.inj (e'.injective h')).1.symm`.
+Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem blockRow_eq_sum {ι R : Type} [CommRing R] {m : ι → ℕ} {n n' : ℕ} (e : (Σ τ : ι, Fin (m τ)) ≃ Fin n)
     (e' : (Σ τ : ι, Fin (m τ)) ≃ Fin n') (B : Matrix (Fin n) (Fin n') R)
@@ -47,7 +45,7 @@ theorem blockRow_eq_sum {ι R : Type} [CommRing R] {m : ι → ℕ} {n n' : ℕ}
     exact h (Sigma.mk.inj (e'.injective h')).1.symm
 
 /- English proof (translation)
-Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, Matrix.of_apply, mul_add, Finset.sum_add_distrib, add_mul, ite_and, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true, ite_mul, zero_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem transpose_mul_symm_mul_apply {R : Type} [CommRing R] {n n' : ℕ} (B : Matrix (Fin n) (Fin n') R) (a b : Fin n)
     (c d : Fin n') :
@@ -58,11 +56,11 @@ theorem transpose_mul_symm_mul_apply {R : Type} [CommRing R] {n n' : ℕ} (B : M
     ite_and, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true, ite_mul, zero_mul]
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw R _ n n' e e' ε' B hB P`. Establish `key : _root_.Matrix.transpose B * symPair (R` using `R) e P * B = ∑ j : Fin (Dw.mult P.1.1), ∑ k : Fin (Dw.mult ((starRingEnd ℂ).comp P.1.1)), (B (e ⟨P.1.1, P.2.1⟩) (e' ⟨P.1.1, j⟩) * B (e ⟨(starRingEnd ℂ).comp P.1.1, P.2.2⟩) (e' ⟨(starRingEnd ℂ).comp P.1.1, k⟩)) • symPair (R := R) e' (⟨P.1, (j, k)⟩ : PairIx H Dw) := by`. Use extensionality with `c d`. Unfold `symPair`. Rewrite using `[transpose_mul_symm_mul_apply, blockRow_eq_sum e e' B hB _ _ c, blockRow_eq_sum e e' B hB _ P.2.2 d, blockRow_eq_sum e e' B hB _ P.2.2 c, blockRow_eq_sum e e' B hB _ P.2.1 d, mul_comm (Finset.sum _ _) (∑ j : Fin (Dw.mult P.1.1), _ * (if d = _ then _ else _)), Finset.sum_mul_sum, …`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.sum_apply, Matrix.smul_apply, Matrix.of_apply, smul_eq_mul, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `only [ite_and]`. Apply the tactic sequence `split_ifs <;> ring`. Establish `hmem : _root_.Matrix.transpose B * symPair (R` using `R) e P * B ∈ Submodule.span R (Set.range fun k => symPair (R := R) e' (ε' k)) := by`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Rewrite using `[key]`. Use `Submodule.sum_mem _ fun j _ => Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Conclude with `Submodule.subset_span ⟨ε'.symm ⟨P.1, (j, k)⟩, by simp⟩`. Take `⟨cf, hcf⟩` from `(Submodule.mem_span_range_iff_exists_fun R).1 hmem`. Conclude with `⟨cf, hcf.symm⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem transpose_mul_symPair_mul_mem_span :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (R : Type) [CommRing R] (n n' : ℕ) (e : (Σ τ : E →+* ℂ, Fin (Dw.mult τ)) ≃ Fin n) (e' : (Σ τ : E →+* ℂ, Fin (Dw.mult τ)) ≃ Fin n') (ε' : Fin Dw.dim ≃ GlobalTheory.LogKSDiv.PairIx H Dw) (B : Matrix (Fin n) (Fin n') R), (∀ (τ σ : E →+* ℂ) (i : Fin (Dw.mult τ)) (k : Fin (Dw.mult σ)), τ ≠ σ → B (e ⟨τ, i⟩) (e' ⟨σ, k⟩) = 0) → ∀ P : GlobalTheory.LogKSDiv.PairIx H Dw, ∃ cf : Fin Dw.dim → R, _root_.Matrix.transpose B * GlobalTheory.LogKSDiv.symPair (R := R) e P * B = ∑ k, cf k • GlobalTheory.LogKSDiv.symPair (R := R) e' (ε' k) := by

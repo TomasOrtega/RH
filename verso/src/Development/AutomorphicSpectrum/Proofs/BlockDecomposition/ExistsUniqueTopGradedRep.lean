@@ -19,9 +19,9 @@ section Gen
 variable {R : Type} [CommRing R] {C : Type 1} [Category.{0} C] {A : C ⥤ CommAlgCat.{0} R}
 
 /- English proof (translation)
-Establish `h1` using `rep_add h (rep_d (b := b) G hG)`. Rewrite `h1` using `[add_zero]`. Use `rep_congr h1 fun s => ?_` and prove the remaining obligations. Establish `h2` using `(b.S _).neg_mem (e s)`. Rewrite `h2` using `[neg_sub]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h2`.
+A detailed English derivation is pending.
 -/
 theorem rep_shift {a b : IdF A} {j : ℕ} {z z' : ∀ s : ComposableArrows C (j + 1), A.obj (s.obj (Fin.last (j + 1)))}
     {c : CH.H (sq a b) (j + 1)} (h : CrystallineSemistableComparison.Pb.Rep a b z c) (G : CH.Cn (CH.modF A) j)
@@ -36,7 +36,7 @@ theorem rep_shift {a b : IdF A} {j : ℕ} {z z' : ∀ s : ComposableArrows C (j 
   exact h2
 
 /- English proof (translation)
-Substitute `e` using the available equality. Express the relevant statement in the definitionally equal form `(A.map (u.map (homOfLE (Fin.le_last (Fin.last k))))).hom (f u) = _`. Rewrite using `[show (homOfLE (Fin.le_last (Fin.last k)) : Fin.last k ⟶ Fin.last k) = 𝟙 _ from Subsingleton.elim _ _, u.map_id, A.map_id]`. Both sides reduce to the same expression.
+Substitute using the available equality. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem term_id {k : ℕ} (u : ComposableArrows C k) (f : CH.Cn (CH.modF A) k) (g : Fin (k + 1) → Fin (k + 1))
     (hg : Monotone g) (e : g = id) :
@@ -48,7 +48,7 @@ theorem term_id {k : ℕ} (u : ComposableArrows C k) (f : CH.Cn (CH.modF A) k) (
   rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Apply `Fin.ext` to reduce the goal to its premises. Simplify using `[CH.back]`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 -/
 theorem back_zero (k : ℕ) : CH.back (Nat.zero_add k) = id := by
   funext i
@@ -60,7 +60,7 @@ end Gen
 def J0 (m : ℕ) : Idx m m := ⟨id, strictMono_id⟩
 
 /- English proof (translation)
-Use `Subtype.ext ((StrictMono.range_inj I.2 strictMono_id).1 ?_)` and prove the remaining obligations. Establish `h : Function.Surjective I.1` using `(Finite.injective_iff_surjective).1 I.2.injective`. Rewrite using `[h.range_eq, Function.surjective_id.range_eq]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem top_index_eq {m : ℕ} (I : Idx m m) : I = J0 m := by
   refine Subtype.ext ((StrictMono.range_inj I.2 strictMono_id).1 ?_)
@@ -71,14 +71,14 @@ section Lift
 variable {K : Type} [Field K] {X : Scheme.{0}} {q : X ⟶ Spec (CommRingCat.of K)}
 
 /- English proof (translation)
-The claim follows from `Classical.choose_spec (Ideal.Quotient.mk_surjective (ev T h g))`.
+A detailed English derivation is pending.
 -/
 theorem mk_liftV {V : X.Opens} (T : Thick (smFun X q)) (h : InU V T) (g : Γ(X, V)) :
     Ideal.Quotient.mk T.J (liftV T h g) = ev T h g :=
   Classical.choose_spec (Ideal.Quotient.mk_surjective (ev T h g))
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.CompanionTheory.GrForm.ev_nat (q := q) φ.hom (ks_in q s V _ T.property) (ks_in q s V _ T'.property) g, ← mk_liftV]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem map_liftV {s : ℕ} {V : X.Opens} {T T' : (KS q s {V}).FullSubcategory} (φ : T ⟶ T') (g : Γ(X, V)) :
     Ideal.Quotient.mk T'.obj.J (((sP (KS q s {V})).A.map φ).hom (liftV T.obj (ks_in q s V _ T.property) g)) =
@@ -96,7 +96,7 @@ section Key
 variable {K : Type} [Field K] {X : Scheme.{0}} {q : X ⟶ Spec (CommRingCat.of K)}
 
 /- English proof (translation)
-Rewrite using `[(GlobalTheory.CompanionTheory.DPFil.isFil_sFil (KS q s {V})).one T']`. Conclude with `Ideal.Quotient.eq.1 ((map_liftV φ g).trans (hL.2.2.2.1 T' u g))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lift_sub {s : ℕ} {V : X.Opens} {d : ℕ} {t : Fin d → Γ(X, V)} {E : Frame (sP (KS q s {V})) d}
     {ε : Γ(X, V) ≃+* (sP (KS q s {V})).A.obj E.D} (hL : IsLoc q s t E ε) {T T' : (KS q s {V}).FullSubcategory}
@@ -107,7 +107,7 @@ theorem lift_sub {s : ℕ} {V : X.Opens} {d : ℕ} {t : Fin d → Γ(X, V)} {E :
   exact Ideal.Quotient.eq.1 ((map_liftV φ g).trans (hL.2.2.2.1 T' u g))
 
 /- English proof (translation)
-The claim follows from `Ideal.Quotient.eq.1 ((mk_liftV _ _ g).trans (hL.2.2.2.1 T u g))`.
+A detailed English derivation is pending.
 -/
 theorem lift_sub_mem_ideal {s : ℕ} {V : X.Opens} {d : ℕ} {t : Fin d → Γ(X, V)} {E : Frame (sP (KS q s {V})) d}
     {ε : Γ(X, V) ≃+* (sP (KS q s {V})).A.obj E.D} (hL : IsLoc q s t E ε) (T : (KS q s {V}).FullSubcategory)
@@ -117,9 +117,9 @@ theorem lift_sub_mem_ideal {s : ℕ} {V : X.Opens} {d : ℕ} {t : Fin d → Γ(X
   Ideal.Quotient.eq.1 ((mk_liftV _ _ g).trans (hL.2.2.2.1 T u g))
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_eq_single k (fun i _ hi => by`. Rewrite using `[if_neg (Ne.symm hi)]; unfold Frame.form; rw [map_zero, mul_zero]) (by simp), if_pos rfl]`. Unfold `Frame.form Frame.a`. Rewrite using `[Fin.prod_univ_one]`. Simplify using `only [Matrix.cons_val_zero, map_one, mul_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hφ : u.map (homOfLE (Fin.le_last (0 : Fin 1).succ)) = 𝟙 _` using `by rw [← u.map_id]; rfl`. Rewrite using `[hφ, (sP (KS q s {V})).A.map_id, hL.2.2.2.2 k, Functor.map_comp, CommAlgCat.hom_comp, AlgHom.comp_apply]`. Express the relevant statement in the definitionally equal form `(show (sP (KS q s {V})).A.obj (u.obj (Fin.last 1)) from liftV (u.obj (Fin.last 1)).obj (ks_in q s V _ (u.obj (Fin.last 1)).property) (t k)) - ((sP (KS q s {V})).A.map (u.map (homOfLE (Fin.zero_le (Fin.last 1))))).hom (show (sP (KS q s {V})).A.obj (u.obj 0) from liftV (u.obj 0).ob …`. Rewrite using `[map_sub]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem addC_near {s : ℕ} {V : X.Opens} {d : ℕ} {t : Fin d → Γ(X, V)} {E : Frame (sP (KS q s {V})) d}
     {ε : Γ(X, V) ≃+* (sP (KS q s {V})).A.obj E.D} (hL : IsLoc q s t E ε) (σ : ∀ T, E.D ⟶ T) (k : Fin d)
@@ -161,33 +161,31 @@ section Key2
 variable {K : Type} [Field K] {X : Scheme.{0}} {q : X ⟶ Spec (CommRingCat.of K)}
 
 /- English proof (translation)
-Establish `hF` using `GlobalTheory.CompanionTheory.DPFil.isFil_sFil (KS q s {V})`. Establish `hc : E.GrConst (sFil (KS q s {V}))` using `hL.1`. Set `ℓ : Fin (n + 1) → CH.Cn (CH.modF (sP (KS q s {V})).A) 1` to `fun k => addC (KS q s {V}) (fun T => liftV T.obj (ks_in q s V _ T.property) (t k))`. Set `cc : Fin (n + 1) → Fin (n + 1) → (sP (KS q s {V})).A.obj E.D` to `fun k i => if k = i then 1 else 0`. Set `hk : Fin (n + 1) → ∀ T : (KS q s {V}).FullSubcategory, (sP (KS q s {V})).A.obj T` to `fun k T => (show (sP (KS q s {V})).A.obj T from liftV T.obj (ks_in q s V _ T.property) (t k)) - ((sP (KS q s {V})).A.map (σ T)).hom (ε (t k))`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hh : ∀ k, h0 (hk k) ∈ FC (sFil (KS q s {V}) ((1 : ℕ) : ℤ)) 0` using `fun k => mem_FC.2 fun u => by`. Rewrite using `[Nat.cast_one, hF.one]`. Conclude with `lift_sub_mem_ideal hL _ (σ _) (t k)`. Establish `he : ∀ k, ℓ k - (∑ i, fc E σ ![i] (cc k i) + CH.d (CH.modF (sP (KS q s {V})).A) 0 (h0 (hk k))) ∈ FC (sFil (KS q s {V}) ((1 + 1 : ℕ) : ℤ)) 1` using `fun k => mem_FC.2 fun u => by`. Establish `e : vl (ℓ k - (∑ i, fc E σ ![i] (cc k i) + CH.d (CH.modF (sP (KS q s {V})).A) 0 (h0 (hk k)))) u = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : vl (ℓ k - (∑ i, fc E σ ![i] (cc k i) + CH.d (CH.modF (sP (KS q s {V})).A) 0 (h0 (hk k)))) u = vl (ℓ k) u - (∑ i, E.form σ ![i] (cc k i) u + vl (CH.d (CH.modF (sP (KS q s {V})).A) 0 (h0 (hk k))) u)`. Express the relevant statement in the definitionally equal form `vl (ℓ k) u - (vl (∑ i, fc E σ ![i] (cc k i)) u + _) = _`. Use `congr 2`. Rewrite using `[vl, Finset.sum_apply]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, cech_d_h0_eval]`. Conclude with `addC_near hL σ k u`. Rewrite using `[e]`. Conclude with `zero_mem _`. Take `⟨g, hg, hn⟩` from `near E σ hF hc (n + 1) ℓ cc (fun k => h0 (hk k)) hh he`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨H, hH, rfl⟩` from `hg`. Establish `hsum : ∑ I : Fin (n + 1) → Fin (n + 1), fc E σ I (∏ k, cc k (I k)) = fc E σ id 1`. Rewrite using `[Finset.sum_eq_single id]`. Use `congr 1`. Simplify using `[cc]`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Introduce `I _ hI`. Choose the witnesses or unpack the hypotheses as in `⟨k, hk'⟩ : ∃ k, I k ≠ k := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hI (funext h)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Replace the relevant objects with their definitions.
 
-Establish `h0' : ∏ k, cc k (I k) = 0` using `Finset.prod_eq_zero (Finset.mem_univ k) (by simp [cc, Ne.symm hk'])`. Rewrite using `[h0']`. Use function extensionality and compare the values at `u'`. Express the relevant statement in the definitionally equal form `E.form σ I 0 u' = 0`. Unfold `Frame.form`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[map_zero, mul_zero]`. Simplify using the standard rewrite rules. Rewrite `hn` using `[hsum]`. Use `⟨fun u => (show (sP (KS q s {V})).A.obj (u.obj (Fin.last n)) from H u) * ((sP (KS q s {V})).A.map (σ _)).hom (ε x), fun u => ?_, fun u => ?_⟩` and prove the remaining obligations. Establish `h1` using `mem_FC.1 hH u`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `e : ((n + 1 : ℕ) : ℤ) = (n : ℤ) + 1` using `by push_cast; ring`. Rewrite `h1` using `[e]`. Conclude with `Ideal.mul_mem_right _ _ h1`. Use `set Y := ((sP (KS q s {V})).A.map (σ (u.obj (Fin.last (n + 1))))).hom (ε x) with hY set P := vl (cupListC (sP (KS q s {V})).A ℓ) u with hP set Fc := vl (fc E σ id 1) u with hFc set D := vl (CH.d (CH.modF (sP (KS q s {V})).A) n H) u with hD`. Establish `hv : (show (sP (KS q s {V})).A.obj (u.obj (Fin.last (n + 1))) from xdtC (q` using `q) s V t x u) = (show (sP (KS q s {V})).A.obj (u.obj (Fin.last (n + 1))) from CH.term (CH.modF (sP (KS q s {V})).A) u (zeroC (KS q s {V}) fun T => liftV T.obj (ks_in q s V _ T.property) x) (CH.front (Nat.zero_add (n + 1))) (CH.front_mono _)) * P := by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Express the relevant statement in the definitionally equal form `_ * (show (sP (KS q s {V})).A.obj (u.obj (Fin.last (n + 1))) from CH.term (CH.modF (sP (KS q s {V})).A) u (cupListC (sP (KS q s {V})).A ℓ) (CH.back (Nat.zero_add (n + 1))) (CH.back_mono _)) = _`. Rewrite using `[term_id u _ _ _ (back_zero _)]`. Establish `hFY : (show (sP (KS q s {V})).A.obj (u.obj (Fin.last (n + 1))) from CH.term (CH.modF (sP (KS q s {V})).A) u (zeroC (KS q s {V}) fun T => liftV T.obj (ks_in q s V _ T.property) x) (CH.front (Nat.zero_add (n + 1))) (CH.front_mono _)) - Y ∈ (sFil (KS q s {V}) ((1 : ℕ) : ℤ)).S _`. Rewrite using `[Nat.cast_one]`. Conclude with `lift_sub hL (u.map (homOfLE (Fin.le_last _))) (σ _) x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hform : E.form σ id (ε x) u = Fc * Y`. Use `form_mul E σ id (ε x) 1 u` as an intermediate fact. Rewrite `this` using `[mul_one]`. Then use the resulting hypothesis. Establish `hR : P - Fc - D ∈ (sFil (KS q s {V}) ((n + 1 + 1 : ℕ) : ℤ)).S _` using `mem_FC.1 hn u`. Establish `hdm` using `d_mul E σ hF hc (ε x) hH u`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hFcm : Fc ∈ (sFil (KS q s {V}) ((n + 1 : ℕ) : ℤ)).S _` using `mem_FC.1 (fc_mem E σ hF id 1) u`. Establish `hDm : D ∈ (sFil (KS q s {V}) ((n + 1 : ℕ) : ℤ)).S _` using `mem_FC.1 (d_mem hH) u`. Establish `hPm : P ∈ (sFil (KS q s {V}) ((n + 1 : ℕ) : ℤ)).S _`. Establish `h1` using `hF.anti (r := ((n + 1 : ℕ) : ℤ)) (by push_cast; omega) _ hR`. Establish `h2` using `add_mem (add_mem h1 hDm) hFcm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Rewrite `h2` using `[sub_add_cancel, sub_add_cancel]`. Then use the resulting hypothesis. Establish `hm1` using `hF.mul 1 (n + 1) _ hFY hPm`. Rewrite `hm1` using `[show 1 + (n + 1) = n + 1 + 1 by omega]`. Establish `hall` using `add_mem (add_mem hm1 (Ideal.mul_mem_left _ Y hR)) hdm`. Establish `e2 : ((n + 1 + 1 : ℕ) : ℤ) = (n : ℤ) + 1 + 1` using `by push_cast; ring`.
-
-Rewrite `hall` using `[e2]`. Rewrite using `[hv, hform]`. Use `hall using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem key {s : ℕ} {V : X.Opens} {n : ℕ} {t : Fin (n + 1) → Γ(X, V)} {E : Frame (sP (KS q s {V})) (n + 1)}
     {ε : Γ(X, V) ≃+* (sP (KS q s {V})).A.obj E.D} (hL : IsLoc q s t E ε) (σ : ∀ T, E.D ⟶ T) (x : Γ(X, V)) :
@@ -288,23 +286,23 @@ end GlobalTheory.CompanionTheory.ConeTopChart
 namespace GlobalTheory.CompanionTheory.ConeTopChart
 
 /- English proof (translation)
-Introduce `_ _ _ K _ _ X q n _ s hs V c y`. Take `⟨E, ε, hL⟩` from `GlobalTheory.CompanionTheory.ConeLocal.exists_loc q c s (by omega)`. Set `σ : ∀ T, E.D ⟶ T` to `fun T => (E.ne T).some`. Establish `hr : (n : ℤ) + 1 = ((n + 1 : ℕ) : ℤ)` using `by push_cast; ring`. Take `⟨hex, huniq⟩` from `GlobalTheory.CompanionTheory.ConeLocal.loc_coef q c.t s E ε hL σ (n + 1) ((n : ℤ) + 1) hr (by omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `toForm : ∀ (x : Γ(X, V)) (z : HQ (KS q s {V}) ((n : ℤ) + 1) ((n : ℤ) + 1 + 1) (n + 1)), CrystallineSemistableComparison.Pb.Rep (sFil (KS q s {V}) ((n : ℤ) + 1)) (sFil (KS q s {V}) ((n : ℤ) + 1 + 1)) (E.form σ id (ε x)) z ↔ CrystallineSemistableComparison.Pb.Rep (sFil (KS q s {V}) …`. Introduce `x z`. Take `⟨G, hG, hGe⟩` from `key hL σ x`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `rep_shift h G hG hGe`. Introduce `h`. Use `rep_shift h (-G) (fun u => (Ideal.neg_mem_iff _).2 (hG u)) (fun u => ?_)` and prove the remaining obligations. Establish `e : (show (sP (KS q s {V})).A.obj (u.obj (Fin.last (n + 1))) from CH.d _ n (-G) u) = -(show (sP (KS q s {V})).A.obj (u.obj (Fin.last (n + 1))) from CH.d _ n G u)`. Rewrite using `[map_neg]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[e]`. Use `(Ideal.neg_mem_iff _).2 (hGe u) using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Establish `uniqForm : ∀ (x x' : Γ(X, V)) (z : HQ (KS q s {V}) ((n : ℤ) + 1) ((n : ℤ) + 1 + 1) (n + 1)), CrystallineSemistableComparison.Pb.Rep (sFil (KS q s {V}) ((n : ℤ) + 1)) (sFil (KS q s {V}) ((n : ℤ) + 1 + 1)) (E.form σ id (ε x)) z → CrystallineSemistableComparison.Pb.Rep (sFil (KS q s …`.
+Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x x' z h h'`. Establish `h2` using `rep_add h (rep_smul (-1 : K) h')`. Establish `e0 : z + (-1 : K) • z = 0` using `by rw [neg_one_smul, add_neg_cancel]`. Rewrite `h2` using `[e0]`. Establish `h3 : CrystallineSemistableComparison.Pb.Rep (sFil (KS q s {V}) ((n : ℤ) + 1)) (sFil (KS q s {V}) ((n : ℤ) + 1 + 1)) (fun u => ∑ I : Idx (n + 1) (n + 1), E.form σ I.1 (ε ((fun _ => x - x') I)) u) 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `rep_congr h2 fun u => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single (J0 _) (fun I _ hI => absurd (top_index_eq I) hI) (by simp)]`. Establish `e1 : E.form σ id (ε x) u + (-1 : K) • E.form σ id (ε x') u - E.form σ (J0 (n + 1)).1 (ε (x - x')) u = 0`. Express the relevant statement in the definitionally equal form `_ - E.form σ id (ε (x - x')) u = 0`. Unfold `Frame.form`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sub, map_sub, neg_one_smul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1]`. Conclude with `zero_mem _`. Establish `h4` using `congrFun (huniq (fun _ => x - x') h3) (J0 _)`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `sub_eq_zero.1 h4`. Take `⟨y', hy'⟩` from `hex y`. Establish `h1 : CrystallineSemistableComparison.Pb.Rep (sFil (KS q s {V}) ((n : ℤ) + 1)) (sFil (KS q s {V}) ((n : ℤ) + 1 + 1)) (E.form σ id (ε (y' (J0 _)))) y`. Use `rep_congr hy' fun u => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single (J0 _) (fun I _ hI => absurd (top_index_eq I) hI) (by simp)]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Express the relevant statement in the definitionally equal form `E.form σ id (ε (y' (J0 _))) u - E.form σ id (ε (y' (J0 _))) u ∈ _`. Rewrite using `[sub_self]`. Conclude with `zero_mem _`. Conclude with `⟨y' (J0 _), (toForm _ _).1 h1, fun x' hx' => uniqForm _ _ _ ((toForm _ _).2 hx') h1⟩`.
+A detailed English derivation is pending.
 -/
 theorem top_chart : CrystallineSemistableComparison.Pb.KH.LocGr → CrystallineSemistableComparison.Pb.KH.PolyTf → CrystallineSemistableComparison.Pb.KH.GrAff →
     ∀ {K : Type} [Field K] [CharZero K] {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of K)) (n : ℕ)

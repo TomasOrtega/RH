@@ -15,13 +15,13 @@ open GlobalTheory.Poinc.Eq8 GlobalTheory.Poinc.Sep.Spz Classical
 namespace GlobalTheory.Poinc.Sep.Spz
 
 /- English proof (translation)
-Introduce `V _ _ _ hB G _ _ hG D A U F _ _ _ k z hk hz c`. Take `⟨hAdm, hChar⟩` from `hB`. Use `haveI := hChar`. Establish `hz0 : z ≠ 0`. Introduce and unpack `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hz` using `[zero_pow (by omega)]`. Conclude with `zero_ne_one hz`. Set `u : Fˣ` to `Units.mk0 z hz0`. Set `τ : Multiplicative D.toPre.X →* Fˣ` to `(zpowersHom Fˣ u).comp (AddMonoidHom.toMultiplicative c)`. Establish `hu : u ^ k = 1` using `by ext; simp [u, hz]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hτ : τ ^ k = 1`. Use `MonoidHom.ext fun χ => ?_` and prove the remaining obligations. Rewrite using `[MonoidHom.pow_apply, MonoidHom.one_apply]`. Simplify using `only [τ, MonoidHom.comp_apply, zpowersHom_apply]`. Rewrite using `[← zpow_natCast, ← zpow_mul, mul_comm, zpow_mul, zpow_natCast, hu, one_zpow]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨q, hy, hq⟩` from `GlobalTheory.ZH.TorusPerp.exists_qkPt_tor (F := F) D.tau_bimult τ hτ`. Take `⟨f, hf⟩` from `GlobalTheory.TorsionIso.torsion_eq GlobalTheory.firstFiveLaws V (maximalIdeal V) hAdm D A G hG U F k hk`. Use `⟨f q, τ, q, fun χ => ?_, hy, hq, (hf.1 q (f q)).2 rfl⟩` and prove the remaining obligations. Simplify using `[τ, u]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_torAt : ∀ (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V], GlobalTheory.Mum.Base V → ∀ (G : Over (Sp V)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ (D : DegData V (maximalIdeal V)) (A : PolAV (Sp (FractionRing V))) (U : Unif (maximalIdeal V) D A G) (F : Type) [Field F] [IsAlgClosed F] [Algebra (FractionRing V) F] (k : ℕ) (z : F), 1 ≤ k → z ^ k = 1 → ∀ c : D.toPre.X →+ ℤ, ∃ x : TFK (R := V) F ⟶ A.A, TorAt U F k z c x := by
   intro V _ _ _ hB G _ _ hG D A U F _ _ _ k z hk hz c

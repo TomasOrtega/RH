@@ -18,7 +18,7 @@ section Extend
 variable {α β : Type} {j : α → β}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Distinguish the cases in `h : ∃ a, j a = k`. Take `⟨a, rfl⟩` from `h`. Simplify using `[hj.extend_apply]`. Simplify using `[Function.extend_apply' _ _ _ h, hg]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem ext_map {M N : Type} [Zero M] [Zero N] (hj : Function.Injective j) (g : M → N) (hg : g 0 = 0) (y : α → M) :
     (fun k => g (Function.extend j y 0 k)) = Function.extend j (fun i => g (y i)) 0 := by
@@ -29,7 +29,7 @@ theorem ext_map {M N : Type} [Zero M] [Zero N] (hj : Function.Injective j) (g : 
   · simp [Function.extend_apply' _ _ _ h, hg]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Distinguish the cases in `h : ∃ x, j x = k`. Take `⟨x, rfl⟩` from `h`. Simplify using `[hj.extend_apply]`. Simplify using `[Function.extend_apply' _ _ _ h]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem ext_add {M : Type} [AddZeroClass M] (hj : Function.Injective j) (a b : α → M) :
     Function.extend j a 0 + Function.extend j b 0 = Function.extend j (a + b) 0 := by
@@ -40,7 +40,7 @@ theorem ext_add {M : Type} [AddZeroClass M] (hj : Function.Injective j) (a b : �
   · simp [Function.extend_apply' _ _ _ h]
 
 /- English proof (translation)
-Simplify using `only [dotProduct]`. Use `(Fintype.sum_of_injective j hj _ _ (fun k hk => ?_) (fun i => ?_)).symm` and prove the remaining obligations. Establish `h : ¬ ∃ x, j x = k` using `fun ⟨x, hx⟩ => hk ⟨x, hx⟩`. Simplify using `[Function.extend_apply' _ _ _ h]`. Simplify using `[hj.extend_apply]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem ext_dot [Fintype α] [Fintype β] {R : Type} [CommRing R] (hj : Function.Injective j) (a b : α → R) :
     Function.extend j a 0 ⬝ᵥ Function.extend j b 0 = a ⬝ᵥ b := by
@@ -56,18 +56,18 @@ end Extend
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Use extensionality with `i k`. Simplify using `[incM, cA, inclR, Matrix.map_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cA_incM (σ : E →ₐ[F] E) {m n : Type} (A : Matrix m n E) : (incM F A).map (cA σ) = incM F (A.map σ) := by
   ext i k
   simp [incM, cA, inclR, Matrix.map_apply]
 
 /- English proof (translation)
-Introduce `z hz`. Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨a, ha, hv, x, hx, y, hy, rfl⟩` from `hz`. Use `AddSubgroup.subset_closure ⟨a, ha, hv, ι *ᵥ x, (hlow x).1 hx, y, hy, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Matrix.mul_smul, incM, incM, ← Matrix.map_mul, Matrix.mul_vecMulVec]`. Both sides reduce to the same expression. Consider the case `zero => rw [Matrix.mul_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [Matrix.mul_add]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [Matrix.mul_neg]`. Conclude with `neg_mem hx`.
+A detailed English derivation is pending.
 -/
 theorem mul_mem_latAtV {n d n₁ : ℕ} (X : Spc F E n) (W : Spc F E d) (X₁ : Spc F E n₁) (ι : Matrix (Fin n) (Fin n₁) E)
     (hlow : ∀ u, u ∈ X₁.L ↔ ι *ᵥ u ∈ X.L) (v : Pl F) :
@@ -86,11 +86,11 @@ theorem mul_mem_latAtV {n d n₁ : ℕ} (X : Spc F E n) (W : Spc F E d) (X₁ : 
 end GlobalTheory.VacRestr
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n d n₁ X W X₁ H j₀ j₁ M₁ hH j co hj hco v φ θ heig z hz`. Establish `hγ` using `GlobalTheory.VacRestr.mul_mem_latAtV X W X₁ H.ι hH.low v z hz`. Establish `hloc : GlobalTheory.LatVac.locCo co v (incM F H.ι * z) = (Function.extend j (GlobalTheory.LatVac.locCo M₁.co v z).1 0, Function.extend j (GlobalTheory.LatVac.locCo M₁.co v z).2 0)`. Simplify using `only [GlobalTheory.LatVac.locCo, AddMonoidHom.coe_mk, ZeroHom.coe_mk, hco]`. Conclude with `Prod.ext (GlobalTheory.VacRestr.ext_map hj _ (map_zero _) _) (GlobalTheory.VacRestr.ext_map hj _ (map_zero _) _)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `htw : symp (R` using `AF F) (cA σ) (inclR (F := F) (AF F) (θ : E)) (incM F X.J) (incM F W.J) (incM F H.ι * z) (incM F H.ι * z) = symp (R := AF F) (cA σ) (inclR (F := F) (AF F) (θ : E)) (incM F X₁.J) (incM F W.J) z z := by`. Rewrite using `[GlobalTheory.symp_mul_left, GlobalTheory.VacRestr.cA_incM, ← hH.gram]`. Use `congr 1`. Simplify using `only [incM]`. Rewrite using `[← Matrix.transpose_map, ← Matrix.map_mul, ← Matrix.map_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `y`. Establish `h` using `congrFun (heig _ hγ) (Function.extend j y 0)`. Rewrite `h` using `[hloc, htw]`. Simplify using `only [schr, Pi.smul_apply, smul_eq_mul] at h ⊢`. Rewrite `h` using `[GlobalTheory.VacRestr.ext_dot hj, GlobalTheory.VacRestr.ext_dot hj, GlobalTheory.VacRestr.ext_add hj]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.VacRestr.restr_eigen : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (n d n₁ : ℕ) (X : Spc F E n) (W : Spc F E d) (X₁ : Spc F E n₁) (H : Plane E n n₁) (j₀ j₁ : ℕ) (M₁ : Model σ X₁ W),

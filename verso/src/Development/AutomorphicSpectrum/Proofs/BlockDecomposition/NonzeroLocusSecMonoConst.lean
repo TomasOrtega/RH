@@ -18,7 +18,7 @@ variable {X Y : Scheme.{0}}
 def chartFn {L : LB X} {d : ℤ} (s : LB.Sec (pw L d)) (i : L.ι) : Γ(X, L.U i) := s.f i
 
 /- English proof (translation)
-Rewrite using `[map_prod, map_prod, Finset.prod_congr rfl (fun l _ => h l), Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, Fintype.card_fin]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem map_prod_eq_pow_mul {A A' B : Type} [CommRing A] [CommRing A'] [CommRing B] (φ : A →+* B)
     (φ' : A' →+* B) {k : ℕ} (x : Fin k → A) (y : Fin k → A') (g : B)
@@ -45,7 +45,7 @@ def pullPow {N : LB X} {N' : LB Y} {β : X ⟶ Y} (v : LB.Iso N (N'.pull β)) (t
   ⟨fun p => v.s p ^ t⟩
 
 /- English proof (translation)
-Establish `key : ∀ w : Fin k → τ, ∏ l, φ (w l) = ((Finset.univ.val.map w).map φ).prod`. Introduce `w`. Rewrite using `[Multiset.map_map]`. Both sides reduce to the same expression. Rewrite using `[key, key, key, key, ← Multiset.prod_add, ← Multiset.prod_add, ← Multiset.map_add, ← Multiset.map_add, hw]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem prod_mul_prod_eq {B τ : Type} [CommMonoid B] (φ : τ → B) {k : ℕ} (w₁ w₂ w₃ w₄ : Fin k → τ)
     (hw : Finset.univ.val.map w₁ + Finset.univ.val.map w₂ = Finset.univ.val.map w₃ + Finset.univ.val.map w₄) :
@@ -57,28 +57,28 @@ theorem prod_mul_prod_eq {B τ : Type} [CommMonoid B] (φ : τ → B) {k : ℕ} 
   rw [key, key, key, key, ← Multiset.prod_add, ← Multiset.prod_add, ← Multiset.map_add, ← Multiset.map_add, hw]
 
 /- English proof (translation)
-Introduce `X L τ d D k h a w₁ w₂ w₃ w₄ hw c`. Conclude with `prod_mul_prod_eq (fun i => chartFn (a i) (show L.ι from c)) w₁ w₂ w₃ w₄ hw`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem secMono_mul : ∀ {X : Scheme.{0}} {L : LB X} {τ : Type} {d D : ℤ} {k : ℕ} (h : d * k = D) (a : τ → LB.Sec (pw L d)) (w₁ w₂ w₃ w₄ : Fin k → τ), (Finset.univ.val.map w₁ + Finset.univ.val.map w₂ = Finset.univ.val.map w₃ + Finset.univ.val.map w₄) → ∀ c, (secMono h a w₁).f c * (secMono h a w₂).f c = (secMono h a w₃).f c * (secMono h a w₄).f c := by
   intro X L τ d D k h a w₁ w₂ w₃ w₄ hw c
   exact prod_mul_prod_eq (fun i => chartFn (a i) (show L.ι from c)) w₁ w₂ w₃ w₄ hw
 
 /- English proof (translation)
-Rewrite using `[h, h', mul_zpow, inv_zpow]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem zpow_mul_inv_eq {G : Type} [CommGroup G] (a a' b b' : G) (t : ℤ) (h : a' = a ^ t) (h' : b' = b ^ t) :
     (a * b⁻¹) ^ t = a' * b'⁻¹ := by
   rw [h, h', mul_zpow, inv_zpow]
 
 /- English proof (translation)
-Rewrite using `[map_zpow, map_zpow]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mapmap_zpow {G H K : Type} [CommGroup G] [CommGroup H] [CommGroup K] (f : G →* H) (g : H →* K)
     (x : G) (t : ℤ) : g (f (x ^ t)) = (g (f x)) ^ t := by
   rw [map_zpow, map_zpow]
 
 /- English proof (translation)
-Use `(pull_g (pw L t) φ i j).trans ((mapmap_zpow (pullU φ _) (res _) (L.g _ _) t).trans ?_)` and prove the remaining obligations. Conclude with `congrArg (· ^ t) (pull_g L φ i j).symm`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem pull_pw_g {Z W : Scheme.{0}} (L : LB W) (φ : Z ⟶ W) (t : ℤ) (i j : PUnit → L.ι) :
     ((pw L t).pull φ).g i j = ((L.pull φ).g i j) ^ t := by
@@ -86,9 +86,9 @@ theorem pull_pw_g {Z W : Scheme.{0}} (L : LB W) (φ : Z ⟶ W) (t : ℤ) (i j : 
   exact congrArg (· ^ t) (pull_g L φ i j).symm
 
 /- English proof (translation)
-Introduce `X Y N N' β v t hv p q`. Use `congrArg (· ^ t) (hv p q)` as an intermediate fact. Simplify using `only [mul_zpow, ← map_zpow] at this`. Use `this.trans ?_` and prove the remaining obligations. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Use `zpow_mul_inv_eq (G := Γ(X, (N'.pull β).U p.1 ⊓ N.U p.2 ⊓ ((N'.pull β).U q.1 ⊓ N.U q.2))ˣ) (res _ ((N'.pull β).g p.1 q.1)) (res _ (((pw N' t).pull β).g p.1 q.1)) (res _ (N.g p.2 q.2)) (res _ ((pw N t).g p.2 q.2)) t ?_ ?_` and prove the remaining obligations. Conclude with `(congrArg _ (pull_pw_g N' β t p.1 q.1)).trans (map_zpow _ _ _)`. Conclude with `map_zpow _ _ _`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem pullPow_isGen : ∀ {X Y : Scheme.{0}} {N : LB X} {N' : LB Y} {β : X ⟶ Y} (v : LB.Iso N (N'.pull β)) (t : ℤ), v.IsGen → (pullPow v t).IsGen := by
   intro X Y N N' β v t hv p q
@@ -103,9 +103,9 @@ theorem pullPow_isGen : ∀ {X Y : Scheme.{0}} {N : LB X} {N' : LB Y} {β : X �
   · exact map_zpow _ _ _
 
 /- English proof (translation)
-Introduce `X Y N N' β v τ d D k h a a' hmaps w p`. Substitute `h` using the available equality. Set `u : Γ(X, (N'.pull β).U p.1 ⊓ N.U p.2)ˣ` to `v.s p`. Use `(map_prod_eq_pow_mul ((resG X (inf_le_left)).comp ((resG X (GlobalTheory.Cartier.pull_U N' β p.1).le).comp (β.app _).hom)) (resG X inf_le_right) (fun l => chartFn (a' (w l)) (p.1 ⟨⟩)) (fun l => chartFn (a (w l)) p.2) (u ^ d).val (fun l => hmaps (w l) p)).trans ?_` and prove the remaining obligations. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← Units.val_pow_eq_pow_val, ← zpow_natCast, ← zpow_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem secMaps_secMono : ∀ {X Y : Scheme.{0}} {N : LB X} {N' : LB Y} {β : X ⟶ Y} (v : LB.Iso N (N'.pull β)) {τ : Type} {d D : ℤ} {k : ℕ} (h : d * k = D) (a : τ → LB.Sec (pw N d)) (a' : τ → LB.Sec (pw N' d)), (∀ i, SecMaps (pullPow v d) (a i) (secPull (a' i) β)) → ∀ w : Fin k → τ, SecMaps (pullPow v D) (secMono h a w) (secPull (secMono h a' w) β) := by
   intro X Y N N' β v τ d D k h a a' hmaps w p
@@ -120,7 +120,7 @@ theorem secMaps_secMono : ∀ {X Y : Scheme.{0}} {N : LB X} {N' : LB Y} {β : X 
   rfl
 
 /- English proof (translation)
-Introduce `X L τ d D k h a i hk`. Use `iSup_congr fun c => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `X.basicOpen (∏ l : Fin k, chartFn (a i) c) = X.basicOpen (chartFn (a i) c)`. Rewrite using `[Finset.prod_const, Finset.card_univ, Fintype.card_fin]`. Conclude with `Scheme.basicOpen_pow _ _ (by omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nonzeroLocus_secMono_const : ∀ {X : Scheme.{0}} {L : LB X} {τ : Type} {d D : ℤ} {k : ℕ} (h : d * k = D) (a : τ → LB.Sec (pw L d)) (i : τ), 1 ≤ k → nonzeroLocus (secMono h a (fun _ => i)) = nonzeroLocus (a i) := by
   intro X L τ d D k h a i hk

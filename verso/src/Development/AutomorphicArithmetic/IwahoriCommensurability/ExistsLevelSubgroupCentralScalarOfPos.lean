@@ -6,23 +6,21 @@ open UpperTheory.Gal.CertificateRingHomMap (GUf Gam0 Plc comp mat rat mem_Sim)
 open UpperTheory.Gal.W2.Seed UpperTheory.Gal.Int.Geo UpperTheory.Gal.Int.Geo.Pl
 
 /- English proof (translation)
-Introduce `E _ _ _ A n p _ S F c hc`. Establish `hcE : (c : E) ≠ 0` using `Nat.cast_ne_zero.2 hc.ne'`. Establish `hcQ : (c : ℚ) ^ 2 ≠ 0` using `pow_ne_zero _ (Nat.cast_ne_zero.2 hc.ne')`. Set `u : GL (Fin n) E` to `⟨(c : E) • 1, (c : E)⁻¹ • 1, by simp [smul_smul, hcE], by simp [smul_smul, hcE]⟩`. Set `s : ℚˣ` to `Units.mk0 ((c : ℚ) ^ 2) hcQ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hm : (u, s) ∈ Gam0 E n`. Use `⟨mem_Sim.2 ?_, ?_⟩` and prove the remaining obligations. Use `show (((c : E) • (1 : Matrix (Fin n) (Fin n) E)).map (GlobalTheory.SplitPts.conjE E).toRingHom)ᵀ * ((c : E) • (1 : Matrix (Fin n) (Fin n) E)) = algebraMap ℚ E ((c : ℚ) ^ 2) • 1`. Use extensionality with `i k`. Distinguish the cases in `hik : i = k`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify using `[hik, Matrix.one_apply, Matrix.mul_apply, pow_two]`. Simplify using `[hik, Ne.symm hik, Matrix.one_apply, Matrix.mul_apply]`. Use `show (0 : ℚ) < (c : ℚ) ^ 2`. Check the signs of the components of the expression. Set `y : Gam0 E n` to `⟨(u, s), hm⟩`.
+Simplify using the standard rewrite rules. Check the signs of the components of the expression. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hmat : (mat (rat y)).val = ((c : FiniteAdeleRing (𝓞 E) E)) • (1 : Matrix (Fin n) (Fin n) (FiniteAdeleRing (𝓞 E) E))` using `by show ((c : E) • (1 : Matrix (Fin n) (Fin n) E)).map (algebraMap E (FiniteAdeleRing (𝓞 E) E)) = _`. Use extensionality with `i k`. Apply the tactic sequence `by_cases hik : i = k <;> simp [hik, Matrix.one_apply]`. Establish `hcomp : ∀ w : Plc E, (comp w (rat y)).val = (c : w.adicCompletion E) • (1 : Matrix (Fin n) (Fin n) (w.adicCompletion E))`. Introduce `w`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use `show ((mat (rat y)).val).map (pLoc E w) = _`. Rewrite using `[hmat]`. Use extensionality with `i k`. Apply the tactic sequence `by_cases hik : i = k <;> simp [hik, Matrix.one_apply]`. Establish `hcen : ∀ g : GUf E n, rat y * g = g * rat y`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `g`. Use `Subtype.ext (Prod.ext (Units.ext ?_) (mul_comm _ _))` and prove the remaining obligations. Use `show (mat (rat y)).val * (mat g).val = (mat g).val * (mat (rat y)).val`. Rewrite using `[hmat]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `⟨y, rfl, rfl, hcomp, hcen, ?_, ?_⟩` and prove the remaining obligations. Introduce `h`. Take `⟨g, rfl⟩` from `F.surj h`. Rewrite using `[← map_mul, ← map_mul, hcen]`. Introduce `v`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `sub_eq_zero.1 (F.vec_inj _ fun w hw => ?_)` and prove the remaining obligations. Rewrite using `[map_sub, map_nsmul, F.vec_act w hw, sub_eq_zero]`. Establish `e : (F.a w * comp w (rat y) * (F.a w)⁻¹).val = (c : w.adicCompletion E) • (1 : Matrix (Fin n) (Fin n) (w.adicCompletion E))`. Rewrite using `[Units.val_mul, Units.val_mul, hcomp w]`. Simplify using the standard rewrite rules.
-
-Rewrite using `[e, Matrix.smul_mulVec, Matrix.one_mulVec, Nat.cast_smul_eq_nsmul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.exists_levelSubgroup_central_scalar_of_pos :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (A : Arith E) (n p : ℕ) [Fact p.Prime] (S : Setup A n p) (F : Frame S) (c : ℕ), 0 < c →

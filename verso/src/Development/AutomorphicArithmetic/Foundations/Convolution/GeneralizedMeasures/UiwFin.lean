@@ -11,16 +11,16 @@ open GroundTheory.Global GroundTheory.Global.SemiLocal GroundTheory.Automorphic.
 open UpperTheory.ConvolutionTheory UpperTheory.ConvolutionTheory.GM
 
 /- English proof (translation)
-The claim follows from `(continuous_fst.mul continuous_const).mul continuous_snd`.
+A detailed English derivation is pending.
 -/
 private theorem gl_cont {k : Type} [Field k] [TopologicalSpace k] [IsTopologicalRing k] {n : ℕ} (x : GL (Fin n) k) :
     Continuous (fun p : GL (Fin n) k × GL (Fin n) k => p.1 * x * p.2) :=
   (continuous_fst.mul continuous_const).mul continuous_snd
 
 /- English proof (translation)
-Use extensionality with `g`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, b, hb, rfl⟩`. Conclude with `⟨(a, b), ⟨ha, hb⟩, rfl⟩`. Introduce and unpack `⟨⟨a, b⟩, ⟨ha, hb⟩, rfl⟩`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨a, ha, b, hb, rfl⟩`.
+Supply the required witnesses or components.
 -/
 private theorem iwCoset_eq_image {K : Type} [Field K] [NumberField K] {n : ℕ} (w : Pl K) (ν : Fin n → ℤ) :
     iwCoset w ν = (fun p : GL (Fin n) (w.adicCompletion K) × GL (Fin n) (w.adicCompletion K) =>
@@ -35,9 +35,9 @@ private theorem iwCoset_eq_image {K : Type} [Field K] [NumberField K] {n : ℕ} 
     exact ⟨a, ha, b, hb, rfl⟩
 
 /- English proof (translation)
-Use extensionality with `g`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, b, hb, rfl⟩`. Rewrite using `[GroundTheory.Automorphic.Parabolic.diagPow_zero, mul_one]`. Conclude with `mul_mem ha hb`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hg`. Conclude with `⟨g, hg, 1, one_mem _, by rw [GroundTheory.Automorphic.Parabolic.diagPow_zero, mul_one, mul_one]⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem iwCoset_zero {K : Type} [Field K] [NumberField K] {n : ℕ} (w : Pl K) :
     iwCoset w (0 : Fin n → ℤ) = (GLnLocal.iwahori (w.adicCompletion K) n : Set (GL (Fin n) (w.adicCompletion K))) := by
@@ -50,11 +50,11 @@ private theorem iwCoset_zero {K : Type} [Field K] [NumberField K] {n : ℕ} (w :
     exact ⟨g, hg, 1, one_mem _, by rw [GroundTheory.Automorphic.Parabolic.diagPow_zero, mul_one, mul_one]⟩
 
 /- English proof (translation)
-Rewrite using `[Set.mem_setOf_eq]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, b, hb, h⟩`. Use `⟨a, ha, ?_⟩` and prove the remaining obligations. Rewrite using `[← QuotientGroup.out_eq' c, h]`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `QuotientGroup.eq.mpr ?_` and prove the remaining obligations. Establish `: (a * Cartan.diagPow (w.adicCompletion K) n ν * b)⁻¹ * (a * Cartan.diagPow (w.adicCompletion K) n ν) = b⁻¹` using `by group`. Rewrite using `[this]`. Conclude with `inv_mem hb`. Introduce and unpack `⟨k, hk, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨h, hh⟩` from `QuotientGroup.mk_out_eq_mul (GLnLocal.iwahori (w.adicCompletion K) n) (k * Cartan.diagPow (w.adicCompletion K) n ν)`. Conclude with `⟨k, hk, h, h.2, hh⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem out_mem_iwCoset_iff {K : Type} [Field K] [NumberField K] {n : ℕ} (w : Pl K) (ν : Fin n → ℤ)
     (c : GL (Fin n) (w.adicCompletion K) ⧸ GLnLocal.iwahori (w.adicCompletion K) n) :
@@ -77,7 +77,7 @@ private theorem out_mem_iwCoset_iff {K : Type} [Field K] [NumberField K] {n : �
     exact ⟨k, hk, h, h.2, hh⟩
 
 /- English proof (translation)
-Establish `hcomp : IsCompact (iwCoset w ν)`. Rewrite using `[iwCoset_eq_image]`. Conclude with `(hC.prod hC).image (gl_cont _)`. Conclude with `HasCompactSupport.intro hcomp (fun x hx => Set.indicator_of_notMem hx _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem iwCoset_ind_hasCompactSupport {K : Type} [Field K] [NumberField K] {n : ℕ} (w : Pl K) (ν : Fin n → ℤ)
     (hC : IsCompact (GLnLocal.iwahori (w.adicCompletion K) n : Set (GL (Fin n) (w.adicCompletion K)))) :
@@ -88,11 +88,11 @@ private theorem iwCoset_ind_hasCompactSupport {K : Type} [Field K] [NumberField 
   exact HasCompactSupport.intro hcomp (fun x hx => Set.indicator_of_notMem hx _)
 
 /- English proof (translation)
-Introduce `k hk x`. Establish `hiff : x * k ∈ iwCoset w ν ↔ x ∈ iwCoset w ν`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, b, hb, h⟩`. Use `⟨a, ha, b * k⁻¹, mul_mem hb (inv_mem hk), ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← mul_assoc, ← h]`. Use `group`. Introduce and unpack `⟨a, ha, b, hb, rfl⟩`. Conclude with `⟨a, ha, b * k, mul_mem hb hk, by group⟩`. Distinguish the cases in `hxm : x ∈ iwCoset w ν`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Set.indicator_of_mem hxm, Set.indicator_of_mem (hiff.2 hxm)]`. Both sides reduce to the same expression. Rewrite using `[Set.indicator_of_notMem hxm, Set.indicator_of_notMem (fun h => hxm (hiff.1 h))]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem iwCoset_ind_mul {K : Type} [Field K] [NumberField K] {n : ℕ} (w : Pl K) (ν : Fin n → ℤ) :
     ∀ k ∈ GLnLocal.iwahori (w.adicCompletion K) n, ∀ x,
@@ -113,9 +113,9 @@ private theorem iwCoset_ind_mul {K : Type} [Field K] [NumberField K] {n : ℕ} (
   · rw [Set.indicator_of_notMem hxm, Set.indicator_of_notMem (fun h => hxm (hiff.1 h))]
 
 /- English proof (translation)
-Rewrite using `[finsum_mem_def]`. Use `finsum_congr fun c => ?_` and prove the remaining obligations. Distinguish the cases in `hc : c.out ∈ iwCoset w ν`. Rewrite using `[Set.indicator_of_mem hc, Set.indicator_of_mem ((out_mem_iwCoset_iff w _ c).1 hc)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Set.indicator_of_notMem hc, Set.indicator_of_notMem (fun h => hc ((out_mem_iwCoset_iff w _ c).2 h))]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem iwCoset_sum {K : Type} [Field K] [NumberField K] {n : ℕ} (μ : Measure (normOneGL K n)) [μ.IsHaarMeasure]
     (w : Pl K) (ν : Fin n → ℤ) :
@@ -133,7 +133,7 @@ private theorem iwCoset_sum {K : Type} [Field K] [NumberField K] {n : ℕ} (μ :
     simp
 
 /- English proof (translation)
-Rewrite using `[iwCoset_sum, Uiw, Hop, ContinuousLinearMap.comp_assoc]`. Use `congr 1`. Use `ext1 u`. Simplify using `only [ContinuousLinearMap.comp_apply, prj]`. Conclude with `(Submodule.starProjection_eq_self_iff.mpr (Submodule.le_topologicalClosure _ (hfix u))).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem uiw_comp_of_fix {K : Type} [Field K] [NumberField K] {n : ℕ} (μ : Measure (normOneGL K n)) [μ.IsHaarMeasure]
     (w : Pl K) (ν : Fin n → ℤ) (T : LL μ →L[ℂ] LL μ)
@@ -148,13 +148,13 @@ private theorem uiw_comp_of_fix {K : Type} [Field K] [NumberField K] {n : ℕ} (
   exact (Submodule.starProjection_eq_self_iff.mpr (Submodule.le_topologicalClosure _ (hfix u))).symm
 
 /- English proof (translation)
-Introduce `K _ _ n hn μ _ m _ w ν hν j r hr e₀ e₁ h₀ h₁`. Break down `Nat.eq_zero_or_pos j with rfl | hj` into its components or cases. Establish `hz : (fun i => ((0 : ℕ) : ℤ) * ν i) = (0 : Fin n → ℤ)`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `he : e₁ = e₀`. Use extensionality with `x`. Rewrite using `[h₀, h₁, hz]`. Rewrite using `[he, pow_zero]`. Both sides reduce to the same expression.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Take `⟨-, hpow, hO, hC, -⟩` from `UpperTheory.ConvolutionTheory.Tf.uiwPow K n μ w ν ν hν hν`. Establish `hx : (fun i => (j : ℤ) * ν i) = j • ν`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Rewrite `h₁` using `[hx]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨hfix, hOf⟩` from `UpperTheory.ConvolutionTheory.GM.stepFin K n hn μ m w (GLnLocal.iwahori (w.adicCompletion K) n) hO ((iwCoset w (j • ν)).indicator 1) (iwCoset_ind_hasCompactSupport w _ hC) (iwCoset_ind_mul w _) r hr e₀ e₁ (fun x => by rw [h₀, iwCoset_zero]) h₁`. Rewrite using `[hOf, hpow j hj]`. Conclude with `uiw_comp_of_fix μ w _ _ hfix`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.GM.uiwFin :
     UiwFin := by

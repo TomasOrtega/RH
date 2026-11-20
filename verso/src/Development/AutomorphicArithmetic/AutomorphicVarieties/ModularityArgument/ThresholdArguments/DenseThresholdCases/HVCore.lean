@@ -16,7 +16,7 @@ open Formalism.GaloisCohomology UpperTheory.Top GlobalTheory.Mem.LiteralAutomorp
 namespace UpperTheory.V.HV.Core
 open UpperTheory.V.Lit UpperTheory.V.W
 /- English proof (translation)
-Take `⟨B, hB⟩` from `Win.thmBab_of_lemmaK (_root_.UpperTheory.V.HV.U.pt_s hN) hN.coh.lfK hN.coh.ltK FW.ferreroWashington hK`. Take `⟨CK, hL⟩` from `hK`. Conclude with `vwin_of_counts (_root_.UpperTheory.V.HV.U.pt_s hN) hN.coh.lfK hN.coh.ltK hL (hB 401 (by norm_num)) (Odd.thmBcFree_of (ML.iv (_root_.UpperTheory.V.HV.U.pt_s hN) hN.coh.uo)) h1 h2 h3 h5 (countZ X.propZ)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem of_four_alt (hN : _root_.GlobalTheory.Mem.LiteralAutomorphy.LiteratureRankNHypothesis) (hK : ∃ CK : ℝ, LemmaK CK) (h1 : CountI) (h2 : CountII) (h3 : CountIII) (h5 : CountV) : VWin := by
   obtain ⟨B, hB⟩ := Win.thmBab_of_lemmaK (_root_.UpperTheory.V.HV.U.pt_s hN) hN.coh.lfK hN.coh.ltK FW.ferreroWashington hK
@@ -24,7 +24,7 @@ theorem of_four_alt (hN : _root_.GlobalTheory.Mem.LiteralAutomorphy.LiteratureRa
   exact vwin_of_counts (_root_.UpperTheory.V.HV.U.pt_s hN) hN.coh.lfK hN.coh.ltK hL (hB 401 (by norm_num))
     (Odd.thmBcFree_of (ML.iv (_root_.UpperTheory.V.HV.U.pt_s hN) hN.coh.uo)) h1 h2 h3 h5 (countZ X.propZ)
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.V.W.modularity_unitary_of_automorphy_hida_unitary hH.litN Pa.pFromAut (_root_.UpperTheory.V.Hi.hida_unitary_of_printed_hida hH)`.
+A detailed English derivation is pending.
 -/
 theorem modU_of_printsH (hH : _root_.UpperTheory.V.Af.HypothesesH') : _root_.UpperTheory.V.W.ModUAlt := _root_.UpperTheory.V.W.modularity_unitary_of_automorphy_hida_unitary hH.litN Pa.pFromAut (_root_.UpperTheory.V.Hi.hida_unitary_of_printed_hida hH)
 end UpperTheory.V.HV.Core

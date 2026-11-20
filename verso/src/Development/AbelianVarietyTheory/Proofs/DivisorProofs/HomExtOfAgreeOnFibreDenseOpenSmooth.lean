@@ -9,11 +9,11 @@ open AlgebraicGeometry CategoryTheory Limits
 namespace GlobalTheory.FibreDense
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hb`. Set `I : Ideal B` to `LinearMap.ker (LinearMap.toSpanSingleton B B b)`. Establish `hI : I ≠ ⊤`. Introduce `h1`. Establish `: (1 : B) ∈ I` using `h1 ▸ Submodule.mem_top`.
+Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `[I] at this`. Conclude with `hb this`. Take `⟨m, hm, hle⟩` from `Ideal.exists_le_maximal I hI`. Set `u : PrimeSpectrum B` to `⟨m, hm.isPrime⟩`. Take `⟨g, hg, hgQ⟩` from `GlobalTheory.T.exists_annihilator_not_mem_minimalPrimes_le A B b h u`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h0` using `GlobalTheory.T.nonZeroDivisor_localization_general_of_noetherian GlobalTheory.T.smooth_algebra_localization_eq_zero_of_avoid_fibre_minimal A B b g u hg hgQ`. Take `⟨s, hs⟩` from `(IsLocalization.map_eq_zero_iff u.asIdeal.primeCompl _ b).1 h0`. Conclude with `s.2 (hle (by simpa [I] using hs))`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem alg (A B : Type) [CommRing A] [CommRing B] [Algebra A B] [Algebra.Smooth A B] (b : B)
     (h : ∀ q : PrimeSpectrum B, q ∈ closure ({P : PrimeSpectrum B | ∃ s ∉ P.asIdeal, s * b = 0} ∩
@@ -33,7 +33,7 @@ theorem alg (A B : Type) [CommRing A] [CommRing B] [Algebra A B] [Algebra.Smooth
   exact s.2 (hle (by simpa [I] using hs))
 
 /- English proof (translation)
-Use `GlobalTheory.T.schemeTheoreticallyDominant_of_germ_injective X T p W fun U V hU hV e b hb => ?_` and prove the remaining obligations. Use `letI := (p.appLE V U e).hom.toAlgebra`. Use `haveI : Algebra.Smooth Γ(T, V) Γ(X, U) := HasRingHomProperty.appLE @Smooth p ‹_› ⟨V, hV⟩ ⟨U, hU⟩ e`. Conclude with `alg Γ(T, V) Γ(X, U) b (GlobalTheory.T.mem_closure_annihilator_primes_inter_fibre X T p W U V hU hV e hW b hb)`.
+Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem dense (X T : Scheme.{0}) (p : X ⟶ T) [Smooth p] (W : X.Opens)
     (hW : ∀ x : X, x ∈ closure ((W : Set X) ∩ p ⁻¹' {p x})) : IsSchemeTheoreticallyDominant W.ι := by
@@ -43,15 +43,13 @@ theorem dense (X T : Scheme.{0}) (p : X ⟶ T) [Smooth p] (W : X.Opens)
   exact alg Γ(T, V) Γ(X, U) b (GlobalTheory.T.mem_closure_annihilator_primes_inter_fibre X T p W U V hU hV e hW b hb)
 
 /- English proof (translation)
-Set `X' : Over Z` to `Over.mk (f ≫ s)`. Set `Y' : Over Z` to `Over.mk s`. Set `f' : X' ⟶ Y'` to `Over.homMk f`. Set `g' : X' ⟶ Y'` to `Over.homMk g h.symm`. Use `haveI : IsSeparated Y'.hom := ‹IsSeparated s›`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `U' : Over Z` to `Over.mk (d ≫ f ≫ s)`. Set `d' : U' ⟶ X'` to `Over.homMk d`. Establish `e : d' ≫ f' = d' ≫ g'` using `by ext1`. Conclude with `hU`. Set `l` to `equalizer.lift d' e`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hd : d = l.left ≫ (equalizer.ι f' g').left`. Rewrite using `[← Over.comp_left, equalizer.lift_ι]`. Both sides reduce to the same expression. Establish `hker : (equalizer.ι f' g').left.ker = ⊥`. Apply `le_bot_iff.1` to reduce the goal to its premises.
+Both sides reduce to the same expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Use `haveI : IsIso (equalizer.ι f' g').left := IsClosedImmersion.isIso_iff_ker_eq_bot.2 hker`. Establish `h0 : IsIso ((Over.forget Z).map (equalizer.ι f' g'))` using `(inferInstance : IsIso (equalizer.ι f' g').left)`. Establish `: IsIso (equalizer.ι f' g')` using `isIso_of_reflects_iso _ (Over.forget Z)`. Establish `hfg : f' = g'` using `(cancel_epi (equalizer.ι f' g')).1 (equalizer.condition f' g')`.
-
-Conclude with `congrArg CommaMorphism.left hfg`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ext_of_dominant {W X Y Z : Scheme.{0}} {f g : X ⟶ Y} (s : Y ⟶ Z) [IsSeparated s] (h : f ≫ s = g ≫ s)
     (d : W ⟶ X) [IsSchemeTheoreticallyDominant d] (hU : d ≫ f = d ≫ g) : f = g := by
@@ -79,7 +77,7 @@ theorem ext_of_dominant {W X Y Z : Scheme.{0}} {f g : X ⟶ Y} (s : Y ⟶ Z) [Is
   exact congrArg CommaMorphism.left hfg
 
 /- English proof (translation)
-Introduce `X T Y p _ q _ W hW f g hfg hfgW`. Use `haveI := dense X T p W hW`. Conclude with `ext_of_dominant q hfg W.ι hfgW`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem main : ∀ (X T Y : Scheme.{0}) (p : X ⟶ T) [Smooth p] (q : Y ⟶ T) [IsSeparated q] (W : X.Opens),
     (∀ x : X, x ∈ closure ((W : Set X) ∩ p ⁻¹' {p x})) →

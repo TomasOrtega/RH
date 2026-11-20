@@ -10,7 +10,7 @@ noncomputable section
 namespace GlobalTheory
 
 /- English proof (translation)
-Rewrite using `[MvPolynomial.eval₂_eq, MvPolynomial.eval₂_eq, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun d hd => ?_` and prove the remaining obligations. Rewrite using `[hp.degree_eq_sum_deg_support hd]`. Simplify using `only [Pi.smul_apply, smul_eq_mul, mul_pow, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem eval₂_smul_of_isHomogeneous {σ R A : Type*} [CommRing R] [CommRing A] (ρ : R →+* A)
     {p : MvPolynomial σ R} {n : ℕ} (hp : p.IsHomogeneous n) (c : A) (P : σ → A) :
@@ -37,27 +37,27 @@ structure IsUnimodularSol (V : WeierstrassCurve A) (P : Fin 3 → A) : Prop wher
   span_eq_top : Ideal.span (Set.range P) = ⊤
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h, Ideal.eq_top_of_isUnit_mem _ (Ideal.subset_span ⟨i, rfl⟩) hi⟩`.
+Supply the required witnesses or components.
 -/
 theorem IsUnimodularSol.of_isUnit {V : WeierstrassCurve A} {P : Fin 3 → A}
     (h : V.toProjective.Equation P) (i : Fin 3) (hi : IsUnit (P i)) : IsUnimodularSol V P :=
   ⟨h, Ideal.eq_top_of_isUnit_mem _ (Ideal.subset_span ⟨i, rfl⟩) hi⟩
 
 /- English proof (translation)
-The claim follows from `.of_isUnit WeierstrassCurve.Projective.equation_zero 1 isUnit_one`.
+A detailed English derivation is pending.
 -/
 theorem isUnimodularSol_zero (V : WeierstrassCurve A) : IsUnimodularSol V ![0, 1, 0] :=
   .of_isUnit WeierstrassCurve.Projective.equation_zero 1 isUnit_one
 
 /- English proof (translation)
-The claim follows from `.of_isUnit ((WeierstrassCurve.Projective.equation_some a b).mpr h) 2 isUnit_one`.
+A detailed English derivation is pending.
 -/
 theorem isUnimodularSol_some {V : WeierstrassCurve A} {a b : A} (h : V.toAffine.Equation a b) :
     IsUnimodularSol V ![a, b, 1] :=
   .of_isUnit ((WeierstrassCurve.Projective.equation_some a b).mpr h) 2 isUnit_one
 
 /- English proof (translation)
-Rewrite using `[WeierstrassCurve.Projective.equation_iff]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val]`. Apply the tactic sequence `constructor <;> intro h <;> linear_combination h`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem equation_origin_iff (V : WeierstrassCurve A) (z w : A) :
     V.toProjective.Equation ![z, -1, w] ↔
@@ -68,28 +68,28 @@ theorem equation_origin_iff (V : WeierstrassCurve A) (z w : A) :
   constructor <;> intro h <;> linear_combination h
 
 /- English proof (translation)
-The claim follows from `.of_isUnit h 1 isUnit_one.neg`.
+A detailed English derivation is pending.
 -/
 theorem isUnimodularSol_origin {V : WeierstrassCurve A} {z w : A}
     (h : V.toProjective.Equation ![z, -1, w]) : IsUnimodularSol V ![z, -1, w] :=
   .of_isUnit h 1 isUnit_one.neg
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.equation.map g, by rw [Set.range_comp, ← Ideal.map_span, h.span_eq_top, Ideal.map_top]⟩`.
+Supply the required witnesses or components.
 -/
 theorem IsUnimodularSol.map {V : WeierstrassCurve A} {P : Fin 3 → A} (h : IsUnimodularSol V P)
     (g : A →+* B) : IsUnimodularSol (V.map g) (g ∘ P) :=
   ⟨h.equation.map g, by rw [Set.range_comp, ← Ideal.map_span, h.span_eq_top, Ideal.map_top]⟩
 
 /- English proof (translation)
-The claim follows from `h.map g`.
+A detailed English derivation is pending.
 -/
 theorem IsUnimodularSol.map_comp {R : Type*} [CommRing R] {W : WeierstrassCurve R} {ρ : R →+* A}
     {P : Fin 3 → A} (h : IsUnimodularSol (W.map ρ) P) (g : A →+* B) :
     IsUnimodularSol (W.map (g.comp ρ)) (g ∘ P) := h.map g
 
 /- English proof (translation)
-Use `h.map (g : A →+* B)` as an intermediate fact. Rewrite `this` using `[WeierstrassCurve.map_baseChange]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem IsUnimodularSol.baseChange {R : Type*} [CommRing R] [Algebra R A] [Algebra R B]
     {W : WeierstrassCurve R} {P : Fin 3 → A} (h : IsUnimodularSol (W.baseChange A) P)
@@ -98,16 +98,16 @@ theorem IsUnimodularSol.baseChange {R : Type*} [CommRing R] [Algebra R A] [Algeb
   rwa [WeierstrassCurve.map_baseChange] at this
 
 /- English proof (translation)
-The claim follows from `h`.
+A detailed English derivation is pending.
 -/
 theorem IsUnimodularSol.of_baseChange {R : Type*} [CommRing R] [Algebra R A]
     {W : WeierstrassCurve R} {P : Fin 3 → A} (h : IsUnimodularSol (W.baseChange A) P) :
     IsUnimodularSol (W.map (algebraMap R A)) P := h
 
 /- English proof (translation)
-Use `⟨(WeierstrassCurve.Projective.equation_smul P hc).mpr h.equation, ?_⟩` and prove the remaining obligations. Rewrite using `[_root_.eq_top_iff, ← h.span_eq_top, Ideal.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Take `⟨v, rfl⟩` from `hc`. Establish `: P i = (v⁻¹ : Aˣ) * ((v : A) • P) i` using `by simp`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `Ideal.mul_mem_left _ _ (Ideal.subset_span ⟨i, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsUnimodularSol.smul {V : WeierstrassCurve A} {P : Fin 3 → A} (h : IsUnimodularSol V P)
     {c : A} (hc : IsUnit c) : IsUnimodularSol V (c • P) := by
@@ -120,7 +120,7 @@ theorem IsUnimodularSol.smul {V : WeierstrassCurve A} {P : Fin 3 → A} (h : IsU
   exact Ideal.mul_mem_left _ _ (Ideal.subset_span ⟨i, rfl⟩)
 
 /- English proof (translation)
-Use `⟨by rw [WeierstrassCurve.Projective.equation_iff]; simp, ?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.eq_top_iff_one]`. Establish `: (1 : ℤ) = (-2) * ![2, -5, 8] 0 + (-1) * ![2, -5, 8] 1` using `by simp`. Rewrite using `[this]`. Conclude with `add_mem (Ideal.mul_mem_left _ _ (Ideal.subset_span ⟨0, rfl⟩)) (Ideal.mul_mem_left _ _ (Ideal.subset_span ⟨1, rfl⟩))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 example : IsUnimodularSol (⟨0, 0, 1, -1, 0⟩ : WeierstrassCurve ℤ) ![2, -5, 8] := by
   refine ⟨by rw [WeierstrassCurve.Projective.equation_iff]; simp, ?_⟩
@@ -131,9 +131,9 @@ example : IsUnimodularSol (⟨0, 0, 1, -1, 0⟩ : WeierstrassCurve ℤ) ![2, -5,
     (Ideal.mul_mem_left _ _ (Ideal.subset_span ⟨1, rfl⟩))
 
 /- English proof (translation)
-Introduce `h`. Establish `h2 : Ideal.span (Set.range ![(0 : ℤ), 2, 0]) ≤ Ideal.span {2}`. Rewrite using `[Ideal.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Apply the tactic sequence `fin_cases i <;> simp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite `h2` using `[h.span_eq_top, top_le_iff, Ideal.span_singleton_eq_top, Int.isUnit_iff]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 example (V : WeierstrassCurve ℤ) : ¬ IsUnimodularSol V ![0, 2, 0] := by
   intro h
@@ -149,11 +149,7 @@ end Unimodular
 variable {R : Type u} [CommRing R] (W : WeierstrassCurve R)
 
 /- English proof (translation)
-Establish `hX` using `fun i : Fin 3 => MvPolynomial.isHomogeneous_X R i`. Establish `hC` using `fun r : R => MvPolynomial.isHomogeneous_C (Fin 3) r`. Rewrite using `[WeierstrassCurve.Projective.polynomial]`. Use `.sub (.add (.add ?_ ?_) ?_) (.add (.add (.add ?_ ?_) ?_) ?_)` and prove the remaining obligations. Conclude with `((hX 1).pow 2).mul (hX 2)`.
-
-Conclude with `(((hC _).mul (hX 0)).mul (hX 1)).mul (hX 2)`. Conclude with `((hC _).mul (hX 1)).mul ((hX 2).pow 2)`. Conclude with `(hX 0).pow 3`. Conclude with `((hC _).mul ((hX 0).pow 2)).mul (hX 2)`. Conclude with `((hC _).mul (hX 0)).mul ((hX 2).pow 2)`.
-
-Conclude with `(hC _).mul ((hX 2).pow 3)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isHomogeneous_polynomial : W.toProjective.polynomial.IsHomogeneous 3 := by
   have hX := fun i : Fin 3 => MvPolynomial.isHomogeneous_X R i
@@ -171,7 +167,7 @@ theorem isHomogeneous_polynomial : W.toProjective.polynomial.IsHomogeneous 3 := 
 def cubicIdeal : Ideal (MvPolynomial (Fin 3) R) := Ideal.span {W.toProjective.polynomial}
 
 /- English proof (translation)
-The claim follows from `Ideal.homogeneous_span _ _ (by rintro _ rfl; exact ⟨3, isHomogeneous_polynomial W⟩)`.
+A detailed English derivation is pending.
 -/
 theorem isHomogeneous_cubicIdeal :
     (cubicIdeal W).IsHomogeneous (MvPolynomial.homogeneousSubmodule (Fin 3) R) :=
@@ -186,7 +182,7 @@ instance gradedAlgebra : GradedAlgebra (grading W) :=
   quotGradedAlgebra _ (isHomogeneous_cubicIdeal W)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_grading_iff {n : ℕ} {a : HomRing W} :
     a ∈ grading W n ↔ ∃ p : MvPolynomial (Fin 3) R, p.IsHomogeneous n ∧
@@ -195,13 +191,13 @@ theorem mem_grading_iff {n : ℕ} {a : HomRing W} :
 def coord (i : Fin 3) : HomRing W := Ideal.Quotient.mk _ (MvPolynomial.X i)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨_, MvPolynomial.isHomogeneous_X R i, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem coord_mem (i : Fin 3) : coord W i ∈ grading W 1 :=
   ⟨_, MvPolynomial.isHomogeneous_X R i, rfl⟩
 
 /- English proof (translation)
-The claim follows from `Ideal.Quotient.ringHom_ext (MvPolynomial.ringHom_ext h₀ h₁)`.
+A detailed English derivation is pending.
 -/
 theorem homRing_hom_ext {A : Type*} [CommRing A] {f g : HomRing W →+* A}
     (h₀ : ∀ r : R, f (algebraMap R _ r) = g (algebraMap R _ r))
@@ -209,7 +205,7 @@ theorem homRing_hom_ext {A : Type*} [CommRing A] {f g : HomRing W →+* A}
   Ideal.Quotient.ringHom_ext (MvPolynomial.ringHom_ext h₀ h₁)
 
 /- English proof (translation)
-Establish `: MvPolynomial.eval₂Hom (algebraMap R (HomRing W)) (coord W) = Ideal.Quotient.mk _` using `MvPolynomial.ringHom_ext (fun r => by simp; rfl) (fun i => by simp [coord])`. Express the relevant statement in the definitionally equal form `(W.toProjective.map _).Equation _`. Rewrite using `[WeierstrassCurve.Projective.Equation, WeierstrassCurve.Projective.map_polynomial, MvPolynomial.eval_map, ← MvPolynomial.coe_eval₂Hom, this, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `Ideal.subset_span rfl`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem equation_coord : (W.baseChange (HomRing W)).toProjective.Equation (coord W) := by
   have : MvPolynomial.eval₂Hom (algebraMap R (HomRing W)) (coord W) = Ideal.Quotient.mk _ :=
@@ -220,13 +216,11 @@ theorem equation_coord : (W.baseChange (HomRing W)).toProjective.Equation (coord
   exact Ideal.subset_span rfl
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[toIdeal_irrelevant_le]`. Introduce and unpack `n hn _ ⟨p, hp, rfl⟩`. Establish `hp' : p ∈ Ideal.span (MvPolynomial.X '' (Set.univ : Set (Fin 3)))`. Rewrite using `[MvPolynomial.mem_ideal_span_X_image]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `m hm`. Use `by_contra! h`. Establish `hm0 : m = 0` using `Finsupp.ext fun i => h i trivial`. Use `MvPolynomial.IsHomogeneous.degree_eq_sum_deg_support hp hm` as an intermediate fact. Simplify using `[hm0] at this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Use `Ideal.mem_map_of_mem (Ideal.Quotient.mk (cubicIdeal W)) hp'` as an intermediate fact. Rewrite `this` using `[Ideal.map_span, Set.image_univ, ← Set.range_comp]`. Then use the resulting hypothesis. Rewrite using `[Ideal.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`.
-
-Conclude with `mem_irrelevant_of_mem _ one_pos (coord_mem W i)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem irrelevant_eq_span_coord :
     (irrelevant (grading W)).toIdeal = Ideal.span (Set.range (coord W)) := by
@@ -270,19 +264,19 @@ theorem evalHom_mk (p : MvPolynomial (Fin 3) R) :
     evalHom W ρ P h (Ideal.Quotient.mk _ p) = MvPolynomial.eval₂ ρ P p := rfl
 
 /- English proof (translation)
-The claim follows from `MvPolynomial.eval₂_X ..`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem evalHom_coord (i : Fin 3) : evalHom W ρ P h (coord W i) = P i :=
   MvPolynomial.eval₂_X ..
 
 /- English proof (translation)
-The claim follows from `MvPolynomial.eval₂_C ..`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem evalHom_algebraMap (r : R) : evalHom W ρ P h (algebraMap R _ r) = ρ r :=
   MvPolynomial.eval₂_C ..
 
 /- English proof (translation)
-The claim follows from `homRing_hom_ext W (fun _ => (congrArg g (evalHom_algebraMap ..)).trans (evalHom_algebraMap W (g.comp ρ) ..).symm) (fun _ => (congrArg g (evalHom_coord ..)).trans (evalHom_coord W (g.comp ρ) (g ∘ P) ..).symm)`.
+A detailed English derivation is pending.
 -/
 theorem comp_evalHom (g : A →+* B) :
     g.comp (evalHom W ρ P h) = evalHom W (g.comp ρ) (g ∘ P) (h.map g) :=
@@ -291,7 +285,7 @@ theorem comp_evalHom (g : A →+* B) :
     (fun _ => (congrArg g (evalHom_coord ..)).trans (evalHom_coord W (g.comp ρ) (g ∘ P) ..).symm)
 
 /- English proof (translation)
-Take `⟨p, hp, rfl⟩` from `ha`. Conclude with `eval₂_smul_of_isHomogeneous ρ hp c P`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem evalHom_smul (c : A) (h' : (W.map ρ).toProjective.Equation (c • P)) {n : ℕ}
     {a : HomRing W} (ha : a ∈ grading W n) :
@@ -302,7 +296,7 @@ theorem evalHom_smul (c : A) (h' : (W.map ρ).toProjective.Equation (c • P)) {
 variable {ρ P} in
 
 /- English proof (translation)
-Rewrite using `[irrelevant_eq_span_coord, Ideal.map_span, ← Set.range_comp, ← h.span_eq_top]`. Use `congr 2`. Use extensionality with `i`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem map_irrelevant_evalHom (h : IsUnimodularSol (W.map ρ) P) :
     (irrelevant (grading W)).toIdeal.map (evalHom W ρ P h.equation) = ⊤ := by
@@ -314,9 +308,9 @@ theorem map_irrelevant_evalHom (h : IsUnimodularSol (W.map ρ) P) :
 end Eval
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `r s hrs`. Use `congrArg (fun a : grading W 0 => evalHom W (RingHom.id R) ![0, 1, 0] WeierstrassCurve.Projective.equation_zero (a : HomRing W)) hrs` as an intermediate fact. Simplify using `using this`. Introduce and unpack `⟨_, p, hp, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components.
 
-Rewrite `hp` using `[MvPolynomial.homogeneousSubmodule_zero]`. Take `⟨r, rfl⟩` from `Submodule.mem_one.mp hp`. Conclude with `⟨r, rfl⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem bijective_algebraMap_grading_zero : Function.Bijective (algebraMap R (grading W 0)) := by
   constructor
@@ -346,13 +340,13 @@ abbrev schemeOver : Over (Spec (.of R)) := Over.mk (toSpec W)
 def coordOpen (i : Fin 3) : (scheme W).Opens := Proj.basicOpen (grading W) (coord W i)
 
 /- English proof (translation)
-Use `top_le_iff.mp fun x _ => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hx`. Establish `h1 : coord W 1 ∈ x.asHomogeneousIdeal.toIdeal`. Assume the negation of the conclusion as `h`. Conclude with `hx (Or.inl h)`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `h2 : coord W 2 ∈ x.asHomogeneousIdeal.toIdeal`. Assume the negation of the conclusion as `h`. Conclude with `hx (Or.inr h)`. Establish `h0 : coord W 0 ∈ x.asHomogeneousIdeal.toIdeal`. Use `x.isPrime.mem_of_pow_mem 3 ?_` and prove the remaining obligations.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e` using `(WeierstrassCurve.Projective.equation_iff _).mp (equation_coord W)`. Use `set V := W.baseChange (HomRing W)`. Establish `: coord W 0 ^ 3 = (coord W 1 ^ 2 + V.a₁ * coord W 0 * coord W 1 + V.a₃ * coord W 1 * coord W 2 - (V.a₂ * coord W 0 ^ 2 + V.a₄ * coord W 0 * coord W 2 + V.a₆ * coord W 2 ^ 2)) * coord W 2` using `by linear_combination -e`. Rewrite using `[this]`. Conclude with `Ideal.mul_mem_left _ _ h2`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `x.not_irrelevant_le (toIdeal_le_toIdeal_iff.mp ?_)` and prove the remaining obligations. Rewrite using `[irrelevant_eq_span_coord, Ideal.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Apply the tactic sequence `fin_cases i <;> assumption`.
+A detailed English derivation is pending.
 -/
 theorem coordOpen_one_sup_coordOpen_two : coordOpen W 1 ⊔ coordOpen W 2 = ⊤ := by
   refine top_le_iff.mp fun x _ => ?_
@@ -391,9 +385,7 @@ variable (ρ : R →+* A) (P : Fin 3 → A) (h : IsUnimodularSol (W.map ρ) P)
 
 @[reassoc (attr := simp)]
 /- English proof (translation)
-Use `(ProjPoint.ofHom_toSpecZero_assoc (grading W) _ _ _).trans ?_` and prove the remaining obligations. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Use `congr 2`. Use extensionality with `r`. Conclude with `evalHom_algebraMap W ρ P h.equation r`.
-
-Use the proof step `@[reassoc]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem ptHom_toSpec : ptHom W ρ P h ≫ toSpec W = Spec.map (CommRingCat.ofHom ρ) := by
   refine (ProjPoint.ofHom_toSpecZero_assoc (grading W) _ _ _).trans ?_
@@ -404,7 +396,7 @@ theorem ptHom_toSpec : ptHom W ρ P h ≫ toSpec W = Spec.map (CommRingCat.ofHom
 
 @[reassoc]
 /- English proof (translation)
-Use `(ProjPoint.SpecMap_ofHom (grading W) _ _ _).trans ?_` and prove the remaining obligations. Simplify using `only [comp_evalHom]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem SpecMap_ptHom (g : A →+* B) :
     Spec.map (CommRingCat.ofHom g) ≫ ptHom W ρ P h =
@@ -414,13 +406,13 @@ theorem SpecMap_ptHom (g : A →+* B) :
   rfl
 
 /- English proof (translation)
-The claim follows from `ProjPoint.ofHom_eq_of_scale (grading W) _ _ c fun _ _ ha => evalHom_smul W ρ P _ c _ ha`.
+A detailed English derivation is pending.
 -/
 theorem ptHom_smul {c : A} (hc : IsUnit c) : ptHom W ρ (c • P) (h.smul hc) = ptHom W ρ P h :=
   ProjPoint.ofHom_eq_of_scale (grading W) _ _ c fun _ _ ha => evalHom_smul W ρ P _ c _ ha
 
 /- English proof (translation)
-The claim follows from `(ProjPoint.ofHom_preimage_basicOpen (grading W) _ _ one_pos (coord_mem W i)).trans (by rw [evalHom_coord])`.
+A detailed English derivation is pending.
 -/
 theorem ptHom_preimage_coordOpen (i : Fin 3) :
     ptHom W ρ P h ⁻¹ᵁ coordOpen W i = PrimeSpectrum.basicOpen (P i) :=
@@ -428,7 +420,7 @@ theorem ptHom_preimage_coordOpen (i : Fin 3) :
     (by rw [evalHom_coord])
 
 /- English proof (translation)
-Substitute `hρ hP` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem ptHom_congr {ρ' : R →+* A} {P' : Fin 3 → A} (hρ : ρ = ρ') (hP : P = P')
     (h' : IsUnimodularSol (W.map ρ') P') : ptHom W ρ P h = ptHom W ρ' P' h' := by
@@ -445,20 +437,20 @@ def pt (P : Fin 3 → A) (h : IsUnimodularSol (W.baseChange A) P) : Spec (.of A)
 variable (P : Fin 3 → A) (h : IsUnimodularSol (W.baseChange A) P)
 
 /- English proof (translation)
-The claim follows from `rfl @[reassoc (attr := simp)]`.
+A detailed English derivation is pending.
 -/
 theorem pt_eq_ptHom : pt W P h = ptHom W (algebraMap R A) P h.of_baseChange := rfl
 
 @[reassoc (attr := simp)]
 /- English proof (translation)
-The claim follows from `ptHom_toSpec .. @[reassoc]`.
+A detailed English derivation is pending.
 -/
 theorem pt_toSpec : pt W P h ≫ toSpec W = Spec.map (CommRingCat.ofHom (algebraMap R A)) :=
   ptHom_toSpec ..
 
 @[reassoc]
 /- English proof (translation)
-The claim follows from `(SpecMap_ptHom W (algebraMap R A) P h (g : A →+* B)).trans (ptHom_congr W _ _ _ g.comp_algebraMap rfl (h.baseChange g))`.
+A detailed English derivation is pending.
 -/
 theorem SpecMap_pt (g : A →ₐ[R] B) :
     Spec.map (CommRingCat.ofHom (g : A →+* B)) ≫ pt W P h = pt W (g ∘ P) (h.baseChange g) :=
@@ -466,13 +458,13 @@ theorem SpecMap_pt (g : A →ₐ[R] B) :
     (ptHom_congr W _ _ _ g.comp_algebraMap rfl (h.baseChange g))
 
 /- English proof (translation)
-The claim follows from `ptHom_smul W _ P h hc`.
+A detailed English derivation is pending.
 -/
 theorem pt_smul {c : A} (hc : IsUnit c) : pt W (c • P) (h.smul hc) = pt W P h :=
   ptHom_smul W _ P h hc
 
 /- English proof (translation)
-The claim follows from `ptHom_preimage_coordOpen ..`.
+A detailed English derivation is pending.
 -/
 theorem pt_preimage_coordOpen (i : Fin 3) :
     pt W P h ⁻¹ᵁ coordOpen W i = PrimeSpectrum.basicOpen (P i) :=
@@ -487,7 +479,7 @@ Both sides reduce to the same expression.
 @[simp] theorem ptOver_left : (ptOver W P h).left = pt W P h := rfl
 
 /- English proof (translation)
-Substitute `hP` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem pt_congr {P' : Fin 3 → A} (hP : P = P') (h' : IsUnimodularSol (W.baseChange A) P') :
     pt W P h = pt W P' h' := by
@@ -500,7 +492,7 @@ def zero : Spec (.of R) ⟶ scheme W := pt W (A := R) ![0, 1, 0] (isUnimodularSo
 
 @[reassoc (attr := simp)]
 /- English proof (translation)
-Rewrite using `[zero, pt_toSpec]`. Conclude with `Spec.map_id _`. Use the proof step `@[reassoc]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zero_toSpec : zero W ≫ toSpec W = 𝟙 _ := by
   rw [zero, pt_toSpec]
@@ -508,7 +500,7 @@ theorem zero_toSpec : zero W ≫ toSpec W = 𝟙 _ := by
 
 @[reassoc]
 /- English proof (translation)
-The claim follows from `(SpecMap_ptHom W (algebraMap R R) ![0, 1, 0] (isUnimodularSol_zero _) ρ).trans (ptHom_congr W _ _ _ (RingHom.comp_id ρ) (by ext i; fin_cases i <;> simp) _) @[reassoc]`.
+A detailed English derivation is pending.
 -/
 theorem SpecMap_zero {A : Type u} [CommRing A] (ρ : R →+* A) :
     Spec.map (CommRingCat.ofHom ρ) ≫ zero W =
@@ -518,7 +510,7 @@ theorem SpecMap_zero {A : Type u} [CommRing A] (ρ : R →+* A) :
 
 @[reassoc]
 /- English proof (translation)
-The claim follows from `SpecMap_zero W _`.
+A detailed English derivation is pending.
 -/
 theorem SpecMap_algebraMap_zero (A : Type u) [CommRing A] [Algebra R A] :
     Spec.map (CommRingCat.ofHom (algebraMap R A)) ≫ zero W =
@@ -526,14 +518,14 @@ theorem SpecMap_algebraMap_zero (A : Type u) [CommRing A] [Algebra R A] :
   SpecMap_zero W _
 
 /- English proof (translation)
-Rewrite using `[zero, pt_preimage_coordOpen]`. Conclude with `PrimeSpectrum.basicOpen_zero`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zero_preimage_coordOpen_two : zero W ⁻¹ᵁ coordOpen W 2 = ⊥ := by
   rw [zero, pt_preimage_coordOpen]
   exact PrimeSpectrum.basicOpen_zero
 
 /- English proof (translation)
-Rewrite using `[zero, pt_preimage_coordOpen]`. Conclude with `PrimeSpectrum.basicOpen_one`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zero_preimage_coordOpen_one : zero W ⁻¹ᵁ coordOpen W 1 = ⊤ := by
   rw [zero, pt_preimage_coordOpen]
@@ -552,14 +544,14 @@ def awayCoord (j : Fin 3) : AwayRing W i :=
   Away.mk (grading W) (coord_mem W i) 1 (coord W j) (coord_mem W j)
 
 /- English proof (translation)
-Use `ext`. Simplify using `[awayCoord]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 @[simp] theorem awayCoord_self : awayCoord W i i = 1 := by
   ext
   simp [awayCoord]
 
 /- English proof (translation)
-Use extensionality with `r`. Express the relevant statement in the definitionally equal form `algebraMap (AwayRing W i) _ (algebraMap (grading W 0) _ _) = _`. Rewrite using `[← IsScalarTower.algebraMap_apply, IsScalarTower.algebraMap_apply (grading W 0) (HomRing W)]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem algebraMap_comp_awayConst :
     (algebraMap (AwayRing W i) (Localization.Away (coord W i))).comp (awayConst W i) =
@@ -570,7 +562,7 @@ theorem algebraMap_comp_awayConst :
   rfl
 
 /- English proof (translation)
-Use extensionality with `j`. Simplify using `only [Function.comp_apply, awayCoord, HomogeneousLocalization.algebraMap_apply, Away.val_mk, Pi.smul_apply, smul_eq_mul, Localization.mk_eq_mk', IsLocalization.Away.invSelf]`. Rewrite using `[IsLocalization.mk'_eq_mul_mk'_one, mul_comm]`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem algebraMap_comp_awayCoord :
     algebraMap (AwayRing W i) (Localization.Away (coord W i)) ∘ awayCoord W i =
@@ -583,14 +575,14 @@ theorem algebraMap_comp_awayCoord :
   simp
 
 /- English proof (translation)
-The claim follows from `IsUnit.of_mul_eq_one_right _ (IsLocalization.Away.mul_invSelf (coord W i))`.
+A detailed English derivation is pending.
 -/
 private theorem isUnit_invSelf :
     IsUnit (IsLocalization.Away.invSelf (coord W i) : Localization.Away (coord W i)) :=
   IsUnit.of_mul_eq_one_right _ (IsLocalization.Away.mul_invSelf (coord W i))
 
 /- English proof (translation)
-Rewrite using `[← WeierstrassCurve.Projective.map_equation _ (f := algebraMap (AwayRing W i) (Localization.Away (coord W i))) (val_injective _)]`. Establish `e` using `WeierstrassCurve.map_map W (awayConst W i) (algebraMap (AwayRing W i) (Localization.Away (coord W i)))`. Simplify using `only [WeierstrassCurve.Projective.map, WeierstrassCurve.toProjective]`. Rewrite using `[e, algebraMap_comp_awayConst, algebraMap_comp_awayCoord, WeierstrassCurve.Projective.equation_smul _ (isUnit_invSelf W i)]`. Conclude with `WeierstrassCurve.Projective.Equation.map (W' := (W.map (algebraMap R (HomRing W))).toProjective) (algebraMap (HomRing W) (Localization.Away (coord W i))) (equation_coord W)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem equation_awayCoord : (W.map (awayConst W i)).toProjective.Equation (awayCoord W i) := by
   rw [← WeierstrassCurve.Projective.map_equation _
@@ -605,15 +597,15 @@ theorem equation_awayCoord : (W.map (awayConst W i)).toProjective.Equation (away
     (algebraMap (HomRing W) (Localization.Away (coord W i))) (equation_coord W)
 
 /- English proof (translation)
-The claim follows from `.of_isUnit (equation_awayCoord W i) i (by simp)`.
+A detailed English derivation is pending.
 -/
 theorem isUnimodularSol_awayCoord : IsUnimodularSol (W.map (awayConst W i)) (awayCoord W i) :=
   .of_isUnit (equation_awayCoord W i) i (by simp)
 
 /- English proof (translation)
-Take `⟨p, hp, rfl⟩` from `id ha`. Apply `val_injective` to reduce the goal to its premises. Establish `hp' : p.IsHomogeneous n` using `by simpa using hp`. Express the relevant statement in the definitionally equal form `algebraMap (AwayRing W i) (Localization.Away (coord W i)) (MvPolynomial.eval₂ _ _ p) = _`. Establish `e : MvPolynomial.eval₂ (algebraMap R (HomRing W)) (coord W) p = Ideal.Quotient.mk _ p` using `RingHom.congr_fun (homRing_hom_ext W (f := evalHom W (algebraMap R (HomRing W)) (coord W) (equation_coord W)) (g := RingHom.id _) (fun r => evalHom_algebraMap ..) (fun j => evalHom_coord ..)) (Ideal.Quotient.mk _ p)`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Rewrite using `[MvPolynomial.eval₂_comp_left, algebraMap_comp_awayConst, algebraMap_comp_awayCoord, eval₂_smul_of_isHomogeneous _ hp', ← MvPolynomial.eval₂_comp_left, e, Away.val_mk, Localization.mk_eq_mk', IsLocalization.eq_mk'_iff_mul_eq]`. Express the relevant statement in the definitionally equal form `_ * algebraMap _ _ (coord W i ^ n) = algebraMap _ _ (Ideal.Quotient.mk _ p)`. Rewrite using `[map_pow, mul_right_comm, ← mul_pow, mul_comm _ (algebraMap _ _ (coord W i)), IsLocalization.Away.mul_invSelf, one_pow, one_mul]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem evalHom_awayCoord (n : ℕ) (a : HomRing W) (ha : a ∈ grading W (n • 1)) :
     evalHom W (awayConst W i) (awayCoord W i) (equation_awayCoord W i) a =
@@ -637,7 +629,7 @@ theorem evalHom_awayCoord (n : ℕ) (a : HomRing W) (ha : a ∈ grading W (n •
 variable {A : Type u} [CommRing A]
 
 /- English proof (translation)
-Use extensionality with `x`. Take `⟨n, a, ha, rfl⟩` from `Away.mk_surjective (grading W) (coord_mem W i) x`. Rewrite using `[← evalHom_awayCoord]`. Conclude with `RingHom.congr_fun (homRing_hom_ext W (f := f.comp (evalHom W _ _ (equation_awayCoord W i))) (g := g.comp (evalHom W _ _ (equation_awayCoord W i))) (fun r => by simpa using h₀ r) (fun j => by simpa using h₁ j)) a`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem awayRing_hom_ext {A : Type*} [CommRing A] {f g : AwayRing W i →+* A}
     (h₀ : ∀ r : R, f (awayConst W i r) = g (awayConst W i r))
@@ -657,7 +649,7 @@ def awayEval (ρ : R →+* A) (P : Fin 3 → A) (h : (W.map ρ).toProjective.Equ
 variable (ρ : R →+* A) (P : Fin 3 → A)
 
 /- English proof (translation)
-The claim follows from `(RingHom.congr_fun (ProjPoint.awayLift_comp_fromZeroRingHom (grading W) (evalHom W ρ P h) (coord W i) (by rwa [evalHom_coord])) (algebraMap R (grading W 0) r)).trans (evalHom_algebraMap W ρ P h r)`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem awayEval_awayConst (h : (W.map ρ).toProjective.Equation P) (hi : IsUnit (P i))
     (r : R) : awayEval W i ρ P h hi (awayConst W i r) = ρ r :=
@@ -666,7 +658,7 @@ The claim follows from `(RingHom.congr_fun (ProjPoint.awayLift_comp_fromZeroRing
     (evalHom_algebraMap W ρ P h r)
 
 /- English proof (translation)
-Use `ProjPoint.awayLift_mk_mul (grading W) (evalHom W ρ P h) (f := coord W i) (by rwa [evalHom_coord]) (coord_mem W i) 1 (coord W j) (coord_mem W j)` as an intermediate fact. Simplify using `only [pow_one, evalHom_coord] at this`. Conclude with `this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem awayEval_awayCoord_mul (h : (W.map ρ).toProjective.Equation P) (hi : IsUnit (P i))
     (j : Fin 3) : awayEval W i ρ P h hi (awayCoord W i j) * P i = P j := by
@@ -682,19 +674,19 @@ instance : IsOpenImmersion (awayChart W i) :=
   inferInstanceAs (IsOpenImmersion (Proj.awayι (grading W) (coord W i) (coord_mem W i) one_pos))
 
 /- English proof (translation)
-The claim follows from `Proj.opensRange_awayι ..`.
+A detailed English derivation is pending.
 -/
 theorem opensRange_awayChart : (awayChart W i).opensRange = coordOpen W i :=
   Proj.opensRange_awayι ..
 
 /- English proof (translation)
-The claim follows from `Proj.isAffineOpen_basicOpen _ _ (coord_mem W i) one_pos`.
+A detailed English derivation is pending.
 -/
 theorem isAffineOpen_coordOpen : IsAffineOpen (coordOpen W i) :=
   Proj.isAffineOpen_basicOpen _ _ (coord_mem W i) one_pos
 
 /- English proof (translation)
-The claim follows from `ProjPoint.ofHom_eq_awayι (grading W) _ _ one_pos (coord_mem W i) _`.
+A detailed English derivation is pending.
 -/
 theorem ptHom_eq_awayChart (h : IsUnimodularSol (W.map ρ) P) (hi : IsUnit (P i)) :
     ptHom W ρ P h =
@@ -702,9 +694,9 @@ theorem ptHom_eq_awayChart (h : IsUnimodularSol (W.map ρ) P) (hi : IsUnit (P i)
   ProjPoint.ofHom_eq_awayι (grading W) _ _ one_pos (coord_mem W i) _
 
 /- English proof (translation)
-Establish `hi : IsUnit (awayCoord W i i)` using `by simp`. Establish `: awayEval W i _ _ (equation_awayCoord W i) hi = RingHom.id _` using `awayRing_hom_ext W i (fun r => awayEval_awayConst ..) fun j => by`. Simplify using `using awayEval_awayCoord_mul W i _ _ (equation_awayCoord W i) hi j`. Rewrite using `[ptHom_eq_awayChart W i _ _ _ hi, this]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use the proof step `@[reassoc]`.
+A detailed English derivation is pending.
 -/
 theorem awayChart_eq_ptHom :
     awayChart W i = ptHom W (awayConst W i) (awayCoord W i) (isUnimodularSol_awayCoord W i) := by
@@ -717,7 +709,7 @@ theorem awayChart_eq_ptHom :
 
 @[reassoc]
 /- English proof (translation)
-Rewrite using `[awayChart_eq_ptHom, SpecMap_ptHom]`. Use the proof step `@[reassoc (attr := simp)]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem SpecMap_awayChart (g : AwayRing W i →+* A) :
     Spec.map (CommRingCat.ofHom g) ≫ awayChart W i = ptHom W (g.comp (awayConst W i))
@@ -726,14 +718,14 @@ theorem SpecMap_awayChart (g : AwayRing W i →+* A) :
 
 @[reassoc (attr := simp)]
 /- English proof (translation)
-Rewrite using `[awayChart_eq_ptHom, ptHom_toSpec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem awayChart_toSpec :
     awayChart W i ≫ toSpec W = Spec.map (CommRingCat.ofHom (awayConst W i)) := by
   rw [awayChart_eq_ptHom, ptHom_toSpec]
 
 /- English proof (translation)
-Establish `: IsIso (CommRingCat.ofHom (awayEval W i ρ P h.equation hi))` using `(ConcreteCategory.isIso_iff_bijective _).mpr hb`. Rewrite using `[ptHom_eq_awayChart W i ρ P h hi]`. Use `infer_instance`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpenImmersion_ptHom (h : IsUnimodularSol (W.map ρ) P) (hi : IsUnit (P i))
     (hb : Function.Bijective (awayEval W i ρ P h.equation hi)) :
@@ -744,7 +736,7 @@ theorem isOpenImmersion_ptHom (h : IsUnimodularSol (W.map ρ) P) (hi : IsUnit (P
   infer_instance
 
 /- English proof (translation)
-Establish `: IsIso (CommRingCat.ofHom (awayEval W i ρ P h.equation hi))` using `(ConcreteCategory.isIso_iff_bijective _).mpr hb`. Rewrite using `[ptHom_eq_awayChart W i ρ P h hi, ← opensRange_awayChart, ← Scheme.Hom.coe_opensRange, Scheme.Hom.opensRange_comp_of_isIso]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem range_ptHom (h : IsUnimodularSol (W.map ρ) P) (hi : IsUnit (P i))
     (hb : Function.Bijective (awayEval W i ρ P h.equation hi)) :
@@ -770,7 +762,7 @@ def affineY : W.toAffine.CoordinateRing :=
 variable {A : Type*} [CommRing A]
 
 /- English proof (translation)
-Rewrite using `[WeierstrassCurve.Affine.equation_iff', WeierstrassCurve.Affine.polynomial]`. Simplify using `only [eval₂_sub, eval₂_add, eval₂_mul, eval₂_pow, eval₂_X, eval₂_C, coe_eval₂RingHom, WeierstrassCurve.map_a₁, WeierstrassCurve.map_a₂, WeierstrassCurve.map_a₃, WeierstrassCurve.map_a₄, WeierstrassCurve.map_a₆]`. Apply the tactic sequence `constructor <;> intro h <;> linear_combination h`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem affine_equation_map_iff (ρ : R →+* A) (a b : A) :
     (W.map ρ).toAffine.Equation a b ↔ W.toAffine.polynomial.eval₂ (eval₂RingHom ρ a) b = 0 := by
@@ -781,9 +773,9 @@ theorem affine_equation_map_iff (ρ : R →+* A) (a b : A) :
   constructor <;> intro h <;> linear_combination h
 
 /- English proof (translation)
-Use `(affine_equation_map_iff W _ _ _).mpr ?_` and prove the remaining obligations. Establish `: eval₂RingHom (algebraMap R W.toAffine.CoordinateRing) (affineX W) = AdjoinRoot.of W.toAffine.polynomial`. Use `Polynomial.ringHom_ext (fun r => ?_) ?_` and prove the remaining obligations. Rewrite using `[coe_eval₂RingHom, eval₂_C]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[coe_eval₂RingHom, eval₂_X]`. Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `AdjoinRoot.eval₂_root W.toAffine.polynomial`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem equation_affineX_affineY :
     (W.baseChange W.toAffine.CoordinateRing).toAffine.Equation (affineX W) (affineY W) := by
@@ -805,19 +797,19 @@ section
 variable (ρ : R →+* A) (a b : A) (h : (W.map ρ).toAffine.Equation a b)
 
 /- English proof (translation)
-Simplify using `[affineEval, affineX]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem affineEval_affineX : affineEval W ρ a b h (affineX W) = a := by
   simp [affineEval, affineX]
 
 /- English proof (translation)
-Simplify using `[affineEval, affineY]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem affineEval_affineY : affineEval W ρ a b h (affineY W) = b := by
   simp [affineEval, affineY]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `AdjoinRoot.lift _ _ _ (AdjoinRoot.of _ (C r)) = _`. Simplify using the standard rewrite rules.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 @[simp] theorem affineEval_algebraMap (r : R) :
     affineEval W ρ a b h (algebraMap R _ r) = ρ r := by
@@ -827,7 +819,7 @@ Express the relevant statement in the definitionally equal form `AdjoinRoot.lift
 end
 
 /- English proof (translation)
-The claim follows from `AdjoinRoot.ringHom_ext (Polynomial.ringHom_ext h₀ hx) hy`.
+A detailed English derivation is pending.
 -/
 theorem affine_hom_ext {f g : W.toAffine.CoordinateRing →+* A}
     (h₀ : ∀ r : R, f (algebraMap R _ r) = g (algebraMap R _ r))
@@ -851,11 +843,9 @@ def chartZ : Spec (.of W.toAffine.CoordinateRing) ⟶ scheme W :=
   pt W ![affineX W, affineY W, 1] (isUnimodularSol_some (equation_affineX_affineY W))
 
 /- English proof (translation)
-Apply the tactic sequence `have hc : awayCoord W 2 = ![awayCoord W 2 0, awayCoord W 2 1, 1] := by ext1 j; fin_cases j <;> simp`. Establish `he : (W.map (awayConst W 2)).toAffine.Equation (awayCoord W 2 0) (awayCoord W 2 1)`. Rewrite using `[← WeierstrassCurve.Projective.equation_some, ← hc]`. Conclude with `equation_awayCoord W 2`. Establish `hm` using `awayEval_awayCoord_mul W 2 (algebraMap R _) ![affineX W, affineY W, 1] (isUnimodularSol_some (equation_affineX_affineY W)).equation isUnit_one`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set ℓ := awayEval W 2 (algebraMap R _) ![affineX W, affineY W, 1] (isUnimodularSol_some (equation_affineX_affineY W)).equation isUnit_one with hℓ`. Establish `h0 : ℓ (awayCoord W 2 0) = affineX W` using `by simpa using hm 0`. Establish `h1 : ℓ (awayCoord W 2 1) = affineY W` using `by simpa using hm 1`. Establish `hr : ∀ r, ℓ (awayConst W 2 r) = algebraMap R _ r` using `awayEval_awayConst W 2 _ _ _ _`. Use `(RingEquiv.ofRingHom ℓ (affineEval W _ _ _ he) ?_ ?_).bijective` and prove the remaining obligations.
-
-Conclude with `affine_hom_ext W (fun r => by simp [hr]) (by simp [h0]) (by simp [h1])`. Apply the tactic sequence `refine awayRing_hom_ext W 2 (fun r => by simp [hr]) fun j => ?_ fin_cases j <;> simp [h0, h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem bijective_awayEval_affine : Function.Bijective (awayEval W 2 (algebraMap R _)
     ![affineX W, affineY W, 1] (isUnimodularSol_some (equation_affineX_affineY W)).equation
@@ -882,7 +872,7 @@ instance : IsOpenImmersion (chartZ W) :=
     (bijective_awayEval_affine W)
 
 /- English proof (translation)
-The claim follows from `TopologicalSpace.Opens.ext (range_ptHom W 2 _ _ (isUnimodularSol_some (equation_affineX_affineY W)) isUnit_one (bijective_awayEval_affine W)) @[reassoc (attr := simp)]`.
+A detailed English derivation is pending.
 -/
 theorem opensRange_chartZ : (chartZ W).opensRange = coordOpen W 2 :=
   TopologicalSpace.Opens.ext (range_ptHom W 2 _ _
@@ -890,7 +880,7 @@ theorem opensRange_chartZ : (chartZ W).opensRange = coordOpen W 2 :=
 
 @[reassoc (attr := simp)]
 /- English proof (translation)
-The claim follows from `pt_toSpec .. @[reassoc]`.
+A detailed English derivation is pending.
 -/
 theorem chartZ_toSpec : chartZ W ≫ toSpec W =
     Spec.map (CommRingCat.ofHom (algebraMap R W.toAffine.CoordinateRing)) :=
@@ -898,7 +888,7 @@ theorem chartZ_toSpec : chartZ W ≫ toSpec W =
 
 @[reassoc]
 /- English proof (translation)
-The claim follows from `(SpecMap_ptHom W _ _ (isUnimodularSol_some (equation_affineX_affineY W)) _).trans (ptHom_congr W _ _ _ (RingHom.ext (affineEval_algebraMap W ρ a b h)) (by ext i; fin_cases i <;> simp) _) @[reassoc]`.
+A detailed English derivation is pending.
 -/
 theorem SpecMap_affineEval_chartZ {A : Type u} [CommRing A] (ρ : R →+* A) (a b : A)
     (h : (W.map ρ).toAffine.Equation a b) :
@@ -910,7 +900,7 @@ theorem SpecMap_affineEval_chartZ {A : Type u} [CommRing A] (ρ : R →+* A) (a 
 
 @[reassoc]
 /- English proof (translation)
-The claim follows from `SpecMap_affineEval_chartZ W (algebraMap R A) a b h`.
+A detailed English derivation is pending.
 -/
 theorem SpecMap_affineAeval_chartZ {A : Type u} [CommRing A] [Algebra R A] (a b : A)
     (h : (W.baseChange A).toAffine.Equation a b) :
@@ -922,7 +912,7 @@ def awayEquivAffine : AwayRing W 2 ≃+* W.toAffine.CoordinateRing :=
   RingEquiv.ofBijective _ (bijective_awayEval_affine W)
 
 /- English proof (translation)
-The claim follows from `ptHom_eq_awayChart W 2 _ _ (isUnimodularSol_some (equation_affineX_affineY W)) isUnit_one`.
+A detailed English derivation is pending.
 -/
 theorem chartZ_eq : chartZ W = Spec.map (CommRingCat.ofHom
     (awayEquivAffine W : AwayRing W 2 →+* W.toAffine.CoordinateRing)) ≫ awayChart W 2 :=
@@ -940,14 +930,14 @@ def originPolynomial : R[X][Y] :=
     + C (C W.a₃ * X ^ 2 + C W.a₆ * X ^ 3 - X)
 
 /- English proof (translation)
-Unfold `originPolynomial`. Use `monicity!`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem monic_originPolynomial : (originPolynomial W).Monic := by
   unfold originPolynomial
   monicity!
 
 /- English proof (translation)
-Unfold `originPolynomial`. Use `compute_degree!`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem natDegree_originPolynomial [Nontrivial R] : (originPolynomial W).natDegree = 3 := by
   unfold originPolynomial
@@ -968,7 +958,7 @@ def originW : OriginRing W := AdjoinRoot.mk (originPolynomial W) (C X)
 variable {A : Type*} [CommRing A]
 
 /- English proof (translation)
-Rewrite using `[equation_origin_iff, originPolynomial]`. Simplify using `only [eval₂_sub, eval₂_add, eval₂_mul, eval₂_pow, eval₂_X, eval₂_C, coe_eval₂RingHom, WeierstrassCurve.map_a₁, WeierstrassCurve.map_a₂, WeierstrassCurve.map_a₃, WeierstrassCurve.map_a₄, WeierstrassCurve.map_a₆]`. Apply the tactic sequence `constructor <;> intro h <;> linear_combination -h`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem origin_equation_map_iff (ρ : R →+* A) (z w : A) :
     (W.map ρ).toProjective.Equation ![z, -1, w] ↔
@@ -980,9 +970,9 @@ theorem origin_equation_map_iff (ρ : R →+* A) (z w : A) :
   constructor <;> intro h <;> linear_combination -h
 
 /- English proof (translation)
-Use `(origin_equation_map_iff W _ _ _).mpr ?_` and prove the remaining obligations. Establish `: eval₂RingHom (algebraMap R (OriginRing W)) (originW W) = AdjoinRoot.of (originPolynomial W)`. Use `Polynomial.ringHom_ext (fun r => ?_) ?_` and prove the remaining obligations. Rewrite using `[coe_eval₂RingHom, eval₂_C]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[coe_eval₂RingHom, eval₂_X]`. Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `AdjoinRoot.eval₂_root (originPolynomial W)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem equation_originZ_originW :
     (W.baseChange (OriginRing W)).toProjective.Equation ![originZ W, -1, originW W] := by
@@ -1004,19 +994,19 @@ section
 variable (ρ : R →+* A) (z w : A) (h : (W.map ρ).toProjective.Equation ![z, -1, w])
 
 /- English proof (translation)
-Simplify using `[originEval, originZ]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem originEval_originZ : originEval W ρ z w h (originZ W) = z := by
   simp [originEval, originZ]
 
 /- English proof (translation)
-Simplify using `[originEval, originW]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem originEval_originW : originEval W ρ z w h (originW W) = w := by
   simp [originEval, originW]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `AdjoinRoot.lift _ _ _ (AdjoinRoot.of _ (C r)) = _`. Simplify using the standard rewrite rules.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 @[simp] theorem originEval_algebraMap (r : R) :
     originEval W ρ z w h (algebraMap R _ r) = ρ r := by
@@ -1026,7 +1016,7 @@ Express the relevant statement in the definitionally equal form `AdjoinRoot.lift
 end
 
 /- English proof (translation)
-The claim follows from `AdjoinRoot.ringHom_ext (Polynomial.ringHom_ext h₀ hw) hz`.
+A detailed English derivation is pending.
 -/
 theorem origin_hom_ext {f g : OriginRing W →+* A}
     (h₀ : ∀ r : R, f (algebraMap R _ r) = g (algebraMap R _ r))
@@ -1049,11 +1039,9 @@ def chartY : Spec (.of (OriginRing W)) ⟶ scheme W :=
   pt W ![originZ W, -1, originW W] (isUnimodularSol_origin (equation_originZ_originW W))
 
 /- English proof (translation)
-Apply the tactic sequence `have hc : (-1 : AwayRing W 1) • awayCoord W 1 = ![-awayCoord W 1 0, -1, -awayCoord W 1 2] := by ext1 j; fin_cases j <;> simp`. Establish `he : (W.map (awayConst W 1)).toProjective.Equation ![-awayCoord W 1 0, -1, -awayCoord W 1 2]`. Rewrite using `[← hc, WeierstrassCurve.Projective.equation_smul _ isUnit_one.neg]`. Conclude with `equation_awayCoord W 1`. Establish `hm` using `awayEval_awayCoord_mul W 1 (algebraMap R _) ![originZ W, -1, originW W] (equation_originZ_originW W) isUnit_one.neg`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set ℓ := awayEval W 1 (algebraMap R _) ![originZ W, -1, originW W] (equation_originZ_originW W) isUnit_one.neg with hℓ`. Establish `h0 : ℓ (awayCoord W 1 0) = -originZ W` using `by simpa [neg_eq_iff_eq_neg] using hm 0`. Establish `h2 : ℓ (awayCoord W 1 2) = -originW W` using `by simpa [neg_eq_iff_eq_neg] using hm 2`. Establish `hr : ∀ r, ℓ (awayConst W 1 r) = algebraMap R _ r` using `awayEval_awayConst W 1 _ _ _ _`. Use `(RingEquiv.ofRingHom ℓ (originEval W _ _ _ he) ?_ ?_).bijective` and prove the remaining obligations.
-
-Conclude with `origin_hom_ext W (fun r => by simp [hr]) (by simp [h0]) (by simp [h2])`. Apply the tactic sequence `refine awayRing_hom_ext W 1 (fun r => by simp [hr]) fun j => ?_ fin_cases j <;> simp [h0, h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem bijective_awayEval_origin : Function.Bijective (awayEval W 1 (algebraMap R _)
     ![originZ W, -1, originW W] (equation_originZ_originW W) isUnit_one.neg) := by
@@ -1080,7 +1068,7 @@ instance : IsOpenImmersion (chartY W) :=
     isUnit_one.neg (bijective_awayEval_origin W)
 
 /- English proof (translation)
-The claim follows from `TopologicalSpace.Opens.ext (range_ptHom W 1 _ _ (isUnimodularSol_origin (equation_originZ_originW W)) isUnit_one.neg (bijective_awayEval_origin W)) @[reassoc (attr := simp)]`.
+A detailed English derivation is pending.
 -/
 theorem opensRange_chartY : (chartY W).opensRange = coordOpen W 1 :=
   TopologicalSpace.Opens.ext (range_ptHom W 1 _ _
@@ -1089,7 +1077,7 @@ theorem opensRange_chartY : (chartY W).opensRange = coordOpen W 1 :=
 
 @[reassoc (attr := simp)]
 /- English proof (translation)
-The claim follows from `pt_toSpec .. @[reassoc]`.
+A detailed English derivation is pending.
 -/
 theorem chartY_toSpec : chartY W ≫ toSpec W =
     Spec.map (CommRingCat.ofHom (algebraMap R (OriginRing W))) :=
@@ -1097,7 +1085,7 @@ theorem chartY_toSpec : chartY W ≫ toSpec W =
 
 @[reassoc]
 /- English proof (translation)
-The claim follows from `(SpecMap_ptHom W _ _ (isUnimodularSol_origin (equation_originZ_originW W)) _).trans (ptHom_congr W _ _ _ (RingHom.ext (originEval_algebraMap W ρ z w h)) (by ext i; fin_cases i <;> simp) _) @[reassoc]`.
+A detailed English derivation is pending.
 -/
 theorem SpecMap_originEval_chartY {A : Type u} [CommRing A] (ρ : R →+* A) (z w : A)
     (h : (W.map ρ).toProjective.Equation ![z, -1, w]) :
@@ -1109,7 +1097,7 @@ theorem SpecMap_originEval_chartY {A : Type u} [CommRing A] (ρ : R →+* A) (z 
 
 @[reassoc]
 /- English proof (translation)
-The claim follows from `SpecMap_originEval_chartY W (algebraMap R A) z w h`.
+A detailed English derivation is pending.
 -/
 theorem SpecMap_originAeval_chartY {A : Type u} [CommRing A] [Algebra R A] (z w : A)
     (h : (W.baseChange A).toProjective.Equation ![z, -1, w]) :
@@ -1121,7 +1109,7 @@ def awayEquivOrigin : AwayRing W 1 ≃+* OriginRing W :=
   RingEquiv.ofBijective _ (bijective_awayEval_origin W)
 
 /- English proof (translation)
-The claim follows from `ptHom_eq_awayChart W 1 _ _ (isUnimodularSol_origin (equation_originZ_originW W)) isUnit_one.neg`.
+A detailed English derivation is pending.
 -/
 theorem chartY_eq : chartY W = Spec.map (CommRingCat.ofHom
     (awayEquivOrigin W : AwayRing W 1 →+* OriginRing W)) ≫ awayChart W 1 :=
@@ -1131,20 +1119,20 @@ def originAug : OriginRing W →ₐ[R] R :=
   originAeval W 0 0 ((equation_origin_iff _ _ _).mpr (by simp))
 
 /- English proof (translation)
-The claim follows from `originEval_originZ W (algebraMap R R) 0 0 ((equation_origin_iff _ _ _).mpr (by simp))`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem originAug_originZ : originAug W (originZ W) = 0 :=
   originEval_originZ W (algebraMap R R) 0 0 ((equation_origin_iff _ _ _).mpr (by simp))
 
 /- English proof (translation)
-The claim follows from `originEval_originW W (algebraMap R R) 0 0 ((equation_origin_iff _ _ _).mpr (by simp)) @[reassoc]`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem originAug_originW : originAug W (originW W) = 0 :=
   originEval_originW W (algebraMap R R) 0 0 ((equation_origin_iff _ _ _).mpr (by simp))
 
 @[reassoc]
 /- English proof (translation)
-Use `(SpecMap_originEval_chartY W (algebraMap R R) 0 0 ((equation_origin_iff _ _ _).mpr (by simp))).trans ?_` and prove the remaining obligations. Rewrite using `[zero, ← pt_smul W (A := R) _ _ isUnit_one.neg]`. Conclude with `ptHom_congr W _ _ _ rfl (by simp) _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem SpecMap_originAug_chartY :
     Spec.map (CommRingCat.ofHom (originAug W : OriginRing W →+* R)) ≫ chartY W = zero W := by
@@ -1156,28 +1144,28 @@ theorem SpecMap_originAug_chartY :
 end ChartY
 
 /- English proof (translation)
-Rewrite using `[opensRange_chartY, opensRange_chartZ, coordOpen_one_sup_coordOpen_two]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem opensRange_chartY_sup_opensRange_chartZ :
     (chartY W).opensRange ⊔ (chartZ W).opensRange = ⊤ := by
   rw [opensRange_chartY, opensRange_chartZ, coordOpen_one_sup_coordOpen_two]
 
 /- English proof (translation)
-The claim follows from `pt_preimage_coordOpen ..`.
+A detailed English derivation is pending.
 -/
 theorem chartY_preimage_coordOpen_two :
     chartY W ⁻¹ᵁ coordOpen W 2 = PrimeSpectrum.basicOpen (originW W) :=
   pt_preimage_coordOpen ..
 
 /- English proof (translation)
-The claim follows from `pt_preimage_coordOpen ..`.
+A detailed English derivation is pending.
 -/
 theorem chartZ_preimage_coordOpen_one :
     chartZ W ⁻¹ᵁ coordOpen W 1 = PrimeSpectrum.basicOpen (affineY W) :=
   pt_preimage_coordOpen ..
 
 /- English proof (translation)
-The claim follows from `(opensRange_chartY_sup_opensRange_chartZ W).ge (Set.mem_univ x)`.
+A detailed English derivation is pending.
 -/
 theorem exists_chartY_or_chartZ (x : scheme W) :
     (∃ y, chartY W y = x) ∨ ∃ y, chartZ W y = x :=
@@ -1202,7 +1190,7 @@ def chartCover : (scheme W).AffineOpenCover where
     | false => inferInstanceAs (IsOpenImmersion (chartZ W))
 
 /- English proof (translation)
-The claim follows from `(chartCover W).openCover.hom_ext _ _ fun b => match b with | true => hY | false => hZ`.
+A detailed English derivation is pending.
 -/
 theorem scheme_hom_ext {T : Scheme.{u}} {f g : scheme W ⟶ T}
     (hY : chartY W ≫ f = chartY W ≫ g) (hZ : chartZ W ≫ f = chartZ W ≫ g) : f = g :=
@@ -1232,7 +1220,7 @@ variable {R' R'' : Type u} [CommRing R'] [CommRing R''] {W' : WeierstrassCurve R
 variable {W} in
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem map_comp_eq {A : Type*} [CommRing A] {f : R →+* R'} (h : W.map f = W') (ρ : R' →+* A) :
     W.map (ρ.comp f) = W'.map ρ := by
@@ -1242,7 +1230,7 @@ theorem map_comp_eq {A : Type*} [CommRing A] {f : R →+* R'} (h : W.map f = W')
 variable {W} in
 
 /- English proof (translation)
-The claim follows from `(map_comp_eq h ρ).symm ▸ hP`.
+A detailed English derivation is pending.
 -/
 theorem IsUnimodularSol.comp_of_map_eq {A : Type*} [CommRing A] {f : R →+* R'}
     (h : W.map f = W') {ρ : R' →+* A} {P : Fin 3 → A} (hP : IsUnimodularSol (W'.map ρ) P) :
@@ -1256,20 +1244,20 @@ def homRingMap : HomRing W →+* HomRing W' :=
     ((map_comp_eq h (algebraMap R' (HomRing W'))).symm ▸ equation_coord W')
 
 /- English proof (translation)
-The claim follows from `evalHom_coord ..`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem homRingMap_coord (i : Fin 3) : homRingMap W f h (coord W i) = coord W' i :=
   evalHom_coord ..
 
 /- English proof (translation)
-The claim follows from `evalHom_algebraMap ..`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem homRingMap_algebraMap (r : R) :
     homRingMap W f h (algebraMap R _ r) = algebraMap R' _ (f r) :=
   evalHom_algebraMap ..
 
 /- English proof (translation)
-The claim follows from `RingHom.congr_fun (MvPolynomial.ringHom_ext (f := (homRingMap W f h).comp (Ideal.Quotient.mk _)) (g := (Ideal.Quotient.mk _).comp (MvPolynomial.map f)) (fun r => (homRingMap_algebraMap W f h r).trans (congrArg (Ideal.Quotient.mk _) (MvPolynomial.map_C f r)).symm) (fun i => (homRi …`.
+A detailed English derivation is pending.
 -/
 theorem homRingMap_mk (p : MvPolynomial (Fin 3) R) :
     homRingMap W f h (Ideal.Quotient.mk _ p) = Ideal.Quotient.mk _ (MvPolynomial.map f p) :=
@@ -1288,7 +1276,7 @@ def gradedMap : grading W →+*ᵍ grading W' where
     exact ⟨_, MvPolynomial.IsHomogeneous.map hp f, (homRingMap_mk W f h p).symm⟩
 
 /- English proof (translation)
-Rewrite using `[← toIdeal_le_toIdeal_iff, irrelevant_eq_span_coord, Ideal.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Rewrite using `[← homRingMap_coord W f h i]`. Conclude with `Ideal.mem_map_of_mem (gradedMap W f h) (mem_irrelevant_of_mem _ one_pos (coord_mem W i))`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem irrelevant_le_map_gradedMap :
     irrelevant (grading W') ≤ (irrelevant (grading W)).map (gradedMap W f h) := by
@@ -1302,7 +1290,7 @@ def mapHom : scheme W' ⟶ scheme W :=
 
 @[reassoc]
 /- English proof (translation)
-Use `(ProjPoint.ofHom_map (gradedMap W f h) (irrelevant_le_map_gradedMap W f h) _ (map_irrelevant_evalHom W' hP)).trans ?_` and prove the remaining obligations. Establish `: (evalHom W' ρ P hP.equation).comp (gradedMap W f h).toRingHom = evalHom W (ρ.comp f) P (hP.comp_of_map_eq h).equation` using `homRing_hom_ext W (fun r => by simp [gradedMap]) (fun i => by simp [gradedMap])`. Simplify using `only [this]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem ptHom_mapHom {A : Type u} [CommRing A] (ρ : R' →+* A) (P : Fin 3 → A)
     (hP : IsUnimodularSol (W'.map ρ) P) :
@@ -1316,7 +1304,7 @@ theorem ptHom_mapHom {A : Type u} [CommRing A] (ρ : R' →+* A) (P : Fin 3 → 
   rfl
 
 /- English proof (translation)
-The claim follows from `(Proj.map_preimage_basicOpen (gradedMap W f h) (irrelevant_le_map_gradedMap W f h) _).trans (congrArg (Proj.basicOpen (grading W')) (homRingMap_coord W f h i)) @[reassoc]`.
+A detailed English derivation is pending.
 -/
 theorem mapHom_preimage_coordOpen (i : Fin 3) :
     mapHom W f h ⁻¹ᵁ coordOpen W i = coordOpen W' i :=
@@ -1325,7 +1313,7 @@ theorem mapHom_preimage_coordOpen (i : Fin 3) :
 
 @[reassoc]
 /- English proof (translation)
-Apply `scheme_hom_ext` to reduce the goal to its premises. Rewrite using `[chartY_toSpec_assoc, chartY, pt_eq_ptHom, ptHom_mapHom_assoc, ptHom_toSpec, ← Spec.map_comp, CommRingCat.ofHom_comp]`. Rewrite using `[chartZ_toSpec_assoc, chartZ, pt_eq_ptHom, ptHom_mapHom_assoc, ptHom_toSpec, ← Spec.map_comp, CommRingCat.ofHom_comp]`. Use the proof step `@[reassoc]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mapHom_toSpec :
     mapHom W f h ≫ toSpec W = toSpec W' ≫ Spec.map (CommRingCat.ofHom f) := by
@@ -1337,16 +1325,16 @@ theorem mapHom_toSpec :
 
 @[reassoc]
 /- English proof (translation)
-Rewrite using `[SpecMap_zero]`. Conclude with `ptHom_mapHom W f h (RingHom.id R') ![0, 1, 0] (isUnimodularSol_zero _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zero_mapHom : zero W' ≫ mapHom W f h = Spec.map (CommRingCat.ofHom f) ≫ zero W := by
   rw [SpecMap_zero]
   exact ptHom_mapHom W f h (RingHom.id R') ![0, 1, 0] (isUnimodularSol_zero _)
 
 /- English proof (translation)
-Apply `scheme_hom_ext` to reduce the goal to its premises. Rewrite using `[chartY, pt_eq_ptHom, ptHom_mapHom, Category.comp_id]`. Both sides reduce to the same expression. Rewrite using `[chartZ, pt_eq_ptHom, ptHom_mapHom, Category.comp_id]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use the proof step `@[reassoc]`.
+A detailed English derivation is pending.
 -/
 theorem mapHom_id : mapHom W (RingHom.id R) W.map_id = 𝟙 _ := by
   apply scheme_hom_ext
@@ -1357,7 +1345,7 @@ theorem mapHom_id : mapHom W (RingHom.id R) W.map_id = 𝟙 _ := by
 
 @[reassoc]
 /- English proof (translation)
-Rewrite using `[pt_eq_ptHom, ptHom_mapHom, pt_eq_ptHom]`. Conclude with `ptHom_congr W _ _ _ (IsScalarTower.algebraMap_eq R R' A).symm rfl _`. Use the proof step `@[reassoc]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pt_mapHom {A : Type u} [CommRing A] [Algebra R R'] [Algebra R' A] [Algebra R A]
     [IsScalarTower R R' A] (h : W.map (algebraMap R R') = W') (P : Fin 3 → A)
@@ -1368,7 +1356,7 @@ theorem pt_mapHom {A : Type u} [CommRing A] [Algebra R R'] [Algebra R' A] [Algeb
 
 @[reassoc]
 /- English proof (translation)
-Apply `scheme_hom_ext` to reduce the goal to its premises. Rewrite using `[chartY, pt_eq_ptHom, ptHom_mapHom_assoc, ptHom_mapHom, ptHom_mapHom]`. Both sides reduce to the same expression. Rewrite using `[chartZ, pt_eq_ptHom, ptHom_mapHom_assoc, ptHom_mapHom, ptHom_mapHom]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mapHom_comp (g : R' →+* R'') (h' : W'.map g = W'') :
     mapHom W' g h' ≫ mapHom W f h = mapHom W (g.comp f) ((map_comp_eq h g).trans h') := by
@@ -1383,7 +1371,7 @@ def awayRingMap (i : Fin 3) : AwayRing W i →+* AwayRing W' i :=
     ((isUnimodularSol_awayCoord W' i).comp_of_map_eq h).equation (by simp)
 
 /- English proof (translation)
-The claim follows from `awayEval_awayConst W i ((awayConst W' i).comp f) (awayCoord W' i) ((isUnimodularSol_awayCoord W' i).comp_of_map_eq h).equation (by simp) r`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem awayRingMap_awayConst (i : Fin 3) (r : R) :
     awayRingMap W f h i (awayConst W i r) = awayConst W' i (f r) :=
@@ -1391,7 +1379,7 @@ The claim follows from `awayEval_awayConst W i ((awayConst W' i).comp f) (awayCo
     ((isUnimodularSol_awayCoord W' i).comp_of_map_eq h).equation (by simp) r
 
 /- English proof (translation)
-Use `awayEval_awayCoord_mul W i ((awayConst W' i).comp f) (awayCoord W' i) ((isUnimodularSol_awayCoord W' i).comp_of_map_eq h).equation (by simp) j` as an intermediate fact. Simplify using `only [awayCoord_self, mul_one] at this`. Conclude with `this`. Use the proof step `@[reassoc]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 @[simp] theorem awayRingMap_awayCoord (i j : Fin 3) :
     awayRingMap W f h i (awayCoord W i j) = awayCoord W' i j := by
@@ -1402,7 +1390,7 @@ Use `awayEval_awayCoord_mul W i ((awayConst W' i).comp f) (awayCoord W' i) ((isU
 
 @[reassoc]
 /- English proof (translation)
-Rewrite using `[awayChart_eq_ptHom W', ptHom_mapHom]`. Conclude with `ptHom_eq_awayChart W i _ _ _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem awayChart_mapHom (i : Fin 3) : awayChart W' i ≫ mapHom W f h =
     Spec.map (CommRingCat.ofHom (awayRingMap W f h i)) ≫ awayChart W i := by
@@ -1410,15 +1398,13 @@ theorem awayChart_mapHom (i : Fin 3) : awayChart W' i ≫ mapHom W f h =
   exact ptHom_eq_awayChart W i _ _ _ _
 
 /- English proof (translation)
-Establish `w : CommRingCat.ofHom (awayConst W i) ≫ CommRingCat.ofHom (awayRingMap W f h i) = CommRingCat.ofHom f ≫ CommRingCat.ofHom (awayConst W' i)` using `by ext1`. Conclude with `RingHom.ext (awayRingMap_awayConst W f h i)`. Establish `hs (s : PushoutCocone (CommRingCat.ofHom (awayConst W i)) (CommRingCat.ofHom f)) : s.inl.hom.comp (awayConst W i) = s.inr.hom.comp f` using `congrArg (·.hom) s.condition`. Establish `he (s : PushoutCocone (CommRingCat.ofHom (awayConst W i)) (CommRingCat.ofHom f)) : (W'.map s.inr.hom).toProjective.Equation (s.inl.hom ∘ awayCoord W i)`. Rewrite using `[← map_comp_eq h, ← hs]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `((isUnimodularSol_awayCoord W i).map_comp s.inl.hom).equation`. Establish `hu (s : PushoutCocone (CommRingCat.ofHom (awayConst W i)) (CommRingCat.ofHom f)) : IsUnit ((s.inl.hom ∘ awayCoord W i) i)` using `by simp`. Establish `hc (s : PushoutCocone (CommRingCat.ofHom (awayConst W i)) (CommRingCat.ofHom f)) (j) : awayEval W' i s.inr.hom _ (he s) (hu s) (awayCoord W' i j) = s.inl.hom (awayCoord W i j)`. Use `awayEval_awayCoord_mul W' i s.inr.hom _ (he s) (hu s) j` as an intermediate fact. Simplify using `only [Function.comp_apply, awayCoord_self, map_one, mul_one] at this`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `this`. Use `⟨⟨w⟩, ⟨PushoutCocone.IsColimit.mk w (fun s => CommRingCat.ofHom (awayEval W' i s.inr.hom _ (he s) (hu s))) ?_ ?_ ?_⟩⟩` and prove the remaining obligations. Introduce `s ext1`. Use `awayRing_hom_ext W i (fun r => ?_) (fun j => ?_)` and prove the remaining obligations. Simplify using `using (RingHom.congr_fun (hs s) r).symm`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `using hc s j`. Introduce `s ext1`. Conclude with `RingHom.ext (awayEval_awayConst W' i s.inr.hom _ (he s) (hu s))`. Introduce `s m h₁ h₂ ext1`. Use `awayRing_hom_ext W' i (fun r => ?_) (fun j => ?_)` and prove the remaining obligations.
-
-Simplify using `[← h₂]`. Rewrite using `[CommRingCat.hom_ofHom, hc, ← h₁]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isPushout_awayRingMap (i : Fin 3) :
     IsPushout (CommRingCat.ofHom (awayConst W i)) (CommRingCat.ofHom f)
@@ -1459,7 +1445,7 @@ theorem isPushout_awayRingMap (i : Fin 3) :
       simp
 
 /- English proof (translation)
-The claim follows from `IsOpenImmersion.isPullback _ _ _ _ (awayChart_mapHom W f h i) (by rw [opensRange_awayChart, opensRange_awayChart, mapHom_preimage_coordOpen])`.
+A detailed English derivation is pending.
 -/
 theorem isPullback_awayChart (i : Fin 3) :
     IsPullback (Spec.map (CommRingCat.ofHom (awayRingMap W f h i))) (awayChart W' i)
@@ -1468,9 +1454,9 @@ theorem isPullback_awayChart (i : Fin 3) :
     (by rw [opensRange_awayChart, opensRange_awayChart, mapHom_preimage_coordOpen])
 
 /- English proof (translation)
-Use `Scheme.isPullback_of_openCover _ _ _ _ (awayCover W).openCover fun (i : Fin 3) => ?_` and prove the remaining obligations. Establish `h₁` using `isPullback_SpecMap_of_isPushout _ _ _ _ (isPushout_awayRingMap W f h i)`. Rewrite `h₁` using `[← awayChart_toSpec W, ← awayChart_toSpec W']`. Establish `h₂` using `(isPullback_awayChart W f h i).flip`. Use `h₁.of_iso h₂.isoPullback (Iso.refl _) (Iso.refl _) (Iso.refl _) ?_ ?_ ?_ ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(Category.comp_id _).trans h₂.isoPullback_hom_snd.symm`. Conclude with `(Category.comp_id _).trans (h₂.isoPullback_hom_fst_assoc _).symm`. Conclude with `(Category.comp_id _).trans (Category.id_comp _).symm`. Conclude with `(Category.comp_id _).trans (Category.id_comp _).symm`.
+A detailed English derivation is pending.
 -/
 theorem isPullback_mapHom :
     IsPullback (mapHom W f h) (toSpec W') (toSpec W) (Spec.map (CommRingCat.ofHom f)) := by
@@ -1494,45 +1480,45 @@ def originMap : OriginRing W →+* OriginRing W' :=
     ((map_comp_eq h (algebraMap R' (OriginRing W'))).symm ▸ equation_originZ_originW W')
 
 /- English proof (translation)
-Simplify using `[affineMap]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem affineMap_affineX : affineMap W f h (affineX W) = affineX W' := by
   simp [affineMap]
 
 /- English proof (translation)
-Simplify using `[affineMap]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem affineMap_affineY : affineMap W f h (affineY W) = affineY W' := by
   simp [affineMap]
 
 /- English proof (translation)
-Rewrite using `[affineMap, affineEval_algebraMap, RingHom.comp_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 @[simp] theorem affineMap_algebraMap (r : R) :
     affineMap W f h (algebraMap R _ r) = algebraMap R' _ (f r) := by
   rw [affineMap, affineEval_algebraMap, RingHom.comp_apply]
 
 /- English proof (translation)
-Simplify using `[originMap]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem originMap_originZ : originMap W f h (originZ W) = originZ W' := by
   simp [originMap]
 
 /- English proof (translation)
-Simplify using `[originMap]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem originMap_originW : originMap W f h (originW W) = originW W' := by
   simp [originMap]
 
 /- English proof (translation)
-Rewrite using `[originMap, originEval_algebraMap, RingHom.comp_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 @[simp] theorem originMap_algebraMap (r : R) :
     originMap W f h (algebraMap R _ r) = algebraMap R' _ (f r) := by
   rw [originMap, originEval_algebraMap, RingHom.comp_apply]
 
 /- English proof (translation)
-The claim follows from `IsOpenImmersion.isPullback _ _ _ _ (by rw [affineMap, SpecMap_affineEval_chartZ, chartZ, pt_eq_ptHom, ptHom_mapHom]) (by rw [opensRange_chartZ, opensRange_chartZ, mapHom_preimage_coordOpen])`.
+A detailed English derivation is pending.
 -/
 theorem isPullback_chartZ : IsPullback (Spec.map (CommRingCat.ofHom (affineMap W f h)))
     (chartZ W') (chartZ W) (mapHom W f h) :=
@@ -1541,7 +1527,7 @@ theorem isPullback_chartZ : IsPullback (Spec.map (CommRingCat.ofHom (affineMap W
     (by rw [opensRange_chartZ, opensRange_chartZ, mapHom_preimage_coordOpen])
 
 /- English proof (translation)
-The claim follows from `IsOpenImmersion.isPullback _ _ _ _ (by rw [originMap, SpecMap_originEval_chartY, chartY, pt_eq_ptHom, ptHom_mapHom]) (by rw [opensRange_chartY, opensRange_chartY, mapHom_preimage_coordOpen])`.
+A detailed English derivation is pending.
 -/
 theorem isPullback_chartY : IsPullback (Spec.map (CommRingCat.ofHom (originMap W f h)))
     (chartY W') (chartY W) (mapHom W f h) :=
@@ -1554,7 +1540,7 @@ def pullbackIso : pullback (toSpec W) (Spec.map (CommRingCat.ofHom f)) ≅ schem
 
 @[reassoc (attr := simp)]
 /- English proof (translation)
-The claim follows from `(isPullback_mapHom W f h).isoPullback_inv_fst @[reassoc (attr := simp)]`.
+A detailed English derivation is pending.
 -/
 theorem pullbackIso_hom_mapHom :
     (pullbackIso W f h).hom ≫ mapHom W f h = pullback.fst _ _ :=
@@ -1562,7 +1548,7 @@ theorem pullbackIso_hom_mapHom :
 
 @[reassoc (attr := simp)]
 /- English proof (translation)
-The claim follows from `(isPullback_mapHom W f h).isoPullback_inv_snd @[reassoc (attr := simp)]`.
+A detailed English derivation is pending.
 -/
 theorem pullbackIso_hom_toSpec :
     (pullbackIso W f h).hom ≫ toSpec W' = pullback.snd _ _ :=
@@ -1570,14 +1556,14 @@ theorem pullbackIso_hom_toSpec :
 
 @[reassoc (attr := simp)]
 /- English proof (translation)
-The claim follows from `(isPullback_mapHom W f h).isoPullback_hom_fst @[reassoc (attr := simp)]`.
+A detailed English derivation is pending.
 -/
 theorem pullbackIso_inv_fst : (pullbackIso W f h).inv ≫ pullback.fst _ _ = mapHom W f h :=
   (isPullback_mapHom W f h).isoPullback_hom_fst
 
 @[reassoc (attr := simp)]
 /- English proof (translation)
-The claim follows from `(isPullback_mapHom W f h).isoPullback_hom_snd`.
+A detailed English derivation is pending.
 -/
 theorem pullbackIso_inv_snd : (pullbackIso W f h).inv ≫ pullback.snd _ _ = toSpec W' :=
   (isPullback_mapHom W f h).isoPullback_hom_snd
@@ -1589,9 +1575,9 @@ abbrev baseChangeIso (f : R →+* R') :
 end BaseChange
 
 /- English proof (translation)
-Introduce `e`. Establish `h₁` using `pt_preimage_coordOpen W (A := R) ![a, b, 1] (isUnimodularSol_some h) 2`. Rewrite `h₁` using `[e, zero_preimage_coordOpen_two]`. Establish `h₂ : PrimeSpectrum.basicOpen (1 : R) = ⊥` using `h₁.symm`. Rewrite `h₂` using `[PrimeSpectrum.basicOpen_eq_bot_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `not_isNilpotent_one h₂`.
+A detailed English derivation is pending.
 -/
 theorem pt_some_ne_zero [Nontrivial R] {a b : R} (h : W.toAffine.Equation a b) :
     pt W (A := R) ![a, b, 1] (isUnimodularSol_some h) ≠ zero W := by
@@ -1606,28 +1592,28 @@ instance [Nontrivial R] : Nonempty (scheme W) :=
   ⟨zero W (Classical.arbitrary (PrimeSpectrum R))⟩
 
 /- English proof (translation)
-The claim follows from `pt_some_ne_zero _ (by simp)`.
+A detailed English derivation is pending.
 -/
 example : pt (⟨0, 0, 1, -1, 0⟩ : WeierstrassCurve ℤ) (A := ℤ) ![0, 0, 1]
     (isUnimodularSol_some (by simp [WeierstrassCurve.baseChange])) ≠ zero _ :=
   pt_some_ne_zero _ (by simp)
 
 /- English proof (translation)
-The claim follows from `pt_smul W _ _ isUnit_one.neg`.
+A detailed English derivation is pending.
 -/
 example : pt W (A := R) ((-1 : R) • ![0, 1, 0]) ((isUnimodularSol_zero _).smul isUnit_one.neg) =
     zero W :=
   pt_smul W _ _ isUnit_one.neg
 
 /- English proof (translation)
-Rewrite using `[equation_origin_iff]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 example (t : R) : (⟨0, 0, 0, 0, 0⟩ : WeierstrassCurve R).toProjective.Equation ![t, -1, t ^ 3] := by
   rw [equation_origin_iff]
   simp
 
 /- English proof (translation)
-The claim follows from `(equation_origin_iff _ _ _).mp (equation_originZ_originW W)`.
+A detailed English derivation is pending.
 -/
 example : originW W = originZ W ^ 3 + algebraMap R _ W.a₁ * originZ W * originW W
     + algebraMap R _ W.a₂ * originZ W ^ 2 * originW W + algebraMap R _ W.a₃ * originW W ^ 2

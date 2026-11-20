@@ -23,9 +23,7 @@ def ConeFibreAverage.Statement : Prop :=
             {y : EuclideanSpace ℂ (Fin n) | ‖y‖ < 1 ∧ y ∈ coneSet h J}
 
 /- English proof (translation)
-Take `⟨hJ, hfib⟩` from `ConeMassOfFibre.hypotheses_inhabited`. Use `⟨hJ, ?_⟩` and prove the remaining obligations. Use `filter_upwards [hfib] with π hπ`. Use `filter_upwards [hπ] with w hw`. Rewrite using `[hw]`.
-
-Conclude with `ENat.natCast_ne_top 1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ConeFibreAverage.hypotheses_inhabited :
     IsProjPrime (⊥ : Ideal (MvPolynomial (Fin 1) ℂ)) ∧

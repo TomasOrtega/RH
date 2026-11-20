@@ -10,13 +10,13 @@ open MvPolynomial
 noncomputable section
 
 /- English proof (translation)
-Introduce `F _ n k Z f hf τ`. Take `⟨c, -, g, hg, rfl⟩` from `hf`. Establish `hex : ∀ W, ∃ d : F, W ∈ Z.support → d ^ 2 = 1 ∧ rename (Prod.map τ id) (g W) = C d * g W`. Introduce `W`. Distinguish the cases in `hW : W ∈ Z.support`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Take `⟨d, hd2, hdg⟩` from `chowFormSwap F n k W (g W) (hg W hW) τ`. Conclude with `⟨d, fun _ => ⟨hd2, hdg⟩⟩`. Conclude with `⟨1, fun h => absurd h hW⟩`. Use `choose d hd using hex`. Use `⟨∏ W ∈ Z.support, d W ^ Z W, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Finset.prod_pow]`. Use `Finset.prod_eq_one fun W hW => ?_` and prove the remaining obligations. Rewrite using `[← pow_mul, mul_comm, pow_mul, (hd W hW).1, one_pow]`. Rewrite using `[map_mul, rename_C, map_prod]`. Rewrite using `[Finset.prod_congr rfl fun W hW => by`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_pow, (hd W hW).2, mul_pow, ← C_pow]]`. Rewrite using `[Finset.prod_mul_distrib, map_prod C]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem ChowCycleSwap.proof : ChowCycleSwap.Statement := by
   intro F _ n k Z f hf τ

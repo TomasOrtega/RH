@@ -16,11 +16,11 @@ variable {F E : Type} [Field F] [Field E] [Algebra F E] {R : Type} [CommRing R] 
 include hσσ hJ hP
 
 /- English proof (translation)
-Establish `H` using `datR_hyp (R := R) hσσ hJ hP`. Unfold `Hsub`. Rewrite using `[mem_stabT]`. Introduce `b`. Rewrite using `[lin_piG]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `Fin.addCases (fun b => ?_) (fun b => ?_) b` and prove the remaining obligations. Rewrite using `[tupH, Fin.append_left]`. Use `Fin.lastCases ?_ (fun a => ?_) b` and prove the remaining obligations. Rewrite using `[F0, Fin.snoc_last]`. Conclude with `SemiG.Dat.unipotent_proj_fixes_normal H _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[F0, Fin.snoc_castSucc]`. Conclude with `SemiG.Dat.Pi_e H _ a`. Rewrite using `[tupH, Fin.append_right]`. Conclude with `SemiG.Dat.Pi_f H _ b`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem piG_mem_H (g : HA R σ J) (hg : g ∈ Ssub R σ J P) : piG hσσ hJ hP g hg ∈ Hsub R σ J P := by
   have H := datR_hyp (R := R) hσσ hJ hP
@@ -39,15 +39,15 @@ theorem piG_mem_H (g : HA R σ J) (hg : g ∈ Ssub R σ J P) : piG hσσ hJ hP g
     exact SemiG.Dat.Pi_f H _ b
 
 /- English proof (translation)
-Establish `hext : ∀ {g₁ g₂ : HA R σ J}, (∀ x, lin R σ J g₁ x = lin R σ J g₂ x) → g₁ = g₂`. Introduce `g₁ g₂ hgg`. Establish `hm : ((HA.mat R σ J g₁ : GL (Fin M) (R ⊗[F] E)) : Matrix (Fin M) (Fin M) (R ⊗[F] E)) = (HA.mat R σ J g₂ : GL (Fin M) (R ⊗[F] E))`. Use extensionality with `i j`. Establish `h1` using `hgg (Pi.single j 1)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Simplify using `only [lin, Matrix.mulVecLin_apply, Matrix.mulVec_single_one] at h1`. Conclude with `congrFun h1 i`. Conclude with `Subtype.ext (Units.ext hm)`. Establish `H` using `datR_hyp (R := R) hσσ hJ hP`. Unfold `Hsub at hh`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hh` using `[mem_stabT]`. Establish `he : ∀ a, lin R σ J h (ratV (F` using `F) R (P.e a)) = ratV (F := F) R (P.e a) := fun a => by`. Establish `h1` using `hh (Fin.castAdd r (Fin.castSucc a))`. Rewrite `h1` using `[tupH, Fin.append_left, F0, Fin.snoc_castSucc]`. Then use the resulting hypothesis. Establish `hz : lin R σ J h (ratV (F` using `F) R P.z) = ratV (F := F) R P.z := by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h1` using `hh (Fin.castAdd r (Fin.last r))`. Rewrite `h1` using `[tupH, Fin.append_left, F0, Fin.snoc_last]`. Then use the resulting hypothesis. Establish `hf : ∀ a, lin R σ J h (ratV (F` using `F) R (P.f a)) = ratV (F := F) R (P.f a) := fun a => by`. Establish `h1` using `hh (Fin.natAdd (r + 1) a)`. Rewrite `h1` using `[tupH, Fin.append_right]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `hext fun x => ?_` and prove the remaining obligations. Rewrite using `[lin_piG]`. Conclude with `SemiG.Dat.Pi_of_fix H ⟨he, hz⟩ hf (uni_lin h) x`.
+A detailed English derivation is pending.
 -/
 theorem piG_of_H {h : HA R σ J} (hh : h ∈ Hsub R σ J P) (hg : h ∈ Ssub R σ J P) :
     piG hσσ hJ hP h hg = h := by
@@ -77,11 +77,11 @@ theorem piG_of_H {h : HA R σ J} (hh : h ∈ Hsub R σ J P) (hg : h ∈ Ssub R �
   exact SemiG.Dat.Pi_of_fix H ⟨he, hz⟩ hf (uni_lin h) x
 
 /- English proof (translation)
-Establish `hext : ∀ {g₁ g₂ : HA R σ J}, (∀ x, lin R σ J g₁ x = lin R σ J g₂ x) → g₁ = g₂`. Introduce `g₁ g₂ hgg`. Establish `hm : ((HA.mat R σ J g₁ : GL (Fin M) (R ⊗[F] E)) : Matrix (Fin M) (Fin M) (R ⊗[F] E)) = (HA.mat R σ J g₂ : GL (Fin M) (R ⊗[F] E))`. Use extensionality with `i j`. Establish `h1` using `hgg (Pi.single j 1)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Simplify using `only [lin, Matrix.mulVecLin_apply, Matrix.mulVec_single_one] at h1`. Conclude with `congrFun h1 i`. Conclude with `Subtype.ext (Units.ext hm)`. Establish `H` using `datR_hyp (R := R) hσσ hJ hP`. Take `⟨-, hn2⟩` from `hn`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `hext fun x => ?_` and prove the remaining obligations. Rewrite using `[lin_piG, lin_one]`. Use `SemiG.Dat.Pi_of_N H (fun v hv => spanR_le Set.univ (hn2 v fun a => ?_)) x` and prove the remaining obligations. Establish `h1` using `hv a`. Rewrite `h1` using `[datR_h]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem piG_of_N {n : HA R σ J} (hn : n ∈ Nsub R σ J P) (hg : n ∈ Ssub R σ J P) :
     piG hσσ hJ hP n hg = 1 := by
@@ -103,11 +103,9 @@ theorem piG_of_N {n : HA R σ J} (hn : n ∈ Nsub R σ J P) (hg : n ∈ Ssub R �
   rwa [datR_h] at h1
 
 /- English proof (translation)
-Establish `hext : ∀ {g₁ g₂ : HA R σ J}, (∀ x, lin R σ J g₁ x = lin R σ J g₂ x) → g₁ = g₂`. Introduce `g₁ g₂ hgg`. Establish `hm : ((HA.mat R σ J g₁ : GL (Fin M) (R ⊗[F] E)) : Matrix (Fin M) (Fin M) (R ⊗[F] E)) = (HA.mat R σ J g₂ : GL (Fin M) (R ⊗[F] E))`. Use extensionality with `i j`. Establish `h1` using `hgg (Pi.single j 1)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Simplify using `only [lin, Matrix.mulVecLin_apply, Matrix.mulVec_single_one] at h1`. Conclude with `congrFun h1 i`. Conclude with `Subtype.ext (Units.ext hm)`. Use `hext fun x => ?_` and prove the remaining obligations. Rewrite using `[lin_piG, lin_mul, lin_piG, lin_piG, Pi_lin_mul hσσ hJ hP hg hg']`.
-
-Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem piG_mul {g g' : HA R σ J} (hg : g ∈ Ssub R σ J P) (hg' : g' ∈ Ssub R σ J P) :
     piG hσσ hJ hP (g * g') ((Ssub R σ J P).mul_mem hg hg') =
@@ -126,15 +124,13 @@ theorem piG_mul {g g' : HA R σ J} (hg : g ∈ Ssub R σ J P) (hg' : g' ∈ Ssub
   rfl
 
 /- English proof (translation)
-Establish `H` using `datR_hyp (R := R) hσσ hJ hP`. Use `set π := piG hσσ hJ hP s hs with hπ`. Establish `hpe : ∀ b, lin R σ J π (ratV (F` using `F) R (P.e b)) = ratV (F := F) R (P.e b) := fun b => by`. Rewrite using `[hπ, lin_piG]`. Conclude with `SemiG.Dat.Pi_e H _ b`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hpie : ∀ b, lin R σ J π⁻¹ (ratV (F` using `F) R (P.e b)) = ratV (F := F) R (P.e b) := fun b => by conv_lhs => rw [← hpe b]`. Rewrite using `[lin_inv_lin]`. Use `⟨fun b => ?_, fun v hv => ?_⟩` and prove the remaining obligations. Rewrite using `[lin_mul, hpie]`. Conclude with `S_e hs b`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `set u := lin R σ J π⁻¹ v with hu`. Establish `hu' : ∀ a, (datR R σ J P T).h ((datR R σ J P T).e a) u = 0` using `fun a => by`. Rewrite using `[datR_h]`. Use `show hR R σ J (ratV (F := F) R (P.e a)) u = 0`. Rewrite using `[← hR_lin π, hpe, hu, lin_lin_inv]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hv a`. Establish `hZ : lin R σ J s (datR R σ J P T).z - (datR R σ J P T).z ∈ Submodule.span (R ⊗[F] E) (Set.range (datR R σ J P T).e)` using `spanR_le Set.univ (stabilizer_fixes_tail_coords hs)`. Establish `h1` using `SemiG.Dat.N_part H (mapX_S hs) (mapW_S hs) hZ u hu'`. Establish `h2 : (datR R σ J P T).Pi (lin R σ J s) u = v`. Rewrite using `[← lin_piG hσσ hJ hP s hs, ← hπ, hu, lin_lin_inv]`.
-
-Rewrite `h1` using `[h2]`. Rewrite using `[lin_mul, ← hu]`. Conclude with `span_le_spanR h1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_inv_piG_mem_N {s : HA R σ J} (hs : s ∈ Ssub R σ J P) :
     s * (piG hσσ hJ hP s hs)⁻¹ ∈ Nsub R σ J P := by

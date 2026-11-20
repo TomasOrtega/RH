@@ -16,11 +16,11 @@ variable {n : ℕ}
 open MeasureTheory
 
 /- English proof (translation)
-Establish `hE : IsGlRep E` using `hD.glRep`. Establish `hU : IsInfUnitary ε E` using `isInfUnitary_of_isDerivedOn hσ hD`. Take `⟨Q, -, hpos, hadj, -⟩` from `tens_unitarize dual hσ hD hgap hV hc hVK hW`. Take `⟨W, hWfd, hVW, hWM, hWst⟩` from `dc_ee_fin_stable dual hE hU hV hc hgap`. Establish `hsym` using `dc_eeF_Qsymm hE dual (casimir_genSub hE hc) hadj`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨B, hB⟩` from `dc_symm_nodal hpos hsym (dc_eeF_mem dual) hWM hWfd hWst`. Use `⟨B, ?_⟩` and prove the remaining obligations. Set `K0 : Submodule ℂ (Fin n → D)` to `LinearMap.ker (Polynomial.aeval (eeF dual E) (Lagrange.nodal (dc_cplxPts B) id)) ⊓ tensSub (genSub E V)`. Establish `hle : tensSub (genSub E V) ≤ K0`. Use `dc_tens_gen_le dual (fun f hf => ⟨hB f (hVW hf), hWM (hVW hf)⟩) ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `a b f hf`. Use `⟨?_, dc_tens_genSub_stable dual a b f hf.2⟩` and prove the remaining obligations. Simplify using `only [SetLike.mem_coe, LinearMap.mem_ker] at hf ⊢`. Rewrite using `[← dc_aeval_intertwine (tensF dual E a b) (eeF dual E) (eeF dual E) (fun y => dc_eeF_comm hE dual a b y), hf.1, map_zero]`. Conclude with `fun f hf => (hle hf).1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem dc_ee_nodal (dual : Bool) {lam : Fin n → ℝ} {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] {ε : Fin n → Bool}
     {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} {D : Submodule ℂ H} {E : Fin n → Fin n → Module.End ℂ D}
@@ -52,7 +52,7 @@ theorem dc_ee_nodal (dual : Bool) {lam : Fin n → ℝ} {H : Type*} [NormedAddCo
   exact fun f hf => (hle hf).1
 
 /- English proof (translation)
-Take `⟨B, hB⟩` from `dc_ee_nodal dual hσ hD hgap hV hc hVK hW`. Conclude with `⟨B, dc_lagrange_decomp (dc_eeF_mem dual) hB, dc_lagrange_eig hB⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem ee_decomp (dual : Bool) {lam : Fin n → ℝ} {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] {ε : Fin n → Bool}
     {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} {D : Submodule ℂ H} {E : Fin n → Fin n → Module.End ℂ D}
@@ -70,9 +70,7 @@ theorem ee_decomp (dual : Bool) {lam : Fin n → ℝ} {H : Type*} [NormedAddComm
   exact ⟨B, dc_lagrange_decomp (dc_eeF_mem dual) hB, dc_lagrange_eig hB⟩
 
 /- English proof (translation)
-Take `⟨B, hB⟩` from `dc_ee_nodal dual hσ hD hgap hV hc hVK hW`. Use `⟨dc_lagProj (eeF dual E) B z, ?_, dc_lagProj_props (dc_eeF_mem dual) hB z⟩` and prove the remaining obligations. Unfold `dc_lagProj`. Use `split_ifs`. Conclude with `dc_isGKEndo_aeval (isGKEndo_eeF hσ hD V dual) _`.
-
-Conclude with `dc_isGKEndo_zero'`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem eigenProj_exists (dual : Bool) {lam : Fin n → ℝ} {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] {ε : Fin n → Bool}
     {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} {D : Submodule ℂ H} {E : Fin n → Fin n → Module.End ℂ D}

@@ -10,9 +10,9 @@ variable {ι : Type} [Fintype ι] [DecidableEq ι] {R : Type} [CommRing R]
 
 omit [Fintype ι] in
 /- English proof (translation)
-Use extensionality with `b c`. Simplify using `only [tpow, Matrix.of_apply]`. Distinguish the cases in `h : b = c`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Rewrite using `[Matrix.diagonal_apply_ne _ h]`. Take `⟨j, hj⟩` from `Function.ne_iff.mp h`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ j) (Matrix.diagonal_apply_ne _ hj)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem tpow_diagonal_alg (n : ℕ) (a : ι → R) :
     tpow n (diagonal a) = diagonal (fun b : Fin n → ι => ∏ j, a (b j)) := by
@@ -27,7 +27,7 @@ theorem tpow_diagonal_alg (n : ℕ) (a : ι → R) :
 
 omit [Fintype ι] in
 /- English proof (translation)
-Establish `h` using `tpow_diagonal_alg (ι := ι) n (fun _ => (1 : R))`. Simplify using `using h`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem tpow_one_alg (n : ℕ) : tpow n (1 : Matrix ι ι R) = 1 := by
   have h := tpow_diagonal_alg (ι := ι) n (fun _ => (1 : R))
@@ -35,7 +35,7 @@ theorem tpow_one_alg (n : ℕ) : tpow n (1 : Matrix ι ι R) = 1 := by
 
 omit [DecidableEq ι] in
 /- English proof (translation)
-Use extensionality with `b c`. Simplify using `only [tpow, Matrix.of_apply, Matrix.mul_apply]`. Rewrite using `[Finset.prod_univ_sum, Fintype.piFinset_univ]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_mul_distrib]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem tpow_mul_alg (n : ℕ) (y z : Matrix ι ι R) : tpow n (y * z) = tpow n y * tpow n z := by
   classical
@@ -46,7 +46,7 @@ theorem tpow_mul_alg (n : ℕ) (y z : Matrix ι ι R) : tpow n (y * z) = tpow n 
   rw [Finset.prod_mul_distrib]
 
 /- English proof (translation)
-Simplify using `[act, tpow, Matrix.vecMul, dotProduct]`.
+Simplify using the standard rewrite rules.
 -/
 theorem act_apply_alg {m : ℕ} (d : Fin m → ℕ) (t : TIdx ι d → R) (y : Matrix ι ι R) (k : TIdx ι d) :
     act d t y k = ∑ a : Fin (d k.1) → ι, t ⟨k.1, a⟩ * ∏ j, y (a j) (k.2 j) := by
@@ -55,13 +55,13 @@ theorem act_apply_alg {m : ℕ} (d : Fin m → ℕ) (t : TIdx ι d → R) (y : M
 end
 
 /- English proof (translation)
-Introduce `ι _ _ R _`. Use `⟨fun n => ⟨tpow_one_alg n, tpow_mul_alg n, fun y => ?_⟩, fun m d t => ⟨?_, ?_, ?_, ?_, ?_, ?_⟩⟩` and prove the remaining obligations. Use extensionality with `a b`. Simplify using `[tpow]`. Use function extensionality and compare the values at `k`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[act, tpow_one_alg]`. Introduce `y z`. Use function extensionality and compare the values at `k`. Simplify using `only [act, tpow_mul_alg, ← Matrix.vecMul_vecMul]`. Introduce `a k`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [act, tpow_diagonal_alg, Matrix.vecMul_diagonal]`. Introduce `S y ht hy k`. Rewrite using `[act_apply_alg]`. Conclude with `S.sum_mem fun a _ => S.mul_mem (ht _) (S.prod_mem fun j _ => hy _ _)`. Introduce `c y`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `k`. Simplify using `only [act_apply_alg, Pi.smul_apply, smul_eq_mul, Finset.mul_sum, mul_assoc]`. Introduce `R' _ φ y`. Use function extensionality and compare the values at `k`. Simplify using `only [act_apply_alg, map_sum, map_mul, map_prod, Matrix.map_apply]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tpow_act_algebra : ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (R : Type) [CommRing R], (∀ n : ℕ, tpow n (1 : Matrix ι ι R) = 1 ∧ (∀ y z : Matrix ι ι R, tpow n (y * z) = tpow n y * tpow n z) ∧ ∀ y : Matrix ι ι R, (tpow n y)ᵀ = tpow n yᵀ) ∧ ∀ (m : ℕ) (d : Fin m → ℕ) (t : TIdx ι d → R), act d t 1 = t ∧ (∀ y z : Matrix ι ι R, act d t (y * z) = act d (act d t y) z) ∧ (∀ (a : ι → R) (k : TIdx ι d), act d t (diagonal a) k = t k * ∏ j, a (k.2 j)) ∧ (∀ (S : Subring R) (y : Matrix ι ι R), (∀ k, t k ∈ S) → (∀ i j, y i j ∈ S) → ∀ k, act d t y k ∈ S) ∧ (∀ (c : R) (y : Matrix ι ι R), act d (c • t) y = c • act d t y) ∧ ∀ (R' : Type) [CommRing R'] (φ : R →+* R') (y : Matrix ι ι R), act d (fun k => φ (t k)) (y.map φ) = fun k => φ (act d t y k) := by
   intro ι _ _ R _

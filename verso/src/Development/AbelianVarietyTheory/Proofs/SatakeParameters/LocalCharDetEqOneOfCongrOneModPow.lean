@@ -9,21 +9,19 @@ noncomputable section
 namespace GlobalTheory.AwayMat
 
 /- English proof (translation)
-Introduce `X Pr R Ch sel S mu cst L G m2 _hX _hPr _hsel hL i P n k hk`. Establish `hD : 1 ≤ cst.D P` using `hL.cst_ok.D_pos P`. Establish `hq : (qOf P.1 : X.E) ≠ 0` using `qOf_ne_zero`. Use `set Z : Fin n → Fin n → X.E := fun a b => (qOf P.1 : X.E) ^ (cst.D P - 1) * (((qOf P.1 : X.E) ^ cst.D P)⁻¹ * (k (Pi.single b (1 : X.E)) a - (Pi.single b (1 : X.E) : Sp X.E n) a)) with hZ`. Use `set A : Fin n → Fin n → X.E := fun a b => (Pi.single b (1 : X.E) : Sp X.E n) a with hA`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hZi : ∀ a b, IntAt P.1 (Z a b)` using `fun a b => (intAt_pow (intAt_nat _) _).mul (hk b a)`. Establish `hAi : ∀ a b, IntAt P.1 (A a b)` using `fun a b => by`. Simplify using `only [hA, Pi.single_apply]`. Use `split_ifs`. Conclude with `intAt_one`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers.
 
-Conclude with `intAt_zero`. Establish `hpow : (qOf P.1 : X.E) * (qOf P.1 : X.E) ^ (cst.D P - 1) = (qOf P.1 : X.E) ^ cst.D P`. Rewrite using `[← pow_succ']`. Use `congr 1`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hM : LinearMap.toMatrix (Pi.basisFun X.E (Fin n)) (Pi.basisFun X.E (Fin n)) k.toLinearMap = Matrix.of fun a b => A a b + (qOf P.1 : X.E) * Z a b`. Use extensionality with `a b`. Rewrite using `[LinearMap.toMatrix_apply, Pi.basisFun_apply, Pi.basisFun_repr, Matrix.of_apply, hZ, hA]`. Simplify using `only`. Rewrite using `[← mul_assoc, hpow, mul_inv_cancel_left₀ (pow_ne_zero _ hq)]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using the standard rewrite rules. Establish `hdet : ((LinearEquiv.det k : X.Eˣ) : X.E) = Matrix.det (Matrix.of fun a b => A a b + (qOf P.1 : X.E) * Z a b)`. Rewrite using `[LinearEquiv.coe_det, ← LinearMap.det_toMatrix (Pi.basisFun X.E (Fin n)), hM]`. Establish `hA1 : (Matrix.of fun a b => A a b) = 1`. Use extensionality with `a b`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[hA, Pi.single_apply, Matrix.one_apply, eq_comm]`. Establish `hred : redP P.1 ((LinearEquiv.det k : X.Eˣ) : X.E) = redP P.1 (1 : X.E)`. Rewrite using `[hdet, LastSteps.redP_det_add_q hAi hZi, hA1, Matrix.det_one]`. Establish `h1 : IsUnit (redP P.1 (1 : X.E))`. Rewrite using `[reduction_one₂]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `isUnit_one`. Establish `hu : IsUnit (redP P.1 ((LinearEquiv.det k : X.Eˣ) : X.E))` using `hred ▸ h1`. Unfold `muAt`. Rewrite using `[LastSteps.locChar_unit _ _ hu, LastSteps.unitV_congr _ hred]`. Unfold `LocE.unitV`.
-
-Rewrite using `[dif_pos h1, show h1.unit = 1 from Units.ext reduction_one₂, map_one, Units.val_one]`.
+A detailed English derivation is pending.
 -/
 theorem muAt_det_congr_one : ∀ {X : Fields} {Pr : Primes X} {R : Ranks} (Ch : Chars X Pr R.m) (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E))
     {S : Set ℕ} (mu : Tup X.F X.E X.K S) (cst : LocCst X (rowSG Pr sel mu)) (L : ChIdx X Pr R (QE sel (mu : Chr X.F X.E X.K))) (G : ChGlob X R.m) (m2 : ℕ),

@@ -13,7 +13,7 @@ noncomputable section
 namespace GlobalTheory.TwistFlat
 
 /- English proof (translation)
-Establish `hT : (translDiff A L a).IsLB` using `LB.isLB_linComb hL _ _`. Rewrite using `[cls_div hT (pull_isLB hN _) hD, map_sub, GlobalTheory.AbDual.pull_translDiff hL a hT, cls_ev hN, pull_evc, lift_snd, lift_fst_assoc, GlobalTheory.CubeDual.evc_lam hL, map_sub, ← pull_comp, ← pull_comp, ← Over.comp_left, ← Over.comp_left, MonObj.comp_one, lam, _root_.mul_comm u ( …`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem pull_cls_translDiff_div {S : Scheme.{0}} {A T Y Z : Over S} [GrpObj A] [IsCommMonObj A] {L : LB A.left}
     (hL : L.IsLB) (hP : (abelian₂ A L).IsLB) {N : LB (A ⊗ T).left} (hN : N.IsLB) (a : Y ⟶ A) (t : Y ⟶ T)
@@ -27,19 +27,17 @@ theorem pull_cls_translDiff_div {S : Scheme.{0}} {A T Y Z : Over S} [GrpObj A] [
   abel
 
 /- English proof (translation)
-Introduce `S A T _ hA L hL N hN Y a t`. Use `haveI := hA.comm`. Establish `hP : (abelian₂ A L).IsLB` using `LB.isLB_linComb hL _ _`. Establish `hF : Fam A (abelian₂ A L)` using `⟨hP, (GlobalTheory.CubeDual.isAdditive_lam GlobalTheory.CubeTop.cubeTheorem hA hL hP).1⟩`. Establish `hT : (translDiff A L a).IsLB` using `LB.isLB_linComb hL _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hD : (LB.div (translDiff A L a) (ev N (snd Y A) (fst Y A ≫ t))).IsLB` using `LB.isLB_div hT (pull_isLB hN.isLB _)`. Prove the components needed by the constructor for the conclusion. Introduce `h p`. Take `⟨V, hV, hc⟩` from `exists_pull_eq_zero (CechPic.pull a.left (cls L hL) - CechPic.pull (1 : Y ⟶ A).left (cls L hL)) p`. Use `⟨V, hV, (cls_eq_zero_iff (pull_isLB hD _)).1 ?_⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e₁` using `pull_cls_translDiff_div hL hP hN.isLB a t hD (fst Y A) (snd Y A)`. Rewrite `e₁` using `[lift_fst_snd, Over.id_left, pull_id]`. Establish `e₂` using `congrArg (CechPic.pull (lift (snd Y A) (fst Y A)).left) ((same_iff hP hN.isLB a t).1 h)`. Rewrite `e₂` using `[pull_evc, pull_evc, lift_fst, lift_snd_assoc, lift_snd_assoc]`. Rewrite using `[cls_pull hD, e₁, e₂, sub_self, zero_add, ← pull_comp]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `pull_eq_zero_of_mem V (((fst Y A).left ⁻¹ᵁ V).ι ≫ (fst Y A).left) (fun z ↦ z.2) hc`. Introduce `h`. Use `same_of_local S A A T hA _ N hF hN Y a t fun p ↦ ?_` and prove the remaining obligations. Take `⟨U, hU, hU'⟩` from `h p`. Take `⟨V, hV, hc⟩` from `exists_pull_eq_zero (CechPic.pull a.left (cls L hL) - CechPic.pull (1 : Y ⟶ A).left (cls L hL)) p`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `Z : Over S` to `Over.mk ((U ⊓ V).ι ≫ Y.hom)`. Set `z : Z ⟶ Y` to `Over.homMk (U ⊓ V).ι rfl`. Use `⟨Z, z, inferInstanceAs (IsOpenImmersion (U ⊓ V).ι), ⟨⟨p, hU, hV⟩, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[same_iff hP hN.isLB, ← sub_eq_zero]`. Establish `hm : ∀ w, (snd A Z ≫ z).left w ∈ U ⊓ V` using `fun w ↦ ((snd A Z).left w).2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e₁` using `pull_cls_translDiff_div hL hP hN.isLB a t hD (snd A Z ≫ z) (fst A Z)`. Establish `z₀ : CechPic.pull ((fst Y A).left ⁻¹ᵁ U).ι (cls _ hD) = 0` using `(cls_eq_zero_iff (pull_isLB hD _)).2 hU'`. Establish `e : (lift (snd A Z ≫ z) (fst A Z)).left ≫ (fst Y A).left = (snd A Z ≫ z).left`. Rewrite using `[← Over.comp_left, lift_fst]`. Rewrite `e₁` using `[pull_eq_zero_of_mem _ _ (fun w ↦ (congrArg (fun q ↦ q w ∈ U) e).mpr (hm w).1) z₀, pull_eq_zero_of_mem V _ (fun w ↦ (hm w).2) hc, add_zero, Category.assoc, Category.assoc]`.
-
-Conclude with `e₁.symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem same_lam_iff_locally_triv : ∀ {S : Scheme.{0}} (A T : Over S) [GrpObj A], IsAbelianScheme A → ∀ (L : LB A.left), L.IsLB → ∀ (N : LB (A ⊗ T).left), Fam A N → ∀ (Y : Over S) (a : Y ⟶ A) (t : Y ⟶ T), Same A (abelian₂ A L) N a t ↔ ∀ p : Y.left, ∃ U : Y.left.Opens, p ∈ U ∧ Triv ((LB.div (translDiff A L a) (ev N (snd Y A) (fst Y A ≫ t))).pull ((fst Y A).left ⁻¹ᵁ U).ι) := by
   intro S A T _ hA L hL N hN Y a t

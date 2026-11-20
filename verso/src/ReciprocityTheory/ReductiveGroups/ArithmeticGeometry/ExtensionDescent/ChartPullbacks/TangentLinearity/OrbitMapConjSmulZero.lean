@@ -17,7 +17,7 @@ namespace ReciprocityTheory.ChartRestriction.G.Out.TLinPf
 open Semi
 
 /- English proof (translation)
-Unfold `padd`. Use `first`. Consider the case `exact mul_comm x y`. Consider the case `(rw (occs := .pos [1]) [← IsCommMonObj.mul_comm B]; rw [← Category.assoc]; congr 1; ext <;> simp)`. Consider the case `rw [Category.id_comp]`.
+Replace the relevant objects with their definitions. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 lemma padd_comm {S : Scheme.{0}} (B : Over S) [GrpObj B] [IsCommMonObj B] {T : Over S}
     (x y : T ⟶ B) : padd B x y = padd B y x := by
@@ -28,7 +28,7 @@ lemma padd_comm {S : Scheme.{0}} (B : Over S) [GrpObj B] [IsCommMonObj B] {T : O
   | rw [Category.id_comp]
 
 /- English proof (translation)
-Apply the tactic sequence `split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma ite_neg_one_eq_neg (c : Prop) [Decidable c] : (if c then (-1 : ℤ) else 0) = -(if c then 1 else 0) := by
   split_ifs <;> simp
@@ -67,16 +67,16 @@ abbrev rhs : LB.Gen (LB.LinComb D.toPre.P.L (φB U ιG e a χ) Oinvε) :=
   LB.pullGen D.toPre.P.L _ _ ((U.gt e).t χ) ((Over.pullback (thick R I e)).map (ιG.act a)).left
 
 /- English proof (translation)
-Rewrite using `[ιD.c_lin (star a) χ, ← Category.assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma c_star : toUnit ((Over.map (thick R I e)).obj (thickObj R I e G)) ≫ D.toPre.c (star a • χ) =
     xc e χ (G := G) ≫ ιD.onB.act (star a) := by
   rw [ιD.c_lin (star a) χ, ← Category.assoc]
 
 /- English proof (translation)
-Simplify using `only [hOv, GtCoord.pG, Category.assoc]`. Rewrite using `[← Category.assoc, ← Functor.map_comp, hO a, Functor.map_comp, Category.assoc]`. Use `congr 1`. Use `ext`. Simplify using `only [DegPre.prBe, Over.comp_left, Over.homMk_left, Over.map_map_left]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use `first`. Consider the case `exact pullback.lift_fst _ _ _`. Consider the case `simp`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 lemma hOv_pG (hO : ∀ a : O, (Over.pullback (thick R I e)).map (ιG.act a) ≫ (U.gt e).q =
       (U.gt e).q ≫ (Over.pullback (thick R I e)).map (ιD.onB.act a)) :
@@ -117,7 +117,7 @@ lemma OφX_1 {T : Over (Spec (CommRingCat.of R))} (P x : T ⟶ D.toPre.P.A) :
     OφX (D := D) P x 1 = x.left := rfl
 
 /- English proof (translation)
-Rewrite using `[← c_star (G := G) ιD e a χ]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 lemma eAk (k : Fin 4) : D.toPre.Oφ (U.gt e).pG (star a • χ) k =
     OφX (D := D) (U.gt e).pG (xc e χ (G := G) ≫ ιD.onB.act (star a)) k := by
@@ -125,7 +125,7 @@ lemma eAk (k : Fin 4) : D.toPre.Oφ (U.gt e).pG (star a • χ) k =
   rfl
 
 /- English proof (translation)
-Rewrite using `[eAk U ιD e a χ 0]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 lemma orbitMap_conj_smul_zero : D.toPre.Oφ (U.gt e).pG (star a • χ) 0 =
     (padd D.toPre.P.A (U.gt e).pG (xc e χ (G := G) ≫ ιD.onB.act (star a))).left := by
@@ -133,7 +133,7 @@ lemma orbitMap_conj_smul_zero : D.toPre.Oφ (U.gt e).pG (star a • χ) 0 =
   rfl
 
 /- English proof (translation)
-Rewrite using `[eAk U ιD e a χ 1]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 lemma orbitMap_conj_smul_one : D.toPre.Oφ (U.gt e).pG (star a • χ) 1 = (xc e χ (G := G) ≫ ιD.onB.act (star a)).left := by
   rw [eAk U ιD e a χ 1]
@@ -152,17 +152,17 @@ lemma selfLieBasisVector : D.toPre.Oφ (U.gt e).pG (star a • χ) 3 =
 
 variable {U ιD e a χ} in
 /- English proof (translation)
-Use `⟨?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(lift X P).left ≫ (padd D.toPre.P.A (fst D.toPre.P.A D.toPre.P.A ≫ f) (snd D.toPre.P.A D.toPre.P.A)).left = _`. Rewrite using `[← Over.comp_left]`. Use `congr 1`. Simplify using `only [padd]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Category.assoc, CartesianMonoidalCategory.comp_lift]`. Simplify using the standard rewrite rules. Express the relevant statement in the definitionally equal form `(lift X P).left ≫ (fst D.toPre.P.A D.toPre.P.A ≫ f).left = _`. Rewrite using `[← Over.comp_left]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using the standard rewrite rules. Express the relevant statement in the definitionally equal form `(lift X P).left ≫ (snd D.toPre.P.A D.toPre.P.A).left = _`. Rewrite using `[← Over.comp_left]`. Use `congr 1`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Express the relevant statement in the definitionally equal form `(lift X P).left ≫ (padd D.toPre.P.A (fst D.toPre.P.A D.toPre.P.A) (snd D.toPre.P.A D.toPre.P.A ≫ g)).left = _`. Rewrite using `[← Over.comp_left]`. Use `congr 1`. Simplify using `only [padd]`. Rewrite using `[← Category.assoc, CartesianMonoidalCategory.comp_lift]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Express the relevant statement in the definitionally equal form `(lift X P).left ≫ (fst D.toPre.P.A D.toPre.P.A).left = _`. Rewrite using `[← Over.comp_left]`. Use `congr 1`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Express the relevant statement in the definitionally equal form `(lift X P).left ≫ (snd D.toPre.P.A D.toPre.P.A ≫ g).left = _`. Rewrite using `[← Over.comp_left]`. Use `congr 1`. Simplify using the standard rewrite rules.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 -/
 lemma eR (f g : D.toPre.P.A ⟶ D.toPre.P.A) (X P : (Over.map (thick R I e)).obj (thickObj R I e G) ⟶ D.toPre.P.A) :
     (lift X P).left ≫ rosatiφ D.toPre.P.A f g 0 = (padd D.toPre.P.A (X ≫ f) P).left ∧
@@ -202,7 +202,7 @@ lemma eR (f g : D.toPre.P.A ⟶ D.toPre.P.A) (X P : (Over.map (thick R I e)).obj
     simp
 
 /- English proof (translation)
-Apply the tactic sequence `fin_cases k <;> simp [DegPre.Oφ, padd, ← Over.comp_left]`. Use `all_goals`. Use `congr 1`. Rewrite using `[← Category.assoc, CartesianMonoidalCategory.comp_lift]`. Simplify using the standard rewrite rules.
+Apply the first step, then apply the next step to every resulting obligation. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma Ophi_nat_lemma {T T' : Over (Spec (CommRingCat.of R))} (h : T' ⟶ T)
     (p : T ⟶ D.toPre.P.A) (χ : D.toPre.X) (k : Fin 4) :
@@ -214,7 +214,7 @@ private lemma Ophi_nat_lemma {T T' : Over (Spec (CommRingCat.of R))} (h : T' ⟶
     simp
 
 /- English proof (translation)
-Rewrite using `[← hOv_pG U ιD ιG e a hO]`. Conclude with `Ophi_nat_lemma (hOv ιG e a) (U.gt e).pG χ k`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma eB (hO : ∀ a : O, (Over.pullback (thick R I e)).map (ιG.act a) ≫ (U.gt e).q =
       (U.gt e).q ≫ (Over.pullback (thick R I e)).map (ιD.onB.act a)) (k : Fin 4) :
@@ -235,9 +235,9 @@ variable {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {O : Type} [Ring O] 
 
 include hO in
 /- English proof (translation)
-Introduce `k`. Take `⟨_, _, _, h3, h4, h5⟩` from `eR (e := e) (ιD.onB.act (star a)) (ιD.onB.act a) (xc e χ (G := G)) (U.gt e).pG`. Rewrite using `[eB U ιD ιG e a χ hO k]`. Use `fin_cases k`. Conclude with `⟨Sum.inr 3, h3.trans (by rw [padd_comm]; rfl)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `⟨Sum.inr 4, h4⟩`. Conclude with `⟨Sum.inr 5, h5⟩`. Conclude with `⟨Sum.inl 3, (selfLieBasisVector U e a χ).trans rfl⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 lemma hsub : ∀ k : Fin 4, ∃ k', φA U ιD e a χ k' = φB U ιG e a χ k := by
   intro k
@@ -252,21 +252,21 @@ lemma hsub : ∀ k : Fin 4, ∃ k', φA U ιD e a χ k' = φB U ιG e a χ k := 
 
 omit [IsDomain R] in
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨rfl, rfl, rfl, rfl⟩`.
+Supply the required witnesses or components.
 -/
 lemma v4 {α : Type} (w x y z : α) : ![w, x, y, z] 0 = w ∧ ![w, x, y, z] 1 = x ∧
     ![w, x, y, z] 2 = y ∧ ![w, x, y, z] 3 = z := ⟨rfl, rfl, rfl, rfl⟩
 
 omit [IsDomain R] in
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨rfl, rfl, rfl, rfl, rfl, rfl⟩`.
+Supply the required witnesses or components.
 -/
 lemma v6 {α : Type} (a b c d f g : α) : ![a, b, c, d, f, g] 0 = a ∧ ![a, b, c, d, f, g] 1 = b ∧
     ![a, b, c, d, f, g] 2 = c ∧ ![a, b, c, d, f, g] 3 = d ∧ ![a, b, c, d, f, g] 4 = f ∧
     ![a, b, c, d, f, g] 5 = g := ⟨rfl, rfl, rfl, rfl, rfl, rfl⟩
 
 /- English proof (translation)
-Introduce `ψ`. Simplify using `only [Fintype.sum_sum_type, Fin.sum_univ_four, Fin.sum_univ_six]`. Use `show @ite ℤ (pB = ψ) (Classical.propDecidable _) (-1) 0 + @ite ℤ (x = ψ) (Classical.propDecidable _) (1) 0 + @ite ℤ (Pa = ψ) (Classical.propDecidable _) (1) 0 + @ite ℤ (u0 = ψ) (Classical.propDecidable _) (-1) 0 = (@ite ℤ (pA = ψ) (Classical.propDecidable _) (-1) 0 + @ite ℤ (xs = …`. Simplify using `only [ite_neg_one_eq_neg]`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private lemma ss_lemma {Y X : Scheme.{0}} (pB x Pa u0 pA xs P : Y ⟶ X) :
     LB.SameSum ![pB, x, Pa, u0] Oinvε (Sum.elim ![pA, xs, P, u0] ![pA, xs, P, pB, x, Pa])
@@ -291,11 +291,7 @@ private lemma ss_lemma {Y X : Scheme.{0}} (pB x Pa u0 pA xs P : Y ⟶ X) :
   ring
 
 /- English proof (translation)
-Take `⟨h0, h1, h2, h3, h4, h5⟩` from `eR (e := e) (ιD.onB.act (star a)) (ιD.onB.act a) (xc e χ (G := G)) (U.gt e).pG`. Use function extensionality and compare the values at `k`. Break down `k with k | k` into its components or cases. Use `fin_cases k`. Conclude with `orbitMap_conj_smul_zero U ιD e a χ`.
-
-Conclude with `orbitMap_conj_smul_one U ιD e a χ`. Conclude with `orbitMap_conj_smul_two U e a χ`. Conclude with `selfLieBasisVector U e a χ`. Use `fin_cases k`. Conclude with `h0`.
-
-Conclude with `h1`. Conclude with `h2`. Conclude with `h3`. Conclude with `h4`. Conclude with `h5`.
+Extract witnesses or component facts from the available result. Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 lemma hA : φA U ιD e a χ = Sum.elim
     ![(padd D.toPre.P.A (U.gt e).pG (xc e χ (G := G) ≫ ιD.onB.act (star a))).left,
@@ -325,7 +321,7 @@ lemma hA : φA U ιD e a χ = Sum.elim
 include hO in
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Rewrite using `[eB U ιD ιG e a χ hO k]`. Apply the tactic sequence `fin_cases k <;> rfl`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma hBv : φB U ιG e a χ =
     ![(padd D.toPre.P.A ((U.gt e).pG ≫ ιD.onB.act a) (xc e χ (G := G))).left,
@@ -337,7 +333,7 @@ lemma hBv : φB U ιG e a χ =
 
 include hO in
 /- English proof (translation)
-Rewrite using `[hA U ιD e a χ, hBv U ιD ιG e a χ hO, padd_comm D.toPre.P.A (xc e χ (G := G) ≫ ιD.onB.act (star a)) (U.gt e).pG, padd_comm D.toPre.P.A (xc e χ (G := G)) ((U.gt e).pG ≫ ιD.onB.act a)]`. Conclude with `ss_lemma _ _ _ _ _ _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma sameSum : LB.SameSum (φB U ιG e a χ) Oinvε (φA U ιD e a χ) εA := by
   rw [hA U ιD e a χ, hBv U ιD ιG e a χ hO,

@@ -148,7 +148,7 @@ def Side1Zero : Prop :=
           (x0 P.k P.r j hj (zxH h j hh.2 v) t γ))
 
 /- English proof (translation)
-Introduce `Wp Wq _ _ _ _ _ _ P p F j hj w h hh γ hF hw hγ hΩ e τ hτ`. Break down `Nat.eq_zero_or_pos j with h0 | h0` into its components or cases. Conclude with `hz Wp Wq P p F j hj w h hh γ h0 hF hw hγ hΩ e τ hτ`. Conclude with `hp Wp Wq P p F j hj w h hh γ h0 hF hw hγ hΩ e τ hτ`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem side_zero_of_positive_and_zero (hp : Side0Pos) (hz : Side0Zero) : Side0 := by
   intro Wp Wq _ _ _ _ _ _ P p F j hj w h hh γ hF hw hγ hΩ e τ hτ
@@ -157,7 +157,7 @@ theorem side_zero_of_positive_and_zero (hp : Side0Pos) (hz : Side0Zero) : Side0 
   · exact hp Wp Wq P p F j hj w h hh γ h0 hF hw hγ hΩ e τ hτ
 
 /- English proof (translation)
-Introduce `Wp Wq _ _ _ _ _ _ P p F j hj w h hh γ hF hw hγ hΩ t ht e`. Break down `Nat.eq_zero_or_pos j with h0 | h0` into its components or cases. Conclude with `hz Wp Wq P p F j hj w h hh γ h0 hF hw hγ hΩ t ht e`. Conclude with `hp Wp Wq P p F j hj w h hh γ h0 hF hw hγ hΩ t ht e`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem side_one_of_positive_and_zero (hp : Side1Pos) (hz : Side1Zero) : Side1 := by
   intro Wp Wq _ _ _ _ _ _ P p F j hj w h hh γ hF hw hγ hΩ t ht e
@@ -176,9 +176,7 @@ def OneBTInt : Prop :=
 section asm
 
 /- English proof (translation)
-Unfold `U.lowW`. Use `continuous_const.add ?_` and prove the remaining obligations. Use `continuous_pi fun a => continuous_pi fun b => ?_` and prove the remaining obligations. Simplify using `only [Matrix.of_apply]`. Use `split_ifs`.
-
-Conclude with `continuous_apply _`. Conclude with `continuous_const`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cont_lowW {p : ℕ} (σ : Equiv.Perm (Fin p)) : Continuous (U.lowW σ) := by
   unfold U.lowW
@@ -190,14 +188,14 @@ theorem cont_lowW {p : ℕ} (σ : Equiv.Perm (Fin p)) : Continuous (U.lowW σ) :
   · exact continuous_const
 
 /- English proof (translation)
-Unfold `LeftFubiniLemmas.lhOf`. Conclude with `(continuous_const.matrix_mul (cont_lowW σ)).matrix_mul continuous_const`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem cont_lhOf {p : ℕ} (σ : Equiv.Perm (Fin p)) : Continuous (LeftFubiniLemmas.lhOf σ) := by
   unfold LeftFubiniLemmas.lhOf
   exact (continuous_const.matrix_mul (cont_lowW σ)).matrix_mul continuous_const
 
 /- English proof (translation)
-Unfold `U.subS`. Use `continuous_finset_sum _ fun i _ => ?_` and prove the remaining obligations. Use `split_ifs`. Conclude with `(continuous_apply i).comp (continuous_apply _)`. Conclude with `continuous_const`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem cont_subS {p : ℕ} : Continuous (U.subS (p := p)) := by
   unfold U.subS
@@ -207,9 +205,9 @@ theorem cont_subS {p : ℕ} : Continuous (U.subS (p := p)) := by
   · exact continuous_const
 
 /- English proof (translation)
-Establish `hs : Continuous fun v : XH h => G.psi U.betaU (U.subS (LeftFubiniLemmas.lhOf (D.ptPerm h) v))`. Unfold `G.psi`. Use `Complex.continuous_exp.comp (continuous_const.mul ?_)` and prove the remaining obligations. Use `Complex.continuous_ofReal.comp (Complex.continuous_re.comp (continuous_const.mul ?_))` and prove the remaining obligations. Conclude with `cont_subS.comp (cont_lhOf _)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Unfold `ellH`. Conclude with `hs.smul continuous_const`.
+A detailed English derivation is pending.
 -/
 theorem cont_ellH {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
     [InnerProductSpace ℂ Wq] (h : C.LPt) : Continuous (ellH (Wp := Wp) (Wq := Wq) h) := by
@@ -225,13 +223,13 @@ variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [Norm
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq]
 
 /- English proof (translation)
-Establish `hcur` using `hC P.k P.r j hj h hh γ`. Establish `hsm` using `hW Wp Wq P p F j hj w hF hw e`. Establish `hGl : ∀ y : XH h × ℂ, y.2 ≠ 0 → x0 P.k P.r j hj (zxH h j hh.2 y.1) y.2 γ ∈ Q.Glev P.k P.r 0 ∩ domP P.k P.r j p.T.base.z p.T.base.z'`. Introduce `y hy`. Take `⟨hdet, hdom⟩` from `hP Wp Wq P p j hj h hh γ hγ hΩ y.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨⟨LevelPointCoordinates.x0_GV hj hdet hy hγ, fun a ha => absurd ha (Nat.not_lt_zero _)⟩, hdom y.2 hy⟩`. Use `contDiffOn_of_locally_contDiffOn fun q hq => ?_` and prove the remaining obligations. Take `⟨U, G, hU, hqU, hGs, hGe⟩` from `hsm _ (hGl q hq.2)`. Take `⟨V, hV, hVeq⟩` from `(continuousOn_iff'.1 hcur.continuousOn) U hU`. Establish `hqV : q ∈ V ∩ (Set.univ ×ˢ {τ : ℂ | τ ≠ 0})`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← hVeq]`. Conclude with `⟨hqU, hq⟩`. Establish `hmap : Set.MapsTo (fun y : XH h × ℂ => x0 P.k P.r j hj (zxH h j hh.2 y.1) y.2 γ) ((Set.univ ×ˢ {τ : ℂ | τ ≠ 0}) ∩ V) U`. Introduce `y hy`. Establish `hy' : y ∈ V ∩ (Set.univ ×ˢ {τ : ℂ | τ ≠ 0})` using `⟨hy.2, hy.1⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `hy'` using `[← hVeq]`. Conclude with `hy'.1`. Use `⟨V, hV, hqV.1, ?_⟩` and prove the remaining obligations. Use `(hGs.comp (hcur.mono Set.inter_subset_left) hmap).congr fun y hy => ?_` and prove the remaining obligations. Conclude with `hGe _ (hmap hy) (hGl y hy.1.2).1`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem jointSmooth (hW : WordSmooth) (hP : Pts) (hC : CurveSmooth) {P : M.Par} (p : KB.Pl P Wp Wq) (F)
     (j : ℕ) (hj : j + 1 ≤ P.r) (w : List C.Letter) (h : C.LPt) (hh : D.IsLocPt h j)
@@ -263,9 +261,9 @@ theorem jointSmooth (hW : WordSmooth) (hP : Pts) (hC : CurveSmooth) {P : M.Par} 
   exact hGe _ (hmap hy) (hGl y hy.1.2).1
 
 /- English proof (translation)
-Establish `hc : ContDiffOn ℝ ∞ (phf p F j hj w h hh.2 γ v e) {τ | τ ≠ 0}`. Establish `hj2` using `jointSmooth hW hP hC p F j hj w h hh γ hF hw hγ hΩ e`. Establish `hg : ContDiffOn ℝ ∞ (fun τ : ℂ => ((v, τ) : XH h × ℂ)) {τ : ℂ | τ ≠ 0}` using `contDiffOn_const.prodMk contDiffOn_id`. Establish `hm : Set.MapsTo (fun τ : ℂ => ((v, τ) : XH h × ℂ)) {τ : ℂ | τ ≠ 0} (Set.univ ×ˢ {τ : ℂ | τ ≠ 0})` using `fun τ hτ => Set.mk_mem_prod (Set.mem_univ v) hτ`. Establish `hk` using `hj2.comp hg hm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hk.congr fun τ _ => rfl`. Unfold `phx`. Rewrite using `[dif_pos hc]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem phx_eq (hW : WordSmooth) (hP : Pts) (hC : CurveSmooth) {P : M.Par} (p : KB.Pl P Wp Wq) (F)
     (j : ℕ) (hj : j + 1 ≤ P.r) (w : List C.Letter) (h : C.LPt) (hh : D.IsLocPt h j)
@@ -287,17 +285,15 @@ theorem phx_eq (hW : WordSmooth) (hP : Pts) (hC : CurveSmooth) {P : M.Par} (p : 
 end asm
 
 /- English proof (translation)
-Introduce `Wp Wq _ _ _ _ _ _ P p F j hj w h hh γ hF hw hγ hΩ φ hφ t ht e`. Establish `hpx : ∀ (v : XH h) (e' : Wd.Ix (Fin w.length)), (phx p F j hj w h hh.2 γ v e' : ℂ → (Wq →L[ℂ] Wp)) = phf p F j hj w h hh.2 γ v e'` using `fun v e' => phx_eq hW hP hC p F j hj w h hh γ hF hw hγ hΩ v e'`. Establish `hsm : SmoothLev P.k P.r 0 (domP P.k P.r j p.T.base.z p.T.base.z') (pbT p j (by omega) F)`. Establish `hcw : KB.CutWord P p.l0 []` using `⟨fun a => a.elim0, fun a => a.elim0⟩`. Conclude with `hW Wp Wq P p F j hj [] hF hcw (fun i => i.elim0)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hRl` using `hR Wp Wq P p F j hj hF`. Establish `htne : t ≠ 0` using `(ht.1 (1, t) (by simp)).2`. Establish `hGood : GoodFam (fun v : XH h => phx p F j hj w h hh.2 γ v)`. Use `⟨fun e' => ?_, fun K hK hKs => ?_⟩` and prove the remaining obligations. Conclude with `(jointSmooth hW hP hC p F j hj w h hh γ hF hw hγ hΩ e').congr fun q _ => congrFun (hpx q.1 e') q.2`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨C, hC', hCv⟩` from `hS Wp Wq P p F j hj w h hh γ hF hw hγ hΩ K hK hKs`. Use `⟨C, hC', fun v hv τ hτ e' => ?_⟩` and prove the remaining obligations. Rewrite using `[hpx v e']`. Conclude with `hCv v hv τ hτ e'`. Establish `hf : ∀ (e' : Wd.Ix (Fin w.length)) (τ : ℂ), τ ≠ 0 → (φ e' : ℂ → (Wq →L[ℂ] Wp)) τ = ∫ v, ellH h v ((phx p F j hj w h hh.2 γ v e' : ℂ → (Wq →L[ℂ] Wp)) τ)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Introduce `e' τ hτ`. Rewrite using `[hφ e' τ hτ, h0 Wp Wq P p F j hj w h hh γ hF hw hγ hΩ e' τ hτ]`. Use `congr 1`. Use function extensionality and compare the values at `v`. Rewrite using `[hpx v e']`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `⟨XH h, inferInstance, MeasureTheory.volume, ellH h, fun v => zxH h j hh.2 v, fun _ => pbT p j (by omega) F, domP P.k P.r j p.T.base.z p.T.base.z', fun v => phx p F j hj w h hh.2 γ v, isOpen_domP _ _ _ _ _, minorDomain_subset _ _ _ hj _ _, fun _ => ⟨hsm, hRl.1, hRl.2⟩, fun v => hP …` and prove the remaining obligations. Introduce `v e' τ _`. Rewrite using `[hpx v e']`. Both sides reduce to the same expression. Conclude with `h1 Wp Wq P p F j hj w h hh γ hF hw hγ hΩ t ht e`.
-
-Conclude with `hO (Wq →L[ℂ] Wp) (XH h) MeasureTheory.volume (ellH h) (cont_ellH h) (Fin w.length) (kapJ P j) (D.positionted w) (fun v => phx p F j hj w h hh.2 γ v) hGood φ hf t htne e`.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem headBridge_of (hR : RulesEq) (hW : WordSmooth) (hP : Pts) (hC : CurveSmooth) (hS : Supp) (h0 : Side0)
     (h1 : Side1) (hO : OneBTInt) : LevelPointCoordinates.HeadBridge := by

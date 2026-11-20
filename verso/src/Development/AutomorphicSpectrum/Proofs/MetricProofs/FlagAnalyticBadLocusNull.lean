@@ -12,7 +12,7 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.PB.WSq.FC
 
 /- English proof (translation)
-Introduce `K _ ι _ Φ _ y Ψ _ _ N j M n d BM FA l`. Conclude with `GlobalTheory.T.base_metric_pullback_family K ι Φ y Ψ N j M n BM _ FA.Re.R.X FA.Re.R.A FA.Re.R.U FA.Re.R.lift (FA.pr ∘ FA.Re.π) l (Pr.holoMap_comp' FA.Re.holo FA.pr_holo) (fun x => FA.Re.R.isOpen_U x) (fun x => FA.Re.R.mem_U x) (fun x p => FA.Re.R.holo x p) (fun x y' hy => FA.Re.R …`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem null_off_bigCell_resolution : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Φ : Type) [Field Φ] (y : (Σ k, ι k) → Φ) (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N j : ℕ) (M : FlagModel y Ψ N j) (n d : ℕ) (BM : BaseMetric M n) (FA : FlagAn BM d) (l : Fin BM.q), IsNull FA.Re.R.A {x | FA.pr (FA.Re.π x) ∈ BM.O l ∧ (FA.pr (FA.Re.π x) ∈ bdry BM.s ∨ ∃ p, FC.plk M (BM.F l) (FC.bvec BM l (FA.pr (FA.Re.π x))) (FA.Re.R.lift x x) p = 0)} := by
   intro K _ ι _ Φ _ y Ψ _ _ N j M n d BM FA l

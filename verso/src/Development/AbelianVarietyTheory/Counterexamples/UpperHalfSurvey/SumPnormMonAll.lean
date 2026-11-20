@@ -27,7 +27,7 @@ omit [NumberField E] [IsCMField E]
 variable {Ψ : Finset (E →+* ℂ)} {τ₁ τ₂ : Ψ}
 
 /- English proof (translation)
-Simplify using `only [mon, norm_mul, colSq]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem mon_sum (x : Frame Ψ 2) :
     ‖mon τ₁ τ₂ 0 0 x‖ ^ 2 + ‖mon τ₁ τ₂ 0 1 x‖ ^ 2 + ‖mon τ₁ τ₂ 1 0 x‖ ^ 2 + ‖mon τ₁ τ₂ 1 1 x‖ ^ 2 =
@@ -35,9 +35,9 @@ theorem mon_sum (x : Frame Ψ 2) :
   simp only [mon, norm_mul, colSq]; ring
 
 /- English proof (translation)
-Rewrite using `[← mon_sum]`. Establish `h1` using `sq_nonneg ‖mon τ₁ τ₂ 0 0 x‖`. Establish `h2` using `sq_nonneg ‖mon τ₁ τ₂ 0 1 x‖`. Establish `h3` using `sq_nonneg ‖mon τ₁ τ₂ 1 0 x‖`. Establish `h4` using `sq_nonneg ‖mon τ₁ τ₂ 1 1 x‖`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply the tactic sequence `fin_cases a <;> fin_cases b <;> simp only [Fin.zero_eta, Fin.mk_one] <;> linarith`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem mon_le (a b : Fin 2) (x : Frame Ψ 2) : ‖mon τ₁ τ₂ a b x‖ ^ 2 ≤ colSq x τ₁ * colSq x τ₂ := by
   rw [← mon_sum]
@@ -48,20 +48,20 @@ theorem mon_le (a b : Fin 2) (x : Frame Ψ 2) : ‖mon τ₁ τ₂ a b x‖ ^ 2 
   fin_cases a <;> fin_cases b <;> simp only [Fin.zero_eta, Fin.mk_one] <;> linarith
 
 /- English proof (translation)
-Simplify using `only [mon, right_mul_borel_first_column x hb]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem mon_rmul (a c : Fin 2) (x : Frame Ψ 2) {b : Frame Ψ 2} (hb : b ∈ Bor Ψ 2) :
     mon τ₁ τ₂ a c (rmul x b) = b τ₁ 0 0 * b τ₂ 0 0 * mon τ₁ τ₂ a c x := by
   simp only [mon, right_mul_borel_first_column x hb]; ring
 
 /- English proof (translation)
-Unfold `mon`. Use `fun_prop`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem mon_diff (a b : Fin 2) : Differentiable ℂ (mon τ₁ τ₂ a b) := by
   unfold mon; fun_prop
 
 /- English proof (translation)
-Simplify using `only [colSq, right_mul_borel_first_column x hb, norm_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem colSq_rmul (x : Frame Ψ 2) {b : Frame Ψ 2} (hb : b ∈ Bor Ψ 2) (τ : Ψ) :
     colSq (rmul x b) τ = ‖b τ 0 0‖ ^ 2 * colSq x τ := by
@@ -72,7 +72,7 @@ end
 variable {X : Data E 2} {τ₁ τ₂ : X.Ψ}
 
 /- English proof (translation)
-Use `mem_SSgt hG hΓ h0 h1 ((mon_diff a b).fun_pow m) (fun x b hb => ?_) (C := 1) (fun x => ?_) c` and prove the remaining obligations. Rewrite using `[mon_rmul _ _ _ hb, prod_two hne hall, mul_pow]`. Rewrite using `[prod_two hne hall, one_mul, norm_pow, ← pow_mul, mul_comm m 2, pow_mul]`. Conclude with `pow_le_pow_left₀ (sq_nonneg _) (mon_le a b x) m`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mon_pow_mem (hG : X.Gm = 1) (hΓ : X.Γ = ⊥) (hne : τ₁ ≠ τ₂) (hall : ∀ τ, τ = τ₁ ∨ τ = τ₂)
     {la : Wt X.Ψ 2} {m : ℕ} (h0 : ∀ τ, la τ 0 = m) (h1 : ∀ τ, la τ 1 = 0) (a b : Fin 2) (c : ℝ) :
@@ -83,14 +83,14 @@ theorem mon_pow_mem (hG : X.Gm = 1) (hΓ : X.Γ = ⊥) (hne : τ₁ ≠ τ₂) (
     exact pow_le_pow_left₀ (sq_nonneg _) (mon_le a b x) m
 
 /- English proof (translation)
-Simplify using `using mon_pow_mem hG hΓ hne hall (la := wtOne X.Ψ) (m := 1) (fun _ => rfl) (fun _ => rfl) a b c`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mon_mem (hG : X.Gm = 1) (hΓ : X.Γ = ⊥) (hne : τ₁ ≠ τ₂) (hall : ∀ τ, τ = τ₁ ∨ τ = τ₂)
     (a b : Fin 2) (c : ℝ) : mon τ₁ τ₂ a b ∈ X.SSgt (wtOne X.Ψ) c := by
   simpa using mon_pow_mem hG hΓ hne hall (la := wtOne X.Ψ) (m := 1) (fun _ => rfl) (fun _ => rfl) a b c
 
 /- English proof (translation)
-Rewrite using `[pnorm_sq hG hx (m := 1) (fun _ => rfl) (fun _ => rfl), prod_two hne hall, pow_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pnorm_one (hG : X.Gm = 1) (hne : τ₁ ≠ τ₂) (hall : ∀ τ, τ = τ₁ ∨ τ = τ₂) {x : Frame X.Ψ 2}
     (hx : x ∈ X.dom) (P : Frame X.Ψ 2 → ℂ) :
@@ -101,7 +101,7 @@ def monAll (τ₁ τ₂ : X.Ψ) : Fin 4 → Frame X.Ψ 2 → ℂ :=
   ![mon τ₁ τ₂ 0 0, mon τ₁ τ₂ 0 1, mon τ₁ τ₂ 1 0, mon τ₁ τ₂ 1 1]
 
 /- English proof (translation)
-Establish `h1` using `colSq_pos (hx τ₁).1`. Establish `h2` using `colSq_pos (hx τ₂).1`. Simplify using `only [pnorm_one hG hne hall hx]`. Rewrite using `[← Finset.sum_div, div_eq_one_iff_eq (mul_pos h1 h2).ne', ← mon_sum, Fin.sum_univ_four]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem sum_pnorm_monAll (hG : X.Gm = 1) (hne : τ₁ ≠ τ₂) (hall : ∀ τ, τ = τ₁ ∨ τ = τ₂)
     {x : Frame X.Ψ 2} (hx : x ∈ X.dom) : ∑ k, X.pnorm (wtOne X.Ψ) (monAll τ₁ τ₂ k) x ^ 2 = 1 := by
@@ -112,7 +112,7 @@ theorem sum_pnorm_monAll (hG : X.Gm = 1) (hne : τ₁ ≠ τ₂) (hall : ∀ τ,
   rfl
 
 /- English proof (translation)
-Establish `h` using `Fintype.card_of_bijective (f := idx X) ⟨idx_injective X, idx_surjective X⟩`. Rewrite `h` using `[Fintype.card_fin]`. Rewrite using `[← h, ← Finset.card_univ, Finset.card_eq_sum_ones, sum_two hne hall]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem nd_eq_two (hne : τ₁ ≠ τ₂) (hall : ∀ τ, τ = τ₁ ∨ τ = τ₂) : nd X = 2 := by
   have h := Fintype.card_of_bijective (f := idx X) ⟨idx_injective X, idx_surjective X⟩
@@ -120,13 +120,13 @@ theorem nd_eq_two (hne : τ₁ ≠ τ₂) (hall : ∀ τ, τ = τ₁ ∨ τ = τ
   rw [← h, ← Finset.card_univ, Finset.card_eq_sum_ones, sum_two hne hall]
 
 /- English proof (translation)
-Rewrite using `[mem_dom hG hp]`. Introduce `τ`. Simplify using `[det_mat, idF]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem idF_mem (hG : X.Gm = 1) (hp : X.p0 = 2) : idF X.Ψ ∈ X.dom := by
   rw [mem_dom hG hp]; intro τ; simp [det_mat, idF]
 
 /- English proof (translation)
-Rewrite using `[mem_dom hG hp]`. Introduce `τ`. Simplify using `[det_mat, swF]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem swF_mem (hG : X.Gm = 1) (hp : X.p0 = 2) : swF X.Ψ ∈ X.dom := by
   rw [mem_dom hG hp]; intro τ; simp [det_mat, swF]
@@ -205,7 +205,7 @@ noncomputable def thetaIn (hG : X.Gm = 1) (hp : X.p0 = 2) (hΓ : X.Γ = ⊥) (hn
     norm_num⟩
 
 /- English proof (translation)
-Take `⟨τ, rfl⟩` from `idx_surjective X k`. Apply the tactic sequence `rcases hall τ with rfl | rfl <;> simp`.
+Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem idx_cases (hall : ∀ τ, τ = τ₁ ∨ τ = τ₂) (k : Fin (nd X)) : k = idx X τ₁ ∨ k = idx X τ₂ := by
   obtain ⟨τ, rfl⟩ := idx_surjective X k
@@ -215,18 +215,18 @@ noncomputable def secS (τ₁ τ₂ : X.Ψ) (k : Fin (nd X)) : Frame X.Ψ 2 → 
   if k = idx X τ₁ then mon τ₁ τ₂ 1 0 else mon τ₁ τ₂ 0 1
 
 /- English proof (translation)
-The claim follows from `if_pos rfl`.
+A detailed English derivation is pending.
 -/
 theorem secS_fst : secS τ₁ τ₂ (idx X τ₁) = mon τ₁ τ₂ 1 0 := if_pos rfl
 
 /- English proof (translation)
-The claim follows from `if_neg fun h => hne (idx_injective X h).symm`.
+A detailed English derivation is pending.
 -/
 theorem secS_snd (hne : τ₁ ≠ τ₂) : secS τ₁ τ₂ (idx X τ₂) = mon τ₁ τ₂ 0 1 :=
   if_neg fun h => hne (idx_injective X h).symm
 
 /- English proof (translation)
-Rewrite using `[← Function.Bijective.sum_comp ⟨idx_injective X, idx_surjective X⟩, sum_two hne hall, secS_fst, secS_snd hne, pnorm_one hG hne hall hx, pnorm_one hG hne hall hx, add_div]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_pnorm_secS (hG : X.Gm = 1) (hne : τ₁ ≠ τ₂) (hall : ∀ τ, τ = τ₁ ∨ τ = τ₂)
     {x : Frame X.Ψ 2} (hx : x ∈ X.dom) : ∑ k, X.pnorm (wtOne X.Ψ) (secS τ₁ τ₂ k) x ^ 2 =
@@ -237,7 +237,7 @@ theorem sum_pnorm_secS (hG : X.Gm = 1) (hne : τ₁ ≠ τ₂) (hall : ∀ τ, �
 def secW (τ₁ τ₂ : X.Ψ) (x : Frame X.Ψ 2) : ℂ := mon τ₁ τ₂ 0 0 x + mon τ₁ τ₂ 1 1 x
 
 /- English proof (translation)
-Establish `h : ‖secW τ₁ τ₂ x‖ ≤ ‖mon τ₁ τ₂ 0 0 x‖ + ‖mon τ₁ τ₂ 1 1 x‖` using `norm_add_le _ _`. Establish `h2` using `pow_le_pow_left₀ (norm_nonneg _) h 2`. Rewrite using `[← mon_sum]`. Use polynomial arithmetic with `[sq_nonneg ‖mon τ₁ τ₂ 0 1 x‖, sq_nonneg ‖mon τ₁ τ₂ 1 0 x‖, sq_nonneg (‖mon τ₁ τ₂ 0 0 x‖ - ‖mon τ₁ τ₂ 1 1 x‖)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem secW_le (x : Frame X.Ψ 2) : ‖secW τ₁ τ₂ x‖ ^ 2 ≤ 2 * (colSq x τ₁ * colSq x τ₂) := by
   have h : ‖secW τ₁ τ₂ x‖ ≤ ‖mon τ₁ τ₂ 0 0 x‖ + ‖mon τ₁ τ₂ 1 1 x‖ := norm_add_le _ _
@@ -247,9 +247,9 @@ theorem secW_le (x : Frame X.Ψ 2) : ‖secW τ₁ τ₂ x‖ ^ 2 ≤ 2 * (colSq
     sq_nonneg (‖mon τ₁ τ₂ 0 0 x‖ - ‖mon τ₁ τ₂ 1 1 x‖)]
 
 /- English proof (translation)
-Establish `h : |‖mon τ₁ τ₂ 0 0 x‖ - ‖mon τ₁ τ₂ 1 1 x‖| ≤ ‖secW τ₁ τ₂ x‖`. Use `abs_norm_sub_norm_le (mon τ₁ τ₂ 0 0 x) (-mon τ₁ τ₂ 1 1 x)` as an intermediate fact. Rewrite `this` using `[norm_neg, sub_neg_eq_add]`. Then use the resulting hypothesis. Establish `h2` using `pow_le_pow_left₀ (abs_nonneg _) h 2`. Rewrite `h2` using `[sq_abs]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3 : ‖mon τ₁ τ₂ 0 0 x‖ * ‖mon τ₁ τ₂ 1 1 x‖ = ‖mon τ₁ τ₂ 1 0 x‖ * ‖mon τ₁ τ₂ 0 1 x‖`. Simplify using `only [mon, norm_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← mon_sum]`. Use polynomial arithmetic with `[sq_nonneg ‖secW τ₁ τ₂ x‖, sq_nonneg (‖mon τ₁ τ₂ 1 0 x‖ - ‖mon τ₁ τ₂ 0 1 x‖)]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem le_secW (x : Frame X.Ψ 2) : colSq x τ₁ * colSq x τ₂ ≤
     2 * (‖secW τ₁ τ₂ x‖ ^ 2 + (‖mon τ₁ τ₂ 1 0 x‖ ^ 2 + ‖mon τ₁ τ₂ 0 1 x‖ ^ 2)) := by
@@ -264,7 +264,7 @@ theorem le_secW (x : Frame X.Ψ 2) : colSq x τ₁ * colSq x τ₂ ≤
   nlinarith [sq_nonneg ‖secW τ₁ τ₂ x‖, sq_nonneg (‖mon τ₁ τ₂ 1 0 x‖ - ‖mon τ₁ τ₂ 0 1 x‖)]
 
 /- English proof (translation)
-Use `mem_SSgt hG hΓ (m := 1) (fun _ => rfl) (fun _ => rfl) ((mon_diff 0 0).fun_add (mon_diff 1 1)) (fun x b hb => ?_) (C := 2) (fun x => ?_) c` and prove the remaining obligations. Rewrite using `[mon_rmul _ _ _ hb, mon_rmul _ _ _ hb, prod_two hne hall]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[prod_two hne hall, pow_one]`. Conclude with `secW_le x`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem secW_mem (hG : X.Gm = 1) (hΓ : X.Γ = ⊥) (hne : τ₁ ≠ τ₂) (hall : ∀ τ, τ = τ₁ ∨ τ = τ₂)
     (c : ℝ) : secW τ₁ τ₂ ∈ X.SSgt (wtOne X.Ψ) c := by
@@ -277,19 +277,17 @@ theorem secW_mem (hG : X.Gm = 1) (hΓ : X.Γ = ⊥) (hne : τ₁ ≠ τ₂) (hal
 def reps (X : Data E 2) : Fin 2 → Frame X.Ψ 2 := ![idF X.Ψ, swF X.Ψ]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Establish `d1` using `(hx τ₁).1`. Establish `d2` using `(hx τ₂).1`. Rewrite `d1`, `d2` using `[det_mat]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Break down `mul_eq_zero.1 h1 with hu | hv` into its components or cases. Establish `hu0 : x τ₁ 0 0 ≠ 0` using `fun h => d1 (by rw [h, hu]; ring)`. Establish `hv : x τ₂ 1 0 = 0` using `(mul_eq_zero.1 h2).resolve_left hu0`. Apply the tactic sequence `have hz : ∀ τ, x τ 1 0 = 0 := fun τ => by rcases hall τ with rfl | rfl <;> assumption`. Use `⟨0, x, fun τ => ⟨(hx τ).1, fun a c hac => ?_⟩, ?_⟩` and prove the remaining obligations.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: a = 1 ∧ c = 0` using `by revert a c; decide`. Rewrite using `[this.1, this.2]`. Conclude with `hz τ`. Apply the tactic sequence `funext τ a c show _ = (mat (idF X.Ψ) τ * mat x τ) a c fin_cases a <;> simp [Matrix.mul_apply, mat, idF]`. Establish `hv1 : x τ₂ 1 0 ≠ 0` using `fun h => d2 (by rw [h, hv]; ring)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu : x τ₁ 0 0 = 0` using `(mul_eq_zero.1 h2).resolve_right hv1`. Apply the tactic sequence `have hz : ∀ τ, x τ 0 0 = 0 := fun τ => by rcases hall τ with rfl | rfl <;> assumption`. Use `⟨1, fun τ => ![x τ 1, x τ 0], fun τ => ⟨?_, fun a c hac => ?_⟩, ?_⟩` and prove the remaining obligations. Use `(hx τ).1` as an intermediate fact. Rewrite `this`, the goal using `[det_mat]`.
+Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Apply `this` to reduce the goal to its premises. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one] at h`. Take the linear combination `-h`. Establish `: a = 1 ∧ c = 0` using `by revert a c; decide`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this.1, this.2]`. Conclude with `hz τ`. Apply the tactic sequence `funext τ a c show _ = (mat (swF X.Ψ) τ * mat (fun τ => ![x τ 1, x τ 0]) τ) a c fin_cases a <;> simp [Matrix.mul_apply, mat, swF]`. Introduce and unpack `⟨j, b, hb, rfl⟩`. Rewrite using `[mon_rmul _ _ _ hb, mon_rmul _ _ _ hb]`.
-
-Apply the tactic sequence `fin_cases j <;> simp [reps, mon, idF, swF]`.
+Apply the first step, then apply the next step to every resulting obligation. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem zero_iff (hall : ∀ τ, τ = τ₁ ∨ τ = τ₂) {x : Frame X.Ψ 2} (hx : x ∈ X.dom) :
     (mon τ₁ τ₂ 1 0 x = 0 ∧ mon τ₁ τ₂ 0 1 x = 0) ↔ ∃ j, ∃ b ∈ Bor X.Ψ 2, x = rmul (reps X j) b := by
@@ -328,13 +326,13 @@ theorem zero_iff (hall : ∀ τ, τ = τ₁ ∨ τ = τ₂) {x : Frame X.Ψ 2} (
     fin_cases j <;> simp [reps, mon, idF, swF]
 
 /- English proof (translation)
-Set `L : V n →L[ℂ] V n` to `(PiLp.continuousLinearEquiv 2 ℂ fun _ : Fin n => ℂ).symm.toContinuousLinearMap.comp (ContinuousLinearMap.pi fun k => EuclideanSpace.proj (σ k))`. Establish `hL : ∀ z k, L z k = z (σ k)` using `fun _ _ => rfl`. Establish `he : (fun z : V n => (WithLp.toLp 2 fun k => z (σ k) / (1 + z i * z j) : V n)) = fun z => (1 + z i * z j)⁻¹ • L z`. Use function extensionality and compare the values at `z`. Use extensionality with `k`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components.
 
-Simplify using `[hL, div_eq_inv_mul]`. Establish `hc : DifferentiableAt ℂ (fun z : V n => (1 + z i * z j)⁻¹) 0`. Use `DifferentiableAt.fun_inv ?_ (by simp)` and prove the remaining obligations. Conclude with `(differentiableAt_const _).fun_add ((EuclideanSpace.proj i : V n →L[ℂ] ℂ).differentiableAt.fun_mul (EuclideanSpace.proj j : V n →L[ℂ] ℂ).differentiableAt)`. Establish `hd : fderiv ℂ (fun z : V n => (1 + z i * z j)⁻¹ • L z) 0 = L`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(hc.hasFDerivAt.fun_smul L.hasFDerivAt).fderiv]`. Use extensionality with `v k`. Simplify using the standard rewrite rules. Rewrite using `[he, hd, ContinuousLinearMap.det, Ne, LinearMap.det_eq_zero_iff_ker_ne_bot, not_not, LinearMap.ker_eq_bot']`. Introduce `v hv`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Use extensionality with `k`. Take `⟨k', rfl⟩` from `hσ k`. Establish `: L v k' = 0` using `by rw [show L v = 0 from hv]; rfl`. Conclude with `this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem det_fderiv_ne {n : ℕ} {σ : Fin n → Fin n} (hσ : Function.Surjective σ) (i j : Fin n) :
     (fderiv ℂ (fun z : V n => (WithLp.toLp 2 fun k => z (σ k) / (1 + z i * z j) : V n)) 0).det ≠ 0 := by
@@ -472,7 +470,7 @@ namespace GlobalTheory.InterpCheck
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
 /- English proof (translation)
-Distinguish the cases in `hξ : ξ = 0`. Simplify using `[hξ, leviO, leviM, leviV]`. Conclude with `(Xa.posL x0 (IW.orth_mem_dom X x0 ho) z hz ξ hξ).le`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem leviL_nonneg (X : Data E r) (Xa : ArchInM X) (x0 : Frame X.Ψ r) (ho : IsOrth X x0)
     (z : V (nd X)) (hz : z ∈ OmF X x0) (ξ : Fin (nd X) → ℂ) : 0 ≤ leviO X x0 (phla X Xa.L) z ξ := by
@@ -481,11 +479,11 @@ theorem leviL_nonneg (X : Data E r) (Xa : ArchInM X) (x0 : Frame X.Ψ r) (ho : I
   · exact (Xa.posL x0 (IW.orth_mem_dom X x0 ho) z hz ξ hξ).le
 
 /- English proof (translation)
-Establish `hr : ∀ w, rhF X x0 w = 0` using `fun w => by`. Unfold `rhF`. Rewrite using `[neg_eq_zero]`. Use `Finset.sum_eq_zero fun τ _ => ?_` and prove the remaining obligations. Break down `hp with hp | hp` into its components or cases.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `e : (⟨X.p0, Nat.lt_succ_of_le X.p0_le⟩ : Fin (r + 1)) = 0` using `Fin.ext hp`. Rewrite using `[e]`. Conclude with `IW.Lm_zero X _ τ`. Establish `e : (⟨X.p0, Nat.lt_succ_of_le X.p0_le⟩ : Fin (r + 1)) = Fin.last r` using `Fin.ext hp`. Rewrite using `[e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `IW.Lm_last_cpt X x0 ho w τ`. Simplify using `only [leviRh, hr]`. Rewrite using `[RgC.leviV_const, Complex.zero_re]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem leviRh_definite (X : Data E r) (hp : X.p0 = 0 ∨ X.p0 = r) (x0 : Frame X.Ψ r) (ho : IsOrth X x0)
     (z : V (nd X)) (ξ : Fin (nd X) → ℂ) : leviRh X x0 z ξ = 0 := by
@@ -514,13 +512,13 @@ def MarginC (X : Data E r) (Xa : ArchInM X) : Prop :=
         (nd X : ℝ) * leviO X x0 (phla X Xa.L) z ξ + (1 + Xa.c1 / Xa.a1) * leviO X x0 Xa.ps0 z ξ
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Take `⟨η, hη, hF⟩` from `Xa.posF`. Use `⟨_, _, lt_add_one _, lt_add_one _, fun x0 ho z hz ξ => ?_⟩` and prove the remaining obligations. Establish `h` using `hF 0 le_rfl (by rw [zero_mul]; positivity) x0 (IW.orth_mem_dom X x0 ho) z hz ξ`. Rewrite `h` using `[IW.leviM_comb X x0 ho hz]`.
+Prove the components needed by the constructor for the conclusion. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hL` using `leviL_nonneg X Xa x0 ho z hz ξ`. Rewrite using `[leviRh_definite X hp x0 ho, mul_zero]`. Simplify using `only [leviO, zero_mul, sub_zero] at h hL ⊢`. Use polynomial arithmetic with `[mul_nonneg hη.le hL]`. Take `⟨η, hη, hF⟩` from `EtaStatement_holds r X Xa`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use the polynomial consequences of the given equalities and inequalities. Extract witnesses or component facts from the available result.
 
-Use `⟨_, _, lt_add_one _, lt_add_one _, fun x0 ho z hz ξ => ?_⟩` and prove the remaining obligations. Establish `h` using `hF x0 ho z hz ξ`. Establish `hx0` using `IW.orth_mem_dom X x0 ho`. Establish `hca : ContDiffAt ℝ 2 (fun w => Xa.ps0 (cpt X x0 w)) z` using `((Xa.potential_smooth x0 hx0).contDiffAt ((ExF.isOpen_OmF X x0).mem_nhds hz)).of_le (show (2 : WithTop ℕ∞) ≤ (⊤ : ℕ∞) from WithTop.coe_le_coe.2 le_top)`. Rewrite `h` using `[IC.leviO_smul X x0 Xa.ps0 _ hca ξ]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hL` using `leviL_nonneg X Xa x0 ho z hz ξ`. Rewrite using `[leviRh_definite X hp x0 ho, mul_zero]`. Use polynomial arithmetic with `[mul_nonneg hη.le hL]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem margins_definite (X : Data E r) (hp : X.p0 = 0 ∨ X.p0 = r) (Xa : ArchInM X) :
     Margin X Xa ∧ MarginC X Xa := by
@@ -548,9 +546,9 @@ theorem margins_definite (X : Data E r) (hp : X.p0 = 0 ∨ X.p0 = r) (Xa : ArchI
 open GlobalTheory.TwoLines Lines in
 
 /- English proof (translation)
-Take `⟨τ₁, τ₂, hne, hall⟩` from `exists_two (defData E) h`. Set `Xa : ArchInM (defData E)` to `thetaIn rfl rfl rfl hne hall`. Set `Fl : FlatM (defData E) Xa` to `flatIn rfl rfl rfl hne hall`. Establish `hPD : PropDisc (defData E)` using `ClosedDiscontinuity.propDisc_closed 2 _`. Take `⟨h1, h2⟩` from `margins_definite (defData E) (Or.inr rfl) Xa`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h3 : ∃ C : ℝ, ∀ x ∈ (defData E).dom, Xa.ps0 x ≤ C` using `⟨0, fun _ _ => le_rfl⟩`. Establish `h4 : ∀ P, (defData E).IsBddSec Xa.Fp P → P ∈ (defData E).SS Xa.Fp` using `fun P hP => ⟨hP, fun ξ hξ => (not_isIso rfl ξ hξ).elim⟩`. Establish `h5` using `ClosedModes.modeHalf_closed 2 (defData E)`. Take `⟨F, hF, hv⟩` from `InterpolationClosed.interpC 2 (defData E) Xa Fl hPD h2 (leviL_nonneg _ Xa) h3 h4 h5 (![1, 0] : Fin 2 → ℂ)`. Conclude with `⟨defData E, Xa, Fl, rfl, hPD, h1, h2, h3, h4, h5, F, hF, (0 : Fin 2), (1 : Fin 2), hv _, hv _⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem model (h : Module.finrank ℚ E = 4) :
     ∃ (X : Data E 2) (Xa : ArchInM X) (Fl : FlatM X Xa), Fl.δ = 2 ∧ PropDisc X ∧ Margin X Xa ∧ MarginC X Xa ∧

@@ -15,7 +15,7 @@ open GlobalTheory.AdelicSvNQuad GlobalTheory.AdelicSvN
 variable {F : Type} [Field F] [NumberField F]
 
 /- English proof (translation)
-Rewrite using `[AddChar.map_neg_eq_inv]`. Use `eq_inv_of_mul_eq_one_left ?_` and prove the remaining obligations. Rewrite using `[show star (ψ t) = starRingEnd ℂ (ψ t) from rfl, Complex.conj_mul', GlobalTheory.StdCharFromIsStd.norm_psi hψ t]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem star_psi {ψ : AddChar (AF F) ℂ} (hψ : IsStd ψ) (t : AF F) : star (ψ t) = ψ (-t) := by
   rw [AddChar.map_neg_eq_inv]
@@ -24,7 +24,7 @@ theorem star_psi {ψ : AddChar (AF F) ℂ} (hψ : IsStd ψ) (t : AF F) : star (�
   simp
 
 /- English proof (translation)
-Use `invOf_eq_right_inv ?_` and prove the remaining obligations. Rewrite using `[show (2 : AF F) = algebraMap F (AF F) 2 from (map_ofNat _ 2).symm, ← map_mul, mul_inv_cancel₀ (two_ne_zero), map_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem invOf_two_eq : (⅟(2 : AF F)) = algebraMap F (AF F) (2⁻¹) := by
   refine invOf_eq_right_inv ?_
@@ -32,7 +32,7 @@ theorem invOf_two_eq : (⅟(2 : AF F)) = algebraMap F (AF F) (2⁻¹) := by
     mul_inv_cancel₀ (two_ne_zero), map_one]
 
 /- English proof (translation)
-Rewrite using `[map_quad, invOf_two_eq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem quad_rat {κ : Type} [Fintype κ] (B : Matrix κ κ F) (ξ : κ → F) :
     quad (⅟(2 : AF F)) (B.map (algebraMap F (AF F))) (fun i => algebraMap F (AF F) (ξ i)) =
@@ -40,21 +40,19 @@ theorem quad_rat {κ : Type} [Fintype κ] (B : Matrix κ κ F) (ξ : κ → F) :
   rw [map_quad, invOf_two_eq]
 
 /- English proof (translation)
-Use `set A : Matrix κ κ (AF F) := C.map (algebraMap F (AF F)) with hAdef`. Establish `hA : Aᵀ = A` using `by rw [hAdef, ← Matrix.transpose_map, hC]`. Establish `inv : ∀ (B : Matrix κ κ (AF F)) φ, mulQ ψ (⅟2) (-B) (mulQ ψ (⅟2) B φ) = φ` using `fun B φ => by`. Use function extensionality and compare the values at `x`. Rewrite using `[mulQ_apply, mulQ_apply, ← mul_assoc, ← AddChar.map_add_eq_mul, quad_neg, neg_add_cancel, AddChar.map_zero_eq_one, one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `inv' : ∀ (B : Matrix κ κ (AF F)) φ, mulQ ψ (⅟2) B (mulQ ψ (⅟2) (-B) φ) = φ` using `fun B φ => by`. Use `inv (-B) φ` as an intermediate fact. Rewrite `this` using `[neg_neg]`. Then use the resulting hypothesis. Establish `adm : ∀ B : Matrix κ κ (AF F), ∀ l ∈ (adeleClass F).adm κ, l ∘ₗ mulQ ψ (⅟2) B ∈ (adeleClass F).adm κ`. Introduce `B l hl g hg`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨g', hg', M, hM⟩` from `mulQ_pureA ψ hψ (⅟2) B hg`. Take `⟨T, hT⟩` from `hl g' hg'`. Conclude with `⟨T.comp M, fun f => by rw [LinearMap.comp_apply, hM f, hT]; rfl⟩`. Establish `nrm : ∀ (B : Matrix κ κ (AF F)) (φ : (κ → AF F) → ℂ) x, ‖mulQ ψ (⅟2) B φ x‖ₑ = ‖φ x‖ₑ`. Introduce `B φ x`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mulQ_apply, enorm_mul, ← ofReal_norm (ψ _), GlobalTheory.StdCharFromIsStd.norm_psi hψ, ENNReal.ofReal_one, one_mul]`. Use `⟨mulQ_mem ψ hψ _ A, mulQ_mem ψ hψ _ (-A), fun φ _ => inv A φ, fun φ _ => inv' A φ, adm A, adm (-A), fun w φ _ => funext fun x => ?_, ⟨1, one_ne_zero, fun φ _ => ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[act_unip, mulQ_apply]`. Simplify using `only [schr]`. Rewrite using `[mulQ_apply, ← mul_assoc, ← mul_assoc, ← AddChar.map_add_eq_mul, ← AddChar.map_add_eq_mul, quad_add A hA]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[one_mul]`. Unfold `thetaSum`. Use `congr 1`. Use function extensionality and compare the values at `ξ`. Rewrite using `[mulQ_apply, hAdef, quad_rat, hψ.2.1, one_mul]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `μ μ' hμ hμ'`. Use `letI : MeasurableSpace (κ → AF F) := borel _`. Use `haveI : BorelSpace (κ → AF F) := ⟨rfl⟩`. Use `haveI : SecondCountableTopology (AF F) := GlobalTheory.AdelicUnitaryTop.secondCountable_adele F`. Use `haveI : SecondCountableTopology (κ → AF F) := inferInstance`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion repeatedly using the stated equalities.
 
-Use `haveI := hμ`. Use `haveI := hμ'`. Establish `e` using `Measure.isAddLeftInvariant_eq_smul μ' μ`. Establish `hpos` using `Measure.addHaarScalarFactor_pos_of_isAddHaarMeasure μ' μ`. Use `⟨(μ'.addHaarScalarFactor μ : ℝ≥0∞), by exact_mod_cast hpos.ne', ENNReal.coe_ne_top, fun φ _ => ?_⟩` and prove the remaining obligations.
-
-Repeatedly rewrite using `[nrm]`. Use `conv_lhs => rw [e]`. Rewrite using `[lintegral_smul_measure]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem isOp_unip (ψ : AddChar (AF F) ℂ) (hψ : IsStd ψ) {κ : Type} [Fintype κ] [DecidableEq κ]
     (C : Matrix κ κ F) (hC : Cᵀ = C) :
@@ -111,9 +109,9 @@ open GlobalTheory.AdelicSvNQuad GlobalTheory.AdelicSvN
 variable {F : Type} [Field F] [NumberField F]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `w`. Rewrite using `[act_unip]`. Simplify using `only [dblAct, act_unip]`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use function extensionality and compare the values at `a`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Apply the tactic sequence `rcases a with a | a <;> rfl`. Use function extensionality and compare the values at `a`. Apply the tactic sequence `rcases a with a | a <;>`. Apply the tactic sequence `simp [Matrix.fromBlocks_map, Matrix.fromBlocks_mulVec, Matrix.map_neg, Matrix.neg_mulVec] <;> ring`.
+Apply the first step, then apply the next step to every resulting obligation. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dblAct_unip {κ : Type} [Fintype κ] [DecidableEq κ] (C : Matrix κ κ F) :
     dblAct (GlobalTheory.AdelicSvN.act (Matrix.fromBlocks 1 0 (-C) 1) :
@@ -130,7 +128,7 @@ theorem dblAct_unip {κ : Type} [Fintype κ] [DecidableEq κ] (C : Matrix κ κ 
       simp [Matrix.fromBlocks_map, Matrix.fromBlocks_mulVec, Matrix.map_neg, Matrix.neg_mulVec] <;> ring
 
 /- English proof (translation)
-Simplify using `only [quad, Matrix.fromBlocks_mulVec, Matrix.zero_mulVec, add_zero, zero_add, Matrix.neg_mulVec, dotProduct, Fintype.sum_sum_type, Sum.elim_inl, Sum.elim_inr, Function.comp_apply, Pi.neg_apply, mul_neg, Finset.sum_neg_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem quad_dbl {κ : Type} [Fintype κ] (h : AF F) (A : Matrix κ κ (AF F)) (x : κ ⊕ κ → AF F) :
     quad h (Matrix.fromBlocks A 0 0 (-A)) x = quad h A (x ∘ Sum.inl) + -quad h A (x ∘ Sum.inr) := by
@@ -139,11 +137,11 @@ theorem quad_dbl {κ : Type} [Fintype κ] (h : AF F) (A : Matrix κ κ (AF F)) (
   ring
 
 /- English proof (translation)
-Introduce `F _ _ ψ hψ κ _ _ C hC`. Use `set A : Matrix κ κ (AF F) := C.map (algebraMap F (AF F)) with hAdef`. Set `Cd : Matrix (κ ⊕ κ) (κ ⊕ κ) F` to `Matrix.fromBlocks C 0 0 (-C)`. Establish `hCd : Cdᵀ = Cd`. Simplify using `only [Cd, Matrix.fromBlocks_transpose, hC, Matrix.transpose_zero, Matrix.transpose_neg]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hn : (-C).map (algebraMap F (AF F)) = -C.map (algebraMap F (AF F))` using `Matrix.map_neg _ (map_neg _) _`. Establish `hCdA : Cd.map (algebraMap F (AF F)) = Matrix.fromBlocks A 0 0 (-A)`. Simplify using `only [Cd, Matrix.fromBlocks_map, hAdef, Matrix.map_zero _ (map_zero _), hn]`. Use `⟨_, _, isOp_unip ψ hψ C hC, mulQ ψ (⅟2) (Cd.map (algebraMap F (AF F))), mulQ ψ (⅟2) (-(Cd.map (algebraMap F (AF F)))), ?_, fun φ₁ _ φ₂ _ => funext fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[dblAct_unip]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `isOp_unip ψ hψ Cd hCd`. Rewrite using `[mulQ_apply, hCdA, quad_dbl]`. Simplify using `only [boxFun, Pi.star_apply, mulQ_apply, star_mul', star_star, star_psi hψ]`. Rewrite using `[AddChar.map_add_eq_mul, ← hAdef]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem main : ∀ (F : Type) [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ), IsStd ψ → ∀ (κ : Type) [Fintype κ]
     [DecidableEq κ], ∀ C : Matrix κ κ F, Cᵀ = C → ∃ (S : ((κ → AF F) → ℂ) →ₗ[ℂ] ((κ → AF F) → ℂ))

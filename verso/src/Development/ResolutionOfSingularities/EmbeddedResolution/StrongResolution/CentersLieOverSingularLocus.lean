@@ -43,9 +43,9 @@ Both sides reduce to the same expression.
     S.totalSpaceToBase (j + 1) = S.transitionMap j ≫ S.totalSpaceToBase j := rfl
 
 /- English proof (translation)
-Proceed by induction on `j with`. Consider the case `zero => show S.totalSpaceZeroIso.hom = (S.blowupSequence h).projectionToBase 0`. Rewrite using `[(S.blowupSequence h).projectionToBase_zero]`. Both sides reduce to the same expression. Consider the case `succ j ih`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Treat this case separately.
 
-Establish `hb : (S.blowupSequence h).transitionMapSucc j = S.transitionMap j` using `S.tower_map_succ j`. Rewrite using `[totalSpaceToBase_succ, ih, (S.blowupSequence h).projectionToBase_succ, hb]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem totalSpaceToBase_eq_blowupSequence_projectionToBase (h : S.TransitionsAreBlowups) (j : ℕ) :
     S.totalSpaceToBase j = (S.blowupSequence h).projectionToBase j := by
@@ -60,7 +60,7 @@ theorem totalSpaceToBase_eq_blowupSequence_projectionToBase (h : S.TransitionsAr
       rfl
 
 /- English proof (translation)
-Proceed by induction on `j with`. Consider the case `zero => show (coprod.inl : S.strictTransform 0 ⟶ S.totalSpace 0) ≫ S.totalSpaceZeroIso.hom = 𝟙 (S.strictTransform 0) ≫ S.strictTransformZeroToBase`. Rewrite using `[Category.id_comp, strictTransformZeroToBase_def]`. Consider the case `succ j ih`. Rewrite using `[totalSpaceToBase_succ, ← Category.assoc, S.inl_comp_transitionMap j, Category.assoc, ih, strictTransformToZero_succ, Category.assoc]`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem inl_comp_totalSpaceToBase (j : ℕ) :
     (coprod.inl : S.strictTransform j ⟶ S.totalSpace j) ≫ S.totalSpaceToBase j =
@@ -75,13 +75,11 @@ theorem inl_comp_totalSpaceToBase (j : ℕ) :
         strictTransformToZero_succ, Category.assoc]
 
 /- English proof (translation)
-Introduce `i hi p hp`. Establish `: AlgebraicGeometry.QuasiCompact (S.centerOffDetached i).subschemeι` using `inferInstance`. Establish `: AlgebraicGeometry.QuasiCompact ((S.centerOffDetached i).subschemeι ≫ (coprod.inl : S.strictTransform i ⟶ S.totalSpace i))` using `inferInstance`. Establish `hcomap : (S.centerOnTotalSpace i).comap (coprod.inl : S.strictTransform i ⟶ S.totalSpace i) = S.centerOffDetached i`. Establish `hk` using `Blowup.ker_comp_coprod_inl_comap_inl (Y := S.discardedUnion i) (S.centerOffDetached i).subschemeι`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hk` using `[Scheme.IdealSheafData.ker_subschemeι]`. Conclude with `hk`. Establish `hp2 : p ∈ ((S.centerOnTotalSpace i).comap (coprod.inl : S.strictTransform i ⟶ S.totalSpace i)).support`. Rewrite using `[hcomap]`. Conclude with `hp`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp3 : (coprod.inl : S.strictTransform i ⟶ S.totalSpace i).base p ∈ (S.centerOnTotalSpace i).support` using `AlgebraicGeometry.Scheme.IdealSheafData.mem_support_comap.mp hp2`. Establish `hmem` using `hc i hi _ hp3`. Establish `e : (coprod.inl : S.strictTransform i ⟶ S.totalSpace i) ≫ (S.blowupSequence h).projectionToBase i = S.strictTransformToZero i ≫ S.strictTransformZeroToBase`. Rewrite using `[← S.totalSpaceToBase_eq_blowupSequence_projectionToBase h i]`. Conclude with `S.inl_comp_totalSpaceToBase i`.
-
-Establish `key : ((S.blowupSequence h).projectionToBase i).base ((coprod.inl : S.strictTransform i ⟶ S.totalSpace i).base p) = (S.strictTransformToZero i ≫ S.strictTransformZeroToBase).base p` using `congrArg (fun g : S.strictTransform i ⟶ Y => g.base p) e`. Rewrite using `[← key]`. Conclude with `hmem`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem centersLieOverSingularLocus_of_inducedCentersLieOverSingularLocus (h : S.TransitionsAreBlowups)
     (hc : S.InducedCentersLieOverSingularLocus h) : S.CentersLieOverSingularLocus := by

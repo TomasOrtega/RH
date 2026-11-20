@@ -27,7 +27,7 @@ open Matrix Formalism.REAL Formalism.MainNotions.S Formalism.L2.Theta GlobalTheo
 variable {n : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
 
 /- English proof (translation)
-Unfold `dRep`. Simplify using `only [GlobalTheory.SmVecModel.exp_smul_conj hP]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem dRep_conj (σ : Mx n → (H →L[ℂ] H)) {P : Mx n} (hP : IsUnit P) (X : Mx n) (w : H) :
     dRep (fun g => σ (P * g * P⁻¹)) X w = dRep σ (P * X * P⁻¹) w := by
@@ -35,7 +35,7 @@ theorem dRep_conj (σ : Mx n → (H →L[ℂ] H)) {P : Mx n} (hP : IsUnit P) (X 
   simp only [GlobalTheory.SmVecModel.exp_smul_conj hP]
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => rfl`. Consider the case `cons X l ih => rw [List.foldr_cons, List.map_cons, List.foldr_cons, ih, dRep_conj σ hP]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem foldr_conj (σ : Mx n → (H →L[ℂ] H)) {P : Mx n} (hP : IsUnit P) (l : List (Mx n)) (w : H) :
     l.foldr (dRep fun g => σ (P * g * P⁻¹)) w = (l.map fun X => P * X * P⁻¹).foldr (dRep σ) w := by
@@ -44,7 +44,7 @@ theorem foldr_conj (σ : Mx n → (H →L[ℂ] H)) {P : Mx n} (hP : IsUnit P) (l
   | cons X l ih => rw [List.foldr_cons, List.map_cons, List.foldr_cons, ih, dRep_conj σ hP]
 
 /- English proof (translation)
-Unfold `sobNorm`. Rewrite using `[List.map_map]`. Use `congr 1`. Use `List.map_congr_left fun l _ => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply, foldr_conj σ hP]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem sobNorm_conj (σ : Mx n → (H →L[ℂ] H)) {P : Mx n} (hP : IsUnit P) (S : List (List (Mx n))) (w : H) :
     sobNorm (fun g => σ (P * g * P⁻¹)) S w = sobNorm σ (S.map fun l => l.map fun X => P * X * P⁻¹) w := by
@@ -55,9 +55,9 @@ theorem sobNorm_conj (σ : Mx n → (H →L[ℂ] H)) {P : Mx n} (hP : IsUnit P) 
   simp only [Function.comp_apply, foldr_conj σ hP]
 
 /- English proof (translation)
-Rewrite using `[sobNorm_conj σ hP, List.map_map]`. Use `congr 1`. Use `(List.map_congr_left fun l _ => ?_).trans (List.map_id S)` and prove the remaining obligations. Use `show List.map (fun X => P * X * P⁻¹) (List.map (fun X => P⁻¹ * X * P) l) = l`. Rewrite using `[List.map_map]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(List.map_congr_left fun X _ => ?_).trans (List.map_id l)` and prove the remaining obligations. Conclude with `GlobalTheory.SmVecModel.conj_cancel hP X`.
+A detailed English derivation is pending.
 -/
 theorem sobNorm_conj_back (σ : Mx n → (H →L[ℂ] H)) {P : Mx n} (hP : IsUnit P) (S : List (List (Mx n))) (w : H) :
     sobNorm (fun g => σ (P * g * P⁻¹)) (S.map fun l => l.map fun X => P⁻¹ * X * P) w = sobNorm σ S w := by
@@ -70,11 +70,11 @@ theorem sobNorm_conj_back (σ : Mx n → (H →L[ℂ] H)) {P : Mx n} (hP : IsUni
   exact GlobalTheory.SmVecModel.conj_cancel hP X
 
 /- English proof (translation)
-Take `⟨S₁, hS₁, -, ⟨B, hB, hc⟩, A, hA, hd⟩` from `GlobalTheory.TypeSumCtrl.exists_ctrl n ε H σ hσ (S₀.map fun l => l.map fun X => P * X * P⁻¹) (by`. Introduce `l hl X hX`. Take `⟨l', hl', rfl⟩` from `List.mem_map.1 hl`. Take `⟨Y, hY, rfl⟩` from `List.mem_map.1 hX`. Conclude with `GlobalTheory.SmVecModel.lie_conj hP hG (hS₀ l' hl' Y hY))`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨S₁.map fun l => l.map fun X => P⁻¹ * X * P, ?_, ⟨fun g => B (P * g * P⁻¹), hB.comp (by fun_prop), fun g hg w hw => ?_⟩, A, hA, fun w hw => ?_⟩` and prove the remaining obligations. Introduce `l hl X hX`. Take `⟨l', hl', rfl⟩` from `List.mem_map.1 hl`. Take `⟨Y, hY, rfl⟩` from `List.mem_map.1 hX`. Conclude with `GlobalTheory.SmVecModel.lie_conj_inv hP hG (hS₁ l' hl' Y hY)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sobNorm_conj_back σ hP, sobNorm_conj_back σ hP]`. Conclude with `hc _ (GlobalTheory.TypeAtCompare.conj_mem hP hG hg) w (GlobalTheory.SmVecModel.smoothVec_of_conj hP hG hw)`. Rewrite using `[sobNorm_conj_back σ hP, sobNorm_conj σ hP]`. Conclude with `hd w (GlobalTheory.SmVecModel.smoothVec_of_conj hP hG hw)`.
+A detailed English derivation is pending.
 -/
 theorem exists_ctrl_conj [CompleteSpace H] {ε : Fin n → Bool} {σ : Mx n → (H →L[ℂ] H)} (hσ : Std ε σ) {P G : Mx n}
     (hP : IsUnit P) (hG : Pᴴ * Jm ε * P = G) (S₀ : List (List (Mx n))) (hS₀ : Words (lieOf G) S₀) :
@@ -99,7 +99,7 @@ theorem exists_ctrl_conj [CompleteSpace H] {ε : Fin n → Bool} {σ : Mx n → 
     exact hd w (GlobalTheory.SmVecModel.smoothVec_of_conj hP hG hw)
 
 /- English proof (translation)
-Introduce `k Xs _`. Simplify using `only [map_zero]`. Conclude with `contDiff_const`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem smoothVec_zero (Lie : Set (Mx n)) (σ : Mx n → (H →L[ℂ] H)) : SmoothVec Lie σ (0 : H) := by
   intro k Xs _
@@ -107,17 +107,17 @@ theorem smoothVec_zero (Lie : Set (Mx n)) (σ : Mx n → (H →L[ℂ] H)) : Smoo
   exact contDiff_const
 
 /- English proof (translation)
-Take `⟨S₀, C₀, hS₀, hb⟩` from `hℓ`. Take `⟨S, hS, hc, A, hA, hd⟩` from `exists_ctrl_conj hσ hP hG S₀ hS₀`. Establish `hv : ∀ i, SmoothVec (lieOf G) (fun g => σ (P * g * P⁻¹)) ((Pi.single 0 u : ℕ → H) i)` using `fun i => by`. Distinguish the cases in `hi : i = 0`. Substitute `hi` using the available equality.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `using hu`. Rewrite using `[Pi.single_eq_of_ne hi]`. Conclude with `smoothVec_zero _ _`. Use `⟨S, hS, hc, Pi.single 0 u, fun i => if i = 0 then ℓ else 0, Pi.single 0 (|C₀| * A), ⟨⟨hv, fun i => ?_, fun i w hw => ?_, ?_, fun g hg => ?_⟩, fun S' _ => ?_⟩⟩` and prove the remaining obligations. Distinguish the cases in `hi : i = 0`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `hi` using the available equality. Simplify using `only [Pi.single_eq_same]`. Check the signs of the components of the expression. Rewrite using `[Pi.single_eq_of_ne hi]`. Distinguish the cases in `hi : i = 0`.
+Simplify using the standard rewrite rules. Check the signs of the components of the expression. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `hi` using the available equality. Simplify using `only [if_true, Pi.single_eq_same]`. Establish `h1` using `hb w hw`. Establish `h2` using `hd w hw`. Establish `h3 : 0 ≤ sobNorm (fun g => σ (P * g * P⁻¹)) S₀ w` using `sobNorm_nonneg _ _ _`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : C₀ * sobNorm (fun g => σ (P * g * P⁻¹)) S₀ w ≤ |C₀| * sobNorm (fun g => σ (P * g * P⁻¹)) S₀ w` using `mul_le_mul_of_nonneg_right (le_abs_self _) h3`. Combine the equalities or inequalities in the displayed calculation. Simplify using `[hi, Pi.single_eq_of_ne hi]`. Use `(hasSum_single 0 fun i hi => ?_).summable` and prove the remaining obligations. Simplify using `[Pi.single_eq_of_ne hi]`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hf g hg]`. Use `hasSum_single (f := fun i : ℕ => (if i = 0 then ℓ else 0) (σ (P * g * P⁻¹) ((Pi.single 0 u : ℕ → H) i))) 0 fun i hi => by simp [hi]` as an intermediate fact. Simplify using `using this`. Use `(hasSum_single 0 fun i hi => ?_).summable` and prove the remaining obligations. Simplify using `[Pi.single_eq_of_ne hi]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hasTypeAll_single [CompleteSpace H] {ε : Fin n → Bool} {σ : Mx n → (H →L[ℂ] H)} (hσ : Std ε σ) {P G : Mx n}
     (hP : IsUnit P) (hG : Pᴴ * Jm ε * P = G) {u : H} (hu : SmoothVec (lieOf G) (fun g => σ (P * g * P⁻¹)) u)
@@ -163,11 +163,11 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.Glob
 open GlobalTheory.SmoothGlob GlobalTheory.LowTypeDetermined GlobalTheory.TypeSum
 
 /- English proof (translation)
-Establish `hD` using `M.ds τ`. Use `haveI : CompleteSpace (M.H τ) := hD.1`. Establish `hσ : Std (M.ε τ) (M.σ τ)` using `std_of_isDS hHC hD`. Use `⟨M.H τ, _, _, M.σ τ, M.lam τ, M.ε τ, M.fr τ, M.enum τ, hD, M.fr_unit τ, M.fr_gram τ, fun x => ?_⟩` and prove the remaining obligations. Take `⟨ℓ, hℓ, hℓv⟩` from `hT.cont τ v x`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hu : SmoothVec (lieAt V τ) (fun g => M.σ τ (M.fr τ * g * (M.fr τ)⁻¹)) (v τ : M.H τ)` using `GlobalTheory.SmVecModel.smoothVec_to_conj (M.fr_unit τ) (M.fr_gram τ) ((GlobalTheory.SmVecModel.mem_sm_iff M τ _).1 (v τ).2)`. Establish `hall : HasTypeAll (lieOf (gramAt D V τ)) (Formalism.QuantumDeterminants.UH (gramAt D V τ)) (fun g => M.σ τ (M.fr τ * g * (M.fr τ)⁻¹)) (fun g => T v (x * atTau θ V τ g))`. Use `hasTypeAll_single hσ (M.fr_unit τ) (M.fr_gram τ) hu hℓ fun g hg => ?_` and prove the remaining obligations. Establish `h1` using `hT.equiv τ g hg v ⟨M.rep τ g (v τ), GlobalTheory.ConjMult.rep_mem_sm M τ hg (v τ).2⟩ rfl`. Establish `h2` using `hℓv ⟨M.rep τ g (v τ), GlobalTheory.ConjMult.rep_mem_sm M τ hg (v τ).2⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show ℓ (M.rep τ g (v τ)) = _`. Rewrite using `[h2, h1]`. Both sides reduce to the same expression. Conclude with `hasTypeAll_iff.1 hall`.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem isTypeAt_value {D : D7} (θ : InfFam D)
     (hHC : GlobalTheory.Published.HarishChandraModules) {V : HSp D} {Sp : D.what₂.Tau → SPar} (M : DSModel V Sp)
@@ -193,19 +193,17 @@ theorem isTypeAt_value {D : D7} (θ : InfFam D)
 end GlobalTheory.CuspValueType
 
 /- English proof (translation)
-Introduce `hP D θ hθ N hN F hF w τ`. Establish `hgood : GoodPar N.V.rank (N.V.sig (tauE D τ)).1 (N.V.sig (tauE D τ)).2 (N.S τ)` using `⟨N.M.lam τ, N.M.ε τ, N.M.enum τ, GlobalTheory.Published.HermitianUnique.isHCParam_of_isDS (N.M.enum τ).1 (N.M.ds τ), GlobalTheory.TypeAtCompare.card_eq_of_congr (N.M.fr_unit τ) (N.M.fr_gram τ) (hN (tauE D τ))⟩`. Establish `key : ∀ T, Mult.IsMultMap θ N.M ∅ 1 T → ∀ v, T v ∈ GlobalTheory.IndefiniteRowSideFullHecke.FinitePartTypes.typeSub θ N.V τ (N.S τ)` using `fun T hT v => GlobalTheory.SeriesToClosure.hasTypeAt_of_isTypeAt θ N.V τ (N.S τ) (T v) hP.discreteSeriesUpqExists (GlobalTheory.Published.discreteSeriesHermitianUnique_iff.1 hP.discreteSeriesHermitianUnique) hP.harishChandraModules hP.casselmanWallach hθ hN hgood (hT.aut v) (Glob …`. Establish `main : ∀ T ∈ Mult.Mult θ N.M ∅ 1, ∀ w, PiTensorProduct.lift T w ∈ GlobalTheory.IndefiniteRowSideFullHecke.FinitePartTypes.typeSub θ N.V τ (N.S τ)`. Introduce `T hT`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `hT using Submodule.span_induction with`. Consider the case `mem T hT`. Introduce `w`. Proceed by induction on `w using PiTensorProduct.induction_on with`. Consider the case `smul_tprod r v`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Rewrite using `[map_smul, PiTensorProduct.lift.tprod]`. Conclude with `Submodule.smul_mem _ r (key T hT v)`. Consider the case `add a b ha hb`. Rewrite using `[map_add]`. Conclude with `Submodule.add_mem _ ha hb`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `zero`. Introduce `w`. Simplify using `only [map_zero, LinearMap.zero_apply]`. Conclude with `Submodule.zero_mem _`. Consider the case `add a b _ _ ha hb`.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Introduce `w`. Rewrite using `[map_add, LinearMap.add_apply]`. Conclude with `Submodule.add_mem _ (ha w) (hb w)`. Consider the case `smul c a _ ha`. Introduce `w`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_smul, LinearMap.smul_apply]`. Conclude with `Submodule.smul_mem _ c (ha w)`. Establish `hF'` using `(Mult.mem_multT θ N.M ∅ 1 F).1 hF`. Establish `eF : F = PiTensorProduct.lift (PiTensorProduct.lift.symm F)` using `(LinearEquiv.apply_symm_apply _ F).symm`. Rewrite using `[eF]`.
-
-Conclude with `main _ hF' w`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CuspValueType.hasTypeAt_cusp : GlobalTheory.FunPr.Hypotheses₂ → ∀ {D : D7} (θ : InfFam D), IsInfFam (D := D) θ → ∀ (N : GlobalTheory.Grid.Node D), N.V.SigOK → ∀ F ∈ N.Cusp θ, ∀ (w : SmT N.M) (τ : D.what₂.Tau), GlobalTheory.IndefiniteRowSideFullHecke.FinitePartTypes.HasTypeAt θ N.V τ (N.S τ) (F w) := by
   intro hP D θ hθ N hN F hF w τ

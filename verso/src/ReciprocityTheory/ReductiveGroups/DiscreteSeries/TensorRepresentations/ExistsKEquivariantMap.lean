@@ -11,18 +11,18 @@ namespace ReciprocityTheory.ChartRestriction.DS
 variable {n : ℕ}
 
 /- English proof (translation)
-Apply the tactic sequence `cases dual <;> simp only [shiftF, lowK, cond] <;> abel`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem lowWeight_shifted (dual : Bool) (ε : Fin n → Bool) (lam : Fin n → ℝ) (s : Fin n) :
     lowK ε (shiftF dual lam s) = cond dual (lowK ε lam - Pi.single s 1) (lowK ε lam + Pi.single s 1) := by
   cases dual <;> simp only [shiftF, lowK, cond] <;> abel
 
 /- English proof (translation)
-Take `⟨T'', φ, hφ, -, -⟩` from `HW.kRepPiece n ε R μ x hx hh`. Take `⟨ψ, hψ, -, -⟩` from `HW.kType_unique T' T''`. Use `⟨(Submodule.subtype _).comp (φ.toLinearEquiv.toLinearMap.comp ψ.toLinearEquiv.toLinearMap), ?_, ?_⟩` and prove the remaining obligations. Introduce `h`. Establish `h1` using `LinearMap.congr_fun h T'.w`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [LinearMap.comp_apply, LinearMap.zero_apply, Submodule.coe_subtype, LinearEquiv.coe_coe, LinearIsometryEquiv.coe_toLinearEquiv, ZeroMemClass.coe_eq_zero, LinearIsometryEquiv.map_eq_zero_iff] at h1`. Establish `h2` using `T'.w_norm`. Rewrite `h2` using `[h1, norm_zero]`. Conclude with `zero_ne_one h2`. Introduce `k v`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [LinearMap.comp_apply, Submodule.coe_subtype, LinearEquiv.coe_coe, LinearIsometryEquiv.coe_toLinearEquiv]`. Rewrite using `[hψ, hφ]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_kEquivariant_map {ε : Fin n → Bool} (R : HW.KRep ε) {μ : Fin n → ℝ} (x : R.V) (hx : x ≠ 0)
     (hh : Formalism.REAL.KHighest ε R.units μ x) (T' : S7.KType ε μ) :
@@ -44,13 +44,13 @@ theorem exists_kEquivariant_map {ε : Fin n → Bool} (R : HW.KRep ε) {μ : Fin
     rw [hψ, hφ]
 
 /- English proof (translation)
-Rewrite `hxh` using `[← HW.tensKRep_units T ρ dρ hc hd]`. Take `⟨f, hf, hfK⟩` from `exists_kEquivariant_map (HW.tensKRep T ρ dρ hc hd) x hx hxh T'`. Set `g : T'.V →ₗ[ℂ] PiLp 2 (fun _ : ι => T.V)` to `f`. Establish `hg : ∀ k v, g (T'.op k v) = HW.tensOp T ρ k (g v)` using `fun k v => hfK k v`. Use `⟨(WithLp.linearEquiv 2 ℂ (ι → T.V)).toLinearMap ∘ₗ g, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `h`. Apply `hf` to reduce the goal to its premises. Use extensionality with `v`. Establish `h1` using `LinearMap.congr_fun h v`. Establish `h2 : g v = 0` using `by simpa using h1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h2`. Introduce `k v`. Use function extensionality and compare the values at `c`. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe]`. Rewrite using `[hg]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[HW.tensOp_apply]`.
+A detailed English derivation is pending.
 -/
 theorem tensor_unitary_rep {ε : Fin n → Bool} {Λ μ : Fin n → ℝ} (T : S7.KType ε Λ) {ι : Type} [Fintype ι] [DecidableEq ι]
     (ρ : S7.KG ε →* unitary (Matrix ι ι ℂ)) (dρ : Matrix (Fin n) (Fin n) ℂ →ₗ[ℂ] Matrix ι ι ℂ)
@@ -81,11 +81,11 @@ theorem tensor_unitary_rep {ε : Fin n → Bool} {Λ μ : Fin n → ℝ} (T : S7
     simp [HW.tensOp_apply]
 
 /- English proof (translation)
-Establish `hdom` using `(HW.kTypeIntDom n ε Λ' T').2`. Consider the cases of `dual with`. Consider the case `false`. Establish `hΛ' : Λ' = Λ + HW.stdWt n s` using `hΛ`. Substitute `hΛ'` using the available equality.
+Establish an intermediate fact. Split into cases according to the possible forms of the given data. Treat this case separately. Establish an intermediate fact. Substitute using the available equality.
 
-Take `⟨x, hx, hxh⟩` from `(HW.pieriStd n ε Λ T).2.2 s hdom`. Conclude with `tensor_unitary_rep T (HW.stdRho ε) LinearMap.id (HW.stdRho_cont ε) (HW.stdRho_hasDeriv ε) T' x hx hxh`. Consider the case `true`. Establish `hΛ' : Λ' = Λ + HW.dualWt n s`. Rewrite using `[hΛ]`.
+Extract witnesses or component facts from the available result. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [cond, HW.dualWt, sub_eq_add_neg]`. Substitute `hΛ'` using the available equality. Take `⟨x, hx, hxh⟩` from `(HW.pieriDual n ε Λ T).2.2 s hdom`. Rewrite `hxh` using `[← HW.dualD_units]`. Conclude with `tensor_unitary_rep T (HW.rhoDual ε) HW.dualD (HW.continuous_rhoDual ε) (HW.hasDeriv_rhoDual ε) T' x hx hxh`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pieri_standard_embedding (dual : Bool) {ε : Fin n → Bool} {Λ Λ' : Fin n → ℝ} (T : S7.KType ε Λ) (T' : S7.KType ε Λ')
     (s : Fin n) (hΛ : Λ' = cond dual (Λ - Pi.single s 1) (Λ + Pi.single s 1)) :

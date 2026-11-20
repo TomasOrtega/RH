@@ -18,11 +18,9 @@ section Grp
 variable {D : D7} {T : D.host.E} (F : LFlag (VS D) D.R.rS T)
 
 /- English proof (translation)
-Introduce `x hx`. Set `f : U →ₗ[D.host.E] U` to `(s : (VS D).V →ₗ[D.host.E] (VS D).V).restrict (p := U) (q := U) (fun y hy => h y hy)`. Establish `hinj : Function.Injective f`. Introduce `a b hab`. Apply `Subtype.ext` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `s.injective` to reduce the goal to its premises. Conclude with `congrArg Subtype.val hab`. Take `⟨y, hy⟩` from `(LinearMap.injective_iff_surjective.mp hinj) ⟨x, hx⟩`. Establish `hyx : s y.1 = x` using `congrArg Subtype.val hy`. Rewrite using `[← hyx, LinearEquiv.symm_apply_apply]`.
-
-Conclude with `y.2`.
+Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem symm_mem_of_mem (s : (VS D).V ≃ₗ[D.host.E] (VS D).V) (U : Submodule D.host.E (VS D).V)
     (h : ∀ x ∈ U, s x ∈ U) : ∀ x ∈ U, s.symm x ∈ U := by
@@ -40,27 +38,27 @@ theorem symm_mem_of_mem (s : (VS D).V ≃ₗ[D.host.E] (VS D).V) (U : Submodule 
   exact y.2
 
 /- English proof (translation)
-Conclude with `Formalism.L2.SG.Pf.xflag_mono_td F (Nat.le_succ j)`.
+A detailed English derivation is pending.
 -/
 theorem Xflag_mono (j : ℕ) : Xflag F j ≤ Xflag F (j + 1) := by
   exact Formalism.L2.SG.Pf.xflag_mono_td F (Nat.le_succ j)
 
 /- English proof (translation)
-Conclude with `PI.DCRelEquiv.UnitaryGroupMassFormula.Xflag_le_X F j`.
+A detailed English derivation is pending.
 -/
 theorem Xflag_le_X (j : ℕ) : Xflag F j ≤ Xsp F := by
   exact PI.DCRelEquiv.UnitaryGroupMassFormula.Xflag_le_X F j
 
 /- English proof (translation)
-Conclude with `(Formalism.L2.SG.Pf.xflag_r F).symm`.
+A detailed English derivation is pending.
 -/
 theorem X_eq_Xflag : Xsp F = Xflag F D.R.rS := by
   exact (Formalism.L2.SG.Pf.xflag_r F).symm
 
 /- English proof (translation)
-Introduce `x hx`. Consider the cases of `j with`. Consider the case `zero`. Rewrite `hx` using `[Formalism.L2.SG.Pf.xflag_zero_td F, Submodule.mem_bot]`. Rewrite using `[hx, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.zero_mem _`. Consider the case `succ j`. Establish `h1` using `Xflag_mono F j (hs j x hx)`. Establish `h2` using `Submodule.add_mem _ h1 hx`. Rewrite `h2` using `[sub_add_cancel]`. Then use the resulting hypothesis.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem flag_pres {s : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hs : ∀ j, ∀ x ∈ Xflag F (j + 1), s x - x ∈ Xflag F j)
     (j : ℕ) : ∀ x ∈ Xflag F j, s x ∈ Xflag F j := by
@@ -76,9 +74,9 @@ theorem flag_pres {s : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hs : ∀ j, ∀ x �
     rwa [sub_add_cancel] at h2
 
 /- English proof (translation)
-Introduce `j x hx`. Establish `hy : s.symm x ∈ Xflag F (j + 1)` using `symm_mem_of_mem s (Xflag F (j + 1)) (flag_pres F hs (j + 1)) x hx`. Establish `h1` using `hs j (s.symm x) hy`. Rewrite `h1` using `[LinearEquiv.apply_symm_apply]`. Establish `h2` using `Submodule.neg_mem _ h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h2` using `[neg_sub]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem flag_inv {s : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hs : ∀ j, ∀ x ∈ Xflag F (j + 1), s x - x ∈ Xflag F j) :
     ∀ j, ∀ x ∈ Xflag F (j + 1), s.symm x - x ∈ Xflag F j := by
@@ -91,7 +89,7 @@ theorem flag_inv {s : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hs : ∀ j, ∀ x ∈
   rwa [neg_sub] at h2
 
 /- English proof (translation)
-Introduce `j x hx`. Establish `htx : t x ∈ Xflag F (j + 1)` using `flag_pres F ht (j + 1) x hx`. Establish `h1` using `Submodule.add_mem _ (hs j (t x) htx) (ht j x hx)`. Use `show s (t x) - x ∈ Xflag F j`. Rewrite `h1` using `[sub_add_sub_cancel]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem flag_mul {s t : (VS D).V ≃ₗ[D.host.E] (VS D).V}
     (hs : ∀ j, ∀ x ∈ Xflag F (j + 1), s x - x ∈ Xflag F j) (ht : ∀ j, ∀ x ∈ Xflag F (j + 1), t x - x ∈ Xflag F j) :
@@ -103,7 +101,7 @@ theorem flag_mul {s t : (VS D).V ≃ₗ[D.host.E] (VS D).V}
   rwa [sub_add_sub_cancel] at h1
 
 /- English proof (translation)
-Introduce `x hx`. Rewrite `hx`, the goal using `[X_eq_Xflag F]`. Conclude with `flag_pres F hs _ x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem X_pres {s : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hs : ∀ j, ∀ x ∈ Xflag F (j + 1), s x - x ∈ Xflag F j) :
     ∀ x ∈ Xsp F, s x ∈ Xsp F := by
@@ -112,9 +110,9 @@ theorem X_pres {s : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hs : ∀ j, ∀ x ∈ X
   exact flag_pres F hs _ x hx
 
 /- English proof (translation)
-Simplify using `only [SRat, Set.mem_setOf_eq] at hs ⊢`. Use `⟨(Formalism.HermitianLatticesTheory.isom (VS D).hT).inv_mem hs.1, flag_inv F hs.2.1, ?_⟩` and prove the remaining obligations. Establish `h1` using `symm_mem_of_mem s (Xsp F) (X_pres F hs.2.1) _ hs.2.2`. Establish `h2` using `Submodule.neg_mem _ h1`. Rewrite `h2` using `[map_sub, LinearEquiv.symm_apply_apply, neg_sub]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h2`.
+A detailed English derivation is pending.
 -/
 theorem SRat_inv {s : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hs : s ∈ SRat F) : s.symm ∈ SRat F := by
   simp only [SRat, Set.mem_setOf_eq] at hs ⊢
@@ -125,9 +123,9 @@ theorem SRat_inv {s : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hs : s ∈ SRat F) : 
   exact h2
 
 /- English proof (translation)
-Simplify using `only [SRat, Set.mem_setOf_eq] at hs ht ⊢`. Use `⟨(Formalism.HermitianLatticesTheory.isom (VS D).hT).mul_mem hs.1 ht.1, flag_mul F hs.2.1 ht.2.1, ?_⟩` and prove the remaining obligations. Establish `hw` using `ht.2.2`. Establish `hsw` using `X_pres F hs.2.1 _ hw`. Establish `key : (s * t) F.fl.z - F.fl.z = (s F.fl.z - F.fl.z) + (s (t F.fl.z - F.fl.z) - (t F.fl.z - F.fl.z)) + (t F.fl.z - F.fl.z)` using `by show s (t F.fl.z) - F.fl.z = _`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[map_sub]`. Normalize the expressions using the abelian group laws. Rewrite using `[key]`. Conclude with `Submodule.add_mem _ (Submodule.add_mem _ hs.2.2 (Submodule.sub_mem _ hsw hw)) hw`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem SRat_mul {s t : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hs : s ∈ SRat F) (ht : t ∈ SRat F) : s * t ∈ SRat F := by
   simp only [SRat, Set.mem_setOf_eq] at hs ht ⊢
@@ -142,9 +140,9 @@ theorem SRat_mul {s t : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hs : s ∈ SRat F) 
   exact Submodule.add_mem _ (Submodule.add_mem _ hs.2.2 (Submodule.sub_mem _ hsw hw)) hw
 
 /- English proof (translation)
-Establish `hi' : ∀ a b, (VS D).hT (n a) (n b) = (VS D).hT a b` using `hi`. Introduce `y hy`. Simplify using `only [orth, Submodule.mem_iInf, LinearMap.mem_ker] at hy ⊢`. Introduce `x hx`. Establish `h1` using `hi' (n.symm x) y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h1` using `[LinearEquiv.apply_symm_apply]`. Rewrite using `[h1]`. Conclude with `hy _ (hX x hx)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem perp_pres {n : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hi : n ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT)
     (hX : ∀ x ∈ Xsp F, n.symm x ∈ Xsp F) : ∀ y ∈ orth (VS D) (Xsp F), n y ∈ orth (VS D) (Xsp F) := by
@@ -158,9 +156,9 @@ theorem perp_pres {n : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hi : n ∈ Formalism
   exact hy _ (hX x hx)
 
 /- English proof (translation)
-Simplify using `only [NRat, Set.mem_setOf_eq] at hn ⊢`. Establish `hX : ∀ x ∈ Xsp F, n.symm x ∈ Xsp F` using `symm_mem_of_mem n (Xsp F) (X_pres F hn.2.1)`. Establish `hO` using `perp_pres F hn.1 hX`. Use `⟨(Formalism.HermitianLatticesTheory.isom (VS D).hT).inv_mem hn.1, flag_inv F hn.2.1, ?_⟩` and prove the remaining obligations. Introduce `x hx`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hy` using `symm_mem_of_mem n (orth (VS D) (Xsp F)) hO x hx`. Establish `h2` using `Submodule.neg_mem _ (hn.2.2 _ hy)`. Rewrite `h2` using `[LinearEquiv.apply_symm_apply, neg_sub]`. Conclude with `h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem NRat_inv {n : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hn : n ∈ NRat F) : n.symm ∈ NRat F := by
   simp only [NRat, Set.mem_setOf_eq] at hn ⊢
@@ -174,9 +172,9 @@ theorem NRat_inv {n : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hn : n ∈ NRat F) : 
   exact h2
 
 /- English proof (translation)
-Simplify using `only [NRat, Set.mem_setOf_eq] at hn hm ⊢`. Use `⟨(Formalism.HermitianLatticesTheory.isom (VS D).hT).mul_mem hn.1 hm.1, flag_mul F hn.2.1 hm.2.1, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Establish `hw` using `hm.2.2 x hx`. Establish `hnw` using `X_pres F hn.2.1 _ hw`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : (n * m) x - x = (n x - x) + (n (m x - x) - (m x - x)) + (m x - x)` using `by show n (m x) - x = _`. Rewrite using `[map_sub]`. Normalize the expressions using the abelian group laws. Rewrite using `[key]`. Conclude with `Submodule.add_mem _ (Submodule.add_mem _ (hn.2.2 x hx) (Submodule.sub_mem _ hnw hw)) hw`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem NRat_mul {n m : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hn : n ∈ NRat F) (hm : m ∈ NRat F) : n * m ∈ NRat F := by
   simp only [NRat, Set.mem_setOf_eq] at hn hm ⊢

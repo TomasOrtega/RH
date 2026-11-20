@@ -21,33 +21,29 @@ end GlobalTheory.TripleAssembly.EqFin
 namespace GlobalTheory.TripleAssembly.EqFin
 set_option maxHeartbeats 2000000 in
 /- English proof (translation)
-Introduce `hH hP D ψ θ hψ hθ W W₁ X A A₁ B α β hT ωA ωB hA hB e Bs Γ Xc om om' h hTA hTB R Rf hM`. Take `⟨oA, -⟩` from `_root_.GlobalTheory.T.triple_algebra_map_surjective hH hP D ψ θ hψ hθ W W₁ X A A₁ B α β hT ωA ωB hA hB e Bs Γ Xc om om' h hTA hTB R Rf hM`. Take `⟨⟨dA, rA⟩, ⟨dB, rB⟩⟩` from `_root_.GlobalTheory.T.triple_twist_transport hH hP D ψ θ hψ hθ W W₁ X A A₁ B α β hT ωA ωB hA hB e Bs Γ Xc om om' h hTA hTB R Rf hM`. Establish `gM : Γ.M.IsGood Bs.ψ` using `hM.triple.geo.hM`. Establish `gM' : Γ.M'.IsGood Bs.ψ` using `hM.triple.geo.hM'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c1 : GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.conjU W 1 h.JW 1 = 1` using `Subtype.ext ((congrArg _ (map_one (matHom W))).trans (map_one _))`. Establish `c1' : GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.conjU W₁ (-1) h.JW₁ 1 = 1` using `Subtype.ext ((congrArg _ (map_one (matHom W₁))).trans (map_one _))`. Establish `hsA : ∀ᶠ v in Filter.cofinite, Rf.p v (Γ.M.vac v) = GlobalTheory.TripleAssembly.vacIm Γ Rf v` using `Filter.Eventually.of_forall fun v => rfl`. Establish `hsB : ∀ᶠ v in Filter.cofinite, Rf.p' v (Γ.M'.vac v) = GlobalTheory.TripleAssembly.vacIm Γ Rf v`. Use `Filter.eventually_cofinite.2 ((Xc.T.finite_toSet).subset fun v hv => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Assume the negation of the conclusion as `hn`. Conclude with `hv (hM.fin.sph v hn).1.symm`. Establish `key : ∀ g ∈ GfC X, ∃ T : Module.End ℂ (GlobalTheory.TripleAssembly.PiT R Γ Rf), (∀ Φ ∈ algF ψ θ true A B, GlobalTheory.TripleAssembly.mapA ψ e Bs Γ R Rf (ωA (1, g) Φ) = T (GlobalTheory.TripleAssembly.mapA ψ e Bs Γ R Rf Φ)) ∧ ∀ Φ ∈ algF ψ θ false A₁ B, GlobalTheory.TripleAssembly. …`. Introduce `g hg`. Take `⟨hv, hvU, fA, fB⟩` from `_root_.GlobalTheory.T.theta_pure_tensor_placewise_finite hP D W W₁ X e Bs Γ Xc om om' R Rf hM h.JX g hg`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `choose a ha using fun v => GlobalTheory.T.exists_localOperator_thetaQuotient_finitePlace D.sp.cm.sig W.rank W₁.rank Bs Γ Xc om om' R Rf hM v (hv v) (hvU v)`. Take `⟨T₀, hT₀⟩` from `GlobalTheory.TripleAssembly.exists_rtensOp (GlobalTheory.TripleAssembly.vacIm Γ Rf) a`. Use `⟨LinearMap.lTensor R.Pi T₀, ?_, ?_⟩` and prove the remaining obligations. Establish `st` using `GlobalTheory.TripleAssembly.EqFin.darbAlg_stable Γ.M Bs.ψ Bs.emb gM R.p Rf.p (GlobalTheory.TripleAssembly.vacIm Γ Rf) hsA (om (1, GlobalTheory.TripleRead.toUX X e h.JX g)) T₀ (fun f φ hφ hφv => by`. Take `⟨φ₁, h1, h1v, hAct, hO⟩` from `fA f φ hφ hφv`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨φ₁, h1, h1v, hO, ?_⟩` and prove the remaining obligations. Rewrite using `[hT₀ _ (Filter.eventually_cofinite.1 ((hφv.and hsA).mono fun v hv' => by rw [hv'.1, hv'.2]))]`. Use `congr 1`. Use function extensionality and compare the values at `v`. Conclude with `(ha v).1 (φ v) (hφ v) (φ₁ v) (h1 v) (hAct v))`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `Φ hΦ`. Take `⟨Ψ, hΨ, rfl⟩` from `rA Φ hΦ`. Establish `hs` using `GlobalTheory.TripleAssembly.darbAlg_le_schA D.sp.cm.sig Γ.V Γ.W Γ.M Bs.ψ Bs.emb gM hΨ`. Establish `e1` using `hTA Ψ hs 1 g`. Rewrite `e1` using `[c1]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `s1` using `(st Ψ hΨ).1`. Establish `s2` using `(st Ψ hΨ).2`. Establish `d1` using `dA _ s1`. Establish `d2` using `dA Ψ hΨ`. Establish `x1` using `congrArg (GlobalTheory.TripleAssembly.mapA ψ e Bs Γ R Rf) e1.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `x2` using `congrArg (LinearMap.lTensor R.Pi T₀) d2.symm`. Conclude with `x1.trans (d1.trans (s2.trans x2))`. Establish `st` using `GlobalTheory.TripleAssembly.EqFin.darbAlg_stable Γ.M' Bs.ψ Bs.emb gM' R.p' Rf.p' (GlobalTheory.TripleAssembly.vacIm Γ Rf) hsB (om' (1, GlobalTheory.TripleRead.toUX X e h.JX g)) T₀ (fun f φ hφ hφv => by`. Take `⟨φ₁, h1, h1v, hAct, hO⟩` from `fB f φ hφ hφv`. Use `⟨φ₁, h1, h1v, hO, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hT₀ _ (Filter.eventually_cofinite.1 ((hφv.and hsB).mono fun v hv' => by rw [hv'.1, hv'.2]))]`. Use `congr 1`. Use function extensionality and compare the values at `v`. Conclude with `(ha v).2 (φ v) (hφ v) (φ₁ v) (h1 v) (hAct v))`. Introduce `Φ hΦ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Take `⟨Ψ, hΨ, rfl⟩` from `rB Φ hΦ`. Establish `hs` using `GlobalTheory.TripleAssembly.darbAlg_le_schA D.sp.cm.sig Γ.V' Γ.W Γ.M' Bs.ψ Bs.emb gM' hΨ`. Establish `e1` using `hTB Ψ hs 1 g`. Rewrite `e1` using `[c1']`. Conclude with `(congrArg (GlobalTheory.TripleAssembly.mapB ψ e Bs Γ R Rf) e1.symm).trans ((dB _ (st Ψ hΨ).1).trans (((st Ψ hΨ).2).trans (congrArg (LinearMap.lTensor R.Pi T₀) (dB Ψ hΨ).symm)))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `opEq : ∀ g, ∀ T : Module.End ℂ (GlobalTheory.TripleAssembly.PiT R Γ Rf), (∀ Φ ∈ algF ψ θ true A B, GlobalTheory.TripleAssembly.mapA ψ e Bs Γ R Rf (ωA (1, g) Φ) = T (GlobalTheory.TripleAssembly.mapA ψ e Bs Γ R Rf Φ)) → GlobalTheory.TripleAssembly.opFin ωA (algF ψ θ true A B) (Glob …`. Introduce `g T hTg`. Establish `H : ∃ T : Module.End ℂ (GlobalTheory.TripleAssembly.PiT R Γ Rf), ∀ Φ ∈ algF ψ θ true A B, GlobalTheory.TripleAssembly.mapA ψ e Bs Γ R Rf (ωA (1, g) Φ) = T (GlobalTheory.TripleAssembly.mapA ψ e Bs Γ R Rf Φ)` using `⟨T, hTg⟩`. Unfold `GlobalTheory.TripleAssembly.opFin`. Rewrite using `[dif_pos H]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `y`. Establish `hy : y ∈ (algF ψ θ true A B).map (GlobalTheory.TripleAssembly.mapA ψ e Bs Γ R Rf)` using `by rw [oA]; trivial`. Take `⟨Φ, hΦ, rfl⟩` from `hy`. Rewrite using `[← H.choose_spec Φ hΦ, hTg Φ hΦ]`.
-
-Use `⟨fun g hg Φ hΦ => ?_, fun g hg Φ hΦ => ?_⟩` and prove the remaining obligations. Take `⟨T, h1, -⟩` from `key g hg`. Rewrite using `[opEq g T h1]`. Conclude with `h1 Φ hΦ`. Take `⟨T, h1, h2⟩` from `key g hg`.
-
-Rewrite using `[opEq g T h1]`. Conclude with `h2 Φ hΦ`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem theta_triple_maps_equivariant_on_finite_vectors : GlobalTheory.Published.HoweDualityReal → _root_.GlobalTheory.FunPr.ThetaLocalInputs →
     ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsStdChar D ψ (-1) → IsInfFam θ →
@@ -157,7 +153,7 @@ open GlobalTheory.SquareComm
 open scoped GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.TripleAssembly.EqFin.theta_triple_maps_equivariant_on_finite_vectors | exact _root_.GlobalTheory.TripleAssembly.EqFin.theta_triple_maps_equivariant_on_finite_vectors | (intros; apply _root_.GlobalTheory.TripleAssembly.EqFin.theta_triple_maps_equ …`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.theta_triple_maps_equivariant : GlobalTheory.Published.HoweDualityReal → _root_.GlobalTheory.FunPr.ThetaLocalInputs →
     ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsStdChar D ψ (-1) → IsInfFam θ →

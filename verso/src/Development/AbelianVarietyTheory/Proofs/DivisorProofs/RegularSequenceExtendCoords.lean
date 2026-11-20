@@ -17,13 +17,11 @@ noncomputable section
 namespace GlobalTheory.ParamFrame
 
 /- English proof (translation)
-Use `haveI : IsRegularLocalRing R := by`. Apply `IsRegularLocalRing.of_spanFinrank_maximalIdeal_le` to reduce the goal to its premises. Rewrite using `[← hrsp.2, ← hrsp.1]`. Establish `h1` using `Submodule.spanFinrank_span_le_ncard_of_finite (R := R) (Set.finite_range r)`. Establish `h2 : (Set.range r).ncard ≤ m`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Set.image_univ]`. Conclude with `(Set.ncard_image_le Set.finite_univ).trans (by simp [Set.ncard_univ])`. Conclude with `h1.trans h2` after adjusting the coercions. Establish `hfr : Module.finrank (IsLocalRing.ResidueField R) (IsLocalRing.CotangentSpace R) = m`. Use `(IsRegularLocalRing.iff_finrank_cotangentSpace R).1 inferInstance` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[← hrsp.2]`. Conclude with `this` after adjusting the coercions. Use `linearIndependent_of_top_le_span_of_card_eq_finrank ?_ (by simp [hfr])` and prove the remaining obligations. Establish `hsp : Submodule.span R (Set.range fun i => (⟨r i, hr i⟩ : IsLocalRing.maximalIdeal R)) = ⊤`. Apply `Submodule.map_injective_of_injective (IsLocalRing.maximalIdeal R).injective_subtype` to reduce the goal to its premises.
-
-Rewrite using `[Submodule.map_span, Submodule.map_subtype_top, ← Set.range_comp]`. Conclude with `hrsp.1`. Rewrite `hsp` using `[← IsLocalRing.CotangentSpace.span_image_eq_top_iff]`. Rewrite `hsp` using `[← Set.range_comp]`. Conclude with `hsp.ge`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem linearIndependent_toCotangent {R : Type} [CommRing R] [IsLocalRing R] [IsNoetherianRing R]
     {m : ℕ} (r : Fin m → R) (hrsp : FinalTheorems.Rsp R m r) (hr : ∀ i, r i ∈ IsLocalRing.maximalIdeal R) :
@@ -55,35 +53,33 @@ open ReciprocityTheory.ChartRestriction.G.DVR.FlatBC (algX) in
 open GlobalTheory.AdaptedFrame in
 
 /- English proof (translation)
-Introduce `k _ _ X _ _ p n _ y O hyO m s hrsp`. Set `f : Fin m → X.presheaf.stalk y` to `fun i => X.presheaf.germ O.1 y hyO (s i)`. Establish `hf : ∀ i, f i ∈ IsLocalRing.maximalIdeal (X.presheaf.stalk y)` using `fun i => hrsp.1 ▸ Ideal.subset_span ⟨i, rfl⟩`. Establish `hli` using `linearIndependent_toCotangent f hrsp hf`. Take `⟨U, x, b, hUO, hyU, hU, hb⟩` from `exists_basis_dFun p n hyO`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Set `z₀ : Fin m → Γ(X, U)` to `fun j => resG X hUO (s j)`. Establish `hz₀ (j : Fin m) : (X.presheaf.germ U y hyU).hom (z₀ j) = f j`. Rewrite using `[germ_resG]`. Set `a : Fin m → Fin n → Γ(X, U)` to `fun j l => b.repr (dFun (algX p U) (z₀ j)) l`. Establish `ha (j : Fin m) : dFun (algX p U) (z₀ j) = ∑ l, a j l • dFun (algX p U) (x l)` using `by conv_lhs => rw [← b.sum_repr (dFun (algX p U) (z₀ j))]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Simplify using `only [hb, a]`. Use `letI iΓ : Algebra k Γ(X, U) := (algX p U).toAlgebra`. Use `letI iA : Algebra k (X.presheaf.stalk y) := ((X.presheaf.germ U y hyU).hom.comp (algX p U)).toAlgebra`. Use `letI iΓA : Algebra Γ(X, U) (X.presheaf.stalk y) := (X.presheaf.germ U y hyU).hom.toAlgebra`. Use `haveI : IsScalarTower k Γ(X, U) (X.presheaf.stalk y) := IsScalarTower.of_algebraMap_eq' rfl`.
+Simplify using the standard rewrite rules. Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Use `haveI := formallySmooth_residueField (n := n) p hU y hyU rfl`. Establish `hw` using `linearIndependent_tmul_D (k := k) f hf hli`. Set `ρ : Γ(X, U) →+* IsLocalRing.ResidueField (X.presheaf.stalk y)` to `(IsLocalRing.residue (X.presheaf.stalk y)).comp (X.presheaf.germ U y hyU).hom`. Set `ab : Fin m → Fin n → IsLocalRing.ResidueField (X.presheaf.stalk y)` to `fun j l => ρ (a j l)`. Establish `hab : LinearIndependent (IsLocalRing.ResidueField (X.presheaf.stalk y)) ab`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Set `wx : Fin n → IsLocalRing.ResidueField (X.presheaf.stalk y) ⊗[X.presheaf.stalk y] Ω[(X.presheaf.stalk y)⁄k]` to `fun l => 1 ⊗ₜ KaehlerDifferential.D k (X.presheaf.stalk y) ((X.presheaf.germ U y hyU).hom (x l))`. Use `LinearIndependent.of_comp (Fintype.linearCombination _ wx) ?_` and prove the remaining obligations. Establish `key : ⇑(Fintype.linearCombination (IsLocalRing.ResidueField (X.presheaf.stalk y)) wx) ∘ ab = fun j => (1 : IsLocalRing.ResidueField (X.presheaf.stalk y)) ⊗ₜ[X.presheaf.stalk y] KaehlerDifferential.D k (X.presheaf.stalk y) (f j)`. Use function extensionality and compare the values at `j`. Rewrite using `[Function.comp_apply, Fintype.linearCombination_apply, ← hz₀ j]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e1` using `congrArg (KaehlerDifferential.map k k Γ(X, U) (X.presheaf.stalk y)) (ha j)`. Rewrite `e1` using `[map_sum]`. Express the relevant statement in the definitionally equal form `KaehlerDifferential.map k k Γ(X, U) (X.presheaf.stalk y) (KaehlerDifferential.D k Γ(X, U) (z₀ j)) = _ at e1`. Rewrite `e1` using `[KaehlerDifferential.map_D]`. Express the relevant statement in the definitionally equal form `KaehlerDifferential.D k (X.presheaf.stalk y) ((X.presheaf.germ U y hyU).hom (z₀ j)) = _ at e1`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e1, TensorProduct.tmul_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul]`. Express the relevant statement in the definitionally equal form `_ = 1 ⊗ₜ (a j l • KaehlerDifferential.map k k Γ(X, U) (X.presheaf.stalk y) (KaehlerDifferential.D k Γ(X, U) (x l)))`. Rewrite using `[KaehlerDifferential.map_D, ← algebraMap_smul (X.presheaf.stalk y) (a j l), TensorProduct.tmul_smul, ← algebraMap_smul (IsLocalRing.ResidueField (X.presheaf.stalk y))]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[key]`. Conclude with `hw`. Take `⟨e, he, hdet⟩` from `GlobalTheory.T.exists_standard_basis_extension_det_ne_zero ab hab`. Set `z : Fin n → Γ(X, U)` to `Function.extend e z₀ x`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Set `c : Matrix (Fin n) (Fin n) Γ(X, U)` to `Matrix.of (Function.extend e a (fun i => Pi.single i (1 : Γ(X, U))))`. Establish `hdz (i : Fin n) : dFun (algX p U) (z i) = ∑ l, c i l • dFun (algX p U) (x l)`. Distinguish the cases in `hi : ∃ j, e j = i`. Take `⟨j, rfl⟩` from `hi`. Simplify using `only [z, c, Matrix.of_apply, he.extend_apply]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `ha j`. Simplify using `only [z, c, Matrix.of_apply, Function.extend_apply' _ _ _ hi]`. Simplify using `[Pi.single_apply]`. Establish `hform : dOn p z = c.det • dOn p x` using `dForm_eq_det_smul z x c hdz`. Establish `hρ : ρ c.det ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Establish `hm : c.map ρ = Matrix.of (Function.extend e ab (fun i => Pi.single i (1 : IsLocalRing.ResidueField (X.presheaf.stalk y))))`. Use extensionality with `i l`. Distinguish the cases in `hi : ∃ j, e j = i`. Take `⟨j, rfl⟩` from `hi`. Simplify using `only [c, ab, Matrix.map_apply, Matrix.of_apply, he.extend_apply]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `only [c, Matrix.map_apply, Matrix.of_apply, Function.extend_apply' _ _ _ hi]`. Distinguish the cases in `hil : l = i`. Substitute `hil` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hil]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[RingHom.map_det]`. Conclude with `(congrArg Matrix.det hm).trans_ne hdet`. Establish `hunit : IsUnit ((X.presheaf.germ U y hyU).hom c.det)` using `(IsLocalRing.residue_ne_zero_iff_isUnit _).1 hρ`. Establish `hyW : y ∈ X.basicOpen c.det` using `(X.mem_basicOpen c.det y hyU).2 hunit`. Establish `hWU : X.basicOpen c.det ≤ U` using `X.basicOpen_le _`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨X.basicOpen c.det, hWU.trans hUO, hyW, fun i => resG X hWU (z i), ⟨e, he⟩, fun j => ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [z, z₀, Function.Embedding.coeFn_mk, he.extend_apply]`. Conclude with `resG_resG _ _ _`. Establish `hx : IsFrame (dOn p x)` using `⟨hU, isFreeGen_dForm x b hb⟩`. Establish `h1` using `hx.res (hU.basicOpen c.det) hWU`.
-
-Use `⟨hU.basicOpen c.det, ?_⟩` and prove the remaining obligations. Rewrite using `[← resForm_dOn hWU, hform, resForm_smul]`. Conclude with `h1.gen.smul_iff.2 (RingedSpace.isUnit_res_basicOpen X.toRingedSpace c.det)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_frame_of_rsp : ∀ (k : Type) [Field k] [CharZero k] (Y : Scheme.{0}) [IsIntegral Y] [IsLocallyNoetherian Y] (q : Y ⟶ Sp k) (n : ℕ) [SmoothOfRelativeDimension n q] (y : Y) (U : Y.affineOpens) (hy : y ∈ U.1) (c : ℕ) (a : Fin c → Γ(Y, U.1)), FinalTheorems.Rsp (Y.presheaf.stalk y) c (fun i => Y.presheaf.germ U.1 y hy (a i)) → ∃ (V : Y.Opens) (hV : V ≤ U.1) (_ : y ∈ V) (z : Fin n → Γ(Y, V)) (e : Fin c ↪ Fin n), (∀ j, z (e j) = resG Y hV (a j)) ∧ IsFrame (dOn q z) := by
   classical

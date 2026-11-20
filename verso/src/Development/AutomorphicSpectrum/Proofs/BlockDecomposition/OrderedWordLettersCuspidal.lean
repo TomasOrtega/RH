@@ -9,7 +9,7 @@ open GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.SmGL GlobalTheory.Loc
 namespace GlobalTheory.CompanionTheory.ZcWords
 
 /- English proof (translation)
-Introduce `c hc`. Take `⟨l, hl, hcl⟩` from `List.mem_flatten.1 hc`. Take `⟨i, rfl⟩` from `(List.mem_ofFn' _ _).1 hl`. Take `⟨j, rfl⟩` from `(List.mem_ofFn' _ _).1 hcl`. Conclude with `Segment.isCusp_term _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem wtW_isCusp {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] {h : ℕ} (Δ : Fin h → Segment k) :

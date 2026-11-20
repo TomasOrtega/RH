@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.Definitions.CommutativeAlgebra.Invariant
 open Polynomial GlobalTheory.CuspGL GlobalTheory.BI
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.CuspGL.exists_int_coeff_of_isPrimitive` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+Apply the cited theorem to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FCharacterTheory%2FExistsIntCoeffPrimitiveGLCharacter.lean&line=17#L17)
 -/

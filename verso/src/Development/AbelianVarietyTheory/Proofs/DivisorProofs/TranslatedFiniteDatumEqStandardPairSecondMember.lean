@@ -32,7 +32,7 @@ namespace GlobalTheory.BotMoveSnd
 variable {D : D7}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [heisO, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem heisO_smul' {S T : HSp D} (ψ : AddChar (AF D.host.F) ℂ) (w : WO S T) (ζ : ℂ) (g : WO S T → ℂ) :
     heisO ψ S T w (ζ • g) = ζ • heisO ψ S T w g := by
@@ -41,7 +41,7 @@ theorem heisO_smul' {S T : HSp D} (ψ : AddChar (AF D.host.F) ℂ) (w : WO S T) 
   ring
 
 /- English proof (translation)
-The claim follows from `{ trans := fun Φ hΦ x hx => by rw [LinearMap.smul_apply, LinearMap.smul_apply, hT.trans Φ hΦ x hx, heisO_smul'] modul := fun Φ hΦ y hy => by rw [LinearMap.smul_apply, LinearMap.smul_apply, hT.modul Φ hΦ y hy, heisO_smul'] vac := by rw [LinearMap.smul_apply, hT.vac] }`.
+A detailed English derivation is pending.
 -/
 theorem isPlaceModel_smul {S T : HSp D} {ψ : AddChar (AF D.host.F) ℂ} {e : AE D} {Λ : AddSubgroup (WO S T)} {c : ℂ}
     (a : ℂ) {g₀ : WO S T → ℂ} {Tm : (WO S T → ℂ) →ₗ[ℂ] (WO S T → ℂ)}
@@ -54,7 +54,7 @@ theorem isPlaceModel_smul {S T : HSp D} {ψ : AddChar (AF D.host.F) ℂ} {e : AE
     vac := by rw [LinearMap.smul_apply, hT.vac] }
 
 /- English proof (translation)
-Take `⟨⟨Tm, hT⟩, hall⟩` from `h`. Use `⟨⟨κ⁻¹ • Tm, ?_⟩, fun Tm' hT' => ?_⟩` and prove the remaining obligations. Use `isPlaceModel_smul κ⁻¹ hT` as an intermediate fact. Rewrite `this` using `[smul_smul, inv_mul_cancel₀ hκ, one_smul]`. Then use the resulting hypothesis. Rewrite using `[hall _ (isPlaceModel_smul κ hT'), LinearMap.smul_apply, smul_smul, inv_mul_cancel₀ hκ, one_smul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 -/
 theorem isThetaAt_rescale {S T : HSp D} {ψ : AddChar (AF D.host.F) ℂ} {e : AE D} {Λ : AddSubgroup (WO S T)} {c κ : ℂ}
     {f₀ Φ f : WO S T → ℂ} (hκ : κ ≠ 0) (h : IsThetaAt ψ (symplO S T) (heisO ψ S T) e Λ c (κ • f₀) Φ f) :
@@ -66,13 +66,13 @@ theorem isThetaAt_rescale {S T : HSp D} {ψ : AddChar (AF D.host.F) ℂ} {e : AE
   · rw [hall _ (isPlaceModel_smul κ hT'), LinearMap.smul_apply, smul_smul, inv_mul_cancel₀ hκ, one_smul]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => Matrix.ext fun i j => h i j, fun h i j => congrFun (congrFun h i) j⟩`.
+Supply the required witnesses or components.
 -/
 theorem isHalf_iff_smul {m n : ℕ} (c : AE D) (u : Mx D m n) : IsHalf c u ↔ c • u = u :=
   ⟨fun h => Matrix.ext fun i j => h i j, fun h i j => congrFun (congrFun h i) j⟩
 
 /- English proof (translation)
-Rewrite `hx`, the goal using `[isHalf_iff_smul]`. Rewrite using `[GlobalTheory.VacMove.actO_eq]`. Use `conv_rhs => rw [← hx]`. Rewrite using `[Matrix.mul_smul, Matrix.smul_mul]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isHalf_actO' {S T : HSp D} (c : AE D) (g : GA D S) (h : GA D T) {x : WO S T} (hx : IsHalf c x) :
     IsHalf c (actO S T g h x) := by
@@ -82,7 +82,7 @@ theorem isHalf_actO' {S T : HSp D} (c : AE D) (g : GA D S) (h : GA D T) {x : WO 
   rw [Matrix.mul_smul, Matrix.smul_mul]
 
 /- English proof (translation)
-Use `⟨fun hx => ?_, isHalf_actO' c _ _⟩` and prove the remaining obligations. Use `isHalf_actO' c g h hx` as an intermediate fact. Establish `e` using `GlobalTheory.SplitHecke.actO_inv_actO (S := S) (T := T) g⁻¹ h⁻¹ x`. Simplify using `only [inv_inv] at e`. Rewrite `this` using `[e]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem isHalf_actO_inv_iff {S T : HSp D} (c : AE D) (g : GA D S) (h : GA D T) (x : WO S T) :
     IsHalf c (actO S T g⁻¹ h⁻¹ x) ↔ IsHalf c x := by
@@ -93,9 +93,9 @@ theorem isHalf_actO_inv_iff {S T : HSp D} (c : AE D) (g : GA D S) (h : GA D T) (
   rwa [e] at this
 
 /- English proof (translation)
-Establish `e1 : (βS.1 : Matrix (Fin s) (Fin s) R) * (βS⁻¹).1 = 1` using `by rw [← Units.val_mul, mul_inv_cancel, Units.val_one]`. Establish `e2 : (βT.1 : Matrix (Fin t) (Fin t) R) * (βT⁻¹).1 = 1` using `by rw [← Units.val_mul, mul_inv_cancel, Units.val_one]`. Establish `e3 : ((βT⁻¹ * b⁻¹ * βT)⁻¹ : GL (Fin t) R) = βT⁻¹ * b * βT` using `by group`. Rewrite using `[e3, _root_.mul_inv_rev]`. Simplify using `only [Units.val_mul, Matrix.mul_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Matrix.mul_assoc βS.1 (βS⁻¹).1, e1, Matrix.one_mul, ← Matrix.mul_assoc βT.1 (βT⁻¹).1, e2, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem frame_move_alg {R : Type} [CommRing R] {s t : ℕ} (a βS : GL (Fin s) R) (b βT : GL (Fin t) R)
     (K : Matrix (Fin s) (Fin t) R) :
@@ -109,9 +109,9 @@ theorem frame_move_alg {R : Type} [CommRing R] {s t : ℕ} (a βS : GL (Fin s) R
   rw [← Matrix.mul_assoc βS.1 (βS⁻¹).1, e1, Matrix.one_mul, ← Matrix.mul_assoc βT.1 (βT⁻¹).1, e2, Matrix.one_mul]
 
 /- English proof (translation)
-Establish `split : actO S T g⁻¹ h⁻¹ x = actO S T g⁻¹ 1 (actO S T 1 h⁻¹ x)`. Simplify using `only [GlobalTheory.VacMove.actO_eq, inv_one, GlobalTheory.VacMove.mt_one₀, Matrix.one_mul, Matrix.mul_one]`. Rewrite using `[split, GlobalTheory.FreeBlockTwist.frMapAdj_actO_one, GlobalTheory.AdjAct.frMapAdj_actO, ← GlobalTheory.AdjAct.finE_inv_val, ← map_inv]`. Unfold `frMapAdj`. Rewrite using `[map_inv (Lev.finE S), map_inv (Lev.finE T), ← Matrix.mul_assoc]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `frame_move_alg (R := EAf D) (Lev.finE S g) βS (Lev.finE T h) βT _`.
+A detailed English derivation is pending.
 -/
 theorem frMapAdj_move (S T : HSp D) (βS : GL (Fin S.rank) (EAf D)) (βT : GL (Fin T.rank) (EAf D)) (g : GA D S)
     (h : GA D T) (x : WO S T) :
@@ -124,7 +124,7 @@ theorem frMapAdj_move (S T : HSp D) (βS : GL (Fin S.rank) (EAf D)) (βT : GL (F
   exact frame_move_alg (R := EAf D) (Lev.finE S g) βS (Lev.finE T h) βT _
 
 /- English proof (translation)
-Unfold `stdSnd dualCoord`. Rewrite using `[frMapAdj_move]`. Rewrite using `[propext (isHalf_actO_inv_iff (cA D e) g h x)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem stdSnd_move (ν : (AE D)ˣ →* Circle) (e : AE D) (I : Ideal (𝓞 D.host.E)) (a : ℕ) (S T : HSp D)
     (βS : GL (Fin S.rank) (Lev.EAf D)) (βT : GL (Fin T.rank) (Lev.EAf D)) (g : GA D S) (h : GA D T) (x : WO S T) :
@@ -134,11 +134,11 @@ theorem stdSnd_move (ν : (AE D)ˣ →* Circle) (e : AE D) (I : Ideal (𝓞 D.ho
   rw [propext (isHalf_actO_inv_iff (cA D e) g h x)]
 
 /- English proof (translation)
-Introduce `D T A A' WW Y ψ θ α β νH S hY ΛA ΛA' ΛW hA hA' hW g hg g' hg' h hh mA mA' mW t₀ r r' hr hv hv' t`. Establish `hWe : IsWeilDatumO ψ A' WW (α t) (α t / β t) (Y.ω' t)` using `(GlobalTheory.Grid.isWeil_false ψ A' WW _ _ _).1 (hY.weil' t)`. Establish `hee : cA D (Y.e t) * cA D (Y.e t) = cA D (Y.e t)`. Rewrite using `[← map_mul, GlobalTheory.PlaceDatum.idemSum_mul_self (hY.idem t)]`. Establish `hinf : infPart D (cA D (Y.e t)) = 0` using `GlobalTheory.PlaceDatum.infPart_cA (GlobalTheory.PlaceDatum.infPart_idemSum (hY.idem t))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hm` using `GlobalTheory.VacMove.isThetaAt_moveLat D ψ A' WW (α t) (α t / β t) (Y.ω' t) hWe Y.rA'.Λ ΛA' Y.rW.Λ ΛW hY.rigA'.1 hA' hY.rigW.1 hW g' hg' h hh mA' mW (cA D (Y.e t)) _ Y.vac' (Y.f' t) hee hinf hY.isVac'.2.theta (GlobalTheory.ConstRatio.theta_f hY t).2 (hY.snd t)`. Rewrite `hm` using `[hv' t]`. Establish `hm2` using `isThetaAt_rescale (hr t).2 hm`. Establish `hΦ : (fun x => stdSnd (α t / β t) (Y.e t) (Y.ideal S t) A.rank A' WW Y.rA'.β Y.rW.β (actO A' WW g'⁻¹ h⁻¹ x)) = stdSnd (α t / β t) (Y.e t) (Y.ideal S t) A.rank A' WW (Lev.finE A' g' * Y.rA'.β) (Lev.finE WW h * Y.rW.β)`. Use function extensionality and compare the values at `fun x => (stdSnd_move _ _ _ _ _ _ _ _ _ _ x).symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite `hm2` using `[hΦ]`. Conclude with `hm2`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem snd_moved : ∀ {D : D7} {T : Type} {A A' WW : HSp D} (Y : Tri T A A' WW) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D)
     (α β : T → ((AE D)ˣ →* Circle)) (νH : T → HChar D.host.E) (S : T → Finset (Formalism.L2.DIV.Pl D.host.E)),

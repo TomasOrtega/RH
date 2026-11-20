@@ -11,9 +11,9 @@ section
 variable {n : ℕ} {A E : Type} [CommRing A] [Ring E] [Algebra A E] (D : Det n A E)
 
 /- English proof (translation)
-Use extensionality with `k`. Establish `h` using `H _ (Ideal.Quotient.mkₐ A (Ideal.span {(X : S[X]) ^ (k + 1)})) ⟨k + 1, by`. Rewrite using `[← map_pow]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mem_span_singleton_self _)⟩`. Rewrite `h` using `[D.nat, D.nat]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `Ideal.mem_span_singleton.1 (Ideal.Quotient.eq.1 h)`. Establish `h3` using `X_pow_dvd_iff.1 h2 k (Nat.lt_succ_self k)`. Rewrite `h3` using `[coeff_sub, sub_eq_zero]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 private theorem dker_poly_eq (S : Type) [CommRing S] [Algebra A S] (p q : S[X] ⊗[A] E)
     (H : ∀ (T : Type) [CommRing T] [Algebra A T] (f : S[X] →ₐ[A] T), IsNilpotent (f X) →
@@ -30,7 +30,7 @@ private theorem dker_poly_eq (S : Type) [CommRing S] [Algebra A S] (p q : S[X] �
   rwa [coeff_sub, sub_eq_zero] at h3
 
 /- English proof (translation)
-Apply `IsNilpotent.isUnit_one_add` to reduce the goal to its premises. Take `⟨k, hk⟩` from `ht`. Establish `: (t ⊗ₜ[A] (1 : E)) * w = t • w` using `by rw [Algebra.smul_def]; rfl`. Conclude with `⟨k, by rw [this, _root_.smul_pow, hk, zero_smul]⟩`.
+Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 private theorem dker_unit (T : Type) [CommRing T] [Algebra A T] (t : T) (ht : IsNilpotent t) (w : T ⊗[A] E) :
     IsUnit (1 + (t ⊗ₜ[A] (1 : E)) * w) := by
@@ -40,7 +40,7 @@ private theorem dker_unit (T : Type) [CommRing T] [Algebra A T] (t : T) (ht : Is
   exact ⟨k, by rw [this, _root_.smul_pow, hk, zero_smul]⟩
 
 /- English proof (translation)
-Rewrite using `[map_add, map_one]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 private theorem dker_cancel (S : Type) [CommRing S] [Algebra A S] (w : S ⊗[A] E) :
     Det.cancel A E S S[X] (1 + X ⊗ₜ w) = 1 + ((X : S[X]) ⊗ₜ[A] (1 : E)) *
@@ -49,7 +49,7 @@ private theorem dker_cancel (S : Type) [CommRing S] [Algebra A S] (w : S ⊗[A] 
   congr 1
 
 /- English proof (translation)
-Take `⟨h1, h2, -⟩` from `d_bc D S`. Take `⟨-, -, h3, h4, -⟩` from `d_chi (D.baseChange S) w`. Rewrite using `[← dker_cancel, ← h1, h3, ← h2, ← h4, finset_sum_coeff]`. Simplify using `only [coeff_C_mul_X_pow]`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private theorem dker_top (S : Type) [CommRing S] [Algebra A S] (w : S ⊗[A] E) :
     (D.D S[X] (1 + ((X : S[X]) ⊗ₜ[A] (1 : E)) *
@@ -61,11 +61,11 @@ private theorem dker_top (S : Type) [CommRing S] [Algebra A S] (w : S ⊗[A] E) 
   simp
 
 /- English proof (translation)
-Rewrite using `[Det.mem_ker]`. Introduce `S _ _ y u v`. Rewrite using `[← dker_top, ← dker_top D S y]`. Use `congr 1`. Apply `dker_poly_eq` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `T _ _ f hf`. Simplify using `only [map_add, map_mul, map_one, Algebra.TensorProduct.map_tmul, AlgHom.id_apply]`. Generalize the expression as in `Algebra.TensorProduct.map f (AlgHom.id A E) (Algebra.TensorProduct.map (IsScalarTower.toAlgHom A S S[X]) (AlgHom.id A E) y) = y'`. Generalize the expression as in `Algebra.TensorProduct.map f (AlgHom.id A E) (Algebra.TensorProduct.map (IsScalarTower.toAlgHom A S S[X]) (AlgHom.id A E) u) = u'`. Generalize the expression as in `Algebra.TensorProduct.map f (AlgHom.id A E) (Algebra.TensorProduct.map (IsScalarTower.toAlgHom A S S[X]) (AlgHom.id A E) v) = v'`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Take `⟨c, hc⟩` from `dker_unit T (f X) hf y'`. Establish `e : 1 + (f X ⊗ₜ[A] (1 : E)) * (y' + u' * (1 ⊗ₜ x) * v') = (c : T ⊗[A] E) * (1 + ((↑c⁻¹ : T ⊗[A] E) * (f X ⊗ₜ[A] (1 : E)) * u' * (1 ⊗ₜ x)) * v')`. Rewrite using `[mul_add, mul_add, ← add_assoc, ← hc]`. Simplify using `only [← mul_assoc, Units.mul_inv, one_mul, mul_one]`. Rewrite using `[e, map_mul, d_comm, ← mul_assoc, hx, mul_one, hc]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem dker_of_kills {x : E} (hx : D.Kills x) : x ∈ D.ker := by
   rw [Det.mem_ker]
@@ -86,15 +86,15 @@ private theorem dker_of_kills {x : E} (hx : D.Kills x) : x ∈ D.ker := by
   rw [e, map_mul, d_comm, ← mul_assoc, hx, mul_one, hc]
 
 /- English proof (translation)
-Introduce `S _ _ h`. Establish `key : D.D S[X] (1 + (1 + ((X : S[X]) ⊗ₜ[A] (1 : E)) * Algebra.TensorProduct.map (IsScalarTower.toAlgHom A S S[X]) (AlgHom.id A E) h) * (1 ⊗ₜ x)) = D.D S[X] 1`. Apply `dker_poly_eq` to reduce the goal to its premises. Introduce `T _ _ f hf`. Simplify using `only [map_add, map_mul, map_one, Algebra.TensorProduct.map_tmul, AlgHom.id_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Generalize the expression as in `Algebra.TensorProduct.map f (AlgHom.id A E) (Algebra.TensorProduct.map (IsScalarTower.toAlgHom A S S[X]) (AlgHom.id A E) h) = h'`. Take `⟨c, hc⟩` from `dker_unit T (f X) hf h'`. Establish `e : 1 + (c : T ⊗[A] E) * (1 ⊗ₜ x) = (c : T ⊗[A] E) * ((↑c⁻¹ : T ⊗[A] E) + 1 ⊗ₜ x)`. Rewrite using `[mul_add, Units.mul_inv]`. Rewrite using `[← hc, e, map_mul, hx, ← map_mul, Units.mul_inv, map_one]`.
+Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Set `ev : S[X] →ₐ[A] S` to `(Polynomial.aeval (R := S) (1 : S)).restrictScalars A`. Establish `hev : Algebra.TensorProduct.map ev (AlgHom.id A E) (Algebra.TensorProduct.map (IsScalarTower.toAlgHom A S S[X]) (AlgHom.id A E) h) = h` using `by clear key`. Proceed by induction on `h with`. Consider the case `zero => simp`. Consider the case `tmul b z => simp [ev]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Establish `hX : ev X = 1` using `by simp [ev]`. Establish `k2` using `congrArg ev key`. Rewrite `k2` using `[← D.nat, map_one, map_one]`. Simplify using `only [map_add, map_mul, map_one, Algebra.TensorProduct.map_tmul, AlgHom.id_apply, hev, hX] at k2`.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `k2` using `[← Algebra.TensorProduct.one_def, one_mul, add_mul, one_mul, add_comm (_ ⊗ₜ x), ← add_assoc, hx]`. Conclude with `k2`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem dker_kills_of {x : E}
     (hx : ∀ (S : Type) [CommRing S] [Algebra A S] (s : S) (y : S ⊗[A] E), D.D S (y + s ⊗ₜ x) = D.D S y) :
@@ -129,9 +129,9 @@ private theorem dker_kills_of {x : E}
 end
 
 /- English proof (translation)
-Introduce `n A E _ _ _ D x`. Use `⟨⟨fun hx S _ _ h => ?_, dker_of_kills D⟩, ⟨fun hx S _ _ s y => ?_, fun hx => dker_of_kills D (dker_kills_of D hx)⟩, fun hx h i h1 hi => ?_⟩` and prove the remaining obligations. Simplify using `using D.mem_ker.1 hx S 1 h 1`. Simplify using `using D.mem_ker.1 hx S y (s ⊗ₜ 1) 1`. Take `⟨-, -, h3, -⟩` from `d_chi D (h * x)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Establish `h4 : D.D A[X] (1 + X ⊗ₜ (h * x)) = 1`. Simplify using `using D.mem_ker.1 hx A[X] 1 (X ⊗ₜ h) 1`. Establish `h5` using `congrArg (fun p => p.coeff i) (h3.symm.trans h4)`. Simplify using `only [finset_sum_coeff, coeff_C_mul_X_pow, coeff_one] at h5`. Simplify `h5` using `[Nat.lt_succ_of_le hi, show i ≠ 0 by omega]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem UpperTheory.V.CA.d_ker :
     ∀ {n : ℕ} {A E : Type} [CommRing A] [Ring E] [Algebra A E] (D : Det n A E) (x : E), (x ∈ D.ker ↔ D.Kills x) ∧ (x ∈ D.ker ↔ ∀ (S : Type) [CommRing S] [Algebra A S] (s : S) (y : S ⊗[A] E), D.D S (y + s ⊗ₜ x) = D.D S y) ∧ (x ∈ D.ker → ∀ h i, 1 ≤ i → i ≤ n → D.lam i (h * x) = 0) := by

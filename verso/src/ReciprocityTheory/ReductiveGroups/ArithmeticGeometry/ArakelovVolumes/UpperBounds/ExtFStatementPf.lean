@@ -14,9 +14,7 @@ def chartE (X : Data E r) : Frame X.Ψ r ≃L[ℂ] V (Module.finrank ℂ (Frame 
   ContinuousLinearEquiv.ofFinrankEq (finrank_euclideanSpace_fin).symm
 
 /- English proof (translation)
-Use `haveI h0 : (volume : Measure ℂ).IsAddHaarMeasure := inferInstance`. Use `haveI h0' : SigmaFinite (volume : Measure ℂ) := inferInstance`. Use `haveI h1 : (volume : Measure (Fin r → ℂ)).IsAddHaarMeasure := by`. Rewrite using `[volume_pi]`. Conclude with `Measure.pi.isAddHaarMeasure _`.
-
-Use `haveI h2 : (volume : Measure (Fin r → Fin r → ℂ)).IsAddHaarMeasure := by`. Rewrite using `[volume_pi]`. Conclude with `Measure.pi.isAddHaarMeasure _`. Rewrite using `[volume_pi]`. Conclude with `Measure.pi.isAddHaarMeasure _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem haar_frame (X : Data E r) : (volume : Measure (Frame X.Ψ r)).IsAddHaarMeasure := by
   haveI h0 : (volume : Measure ℂ).IsAddHaarMeasure := inferInstance
@@ -28,7 +26,7 @@ theorem haar_frame (X : Data E r) : (volume : Measure (Frame X.Ψ r)).IsAddHaarM
   rw [volume_pi]; exact Measure.pi.isAddHaarMeasure _
 
 /- English proof (translation)
-Use `haveI := haar_frame X`. Use `haveI : (Measure.map (chartE X) (volume : Measure (Frame X.Ψ r))).IsAddHaarMeasure := (chartE X).isAddHaarMeasure_map volume`. Establish `h` using `Measure.isAddLeftInvariant_eq_smul (volume : Measure (V (Module.finrank ℂ (Frame X.Ψ r)))) (Measure.map (chartE X) (volume : Measure (Frame X.Ψ r)))`. Use `⟨(volume : Measure (V (Module.finrank ℂ (Frame X.Ψ r)))).addHaarScalarFactor (Measure.map (chartE X) volume), ENNReal.coe_lt_top, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem vol_eq (X : Data E r) :
     ∃ c : ℝ≥0∞, c < ⊤ ∧ (volume : Measure (V (Module.finrank ℂ (Frame X.Ψ r)))) =
@@ -44,7 +42,7 @@ theorem vol_eq (X : Data E r) :
     _ = _ := by rw [ENNReal.smul_def]; rfl
 
 /- English proof (translation)
-Take `⟨c, hc, hv⟩` from `vol_eq X`. Use `⟨c, hc, ?_⟩` and prove the remaining obligations. Rewrite using `[hv, Measure.restrict_smul, lintegral_smul_measure, MeasurableEquiv.restrict_map, lintegral_map_equiv]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem lint_transfer (X : Data E r) (S : Set (V (Module.finrank ℂ (Frame X.Ψ r))))
     (g : V (Module.finrank ℂ (Frame X.Ψ r)) → ℝ≥0∞) :
@@ -57,15 +55,15 @@ theorem lint_transfer (X : Data E r) (S : Set (V (Module.finrank ℂ (Frame X.Ψ
 variable {x0 : Frame X.Ψ r} (D : LUData X x0) (la : Wt X.Ψ r) (F : V (nd X) → ℂ)
 
 /- English proof (translation)
-Establish `hO : IsOpen ((chartE X).symm ⁻¹' X.dom)` using `(FourierCoefficientDomain.isOpen_dom X).preimage (chartE X).symm.continuous`. Take `⟨ε, hε, hball⟩` from `Metric.isOpen_iff.mp hO (chartE X x) (by simpa using hx)`. Establish `hsub : ∀ y, chartE X y ∈ closedBall (chartE X x) (ε / 2) → y ∈ X.dom` using `fun y hy => by`. Use `hball (closedBall_subset_ball (by linarith) hy)` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `⟨ε / 2, by positivity, hsub, ?_⟩` and prove the remaining obligations. Establish `hC : IsCompact ((chartE X) ⁻¹' closedBall (chartE X x) (ε / 2))` using `(chartE X).toHomeomorph.isCompact_preimage.mpr (isCompact_closedBall _ _)`. Establish `hCd : (chartE X) ⁻¹' closedBall (chartE X x) (ε / 2) ⊆ X.dom` using `fun y hy => hsub y hy`. Establish `hint` using `poincareLift_locally_squareIntegrable D la F hM hx0 hF hL2 hC hCd`. Take `⟨c, hc, htr⟩` from `lint_transfer X (closedBall (chartE X x) (ε / 2)) (fun w => ENNReal.ofReal (‖P0 D la F ((chartE X).symm w)‖ ^ 2))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hfin : ∫⁻ w in ball (chartE X x) (ε / 2) \ {w | D.Δ ((chartE X).symm w) = 0}, ENNReal.ofReal (‖P0 D la F ((chartE X).symm w)‖ ^ 2) < ⊤`. Use `lt_of_le_of_lt (lintegral_mono_set (Set.sdiff_subset.trans ball_subset_closedBall)) ?_` and prove the remaining obligations. Rewrite using `[htr]`. Simplify using `only [ContinuousLinearEquiv.symm_apply_apply]`. Conclude with `ENNReal.mul_lt_top hc hint`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hΔd : DifferentiableOn ℂ (fun w => D.Δ ((chartE X).symm w)) (ball (chartE X x) (ε / 2))` using `(D.hΔ.comp (chartE X).symm.differentiable).differentiableOn`. Establish `hud : DifferentiableOn ℂ (fun w => P0 D la F ((chartE X).symm w)) (ball (chartE X x) (ε / 2) \ {w | D.Δ ((chartE X).symm w) = 0})`. Use `(poincareLift_differentiableOn D la F hF).comp (chartE X).symm.differentiable.differentiableOn fun w hw => ?_` and prove the remaining obligations. Use `⟨hsub _ ?_, hw.2⟩` and prove the remaining obligations. Simplify using `using ball_subset_closedBall hw.1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Take `⟨U, hU, hUe⟩` from `ReciprocityTheory.L2DbarEstimates.ext _ (chartE X x) (ε / 2) _ _ hΔd hud hfin`. Use `⟨U, hU, fun y hy hΔ => ?_⟩` and prove the remaining obligations. Use `hUe ⟨hy, by simpa using hΔ⟩` as an intermediate fact. Simplify using `using this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem local_ext (hM : FrameMeasStatement (E := E)) (hx0 : IsOrth X x0)
     (hF : DifferentiableOn ℂ F (OmF X x0))
@@ -107,15 +105,13 @@ theorem local_ext (hM : FrameMeasStatement (E := E)) (hx0 : IsOrth X x0)
   simpa using this
 
 /- English proof (translation)
-Establish `hmat : ∀ τ : X.Ψ, Continuous fun x : Frame X.Ψ r => mat x τ` using `fun τ => continuous_pi fun i => continuous_pi fun j => (continuous_apply j).comp ((continuous_apply i).comp (continuous_apply τ))`. Establish `hgram : ∀ τ : X.Ψ, Continuous fun x : Frame X.Ψ r => gram τ.1 X.Gm (mat x τ)`. Introduce `τ`. Use `continuous_pi fun a => continuous_pi fun b => ?_` and prove the remaining obligations. Simplify using `only [gram, Matrix.of_apply, hermC, col, mat, starRingEnd_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `fun_prop`. Establish `hopen : IsOpen X.dom`. Establish `e : X.dom = ⋂ τ : X.Ψ, ({x | (mat x τ).det ≠ 0} ∩ ⋂ i : Fin (r + 1), {x | 0 < psgn X.p0 i * (dmin X.Gm x τ i).re})`. Use extensionality with `x`. Simplify using `[Data.dom, GG]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Use `isOpen_iInter_of_finite fun τ => IsOpen.inter ?_ (isOpen_iInter_of_finite fun i => ?_)` and prove the remaining obligations. Conclude with `isOpen_ne_fun (hmat τ).matrix_det continuous_const`. Use `isOpen_lt continuous_const (continuous_const.mul (Complex.continuous_re.comp ?_))` and prove the remaining obligations. Conclude with `((hgram τ).matrix_submatrix _ _).matrix_det`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Metric.mem_closure_iff]`. Introduce `ε hε`. Take `⟨δ, hδ, hball⟩` from `Metric.isOpen_iff.1 hopen x hx`. Take `⟨y, hy, hΔ⟩` from `D.dense x hx (min ε δ) (lt_min hε hδ)`. Use `⟨y, (show y ∈ X.dom ∧ D.Δ y ≠ 0 from ⟨hball (Metric.ball_subset_ball (min_le_right _ _) hy), hΔ⟩), ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[dist_comm]`. Conclude with `lt_of_lt_of_le (Metric.mem_ball.1 hy) (min_le_left _ _)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dense_cell {x : Frame X.Ψ r} (hx : x ∈ X.dom) : x ∈ closure (cell D) := by
   have hmat : ∀ τ : X.Ψ, Continuous fun x : Frame X.Ψ r => mat x τ := fun τ =>
@@ -144,7 +140,7 @@ theorem dense_cell {x : Frame X.Ψ r} (hx : x ∈ X.dom) : x ∈ closure (cell D
   exact lt_of_lt_of_le (Metric.mem_ball.1 hy) (min_le_left _ _)
 
 /- English proof (translation)
-Use `continuous_pi fun τ => continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Simplify using `only [rmul, mat, Matrix.mul_apply, Matrix.of_apply]`. Use `fun_prop`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rmul_cont (b : Frame X.Ψ r) : Continuous fun x : Frame X.Ψ r => rmul x b := by
   refine continuous_pi fun τ => continuous_pi fun i => continuous_pi fun j => ?_
@@ -164,33 +160,27 @@ open scoped ENNReal Matrix
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Introduce `r X x0 hx0 la F hF hL2`. Take `⟨D⟩` from `luData_of hLU X x0 hx0`. Establish `hloc` using `fun (x : Frame X.Ψ r) (hx : x ∈ X.dom) => local_ext D la F hM hx0 hF hL2 hx`. Use `choose ρ hρ hsub U hU hUeq using hloc`. Establish `hagree : ∀ x (hx : x ∈ X.dom) y (hy : y ∈ X.dom) w, w ∈ ball (chartE X x) (ρ x hx) → w ∈ ball (chartE X y) (ρ y hy) → U x hx w = U y hy w`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx y hy w hwx hwy`. Use `set T := ball (chartE X x) (ρ x hx) ∩ ball (chartE X y) (ρ y hy) with hT`. Use `set s := T ∩ {w | D.Δ ((chartE X).symm w) ≠ 0} with hs`. Establish `hTo : IsOpen T` using `isOpen_ball.inter isOpen_ball`. Establish `heq : Set.EqOn (U x hx) (U y hy) s`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `w' hw'`. Establish `h1` using `hUeq x hx ((chartE X).symm w') (by simpa using hw'.1.1) hw'.2`. Establish `h2` using `hUeq y hy ((chartE X).symm w') (by simpa using hw'.1.2) hw'.2`. Simplify using `only [ContinuousLinearEquiv.apply_symm_apply] at h1 h2`. Rewrite using `[h1, h2]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hcl : T ⊆ closure s`. Introduce `w' hw'`. Rewrite using `[Metric.mem_closure_iff]`. Introduce `δ hδ`. Take `⟨δ0, hδ0, hb0⟩` from `Metric.isOpen_iff.mp hTo w' hw'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hz : (chartE X).symm w' ∈ X.dom` using `hsub x hx _ (by simpa using ball_subset_closedBall hw'.1)`. Use `set κ := ‖((chartE X) : Frame X.Ψ r →L[ℂ] V (Module.finrank ℂ (Frame X.Ψ r)))‖ + 1 with hκ`. Establish `hκ0 : 0 < κ` using `by positivity`. Take `⟨y', hy', hΔ'⟩` from `D.dense _ hz (min δ δ0 / κ) (by positivity)`. Establish `hd : dist w' (chartE X y') < min δ δ0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Establish `h1 : dist w' (chartE X y') = ‖(chartE X) ((chartE X).symm w' - y')‖`. Rewrite using `[map_sub, ContinuousLinearEquiv.apply_symm_apply, dist_eq_norm]`. Rewrite using `[h1]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← dist_eq_norm, dist_comm]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `(mem_ball.mp hy').le`. Use `_ < κ * (min δ δ0 / κ) := by gcongr`. Rewrite using `[hκ]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `_ = min δ δ0 := by field_simp`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `⟨chartE X y', ⟨hb0 (mem_ball.mpr (by rw [dist_comm]; exact lt_of_lt_of_le hd (min_le_right _ _))), by simpa using hΔ'⟩, lt_of_lt_of_le hd (min_le_left _ _)⟩` and prove the remaining obligations. Use `Set.EqOn.of_subset_closure heq ((hU x hx).continuousOn.mono Set.inter_subset_left) ((hU y hy).continuousOn.mono Set.inter_subset_right) Set.inter_subset_left hcl` as an intermediate fact. Conclude with `this ⟨hwx, hwy⟩`. Use `set P : Frame X.Ψ r → ℂ := fun x => if hx : x ∈ X.dom then U x hx (chartE X x) else 0 with hP`. Establish `hPcell : ∀ y ∈ cell D, P y = P0 D la F y`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `y hy`. Rewrite using `[hP]`. Simplify using `only [dif_pos hy.1]`. Conclude with `hUeq y hy.1 y (mem_ball_self (hρ y hy.1)) hy.2`. Establish `hPd : DifferentiableOn ℂ P X.dom`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Establish `hev : P =ᶠ[𝓝 x] (fun y => U x hx (chartE X y))`. Establish `hO : (chartE X) ⁻¹' ball (chartE X x) (ρ x hx) ∈ 𝓝 x` using `(isOpen_ball.preimage (chartE X).continuous).mem_nhds (mem_ball_self (hρ x hx))`. Use `filter_upwards [hO] with y hy`. Establish `hyd : y ∈ X.dom` using `hsub x hx y (ball_subset_closedBall hy)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hP]`. Simplify using `only [dif_pos hyd]`. Conclude with `(hagree x hx y hyd (chartE X y) hy (mem_ball_self (hρ y hyd))).symm`. Establish `hd : DifferentiableAt ℂ (fun y => U x hx (chartE X y)) x` using `((hU x hx).differentiableAt (isOpen_ball.mem_nhds (mem_ball_self (hρ x hx)))).comp x (chartE X).differentiableAt`. Conclude with `(hd.congr_of_eventuallyEq hev).differentiableWithinAt`.
-
-Use `⟨P, ⟨hPd, fun x hx b hb => ?_⟩, fun z hz => ?_⟩` and prove the remaining obligations. Establish `heq : Set.EqOn (fun x => P (rmul x b)) (fun x => bchar la b * P x) (cell D)`. Introduce `y hy`. Take `⟨h1, -, -⟩` from `cell_rmul D hy.1 hy.2 hb`. Establish `hyb : rmul y b ∈ cell D` using `⟨OrthogonalFrameDomain.rmul_mem_dom X hy.1 hb, h1⟩`.
-
-Simplify using `only`. Rewrite using `[hPcell _ hyb, hPcell _ hy, poincareLift_borel_equivariant D la F hy.1 hb]`. Establish `hc1 : ContinuousOn (fun x => P (rmul x b)) X.dom` using `hPd.continuousOn.comp (rmul_cont b).continuousOn fun y hy => OrthogonalFrameDomain.rmul_mem_dom X hy hb`. Establish `hc2 : ContinuousOn (fun x => bchar la b * P x) X.dom` using `continuousOn_const.mul hPd.continuousOn`. Conclude with `Set.EqOn.of_subset_closure heq hc1 hc2 (fun y hy => hy.1) (fun y hy => dense_cell D hy) hx`.
-
-Take `⟨h1, -, -⟩` from `cpt_cell D hz`. Rewrite using `[hPcell _ ⟨hz, h1⟩, poincareLift_on_chart D la F hz]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem extF_of (hLU : LUStatement (E := E)) (hM : FrameMeasStatement (E := E)) :
     ExtFStatement (E := E) := by

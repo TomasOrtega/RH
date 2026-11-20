@@ -13,7 +13,7 @@ open GlobalTheory.CuspRep
 namespace UpperTheory.HilbertEisensteinWeightOne.PoissonSummationAdelic
 
 /- English proof (translation)
-Use function extensionality and compare the values at `v`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression.
 -/
 theorem toR_homeomorphMixedSpace (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (x : Ad F) :
     toR F (homeomorphMixedSpace F x.1) = UpperTheory.V.TR.pInf F x := by
@@ -26,7 +26,7 @@ instance isEmpty_isComplex : IsEmpty {w : InfinitePlace F // InfinitePlace.IsCom
   ⟨fun w => (InfinitePlace.not_isReal_iff_isComplex.2 w.2) (IsTotallyReal.isReal w.1)⟩
 
 /- English proof (translation)
-Rewrite using `[← real_inner_self_eq_norm_sq, mixedToEuclidean, ContinuousLinearEquiv.trans_apply, inner_toMixed_symm]`. Simplify using `only [Finset.univ_eq_empty, Finset.sum_empty, add_zero, mapComplexCoord_apply]`. Rewrite using `[← Equiv.sum_comp (Equiv.subtypeUnivEquiv (fun v => IsTotallyReal.isReal v)).symm]`. Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations. Simplify using `[toR, sq]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem norm_sq_mixedToEuclidean (u : mixedSpace F) :
     ‖mixedToEuclidean F u‖ ^ 2 = ∑ v, (toR F u v) ^ 2 := by
@@ -38,7 +38,7 @@ theorem norm_sq_mixedToEuclidean (u : mixedSpace F) :
   simp [toR, sq]
 
 /- English proof (translation)
-Rewrite using `[GroundTheory.Automorphic.Adele2.toEuclid2_apply, WithLp.prod_norm_sq_eq_of_L2, Finset.sum_add_distrib, ← norm_sq_mixedToEuclidean, ← norm_sq_mixedToEuclidean]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem norm_sq_toEuclid2 (u : Fin 2 → mixedSpace F) :
     ‖GroundTheory.Automorphic.Adele2.toEuclid2 F u‖ ^ 2 = ∑ v, ((toR F (u 0) v) ^ 2 + (toR F (u 1) v) ^ 2) := by
@@ -62,16 +62,16 @@ def lin (v : InfinitePlace F) : (Fin 2 → mixedSpace F) →L[ℝ] ℂ :=
   Complex.ofRealCLM.comp (coordCLM F 0 v) + Complex.I • Complex.ofRealCLM.comp (coordCLM F 1 v)
 
 /- English proof (translation)
-Simplify using `[lin, coordCLM_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lin_apply (v : InfinitePlace F) (u : Fin 2 → mixedSpace F) :
     lin F v u = (toR F (u 0) v : ℂ) + Complex.I * (toR F (u 1) v : ℂ) := by
   simp [lin, coordCLM_apply]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih`. Establish `h` using `(hf a).mul ih`. Establish `e : (fun x => ∏ i ∈ insert a s, f i x) = (f a * fun x => ∏ i ∈ s, f i x)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `x`. Simplify using `[Finset.prod_insert ha]`. Rewrite using `[e]`. Conclude with `h`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasTemperateGrowth_prod {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] {ι : Type*}
     (s : Finset ι) (f : ι → E → ℂ) (hf : ∀ i, (f i).HasTemperateGrowth) :
@@ -89,17 +89,17 @@ theorem hasTemperateGrowth_prod {E : Type*} [NormedAddCommGroup E] [NormedSpace 
 def poly (u : Fin 2 → mixedSpace F) : ℂ := ∏ v, lin F v u
 
 /- English proof (translation)
-The claim follows from `hasTemperateGrowth_prod _ (fun v u => lin F v u) fun v => (lin F v).hasTemperateGrowth`.
+A detailed English derivation is pending.
 -/
 theorem hasTemperateGrowth_poly : (poly F).HasTemperateGrowth :=
   hasTemperateGrowth_prod _ (fun v u => lin F v u) fun v => (lin F v).hasTemperateGrowth
 
 /- English proof (translation)
-Use `⟨SchwartzMap.smulLeftCLM ℂ (poly F) (SchwartzMap.compCLMOfContinuousLinearEquiv ℂ (GroundTheory.Automorphic.Adele2.toEuclid2 F) (gaussianSchwartz _)), fun u => ?_⟩` and prove the remaining obligations. Rewrite using `[SchwartzMap.smulLeftCLM_apply_apply (hasTemperateGrowth_poly F)]`. Simplify using `only [SchwartzMap.compCLMOfContinuousLinearEquiv_apply, Function.comp_apply, gaussianSchwartz_apply, smul_eq_mul]`. Rewrite using `[norm_sq_toEuclid2, arch, Finset.prod_mul_distrib, poly]`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Apply the tactic sequence `all_goals first`. Consider the case `exact Finset.prod_congr rfl fun v _ => lin_apply F v u`. Consider the case `(rw [← Complex.exp_sum, Complex.ofReal_exp]`. Use `congr 1`. Use `push_cast`.
+Treat this case separately. Treat this case separately. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.mul_sum])`.
+A detailed English derivation is pending.
 -/
 theorem exists_schwartz_arch :
     ∃ φ : SchwartzMap (Fin 2 → NumberField.mixedEmbedding.mixedSpace F) ℂ,
@@ -125,9 +125,9 @@ open IsDedekindDomain Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual R
 open GlobalTheory.HeckeGal GlobalTheory.GalOfCusp UpperTheory.V.Af UpperTheory.V.Base
 
 /- English proof (translation)
-Take `⟨m, hm, h⟩` from `isOfFinOrder_iff_pow_eq_one.1 hfin`. Establish `ho` using `GlobalTheory.HeckeGal.isOpen_ker_of_pow ω.1 ω.2.1 hm fun x => congrArg (fun ξ : HChar F => ξ.1 x) h`. Take `⟨S, M, hS, key⟩` from `GlobalTheory.OpenIdeleCongr.localIdele_mem_of_isOpen ω.1.ker ho`. Use `hS.subset fun w hw => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hwS`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Apply `hw` to reduce the goal to its premises. Use `Nat.le_zero.1 ((hc w).2 ?_)` and prove the remaining obligations. Simplify using `only [Set.mem_ofPred_eq]`. Introduce `x hu _`. Conclude with `key w x hu fun h => absurd h hwS`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem finite_support_of_cond (ω : HChar F) (c : HeightOneSpectrum (𝓞 F) → ℕ) (hfin : IsOfFinOrder ω)
     (hc : ∀ w, UpperTheory.V.Sd.IsCondAt w ω (c w)) : {w | c w ≠ 0}.Finite := by

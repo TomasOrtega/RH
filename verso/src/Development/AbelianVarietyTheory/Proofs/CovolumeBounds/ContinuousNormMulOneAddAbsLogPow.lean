@@ -12,19 +12,17 @@ open Filter Metric Function Asymptotics
 open scoped Topology
 
 /- English proof (translation)
-Rewrite using `[continuous_iff_continuousAt]`. Introduce `t`. Distinguish the cases in `ht : t = 0`. Substitute `ht` using the available equality. Establish `hn : Tendsto (fun t : ℂ => ‖t‖) (𝓝[≠] 0) (𝓝[≠] 0)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact.
 
-Use `tendsto_nhdsWithin_iff.mpr ⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `(continuous_norm.tendsto' 0 0 norm_zero).mono_left nhdsWithin_le_nhds`. Use `filter_upwards [self_mem_nhdsWithin] with t ht`. Conclude with `norm_ne_zero_iff.mpr ht`. Establish `hv : Tendsto (fun t : ℂ => 1 - Real.log ‖t‖) (𝓝[≠] 0) atTop`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Use `tendsto_neg_atBot_atTop.comp (Real.tendsto_log_nhdsNE_zero.comp hn)` as an intermediate fact. Conclude with `(tendsto_atTop_add_const_left _ 1 this).congr fun t => by`. Simplify using `only [Function.comp_apply]`. Expand and normalize the polynomial expressions, which then agree. Establish `hlim` using `((Real.tendsto_pow_mul_exp_neg_atTop_nhds_zero (N + 1)).comp hv).const_mul (Real.exp 1)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `hlim` using `[mul_zero]`. Establish `hmain : Tendsto (fun t : ℂ => ‖t‖ * (1 + |Real.log ‖t‖|) ^ (N + 1)) (𝓝[≠] 0) (𝓝 0)`. Use `hlim.congr' ?_` and prove the remaining obligations. Use `filter_upwards [mem_nhdsWithin_of_mem_nhds (Metric.closedBall_mem_nhds (0 : ℂ) one_pos), self_mem_nhdsWithin] with t h1 h2`. Establish `hpos : 0 < ‖t‖` using `norm_pos_iff.mpr h2`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hle : ‖t‖ ≤ 1` using `by simpa using h1`. Establish `hlog : Real.log ‖t‖ ≤ 0` using `Real.log_nonpos (norm_nonneg _) hle`. Simplify using `only [Function.comp_apply]`. Rewrite using `[abs_of_nonpos hlog, show -(1 - Real.log ‖t‖) = -1 + Real.log ‖t‖ by ring, Real.exp_add, Real.exp_log hpos]`. Establish `he : Real.exp 1 * Real.exp (-1) = 1` using `by rw [← Real.exp_add]; norm_num`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← continuousWithinAt_compl_self, ContinuousWithinAt]`. Use `hmain using 2` and compare the differences between its conclusion and the goal. Simplify using the standard rewrite rules. Establish `hn : ‖t‖ ≠ 0` using `norm_ne_zero_iff.mpr ht`.
-
-Conclude with `continuous_norm.continuousAt.mul ((continuousAt_const.add ((Real.continuousAt_log hn).comp continuous_norm.continuousAt).abs).pow _)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_norm_mul_one_add_abs_log_pow (N : ℕ) :
     Continuous fun t : ℂ => ‖t‖ * (1 + |Real.log ‖t‖|) ^ (N + 1) := by
@@ -66,9 +64,9 @@ theorem continuous_norm_mul_one_add_abs_log_pow (N : ℕ) :
       ((continuousAt_const.add ((Real.continuousAt_log hn).comp continuous_norm.continuousAt).abs).pow _)
 
 /- English proof (translation)
-Use `show 1 + ∑ j ∈ S, |Real.log ‖z j‖| ≤ _`. Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.prod_insert ha]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h0 : 0 ≤ ∑ j ∈ s, |Real.log ‖z j‖|` using `Finset.sum_nonneg fun _ _ => abs_nonneg _`. Establish `ha0` using `abs_nonneg (Real.log ‖z a‖)`. Establish `h1` using `mul_le_mul_of_nonneg_left ih (by linarith : (0 : ℝ) ≤ 1 + |Real.log ‖z a‖|)`. Use polynomial arithmetic with `[mul_nonneg ha0 h0]`.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem logWeight_le_prod {κ : Type*} (S : Finset κ) (z : κ → ℂ) :
     lwP₂ S z ≤ ∏ j ∈ S, (1 + |Real.log ‖z j‖|) := by
@@ -84,15 +82,15 @@ theorem logWeight_le_prod {κ : Type*} (S : Finset κ) (z : κ → ℂ) :
     nlinarith [mul_nonneg ha0 h0]
 
 /- English proof (translation)
-Take `⟨K, hK, hpK, hKU⟩` from `exists_compact_subset hU hp`. Take `⟨C, N, hC, hb⟩` from `hf.exists_one_le hKU hK`. Take `⟨k, hkS, hk0⟩` from `hB`. Establish `hφ` using `continuous_norm_mul_one_add_abs_log_pow N`. Establish `hg : Tendsto (fun x => C * ∏ j ∈ S, (‖w x j‖ * (1 + |Real.log ‖w x j‖|) ^ (N + 1))) (𝓝 p) (𝓝 0)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Tendsto (fun x => C * ∏ j ∈ S, (‖w x j‖ * (1 + |Real.log ‖w x j‖|) ^ (N + 1))) (𝓝 p) (𝓝 (C * ∏ j ∈ S, (‖w p j‖ * (1 + |Real.log ‖w p j‖|) ^ (N + 1))))` using `tendsto_const_nhds.mul (tendsto_finsetProd _ fun j hj => (hφ.tendsto _).comp (hw j hj).tendsto)`. Rewrite `this` using `[Finset.prod_eq_zero hkS (by simp [hk0]), mul_zero]`. Then use the resulting hypothesis. Use `squeeze_zero_norm' ?_ hg` and prove the remaining obligations. Use `filter_upwards [mem_interior_iff_mem_nhds.mp hpK] with x hx`. Distinguish the cases in `hxB : x ∈ coordDivisor S w`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mem_coordDivisor_iff_prod_eq_zero.mp hxB, zero_mul, norm_zero]`. Conclude with `mul_nonneg (by linarith) (Finset.prod_nonneg fun j _ => by positivity)`. Establish `hfx` using `hb x hx hxB`. Establish `hW` using `logWeight_le_prod S (w x)`. Establish `hW0 : 0 ≤ GlobalTheory.lwP₂ S (w x)` using `(logWeight_pos S (w x)).le`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `h1 : ‖f x‖ ≤ C * ∏ j ∈ S, (1 + |Real.log ‖w x j‖|) ^ (N + 1)`. Combine the equalities or inequalities in the displayed calculation. Use `mul_le_mul_of_nonneg_left (Finset.prod_le_prod (fun j _ => by positivity) fun j _ => pow_le_pow_right₀ ?_ (Nat.le_succ N)) (by linarith)` and prove the remaining obligations. Combine the linear relations using `[abs_nonneg (Real.log ‖w x j‖)]`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Combine the linear equalities and inequalities to obtain the conclusion. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[Finset.prod_mul_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem HasLogGrowth.tendsto_prod_mul {κ X : Type*} [TopologicalSpace X] [LocallyCompactSpace X]
     {S : Finset κ} {w : X → κ → ℂ} {U : Set X} (hU : IsOpen U) {f : X → ℂ}
@@ -135,7 +133,7 @@ theorem HasLogGrowth.tendsto_prod_mul {κ X : Type*} [TopologicalSpace X] [Local
 variable {ι : Type*} [Fintype ι] {S : Finset ι} {U : Set (ι → ℂ)}
 
 /- English proof (translation)
-Apply the tactic sequence `have hc : Continuous (fun t : ℂ => fun j => if p j = 0 then t else p j) := continuous_pi fun j => by split_ifs <;> fun_prop`. Use `hc.tendsto' 0 p ?_` and prove the remaining obligations. Use function extensionality and compare the values at `j`. Use `split_ifs with h`. Use `exacts [h.symm, rfl]`.
+Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 private theorem tendsto_ite_eq_zero_nhds_zero {α : Type*} (p : α → ℂ) :
     Tendsto (fun t : ℂ => fun j => if p j = 0 then t else p j) (𝓝 0) (𝓝 p) := by
@@ -147,7 +145,7 @@ private theorem tendsto_ite_eq_zero_nhds_zero {α : Type*} (p : α → ℂ) :
   exacts [h.symm, rfl]
 
 /- English proof (translation)
-Rewrite using `[notMem_coordDivisor]`. Introduce `j _`. Use `show (if p j = 0 then t else p j) ≠ 0`. Use `split_ifs with h`. Use `exacts [ht, h]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem ite_eq_zero_notMem_coordDivisor {α : Type*} (S : Finset α) (p : α → ℂ) {t : ℂ} (ht : t ≠ 0) :
     (fun j => if p j = 0 then t else p j) ∉ coordDivisor S id := by
@@ -158,19 +156,17 @@ private theorem ite_eq_zero_notMem_coordDivisor {α : Type*} (S : Finset α) (p 
   exacts [ht, h]
 
 /- English proof (translation)
-Take `⟨K, hK, hpK, hKU⟩` from `exists_compact_subset hU hp`. Take `⟨C, N, hC, hb⟩` from `hf.exists_one_le hKU hK`. Use `set γ : ℂ → ι → ℂ := fun t j => if p j = 0 then t else p j with hγdef`. Establish `hγ : Tendsto γ (𝓝[≠] 0) (𝓝 p)` using `(tendsto_ite_eq_zero_nhds_zero p).mono_left nhdsWithin_le_nhds`. Choose the witnesses or unpack the hypotheses as in `⟨M, hM, key⟩ : ∃ M : ℝ, 1 ≤ M ∧ ∀ t : ℂ, GlobalTheory.lwP₂ S (id (γ t)) ≤ M * (1 + |Real.log ‖t‖|) := by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hsum : 0 ≤ ∑ j ∈ S, |Real.log ‖p j‖|` using `Finset.sum_nonneg fun _ _ => abs_nonneg _`. Establish `hc : (0 : ℝ) ≤ S.card` using `Nat.cast_nonneg _`. Use `⟨1 + ∑ j ∈ S, |Real.log ‖p j‖| + S.card, by linarith, fun t => ?_⟩` and prove the remaining obligations. Establish `hs : ∑ j ∈ S, |Real.log ‖γ t j‖| ≤ ∑ j ∈ S, (|Real.log ‖p j‖| + |Real.log ‖t‖|)` using `Finset.sum_le_sum fun j _ => by`. Distinguish the cases in `hj : p j = 0`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify using `only [hγdef, hj, if_true, norm_zero, Real.log_zero, abs_zero, zero_add, le_refl]`. Simplify using `only [hγdef, hj, if_false]`. Combine the linear relations using `[abs_nonneg (Real.log ‖t‖)]`. Rewrite `hs` using `[Finset.sum_add_distrib, Finset.sum_const, nsmul_eq_mul]`. Establish `hL` using `abs_nonneg (Real.log ‖t‖)`.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Use `show 1 + ∑ j ∈ S, |Real.log ‖γ t j‖| ≤ _`. Use polynomial arithmetic with `[mul_nonneg hsum hL]`. Establish `h1 : Tendsto (fun t => h (γ t)) (𝓝[≠] 0) (𝓝 (h p))` using `(hh.continuousAt (hU.mem_nhds hp)).tendsto.comp hγ`. Establish `h2 : Tendsto (fun t => h (γ t)) (𝓝[≠] 0) (𝓝 0)`. Establish `hφ` using `((continuous_norm_mul_one_add_abs_log_pow N).tendsto' 0 0 (by simp)).const_mul (C * M ^ N)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hφ` using `[mul_zero]`. Use `squeeze_zero_norm' ?_ (hφ.mono_left nhdsWithin_le_nhds)` and prove the remaining obligations. Use `filter_upwards [hγ (mem_interior_iff_mem_nhds.mp hpK), self_mem_nhdsWithin] with t htK ht0`. Establish `hB : γ t ∉ coordDivisor S id` using `ite_eq_zero_notMem_coordDivisor S p ht0`. Rewrite using `[he (γ t) (hKU htK) hB]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hk' : γ t k = t` using `by simp only [hγdef, hk, if_true]`. Rewrite using `[hk', norm_mul]`. Establish `hW0 : 0 ≤ GlobalTheory.lwP₂ S (id (γ t))` using `(logWeight_pos _ _).le`. Establish `hL` using `abs_nonneg (Real.log ‖t‖)`. Establish `h3 : ‖f (γ t)‖ ≤ C * M ^ N * (1 + |Real.log ‖t‖|) ^ (N + 1)`.
-
-Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Conclude with `tendsto_nhds_unique h1 h2`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem HasLogGrowth.eq_zero_of_eq_coord_mul (hU : IsOpen U) {f h : (ι → ℂ) → ℂ}
     (hf : HasLogGrowth S id U f) (hh : ContinuousOn h U) {k : ι}
@@ -223,33 +219,33 @@ theorem HasLogGrowth.eq_zero_of_eq_coord_mul (hU : IsOpen U) {f h : (ι → ℂ)
   exact tendsto_nhds_unique h1 h2
 
 /- English proof (translation)
-Establish `loc : ∀ a ∈ U, a i = 0 → ∃ ε > 0, ∃ G : (ι → ℂ) → ℂ, Metric.ball a ε ⊆ U ∧ DifferentiableOn ℂ G (Metric.ball a ε) ∧ ∀ z ∈ Metric.ball a ε, f z = z i * G z`. Introduce `a ha hai`. Take `⟨ε, hε, hball⟩` from `Metric.isOpen_iff.mp hU a ha`. Establish `hpoly : (univ.pi fun _ : ι => Metric.ball (0 : ℂ) ε) = Metric.ball (0 : ι → ℂ) ε` using `(ball_pi (0 : ι → ℂ) hε).symm`. Establish `hmem : ∀ y ∈ Metric.ball (0 : ι → ℂ) ε, a + y ∈ Metric.ball a ε`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `y hy`. Simplify `hy` using `[Metric.mem_ball, dist_eq_norm]`. Establish `hF : DifferentiableOn ℂ (fun y => f (a + y)) (univ.pi fun _ : ι => Metric.ball (0 : ℂ) ε)`. Rewrite using `[hpoly]`. Conclude with `hf.comp ((differentiableOn_const a).add differentiableOn_id) fun y hy => hball (hmem y hy)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hF0 : ∀ y ∈ univ.pi fun _ : ι => Metric.ball (0 : ℂ) ε, f (a + update y i 0) = 0`. Introduce `y hy`. Establish `hy' : update y i 0 ∈ univ.pi fun _ : ι => Metric.ball (0 : ℂ) ε` using `update_mem_polydisc hy (Metric.mem_ball_self hε)`. Rewrite `hy'` using `[hpoly]`. Use `h0 _ (hball (hmem _ hy')) ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `[hai]`. Take `⟨G, hG, hfG⟩` from `exists_eq_coord_mul_of_vanishing hF i hF0`. Use `⟨ε, hε, fun z => G (z - a), hball, ?_, ?_⟩` and prove the remaining obligations. Rewrite `hG` using `[hpoly]`. Use `hG.comp (differentiableOn_id.sub (differentiableOn_const a)) fun z hz => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `hz` using `[Metric.mem_ball, dist_eq_norm]`. Introduce `z hz`. Establish `hz' : z - a ∈ univ.pi fun _ : ι => Metric.ball (0 : ℂ) ε`. Rewrite using `[hpoly]`. Simplify `hz` using `[Metric.mem_ball, dist_eq_norm]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `hfG (z - a) hz'` using `[hai]`. Set `g : (ι → ℂ) → ℂ` to `fun z => if z i = 0 then deriv (fun t => f (update z i t)) 0 else f z / z i`. Establish `hgG : ∀ a ∈ U, a i = 0 → ∃ ε > 0, ∃ G : (ι → ℂ) → ℂ, DifferentiableOn ℂ G (Metric.ball a ε) ∧ ∀ z ∈ Metric.ball a ε, g z = G z`. Introduce `a ha hai`. Take `⟨ε, hε, G, -, hG, hfG⟩` from `loc a ha hai`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨ε, hε, G, hG, fun z hz => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hzi : z i = 0`. Simplify using `only [g, hzi, if_true]`. Establish `hGz : DifferentiableAt ℂ G z` using `hG.differentiableAt (Metric.isOpen_ball.mem_nhds hz)`. Establish `hu : HasDerivAt (update z i) (Pi.single i (1 : ℂ)) 0` using `hasDerivAt_update z i 0`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz0 : update z i 0 = z` using `by rw [← hzi]; exact update_eq_self i z`. Establish `hGz' : HasFDerivAt G (fderiv ℂ G z) (update z i 0)`. Rewrite using `[hz0]`. Conclude with `hGz.hasFDerivAt`. Establish `hk : HasDerivAt (fun t => G (update z i t)) (fderiv ℂ G z (Pi.single i 1)) 0` using `hGz'.comp_hasDerivAt 0 hu`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hprod : HasDerivAt (fun t => t * G (update z i t)) (1 * G (update z i 0) + 0 * fderiv ℂ G z (Pi.single i 1)) 0` using `(hasDerivAt_id' (0 : ℂ)).mul hk`. Establish `hev : (fun t => f (update z i t)) =ᶠ[𝓝 0] fun t => t * G (update z i t)`. Establish `hm : update z i ⁻¹' Metric.ball a ε ∈ 𝓝 (0 : ℂ)` using `hu.continuousAt.preimage_mem_nhds (by rw [hz0]; exact Metric.isOpen_ball.mem_nhds hz)`. Use `filter_upwards [hm] with t ht`. Rewrite using `[hfG _ ht]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[hev.deriv_eq, hprod.deriv]`. Simplify using `[hz0]`. Simplify using `only [g, hzi, if_false]`. Rewrite using `[hfG z hz]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Clear the denominators using the available nonvanishing facts. Use `⟨g, ?_, ?_⟩` and prove the remaining obligations. Introduce `a ha`. Distinguish the cases in `hai : a i = 0`. Take `⟨ε, hε, G, hG, hgG'⟩` from `hgG a ha hai`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hGa : DifferentiableAt ℂ G a` using `hG.differentiableAt (Metric.ball_mem_nhds a hε)`. Establish `hev : g =ᶠ[𝓝 a] G` using `Filter.eventually_of_mem (Metric.ball_mem_nhds a hε) hgG'`. Conclude with `(hGa.congr_of_eventuallyEq hev).differentiableWithinAt`. Establish `hne : ∀ᶠ z in 𝓝 a, z i ≠ 0` using `(continuous_apply i).continuousAt.eventually_ne hai`. Establish `hfa : DifferentiableAt ℂ f a` using `hf.differentiableAt (hU.mem_nhds ha)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hci : DifferentiableAt ℂ (fun z : ι → ℂ => z i) a` using `by fun_prop`. Establish `hq : DifferentiableAt ℂ (fun z => f z * (z i)⁻¹) a` using `hfa.mul (hci.inv hai)`. Establish `hev : g =ᶠ[𝓝 a] fun z => f z * (z i)⁻¹` using `hne.mono fun z hz => by`. Simplify using `only [g, hz, if_false, div_eq_mul_inv]`. Conclude with `(hq.congr_of_eventuallyEq hev).differentiableWithinAt`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 
-Introduce `z hz`. Distinguish the cases in `hzi : z i = 0`. Rewrite using `[h0 z hz hzi, hzi, zero_mul]`. Simplify using `only [g, hzi, if_false]`. Clear the denominators using the available nonvanishing facts.
+A detailed English derivation is pending.
 -/
 theorem exists_eq_coord_mul_of_isOpen (hU : IsOpen U) {f : (ι → ℂ) → ℂ}
     (hf : DifferentiableOn ℂ f U) (i : ι) (h0 : ∀ z ∈ U, z i = 0 → f z = 0) :
@@ -335,13 +331,13 @@ theorem exists_eq_coord_mul_of_isOpen (hU : IsOpen U) {f : (ι → ℂ) → ℂ}
       field_simp
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil`. Introduce `h hh he`. Use `⟨h, hh, fun z hz => ?_⟩` and prove the remaining obligations. Simplify using `using he z hz.1 hz.2`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Consider the case `cons j l ih`. Introduce `h hh he`. Establish `hjS : j ∈ S` using `hl j (by simp)`. Establish `hlS : ∀ i ∈ l, i ∈ S` using `fun i hi => hl i (by simp [hi])`. Establish `hq : HasLogGrowth S id U fun z => (l.map z).prod * f z` using `(HasLogGrowth.of_continuousOn (continuous_list_prod l fun i _ => continuous_apply i).continuousOn).mul hf`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hvan : ∀ z ∈ U, z j = 0 → h z = 0` using `fun z hz hzj => hq.eq_zero_of_eq_coord_mul hU hh.continuousOn (fun y hy hyB => by`. Rewrite using `[he y hy hyB, List.map_cons, List.prod_cons, mul_assoc]) hz hzj`. Take `⟨g, hg, hhg⟩` from `exists_eq_coord_mul_of_isOpen hU hh j hvan`. Use `ih hlS g hg fun z hz hzB => ?_` and prove the remaining obligations. Establish `hzj : z j ≠ 0` using `(notMem_coordDivisor.mp hzB) j hjS`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `he z hz hzB` as an intermediate fact. Rewrite `this` using `[hhg z hz, List.map_cons, List.prod_cons, mul_assoc]`. Conclude with `mul_left_cancel₀ hzj this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem HasLogGrowth.exists_extension_of_prod_mul (hU : IsOpen U) {f : (ι → ℂ) → ℂ}
     (hf : HasLogGrowth S id U f) (l : List ι) (hl : ∀ j ∈ l, j ∈ S) :
@@ -374,17 +370,15 @@ theorem HasLogGrowth.exists_extension_of_prod_mul (hU : IsOpen U) {f : (ι → �
 end
 
 /- English proof (translation)
-Establish `hBc : IsClosed (coordDivisor S (id : (ι → ℂ) → ι → ℂ))` using `isClosed_coordDivisor S fun j _ => continuous_apply j`. Take `⟨P, hP⟩ : ∃ P : (ι → ℂ) → ℂ, P = fun z => ∏ j ∈ S, z j` from `⟨_, rfl⟩`. Establish `hPd : ∀ z, DifferentiableAt ℂ P z`. Introduce `z`. Rewrite using `[hP]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `fun_prop`. Establish `hh : DifferentiableOn ℂ (fun z => P z * (P z * f z)) U`. Introduce `p hp`. Distinguish the cases in `hpB : p ∈ coordDivisor S id`. Establish `hP0 : P p = 0` using `by rw [hP]; exact mem_coordDivisor_iff_prod_eq_zero.mp hpB`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht` using `hg.tendsto_prod_mul hU hp hpB fun j _ => (continuous_apply j).continuousAt`. Establish `ho : Asymptotics.IsLittleO (nhds p) (fun z => P z * f z) (fun _ => (1 : ℝ))`. Rewrite using `[Asymptotics.isLittleO_one_iff, hP]`. Conclude with `ht`. Establish `hfd : HasFDerivAt (fun z => P z * (P z * f z)) (0 : (ι → ℂ) →L[ℂ] ℂ) p`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hasFDerivAt_iff_isLittleO]`. Use `Asymptotics.isLittleO_norm_right.mp ?_` and prove the remaining obligations. Use `((hPd p).isBigO_sub.norm_right.mul_isLittleO ho).congr (fun z => ?_) (fun z => mul_one _)` and prove the remaining obligations. Simplify using `[hP0]`. Conclude with `hfd.differentiableAt.differentiableWithinAt`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpUB : U \ coordDivisor S id ∈ nhds p` using `(hU.sdiff hBc).mem_nhds ⟨hp, hpB⟩`. Establish `hfd : DifferentiableAt ℂ f p` using `hf.differentiableAt hpUB`. Conclude with `((hPd p).mul ((hPd p).mul hfd)).differentiableWithinAt`. Establish `hl : ∀ j ∈ S.toList ++ S.toList, j ∈ S` using `fun j hj => by simpa using hj`. Use `hg.exists_extension_of_prod_mul hU (S.toList ++ S.toList) hl _ hh fun z _ _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[List.map_append, List.prod_append, Finset.prod_map_toList]`. Simplify using `only [hP]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem HasLogGrowth.exists_differentiableOn_extension {ι : Type*} [Fintype ι]
     {S : Finset ι} {U : Set (ι → ℂ)} (hU : IsOpen U) {f : (ι → ℂ) → ℂ}

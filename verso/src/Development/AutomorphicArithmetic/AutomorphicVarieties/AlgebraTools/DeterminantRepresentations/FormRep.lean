@@ -4,7 +4,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.Deter
 open Polynomial Matrix UpperTheory.V UpperTheory.V.W
 
 /- English proof (translation)
-Simplify using `[GDet.repAlg]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem repAlg_single {G R : Type} [Group G] [CommRing R] {a : ℕ} (ρ : G →* Matrix (Fin a) (Fin a) R)
     (B : Type) [CommRing B] [Algebra R B] (g : G) (b : B) :
@@ -12,7 +12,7 @@ private theorem repAlg_single {G R : Type} [Group G] [CommRing R] {a : ℕ} (ρ 
   simp [GDet.repAlg]
 
 /- English proof (translation)
-Establish `e : F.eps O B g = Units.map (algebraMap R B : R →* B) (F.eps O R g)`. Use `ext`. Simplify using `[GFrame.eps, IsScalarTower.algebraMap_apply O R B]`. Rewrite using `[e, ← map_zpow]`. Both sides reduce to the same expression.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem UpperTheory.V.AlgebraTools.Det.eps_zpow_algebraMap_eq {l : ℕ} [Fact l.Prime] (F : GFrame l) (O : Type) [CommRing O]
     [Algebra ℤ_[l] O] (R : Type) [CommRing R] [Algebra O R] (B : Type) [CommRing B] [Algebra R B]
@@ -25,23 +25,23 @@ private theorem UpperTheory.V.AlgebraTools.Det.eps_zpow_algebraMap_eq {l : ℕ} 
   rfl
 
 /- English proof (translation)
-Introduce `l _ F O _ _ R _ _ n a r P hP`. Establish `h1 : ∀ (B : Type) [CommRing B] [Algebra R B] [Algebra O B] [IsScalarTower O R B] (y : MonoidAlgebra B F.G₀), (GDet.repAlg (mat r) B y)ᵀ * (P : Matrix (Fin a) (Fin a) R).map (algebraMap R B) = (P : Matrix (Fin a) (Fin a) R).map (algebraMap R B) * GDet.repAlg (mat r) B (F.star O B …`. Introduce `B _ _ _ _ y`. Set `ρ' : F.G₀ →* Matrix (Fin a) (Fin a) B` to `(algebraMap R B).mapMatrix.toMonoidHom.comp (mat r)`. Establish `hρ : ∀ g, (mat r g).map (algebraMap R B) = ρ' g` using `fun g => rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Proceed by induction on `y using MonoidAlgebra.induction_linear with`. Consider the case `zero => simp [GFrame.star]`. Consider the case `add x z hx hz`. Rewrite using `[(UpperTheory.V.AlgebraTools.Det.starApi F O B n).2.2.1, map_add, map_add, Matrix.transpose_add, Matrix.add_mul, Matrix.mul_add, hx, hz]`. Consider the case `single g b`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Establish `hs : F.star O B n (MonoidAlgebra.single g b) = MonoidAlgebra.single (F.conj g)⁻¹ (b * ((F.eps O B g ^ (1 - (n:ℤ)) : Bˣ) : B))`. Simplify using `[GFrame.star, GFrame.starOp]`. Rewrite using `[hs, repAlg_single, repAlg_single, hρ, hρ, UpperTheory.V.AlgebraTools.Det.eps_zpow_algebraMap_eq F O R B]`. Establish `hF : (ρ' g)ᵀ * (P : Matrix (Fin a) (Fin a) R).map (algebraMap R B) * ρ' (F.conj g) = algebraMap R B ((F.eps O R g ^ (1 - (n:ℤ)) : Rˣ) : R) • (P : Matrix (Fin a) (Fin a) R).map (algebraMap R B)`. Use `congrArg (fun M : Matrix (Fin a) (Fin a) R => M.map (algebraMap R B)) (hP g)` as an intermediate fact.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h' : (ρ' g)ᵀ * (P : Matrix (Fin a) (Fin a) R).map (algebraMap R B) * ρ' (F.conj g) = ((((F.eps O R g ^ (1 - (n:ℤ)) : Rˣ) : R)) • (P : Matrix (Fin a) (Fin a) R)).map (algebraMap R B)`. Simplify `this` using `[Matrix.map_mul, Matrix.transpose_map, ρ']`. Rewrite using `[h']`. Use extensionality with `i j`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hinv : ρ' (F.conj g) * ρ' (F.conj g)⁻¹ = 1`. Rewrite using `[← map_mul, mul_inv_cancel, map_one]`. Establish `key : (ρ' g)ᵀ * (P : Matrix (Fin a) (Fin a) R).map (algebraMap R B) = algebraMap R B ((F.eps O R g ^ (1 - (n:ℤ)) : Rˣ) : R) • ((P : Matrix (Fin a) (Fin a) R).map (algebraMap R B) * ρ' (F.conj g)⁻¹)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hinv, Matrix.mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `_ = (ρ' g)ᵀ * (P : Matrix (Fin a) (Fin a) R).map (algebraMap R B) * ρ' (F.conj g) * ρ' (F.conj g)⁻¹ := by`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = _ := by rw [hF, Matrix.smul_mul]`. Rewrite using `[Matrix.transpose_smul, Matrix.smul_mul, key, Matrix.mul_smul, smul_smul]`. Establish `hu : ∀ (B : Type) [CommRing B] [Algebra R B], IsUnit ((P : Matrix (Fin a) (Fin a) R).map (algebraMap R B))`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `B _ _`. Conclude with `(P.isUnit.map (algebraMap R B).mapMatrix)`. Use `⟨h1, ?_, ?_⟩` and prove the remaining obligations. Introduce `y hy`. Use `h1 R y` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `this` using `[hy, Matrix.transpose_zero, Matrix.zero_mul]`. Take `⟨u, hu'⟩` from `hu R`. Establish `h2` using `congrArg (fun M => (↑u⁻¹ : Matrix (Fin a) (Fin a) R) * M) this`. Simplify using `only [← hu', Matrix.mul_zero, ← Matrix.mul_assoc, Units.inv_mul, Matrix.one_mul] at h2`. Conclude with `h2.symm`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `B _ _ _ _ y`. Use `congrArg Matrix.det (h1 B y)` as an intermediate fact. Rewrite `this` using `[Matrix.det_mul, Matrix.det_mul, Matrix.det_transpose, mul_comm]`. Establish `hd` using `(Matrix.isUnit_iff_isUnit_det _).mp (hu B)`. Conclude with `(hd.mul_left_cancel this).symm`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.AlgebraTools.Det.formRep :
     ∀ {l : ℕ} [Fact l.Prime] (F : GFrame l) (O : Type) [CommRing O] [Algebra ℤ_[l] O] (R : Type) [CommRing R] [Algebra O R] (n : ℕ) {a : ℕ} (r : F.G₀ →* GL (Fin a) R) (P : GL (Fin a) R), F.IsForm O n r P →

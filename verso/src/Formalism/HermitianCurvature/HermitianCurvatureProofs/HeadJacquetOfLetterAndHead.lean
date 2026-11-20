@@ -9,13 +9,13 @@ noncomputable section
 namespace Formalism.FourierDecayAlt.P
 
 /- English proof (translation)
-The claim follows from `LevelPointCoordinates.headJ_of (word_induction_of_parts hHL z_only rules_closed) hB`.
+A detailed English derivation is pending.
 -/
 theorem head_jacquet_of_letter_and_head (hHL : LevelPointCoordinates.HeadLetter) (hB : LevelPointCoordinates.HeadBridge) : LevelPointCoordinates.HeadJ :=
   LevelPointCoordinates.headJ_of (word_induction_of_parts hHL z_only rules_closed) hB
 
 /- English proof (translation)
-The claim follows from `pb_radHead_of_headJ (head_jacquet_of_letter_and_head hHL hB)`.
+A detailed English derivation is pending.
 -/
 theorem radial_head_of_letter_and_head (hHL : LevelPointCoordinates.HeadLetter) (hB : LevelPointCoordinates.HeadBridge) : KB.RadHead :=
   pb_radHead_of_headJ (head_jacquet_of_letter_and_head hHL hB)

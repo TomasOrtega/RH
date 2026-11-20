@@ -6,7 +6,7 @@ open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC
 namespace LateralTheory.CohomologicalPurity
 
 /- English proof (translation)
-Substitute `e` using the available equality. Conclude with `opnMap_comp _ _ _ _ _ h1 h2 h`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem opnMap_tri {X'' X' X : Scheme.{0}} {g : X'' ⟶ X} (a : X'' ⟶ X') (b : X' ⟶ X) (e : g = a ≫ b)
     (U'' : X''.Opens) (U' : X'.Opens) (U : X.Opens) (h : U'' ≤ g ⁻¹ᵁ U) (h1 : U'' ≤ a ⁻¹ᵁ U') (h2 : U' ≤ b ⁻¹ᵁ U) :
@@ -14,7 +14,7 @@ theorem opnMap_tri {X'' X' X : Scheme.{0}} {g : X'' ⟶ X} (a : X'' ⟶ X') (b :
   subst e; exact opnMap_comp _ _ _ _ _ h1 h2 h
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `pull _ (dbl.inl P') _ n (pull _ (dbl.map φ) _ n x.1) = pull _ φ.right _ n (pull _ (dbl.inl P) _ n x.1)`. Rewrite using `[← pull_comp, ← pull_comp, dbl.inl_map']`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem fgt_pull (q : ℕ) {P' P : Arrow Spc} (φ : P' ⟶ P) (n i : ℤ) (x : Hs q P n i) :
     Hs.fgt q P' n i (Hs.pull q φ n i x) = pull _ φ.right (tw q i) n (Hs.fgt q P n i x) := by
@@ -22,52 +22,50 @@ theorem fgt_pull (q : ℕ) {P' P : Arrow Spc} (φ : P' ⟶ P) (n i : ℤ) (x : H
   rw [← pull_comp, ← pull_comp, dbl.inl_map']
 
 /- English proof (translation)
-Rewrite using `[← pull_comp, ← pull_comp, ← Arrow.w φ]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem res_pull (q : ℕ) {P' P : Arrow Spc} (φ : P' ⟶ P) (n i : ℤ) (y : Ht q P.right n i) :
     pull _ P'.hom (tw q i) n (pull _ φ.right (tw q i) n y) = pull _ φ.left (tw q i) n (pull _ P.hom (tw q i) n y) := by
   rw [← pull_comp, ← pull_comp, ← Arrow.w φ]
 
 /- English proof (translation)
-Rewrite using `[Arrow.comp_left, pull_comp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pull_left_comp (q : ℕ) {P'' P' P : Arrow Spc} (φ : P'' ⟶ P') (ψ : P' ⟶ P) (n i : ℤ) (y : Ht q P.left n i) :
     pull _ (φ ≫ ψ).left (tw q i) n y = pull _ φ.left (tw q i) n (pull _ ψ.left (tw q i) n y) := by
   rw [Arrow.comp_left, pull_comp]
 
 /- English proof (translation)
-Rewrite using `[Arrow.comp_right, pull_comp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pull_right_comp (q : ℕ) {P'' P' P : Arrow Spc} (φ : P'' ⟶ P') (ψ : P' ⟶ P) (n i : ℤ) (y : Ht q P.right n i) :
     pull _ (φ ≫ ψ).right (tw q i) n y = pull _ φ.right (tw q i) n (pull _ ψ.right (tw q i) n y) := by
   rw [Arrow.comp_right, pull_comp]
 
 /- English proof (translation)
-Introduce `a1 b1 hBd q A B _ _ φ I hq J _ _ D s t hc he i hO n`. Take `⟨δ, hδ⟩` from `hBd`. Take `⟨m, rfl⟩ : ∃ m, n = m + 1` from `⟨n - 1, by ring⟩`. Establish `hqB : IsUnit (q : B)` using `by simpa using hq.map φ`. Establish `hqj : ∀ j, IsUnit (q : D.obj j)` using `fun j => by simpa using hq.map (s.app j).hom`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsn : ∀ {j k : J} (f : j ⟶ k), s.app k = s.app j ≫ D.map f` using `fun f => by simpa using s.naturality f`. Establish `htn : ∀ {j k : J} (f : j ⟶ k), D.map f ≫ t.app k = t.app j` using `fun f => by simpa using t.naturality f`. Establish `hD : ∀ {j k : J} (f : j ⟶ k), off (D.obj k) (I.map (s.app k).hom) ≤ Spec.map (D.map f) ⁻¹ᵁ off (D.obj j) (I.map (s.app j).hom)`. Introduce `j k f`. Establish `e1` using `off_map (s.app k).hom I`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e2` using `off_map (s.app j).hom I`. Simplify using `only [CommRingCat.ofHom_hom] at e1 e2`. Rewrite using `[e1, e2, hsn f, Spec.map_comp]`. Introduce `x hx`. Conclude with `hx`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hT : ∀ j, off B (I.map φ) ≤ Spec.map (t.app j) ⁻¹ᵁ off (D.obj j) (I.map (s.app j).hom)`. Introduce `j`. Establish `e1` using `off_map φ I`. Establish `e2` using `off_map (s.app j).hom I`. Simplify using `only [CommRingCat.ofHom_hom] at e2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, e2, ← he j, Spec.map_comp]`. Introduce `x hx`. Conclude with `hx`. Establish `eT : ∀ {j k : J} (f : j ⟶ k), Spec.map (t.app j) = Spec.map (t.app k) ≫ Spec.map (D.map f)` using `fun f => by`. Rewrite using `[← Spec.map_comp, htn f]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `eD : ∀ {j k l : J} (f : j ⟶ k) (g : k ⟶ l), Spec.map (D.map (f ≫ g)) = Spec.map (D.map g) ≫ Spec.map (D.map f)` using `fun f g => by rw [← Spec.map_comp, ← Functor.map_comp]`. Establish `sc : ∀ k : ℤ, (∀ x : Ht q (opn (off B (I.map φ))).right k i, ∃ j, ∃ y : Ht q (opn (off (D.obj j) (I.map (s.app j).hom))).right k i, pull _ (opnMap (Spec.map (t.app j)) _ _ (hT j)).right (tw q i) k y = x) ∧ ∀ j (y : Ht q (opn (off (D.obj j) (I.map (s.app j).hom))).right k i), pull …` using `fun k => spec_cont b1 q D t hc hqB hqj k i`. Establish `ex` using `fun {X : Scheme.{0}} (V : X.Opens) (k : ℤ) => hδ.1 q (opn V) (opn_mono V) k i`. Prove the components needed by the constructor for the conclusion. Introduce `x`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨j1, y1, hy1'⟩` from `(sc (m + 1)).1 (Hs.fgt q _ (m + 1) i x)`. Establish `h2 : pull _ (opnMap (Spec.map (t.app j1)) _ _ (hT j1)).left (tw q i) (m + 1) (pull _ (opn (off (D.obj j1) (I.map (s.app j1).hom))).hom (tw q i) (m + 1) y1) = 0`. Rewrite using `[← res_pull, hy1']`. Conclude with `(ex _ (m + 1)).1.apply_apply_eq_zero x`. Take `⟨k, f, h', hk⟩` from `(hO (m + 1)).2 j1 (hT j1) _ h2`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `h3 : pull _ (opn (off (D.obj k) (I.map (s.app k).hom))).hom (tw q i) (m + 1) (pull _ (opnMap (Spec.map (D.map f)) _ _ h').right (tw q i) (m + 1) y1) = 0`. Rewrite using `[res_pull]`. Conclude with `hk`. Take `⟨z, hz⟩` from `((ex (off (D.obj k) (I.map (s.app k).hom)) (m + 1)).1 _).1 h3`. Establish `h4 : Hs.fgt q _ (m + 1) i (x - Hs.pull q (opnMap (Spec.map (t.app k)) _ _ (hT k)) (m + 1) i z) = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_sub, fgt_pull, hz, ← pull_right_comp, ← opnMap_tri (Spec.map (t.app k)) (Spec.map (D.map f)) (eT f) _ _ _ (hT j1) (hT k) h', hy1', sub_self]`. Take `⟨w, hw⟩` from `((ex (off B (I.map φ)) m).2.2 _).1 h4`. Take `⟨j2, h2', w2, hw2⟩` from `(hO m).1 w`. Use `⟨IsFiltered.max k j2, hT _, Hs.pull q (opnMap (Spec.map (D.map (IsFiltered.leftToMax k j2))) _ _ (hD _)) (m + 1) i z + δ q _ m i (pull _ (opnMap (Spec.map (D.map (IsFiltered.rightToMax k j2))) _ _ (hD _)).left (tw q i) m w2), ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, ← Hs.pull_comp', ← opnMap_tri (Spec.map (t.app _)) (Spec.map (D.map (IsFiltered.leftToMax k j2))) (eT _) _ _ _ (hT k) (hT _) (hD _), hδ.2.1 q _ _ _ (opn_mono _) (opn_mono _), ← pull_left_comp, ← opnMap_tri (Spec.map (t.app _)) (Spec.map (D.map (IsFiltered.rightToMax k j …`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Normalize the expressions using the abelian group laws. Introduce `j h y hy`. Establish `hf : pull _ (opnMap (Spec.map (t.app j)) _ _ h).right (tw q i) (m + 1) (Hs.fgt q _ (m + 1) i y) = 0`. Rewrite using `[← fgt_pull, hy, map_zero]`. Take `⟨k, f, hk⟩` from `(sc (m + 1)).2 j _ (by exact hf)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h5 : Hs.fgt q _ (m + 1) i (Hs.pull q (opnMap (Spec.map (D.map f)) _ _ (hD f)) (m + 1) i y) = 0`. Rewrite using `[fgt_pull]`. Conclude with `hk`. Take `⟨w, hw⟩` from `((ex (off (D.obj k) (I.map (s.app k).hom)) m).2.2 _).1 h5`. Establish `h6 : δ q _ m i (pull _ (opnMap (Spec.map (t.app k)) _ _ (hT k)).left (tw q i) m w) = 0`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hδ.2.1 q _ _ (opnMap (Spec.map (t.app k)) _ _ (hT k)) (opn_mono _) (opn_mono _), hw, ← Hs.pull_comp', ← opnMap_tri (Spec.map (t.app k)) (Spec.map (D.map f)) (eT f) _ _ _ h (hT k) (hD f), hy]`. Take `⟨v, hv⟩` from `((ex (off B (I.map φ)) m).2.1 _).1 h6`. Take `⟨j3, v3, hv3'⟩` from `(sc m).1 v`. Establish `h7 : pull _ (opnMap (Spec.map (t.app (IsFiltered.max k j3))) _ _ (hT _)).left (tw q i) m (pull _ (opnMap (Spec.map (D.map (IsFiltered.leftToMax k j3))) _ _ (hD _)).left (tw q i) m w - pull _ (opn (off (D.obj (IsFiltered.max k j3)) (I.map (s.app _).hom))).hom (tw q i) m (pull _ (o …`. Rewrite using `[map_sub, sub_eq_zero, ← pull_left_comp, ← opnMap_tri (Spec.map (t.app _)) (Spec.map (D.map (IsFiltered.leftToMax k j3))) (eT _) _ _ _ (hT k) (hT _) (hD _), ← res_pull, ← pull_right_comp, ← opnMap_tri (Spec.map (t.app _)) (Spec.map (D.map (IsFiltered.rightToMax k j3))) (eT _) _ _ …`.
-
-Take `⟨r, g, h8, hr⟩` from `(hO m).2 _ (hT _) _ h7`. Use `⟨r, f ≫ IsFiltered.leftToMax k j3 ≫ g, hD _, ?_⟩` and prove the remaining obligations. Rewrite `hr` using `[map_sub, sub_eq_zero]`. Rewrite using `[opnMap_tri (Spec.map (D.map (IsFiltered.leftToMax k j3 ≫ g))) (Spec.map (D.map f)) (eD _ _) _ _ _ _ (hD _) (hD f), Hs.pull_comp', ← hw, opnMap_tri (Spec.map (D.map g)) (Spec.map (D.map (IsFiltered.leftToMax k j3))) (eD _ _) _ _ _ _ h8 (hD _), Hs.pull_comp', hδ.2.1 q _ _ _ (opn_m …`. Conclude with `(ex _ m).2.1.apply_apply_eq_zero _`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem leafHsFive : LeafHsFive := by
   intro a1 b1 hBd q A B _ _ φ I hq J _ _ D s t hc he i hO n
@@ -161,7 +159,7 @@ theorem leafHsFive : LeafHsFive := by
     exact (ex _ m).2.1.apply_apply_eq_zero _
 
 /- English proof (translation)
-The claim follows from `leafHsCont_of hB hE hO leafHsFive`.
+A detailed English derivation is pending.
 -/
 theorem leafHsCont_of' (hB : LeafBd) (hE : LeafExc) (hO : LeafOffCont) : LeafHsCont :=
   leafHsCont_of hB hE hO leafHsFive

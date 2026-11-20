@@ -28,9 +28,9 @@ def adjPair3 {T : Over S'} (a b c : T ⟶ G') : T.left ⟶ (G3 G).left :=
 
 omit [IsCommMonObj G] [IsCommMonObj G'] in
 /- English proof (translation)
-Set `U : Over.mk (T'.hom ≫ σ) ⟶ Over.mk (T.hom ≫ σ)` to `Over.homMk r.left (by show r.left ≫ T.hom ≫ σ = T'.hom ≫ σ`. Rewrite using `[← Category.assoc, Over.w r])`. Establish `e : ∀ a : T ⟶ G', U ≫ pushHom gp T a = pushHom gp T' (r ≫ a)` using `fun a => Over.OverMorphism.ext (Category.assoc r.left a.left φ).symm`. Use `show (U ≫ lift (pushHom gp T a) (lift (pushHom gp T b) (pushHom gp T c))).left = _`. Rewrite using `[comp_lift, comp_lift, e, e, e]`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem adjPair3_comp {T T' : Over S'} (r : T' ⟶ T) (a b c : T ⟶ G') :
     r.left ≫ adjPair3 gp a b c = adjPair3 gp (r ≫ a) (r ≫ b) (r ≫ c) := by
@@ -44,7 +44,7 @@ theorem adjPair3_comp {T T' : Over S'} (r : T' ⟶ T) (a b c : T ⟶ G') :
 
 omit [IsCommMonObj G] [IsCommMonObj G'] in
 /- English proof (translation)
-Substitute `hh` using the available equality. Take `rfl : A = pushHom gp (Over.mk k) a` from `Over.OverMorphism.ext ha`. Take `rfl : B = pushHom gp (Over.mk k) b` from `Over.OverMorphism.ext hb`. Take `rfl : C = pushHom gp (Over.mk k) c` from `Over.OverMorphism.ext hc`. Both sides reduce to the same expression.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem adjPair3_eq {Z : Scheme.{0}} {k : Z ⟶ S'} {h : Z ⟶ S} (hh : h = k ≫ σ) (a b c : Over.mk k ⟶ G')
     (A B C : Over.mk h ⟶ G) (ha : A.left = a.left ≫ φ) (hb : B.left = b.left ≫ φ) (hc : C.left = c.left ≫ φ) :
@@ -57,9 +57,9 @@ theorem adjPair3_eq {Z : Scheme.{0}} {k : Z ⟶ S'} {h : Z ⟶ S} (hh : h = k �
 
 omit [IsCommMonObj G] [IsCommMonObj G'] in
 /- English proof (translation)
-Use `pullback.hom_ext (f := G.hom) (g := G.hom) ?_ ?_` and prove the remaining obligations. Establish `e₁ : (lift a b).left ≫ (fst G' G').left = a.left` using `congrArg (fun q => q.left) (lift_fst a b)`. Establish `e₂ : adjPair2 gp a b ≫ (fst G G).left = a.left ≫ φ` using `congrArg (fun q => q.left) (lift_fst (pushHom gp T a) (pushHom gp T b))`. Use `show ((lift a b).left ≫ φ₂) ≫ (fst G G).left = adjPair2 gp a b ≫ (fst G G).left`. Rewrite using `[e₂, Category.assoc, sq.1, ← Category.assoc, e₁]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e₁ : (lift a b).left ≫ (snd G' G').left = b.left` using `congrArg (fun q => q.left) (lift_snd a b)`. Establish `e₂ : adjPair2 gp a b ≫ (snd G G).left = b.left ≫ φ` using `congrArg (fun q => q.left) (lift_snd (pushHom gp T a) (pushHom gp T b))`. Use `show ((lift a b).left ≫ φ₂) ≫ (snd G G).left = adjPair2 gp a b ≫ (snd G G).left`. Rewrite using `[e₂, Category.assoc, sq.2, ← Category.assoc, e₁]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adjPair2_eq {φ₂ : (G' ⊗ G').left ⟶ (G ⊗ G).left} (sq : IsSquare φ φ₂) {T : Over S'} (a b : T ⟶ G') :
     (lift a b).left ≫ φ₂ = adjPair2 gp a b := by
@@ -77,9 +77,9 @@ theorem adjPair2_eq {φ₂ : (G' ⊗ G').left ⟶ (G ⊗ G).left} (sq : IsSquare
 
 omit [IsCommMonObj G] [IsCommMonObj G'] in
 /- English proof (translation)
-Establish `e₀ : lift a b ≫ lift (fst G' G' ≫ f) (snd G' G') = lift (a ≫ f) b` using `by simp [comp_lift]`. Establish `e₁ : lift a b ≫ lift (fst G' G') (snd G' G' ≫ f') = lift a (b ≫ f')` using `by simp [comp_lift]`. Rewrite using `[Fin.prod_univ_two, ← adjPair2_eq gp sq, ← adjPair2_eq gp sq, ← e₀, ← e₁, Over.comp_left, Over.comp_left, Category.assoc, Category.assoc]`. Use `show _ ^ (1 : ℤ) * _ ^ (-1 : ℤ) = _`. Rewrite using `[zpow_one, zpow_neg_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem grpPullback_square_product_lift {φ₂ : (G' ⊗ G').left ⟶ (G ⊗ G).left} (sq : IsSquare φ φ₂) (f f' : G' ⟶ G') {T : Over S'}
     (a b : T ⟶ G') {U : Type} [CommGroup U] (h : (T.left ⟶ (G ⊗ G).left) → U) :
@@ -94,7 +94,7 @@ theorem grpPullback_square_product_lift {φ₂ : (G' ⊗ G').left ⟶ (G ⊗ G).
   rw [zpow_one, zpow_neg_one]; rfl
 
 /- English proof (translation)
-Use `(Fintype.prod_equiv (Equiv.ulift : ULift.{0} (Fin 3) ≃ Fin 3) _ (fun i => g ⟨i⟩ ^ lawε ⟨i⟩) (fun _ => rfl)).trans ?_` and prove the remaining obligations. Rewrite using `[Fin.prod_univ_three]`. Use `show _ ^ (1 : ℤ) * _ ^ (-1 : ℤ) * _ ^ (-1 : ℤ) = _`. Rewrite using `[zpow_one, zpow_neg_one, zpow_neg_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adjProd_ulift {U : Type} [CommGroup U] (g : ULift.{0} (Fin 3) → U) :
     ∏ i, g i ^ lawε i = g ⟨0⟩ * (g ⟨1⟩)⁻¹ * (g ⟨2⟩)⁻¹ := by
@@ -106,11 +106,11 @@ theorem adjProd_ulift {U : Type} [CommGroup U] (g : ULift.{0} (Fin 3) → U) :
 
 omit [IsCommMonObj G'] in
 /- English proof (translation)
-Rewrite using `[adjProd_ulift, adjPair2, adjPair2, adjPair2, map_mul, adjPair3]`. Generalize the expression as in `pushHom gp T a = A`. Generalize the expression as in `pushHom gp T b = B`. Generalize the expression as in `pushHom gp T c = C`. Establish `e₀ : lift A (lift B C) ≫ lift (padd G (x3 G 0) (x3 G 1)) (x3 G 2) = lift (A * B) C`.
+Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Rewrite using `[comp_lift]`. Use `congr 1`. Conclude with `(MonObj.comp_mul _ _ _).trans (by simp [x3])`. Simplify using `[x3]`. Establish `e₁ : lift A (lift B C) ≫ lift (x3 G 0) (x3 G 2) = lift A C` using `by simp [x3, comp_lift]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e₂ : lift A (lift B C) ≫ lift (x3 G 1) (x3 G 2) = lift B C` using `by simp [x3, comp_lift]`. Rewrite using `[← e₀, ← e₁]`. Conclude with `congrArg₂ (· * ·) rfl (congrArg (fun q => (h q.left)⁻¹) e₂)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem grpPullback_prod_firstLaw_pow {T : Over S'} (a b c : T ⟶ G') {U : Type} [CommGroup U] (h : (T.left ⟶ (G ⊗ G).left) → U) :
     ∏ i, h (adjPair3 gp a b c ≫ law1φ G (x3 G 0) (x3 G 1) (x3 G 2) i) ^ lawε i =
@@ -131,11 +131,11 @@ theorem grpPullback_prod_firstLaw_pow {T : Over S'} (a b c : T ⟶ G') {U : Type
 
 omit [IsCommMonObj G'] in
 /- English proof (translation)
-Rewrite using `[adjProd_ulift, adjPair2, adjPair2, adjPair2, map_mul, adjPair3]`. Generalize the expression as in `pushHom gp T a = A`. Generalize the expression as in `pushHom gp T b = B`. Generalize the expression as in `pushHom gp T c = C`. Establish `e₀ : lift A (lift B C) ≫ lift (x3 G 0) (padd G (x3 G 1) (x3 G 2)) = lift A (B * C)`.
+Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Rewrite using `[comp_lift]`. Use `congr 1`. Simplify using `[x3]`. Conclude with `(MonObj.comp_mul _ _ _).trans (by simp [x3])`. Establish `e₁ : lift A (lift B C) ≫ lift (x3 G 0) (x3 G 1) = lift A B` using `by simp [x3, comp_lift]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e₂ : lift A (lift B C) ≫ lift (x3 G 0) (x3 G 2) = lift A C` using `by simp [x3, comp_lift]`. Conclude with `congrArg₂ (· * ·) (congrArg₂ (· * ·) (congrArg (fun q => h q.left) e₀) (congrArg (fun q => (h q.left)⁻¹) e₁)) (congrArg (fun q => (h q.left)⁻¹) e₂)`.
+A detailed English derivation is pending.
 -/
 theorem grpPullback_prod_secondLaw_pow {T : Over S'} (a b c : T ⟶ G') {U : Type} [CommGroup U] (h : (T.left ⟶ (G ⊗ G).left) → U) :
     ∏ i, h (adjPair3 gp a b c ≫ law2φ G (x3 G 0) (x3 G 1) (x3 G 2) i) ^ lawε i =
@@ -155,13 +155,13 @@ theorem grpPullback_prod_secondLaw_pow {T : Over S'} (a b c : T ⟶ G') {U : Typ
     (congrArg (fun q => (h q.left)⁻¹) e₂)
 
 /- English proof (translation)
-Set `e : 𝟙_ (Over S') ⟶ G3 G'` to `lift 1 (lift 1 1)`. Establish `sj : Function.Surjective ((snd G' (G' ⊗ G')).left ≫ (snd G' G').left ≫ G'.hom).appTop.hom` using `surj_comp (surj_snd hG hA _) (surj_comp (surj_snd hG hA _) (hG _ _ hA).2)`. Establish `he : e.left ≫ (snd G' (G' ⊗ G')).left ≫ (snd G' G').left ≫ G'.hom = 𝟙 _`. Rewrite using `[Over.w, Over.w]`. Conclude with `Over.w e`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `ev : ∀ (a₁ b₁ a₂ b₂ l₁ l₂ l₃ : G3 G' ⟶ G') {T' : Over S'} (r : T' ⟶ G3 G') {z : T'.left} {J}, Good P z J → val (LB.mulGen P _ _ _ _ (LB.pullGen P _ _ w (adjPair3 gp l₁ l₂ l₃)) (LB.mulGen P _ _ _ _ (LB.pullGen P _ _ t (lift a₁ b₁).left) (LB.pullGen P _ _ t (lift a₂ b₂).left))) r.l …` using `fun a₁ b₁ a₂ b₂ l₁ l₂ l₃ T' r z J hJ => by`. Rewrite using `[val_mul hJ, val_mul hJ, val_pull hJ, val_pull hJ, val_pull hJ, adjPair3_comp, ← Over.comp_left, ← Over.comp_left, comp_lift, comp_lift]`. Establish `gn : ∀ (a₁ b₁ a₂ b₂ l₁ l₂ l₃ : G3 G' ⟶ G'), (LB.mulGen P _ _ _ _ (LB.pullGen P _ _ w (adjPair3 gp l₁ l₂ l₃)) (LB.mulGen P _ _ _ _ (LB.pullGen P _ _ t (lift a₁ b₁).left) (LB.pullGen P _ _ t (lift a₂ b₂).left))).IsGen` using `fun _ _ _ _ _ _ _ => DVR.mulGen_isGen _ _ _ _ _ _ _ (DVR.pullGen_isGen _ _ _ _ hw _) (DVR.mulGen_isGen _ _ _ _ _ _ _ (DVR.pullGen_isGen _ _ _ _ ht _) (DVR.pullGen_isGen _ _ _ _ ht _))`. Establish `key` using `gen_unique' hP (fun V _ k => ?_) _ e.left he sj (gn a b 1 1 k₁ k₂ k₃) (gn a₁ b₁ a₂ b₂ l₁ l₂ l₃) (fun y I hI => ?_) _ ρ.left z J hJ`. Rewrite `key` using `[ev _ _ _ _ _ _ _ ρ hJ, ev _ _ _ _ _ _ _ ρ hJ, MonObj.comp_one]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Simplify using the standard rewrite rules.
 
-Simplify using `only [Fintype.prod_sum_type, Sum.elim_inl, Sum.elim_inr]`. Conclude with `hF V k`. Simplify using `only [List.mem_cons, List.not_mem_nil, or_false, forall_eq_or_imp, forall_eq] at h0`. Take `⟨h₁, h₂, h₃, h₄, h₅, h₆, h₇, h₈, h₉, h₁₀, h₁₁, h₁₂⟩` from `h0`. Use `(ev _ _ _ _ _ _ _ e hI).trans (Eq.trans ?_ (ev _ _ _ _ _ _ _ e hI).symm)` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [e]`. Rewrite using `[h₁, h₂, h₃, h₄, h₅, h₆, h₇, h₈, h₉, h₁₀, h₁₁, h₁₂, MonObj.comp_one]`.
+A detailed English derivation is pending.
 -/
 theorem adjCompare (hG : Out.GlobalFnsSt) (hA : IsAbelianScheme G') {P : LB (G ⊗ G).left} (hP : P.IsLB)
     {K L : Type} [Fintype K] [Fintype L] {τ : K → ((G' ⊗ G').left ⟶ (G ⊗ G).left)} {ε : K → ℤ}
@@ -207,19 +207,19 @@ theorem adjCompare (hG : Out.GlobalFnsSt) (hA : IsAbelianScheme G') {P : LB (G �
     rw [h₁, h₂, h₃, h₄, h₅, h₆, h₇, h₈, h₉, h₁₀, h₁₁, h₁₂, MonObj.comp_one]
 
 /- English proof (translation)
-Set `p₀` to `x3 G' 0`. Set `p₁` to `x3 G' 1`. Set `p₂` to `x3 G' 2`. Set `e : 𝟙_ (Over S') ⟶ G3 G'` to `lift 1 (lift 1 1)`. Establish `e₀ : e ≫ p₀ = 1` using `by simp [e, p₀, x3]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `e₁ : e ≫ p₁ = 1` using `by simp [e, p₁, x3]`. Establish `e₂ : e ≫ p₂ = 1` using `by simp [e, p₂, x3]`. Establish `o₁ : e ≫ (p₀ * p₁) = 1` using `(MonObj.comp_mul _ _ _).trans (by rw [e₀, e₁, _root_.mul_one])`. Establish `of : ∀ q : G3 G' ⟶ G', e ≫ q = 1 → e ≫ q ≫ f = 1` using `fun q hq => by rw [← Category.assoc, hq, MonObj.one_comp]`. Establish `of' : ∀ q : G3 G' ⟶ G', e ≫ q = 1 → e ≫ q ≫ f' = 1` using `fun q hq => by rw [← Category.assoc, hq, MonObj.one_comp]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `ρ : T ⟶ G3 G'` to `lift x (lift x' y)`. Establish `r₀ : ρ ≫ p₀ = x` using `by simp [ρ, p₀, x3]`. Establish `r₁ : ρ ≫ p₁ = x'` using `by simp [ρ, p₁, x3]`. Establish `r₂ : ρ ≫ p₂ = y` using `by simp [ρ, p₂, x3]`. Establish `s₁ : ρ ≫ (p₀ * p₁) = x * x'` using `(MonObj.comp_mul _ _ _).trans (by rw [r₀, r₁])`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Use `adjCompare gp hG hA β.isLB t ht β.law1 β.isGen1 (p₀ * p₁) p₂ p₀ p₂ p₁ p₂ p₀ p₁ (p₂ ≫ f') (p₀ ≫ f) (p₁ ≫ f) p₂ (fun V _ k => by` as an intermediate fact. Rewrite using `[grpPullback_prod_firstLaw_pow, grpPullback_prod_firstLaw_pow, grpPullback_square_product_lift gp sq, grpPullback_square_product_lift gp sq, grpPullback_square_product_lift gp sq, grpPullback_square_product_lift gp sq, MonObj.one_comp, MonObj.one_comp, MonObj.mul_comp]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv]`.
+Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Use the proof step `abel)`. Use the proof step `(by`. Simplify using `only [List.mem_cons, List.not_mem_nil, or_false, forall_eq_or_imp, forall_eq]`. Conclude with `⟨o₁, e₂, e₀, e₂, e₁, e₂, e₀, e₁, of' _ e₂, of _ e₀, of _ e₁, e₂⟩) ρ hJ`. Rewrite `this` using `[s₁, ← Category.assoc ρ p₂, ← Category.assoc ρ p₀, ← Category.assoc ρ p₁, r₀, r₁, r₂]`. Then use the resulting hypothesis.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `adjCompare gp hG hA β.isLB t ht β.law2 β.isGen2 p₂ (p₀ * p₁) p₂ p₀ p₂ p₁ p₂ (p₀ ≫ f') (p₁ ≫ f') (p₂ ≫ f) p₀ p₁ (fun V _ k => by` as an intermediate fact. Rewrite using `[grpPullback_prod_secondLaw_pow, grpPullback_prod_secondLaw_pow, grpPullback_square_product_lift gp sq, grpPullback_square_product_lift gp sq, grpPullback_square_product_lift gp sq, grpPullback_square_product_lift gp sq, MonObj.one_comp, MonObj.one_comp, MonObj.mul_comp]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv]`. Use the proof step `abel)`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use the proof step `(by`. Simplify using `only [List.mem_cons, List.not_mem_nil, or_false, forall_eq_or_imp, forall_eq]`. Conclude with `⟨e₂, o₁, e₂, e₀, e₂, e₁, e₂, of' _ e₀, of' _ e₁, of _ e₂, e₀, e₁⟩) ρ hJ`. Rewrite `this` using `[s₁, ← Category.assoc ρ p₂, ← Category.assoc ρ p₀, ← Category.assoc ρ p₁, r₀, r₁, r₂]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem adjAdd (hG : Out.GlobalFnsSt) (hA : IsAbelianScheme G') {P : LB (G ⊗ G).left} (β : IsBiext G P)
     {φ₂ : (G' ⊗ G').left ⟶ (G ⊗ G).left} (sq : IsSquare φ φ₂) (f f' : G' ⟶ G') [IsMonHom f] [IsMonHom f']
@@ -275,9 +275,9 @@ omit [IsCommMonObj G] [IsCommMonObj G'] in
 include gp in
 
 /- English proof (translation)
-Substitute `hb` using the available equality. Set `ρ : (Over.mk a ⟶ G') →* (Over.mk (a ≫ σ) ⟶ G)` to `pushHom gp (Over.mk a)`. Establish `hρ : ∀ x, (ρ x).left = x.left ≫ φ` using `fun _ => rfl`. Use `⟨MulEquiv.ofBijective ρ ⟨fun x y hxy => ?_, fun y => ?_⟩, hρ⟩` and prove the remaining obligations. Use `Over.OverMorphism.ext (gp.1.hom_ext ?_ ((Over.w x).trans (Over.w y).symm))` and prove the remaining obligations.
+Substitute using the available equality. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(hρ x).symm.trans ((congrArg (fun z => z.left) hxy).trans (hρ y))`. Conclude with `⟨Over.homMk (gp.1.lift y.left a (Over.w y)) (gp.1.lift_snd _ _ _), Over.OverMorphism.ext ((hρ _).trans (gp.1.lift_fst _ _ _))⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem adjPoints {X : Scheme.{0}} (a : X ⟶ S') (b : X ⟶ S) (hb : b = a ≫ σ) :
     ∃ e : (Over.mk a ⟶ G') ≃* (Over.mk b ⟶ G), ∀ x, (e x).left = x.left ≫ φ := by
@@ -299,7 +299,7 @@ open scoped CategoryTheory.Obj CategoryTheory.MonObj
 attribute [local instance] Over.cartesianMonoidalCategory
 
 /- English proof (translation)
-The claim follows from `(Over.w (spMap s.1)).symm`.
+A detailed English derivation is pending.
 -/
 theorem adjBase {R₀ : Type} [CommRing R₀] {O R : LAlg R₀} (s : LHom O R) :
     Spec.map (CommRingCat.ofHom (algebraMap R₀ (R : Type))) =
@@ -307,13 +307,11 @@ theorem adjBase {R₀ : Type} [CommRing R₀] {O R : LAlg R₀} (s : LHom O R) :
   (Over.w (spMap s.1)).symm
 
 /- English proof (translation)
-Use `choose E hE using fun (R : LAlg R₀) (s : LHom O R) => adjPoints gp _ _ (adjBase s)`. Use `choose F hF using fun (R : LAlg R₀) (s : LHom O R) (x : B.G R) => (hb R).2 (E R s ((E R s).symm (e R x) ≫ f))`. Establish `spec : ∀ {R : LAlg R₀} (s : LHom O R) (x : B.G R) (x' : Over.mk (Spec.map (CommRingCat.ofHom s.1.toRingHom)) ⟶ G'), x'.left ≫ φ = (e R x).left → (x' ≫ f).left ≫ φ = (e R (F R s x)).left` using `fun {R} s x x' h => by`. Establish `: e R x = E R s x'` using `Over.OverMorphism.ext (h.symm.trans (hE R s x').symm)`. Rewrite using `[hF, this, MulEquiv.symm_apply_apply, hE]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨⟨fun {R} s => AddMonoidHom.mk' (F R s) fun x y => (hb R).1 ?_, fun {R S} s g x => (hb S).1 ?_⟩, spec⟩` and prove the remaining obligations. Rewrite using `[hm, hF, hF, hF, hm]`. Conclude with `(congrArg (fun q => E R s (q ≫ f)) (map_mul (E R s).symm _ _)).trans ((congrArg (E R s) (MonObj.mul_comp _ _ _)).trans (map_mul (E R s) _ _))`. Set `x'` to `(E R s).symm (e R x)`. Establish `hx : x'.left ≫ φ = (e R x).left` using `(hE R s x').symm.trans (congrArg (fun q => q.left) ((E R s).apply_symm_apply _))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Set `U : Over.mk (Spec.map (CommRingCat.ofHom (g.comp s).1.toRingHom)) ⟶ Over.mk (Spec.map (CommRingCat.ofHom s.1.toRingHom))` to `Over.homMk (Spec.map (CommRingCat.ofHom g.1.toRingHom)) (by show Spec.map _ ≫ Spec.map _ = Spec.map _`. Rewrite using `[← Spec.map_comp]`. Use the proof step `rfl)`. Establish `h₁` using `spec (g.comp s) (B.map g x) (U ≫ x') (by`. Rewrite using `[hn]`.
-
-Conclude with `(Category.assoc _ _ _).trans (congrArg (U.left ≫ ·) hx))`. Use `Over.OverMorphism.ext (h₁.symm.trans ?_)` and prove the remaining obligations. Use `show _ = (e S (B.map g (F R s x))).left`. Rewrite using `[hn, Category.assoc]`. Conclude with `(Category.assoc _ _ _).trans (congrArg (U.left ≫ ·) (spec s x x' hx))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adjEnd {R₀ : Type} [CommRing R₀] (G : Over (Spec (CommRingCat.of R₀))) [GrpObj G] (B : BX R₀)
     (e : ∀ R : LAlg R₀, B.G R → (sp (R₀ := R₀) (R : Type) ⟶ G)) (hb : ∀ R, Function.Bijective (e R))
@@ -352,17 +350,17 @@ theorem adjEnd {R₀ : Type} [CommRing R₀] (G : Over (Spec (CommRingCat.of R�
     exact (Category.assoc _ _ _).trans (congrArg (U.left ≫ ·) (spec s x x' hx))
 
 /- English proof (translation)
-Introduce `FRM _ hG R₀ _ G _ _ P β B e b J hb hm hn hJ h1 h2 O G' _ _ φ φ₂ hA gp sq f f' _ _ ⟨t, ht⟩`. Take `⟨a, ha⟩` from `adjEnd G B e hb hm hn O G' φ gp f`. Take `⟨a', ha'⟩` from `adjEnd G B e hb hm hn O G' φ gp f'`. Use `choose E hE using fun (R : LAlg R₀) (s : LHom O R) => adjPoints gp _ _ (adjBase s)`. Set `l` to `fun (R : LAlg R₀) (s : LHom O R) (x : B.G R) => (E R s).symm (e R x)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hl : ∀ R s x, (e R x).left = (l R s x).left ≫ φ` using `fun R s x => (congrArg (fun q => q.left) ((E R s).apply_symm_apply _)).symm.trans (hE R s _)`. Establish `lm : ∀ R s x y, l R s (x + y) = l R s x * l R s y` using `fun R s x y => (congrArg (E R s).symm (hm R x y)).trans (map_mul (E R s).symm _ _)`. Set `v` to `fun (R : LAlg R₀) (s : LHom O R) (x y : Over.mk (Spec.map (CommRingCat.ofHom s.1.toRingHom)) ⟶ G') => ReciprocityTheory.ChartRestriction.G.Geo.Tor.val (Z := (sp (R₀ := R₀) (R : Type)).left) t (lift x y).left (IsLocalRing.closedPoint (R : Type)) (J R)`. Use `Exists.elim ((FRM B b _ _ h1 h2).2 O a a' (fun {R} s x y => Units.map (stalkClosedPointIso (CommRingCat.of (R : Type))).hom.hom.toMonoidHom (v R s (l R s x) (l R s y) * (v R s 1 1)⁻¹)) (fun {R} s x x' y => ?_) (fun {R} s x y y' => ?_)) fun A hA' => ?_` and prove the remaining obligations. Use `rotate_left 2`.
+Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨rfl, rfl⟩` from `hA'`. Conclude with `⟨A, ha, ha'⟩`. Establish `k` using `(adjAdd gp hG hA β sq f f' t ht (l R s x) (l R s x') (l R s y) (hJ R)).1`. Rewrite `k` using `[← adjPair3_eq gp (adjBase s) _ _ _ _ _ _ (hl R s x) (hl R s x') (ha' s y _ (hl R s y).symm).symm, ← adjPair3_eq gp (adjBase s) _ _ _ _ _ _ (ha s x _ (hl R s x).symm).symm (ha s x' _ (hl R s x').symm).symm (hl R s y), ← lm]`. Rewrite using `[← map_mul, ← map_mul, ← map_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `congrArg _ ?_` and prove the remaining obligations. Establish `k'` using `congrArg Additive.ofMul k`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv, v] at k' ⊢`. Take the linear combination `(norm := abel) k'`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `k` using `(adjAdd gp hG hA β sq f f' t ht (l R s y) (l R s y') (l R s x) (hJ R)).2`. Rewrite `k` using `[← adjPair3_eq gp (adjBase s) _ _ _ _ _ _ (hl R s x) (ha' s y _ (hl R s y).symm).symm (ha' s y' _ (hl R s y').symm).symm, ← adjPair3_eq gp (adjBase s) _ _ _ _ _ _ (ha s x _ (hl R s x).symm).symm (hl R s y) (hl R s y'), ← lm]`. Rewrite using `[← map_mul, ← map_mul, ← map_mul]`. Use `congrArg _ ?_` and prove the remaining obligations. Establish `k'` using `congrArg Additive.ofMul k`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv, v] at k' ⊢`. Take the linear combination `(norm := abel) k'`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_oAdj_of_rosatiAdjoint :
   (∀ {R₀ : Type} [CommRing R₀] (B : BX R₀) (b : ∀ R x y, B.P R x y) (t₁ t₂ : ∀ R : LAlg R₀, B.G R → B.G R → B.G R → (R : Type)ˣ),

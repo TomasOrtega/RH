@@ -5,59 +5,49 @@ namespace GlobalTheory.CompanionTheory.Semistable
 open MvPolynomial
 
 /- English proof (translation)
-Set `P` to `MvPolynomial σ O`. Set `I : Ideal P` to `Ideal.span {(∏ i ∈ T, MvPolynomial.X i) - MvPolynomial.C ϖ}`. Set `A` to `P ⧸ I`. Set `a : A` to `algebraMap O A ϖ`. Set `B` to `Localization.Away a`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `C` to `MvPolynomial {j : σ // j ≠ i0} O`. Set `y : σ → C` to `fun i => if hi : i = i0 then 0 else MvPolynomial.X ⟨i, hi⟩`. Set `g : C` to `∏ i ∈ T.erase i0, y i`. Set `h : C` to `MvPolynomial.C ϖ * g`. Set `C'` to `Localization.Away h`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `u : C'` to `IsLocalization.Away.invSelf h`. Establish `hu : algebraMap C C' h * u = 1` using `IsLocalization.Away.mul_invSelf h`. Establish `hh : IsUnit (algebraMap C C' h)` using `IsLocalization.Away.algebraMap_isUnit h`. Establish `e1 : algebraMap C C' h = algebraMap O C' ϖ * algebraMap C C' g`. Rewrite using `[IsScalarTower.algebraMap_apply O C C' ϖ, MvPolynomial.algebraMap_eq, ← map_mul]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hϖ' : IsUnit (algebraMap O C' ϖ)`. Rewrite `hh` using `[e1]`. Conclude with `isUnit_of_mul_isUnit_left hh`. Set `z : σ → C'` to `fun i => if i = i0 then algebraMap O C' ϖ ^ 2 * u else algebraMap C C' (y i)`. Establish `hzg : ∏ i ∈ T.erase i0, z i = algebraMap C C' g`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_prod]`. Use `Finset.prod_congr rfl (fun i hi => ?_)` and prove the remaining obligations. Simplify using `only [z, if_neg (Finset.ne_of_mem_erase hi)]`. Establish `hz : ∏ i ∈ T, z i = algebraMap O C' ϖ`. Rewrite using `[← Finset.mul_prod_erase T z hi0, hzg]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [z, if_pos rfl]`. Take the linear combination `(algebraMap O C' ϖ) * hu - (algebraMap O C' ϖ * u) * e1`. Set `ψP : P →ₐ[O] C'` to `MvPolynomial.aeval z`. Establish `hψP : ∀ x ∈ I, ψP x = 0`. Introduce `x hx`.
+Take a linear combination of the given relations to obtain the conclusion. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨c, rfl⟩` from `Ideal.mem_span_singleton'.mp hx`. Establish `h3 : ∀ i, ψP (MvPolynomial.X i) = z i` using `fun i => MvPolynomial.aeval_X z i`. Establish `h4 : ψP (MvPolynomial.C ϖ) = algebraMap O C' ϖ` using `MvPolynomial.aeval_C z ϖ`. Establish `h5 : ψP ((∏ i ∈ T, MvPolynomial.X i) - MvPolynomial.C ϖ) = 0`. Rewrite using `[map_sub, map_prod, h4]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [h3, hz, sub_self]`. Rewrite using `[map_mul, h5, mul_zero]`. Set `ψA : A →ₐ[O] C'` to `Ideal.Quotient.liftₐ I ψP hψP`. Establish `hψA : ∀ p : P, ψA (Ideal.Quotient.mk I p) = ψP p` using `fun p => rfl`. Establish `hunit1 : ∀ yy : Submonoid.powers a, IsUnit (ψA yy)`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨_, n, rfl⟩`. Use `show IsUnit (ψA (algebraMap O A ϖ ^ n))`. Rewrite using `[map_pow, AlgHom.commutes]`. Conclude with `hϖ'.pow n`. Set `ψ : B →ₐ[O] C'` to `IsLocalization.liftAlgHom (M := Submonoid.powers a) (S := B) (f := ψA) hunit1`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
-Establish `hψ : ∀ x : A, ψ (algebraMap A B x) = ψA x` using `fun x => by first`. Consider the case `exact IsLocalization.lift_eq (M := Submonoid.powers a) (S := B) _ x`. Consider the case `simp [ψ, IsLocalization.liftAlgHom]`. Set `xB : σ → B` to `fun i => algebraMap A B (Ideal.Quotient.mk I (MvPolynomial.X i))`. Establish `hxB : ∏ i ∈ T, xB i = algebraMap O B ϖ`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `e : (Ideal.Quotient.mk I (∏ i ∈ T, MvPolynomial.X i)) = Ideal.Quotient.mk I (MvPolynomial.C ϖ)` using `Ideal.Quotient.eq.mpr (Ideal.subset_span rfl)`. Simplify using `only [xB]`. Rewrite using `[← map_prod, ← map_prod, e, IsScalarTower.algebraMap_apply O A B]`. Both sides reduce to the same expression. Establish `hϖB : IsUnit (algebraMap O B ϖ)`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[IsScalarTower.algebraMap_apply O A B]`. Conclude with `IsLocalization.Away.algebraMap_isUnit a`. Establish `hxB' : xB i0 * ∏ i ∈ T.erase i0, xB i = algebraMap O B ϖ`. Rewrite using `[Finset.mul_prod_erase T xB hi0, hxB]`. Establish `hpB : IsUnit (∏ i ∈ T.erase i0, xB i)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hϖB` using `[← hxB']`. Conclude with `isUnit_of_mul_isUnit_right hϖB`. Set `χC : C →ₐ[O] B` to `MvPolynomial.aeval (fun j => xB j.1)`. Establish `hχX : ∀ j : {j : σ // j ≠ i0}, χC (MvPolynomial.X j) = xB j.1` using `fun j => MvPolynomial.aeval_X (fun j : {j : σ // j ≠ i0} => xB j.1) j`. Establish `hχy : ∀ i ∈ T.erase i0, χC (y i) = xB i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `i hi`. Establish `hne : i ≠ i0` using `Finset.ne_of_mem_erase hi`. Establish `hyi : y i = MvPolynomial.X ⟨i, hne⟩` using `dif_neg hne`. Rewrite using `[hyi, hχX ⟨i, hne⟩]`. Establish `hχh : χC h = algebraMap O B ϖ * ∏ i ∈ T.erase i0, xB i` using `by show χC (MvPolynomial.C ϖ * ∏ i ∈ T.erase i0, y i) = _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Rewrite using `[map_mul, map_prod]`. Establish `hC : χC (MvPolynomial.C ϖ) = algebraMap O B ϖ` using `MvPolynomial.aeval_C _ ϖ`. Rewrite using `[hC, Finset.prod_congr rfl hχy]`. Establish `hunit2 : ∀ yy : Submonoid.powers h, IsUnit (χC yy)`. Introduce and unpack `⟨_, n, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
-Use `show IsUnit (χC (h ^ n))`. Rewrite using `[map_pow, hχh]`. Conclude with `(hϖB.mul hpB).pow n`. Set `χ : C' →ₐ[O] B` to `IsLocalization.liftAlgHom (M := Submonoid.powers h) (S := C') (f := χC) hunit2`. Establish `hχ : ∀ x : C, χ (algebraMap C C' x) = χC x` using `fun x => by first`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Consider the case `exact IsLocalization.lift_eq (M := Submonoid.powers h) (S := C') _ x`. Consider the case `simp [χ, IsLocalization.liftAlgHom]`. Establish `hχu : χ (algebraMap C C' h) * χ u = 1` using `by rw [← map_mul, hu, map_one]`. Rewrite `hχu` using `[hχ, hχh]`. Establish `h1 : χ.comp ψ = AlgHom.id O B`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `IsLocalization.algHom_ext (Submonoid.powers a)` to reduce the goal to its premises. Apply `Ideal.Quotient.algHom_ext` to reduce the goal to its premises. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `i`. Use `show χ (ψ (algebraMap A B (Ideal.Quotient.mk I (MvPolynomial.X i)))) = algebraMap A B (Ideal.Quotient.mk I (MvPolynomial.X i))`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite using `[hψ, hψA]`. Establish `hXi : ψP (MvPolynomial.X i) = z i` using `MvPolynomial.aeval_X z i`. Rewrite using `[hXi]`. Use `show χ (z i) = xB i`. Distinguish the cases in `hi : i = i0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hi]`. Establish `hz0 : z i0 = algebraMap O C' ϖ ^ 2 * u` using `if_pos rfl`. Rewrite using `[hz0, map_mul, map_pow, AlgHom.commutes]`. Take the linear combination `(χ u * algebraMap O B ϖ) * hxB'.symm + xB i0 * hχu`. Establish `hzi : z i = algebraMap C C' (y i)` using `if_neg hi`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hyi : y i = MvPolynomial.X ⟨i, hi⟩` using `dif_neg hi`. Rewrite using `[hzi, hχ, hyi, hχX ⟨i, hi⟩]`. Establish `h2 : ψ.comp χ = AlgHom.id O C'`. Apply `IsLocalization.algHom_ext (Submonoid.powers h)` to reduce the goal to its premises. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Introduce `j`. Use `show ψ (χ (algebraMap C C' (MvPolynomial.X j))) = algebraMap C C' (MvPolynomial.X j)`. Rewrite using `[hχ]`. Rewrite using `[hχX j]`. Use `show ψ (algebraMap A B (Ideal.Quotient.mk I (MvPolynomial.X j.1))) = _`.
-
-Rewrite using `[hψ, hψA]`. Establish `hXi : ψP (MvPolynomial.X j.1) = z j.1` using `MvPolynomial.aeval_X z j.1`. Establish `hzi : z j.1 = algebraMap C C' (y j.1)` using `if_neg j.2`. Establish `hyi : y j.1 = MvPolynomial.X ⟨j.1, j.2⟩` using `dif_neg j.2`. Rewrite using `[hXi, hzi, hyi]`.
-
-Set `e : C' ≃ₐ[O] B` to `AlgEquiv.ofAlgHom χ ψ h1 h2`. Use `haveI : Algebra.FormallySmooth C C' := Algebra.FormallySmooth.of_isLocalization (Submonoid.powers h)`. Use `haveI : Algebra.FormallySmooth O C' := Algebra.FormallySmooth.comp O C C'`. Use `haveI : Algebra.FormallySmooth O B := Algebra.FormallySmooth.of_equiv e`. Use `haveI : Algebra.FinitePresentation O A := Algebra.FinitePresentation.quotient (Submodule.fg_span_singleton _)`.
-
-Use `haveI : Algebra.FinitePresentation A B := IsLocalization.Away.finitePresentation a`. Use `haveI : Algebra.FinitePresentation O B := Algebra.FinitePresentation.trans O A B`. Use `haveI : Algebra.FinitePresentation O F := IsLocalization.Away.finitePresentation ϖ`. Set `φ` to `IsLocalization.Away.map F B (algebraMap O A) ϖ`. Use `letI : Algebra F B := φ.toAlgebra`.
-
-Use `haveI : IsScalarTower O F B := IsScalarTower.of_algebraMap_eq (fun x => by`. Rewrite using `[RingHom.algebraMap_toAlgebra, IsScalarTower.algebraMap_apply O A B]`. Conclude with `(IsLocalization.map_eq _ _).symm)`. Use `haveI : Algebra.FormallySmooth F B := Algebra.FormallySmooth.localization_base (Submonoid.powers ϖ)`. Use `haveI : Algebra.FinitePresentation F B := Algebra.FinitePresentation.of_restrict_scalars_finitePresentation O F B`.
-
-Establish `hs : Algebra.Smooth F B` using `⟨inferInstance, inferInstance⟩`. Conclude with `hs`.
+Introduce a local definition for the expression. Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem smooth_away_core (O : Type) [CommRing O] (ϖ : O) (σ : Type) [Finite σ] [DecidableEq σ]
     (T : Finset σ) (i0 : σ) (hi0 : i0 ∈ T) (F : Type) [Field F] [Algebra O F]
@@ -211,7 +201,7 @@ theorem smooth_away_core (O : Type) [CommRing O] (ϖ : O) (σ : Type) [Finite σ
   exact hs
 
 /- English proof (translation)
-Introduce `O _ _ _ ϖ _ m r hr1 hrm F _ _ _`. Conclude with `smooth_away_core O ϖ (Fin m) (Finset.univ.filter (fun i : Fin m => (i : ℕ) < r)) ⟨0, by omega⟩ (Finset.mem_filter.mpr ⟨Finset.mem_univ _, show (0 : ℕ) < r by omega⟩) F`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem smooth_generic_fibre : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (ϖ : O), Irreducible ϖ → ∀ (m r : ℕ), 1 ≤ r → r ≤ m → ∀ (F : Type) [Field F] [Algebra O F] [IsLocalization.Away ϖ F], (IsLocalization.Away.map F (Localization.Away (algebraMap O (MvPolynomial (Fin m) O ⧸ Ideal.span {(∏ i ∈ Finset.univ.filter (fun i : Fin m => (i : ℕ) < r), MvPolynomial.X i) - MvPolynomial.C ϖ}) ϖ)) (algebraMap O (MvPolynomial (Fin m) O ⧸ Ideal.span {(∏ i ∈ Finset.univ.filter (fun i : Fin m => (i : ℕ) < r), MvPolynomial.X i) - MvPolynomial.C ϖ})) ϖ).Smooth := by
   intro O _ _ _ ϖ _ m r hr1 hrm F _ _ _

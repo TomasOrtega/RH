@@ -13,7 +13,7 @@ private def blockAdjointFin2 (R : Type) [CommRing R] : Matrix (Fin 2) (Fin 2) R 
     rw [smul_comm]
 
 /- English proof (translation)
-Use extensionality with `a b`. Apply the tactic sequence `fin_cases a <;> fin_cases b <;> rfl`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem adjoint_block_submatrix_eq {R : Type} [CommRing R] (X : M4 R) :
     blockAdjointFin2 R (X.submatrix ixA ixA) = (adj X).submatrix ixB ixB := by
@@ -21,7 +21,7 @@ private theorem adjoint_block_submatrix_eq {R : Type} [CommRing R] (X : M4 R) :
   fin_cases a <;> fin_cases b <;> rfl
 
 /- English proof (translation)
-Introduce `Y`. Use `⟨blockAdjointFin2 R Y, ?_⟩` and prove the remaining obligations. Use extensionality with `a b`. Apply the tactic sequence `fin_cases a <;> fin_cases b <;> simp [blockAdjointFin2, ixB, sgn]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem adjoint_block_surjective {R : Type} [CommRing R] : Function.Surjective (blockAdjointFin2 R) := by
   intro Y
@@ -32,13 +32,11 @@ private theorem adjoint_block_surjective {R : Type} [CommRing R] : Function.Surj
 end UpperTheory.V.Ws.Bl
 
 /- English proof (translation)
-Introduce `R Γ _ _ r hr hA`. Establish `hadj : ∀ g, (adj (r g)).submatrix ixB ixB ∈ Submodule.span R (Set.range fun g => (r g).submatrix ixB ixB)`. Introduce `g`. Take `⟨ν, hν⟩` from `hr.gsp g`. Establish `hinv : r g * r g⁻¹ = 1` using `by rw [← map_mul, mul_inv_cancel, map_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[(grp R).2.2.2.2.2.2.1 ν _ _ hν hinv]`. Establish `hs : (ν • r g⁻¹).submatrix ixB ixB = ν • (r g⁻¹).submatrix ixB ixB` using `rfl`. Rewrite using `[hs]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨g⁻¹, rfl⟩)`. Rewrite using `[eq_top_iff]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Submodule.map_top, LinearMap.range_eq_top.mpr adjoint_block_surjective]`. Use `_ = Submodule.map (blockAdjointFin2 R) (Submodule.span R (Set.range fun g => (r g).submatrix ixA ixA)) := by rw [hA]`. Use `_ = Submodule.span R (blockAdjointFin2 R '' Set.range fun g => (r g).submatrix ixA ixA) := Submodule.map_span _ _`. Use `_ ≤ _ := by`.
-
-Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨_, ⟨g, rfl⟩, rfl⟩`. Rewrite using `[adjoint_block_submatrix_eq]`. Conclude with `hadj g`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.Bl.spanB :
     ∀ (R Γ : Type) [CommRing R] [Group Γ] (r : Γ →* M4 R), BG r → Submodule.span R (Set.range fun g => (r g).submatrix ixA ixA) = ⊤ → Submodule.span R (Set.range fun g => (r g).submatrix ixB ixB) = ⊤ := by

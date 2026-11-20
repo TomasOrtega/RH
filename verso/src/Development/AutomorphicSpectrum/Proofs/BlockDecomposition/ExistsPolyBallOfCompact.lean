@@ -22,11 +22,11 @@ section Abstract
 variable {G Z : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [AddCommGroup Z] [Module ℂ Z]
 
 /- English proof (translation)
-Take `⟨ι, _, r, c, h1, h2⟩` from `GlobalTheory.CompanionTheory.TwAvgInd.exists_finite_average (cInd H σ) (GlobalTheory.CompanionTheory.BZFun.isSmooth_cInd H σ) hL θ hθ f`. Use `⟨_, h1, h2, fun x hx => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Apply `hx` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Introduce a local definition for the expression.
 
-Set `E : cIndSpace H σ →ₗ[ℂ] Z` to `(GlobalTheory.CompanionTheory.TwAvgInd.evalAt H σ x) ∘ₗ (cIndSpace H σ).subtype`. Establish `hz : ∀ i, E (GlobalTheory.CompanionTheory.TwistedAverage.twOrbit (cInd H σ) L θ f (r i)) = 0`. Introduce `i`. Establish `: E (cInd H σ ((r i : L) : G) f) = 0` using `hcon _ (r i).2`. Simplify using `only [GlobalTheory.CompanionTheory.TwistedAverage.twOrbit, map_smul, this, smul_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `: E (c • ∑ i, GlobalTheory.CompanionTheory.TwistedAverage.twOrbit (cInd H σ) L θ f (r i)) = 0`. Rewrite using `[map_smul, map_sum, Finset.sum_eq_zero fun i _ => hz i, smul_zero]`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_avg (H : Subgroup G) (σ : Representation ℂ H Z) (L : Subgroup G) (hL : IsCompact (L : Set G))
     (θ : L →* ℂˣ) (hθ : IsOpen (θ.ker : Set L)) (f : cIndSpace H σ) :
@@ -49,25 +49,21 @@ theorem exists_avg (H : Subgroup G) (σ : Representation ℂ H Z) (L : Subgroup 
   exact this
 
 /- English proof (translation)
-Take `⟨L', hL', hc, g', h1, h2, h3⟩` from `hf`. Set `c : G →* G` to `(MulAut.conj y⁻¹).toMonoidHom`. Establish `hcv : ∀ x, c x = y⁻¹ * x * y` using `fun x => by simp [c, MulAut.conj_apply]`. Establish `hcc : Continuous c`. Establish `: (c : G → G) = fun x => y⁻¹ * x * y` using `funext hcv`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[this]`. Use `fun_prop`. Set `L : Subgroup G` to `L'.map c`. Establish `hL : L ≤ U`. Introduce and unpack `_ ⟨l, hl, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hcv]`. Conclude with `hU' _ (hL' hl)`. Establish `key : ∀ (n : L') , ∃ m : L, (m : G) = y⁻¹ * n * y ∧ (θ.comp (Subgroup.inclusion hL)) m = (θ.comp (Subgroup.inclusion hL')) n`. Introduce `n`. Use `⟨⟨y⁻¹ * n * y, ⟨n, n.2, hcv _⟩⟩, rfl, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hθ ⟨n, hL' n.2⟩ (hU' _ (hL' n.2))`. Establish `hconj : ∀ (n : G) (w : cIndSpace H σ), cInd H σ y⁻¹ (cInd H σ n w) = cInd H σ (y⁻¹ * n * y) (cInd H σ y⁻¹ w)`. Introduce `n w`. Rewrite using `[← Module.End.mul_apply, ← Module.End.mul_apply, ← map_mul, ← map_mul]`. Use `congr 2`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `group`. Use `⟨L, hL, hc.image hcc, cInd H σ y⁻¹ g', ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `e : f - cInd H σ y⁻¹ g' = cInd H σ y⁻¹ (cInd H σ y f - g')`. Rewrite using `[map_sub, ← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]`. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Establish `hle : twKer (cInd H σ) L' (θ.comp (Subgroup.inclusion hL')) ≤ (twKer (cInd H σ) L (θ.comp (Subgroup.inclusion hL))).comap (cInd H σ y⁻¹)`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨n, v, rfl⟩`. Take `⟨m, hm, hm'⟩` from `key n`. Use `Submodule.subset_span ⟨m, cInd H σ y⁻¹ v, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[map_sub, map_smul, hconj, hm, hm']`. Conclude with `hle h1`. Introduce and unpack `⟨_, n, hn, rfl⟩`. Establish `e` using `hconj n g'`. Rewrite `e` using `[h2 ⟨n, hn⟩, map_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e3 : θ (Subgroup.inclusion hL ⟨c n, n, hn, rfl⟩) = θ (Subgroup.inclusion hL' ⟨n, hn⟩)`. Establish `h4` using `hθ ⟨n, hL' hn⟩ (hU' _ (hL' hn))`. Rewrite using `[← show (⟨y⁻¹ * n * y, hU' _ (hL' hn)⟩ : U) = Subgroup.inclusion hL ⟨c n, n, hn, rfl⟩ from Subtype.ext (hcv n).symm]`. Conclude with `h4`. Establish `e5 : cInd H σ (c n) (cInd H σ y⁻¹ g') = _` using `(congrArg (fun x => cInd H σ x (cInd H σ y⁻¹ g')) (hcv n)).trans e.symm`.
-
-Use `e5.trans ?_` and prove the remaining obligations. Use `show ((θ (Subgroup.inclusion hL' ⟨n, hn⟩) : ℂˣ) : ℂ) • _ = ((θ (Subgroup.inclusion hL ⟨c n, n, hn, rfl⟩) : ℂˣ) : ℂ) • _`. Rewrite using `[e3]`. Introduce `u hu`. Use `h3 _ (hU u hu)` as an intermediate fact.
-
-Rewrite `this` using `[one_mul]`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem avgVanish_conj (H : Subgroup G) (σ : Representation ℂ H Z) (U : Subgroup G) (θ : U →* ℂˣ) (y : G)
     (hU : ∀ u ∈ U, y * u * y⁻¹ ∈ U) (hU' : ∀ u ∈ U, y⁻¹ * u * y ∈ U)
@@ -125,9 +121,9 @@ theorem avgVanish_conj (H : Subgroup G) (σ : Representation ℂ H Z) (U : Subgr
     exact this
 
 /- English proof (translation)
-Take `⟨L, hL, hc, g, h1, h2, h3⟩` from `hf`. Use `⟨L, hL, hc, g, h1, h2, fun u hu => ?_⟩` and prove the remaining obligations. Establish `e1 : h * e * y * u = h * (y * ((y⁻¹ * e * y) * u))` using `by group`. Establish `hh2` using `(g : smoothPart (ind H σ)).1.2 ⟨h, hh⟩ (y * ((y⁻¹ * e * y) * u))`. Rewrite using `[e1]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h4` using `h3 _ (U.mul_mem he hu)`. Use `hh2.trans ?_` and prove the remaining obligations. Rewrite using `[h4, map_zero]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem avgVanish_left (H : Subgroup G) (σ : Representation ℂ H Z) (U : Subgroup G) (θ : U →* ℂˣ)
     (f : cIndSpace H σ) (y e h : G) (hh : h ∈ H) (he : y⁻¹ * e * y ∈ U)
@@ -158,7 +154,7 @@ Both sides reduce to the same expression.
 theorem dEmb_eq (i t : ℕ) (d : Fin (t + 1) → k) : dEmb k i t d = uEl k i t 0 d := rfl
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Establish `: Fin.append (c + c') (d + d') = Fin.append c d + Fin.append c' d'`. Apply the tactic sequence `funext x; refine Fin.addCases ?_ ?_ x <;> simp`. Simplify using `only [uEl, Subgroup.coe_mul, this, ofAdd_add, map_mul]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem uEl_mul (i t : ℕ) (c c' : Fin (i + 1) → k) (d d' : Fin (t + 1) → k) :
     uEl k i t c d * uEl k i t c' d' = uEl k i t (c + c') (d + d') := by
@@ -168,15 +164,15 @@ theorem uEl_mul (i t : ℕ) (c c' : Fin (i + 1) → k) (d d' : Fin (t + 1) → k
   simp only [uEl, Subgroup.coe_mul, this, ofAdd_add, map_mul]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨_, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem uEl_mem (i t : ℕ) (c : Fin (i + 1) → k) (d : Fin (t + 1) → k) :
     uEl k i t c d ∈ MirUin k ((i + 1) + t + 1) := ⟨_, rfl⟩
 
 /- English proof (translation)
-Take `⟨w, hw⟩` from `(Subgroup.mem_subgroupOf.1 hu : ((u : Mir k ((i + 1) + t + 1)) : GL _ k) ∈ MirU k ((i + 1) + t + 1))`. Use `⟨fun a => w.toAdd (Fin.castAdd (t + 1) a), fun a => w.toAdd (Fin.natAdd (i + 1) a), ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Use `hw.symm.trans ?_` and prove the remaining obligations. Use `show unip k ((i + 1) + t + 1) w = unip k ((i + 1) + (t + 1)) _`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Set `w' : Fin ((i + 1) + (t + 1)) → k` to `w.toAdd`. Establish `e : Fin.append (fun a => w' (Fin.castAdd (t + 1) a)) (fun a => w' (Fin.natAdd (i + 1) a)) = w'` using `Fin.append_castAdd_natAdd`. Conclude with `congrArg Multiplicative.ofAdd e.symm`.
+Introduce a local definition for the expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_uEl (i t : ℕ) (u : Mir k ((i + 1) + t + 1)) (hu : u ∈ MirUin k ((i + 1) + t + 1)) :
     ∃ c d, u = uEl k i t c d := by
@@ -192,7 +188,7 @@ theorem exists_uEl (i t : ℕ) (u : Mir k ((i + 1) + t + 1)) (hu : u ∈ MirUin 
   exact congrArg Multiplicative.ofAdd e.symm
 
 /- English proof (translation)
-Rewrite using `[mirChar_eq k ψ ((i + 1) + t) _ (Multiplicative.ofAdd (Fin.append c d : Fin ((i + 1) + (t + 1)) → k)) rfl]`. Establish `: (Fin.last ((i + 1) + t) : Fin ((i + 1) + t + 1)) = Fin.natAdd (i + 1) (Fin.last t)` using `rfl`. Rewrite using `[toAdd_ofAdd, this, Fin.append_right]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem mirChar_uEl (ψ : AddChar k Circle) (i t : ℕ) (c : Fin (i + 1) → k) (d : Fin (t + 1) → k)
     (h : uEl k i t c d ∈ MirUin k ((i + 1) + t + 1)) :
@@ -202,13 +198,13 @@ theorem mirChar_uEl (ψ : AddChar k Circle) (i t : ℕ) (c : Fin (i + 1) → k) 
   rw [toAdd_ofAdd, this, Fin.append_right]
 
 /- English proof (translation)
-The claim follows from `(ePG i t).injective.eq_iff`.
+A detailed English derivation is pending.
 -/
 theorem ePG_inj {i t : ℕ} {a b : Σ x, Two (Fin (i + 1)) (Fin t) x} : ePG i t a = ePG i t b ↔ a = b :=
   (ePG i t).injective.eq_iff
 
 /- English proof (translation)
-Apply `Fin.ext` to reduce the goal to its premises. Rewrite using `[GlobalTheory.CompanionTheory.BZPhiPG.Fib.ePG_true_val]`. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem ePG_true_eq (i t : ℕ) (b : Fin (t + 1)) :
     ePG (i + 1) (t + 1) ⟨true, b⟩ = Fin.castSucc (Fin.natAdd (i + 1) b) := by
@@ -217,7 +213,7 @@ theorem ePG_true_eq (i t : ℕ) (b : Fin (t + 1)) :
   simp
 
 /- English proof (translation)
-Apply `Fin.ext` to reduce the goal to its premises. Rewrite using `[GlobalTheory.CompanionTheory.BZPhiPG.Cells.ePG_false_val]`. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem ePG_false_eq (i t : ℕ) (a : Fin (i + 1)) :
     ePG (i + 1) (t + 1) ⟨false, Fin.castSucc a⟩ = Fin.castSucc (Fin.castAdd (t + 1) a) := by
@@ -233,11 +229,11 @@ theorem uEl_val (i t : ℕ) (c : Fin (i + 1) → k) (d : Fin (t + 1) → k) :
       1 + colMat k ((i + 1) + (t + 1)) (Fin.append c d) := rfl
 
 /- English proof (translation)
-Use `show ((uEl k i t c 0 : Mir k _) : GL (Fin ((i + 1) + (t + 1) + 1)) k) ∈ parab k (ePG (i + 1) (t + 1))`. Use `mem_parab_iff.2 ?_` and prove the remaining obligations. Introduce `a b x y hab`. Apply the tactic sequence `cases a <;> cases b <;> first | exact absurd hab (by decide) | skip`. Rewrite using `[uEl_val, Matrix.add_apply, Matrix.one_apply_ne (fun e => by simpa using ePG_inj.1 e), zero_add, ePG_true_eq]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hy : y = Fin.last (i + 1)`. Substitute `hy` using the available equality. Rewrite using `[ePG_false_last]`. Simplify using `only [colMat, if_true, Fin.lastCases_castSucc, Fin.append_right, Pi.zero_apply]`. Take `⟨y', rfl⟩` from `Fin.exists_castSucc_eq.2 hy`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ePG_false_eq]`. Simplify using `[colMat, Fin.castSucc_ne_last]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem uEl_mem_HPG (i t : ℕ) (c : Fin (i + 1) → k) : uEl k i t c 0 ∈ HPG k (i + 1) (t + 1) := by
   show ((uEl k i t c 0 : Mir k _) : GL (Fin ((i + 1) + (t + 1) + 1)) k) ∈ parab k (ePG (i + 1) (t + 1))
@@ -254,11 +250,11 @@ theorem uEl_mem_HPG (i t : ℕ) (c : Fin (i + 1) → k) : uEl k i t c 0 ∈ HPG 
     simp [colMat, Fin.castSucc_ne_last]
 
 /- English proof (translation)
-Proceed by induction on `b using Fin.lastCases with`. Consider the case `last`. Rewrite using `[ePG_false_last]`. Proceed by induction on `a using Fin.lastCases with`. Consider the case `last => rw [ePG_false_last]`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately.
 
-Simplify using `[colMat]`. Consider the case `cast a => rw [ePG_false_eq]`. Simplify using `[colMat]`. Consider the case `cast b`. Rewrite using `[ePG_false_eq]`.
+Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[colMat, Fin.castSucc_ne_last]`.
+Simplify using the standard rewrite rules.
 -/
 theorem colMat_ePG_false (i t : ℕ) (c : Fin (i + 1) → k) (a b : Fin (i + 1 + 1)) :
     colMat k ((i + 1) + (t + 1)) (Fin.append c 0) (ePG (i + 1) (t + 1) ⟨false, a⟩) (ePG (i + 1) (t + 1) ⟨false, b⟩) =
@@ -274,17 +270,15 @@ theorem colMat_ePG_false (i t : ℕ) (c : Fin (i + 1) → k) (a b : Fin (i + 1 +
     simp [colMat, Fin.castSucc_ne_last]
 
 /- English proof (translation)
-Apply `Prod.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `a b`. Use `show (leviProj k (ePG (i + 1) (t + 1)) (hpgIncl k (i + 1) (t + 1) ⟨uEl k i t c 0, uEl_mem_HPG i t c⟩) false : GL (Fin (i + 1 + 1)) k).val a b = (1 + colMat k (i + 1) c : Matrix (Fin (i + 1 + 1)) (Fin (i + 1 + 1)) k) a b`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[leviProj_apply]`. Use `show (1 + colMat k ((i + 1) + (t + 1)) (Fin.append c 0) : Matrix (Fin ((i + 1) + (t + 1) + 1)) (Fin ((i + 1) + (t + 1) + 1)) k) (ePG (i + 1) (t + 1) ⟨false, a⟩) (ePG (i + 1) (t + 1) ⟨false, b⟩) = _`. Rewrite using `[Matrix.add_apply, Matrix.add_apply, colMat_ePG_false]`. Use `congr 1`. Distinguish the cases in `hab : a = b`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Substitute `hab` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[Matrix.one_apply_ne hab, Matrix.one_apply_ne (fun e => hab (by simpa using ePG_inj.1 e))]`. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `a b`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show (leviProj k (ePG (i + 1) (t + 1)) (hpgIncl k (i + 1) (t + 1) ⟨uEl k i t c 0, uEl_mem_HPG i t c⟩) true : GL (Fin (t + 1)) k).val a b = (1 : Matrix (Fin (t + 1)) (Fin (t + 1)) k) a b`. Rewrite using `[leviProj_apply]`. Use `show (1 + colMat k ((i + 1) + (t + 1)) (Fin.append c 0) : Matrix (Fin ((i + 1) + (t + 1) + 1)) (Fin ((i + 1) + (t + 1) + 1)) k) (ePG (i + 1) (t + 1) ⟨true, a⟩) (ePG (i + 1) (t + 1) ⟨true, b⟩) = _`. Rewrite using `[Matrix.add_apply, ePG_true_eq, ePG_true_eq]`. Establish `h0 : colMat k ((i + 1) + (t + 1)) (Fin.append c 0) (Fin.castSucc (Fin.natAdd (i + 1) a)) (Fin.castSucc (Fin.natAdd (i + 1) b)) = 0`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Unfold `colMat`. Conclude with `if_neg (Fin.castSucc_ne_last _)`. Rewrite using `[h0, add_zero]`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality.
-
-Simplify using the standard rewrite rules. Rewrite using `[Matrix.one_apply_ne hab, Matrix.one_apply_ne (fun e => hab (by simpa using e))]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pgProj_uEl (i t : ℕ) (c : Fin (i + 1) → k) :
     pgProj k (i + 1) (t + 1) ⟨uEl k i t c 0, uEl_mem_HPG i t c⟩ =
@@ -326,14 +320,14 @@ def rU : Representation ℂ (Multiplicative (Fin (i + 1) → k)) (τ.V ⊗[ℂ] 
   (extTensor τ.ρ σ.ρ).comp ((GlobalTheory.CompanionTheory.BZPhiPhi.unipM k i).prod 1)
 
 /- English proof (translation)
-Simplify using `[rU]`.
+Simplify using the standard rewrite rules.
 -/
 theorem rU_tmul (c : Multiplicative (Fin (i + 1) → k)) (a : τ.V) (b : σ.V) :
     rU τ σ c (a ⊗ₜ b) = τ.ρ (GlobalTheory.CompanionTheory.BZPhiPhi.unipM k i c) a ⊗ₜ b := by
   simp [rU]
 
 /- English proof (translation)
-Use `isSmooth_comp (isSmooth_extTensor hτ hσ) _ ?_` and prove the remaining obligations. Use `Continuous.prodMk ?_ continuous_const` and prove the remaining obligations. Conclude with `(GlobalTheory.CompanionTheory.BZPhiPhi.continuous_unipM (k := k) i).comp continuous_toAdd`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isSmooth_rU (hτ : IsSmooth τ.ρ) (hσ : IsSmooth σ.ρ) : IsSmooth (rU τ σ) := by
   refine isSmooth_comp (isSmooth_extTensor hτ hσ) _ ?_
@@ -341,13 +335,11 @@ theorem isSmooth_rU (hτ : IsSmooth τ.ρ) (hσ : IsSmooth σ.ρ) : IsSmooth (rU
   exact (GlobalTheory.CompanionTheory.BZPhiPhi.continuous_unipM (k := k) i).comp continuous_toAdd
 
 /- English proof (translation)
-Apply `TensorProduct.ext'` to reduce the goal to its premises. Introduce `a b`. Rewrite using `[rU_tmul]`. Establish `e2` using `pgProj_uEl (k := k) i t c`. Establish `e1 : sigX τ σ ⟨uEl k i t c 0, uEl_mem_HPG i t c⟩ (a ⊗ₜ b) = (mtw τ (((t + 1 : ℕ) : ℝ) / 2)).ρ (pgProj k (i + 1) (t + 1) ⟨uEl k i t c 0, uEl_mem_HPG i t c⟩).1 a ⊗ₜ[ℂ] (σ.tw (-((i + 1 + 1 : ℕ) : ℝ) / 2)).ρ (pgProj k (i + 1) (t + 1) ⟨uEl k i t c 0, uEl_mem_HPG i t c⟩).2 b` using `extTensor_tmul (mtw τ _).ρ (σ.tw _).ρ _ a b`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e3 : (mtw τ (((t + 1 : ℕ) : ℝ) / 2)).ρ (pgProj k (i + 1) (t + 1) ⟨uEl k i t c 0, uEl_mem_HPG i t c⟩).1 a = τ.ρ (GlobalTheory.CompanionTheory.BZPhiPhi.unipM k i (Multiplicative.ofAdd c)) a`. Rewrite using `[e2]`. Use `show twist τ.ρ (dpowM _ _) _ a = _`. Rewrite using `[twist_apply, GlobalTheory.CompanionTheory.LeibOrd.DerivTw.dpowM_uin _ ⟨_, GlobalTheory.CompanionTheory.BZPhiPhi.unipM_mem_MirUin k i _⟩]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e4 : (σ.tw (-((i + 1 + 1 : ℕ) : ℝ) / 2)).ρ (pgProj k (i + 1) (t + 1) ⟨uEl k i t c 0, uEl_mem_HPG i t c⟩).2 b = b`. Rewrite using `[e2]`. Use `show ((σ.tw _).ρ 1) b = b`. Rewrite using `[map_one]`. Both sides reduce to the same expression.
-
-Use `e1.trans ?_` and prove the remaining obligations. Conclude with `congrArg₂ (fun (x : τ.V) (y : σ.V) => (x ⊗ₜ[ℂ] y : τ.V ⊗[ℂ] σ.V)) e3 e4`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem sigX_uEl (c : Fin (i + 1) → k) :
     sigX τ σ ⟨uEl k i t c 0, uEl_mem_HPG i t c⟩ = rU τ σ (Multiplicative.ofAdd c) := by
@@ -391,9 +383,9 @@ instance muD_haar (n : ℕ) : (muD k n).IsAddHaarMeasure := by
 def chi (ψ : AddChar k Circle) {t : ℕ} (d : Fin (t + 1) → k) : ℂ := (((Circle.toUnits (ψ (d (Fin.last t))))⁻¹ : ℂˣ) : ℂ)
 
 /- English proof (translation)
-Establish `hl : IsLocallyConstant (ψ : k → Circle)`. Rewrite using `[IsLocallyConstant.iff_exists_open]`. Introduce `x`. Use `⟨(fun y => y - x) ⁻¹' {y : k | ψ y = 1}, (GlobalTheory.CompanionTheory.BZFun.isOpen_addChar_eq_one k ψ hψ).preimage (by fun_prop), by simp, fun y hy => ?_⟩` and prove the remaining obligations. Establish `hy' : ψ (y - x) = 1` using `hy`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: ψ y = ψ (y - x) * ψ x` using `by rw [← AddChar.map_add_eq_mul, sub_add_cancel]`. Rewrite using `[this, hy', one_mul]`. Conclude with `(hl.comp_continuous (continuous_apply (Fin.last t))).comp (fun z : Circle => (((Circle.toUnits z)⁻¹ : ℂˣ) : ℂ))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLocallyConstant_chi (ψ : AddChar k Circle) (hψ : Continuous ψ) (t : ℕ) :
     IsLocallyConstant (chi ψ : (Fin (t + 1) → k) → ℂ) := by
@@ -409,7 +401,7 @@ theorem isLocallyConstant_chi (ψ : AddChar k Circle) (hψ : Continuous ψ) (t :
     (fun z : Circle => (((Circle.toUnits z)⁻¹ : ℂˣ) : ℂ))
 
 /- English proof (translation)
-Simplify using `only [chi, Pi.add_apply, AddChar.map_add_eq_mul, map_mul, mul_inv]`. Rewrite using `[← Units.val_mul]`. Use `congr 1`. Rewrite using `[mul_comm ((Circle.toUnits (ψ (a (Fin.last t))))⁻¹), mul_inv_cancel_left]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 -/
 theorem chi_add (ψ : AddChar k Circle) {t : ℕ} (a b : Fin (t + 1) → k) :
     chi ψ a = ((Circle.toUnits (ψ (b (Fin.last t))) : ℂˣ) : ℂ) * chi ψ (a + b) := by
@@ -424,16 +416,16 @@ def phi (ψ : AddChar k Circle) (w : XS τ σ) (d : Fin (t + 1) → k) : τ.V �
   chi ψ d • evX w (dEmb k i t d * 1)
 
 /- English proof (translation)
-Conclude with `(isLocallyConstant_chi ψ hψ t).comp₂ (GlobalTheory.CompanionTheory.BZPhiPG.Fib.fibre_isLocallyConstant_hasCompactSupport k i t τ σ w 1).1 (fun a b => a • b)`.
+A detailed English derivation is pending.
 -/
 theorem phi_lc (ψ : AddChar k Circle) (hψ : Continuous ψ) (w : XS τ σ) : IsLocallyConstant (phi ψ w) := by
   exact (isLocallyConstant_chi ψ hψ t).comp₂
     (GlobalTheory.CompanionTheory.BZPhiPG.Fib.fibre_isLocallyConstant_hasCompactSupport k i t τ σ w 1).1 (fun a b => a • b)
 
 /- English proof (translation)
-Use `(GlobalTheory.CompanionTheory.BZPhiPG.Fib.fibre_isLocallyConstant_hasCompactSupport k i t τ σ w 1).2.mono ?_` and prove the remaining obligations. Introduce `d hd`. Introduce `h0`. Conclude with `hd (by`. Simplify using `only [phi]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[show evX w (dEmb k i t d * 1) = 0 from h0, smul_zero])`.
+A detailed English derivation is pending.
 -/
 theorem phi_cs (ψ : AddChar k Circle) (w : XS τ σ) : HasCompactSupport (phi ψ w) := by
   refine (GlobalTheory.CompanionTheory.BZPhiPG.Fib.fibre_isLocallyConstant_hasCompactSupport k i t τ σ w 1).2.mono ?_
@@ -454,7 +446,7 @@ Both sides reduce to the same expression.
 theorem evX_smul (c : ℂ) (a : XS τ σ) (x : Mir k ((i + 1) + (t + 1))) : evX (c • a) x = c • evX a x := rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `d`. Simplify using `only [phi, Pi.add_apply]`. Rewrite using `[evX_add, smul_add]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem phi_add (ψ : AddChar k Circle) (a b : XS τ σ) : phi ψ (a + b) = phi ψ a + phi ψ b := by
   funext d
@@ -462,7 +454,7 @@ theorem phi_add (ψ : AddChar k Circle) (a b : XS τ σ) : phi ψ (a + b) = phi 
   rw [evX_add, smul_add]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `d`. Simplify using `only [phi, Function.comp_apply, LinearMap.smul_apply, LinearMap.id_apply]`. Rewrite using `[evX_smul, smul_comm]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem phi_smul (ψ : AddChar k Circle) (c : ℂ) (a : XS τ σ) :
     phi ψ (c • a) = (c • (LinearMap.id : (τ.V ⊗[ℂ] σ.V) →ₗ[ℂ] (τ.V ⊗[ℂ] σ.V))) ∘ phi ψ a := by
@@ -473,14 +465,14 @@ theorem phi_smul (ψ : AddChar k Circle) (c : ℂ) (a : XS τ σ) :
 def iF (ψ : AddChar k Circle) (w : XS τ σ) : τ.V ⊗[ℂ] σ.V := smInt (muD k (t + 1)) (phi ψ w)
 
 /- English proof (translation)
-The claim follows from `(congrArg (smInt (muD k (t + 1))) (phi_add ψ a b)).trans (smInt_add _ (phi_lc ψ hψ a) (phi_cs ψ a) (phi_lc ψ hψ b) (phi_cs ψ b))`.
+A detailed English derivation is pending.
 -/
 theorem iF_add (ψ : AddChar k Circle) (hψ : Continuous ψ) (a b : XS τ σ) : iF ψ (a + b) = iF ψ a + iF ψ b :=
   (congrArg (smInt (muD k (t + 1))) (phi_add ψ a b)).trans
     (smInt_add _ (phi_lc ψ hψ a) (phi_cs ψ a) (phi_lc ψ hψ b) (phi_cs ψ b))
 
 /- English proof (translation)
-The claim follows from `(congrArg (smInt (muD k (t + 1))) (phi_smul ψ c a)).trans (smInt_linear _ _ (phi_lc ψ hψ a) (phi_cs ψ a))`.
+A detailed English derivation is pending.
 -/
 theorem iF_smul (ψ : AddChar k Circle) (hψ : Continuous ψ) (c : ℂ) (a : XS τ σ) : iF ψ (c • a) = c • iF ψ a :=
   (congrArg (smInt (muD k (t + 1))) (phi_smul ψ c a)).trans
@@ -498,7 +490,7 @@ theorem evX_cInd (w : XS τ σ) (g x : Mir k ((i + 1) + t + 1)) :
     evX (cInd (HPG k (i + 1) (t + 1)) (sigX τ σ) g w) x = evX w (x * g) := rfl
 
 /- English proof (translation)
-Use `(w : smoothPart (ind (HPG k (i + 1) (t + 1)) (sigX τ σ))).1.2 ⟨_, uEl_mem_HPG i t c⟩ x` as an intermediate fact. Rewrite `this` using `[sigX_uEl]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evX_left (w : XS τ σ) (c : Fin (i + 1) → k) (x : Mir k ((i + 1) + t + 1)) :
     evX w (uEl k i t c 0 * x) = rU τ σ (Multiplicative.ofAdd c) (evX w x) := by
@@ -507,14 +499,14 @@ theorem evX_left (w : XS τ σ) (c : Fin (i + 1) → k) (x : Mir k ((i + 1) + t 
   exact this
 
 /- English proof (translation)
-Simplify using `only [mul_one, dEmb_eq, uEl_mul, zero_add, add_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dEmb_mul_uEl (c : Fin (i + 1) → k) (d d₁ : Fin (t + 1) → k) :
     dEmb k i t d * 1 * uEl k i t c d₁ = uEl k i t c 0 * (dEmb k i t (d + d₁) * 1) := by
   simp only [mul_one, dEmb_eq, uEl_mul, zero_add, add_zero]
 
 /- English proof (translation)
-Simplify using `only [phi]`. Rewrite using `[evX_cInd, dEmb_mul_uEl, evX_left, chi_add ψ d d₁, map_smul, smul_smul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem phi_translate (ψ : AddChar k Circle) (w : XS τ σ) (c : Fin (i + 1) → k) (d₁ d : Fin (t + 1) → k) :
     phi ψ (cInd (HPG k (i + 1) (t + 1)) (sigX τ σ) (uEl k i t c d₁) w) d =
@@ -523,7 +515,7 @@ theorem phi_translate (ψ : AddChar k Circle) (w : XS τ σ) (c : Fin (i + 1) �
   rw [evX_cInd, dEmb_mul_uEl, evX_left, chi_add ψ d d₁, map_smul, smul_smul]
 
 /- English proof (translation)
-Rewrite using `[smInt_comp_measurePreserving _ (measurePreserving_add_right (muD k (t + 1)) d₁) (hl.comp T), smInt_linear _ _ hl hc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem smInt_translate {W : Type} [AddCommGroup W] [Module ℂ W] (T : W →ₗ[ℂ] W) {φ : (Fin (t + 1) → k) → W}
     (hl : IsLocallyConstant φ) (hc : HasCompactSupport φ) (d₁ : Fin (t + 1) → k) :
@@ -532,7 +524,7 @@ theorem smInt_translate {W : Type} [AddCommGroup W] [Module ℂ W] (T : W →ₗ
     smInt_linear _ _ hl hc]
 
 /- English proof (translation)
-Establish `e : phi ψ (cInd (HPG k (i + 1) (t + 1)) (sigX τ σ) (uEl k i t c d₁) w) = ((((Circle.toUnits (ψ (d₁ (Fin.last t))) : ℂˣ) : ℂ) • rU τ σ (Multiplicative.ofAdd c)) ∘ phi ψ w) ∘ fun d => d + d₁` using `funext fun d => phi_translate ψ w c d₁ d`. Conclude with `(congrArg (smInt (muD k (t + 1))) e).trans (smInt_translate _ (phi_lc ψ hψ w) (phi_cs ψ w) d₁)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem iF_translate (ψ : AddChar k Circle) (hψ : Continuous ψ) (w : XS τ σ) (c : Fin (i + 1) → k)
     (d₁ : Fin (t + 1) → k) :
@@ -554,7 +546,7 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 attribute [local instance] instMSpi instBSpi
 
 /- English proof (translation)
-Break down `le_total (valuation k (s₁ : k)) (valuation k (s₂ : k)) with h | h` into its components or cases. Conclude with `⟨s₂, h, le_rfl⟩`. Conclude with `⟨s₁, le_rfl, h⟩`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem exists_val_ge (s₁ s₂ : kˣ) :
     ∃ s : kˣ, valuation k (s₁ : k) ≤ valuation k (s : k) ∧ valuation k (s₂ : k) ≤ valuation k (s : k) := by
@@ -563,11 +555,11 @@ theorem exists_val_ge (s₁ s₂ : kˣ) :
   · exact ⟨s₁, le_rfl, h⟩
 
 /- English proof (translation)
-Use `hK.induction_on (p := fun S => ∃ s : kˣ, ∀ x ∈ S, Multiplicative.ofAdd x ∈ polyBall n s) ⟨1, by simp⟩ ?_ ?_ ?_` and prove the remaining obligations. Introduce and unpack `S T hST ⟨s, hs⟩`. Conclude with `⟨s, fun x hx => hs x (hST hx)⟩`. Introduce and unpack `S T ⟨s₁, h₁⟩ ⟨s₂, h₂⟩`. Take `⟨s, a, b⟩` from `exists_val_ge s₁ s₂`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Use `⟨s, fun x hx => ?_⟩` and prove the remaining obligations. Break down `hx with hx | hx` into its components or cases. Conclude with `polyBall_mono n a (h₁ x hx)`. Conclude with `polyBall_mono n b (h₂ x hx)`. Introduce `x _`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨s, hs⟩` from `exists_mem_polyBall (Multiplicative.ofAdd x)`. Conclude with `⟨_, mem_nhdsWithin_of_mem_nhds (((isOpen_polyBall n s).preimage continuous_ofAdd).mem_nhds hs), s, fun y hy => hy⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_polyBall_of_compact {n : ℕ} {K : Set (Fin n → k)} (hK : IsCompact K) :
     ∃ s : kˣ, ∀ x ∈ K, Multiplicative.ofAdd x ∈ polyBall n s := by
@@ -587,7 +579,7 @@ theorem exists_polyBall_of_compact {n : ℕ} {K : Set (Fin n → k)} (hK : IsCom
       (((isOpen_polyBall n s).preimage continuous_ofAdd).mem_nhds hs), s, fun y hy => hy⟩
 
 /- English proof (translation)
-Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨n, v, rfl⟩`. Conclude with `Submodule.subset_span ⟨⟨n, h n.2⟩, v, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem twKer_one_mono {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ G V)
     {A B : Subgroup G} (h : A ≤ B) : twKer ρ A 1 ≤ twKer ρ B 1 := by
@@ -596,13 +588,13 @@ theorem twKer_one_mono {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V] (�
   exact Submodule.subset_span ⟨⟨n, h n.2⟩, v, rfl⟩
 
 /- English proof (translation)
-Establish `ho : IsOpen (((1 : L →* ℂˣ).ker : Subgroup L) : Set L)`. Establish `: (((1 : L →* ℂˣ).ker : Subgroup L) : Set L) = Set.univ`. Use extensionality with `x`. Simplify using `[MonoidHom.mem_ker]`. Rewrite using `[this]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `isOpen_univ`. Take `⟨K, T, -, -, -, hT, hsum⟩` from `(GlobalTheory.CompanionTheory.TwistedAverage.mem_twKer_iff_average ρ hρ L hL 1 ho v).1 hv`. Establish `hne : T.Nonempty`. Take `⟨t, ⟨ht, -⟩, -⟩` from `hT 1`. Conclude with `⟨t, ht⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hc : (T.card : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hne.card_pos.ne'`. Establish `h1 : (T.card : ℂ) • v = 0`. Rewrite using `[← hsum, Nat.cast_smul_eq_nsmul, ← Finset.sum_const]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[hf _ x.2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Conclude with `(smul_eq_zero.1 h1).resolve_left hc`.
+A detailed English derivation is pending.
 -/
 theorem eq_zero_of_fixed_twKer {G V : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [AddCommGroup V]
     [Module ℂ V] (ρ : Representation ℂ G V) (hρ : IsSmooth ρ) (L : Subgroup G) (hL : IsCompact (L : Set G))
@@ -629,15 +621,15 @@ theorem eq_zero_of_fixed_twKer {G V : Type} [Group G] [TopologicalSpace G] [IsTo
 variable {i t : ℕ} {τ : MRep k (i + 1)} {σ : GRep k (t + 1)}
 
 /- English proof (translation)
-Unfold `twKer at hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem w hw`. Take `⟨u, a, rfl⟩` from `hw`. Take `⟨v, hv⟩` from `(Subgroup.mem_subgroupOf.1 u.2 : ((u : Mir k (i + 1)) : GL (Fin (i + 1 + 1)) k) ∈ MirU k (i + 1))`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hu : (u : Mir k (i + 1)) = GlobalTheory.CompanionTheory.BZPhiPhi.unipM k i v` using `Subtype.ext hv.symm`. Take `⟨s, hs⟩` from `exists_mem_polyBall v`. Use `⟨s, Submodule.subset_span ⟨⟨v, hs⟩, a ⊗ₜ b, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[rU_tmul, hu]`. Simplify using `[TensorProduct.sub_tmul]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Consider the case `zero => exact ⟨1, by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨s₁, h₁⟩` from `hx`. Take `⟨s₂, h₂⟩` from `hy`. Take `⟨s, a, c⟩` from `exists_val_ge s₁ s₂`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨s, ?_⟩` and prove the remaining obligations. Rewrite using `[TensorProduct.add_tmul]`. Conclude with `add_mem (twKer_one_mono _ (polyBall_mono _ a) h₁) (twKer_one_mono _ (polyBall_mono _ c) h₂)`. Consider the case `smul c x _ hx`. Take `⟨s, hs⟩` from `hx`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨s, ?_⟩` and prove the remaining obligations. Rewrite using `[← TensorProduct.smul_tmul']`. Conclude with `Submodule.smul_mem _ _ hs`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_polyBall_tmul (x : τ.V) (hx : x ∈ twKer τ.ρ (MirUin k (i + 1)) 1) (b : σ.V) :
     ∃ s : kˣ, (x ⊗ₜ[ℂ] b : τ.V ⊗[ℂ] σ.V) ∈ twKer (rU τ σ) (polyBall (i + 1) s) 1 := by
@@ -666,11 +658,11 @@ theorem exists_polyBall_tmul (x : τ.V) (hx : x ∈ twKer τ.ρ (MirUin k (i + 1
     exact Submodule.smul_mem _ _ hs
 
 /- English proof (translation)
-Set `K` to `twKer τ.ρ (MirUin k (i + 1)) 1`. Establish `ex : Function.Exact (LinearMap.rTensor σ.V K.subtype) (LinearMap.rTensor σ.V K.mkQ)` using `rTensor_exact σ.V (LinearMap.exact_subtype_mkQ K) (Submodule.mkQ_surjective K)`. Take `⟨y, rfl⟩` from `(ex z).1 hz`. Use `clear hz`. Proceed by induction on `y using TensorProduct.induction_on with`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => exact ⟨1, by simp⟩`. Consider the case `tmul x b => exact exists_polyBall_tmul x.1 x.2 b`. Consider the case `add a b ha hb`. Take `⟨s₁, h₁⟩` from `ha`. Take `⟨s₂, h₂⟩` from `hb`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨s, u, v⟩` from `exists_val_ge s₁ s₂`. Use `⟨s, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add]`. Conclude with `add_mem (twKer_one_mono _ (polyBall_mono _ u) h₁) (twKer_one_mono _ (polyBall_mono _ v) h₂)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_polyBall_of_qC (z : τ.V ⊗[ℂ] σ.V) (hz : qC τ σ z = 0) :
     ∃ s : kˣ, z ∈ twKer (rU τ σ) (polyBall (i + 1) s) 1 := by
@@ -696,14 +688,14 @@ def Lball (i t : ℕ) (s : kˣ) : Subgroup (Mir k ((i + 1) + t + 1)) :=
   (polyBall ((i + 1) + t + 1) s).map (GlobalTheory.CompanionTheory.BZPhiPhi.unipM k ((i + 1) + t))
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨v, -, rfl⟩`. Conclude with `GlobalTheory.CompanionTheory.BZPhiPhi.unipM_mem_MirUin k _ v`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem Lball_le (s : kˣ) : Lball k i t s ≤ MirUin k ((i + 1) + t + 1) := by
   rintro _ ⟨v, -, rfl⟩
   exact GlobalTheory.CompanionTheory.BZPhiPhi.unipM_mem_MirUin k _ v
 
 /- English proof (translation)
-Use `(isCompact_polyBall (k := k) ((i + 1) + t + 1) s).image ((GlobalTheory.CompanionTheory.BZPhiPhi.continuous_unipM (k := k) ((i + 1) + t)).comp continuous_toAdd)` as an intermediate fact. Conclude with `this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isCompact_Lball (s : kˣ) : IsCompact (Lball k i t s : Set (Mir k ((i + 1) + t + 1))) := by
   have := (isCompact_polyBall (k := k) ((i + 1) + t + 1) s).image
@@ -711,9 +703,9 @@ theorem isCompact_Lball (s : kˣ) : IsCompact (Lball k i t s : Set (Mir k ((i + 
   exact this
 
 /- English proof (translation)
-Use `⟨Multiplicative.ofAdd (Fin.append c d : Fin ((i + 1) + (t + 1)) → k), ?_, rfl⟩` and prove the remaining obligations. Establish `key : ∀ y : Fin ((i + 1) + (t + 1)), (Fin.append c d : Fin ((i + 1) + (t + 1)) → k) y ∈ GlobalTheory.SplitWeil.cball s`. Introduce `y`. Use `Fin.addCases (fun a => ?_) (fun a => ?_) y` and prove the remaining obligations. Rewrite using `[Fin.append_left]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hc a`. Rewrite using `[Fin.append_right]`. Conclude with `hd a`. Conclude with `key`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem uEl_mem_Lball {s : kˣ} {c : Fin (i + 1) → k} {d : Fin (t + 1) → k}
     (hc : Multiplicative.ofAdd c ∈ polyBall (i + 1) s) (hd : Multiplicative.ofAdd d ∈ polyBall (t + 1) s) :
@@ -727,9 +719,9 @@ theorem uEl_mem_Lball {s : kˣ} {c : Fin (i + 1) → k} {d : Fin (t + 1) → k}
   exact key
 
 /- English proof (translation)
-Take `⟨v, hv, rfl⟩` from `hl`. Set `w' : Fin ((i + 1) + (t + 1)) → k` to `v.toAdd`. Establish `e : Fin.append (fun a => w' (Fin.castAdd (t + 1) a)) (fun a => w' (Fin.natAdd (i + 1) a)) = w'` using `Fin.append_castAdd_natAdd`. Use `⟨fun a => w' (Fin.castAdd (t + 1) a), fun a => w' (Fin.natAdd (i + 1) a), fun a => hv _, fun a => hv _, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Use `show unip k ((i + 1) + t + 1) v = unip k ((i + 1) + (t + 1)) _`. Use `congr 1`. Conclude with `congrArg Multiplicative.ofAdd e.symm`.
+Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem exists_of_mem_Lball {s : kˣ} {l : Mir k ((i + 1) + t + 1)} (hl : l ∈ Lball k i t s) :
     ∃ (c : Fin (i + 1) → k) (d : Fin (t + 1) → k), Multiplicative.ofAdd c ∈ polyBall (i + 1) s ∧
@@ -745,31 +737,29 @@ theorem exists_of_mem_Lball {s : kˣ} {l : Mir k ((i + 1) + t + 1)} (hl : l ∈ 
   exact congrArg Multiplicative.ofAdd e.symm
 
 /- English proof (translation)
-Establish `zc : Multiplicative.ofAdd (0 : Fin (i + 1) → k) ∈ polyBall (i + 1) s` using `(polyBall (i + 1) s).one_mem`. Establish `zd : Multiplicative.ofAdd (0 : Fin (t + 1) → k) ∈ polyBall (t + 1) s` using `(polyBall (t + 1) s).one_mem`. Establish `h1 : ∀ d : Fin (t + 1) → k, Multiplicative.ofAdd d ∈ polyBall (t + 1) s → evX g (dEmb k i t d * 1) = ((Circle.toUnits (ψ (d (Fin.last t))) : ℂˣ) : ℂ) • evX g 1`. Introduce `d hd`. Use `hev 0 d zc hd 1` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `this` using `[one_mul, ← dEmb_eq, ← mul_one (dEmb k i t d)]`. Then use the resulting hypothesis. Set `D : Set (Fin (t + 1) → k)` to `{d | Multiplicative.ofAdd d ∈ polyBall (t + 1) s}`. Establish `hphi : phi ψ g = D.indicator fun _ => evX g 1`. Use function extensionality and compare the values at `d`. Distinguish the cases in `hd : d ∈ D`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[Set.indicator_of_mem hd]`. Simplify using `only [phi]`. Rewrite using `[h1 d hd, smul_smul]`. Establish `: chi ψ d * ((Circle.toUnits (ψ (d (Fin.last t))) : ℂˣ) : ℂ) = 1`. Simplify using `only [chi]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Units.val_mul, inv_mul_cancel, Units.val_one]`. Rewrite using `[this, one_smul]`. Rewrite using `[Set.indicator_of_notMem hd]`. Simplify using `only [phi]`. Establish `: evX g (dEmb k i t d * 1) = 0`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `h`. Conclude with `hd (hsupp d h)`. Rewrite using `[this, smul_zero]`. Establish `hI : iF ψ g = (((muD k (t + 1) D).toReal : ℝ) : ℂ) • evX g 1`. Unfold `iF`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hphi]`. Conclude with `smInt_indicator _ _ _`. Establish `hDo : IsOpen D` using `(isOpen_polyBall (t + 1) s).preimage continuous_ofAdd`. Establish `hDc : IsCompact D`. Use `(isCompact_polyBall (k := k) (t + 1) s).image continuous_toAdd` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components.
 
-Use `this using 1` and compare the differences between its conclusion and the goal. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Conclude with `⟨Multiplicative.ofAdd x, hx, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `⟨y, hy, rfl⟩`. Conclude with `hy`. Establish `hvol : (((muD k (t + 1) D).toReal : ℝ) : ℂ) ≠ 0`. Establish `h3 : (muD k (t + 1) D).toReal ≠ 0` using `ENNReal.toReal_ne_zero.2 ⟨(hDo.measure_pos _ ⟨0, zd⟩).ne', hDc.measure_lt_top.ne⟩`. Conclude with `h3` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hg1 : evX g 1 ∈ twKer (rU τ σ) (polyBall (i + 1) s) 1`. Rewrite `hk` using `[hI]`. Conclude with `(Submodule.smul_mem_iff _ hvol).1 hk`. Establish `hfix : ∀ l ∈ polyBall (i + 1) s, rU τ σ l (evX g 1) = evX g 1`. Introduce `l hl`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e1` using `evX_left g (Multiplicative.toAdd l) 1`. Establish `e2` using `hev (Multiplicative.toAdd l) 0 hl zd 1`. Rewrite `e1` using `[mul_one]`. Rewrite `e2` using `[one_mul]`. Establish `e3 : rU τ σ l (evX g 1) = evX g (uEl k i t (Multiplicative.toAdd l) 0)` using `e1.symm`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[e3, e2]`. Simplify using the standard rewrite rules. Establish `hzero : evX g 1 = 0` using `eq_zero_of_fixed_twKer (rU τ σ) (isSmooth_rU τ σ hτ hσ) _ (isCompact_polyBall (i + 1) s) hg1 hfix`. Establish `hD : ∀ d : Fin (t + 1) → k, evX g (dEmb k i t d * 1) = 0`. Introduce `d`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hd : Multiplicative.ofAdd d ∈ polyBall (t + 1) s`. Rewrite using `[h1 d hd, hzero, smul_zero]`. Assume the negation of the conclusion as `h`. Conclude with `hd (hsupp d h)`. Establish `e : uEl k i t c d = uEl k i t c 0 * (dEmb k i t d * 1)`.
-
-Simplify using `only [mul_one, dEmb_eq, uEl_mul, zero_add, add_zero]`. Rewrite using `[e, evX_left, hD, map_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vanish_of_eigen (ψ : AddChar k Circle) (hτ : IsSmooth τ.ρ) (hσ : IsSmooth σ.ρ) (s : kˣ) (g : XS τ σ)
     (hev : ∀ (c : Fin (i + 1) → k) (d : Fin (t + 1) → k), Multiplicative.ofAdd c ∈ polyBall (i + 1) s →

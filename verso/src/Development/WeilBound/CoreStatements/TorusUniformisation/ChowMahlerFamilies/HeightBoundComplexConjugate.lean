@@ -16,9 +16,9 @@ noncomputable def lf {S : Scheme.{0}} {G : Over S} {R : Type} [CommRing R] {x : 
   v.left
 
 /- English proof (translation)
-Simplify using `only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Use `congr 2`. Use `RingHom.ext fun r => ?_` and prove the remaining obligations. Use `show dualMap e (algebraMap R (DualNumber R) r) = algebraMap R' (DualNumber R') (e r)`. Rewrite using `[TrivSqZeroExt.algebraMap_eq_inl, TrivSqZeroExt.algebraMap_eq_inl]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `ext <;> simp [dualMap]`.
+A detailed English derivation is pending.
 -/
 theorem sq_alg {R R' : Type} [CommRing R] [CommRing R'] (e : R →+* R') :
     spMap (dualMap e) ≫ spMap (algebraMap R (DualNumber R)) = spMap (algebraMap R' (DualNumber R')) ≫ spMap e := by
@@ -30,7 +30,7 @@ theorem sq_alg {R R' : Type} [CommRing R] [CommRing R'] (e : R →+* R') :
   ext <;> simp [dualMap]
 
 /- English proof (translation)
-Simplify using `only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Use `congr 2`. Use `RingHom.ext fun r => ?_` and prove the remaining obligations. Use `show (dualMap e r).fst = e r.fst`. Simplify using `[dualMap]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sq_fst {R R' : Type} [CommRing R] [CommRing R'] (e : R →+* R') :
     spMap (TrivSqZeroExt.fstHom R' R' R').toRingHom ≫ spMap (dualMap e) =
@@ -42,7 +42,7 @@ theorem sq_fst {R R' : Type} [CommRing R] [CommRing R'] (e : R →+* R') :
   simp [dualMap]
 
 /- English proof (translation)
-Set `k : Over.mk (a ≫ x) ⟶ Over.mk x` to `Over.homMk a rfl`. Establish `: k ≫ (1 : Over.mk x ⟶ G) = 1`. Rewrite using `[Hom.one_def, Hom.one_def, ← Category.assoc, comp_toUnit]`. Conclude with `congrArg (fun q => q.left) this`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem one_comp {S T T' : Scheme.{0}} (G : Over S) [GrpObj G] (x : T ⟶ S) (a : T' ⟶ T) :
     a ≫ (1 : Over.mk x ⟶ G).left = (1 : Over.mk (a ≫ x) ⟶ G).left := by
@@ -52,9 +52,9 @@ theorem one_comp {S T T' : Scheme.{0}} (G : Over S) [GrpObj G] (x : T ⟶ S) (a 
   exact congrArg (fun q => q.left) this
 
 /- English proof (translation)
-Substitute `hz` using the available equality. Establish `hw : lf v ≫ G.hom = spMap (algebraMap R (DualNumber R)) ≫ z` using `Over.w v`. Use `⟨Over.homMk (spMap (dualMap e) ≫ lf v) ?_, rfl, fun ht => ?_⟩` and prove the remaining obligations. Use `show (spMap (dualMap e) ≫ lf v) ≫ G.hom = spMap (algebraMap R' (DualNumber R')) ≫ spMap e ≫ z`. Rewrite using `[Category.assoc, hw, ← Category.assoc, sq_alg, Category.assoc]`.
+Substitute using the available equality. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `ht' : spMap (TrivSqZeroExt.fstHom R R R).toRingHom ≫ lf v = (1 : Over.mk z ⟶ G).left` using `ht show spMap (TrivSqZeroExt.fstHom R' R' R').toRingHom ≫ spMap (dualMap e) ≫ lf v = (1 : Over.mk (spMap e ≫ z) ⟶ G).left`. Rewrite using `[← Category.assoc, sq_fst, Category.assoc, ht']`. Conclude with `one_comp G z (spMap e)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_bc {S : Scheme.{0}} {G : Over S} [GrpObj G] {R R' : Type} [CommRing R] [CommRing R'] (e : R →+* R')
     (z : Sp R ⟶ S) (z' : Sp R' ⟶ S) (hz : z' = spMap e ≫ z) (v : epsAt z ⟶ G) :
@@ -71,7 +71,7 @@ theorem exists_bc {S : Scheme.{0}} {G : Over S} [GrpObj G] {R R' : Type} [CommRi
     exact one_comp G z (spMap e)
 
 /- English proof (translation)
-Take `⟨v, rfl⟩` from `(LiePull.tanPts h x').surjective u`. Conclude with `⟨v, rfl, (LiePull.isTan_iff h x' v).1⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_lift {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} [GrpObj G] [GrpObj G'] {f : S' ⟶ S}
     {φ : G'.left ⟶ G.left} (h : IsGrpPullback G' G f φ) {R : Type} [CommRing R] (x' : Sp R ⟶ S')
@@ -81,7 +81,7 @@ theorem exists_lift {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} [GrpObj G] [
   exact ⟨v, rfl, (LiePull.isTan_iff h x' v).1⟩
 
 /- English proof (translation)
-Substitute `h` using the available equality. Take `rfl : v = v'` from `Over.OverMorphism.ext hv`. Take `rfl : w = w'` from `Over.OverMorphism.ext hw`. Conclude with `hc`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem hodge_congr {S : Scheme.{0}} {G : Over S} [GrpObj G] (Lb : LB G.left) {z z' : Sp ℂ ⟶ S} (h : z = z')
     {v w : epsAt z ⟶ G} {v' w' : epsAt z' ⟶ G} (hv : lf v = lf v') (hw : lf w = lf w') {c : ℂ}
@@ -95,17 +95,17 @@ end PositivityTheory.Xgn.QuotientUniformizationConjugate
 
 open PositivityTheory.Xgn.QuotientUniformizationConjugate in
 /- English proof (translation)
-Introduce `E _ _ _ H X t Ω _ ξ Li _ _ M K J y h C z hb P`. Take `⟨P', mK, mB, c1, c2⟩` from `GlobalTheory.T.abelian_part_base_change E H X t ℂ ℂ z P (starRingEnd ℂ)`. Take `⟨hp, hb'⟩` from `hb P'`. Use `⟨(CoverDenseAlt.isPrincipal_iff_of_base_change E H ℂ ℂ (starRingEnd ℂ) P.tB P'.tB mB).1 hp, fun v v₀ c hv hv₀ hc => ?_⟩` and prove the remaining obligations. Establish `hid : 𝟙 (Sp ℂ) ≫ spMap (starRingEnd ℂ) = spMap (starRingEnd ℂ) ≫ 𝟙 (Sp ℂ)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[Category.id_comp, Category.comp_id]`. Take `⟨u, hu, hut⟩` from `exists_bc (starRingEnd ℂ) (𝟙 (Sp ℂ)) _ hid v`. Take `⟨v', hv', hvt⟩` from `exists_lift mK.cart (𝟙 (Sp ℂ)) u`. Take `⟨v₀', hv₀', -⟩` from `exists_bc (starRingEnd ℂ) z _ rfl v₀`. Take `⟨a, ha, -⟩` from `exists_bc (starRingEnd ℂ) (𝟙 (Sp ℂ)) _ rfl (v ≫ P.τ.q ≫ P.e.hom)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb₁, -⟩` from `exists_bc (starRingEnd ℂ) (𝟙 (Sp ℂ)) _ hid (v ≫ P.τ.q ≫ P.e.hom)`. Establish `hv'' : lf v' ≫ mK.φ = spMap (dualMap (starRingEnd ℂ)) ≫ lf v` using `hv'.trans hu`. Establish `hv₀'' : lf v ≫ P.m.φ = lf v₀` using `hv₀`. Establish `e₁ : lf v' ≫ P'.m.φ = lf v₀'`. Rewrite using `[← c1, ← Category.assoc, hv'', Category.assoc, hv₀'', hv₀']`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e₂ : lf (v' ≫ P'.τ.q ≫ P'.e.hom) ≫ mB.φ = lf b`. Establish `s₁ : lf (v' ≫ P'.τ.q ≫ P'.e.hom) = lf v' ≫ (P'.τ.q ≫ P'.e.hom).left` using `rfl`. Establish `s₂ : lf (v ≫ P.τ.q ≫ P.e.hom) = lf v ≫ (P.τ.q ≫ P.e.hom).left` using `rfl`. Rewrite using `[hb₁, s₁, s₂, Category.assoc, ← c2, ← Category.assoc, hv'', Category.assoc]`. Establish `h₁` using `GlobalTheory.T.hodge_inner_product_conjugate E H (Sp ℂ) P.tB (𝟙 _) _ _ a a c ha ha hc`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hab : lf a = lf b` using `ha.trans hb₁.symm`. Establish `h₂` using `hodge_congr P.tB.PP.L hid.symm hab hab h₁`. Establish `h₃` using `((GlobalTheory.T.hodge_inner_product_pullback_unique E H (Sp ℂ) (Sp ℂ) P'.tB P.tB (spMap (starRingEnd ℂ)) mB (𝟙 _) _ _ b b e₂ e₂).1 _).2 h₂`. Establish `h₄` using `hb' v' v₀' _ (hvt (hut hv)) e₁ h₃`. Rewrite `h₄` using `[h.conj z v₀ v₀ v₀' v₀' hv₀' hv₀', Complex.conj_re, Complex.conj_re]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h₄`.
+A detailed English derivation is pending.
 -/
 theorem PositivityTheory.Xgn.height_bound_complex_conjugate : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (X : Scheme.{0}) (t : SAB H X) (Ω : Type) [Field Ω] (ξ : Sp Ω ⟶ X) (Li : Type) [AddCommGroup Li] [Module Ω Li] (M : LieModel t.G ξ Li) (K : Type) (J : K → Type) (y : (Σ k, J k) → Ω) (h : LieMetric M y) (C : ℝ) (z : Sp ℂ ⟶ X), AbBound t h C (spMap (starRingEnd ℂ) ≫ z) → AbBound t h C z := by
   intro E _ _ _ H X t Ω _ ξ Li _ _ M K J y h C z hb P

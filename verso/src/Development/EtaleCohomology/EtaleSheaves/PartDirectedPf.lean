@@ -6,9 +6,9 @@ local notation "PT" => LateralTheory.E.PartDiagCut.Part
 variable {A : Type} [CommRing A]
 
 /- English proof (translation)
-Distinguish the cases in `hac : a = c`. Establish `hbd : b ≠ d`. Introduce `h; exact hne (by rw [hac, h])`. Use `Q.orth b hb d hd hbd` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Use `P.orth a ha c hc hac` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem prod_eq_zero_of_ne {a b c d : A} (P : PT A) (Q : PT A)
     (ha : a ∈ P.blocks) (hb : b ∈ Q.blocks) (hc : c ∈ P.blocks) (hd : d ∈ Q.blocks)
@@ -55,7 +55,7 @@ noncomputable def meet (P Q : PT A) : PT A where
       exact hx.2 (by rw [← hid.eq]; exact h0)
 
 /- English proof (translation)
-Introduce `e he`. Simplify using `only [meet, Finset.mem_image, Finset.mem_filter, Finset.mem_product] at he`. Take `⟨⟨a, b⟩, ⟨⟨ha, hb⟩, _⟩, rfl⟩` from `he`. Use `⟨a, ha, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 -/
 theorem le_meet_left (P Q : PT A) : P ≤ meet P Q := by
   intro e he
@@ -66,7 +66,7 @@ theorem le_meet_left (P Q : PT A) : P ≤ meet P Q := by
     _ = a * b := by rw [(P.idem a ha).1.eq]
 
 /- English proof (translation)
-Introduce `e he`. Simplify using `only [meet, Finset.mem_image, Finset.mem_filter, Finset.mem_product] at he`. Take `⟨⟨a, b⟩, ⟨⟨ha, hb⟩, _⟩, rfl⟩` from `he`. Use `⟨b, hb, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 -/
 theorem le_meet_right (P Q : PT A) : Q ≤ meet P Q := by
   intro e he
@@ -77,7 +77,7 @@ theorem le_meet_right (P Q : PT A) : Q ≤ meet P Q := by
     _ = a * b := by rw [(Q.idem b hb).1.eq]
 
 /- English proof (translation)
-Distinguish the cases in `h : Nontrivial A`. Conclude with `⟨{ blocks := {1} idem := by intro e he; rw [Finset.mem_singleton] at he; subst he; exact ⟨IsIdempotentElem.one, one_ne_zero⟩ orth := by intro e he e' he' hne; rw [Finset.mem_singleton] at he he'; exact absurd (he.trans he'.symm) hne sum_eq := by simp }⟩`. Rewrite `h` using `[not_nontrivial_iff_subsingleton]`. Conclude with `⟨{ blocks := ∅ idem := by simp orth := by simp sum_eq := Subsingleton.elim _ _ }⟩`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem part_nonempty (A : Type) [CommRing A] : Nonempty (PT A) := by
   by_cases h : Nontrivial A
@@ -92,7 +92,7 @@ theorem part_nonempty (A : Type) [CommRing A] : Nonempty (PT A) := by
              sum_eq := Subsingleton.elim _ _ }⟩
 
 /- English proof (translation)
-Introduce `A _`. Conclude with `⟨⟨fun P Q => ⟨meet P Q, le_meet_left P Q, le_meet_right P Q⟩⟩, part_nonempty A⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem PartDirected_of : LateralTheory.E.PartDiagCut.PartDirected := by
   intro A _

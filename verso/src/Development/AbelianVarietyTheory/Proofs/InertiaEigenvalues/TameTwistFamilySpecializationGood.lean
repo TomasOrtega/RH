@@ -18,11 +18,11 @@ namespace GlobalTheory.ExportSeries.SpecGood
 variable {D : D7}
 
 /- English proof (translation)
-Introduce `D P e h`. Take `⟨⟨h1, h2, v, ε, ⟨α, rfl, -⟩, h3⟩, -⟩` from `h`. Establish `k1` using `congrArg (infPart D) h1`. Establish `k2` using `congrArg (infPart D) h2`. Establish `k3` using `congrArg (infPart D) h3`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [RingHom.map_mul, RingHom.map_add, RingHom.map_zero] at k1 k2 k3`. Establish `k4 : infPart D (algebraMap (AF D.host.F) (AE D) (pairA D.host.F 0 α)) = 0`. Simplify using `[infPart, Algebra.TensorProduct.algebraMap_apply]`. Use `show (0 : Ainf D.host.F) ⊗ₜ[D.host.F] (1 : D.host.E) = 0`. Conclude with `TensorProduct.zero_tmul _ _`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite `k3` using `[k4]`. Take the linear combination `-k1 + infPart D e * k3 - k2`.
+A detailed English derivation is pending.
 -/
 theorem infPart_eq_zero_of_isIdemAt : ∀ (D : D7) (P : Pl D.host.E) (e : AE D), Formalism.L2.NTheta.IsIdemAt e P → infPart D e = 0 := by
   intro D P e h
@@ -39,7 +39,7 @@ theorem infPart_eq_zero_of_isIdemAt : ∀ (D : D7) (P : Pl D.host.E) (e : AE D),
   linear_combination -k1 + infPart D e * k3 - k2
 
 /- English proof (translation)
-Take `⟨ι, i1, i2, -⟩` from `GlobalTheory.HostAdeleIso.exists_finiteAdele_equiv D`. Use `⟨?_, GlobalTheory.T.finite_part_integral_unit_of_unit_residue D ι i1 i2 P (idemAt P) (GlobalTheory.T.place_idempotent_finite_adele_zero_elsewhere D ι i1 i2 P _ hP) x h1 hx v hv⟩` and prove the remaining obligations. Use `congrArg (infPart D) h1` as an intermediate fact. Rewrite `this` using `[RingHom.map_mul, RingHom.map_sub, RingHom.map_one, infPart_eq_zero_of_isIdemAt D P _ hP, sub_zero, one_mul]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem finUnit_of_res (P : Pl D.host.E) (hP : Formalism.L2.NTheta.IsIdemAt (idemAt P) P) (x : (AE D)ˣ)
     (h1 : (1 - idemAt P) * (x : AE D) = 1 - idemAt P)
@@ -54,14 +54,14 @@ theorem finUnit_of_res (P : Pl D.host.E) (hP : Formalism.L2.NTheta.IsIdemAt (ide
 variable {C A : Type} [AddCommGroup C] [CommGroup A]
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.PlaceModelSum.mul_sum_orth (fun a ha => (h.isIdemAt ha).1) (fun a ha b hb hab => h.mul_eq_zero ha hb hab) hP`.
+A detailed English derivation is pending.
 -/
 theorem idemAt_mul_idem {Q : Finset (Pl D.host.E)} (h : SplitSet Q) {P : Pl D.host.E} (hP : P ∈ Q) :
     idemAt P * idem Q = idemAt P :=
   GlobalTheory.PlaceModelSum.mul_sum_orth (fun a ha => (h.isIdemAt ha).1) (fun a ha b hb hab => h.mul_eq_zero ha hb hab) hP
 
 /- English proof (translation)
-Rewrite using `[idem, map_sum, Finset.mul_sum]`. Conclude with `Finset.sum_eq_zero fun j hj => h.mul_conj hP hj`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem idemAt_mul_conj_idem {Q : Finset (Pl D.host.E)} (h : SplitSet Q) {P : Pl D.host.E} (hP : P ∈ Q) :
     idemAt P * cA D (idem Q) = 0 := by
@@ -69,7 +69,7 @@ theorem idemAt_mul_conj_idem {Q : Finset (Pl D.host.E)} (h : SplitSet Q) {P : Pl
   exact Finset.sum_eq_zero fun j hj => h.mul_conj hP hj
 
 /- English proof (translation)
-Use extensionality with `PP`. Conclude with `congrArg Multiplicative.toAdd (hx PP.1 PP.2)`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem delQ_eq_one {u : UnivTwist D C} {Q : Finset (Pl D.host.E)} {x : (AE D)ˣ} (hx : ∀ P ∈ Q, u.del P x = 1) :
     u.delQ Q x = 1 := by
@@ -79,25 +79,23 @@ theorem delQ_eq_one {u : UnivTwist D C} {Q : Finset (Pl D.host.E)} {x : (AE D)ˣ
 open Classical in
 
 /- English proof (translation)
-Establish `cc` using `GlobalTheory.DualPairCheck.cA_cA (D := D)`. Use `⟨?_, ?_, ?_, h.1, ?_, ?_⟩` and prove the remaining obligations. Use `haveI := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.isTopRing (F := D.host.F) (E := D.host.E)`. Set `H : Subgroup (AE D)ˣ` to `⨅ P : ↥Q, (u.del P.1).ker`. Establish `hH : IsOpen (H : Set (AE D)ˣ)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Subgroup.coe_iInf]`. Conclude with `isOpen_iInter_of_finite fun P => (h.2 P.1 P.2).isOpen`. Use `Subgroup.isOpen_mono (fun x hx => ?_) hH` and prove the remaining obligations. Rewrite `hx` using `[Subgroup.mem_iInf]`. Use `show χ (u.delQ Q x) = 1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[delQ_eq_one fun P hP => hx ⟨P, hP⟩, map_one]`. Introduce `x show χ (u.delQ Q _) = 1`. Rewrite using `[delQ_eq_one fun P hP => (h.2 P hP).rat x, map_one]`. Introduce `a show χ (u.delQ Q _) = 1`. Rewrite using `[h.delQ_real a, map_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `x h1 h2 h3 h4 show χ (u.delQ Q x) = 1 replace h4 : (idem Q + cA D (idem Q)) * (x : AE D) = idem Q + cA D (idem Q) := h4`. Use `(congrArg χ (delQ_eq_one fun P hP => ?_)).trans (map_one χ)` and prove the remaining obligations. Use `(h.2 P hP).unram x h1 h2 h3 ?_` and prove the remaining obligations. Use `show (idem {P} + cA D (idem {P})) * (x : AE D) = idem {P} + cA D (idem {P})`. Establish `e1 : idem ({P} : Finset (Pl D.host.E)) = idemAt P` using `Finset.sum_singleton _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e1]`. Establish `k1` using `idemAt_mul_idem h.1 hP`. Establish `k2` using `idemAt_mul_conj_idem h.1 hP`. Establish `k3 : cA D (idemAt P) * idem Q = 0`. Use `congrArg (cA D) k2` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite `this` using `[RingHom.map_mul, cc, RingHom.map_zero]`. Then use the resulting hypothesis. Establish `k4 : cA D (idemAt P) * cA D (idem Q) = cA D (idemAt P)`. Rewrite using `[← RingHom.map_mul, k1]`. Take the linear combination `(idemAt P + cA D (idemAt P)) * h4 + (1 - (x : AE D)) * (k1 + k2 + k3 + k4)`. Introduce `PP hPP x h1 hx v hv show χ (u.delQ Q x) = (u.spec Q χ).res PP v`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Rewrite using `[show (u.spec Q χ).res PP = χ.comp ((AddMonoidHom.toMultiplicative (AddMonoidHom.single (fun _ : ↥Q => C) ⟨PP, hPP⟩)).comp (u.kap PP)) from dif_pos hPP, MonoidHom.comp_apply]`. Establish `hfu` using `finUnit_of_res PP (h.1.isIdemAt hPP) x h1 hx v hv`. Use `congrArg χ ?_` and prove the remaining obligations. Use extensionality with `⟨P', hP'⟩`. Distinguish the cases in `hne : P' = PP`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Substitute `hne` using the available equality. Use `(h.2 P' hP').res P' (Finset.mem_singleton_self _) x h1 hx v hv` as an intermediate fact. Simplify using `[UnivTwist.delQ, this]`. Establish `hd : u.del P' x = 1`. Use `(h.2 P' hP').unram x hfu.1 hfu.2.1 hfu.2.2 ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show (idem {P'} + cA D (idem {P'})) * (x : AE D) = idem {P'} + cA D (idem {P'})`. Establish `e1 : idem ({P'} : Finset (Pl D.host.E)) = idemAt P'` using `Finset.sum_singleton _ _`. Rewrite using `[e1]`. Establish `z1 : idemAt P' * idemAt PP = 0` using `h.1.mul_eq_zero hP' hPP (Ne.symm hne)`. Establish `z2 : idemAt PP * cA D (idemAt P') = 0` using `h.1.mul_conj hPP hP'`.
-
-Take the linear combination `(idemAt P' + cA D (idemAt P')) * h1 + ((x : AE D) - 1) * (z1 + z2)`. Simplify using `[UnivTwist.delQ, hd, Pi.single_apply, hne]`. Introduce `e`. Conclude with `absurd (congrArg Subtype.val e) hne`.
+Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem spec_good (D : D7) (C A : Type) [AddCommGroup C] [CommGroup A] (u : UnivTwist D C) (Q : Finset (Pl D.host.E))
     (χ : Multiplicative (↥Q → C) →* A) (h : u.Good Q) : (u.spec Q χ).Good := by

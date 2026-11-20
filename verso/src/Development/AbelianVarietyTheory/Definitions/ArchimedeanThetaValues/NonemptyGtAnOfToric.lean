@@ -21,15 +21,13 @@ instance neZero_level_A : NeZero l.A := ⟨l.A_pos.ne'⟩
 instance neZero_level_M : NeZero l.M := ⟨by have := l.three_le; omega⟩
 
 /- English proof (translation)
-Use `set S : Submodule ℤ A.X := LinearMap.range ((j : ℤ) • LinearMap.id) with hS`. Establish `hmem : ∀ mu : A.X, j • mu ∈ S` using `fun mu => ⟨mu, by simp⟩`. Establish `htor : Module.IsTorsion ℤ (A.X ⧸ S)`. Introduce `q`. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective S q`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨(j : ℤ), mem_nonZeroDivisors_of_ne_zero (by exact_mod_cast NeZero.ne j)⟩, ?_⟩` and prove the remaining obligations. Use `show (j : ℤ) • Submodule.Quotient.mk x = (0 : A.X ⧸ S)`. Rewrite using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero, natCast_zsmul]`. Conclude with `hmem x`. Establish `: Finite (A.X ⧸ S)` using `Module.finite_of_fg_torsion _ htor`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨A.X ⧸ S, Fintype.ofFinite _, fun t => Quotient.out t, fun α₀ => ⟨Submodule.Quotient.mk α₀, ?_, ?_⟩⟩` and prove the remaining obligations. Establish `h : Submodule.Quotient.mk (Quotient.out (Submodule.Quotient.mk α₀ : A.X ⧸ S)) = (Submodule.Quotient.mk α₀ : A.X ⧸ S)` using `Quotient.out_eq _`. Rewrite `h` using `[Submodule.Quotient.eq]`. Take `⟨mu, hmu⟩` from `h`. Use `⟨mu, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Simplify using `only [LinearMap.smul_apply, LinearMap.id_apply, natCast_zsmul] at hmu`. Rewrite using `[hmu]`. Normalize the expressions using the abelian group laws. Introduce and unpack `t ⟨mu, hmu⟩`. Establish `hmu' : Quotient.out t = α₀ + j • mu` using `hmu`.
-
-Establish `h : (Submodule.Quotient.mk (Quotient.out t) : A.X ⧸ S) = t` using `Quotient.out_eq _`. Rewrite using `[← h, hmu', Submodule.Quotient.eq, add_sub_cancel_left]`. Conclude with `hmem mu`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem AnArc.exists_rep {O : Type} [CommRing O] [StarRing O] (A : AnArc O) (j : ℕ) [NeZero j] :
     ∃ (C : Type) (_ : Fintype C) (rep : C → A.X), ∀ α₀, ∃! t, ∃ mu, rep t = α₀ + j • mu := by
@@ -106,13 +104,13 @@ def AnArc.ofForm (O : Type) [CommRing O] [StarRing O] (X : Type) [AddCommGroup X
   be_even := even
 
 /- English proof (translation)
-Use `letI := H.starRing`. Take `@⟨D₀, mod, oa, nontriv, even, bimult, gen, w0, be, be_symm, be_pos, be_adj, be_dvd, eta, etaA, geom⟩` from `a`. Simplify using `only at hD`. Substitute `hD` using the available equality. Use `letI : Module (𝓞 E) X := mod`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Substitute using the available equality. Equip the data with the indicated structure.
 
-Establish `heven : ∀ x : X, (2 : ℤ) ∣ be x x` using `fun x => dvd_trans (dvd_mul_right 2 _) (be_dvd x x)`. Establish `hadj : ∀ (r : 𝓞 E) (y x : X), be (r • y) x = be y (star r • x)` using `be_adj`. Set `A : AnArc (𝓞 E)` to `AnArc.ofForm (𝓞 E) X be be_symm be_pos hadj heven`. Set `q : A.X → (FractionRing ℂ)ˣ` to `fun _ => 1`. Establish `hq : ∀ x, algebraMap (FractionRing ℂ) ℂ (q x) = A.psi x` using `fun x => by`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Simplify using `[q, A, AnArc.ofForm]`. Establish `h : ∀ (r : 𝓞 E) (y z : A.X), ToricData.polar q (r • y) z = ToricData.polar q y (star r • z)` using `fun _ _ _ => by simp [ToricData.polar, q]`. Use `haveI : IsEmpty (Fin A.gB) := inferInstanceAs (IsEmpty (Fin 0))`. Establish `hoa : oa = ToricData.toricOAct q (𝓞 E) h`. Break down `oa with ⟨⟨⟨act, hom, one, mul, add⟩, rosati⟩, c_lin, tau_bal⟩` into its components or cases.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Establish `hact : act = (ToricData.toricOAct q (𝓞 E) h).onB.act` using `funext fun _ => toUnit_unique _ _`. Substitute `hact` using the available equality. Both sides reduce to the same expression. Substitute `hoa` using the available equality. Conclude with `⟨{ toGtDict := ToricDict.dict A q hq h, be_eq := fun _ _ => rfl, sec := ToricDict.secFn A q hq h }⟩`.
+Substitute using the available equality. Both sides reduce to the same expression. Substitute using the available equality. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem nonempty_gtAn_of_toric {b : O →+* ℂ} (a : ArcIn D l β ℂ b) (X : Type) [AddCommGroup X] [Module.Free ℤ X]
     [Module.Finite ℤ X] (hD : a.D₀ = ToricData.toricPre ℂ X fun _ => 1) : Nonempty (GtAn a) := by
@@ -141,7 +139,7 @@ theorem nonempty_gtAn_of_toric {b : O →+* ℂ} (a : ArcIn D l β ℂ b) (X : T
 omit [Algebra (FractionRing ℂ) ℂ] [IsScalarTower ℂ (FractionRing ℂ) ℂ] in
 
 /- English proof (translation)
-The claim follows from `letI := FractionRing.liftAlgebra ℂ ℂ haveI := FractionRing.isScalarTower_liftAlgebra ℂ ℂ ⟨_, this, ⟨ToricDict.secFn (AnArc.tate τ₀) _ (ToricDict.algebraMap_psiFrac _) _⟩⟩`.
+A detailed English derivation is pending.
 -/
 example (τ₀ : ℂ) : ∃ (_ : Algebra (FractionRing ℂ) ℂ) (_ : IsScalarTower ℂ (FractionRing ℂ) ℂ),
     Nonempty (ToricDict.tate τ₀).SecFn :=
@@ -150,7 +148,7 @@ example (τ₀ : ℂ) : ∃ (_ : Algebra (FractionRing ℂ) ℂ) (_ : IsScalarTo
   ⟨_, this, ⟨ToricDict.secFn (AnArc.tate τ₀) _ (ToricDict.algebraMap_psiFrac _) _⟩⟩
 
 /- English proof (translation)
-The claim follows from `nonempty_gtAn_of_toric (HostModel.arcIn c ℂ bF) (𝓞 E) rfl`.
+A detailed English derivation is pending.
 -/
 theorem nonempty_gtAn_arcIn (c : Coeff l) (bF : c.F →+* ℂ) : Nonempty (GtAn (HostModel.arcIn c ℂ bF)) :=
   nonempty_gtAn_of_toric (HostModel.arcIn c ℂ bF) (𝓞 E) rfl
@@ -158,7 +156,7 @@ theorem nonempty_gtAn_arcIn (c : Coeff l) (bF : c.F →+* ℂ) : Nonempty (GtAn 
 omit [Algebra (FractionRing ℂ) ℂ] [IsScalarTower ℂ (FractionRing ℂ) ℂ] in
 
 /- English proof (translation)
-Use `letI : Algebra (FractionRing ℂ) ℂ := FractionRing.liftAlgebra ℂ ℂ`. Use `haveI : IsScalarTower ℂ (FractionRing ℂ) ℂ := FractionRing.isScalarTower_liftAlgebra ℂ ℂ`. Conclude with `⟨inferInstance, inferInstance, nonempty_gtAn_arcIn _ _⟩`.
+Equip the data with the indicated structure. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_gtAn_arcIn : ∃ (_ : Algebra (FractionRing ℂ) ℂ) (_ : IsScalarTower ℂ (FractionRing ℂ) ℂ),
     Nonempty (GtAn (HostModel.arcIn (HostModel.coeff (HostModel.level HostModel.host 5 (by norm_num))) ℂ
@@ -175,7 +173,7 @@ def y : letI := H.starRing; Λ.A.La →ₗ[𝓞 E] a.D₀.X :=
   letI := H.starRing; Λ.eX.toLinearMap ∘ₗ Λ.A.yLin
 
 /- English proof (translation)
-Use `letI := H.starRing`. Introduce `la`. Use `show Λ.eX (Λ.A.yLin la) = Λ.eX la.y`. Rewrite using `[AnArc.yLin_apply]`.
+Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 @[simp] theorem y_apply : letI := H.starRing; ∀ la : Λ.A.La, Λ.y la = Λ.eX la.y := by
   letI := H.starRing
@@ -184,7 +182,7 @@ Use `letI := H.starRing`. Introduce `la`. Use `show Λ.eX (Λ.A.yLin la) = Λ.eX
   rw [AnArc.yLin_apply]
 
 /- English proof (translation)
-Use `letI := H.starRing`. Introduce `x`. Take `⟨la, hla⟩` from `Λ.A.yLin_surjective (Λ.eX.symm x)`. Use `⟨la, ?_⟩` and prove the remaining obligations. Rewrite using `[y_apply, ← AnArc.yLin_apply, hla, LinearEquiv.apply_symm_apply]`.
+Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem y_onto : Function.Surjective Λ.y := by
   letI := H.starRing
@@ -194,7 +192,7 @@ theorem y_onto : Function.Surjective Λ.y := by
   rw [y_apply, ← AnArc.yLin_apply, hla, LinearEquiv.apply_symm_apply]
 
 /- English proof (translation)
-Use `letI := H.starRing`. Introduce `v`. Rewrite using `[Λ.ker v]`. Simplify using `only [y_apply, LinearEquiv.map_eq_zero_iff]`.
+Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem ker_y : letI := H.starRing; ∀ v, (Λ.ex₀ v).IsZero ↔ ∃ la, Λ.y la = 0 ∧ v = Λ.A.P0 la := by
   letI := H.starRing
@@ -203,7 +201,7 @@ theorem ker_y : letI := H.starRing; ∀ v, (Λ.ex₀ v).IsZero ↔ ∃ la, Λ.y 
   simp only [y_apply, LinearEquiv.map_eq_zero_iff]
 
 /- English proof (translation)
-Use `letI := H.starRing`. Introduce `w la`. Establish `h` using `Λ.toGtDict.shift w la`. Use `h using 3 with x` and compare the differences between its conclusion and the goal. Rewrite using `[y_apply, ← Λ.be_eq, LinearEquiv.apply_symm_apply]`.
+Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities.
 -/
 theorem shift_be : letI := H.starRing; ∀ (w : ℂ) (la : Λ.A.La),
     IsTorusPt (Λ.ex₀ (w • Λ.A.N la)) fun x => eTwoPi (w * a.be (Λ.y la) x) := by
@@ -214,7 +212,7 @@ theorem shift_be : letI := H.starRing; ∀ (w : ℂ) (la : Λ.A.La),
   rw [y_apply, ← Λ.be_eq, LinearEquiv.apply_symm_apply]
 
 /- English proof (translation)
-Use `letI := H.starRing`. Introduce `x y`. Rewrite using `[← Λ.be_eq]`. Conclude with `a.be_dvd _ _`.
+Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dvd_be : letI := H.starRing; ∀ x y, (2 * l.M' : ℤ) ∣ Λ.A.be x y := by
   letI := H.starRing
@@ -223,7 +221,7 @@ theorem dvd_be : letI := H.starRing; ∀ x y, (2 * l.M' : ℤ) ∣ Λ.A.be x y :
   exact a.be_dvd _ _
 
 /- English proof (translation)
-Use `letI := H.starRing`. Introduce `x y`. Establish `hA : l.A ∣ l.M'` using `Nat.dvd_lcm_right l.M l.A`. Conclude with `dvd_trans (dvd_mul_of_dvd_right (Int.natCast_dvd_natCast.2 hA) 2) (Λ.dvd_be x y)`.
+Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem A_dvd_be : letI := H.starRing; ∀ x y, (l.A : ℤ) ∣ Λ.A.be x y := by
   letI := H.starRing
@@ -232,7 +230,7 @@ theorem A_dvd_be : letI := H.starRing; ∀ x y, (l.A : ℤ) ∣ Λ.A.be x y := b
   exact dvd_trans (dvd_mul_of_dvd_right (Int.natCast_dvd_natCast.2 hA) 2) (Λ.dvd_be x y)
 
 /- English proof (translation)
-Use `letI := H.starRing`. Introduce `x y`. Establish `hM : l.M ∣ l.M'` using `Nat.dvd_lcm_left l.M l.A`. Conclude with `dvd_trans (dvd_mul_of_dvd_right (Int.natCast_dvd_natCast.2 hM) 2) (Λ.dvd_be x y)`.
+Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem M_dvd_be : letI := H.starRing; ∀ x y, (l.M : ℤ) ∣ Λ.A.be x y := by
   letI := H.starRing
@@ -245,11 +243,11 @@ def Lifts {k : ℕ} [NeZero k] (p : Out.QkPt a.D₀ (FractionRing ℂ) k) : letI
   fun la => ∀ q', QkExt (algebraMap _ ℂ) p q' → Out.QkPt.Equiv a.D₀ ℂ (Λ.toGtDict.qk k la) q'
 
 /- English proof (translation)
-Use `letI := H.starRing`. Establish `hf : (algebraMap (FractionRing ℂ) ℂ).comp (algebraMap (FractionRing ℂ) (FractionRing ℂ)) = algebraMap (FractionRing ℂ) ℂ`. Rewrite using `[Algebra.algebraMap_self, RingHom.comp_id]`. Take `⟨q, hq, huniq⟩` from `TorusExt.existsUnique_qkExt a.bimult (algebraMap (FractionRing ℂ) ℂ) hf p`. Take `⟨la, rfl⟩` from `Λ.toGtDict.qk_surjective k q`.
+Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨la, fun la' => ⟨fun h => ?_, ?_⟩⟩` and prove the remaining obligations. Take `⟨m, hm⟩` from `(Λ.toGtDict.qk_equiv_iff k la' la).1 (h _ hq)`. Conclude with `⟨-m, by rw [hm, smul_neg, add_neg_cancel_right]⟩`. Introduce and unpack `⟨m, rfl⟩ q' hq'`. Rewrite using `[huniq q' hq']`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `TorusExt.equiv_symm a.bimult (Λ.toGtDict.qk_equiv_add k la m)`.
+A detailed English derivation is pending.
 -/
 theorem exists_lifts {k : ℕ} [NeZero k] (p : Out.QkPt a.D₀ (FractionRing ℂ) k) : letI := H.starRing
     ∃ la : Λ.A.La, ∀ la', Λ.Lifts p la' ↔ ∃ m, la' = la + k • m := by
@@ -267,9 +265,9 @@ theorem exists_lifts {k : ℕ} [NeZero k] (p : Out.QkPt a.D₀ (FractionRing ℂ
     exact TorusExt.equiv_symm a.bimult (Λ.toGtDict.qk_equiv_add k la m)
 
 /- English proof (translation)
-Use `letI := H.starRing`. Introduce `la h`. Establish `hf : (algebraMap (FractionRing ℂ) ℂ).comp (algebraMap (FractionRing ℂ) (FractionRing ℂ)) = algebraMap (FractionRing ℂ) ℂ`. Rewrite using `[Algebra.algebraMap_self, RingHom.comp_id]`. Take `⟨q, hq, -⟩` from `TorusExt.existsUnique_qkExt a.bimult (algebraMap (FractionRing ℂ) ℂ) hf p`.
+Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hqy : q.y = p.y`. Rewrite using `[(TorusExt.qkExt_iff a.bimult _ hf p q).1 hq, TorusExt.qkExt, TorusExt.qkMk_y]`. Take `⟨z, hz, -⟩` from `(TorusExt.equiv_iff a.bimult _ _).1 (h q hq)`. Use `⟨z, ?_⟩` and prove the remaining obligations. Rewrite using `[← hqy, hz, Λ.toGtDict.qk_y, y_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem y_of_lifts {k : ℕ} [NeZero k] (p : Out.QkPt a.D₀ (FractionRing ℂ) k) : letI := H.starRing
     ∀ la : Λ.A.La, Λ.Lifts p la → ∃ z, p.y = Λ.y la + k • z := by

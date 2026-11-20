@@ -30,7 +30,7 @@ def UnitSplit (D : D7) : Prop :=
         (∀ τ, W'.sig τ = (if s then (P - 1, Q) else (P, Q - 1)))
 
 /- English proof (translation)
-Take `⟨-, hall⟩` from `hT W P Q hW hs`. Take `⟨-, hF⟩` from `hall μ hμ`. Rewrite using `[hF 𝓕 h𝓕, ENNReal.toReal_ofReal (D.vol_pos W).le]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem volTie_toReal (D : D7) (hT : VolTie D) (W : HSpace D.host.E) (P Q : ℕ) (hW : W.SigOK)
     (hs : ∀ τ, W.sig τ = (P, Q)) (μ : Measure (HA (AF D.host.F) D.sp.cm.sig W.gram))
@@ -42,9 +42,9 @@ theorem volTie_toReal (D : D7) (hT : VolTie D) (W : HSpace D.host.E) (P Q : ℕ)
   rw [hF 𝓕 h𝓕, ENNReal.toReal_ofReal (D.vol_pos W).le]
 
 /- English proof (translation)
-Take `⟨⟨μ, hμ⟩, hall⟩` from `hT W P Q hW hs`. Take `⟨⟨𝓕, h𝓕⟩, hF⟩` from `hall μ hμ`. Take `⟨⟨μ₀, hμ₀⟩, hall₀⟩` from `hT W₀ P₀ Q₀ hW₀ hs₀`. Take `⟨⟨𝓕₀, h𝓕₀⟩, hF₀⟩` from `hall₀ μ₀ hμ₀`. Establish `e` using `hI W W₀ P Q P₀ Q₀ hW hW₀ hs hs₀ hr μ 𝓕 μ₀ 𝓕₀ hμ h𝓕 hμ₀ h𝓕₀`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `e` using `[hF 𝓕 h𝓕, hF₀ 𝓕₀ h𝓕₀]`. Conclude with `(ENNReal.ofReal_eq_ofReal_iff (D.vol_pos W).le (D.vol_pos W₀).le).1 e`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vol_eq_of_indep (D : D7) (hT : VolTie D) (hI : VolSigIndep D) (W W₀ : HSpace D.host.E) (P Q P₀ Q₀ : ℕ)
     (hW : W.SigOK) (hW₀ : W₀.SigOK) (hs : ∀ τ, W.sig τ = (P, Q)) (hs₀ : ∀ τ, W₀.sig τ = (P₀, Q₀))
@@ -61,7 +61,7 @@ def stdPos (D : D7) (n : ℕ) : HSpace D.host.E :=
   Formalism.BasicNotions.Examples₂.posSpace (E := D.host.E) (fun x hx => Formalism.BasicNotions.Examples₂.star_isIntegral x hx) n
 
 /- English proof (translation)
-The claim follows from `Formalism.BasicNotions.Examples₂.posSpace_sigOK (E := D.host.E) (fun x hx => Formalism.BasicNotions.Examples₂.star_isIntegral x hx) n`.
+A detailed English derivation is pending.
 -/
 theorem stdPos_sigOK (D : D7) (n : ℕ) : (stdPos D n).SigOK :=
   Formalism.BasicNotions.Examples₂.posSpace_sigOK (E := D.host.E) (fun x hx => Formalism.BasicNotions.Examples₂.star_isIntegral x hx) n
@@ -77,7 +77,7 @@ Both sides reduce to the same expression.
 theorem stdPos_sig (D : D7) (n : ℕ) (τ : D.host.E →+* ℂ) : (stdPos D n).sig τ = (n, 0) := rfl
 
 /- English proof (translation)
-Rewrite using `[vol_eq_of_indep D hT hI W (stdPos D n) P Q n 0 hW (stdPos_sigOK D n) hs (stdPos_sig D n) (by rw [hrk, stdPos_rank])]`. Conclude with `volume_mass_of_class_data D n hT hC.1 hC.2.1 hC.2.2 (stdPos D n) (stdPos_sigOK D n) (fun τ => by rw [stdPos_sig, stdPos_rank]) (stdPos_rank D n)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vol_eq_mass_of_indep (D : D7) (n : ℕ) (hT : VolTie D) (hI : VolSigIndep D) (hC : ClassItemsAt D n)
     (W : HSpace D.host.E) (P Q : ℕ) (hW : W.SigOK) (hs : ∀ τ, W.sig τ = (P, Q)) (hrk : W.rank = n) :
@@ -90,13 +90,13 @@ theorem vol_eq_mass_of_indep (D : D7) (n : ℕ) (hT : VolTie D) (hI : VolSigInde
 variable [Fact Formalism.HermitianLattices.Ext.L3.HermRepUnram] in
 
 /- English proof (translation)
-Introduce `W P Q hW hs hM s hsP`. Take `⟨x, hx, W', ι, h1, h2, hW', hs'⟩` from `hU W P Q hW hs hM s hsP`. Use `⟨x, hx, W', ι, h1, h2, hW', hs', ?_⟩` and prove the remaining obligations. Introduce `μ 𝓕 μ' 𝓕' hμ h𝓕 hμ' h𝓕'`. Establish `hrk : W.rank = P + Q`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `Formalism.BasicNotions.sig_sum W hW D.host.φ₀` as an intermediate fact. Rewrite `this` using `[hs D.host.φ₀]`. Use linear arithmetic over natural numbers and integers. Establish `hs'' : ∀ τ, W'.sig τ = (if s then P - 1 else P, if s then Q else Q - 1)`. Apply the tactic sequence `intro τ; rw [hs' τ]; cases s <;> simp`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hrk' : W'.rank = W.rank - 1`. Use `Formalism.BasicNotions.sig_sum W' hW' D.host.φ₀` as an intermediate fact. Rewrite `this` using `[hs'' D.host.φ₀]`. Apply the tactic sequence `cases s <;> simp at this hsP <;> omega`. Rewrite using `[volTie_toReal D hT W P Q hW hs μ 𝓕 hμ h𝓕, volTie_toReal D hT W' _ _ hW' hs'' μ' 𝓕' hμ' h𝓕', vol_eq_mass_of_indep D W.rank hT hI (hC _ (by omega)) W P Q hW hs rfl, vol_eq_mass_of_indep D (W.rank - 1) hT hI (hC _ (by omega)) W' _ _ hW' hs'' hrk']`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Conclude with `standardLattice_aux2b D W.rank hM`.
+A detailed English derivation is pending.
 -/
 theorem volRatioTrue_of_indep (D : D7) (hT : VolTie D) (hI : VolSigIndep D)
     (hC : ∀ n, 2 ≤ n → ClassItemsAt D n) (hU : UnitSplit D) : VolRatioTrue D := by
@@ -127,32 +127,32 @@ def LandherrSig (D : D7) : Prop :=
 def band (m a b : ℕ) : Fin m → Bool := fun i => decide (a ≤ (i : ℕ) ∧ (i : ℕ) < b)
 
 /- English proof (translation)
-Apply the tactic sequence `first | exact UpperTheory.Reformulated.B.CardinalityOfBand.card_band .. | (apply UpperTheory.Reformulated.B.CardinalityOfBand.card_band <;> assumption) | (intros; apply UpperTheory.Reformulated.B.CardinalityOfBand.card_band <;> assumption) | (apply @UpperTheory.Reformulated.B.Car …`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem card_band (m a b : ℕ) (hb : b ≤ m) :
     (Finset.univ.filter (fun i : Fin m => band m a b i = true)).card = b - a := by
   first | exact UpperTheory.Reformulated.B.CardinalityOfBand.card_band .. | (apply UpperTheory.Reformulated.B.CardinalityOfBand.card_band <;> assumption) | (intros; apply UpperTheory.Reformulated.B.CardinalityOfBand.card_band <;> assumption) | (apply @UpperTheory.Reformulated.B.CardinalityOfBand.card_band <;> assumption) | (intros; apply @UpperTheory.Reformulated.B.CardinalityOfBand.card_band <;> assumption) | (apply @UpperTheory.Reformulated.B.CardinalityOfBand.card_band <;> first | assumption | infer_instance) | exact @UpperTheory.Reformulated.B.CardinalityOfBand.card_band m a b hb | exact @UpperTheory.Reformulated.B.CardinalityOfBand.card_band m a b | exact @UpperTheory.Reformulated.B.CardinalityOfBand.card_band m a | exact @UpperTheory.Reformulated.B.CardinalityOfBand.card_band m
 
 /- English proof (translation)
-Establish `hsum` using `Finset.card_filter_add_card_filter_not (s := (Finset.univ : Finset (Fin N))) (p := fun i => d i = true)`. Rewrite `hsum` using `[hq, Finset.card_univ, Fintype.card_fin]`. Establish `hp : Fintype.card {i // d i = false} = N - q`. Rewrite using `[Fintype.card_subtype]`. Establish `: (Finset.univ.filter (fun i : Fin N => d i = false)) = (Finset.univ.filter (fun i : Fin N => ¬ d i = true))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use extensionality with `i`. Simplify using the standard rewrite rules. Rewrite using `[this]`. Use linear arithmetic over natural numbers and integers. Establish `hq' : Fintype.card {i // ¬ d i = false} = q`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Rewrite using `[Fintype.card_subtype, ← hq]`. Use `congr 1`. Use extensionality with `i`. Simplify using the standard rewrite rules. Set `e1 : {i // d i = false} ≃ Fin (N - q)` to `Fintype.equivFinOfCardEq hp`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Set `e2 : {i // ¬ d i = false} ≃ Fin q` to `Fintype.equivFinOfCardEq hq'`. Set `e : Fin N ≃ Fin (N - q) ⊕ Fin q` to `(Equiv.sumCompl (fun i => d i = false)).symm.trans (Equiv.sumCongr e1 e2)`. Establish `hl : ∀ a, e.symm (Sum.inl a) = (e1.symm a).1` using `fun a => rfl`. Establish `hr : ∀ a, e.symm (Sum.inr a) = (e2.symm a).1` using `fun a => rfl`. Use `⟨e, 1, ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Units.val_one, Formalism.UG.cT_one, Matrix.one_mul, Matrix.mul_one]`. Use extensionality with `a b`. Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b`. Rewrite using `[Matrix.reindex_apply, Matrix.submatrix_apply, hl, hl, Matrix.diagonal_apply]`. Simplify using `only [Formalism.UG.Jpq, Matrix.fromBlocks_apply₁₁, Matrix.one_apply]`.
+Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `h : a = b`. Substitute `h` using the available equality. Simplify using `[(e1.symm a).2, Formalism.BasicNotions.Examples₂.sgn]`. Establish `h' : (e1.symm a).1 ≠ (e1.symm b).1` using `fun h' => h (e1.symm.injective (Subtype.val_injective h'))`. Simplify using `[h, h']`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[Matrix.reindex_apply, Matrix.submatrix_apply, hl, hr, Matrix.diagonal_apply]`. Simplify using `only [Formalism.UG.Jpq, Matrix.fromBlocks_apply₁₂, Matrix.zero_apply]`. Establish `h' : (e1.symm a).1 ≠ (e2.symm b).1` using `fun h => (e2.symm b).2 (h ▸ (e1.symm a).2)`. Simplify using `[h']`. Rewrite using `[Matrix.reindex_apply, Matrix.submatrix_apply, hr, hl, Matrix.diagonal_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Formalism.UG.Jpq, Matrix.fromBlocks_apply₂₁, Matrix.zero_apply]`. Establish `h' : (e2.symm a).1 ≠ (e1.symm b).1` using `fun h => (e2.symm a).2 (h ▸ (e1.symm b).2)`. Simplify using `[h']`. Rewrite using `[Matrix.reindex_apply, Matrix.submatrix_apply, hr, hr, Matrix.diagonal_apply]`. Simplify using `only [Formalism.UG.Jpq, Matrix.fromBlocks_apply₂₂, Matrix.neg_apply, Matrix.one_apply]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hd : d (e2.symm a).1 = true` using `by simpa using (e2.symm a).2`. Distinguish the cases in `h : a = b`. Substitute `h` using the available equality. Simplify using `[hd, Formalism.BasicNotions.Examples₂.sgn]`. Establish `h' : (e2.symm a).1 ≠ (e2.symm b).1` using `fun h' => h (e2.symm.injective (Subtype.val_injective h'))`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[h, h']`.
+Simplify using the standard rewrite rules.
 -/
 theorem hasSig_diag_sgn {N : ℕ} (d : Fin N → Bool) (q : ℕ)
     (hq : (Finset.univ.filter (fun i => d i = true)).card = q) :
@@ -207,9 +207,9 @@ def bandSpace (D : D7) (m a b : ℕ) : HSpace D.host.E :=
     (m - (b - a)) (b - a)
 
 /- English proof (translation)
-Introduce `τ`. Establish `hg : (bandSpace D m a b).gram.map τ = Matrix.diagonal fun i : Fin m => (Formalism.BasicNotions.Examples₂.sgn (band m a b i) : ℂ)`. Use extensionality with `i j`. Rewrite using `[Matrix.map_apply]`. Use `(congrArg τ (Formalism.BasicNotions.Examples₂.stdSpace_gram_apply (E := D.host.E) (fun x hx => Formalism.BasicNotions.Examples₂.star_isIntegral x hx) m (band m a b) (m - (b - a)) (b - a) i j)).trans ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `τ (if i = j then (Formalism.BasicNotions.Examples₂.sgn (band m a b i) : D.host.E) else 0) = if i = j then (Formalism.BasicNotions.Examples₂.sgn (band m a b i) : ℂ) else 0`. Apply the tactic sequence `by_cases h : i = j <;> simp [h, Formalism.BasicNotions.Examples₂.map_sgn]`. Rewrite using `[hg]`. Conclude with `hasSig_diag_sgn (band m a b) (b - a) (card_band m a b hb)`.
+Express the relevant assertion in an equivalent form by its definition. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bandSpace_sigOK (D : D7) (m a b : ℕ) (hb : b ≤ m) : (bandSpace D m a b).SigOK := by
   intro τ
@@ -226,19 +226,17 @@ theorem bandSpace_sigOK (D : D7) (m a b : ℕ) (hb : b ≤ m) : (bandSpace D m a
   exact hasSig_diag_sgn (band m a b) (b - a) (card_band m a b hb)
 
 /- English proof (translation)
-Establish `h1 : (bandSpace D (n + 1) a b).SigOK` using `bandSpace_sigOK D (n + 1) a b hb`. Take `⟨φ, hφ⟩` from `hL (bandSpace D (n + 1) a b) W h1 hW hn.symm (fun τ => by`. Rewrite using `[hs τ]`. Use `show (n + 1 - (b - a), b - a) = (P, Q)`. Rewrite using `[hQ, hP])`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨φ', hφ'⟩ : ∃ φ' : (Fin (n + 1) → D.host.E) ≃ₗ[D.host.E] W.V, ∀ x y : Fin (n + 1) → D.host.E, W.hT (φ' x) (φ' y) = Formalism.BasicNotions.Examples₂.diagForm (n + 1) (band (n + 1) a b) x y` from `⟨φ, hφ⟩`. Establish `key : ∀ u : Fin (n + 1) → D.host.E, W.hT (φ' (Pi.single (Fin.last n) (1 : D.host.E))) (φ' u) = Formalism.BasicNotions.Examples₂.sgn (band (n + 1) a b (Fin.last n)) * u (Fin.last n)`. Introduce `u`. Rewrite using `[hφ', Formalism.BasicNotions.Examples₂.diagForm_single_left]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨φ' (Pi.single (Fin.last n) (1 : D.host.E)), ?_, bandSpace D n a b', φ'.toLinearMap ∘ₗ Formalism.BasicNotions.Examples₂.extZero n, ?_, ?_, bandSpace_sigOK D n a b' hb', fun τ => rfl⟩` and prove the remaining obligations. Rewrite using `[key]`. Simplify using the standard rewrite rules. Conclude with `fun y z => (hφ' _ _).trans (Formalism.BasicNotions.Examples₂.extZero_isom n (band n a b') (band (n + 1) a b) (fun i => (hbb i).symm) y z)`. Use extensionality with `v`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [LinearMap.mem_range, LinearMap.mem_ker]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩`. Conclude with `(key _).trans (mul_eq_zero_of_right _ (Formalism.BasicNotions.Examples₂.extZero_last n y))`. Introduce `hv`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hv'` using `key (φ'.symm v)`. Rewrite `hv'` using `[LinearEquiv.apply_symm_apply, hv]`. Establish `hz : φ'.symm v (Fin.last n) = 0`. Break down `mul_eq_zero.1 hv'.symm with h | h` into its components or cases. Conclude with `absurd h (Formalism.BasicNotions.Examples₂.sgn_ne_zero _)`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `h`. Establish `hE : Formalism.BasicNotions.Examples₂.extZero n (fun i => φ'.symm v (Fin.castSucc i)) = φ'.symm v`. Use function extensionality and compare the values at `i`. Use `Fin.lastCases ?_ (fun j => ?_) i` and prove the remaining obligations. Rewrite using `[Formalism.BasicNotions.Examples₂.extZero_last, hz]`.
-
-Rewrite using `[Formalism.BasicNotions.Examples₂.extZero_castSucc]`. Conclude with `⟨fun i => φ'.symm v (Fin.castSucc i), (congrArg φ' hE).trans (φ'.apply_symm_apply v)⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem selfDualLattice_projection_mem_of_unit_length (D : D7) (hL : LandherrSig D) (W : HSpace D.host.E) (P Q : ℕ) (hW : W.SigOK)
     (hs : ∀ τ, W.sig τ = (P, Q)) (n a b b' : ℕ) (hn : W.rank = n + 1) (hb : b ≤ n + 1) (hQ : b - a = Q)
@@ -283,17 +281,17 @@ theorem selfDualLattice_projection_mem_of_unit_length (D : D7) (hL : LandherrSig
       exact ⟨fun i => φ'.symm v (Fin.castSucc i), (congrArg φ' hE).trans (φ'.apply_symm_apply v)⟩
 
 /- English proof (translation)
-Introduce `W P Q hW hs hM s hsP`. Establish `hrk : W.rank = P + Q`. Use `Formalism.BasicNotions.sig_sum W hW D.host.φ₀` as an intermediate fact. Rewrite `this` using `[hs D.host.φ₀]`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Take `⟨n, hn⟩ : ∃ n, W.rank = n + 1` from `⟨W.rank - 1, by omega⟩`. Consider the cases of `s with`. Consider the case `true`. Establish `hP1 : 1 ≤ P` using `by simpa using hsP`. Take `⟨x, hx, W', ι, h1, h2, h3, h4⟩` from `selfDualLattice_projection_mem_of_unit_length D hL W P Q hW hs n (P - 1) n n hn (by omega) (by omega) (by omega) le_rfl (fun i => by simp only [band, Fin.val_castSucc])`.
+Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Treat this case separately. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨x, ?_, W', ι, h1, h2, h3, fun τ => ?_⟩` and prove the remaining obligations. Rewrite using `[hx]`. Simplify using `[band, Formalism.BasicNotions.Examples₂.sgn]`. Apply the tactic sequence `rw [h4 τ]; simp only [if_true, Prod.mk.injEq]; constructor <;> omega`. Consider the case `false`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Treat this case separately.
 
-Establish `hQ1 : 1 ≤ Q` using `by simpa using hsP`. Take `⟨x, hx, W', ι, h1, h2, h3, h4⟩` from `selfDualLattice_projection_mem_of_unit_length D hL W P Q hW hs n P (n + 1) n hn le_rfl (by omega) (by omega) le_rfl (fun i => by`. Use `i.isLt` as an intermediate fact. Simplify using `only [band, Fin.val_castSucc, decide_eq_decide]`. Use the proof step `omega)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨x, ?_, W', ι, h1, h2, h3, fun τ => ?_⟩` and prove the remaining obligations. Rewrite using `[hx]`. Establish `hb : band (n + 1) P (n + 1) (Fin.last n) = true`. Simplify using `only [band, Fin.val_last, decide_eq_true_eq]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hb]`. Simplify using `[Formalism.BasicNotions.Examples₂.sgn]`. Apply the tactic sequence `rw [h4 τ]; simp only [Bool.false_eq_true, if_false, Prod.mk.injEq]; constructor <;> omega`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem unitSplit_of_landherr (D : D7) (hL : LandherrSig D) : UnitSplit D := by
   intro W P Q hW hs hM s hsP
@@ -329,7 +327,7 @@ theorem unitSplit_of_landherr (D : D7) (hL : LandherrSig D) : UnitSplit D := by
 variable [Fact Formalism.HermitianLattices.Ext.L3.HermRepUnram] in
 
 /- English proof (translation)
-The claim follows from `volRatioTrue_of_indep D hT hI hC (unitSplit_of_landherr D hL)`.
+A detailed English derivation is pending.
 -/
 theorem volRatioTrue_of_named (D : D7) (hT : VolTie D) (hI : VolSigIndep D) (hL : LandherrSig D)
     (hC : ∀ n, 2 ≤ n → ClassItemsAt D n) : VolRatioTrue D :=
@@ -338,7 +336,7 @@ theorem volRatioTrue_of_named (D : D7) (hT : VolTie D) (hI : VolSigIndep D) (hL 
 variable [Fact Formalism.HermitianLattices.Ext.L3.HermRepUnram] in
 
 /- English proof (translation)
-The claim follows from `theorem_two_of_volume_ratio D (volRatioTrue_of_named D hT hI hL hC) hT`.
+A detailed English derivation is pending.
 -/
 theorem theorem_two_of_landherr (D : D7) (hT : VolTie D) (hI : VolSigIndep D) (hL : LandherrSig D)
     (hC : ∀ n, 2 ≤ n → ClassItemsAt D n) : Conclusion2 D :=

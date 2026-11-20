@@ -135,7 +135,7 @@ def FamAd (act : 𝓞 E → Fin d → MvPowerSeries (Fin 1 × Fin d) S) (ad : �
           (peG t x0 d x e m ![fun j => X ((0 : Fin 2), j), fun j => psIn d m ![1] (act (H.bar a) j)]))
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `⟨h.gen, h.ph1, h.ph2, h.sy, h.ad⟩`. Introduce and unpack `⟨h1, h2, h3, h4, h5⟩`. Conclude with `⟨h1, h2, h3, h4, h5⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem isFrameG_iff (F : Fin d → MvPowerSeries (Fin 2 × Fin d) S) (act : 𝓞 E → Fin d → MvPowerSeries (Fin 1 × Fin d) S)
     (ph1 ph2 : MvPowerSeries (Fin 3 × Fin d) S) (sy : MvPowerSeries (Fin 2 × Fin d) S)
@@ -159,7 +159,7 @@ def nuAlg (Dw : Datum H) [StarRing (𝓞 E)] (T : CDVR) {d : ℕ} (B : FB T.V d 
 end Depth
 
 /- English proof (translation)
-Introduce `e _`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression.
 -/
 theorem JEq.refl {R : Type} [CommRing R] {σ : Type} (m : ℕ) (f : MvPowerSeries σ R) : JEq m f f := by
   intro e _
@@ -185,17 +185,15 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
 variable {Xo : Moduli Dw l} {c : Coeff l} [StarRing (𝓞 E)]
 
 /- English proof (translation)
-Use `letI := io.toAlgebra`. Establish `hFK : Ch.ch.B.FK T.Fr = B.FK T.Fr`. Use function extensionality and compare the values at `j`. Use `show MvPowerSeries.map (algebraMap T.Fr T.Fr) (Ch.ch.B.G.F j) = MvPowerSeries.map (algebraMap T.V T.Fr) (B.G.F j)`. Rewrite using `[gt_map_id, hF, Ch.gen.1.1 j]`.
+Equip the data with the indicated structure. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hAK : ∀ b, Ch.ch.B.actK T.Fr b = B.actK T.Fr b`. Introduce `b`. Use function extensionality and compare the values at `j`. Use `show MvPowerSeries.map (algebraMap T.Fr T.Fr) (Ch.ch.B.A.act b j) = MvPowerSeries.map (algebraMap T.V T.Fr) (B.A.act b j)`. Rewrite using `[gt_map_id, hA, Ch.gen.1.2.1 b j]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hB : ∀ {ι : Type} [Fintype ι] (f : PS T.Fr n (chD Ch.ch)) (cp : ι → Fin n) (u : ι → Fin (chD Ch.ch) → T.Fr) (P : MvPolynomial ι T.Fr), nabValN Ch.ch.B T.Fr Ch.ch.h H.w0 k f cp u P = nabValN B T.Fr Ch.ch.h H.w0 k f cp u P`. Introduce `ι _ f cp u P`. Simplify using `only [nabValN, FB.hL, hFK, hAK]`. Simplify using `only [nuLocC, nuAlg]`. Use `iInf_congr fun P => iInf_congr fun _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Simplify by unfolding definitions. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Apply `le_antisymm` to reduce the goal to its premises. Use `le_iInf fun g => ?_` and prove the remaining obligations. Establish `hmem : IsIntPS T (MvPowerSeries.map (algebraMap T.V T.Fr) g)` using `fun m => RingHom.mem_range.mpr ⟨MvPowerSeries.coeff m g, by simp⟩`. Conclude with `(iInf₂_le _ hmem).trans_eq (by rw [hB])`. Use `le_iInf fun f => le_iInf fun hf => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hf'` using `fun m => RingHom.mem_range.mp (hf m)`. Use `choose g hg using hf'`. Establish `hfg : MvPowerSeries.map (algebraMap T.V T.Fr) (g : PS T.V n (chD Ch.ch)) = f`. Use extensionality with `m`. Conclude with `hg m`.
-
-Conclude with `(iInf_le _ (g : PS T.V n (chD Ch.ch))).trans_eq (by rw [hfg, hB])`.
+A detailed English derivation is pending.
 -/
 theorem nuLocC_eq_nuAlg {T : CDVR} {io : c.F →+* T.Fr} {y : IntFr Xo c T io} (Ch : IntChart T io y)
     (B : FB T.V (chD Ch.ch) (𝓞 E)) (hF : B.G.F = Ch.FT) (hA : B.A.act = Ch.actT) (e k : ℕ) (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ) :

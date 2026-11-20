@@ -11,7 +11,7 @@ section
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.L2 Formalism.L2.Host GlobalTheory.Mem GlobalTheory.Mem.Top GlobalTheory.Mem.Top.Bl GlobalTheory.HeightCounting GlobalTheory.HeightCounting.Up GlobalTheory.Mem.LiteralAutomorphy
 namespace GlobalTheory.ArchFromLit
 /- English proof (translation)
-Introduce `hLoc hAut hL`. Conclude with `{ pht := GlobalTheory.PhtCompare.phtCmp lp := fun _ _ => ⟨⟨⟩⟩ cg := fun _ _ _ => ⟨⟨⟩⟩ }`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem archimedean_local_langlands_compatibility_alt : _root_.GlobalTheory.Mem.LiteralAutomorphy.LocalRepresentationTheoryHypothesesAlt → _root_.GlobalTheory.Mem.LiteralAutomorphy.GlobalAutomorphicGaloisHypotheses' → ∀ hL : _root_.UpperTheory.Zero.LLC.RecTExists, _root_.GlobalTheory.HeightCounting.ArchimedeanComparison' hL := by
   intro hLoc hAut hL

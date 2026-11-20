@@ -52,7 +52,7 @@ Both sides reduce to the same expression.
 example (D : D7) (τ : D.what₂.Tau) (x : D.host.E) : (fieldsOf D).emb τ x = tauLL D τ x := rfl
 
 /- English proof (translation)
-The claim follows from `DFunLike.congr_fun D.embE_φ₀ _`.
+A detailed English derivation is pending.
 -/
 example (D : D7) (τ : D.what₂.Tau) (x : D.host.E) :
     (seamOf D).σ₀ ((fieldsOf D).emb τ x) = TaylorLogMetric.embT D ((seamOf D).iT τ) ((seamOf D).iE x) :=
@@ -154,7 +154,7 @@ def ColPeriodAt (D : D7) (Dx : DivX D) (L : SizeData₂ D) (EX : ErrX D)
       Bound D L EX C1 i w u μ
 
 /- English proof (translation)
-The claim follows from `h.1 i w hw u hT μ`.
+A detailed English derivation is pending.
 -/
 example (D : D7) (L : SizeData₂ D) (EX : ErrX D) (C1 C2 : ℝ) (h : LiftErrorLocal.PropositionCLatticeBound D L EX C1 C2) (i : Fin 2) (w : LiftErrorLocal.Pl D)
     (hw : LiftErrorLocal.Over D i w) (u : D.what₂.Word) (hT : D.what₂.places.resChar w ≠ (D.mem u).A.T) (μ : D.what₂.Tup) :

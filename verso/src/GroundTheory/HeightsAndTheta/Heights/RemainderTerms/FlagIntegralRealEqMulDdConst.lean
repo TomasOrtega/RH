@@ -15,7 +15,7 @@ def flagIntegralReal (f N : ℕ) : MvPolynomial (Fin f × Fin N) ℝ →ₗ[ℝ]
   map_smul' c G := by simp only [coeff_smul, smul_eq_mul, RingHom.id_apply, mul_sum, mul_assoc]
 
 /- English proof (translation)
-Simplify using `[flagIntegralReal, flagIntegral, coeff_map, Finsupp.prod]`.
+Simplify using the standard rewrite rules.
 -/
 theorem flagIntegralReal_map (f N : ℕ) (Φ : RootRing f N) :
     flagIntegralReal f N (map (algebraMap ℚ ℝ) Φ) = (flagIntegral f N Φ : ℝ) := by
@@ -24,11 +24,11 @@ theorem flagIntegralReal_map (f N : ℕ) (Φ : RootRing f N) :
 namespace FlagEq
 
 /- English proof (translation)
-Establish `hsub : (blockVandermonde f N).support ⊆ (blockVandermonde f N).support ∪ univ.image (stairExp f N)` using `subset_union_left`. Use `show ∑ α ∈ _, _ = _`. Rewrite using `[sum_subset hsub (fun α _ hα => by rw [notMem_support_iff.mp hα]; simp)]`. Establish `hc : ∀ α : Fin f × Fin N →₀ ℕ, ((coeff α (blockVandermonde f N) : ℚ) : ℝ) = ∑ w, ((permSign f N w : ℤ) : ℝ) * if stairExp f N w = α then 1 else 0`. Introduce `α`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[coeff_blockVandermonde, Rat.cast_sum]`. Use `sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`. Simplify using `only [hc, mul_sum, sum_mul]`. Rewrite using `[sum_comm]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Simplify using `only [mul_ite, ite_mul, mul_one, mul_zero, zero_mul]`. Rewrite using `[sum_ite_eq, if_pos (mem_union_right _ (mem_image_of_mem _ (mem_univ w))), prod_factorial_stairExp]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem flagIntegralReal_eq {f N : ℕ} (G : MvPolynomial (Fin f × Fin N) ℝ) :
     flagIntegralReal f N G =
@@ -53,7 +53,7 @@ theorem flagIntegralReal_eq {f N : ℕ} (G : MvPolynomial (Fin f × Fin N) ℝ) 
   ring
 
 /- English proof (translation)
-Simplify using `[IndefiniteRowSideFullHecke.RestTerms.ddConst, IndefiniteRowSideFullHecke.RestTerms.blockAntisym, permSign, rho, IndefiniteRowSideFullHecke.RestTerms.rhoMon, coeff_sum, coeff_smul, smul_eq_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ddConst_apply (f j k : ℕ) (G : IndefiniteRowSideFullHecke.RestTerms.Roots f j k) :
     IndefiniteRowSideFullHecke.RestTerms.ddConst f j k G =
@@ -63,7 +63,7 @@ theorem ddConst_apply (f j k : ℕ) (G : IndefiniteRowSideFullHecke.RestTerms.Ro
     IndefiniteRowSideFullHecke.RestTerms.rhoMon, coeff_sum, coeff_smul, smul_eq_mul]
 
 /- English proof (translation)
-Rewrite using `[ddConst_apply, coeff_rho_antisym]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ddConst_eq (f j k : ℕ) (G : IndefiniteRowSideFullHecke.RestTerms.Roots f j k) :
     IndefiniteRowSideFullHecke.RestTerms.ddConst f j k G =
@@ -71,7 +71,7 @@ theorem ddConst_eq (f j k : ℕ) (G : IndefiniteRowSideFullHecke.RestTerms.Roots
   rw [ddConst_apply, coeff_rho_antisym]
 
 /- English proof (translation)
-Simplify using `only [IndefiniteRowSideFullHecke.RestTerms.psumAt, map_sum, map_pow, rename_X, Equiv.prodCongrRight_apply]`. Conclude with `Equiv.sum_comp (w τ) (fun i => (X (τ, i) : IndefiniteRowSideFullHecke.RestTerms.Roots f j k) ^ m)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rename_psumAt (f j k m : ℕ) (τ : Fin f) (w : Fin f → Equiv.Perm (Fin (j + k))) :
     rename (Equiv.prodCongrRight w) (IndefiniteRowSideFullHecke.RestTerms.psumAt f j k m τ) =
@@ -84,7 +84,7 @@ def antisym (f j k : ℕ) (G : IndefiniteRowSideFullHecke.RestTerms.Roots f j k)
     ((permSign f (j + k) w : ℤ) : ℝ) • rename (Equiv.prodCongrRight w) G
 
 /- English proof (translation)
-Simplify using `only [antisym, map_mul, rename_psumAt, mul_sum, mul_smul_comm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem antisym_psumAt_mul (f j k m : ℕ) (τ : Fin f) (G : IndefiniteRowSideFullHecke.RestTerms.Roots f j k) :
     antisym f j k (IndefiniteRowSideFullHecke.RestTerms.psumAt f j k m τ * G) =
@@ -92,11 +92,9 @@ theorem antisym_psumAt_mul (f j k m : ℕ) (τ : Fin f) (G : IndefiniteRowSideFu
   simp only [antisym, map_mul, rename_psumAt, mul_sum, mul_smul_comm]
 
 /- English proof (translation)
-Establish `hcomp : ∀ w : Fin f → Equiv.Perm (Fin (j + k)), rename (Equiv.prodCongrRight u) (rename (Equiv.prodCongrRight w) G) = rename (Equiv.prodCongrRight (u * w)) G`. Introduce `w`. Rewrite using `[rename_rename]`. Use `congr 1`. Establish `hs : ((permSign f (j + k) u : ℤ) : ℝ) * ((permSign f (j + k) u : ℤ) : ℝ) = 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Conclude with `permSign_mul_self u` after adjusting the coercions. Simplify using `only [antisym, map_sum, map_smul, hcomp, smul_sum, smul_smul]`. Use `Fintype.sum_equiv (Equiv.mulLeft u) _ _ (fun w => ?_)` and prove the remaining obligations. Simplify using `only [Equiv.coe_mulLeft, permSign_mul]`. Use `push_cast`.
-
-Rewrite using `[← mul_assoc, hs, one_mul]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 -/
 theorem rename_antisym (f j k : ℕ) (u : Fin f → Equiv.Perm (Fin (j + k)))
     (G : IndefiniteRowSideFullHecke.RestTerms.Roots f j k) :
@@ -117,17 +115,17 @@ theorem rename_antisym (f j k : ℕ) (u : Fin f → Equiv.Perm (Fin (j + k)))
   rw [← mul_assoc, hs, one_mul]
 
 /- English proof (translation)
-Set `u : Fin f → Equiv.Perm (Fin N)` to `Pi.mulSingle τ (Equiv.swap i i')`. Establish `hu1 : u τ = Equiv.swap i i'` using `Pi.mulSingle_eq_same _ _`. Establish `hu2 : ∀ τ', τ' ≠ τ → u τ' = 1` using `fun τ' h => Pi.mulSingle_eq_of_ne h _`. Establish `hs : permSign f N u = -1`. Rewrite using `[permSign, Fintype.prod_eq_single τ]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hu1, Equiv.Perm.sign_swap hii]`. Both sides reduce to the same expression. Introduce `τ' h`. Rewrite using `[hu2 τ' h]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hfix : (Finsupp.equivFunOnFinite.symm fun v => β (Equiv.prodCongrRight u v)) = β`. Use extensionality with `⟨τ', l⟩`. Simplify using `only [Finsupp.coe_equivFunOnFinite_symm, Equiv.prodCongrRight_apply]`. Distinguish the cases in `h : τ' = τ`. Substitute `h` using the available equality.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[hu1]`. Break down `eq_or_ne l i with rfl | h1` into its components or cases. Rewrite using `[Equiv.swap_apply_left, hβ]`. Break down `eq_or_ne l i' with rfl | h2` into its components or cases. Rewrite using `[Equiv.swap_apply_right, hβ]`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Equiv.swap_apply_of_ne_of_ne h1 h2]`. Rewrite using `[hu2 τ' h]`. Both sides reduce to the same expression. Establish `h` using `congrArg (coeff β) (hA u)`. Rewrite `h` using `[coeff_rename_prodCongrRight, hfix, hs, coeff_smul, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Move the coercions through the operations in `at h`. Combine the linear equalities and inequalities to obtain the conclusion.
+Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem coeff_eq_zero_of_swap {f N : ℕ} (A : MvPolynomial (Fin f × Fin N) ℝ)
     (hA : ∀ u : Fin f → Equiv.Perm (Fin N),
@@ -160,13 +158,13 @@ theorem coeff_eq_zero_of_swap {f N : ℕ} (A : MvPolynomial (Fin f × Fin N) ℝ
   linarith
 
 /- English proof (translation)
-Rewrite using `[ddConst_apply, ← antisym, antisym_psumAt_mul, IndefiniteRowSideFullHecke.RestTerms.psumAt, sum_mul, coeff_sum]`. Use `sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Rewrite using `[X_pow_eq_monomial, coeff_monomial_mul']`. Use `split_ifs with h`. Rewrite `h` using `[Finsupp.single_le_iff]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [rho, Finsupp.coe_equivFunOnFinite_symm] at h`. Establish `hi : (i : ℕ) + m < j + k` using `by have := i.isLt; omega`. Establish `hii : i ≠ ⟨(i : ℕ) + m, hi⟩`. Introduce `h'`. Use `congrArg Fin.val h'` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `at this`. Use linear arithmetic over natural numbers and integers. Rewrite using `[coeff_eq_zero_of_swap _ (fun u => rename_antisym f j k u G) _ τ i ⟨(i : ℕ) + m, hi⟩ hii, mul_zero]`. Rewrite using `[Finsupp.tsub_apply, Finsupp.tsub_apply, Finsupp.single_eq_same, Finsupp.single_eq_of_ne (by intro h'; simp at h'; exact hii h'.symm)]`. Simplify using `only [rho, Finsupp.coe_equivFunOnFinite_symm]`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem ddConst_psumAt_mul (f j k m : ℕ) (τ : Fin f) (G : IndefiniteRowSideFullHecke.RestTerms.Roots f j k)
     (hm : 1 ≤ m) : IndefiniteRowSideFullHecke.RestTerms.ddConst f j k (IndefiniteRowSideFullHecke.RestTerms.psumAt f j k m τ * G) = 0 := by
@@ -188,7 +186,7 @@ theorem ddConst_psumAt_mul (f j k m : ℕ) (τ : Fin f) (G : IndefiniteRowSideFu
   · rfl
 
 /- English proof (translation)
-Rewrite using `[ddConst_eq, Fintype.sum_eq_single 1]`. Simplify using `[stairExp_one, permSign_one]`. Introduce `w hw`. Rewrite using `[coeff_monomial, if_neg (fun h => hw (eq_one_of_stairExp_eq w h.symm)), mul_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem ddConst_monomial_rho (f j k : ℕ) :
     IndefiniteRowSideFullHecke.RestTerms.ddConst f j k (monomial (rho f (j + k)) (1 : ℝ)) = 1 := by
@@ -202,7 +200,7 @@ end FlagEq
 open FlagEq in
 
 /- English proof (translation)
-Rewrite using `[flagIntegralReal_eq, ddConst_eq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem flagIntegralReal_eq_mul_ddConst (f j k : ℕ) (G : IndefiniteRowSideFullHecke.RestTerms.Roots f j k) :
     flagIntegralReal f (j + k) G = stairConst f (j + k) * IndefiniteRowSideFullHecke.RestTerms.ddConst f j k G := by

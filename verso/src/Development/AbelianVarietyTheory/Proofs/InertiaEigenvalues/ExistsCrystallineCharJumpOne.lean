@@ -15,9 +15,9 @@ open Classical
 namespace GlobalTheory.LTChar
 
 /- English proof (translation)
-Introduce `l _ P AI hT K LL hA τ₀`. Use `haveI := (P.PD K).finK₀`. Establish `hn : 0 < finrank ℚ_[l] ↥(K0 K)` using `Module.finrank_pos`. Take `⟨x, hxu, hxφ, hx1, hx2, hxj⟩` from `GlobalTheory.T.exists_cyclotomic_period_local_prime l P AI hT K _ hn`. Take `⟨c, hc⟩` from `GlobalTheory.T.exists_unramified_character_of_eigen_unit l P K x hxu (GlobalTheory.T.galois_periodRatio_mem_unramified_alt l P AI hT K x hxu hxφ hx1 hx2 hxj)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hcont` using `GlobalTheory.T.continuous_galois_character_of_bcris_unit_fil_one l P AI hT K x hxu hx1 hx2 c hc`. Take `⟨χ, hχc, hχ⟩` from `GlobalTheory.T.exists_continuous_integralUnitChar_of_char l K LL τ₀ c hcont`. Conclude with `⟨χ, hχc, GlobalTheory.T.crystalline_character_jump_one_at_embedding l P AI hT K LL hA τ₀ x hxu hxφ hx1 hx2 hxj c hc _ hχc hχ⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_crystalline_char_jump_one : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P), LocTied l P AI → ∀ (K LL : FinExt l), CaseA K LL → ∀ τ₀ : ↥K.1 →ₐ[ℚ_[l]] ↥LL.1, ∃ χ : ↥(GK K) →* (↥(OL LL))ˣ, Continuous (fun g => (((χ g : (↥(OL LL))ˣ) : ↥(OL LL)) : ↥LL.1)) ∧ IsCrys (P.PD K) (charRep ((Units.map (algebraMap ↥(OL LL) ↥LL.1).toMonoidHom).comp χ)) ∧ ∀ τ b, multV (P.PD K) (charRep ((Units.map (algebraMap ↥(OL LL) ↥LL.1).toMonoidHom).comp χ)) τ b = if b = (if τ = τ₀ then 1 else 0) then 1 else 0 := by
   intro l _ P AI hT K LL hA τ₀

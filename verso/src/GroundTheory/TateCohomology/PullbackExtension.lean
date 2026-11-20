@@ -17,14 +17,14 @@ def pullbackSubmodule : Submodule k (S.X₂.V × Y.V) :=
 
 variable {S β} in
 /- English proof (translation)
-Simplify using `[pullbackSubmodule, sub_eq_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_pullbackSubmodule {p : S.X₂.V × Y.V} :
     p ∈ pullbackSubmodule S β ↔ S.g.hom p.1 = β.hom p.2 := by
   simp [pullbackSubmodule, sub_eq_zero]
 
 /- English proof (translation)
-Introduce `p hp`. Rewrite using `[Submodule.mem_comap, mem_pullbackSubmodule]`. Rewrite `hp` using `[mem_pullbackSubmodule]`. Simplify using `[Rep.hom_comm_apply, hp]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem pullbackSubmodule_le_comap (g : G) :
     pullbackSubmodule S β ≤ (pullbackSubmodule S β).comap ((S.X₂.ρ.prod Y.ρ) g) := by
@@ -54,7 +54,7 @@ Both sides reduce to the same expression.
 @[simp] theorem pullbackSnd_apply (p : pullbackRep S β) : (pullbackSnd S β).hom p = p.1.2 := rfl
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(S.f ≫ S.g).hom x = 0`. Rewrite using `[S.zero]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem g_apply_f_apply (x : S.X₁) : S.g.hom (S.f.hom x) = 0 := by
   change (S.f ≫ S.g).hom x = 0
@@ -84,7 +84,7 @@ Both sides reduce to the same expression.
 @[simp] theorem pullbackι_apply_snd (x : S.X₁) : ((pullbackι S β).hom x).1.2 = 0 := rfl
 
 /- English proof (translation)
-Use extensionality with `x`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem pullbackι_pullbackSnd : pullbackι S β ≫ pullbackSnd S β = 0 := by
   ext x
@@ -117,11 +117,11 @@ Both sides reduce to the same expression.
 variable {S} in
 
 /- English proof (translation)
-Establish `hex` using `function_exact_of_shortExact hS`. Establish `hinj : Function.Injective S.f.hom` using `(Rep.mono_iff_injective _).1 hS.mono_f`. Establish `hsurj : Function.Surjective S.g.hom` using `(Rep.epi_iff_surjective _).1 hS.epi_g`. Use `shortExact_of_linear ?_ ?_ ?_` and prove the remaining obligations. Introduce `a b hab`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hinj (congrArg (fun p : pullbackRep S β => p.1.1) hab)`. Introduce `y`. Take `⟨x, hx⟩` from `hsurj (β.hom y)`. Conclude with `⟨⟨(x, y), mem_pullbackSubmodule.2 hx⟩, rfl⟩`. Introduce `p hp`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hp2 : p.1.2 = 0` using `hp`. Establish `hg : S.g.hom p.1.1 = 0`. Rewrite using `[(mem_pullbackSubmodule.1 p.2), hp2, map_zero]`. Take `⟨x, hx⟩` from `(hex p.1.1).1 hg`. Use `⟨x, Subtype.ext (Prod.ext hx hp2.symm)⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem pullbackSES_shortExact (hS : S.ShortExact) : (pullbackSES S β).ShortExact := by
   have hex := function_exact_of_shortExact hS

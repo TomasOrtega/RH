@@ -34,7 +34,7 @@ def pullBasis (M : MChart Z) (x : Sp S ⟶ N) (hx : ⊤ ≤ (x ≫ p) ⁻¹ᵁ M
   (lieBasis M (x ≫ p) hx).map (tanEquiv h x).symm
 
 /- English proof (translation)
-Establish `e' : spMap φ ≫ x ≫ p = x' ≫ p` using `by rw [← Category.assoc, e]`. Apply `(tanEquiv h x').injective` to reduce the goal to its premises. Rewrite using `[← tanPull_tanEquiv h φ e e']`. Simplify using `only [pullBasis, Module.Basis.map_apply, LinearEquiv.apply_symm_apply]`. Conclude with `tanPull_lieBasis M φ e' hx hx' j`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tanPull_pullBasis (M : MChart Z) (φ : S →+* S') {x : Sp S ⟶ N} {x' : Sp S' ⟶ N} (e : spMap φ ≫ x = x')
     (hx : ⊤ ≤ (x ≫ p) ⁻¹ᵁ M.U) (hx' : ⊤ ≤ (x' ≫ p) ⁻¹ᵁ M.U) (j : Fin M.n) :
@@ -46,7 +46,7 @@ theorem tanPull_pullBasis (M : MChart Z) (φ : S →+* S') {x : Sp S ⟶ N} {x' 
   exact tanPull_lieBasis M φ e' hx hx' j
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[pullBasis, Module.Basis.toMatrix_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem pullBasis_toMatrix (M M₁ : MChart Z) (x : Sp S ⟶ N) (hx : ⊤ ≤ (x ≫ p) ⁻¹ᵁ M.U)
     (hx₁ : ⊤ ≤ (x ≫ p) ⁻¹ᵁ M₁.U) : (pullBasis h M x hx).toMatrix (pullBasis h M₁ x hx₁) =
@@ -60,9 +60,9 @@ def twoDet (M : MChart Z) (M' : MChart Z') (ha : IsAffineOpen (p ⁻¹ᵁ M.U �
     (pullBasis h' M' (tau ha) (le_preimage_map p' inf_le_right (tau_le _ le_rfl)))).unit
 
 /- English proof (translation)
-Establish `e : spMap (ev x _ hh) ≫ tau ha = x` using `spMap_ev x _ hh`. Use `(map_rdet _ _).trans (congrArg rdet ?_)` and prove the remaining obligations. Use extensionality with `i j`. Establish `h1` using `(pullBasis h M (tau ha) (le_preimage_map p inf_le_left (tau_le _ le_rfl))).sum_toMatrix_smul_self (pullBasis h' M' (tau ha) (le_preimage_map p' inf_le_right (tau_le _ le_rfl))) j`. Establish `h2` using `congrArg (tanPull (G := G) _ e) h1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[map_sum, tanPull_pullBasis h' M' _ e _ h₁]`. Simplify using `only [map_smulₛₗ, tanPull_pullBasis h M _ e _ h₀] at h2`. Rewrite using `[Module.Basis.toMatrix_apply, ← h2, Module.Basis.repr_sum_self]`. Both sides reduce to the same expression.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ev_twoDet (M : MChart Z) (M' : MChart Z') (ha : IsAffineOpen (p ⁻¹ᵁ M.U ⊓ p' ⁻¹ᵁ M'.U)) (x : Sp S ⟶ N)
     (h₀ : ⊤ ≤ (x ≫ p) ⁻¹ᵁ M.U) (h₁ : ⊤ ≤ (x ≫ p') ⁻¹ᵁ M'.U) (hh : ⊤ ≤ x ⁻¹ᵁ (p ⁻¹ᵁ M.U ⊓ p' ⁻¹ᵁ M'.U)) :
@@ -81,15 +81,15 @@ theorem ev_twoDet (M : MChart Z) (M' : MChart Z') (ha : IsAffineOpen (p ⁻¹ᵁ
 include h' h in
 
 /- English proof (translation)
-Establish `le : ∀ J : ((detLie Z).pull p).ι, ((detLie Z).pull p).U J ≤ p ⁻¹ᵁ (J PUnit.unit).U` using `fun J => LB.wchart_le (detLie Z) (fun _ : PUnit => p) J PUnit.unit`. Establish `le' : ∀ J : ((detLie Z').pull p').ι, ((detLie Z').pull p').U J ≤ p' ⁻¹ᵁ (J PUnit.unit).U` using `fun J => LB.wchart_le (detLie Z') (fun _ : PUnit => p') J PUnit.unit`. Use `⟨⟨fun a => res (inf_le_inf (le a.1) (le' a.2)) (twoDet h' h (a.1 PUnit.unit) (a.2 PUnit.unit) (ha _ _ (MChart.hU _) (MChart.hU _)))⟩, fun a b => ?_⟩` and prove the remaining obligations. Use `Eq.trans ?_ (mul_right_comm _ _ _)` and prove the remaining obligations. Use `eq_mul_inv_of_mul_eq (Units.ext (ext_ev fun S _ z hz => ?_))` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hp` using `le_preimage_mono inf_le_left hz`. Establish `hq` using `le_preimage_mono inf_le_right hz`. Establish `hp1 : ⊤ ≤ z ⁻¹ᵁ ((detLie Z).pull p).U a.1` using `le_preimage_mono inf_le_left hp`. Establish `hq1 : ⊤ ≤ z ⁻¹ᵁ ((detLie Z).pull p).U b.1` using `le_preimage_mono inf_le_left hq`. Establish `hp2 : ⊤ ≤ z ⁻¹ᵁ ((detLie Z').pull p').U a.2` using `le_preimage_mono inf_le_right hp`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq2 : ⊤ ≤ z ⁻¹ᵁ ((detLie Z').pull p').U b.2` using `le_preimage_mono inf_le_right hq`. Establish `hp0` using `le_preimage_map p (le a.1) hp1`. Establish `hq0` using `le_preimage_map p (le b.1) hq1`. Establish `hp3` using `le_preimage_map p' (le' a.2) hp2`. Establish `hq3` using `le_preimage_map p' (le' b.2) hq2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp4` using `le_preimage_mono (inf_le_inf (le a.1) (le' a.2)) hp`. Establish `hq4` using `le_preimage_mono (inf_le_inf (le b.1) (le' b.2)) hq`. Establish `g` using `ev_pull_g (detLie Z) p z a.1 b.1 (le_preimage_inf hp1 hq1) (le_preimage_inf hp0 hq0)`. Establish `g'` using `ev_pull_g (detLie Z') p' z a.2 b.2 (le_preimage_inf hp2 hq2) (le_preimage_inf hp3 hq3)`. Use `(map_mul (ev z _ hz) _ _).trans (Eq.trans ?_ (map_mul (ev z _ hz) _ _).symm)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(congrArg₂ (· * ·) ((ev_res z _ hz hp _).trans ((ev_res z _ hp hp4 _).trans (ev_twoDet h' h _ _ _ z hp0 hp3 hp4))) ((ev_res z _ hz _ _).trans (g'.trans (ev_detChg _ _ _ hp3 hq3 _)))).trans (Eq.trans ?_ (congrArg₂ (· * ·) ((ev_res z _ hz _ _).trans (g.trans (ev_detChg _ _ _ hp0 hq …` and prove the remaining obligations. Conclude with `(congrArg (_ * rdet ·) (pullBasis_toMatrix h' _ _ z hp3 hq3).symm).trans ((rdet_toMatrix_mul _ _ _).trans ((congrArg (rdet · * _) (pullBasis_toMatrix h _ _ z hp0 hq0).symm).trans (rdet_toMatrix_mul _ _ _)).symm)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem lbIso_detLie_pull (ha : ∀ (U : Z.X.Opens) (U' : Z'.X.Opens), IsAffineOpen U → IsAffineOpen U' →
     IsAffineOpen (p ⁻¹ᵁ U ⊓ p' ⁻¹ᵁ U')) : LBIso ((detLie Z').pull p') ((detLie Z).pull p) := by
@@ -127,9 +127,9 @@ theorem lbIso_detLie_pull (ha : ∀ (U : Z.X.Opens) (U' : Z'.X.Opens), IsAffineO
 end Det
 
 /- English proof (translation)
-Set `m : pullback (hU.fromSpec ≫ f) (hV.fromSpec ≫ g) ⟶ pullback f g` to `pullback.map _ _ _ _ hU.fromSpec hV.fromSpec (𝟙 _) (by simp) (by simp)`. Establish `e : m.opensRange = pullback.snd f g ⁻¹ᵁ V ⊓ pullback.fst f g ⁻¹ᵁ U`. Apply `Opens.ext` to reduce the goal to its premises. Rewrite using `[Scheme.Hom.coe_opensRange, Scheme.Pullback.range_map, hU.range_fromSpec, hV.range_fromSpec, Set.inter_comm]`. Both sides reduce to the same expression.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Conclude with `e ▸ isAffineOpen_opensRange m`.
+A detailed English derivation is pending.
 -/
 theorem isAffineOpen_snd_inf_fst {X Y T : Scheme.{0}} [IsAffine T] (f : X ⟶ T) (g : Y ⟶ T) {U : X.Opens} {V : Y.Opens}
     (hU : IsAffineOpen U) (hV : IsAffineOpen V) : IsAffineOpen (pullback.snd f g ⁻¹ᵁ V ⊓ pullback.fst f g ⁻¹ᵁ U) := by
@@ -142,27 +142,25 @@ theorem isAffineOpen_snd_inf_fst {X Y T : Scheme.{0}} [IsAffine T] (f : X ⟶ T)
   exact e ▸ isAffineOpen_opensRange m
 
 /- English proof (translation)
-Establish `lift : ∀ (x : N) (K : Type) [Field K] (g : N.presheaf.stalk x →+* K), Function.Injective g → ∃ y : Sp K ⟶ U, y ≫ u = Spec.map (CommRingCat.ofHom g) ≫ N.fromSpecStalk x`. Introduce `x K _ g hg`. Use `(hN x).1` as an intermediate fact. Use `GlobalTheory.HomExt.exists_lift_of_range_subset u _ ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨t, rfl⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Take `⟨ξ, hξ, hs⟩` from `GlobalTheory.exists_mem_genericPoints_specializes x`. Establish `hξ'` using `GlobalTheory.genericPoints_subset_range_of_isDominant u hξ`. Choose the witnesses or unpack the hypotheses as in `⟨q, rfl⟩ : ξ ∈ Set.range (N.fromSpecStalk x) := by`. Rewrite using `[Scheme.range_fromSpecStalk]`. Conclude with `hs`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `ht : Spec.map (CommRingCat.ofHom g) t ⤳ q`. Use `(PrimeSpectrum.le_iff_specializes _ _).1 ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Ideal.comap g t.asIdeal ≤ q.asIdeal`. Rewrite using `[@Ideal.eq_bot_of_prime _ _ t.asIdeal t.isPrime, Ideal.comap_bot_of_injective _ hg]`. Conclude with `bot_le`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `ht.map (N.fromSpecStalk x).continuous`. Establish `h3` using `(hξ : Maximal IsIrreducible _).2 isIrreducible_singleton.closure (specializes_iff_closure_subset.1 h2)`. Rewrite using `[Scheme.Hom.comp_apply, (h2.antisymm (specializes_iff_closure_subset.2 h3)).eq]`. Conclude with `hξ'`. Establish `k₁ : D₁.KeepsRegular p₁`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `i V hV`. Use `D₁.keepsRegular_of_flat (u ≫ p₁) i (u ⁻¹ᵁ V) (fun y hy => hV hy)` as an intermediate fact. Use `mem_nonZeroDivisors_iff_right.2 fun a ha => u.app_injective V ?_` and prove the remaining obligations. Rewrite using `[map_zero]`. Use `mem_nonZeroDivisors_iff_right.1 this _ ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e` using `congrArg (u.app V).hom ha`. Rewrite `e` using `[map_mul, map_zero, Cartier.app_resG]`. Conclude with `e`. Establish `hI : (D₁.pull p₁ k₁).idealSheaf = D₂.idealSheaf.comap p₂`. Use `GlobalTheory.Vanishing.eq_comap_of_stalk fun x => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨hd, hn⟩` from `hN x`. Take `⟨i, hi⟩` from `D₂.exists_mem (p₂ x)`. Take `⟨i', hi'⟩` from `D₁.exists_mem (p₁ x)`. Establish `: CharZero (N.presheaf.stalk x)`. Take `⟨y, -⟩` from `lift x _ _ (IsFractionRing.injective _ (FractionRing (N.presheaf.stalk x)))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `hz _ y` as an intermediate fact. Conclude with `⟨fun p q e => Nat.cast_injective (R := FractionRing (N.presheaf.stalk x)) (by`. Simplify using `using congrArg (algebraMap _ (FractionRing (N.presheaf.stalk x))) e)⟩`. Establish `e2 : ∀ {X : Scheme.{0}} (π : N ⟶ X) {W : Type} [CommRing W] (g : N.presheaf.stalk x →+* W), Spec.map (CommRingCat.ofHom (g.comp (π.stalkMap x).hom)) ≫ X.fromSpecStalk (π x) = (Spec.map (CommRingCat.ofHom g) ≫ N.fromSpecStalk x) ≫ π` using `fun π W _ g => by`. Rewrite using `[Category.assoc, ← Scheme.SpecMap_stalkMap_fromSpecStalk, CommRingCat.ofHom_comp, Spec.map_comp, Category.assoc]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Both sides reduce to the same expression. Establish `key : ∀ (W : Type) [CommRing W] [IsDomain W] [IsLocalRing W], CDvr W → ∀ g : N.presheaf.stalk x →+* W, Function.Injective g → ((FinalTheorems.stalkId D₁.idealSheaf (p₁ x)).map (p₁.stalkMap x).hom).map g = ((FinalTheorems.stalkId D₂.idealSheaf (p₂ x)).map (p₂.stalkMap x).hom).map …`. Introduce `W _ _ _ hW g hg`. Take `⟨y, hy⟩` from `lift x _ ((algebraMap W (FractionRing W)).comp g) ((IsFractionRing.injective W _).comp hg)`. Rewrite using `[Ideal.map_map, Ideal.map_map, ← PolDiv.idlAlong_fromSpecStalk, ← PolDiv.idlAlong_fromSpecStalk, e2, e2]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `ht W hW _ y ?_` and prove the remaining obligations. Rewrite using `[hy, CommRingCat.ofHom_comp, Spec.map_comp, Category.assoc]`. Rewrite `key`, the goal using `[D₂.stalkId_idealSheaf i _ hi, Ideal.map_span, Set.image_singleton]`. Rewrite `key` using `[D₁.stalkId_idealSheaf i' _ hi', Ideal.map_span, Set.image_singleton, ← EffCartierData.germ_app]`. Rewrite using `[(D₁.pull p₁ k₁).stalkId_idealSheaf i' _ hi']`.
-
-Conclude with `PolDiv.span_eq_of_traits (nonZeroDivisors.ne_zero (Cartier.isRegularFn_iff_germ.1 (k₁ i') x hi')) key`. Establish `k₂ : D₂.KeepsRegular p₂` using `(D₂.keepsRegular_iff_effCartier p₂).2 (hI ▸ (D₁.pull p₁ k₁).effCartier_idealSheaf)`. Conclude with `((D₁.lbIso_pull p₁ k₁).symm.trans (pull_isLB D₁.isLB_lb _) (D₁.pull p₁ k₁).isLB_lb (D₂.pull p₂ k₂).isLB_lb (EffCartierData.lbIso_of_idealSheaf_eq _ _ (hI.trans (D₂.idealSheaf_pull p₂ k₂).symm))).trans (pull_isLB D₁.isLB_lb _) (D₂.pull p₂ k₂).isLB_lb (pull_isLB D₂.isLB_lb _) (D₂.l …`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem lbIso_pull_of_traits {N U X₁ X₂ : Scheme.{0}} (u : U ⟶ N) (p₁ : N ⟶ X₁) (p₂ : N ⟶ X₂) (D₁ : EffCartierData X₁)
     (D₂ : EffCartierData X₂) (hN : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme N) [IsLocallyNoetherian N] [IsPreimmersion u]
@@ -235,7 +233,7 @@ theorem lbIso_pull_of_traits {N U X₁ X₂ : Scheme.{0}} (u : U ⟶ N) (p₁ : 
     (pull_isLB D₁.isLB_lb _) (D₂.pull p₂ k₂).isLB_lb (pull_isLB D₂.isLB_lb _) (D₂.lbIso_pull p₂ k₂)
 
 /- English proof (translation)
-Establish `key : ∀ {Y : Scheme.{0}} (q : N ⟶ Y) {L M : LB Y} (hL : L.IsLB) (hM : M.IsLB), CechPic.cls _ (pull_isLB (CechPic.isLB_tens (isLB_lbPow (CechPic.isLB_dual hL) m) (CechPic.isLB_dual hM)) q) = m • -CechPic.cls _ (pull_isLB hL q) + -CechPic.cls _ (pull_isLB hM q)` using `fun q L M hL hM => by`. Rewrite using `[CechPic.cls_pull (CechPic.isLB_tens (isLB_lbPow (CechPic.isLB_dual hL) m) (CechPic.isLB_dual hM)), CechPic.cls_tens (isLB_lbPow (CechPic.isLB_dual hL) m) (CechPic.isLB_dual hM), CechPic.cls_lbPow (CechPic.isLB_dual hL), CechPic.cls_dual hL, CechPic.cls_dual hM, map_add, map_nsmu …`. Use `(CechPic.cls_eq_iff _ _).1 ((key p' hA' hB').trans (Eq.trans ?_ (key p hA hB).symm))` and prove the remaining obligations. Rewrite using `[(CechPic.cls_eq_iff (pull_isLB hA' p') (pull_isLB hA p)).2 a, (CechPic.cls_eq_iff (pull_isLB hB' p') (pull_isLB hB p)).2 b]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem lbIso_pull_tens {N X X' : Scheme.{0}} {p' : N ⟶ X'} {p : N ⟶ X} {A' B' : LB X'} {A B : LB X} (hA' : A'.IsLB)
     (hB' : B'.IsLB) (hA : A.IsLB) (hB : B.IsLB) (m : ℕ) (a : LBIso (A'.pull p') (A.pull p))
@@ -254,31 +252,31 @@ theorem lbIso_pull_tens {N X X' : Scheme.{0}} {p' : N ⟶ X'} {p : N ⟶ X} {A' 
     (CechPic.cls_eq_iff (pull_isLB hB' p') (pull_isLB hB p)).2 b]
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l l' Xo Xo' c c' O O' _ _ β β' Z Z' BD BD' φ m b σ r ν hβ hβ' hO htw hσ hP hP' hr`. Take `⟨-, h1, h2, h3, h4⟩` from `(ofModel Z').arith_and_proOpen hβ' hO`. Establish `h1 : IsPreimmersion Z'.j` using `h1`. Establish `h2 : Flat Z'.j` using `h2`. Establish `h3 : IsDominant Z'.j` using `h3`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : QuasiCompact Z'.j` using `h4`. Take `⟨⟨_, _⟩, _, -⟩` from `id hβ'`. Use `Z'.flat` as an intermediate fact. Use `GlobalTheory.ThetaDescent.isProper_of_isProjOver Z'.proj` as an intermediate fact. Use `GlobalTheory.ThetaDescent.isProper_of_isProjOver Z.proj` as an intermediate fact.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsLocallyNoetherian Z'.X` using `LocallyOfFiniteType.isLocallyNoetherian Z'.s`. Use `GlobalTheory.IsNormalScheme.of_pred Z'.normal` as an intermediate fact. Use `isIso_stalkMap_of_flat_of_surjectiveOnStalks Z'.j` as an intermediate fact. Establish `: GlobalTheory.IsNormalScheme (Xo'.XF c')` using `GlobalTheory.IsNormalScheme.of_isIso_stalkMap Z'.j`. Establish `: IsLocallyNoetherian (Xo'.XF c')` using `AmpUniq.isLocallyNoetherian_of_isPreimmersion Z'.j`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `s₁` to `Z'.s ≫ spMap b`. Establish `w : Z'.j ≫ s₁ = (r ≫ Z.j) ≫ Z.s` using `by rw [Category.assoc, hr]`. Set `f : Xo'.XF c' ⟶ pullback s₁ Z.s` to `pullback.lift Z'.j (r ≫ Z.j) w`. Establish `hf₁ : f ≫ pullback.fst s₁ Z.s = Z'.j` using `pullback.lift_fst _ _ _`. Establish `hf₂ : f ≫ pullback.snd s₁ Z.s = r ≫ Z.j` using `pullback.lift_snd _ _ _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsPreimmersion (f ≫ pullback.fst s₁ Z.s)` using `hf₁ ▸ inferInstance`. Establish `: QuasiCompact (f ≫ pullback.fst s₁ Z.s)` using `hf₁ ▸ inferInstance`. Establish `: IsPreimmersion f` using `AmpUniq.isPreimmersion_of_comp f (pullback.fst s₁ Z.s)`. Establish `: QuasiCompact f` using `.of_comp f (pullback.fst s₁ Z.s)`. Establish `: Flat (f ≫ pullback.fst s₁ Z.s ≫ Z'.s)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[reassoc_of% hf₁]`. Use `infer_instance`. Establish `: IsFinite f.fromNormalization` using `AmpUniq.isFinite_fromNormalization_graph f (pullback.fst s₁ Z.s ≫ Z'.s)`. Set `u` to `f.toNormalization`. Set `p₁` to `f.fromNormalization ≫ pullback.fst s₁ Z.s`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `p₂` to `f.fromNormalization ≫ pullback.snd s₁ Z.s`. Establish `hu₁ : u ≫ p₁ = Z'.j` using `by simp [u, p₁, hf₁]`. Establish `hu₂ : u ≫ p₂ = r ≫ Z.j` using `by simp [u, p₂, hf₂]`. Establish `: IsPreimmersion (u ≫ p₁)` using `hu₁ ▸ inferInstance`. Establish `: IsPreimmersion u` using `AmpUniq.isPreimmersion_of_comp u p₁`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Flat u` using `AmpUniq.flat_of_isPreimmersion u`. Establish `hN` using `GlobalTheory.IsNormalScheme.pred f.normalization`. Establish `: IsLocallyNoetherian f.normalization` using `LocallyOfFiniteType.isLocallyNoetherian p₁`. Set `z₀ : Sp O' ⟶ Sp ℤ` to `spMap (algebraMap ℤ O')`. Establish `: LocallyOfFiniteType z₀` using `(HasRingHomProperty.Spec_iff (P := @LocallyOfFiniteType)).2 (RingHom.finiteType_algebraMap.2 ‹_›)`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Flat z₀` using `Flat.SpecMap_iff.2 (RingHom.flat_algebraMap_iff.2 inferInstance)`. Establish `: Flat (f.toNormalization ≫ p₁ ≫ Z'.s)`. Rewrite using `[reassoc_of% hu₁]`. Use `infer_instance`. Establish `: Flat (p₁ ≫ Z'.s)` using `flat_normalization f (p₁ ≫ Z'.s)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `t₂` to `FiniteStable.twist σ hσ Z.t`. Set `ν₁ : SABMap Z'.oF.t (FiniteStable.twist σ hσ Z.oF.t) r` to `⟨ν.cm, ν.cart, ν.base, ν.act, ν.lin⟩`. Set `ν₂ : SABMap (FiniteStable.twist σ hσ Z.oF.t) t₂ Z.j` to `⟨Z.m.cm, Z.m.cart, Z.m.base, fun a => Z.m.act (σ a), Z.m.lin⟩`. Take `⟨m₂, -⟩` from `ObjMaps.exists_sab_comp ν₂ ν₁`. Take `⟨_, _, _, _, _, n₁, -⟩` from `sabPull Out.CubePf.cubePull p₁ Z'.t`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨_, _, _, _, _, n₂, -⟩` from `sabPull Out.CubePf.cubePull p₂ t₂`. Take `⟨a₁, -⟩` from `ObjMaps.exists_sab_cancel n₁ (hu₁ ▸ Z'.m : SABMap Z'.oF.t Z'.t (u ≫ p₁))`. Take `⟨a₂, -⟩` from `ObjMaps.exists_sab_cancel n₂ (hu₂ ▸ m₂ : SABMap Z'.oF.t t₂ (u ≫ p₂))`. Take `⟨e, -⟩` from `GlobalTheory.exists_sabMap_id_of_common_generic GlobalTheory.homExtension_semiAbelian_dvr_unconditional E H _ _ u ⟨hN, (p₁ ≫ Z'.s) ≫ z₀, inferInstance, inferInstance⟩ inferInstance inferInstance inferInstance inferInstance Z'.oF.t _ _ a₁ a₂ Z'.oF.proper`. Take `⟨n₂', -⟩` from `ObjMaps.exists_sab_comp n₂ e`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `n₂'` using `[Category.id_comp]`. Establish `hdet` using `lbIso_detLie_pull (G := (Over.pullback p₁).obj Z'.t.G) n₁.cart n₂'.cart fun U U' hU hU' => (isAffineOpen_snd_inf_fst s₁ Z.s hU' hU).preimage f.fromNormalization`. Establish `: Flat (u ≫ p₁)` using `hu₁ ▸ h2`. Establish `hdiv` using `lbIso_pull_of_traits u p₁ p₂ BD' BD hN (fun K _ y => charZero_of_point (K := .of K) y) fun W _ _ _ hW χ y hy => GlobalTheory.TraitOrder.idlAlong_eq E H D l l' Xo Xo' c c' O O' β β' Z Z' BD BD' φ σ r ν hβ hβ' htw hσ hP.1 hP'.1 W hW (χ ≫ p₂) (χ ≫ p₁) y (by rw [reassoc_of% hy, hu₁]) …`. Establish `hA : LBIso ((polOf Z' m BD').pull p₁) ((polOf Z m BD).pull p₂)` using `lbIso_pull_tens (PolFin.isLB_detLie_of_polOf hP'.2.isLB) BD'.isLB_lb (PolFin.isLB_detLie_of_polOf hP.2.isLB) BD.isLB_lb m hdet hdiv`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `: IsFinite p₁` using `AmpUniq.isFinite_fst s₁ Z.s f.fromNormalization hP'.2.isLB hP.2.isLB (PolFin.exists_H0_of_isAmpleLB hP.2) hA`. Take `⟨h, ⟨k₁, k₂⟩, -⟩` from `existsUnique_lift_of_densePart Z'.X _ Z'.X f.normalization Z'.j Z'.normal inferInstance inferInstance inferInstance inferInstance p₁ (𝟙 _) u inferInstance (by rw [hu₁, Category.comp_id])`. Use `⟨h ≫ p₂, ?_, by rw [reassoc_of% k₁, hu₂]⟩` and prove the remaining obligations. Establish `: p₂ ≫ Z.s = p₁ ≫ s₁` using `by simp only [p₁, p₂, Category.assoc, pullback.condition]`. Rewrite using `[Category.assoc, this, reassoc_of% k₂]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_hom_of_isPol : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l l' : Level H) (Xo : Moduli D l)
     (Xo' : Moduli D l') (c : Coeff l) (c' : Coeff l') (O O' : Type) [CommRing O] [CommRing O'] (β : O →+* c.F)

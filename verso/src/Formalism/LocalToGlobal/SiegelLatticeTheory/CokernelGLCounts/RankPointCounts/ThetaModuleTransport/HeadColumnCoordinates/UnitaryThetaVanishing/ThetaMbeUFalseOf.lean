@@ -11,7 +11,7 @@ variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableS
 variable {M : Model F E} {V : Type} [AddCommGroup V] [Module E V]
 
 /- English proof (translation)
-Establish `hn : ∀ x : E, M.L.cj (H.normE x) = H.normE x`. Introduce `x`. Rewrite using `[HermSp.normE, map_mul, M.L.cj_cj, mul_comm]`. Simplify using `only [HermSp.Gdet, map_sub, map_mul, AlgEquiv.commutes, hn]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem gdet_fix (H : HermSp M V) {r : ℕ} (f f' : Fin (r + 1) → V) (T T' : F) :
     M.L.cj (H.Gdet f f' T T') = H.Gdet f f' T T' := by
@@ -21,9 +21,9 @@ theorem gdet_fix (H : HermSp M V) {r : ℕ} (f f' : Fin (r + 1) → V) (T T' : F
   simp only [HermSp.Gdet, map_sub, map_mul, AlgEquiv.commutes, hn]
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `(M.L.cj_fix _).mp (gdet_fix H f f' T T')`. Establish `ha0 : a ≠ 0`. Introduce and unpack `rfl`. Apply `hG` to reduce the goal to its premises. Rewrite using `[← ha, map_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← ha]`. Conclude with `(IsUnit.mk0 a ha0).map (algebraMap F E)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gdet_unit (H : HermSp M V) {r : ℕ} (f f' : Fin (r + 1) → V) (T T' : F)
     (hG : H.Gdet f f' T T' ≠ 0) : IsUnit (H.Gdet f f' T T') := by
@@ -36,9 +36,9 @@ theorem gdet_unit (H : HermSp M V) {r : ℕ} (f f' : Fin (r + 1) → V) (T T' : 
   exact (IsUnit.mk0 a ha0).map (algebraMap F E)
 
 /- English proof (translation)
-Establish `hmul : ∀ x y : E, H.normE x * H.normE y = H.normE (x * y)`. Introduce `x y`. Simplify using `only [HermSp.normE, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `h` using `congrArg H.normE hrel`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite `h` using `[← hmul, ← hmul]`. Simplify using `only [HermSp.Gdet]`. Take the linear combination `(algebraMap F E (T * T')) * h`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem gdet_rel (H : HermSp M V) {r : ℕ} (f₁ f₁' f₂ f₂' : Fin (r + 1) → V) (T T' : F)
     (hrel : H.Dl f₁ f₁' r * H.Dl f₂ f₂' (r + 1) = H.Dl f₂ f₂' r * H.Dl f₁ f₁' (r + 1)) :
@@ -54,9 +54,9 @@ theorem gdet_rel (H : HermSp M V) {r : ℕ} (f₁ f₁' f₂ f₂' : Fin (r + 1)
   linear_combination (algebraMap F E (T * T')) * h
 
 /- English proof (translation)
-Rewrite using `[gramC_eq H f f' T T' hF hF', Matrix.det_transpose]`. Take `⟨s, hs, hdet⟩` from `gram_det H f f' T T' hF hF' hD1`. Establish `: (H.gram (Sum.elim f f')).det = H.Gdet f f' T T' * s`. Rewrite using `[← hdet, mul_assoc, hs, mul_one]`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hG.mul ⟨⟨s, s, hs, hs⟩, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem unit_gramC_of (H : HermSp M V) {r : ℕ} (f f' : Fin (r + 1) → V) (T T' : F)
     (hF : Formalism.MainNotions.ThinScalesBound.FrameK H f T) (hF' : Formalism.MainNotions.ThinScalesBound.FrameK H f' T')
@@ -70,23 +70,19 @@ theorem unit_gramC_of (H : HermSp M V) {r : ℕ} (f f' : Fin (r + 1) → V) (T T
   exact hG.mul ⟨⟨s, s, hs, hs⟩, rfl⟩
 
 /- English proof (translation)
-Take `⟨L, sp, mu⟩` from `M`. Consider the cases of `sp with`. Consider the case `some g => intro hmode`. Simplify using `at hmode`. Consider the case `none`.
+Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Introduce `_ V _ _ H hn t₁ f₂ f₂' φ φ' hyp hD Z₁ Z₂ e₁ e₂`. Establish `hs : (⟨L, none, mu⟩ : Model F E).split = none` using `rfl`. Establish `z₁ : Z₁.Z.map (Model.R ⟨L, none, mu⟩).subtype = H.Zhat t₁.f t₁.f'`. Rewrite using `[e₁]`. Conclude with `zzplusOf_none hs _ _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `z₂ : Z₂.Z.map (Model.R ⟨L, none, mu⟩).subtype = H.Zhat f₂ f₂'`. Rewrite using `[e₂]`. Conclude with `zzplusOf_none hs _ _ _`. Establish `hU1 : IsUnit (H.Dl t₁.f t₁.f' (r + 1))` using `dl_succ_unit hyp`. Establish `hU2 : IsUnit (H.Dl f₂ f₂' (r + 1))` using `by rw [dl_full, ← z₂]; exact Z₂.unit`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrel : H.Dl t₁.f t₁.f' r * H.Dl f₂ f₂' (r + 1) = H.Dl f₂ f₂' r * H.Dl t₁.f t₁.f' (r + 1)` using `hyp.2.2.2.1.2.2.2.2.2`. Establish `hint : ∀ a b, H.Zhat f₂ f₂' a b ∈ L.O`. Introduce `a b`. Rewrite using `[← z₂]`. Conclude with `(Z₂.Z a b).2`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hT : t₁.T ∈ 𝒪[F]` using `hyp.1.1.2.1.2.2.2.1`. Establish `hT' : t₁.T' ∈ 𝒪[F]` using `hyp.1.1.2.2.1.2.2.2.1`. Establish `hF₁ : Formalism.MainNotions.ThinScalesBound.FrameK H t₁.f t₁.T` using `⟨hyp.1.1.2.1.2.1, hyp.1.1.2.1.2.2.1⟩`. Establish `hF₁' : Formalism.MainNotions.ThinScalesBound.FrameK H t₁.f' t₁.T'` using `⟨hyp.1.1.2.2.1.2.1, hyp.1.1.2.2.1.2.2.1⟩`. Establish `hGu₁ : IsUnit (H.Gdet t₁.f t₁.f' t₁.T t₁.T')` using `gdet_unit H _ _ _ _ hyp.1.1.2.2.2.2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hGu₂ : IsUnit (H.Gdet f₂ f₂' t₁.T t₁.T')`. Establish `hN₂ : IsUnit (H.normE (H.Dl f₂ f₂' (r + 1)))` using `hU2.mul (hU2.map L.cj)`. Use `gdet_rel H t₁.f t₁.f' f₂ f₂' t₁.T t₁.T' hrel` as an intermediate fact. Establish `hp : IsUnit (H.Gdet f₂ f₂' t₁.T t₁.T' * H.normE (H.Dl t₁.f t₁.f' (r + 1)))`. Rewrite using `[this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hN₂.mul hGu₁`. Conclude with `isUnit_of_mul_isUnit_left hp`. Establish `hG1` using `unit_gramC_of H _ _ _ _ hF₁ hF₁' hU1 hGu₁`. Establish `hG2` using `unit_gramC_of H _ _ _ _ hyp.2.1 hyp.2.2.1 hU2 hGu₂`. Establish `hh : ((Z₁.Z.map (Model.R ⟨L, none, mu⟩).subtype).submatrix Fin.castSucc Fin.castSucc).det * (Z₂.Z.map (Model.R ⟨L, none, mu⟩).subtype).det = ((Z₂.Z.map (Model.R ⟨L, none, mu⟩).subtype).submatrix Fin.castSucc Fin.castSucc).det * (Z₁.Z.map (Model.R ⟨L, none, mu⟩).subtype).det`.
-
-Rewrite using `[z₁, z₂, ← dl_eq_det, ← dl_eq_det, ← dl_full, ← dl_full]`. Conclude with `hrel`. Rewrite `hG1` using `[← z₁]`. Rewrite `hG2` using `[← z₂]`. Rewrite using `[h1 F E ⟨L, none, mu⟩ hs r n V H hn t₁ f₂ f₂' φ φ' hyp hD hU2 hint, ← z₁, ← z₂]`.
-
-Conclude with `h2 E L.O (L.cj : E →+* E) (fun x => L.cj_cj x) (fun x hx => cj_mem_O L hx) r _ _ (Formalism.MainNotions.LocalModelPeriodLattices.algebraMap_mem_O L ⟨t₁.T, hT⟩) (Formalism.MainNotions.LocalModelPeriodLattices.algebraMap_mem_O L ⟨t₁.T', hT'⟩) (AlgEquiv.commutes _ _) (AlgEquiv.commu …`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem thetaMbeU_false_of (h1 : CoordU) (h2 : AlgAll) (M : Model F E) (r n : ℕ) :
     Formalism.L2.SG.LocalCountModules.UnitaryGroupMassFormula.LocCntUL.ThetaMbeU M r n false := by

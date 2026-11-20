@@ -9,7 +9,7 @@ open Formalism.L2.Th1.H
 open Formalism.L2.Th1.F (cmPair cmTheta)
 
 /- English proof (translation)
-Use extensionality with `⟨a, i⟩ ⟨a', i'⟩`. Simplify using `only [blk4, Matrix.smul_apply, Matrix.one_apply, Prod.mk.injEq, smul_eq_mul]`. Apply the tactic sequence `by_cases h1 : a = a' <;> by_cases h2 : i = i' <;> simp [h1, h2]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem block_diag_smul_one {n : Type} [Fintype n] [DecidableEq n] (c : ℂ) :
     blk4 (c • (1 : Matrix n n ℂ)) = c • (1 : Matrix (Fin 4 × n) (Fin 4 × n) ℂ) := by
@@ -18,9 +18,9 @@ theorem block_diag_smul_one {n : Type} [Fintype n] [DecidableEq n] (c : ℂ) :
   by_cases h1 : a = a' <;> by_cases h2 : i = i' <;> simp [h1, h2]
 
 /- English proof (translation)
-Use extensionality with `z`. Rewrite using `[mem_stdLat]`. Prove the components needed by the constructor for the conclusion. Introduce `hz w`. Conclude with `(mem_stdLat L n _).1 (hz w.1) w.2`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hz a`. Conclude with `(mem_stdLat L n _).2 fun i => hz (a, i)`.
+A detailed English derivation is pending.
 -/
 theorem fourth_power_standard_lattice (L : PeriodPair) (n : Type) [Fintype n] : pow4 (stdLat L n) = stdLat L (Fin 4 × n) := by
   ext z
@@ -32,9 +32,9 @@ theorem fourth_power_standard_lattice (L : PeriodPair) (n : Type) [Fintype n] : 
     exact (mem_stdLat L n _).2 fun i => hz (a, i)
 
 /- English proof (translation)
-Establish `ht : IsAddTorsion (M ⧸ M'.addSubgroupOf M)`. Introduce `q`. Proceed by induction on `q using QuotientAddGroup.induction_on with`. Consider the case `H x`. Rewrite using `[isOfFinAddOrder_iff_nsmul_eq_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Use `⟨N, hN, ?_⟩` and prove the remaining obligations. Rewrite using `[← QuotientAddGroup.mk_nsmul, QuotientAddGroup.eq_zero_iff]`. Conclude with `h x x.2`. Use `AddCommGroup.finite_of_fg_isAddTorsion _ ht` as an intermediate fact. Conclude with `AddSubgroup.index_ne_zero_of_finite`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem relIdx_ne_zero_of_fg {V : Type} [AddCommGroup V] [Module ℂ V] (M M' : AddSubgroup V) [AddGroup.FG M]
     (N : ℕ) (hN : 0 < N) (h : ∀ x ∈ M, N • x ∈ M') : relIdx M' M ≠ 0 := by
@@ -70,18 +70,18 @@ abbrev th : ℂ := cmTheta 1 7
 def uu : ℂ := th ^ 2 / 2
 
 /- English proof (translation)
-Rewrite using `[show L7 = Formalism.L2.Th1.F.scalePair (cmPair 1 1 7 one_pos (by norm_num)) 1 one_ne_zero from rfl, (Formalism.L2.Th1.F.homogeneity _ 1 one_ne_zero).1 z, inv_one, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mem7 (z : ℂ) : z ∈ L7.lattice ↔ z ∈ (cmPair 1 1 7 one_pos (by norm_num)).lattice := by
   rw [show L7 = Formalism.L2.Th1.F.scalePair (cmPair 1 1 7 one_pos (by norm_num)) 1 one_ne_zero from rfl,
     (Formalism.L2.Th1.F.homogeneity _ 1 one_ne_zero).1 z, inv_one, one_mul]
 
 /- English proof (translation)
-Establish `h` using `Formalism.L2.Th1.F.cmThetaEq 1 1 2 7 (by norm_num)`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Use `h.1` as an intermediate fact. Move the coercions through the operations in `at this`. Rewrite using `[this]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Use `h.2.1` as an intermediate fact. Move the coercions through the operations in `at this`. Conclude with `this`. Use `h.2.2` as an intermediate fact.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Move the coercions through the operations in `at this`. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem th_rel : th ^ 2 = th - 2 ∧ th + conj th = 1 ∧ th * conj th = 2 := by
   have h := Formalism.L2.Th1.F.cmThetaEq 1 1 2 7 (by norm_num)
@@ -91,7 +91,7 @@ theorem th_rel : th ^ 2 = th - 2 ∧ th + conj th = 1 ∧ th * conj th = 2 := by
   · have := h.2.2; push_cast at this; rw [this]; ring
 
 /- English proof (translation)
-Establish `h` using `th_rel.2.2`. Simplify using `only [uu, map_div₀, map_pow, map_ofNat]`. Establish `: th ^ 2 / 2 * (conj th ^ 2 / 2) = (th * conj th) ^ 2 / 4` using `by ring`. Rewrite using `[this, h]`. Evaluate the numerical expressions.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 theorem uu_norm : uu * conj uu = 1 := by
   have h := th_rel.2.2
@@ -100,20 +100,20 @@ theorem uu_norm : uu * conj uu = 1 := by
   rw [this, h]; norm_num
 
 /- English proof (translation)
-Introduce `h` and use `by have := uu_norm; rw [h] at this; simp at this`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem uu_ne : uu ≠ 0 := fun h => by have := uu_norm; rw [h] at this; simp at this
 
 /- English proof (translation)
-Simplify using `[th, cmTheta]`.
+Simplify using the standard rewrite rules.
 -/
 theorem th_im : th.im = Real.sqrt 7 / 2 := by
   simp [th, cmTheta]
 
 /- English proof (translation)
-Introduce `h`. Establish `h2 : th ^ 2 = 2`. Use `congrArg (· * 2) h` as an intermediate fact. Simplify using `only [uu] at this`. Take the linear combination `this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `h4 : th = 4` using `by linear_combination h2 - th_rel.1`. Establish `h5` using `congrArg Complex.im h4`. Rewrite `h5` using `[th_im]`. Establish `: (0 : ℝ) < Real.sqrt 7` using `Real.sqrt_pos.2 (by norm_num)`. Evaluate the numerical expressions using `at h5`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Evaluate the numerical expressions.
 -/
 theorem uu_ne_one : uu ≠ 1 := by
   intro h
@@ -128,7 +128,7 @@ theorem uu_ne_one : uu ≠ 1 := by
   norm_num at h5
 
 /- English proof (translation)
-Rewrite `hx`, the goal using `[mem7]`. Use `Formalism.L2.Th1.F.cmStable 1 1 2 7 one_pos (by norm_num) (by norm_num) 0 1 x hx` as an intermediate fact. Simplify using `using this`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem th_stable {x : ℂ} (hx : x ∈ L7.lattice) : th * x ∈ L7.lattice := by
   rw [mem7] at hx ⊢
@@ -136,7 +136,7 @@ theorem th_stable {x : ℂ} (hx : x ∈ L7.lattice) : th * x ∈ L7.lattice := b
   simpa using this
 
 /- English proof (translation)
-Rewrite `hx`, the goal using `[mem7]`. Use `Formalism.L2.Th1.F.cmStable 1 1 2 7 one_pos (by norm_num) (by norm_num) 1 (-1) x hx` as an intermediate fact. Establish `h2 : conj th = 1 - th` using `by rw [← th_rel.2.1]; ring`. Rewrite using `[h2]`. Simplify `this` using `[sub_eq_add_neg]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem thbar_stable {x : ℂ} (hx : x ∈ L7.lattice) : conj th * x ∈ L7.lattice := by
   rw [mem7] at hx ⊢
@@ -146,7 +146,7 @@ theorem thbar_stable {x : ℂ} (hx : x ∈ L7.lattice) : conj th * x ∈ L7.latt
   simpa [sub_eq_add_neg] using this
 
 /- English proof (translation)
-Establish `h` using `L7.ω₁_mem_lattice`. Establish `e : L7.ω₁ = 1` using `by show (1 : ℂ) * ((1 : ℕ) : ℂ) = 1; simp`. Rewrite `h` using `[e]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem cayleyGaussianIntegrals_one_fact : (1 : ℂ) ∈ L7.lattice := by
   have h := L7.ω₁_mem_lattice
@@ -154,7 +154,7 @@ theorem cayleyGaussianIntegrals_one_fact : (1 : ℂ) ∈ L7.lattice := by
   rwa [e] at h
 
 /- English proof (translation)
-Establish `e : L7.ω₂ / 2 = th / 2` using `by show (1 : ℂ) * cmTheta 1 7 / 2 = cmTheta 1 7 / 2; ring`. Rewrite using `[← e]`. Conclude with `L7.ω₂_div_two_notMem_lattice`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem thHalf_not : th / 2 ∉ L7.lattice := by
   have e : L7.ω₂ / 2 = th / 2 := by show (1 : ℂ) * cmTheta 1 7 / 2 = cmTheta 1 7 / 2; ring
@@ -169,7 +169,7 @@ Both sides reduce to the same expression.
 theorem smulU_apply {m : Type} (x : m → ℂ) : smulU m x = uu • x := rfl
 
 /- English proof (translation)
-Introduce `x y`. Rewrite using `[stdH_apply, stdH_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [Formalism.L2.Th1.F.herm, Pi.smul_apply, smul_eq_mul, map_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 -/
 theorem smul_isom (L : PeriodPair) (m : Type) [Fintype m] [DecidableEq m] (c : ℂ) (hc : c * conj c = 1) :
     ∀ x y : m → ℂ, stdH L m (c • x) (c • y) = stdH L m x y := by
@@ -182,25 +182,25 @@ theorem smul_isom (L : PeriodPair) (m : Type) [Fintype m] [DecidableEq m] (c : �
     _ = _ := by rw [hc, one_mul]
 
 /- English proof (translation)
-Introduce `x y` and use `smul_isom L7 m uu uu_norm x y`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem smulU_isom (m : Type) [Fintype m] [DecidableEq m] :
     IsIsom (stdH L7 m) (stdH L7 m) (smulU m : (m → ℂ) →ₗ[ℂ] (m → ℂ)) :=
   fun x y => smul_isom L7 m uu uu_norm x y
 
 /- English proof (translation)
-Rewrite `hx`, the goal using `[mem_stdLat]`. Conclude with `fun i => th_stable (hx i)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem th_stable_std {m : Type} {x : m → ℂ} (hx : x ∈ stdLat L7 m) : cmTheta 1 7 • x ∈ stdLat L7 m := by
   rw [mem_stdLat] at hx ⊢
   exact fun i => th_stable (hx i)
 
 /- English proof (translation)
-Use `relIdx_ne_zero_of_fg _ _ 2 two_pos ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Rewrite using `[mem_stdLat]`. Introduce `w`. Establish `hx'` using `(mem_stdLat _ _ _).1 hx w`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `: (2 • (smulU m x)) w = th * (th * x w)`. Simplify using `only [smulU_apply, Pi.smul_apply, smul_eq_mul, uu, nsmul_eq_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `show (2 • (smulU m x)) w ∈ _`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `th_stable (th_stable hx')`.
+A detailed English derivation is pending.
 -/
 theorem idxU₁ (m : Type) [Finite m] :
     relIdx (stdLat L7 m) (imgLat (smulU m : (m → ℂ) →ₗ[ℂ] (m → ℂ)) (stdLat L7 m)) ≠ 0 := by
@@ -217,11 +217,11 @@ theorem idxU₁ (m : Type) [Finite m] :
   exact th_stable (th_stable hx')
 
 /- English proof (translation)
-Use `relIdx_ne_zero_of_fg _ _ 2 two_pos ?_` and prove the remaining obligations. Introduce `x hx`. Use `⟨fun w => conj th * (conj th * x w), ?_, ?_⟩` and prove the remaining obligations. Conclude with `(mem_stdLat _ _ _).2 fun w => thbar_stable (thbar_stable ((mem_stdLat _ _ _).1 hx w))`. Use extensionality with `w show uu * (conj th * (conj th * x w)) = (2 • x) w`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `h` using `th_rel.2.2`. Simplify using `only [uu, Pi.smul_apply, nsmul_eq_mul]`. Establish `: th ^ 2 / 2 * (conj th * (conj th * x w)) = (th * conj th) ^ 2 / 2 * x w` using `by ring`. Rewrite using `[this, h]`. Use `push_cast`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem idxU₂ (m : Type) [Finite m] :
     relIdx (imgLat (smulU m : (m → ℂ) →ₗ[ℂ] (m → ℂ)) (stdLat L7 m)) (stdLat L7 m) ≠ 0 := by
@@ -237,13 +237,11 @@ theorem idxU₂ (m : Type) [Finite m] :
     rw [this, h]; push_cast; ring
 
 /- English proof (translation)
-Introduce `h`. Establish `h1 : (fun _ => (1 : ℂ)) ∈ stdLat L7 m`. Rewrite using `[mem_stdLat]`. Introduce `_`. Conclude with `cayleyGaussianIntegrals_one_fact`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2 : smulU m (fun _ => (1 : ℂ)) ∈ stdLat L7 m`. Rewrite using `[← h]`. Conclude with `⟨_, h1, rfl⟩`. Take `⟨i⟩` from `‹Nonempty m›`. Establish `h3` using `(mem_stdLat _ _ _).1 h2 i`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : smulU m (fun _ => (1 : ℂ)) i = th / 2 - 1`. Simplify using `only [smulU_apply, Pi.smul_apply, smul_eq_mul, uu, th_rel.1]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h3` using `[h4]`. Establish `h6 : th / 2 ∈ L7.lattice` using `by simpa using add_mem h3 cayleyGaussianIntegrals_one_fact`.
-
-Conclude with `thHalf_not h6`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem smulU_ne (m : Type) [Nonempty m] :
     imgLat (smulU m : (m → ℂ) →ₗ[ℂ] (m → ℂ)) (stdLat L7 m) ≠ stdLat L7 m := by
@@ -267,7 +265,7 @@ variable (n : Type) [Fintype n] [DecidableEq n]
 def gU : (Fin 4 × n → ℂ) ≃ₗ[ℂ] (Fin 4 × n → ℂ) := smulU (Fin 4 × n)
 
 /- English proof (translation)
-Introduce `x y`. Rewrite using `[block_diag_smul_one]`. Conclude with `smulU_isom (Fin 4 × n) x y`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gU_isom : IsIsom (matH (blk4 (((Formalism.L2.Th1.F.area L7 : ℝ) : ℂ)⁻¹ • (1 : Matrix n n ℂ))))
     (stdH L7 (Fin 4 × n)) (gU n : (Fin 4 × n → ℂ) →ₗ[ℂ] (Fin 4 × n → ℂ)) := by
@@ -276,7 +274,7 @@ theorem gU_isom : IsIsom (matH (blk4 (((Formalism.L2.Th1.F.area L7 : ℝ) : ℂ)
   exact smulU_isom (Fin 4 × n) x y
 
 /- English proof (translation)
-Establish `h` using `CmData.stdData_cm 1 1 2 7 one_pos (by norm_num) 1 one_ne_zero (by norm_num) (by decide) (by norm_num) _ _ _ (gU_isom n) (stdSelfDual L7 n) (fun x hx => th_stable_std hx) (by rw [fourth_power_standard_lattice]; exact idxU₁ _) (by rw [fourth_power_standard_lattice]; exact idxU₂ _)`. Establish `e : (1 : ℂ) * ((1 : ℕ) : ℂ) = 1` using `by norm_num`. Rewrite `h` using `[e]`. Conclude with `h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stdData_seven :
     StdData L7 1 (((Formalism.L2.Th1.F.area L7 : ℝ) : ℂ)⁻¹ • (1 : Matrix n n ℂ)) (stdLat L7 n)
@@ -290,7 +288,7 @@ theorem stdData_seven :
   exact h
 
 /- English proof (translation)
-Rewrite using `[fourth_power_standard_lattice]`. Conclude with `smulU_ne (Fin 4 × n)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem seven_nontrivial [Nonempty n] :
     imgLat (gU n : (Fin 4 × n → ℂ) →ₗ[ℂ] (Fin 4 × n → ℂ)) (pow4 (stdLat L7 n)) ≠ stdLat L7 (Fin 4 × n) := by
@@ -300,7 +298,7 @@ theorem seven_nontrivial [Nonempty n] :
 def alpha7 (m : Type) [Fintype m] [DecidableEq m] : (m → ℂ) → ℂ := alphaQ (Real.sqrt (7 : ℕ) / 2) (stdH L7 m)
 
 /- English proof (translation)
-Introduce `h`. Apply `uu_ne_one` to reduce the goal to its premises. Establish `: uu⁻¹ = 1` using `by linear_combination -h`. Conclude with `inv_eq_one.1 this`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem one_sub_inv_uu_ne : (1 : ℂ) - uu⁻¹ ≠ 0 := by
   intro h

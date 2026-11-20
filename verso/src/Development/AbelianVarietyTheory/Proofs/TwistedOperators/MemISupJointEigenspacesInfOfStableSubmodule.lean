@@ -28,43 +28,39 @@ open Classical
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `E ι _ _ F G P C hFG hadd hsmul hPG hFP hdec`. Establish `hF0 : ∀ i, F i 0 = 0`. Introduce `i`. Use `hsmul i 0 0 G.zero_mem` as an intermediate fact. Simplify using `using this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Take `⟨V, hV⟩ : ∃ V : (ι → ℂ) → Submodule ℂ E, ∀ c x, x ∈ V c ↔ (x ∈ G ∧ ∀ i, F i x = c i • x)` from `⟨fun c => { carrier := {h | h ∈ G ∧ ∀ i, F i h = c i • h} add_mem' := by`. Introduce and unpack `x y ⟨hx, hx'⟩ ⟨hy, hy'⟩`. Use `⟨G.add_mem hx hy, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[hadd i x hx y hy, hx' i, hy' i, smul_add]`. Use the proof step `zero_mem' := ⟨G.zero_mem, fun i => by rw [hF0 i, smul_zero]⟩`.
+Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Use the proof step `smul_mem' := by`. Introduce and unpack `a x ⟨hx, hx'⟩`. Use `⟨G.smul_mem a hx, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[hsmul i a x hx, hx' i]`. Conclude with `smul_comm _ _ _ }, fun c x => Iff.rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hVG : ∀ c, V c ≤ G` using `fun c x hx => ((hV c x).1 hx).1`. Establish `hSG : ∀ s : Finset (ι → ℂ), (⨆ c ∈ s, V c) ≤ G` using `fun s => iSup₂_le fun c _ => hVG c`. Establish `hmemS : ∀ (s : Finset (ι → ℂ)) c, c ∈ s → V c ≤ ⨆ c ∈ s, V c` using `fun s c hc => le_iSup₂_of_le (f := fun c (_ : c ∈ s) => V c) c hc le_rfl`. Establish `hT : ∀ (i : ι) (b : ℂ) (s : Finset (ι → ℂ)), ∀ z ∈ ⨆ c ∈ s, V c, F i z - b • z ∈ ⨆ c ∈ s, V c`. Introduce `i b s`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨M, hM⟩ : ∃ M : Submodule ℂ E, ∀ v, v ∈ M ↔ (v ∈ G ∧ F i v - b • v ∈ ⨆ c ∈ s, V c)` from `⟨{ carrier := {v | v ∈ G ∧ F i v - b • v ∈ ⨆ c ∈ s, V c} add_mem' := by`. Introduce and unpack `x y ⟨hx, hx'⟩ ⟨hy, hy'⟩`. Use `⟨G.add_mem hx hy, ?_⟩` and prove the remaining obligations. Establish `: F i (x + y) - b • (x + y) = (F i x - b • x) + (F i y - b • y)`. Rewrite using `[hadd i x hx y hy, smul_add]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Normalize the expressions using the abelian group laws. Rewrite using `[this]`. Conclude with `Submodule.add_mem _ hx' hy'`. Use the proof step `zero_mem' := ⟨G.zero_mem, by simp [hF0 i]⟩`. Use the proof step `smul_mem' := by`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce and unpack `a x ⟨hx, hx'⟩`. Use `⟨G.smul_mem a hx, ?_⟩` and prove the remaining obligations. Establish `: F i (a • x) - b • (a • x) = a • (F i x - b • x)`. Rewrite using `[hsmul i a x hx, smul_sub, smul_comm b a x]`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Submodule.smul_mem _ a hx' }, fun v => Iff.rfl⟩`. Establish `hle : (⨆ c ∈ s, V c) ≤ M` using `iSup₂_le fun c hc v hv => by`. Rewrite using `[hM]`. Take `⟨hvG, hv'⟩` from `(hV c v).1 hv`. Use `⟨hvG, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hv' i, ← sub_smul]`. Conclude with `hmemS s c hc ((V c).smul_mem _ hv)`. Introduce `z hz`. Conclude with `((hM z).1 (hle hz)).2`. Establish `hB : ∀ (a : ι → ℂ) (s : Finset (ι → ℂ)), a ∉ s → ∀ y ∈ V a, ∀ z ∈ ⨆ c ∈ s, V c, y + z ∈ P → y ∈ P`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `a s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Introduce `_ y _ z hz hyz`. Simplify using `at hz`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite `hyz` using `[hz, add_zero]`. Conclude with `hyz`. Consider the case `insert b t hbt ih`. Introduce `ha y hy z hz hyz`. Rewrite `ha` using `[Finset.mem_insert, not_or]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨hab, hat⟩` from `ha`. Rewrite `hz` using `[Finset.iSup_insert, Submodule.mem_sup]`. Take `⟨zb, hzb, zt, hzt, rfl⟩` from `hz`. Take `⟨i, hi⟩` from `Function.ne_iff.1 hab`. Take `⟨hyG, hy'⟩` from `(hV a y).1 hy`.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hzbG, hzb'⟩` from `(hV b zb).1 hzb`. Establish `hztG` using `hSG t hzt`. Establish `hP1 : F i (y + (zb + zt)) - b i • (y + (zb + zt)) ∈ P` using `P.sub_mem (hFP i _ hyz) (P.smul_mem _ hyz)`. Establish `heq : F i (y + (zb + zt)) - b i • (y + (zb + zt)) = (a i - b i) • y + (F i zt - b i • zt)`. Rewrite using `[hadd i y hyG _ (G.add_mem hzbG hztG), hadd i zb hzbG zt hztG, hy' i, hzb' i]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [smul_add, sub_smul]`. Normalize the expressions using the abelian group laws. Rewrite `hP1` using `[heq]`. Establish `hy2 : (a i - b i) • y ∈ V a` using `(V a).smul_mem _ hy`. Establish `h3` using `ih hat _ hy2 _ (hT i (b i) t zt hzt) hP1`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Establish `hne : a i - b i ≠ 0` using `sub_ne_zero.2 hi`. Establish `h4` using `P.smul_mem (a i - b i)⁻¹ h3`. Rewrite `h4` using `[smul_smul, inv_mul_cancel₀ hne, one_smul]`. Then use the resulting hypothesis. Establish `hspan : ∀ c, Submodule.span ℂ {h | h ∈ G ∧ ∀ i, F i h = c i • h} = V c` using `fun c => le_antisymm (Submodule.span_le.2 fun x hx => (hV c x).2 hx) fun x hx => Submodule.subset_span ((hV c x).1 hx)`. Establish `hmain : ∀ s : Finset (ι → ℂ), ∀ x ∈ P, x ∈ ⨆ c ∈ s, V c → x ∈ ⨆ c ∈ s, Submodule.span ℂ {h | h ∈ P ∧ ∀ i, F i h = c i • h}`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => intro x _ hx`. Simplify using `using hx`. Consider the case `insert a s has ih`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `x hxP hx`. Rewrite `hx` using `[Finset.iSup_insert, Submodule.mem_sup]`. Take `⟨y, hy, z, hz, rfl⟩` from `hx`. Establish `hyP : y ∈ P` using `hB a s has y hy z hz hxP`. Establish `hzP : z ∈ P`.
-
-Use `P.sub_mem hxP hyP` as an intermediate fact. Simplify using `using this`. Rewrite using `[Finset.iSup_insert]`. Conclude with `Submodule.mem_sup.2 ⟨y, Submodule.subset_span ⟨hyP, ((hV a y).1 hy).2⟩, z, ih z hzP hz, rfl⟩`. Introduce `x hx`.
-
-Establish `h` using `hdec x (hPG hx)`. Simplify using `only [hspan] at h`. Conclude with `hmain C x hx h`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_iSup_jointEigen_inf_of_stable : ∀ {E ι : Type} [AddCommGroup E] [Module ℂ E] (F : ι → E → E) (G P : Submodule ℂ E) (C : Finset (ι → ℂ)),
     (∀ i, ∀ x ∈ G, F i x ∈ G) → (∀ i, ∀ x ∈ G, ∀ y ∈ G, F i (x + y) = F i x + F i y) →

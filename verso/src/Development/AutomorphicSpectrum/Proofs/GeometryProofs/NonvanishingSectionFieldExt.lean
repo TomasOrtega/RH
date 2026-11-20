@@ -25,31 +25,29 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.Sl.KeyGen
 
 /- English proof (translation)
-Introduce `E _ _ _ H L _ _ D _`. Establish `: Smooth D.t.G.hom` using `D.t.semi.smooth`. Establish `: GeometricallyConnected D.t.G.hom` using `D.t.semi.geomConnected`. Establish `: QuasiCompact D.t.G.hom` using `D.t.semi.quasiCompact`. Establish `hN : (LB.LinComb D.t.PP.L (K` using `Fin 1) (fun _ => 𝟙 _) (fun _ => ((1 : ℕ) : ℤ))).IsLB := LB.isLB_linComb D.t.PP.isLB _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨t, ht⟩` from `GlobalTheory.T.exists_nonzero_section_pp_data E H L D`. Take `⟨d₀, hd₀, hb⟩` from `GlobalTheory.T.section_module_bounded_denominator (𝓞 L) D.t.G _ hN t ht`. Set `I : Ideal (𝓞 L)` to `{ carrier := {x | ∃ u : SecMod D.t.G.hom (LB.LinComb D.t.PP.L (K := Fin 1) (fun _ => 𝟙 _) (fun _ => ((1 : ℕ) : ℤ))), d₀ • u = x • t} add_mem' := by`. Introduce and unpack `a b ⟨u, hu⟩ ⟨v, hv⟩`. Conclude with `⟨u + v, by rw [smul_add, hu, hv, add_smul]⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Use the proof step `zero_mem' := ⟨0, by simp⟩`. Use the proof step `smul_mem' := by`. Introduce and unpack `c a ⟨u, hu⟩`. Conclude with `⟨c • u, by rw [smul_comm, hu, smul_eq_mul, mul_smul]⟩ }`. Establish `hI : I ≠ ⊥` using `fun h0 => hd₀ (by`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `: d₀ ∈ I` using `⟨t, rfl⟩`. Rewrite `this` using `[h0]`. Simplify using `using this)`. Take `⟨L', _, _, _, y, hy, hB⟩` from `GlobalTheory.T.principal_extension_projective_module L D.B.carrier I hI`. Take `⟨⟨D', m⟩⟩` from `(GlobalTheory.T.polarized_data_field_extension E H L D L').1`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hgg, -, io, -, hspan, -⟩` from `(GlobalTheory.T.polarized_data_field_extension E H L D L').2 D' m`. Take `⟨e, he1, he2⟩` from `hB D'.B.carrier io hspan hgg`. Take `⟨P, hP1, hP2⟩` from `GlobalTheory.T.section_module_field_ext_map E H L D L' D' m`. Establish `: Smooth D'.t.G.hom` using `D'.t.semi.smooth`. Set `φ` to `algebraMap (𝓞 L) (𝓞 L')`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Assume the hypotheses and unpack their components.
 
-Set `W : Ideal (𝓞 L')` to `{ carrier := {z | ∃ v : SecMod D'.t.G.hom (LB.LinComb D'.t.PP.L (K := Fin 1) (fun _ => 𝟙 _) (fun _ => ((1 : ℕ) : ℤ))), φ d₀ • v = z • P t} add_mem' := by`. Introduce and unpack `a b ⟨u, hu⟩ ⟨v, hv⟩`. Conclude with `⟨u + v, by rw [smul_add, hu, hv, add_smul]⟩`. Use the proof step `zero_mem' := ⟨0, by simp⟩`. Use the proof step `smul_mem' := by`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `c a ⟨u, hu⟩`. Conclude with `⟨c • u, by rw [smul_comm, hu, smul_eq_mul, mul_smul]⟩ }`. Establish `hIW : I.map φ ≤ W` using `Ideal.map_le_iff_le_comap.2 fun x ⟨u, hu⟩ => ⟨P u, by rw [← hP1, hu, hP1]⟩`. Take `⟨s, hs⟩ : y ∈ W` from `hIW (hy ▸ Ideal.mem_span_singleton_self y)`. Use `⟨L', inferInstance, inferInstance, inferInstance, D', m, s, e, ?_, he1, he2⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Introduce `b'`. Set `b : Sp (𝓞 L)` to `spMap φ b'`. Take `⟨x, u, hu, yy, hyy, hmem⟩ : ∃ (x : 𝓞 L) (u : SecMod D.t.G.hom (LB.LinComb D.t.PP.L (K` from `Fin 1) (fun _ => 𝟙 _) (fun _ => ((1 : ℕ) : ℤ)))), d₀ • u = x • t ∧ ∃ yy : D.t.G.left, D.t.G.hom yy = b ∧ yy ∈ Out.nonzeroLocus (M := LB.LinComb D.t.PP.L (K := Fin 1) (fun _ => 𝟙 _) (fun _ => ((1 : ℕ) : ℤ))) u := by`. Distinguish the cases in `hb0 : b.asIdeal = ⊥`. Conclude with `⟨d₀, t, rfl, GlobalTheory.T.nonzero_section_generic_fibre (𝓞 L) D.t.G _ hN t ht b hb0⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Establish `hmax : b.asIdeal.IsMaximal` using `Ring.DimensionLEOne.maximalOfPrime hb0 b.isPrime`. Take `⟨x, u, hu, hV⟩` from `GlobalTheory.T.exists_section_not_in_set (𝓞 L) _ (fun a m ha h => eq_zero_of_smul_eq_zero ha h) t ht d₀ hd₀ hb {u | ∀ yy : D.t.G.left, D.t.G.hom yy = b → yy ∉ Out.nonzeroLocus (M := LB.LinComb D.t.PP.L (K := Fin 1) (fun _ => 𝟙 _) (fun _ => ((1 : ℕ) : ℤ))) u} b.asIdeal hmax hb0 (f …`. Simplify using `only [Set.mem_setOf_eq, not_forall, not_not] at hV`. Take `⟨yy, hyy, hmem⟩` from `hV`. Conclude with `⟨x, u, hu, yy, hyy, hmem⟩`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨y', hy', hm'⟩` from `hP2 u b' yy hyy hmem`. Use `⟨y', hy', ?_⟩` and prove the remaining obligations. Establish `hxI : φ x ∈ I.map φ` using `Ideal.mem_map_of_mem φ (show x ∈ I from ⟨u, hu⟩)`. Rewrite `hxI` using `[hy, Ideal.mem_span_singleton']`. Take `⟨w, hw⟩` from `hxI`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hφ : φ d₀ ≠ 0` using `fun h0 => hd₀ (FaithfulSMul.algebraMap_injective (𝓞 L) (𝓞 L') (h0.trans (map_zero _).symm))`. Establish `hPu : P u = w • s`. Establish `: φ d₀ • (P u - w • s) = 0`. Rewrite using `[smul_sub, ← hP1, hu, hP1, smul_comm, hs, smul_smul, ← hw, sub_self]`. Conclude with `sub_eq_zero.1 (eq_zero_of_smul_eq_zero hφ this)`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hm'` using `[hPu]`. Take `⟨k, hk⟩` from `TopologicalSpace.Opens.mem_iSup.1 hm'`. Use `TopologicalSpace.Opens.mem_iSup.2 ⟨k, ?_⟩` and prove the remaining obligations. Establish `: y' ∈ D'.t.G.left.basicOpen (constFn D'.t.G.hom _ w * LB.Sec.f (show SecMod D'.t.G.hom _ from s) k)` using `hk`. Rewrite `this` using `[Scheme.basicOpen_mul]`.
-
-Conclude with `this.2`.
+A detailed English derivation is pending.
 -/
 theorem section_and_basis : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (L : Type) [Field L] [NumberField L] (D : PPData H L), 1 ≤ D.g → ∃ (L' : Type) (_ : Field L') (_ : NumberField L') (_ : Algebra L L') (D' : PPData H L') (_ : D.Ext D') (s : Out.H0 D'.t.PP.L 1) (e : Fin D'.g → D'.B.carrier), KeyDeg.NonVan D'.t.G.hom s ∧ LinearIndependent (𝓞 L') e ∧ Submodule.span (𝓞 L') (Set.range e) = ⊤ := by
   intro E _ _ _ H L _ _ D _

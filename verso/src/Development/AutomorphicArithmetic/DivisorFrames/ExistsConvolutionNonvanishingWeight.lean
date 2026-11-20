@@ -10,9 +10,9 @@ import Development.AutomorphicArithmetic.DivisorFrames.ConvolutionFamilyIntegrab
 open MeasureTheory FreeSingleHomotopyEquivDiscreteChains.UpperTheory.Dv.ConeB
 
 /- English proof (translation)
-Set `L : (ι → ℂ) →ₗ[ℝ] (ι → ℂ)` to `LinearMap.pi fun i => (Algebra.lmul ℝ ℂ (s i)).comp (LinearMap.proj i)`. Establish `hdet : LinearMap.det L = nm s`. Rewrite using `[LinearMap.det_pi, nm]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Algebra.norm_apply, Algebra.norm_complex_apply, Complex.normSq_eq_norm_sq]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hL : (fun y => s * y) = L`. Use function extensionality and compare the values at `y i`. Simplify using `[L]`. Rewrite using `[hL, Measure.map_linearMap_addHaar_eq_smul_addHaar _ (by rw [hdet]; exact (nm_pos hs).ne'), hdet, abs_of_pos (inv_pos.2 (nm_pos hs))]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem map_mul_vol' {ι : Type} [Fintype ι] {s : ι → ℂ} (hs : ∀ w, s w ≠ 0) :
     (volume : Measure (ι → ℂ)).map (fun y => s * y) = ENNReal.ofReal (nm s)⁻¹ • volume := by
@@ -29,7 +29,7 @@ private theorem map_mul_vol' {ι : Type} [Fintype ι] {s : ι → ℂ} (hs : ∀
     abs_of_pos (inv_pos.2 (nm_pos hs))]
 
 /- English proof (translation)
-Establish `hm : Measurable fun y : ι → ℂ => s * y` using `measurable_const_mul s`. Rewrite using `[← integral_map hm.aemeasurable hG.aestronglyMeasurable, map_mul_vol' hs, integral_smul_measure, ENNReal.toReal_ofReal (inv_pos.2 (nm_pos hs)).le]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem integral_scale' {ι : Type} [Fintype ι] {s : ι → ℂ} (hs : ∀ w, s w ≠ 0)
     {G : (ι → ℂ) → ℂ} (hG : Continuous G) : ∫ y, G (s * y) = (nm s)⁻¹ • ∫ y, G y := by
@@ -38,7 +38,7 @@ private theorem integral_scale' {ι : Type} [Fintype ι] {s : ι → ℂ} (hs : 
     ENNReal.toReal_ofReal (inv_pos.2 (nm_pos hs)).le]
 
 /- English proof (translation)
-Use `integrable_one_add_norm (E := ι → ℂ) (μ := volume) (r := ((Module.finrank ℝ (ι → ℂ) + 1 : ℕ) : ℝ)) (by push_cast; linarith)` as an intermediate fact. Use `(this.const_mul C).congr (Filter.Eventually.of_forall fun s => ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[Real.rpow_neg (by positivity), Real.rpow_natCast, div_eq_mul_inv]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem bound_int {ι : Type} [Fintype ι] (C : ℝ) :
     Integrable (fun s : ι → ℂ => C / (1 + ‖s‖) ^ (Module.finrank ℝ (ι → ℂ) + 1)) := by
@@ -49,29 +49,27 @@ private theorem bound_int {ι : Type} [Fintype ι] (C : ℝ) :
   rw [Real.rpow_neg (by positivity), Real.rpow_natCast, div_eq_mul_inv]
 
 /- English proof (translation)
-Introduce `ι _ n K _ _ _ _ _ μ _ _ κ e hκ η hη h0 φ hφ hdec k₀ hk₀ hhom`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Establish `hφk : ∀ k, Continuous (φ k)` using `fun k => hφ.comp (Continuous.prodMk_right k)`. Take `⟨C, hC⟩` from `hdec (Module.finrank ℝ (ι → ℂ) + 1)`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hint : ∀ k, Integrable (φ k)` using `fun k => (bound_int C).mono' (hφk k).aestronglyMeasurable (Filter.Eventually.of_forall (hC k))`. Take `⟨y₀, hy₀, hF₀⟩` from `UpperTheory.fourier_nonvanishing_unit_point (φ k₀) (hφk k₀) (hint k₀) hk₀`. Establish `hG : Continuous (Function.uncurry fun k y => FT (φ k) y)`. Use `continuous_of_dominated (F := fun (p : K × (ι → ℂ)) s => φ p.1 s * ec (s * p.2)) (fun p => ?_) (fun p => ?_) (bound_int C) ?_` and prove the remaining obligations. Conclude with `((hφk p.1).mul (continuous_ec.comp (continuous_id.mul continuous_const))).aestronglyMeasurable`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `Filter.Eventually.of_forall fun s => by rw [norm_mul, norm_ec, mul_one]; exact hC _ _`. Use `Filter.Eventually.of_forall fun s => ?_` and prove the remaining obligations. Conclude with `(hφ.comp (continuous_fst.prodMk continuous_const)).mul (continuous_ec.comp (continuous_const.mul continuous_snd))`. Establish `hnm : ∀ {y : ι → ℂ}, (∀ w, y w ≠ 0) → (nm y : ℂ) ≠ 0` using `fun hy => by exact_mod_cast (nm_pos hy).ne'`. Establish `hc : FT (φ k₀) y₀ * dwt κ e y₀ ≠ 0` using `mul_ne_zero hF₀ (inv_ne_zero (mul_ne_zero (wt_ne_zero κ e hy₀) (hnm hy₀)))`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hpos : ∀ k y, sc y (η k) = sc y₀ (η k₀) → 0 < (starRingEnd ℂ (FT (φ k₀) y₀ * dwt κ e y₀) * (FT (φ k) y * dwt κ e y)).re`. Introduce `k y hy`. Establish `hyne : ∀ w, y w ≠ 0` using `fun w hw => by`. Take `⟨i, hi⟩` from `h0 k₀ w`. Establish `h1 : y w * η k (i, w) = y₀ w * η k₀ (i, w)` using `congrFun hy (i, w)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite `h1` using `[hw, zero_mul]`. Conclude with `mul_ne_zero (hy₀ w) hi h1.symm`. Take `⟨t, ht, rfl⟩ : ∃ t : ι → ℂ, (∀ w, t w ≠ 0) ∧ y = t * y₀` from `⟨fun w => y w / y₀ w, fun w => div_ne_zero (hyne w) (hy₀ w), funext fun w => (div_mul_cancel₀ _ (hy₀ w)).symm⟩`. Establish `hsc : sc t (η k) = η k₀`. Use function extensionality and compare the values at `p`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result.
 
-Establish `h1 : t p.2 * y₀ p.2 * η k p = y₀ p.2 * η k₀ p` using `congrFun hy p`. Use `mul_left_cancel₀ (hy₀ p.2) ?_` and prove the remaining obligations. Rewrite using `[← h1, sc]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨r, hr, hrs⟩` from `hhom k t ht hsc`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hFT : FT (φ k) (t * y₀) = r * wt κ e t * ((nm t)⁻¹ • FT (φ k₀) y₀)`. Rewrite using `[FT, FT, ← integral_scale' ht (G := fun s => φ k₀ s * ec (s * y₀)) ((hφk k₀).mul (continuous_ec.comp (continuous_id.mul continuous_const))), ← integral_const_mul]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun s => ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[hrs s, mul_left_comm s t y₀, mul_assoc t s y₀]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `h2 : FT (φ k) (t * y₀) * dwt κ e (t * y₀) = ((r * ((nm t)⁻¹ * (nm t)⁻¹) : ℝ) : ℂ) * (FT (φ k₀) y₀ * dwt κ e y₀)`. Establish `a1` using `wt_ne_zero κ e ht`. Establish `a2` using `hnm ht`. Rewrite using `[hFT, dwt_mul, show dwt κ e t = (wt κ e t * (nm t : ℂ))⁻¹ from rfl, Complex.real_smul]`.
+Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `push_cast`. Clear the denominators using the available nonvanishing facts. Rewrite using `[h2, mul_left_comm, Complex.re_ofReal_mul, ← Complex.normSq_eq_conj_mul_self, Complex.ofReal_re]`. Establish `a3` using `nm_pos ht`. Conclude with `mul_pos (by positivity) (Complex.normSq_pos.2 hc)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨β, hβ, hβc, hβi, hβne⟩` from `UpperTheory.fourier_continuous_nonvanishing μ η hη h0 (fun k y => FT (φ k) y) hG κ e k₀ y₀ hy₀ _ hpos`. Take `⟨h, hh, hhi, hhF⟩` from `UpperTheory.schwartz_fourier_preimage β hβ hβc`. Take `⟨h₀, i1, i2, i3, i4⟩` from `UpperTheory.exists_test_fourier_nonvanishing κ e hκ`. Establish `key : ∀ k, (∫ s, (∫ v, h v * φ k (s + pr v (η k))) * wt κ e s) * (∫ y, FT h₀ y * dwt κ e y) = (∫ s, h₀ s * wt κ e s) * ∫ y, β (sc y (η k)) * FT (φ k) y * dwt κ e y`. Introduce `k`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take `⟨j1, j2, j3⟩` from `UpperTheory.convolution_decay_integrable_fourier κ e (η k) (φ k) (hφk k) (fun N => (hdec N).imp fun C hC => hC k) h hh hhi`. Simplify using `only [hhF] at j3`. Apply the tactic sequence `have := UpperTheory.fourier_weight_integral_symmetry κ e _ h₀ j1 i1 j2 i2 (by simpa only [j3] using hβi k) i3`. Simplify `this` using `only [j3]`. Establish `hfub` using `UpperTheory.convolution_family_integrable μ κ e η hη φ hφ hdec h hh hhi`.
-
-Simplify using `only [hcon, mul_zero, integral_zero] at hfub`. Use `integral_congr_ae (μ := μ) (Filter.Eventually.of_forall key)` as an intermediate fact. Rewrite `this` using `[integral_mul_const, integral_const_mul, hfub, zero_mul]`. Conclude with `mul_ne_zero i4 hβne this.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.exists_convolution_nonvanishing_weight :
     ∀ {ι : Type} [Fintype ι] {n : ℕ} {K : Type} [TopologicalSpace K] [CompactSpace K] [SecondCountableTopology K]

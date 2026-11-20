@@ -19,9 +19,9 @@ open UpperTheory.V.HV (Coef)
 namespace UpperTheory.V.Hi.JEx
 
 /- English proof (translation)
-Establish `kt` using `kerTest (fun _ : X => K) (fun x => (f x : R →+* K)) (fun x => mat (ρ x)) D hsep hD`. Use `⟨polarInj F O R n D (fun _ : X => K) f hsep fun x => ?_, fun v g => kt _ fun x => ?_, fun g hg => kt _ fun x => ?_⟩` and prove the remaining obligations. Take `⟨P, hP⟩` from `hP x`. Rewrite using `[hD]`. Introduce `B _ _ _ _ y`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(formRep F O K n (ρ x) P hP).2.2 B y`. Rewrite using `[← oElRep F O K n (ρ x) v _ (hfl x v) g]`. Use `congr 1`. Simplify using `[GFrame.oEl, map_list_prod, List.map_ofFn, Function.comp_def]`. Simplify using `[GDet.repAlg, mat, hg x]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rels {l : ℕ} [Fact l.Prime] (F : GFrame l) (O : Type) [CommRing O] [Algebra ℤ_[l] O] (R : Type) [CommRing R]
     [Algebra O R] {n : ℕ} (D : GDet n R F.G₀) (ψ : ∀ v, Fin n → F.Gv v →* Rˣ) {X : Type} (K : Type) [CommRing K]
@@ -42,11 +42,9 @@ theorem rels {l : ℕ} [Fact l.Prime] (F : GFrame l) (O : Type) [CommRing O] [Al
   · simp [GDet.repAlg, mat, hg x]
 
 /- English proof (translation)
-Take `⟨hc, hfin, hlm, -⟩` from `UpperTheory.V.abelian₂.dvr_finite l c.O`. Use `haveI : Finite (ResidueField c.O) := hfin`. Use `haveI : CharP (ResidueField c.O) l := by`. Use `(CharP.charP_iff_prime_eq_zero hl.out).2 ?_` and prove the remaining obligations. Rewrite using `[← map_natCast (residue c.O), residue_eq_zero_iff]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `hlm`. Use `haveI : CharP (c.O ⧸ maximalIdeal c.O) l := inferInstanceAs (CharP (ResidueField c.O) l)`. Set `j : ResidueField c.O →+* Perfection (c.O ⧸ maximalIdeal c.O) l` to `Perfection.lift l (ResidueField c.O) (c.O ⧸ maximalIdeal c.O) (RingHom.id (ResidueField c.O))`. Establish `hj : ∀ x, Perfection.coeff (c.O ⧸ maximalIdeal c.O) l 0 (j x) = x` using `fun x => RingHom.congr_fun ((Perfection.lift l (ResidueField c.O) (c.O ⧸ maximalIdeal c.O)).symm_apply_apply (RingHom.id (ResidueField c.O))) x`. Set `τ : ResidueField c.O →* c.O` to `(Perfection.teichmuller l (maximalIdeal c.O)).comp j`.
-
-Use `⟨fun i => (Units.map τ).comp (r.chib i), fun i g => ⟨(Perfection.mk_teichmuller (j _)).trans (hj _), ?_⟩, fun i g hg => by rw [MonoidHom.comp_apply, hg, map_one]⟩` and prove the remaining obligations. Rewrite using `[MonoidHom.comp_apply, ← map_pow, ← Nat.card_units, pow_card_eq_one', map_one]`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem teich {l : ℕ} [hl : Fact l.Prime] {F : GFrame l} (c : Coef l) {n : ℕ} (r : Resid F c.O n) :
     ∃ t, r.IsTeich t ∧ ∀ i g, r.chib i g = 1 → t i g = 1 := by
@@ -68,7 +66,7 @@ theorem teich {l : ℕ} [hl : Fact l.Prime] {F : GFrame l} (c : Coef l) {n : ℕ
   rw [MonoidHom.comp_apply, ← map_pow, ← Nat.card_units, pow_card_eq_one', map_one]
 
 /- English proof (translation)
-Establish `hk : ∀ a ∈ maximalIdeal R ^ 1, (res O R : R →+* ResidueField O) a = 0` using `fun a ha => (res_eq_zero_iff O R a).2 (by simpa using ha)`. Conclude with `(hf 1).comp (Ideal.Quotient.lift _ (res O R : R →+* ResidueField O) hk)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem res_lc {O R Γ : Type} [CommRing O] [IsLocalRing O] [CommRing R] [Algebra O R] [IsCO O R] [TopologicalSpace Γ] {f : Γ → R}
     (hf : AdicCont (maximalIdeal R) f) : IsLocallyConstant fun g => res O R (f g) := by
@@ -77,7 +75,7 @@ theorem res_lc {O R Γ : Type} [CommRing O] [IsLocalRing O] [CommRing R] [Algebr
   exact (hf 1).comp (Ideal.Quotient.lift _ (res O R : R →+* ResidueField O) hk)
 
 /- English proof (translation)
-Introduce `N` and use `by have hle : maximalIdeal R ^ N ≤ (maximalIdeal R' ^ N).comap (φ : R →+* R') := by refine le_trans (Ideal.pow_right_mono (fun y hy => ?_) N) (Ideal.le_comap_pow _ N) show φ y ∈ maximalIdeal R' rw [← res_eq_zero_iff O, res_map, res_eq_zero_iff] exact hy exact (hf N).comp (Ideal.q …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem cont_map {O R R' Γ : Type} [CommRing O] [IsLocalRing O] [CommRing R] [Algebra O R] [IsCO O R] [CommRing R'] [Algebra O R']
     [IsCO O R'] [TopologicalSpace Γ] (φ : R →ₐ[O] R') {f : Γ → R} (hf : AdicCont (maximalIdeal R) f) :
@@ -90,16 +88,16 @@ theorem cont_map {O R R' Γ : Type} [CommRing O] [IsLocalRing O] [CommRing R] [A
   exact (hf N).comp (Ideal.quotientMap _ (φ : R →+* R') hle)
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.LocallyConstantOfKernel.lc_of_ker χ h`.
+A detailed English derivation is pending.
 -/
 theorem lc_of_open {Γ B : Type} [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] [Group B] (χ : Γ →* B)
     (h : IsOpen (χ.ker : Set Γ)) : IsLocallyConstant χ :=
   _root_.UpperTheory.Reformulated.B.LocallyConstantOfKernel.lc_of_ker χ h
 
 /- English proof (translation)
-Use `letI : TopologicalSpace (ResidueField O) := ⊥`. Use `haveI : DiscreteTopology (ResidueField O) := ⟨rfl⟩`. Use `extDense _ _ S hS (fun i _ => ?_) (fun i _ => repCont _ ?_ i) fun g hg => ?_` and prove the remaining obligations. Simplify using `only [(mapApi D _).2.2.1]`. Conclude with `(res_lc (hD i)).continuous`.
+Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Continuous.matrix_diagonal (continuous_pi fun i => IsLocallyConstant.continuous ?_)` and prove the remaining obligations. Conclude with `(lc_of_open _ (r.chib_open i)).comp Units.val`. Rewrite using `[← h g hg, ← (mapApi D _).1]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem red_eq {l : ℕ} [Fact l.Prime] {F : GFrame l} {O : Type} [CommRing O] [IsLocalRing O] [Algebra ℤ_[l] O] {n : ℕ}
     (r : Resid F O n) {R : Type} [CommRing R] [Algebra O R] [IsCO O R] (D : GDet n R F.G₀) (hD : D.IsCont (maximalIdeal R))
@@ -117,16 +115,16 @@ theorem red_eq {l : ℕ} [Fact l.Prime] {F : GFrame l} {O : Type} [CommRing O] [
     simp
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.Qk6.heckePol_map f n q a`.
+A detailed English derivation is pending.
 -/
 theorem heckePol_map {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) (n q : ℕ) (a : ℕ → A) :
     (heckePol n q a).map f = heckePol n q fun j => f (a j) :=
   _root_.UpperTheory.Reformulated.B.Qk6.heckePol_map f n q a
 
 /- English proof (translation)
-Rewrite using `[heckePol, finset_sum_coeff, Finset.sum_eq_single j]`. Rewrite using `[coeff_C_mul, coeff_X_pow_self, mul_one, mul_assoc, ← mul_assoc, ← mul_pow]`. Simplify using the standard rewrite rules. Introduce `i hi hij`. Rewrite using `[coeff_C_mul, coeff_X_pow, if_neg, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.mem_range.1 hi` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Introduce `h`. Conclude with `absurd (Finset.mem_range.2 (by omega)) h`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem heckePol_coeff {A : Type} [CommRing A] (n q : ℕ) (a : ℕ → A) (j : ℕ) (hj : j ≤ n) :
     (-1) ^ j * (heckePol n q a).coeff (n - j) = (q : A) ^ (j * (j - 1) / 2) * a j := by
@@ -141,9 +139,9 @@ theorem heckePol_coeff {A : Type} [CommRing A] (n q : ℕ) (a : ℕ → A) (j : 
     exact absurd (Finset.mem_range.2 (by omega)) h
 
 /- English proof (translation)
-Proceed by induction on `j using WellFoundedLT.induction with`. Consider the case `ind j ih`. Establish `e : (Finset.univ.filter fun i : Fin n => i ≤ j) = insert j (Finset.univ.filter fun i => i < j)`. Use extensionality with `i`. Simplify using `[le_iff_eq_or_lt]`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `h1` using `h j`. Rewrite `h1` using `[e, Finset.prod_insert (by simp), Finset.prod_insert (by simp), Finset.prod_congr rfl fun i hi => ih i (Finset.mem_filter.1 hi).2]`. Conclude with `mul_right_cancel h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_of_prod {C : Type} [CommGroup C] {n : ℕ} (x y : Fin n → C)
     (h : ∀ j, ∏ i with i ≤ j, x i = ∏ i with i ≤ j, y i) (j : Fin n) : x j = y j := by

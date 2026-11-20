@@ -67,7 +67,7 @@ structure TransformedComponentHypotheses : Prop where
                               C = closure ({π ξ'} : Set ↥T.scheme)
 
 /- English proof (translation)
-The claim follows from `MonomialCenterGeometry.smooth_componentUnionIdeal center_snc := MonomialCenterGeometry.hasStrictNormalCrossingsWith_componentUnionIdeal blowup_total_transform := _root_.FunctorialResolution.EmbeddedResolution.comap_eq_strictTransform_mul_exceptionalIdeal_pow components_subset_div …`.
+A detailed English derivation is pending.
 -/
 theorem strictTransformHypotheses_of_transformedComponents (h : TransformedComponentHypotheses.{u}) :
     StrictTransformCase.StrictTransformHypotheses.{u} where

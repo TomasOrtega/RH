@@ -18,7 +18,7 @@ open GlobalTheory.RootEx (embX)
 namespace GlobalTheory.FinPl
 
 /- English proof (translation)
-Establish `h1 : p.sec (p.pr a * u) = p.sec (p.pr (a * p.sec u))` using `by rw [map_mul p.pr, p.pr_sec]`. Establish `h2 : p.e * p.sec u = p.sec u` using `by rw [← p.sec_pr, p.pr_sec]`. Rewrite using `[h1, p.sec_pr, mul_left_comm, h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem sec_mul_sec {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {D : D7}
     (p : SplitPt D k) (a : AE D) (u : k) : p.sec (p.pr a * u) = a * p.sec u := by
@@ -27,7 +27,7 @@ theorem sec_mul_sec {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [
   rw [h1, p.sec_pr, mul_left_comm, h2]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [mulVec, dotProduct, map_sum, Matrix.map_apply, sec_mul_sec]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem mulVec_sec {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {D : D7}
     (p : SplitPt D k) {r : ℕ} (m : Matrix (Fin r) (Fin r) (AE D)) (u : Fin r → k) :
@@ -36,9 +36,9 @@ theorem mulVec_sec {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [I
   simp only [mulVec, dotProduct, map_sum, Matrix.map_apply, sec_mul_sec]
 
 /- English proof (translation)
-Use `GlobalTheory.LevelUnfold.mem_gluedS.2 ⟨q.1, ?_, fun i => ⟨fun _ => ?_, fun hi => absurd hi (by omega)⟩⟩` and prove the remaining obligations. Establish `h0 : (Pi.single (Sum.inr 0) 1 : n ⊕ Fin 1 → k) ∘ Sum.inl = 0`. Use function extensionality and compare the values at `j`. Simplify using the standard rewrite rules. Rewrite using `[h0, zero_sub]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `neg_mem (Pair.smul_mem_ker q.mem_max P.hasVal_vec.mem)`. Take `rfl : i = 0` from `Subsingleton.elim _ _`. Rewrite using `[Pi.single_eq_same, Unif.inv, inv_mul_cancel₀ q.ne_zero]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem single_mem_gluedS {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {n : Type} [DecidableEq n] (q : Unif k) (P : Pair k n) :
@@ -53,11 +53,11 @@ theorem single_mem_gluedS {k : Type} [Field k] [ValuativeRel k] [TopologicalSpac
     rw [Pi.single_eq_same, Unif.inv, inv_mul_cancel₀ q.ne_zero]
 
 /- English proof (translation)
-Introduce `D k _ _ _ _ p n _ _ q σ B L₀ β β₀ P hg γ hpres`. Establish `he : p.sec 1 = p.e` using `by rw [← map_one p.pr, p.sec_pr, mul_one]`. Establish `hvec : p.sec 1 • ratV (vecB B.o B.ζ) = fun i => p.sec ((β₀.b *ᵥ (Pi.single (Sum.inr 0) 1 : n ⊕ Fin 1 → k)) i)`. Use function extensionality and compare the values at `i`. Rewrite using `[Pi.smul_apply, smul_eq_mul, he, mulVec_single_one, hg.sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[p.sec_pr]`. Establish `hmem : p.sec 1 • ratV (vecB B.o B.ζ) ∈ latA B.V₀ L₀ (· = p.v)`. Rewrite using `[hg.unit.2, hvec, ← hg.lat]`. Conclude with `single_mem_gluedS q P`. Use `hpres _ hmem` as an intermediate fact.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[hg.unit.2, hvec]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem zero_col_mem : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (p : SplitPt D k) (n : Type) [Fintype n] [DecidableEq n] (q : Unif k) (σ : ℕ) (B : BesLev D σ) (L₀ : Lat B.V₀) (β : Frame p B.A n) (β₀ : Frame p B.V₀ (n ⊕ Fin 1)) (P : Pair k n), GluedCore B L₀ q β β₀ P → ∀ γ : GA D B.V₀, (∀ a : AE D, a • ratV (vecB B.o B.ζ) ∈ latA B.V₀ L₀ (· = p.v) → mt B.V₀ γ⁻¹ *ᵥ (a • ratV (vecB B.o B.ζ)) ∈ latA B.V₀ L₀ (· = p.v)) → mt B.V₀ γ⁻¹ *ᵥ (fun i => p.sec ((β₀.b *ᵥ (Pi.single (Sum.inr 0) 1 : n ⊕ Fin 1 → k)) i)) ∈ latV B.V₀ L₀ (· = p.v) := by
   intro D k _ _ _ _ p n _ _ q σ B L₀ β β₀ P hg γ hpres
@@ -74,13 +74,13 @@ theorem zero_col_mem : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [Topol
   rwa [hg.unit.2, hvec] at this
 
 /- English proof (translation)
-Introduce `k _ _ _ _ p n _ _ q σ B L₀ β β₀ P hsd hg γ hγ hpres`. Take `⟨hF1, -, -, hF4, -⟩` from `GlobalTheory.T.splitPlaceHermitianFrame_properties D k p B.V₀ (n ⊕ Fin 1) β₀`. Take `⟨h, rfl⟩` from `(hF1 γ).1 hγ`. Establish `key : ∀ x, mt B.V₀ (β₀.gl h)⁻¹ *ᵥ (fun i => p.sec ((β₀.b *ᵥ x) i)) ∈ latV B.V₀ L₀ (· = p.v) ↔ x ∈ h • gluedS q 1 P.ker P.vec`. Introduce `x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← map_inv, mulVec_sec, β₀.gl_mat, mulVec_mulVec, Matrix.mul_assoc, Matrix.mul_assoc, β₀.b'b, Matrix.mul_one, ← mulVec_mulVec, ← hg.lat, GlobalTheory.LatPair.mem_smul_iff]`. Both sides reduce to the same expression. Establish `hz` using `(key _).1 (zero_col_mem D k p n q σ B L₀ β β₀ P hg _ hpres)`. Establish `hint : ∀ x ∈ h • gluedS q 1 P.ker P.vec, (q.1 : k) * x (Sum.inr 0) ∈ 𝒪[k]` using `fun x hx => GlobalTheory.T.gluedSplitPlace_lineCoordinate_integral D k p n q σ B L₀ β β₀ P hsd hg _ hγ hpres x ((key x).2 hx)`. Break down `GlobalTheory.T.smul_gluedLatticeFirstPosition_cases k n q P h hz hint with ⟨Λ, hΛ, hM | hM⟩ | ⟨g, hM⟩` into its components or cases.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `Or.inr ⟨Λ, hΛ, Or.inl fun x => by rw [← hM]; exact (key x).symm⟩`. Conclude with `Or.inr ⟨Λ, hΛ, Or.inr fun x => by rw [← hM]; exact (key x).symm⟩`. Take `⟨hA1, -⟩` from `GlobalTheory.T.splitPlaceHermitianFrame_properties D k p B.A n β`. Take `⟨Λ₀, -, hΛ₀, hK⟩` from `hF4 L₀ hsd`. Establish `hΛG : Λ₀ = gluedS q 1 P.ker P.vec` using `Submodule.ext fun x => (hΛ₀ x).trans (hg.lat x).symm`.
+Prove the second alternative. Prove the second alternative. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `Or.inl ⟨β.gl g, (hA1 _).2 ⟨g, rfl⟩, β₀.gl ((embX 1 g)⁻¹ * h), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hK, hΛG, mul_smul, hM, inv_smul_smul]`. Rewrite using `[GlobalTheory.T.orthogonalEmbedding_splitPlace_blockDiagonal D k p n σ B β β₀ hg.sum g, ← map_mul, mul_inv_cancel_left]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem orbitGlued (D : D7) : OrbitGlued D := by
   intro k _ _ _ _ p n _ _ q σ B L₀ β β₀ P hsd hg γ hγ hpres

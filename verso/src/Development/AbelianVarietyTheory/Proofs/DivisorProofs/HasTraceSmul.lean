@@ -14,20 +14,20 @@ open scoped InnerProductSpace
 namespace GlobalTheory.PsCo.Pc3
 
 /- English proof (translation)
-The claim follows from `Submodule.span_mono fun _ ⟨H, P, hH, hP, e⟩ => ⟨H, P, hH, hP.trans h, e⟩`.
+A detailed English derivation is pending.
 -/
 theorem shapeM_mono {n : ℕ} (ε : Fin n → Bool) {d d' : ℕ} (h : d ≤ d') : ShapeM ε d ≤ ShapeM ε d' :=
   Submodule.span_mono fun _ ⟨H, P, hH, hP, e⟩ => ⟨H, P, hH, hP.trans h, e⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hS.1.add hT.1, by rw [trace_add hS.1 hT.1, hS.2, hT.2]⟩`.
+Supply the required witnesses or components.
 -/
 theorem hasTrace_add' {U : Type} [NormedAddCommGroup U] [InnerProductSpace ℂ U] [CompleteSpace U]
     {S T : U →L[ℂ] U} {a b : ℂ} (hS : HasTrace S a) (hT : HasTrace T b) : HasTrace (S + T) (a + b) :=
   ⟨hS.1.add hT.1, by rw [trace_add hS.1 hT.1, hS.2, hT.2]⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hT.1.smul c, by rw [trace_smul, hT.2]⟩`.
+Supply the required witnesses or components.
 -/
 theorem hasTrace_smul' {U : Type} [NormedAddCommGroup U] [InnerProductSpace ℂ U] [CompleteSpace U]
     {T : U →L[ℂ] U} {a : ℂ} (c : ℂ) (hT : HasTrace T a) : HasTrace (c • T) (c * a) :=
@@ -39,47 +39,39 @@ Both sides reduce to the same expression.
 theorem toM_mul' {n : ℕ} {ε : Fin n → Bool} (a b : UJ ε) : toM (a * b) = toM a * toM b := rfl
 
 /- English proof (translation)
-Use `GlobalTheory.CompanionTheory.HaarUJ.haar_rinv_UJ n ε μ` as an intermediate fact. Establish `hZG : inG ε Z` using `(GlobalTheory.T.indefiniteUnitaryLieAlgebra_mem_iff_entries n ε Z).2 hZ`. Take `⟨hxc, hxinv⟩` from `GlobalTheory.CompanionTheory.ExpOneParam.continuous_expG_and_toM_inv n ε Z hZG`. Take `⟨hadS, hder⟩` from `hBD n ε Z H P hZ hH`. Establish `hbS : bas ε H P ∈ ShapeM ε (P.totalDegree + 2)` using `Submodule.subset_span ⟨H, P, hH, by omega, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨-, -, hac, hacs⟩` from `hSh n ε _ _ hadS`. Take `⟨-, -, hbc, hbcs⟩` from `hSh n ε _ _ hbS`. Take `⟨L, hLf, hLmem, hLd⟩` from `hUF n ε U π hπ hirr (P.totalDegree + 2)`. Use `hLf` as an intermediate fact. Take `⟨-, hTr⟩` from `hRS n ε μ U π hπ _ _ hadS`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨-, hAr⟩` from `hRS n ε μ U π hπ _ _ hbS`. Use `set fad : UJ ε → ℂ := fun g => adBas ε Z H P (toM g) with hfad`. Use `set fb : UJ ε → ℂ := fun g => bas ε H P (toM g) with hfb`. Use `set T := repOp π μ fad with hT`. Use `set A := repOp π μ fb with hA`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Use `set e := stdOrthonormalBasis ℂ L with he`. Use `set x : ℝ → UJ ε := fun t => expG ε Z t with hx`. Establish `hx0 : x 0 = 1`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Formalism.REAL.toM_expG ε Z 0 hZG` as an intermediate fact. Simplify using `only [Complex.ofReal_zero, zero_smul, NormedSpace.exp_zero] at this`. Conclude with `this`. Establish `hconj : ∀ (s : ℝ) (g : UJ ε), toM ((x s)⁻¹ * g * x s) = NormedSpace.exp (-((s : ℂ) • Z)) * toM g * NormedSpace.exp ((s : ℂ) • Z)` using `fun s g => by`. Rewrite using `[toM_mul', toM_mul', hxinv s, Formalism.REAL.toM_expG ε Z s hZG]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `key : ∀ (y : UJ ε) (v u : U), ⟪v, π y u⟫_ℂ = ⟪π y⁻¹ v, u⟫_ℂ` using `fun y v u => by`. Rewrite using `[hπ.inner_apply_left, inv_inv]`. Use `set w : UJ ε → ℂ := fun g => ∑ j, ⟪(e j : U), π g (e j : U)⟫_ℂ with hw`. Establish `hwc : Continuous w` using `continuous_finsetSum _ fun j _ => continuous_const.inner (hπ.continuous_apply _)`. Establish `hsum : ∑ j, ⟪(e j : U), T (e j : U)⟫_ℂ = ∫ g, fad g * w g ∂μ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hint : ∀ j ∈ Finset.univ, Integrable (fun g => fad g * ⟪(e j : U), π g (e j : U)⟫_ℂ) μ` using `fun j _ => (hac.mul (continuous_const.inner (hπ.continuous_apply _))).integrable_of_hasCompactSupport hacs.mul_right`. Simplify using `only [hT, hπ.inner_repOp hac hacs, hw, Finset.mul_sum]`. Rewrite using `[integral_finsetSum _ hint]`. Establish `hid : ∀ t : ℝ, ∑ j, ⟪(e j : U), π (x t) (A (π (x t)⁻¹ (e j : U)))⟫_ℂ = ∫ g, fb ((x t)⁻¹ * g * x t) * w g ∂μ`. Introduce `t`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `set y := x t`. Establish `h1 : ∀ j, ⟪(e j : U), π y (A (π y⁻¹ (e j : U)))⟫_ℂ = ∫ g, fb g * ⟪(e j : U), π (y * g * y⁻¹) (e j : U)⟫_ℂ ∂μ`. Introduce `j`. Rewrite using `[key y, hA, hπ.inner_repOp hbc hbcs]`. Use `integral_congr_ae (Eventually.of_forall fun g => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only`. Use `congr 1`. Rewrite using `[map_mul, map_mul]`. Use `show _ = ⟪(e j : U), π y (π g (π y⁻¹ (e j : U)))⟫_ℂ`. Rewrite using `[key y]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hint : ∀ j ∈ Finset.univ, Integrable (fun g => fb g * ⟪(e j : U), π (y * g * y⁻¹) (e j : U)⟫_ℂ) μ` using `fun j _ => (hbc.mul (continuous_const.inner ((hπ.continuous_apply _).comp (by fun_prop)))).integrable_of_hasCompactSupport hbcs.mul_right`. Rewrite using `[Finset.sum_congr rfl fun j _ => h1 j, ← integral_finsetSum _ hint]`. Establish `e2 : (fun g => ∑ j, fb g * ⟪(e j : U), π (y * g * y⁻¹) (e j : U)⟫_ℂ) = fun g => fb g * w (y * g * y⁻¹)` using `funext fun g => by simp only [hw, Finset.mul_sum]`. Rewrite using `[e2]`. Establish `e3` using `integral_mul_right_eq_self (μ := μ) (fun g => fb (y⁻¹ * g) * w (y * (y⁻¹ * g) * y⁻¹)) y`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `e4` using `integral_mul_left_eq_self (μ := μ) (fun g => fb g * w (y * g * y⁻¹)) y⁻¹`. Rewrite using `[← e4, ← e3]`. Use `integral_congr_ae (Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Simplify using `only`. Use `congr 2`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `group`. Use `group`. Establish `h0 : π (x 0) = 1` using `by rw [hx0, map_one]`. Establish `hCD'` using `hCD U L (fun t => π (x t)) (fun t => π (x t)⁻¹) A h0 (fun t v u => by`. Rewrite using `[hπ.inner_apply_left, ← ContinuousLinearMap.mul_apply, ← map_mul, inv_mul_cancel, map_one, ContinuousLinearMap.one_apply])`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `(fun t v u => (hπ.inner_apply_left _ v u).symm) (fun v hv => hLd v hv Z hZG)`. Use the proof step `(fun u => hLmem _ (hAr u).1) (fun u => hLmem _ (hAr u).2)`. Establish `hfun : (fun t => ∑ j, ⟪(stdOrthonormalBasis ℂ L j : U), π (x t) (A (π (x t)⁻¹ (stdOrthonormalBasis ℂ L j : U)))⟫_ℂ) = fun t => ∫ g, fb ((x t)⁻¹ * g * x t) * w g ∂μ`. Use function extensionality and compare the values at `hid`. Rewrite `hCD'` using `[hfun]`.
+Check the signs of the components of the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hC : IsCompact ((fun p : ℝ × UJ ε => x p.1 * p.2 * (x p.1)⁻¹) '' (Icc (-1 : ℝ) 1 ×ˢ tsupport fad))` using `(isCompact_Icc.prod hacs.isCompact).image (by fun_prop)`. Take `⟨χ, h1, -, hcs, -⟩` from `exists_continuous_one_zero_of_isCompact hC isClosed_empty (disjoint_empty _)`. Take `⟨M, hM⟩` from `hacs.exists_bound_of_continuous hac`. Establish `hM0 : 0 ≤ M` using `(norm_nonneg _).trans (hM 1)`. Establish `keyb : ∀ u ∈ Icc (-1 : ℝ) 1, ∀ g, ‖fad ((x u)⁻¹ * g * x u) * w g‖ ≤ M * ‖(χ g : ℂ)‖ * ‖w g‖`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `u hu g`. Rewrite using `[norm_mul]`. Distinguish the cases in `h : fad ((x u)⁻¹ * g * x u) = 0`. Rewrite using `[h, norm_zero, zero_mul]`. Check the signs of the components of the expression.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Establish `hg : g ∈ (fun p : ℝ × UJ ε => x p.1 * p.2 * (x p.1)⁻¹) '' (Icc (-1 : ℝ) 1 ×ˢ tsupport fad)` using `⟨(u, (x u)⁻¹ * g * x u), ⟨hu, subset_tsupport fad h⟩, by simp only; group⟩`. Establish `h2 : (χ g : ℂ) = 1` using `by simp [h1 hg]`. Rewrite using `[h2, norm_one, mul_one]`. Conclude with `mul_le_mul_of_nonneg_right (hM _) (norm_nonneg _)`. Establish `hχc : Continuous fun g => (χ g : ℂ)` using `Complex.continuous_ofReal.comp χ.continuous`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hbint : Integrable (fun g => M * ‖(χ g : ℂ)‖ * ‖w g‖) μ`. Use `(((hχc.norm.const_mul M).mul hwc.norm)).integrable_of_hasCompactSupport ?_` and prove the remaining obligations. Use `HasCompactSupport.mul_right ?_` and prove the remaining obligations. Use `HasCompactSupport.mul_left ?_` and prove the remaining obligations. Conclude with `(hcs.comp_left (g := fun r : ℝ => (r : ℂ)) Complex.ofReal_zero).norm`.
-
-Establish `hcontF : ∀ (f : UJ ε → ℂ), Continuous f → ∀ u, Continuous fun g => f ((x u)⁻¹ * g * x u) * w g` using `fun f hf u => (hf.comp (by fun_prop)).mul hwc`. Establish `hint` using `hasDerivAt_integral_of_dominated_loc_of_deriv_le (μ := μ) (F := fun u g => fb ((x u)⁻¹ * g * x u) * w g) (F' := fun u g => fad ((x u)⁻¹ * g * x u) * w g) (x₀ := (0 : ℝ)) (s := Ioo (-1 : ℝ) 1) (bound := fun g => M * ‖(χ g : ℂ)‖ * ‖w g‖) (Ioo_mem_nhds (by norm_num) (by norm_num)) ( …`. Simplify using `only [hx0, inv_one, one_mul, mul_one]`. Conclude with `(hbc.mul hwc).integrable_of_hasCompactSupport hbcs.mul_right)`. Use the proof step `(hcontF fad hac 0).aestronglyMeasurable`.
-
-Use the proof step `(.of_forall fun g u hu => keyb u (Ioo_subset_Icc_self hu) g) hbint`. Use the proof step `(.of_forall fun g u _ => by`. Establish `e5 : (fun v : ℝ => fb ((x v)⁻¹ * g * x v) * w g) = fun v : ℝ => bas ε H P (NormedSpace.exp (-((v : ℂ) • Z)) * toM g * NormedSpace.exp ((v : ℂ) • Z)) * w g`. Use function extensionality and compare the values at `fun v => by simp only [hfb, hconj]`. Rewrite using `[e5]`.
-
-Establish `e6 : fad ((x u)⁻¹ * g * x u) = adBas ε Z H P (NormedSpace.exp (-((u : ℂ) • Z)) * toM g * NormedSpace.exp ((u : ℂ) • Z))`. Simplify using `only [hfad, hconj]`. Rewrite using `[e6]`. Conclude with `(hder (toM g) u).mul_const (w g))`. Establish `hzero : ∫ g, fad ((x 0)⁻¹ * g * x 0) * w g ∂μ = 0` using `hint.2.unique hCD'`.
-
-Simplify using `only [hx0, inv_one, one_mul, mul_one] at hzero`. Establish `hTL : ∀ u, T u ∈ L` using `fun u => hLmem _ (hTr u).1`. Use `hTS U L T hTL` as an intermediate fact. Rewrite `this` using `[hsum, hzero]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem trace_adBas (hSh : StShape) (hBD : StBasDeriv) (hUF : UFin) (hRS : RangeShape) (hTS : TraceSum)
     (hCD : ConjDeriv) {n : ℕ} (ε : Fin n → Bool) (μ : Measure (UJ ε)) [μ.IsHaarMeasure] (U : Type)
@@ -217,21 +209,21 @@ theorem trace_adBas (hSh : StShape) (hBD : StBasDeriv) (hUF : UFin) (hRS : Range
   rwa [hsum, hzero] at this
 
 /- English proof (translation)
-Introduce `hSh hBD hUF hRS hTS hCD n ε μ _ U _ _ _ π hπ hirr φ hφ`. It suffices to establish `h : (∃ d, φ ∈ ShapeM ε d) ∧ HasTrace (repOp π μ fun g => φ (toM g)) 0 from h.2`. Proceed by induction on `hφ using Submodule.span_induction with`. Consider the case `mem φ hmem`. Take `⟨Z, H, P, hZ, hH, rfl⟩` from `hmem`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the argument to an intermediate assertion. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨⟨_, (hBD n ε Z H P hZ hH).1⟩, trace_adBas hSh hBD hUF hRS hTS hCD ε μ U π hπ hirr Z H P hZ hH⟩`. Consider the case `zero`. Use `⟨⟨0, zero_mem _⟩, ?_⟩` and prove the remaining obligations. Establish `h0 : IsRepOp π μ (fun g => (0 : Mat n → ℂ) (toM g)) 0` using `fun v => by`. Simplify using `only [Pi.zero_apply, zero_smul, integral_zero, ContinuousLinearMap.zero_apply]`.
+Supply the required witnesses or components. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `⟨integrable_zero _ _ _, trivial⟩`. Rewrite using `[h0.repOp_eq]`. Conclude with `⟨isTraceClass_zero, trace_zero⟩`. Consider the case `add φ₁ φ₂ _ _ h₁ h₂`. Take `⟨⟨d₁, hd₁⟩, ht₁⟩` from `h₁`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨d₂, hd₂⟩, ht₂⟩` from `h₂`. Use `⟨⟨max d₁ d₂, add_mem (shapeM_mono ε (le_max_left _ _) hd₁) (shapeM_mono ε (le_max_right _ _) hd₂)⟩, ?_⟩` and prove the remaining obligations. Establish `o₁` using `(hRS n ε μ U π hπ d₁ φ₁ hd₁).1`. Establish `o₂` using `(hRS n ε μ U π hπ d₂ φ₂ hd₂).1`. Establish `hs : IsRepOp π μ (fun g => (φ₁ + φ₂) (toM g)) (repOp π μ (fun g => φ₁ (toM g)) + repOp π μ (fun g => φ₂ (toM g)))` using `fun v => by`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `((o₁ v).1.add (o₂ v).1).congr (Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Simplify using `only [Pi.add_apply, add_smul]`. Rewrite using `[ContinuousLinearMap.add_apply, (o₁ v).2, (o₂ v).2, ← integral_add (o₁ v).1 (o₂ v).1]`. Simplify using `only [Pi.add_apply, add_smul]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hs.repOp_eq]`. Simplify using `using hasTrace_add' ht₁ ht₂`. Consider the case `smul c φ _ h`. Take `⟨⟨d, hd⟩, ht⟩` from `h`. Use `⟨⟨d, Submodule.smul_mem _ c hd⟩, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `o` using `(hRS n ε μ U π hπ d φ hd).1`. Establish `hs : IsRepOp π μ (fun g => (c • φ) (toM g)) (c • repOp π μ (fun g => φ (toM g)))` using `fun v => by`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `((o v).1.smul c).congr (Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Simplify using `only [Pi.smul_apply, smul_eq_mul, mul_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[ContinuousLinearMap.smul_apply, (o v).2, ← integral_smul]`. Simplify using `only [Pi.smul_apply, smul_eq_mul, mul_smul]`. Rewrite using `[hs.repOp_eq]`. Simplify using `using hasTrace_smul' c ht`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem stTrAd_of : StShape → StBasDeriv → UFin → RangeShape → TraceSum → ConjDeriv → StTrAd := by
   intro hSh hBD hUF hRS hTS hCD n ε μ _ U _ _ _ π hπ hirr φ hφ

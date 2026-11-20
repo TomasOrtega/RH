@@ -21,7 +21,7 @@ instance spMap_surjective {K : Type} [Field K] (L : Type) [Field L] [Algebra K L
   ⟨fun _ => ⟨IsLocalRing.closedPoint L, Subsingleton.elim _ _⟩⟩
 
 /- English proof (translation)
-Rewrite using `[bcMap_hom]`. Simplify using `only [Over.pullback_map_left]`. Conclude with `pullback.lift_fst _ _ _`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem bcMap_left_fst {K : Type} [Field K] (L : Type) [Field L] [Algebra K L] {A B : AbVar K} (f : A ⟶ B) :
     (bcMap L f).hom.left ≫ pullback.fst B.X.hom (spMap (algebraMap K L)) =
@@ -31,7 +31,7 @@ theorem bcMap_left_fst {K : Type} [Field K] (L : Type) [Field L] [Algebra K L] {
   exact pullback.lift_fst _ _ _
 
 /- English proof (translation)
-Introduce `f g h`. Establish `: Epi (pullback.fst A.X.hom (spMap (algebraMap K L)))` using `Flat.epi_of_flat_of_surjective _`. Apply `hom_ext` to reduce the goal to its premises. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[← cancel_epi (pullback.fst A.X.hom (spMap (algebraMap K L))), ← bcMap_left_fst, ← bcMap_left_fst, h]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem bcMap_injective {K : Type} [Field K] (L : Type) [Field L] [Algebra K L] (A B : AbVar K) :
     Function.Injective (bcMap L : (A ⟶ B) → _) := by
@@ -42,28 +42,28 @@ theorem bcMap_injective {K : Type} [Field K] (L : Type) [Field L] [Algebra K L] 
   rw [← cancel_epi (pullback.fst A.X.hom (spMap (algebraMap K L))), ← bcMap_left_fst, ← bcMap_left_fst, h]
 
 /- English proof (translation)
-The claim follows from `hom_ext (Functor.map_mul (Over.pullback (spMap (algebraMap K L))) f.hom g.hom)`.
+A detailed English derivation is pending.
 -/
 theorem bcMap_add {K : Type} [Field K] (L : Type) [Field L] [Algebra K L] {A B : AbVar K} (f g : A ⟶ B) :
     bcMap L (f + g) = bcMap L f + bcMap L g :=
   hom_ext (Functor.map_mul (Over.pullback (spMap (algebraMap K L))) f.hom g.hom)
 
 /- English proof (translation)
-The claim follows from `hom_ext ((Over.pullback (spMap (algebraMap K L))).map_comp f.hom g.hom)`.
+A detailed English derivation is pending.
 -/
 theorem bcMap_comp {K : Type} [Field K] (L : Type) [Field L] [Algebra K L] {A B C : AbVar K} (f : A ⟶ B)
     (g : B ⟶ C) : bcMap L (f ≫ g) = bcMap L f ≫ bcMap L g :=
   hom_ext ((Over.pullback (spMap (algebraMap K L))).map_comp f.hom g.hom)
 
 /- English proof (translation)
-The claim follows from `hom_ext ((Over.pullback (spMap (algebraMap K L))).map_id A.X)`.
+A detailed English derivation is pending.
 -/
 theorem bcMap_id {K : Type} [Field K] (L : Type) [Field L] [Algebra K L] (A : AbVar K) :
     bcMap L (𝟙 A) = 𝟙 _ :=
   hom_ext ((Over.pullback (spMap (algebraMap K L))).map_id A.X)
 
 /- English proof (translation)
-Introduce `_ _ L _ _ A B _` and use `⟨bcMap_add L, bcMap_comp L, bcMap_id L A, bcMap_injective L A B⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem bcMap_functorial : ∀ (K : Type) [Field K] (L : Type) [Field L] [Algebra K L] (A B C : AbVar K),
     (∀ f g : A ⟶ B, bcMap L (f + g) = bcMap L f + bcMap L g) ∧

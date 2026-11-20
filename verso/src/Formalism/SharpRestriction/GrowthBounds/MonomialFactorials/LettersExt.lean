@@ -11,13 +11,13 @@ section Letters
 variable (C0 CE1 CE2 : ℝ) (X : flipOneThree.Inst)
 
 /- English proof (translation)
-Consider the cases of `L`. Consider the cases of `L'`. Simplify the hypotheses and the goal together.
+Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Simplify the hypotheses and the goal together.
 -/
 theorem letters_ext {N : ℕ} (L L' : Formalism.GM.M.Letters N) (h1 : L.vec = L'.vec) (h2 : L.deg = L'.deg) : L = L' := by
   cases L; cases L'; simp_all
 
 /- English proof (translation)
-Introduce `i j h`. Establish `h'` using `congrArg Fin.val h`. Simplify using `only [uTop] at h'`. Conclude with `Fin.ext (by omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem uTop_inj : Function.Injective (uTop (X.S C0 CE1 CE2)) := by
   intro i j h
@@ -31,15 +31,13 @@ abbrev lLL (aTop : Fin X.s → ℕ) (b : SegBlock X.s X.r) (x : Lv C0 CE1 CE2 X)
 abbrev gT (b : SegBlock X.s X.r) : Formalism.GM.M.TieData := (gB C0 CE1 CE2 X (fun _ => 0) 0 b).T
 
 /- English proof (translation)
-Establish `hi` using `i.2`. Simplify using `only [SegData.t] at hi`. Simplify using `only [lLL, Formalism.GM.M.BlockData.lettersAt, gB, gmB, gmL, gmT, blockData, BlockData.withMargin, blockBase, segChain, segTies]`. Establish `h1 : (q : ℕ) ≠ 2 * X.s` using `by omega`. Establish `hodd : ¬ (q : ℕ) % 2 = 0` using `by omega`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `htop : topOf q h1 = uTop (X.S C0 CE1 CE2) i` using `Fin.ext (by simp only [topOf, uTop]; omega)`. Establish `hnl : ¬ ((uTop (X.S C0 CE1 CE2) i : ℕ) < (X.S C0 CE1 CE2).sigma)` using `by simp only [uTop]; omega`. Establish `hu : ¬ q = ⟨2 * X.s, by omega⟩`. Introduce `h`. Conclude with `h1 (by rw [h])`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_neg h1, if_neg hodd, htop, if_neg hnl]`. Simplify using `only [hu, if_false, Nat.sub_zero]`. Use `congr 1`. Use `(Finset.sum_eq_single i ?_ ?_).trans ?_` and prove the remaining obligations. Introduce `j _ hj`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hj' : (j : ℕ) ≠ (i : ℕ)` using `fun h => hj (Fin.ext h)`. Apply `if_neg` to reduce the goal to its premises. Use `show ¬ ((q : ℕ) = 2 * ((X.S C0 CE1 CE2).sigma + (j : ℕ)) ∨ (q : ℕ) = 2 * ((X.S C0 CE1 CE2).sigma + (j : ℕ)) + 1)`. Use linear arithmetic over natural numbers and integers. Introduce `h`.
-
-Conclude with `absurd (Finset.mem_univ i) h`. Conclude with `if_pos (Or.inr (show (q : ℕ) = 2 * ((X.S C0 CE1 CE2).sigma + (i : ℕ)) + 1 from hq))`.
+Reduce the claim to the hypotheses of an applicable result. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem deg_eta (aTop : Fin X.s → ℕ) (b : SegBlock X.s X.r) (x : Lv C0 CE1 CE2 X) (i : Fin (X.S C0 CE1 CE2).t)
     (q : Fin (2 * X.s + 1)) (hq : (q : ℕ) = 2 * ((X.S C0 CE1 CE2).sigma + (i : ℕ)) + 1) :
@@ -68,15 +66,15 @@ theorem deg_eta (aTop : Fin X.s → ℕ) (b : SegBlock X.s X.r) (x : Lv C0 CE1 C
   · exact if_pos (Or.inr (show (q : ℕ) = 2 * ((X.S C0 CE1 CE2).sigma + (i : ℕ)) + 1 from hq))
 
 /- English proof (translation)
-Establish `hLL : (gB C0 CE1 CE2 X aTop 0 b).LL.deg q = (gB C0 CE1 CE2 X aTop' 0 b).LL.deg q`. Simplify using `only [gB, gmB, gmL, blockData, BlockData.withMargin, blockBase, segChain]`. Distinguish the cases in `h : (q : ℕ) = 2 * X.s`. Rewrite using `[dif_pos h, dif_pos h]`. Rewrite using `[dif_neg h, dif_neg h]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hv : ((topOf q h : Fin X.s) : ℕ) = (q : ℕ) / 2` using `rfl`. Establish `hlt : (q : ℕ) / 2 < X.s`. Use `(topOf q h).2` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `split_ifs with h2 h3 h3`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Both sides reduce to the same expression. Simplify using `only [coarseC]`. Rewrite using `[hag _ h3]`. It suffices to derive a contradiction.
+Both sides reduce to the same expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hq` to reduce the goal to its premises. Use `⟨⟨(q : ℕ) / 2 - (X.S C0 CE1 CE2).sigma, ?_⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [SegData.t]`. Use linear arithmetic over natural numbers and integers. Simplify using `only`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Simplify using `only [lLL, Formalism.GM.M.BlockData.lettersAt]`. Rewrite using `[hLL]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem deg_other (aTop aTop' : Fin X.s → ℕ) (b : SegBlock X.s X.r) (x : Lv C0 CE1 CE2 X)
     (hag : ∀ l : Fin X.s, (l : ℕ) < (X.S C0 CE1 CE2).sigma → aTop l = aTop' l)
@@ -108,15 +106,15 @@ theorem deg_other (aTop aTop' : Fin X.s → ℕ) (b : SegBlock X.s X.r) (x : Lv 
   rfl
 
 /- English proof (translation)
-Apply `letters_ext` to reduce the goal to its premises. Both sides reduce to the same expression. Use function extensionality and compare the values at `q`. Simplify using `only [Formalism.GM.M.Letters.setTies]`. Use `split_ifs with h`.
+Reduce the claim to the hypotheses of an applicable result. Both sides reduce to the same expression. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hc` using `Classical.choose_spec h`. Establish `hp : (gT C0 CE1 CE2 X b).pos (Classical.choose h) = 2 * ((X.S C0 CE1 CE2).sigma + ((Classical.choose h : Fin (X.S C0 CE1 CE2).t) : ℕ))` using `rfl`. Establish `hjq : (q : ℕ) = 2 * ((X.S C0 CE1 CE2).sigma + ((Classical.choose h : Fin (X.S C0 CE1 CE2).t) : ℕ)) + 1`. Use linear arithmetic over natural numbers and integers. Rewrite using `[deg_eta C0 CE1 CE2 X _ b x _ q hjq]`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `he : ∃ i, uTop (X.S C0 CE1 CE2) i = uTop (X.S C0 CE1 CE2) (Classical.choose h)` using `⟨_, rfl⟩`. Establish `hov : ovr (uTop (X.S C0 CE1 CE2)) a n (uTop (X.S C0 CE1 CE2) (Classical.choose h)) = n (Classical.choose h)`. Simplify using `only [ovr, dif_pos he]`. Rewrite using `[uTop_inj C0 CE1 CE2 X (Classical.choose_spec he)]`. Simplify using `only [coarseC, hov]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[deg_other C0 CE1 CE2 X _ a b x ?_ q ?_]`. Introduce `l hl`. Establish `hne : ¬ ∃ i, uTop (X.S C0 CE1 CE2) i = l`. Introduce and unpack `⟨i, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Simplify using `only [uTop] at hl`. Use linear arithmetic over natural numbers and integers. Simplify using `only [ovr, dif_neg hne]`. Introduce and unpack `⟨i, hi⟩`. Conclude with `h ⟨i, hi⟩`.
+Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem lLL_ovr (a : Fin X.s → ℕ) (n : Fin (X.S C0 CE1 CE2).t → ℕ) (b : SegBlock X.s X.r) (x : Lv C0 CE1 CE2 X) :
     lLL C0 CE1 CE2 X (ovr (uTop (X.S C0 CE1 CE2)) a n) b x =

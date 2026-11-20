@@ -1,11 +1,11 @@
 import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.SphericalCoordinates.LevelChange
 
 /- English proof (translation)
-Establish `key : ∀ u : Sˣ, (σ (u : S)).unop * (σ ((u⁻¹ : Sˣ) : S)).unop = 1`. Introduce `u`. Rewrite using `[← MulOpposite.unop_mul, ← map_mul, Units.inv_mul, map_one, MulOpposite.unop_one]`. Establish `hb : b = ((x'⁻¹ : Sˣ) : S) * (algebraMap A S t' * (σ ((x'⁻¹ : Sˣ) : S)).unop)`. Rewrite using `[← hx']`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Units.inv_mul, key, one_mul, mul_one]`. Use `_ = _ := by simp only [mul_assoc]`. Rewrite `hx` using `[hb]`. Simplify using `only [mul_assoc, Algebra.left_comm] at hx`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [Units.val_mul, map_mul, MulOpposite.unop_mul, mul_assoc]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Units.val_mul, map_mul, mul_assoc, hx]`. Use `_ = _ := Algebra.commutes _ _`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.Gal.W2.mul_inv_star_of_triv {S A : Type*} [Ring S] [CommRing A] [Algebra A S]
     (σ : S →+* Sᵐᵒᵖ) (b : S) (x x' : Sˣ) (t t' : Aˣ)
@@ -36,13 +36,13 @@ open scoped Matrix TensorProduct Classical
 open UpperTheory.Gal.W2
 
 /- English proof (translation)
-Introduce `hcore p _ D G L B D' j hpl f nu hw`. Take `⟨x, c, hxc, hread⟩` from `hcore p D G L B.β D' j hpl f nu hw`. Take `⟨t0, ht0⟩` from `B.trivAf.choose_spec`. Establish `hmem : ((trivX B * x⁻¹, t0 * c⁻¹) : (AfP p ⊗[ℚ] G.C)ˣ × (AfP p)ˣ) ∈ UPts G.star (AfP p)`. Rewrite using `[UPts, mem_uGroup]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_inv_star_of_triv _ _ _ _ _ _ ht0 hxc`. Use `⟨⟨_, hmem⟩, ?_⟩` and prove the remaining obligations. Establish `hrd : ∀ w, rd L (trivX B) ⟨_, hmem⟩ w = rd L x 1 w`. Introduce `w`. Establish `hy : (((trivX B * x⁻¹)⁻¹ : (AfP p ⊗[ℚ] G.C)ˣ) : AfP p ⊗[ℚ] G.C) * (trivX B : AfP p ⊗[ℚ] G.C) = x`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Units.val_mul]`. Use `congr 1`. Use `group`. Simplify using `only [rd, inv_one, map_one, Module.End.one_apply]`. Rewrite using `[← hy, map_mul, Module.End.mul_apply]`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Both sides reduce to the same expression. Introduce `n hn hcop`. Take `⟨h1, h2⟩` from `hread n hn hcop`. Conclude with `⟨fun w => by rw [hrd]; exact h1 w, fun a => by rw [hrd]; exact h2 a⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.W2.adOfWit_of :
     UpperTheory.Gal.W2.AdCore → UpperTheory.Gal.W2.AdOfWit := by

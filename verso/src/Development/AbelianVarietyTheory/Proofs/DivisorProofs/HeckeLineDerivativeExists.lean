@@ -14,17 +14,17 @@ noncomputable section
 namespace GlobalTheory.LeviLineChar
 
 /- English proof (translation)
-Use `set G : ℝ → ℂ := fun y => ∫ u in (0 : ℝ)..y, g u with hGdef`. Establish `hG : ∀ y, HasDerivAt G (g y) y` using `fun y => (hg.integral_hasStrictDerivAt 0 y).hasDerivAt`. Choose the witnesses or unpack the hypotheses as in `⟨δ, hδ⟩ : ∃ δ, G δ ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : G = fun _ => 0` using `funext h`. Establish `h2` using `hG 0`. Rewrite `h2` using `[h1]`. Use `h2.unique (hasDerivAt_const (0 : ℝ) (0 : ℂ))` as an intermediate fact. Rewrite `this` using `[h0]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `one_ne_zero this`. Establish `key : ∀ s, g s = (G (s + δ) - G s) / G δ`. Introduce `s`. Rewrite using `[eq_div_iff hδ]`. Establish `e1 : G (s + δ) - G s = ∫ u in s..s + δ, g u`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [hGdef]`. Rewrite using `[intervalIntegral.integral_interval_sub_left (hg.intervalIntegrable _ _) (hg.intervalIntegrable _ _)]`. Establish `e2 : (∫ u in s..s + δ, g u) = ∫ u in (0 : ℝ)..δ, g (u + s)`. Rewrite using `[intervalIntegral.integral_comp_add_right]`. Simplify using `[add_comm]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, e2]`. Simplify using `only [hGdef]`. Rewrite using `[← intervalIntegral.integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `u`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[add_comm u s, hm]`. Use `⟨(g (x + δ) - g x) / G δ, ?_⟩` and prove the remaining obligations. Establish `hd : HasDerivAt (fun s => (G (s + δ) - G s) / G δ) ((g (x + δ) - g x) / G δ) x` using `(((hG (x + δ)).comp_add_const x δ).sub (hG x)).div_const (G δ)`. Conclude with `hd.congr_of_eventuallyEq (Filter.Eventually.of_forall fun s => key s)`.
+A detailed English derivation is pending.
 -/
 theorem exists_hasDerivAt_of_mul {g : ℝ → ℂ} (hg : Continuous g) (h0 : g 0 = 1)
     (hm : ∀ s u, g (s + u) = g s * g u) (x : ℝ) : ∃ c, HasDerivAt g c x := by
@@ -68,15 +68,13 @@ namespace GlobalTheory.LeviLineChar
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {d d₁ : ℕ}
 
 /- English proof (translation)
-Use `haveI := GlobalTheory.Doubling.isTopologicalRing_tens (F := F) (E := E) (R := AF F)`. Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, H'.x i ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hx (funext h)`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hu : IsUnit (incV F H'.x i)` using `(Ne.isUnit hi).map (inclR (F := F) (AF F))`. Establish `hval : ∀ s : Multiplicative ℝ, (t s : AE F E) = (mat (γ s) *ᵥ incV F H'.x) i * hu.unit⁻¹`. Introduce `s`. Establish `h1` using `congrFun (ht s).1 i`. Rewrite `h1` using `[Pi.smul_apply, smul_eq_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities.
 
-Rewrite using `[h1, mul_assoc, hu.mul_val_inv, mul_one]`. Establish `hc : Continuous fun s : Multiplicative ℝ => (t s : AE F E)`. Repeatedly rewrite using `[hval]`. Establish `hm : Continuous fun s : Multiplicative ℝ => mat (γ s)`. Unfold `mat`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `fun_prop`. Conclude with `((continuous_apply i).comp (hm.matrix_mulVec continuous_const)).mul continuous_const`. Establish `hc' : Continuous fun s : ℝ => (t (Multiplicative.ofAdd s) : AE F E)` using `hc.comp continuous_ofAdd`. Use `Units.continuous_iff.2 ⟨hc', ?_⟩` and prove the remaining obligations. Establish `: (fun s : ℝ => ((t (Multiplicative.ofAdd s))⁻¹ : (AE F E)ˣ).1) = fun s => (t (Multiplicative.ofAdd (-s)) : AE F E)`.
-
-Use function extensionality and compare the values at `s`. Rewrite using `[← map_inv, ofAdd_neg]`. Rewrite using `[this]`. Conclude with `hc'.comp continuous_neg`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_levi_scalar (W : Spc F E d) (W₁ : Spc F E d₁) (H' : Plane E d d₁) (hx : H'.x ≠ 0)
     (γ : Multiplicative ℝ →* UA σ W.J) (hγ : Continuous γ) (γ₁ : Multiplicative ℝ →* UA σ W₁.J)
@@ -114,11 +112,11 @@ noncomputable section
 namespace GlobalTheory.LeviLineChar
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ d d₁ W W₁ H' hx γ hγ γ₁ _ t ht χ hχ z`. Establish `htc` using `continuous_levi_scalar W W₁ H' hx γ hγ.1 γ₁ t ht`. Establish `hpos : ∀ s, (absE F E (t (Multiplicative.ofAdd s)) : ℝ) ≠ 0`. Introduce `s`. Use `(Group.isUnit (t (Multiplicative.ofAdd s))).map (absE F E)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `this.ne_zero` after adjusting the coercions. Use `exists_hasDerivAt_of_mul ?_ ?_ ?_ 0` and prove the remaining obligations. Use `(continuous_subtype_val.comp (hχ.1.comp htc)).mul (Complex.continuous_ofReal.comp ?_)` and prove the remaining obligations. Conclude with `(NNReal.continuous_coe.comp (GlobalTheory.Doubling.continuous_absE.comp htc)).rpow_const fun s => Or.inl (hpos s)`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `s u`. Rewrite using `[ofAdd_add, map_mul, map_mul, Circle.coe_mul, map_mul, NNReal.coe_mul, Real.mul_rpow (NNReal.coe_nonneg _) (NNReal.coe_nonneg _), Complex.ofReal_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_levi_char : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {d d₁ : ℕ}
     (W : Spc F E d) (W₁ : Spc F E d₁) (H' : Plane E d d₁), H'.x ≠ 0 →

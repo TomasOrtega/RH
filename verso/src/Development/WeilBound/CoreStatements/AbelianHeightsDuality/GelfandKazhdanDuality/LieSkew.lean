@@ -15,13 +15,13 @@ variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
 def expG (X : Lie E a) (t : ℝ) : GL (Fin a) (Cinf E) := (Matrix.isUnit_exp (t • Matrix.of X)).unit
 
 /- English proof (translation)
-The claim follows from `IsUnit.unit_spec _`.
+A detailed English derivation is pending.
 -/
 theorem expG_val (X : Lie E a) (t : ℝ) : (expG X t).val = NormedSpace.exp (t • Matrix.of X) :=
   IsUnit.unit_spec _
 
 /- English proof (translation)
-Use `ext1`. Rewrite using `[expG_val]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem expG_zero (X : Lie E a) : expG X 0 = 1 := by
   ext1
@@ -31,7 +31,7 @@ theorem expG_zero (X : Lie E a) : expG X 0 = 1 := by
 open scoped Matrix.Norms.Operator in
 
 /- English proof (translation)
-Set `L : Matrix (Fin a) (Fin a) (Cinf E) →L[ℝ] Lie E a` to `LinearMap.toContinuousLinearMap (Matrix.ofLinearEquiv ℝ).symm.toLinearMap`. Establish `h1` using `hasDerivAt_exp_smul_const (𝕂 := ℝ) (Matrix.of X) t`. Conclude with `L.hasFDerivAt.comp_hasDerivAt t h1`.
+Introduce a local definition for the expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_toL_exp (X : Lie E a) (t : ℝ) :
     HasDerivAt (fun s : ℝ => toL (NormedSpace.exp (s • Matrix.of X))) (rmul X (toL (NormedSpace.exp (t • Matrix.of X)))) t := by
@@ -41,11 +41,11 @@ theorem hasDerivAt_toL_exp (X : Lie E a) (t : ℝ) :
   exact L.hasFDerivAt.comp_hasDerivAt t h1
 
 /- English proof (translation)
-Establish `hx : toL (expG X t).val ∈ invSet E a` using `val_mem_invSet _`. Establish `hf` using `((contDiffAt_chart hφ x hx).differentiableAt (by simp)).hasFDerivAt`. Establish `hc` using `hasDerivAt_toL_exp X t`. Rewrite `hc` using `[← expG_val]`. Establish `h` using `hf.comp_hasDerivAt t hc`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e1 : (fun s => φ (x * infGL E a (expG X s))) = chart φ x ∘ fun s : ℝ => toL (NormedSpace.exp (s • Matrix.of X))`. Use function extensionality and compare the values at `s`. Rewrite using `[Function.comp_apply, ← expG_val, chart_val]`. Rewrite using `[e1]`. Use `h.congr_deriv ?_` and prove the remaining obligations.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← chart_lieD hφ X x hx, chart_val]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hasDerivAt_expG {φ : GA E a → ℂ} (hφ : φ ∈ Sm E a) (X : Lie E a) (x : GA E a) (t : ℝ) :
     HasDerivAt (fun s => φ (x * infGL E a (expG X s))) (lieD X φ (x * infGL E a (expG X t))) t := by
@@ -62,11 +62,9 @@ theorem hasDerivAt_expG {φ : GA E a → ℂ} (hφ : φ ∈ Sm E a) (X : Lie E a
   rw [← chart_lieD hφ X x hx, chart_val]
 
 /- English proof (translation)
-Use `GlobalTheory.CompanionTheory.Hypotheses₂.GaussCurve.hasDerivAt_Lp_of_dominated _ _ (fun t q => descend (latticeGL E a) (fun x => φ.1 (x * infGL E a (expG X t))) q) (fun t q => descend (latticeGL E a) (fun x => lieD X φ.1 (x * infGL E a (expG X t))) q) (fun _ => C) 0 1 one_pos ?_ …` and prove the remaining obligations. Introduce `t`. Rewrite using `[right_translate_toL2]`. Conclude with `(hl.mul_right _).coeFn_toL2`. Establish `e : (fun q => descend (latticeGL E a) (fun x => lieD X φ.1 (x * infGL E a (expG X 0))) q) = descend (latticeGL E a) (lie E a X φ).1`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `q`. Simplify using `[descend, expG_zero]`. Rewrite using `[e]`. Conclude with `hl'.coeFn_toL2`. Conclude with `memLp_const C`.
-
-Introduce `q t _`. Conclude with `hasDerivAt_expG φ.2 X q.out t`. Introduce `q t _`. Conclude with `hC _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_R (μ : Measure (GA E a)) [μ.IsHaarMeasure] [μ.IsMulRightInvariant]
     [IsFiniteMeasure (quotMeasure (latticeGL E a) μ)] {φ : Sm E a} (X : Lie E a)
@@ -93,11 +91,11 @@ theorem hasDerivAt_R (μ : Measure (GA E a)) [μ.IsHaarMeasure] [μ.IsMulRightIn
     exact hC _
 
 /- English proof (translation)
-Use `haveI := GlobalTheory.CovolGL.isFiniteMeasure_quotMeasure E a μ`. Use `haveI : μ.IsMulRightInvariant := GlobalTheory.CovolGL.isMulRightInvariant E a μ`. Use `set hL := memL2_normalised_cusp_form hB μ hπ`. Establish `hbd : ∀ x : π.V, ∃ C : ℝ, ∀ g, ‖(lie E a X x.1).1 g‖ ≤ C` using `fun x => hB E a _ (π.cusp _ (π.stable (.lie X) x.1 x.2)) fun t g => congrArg norm (hπ _ (π.stable (.lie X) x.1 x.2) t g)`. Take `⟨C1, h1⟩` from `hbd f`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨C2, h2⟩` from `hbd g`. Establish `df` using `hasDerivAt_R μ X (hL f.1 f.2) (hL _ (π.stable (.lie X) f.1 f.2)) h1`. Establish `dg` using `hasDerivAt_R μ X (hL g.1 g.2) (hL _ (π.stable (.lie X) g.1 g.2)) h2`. Establish `hd` using `HasDerivAt.inner ℂ df dg`. Establish `hconst : (fun t => ⟪R (latticeGL E a) μ (infGL E a (expG X t)) (hL f.1 f.2).toL2, R (latticeGL E a) μ (infGL E a (expG X t)) (hL g.1 g.2).toL2⟫_ℂ) = fun _ => ⟪(hL f.1 f.2).toL2, (hL g.1 g.2).toL2⟫_ℂ` using `funext fun t => inner_R μ _ _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `hd` using `[hconst]`. Establish `h0` using `hd.unique (hasDerivAt_const _ _)`. Simplify using `only [expG_zero, map_one, ContinuousLinearMap.one_apply] at h0`. Rewrite using `[add_comm]`. Conclude with `h0`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inner_lie_skew' (hB : GlobalTheory.Published.CuspFormsBoundedGL) (μ : Measure (GA E a)) [μ.IsHaarMeasure]
     {π : CuspSub E a} (hπ : IsNormalised π) (X : Lie E a) (f g : π.V) :

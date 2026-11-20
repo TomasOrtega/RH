@@ -41,9 +41,9 @@ def LeafRep : Prop := Hyps → ∀ (q : ℕ) [NeZero q] (k : Type) [Field k], Is
           pullback.condition n c) = eL n c ≫ (CategoryTheory.shiftFunctor (DerivedCategory A) n).map ℓ)
 
 /- English proof (translation)
-Introduce `hy q _ k _ hq i B W Y0 Y1 Y2 b ι _ V hV p g1 g2 h0 h1 h2 hA n y`. Take `⟨A, _, _, _, O, K0, K1, K2, L, f, g, ℓ, e0, e2, eL, hK0, hf, hg, hK2, hL, hℓ, hinj, hsurj, n0, nL⟩` from `hR hy q k hq i b ι V hV p g1 g2 h0 h1 h2 hA`. Take `⟨h, hh⟩` from `hT A K0 K1 K2 L f g ℓ hK0 hf hg hK2 hL hℓ`. Take `⟨c, hc⟩` from `hsurj n (e0 n y ≫ (CategoryTheory.shiftFunctor (DerivedCategory A) n).map h)`. Use `⟨c, hinj n ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[n0, nL, hc, Category.assoc, ← Functor.map_comp, hh]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem goal_of (hT : LeafTrunc) (hR : LeafRep) : LeafGhostRel := by
   intro hy q _ k _ hq i B W Y0 Y1 Y2 b ι _ V hV p g1 g2 h0 h1 h2 hA n y

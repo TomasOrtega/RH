@@ -9,9 +9,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.Cusp
 
 /- English proof (translation)
-Establish `hi : (⟨1, Nat.succ_lt_succ h𝔉⟩ : Fin (𝔉.k + 1)) ≠ 0` using `Fin.ne_of_val_ne one_ne_zero`. Establish `h0 : constTermOn (GQ V) (NA (.single (𝔉.isIsotropic hi))) φ = 0` using `(isCuspFun_iff h.2.1).1 h.2.2 _ (𝔉.isIsotropic hi)`. Use function extensionality and compare the values at `x`. Use `(Stages.constTermOn_stages (GA D V) (GQ V) (NA 𝔉) (NA (.single (𝔉.isIsotropic hi))) (𝔉.unip_single_le D.sp.cm _ hi) (fun p hp n hn => IsoFlag.conj_mem_unip ?_ hn) (cocompact_flag D V 𝔉) (cocompact_single _) φ h.2.1 h.1 x).trans ?_` and prove the remaining obligations. Rewrite using `[IsoFlag.par_single]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `𝔉.par_le_parab D.sp.cm _ _ (𝔉.unip_le_par D.sp.cm _ hp)`. Rewrite using `[h0]`. Conclude with `(cocompact_flag D V 𝔉).constTermOn_const 0 x`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem constTerm_eq_zero_of_mem_cuspCont (D : D7) (V : HSp D) (φ : GA D V → ℂ) (h : φ ∈ cuspCont V) (𝔉 : IsoFlag V)
     (h𝔉 : 𝔉.Proper) : constTerm 𝔉 φ = 0 := by

@@ -11,15 +11,15 @@ open PowerSeries GlobalTheory.Honda Formalism.L2.Th1.CM
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `L c hc`. Establish `hc' : c⁻¹ ≠ 0` using `inv_ne_zero hc`. Take `⟨hmem, -, -, hwp, -, -, -, -, -, hg2, hg3⟩` from `Formalism.L2.Th1.F.homogeneity L c⁻¹ hc'`. Use `⟨Formalism.L2.Th1.F.scalePair L c⁻¹ hc', ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `z`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hmem, inv_inv]`. Rewrite using `[hg2, inv_pow, inv_inv]`. Rewrite using `[hg3, inv_pow, inv_inv]`. Introduce `z`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion.
 
-Use `hwp (c * z)` as an intermediate fact. Rewrite `this` using `[← mul_assoc, inv_mul_cancel₀ hc, one_mul, inv_pow, inv_inv]`. Conclude with `this`. Unfold `PeriodPair.derivWeierstrassP`. Rewrite using `[Formalism.L2.Th1.F.Homog.tsum_scale L c⁻¹ hc' (fun l => 2 / (z - l) ^ 3), mul_neg, ← tsum_mul_left]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use `tsum_congr fun l => ?_` and prove the remaining obligations. Establish `: z - c⁻¹ * (l : ℂ) = c⁻¹ * (c * z - l)` using `by field_simp`. Rewrite using `[this, mul_pow, inv_pow, div_eq_mul_inv, div_eq_mul_inv, mul_inv, inv_inv]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `d hd`. Conclude with `Formalism.L2.Th1.F.hasCMByScale d L c⁻¹ hc' hd`.
+A detailed English derivation is pending.
 -/
 theorem homotheticLattice : ∀ (L : PeriodPair) (c : ℂ), c ≠ 0 → ∃ L' : PeriodPair,
     (∀ z, z ∈ L'.lattice ↔ c * z ∈ L.lattice) ∧ L'.g₂ = c ^ 4 * L.g₂ ∧ L'.g₃ = c ^ 6 * L.g₃ ∧

@@ -3,11 +3,11 @@ import Mathlib
 namespace Bl.general_b_fact_upper_alt_form
 
 /- English proof (translation)
-Introduce `K _ n k _ _ _ _ f A hA`. Establish `hker : LinearMap.ker (Matrix.toLin' A) = ⊥` using `LinearMap.ker_eq_bot.mpr (fun x y hxy => hA (by simpa only [Matrix.toLin'_apply] using hxy))`. Take `⟨g, hg⟩` from `(Matrix.toLin' A).exists_leftInverse_of_injective hker`. Establish `hBA : LinearMap.toMatrix' g * A = 1`. Establish `h` using `congrArg LinearMap.toMatrix' hg`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[LinearMap.toMatrix'_comp, LinearMap.toMatrix'_id, LinearMap.toMatrix'_toLin']`. Then use the resulting hypothesis. Establish `h1 : (LinearMap.toMatrix' g).map f * A.map f = 1`. Rewrite using `[← Matrix.map_mul, hBA, Matrix.map_one _ f.map_zero f.map_one]`. Introduce `v w hvw`. Establish `h2` using `congrArg (fun u => Matrix.mulVec ((LinearMap.toMatrix' g).map f) u) hvw`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify `h2` using `only [Matrix.mulVec_mulVec, h1, Matrix.one_mulVec]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem goal1 :
   ∀ {K : Type} [inst : Field.{0} K] {n k : Type} [Fintype.{0} n] [DecidableEq.{1} n] [inst_3 : Fintype.{0} k]

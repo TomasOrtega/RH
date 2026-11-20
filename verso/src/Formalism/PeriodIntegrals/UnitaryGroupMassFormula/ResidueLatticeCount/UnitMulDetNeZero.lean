@@ -21,16 +21,16 @@ Both sides reduce to the same expression.
 theorem unitMul_apply (u : (𝓞 K)ˣ) (y : mixedSpace K) : unitMul K u y = u • y := rfl
 
 /- English proof (translation)
-Use `LinearMap.ext fun y => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, unitMul_apply, mul_smul]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem unitMul_comp (u v : (𝓞 K)ˣ) : unitMul K u ∘ₗ unitMul K v = unitMul K (u * v) := by
   refine LinearMap.ext fun y => ?_
   simp only [LinearMap.comp_apply, unitMul_apply, mul_smul]
 
 /- English proof (translation)
-Introduce `h`. Establish `h1 : unitMul K u ∘ₗ unitMul K u⁻¹ = LinearMap.id`. Rewrite using `[unitMul_comp, mul_inv_cancel]`. Use `LinearMap.ext fun y => ?_` and prove the remaining obligations. Rewrite using `[unitMul_apply, one_smul, LinearMap.id_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congrArg LinearMap.det h1` as an intermediate fact. Rewrite `this` using `[LinearMap.det_comp, h, zero_mul, LinearMap.det_id]`. Conclude with `zero_ne_one this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unitMul_det_ne_zero (u : (𝓞 K)ˣ) : LinearMap.det (unitMul K u) ≠ 0 := by
   intro h
@@ -43,9 +43,9 @@ theorem unitMul_det_ne_zero (u : (𝓞 K)ˣ) : LinearMap.det (unitMul K u) ≠ 0
   exact zero_ne_one this
 
 /- English proof (translation)
-Use extensionality with `y`. Simplify using `only [Set.mem_preimage, box, Set.mem_ofPred_eq, unitMul_apply, unitSMul_smul, map_mul, normAtPlace_apply]`. Use `forall_congr' fun w => ?_` and prove the remaining obligations. Establish `hw : 0 < w (u : K)`. Use `w.pos_iff.2 ?_` and prove the remaining obligations.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using the standard rewrite rules. Rewrite using `[← one_div, lt_div_iff₀' hw]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem preimage_box (u : (𝓞 K)ˣ) :
     (unitMul K u) ⁻¹' (box K fun _ => 1) = box K (fun w => (w (u : K))⁻¹) := by
@@ -59,14 +59,14 @@ theorem preimage_box (u : (𝓞 K)ˣ) :
   rw [← one_div, lt_div_iff₀' hw]
 
 /- English proof (translation)
-Repeatedly rewrite using `[inv_pow]`. Rewrite using `[Finset.prod_inv_distrib, prod_eq_abs_norm, Units.norm, Rat.cast_one, inv_one]`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem prod_inv_unit (u : (𝓞 K)ˣ) : ∏ w : InfinitePlace K, ((w (u : K))⁻¹) ^ mult w = 1 := by
   simp_rw [inv_pow]
   rw [Finset.prod_inv_distrib, prod_eq_abs_norm, Units.norm, Rat.cast_one, inv_one]
 
 /- English proof (translation)
-Unfold `vfac`. Use `mul_ne_zero (pow_ne_zero _ two_ne_zero) (pow_ne_zero _ ?_)` and prove the remaining obligations. Conclude with `NNReal.pi_ne_zero` after adjusting the coercions.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem vfac_ne_zero : vfac K ≠ 0 := by
   unfold vfac
@@ -74,7 +74,7 @@ theorem vfac_ne_zero : vfac K ≠ 0 := by
   exact_mod_cast NNReal.pi_ne_zero
 
 /- English proof (translation)
-Unfold `vfac`. Conclude with `ENNReal.mul_ne_top (ENNReal.pow_ne_top ENNReal.ofNat_ne_top) (ENNReal.pow_ne_top ENNReal.coe_ne_top)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem vfac_ne_top : vfac K ≠ ⊤ := by
   unfold vfac
@@ -82,9 +82,9 @@ theorem vfac_ne_top : vfac K ≠ ⊤ := by
     (ENNReal.pow_ne_top ENNReal.coe_ne_top)
 
 /- English proof (translation)
-Introduce `K _ _ u`. Establish `hdet` using `unitMul_det_ne_zero K u`. Establish `hmap` using `Measure.map_linearMap_addHaar_eq_smul_addHaar (volume : Measure (mixedSpace K)) hdet`. Establish `hpre` using `Measure.addHaar_preimage_linearMap (volume : Measure (mixedSpace K)) hdet (box K fun _ => 1)`. Establish `hw : ∀ w : InfinitePlace K, 0 < (w (u : K))⁻¹` using `fun w => inv_pos.2 (w.pos_iff.2 (by simp))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hpre` using `[preimage_box, boxVolume K _ hw, boxVolume K _ (fun _ => one_pos), prod_inv_unit]`. Simplify using `only [one_pow, Finset.prod_const_one, ENNReal.ofReal_one, mul_one] at hpre`. Establish `hc : ENNReal.ofReal |(LinearMap.det (unitMul K u))⁻¹| = 1` using `(ENNReal.mul_left_inj (vfac_ne_zero K) (vfac_ne_top K)).1 (by rw [one_mul]; exact hpre.symm)`. Rewrite `hmap` using `[hc, one_smul]`. Conclude with `⟨(unitMul K u).continuous_of_finiteDimensional.measurable, hmap⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem unitPreserving : UnitPreserving := by
   intro K _ _ u

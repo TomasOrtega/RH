@@ -9,7 +9,7 @@ open Formalism.MainNotions.G
 variable (p : ℕ) [hp : Fact p.Prime] (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
 
 /- English proof (translation)
-Rewrite using `[← map_natCast (Ideal.Quotient.mk ((IsLocalRing.maximalIdeal O) ^ n)) (p ^ n), Nat.cast_pow, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `Ideal.pow_mem_pow hpm n`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem castPow_zero (hpm : (p : O) ∈ IsLocalRing.maximalIdeal O) (n : ℕ) :
     ((p ^ n : ℕ) : O ⧸ (IsLocalRing.maximalIdeal O) ^ n) = 0 := by
@@ -23,9 +23,9 @@ def iotaN (hpm : (p : O) ∈ IsLocalRing.maximalIdeal O) (n : ℕ) :
     (PadicInt.toZModPow n)
 
 /- English proof (translation)
-Establish `hz` using `PadicInt.zmod_cast_comp_toZModPow (p := p) m n hle`. Establish `key : ∀ (f g : ZMod (p ^ n) →+* O ⧸ (IsLocalRing.maximalIdeal O) ^ m), f = g` using `fun f g => RingHom.ext_zmod f g`. Unfold `iotaN`. Rewrite using `[← hz]`. Use extensionality with `x`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Simplify using `only [RingHom.comp_apply]`. Conclude with `congrArg (fun f => f (PadicInt.toZModPow n x)) (key ((Ideal.Quotient.factorPow (IsLocalRing.maximalIdeal O) hle).comp (ZMod.castHom (ringChar.dvd (castPow_zero p O hpm n)) (O ⧸ (IsLocalRing.maximalIdeal O) ^ n))) ((ZMod.castHom (ringChar.dvd (castPow_zero p O hpm m)) (O ⧸ (IsLoca …`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem iotaN_compat (hpm : (p : O) ∈ IsLocalRing.maximalIdeal O) {m n : ℕ} (hle : m ≤ n) :
     (Ideal.Quotient.factorPow (IsLocalRing.maximalIdeal O) hle).comp (iotaN p O hpm n) = iotaN p O hpm m := by
@@ -47,16 +47,16 @@ def iota0 (hpm : (p : O) ∈ IsLocalRing.maximalIdeal O) [IsAdicComplete (IsLoca
     (AdicCompletion.liftRingHom (IsLocalRing.maximalIdeal O) (iotaN p O hpm) (fun hle => iotaN_compat p O hpm hle))
 
 /- English proof (translation)
-The claim follows from `map_natCast (iota0 p O hpm) p`.
+A detailed English derivation is pending.
 -/
 theorem padic_integers_embedding_map_prime (hpm : (p : O) ∈ IsLocalRing.maximalIdeal O) [IsAdicComplete (IsLocalRing.maximalIdeal O) O] :
     iota0 p O hpm (p : ℤ_[p]) = (p : O) :=
   map_natCast (iota0 p O hpm) p
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Assume the negation of the conclusion as `hne`. Establish `hspec` using `PadicInt.unitCoeff_spec hne`. Establish `h2` using `congrArg (iota0 p O hpm) hspec`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[hx, map_mul, map_pow, padic_integers_embedding_map_prime]`. Establish `hu : IsUnit (iota0 p O hpm (PadicInt.unitCoeff hne : ℤ_[p]))` using `(Units.isUnit _).map _`. Break down `mul_eq_zero.mp h2.symm with h3 | h3` into its components or cases. Conclude with `hu.ne_zero h3`. Conclude with `hp0 (pow_eq_zero_iff'.mp h3).1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem padic_integers_embedding_injective (hpm : (p : O) ∈ IsLocalRing.maximalIdeal O) (hp0 : (p : O) ≠ 0)
     [IsAdicComplete (IsLocalRing.maximalIdeal O) O] : Function.Injective (iota0 p O hpm) := by
@@ -77,7 +77,7 @@ def iotaQ (hpm : (p : O) ∈ IsLocalRing.maximalIdeal O) (hp0 : (p : O) ≠ 0)
     ((IsFractionRing.injective O (KK O)).comp (padic_integers_embedding_injective p O hpm hp0))
 
 /- English proof (translation)
-Unfold `iotaQ`. Conclude with `IsFractionRing.lift_algebraMap _ x`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem iotaQ_int (hpm : (p : O) ∈ IsLocalRing.maximalIdeal O) (hp0 : (p : O) ≠ 0)
     [IsAdicComplete (IsLocalRing.maximalIdeal O) O] (x : ℤ_[p]) :
@@ -90,7 +90,7 @@ def iotaX (X : flipOneThree.Inst) : ℚ_[X.p] →+* KK X.O :=
   iotaQ X.p X.O X.setting.p_mem X.setting.p_ne
 
 /- English proof (translation)
-Use `haveI : IsAdicComplete (IsLocalRing.maximalIdeal X.O) X.O := X.setting.complete`. Conclude with `⟨_, iotaQ_int X.p X.O X.setting.p_mem X.setting.p_ne x⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem iotaX_int (X : flipOneThree.Inst) (x : ℤ_[X.p]) :
     ∃ y : X.O, iotaX X (x : ℚ_[X.p]) = algebraMap X.O (KK X.O) y := by

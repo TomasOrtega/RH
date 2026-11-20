@@ -10,7 +10,7 @@ namespace PositivityTheory.Lit1.PTN
 attribute [local instance 2000] Rep.hV2
 
 /- English proof (translation)
-Establish `hb` using `bijective_toDualDual (D := D) (M := A) hD hA`. Set `f : A.V →+ (dualRep D (dualRep D A)).V` to `{ toFun := (toDualDual D A).hom, map_zero' := map_zero _, map_add' := map_add _ }`. Use `⟨AddEquiv.ofBijective f hb, fun g a => ?_⟩` and prove the remaining obligations. Conclude with `Rep.hom_comm_apply (toDualDual D A) g a`.
+Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem bidualCmp {G : Type} [Group G] (D A : Rep.{0} (ULift.{0} ℤ) G) (N : ℕ) [NeZero N]
     (hD : Nonempty (D ≃+ ZMod N)) [Finite A] (hA : ∀ m : A, N • m = 0) :

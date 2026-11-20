@@ -21,7 +21,7 @@ noncomputable section
 namespace GlobalTheory.DblTargetSiegel
 
 /- English proof (translation)
-Use extensionality with `i j`. Take `⟨j, rfl⟩` from `finSumFinEquiv.surjective j`. Simplify using `only [GlobalTheory.DiagSiegel.diagMat, Matrix.submatrix_apply, Equiv.symm_apply_apply, id, Matrix.mul_apply, Matrix.transpose_apply]`. Apply the tactic sequence `rcases j with j | j <;> simp [GlobalTheory.WeilM.diagCols, Matrix.one_apply]`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem mul_diagCols_transpose {X : Type} [CommRing X] {m n : ℕ} (z : Matrix (Fin m) (Fin n) X) :
     z * ((GlobalTheory.WeilM.diagCols (Fin n) : Matrix (Fin n ⊕ Fin n) (Fin n) X).submatrix finSumFinEquiv.symm id)ᵀ =
@@ -36,11 +36,11 @@ end GlobalTheory.DblTargetSiegel
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Introduce `D ψ hψ S T χS hS rS JB ξ hξ κ _ co hco ωd hωd omp htr`. Introduce `l hl hinv p t hpt φ hφ`. Take `⟨ν, 𝓕, hν⟩` from `GlobalTheory.Size.exists_isCovolOne (D := D) T S`. Establish `hinv' : ∀ z : Matrix (Fin S.rank) (Fin T.rank) (AF D.host.F ⊗[D.host.F] D.host.E), ∀ Φ ∈ GlobalTheory.WeilM.schA D.host.F κ, l ((GlobalTheory.WeilSchrodinger.transD (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA D.sp.cm.sig) co).rho ψ (GlobalTheory.DiagSiegel.diagMa …`. Introduce `z Φ hΦ`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `hinv z Φ hΦ`. Rewrite `h1` using `[GlobalTheory.DblTargetSiegel.mul_diagCols_transpose]`. Then use the resulting hypothesis. Take `⟨c, hc⟩` from `GlobalTheory.T.diagonalSiegel_heisenbergInvariant_form_unique D ψ hψ S T JB ξ hξ κ co hco ν 𝓕 hν l hl hinv'`. Take `⟨hmem, hrule⟩` from `GlobalTheory.T.thetaDiagonal_siegelParabolic_rule D ψ hψ S T JB ξ hξ κ co hco ν 𝓕 hν χS hS rS ωd hωd omp htr p t hpt φ hφ`. Use `show l (omp (p, 1) φ) = _`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc _ hmem, hrule, hc _ hφ]`. Simplify using `only [GlobalTheory.DiagSiegel.ruleFac]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.DblTargetSiegel.siegelRule_dblTarget : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) →
     ∀ (S T : HSp D) (χS : (AE D)ˣ →* Circle), IsHeckeChar D χS → ResEta D χS S.rank →

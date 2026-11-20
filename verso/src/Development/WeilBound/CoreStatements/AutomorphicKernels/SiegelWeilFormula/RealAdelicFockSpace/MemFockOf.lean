@@ -15,14 +15,14 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 variable {d : SD σ}
 
 /- English proof (translation)
-Conclude with `OswGen.hg_sch R hνf hf hg'`.
+A detailed English derivation is pending.
 -/
 theorem hg_sch (R : RD d) {νf : Measure (Yf d)} (hνf : νf.IsAddHaarMeasure) {f : Mx F E d.m d.n → ℂ} (hf : f ∈ d.schM)
     {g : Yf d → ℂ} (hg' : g ∈ SB (Yf d)) : ∃ h : 𝓢(Vw d, ℂ), ⇑h = hg R νf f g := by
   exact OswGen.hg_sch R hνf hf hg'
 
 /- English proof (translation)
-Conclude with `OswGen.mem_fock_of R hνf hf H`.
+A detailed English derivation is pending.
 -/
 theorem mem_fock_of (R : RD d) {νf : Measure (Yf d)} (hνf : νf.IsAddHaarMeasure) {f : Mx F E d.m d.n → ℂ}
     (hf : f ∈ d.schM) (H : ∀ g ∈ SB (Yf d), ∃ P : MvPolynomial (Iw d) ℂ,

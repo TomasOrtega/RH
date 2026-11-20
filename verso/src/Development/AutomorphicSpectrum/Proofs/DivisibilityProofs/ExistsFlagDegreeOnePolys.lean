@@ -7,7 +7,7 @@ open MvPolynomial Filter Topology GlobalTheory.CompanionTheory.Ar.Top
 namespace GlobalTheory.CompanionTheory.Ar.Top
 
 /- English proof (translation)
-The claim follows from `RootFieldNumerics.exists_degree_one_class`.
+A detailed English derivation is pending.
 -/
 theorem testForms_sh_tot : ∀ (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N : ℕ) (j : ℕ) (τ : Ψ), 1 ≤ j → j < N → (∃ Q : RP Ψ N, Q.IsHomogeneous (dimFl Ψ N) ∧ degFl Q = 1) ∧ ∃ Q : RP Ψ N, Q.IsHomogeneous (dimFl Ψ N - 1) ∧ degFl (pkLow j τ 1 * Q) = 1 :=
   RootFieldNumerics.exists_degree_one_class

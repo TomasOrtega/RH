@@ -15,7 +15,7 @@ def SParGap (n p q : ℕ) (S : SPar) : Prop :=
     ∀ x ∈ S, ∀ y ∈ S, x.2 ≠ y.2 → h ≤ |((x.1 : ℚ) : ℝ) - ((y.1 : ℚ) : ℝ)|
 
 /- English proof (translation)
-Break down `h with h | h` into its components or cases. Conclude with `Or.inl h`. Conclude with `Or.inr (Or.inl h)`.
+Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative.
 -/
 theorem sParGap_of_definite {n p q : ℕ} (h : p = 0 ∨ q = 0) (S : SPar) : SParGap n p q S := by
   rcases h with h | h

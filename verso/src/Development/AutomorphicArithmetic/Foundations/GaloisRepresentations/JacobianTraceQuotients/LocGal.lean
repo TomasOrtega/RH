@@ -17,9 +17,9 @@ variable {k k' : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarc
   [IsModuleTopology k k']
 
 /- English proof (translation)
-Set `b` to `Module.finBasis k k'`. Establish `e : (Algebra.norm k : k' → k) = fun x => (Algebra.leftMulMatrix b x).det`. Use function extensionality and compare the values at `x`. Conclude with `Algebra.norm_eq_matrix_det b x`. Rewrite using `[e]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Continuous.matrix_det (continuous_matrix fun i j => ?_)` and prove the remaining obligations. Establish `hl : Continuous ((b.coord i).comp (LinearMap.mulRight k (b j)))` using `IsModuleTopology.continuous_of_linearMap _`. Use `hl.congr fun x => ?_` and prove the remaining obligations. Simplify using `[Algebra.leftMulMatrix_eq_repr_mul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem cont_norm : Continuous (Algebra.norm k : k' → k) := by
   let b := Module.finBasis k k'
@@ -34,19 +34,19 @@ private theorem cont_norm : Continuous (Algebra.norm k : k' → k) := by
   simp [Algebra.leftMulMatrix_eq_repr_mul]
 
 /- English proof (translation)
-Use `borelize k'`. Unfold `GlobalTheory.SplitWeil.nabs`. Use `congr 1`. Use `symm`. Take `⟨K, hK, hK0⟩` from `exists_compact_mem_nhds (0 : k')`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Use symmetry to reverse the relation. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `μ : Measure k'` to `Measure.addHaar`. Establish `h0 : μ K ≠ 0` using `(μ.measure_pos_of_nonempty_interior ⟨0, mem_interior_iff_mem_nhds.mpr hK0⟩).ne'`. Establish `hf : μ K ≠ ∞` using `hK.measure_lt_top.ne`. Use `distribHaarChar_eq_of_measure_smul_eq_mul (μ := μ) h0 hf ?_` and prove the remaining obligations. Set `T : k' ≃ₗ[k] k'` to `DistribMulAction.toLinearEquiv k k' x⁻¹`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hT` using `GlobalTheory.T.map_linearEquiv_addHaar_localField k k' μ T`. Establish `hdet : LinearEquiv.det T = (Units.map (Algebra.norm k : k' →* k) x)⁻¹`. Use `ext`. Simplify using `only [LinearEquiv.coe_det, T, Units.coe_map, MonoidHom.coe_coe, Algebra.norm_apply, Units.val_inv_eq_inv_val, map_inv₀]`. Establish `hl : (↑(DistribMulAction.toLinearEquiv k k' x⁻¹) : k' →ₗ[k] k') = LinearMap.mul k k' ↑x⁻¹`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `y`. Simplify using `[Units.smul_def]`. Rewrite using `[hl]`. Apply `eq_inv_of_mul_eq_one_left` to reduce the goal to its premises. Rewrite using `[← LinearMap.det_comp]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hc : (LinearMap.mul k k' ↑x⁻¹).comp (Algebra.lmul k k' ↑x) = LinearMap.id`. Use extensionality with `y`. Simplify using the standard rewrite rules. Rewrite using `[hc, LinearMap.det_id]`. Establish `hm : MeasurableSet K` using `hK.isClosed.measurableSet`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hTc : Continuous T` using `IsModuleTopology.continuous_of_linearMap (T : k' →ₗ[k] k')`. Establish `e : Measure.map T μ K = (((distribHaarChar k) (LinearEquiv.det T))⁻¹ • μ) K`. Rewrite using `[hT]`. Rewrite `e` using `[Measure.map_apply hTc.measurable hm, hdet, map_inv, inv_inv]`. Simplify using `only [Measure.smul_apply, ENNReal.smul_def, smul_eq_mul] at e`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← e]`. Use `congr 1`. Use extensionality with `y`. Simplify using `[T, Set.mem_smul_set_iff_inv_smul_mem]`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem nabs_norm [CharZero k] (x : k'ˣ) :
     GlobalTheory.SplitWeil.nabs k (Units.map (Algebra.norm k : k' →* k) x) = GlobalTheory.SplitWeil.nabs k' x := by
@@ -89,7 +89,7 @@ private theorem nabs_norm [CharZero k] (x : k'ˣ) :
   simp [T, Set.mem_smul_set_iff_inv_smul_mem]
 
 /- English proof (translation)
-Establish `ho : orderOf s = Module.finrank k k'` using `(orderOf_eq_card_of_forall_mem_zpowers hs).trans (IsGalois.card_aut_eq_finrank k k')`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[IsCyclic.image_range_orderOf hs]`. Use `_ = ∏ i ∈ Finset.range (orderOf s), f (s ^ i) := Finset.prod_image (fun i hi j hj h => pow_injOn_Iio_orderOf (by simpa using hi) (by simpa using hj) h)`. Use `_ = _ := by rw [ho]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem prod_aut [IsGalois k k'] {M : Type*} [CommMonoid M] (s : k' ≃ₐ[k] k') (hs : ∀ τ, τ ∈ Subgroup.zpowers s)
     (f : (k' ≃ₐ[k] k') → M) : ∏ τ, f τ = ∏ i ∈ Finset.range (Module.finrank k k'), f (s ^ i) := by
@@ -103,7 +103,7 @@ private theorem prod_aut [IsGalois k k'] {M : Type*} [CommMonoid M] (s : k' ≃�
     _ = _ := by rw [ho]
 
 /- English proof (translation)
-Proceed by induction on `i with`. Consider the case `zero => rfl`. Consider the case `succ n ih`. Rewrite using `[Function.iterate_succ_apply', ih, pow_succ', AlgEquiv.mul_apply]`. Both sides reduce to the same expression.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem iter_aut (s : k' ≃ₐ[k] k') (i : ℕ) (x : k') :
     (⇑(s : k' ≃+* k'))^[i] x = (s ^ i) x := by
@@ -120,11 +120,11 @@ section Global
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Substitute `h` using the available equality. Establish `ev : ∀ (u : HeightOneSpectrum (𝓞 E)) (x : E), Valued.v (algebraMap E (u.adicCompletion E) x) = u.valuation E x` using `fun u x => HeightOneSpectrum.valuedAdicCompletion_eq_valuation' u x`. Establish `key : ∀ x : E, Valued.v (galEquiv v σ w (σ • w) rfl (algebraMap E _ x)) = Valued.v (algebraMap E (w.adicCompletion E) x)`. Introduce `x`. Rewrite using `[galEquiv_algebraMap, ev, ev]`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `valuation_smul σ w x`. Distinguish the cases in `hy : y = 0`. Simplify using `[hy]`. Establish `hy' : galEquiv v σ w (σ • w) rfl y ≠ 0` using `by simpa using hy`. Establish `h1` using `Valued.locally_const ((Valuation.ne_zero_iff _).mpr hy)`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `(continuous_galEquiv v σ w (σ • w) rfl).continuousAt.preimage_mem_nhds (Valued.locally_const ((Valuation.ne_zero_iff _).mpr hy'))`. Take `⟨_, ⟨x, rfl⟩, hx⟩` from `(HeightOneSpectrum.denseRange_algebraMap E w).inter_nhds_nonempty (Filter.inter_mem h1 h2)`. Establish `e1 : Valued.v (algebraMap E (w.adicCompletion E) x) = Valued.v y` using `hx.1`. Establish `e2 : Valued.v (galEquiv v σ w (σ • w) rfl (algebraMap E _ x)) = Valued.v (galEquiv v σ w (σ • w) rfl y)` using `hx.2`. Rewrite using `[← e2, key, e1]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem val_gal (v : HeightOneSpectrum (𝓞 F)) (σ : E ≃ₐ[F] E) (w u : HeightOneSpectrum (𝓞 E))
     [w.asIdeal.LiesOver v.asIdeal] [u.asIdeal.LiesOver v.asIdeal] (h : u = σ • w) (y : w.adicCompletion E) :
@@ -152,11 +152,11 @@ private theorem val_gal (v : HeightOneSpectrum (𝓞 F)) (σ : E ≃ₐ[F] E) (w
   rw [← e2, key, e1]
 
 /- English proof (translation)
-Take `⟨t, rfl⟩` from `(tensorEquiv' E v).surjective y`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x a`. Simplify using `only [galFin, galOf, RingHom.coe_comp, Function.comp_apply, RingHom.coe_coe, AlgEquiv.symm_apply_apply]`.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Rewrite using `[Algebra.TensorProduct.map_tmul, tensorEquiv'_tmul, tensorEquiv'_tmul]`. Simplify using `only [Pi.mul_apply, map_mul, Pi.algebraMap_apply, AlgHom.id_apply, AlgEquiv.commutes, galEquiv_algebraMap]`. Both sides reduce to the same expression. Consider the case `add a b ha hb`. Simplify using `only [map_add, Pi.add_apply] at ha hb ⊢`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Treat this case separately. Simplify using the standard rewrite rules.
 
-Rewrite using `[ha, hb]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem galFin_eq (σ : E ≃ₐ[F] E) {v : Pl F} (w : PlacesOver E v) (hfix : w.1 = σ • w.1)
     (y : CompletionsOver E v) : galFin σ v y w = galEquiv v σ w.1 w.1 hfix (y w) := by
@@ -178,17 +178,13 @@ end Global
 
 open scoped Valued in
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ _ _ σ hσ hp v w hns`. Take `⟨-, -, -, huniq, -, -⟩` from `UpperTheory.ConvolutionTheory.T.places F E hp`. Establish `hw : ∀ u : PlacesOver E v, u = w` using `huniq v hns w`. Take `⟨A, hval, hfin, hgal, s, hs, hrk, hinc, hgf, -⟩` from `UpperTheory.V.Z.Tf.Orb.placeData F E σ hσ v w hw`. Establish `hA : A = algebraCompletion v w.1` using `Algebra.algebra_ext _ _ fun x => (hinc x).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Substitute `hA` using the available equality. Establish `hfix : w.1 = σ • w.1` using `(congrArg Subtype.val (hw (σ • w))).symm`. Establish `hse : ∀ z, s z = galEquiv v σ w.1 w.1 hfix z` using `fun z => by`. Establish `h1` using `hgf (Pi.single w z)`. Rewrite `h1` using `[galFin_eq σ w hfix, Pi.single_eq_same]`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h1.symm`. Establish `hvs : ∀ z, Valued.v (s z) = Valued.v z` using `fun z => by`. Rewrite using `[hse]`. Conclude with `val_gal v σ w.1 w.1 hfix z`. Use `haveI : CharZero (v.adicCompletion F) := charZero_of_injective_algebraMap (algebraMap F _).injective`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `haveI : IsModuleTopology (v.adicCompletion F) (w.1.adicCompletion E) := isModuleTopologyOfFiniteDimensional`. Use `⟨(s : _ ≃+* _), Units.map (Algebra.norm (v.adicCompletion F) : w.1.adicCompletion E →* _), fun n g => ?_, ⟨⟨fun x => ?_, ?_, fun x => ?_⟩, fun x => ?_, ?_, fun x => ?_⟩, fun x => rfl⟩` and prove the remaining obligations. Conclude with `Units.ext (Matrix.ext fun a b => hgf _)`. Conclude with `le_antisymm ((ValuativeRel.isEquiv (valuation _) Valued.v _ _).2 (hvs x).le) ((ValuativeRel.isEquiv (valuation _) Valued.v _ _).2 (hvs x).ge)`. Conclude with `hp.pos`.
-
-Rewrite using `[iter_aut, ← hrk, ← IsGalois.card_aut_eq_finrank, pow_card_eq_one']`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `algebraMap _ _ (Algebra.norm (v.adicCompletion F) (x : w.1.adicCompletion E)) = _`. Rewrite using `[Algebra.norm_eq_prod_automorphisms, prod_aut s hs, hrk]`. Conclude with `Finset.prod_congr rfl fun i _ => (iter_aut s i _).symm`.
-
-Conclude with `Continuous.units_map _ cont_norm`. Conclude with `nabs_norm x`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.Join.locGal :
     UpperTheory.Gal.Join.LocGal := by

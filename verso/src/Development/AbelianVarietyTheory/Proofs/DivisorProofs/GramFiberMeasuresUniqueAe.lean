@@ -3,17 +3,15 @@ import Mathlib
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `s hs`. Use `set A := Localization.Away g`. Distinguish the cases in `hI : Ideal.span {algebraMap B A s, algebraMap B A f} = ⊤`. Establish `h1 : (1 : A) ∈ Ideal.span {algebraMap B A s, algebraMap B A f}`. Rewrite using `[hI]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `Submodule.mem_top`. Take `⟨a, b, hab⟩` from `Ideal.mem_span_pair.mp h1`. Use `⟨a, ?_⟩` and prove the remaining obligations. Establish `: algebraMap B A s * a - 1 = (-b) * algebraMap B A f`. Rewrite using `[← hab]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `Ideal.mul_mem_left _ _ (Ideal.mem_span_singleton_self _)`. It suffices to derive a contradiction. Take `⟨M, hM, hIM⟩` from `Ideal.exists_le_maximal _ hI`.
+It suffices to derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hMp : (M.comap (algebraMap D A)).IsPrime` using `Ideal.comap_isPrime _ _`. Establish `hf : algebraMap B D f ∈ M.comap (algebraMap D A)`. Rewrite using `[Ideal.mem_comap, ← IsScalarTower.algebraMap_apply]`. Conclude with `hIM (Ideal.subset_span (by simp))`. Establish `hg : g ∉ M.comap (algebraMap D A)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `hgM`. Rewrite `hgM` using `[Ideal.mem_comap]`. Conclude with `hM.ne_top (Ideal.eq_top_of_isUnit_mem _ hgM (IsLocalization.Away.algebraMap_isUnit g))`. Establish `hEq` using `huniq _ hMp hf hg`. Apply `hs` to reduce the goal to its premises.
-
-Rewrite using `[← hQP, Ideal.mem_comap, ← hEq, Ideal.mem_comap, ← IsScalarTower.algebraMap_apply]`. Conclude with `hIM (Ideal.subset_span (by simp))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unitsMod_away_of_unique_prime (B D : Type) [CommRing B] [CommRing D] [Algebra B D]
     (f : B) (P : Ideal B) (Q : Ideal D) (g : D)

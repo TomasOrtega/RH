@@ -22,17 +22,17 @@ variable {K : Type} [Field K]
 def sw (n : Fin 2 →₀ ℕ) : Fin 2 →₀ ℕ := Finsupp.equivMapDomain (Equiv.swap 0 1) n
 
 /- English proof (translation)
-Simplify using `[sw]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sw_zero (n : Fin 2 →₀ ℕ) : sw n 0 = n 1 := by simp [sw]
 
 /- English proof (translation)
-Simplify using `[sw]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sw_one (n : Fin 2 →₀ ℕ) : sw n 1 = n 0 := by simp [sw]
 
 /- English proof (translation)
-Rewrite using `[rename_eq_subst]`. Unfold `swap2`. Use `congr 1`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `fin_cases i <;> simp`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem swap_two_eq_rename_equiv (G : MvPowerSeries (Fin 2) K) :
     swap2 G = rename (Equiv.swap (0 : Fin 2) 1).toEmbedding G := by
@@ -43,9 +43,9 @@ theorem swap_two_eq_rename_equiv (G : MvPowerSeries (Fin 2) K) :
   fin_cases i <;> simp
 
 /- English proof (translation)
-Establish `h : n = Finsupp.embDomain (Equiv.swap (0 : Fin 2) 1).toEmbedding (sw n)`. Rewrite using `[Finsupp.embDomain_eq_mapDomain, sw, Finsupp.equivMapDomain_eq_mapDomain, ← Finsupp.mapDomain_comp]`. Establish `hid : (⇑(Equiv.swap (0 : Fin 2) 1).toEmbedding ∘ ⇑(Equiv.swap (0 : Fin 2) 1)) = id`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[hid, Finsupp.mapDomain_id]`. Rewrite using `[swap_two_eq_rename_equiv]`. Use `conv_lhs => rw [h]`. Conclude with `coeff_embDomain_rename _ _ _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coeff_swap2 (G : MvPowerSeries (Fin 2) K) (n : Fin 2 →₀ ℕ) :
     coeff n (swap2 G) = coeff (sw n) G := by
@@ -61,26 +61,26 @@ theorem coeff_swap2 (G : MvPowerSeries (Fin 2) K) (n : Fin 2 →₀ ℕ) :
   exact coeff_embDomain_rename _ _ _
 
 /- English proof (translation)
-Simplify using `only [swap_two_eq_rename_equiv, map_sub]`.
+Simplify using the standard rewrite rules.
 -/
 theorem swap_two_sub (f g : MvPowerSeries (Fin 2) K) : swap2 (f - g) = swap2 f - swap2 g := by
   simp only [swap_two_eq_rename_equiv, map_sub]
 
 /- English proof (translation)
-Simplify using `only [swap_two_eq_rename_equiv, map_mul, rename_C]`.
+Simplify using the standard rewrite rules.
 -/
 theorem swap_two_C_mul (a : K) (f : MvPowerSeries (Fin 2) K) : swap2 (C a * f) = C a * swap2 f := by
   simp only [swap_two_eq_rename_equiv, map_mul, rename_C]
 
 /- English proof (translation)
-Simplify using `only [swap_two_eq_rename_equiv, map_sum]`.
+Simplify using the standard rewrite rules.
 -/
 theorem swap_two_sum {α : Type} (s : Finset α) (f : α → MvPowerSeries (Fin 2) K) :
     swap2 (∑ k ∈ s, f k) = ∑ k ∈ s, swap2 (f k) := by
   simp only [swap_two_eq_rename_equiv, map_sum]
 
 /- English proof (translation)
-Use extensionality with `n`. Simplify using `only [coeff_swap2, coeff_map]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem swap_two_map (σ : K →+* K) (f : MvPowerSeries (Fin 2) K) :
     swap2 (map σ f) = map σ (swap2 f) := by
@@ -88,14 +88,14 @@ theorem swap_two_map (σ : K →+* K) (f : MvPowerSeries (Fin 2) K) :
   simp only [coeff_swap2, coeff_map]
 
 /- English proof (translation)
-The claim follows from `HasSubst.X_X`.
+A detailed English derivation is pending.
 -/
 theorem hasSubst_swap : HasSubst ![(X 1 : MvPowerSeries (Fin 2) K), X 0] := HasSubst.X_X
 
 /- English proof (translation)
-Rewrite using `[frobVar_eq_expand hp (swap2 f)]`. Unfold `swap2 frobVar`. Rewrite using `[expand_subst p hp hasSubst_swap, subst_comp_subst_apply (HasSubst.X_pow hp) hasSubst_swap]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Apply the tactic sequence `fin_cases i <;> simp [subst_pow hasSubst_swap, subst_X hasSubst_swap]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem swap_two_frobenius {p : ℕ} (hp : p ≠ 0) (f : MvPowerSeries (Fin 2) K) :
     swap2 (frobVar p f) = frobVar p (swap2 f) := by
@@ -107,7 +107,7 @@ theorem swap_two_frobenius {p : ℕ} (hp : p ≠ 0) (f : MvPowerSeries (Fin 2) K
   fin_cases i <;> simp [subst_pow hasSubst_swap, subst_X hasSubst_swap]
 
 /- English proof (translation)
-Use extensionality with `n`. Rewrite using `[coeff_swap2, coeff_product_single_variables (by decide) (by decide), coeff_product_single_variables (by decide) (by decide), sw_zero, sw_one, mul_comm]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem swap_two_single_mul (f g : PowerSeries K) :
     swap2 (at1 0 f * at1 1 g) = at1 0 g * at1 1 f := by
@@ -116,7 +116,7 @@ theorem swap_two_single_mul (f g : PowerSeries K) :
     (by decide), sw_zero, sw_one, mul_comm]
 
 /- English proof (translation)
-Unfold `DeS`. Rewrite using `[swap_two_C_mul, swap_two_sub, swap_two_C_mul, swap_two_frobenius hp, swap_two_map]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem swap_two_de_s {p : ℕ} (hp : p ≠ 0) (σ : K →+* K) (G : MvPowerSeries (Fin 2) K) :
     DeS p σ (swap2 G) = swap2 (DeS p σ G) := by
@@ -134,56 +134,56 @@ def sc2 (u v : K) : Fin 2 → MvPowerSeries (Fin 2) K := ![C u * X 0, C v * X 1]
 def sc3 (u v : K) : Fin 3 → MvPowerSeries (Fin 3) K := ![C u * X 0, C u * X 1, C v * X 2]
 
 /- English proof (translation)
-Apply the tactic sequence `fin_cases i <;> simp [sc2]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem constant_coeff_scale_two (u v : K) (i : Fin 2) : constantCoeff (sc2 u v i) = 0 := by
   fin_cases i <;> simp [sc2]
 
 /- English proof (translation)
-Apply the tactic sequence `fin_cases i <;> simp [sc3]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem constant_coeff_scale_three (u v : K) (i : Fin 3) : constantCoeff (sc3 u v i) = 0 := by
   fin_cases i <;> simp [sc3]
 
 /- English proof (translation)
-The claim follows from `hasSubst_of_constantCoeff_zero (constant_coeff_scale_two u v)`.
+A detailed English derivation is pending.
 -/
 theorem has_subst_scale_two (u v : K) : HasSubst (sc2 u v) := hasSubst_of_constantCoeff_zero (constant_coeff_scale_two u v)
 
 /- English proof (translation)
-The claim follows from `hasSubst_of_constantCoeff_zero (constant_coeff_scale_three u v)`.
+A detailed English derivation is pending.
 -/
 theorem has_subst_scale_three (u v : K) : HasSubst (sc3 u v) := hasSubst_of_constantCoeff_zero (constant_coeff_scale_three u v)
 
 /- English proof (translation)
-Rewrite using `[subst_X (has_subst_scale_three u v)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem subst_scale_three_X_zero (u v : K) : subst (sc3 u v) (X 0 : MvPowerSeries (Fin 3) K) = C u * X 0 := by
   rw [subst_X (has_subst_scale_three u v)]
   rfl
 
 /- English proof (translation)
-Rewrite using `[subst_X (has_subst_scale_three u v)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem subst_scale_three_X_one (u v : K) : subst (sc3 u v) (X 1 : MvPowerSeries (Fin 3) K) = C u * X 1 := by
   rw [subst_X (has_subst_scale_three u v)]
   rfl
 
 /- English proof (translation)
-Rewrite using `[subst_X (has_subst_scale_three u v)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem subst_scale_three_X_two (u v : K) : subst (sc3 u v) (X 2 : MvPowerSeries (Fin 3) K) = C v * X 2 := by
   rw [subst_X (has_subst_scale_three u v)]
   rfl
 
 /- English proof (translation)
-Rewrite using `[← coe_substAlgHom (has_subst_scale_three u v), map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem subst_scale_three_zero (u v : K) : subst (sc3 u v) (0 : MvPowerSeries (Fin 3) K) = 0 := by
   rw [← coe_substAlgHom (has_subst_scale_three u v), map_zero]
 
 /- English proof (translation)
-Rewrite using `[rescale_eq_subst]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `fin_cases i <;> simp [sc2, smul_eq_C_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem subst_scale_two_eq_rescale (u v : K) (H : MvPowerSeries (Fin 2) K) :
     subst (sc2 u v) H = rescale ![u, v] H := by
@@ -193,7 +193,7 @@ theorem subst_scale_two_eq_rescale (u v : K) (H : MvPowerSeries (Fin 2) K) :
   fin_cases i <;> simp [sc2, smul_eq_C_mul]
 
 /- English proof (translation)
-Rewrite using `[subst_scale_two_eq_rescale, coeff_rescale, Finsupp.prod_fintype _ _ (by simp), Fin.prod_univ_two]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem coeff_subst_scale_two (u v : K) (H : MvPowerSeries (Fin 2) K) (n : Fin 2 →₀ ℕ) :
     coeff n (subst (sc2 u v) H) = u ^ n 0 * v ^ n 1 * coeff n H := by
@@ -201,7 +201,7 @@ theorem coeff_subst_scale_two (u v : K) (H : MvPowerSeries (Fin 2) K) (n : Fin 2
   simp
 
 /- English proof (translation)
-Use extensionality with `n`. Simplify using `only [coeff_subst_scale_two, mul_pow]`. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem subst_scale_two_comp (u v u' v' : K) (H : MvPowerSeries (Fin 2) K) :
     subst (sc2 u' v') (subst (sc2 u v) H) = subst (sc2 (u * u') (v * v')) H := by
@@ -210,14 +210,14 @@ theorem subst_scale_two_comp (u v u' v' : K) (H : MvPowerSeries (Fin 2) K) :
   ring
 
 /- English proof (translation)
-Use extensionality with `n`. Simplify using `[coeff_subst_scale_two]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem subst_scale_two_one (H : MvPowerSeries (Fin 2) K) : subst (sc2 (1 : K) 1) H = H := by
   ext n
   simp [coeff_subst_scale_two]
 
 /- English proof (translation)
-Use extensionality with `n`. Rewrite using `[coeff_swap2, coeff_subst_scale_two, coeff_subst_scale_two, coeff_swap2, sw_zero, sw_one]`. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem swap_two_subst_scale_two (u v : K) (H : MvPowerSeries (Fin 2) K) :
     swap2 (subst (sc2 u v) H) = subst (sc2 v u) (swap2 H) := by
@@ -226,12 +226,12 @@ theorem swap_two_subst_scale_two (u v : K) (H : MvPowerSeries (Fin 2) K) :
   ring
 
 /- English proof (translation)
-The claim follows from `HasSubst.X_X`.
+A detailed English derivation is pending.
 -/
 theorem has_subst_first_pair : HasSubst ![(X 0 : MvPowerSeries (Fin 3) K), X 1] := HasSubst.X_X
 
 /- English proof (translation)
-Unfold `in3`. Apply the tactic sequence `exact constantCoeff_subst_eq_zero has_subst_first_pair (by intro i; fin_cases i <;> simp) hF`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem constantCoeff_first_two_of_three {F : MvPowerSeries (Fin 2) K} (hF : constantCoeff F = 0) :
     constantCoeff (in3 F) = 0 := by
@@ -239,21 +239,21 @@ theorem constantCoeff_first_two_of_three {F : MvPowerSeries (Fin 2) K} (hF : con
   exact constantCoeff_subst_eq_zero has_subst_first_pair (by intro i; fin_cases i <;> simp) hF
 
 /- English proof (translation)
-The claim follows from `hasSubst_of_constantCoeff_zero (by intro i; fin_cases i <;> simp [constantCoeff_first_two_of_three hF])`.
+A detailed English derivation is pending.
 -/
 theorem has_subst_coboundary_first {F : MvPowerSeries (Fin 2) K} (hF : constantCoeff F = 0) :
     HasSubst ![in3 F, (X 2 : MvPowerSeries (Fin 3) K)] :=
   hasSubst_of_constantCoeff_zero (by intro i; fin_cases i <;> simp [constantCoeff_first_two_of_three hF])
 
 /- English proof (translation)
-The claim follows from `HasSubst.X_X`.
+A detailed English derivation is pending.
 -/
 theorem has_subst_last_pair (x : Fin 3) : HasSubst ![(X x : MvPowerSeries (Fin 3) K), X 2] := HasSubst.X_X
 
 /- English proof (translation)
-Establish `hs : HasSubst (fun a : Fin 2 => C u * (X a : MvPowerSeries (Fin 2) K))` using `hasSubst_of_constantCoeff_zero (by intro i; simp)`. Establish `h1 : C u * in3 F = in3 (C u * F)`. Unfold `in3`. Rewrite using `[subst_mul has_subst_first_pair, subst_C]`. Rewrite using `[h1, ← hu]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Unfold `in3`. Rewrite using `[subst_comp_subst_apply has_subst_first_pair (has_subst_scale_three u v), subst_comp_subst_apply hs has_subst_first_pair]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `fin_cases i <;> simp [subst_mul has_subst_first_pair, subst_X has_subst_first_pair, subst_scale_three_X_zero, subst_scale_three_X_one]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem subst_scale_three_include {F : MvPowerSeries (Fin 2) K} {u : K} (v : K)
     (hu : subst (fun a : Fin 2 => C u * (X a : MvPowerSeries (Fin 2) K)) F = C u * F) :
@@ -271,13 +271,13 @@ theorem subst_scale_three_include {F : MvPowerSeries (Fin 2) K} {u : K} (v : K)
   fin_cases i <;> simp [subst_mul has_subst_first_pair, subst_X has_subst_first_pair, subst_scale_three_X_zero, subst_scale_three_X_one]
 
 /- English proof (translation)
-Unfold `d1`. Rewrite using `[subst_sub (has_subst_scale_three u v), subst_sub (has_subst_scale_three u v), subst_comp_subst_apply (has_subst_scale_two u v) (has_subst_coboundary_first hF), subst_comp_subst_apply (has_subst_scale_two u v) (has_subst_last_pair 0), subst_comp_subst_apply (has_subst_scale_two u …`. Use `congr 1`. Use `congr 1`. Use `congr 1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `i`. Apply the tactic sequence `fin_cases i <;>`. Simplify using `[subst_mul (has_subst_coboundary_first hF), subst_X (has_subst_coboundary_first hF), subst_scale_three_X_two, sc2, subst_scale_three_include v hu]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Apply the tactic sequence `fin_cases i <;>`. Simplify using `[subst_mul (has_subst_last_pair 0), subst_X (has_subst_last_pair 0), subst_scale_three_X_zero, subst_scale_three_X_two, sc2]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `fin_cases i <;>`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `[subst_mul (has_subst_last_pair 1), subst_X (has_subst_last_pair 1), subst_scale_three_X_one, subst_scale_three_X_two, sc2]`.
+Simplify using the standard rewrite rules.
 -/
 theorem partial_coboundary_subst_scale {F : MvPowerSeries (Fin 2) K} (hF : constantCoeff F = 0) {u : K} (v : K)
     (hu : subst (fun a : Fin 2 => C u * (X a : MvPowerSeries (Fin 2) K)) F = C u * F)
@@ -305,7 +305,7 @@ theorem partial_coboundary_subst_scale {F : MvPowerSeries (Fin 2) K} (hF : const
       simp [subst_mul (has_subst_last_pair 1), subst_X (has_subst_last_pair 1), subst_scale_three_X_one, subst_scale_three_X_two, sc2]
 
 /- English proof (translation)
-Unfold `d1`. Rewrite using `[subst_add (has_subst_coboundary_first hF), subst_add (has_subst_last_pair 0), subst_add (has_subst_last_pair 1)]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem diffOne_add {F : MvPowerSeries (Fin 2) K} (hF : constantCoeff F = 0)
     (H H' : MvPowerSeries (Fin 2) K) : d1 F (H + H') = d1 F H + d1 F H' := by
@@ -314,7 +314,7 @@ theorem diffOne_add {F : MvPowerSeries (Fin 2) K} (hF : constantCoeff F = 0)
   ring
 
 /- English proof (translation)
-Unfold `d1`. Rewrite using `[subst_mul (has_subst_coboundary_first hF), subst_mul (has_subst_last_pair 0), subst_mul (has_subst_last_pair 1), subst_C, subst_C, subst_C]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem partial_coboundary_C_mul {F : MvPowerSeries (Fin 2) K} (hF : constantCoeff F = 0) (a : K)
     (H : MvPowerSeries (Fin 2) K) : d1 F (C a * H) = C a * d1 F H := by
@@ -323,7 +323,7 @@ theorem partial_coboundary_C_mul {F : MvPowerSeries (Fin 2) K} (hF : constantCoe
   ring
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Establish `h` using `partial_coboundary_C_mul hF 0 (0 : MvPowerSeries (Fin 2) K)`. Simplify using `using h`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, diffOne_add hF, ih]`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 -/
 theorem partial_coboundary_sum {F : MvPowerSeries (Fin 2) K} (hF : constantCoeff F = 0) (s : Finset ℕ)
     (f : ℕ → MvPowerSeries (Fin 2) K) : d1 F (∑ k ∈ s, f k) = ∑ k ∈ s, d1 F (f k) := by
@@ -341,16 +341,16 @@ section Sim
 variable {K : Type} [NormedField K] [IsUltrametricDist K] [CharZero K]
 
 /- English proof (translation)
-Unfold `Simeq`. Rewrite using `[sub_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem simeq_iff_sub {ι : Type} (f g : MvPowerSeries ι K) : Simeq f g ↔ Simeq (f - g) 0 := by
   unfold Simeq
   rw [sub_zero]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using (hS K ι).1 0`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha]`. Establish `h1` using `(hS K ι).2.2.2.1 _ _ _ _ (h a (Finset.mem_insert_self a s)) (ih fun k hk => h k (Finset.mem_insert_of_mem hk))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `using h1`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem simeq_sum (hS : SimeqRules) {ι : Type} (s : Finset ℕ) (f : ℕ → MvPowerSeries ι K)
     (h : ∀ k ∈ s, Simeq (f k) 0) : Simeq (∑ k ∈ s, f k) 0 := by
@@ -364,7 +364,7 @@ theorem simeq_sum (hS : SimeqRules) {ι : Type} (s : Finset ℕ) (f : ℕ → Mv
     simpa using h1
 
 /- English proof (translation)
-Introduce `n`. Rewrite using `[coeff_C_mul, coeff_X]`. Use `split_ifs`. Simplify using `using hu`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem integral_C_mul_X {ι : Type} {u : K} (hu : ‖u‖ ≤ 1) (i : ι) :
     Integral (C u * (X i : MvPowerSeries ι K)) := by
@@ -376,7 +376,7 @@ theorem integral_C_mul_X {ι : Type} {u : K} (hu : ‖u‖ ≤ 1) (i : ι) :
   · simp
 
 /- English proof (translation)
-Use `fin_cases i`. Conclude with `integral_C_mul_X hu 0`. Conclude with `integral_C_mul_X hv 1`.
+A detailed English derivation is pending.
 -/
 theorem integral_scale_two {u v : K} (hu : ‖u‖ ≤ 1) (hv : ‖v‖ ≤ 1) (i : Fin 2) :
     Integral (sc2 u v i) := by
@@ -385,7 +385,7 @@ theorem integral_scale_two {u v : K} (hu : ‖u‖ ≤ 1) (hv : ‖v‖ ≤ 1) (
   · exact integral_C_mul_X hv 1
 
 /- English proof (translation)
-Use `fin_cases i`. Conclude with `integral_C_mul_X hu 0`. Conclude with `integral_C_mul_X hu 1`. Conclude with `integral_C_mul_X hv 2`.
+A detailed English derivation is pending.
 -/
 theorem integral_scale_three {u v : K} (hu : ‖u‖ ≤ 1) (hv : ‖v‖ ≤ 1) (i : Fin 3) :
     Integral (sc3 u v i) := by
@@ -395,7 +395,7 @@ theorem integral_scale_three {u v : K} (hu : ‖u‖ ≤ 1) (hv : ‖v‖ ≤ 1)
   · exact integral_C_mul_X hv 2
 
 /- English proof (translation)
-Establish `h1 : ‖u‖ ^ N = 1` using `by rw [← norm_pow, h, norm_one]`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg u) hN).1 h1`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem norm_of_pow_eq_one {u : K} {N : ℕ} (hN : N ≠ 0) (h : u ^ N = 1) : ‖u‖ = 1 := by
   have h1 : ‖u‖ ^ N = 1 := by rw [← norm_pow, h, norm_one]
@@ -408,19 +408,17 @@ end TwoVariableSwapLemmas
 open TwoVariableSwapLemmas
 
 /- English proof (translation)
-Introduce `K _ _ p σ G γ γ' hp`. Establish `hp0 : p ≠ 0` using `by omega`. Use `⟨?_, ?_, ?_, ?_, swap_two_de_s hp0 σ G, ?_⟩` and prove the remaining obligations. Use extensionality with `n`. Establish `hsw : sw (sw n) = n`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Use extensionality with `i`. Use `fin_cases i`. Conclude with `(sw_zero _).trans (sw_one _)`. Conclude with `(sw_one _).trans (sw_zero _)`. Rewrite using `[coeff_swap2, coeff_swap2, hsw]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Introduce `h n hn`. Rewrite `hn` using `[coeff_swap2]`. Take `⟨h0, h1, h2⟩` from `h _ hn`. Rewrite `*` using `[sw_zero, sw_one]`. Use `⟨h1, h0, ?_⟩` and prove the remaining obligations.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsq : p * p ≡ 1 [MOD p ^ 2 - 1]`. Establish `h1 : 1 ≤ p ^ 2` using `Nat.one_le_pow _ _ (by omega)`. Establish `: p * p = 1 + (p ^ 2 - 1)` using `by rw [← sq]; omega`. Rewrite using `[this]`. Simplify using `[Nat.ModEq]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Introduce `h n hn`. Rewrite using `[coeff_swap2]`. Apply `h` to reduce the goal to its premises. Rewrite using `[sw_zero, sw_one]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Conclude with `hn.symm`. Introduce `h n`. Rewrite using `[coeff_swap2]`. Conclude with `h _`. Unfold `Hser`.
-
-Rewrite using `[swap_two_sub, swap_two_sub, swap_two_C_mul, swap_two_C_mul, swap_two_single_mul, swap_two_single_mul, swap_two_de_s hp0]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem swap_rules : SwapRules := by
   intro K _ _ p σ G γ γ' hp
@@ -461,13 +459,13 @@ theorem swap_rules : SwapRules := by
     ring
 
 /- English proof (translation)
-Introduce `K ι _ _ _ _ p σ hp hpn hσ h N hN hs`. Take `⟨h0, hI⟩` from `hs`. Rewrite `h0`, `hI` using `[sub_zero]`. Establish `hp0 : p ≠ 0` using `hp.ne_zero`. Establish `hlt : ‖(p : K)‖ < 1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hpn]`. Conclude with `inv_lt_one_of_one_lt₀ (by exact_mod_cast hp.one_lt)`. Establish `hr : ‖((N : K))⁻¹‖ = 1`. Rewrite using `[norm_inv, Formalism.DworkPowerSeriesWeights.norm_natCast_eq_one_of_not_dvd hp hlt hN, inv_one]`. Establish `h0' : MvPowerSeries.constantCoeff (MvPowerSeries.C ((N : K)⁻¹) * h) = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[h0]`. Use `⟨by rwa [sub_zero], ?_⟩` and prove the remaining obligations. Rewrite using `[sub_zero, hD K ι p σ hp hpn hσ _ h0']`. Establish `hc` using `(hD K ι p σ hp hpn hσ h h0).1 hI`. Introduce `n`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `he : frobVar p (MvPowerSeries.map σ (MvPowerSeries.C ((N : K)⁻¹) * h)) - MvPowerSeries.C (p : K) * (MvPowerSeries.C ((N : K)⁻¹) * h) = MvPowerSeries.C ((N : K)⁻¹) * (frobVar p (MvPowerSeries.map σ h) - MvPowerSeries.C (p : K) * h)`. Rewrite using `[map_mul, MvPowerSeries.map_C, map_inv₀, map_natCast, frobVar_eq_expand hp0, frobVar_eq_expand hp0, map_mul, MvPowerSeries.expand_C]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[he, MvPowerSeries.coeff_C_mul, norm_mul, hr, one_mul]`. Conclude with `hc n`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem LamModule_of (hD : DworkMv) : LamModule := by
   intro K ι _ _ _ _ p σ hp hpn hσ h N hN hs
@@ -496,37 +494,35 @@ theorem LamModule_of (hD : DworkMv) : LamModule := by
   exact hc n
 
 /- English proof (translation)
-Introduce `K _ _ _ p σ hU hζ F hF be hbe`. Take `⟨hp, hp2, hpn, -, hσ⟩` from `hU`. Take `⟨ζ, hζ⟩` from `hζ`. Take `⟨hdiv, hd1, hd2, hrot⟩` from `hbe`. Establish `hF0 : MvPowerSeries.constantCoeff F = 0` using `hF.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hsym` using `(hL K p hp hpn F hF).2.1`. Take `⟨N, hN⟩ : ∃ N, N = p ^ 2 - 1` from `⟨_, rfl⟩`. Rewrite `hζ`, `hrot`, `hsym` using `[← hN]`. Establish `hsq : p ^ 2 = N + 1`. Establish `: 1 ≤ p ^ 2` using `Nat.one_le_pow _ _ hp.pos`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Establish `hN0 : N ≠ 0`. Introduce `h0`. Rewrite `hsq` using `[h0]`. Use the polynomial consequences of the given equalities and inequalities.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `hNp : ¬ p ∣ N`. Introduce `hd`. Establish `h1 : p ∣ N + 1` using `by rw [← hsq]; exact dvd_pow_self p two_ne_zero`. Conclude with `hp.one_lt.ne' (Nat.dvd_one.1 ((Nat.dvd_add_right hd).1 h1))`. Establish `hNK : (N : K) ≠ 0` using `Nat.cast_ne_zero.2 hN0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hζ0 : ζ ≠ 0` using `hζ.ne_zero hN0`. Establish `hη : ∀ k : ℕ, (ζ ^ k) ^ N = 1` using `fun k => by`. Rewrite using `[← pow_mul, mul_comm, pow_mul, hζ.pow_eq_one, one_pow]`. Establish `hθ : ∀ k : ℕ, (ζ⁻¹ ^ (p * k)) ^ N = 1` using `fun k => by`. Rewrite using `[← pow_mul, mul_comm, pow_mul, inv_pow, hζ.pow_eq_one, inv_one, one_pow]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hηθ : ∀ k : ℕ, (ζ ^ k) ^ p * ζ⁻¹ ^ (p * k) = 1` using `fun k => by`. Rewrite using `[← pow_mul, mul_comm k p, ← mul_pow, mul_inv_cancel₀ hζ0, one_pow]`. Establish `hηn : ∀ k : ℕ, ‖ζ ^ k‖ ≤ 1` using `fun k => (norm_of_pow_eq_one hN0 (hη k)).le`. Establish `hθn : ∀ k : ℕ, ‖ζ⁻¹ ^ (p * k)‖ ≤ 1` using `fun k => (norm_of_pow_eq_one hN0 (hθ k)).le`. Establish `havg : ∀ (ι : Type) [Finite ι] (f : ℕ → MvPowerSeries ι K), (∀ k, Simeq (f k) 0) → Simeq (MvPowerSeries.C ((N : K)⁻¹) * ∑ k ∈ range N, f k) 0` using `fun ι _ f hf => hM K ι p σ hp hpn hσ _ N hNp (simeq_sum hS _ f fun k _ => hf k)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB : ∀ k : ℕ, Simeq (MvPowerSeries.subst (sc2 (ζ ^ k) (ζ⁻¹ ^ (p * k))) be) be`. Introduce `k`. Establish `h1` using `(hS K (Fin 2)).2.2.2.2 (Fin 2) _ _ (sc2 1 (ζ⁻¹ ^ (p * k))) (constant_coeff_scale_two _ _) (integral_scale_two (by simp) (hθn k)) (hrot (ζ ^ k) (hη k))`. Establish `e1 : (![MvPowerSeries.C (ζ ^ k) * (MvPowerSeries.X 0 : MvPowerSeries (Fin 2) K), MvPowerSeries.X 1] : Fin 2 → MvPowerSeries (Fin 2) K) = sc2 (ζ ^ k) 1`. Simplify using `[sc2]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e2 : (![(MvPowerSeries.X 0 : MvPowerSeries (Fin 2) K), MvPowerSeries.C ((ζ ^ k) ^ p) * MvPowerSeries.X 1] : Fin 2 → MvPowerSeries (Fin 2) K) = sc2 1 ((ζ ^ k) ^ p)`. Simplify using `[sc2]`. Rewrite `h1` using `[e1, e2, subst_scale_two_comp, subst_scale_two_comp, hηθ k, mul_one, one_mul, one_mul, subst_scale_two_one]`. Conclude with `h1`. Use `⟨MvPowerSeries.C ((N : K)⁻¹) * ∑ k ∈ range N, MvPowerSeries.subst (sc2 (ζ ^ k) (ζ⁻¹ ^ (p * k))) be, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `n hn`. Establish `hc : MvPowerSeries.coeff n (MvPowerSeries.C ((N : K)⁻¹) * ∑ k ∈ range N, MvPowerSeries.subst (sc2 (ζ ^ k) (ζ⁻¹ ^ (p * k))) be) = (N : K)⁻¹ * ((∑ k ∈ range N, (ζ ^ n 0 * ζ⁻¹ ^ (p * n 1)) ^ k) * MvPowerSeries.coeff n be)`. Rewrite using `[MvPowerSeries.coeff_C_mul, map_sum, Finset.sum_mul]`. Use `congr 1`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[coeff_subst_scale_two, mul_pow, ← pow_mul, ← pow_mul, ← pow_mul, ← pow_mul, mul_comm k (n 0), mul_assoc p k, mul_assoc p (n 1), mul_comm k (n 1)]`. Rewrite `hn` using `[hc]`. Establish `hbe : MvPowerSeries.coeff n be ≠ 0` using `fun h => hn (by rw [h, mul_zero, mul_zero])`. Establish `hsum : ∑ k ∈ range N, (ζ ^ n 0 * ζ⁻¹ ^ (p * n 1)) ^ k ≠ 0` using `fun h => hn (by rw [h, zero_mul, mul_zero])`. Establish `hω : ζ ^ n 0 * ζ⁻¹ ^ (p * n 1) = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Assume the negation of the conclusion as `hne`. Apply `hsum` to reduce the goal to its premises. Rewrite using `[geom_sum_eq hne, mul_pow, ← pow_mul, ← pow_mul, mul_comm (n 0), mul_comm (p * n 1), pow_mul, pow_mul ζ⁻¹, inv_pow, hζ.pow_eq_one]`. Simplify using the standard rewrite rules. Rewrite `hω` using `[inv_pow, mul_inv_eq_one₀ (pow_ne_zero _ hζ0)]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Conclude with `hbe (hdiv n (Or.inl (by omega)))`. Assume the negation of the conclusion as `h`. Conclude with `hbe (hdiv n (Or.inr (by omega)))`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hN, Nat.modEq_iff_dvd, ← hζ.zpow_eq_one_iff_dvd, zpow_sub₀ hζ0, zpow_natCast, zpow_natCast, hω, div_self (pow_ne_zero _ hζ0)]`. Rewrite using `[simeq_iff_sub]`. Establish `he : MvPowerSeries.C ((N : K)⁻¹) * ∑ k ∈ range N, MvPowerSeries.subst (sc2 (ζ ^ k) (ζ⁻¹ ^ (p * k))) be - be = MvPowerSeries.C ((N : K)⁻¹) * ∑ k ∈ range N, (MvPowerSeries.subst (sc2 (ζ ^ k) (ζ⁻¹ ^ (p * k))) be - be)`. Rewrite using `[Finset.sum_sub_distrib, Finset.sum_const, card_range, mul_sub, nsmul_eq_mul, ← mul_assoc, ← map_natCast (MvPowerSeries.C (σ := Fin 2) (R := K)) N, ← map_mul, inv_mul_cancel₀ hNK, map_one, one_mul]`. Rewrite using `[he]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `havg (Fin 2) _ fun k => (simeq_iff_sub _ _).1 (hB k)`. Rewrite using `[partial_coboundary_C_mul hF0, partial_coboundary_sum hF0]`. Apply `havg (Fin 3)` to reduce the goal to its premises. Introduce `k`. Rewrite using `[partial_coboundary_subst_scale hF0 _ (hsym _ (hη k))]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `(hS K (Fin 3)).2.2.2.2 (Fin 3) _ _ (sc3 (ζ ^ k) (ζ⁻¹ ^ (p * k))) (constant_coeff_scale_three _ _) (integral_scale_three (hηn k) (hθn k)) hd1`. Rewrite `h1` using `[subst_scale_three_zero]`. Then use the resulting hypothesis. Rewrite using `[swap_two_C_mul, swap_two_sum, partial_coboundary_C_mul hF0, partial_coboundary_sum hF0]`. Apply `havg (Fin 3)` to reduce the goal to its premises. Introduce `k`.
-
-Rewrite using `[swap_two_subst_scale_two, partial_coboundary_subst_scale hF0 _ (hsym _ (hθ k))]`. Establish `h1` using `(hS K (Fin 3)).2.2.2.2 (Fin 3) _ _ (sc3 (ζ⁻¹ ^ (p * k)) (ζ ^ k)) (constant_coeff_scale_three _ _) (integral_scale_three (hθn k) (hηn k)) hd2`. Rewrite `h1` using `[subst_scale_three_zero]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem StepZero_of (hM : LamModule) (hS : SimeqRules) (hL : LawSymm) : StepZero := by
   intro K _ _ _ p σ hU hζ F hF be hbe
@@ -638,17 +634,17 @@ theorem StepZero_of (hM : LamModule) (hS : SimeqRules) (hL : LawSymm) : StepZero
     rwa [subst_scale_three_zero] at h1
 
 /- English proof (translation)
-Introduce `K0 K ι _ _ _ _ j hj`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `f g ⟨h0, hI⟩`. Establish `h0' : MvPowerSeries.constantCoeff (MvPowerSeries.map j f - MvPowerSeries.map j g) = 0`. Rewrite using `[← map_sub, MvPowerSeries.constantCoeff_map, h0, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨h0', ?_⟩` and prove the remaining obligations. Establish `hm : MvPowerSeries.map j (mvExp (f - g)) = mvExp (MvPowerSeries.map j (f - g))`. Unfold `mvExp`. Rewrite using `[PowerSeries.map_subst (PowerSeries.HasSubst.of_constantCoeff_zero h0), PowerSeries.map_exp]`. Rewrite using `[← map_sub, ← hm]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `n`. Rewrite using `[MvPowerSeries.coeff_map, hj]`. Conclude with `hI n`. Introduce `p c c'`. Establish `hA : MvPowerSeries.map j (Aser K0 p) = Aser K p`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `n`. Rewrite using `[MvPowerSeries.coeff_map]`. Simplify using `only [Aser, MvPowerSeries.coeff_apply, map_sum]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `hA' : MvPowerSeries.map j (Aser' K0 p) = Aser' K p`. Use extensionality with `n`. Rewrite using `[MvPowerSeries.coeff_map]`. Simplify using `only [Aser', MvPowerSeries.coeff_apply, map_sum]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `split_ifs <;> simp`. Unfold `Gser`. Rewrite using `[map_sub, map_mul, map_mul, MvPowerSeries.map_C, MvPowerSeries.map_C, hA, hA']`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mapSimeq_statement : MapSimeq := by
   intro K0 K ι _ _ _ _ j hj

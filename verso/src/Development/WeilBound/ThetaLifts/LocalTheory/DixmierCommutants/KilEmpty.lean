@@ -14,11 +14,11 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 def RI {m : ℕ} (Y : Matrix (Fin n) (Fin m) k) : Prop := ∃ R : Matrix (Fin m) (Fin n) k, Y * R = 1
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨R, h⟩`. Use `le_antisymm (rank_le_height Y) ?_` and prove the remaining obligations. Use `rank_mul_le_left Y R` as an intermediate fact. Rewrite `this` using `[h, rank_one, Fintype.card_fin]`. Then use the resulting hypothesis.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Introduce `h`. Establish `hs : LinearMap.range Y.mulVecLin = ⊤` using `Submodule.eq_top_of_finrank_eq (by rw [Module.finrank_fin_fun]; exact h)`. Use `choose u hu using fun j : Fin n => LinearMap.range_eq_top.1 hs (Pi.single j 1)`. Use `⟨Matrix.of fun i j => u j i, Matrix.ext fun i j => ?_⟩` and prove the remaining obligations. Use `congrFun (hu j) i` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[Pi.single_apply]`. Rewrite using `[Matrix.one_apply]`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ri_iff {m : ℕ} {Y : Matrix (Fin n) (Fin m) k} : RI Y ↔ Y.rank = n := by
   constructor
@@ -36,9 +36,7 @@ theorem ri_iff {m : ℕ} {Y : Matrix (Fin n) (Fin m) k} : RI Y ↔ Y.rank = n :=
     exact this
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h'`. Use `push Not at h'`. Establish `: Function.Injective Y.vecMul` using `fun a b hab => by`. Assume the negation of the conclusion as `hne`. Conclude with `h' (a - b) (sub_ne_zero.2 hne) (by rw [sub_vecMul]; exact sub_eq_zero.2 hab)`.
-
-Conclude with `h (ri_iff.2 (by rw [(vecMul_injective_iff.1 this).rank_matrix, Fintype.card_fin]))`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem not_ri {m : ℕ} {Y : Matrix (Fin n) (Fin m) k} (h : ¬ RI Y) : ∃ c : Fin n → k, c ≠ 0 ∧ c ᵥ* Y = 0 := by
   by_contra h'
@@ -49,13 +47,13 @@ theorem not_ri {m : ℕ} {Y : Matrix (Fin n) (Fin m) k} (h : ¬ RI Y) : ∃ c : 
   exact h (ri_iff.2 (by rw [(vecMul_injective_iff.1 this).rank_matrix, Fintype.card_fin]))
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨R * (Y * R)⁻¹, by rw [← Matrix.mul_assoc, mul_nonsing_inv _ (Ne.isUnit h)]⟩`.
+Supply the required witnesses or components.
 -/
 theorem ri_of_det {m : ℕ} {Y : Matrix (Fin n) (Fin m) k} {R : Matrix (Fin m) (Fin n) k} (h : (Y * R).det ≠ 0) : RI Y :=
   ⟨R * (Y * R)⁻¹, by rw [← Matrix.mul_assoc, mul_nonsing_inv _ (Ne.isUnit h)]⟩
 
 /- English proof (translation)
-The claim follows from `(isOpen_ne_fun (continuous_id.matrix_mul continuous_const).matrix_det continuous_const).mem_nhds (by simp [h])`.
+A detailed English derivation is pending.
 -/
 theorem det_nhds {m : ℕ} {Y : Matrix (Fin n) (Fin m) k} {R : Matrix (Fin m) (Fin n) k} (h : Y * R = 1) :
     {X : Matrix (Fin n) (Fin m) k | (X * R).det ≠ 0} ∈ 𝓝 Y :=
@@ -78,11 +76,11 @@ structure Inv (ν : kˣ →* ℂˣ) (L : (Matrix (Fin n) (Fin d) k → ℂ) →�
 variable {e} {ν : kˣ →* ℂˣ} {L : (Matrix (Fin n) (Fin d) k → ℂ) →ₗ[ℂ] W}
 
 /- English proof (translation)
-Establish `hd : (idp (vecMulVec x c) ((l⁻¹ : kˣ) - 1))ᵀ.det = (l⁻¹ : kˣ)`. Rewrite using `[det_transpose, idp, ← smul_vecMulVec, vecMulVec_eq Unit, det_one_add_replicateCol_mul_replicateRow, dotProduct_smul, hc]`. Simplify using the standard rewrite rules. Set `g : GL (Fin n) k` to `GeneralLinearGroup.mkOfDetNeZero _ (hd ▸ (l⁻¹).ne_zero)`. Establish `hg : gdet g = l⁻¹` using `Units.ext hd`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨s, e1⟩` from `hL.right h hh Φ hΦ`. Establish `gv : g.valᵀ = idp (vecMulVec x c) ((l⁻¹ : kˣ) - 1)` using `transpose_transpose _`. Establish `e3 : omB ν 1 g 1 (fun Y : Matrix (Fin n) (Fin d) k => Φ (Y * h)) = ((ν l)⁻¹ : ℂ) • fun S : Matrix (Fin n) (Fin d) k => Φ (idp (vecMulVec x c) ((l⁻¹ : kˣ) - 1) * S * h)`. Use function extensionality and compare the values at `Y`. Establish `: apow l⁻¹ ((d : ℂ) / 2) = 1` using `apow_of_valuation_eq_one (by simp [hl]) _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Simplify using `only [omB, hg, gv, Fintype.card_fin, this]`. Simplify using the standard rewrite rules. Establish `e2` using `(congrArg L e3).symm.trans (hL.left g _ s)`. Rewrite `e2` using `[map_smul, e1]`. Rewrite using `[LinearMap.mem_ker, map_sub, map_smul, ← e2, smul_smul, mul_inv_cancel₀ (Units.ne_zero _), one_smul, sub_self]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem Inv.op (hL : Inv e ν L) {l : kˣ} (hl : valuation k (l : k) = 1) {x c : Fin n → k} (hc : c ⬝ᵥ x = 1)
     {h : Matrix (Fin d) (Fin d) k} (hh : InP e h) (Φ) (hΦ : Φ ∈ SB (Matrix (Fin n) (Fin d) k)) :
@@ -104,17 +102,15 @@ theorem Inv.op (hL : Inv e ν L) {l : kˣ} (hl : valuation k (l : k) = 1) {x c :
   rw [LinearMap.mem_ker, map_sub, map_smul, ← e2, smul_smul, mul_inv_cancel₀ (Units.ne_zero _), one_smul, sub_self]
 
 /- English proof (translation)
-Rewrite using `[vecMulVec_mul_vecMulVec, hc, one_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem idem_vmv {m : Type} [Fintype m] {x c : m → k} (hc : c ⬝ᵥ x = 1) : vecMulVec x c * vecMulVec x c = vecMulVec x c := by
   rw [vecMulVec_mul_vecMulVec, hc, one_smul]
 
 /- English proof (translation)
-Establish `q : ∀ X, c X ⬝ᵥ cl e t X = 1 → (c X ᵥ* X) ⬝ᵥ Pi.single (e (.inr t)) 1 = 1` using `fun X hX => by`. Rewrite using `[dotProduct_single, mul_one]`. Conclude with `hX`. Use `fixk hU (P := fun X => vecMulVec (cl e t X) (c X)) (Q := fun X => vecMulVec (Pi.single (e (.inr t)) 1) (c X ᵥ* X)) ?_ ?_ (idem_vmv h0) (idem_vmv (q _ h0)) hl (c := ν l) (fun h => hν (Units.ext h)) hB fun X hX => (h X hX).imp_right fun ⟨h1, h2⟩ => ⟨idem_vmv h1, idem_vmv (q _ h1), …` and prove the remaining obligations. Use `continuousAt_pi.2 fun i => continuousAt_pi.2 fun j => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(continuous_id.matrix_elem i _).continuousAt.mul (continuousAt_pi.1 cc j)`. Use `continuousAt_pi.2 fun i => continuousAt_pi.2 fun j => continuousAt_const.mul ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `ContinuousAt (fun y : Matrix (Fin n) (Fin d) k => ∑ r, c y r * y r j) X₀`. Conclude with `tendsto_finset_sum Finset.univ fun r _ => (continuousAt_pi.1 cc r).mul (continuous_id.matrix_elem r j).continuousAt`. Rewrite using `[vecMulVec_mul, mul_vecMulVec, mulVec_single_one]`.
-
-Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem fix_col (hL : Inv e ν L) {l : kˣ} (hl : valuation k (l : k) = 1) (hν : ν l ≠ 1) {U₀} (hU : Kil (LinearMap.ker L) U₀) (t : Bool)
     {X₀ : Matrix (Fin n) (Fin d) k} {c : Matrix (Fin n) (Fin d) k → Fin n → k} (cc : ContinuousAt c X₀) (h0 : c X₀ ⬝ᵥ cl e t X₀ = 1)
@@ -134,20 +130,20 @@ theorem fix_col (hL : Inv e ν L) {l : kˣ} (hl : valuation k (l : k) = 1) (hν 
     rfl
 
 /- English proof (translation)
-Introduce `Φ _ h` and use `by rw [show Φ = 0 from funext fun y => by by_contra h'; exact h y h'] exact zero_mem _`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem kil_empty {V : Type} [TopologicalSpace V] (Z : Submodule ℂ (V → ℂ)) : Kil Z ∅ := fun Φ _ h => by
   rw [show Φ = 0 from funext fun y => by by_contra h'; exact h y h']
   exact zero_mem _
 
 /- English proof (translation)
-Use `kil_loc hV_mat fun X₀ hX => ?_` and prove the remaining obligations. Take `⟨i, hi⟩` from `Function.ne_iff.1 hX`. Establish `ci : Continuous fun X : Matrix (Fin n) (Fin d) k => cl e false X i` using `continuous_id.matrix_elem i _`. Establish `k1 : ∀ X : Matrix (Fin n) (Fin d) k, cl e false X i ≠ 0 → (Pi.single i (cl e false X i)⁻¹ : Fin n → k) ⬝ᵥ cl e false X = 1` using `fun X h => by`. Rewrite using `[single_dotProduct, inv_mul_cancel₀ h]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `fix_col hL hl hν (kil_empty _) false (c := fun X => Pi.single i (cl e false X i)⁻¹) ?_ (k1 _ hi) ((isOpen_ne_fun ci continuous_const).mem_nhds hi) fun X hX => Or.inr ⟨k1 X hX, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(continuous_single (A := fun _ : Fin n => k) i).continuousAt.comp (ci.continuousAt.inv₀ hi)`. Introduce `r hr`. Simplify using `[idp, vecMulVec_apply, hr]`. Establish `: ((Pi.single i (cl e false X i)⁻¹ : Fin n → k) ᵥ* X) (e (.inr false)) = 1` using `k1 X hX`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [idp, vecMulVec_apply, Matrix.add_apply, Matrix.smul_apply, this]`. Simplify using `[hl]`. Simplify using `[idp, vecMulVec_apply]`. Introduce `s s'`. Simplify using `[idp, vecMulVec_apply, Matrix.one_apply]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s`. Simplify using `[idp, vecMulVec_apply]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem kil_one (hL : Inv e ν L) {l : kˣ} (hl : valuation k (l : k) = 1) (hν : ν l ≠ 1) :
     Kil (LinearMap.ker L) {Y | cl e false Y ≠ 0} := by
@@ -172,25 +168,21 @@ theorem kil_one (hL : Inv e ν L) {l : kˣ} (hl : valuation k (l : k) = 1) (hν 
     simp [idp, vecMulVec_apply]
 
 /- English proof (translation)
-Establish `h12 : Kil (LinearMap.ker L) {Y | cl e false Y ≠ 0 ∨ RI (mid e Y)}`. Use `kil_loc hV_mat fun X hX => hX.elim (fun h => ⟨_, ?_, kil_one hL hl hν⟩) fun ⟨R, h⟩ => ⟨_, ?_, h2⟩` and prove the remaining obligations. Conclude with `(isOpen_ne_fun (continuous_pi fun i => continuous_id.matrix_elem i _) continuous_const).mem_nhds h`. Establish `cm : Continuous (mid e : Matrix (Fin n) (Fin d) k → _)` using `continuous_id.matrix_submatrix _ _`. Conclude with `mem_of_superset (cm.continuousAt.preimage_mem_nhds (det_nhds h)) fun Y hY => ri_of_det hY`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `kil_loc hV_mat fun X₀ ⟨R, hR⟩ => ?_` and prove the remaining obligations. Establish `key : ∀ X : Matrix (Fin n) (Fin d) k, (X * R).det ≠ 0 → ¬ (cl e false X ≠ 0 ∨ RI (mid e X)) → (R (e (.inr true)) ᵥ* (X * R)⁻¹) ᵥ* X = Pi.single (e (.inr true)) 1` using `fun X hd hX => by push Not at hX`. Take `⟨c, c0, hc⟩` from `not_ri hX.2`. Establish `r : c ᵥ* X = Pi.single (e (.inr true)) ((c ᵥ* X) (e (.inr true)))`. Use function extensionality and compare the values at `j`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis.
 
-Take `⟨j, rfl⟩` from `e.surjective j`. Break down `j with s | _ | _` into its components or cases. Rewrite using `[Pi.single_eq_of_ne (by simp)]`. Conclude with `congrFun hc s`. Establish `: (c ᵥ* X) (e (.inr false)) = c ⬝ᵥ cl e false X` using `rfl`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[this, hX.1]`. Simplify using the standard rewrite rules. Use `set a := (c ᵥ* X) (e (.inr true))`. Establish `e1 : c = a • (R (e (.inr true)) ᵥ* (X * R)⁻¹)` using `by conv_lhs => rw [← vecMul_one c, ← mul_nonsing_inv _ (Ne.isUnit hd), ← vecMul_vecMul, ← vecMul_vecMul, r, single_vecMul]`. Rewrite using `[smul_vecMul]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Establish `a0 : a ≠ 0` using `fun h => c0 (by rw [e1, h, zero_smul])`. Apply `smul_right_injective _ a0` to reduce the goal to its premises. Simplify using `only`. Rewrite using `[← smul_vecMul, ← e1, r, ← Pi.single_smul, smul_eq_mul, mul_one]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Distinguish the cases in `h0 : cl e false X₀ ≠ 0 ∨ RI (mid e X₀)`. Choose the witnesses or unpack the hypotheses as in `⟨B, hB, hk⟩ : ∃ B ∈ 𝓝 X₀, B ⊆ {Y | cl e false Y ≠ 0 ∨ RI (mid e Y)} := by`. Use `h0.elim (fun h => ⟨_, ?_, fun _ => Or.inl⟩) fun ⟨R, h⟩ => ⟨_, ?_, fun _ => Or.inr⟩` and prove the remaining obligations. Conclude with `(isOpen_ne_fun (continuous_pi fun i => continuous_id.matrix_elem i _) continuous_const).mem_nhds h`. Establish `cm : Continuous (mid e : Matrix (Fin n) (Fin d) k → _)` using `continuous_id.matrix_submatrix _ _`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `mem_of_superset (cm.continuousAt.preimage_mem_nhds (det_nhds h)) fun Y hY => ri_of_det hY`. Conclude with `⟨B, hB, fun Φ hΦ hs => h12 Φ hΦ fun y hy => hk (hs y hy)⟩`. Establish `k1 : ∀ X : Matrix (Fin n) (Fin d) k, (X * R).det ≠ 0 → ¬ (cl e false X ≠ 0 ∨ RI (mid e X)) → (R (e (.inr true)) ᵥ* (X * R)⁻¹) ⬝ᵥ cl e true X = 1` using `fun X hd hX => by`. Use `congrFun (key X hd hX) (e (.inr true))` as an intermediate fact. Rewrite `this` using `[Pi.single_eq_same]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Prove the first alternative. Reduce the conclusion to the remaining proof obligations.
 
-Use `fix_col hL hl hν h12 true (c := fun X => R (e (.inr true)) ᵥ* (X * R)⁻¹) ?_ (k1 _ (by simp [hR]) h0) (det_nhds hR) fun X hX => ?_` and prove the remaining obligations. Establish `c1 : ContinuousAt (fun X : Matrix (Fin n) (Fin d) k => (X * R)⁻¹) X₀` using `ContinuousAt.comp (f := fun X : Matrix (Fin n) (Fin d) k => X * R) (continuousAt_matrix_inv _ (by`. Rewrite using `[hR, det_one, Ring.inverse_eq_inv']`. Conclude with `continuousAt_inv₀ one_ne_zero))`. Use the proof step `(continuous_id.matrix_mul continuous_const).continuousAt`.
-
-Conclude with `ContinuousAt.comp (f := fun X : Matrix (Fin n) (Fin d) k => (X * R)⁻¹) (continuous_const.matrix_vecMul continuous_id).continuousAt c1`. Distinguish the cases in `h : cl e false X ≠ 0 ∨ RI (mid e X)`. Conclude with `Or.inl h`. Use `Or.inr ⟨k1 X hX h, ?_⟩` and prove the remaining obligations. Rewrite using `[key X hX h]`.
-
-Apply the tactic sequence `refine ⟨fun r hr => ?_, ?_, ?_, fun s s' => ?_, fun s => ?_⟩ <;> simp [idp, vecMulVec_apply, Matrix.one_apply, *]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem kil_full (hL : Inv e ν L) {l : kˣ} (hl : valuation k (l : k) = 1) (hν : ν l ≠ 1)
     (h2 : Kil (LinearMap.ker L) {Y | RI (mid e Y)}) : Kil (LinearMap.ker L) {Y | RI Y} := by

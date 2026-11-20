@@ -16,9 +16,9 @@ namespace PKLt1
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {m k : ℕ}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `c`. Unfold `lastRow`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `split_ifs with h`. Establish `hr : ∀ j, p.val i j = (1 : Matrix (Fin k) (Fin k) (Ad E)) i j` using `fun j => hp i j (Or.inl (by omega))`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Units.val_mul, Matrix.mul_apply]`. Simplify using `only [hr, Matrix.one_apply, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem lastRow_mir {p : GA E k} (g : GA E k) (hp : Mir (k - 1) p) : lastRow (p * g) = lastRow g := by
   funext c
@@ -31,7 +31,7 @@ theorem lastRow_mir {p : GA E k} (g : GA E k) (hp : Mir (k - 1) p) : lastRow (p 
   · rfl
 
 /- English proof (translation)
-Unfold `PW Wh`. Rewrite using `[(hK5a E m k hk hkm ψ hψ ι hι φ hφ).2.2.2.1 g]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem pw_eq (hK5a : TransformsEmbedding) (hk : 1 ≤ k) (hkm : k < m) {ψ : AddChar (Ad E) ℂ} (hψ : StdPsi ψ)
     {ι : GA E k →* GA E m} (hι : IsEmb ι) {φ : XB E m} (hφ : Good ψ (m - 1) (φ : GA E m → ℂ)) (φ' : XB E k)
@@ -42,18 +42,18 @@ theorem pw_eq (hK5a : TransformsEmbedding) (hk : 1 ≤ k) (hkm : k < m) {ψ : Ad
 
 omit [IsTotallyComplex E] in
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.1, h.2.1, fun _ _ hc => absurd hc (Nat.not_lt_zero _)⟩`.
+Supply the required witnesses or components.
 -/
 theorem unipotent_zero_of_level {j : ℕ} {u : GA E m} (h : UU j u) : UU 0 u :=
   ⟨h.1, h.2.1, fun _ _ hc => absurd hc (Nat.not_lt_zero _)⟩
 
 omit [IsTotallyComplex E] in
 /- English proof (translation)
-Use `⟨fun i c hci => ?_, fun i => ?_, fun _ _ hc => absurd hc (Nat.not_lt_zero _)⟩` and prove the remaining obligations. Rewrite using `[Units.val_mul, Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Break down `lt_or_ge j i with h | h` into its components or cases. Rewrite using `[hu.1 i j h, zero_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hv.1 j c (lt_of_lt_of_le hci h), mul_zero]`. Rewrite using `[Units.val_mul, Matrix.mul_apply, Finset.sum_eq_single i]`. Rewrite using `[hu.2.1, hv.2.1, one_mul]`. Introduce `j _ hj`. Break down `lt_or_gt_of_ne hj with h | h` into its components or cases.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[hu.1 i j h, zero_mul]`. Rewrite using `[hv.1 j i h, mul_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ i) h`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem unipotent_zero_mul {u v : GA E m} (hu : UU 0 u) (hv : UU 0 v) : UU 0 (u * v) := by
   refine ⟨fun i c hci => ?_, fun i => ?_, fun _ _ hc => absurd hc (Nat.not_lt_zero _)⟩
@@ -72,11 +72,11 @@ theorem unipotent_zero_mul {u v : GA E m} (hu : UU 0 u) (hv : UU 0 v) : UU 0 (u 
 
 omit [IsTotallyComplex E] in
 /- English proof (translation)
-Establish `hp : ∀ i c : Fin m, (c : ℕ) ≤ i → posM (Subtype.val : UnipotentBlockColumnIndex m k k → Fin m × Fin m) x i c = 0`. Introduce `i c hci`. Rewrite using `[posM, Matrix.sum_apply]`. Use `Finset.sum_eq_zero fun t _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.single_apply_of_ne]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨e1, e2⟩`. Use `t.2` as an intermediate fact. Rewrite `this` using `[e1, e2]`. Use linear arithmetic over natural numbers and integers. Use `⟨fun i c hci => ?_, fun i => ?_, fun _ _ hc => absurd hc (Nat.not_lt_zero _)⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `(1 + posM _ x : Matrix (Fin m) (Fin m) (Ad E)) i c = 0`. Rewrite using `[Matrix.add_apply, hp i c (le_of_lt hci), add_zero, Matrix.one_apply_ne (ne_of_gt hci)]`. Express the relevant statement in the definitionally equal form `(1 + posM _ x : Matrix (Fin m) (Fin m) (Ad E)) i i = 1`. Rewrite using `[Matrix.add_apply, hp i i le_rfl, add_zero, Matrix.one_apply_eq]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem blkU_unipotent_zero (x : UnipotentBlockColumnIndex m k k → Ad E) : UU 0 (blkU x : GA E m) := by
   have hp : ∀ i c : Fin m, (c : ℕ) ≤ i → posM (Subtype.val : UnipotentBlockColumnIndex m k k → Fin m × Fin m) x i c = 0 := by
@@ -95,13 +95,13 @@ theorem blkU_unipotent_zero (x : UnipotentBlockColumnIndex m k k → Ad E) : UU 
     rw [Matrix.add_apply, hp i i le_rfl, add_zero, Matrix.one_apply_eq]
 
 /- English proof (translation)
-Establish `hm' : (0 : ℝ) < m` using `Nat.cast_pos.2 hm`. Break down `le_or_gt 1 D with h | h` into its components or cases. Establish `h1 : D ^ (-(m : ℝ)⁻¹) ≤ 1` using `Real.rpow_le_one_of_one_le_of_nonpos h (by simp [hm'.le])`. Establish `h2 : D⁻¹ ≤ D` using `le_trans (inv_le_one_of_one_le₀ h) h`. Establish `e1 : (D ^ (-(m : ℝ)⁻¹)) ^ (M * 2) = D ^ (-(2 * M / m : ℝ))`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul hD.le]`. Use `congr 1`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Establish `e2 : D⁻¹ ^ ((M : ℝ) / m) * D ^ (-((M : ℝ) / m)) = D ^ (-(2 * M / m : ℝ))`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Rewrite using `[Real.inv_rpow hD.le, ← Real.rpow_neg hD.le, ← Real.rpow_add hD]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[min_eq_right h1, min_eq_right h2, mul_pow, ← pow_mul, e1, mul_assoc, e2]`. Establish `h1 : 1 ≤ D ^ (-(m : ℝ)⁻¹)` using `Real.one_le_rpow_of_pos_of_le_one_of_nonpos hD h.le (by simp [hm'.le])`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : D ≤ D⁻¹` using `le_trans h.le (one_le_inv₀ hD |>.2 h.le)`. Rewrite using `[min_eq_left h1, min_eq_left h2, one_pow, mul_one, mul_assoc, ← Real.rpow_add hD, add_neg_cancel, Real.rpow_zero, mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem sq_real {D C : ℝ} (hD : 0 < D) (M m : ℕ) (hm : 0 < m) :
     (C * min 1 (D ^ (-(m : ℝ)⁻¹)) ^ M) ^ 2 = C ^ 2 * min D D⁻¹ ^ ((M : ℝ) / m) * D ^ (-((M : ℝ) / m)) := by
@@ -125,15 +125,13 @@ theorem sq_real {D C : ℝ} (hD : 0 < D) (M m : ℕ) (hm : 0 < m) :
       Real.rpow_zero, mul_one]
 
 /- English proof (translation)
-Take `⟨C, hC⟩` from `hdec`. Take `⟨Cc, hCc⟩` from `hK5c E m k hk hkm ι hι`. Take `⟨hgood, heq, -, -, -, hbd⟩` from `hK5a E m k hk hkm ψ hψ ι hι φ hφ`. Establish `hm : 1 ≤ m` using `by omega`. Establish `hdpos` using `(hK1 E m hm).2.1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨(M : ℝ) / m, (M : ℝ) / m, (max C 0) ^ 2, by positivity, fun g => ?_⟩` and prove the remaining obligations. Establish `hB : ∀ x : UnipotentBlockColumnIndex m k k → Ad E, ‖pT ψ (k + 1) (m - (k + 1)) φ (blkU x * ι g)‖ ≤ max C 0 * min 1 (Dt g ^ (-(m : ℝ)⁻¹)) ^ M`. Introduce `x`. Use `hbd (k + 1) _ _ (by omega) (by omega) fun v hv => ?_` and prove the remaining obligations. Establish `hvu : UU 0 (v * blkU x)` using `unipotent_zero_mul (unipotent_zero_of_level hv) (blkU_unipotent_zero x)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hdm` using `(hCc g (v * blkU x)).1 hvu`. Rewrite using `[← mul_assoc]`. Use `(hC _).trans ?_` and prove the remaining obligations. Unfold `wt`. Use `(mul_le_mul_of_nonneg_right (le_max_left C 0) (pow_nonneg (le_min zero_le_one (hdpos _).le) M)).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Use `mul_le_mul_of_nonneg_left ?_ (le_max_right C 0)` and prove the remaining obligations. Conclude with `pow_le_pow_left₀ (le_min zero_le_one (hdpos _).le) (min_le_min_left 1 hdm) M`. Establish `h` using `(hK5b E m k hk hkm ψ hψ ι hι _ hgood g).1 _ hB`. Simplify using `only [heq]`. Use `h.trans (ENNReal.ofReal_le_ofReal (le_of_eq ?_))` and prove the remaining obligations.
-
-Conclude with `sq_real (hD g) M m (by omega)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem sq (hK1 : K1) (hK5a : TransformsEmbedding) (hK5b : FourierSeriesColumn) (hK5c : ShortRowsEmbedding) (hk : 1 ≤ k) (hkm : k < m)
     {ψ : AddChar (Ad E) ℂ} (hψ : StdPsi ψ) {ι : GA E k →* GA E m} (hι : IsEmb ι) {φ : XB E m}
@@ -166,21 +164,19 @@ theorem sq (hK1 : K1) (hK5a : TransformsEmbedding) (hK5b : FourierSeriesColumn) 
 
 omit [IsTotallyComplex E] in
 /- English proof (translation)
-Use `set G : ℕ → ℕ → F := fun i j => if h : i < k ∧ j < k then (if j = i + 1 then A ⟨i, h.1⟩ ⟨j, h.2⟩ else 0) else 0 with hG`. Establish `e1 : ∀ i j : Fin m, (if (j : ℕ) = i + 1 then embM m A i j else 0) = G i j`. Introduce `i j`. Simplify using `only [hG, embM, Matrix.of_apply]`. Distinguish the cases in `h : (i : ℕ) < k ∧ (j : ℕ) < k`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_pos h, dif_pos h]`. Rewrite using `[dif_neg h, dif_neg h] split_ifs with h1`. Rewrite using `[Matrix.one_apply_ne]`. Introduce `e`. Rewrite `h1` using `[e]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Both sides reduce to the same expression. Establish `e2 : ∀ i j : Fin k, (if (j : ℕ) = i + 1 then A i j else 0) = G i j`. Introduce `i j`. Simplify using `only [hG]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_pos ⟨i.2, j.2⟩]`. Unfold `Whittaker.superdiagSum`. Repeatedly rewrite using `[e1, e2]`. Establish `h3 : ∀ n, (∑ i : Fin n, ∑ j : Fin n, G i j) = ∑ i ∈ Finset.range n, ∑ j ∈ Finset.range n, G i j`. Introduce `n`.
+Replace the relevant objects with their definitions. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Fin.sum_univ_eq_sum_range (fun i => ∑ j : Fin n, G i j)]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Conclude with `Fin.sum_univ_eq_sum_range (G i) n`. Rewrite using `[h3, h3]`. Establish `h4 : ∀ i, ∑ j ∈ Finset.range m, G i j = ∑ j ∈ Finset.range k, G i j`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `i`. Use `(Finset.sum_subset (Finset.range_mono hkm) fun j _ hj => ?_).symm` and prove the remaining obligations. Simplify using `only [Finset.mem_range] at hj`. Simplify using `only [hG]`. Rewrite using `[dif_neg (by omega)]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Repeatedly rewrite using `[h4]`. Use `(Finset.sum_subset (Finset.range_mono hkm) fun i _ hi => ?_).symm` and prove the remaining obligations. Simplify using `only [Finset.mem_range] at hi`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Simplify using `only [hG]`.
-
-Rewrite using `[dif_neg (by omega)]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem law_superdiag {F : Type} [Field F] (A : Matrix (Fin k) (Fin k) F) (hkm : k ≤ m) :
     Whittaker.superdiagSum (embM m A) = Whittaker.superdiagSum A := by
@@ -223,13 +219,13 @@ theorem law_superdiag {F : Type} [Field F] (A : Matrix (Fin k) (Fin k) F) (hkm :
   rw [dif_neg (by omega)]
 
 /- English proof (translation)
-Introduce `w g hg n hn κ hκ l`. Establish `hK` using `(hK5e E m k hkm.le).2 ι hι`. Take `⟨ιw, hιw⟩` from `(hK5e E m k hkm.le).1 (w.1.adicCompletion E)`. Take `⟨hfl, hcl, hun, hint, htor⟩` from `hK.2.2.2.2.2.2.2.1 w.1 ιw hιw`. Take `⟨χ, hχ, hχv, hW⟩` from `hK7 E m ψ hψ w.1 (hS w.1 w.2)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨χ', hχ', hχv', hW'⟩` from `hK7 E k ψ hψ w.1 (hS w.1 w.2)`. Establish `hχχ : χ' = χ` using `DFunLike.ext _ _ fun y => by rw [hχv y, hχv' y]`. Rewrite `hW'` using `[hχχ]`. Establish `hι1 : cLoc w.1 (ι g) = 1` using `by rw [hcl, hg, map_one]`. Rewrite using `[pw_eq hK5a hk hkm hψ hι hφ, pw_eq hK5a hk hkm hψ hι hφ, map_mul ι, hfl, map_mul ιw, map_mul ιw, htor, hW (α w) φ hφ (hsat w) (ι g) hι1, hW' (α' w) φ' hφ' (hsat' w) g hg, sphericalWhittaker_mul_right hχ.1 _ _ (hint κ hκ), sphericalWhittaker_mul_left hχ.1 _ (hun n hn), sphericalWh …`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hps : Whittaker.psiN χ (ιw n) = Whittaker.psiN χ n`. Unfold `Whittaker.psiN`. Rewrite using `[hιw n, law_superdiag _ hkm.le]`. Establish `hnorm : Whittaker.psiN χ n * conj (Whittaker.psiN χ n) = 1`. Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq, Whittaker.psiN, hχ.2.2]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `h8` using `((hK8a E S m k α α' w χ hχ hk hkm.le).2 l).2.1 (Or.inl hkm)`. Rewrite using `[hps, ← h8]`. Simplify using `only [map_mul]`. Take the linear combination `(Wh ψ φ (ι g) * conj (Wh ψ φ' g) * sphericalWhittaker χ (α w) (Iwasawa.torusPow _ m (pad m l)) * conj (sphericalWhittaker χ (α' w) (Iwasawa.torusPow _ k l))) * hnorm`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem law (hG0 : jumpWindows.G0) (hK5e : CornerEmbedding) (hK5a : TransformsEmbedding) (hK7 : K7) (hK8a : LocalHeckeAlgebra) (hk : 1 ≤ k) (hkm : k < m)
     {ψ : AddChar (Ad E) ℂ} (hψ : StdPsi ψ) {S : Finset (Pl E)} (hS : ∀ w, w ∉ S → Cond ψ w)
@@ -265,7 +261,7 @@ theorem law (hG0 : jumpWindows.G0) (hK5e : CornerEmbedding) (hK5a : TransformsEm
     conj (sphericalWhittaker χ (α' w) (Iwasawa.torusPow _ k l))) * hnorm
 
 /- English proof (translation)
-Take `⟨h1, -, h3, h4, -, h6, -⟩` from `hP2 E a ψ hψ`. Establish `hpre : Pre ψ 0 (whit ψ (a - 1) (φ : GA E a → ℂ))` using `h4 (a - 1) (by omega) _ (h6 _ _ hφ)`. Conclude with `h1 0 _ hpre n (h3 n hn) h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem pos_wh (hP2 : P2) {a : ℕ} (ha : 1 ≤ a) {ψ : AddChar (Ad E) ℂ} (hψ : StdPsi ψ) {φ : XB E a}
     (hφ : Good ψ (a - 1) (φ : GA E a → ℂ)) {n : GA E a} (hn : UU 0 n) (h : GA E a) :
@@ -275,7 +271,7 @@ theorem pos_wh (hP2 : P2) {a : ℕ} (ha : 1 ≤ a) {ψ : AddChar (Ad E) ℂ} (h�
   exact h1 0 _ hpre n (h3 n hn) h
 
 /- English proof (translation)
-Take `⟨-, h2, -⟩` from `hP2 E a ψ hψ`. Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq, h2]`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem pos_unit (hP2 : P2) {a : ℕ} {ψ : AddChar (Ad E) ℂ} (hψ : StdPsi ψ) (n : GA E a) :
     psN ψ n * conj (psN ψ n) = 1 := by
@@ -284,21 +280,21 @@ theorem pos_unit (hP2 : P2) {a : ℕ} {ψ : AddChar (Ad E) ℂ} (hψ : StdPsi ψ
   simp
 
 /- English proof (translation)
-Take `⟨C, hCU, hCblk, -, -, -, hB⟩` from `hb`. Take `⟨hex, hK⟩` from `hK5e E m k hkm.le`. Take `⟨-, hblk, hsurj, -, -, -, -, hloc, -, huu, hpsn⟩` from `hK ι hι`. Take `⟨-, hmul, -, -, hDuu, -, -, -, -, -, hDint⟩` from `hD0 E k`. Take `⟨-, hmulm, -, -, hDuum, -⟩` from `hD0 E m`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hm1 : 1 ≤ m` using `by omega`. Use `⟨1 / 2, 2, by norm_num, fun g hg hpw => ?_⟩` and prove the remaining obligations. Take `⟨n, g₀, κ, hn, hg₀, hκi, hκS, hκw, rfl⟩` from `(hC0 E k S).2.2.2.1 g hg`. Establish `e1 : PW ψ (fun g => pT ψ k (m - k) φ (ι g)) φ' (n * g₀ * κ) = Wh ψ φ (ι g₀) * conj (Wh ψ φ' g₀)`. Rewrite using `[hsph _ κ hκi hκS hκw, pw_eq hK5a hk hkm hψ hι hφ, map_mul, pos_wh hP2 hm1 hψ hφ ((huu n).2 hn), pos_wh hP2 hk hψ hφ' hn, hpsn]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hc : conj (psN ψ n * Wh ψ φ' g₀) = conj (psN ψ n) * conj (Wh ψ φ' g₀)` using `map_mul _ _ _`. Rewrite using `[hc]`. Take the linear combination `(Wh ψ φ (ι g₀) * conj (Wh ψ φ' g₀)) * pos_unit hP2 hψ n`. Establish `hDg : Dt (n * g₀ * κ) = Dt g₀`. Rewrite using `[hmul, hmul, hDuu 0 n hn, hDint κ hκi hκw]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite `hpw`, the goal using `[e1]`. Rewrite using `[hDg]`. Establish `hIn : InS S (ι g₀)` using `fun w hw => by`. Take `⟨ιw, hιw⟩` from `hex (w.adicCompletion E)`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[(hloc w ιw hιw).2.1 g₀, hg₀ w hw, map_one]`. Establish `hMir : Mir k (ι g₀)` using `fun i c h => hblk g₀ i c (h.imp id fun h => h.le)`. Take `⟨n', c, hcC, t, hn', -, hgc, ht, hWt⟩` from `hB (ι g₀) ⟨hIn, hMir⟩ (left_ne_zero_of_mul hpw)`. Take `⟨c₀, rfl⟩` from `hsurj c (hCblk c hcC)`. Establish `hc₀ : c₀ ∈ U'` using `hUU c₀ (hCU hcC)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨n₀, hn₀d⟩ : ∃ n₀, n₀ = g₀ * c₀⁻¹` from `⟨_, rfl⟩`. Establish `hιn : ι n₀ = n'` using `by rw [hn₀d, map_mul, map_inv, hgc, mul_inv_cancel_right]`. Establish `hn₀ : UU 0 n₀` using `(huu n₀).1 (hιn ▸ hn')`. Establish `hg₀eq : g₀ = n₀ * c₀` using `by rw [hn₀d, inv_mul_cancel_right]`. Establish `hDt : Dt g₀ = Dt c₀` using `by rw [hg₀eq, hmul, hDuu 0 n₀ hn₀, one_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hlo, hhi, hre⟩` from `hU'p c₀ hc₀`. Use `⟨hDt ▸ hlo, hDt ▸ hhi, ?_⟩` and prove the remaining obligations. Establish `hval : Wh ψ φ (ι g₀) * conj (Wh ψ φ' g₀) = (t : ℂ) * conj (Wh ψ φ' c₀)`. Rewrite using `[hWt, ← hιn, hpsn, hg₀eq, pos_wh hP2 hk hψ hφ' hn₀]`. Establish `hc : conj (psN ψ n₀ * Wh ψ φ' c₀) = conj (psN ψ n₀) * conj (Wh ψ φ' c₀)` using `map_mul _ _ _`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hc]`. Take the linear combination `((t : ℂ) * conj (Wh ψ φ' c₀)) * pos_unit hP2 hψ n₀`. Rewrite using `[hval, hDt, mul_assoc, Complex.re_ofReal_mul]`. Conclude with `mul_nonneg ht hre.le`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pos (hG0 : jumpWindows.G0) (hP2 : P2) (hD0 : D0) (hC0 : C0) (hK5e : CornerEmbedding) (hK5a : TransformsEmbedding) (hk : 1 ≤ k) (hkm : k < m)
     {ψ : AddChar (Ad E) ℂ} (hψ : StdPsi ψ) {S : Finset (Pl E)} {ι : GA E k →* GA E m} (hι : IsEmb ι) {u : ℝ}
@@ -354,21 +350,17 @@ theorem pos (hG0 : jumpWindows.G0) (hP2 : P2) (hD0 : D0) (hC0 : C0) (hK5e : Corn
 end PKLt1
 
 /- English proof (translation)
-Introduce `hG0 hG5 hD0 hP2 hC0 hK1 hK5e hK5a hK5b hK5c hK6 hK7 hK8 hK8a hKU`. Introduce `E _ _ _ m k hk hkm ψ hψ S hS ι hι α α' u φ' hφ'`. Take `⟨U', hU', hU'p⟩` from `hKU E k ψ hψ φ' u hφ'.good hφ'.one`. Take `⟨-, hK⟩` from `hK5e E m k hkm.le`. Take `⟨U, hU, hUU⟩` from `(hK ι hι).2.2.2.2.1 U' hU'`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨U, hU, fun M hM φ hφ => ?_⟩` and prove the remaining obligations. Establish `hA` using `hK5a E m k hk hkm ψ hψ ι hι φ hφ.good`. Establish `hsph : SphOff S (PW ψ (fun g => pT ψ k (m - k) φ (ι g)) φ')`. Introduce `g κ hκi hκS hκw`. Take `⟨hex, -, hinf, -, -⟩` from `(hK ι hι).2.2.2.2.2.2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨-, -, -, -, -, -, -, hloc, -, -, -⟩` from `hK ι hι`. Rewrite using `[PKLt1.pw_eq hK5a hk hkm hψ hι hφ.good, PKLt1.pw_eq hK5a hk hkm hψ hι hφ.good, map_mul, (hK8 E k ψ hψ S hS α' φ' hφ'.good hφ'.sat).2.1 g κ hκi hκS hκw]`. Use `congr 1`. Use `(hK8 E m ψ hψ S hS α φ hφ.good hφ.sat).2.1 (ι g) (ι κ) ?_ (fun w hw => ?_) (fun w => ?_)` and prove the remaining obligations. Conclude with `(hK ι hι).2.2.2.2.2.2.2.2.1 κ hκi`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨ιw, hιw⟩` from `(hK5e E m k hkm.le).1 (w.adicCompletion E)`. Rewrite using `[(hloc w ιw hιw).2.1 κ, hκS w hw, map_one]`. Take `⟨ιw, hιw⟩` from `(hK5e E m k hkm.le).1 (w.adicCompletion E)`. Rewrite using `[(hloc w ιw hιw).2.1 κ]`. Conclude with `(hloc w ιw hιw).2.2.2.1 _ (hκw w)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `{ pre := hA.2.2.1 supp := by`. Take `⟨C, hC, hCp⟩` from `hK6 E m k hk hkm ψ hψ S hS ι hι α M U φ hφ`. Use `⟨C, hC, fun g hg => ?_⟩` and prove the remaining obligations. Take `⟨p, hp, hw⟩` from `hA.2.2.2.2.1 g hg`. Rewrite using `[← PKLt1.lastRow_mir g hp]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `hCp _ hw`. Use `sq := PKLt1.sq hK1 hK5a hK5b hK5c hk hkm hψ hι hφ.good hM hφ.dec (hD0 E k).1`. Use `good := hφ'.good`. Use `inv := hφ'.inv`. Use `dec := hφ'.dec`.
-
-Use `law := PKLt1.law hG0 hK5e hK5a hK7 hK8a hk hkm hψ hS hι α α' hφ.good hφ.sat hφ'.good hφ'.sat`. Use `sph := hsph`. Use `one := by`. Take `⟨C, -, -, -, -, ⟨t, ht, hW⟩, -⟩` from `hφ.bump`. Rewrite using `[PKLt1.pw_eq hK5a hk hkm hψ hι hφ.good, map_one, hW, hφ'.one]`.
-
-Simplify using `[ht]`. Use `pos := PKLt1.pos hG0 hP2 hD0 hC0 hK5e hK5a hk hkm hψ hι hU'p hUU hφ.good hφ.bump hφ'.good hsph }`.
+A detailed English derivation is pending.
 -/
 theorem kernel_less_first_of : jumpWindows.G0 → jumpWindows.G5 → D0 → P2 → C0 → K1 → CornerEmbedding → TransformsEmbedding → FourierSeriesColumn → ShortRowsEmbedding → K6 → K7 → K8 → LocalHeckeAlgebra → KU → KLt1 := by
   intro hG0 hG5 hD0 hP2 hC0 hK1 hK5e hK5a hK5b hK5c hK6 hK7 hK8 hK8a hKU

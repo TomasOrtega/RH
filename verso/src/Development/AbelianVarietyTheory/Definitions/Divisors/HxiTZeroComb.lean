@@ -108,21 +108,21 @@ Both sides reduce to the same expression.
 example (Y : Scheme.{0}) (n : ℤ) : HEt l E Y n 0 = HE l E Y n := rfl
 
 /- English proof (translation)
-Simplify using `[opT]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem opT_zero_comb {A : Over S} [GrpObj A] (act : OActN O A) {m : ℕ} (p : S ⟶ B) (b : B' ⟶ B) (n t : ℤ) :
     opT l act p b (0 : Matrix (Fin m) (Fin m) O →₀ E) n t = 0 := by
   simp [opT]
 
 /- English proof (translation)
-Rewrite using `[HxiT, opT_zero_comb, LinearMap.range_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem HxiT_zero_comb {A : Over S} [GrpObj A] (act : OActN O A) {m : ℕ} (p : S ⟶ B) (b : B' ⟶ B) (k : ℕ) (t i : ℤ) :
     HxiT l act p b (0 : Matrix (Fin m) (Fin m) O →₀ E) k t i = ⊥ := by
   rw [HxiT, opT_zero_comb, LinearMap.range_zero]
 
 /- English proof (translation)
-Unfold `opT`. Conclude with `Finsupp.sum_add_index' (fun _ => zero_smul _ _) (fun _ _ _ => add_smul _ _ _)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem opT_add {A : Over S} [GrpObj A] (act : OActN O A) {m : ℕ} (p : S ⟶ B) (b : B' ⟶ B)
     (ε ε' : Matrix (Fin m) (Fin m) O →₀ E) (n t : ℤ) : opT l act p b (ε + ε') n t = opT l act p b ε n t + opT l act p b ε' n t := by

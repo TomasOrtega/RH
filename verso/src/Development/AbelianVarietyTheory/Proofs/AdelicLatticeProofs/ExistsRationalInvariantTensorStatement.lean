@@ -5,7 +5,7 @@ open Matrix GlobalTheory.ClassFin
 open scoped Kronecker ComplexOrder TensorProduct
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.ClassFin.RatInvTensor.exists_rational_invariant_tensor` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FAdelicLatticeProofs%2FExistsRationalInvariantTensor.lean&line=115#L115)
 -/

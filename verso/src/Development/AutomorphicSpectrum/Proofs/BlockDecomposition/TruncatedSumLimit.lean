@@ -8,9 +8,9 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Mass.MeanV
 
 /- English proof (translation)
-Set `e : {x : Unit → F // ∀ v, v ∉ T → ∀ i, algebraMap F (Fv F v) (x i) ∈ v.adicCompletionIntegers F} ≃ (IntOut T)` to `(Equiv.funUnique Unit F).subtypeEquiv (fun x => by`. Prove the components needed by the constructor for the conclusion. Introduce `hx v hv`. Conclude with `hx v hv ()`. Introduce `hx v hv i`.
+Introduce a local definition for the expression. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hx v hv)`. Rewrite using `[← tsum_subtype (IntOut T) h]`. Conclude with `e.tsum_eq (fun y : IntOut T => h y.1)`.
+A detailed English derivation is pending.
 -/
 theorem tsum_unitVec_eq {F : Type} [Field F] [NumberField F] (T : Finset (HeightOneSpectrum (𝓞 F))) (h : F → ℝ) :
     ∑' x : {x : Unit → F // ∀ v, v ∉ T → ∀ i, algebraMap F (Fv F v) (x i) ∈ v.adicCompletionIntegers F}, h (x.1 ()) =
@@ -26,7 +26,7 @@ theorem tsum_unitVec_eq {F : Type} [Field F] [NumberField F] (T : Finset (Height
   exact e.tsum_eq (fun y : IntOut T => h y.1)
 
 /- English proof (translation)
-Rewrite using `[tsum_ne_zero_eq_sum h B hB hh, tsum_eq_sum (s := insert 0 B) ?_, Finset.sum_insert (fun h0 => hB 0 h0 rfl)]`. Introduce `x hx`. Simplify using `only [Finset.mem_insert, not_or] at hx`. Conclude with `hh x hx.1 hx.2`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tsum_eq_zero_add_of_finset {F : Type} [Field F] (h : F → ℝ) (B : Finset F) (hB : ∀ x ∈ B, x ≠ 0)
     (hh : ∀ x, x ≠ 0 → x ∉ B → h x = 0) :
@@ -37,26 +37,26 @@ theorem tsum_eq_zero_add_of_finset {F : Type} [Field F] (h : F → ℝ) (B : Fin
   exact hh x hx.1 hx.2
 
 /- English proof (translation)
-The claim follows from `(measurePreserving_funUnique μ Unit).integral_comp' (g := f)`.
+A detailed English derivation is pending.
 -/
 theorem integral_unitVec_eq {X : Type} [MeasurableSpace X] (μ : Measure X) [SigmaFinite μ] (f : X → ℝ) :
     ∫ y, f (y ()) ∂(Measure.pi fun _ : Unit => μ) = ∫ y, f y ∂μ :=
   (measurePreserving_funUnique μ Unit).integral_comp' (g := f)
 
 /- English proof (translation)
-Introduce `hE hC F _ _ hF θ hθ li lam hli hlam T G ψ hG hGc hψ`. Establish `hlocI : IsLocR (Ainf F)` using `GlobalTheory.CompanionTheory.SW.isLocR_Ainf F hF`. Establish `: BorelSpace (Ainf F)` using `⟨rfl⟩`. Establish `: LocallyCompactSpace (Ainf F)` using `hlocI.2.1`. Establish `: SecondCountableTopology (Ainf F)` using `hlocI.2.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hli.1` as an intermediate fact. Establish `: SigmaFinite li` using `inferInstance`. Establish `hsf : ∀ v, SigmaFinite (lam v)` using `fun v => by`. Establish `hloc : IsLocR (Fv F v)` using `GlobalTheory.CompanionTheory.SW.LocFv.isLocR_Fv F v`. Establish `: BorelSpace (Fv F v)` using `⟨rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: LocallyCompactSpace (Fv F v)` using `hloc.2.1`. Establish `: SecondCountableTopology (Fv F v)` using `hloc.2.2.1`. Use `(hlam v).1` as an intermediate fact. Use `infer_instance`. Establish `key` using `hE F hF θ hθ li lam hli hlam Unit T (fun y => G (y ())) (fun v y => ψ v (y ())) (hG.comp (continuous_apply ())) (hGc.comp_homeomorph (Homeomorph.funUnique Unit (Ainf F))) (fun v hv => ⟨(hψ v hv).1.comp (continuous_apply ()), (hψ v hv).2.comp_homeomorph (Homeomorph.funUnique Unit …`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `key` using `[integral_unitVec_eq li G, Finset.prod_congr rfl (fun v _ => haveI := hsf v; integral_unitVec_eq (lam v) (ψ v))]`. Simplify using `only [Fintype.card_unit, mul_one] at key`. Establish `hd : 0 < Module.finrank ℚ F` using `Module.finrank_pos`. Establish `hpow : Tendsto (fun ε : ℝ => ε ^ Module.finrank ℚ F * (G 0 * ∏ v ∈ T, ψ v 0)) (𝓝[>] 0) (𝓝 0)`. Establish `h0 : Tendsto (fun ε : ℝ => ε ^ Module.finrank ℚ F * (G 0 * ∏ v ∈ T, ψ v 0)) (𝓝 0) (𝓝 ((0 : ℝ) ^ Module.finrank ℚ F * (G 0 * ∏ v ∈ T, ψ v 0)))` using `((continuous_pow _).mul continuous_const).tendsto 0`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h0` using `[zero_pow hd.ne', zero_mul]`. Conclude with `h0.mono_left nhdsWithin_le_nhds`. Establish `hsub` using `key.sub hpow`. Rewrite `hsub` using `[sub_zero]`. Use `hsub.congr' ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `filter_upwards [self_mem_nhdsWithin] with ε hε`. Take `⟨B, hB, hh⟩` from `truncTerm_finite hC F hF θ hθ T G ψ hGc (fun v hv => (hψ v hv).2) ε hε`. Establish `h0mem : (0 : F) ∈ IntOut T` using `fun v _ => by`. Rewrite using `[map_zero]`. Conclude with `zero_mem _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `e` using `(tsum_unitVec_eq T (fun x => G (θ ε * algebraMap F (Ainf F) x) * ∏ v ∈ T, ψ v (algebraMap F (Fv F v) x))).trans (tsum_eq_zero_add_of_finset _ B hB hh)`. Rewrite `e` using `[Set.indicator_of_mem h0mem]`. Rewrite using `[e]`. Simplify using `only [truncSum, map_zero, mul_zero]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem tendsto_truncSum : Equi → CountBd → ∀ (F : Type) [Field F] [NumberField F], IsTotallyReal F →
     ∀ θ : ℝ →+* Ainf F, Continuous θ → ∀ (li : Measure (Ainf F))

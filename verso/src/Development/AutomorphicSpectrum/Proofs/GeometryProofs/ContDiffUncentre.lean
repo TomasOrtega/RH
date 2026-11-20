@@ -54,7 +54,7 @@ def IsFramePeriods (𝔐 : HodgeCpt Y S y) {r : ℕ} (b : Fin r → 𝔐.Li) {P 
       𝔐.M.GramAt 𝔐.t.PP.L z b (periodGram L U u))
 
 /- English proof (translation)
-Establish `h : (ρ : ℂ) ≠ 0` using `by exact_mod_cast hρ.ne'`. Use function extensionality and compare the values at `i`. Simplify using `[recentre, uncentre, h]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem recentre_uncentre {n : ℕ} (t₀ : Fin n → ℂ) {ρ : ℝ} (hρ : 0 < ρ) (π : Equiv.Perm (Fin n)) (t : Fin n → ℂ) :
     recentre t₀ ρ π (uncentre t₀ ρ π t) = t := by
@@ -63,9 +63,9 @@ theorem recentre_uncentre {n : ℕ} (t₀ : Fin n → ℂ) {ρ : ℝ} (hρ : 0 <
   simp [recentre, uncentre, h]
 
 /- English proof (translation)
-Establish `: Flat.punct n a ρ = Metric.ball 0 ρ ∩ ⋂ i : Fin n, {z : Fin n → ℂ | i.val < a → z i ≠ 0}`. Use extensionality with `z`. Simplify using `[Flat.punct]`. Rewrite using `[this]`. Use `Metric.isOpen_ball.inter (isOpen_iInter_of_finite fun i => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `h : i.val < a`. Simplify `isOpen_ne_fun (continuous_apply i) continuous_const` using `[h]`. Simplify using `[h]`.
+Consider separately whether the proposition holds or fails. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 -/
 theorem isOpen_punct (n a : ℕ) (ρ : ℝ) : IsOpen (Flat.punct n a ρ) := by
   have : Flat.punct n a ρ = Metric.ball 0 ρ ∩ ⋂ i : Fin n, {z : Fin n → ℂ | i.val < a → z i ≠ 0} := by
@@ -77,7 +77,7 @@ theorem isOpen_punct (n a : ℕ) (ρ : ℝ) : IsOpen (Flat.punct n a ρ) := by
   · simp [h]
 
 /- English proof (translation)
-Unfold `uncentre`. Conclude with `contDiff_pi.2 fun i => contDiff_const.mul ((contDiff_apply ℝ ℂ (π.symm i)).sub contDiff_const)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem contDiff_uncentre {n : ℕ} (t₀ : Fin n → ℂ) (ρ : ℝ) (π : Equiv.Perm (Fin n)) :
     ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (uncentre t₀ ρ π) := by
@@ -85,7 +85,7 @@ theorem contDiff_uncentre {n : ℕ} (t₀ : Fin n → ℂ) (ρ : ℝ) (π : Equi
   exact contDiff_pi.2 fun i => contDiff_const.mul ((contDiff_apply ℝ ℂ (π.symm i)).sub contDiff_const)
 
 /- English proof (translation)
-Rewrite using `[mem_ball_zero_iff, pi_norm_lt_iff one_pos]`. Introduce `i`. Establish `h1 : ‖t (π.symm i) - t₀ (π.symm i)‖ ≤ ‖t - t₀‖` using `norm_le_pi_norm (t - t₀) (π.symm i)`. Simplify using `only [uncentre, norm_mul, norm_inv, Complex.norm_real, Real.norm_of_nonneg hρ.le]`. Rewrite using `[inv_mul_lt_iff₀ hρ]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -99,14 +99,14 @@ theorem uncentre_mem_ball {n : ℕ} {t₀ t : Fin n → ℂ} {ρ : ℝ} (hρ : 0
   linarith
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[uncentre]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem uncentre_self {n : ℕ} (t : Fin n → ℂ) (ρ : ℝ) (π : Equiv.Perm (Fin n)) : uncentre t ρ π t = 0 := by
   funext i
   simp [uncentre]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[recentre]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem recentre_zero {n : ℕ} (t : Fin n → ℂ) (ρ : ℝ) (π : Equiv.Perm (Fin n)) : recentre t ρ π 0 = t := by
   funext i

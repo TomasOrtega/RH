@@ -4,13 +4,13 @@ open NumberField IsDedekindDomain MeasureTheory
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `G H _ _ _ _ _ _ _ _ _ _ e he hes Γ Λ hΓ μ 𝓕 hμ h𝓕`. Set `m : G ≃ᵐ H` to `{ toEquiv := e.toEquiv measurable_toFun := he.measurable measurable_invFun := hes.measurable }`. Establish `hmp : MeasurePreserving m (μ.map e.symm) μ` using `(MeasurePreserving.symm m.symm ⟨m.symm.measurable, rfl⟩)`. Establish `hmp' : MeasurePreserving e (μ.map e.symm) μ` using `hmp`. Use `⟨μ.map e.symm, AddEquiv.isAddHaarMeasure_map μ e.symm hes (by simpa using he), ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Set `f : Λ → Γ` to `fun y => ⟨e.symm y, (hΓ _).1 (by simpa using y.2)⟩`. Establish `hf : Function.Bijective f`. Prove the components needed by the constructor for the conclusion. Introduce `a b hab`. Conclude with `Subtype.ext (e.symm.injective (congrArg Subtype.val hab))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x`. Conclude with `⟨⟨e x, (hΓ _).2 x.2⟩, Subtype.ext (by simp [f])⟩`. Use `h𝓕.preimage_of_equiv hmp'.quasiMeasurePreserving hf ?_` and prove the remaining obligations. Introduce `y x`. Simplify using `[f, AddSubgroup.vadd_def]`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `φ`. Conclude with `hmp.setIntegral_preimage_emb m.measurableEmbedding φ 𝓕`.
+A detailed English derivation is pending.
 -/
 theorem exists_isAddHaarMeasure_isAddFundamentalDomain_preimage :
     ∀ (G H : Type) [AddCommGroup G] [TopologicalSpace G] [IsTopologicalAddGroup G] [MeasurableSpace G] [BorelSpace G] [AddCommGroup H] [TopologicalSpace H] [IsTopologicalAddGroup H] [MeasurableSpace H] [BorelSpace H] (e : G ≃+ H), Continuous e → Continuous e.symm → ∀ (Γ : AddSubgroup G) (Λ : AddSubgroup H), (∀ x, e x ∈ Λ ↔ x ∈ Γ) → ∀ (μ : Measure H) (𝓕 : Set H), μ.IsAddHaarMeasure → IsAddFundamentalDomain Λ 𝓕 μ → ∃ ν : Measure G, ν.IsAddHaarMeasure ∧ IsAddFundamentalDomain Γ (e ⁻¹' 𝓕) ν ∧ ∀ φ : H → ℝ, ∫ w in e ⁻¹' 𝓕, φ (e w) ∂ν = ∫ w in 𝓕, φ w ∂μ := by

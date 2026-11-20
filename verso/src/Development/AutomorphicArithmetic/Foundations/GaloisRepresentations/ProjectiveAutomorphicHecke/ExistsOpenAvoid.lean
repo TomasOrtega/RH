@@ -10,15 +10,13 @@ namespace UpperTheory.Gal.CertificateRingHomMap.PNbhd2
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
 
 /- English proof (translation)
-Take `⟨hKo, hKc⟩` from `GlobalTheory.LFun.SatCompare.isOpen_isCompact_KGL (E := E) w n`. Distinguish the cases in `hxK : x ∈ GlobalTheory.LFun.KGL w n`. Use `swap`. Conclude with `⟨_, hKo, le_rfl, hxK⟩`. Establish `hne : ∃ i j, x.val i j ≠ (1 : Matrix (Fin n) (Fin n) (w.adicCompletion E)) i j`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hx (Units.ext (Matrix.ext h))`. Take `⟨i, j, hij⟩` from `hne`. Use `haveI : CompactSpace ↥(GlobalTheory.LFun.KGL w n) := isCompact_iff_compactSpace.1 hKc`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Set `f : ↥(GlobalTheory.LFun.KGL w n) → w.adicCompletion E` to `fun g => g.1.val i j - (1 : Matrix (Fin n) (Fin n) (w.adicCompletion E)) i j`. Establish `hf : Continuous f` using `Continuous.sub (Continuous.matrix_elem (Units.continuous_val.comp continuous_subtype_val) i j) continuous_const`. Take `⟨A, hA⟩` from `NonarchimedeanAddGroup.is_nonarchimedean ({x.val i j - (1 : Matrix (Fin n) (Fin n) (w.adicCompletion E)) i j}ᶜ : Set (w.adicCompletion E)) (isOpen_compl_singleton.mem_nhds (by simpa using (sub_ne_zero.2 hij).symm))`. Establish `hW : IsClopen (f ⁻¹' (A : Set (w.adicCompletion E)))` using `A.isClopen.preimage hf`. Establish `h1 : (1 : ↥(GlobalTheory.LFun.KGL w n)) ∈ f ⁻¹' (A : Set (w.adicCompletion E))`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Simplify using `[f, A.zero_mem]`. Take `⟨H, hH⟩` from `IsTopologicalGroup.exist_openSubgroup_sub_clopen_nhds_of_one hW h1`. Use `⟨(H : Subgroup _).map (GlobalTheory.LFun.KGL w n).subtype, ?_, Subgroup.map_subtype_le _, ?_⟩` and prove the remaining obligations. Conclude with `hKo.isOpenEmbedding_subtypeVal.isOpenMap _ H.isOpen`. Introduce and unpack `⟨h, hh, rfl⟩`.
-
-Conclude with `hA (hH hh) rfl`.
+A detailed English derivation is pending.
 -/
 private theorem exists_open_avoid (w : Plc E) (x : GLw n w) (hx : x ≠ 1) :
     ∃ V : Subgroup (GLw n w), IsOpen (V : Set (GLw n w)) ∧ V ≤ GlobalTheory.LFun.KGL w n ∧ x ∉ V := by
@@ -49,15 +47,13 @@ private theorem exists_open_avoid (w : Plc E) (x : GLw n w) (hx : x ≠ 1) :
     exact hA (hH hh) rfl
 
 /- English proof (translation)
-Proceed by induction on `F using Finset.induction_on with`. Consider the case `empty`. Conclude with `⟨fun w => GlobalTheory.LFun.KGL w n, fun w => ⟨(GlobalTheory.LFun.SatCompare.isOpen_isCompact_KGL (E := E) w n).1, le_rfl⟩, by simp⟩`. Consider the case `insert i F _ ih`. Take `⟨Kw, h1, h2⟩` from `ih`.
+Proceed by induction. Treat this case separately. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨v, V, hVo, hVK⟩` from `i`. Establish `hle : ∀ w, Function.update Kw v (Kw v ⊓ V) w ≤ Kw w` using `fun w => by`. Distinguish the cases in `h : w = v`. Substitute `h` using the available equality. Rewrite using `[Function.update_self]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Conclude with `inf_le_left`. Rewrite using `[Function.update_of_ne h]`. Use `⟨Function.update Kw v (Kw v ⊓ V), fun w => ?_, fun j hj => ?_⟩` and prove the remaining obligations. Use `⟨?_, (hle w).trans (h1 w).2⟩` and prove the remaining obligations. Distinguish the cases in `h : w = v`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `h` using the available equality. Rewrite using `[Function.update_self]`. Conclude with `(h1 w).1.inter hVo`. Rewrite using `[Function.update_of_ne h]`. Conclude with `(h1 w).1`.
-
-Break down `Finset.mem_insert.1 hj with rfl | hj` into its components or cases. Simplify using `only [Function.update_self]`. Conclude with `inf_le_right`. Conclude with `(hle j.1).trans (h2 j hj)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem exists_Kw
     (F : Finset (Σ w : Plc E, {V : Subgroup (GLw n w) // IsOpen (V : Set (GLw n w)) ∧ V ≤ GlobalTheory.LFun.KGL w n})) :
@@ -92,23 +88,21 @@ private theorem exists_Kw
 end UpperTheory.Gal.CertificateRingHomMap.PNbhd2
 
 /- English proof (translation)
-Introduce `E _ _ _ n O hO`. Use `haveI := GlobalTheory.DefU.LocAdm.t2Space_adelicGL_cmField (E := E) (n := n)`. Set `p : finU E n →* GL (Fin n) (Af E)` to `(GeneralLinearGroup.map (pFin E)).comp ((UA E n).subtype.comp (finU E n).subtype)`. Establish `hp : Continuous p` using `continuous_map_pFin.comp (continuous_subtype_val.comp continuous_subtype_val)`. Establish `hfin : ∀ x : UA E n, x ∈ finU E n ↔ finGL E n (GeneralLinearGroup.map (pFin E) (x : GA E n)) = (x : GA E n)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Establish `h1 : GeneralLinearGroup.map (pInf E) (x : GA E n) = 1` using `hx`. Conclude with `ga_ext (by rw [pInf_finGL, h1]) (by rw [pFin_finGL])`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition.
 
-Introduce `hx`. Express the relevant statement in the definitionally equal form `GeneralLinearGroup.map (pInf E) (x : GA E n) = 1`. Rewrite using `[← hx, pInf_finGL]`. Establish `hc : IsClosed ((finU E n : Subgroup (UA E n)) : Set (UA E n))`. Establish `e : ((finU E n : Subgroup (UA E n)) : Set (UA E n)) = {x : UA E n | finGL E n (GeneralLinearGroup.map (pFin E) (x : GA E n)) = (x : GA E n)}` using `Set.ext hfin`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `isClosed_eq (GlobalTheory.DefU.LocAdm.continuous_finGL.comp (continuous_map_pFin.comp continuous_subtype_val)) continuous_subtype_val`. Establish `hι : Topology.IsClosedEmbedding (fun x : finU E n => ((x : UA E n) : GA E n))` using `GlobalTheory.DefU.LocAdm.isClosed_UA.isClosedEmbedding_subtypeVal.comp hc.isClosedEmbedding_subtypeVal`. Establish `hKc` using `GlobalTheory.EulerTwRestr.isCompact_Kglob (E := E) (n := n)`. Establish `hKo` using `GlobalTheory.EulerTwRestr.isOpen_Kglob (E := E) (n := n)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hC : IsCompact {u : finU E n | p u ∈ GlobalTheory.EulerTw.Kglob E n}` using `IsCompact.of_isClosed_subset (hι.isCompact_preimage (hKc.image GlobalTheory.DefU.LocAdm.continuous_finGL)) ((Subgroup.isClosed_of_isOpen _ hKo).preimage hp) fun x hx => ⟨p x, hx, (hfin x).1 x.2⟩`. Establish `hL : ∀ w : Plc E, Continuous fun u : finU E n => cLoc w u.1` using `fun w => (show Continuous (GeneralLinearGroup.map (n := Fin n) (pLoc E w)) from Continuous.units_map _ (Continuous.matrix_map continuous_id (show Continuous (pLoc E w) from RestrictedProduct.continuous_eval (R := fun w : Plc E => w.adicCompletion E) (A := fun w : Plc E => (w.adic …`. Set `D : (Σ w : Plc E, {V : Subgroup (GLw n w) // IsOpen (V : Set (GLw n w)) ∧ V ≤ GlobalTheory.LFun.KGL w n}) → Set (finU E n)` to `fun i => {u | cLoc i.1 u.1 ∈ i.2.1}`. Establish `hD : ∀ i, IsClosed (D i)` using `fun i => (Subgroup.isClosed_of_isOpen _ i.2.2.1).preimage (hL i.1)`. Establish `hone : ∀ u : finU E n, (∀ i, u ∈ D i) → u = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `u hu`. Establish `h1 : ∀ w : Plc E, cLoc w u.1 = 1`. Introduce `w`. Assume the negation of the conclusion as `hne`. Take `⟨V, hVo, hVK, hV⟩` from `UpperTheory.Gal.CertificateRingHomMap.PNbhd2.exists_open_avoid w _ hne`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hV (hu ⟨w, V, hVo, hVK⟩)`. Establish `h2 : p u = 1` using `GlobalTheory.EulerTwRestr.gl_ext fun w => (h1 w).trans (map_one _).symm`. Establish `h3 : GeneralLinearGroup.map (pInf E) (u.1 : GA E n) = 1` using `u.2`. Conclude with `Subtype.ext (Subtype.ext (ga_ext (by rw [h3]; simp) (by simpa using (show GeneralLinearGroup.map (pFin E) (u.1 : GA E n) = 1 from h2))))`. Establish `hemp : ({u : finU E n | p u ∈ GlobalTheory.EulerTw.Kglob E n} \ (O : Set (finU E n))) ∩ ⋂ i, D i = ∅`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `Set.eq_empty_of_forall_notMem fun u hu => ?_` and prove the remaining obligations. Use `hone u (Set.mem_iInter.1 hu.2)` as an intermediate fact. Conclude with `hu.1.2 (this ▸ O.one_mem)`. Take `⟨F, hF⟩` from `(hC.diff hO).elim_finite_subfamily_closed D hD hemp`. Take `⟨Kw, hK1, hK2⟩` from `UpperTheory.Gal.CertificateRingHomMap.PNbhd2.exists_Kw F`.
-
-Use `⟨F.image Sigma.fst, Kw, hK1, fun u hu hS => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `huO`. Establish `hmem : u ∈ ({u : finU E n | p u ∈ GlobalTheory.EulerTw.Kglob E n} \ (O : Set (finU E n))) ∩ ⋂ i ∈ F, D i` using `⟨⟨GlobalTheory.EulerTwRestr.mem_Kglob.2 hu, huO⟩, Set.mem_iInter₂.2 fun i hi => hK2 i hi (hS i.1 (Finset.mem_image_of_mem _ hi))⟩`. Rewrite `hmem` using `[hF]`. Conclude with `hmem`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.CertificateRingHomMap.pNbhd2_of :
     UpperTheory.Gal.CertificateRingHomMap.Nbhd2 := by

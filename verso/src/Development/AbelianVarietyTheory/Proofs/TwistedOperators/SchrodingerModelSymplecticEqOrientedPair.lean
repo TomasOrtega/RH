@@ -17,13 +17,13 @@ noncomputable section
 namespace GlobalTheory.SquareAgree.SympForm
 
 /- English proof (translation)
-Unfold `symplO GlobalTheory.WeilM.symp hO GlobalTheory.WeilM.hTens`. Use `congr 1`. Establish `h : ∀ j l, (1 : AE D) * GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM D.host.F (D.host.xi0 • S.gram⁻¹) j l = incA D D.host.xi0 * incA D (S.gram⁻¹ j l)` using `fun j l => by`. Rewrite using `[one_mul, ← map_mul]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hc : ∀ z, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA D.sp.cm.sig z = cA D z` using `fun z => rfl`. Simplify using `only [Finset.mul_sum, hc]`. Use `conv_rhs => rw [Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `conv_rhs => rw [Finset.sum_comm]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun d _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Establish `h' : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM D.host.F T.gramᵀ d c = incA D (T.gram c d)` using `rfl`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite using `[h']`. Take the linear combination `(-(x d a * incA D (T.gram c d) * cA D (y c b))) * h a b`.
+A detailed English derivation is pending.
 -/
 theorem symplO_eq_symp_one {D : D7} (S T : HSp D) (x y : WO S T) : symplO S T x y =
     GlobalTheory.WeilM.symp (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA D.sp.cm.sig) 1 (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM D.host.F T.gramᵀ)
@@ -52,21 +52,21 @@ end GlobalTheory.SquareAgree.SympForm
 open GlobalTheory.SquareAgree.SympForm in
 
 /- English proof (translation)
-Introduce `D ε S X d e Vs Ws hJ hJW cS hc u v`. Take `⟨G, hGdef⟩ : ∃ G : Matrix (Fin S.rank) (Fin S.rank) D.host.E, (if ε then -1 else 1 : D.host.E) • S.gram = G` from `⟨_, rfl⟩`. Rewrite `hc` using `[hGdef]`. Establish `hs : (sgn ε S).gram = G`. Rewrite using `[← hGdef]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Consider the cases of `ε`. Simplify using `[sgn]`. Use extensionality with `i j`. Simplify using `[HSpace.gram]`. Establish `hVJ : Vs.J = -G`.
+Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Apply the tactic sequence `rw [hJ, ← hGdef]; cases ε <;> simp`. Establish `hdet : IsUnit G.det` using `by rw [← hs]; exact (Formalism.L2.Theta.gram_det_ne (sgn ε S)).isUnit`. Establish `hHG : (G⁻¹).map (incA D) * G.map (incA D) = 1`. Rewrite using `[← Matrix.map_mul, Matrix.nonsing_inv_mul _ hdet, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `hherm : ∀ i j, D.sp.cm.sig (G i j) = G j i`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `i j`. Establish `h` using `(sgn ε S).herm.eq ((sgn ε S).frame i) ((sgn ε S).frame j)`. Rewrite using `[← hs]`. Simplify `h` using `[HSpace.gram, CMData.sig, starRingEnd_apply]`. Establish `hG : (G.map (incA D)).map (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA D.sp.cm.sig) = (G.map (incA D))ᵀ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use extensionality with `i j`. Use `show GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA D.sp.cm.sig (incA D (G i j)) = incA D (G j i)`. Rewrite using `[← hherm i j]`. Both sides reduce to the same expression. Establish `key` using `hTens_transpose_mul (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA D.sp.cm.sig) e (X.gram.map (incA D)) (incA D D.host.xi0) hHG hG u v`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM D.host.F Vs.J = -(G.map (incA D))`. Rewrite using `[hVJ]`. Conclude with `Matrix.map_neg _ (map_neg (incA D)) _`. Establish `e2 : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM D.host.F Ws.J = incA D D.host.xi0 • reindex e e (X.gram.map (incA D))ᵀ`. Rewrite using `[hJW]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.incM_smul _ _`. Establish `e3 : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM D.host.F (D.host.xi0 • (sgn ε S).gram⁻¹) = incA D D.host.xi0 • (G⁻¹).map (incA D)`. Rewrite using `[hs]`. Conclude with `GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.incM_smul _ _`. Establish `e4 : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM D.host.F X.gramᵀ = (X.gram.map (incA D))ᵀ` using `rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Rewrite using `[symplO_eq_symp_one, e3, e4, hc, hc, e1, e2]`. Establish `e5 : GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.incM G = G.map (incA D)` using `by ext i j; rfl`. Simplify using `only [e5]`. Unfold `GlobalTheory.WeilM.symp`. Simplify using `only [key, one_mul, neg_one_mul]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.SquareAgree.SympForm.symp_model_eq_symplO : ∀ (D : D7) (ε : Bool) (S X : HSp D) {d : ℕ} (e : Fin X.rank ≃ Fin d)
     (Vs : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc D.host.F D.host.E S.rank) (Ws : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc D.host.F D.host.E d),

@@ -8,7 +8,7 @@ noncomputable section
 namespace GlobalTheory.Pass.LocDirect
 
 /- English proof (translation)
-Set `e` to `Fintype.equivFin κ`. Use `⟨Fintype.card κ, fun m => x (e.symm m), fun m => p (e.symm m), fun m g v => h1 _ g v, fun v hv => h2 v fun j => ?_⟩` and prove the remaining obligations. Simplify using `using hv (e j)`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isSubFam_of_fintype {G : Type} [Group G] [TopologicalSpace G] {Qp LL O : Type} [Field Qp] [Field LL]
     [Algebra Qp LL] [CommRing O] [Algebra O LL] [TopologicalSpace LL]
@@ -25,7 +25,7 @@ theorem isSubFam_of_fintype {G : Type} [Group G] [TopologicalSpace G] {Qp LL O :
 variable {D : D7} (i : D.nd.Loc) (w : HeightOneSpectrum (𝓞 D.host.E)) (hw : w ∈ placesOver D.host.E (D.nd.l i))
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [Br.loc, Br.locM, Br.locO, mapM, MonoidHom.coe_comp, Function.comp_apply, RingHom.toMonoidHom_eq_coe, MonoidHom.coe_coe, RingHom.mapMatrix_apply, Matrix.map_apply, toK]`. Conclude with `congrArg Subtype.val (Br.toLLK_alg (D.nbr i w hw) _).symm`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem loc_eq_map {k : ℕ} (M : GE D.nd →* Matrix (Fin k) (Fin k) (D.nd.O i)) (g : Br.G D.nbr i w hw) :
     Br.loc D.nbr i w hw M g =
@@ -42,13 +42,13 @@ namespace GlobalTheory.Pass.LocDirect
 variable {D : D7} (i : D.nd.Loc) (w : HeightOneSpectrum (𝓞 D.host.E)) (hw : w ∈ placesOver D.host.E (D.nd.l i))
 
 /- English proof (translation)
-Take `⟨l, hl⟩` from `LinearMap.exists_leftInverse_of_injective j (LinearMap.ker_eq_bot.mpr hj)`. Establish `hLJ : LinearMap.toMatrix' l * LinearMap.toMatrix' j = 1`. Rewrite using `[← LinearMap.toMatrix'_comp, hl, LinearMap.toMatrix'_id]`. Establish `hJM : ∀ γ, LinearMap.toMatrix' j * mapM (toK D.nd i) M γ = mapM (toK D.nd i) (rTwO D.nd i r x₀) γ * LinearMap.toMatrix' j`. Introduce `γ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e : j ∘ₗ Matrix.toLin' (mapM (toK D.nd i) M γ) = Matrix.toLin' (mapM (toK D.nd i) (rTwO D.nd i r x₀) γ) ∘ₗ j`. Use `LinearMap.ext fun v => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.comp_apply, LinearMap.comp_apply, Matrix.toLin'_apply, Matrix.toLin'_apply, hjM]`. Use `congrArg LinearMap.toMatrix' e` as an intermediate fact. Simplify `this` using `[LinearMap.toMatrix'_comp, LinearMap.toMatrix'_toLin']`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `set f := Br.toLLK (D.nbr i w hw)`. Use `⟨(LinearMap.toMatrix' j).map f, fun v hv => ?_, fun g => ?_⟩` and prove the remaining obligations. Establish `h1 : ((LinearMap.toMatrix' l).map f * (LinearMap.toMatrix' j).map f) = 1`. Rewrite using `[← Matrix.map_mul, hLJ, Matrix.map_one _ (map_zero f) (map_one f)]`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, Matrix.one_mulVec]`. Use `_ = 0 := by rw [← Matrix.mulVec_mulVec, hv, Matrix.mulVec_zero]`. Rewrite using `[loc_eq_map, loc_eq_map, ← Matrix.map_mul, ← Matrix.map_mul, hJM]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_locEmb (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i))) {k : ℕ}
     (M : GE D.nd →* Matrix (Fin k) (Fin k) (D.nd.O i)) (x₀ : D.nd.X i)
@@ -86,15 +86,15 @@ namespace GlobalTheory.Pass.LocDirect
 variable {D : D7} (i : D.nd.Loc) (w : HeightOneSpectrum (𝓞 D.host.E)) (hw : w ∈ placesOver D.host.E (D.nd.l i))
 
 /- English proof (translation)
-Take `⟨-, x₀, hx₀, j, hj, hjM⟩` from `hSub`. Take `⟨J, hJi, hJ⟩` from `exists_locEmb i w hw r M x₀ j hj hjM`. Take `⟨a', b', p, q, hp, hq, hinj⟩` from `h`. Set `cX : Fin a → (↥(XV i w hw Y) →ₗ[Br.LL D.nbr i w hw] (Fin D.R.nV → Br.LL D.nbr i w hw))` to `fun m => LinearMap.proj m ∘ₗ (XV i w hw Y).subtype`. Set `P : (Fin a' × Fin a) ⊕ Fin b' → Wr.V →ₗ[Br.LL D.nbr i w hw] (Fin D.R.nV → Br.LL D.nbr i w hw)` to `Sum.elim (fun ij => cX ij.2 ∘ₗ (p ij.1 : Wr.V →ₗ[Br.LL D.nbr i w hw] ↥(XV i w hw Y))) (fun m => Matrix.mulVecLin J ∘ₗ (q m : Wr.V →ₗ[Br.LL D.nbr i w hw] (Fin k → Br.LL D.nbr i w hw)))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `xf : (Fin a' × Fin a) ⊕ Fin b' → ↥Xs` to `Sum.elim (fun ij => ⟨x ij.2, hx ij.2⟩) (fun _ => ⟨x₀, hx₀⟩)`. Use `isSubFam_of_fintype _ Wr xf P ?_ ?_` and prove the remaining obligations. Introduce and unpack `(⟨m, n⟩ | m) g v`. Establish `e1` using `hp m g v`. Express the relevant statement in the definitionally equal form `cX n (p m (Wr.ρ g v)) = (Br.loc D.nbr i w hw (rTwO D.nd i r (x n)) g).mulVec (cX n (p m v))`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[e1]`. Both sides reduce to the same expression. Establish `e1` using `hq m g v`. Express the relevant statement in the definitionally equal form `J.mulVec (q m (Wr.ρ g v)) = (Br.loc D.nbr i w hw (rTwO D.nd i r x₀) g).mulVec (J.mulVec (q m v))`. Rewrite using `[e1]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `key : ∀ u : Fin k → Br.LL D.nbr i w hw, J.mulVec ((Br.loc D.nbr i w hw M g).mulVec u) = (Br.loc D.nbr i w hw (rTwO D.nd i r x₀) g).mulVec (J.mulVec u)` using `fun u => by`. Rewrite using `[Matrix.mulVec_mulVec, hJ, ← Matrix.mulVec_mulVec]`. Conclude with `key (q m v)`. Introduce `v hv`. Use `hinj v (fun m => ?_) (fun m => hJi _ (hv (Sum.inr m)))` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `n`. Conclude with `hv (Sum.inl (m, n))`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem isSubFam_of_isSubSumOf (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i))) (Xs : Set (D.nd.X i))
     {k : ℕ} (M : GE D.nd →* Matrix (Fin k) (Fin k) (D.nd.O i)) (hSub : SubTw i r Xs M)
@@ -140,7 +140,7 @@ end GlobalTheory.Pass.LocDirect
 namespace GlobalTheory.Pass.LocDirect
 
 /- English proof (translation)
-Introduce `D i w hw r _ Xs e hL k M hSub hM a x hx hc Y hst W₁ W₂ h₁ h₂ L₁ L₂ F hF`. Conclude with `hL W₁ W₂ (isSubFam_of_isSubSumOf i w hw r Xs M hSub hM x hx hc Y hst W₁ h₁) (isSubFam_of_isSubSumOf i w hw r Xs M hSub hM x hx hc Y hst W₂ h₂) L₁ L₂ F hF`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem liftAll_of_liftFamW : ∀ (D : D7) (i : D.nd.Loc) (w : HeightOneSpectrum (𝓞 D.host.E))
     (hw : w ∈ placesOver D.host.E (D.nd.l i)) (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i))),

@@ -17,9 +17,9 @@ open Formalism.MainNotions.ModuliIntegralCharts.H1.BoxTuple Formalism.MainNotion
 namespace GlobalTheory.PowThetaFrame
 
 /- English proof (translation)
-Introduce `hL hL2 hL4 hT E _ _ _ H Dw l Xo c n T io y _ C P _ g g' _ hg' _ _ _ π π' _ hπ' _ _ _ F _ _ _ _ _ _ v ϖ hϖ hv Q hQ D' A' G' _ _ pD pA pG U' PU _ oD' hx hact`. Set `_` to `H.starRing`. Take `⟨θ, hν, hθ⟩` from `exists_thetaFrame hL hL2 hL4 hT T.V ϖ hϖ D' (sumQ pD.xe Q) (QBox.main T.V ϖ hϖ n P.D D' pD Q hQ) F v hv`. Establish `hw : TraceFormTwistIso D'.toPre oD' H.w0` using `PsiWZeroProd.main T.V n P.D.toPre D'.toPre pD (𝓞 E) (fun a x => funext (hx a x)) P.oD oD' hact H.w0 P.w0`. Take `⟨f, -, hf⟩` from `PullLin.exists_pull_linearMap hL T.V D' F (𝓞 E) oD' H.w0 hw (star π') g' 1 hg'.one_le le_rfl (by rw [star_star, mul_comm]; exact hπ')`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨θ, f θ, hν, hθ, (hf _ _).2 rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem main : Laws → Laws2 → Laws4 → TwistBaseChangeStatement → ThetaFrameF := by
   intro hL hL2 hL4 hT E _ _ _ H Dw l Xo c n T io y _ C P _ g g' _ hg' _ _ _ π π' _ hπ' _ _ _ F _ _ _ _ _ _ v ϖ hϖ hv

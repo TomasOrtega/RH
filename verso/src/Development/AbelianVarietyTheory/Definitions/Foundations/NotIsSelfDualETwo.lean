@@ -15,7 +15,7 @@ open NumberField in
 open scoped Matrix ComplexOrder in
 variable {K : Type} [Field K] [NumberField K] {ι : Type} [Fintype ι] {n N : ℕ} {C : Type} in
 /- English proof (translation)
-Simplify using `only [_root_.GlobalTheory.TestLat.sumLat, Submodule.mem_iInf, Submodule.mem_comap, LinearMap.restrictScalars_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem _root_.GlobalTheory.TestLat.Model.mem_sumLat (lam : ι → _root_.Formalism.BasicNotions.DomWeight n) (e : Fin N ≃ C × _root_.Formalism.L2.DIV.VVIdx lam)
     (T : C → Submodule (𝓞 K) (_root_.Formalism.L2.DIV.VV K lam))
@@ -26,7 +26,7 @@ theorem _root_.GlobalTheory.TestLat.Model.mem_sumLat (lam : ι → _root_.Formal
 
 omit [NumberField K] in
 /- English proof (translation)
-Simplify using `[valAt, Module.Basis.equivFun_symm_apply, LinearMap.funLeft_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem valAt_apply (lam : ι → DomWeight n) (e : Fin N ≃ C × VVIdx lam) (c : C) (u : Fin N → K) :
     valAt lam e c u = ∑ i, u (e.symm (c, i)) • bVV K lam i := by
@@ -38,7 +38,7 @@ variable {K : Type} [Field K] [NumberField K] {ι : Type} [Fintype ι] {n N : �
 omit [NumberField K] in
 
 /- English proof (translation)
-Use `Function.bijective_iff_has_inverse.mpr ⟨fun f a => (_root_.Formalism.L2.DIV.bVV K lam).equivFun (f (e a).1) (e a).2, fun u => ?_, fun f => ?_⟩` and prove the remaining obligations. Use extensionality with `a`. Simplify using `only [_root_.GlobalTheory.TestLat.valAt, LinearMap.comp_apply, LinearMap.funLeft_apply, LinearEquiv.coe_coe, LinearEquiv.apply_symm_apply, Prod.mk.eta, Equiv.symm_apply_apply]`. Use extensionality with `c`. Simplify using `[_root_.GlobalTheory.TestLat.valAt, LinearMap.funLeft_apply]`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem _root_.GlobalTheory.TestLat.Model.valAt_bijective (lam : ι → _root_.Formalism.BasicNotions.DomWeight n) (e : Fin N ≃ C × _root_.Formalism.L2.DIV.VVIdx lam) :
     Function.Bijective fun (u : Fin N → K) (c : C) => _root_.GlobalTheory.TestLat.valAt lam e c u := by
@@ -56,11 +56,11 @@ variable {K : Type} [Field K] [NumberField K] {ι : Type} [Fintype ι] {n N : �
 omit [NumberField K] in
 
 /- English proof (translation)
-Simplify using `only [dotProduct, Matrix.mulVec, _root_.GlobalTheory.TestLat.sumGram, Matrix.of_apply, Pi.star_apply]`. Rewrite using `[← e.symm.sum_comp, Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Simplify using `only [_root_.GlobalTheory.TestLat.valAt, LinearMap.comp_apply, LinearMap.funLeft_apply, LinearEquiv.coe_coe, Module.Basis.equivFun_symm_apply, map_sum, map_smulₛₗ, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul, Finset.mul_sum]`. Use `conv_rhs => rw [Finset.sum_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← e.symm.sum_comp, Fintype.sum_prod_type]`. Simplify using `only [Equiv.apply_symm_apply]`. Rewrite using `[Finset.sum_eq_single c (fun b _ hb => by simp [Ne.symm hb]) (by simp)]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_pos rfl]`. Simplify using `only [RingHom.id_apply, starRingEnd_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.TestLat.Model.sumGram_form [StarRing K] [Fintype C] (lam : ι → _root_.Formalism.BasicNotions.DomWeight n)
     (e : Fin N ≃ C × _root_.Formalism.L2.DIV.VVIdx lam)
@@ -86,18 +86,16 @@ theorem _root_.GlobalTheory.TestLat.Model.sumGram_form [StarRing K] [Fintype C] 
   ring
 
 /- English proof (translation)
-Introduce `v`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem isMetric_one : IsMetric (1 : Matrix (Fin N) (Fin N) K) fun _ => 1 := by
   intro v
   simp
 
 /- English proof (translation)
-Introduce `v`. Establish `h : ((2⁻¹ : ℂ) • (1 : Matrix (Fin 1) (Fin 1) ℂ))⁻¹ = (2 : ℂ) • 1`. Apply `Matrix.inv_eq_left_inv` to reduce the goal to its premises. Simplify using `[smul_smul]`. Use `⟨by simp, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [h]`. Use extensionality with `a b`. Use `fin_cases a`. Use `fin_cases b`. Simplify using `[Matrix.mul_apply, map_ofNat]`.
-
-Evaluate the numerical expressions.
+Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Evaluate the numerical expressions. A detailed English derivation is pending.
 -/
 theorem isMetric_four : IsMetric ((4 : K) • (1 : Matrix (Fin 1) (Fin 1) K))
     fun _ => (2⁻¹ : ℂ) • (1 : Matrix (Fin 1) (Fin 1) ℂ) := by
@@ -113,9 +111,9 @@ theorem isMetric_four : IsMetric ((4 : K) • (1 : Matrix (Fin 1) (Fin 1) K))
   norm_num
 
 /- English proof (translation)
-Introduce `h`. Take `⟨v⟩ : Nonempty (InfinitePlace K)` from `inferInstance`. Take `⟨h1, h2⟩` from `h v`. Establish `h3` using `congrArg Matrix.det h2`. Establish `h4 : (X v)⁻¹.det ≠ 0` using `(Matrix.isUnit_nonsing_inv_det _ h1).ne_zero`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h3` using `[Matrix.det_mul, Matrix.det_conjTranspose]`. Simplify using `only [Matrix.map_zero _ (map_zero _), Matrix.det_zero, mul_eq_zero, star_eq_zero, or_self] at h3`. Conclude with `h4 h3`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem not_isMetric_zero (X : InfinitePlace K → Matrix (Fin 1) (Fin 1) ℂ) : ¬ IsMetric (0 : Matrix (Fin 1) (Fin 1) K) X := by
   intro h
@@ -129,9 +127,9 @@ theorem not_isMetric_zero (X : InfinitePlace K → Matrix (Fin 1) (Fin 1) ℂ) :
 
 omit [NumberField K] in
 /- English proof (translation)
-Use `⟨by simp, ?_, ?_⟩` and prove the remaining obligations. Introduce `a b`. Rewrite using `[Matrix.one_apply]`. Use `split_ifs`. Conclude with `one_mem _`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `zero_mem _`. Introduce `φ`. Rewrite using `[Matrix.map_one _ (map_zero _) (map_one _)]`. Conclude with `Matrix.PosDef.one`.
+A detailed English derivation is pending.
 -/
 theorem isDefGram_one [StarRing K] : IsDefGram (1 : Matrix (Fin n) (Fin n) K) := by
   refine ⟨by simp, ?_, ?_⟩
@@ -148,14 +146,14 @@ def stdLat (K : Type) [Field K] [NumberField K] (n : ℕ) : Submodule (𝓞 K) (
   Submodule.span (𝓞 K) (Set.range (Pi.basisFun K (Fin n)))
 
 /- English proof (translation)
-Rewrite using `[stdLat, Module.Basis.mem_span_iff_repr_mem]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mem_stdLat (x : Fin n → K) : x ∈ stdLat K n ↔ ∀ a, x a ∈ (algebraMap (𝓞 K) K).range := by
   rw [stdLat, Module.Basis.mem_span_iff_repr_mem]
   simp
 
 /- English proof (translation)
-The claim follows from `Submodule.fg_span (Set.finite_range _) span_eq_top := by rw [stdLat, Submodule.span_span_of_tower] exact (Pi.basisFun K (Fin n)).span_eq`.
+A detailed English derivation is pending.
 -/
 theorem isLattice_stdLat : Submodule.IsLattice K (stdLat K n) where
   fg := Submodule.fg_span (Set.finite_range _)
@@ -164,7 +162,7 @@ theorem isLattice_stdLat : Submodule.IsLattice K (stdLat K n) where
     exact (Pi.basisFun K (Fin n)).span_eq
 
 /- English proof (translation)
-Take `⟨y, rfl⟩` from `hx`. Conclude with `⟨⟨σ y, (RingOfIntegers.isIntegral_coe y).map σ.toIntAlgHom⟩, rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem map_mem_range (σ : K →+* K) {x : K} (hx : x ∈ (algebraMap (𝓞 K) K).range) :
     σ x ∈ (algebraMap (𝓞 K) K).range := by
@@ -172,13 +170,11 @@ theorem map_mem_range (σ : K →+* K) {x : K} (hx : x ∈ (algebraMap (𝓞 K) 
   exact ⟨⟨σ y, (RingOfIntegers.isIntegral_coe y).map σ.toIntAlgHom⟩, rfl⟩
 
 /- English proof (translation)
-Use `⟨isLattice_stdLat, fun y => ⟨fun hy x hx => ?_, fun h => ?_⟩⟩` and prove the remaining obligations. Rewrite `hx`, `hy` using `[mem_stdLat]`. Use `Subring.sum_mem _ fun i _ => Subring.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Use `Subring.mul_mem _ (Subring.mul_mem _ (map_mem_range σ (hx i)) ?_) (hy j)` and prove the remaining obligations. Rewrite using `[Matrix.one_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs`. Conclude with `one_mem _`. Conclude with `zero_mem _`. Rewrite using `[mem_stdLat]`. Introduce `a`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `h (Pi.single a 1) (by` as an intermediate fact. Rewrite using `[mem_stdLat]`. Introduce `b`. Rewrite using `[Pi.single_apply]`. Use `split_ifs`.
-
-Conclude with `one_mem _`. Conclude with `zero_mem _)`. Simplify `this` using `[Formalism.UG.hform, Matrix.one_apply, Pi.single_apply, apply_ite σ]`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem isSelfDualE_std (σ : K →+* K) : IsSelfDualE σ (1 : Matrix (Fin n) (Fin n) K) (stdLat K n) := by
   refine ⟨isLattice_stdLat, fun y => ⟨fun hy x hx => ?_, fun h => ?_⟩⟩
@@ -198,9 +194,9 @@ theorem isSelfDualE_std (σ : K →+* K) : IsSelfDualE σ (1 : Matrix (Fin n) (F
     simpa [Formalism.UG.hform, Matrix.one_apply, Pi.single_apply, apply_ite σ] using this
 
 /- English proof (translation)
-Use `⟨isLattice_stdLat, ?_⟩` and prove the remaining obligations. Use extensionality with `y`. Rewrite using `[(isSelfDualE_std (starRingEnd K)).2 y]`. Express the relevant statement in the definitionally equal form `(∀ x ∈ stdLat K n, _) ↔ _`. Use `forall₂_congr fun x _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[Formalism.UG.hform, Matrix.one_apply, dotProduct, Submodule.mem_one, starRingEnd_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem isSelfDualK_std [StarRing K] : IsSelfDualK (1 : Matrix (Fin n) (Fin n) K) (stdLat K n) := by
   refine ⟨isLattice_stdLat, ?_⟩
@@ -211,15 +207,15 @@ theorem isSelfDualK_std [StarRing K] : IsSelfDualK (1 : Matrix (Fin n) (Fin n) K
   simp [Formalism.UG.hform, Matrix.one_apply, dotProduct, Submodule.mem_one, starRingEnd_apply]
 
 /- English proof (translation)
-Introduce `h`. Establish `h1 : (fun _ => (1 : K)) ∈ (Submodule.span (𝓞 K) {fun _ : Fin 1 => (2 : K)})`. Rewrite using `[h.2]`. Introduce `x hx`. Take `⟨a, rfl⟩` from `Submodule.mem_span_singleton.1 hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `: Formalism.UG.hform σ (1 : Matrix (Fin 1) (Fin 1) K) (a • fun _ => (2 : K)) (fun _ => 1) = σ (algebraMap (𝓞 K) K (a * 2))`. Simplify using `[Formalism.UG.hform, Algebra.smul_def, map_ofNat]`. Rewrite using `[this]`. Conclude with `map_mem_range σ ⟨_, rfl⟩`. Take `⟨a, ha⟩` from `Submodule.mem_span_singleton.1 h1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h2 : algebraMap (𝓞 K) K a * 2 = 1` using `by simpa [Algebra.smul_def] using congrFun ha 0`. Establish `h3 : IsIntegral ℤ (algebraMap ℚ K 2⁻¹)`. Establish `: algebraMap ℚ K 2⁻¹ = algebraMap (𝓞 K) K a`. Rewrite using `[map_inv₀, map_ofNat]`. Conclude with `(eq_inv_of_mul_eq_one_left h2).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `RingOfIntegers.isIntegral_coe a`. Rewrite `h3` using `[isIntegral_algebraMap_iff (algebraMap ℚ K).injective]`. Take `⟨z, hz⟩` from `IsIntegrallyClosed.isIntegral_iff.1 h3`. Establish `h4 : (z : ℚ) * 2 = 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Establish `: (z : ℚ) = 2⁻¹` using `hz`. Rewrite using `[this]`. Evaluate the numerical expressions. Establish `h5 : z * 2 = 1` using `by exact_mod_cast h4`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem not_isSelfDualE_two (σ : K →+* K) :
     ¬ IsSelfDualE σ (1 : Matrix (Fin 1) (Fin 1) K) (Submodule.span (𝓞 K) {fun _ => (2 : K)}) := by
@@ -252,7 +248,7 @@ theorem not_isSelfDualE_two (σ : K →+* K) :
 def wOne : DomWeight 2 := ⟨![1, 0], by intro i j h; fin_cases i <;> fin_cases j <;> simp_all⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Simplify `h () 0 1` using `[wOne]`. Apply the tactic sequence `intro h _ i j fin_cases i <;> fin_cases j <;> simp [wOne] <;> linarith`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem spreadLe_wOne (R : ℝ) : SpreadLe (fun _ : Unit => wOne) R ↔ 1 ≤ R := by
   constructor
@@ -262,7 +258,7 @@ theorem spreadLe_wOne (R : ℝ) : SpreadLe (fun _ : Unit => wOne) R ↔ 1 ≤ R 
     fin_cases i <;> fin_cases j <;> simp [wOne] <;> linarith
 
 /- English proof (translation)
-Simplify using `[bound]`. Evaluate the numerical expressions.
+Simplify using the standard rewrite rules. Evaluate the numerical expressions.
 -/
 theorem bound_one_two : bound 1 2 1 = 8 * Real.log 2 := by
   simp [bound]; norm_num

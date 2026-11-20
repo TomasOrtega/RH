@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.Re
 import CompanionTheory.ThickeningEstimates.LieGroupReduction.MetaplecticRepresentation.RealMetaplecticRepresentationHolds
 
 /- English proof (translation)
-The claim follows from `CompanionTheory.ThKR.realMetaplecticRepresentation_holds`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Published.realMetaplecticRepresentation_holds : GlobalTheory.Published.RealMetaplecticRepresentation :=
   CompanionTheory.ThKR.realMetaplecticRepresentation_holds

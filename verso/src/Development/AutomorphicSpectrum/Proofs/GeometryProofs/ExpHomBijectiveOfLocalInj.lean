@@ -11,33 +11,29 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace GlobalTheory.CompanionTheory.Ar.LbMarking
 
 /- English proof (translation)
-Introduce `M _ g g' ex r h hadd hr hsurj ⟨δ, hδ, hsep⟩ ⟨ε, hε, hsep'⟩`. Establish `hex0 : ex 0 = 1`. Establish `h0` using `hadd 0 0`. Rewrite `h0` using `[add_zero]`. Conclude with `left_eq_mul.mp h0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Assume the negation of the conclusion as `hne`. Establish `hnorm : 0 < ‖x‖` using `norm_pos_iff.mpr hne`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs : 0 < δ / (2 * ‖x‖)` using `by positivity`. Establish `ht : ((δ / (2 * ‖x‖) : ℝ) : ℂ) ≠ 0`. Conclude with `hs.ne'` after adjusting the coercions. Establish `h1 : r (((δ / (2 * ‖x‖) : ℝ) : ℂ) • x) = 1`. Rewrite using `[← hr, map_smul, hx, smul_zero, hex0]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : ‖((δ / (2 * ‖x‖) : ℝ) : ℂ) • x‖ < δ`. Rewrite using `[norm_smul, Complex.norm_real, Real.norm_eq_abs, abs_of_pos hs]`. Establish `: δ / (2 * ‖x‖) * ‖x‖ = δ / 2`. Clear the denominators using the available nonvanishing facts. Rewrite using `[this]`.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `h3` using `hsep _ h2 h1`. Conclude with `hne ((smul_eq_zero.mp h3).resolve_left ht)`. Introduce `v`. Assume the negation of the conclusion as `hv`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hsub : ∀ a b, ex a = 1 → ex b = 1 → a ≠ b → ε ≤ ‖a - b‖`. Introduce `a b ha hb hab`. Assume the negation of the conclusion as `hlt`. Establish `h1 : ex (a - b) = 1`. Establish `h2` using `hadd (a - b) b`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[sub_add_cancel, ha, hb, _root_.mul_one]`. Conclude with `h2.symm`. Conclude with `hab (sub_eq_zero.mp (hsep' _ (not_le.mp hlt) h1))`. Establish `hK : {y | ex y = 1}.Countable`. Establish `hdisj : ({y | ex y = 1} : Set (Fin g' → ℂ)).PairwiseDisjoint (fun y => ball y (ε / 2))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `a ha b hb hab`. Use `Set.disjoint_left.mpr ?_` and prove the remaining obligations. Introduce `z hza hzb`. Establish `h1` using `hsub a b ha hb hab`. Establish `h2 : dist z a < ε / 2` using `hza`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `h3 : dist z b < ε / 2` using `hzb`. Establish `h4 : dist a b ≤ dist z a + dist z b` using `dist_triangle_left a b z`. Rewrite `h4` using `[dist_eq_norm a b]`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `hdisj.countable_of_isOpen (fun _ _ => isOpen_ball) (fun y _ => ⟨y, mem_ball_self (half_pos hε)⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `choose x hx using fun t : ℂ => hsurj (ex (t • v))`. Establish `hkK : ∀ t, ex (t • v - h (x t)) = 1`. Introduce `t`. Establish `h2` using `hadd (t • v - h (x t)) (h (x t))`. Rewrite `h2` using `[sub_add_cancel, hr, hx t]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `right_eq_mul.mp h2`. Establish `hinj : Function.Injective (fun t : ℂ => (⟨t • v - h (x t), hkK t⟩ : {y | ex y = 1}))`. Introduce `s t hst`. Assume the negation of the conclusion as `hne`. Establish `h1 : s • v - h (x s) = t • v - h (x t)` using `congrArg Subtype.val hst`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hc : s - t ≠ 0` using `sub_ne_zero.mpr hne`. Apply `hv` to reduce the goal to its premises. Use `⟨(s - t)⁻¹ • (x s - x t), ?_⟩` and prove the remaining obligations. Establish `h2 : (s - t) • v = h (x s - x t)`. Rewrite using `[map_sub, sub_smul]`.
-
-Rewrite `h1`, the goal using `[sub_eq_sub_iff_add_eq_add]`. Rewrite using `[h1, add_comm]`. Rewrite using `[map_smul, ← h2, smul_smul, inv_mul_cancel₀ hc, one_smul]`. Use `haveI : Countable {y | ex y = 1} := hK.to_subtype`. Establish `hC : Countable ℂ` using `hinj.countable`.
-
-Establish `hle` using `Cardinal.mk_le_aleph0_iff.mpr hC`. Rewrite `hle` using `[Cardinal.mk_complex]`. Conclude with `absurd Cardinal.aleph0_lt_continuum (not_lt.mpr hle)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem linearLift_bijective_of_discrete_kernels : ∀ (M : Type) [Group M] (g g' : ℕ) (ex : (Fin g' → ℂ) → M) (r : (Fin g → ℂ) → M) (h : (Fin g → ℂ) →ₗ[ℂ] (Fin g' → ℂ)), (∀ z w, ex (z + w) = ex z * ex w) → (∀ x, ex (h x) = r x) → Function.Surjective r → (∃ δ : ℝ, 0 < δ ∧ ∀ x, ‖x‖ < δ → r x = 1 → x = 0) → (∃ δ : ℝ, 0 < δ ∧ ∀ y, ‖y‖ < δ → ex y = 1 → y = 0) → Function.Bijective h := by
   intro M _ g g' ex r h hadd hr hsurj ⟨δ, hδ, hsep⟩ ⟨ε, hε, hsep'⟩

@@ -10,9 +10,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.LatFull
 
 /- English proof (translation)
-Take `⟨-, -, -, h1, h2⟩` from `h`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Simplify using `using h2 x hx`.
+Extract witnesses or component facts from the available result. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `hx`. Simplify using `using h1 x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem baseFrame_one_eq {D : D7} (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D))
     (Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)) (h : Lev.IsBaseFrame V β Λ 1) :
@@ -26,7 +26,7 @@ theorem baseFrame_one_eq {D : D7} (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D))
     simpa using h1 x hx
 
 /- English proof (translation)
-Introduce `D ρ hρ i j b h`. Rewrite using `[GlobalTheory.LatAtHLat.latAt_eq_hLat D _ _ (ρ.B i j b) (baseFrame_one_eq _ _ _ (hρ.latS i j b))]`. Conclude with `GlobalTheory.RepsCompare.isLattice_hLat _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem latAt_isLattice : ∀ (D : D7) (ρ : Setup D.ntw), ρ.Good → ∀ (i : D.ntw.Tw) (j : Fin D.R.m) (b : Bool)
     (h : GA D (Vc D j)), Submodule.IsLattice D.host.E ((ρ.B i j b).latAt (finPt (Vc D j) h)) := by

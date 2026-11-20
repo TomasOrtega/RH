@@ -11,11 +11,11 @@ open MvPolynomial
 noncomputable section
 
 /- English proof (translation)
-Proceed by induction on `Q using MvPolynomial.induction_on with`. Consider the case `C r => simp [MvPolynomial.algebraMap_eq]`. Consider the case `add p q hp hq`. Rewrite using `[map_add, add_sub_add_comm]`. Conclude with `dvd_add hp hq`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `mul_X p k hp`. Rewrite using `[map_mul, aeval_X]`. Establish `hk : (X a - X b : MvPolynomial σ R) ∣ X k - (if k = a then (X b : MvPolynomial σ R) else X k)` using `by split_ifs with h`. Substitute `h` using the available equality. Conclude with `dvd_rfl`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `e : p * X k - aeval (fun v => if v = a then (X b : MvPolynomial σ R) else X v) p * (if k = a then (X b : MvPolynomial σ R) else X k) = (p - aeval (fun v => if v = a then (X b : MvPolynomial σ R) else X v) p) * X k + aeval (fun v => if v = a then (X b : MvPolynomial σ R) else X v) …` using `by ring`. Rewrite using `[e]`. Conclude with `dvd_add (dvd_mul_of_dvd_left hp _) (dvd_mul_of_dvd_right hk _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem FlagSwapDivisible.dvd_sub_substitute {R σ : Type} [CommRing R] [DecidableEq σ] (a b : σ)
     (Q : MvPolynomial σ R) :
@@ -42,15 +42,13 @@ theorem FlagSwapDivisible.dvd_sub_substitute {R σ : Type} [CommRing R] [Decidab
     exact dvd_add (dvd_mul_of_dvd_left hp _) (dvd_mul_of_dvd_right hk _)
 
 /- English proof (translation)
-Introduce `σ _ P a b hab hP`. Use `set g : σ → MvPolynomial σ ℚ := fun v => if v = a then X b else X v with hg`. Establish `hswap : g ∘ Equiv.swap a b = g`. Use function extensionality and compare the values at `v`. Simplify using `only [Function.comp_apply, hg]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `eq_or_ne v a with rfl | hva` into its components or cases. Simplify using `[Equiv.swap_apply_left, hab.symm]`. Break down `eq_or_ne v b with rfl | hvb` into its components or cases. Simplify using `[Equiv.swap_apply_right, hva]`. Simplify using `[Equiv.swap_apply_of_ne_of_ne hva hvb, hva]`.
+Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hzero : aeval g P = 0`. Establish `h1 : aeval g P = -aeval g P`. Combine the equalities or inequalities in the displayed calculation. Establish `h2 : aeval g P + aeval g P = 0` using `by nth_rewrite 2 [h1]; exact add_neg_cancel _`. Establish `h3 : (2 : MvPolynomial σ ℚ) * aeval g P = 0` using `by rw [two_mul]; exact h2`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `mul_eq_zero.mp h3 with h | h` into its components or cases. Conclude with `absurd h two_ne_zero`. Conclude with `h`. Establish `hd` using `FlagSwapDivisible.dvd_sub_substitute a b P`. Rewrite `hd` using `[← hg, hzero, sub_zero]`.
-
-Conclude with `hd`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem FlagSwapDivisible.proof : FlagSwapDivisible.Statement := by
   intro σ _ P a b hab hP

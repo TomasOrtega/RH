@@ -11,7 +11,7 @@ open Formalism.IncomingBounds Formalism.L2.Pj Formalism.L2.FormalSeriesBounds Fo
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ
 
 /- English proof (translation)
-Use `⟨fun q => if h : q.1 = a then b (h ▸ q.2) else 0, fun q hq => dif_neg hq, ?_⟩` and prove the remaining obligations. Rewrite using `[Fintype.sum_sigma, Finset.sum_eq_single a]`. Simplify using the standard rewrite rules. Introduce `s _ hs`. Simplify using `[hs]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
 Simplify using the standard rewrite rules.
 -/
@@ -26,9 +26,9 @@ private theorem UpperTheory.extend_sigma_coefficients_by_zero {A C W : Type} [Fi
   · simp
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw lv Xo c _ hstar T io y C3 C _ _ V ι hι k Y hY Orb _ d _ lab ha`. Establish `hsep1 : ∀ o (s s' : ZMod d), s ≠ s' → ∃ a : 𝓞 E, V.v (emA3 io ι (lab.tau o s) a - emA3 io ι (lab.tau o s') a) = 0` using `fun o s s' h => ha.sep (o, s) (o, s') fun e => h (Prod.mk.inj e).2`. Establish `hgeo` using `fun o => GlobalTheory.T.separatedEmbeddings_directions_typedBasis E H Dw lv Xo c hstar T io y C3 C V ι hι k Y hY (ZMod d) (lab.tau o) (hsep1 o)`. Use `labSGeo_of hstar hι ha ⟨fun o x a => (hgeo o).2.1 x.1 x.2 a, fun o => ?_, fun o a v hv => ?_⟩` and prove the remaining obligations. Take `⟨w, h1, h2⟩` from `(hgeo o).2.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨w, h1, fun q q' => (h2 q q').trans (by congr)⟩`. Take `⟨b, hb⟩` from `(hgeo o).2.2.2 a v hv`. Take `⟨b', h1, h2⟩` from `UpperTheory.extend_sigma_coefficients_by_zero (fun s => Dw.mult (lab.tau o s)) (selfLieBasisVector C3 ι lab o) a b`. Conclude with `⟨b', h1, hb.trans h2⟩`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem UpperTheory.labelSetGeo_of_labelSetArith :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (lv : Level H)

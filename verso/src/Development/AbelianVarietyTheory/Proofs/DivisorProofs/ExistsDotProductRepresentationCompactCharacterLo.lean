@@ -26,9 +26,9 @@ noncomputable section
 namespace GlobalTheory.CompactCharDual
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.UnitNormRealPartBound.main`. Consider the case `exact _root_.GlobalTheory.UnitNormRealPartBound.main`. Consider the case `(apply _root_.GlobalTheory.UnitNormRealPartBound.main <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.UnitNormRealPartBound.main <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.UnitNormRealPartBound.main <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.UnitNormRealPartBound.main ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem eq_one_of_pow_close {z : ℂ} (h : ∀ n : ℕ, ‖z ^ n - 1‖ < 1 / 2) : z = 1 := by
   first
@@ -40,9 +40,9 @@ theorem eq_one_of_pow_close {z : ℂ} (h : ∀ n : ℕ, ‖z ^ n - 1‖ < 1 / 2)
   | (intros; exact _root_.GlobalTheory.UnitNormRealPartBound.main ..)
 
 /- English proof (translation)
-Take `⟨δ, hδ, h⟩` from `Metric.continuousAt_iff.1 (hc.continuousAt (x := 0)) (1 / 2) (by norm_num)`. Use `⟨δ, hδ, fun x hx => eq_one_of_pow_close fun n => ?_⟩` and prove the remaining obligations. Use `h (x := n • x) (by` as an intermediate fact. Rewrite using `[dist_zero_right]`. Conclude with `(IsUltrametricDist.norm_nsmul_le x n).trans_lt hx)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[AddChar.map_zero_eq_one, dist_eq_norm, AddChar.map_nsmul_eq_pow]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem exists_ball_ker {K : Type} [NormedAddCommGroup K] [IsUltrametricDist K] (ψ : AddChar K ℂ)
     (hc : Continuous ψ) : ∃ δ > 0, ∀ x : K, ‖x‖ < δ → ψ x = 1 := by
@@ -53,9 +53,9 @@ theorem exists_ball_ker {K : Type} [NormedAddCommGroup K] [IsUltrametricDist K] 
   rwa [AddChar.map_zero_eq_one, dist_eq_norm, AddChar.map_nsmul_eq_pow] at this
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hχ`. Establish `h0 : (QuotientAddGroup.mk χ : AddChar Q ℂ ⧸ H) ≠ 0` using `fun e => hχ ((QuotientAddGroup.eq_zero_iff _).1 e)`. Take `⟨Λ, hΛ⟩` from `AddChar.exists_apply_ne_zero.2 h0`. Take `⟨x, hx⟩` from `(AddChar.doubleDualEquiv (α := Q)).surjective (Λ.compAddMonoidHom (QuotientAddGroup.mk' H))`. Establish `hev : ∀ φ : AddChar Q ℂ, φ x = Λ (QuotientAddGroup.mk φ)` using `fun φ => DFunLike.congr_fun hx φ`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Distinguish the cases in `hx0 : x = 0`. Conclude with `hΛ (by rw [← hev, hx0, AddChar.map_zero_eq_one])`. Take `⟨φ, hφ, hφx⟩` from `h x hx0`. Conclude with `hφx (by rw [hev, (QuotientAddGroup.eq_zero_iff _).2 hφ, AddChar.map_zero_eq_one])`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem mem_of_separates {Q : Type} [AddCommGroup Q] [Finite Q] (H : AddSubgroup (AddChar Q ℂ))
     (h : ∀ x : Q, x ≠ 0 → ∃ χ ∈ H, χ x ≠ 1) (χ : AddChar Q ℂ) : χ ∈ H := by
@@ -70,7 +70,7 @@ theorem mem_of_separates {Q : Type} [AddCommGroup Q] [Finite Q] (H : AddSubgroup
     exact hφx (by rw [hev, (QuotientAddGroup.eq_zero_iff _).2 hφ, AddChar.map_zero_eq_one])
 
 /- English proof (translation)
-Use `⟨⟨Quotient.lift φ fun a b hab => ?_, φ.map_zero_eq_one, ?_⟩, fun x => rfl⟩` and prove the remaining obligations. Use `hφ _ (QuotientAddGroup.leftRel_apply.1 hab)` as an intermediate fact. Rewrite using `[← add_neg_cancel_left a b, AddChar.map_add_eq_mul, this, mul_one]`. Introduce and unpack `⟨a⟩ ⟨b⟩`. Conclude with `φ.map_add_eq_mul a b`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem exists_lift {G : Type} [AddCommGroup G] (N : AddSubgroup G) (φ : AddChar G ℂ)
     (hφ : ∀ x ∈ N, φ x = 1) : ∃ Λ : AddChar (G ⧸ N) ℂ, ∀ x : G, Λ x = φ x := by
@@ -85,41 +85,35 @@ end GlobalTheory.CompactCharDual
 namespace GlobalTheory.CompactCharDual
 
 /- English proof (translation)
-Take `⟨δ, hδ, hψδ⟩` from `exists_ball_ker ψ₀ hc`. Take `⟨r, hr, hrL'⟩` from `Metric.isOpen_iff.1 hL' 0 L'.zero_mem`. Choose the witnesses or unpack the hypotheses as in `⟨t₁, ht₁⟩ : ∃ t, ψ₀ t ≠ 1 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Conclude with `hne (DFunLike.ext _ _ fun t => by rw [h t, AddChar.one_apply])`. Establish `ht0 : 0 < ‖t₁‖` using `norm_pos_iff.2 fun h => ht₁ (by rw [h, AddChar.map_zero_eq_one])`. Use `set ρ := ‖t₁‖ / r with hρ`. Establish `hρ0 : 0 < ρ` using `div_pos ht0 hr`. Use `set η := min r (δ / ρ) with hη`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hη0 : 0 < η` using `lt_min hr (div_pos hδ hρ0)`. Establish `small : ∀ a y : κ → K, ‖a‖ ≤ ρ → ‖y‖ < η → ψ₀ (a ⬝ᵥ y) = 1`. Introduce `a y ha hy`. Establish `key : ∀ s : Finset κ, (∀ i ∈ s, ψ₀ (a i * y i) = 1) → ψ₀ (∑ i ∈ s, a i * y i) = 1`. Introduce `s`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => intro _`. Simplify using the standard rewrite rules. Consider the case `insert i s hi ih`. Introduce `hf`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Finset.sum_insert hi, AddChar.map_add_eq_mul, hf i (Finset.mem_insert_self _ _), ih (fun j hj => hf j (Finset.mem_insert_of_mem hj)), one_mul]`. Use `show ψ₀ (∑ i, a i * y i) = 1`. Use `key Finset.univ fun i _ => hψδ _ ?_` and prove the remaining obligations. Rewrite using `[norm_mul]`. Establish `h1 : ‖a i‖ ≤ ρ` using `(norm_le_pi_norm a i).trans ha`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : ‖y i‖ < δ / ρ` using `((norm_le_pi_norm y i).trans_lt hy).trans_le (min_le_right _ _)`. Combine the equalities or inequalities in the displayed calculation. Set `M : AddSubgroup (κ → K)` to `{ carrier := {y | ∀ a : κ → K, ‖a‖ ≤ ρ → ψ₀ (a ⬝ᵥ y) = 1} add_mem' := fun {y y'} hy hy' a ha => by`. Rewrite using `[dotProduct_add, AddChar.map_add_eq_mul, hy a ha, hy' a ha, mul_one]`. Use the proof step `zero_mem' := fun a _ => by rw [dotProduct_zero, AddChar.map_zero_eq_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `neg_mem' := fun {y} hy a ha => by`. Rewrite using `[dotProduct_neg, ← neg_dotProduct]`. Conclude with `hy (-a) (by rwa [norm_neg]) }`. Establish `hMmem : ∀ y, y ∈ M ↔ ∀ a : κ → K, ‖a‖ ≤ ρ → ψ₀ (a ⬝ᵥ y) = 1` using `fun y => Iff.rfl`. Establish `hML' : ∀ y ∈ M, y ∈ L'`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `y hy`. Use `hrL' (mem_ball_zero_iff.2 ?_)` and prove the remaining obligations. Rewrite using `[pi_norm_lt_iff hr]`. Introduce `k`. Assume the negation of the conclusion as `hk`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `push_neg at hk`. Establish `hyk : 0 < ‖y k‖` using `hr.trans_le hk`. Use `ht₁ ?_` and prove the remaining obligations. Establish `hnorm : ‖(Pi.single k (t₁ / y k) : κ → K)‖ ≤ ρ`. Use `(pi_norm_le_iff_of_nonneg hρ0.le).2 fun i => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Distinguish the cases in `hi : i = k`. Substitute `hi` using the available equality. Rewrite using `[Pi.single_eq_same, norm_div]`. Conclude with `div_le_div_of_nonneg_left ht0.le hr hk`. Rewrite using `[Pi.single_eq_of_ne hi, norm_zero]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hρ0.le`. Use `(hMmem y).1 hy _ hnorm` as an intermediate fact. Rewrite `this` using `[single_dotProduct, div_mul_cancel₀ _ (norm_pos_iff.1 hyk)]`. Then use the resulting hypothesis. Set `U : AddSubgroup (κ → K)` to `{ carrier := Metric.ball 0 η add_mem' := fun {a b} ha hb => mem_ball_zero_iff.2 ((IsUltrametricDist.norm_add_le_max a b).trans_lt (max_lt (mem_ball_zero_iff.1 ha) (mem_ball_zero_iff.1 hb))) zero_mem' := Metric.mem_ball_self hη0 neg_mem' := fun {a} ha => by simpa using ha }`. Establish `hUM : U ≤ M` using `fun y hy a ha => small a y ha (mem_ball_zero_iff.1 hy)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Assume the hypotheses and unpack their components.
 
-Set `N : AddSubgroup L` to `M.addSubgroupOf L`. Establish `hNo : IsOpen (N : Set L)`. Use `AddSubgroup.isOpen_mono (H₁ := U.addSubgroupOf L) (fun y hy => AddSubgroup.mem_addSubgroupOf.2 (hUM (AddSubgroup.mem_addSubgroupOf.1 hy))) ?_` and prove the remaining obligations. Conclude with `(Metric.isOpen_ball (x := (0 : κ → K)) (ε := η)).preimage continuous_subtype_val`. Use `haveI : CompactSpace L := isCompact_iff_compactSpace.1 hL`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : Finite (L ⧸ N) := AddSubgroup.quotient_finite_of_isOpen N hNo`. Set `e : (κ → K) → AddChar L ℂ` to `fun a => { toFun := fun y => ψ₀ (a ⬝ᵥ (y : κ → K)) map_zero_eq_one' := by simp map_add_eq_mul' := fun y y' => by`. Rewrite using `[AddSubgroup.coe_add, dotProduct_add, AddChar.map_add_eq_mul] }`. Establish `he : ∀ a (y : L), e a y = ψ₀ (a ⬝ᵥ (y : κ → K))` using `fun _ _ => rfl`. Establish `hχ0 : χ 0 = 1` using `htriv 0 L.zero_mem L'.zero_mem`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Set `χL : AddChar L ℂ` to `{ toFun := fun y => χ y map_zero_eq_one' := hχ0 map_add_eq_mul' := fun y y' => hmul _ y.2 _ y'.2 }`. Take `⟨X, hX⟩` from `exists_lift N χL fun y hy => htriv _ y.2 (hML' _ hy)`. Set `H : AddSubgroup (AddChar (L ⧸ N) ℂ)` to `{ carrier := {Λ | ∃ a : κ → K, ‖a‖ ≤ ρ ∧ ∀ y : L, Λ y = ψ₀ (a ⬝ᵥ (y : κ → K))} add_mem' := by`. Introduce and unpack `Λ Λ' ⟨a, ha, h⟩ ⟨b, hb, h'⟩`. Use `⟨a + b, (IsUltrametricDist.norm_add_le_max a b).trans (max_le ha hb), fun y => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Rewrite using `[AddChar.add_apply, h, h', add_dotProduct, AddChar.map_add_eq_mul]`. Use the proof step `zero_mem' := ⟨0, by rw [norm_zero]; exact hρ0.le, fun y => by simp⟩`. Use the proof step `neg_mem' := by`. Introduce and unpack `Λ ⟨a, ha, h⟩`. Use `⟨-a, by rwa [norm_neg], fun y => ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[AddChar.neg_apply, ← QuotientAddGroup.mk_neg, h, AddSubgroup.coe_neg, dotProduct_neg, neg_dotProduct] }`. Establish `hsep : ∀ q : L ⧸ N, q ≠ 0 → ∃ Λ ∈ H, Λ q ≠ 1`. Introduce `q hq`. Take `⟨y, rfl⟩` from `QuotientAddGroup.mk_surjective q`. Establish `hyN : (y : κ → K) ∉ M` using `fun h => hq ((QuotientAddGroup.eq_zero_iff _).2 h)`.
-
-Rewrite `hyN` using `[hMmem]`. Use `push_neg at hyN`. Take `⟨a, ha, hay⟩` from `hyN`. Take `⟨Λ, hΛ⟩` from `exists_lift N (e a) fun z hz => hz a ha`. Conclude with `⟨Λ, ⟨a, ha, fun z => hΛ z⟩, by rw [hΛ]; exact hay⟩`.
-
-Take `⟨a, -, ha⟩` from `mem_of_separates H hsep X`. Conclude with `⟨a, fun y hy => (hX ⟨y, hy⟩).symm.trans (ha ⟨y, hy⟩)⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_dotProduct_eq {K : Type} [NormedField K] [IsUltrametricDist K] {κ : Type} [Fintype κ]
     (ψ₀ : AddChar K ℂ) (hc : Continuous ψ₀) (hne : ψ₀ ≠ 1)
@@ -242,7 +236,7 @@ end GlobalTheory.CompactCharDual
 namespace GlobalTheory.CompactCharDual
 
 /- English proof (translation)
-Introduce `F _ _ v κ _ ψ₀ hc hne L hL L' hL' χ hmul htriv`. Use `haveI : IsUltrametricDist (Fv F v) := inferInstance`. Conclude with `exists_dotProduct_eq ψ₀ hc hne L hL L' hL' χ hmul htriv`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_dotProduct_eq_local : ∀ {F : Type} [Field F] [NumberField F] (v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F) {κ : Type} [Fintype κ]
     (ψ₀ : AddChar (Fv F v) ℂ), Continuous ψ₀ → ψ₀ ≠ 1 →

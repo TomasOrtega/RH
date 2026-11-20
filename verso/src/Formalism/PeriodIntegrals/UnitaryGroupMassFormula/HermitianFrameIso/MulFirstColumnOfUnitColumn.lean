@@ -27,27 +27,27 @@ Both sides reduce to the same expression.
     low K i j = K i.succ j.succ := rfl
 
 /- English proof (translation)
-Simplify using `[blk]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem blk_zero_zero (c : S) (A : Matrix (Fin m) (Fin m) S) : blk c A 0 0 = c := by
   simp [blk]
 
 /- English proof (translation)
-Simplify using `[blk]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem blk_zero_succ (c : S) (A : Matrix (Fin m) (Fin m) S) (j : Fin m) :
     blk c A 0 j.succ = 0 := by
   simp [blk]
 
 /- English proof (translation)
-Simplify using `[blk]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem blk_succ_zero (c : S) (A : Matrix (Fin m) (Fin m) S) (i : Fin m) :
     blk c A i.succ 0 = 0 := by
   simp [blk]
 
 /- English proof (translation)
-Simplify using `[blk]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem blk_succ_succ (c : S) (A : Matrix (Fin m) (Fin m) S) (i j : Fin m) :
     blk c A i.succ j.succ = A i j := by

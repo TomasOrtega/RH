@@ -68,13 +68,13 @@ def cubeDP (hm : ∀ x ∈ J, g x ∈ J) (ha : ∀ x ∈ J, ∀ y ∈ J, g (x + 
           Nat.uniformBell_one_right]
 
 /- English proof (translation)
-Establish `key : ∀ l : List (ℕ × A), (∀ p ∈ l, p.2 ∈ J) → (1 ≤ (l.map Prod.fst).sum → (l.map fun p ↦ δ.dpow p.1 p.2).prod ∈ J) ∧ (2 ≤ (l.map Prod.fst).sum → ∀ c ∈ J, (l.map fun p ↦ δ.dpow p.1 p.2).prod * c = 0) ∧ (3 ≤ (l.map Prod.fst).sum → (l.map fun p ↦ δ.dpow p.1 p.2).prod = 0)`. Introduce `l`. Proceed by induction on `l with`. Consider the case `nil => simp`. Consider the case `cons p l ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Introduce `hl`. Establish `hp : p.2 ∈ J` using `hl p (by simp)`. Take `⟨i1, i2, i3⟩` from `ih fun q hq ↦ hl q (by simp [hq])`. Simplify using `only [List.map_cons, List.sum_cons, List.prod_cons]`. Break down `hn : p.1 with _ | _ | _ | n` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using `only [zero_add]`. Conclude with `⟨fun h ↦ J.mul_mem_left _ (i1 h), fun h c hc ↦ by rw [mul_assoc, i2 h c hc, mul_zero], fun h ↦ by rw [i3 h, mul_zero]⟩`. Establish `hm : δ.dpow (0 + 1) p.2 ∈ J` using `δ.dpow_mem (by simp) hp`. Conclude with `⟨fun _ ↦ J.mul_mem_right _ hm, fun h c hc ↦ h3 _ hm _ (i1 (by omega)) c hc, fun h ↦ by rw [mul_comm, i2 (by omega) _ hm]⟩`. Establish `hm : δ.dpow (0 + 1 + 1) p.2 ∈ J` using `δ.dpow_mem (by simp) hp`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨fun _ ↦ J.mul_mem_right _ hm, fun h c hc ↦ by rw [mul_assoc]; exact h2 _ hp _ (J.mul_mem_left _ hc), fun h ↦ h2 _ hp _ (i1 (by omega))⟩`. Rewrite using `[h _ (by omega) _ hp]; simp`. Conclude with `⟨3, fun l hl ↦ (key l hl).2.2⟩`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem isDPNilpotent_of_cube (δ : DividedPowers J) (h3 : ∀ a ∈ J, ∀ b ∈ J, ∀ c ∈ J, a * b * c = 0)
     (h2 : ∀ a ∈ J, ∀ c ∈ J, δ.dpow 2 a * c = 0) (h : ∀ n, 3 ≤ n → ∀ a ∈ J, δ.dpow n a = 0) :
@@ -128,7 +128,7 @@ instance : Mul (Bi R B) := ⟨fun x y ↦ mk (x.1 * y.1) (x.1 • y.2.1 + y.1 �
 instance : One (Bi R B) := ⟨mk 1 0 0 0⟩
 
 /- English proof (translation)
-The claim follows from `Prod.ext h0 (Prod.ext h1 (Prod.ext h2 h3))`.
+A detailed English derivation is pending.
 -/
 @[ext] theorem ext' {x y : Bi R B} (h0 : x.1 = y.1) (h1 : x.2.1 = y.2.1) (h2 : x.2.2.1 = y.2.2.1)
     (h3 : x.2.2.2 = y.2.2.2) : x = y := Prod.ext h0 (Prod.ext h1 (Prod.ext h2 h3))
@@ -303,7 +303,7 @@ instance : Algebra R (Bi R B) := Algebra.ofModule
   (fun r x y ↦ by ext1 <;> simp [wedge_smul_left, wedge_smul_right, smul_comm r])
 
 /- English proof (translation)
-Rewrite using `[Algebra.algebraMap_eq_smul_one, Algebra.algebraMap_eq_smul_one]`. Apply the tactic sequence `ext1 <;> simp`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem algebraMap_eq (r : R) : algebraMap R (Bi R B) r = mk (algebraMap R B r) 0 0 0 := by
   rw [Algebra.algebraMap_eq_smul_one, Algebra.algebraMap_eq_smul_one]
@@ -317,7 +317,7 @@ def π : Bi R B →+* B where
   map_mul' _ _ := rfl
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_ker {x : Bi R B} : x ∈ RingHom.ker π ↔ x.1 = 0 := Iff.rfl
 
@@ -332,18 +332,18 @@ def dp : DividedPowers (RingHom.ker (π (R := R) (B := B))) :=
     (fun x _ ↦ by ext1 <;> simp [sq])
 
 /- English proof (translation)
-The claim follows from `if_pos hx`.
+A detailed English derivation is pending.
 -/
 theorem dp_two {x : Bi R B} (hx : x.1 = 0) : dp.dpow 2 x = sq x := if_pos hx
 
 /- English proof (translation)
-Take `⟨k, rfl⟩` from `Nat.exists_eq_add_of_le' hn`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem dp_high {n : ℕ} (hn : 3 ≤ n) (x : Bi R B) : dp.dpow n x = 0 := by
   obtain ⟨k, rfl⟩ := Nat.exists_eq_add_of_le' hn; rfl
 
 /- English proof (translation)
-The claim follows from `isDPNilpotent_of_cube _ (fun x hx y hy z hz ↦ by rw [mem_ker] at hx hy hz; ext1 <;> simp [hx, hy, hz]) (fun x hx y hy ↦ by rw [mem_ker] at hx hy; rw [dp_two hx]; ext1 <;> simp [sq, hy]) fun n hn a _ ↦ dp_high hn a`.
+A detailed English derivation is pending.
 -/
 theorem isDPNilpotent_dp : IsNilDP (dp (R := R) (B := B)) :=
   isDPNilpotent_of_cube _ (fun x hx y hy z hz ↦ by rw [mem_ker] at hx hy hz; ext1 <;> simp [hx, hy, hz])
@@ -420,15 +420,15 @@ end Bi
 variable {X : Scheme.{0}} {s : X ⟶ Sp R}
 
 /- English proof (translation)
-Set `i` to `(diagExt R B).secHom hx (diagExt R B).i fun _ ↦ rfl`. Set `k` to `(diagExt R B).secHom hx (diagSec R B) (fst_derSec _)`. Apply the tactic sequence `let a1 := Bi.hom hx Bi.j1 (fun _ ↦ rfl) fun c _ ↦ by ext1 <;> simp [Bi.sq, Bi.j1]`. Apply the tactic sequence `let a12 := Bi.hom hx Bi.j12 (fun _ ↦ rfl) fun c _ ↦ by ext1 <;> simp [Bi.sq, Bi.j12]`. Apply the tactic sequence `let ad := Bi.hom hx Bi.jd (fun _ ↦ rfl) fun c hc ↦ by ext1 <;> simp [Bi.sq, Bi.jd, hc]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `e0` using `ev_sq f i a1 i a12 fun c ↦ rfl`. Establish `e1` using `ev_sq f k a1 i ad fun c ↦ by`. Express the relevant statement in the definitionally equal form `Bi.j1 (diagSec R B c) = Bi.jd (TrivSqZeroExt.inl c)`. Apply the tactic sequence `ext1 <;> simp [Bi.j1, Bi.jd]`. Establish `e2` using `ev_sq f k a12 k ad fun c ↦ by`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `Bi.j12 (diagSec R B c) = Bi.jd (diagSec R B c)`. Apply the tactic sequence `ext1 <;> simp [Bi.j12, Bi.jd]`. Establish `l0` using `congrArg (fun y : Bi R B ↦ y.2.2.2) e0`. Establish `l1` using `congrArg (fun y : Bi R B ↦ y.2.2.2) e1`. Establish `l2` using `congrArg (fun y : Bi R B ↦ y.2.2.2) e2`.
+Express the relevant assertion in an equivalent form by its definition. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `0 + _ = 0 + _ at l0`. Express the relevant statement in the definitionally equal form `0 + _ = dOne R B (TrivSqZeroExt.snd (R := B) (ev f i)) + _ at l1`. Express the relevant statement in the definitionally equal form `0 + _ = dOne R B (TrivSqZeroExt.snd (R := B) (ev f k)) + _ at l2`. Express the relevant statement in the definitionally equal form `dOne R B (TrivSqZeroExt.snd (R := B) (ev f i) - TrivSqZeroExt.snd (R := B) (ev f k)) = 0`. Rewrite using `[map_sub]`.
+Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `key : ∀ a b c d e : Om R B 2, 0 + a = 0 + b → 0 + a = d + c → 0 + b = e + c → d - e = 0` using `fun a b c d e h1 h2 h3 ↦ by linear_combination (norm := abel1) h1 - h2 + h3`. Conclude with `key _ _ _ _ _ l0 l1 l2`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem dOne_connForm (f : Z1 (O (dp0 R) s)) (x : Sp B ⟶ X) (hx : x ≫ s = spMap (algebraMap R B)) :
     dOne R B (connForm f x hx) = 0 := by

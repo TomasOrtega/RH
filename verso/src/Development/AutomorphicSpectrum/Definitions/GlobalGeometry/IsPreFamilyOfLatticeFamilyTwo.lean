@@ -78,7 +78,7 @@ namespace Fam
 omit [IsDomain O] [IsDiscreteValuationRing O] [∀ k, Fintype (J k)] in
 
 /- English proof (translation)
-Simplify using `[coordLat, AddSubgroup.mem_iInf, Fintype.linearCombination_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_coordLat_iff (y : (Σ k, J k) → Ω) (L : Lat ξ V) {m : ℕ} (b : Fin m → V) (c : ∀ k, J k) (a : Fin m → Ω) :
     a ∈ coordLat O y L b c ↔ ∀ q : Cpt ξ, InChart ξ (mseg y) c q → (∀ o : O, algebraMap O Ω o ∈ regAt ξ q) →
@@ -88,7 +88,7 @@ theorem mem_coordLat_iff (y : (Σ k, J k) → Ω) (L : Lat ξ V) {m : ℕ} (b : 
 omit [IsDomain O] [IsDiscreteValuationRing O] [∀ k, Fintype (J k)] in
 
 /- English proof (translation)
-Introduce `a ha` and use `(mem_coordLat_iff O y L' b c a).2 fun q h1 h2 => h q ((mem_coordLat_iff O y L b c a).1 ha q h1 h2)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem coordLat_mono (y : (Σ k, J k) → Ω) {L L' : Lat ξ V} (h : ∀ q, L q ≤ L' q) {m : ℕ} (b : Fin m → V)
     (c : ∀ k, J k) : coordLat O y L b c ≤ coordLat O y L' b c := fun a ha =>
@@ -97,9 +97,9 @@ theorem coordLat_mono (y : (Σ k, J k) → Ω) {L L' : Lat ξ V} (h : ∀ q, L q
 omit [IsDomain O] [IsDiscreteValuationRing O] [∀ k, Fintype (J k)] in
 
 /- English proof (translation)
-Proceed by induction on `ha using Algebra.adjoin_induction with`. Consider the case `mem t ht => obtain ⟨j, rfl⟩ := ht`. Conclude with `h1.2 j`. Consider the case `algebraMap o => exact h2 o`. Consider the case `add s t _ _ hs ht => exact add_mem hs ht`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `mul s t _ _ hs ht => exact mul_mem hs ht`.
+A detailed English derivation is pending.
 -/
 theorem chartRing_le_regAt (y : (Σ k, J k) → Ω) (c : ∀ k, J k) (q : Cpt ξ) (h1 : InChart ξ (mseg y) c q)
     (h2 : ∀ o : O, algebraMap O Ω o ∈ regAt ξ q) {a : Ω} (ha : a ∈ chartRing O (mseg y) c) : a ∈ regAt ξ q := by
@@ -112,9 +112,9 @@ theorem chartRing_le_regAt (y : (Σ k, J k) → Ω) (c : ∀ k, J k) (q : Cpt ξ
 omit [IsDomain O] [IsDiscreteValuationRing O] [∀ k, Fintype (J k)] in
 
 /- English proof (translation)
-Rewrite `ha`, the goal using `[mem_coordLat_iff]`. Introduce `q h1 h2`. Use `(L q).smul_mem ⟨t, chartRing_le_regAt O y c q h1 h2 ht⟩ (ha q h1 h2)` as an intermediate fact. Establish `e : ∑ i, (t • a) i • b i = t • ∑ i, a i • b i` using `by simp [Finset.smul_sum, mul_smul]`. Rewrite using `[e]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem smul_mem_coordLat (y : (Σ k, J k) → Ω) (L : Lat ξ V) {m : ℕ} (b : Fin m → V) (c : ∀ k, J k) {t : Ω}
     (ht : t ∈ chartRing O (mseg y) c) {a : Fin m → Ω} (ha : a ∈ coordLat O y L b c) :
@@ -128,9 +128,9 @@ theorem smul_mem_coordLat (y : (Σ k, J k) → Ω) (L : Lat ξ V) {m : ℕ} (b :
 def unitLat (ξ : Spec (CommRingCat.of Ω) ⟶ X) : Lat ξ Ω := fun q => Submodule.span (regAt ξ q) {1}
 
 /- English proof (translation)
-Rewrite using `[unitLat, Submodule.mem_span_singleton]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨t, rfl⟩`. Simplify using `[Subring.smul_def]`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨⟨a, h⟩, by simp [Subring.smul_def]⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_unitLat (q : Cpt ξ) (a : Ω) : a ∈ unitLat ξ q ↔ a ∈ regAt ξ q := by
   rw [unitLat, Submodule.mem_span_singleton]
@@ -143,7 +143,7 @@ theorem mem_unitLat (q : Cpt ξ) (a : Ω) : a ∈ unitLat ξ q ↔ a ∈ regAt �
 omit [IsDomain O] [IsDiscreteValuationRing O] [∀ k, Fintype (J k)] in
 
 /- English proof (translation)
-Rewrite using `[mem_coordLat_iff]`. Simplify using `only [Fin.sum_univ_one, smul_eq_mul, mem_unitLat]`. Use `⟨fun H => (h.ring c hc _).2 fun q hq => H q hq fun o => ?_, fun H q h1 h2 => chartRing_le_regAt O y c q h1 h2 H⟩` and prove the remaining obligations. Conclude with `(h.ring c hc _).1 (Subalgebra.algebraMap_mem _ o) q hq`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem mem_coordLat_unitLat (y : (Σ k, J k) → Ω) (h : CoordTie O ξ (mseg y)) (c : ∀ k, J k) (hc : mseg y c ≠ 0)
     (t : Ω) (a : Fin 1 → Ω) :
@@ -157,9 +157,9 @@ theorem mem_coordLat_unitLat (y : (Σ k, J k) → Ω) (h : CoordTie O ξ (mseg y
 omit [∀ k, Fintype (J k)] in
 
 /- English proof (translation)
-Use `⟨h.famM, h.fam, ⟨h.char.1, h.char.2.1, h.char.2.2.1⟩, h.base, fun c hc C _ _ _ _ RC hT χ _ => ?_⟩` and prove the remaining obligations. Use `h.test c hc C RC hT` as an intermediate fact. Rewrite `this` using `[← IsScalarTower.algebraMap_apply]`. Use `this using 3 with τ a` and compare the differences between its conclusion and the goal. Establish `h1 : (1 : ZMod 2).val = 1` using `by decide`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact.
 
-Break down `(by decide : ∀ a : ZMod 2, a = 0 ∨ a = 1) a with rfl | rfl` into its components or cases. Simplify using the standard rewrite rules. Simplify using `[h1]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem isPreFamily_of_lattice_family_two (x : (Σ k, J k) → Ω) (p : ℕ) (w : O)
     (σ : Sg → ZMod 2 →+* IsLocalRing.ResidueField O) (φ : Equiv.Perm Sg)
@@ -177,7 +177,7 @@ theorem isPreFamily_of_lattice_family_two (x : (Σ k, J k) → Ω) (p : ℕ) (w 
 omit [∀ k, Fintype (J k)] in
 
 /- English proof (translation)
-Introduce `h`. Take `⟨u, hu, e⟩` from `h.char.2.1`. Conclude with `not_irreducible_pow (x := w) (n := p - 1) (by omega) (e ▸ (irreducible_isUnit_mul hu).2 hi)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem not_isPreFamily_of_irreducible (x : (Σ k, J k) → Ω) {p : ℕ} (hp : 3 ≤ p) (hi : Irreducible (p : O)) (w : O)
     (σ : Sg → F →+* IsLocalRing.ResidueField O) (φ : Equiv.Perm Sg) (D : (∀ k, J k) → LieLatticeData Ω F n Sg r s) :

@@ -21,21 +21,21 @@ open GlobalTheory.BI
 namespace GlobalTheory.BrauerZero
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.inducedClassFunctionFromSubgroup_trans K A hKA ψ`.
+A detailed English derivation is pending.
 -/
 theorem step_ind_ind {G : Type} [Group G] [Finite G] (K A : Subgroup G) (hKA : K ≤ A) (ψ : K → ℂ) :
     ind A (ind (K.subgroupOf A) (fun k => ψ ⟨((k : A) : G), k.2⟩)) = ind K ψ :=
   GlobalTheory.T.inducedClassFunctionFromSubgroup_trans K A hKA ψ
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.inducedClassFunction_mem_inducedDegreeOneCharDiff E f hf`.
+A detailed English derivation is pending.
 -/
 theorem inducedClassFunction_mem_degreeOneCharacterDiff {G : Type} [Group G] [Finite G] (E : Subgroup G) (f : E → ℂ) (hf : f ∈ D0 E) :
     ind E f ∈ D0 G :=
   GlobalTheory.T.inducedClassFunction_mem_inducedDegreeOneCharDiff E f hf
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.induced_one_sub_index_mem_degreeOneCharacterDiff K hc`.
+A detailed English derivation is pending.
 -/
 theorem step_ind_one_sub_index_of_comm {G : Type} [Group G] [Finite G] (K : Subgroup G)
     (hc : ∀ a b : G, a * b * a⁻¹ * b⁻¹ ∈ K) :
@@ -43,28 +43,28 @@ theorem step_ind_one_sub_index_of_comm {G : Type} [Group G] [Finite G] (K : Subg
   GlobalTheory.T.induced_one_sub_index_mem_degreeOneCharacterDiff K hc
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.exists_gt_commutator_mem_of_ne_whole K hK`.
+A detailed English derivation is pending.
 -/
 theorem step_exists_gt_commutators_le {G : Type} [Group G] [Finite G] [Group.IsNilpotent G] (K : Subgroup G)
     (hK : K ≠ ⊤) : ∃ A : Subgroup G, K < A ∧ ∀ a ∈ A, ∀ b ∈ A, a * b * a⁻¹ * b⁻¹ ∈ K :=
   GlobalTheory.T.exists_gt_commutator_mem_of_ne_whole K hK
 
 /- English proof (translation)
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro K hK`. Use `K.index_ne_zero_of_finite` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Consider the case `succ n ih`. Introduce `K hK`. Distinguish the cases in `hKt : K = ⊤`. Substitute `hKt` using the available equality. Establish `e : ind (⊤ : Subgroup G) (fun _ => (1 : ℂ)) = fun _ => 1` using `ind_top (fun _ => (1 : ℂ)) (fun _ _ => rfl)`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact.
 
-Rewrite using `[e, Subgroup.index_top]`. Simplify using the standard rewrite rules. Take `⟨A, hKA, hc⟩` from `step_exists_gt_commutators_le K hKt`. Establish `h1 : ind (K.subgroupOf A) (fun _ => (1 : ℂ)) - (fun _ => ((K.subgroupOf A).index : ℂ)) ∈ D0 A` using `step_ind_one_sub_index_of_comm (K.subgroupOf A) (fun a b => by`. Rewrite using `[Subgroup.mem_subgroupOf]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using hc a a.2 b b.2)`. Establish `h2` using `inducedClassFunction_mem_degreeOneCharacterDiff A _ h1`. Establish `hrel` using `Subgroup.relIndex_mul_index hKA.le`. Establish `hlt : 1 < K.relIndex A`. Establish `h0 : (K.subgroupOf A).index ≠ 0` using `Subgroup.index_ne_zero_of_finite`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1' : (K.subgroupOf A).index ≠ 1` using `fun h => hKA.not_ge (Subgroup.subgroupOf_eq_top.1 (Subgroup.index_eq_one.1 h))`. Unfold `Subgroup.relIndex`. Use linear arithmetic over natural numbers and integers. Establish `hA0 : A.index ≠ 0` using `A.index_ne_zero_of_finite`. Establish `h3` using `ih A (by nlinarith)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `t` using `step_ind_ind K A hKA.le (fun _ => (1 : ℂ))`. Establish `key : ind K (fun _ => (1 : ℂ)) - (fun _ => (K.index : ℂ)) = ind A (ind (K.subgroupOf A) (fun _ => (1 : ℂ)) - (fun _ => ((K.subgroupOf A).index : ℂ))) + ((K.subgroupOf A).index : ℤ) • (ind A (fun _ => (1 : ℂ)) - (fun _ => (A.index : ℂ)))`. Rewrite using `[ind_sub, ← t, ← hrel]`. Use function extensionality and compare the values at `g`. Establish `hc1` using `ind_const A (((K.subgroupOf A).index : ℕ) : ℂ) g`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Simplify using `only [Pi.sub_apply, Pi.add_apply, Pi.smul_apply, hc1, zsmul_eq_mul]`. Simplify using `only [Pi.mul_apply, Pi.sub_apply, Pi.intCast_apply, Pi.natCast_apply, Int.cast_natCast]`. Simplify using `only [Subgroup.relIndex]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[key]`. Conclude with `add_mem h2 (zsmul_mem h3 _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ind_one_sub_index_mem_degreeOneDiff_nilpotent {G : Type} [Group G] [Finite G] [Group.IsNilpotent G] :
     ∀ (n : ℕ) (K : Subgroup G), K.index ≤ n →
@@ -109,11 +109,11 @@ theorem ind_one_sub_index_mem_degreeOneDiff_nilpotent {G : Type} [Group G] [Fini
       exact add_mem h2 (zsmul_mem h3 _)
 
 /- English proof (translation)
-Establish `key : ∀ φ ∈ AddSubgroup.closure {φ : G → ℂ | ∃ (E : Subgroup G) (ψ : E → ℂ), (∃ l : ℕ, l.Prime ∧ ∀ y : E, ∃ j : ℕ, y ^ l ^ j ∈ Subgroup.center E) ∧ ψ ∈ Virt ℂ ℂ E ∧ φ = ind E ψ}, φ * f ∈ D0 G`. Introduce `φ hφ`. Proceed by induction on `hφ using AddSubgroup.closure_induction with`. Consider the case `mem φ hφ`. Take `⟨E, ψ, hl, hψ, rfl⟩` from `hφ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Rewrite using `[ind_mul_classFun_eq_ind_mul_restrict G E ψ f hf]`. Conclude with `h E hl ψ hψ`. Consider the case `zero => rw [zero_mul]`. Conclude with `zero_mem _`. Consider the case `add a b _ _ ha hb => rw [add_mul]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `add_mem ha hb`. Consider the case `neg a _ ha => rw [neg_mul]`. Conclude with `neg_mem ha`. Simplify using `using key 1 (one_mem_closure_ind_centralByPrime G)`.
+A detailed English derivation is pending.
 -/
 theorem mem_degreeOneDiff_of_forall_centralByPrime (G : Type) [Group G] [Finite G] (f : G → ℂ)
     (hf : ∀ g x : G, f (x⁻¹ * g * x) = f g)
@@ -134,27 +134,25 @@ theorem mem_degreeOneDiff_of_forall_centralByPrime (G : Type) [Group G] [Finite 
   simpa using key 1 (one_mem_closure_ind_centralByPrime G)
 
 /- English proof (translation)
-Take `⟨l, hl, hc⟩` from `hG`. Establish `: Fact l.Prime` using `⟨hl⟩`. Establish `hq : IsPGroup l (G ⧸ Subgroup.center G)`. Introduce `x`. Take `⟨y, rfl⟩` from `QuotientGroup.mk_surjective x`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨j, hj⟩` from `hc y`. Conclude with `⟨j, by rw [← QuotientGroup.mk_pow, QuotientGroup.eq_one_iff]; exact hj⟩`. Use `hq.isNilpotent` as an intermediate fact. Use `haveI : Group.IsNilpotent G := Subgroup.isNilpotent_of_ker_le_center (QuotientGroup.mk' (Subgroup.center G)) (by simp)`. Establish `hab : AbByP G` using `⟨l, hl, Subgroup.center G, inferInstance, fun a _ b hb => Subgroup.mem_center_iff.1 hb a, fun g => hc g⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `C : ∀ χ : G → ℂ, IsChar ℂ ℂ χ → χ - (fun _ => χ 1) ∈ D0 G`. Use `isChar_induction ℂ ℂ G (fun χ => χ - (fun _ => χ 1) ∈ D0 G) ?_ ?_` and prove the remaining obligations. Establish `e : (0 : G → ℂ) - (fun _ => (0 : G → ℂ) 1) = 0` using `by funext g; simp`. Rewrite using `[e]`. Conclude with `zero_mem _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `φ c hφ _ hQ`. Establish `e : (φ + c) - (fun _ => (φ + c) 1) = (φ - fun _ => φ 1) + (c - fun _ => c 1)`. Use function extensionality and compare the values at `g`. Simplify using `only [Pi.add_apply, Pi.sub_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e]`. Use `add_mem ?_ hQ` and prove the remaining obligations. Break down `irrChar_linear_or_induced ℂ G φ hab hφ with ⟨lam, hlam⟩ | ⟨T, hT, ψ, hψ, rfl⟩` into its components or cases. Establish `hφc : IsChar ℂ ℂ φ` using `by obtain ⟨n, ρ, -, h⟩ := hφ; exact ⟨n, ρ, h⟩`. Establish `hcl` using `(isChar_restrict_conj_one ℂ ℂ G φ hφc).2.1`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `AddSubgroup.subset_closure ⟨⊤, lam.comp (⊤ : Subgroup G).subtype, ?_⟩` and prove the remaining obligations. Establish `e1 : (fun h : (⊤ : Subgroup G) => ((lam.comp (⊤ : Subgroup G).subtype h : ℂˣ) : ℂ)) = fun h : (⊤ : Subgroup G) => φ (h : G)`. Use function extensionality and compare the values at `h`. Simplify using `[hlam]`. Rewrite using `[e1, ind_top φ hcl, ind_top (fun _ : G => (1 : ℂ)) (fun _ _ => rfl)]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `g`. Simplify using `[hlam]`. Take `⟨n, hn, -⟩` from `(isChar_restrict_conj_one ℂ ℂ T ψ hψ).2.2`. Establish `hψV : ψ - (fun _ => ψ 1) ∈ Virt ℂ ℂ T`. Use `sub_mem (isChar_mem_virt_complex hψ) ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : (fun _ : T => ψ 1) = n • (fun _ : T => (1 : ℂ))` using `by funext; simp [hn]`. Rewrite using `[e2]`. Conclude with `nsmul_mem (isChar_mem_virt_complex (isChar_one ℂ ℂ T)) n`. Establish `h1` using `inducedClassFunction_mem_degreeOneCharacterDiff T _ (IH T hT _ hψV (by simp))`. Establish `h2` using `ind_one_sub_index_mem_degreeOneDiff_nilpotent T.index T le_rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `key : ind T ψ - (fun _ => ind T ψ 1) = ind T (ψ - fun _ => ψ 1) + (n : ℤ) • (ind T (fun _ => (1 : ℂ)) - fun _ => (T.index : ℂ))`. Rewrite using `[ind_sub]`. Use function extensionality and compare the values at `g`. Simplify using `only [Pi.sub_apply, Pi.add_apply, Pi.smul_apply, ind_apply_one, hn, ind_const T (n : ℂ) g, zsmul_eq_mul, Pi.mul_apply, Pi.intCast_apply, Pi.natCast_apply]`. Use `push_cast`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key]`. Conclude with `add_mem h1 (zsmul_mem h2 _)`. Introduce `f hf hf1`. Take `⟨a, b, ha, hb, rfl⟩` from `(mem_virt_iff_sub ℂ ℂ G f).1 hf`.
-
-Establish `hab1 : a 1 = b 1` using `by simpa [sub_eq_zero] using hf1`. Establish `e : a - b = (a - fun _ => a 1) - (b - fun _ => b 1)` using `by funext g; simp [hab1]`. Rewrite using `[e]`. Conclude with `sub_mem (C a ha) (C b hb)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem central_case (G : Type) [Group G] [Finite G]
     (hG : ∃ l : ℕ, l.Prime ∧ ∀ y : G, ∃ j : ℕ, y ^ l ^ j ∈ Subgroup.center G)
@@ -212,17 +210,17 @@ theorem central_case (G : Type) [Group G] [Finite G]
   rw [e]; exact sub_mem (C a ha) (C b hb)
 
 /- English proof (translation)
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro G _ _ hG`. Use `Nat.card_pos (α := G)` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Consider the case `succ n ih`. Introduce `G _ _ hG f hf hf1`. Establish `hcl : ∀ g x : G, f (x⁻¹ * g * x) = f g` using `(virt_mul_comap_conj_ind_linear G).2.2.1 f hf`. Use `mem_degreeOneDiff_of_forall_centralByPrime G f hcl ?_` and prove the remaining obligations. Introduce `E hE ψ hψ`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hV : (fun e : E => ψ e * f e) ∈ Virt ℂ ℂ E` using `(virt_mul_comap_conj_ind_linear E).1 ψ hψ _ ((virt_mul_comap_conj_ind_linear G).2.1 f hf E E.subtype)`. Establish `h1 : (fun e : E => ψ e * f e) 1 = 0` using `by simp [hf1]`. Distinguish the cases in `hlt : Nat.card E < Nat.card G`. Conclude with `inducedClassFunction_mem_degreeOneCharacterDiff E _ (ih E (by omega) _ hV h1)`. Establish `htop : E = ⊤` using `(Subgroup.card_eq_iff_eq_top E).1 (le_antisymm (Subgroup.card_le_card_group E) (not_lt.1 hlt))`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hVG : ind E (fun e => ψ e * f e) ∈ Virt ℂ ℂ G` using `(virt_mul_comap_conj_ind_linear G).2.2.2.1 E _ hV`. Establish `hG1 : ind E (fun e => ψ e * f e) 1 = 0` using `by rw [ind_apply_one]; simp [hf1]`. Substitute `htop` using the available equality. Take `⟨l, hl, hc⟩` from `hE`. Establish `hG' : ∃ l : ℕ, l.Prime ∧ ∀ y : G, ∃ j : ℕ, y ^ l ^ j ∈ Subgroup.center G`.
+Establish an intermediate fact. Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨l, hl, fun y => ?_⟩` and prove the remaining obligations. Take `⟨j, hj⟩` from `hc ⟨y, Subgroup.mem_top y⟩`. Use `⟨j, Subgroup.mem_center_iff.2 fun z => ?_⟩` and prove the remaining obligations. Use `Subgroup.mem_center_iff.1 hj ⟨z, Subgroup.mem_top z⟩` as an intermediate fact. Simplify using `using congrArg Subtype.val this`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Use `central_case G hG' (fun T hT g hg hg1 => ih T ?_ g hg hg1) _ hVG hG1` and prove the remaining obligations. Use `Subgroup.card_le_card_group T` as an intermediate fact. Establish `hne : Nat.card T ≠ Nat.card G` using `fun h => hT ((Subgroup.card_eq_iff_eq_top T).1 h)`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem virtualCharacter_degreeZero_mem_degreeOneDiff : ∀ (n : ℕ) (G : Type) [Group G] [Finite G], Nat.card G ≤ n →
     ∀ f ∈ Virt ℂ ℂ G, f 1 = 0 → f ∈ D0 G := by
@@ -259,9 +257,9 @@ theorem virtualCharacter_degreeZero_mem_degreeOneDiff : ∀ (n : ℕ) (G : Type)
       omega
 
 /- English proof (translation)
-Rewrite `hf` using `[D0, ← Submodule.span_int_eq_addSubgroupClosure, Submodule.mem_toAddSubgroup, Submodule.mem_span_set']`. Take `⟨n, c, s, hs⟩` from `hf`. Use `choose H χ hHχ using fun i => (s i).2`. Use `⟨n, H, χ, c, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[← hs, Finset.sum_apply]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, hHχ i, zsmul_eq_mul, indFun_eq_ind, indFun_eq_ind]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_sum_induced_characters_of_mem_degreeOneDiff {G : Type} [Group G] [Fintype G] {f : G → ℂ} (hf : f ∈ D0 G) :
     ∃ (r : ℕ) (H : Fin r → Subgroup G) (χ : ∀ i, H i →* ℂˣ) (c : Fin r → ℤ), ∀ g : G,
@@ -278,9 +276,9 @@ theorem exists_sum_induced_characters_of_mem_degreeOneDiff {G : Type} [Group G] 
   rfl
 
 /- English proof (translation)
-Introduce `G _ _ V _ _ _ ρ`. Establish `hchar` using `(isChar_and_isIrrChar_of_rep ℂ ℂ G V ρ).1`. Establish `hV : (fun g => LinearMap.trace ℂ V (ρ g) - (Module.finrank ℂ V : ℂ)) ∈ Virt ℂ ℂ G`. Establish `e : (fun g => LinearMap.trace ℂ V (ρ g) - (Module.finrank ℂ V : ℂ)) = (fun g => algebraMap ℂ ℂ (ρ.character g)) - (Module.finrank ℂ V) • (fun _ => (1 : ℂ))`. Use function extensionality and compare the values at `g`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[Representation.character]`. Rewrite using `[e]`. Conclude with `sub_mem (isChar_mem_virt_complex hchar) (nsmul_mem (isChar_mem_virt_complex (isChar_one ℂ ℂ G)) _)`. Establish `h1 : (fun g => LinearMap.trace ℂ V (ρ g) - (Module.finrank ℂ V : ℂ)) 1 = 0` using `by simp`. Conclude with `exists_sum_induced_characters_of_mem_degreeOneDiff (virtualCharacter_degreeZero_mem_degreeOneDiff _ G le_rfl _ hV h1)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem brauerDegreeZero : GlobalTheory.Published.BrauerDegreeZero := by
   intro G _ _ V _ _ _ ρ

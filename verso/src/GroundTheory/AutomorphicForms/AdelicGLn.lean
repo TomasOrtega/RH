@@ -31,19 +31,19 @@ abbrev InfiniteAdelicGL : Type _ := GL (Fin n) (InfiniteAdeleRing K)
 abbrev FiniteAdelicGL : Type _ := GL (Fin n) (FiniteAdeleRing (𝓞 K) K)
 
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 theorem isTopologicalGroup : IsTopologicalGroup (AdelicGL K n) :=
   inferInstance
 
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 theorem t2Space : T2Space (AdelicGL K n) :=
   inferInstance
 
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 theorem locallyCompactSpace : LocallyCompactSpace (AdelicGL K n) :=
   inferInstance
@@ -59,9 +59,9 @@ theorem coe_det (g : AdelicGL K n) : (det K n g : 𝔸[K]) = (g : AdelicMatrix K
   rfl
 
 /- English proof (translation)
-Use `Units.continuous_iff.2 ⟨Continuous.matrix_det (Units.continuous_val (M := AdelicMatrix K n)), ?_⟩` and prove the remaining obligations. Establish `: (fun g : AdelicGL K n => (((det K n g)⁻¹ : (𝔸[K])ˣ) : 𝔸[K])) = fun g => ((g⁻¹ : AdelicGL K n) : AdelicMatrix K n).det`. Use function extensionality and compare the values at `g`. Rewrite using `[← map_inv]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[this]`. Conclude with `Continuous.matrix_det (Units.continuous_coe_inv (M := AdelicMatrix K n))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_det : Continuous (det K n) := by
   refine Units.continuous_iff.2 ⟨Continuous.matrix_det (Units.continuous_val (M := AdelicMatrix K n)),
@@ -79,7 +79,7 @@ def prodEquiv : AdelicGL K n ≃ₜ* InfiniteAdelicGL K n × FiniteAdelicGL K n 
 
 @[simp]
 /- English proof (translation)
-The claim follows from `rfl @[simp]`.
+A detailed English derivation is pending.
 -/
 theorem prodEquiv_apply_fst (g : AdelicGL K n) (a b : Fin n) :
     (prodEquiv K n g).1 a b = (g a b).1 :=
@@ -106,7 +106,7 @@ theorem infiniteEquiv_apply (g : InfiniteAdelicGL K n) (w : InfinitePlace K) (a 
   rfl
 
 /- English proof (translation)
-Rewrite using `[GLnLocal.mem_integralMatrices]`. Simplify using `only [GroundTheory.Global.mem_valuationInteger_iff]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mem_integralMatrices_adicCompletion (v : HeightOneSpectrum (𝓞 K))
     (M : Matrix (Fin n) (Fin n) (v.adicCompletion K)) :
@@ -151,7 +151,7 @@ def restrictedProductEquiv :
 
 @[simp]
 /- English proof (translation)
-The claim follows from `rfl @[simp]`.
+A detailed English derivation is pending.
 -/
 theorem restrictedProductEquiv_apply_fst (g : AdelicGL K n) (w : InfinitePlace K) (a b : Fin n) :
     (restrictedProductEquiv K n g).1 w a b = (g a b).1 w :=
@@ -167,7 +167,7 @@ theorem restrictedProductEquiv_apply_snd (g : AdelicGL K n) (v : HeightOneSpectr
   rfl
 
 /- English proof (translation)
-The claim follows from `((restrictedProductEquiv K n g).2).2`.
+A detailed English derivation is pending.
 -/
 theorem eventually_mem_integralGL (g : AdelicGL K n) :
     ∀ᶠ v in cofinite, (restrictedProductEquiv K n g).2 v ∈
@@ -178,7 +178,7 @@ def integralFiniteMatrices : Subring (Matrix (Fin n) (Fin n) (FiniteAdeleRing (�
   (RingHom.mapMatrix (GroundTheory.Global.integralFiniteAdeles (𝓞 K) K).subtype).range
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨N, rfl⟩ a b`. Conclude with `(N a b).2`. Introduce `h`. Conclude with `⟨Matrix.of fun a b => ⟨M a b, h a b⟩, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_integralFiniteMatrices {M : Matrix (Fin n) (Fin n) (FiniteAdeleRing (𝓞 K) K)} :
     M ∈ integralFiniteMatrices K n ↔
@@ -193,7 +193,7 @@ def integralFiniteGL : Subgroup (FiniteAdelicGL K n) :=
   (integralFiniteMatrices K n).toSubmonoid.units
 
 /- English proof (translation)
-Rewrite using `[integralFiniteGL, Submonoid.mem_units_iff, Subring.mem_toSubmonoid, Subring.mem_toSubmonoid, mem_integralFiniteMatrices, mem_integralFiniteMatrices]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_integralFiniteGL_iff {g : FiniteAdelicGL K n} :
     g ∈ integralFiniteGL K n ↔
@@ -203,9 +203,9 @@ theorem mem_integralFiniteGL_iff {g : FiniteAdelicGL K n} :
     Subring.mem_toSubmonoid, mem_integralFiniteMatrices, mem_integralFiniteMatrices]
 
 /- English proof (translation)
-Establish `hinv : ∀ v a b, ((finiteRestrictedEquiv K n g v)⁻¹ : GL (Fin n) (v.adicCompletion K)) a b = (g⁻¹ : FiniteAdelicGL K n) a b v` using `fun v a b => by`. Rewrite using `[← RestrictedProduct.inv_apply, ← map_inv]`. Both sides reduce to the same expression. Simplify using `only [mem_integralFiniteGL_iff, GLnLocal.mem_integralGL_iff, hinv, finiteRestrictedEquiv_apply, GroundTheory.Global.mem_valuationInteger_iff, GroundTheory.Global.mem_integralFiniteAdeles]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨h1, h2⟩ v`. Conclude with `⟨fun a b => h1 a b v, fun a b => h2 a b v⟩`. Introduce `h`. Conclude with `⟨fun a b v => (h v).1 a b, fun a b v => (h v).2 a b⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem mem_integralFiniteGL_iff_forall {g : FiniteAdelicGL K n} :
     g ∈ integralFiniteGL K n ↔
@@ -224,7 +224,7 @@ theorem mem_integralFiniteGL_iff_forall {g : FiniteAdelicGL K n} :
     exact ⟨fun a b v => (h v).1 a b, fun a b v => (h v).2 a b⟩
 
 /- English proof (translation)
-Establish `: (integralFiniteMatrices K n : Set (Matrix (Fin n) (Fin n) (FiniteAdeleRing (𝓞 K) K))) = ⋂ a, ⋂ b, (fun M : Matrix (Fin n) (Fin n) (FiniteAdeleRing (𝓞 K) K) => M a b) ⁻¹' (GroundTheory.Global.integralFiniteAdeles (𝓞 K) K)`. Use extensionality with `M`. Simplify using `[mem_integralFiniteMatrices]`. Rewrite using `[this]`. Conclude with `isOpen_iInter_of_finite fun a => isOpen_iInter_of_finite fun b => GroundTheory.Global.isOpen_integralFiniteAdeles.preimage (continuous_apply_apply a b)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_integralFiniteMatrices :
     IsOpen (integralFiniteMatrices K n : Set (Matrix (Fin n) (Fin n) (FiniteAdeleRing (𝓞 K) K))) := by
@@ -238,7 +238,7 @@ theorem isOpen_integralFiniteMatrices :
     GroundTheory.Global.isOpen_integralFiniteAdeles.preimage (continuous_apply_apply a b)
 
 /- English proof (translation)
-Establish `: (integralFiniteMatrices K n : Set (Matrix (Fin n) (Fin n) (FiniteAdeleRing (𝓞 K) K))) = Set.pi univ fun _ => Set.pi univ fun _ => (GroundTheory.Global.integralFiniteAdeles (𝓞 K) K : Set (FiniteAdeleRing (𝓞 K) K))`. Conclude with `Set.ext fun M => ⟨fun h a _ b _ => (mem_integralFiniteMatrices K n).1 h a b, fun h => (mem_integralFiniteMatrices K n).2 fun a b => h a (mem_univ a) b (mem_univ b)⟩`. Rewrite using `[this]`. Conclude with `isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => GroundTheory.Global.isCompact_integralFiniteAdeles K`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCompact_integralFiniteMatrices :
     IsCompact (integralFiniteMatrices K n :
@@ -254,13 +254,13 @@ theorem isCompact_integralFiniteMatrices :
     GroundTheory.Global.isCompact_integralFiniteAdeles K
 
 /- English proof (translation)
-The claim follows from `Submonoid.isOpen_units (isOpen_integralFiniteMatrices K n)`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_integralFiniteGL : IsOpen (integralFiniteGL K n : Set (FiniteAdelicGL K n)) :=
   Submonoid.isOpen_units (isOpen_integralFiniteMatrices K n)
 
 /- English proof (translation)
-Establish `h` using `(isCompact_integralFiniteMatrices K n).prod (MulOpposite.opHomeomorph.symm.isCompact_preimage.2 (isCompact_integralFiniteMatrices K n))`. Use `Units.isClosedEmbedding_embedProduct.isCompact_preimage h using 1` and compare the differences between its conclusion and the goal. Use extensionality with `u`. Simplify using `only [SetLike.mem_coe, integralFiniteGL, Submonoid.mem_units_iff, Set.mem_preimage, Set.mem_prod, Units.embedProduct_apply, Subring.mem_toSubmonoid]`. Conclude with `Iff.rfl`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem isCompact_integralFiniteGL :
     IsCompact (integralFiniteGL K n : Set (FiniteAdelicGL K n)) := by
@@ -277,7 +277,7 @@ def integralFiniteOpenSubgroup : OpenSubgroup (FiniteAdelicGL K n) where
   isOpen' := isOpen_integralFiniteGL K n
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun s _ hs => Set.subsingleton_of_image hinj s (isTotallyDisconnected_of_totallyDisconnectedSpace _ _ (Set.subset_univ _) (hs.image f hf.continuousOn))⟩`.
+Supply the required witnesses or components.
 -/
 theorem totallyDisconnectedSpace_of_injective {X Y : Type*} [TopologicalSpace X]
     [TopologicalSpace Y] [TotallyDisconnectedSpace Y] {f : X → Y} (hf : Continuous f)
@@ -295,7 +295,7 @@ instance totallyDisconnectedSpace_finite : TotallyDisconnectedSpace (FiniteAdeli
       (Subtype.ext (funext fun v => congrFun hgh v))
 
 /- English proof (translation)
-The claim follows from `hasBasis_nhds_one_compactOpenSubgroup`.
+A detailed English derivation is pending.
 -/
 theorem finite_hasBasis_nhds_one :
     (𝓝 (1 : FiniteAdelicGL K n)).HasBasis
@@ -315,7 +315,7 @@ theorem diagonal_apply (γ : GL (Fin n) K) (a b : Fin n) :
   rfl
 
 /- English proof (translation)
-Introduce `_ _ h` and use `Units.ext <| Matrix.ext fun a b => NumberField.AdeleRing.algebraMap_injective (𝓞 K) K (congrArg (fun g : AdelicGL K n => g a b) h)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem diagonal_injective : Function.Injective (diagonal K n) := fun _ _ h =>
   Units.ext <| Matrix.ext fun a b =>
@@ -325,9 +325,9 @@ def rationalGL : Subgroup (AdelicGL K n) :=
   (diagonal K n).range
 
 /- English proof (translation)
-Use `GroundTheory.Global.discreteTopology_principalSubgroup K` as an intermediate fact. Take `⟨V, hVo, hV⟩` from `isOpen_induced_iff.1 (isOpen_discrete ({0} : Set (NumberField.AdeleRing.principalSubgroup (𝓞 K) K)))`. Use `⟨V, hVo, ?_, fun k hk => ?_⟩` and prove the remaining obligations. Establish `: (0 : NumberField.AdeleRing.principalSubgroup (𝓞 K) K) ∈ Subtype.val ⁻¹' V`. Rewrite using `[hV]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Conclude with `this`. Establish `: (⟨algebraMap K 𝔸[K] k, ⟨k, rfl⟩⟩ : NumberField.AdeleRing.principalSubgroup (𝓞 K) K) ∈ Subtype.val ⁻¹' V` using `hk`. Rewrite `this` using `[hV, Set.mem_singleton_iff, Subtype.ext_iff]`. Conclude with `NumberField.AdeleRing.algebraMap_injective (𝓞 K) K (this.trans (map_zero _).symm)`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isOpen_inter_eq_zero :
     ∃ V : Set 𝔸[K], IsOpen V ∧ (0 : 𝔸[K]) ∈ V ∧ ∀ k : K, algebraMap K 𝔸[K] k ∈ V → k = 0 := by
@@ -344,15 +344,15 @@ theorem exists_isOpen_inter_eq_zero :
     exact NumberField.AdeleRing.algebraMap_injective (𝓞 K) K (this.trans (map_zero _).symm)
 
 /- English proof (translation)
-Take `⟨V, hVo, hV0, hV⟩` from `exists_isOpen_inter_eq_zero K`. Set `W : Set (AdelicGL K n)` to `⋂ a, ⋂ b, (fun g : AdelicGL K n => (g : AdelicMatrix K n) a b - (1 : AdelicMatrix K n) a b) ⁻¹' V`. Establish `hWo : IsOpen W` using `isOpen_iInter_of_finite fun a => isOpen_iInter_of_finite fun b => hVo.preimage ((Continuous.matrix_elem (Units.continuous_val (M := AdelicMatrix K n)) a b).sub continuous_const)`. Use `discreteTopology_of_isOpen_singleton_one (isOpen_induced_iff.2 ⟨W, hWo, ?_⟩)` and prove the remaining obligations. Use extensionality with `⟨g, γ, rfl⟩`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Simplify using `only [W, Set.mem_preimage, Set.mem_iInter, Set.mem_singleton_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `hγ : γ = 1`. Establish `hsub : ((diagonal K n γ : AdelicGL K n) : AdelicMatrix K n) - 1 = (algebraMap K 𝔸[K]).mapMatrix ((γ : Matrix (Fin n) (Fin n) K) - 1)`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[map_sub, map_one]`. Both sides reduce to the same expression. Use `Units.ext <| Matrix.ext fun a b => ?_` and prove the remaining obligations. Establish `h1` using `h a b`. Rewrite `h1` using `[← Matrix.sub_apply, hsub]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `hV _ h1`. Rewrite `h2` using `[Matrix.sub_apply, sub_eq_zero]`. Conclude with `h2`. Substitute `hγ` using the available equality. Conclude with `Subtype.ext (map_one _)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `h a b`. Establish `: (diagonal K n γ : AdelicGL K n) = 1` using `congrArg Subtype.val h`. Rewrite using `[this, Units.val_one, sub_self]`. Conclude with `hV0`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem discreteTopology_rationalGL : DiscreteTopology (rationalGL K n) := by
   obtain ⟨V, hVo, hV0, hV⟩ := exists_isOpen_inter_eq_zero K
@@ -386,7 +386,7 @@ theorem discreteTopology_rationalGL : DiscreteTopology (rationalGL K n) := by
     exact hV0
 
 /- English proof (translation)
-The claim follows from `have := discreteTopology_rationalGL K n Subgroup.isClosed_of_discrete`.
+A detailed English derivation is pending.
 -/
 theorem isClosed_rationalGL : IsClosed (rationalGL K n : Set (AdelicGL K n)) :=
   have := discreteTopology_rationalGL K n

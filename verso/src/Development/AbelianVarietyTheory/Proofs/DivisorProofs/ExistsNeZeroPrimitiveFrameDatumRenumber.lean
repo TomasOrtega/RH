@@ -28,7 +28,7 @@ def permGL (π : C ≃ C) : GL C k :=
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [DecidableEq A] [DecidableEq A'] in
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[frameMatrixFirstColumnBlock_mul_apply, frameMatrixFirstColumnBlock_mul_apply, invT_val, invT_val, _root_.mul_inv_rev]`. Simplify using `[permGL, Matrix.mul_apply, PEquiv.toMatrix_apply, Units.val_mul, Option.mem_def, Equiv.symm_apply_eq]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem frameMatrixFirstColumnBlock_renumber (σ σ' : A ⊕ A' ≃ C) (h : GL C k) :
     X0 k σ' * (invT h).val = X0 k σ * (invT (permGL (σ.symm.trans σ') * h)).val := by
@@ -39,7 +39,7 @@ theorem frameMatrixFirstColumnBlock_renumber (σ σ' : A ⊕ A' ≃ C) (h : GL C
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [DecidableEq A] [DecidableEq A'] in
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[frameMatrixSecondColumnBlock_mul_apply, frameMatrixSecondColumnBlock_mul_apply]`. Simplify using `[permGL, Matrix.mul_apply, PEquiv.toMatrix_apply, Units.val_mul]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem frameMatrixSecondColumnBlock_renumber (σ σ' : A ⊕ A' ≃ C) (h : GL C k) :
     Y0 k σ * (permGL (σ.symm.trans σ') * h).val = Y0 k σ' * h.val := by
@@ -50,9 +50,9 @@ theorem frameMatrixSecondColumnBlock_renumber (σ σ' : A ⊕ A' ≃ C) (h : GL 
 variable [MeasurableSpace k] [BorelSpace k]
 
 /- English proof (translation)
-Use `set Q : GL C k := permGL (σ.symm.trans σ') with hQ`. Distinguish the cases in `hX : ∃ h : GL C k, X = X0 k σ' * (invT h).val`. Take `⟨h, rfl⟩` from `hX`. Establish `hc : (ν (gdet Q) : ℂ) * apow (gdet Q) ((Fintype.card C : ℂ) / 2) ≠ 0` using `mul_ne_zero (Units.ne_zero _) (apow_ne_zero _ _)`. Rewrite using `[splitTheta_fFun_frameFirstBlock_mul μ σ', frameMatrixFirstColumnBlock_renumber σ σ' h, splitTheta_fFun_frameFirstBlock_mul μ σ, ← hQ, frameMatrixSecondColumnBlock_renumber, gdet_mul, map_mul, apow_mul, Units.val_mul]`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `ha` using `apow_ne_zero (gdet Q) ((Fintype.card C : ℂ) / 2)`. Establish `hn : (ν (gdet Q) : ℂ) ≠ 0` using `Units.ne_zero _`. Clear the denominators using the available nonvanishing facts. Establish `hX' : ¬ ∃ h : GL C k, X = X0 k σ * (invT h).val` using `fun H => hX ((rank_eq_card_iff_exists_frameMatrixFirstColumnBlock σ' X).1 ((rank_eq_card_iff_exists_frameMatrixFirstColumnBlock σ X).2 H))`. Rewrite using `[fFun, dif_neg hX, fFun, dif_neg hX', mul_zero]`.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fFun_renumber (μ : Measure (GL A' k)) [μ.IsHaarMeasure] (σ σ' : A ⊕ A' ≃ C) (ν : kˣ →* ℂˣ)
     (Ψ : Matrix A' C k → ℂ) (X : Matrix A C k) :
@@ -77,9 +77,7 @@ end GlobalTheory.ColumnRenumber
 open GlobalTheory.ColumnRenumber in
 
 /- English proof (translation)
-Introduce `k _ _ _ _ _ _ A A' C _ _ _ _ _ _ μ _ σ σ' ν`. Use `⟨((ν (gdet (permGL (k := k) (σ.symm.trans σ'))) : ℂ) * apow (gdet (permGL (k := k) (σ.symm.trans σ'))) ((Fintype.card C : ℂ) / 2))⁻¹, inv_ne_zero (mul_ne_zero (Units.ne_zero _) (apow_ne_zero _ _)), fun ϖ n Λ Ψ X => ?_⟩` and prove the remaining obligations. Unfold `phiA`. Use `split_ifs`. Conclude with `fFun_renumber μ σ σ' ν Ψ X`.
-
-Rewrite using `[mul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.ColumnRenumber.phiA_renumber : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k]
     (A A' C : Type) [Fintype A] [DecidableEq A] [Fintype A'] [DecidableEq A'] [Fintype C] [DecidableEq C]

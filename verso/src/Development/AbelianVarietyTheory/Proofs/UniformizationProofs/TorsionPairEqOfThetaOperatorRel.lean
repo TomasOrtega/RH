@@ -21,7 +21,7 @@ open ReciprocityTheory.ChartRestriction.G.DVR
 variable {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} {F : Type} [Field F] [Algebra (FractionRing R) F]
 
 /- English proof (translation)
-Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, tr_fst, tr_fst, Category.id_comp]`. Establish `e : (DegPre.trPt D F b⁻¹ ≫ DegPre.trPt D F b) ≫ DegPre.prB D F = DegPre.prB D F`. Rewrite using `[Category.assoc, tr_pr, MonObj.comp_mul, tr_pr, ← Category.assoc, tr_fst, _root_.mul_assoc, ← MonObj.comp_mul, inv_mul_cancel, MonObj.comp_one, _root_.mul_one]`. Conclude with `e.trans (Category.id_comp _).symm`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trPt_inv_comp (b : TF (R := R) F ⟶ D.P.A) : DegPre.trPt D F b⁻¹ ≫ DegPre.trPt D F b = 𝟙 _ := by
   apply CartesianMonoidalCategory.hom_ext
@@ -32,7 +32,7 @@ theorem trPt_inv_comp (b : TF (R := R) F ⟶ D.P.A) : DegPre.trPt D F b⁻¹ ≫
     exact e.trans (Category.id_comp _).symm
 
 /- English proof (translation)
-Substitute `hb` using the available equality. Establish `e` using `h α β hβ _ (DegPre.trPt D F p.g.b⁻¹) y J hJ`. Rewrite `e` using `[trPt_inv_comp, tr_fst, val_mul hJ]`. Conclude with `e`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem phiVal_inv {n : ℕ} (p : QkPt D F n)
     (w : LB.Gen (LB.LinComb D.P.L (DegPre.lineφ D F p.g.b) (DegPre.lineε n)))
@@ -52,15 +52,15 @@ end OperatorPoint
 open ReciprocityTheory.ChartRestriction.G.DVR OperatorPoint in
 
 /- English proof (translation)
-Introduce `hG hT R _ _ D hB F _ _ n hn p p' w w' hw hw' H hy hb`. Establish `hI` using `(degPre_abelianPart_isIntegral_and_isIntegrallyClosed_stalk R D F).1`. Establish `key : ∀ (α : D.X) (y : (DegPre.BF D F).left) (J), Good D.P.L y J → val (p.g.s α) (fst (TF (R` using `R) F) D.P.A).left y J * val w (fst (TF (R := R) F) D.P.A).left y J = val (p'.g.s α) (fst (TF (R := R) F) D.P.A).left y J * val w' (fst (TF (R := R) F) D.P.A).left y J := by`. Introduce `α y J hJ`. Take `⟨σ, hσ⟩` from `FamFree.exists_sec_ne_zero (D := D) (F := F) hT hn α`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨s, rfl, -⟩` from `FamFree.exists_fam_single hG hB hn α σ`. Take `⟨t, h₁, h₂⟩` from `H s`. Establish `e₁` using `phiVal_inv p w ((phiRel_iff hG p w hw s t).1 h₁) α (α + p.y) rfl _ rfl y J hJ`. Establish `e₂` using `phiVal_inv p' w' ((phiRel_iff hG p' w' hw' s t).1 h₂) α (α + p.y) (by rw [hy]) _ hb.symm y J hJ`. Establish `hne : sval (s.s α) (𝟙 _) y J ≠ 0` using `RootUnit.sec_gs_ne_zero (s.s α) (not_forall.1 hσ) y _ (hJ.mem _ (𝟙 _))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `mul_left_cancel (Units.ext (mul_left_cancel₀ hne (e₁.symm.trans e₂)))`. Establish `key' : ∀ (α : D.X) (y : (DegPre.BF D F).left) (J), Good D.P.L y J → val (p.g.s α) (fst (TF (R` using `R) F) D.P.A).left y J = val (p'.g.s α) (fst (TF (R := R) F) D.P.A).left y J := by`. Introduce `α y J hJ`. Establish `e₀` using `key 0 y J hJ`. Rewrite `e₀` using `[val_corr hJ p.g.s_zero, val_corr hJ p'.g.s_zero, val_one, _root_.one_mul, _root_.one_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e` using `key α y J hJ`. Rewrite `e` using `[e₀]`. Conclude with `mul_right_cancel e`. Use `TorusExt.gt_ext hb fun χ => corr_of_val D.P.isLB fun y J hJ => ?_` and prove the remaining obligations. Establish `hc : LB.Gen.Corr D.P.L _ _ _ _ (LB.pullGen D.P.L _ _ (p.g.s χ) (fst (TF (R` using `R) F) D.P.A).left) (LB.pullGen D.P.L _ _ (p'.g.s χ) (fst (TF (R := R) F) D.P.A).left) := corr_of_val D.P.isLB fun y J hJ => by`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[val_pull hJ, val_pull hJ, Category.id_comp]`. Conclude with `key' χ y J hJ`. Establish `z₁ : (DegPre.zF D F).left ≫ (fst (TF (R` using `R) F) D.P.A).left = 𝟙 _ := congrArg (fun q => q.left) (show DegPre.zF D F ≫ fst _ _ = 𝟙 _ from lift_fst _ _)`. Establish `e` using `val_corr hJ hc (DegPre.zF D F).left`. Rewrite `e` using `[val_pull hJ, val_pull hJ, z₁]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem qkPt_g_eq_of_phiRel :
     GlobalFnsSt → SecTwistSt → ∀ (R : Type) [CommRing R] [IsDomain R] (D : DegPre R), D.TauBimult → ∀ (F : Type) [Field F] [Algebra (FractionRing R) F] (n : ℕ), 1 ≤ n → ∀ (p p' : QkPt D F n) (w : LB.Gen (LB.LinComb D.P.L (DegPre.lineφ D F p.g.b) (DegPre.lineε n))) (w' : LB.Gen (LB.LinComb D.P.L (DegPre.lineφ D F p'.g.b) (DegPre.lineε n))), w.IsGen → w'.IsGen → (∀ s : Fam D F n, ∃ s' : Fam D F n, PhiRel D F n p w s s' ∧ PhiRel D F n p' w' s s') → p'.y = p.y → p.g.b = p'.g.b → p.g = p'.g := by

@@ -16,17 +16,17 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteS
   {E : Fin n → Fin n → Module.End ℂ D}
 
 /- English proof (translation)
-Use `⟨hf', fun c y hy => ?_⟩` and prove the remaining obligations. Establish `hkh` using `adjB_star_Kset hk`. Take `⟨y', hy'M, hy'⟩` from `hMK kᴴ hkh y hy`. Establish `hL : inner ℂ (f' c) y = ∑ d, (starRingEnd ℂ) (cond dual (star (k c d)) (k c d)) * inner ℂ (u d) y'`. Rewrite using `[Submodule.coe_inner, show ((f' c : D) : H) = kDiag dual σ k (fun c => ((u c : D) : H)) c from congrFun hff c]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [kDiag, sum_inner, inner_smul_left]`. Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Rewrite using `[adjB_inner hσ hk, ← hy', ← Submodule.coe_inner]`. Use `set g : Fin n → D := fun d => (starRingEnd ℂ) (cond dual (star (k c d)) (k c d)) • y'`. Establish `hg : g ∈ tensSub M` using `tset_mem.2 fun d => M.smul_mem _ hy'M`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgk : (fun d => ((g d : D) : H)) = kDiag dual σ kᴴ (fun d => (((Pi.single c y : Fin n → D) d : D) : H))`. Use function extensionality and compare the values at `d`. Simplify using `only [kDiag, g, Submodule.coe_smul]`. Rewrite using `[Finset.sum_eq_single c (fun e _ he => by simp [he]) (by simp)]`. Simplify using `only [Pi.single_eq_same, hy']`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Apply the tactic sequence `cases dual <;> simp [Matrix.conjTranspose_apply]`. Establish `hps` using `hps3 kᴴ hkh _ (adjA_single_mem c hy) g hg hgk`. Establish `hgsum : g = ∑ d, (starRingEnd ℂ) (cond dual (star (k c d)) (k c d)) • (Pi.single d y' : Fin n → D)`. Use function extensionality and compare the values at `e`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `[g, Finset.sum_apply, Pi.single_apply]`. Establish `hR : inner ℂ x'' (ps (Pi.single c y)) = ∑ d, (starRingEnd ℂ) (cond dual (star (k c d)) (k c d)) * (adjSg ε d * inner ℂ (u d) y')`. Rewrite using `[Submodule.coe_inner, hxx, adjB_inner hσ hk, ← hps, ← Submodule.coe_inner, hgsum, map_sum, inner_sum]`. Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, inner_smul_right, adjR_inv h d hy'M]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hL, hR, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Use `adjB_sgn hk dual c d` as an intermediate fact. Take the linear combination `(-inner ℂ (u d) y') * this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem adjB_K (dual : Bool) (hσ : IsURepOn (UJset ε) σ) {M : Submodule ℂ D}
     (hMK : ∀ k ∈ Kset ε, ∀ x ∈ M, ∃ y ∈ M, (y : H) = σ k x) {ps : (Fin n → D) →ₗ[ℂ] D}
@@ -71,29 +71,27 @@ theorem adjB_K (dual : Bool) (hσ : IsURepOn (UJset ε) σ) {M : Submodule ℂ D
   linear_combination (-inner ℂ (u d) y') * this
 
 /- English proof (translation)
-Establish `hU` using `isInfUnitary_of_isDerivedOn hσ hD`. Establish `hME : ∀ a b, ∀ v ∈ genSub E V, E a b v ∈ genSub E V` using `fun a b v hv => closure_E_mem_genSub a b hv`. Establish `hME' : ∀ a b, ∀ v ∈ genSub E V', E a b v ∈ genSub E V'` using `fun a b v hv => closure_E_mem_genSub a b hv`. Establish `hMK : ∀ k ∈ Kset ε, ∀ x ∈ genSub E V, ∃ y ∈ genSub E V, (y : H) = σ k x` using `fun k hk x hx => occD_genSub_K hσ hD hV.1 hV.2.1 hk hx`. Establish `hM'K : ∀ k ∈ Kset ε, ∀ x ∈ genSub E V', ∃ y ∈ genSub E V', (y : H) = σ k x` using `fun k hk x hx => occD_genSub_K hσ hD hV'.1 hV'.2.1 hk hx`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hex : ∀ x ∈ genSub E V', ∃ u, adjR ε (genSub E V) ps x u`. Introduce `x hx`. Use `choose z hz hzr using fun c => adjA_rep dual hσ hD hgap hV hc hV'.1 hV'.2.1 hps2 hx c`. Use `⟨fun c => adjSg ε c • z c, tset_mem.2 fun c => Submodule.smul_mem _ _ (hz c), fun c y hy => ?_⟩` and prove the remaining obligations. Rewrite using `[inner_smul_left, adjSg_conj, hzr c y hy]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨ι, hι⟩` from `adjR_linear hex`. Establish `hEcl : ∀ a b, ∀ x ∈ genSub E V', ι (E a b x) = tensF dual E a b (ι x)` using `fun a b x hx => adjR_unique (hι _ (hME' a b x hx)) (adjB_E dual hU hME hps2 (hι x hx) a b)`. Establish `hKcl : ∀ k ∈ Kset ε, ∀ x ∈ genSub E V', ∀ x'' ∈ genSub E V', (x'' : H) = σ k (x : H) → (fun c => ((ι x'' c : D) : H)) = kDiag dual σ k (fun c => ((ι x c : D) : H))`. Introduce `k hk x hx x'' hx'' hxx`. Use `choose w hw hwe using fun d => hMK k hk _ (tset_mem.1 (hι x hx).1 d)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set f' : Fin n → D := fun c => ∑ d, (cond dual (star (k c d)) (k c d)) • w d`. Establish `hf' : f' ∈ tensSub (genSub E V)` using `tset_mem.2 fun c => Submodule.sum_mem _ fun d _ => Submodule.smul_mem _ _ (hw d)`. Establish `hff : (fun c => ((f' c : D) : H)) = kDiag dual σ k (fun c => ((ι x c : D) : H))`. Use function extensionality and compare the values at `c`. Simplify using `only [f', kDiag, Submodule.coe_sum, Submodule.coe_smul, hwe]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[adjR_unique (hι x'' hx'') (adjB_K dual hσ hMK hps3 hk hxx (hι x hx) hf' hff)]`. Conclude with `hff`. Use `⟨ι, fun x hx => (hι x hx).1, ?_, hEcl, hKcl⟩` and prove the remaining obligations. Introduce `x hx hx0`. Use `set N : Submodule ℂ D := genSub E V' ⊓ LinearMap.ker ι`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hNE : ∀ a b, ∀ y ∈ N, E a b y ∈ N`. Introduce `a b y hy`. Use `⟨hME' a b y hy.1, ?_⟩` and prove the remaining obligations. Rewrite using `[SetLike.mem_coe, LinearMap.mem_ker, hEcl a b y hy.1, LinearMap.mem_ker.1 hy.2, map_zero]`. Establish `hNK : ∀ k ∈ Kset ε, ∀ y ∈ N, ∃ y' ∈ N, (y' : H) = σ k y`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `k hk y hy`. Take `⟨y', hy'M, hy'⟩` from `hM'K k hk y hy.1`. Use `⟨y', ⟨hy'M, ?_⟩, hy'⟩` and prove the remaining obligations. Rewrite using `[SetLike.mem_coe, LinearMap.mem_ker]`. Establish `h1` using `hKcl k hk y hy.1 y' hy'M hy'`.
+Rewrite the indicated hypotheses using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite `h1` using `[LinearMap.mem_ker.1 hy.2]`. Use function extensionality and compare the values at `c`. Establish `h2` using `congrFun h1 c`. Simplify using `only [kDiag, Pi.zero_apply, ZeroMemClass.coe_zero, map_zero, smul_zero, Finset.sum_const_zero] at h2`. Conclude with `Subtype.ext h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. It suffices to derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Break down `data_genSub_irred hgap' hσ hD hV' hc' hVK' N inf_le_left hNE hNK with h | h` into its components or cases. Establish `: x ∈ N` using `⟨hx, LinearMap.mem_ker.2 hx0⟩`. Rewrite `this` using `[h]`. Conclude with `(Submodule.mem_bot ℂ).1 this`. It suffices to derive a contradiction.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Take `⟨f₀, hf₀, hps0⟩` from `hne`. Establish `hm : ps f₀ ∈ N` using `h ▸ hps1 f₀ hf₀`. Establish `hR` using `hι _ (hps1 f₀ hf₀)`. Rewrite `hR` using `[LinearMap.mem_ker.1 hm.2]`. Establish `h0 : ∀ c, inner ℂ (ps f₀) (ps (Pi.single c (f₀ c))) = (0 : ℂ)`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Introduce `c`. Rewrite using `[adjR_inv hR c (tset_mem.1 hf₀ c)]`. Simplify using the standard rewrite rules. Apply `hps0` to reduce the goal to its premises. Rewrite using `[← inner_self_eq_zero (𝕜 := ℂ)]`.
-
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← inner_sum, ← map_sum, Finset.univ_sum_single]`. Use `_ = 0 := Finset.sum_eq_zero fun c _ => h0 c`.
+A detailed English derivation is pending.
 -/
 theorem adjB_emb (dual : Bool) (hσ : IsURepOn (UJset ε) σ) (hD : IsDerivedOn ε σ D E)
     {lam lam' : Fin n → ℝ} {V V' : Submodule ℂ D} (hgap : StdGap ε lam) (hV : IsKIrrHW ε E (lowK ε lam) V)
@@ -181,7 +179,7 @@ variable {ε : Fin n → Bool} {lam lam' : Fin n → ℝ} {T : S7.KType ε (lowK
   {v₀ : T.V} {v₀' : T'.V}
 
 /- English proof (translation)
-Establish `hσ` using `rreg_isURepOn ε`. Conclude with `adjB_emb dual hσ (isDerivedOn_smE hσ) hgap (datumV_isKIrrHW hP hv₀) (datumV_casimir hP v₀) hgap' (datumV_isKIrrHW hP' hv₀') (datumV_casimir hP' v₀') (datumV_kStable hP' v₀') hps.1 hps.2.1 hps.2.2 hne`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem occAdj_emb (dual : Bool) (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ) (hv₀ : v₀ ≠ 0)
     (hgap' : StdGap ε lam') (hP' : IsPsiFor ε lam' T' Ψ') (hv₀' : v₀' ≠ 0)

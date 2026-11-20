@@ -14,9 +14,7 @@ section Gen
 variable {G G' : Type} [Group G] [TopologicalSpace G] [Group G'] [TopologicalSpace G']
 
 /- English proof (translation)
-Use `⟨fun p hp g => ?_, fun g k hk => ?_, fun γ hγ hγP => ?_, h.cont.comp hj⟩` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `h.left (j p) (hP p hp) (j g)`. Rewrite using `[map_mul]`. Conclude with `h.right (j g) (j k) (hK k hk)`.
-
-Conclude with `h.rat (j γ) (hΓ γ hγ) (hP γ hγP)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isHt_pull (j : G →* G') (hj : Continuous j) {Γ K P : Subgroup G} {Γ' K' P' : Subgroup G'} {η : G' → ℝ}
     (h : IsHt Γ' K' P' η) (hΓ : ∀ γ ∈ Γ, j γ ∈ Γ') (hK : ∀ k ∈ K, j k ∈ K') (hP : ∀ p ∈ P, j p ∈ P') :
@@ -29,14 +27,14 @@ theorem isHt_pull (j : G →* G') (hj : Continuous j) {Γ K P : Subgroup G} {Γ'
   · exact h.rat (j γ) (hΓ γ hγ) (hP γ hγP)
 
 /- English proof (translation)
-Conclude with `⟨fun p _ g => h.left p (Subgroup.mem_top p) g, h.right, fun γ hγ _ => h.rat γ hγ (Subgroup.mem_top γ), h.cont⟩`.
+Supply the required witnesses or components.
 -/
 theorem isHt_of_top {Γ K P : Subgroup G} {η : G → ℝ} (h : IsHt Γ K ⊤ η) : IsHt Γ K P η := by
   exact ⟨fun p _ g => h.left p (Subgroup.mem_top p) g, h.right, fun γ hγ _ => h.rat γ hγ (Subgroup.mem_top γ),
     h.cont⟩
 
 /- English proof (translation)
-Use `⟨fun p hp g => ?_, fun g k hk => ?_, fun γ hγ hγP => ?_, (ha.cont.add hb.cont).div_const 2⟩` and prove the remaining obligations. Rewrite using `[ha.left p hp g, hb.left p hp g]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[ha.right g k hk, hb.right g k hk]`. Rewrite using `[ha.rat γ hγ hγP, hb.rat γ hγ hγP]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Evaluate the numerical expressions.
 -/
@@ -50,7 +48,7 @@ theorem isHt_half_add {Γ K P : Subgroup G} {a b : G → ℝ} (ha : IsHt Γ K P 
     norm_num
 
 /- English proof (translation)
-Use `⟨fun p hp g => ?_, fun g k hk => ?_, fun γ hγ hγP => ?_, (ha.cont.sub hb.cont).div_const 2⟩` and prove the remaining obligations. Rewrite using `[ha.left p hp g, hb.left p hp g]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[ha.right g k hk, hb.right g k hk]`. Rewrite using `[ha.rat γ hγ hγP, hb.rat γ hγ hγP]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Evaluate the numerical expressions.
 -/
@@ -64,11 +62,11 @@ theorem isHt_half_sub {Γ K P : Subgroup G} {a b : G → ℝ} (ha : IsHt Γ K P 
     norm_num
 
 /- English proof (translation)
-Establish `hc0 : ∀ x, c x ≠ 0` using `fun x h0 => by`. Establish `h1` using `hc.norm x (Subgroup.mem_top x)`. Rewrite `h1` using `[h0, norm_zero]`. Conclude with `zero_ne_one h1`. Use `⟨fun p hp q hq => ?_, fun p hp => ?_, fun γ hγ hγP => ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, hu.mul (j p) (hP p hp) (j q) (hP q hq), hc.mul p (Subgroup.mem_top p) q (Subgroup.mem_top q), mul_inv]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[norm_mul, norm_inv, hu.norm (j p) (hP p hp), hc.norm p (Subgroup.mem_top p)]`. Evaluate the numerical expressions. Rewrite using `[hu.rat (j γ) (hΓ γ hγ) (hP γ hγP), hc.rat γ hγ (Subgroup.mem_top γ)]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Evaluate the numerical expressions. Use `(hu.cont.comp hj.continuousOn (fun x hx => hP x hx)).mul ?_` and prove the remaining obligations. Conclude with `(hc.cont.mono (fun x _ => Subgroup.mem_top x)).inv₀ (fun x _ => hc0 x)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isCh_pull (j : G →* G') (hj : Continuous j) {Γ P : Subgroup G} {Γ' P' : Subgroup G'} {u : G' → ℂ} {c : G → ℂ}
     (hu : IsCh Γ' P' u) (hc : IsCh Γ ⊤ c) (hΓ : ∀ γ ∈ Γ, j γ ∈ Γ') (hP : ∀ p ∈ P, j p ∈ P') :
@@ -91,55 +89,45 @@ theorem isCh_pull (j : G →* G') (hj : Continuous j) {Γ P : Subgroup G} {Γ' P
 end Gen
 
 /- English proof (translation)
-Introduce `hStd hGT hBd hExt hPar hJT hJC hJP hJI hJR hJCh F E R _ _ _ _ _ _ _ _ _ _ A ε ν r δ α ω ι _ _ i j hA hB hi hJ hIwa`. Take `⟨hjc, -, -, -⟩` from `hJT F E R A ε ν r δ α ω ι i j hA hB hi hJ`. Establish `hcK` using `hJC F E R A ε ν r δ α ω ι i j hA hB hi hJ`. Take `⟨hst, hQeq, hbd⟩` from `hJP F E R A ε ν r δ α ω ι i j hA hB hi hJ`. Establish `hIw` using `hJI F E R A ε ν r δ α ω ι i j hA hB hi hJ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨hmapΓ, htr⟩` from `hJR F E R A ε ν r δ α ω ι i j hA hB hi hJ`. Take `⟨hc0, hld⟩` from `hJCh F E R A ε ν r δ α ω ι i j hA hB hi hJ`. Take `⟨hparU, hhtU, -⟩` from `(hPar E R A hA ι ε Set.univ).2 (by rw [inf_idem]; exact hIwa)`. Rewrite `hparU` using `[inf_idem]`. Establish `hGL` using `hA.toGoodL`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hSG` using `(hStd F).lgmul`. Establish `hlg1 : A.lg 1 = 0`. Establish `h` using `hGL.lgmul 1 1`. Rewrite `h` using `[mul_one]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hP : ∀ p ∈ Subgroup.comap (prj A ν ι) (stab 𝔸[𝓞 F, F] {(Sum.inl i : ι ⊕ ι)}), j p ∈ A.uQ ε Set.univ`. Introduce `p hp`. Rewrite `hp` using `[← hQeq]`. Conclude with `hp`. Establish `hK : ∀ k ∈ cK α j, j k ∈ A.uK ε ι` using `fun k hk => (Subgroup.mem_inf.1 hk).1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hΓ : ∀ γ ∈ cΓ A ν ι, j γ ∈ A.uΓ ε ι`. Introduce `γ hγ`. Rewrite using `[← hmapΓ]`. Conclude with `Subgroup.mem_map_of_mem j hγ`. Establish `hωsq : ∀ y : IdeleGroup F, ω.toIdele y * ω.toIdele y = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `y`. Rewrite using `[hB.ωχ, mul_eq_one_iff_eq_inv]`. Establish `h1` using `hA.χσ (Units.map (ν : 𝔸[𝓞 F, F] →* R) y)`. Use `h1 using 2` and compare the differences between its conclusion and the goal. Apply the tactic sequence `all_goals (ext; simp [hB.fix])`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hcov : ∀ x : cover A ν ι, A.lg (x : Rˣ × GL (ι ⊕ ι) 𝔸[𝓞 F, F]).1 = -(adStd F).lg (Matrix.GeneralLinearGroup.det (prj A ν ι x)) ∧ A.χ (Units.map (ν : 𝔸[𝓞 F, F] →* R) (Matrix.GeneralLinearGroup.det (prj A ν ι x))) = 1`. Introduce `x`. Establish `hx` using `MonoidHom.mem_ker.1 x.2`. Simplify using `only [MonoidHom.mul_apply, MonoidHom.coe_comp, Function.comp_apply, MonoidHom.coe_fst, MonoidHom.coe_snd] at hx`. Prove the components needed by the constructor for the conclusion.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `h` using `congrArg A.lg hx`. Rewrite `h` using `[hGL.lgmul, hGL.lgmul, hB.lgσ, hB.lg, hlg1]`. Use `show A.lg (x : Rˣ × GL (ι ⊕ ι) 𝔸[𝓞 F, F]).1 = -(adStd F).lg (Matrix.GeneralLinearGroup.det (x : Rˣ × GL (ι ⊕ ι) 𝔸[𝓞 F, F]).2)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h` using `congrArg A.χ hx`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite `h` using `[map_mul, map_mul, hA.χσ, map_one, mul_inv_cancel, one_mul]`. Conclude with `h`. Establish `hext : ∀ x ∈ Subgroup.comap (prj A ν ι) (stab 𝔸[𝓞 F, F] {(Sum.inl i : ι ⊕ ι)}), A.uH ε Set.univ (j x) = A.lg (bdet (Sum.inl '' (Set.univ : Set ι)) ((j x : A.U ε ι) : GL (ι ⊕ ι) R))`. Introduce `x hx`. Take `⟨-, -, -, hT2U, -, -, hKc⟩` from `hGT E R A hA ι ε`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `haveI := hT2U`. Take `⟨-, hmulS, hcontS, hratS, hkS, -⟩` from `hBd E R A hGL (ι ⊕ ι) (Sum.inl '' (Set.univ : Set ι))`. Establish `h` using `(hExt (A.U ε ι) (A.uΓ ε ι) (A.uK ε ι) (A.uQ ε Set.univ) (fun p => A.lg (bdet (Sum.inl '' (Set.univ : Set ι)) (p : GL (ι ⊕ ι) R))) hKc hparU.closed hIwa (fun p hp q hq => by show A.lg (bdet _ ((p * q : A.U ε ι) : GL (ι ⊕ ι) R)) = _`. Rewrite using `[Subgroup.coe_mul, hmulS _ (Subgroup.mem_subgroupOf.1 hp) _ (Subgroup.mem_subgroupOf.1 hq), hGL.lgmul])`. Use the proof step `(hGL.lgcont.comp_continuousOn (hcontS.comp continuous_subtype_val.continuousOn (fun p hp => Subgroup.mem_subgroupOf.1 hp)))`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Use the proof step `(fun p hp hk => hkS _ (Subgroup.mem_subgroupOf.1 hp) (Subgroup.mem_subgroupOf.1 hk))`. Use the proof step `(fun p hp hg => by`. Take `⟨e, he⟩` from `hratS _ (Subgroup.mem_subgroupOf.1 hp) (Subgroup.mem_subgroupOf.1 hg)`. Use `show A.lg _ = 0`. Rewrite using `[he]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hGL.lgi e)).2 (j x) (hP x hx) 1 (Subgroup.one_mem _)`. Rewrite `h` using `[mul_one]`. Conclude with `h`. Use `⟨?_, ?_, ?_, hcK, ?_, ?_, ?_, ?_, ?_, ?_, ?_, hld, ?_, ?_, fun g => rfl⟩` and prove the remaining obligations. Establish `h1 : 0 < Fintype.card ι` using `Fintype.card_pos_iff.2 ⟨i⟩`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[Fintype.card_sum]`. Use linear arithmetic over natural numbers and integers. Use `ContinuousMonoidHom.ext fun x => ?_` and prove the remaining obligations. Take `⟨y, rfl⟩` from `QuotientGroup.mk_surjective x`. Conclude with `hωsq y`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `continuous_snd.comp continuous_subtype_val`. Introduce `κ hκ`. Take `⟨κ', hκ', hEq⟩` from `Subgroup.mem_map.1 (Subgroup.mem_comap.1 (Subgroup.mem_inf.1 hκ).2)`. Use `⟨κ', hκ', ?_⟩` and prove the remaining obligations. Establish `hd : (fun k : ι ⊕ ι => ((Sum.elim (fun _ => (1 : IdeleGroup F)) (fun _ => α) k : IdeleGroup F) : 𝔸[𝓞 F, F])) = (Sum.elim (fun _ => 1) (fun _ => (α : 𝔸[𝓞 F, F])) : ι ⊕ ι → 𝔸[𝓞 F, F])`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `k`. Apply the tactic sequence `rcases k with k | k <;> rfl`. Rewrite using `[hd]`. Express the relevant statement in the definitionally equal form `((prj A ν ι κ : GL (ι ⊕ ι) 𝔸[𝓞 F, F]) : Matrix (ι ⊕ ι) (ι ⊕ ι) 𝔸[𝓞 F, F]) * ((dg ι α : GL (ι ⊕ ι) 𝔸[𝓞 F, F]) : Matrix (ι ⊕ ι) (ι ⊕ ι) 𝔸[𝓞 F, F]) = ((dg ι α : GL (ι ⊕ ι) 𝔸[𝓞 F, F]) : Matrix (ι ⊕ ι) (ι ⊕ ι) 𝔸[𝓞 F, F]) * (κ' : Matrix (ι ⊕ ι) (ι ⊕ ι) 𝔸[𝓞 F, F])`. Rewrite using `[← hEq]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [MulEquiv.coe_toMonoidHom, MulAut.conj_apply]`. Rewrite using `[← Units.val_mul, inv_mul_cancel_right, Units.val_mul]`. Introduce `γ hγ`. Conclude with `(Subgroup.mem_prod.1 (Subgroup.mem_subgroupOf.1 hγ)).2`. Introduce `s hs g hg`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨γ, hγ, h⟩` from `htr g hg`. Use `⟨γ, hγ, ?_⟩` and prove the remaining obligations. Break down `hs with rfl | rfl` into its components or cases. Conclude with `h`. Rewrite using `[hst]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h`. Use `⟨?_, hIw, isCh_pull j hjc hparU.ch hc0 hΓ hP⟩` and prove the remaining obligations. Rewrite using `[← hQeq, Subgroup.coe_comap]`. Conclude with `hparU.closed.preimage hjc`. Rewrite using `[hst]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨?_, hIw, isCh_pull j hjc hparU.ch hc0 hΓ hP⟩` and prove the remaining obligations. Rewrite using `[← hQeq, Subgroup.coe_comap]`. Conclude with `hparU.closed.preimage hjc`. Conclude with `isHt_half_add (isHt_pull j hjc hhtU hΓ hK hP) (isHt_of_top hld)`. Rewrite using `[hst]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `isHt_half_sub (isHt_pull j hjc hhtU hΓ hK hP) (isHt_of_top hld)`. Introduce `p hp`. Take `⟨hb1, -⟩` from `hbd p hp`. Take `⟨hl, -⟩` from `hcov p`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
-
-Use `show (A.χ (bdet (Sum.inl '' Set.univ) ((j p : A.U ε ι) : GL (ι ⊕ ι) R)) : ℂ) * ((A.χ (p : Rˣ × GL (ι ⊕ ι) 𝔸[𝓞 F, F]).1 : ℂ))⁻¹ = _`. Rewrite using `[hb1, map_mul, Circle.coe_mul, hB.ωχ, mul_comm, ← mul_assoc, inv_mul_cancel₀ (Circle.coe_ne_zero _), one_mul]`. Use `show (A.uH ε Set.univ (j p) + ld p) / 2 = _`. Rewrite using `[hext p hp, hb1, hGL.lgmul, hB.lg, hl]`. Simplify using `only [So.ld]`.
-
-Expand and normalize the polynomial expressions, which then agree. Introduce `p hp`. Rewrite `hp` using `[hst]`. Take `⟨hb1, hb2⟩` from `hbd p hp`. Take `⟨hl, hχ⟩` from `hcov p`.
-
-Establish `hωb : ω.toIdele (bdet {Sum.inl i} (prj A ν ι p)) = ω.toIdele (bdet {Sum.inr i} (prj A ν ι p))`. Establish `h3 : ω.toIdele (bdet {Sum.inl i} (prj A ν ι p)) * ω.toIdele (bdet {Sum.inr i} (prj A ν ι p)) = 1`. Rewrite using `[hB.ωχ, hB.ωχ, ← map_mul, ← map_mul, ← hb2]`. Conclude with `hχ`. Conclude with `mul_right_cancel (h3.trans (hωsq _).symm)`.
-
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `show (A.χ (bdet (Sum.inl '' Set.univ) ((j p : A.U ε ι) : GL (ι ⊕ ι) R)) : ℂ) * ((A.χ (p : Rˣ × GL (ι ⊕ ι) 𝔸[𝓞 F, F]).1 : ℂ))⁻¹ = _`. Rewrite using `[hb1, map_mul, Circle.coe_mul, ← hωb, hB.ωχ, mul_comm, ← mul_assoc, inv_mul_cancel₀ (Circle.coe_ne_zero _), one_mul]`. Use `show (A.uH ε Set.univ (j p) - ld p) / 2 = _`. Rewrite using `[hext p hp, hb1, hGL.lgmul, hB.lg, hl]`.
-
-Simplify using `only [So.ld]`. Rewrite using `[hb2, hSG]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem jmir : StdGood → GrpTop → BdetLaw → ExtLaw → ParLaw → JTop → JCpt → JPar → JIwa → JRat → JCh → JMir := by
   intro hStd hGT hBd hExt hPar hJT hJC hJP hJI hJR hJCh F E R _ _ _ _ _ _ _ _ _ _ A ε ν r δ α ω ι _ _ i j hA hB

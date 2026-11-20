@@ -8,7 +8,7 @@ open Formalism.L2.Host GlobalTheory.Published GlobalTheory.NT GlobalTheory.Mem.F
 namespace GlobalTheory.HilbertInClosure
 
 /- English proof (translation)
-Introduce `H E _ _ _ j ι M hM`. Take `⟨hN, h, hst, hc, hd, hmax⟩` from `hilbert_qb_aut H E j ι M hM`. Establish `hm : ∀ σ : Qb ≃ₐ[ℚ] Qb, σ ∈ GalOf j.fieldRange ↔ ∀ x ∈ j.fieldRange, σ x = x` using `fun σ => IntermediateField.mem_fixingSubgroup_iff _ _`. Conclude with `⟨hN, ⟨h, fun σ hσ => hst σ ((hm σ).2 hσ), fun σ τ hσ hτ => hc σ ((hm σ).2 hσ) τ ((hm τ).2 hτ)⟩, hd, fun L _ hL => hmax L hL.1 fun σ hσ τ hτ => hL.2.2 σ τ ((hm σ).1 hσ) ((hm τ).1 hτ)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem rayField_top_maximal_unramified : GlobalArtinReciprocity → ∀ (E : Type) [Field E] [NumberField E]
     [IsTotallyComplex E] (j : E →ₐ[ℚ] Qb) (ι : Qb →+* ℂ) (M : IntermediateField ℚ ℂ),

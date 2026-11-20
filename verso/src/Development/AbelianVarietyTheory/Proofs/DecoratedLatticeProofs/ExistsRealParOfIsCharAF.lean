@@ -14,19 +14,19 @@ namespace GlobalTheory.StdUnn
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Introduce `D ψ hψ θ hθ`. Take `⟨ψ₀, h₀, a, -, ha⟩` from `GlobalTheory.ThetaAllChar.exists_std hψ`. Use `set y : D.host.E := algebraMap D.host.F D.host.E a with hy_def`. Establish `hyc : IsCMField.complexConj D.host.E y = y` using `(IsCMField.complexConj_eq_self_iff D.host.E y).2 a.2`. Establish `hreal : ∀ τ, (tauE D τ y).im = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `τ`. Establish `h` using `IsCMField.complexEmbedding_complexConj D.host.E (tauE D τ) y`. Rewrite `h` using `[hyc]`. Use `congrArg Complex.im h` as an intermediate fact. Rewrite `this` using `[Complex.conj_im]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨fun τ => -(tauE D τ y).re, ?_⟩` and prove the remaining obligations. Introduce `x`. Establish `e1 : psiInf D.host.F ψ x = psiInf D.host.F ψ₀ (algebraMap D.host.F (Ainf D.host.F) a * x)`. Simplify using `only [psiInf]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ha]`. Use `congr 1`. Use `show (algebraMap D.host.F (Ainf D.host.F) a * x, algebraMap D.host.F (Af D.host.F) a * 0) = _`. Rewrite using `[mul_zero]`. Both sides reduce to the same expression.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[e1, h₀.2.2 θ hθ]`. Use `congr 1`. Establish `e2 : ∀ ρ, θ ρ ((algebraMap D.host.F (Ainf D.host.F) a * x) ⊗ₜ[D.host.F] (1 : D.host.E)) = θ ρ (x ⊗ₜ[D.host.F] (1 : D.host.E)) * tauE D ρ y`. Introduce `ρ`. Establish `e3 : (algebraMap D.host.F (Ainf D.host.F) a * x) ⊗ₜ[D.host.F] (1 : D.host.E) = (x ⊗ₜ[D.host.F] (1 : D.host.E)) * ((1 : Ainf D.host.F) ⊗ₜ[D.host.F] y)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul, ← Algebra.smul_def, ← TensorProduct.smul_tmul', ← TensorProduct.tmul_smul, Algebra.smul_def, mul_one]`. Rewrite using `[e3, map_mul, (hθ ρ).1]`. Simplify using `only [e2]`. Establish `e4 : ∀ ρ, (((-(tauE D ρ y).re : ℝ)) : ℂ) = -tauE D ρ y`. Introduce `ρ`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `apply Complex.ext <;> simp [hreal ρ]`. Simplify using `only [e4, Finset.mul_sum]`. Use `push_cast`. Use `Finset.sum_congr rfl fun ρ _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_realPar_of_isCharAF : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsCharAF D.host.F ψ →
     ∀ θ : InfFam D, IsInfFam θ → ∃ l : D.what₂.Tau → ℝ, HasRealPar ψ θ l := by

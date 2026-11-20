@@ -16,11 +16,11 @@ namespace GlobalTheory
 open SqZero TrivSqZeroExt
 
 /- English proof (translation)
-Set `Φ : JetR R (Fin d) 1 →ₐ[R] TrivSqZeroExt R (Fin d → R)` to `jetLift R (RingHom.ker (fstHom R R (Fin d → R))) (ker_fst_sq _) (fun j => inr (Pi.single j 1)) (fun _ => (RingHom.mem_ker).mpr rfl)`. Establish `hΦ : ∀ j, Φ (zR 1 j) = inr (Pi.single j 1)` using `fun j => jetLift_zR _ _ _ _ j`. Establish `hz : ∀ i j : Fin d, zR (R` using `R) 1 i * zR 1 j = 0 := fun i j => mul_eq_zero_of_sq (ker_jetAug_pow (R := R) (Fin d) 1) (zR_mem_ker 1 i) (zR_mem_ker 1 j)`. Establish `h₁ : (vecTo (Algebra.ofId R _) (zR 1) hz).comp Φ = AlgHom.id R _` using `jet_ext fun j => by rw [AlgHom.comp_apply, hΦ, vecTo_single, AlgHom.id_apply]`. Establish `h₂ : (fstHom R R (Fin d → R)).comp Φ = jetAug R (Fin d) 1` using `jet_ext fun j => by rw [AlgHom.comp_apply, hΦ, jetAug_zR]; rfl`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h₃ : ∀ j, (TrivSqZeroExt.map (LinearMap.proj j : (Fin d → R) →ₗ[R] R)).comp Φ = dualLift (Pi.single j (1 : R))` using `fun j => jet_ext fun i => by`. Rewrite using `[AlgHom.comp_apply, hΦ, dualLift_zR, map_inr, LinearMap.proj_apply, Pi.single_apply, Pi.single_apply]`. Simplify using `only [eq_comm]`. Use `conv_lhs => rw [← AlgHom.id_apply (R := R) a, ← h₁, AlgHom.comp_apply, vecTo_apply]`. Simplify using `only [← h₂, ← h₃, AlgHom.comp_apply, snd_map, LinearMap.proj_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem firstJet_eq_aug_add_sum {R : Type} [CommRing R] {d : ℕ} (a : JetR R (Fin d) 1) :
     a = algebraMap R _ (jetAug R (Fin d) 1 a) +
@@ -45,17 +45,15 @@ theorem firstJet_eq_aug_add_sum {R : Type} [CommRing R] {d : ℕ} (a : JetR R (F
   rfl
 
 /- English proof (translation)
-Introduce `R _ G _ _ hG d v hv x hx0 hx1 A _ _ ψ e he`. Establish `haug : spMap (jetAug R (Fin d) 1) ≫ x 1 = 1`. Establish `e : jetAug R (Fin d) 1 = (jetAug R (Fin d) 0).comp (jetZeroR R (Fin d) 1)` using `jet_ext fun j => by rw [AlgHom.comp_apply, jetAug_zR]; exact (jetAug_zR (R := R) 0 j).symm`. Rewrite using `[e, ← spMap_comp, Category.assoc, hx0 1, comp_one']`. Take `⟨c, hc, hcJ, hxc⟩` from `(expBij _ hv _ (ker_jetAug_pow (R := R) (Fin d) 1)).2 (x 1) (mem_redKer_of_section _ (Algebra.ofId R _) (fun a => (jetAug R (Fin d) 1).commutes a) haug)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hs : ∀ j i : Fin d, dualLift (Pi.single j (1 : R)) (c i) = inr ((Pi.single j (1 : R) : Fin d → R) i)` using `fun j => by`. Establish `h₁` using `hx1 j`. Rewrite `h₁` using `[hxc, comp_lieExp]`. Establish `h₂ : lieExp v (fun i => (inr ((Pi.single j (1 : R) : Fin d → R) i) : DualNumber R)) (fun _ => inr_mul_inr _ _ _) = v j`. Rewrite using `[lieExp, Finset.prod_eq_single j]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← scaleD_eq, Pi.single_eq_same, scaleD_one, spMap_id]`. Conclude with `Category.id_comp _`. Introduce `i _ hi`. Conclude with `epsTo_zero_comp ((isTan_iff _).2 (hv.1 i)) _ (by rw [Pi.single_eq_of_ne hi, inr_zero]) _`. Conclude with `fun h => absurd (Finset.mem_univ j) h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h₃ : ∀ i, dualLift (Pi.single j (1 : R)) (c i) ∈ RingHom.ker (fstD R)` using `fun i => by`. Rewrite using `[RingHom.mem_ker, ← AlgHom.comp_apply, fstD_comp_dualLift]`. Conclude with `hcJ i`. Conclude with `congrFun ((expBij (DualNumber R) hv (RingHom.ker (fstD R)) kerD_sq).1 (fun i => dualLift (Pi.single j (1 : R)) (c i)) (fun i => inr ((Pi.single j (1 : R) : Fin d → R) i)) h₃ (fun i => inr_mem_kerD _) _ _ (h₁.trans h₂.symm))`. Establish `hcz : ∀ i, c i = zR 1 i` using `fun i => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[firstJet_eq_aug_add_sum (c i), (hcJ i : jetAug R (Fin d) 1 (c i) = 0), map_zero, zero_add, Finset.sum_eq_single i]`. Rewrite using `[hs, snd_inr, Pi.single_eq_same, map_one, _root_.one_mul]`. Introduce `j _ hj`. Rewrite using `[hs, snd_inr, Pi.single_eq_of_ne hj.symm, map_zero, zero_mul]`. Conclude with `fun h => absurd (Finset.mem_univ i) h`.
-
-Rewrite using `[hxc, comp_lieExp, lieExp]`. Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `congr 2`. Conclude with `DualNumber.algHom_ext (by rw [epsTo_eps, hcz]; exact (he j).symm)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem firstJet_eq_prod_tangent : ∀ (R : Type) [CommRing R] (G : Over (Spec (CommRingCat.of R)))
     [GrpObj G] [IsCommMonObj G], Smooth G.hom → ∀ (d : ℕ) (v : Fin d → (epsR R ⟶ G)),

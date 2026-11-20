@@ -14,9 +14,9 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.HCharUnit
 
 /- English proof (translation)
-Apply `hu` to reduce the goal to its premises. Use `show Valued.v (((k : E) : v.adicCompletion E)) = 1`. Rewrite using `[HeightOneSpectrum.valuedAdicCompletion_eq_valuation']`. Establish `h0 : v.valuation E (k : E) ≠ 0` using `by simp`. Establish `hl : WithZero.log (v.valuation E (k : E)) = 0`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `ordF at ho`. Use linear arithmetic over natural numbers and integers. Rewrite using `[← WithZero.exp_log h0, hl, WithZero.exp_zero]`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locK_eq_one {E : Type} [Field E] [NumberField E] (χ : HChar E) (k : Eˣ) (v : HeightOneSpectrum (𝓞 E))
     (hu : χ.UnrAt v) (ho : ordF v k = 0) : χ.locK v k = 1 := by
@@ -29,17 +29,15 @@ theorem locK_eq_one {E : Type} [Field E] [NumberField E] (χ : HChar E) (k : Eˣ
   rw [← WithZero.exp_log h0, hl, WithZero.exp_zero]
 
 /- English proof (translation)
-Introduce `E _ _ χ k`. Establish `hT : ({v | ¬ χ.UnrAt v} ∪ {v : HeightOneSpectrum (𝓞 E) | ordF v k ≠ 0}).Finite` using `Set.Finite.union (Filter.eventually_cofinite.mp (Formalism.L2.Fam.IdTrans.unrAe χ)) (GlobalTheory.HeckeProduct.finite_ordF k)`. Use `set S := hT.toFinset with hSdef`. Establish `hsub : (Function.mulSupport fun w : Pl E => χ.locK w k) ⊆ (S : Set (HeightOneSpectrum (𝓞 E)))`. Introduce `v hv`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hSdef, Set.Finite.coe_toFinset]`. Assume the negation of the conclusion as `h`. Simplify using `only [Set.mem_union, Set.mem_setOf_eq, not_or, not_not] at h`. Conclude with `hv (locK_eq_one χ k v h.1 h.2)`. Use `⟨S.finite_toSet.subset hsub, ?_⟩` and prove the remaining obligations.
+Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hS : ∀ v, v ∉ S → χ.UnrAt v`. Introduce `v hv`. Assume the negation of the conclusion as `h`. Conclude with `hv (by rw [hSdef, Set.Finite.mem_toFinset]; exact Or.inl h)`. Establish `hpr` using `Formalism.L2.Host.HChar.productRule χ S hS k`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hrest : (∏ᶠ (v : HeightOneSpectrum (𝓞 E)) (_ : v ∉ S), χ.val v ^ ordF v k) = 1`. Apply `finprod_eq_one_of_forall_eq_one` to reduce the goal to its premises. Introduce `v`. Rewrite using `[finprod_eq_if]`. Use `split_ifs with hv`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `: ordF v k = 0`. Assume the negation of the conclusion as `h`. Conclude with `hv (by rw [hSdef, Set.Finite.mem_toFinset]; exact Or.inr h)`. Rewrite using `[this, zpow_zero]`.
-
-Rewrite `hpr` using `[hrest, mul_one]`. Rewrite using `[finprod_eq_prod_of_mulSupport_subset _ hsub, mul_comm]`. Conclude with `hpr`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finprod_locK_mul_inf : ∀ (E : Type) [Field E] [NumberField E] (χ : HChar E) (k : Eˣ),
     (Function.mulSupport fun w : Pl E => χ.locK w k).Finite ∧ (∏ᶠ w : Pl E, χ.locK w k) * χ.inf k = 1 := by

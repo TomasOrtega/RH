@@ -18,7 +18,7 @@ section SlopeTestRemainingChoices
 variable {K : Type} [Field K] [NumberField K] {n : ℕ}
 
 /- English proof (translation)
-Use `⟨(detModule K n (infEmb K n a))⁻¹, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← retract_infEmb, coe_retractOne, map_mul, infPart_infEmb, ← map_inv, map_inv (zInf K n)]`. Rewrite using `[map_inv (centralSection K n), map_inv (infPart K n)]`. Both sides reduce to the same expression. Rewrite using `[← retract_infEmb, coe_retractOne, map_mul, finPart_infEmb, map_inv, finPart_centralSection]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -33,7 +33,7 @@ private theorem parts_archP (a : archGroup K n) :
     simp
 
 /- English proof (translation)
-Take `⟨s, h1, h2⟩` from `parts_archP a`. Rewrite using `[tensFun, Subgroup.coe_mul, Subgroup.coe_inv, map_mul, map_mul, map_inv, map_inv, h1, h2, inv_one, one_mul, mul_inv_rev, ← map_inv, mul_assoc, zInf_mul_comm, kbar_mul_zInf]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 private theorem tensFun_shift (β : TI K n) (e : TF K n) (a : archGroup K n) (g : normOneGL K n) :
     tensFun β e ((archP K n a)⁻¹ * g) =
@@ -44,15 +44,15 @@ private theorem tensFun_shift (β : TI K n) (e : TF K n) (a : archGroup K n) (g 
     mul_inv_rev, ← map_inv, mul_assoc, zInf_mul_comm, kbar_mul_zInf]
 
 /- English proof (translation)
-Establish `hc : Continuous (Function.uncurry fun (s : {r : ℝ // 0 < r}) (a : archGroup K n) => β₁ a * β₂ (a⁻¹ * (x * zInf K n s)))`. Use `(β₁.continuous.comp continuous_snd).mul (β₂.continuous.comp ?_)` and prove the remaining obligations. Conclude with `(continuous_snd.inv).mul (continuous_const.mul (continuous_zInf.comp continuous_fst))`. Establish `hs : HasCompactSupport (Function.uncurry fun (s : {r : ℝ // 0 < r}) (a : archGroup K n) => β₁ a * β₂ (a⁻¹ * (x * zInf K n s)))`. Establish `hC : IsCompact ((fun p : {r : ℝ // 0 < r} × archGroup K n => (p.1 * detA K n (x⁻¹ * p.2), p.2)) '' ((detA K n '' tsupport β₂) ×ˢ tsupport β₁))` using `((β₂.hasCompactSupport.isCompact.image continuous_detA).prod β₁.hasCompactSupport.isCompact).image ((continuous_fst.mul (continuous_detA.comp (continuous_const.mul continuous_snd))).prodMk continuous_snd)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `HasCompactSupport.intro hC fun p hp => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Apply `hp` to reduce the goal to its premises. Take `⟨s, a⟩` from `p`. Establish `h1 : β₁ a ≠ 0` using `left_ne_zero_of_mul hne`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : β₂ (a⁻¹ * (x * zInf K n s)) ≠ 0` using `right_ne_zero_of_mul hne`. Establish `h3` using `mem_of_kernel_ne_zero hn (κ := β₂) (a := a⁻¹ * x) (s := s) (by rwa [mul_assoc])`. Use `⟨(s * detA K n (a⁻¹ * x), a), ⟨h3, subset_tsupport _ h1⟩, ?_⟩` and prove the remaining obligations. Establish `h4 : detA K n (a⁻¹ * x) * detA K n (x⁻¹ * a) = 1`. Rewrite using `[← map_mul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[mul_assoc]`. Simplify using `only [mul_assoc, h4, mul_one]`. Establish `hsw` using `integral_integral_swap_of_hasCompactSupport hc hs (μ := GroundTheory.Global.posRealMeasure) (ν := ν)`. Simplify using `only [kbar, conv_apply]`. Rewrite using `[hsw]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `integral_congr_ae (Filter.Eventually.of_forall fun a => ?_)` and prove the remaining obligations. Simplify using `only [mul_assoc]`. Conclude with `integral_const_mul _ _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem kbar_conv (hn : 0 < n) (ν : Measure (archGroup K n)) [ν.IsHaarMeasure] (β₁ β₂ : TI K n)
     (x : archGroup K n) :
@@ -87,7 +87,7 @@ private theorem kbar_conv (hn : 0 < n) (ν : Measure (archGroup K n)) [ν.IsHaar
   exact integral_const_mul _ _
 
 /- English proof (translation)
-Simplify using `only [(UpperTheory.ConvolutionTheory.Tf.tensApply K n hn _ e).1, tensFun_shift]`. Rewrite using `[tensFun, kbar_conv hn, ← integral_mul_const]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun a => ?_)` and prove the remaining obligations. Simplify using `only [mul_assoc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 private theorem tens_conv (hn : 0 < n) (ν : Measure (archGroup K n)) [ν.IsHaarMeasure] (β₁ β₂ : TI K n) (e : TF K n)
     (g : normOneGL K n) :
@@ -100,7 +100,7 @@ private theorem tens_conv (hn : 0 < n) (ν : Measure (archGroup K n)) [ν.IsHaar
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Introduce `K _ _ n hn ν' _ ν _ hint β hβ hβc hβu κ γ e hκ`. Use extensionality with `g`. Rewrite using `[tens_conv hn, archConv_apply, archConvFun, hint (fun a => κ a * tens γ e ((archP K n a)⁻¹ * g))]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun A => ?_)` and prove the remaining obligations. Simplify using `only [hκ]`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
 Both sides reduce to the same expression.
 -/

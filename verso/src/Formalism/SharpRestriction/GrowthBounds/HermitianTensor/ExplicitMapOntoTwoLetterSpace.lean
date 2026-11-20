@@ -7,7 +7,7 @@ namespace Formalism.MainNotions.flipOneThree.Pf
 open Formalism.MainNotions.G Formalism.MainNotions.flipOneThree Formalism.CountingSumsFrames Formalism.CountingSumsFrames.Har4 Formalism.GradedWeylDivisibility MvPolynomial
 
 /- English proof (translation)
-Proceed by induction on `q using MvPolynomial.induction_on with`. Consider the case `C a => rw [rename_C, MvPolynomial.sumRingEquiv_C]`. Consider the case `add p q hp hq => rw [map_add, map_add, hp, hq, map_add]`. Consider the case `mul_X p n hp => rw [map_mul, map_mul, hp, rename_X, MvPolynomial.sumRingEquiv_X_inr, map_mul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem ta_sumToIter_rename_inr {R S₁ S₂ : Type} [CommRing R] (q : MvPolynomial S₂ R) :
     sumRingEquiv R S₁ S₂ (rename Sum.inr q) = C q := by
@@ -21,7 +21,7 @@ section A
 variable (K : Type) [Field K] (m : ℕ)
 
 /- English proof (translation)
-Simplify using `only [PsiXY, blockEmb, aeval_rename, rename_rename]`. Use `conv_rhs => rw [← aeval_X_left_apply ((rename _) f), aeval_rename]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem Psi_xs (f : MvPolynomial (Fin (m + 1)) K) :
     PsiXY K m (rename Sum.inl f) = blockEmb K true (rename (fun i => (i, (0 : Fin (m + 1)))) f) := by
@@ -30,7 +30,7 @@ theorem Psi_xs (f : MvPolynomial (Fin (m + 1)) K) :
   rfl
 
 /- English proof (translation)
-Simplify using `only [PsiXY, blockEmb, aeval_rename]`. Rewrite using `[← AlgHom.comp_apply, MvPolynomial.comp_aeval]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem Psi_ys (f : MvPolynomial (Fin (m + 1)) K) :
     PsiXY K m (rename Sum.inr f) = blockEmb K false (aeval (covY K m) f) := by
@@ -41,19 +41,19 @@ theorem Psi_ys (f : MvPolynomial (Fin (m + 1)) K) :
 end A
 
 /- English proof (translation)
-Introduce `K _ m hm`. Set `Φ1 : PolXY K (m + 1) →ₐ[K] MvPolynomial (Fin (m + 1) ⊕ (Fin (m + 1) × Fin (m + 1))) K` to `aeval (Sum.elim (fun i => X (Sum.inl i)) (fun i => rename Sum.inr (covY K m i)))`. Set `e : Fin (m + 1) ⊕ (Fin (m + 1) × Fin (m + 1)) → Bool × (Fin (m + 1) × Fin (m + 1))` to `Sum.elim (fun i => (true, (i, 0))) (fun v => (false, v))`. Establish `he : Function.Injective e`. Introduce and unpack `(a | a) (b | b) h`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Simplify using `only [e, Sum.elim_inl, Prod.mk.injEq, true_and, and_true] at h`. Rewrite using `[h]`. Simplify using `[e] at h`. Simplify using `[e] at h`. Simplify using `only [e, Sum.elim_inr, Prod.mk.injEq, true_and] at h`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[h]`. Establish `hfac : PsiXY K m = (rename e).comp Φ1`. Apply `algHom_ext` to reduce the goal to its premises. Introduce and unpack `(i | i)`. Simplify using `[PsiXY, Φ1, e]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Simplify using `only [PsiXY, Φ1, aeval_X, Sum.elim_inr, AlgHom.comp_apply, rename_rename]`. Both sides reduce to the same expression. Establish `hφ : Function.Injective (aeval (covY K m) : MvPolynomial (Fin (m + 1)) K →ₐ[K] _)` using `ShapeCovering.signed_minors_alg_independent K m hm`. Establish `hcomm : (sumRingEquiv K (Fin (m + 1)) (Fin (m + 1) × Fin (m + 1))).toRingHom.comp Φ1.toRingHom = (map (aeval (covY K m) : MvPolynomial (Fin (m + 1)) K →ₐ[K] _).toRingHom).comp (sumRingEquiv K (Fin (m + 1)) (Fin (m + 1))).toRingHom`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `a`. Simplify using `[Φ1, sumRingEquiv_C]`. Introduce and unpack `(i | i)`. Simplify using `[Φ1, sumRingEquiv_X_inl]`. Simplify using `[Φ1, ta_sumToIter_rename_inr, sumRingEquiv_X_inr]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `h1 : Function.Injective Φ1`. Introduce `f1 f2 h`. Establish `h2` using `DFunLike.congr_fun hcomm f1`. Establish `h3` using `DFunLike.congr_fun hcomm f2`. Simplify using `only [RingHom.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, RingEquiv.toRingHom_eq_coe] at h2 h3`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `h2` using `[h, h3]`. Establish `h4` using `map_injective _ hφ h2`. Conclude with `((sumRingEquiv K (Fin (m + 1)) (Fin (m + 1))).injective h4).symm`. Rewrite using `[hfac]`. Conclude with `(rename_injective e he).comp h1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem explicit_map_injective : ExplicitMapInjective := by
   intro K _ m hm
@@ -98,14 +98,14 @@ theorem explicit_map_injective : ExplicitMapInjective := by
   exact (rename_injective e he).comp h1
 
 /- English proof (translation)
-Conclude with `IsHomogeneous.prod Finset.univ (fun i => X i ^ a i) a (fun i _ => isHomogeneous_X_pow i (a i))`.
+A detailed English derivation is pending.
 -/
 theorem ta_isHom_prodX {A : Type} [CommRing A] {k : ℕ} (a : Fin k → ℕ) :
     (∏ i, X i ^ a i : MvPolynomial (Fin k) A).IsHomogeneous (∑ i, a i) := by
   exact IsHomogeneous.prod Finset.univ (fun i => X i ^ a i) a (fun i _ => isHomogeneous_X_pow i (a i))
 
 /- English proof (translation)
-Rewrite using `[monomial_eq, Finsupp.prod_fintype _ _ (fun _ => pow_zero _), Fintype.prod_sum_type, map_prod, map_prod, smul_eq_C_mul]`. Simplify using `only [map_pow, rename_X]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem ta_monomial_split {K : Type} [Field K] {k : ℕ} (v : XY k →₀ ℕ) (c : K) :
     (monomial v c : PolXY K k) = c • (rename Sum.inl (∏ i : Fin k, X i ^ v (Sum.inl i)) *
@@ -115,11 +115,11 @@ theorem ta_monomial_split {K : Type} [Field K] {k : ℕ} (v : XY k →₀ ℕ) (
   simp only [map_pow, rename_X]
 
 /- English proof (translation)
-Introduce `d hd`. Establish `hmem : d ∈ (rename Sum.inl f : PolXY K k).support` using `mem_support_iff.2 hd`. Rewrite `hmem` using `[support_rename_of_injective Sum.inl_injective, Finset.mem_image]`. Take `⟨d', hd', rfl⟩` from `hmem`. Establish `hP` using `h (mem_support_iff.1 hd')`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only [Finsupp.weight_apply] at hP ⊢`. Rewrite using `[Finsupp.sum_mapDomain_index_inj Sum.inl_injective]`. Simplify using `only [wXY, Sum.elim_inl]`. Rewrite using `[← hP]`. Use `ext`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Simplify using `[Finsupp.sum, Prod.fst_sum]`. Simplify using `[Finsupp.sum, Prod.snd_sum]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem ta_rename_inl_hom {K : Type} [Field K] {k P : ℕ} (f : MvPolynomial (Fin k) K) (h : f.IsHomogeneous P) :
     IsWeightedHomogeneous (wXY k) (rename Sum.inl f : PolXY K k) (P, 0) := by
@@ -138,11 +138,11 @@ theorem ta_rename_inl_hom {K : Type} [Field K] {k P : ℕ} (f : MvPolynomial (Fi
   · simp [Finsupp.sum, Prod.snd_sum]
 
 /- English proof (translation)
-Introduce `d hd`. Establish `hmem : d ∈ (rename Sum.inr f : PolXY K k).support` using `mem_support_iff.2 hd`. Rewrite `hmem` using `[support_rename_of_injective Sum.inr_injective, Finset.mem_image]`. Take `⟨d', hd', rfl⟩` from `hmem`. Establish `hQ` using `h (mem_support_iff.1 hd')`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only [Finsupp.weight_apply] at hQ ⊢`. Rewrite using `[Finsupp.sum_mapDomain_index_inj Sum.inr_injective]`. Simplify using `only [wXY, Sum.elim_inr]`. Rewrite using `[← hQ]`. Use `ext`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Simplify using `[Finsupp.sum, Prod.fst_sum]`. Simplify using `[Finsupp.sum, Prod.snd_sum]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem ta_rename_inr_hom {K : Type} [Field K] {k Q : ℕ} (f : MvPolynomial (Fin k) K) (h : f.IsHomogeneous Q) :
     IsWeightedHomogeneous (wXY k) (rename Sum.inr f : PolXY K k) (0, Q) := by
@@ -161,7 +161,7 @@ theorem ta_rename_inr_hom {K : Type} [Field K] {k Q : ℕ} (f : MvPolynomial (Fi
   · simp [Finsupp.sum, Prod.snd_sum]
 
 /- English proof (translation)
-Rewrite using `[Formalism.CountingSumsFrames.Har4.mem_PolAB_iff]`. Use `(ta_rename_inl_hom f1 h1).mul (ta_rename_inr_hom f2 h2)` as an intermediate fact. Simplify using `using this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem ta_mul_mem_PolAB {K : Type} [Field K] {k P Q : ℕ} (f1 f2 : MvPolynomial (Fin k) K)
     (h1 : f1.IsHomogeneous P) (h2 : f2.IsHomogeneous Q) :
@@ -171,9 +171,9 @@ theorem ta_mul_mem_PolAB {K : Type} [Field K] {k P Q : ℕ} (f1 f2 : MvPolynomia
   simpa using this
 
 /- English proof (translation)
-Use function extensionality and compare the values at `t`. Unfold `nuOf letterWt`. Simplify using `only [if_true]`. Establish `hl : Fin.last m ≠ 0`. Introduce `h`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `congrArg Fin.val h` as an intermediate fact. Simplify using `at this`. Use linear arithmetic over natural numbers and integers. Rewrite using `[if_neg hl]`. Apply the tactic sequence `split_ifs <;> simp`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem ta_nuOf_vec (m P : ℕ) (hm : 1 ≤ m) : nuOf (letterWt m P true) = fun t => if t = 0 then P else 0 := by
   funext t
@@ -188,7 +188,7 @@ theorem ta_nuOf_vec (m P : ℕ) (hm : 1 ≤ m) : nuOf (letterWt m P true) = fun 
   split_ifs <;> simp
 
 /- English proof (translation)
-Use function extensionality and compare the values at `t`. Unfold `nuOf letterWt`. Simplify using `only [Bool.false_eq_true, if_false, if_true]`. Apply the tactic sequence `split_ifs <;> simp`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem ta_nuOf_cov (m Q : ℕ) : nuOf (letterWt m Q false) = fun t => if t = Fin.last m then 0 else Q := by
   funext t
@@ -197,21 +197,21 @@ theorem ta_nuOf_cov (m Q : ℕ) : nuOf (letterWt m Q false) = fun t => if t = Fi
   split_ifs <;> simp
 
 /- English proof (translation)
-Introduce `K _ m hm P Q x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Unfold `twoSp tensorLat at hx`. Use `Submodule.span_induction (p := fun x _ => ∃ f ∈ PolAB K (m + 1) P Q, PsiXY K m f = x) ?_ ⟨0, Submodule.zero_mem _, map_zero _⟩ ?_ ?_ hx` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `y ⟨F, hF, rfl⟩`. Establish `ht` using `hF true`. Establish `hf` using `hF false`. Simplify using `only [if_true, Bool.false_eq_true, if_false] at ht hf`. Rewrite `ht` using `[ta_nuOf_vec m P hm]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hf` using `[ta_nuOf_cov m Q]`. Take `⟨f1, h1, e1⟩` from `(ShapeCovering.first_column_polynomials_characterize K m P (F true) hm).1 ht`. Take `⟨f2, h2, e2⟩` from `(ShapeCovering.signed_minor_polynomials_characterize K m Q (F false) hm).1 hf`. Use `⟨rename Sum.inl f1 * rename Sum.inr f2, ta_mul_mem_PolAB f1 f2 h1 h2, ?_⟩` and prove the remaining obligations. Rewrite `e2` using `[covY_eq]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[map_mul, Psi_xs, Psi_ys, e1, e2, Fintype.prod_bool]`. Introduce and unpack `x y _ _ ⟨f, hf, rfl⟩ ⟨g, hg, rfl⟩`. Conclude with `⟨f + g, Submodule.add_mem _ hf hg, map_add _ _ _⟩`. Introduce and unpack `c x _ ⟨f, hf, rfl⟩`. Conclude with `⟨c • f, Submodule.smul_mem _ _ hf, map_smul _ _ _⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨f, hf, rfl⟩`. Rewrite using `[f.as_sum, map_sum]`. Use `Submodule.sum_mem _ fun v hv => ?_` and prove the remaining obligations. Rewrite using `[ta_monomial_split, map_smul, map_mul, Psi_xs, Psi_ys]`. Use `Submodule.smul_mem _ _ (Submodule.subset_span ?_)` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun b : Bool => (cond b (rename (fun i : Fin (m + 1) => (i, (0 : Fin (m + 1)))) (∏ i : Fin (m + 1), (X i : MvPolynomial (Fin (m + 1)) K) ^ v (Sum.inl i))) (aeval (covY K m) (∏ i : Fin (m + 1), (X i : MvPolynomial (Fin (m + 1)) K) ^ v (Sum.inr i))) : MvPolynomial (Fin (m + 1) × F …` and prove the remaining obligations. Introduce `b`. Consider the cases of `b`. Simplify using `only [Bool.false_eq_true, if_false, cond_false]`. Rewrite using `[ta_nuOf_cov m Q]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `(ShapeCovering.signed_minor_polynomials_characterize K m Q _ hm).2 ⟨_, ?_, rfl⟩` and prove the remaining obligations. Use `ta_isHom_prodX (A := K) (fun i : Fin (m + 1) => v (Sum.inr i))` as an intermediate fact. Rewrite `this` using `[show ∑ i : Fin (m + 1), v (Sum.inr i) = Q from (hf v hv).2]`. Then use the resulting hypothesis. Simplify using `only [if_true, cond_true]`. Rewrite using `[ta_nuOf_vec m P hm]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `(ShapeCovering.first_column_polynomials_characterize K m P _ hm).2 ⟨_, ?_, rfl⟩` and prove the remaining obligations. Use `ta_isHom_prodX (A := K) (fun i : Fin (m + 1) => v (Sum.inl i))` as an intermediate fact. Rewrite `this` using `[show ∑ i : Fin (m + 1), v (Sum.inl i) = P from (hf v hv).1]`. Then use the resulting hypothesis. Rewrite using `[Fintype.prod_bool]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem explicit_map_onto_two_letter_space : ExplicitMapOntoTwoLetters := by
   intro K _ m hm P Q x

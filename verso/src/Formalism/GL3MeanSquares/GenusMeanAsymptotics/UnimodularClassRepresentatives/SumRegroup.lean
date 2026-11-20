@@ -18,27 +18,23 @@ open UnimodularLocalization GoodPrimeTerms GoodGenusOrbits LocalFactorEquality
 open Classical in
 
 /- English proof (translation)
-Establish `hZ1 : ∀ 𝔭 ∉ Z, fibLoc S L 𝔭.1 A = 1` using `fun 𝔭 h𝔭 => fibLoc_eq_one hK hF hs hd S hL hLi hA hAi 𝔭.2 hn (hZL 𝔭 h𝔭) (hZn 𝔭 h𝔭) (hZA 𝔭 h𝔭)`. Establish `hex : ∀ τ : ↥Z → Submodule (𝓞 K) V', τ ∈ Fintype.piFinset (fun 𝔭 : ↥Z => s 𝔭.1) → ∃ M, Good F S L M ∧ (∀ 𝔭 : ↥Z, locF 𝔭.1.1 M = τ 𝔭) ∧ ∀ 𝔭 ∉ Z, locF 𝔭.1 M = locF 𝔭.1 A`. Introduce `τ hτ`. Rewrite `hτ` using `[Fintype.mem_piFinset]`. Take `⟨M, hM, h1, h2⟩` from `exists_patch hK hF S hL hLi hA Z (fun 𝔭 => if H : 𝔭 ∈ Z then τ ⟨𝔭, H⟩ else ⊥) (fun 𝔭 h𝔭 => by`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Simplify using `only [dif_pos h𝔭]`. Conclude with `⟨((hsr 𝔭).1 _ (hτ ⟨𝔭, h𝔭⟩)).1, ((hsr 𝔭).1 _ (hτ ⟨𝔭, h𝔭⟩)).2.2⟩)`. Use the proof step `(fun 𝔭 h𝔭 => by rw [hZ1 𝔭 h𝔭]; exact one_ne_zero)`. Conclude with `⟨M, hM, fun 𝔭 => by rw [h1 𝔭.1 𝔭.2, dif_pos 𝔭.2], h2⟩`. Use `choose! M hMg hMZ hMA using hex`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Supply the required witnesses or components. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Finset.prod_coe_sort Z (fun 𝔭 => ∑ T ∈ s 𝔭, (fibLoc S L 𝔭.1 T : ℝ) * lamP h' T 𝔭.1), Finset.prod_univ_sum, Finset.mul_sum]`. Establish `e1 : ∀ τ ∈ Fintype.piFinset (fun 𝔭 : ↥Z => s 𝔭.1), c * ∏ 𝔭 : ↥Z, ((fibLoc S L 𝔭.1.1 (τ 𝔭) : ℝ) * lamP h' (τ 𝔭) 𝔭.1.1) = ∑ Λ' ∈ s'.filter (fun Λ' => Formalism.HermitianLatticesTheory.SameGenus h' (M τ) Λ'), (Nat.card (fibG S L Λ') : ℝ) / (Nat.card (Formalism.ThetaLiftIndependence. …`. Introduce `τ hτ`. Rewrite using `[sum_genus hK hF hs hd S hL hLi hc hs' hA hAi Z hZ1 hZA (hMg τ hτ) (hMA τ hτ), ← Finset.prod_coe_sort Z]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_congr rfl fun 𝔭 _ => ?_` and prove the remaining obligations. Rewrite using `[hMZ τ hτ 𝔭]`. Rewrite using `[Finset.sum_congr rfl e1]`. Repeatedly rewrite using `[Finset.sum_filter]`. Rewrite using `[Finset.sum_comm]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Use `Finset.sum_congr rfl fun Λ' hΛ' => ?_` and prove the remaining obligations. Distinguish the cases in `hg : Good F S L Λ'`. Establish `hloc : ∀ 𝔭 : ↥Z, ∃! T₀, T₀ ∈ s 𝔭.1 ∧ ∃ g ∈ Formalism.HermitianLatticesTheory.isom h', Formalism.HermitianLatticesTheory.gmap g T₀ = locF 𝔭.1.1 Λ'` using `fun 𝔭 => (hsr 𝔭.1).2 _ (LocF.locF_idem _ _) (isIntegralAt_locF 𝔭.1.2.isPrime hF (hg.integral hF hL hLi)) (by rw [fibLoc_locF]; exact hg.2 𝔭.1) choose τ₀ hτ₀ hu using hloc`. Establish `hmem : τ₀ ∈ Fintype.piFinset (fun 𝔭 : ↥Z => s 𝔭.1)` using `Fintype.mem_piFinset.mpr fun 𝔭 => (hτ₀ 𝔭).1`. Rewrite using `[Finset.sum_eq_single τ₀, if_pos]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[sameGenus_iff hK hF]`. Introduce `𝔭`. Distinguish the cases in `h𝔭 : 𝔭 ∈ Z`. Use `(hτ₀ ⟨𝔭, h𝔭⟩).2` as an intermediate fact. Rewrite using `[hMZ τ₀ hmem ⟨𝔭, h𝔭⟩]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this`. Conclude with `good_orbit hK hF hs hd S hL hLi 𝔭.2 hn (hZL 𝔭 h𝔭) (hZn 𝔭 h𝔭) ((hMg τ₀ hmem).2 𝔭) (hg.2 𝔭)`. Introduce `τ hτ hne`. Rewrite using `[if_neg]`. Introduce `hsg`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Apply `hne` to reduce the goal to its premises. Use function extensionality and compare the values at `𝔭`. Apply `hu 𝔭` to reduce the goal to its premises. Use `⟨Fintype.mem_piFinset.mp hτ 𝔭, ?_⟩` and prove the remaining obligations. Use `(sameGenus_iff hK hF _ _).mp hsg 𝔭.1` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[hMZ τ hτ 𝔭]`. Then use the resulting hypothesis. Introduce `hc'`. Conclude with `absurd hmem hc'`. Establish `hlat` using `isLattice_of_fibReps S hs' hΛ'`. Establish `: ∃ 𝔭 : {𝔭 : Ideal (𝓞 F) // 𝔭.IsMaximal}, fibLoc S L 𝔭.1 Λ' = 0`.
-
-Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Conclude with `hg ⟨hlat, hcon⟩`. Take `⟨𝔭, h𝔭⟩` from `this`. Rewrite using `[card_fibG_eq_zero hK hF hs hd S hL hLi hlat 𝔭 h𝔭]`.
-
-Simplify using the standard rewrite rules.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sum_regroup (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F) (hs : h.IsSymm)
     (hd : IsTotPosDef h) (S : VecSplit h h') {L : Submodule (𝓞 K) V}
@@ -124,21 +120,19 @@ theorem sum_regroup (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : I
     simp
 
 /- English proof (translation)
-Take `⟨s', hs'⟩` from `exists_fibReps hK hs hd S hL hLi`. Rewrite using `[repMass_eq_sum_fib hK hs hd S hL hLi hs']`. Distinguish the cases in `H : ∀ 𝔭 : {𝔭 : Ideal (𝓞 F) // 𝔭.IsMaximal}, ∃ T, fibLoc S L 𝔭.1 T ≠ 0`. Take `⟨n, hn⟩` from `exists_norm_eq hF hs S hLi H`. Establish `hn0 : n ≠ 0`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce and unpack `rfl`. Conclude with `S.hx₀ (by rw [hn]; simp)`. Establish `hA` using `StabilizerLattices.isLattice_cut S hL`. Establish `hAi` using `isIntegralLat_cut S hLi`. Establish `f1` using `finite_vd_ne_zero hK hF hs hd hL hLi`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `f2` using `finite_vF_ne_zero hn0`. Establish `f3` using `finite_vd_ne_zero hK hF (S.isSymm hs) (S.isTotPosDef hd) hA hAi`. Use `set Z : Finset {𝔭 : Ideal (𝓞 F) // 𝔭.IsMaximal} := f1.toFinset ∪ f2.toFinset ∪ f3.toFinset with hZ`. Establish `hZL : ∀ 𝔭 ∉ Z, vd h L 𝔭.1 = 0`. Introduce `𝔭 h𝔭`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `h0`. Conclude with `h𝔭 (by simp only [hZ, Finset.mem_union, Set.Finite.mem_toFinset]; exact Or.inl (Or.inl h0))`. Establish `hZn : ∀ 𝔭 ∉ Z, vF 𝔭.1 n = 0`. Introduce `𝔭 h𝔭`. Assume the negation of the conclusion as `h0`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `h𝔭 (by simp only [hZ, Finset.mem_union, Set.Finite.mem_toFinset]; exact Or.inl (Or.inr h0))`. Establish `hZA : ∀ 𝔭 ∉ Z, vd h' (S.cut L) 𝔭.1 = 0`. Introduce `𝔭 h𝔭`. Assume the negation of the conclusion as `h0`. Conclude with `h𝔭 (by simp only [hZ, Finset.mem_union, Set.Finite.mem_toFinset]; exact Or.inr h0)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `choose T hT using H`. Take `⟨M₀, hM₀, -, -⟩` from `exists_patch hK hF S hL hLi hA Z (fun 𝔭 => locF 𝔭.1 (T 𝔭)) (fun 𝔭 _ => ⟨LocF.locF_idem _ _, by rw [fibLoc_locF]; exact hT 𝔭⟩) (fun 𝔭 h𝔭 => by`. Rewrite using `[fibLoc_eq_one hK hF hs hd S hL hLi hA hAi 𝔭.2 hn (hZL 𝔭 h𝔭) (hZn 𝔭 h𝔭) (hZA 𝔭 h𝔭)]`. Conclude with `one_ne_zero)`. Establish `hex` using `fun 𝔭 => exists_locReps hK hF hs hd S hL hLi hM₀ 𝔭`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sum_regroup hK hF hs hd S hL hLi hc hs' hn hA hAi Z hZL hZn hZA (fun 𝔭 => (hex 𝔭).choose) (fun 𝔭 => (hex 𝔭).choose_spec)]`. Use `congr 1`. Rewrite using `[tprod_eq_prod (s := Z) (fun 𝔭 h𝔭 => psiP_eq_one' hK hF hs hd S hL hLi 𝔭.2 hn (hZL 𝔭 h𝔭) (hZn 𝔭 h𝔭))]`. Conclude with `Finset.prod_congr rfl fun 𝔭 _ => (psiP_eq S L 𝔭.1 (hex 𝔭)).symm`. Use `push Not at H`.
-
-Take `⟨𝔭, H⟩` from `H`. Rewrite using `[tprod_of_exists_eq_zero ⟨𝔭, psiP_eq_zero S L 𝔭.1 H⟩, mul_zero]`. Use `Finset.sum_eq_zero fun Λ' hΛ' => ?_` and prove the remaining obligations. Rewrite using `[card_fibG_eq_zero hK hF hs hd S hL hLi (isLattice_of_fibReps S hs' hΛ') 𝔭 (H Λ')]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem repMass_eq_prod_psi' (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F) (hs : h.IsSymm)
     (hd : IsTotPosDef h) (S : VecSplit h h') {L : Submodule (𝓞 K) V}

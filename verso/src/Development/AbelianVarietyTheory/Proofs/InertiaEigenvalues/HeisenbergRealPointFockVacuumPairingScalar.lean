@@ -24,9 +24,9 @@ namespace GlobalTheory.RealVacScalar
 variable {D : D7}
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[Matrix.sum_apply]`. Use `show ∑ τ : D.what₂.Tau, idem D (.inr τ) * w i j = w i j`. Rewrite using `[← Finset.sum_mul]`. Use `GlobalTheory.SplitScalar.adele_ext ?_ ?_` and prove the remaining obligations.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[RingHom.map_mul, (GlobalTheory.T.cmAdeleIdempotentOfPlace_properties D).2.2.2.2.2.1, one_mul]`. Establish `h0 : finPart D (w i j) = 0` using `congrFun (congrFun hw i) j`. Rewrite using `[RingHom.map_mul, h0, mul_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_wAt_real {S T : HSp D} (w : WO S T) (hw : w.map (finPart D) = 0) :
     ∑ τ : D.what₂.Tau, wAt (.inr τ) w = w := by
@@ -40,7 +40,7 @@ theorem sum_wAt_real {S T : HSp D} (w : WO S T) (hw : w.map (finPart D) = 0) :
     rw [RingHom.map_mul, h0, mul_zero]
 
 /- English proof (translation)
-Rewrite using `[wAt_eq_smul, Finset.smul_sum]`. Use `Finset.sum_eq_zero fun τ hτ => ?_` and prove the remaining obligations. Rewrite using `[← wAt_eq_smul]`. Conclude with `GlobalTheory.PlaceStable.wAt_wAt_ne (fun h => hr (by rw [Sum.inr_injective h]; exact hτ)) w`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wAt_sum_real_notMem {S T : HSp D} (w : WO S T) {r : D.what₂.Tau} {P : Finset D.what₂.Tau} (hr : r ∉ P) :
     wAt (.inr r) (∑ τ ∈ P, wAt (.inr τ) w) = 0 := by
@@ -50,7 +50,7 @@ theorem wAt_sum_real_notMem {S T : HSp D} (w : WO S T) {r : D.what₂.Tau} {P : 
   exact GlobalTheory.PlaceStable.wAt_wAt_ne (fun h => hr (by rw [Sum.inr_injective h]; exact hτ)) w
 
 /- English proof (translation)
-Unfold `thetaIP ipO`. Use `congr 1`. Use function extensionality and compare the values at `x`. Rewrite using `[Complex.star_def, mul_comm]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem thetaIP_eq_ipO {S T : HSp D} (μ : Measure (WO S T)) (𝓕 : Set (WO S T)) (a b : WO S T → ℂ) :
     thetaIP μ 𝓕 a b = ipO μ 𝓕 b a := by
@@ -60,7 +60,7 @@ theorem thetaIP_eq_ipO {S T : HSp D} (μ : Measure (WO S T)) (𝓕 : Set (WO S T
   rw [Complex.star_def, mul_comm]
 
 /- English proof (translation)
-Unfold `ipO`. Rewrite using `[← integral_conj]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Simplify using `[mul_comm]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem ipO_conj {S T : HSp D} (μ : Measure (WO S T)) (𝓕 : Set (WO S T)) (a b : WO S T → ℂ) :
     ipO μ 𝓕 a b = starRingEnd ℂ (ipO μ 𝓕 b a) := by
@@ -71,9 +71,9 @@ theorem ipO_conj {S T : HSp D} (μ : Measure (WO S T)) (𝓕 : Set (WO S T)) (a 
   simp [mul_comm]
 
 /- English proof (translation)
-Proceed by induction on `P using Finset.induction_on with`. Consider the case `empty`. Introduce `f g _ _ _ _`. Rewrite using `[Finset.sum_empty, Finset.prod_empty, GlobalTheory.SplitScalar.heisO_zero, one_mul]`. Consider the case `insert r P hr ih`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Introduce `f g hf hg vf vg`. Establish `h0` using `wAt_sum_real_notMem w hr`. Rewrite using `[Finset.sum_insert hr, Finset.prod_insert hr, GlobalTheory.SplitScalar.heisO_add_of_orth ψ S T (GlobalTheory.LocalPure.symplO_wAt S T w h0), hγ r _ g ((GlobalTheory.HeisThetaLaws.heis_theta_laws D ψ hψ S T).1 _ _ hf) hg (GlobalTheory.PlaceStable.isFockVacAt_heisO hθ h0 (vf r)) (v …`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem ip_sum {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {S T : HSp D}
     {sS : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ} {sT : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ}
@@ -101,9 +101,9 @@ theorem ip_sum {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {S T : HSp D}
       ih f g hf hg vf vg, mul_assoc]
 
 /- English proof (translation)
-Introduce `D ψ θ S T hψ hθ sS sT hsS hsT μ 𝓕 hμ w hw`. Use `choose γ hγ using fun τ => GlobalTheory.VacCompress.compress D ψ θ S T μ 𝓕 hψ hθ hμ τ (sS τ) (sT τ) (hsS τ) (hsT τ) w`. Use `⟨starRingEnd ℂ (∏ τ, γ τ), fun h e hh he vh ve => ?_⟩` and prove the remaining obligations. Establish `key` using `ip_sum hψ hθ μ 𝓕 w γ hγ Finset.univ e h he hh ve vh`. Rewrite `key` using `[sum_wAt_real w hw]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[thetaIP_eq_ipO, thetaIP_eq_ipO, ipO_conj, key, map_mul, ← ipO_conj]`.
+A detailed English derivation is pending.
 -/
 theorem compress_real : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D), IsStdChar D ψ (-1) →
     IsInfFam θ → ∀ (sS : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ)

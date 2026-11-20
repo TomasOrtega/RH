@@ -12,13 +12,13 @@ namespace GroundTheory.Heights₂.Heights
 open MvPolynomial ComplexSets Filter Topology
 
 /- English proof (translation)
-Introduce `n J q c hJ hdim`. Establish `hdim1` using `hD n J q c hJ hdim`. Take `⟨M⟩` from `IndefiniteRowSideFullHecke.ComplexSets.NormalModelExists.proof n J hJ`. Take `⟨Γ, hΓd, hΓ, -⟩` from `hL n 1 J q M c hJ hdim1`. Establish `hr` using `c.radius_pos`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h0 : (0 : Fin 1 → ℂ) ∈ Metric.ball 0 c.radius` using `Metric.mem_ball_self hr`. Establish `hinj : Set.InjOn Γ (Metric.ball 0 c.radius)` using `fun a ha b hb hab ↦ c.injOn ha hb (by rw [← (hΓ a ha).2, ← (hΓ b hb).2, hab])`. Take `⟨P, hP⟩` from `hA n J q M (Γ 0) hJ (hΓ 0 h0).1 ((hΓ 0 h0).2.trans c.map_zero)`. Use `⟨P, fun f ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[hP f, hO n J M (Γ 0) c.radius Γ hJ hdim1 hr hΓd hinj (fun τ hτ ↦ (hΓ τ hτ).1) rfl]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Unfold `branchOrder`. Apply `analyticOrderAt_congr` to reduce the goal to its premises. Use `filter_upwards [Metric.ball_mem_nhds (0 : ℂ) hr] with τ hτ`. Establish `hτ' : (fun _ ↦ τ : Fin 1 → ℂ) ∈ Metric.ball (0 : Fin 1 → ℂ) c.radius`. Rewrite `hτ`, the goal using `[mem_ball_zero_iff]`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(pi_norm_const_le τ).trans_lt hτ`. Rewrite using `[eval_rename, ← (hΓ _ hτ').2]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem PrimeBranchPlace.proof (hD : PrimeBranchDimOne.Statement) (hL : IndefiniteRowSideFullHecke.ComplexSets.BranchLift.Statement)
     (hA : NormalModelPlace.Statement) (hO : NormalCurveBranchOrder.Statement) : PrimeBranchPlace.Statement := by

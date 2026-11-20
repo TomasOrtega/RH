@@ -15,19 +15,17 @@ open MeasureTheory in
 open scoped ContDiff in
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace in
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.HatNF.CutPow at hφ`. Take `⟨hφs, ⟨δ, hδ, hφ0⟩, a, R, hφR⟩` from `hφ`. Establish `hzero : ∀ x < δ, (fun y => φ y / y ^ e) =ᶠ[nhds x] fun _ => (0 : ℝ)` using `fun x hx => (eventually_lt_nhds hx).mono fun y hy => by show φ y / y ^ e = 0`. Rewrite using `[hφ0 y hy, zero_div]`. Establish `hconst : ∀ x, max R δ < x → (fun y => φ y / y ^ e) =ᶠ[nhds x] fun _ => a` using `fun x hx => (eventually_gt_nhds hx).mono fun y hy => by`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hy0 : 0 < y` using `hδ.trans (lt_of_le_of_lt (_root_.le_max_right _ _) hy)`. Establish `hy1 : φ y = a * y ^ e` using `hφR y ((_root_.le_max_left _ _).trans hy.le)`. Simplify using `only`. Rewrite using `[hy1, mul_div_assoc, div_self (pow_ne_zero _ hy0.ne'), mul_one]`. Establish `hsmooth : ContDiff ℝ ∞ (fun y => φ y / y ^ e)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[contDiff_iff_contDiffAt]`. Introduce `x`. Break down `lt_or_ge x δ with hx | hx` into its components or cases. Conclude with `contDiffAt_const.congr_of_eventuallyEq (hzero x hx)`. Conclude with `hφs.contDiffAt.div (contDiffAt_id.pow e) (pow_ne_zero _ (hδ.trans_le hx).ne')`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨fun y => φ y / y ^ e, hsmooth, fun q => ?_, fun x => ?_⟩` and prove the remaining obligations. Take `⟨C, hC⟩` from `(isCompact_Icc : IsCompact (Set.Icc δ (max R δ))).exists_bound_of_continuousOn (hsmooth.continuous_iteratedDeriv q (WithTop.coe_le_coe.mpr le_top)).continuousOn`. Use `⟨max C (max |a| 0), fun x => ?_⟩` and prove the remaining obligations. Break down `lt_or_ge x δ with hx | hx` into its components or cases. Apply the tactic sequence `rw [(hzero x hx).iteratedDeriv_eq, iteratedDeriv_const] split_ifs <;> rw [norm_zero] <;> exact (_root_.le_max_right _ _).trans (_root_.le_max_right _ _)`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Apply the first step, then apply the next step to every resulting obligation. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Break down `le_or_gt x (max R δ) with hx' | hx'` into its components or cases. Conclude with `(hC x ⟨hx, hx'⟩).trans (_root_.le_max_left _ _)`. Rewrite using `[(hconst x hx').iteratedDeriv_eq, iteratedDeriv_const] split_ifs`. Rewrite using `[Real.norm_eq_abs]`. Conclude with `(_root_.le_max_left _ _).trans (_root_.le_max_right _ _)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[norm_zero]`. Conclude with `(_root_.le_max_right _ _).trans (_root_.le_max_right _ _)`. Break down `lt_or_ge x δ with hx | hx` into its components or cases. Use `show φ x = x ^ e * (φ x / x ^ e)`. Rewrite using `[hφ0 x hx, zero_div, mul_zero]`.
-
-Establish `hx0 : x ^ e ≠ 0` using `pow_ne_zero _ (hδ.trans_le hx).ne' show φ x = x ^ e * (φ x / x ^ e)`. Rewrite using `[mul_comm, div_mul_cancel₀ (φ x) hx0]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_smooth_bounded_derivs_eq_pow_mul_of_cutPow {e : ℕ} {φ : ℝ → ℝ} (hφ : _root_.GlobalTheory.HatNF.CutPow e φ) :
     ∃ h : ℝ → ℝ, ContDiff ℝ ∞ h ∧ (∀ q : ℕ, ∃ c, ∀ x, ‖iteratedDeriv q h x‖ ≤ c) ∧
@@ -74,7 +72,7 @@ open MeasureTheory in
 open scoped ContDiff in
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace in
 /- English proof (translation)
-Unfold `_root_.Formalism.FourierDecayAlt.B.CkOn at hF ⊢`. Introduce `g₀ hg₀`. Take `⟨U, F', hU, hgU, hF', hEq⟩` from `hF g₀ hg₀`. Use `⟨U, fun g => c g • F' g, hU, hgU, ?_, fun g hgU hg => by simp only [hEq g hgU hg]⟩` and prove the remaining obligations. Conclude with `(hc.contDiffOn.smul hF').of_le (WithTop.coe_le_coe.mpr le_top)`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem ckOn_smul_of_ckOn_infinite {k r : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E]
     {c : _root_.Formalism.FourierDecayAlt.B.Mat k r → ℂ} (hc : ContDiff ℝ ∞ c) {F : _root_.Formalism.FourierDecayAlt.B.Mat k r → E} (n : ℕ∞)
@@ -89,23 +87,21 @@ open MeasureTheory in
 open scoped ContDiff in
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace in
 /- English proof (translation)
-Take `⟨ρ, rfl⟩ : ∃ ρ, r = 0 + ρ` from `⟨r, (zero_add r).symm⟩`. Establish `hcd : ContDiff ℝ ∞ (fun g => ((h (_root_.Formalism.QuantumDeterminants.Gf k (0 + ρ) z z' g) : ℝ) : ℂ))` using `Complex.ofRealCLM.contDiff.comp (hh.comp (_root_.Formalism.FourierDecayAlt.P.JCx1.contDiff_Gf z z'))`. Take `⟨M, hM⟩` from `_root_.Formalism.FourierDecayAlt.P.AdmissibleLieWords.poly_H (_root_.Formalism.FourierDecayAlt.P.AdmissibleLieWords.gf_pd k (0 + ρ) z z') m`. Take `⟨K, hK0, hK⟩` from `_root_.PI.UnitaryCorollaryDerivatives.CRH.main (fun g => _root_.Formalism.QuantumDeterminants.Gf k (0 + ρ) z z' g) h (fun _ => 2 * (0 + ρ) + 2) m M (_root_.Formalism.FourierDecayAlt.P.JCx1.contDiff_Gf z z') hh hb (fun w hw hne g hg => by`. Establish `hp : _root_.PI.UnitaryCorollaryDerivatives.CRH.cs (fun _ => 2 * (0 + ρ) + 2) w = (2 * (0 + ρ) + 2) * w.length`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only [_root_.PI.UnitaryCorollaryDerivatives.CRH.cs, List.map_const', List.sum_replicate, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hp]`. Conclude with `hM w hw hne g hg) m 0`. Establish `hWB : _root_.PI.UnitaryCorollaryDerivatives.WB (fun X => _root_.PI.UnitaryCorollaryDerivatives.costP k 0 ρ X + (2 * (0 + ρ) + 2)) (fun g => ((h (_root_.Formalism.QuantumDeterminants.Gf k (0 + ρ) z z' g) : ℝ) : ℂ)) (m + 0) K 0`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `_root_.PI.UnitaryCorollaryDerivatives.WB`. Introduce `u v hu hv huv g hg`. Rewrite using `[_root_.Formalism.FourierDecayAlt.P.BetaSesquilinearity.dLR_eq]`. Establish `hadm : _root_.PI.UnitaryCorollaryDerivatives.CRH.admitted m (_root_.Formalism.FourierDecayAlt.P.BetaSesquilinearity.wL u ++ _root_.Formalism.FourierDecayAlt.P.BetaSesquilinearity.wR v)` using `⟨u, v, hu, hv, huv, rfl⟩`. Establish `hlen : (_root_.Formalism.FourierDecayAlt.P.BetaSesquilinearity.wL u ++ _root_.Formalism.FourierDecayAlt.P.BetaSesquilinearity.wR v).length ≤ m`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [_root_.Formalism.FourierDecayAlt.P.BetaSesquilinearity.wL, _root_.Formalism.FourierDecayAlt.P.BetaSesquilinearity.wR, List.length_append, List.length_map]`. Use linear arithmetic over natural numbers and integers. Establish `hK1` using `hK _ hadm hlen g hg`. Simplify using `only [iteratedDeriv_zero] at hK1`. Establish `hn : _root_.PI.UnitaryCorollaryDerivatives.CRH.cs (fun _ => 2 * (0 + ρ) + 2) (_root_.Formalism.FourierDecayAlt.P.BetaSesquilinearity.wL u ++ _root_.Formalism.FourierDecayAlt.P.BetaSesquilinearity.wR v) ≤ (List.map (fun X => _root_.PI.UnitaryCorollaryDerivatives.costP k 0 ρ X + (2 …`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [_root_.PI.UnitaryCorollaryDerivatives.CRH.cs, _root_.Formalism.FourierDecayAlt.P.BetaSesquilinearity.wL, _root_.Formalism.FourierDecayAlt.P.BetaSesquilinearity.wR, List.map_append, List.map_map, List.sum_append, List.sum_map_add, Function.comp_def, List.map_const', List.sum …`. Use linear arithmetic over natural numbers and integers. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Real.rpow_natCast]`. Use `_ ≤ _ := mul_le_mul_of_nonneg_left (Real.rpow_le_rpow_of_exponent_le (_root_.Formalism.FourierDecayAlt.P.BetaSesquilinearity.gN_ge_one hg) (by linarith [(Nat.cast_le (α := ℝ)).mpr hn])) hK0`.
+Use linear arithmetic over natural numbers and integers. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨CΨ, hCΨ0, hCΨ⟩` from `_root_.PI.UnitaryCorollaryDerivatives.cC_bound (j := 0) (ρ := ρ) (E := Wq →L[ℂ] Wp) (Q := m) (o := 0) (mm₀ := m) (A₀ := A) hcd hWB (w := []) (fun X hX => nomatch hX) (Nat.le_refl _) (Nat.le_refl _)`. Take `⟨c, hc⟩` from `id hA`. Establish `hc'` using `hc`. Unfold `_root_.Formalism.FourierDecayAlt.B.InCC`. Use `⟨CΨ * c, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `_root_.Formalism.FourierDecayAlt.B.CCle at hc ⊢`. Use `⟨ckOn_smul_of_ckOn_infinite hcd _ hf, fun u v hu hv huv g hg => ?_⟩` and prove the remaining obligations. Establish `hIW : ∀ w : List (_root_.Formalism.FourierDecayAlt.B.Mat k (0 + ρ)), (∀ X ∈ w, _root_.Formalism.FourierDecayAlt.B.unitLie k (0 + ρ) X) → _root_.Formalism.FourierDecayAlt.U.unitP k 0 ρ w` using `fun w hw X hX => ⟨⟨(hw X hX).1, fun i b hb' _ => absurd hb' (Nat.not_lt_zero _)⟩, (hw X hX).2⟩`. Establish `hB : ‖_root_.Formalism.FourierDecayAlt.B.dLR u v (fun g => ((h (_root_.Formalism.QuantumDeterminants.Gf k (0 + ρ) z z' g) : ℝ) : ℂ) • f g) g‖ ≤ CΨ * c * _root_.Formalism.FourierDecayAlt.B.gN g ^ ((0 : ℕ) * ((0 : ℕ) : ℝ) + ((2 * (0 + ρ) + 2 : ℕ) : ℝ) * ((m + 0 : ℕ) : ℝ) - A)` using `hCΨ f c hc' u v (hIW u hu) (hIW v hv) huv g hg`. Establish `hpos` using `_root_.Formalism.FourierDecayAlt.P.BetaSesquilinearity.gN_pos hg`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_comm, mul_assoc, ← Real.rpow_add hpos]`. Establish `h0 : ((0 : ℕ) * ((0 : ℕ) : ℝ) + ((2 * (0 + ρ) + 2 : ℕ) : ℝ) * ((m + 0 : ℕ) : ℝ) - A) + (A - (2 * ((0 + ρ : ℕ) : ℝ) + 2) * m) = 0`. Simplify using `only [Nat.cast_zero, Nat.cast_add, Nat.cast_mul, Nat.cast_ofNat]`. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite using `[h0, Real.rpow_zero, mul_one]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem inCC_real_smul_comp_Gf_of_inCC {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
     [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] (z z' : Fin (2 * r + k + 1) → ℂ) {h : ℝ → ℝ}
@@ -177,15 +173,15 @@ open scoped ContDiff in
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace in
 
 /- English proof (translation)
-Introduce `Wp Wq _ _ _ _ _ _ P Bs e m φ f A hφ hf hA`. Establish `hval : _root_.GlobalTheory.HatNF.mulG Bs φ f = fun g => ((φ (_root_.Formalism.QuantumDeterminants.Gf P.k P.r Bs.z Bs.z' g) : ℝ) : ℂ) • f g` using `rfl`. Take `⟨h, hh, hb, hφh⟩` from `exists_smooth_bounded_derivs_eq_pow_mul_of_cutPow hφ`. Establish `hφs : ContDiff ℝ ∞ φ`. Unfold `_root_.GlobalTheory.HatNF.CutPow at hφ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Conclude with `hφ.1`. Establish `hfun : _root_.GlobalTheory.HatNF.mulG Bs φ f = fun g => ((_root_.Formalism.QuantumDeterminants.Gf P.k P.r Bs.z Bs.z' g ^ e : ℝ) : ℂ) • (((h (_root_.Formalism.QuantumDeterminants.Gf P.k P.r Bs.z Bs.z' g) : ℝ) : ℂ) • f g)`. Rewrite using `[hval]`. Use function extensionality and compare the values at `g`. Rewrite using `[smul_smul, ← Complex.ofReal_mul, ← hφh]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hval]`. Conclude with `ckOn_smul_of_ckOn_infinite (c := fun g => ((φ (_root_.Formalism.QuantumDeterminants.Gf P.k P.r Bs.z Bs.z' g) : ℝ) : ℂ)) (Complex.ofRealCLM.contDiff.comp (hφs.comp (_root_.Formalism.FourierDecayAlt.P.JCx1.contDiff_Gf Bs.z Bs.z'))) ⊤ hf`. Rewrite using `[hfun]`. Take `⟨c, hc⟩` from `inCC_real_smul_comp_Gf_of_inCC Bs.z Bs.z' hh hb hf hA`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hpd` using `(show (∀ F : _root_.Formalism.FourierDecayAlt.B.Mat P.k P.r → Wq →L[ℂ] Wp, _root_.Formalism.FourierDecayAlt.B.CkOn ⊤ (_root_.Formalism.FourierDecayAlt.B.GV P.k P.r) F → _root_.Formalism.FourierDecayAlt.B.CkOn ⊤ (_root_.Formalism.FourierDecayAlt.B.GV P.k P.r) (fun g => ((_root_.Fo …`. Take `⟨K, -, hK⟩` from `hpd (A - (2 * (P.r : ℝ) + 2) * ((e : ℝ) + m)) m`. Use `⟨K * c, hK _ c ?_⟩` and prove the remaining obligations. Establish `hA' : A - (2 * (P.r : ℝ) + 2) * ((e : ℝ) + m) + (((2 * P.r + 2) * e : ℕ) : ℝ) = A - (2 * (P.r : ℝ) + 2) * m`. Simplify using `only [Nat.cast_mul, Nat.cast_add, Nat.cast_ofNat]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hA']`. Conclude with `hc`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.HatNF.mulG_ckOn_inCC : ∀ (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
     [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq]

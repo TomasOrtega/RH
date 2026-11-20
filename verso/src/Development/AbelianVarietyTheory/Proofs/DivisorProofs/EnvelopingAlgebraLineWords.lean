@@ -8,7 +8,7 @@ namespace GlobalTheory.TorFin.WordSpan
 variable {n : ℕ} {G : Type} [Group G]
 
 /- English proof (translation)
-Establish `h1 : IsUni J (1 : Matrix (Fin n) (Fin n) ℂ)` using `by simp [IsUni]`. Establish `h` using `hs 1 1 h1 h1`. Rewrite `h` using `[mul_one]`. Conclude with `mul_left_cancel (a := s 1) (by rw [mul_one]; exact h.symm)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_one_of_isMulOn {J : Matrix (Fin n) (Fin n) ℂ} {s : Matrix (Fin n) (Fin n) ℂ → G}
     (hs : IsMulOn J s) : s 1 = 1 := by
@@ -18,14 +18,14 @@ theorem map_one_of_isMulOn {J : Matrix (Fin n) (Fin n) ℂ} {s : Matrix (Fin n) 
   exact mul_left_cancel (a := s 1) (by rw [mul_one]; exact h.symm)
 
 /- English proof (translation)
-Simplify using `[lineOf, map_one_of_isMulOn hs]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lineOf_zero {J : Matrix (Fin n) (Fin n) ℂ} {s : Matrix (Fin n) (Fin n) ℂ → G}
     (hs : IsMulOn J s) (Z : Matrix (Fin n) (Fin n) ℂ) : lineOf s Z 0 = 1 := by
   simp [lineOf, map_one_of_isMulOn hs]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Establish `h` using `hρ Z hZ f g 0`. Rewrite `h` using `[lineOf_zero hs, mul_one]`. Conclude with `h.deriv.symm`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rho_skew_apply {J : Matrix (Fin n) (Fin n) ℂ} {s : Matrix (Fin n) (Fin n) ℂ → G}
     (hs : IsMulOn J s) {ρ : Matrix (Fin n) (Fin n) ℂ →ₗ[ℂ] Module.End ℂ (smLoc J s)}
@@ -37,7 +37,7 @@ theorem rho_skew_apply {J : Matrix (Fin n) (Fin n) ℂ} {s : Matrix (Fin n) (Fin
   exact h.deriv.symm
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil => simp`. Consider the case `cons Z L ih`. Simplify using `only [List.map_cons, List.prod_cons, List.foldr_cons, Module.End.mul_apply]`. Rewrite using `[rho_skew_apply hs hρ (hL Z (by simp)), ih (fun Y hY => hL Y (by simp [hY]))]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem prod_apply {J : Matrix (Fin n) (Fin n) ℂ} {s : Matrix (Fin n) (Fin n) ℂ → G}
     (hs : IsMulOn J s) {ρ : Matrix (Fin n) (Fin n) ℂ →ₗ[ℂ] Module.End ℂ (smLoc J s)}
@@ -50,13 +50,13 @@ theorem prod_apply {J : Matrix (Fin n) (Fin n) ℂ} {s : Matrix (Fin n) (Fin n) 
     rw [rho_skew_apply hs hρ (hL Z (by simp)), ih (fun Y hY => hL Y (by simp [hY]))]
 
 /- English proof (translation)
-Establish `hJJ : J * J⁻¹ = 1` using `Matrix.mul_nonsing_inv J hdet`. Establish `hJiJ : J⁻¹ * J = 1` using `Matrix.nonsing_inv_mul J hdet`. Use `set Ys := J⁻¹ * Yᴴ * J with hYs`. Establish `hYsH : Ysᴴ * J = J * Y`. Rewrite using `[hYs, conjTranspose_mul, conjTranspose_mul, conjTranspose_conjTranspose, hJ, conjTranspose_nonsing_inv, hJ, Matrix.mul_assoc, Matrix.mul_assoc, hJiJ, Matrix.mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hJYs : J * Ys = Yᴴ * J`. Rewrite using `[hYs, ← Matrix.mul_assoc, ← Matrix.mul_assoc, hJJ, Matrix.one_mul]`. Use `⟨(1 / 2 : ℂ) • (Y - Ys), (1 / (2 * Complex.I)) • (Y + Ys), ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [IsSkew, conjTranspose_smul, conjTranspose_sub, Matrix.smul_mul, Matrix.mul_smul, Matrix.sub_mul, Matrix.mul_sub, hYsH, hJYs]`. Establish `: star (1 / 2 : ℂ) = 1 / 2` using `by simp`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, ← smul_add]`. Simplify using the standard rewrite rules. Simplify using `only [IsSkew, conjTranspose_smul, conjTranspose_add, Matrix.smul_mul, Matrix.mul_smul, Matrix.add_mul, Matrix.mul_add, hYsH, hJYs]`. Establish `: star (1 / (2 * Complex.I)) = -(1 / (2 * Complex.I))`. Simplify using `[Complex.ext_iff]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[this, neg_smul, add_comm (J * Y), neg_add_cancel]`. Rewrite using `[smul_smul, show Complex.I * (1 / (2 * Complex.I)) = 1 / 2 by field_simp] module`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem skew_decomp {J : Matrix (Fin n) (Fin n) ℂ} (hJ : Jᴴ = J) (hdet : IsUnit J.det)
     (Y : Matrix (Fin n) (Fin n) ℂ) :
@@ -89,19 +89,19 @@ namespace GlobalTheory.TorFin.WordSpan
 variable {n : ℕ} {G : Type} [Group G]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Simplify using `[wop, Finsupp.sum_single_index]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem wop_single (l : List (ℝ → G)) (f : G → ℂ) : wop (Finsupp.single l 1) f = l.foldr rder f := by
   funext g; simp [wop, Finsupp.sum_single_index]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Simplify using `[wop]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem wop_zero (f : G → ℂ) : wop (0 : List (ℝ → G) →₀ ℂ) f = 0 := by
   funext g; simp [wop]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Simplify using `only [wop, Pi.add_apply]`. Rewrite using `[Finsupp.sum_add_index' (fun _ => zero_mul _) (fun _ _ _ => add_mul _ _ _)]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem wop_add (z z' : List (ℝ → G) →₀ ℂ) (f : G → ℂ) : wop (z + z') f = wop z f + wop z' f := by
   funext g
@@ -109,7 +109,7 @@ theorem wop_add (z z' : List (ℝ → G) →₀ ℂ) (f : G → ℂ) : wop (z + 
   rw [Finsupp.sum_add_index' (fun _ => zero_mul _) (fun _ _ _ => add_mul _ _ _)]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Simplify using `only [wop, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[Finsupp.sum_smul_index' (fun _ => zero_mul _), Finsupp.mul_sum]`. Simplify using `[smul_eq_mul, mul_assoc]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem wop_smul (c : ℂ) (z : List (ℝ → G) →₀ ℂ) (f : G → ℂ) : wop (c • z) f = c • wop z f := by
   funext g
@@ -122,15 +122,13 @@ def words (J : Matrix (Fin n) (Fin n) ℂ) (s : Matrix (Fin n) (Fin n) ℂ → G
   {T | ∃ L : List (Matrix (Fin n) (Fin n) ℂ), (∀ Z ∈ L, IsSkew J Z) ∧ T = (L.map ρ).prod}
 
 /- English proof (translation)
-Establish `hone : (1 : Module.End ℂ (smLoc J s)) ∈ Submodule.span ℂ (words J s ρ)` using `Submodule.subset_span ⟨[], by simp, by simp⟩`. Establish `hmul : ∀ x y, x ∈ Submodule.span ℂ (words J s ρ) → y ∈ Submodule.span ℂ (words J s ρ) → x * y ∈ Submodule.span ℂ (words J s ρ)`. Introduce `x y hx hy`. Establish `hxy` using `Submodule.mul_mem_mul hx hy`. Rewrite `hxy` using `[Submodule.span_mul_span]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `Submodule.span_le.mpr ?_ hxy` and prove the remaining obligations. Introduce and unpack `_ ⟨a, ⟨L, hL, rfl⟩, b, ⟨L', hL', rfl⟩, rfl⟩`. Use `Submodule.subset_span ⟨L ++ L', ?_, by simp [List.prod_append]⟩` and prove the remaining obligations. Introduce `Z hZ`. Break down `List.mem_append.mp hZ with h | h` into its components or cases.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `hL Z h`. Conclude with `hL' Z h`. Set `S : Subalgebra ℂ (Module.End ℂ (smLoc J s))` to `(Submodule.span ℂ (words J s ρ)).toSubalgebra hone hmul`. Establish `hle : Algebra.adjoin ℂ (Set.range ρ) ≤ S`. Use `Algebra.adjoin_le ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `_ ⟨Y, rfl⟩`. Take `⟨Z₁, Z₂, h₁, h₂, rfl⟩` from `skew_decomp hJ hdet Y`. Use `show ρ (Z₁ + Complex.I • Z₂) ∈ Submodule.span ℂ (words J s ρ)`. Rewrite using `[map_add, map_smul]`. Use `Submodule.add_mem _ (Submodule.subset_span ⟨[Z₁], by simpa using h₁, by simp⟩) (Submodule.smul_mem _ _ (Submodule.subset_span ⟨[Z₂], by simpa using h₂, by simp⟩))` and prove the remaining obligations.
-
-Introduce `T hT`. Conclude with `hle hT`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem adjoin_le_span {J : Matrix (Fin n) (Fin n) ℂ} (hJ : Jᴴ = J) (hdet : IsUnit J.det)
     {s : Matrix (Fin n) (Fin n) ℂ → G} (ρ : Matrix (Fin n) (Fin n) ℂ →ₗ[ℂ] Module.End ℂ (smLoc J s)) :
@@ -163,21 +161,19 @@ theorem adjoin_le_span {J : Matrix (Fin n) (Fin n) ℂ} (hJ : Jᴴ = J) (hdet : 
   exact hle hT
 
 /- English proof (translation)
-Introduce `n G _ J s hJ hdet hs ρ hρ T hT`. Establish `hS` using `adjoin_le_span hJ hdet ρ T hT`. Use `clear hT`. Proceed by induction on `hS using Submodule.span_induction with`. Consider the case `mem x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨L, hL, rfl⟩` from `hx`. Use `⟨Finsupp.single (L.map (lineOf s)) 1, ?_, ?_⟩` and prove the remaining obligations. Introduce `l hl γ hγ`. Establish `hl' : l = L.map (lineOf s)`. Assume the negation of the conclusion as `hne`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules.
 
-Simplify using `[Finsupp.single_apply, Ne.symm hne] at hl`. Conclude with `hne hl`. Substitute `hl'` using the available equality. Take `⟨Z, hZ, rfl⟩` from `List.mem_map.mp hγ`. Conclude with `⟨Z, hL Z hZ, rfl⟩`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `f`. Rewrite using `[prod_apply hs hρ L hL f, wop_single]`. Consider the case `zero`. Conclude with `⟨0, by simp, fun f => by rw [wop_zero]; rfl⟩`. Consider the case `add x y _ _ hx hy`.
+Treat this case separately. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨z, hz, hzf⟩` from `hx`. Take `⟨z', hz', hzf'⟩` from `hy`. Use `⟨z + z', ?_, ?_⟩` and prove the remaining obligations. Introduce `l hl`. Break down `Finset.mem_union.mp (Finsupp.support_add hl) with h | h` into its components or cases.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hz l h`. Conclude with `hz' l h`. Introduce `f`. Rewrite using `[wop_add, ← hzf, ← hzf']`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `smul c x _ hx`. Take `⟨z, hz, hzf⟩` from `hx`. Use `⟨c • z, fun l hl => hz l (Finsupp.support_smul hl), ?_⟩` and prove the remaining obligations. Introduce `f`. Rewrite using `[wop_smul, ← hzf]`.
-
-Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_wop_of_mem_adjoin : ∀ (n : ℕ) (G : Type) [Group G] (J : Matrix (Fin n) (Fin n) ℂ) (s : Matrix (Fin n) (Fin n) ℂ → G), Jᴴ = J → IsUnit J.det → IsMulOn J s → ∀ ρ : Matrix (Fin n) (Fin n) ℂ →ₗ[ℂ] Module.End ℂ (smLoc J s), IsRightDer J s ρ → ∀ T ∈ Algebra.adjoin ℂ (Set.range ρ), ∃ z : List (ℝ → G) →₀ ℂ, (∀ l ∈ z.support, ∀ γ ∈ l, ∃ Z, IsSkew J Z ∧ γ = lineOf s Z) ∧ ∀ f : smLoc J s, (T f).1 = wop z f.1 := by
   intro n G _ J s hJ hdet hs ρ hρ T hT

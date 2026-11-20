@@ -5,15 +5,15 @@ open CategoryTheory Limits AlgebraicGeometry UpperTheory.Gal.DifferentialFormSec
 namespace UpperTheory.Gal.KunnethLefschetz.G
 
 /- English proof (translation)
-Establish `hl : IsPushout (CommRingCat.ofHom (MvPolynomial.C : K →+* MvPolynomial σ K)) (CommRingCat.ofHom φ) (CommRingCat.ofHom (MvPolynomial.map φ : MvPolynomial σ K →+* MvPolynomial σ K')) (CommRingCat.ofHom (MvPolynomial.C : K' →+* MvPolynomial σ K'))`. Use `letI := φ.toAlgebra`. Use `letI : Algebra (MvPolynomial σ K) (MvPolynomial σ K') := MvPolynomial.algebraMvPolynomial`. Conclude with `((CommRingCat.isPushout_iff_isPushout (R := K) (S := MvPolynomial σ K) (R' := K') (S' := MvPolynomial σ K')).mpr inferInstance).flip`. Establish `e1 : CommRingCat.ofHom (MvPolynomial.C : K →+* MvPolynomial σ K) ≫ CommRingCat.ofHom (MvPolynomial.eval₂Hom s x) = CommRingCat.ofHom s`.
+Establish an intermediate fact. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `a`. Simplify using the standard rewrite rules. Establish `e2 : CommRingCat.ofHom (MvPolynomial.C : K' →+* MvPolynomial σ K') ≫ CommRingCat.ofHom (MvPolynomial.eval₂Hom s' fun i => t (x i)) = CommRingCat.ofHom s'`. Use extensionality with `a`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `big : IsPushout (CommRingCat.ofHom (MvPolynomial.C : K →+* MvPolynomial σ K) ≫ CommRingCat.ofHom (MvPolynomial.eval₂Hom s x)) (CommRingCat.ofHom φ) (CommRingCat.ofHom t) (CommRingCat.ofHom (MvPolynomial.C : K' →+* MvPolynomial σ K') ≫ CommRingCat.ofHom (MvPolynomial.eval₂Hom s' f …`. Rewrite using `[e1, e2]`. Conclude with `po.flip`. Establish `hw : ∀ a, t (s a) = s' (φ a)` using `fun a => by`. Use `congrArg (fun f => f.hom a) po.w` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify using `using this.symm`. Establish `p : CommRingCat.ofHom (MvPolynomial.eval₂Hom s x) ≫ CommRingCat.ofHom t = CommRingCat.ofHom (MvPolynomial.map φ : MvPolynomial σ K →+* MvPolynomial σ K') ≫ CommRingCat.ofHom (MvPolynomial.eval₂Hom s' fun i => t (x i))` using `by ext1`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `a`. Simplify using `[hw]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `i`. Simplify using the standard rewrite rules. Establish `r` using `big.of_left p hl`. Establish `hP : (RingHom.toMorphismProperty fun {R S} [CommRing R] [CommRing S] (f : R →+* S) => f.Etale).IsStableUnderCobaseChange` using `RingHom.isStableUnderCobaseChange_toMorphismProperty_iff.mpr RingHom.Etale.isStableUnderBaseChange`. Conclude with `MorphismProperty.IsStableUnderCobaseChange.of_isPushout (P := RingHom.toMorphismProperty fun {R S} [CommRing R] [CommRing S] (f : R →+* S) => f.Etale) r.flip hE`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem etale_pushout {K K' B B' : Type} [CommRing K] [CommRing K'] [CommRing B] [CommRing B']
     (φ : K →+* K') (s : K →+* B) (s' : K' →+* B') (t : B →+* B')
@@ -62,13 +62,13 @@ private theorem etale_pushout {K K' B B' : Type} [CommRing K] [CommRing K'] [Com
     r.flip hE
 
 /- English proof (translation)
-Introduce `K K' _ _ φ Z Z' q q' a hpb V hV σ x hE`. Use `haveI : IsAffineHom a := MorphismProperty.of_isPullback (P := @IsAffineHom) hpb.flip inferInstance`. Establish `hU : IsAffineOpen (a ⁻¹ᵁ V)` using `hV.preimage a`. Use `⟨hU, ?_⟩` and prove the remaining obligations. Establish `hUY : a ⁻¹ᵁ V = a ⁻¹ᵁ V ⊓ q' ⁻¹ᵁ ⊤` using `by simp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : (⊤ : (Spec (CommRingCat.of K')).Opens) ≤ Spec.map (CommRingCat.ofHom φ) ⁻¹ᵁ ⊤` using `le_top`. Establish `h2 : V ≤ q ⁻¹ᵁ ⊤` using `le_top`. Establish `hI` using `isIso_pushoutSection_of_isAffineOpen hpb h1 h2 hUY (isAffineOpen_top _) (isAffineOpen_top _) hV`. Establish `sq` using `((isIso_pushoutSection_iff hpb h1 h2 hUY).mp hI).flip`. Establish `sq' : IsPushout (CommRingCat.ofHom φ) (CommRingCat.ofHom (Pb.strV q V)) (CommRingCat.ofHom (Pb.strV q' (a ⁻¹ᵁ V))) (CommRingCat.ofHom (Scheme.Hom.app a V).hom)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `sq.of_iso (Scheme.ΓSpecIso _) (Scheme.ΓSpecIso _) (Iso.refl _) (Iso.refl _) ?_ ?_ ?_ ?_` and prove the remaining obligations. Rewrite using `[← Scheme.ΓSpecIso_naturality]`. Simplify using `[Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE]`. Simplify using `[Pb.strV]`. Simplify using `[Pb.strV]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[Scheme.Hom.app_eq_appLE]`. Conclude with `etale_pushout φ (Pb.strV q V) (Pb.strV q' (a ⁻¹ᵁ V)) (Scheme.Hom.app a V).hom sq' σ x hE`.
+A detailed English derivation is pending.
 -/
 theorem coordBC : UpperTheory.Gal.KunnethLefschetz.G.CoordBC := by
   intro K K' _ _ φ Z Z' q q' a hpb V hV σ x hE

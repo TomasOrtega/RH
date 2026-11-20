@@ -30,7 +30,7 @@ open Module
 namespace GlobalTheory.NormBC
 
 /- English proof (translation)
-Establish `h : Algebra.lmul B (B ⊗[R] L) ((1 : B) ⊗ₜ[R] x) = (Algebra.lmul R L x).baseChange B`. Apply `TensorProduct.AlgebraTensorModule.ext` to reduce the goal to its premises. Introduce `b z`. Simplify using `[Algebra.TensorProduct.tmul_mul_tmul]`. Rewrite using `[Algebra.norm_apply, h, LinearMap.det_baseChange, Algebra.norm_apply]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_one_tmul {R B L : Type} [Field R] [CommRing B] [Algebra R B] [Field L] [Algebra R L]
     [FiniteDimensional R L] (x : L) :
@@ -42,7 +42,7 @@ theorem norm_one_tmul {R B L : Type} [Field R] [CommRing B] [Algebra R B] [Field
   rw [Algebra.norm_apply, h, LinearMap.det_baseChange, Algebra.norm_apply]
 
 /- English proof (translation)
-Rewrite `h` using `[Algebra.norm_apply]`. Establish `hu : IsUnit (LinearMap.mul B A z)` using `(LinearMap.isUnit_iff_isUnit_det _).2 h`. Take `⟨y, hy⟩` from `((Module.End.isUnit_iff _).1 hu).2 1`. Conclude with `IsUnit.of_mul_eq_one y (by simpa using hy)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isUnit_of_isUnit_norm {B A : Type} [CommRing B] [CommRing A] [Algebra B A] [Module.Free B A]
     [Module.Finite B A] {z : A} (h : IsUnit (Algebra.norm B z)) : IsUnit z := by
@@ -62,7 +62,7 @@ def toAlg (L : FinExt l) : Bst P ⊗[ℚ_[l]] (Fin 1 → ↥L.1) ≃ₗ[Bst P] B
     (LinearEquiv.funUnique (Fin 1) ℚ_[l] ↥L.1)
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v b => rfl`. Consider the case `add x x' hx hx' => simp only [map_add, hx, hx']`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem toAlg_comm (L : FinExt l) (z : (Fin 1 → ↥L.1) ⊗[ℚ_[l]] Bst P) :
     toAlg P L (TensorProduct.comm ℚ_[l] (Fin 1 → ↥L.1) (Bst P) z) = toA P L z := by
@@ -72,7 +72,7 @@ theorem toAlg_comm (L : FinExt l) (z : (Fin 1 → ↥L.1) ⊗[ℚ_[l]] Bst P) :
   | add x x' hx hx' => simp only [map_add, hx, hx']
 
 /- English proof (translation)
-Establish `h` using `b.linearIndependent.map' (((toAlg P L).toLinearMap.restrictScalars ↥(MaximalUnramifiedExtension l)) ∘ₗ GlobalTheory.PstRank.toB P ρ) (LinearMap.ker_eq_bot.mpr ((toAlg P L).injective.comp (GlobalTheory.PstRank.toB_injective P ρ)))`. Establish `hf : (fun i => toA P L (((toUr P ρ).symm (b i) : ↥(Dpst P ρ)) : (Fin 1 → ↥L.1) ⊗[ℚ_[l]] Bst P)) = ⇑(((toAlg P L).toLinearMap.restrictScalars ↥(MaximalUnramifiedExtension l)) ∘ₗ GlobalTheory.PstRank.toB P ρ) ∘ ⇑b`. Use function extensionality and compare the values at `fun i => (toAlg_comm P L _).symm`. Rewrite using `[hf]`. Conclude with `h`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem linearIndependent_toA {K L : FinExt l} (ρ : Representation ↥L.1 ↥(GK K) (Fin 1 → ↥L.1)) {d : ℕ}
     (b : Basis (Fin d) ↥(MaximalUnramifiedExtension l) (DpstUr P ρ)) :
@@ -95,11 +95,11 @@ open GlobalTheory.NormBC
 variable {l : ℕ} [Fact l.Prime] (P : LocPrime l)
 
 /- English proof (translation)
-It suffices to establish `h : ∀ s : Finset (Fin d), ∃ K' : FinExt l, ∀ i ∈ s, ∀ (g : ↥(GK K)), (g : GQ l) ∈ GK K' → stRep P ρ g (y i) = y i by`. Take `⟨K', hK'⟩` from `h Finset.univ`. Conclude with `⟨K', fun i => hK' i (Finset.mem_univ i)⟩`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`.
+Reduce the argument to an intermediate assertion. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `empty => exact ⟨K, by simp⟩`. Consider the case `insert j s hj ih`. Take `⟨K₁, h₁⟩` from `ih`. Take `⟨K₂, h₂⟩` from `(mem_Dpst P ρ).mp (hy j)`. Use `⟨supExt K₁ K₂, fun i hi g hg => ?_⟩` and prove the remaining obligations.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Break down `Finset.mem_insert.mp hi with rfl | hi` into its components or cases. Conclude with `h₂ g (GK_le (K' := supExt K₁ K₂) le_sup_right hg)`. Conclude with `h₁ i hi g (GK_le (K' := supExt K₁ K₂) le_sup_left hg)`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem exists_common_fixed {K L : FinExt l} (ρ : Representation ↥L.1 ↥(GK K) (Fin 1 → ↥L.1)) {d : ℕ}
     (y : Fin d → (Fin 1 → ↥L.1) ⊗[ℚ_[l]] Bst P) (hy : ∀ i, y i ∈ Dpst P ρ) :
@@ -125,31 +125,29 @@ set_option maxHeartbeats 1000000 in
 open GlobalTheory.Pst.UnitLetter GlobalTheory.NormBC in
 
 /- English proof (translation)
-Introduce `l _ P AI hT K L ρm χ hm hpst`. Use `haveI := L.2`. Take `⟨hdom, hfrac, hline⟩` from `GlobalTheory.Pst.stRegular l P AI hT`. Take `⟨hfd, hrank⟩` from `(isPst_iff P ρm).mp hpst`. Use `set d := finrank ℚ_[l] ↥L.1 with hddef`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hd : finrank ↥(MaximalUnramifiedExtension l) (DpstUr P ρm) = d`. Rewrite using `[hrank]`. Conclude with `(LinearEquiv.funUnique (Fin 1) ℚ_[l] ↥L.1).finrank_eq`. Set `bD` to `Module.finBasisOfFinrankEq ↥(MaximalUnramifiedExtension l) (DpstUr P ρm) hd`. Set `y : Fin d → (Fin 1 → ↥L.1) ⊗[ℚ_[l]] Bst P` to `fun i => ((toUr P ρm).symm (bD i) : ↥(Dpst P ρm)).1`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hyD : ∀ i, y i ∈ Dpst P ρm` using `fun i => ((toUr P ρm).symm (bD i)).2`. Take `⟨K', hK'⟩` from `exists_common_fixed P ρm y hyD`. Set `w : Fin d → Bst P ⊗[ℚ_[l]] ↥L.1` to `fun i => toA P L (y i)`. Set `G` to `{g : ↥(GK K) // (g : GQ l) ∈ GK K'}`. Set `σ : G → (Bst P ⊗[ℚ_[l]] ↥L.1) →+ (Bst P ⊗[ℚ_[l]] ↥L.1)` to `fun g => AddMonoidHom.mk' (fun z => Algebra.TensorProduct.map (actSt P ((g.1 : ↥(GK K)) : GQ l)) (AlgHom.id ℚ_[l] ↥L.1) z * ((1 : Bst P) ⊗ₜ[ℚ_[l]] χ g.1)) (fun a b => by simp [map_add, add_mul])`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hσ : ∀ (g : G) (b : Bst P) (z : Bst P ⊗[ℚ_[l]] ↥L.1), σ g (b • z) = actSt P ((g.1 : ↥(GK K)) : GQ l) b • σ g z`. Introduce `g b z`. Simplify using `only [σ, AddMonoidHom.mk'_apply, Algebra.smul_def, map_mul, mul_assoc]`. Use `congr 1`. Establish `hreg : ∀ b b' : Bst P, b ≠ 0 → (∀ g : G, b * actSt P ((g.1 : ↥(GK K)) : GQ l) b' = actSt P ((g.1 : ↥(GK K)) : GQ l) b * b') → ∃ c : ↥(MaximalUnramifiedExtension l), b' = algebraMap ↥(MaximalUnramifiedExtension l) (Bst P) c * b`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce `b b' hb h`. Take `⟨c, -, hc⟩` from `hfrac (supExt K K') b b' hb fun g => h ⟨⟨g, GK_le (K' := supExt K K') le_sup_left g.2⟩, GK_le (K' := supExt K K') le_sup_right g.2⟩`. Conclude with `⟨c, hc⟩`. Establish `hv : ∀ (g : G) i, σ g (w i) = w i`. Introduce `g i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [σ, w, AddMonoidHom.mk'_apply]`. Rewrite using `[← toA_stRep ρm χ hm, hK' i g.1 g.2]`. Establish `hK : LinearIndependent ↥(MaximalUnramifiedExtension l) w` using `linearIndependent_toA P ρm bD`. Establish `hB : LinearIndependent (Bst P) w`. Use `GlobalTheory.RegularRing.linearIndepOn_of_invariant (K := ↥(MaximalUnramifiedExtension l)) (B := Bst P) (W := Bst P ⊗[ℚ_[l]] ↥L.1) (G := G) (fun g => actSt P ((g.1 : ↥(GK K)) : GQ l)) σ hσ hreg w hv Finset.univ (hK.linearIndepOn _)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite `this` using `[Finset.coe_univ]`. Conclude with `linearIndepOn_univ.mp this`. Establish `hfin : finrank (Bst P) (Bst P ⊗[ℚ_[l]] ↥L.1) = d` using `Module.finrank_baseChange`. Take `⟨a, ha⟩` from `GlobalTheory.T.exists_field_coeff_norm_sum_smul_ne_zero (k := ↥(MaximalUnramifiedExtension l)) w (GlobalTheory.T.exists_norm_sum_smul_ne_zero_of_linearIndependent hfin w hB)`. Set `ys` to `∑ i, mulV P ↥L.1 (Fin 1 → ↥L.1) (a i) (y i)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hys : ys ∈ Dpst P ρm` using `Submodule.sum_mem _ fun i _ => mulV_mem_Dpst P ρm (a i) (y i) (hyD i)`. Establish `hysA : toA P L ys = ∑ i, algebraMap ↥(MaximalUnramifiedExtension l) (Bst P) (a i) • w i`. Simplify using `only [ys, map_sum, toA_mulV, w]`. Establish `hn : Algebra.norm (Bst P) (toA P L ys) ≠ 0` using `by rw [hysA]; exact ha`. Take `⟨K₂, hK₂⟩` from `(mem_Dpst P ρm).mp hys`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hχ : ∀ g : ↥(GK K), χ g ≠ 0`. Introduce `g h0`. Establish `h1 : ρm (g * g⁻¹) (fun _ => (1 : ↥L.1)) = fun _ => 1` using `by rw [mul_inv_cancel, map_one]; rfl`. Rewrite `h1` using `[map_mul, Module.End.mul_apply, hm g, h0, zero_smul]`. Conclude with `zero_ne_one (congrFun h1 0)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hunit : IsUnit (Algebra.norm (Bst P) (toA P L ys))`. Use `hline (supExt K K₂) _ hn fun g => ?_` and prove the remaining obligations. Set `g0 : ↥(GK K)` to `⟨g, GK_le (K' := supExt K K₂) le_sup_left g.2⟩`. Establish `hfix` using `hK₂ g0 (GK_le (K' := supExt K K₂) le_sup_right g.2)`. Establish `h1 : Algebra.norm (Bst P) (toA P L (stRep P ρm g0 ys)) = Algebra.norm (Bst P) (toA P L ys)`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hfix]`. Rewrite `h1` using `[toA_stRep ρm χ hm, map_mul, GlobalTheory.T.norm_tensorProduct_map_id_right, norm_one_tmul]`. Establish `hν : Algebra.norm ℚ_[l] (χ g0) ≠ 0` using `Algebra.norm_ne_zero_iff.mpr (hχ g0)`. Use `⟨(Algebra.norm ℚ_[l] (χ g0))⁻¹, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `actSt P ((g0 : ↥(GK K)) : GQ l) _ = _`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `conv_rhs => rw [← h1]`. Rewrite using `[mul_comm, mul_assoc, ← map_mul, mul_inv_cancel₀ hν, map_one, mul_one]`. Take `⟨v, hv'⟩` from `(isUnit_of_isUnit_norm hunit).exists_right_inv`. Use `⟨ys, hys, (toA P L).symm v, ?_⟩` and prove the remaining obligations. Apply `(toA P L).injective` to reduce the goal to its premises.
-
-Rewrite using `[toA_mulB, LinearEquiv.apply_symm_apply, toA_tmul, mul_comm, hv']`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Pst.UnitLetter.exists_unit_Dpst : ∀ {l : ℕ} [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P), Nonempty (LocTied l P AI) → ∀ {K L : FinExt l} (ρm : Representation ↥L.1 ↥(GK K) (Fin 1 → ↥L.1)) (χ : ↥(GK K) → ↥L.1), (∀ g v, ρm g v = χ g • v) → IsPst P ρm → ∃ y ∈ Dpst P ρm, ∃ y' : (Fin 1 → ↥L.1) ⊗[ℚ_[l]] Bst P, GlobalTheory.Pst.TwistLetters.mulB P (Fin 1 → ↥L.1) y' y = (fun _ => (1 : ↥L.1)) ⊗ₜ (1 : Bst P) := by
   intro l _ P AI hT K L ρm χ hm hpst

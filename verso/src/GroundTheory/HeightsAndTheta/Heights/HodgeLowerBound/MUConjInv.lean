@@ -10,7 +10,7 @@ namespace GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.LowerBoundF
 open ReciprocityTheory.ChartRestriction.G.Geo GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Inter
 
 /- English proof (translation)
-Rewrite using `[hPP, mul_assoc m vol J, ← hvol, show m * (c * degMu) = c * (m * degMu) by ring, mul_div_mul_left _ _ hc]`.
+Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem sl_eq {PP arLim c degMu vol J m : ℝ} (hPP : PP = c * arLim) (hc : c ≠ 0) (hvol : c * degMu = vol * J) :
     PP / (m * vol * J) = arLim / (m * degMu) := by
@@ -39,13 +39,13 @@ def LowerBoundComponentConjugate.Statement : Prop :=
       -(Ch + Cu / 2) * D.f * D.jp * D.abelian₂ B ≤ D.PPB II B / (((D.n + 1 : ℕ) : ℝ) * vol * (D.J' : ℝ))
 
 /- English proof (translation)
-Introduce `Ψ _ _ K _ _ ι _ D II Ch Cu B hC hII hK hZ _hX hpos hconj hint hbd hS hmean hP _hH hj1 hj3 hB1 hB2 vol hvol`. Establish `hyp : ∀ eps t' : ℝ, 0 < eps → eps ≤ 1 → 0 < t' → t' ≤ 1 → ((D.n + 1 : ℕ) : ℝ) * (-Ch * D.f * D.jp * D.abelian₂ B - eps * D.Kamp) * (D.MU B eps t').geomDeg D.P D.n ≤ (D.MU B eps t').top II D.P (D.n + 1)`. Introduce `eps t' he0 he1 ht0 ht1`. Take `⟨h1, h2, h3⟩` from `hpos B hB2 eps t' he0 he1 ht0 ht1`. Use `hZ Ψ K ι D II (D.MU B eps t') _ hII h1 h2 h3 (hconj B hB2 eps t' he0 he1 ht0 ht1) ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `W hW`. Distinguish the cases in `hb : OnBd D.Bd W`. Conclude with `hbd B hB1 eps t' he0 he1 ht0 ht1 W hW hb`. Conclude with `hint B hB1 eps t' he0 he1 ht0 ht1 W hW hb`. Establish `hlim` using `hS Ψ K ι D II hC hII hK B hB2 (-Ch * D.f * D.jp * D.abelian₂ B) hyp`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hU` using `hmean hj1 hj3 B hB1`. Take `⟨hPP, -, hdeg⟩` from `hP Ψ K ι D II hC hII B`. Establish `hc : ((cf D.n : ℚ) : ℝ) * (D.fdeg' : ℝ) ≠ 0`. Use `mul_ne_zero (by simp [cf]) ?_` and prove the remaining obligations. Conclude with `hF Ψ D.N D.j D.j_le_N` after adjusting the coercions.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sl_eq hPP hc hvol]`. Establish `hm : (0 : ℝ) < ((D.n + 1 : ℕ) : ℝ) * D.degMu` using `mul_pos (by positivity) hdeg`. Rewrite using `[le_div_iff₀ hm]`. Establish `hU'` using `mul_le_mul_of_nonneg_left hU hm.le`. Use polynomial arithmetic with `[hlim, hU']`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem LowerBoundComponentConjugate.proof (hF : FdegNeZero.Statement) : LowerBoundComponentConjugate.Statement := by
   intro Ψ _ _ K _ _ ι _ D II Ch Cu B hC hII hK hZ _hX hpos hconj hint hbd hS hmean hP _hH hj1 hj3 hB1 hB2 vol hvol

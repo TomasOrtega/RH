@@ -28,14 +28,14 @@ end GlobalTheory.HTLieFix
 namespace GlobalTheory.HTLieFix
 
 /- English proof (translation)
-The claim follows from `Matrix.toLin'.injective (LinearMap.ext fun v => by simpa [Matrix.toLin'_apply] using h v)`.
+A detailed English derivation is pending.
 -/
 theorem mat_ext' {n : ℕ} {C : Type} [CommRing C] {A B : Matrix (Fin n) (Fin n) C}
     (h : ∀ v, A.mulVec v = B.mulVec v) : A = B :=
   Matrix.toLin'.injective (LinearMap.ext fun v => by simpa [Matrix.toLin'_apply] using h v)
 
 /- English proof (translation)
-The claim follows from `| 0, w => by simp [h0] | a + 1, w => by rw [List.ofFn_succ, List.prod_cons, Fin.sum_univ_succ, hadd, prod_ofFn_eq' T h0 hadd (fun i => w i.succ)]`.
+A detailed English derivation is pending.
 -/
 theorem prod_ofFn_eq' {G : Type} [Monoid G] {V : Type} [AddCommMonoid V] (T : V → G)
     (h0 : T 0 = 1) (hadd : ∀ c c', T (c + c') = T c * T c') :

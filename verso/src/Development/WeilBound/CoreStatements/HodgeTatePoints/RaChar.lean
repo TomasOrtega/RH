@@ -12,9 +12,9 @@ noncomputable section
 namespace PositivityTheory.HtPt.Ra
 
 /- English proof (translation)
-Introduce `p _ C _ _ _ v R _ _ hv _ N _ _ _ AA ψ`. Take `⟨B, hB, hAA⟩` from `AA.lat`. Rewrite using `[hAA, ← dualLat_dualLat_spanCols B hB, ← hAA]`. Introduce `u hu`. Take `⟨r, hr⟩` from `hv.exists_of_le_one (valuation_fourier_le_one v hv (fun _ : Unit => ψ) AA hu ())`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨r, hr.trans ?_⟩` and prove the remaining obligations. Rewrite using `[fourier_apply']`. Conclude with `Finset.sum_congr rfl fun a _ => mul_comm _ _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem charmem : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (R : Type) [CommRing R] [Algebra R C], v.Integers R → v (p : C) < 1 → ∀ (N : Type) [AddCommGroup N] [Fintype N] [DecidableEq N], ∀ AA : HopfOrder (C := C) R N, ∀ ψ : AddChar N C, (fun x => ψ x) ∈ AA.carrier := by
   intro p _ C _ _ _ v R _ _ hv _ N _ _ _ AA ψ

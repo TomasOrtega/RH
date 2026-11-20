@@ -15,47 +15,47 @@ def psi (ρ : B →+* Matrix (Fin n) (Fin n) k) (s : k) : B[X] →+* Matrix (Fin
   Polynomial.eval₂RingHom' ρ (s • (1 : Matrix (Fin n) (Fin n) k)) (fun a => (Commute.one_right (ρ a)).smul_right s)
 
 /- English proof (translation)
-The claim follows from `Polynomial.eval₂_C _ _`.
+A detailed English derivation is pending.
 -/
 theorem psi_C (ρ : B →+* Matrix (Fin n) (Fin n) k) (s : k) (a : B) : psi ρ s (C a) = ρ a :=
   Polynomial.eval₂_C _ _
 
 /- English proof (translation)
-The claim follows from `Polynomial.eval₂_X _ _`.
+A detailed English derivation is pending.
 -/
 theorem psi_X (ρ : B →+* Matrix (Fin n) (Fin n) k) (s : k) : psi ρ s X = s • (1 : Matrix (Fin n) (Fin n) k) :=
   Polynomial.eval₂_X _ _
 
 /- English proof (translation)
-Rewrite using `[map_add, map_mul, psi_C, psi_X, psi_C, Matrix.smul_mul, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem psi_P (ρ : B →+* Matrix (Fin n) (Fin n) k) (s : k) (u v : B) :
     psi ρ s (C u + X * C v) = ρ u + s • ρ v := by
   rw [map_add, map_mul, psi_C, psi_X, psi_C, Matrix.smul_mul, Matrix.one_mul]
 
 /- English proof (translation)
-Rewrite using `[map_sub, map_mul, psi_C, psi_X, psi_C, Matrix.smul_mul, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem psi_Q (ρ : B →+* Matrix (Fin n) (Fin n) k) (s : k) (u v : B) :
     psi ρ s (C u - X * C v) = ρ u - s • ρ v := by
   rw [map_sub, map_mul, psi_C, psi_X, psi_C, Matrix.smul_mul, Matrix.one_mul]
 
 /- English proof (translation)
-Rewrite using `[map_sub, map_pow, psi_X, psi_C, hd, _root_.smul_pow, one_pow, sub_self]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem psi_rel {d : B} {ρ : B →+* Matrix (Fin n) (Fin n) k} {s : k} (hd : ρ d = (s ^ 2) • (1 : Matrix (Fin n) (Fin n) k)) :
     psi ρ s (X ^ 2 - C d) = 0 := by
   rw [map_sub, map_pow, psi_X, psi_C, hd, _root_.smul_pow, one_pow, sub_self]
 
 /- English proof (translation)
-Rewrite using `[h, map_add, map_mul, psi_rel hd, zero_mul, add_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem psi_eq {d : B} {ρ : B →+* Matrix (Fin n) (Fin n) k} {s : k} (hd : ρ d = (s ^ 2) • (1 : Matrix (Fin n) (Fin n) k))
     (F G H : B[X]) (h : F = G + (X ^ 2 - C d) * H) : psi ρ s F = psi ρ s G := by
   rw [h, map_add, map_mul, psi_rel hd, zero_mul, add_zero]
 
 /- English proof (translation)
-Rewrite using `[← psi_P, ← psi_Q, ← psi_C ρ s a, ← psi_C ρ s ((u ^ 2 - d * v ^ 2) * a), ← map_mul, ← map_mul]`. Conclude with `psi_eq hd _ _ (C (- v ^ 2 * a)) (by simp only [map_mul, map_sub, map_pow, map_neg]; ring)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GA {d : B} {ρ : B →+* Matrix (Fin n) (Fin n) k} {s : k} (hd : ρ d = (s ^ 2) • (1 : Matrix (Fin n) (Fin n) k))
     (u v a : B) : (ρ u + s • ρ v) * ρ a * (ρ u - s • ρ v) = ρ ((u ^ 2 - d * v ^ 2) * a) := by
@@ -63,7 +63,7 @@ theorem GA {d : B} {ρ : B →+* Matrix (Fin n) (Fin n) k} {s : k} (hd : ρ d = 
   exact psi_eq hd _ _ (C (- v ^ 2 * a)) (by simp only [map_mul, map_sub, map_pow, map_neg]; ring)
 
 /- English proof (translation)
-Rewrite using `[← psi_P, ← psi_Q, ← psi_C ρ s a, ← psi_C ρ s ((u ^ 2 - d * v ^ 2) * a), ← map_mul, ← map_mul]`. Conclude with `psi_eq hd _ _ (C (- v ^ 2 * a)) (by simp only [map_mul, map_sub, map_pow, map_neg]; ring)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem AG {d : B} {ρ : B →+* Matrix (Fin n) (Fin n) k} {s : k} (hd : ρ d = (s ^ 2) • (1 : Matrix (Fin n) (Fin n) k))
     (u v a : B) : (ρ u - s • ρ v) * ρ a * (ρ u + s • ρ v) = ρ ((u ^ 2 - d * v ^ 2) * a) := by
@@ -71,14 +71,14 @@ theorem AG {d : B} {ρ : B →+* Matrix (Fin n) (Fin n) k} {s : k} (hd : ρ d = 
   exact psi_eq hd _ _ (C (- v ^ 2 * a)) (by simp only [map_mul, map_sub, map_pow, map_neg]; ring)
 
 /- English proof (translation)
-Rewrite using `[← psi_Q, ← psi_C ρ s a, ← map_mul, ← map_mul, mul_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem A_comm (ρ : B →+* Matrix (Fin n) (Fin n) k) (s : k) (u v a : B) :
     (ρ u - s • ρ v) * ρ a = ρ a * (ρ u - s • ρ v) := by
   rw [← psi_Q, ← psi_C ρ s a, ← map_mul, ← map_mul, mul_comm]
 
 /- English proof (translation)
-Establish `e : ((ρ u + s • ρ v).map c)ᵀ = ((ρ u).map c)ᵀ + (-s) • ((ρ v).map c)ᵀ`. Use extensionality with `i j`. Simplify using `[hcs]`. Rewrite using `[e, Matrix.mul_add, Matrix.mul_smul, ← hF.adj, ← hF.adj, Matrix.sub_mul, Matrix.smul_mul, neg_smul, sub_eq_add_neg]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem adj_span {c : k →+* k} {δ : GL (Fin n) k} {s : k} {d : B} {ρ : B →+* Matrix (Fin n) (Fin n) k}
     (hF : IsFrame c δ s d ρ) (hcs : c s = -s) (u v : B) :
@@ -90,9 +90,9 @@ theorem adj_span {c : k →+* k} {δ : GL (Fin n) k} {s : k} {d : B} {ρ : B →
     sub_eq_add_neg]
 
 /- English proof (translation)
-Rewrite using `[ClsNormP.thetaGL_val']`. Establish `hXY : (g.val.map c)ᵀ * ((g⁻¹).val.map c)ᵀ = 1`. Rewrite using `[← Matrix.transpose_mul, ← Matrix.map_mul, Units.inv_mul, Matrix.map_one c (map_zero c) (map_one c), Matrix.transpose_one]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Use `_ = δ.val * GlobalTheory.Tw.Phi n k * ((g.val.map c)ᵀ * ((g⁻¹).val.map c)ᵀ) * (GlobalTheory.Tw.Phi n k)ᵀ := by`. Rewrite using `[← adj_span hF hcs u v, ← hg]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = δ.val := by`. Rewrite using `[hXY, Matrix.mul_one, Matrix.mul_assoc, ClsNormP.phi_mul_transpose_eq_one, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem A_delta_theta {c : k →+* k} {δ : GL (Fin n) k} {s : k} {d : B} {ρ : B →+* Matrix (Fin n) (Fin n) k}
     (hF : IsFrame c δ s d ρ) (hcs : c s = -s) (g : GL (Fin n) k) (u v : B) (hg : g.val = ρ u + s • ρ v) :
@@ -115,29 +115,27 @@ namespace CompanionTheory.Rg.BcB.G3
 
 open ClsEqP in
 /- English proof (translation)
-Introduce `k _ _ n c hc δ s hs0 hcs B _ d ρ hF t t'`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g, hg⟩`. Establish `hN` using `clsNorm_pf k n c hc δ s hs0 hcs B d ρ hF t`. Establish `hN'` using `clsNorm_pf k n c hc δ s hs0 hcs B d ρ hF t'`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : g⁻¹ * pt δ ρ t * thetaGL n c g * thetaGL n c (g⁻¹ * pt δ ρ t * thetaGL n c g) = g⁻¹ * (pt δ ρ t * thetaGL n c (pt δ ρ t)) * g`. Simplify using `only [map_mul, map_inv, GlobalTheory.LocTwist.thetaGL_thetaGL n c hc]`. Use `group`. Rewrite `hN'` using `[hg, e, hN]`. Establish `hcomm : g * (δ * thetaGL n c δ) = (δ * thetaGL n c δ) * g`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Take `⟨u, v, huv⟩` from `hF.span g.val (by simpa only [Units.val_mul] using congrArg Units.val hcomm)`. Establish `hA` using `A_delta_theta hF hcs g u v huv`. Establish `hg1 : g * pt δ ρ t' = pt δ ρ t * thetaGL n c g` using `by rw [hg]; group`. Establish `hg2 : g.val * (ρ t' * δ.val) = ρ t * δ.val * (thetaGL n c g).val`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `congrArg Units.val hg1` using `only [pt, Units.val_mul, ClsNormP.units_map_val]`. Establish `h3 : ρ ((u ^ 2 - d * v ^ 2) * t') * δ.val = ρ t * δ.val`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[huv, AG hF.sq u v 1, mul_one, map_mul, Matrix.mul_assoc]`. Use `_ = (ρ u - s • ρ v) * (ρ t * δ.val * (thetaGL n c g).val) := by`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_one, Matrix.mul_one, Matrix.mul_assoc, hg2]`. Use `_ = ρ t * ((ρ u - s • ρ v) * (δ.val * (thetaGL n c g).val)) := by`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, A_comm, Matrix.mul_assoc, Matrix.mul_assoc]`. Use `_ = ρ t * δ.val := by rw [hA]`. Establish `h4 : ρ ((u ^ 2 - d * v ^ 2) * t') = ρ t`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Use `congrArg (· * (δ⁻¹).val) h3` as an intermediate fact. Simplify `this` using `only [Matrix.mul_assoc, Units.mul_inv, Matrix.mul_one]`. Conclude with `⟨u, v, by rw [← hF.inj h4, mul_comm]⟩`. Introduce and unpack `⟨u, v, huv⟩ set w : Bˣ := t'⁻¹ * t with hwdef`. Establish `hw : (w : B) = u ^ 2 - d * v ^ 2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hwdef, Units.val_mul, huv, ← mul_assoc, Units.inv_mul, one_mul]`. Establish `h1 : (ρ u + s • ρ v) * ((ρ u - s • ρ v) * ρ (↑w⁻¹ : B)) = 1`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_one (ρ u + s • ρ v), ← map_one ρ, GA hF.sq u v 1, ← map_mul, ← hw, mul_one, Units.mul_inv]`. Establish `h2 : ((ρ u - s • ρ v) * ρ (↑w⁻¹ : B)) * (ρ u + s • ρ v) = 1`. Rewrite using `[AG hF.sq u v, ← hw, Units.mul_inv, map_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h5 : (ρ u + s • ρ v) * ρ (↑w⁻¹ : B) * (ρ u - s • ρ v) = 1`. Rewrite using `[GA hF.sq u v, ← hw, Units.mul_inv, map_one]`. Set `G : GL (Fin n) k` to `⟨ρ u + s • ρ v, (ρ u - s • ρ v) * ρ (↑w⁻¹ : B), h1, h2⟩`. Use `⟨G, ?_⟩` and prove the remaining obligations. Establish `hA` using `A_delta_theta hF hcs G u v rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hθ : δ.val * (thetaGL n c G).val = (ρ u + s • ρ v) * ρ (↑w⁻¹ : B) * δ.val`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h5, Matrix.one_mul]`. Use `_ = (ρ u + s • ρ v) * ρ (↑w⁻¹ : B) * δ.val := by rw [Matrix.mul_assoc _ (ρ u - s • ρ v), hA]`. Establish `hB : ((w * w⁻¹ * t * w⁻¹ : Bˣ) : B) = t'`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Use `congr 1`. Rewrite using `[hwdef]`. Use `group`. Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [pt, Units.val_mul, ClsNormP.units_map_val]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `ρ t' * δ.val = (ρ u - s • ρ v) * ρ (↑w⁻¹ : B) * (ρ t * δ.val) * (thetaGL n c G).val`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← hw, ← hB]`. Simplify using `only [Units.val_mul, mul_assoc]`. Use `_ = (ρ u - s • ρ v) * ρ ((↑w⁻¹ : B) * t) * (ρ u + s • ρ v) * ρ (↑w⁻¹ : B) * δ.val := by`.
-
-Rewrite using `[AG hF.sq u v, map_mul]`. Use `_ = (ρ u - s • ρ v) * ρ (↑w⁻¹ : B) * (ρ t * δ.val) * (thetaGL n c G).val := by`. Rewrite using `[Matrix.mul_assoc _ (ρ t * δ.val), Matrix.mul_assoc (ρ t), hθ, map_mul]`. Simplify using `only [Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem clsEq_pf : ClsEq := by
   intro k _ _ n c hc δ s hs0 hcs B _ d ρ hF t t'

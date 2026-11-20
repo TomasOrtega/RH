@@ -6,7 +6,7 @@ open UpperTheory.V.Af UpperTheory.V.Sd
 namespace UpperTheory.V.Z.Sym.Unl
 
 /- English proof (translation)
-Unfold `Lk`. Rewrite using `[map_div₀, map_pow, map_sub, map_one]`. Use `congr 1`. Conclude with `(Polynomial.aeval_algHom_apply (σ.toRingHom.toIntAlgHom) x (numL k)).symm`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 private lemma map_Lk (σ : ℂ ≃+* ℂ) (k : ℕ) (x : ℂ) : σ (Lk k x) = Lk k (σ x) := by
   unfold Lk
@@ -15,15 +15,15 @@ private lemma map_Lk (σ : ℂ ≃+* ℂ) (k : ℕ) (x : ℂ) : σ (Lk k x) = Lk
   exact (Polynomial.aeval_algHom_apply (σ.toRingHom.toIntAlgHom) x (numL k)).symm
 
 /- English proof (translation)
-Establish `hN : 0 < N` using `Nat.pos_of_ne_zero (NeZero.ne N)`. Establish `hpow : ∀ (m : ℕ) (c : ZMod N), (ZMod.stdAddChar ((m : ZMod N) * c) : ℂ) = (ZMod.stdAddChar c : ℂ) ^ m`. Introduce `m c`. Rewrite using `[← AddChar.map_nsmul_eq_pow, nsmul_eq_mul]`. Establish `hone : (ZMod.stdAddChar (1 : ZMod N) : ℂ) ^ N = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hpow, ZMod.natCast_self, zero_mul, AddChar.map_zero_eq_one]`. Establish `hz : IsPrimitiveRoot (ZMod.stdAddChar (1 : ZMod N) : ℂ) N`. Use `IsPrimitiveRoot.mk_of_lt _ hN hone fun l hl hlN h => ?_` and prove the remaining obligations. Establish `h1 : (ZMod.stdAddChar ((l : ZMod N) * 1) : ℂ) = ZMod.stdAddChar (0 : ZMod N)`. Rewrite using `[hpow, h, AddChar.map_zero_eq_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2` using `ZMod.injective_stdAddChar h1`. Rewrite `h2` using `[mul_one, ZMod.natCast_eq_zero_iff]`. Conclude with `absurd (Nat.le_of_dvd hl h2) (by omega)`. Establish `hz'` using `hz.map_of_injective (f := σ) σ.injective`. Take `⟨i, -, hi⟩` from `hz.eq_pow_of_pow_eq_one hz'.pow_eq_one`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hc : i.Coprime N`. Rewrite using `[← hz.pow_iff_coprime hN, hi]`. Conclude with `hz'`. Use `⟨ZMod.unitOfCoprime i hc, fun b => ?_⟩` and prove the remaining obligations. Take `⟨m, rfl⟩ : ∃ m : ℕ, (m : ZMod N) = b` from `⟨b.val, ZMod.natCast_zmod_val b⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : (ZMod.stdAddChar (m : ZMod N) : ℂ) = (ZMod.stdAddChar (1 : ZMod N) : ℂ) ^ m`. Rewrite using `[← hpow, mul_one]`. Establish `e2 : (ZMod.stdAddChar ((i : ZMod N) * (m : ZMod N)) : ℂ) = (ZMod.stdAddChar (1 : ZMod N) : ℂ) ^ (i * m)`. Rewrite using `[← Nat.cast_mul, ← hpow, mul_one]`. Rewrite using `[ZMod.coe_unitOfCoprime, e1, e2, map_pow, ← hi, pow_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma exists_unit (N : ℕ) [NeZero N] (σ : ℂ ≃+* ℂ) :
     ∃ s : (ZMod N)ˣ, ∀ b : ZMod N, σ (ZMod.stdAddChar b : ℂ) = (ZMod.stdAddChar ((s : ZMod N) * b) : ℂ) := by
@@ -57,11 +57,11 @@ end UpperTheory.V.Z.Sym.Unl
 
 open UpperTheory.V.Af UpperTheory.V.Sd in
 /- English proof (translation)
-Introduce `N _ hN σ`. Take `⟨s, hs⟩` from `UpperTheory.V.Z.Sym.Unl.exists_unit N σ`. Use `⟨s, hs, fun k hk a n => ?_⟩` and prove the remaining obligations. Use `haveI : Fact (1 < N) := ⟨hN⟩`. Establish `ha : ((a : (ZMod N)ˣ) : ZMod N) ≠ 0` using `a.ne_zero`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsa : (((s * a : (ZMod N)ˣ)) : ZMod N) ≠ 0` using `(s * a).ne_zero`. Establish `hu : (((s * a : (ZMod N)ˣ)) : ZMod N) = (s : ZMod N) * a` using `Units.val_mul s a`. Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Rewrite using `[(eisCoef N k hk _ hsa).1, (eisCoef N k hk _ ha).1, UpperTheory.V.Z.Sym.Unl.map_Lk, hs, hu]`. Rewrite using `[(eisCoef N k hk _ hsa).2 n hn, (eisCoef N k hk _ ha).2 n hn, map_sum]`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun e _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul σ, map_pow σ, map_natCast σ, map_add σ, map_mul σ, map_pow σ, map_neg σ, map_one σ, hs, hs, hu]`. Simplify using `only [mul_assoc, mul_neg]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Sym.Unl.eisCj : UpperTheory.V.Z.Sym.Unl.EisCj := by
   intro N _ hN σ

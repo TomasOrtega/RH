@@ -17,7 +17,7 @@ set_option maxHeartbeats 1600000
 @[reducible] def xdTr (x : ThData D) : ThData (cut D Λ) := { x with }
 
 /- English proof (translation)
-The claim follows from `{ H with twOf_eq := fun a => H.twOf_eq a.1 twSide_eq := fun a => H.twSide_eq a.1 Q_eq := fun a => H.Q_eq a.1 psi_eq := H.psi_eq.imp fun _ k => ⟨k.1, k.2.1, fun a => k.2.2 a.1⟩ }`.
+A detailed English derivation is pending.
 -/
 theorem nchTie_tr {x : NChoice D} (H : NChTie D x) : NChTie (cut D Λ) (nchTr Λ x) :=
   { H with
@@ -27,7 +27,7 @@ theorem nchTie_tr {x : NChoice D} (H : NChTie D x) : NChTie (cut D Λ) (nchTr Λ
     psi_eq := H.psi_eq.imp fun _ k => ⟨k.1, k.2.1, fun a => k.2.2 a.1⟩ }
 
 /- English proof (translation)
-Use `delta BlochKatoReduction.Gen.sLen BlochKatoReduction.Gen.selT BlochKatoReduction.Gen.bk BlochKatoReduction.Gen.Trep BlochKatoReduction.Gen.Tgl BlochKatoReduction.Gen.IsImgK BlochKatoReduction.Gen.IsFrac BlochKatoReduction.Gen.phiK BlochKatoReduction.Gen.chiS BlochKatoReduction.Ge …`. Simplify using `+instances only [cut, GlobalTheory.HeightCounting.setRaw, GlobalTheory.HeightCounting.NLay0.reEta, layCut, ndCut, GlobalTheory.HeightCounting.rowsEta]`. Use `congr 1`.
+Simplify by unfolding definitions. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem sLen_tr (i : D.ntw.Tw) (s : D.ntw.Sig i) (k : ℕ) (Q : Finset (IsDedekindDomain.HeightOneSpectrum (𝓞 D.host.E))) (ψ : BlochKatoReduction.Gen.GE D.nd →* (D.ntw.Ok i k)ˣ) :
     BlochKatoReduction.Gen.sLen (BlochKatoReduction.bk0 (cut D Λ)) i s k Q ψ = BlochKatoReduction.Gen.sLen (BlochKatoReduction.bk0 D) i s k Q ψ := by
@@ -36,7 +36,7 @@ theorem sLen_tr (i : D.ntw.Tw) (s : D.ntw.Sig i) (k : ℕ) (Q : Finset (IsDedeki
   congr 1
 
 /- English proof (translation)
-Take `⟨hc, N0, S, H⟩` from `H`. Use `⟨hc, N0, S, fun w hw => ⟨(H w hw).1, ?_⟩⟩` and prove the remaining obligations. Take `⟨h1, h2, h3, ⟨e, h4, h4', h4''⟩, h5, h6⟩` from `(H w hw).2`. Conclude with `⟨h1, h2, h3, ⟨e, h4, h4', fun s hs => (sLen_tr Λ _ s _ _ _).trans_le (h4'' s hs)⟩, h5, h6⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem twAt_tr {x : NChoice D} {y : ThData D} (H : LocalQuadraticParts.TWAt D x y) : LocalQuadraticParts.TWAt (cut D Λ) (nchTr Λ x) (xdTr Λ y) := by
   obtain ⟨hc, N0, S, H⟩ := H

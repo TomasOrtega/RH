@@ -12,29 +12,25 @@ noncomputable section
 namespace GlobalTheory.Mum
 
 /- English proof (translation)
-Introduce `R _ _ _ _ M G Y α t hαt W hWa x hx hxc F _ β V hV h1 hnu`. Use `haveI := hV`. Set `T` to `AdicCompletion (maximalIdeal V) V`. Set `g : V →+* T` to `algebraMap V T`. Establish `hg : Function.Injective g` using `GlobalTheory.algebraMap_adicCompletion_injective_of_dvr V`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `f : G.left ⟶ Sp R` to `G.hom ≫ M.π`. Set `ρ : R →+* Γ(G.left, W)` to `((Scheme.ΓSpecIso (CommRingCat.of R)).inv ≫ f.appLE ⊤ W le_top).hom`. Set `lam : Γ(G.left, W) →+* T` to `g.comp ((β.comp (α.app W).hom).codRestrict V h1)`. Set `φ : R →+* T` to `lam.comp ρ`. Set `ψ : FractionRing R →+* F` to `β.comp ((Scheme.ΓSpecIso (CommRingCat.of (FractionRing R))).inv ≫ t.appLE ⊤ (α ⁻¹ᵁ W) le_top).hom`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `key : ∀ r, β ((α.app W).hom (ρ r)) = ψ (algebraMap R (FractionRing R) r)`. Introduce `r`. Establish `hc : ∀ {a b : Y ⟶ Sp R} (_ : a = b), a.appLE ⊤ (α ⁻¹ᵁ W) le_top = b.appLE ⊤ (α ⁻¹ᵁ W) le_top`. Introduce and unpack `_ _ rfl`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `e1 : f.appLE ⊤ W le_top ≫ α.app W = (α ≫ f).appLE ⊤ (α ⁻¹ᵁ W) le_top`. Rewrite using `[Scheme.Hom.app_eq_appLE]`. Conclude with `Scheme.Hom.appLE_comp_appLE _ _ _ _ _ _ _`. Establish `e2 : α ≫ f = t ≫ jK R`. Simplify using `only [f]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[reassoc_of% hαt, M.gp_π]`. Establish `e4 : (t ≫ jK R).appLE ⊤ (α ⁻¹ᵁ W) le_top = (jK R).appTop ≫ t.appLE ⊤ (α ⁻¹ᵁ W) le_top` using `Scheme.Hom.comp_appLE t (jK R) ⊤ (α ⁻¹ᵁ W) le_top`. Establish `e3 : (Scheme.ΓSpecIso (CommRingCat.of R)).inv ≫ f.appLE ⊤ W le_top ≫ α.app W = CommRingCat.ofHom (algebraMap R (FractionRing R)) ≫ (Scheme.ΓSpecIso (CommRingCat.of (FractionRing R))).inv ≫ t.appLE ⊤ (α ⁻¹ᵁ W) le_top`. Rewrite using `[e1, hc e2, e4, ← Category.assoc, ← Category.assoc, Scheme.ΓSpecIso_inv_naturality]`. Express the relevant statement in the definitionally equal form `β (((Scheme.ΓSpecIso (CommRingCat.of R)).inv ≫ f.appLE ⊤ W le_top ≫ α.app W).hom r) = β ((CommRingCat.ofHom (algebraMap R (FractionRing R)) ≫ (Scheme.ΓSpecIso (CommRingCat.of (FractionRing R))).inv ≫ t.appLE ⊤ (α ⁻¹ᵁ W) le_top).hom r)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e3]`. Establish `hφi : Function.Injective φ`. Introduce `a b hab`. Establish `h2 : ((β.comp (α.app W).hom).codRestrict V h1) (ρ a) = ((β.comp (α.app W).hom).codRestrict V h1) (ρ b)` using `hg hab`. Establish `h3 : β ((α.app W).hom (ρ a)) = β ((α.app W).hom (ρ b))` using `congrArg Subtype.val h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h3` using `[key, key]`. Conclude with `IsFractionRing.injective R (FractionRing R) (ψ.injective h3)`. Use `haveI : CharZero T := charZero_of_injective_ringHom hφi`. Use `⟨T, inferInstance, inferInstance, inferInstance, lam, g, φ, ⟨inferInstance, inferInstance, inferInstance⟩, hg, inferInstance, fun c => rfl, hφi, ?_, ?_⟩` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `r hu`. Assume the negation of the conclusion as `hr`. Establish `hrm : r ∈ maximalIdeal R` using `hr`. Establish `hres : (G.left.residue x).hom ((G.left.presheaf.germ W x hx).hom (ρ r)) = 0`. Establish `hb : x ∉ G.left.basicOpen (ρ r)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `hxb`. Establish `e` using `Scheme.basicOpen_appLE f W ⊤ le_top ((Scheme.ΓSpecIso (CommRingCat.of R)).inv r)`. Rewrite `e` using `[basicOpen_eq_of_affine (R := CommRingCat.of R) r]`. Establish `h4` using `((show G.left.basicOpen (ρ r) = _ from e).le hxb).2`. Establish `h7 : r ∉ PrimeSpectrum.asIdeal (f x)` using `h4`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h6 : f x = closedPoint R` using `hxc`. Rewrite `h7` using `[h6]`. Conclude with `h7 hrm`. Rewrite `hb` using `[Scheme.mem_basicOpen _ _ _ hx]`. Conclude with `(IsLocalRing.residue_eq_zero_iff _).2 hb`.
-
-Establish `h5` using `hnu (ρ r) hres`. Establish `h6 : ((β.comp (α.app W).hom).codRestrict V h1) (ρ r) ∈ maximalIdeal V` using `(ValuationSubring.coe_mem_nonunits_iff (a := ⟨_, h1 (ρ r)⟩)).mp h5`. Conclude with `h6 (isUnit_of_map_unit g _ hu)`. Simplify using `only [Category.assoc]`. Rewrite using `[← IsAffineOpen.SpecMap_appLE_fromSpec f (isAffineOpen_top (Sp R)) hWa le_top, IsAffineOpen.fromSpec_top, Scheme.isoSpec_Spec_inv, ← Spec.map_comp, ← Spec.map_comp]`.
-
-Both sides reduce to the same expression.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem trait_at_closed_point : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [CharZero R] (M : Modif R) (G : Over M.S) (Y : Scheme.{0}) (α : Y ⟶ G.left) (t : Y ⟶ Sp (FractionRing R)), α ≫ G.hom = t ≫ M.gp → ∀ (W : G.left.Opens) (hWa : IsAffineOpen W) (x : G.left) (hx : x ∈ W), M.π (G.hom x) = closedPoint R → ∀ (F : Type) [Field F] (β : Γ(Y, α ⁻¹ᵁ W) →+* F) (V : ValuationSubring F), IsDiscreteValuationRing V → ∀ (h1 : ∀ c, β ((α.app W).hom c) ∈ V), (∀ c, (G.left.residue x).hom ((G.left.presheaf.germ W x hx).hom c) = 0 → β ((α.app W).hom c) ∈ V.nonunits) → ∃ (T : Type) (_ : CommRing T) (_ : IsDomain T) (_ : IsLocalRing T) (lam : Γ(G.left, W) →+* T) (g : V →+* T) (φ : R →+* T), GlobalTheory.LN.CDvr T ∧ Function.Injective g ∧ IsLocalHom g ∧ (∀ c, g ⟨β ((α.app W).hom c), h1 c⟩ = lam c) ∧ Function.Injective φ ∧ IsLocalHom φ ∧ (Spec.map (CommRingCat.ofHom lam) ≫ hWa.fromSpec ≫ G.hom) ≫ M.π = spMap φ := by
   intro R _ _ _ _ M G Y α t hαt W hWa x hx hxc F _ β V hV h1 hnu

@@ -11,11 +11,9 @@ noncomputable section
 universe u
 
 /- English proof (translation)
-Use `choose i hi using hrel`. Use `⟨∏ k, X ⟨k, i k⟩ ^ c k, ?_, ?_⟩` and prove the remaining obligations. Establish `hc : c = ∑ k, c k • blockWeight ι ⟨k, i k⟩`. Use function extensionality and compare the values at `j`. Simplify using `[blockWeight, Finset.sum_apply, Pi.single_apply]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h` using `IsWeightedHomogeneous.prod Finset.univ (fun k => (X ⟨k, i k⟩ : MRing ι R) ^ c k) (fun k => c k • blockWeight ι ⟨k, i k⟩) fun k _ => (isWeightedHomogeneous_X R (blockWeight ι) _).pow _`. Rewrite `h` using `[← hc]`. Conclude with `h`. Introduce `h`. Take `⟨k, -, hk⟩` from `(Ideal.IsPrime.prod_mem_iff (hp := hW)).mp h`.
-
-Conclude with `hi k (hW.mem_of_pow_mem _ hk)`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem homLocRing_form_not_mem {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type}
     {R : Type u} [CommRing R] {W : Ideal (MRing ι R)} (hW : W.IsPrime) (hrel : IsRelevant W)
@@ -35,17 +33,17 @@ theorem homLocRing_form_not_mem {K : Type} [Fintype K] [DecidableEq K] {ι : K �
     exact hi k (hW.mem_of_pow_mem _ hk)
 
 /- English proof (translation)
-Introduce `O _ _ _ K _ _ ι _ P hP c x hx hxP W hW hWrel`. Use `hP.isPrime` as an intermediate fact. Establish `hWp : W.IsPrime` using `hW.1.1`. Establish `hPW : P ≤ W` using `le_sup_left.trans hW.1.2`. Establish `hxW : x ∈ W` using `hW.1.2 (Ideal.mem_sup_right (Ideal.mem_span_singleton_self x))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hlocal, hunit⟩` from `hloc O K ι P W hWp hPW`. Establish `hnoe` using `hnoeth O K ι P W hP.multiHomog hWp hWrel hPW`. Use `⟨hlocal, hnoe, le_antisymm ?_ ?_⟩` and prove the remaining obligations. Use `(hdim O K ι P W hP.multiHomog hWp hWrel hPW).trans ?_` and prove the remaining obligations. Establish `h1` using `Ideal.map_height_le_one_of_mem_minimalPrimes hW`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `h1` after adjusting the coercions. Take `⟨g, hg, hgW⟩` from `homLocRing_form_not_mem hWp hWrel c`. Establish `hz : algebraMap (MRing ι O ⧸ P) (FractionRing (MRing ι O ⧸ P)) (Ideal.Quotient.mk P x) / algebraMap (MRing ι O ⧸ P) (FractionRing (MRing ι O ⧸ P)) (Ideal.Quotient.mk P g) ∈ homLocRing P W` using `Subring.subset_closure ⟨c, x, g, hx, hg, hgW, rfl⟩`. Establish `hnu : ¬ IsUnit (⟨_, hz⟩ : homLocRing P W)` using `fun h => (hunit c x g hx hg hgW hz).mp h hxW`. Establish `hne : (⟨_, hz⟩ : homLocRing P W) ≠ 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h0`. Establish `h1` using `congrArg Subtype.val h0`. Simplify using `only [ZeroMemClass.coe_zero, div_eq_zero_iff, IsFractionRing.to_map_eq_zero_iff, Ideal.Quotient.eq_zero_iff_mem] at h1`. Break down `h1 with h1 | h1` into its components or cases. Conclude with `hxP h1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hgW (hPW h1)`. Establish `hlt : (⊥ : Ideal (homLocRing P W)) < IsLocalRing.maximalIdeal (homLocRing P W)`. Use `bot_lt_iff_ne_bot.mpr fun h => hne ?_` and prove the remaining obligations. Establish `hm` using `(IsLocalRing.mem_maximalIdeal _).mpr hnu`. Rewrite `hm` using `[h, Ideal.mem_bot]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `Ideal.height_add_one_le_of_lt_of_isPrime hlt`. Rewrite using `[← IsLocalRing.maximalIdeal_height_eq_ringKrullDim]`. Establish `h3 : (1 : ℕ∞) ≤ (IsLocalRing.maximalIdeal (homLocRing P W)).height` using `le_trans le_add_self h2`. Conclude with `h3` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem HomLocRingLocal.proof (hloc : HomLocRingIsLocal.Statement.{u})
     (hnoeth : HomLocRingNoetherian.Statement.{u}) (hdim : HomLocRingDimLe.Statement.{u}) :

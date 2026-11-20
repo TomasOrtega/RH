@@ -23,25 +23,23 @@ def ThetaSpan : Prop :=
       x = sc (E := E) v (a0 : Fv F v) + sc (E := E) v (a1 : Fv F v) * inclR (F := F) (Fv F v) (θ : E)
 
 /- English proof (translation)
-Use `haveI : Finite (𝓞 F ⧸ v.asIdeal) := finite_res v`. Use `haveI : v.asIdeal.IsMaximal := v.isMaximal`. Use `letI : Field (𝓞 F ⧸ v.asIdeal) := Ideal.Quotient.field _`. Establish `hcard : Nat.card (QE (E` using `E) v) = Nat.card (𝓞 F ⧸ v.asIdeal) ^ 2 := card_QE σ v h`. Establish `hk : 1 < Nat.card (𝓞 F ⧸ v.asIdeal)` using `Finite.one_lt_card`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hpos : Nat.card (QE (E` using `E) v) ≠ 0 := by`. Rewrite using `[hcard]`. Check the signs of the components of the expression. Use `haveI : Finite (QE (E := E) v) := Nat.finite_of_card_ne_zero hpos`. Use `haveI : Nontrivial (QE (E := E) v) := by`.
+Check the signs of the components of the expression. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite using `[← Finite.one_lt_card_iff_nontrivial, hcard]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hx : ∃ x : QE (E` using `E) v, x ∉ Set.range (algebraMap (𝓞 F ⧸ v.asIdeal) (QE (E := E) v)) := by`. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Extract witnesses or component facts from the available result.
 
-Establish `hs : Function.Surjective (algebraMap (𝓞 F ⧸ v.asIdeal) (QE (E` using `E) v)) := fun y => hne y`. Establish `hle` using `Nat.card_le_card_of_surjective _ hs`. Rewrite `hle` using `[hcard]`. Use the polynomial consequences of the given equalities and inequalities. Take `⟨x, hx⟩` from `hx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Take `⟨θ, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Establish `hind : ∀ a0 a1 : 𝓞 F ⧸ v.asIdeal, algebraMap _ (QE (E` using `E) v) a0 + algebraMap _ (QE (E := E) v) a1 * Ideal.Quotient.mk (IE (E := E) v) θ = 0 → a0 = 0 ∧ a1 = 0 := by`. Introduce `a0 a1 h0`. Distinguish the cases in `ha1 : a1 = 0`. Substitute `ha1` using the available equality.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [map_zero, zero_mul, add_zero] at h0`. Conclude with `⟨(algebraMap (𝓞 F ⧸ v.asIdeal) (QE (E := E) v)).injective (by rw [h0, map_zero]), rfl⟩`. It suffices to derive a contradiction. Apply `hx` to reduce the goal to its premises. Use `⟨-(a0 * a1⁻¹), ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hinv : algebraMap (𝓞 F ⧸ v.asIdeal) (QE (E` using `E) v) a1⁻¹ * algebraMap (𝓞 F ⧸ v.asIdeal) (QE (E := E) v) a1 = 1 := by`. Rewrite using `[← map_mul, inv_mul_cancel₀ ha1, map_one]`. Rewrite using `[map_neg, map_mul]`. Take the linear combination `(-(algebraMap (𝓞 F ⧸ v.asIdeal) (QE (E := E) v) a1⁻¹)) * h0 + (Ideal.Quotient.mk (IE (E := E) v) θ) * hinv`. Use `⟨θ, hind, ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Set `f : (𝓞 F ⧸ v.asIdeal) × (𝓞 F ⧸ v.asIdeal) → QE (E` to `E) v := fun p => algebraMap _ (QE (E := E) v) p.1 + algebraMap _ (QE (E := E) v) p.2 * Ideal.Quotient.mk (IE (E := E) v) θ`. Establish `hinj : Function.Injective f`. Introduce `p p' hpp`. Establish `h0` using `hind (p.1 - p'.1) (p.2 - p'.2) (by`. Simplify using `only [f] at hpp`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[map_sub, map_sub]`. Take the linear combination `hpp)`. Conclude with `Prod.ext (sub_eq_zero.mp h0.1) (sub_eq_zero.mp h0.2)`. Establish `hbij` using `bij_of_card f hinj (by rw [Nat.card_prod, hcard, sq])`. Introduce `q`.
-
-Take `⟨p, hp⟩` from `hbij.2 q`. Conclude with `⟨p.1, p.2, hp.symm⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem theta_exists (h : IsCMExt F E σ) : ∃ θ : 𝓞 E,
     (∀ a0 a1 : 𝓞 F ⧸ v.asIdeal, algebraMap _ (QE (E := E) v) a0 + algebraMap _ (QE (E := E) v) a1 *
@@ -102,23 +100,21 @@ theorem theta_exists (h : IsCMExt F E σ) : ∃ θ : 𝓞 E,
   exact ⟨p.1, p.2, hp.symm⟩
 
 /- English proof (translation)
-Introduce `a0 a1 h0`. Use `haveI : v.asIdeal.IsMaximal := v.isMaximal`. Use `letI : Field (𝓞 F ⧸ v.asIdeal) := Ideal.Quotient.field _`. Establish `hθ : ∀ f : F, algebraMap F E f ≠ (θ : E)`. Introduce `f hf`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hint : IsIntegral ℤ f` using `(isIntegral_algHom_iff ((algebraMap F E).toIntAlgHom) (algebraMap F E).injective).mp (by show IsIntegral ℤ (algebraMap F E f)`. Rewrite using `[hf]`. Conclude with `RingOfIntegers.isIntegral_coe θ)`. Establish `hg : θ = algebraMap (𝓞 F) (𝓞 E) ⟨f, hint⟩`. Apply `RingOfIntegers.ext` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[← hf]`. Both sides reduce to the same expression. Establish `hz` using `h3 (-(Ideal.Quotient.mk _ ⟨f, hint⟩)) 1 (by`. Rewrite using `[map_neg, map_one, one_mul, hg]`. Use `show -Ideal.Quotient.mk (IE (E := E) v) (algebraMap (𝓞 F) (𝓞 E) ⟨f, hint⟩) + Ideal.Quotient.mk (IE (E := E) v) (algebraMap (𝓞 F) (𝓞 E) ⟨f, hint⟩) = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `neg_add_cancel _)`. Conclude with `one_ne_zero hz.2`. Establish `hli : LinearIndependent F ![(1 : E), (θ : E)]`. Rewrite using `[LinearIndependent.pair_iff]`. Introduce `s t hst`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. It suffices to derive a contradiction.
 
-Distinguish the cases in `ht : t = 0`. Substitute `ht` using the available equality. Rewrite `hst` using `[zero_smul, add_zero, Algebra.smul_def, mul_one]`. Conclude with `⟨(algebraMap F E).injective (by rw [hst, map_zero]), rfl⟩`. It suffices to derive a contradiction.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Apply `hθ (-(s * t⁻¹))` to reduce the goal to its premises. Rewrite `hst` using `[Algebra.smul_def, Algebra.smul_def, mul_one]`. Establish `hinv : algebraMap F E t⁻¹ * algebraMap F E t = 1`. Rewrite using `[← map_mul, inv_mul_cancel₀ ht, map_one]`. Rewrite using `[map_neg, map_mul]`.
+Take a linear combination of the given relations to obtain the conclusion. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Take the linear combination `(-(algebraMap F E t⁻¹)) * hst + (θ : E) * hinv`. Set `b` to `basisOfLinearIndependentOfCardEqFinrank hli (by rw [Fintype.card_fin, h.2.2.1])`. Set `b'` to `Algebra.TensorProduct.basis (Fv F v) b`. Establish `hb : ![(1 : Fv F v) ⊗ₜ[F] (1 : E), (1 : Fv F v) ⊗ₜ[F] (θ : E)] = ⇑b'`. Use extensionality with `i`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply the tactic sequence `fin_cases i <;>`. Simplify using `[b', b, Algebra.TensorProduct.basis_apply, coe_basisOfLinearIndependentOfCardEqFinrank]`. Establish `hli' : LinearIndependent (Fv F v) ![(1 : Fv F v) ⊗ₜ[F] (1 : E), (1 : Fv F v) ⊗ₜ[F] (θ : E)]`. Rewrite using `[hb]`. Conclude with `b'.linearIndependent`.
-
-Apply `LinearIndependent.pair_iff.mp hli' a0 a1` to reduce the goal to its premises. Rewrite using `[TensorProduct.smul_tmul', TensorProduct.smul_tmul', smul_eq_mul, smul_eq_mul, mul_one, mul_one]`. Rewrite using `[← h0]`. Simplify using `[sc, inclR, Algebra.TensorProduct.tmul_mul_tmul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem theta_indep (h : IsCMExt F E σ) (θ : 𝓞 E)
     (h3 : ∀ a0 a1 : 𝓞 F ⧸ v.asIdeal, algebraMap _ (QE (E := E) v) a0 + algebraMap _ (QE (E := E) v) a1 *
@@ -175,14 +171,14 @@ theorem theta_indep (h : IsCMExt F E σ) (θ : 𝓞 E)
   simp [sc, inclR, Algebra.TensorProduct.tmul_mul_tmul]
 
 /- English proof (translation)
-Introduce `hstd hun` and use `by obtain ⟨θ, h3, h4⟩ := theta_exists σ v hstd.1 exact ⟨θ, hS hstd hun θ h4, theta_indep σ v hstd.1 θ h3, h3, h4⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem thetaBas_of (hS : ThetaSpan σ J ψ v) : ThetaBas σ J ψ v := fun hstd hun => by
   obtain ⟨θ, h3, h4⟩ := theta_exists σ v hstd.1
   exact ⟨θ, hS hstd hun θ h4, theta_indep σ v hstd.1 θ h3, h3, h4⟩
 
 /- English proof (translation)
-The claim follows from `resAlg_of_theta σ J ψ v (thetaBas_of σ J ψ v hS) hE`.
+A detailed English derivation is pending.
 -/
 theorem resAlg_of_span (hS : ThetaSpan σ J ψ v) (hE : EtaLink σ J ψ v) : ResAlg σ J ψ v :=
   resAlg_of_theta σ J ψ v (thetaBas_of σ J ψ v hS) hE

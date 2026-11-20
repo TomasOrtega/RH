@@ -47,21 +47,19 @@ namespace Formalism.MainNotions.S.Pv.AmpDDPf.BM
 open Formalism.BasicNotions Formalism.QuantumDeterminants Formalism.MainNotions.S Formalism.MainNotions.S.Pv.AmpDDPf
 
 /- English proof (translation)
-Establish `hSchH` using `Formalism.FourierDecayAlt.P.schur_hermitian`. Establish `hNI` using `Formalism.FourierDecayAlt.P.norm_inverse_bound`. Establish `hGG` using `Formalism.FourierDecayAlt.P.growth_group_bound`. Establish `hRS` using `right_stabilizer_invariance`. Introduce `hIn k r L h μG w0 l l' hOP γ μR νR ν hCD b hb hab' hpm v hv v' hv' ξ ξ'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨hgap, hOK, -, hw0, hμG, hl, hl'⟩` from `hOP`. Take `⟨hγ, hGf, hmono, hrel, hμR, hOQ, hQ⟩` from `hCD`. Establish `hσ : PI.UpqRep.IsDSHpk k r L.ε L.lam L.σ` using `L.hσ`. Take `⟨d, hd, hSch⟩` from `hSchH k r L.ε L.lam L.Hs L.σ μG L.hlam hσ hμG`. Take `⟨P, hP, hw⟩` from `hw0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hnorm : ‖w0‖ = 1` using `hw.1`. Establish `hw0ne : w0 ≠ 0`. Introduce `h0`. Rewrite `hnorm` using `[h0, norm_zero]`. Conclude with `zero_ne_one hnorm`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hw1 : ⟪w0, w0⟫_ℂ = 1`. Rewrite using `[inner_self_eq_norm_sq_to_K, hnorm]`. Simplify using the standard rewrite rules. Establish `hfd : PI.BesselPeriodGGP.fdegH μG L.σ w0 = d` using `Formalism.FourierDecayAlt.P.S3dx6.fdeg_of_schur hw0ne hd (hSch w0 w0 w0 w0).2`. Take `⟨C, hC⟩` from `hIn.1 k r hOK.1 L.ε L.lam h L.Hs L.σ L.hlam hσ hgap hOK.2.1 P hP w0 w0 hw.2 hw.2`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hh : 0 ≤ h` using `le_trans (by positivity) hOK.2.1`. Establish `ha : 0 ≤ Formalism.FourierDecayAlt.ThreeDimData.aOf r h` using `div_nonneg hh (by positivity)`. Establish `hD : Formalism.MainNotions.InverseNormDecayBounds.DiagonalMatrixCoefficientPowerDecay L.σ w0 (Formalism.FourierDecayAlt.ThreeDimData.aOf r h)` using `⟨C, fun g hg => hC g hg⟩`. Establish `hw0DD : w0 ∈ Formalism.FourierDecayAlt.ThreeDimData.DDsp L.σ w0`. Use `Formalism.FourierDecayAlt.P.S3dx6.mem_DD L.σ w0 (Formalism.FourierDecayAlt.P.S3dx6.one_mem_uh (k := k) (r := r))` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[(Formalism.FourierDecayAlt.P.MatrixMultiplicationContinuity.sigma_facts hσ).1, ContinuousLinearMap.one_apply]`. Then use the resulting hypothesis. Take `⟨C1, hC1⟩` from `Formalism.MainNotions.InverseNormDecayBounds.decDD L.hσ ha hD w0 hw0DD v hv`. Take `⟨C2, hC2⟩` from `Formalism.MainNotions.InverseNormDecayBounds.decDD L.hσ ha hD w0 hw0DD v' hv'`. Establish `hAG0 : 0 ≤ Formalism.FourierDecayAlt.ThreeDimData.AG k r` using `by unfold Formalism.FourierDecayAlt.ThreeDimData.AG; positivity`. Establish `hab : b ≤ Formalism.FourierDecayAlt.ThreeDimData.aOf r h` using `by linarith`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hIG : Integrable (fun x : Mt k r => Formalism.FourierDecayAlt.B.gN (Matrix.of x) ^ (b - Formalism.FourierDecayAlt.ThreeDimData.aOf r h)) μG`. Establish `h1` using `hGG k r μG (Formalism.FourierDecayAlt.ThreeDimData.aOf r h - b) hμG (by linarith)`. Simplify `h1` using `only [neg_sub]`. Establish `hinv : MeasurePreserving (Formalism.FourierDecayAlt.P.B7.invM (k` using `k) (r := r)) μR μR := ⟨Formalism.FourierDecayAlt.P.B7.measurable_invM, hRS k r L γ μR hOK.1 hγ hGf hrel hmono hμR⟩`. Rewrite using `[hfd]`.
-
-Conclude with `amp_core L hμG hd hSch hNI hw1 l l' hl hl' hγ hrel hμR hOQ hQ hinv hb hab hIG hpm hv hv' hC1 hC2 ξ ξ'`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ampDD_thm : Formalism.MainNotions.S.Pv.AmpDD.BM.AmpDD := by
   have hSchH := Formalism.FourierDecayAlt.P.schur_hermitian
@@ -104,21 +102,21 @@ theorem ampDD_thm : Formalism.MainNotions.S.Pv.AmpDD.BM.AmpDD := by
   exact amp_core L hμG hd hSch hNI hw1 l l' hl hl' hγ hrel hμR hOQ hQ hinv hb hab hIG hpm hv hv' hC1 hC2 ξ ξ'
 
 /- English proof (translation)
-Establish `hSchH` using `Formalism.FourierDecayAlt.P.schur_hermitian`. Establish `hNI` using `Formalism.FourierDecayAlt.P.norm_inverse_bound`. Establish `hGG` using `Formalism.FourierDecayAlt.P.growth_group_bound`. Establish `hRS` using `right_stabilizer_invariance`. Introduce `hIn k r L h μG w0 l l' hOPKF γ μR νR ν hCD b hb hab' hpm v v' hv hv' ξ ξ'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨hOP, hK1, hK2⟩` from `hOPKF`. Take `⟨hgap, hOK, -, hw0, hμG, -, -⟩` from `hOP`. Take `⟨hγ, hGf, hmono, hrel, hμR, hOQ, hQ⟩` from `hCD`. Establish `hσ : PI.UpqRep.IsDSHpk k r L.ε L.lam L.σ` using `L.hσ`. Take `⟨d, hd, hSch⟩` from `hSchH k r L.ε L.lam L.Hs L.σ μG L.hlam hσ hμG`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hw0K : PI.UpqRep.IsKFinHpk (k` using `k) (r := r) L.σ w0 := Formalism.MainNotions.KFiniteLowUnitary.kFin_of_lowUnitH' hw0`. Establish `hw0s : w0 ∈ PI.UpqRep.smoothVecs (k` using `k) (r := r) L.σ := hIn.2.2.1 k r L.ε L.lam L.Hs L.σ L.hlam hσ w0 hw0K`. Take `⟨P, hP, hw⟩` from `hw0`. Establish `hnorm : ‖w0‖ = 1` using `hw.1`. Establish `hw0ne : w0 ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `h0`. Rewrite `hnorm` using `[h0, norm_zero]`. Conclude with `zero_ne_one hnorm`. Establish `hw1 : ⟪w0, w0⟫_ℂ = 1`. Rewrite using `[inner_self_eq_norm_sq_to_K, hnorm]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `hfd : PI.BesselPeriodGGP.fdegH μG L.σ w0 = d` using `Formalism.FourierDecayAlt.P.S3dx6.fdeg_of_schur hw0ne hd (hSch w0 w0 w0 w0).2`. Take `⟨C1, Ws1, -, hC1⟩` from `hIn.2.1 k r L.ε L.lam h L.Hs L.σ L.hlam hσ hgap hOK v hv`. Take `⟨C2, Ws2, -, hC2⟩` from `hIn.2.1 k r L.ε L.lam h L.Hs L.σ L.hlam hσ hgap hOK v' hv'`. Establish `e1 : (1 : ℝ) - Formalism.FourierDecayAlt.ThreeDimData.aOf r h = -(Formalism.FourierDecayAlt.ThreeDimData.aOf r h - 1)` using `by ring`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hC1' : ∀ g ∈ UH (Hpk k r), ‖⟪v, L.σ g w0⟫_ℂ‖ ≤ (C1 * (Ws1.map fun W => ‖PI.UpqRep.dsigW (k` using `k) (r := r) L.σ W w0‖).sum) * Formalism.FourierDecayAlt.B.gN g ^ (-(Formalism.FourierDecayAlt.ThreeDimData.aOf r h - 1)) := fun g hg => by`. Rewrite using `[← e1]`. Conclude with `hC1 w0 hw0s g hg`. Establish `hC2' : ∀ g ∈ UH (Hpk k r), ‖⟪v', L.σ g w0⟫_ℂ‖ ≤ (C2 * (Ws2.map fun W => ‖PI.UpqRep.dsigW (k` using `k) (r := r) L.σ W w0‖).sum) * Formalism.FourierDecayAlt.B.gN g ^ (-(Formalism.FourierDecayAlt.ThreeDimData.aOf r h - 1)) := fun g hg => by`. Rewrite using `[← e1]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hC2 w0 hw0s g hg`. Establish `hAG0 : 0 ≤ Formalism.FourierDecayAlt.ThreeDimData.AG k r` using `by unfold Formalism.FourierDecayAlt.ThreeDimData.AG; positivity`. Establish `hab : b ≤ Formalism.FourierDecayAlt.ThreeDimData.aOf r h - 1` using `by linarith`. Establish `hIG : Integrable (fun x : Mt k r => Formalism.FourierDecayAlt.B.gN (Matrix.of x) ^ (b - (Formalism.FourierDecayAlt.ThreeDimData.aOf r h - 1))) μG`. Establish `h1` using `hGG k r μG (Formalism.FourierDecayAlt.ThreeDimData.aOf r h - 1 - b) hμG (by linarith)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify `h1` using `only [neg_sub]`. Establish `hinv : MeasurePreserving (Formalism.FourierDecayAlt.P.B7.invM (k` using `k) (r := r)) μR μR := ⟨Formalism.FourierDecayAlt.P.B7.measurable_invM, hRS k r L γ μR hOK.1 hγ hGf hrel hmono hμR⟩`. Rewrite using `[hfd]`. Conclude with `amp_core' L hμG hd hSch hNI hw1 l l' hγ hrel hμR hOQ hQ hinv hb hab hIG hpm (fun t ht => hK1 _ (Formalism.FourierDecayAlt.P.S3dx6.mem_DD L.σ w0 ht) v hv) (fun t ht => hK2 _ (Formalism.FourierDecayAlt.P.S3dx6.mem_DD L.σ w0 ht) v' hv') hC1' hC2' ξ ξ'`.
+A detailed English derivation is pending.
 -/
 theorem amplitude_K_finite : Formalism.MainNotions.S.Pv.AmpDD.BM.AmpKF := by
   have hSchH := Formalism.FourierDecayAlt.P.schur_hermitian
@@ -176,13 +174,11 @@ namespace Formalism.L2.SG.AmpOrbPf.BM
 open Formalism.BasicNotions Formalism.QuantumDeterminants Formalism.MainNotions.S Formalism.L2.SG.AmpOrbPf
 
 /- English proof (translation)
-Use `set L := toBessel D τ w w' θ W lam A hW hA hT hT' with hL`. Take `⟨h1, h2⟩` from `side_pair hW hA hT hT' hg hok`. Take `⟨l, hl, hla, -⟩` from `hAt hI _ _ _ _ h _ A.σ _ W.Wp _ _ _ _ _ _ _ _ h1`. Take `⟨l', hl', hla', -⟩` from `hAt hI _ _ _ _ h _ A.σ _ W.Wq _ _ _ _ _ _ _ _ h2`. Establish `hKS : PI.KFinSmooth` using `hI.2.2.1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hw0` using `lowest_K_type_unit hA`. Establish `hDDs : ∀ x ∈ Formalism.FourierDecayAlt.ThreeDimData.DDsp A.σ (((‖A.v0‖⁻¹ : ℝ) : ℂ) • A.v0), x ∈ PI.UpqRep.smoothVecs (k` using `D.R.k) (r := D.R.rS) A.σ := Formalism.FourierDecayAlt.P.DDSmoothness.DD_smooth hKS hA.1 hA.2.1 hw0`. Establish `hG : IsHaarOn (UH (Hpk D.R.k D.R.rS)) W.μG` using `hW.2.2.2.2.2.2.1`. Use `⟨l, l', hl, hl', ⟨⟨hg, hok, c_ne_zero D, hw0, hG, ?_, ?_⟩, ?_, ?_⟩⟩` and prove the remaining obligations. Introduce `x hx v hv`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(hla x (hDDs x hx) v (Or.inl hv)).2`. Introduce `x hx v hv`. Conclude with `(hla' x (hDDs x hx) v (Or.inl hv)).2`. Introduce `x hx v hv`. Conclude with `(hla x (hDDs x hx) v (Or.inr hv)).2`.
-
-Introduce `x hx v hv`. Conclude with `(hla' x (hDDs x hx) v (Or.inr hv)).2`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem ls_pair (hI : CompanionTheory.D.Upq.BesselFunctionalConstruction.Inputs) (hAt : CompanionTheory.Lime.BM.AtFormAdmOne)
     {D : D7} {τ : D.what₂.Tau} {w w' : D.what₂.Word} {θ : ℝ} {W : LocW D.R.k D.R.rS}
@@ -217,39 +213,33 @@ theorem ls_pair (hI : CompanionTheory.D.Upq.BesselFunctionalConstruction.Inputs)
     exact (hla' x (hDDs x hx) v (Or.inr hv)).2
 
 /- English proof (translation)
-Establish `hI` using `CompanionTheory.Lime.BM.inputs`. Establish `hAt` using `CompanionTheory.Lime.BM.atFormAdmOne hJ`. Establish `hNz` using `Formalism.MainNotions.S.Pv.AmpDDPf.nonzero_K_finite`. Establish `hAKF` using `Formalism.MainNotions.S.Pv.AmpDDPf.BM.amplitude_K_finite`. Establish `hCC` using `Formalism.MainNotions.S.Pv.AmpDDPf.cell_convergence`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hGap` using `fun h1 h2 => Formalism.MainNotions.S.Pv.AmpDDPf.gap_of_hypotheses D large₂ C' Cl Cg cb Cu cT CT C0 Cn h1 h2`. Introduce `hH hCl hCn τ w w' hTT θ W hW lam' hl A hA hT hT'`. Take `⟨h, hg, hok, hcell⟩` from `hGap hCl hCn hH τ lam' hl`. Use `set L := toBessel D τ w w' θ W lam' A hW hA hT hT' with hL`. Use `set w0 : A.H := (((‖A.v0‖⁻¹ : ℝ) : ℂ) • A.v0) with hw0def`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨l, l', hl1, hl1', hOP⟩` from `ls_pair hI hAt hW hA hT hT' hg hok`. Establish `hw0 : PI.UpqRep.IsLowUnitH D.R.k D.R.rS (epsSH D.R) lam' A.σ w0` using `lowest_K_type_unit hA`. Establish `hKS : PI.KFinSmooth` using `hI.2.2.1`. Establish `hG : IsHaarOn (UH (Hpk D.R.k D.R.rS)) W.μG` using `hW.2.2.2.2.2.2.1`. Establish `hDDs : ∀ x ∈ Formalism.FourierDecayAlt.ThreeDimData.DDsp A.σ w0, x ∈ PI.UpqRep.smoothVecs (k` using `D.R.k) (r := D.R.rS) A.σ := Formalism.FourierDecayAlt.P.DDSmoothness.DD_smooth hKS hA.1 hA.2.1 hw0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨⟨x, hx, y, hy, hxy⟩, ⟨x', hx', y', hy', hxy'⟩⟩` from `hNV hH τ w w' hTT θ W hW lam' hl A hA hT hT' w0 hw0`. Establish `hlx : l x ≠ 0`. Introduce `h0`. Apply `hxy` to reduce the goal to its premises. Establish `e : Formalism.FourierDecayAlt.ThreeDimData.be W.z L.c W.π A.σ W.μW L.μN x y = (innerSL ℂ (l y)).smulRight (l x)` using `hOP.1.2.2.2.2.2.1 x hx y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Rewrite using `[e, h0]`. Use `ext`. Simplify using the standard rewrite rules. Establish `hlx' : l' x' ≠ 0`. Introduce `h0`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Apply `hxy'` to reduce the goal to its premises. Establish `e : Formalism.FourierDecayAlt.ThreeDimData.be W.z' L.c W.π' A.σ W.μW' L.μN x' y' = (innerSL ℂ (l' y')).smulRight (l' x')` using `hOP.1.2.2.2.2.2.2 x' hx' y' hy'`. Rewrite using `[e, h0]`. Use `ext`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨v, hvK, hlv⟩` from `hNz hKD hKS _ _ _ _ _ A.σ w0 W.Wp W.z L.c W.π hA.1 hA.2.1 hw0 l hl1 ⟨x, hx, hlx⟩`. Take `⟨v', hvK', hlv'⟩` from `hNz hKD hKS _ _ _ _ _ A.σ w0 W.Wq W.z' L.c W.π' hA.1 hA.2.1 hw0 l' hl1' ⟨x', hx', hlx'⟩`. Establish `hB : PI.BesselMapUniq.IsBesselMapSm (k` using `D.R.k) (r := D.R.rS) W.z (PI.BesselMapUniq.psiGen D.R.k D.R.rS W.z (fun _ => L.c)) A.σ W.π A.B := by`. Rewrite using `[psiGen_const]`. Conclude with `(Formalism.MainNotions.BridgeCS3d.isBesselMapSm_iff _ _ _ _ _).1 hA.2.2.1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hB' : PI.BesselMapUniq.IsBesselMapSm (k` using `D.R.k) (r := D.R.rS) W.z' (PI.BesselMapUniq.psiGen D.R.k D.R.rS W.z' (fun _ => L.c)) A.σ W.π' A.B' := by`. Rewrite using `[psiGen_const]`. Conclude with `(Formalism.MainNotions.BridgeCS3d.isBesselMapSm_iff _ _ _ _ _).1 hA.2.2.2.1`. Establish `hlG : PI.BesselMapUniq.IsBesselMapSm (k` using `D.R.k) (r := D.R.rS) W.z (PI.BesselMapUniq.psiGen D.R.k D.R.rS W.z (fun _ => L.c)) A.σ W.π l := by`. Rewrite using `[psiGen_const]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `hl1`. Establish `hlG' : PI.BesselMapUniq.IsBesselMapSm (k` using `D.R.k) (r := D.R.rS) W.z' (PI.BesselMapUniq.psiGen D.R.k D.R.rS W.z' (fun _ => L.c)) A.σ W.π' l' := by`. Rewrite using `[psiGen_const]`. Conclude with `hl1'`. Take `⟨c0, hc0⟩` from `CompanionTheory.Lime.BM.aIsL hJ hg hok hA.1 hA.2.1 L.hz.1 L.hz.2 (fun _ => c_ne_zero D) L.hπ hB hlG ⟨x, hDDs x hx, hlx⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨c0', hc0'⟩` from `CompanionTheory.Lime.BM.aIsL hJ hg hok hA.1 hA.2.1 L.hz'.1 L.hz'.2 (fun _ => c_ne_zero D) L.hπ' hB' hlG' ⟨x', hDDs x' hx', hlx'⟩`. Use `set t : ℂ := ((‖A.v0‖ : ℝ) : ℂ) with ht`. Establish `hv0ne : A.v0 ≠ 0` using `hA.2.2.2.2.2.1`. Establish `hv0 : A.v0 = t • w0`. Rewrite using `[hw0def, ht, smul_smul, ← Complex.ofReal_mul, mul_inv_cancel₀ (norm_ne_zero_iff.mpr hv0ne), Complex.ofReal_one, one_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hw0s : w0 ∈ PI.UpqRep.smoothVecs (k` using `D.R.k) (r := D.R.rS) A.σ := Formalism.FourierDecayAlt.P.DDSmoothness.smooth_smul _ hA.2.2.2.2.1`. Establish `hΦ : ∀ g ∈ UH (Hpk D.R.k D.R.rS), A.Φ g = (c0 * t) • l (A.σ g w0)`. Introduce `g hg'`. Use `show A.B (A.σ g A.v0) = _`. Rewrite using `[hv0]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `orbit_mul hA.2.1 c0 hc0 hl1.2.1 hw0s t hg'`. Establish `hΦ' : ∀ g ∈ UH (Hpk D.R.k D.R.rS), A.Φ' g = (c0' * t) • l' (A.σ g w0)`. Introduce `g hg'`. Use `show A.B' (A.σ g A.v0) = _`. Rewrite using `[hv0]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `orbit_mul hA.2.1 c0' hc0' hl1'.2.1 hw0s t hg'`. Use `set s : ℂ := ⟪l v, l v⟫_ℂ * ⟪l' v', l' v'⟫_ℂ with hs`. Establish `hs0 : s ≠ 0` using `mul_ne_zero (inner_self_ne_zero.mpr hlv) (inner_self_ne_zero.mpr hlv')`. Use `set dg : ℂ := (PI.BesselPeriodGGP.fdegH W.μG A.σ w0 : ℂ) with hdg`. Use `set K1 : ℂ := ((A.cN : ℂ)⁻¹) * (c0 * t) * (starRingEnd ℂ) (c0' * t) with hK1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨fun g => (K1 * s⁻¹ * dg⁻¹) • Formalism.MainNotions.S.Pv.AmpDD.coefF L v v' (l v) (l' v') g, kfin_coef L _ v v' _ _ hvK hvK', ?_⟩` and prove the remaining obligations. Introduce `γ hγ hGf hMono hRel μR νR ν hRH hOQ hqR`. Establish `hCD : Formalism.MainNotions.S.Pv.AmpDD.CellData L W.μG γ μR νR ν` using `⟨hγ, hGf, hMono, hRel, hRH, hOQ, hqR⟩`. Take `⟨b, hb0, hbm, hbi⟩` from `hCC _ _ L h W.μG γ μR νR ν ENNReal.ofReal_ne_top hok hcell hCD hMono`. Establish `hAmp` using `hAKF hI _ _ L h W.μG w0 l l' hOP γ μR νR ν hCD b hb0 hbm hbi v v' hvK hvK' (l v) (l' v')`.
-
-Establish `hae` using `ae_UH_conj hγ hG hRH hqR`. Establish `hJ1 : A.J νR γ = K1 • ampJ νR 1 (fun g => l (A.σ g w0)) (fun g => l' (A.σ g w0)) γ` using `ampJ_mul νR A.cN A.Φ _ A.Φ' _ (c0 * t) (c0' * t) γ hγ hΦ hΦ' hae`. Establish `hJ2 : ampJ νR 1 (fun g => l (A.σ g w0)) (fun g => l' (A.σ g w0)) γ = (s⁻¹ * dg⁻¹) • OrbInt L (Formalism.MainNotions.S.Pv.AmpDD.coefF L v v' (l v) (l' v')) γ ν`. Establish `hAmp' : s • ampJ νR 1 (fun g => l (A.σ g w0)) (fun g => l' (A.σ g w0)) γ = dg⁻¹ • OrbInt L (Formalism.MainNotions.S.Pv.AmpDD.coefF L v v' (l v) (l' v')) γ ν` using `hAmp`. Establish `e1 : ampJ νR 1 (fun g => l (A.σ g w0)) (fun g => l' (A.σ g w0)) γ = s⁻¹ • (s • ampJ νR 1 (fun g => l (A.σ g w0)) (fun g => l' (A.σ g w0)) γ)`.
-
-Rewrite using `[smul_smul, inv_mul_cancel₀ hs0, one_smul]`. Rewrite using `[e1, hAmp']`. Conclude with `smul_smul s⁻¹ dg⁻¹ _`. Rewrite using `[hJ1, hJ2]`. Establish `hO` using `orbInt_smul L (K1 * s⁻¹ * dg⁻¹) (Formalism.MainNotions.S.Pv.AmpDD.coefF L v v' (l v) (l' v')) γ ν`.
-
-Establish `e2 : K1 • ((s⁻¹ * dg⁻¹) • OrbInt L (Formalism.MainNotions.S.Pv.AmpDD.coefF L v v' (l v) (l' v')) γ ν) = (K1 * s⁻¹ * dg⁻¹) • OrbInt L (Formalism.MainNotions.S.Pv.AmpDD.coefF L v v' (l v) (l' v')) γ ν`. Rewrite using `[smul_smul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Conclude with `e2.trans hO.symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem ampOrbNV (hJ : CompanionTheory.Lime.BM.UniqGap) (hKD : Formalism.MainNotions.S.Pv.AmpDD.KDense) (D : D7) (large₂ : SizeData₂ D)
     (C' Cl Cg cb Cu cT CT C0 Cn : ℝ) (hNV : Formalism.MainNotions.S.Pv.AmpDD.NVHyp D large₂ C' Cl Cg cb Cu cT CT C0 Cn) :
@@ -354,7 +344,7 @@ theorem ampOrbNV (hJ : CompanionTheory.Lime.BM.UniqGap) (hKD : Formalism.MainNot
   exact e2.trans hO.symm
 
 /- English proof (translation)
-The claim follows from `ampOrbNV hJ hKD D large₂ C' Cl Cg cb Cu cT CT C0 0 (Formalism.L2.S.Pv.NonVacuity.nvHyp0 D large₂ C' Cl Cg cb Cu cT CT C0 (by linarith))`.
+A detailed English derivation is pending.
 -/
 theorem ampOrb0 (hJ : CompanionTheory.Lime.BM.UniqGap) (hKD : Formalism.MainNotions.S.Pv.AmpDD.KDense) (D : D7) (large₂ : SizeData₂ D)
     (C' Cl Cg cb Cu cT CT C0 : ℝ) (hCl : 1000 ≤ Cl) : Formalism.MainNotions.S.Pv.LemmaJ.AmpOrb D large₂ C' Cl Cg cb Cu cT CT C0 0 :=
@@ -367,53 +357,45 @@ namespace Formalism.L2.S.Pv.AmpOrbCoef.BM
 open Formalism.BasicNotions Formalism.QuantumDeterminants Formalism.MainNotions.S Formalism.L2.SG.AmpOrbPf Formalism.L2.S.Pv.AmpOrbCoef
 
 /- English proof (translation)
-Introduce `Cg cb Cu cT CT C0`. Use `⟨0, 1000, fun C' Cl _ hCl D large₂ hH τ w w' hTT θ W hW A hA hT hT' => ?_⟩` and prove the remaining obligations. Establish `hI : CompanionTheory.D.Upq.BesselFunctionalConstruction.Inputs` using `CompanionTheory.Lime.BM.inputs`. Establish `hAt` using `CompanionTheory.Lime.BM.atFormAdmOne hJ`. Establish `hl0 : l1dist (lamD D τ) (lamD D τ) ≤ 0 * D.R.k * (D.R.m : ℝ) ^ 3` using `by unfold l1dist; simp`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨h, hg, hok, hcell⟩` from `Formalism.MainNotions.S.Pv.AmpDDPf.gap_of_hypotheses D large₂ C' Cl Cg cb Cu cT CT C0 0 hCl (by linarith) hH τ (lamD D τ) hl0`. Use `set L := toBessel D τ w w' θ W (lamD D τ) A hW hA hT hT' with hL`. Use `set w0 : A.H := (((‖A.v0‖⁻¹ : ℝ) : ℂ) • A.v0) with hw0def`. Take `⟨l, l', hl1, hl1', hOP⟩` from `Formalism.L2.SG.AmpOrbPf.BM.ls_pair hI hAt hW hA hT hT' hg hok`. Establish `hw0 : PI.UpqRep.IsLowUnitH D.R.k D.R.rS (epsSH D.R) (lamD D τ) A.σ w0` using `lowest_K_type_unit hA`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hKS : PI.KFinSmooth` using `hI.2.2.1`. Establish `hG : IsHaarOn (UH (Hpk D.R.k D.R.rS)) W.μG` using `hW.2.2.2.2.2.2.1`. Establish `hDDs : ∀ x ∈ Formalism.FourierDecayAlt.ThreeDimData.DDsp A.σ w0, x ∈ PI.UpqRep.smoothVecs (k` using `D.R.k) (r := D.R.rS) A.σ := Formalism.FourierDecayAlt.P.DDSmoothness.DD_smooth hKS hA.1 hA.2.1 hw0`. Take `⟨⟨x, hx, y, hy, hxy⟩, ⟨x', hx', y', hy', hxy'⟩⟩` from `Formalism.L2.S.Pv.NonVacuity.nvHyp0 D large₂ C' Cl Cg cb Cu cT CT C0 (by linarith) hH τ w w' hTT θ W hW (lamD D τ) hl0 A hA hT hT' w0 hw0`. Establish `hlx : l x ≠ 0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `h0`. Apply `hxy` to reduce the goal to its premises. Establish `e : Formalism.FourierDecayAlt.ThreeDimData.be W.z L.c W.π A.σ W.μW L.μN x y = (innerSL ℂ (l y)).smulRight (l x)` using `hOP.1.2.2.2.2.2.1 x hx y hy`. Rewrite using `[e, h0]`. Use `ext`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `hlx' : l' x' ≠ 0`. Introduce `h0`. Apply `hxy'` to reduce the goal to its premises. Establish `e : Formalism.FourierDecayAlt.ThreeDimData.be W.z' L.c W.π' A.σ W.μW' L.μN x' y' = (innerSL ℂ (l' y')).smulRight (l' x')` using `hOP.1.2.2.2.2.2.2 x' hx' y' hy'`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Rewrite using `[e, h0]`. Use `ext`. Simplify using the standard rewrite rules. Establish `hB : PI.BesselMapUniq.IsBesselMapSm (k` using `D.R.k) (r := D.R.rS) W.z (PI.BesselMapUniq.psiGen D.R.k D.R.rS W.z (fun _ => L.c)) A.σ W.π A.B := by`. Rewrite using `[psiGen_const]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Formalism.MainNotions.BridgeCS3d.isBesselMapSm_iff _ _ _ _ _).1 hA.2.2.1`. Establish `hB' : PI.BesselMapUniq.IsBesselMapSm (k` using `D.R.k) (r := D.R.rS) W.z' (PI.BesselMapUniq.psiGen D.R.k D.R.rS W.z' (fun _ => L.c)) A.σ W.π' A.B' := by`. Rewrite using `[psiGen_const]`. Conclude with `(Formalism.MainNotions.BridgeCS3d.isBesselMapSm_iff _ _ _ _ _).1 hA.2.2.2.1`. Establish `hlG : PI.BesselMapUniq.IsBesselMapSm (k` using `D.R.k) (r := D.R.rS) W.z (PI.BesselMapUniq.psiGen D.R.k D.R.rS W.z (fun _ => L.c)) A.σ W.π l := by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[psiGen_const]`. Conclude with `hl1`. Establish `hlG' : PI.BesselMapUniq.IsBesselMapSm (k` using `D.R.k) (r := D.R.rS) W.z' (PI.BesselMapUniq.psiGen D.R.k D.R.rS W.z' (fun _ => L.c)) A.σ W.π' l' := by`. Rewrite using `[psiGen_const]`. Conclude with `hl1'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨c0, hc0⟩` from `CompanionTheory.Lime.BM.aIsL hJ hg hok hA.1 hA.2.1 L.hz.1 L.hz.2 (fun _ => c_ne_zero D) L.hπ hB hlG ⟨x, hDDs x hx, hlx⟩`. Take `⟨c0', hc0'⟩` from `CompanionTheory.Lime.BM.aIsL hJ hg hok hA.1 hA.2.1 L.hz'.1 L.hz'.2 (fun _ => c_ne_zero D) L.hπ' hB' hlG' ⟨x', hDDs x' hx', hlx'⟩`. Establish `hW'` using `hW`. Take `⟨hc1, hc2, -, -, -, -, -, hUW, -, hUW', -, hNq, hq, hq'⟩` from `hW'`. Establish `hA'` using `hA`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨-, -, -, -, hv0s, hv0ne, -, hcN, hl2, hl2', -⟩` from `hA'`. Establish `hNa : ∀ᵐ x ∂W.μN, Matrix.of x ∈ Nset D.R.k D.R.rS`. Rewrite using `[hNq]`. Conclude with `Formalism.MainNotions.S.Pv.AmpDDPf.ae_mem_haarLieN _`. Establish `hκtop : kapN D θ ≠ ⊤` using `ENNReal.ofReal_ne_top`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hκ0 : kapN D θ ≠ 0` using `Formalism.L2.SG.AmpOrbPf.kapN_ne_zero hW`. Establish `: SigmaFinite W.μN`. Use `(Formalism.MainNotions.BridgeCSB.haarLieN D.R.k D.R.rS _ hκ0 hκtop).1` as an intermediate fact. Rewrite using `[hNq]`. Conclude with `this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `hNt : Nontrivial W.Wp` using `by obtain ⟨g, -, hU⟩ := hc1; exact hU.1`. Establish `hNt' : Nontrivial W.Wq` using `by obtain ⟨g, -, hU⟩ := hc2; exact hU.1`. Take `⟨xb, hxb, hBx⟩` from `B_ne hA.2.1 hG hUW hNa hq hv0s hcN hl2`. Take `⟨xb', hxb', hBx'⟩` from `B_ne hA.2.1 hG hUW' hNa hq' hv0s hcN hl2'`. Establish `hc0ne : c0 ≠ 0`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `e`. Apply `hBx` to reduce the goal to its premises. Establish `h1` using `hc0 xb hxb`. Rewrite `h1` using `[e]`. Rewrite using `[h1]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `zero_smul ℂ _`. Establish `hc0ne' : c0' ≠ 0`. Introduce `e`. Apply `hBx'` to reduce the goal to its premises. Establish `h1` using `hc0' xb' hxb'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h1` using `[e]`. Rewrite using `[h1]`. Conclude with `zero_smul ℂ _`. Use `set t : ℂ := ((‖A.v0‖ : ℝ) : ℂ) with ht`. Establish `hv0 : A.v0 = t • w0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hw0def, ht, smul_smul, ← Complex.ofReal_mul, mul_inv_cancel₀ (norm_ne_zero_iff.mpr hv0ne), Complex.ofReal_one, one_smul]`. Establish `htne : t ≠ 0` using `by rw [ht]; exact_mod_cast norm_ne_zero_iff.mpr hv0ne`. Establish `hw0s : w0 ∈ PI.UpqRep.smoothVecs (k` using `D.R.k) (r := D.R.rS) A.σ := Formalism.FourierDecayAlt.P.DDSmoothness.smooth_smul _ hv0s`. Establish `hΦ : ∀ g ∈ UH (Hpk D.R.k D.R.rS), A.Φ g = (c0 * t) • l (A.σ g w0)`. Introduce `g hg'`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `show A.B (A.σ g A.v0) = _`. Rewrite using `[hv0]`. Conclude with `orbit_mul hA.2.1 c0 hc0 hl1.2.1 hw0s t hg'`. Establish `hΦ' : ∀ g ∈ UH (Hpk D.R.k D.R.rS), A.Φ' g = (c0' * t) • l' (A.σ g w0)`. Introduce `g hg'`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `show A.B' (A.σ g A.v0) = _`. Rewrite using `[hv0]`. Conclude with `orbit_mul hA.2.1 c0' hc0' hl1'.2.1 hw0s t hg'`. Use `set s : ℂ := ⟪l x, l x⟫_ℂ * ⟪l' x', l' x'⟫_ℂ with hs`. Establish `hs0 : s ≠ 0` using `mul_ne_zero (inner_self_ne_zero.mpr hlx) (inner_self_ne_zero.mpr hlx')`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set dg : ℂ := (PI.BesselPeriodGGP.fdegH W.μG A.σ w0 : ℂ) with hdg`. Establish `hdg0 : dg ≠ 0`. Rewrite using `[hdg]`. Take `⟨-, -, hn1, -⟩` from `hw0`. Conclude with `(fdegH_pos hA.1 hA.2.1 hG hn1).ne'` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set K1 : ℂ := ((A.cN : ℂ)⁻¹) * (c0 * t) * (starRingEnd ℂ) (c0' * t) with hK1`. Establish `hK1ne : K1 ≠ 0`. Rewrite using `[hK1]`. Use `mul_ne_zero (mul_ne_zero (inv_ne_zero (by exact_mod_cast hcN.ne')) (mul_ne_zero hc0ne htne)) ?_` and prove the remaining obligations. Conclude with `(map_ne_zero _).2 (mul_ne_zero hc0ne' htne)`.
-
-Use `⟨x, x', l x, l' x', l x, l' x', K1 * s⁻¹ * dg⁻¹, mul_ne_zero (mul_ne_zero hK1ne (inv_ne_zero hs0)) (inv_ne_zero hdg0), hDDs x hx, hDDs x' hx', hOP.1.2.2.2.2.2.1 x hx x hx, hOP.1.2.2.2.2.2.2 x' hx' x' hx', inner_self_ne_zero.mpr hlx, inner_self_ne_zero.mpr hlx', ?_⟩` and prove the remaining obligations. Introduce `γ hγ hGf hMono hRel μR νR ν hRH hOQ hqR`. Establish `hCD : Formalism.MainNotions.S.Pv.AmpDD.CellData L W.μG γ μR νR ν` using `⟨hγ, hGf, hMono, hRel, hRH, hOQ, hqR⟩`. Take `⟨b, hb0, hbm, hbi⟩` from `Formalism.MainNotions.S.Pv.AmpDDPf.cell_convergence _ _ L h W.μG γ μR νR ν ENNReal.ofReal_ne_top hok hcell hCD hMono`. Establish `hAmp` using `Formalism.MainNotions.S.Pv.AmpDDPf.BM.ampDD_thm hI _ _ L h W.μG w0 l l' hOP.1 γ μR νR ν hCD b hb0 (by linarith) hbi x hx x' hx' (l x) (l' x')`.
-
-Establish `hae` using `ae_UH_conj hγ hG hRH hqR`. Establish `hJ1 : A.J νR γ = K1 • ampJ νR 1 (fun g => l (A.σ g w0)) (fun g => l' (A.σ g w0)) γ` using `ampJ_mul νR A.cN A.Φ _ A.Φ' _ (c0 * t) (c0' * t) γ hγ hΦ hΦ' hae`. Establish `hJ2 : ampJ νR 1 (fun g => l (A.σ g w0)) (fun g => l' (A.σ g w0)) γ = (s⁻¹ * dg⁻¹) • OrbInt L (Formalism.MainNotions.S.Pv.AmpDD.coefF L x x' (l x) (l' x')) γ ν`. Establish `hAmp' : s • ampJ νR 1 (fun g => l (A.σ g w0)) (fun g => l' (A.σ g w0)) γ = dg⁻¹ • OrbInt L (Formalism.MainNotions.S.Pv.AmpDD.coefF L x x' (l x) (l' x')) γ ν` using `hAmp`. Establish `e1 : ampJ νR 1 (fun g => l (A.σ g w0)) (fun g => l' (A.σ g w0)) γ = s⁻¹ • (s • ampJ νR 1 (fun g => l (A.σ g w0)) (fun g => l' (A.σ g w0)) γ)`.
-
-Rewrite using `[smul_smul, inv_mul_cancel₀ hs0, one_smul]`. Rewrite using `[e1, hAmp']`. Conclude with `smul_smul s⁻¹ dg⁻¹ _`. Rewrite using `[hJ1, hJ2]`. Establish `hO` using `orbInt_smul L (K1 * s⁻¹ * dg⁻¹) (Formalism.MainNotions.S.Pv.AmpDD.coefF L x x' (l x) (l' x')) γ ν`.
-
-Establish `e2 : K1 • ((s⁻¹ * dg⁻¹) • OrbInt L (Formalism.MainNotions.S.Pv.AmpDD.coefF L x x' (l x) (l' x')) γ ν) = (K1 * s⁻¹ * dg⁻¹) • OrbInt L (Formalism.MainNotions.S.Pv.AmpDD.coefF L x x' (l x) (l' x')) γ ν`. Rewrite using `[smul_smul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Conclude with `e2.trans hO.symm`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem ampOrbCoefDD_of (hJ : CompanionTheory.Lime.BM.UniqGap) : Formalism.MainNotions.S.Pv.LemmaJ.AmpOrbCoefDD := by
   intro Cg cb Cu cT CT C0
@@ -545,7 +527,7 @@ theorem ampOrbCoefDD_of (hJ : CompanionTheory.Lime.BM.UniqGap) : Formalism.MainN
   exact e2.trans hO.symm
 
 /- English proof (translation)
-The claim follows from `Formalism.L2.S.Pv.AmpFinal.ampUnif_of_parts (fun Cg cb Cu cT CT C0 => ⟨0, 1000, fun C' Cl _ hCl D large₂ => Formalism.L2.SG.AmpOrbPf.BM.ampOrb0 hJ hKD D large₂ C' Cl Cg cb Cu cT CT C0 hCl⟩) Formalism.MainNotions.S.Pv.LemmaJ.rootJac_holds Formalism.MainNotions.S.Pv.LemmaJ.rootHaar …`.
+A detailed English derivation is pending.
 -/
 theorem ampUnif_gap (hJ : CompanionTheory.Lime.BM.UniqGap) (hKD : Formalism.MainNotions.S.Pv.AmpDD.KDense) : Formalism.MainNotions.S.Pv.LemmaJ.AmpUnif :=
   Formalism.L2.S.Pv.AmpFinal.ampUnif_of_parts (fun Cg cb Cu cT CT C0 => ⟨0, 1000, fun C' Cl _ hCl D large₂ =>

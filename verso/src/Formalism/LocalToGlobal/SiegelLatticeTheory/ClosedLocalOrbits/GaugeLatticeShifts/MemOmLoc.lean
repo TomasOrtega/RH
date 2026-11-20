@@ -14,23 +14,21 @@ namespace Formalism.L2.SG.RealObj.EnergyConvJ
 variable {D : D7} {X : HidaSetting D} {θ : ℝ}
 
 /- English proof (translation)
-Establish `hsc0 : sc ≠ 0` using `hsc.ne'`. Use `set γ : X.B.I.Ginf := Function.update (1 : X.B.I.Ginf) v g with hγdef`. Establish `hγv : γ v = g` using `by rw [hγdef]; exact Function.update_self _ _ _`. Take `⟨d, hd⟩ : ∃ d : Fin (D.R.rS + 1) → ℂ, d = fun a => star (dsc (D` from `D) lam sc a) * dsc (D := D) lam sc a * cv a := ⟨_, rfl⟩`. Establish `hZ : Formalism.QuantumDeterminants.Zhat D.R.k D.R.rS (Qi *ᵥ rv X.B.I v (X.zR u)) (Qi *ᵥ rv X.B.I v (X.zR u')) (trG Q Qi g) = Matrix.diagonal d`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `a b`. Use `zhat_tr X hQ hsc0 u u' γ a b` as an intermediate fact. Rewrite `this` using `[hγv]`. Rewrite using `[this]`. Establish `hZX : ZX X u u' sc γ v = Matrix.diagonal cv`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `ZX`. Rewrite using `[hγv]`. Conclude with `hg`. Rewrite using `[hZX]`. Distinguish the cases in `hab : a = b`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Substitute `hab` using the available equality. Simplify using `[hd]`. Simplify using `[Matrix.diagonal_apply_ne _ hab]`. Establish `hd0 : ∀ a, d a ≠ 0` using `fun a => by`. Rewrite using `[hd]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_ne_zero (mul_ne_zero (star_ne_zero.mpr (dsc_ne hl hsc0 a)) (dsc_ne hl hsc0 a)) (hcv.1 a)`. Use `⟨Formalism.L2.SG.Pf.LTL.trG_mem Q Qi _ hQ.2.1 hQ.2.2.1 g, fun l _ => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[dmin_diag _ _ _ d hZ l]`. Conclude with `Finset.prod_ne_zero_iff.mpr fun i _ => hd0 _`. Unfold `Formalism.QuantumDeterminants.Gf`.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[dmin_diag _ _ _ d hZ, dmin_diag _ _ _ d hZ, (show Formalism.QuantumDeterminants.Tz D.R.k D.R.rS (Qi *ᵥ rv X.B.I v (X.zR u)) = Tw u from (Formalism.L2.SG.Pf.Choice.zTr_of X hQ u).2), (show Formalism.QuantumDeterminants.Tz D.R.k D.R.rS (Qi *ᵥ rv X.B.I v (X.zR u')) = Tw u' from (Fo …`. Establish `hlast` using `Formalism.L2.SG.RealObj.InfCut.UnitaryIsometries.normSq_last_gt (Tw u) (Tw u') cv hcv.2`. Establish `hcl : ∀ (h : D.R.rS + 1 ≤ D.R.rS + 1) (i : Fin (D.R.rS + 1)), Fin.castLE h i = i` using `fun _ _ => Fin.ext rfl`. Establish `hdl : d (Fin.last D.R.rS) = cv (Fin.last D.R.rS)` using `by simp only [hd, dsc_last, star_one, one_mul]`. Take `⟨P, hPd⟩ : ∃ P : ℂ, P = ∏ i : Fin D.R.rS, d (Fin.castSucc i)` from `⟨_, rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e1 : ∏ i : Fin (Fin.last (D.R.rS + 1)).val, d (Fin.castLE (Nat.le_of_lt_succ (Fin.last (D.R.rS + 1)).isLt) i) = P * cv (Fin.last D.R.rS)` using `by show ∏ i : Fin (D.R.rS + 1), d (Fin.castLE _ i) = _`. Rewrite using `[Fin.prod_univ_castSucc]`. Simplify using `only [hcl, hdl, hPd]`. Establish `e2 : ∏ i : Fin (⟨D.R.rS, by omega⟩ : Fin (D.R.rS + 2)).val, d (Fin.castLE (Nat.le_of_lt_succ (⟨D.R.rS, by omega⟩ : Fin (D.R.rS + 2)).isLt) i) = P`. Rewrite using `[hPd]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[e1, e2]`. Establish `hP0 : P ≠ 0` using `by rw [hPd]; exact Finset.prod_ne_zero_iff.mpr fun i _ => hd0 _`. Rewrite using `[Complex.normSq_mul]`. Establish `hn : Tw u * Tw u' < Complex.normSq (cv (Fin.last D.R.rS))`.
-
-Rewrite using `[Complex.normSq_eq_norm_sq]`. Conclude with `hlast`. Establish `hp : 0 < Complex.normSq P` using `Complex.normSq_pos.mpr hP0`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem mem_om_loc {v : InfinitePlace X.B.I.F} {lam : ℂ} (hl : lam ≠ 0)
     {Q : Matrix (Fin X.B.I.n) (Fin (2 * D.R.rS + D.R.k + 1)) ℂ}
@@ -86,11 +84,11 @@ theorem mem_om_loc {v : InfinitePlace X.B.I.F} {lam : ℂ} (hl : lam ≠ 0)
     nlinarith
 
 /- English proof (translation)
-Take `⟨hz, hT⟩` from `zT C u τ`. Establish `h2` using `(transpC' C τ).2.1`. Establish `hg` using `(transpC' C τ).2.2.1`. Establish `hDS : IsDSHpk D.R.k D.R.rS (epsSH D.R) (lamD D τ) (sigB X (Qcs C τ) (Qics C τ) τ)`. Take `⟨P, hP⟩` from `Formalism.MainNotions.S.Inh.obj_cayleyU_rows D`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨P, hP, ?_⟩` and prove the remaining obligations. Conclude with `dsHpk_tr (n_eq' X) (X.B.I.ε (vOf X τ)) (epsSH D.R) (fun i => by rw [X.eps_eq]; exact congrArg (epsS D.R) (Fin.ext rfl)) (X.B.lam (vOf X τ)) (lamD D τ) (fun i => by`. Rewrite using `[X.lam_eq, show X.pl (vOf X τ) = τ from X.pl.apply_symm_apply τ]`. Conclude with `congrArg (lamS D.R (D.hc τ)) (Fin.ext rfl))`. Use the proof step `(X.B.σ (vOf X τ)) (X.ds (vOf X τ)) (Qcs C τ) (Qics C τ) h2 hg P hP`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hμG` using `haar_tr (n_eq' X) (X.B.I.ε (vOf X τ)) (Qcs C τ) (Qics C τ) h2 hg`. Establish `hμN` using `muNc_haar (D := D) hθ`. Take `⟨νq, hsf, hq⟩` from `Formalism.L2.SG.Pf.QuotMeasExists.quotMeasExistsSF _ _ _ hz hT _ _ hμG (isHaarOn_muS_gen hz hT (C.muW_haar u τ) (C.muW_one u τ) (Formalism.MainNotions.BridgeLemma₃.lbHaarUp_proved.2 _ _ _ hμN))`. Conclude with `⟨νq, hsf, Formalism.MainNotions.S.Inh.amp_isHCParam_lamD D τ, hDS, hgap, hok, hlow, hz, hT, cStd_ne, hty_c C u τ, C.muW_haar u τ, hμN, hμG, hq⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem sideC_SF (C : Choice X θ) (hθ : 0 < θ) (u : D.what₂.Word) (τ : D.what₂.Tau) {h : ℝ}
     (hgap : Formalism.QuantumDeterminants.GapAtLeast (epsSH D.R) (lamD D τ) h) (hok : Formalism.FourierDecayAlt.ThreeDimData.GapOK D.R.k D.R.rS h)

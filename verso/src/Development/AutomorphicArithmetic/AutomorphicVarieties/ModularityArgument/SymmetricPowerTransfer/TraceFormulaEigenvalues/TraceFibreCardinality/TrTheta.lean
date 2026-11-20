@@ -3,47 +3,39 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 open Module
 
 /- English proof (translation)
-Establish `key : ∀ F : Submodule ℂ M, (∀ b, F.map (n b) ≤ F) → F ≤ ⨆ b, F.map (n b) → F = ⊥`. Introduce `F hinv hle`. Take `⟨G0, ⟨t, rfl⟩, hmax⟩` from `(wellFounded_gt (α := Submodule ℂ M)).has_min {G | ∃ t : Finset Λ, G = t.sup fun b => F.map (n b)} ⟨⊥, ∅, rfl⟩`. Establish `hall : ∀ b, F.map (n b) ≤ t.sup fun b => F.map (n b)`. Introduce `b`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Assume the negation of the conclusion as `hb`. Apply `hmax _ ⟨insert b t, rfl⟩` to reduce the goal to its premises. Rewrite using `[Finset.sup_insert]`. Conclude with `lt_of_le_of_ne le_sup_right (fun h => hb (by rw [h]; exact le_sup_left))`. Establish `hF : F ≤ t.sup fun b => F.map (n b)` using `hle.trans (iSup_le hall)`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Proceed by induction.
 
-Use `clear hmax hall hle`. Proceed by induction on `t using Finset.induction_on with`. Consider the case `empty => simpa using hF`. Consider the case `insert c t hct ih`. Apply `ih` to reduce the goal to its premises.
+Treat this case separately. Treat this case separately. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `Gmap : (t.sup fun b => F.map (n b)).map (n c) ≤ t.sup fun b => F.map (n b)`. Use `Finset.sup_induction (p := fun P : Submodule ℂ M => P.map (n c) ≤ t.sup fun b => F.map (n b)) (by simp) (fun P1 h1 P2 h2 => ?_) (fun b hb => ?_)` and prove the remaining obligations. Rewrite using `[Submodule.map_sup]`. Conclude with `sup_le h1 h2`. Establish `e : (F.map (n b)).map (n c) = (F.map (n c)).map (n b)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Submodule.map_comp, ← Submodule.map_comp]`. Use `congr 1`. Conclude with `(hc c b).eq`. Use `show (F.map (n b)).map (n c) ≤ _`. Rewrite using `[e]`.
+Rewrite the indicated hypotheses using the stated equalities. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Conclude with `(Submodule.map_mono (hinv c)).trans (Finset.le_sup (f := fun b => F.map (n b)) hb)`. Rewrite `hF` using `[Finset.sup_insert]`. Generalize the expression as in `t.sup (fun b => F.map (n b)) = G at hF Gmap ⊢`. Establish `powinv : ∀ k : ℕ, ∀ z ∈ G, (n c ^ k) z ∈ G`. Introduce `k`.
+Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Proceed by induction on `k with`. Consider the case `zero => intro z hz`. Simplify using `using hz`. Consider the case `succ k ihk`. Introduce `z hz`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[pow_succ', Module.End.mul_apply]`. Conclude with `Gmap (Submodule.mem_map_of_mem (ihk z hz))`. Establish `step : ∀ k : ℕ, ∀ x ∈ F, ∃ y ∈ F, ∃ g ∈ G, x = (n c ^ k) y + g`. Introduce `k`. Proceed by induction on `k with`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Consider the case `zero => intro x hx; exact ⟨x, hx, 0, zero_mem _, by simp⟩`. Consider the case `succ k ihk`. Introduce `x hx`. Take `⟨y, hy, g, hg, rfl⟩` from `ihk x hx`. Take `⟨y1, hy1, g1, hg1, rfl⟩` from `Submodule.mem_sup.mp (hF hy)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨y2, hy2, rfl⟩` from `Submodule.mem_map.mp hy1`. Use `⟨y2, hy2, (n c ^ k) g1 + g, G.add_mem (powinv k g1 hg1) hg, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, show (n c ^ k) (n c y2) = (n c ^ (k + 1)) y2 by`. Rewrite using `[pow_succ, Module.End.mul_apply], add_assoc]`. Take `⟨m, hm⟩` from `hn c`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `x hx`. Take `⟨y, _, g, hg, rfl⟩` from `step m x hx`. Rewrite using `[hm, LinearMap.zero_apply, zero_add]`. Conclude with `hg`. Set `F : ℕ → Submodule ℂ M` to `fun j => Nat.rec ⊤ (fun _ P => ⨆ b, P.map (n b)) j`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Establish `Fsucc : ∀ j, F (j + 1) = ⨆ b, (F j).map (n b)` using `fun j => rfl`. Establish `F0 : F 0 = ⊤` using `rfl`. Establish `anti : ∀ j, F (j + 1) ≤ F j`. Introduce `j`. Proceed by induction on `j with`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero => rw [F0]`. Conclude with `le_top`. Consider the case `succ j ih`. Rewrite using `[Fsucc (j + 1), Fsucc j]`. Conclude with `iSup_mono fun b => Submodule.map_mono ih`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `ninv : ∀ j b, (F j).map (n b) ≤ F (j + 1)` using `fun j b => by`. Rewrite using `[Fsucc]`. Conclude with `le_iSup (fun b => (F j).map (n b)) b`. Establish `Tinv : ∀ j, (F j).map T ≤ F j`. Introduce `j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Proceed by induction on `j with`. Consider the case `zero => rw [F0]`. Conclude with `le_top`. Consider the case `succ j ih`. Rewrite using `[Fsucc, Submodule.map_iSup]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Use `iSup_le fun b => ?_` and prove the remaining obligations. Rewrite using `[← Submodule.map_comp]`. Establish `e : T.comp (n b) = (n (σ b)).comp T` using `hT b`. Rewrite using `[e, Submodule.map_comp]`. Conclude with `(Submodule.map_mono ih).trans (le_iSup (fun b => (F j).map (n b)) (σ b))`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨_, ⟨j, rfl⟩, hmin⟩` from `(wellFounded_lt (α := Submodule ℂ M)).has_min (Set.range F) ⟨_, 0, rfl⟩`. Establish `hstab : F j ≤ F (j + 1)`. Break down `(anti j).lt_or_eq with hlt | heq` into its components or cases. Conclude with `absurd hlt (hmin _ ⟨j + 1, rfl⟩)`. Conclude with `heq.ge`.
-
-Establish `hbot : F j = ⊥` using `key (F j) (fun b => (ninv j b).trans (anti j)) (hstab.trans (Fsucc j).le)`. Establish `hpow : ∀ k x, ((n a * T) ^ k) x ∈ F k`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => intro x`.
-
-Rewrite using `[F0]`. Conclude with `Submodule.mem_top`. Consider the case `succ k ih`. Introduce `x`. Rewrite using `[pow_succ', Module.End.mul_apply, Module.End.mul_apply]`.
-
-Conclude with `ninv k a (Submodule.mem_map_of_mem (Tinv k (Submodule.mem_map_of_mem (ih x))))`. Establish `hnil : IsNilpotent (n a * T)` using `⟨j, LinearMap.ext fun x => by`. Establish `hx` using `hpow j x`. Rewrite `hx` using `[hbot, Submodule.mem_bot]`. Conclude with `hx⟩`.
-
-Conclude with `(LinearMap.isNilpotent_trace_of_isNilpotent hnil).eq_zero`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem trTheta_nil {Λ M : Type} [AddCommGroup M] [Module ℂ M] [FiniteDimensional ℂ M]
     (n : Λ → Module.End ℂ M) (T : Module.End ℂ M) (σ : Λ → Λ)
@@ -150,7 +142,7 @@ private theorem trTheta_nil {Λ M : Type} [AddCommGroup M] [Module ℂ M] [Finit
   exact (LinearMap.isNilpotent_trace_of_isNilpotent hnil).eq_zero
 
 /- English proof (translation)
-Use extensionality with `x`. Establish `hx : x ∈ ⨆ i, V i` using `by rw [htop]; exact Submodule.mem_top`. Conclude with `Submodule.iSup_induction V (motive := fun x => f x = g x) hx (fun i y hy => h i y hy) (by simp) (fun y z hy hz => by simp only [map_add, hy, hz])`.
+By extensionality, compare the relevant components. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem trTheta_ext {ι M : Type} [AddCommGroup M] [Module ℂ M] {V : ι → Submodule ℂ M}
     (htop : ⨆ i, V i = ⊤) {f g : Module.End ℂ M} (h : ∀ i, ∀ x ∈ V i, f x = g x) : f = g := by
@@ -160,11 +152,11 @@ private theorem trTheta_ext {ι M : Type} [AddCommGroup M] [Module ℂ M] {V : �
     (by simp) (fun y z hy hz => by simp only [map_add, hy, hz])
 
 /- English proof (translation)
-Establish `hcompl : IsCompl (V i) (⨆ j, ⨆ (_ : j ≠ i), V j)`. Use `⟨hind i, codisjoint_iff.mpr (eq_top_iff.mpr ?_)⟩` and prove the remaining obligations. Rewrite using `[← htop]`. Use `iSup_le fun j => ?_` and prove the remaining obligations. Distinguish the cases in `hj : j = i`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Substitute `hj` using the available equality. Conclude with `le_sup_left`. Conclude with `le_sup_of_le_right (le_iSup₂_of_le j hj le_rfl)`. Use `⟨(V i).subtype ∘ₗ (V i).projectionOnto _ hcompl, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `congrArg Subtype.val (Submodule.linearProjOfIsCompl_apply_left hcompl ⟨x, hx⟩)`. Introduce `j hj x hx`. Conclude with `congrArg Subtype.val (Submodule.linearProjOfIsCompl_apply_right hcompl ⟨x, (le_iSup₂_of_le (f := fun j (_ : j ≠ i) => V j) j hj le_rfl : V j ≤ ⨆ j, ⨆ (_ : j ≠ i), V j) hx⟩)`. Introduce `x`. Conclude with `((V i).projectionOnto _ hcompl x).2`.
+A detailed English derivation is pending.
 -/
 private theorem trTheta_proj {ι M : Type} [AddCommGroup M] [Module ℂ M] {V : ι → Submodule ℂ M}
     (hind : iSupIndep V) (htop : ⨆ i, V i = ⊤) (i : ι) :
@@ -189,61 +181,53 @@ private theorem trTheta_proj {ι M : Type} [AddCommGroup M] [Module ℂ M] {V : 
     exact ((V i).projectionOnto _ hcompl x).2
 
 /- English proof (translation)
-Introduce `Λ M _ _ _ u Θ σ hc hΘ`. Set `V : (Λ → ℂ) → Submodule ℂ M` to `fun χ => ⨅ a, (u a).maxGenEigenspace (χ a)`. Establish `memV : ∀ χ x, x ∈ V χ ↔ ∀ b, ∃ k : ℕ, ((u b - χ b • (1 : End ℂ M)) ^ k) x = 0` using `fun χ x => Module.End.mem_iInf_maxGenEigenspace_iff u χ x`. Establish `hmaps : ∀ a b φ, Set.MapsTo (u a) ((u b).maxGenEigenspace φ) ((u b).maxGenEigenspace φ)` using `fun a b φ => Module.End.mapsTo_maxGenEigenspace_of_comm (hc b a) φ`. Establish `hind : iSupIndep V` using `Module.End.independent_iInf_maxGenEigenspace_of_forall_mapsTo u hmaps`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `htop : ⨆ χ, V χ = ⊤` using `Module.End.iSup_iInf_maxGenEigenspace_eq_top_of_forall_mapsTo u hmaps (fun a => Module.End.iSup_maxGenEigenspace_eq_top (u a))`. Establish `hfin : {χ | V χ ≠ ⊥}.Finite` using `WellFoundedGT.finite_ne_bot_of_iSupIndep hind`. Establish `hint : DirectSum.IsInternal V` using `(DirectSum.isInternal_submodule_iff_iSupIndep_and_iSup_eq_top V).mpr ⟨hind, htop⟩`. Use `choose P hP1 hP2 hP3 using trTheta_proj hind htop`. Establish `uV : ∀ a χ, ∀ x ∈ V χ, u a x ∈ V χ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a χ x hx`. Simplify using `only [V, Submodule.mem_iInf] at hx ⊢`. Conclude with `fun b => hmaps a b (χ b) (hx b)`. Establish `ΘV : ∀ χ ψ : Λ → ℂ, (∀ b, ψ b = χ (σ.symm b)) → ∀ x ∈ V χ, Θ x ∈ V ψ`. Introduce `χ ψ hψ x hx`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `hx`, the goal using `[memV]`. Introduce `b`. Take `⟨k, hk⟩` from `hx (σ.symm b)`. Use `⟨k, ?_⟩` and prove the remaining obligations. Rewrite using `[hψ b]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hs : SemiconjBy Θ (u (σ.symm b) - χ (σ.symm b) • (1 : End ℂ M)) (u b - χ (σ.symm b) • (1 : End ℂ M))`. Unfold `SemiconjBy`. Rewrite using `[mul_sub, sub_mul, hΘ, σ.apply_symm_apply, mul_smul_comm, smul_mul_assoc, mul_one, one_mul]`. Establish `h2` using `LinearMap.congr_fun (hs.pow_right k) x`. Rewrite `h2` using `[Module.End.mul_apply, Module.End.mul_apply, hk, map_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h2.symm`. Establish `fixOK : ∀ χ : Λ → ℂ, (∀ b, χ (σ b) = χ b) → ∀ b, χ b = χ (σ.symm b)` using `fun χ h b => by rw [← h (σ.symm b), σ.apply_symm_apply]`. Establish `nfix : ∀ χ : Λ → ℂ, ¬ (∀ b, χ (σ b) = χ b) → (fun b => χ (σ.symm b)) ≠ χ`. Introduce `χ h he`. Apply `h` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `b`. Establish `h3` using `congrFun he (σ b)`. Simplify using `only [Equiv.symm_apply_apply] at h3`. Conclude with `h3.symm`. Use `set F := hfin.toFinset with hF`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `sumP : ∑ χ ∈ F, P χ = 1`. Apply `trTheta_ext htop` to reduce the goal to its premises. Introduce `ψ x hx`. Rewrite using `[LinearMap.sum_apply, Module.End.one_apply]`. Distinguish the cases in `hψ : ψ ∈ F`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[Finset.sum_eq_single ψ (fun χ _ hne => hP2 χ ψ (Ne.symm hne) x hx) (fun h => absurd hψ h)]`. Conclude with `hP1 ψ x hx`. Establish `hb : V ψ = ⊥`. Rewrite `hψ` using `[hF, Set.Finite.mem_toFinset]`. Simplify using `using hψ`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Establish `hx0 : x = 0`. Establish `hx'` using `hx`. Rewrite `hx'` using `[hb, Submodule.mem_bot]`. Conclude with `hx'`. Substitute `hx0` using the available equality.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Simplify using the standard rewrite rules. Establish `hPΘ : ∀ χ, Set.MapsTo (P χ * Θ) (V χ) (V χ)` using `fun χ x _ => hP3 χ (Θ x)`. Use `⟨F.filter (fun χ => ∀ b, χ (σ b) = χ b), fun χ => LinearMap.trace ℂ (V χ) ((P χ * Θ).restrict (hPΘ χ)), ?_, ?_⟩` and prove the remaining obligations. Introduce `χ hχ`. Rewrite `hχ` using `[Finset.mem_filter, hF, Set.Finite.mem_toFinset]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨hχ.1, hχ.2⟩`. Introduce `a`. Establish `decomp : u a * Θ = ∑ χ ∈ F, u a * Θ * P χ`. Rewrite using `[← Finset.mul_sum, sumP, mul_one]`. Rewrite using `[decomp, map_sum, Finset.sum_filter]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun χ hχ => ?_` and prove the remaining obligations. Use `split_ifs with hfix`. Establish `hg : ∀ ψ, Set.MapsTo (u a * Θ * P χ) (V ψ) (V ψ)`. Introduce `ψ x hx`. Distinguish the cases in `h : ψ = χ`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Substitute `h show u a (Θ (P ψ x)) ∈ V ψ` using the available equality. Rewrite using `[hP1 ψ x hx]`. Conclude with `uV a ψ _ (ΘV ψ ψ (fixOK ψ hfix) x hx)`. Use `show u a (Θ (P χ x)) ∈ V ψ`. Rewrite using `[hP2 χ ψ h x hx, map_zero, map_zero]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `zero_mem _`. Rewrite using `[LinearMap.trace_eq_sum_trace_restrict' hint hfin hg]`. Rewrite using `[Finset.sum_eq_single χ ?_ (fun h => absurd hχ h)]`. Establish `hN : ∀ b, Set.MapsTo (u b - χ b • (1 : End ℂ M)) (V χ) (V χ)`. Introduce `b x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply]`. Conclude with `(V χ).sub_mem (uV b χ x hx) ((V χ).smul_mem _ hx)`. Set `N : Λ → Module.End ℂ (V χ)` to `fun b => (u b - χ b • (1 : End ℂ M)).restrict (hN b)`. Set `T : Module.End ℂ (V χ)` to `(P χ * Θ).restrict (hPΘ χ)`. Establish `hEq : (u a * Θ * P χ).restrict (hg χ) = (χ a • 1 + N a) * T`.
+Normalize the expressions using the abelian group laws. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `y`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `hΘy : Θ y ∈ V χ` using `ΘV χ χ (fixOK χ hfix) y y.2`. Express the relevant statement in the definitionally equal form `u a (Θ (P χ y)) = χ a • P χ (Θ y) + (u a - χ a • (1 : End ℂ M)) (P χ (Θ y))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hP1 χ _ y.2, hP1 χ _ hΘy, LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply]`. Normalize the expressions using the abelian group laws. Establish `hcN : ∀ b b', Commute (N b) (N b')`. Introduce `b b'`. Establish `h0 : Commute (u b - χ b • (1 : End ℂ M)) (u b' - χ b' • (1 : End ℂ M))` using `Commute.sub_left ((hc b b').sub_right ((Commute.one_right (u b)).smul_right (χ b'))) ((Commute.one_left _).smul_left (χ b))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show N b * N b' = N b' * N b`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `y`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [N, Module.End.mul_apply, LinearMap.restrict_coe_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `LinearMap.congr_fun h0.eq y`. Establish `hnN : ∀ b, IsNilpotent (N b)` using `fun b => Module.End.isNilpotent_restrict_of_le (iInf_le (fun a => (u a).maxGenEigenspace (χ a)) b) (Module.End.isNilpotent_restrict_genEigenspace_top (u b) (χ b))`. Establish `hTN : ∀ b, T * N b = N (σ b) * T`. Introduce `b`. Establish `hE : Θ * (u b - χ b • (1 : End ℂ M)) = (u (σ b) - χ (σ b) • (1 : End ℂ M)) * Θ`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hfix b, mul_sub, sub_mul, hΘ, mul_smul_comm, smul_mul_assoc, mul_one, one_mul]`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `y`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `m1 : Θ ((u b - χ b • (1 : End ℂ M)) y) ∈ V χ` using `ΘV χ χ (fixOK χ hfix) _ (hN b y.2)`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `m2 : Θ y ∈ V χ` using `ΘV χ χ (fixOK χ hfix) y y.2`. Express the relevant statement in the definitionally equal form `P χ (Θ ((u b - χ b • (1 : End ℂ M)) y)) = (u (σ b) - χ (σ b) • (1 : End ℂ M)) (P χ (Θ y))`. Rewrite using `[hP1 χ _ m1, hP1 χ _ m2]`. Conclude with `LinearMap.congr_fun hE y`. Rewrite using `[hEq, add_mul, map_add, smul_mul_assoc, one_mul, map_smul, smul_eq_mul, trTheta_nil N T σ hcN hnN hTN a, add_zero, mul_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `ψ _ hne`. Establish `hz : (u a * Θ * P χ).restrict (hg ψ) = 0`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `y`. Apply `Subtype.ext` to reduce the goal to its premises.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `u a (Θ (P χ y)) = 0`. Rewrite using `[hP2 χ ψ hne y.1 y.2, map_zero, map_zero]`. Rewrite using `[hz, map_zero]`. Apply `LinearMap.trace_eq_zero_of_mapsTo_ne hint (fun ψ => if ψ = χ then (fun b => χ (σ.symm b)) else χ)` to reduce the goal to its premises. Introduce `ψ`.
-
-Distinguish the cases in `h : ψ = χ`. Substitute `h` using the available equality. Rewrite using `[if_pos rfl]`. Conclude with `nfix ψ hfix`. Rewrite using `[if_neg h]`.
-
-Conclude with `fun e => h e.symm`. Introduce `ψ x hx`. Distinguish the cases in `h : ψ = χ`. Substitute `h` using the available equality. Rewrite using `[if_pos rfl]`.
-
-Use `show u a (Θ (P ψ x)) ∈ V _`. Rewrite using `[hP1 ψ x hx]`. Conclude with `uV a _ _ (ΘV ψ _ (fun b => rfl) x hx)`. Rewrite using `[if_neg h] show u a (Θ (P χ x)) ∈ V χ`. Rewrite using `[hP2 χ ψ h x hx, map_zero, map_zero]`.
-
-Conclude with `zero_mem _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Sym.Tf.trTheta :
     UpperTheory.V.Z.Sym.Tf.TrTheta := by

@@ -9,7 +9,7 @@ open Formalism.BasicNotions Formalism.BasicNotions.Loc GlobalTheory.Cyc
 namespace GlobalTheory.Cyc
 
 /- English proof (translation)
-The claim follows from `AlmostTrace.trace_almost_onto_of_levels (GlobalTheory.Cyc.exists_trace_norm_ge l) K L S hKL hS hrep a ha ha1`.
+A detailed English derivation is pending.
 -/
 theorem trace_almost_onto (l : ℕ) [Fact l.Prime] (K : FinExt l)
     (L : IntermediateField ℚ_[l] (Om l)) (S : Finset (GQ l)) (hKL : Kinf K ≤ L)

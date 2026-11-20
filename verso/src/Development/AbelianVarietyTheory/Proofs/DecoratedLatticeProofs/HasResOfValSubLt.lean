@@ -23,9 +23,9 @@ variable [StarRing E] {n : ℕ}
 variable {hc : Formalism.BasicNotions.CMData F E} {ST SG Q : Finset (HeightOneSpectrum (𝓞 E))}
 
 /- English proof (translation)
-Use `HasRes.unique (h.f P _ (hN ▸ (Formalism.L2.Col.mem_stdLat _).2 fun i => ⟨x i, rfl⟩) r hr) ?_` and prove the remaining obligations. Use `choose ρ hρ hv using hrow`. Use `⟨∑ i, ρ i * x i, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [map_sum, map_mul, hρ, ite_mul, zero_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Simplify using `only [Col2.pullV, Matrix.mulVec, dotProduct, map_sum, map_mul, adAt_inclE]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Finset.sum_sub_distrib]`. Use `Valuation.map_sum_lt _ one_ne_zero fun i _ => ?_` and prove the remaining obligations. Use `show Valued.v (_ * algebraMap E (P.1.adicCompletion E) (algebraMap (𝓞 E) E (x i)) - _) < 1`. Rewrite using `[← _root_.sub_mul, map_mul, valued_algebraMap]`. Conclude with `(mul_le_of_le_one_right' (P.1.valuation_le_one (x i))).trans_lt (hv i)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fn_eq {p : DecoF E n ST SG Q} {k : GL (Fin n) (AfE F E)} (h : IsPtOf hc k p) (hN : p.deco.1.N = Formalism.L2.Col.stdLat E n) (P : ST)
     (r : Fin n) (hr : r.1 + 1 = n) (c : 𝓞 E)

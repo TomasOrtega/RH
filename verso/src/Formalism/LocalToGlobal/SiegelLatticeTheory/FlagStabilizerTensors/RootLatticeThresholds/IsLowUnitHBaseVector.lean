@@ -10,9 +10,7 @@ open Formalism.BasicNotions Formalism.MainNotions.S Formalism.L2.SG.HidaSetting 
 namespace Formalism.L2.SG.Pf
 
 /- English proof (translation)
-Take `⟨P, hP, hmem⟩` from `C.y_low τ`. Use `⟨P, hP, ?_, hmem⟩` and prove the remaining obligations. Take `⟨-, hiso⟩` from `Formalism.L2.SG.Pf.WuBL.sigB_rep C τ`. Use `show ‖X.B.σ (vOf X τ) (C.Q τ * C.y τ * C.Qi τ) (X.B.w (vOf X τ))‖ = 1`. Rewrite using `[← (X.low (vOf X τ)).1]`.
-
-Conclude with `hiso (C.y τ) (C.y_mem τ) (X.B.w (vOf X τ))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLowUnitH_base_vector {D : D7} {X : HidaSetting D} {θ : ℝ} (C : Choice X θ) (τ : D.what₂.Tau) :
     IsLowUnitH D.R.k D.R.rS (epsSH D.R) (lamD D τ) (sigB X (C.Q τ) (C.Qi τ) τ) (v0Of C τ) := by
@@ -26,7 +24,7 @@ theorem isLowUnitH_base_vector {D : D7} {X : HidaSetting D} {θ : ℝ} (C : Choi
 variable [Fact Formalism.L2.SG.SplitPrimeNormLemmas.CoefWeightedLoc] in
 
 /- English proof (translation)
-The claim follows from `goodSRest_of_loc (Formalism.L2.SG.Pf.LocF.locFactor_holds hG C) hB u u' τ (Formalism.L2.SG.Pf.WuDec.lowSmoothSK (dsTr C τ) (isLowUnitH_base_vector C τ)) hT`.
+A detailed English derivation is pending.
 -/
 theorem goodSRest_all {D : D7} {X : HidaSetting D} {θ : ℝ} (hG : Formalism.L2.SG.ConcreteSettingExists.GapHyp D)
     (hT : Formalism.BasicNotions.dsigTie D) {C : Choice X θ} (hB : WuBessel C) (u u' : D.what₂.Word) (τ : D.what₂.Tau) :

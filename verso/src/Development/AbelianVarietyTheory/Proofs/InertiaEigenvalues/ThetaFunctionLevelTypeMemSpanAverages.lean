@@ -16,9 +16,9 @@ variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.w
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
 
 /- English proof (translation)
-Establish `h` using `levFn_withP (V := Vc D i) (β := R.βV i) (L := R.datVt i t) (R.datVt i t).P (finE (Vc D i) κ)`. Establish `h1 : Formalism.L2.DIV.ext1 (R.datVt i t).P.H (R.datVt i t).P.chi (Formalism.L2.DIV.rTup (R.βV i) (R.datVt i t) (finE (Vc D i) κ)) = 1`. Unfold `Formalism.L2.DIV.ext1`. Use `split_ifs with hm`. Establish `: (⟨_, hm⟩ : (R.datVt i t).P.H) = 1` using `Subtype.ext (Subgroup.mem_bot.1 hm)`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, map_one]`. Both sides reduce to the same expression. Unfold `levChi`. Rewrite using `[show R.datVt i t = withP (R.datVt i t) (R.datVt i t).P from rfl, h, h1, one_mul]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem levChi_datVt (R : RealDat D A Ks) (i : Fin D.R.m) (t : T) (κ : GA D (Vc D i)) :
     levChi (Vc D i) (R.βV i) (R.datVt i t) κ = levChi (Vc D i) (R.βV i) (flagL (R.datVt i t)) κ := by
@@ -34,7 +34,7 @@ theorem levChi_datVt (R : RealDat D A Ks) (i : Fin D.R.m) (t : T) (κ : GA D (Vc
   rfl
 
 /- English proof (translation)
-Unfold `levChi`. Rewrite using `[map_mul, levFn_flag_mul h₁ h₂, Units.val_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem chF_mul (R : RealDat D A Ks) (i : Fin D.R.m) (t : T) {κ₁ κ₂ : GA D (Vc D i)}
     (h₁ : finE (Vc D i) κ₁ ∈ Formalism.L2.DIV.parLev D.sp.cm (Vc D i).gram (R.βV i) (R.datVt i t))
@@ -45,16 +45,16 @@ theorem chF_mul (R : RealDat D A Ks) (i : Fin D.R.m) (t : T) {κ₁ κ₂ : GA D
   rw [map_mul, levFn_flag_mul h₁ h₂, Units.val_mul]
 
 /- English proof (translation)
-Rewrite using `[map_one]`. Conclude with `Subgroup.one_mem _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem parLev_one (R : RealDat D A Ks) (i : Fin D.R.m) (t : T) :
     finE (Vc D i) 1 ∈ Formalism.L2.DIV.parLev D.sp.cm (Vc D i).gram (R.βV i) (R.datVt i t) := by
   rw [map_one]; exact Subgroup.one_mem _
 
 /- English proof (translation)
-Establish `h` using `chF_mul R i t (parLev_one R i t) (parLev_one R i t)`. Rewrite `h` using `[mul_one]`. Establish `hne` using `levChi_ne_zero (β := R.βV i) (flagL (R.datVt i t)) (1 : GA D (Vc D i))`. Establish `: levChi (Vc D i) (R.βV i) (flagL (R.datVt i t)) 1 * (levChi (Vc D i) (R.βV i) (flagL (R.datVt i t)) 1 - 1) = 0`. Rewrite using `[mul_sub, ← h]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Break down `mul_eq_zero.1 this with h0 | h0` into its components or cases. Conclude with `absurd h0 hne`. Conclude with `sub_eq_zero.1 h0`.
+Expand and normalize the polynomial expressions, which then agree. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem chF_one (R : RealDat D A Ks) (i : Fin D.R.m) (t : T) :
     levChi (Vc D i) (R.βV i) (flagL (R.datVt i t)) 1 = 1 := by
@@ -68,9 +68,9 @@ theorem chF_one (R : RealDat D A Ks) (i : Fin D.R.m) (t : T) :
   · exact sub_eq_zero.1 h0
 
 /- English proof (translation)
-Establish `hi : finE (Vc D i) κ⁻¹ ∈ Formalism.L2.DIV.parLev D.sp.cm (Vc D i).gram (R.βV i) (R.datVt i t)`. Rewrite using `[map_inv]`. Conclude with `Subgroup.inv_mem _ h`. Establish `e` using `chF_mul R i t h hi`. Rewrite `e` using `[mul_inv_cancel, chF_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hne` using `levChi_ne_zero (β := R.βV i) (flagL (R.datVt i t)) κ`. Clear the denominators using the available nonvanishing facts. Rewrite using `[mul_comm]`. Conclude with `e.symm`.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chF_inv (R : RealDat D A Ks) (i : Fin D.R.m) (t : T) {κ : GA D (Vc D i)}
     (h : finE (Vc D i) κ ∈ Formalism.L2.DIV.parLev D.sp.cm (Vc D i).gram (R.βV i) (R.datVt i t)) :
@@ -84,9 +84,9 @@ theorem chF_inv (R : RealDat D A Ks) (i : Fin D.R.m) (t : T) {κ : GA D (Vc D i)
   rw [mul_comm]; exact e.symm
 
 /- English proof (translation)
-Use `⟨(GfC (Vc D i)).mul_mem ((GfC (Vc D i)).mul_mem hκG hj.1) ((GfC (Vc D i)).inv_mem hκG), ?_⟩` and prove the remaining obligations. Establish `hj2 : finE (Vc D i) j ∈ Formalism.L2.DIV.lev D.sp.cm (Vc D i).gram (R.βV i) (R.datVt i t)` using `hj.2`. Establish `hki : (finE (Vc D i) κ)⁻¹ ∈ Formalism.L2.DIV.parLev D.sp.cm (Vc D i).gram (R.βV i) (R.datVt i t)` using `Subgroup.inv_mem _ hκ`. Use `show finE (Vc D i) (κ * j * κ⁻¹) ∈ Formalism.L2.DIV.lev D.sp.cm (Vc D i).gram (R.βV i) (R.datVt i t)`. Rewrite using `[map_mul, map_mul, map_inv]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Subgroup.mul_mem _ (Subgroup.mul_mem _ hκ hj2.1) hki, ?_⟩` and prove the remaining obligations. Establish `h1 : Formalism.L2.DIV.rTup (R.βV i) (R.datVt i t) (finE (Vc D i) j) = 1` using `Subgroup.mem_bot.1 hj2.2`. Rewrite using `[Formalism.L2.DIV.rTup_mul (Subgroup.mul_mem _ hκ hj2.1) hki, Formalism.L2.DIV.rTup_mul hκ hj2.1, h1, Formalism.L2.DIV.rTup_inv hκ, mul_one, mul_inv_cancel]`. Conclude with `Subgroup.one_mem _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_mem_lev (R : RealDat D A Ks) (i : Fin D.R.m) (t : T) {κ j : GA D (Vc D i)} (hκG : κ ∈ GfC (Vc D i))
     (hκ : finE (Vc D i) κ ∈ Formalism.L2.DIV.parLev D.sp.cm (Vc D i).gram (R.βV i) (R.datVt i t))
@@ -104,11 +104,11 @@ theorem conj_mem_lev (R : RealDat D A Ks) (i : Fin D.R.m) (t : T) {κ j : GA D (
   exact Subgroup.one_mem _
 
 /- English proof (translation)
-Use `⟨(hP i t).datum.om_pres _ φ hφ.1, fun j hj => ?_⟩` and prove the remaining obligations. Establish `hc` using `conj_mem_lev R i t hκG hκ hj`. Establish `e : ((j, 1) : GA D (Vc D i) × GA D (Wc D i)) * (κ⁻¹, 1) = (κ⁻¹, 1) * (κ * j * κ⁻¹, 1)`. Simplify using `only [Prod.mk_mul_mk, mul_one]`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Use `group`. Establish `hj2 : finE (Vc D i) j ∈ Formalism.L2.DIV.parLev D.sp.cm (Vc D i).gram (R.βV i) (R.datVt i t)` using `hj.2.1`. Establish `hki : finE (Vc D i) κ⁻¹ ∈ Formalism.L2.DIV.parLev D.sp.cm (Vc D i).gram (R.βV i) (R.datVt i t)`. Rewrite using `[map_inv]`. Conclude with `Subgroup.inv_mem _ hκ`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hchi : levChi (Vc D i) (R.βV i) (R.datVt i t) (κ * j * κ⁻¹) = levChi (Vc D i) (R.βV i) (R.datVt i t) j`. Rewrite using `[levChi_datVt, levChi_datVt, chF_mul R i t (by rw [map_mul]; exact Subgroup.mul_mem _ hκ hj2) hki, chF_mul R i t hκ hj2, chF_inv R i t hκ]`. Establish `hne` using `levChi_ne_zero (β := R.βV i) (flagL (R.datVt i t)) κ`. Clear the denominators using the available nonvanishing facts. Rewrite using `[← Module.End.mul_apply, ← map_mul, e, map_mul, Module.End.mul_apply, hφ.2 _ hc, map_smul, hchi]`.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem typeVec_move (R : RealDat D A Ks) (i : Fin D.R.m) (t : T) (hP : R.FullP) {κ : GA D (Vc D i)}
     (hκG : κ ∈ GfC (Vc D i))
@@ -135,13 +135,13 @@ theorem levG_flag1 (R : RealDat D A Ks) (i : Fin D.R.m) (t : T) :
     levG (Vc D i) (R.βV i) (flag1L (R.datVt i t)) = levG (Vc D i) (R.βV i) (R.datVt i t) := rfl
 
 /- English proof (translation)
-Establish `hd : κ⁻¹ * κ' ∈ levG (Vc D i) (R.βV i) (R.datVt i t)`. Establish `h0` using `lift_div_mem hκ hκ'`. Rewrite `h0` using `[levG_flag1]`. Conclude with `h0`. Establish `hdi : (κ⁻¹ * κ')⁻¹ ∈ levG (Vc D i) (R.βV i) (R.datVt i t)` using `Subgroup.inv_mem _ hd`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm` using `typeVec_move R i t hP hκ.1 hκ.2.1 hφ`. Establish `e : ((κ'⁻¹, 1) : GA D (Vc D i) × GA D (Wc D i)) = ((κ⁻¹ * κ')⁻¹, 1) * (κ⁻¹, 1)`. Simplify using `only [Prod.mk_mul_mk, mul_one]`. Use `congr 1`. Use `group`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdp : finE (Vc D i) (κ⁻¹ * κ') ∈ Formalism.L2.DIV.parLev D.sp.cm (Vc D i).gram (R.βV i) (R.datVt i t)` using `hd.2.1`. Establish `hc : levChi (Vc D i) (R.βV i) (flagL (R.datVt i t)) κ' = levChi (Vc D i) (R.βV i) (flagL (R.datVt i t)) κ * levChi (Vc D i) (R.βV i) (flagL (R.datVt i t)) (κ⁻¹ * κ')`. Rewrite using `[← chF_mul R i t hκ.2.1 hdp, mul_inv_cancel_left]`. Rewrite using `[e, map_mul, Module.End.mul_apply, hm.2 _ hdi, levChi_datVt, chF_inv R i t hdp, hc, smul_smul]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `levChi_ne_zero (β := R.βV i) (flagL (R.datVt i t)) κ`. Establish `h2` using `levChi_ne_zero (β := R.βV i) (flagL (R.datVt i t)) (κ⁻¹ * κ')`. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem pi_lift_indep (R : RealDat D A Ks) (i : Fin D.R.m) (t : T) (hP : R.FullP) {g0 : Formalism.L2.DIV.G0 (R.datVt i t).Pg (R.datVt i t).r}
     {κ κ' : GA D (Vc D i)} (hκ : IsLevelLift (Vc D i) (R.βV i) (R.datVt i t) g0 κ)
@@ -173,23 +173,23 @@ namespace GlobalTheory.DownLift.GenFinite
 open LiftOp
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T A Ks _ _ _ R F hG hP i t f hf`. Distinguish the cases in `hex : ∃ κ : G → GA D (Vc D i), IsLifts R i t κ`. Use `swap`. Conclude with `Submodule.subset_span (Or.inl ⟨hf, fun PP a _ tr ε _ κ hκ => absurd ⟨κ, hκ⟩ hex⟩)`. Take `⟨κ, hκ⟩` from `hex`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Set `S : Submodule ℂ (WO (Vc D i) (Wc D i) → ℂ)` to `{ carrier := {φ | TypeVec R i t φ} add_mem' := fun {a b} ha hb => ⟨theta_add ha.1 hb.1, fun j hj => by rw [map_add, ha.2 j hj, hb.2 j hj, smul_add]⟩ zero_mem' := ⟨by simpa using theta_smul (0 : ℂ) hf.1, fun j hj => by rw [map_zero, smul_zero]⟩ smul_mem' := fun c a ha => ⟨theta_sm …`. Rewrite using `[map_smul, ha.2 j hj, smul_comm]⟩ }`. Establish `hSm : ∀ φ, φ ∈ S ↔ TypeVec R i t φ` using `fun _ => Iff.rfl`. Set `π : G → Module.End ℂ (WO (Vc D i) (Wc D i) → ℂ)` to `fun g => (levChi (Vc D i) (R.βV i) (flagL (R.datVt i t)) (κ g))⁻¹ • R.ωP i t ((κ g)⁻¹, 1)`. Establish `hπ : ∀ g φ, π g φ = (levChi (Vc D i) (R.βV i) (flagL (R.datVt i t)) (κ g))⁻¹ • R.ωP i t ((κ g)⁻¹, 1) φ` using `fun _ _ => rfl`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hS : ∀ g, ∀ v ∈ S, π g v ∈ S`. Introduce `g v hv`. Rewrite using `[hπ]`. Conclude with `S.smul_mem _ ((hSm _).2 (typeVec_move R i t hP (hκ g).1 (hκ g).2.1 ((hSm _).1 hv)))`. Establish `hlift1 : IsLevelLift (Vc D i) (R.βV i) (R.datVt i t) (R.eG 1) 1` using `⟨Subgroup.one_mem _, parLev_one R i t, by rw [map_one, Formalism.L2.DIV.rTup_one, map_one]; rfl⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : ∀ v ∈ S, π 1 v = v`. Introduce `v hv`. Rewrite using `[hπ, pi_lift_indep R i t hP hlift1 (hκ 1) ((hSm _).1 hv), chF_one, inv_one, one_smul, inv_one, ← Prod.one_eq_mk, map_one]`. Both sides reduce to the same expression. Establish `hmul : ∀ g h, ∀ v ∈ S, π (g * h) v = π h (π g v)`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `g h v hv`. Establish `hl : IsLevelLift (Vc D i) (R.βV i) (R.datVt i t) (R.eG (g * h)) (κ g * κ h)`. Use `⟨(GfC (Vc D i)).mul_mem (hκ g).1 (hκ h).1, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `Subgroup.mul_mem _ (hκ g).2.1 (hκ h).2.1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the hypotheses and the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[map_mul, Formalism.L2.DIV.rTup_mul (hκ g).2.1 (hκ h).2.1, (hκ g).2.2, (hκ h).2.2, map_mul]`. Both sides reduce to the same expression. Rewrite using `[hπ, pi_lift_indep R i t hP hl (hκ (g * h)) ((hSm _).1 hv), hπ, hπ, map_smul, smul_smul, ← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, mul_one, chF_mul R i t (hκ g).2.1 (hκ h).2.1, _root_.mul_inv_rev, _root_.mul_inv_rev]`. Set `C : Set (G → ℂ)` to `{c | ∃ (PP : R.Pg) (a : Fin D.R.r → kP PP.1), a ≠ 0 ∧ ∃ (tr : Bool) (ε : ℤ), (ε = 1 ∨ ε = -1) ∧ c = mirC R i PP a tr ε}`. Establish `hC : ∀ c ∈ C, ∀ x : G, (fun g => c (x * g * x⁻¹)) ∈ C`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Introduce and unpack `c ⟨PP, a, ha, tr, ε, hε, rfl⟩ x`. Take `⟨a', ha', he⟩` from `GlobalTheory.T.mirabolicDetCharacterFunction_conj D G Pl0 T A Ks R i PP a ha tr ε x`. Conclude with `⟨PP, a', ha', tr, ε, hε, funext he⟩`. Establish `havg : ∀ (PP : R.Pg) (a : Fin D.R.r → kP PP.1) (tr : Bool) (ε : ℤ) (κ' : G → GA D (Vc D i)), IsLifts R i t κ' → ∀ w ∈ S, avgW R i t PP a tr ε κ' w = ∑ g, mirC R i PP a tr ε g • π g w`. Introduce `PP a tr ε κ' hκ' w hw`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Unfold `avgW`. Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations. Rewrite using `[hπ, ← pi_lift_indep R i t hP (hκ g) (hκ' g) ((hSm _).1 hw), smul_smul]`. Establish `key` using `GlobalTheory.T.mem_span_annihilated_union_class_averages S π hS h1 hmul C hC f hf`. Use `Submodule.span_mono ?_ key` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Prove the first alternative. Rewrite the conclusion using the stated equalities. Prove the second alternative.
 
-Introduce and unpack `w (⟨hwS, hw⟩ | ⟨c, ⟨PP, a, ha, tr, ε, hε, rfl⟩, w', hw'S, rfl⟩)`. Conclude with `Or.inl ⟨hwS, fun PP a ha tr ε hε κ' hκ' => by`. Rewrite using `[havg PP a tr ε κ' hκ' w hwS]`. Conclude with `hw _ ⟨PP, a, ha, tr, ε, hε, rfl⟩⟩`. Conclude with `Or.inr ⟨PP, a, ha, tr, ε, hε, κ, hκ, w', hw'S.1, (havg PP a tr ε κ hκ w' hw'S).symm⟩`.
+A detailed English derivation is pending.
 -/
 theorem cleanSpan : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (A : FamIn D.what₂.LL G Pl0 T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), GlobalTheory.LiftRows.Given R F → R.FullP → ∀ (i : Fin D.R.m) (t : T) (f : WO (Vc D i) (Wc D i) → ℂ), GlobalTheory.DownLift.GenFinite.TypeVec R i t f → f ∈ Submodule.span ℂ ({φ | GlobalTheory.DownLift.GenFinite.TypeVec R i t φ ∧ GlobalTheory.DownLift.GenFinite.Clean R i t φ} ∪ GlobalTheory.DownLift.GenFinite.AvgIm R i t) := by
   intro D G _ _ Pl0 T A Ks _ _ _ R F hG hP i t f hf

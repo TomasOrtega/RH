@@ -13,7 +13,7 @@ namespace GlobalTheory.HilbertSamuel.Model
 variable {F : Type} [Field F] [NumberField F] (G : Geo F)
 
 /- English proof (translation)
-Establish `h : G.lattice.FG` using `Submodule.fg_span (Set.finite_range _)`. Establish `: Module.Finite (𝓞 F) G.lattice` using `Module.Finite.iff_fg.2 h`. Establish `: Module.Finite ℤ G.lattice` using `Module.Finite.trans (𝓞 F) _`. Establish `h' : (G.lattice.restrictScalars ℤ).FG` using `Module.Finite.iff_fg.1 this`. Conclude with `Submodule.fg_iff_exists_fin_generating_family.1 h'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_intGens : ∃ (n : ℕ) (w : Fin n → Fin G.N → F),
     Submodule.span ℤ (Set.range w) = G.lattice.restrictScalars ℤ := by
@@ -37,9 +37,9 @@ def regen {n : ℕ} (w : Fin n → Fin G.N → F) (hw : Submodule.span F (Set.ra
     U_le := G.U_le }
 
 /- English proof (translation)
-Take `⟨n, w, h⟩` from `exists_intGens G`. Establish `hm (k) : w k ∈ G.lattice` using `h.le (Submodule.subset_span ⟨k, rfl⟩)`. Establish `hl : Submodule.span (𝓞 F) (Set.range w) = G.lattice` using `le_antisymm (Submodule.span_le.2 (Set.range_subset_iff.2 hm)) fun u hu => Submodule.span_le_restrictScalars ℤ (𝓞 F) _ (h.ge hu)`. Establish `hw : Submodule.span F (Set.range w) = ⊤`. Rewrite using `[← Submodule.span_span_of_tower (𝓞 F), hl, HermSys.lattice, Submodule.span_span_of_tower]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `G.geom.alg.spans`. Use `⟨n, w, hw, 1 + ∑ k, ∑ σ : F →+* ℂ, G.normAt σ (w k), ⟨fun u hu => h.ge (hl.le hu), fun k σ => ?_, ?_⟩, hl⟩` and prove the remaining obligations. Establish `h0 (k) (σ : F →+* ℂ) : 0 ≤ G.normAt σ (w k)` using `Real.sqrt_nonneg _`. Conclude with `((Finset.single_le_sum (fun σ _ => h0 k σ) (Finset.mem_univ σ)).trans (Finset.single_le_sum (f := fun k => ∑ σ : F →+* ℂ, G.normAt σ (w k)) (fun k _ => Finset.sum_nonneg fun σ _ => h0 k σ) (Finset.mem_univ k))).trans (le_add_of_nonneg_left zero_le_one)`. Conclude with `le_add_of_nonneg_right (Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => Real.sqrt_nonneg _)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_regen : ∃ (n : ℕ) (w : Fin n → Fin G.N → F) (hw : _) (Λ : ℝ),
     (regen G w hw Λ).ShortGenerators ∧ (regen G w hw Λ).lattice = G.lattice := by
@@ -59,14 +59,14 @@ theorem exists_regen : ∃ (n : ℕ) (w : Fin n → Fin G.N → F) (hw : _) (Λ 
   · exact le_add_of_nonneg_right (Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => Real.sqrt_nonneg _)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨h.bir.1, h.bir.2, h.bir.3, h.bir.4, h.bir.5⟩, h.nef, h.big⟩`.
+Supply the required witnesses or components.
 -/
 theorem positivity_regen (h : G.Positivity) {n : ℕ} (w : Fin n → Fin G.N → F) (hw) (Λ : ℝ) :
     (regen G w hw Λ).Positivity :=
   ⟨⟨h.bir.1, h.bir.2, h.bir.3, h.bir.4, h.bir.5⟩, h.nef, h.big⟩
 
 /- English proof (translation)
-Take `⟨f, rfl⟩` from `hf`. Use `⟨(oneChart (isLB_tens G.K.isLB G.isLBA) G.isLB (Nat.cast_succ j).symm).mul (H0.ofSec G.str ⊤ (G.comb u)) f, ?_⟩` and prove the remaining obligations. Rewrite using `[ProdChart.restr_mul, H0.restr_ofSec, G.ofSec_comb]`. Simplify using `[Geo.mulW, Fintype.linearCombination_apply]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mulW_mem_global (j : ℕ) (u : Fin G.N → F) {f : G.Sec j} (hf : f ∈ G.global j) :
     G.mulW j u f ∈ G.global (j + 1) := by
@@ -88,7 +88,7 @@ def lat (j : ℕ) : Submodule (𝓞 F) (G.global j) :=
       Submodule.map₂ ((mulG G j).restrictScalars₁₂ (𝓞 F) (𝓞 F)) G.lattice M) j
 
 /- English proof (translation)
-Consider the cases of `j with`. Consider the case `zero => exact Submodule.subset_span ⟨i, rfl⟩`. Consider the case `succ j => exact Submodule.mem_sup_left (Submodule.subset_span ⟨i, rfl⟩)`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 -/
 theorem basis_mem_lat (j : ℕ) (i) : Module.finBasis F (G.global j) i ∈ lat G j := by
   cases j with
@@ -96,9 +96,9 @@ theorem basis_mem_lat (j : ℕ) (i) : Module.finBasis F (G.global j) i ∈ lat G
   | succ j => exact Submodule.mem_sup_left (Submodule.subset_span ⟨i, rfl⟩)
 
 /- English proof (translation)
-Use `⟨?_, top_le_iff.1 ((Module.finBasis F (G.global j)).span_eq.ge.trans (Submodule.span_mono (Set.range_subset_iff.2 (basis_mem_lat G j))))⟩` and prove the remaining obligations. Proceed by induction on `j with`. Consider the case `zero => exact Submodule.fg_span (Set.finite_range _)`. Consider the case `succ j ih`. Establish `h : G.lattice.FG` using `Submodule.fg_span (Set.finite_range _)`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Conclude with `(Submodule.fg_span (Set.finite_range _)).sup (h.map₂ _ ih)`.
+A detailed English derivation is pending.
 -/
 theorem isFull_lat (j : ℕ) : IsFull (lat G j) := by
   refine ⟨?_, top_le_iff.1 ((Module.finBasis F (G.global j)).span_eq.ge.trans
@@ -115,7 +115,7 @@ def data (T : ℕ) (hT : G.D + 1 ≤ T) (β J : ℝ) (hβ : 1 ≤ β) : Data F :
 variable {T : ℕ} (hT : G.D + 1 ≤ T) (β J : ℝ) (hβ : 1 ≤ β)
 
 /- English proof (translation)
-Introduce `j _ w hw f hf` and use `have h : mulG G j w f ∈ lat G (j + 1) := Submodule.mem_sup_right (Submodule.apply_mem_map₂ ((mulG G j).restrictScalars₁₂ (𝓞 F) (𝓞 F)) hw hf) ⟨mulG G j w f, h, rfl⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mulStable : (data G T hT β J hβ).MulStable := fun j _ w hw f hf =>
   have h : mulG G j w f ∈ lat G (j + 1) := Submodule.mem_sup_right
@@ -123,7 +123,7 @@ theorem mulStable : (data G T hT β J hβ).MulStable := fun j _ w hw f hf =>
   ⟨mulG G j w f, h, rfl⟩
 
 /- English proof (translation)
-The claim follows from `have e := (data G T hT β J hβ).latRank_M j ⟨Module.finBasis F (G.global j) ∘ Fin.cast e, fun _ => basis_mem_lat G j _, (Module.finBasis F (G.global j)).linearIndependent.comp _ (Fin.cast_injective e), fun _ σ => (nrm_ofBasis _ σ _).le⟩`.
+A detailed English derivation is pending.
 -/
 theorem shortFamily (j : ℕ) : (data G T hT β J hβ).ShortFamily j 1 :=
   have e := (data G T hT β J hβ).latRank_M j
@@ -134,7 +134,7 @@ theorem shortFamily (j : ℕ) : (data G T hT β J hβ).ShortFamily j 1 :=
 omit [NumberField F] in
 
 /- English proof (translation)
-Simplify using `[HermFam.nrm, ofBasis, ofGram, ofCoords, basisCoords, dotProduct, Complex.conj_mul', ← Complex.ofReal_pow]`.
+Simplify using the standard rewrite rules.
 -/
 theorem nrm_ofBasis_eq {V n : Type} [AddCommGroup V] [Module F V] [Fintype n] [DecidableEq n]
     (b : Module.Basis n F V) (σ : F →+* ℂ) (x : V) :
@@ -142,15 +142,13 @@ theorem nrm_ofBasis_eq {V n : Type} [AddCommGroup V] [Module F V] [Fintype n] [D
   simp [HermFam.nrm, ofBasis, ofGram, ofCoords, basisCoords, dotProduct, Complex.conj_mul', ← Complex.ofReal_pow]
 
 /- English proof (translation)
-Use `⟨∑ l, ∑ k, ∑ i, archSize A (Pi.single k 1) * ‖σ (b'.repr (μ (Pi.single k 1) (b i)) l)‖, by unfold archSize; positivity, fun w f => ?_⟩` and prove the remaining obligations. Establish `hw (k) : ‖σ (w k)‖ ≤ frameNorm A (fun k => σ (w k)) * archSize A (Pi.single k 1)`. Simplify `norm_pairing_le hA (fun k => σ (w k)) (Pi.single k 1)` using `[Pi.single_apply]`. Establish `hf (i) : ‖σ (b.repr f i)‖ ≤ (ofBasis b).nrm σ f`. Rewrite using `[nrm_ofBasis_eq]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Real.le_sqrt_of_sq_le (Finset.single_le_sum (f := fun i => ‖σ (b.repr f i)‖ ^ 2) (fun _ _ => sq_nonneg _) (Finset.mem_univ i))`. Establish `e (l) : b'.repr (μ w f) l = ∑ k, ∑ i, w k * b.repr f i * b'.repr (μ (Pi.single k 1) (b i)) l` using `by conv_lhs => rw [pi_eq_sum_univ' w, ← b.sum_repr f]`. Simplify using `only [map_sum, map_smul, LinearMap.sum_apply, LinearMap.smul_apply, Finsupp.coe_finsetSum, Finset.sum_apply, Finsupp.smul_apply, smul_eq_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[nrm_ofBasis_eq b']`. Use `(Real.sqrt_le_iff.2 ⟨by positivity, Finset.sum_sq_le_sq_sum_of_nonneg fun _ _ => norm_nonneg _⟩).trans ?_` and prove the remaining obligations. Simplify using `only [Finset.sum_mul]`. Use `Finset.sum_le_sum fun l _ => ?_` and prove the remaining obligations. Rewrite using `[e, map_sum]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun k _ => ?_)` and prove the remaining obligations. Rewrite using `[map_sum]`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, norm_mul, norm_mul]`. Use `mul_le_mul_of_nonneg_right (mul_le_mul (hw k) (hf i) (norm_nonneg _) ((norm_nonneg _).trans (hw k))) (norm_nonneg (σ (b'.repr (μ (Pi.single k 1) (b i)) l)))` as an intermediate fact.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_bound {V V' : Type} [AddCommGroup V] [Module F V] [AddCommGroup V'] [Module F V'] {N m m' : ℕ}
     (b : Module.Basis (Fin m) F V) (b' : Module.Basis (Fin m') F V') (μ : (Fin N → F) →ₗ[F] V →ₗ[F] V')
@@ -184,7 +182,7 @@ theorem exists_bound {V V' : Type} [AddCommGroup V] [Module F V] [AddCommGroup V
   linarith
 
 /- English proof (translation)
-Use `choose c h0 hc using fun (j : ℕ) (σ : F →+* ℂ) => exists_bound (Module.finBasis F (G.global j)) (Module.finBasis F (G.global (j + 1))) (mulG G j) σ (G.herm σ)`. Use `⟨(∑ j ∈ Finset.range T, ∑ σ, c j σ) ^ 2, fun β h _ J j hj σ w _ f _ g e => ?_⟩` and prove the remaining obligations. Take `rfl : g = mulG G j w f` from `Subtype.ext e`. Establish `h₁ : c j σ ≤ Real.sqrt β` using `Real.le_sqrt_of_sq_le ((pow_le_pow_left₀ (h0 j σ) ((Finset.single_le_sum (fun σ _ => h0 j σ) (Finset.mem_univ σ)).trans (Finset.single_le_sum (f := fun j => ∑ σ, c j σ) (fun j _ => Finset.sum_nonneg fun σ _ => h0 j σ) (Finset.mem_range.2 hj))) 2).trans h)`. Conclude with `(hc j σ w f).trans (mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right h₁ (Real.sqrt_nonneg _)) (Real.sqrt_nonneg _))`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_mulBound : ∃ β₀ : ℝ, ∀ β ≥ β₀, ∀ (hβ : 1 ≤ β) (J : ℝ), (data G T hT β J hβ).MulBound fun _ => β := by
   choose c h0 hc using fun (j : ℕ) (σ : F →+* ℂ) => exists_bound (Module.finBasis F (G.global j))
@@ -201,7 +199,7 @@ theorem exists_mulBound : ∃ β₀ : ℝ, ∀ β ≥ β₀, ∀ (hβ : 1 ≤ β
 include hT in
 
 /- English proof (translation)
-Take `⟨n, w, hw, Λ, hs, -⟩` from `exists_regen G`. Take `⟨β, hβ⟩` from `exists_mulBound (regen G w hw Λ) (T := T) hT`. Establish `h1` using `le_max_right β 1`. Conclude with `⟨data (regen G w hw Λ) T hT (max β 1) 0 h1, rfl, rfl, Data.d_eq_finrank _, rfl, positivity_regen G h w hw Λ, mulStable (regen G w hw Λ) hT _ 0 h1, hβ _ (le_max_left _ _) h1 0, hs, shortFamily (regen G w hw Λ) hT _ 0 h1 _, shortFamily (regen G w hw Λ) hT _ 0 h1 _⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_data_of_positivity (h : G.Positivity) :
     ∃ X : Data F, X.D = G.D ∧ X.T = T ∧ X.d = Module.finrank F (G.global T) ∧ X.del = G.del ∧ X.Positivity ∧
@@ -217,7 +215,7 @@ theorem exists_data_of_positivity (h : G.Positivity) :
 omit G in
 
 /- English proof (translation)
-Take `⟨X, h₁, h₂, h₃, h₄, h⟩` from `exists_data_of_positivity (Proj.geo F hM) (T := T) hT (Proj.positivity F hM)`. Conclude with `⟨X, h₁, h₂, (Proj.finrank_global_pos F hM T).trans_eq h₃.symm, h₄.trans (projSys.del_eq_one F M), h⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_data {M : ℕ} (hM : 1 ≤ M) {T : ℕ} (hT : M + 1 ≤ T) :
     ∃ X : Data F, X.D = M ∧ X.T = T ∧ 0 < X.d ∧ X.del = 1 ∧ X.Positivity ∧ X.MulStable ∧
@@ -228,11 +226,11 @@ theorem exists_data {M : ℕ} (hM : 1 ≤ M) {T : ℕ} (hT : M + 1 ≤ T) :
 omit G in
 
 /- English proof (translation)
-Introduce `h`. Establish `key (a : 𝓞 F) : ∃ z : ℤ, (a : F) = z`. Establish `hm : a • (1 : Matrix (Fin (M + 1)) (Fin (M + 1)) F).col 0 ∈ (Proj.geo F hM).lattice` using `(Proj.geo F hM).lattice.smul_mem a (Submodule.subset_span ⟨(0 : Fin (M + 1)), rfl⟩)`. Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun ℤ).1 (h.int _ hm)`. Establish `: (∑ i : Fin (M + 1), c i • (1 : Matrix (Fin (M + 1)) (Fin (M + 1)) F).col i) 0 = (a • (1 : Matrix (Fin (M + 1)) (Fin (M + 1)) F).col 0) 0` using `congrFun hc (0 : Fin (M + 1))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `⟨c (0 : Fin (M + 1)), by simpa [Matrix.one_apply, Algebra.smul_def] using this.symm⟩`. Take `⟨σ⟩ : Nonempty (F →+* ℂ)` from `inferInstance`. Use `IsTotallyComplex.complexEmbedding_not_isReal σ (ComplexEmbedding.isReal_iff.2 (RingHom.ext fun x => ?_))` and prove the remaining obligations. Take `⟨a, b, -, rfl⟩` from `IsFractionRing.div_surjective (A := 𝓞 F) x`. Take `⟨p, hp⟩` from `key a`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨q, hq⟩` from `key b`. Rewrite using `[show algebraMap (𝓞 F) F a = p from hp, show algebraMap (𝓞 F) F b = q from hq]`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem not_shortGenerators_geo [IsTotallyComplex F] {M : ℕ} (hM : 1 ≤ M) : ¬ (Proj.geo F hM).ShortGenerators := by
   intro h

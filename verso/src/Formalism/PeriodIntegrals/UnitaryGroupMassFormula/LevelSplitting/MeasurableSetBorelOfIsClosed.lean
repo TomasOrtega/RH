@@ -9,7 +9,7 @@ open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.SG.S
 open scoped TensorProduct
 
 /- English proof (translation)
-Establish `: MeasurableSet[borel X] sᶜ` using `MeasurableSpace.measurableSet_generateFrom h.isOpen_compl`. Simplify using `using this.compl`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem measurableSet_borel_of_isClosed {X : Type} [TopologicalSpace X] {s : Set X}
     (h : IsClosed s) : MeasurableSet[borel X] s := by
@@ -17,23 +17,21 @@ theorem measurableSet_borel_of_isClosed {X : Type} [TopologicalSpace X] {s : Set
   simpa using this.compl
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ n v Λ`. Establish `hE` using `countable_nf E`. Establish `hfd : FiniteDimensional F E` using `Module.Finite.of_restrictScalars_finite ℚ F E`. Set `_ : MeasurableSpace (Fin n → Fv F v ⊗[F] E)` to `borel _`. Establish `hT2 : T2Space (Fv F v ⊗[F] E)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨ι, _, ⟨h⟩⟩` from `PI.AdicCompletionValuation.exists_homeomorph_tens (F := F) (E := E) (Fv F v)`. Conclude with `h.isEmbedding.t2Space`. Establish `hO : CompactSpace (v.adicCompletionIntegers F)` using `isCompact_iff_compactSpace.mp (PI.AdicCompletionValuation.isCompact_adicCompletionIntegers F v)`. Use `set S : Set (Fin n → Fv F v ⊗[F] E) := ratV (F := F) (Fv F v) '' Λ with hS`. Establish `hSc : Countable S` using `((Set.to_countable Λ).image _).to_subtype`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hL : (latLoc (E` using `E) v Λ : Set (Fin n → Fv F v ⊗[F] E)) = ⋃ T : Finset S, (Submodule.span (v.adicCompletionIntegers F) (Set.range fun i : T => ((i : S) : Fin n → Fv F v ⊗[F] E)) : Set _) := by`. Use extensionality with `x`. Simplify using `only [SetLike.mem_coe, Set.mem_iUnion]`. Prove the components needed by the constructor for the conclusion. Introduce `hx`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨T', hT'S, hxT'⟩` from `Submodule.mem_span_finite_of_mem_span hx`. Use `⟨T'.subtype (· ∈ S), ?_⟩` and prove the remaining obligations. Establish `: (Set.range fun i : T'.subtype (· ∈ S) => ((i : S) : Fin n → Fv F v ⊗[F] E)) = (T' : Set (Fin n → Fv F v ⊗[F] E))`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce and unpack `⟨i, rfl⟩`. Conclude with `Finset.mem_subtype.1 i.2`. Introduce `hy`. Conclude with `⟨⟨⟨y, hT'S hy⟩, Finset.mem_subtype.2 hy⟩, rfl⟩`. Rewrite using `[this]`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `hxT'`. Introduce and unpack `⟨T, hxT⟩`. Use `Submodule.span_mono ?_ hxT` and prove the remaining obligations. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `(i : S).2`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hL]`. Use `MeasurableSet.iUnion fun T => measurableSet_borel_of_isClosed (IsCompact.isClosed ?_)` and prove the remaining obligations. Rewrite using `[← Fintype.range_linearCombination]`. Establish `hc : Continuous (Fintype.linearCombination (v.adicCompletionIntegers F) fun i : T => ((i : S) : Fin n → Fv F v ⊗[F] E))`. Establish `: (Fintype.linearCombination (v.adicCompletionIntegers F) fun i : T => ((i : S) : Fin n → Fv F v ⊗[F] E)) = fun c : T → v.adicCompletionIntegers F => ∑ i : T, ((c i : v.adicCompletionIntegers F) : Fv F v) • ((i : S) : Fin n → Fv F v ⊗[F] E)`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `c`. Rewrite using `[Fintype.linearCombination_apply]`. Both sides reduce to the same expression. Rewrite using `[this]`. Use `continuous_finsetSum _ fun i _ => ?_` and prove the remaining obligations.
-
-Establish `h1 : Continuous fun c : T → v.adicCompletionIntegers F => ((c i : v.adicCompletionIntegers F) : Fv F v)` using `continuous_subtype_val.comp (continuous_apply i)`. Conclude with `h1.smul continuous_const`. Conclude with `isCompact_range hc`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem lattice_borel : LatBorel := by
   classical

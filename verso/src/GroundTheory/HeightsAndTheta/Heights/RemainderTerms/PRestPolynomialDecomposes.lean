@@ -5,7 +5,7 @@ set_option maxSynthPendingDepth 1
 namespace GroundTheory.Heights₂.Heights.RestTerms
 
 /- English proof (translation)
-Introduce `f r a c`. Take `⟨Q, hQ, -⟩` from `h1 f r a c`. Conclude with `⟨Q, hQ⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem RestPolynomialDecomposes.proof (h1 : RestPolynomialHomogeneousDecomposition.Statement) :
     RestPolynomialDecomposes.Statement := by

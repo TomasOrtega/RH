@@ -15,13 +15,13 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.IndefiniteRowSideFullH
 namespace PositivityTheory.SiegelWeilFormula.Krd
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ d`. Take `⟨ε, hε⟩` from `d.ok.frame.1`. Use `⟨ε, hε, ?_⟩` and prove the remaining obligations. Establish `hss : ∀ x, σ (σ x) = x` using `PositivityTheory.ThKG.Tow.Levi.sig_sig d.cm`. Establish `i : Fin d.n` using `⟨0, d.ok.hn⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : ∀ c : E, (∀ i j, σ (d.Y.J j i) = c * d.Y.J i j) → ((ε : ℤ) : E) = c` using `fun c hc => by`. Establish `e` using `congrFun (congrFun (conjT_frame c d.Y.J hc hss d.b.1) (Sum.inl i)) (Sum.inr i)`. Rewrite `e` using `[hε]`. Simplify `e` using `[Matrix.fromBlocks]`. Break down `d.ok.sign with ⟨hA, hY⟩ | ⟨hA, hY⟩` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Separate the alternatives or extract the components of the hypothesis.
 
-Use `Or.inl ⟨hA, ?_⟩` and prove the remaining obligations. Establish `e` using `key (-1) fun i j => by rw [hY, neg_one_mul]`. Establish `e' : ((ε : ℤ) : E) = ((-1 : ℤ) : E)` using `by rw [e]; push_cast; rfl`. Conclude with `Units.ext (by simpa using Int.cast_injective (α := E) e')`. Use `Or.inr ⟨hA, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e` using `key 1 fun i j => by rw [hY, one_mul]`. Establish `e' : ((ε : ℤ) : E) = ((1 : ℤ) : E)` using `by rw [e]; push_cast; rfl`. Conclude with `Units.ext (by simpa using Int.cast_injective (α := E) e')`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem epsEx_k : _root_.PositivityTheory.SiegelWeilFormula.Krd.EpsEx_k := by
   intro F E _ _ _ _ _ σ d
@@ -43,9 +43,9 @@ theorem epsEx_k : _root_.PositivityTheory.SiegelWeilFormula.Krd.EpsEx_k := by
     have e' : ((ε : ℤ) : E) = ((1 : ℤ) : E) := by rw [e]; push_cast; rfl
     exact Units.ext (by simpa using Int.cast_injective (α := E) e')
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ d`. Use `⟨fun hA => ?_, fun hA => ?_⟩` and prove the remaining obligations. Use `choose fr sg hfr using fun w => frame_of_sig (hA.sig w) d.ok.aniso`. Conclude with `⟨fr, sg, fun w => by rw [one_smul, hfr w]⟩`. Use `choose fr sg hfr using fun w => frame_of_sig (hA.sig w) d.ok.aniso`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fr, sg, fun w => ?_⟩` and prove the remaining obligations. Rewrite using `[← hfr w, Matrix.mul_smul, Matrix.smul_mul]`.
+A detailed English derivation is pending.
 -/
 theorem frEx_k : _root_.PositivityTheory.SiegelWeilFormula.Krd.FrEx_k := by
   intro F E _ _ _ _ _ σ d

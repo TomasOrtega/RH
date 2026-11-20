@@ -13,11 +13,9 @@ set_option autoImplicit false
 namespace GlobalTheory.CechPoset
 
 /- English proof (translation)
-Introduce `R R' _ _ _ X X' s s' φ w κ _ D hD'`. Use function extensionality and compare the values at `t`. Establish `key : GlobalTheory.AbLaw.SecOnR.coord (f` using `s') (M := (LB.triv X).pull φ) (GlobalTheory.AbLaw.secTermBaseChange (LB.triv X) D w 1 ((1 : R') ⊗ₜ[R] one s D) t) (i0 φ) = 1 := by erw [GlobalTheory.AbLaw.secTermBaseChange_tmul, one_smul]`. Use `(GlobalTheory.AbLaw.SecOn.coord_pullLE (M := LB.triv X) φ (GlobalTheory.AbLaw.preimage_biInf D φ t.1).ge ((GlobalTheory.AbLaw.secOnTrivEquiv _).symm 1) (i0 φ)).trans ?_` and prove the remaining obligations. Establish `hc : GlobalTheory.LB.coord ((GlobalTheory.AbLaw.secOnTrivEquiv (X` using `X) (⨅ i ∈ t.1, D i)).symm 1) PUnit.unit = 1 := by`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `(GlobalTheory.AbLaw.SecOn.coord_chart_symm (M := Out.Inh.trivLB X) (Out.Inh.trivLB_isLB X) PUnit.unit PUnit.unit le_top (1 : Γ(X, ⨅ i ∈ t.1, D i))).trans ?_` and prove the remaining obligations. Rewrite using `[map_one]`. Conclude with `(_root_.one_mul _).trans (map_one _)`. Conclude with `(congrArg _ hc).trans (map_one _)`. Express the relevant statement in the definitionally equal form `Sec.res s' _ (GlobalTheory.AbLaw.SecOnR.coord (f := s') (M := (LB.triv X).pull φ) (GlobalTheory.AbLaw.secTermBaseChange (LB.triv X) D w 1 ((1 : R') ⊗ₜ[R] one s D) t) (i0 φ)) = 1`.
-
-Rewrite using `[key]`. Conclude with `(Sec.res s' _).map_one`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Φ_one_tmul : ∀ {R R' : Type} [CommRing R] [CommRing R'] [Algebra R R'] {X X' : Scheme.{0}} {s : X ⟶ Sp R} {s' : X' ⟶ Sp R'} {φ : X' ⟶ X} (w : φ ≫ s = s' ≫ spMap (algebraMap R R')) {κ : Type} [LinearOrder κ] (D : κ → X.Opens) (hD' : ∀ I : Finset κ, I.Nonempty → IsAffineOpen (⨅ i ∈ I, φ ⁻¹ᵁ D i)), Φ w D hD' 0 ((1 : R') ⊗ₜ[R] one s D) = fun _ => 1 := by
   intro R R' _ _ _ X X' s s' φ w κ _ D hD'

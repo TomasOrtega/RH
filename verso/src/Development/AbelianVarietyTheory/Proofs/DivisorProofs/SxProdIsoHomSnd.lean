@@ -15,7 +15,7 @@ def sxProdIso (A B : Spc) (p : ℕ) :
   PreservesLimitPair.iso ((evaluation _ _).obj (op (SimplexCategory.mk p))) A B ≪≫ FunctorToTypes.binaryProductIso _ _
 
 /- English proof (translation)
-Rewrite using `[sxProdIso, Iso.trans_hom, Category.assoc]`. Use `erw [FunctorToTypes.binaryProductIso_hom_comp_fst]`. Rewrite using `[PreservesLimitPair.iso_hom]`. Use `erw [prodComparison_fst]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem sxProdIso_hom_fst (A B : Spc) (p : ℕ) :
     (sxProdIso A B p).hom ≫ FunctorToTypes.prod.fst = (prod.fst : A ⨯ B ⟶ A).app (op (SimplexCategory.mk p)) := by
@@ -26,7 +26,7 @@ theorem sxProdIso_hom_fst (A B : Spc) (p : ℕ) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[sxProdIso, Iso.trans_hom, Category.assoc]`. Use `erw [FunctorToTypes.binaryProductIso_hom_comp_snd]`. Rewrite using `[PreservesLimitPair.iso_hom]`. Use `erw [prodComparison_snd]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem sxProdIso_hom_snd (A B : Spc) (p : ℕ) :
     (sxProdIso A B p).hom ≫ FunctorToTypes.prod.snd = (prod.snd : A ⨯ B ⟶ B).app (op (SimplexCategory.mk p)) := by
@@ -37,14 +37,14 @@ theorem sxProdIso_hom_snd (A B : Spc) (p : ℕ) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[Iso.inv_comp_eq, sxProdIso_hom_fst]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sxProdIso_inv_fst (A B : Spc) (p : ℕ) :
     (sxProdIso A B p).inv ≫ (prod.fst : A ⨯ B ⟶ A).app (op (SimplexCategory.mk p)) = FunctorToTypes.prod.fst := by
   rw [Iso.inv_comp_eq, sxProdIso_hom_fst]
 
 /- English proof (translation)
-Rewrite using `[Iso.inv_comp_eq, sxProdIso_hom_snd]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sxProdIso_inv_snd (A B : Spc) (p : ℕ) :
     (sxProdIso A B p).inv ≫ (prod.snd : A ⨯ B ⟶ B).app (op (SimplexCategory.mk p)) = FunctorToTypes.prod.snd := by
@@ -54,21 +54,21 @@ def sxPair {A B : Spc} {p : ℕ} {V : Scheme.{0}} (a : Sx A p V) (b : Sx B p V) 
   ((sxProdIso A B p).inv.app (op V)) (show (FunctorToTypes.prod (A.obj (op (SimplexCategory.mk p))) (B.obj (op (SimplexCategory.mk p)))).obj (op V) from (a, b))
 
 /- English proof (translation)
-Conclude with `ConcreteCategory.congr_hom (congr_app (sxProdIso_inv_fst A B p) (op V)) (((a, b) : Sx A p V × Sx B p V) : (FunctorToTypes.prod (A.obj (op (SimplexCategory.mk p))) (B.obj (op (SimplexCategory.mk p)))).obj (op V))`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem sxPair_fst {A B : Spc} {p : ℕ} {V : Scheme.{0}} (a : Sx A p V) (b : Sx B p V) :
     (sxPair a b).map prod.fst = a := by
   exact ConcreteCategory.congr_hom (congr_app (sxProdIso_inv_fst A B p) (op V)) (((a, b) : Sx A p V × Sx B p V) : (FunctorToTypes.prod (A.obj (op (SimplexCategory.mk p))) (B.obj (op (SimplexCategory.mk p)))).obj (op V))
 
 /- English proof (translation)
-Conclude with `ConcreteCategory.congr_hom (congr_app (sxProdIso_inv_snd A B p) (op V)) (((a, b) : Sx A p V × Sx B p V) : (FunctorToTypes.prod (A.obj (op (SimplexCategory.mk p))) (B.obj (op (SimplexCategory.mk p)))).obj (op V))`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem sxPair_snd {A B : Spc} {p : ℕ} {V : Scheme.{0}} (a : Sx A p V) (b : Sx B p V) :
     (sxPair a b).map prod.snd = b := by
   exact ConcreteCategory.congr_hom (congr_app (sxProdIso_inv_snd A B p) (op V)) (((a, b) : Sx A p V × Sx B p V) : (FunctorToTypes.prod (A.obj (op (SimplexCategory.mk p))) (B.obj (op (SimplexCategory.mk p)))).obj (op V))
 
 /- English proof (translation)
-Establish `h1` using `ConcreteCategory.congr_hom (congr_app (sxProdIso_hom_fst A B p) (op V)) y`. Establish `h2` using `ConcreteCategory.congr_hom (congr_app (sxProdIso_hom_snd A B p) (op V)) y`. Establish `: ((sxProdIso A B p).hom.app (op V)) y = (y.map prod.fst, y.map prod.snd)` using `Prod.ext h1 h2`. Rewrite using `[sxPair, ← this]`. Conclude with `ConcreteCategory.congr_hom (congr_app (sxProdIso A B p).hom_inv_id (op V)) y`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sxPair_eta {A B : Spc} {p : ℕ} {V : Scheme.{0}} (y : Sx (A ⨯ B) p V) :
     sxPair (y.map prod.fst) (y.map prod.snd) = y := by
@@ -79,14 +79,14 @@ theorem sxPair_eta {A B : Spc} {p : ℕ} {V : Scheme.{0}} (y : Sx (A ⨯ B) p V)
   exact ConcreteCategory.congr_hom (congr_app (sxProdIso A B p).hom_inv_id (op V)) y
 
 /- English proof (translation)
-Rewrite using `[← sxPair_eta y, ← sxPair_eta y', h1, h2]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sx_prod_ext {A B : Spc} {p : ℕ} {V : Scheme.{0}} {y y' : Sx (A ⨯ B) p V}
     (h1 : y.map prod.fst = y'.map prod.fst) (h2 : y.map prod.snd = y'.map prod.snd) : y = y' := by
   rw [← sxPair_eta y, ← sxPair_eta y', h1, h2]
 
 /- English proof (translation)
-The claim follows from `ConcreteCategory.congr_hom ((f.app (op (SimplexCategory.mk p))).naturality g.op) x`.
+A detailed English derivation is pending.
 -/
 theorem sxMap_res {E E' : Spc} (f : E ⟶ E') {p : ℕ} {V U : Scheme.{0}} (g : V ⟶ U) (x : Sx E p U) :
     (x.res g).map f = (x.map f).res g :=
@@ -99,14 +99,14 @@ theorem sxMap_comp {E E' E'' : Spc} (f : E ⟶ E') (f' : E' ⟶ E'') {p : ℕ} {
     x.map (f ≫ f') = (x.map f).map f' := rfl
 
 /- English proof (translation)
-The claim follows from `sx_prod_ext (by rw [sxMap_res, sxPair_fst, sxPair_fst]) (by rw [sxMap_res, sxPair_snd, sxPair_snd])`.
+A detailed English derivation is pending.
 -/
 theorem sxPair_res {A B : Spc} {p : ℕ} {V U : Scheme.{0}} (g : V ⟶ U) (a : Sx A p U) (b : Sx B p U) :
     (sxPair a b).res g = sxPair (a.res g) (b.res g) :=
   sx_prod_ext (by rw [sxMap_res, sxPair_fst, sxPair_fst]) (by rw [sxMap_res, sxPair_snd, sxPair_snd])
 
 /- English proof (translation)
-The claim follows from `sx_prod_ext (by rw [← sxMap_comp, prod.map_fst, sxMap_comp, sxPair_fst, sxPair_fst]) (by rw [← sxMap_comp, prod.map_snd, sxMap_comp, sxPair_snd, sxPair_snd])`.
+A detailed English derivation is pending.
 -/
 theorem sxPair_map {A B A' B' : Spc} (f : A ⟶ A') (f' : B ⟶ B') {p : ℕ} {V : Scheme.{0}} (a : Sx A p V) (b : Sx B p V) :
     (sxPair a b).map (prod.map f f') = sxPair (a.map f) (b.map f') :=
@@ -118,14 +118,14 @@ open CupSpec
 variable {R : Type} [CommRing R]
 
 /- English proof (translation)
-Rewrite using `[Sec.res, Sec.res, Sec.res, op_comp, Functor.map_comp, ModuleCat.hom_comp, LinearMap.comp_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem secRes_res {F : Shv R} {U V W : Scheme.{0}} (g : V ⟶ U) (g' : W ⟶ V) (b : Sec F U) :
     Sec.res g' (Sec.res g b) = Sec.res (g' ≫ g) b := by
   rw [Sec.res, Sec.res, Sec.res, op_comp, Functor.map_comp, ModuleCat.hom_comp, LinearMap.comp_apply]
 
 /- English proof (translation)
-Rewrite using `[ev_def, ev_def, Cochain.smul_v, Linear.comp_smul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ev_smulU {E : Spc} {I : Cx R} {n : ℤ} (r : ULift.{1} R) (α : Cochain ((chains R).obj E) I n) (p : ℕ) (s : ℤ)
     (h : -(p : ℤ) + n = s) (U : Scheme.{0}) (x : Sx E p U) : ev (r • α) p s h U x = r • ev α p s h U x := by
@@ -147,7 +147,7 @@ def evLin (I : Cx R) (E : Spc) (n : ℤ) (p : ℕ) (s : ℤ) (h : -(p : ℤ) + n
   map_smul' r α := ev_smulU r α p s h U x
 
 /- English proof (translation)
-The claim follows from `ev_pull _ _ p s h W y`.
+A detailed English derivation is pending.
 -/
 theorem cotPre_ev (q N : ℕ) (I : Cx R) (n : ℤ) {U V : Scheme.{0}} (v : V ⟶ U)
     (c : Cochain ((chains R).obj (sch.obj U ⨯ fibQ q N)) I n) (p : ℕ) (s : ℤ) (h : -(p : ℤ) + n = s) (W : Scheme.{0})

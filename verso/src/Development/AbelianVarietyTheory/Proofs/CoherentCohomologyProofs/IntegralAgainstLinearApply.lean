@@ -8,7 +8,7 @@ variable {K B : Type*} [TopologicalSpace K] [CompactSpace K] [MeasurableSpace K]
   [OpensMeasurableSpace K] [NormedAddCommGroup B] [NormedSpace ℂ B]
 
 /- English proof (translation)
-The claim follows from `(f.continuous.smul p.continuous).integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace _)`.
+A detailed English derivation is pending.
 -/
 theorem integrable_smul (μ : Measure K) [IsFiniteMeasure μ] (p : C(K, B)) (f : C(K, ℂ)) :
     Integrable (fun k => f k • p k) μ :=
@@ -32,7 +32,7 @@ Both sides reduce to the same expression.
     (f : C(K, ℂ)) : integralAgainstLinear μ p f = ∫ k, f k • p k ∂μ := rfl
 
 /- English proof (translation)
-Establish `h : ∀ᵐ k ∂μ, ‖f k • p k‖ ≤ ‖p‖ * ‖f‖` using `Filter.Eventually.of_forall fun k => by`. Rewrite using `[norm_smul, mul_comm]`. Conclude with `mul_le_mul (p.norm_coe_le_norm k) (f.norm_coe_le_norm k) (norm_nonneg _) (norm_nonneg _)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem norm_integral_smul_le (μ : Measure K) [IsFiniteMeasure μ] (p : C(K, B)) (f : C(K, ℂ)) :
     ‖∫ k, f k • p k ∂μ‖ ≤ (μ.real Set.univ * ‖p‖) * ‖f‖ := by

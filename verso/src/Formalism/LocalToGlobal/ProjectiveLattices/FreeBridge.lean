@@ -136,9 +136,9 @@ end Unif
 section Points
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hv`. Consider the cases of `hv`. Apply the tactic sequence `constructor <;> assumption`. Introduce `hv`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the cases of `hv`. Apply the tactic sequence `constructor <;> assumption`.
+Split into cases according to the possible forms of the given data. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem isVal_iff {K : Type} [Field K] [NumberField K] {R : Type} [CommRing R] [Algebra K R]
     (la : HeightOneSpectrum (𝓞 K)) (v : R → EReal) : IsVal la v ↔ Formalism.L2.Pj.IsVal la v := by

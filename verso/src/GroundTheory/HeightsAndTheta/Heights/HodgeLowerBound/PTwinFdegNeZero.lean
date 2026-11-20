@@ -22,13 +22,13 @@ def bigMat (j : ℕ) : Matrix (Ψ × Fin N) (Ψ × Fin N) (Rts Ψ N) :=
 
 omit [Fintype Ψ] [DecidableEq Ψ] in
 /- English proof (translation)
-Set `e : Fin j ⊕ Fin (N - j) ≃ Fin N` to `finSumFinEquiv.trans (finCongr (by omega))`. Rewrite using `[← det_submatrix_equiv_self e, ← Matrix.fromBlocks_toBlocks ((blkMat j τ).submatrix e e)]`. Establish `h21 : ((blkMat (Ψ` using `Ψ) (N := N) j τ).submatrix e e).toBlocks₂₁ = 0 := by`. Use extensionality with `a b`. Simplify using `[toBlocks₂₁, blkMat, e]`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[h21, det_fromBlocks_zero₂₁]`. Use `congr 1`. Unfold `altRho`. Use `congr 1`. Use `Matrix.ext fun a b => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[toBlocks₁₁, blkMat, e, yv, colExp]`. Both sides reduce to the same expression. Unfold `altRho`. Use `congr 1`. Use `Matrix.ext fun a b => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[toBlocks₂₂, blkMat, e, zv, colExp]`. Rewrite using `[show N - 1 - (j + (b : ℕ)) = N - j - 1 - b by omega]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem det_blkMat (j : ℕ) (hj : j ≤ N) (τ : Ψ) :
     (blkMat (Ψ := Ψ) (N := N) j τ).det = altRho j (yv j hj τ) * altRho (N - j) (zv j τ) := by
@@ -52,11 +52,11 @@ theorem det_blkMat (j : ℕ) (hj : j ≤ N) (τ : Ψ) :
     rfl
 
 /- English proof (translation)
-Establish `h : bigMat (Ψ` using `Ψ) (N := N) j = (blockDiagonal fun τ => blkMat (Ψ := Ψ) (N := N) j τ).submatrix (Equiv.prodComm Ψ (Fin N)) (Equiv.prodComm Ψ (Fin N)) := by`. Use `Matrix.ext fun x l => ?_` and prove the remaining obligations. Take `⟨x1, x2⟩` from `x`. Take `⟨l1, l2⟩` from `l`. Simplify using `only [bigMat, blkMat, of_apply, submatrix_apply, Equiv.prodComm_apply, blockDiagonal_apply, Prod.fst_swap, Prod.snd_swap]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `h1 : x1 = l1`. Substitute `h1` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h1]`. Rewrite using `[h, det_submatrix_equiv_self, det_blockDiagonal, fibV]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.prod_congr rfl fun τ _ => det_blkMat j hj τ`.
+A detailed English derivation is pending.
 -/
 theorem det_bigMat (j : ℕ) (hj : j ≤ N) : (bigMat (Ψ := Ψ) (N := N) j).det = fibV j hj := by
   have h : bigMat (Ψ := Ψ) (N := N) j =
@@ -75,9 +75,9 @@ theorem det_bigMat (j : ℕ) (hj : j ≤ N) : (bigMat (Ψ := Ψ) (N := N) j).det
   exact Finset.prod_congr rfl fun τ _ => det_blkMat j hj τ
 
 /- English proof (translation)
-Establish `hw' : ∀ x, (w x).1 = x.1 ∧ (((w x).2 : ℕ) < j ↔ (x.2 : ℕ) < j)` using `(Finset.mem_filter.mp hw).2`. Rewrite using `[AlgHom.map_det]`. Establish `h : (rename w : Rts Ψ N →ₐ[ℚ] Rts Ψ N).mapMatrix (bigMat j) = (bigMat j).submatrix w id`. Use `Matrix.ext fun x l => ?_` and prove the remaining obligations. Establish `e : ((w x).1 = l.1 ∧ (((w x).2 : ℕ) < j ↔ (l.2 : ℕ) < j)) ↔ (x.1 = l.1 ∧ ((x.2 : ℕ) < j ↔ (l.2 : ℕ) < j))` using `by rw [(hw' x).1, (hw' x).2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [AlgHom.mapMatrix_apply, map_apply, bigMat, of_apply, submatrix_apply, id, e]`. Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[h, det_permute, MvPolynomial.smul_eq_C_mul]`. Use `congr 1`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem rename_det_bigMat (j : ℕ) (w : Perm (Ψ × Fin N)) (hw : w ∈ G0 j) :
     rename w (bigMat (Ψ := Ψ) (N := N) j).det = ((Perm.sign w : ℤ) : ℚ) • (bigMat j).det := by
@@ -93,7 +93,7 @@ theorem rename_det_bigMat (j : ℕ) (w : Perm (Ψ × Fin N)) (hw : w ∈ G0 j) :
   congr 1
 
 /- English proof (translation)
-Rewrite using `[antisym, ← det_bigMat j hj, Finset.card_eq_sum_ones, Nat.cast_sum, Finset.sum_smul]`. Use `Finset.sum_congr rfl fun w hw => ?_` and prove the remaining obligations. Rewrite using `[rename_det_bigMat j w hw, smul_smul, ← Int.cast_mul, ← Units.val_mul, Int.units_mul_self]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem antisym_fibV (j : ℕ) (hj : j ≤ N) :
     antisym (G0 j) (fibV (Ψ := Ψ) j hj) = ((G0 (Ψ := Ψ) (N := N) j).card : ℚ) • fibV j hj := by
@@ -106,7 +106,7 @@ def rev (j : ℕ) (hj : j ≤ N) (i : Fin N) : Fin N :=
   ⟨if (i : ℕ) < j then j - 1 - i else N - 1 + j - i, by split_ifs <;> omega⟩
 
 /- English proof (translation)
-Apply `Fin.ext` to reduce the goal to its premises. Simplify using `only [rev]`. Apply the tactic sequence `split_ifs <;> omega`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem rev_rev (j : ℕ) (hj : j ≤ N) (i : Fin N) : rev j hj (rev j hj i) = i := by
   apply Fin.ext
@@ -124,7 +124,7 @@ theorem rho_apply (j : ℕ) (hj : j ≤ N) (x : Ψ × Fin N) : rho j hj x = (x.1
 
 omit [Fintype Ψ] [DecidableEq Ψ] in
 /- English proof (translation)
-Simplify using `only [rho_apply, rev, true_and]`. Apply the tactic sequence `split_ifs <;> omega`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem rho_mem (j : ℕ) (hj : j ≤ N) (l : Ψ × Fin N) :
     (rho j hj l).1 = l.1 ∧ ((((rho j hj l).2 : Fin N) : ℕ) < j ↔ (l.2 : ℕ) < j) := by
@@ -132,7 +132,7 @@ theorem rho_mem (j : ℕ) (hj : j ≤ N) (l : Ψ × Fin N) :
   split_ifs <;> omega
 
 /- English proof (translation)
-Rewrite using `[monomial_sum_one]`. Use `Finset.prod_congr rfl fun l _ => ?_` and prove the remaining obligations. Simplify using `[bigMat, (hσ l).1, (hσ l).2, X_pow_eq_monomial]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem prod_bigMat_of (j : ℕ) (σ : Perm (Ψ × Fin N))
     (hσ : ∀ l, (σ l).1 = l.1 ∧ (((σ l).2 : ℕ) < j ↔ (l.2 : ℕ) < j)) :
@@ -142,7 +142,7 @@ theorem prod_bigMat_of (j : ℕ) (σ : Perm (Ψ × Fin N))
   simp [bigMat, (hσ l).1, (hσ l).2, X_pow_eq_monomial]
 
 /- English proof (translation)
-Rewrite using `[Finsupp.finsetSum_apply]`. Simplify using `[Finsupp.single_apply, σ.injective.eq_iff]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sum_single_apply (j : ℕ) (σ : Perm (Ψ × Fin N)) (l : Ψ × Fin N) :
     (∑ l', Finsupp.single (σ l') (colExp j N l'.2)) (σ l) = colExp j N l.2 := by
@@ -150,7 +150,7 @@ theorem sum_single_apply (j : ℕ) (σ : Perm (Ψ × Fin N)) (l : Ψ × Fin N) :
   simp [Finsupp.single_apply, σ.injective.eq_iff]
 
 /- English proof (translation)
-Use `Finsupp.ext fun x => ?_` and prove the remaining obligations. Take `⟨l, rfl⟩` from `(rho (Ψ := Ψ) j hj).surjective x`. Rewrite using `[sum_single_apply]`. Simplify using `only [delta0, Finsupp.coe_equivFunOnFinite_symm, rho_apply, rev, colExp]`. Apply the tactic sequence `split_ifs <;> omega`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sum_single_rho (j : ℕ) (hj : j ≤ N) :
     (∑ l, Finsupp.single (rho (Ψ := Ψ) j hj l) (colExp j N l.2)) = delta0 j := by
@@ -161,15 +161,15 @@ theorem sum_single_rho (j : ℕ) (hj : j ≤ N) :
   split_ifs <;> omega
 
 /- English proof (translation)
-Rewrite using `[det_apply, coeff_sum, Finset.sum_eq_single (rho j hj)]`. Rewrite using `[Units.smul_def, coeff_smul, prod_bigMat_of j _ (rho_mem j hj), coeff_monomial, if_pos (sum_single_rho j hj)]`. Simplify using the standard rewrite rules. Introduce `σ _ hne`. Rewrite using `[Units.smul_def, coeff_smul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hσ : ∀ l, (σ l).1 = l.1 ∧ (((σ l).2 : ℕ) < j ↔ (l.2 : ℕ) < j)`. Rewrite using `[prod_bigMat_of j σ hσ, coeff_monomial, if_neg, smul_zero]`. Introduce `hm`. Apply `hne` to reduce the goal to its premises. Use `Equiv.ext fun l => Prod.ext ?_ (Fin.ext ?_)` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[(hσ l).1, rho_apply]`. Establish `h1` using `congrArg (fun m : Ψ × Fin N →₀ ℕ => m (σ l)) hm`. Establish `h2` using `(hσ l).2`. Rewrite `h1` using `[sum_single_apply]`. Simplify using `only [delta0, Finsupp.coe_equivFunOnFinite_symm, colExp] at h1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [rho_apply, rev]`. Establish `h3` using `(σ l).2.2`. Establish `h4` using `l.2.2`. Apply the tactic sequence `split_ifs at h1 ⊢ <;> omega`. Take `⟨l, hl⟩` from `not_forall.mp hσ`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Finset.prod_eq_zero (Finset.mem_univ l) (by simp only [bigMat, of_apply, if_neg hl]), coeff_zero, smul_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem coeff_det_bigMat (j : ℕ) (hj : j ≤ N) :
     coeff (delta0 j) (bigMat (Ψ := Ψ) (N := N) j).det = ((Perm.sign (rho (Ψ := Ψ) j hj) : ℤ) : ℚ) := by
@@ -200,7 +200,7 @@ theorem coeff_det_bigMat (j : ℕ) (hj : j ≤ N) :
     exact absurd (Finset.mem_univ _) h
 
 /- English proof (translation)
-Introduce `Ψ _ _ N j hj`. Rewrite using `[fdeg, antisym_fibV j hj, coeff_smul, ← det_bigMat j hj, coeff_det_bigMat j hj, smul_eq_mul]`. Use `mul_ne_zero ?_ ?_` and prove the remaining obligations. Conclude with `Nat.cast_ne_zero.mpr (Finset.card_ne_zero.mpr ⟨1, by simp [G0]⟩)`. Conclude with `Int.cast_ne_zero.mpr (Units.ne_zero _)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem proof : FdegNeZero.Statement := by
   intro Ψ _ _ N j hj

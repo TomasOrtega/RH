@@ -24,9 +24,9 @@ variable {K V Ω : Type} [Field K] [NumberField K] [AddCommGroup V] [Module K V]
   {ψ : Ω →+* X.functionField} {s : W → L.B.Sec}
 
 /- English proof (translation)
-Use `lt_of_le_of_ne (Finset.sum_nonneg fun _ _ => sq_nonneg _) fun hS => ?_` and prove the remaining obligations. Take `⟨w, hw⟩` from `TopologicalSpace.Opens.mem_iSup.1 (hM.bpf.ge (TopologicalSpace.Opens.mem_top (y.1 (IsLocalRing.closedPoint ℂ))))`. Establish `hne` using `(secVal_ne_zero_iff (s w) hy).2 (mem_ptsIn.2 hw)`. Establish `hb` using `GlobalTheory.frame_semilinear_sq_le K V Nm W N n b g A c gw σ (fun w => valR y.1 (L.B.U i) ((s w).f i)) hF hg hc (fun m β u x hx => valR_section_sum K V Ω Nm W ev D X p L ψ s hM hev _ i y hy m β u x hx) w`. Rewrite `hb` using `[← hS, mul_zero]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hne (by`. Establish `: ‖valR y.1 (L.B.U i) ((s w).f i)‖ = 0` using `by nlinarith [norm_nonneg (valR y.1 (L.B.U i) ((s w).f i))]`. Conclude with `norm_eq_zero.1 this)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem IsModelOf.fs_sum_pos (hM : IsModelOf Nm W ev D p L ψ s) (hev : ev ≠ 0) {N n : ℕ} {b : Module.Basis (Fin N) K V}
     {g : Matrix (Fin N) (Fin n) K} {A : (K →+* ℂ) → Matrix (Fin N) (Fin N) ℂ} {c : Matrix (Fin n) (Fin N) K}
@@ -46,15 +46,15 @@ theorem IsModelOf.fs_sum_pos (hM : IsModelOf Nm W ev D p L ψ s) (hev : ev ≠ 0
     exact norm_eq_zero.1 this)
 
 /- English proof (translation)
-Take `⟨N, n, b, g, A, c, gw, hF, hg, hc, hφ⟩` from `hM.fs`. Use `⟨N, n, b, g, fun σ => ((Real.exp t : ℝ) : ℂ) • A σ, c, gw, ⟨hF.span, hF.full, fun σ => ?_, fun σ x => ?_, fun σ x => ?_⟩, hg, hc, fun σ i y hy => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.det_smul]`. Conclude with `mul_ne_zero (pow_ne_zero _ (Complex.ofReal_ne_zero.2 (Real.exp_pos _).ne')) (hF.herm σ)`. Simplify using `only [GlobalTheory.HeightShift.frameNorm_exp_smul (hF.herm _)]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hF.conj σ x]`. Rewrite using `[GlobalTheory.HeightShift.frameNorm_exp_smul (hF.herm _), hF.norm]`. Establish `hpos` using `hM.fs_sum_pos hev hF hg hc σ i y hy`. Establish `e : ∑ a, ‖∑ k, (∑ m, σ (c k m) * (((Real.exp t : ℝ) : ℂ) • A σ) m a) * valR y.1 (L.B.U i) ((s (gw k)).f i)‖ ^ 2 = Real.exp t ^ 2 * ∑ a, ‖∑ k, (∑ m, σ (c k m) * A σ m a) * valR y.1 (L.B.U i) ((s (gw k)).f i)‖ ^ 2`. Rewrite using `[Finset.mul_sum]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Establish `: ∑ k, (∑ m, σ (c k m) * (((Real.exp t : ℝ) : ℂ) • A σ) m a) * valR y.1 (L.B.U i) ((s (gw k)).f i) = ((Real.exp t : ℝ) : ℂ) * ∑ k, (∑ m, σ (c k m) * A σ m a) * valR y.1 (L.B.U i) ((s (gw k)).f i)`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_assoc, Finset.mul_sum]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, norm_mul, mul_pow, Complex.norm_real, Real.norm_of_nonneg (Real.exp_pos _).le]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, Real.log_mul (pow_pos (Real.exp_pos _) 2).ne' hpos.ne', Real.log_pow, Real.log_exp, ← hφ σ i y]`. Express the relevant statement in the definitionally equal form `(L.φ (σ.comp (algebraMap (𝓞 K) K))).φ i y + 2 * t = _`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Express the relevant assertion in an equivalent form by its definition. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem IsModelOf.fs_shift (hM : IsModelOf Nm W ev D p L ψ s) (hev : ev ≠ 0) (t : ℝ) :
     ∃ (N n : ℕ) (b : Module.Basis (Fin N) K V) (g : Matrix (Fin N) (Fin n) K)

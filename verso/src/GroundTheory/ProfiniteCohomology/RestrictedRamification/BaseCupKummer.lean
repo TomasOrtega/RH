@@ -23,7 +23,7 @@ variable {K : FiniteSubfield} (S : Set (HeightOneSpectrum (𝓞 K.1)))
 omit [NeZero n] in
 
 /- English proof (translation)
-Apply `Additive.toMul.injective` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `((Additive.toMul ζ : rootsOfUnity n L) : Lˣ) ^ n = 1`. Conclude with `(mem_rootsOfUnity n _).1 (Additive.toMul ζ).2`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem nsmul_galRootsOfUnity_eq_zero' {F L : Type} [Field F] [Field L] [Algebra F L]
     (ζ : galRootsOfUnity.{0} F L n) : n • ζ = 0 := by
@@ -67,7 +67,7 @@ def intActPairing (A Z' : Rep.{0} (ULift.{0} ℤ) H) (e : Z' →+ ℤ)
       rw [hZ, map_zsmul]
 
 /- English proof (translation)
-The claim follows from `pairingHom_tmul _ _ a z`.
+A detailed English derivation is pending.
 -/
 theorem intActPairing_tmul (A Z' : Rep.{0} (ULift.{0} ℤ) H) (e : Z' →+ ℤ)
     (hZ : ∀ (g : H) (z : Z'), Z'.ρ g z = z)
@@ -110,7 +110,7 @@ def zmodActPairing (D Z' : Rep.{0} (ULift.{0} ℤ) H) (hD : ∀ d : D, n • d =
 
 omit [NeZero n] in
 /- English proof (translation)
-The claim follows from `pairingHom_tmul _ _ d z`.
+A detailed English derivation is pending.
 -/
 theorem zmodActPairing_tmul (D Z' : Rep.{0} (ULift.{0} ℤ) H) (hD : ∀ d : D, n • d = 0) (e : Z' →+ ZMod n)
     (hZ : ∀ (g : H) (z : Z'), Z'.ρ g z = z)
@@ -122,7 +122,7 @@ end ActPairings
 omit [NeZero n] in
 
 /- English proof (translation)
-Rewrite using `[ZMod.coe_intCast]`. Use `conv_lhs => rw [← Int.emod_add_ediv_mul z n]`. Rewrite using `[add_smul, mul_smul, natCast_zsmul, hx, smul_zero, add_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zsmul_eq_cast_zsmul {M : Type*} [AddCommGroup M] [NeZero n] {x : M} (hx : n • x = 0) (z : ℤ) :
     z • x = (ZMod.cast (z : ZMod n) : ℤ) • x := by
@@ -132,7 +132,7 @@ theorem zsmul_eq_cast_zsmul {M : Type*} [AddCommGroup M] [NeZero n] {x : M} (hx 
 
 omit [NeZero n] in
 /- English proof (translation)
-Rewrite using `[smul_assoc, smul_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem nsmul_zsmul_swap {M : Type*} [AddCommGroup M] (m : ℕ) (z : ℤ) (x : M) : (m • z) • x = z • (m • x) := by
   rw [smul_assoc, smul_comm]
@@ -155,16 +155,16 @@ abbrev gsPairingμᵥ (v : S) :
 
 omit [NeZero n] in
 /- English proof (translation)
-The claim follows from `intActPairing_tmul _ _ _ _ x m`.
+A detailed English derivation is pending.
 -/
 theorem gsPairingU_tmul (x : galSUnitsMax K.1 ℚ̄ S) (m : intRepTriv (galUnramifiedOutside K.1 ℚ̄ S)) :
     (gsPairingU S).hom (x ⊗ₜ[ULift.{0} ℤ] m) = m.down • x :=
   intActPairing_tmul _ _ _ _ x m
 
 /- English proof (translation)
-Use `Rep.hom_ext (Representation.IntertwiningMap.ext (TensorProduct.ext' fun (x : galSUnitsMax K.1 ℚ̄ S) (m : intRepTriv (galUnramifiedOutside K.1 ℚ̄ S)) => ?_))` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(gsPairingU S).hom (x ⊗ₜ[ULift.{0} ℤ] (n • m)) = (gsPairingU S).hom ((n • x) ⊗ₜ[ULift.{0} ℤ] m)`. Rewrite using `[gsPairingU_tmul, gsPairingU_tmul]`. Establish `hm : (n • m).down = (n : ℤ) * m.down`. Express the relevant statement in the definitionally equal form `n • m.down = _`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[nsmul_eq_mul]`. Rewrite using `[hm, mul_comm, mul_smul, natCast_zsmul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem gsPairingU_h₂₃ :
     (𝟙 (sUnitsKummerSequence S (maxUnramifiedOutside K.1 ℚ̄ S) n).X₂ ⊗ₘ (bockSeq (galUnramifiedOutside K.1 ℚ̄ S) n).f) ≫
@@ -180,7 +180,7 @@ theorem gsPairingU_h₂₃ :
   rw [hm, mul_comm, mul_smul, natCast_zsmul]
 
 /- English proof (translation)
-The claim follows from `congrArg (rootsOfUnityToSUnits S (maxUnramifiedOutside K.1 ℚ̄ S) n).hom (zmodActPairing_tmul _ _ _ _ _ _ ζ a)`.
+A detailed English derivation is pending.
 -/
 theorem gsPairingμ_tmul (ζ : gsRoots S n) (a : zmodRep.{0} (galUnramifiedOutside K.1 ℚ̄ S) n) :
     (gsPairingμ S n).hom (ζ ⊗ₜ[ULift.{0} ℤ] a) =
@@ -188,7 +188,7 @@ theorem gsPairingμ_tmul (ζ : gsRoots S n) (a : zmodRep.{0} (galUnramifiedOutsi
   congrArg (rootsOfUnityToSUnits S (maxUnramifiedOutside K.1 ℚ̄ S) n).hom (zmodActPairing_tmul _ _ _ _ _ _ ζ a)
 
 /- English proof (translation)
-The claim follows from `congrArg (rootsOfUnityToUnits _ _ n).hom (zmodActPairing_tmul _ _ _ _ _ _ ζ a)`.
+A detailed English derivation is pending.
 -/
 theorem gsPairingμᵥ_tmul (v : S)
     (ζ : galRootsOfUnity.{0, 0} ((v : HeightOneSpectrum (𝓞 K.1)).adicCompletion K.1)
@@ -199,7 +199,7 @@ theorem gsPairingμᵥ_tmul (v : S)
   congrArg (rootsOfUnityToUnits _ _ n).hom (zmodActPairing_tmul _ _ _ _ _ _ ζ a)
 
 /- English proof (translation)
-Use `Rep.hom_ext (Representation.IntertwiningMap.ext (TensorProduct.ext' fun (ζ : gsRoots S n) (m : intRepTriv (galUnramifiedOutside K.1 ℚ̄ S)) => ?_))` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(gsPairingU S).hom ((rootsOfUnityToSUnits S (maxUnramifiedOutside K.1 ℚ̄ S) n).hom ζ ⊗ₜ[ULift.{0} ℤ] m) = (gsPairingμ S n).hom (ζ ⊗ₜ[ULift.{0} ℤ] (zmodReduction _ n).hom (ULift.up m.down))`. Establish `e2 : (gsPairingμ S n).hom (ζ ⊗ₜ[ULift.{0} ℤ] (zmodReduction _ n).hom (ULift.up m.down)) = (rootsOfUnityToSUnits S (maxUnramifiedOutside K.1 ℚ̄ S) n).hom ((ZMod.cast ((m.down : ℤ) : ZMod n) : ℤ) • ζ)` using `(congrArg (fun a => (gsPairingμ S n).hom (ζ ⊗ₜ[ULift.{0} ℤ] a)) (zmodReduction_hom_apply _ n m.down)).trans (gsPairingμ_tmul S n ζ _)`. Use `(gsPairingU_tmul S _ m).trans (Eq.trans ?_ e2.symm)` and prove the remaining obligations. Conclude with `(zsmul_eq_cast_zsmul n (by rw [← map_nsmul, nsmul_gsRoots, map_zero]) m.down).trans (map_zsmul _ _ _).symm`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem gsPairingU_h₁₂ :
     ((sUnitsKummerSequence S (maxUnramifiedOutside K.1 ℚ̄ S) n).f ⊗ₘ 𝟙 (bockSeq (galUnramifiedOutside K.1 ℚ̄ S) n).X₂) ≫
@@ -219,7 +219,7 @@ theorem gsPairingU_h₁₂ :
 
 omit [NeZero n] in
 /- English proof (translation)
-Use `Rep.hom_ext (Representation.IntertwiningMap.ext (TensorProduct.ext' fun (x : galUnits.{0, 0} ((v : HeightOneSpectrum (𝓞 K.1)).adicCompletion K.1) (AlgebraicClosure ((v : HeightOneSpectrum (𝓞 K.1)).adicCompletion K.1))) (m : Rep.res (gsFinFamily S ιs v).toMonoidHom (intRepTriv (ga …` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(mulIntRight (gsFinFamily S ιs v).toMonoidHom _).hom (x ⊗ₜ[ULift.{0} ℤ] (ULift.up (n • m.down) : Rep.res (gsFinFamily S ιs v).toMonoidHom (intRepTriv (galUnramifiedOutside K.1 ℚ̄ S)))) = (mulIntRight (gsFinFamily S ιs v).toMonoidHom _).hom ((n • x) ⊗ₜ[ULift.{0} ℤ] (ULift.up m.dow …`. Use `(mulIntRight_tmul (gsFinFamily S ιs v).toMonoidHom (galUnits.{0, 0} ((v : HeightOneSpectrum (𝓞 K.1)).adicCompletion K.1) (AlgebraicClosure ((v : HeightOneSpectrum (𝓞 K.1)).adicCompletion K.1))) x (n • m.down)).trans (Eq.trans ?_ (mulIntRight_tmul (gsFinFamily S ιs v).toMonoidHom …` and prove the remaining obligations. Conclude with `nsmul_zsmul_swap n m.down x`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem gsPairingU_h₂₃ᵥ (v : S) :
     (𝟙 _ ⊗ₘ (Rep.resFunctor (gsFinFamily S ιs v).toMonoidHom).map (bockSeq (galUnramifiedOutside K.1 ℚ̄ S) n).f) ≫
@@ -246,9 +246,9 @@ theorem gsPairingU_h₂₃ᵥ (v : S) :
 
 set_option maxHeartbeats 1600000 in
 /- English proof (translation)
-Use `Rep.hom_ext (Representation.IntertwiningMap.ext (TensorProduct.ext' fun (ζ : galRootsOfUnity.{0, 0} ((v : HeightOneSpectrum (𝓞 K.1)).adicCompletion K.1) (AlgebraicClosure ((v : HeightOneSpectrum (𝓞 K.1)).adicCompletion K.1)) n) (m : Rep.res (gsFinFamily S ιs v).toMonoidHom (intRe …` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(mulIntRight (gsFinFamily S ιs v).toMonoidHom _).hom ((rootsOfUnityToUnits _ _ n).hom ζ ⊗ₜ[ULift.{0} ℤ] (ULift.up m.down : Rep.res (gsFinFamily S ιs v).toMonoidHom (intRepTriv (galUnramifiedOutside K.1 ℚ̄ S)))) = (gsPairingμᵥ S ιs n v).hom (ζ ⊗ₜ[ULift.{0} ℤ] ((zmodReduction _ n). …`. Establish `e2 : (gsPairingμᵥ S ιs n v).hom (ζ ⊗ₜ[ULift.{0} ℤ] ((zmodReduction _ n).hom (ULift.up m.down) : Rep.res (gsFinFamily S ιs v).toMonoidHom (zmodRep.{0} _ n))) = (rootsOfUnityToUnits _ _ n).hom ((ZMod.cast ((m.down : ℤ) : ZMod n) : ℤ) • ζ)` using `(congrArg (fun a : Rep.res (gsFinFamily S ιs v).toMonoidHom (zmodRep.{0} _ n) => (gsPairingμᵥ S ιs n v).hom (ζ ⊗ₜ[ULift.{0} ℤ] a)) (zmodReduction_hom_apply _ n m.down)).trans (gsPairingμᵥ_tmul S ιs n v ζ _)`. Use `(mulIntRight_tmul (gsFinFamily S ιs v).toMonoidHom (galUnits.{0, 0} ((v : HeightOneSpectrum (𝓞 K.1)).adicCompletion K.1) (AlgebraicClosure ((v : HeightOneSpectrum (𝓞 K.1)).adicCompletion K.1))) _ m.down).trans (Eq.trans ?_ e2.symm)` and prove the remaining obligations. Establish `hx : n • (rootsOfUnityToUnits _ _ n).hom ζ = 0`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← map_nsmul, nsmul_galRootsOfUnity_eq_zero', map_zero]`. Conclude with `(zsmul_eq_cast_zsmul n hx m.down).trans (map_zsmul (rootsOfUnityToUnits _ _ n).hom _ ζ).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gsPairingU_h₁₂ᵥ (v : S) :
     ((kummerSequence ((v : HeightOneSpectrum (𝓞 K.1)).adicCompletion K.1)
@@ -279,7 +279,7 @@ theorem gsPairingU_h₁₂ᵥ (v : S) :
 
 set_option maxHeartbeats 1600000 in
 /- English proof (translation)
-Apply `Additive.toMul.injective` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(ιs v) ((((Additive.toMul ζ : rootsOfUnity n (maxUnramifiedOutside K.1 ℚ̄ S)) : (maxUnramifiedOutside K.1 ℚ̄ S)ˣ) : maxUnramifiedOutside K.1 ℚ̄ S) : ℚ̄) = ((restrictRootsOfUnity ((ιs v).comp (maxUnramifiedOutside K.1 ℚ̄ S).val).toRingHom n (Additive.toMul ζ) : (AlgebraicClosure ( …`. Rewrite using `[restrictRootsOfUnity_coe_apply]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem gsSUnitsLocalMor_rootsOfUnityToSUnits (v : S) (ζ : gsRoots S n) :
     (gsSUnitsLocalMor S ιs v).hom ((rootsOfUnityToSUnits S (maxUnramifiedOutside K.1 ℚ̄ S) n).hom ζ) =
@@ -296,7 +296,7 @@ theorem gsSUnitsLocalMor_rootsOfUnityToSUnits (v : S) (ζ : gsRoots S n) :
 
 set_option maxHeartbeats 1600000 in
 /- English proof (translation)
-Use `Rep.hom_ext (Representation.IntertwiningMap.ext (TensorProduct.ext' fun (ζ : gsRoots S n) (a : zmodRep.{0} (galUnramifiedOutside K.1 ℚ̄ S) n) => ?_))` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(gsSUnitsLocalMor S ιs v).hom ((gsPairingμ S n).hom (ζ ⊗ₜ[ULift.{0} ℤ] a)) = (gsPairingμᵥ S ιs n v).hom ((gsRootsOmegaMor S ιs n v).hom ζ ⊗ₜ[ULift.{0} ℤ] (a : Rep.res (gsFinFamily S ιs v).toMonoidHom (zmodRep.{0} _ n)))`. Use `(congrArg (gsSUnitsLocalMor S ιs v).hom (gsPairingμ_tmul S n ζ a)).trans (Eq.trans ?_ (gsPairingμᵥ_tmul S ιs n v ((gsRootsOmegaMor S ιs n v).hom ζ) a).symm)` and prove the remaining obligations. Conclude with `(congrArg (gsSUnitsLocalMor S ιs v).hom (map_zsmul (rootsOfUnityToSUnits S (maxUnramifiedOutside K.1 ℚ̄ S) n).hom (ZMod.cast a.down : ℤ) ζ)).trans ((map_zsmul (gsSUnitsLocalMor S ιs v).hom (ZMod.cast a.down : ℤ) _).trans ((congrArg (fun y => (ZMod.cast a.down : ℤ) • y) (gsSUnitsL …`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem gsPairingμ_hμ (v : S) :
     (Rep.resFunctor (gsFinFamily S ιs v).toMonoidHom).map (gsPairingμ S n) ≫ gsSUnitsLocalMor S ιs v =
@@ -316,7 +316,7 @@ theorem gsPairingμ_hμ (v : S) :
 
 set_option maxHeartbeats 1600000 in
 /- English proof (translation)
-Use `Rep.hom_ext (Representation.IntertwiningMap.ext (TensorProduct.ext' fun (x : galSUnitsMax K.1 ℚ̄ S) (m : intRepTriv (galUnramifiedOutside K.1 ℚ̄ S)) => ?_))` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(gsSUnitsLocalMor S ιs v).hom ((gsPairingU S).hom (x ⊗ₜ[ULift.{0} ℤ] (ULift.up m.down : intRepTriv (galUnramifiedOutside K.1 ℚ̄ S)))) = (mulIntRight (gsFinFamily S ιs v).toMonoidHom _).hom ((gsSUnitsLocalMor S ιs v).hom x ⊗ₜ[ULift.{0} ℤ] (ULift.up m.down : Rep.res (gsFinFamily S …`. Use `(congrArg (gsSUnitsLocalMor S ιs v).hom (gsPairingU_tmul S x _)).trans (Eq.trans ?_ (mulIntRight_tmul (gsFinFamily S ιs v).toMonoidHom (galUnits.{0, 0} ((v : HeightOneSpectrum (𝓞 K.1)).adicCompletion K.1) (AlgebraicClosure ((v : HeightOneSpectrum (𝓞 K.1)).adicCompletion K.1))) _ …` and prove the remaining obligations. Conclude with `map_zsmul _ _ _`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem gsPairingU_hμ (v : S) :
     (Rep.resFunctor (gsFinFamily S ιs v).toMonoidHom).map (gsPairingU S) ≫ gsSUnitsLocalMor S ιs v =
@@ -336,7 +336,7 @@ theorem gsPairingU_hμ (v : S) :
 
 omit [NeZero n] in
 /- English proof (translation)
-Rewrite `h` using `[pow_one, neg_one_smul, add_neg_eq_zero]`. Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_of_add_neg_one_pow_one_smul_eq_zero {R M : Type*} [Ring R] [AddCommGroup M] [Module R M] {a b : M}
     (h : a + (-1 : R) ^ 1 • b = 0) : a = b := by
@@ -346,7 +346,7 @@ theorem eq_of_add_neg_one_pow_one_smul_eq_zero {R M : Type*} [Ring R] [AddCommGr
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Establish `e` using `compactCup_compactδ_add_compactCup_δ (gsFinFamily S ιs) (SA := sUnitsKummerSequence S (maxUnramifiedOutside K.1 ℚ̄ S) n) (SAᵥ := fun v => kummerSequence ((v : HeightOneSpectrum (𝓞 K.1)).adicCompletion K.1) (AlgebraicClosure ((v : HeightOneSpectrum (𝓞 K.1)).adicCompletion K.1)) n) …`. Conclude with `eq_of_add_neg_one_pow_one_smul_eq_zero e`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem gsKummerCompactδ_cup (hnS : ∀ v ∉ S, ((n : ℕ) : 𝓞 K.1) ∉ v.asIdeal) (x : gsUnitsCompact S ιs 1)
     (y : cohomology (zmodRep.{0} (galUnramifiedOutside K.1 ℚ̄ S) n) 1) :

@@ -10,9 +10,9 @@ open Matrix Formalism.UG GlobalTheory.BCT GlobalTheory.BorelUMod GlobalTheory.LG
 namespace PositivityTheory.Rg.BcB.F.Eig.IndexUAAux
 
 /- English proof (translation)
-Take `⟨k, hk⟩ : ∃ k : ℕ, (j : ℕ) = i + k` from `⟨j - i, by have := Fin.le_def.1 h; omega⟩`. Proceed by induction on `k generalizing j with`. Consider the case `zero`. Establish `hji : j = i` using `Fin.ext (by omega)`. Conclude with `le_of_eq (congrArg l hji)`.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Establish an intermediate fact. Treat this case separately.
 
-Consider the case `succ k ih`. Establish `hj1 : (j : ℕ) - 1 < m` using `by omega`. Establish `h1 : 2 ≤ l ⟨(j : ℕ) - 1, hj1⟩ - l j` using `hl.1 ⟨(j : ℕ) - 1, hj1⟩ j (by show (j : ℕ) = (j : ℕ) - 1 + 1; omega)`. Establish `h2 : l ⟨(j : ℕ) - 1, hj1⟩ ≤ l i` using `ih (Fin.le_def.2 (by show (i : ℕ) ≤ (j : ℕ) - 1; omega)) (by show (j : ℕ) - 1 = (i : ℕ) + k; omega)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem cone_anti {m : ℕ} {l : Fin m → ℤ} (hl : Cone l) {i j : Fin m} (h : i ≤ j) : l j ≤ l i := by
   obtain ⟨k, hk⟩ : ∃ k : ℕ, (j : ℕ) = i + k := ⟨j - i, by have := Fin.le_def.1 h; omega⟩
@@ -28,11 +28,11 @@ theorem cone_anti {m : ℕ} {l : Fin m → ℤ} (hl : Cone l) {i j : Fin m} (h :
     linarith
 
 /- English proof (translation)
-Establish `hij : (i : ℕ) ≤ j` using `Fin.le_def.1 h`. Establish `hP' : ∀ x : Fin (n / 2), 0 < l x` using `fun x => by linarith [hl.2 x]`. Establish `hA : ∀ a b : ℕ, ∀ (ha : a < n / 2) (hb : b < n / 2), a ≤ b → l ⟨b, hb⟩ ≤ l ⟨a, ha⟩` using `fun a b ha hb hab => cone_anti hl (Fin.le_def.2 hab)`. Use `delta wexp`. Use `beta_reduce`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
-Use `split_ifs`. Apply the tactic sequence `all_goals first`. Consider the case `omega`. Consider the case `exact hA _ _ _ _ (by omega)`. Consider the case `exact neg_le_neg (hA _ _ _ _ (by omega))`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact (neg_nonpos.2 (hP' _).le).trans (hP' _).le`. Consider the case `exact (hP' _).le`. Consider the case `exact neg_nonpos.2 (hP' _).le`. Consider the case `exact le_rfl`.
+A detailed English derivation is pending.
 -/
 theorem wexp_anti {n : ℕ} {l : Fin (n / 2) → ℤ} (hl : Cone l) {i j : Fin n} (h : i ≤ j) :
     wexp n l j ≤ wexp n l i := by
@@ -53,11 +53,9 @@ theorem wexp_anti {n : ℕ} {l : Fin (n / 2) → ℤ} (hl : Cone l) {i j : Fin n
     | exact le_rfl
 
 /- English proof (translation)
-Establish `hr : (i.rev : ℕ) = n - (i + 1)` using `Fin.val_rev i`. Establish `hl' : ∀ a b : ℕ, ∀ (ha : a < n / 2) (hb : b < n / 2), a = b → l ⟨a, ha⟩ = l ⟨b, hb⟩`. Introduce and unpack `a b ha hb rfl`. Both sides reduce to the same expression. Use `delta wexp`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Both sides reduce to the same expression. Treat this case separately.
 
-Use `beta_reduce`. Use `split_ifs`. Apply the tactic sequence `all_goals first`. Consider the case `omega`. Consider the case `exact hl' _ _ _ _ (by omega)`.
-
-Consider the case `exact congrArg Neg.neg (hl' _ _ _ _ (by omega))`. Consider the case `(rw [neg_neg]; exact hl' _ _ _ _ (by omega))`. Consider the case `simp`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem wexp_rev {n : ℕ} (l : Fin (n / 2) → ℤ) (i : Fin n) : wexp n l i.rev = -wexp n l i := by
   have hr : (i.rev : ℕ) = n - (i + 1) := Fin.val_rev i
@@ -75,7 +73,7 @@ theorem wexp_rev {n : ℕ} (l : Fin (n / 2) → ℤ) (i : Fin n) : wexp n l i.re
     | simp
 
 /- English proof (translation)
-Use `delta wexp`. Use `beta_reduce`. Rewrite using `[dif_pos (by rw [Fin.val_castLE]; exact i.2)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem wexp_castLE {n : ℕ} (l : Fin (n / 2) → ℤ) (i : Fin (n / 2)) :
     wexp n l (Fin.castLE (Nat.div_le_self n 2) i) = l i := by
@@ -85,22 +83,20 @@ theorem wexp_castLE {n : ℕ} (l : Fin (n / 2) → ℤ) (i : Fin (n / 2)) :
   rfl
 
 /- English proof (translation)
-Conclude with `sub_nonneg.2 (wexp_anti hl h.le)`.
+A detailed English derivation is pending.
 -/
 theorem wexp_nonneg {n : ℕ} {l : Fin (n / 2) → ℤ} (hl : Cone l) {i j : Fin n} (h : i < j) :
     0 ≤ wexp n l i - wexp n l j := by
   exact sub_nonneg.2 (wexp_anti hl h.le)
 
 /- English proof (translation)
-Use `show (H.subgroupOf X).index = (H.subgroupOf Y).index`. Rewrite using `[Subgroup.index_eq_card, Subgroup.index_eq_card]`. Set `f : Y ⧸ H.subgroupOf Y → X ⧸ H.subgroupOf X` to `Quotient.map' (fun y : Y => (⟨y.1, hYX y.2⟩ : X)) (fun a b hab => by`. Rewrite `hab`, the goal using `[QuotientGroup.leftRel_apply]`. Conclude with `hab)`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hinj : Function.Injective f`. Introduce `a b hab`. Take `⟨a, rfl⟩` from `QuotientGroup.mk_surjective a`. Take `⟨b, rfl⟩` from `QuotientGroup.mk_surjective b`. Establish `hab' : ((⟨a.1, hYX a.2⟩ : X) : X ⧸ H.subgroupOf X) = ((⟨b.1, hYX b.2⟩ : X) : X ⧸ H.subgroupOf X)` using `hab`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hab'`, the goal using `[QuotientGroup.eq]`. Conclude with `hab'`. Establish `hsurj : Function.Surjective f`. Introduce `xb`. Take `⟨x, rfl⟩` from `QuotientGroup.mk_surjective xb`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨y, hy, z, hz, hxyz⟩` from `h x.1 x.2`. Use `⟨((⟨y, hy⟩ : Y) : Y ⧸ H.subgroupOf Y), ?_⟩` and prove the remaining obligations. Use `show ((⟨y, hYX hy⟩ : X) : X ⧸ H.subgroupOf X) = (x : X ⧸ H.subgroupOf X)`. Rewrite using `[QuotientGroup.eq, Subgroup.mem_subgroupOf]`. Use `show y⁻¹ * x.1 ∈ H`.
-
-Rewrite using `[hxyz, inv_mul_cancel_left]`. Conclude with `hz`. Conclude with `(Nat.card_congr (Equiv.ofBijective f ⟨hinj, hsurj⟩)).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem relIndex_transfer {G : Type*} [Group G] {X Y H : Subgroup G} (hYX : Y ≤ X)
     (h : ∀ x ∈ X, ∃ y ∈ Y, ∃ z ∈ H, x = y * z) : H.relIndex X = H.relIndex Y := by
@@ -134,7 +130,7 @@ section Val
 variable {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))] {n : ℕ}
 
 /- English proof (translation)
-Rewrite using `[map_zpow₀, hU.2.2.2.1]`. Use `show ((Multiplicative.ofAdd (-1 : ℤ) : Multiplicative ℤ) : WithZero (Multiplicative ℤ)) ^ k = ((Multiplicative.ofAdd (-k) : Multiplicative ℤ) : WithZero (Multiplicative ℤ))`. Rewrite using `[← WithZero.coe_zpow, ← ofAdd_zsmul, smul_eq_mul, mul_neg, mul_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem v_zpow {ϖ : L} {σ : L →+* L} {q : ℕ} (hU : IsUnramInv ϖ σ q) (k : ℤ) :
     Valued.v (ϖ ^ k) = WithZero.exp (-k) := by
@@ -144,7 +140,7 @@ theorem v_zpow {ϖ : L} {σ : L →+* L} {q : ℕ} (hU : IsUnramInv ϖ σ q) (k 
   rw [← WithZero.coe_zpow, ← ofAdd_zsmul, smul_eq_mul, mul_neg, mul_one]
 
 /- English proof (translation)
-Introduce `h0`. Establish `hv` using `hU.2.2.2.1`. Rewrite `hv` using `[h0, map_zero]`. Conclude with `WithZero.zero_ne_coe hv`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unif_ne_zero {ϖ : L} {σ : L →+* L} {q : ℕ} (hU : IsUnramInv ϖ σ q) : ϖ ≠ 0 := by
   intro h0
@@ -153,7 +149,7 @@ theorem unif_ne_zero {ϖ : L} {σ : L →+* L} {q : ℕ} (hU : IsUnramInv ϖ σ 
   exact WithZero.zero_ne_coe hv
 
 /- English proof (translation)
-Establish `h1` using `GlobalTheory.BorelUMod.v_eq_exp (zpow_ne_zero k (unif_ne_zero hU))`. Rewrite `h1` using `[v_zpow hU]`. Establish `h2` using `WithZero.exp_injective h1`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem ordL_zpow {ϖ : L} {σ : L →+* L} {q : ℕ} (hU : IsUnramInv ϖ σ q) (k : ℤ) : ordL (ϖ ^ k) = k := by
   have h1 := GlobalTheory.BorelUMod.v_eq_exp (zpow_ne_zero k (unif_ne_zero hU))
@@ -162,7 +158,7 @@ theorem ordL_zpow {ϖ : L} {σ : L →+* L} {q : ℕ} (hU : IsUnramInv ϖ σ q) 
   omega
 
 /- English proof (translation)
-Break down `eq_or_ne y 0 with rfl | hy` into its components or cases. Simplify using the standard rewrite rules. Take `⟨m, rfl⟩` from `WithZero.ne_zero_iff_exists.1 hy`. Rewrite using `[show WithZero.exp c = ((Multiplicative.ofAdd c : Multiplicative ℤ) : WithZero (Multiplicative ℤ)) from rfl, show WithZero.exp (-c) = ((Multiplicative.ofAdd (-c) : Multiplicative ℤ) : WithZero (Multiplicative ℤ)) from rfl, ← WithZero.coe_mul, ← WithZero.coe_one, WithZero.coe_le_c …`. Use linear arithmetic over natural numbers and integers.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem mul_exp_le_one_iff (y : WithZero (Multiplicative ℤ)) (c : ℤ) :
     y * WithZero.exp c ≤ 1 ↔ y ≤ WithZero.exp (-c) := by
@@ -177,11 +173,11 @@ theorem mul_exp_le_one_iff (y : WithZero (Multiplicative ℤ)) (c : ℤ) :
 
 omit [Valued L (WithZero (Multiplicative ℤ))] in
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hB, hD⟩ i j hji`. Break down `hji.lt_or_eq with hlt | rfl` into its components or cases. Rewrite using `[Matrix.sub_apply, Matrix.one_apply_ne (ne_of_gt hlt), hB i j hlt, sub_zero]`. Rewrite using `[Matrix.sub_apply, Matrix.one_apply_eq, hD _, sub_self]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Use `⟨fun i j hji => ?_, fun i => ?_⟩` and prove the remaining obligations. Establish `h1` using `h i j hji.le`. Rewrite `h1` using `[Matrix.sub_apply, Matrix.one_apply_ne (ne_of_gt hji), sub_zero]`. Then use the resulting hypothesis. Establish `h1` using `h i i le_rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite `h1` using `[Matrix.sub_apply, Matrix.one_apply_eq, sub_eq_zero]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem unip_iff {σ : L →+* L} (g : GU σ n) :
     IsUnipU g ↔ ∀ i j, j ≤ i → ((((g : GL (Fin n) L) : Matrix (Fin n) (Fin n) L)) - 1) i j = 0 := by
@@ -198,21 +194,17 @@ theorem unip_iff {σ : L →+* L} (g : GU σ n) :
       rwa [Matrix.sub_apply, Matrix.one_apply_eq, sub_eq_zero] at h1
 
 /- English proof (translation)
-Establish `hu` using `(unip_iff g).1 hg`. Establish `hlow : ∀ i j, j < i → (((g : GL (Fin n) L)) : Matrix (Fin n) (Fin n) L) i j = 0` using `fun i j hji => by`. Establish `h1` using `hu i j hji.le`. Rewrite `h1` using `[Matrix.sub_apply, Matrix.one_apply_ne (ne_of_gt hji), sub_zero]`. Then use the resulting hypothesis. Establish `hdiag : ∀ i, (((g : GL (Fin n) L)) : Matrix (Fin n) (Fin n) L) i i = 1` using `fun i => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `h1` using `hu i i le_rfl`. Rewrite `h1` using `[Matrix.sub_apply, Matrix.one_apply_eq, sub_eq_zero]`. Then use the resulting hypothesis. Establish `hinv : ∀ i j, ((((g : GL (Fin n) L))⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) i j = σ ((((g : GL (Fin n) L)) : Matrix (Fin n) (Fin n) L) j.rev i.rev)` using `(GlobalTheory.LGrp.mem_GU_iff σ n (g : GL (Fin n) L)).1 g.2`. Use `show (g : GL (Fin n) L) ∈ PositivityTheory.SphericalProduct.IwGL L n ↔ _`. Rewrite using `[GlobalTheory.CompanionTheory.DomGLVal.mem_IwGL_iff]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨hv, -⟩, -⟩ show _ ∧ _`. Use `⟨hu, fun i j hij => ?_⟩` and prove the remaining obligations. Simplify using `only [Matrix.sub_apply, Matrix.one_apply_ne (ne_of_lt hij), sub_zero, neg_zero, WithZero.exp_zero]`. Conclude with `hv i j`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `⟨-, hup⟩`. Establish `hall : ∀ i j, Valued.v ((((g : GL (Fin n) L)) : Matrix (Fin n) (Fin n) L) i j) ≤ 1`. Introduce `i j`. Break down `lt_trichotomy i j with hij | rfl | hij` into its components or cases. Establish `h1` using `hup i j hij`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.sub_apply, Matrix.one_apply_ne (ne_of_lt hij), sub_zero, neg_zero, WithZero.exp_zero] at h1`. Conclude with `h1`. Rewrite using `[hdiag, map_one]`. Rewrite using `[hlow i j hij, map_zero]`. Conclude with `zero_le`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `show _ ∧ _`. Use `⟨hall, fun i j hji => ?_⟩` and prove the remaining obligations. Rewrite using `[hlow i j hji, map_zero]`. Conclude with `zero_lt_one`.
-
-Use `show _ ∧ _`. Use `⟨fun i j => ?_, fun i j hji => ?_⟩` and prove the remaining obligations. Rewrite using `[hinv, hσ]`. Conclude with `hall _ _`. Rewrite using `[hinv, hlow j.rev i.rev (Fin.rev_lt_rev.2 hji), map_zero, map_zero]`.
-
-Conclude with `zero_lt_one`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_IwU_iff {σ : L →+* L} (hσ : ∀ x, Valued.v (σ x) = Valued.v x) (g : GU σ n) (hg : IsUnipU g) :
     g ∈ PositivityTheory.SphericalProduct.IwU σ n ↔
@@ -265,25 +257,23 @@ section Steps
 variable {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))] {n : ℕ}
 
 /- English proof (translation)
-Take `⟨D, hJ, hN, hNm, hT⟩` from `PositivityTheory.SphericalProduct.iwahori_u L ϖ σ q hU n`. Take `⟨d, hTd, hTne⟩ : ∃ d : Fin n → L, ((t : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) = Matrix.diagonal d ∧ ∀ i, d i ≠ 0` from `⟨_, GlobalTheory.CompanionTheory.DomGLVal.diag_data ht⟩`. Establish `hdom' : ∀ i j : Fin n, i ≤ j → ordL (d j) ≤ ordL (d i)` using `fun i j hij => by`. Establish `h1` using `hdom i j hij`. Rewrite `h1` using `[hTd, Matrix.diagonal_apply_eq, Matrix.diagonal_apply_eq]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hTinv : ((((t : GL (Fin n) L))⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) = Matrix.diagonal (fun i => (d i)⁻¹)` using `GlobalTheory.CompanionTheory.DomGLVal.val_inv_diag hTne hTd`. Establish `hmap : ∀ z : GU σ n, t⁻¹ * z * t ∈ PositivityTheory.SphericalProduct.IwU σ n → z ∈ (PositivityTheory.SphericalProduct.IwU σ n).map (MulAut.conj t).toMonoidHom` using `fun z hz => (Subgroup.mem_map).2 ⟨_, hz, show t * (t⁻¹ * z * t) * t⁻¹ = z by group⟩`. Use `relIndex_transfer inf_le_left fun x hx => ?_` and prove the remaining obligations. Rewrite `hx` using `[← hJ]`. Take `⟨c, hc, b, hb, a, ha, rfl⟩` from `D.fact_up x hx`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hc'` using `Subgroup.mem_inf.1 hc`. Establish `hb'` using `Subgroup.mem_inf.1 hb`. Establish `ha'` using `Subgroup.mem_inf.1 ha`. Establish `hcJ : c ∈ PositivityTheory.SphericalProduct.IwU σ n` using `hJ ▸ hc'.1`. Establish `hbJ : b ∈ PositivityTheory.SphericalProduct.IwU σ n` using `hJ ▸ hb'.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `haJ : a ∈ PositivityTheory.SphericalProduct.IwU σ n` using `hJ ▸ ha'.1`. Establish `hbT : t⁻¹ * b * t = b`. Take `⟨db, hBd, -⟩ : ∃ db : Fin n → L, ((b : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) = Matrix.diagonal db ∧ ∀ i, db i ≠ 0` from `⟨_, GlobalTheory.CompanionTheory.DomGLVal.diag_data ((hT b).1 hb'.2)⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Use `show ((((t : GL (Fin n) L))⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) * ((b : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) * ((t : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) = ((b : GL (Fin n) L) : Matrix (Fin n) (Fin n) L)`. Rewrite using `[hTinv, hBd, hTd, Matrix.diagonal_mul_diagonal, Matrix.diagonal_mul_diagonal]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Rewrite using `[mul_comm (d i)⁻¹ (db i), mul_assoc, inv_mul_cancel₀ (hTne i), mul_one]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `haI : ((a : GL (Fin n) L)) ∈ PositivityTheory.SphericalProduct.IwGL L n` using `haJ`. Establish `hInt` using `(GlobalTheory.CompanionTheory.DomGLVal.mem_IwGL_iff _).1 haI`. Establish `hg : PositivityTheory.SphericalProduct.IsLowUniM (a : GL (Fin n) L)` using `(hNm a).1 ha'.2`. Establish `hg' : PositivityTheory.SphericalProduct.IsLowUniM ((a : GL (Fin n) L))⁻¹` using `(hNm a⁻¹).1 (Subgroup.mem_inf.1 ((D.J ⊓ D.Nm).inv_mem ha)).2`. Establish `hratio : ∀ i j : Fin n, j < i → Valued.v ((d i)⁻¹) * Valued.v (((d j)⁻¹)⁻¹) ≤ 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i j hji`. Establish `h1` using `GlobalTheory.CompanionTheory.DomGLVal.v_le_of_ordL_le (hTne i) (hTne j) (hdom' j i hji.le)`. Establish `h2` using `GlobalTheory.CompanionTheory.DomGLVal.ratio_le (hTne i) h1`. Rewrite using `[inv_inv, mul_comm]`. Conclude with `h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlow` using `GlobalTheory.CompanionTheory.DomGLVal.low_mem (s := ((t : GL (Fin n) L))⁻¹) (e := fun i => (d i)⁻¹) (fun i => inv_ne_zero (hTne i)) hTinv hg hg' (fun i j hji => GlobalTheory.CompanionTheory.DomGLVal.valuation_triple_mul_lt_one (hratio i j hji) (hInt.1.2 i j hji)) (fun i j hji => …`. Establish `hta : t⁻¹ * a * t ∈ PositivityTheory.SphericalProduct.IwU σ n`. Establish `e : (((t⁻¹ * a * t : GU σ n)) : GL (Fin n) L) = ((t : GL (Fin n) L))⁻¹ * (a : GL (Fin n) L) * (((t : GL (Fin n) L))⁻¹)⁻¹`. Rewrite using `[inv_inv]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `show (((t⁻¹ * a * t : GU σ n)) : GL (Fin n) L) ∈ PositivityTheory.SphericalProduct.IwGL L n`. Rewrite using `[e]`. Conclude with `hlow.1`. Use `⟨c, Subgroup.mem_inf.2 ⟨hcJ, (GlobalTheory.LGrp.mem_borelU_U σ n c).2 ((hN c).1 hc'.2)⟩, b * a, hmap _ ?_, mul_assoc c b a⟩` and prove the remaining obligations. Establish `e2 : t⁻¹ * (b * a) * t = (t⁻¹ * b * t) * (t⁻¹ * a * t)` using `by group`.
-
-Rewrite using `[e2, hbT]`. Conclude with `(PositivityTheory.SphericalProduct.IwU σ n).mul_mem hbJ hta`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem step1 [CompleteSpace L] {ϖ : L} {σ : L →+* L} {q : ℕ} (hU : IsUnramInv ϖ σ q) (t : GU σ n)
     (ht : PositivityTheory.SphericalProduct.IsDiagM (t : GL (Fin n) L))
@@ -354,15 +344,15 @@ theorem step1 [CompleteSpace L] {ϖ : L} {σ : L →+* L} {q : ℕ} (hU : IsUnra
   exact (PositivityTheory.SphericalProduct.IwU σ n).mul_mem hbJ hta
 
 /- English proof (translation)
-Establish `hmono : ∀ {c C : Fin n → Fin n → ℤ} (hc : IsWeight c) (hC : IsWeight C), (∀ i j, i < j → c i j ≤ C i j) → unipLat hU.2.1 hC ≤ unipLat hU.2.1 hc`. Introduce `c C hc hC hcC u hu`. Take `⟨h1, h2⟩` from `hu`. Use `show _ ∧ _`. Conclude with `⟨h1, fun i j hij => (h2 i j hij).trans (WithZero.exp_le_exp.2 (neg_le_neg (hcC i j hij)))⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨C, hC, hdC, h0C⟩` from `exists_idealWeight (c := d)`. Establish `e1` using `relIndex_unipLat hU hd hC hdC`. Establish `e2` using `relIndex_unipLat hU (isWeight_zero (n := n)) hC h0C`. Establish `hle1 : unipLat hU.2.1 hC ≤ unipLat hU.2.1 hd` using `hmono hd hC hdC.1`. Establish `hle2 : unipLat hU.2.1 hd ≤ unipLat hU.2.1 (n` using `n) isWeight_zero := hmono isWeight_zero hd (fun i j hij => hd0 i j hij)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmul` using `Subgroup.relIndex_mul_relIndex _ _ _ hle1 hle2`. Rewrite `hmul` using `[e1, e2]`. Simplify using `only [sub_zero] at hmul`. Establish `hsplit : ∑ p ∈ upPairs n, (C p.1 p.2).toNat = ∑ p ∈ upPairs n, (C p.1 p.2 - d p.1 p.2).toNat + ∑ p ∈ upPairs n, (d p.1 p.2).toNat`. Rewrite using `[← Finset.sum_add_distrib]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun p hp => ?_` and prove the remaining obligations. Establish `hp' : p ∈ Finset.univ.filter (fun p : Fin n × Fin n => p.1 < p.2)` using `hp`. Establish `hlt : p.1 < p.2` using `(Finset.mem_filter.1 hp').2`. Establish `h1` using `hdC.1 p.1 p.2 hlt`. Establish `h2` using `hd0 p.1 p.2 hlt`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Rewrite `hmul` using `[hsplit, pow_add]`. Establish `hq : 0 < q ^ ∑ p ∈ upPairs n, (C p.1 p.2 - d p.1 p.2).toNat` using `pow_pos (by have := hU.2.2.2.2.2.1; omega) _`. Conclude with `Nat.eq_of_mul_eq_mul_left hq hmul`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem step3 {ϖ : L} {σ : L →+* L} {q : ℕ} (hU : IsUnramInv ϖ σ q) {d : Fin n → Fin n → ℤ} (hd : IsWeight d)
     (hd0 : ∀ i j, i < j → 0 ≤ d i j) :
@@ -404,9 +394,7 @@ section Conj
 variable {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))] {n : ℕ}
 
 /- English proof (translation)
-Use `⟨fun i j => ?_, fun i j k _ _ => ?_⟩` and prove the remaining obligations. Use `show wexp n l j.rev - wexp n l i.rev = wexp n l i - wexp n l j`. Rewrite using `[wexp_rev, wexp_rev]`. Expand and normalize the polynomial expressions, which then agree. Use `show wexp n l i - wexp n l k ≤ (wexp n l i - wexp n l j) + (wexp n l j - wexp n l k)`.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem isWeight_wexp (l : Fin (n / 2) → ℤ) : IsWeight (fun i j : Fin n => wexp n l i - wexp n l j) := by
   refine ⟨fun i j => ?_, fun i j k _ _ => ?_⟩
@@ -417,13 +405,13 @@ theorem isWeight_wexp (l : Fin (n / 2) → ℤ) : IsWeight (fun i j : Fin n => w
     linarith
 
 /- English proof (translation)
-Establish `hϖ` using `unif_ne_zero hU`. Establish `htinv : (((t⁻¹ : GU σ n) : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) = Matrix.diagonal (fun i => ϖ ^ (-e i))`. Rewrite using `[Subgroup.coe_inv]`. Apply `Units.inv_eq_of_mul_eq_one_right` to reduce the goal to its premises. Rewrite using `[ht, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `k`. Rewrite using `[_root_.zpow_neg, mul_inv_cancel₀ (zpow_ne_zero _ hϖ)]`. Establish `hmat : ((((t⁻¹ * u * t : GU σ n) : GL (Fin n) L) : Matrix (Fin n) (Fin n) L)) = Matrix.diagonal (fun i => ϖ ^ (-e i)) * ((u : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) * Matrix.diagonal (fun i => ϖ ^ e i)`. Rewrite using `[Subgroup.coe_mul, Subgroup.coe_mul, Units.val_mul, Units.val_mul, htinv, ht]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hmat]`. Simplify using `only [Matrix.sub_apply, Matrix.mul_diagonal, Matrix.diagonal_mul]`. Break down `eq_or_ne i j with rfl | hij` into its components or cases. Establish `h1 : ϖ ^ (-e i) * ϖ ^ e i = 1`. Rewrite using `[_root_.zpow_neg, inv_mul_cancel₀ (zpow_ne_zero _ hϖ)]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.one_apply_eq]`. Take the linear combination `h1`. Rewrite using `[Matrix.one_apply_ne hij]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem conj_entry_alt {ϖ : L} {σ : L →+* L} {q : ℕ} (hU : IsUnramInv ϖ σ q) (e : Fin n → ℤ) (t : GU σ n)
     (ht : ((t : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) = Matrix.diagonal (fun i => ϖ ^ e i)) (u : GU σ n)
@@ -454,7 +442,7 @@ theorem conj_entry_alt {ϖ : L} {σ : L →+* L} {q : ℕ} (hU : IsUnramInv ϖ �
     ring
 
 /- English proof (translation)
-Establish `e : WithZero.exp a * y * WithZero.exp (-b) = y * WithZero.exp (a - b)`. Rewrite using `[sub_eq_add_neg, WithZero.exp_add, mul_comm (WithZero.exp a) y, mul_assoc]`. Rewrite using `[e, mul_exp_le_one_iff]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_val (y : WithZero (Multiplicative ℤ)) (a b : ℤ) :
     WithZero.exp a * y * WithZero.exp (-b) ≤ 1 ↔ y ≤ WithZero.exp (-(a - b)) := by
@@ -463,23 +451,19 @@ theorem conj_val (y : WithZero (Multiplicative ℤ)) (a b : ℤ) :
   rw [e, mul_exp_le_one_iff]
 
 /- English proof (translation)
-Use extensionality with `u`. Establish `hv : IsUnipU (u : GU σ n)` using `(GlobalTheory.LGrp.mem_borelU_U σ n _).1 u.2`. Establish `hw_ent : ∀ i j, ((((t⁻¹ * (u : GU σ n) * t : GU σ n) : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) - 1) i j = ϖ ^ (-wexp n l i) * (((((u : GU σ n) : GL (Fin n) L)) : Matrix (Fin n) (Fin n) L) - 1) i j * ϖ ^ wexp n l j` using `conj_entry_alt hU (wexp n l) t ht (u : GU σ n)`. Establish `hvz` using `(unip_iff (u : GU σ n)).1 hv`. Establish `hw : IsUnipU (t⁻¹ * (u : GU σ n) * t)` using `(unip_iff _).2 fun i j hji => by`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hw_ent, hvz i j hji, mul_zero, zero_mul]`. Establish `hc : u ∈ ((PositivityTheory.SphericalProduct.IwU σ n).map (MulAut.conj t).toMonoidHom).comap (borelU σ n).U.subtype ↔ t⁻¹ * (u : GU σ n) * t ∈ PositivityTheory.SphericalProduct.IwU σ n` using `by show (u : GU σ n) ∈ (PositivityTheory.SphericalProduct.IwU σ n).map (MulAut.conj t).toMonoidHom ↔ _`. Rewrite using `[Subgroup.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, hxv⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Establish `e : t⁻¹ * (u : GU σ n) * t = x`. Rewrite using `[← hxv]`. Use `show t⁻¹ * (t * x * t⁻¹) * t = x`. Use `group`. Rewrite using `[e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hx`. Introduce `h`. Use `⟨_, h, ?_⟩` and prove the remaining obligations. Use `show t * (t⁻¹ * (u : GU σ n) * t) * t⁻¹ = (u : GU σ n)`. Use `group`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hv0 : ∀ i, Valued.v (ϖ ^ (-wexp n l i)) = WithZero.exp (wexp n l i)` using `fun i => by`. Rewrite using `[v_zpow hU, neg_neg]`. Establish `hkey : ∀ i j, (Valued.v (ϖ ^ (-wexp n l i) * (((((u : GU σ n) : GL (Fin n) L)) : Matrix (Fin n) (Fin n) L) - 1) i j * ϖ ^ wexp n l j) ≤ 1 ↔ Valued.v ((((((u : GU σ n) : GL (Fin n) L)) : Matrix (Fin n) (Fin n) L) - 1) i j) ≤ WithZero.exp (-(wexp n l i - wexp n l j)))` using `fun i j => by`. Rewrite using `[map_mul, map_mul, hv0, v_zpow hU]`. Conclude with `conj_val _ _ _`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[Subgroup.mem_inf, hc, mem_IwU_iff hU.2.1 _ hw]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨-, h1⟩, ⟨h2, -⟩⟩ show _ ∧ _`. Use `⟨h2, fun i j hij => ?_⟩` and prove the remaining obligations. Establish `h3` using `h1 i j hij`.
+Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [neg_zero, WithZero.exp_zero] at h3`. Rewrite `h3` using `[hw_ent]`. Conclude with `(hkey i j).1 h3`. Introduce and unpack `⟨h2, h1⟩`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
-
-Use `show _ ∧ _`. Use `⟨(unip_iff _).1 hw, fun i j hij => ?_⟩` and prove the remaining obligations. Simplify using `only [neg_zero, WithZero.exp_zero]`. Rewrite using `[hw_ent]`. Conclude with `(hkey i j).2 (h1 i j hij)`.
-
-Use `show _ ∧ _`. Use `⟨h2, fun i j hij => (h1 i j hij).trans ?_⟩` and prove the remaining obligations. Simplify using `only [neg_zero]`. Conclude with `WithZero.exp_le_exp.2 (by linarith [wexp_nonneg hl hij])`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem comap_eq {ϖ : L} {σ : L →+* L} {q : ℕ} (hU : IsUnramInv ϖ σ q) {l : Fin (n / 2) → ℤ} (hl : Cone l)
     (t : GU σ n)
@@ -539,9 +523,9 @@ theorem comap_eq {ϖ : L} {σ : L →+* L} {q : ℕ} (hU : IsUnramInv ϖ σ q) {
       exact WithZero.exp_le_exp.2 (by linarith [wexp_nonneg hl hij])
 
 /- English proof (translation)
-Establish `hIw : (PositivityTheory.SphericalProduct.IwU σ n ⊓ (borelU σ n).U).subgroupOf (borelU σ n).U = unipLat hU.2.1 (n` using `n) isWeight_zero := by`. Use extensionality with `u`. Rewrite using `[Subgroup.mem_subgroupOf, Subgroup.mem_inf]`. Establish `hv : IsUnipU (u : GU σ n)` using `(GlobalTheory.LGrp.mem_borelU_U σ n _).1 u.2`. Rewrite using `[mem_IwU_iff hU.2.1 _ hv]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨fun h => h.1, fun h => ⟨h, u.2⟩⟩`. Rewrite using `[← Subgroup.relIndex_subgroupOf (inf_le_right : PositivityTheory.SphericalProduct.IwU σ n ⊓ (borelU σ n).U ≤ (borelU σ n).U), hIw, ← Subgroup.inf_relIndex_right, ← Subgroup.comap_subtype, comap_eq hU hl t ht]`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 -/
 theorem step2 {ϖ : L} {σ : L →+* L} {q : ℕ} (hU : IsUnramInv ϖ σ q) {l : Fin (n / 2) → ℤ} (hl : Cone l)
     (t : GU σ n)
@@ -560,9 +544,9 @@ theorem step2 {ϖ : L} {σ : L →+* L} {q : ℕ} (hU : IsUnramInv ϖ σ q) {l :
     ← Subgroup.inf_relIndex_right, ← Subgroup.comap_subtype, comap_eq hU hl t ht]
 
 /- English proof (translation)
-Rewrite using `[Nat.cast_sum]`. Establish `h1 : ∀ p ∈ upPairs n, (((wexp n l p.1 - wexp n l p.2).toNat : ℕ) : ℤ) = wexp n l p.1 - wexp n l p.2`. Introduce `p hp`. Establish `hp' : p ∈ Finset.univ.filter (fun p : Fin n × Fin n => p.1 < p.2)` using `hp`. Conclude with `Int.toNat_of_nonneg (wexp_nonneg hl (Finset.mem_filter.1 hp').2)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_congr rfl h1, sum_upPairs, sum_half _ (wexp_rev l)]`. Use `congr 1`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[wexp_castLE]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem sum_wexp {l : Fin (n / 2) → ℤ} (hl : Cone l) :
     ((∑ p ∈ upPairs n, (wexp n l p.1 - wexp n l p.2).toNat : ℕ) : ℤ) =
@@ -587,9 +571,9 @@ namespace PositivityTheory.Rg.BcB.F.Eig
 
 open IndexUAAux in
 /- English proof (translation)
-Introduce `L _ _ _ ϖ σ q n hU l hl t ht`. Establish `hdiag : PositivityTheory.SphericalProduct.IsDiagM (t : GL (Fin n) L)` using `fun i j hij => by show ((t : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) i j = 0`. Rewrite using `[ht, Matrix.diagonal_apply_ne _ hij]`. Establish `hdom : ∀ i j : Fin n, i ≤ j → ordL (((t : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) j j) ≤ ordL (((t : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) i i)`. Introduce `i j hij`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[ht, Matrix.diagonal_apply_eq, Matrix.diagonal_apply_eq, ordL_zpow hU, ordL_zpow hU]`. Conclude with `wexp_anti hl hij`. Rewrite using `[step1 hU t hdiag hdom, step2 hU hl t ht, step3 hU (isWeight_wexp l) (fun i j hij => wexp_nonneg hl hij), Nat.cast_pow, ← sum_wexp hl, Int.toNat_natCast]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem indexU : IndexU := by
   intro L _ _ _ ϖ σ q n hU l hl t ht

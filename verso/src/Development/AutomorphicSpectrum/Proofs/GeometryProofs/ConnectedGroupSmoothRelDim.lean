@@ -8,19 +8,17 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 namespace GlobalTheory.CompanionTheory.Ggeo
 
 /- English proof (translation)
-Introduce `X _ G _ hs hc`. Use `haveI : Smooth G.hom := hs`. Take `⟨d, W, hxW, hW⟩ : ∃ (d : G.left → ℕ) (W : G.left → G.left.Opens), (∀ x, x ∈ W x) ∧ ∀ x, SmoothOfRelativeDimension (d x) ((W x).ι ≫ G.hom)` from `by choose d W hxW hW using fun x => ReciprocityTheory.ChartRestriction.G.H1.exists_dim G.hom x`. Conclude with `⟨d, W, hxW, hW⟩`. Establish `hres : ∀ (x : G.left) (V : G.left.Opens), V ≤ W x → SmoothOfRelativeDimension (d x) (V.ι ≫ G.hom)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x V hV`. Establish `h` using `HasRingHomProperty.comp_of_isOpenImmersion (@SmoothOfRelativeDimension (d x)) (G.left.homOfLE hV) ((W x).ι ≫ G.hom) (hW x)`. Rewrite `h` using `[← Category.assoc, Scheme.homOfLE_ι]`. Then use the resulting hypothesis. Establish `hd : IsLocallyConstant d`. Rewrite using `[IsLocallyConstant.iff_exists_open]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x`. Use `⟨W x, (W x).isOpen, hxW x, fun y hy => ?_⟩` and prove the remaining obligations. Establish `h1` using `hres x (W x ⊓ W y) inf_le_left`. Establish `h2` using `hres y (W x ⊓ W y) inf_le_right`. Conclude with `ReciprocityTheory.ChartRestriction.G.H1.dim_unique _ h2 h1 ⟨y, hy, hxW y⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `e : X ⟶ G.left` to `(η[G]).left`. Establish `hcomp : e ≫ G.hom = 𝟙 X` using `Over.w (η[G])`. Establish `he : ∀ s : X, G.hom (e s) = s`. Introduce `s`. Establish `h` using `congrArg (fun g : X ⟶ X => g s) hcomp`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify using `using h`. Establish `hfib : ∀ s : X, _root_.IsPreconnected (G.hom ⁻¹' {s})`. Introduce `s`. Rewrite using `[← Scheme.Hom.range_fiberι]`. Conclude with `isPreconnected_range (Scheme.Hom.continuous _)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨s₀⟩ : Nonempty X` from `inferInstance`. Establish `hconst : ∀ x, d x = d (e s₀)`. Introduce `x`. Establish `h1 : d x = d (e (G.hom x))` using `hd.apply_eq_of_isPreconnected (hfib (G.hom x)) rfl (he (G.hom x))`. Establish `h2 : d (e (G.hom x)) = d (e s₀)` using `(hd.comp_continuous (Scheme.Hom.continuous e)).apply_eq_of_isPreconnected isPreconnected_univ trivial trivial`.
-
-Conclude with `h1.trans h2`. Use `⟨d (e s₀), ?_⟩` and prove the remaining obligations. Use `haveI : IsZariskiLocalAtSource (@SmoothOfRelativeDimension (d (e s₀))) := HasRingHomProperty.instIsZariskiLocalAtSource`. Conclude with `IsZariskiLocalAtSource.of_iSup_eq_top (P := @SmoothOfRelativeDimension (d (e s₀))) W (eq_top_iff.2 fun x _ => TopologicalSpace.Opens.mem_iSup.2 ⟨x, hxW x⟩) (fun x => by rw [← hconst x]; exact hW x)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_smoothOfRelativeDimension_of_geometricallyConnected :
     ∀ (X : Scheme.{0}) [ConnectedSpace X] (G : Over X) [GrpObj G], Smooth G.hom →

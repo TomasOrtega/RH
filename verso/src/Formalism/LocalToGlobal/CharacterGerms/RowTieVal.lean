@@ -33,7 +33,7 @@ def FBChart.nuPlE (Y : FBChart C V O dd) (Ls : LetSys C dd) (n : ℕ) : EReal :=
   ⨅ x ∈ Y.valSet Ls n, (WithBot.some x : WithBot (WithTop ℝ))
 
 /- English proof (translation)
-Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_empty, Finset.sum_empty, AddValuation.map_one]`. Introduce `a s ha ih`. Rewrite using `[Finset.prod_insert ha, Finset.sum_insert ha, AddValuation.map_mul, ih]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_prod_add (V : VF C) {α : Type} (s : Finset α) (x : α → C) : V.v (∏ o ∈ s, x o) = ∑ o ∈ s, V.v (x o) := by
   refine Finset.induction_on s ?_ ?_
@@ -107,7 +107,7 @@ def ValEqPSt : Prop :=
         Y.nab Ls n f P = ∏ o, ValOf ((Y.raw (p o)).rowData (H o)).hL (Po o) (kind o) (gr o)
 
 /- English proof (translation)
-Take `⟨f, hf, e⟩` from `hv hs P hP Po hQ kind hk S t ht gr hg`. Rewrite using `[← map_prod_add V Finset.univ (fun o => ValOf ((Y.raw (p o)).rowData (H o)).hL (Po o) (kind o) (gr o)), ← e]`. Conclude with `csInf_le hb ⟨P, hP, f, hf, rfl⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_prod (hb : BddBelow (Y.valSet Ls n)) (hs : PairsSep Y p) (hv : ValEqPSt Y p H Ls n)
     (P : MvPolynomial (Ls.ι n) C) (hP : P ∈ Ls.FF n) (Po : ∀ o, MvPolynomial (Fin n × WV (I o)) C)

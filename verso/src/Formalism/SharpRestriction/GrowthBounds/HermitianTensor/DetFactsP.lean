@@ -10,11 +10,11 @@ open Formalism.MainNotions.G Formalism.MainNotions.flipOneThree Formalism.Counti
 open scoped TensorProduct
 
 /- English proof (translation)
-Introduce `K _ r B`. Set `g : Bool → MvPolynomial (Fin r × Fin r) K →ₗ[K] (MvPolynomial (Fin r × Fin r) K ⊗[K] MvPolynomial (Fin r × Fin r) K)` to `fun b => match b with`. Consider the case `true => (Algebra.TensorProduct.includeLeft : MvPolynomial (Fin r × Fin r) K →ₐ[K] MvPolynomial (Fin r × Fin r) K ⊗[K] MvPolynomial (Fin r × Fin r) K).toLinearMap`. Consider the case `false => (Algebra.TensorProduct.includeRight : MvPolynomial (Fin r × Fin r) K →ₐ[K] MvPolynomial (Fin r × Fin r) K ⊗[K] MvPolynomial (Fin r × Fin r) K).toLinearMap`. Take `⟨F, hF⟩` from `KP.tensorMap (K := K) (S := Bool) (α := Fin r × Fin r) g`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Use `⟨(TensorProduct.lift B) ∘ₗ F, ?_⟩` and prove the remaining obligations. Introduce `f f'`. Establish `h` using `hF (fun b => match b with | true => f | false => f')`. Rewrite `h` using `[Fintype.prod_bool, Fintype.prod_bool]`. Establish `h' : F (blockEmb K true f * blockEmb K false f') = f ⊗ₜ[K] f'`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `h.trans ?_` and prove the remaining obligations. Use `show (f ⊗ₜ[K] (1 : MvPolynomial (Fin r × Fin r) K)) * ((1 : MvPolynomial (Fin r × Fin r) K) ⊗ₜ[K] f') = _`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul]`. Rewrite using `[LinearMap.comp_apply, h', TensorProduct.lift.tmul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bilinP : BilinP := by
   classical
@@ -38,15 +38,15 @@ theorem bilinP : BilinP := by
   rw [LinearMap.comp_apply, h', TensorProduct.lift.tmul]
 
 /- English proof (translation)
-Introduce `A _ r e`. Prove the components needed by the constructor for the conclusion. Establish `h1 : detY A r ∈ dualWeyl A r r (qcOm r r)`. Rewrite using `[← qc_full_minor A r r le_rfl id strictMono_id rfl]`. Conclude with `qc_initMinor_mem A id le_rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `qc_pow_mem A r r _ _ h1 e`. Establish `e1 : e • qcOm r r = fun _ => e`. Use function extensionality and compare the values at `t`. Simplify using `[qcOm, t.isLt]`. Rewrite `h2` using `[e1]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `l`. Unfold `detY`. Establish `hA` using `AlgHom.map_det (rowAct A (n := r) l) (Matrix.of fun i j : Fin r => (X (i, j) : MvPolynomial (Fin r × Fin r) A))`. Establish `hM : (rowAct A (n` using `r) l).mapMatrix (Matrix.of fun i j : Fin r => (X (i, j) : MvPolynomial (Fin r × Fin r) A)) = (C : A →+* MvPolynomial (Fin r × Fin r) A).mapMatrix l * (Matrix.of fun i j : Fin r => (X (i, j) : MvPolynomial (Fin r × Fin r) A)) := by`. Apply `Matrix.ext` to reduce the goal to its premises.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i j`. Rewrite using `[Matrix.mul_apply]`. Use `show rowAct A l (X (i, j)) = ∑ b, C (l i b) * X (b, j)`. Simplify using `[rowAct]`. Use `hA.trans ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[hM, Matrix.det_mul, ← RingHom.map_det]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem detFactsP : DetFactsP := by
   intro A _ r e
@@ -75,15 +75,13 @@ theorem detFactsP : DetFactsP := by
     rfl
 
 /- English proof (translation)
-Introduce `p a c r ell hp hr hl hc`. Unfold `N0 deF kappaOneExponent lgA`. Establish `hp1 : (1 : ℝ) < p` using `by exact_mod_cast hp`. Establish `hN : ((r * (r - 1) / 2 : ℕ) : ℝ) ≤ ((r + 1 : ℕ) : ℝ) ^ 2`. Establish `h0 : r * (r - 1) / 2 ≤ (r + 1) ^ 2`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Conclude with `h0` after adjusting the coercions. Establish `h1 : Nat.log p (ell + r - 1) ≤ Nat.log p (8 * a + (r + 1))` using `Nat.log_mono_right (by omega)`. Establish `h2 : (Nat.log p (8 * a + (r + 1)) : ℝ) ≤ Real.logb p ((8 * a + (r + 1) : ℕ) : ℝ)` using `by first`. Consider the case `exact Real.natLog_le_logb _ _`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
-Consider the case `(have hpow := Nat.pow_log_le_self p (x := 8 * a + (r + 1)) (by omega)`. Rewrite using `[Real.le_logb_iff_rpow_le hp1 (by positivity)]`. Conclude with `hpow)` after adjusting the coercions. Establish `h3 : (Nat.log p (ell + r - 1) : ℝ) ≤ Nat.log p (8 * a + (r + 1))` using `by exact_mod_cast h1`. Establish `hL : (Nat.log p (ell + r - 1) : ℝ) ≤ Real.logb p ((8 * a + (r + 1) : ℕ) : ℝ) + 1` using `by linarith`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Establish an intermediate fact.
 
-Move the coercions through the operations in `at hL hN`. Establish `key : ((r * (r - 1) / 2 * Nat.log p (ell + r - 1) : ℕ) : ℝ) ≤ ((r : ℝ) + 1) ^ 2 * (Real.logb p (8 * (a : ℝ) + ((r : ℝ) + 1)) + 1)`. Use `push_cast`. Conclude with `mul_le_mul hN hL (Nat.cast_nonneg _) (by positivity)`. Establish `key2` using `key.trans (Nat.le_ceil _)`.
-
-Move the coercions through the operations in `at key2 ⊢`. Conclude with `key2` after adjusting the coercions.
+Move the embeddings inside the algebraic operations. Establish an intermediate fact. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem numP : NumP := by
   intro p a c r ell hp hr hl hc

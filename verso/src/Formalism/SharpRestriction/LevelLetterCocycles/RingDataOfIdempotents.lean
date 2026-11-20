@@ -25,13 +25,13 @@ def blockZeroEquiv (r t : ℕ) : Fin r ≃ {a : Fin (r + t) // blkG r t a = 0} w
     rfl
 
 /- English proof (translation)
-Apply `absIrr_of_span` to reduce the goal to its premises. Introduce `a b`. Set `L` to `Matrix.reindexLinearEquiv k k (blockZeroEquiv r t) (blockZeroEquiv r t)`. Establish `hL : ∀ g, L (ρb g) = (M g).toSquareBlock (blkG r t) 0`. Introduce `g`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use extensionality with `x y`. Take `⟨x', rfl⟩` from `(blockZeroEquiv r t).surjective x`. Take `⟨y', rfl⟩` from `(blockZeroEquiv r t).surjective y`. Simplify using `only [L, Matrix.reindexLinearEquiv_apply, Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.symm_apply_apply]`. Conclude with `(h g x' y').symm`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h1 : L.symm (Matrix.single a b (1 : k)) ∈ Submodule.span k (Set.range ρb)`. Rewrite using `[hs]`. Conclude with `Submodule.mem_top`. Establish `h2` using `Submodule.mem_map_of_mem (f := L.toLinearMap) h1`. Rewrite `h2` using `[Submodule.map_span]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3 : L.toLinearMap (L.symm (Matrix.single a b (1 : k))) = Matrix.single a b (1 : k)` using `L.apply_symm_apply _`. Rewrite `h2` using `[h3]`. Use `Submodule.span_mono ?_ h2` and prove the remaining obligations. Introduce and unpack `_ ⟨_, ⟨g, rfl⟩, rfl⟩`. Conclude with `⟨g, (hL g).symm⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem absIrr_block {k G : Type} [Field k] {r t : ℕ} (M : G → Matrix (Fin (r + t)) (Fin (r + t)) k)
     (ρb : G → Matrix (Fin r) (Fin r) k)
@@ -66,14 +66,14 @@ variable {R : Ranks} {H : Host R} {what₂ : Rows.Data R} (N : NData R H what₂
   (ρ : N.X i → (GE N →* GL (Fin R.r) (N.O i))) (π : N.X i)
 
 /- English proof (translation)
-Establish `h` using `R.rank_add_five_le`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem one_le_letterBlockLength (R : Ranks) : 1 ≤ R.t := by
   have h := R.rank_add_five_le
   omega
 
 /- English proof (translation)
-The claim follows from `absIrr_block (r := R.r) (t := R.t) (fun g => (rO N i r π g).map (IsLocalRing.residue (N.O i))) (fun g => mapM (IsLocalRing.residue (N.O i)) (rhoO N i ρ π) g) (fun g a b => congrArg (IsLocalRing.residue (N.O i)) (hN.2.2 g a b)) hres`.
+A detailed English derivation is pending.
 -/
 theorem absIrr_of_res (hN : NormAt N r ρ π)
     (hres : Submodule.span (kk N i)
@@ -84,9 +84,9 @@ theorem absIrr_of_res (hN : NormAt N r ρ π)
     (fun g a b => congrArg (IsLocalRing.residue (N.O i)) (hN.2.2 g a b)) hres
 
 /- English proof (translation)
-Use `haveI := N.O_complete i`. Use `idem (N.O i) (N.X i) (N.T i) (Fin R.nV) (GE N) (repX N r) π R.t (blk R) (chiU N i 1) (epsU N i) (primHyp_of N r ρ π hN hG1) (absIrr_of_res N r ρ π hN hres) ?_` and prove the remaining obligations. Establish `h1 : Fintype.card {a : Fin (R.r + R.t) // blkG R.r R.t a = 0} = R.r`. Rewrite using `[← Fintype.card_congr (blockZeroEquiv R.r R.t), Fintype.card_fin]`. Establish `h2 : 2 ≤ R.r`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `R.two_le_m`. Establish `h4` using `R.m_add_three_le_k`. Unfold `Ranks.r`. Use linear arithmetic over natural numbers and integers. Conclude with `h2.trans (le_of_eq h1.symm)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem idem_exists (hN : NormAt N r ρ π)
     (hG1 : ∀ (γ : GE N) (k : ℕ), (fun x : N.X i => ((rO N i r x γ).charpolyRev).coeff k) ∈ N.T i)
@@ -106,9 +106,9 @@ theorem idem_exists (hN : NormAt N r ρ π)
   exact h2.trans (le_of_eq h1.symm)
 
 /- English proof (translation)
-Take `⟨D, hD, i1, i2, i3, i4, i5, hdisp⟩` from `composite_of_chain_holds (N.O i) (N.X i) (N.T i) (Fin R.nV) (GE N) (repX N r) π R.t (one_le_letterBlockLength R) (blk R) (chiU N i 1) (epsU N i) (primHyp_of N r ρ π hN hG1) (absIrr_of_res N r ρ π hN hres) eB e₁ hI g0 s hX`. Establish `hp : D.p D.π' = π`. Take `⟨-, -, -, -, h, -⟩` from `hD`. Conclude with `h`. Use `⟨D, hD, ?_, i1, i2, i3, i4, i5, hdisp _⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hp, Formalism.MainNotions.TruncatedSeriesCountingIdentities.Br.length_ccAt]`.
+A detailed English derivation is pending.
 -/
 theorem ring_data_of_idempotents (hN : NormAt N r ρ π)
     (hG1 : ∀ (γ : GE N) (k : ℕ), (fun x : N.X i => ((rO N i r x γ).charpolyRev).coeff k) ∈ N.T i)

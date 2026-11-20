@@ -14,9 +14,9 @@ variable {n : ℕ} {Y : Type*} [TopologicalSpace Y] [T2Space Y] [SecondCountable
   [MeasurableSpace Y] [BorelSpace Y] {ι : Type*} {La : Type*} [AddCommGroup La]
 
 /- English proof (translation)
-Unfold `nsq`. Use `set j := A.pick y`. Establish `hj : y ∈ (A.chart j).source` using `A.mem_pick y`. Establish `h1 : s i y = A.g la i j y * s j y` using `hs.2 i j y trivial hy hj`. Establish `h2 : A.ph la j y = A.ph la i y - Real.log (‖A.g la i j y‖ ^ 2)` using `A.ph_trans la i j y hy hj`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg : 0 < ‖A.g la i j y‖ ^ 2`. Use `A.g_ne la i j y hy hj` as an intermediate fact. Check the signs of the components of the expression. Rewrite using `[h1, h2, norm_mul, mul_pow, neg_sub, sub_eq_add_neg, Real.exp_add, Real.exp_log hg]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Check the signs of the components of the expression. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem nsq_eq_chart (A : WeightedAtlas n Y ι La) {la : La} {s : ι → Y → ℂ} (hs : A.IsSec la s)
     {i : ι} {y : Y} (hy : y ∈ (A.chart i).source) :
@@ -33,9 +33,9 @@ theorem nsq_eq_chart (A : WeightedAtlas n Y ι La) {la : La} {s : ι → Y → �
   ring
 
 /- English proof (translation)
-Establish `h1 : ContinuousOn (s i ∘ (A.chart i).symm) (A.chart i).target`. Use `(hs.1 i).continuousOn` as an intermediate fact. Simplify `this` using `[Set.preimage_univ, Set.inter_univ]`. Establish `h2 : ContinuousOn ((s i ∘ (A.chart i).symm) ∘ (A.chart i)) (A.chart i).source` using `h1.comp (A.chart i).continuousOn (fun x hx => (A.chart i).map_source hx)`. Use `h2.congr (fun x hx => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[Function.comp, (A.chart i).left_inv hx]`.
+Simplify using the standard rewrite rules.
 -/
 theorem continuousOn_sec (A : WeightedAtlas n Y ι La) {la : La} {s : ι → Y → ℂ} (hs : A.IsSec la s)
     (i : ι) : ContinuousOn (s i) (A.chart i).source := by
@@ -48,7 +48,7 @@ theorem continuousOn_sec (A : WeightedAtlas n Y ι La) {la : La} {s : ι → Y �
   simp [Function.comp, (A.chart i).left_inv hx]
 
 /- English proof (translation)
-Establish `h1 : ContinuousOn (A.ph la i ∘ (A.chart i).symm) (A.chart i).target` using `(A.smooth_ph la i).continuousOn`. Establish `h2 : ContinuousOn ((A.ph la i ∘ (A.chart i).symm) ∘ (A.chart i)) (A.chart i).source` using `h1.comp (A.chart i).continuousOn (fun x hx => (A.chart i).map_source hx)`. Use `h2.congr (fun x hx => ?_)` and prove the remaining obligations. Simplify using `[Function.comp, (A.chart i).left_inv hx]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem continuousOn_ph (A : WeightedAtlas n Y ι La) (la : La) (i : ι) :
     ContinuousOn (A.ph la i) (A.chart i).source := by
@@ -60,9 +60,9 @@ theorem continuousOn_ph (A : WeightedAtlas n Y ι La) (la : La) (i : ι) :
   simp [Function.comp, (A.chart i).left_inv hx]
 
 /- English proof (translation)
-Rewrite using `[continuous_iff_continuousAt]`. Introduce `y`. Use `set i := A.pick y`. Establish `hU : (A.chart i).source ∈ 𝓝 y` using `(A.chart i).open_source.mem_nhds (A.mem_pick y)`. Establish `hc : ContinuousOn (fun x => ‖s i x‖ ^ 2 * Real.exp (-A.ph la i x)) (A.chart i).source` using `((A.continuousOn_sec hs i).norm.pow 2).mul ((A.continuousOn_ph la i).neg.rexp)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(hc.continuousAt hU).congr ?_` and prove the remaining obligations. Use `filter_upwards [hU] with x hx`. Conclude with `(A.nsq_eq_chart hs hx).symm`.
+A detailed English derivation is pending.
 -/
 theorem continuous_nsq (A : WeightedAtlas n Y ι La) {la : La} {s : ι → Y → ℂ} (hs : A.IsSec la s) :
     Continuous (A.nsq la s) := by
@@ -77,7 +77,7 @@ theorem continuous_nsq (A : WeightedAtlas n Y ι La) {la : La} {s : ι → Y →
   exact (A.nsq_eq_chart hs hx).symm
 
 /- English proof (translation)
-Unfold `sqn`. Conclude with `continuous_finsetSum _ (fun k _ => A.continuous_nsq (hw k))`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_sqn (A : WeightedAtlas n Y ι La) {la : La} {N : ℕ} {w : Fin N → ι → Y → ℂ}
     (hw : ∀ k, A.IsSec la (w k)) : Continuous (A.sqn la w) := by
@@ -85,23 +85,23 @@ theorem continuous_sqn (A : WeightedAtlas n Y ι La) {la : La} {N : ℕ} {w : Fi
   exact continuous_finsetSum _ (fun k _ => A.continuous_nsq (hw k))
 
 /- English proof (translation)
-Unfold `nsq`. Check the signs of the components of the expression.
+Replace the relevant objects with their definitions. Check the signs of the components of the expression.
 -/
 theorem nsq_nonneg (A : WeightedAtlas n Y ι La) (la : La) (s : ι → Y → ℂ) (y : Y) :
     0 ≤ A.nsq la s y := by
   unfold nsq; positivity
 
 /- English proof (translation)
-Unfold `sqn`. Conclude with `Finset.sum_nonneg (fun k _ => A.nsq_nonneg la (w k) y)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem sqn_nonneg (A : WeightedAtlas n Y ι La) (la : La) {N : ℕ} (w : Fin N → ι → Y → ℂ) (y : Y) :
     0 ≤ A.sqn la w y := by
   unfold sqn; exact Finset.sum_nonneg (fun k _ => A.nsq_nonneg la (w k) y)
 
 /- English proof (translation)
-Use `⟨fun i => ?_, fun i j y hy hi hj => ?_⟩` and prove the remaining obligations. Establish `: (fun y => ∑ q ∈ F, h q i y) ∘ (A.chart i).symm = fun v => ∑ q ∈ F, (h q i ∘ (A.chart i).symm) v`. Use function extensionality and compare the values at `v`. Simplify using the standard rewrite rules. Rewrite using `[this]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `DifferentiableOn.fun_sum (fun q hq => (hh q hq).1 i)`. Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl (fun q hq => (hh q hq).2 i j y hy hi hj)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isSec_sum (A : WeightedAtlas n Y ι La) {la : La} {κ : Type*} (F : Finset κ)
     {h : κ → ι → Y → ℂ} (hh : ∀ q ∈ F, A.IsSec la (h q)) :
@@ -116,7 +116,7 @@ theorem isSec_sum (A : WeightedAtlas n Y ι La) {la : La} {κ : Type*} (F : Fins
     exact Finset.sum_congr rfl (fun q hq => (hh q hq).2 i j y hy hi hj)
 
 /- English proof (translation)
-Unfold `nsq`. Establish `h1 : ‖∑ q ∈ F, h q (A.pick y) y‖ ^ 2 ≤ (F.card : ℝ) * ∑ q ∈ F, ‖h q (A.pick y) y‖ ^ 2` using `(pow_le_pow_left₀ (norm_nonneg _) (norm_sum_le _ _) 2).trans sq_sum_le_card_mul_sum_sq`. Establish `he : 0 ≤ Real.exp (-A.ph la (A.pick y) y)` using `(Real.exp_pos _).le`. Combine the equalities or inequalities in the displayed calculation.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem nsq_sum_le (A : WeightedAtlas n Y ι La) (la : La) {κ : Type*} (F : Finset κ)
     (h : κ → ι → Y → ℂ) (y : Y) :
@@ -131,7 +131,7 @@ theorem nsq_sum_le (A : WeightedAtlas n Y ι La) (la : La) {κ : Type*} (F : Fin
     _ = _ := by rw [mul_assoc, Finset.sum_mul]
 
 /- English proof (translation)
-Establish `: Nonempty (Fin n)` using `⟨⟨0, hn⟩⟩`. Rewrite using `[A.mu_chart (A.pick P) {P} (measurableSet_singleton P) (Set.singleton_subset_iff.2 (A.mem_pick P)), Set.image_singleton]`. Conclude with `setLIntegral_measure_zero _ _ (measure_singleton _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mu_singleton (A : WeightedAtlas n Y ι La) (hn : 1 ≤ n) (P : Y) : A.mu {P} = 0 := by
   have : Nonempty (Fin n) := ⟨⟨0, hn⟩⟩
@@ -140,21 +140,19 @@ theorem mu_singleton (A : WeightedAtlas n Y ι La) (hn : 1 ≤ n) (P : Y) : A.mu
   exact setLIntegral_measure_zero _ _ (measure_singleton _)
 
 /- English proof (translation)
-Use `set e := A.chart i`. Use `set U := e.source ∩ e ⁻¹' W with hUdef`. Establish `hUo : IsOpen U` using `e.isOpen_inter_preimage hW`. Establish `hUm : MeasurableSet U` using `hUo.measurableSet`. Use `set φ : V n → Y := W.piecewise e.symm (fun _ => y0) with hφdef`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hφ : Measurable φ` using `ContinuousOn.measurable_piecewise (e.continuousOn_symm.mono hWt) continuousOn_const hW.measurableSet`. Establish `himg : ∀ B : Set Y, e '' (B ∩ U) = φ ⁻¹' B ∩ W`. Introduce `B`. Use extensionality with `v`. Prove the components needed by the constructor for the conclusion.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨x, ⟨hxB, hxs, hxW⟩, rfl⟩`. Use `⟨?_, hxW⟩` and prove the remaining obligations. Use `show φ (e x) ∈ B`. Rewrite using `[show φ (e x) = e.symm (e x) from Set.piecewise_eq_of_mem _ _ _ hxW, e.left_inv hxs]`. Conclude with `hxB`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Introduce and unpack `⟨hvB, hvW⟩`. Rewrite `hvB` using `[Set.mem_preimage, show φ v = e.symm v from Set.piecewise_eq_of_mem _ _ _ hvW]`. Establish `hvt` using `hWt hvW`. Use `⟨e.symm v, ⟨hvB, e.map_target hvt, ?_⟩, e.right_inv hvt⟩` and prove the remaining obligations. Use `show e (e.symm v) ∈ W`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e.right_inv hvt]` and apply the resulting hypothesis. Use `set ν : Measure (V n) := c • (volume.restrict W)`. Establish `hle : A.mu.restrict U ≤ Measure.map φ ν`. Rewrite using `[Measure.le_iff]`. Introduce `B hB`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[Measure.restrict_apply hB, Measure.map_apply hφ hB, A.mu_chart i (B ∩ U) (hB.inter hUm) (Set.inter_subset_right.trans Set.inter_subset_left), himg B]`. Establish `hm : MeasurableSet (φ ⁻¹' B ∩ W)` using `(hφ hB).inter hW.measurableSet`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[setLIntegral_const, Measure.smul_apply, Measure.restrict_apply (hφ hB), smul_eq_mul, mul_comm]`. Use `set Φ : Y → ℝ≥0∞ := U.piecewise (fun x => ψ (e x)) (fun _ => 0) with hΦdef`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Simplify using the standard rewrite rules.
 
-Establish `hΦ : Measurable Φ` using `ContinuousOn.measurable_piecewise (hψ.comp_continuousOn (e.continuousOn.mono Set.inter_subset_left)) continuousOn_const hUm`. Combine the equalities or inequalities in the displayed calculation. Use `congr 1`. Use `setLIntegral_congr_fun hW.measurableSet (fun v hv => ?_)` and prove the remaining obligations. Establish `hvt` using `hWt hv`.
-
-Establish `hU : e.symm v ∈ U` using `⟨e.map_target hvt, by show e (e.symm v) ∈ W`. Rewrite using `[e.right_inv hvt]⟩` and apply the resulting hypothesis. Simplify using `only [φ, Φ, Set.piecewise_eq_of_mem _ _ _ hv, Set.piecewise_eq_of_mem _ _ _ hU, e.right_inv hvt]`.
+A detailed English derivation is pending.
 -/
 theorem lintegral_chart_le (A : WeightedAtlas n Y ι La) (i : ι) (y0 : Y) {W : Set (V n)}
     (hW : IsOpen W) (hWt : W ⊆ (A.chart i).target) (c : ℝ≥0∞)
@@ -221,13 +219,13 @@ theorem lintegral_chart_le (A : WeightedAtlas n Y ι La) (i : ι) (y0 : Y) {W : 
 end WeightedAtlas
 
 /- English proof (translation)
-Establish `h0` using `(hMVI hn a).2 ha`. Establish `h1 : ∫⁻ v in Metric.ball vP r, ENNReal.ofReal ‖v - vP‖ ^ (-2 * a) ≤ ∫⁻ v in Metric.ball vP 1, ENNReal.ofReal ‖v - vP‖ ^ (-2 * a)` using `lintegral_mono_set (Metric.ball_subset_ball hr)`. Establish `h2 : ∫⁻ v in Metric.ball vP 1, ENNReal.ofReal ‖v - vP‖ ^ (-2 * a) = ∫⁻ y in Metric.ball (0 : V n) 1, ENNReal.ofReal ‖y‖ ^ (-2 * a)`. Rewrite using `[← lintegral_indicator Metric.isOpen_ball.measurableSet, ← lintegral_indicator Metric.isOpen_ball.measurableSet, ← lintegral_sub_right_eq_self ((Metric.ball (0 : V n) 1).indicator (fun y => ENNReal.ofReal ‖y‖ ^ (-2 * a))) vP]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `v`. Distinguish the cases in `hv : v ∈ Metric.ball vP 1`. Establish `hv' : v - vP ∈ Metric.ball (0 : V n) 1`. Rewrite using `[mem_ball_zero_iff]`. Rewrite `hv` using `[Metric.mem_ball, dist_eq_norm]`. Then use the resulting hypothesis.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[Set.indicator_of_mem hv, Set.indicator_of_mem hv']`. Establish `hv' : v - vP ∉ Metric.ball (0 : V n) 1`. Rewrite using `[mem_ball_zero_iff]`. Rewrite `hv` using `[Metric.mem_ball, dist_eq_norm]`. Then use the resulting hypothesis. Rewrite using `[Set.indicator_of_notMem hv, Set.indicator_of_notMem hv']`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 
-Conclude with `lt_of_le_of_lt h1 (h2 ▸ h0)`.
+A detailed English derivation is pending.
 -/
 theorem lintegral_ball_rpow_lt_top {n : ℕ} (hMVI : MVIntStatement n) (hn : 1 ≤ n) (vP : V n)
     {r : ℝ} (hr : r ≤ 1) {a : ℝ} (ha : a < n) :

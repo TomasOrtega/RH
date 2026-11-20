@@ -28,17 +28,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open scoped InnerProductSpace
 
 /- English proof (translation)
-Introduce `D V S M H _ _ _ π hπ hDS hU`. Take `⟨Φ0, hΦ0, hne⟩` from `GlobalTheory.T.exists_ne_zero_discreteSeriesInfiniteHom D V S M H π hπ hDS`. Take `⟨Ψ0, hΨ0, hΨne⟩` from `GlobalTheory.T.exists_smoothVector_ne_zero_of_discreteSeriesHom D V S M H π hπ.unitary hU ⟨Φ0, hΦ0⟩ (fun h => hne (congrArg Subtype.val h))`. Set `T : GlobalTheory.PRep.smoothPart (finPartDS M hU) →ₗ[ℂ] ContinuousMultilinearMap ℂ M.H H` to `(homDS M π ⊤).subtype ∘ₗ (GlobalTheory.PRep.smoothPart (finPartDS M hU)).subtype`. Establish `hT : ∀ w, T w ∈ homDS M π ⊤` using `fun w => w.1.2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `⟨T, mem_homTensorPi.2 ⟨fun _ _ => trivial, fun g w y => rfl, fun i g w y => (hT w).2 i g y⟩, Subtype.val_injective.comp Subtype.val_injective, ?_⟩` and prove the remaining obligations. Establish `hinv : ∀ g, ∀ v ∈ Submodule.span ℂ {v | ∃ w y, v = T w y}, π g v ∈ Submodule.span ℂ {v | ∃ w y, v = T w y}`. Introduce `g v hv`. Use `(Submodule.span_le (p := (Submodule.span ℂ {v | ∃ w y, v = T w y}).comap (π g : H →ₗ[ℂ] H))).2 ?_ hv` and prove the remaining obligations. Introduce and unpack `_ ⟨w, y, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `Submodule.subset_span ⟨finPartDSSm M hU (toFin V g) w, fun τ => dsRep M τ (projArch D.sp.cm.sig V.gram (placeOf D τ) g) (y τ), ?_⟩` and prove the remaining obligations. Establish `e1 : π g (T w y) = π (toInf V g : GA D V) (π (toFin V g : GA D V) (T w y))` using `by conv_lhs => rw [← toInf_mul_toFin g]`. Rewrite using `[map_mul]`. Both sides reduce to the same expression. Establish `e2 : π (toFin V g : GA D V) (T w y) = T (finPartDSSm M hU (toFin V g) w) y` using `rfl`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `π g (T w y) = _`. Rewrite using `[e1, e2]`. Conclude with `GlobalTheory.TrAct.toInf_apply_homDS D V S M H π ⊤ _ (hT _) g y`. Break down `hπ.irred.2 _ (isSubrep_topologicalClosure hinv) with h | h` into its components or cases. It suffices to derive a contradiction.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Reduce the conclusion to the remaining proof obligations.
 
-Use `hΨne (Subtype.ext (ContinuousMultilinearMap.ext fun y => ?_))` and prove the remaining obligations. Establish `: T ⟨Ψ0, hΨ0⟩ y ∈ (Submodule.span ℂ {v | ∃ w y, v = T w y}).topologicalClosure` using `Submodule.le_topologicalClosure _ (Submodule.subset_span ⟨_, y, rfl⟩)`. Rewrite `this` using `[h, Submodule.mem_bot]`. Simplify using `only [ZeroMemClass.coe_zero, ContinuousMultilinearMap.zero_apply]`. Conclude with `this`.
-
-Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.TrCopy.isCopyFinDS_finPartDSSm : ∀ (D : D7) (V : HSp D) (S : D.what₂.Tau → SPar) (M : DSModel V S) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] (π : GA D V →* (H →L[ℂ] H)), IsIrrUnitary π → HasDSComp M π → ∀ hU : IsSubrep π ⊤, IsCopyFinDS (finPartDSSm M hU) M π ⊤ := by
   intro D V S M H _ _ _ π hπ hDS hU

@@ -24,13 +24,13 @@ private noncomputable def gaT (Dw : Datum H) (a : (E →+* ℂ) × ℕ → ℕ) 
   GlobalTheory.RowAt.gap (Dw.mult τ) fun i => a (τ, i)
 
 /- English proof (translation)
-Use `haveI := P.nz`. Establish `hbij : Function.Bijective (fun x : {z // z ∈ Z} × ZMod P.d => P.pos x.1.1 x.2.val)`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨z1, hz1⟩, s1⟩ ⟨⟨z2, hz2⟩, s2⟩ heq`. Take `⟨q, -, hq⟩` from `h (P.pos z1 s1.val)`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e1` using `hq (z1, s1) ⟨hz1, rfl⟩`. Establish `e2` using `hq (z2, s2) ⟨hz2, by simpa using heq.symm⟩`. Establish `e` using `e1.trans e2.symm`. Simplify using `only [Prod.mk.injEq] at e`. Take `⟨rfl, rfl⟩` from `e`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Introduce `w`. Take `⟨q, ⟨hq1, hq2⟩, -⟩` from `h w`. Conclude with `⟨(⟨q.1, hq1⟩, q.2), hq2⟩`. Establish `hc` using `Fintype.card_of_bijective hbij`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hc` using `[Fintype.card_prod, Fintype.card_coe, ZMod.card]`. Conclude with `hc`.
+A detailed English derivation is pending.
 -/
 private theorem card_reps (P : RF.Par) (Z : Finset P.Pl) (h : RF.IsReps P Z) : Z.card * P.d = Fintype.card P.Pl := by
   haveI := P.nz
@@ -52,51 +52,47 @@ private theorem card_reps (P : RF.Par) (Z : Finset P.Pl) (h : RF.IsReps P Z) : Z
   exact hc
 
 /- English proof (translation)
-Introduce `hstar N j pl a hj1 hjm htie hp hq hdom la hsmall hqq hdd hM hin5 T io e hover y halg C3 nW ν hν hcls hodd`. Take `⟨C, hF, hCZ, V, ι, hVl, hemb, halgc, hcpl, hMM, hvm, hnu⟩` from `GlobalTheory.PlaceClosedField.exists_closed_field_over_place E H Dw lv Xo c la T io e hover`. Establish `hl2 : V.l ≠ 2` using `hVl ▸ ne_two_of_not_small hsmall`. Establish `hνC` using `hnu y C3 lv.M a nW ν hν`. Establish `hvM : V.v (lv.M : C) = 0` using `hvm _ hM`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨Y, hY⟩` from `GlobalTheory.ChartBaseChange.exists_baseChange E H Dw lv Xo c T io y C3 C V ι hemb halgc hcpl hl2 (GlobalTheory.QuadTrace.cmHost_idempotent_trace_eq_one E H hstar) lv.M hvM`. Rewrite `hcls`, `hodd`, the goal using `[← hVl]`. Use `haveI : NeZero (N.ordP V.l) := ⟨hodd.pos.ne'⟩`. Use `haveI : NeZero (2 * N.ordP V.l) := ⟨by have := hodd.pos; omega⟩`. Take `⟨Z, hZ⟩` from `GlobalTheory.InertLabelling.exists_reps N V.l`.
+Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hZ' : RF.IsReps (parOf N j V.l) Z` using `hZ`. Take `⟨lab, hari, hhd, hn, hj, hj', hbig, htau, hsurj, hdisc⟩` from `UpperTheory.exists_orbit_labelling_at_inert_prime_of_odd_order E H lv c N pl htie la T io C V ι hemb hcpl hVl hl2 hMM hcls hodd j Z hZ' (N.R.k - 1) j (N.R.m - j)`. Establish `hinP : ∀ o s, lab.tau o s ↑H.rt = H.rt0 ↔ Even s.val`. Introduce `o s`. Rewrite using `[htau o s]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `split_ifs with he`. Simplify using `only [he, iff_true]`. Conclude with `(htie.psi _).2 ⟨_, rfl⟩`. Simplify using `only [he, iff_false]`. Conclude with `fun h => (RowLab.inPsi_conj_iff (H := H) _).1 h ((htie.psi _).2 ⟨_, rfl⟩)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hmult : ∀ o s, Dw.mult (lab.tau o s) = if Even s.val then Dw.p else Dw.q`. Introduce `o s`. Simplify using `only [Datum.mult, hinP]`. Establish `h2 : ((N.ordP V.l : ℕ) : ZMod (2 * N.ordP V.l)) + (N.ordP V.l : ℕ) = 0`. Rewrite using `[← Nat.cast_add, ← two_mul, ZMod.natCast_self]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hpar : ∀ s : ZMod (2 * N.ordP V.l), Even (s - ((N.ordP V.l : ℕ) : ZMod (2 * N.ordP V.l))).val ↔ ¬Even s.val`. Introduce `s`. Establish `e1 : s - ((N.ordP V.l : ℕ) : ZMod (2 * N.ordP V.l)) = s + (N.ordP V.l : ℕ)`. Rewrite using `[sub_eq_iff_eq_add, add_assoc, h2, add_zero]`. Establish `hlt : N.ordP V.l < 2 * N.ordP V.l` using `by have := hodd.pos; omega`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Rewrite using `[e1, ZMod.val_add, ZMod.val_natCast, Nat.mod_eq_of_lt hlt, Nat.even_iff, Nat.even_iff, Nat.mod_mod_of_dvd _ (dvd_mul_right 2 _)]`. Take `⟨t, ht⟩` from `hodd`. Use linear arithmetic over natural numbers and integers. Establish `hk3` using `N.R.m_add_three_le_k`. Establish `hrank : lab.RankOK Dw`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `o`. Use `⟨?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `g s`. Rewrite using `[hbig, hbig]`. Apply the tactic sequence `fin_cases g <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `s hs`. Rewrite `hs` using `[hbig]`. Simplify using `only [iff_true] at hs`. Rewrite using `[hmult, if_pos hs, hn, hj, hp]`. Simplify using `only [Ranks.sigW]`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Introduce `s hs`. Rewrite `hs` using `[hbig]`. Simplify using `only [iff_true] at hs`. Rewrite using `[hmult, if_neg hs, hj', hq]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Ranks.sigW]`. Introduce `s hs`. Rewrite `hs` using `[hbig]`. Simplify using `at hs`. Rewrite using `[hhd, hmult, if_pos ((hpar s).2 (Nat.not_even_iff_odd.2 hs)), hn, hj, hp]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [Ranks.sigW]`. Use linear arithmetic over natural numbers and integers. Introduce `s hs`. Rewrite `hs` using `[hbig]`. Simplify using `at hs`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hhd, hmult, if_neg (fun h => (hpar s).1 h hs), hj', hq]`. Simplify using `only [Ranks.sigW]`. Establish `hbig0 : ∀ o s, lab.big o 0 s ↔ Even s.val` using `fun o s => by rw [hbig]; simp`. Establish `hlt : lab.j' < lab.n` using `by rw [hj', hn]; omega`. Establish `hmono : ∀ τ, ∀ i k, i ≤ k → k < Dw.mult τ → a (τ, k) ≤ a (τ, i)` using `fun τ i k hik hk => hdom τ ⟨i, by omega⟩ ⟨k, hk⟩ (Fin.mk_le_mk.2 hik)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hsupp : ∀ o s k', gaT Dw a (lab.tau o s) k' ≠ 0 → 1 ≤ k' ∧ k' ≤ Dw.mult (lab.tau o s)` using `fun o s k' h => (GlobalTheory.RowAt.gap_sums _ _ (hmono _)).1 k' h`. Establish `hwt : WtTieS Dw.mult lab.tau (fun o s => gaT Dw a (lab.tau o s)) fun τ i => a (τ, i)`. Use `⟨fun o s i hi => ?_, fun σ hσ => ?_⟩` and prove the remaining obligations. Conclude with `(((GlobalTheory.RowAt.gap_sums _ _ (hmono _)).2 _ le_rfl).1 i hi).symm`. Take `⟨x, hx⟩` from `hsurj σ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `absurd hx (hσ x.1 x.2)`. Take `⟨X, F, hX, hval⟩` from `UpperTheory.labelSetGeo_of_even_of_rankOK_of_not_dvd_discr hUp E H Dw lv Xo c hstar T io y C3 C V ι hemb lv.M Y hY halg {z // z ∈ Z} (2 * N.ordP V.l) lab hari hdisc ⟨N.ordP V.l, by ring⟩ hrank hbig0 hlt a (fun o s => gaT Dw a (lab.tau o s)) hsupp hwt nW ν hνC`. Establish `key : ∀ v w : ℕ, v < 2 * N.ordP V.l → w < 2 * N.ordP V.l → (Even v ↔ Even w) → v % N.ordP V.l = w % N.ordP V.l → v = w`. Introduce `v w hv hw hpw hvw`. Establish `hm` using `hodd.pos`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `h1` using `Nat.div_add_mod v (N.ordP V.l)`. Establish `h2` using `Nat.div_add_mod w (N.ordP V.l)`. Establish `h3 : v / N.ordP V.l < 2` using `(Nat.div_lt_iff_lt_mul hm).2 hv`. Establish `h4 : w / N.ordP V.l < 2` using `(Nat.div_lt_iff_lt_mul hm).2 hw`. Rewrite `hpw` using `[Nat.even_iff, Nat.even_iff]`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Apply the first step, then apply the next step to every resulting obligation.
 
-Take `⟨t, ht⟩` from `hodd`. Generalize the expression as in `v / N.ordP V.l = p1 at *`. Generalize the expression as in `w / N.ordP V.l = p2 at *`. Generalize the expression as in `v % N.ordP V.l = r1 at *`. Generalize the expression as in `w % N.ordP V.l = r2 at *`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply the tactic sequence `interval_cases p1 <;> interval_cases p2 <;> omega`. Establish `hinj : Function.Injective (fun x : {z // z ∈ Z} × ZMod (2 * N.ordP V.l) => lab.tau x.1 x.2)`. Introduce and unpack `⟨o, s⟩ ⟨o', s'⟩ heq`. Simplify using `only at heq`. Establish `hps : Even s.val ↔ Even s'.val` using `by rw [← hinP o s, ← hinP o' s', heq]`.
+Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hpos : N.pos V.l o.1 s.val = N.pos V.l o'.1 s'.val`. Rewrite `heq` using `[htau, htau]`. Distinguish the cases in `he : Even s.val`. Rewrite `heq` using `[if_pos he, if_pos (hps.1 he)]`. Conclude with `htie.inj heq`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Rewrite `heq` using `[if_neg he, if_neg (fun h => he (hps.2 h))]`. Conclude with `htie.inj ((ComplexEmbedding.involutive_conjugate E).injective heq)`. Take `⟨q, -, hq'⟩` from `hZ (N.pos V.l o.1 s.val)`. Establish `e1` using `hq' (o.1, (s.val : ZMod (N.ordP V.l))) ⟨o.2, by simp only [ZMod.val_natCast, RowLab.pos_mod]⟩`. Establish `e2` using `hq' (o'.1, (s'.val : ZMod (N.ordP V.l))) ⟨o'.2, by simp only [ZMod.val_natCast, RowLab.pos_mod, hpos]⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e3` using `e1.trans e2.symm`. Simplify using `only [Prod.mk.injEq] at e3`. Take `⟨ho, hs⟩` from `e3`. Establish `hmod : s.val % N.ordP V.l = s'.val % N.ordP V.l` using `(ZMod.natCast_eq_natCast_iff' _ _ _).1 hs`. Establish `hv` using `key _ _ (ZMod.val_lt s) (ZMod.val_lt s') hps hmod`.
-
-Conclude with `Prod.ext (Subtype.ext ho) (ZMod.val_injective _ hv)`. Establish `hnm : lab.j + lab.j' = N.R.m` using `by rw [hj, hj']; omega`. Use `⟨Z, lab.tau, { C := C, V := V, hVl := rfl, I := fun o x ↦ lab.II Dw o, J := fun o ↦ JJ fun x ↦ lab.II Dw o, X := X, F := F, hn := fun o => ⟨(hX o).1.trans hn, (hX o).2.1.trans hnm⟩, alt := fun o => (hX o).2.2.1 }, hZ', ⟨hinj, hsurj⟩, fun o s => hinP o s, fun o s he => ?_, fun o s …` and prove the remaining obligations. Conclude with `(htau o s).trans ((if_pos he).trans (congrArg pl (RowLab.pos_mod N V.l o.1 s.val).symm))`. Rewrite `hval` using `[hhd]`.
-
-Conclude with `hval`.
+A detailed English derivation is pending.
 -/
 private theorem exists_rowFamS (hUp : ∀ (p : ℕ) [Fact p.Prime], ReciprocityTheory.ChartRestriction.G.Pdiv.ChartF.UpFSt p)
     {Dw : Datum H} {lv : Level H} (Xo : Moduli Dw lv) (c : Coeff lv) [StarRing (𝓞 E)] :
@@ -234,9 +230,9 @@ private theorem exists_rowFamS (hUp : ∀ (p : ℕ) [Fact p.Prime], ReciprocityT
     exact hval
 
 /- English proof (translation)
-Use `push_cast`. Distinguish the cases in `hp : p`. Establish `hn : n ∈ Finset.Icc 1 K` using `Finset.mem_Icc.mpr ⟨h1, hK⟩`. Simplify using `only [hp, true_and, if_true]`. Rewrite using `[← Finset.add_sum_erase _ _ hn, ← Finset.add_sum_erase (Finset.Icc 1 K) (fun k => (k : ℝ) * (g k : ℝ)) hn]`.
+Move the embeddings inside the algebraic operations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[if_pos rfl, Finset.sum_congr rfl (fun k hk => if_neg (Finset.ne_of_mem_erase hk))]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `[hp]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 -/
 private theorem rest_add (n K : ℕ) (h1 : 1 ≤ n) (hK : n ≤ K) (p : Prop) [Decidable p] (g : ℕ → ℕ) :
     ∑ k ∈ Finset.Icc 1 K, (if p ∧ k = n then (0 : ℝ) else (k : ℝ) * g k) =
@@ -254,43 +250,39 @@ end UpperTheory.OrbitFamilyRestriction
 
 open UpperTheory.OrbitFamilyRestriction in
 /- English proof (translation)
-Introduce `hUp E _ _ _ H Dw lv Xo c _`. Establish `hR` using `exists_rowFamS hUp Xo c`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `hstar N j pl a hj1 hjm htie hp hq hdom la hsmall hqq hdd hM hin5 Tc io e hover y halg C3 nW ν hν hcls hodd T θ0 C1 hdeg hrows`. Take `⟨Z, tau, R, hZ, hbij, hpsi, hev, hrk, hval⟩` from `hR hstar N j pl a hj1 hjm htie hp hq hdom la hsmall hqq hdd hM hin5 Tc io e hover y halg C3 nW ν hν hcls hodd`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hk3` using `N.R.m_add_three_le_k`. Establish `hmono : ∀ τ, ∀ i k, i ≤ k → k < Dw.mult τ → a (τ, k) ≤ a (τ, i)` using `fun τ i k hik hk => hdom τ ⟨i, by omega⟩ ⟨k, hk⟩ (Fin.mk_le_mk.2 hik)`. Establish `hmr : ∀ τ, Dw.mult τ ≤ N.R.r`. Introduce `τ`. Unfold `Datum.mult`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Rewrite using `[hp, hq]`. Simplify using `only [Ranks.sigW, Ranks.r]`. Apply the tactic sequence `split_ifs <;> omega`. Establish `hmain : ∀ (o : {z // z ∈ Z}) (s : ZMod (2 * (parOf N j (resCharOf la)).d)), Even s.val → gaT Dw a (tau o s) (N.R.k - 1) = gapW N pl a (N.pos (resCharOf la) o.1 (s.val % N.ordP (resCharOf la)))`. Introduce `o s he`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hev o s he]`. Establish `hin : pl (N.pos (resCharOf la) o.1 (s.val % N.ordP (resCharOf la))) ↑H.rt = H.rt0` using `(htie.psi _).2 ⟨_, rfl⟩`. Simplify using `only [gaT, GlobalTheory.RowAt.gap, Datum.mult, hin, if_true, hp, Ranks.sigW, gapW]`. Use `split_ifs with hc1 hc2`. Rewrite using `[show N.R.k - 1 - 1 = N.R.k - 2 by omega]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers. Establish `hstep : ∀ (o : {z // z ∈ Z}) (s : ZMod (2 * (parOf N j (resCharOf la)).d)), (∑ k ∈ Finset.Icc 1 N.R.r, if Even s.val ∧ k = N.R.k - 1 then (0 : ℝ) else (k : ℝ) * (gaT Dw a (tau o s) k : ℝ)) = (∑ i : Fin (Dw.mult (tau o s)), (a (tau o s, i) : ℝ)) - ((N.R.k - 1 : ℕ) : ℝ) * (if Even …`. Introduce `o s`. Rewrite using `[rest_add (N.R.k - 1) N.R.r (by omega) (by simp only [Ranks.r]; omega) (Even s.val) (gaT Dw a (tau o s))]`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hg : (∑ k ∈ Finset.Icc 1 N.R.r, k * gaT Dw a (tau o s) k) = ∑ i : Fin (Dw.mult (tau o s)), a (tau o s, i)` using `((GlobalTheory.RowAt.gap_sums _ _ (hmono (tau o s))).2 _ (hmr _)).2`. Use `congr 1`. Rewrite using `[hg]`. Use `push_cast`. Both sides reduce to the same expression.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `he : Even s.val`. Rewrite using `[if_pos he, if_pos he, hmain o s he]`. Rewrite using `[if_neg he, if_neg he]`. Establish `hsumW : ∑ z, (gapW N pl a z : ℝ) = ∑ o : {z // z ∈ Z}, ∑ s : ZMod (2 * (parOf N j (resCharOf la)).d), (if Even s.val then (gapW N pl a (N.pos (resCharOf la) o.1 (s.val % N.ordP (resCharOf la))) : ℝ) else 0)`. Set `G : (E →+* ℂ) → ℝ` to `fun τ => ∑ z, if pl z = τ then (gapW N pl a z : ℝ) else 0`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [G]`. Rewrite using `[Finset.sum_comm]`. Simplify using the standard rewrite rules. Use `_ = ∑ x : {z // z ∈ Z} × ZMod (2 * (parOf N j (resCharOf la)).d), G (tau x.1 x.2) := (hbij.sum_comp G).symm`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Use `_ = ∑ o, ∑ s, G (tau o s) := Fintype.sum_prod_type' (fun o s => G (tau o s))`. Use `_ = _ := by`. Use `Finset.sum_congr rfl fun o _ => Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Distinguish the cases in `he : Even s.val`. Rewrite using `[if_pos he, hev o s he]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[G, htie.inj.eq_iff]`. Rewrite using `[if_neg he]`. Use `Finset.sum_eq_zero fun z _ => if_neg ?_` and prove the remaining obligations. Introduce `hz`. Establish `h1 : InPsi H (pl z)` using `(htie.psi _).2 ⟨z, rfl⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Chain the equalities or inequalities of the calculation.
 
-Rewrite `h1` using `[hz]`. Conclude with `he ((hpsi o s).1 h1)`. Establish `hDF : ((DF Dw a : ℕ) : ℝ) = ∑ o : {z // z ∈ Z}, ∑ s : ZMod (2 * (parOf N j (resCharOf la)).d), ∑ i : Fin (Dw.mult (tau o s)), (a (tau o s, i) : ℝ)`. Set `g : (E →+* ℂ) → ℝ` to `fun τ => ∑ i : Fin (Dw.mult τ), (a (τ, i) : ℝ)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Establish `hrest : restOf N Dw pl a = ∑ o : {z // z ∈ Z}, ∑ s : ZMod (2 * (parOf N j (resCharOf la)).d), ∑ k ∈ Finset.Icc 1 N.R.r, if Even s.val ∧ k = N.R.k - 1 then (0 : ℝ) else (k : ℝ) * (gaT Dw a (tau o s) k : ℝ)`. Rewrite using `[Finset.sum_congr rfl fun o _ => Finset.sum_congr rfl fun s _ => hstep o s]`. Simplify using `only [Finset.sum_sub_distrib, ← Finset.mul_sum]`. Rewrite using `[← hsumW, ← hDF]`. Unfold `restOf`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[Nat.cast_sub (by omega : 1 ≤ N.R.k), Nat.cast_one]`. Conclude with `⟨⟨hodd, Z, hZ, R, fun o s => gaT Dw a (tau o s), gapW N pl a, nW, T, θ0, restOf N Dw pl a, ν, fun o s k hk => by rw [hrk]; exact (GlobalTheory.RowAt.gap_sums _ _ (hmono _)).1 k hk, fun o s he => hmain o s he, hrest, hrows, hdeg, hval⟩, rfl, rfl⟩`. Introduce `hstar N j pl a hj1 hjm htie hp hq hdom la hsmall hqq hdd hM hin5 Tc io e hover y halg C3 nW ν hν hcls hodd hw s ha hrows`. Take `⟨Z, tau, R, hZ, hbij, hpsi, hev, hrk, hval⟩` from `hR hstar N j pl a hj1 hjm htie hp hq hdom la hsmall hqq hdd hM hin5 Tc io e hover y halg C3 nW ν hν hcls hodd`. Establish `hk3` using `N.R.m_add_three_le_k`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hmono : ∀ τ, ∀ i k, i ≤ k → k < Dw.mult τ → a (τ, k) ≤ a (τ, i)` using `fun τ i k hik hk => hdom τ ⟨i, by omega⟩ ⟨k, hk⟩ (Fin.mk_le_mk.2 hik)`. Establish `hmr : ∀ τ, Dw.mult τ ≤ N.R.r`. Introduce `τ`. Unfold `Datum.mult`. Rewrite using `[hp, hq]`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Ranks.sigW, Ranks.r]`. Apply the tactic sequence `split_ifs <;> omega`. Establish `hc` using `card_reps _ Z hZ`. Establish `hf : Fintype.card (parOf N j (resCharOf la)).Pl = N.R.f` using `by show Fintype.card (Bool × N.R.A) = N.R.f`. Simplify using `[Fintype.card_prod, Formalism.HC.Frame.card_A, Ranks.f, Ranks.n]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Use `⟨⟨Z, R, fun o σ => gaT Dw a (tau o σ), N.R.r, s, nW, 1, ν, le_rfl, hw, ?_, ?_, ?_, hval⟩, rfl⟩` and prove the remaining obligations. Introduce `o σ k hk`. Establish `h` using `(GlobalTheory.RowAt.gap_sums _ _ (hmono (tau o σ))).1 k hk`. Rewrite using `[hrk]`. Conclude with `⟨h.1, h.2, h.2.trans (hmr _)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `o σ`. Distinguish the cases in `h0 : 0 < Dw.mult (tau o σ)`. Establish `h` using `((GlobalTheory.RowAt.gap_sums _ _ (hmono (tau o σ))).2 _ (hmr _)).1 0 h0`. Conclude with `le_of_eq_of_le h (ha _ h0)`. Establish `hz : ∀ k, gaT Dw a (tau o σ) k = 0`.
-
-Introduce `k`. Simplify using `only [gaT, GlobalTheory.RowAt.gap]`. Apply the tactic sequence `split_ifs <;> omega`. Simplify using `[hz]`. Use `show 4 * N.R.r * s * (Z.card * (parOf N j (resCharOf la)).d) ≤ nW`.
-
-Rewrite using `[hc, hf]`. Conclude with `hrows`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.exists_pkgCs_of_degree_bound_at_inert_primes :
     (∀ (p : ℕ) [Fact p.Prime], ReciprocityTheory.ChartRestriction.G.Pdiv.ChartF.UpFSt p) →

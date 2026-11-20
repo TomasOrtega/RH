@@ -9,17 +9,17 @@ set_option backward.isDefEq.respectTransparency false
 open CategoryTheory Limits AlgebraicGeometry GroundTheory.PAdicHodge CrystallineSemistableComparison UpperTheory.Ru.crystallineComparison UpperTheory.Gal.crystallineComparison
 
 /- English proof (translation)
-Set `A : I → CommRingCat.{0}` to `fun k => CommRingCat.of (Localization.Away (f k))`. Set `m : ∀ k, Spec (A k) ⟶ Spec (CommRingCat.of R)` to `fun k => Spec.map (CommRingCat.ofHom (algebraMap R (Localization.Away (f k))))`. Set `g : ∐ (fun k => Spec (A k)) ⟶ Spec (CommRingCat.of R)` to `Sigma.desc m`. Establish `hEt : Etale g`. Use `(IsZariskiLocalAtSource.sigmaDesc (P := @Etale) ?_)` and prove the remaining obligations.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `k`. Use `infer_instance`. Establish `hSu : Surjective g`. Use `⟨fun p => ?_⟩` and prove the remaining obligations. Take `⟨k, hk⟩` from `hcov p`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hp : p ∈ Set.range (PrimeSpectrum.comap (algebraMap R (Localization.Away (f k))))`. Rewrite using `[PrimeSpectrum.localization_away_comap_range (Localization.Away (f k)) (f k)]`. Conclude with `hk`. Take `⟨q, rfl⟩` from `hp`. Use `⟨(Sigma.ι (fun k => Spec (A k)) k) q, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: Sigma.ι (fun k => Spec (A k)) k ≫ g = m k` using `Sigma.ι_desc _ _`. Rewrite using `[← Scheme.Hom.comp_apply, this]`. Both sides reduce to the same expression. Take `⟨s, hs⟩` from `hsec _ g hEt hSu`. Establish `hg : g = sigmaSpec A ≫ Spec.map (CommRingCat.ofHom (algebraMap R (Π k, Localization.Away (f k))))`.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Sigma.hom_ext _ _ fun k => ?_` and prove the remaining obligations. Rewrite using `[Sigma.ι_desc, ι_sigmaSpec_assoc, ← Spec.map_comp]`. Both sides reduce to the same expression. Set `r'` to `Spec.preimage (s ≫ sigmaSpec A)`. Establish `hr' : Spec.map r' = s ≫ sigmaSpec A` using `Spec.map_preimage _`.
+Both sides reduce to the same expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hc : CommRingCat.ofHom (algebraMap R (Π k, Localization.Away (f k))) ≫ r' = 𝟙 _`. Apply `Spec.map_injective` to reduce the goal to its premises. Rewrite using `[Spec.map_comp, hr', Category.assoc, ← hg, hs, Spec.map_id]`. Conclude with `⟨r'.hom, congrArg CommRingCat.Hom.hom hc⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private lemma key {R : Type} [CommRing R]
     (hsec : ∀ (X : Scheme.{0}) (f : X ⟶ Spec (CommRingCat.of R)), Etale f → Surjective f →
@@ -59,19 +59,17 @@ private lemma key {R : Type} [CommRing R]
   exact ⟨r'.hom, congrArg CommRingCat.Hom.hom hc⟩
 
 /- English proof (translation)
-Introduce `R _ hsec ι W hWo hWc`. Set `J : Type` to `{x : ι × R // (PrimeSpectrum.basicOpen x.2 : Set (PrimeSpectrum R)) ⊆ W x.1}`. Establish `hcov : (Set.univ : Set (PrimeSpectrum R)) ⊆ ⋃ j : J, (PrimeSpectrum.basicOpen j.1.2 : Set (PrimeSpectrum R))`. Introduce `p _`. Take `⟨i, hi⟩` from `hWc p`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨_, ⟨f, rfl⟩, hpf, hsub⟩` from `PrimeSpectrum.isTopologicalBasis_basic_opens.exists_subset_of_mem_open hi (hWo i)`. Conclude with `Set.mem_iUnion.2 ⟨⟨(i, f), hsub⟩, hpf⟩`. Take `⟨t, ht⟩` from `isCompact_univ.elim_finite_subcover _ (fun j : J => (PrimeSpectrum.basicOpen j.1.2).isOpen) hcov`. Set `f : t → R` to `fun k => k.1.1.2`. Establish `hcovI : ∀ p : PrimeSpectrum R, ∃ k, f k ∉ p.asIdeal`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `p`. Take `⟨j, hj, hp⟩` from `Set.mem_iUnion₂.1 (ht (Set.mem_univ p))`. Conclude with `⟨⟨j, hj⟩, hp⟩`. Take `⟨r, hr⟩` from `key hsec f hcovI`. Establish `hrf : ∀ x, r (algebraMap R _ x) = x` using `fun x => congrArg (fun h => h x) hr`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨t, inferInstance, fun k => r (Pi.single k 1), fun k => k.1.1.1, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(CompleteOrthogonalIdempotents.single (fun k => Localization.Away (f k))).map r`. Introduce `k p hp`. Use `k.1.2 ?_` and prove the remaining obligations. Use `show f k ∉ p.asIdeal`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Introduce `hf`. Apply `hp` to reduce the goal to its premises. Establish `hu : Pi.single k 1 = algebraMap R (Π k, Localization.Away (f k)) (f k) * Pi.single k (IsLocalization.Away.invSelf (f k))`. Use extensionality with `l`. Distinguish the cases in `h : l = k`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Substitute `h` using the available equality. Simplify using `[IsLocalization.Away.mul_invSelf]`. Simplify using `[Pi.single_eq_of_ne h]`. Use `show r (Pi.single k 1) ∈ p.asIdeal`. Rewrite using `[hu, map_mul, hrf]`.
-
-Conclude with `p.asIdeal.mul_mem_right _ hf`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.exists_orthogonalIdempotents_subordinate_of_etale_sections :
     ∀ (R : Type) [CommRing R],

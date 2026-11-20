@@ -47,7 +47,7 @@ def modPMap : ModP (normInteger K) p →+* ModP (normInteger L) p :=
 
 omit [Fact p.Prime] [IsPerfectoidField K p] [IsPerfectoidField L p] in
 /- English proof (translation)
-The claim follows from `Ideal.quotientMap_mk`.
+A detailed English derivation is pending.
 -/
 theorem modPMap_mk (a : normInteger K) :
     modPMap φ hφ (Ideal.Quotient.mk (Ideal.span {(p : normInteger K)}) a) =
@@ -60,7 +60,7 @@ def preTiltMap : 𝒪K♭ →+* 𝒪L♭ :=
   Perfection.map p (modPMap φ hφ)
 
 /- English proof (translation)
-The claim follows from `Perfection.coeff_map _ _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem coeff_preTiltMap (x : 𝒪K♭) (n : ℕ) :
     Perfection.coeff (ModP (normInteger L) p) p n (preTiltMap p φ hφ x) =
@@ -68,11 +68,11 @@ theorem coeff_preTiltMap (x : 𝒪K♭) (n : ℕ) :
   Perfection.coeff_map _ _ _ _
 
 /- English proof (translation)
-Set `y : ℕ → normInteger K` to `fun n => PreTilt.untilt ((frobeniusEquiv 𝒪K♭ p).symm^[n] x)`. Establish `hy : ∀ n, y (n + 1) ^ p = y n` using `IsPerfectoidField.untilt_iterate_succ_pow p x`. Establish `hx : x = IsPerfectoidField.ofCompatible p y hy` using `IsPerfectoidField.preTilt_ext p fun n => by`. Rewrite using `[IsPerfectoidField.coeff_ofCompatible, IsPerfectoidField.mk_untilt_iterate]`. Establish `hy' : ∀ n, (integerMap φ hφ ∘ y) (n + 1) ^ p = (integerMap φ hφ ∘ y) n` using `fun n => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [Function.comp_apply, ← map_pow, hy]`. Establish `key : preTiltMap p φ hφ x = IsPerfectoidField.ofCompatible p _ hy'`. Use `IsPerfectoidField.preTilt_ext p fun n => ?_` and prove the remaining obligations. Rewrite using `[IsPerfectoidField.coeff_ofCompatible]`. Express the relevant statement in the definitionally equal form `Perfection.coeff (ModP (normInteger L) p) p n (preTiltMap p φ hφ x) = _`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[coeff_preTiltMap]`. Express the relevant statement in the definitionally equal form `modPMap φ hφ (PreTilt.coeff n x) = _`. Rewrite using `[← IsPerfectoidField.mk_untilt_iterate, modPMap_mk]`. Both sides reduce to the same expression. Rewrite using `[key, IsPerfectoidField.untilt_ofCompatible]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -98,7 +98,7 @@ theorem untilt_preTiltMap (x : 𝒪K♭) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[untilt_preTiltMap, coe_integerMap]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem coe_untilt_preTiltMap (x : 𝒪K♭) :
     ((PreTilt.untilt (preTiltMap p φ hφ x) : normInteger L) : L) =
@@ -106,7 +106,7 @@ theorem coe_untilt_preTiltMap (x : 𝒪K♭) :
   rw [untilt_preTiltMap, coe_integerMap]
 
 /- English proof (translation)
-Use `(injective_iff_map_eq_zero _).2 fun x hx => ?_` and prove the remaining obligations. Establish `h1` using `coe_untilt_preTiltMap φ hφ x`. Rewrite `h1` using `[hx, IsPerfectoidField.untilt_zero, ZeroMemClass.coe_zero, eq_comm, map_eq_zero_iff φ φ.injective]`. Conclude with `(IsPerfectoidField.untilt_eq_zero_iff p).1 (Subtype.ext h1)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem preTiltMap_injective : Function.Injective (preTiltMap p φ hφ) := by
   refine (injective_iff_map_eq_zero _).2 fun x hx => ?_
@@ -116,7 +116,7 @@ theorem preTiltMap_injective : Function.Injective (preTiltMap p φ hφ) := by
   exact (IsPerfectoidField.untilt_eq_zero_iff p).1 (Subtype.ext h1)
 
 /- English proof (translation)
-Rewrite using `[preTilt_norm_def, preTilt_norm_def, coe_untilt_preTiltMap, hφ]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_preTiltMap (x : 𝒪K♭) : ‖preTiltMap p φ hφ x‖ = ‖x‖ := by
   rw [preTilt_norm_def, preTilt_norm_def, coe_untilt_preTiltMap, hφ]
@@ -128,7 +128,7 @@ def tiltMap : K♭ →+* L♭ :=
 
 @[simp]
 /- English proof (translation)
-The claim follows from `IsLocalization.map_eq (M := nonZeroDivisors 𝒪K♭) (S := K♭) (T := nonZeroDivisors 𝒪L♭) (Q := L♭) (nonZeroDivisors_le_comap_nonZeroDivisors_of_injective _ (preTiltMap_injective φ hφ)) a`.
+A detailed English derivation is pending.
 -/
 theorem tiltMap_algebraMap (a : 𝒪K♭) :
     tiltMap p φ hφ (algebraMap 𝒪K♭ K♭ a) = algebraMap 𝒪L♭ L♭ (preTiltMap p φ hφ a) :=
@@ -137,7 +137,7 @@ theorem tiltMap_algebraMap (a : 𝒪K♭) :
     (nonZeroDivisors_le_comap_nonZeroDivisors_of_injective _ (preTiltMap_injective φ hφ)) a
 
 /- English proof (translation)
-Take `⟨a, b, hb, h⟩` from `exists_mul_algebraMap_eq x`. Establish `hb' : preTiltMap p φ hφ b ≠ 0` using `(map_ne_zero_iff _ (preTiltMap_injective φ hφ)).2 hb`. Establish `h' : tiltMap p φ hφ x * algebraMap 𝒪L♭ L♭ (preTiltMap p φ hφ b) = algebraMap 𝒪L♭ L♭ (preTiltMap p φ hφ a)`. Rewrite using `[← tiltMap_algebraMap, ← tiltMap_algebraMap, ← map_mul, h]`. Rewrite using `[tiltSharp_eq hb' h', tiltSharp_eq hb h, map_div₀, coe_untilt_preTiltMap, coe_untilt_preTiltMap]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem tiltSharp_tiltMap (x : K♭) : tiltSharp L p (tiltMap p φ hφ x) = φ (tiltSharp K p x) := by
   obtain ⟨a, b, hb, h⟩ := exists_mul_algebraMap_eq x
@@ -150,27 +150,27 @@ theorem tiltSharp_tiltMap (x : K♭) : tiltSharp L p (tiltMap p φ hφ x) = φ (
     coe_untilt_preTiltMap]
 
 /- English proof (translation)
-Rewrite using `[← norm_tiltSharp, tiltSharp_tiltMap, hφ, norm_tiltSharp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_tiltMap (x : K♭) : ‖tiltMap p φ hφ x‖ = ‖x‖ := by
   rw [← norm_tiltSharp, tiltSharp_tiltMap, hφ, norm_tiltSharp]
 
 /- English proof (translation)
-The claim follows from `(tiltMap p φ hφ).injective`.
+A detailed English derivation is pending.
 -/
 theorem tiltMap_injective : Function.Injective (tiltMap p φ hφ) :=
   (tiltMap p φ hφ).injective
 
 /- English proof (translation)
-Use extensionality with `w`. Use `set a : ℕ → 𝒪K♭ := fun n => ((_root_.frobeniusEquiv 𝒪K♭ p).symm ^ n) (w.coeff n)`. Establish `hw : WittVector.teichmullerSeries a = w` using `WittVector.teichmullerSeries_coeff_eq w`. Establish `hle : ∀ n : ℕ, ‖((f w : normInteger L) : L) - g w‖ ≤ ‖(p : L)‖ ^ (n + 1)`. Introduce `n`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `WittVector.dvd_sub_sum_teichmullerSeries (p := p) a n`. Rewrite `hc` using `[hw]`. Establish `hS : f (∑ i ∈ Finset.Iic n, WittVector.teichmuller p (a i) * (p : WittVector p 𝒪K♭) ^ i) = g (∑ i ∈ Finset.Iic n, WittVector.teichmuller p (a i) * (p : WittVector p 𝒪K♭) ^ i)`. Simplify using `only [map_sum, map_mul, map_pow, map_natCast, h]`. Establish `hfw : f w = f (∑ i ∈ Finset.Iic n, WittVector.teichmuller p (a i) * (p : WittVector p 𝒪K♭) ^ i) + (p : normInteger L) ^ (n + 1) * f c`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_natCast f p, ← map_pow, ← map_mul, ← hc, ← map_add, add_sub_cancel]`. Establish `hgw : g w = g (∑ i ∈ Finset.Iic n, WittVector.teichmuller p (a i) * (p : WittVector p 𝒪K♭) ^ i) + (p : normInteger L) ^ (n + 1) * g c`. Rewrite using `[← map_natCast g p, ← map_pow, ← map_mul, ← hc, ← map_add, add_sub_cancel]`. Rewrite using `[hfw, hgw, hS]`. Establish `hc1` using `mem_normInteger.1 (f c).2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc2` using `mem_normInteger.1 (g c).2`. Simplify using `only [Subring.coe_add, Subring.coe_mul, SubmonoidClass.coe_pow, Subring.coe_natCast, add_sub_add_left_eq_sub, ← mul_sub, norm_mul, norm_pow]`. Combine the equalities or inequalities in the displayed calculation. Use `IsUltrametricDist.norm_add_le_max ((f c : normInteger L) : L) (-((g c : normInteger L) : L))` as an intermediate fact. Rewrite `this` using `[norm_neg, ← sub_eq_add_neg]`.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `this.trans (max_le hc1 hc2)`. Use `_ = _ := mul_one _`. Establish `ht : Filter.Tendsto (fun n : ℕ => ‖(p : L)‖ ^ (n + 1)) Filter.atTop (nhds 0)` using `(tendsto_pow_atTop_nhds_zero_of_lt_one (norm_nonneg _) (IsPerfectoidField.norm_natCast_lt_one (K := L) (p := p))).comp (Filter.tendsto_add_atTop_nat 1)`. Establish `h0 : ‖((f w : normInteger L) : L) - g w‖ ≤ 0` using `ge_of_tendsto' ht hle`. Conclude with `sub_eq_zero.1 (norm_le_zero_iff.1 h0)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ringHom_ext_wittVector_preTilt {f g : WittVector p 𝒪K♭ →+* normInteger L}
     (h : ∀ a, f (WittVector.teichmuller p a) = g (WittVector.teichmuller p a)) : f = g := by
@@ -210,7 +210,7 @@ theorem ringHom_ext_wittVector_preTilt {f g : WittVector p 𝒪K♭ →+* normIn
   exact sub_eq_zero.1 (norm_le_zero_iff.1 h0)
 
 /- English proof (translation)
-Use `ringHom_ext_wittVector_preTilt (f := (WittVector.fontaineTheta (normInteger L) p).comp (WittVector.map (preTiltMap p φ hφ))) (g := (integerMap φ hφ).comp (WittVector.fontaineTheta (normInteger K) p)) fun a => by` as an intermediate fact. Rewrite using `[RingHom.comp_apply, RingHom.comp_apply, WittVector.map_teichmuller, WittVector.fontaineTheta_teichmuller, WittVector.fontaineTheta_teichmuller, untilt_preTiltMap]`. Conclude with `congrArg (fun F => F w) this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fontaineTheta_map_preTiltMap (w : WittVector p 𝒪K♭) :
     WittVector.fontaineTheta (normInteger L) p (WittVector.map (preTiltMap p φ hφ) w) =

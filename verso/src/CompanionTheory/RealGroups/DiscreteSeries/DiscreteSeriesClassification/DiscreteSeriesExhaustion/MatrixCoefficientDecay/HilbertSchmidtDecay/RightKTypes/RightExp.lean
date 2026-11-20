@@ -12,15 +12,13 @@ open CompanionTheory.RgExh CompanionTheory.RgExh.Dec ReciprocityTheory.ChartRest
 variable {n : ℕ}
 
 /- English proof (translation)
-Take `⟨W, hW, hmem⟩` from `A.fin x`. Take `⟨C, hC⟩` from `A.bdd`. Set `b` to `Module.finBasis ℂ W`. Set `embW : W →ₗ[ℂ] A.N` to `A.emb ∘ₗ W.subtype`. Establish `hinj : Function.Injective embW` using `A.inj.comp Subtype.val_injective`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `e : W ≃ₗ[ℂ] LinearMap.range embW` to `LinearEquiv.ofInjective embW hinj`. Establish `: FiniteDimensional ℂ (LinearMap.range embW)` using `LinearMap.finiteDimensional_range embW`. Set `ψ : Fin (Module.finrank ℂ W) → (LinearMap.range embW →L[ℂ] ℂ)` to `fun l => LinearMap.toContinuousLinearMap ((b.coord l) ∘ₗ e.symm.toLinearMap)`. Use `⟨Module.finrank ℂ W, fun l => (b l : X.V), fun l k => b.repr ⟨A.ρ k x, hmem k⟩ l, ∑ l, ‖ψ l‖ * (|C| * ‖A.emb x‖), fun l k => ?_, fun k => ?_⟩` and prove the remaining obligations. Establish `h1 : b.repr ⟨A.ρ k x, hmem k⟩ l = ψ l (e ⟨A.ρ k x, hmem k⟩)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `[ψ]`. Use `show ‖b.repr ⟨A.ρ k x, hmem k⟩ l‖ ≤ _`. Rewrite using `[h1]`. Establish `h2 : ‖e ⟨A.ρ k x, hmem k⟩‖ = ‖A.emb (A.ρ k x)‖` using `rfl`. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Use `mul_le_mul_of_nonneg_left ?_ (norm_nonneg _)` and prove the remaining obligations. Rewrite using `[h2]`. Conclude with `(hC k x).trans (mul_le_mul_of_nonneg_right (le_abs_self C) (norm_nonneg _))`. Use `_ ≤ _ := Finset.single_le_sum (f := fun l => ‖ψ l‖ * (|C| * ‖A.emb x‖)) (fun l _ => by positivity) (Finset.mem_univ l)`. Establish `h3` using `congrArg Subtype.val (b.sum_repr ⟨A.ρ k x, hmem k⟩)`.
-
-Simplify using `only [Submodule.coe_sum, Submodule.coe_smul] at h3`. Conclude with `h3.symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rightExp {ε : Fin n → Bool} {X : GMod n} (A : KAct ε X) (x : X.V) :
     ∃ (r : ℕ) (w : Fin r → X.V) (a : Fin r → S7.KG ε → ℂ) (B : ℝ), (∀ l k, ‖a l k‖ ≤ B) ∧

@@ -17,7 +17,7 @@ def ThetaGramPositiveScalar {R : Ranks} {H : Host R} {what₂ : Rows.Data R}
     (what₂.isot (N.j i) σ ≠ ⊥ → 0 < what₂.lamP (N.mu i) (N.j i) σ)
 
 /- English proof (translation)
-Establish `hg` using `(h i σ).1 f hf`. Simplify using `only [thetaGram, LinearMap.comp_apply] at hg`. Establish `key : inner ℂ (what₂.thetaT (N.mu i) (N.j i) f) (what₂.thetaT (N.mu i) (N.j i) f) = ((what₂.lamP (N.mu i) (N.j i) σ : ℝ) : ℂ) * inner ℂ f f` using `by show inner ℂ (LinearMap.adjoint (what₂.thetaP (N.mu i) (N.j i)) f) (what₂.thetaT (N.mu i) (N.j i) f) = _`. Rewrite using `[LinearMap.adjoint_inner_left, hg, inner_smul_right]`. Rewrite using `[@norm_sq_eq_re_inner ℂ, @norm_sq_eq_re_inner ℂ, key]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -36,11 +36,9 @@ theorem ThetaGramPositiveScalar.norm_sq {R : Ranks} {H : Host R} {what₂ : Rows
   simp
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Establish `hpos : 0 < what₂.lamP (N.mu i) (N.j i) σ`. Apply `(h i σ).2` to reduce the goal to its premises. Introduce `hb`. Rewrite `hf` using `[hb]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hne ((Submodule.mem_bot ℂ).1 hf)`. Establish `e` using `h.norm_sq i σ f hf`. Rewrite `e` using `[h0, norm_zero]`. Establish `e2 : what₂.lamP (N.mu i) (N.j i) σ * ‖f‖ ^ 2 = 0` using `by rw [← e]; norm_num`. Break down `mul_eq_zero.1 e2 with h1 | h1` into its components or cases.
-
-Conclude with `absurd h1 hpos.ne'`. Conclude with `hne (norm_eq_zero.1 (pow_eq_zero_iff two_ne_zero |>.1 h1))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem ThetaGramPositiveScalar.eq_zero {R : Ranks} {H : Host R} {what₂ : Rows.Data R}
     {N : NData R H what₂} {A : NAut N} (h : ThetaGramPositiveScalar N A) (i : N.Loc) (σ : what₂.FT)

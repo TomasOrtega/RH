@@ -22,7 +22,7 @@ theorem singleConjugation_apply (E : GLOps n K V) (c i : Fin n) (X : Module.End 
     singleConjugation E c i X = E c i * (X * E i c) := rfl
 
 /- English proof (translation)
-Proceed by induction on `k generalizing X with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Rewrite using `[pow_succ, Module.End.mul_apply, ih, singleConjugation_apply, pow_succ, pow_succ']`. Simplify using `only [mul_assoc]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem singleConjugation_pow_apply (E : GLOps n K V) (c i : Fin n) (k : ℕ) (X : Module.End K V) :
     ((singleConjugation E c i) ^ k) X = (E c i) ^ k * (X * (E i c) ^ k) := by
@@ -39,11 +39,11 @@ theorem casimirConjugation_eq_sum_single (E : GLOps n K V) (c : Fin n) (s : Fins
     casimirConjugation E c s = ∑ i ∈ s, singleConjugation E c i := rfl
 
 /- English proof (translation)
-Establish `h1 : E c i * E c j = E c j * E c i`. Use `hE.1 c i c j` as an intermediate fact. Rewrite `this` using `[if_neg hi, if_neg hj, sub_zero, sub_eq_zero]`. Conclude with `this`. Establish `h2 : E j c * E i c = E i c * E j c`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hE.1 j c i c` as an intermediate fact. Rewrite `this` using `[if_neg (Ne.symm hi), if_neg (Ne.symm hj), sub_zero, sub_eq_zero]`. Conclude with `this`. Unfold `Commute SemiconjBy`. Use extensionality with `X : 1`.
+Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [Module.End.mul_apply, singleConjugation_apply, ← mul_assoc, h1]`. Simplify using `only [mul_assoc, h2]`.
+A detailed English derivation is pending.
 -/
 theorem singleConjugation_commute {E : GLOps n K V} (hE : IsGLRep E) (c i j : Fin n) (hi : i ≠ c) (hj : j ≠ c) :
     Commute (singleConjugation E c i) (singleConjugation E c j) := by
@@ -61,9 +61,9 @@ theorem singleConjugation_commute {E : GLOps n K V} (hE : IsGLRep E) (c i j : Fi
   simp only [mul_assoc, h2]
 
 /- English proof (translation)
-Establish `hc : Commute (singleConjugation E c i) (casimirConjugation E c s)`. Rewrite using `[casimirConjugation_eq_sum_single]`. Conclude with `Commute.sum_right _ _ _ fun j hj => singleConjugation_commute hE c i j hi (hs j hj)`. Unfold `casimirPower`. Rewrite using `[casimirConjugation_eq_sum_single E c (insert i s), Finset.sum_insert his, ← casimirConjugation_eq_sum_single, hc.add_pow, LinearMap.sum_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Module.End.mul_apply, Module.End.mul_apply, Module.End.natCast_apply, map_nsmul, map_nsmul, singleConjugation_pow_apply]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem casimirPowerW_insert_binomial {E : GLOps n K V} (hE : IsGLRep E) (c i : Fin n) (s : Finset (Fin n)) (his : i ∉ s)
     (hi : i ≠ c) (hs : ∀ j ∈ s, j ≠ c) (q : ℕ) :
@@ -79,7 +79,7 @@ theorem casimirPowerW_insert_binomial {E : GLOps n K V} (hE : IsGLRep E) (c i : 
     singleConjugation_pow_apply]
 
 /- English proof (translation)
-Unfold `casimirPower casimirConjugation`. Rewrite using `[Finset.sum_empty]`. Apply the tactic sequence `rcases q with _ | q <;> simp`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem casimirPowerW_empty (E : GLOps n K V) (c : Fin n) (q : ℕ) :
     casimirPower E c ∅ q = if q = 0 then 1 else 0 := by
@@ -94,9 +94,9 @@ section Alg2
 variable {n : ℕ} {K V : Type*} [Field K] [CharZero K] [AddCommGroup V] [Module K V]
 
 /- English proof (translation)
-Establish `hk' : k ≤ q + b` using `le_trans hk (Nat.le_add_right q b)`. Rewrite using `[Nat.cast_choose K hk, Nat.cast_choose K hk', Nat.sub_add_comm hk]`. Establish `h1 : ((q + b).factorial : K) ≠ 0` using `by exact_mod_cast (Nat.factorial_pos _).ne'`. Establish `h2 : (q.factorial : K) ≠ 0` using `by exact_mod_cast (Nat.factorial_pos _).ne'`. Establish `h3 : (k.factorial : K) ≠ 0` using `by exact_mod_cast (Nat.factorial_pos _).ne'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : ((q - k).factorial : K) ≠ 0` using `by exact_mod_cast (Nat.factorial_pos _).ne'`. Establish `h5 : ((q - k + b).factorial : K) ≠ 0` using `by exact_mod_cast (Nat.factorial_pos _).ne'`. Establish `h6 : (b.factorial : K) ≠ 0` using `by exact_mod_cast (Nat.factorial_pos _).ne'`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 -/
 theorem factorial_ratio_choose_identity (b q k : ℕ) (hk : k ≤ q) :
     ((b.factorial : K) / (((q + b).factorial : K) * (q.factorial : K))) * ((q.choose k : ℕ) : K) =
@@ -113,9 +113,9 @@ theorem factorial_ratio_choose_identity (b q k : ℕ) (hk : k ≤ q) :
   field_simp
 
 /- English proof (translation)
-Unfold `casimirPowerScaled divPowE`. Rewrite using `[casimirPowerW_insert_binomial hE c i s his hi hs q]`. Simplify using `only [LinearMap.smul_apply, LinearMap.sum_apply, Finset.smul_sum, Module.End.mul_apply, map_smul]`. Use `Finset.sum_congr rfl fun k hk => ?_` and prove the remaining obligations. Establish `hkq : k ≤ q` using `Nat.lt_succ_iff.mp (Finset.mem_range.mp hk)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [← Nat.cast_smul_eq_nsmul K, smul_smul]`. Use `congr 1`. Rewrite using `[factorial_ratio_choose_identity b q k hkq]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 -/
 theorem casimirPowerScaled_insert_dividedPower {E : GLOps n K V} (hE : IsGLRep E) (c i : Fin n) (s : Finset (Fin n)) (his : i ∉ s)
     (hi : i ≠ c) (hs : ∀ j ∈ s, j ≠ c) (b q : ℕ) (y : V) :
@@ -139,9 +139,9 @@ variable {p : ℕ} {O : Type*} [CommRing O] [IsDomain O] [IsDiscreteValuationRin
 variable {n : ℕ} {V : Type*} [AddCommGroup V] [Module (KK O) V] [Module O V] [IsScalarTower O (KK O) V]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hnu`. Establish `hum : (u : O) ∈ IsLocalRing.maximalIdeal O` using `(IsLocalRing.mem_maximalIdeal _).mpr hnu`. Establish `hcop : IsCoprime (u : ℤ) (p : ℤ)` using `Nat.isCoprime_iff_coprime.mpr (Nat.coprime_comm.mp ((Nat.Prime.coprime_iff_not_dvd hp).mpr hu))`. Take `⟨x, z, hxz⟩` from `hcop`. Establish `h1 : ((x * u + z * p : ℤ) : O) = 1` using `by rw [hxz]; simp`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Move the coercions through the operations in `at h1`. Establish `h2 : (1 : O) ∈ IsLocalRing.maximalIdeal O`. Rewrite using `[← h1]`. Conclude with `Ideal.add_mem _ (Ideal.mul_mem_left _ _ hum) (Ideal.mul_mem_left _ _ S.p_mem)`. Conclude with `(IsLocalRing.maximalIdeal.isMaximal O).ne_top ((Ideal.eq_top_iff_one _).mpr h2)`.
+Move the embeddings inside the algebraic operations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isUnit_natCast_of_not_dvd_root_weights (S : UniformizedDVR p O) (hp : p.Prime) (u : ℕ) (hu : ¬ p ∣ u) :
     IsUnit (u : O) := by
@@ -158,11 +158,11 @@ private theorem isUnit_natCast_of_not_dvd_root_weights (S : UniformizedDVR p O) 
   exact (IsLocalRing.maximalIdeal.isMaximal O).ne_top ((Ideal.eq_top_iff_one _).mpr h2)
 
 /- English proof (translation)
-Use `charZero_of_inj_zero fun N hN => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hN0`. Establish `hN' : (N : O) = 0`. Apply `IsFractionRing.injective O (KK O)` to reduce the goal to its premises. Rewrite using `[map_natCast, map_zero, hN]`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hCu : p ^ N.factorization p * (N / p ^ N.factorization p) = N` using `by first`. Consider the case `exact Nat.ordProj_mul_ordCompl_eq_self N p`. Consider the case `exact Nat.ord_proj_mul_ord_compl_eq_self N p`. Establish `hu : ¬ p ∣ (N / p ^ N.factorization p)` using `by first`. Consider the case `exact Nat.not_dvd_ordCompl hp hN0`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Establish an intermediate fact. Treat this case separately.
 
-Consider the case `exact Nat.not_dvd_ord_compl hp hN0`. Rewrite `hN'` using `[← hCu, Nat.cast_mul, Nat.cast_pow]`. Break down `mul_eq_zero.mp hN' with h | h` into its components or cases. Conclude with `S.p_ne (pow_eq_zero_iff'.mp h).1`. Conclude with `(isUnit_natCast_of_not_dvd_root_weights S hp _ hu).ne_zero h`.
+Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 private theorem charZero_KK_of_uniformizedDVR (S : UniformizedDVR p O) (hp : p.Prime) : CharZero (KK O) := by
   refine charZero_of_inj_zero fun N hN => ?_
@@ -184,17 +184,15 @@ private theorem charZero_KK_of_uniformizedDVR (S : UniformizedDVR p O) (hp : p.P
   · exact (isUnit_natCast_of_not_dvd_root_weights S hp _ hu).ne_zero h
 
 /- English proof (translation)
-Establish `hC0 : N.choose k ≠ 0` using `(Nat.choose_pos hk).ne'`. Establish `hCu : p ^ (N.choose k).factorization p * (N.choose k / p ^ (N.choose k).factorization p) = N.choose k` using `by first`. Consider the case `exact Nat.ordProj_mul_ordCompl_eq_self (N.choose k) p`. Consider the case `exact Nat.ord_proj_mul_ord_compl_eq_self (N.choose k) p`. Establish `hu : ¬ p ∣ (N.choose k / p ^ (N.choose k).factorization p)` using `by first`.
+Establish an intermediate fact. Establish an intermediate fact. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `exact Nat.not_dvd_ordCompl hp hC0`. Consider the case `exact Nat.not_dvd_ord_compl hp hC0`. Establish `ha : (N.choose k).factorization p ≤ d` using `Nat.factorization_choose_le_log.trans hN`. Generalize the expression as in `(N.choose k).factorization p = a at hCu hu ha`. Generalize the expression as in `N.choose k / p ^ a = u at hCu hu`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Establish `huO : IsUnit (u : O)` using `isUnit_natCast_of_not_dvd_root_weights S hp u hu`. Establish `hp0 : (p : KK O) ≠ 0`. Rewrite using `[← map_natCast (algebraMap O (KK O))]`. Conclude with `(map_ne_zero_iff _ (IsFractionRing.injective O (KK O))).mpr S.p_ne`. Establish `hu0 : ((u : ℕ) : KK O) ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_natCast (algebraMap O (KK O))]`. Conclude with `(huO.map _).ne_zero`. Establish `hinv : algebraMap O (KK O) ((huO.unit⁻¹ : Oˣ) : O) = ((u : ℕ) : KK O)⁻¹`. Apply `eq_inv_of_mul_eq_one_left` to reduce the goal to its premises. Rewrite using `[← map_natCast (algebraMap O (KK O)), ← map_mul, huO.val_inv_mul, map_one]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨(p : O) ^ (d - a) * ((huO.unit⁻¹ : Oˣ) : O), ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_pow, map_natCast, hinv, ← hCu]`. Use `push_cast`. Use `conv_rhs => rw [← Nat.sub_add_cancel ha, pow_add]`. Clear the denominators using the available nonvanishing facts.
-
-Apply the tactic sequence `try ring`.
+Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 private theorem exists_integral_p_pow_div_choose_of_log_le (S : UniformizedDVR p O) (hp : p.Prime) (N k d : ℕ)
     (hN : Nat.log p N ≤ d) (hk : k ≤ N) :
@@ -230,19 +228,19 @@ private theorem exists_integral_p_pow_div_choose_of_log_le (S : UniformizedDVR p
   try ring
 
 /- English proof (translation)
-Use `haveI := charZero_KK_of_uniformizedDVR S hp`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Introduce `_ q b _ y hy`. Simplify using `only [Finset.card_empty, zero_mul, pow_zero, one_smul]`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Unfold `casimirPowerScaled`. Rewrite using `[casimirPowerW_empty]`. Use `split_ifs with hq`. Substitute `hq` using the available equality. Establish `hb0 : (b.factorial : KK O) ≠ 0` using `by exact_mod_cast (Nat.factorial_pos b).ne'`.
+Rewrite the conclusion using the stated equalities. Substitute using the available equality. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 
-Simplify `hy` using `[hb0]`. Simplify using the standard rewrite rules. Consider the case `@insert i s his ih`. Introduce `hs q b hqb y hy`. Establish `hic : i ≠ c` using `hs i (Finset.mem_insert_self i s)`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hs' : ∀ j ∈ s, j ≠ c` using `fun j hj => hs j (Finset.mem_insert_of_mem hj)`. Rewrite using `[casimirPowerScaled_insert_dividedPower hE c i s his hic hs' b q y, Finset.smul_sum]`. Use `Submodule.sum_mem _ fun k hk => ?_` and prove the remaining obligations. Establish `hkq : k ≤ q` using `Nat.lt_succ_iff.mp (Finset.mem_range.mp hk)`. Establish `hy' : divPowE E i c k y ∈ M` using `hM _ (Or.inl ⟨i, c, k, hic, rfl⟩) y hy`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz : ((p : O) ^ (s.card * deF p n L)) • casimirPowerScaled E c s b (q - k) (divPowE E i c k y) ∈ M` using `ih hs' (q - k) b (by omega) _ hy'`. Establish `hz'` using `hM _ (Or.inl ⟨c, i, k, Ne.symm hic, rfl⟩) _ hz`. Take `⟨o, ho⟩` from `exists_integral_p_pow_div_choose_of_log_le S hp (q + b) k (deF p n L) (by unfold deF; exact Nat.log_mono_right hqb) (by omega)`. Establish `heq : ((p : O) ^ ((insert i s).card * deF p n L)) • ((1 / (((q + b).choose k : ℕ) : KK O)) • divPowE E c i k (casimirPowerScaled E c s b (q - k) (divPowE E i c k y))) = o • divPowE E c i k (((p : O) ^ (s.card * deF p n L)) • casimirPowerScaled E c s b (q - k) (divPowE E i c k y))` using `by first`. Consider the case `rw [Finset.card_insert_of_notMem his]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Consider the case `rw [Finset.card_insert_of_not_mem his]`. Simplify using `only [← algebraMap_smul (R := O) (KK O), map_smul, smul_smul]`. Use `congr 1`. Rewrite using `[ho]`. Simplify using `only [map_pow, map_natCast]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[heq]`. Conclude with `M.smul_mem o hz'`.
+A detailed English derivation is pending.
 -/
 theorem scaled_casimirPower_integral_bound (S : UniformizedDVR p O) (hp : p.Prime) {E : GLOps n (KK O) V} (hE : IsGLRep E)
     {M : Submodule O V} (hM : UZStable (O := O) E M) (c : Fin n) (L : ℕ) (s : Finset (Fin n)) :
@@ -289,11 +287,11 @@ theorem scaled_casimirPower_integral_bound (S : UniformizedDVR p O) (hp : p.Prim
     exact M.smul_mem o hz'
 
 /- English proof (translation)
-Unfold `extremalProjector`. Rewrite using `[LinearMap.sum_apply, Finset.smul_sum]`. Use `Submodule.sum_mem _ fun q hq => ?_` and prove the remaining obligations. Establish `hqL : q ≤ L` using `Nat.lt_succ_iff.mp (Finset.mem_range.mp hq)`. Establish `h` using `scaled_casimirPower_integral_bound S hp hE hM c L (Finset.Iio c) (fun j hj => ne_of_lt (Finset.mem_Iio.mp hj)) q c.val (by have := c.isLt; omega) y hy`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[Fin.card_Iio]`. Establish `heq : ((p : O) ^ (c.val * deF p n L)) • (((-1 : KK O) ^ q) • casimirPowerScaled E c (Finset.Iio c) c.val q) y = ((-1 : O) ^ q) • (((p : O) ^ (c.val * deF p n L)) • casimirPowerScaled E c (Finset.Iio c) c.val q y)`. Simplify using `only [LinearMap.smul_apply, ← algebraMap_smul (R := O) (KK O), smul_smul, map_pow, map_neg, map_one, map_natCast]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[heq]`. Conclude with `M.smul_mem _ h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem extremalProjector_denominator_bound (S : UniformizedDVR p O) (hp : p.Prime) {E : GLOps n (KK O) V} (hE : IsGLRep E)
     {M : Submodule O V} (hM : UZStable (O := O) E M) (c : Fin n) (L : ℕ) (y : V) (hy : y ∈ M) :

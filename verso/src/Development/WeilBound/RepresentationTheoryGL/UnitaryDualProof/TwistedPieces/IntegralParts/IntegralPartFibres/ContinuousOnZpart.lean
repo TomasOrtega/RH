@@ -13,9 +13,9 @@ open PositivityTheory.RgUd.T PositivityTheory.RgUd.T.Nil PositivityTheory.RgUd.T
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {n : ℕ}
 
 /- English proof (translation)
-Take `⟨T, hT⟩` from `exists_bound hZ hK`. Establish `hu : (ϖ k ^ T) ≠ 0` using `pow_ne_zero _ (ϖ_ne_zero)`. Use `⟨(fun M => (ϖ k ^ T)⁻¹ • M) '' (ball n 1 ∩ (Z : Set (Matrix (Fin n) (Fin n) k))), ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `((isCompact_ball 1).inter_right (isClosed_subalgebra Z)).image (continuous_const_smul _)`. Introduce and unpack `_ ⟨M, ⟨_, hM⟩, rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Z.smul_mem hM _`. Introduce `x hx`. Take `⟨hc, hnil⟩` from `zpart_spec hx.2`. Use `⟨ϖ k ^ T • zpart Z x, ⟨hT _ hc _ hnil (by simpa using hx.1), Z.smul_mem hc _⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [smul_smul, inv_mul_cancel₀ hu, one_smul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_cpt {Z : Subalgebra k (Matrix (Fin n) (Fin n) k)} (hZ : CR Z) {K : Set (Matrix (Fin n) (Fin n) k)}
     (hK : IsCompact K) : ∃ S : Set (Matrix (Fin n) (Fin n) k), IsCompact S ∧ S ⊆ Z ∧ ∀ x ∈ K ∩ CC Z, zpart Z x ∈ S := by
@@ -31,13 +31,11 @@ theorem exists_cpt {Z : Subalgebra k (Matrix (Fin n) (Fin n) k)} (hZ : CR Z) {K 
     simp only [smul_smul, inv_mul_cancel₀ hu, one_smul]
 
 /- English proof (translation)
-Introduce `x hx`. Take `⟨K, hK, hKx⟩` from `exists_compact_mem_nhds x`. Take `⟨S, hS, hSZ, hSK⟩` from `exists_cpt hZ hK`. Establish `hmem : ∀ᶠ y in 𝓝[CC Z] x, zpart Z y ∈ S` using `by filter_upwards [nhdsWithin_le_nhds hKx, self_mem_nhdsWithin] with y hy1 hy2`. Conclude with `hSK y ⟨hy1, hy2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `hS.tendsto_nhds_of_unique_mapClusterPt hmem ?_` and prove the remaining obligations. Introduce `c hcS hcl`. Use `zpart_unique hZ hx.2 (hSZ hcS) ?_ |>.symm` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Establish `hU : IsOpen {p : Matrix (Fin n) (Fin n) k × Matrix (Fin n) (Fin n) k | ¬IsNilpotent (p.1 - p.2)}` using `(isClosed_nilpotent.preimage (continuous_fst.sub continuous_snd)).isOpen_compl`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨A, B, hA, hB, hxA, hcB, hAB⟩` from `isOpen_prod_iff.1 hU x c hne`. Establish `hev : ∀ᶠ y in 𝓝[CC Z] x, y ∈ A ∧ y ∈ CC Z` using `by filter_upwards [nhdsWithin_le_nhds (hA.mem_nhds hxA), self_mem_nhdsWithin] with y h1 h2`. Conclude with `⟨h1, h2⟩`. Establish `hfr : ∃ᶠ y in 𝓝[CC Z] x, zpart Z y ∈ B` using `(mapClusterPt_iff_frequently.1 hcl) B (hB.mem_nhds hcB)`. Take `⟨y, hyB, hyA, hyC⟩` from `(hfr.and_eventually hev).exists`.
-
-Conclude with `hAB (Set.mk_mem_prod hyA hyB) (zpart_spec hyC).2`.
+Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem continuousOn_zpart {Z : Subalgebra k (Matrix (Fin n) (Fin n) k)} (hZ : CR Z) : ContinuousOn (zpart Z) (CC Z) := by
   intro x hx

@@ -21,27 +21,25 @@ open scoped CategoryTheory.Obj RatFunc
 namespace GlobalTheory.Nef
 
 /- English proof (translation)
-Introduce `k _ C _ hC L hL hpos`. Use `LieSemineg.isIntegral_curve hC.1 hC.2.2` as an intermediate fact. Establish `hd : topologicalKrullDim C = 1` using `LieSemineg.dim_curve hC.1`. Take `⟨hprop, H, hH⟩` from `(isProjOver_iff_isProper_and_exists_isAmpleLB (strHom k C)).1 hC.2.1`. Use `LocallyOfFiniteType.isLocallyNoetherian (strHom k C)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set O := GlobalTheory.structureModule C with hO`. Use `set d := interNum k O ![L] with hdd`. Use `set f := chiPic k O with hf`. Establish `hdeg : ∀ (M : LB C) (hM : M.IsLB), interNum k O ![M] = f 0 - f (-cls M hM)`. Introduce `M hM`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[interNum_one k O hM, chi_twistZ k O hM, hf, chiPic_zero, neg_one_zsmul]`. Establish `hchi : ∀ m : ℕ, f ((m : ℤ) • cls L hL) = f 0 + m * d`. Introduce `m`. Take `⟨N, hN, hc⟩` from `cls_surj (-((m : ℤ) • cls L hL))`. Establish `hLm` using `isLB_lbPow hL m`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : cls _ (LB.isLB_triv C) = cls N hN + cls _ hLm`. Rewrite using `[hc, cls_lbPow hL m hLm, cls_triv, natCast_zsmul, neg_add_cancel]`. Establish `hadd` using `interNum_one_of_cls_eq_add (k := k) hH hd (LB.isLB_triv C) hN hLm e`. Rewrite `hadd` using `[ArInt.interNum_one_lbPow_of_curve hH hd hL m, hdeg _ (LB.isLB_triv C), hdeg N hN, hc, cls_triv, neg_zero, neg_neg]`. Establish `hd' : interNum k (GlobalTheory.structureModule C) ![L] = d` using `rfl`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Use `set m : ℕ := (f 0).natAbs + 1 with hm`. Establish `hm0 : 0 < m` using `Nat.succ_pos _`. Establish `hLm` using `isLB_lbPow hL m`. Establish `hqc` using `Twist.isQuasicoherent_twist (F := O) hLm`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hvan : ∀ n, 2 ≤ n → Subsingleton (coh (twist O (lbPow L m)) n)`. Introduce `n hn`. Use `hH.subsingleton_coh_of_dim_lt _ ?_` and prove the remaining obligations. Rewrite using `[hd]`. Conclude with `(show (1 : ℕ) < n by omega)` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hχ : chi k (twist O (lbPow L m)) = f 0 + m * d`. Rewrite using `[← chiPic_cls k O hLm, cls_lbPow hL m hLm, ← natCast_zsmul, ← hf, hchi m]`. Establish `hχpos : 0 < chi k (twist O (lbPow L m))`. Rewrite using `[hχ]`. Establish `h1 : (1 : ℤ) ≤ d` using `hpos`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Establish `h2 : -(f 0) ≤ ((f 0).natAbs : ℤ)`. Rewrite using `[Int.natCast_natAbs]`. Conclude with `neg_le_abs (f 0)`. Establish `h3 : (m : ℤ) = (f 0).natAbs + 1` using `by rw [hm]; push_cast; ring`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hh0 : 0 < hdim k (twist O (lbPow L m)) 0`. Use `chi_eq_hdim_zero_sub_hdim_one k hvan` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hnt : Nontrivial (coh (twist O (lbPow L m)) 0)` using `Module.nontrivial_of_finrank_pos hh0`. Take `⟨σ, hσ⟩` from `hasNonzeroSec_iff_nontrivial.2 hnt`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `⟨m, σ, ?_⟩` and prove the remaining obligations. Use `by_contra! hall`. Establish `htop : Out.nonzeroLocus σ = ⊤` using `top_unique fun c _ ↦ (hall c hm0 hσ)`. Establish `h0 : cls _ hLm = 0` using `(cls_eq_zero_iff hLm).2 (exists_isGen_of_nonzeroLocus_eq_top σ htop)`. Establish `hz` using `interNum_eq_zero_of_cls_eq_zero k O (isLB_vecOne hLm) 0 h0`.
-
-Rewrite `hz` using `[ArInt.interNum_one_lbPow_of_curve hH hd hL m]`. Establish `: (0 : ℤ) < m * d` using `mul_pos (by exact_mod_cast hm0) hpos`. Establish `hd' : interNum k (GlobalTheory.structureModule C) ![L] = d` using `rfl`. Rewrite `hz` using `[hd']`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem exists_sec_lbPow_vanishing_of_degree_pos : ∀ (k : Type) [Field k] (C : Scheme.{0})
     [Algebra k Γ(C, ⊤)], IsCurve k C → ∀ L : LB C, L.IsLB →

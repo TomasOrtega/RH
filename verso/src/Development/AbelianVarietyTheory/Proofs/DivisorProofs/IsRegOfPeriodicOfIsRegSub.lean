@@ -14,21 +14,21 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.CechPer
 
 /- English proof (translation)
-Introduce `A _ g L u hA K W h hW hd hp hr`. Take `⟨hopen, -, hpre, hval, hinf, -, hsup, -, -, -, -, htop⟩` from `GlobalTheory.T.uniformisation_preimage_value_rules A g L u`. Establish `glue` using `GlobalTheory.T.isRegularOnOpenUniformised_of_locally A g L u hA`. Establish `alg` using `GlobalTheory.T.isRegularOnOpenUniformised_subalgebra_restrict A g L u`. Take `⟨n, V, r, hV⟩` from `GlobalTheory.T.exists_complexAbelianVariety_sectionRatio_affine_cover A g L u hA`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `tor` using `fun c : Fin n => GlobalTheory.T.exists_regular_section_of_regular_differences A g L u hA K W h hW hr ⟨V c, hV.1 c⟩`. Use `choose k hk using tor`. Establish `hk' : ∀ c i, IsReg u.ex (V c ⊓ W i) (k c - h i)` using `hk`. Establish `covW : ∀ z, ∃ i, z ∈ pre u.ex (W i)` using `fun z => (hsup K W z).1 (hW ▸ htop z)`. Establish `covV : ∀ z, ∃ c, z ∈ pre u.ex (V c)` using `fun z => (hsup (Fin n) V z).1 (hV.2.1 ▸ htop z)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hreg : ∀ c, IsReg u.ex (V c) (k c)`. Use `GlobalTheory.T.regular_of_periodic_regular_differences_ratio_cover A g L u hA n V r hV k (fun c z hz => ?_) (fun c l z hz => ?_) (fun c c' => ?_)` and prove the remaining obligations. Take `⟨i, hi⟩` from `covW z`. Establish `hz' : z ∈ pre u.ex (V c ⊓ W i)` using `by rw [hinf]; exact ⟨hz, hi⟩`. Establish `h1 : DifferentiableAt ℂ (k c - h i) z` using `((alg _).2.2.2.2.1 _ (hk' c i) z hz').differentiableAt ((hopen _).mem_nhds hz')`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : DifferentiableAt ℂ (h i) z` using `(hd i z hi).differentiableAt ((hopen _).mem_nhds hi)`. Establish `h3` using `h1.add h2`. Rewrite `h3` using `[sub_add_cancel]`. Conclude with `h3.differentiableWithinAt`. Take `⟨i, hi⟩` from `covW z`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hz' : z ∈ pre u.ex (V c ⊓ W i)` using `by rw [hinf]; exact ⟨hz, hi⟩`. Take `⟨b, hb⟩` from `hk' c i`. Establish `e1` using `hb z hz'`. Establish `e2` using `hb _ ((hpre _ l z).2 hz')`. Rewrite `e2` using `[hval, ← e1, Pi.sub_apply, Pi.sub_apply, hp i l z hi]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `sub_left_injective e2`. Use `glue _ _ fun z hz => ?_` and prove the remaining obligations. Take `⟨i, hi⟩` from `covW z`. Use `⟨V c ⊓ V c' ⊓ W i, inf_le_left, by rw [hinf]; exact ⟨hz, hi⟩, ?_⟩` and prove the remaining obligations. Establish `r1` using `(alg _).2.2.2.1 (V c ⊓ V c' ⊓ W i) (inf_le_inf_right _ inf_le_left) _ (hk' c i)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `r2` using `(alg _).2.2.2.1 (V c ⊓ V c' ⊓ W i) (inf_le_inf_right _ inf_le_right) _ (hk' c' i)`. Establish `r3` using `((alg _).2.1 _ _ r1 r2).2.1`. Rewrite `r3` using `[sub_sub_sub_cancel_right]`. Then use the resulting hypothesis. Introduce `i`. Use `glue _ _ fun z hz => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨c, hc⟩` from `covV z`. Use `⟨V c ⊓ W i, inf_le_right, by rw [hinf]; exact ⟨hc, hz⟩, ?_⟩` and prove the remaining obligations. Establish `r1` using `(alg _).2.2.2.1 (V c ⊓ W i) inf_le_left _ (hreg c)`. Establish `r3` using `((alg _).2.1 _ _ r1 (hk' c i)).2.1`. Rewrite `r3` using `[sub_sub_cancel]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem isReg_of_periodic_of_isReg_sub : ∀ (A : Over (Sp ℂ)) [GrpObj A] (g : ℕ) (L : LB A.left) (u : HolUnif A L g), IsAbelianScheme A → ∀ (K : Type) (W : K → A.left.Opens) (h : K → (Fin g → ℂ) → ℂ), ⨆ i, W i = ⊤ → (∀ i, DifferentiableOn ℂ (h i) (pre u.ex (W i))) → (∀ i (l : u.Λ), ∀ z ∈ pre u.ex (W i), h i (z + l) = h i z) → (∀ i j, IsReg u.ex (W i ⊓ W j) (h i - h j)) → ∀ i, IsReg u.ex (W i) (h i) := by
   intro A _ g L u hA K W h hW hd hp hr

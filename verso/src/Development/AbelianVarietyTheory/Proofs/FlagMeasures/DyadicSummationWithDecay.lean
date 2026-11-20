@@ -6,13 +6,13 @@ open scoped InnerProductSpace ENNReal
 namespace GlobalTheory.Amp
 
 /- English proof (translation)
-Establish `hc : 0 < Q / (2 * P)` using `by positivity`. Establish `hd : 0 < P / (2 * Q)` using `by positivity`. Establish `hpt : ∀ x, ENNReal.ofReal (A x * B x) ≤ ENNReal.ofReal (Q / (2 * P)) * ENNReal.ofReal (A x ^ 2) + ENNReal.ofReal (P / (2 * Q)) * ENNReal.ofReal (B x ^ 2)`. Introduce `x`. Rewrite using `[← ENNReal.ofReal_mul hc.le, ← ENNReal.ofReal_mul hd.le, ← ENNReal.ofReal_add (by positivity) (by positivity)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises. Establish `: Q / (2 * P) * A x ^ 2 + P / (2 * Q) * B x ^ 2 - A x * B x = (Q * A x - P * B x) ^ 2 / (2 * P * Q)` using `by field_simp; ring`. Establish `h0 : 0 ≤ (Q * A x - P * B x) ^ 2 / (2 * P * Q)` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `mA : Measurable fun x => ENNReal.ofReal (A x ^ 2)` using `by fun_prop`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `mB : Measurable fun x => ENNReal.ofReal (B x ^ 2)` using `by fun_prop`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[lintegral_add_left (mA.const_mul _), lintegral_const_mul _ mA, lintegral_const_mul _ mB]`. Use `_ ≤ ENNReal.ofReal (Q / (2 * P)) * ENNReal.ofReal (P ^ 2) + ENNReal.ofReal (P / (2 * Q)) * ENNReal.ofReal (Q ^ 2) := by gcongr`. Use `_ = _ := by`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← ENNReal.ofReal_mul hc.le, ← ENNReal.ofReal_mul hd.le, ← ENNReal.ofReal_add (by positivity) (by positivity)]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem dyad_cauchySchwarz {X : Type} [MeasurableSpace X] (μ : Measure X) (A B : X → ℝ)
     (hA : Measurable A) (hB : Measurable B) (P Q : ℝ) (hP : 0 < P) (hQ : 0 < Q)
@@ -48,11 +48,11 @@ theorem dyad_cauchySchwarz {X : Type} [MeasurableSpace X] (μ : Measure X) (A B 
       field_simp; ring
 
 /- English proof (translation)
-Establish `hex : ∃ i : ℕ, s ≤ 2 ^ (i + 1) * H`. Take `⟨n, hn⟩` from `pow_unbounded_of_one_lt (s / H) (one_lt_two (α := ℝ))`. Use `⟨n, ?_⟩` and prove the remaining obligations. Rewrite `hn` using `[div_lt_iff₀ hH]`. Establish `: (0:ℝ) < 2 ^ n * H` using `by positivity`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[pow_succ]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨Nat.find hex, Nat.find_spec hex, ?_⟩` and prove the remaining obligations. Break down `h : Nat.find hex with _ | k` into its components or cases. Conclude with `Or.inl rfl`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative.
 
-Use `right`. Use `Nat.find_min hex (m := k) (by omega)` as an intermediate fact. Conclude with `not_le.mp this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem dyad_exists_shell (H s : ℝ) (hH : 0 < H) :
     ∃ i : ℕ, s ≤ 2 ^ (i + 1) * H ∧ (i = 0 ∨ 2 ^ i * H < s) := by
@@ -71,9 +71,9 @@ theorem dyad_exists_shell (H s : ℝ) (hH : 0 < H) :
     exact not_le.mp this
 
 /- English proof (translation)
-Take `⟨n, h1, h2⟩` from `exists_nat_pow_near (x := M / y) (y := 2) (by rw [le_div_iff₀ hy]; linarith) one_lt_two`. Use `⟨n, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[div_lt_iff₀ (by positivity)]`. Rewrite `h2` using `[div_lt_iff₀ hy]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite `h1` using `[le_div_iff₀ hy]`. Establish `: 2 * (M / 2 ^ (n + 1)) = M / 2 ^ n` using `by field_simp; ring`. Rewrite using `[this, le_div_iff₀ (by positivity)]; linarith`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem dyad_exists_down (M y : ℝ) (hy : 0 < y) (hM : y ≤ M) :
     ∃ a : ℕ, M / 2 ^ (a + 1) < y ∧ y ≤ 2 * (M / 2 ^ (a + 1)) := by
@@ -87,11 +87,11 @@ theorem dyad_exists_down (M y : ℝ) (hy : 0 < y) (hM : y ≤ M) :
     rw [this, le_div_iff₀ (by positivity)]; linarith
 
 /- English proof (translation)
-Establish `hr' : (0:ℝ) < r` using `by exact_mod_cast hr`. Establish `h1 : (u ^ n)⁻¹ ≤ sg ^ (-((n : ℝ) / r))`. Rewrite using `[Real.rpow_neg (by linarith)]`. Apply `inv_anti₀ (by positivity)` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[← Real.rpow_natCast u r, ← Real.rpow_mul hu.le, ← Real.rpow_natCast u n]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts. Establish `h2 : w ^ (k + 1) ≤ N ^ (k + 1) * (u * (2 * H)) ^ (4 * r) * De ^ 2 * v`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_pow u, mul_pow u]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ _ := by gcongr`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem dyad_piece_real (r k e n : ℕ) (H De N sg u v w : ℝ) (hr : 1 ≤ r) (hH : 0 < H)
     (hDe : 0 < De) (hN : 0 < N) (hsg : 1 ≤ sg) (hu : 0 < u) (hv : 0 < v) (hw : 0 < w)
@@ -121,7 +121,7 @@ theorem dyad_piece_real (r k e n : ℕ) (H De N sg u v w : ℝ) (hr : 1 ≤ r) (
     _ ≤ _ := by gcongr
 
 /- English proof (translation)
-Establish `g : ∑' n : ℕ, (2⁻¹ : ℝ≥0∞) ^ n = 2`. Rewrite using `[ENNReal.tsum_geometric]`. Simplify using the standard rewrite rules. Rewrite using `[ENNReal.tsum_mul_left]`. Simplify using `only [ENNReal.tsum_prod', ENNReal.tsum_mul_left, ENNReal.tsum_mul_right, g]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -135,53 +135,43 @@ theorem dyad_tsum_four (c : ℝ≥0∞) :
   ring
 
 /- English proof (translation)
-Introduce `X _ ν A B S S' Y Y' r j kk e q H₁ De D K K' sg hA hB _ _ _ _ hr hkk hq hH hDe hD hK hK' hsg hae h1 h2`. Take `⟨k, rfl⟩ : ∃ k, kk = k + 1` from `⟨kk - 1, by omega⟩`. Take `⟨n, rfl⟩ : ∃ n, q = e + 4 * r + 1 + n` from `⟨q - (e + 4 * r + 1), by omega⟩`. Establish `hexp : ((e + 4 * r + 1 + n : ℕ) : ℝ) - e - 4 * r - 1 = n` using `by push_cast; ring`. Rewrite using `[hexp]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hH0 : 0 < H₁` using `by linarith`. Establish `hDe0 : 0 < De` using `by linarith`. Use `set C : ℝ := Real.sqrt (K * K') * ((2 * H₁) ^ (e + 4 * r) * De ^ 2 * (2 ^ j / D) ^ (k + 1) * sg ^ (-((n : ℝ) / r))) with hC`. Establish `hC0 : 0 ≤ C` using `by positivity`. Set `M : ℕ → ℕ → ℝ` to `fun i i' => (2 ^ (i + i' + 1) * H₁) ^ r * De`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hM0 : ∀ i i', 0 < M i i'` using `fun i i' => by positivity`. Set `P : ℕ × ℕ × ℕ × ℕ → Set X` to `fun p => {x | (0 ≤ A x ∧ 0 ≤ B x ∧ 1 ≤ S x ∧ 1 ≤ S' x ∧ 0 < Y x ∧ 0 < Y' x ∧ Y x * Y' x * D ≤ 2 ^ j ∧ D ≤ (S x * S' x) ^ r ∧ Y x ≤ max (S x) (S' x) ^ r * De ∧ Y' x ≤ max (S x) (S' x) ^ r * De ∧ sg ≤ max 1 ((S x * S' x) ^ r / (2 * H₁) ^ (2 * r))) ∧ (S x ≤ 2 ^ (p.1 + 1) * H₁ ∧ (p.1 …`. Establish `hcov : ∀ᵐ x ∂ν, x ∈ ⋃ p, P p` using `by filter_upwards [hae] with x hx`. Take `⟨i, hi⟩` from `dyad_exists_shell H₁ (S x) hH0`. Take `⟨i', hi'⟩` from `dyad_exists_shell H₁ (S' x) hH0`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hmax : max (S x) (S' x) ^ r * De ≤ M i i'`. Establish `a1 : (2:ℝ) ^ (i + 1) ≤ 2 ^ (i + i' + 1)` using `pow_le_pow_right₀ one_le_two (by omega)`. Establish `a2 : (2:ℝ) ^ (i' + 1) ≤ 2 ^ (i + i' + 1)` using `pow_le_pow_right₀ one_le_two (by omega)`. Establish `a3 : max (S x) (S' x) ≤ 2 ^ (i + i' + 1) * H₁` using `max_le (hi.1.trans (by gcongr)) (hi'.1.trans (by gcongr))`. Establish `a4 : 0 ≤ max (S x) (S' x)` using `le_max_of_le_left (by linarith [hx.2.2.1])`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `show _ ≤ (2 ^ (i + i' + 1) * H₁) ^ r * De`. Use `gcongr`. Take `⟨a, ha⟩` from `dyad_exists_down (M i i') (Y x) hx.2.2.2.2.1 (hx.2.2.2.2.2.2.2.2.1.trans hmax)`. Take `⟨b, hb⟩` from `dyad_exists_down (M i i') (Y' x) hx.2.2.2.2.2.1 (hx.2.2.2.2.2.2.2.2.2.1.trans hmax)`. Conclude with `Set.mem_iUnion.2 ⟨(i, i', a, b), hx, hi, hi', ha, hb⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Establish `hpiece : ∀ p : ℕ × ℕ × ℕ × ℕ, ∫⁻ x in P p, ENNReal.ofReal (A x * B x) ∂ν ≤ ENNReal.ofReal C * (2⁻¹ ^ p.1 * (2⁻¹ ^ p.2.1 * (2⁻¹ ^ p.2.2.1 * 2⁻¹ ^ p.2.2.2)))`. Introduce and unpack `⟨i, i', a, b⟩`. Break down `(P (i, i', a, b)).eq_empty_or_nonempty with he | ⟨x, hx⟩` into its components or cases. Rewrite using `[he]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨⟨-, -, s1, s2, y1, y2, g1, g2, -, -, g3⟩, ⟨b1, -⟩, ⟨b2, -⟩, ⟨c1, -⟩, ⟨c2, -⟩⟩` from `hx`. Simplify using `only at b1 b2 c1 c2 ⊢`. Establish `hm` using `hM0 i i'`. Use `set y : ℝ := M i i' / 2 ^ (a + 1) with hy`. Use `set y' : ℝ := M i i' / 2 ^ (b + 1) with hy'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hy0 : 0 < y` using `by positivity`. Establish `hy0' : 0 < y'` using `by positivity`. Use `set R : ℝ := 2 ^ (i + i' + 1) * H₁ with hR`. Establish `hR0 : 0 < R` using `by positivity`. Use `set q := e + 4 * r + 1 + n with hqdef`.
+Supply the required witnesses or components. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `i1 : ∫⁻ x in P (i, i', a, b), ENNReal.ofReal (A x ^ 2) ∂ν ≤ ENNReal.ofReal ((Real.sqrt K * Real.sqrt (R ^ e) * y ^ (k + 1) * (((2:ℝ) ^ i) ^ q)⁻¹) ^ 2)`. Use `le_trans (lintegral_mono_set ?_) ((h1 i i' y hy0).trans (le_of_eq ?_))` and prove the remaining obligations. Introduce `z hz`. Conclude with `⟨hz.2.1.1, hz.2.1.2, hz.2.2.1.1, hz.2.2.2.1.1, hz.2.2.2.1.2⟩`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hR, mul_pow _ _ 2, mul_pow _ _ 2, mul_pow _ _ 2, Real.sq_sqrt hK.le, Real.sq_sqrt (by positivity), inv_pow, ← pow_mul y, ← pow_mul _ q, mul_comm q 2, mul_comm (k + 1) 2]`. Establish `i2 : ∫⁻ x in P (i, i', a, b), ENNReal.ofReal (B x ^ 2) ∂ν ≤ ENNReal.ofReal ((Real.sqrt K' * Real.sqrt (R ^ e) * y' ^ (k + 1) * (((2:ℝ) ^ i') ^ q)⁻¹) ^ 2)`. Use `le_trans (lintegral_mono_set ?_) ((h2 i i' y' hy0').trans (le_of_eq ?_))` and prove the remaining obligations. Introduce `z hz`. Conclude with `⟨hz.2.2.1.1, hz.2.2.1.2, hz.2.1.1, hz.2.2.2.2.1, hz.2.2.2.2.2⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Rewrite using `[← hR, mul_pow _ _ 2, mul_pow _ _ 2, mul_pow _ _ 2, Real.sq_sqrt hK'.le, Real.sq_sqrt (by positivity), inv_pow, ← pow_mul y', ← pow_mul _ q, mul_comm q 2, mul_comm (k + 1) 2]`. Use `(dyad_cauchySchwarz _ A B hA hB _ _ (by positivity) (by positivity) i1 i2).trans ?_` and prove the remaining obligations. Establish `hrhs : ENNReal.ofReal C * (2⁻¹ ^ i * (2⁻¹ ^ i' * (2⁻¹ ^ a * 2⁻¹ ^ b))) = ENNReal.ofReal (C * (((2:ℝ) ^ (i + i'))⁻¹ * ((2:ℝ) ^ (a + b))⁻¹))`. Establish `e2 : (2⁻¹ : ℝ≥0∞) = ENNReal.ofReal (2⁻¹ : ℝ)`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ENNReal.ofReal_inv_of_pos two_pos]`. Simplify using the standard rewrite rules. Rewrite using `[ENNReal.ofReal_mul hC0, e2]`. Use `congr 1`. Simplify using `only [← ENNReal.ofReal_pow (show (0:ℝ) ≤ 2⁻¹ by norm_num)]`.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Rewrite using `[← ENNReal.ofReal_mul (by positivity), ← ENNReal.ofReal_mul (by positivity), ← ENNReal.ofReal_mul (by positivity)]`. Use `congr 1`. Rewrite using `[pow_add, pow_add]`. Simplify using `only [inv_pow]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Rewrite using `[hrhs]`. Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises. Establish `hRu : R = 2 ^ (i + i') * (2 * H₁)` using `by rw [hR]; ring`. Establish `hu1 : (1:ℝ) ≤ 2 ^ (i + i')` using `one_le_pow₀ one_le_two`. Establish `hSS : S x * S' x ≤ 2 ^ (i + i') * (2 * H₁) ^ 2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Combine the equalities or inequalities in the displayed calculation. Apply `mul_le_mul b1 b2 (by linarith) (by positivity)` to reduce the goal to its premises. Use `_ = _ := by ring`. Establish `hSS0 : 0 ≤ S x * S' x` using `mul_nonneg (by linarith) (by linarith)`. Establish `hSSr : (S x * S' x) ^ r ≤ (2 ^ (i + i')) ^ r * (2 * H₁) ^ (2 * r)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[pow_mul, ← mul_pow]`. Use `gcongr`. Establish `key` using `dyad_piece_real r k e n H₁ De (2 ^ j / D) sg (2 ^ (i + i')) ((2 ^ (a + b))⁻¹) (y * y') hr hH0 hDe0 (by positivity) hsg (by positivity) (by positivity) (by positivity) (by`. Rewrite using `[le_div_iff₀ hD]`. Use `le_trans ?_ g1` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the proof step `gcongr)`. Use the proof step `(by`. Rewrite using `[← hRu]`. Establish `: y * y' = (R ^ r * De) ^ 2 * (2 ^ (a + b))⁻¹ / 4`. Rewrite using `[hy, hy']`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `show (R ^ r * De) / _ * ((R ^ r * De) / _) = _`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Establish `: 0 ≤ (R ^ r * De) ^ 2 * ((2:ℝ) ^ (a + b))⁻¹` using `by positivity`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Use the proof step `linarith)`. Use the proof step `(by`. Rewrite using `[div_mul_eq_mul_div, le_div_iff₀ hD, one_mul]`. Establish `j1 : (1:ℝ) ≤ 2 ^ j` using `one_le_pow₀ one_le_two`. Establish `: ((2:ℝ) ^ (i + i')) ^ r ≤ (2 ^ (i + i')) ^ (2 * r)` using `pow_le_pow_right₀ hu1 (by omega)`.
-
-Combine the equalities or inequalities in the displayed calculation. Use the proof step `(by`. Use `g3.trans (max_le (one_le_pow₀ hu1) ?_)` and prove the remaining obligations. Rewrite using `[div_le_iff₀ (by positivity)]`. Conclude with `hSSr)`.
-
-Rewrite `key` using `[← hRu, ← hqdef]`. Establish `hsq : Real.sqrt (R ^ e) * Real.sqrt (R ^ e) = R ^ e` using `Real.mul_self_sqrt (by positivity)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Real.sqrt_mul hK.le, mul_pow y, pow_add 2 i i', mul_pow _ _ q, mul_inv]`. Expand and normalize the polynomial expressions, which then agree.
-
-Use `_ ≤ Real.sqrt (K * K') * ((2 * H₁) ^ (e + 4 * r) * De ^ 2 * (2 ^ j / D) ^ (k + 1) * sg ^ (-((n : ℝ) / r)) * (((2:ℝ) ^ (i + i'))⁻¹ * ((2:ℝ) ^ (a + b))⁻¹)) := by`. Rewrite using `[hsq]`. Use `gcongr`. Use `_ = _ := by rw [hC]; ring`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[Measure.restrict_eq_self_of_ae_mem hcov]`. Use `_ ≤ _ := lintegral_iUnion_le _ _`. Use `_ ≤ _ := ENNReal.tsum_le_tsum hpiece`. Use `_ = 16 * ENNReal.ofReal C := dyad_tsum_four _`. Use `_ = ENNReal.ofReal (16 * C) := by`.
-
-Rewrite using `[ENNReal.ofReal_mul (show (0:ℝ) ≤ 16 by norm_num), ENNReal.ofReal_ofNat]`. Use `_ = _ := by rw [hC]; congr 1; ring`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dyadic_summation : ∀ (X : Type) [MeasurableSpace X] (ν : Measure X) (A B S S' Y Y' : X → ℝ) (r j kk e q : ℕ) (H₁ De D K K' sg : ℝ), Measurable A → Measurable B → Measurable S → Measurable S' → Measurable Y → Measurable Y' → 1 ≤ r → 1 ≤ kk → e + 4 * r + 2 ≤ q → 1 ≤ H₁ → 1 ≤ De → 0 < D → 0 < K → 0 < K' → 1 ≤ sg → (∀ᵐ x ∂ν, 0 ≤ A x ∧ 0 ≤ B x ∧ 1 ≤ S x ∧ 1 ≤ S' x ∧ 0 < Y x ∧ 0 < Y' x ∧ Y x * Y' x * D ≤ 2 ^ j ∧ D ≤ (S x * S' x) ^ r ∧ Y x ≤ max (S x) (S' x) ^ r * De ∧ Y' x ≤ max (S x) (S' x) ^ r * De ∧ sg ≤ max 1 ((S x * S' x) ^ r / (2 * H₁) ^ (2 * r))) → (∀ (i i' : ℕ) (y : ℝ), 0 < y → ∫⁻ x in {x | S x ≤ 2 ^ (i + 1) * H₁ ∧ (i = 0 ∨ 2 ^ i * H₁ < S x) ∧ S' x ≤ 2 ^ (i' + 1) * H₁ ∧ y < Y x ∧ Y x ≤ 2 * y}, ENNReal.ofReal (A x ^ 2) ∂ν ≤ ENNReal.ofReal (K * (2 ^ (i + i' + 1) * H₁) ^ e * y ^ (2 * kk) * (((2 : ℝ) ^ i) ^ (2 * q))⁻¹)) → (∀ (i i' : ℕ) (y : ℝ), 0 < y → ∫⁻ x in {x | S' x ≤ 2 ^ (i' + 1) * H₁ ∧ (i' = 0 ∨ 2 ^ i' * H₁ < S' x) ∧ S x ≤ 2 ^ (i + 1) * H₁ ∧ y < Y' x ∧ Y' x ≤ 2 * y}, ENNReal.ofReal (B x ^ 2) ∂ν ≤ ENNReal.ofReal (K' * (2 ^ (i + i' + 1) * H₁) ^ e * y ^ (2 * kk) * (((2 : ℝ) ^ i') ^ (2 * q))⁻¹)) → ∫⁻ x, ENNReal.ofReal (A x * B x) ∂ν ≤ ENNReal.ofReal (16 * Real.sqrt (K * K') * (2 * H₁) ^ (e + 4 * r) * De ^ 2 * (2 ^ j / D) ^ kk * sg ^ (-(((q : ℝ) - e - 4 * r - 1) / r))) := by
   intro X _ ν A B S S' Y Y' r j kk e q H₁ De D K K' sg hA hB _ _ _ _ hr hkk hq hH hDe hD hK hK'

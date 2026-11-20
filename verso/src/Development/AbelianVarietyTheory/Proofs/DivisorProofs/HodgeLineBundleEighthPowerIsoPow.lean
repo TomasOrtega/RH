@@ -18,7 +18,7 @@ namespace GlobalTheory.HodgePow
 open GlobalTheory.VB GlobalTheory.LieVB GlobalTheory.CechPic
 
 /- English proof (translation)
-Establish `he' : η[B] ≫ e.inv = η[A]` using `by rw [← he, Category.assoc, e.hom_inv_id, Category.comp_id]`. Set `φ : omega A ≅ omega B` to `{ hom := cotMap e.inv he' inv := cotMap e.hom he hom_inv_id := (cotMap_comp he' he e.hom_inv_id (Category.comp_id _)).trans (cotMap_id rfl _) inv_hom_id := (cotMap_comp he he' e.inv_hom_id (Category.comp_id _)).trans (cotMap_id rfl _) }`. Conclude with `⟨hA.of_iso φ, hA.lbIso_det_of_iso φ⟩`.
+Establish an intermediate fact. Introduce a local definition for the expression. Supply the required witnesses or components.
 -/
 theorem lbIso_hodge_of_iso {S : Scheme.{0}} {A B : Over S} [GrpObj A] [GrpObj B] (e : A ≅ B)
     (he : η[A] ≫ e.hom = η[B]) (r : ℕ) (hA : IsVB (omega A) r) :
@@ -42,15 +42,15 @@ section Pow
 variable {S : Scheme.{0}} (G : Over S) [GrpObj G] [QuasiSeparated G.hom] (g : ℕ)
 
 /- English proof (translation)
-Establish `hV : ∀ m, IsVB (omega (powObj G m)) (m * g)` using `fun m => by haveI := (GlobalFunctionsDvrGeneric.powObj_props G m).2.1 haveI := smoothOfRelativeDimension_powObj G g hs m`. Conclude with `isVB_omega _ _`. Use `⟨hV (n + 1), ?_⟩` and prove the remaining obligations. Proceed by induction on `n with`. Consider the case `zero`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Establish an intermediate fact.
 
-Establish `hE : η[G ⊗ 𝟙_ (Over S)] ≫ (prodUnitIso G).hom = η[G]` using `by simp [prodUnitIso]`. Establish `h1` using `hV 1`. Rewrite `h1` using `[Nat.one_mul]`. Use `(lbIso_hodge_of_iso (prodUnitIso G) hE g h1).2` as an intermediate fact. Rewrite using `[Nat.zero_add, one_smul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hh : ∀ (r : ℕ) (hr : r = 1 * g) (h₁ : IsVB (omega (powObj G 1)) r), cls _ h₁.isLB_det = cls _ hG.isLB_det`. Introduce `r hr h₁`. Rewrite `hr` using `[Nat.one_mul]`. Substitute `hr` using the available equality. Conclude with `(cls_eq_iff _ _).2 this`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Treat this case separately. Apply the first step, then apply the next step to every resulting obligation.
 
-Conclude with `hh _ rfl (hV 1)`. Consider the case `succ n ih => haveI := (GlobalFunctionsDvrGeneric.powObj_props G (n + 1)).2.1`. Apply the tactic sequence `have key := GlobalTheory.HodgeProd.lbIso_det_conormal_prod G (powObj G (n + 1)) g ((n + 1) * g) hG (hV (n + 1)) η[G ⊗ powObj G (n + 1)] (by ext1 <;> simp)`. Establish `hT` using `isLB_tens hG.isLB_det (hV (n + 1)).isLB_det`. Establish `hh : ∀ (r : ℕ) (hr : r = g + (n + 1) * g) (h₁ : IsVB (omega (powObj G (n + 1 + 1))) r), cls _ h₁.isLB_det = cls _ hG.isLB_det + cls _ (hV (n + 1)).isLB_det`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Introduce `r hr h₁`. Substitute `hr` using the available equality. Rewrite using `[← cls_tens _ _ hT]`. Conclude with `(cls_eq_iff _ _).2 key`. Rewrite using `[hh _ (by ring) (hV _), ih, succ_nsmul' _ (n + 1)]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cls_hodge_powObj [Smooth G.hom] [IsSeparated G.hom] [QuasiCompact G.hom]
     (hs : SmoothOfRelativeDimension g G.hom) (hG : IsVB (omega G) g) (n : ℕ) :
@@ -89,7 +89,7 @@ theorem cls_hodge_powObj [Smooth G.hom] [IsSeparated G.hom] [QuasiCompact G.hom]
     rw [hh _ (by ring) (hV _), ih, succ_nsmul' _ (n + 1)]
 
 /- English proof (translation)
-Use `haveI := powPr.isMonHom G i`. Conclude with `IsMonHom.one_hom _`.
+A detailed English derivation is pending.
 -/
 theorem one_powPr {n : ℕ} (i : Fin n) : η[powObj G n] ≫ powPr G i = η[G] := by
   haveI := powPr.isMonHom G i
@@ -98,15 +98,11 @@ theorem one_powPr {n : ℕ} (i : Fin n) : η[powObj G n] ≫ powPr G i = η[G] :
 end Pow
 
 /- English proof (translation)
-Introduce `S G H _ _ g pr hpr hU hG hs`. Use `haveI := hG.smooth`. Use `haveI := hG.separated`. Use `haveI := hG.quasiCompact`. Use `haveI : SmoothOfRelativeDimension g G.hom := hs`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hVG : IsVB (omega G) g` using `isVB_omega G g`. Take `⟨hP, hc⟩` from `cls_hodge_powObj G g hs hVG 7`. Set `lim : IsLimit (Fan.mk H pr)` to `mkFanLimit _ (fun s => (hU s.pt s.proj).exists.choose) (fun s i => (hU s.pt s.proj).exists.choose_spec i) (fun s m hm => (hU s.pt s.proj).unique hm (hU s.pt s.proj).exists.choose_spec)`. Set `e : H ≅ powObj G 8` to `lim.conePointUniqueUpToIso (powIsLimit G 8)`. Establish `he : ∀ i, e.hom ≫ powPr G i = pr i` using `fun i => lim.conePointUniqueUpToIso_hom_comp (powIsLimit G 8) ⟨i⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hη : η[powObj G 8] ≫ e.inv = η[H]`. Use `lim.hom_ext fun ⟨i⟩ => ?_` and prove the remaining obligations. Establish `h1 : e.inv ≫ pr i = powPr G i` using `by rw [← he, Iso.inv_hom_id_assoc]`. Use `haveI := hpr i`. Simplify using `only [Fan.mk_π_app, Category.assoc, h1]`.
-
-Conclude with `(one_powPr G i).trans (IsMonHom.one_hom (pr i)).symm`. Take `⟨hH, hiso⟩` from `lbIso_hodge_of_iso e.symm hη (8 * g) hP`. Establish `hL` using `hVG.isLB_det`. Use `(cls_eq_iff hH.isLB_det (isLB_lbPow hL 8)).1 ?_` and prove the remaining obligations. Rewrite using `[cls_lbPow hL, ← (cls_eq_iff hP.isLB_det hH.isLB_det).2 hiso]`.
-
-Conclude with `hc`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hodge_eight_mul_iso_hodge_pow_eight : ∀ (S : Scheme.{0}) (G H : Over S) [GrpObj G] [GrpObj H] (g : ℕ) (pr : Fin 8 → (H ⟶ G)),
     (∀ u, IsMonHom (pr u)) → (∀ (T : Over S) (y : Fin 8 → (T ⟶ G)), ∃! x : T ⟶ H, ∀ u, x ≫ pr u = y u) →

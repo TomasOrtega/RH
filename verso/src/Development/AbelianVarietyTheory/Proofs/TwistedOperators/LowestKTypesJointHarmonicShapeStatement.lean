@@ -5,7 +5,7 @@ import Formalism.LocalToGlobal.BesselHermitianTheta.DefsReal
 open Formalism.BasicNotions.TH Formalism.MainNotions.SchurIrreducible
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.lowestKTypes_jointShape` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FLowestKTypesJointHarmonicShape.lean&line=11#L11)
 -/

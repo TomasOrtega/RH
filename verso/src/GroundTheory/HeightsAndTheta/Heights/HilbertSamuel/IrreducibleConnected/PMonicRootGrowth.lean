@@ -7,11 +7,9 @@ namespace GroundTheory.Heights₂.Heights.HilbertSamuel
 open MvPolynomial Finset
 
 /- English proof (translation)
-Establish `h1 : (1 : ℝ) ≤ 1 + ‖y‖` using `le_add_of_nonneg_right (norm_nonneg _)`. Rewrite using `[eval_eq, sum_mul]`. Use `(norm_sum_le _ _).trans (sum_le_sum fun s hs ↦ ?_)` and prove the remaining obligations. Rewrite using `[norm_mul, norm_prod]`. Use `gcongr`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[norm_pow]`. Use `gcongr`. Conclude with `(norm_le_pi_norm y i).trans (le_add_of_nonneg_left zero_le_one)`. Use `_ = (1 + ‖y‖) ^ (s.sum fun _ e ↦ e) := prod_pow_eq_pow_sum _ _ _`.
-
-Use `_ ≤ (1 + ‖y‖) ^ a.totalDegree := pow_le_pow_right₀ h1 (le_totalDegree hs)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_eval_le_sum_norm_coeff_mul {d : ℕ} (a : MvPolynomial (Fin d) ℂ) (y : Fin d → ℂ) :
     ‖eval y a‖ ≤ (∑ s ∈ a.support, ‖coeff s a‖) * (1 + ‖y‖) ^ a.totalDegree := by
@@ -30,9 +28,9 @@ theorem norm_eval_le_sum_norm_coeff_mul {d : ℕ} (a : MvPolynomial (Fin d) ℂ)
     _ ≤ (1 + ‖y‖) ^ a.totalDegree := pow_le_pow_right₀ h1 (le_totalDegree hs)
 
 /- English proof (translation)
-Establish `key` using `hτ.norm_lt_cauchyBound hq.ne_zero`. Establish `hs : Polynomial.cauchyBound q ≤ (∑ i ∈ range q.natDegree, ‖q.coeff i‖₊) + 1`. Unfold `Polynomial.cauchyBound`. Rewrite using `[hq.leadingCoeff, nnnorm_one, div_one]`. Use `gcongr`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Finset.sup_le fun i hi ↦ single_le_sum (f := fun i ↦ ‖q.coeff i‖₊) (fun _ _ ↦ by positivity) hi`. Establish `h' : ((‖τ‖₊ : NNReal) : ℝ) ≤ (((∑ i ∈ range q.natDegree, ‖q.coeff i‖₊) + 1 : NNReal) : ℝ)` using `NNReal.coe_le_coe.mpr (key.trans_le hs).le`. Move the coercions through the operations in `at h'`. Combine the linear equalities and inequalities to obtain the conclusion.
+Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem norm_le_one_add_sum_norm_coeff_of_monic {q : Polynomial ℂ} (hq : q.Monic) {τ : ℂ}
     (hτ : q.IsRoot τ) : ‖τ‖ ≤ 1 + ∑ i ∈ range q.natDegree, ‖q.coeff i‖ := by
@@ -48,13 +46,11 @@ theorem norm_le_one_add_sum_norm_coeff_of_monic {q : Polynomial ℂ} (hq : q.Mon
   linarith
 
 /- English proof (translation)
-Introduce `d m hm`. Use `set n := m.natDegree`. Use `set S : ℕ → ℝ := fun i ↦ ∑ s ∈ (m.coeff i).support, ‖coeff s (m.coeff i)‖`. Use `⟨1 + ∑ i ∈ range n, S i, (range n).sup fun i ↦ (m.coeff i).totalDegree, fun y τ hτ ↦ ?_⟩` and prove the remaining obligations. Establish `hmap : (m.map (eval y)).Monic` using `hm.map _`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdeg : (m.map (eval y)).natDegree = n` using `hm.natDegree_map _`. Establish `h1 : (1 : ℝ) ≤ 1 + ‖y‖` using `le_add_of_nonneg_right (norm_nonneg _)`. Use `set M := (range n).sup fun i ↦ (m.coeff i).totalDegree`. Establish `hM : (1 : ℝ) ≤ (1 + ‖y‖) ^ M` using `one_le_pow₀ h1`. Establish `hb` using `norm_le_one_add_sum_norm_coeff_of_monic hmap hτ`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 
-Rewrite `hb` using `[hdeg]`. Simplify using `only [Polynomial.coeff_map] at hb`. Combine the equalities or inequalities in the displayed calculation. Simplify using `using hM`. Use `(norm_eval_le_sum_norm_coeff_mul _ y).trans ?_ gcongr` and prove the remaining obligations.
-
-Conclude with `le_sup (f := fun i ↦ (m.coeff i).totalDegree) hi`. Use `_ = (1 + ∑ i ∈ range n, S i) * (1 + ‖y‖) ^ M := by rw [add_mul, sum_mul]`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem MonicRootGrowth.proof : MonicRootGrowth.Statement := by
   intro d m hm

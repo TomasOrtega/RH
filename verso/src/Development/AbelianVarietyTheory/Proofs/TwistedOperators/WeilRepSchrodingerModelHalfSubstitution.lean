@@ -16,15 +16,13 @@ open GlobalTheory.PlaceModel GlobalTheory.PlaceDatum
 variable {D : D7} {S T : HSp D}
 
 /- English proof (translation)
-Establish `h0 : IsSBHalf e Λ (halfInd e Λ)` using `GlobalTheory.isSBHalf_halfInd e Λ`. Unfold `IsSBHalf at h0 ⊢`. Take `⟨hsupp, k, hk, hinv, hlat⟩` from `h0`. Establish `hχ` using `GlobalTheory.PlaceModel.isBichar_symplO S T ψ`. Use `⟨fun t ht => hsupp t (right_ne_zero_of_mul ht), m * k, Nat.mul_pos hm hk, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `u hu hue t`. Establish `huh : u ∈ half S T e` using `(GlobalTheory.PlaceModel.isHalf_iff S T).1 hue`. Establish `hmu : IsHalf e (m • u)` using `(GlobalTheory.PlaceModel.isHalf_iff S T).2 ((half S T e).nsmul_mem huh m)`. Establish `hI : halfInd e Λ (t + (m * k) • u) = halfInd e Λ t`. Rewrite using `[mul_comm, ← smul_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hinv (m • u) (Λ.nsmul_mem hu m) hmu t`. Establish `hone : ψ (symplO S T ((m * k) • u) y) = 1`. Establish `hs` using `hχ.nsmul m (k • u) y`. Rewrite using `[← smul_smul, hs]`. Conclude with `hLL' (k • u) ⟨Λ.nsmul_mem hu k, (half S T e).nsmul_mem huh k⟩ (m • y) ⟨hmy, (half S T (cA D e)).nsmul_mem hy m⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hsplit` using `hχ.left t ((m * k) • u) y`. Use `beta_reduce`. Rewrite using `[hI, hsplit, hone, mul_one]`. Introduce `t ht`. Rewrite using `[← smul_smul]`.
-
-Conclude with `Λ.nsmul_mem (hlat t (right_ne_zero_of_mul ht)) m`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma isSBHalf_psi_mul_halfInd {ψ : AddChar (AF D.host.F) ℂ} {e : AE D} {Λ : AddSubgroup (WO S T)}
     (hLL' : ∀ u ∈ Λ ⊓ half S T e, ∀ y ∈ Λ ⊓ half S T (cA D e), ψ (symplO S T u y) = 1)
@@ -54,9 +52,9 @@ private lemma isSBHalf_psi_mul_halfInd {ψ : AddChar (AF D.host.F) ℂ} {e : AE 
     exact Λ.nsmul_mem (hlat t (right_ne_zero_of_mul ht)) m
 
 /- English proof (translation)
-Take `⟨m, hm, hmy⟩` from `hden y ((GlobalTheory.PlaceModel.isHalf_iff S T).1 hy')`. Establish `hΦ0 : IsSBHalf e Λ (halfInd e Λ)` using `GlobalTheory.isSBHalf_halfInd e Λ`. Establish `hΨ` using `isSBHalf_psi_mul_halfInd hLL' ((GlobalTheory.PlaceModel.isHalf_iff S T).1 hy') hm hmy`. Establish `hwave : wave (fun x y : WO S T => ψ (symplO S T x y)) (Λ ⊓ half S T e) x y = fun t => ψ (symplO S T (t + x) y) * halfInd e Λ (t + x)`. Use function extensionality and compare the values at `t`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [GlobalTheory.PlaceModel.wave, GlobalTheory.PlaceModel.halfInd_eq_ind]`. Establish `hvac : T₁ (halfInd e Λ) = f₀` using `by simpa using h₁.vac`. Rewrite using `[hwave, h₁.trans _ hΨ x hx, h₁.modul _ hΦ0 y hy', hvac]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem placeModel_wave {ψ : AddChar (AF D.host.F) ℂ} {e : AE D} {Λ : AddSubgroup (WO S T)}
     (hLL' : ∀ u ∈ Λ ⊓ half S T e, ∀ y ∈ Λ ⊓ half S T (cA D e), ψ (symplO S T u y) = 1)
@@ -77,15 +75,15 @@ theorem placeModel_wave {ψ : AddChar (AF D.host.F) ℂ} {e : AE D} {Λ : AddSub
   rw [hwave, h₁.trans _ hΨ x hx, h₁.modul _ hΦ0 y hy', hvac]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `t`. Establish `ht : actO S T g h (actO S T g⁻¹ h⁻¹ t) = t`. Simplify using `using GlobalTheory.SplitHecke.actO_inv_actO g⁻¹ h⁻¹ t`. Establish `hadd : t + actO S T g h x = actO S T g h (actO S T g⁻¹ h⁻¹ t + x)`. Use `map_add (GlobalTheory.SplitHecke.actAdd S T g h) (actO S T g⁻¹ h⁻¹ t) x` as an intermediate fact.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `actO S T g h (actO S T g⁻¹ h⁻¹ t + x) = actO S T g h (actO S T g⁻¹ h⁻¹ t) + actO S T g h x at this`. Rewrite using `[this, ht]`. Establish `hhalf : ∀ w : WO S T, actO S T g h w ∈ half S T e ↔ w ∈ half S T e`. Introduce `w`. Simplify using `only [← GlobalTheory.PlaceModel.isHalf_iff]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hw`. Simplify `GlobalTheory.SplitHecke.isHalf_actO g⁻¹ h⁻¹ hw` using `[GlobalTheory.SplitHecke.actO_inv_actO]`. Conclude with `GlobalTheory.SplitHecke.isHalf_actO g h`. Establish `hmem : ∀ w : WO S T, actO S T g h w ∈ Λ ⊓ half S T e ↔ w ∈ Λ ⊓ half S T e`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `w`. Simplify using `only [AddSubgroup.mem_inf, hhalf, ← hΛ w]`. Simplify using `only [GlobalTheory.PlaceModel.wave]`. Rewrite using `[hadd, GlobalTheory.SplitHecke.symplO_actO]`. Simplify using `only [GlobalTheory.PlaceModel.ind]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hw : actO S T g⁻¹ h⁻¹ t + x ∈ Λ ⊓ half S T e`. Rewrite using `[if_pos hw, if_pos ((hmem _).2 hw)]`. Rewrite using `[if_neg hw, if_neg (fun hw' => hw ((hmem _).1 hw'))]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wave_actO (ψ : AddChar (AF D.host.F) ℂ) (e : AE D) {Λ : AddSubgroup (WO S T)} {g : GA D S} {h : GA D T}
     (hΛ : ∀ u, u ∈ Λ ↔ actO S T g h u ∈ Λ) (x y : WO S T) :
@@ -116,35 +114,31 @@ theorem wave_actO (ψ : AddChar (AF D.host.F) ℂ) (e : AE D) {Λ : AddSubgroup 
   · rw [if_neg hw, if_neg (fun hw' => hw ((hmem _).1 hw'))]
 
 /- English proof (translation)
-Introduce `D ψ S T χS χT om ΛS ΛT a f₀ Tm hW hS hT ha hinf hth hTm g h c hΛ hc Φ hΦ`. Establish `hstd : IsStdChar D ψ (-1)` using `hW.std`. Establish `hψ : IsCharAF D.host.F ψ`. Unfold `IsStdChar at hstd`. Conclude with `hstd.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `hdual` using `(GlobalTheory.T.self_dual_lattice_pairing_dual D ψ S T ΛS ΛT hstd hS hT).1`. Establish `hsm : ∀ w : AE D, w * w = w → ∀ u ∈ (latO S T ΛS ΛT fun _ => True), w • u ∈ (latO S T ΛS ΛT fun _ => True)`. Introduce `w hw u hu`. Use `GlobalTheory.LatticeStable.smul_mem_latO D S T ΛS ΛT (fun _ => True) w ?_ u hu` and prove the remaining obligations. Conclude with `GlobalTheory.AdIdem.idempotent_mem_intAE D _ (by rw [← map_mul, hw])`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfm` using `GlobalTheory.LatFinMod.latO_finite_mod D S T ΛS ΛT hS.1.fg hT.1.fg (fun _ => True)`. Establish `hnm : ∀ t : WO S T, t.map (infPart D) = 0 → ∃ k : ℕ, 0 < k ∧ k • t ∈ (latO S T ΛS ΛT fun _ => True)` using `fun t ht => GlobalTheory.PlaceDatum.exists_nsmul_mem_latO' hS.1 hT.1 t ht`. Generalize the expression as in `(latO S T ΛS ΛT fun _ => True) = Λ at hdual hsm hfm hnm hTm hΛ hΦ ⊢`. Establish `hcA : cA D a * cA D a = cA D a` using `by rw [← map_mul, ha]`. Establish `hinf' : infPart D (cA D a) = 0` using `GlobalTheory.PlaceDatum.infPart_cA hinf`.
+Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hLL : ∀ u ∈ Λ ⊓ half S T a, ∀ y ∈ Λ ⊓ half S T (cA D a), ψ (symplO S T u y) = 1`. Introduce `u hu y hy`. Rewrite `hu`, `hy` using `[AddSubgroup.mem_inf]`. Conclude with `(hdual u (GlobalTheory.PlaceDatum.infPart_of_half hinf ((GlobalTheory.PlaceModel.isHalf_iff S T).2 hu.2))).1 hu.1 y hy.1`. Establish `hden : ∀ y ∈ half S T (cA D a), ∃ k : ℕ, 0 < k ∧ k • y ∈ Λ` using `fun y hy => hnm y (GlobalTheory.PlaceDatum.infPart_of_half hinf' ((GlobalTheory.PlaceModel.isHalf_iff S T).2 hy))`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hXd : ∀ x ∈ half S T a, (∀ y ∈ Λ ⊓ half S T (cA D a), ψ (symplO S T x y) = 1) → x ∈ Λ ⊓ half S T a`. Introduce `x hx hxy`. Use `AddSubgroup.mem_inf.2 ⟨?_, hx⟩` and prove the remaining obligations. Use `(hdual x (GlobalTheory.PlaceDatum.infPart_of_half hinf ((GlobalTheory.PlaceModel.isHalf_iff S T).2 hx))).2 ?_` and prove the remaining obligations. Introduce `u' hu'`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hmem : cA D a • u' ∈ Λ ⊓ half S T (cA D a)`. Use `AddSubgroup.mem_inf.2 ⟨hsm _ hcA u' hu', ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.PlaceModel.mem_half, smul_smul, hcA]`. Establish `heq : symplO S T x u' = symplO S T x (cA D a • u')`. Rewrite using `[← GlobalTheory.PlaceModel.symplO_smul, (GlobalTheory.PlaceModel.mem_half S T).1 hx]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[heq]`. Conclude with `hxy _ hmem`. Establish `hfin : ∀ k : ℕ, 0 < k → ∃ R : Set (WO S T), R.Finite ∧ ∀ t ∈ Λ ⊓ half S T a, ∃ r ∈ R, ∃ u ∈ Λ ⊓ half S T a, t = r + k • u`. Introduce `k hk`. Take `⟨R, hR, hRt⟩` from `hfm k hk`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨(fun r => a • r) '' R, hR.image _, ?_⟩` and prove the remaining obligations. Introduce `t ht`. Rewrite `ht` using `[AddSubgroup.mem_inf]`. Take `⟨r, hr, u, hu, rfl⟩` from `hRt t ht.1`. Use `⟨a • r, Set.mem_image_of_mem _ hr, a • u, AddSubgroup.mem_inf.2 ⟨hsm a ha u hu, ?_⟩, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[GlobalTheory.PlaceModel.mem_half, smul_smul, ha]`. Establish `h2` using `(GlobalTheory.PlaceModel.mem_half S T).1 ht.2`. Rewrite `h2` using `[smul_add, smul_comm a k u]`. Conclude with `h2.symm`. Establish `htf : ∀ k : ℕ, 0 < k → Function.Injective fun t : WO S T => k • t` using `fun k hk => Function.LeftInverse.injective (g := fun t : WO S T => incA D (k : D.host.E)⁻¹ • t) (fun t => GlobalTheory.PlaceModel.inv_smul_nsmul S T hk t)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hspan : Φ ∈ GlobalTheory.PlaceModel.waveSpan (fun x y : WO S T => ψ (symplO S T x y)) (half S T a) (half S T (cA D a)) (Λ ⊓ half S T a)`. Unfold `IsSBHalf at hΦ`. Take `⟨hsupp, k, hk, hinv, hlat⟩` from `hΦ`. Use `GlobalTheory.PlaceDatum.mem_waveSpan (L' := Λ ⊓ half S T (cA D a)) (GlobalTheory.PlaceModel.isBichar_symplO S T ψ) inf_le_right inf_le_right hLL hXd (fun k hk x hx => GlobalTheory.PlaceModel.half_div S T a k hk x hx) (fun k hk y hy => GlobalTheory.PlaceModel.half_div S T (cA D a) …` and prove the remaining obligations. Introduce `u hu t`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately.
 
-Rewrite `hu` using `[AddSubgroup.mem_inf]`. Conclude with `hinv u hu.1 ((GlobalTheory.PlaceModel.isHalf_iff S T).2 hu.2) t`. Introduce `t ht`. Conclude with `AddSubgroup.mem_inf.2 ⟨hlat t ht, (half S T a).nsmul_mem ((GlobalTheory.PlaceModel.isHalf_iff S T).1 (hsupp t ht)) k⟩`. Use `clear hΦ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Unfold `GlobalTheory.PlaceModel.waveSpan at hspan`. Proceed by induction on `hspan using Submodule.span_induction with`. Consider the case `mem Ψ hΨ`. Take `⟨x, hx, y, hy, rfl⟩` from `hΨ`. Establish `hxH : IsHalf a x` using `(GlobalTheory.PlaceModel.isHalf_iff S T).2 hx`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Establish `hyH : IsHalf (cA D a) y` using `(GlobalTheory.PlaceModel.isHalf_iff S T).2 hy`. Establish `hthy : IsThetaFunO ψ S T (heisO ψ S T y f₀)` using `GlobalTheory.FinTranslate.isTheta_heisO_fin hψ (GlobalTheory.PlaceDatum.infPart_of_half hinf' hyH) hth`. Rewrite using `[placeModel_wave hLL hden hTm hxH hyH, hW.om_heis g h x _ hthy, hW.om_heis g h y f₀ hth, hc, GlobalTheory.SplitScalar.heisO_smul, GlobalTheory.SplitScalar.heisO_smul, wave_actO ψ a hΛ x y, placeModel_wave hLL hden hTm (GlobalTheory.SplitHecke.isHalf_actO g h hxH) (GlobalTheory.Sp …`. Consider the case `zero`. Rewrite using `[show (fun x => (0 : WO S T → ℂ) (actO S T g⁻¹ h⁻¹ x)) = 0 from rfl]`.
-
-Simplify using `only [map_zero, smul_zero]`. Consider the case `add Ψ₁ Ψ₂ _ _ ih₁ ih₂`. Rewrite using `[show (fun x => (Ψ₁ + Ψ₂) (actO S T g⁻¹ h⁻¹ x)) = (fun x => Ψ₁ (actO S T g⁻¹ h⁻¹ x)) + (fun x => Ψ₂ (actO S T g⁻¹ h⁻¹ x)) from rfl]`. Simplify using `only [map_add, ih₁, ih₂, smul_add]`. Consider the case `smul r Ψ _ ih`.
-
-Rewrite using `[show (fun x => (r • Ψ) (actO S T g⁻¹ h⁻¹ x)) = r • (fun x => Ψ (actO S T g⁻¹ h⁻¹ x)) from rfl]`. Simplify using `only [map_smul, ih]`. Conclude with `smul_comm r c _`.
+Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem om_placeModel : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (χS χT : (AE D)ˣ →* Circle) (om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)) (ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)) (ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)) (a : AE D) (f₀ : WO S T → ℂ) (Tm : (WO S T → ℂ) →ₗ[ℂ] (WO S T → ℂ)), IsWeilDatumO ψ S T χS χT om → IsSelfDualC S ΛS → IsSelfDualC T ΛT → a * a = a → infPart D a = 0 → IsThetaFunO ψ S T f₀ → IsPlaceModel ψ (symplO S T) (heisO ψ S T) a (latO S T ΛS ΛT fun _ => True) 1 f₀ Tm → ∀ (g : GA D S) (h : GA D T) (c : ℂ), (∀ u, u ∈ (latO S T ΛS ΛT fun _ => True) ↔ actO S T g h u ∈ (latO S T ΛS ΛT fun _ => True)) → om (g, h) f₀ = c • f₀ → ∀ Φ, IsSBHalf a (latO S T ΛS ΛT fun _ => True) Φ → om (g, h) (Tm Φ) = c • Tm fun x => Φ (actO S T g⁻¹ h⁻¹ x) := by
   intro D ψ S T χS χT om ΛS ΛT a f₀ Tm hW hS hT ha hinf hth hTm g h c hΛ hc Φ hΦ

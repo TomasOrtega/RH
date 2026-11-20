@@ -17,11 +17,11 @@ def prodFns (V W : Type) [TopologicalSpace V] [TopologicalSpace W] : Submonoid C
     exact ⟨a * a', b * b', fun z => by simp [hg, hh]; ring⟩
 
 /- English proof (translation)
-Introduce `p q hpq`. Distinguish the cases in `h1 : p.1 = q.1`. Establish `h2 : p.2 ≠ q.2` using `fun h => hpq (Prod.ext h1 h)`. Set `g : C(V × W, ℝ)` to `⟨fun z => dist z.2 q.2, by fun_prop⟩`. Establish `hg : g ∈ (prodFns V W : Set C(V × W, ℝ))` using `by show ∃ a : C(V, ℝ), ∃ b : C(W, ℝ), ∀ z, g z = a z.1 * b z.2`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `⟨1, ⟨fun y => dist y q.2, by fun_prop⟩, fun z => by simp [g]⟩`. Use `⟨g, ⟨g, Algebra.subset_adjoin hg, rfl⟩, ?_⟩` and prove the remaining obligations. Simplify `h2` using `[g]`. Set `g : C(V × W, ℝ)` to `⟨fun z => dist z.1 q.1, by fun_prop⟩`. Establish `hg : g ∈ (prodFns V W : Set C(V × W, ℝ))` using `by show ∃ a : C(V, ℝ), ∃ b : C(W, ℝ), ∀ z, g z = a z.1 * b z.2`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `⟨⟨fun x => dist x q.1, by fun_prop⟩, 1, fun z => by simp [g]⟩`. Use `⟨g, ⟨g, Algebra.subset_adjoin hg, rfl⟩, ?_⟩` and prove the remaining obligations. Simplify `h1` using `[g]`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem prodFns_separates (V W : Type) [MetricSpace V] [MetricSpace W] :
     (Algebra.adjoin ℝ (prodFns V W : Set C(V × W, ℝ))).SeparatesPoints := by
@@ -42,7 +42,7 @@ theorem prodFns_separates (V W : Type) [MetricSpace V] [MetricSpace W] :
     simpa [g] using h1
 
 /- English proof (translation)
-Use `HasCompactSupport.intro (ha.isCompact.prod hb.isCompact) fun z hz => ?_` and prove the remaining obligations. Break down `not_and_or.mp (show ¬(z.1 ∈ tsupport a ∧ z.2 ∈ tsupport b) from hz) with h | h` into its components or cases. Simplify using `[image_eq_zero_of_notMem_tsupport h]`. Simplify using `[image_eq_zero_of_notMem_tsupport h]`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem hasCompactSupport_prod_mul {V W : Type} [MetricSpace V] [MetricSpace W] {a : V → ℝ} {b : W → ℝ}
     (ha : HasCompactSupport a) (hb : HasCompactSupport b) :
@@ -53,43 +53,41 @@ theorem hasCompactSupport_prod_mul {V W : Type} [MetricSpace V] [MetricSpace W] 
   · simp [image_eq_zero_of_notMem_tsupport h]
 
 /- English proof (translation)
-Establish `hKc : IsCompact (tsupport F)` using `hFc`. Take `⟨χ₁, h1K, -, h1c, h1b⟩` from `exists_continuous_one_zero_of_isCompact (hKc.image continuous_fst) isClosed_empty (Set.disjoint_empty _)`. Take `⟨χ₂, h2K, -, h2c, h2b⟩` from `exists_continuous_one_zero_of_isCompact (hKc.image continuous_snd) isClosed_empty (Set.disjoint_empty _)`. Use `set χ : V × W → ℝ := fun z => χ₁ z.1 * χ₂ z.2 with hχ`. Establish `hχc : Continuous χ` using `(χ₁.continuous.comp continuous_fst).mul (χ₂.continuous.comp continuous_snd)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hχs : HasCompactSupport χ` using `hasCompactSupport_prod_mul h1c h2c`. Establish `hχ0 : ∀ z, 0 ≤ χ z` using `fun z => mul_nonneg (h1b _).1 (h2b _).1`. Establish `hχF : ∀ z, χ z * F z = F z`. Introduce `z`. Distinguish the cases in `hz : z ∈ tsupport F`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `e1 : χ₁ z.1 = 1` using `by simpa using h1K ⟨z, hz, rfl⟩`. Establish `e2 : χ₂ z.2 = 1` using `by simpa using h2K ⟨z, hz, rfl⟩`. Simplify using `[hχ, e1, e2]`. Simplify using `[image_eq_zero_of_notMem_tsupport hz]`. Establish `hX : IsCompact (tsupport χ₁ ×ˢ tsupport χ₂)` using `h1c.isCompact.prod h2c.isCompact`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hχX : ∀ z, z ∉ tsupport χ₁ ×ˢ tsupport χ₂ → χ z = 0`. Introduce `z hz`. Break down `not_and_or.mp (show ¬(z.1 ∈ tsupport χ₁ ∧ z.2 ∈ tsupport χ₂) from hz) with h | h` into its components or cases. Simplify using `[hχ, image_eq_zero_of_notMem_tsupport h]`. Simplify using `[hχ, image_eq_zero_of_notMem_tsupport h]`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hint : ∀ (G : C(V × W, ℝ)) (m : Measure (V × W)) [IsFiniteMeasureOnCompacts m], Integrable (fun z => χ z * G z) m` using `fun G m _ => (hχc.mul G.continuous).integrable_of_hasCompactSupport (hχs.mul_right (f' := G))`. Establish `key : ∀ G ∈ Algebra.adjoin ℝ (prodFns V W : Set C(V × W, ℝ)), Tendsto (fun i => ∫ z, χ z * G z ∂M i) l (𝓝 (∫ z, χ z * G z ∂M₀))`. Introduce `G hG`. Establish `hG' : G ∈ Submodule.span ℝ (prodFns V W : Set C(V × W, ℝ))`. Establish `: G ∈ Subalgebra.toSubmodule (Algebra.adjoin ℝ (prodFns V W : Set C(V × W, ℝ)))` using `hG`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[Algebra.adjoin_eq_span, Submonoid.closure_eq]`. Then use the resulting hypothesis. Use `clear hG`. Proceed by induction on `hG' using Submodule.span_induction with`. Consider the case `mem g hg`. Take `⟨a, b, hab⟩ : ∃ a : C(V, ℝ), ∃ b : C(W, ℝ), ∀ z, g z = a z.1 * b z.2` from `hg`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `e : (fun z => χ z * g z) = fun z : V × W => (χ₁ z.1 * a z.1) * (χ₂ z.2 * b z.2)`. Use function extensionality and compare the values at `z`. Rewrite using `[hab, hχ]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact.
 
-Conclude with `h (fun x => χ₁ x * a x) (fun y => χ₂ y * b y) (χ₁.continuous.mul a.continuous) (h1c.mul_right (f' := a)) (χ₂.continuous.mul b.continuous) (h2c.mul_right (f' := b))`. Consider the case `zero`. Establish `e : ∀ m : Measure (V × W), ∫ z, χ z * (0 : C(V × W, ℝ)) z ∂m = 0` using `fun m => by simp`. Simplify using `only [e]`. Conclude with `tendsto_const_nhds`.
+Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Consider the case `add g g' _ _ hg hg'`. Establish `e : ∀ (m : Measure (V × W)) [IsFiniteMeasureOnCompacts m], ∫ z, χ z * (g + g') z ∂m = ∫ z, χ z * g z ∂m + ∫ z, χ z * g' z ∂m`. Introduce `m _`. Rewrite using `[← integral_add (hint g m) (hint g' m)]`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Use function extensionality and compare the values at `z`. Simplify using `[mul_add]`. Rewrite using `[e M₀]`. Conclude with `(hg.add hg').congr fun i => (e (M i)).symm`. Consider the case `smul k g _ hg`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `e : ∀ m : Measure (V × W), ∫ z, χ z * (k • g) z ∂m = k * ∫ z, χ z * g z ∂m`. Introduce `m`. Rewrite using `[← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `z`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only [ContinuousMap.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e M₀]`. Conclude with `(hg.const_mul k).congr fun i => (e (M i)).symm`. Take `⟨L, hLdef⟩ : ∃ L, L = ∫ z, χ z ∂M₀` from `⟨_, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL : Tendsto (fun i => ∫ z, χ z ∂M i) l (𝓝 L)`. Rewrite using `[hLdef]`. Conclude with `h χ₁ χ₂ χ₁.continuous h1c χ₂.continuous h2c`. Rewrite using `[Metric.tendsto_nhds]`. Introduce `ε hε`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hpos : (0 : ℝ) < |L| + 1` using `by positivity`. Use `set δ := ε / 3 / (|L| + 1) with hδ`. Establish `hδpos : 0 < δ` using `by positivity`. Establish `hδ3 : δ * (|L| + 1) = ε / 3` using `div_mul_cancel₀ _ (ne_of_gt hpos)`. Take `⟨G, hGA, hGK⟩` from `ContinuousMap.exists_mem_subalgebra_near_continuous_of_isCompact_of_separatesPoints (prodFns_separates V W) ⟨F, hF⟩ hX hδpos`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hb : ∀ z, ‖F z - χ z * G z‖ ≤ δ * χ z`. Introduce `z`. Establish `e : F z - χ z * G z = χ z * (F z - G z)` using `by rw [mul_sub, hχF]`. Rewrite using `[e, norm_mul, Real.norm_of_nonneg (hχ0 z)]`. Distinguish the cases in `hz : z ∈ tsupport χ₁ ×ˢ tsupport χ₂`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hz' : ‖F z - G z‖ ≤ δ`. Use `(hGK z hz).le` as an intermediate fact. Rewrite `this` using `[norm_sub_rev]`. Then use the resulting hypothesis. Combine the equalities or inequalities in the displayed calculation. Simplify using `[hχX z hz]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hbI : ∀ (m : Measure (V × W)) [IsFiniteMeasureOnCompacts m], ‖∫ z, F z ∂m - ∫ z, χ z * G z ∂m‖ ≤ δ * ∫ z, χ z ∂m`. Introduce `m _`. Rewrite using `[← integral_sub (hF.integrable_of_hasCompactSupport hFc) (hint G m), ← integral_const_mul]`. Conclude with `norm_integral_le_of_norm_le ((hχc.integrable_of_hasCompactSupport hχs).const_mul δ) (Eventually.of_forall hb)`. Use `filter_upwards [hL.eventually (gt_mem_nhds (lt_add_one L)), Metric.tendsto_nhds.mp (key G hGA) (ε / 3) (by positivity)] with i hi1 hi2`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `e1` using `hbI (M i)`. Establish `e2` using `hbI M₀`. Rewrite `e2` using `[← hLdef]`. Rewrite `e1`, `e2` using `[Real.norm_eq_abs, abs_le]`. Rewrite `hi2`, the goal using `[Real.dist_eq, abs_lt]`.
-
-Establish `h3 : δ * ∫ z, χ z ∂M i < ε / 3`. Combine the equalities or inequalities in the displayed calculation. Establish `h4 : δ * L < ε / 3`. Combine the equalities or inequalities in the displayed calculation. Apply the tactic sequence `constructor <;> linarith [e1.1, e1.2, e2.1, e2.2, hi2.1, hi2.2]`.
+A detailed English derivation is pending.
 -/
 theorem tendsto_integral_of_prod {ι V W : Type} [MetricSpace V] [MetricSpace W] [ProperSpace V] [ProperSpace W]
     [MeasurableSpace V] [BorelSpace V] [MeasurableSpace W] [BorelSpace W] (l : Filter ι)
@@ -213,15 +211,15 @@ theorem tendsto_integral_of_prod {ι V W : Type} [MetricSpace V] [MetricSpace W]
   constructor <;> linarith [e1.1, e1.2, e2.1, e2.2, hi2.1, hi2.2]
 
 /- English proof (translation)
-Introduce `φ hφ hφc`. Set `M : ℝ → Measure (V × W)` to `fun r => Real.toNNReal ((r ^ (d + d'))⁻¹) • (μ.prod ν).map (fun g => (r⁻¹ • c g.1, r⁻¹ • c' g.2))`. Establish `: ∀ r, IsFiniteMeasureOnCompacts (M r)` using `fun r => by dsimp only [M]; infer_instance`. Establish `hmeas : ∀ r : ℝ, Measurable (fun g : α × β => (r⁻¹ • c g.1, r⁻¹ • c' g.2))` using `fun r => (((continuous_const_smul r⁻¹).measurable.comp hc).comp measurable_fst).prodMk (((continuous_const_smul r⁻¹).measurable.comp hc').comp measurable_snd)`. Establish `hint : ∀ r : ℝ, 0 < r → ∀ f : V × W → ℝ, Continuous f → ∫ z, f z ∂M r = (r ^ (d + d'))⁻¹ * ∫ g, f (r⁻¹ • c g.1, r⁻¹ • c' g.2) ∂(μ.prod ν)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `r hr f hf`. Simplify using `only [M]`. Rewrite using `[integral_smul_nnreal_measure, integral_map (hmeas r).aemeasurable hf.aestronglyMeasurable, NNReal.smul_def, smul_eq_mul, Real.coe_toNNReal _ (by positivity)]`. Establish `key` using `tendsto_integral_of_prod (nhdsWithin (0 : ℝ) (Set.Ioi 0)) M (lam.prod lam') ?_ φ hφ hφc`. Use `key.congr' ?_ filter_upwards [self_mem_nhdsWithin] with r (hr : 0 < r)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hint r hr φ hφ]`. Both sides reduce to the same expression. Introduce `a b ha hac hb hbc`. Establish `hprod` using `(h a ha hac).mul (h' b hb hbc)`. Rewrite using `[integral_prod_mul a b]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `hprod.congr' ?_` and prove the remaining obligations. Use `filter_upwards [self_mem_nhdsWithin] with r (hr : 0 < r)`. Rewrite using `[hint r hr (fun z => a z.1 * b z.2) ((ha.comp continuous_fst).mul (hb.comp continuous_snd))]`. Establish `e` using `integral_prod_mul (μ := μ) (ν := ν) (fun x => a (r⁻¹ • c x)) (fun y => b (r⁻¹ • c' y))`. Simplify using `only at e ⊢`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, pow_add, mul_inv]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem vag_prod (α β V W : Type) [MeasurableSpace α] [MeasurableSpace β] [NormedAddCommGroup V] [NormedSpace ℝ V]
     [FiniteDimensional ℝ V] [MeasurableSpace V] [BorelSpace V] [NormedAddCommGroup W] [NormedSpace ℝ W]

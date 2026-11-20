@@ -33,14 +33,14 @@ theorem transport_pt {E E' : Type} [AddCommGroup E] [Module R E] [AddCommGroup E
     (e : E ≃ₗ[R] E') (v : E') : (transport M e).pt v = M.pt (e.symm v) := rfl
 
 /- English proof (translation)
-Unfold `IsTanAt at hv ⊢`. Rewrite using `[Over.comp_left, ← Category.assoc, hv, ← Over.comp_left, MonObj.one_comp]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem isTanAt_comp {v : epsAt x ⟶ G} (hv : IsTanAt G x v) (f : G ⟶ G) [IsMonHom f] : IsTanAt G x (v ≫ f) := by
   unfold IsTanAt at hv ⊢
   rw [Over.comp_left, ← Category.assoc, hv, ← Over.comp_left, MonObj.one_comp]
 
 /- English proof (translation)
-Simplify using `[MonObj.mul_comp]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mul_comp' {T : Over S} (u v : T ⟶ G) (f : G ⟶ G) [IsMonHom f] : (u * v) ≫ f = (u ≫ f) * (v ≫ f) := by
   simp [MonObj.mul_comp]
@@ -51,7 +51,7 @@ def endo (M : LieModel G x E) (f : G ⟶ G) [IsMonHom f] (e : E) : E :=
   Classical.choose (M.onto (M.pt e ≫ f) (isTanAt_comp (M.tan e) f))
 
 /- English proof (translation)
-The claim follows from `Classical.choose_spec (M.onto (M.pt e ≫ f) (isTanAt_comp (M.tan e) f))`.
+A detailed English derivation is pending.
 -/
 theorem endo_spec (M : LieModel G x E) (f : G ⟶ G) [IsMonHom f] (e : E) : M.pt (endo M f e) = M.pt e ≫ f :=
   Classical.choose_spec (M.onto (M.pt e ≫ f) (isTanAt_comp (M.tan e) f))
@@ -63,7 +63,7 @@ def diff (M : LieModel G x E) (f : G ⟶ G) [IsMonHom f] : E →ₗ[R] E where
     rw [endo_spec, RingHom.id_apply, LieModel.pt_smul, LieModel.pt_smul, endo_spec, Category.assoc])
 
 /- English proof (translation)
-The claim follows from `endo_spec M f e`.
+A detailed English derivation is pending.
 -/
 theorem diff_spec (M : LieModel G x E) (f : G ⟶ G) [IsMonHom f] (e : E) : M.pt (diff M f e) = M.pt e ≫ f :=
   endo_spec M f e
@@ -100,7 +100,7 @@ def rho {O : Type} [CommRing O] (act : OAct O G) (M : LieModel G x E) : O →+* 
     rw [diff_spec, M.add, diff_spec, diff_spec, act.add, comp_mul]
 
 /- English proof (translation)
-Introduce `a e` and use `by letI := act.hom a; exact diff_spec M (act.act a) e`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem rho_isActOf {O : Type} [CommRing O] (act : OAct O G) (M : LieModel G x E) : M.IsActOf act.act (rho act M) :=
   fun a e => by letI := act.hom a; exact diff_spec M (act.act a) e
@@ -112,19 +112,17 @@ namespace GlobalTheory.CompanionTheory.Ar.Ggeo
 open LieCoord in
 
 /- English proof (translation)
-Introduce `E _ _ _ H S t R _ _ x`. Use `haveI := t.semi`. Use `haveI : Smooth t.G.hom := ReciprocityTheory.ChartRestriction.G.Semi.IsSemiAbelian.smooth`. Take `⟨V, _, _, ⟨M0⟩⟩` from `GlobalTheory.CompanionTheory.Ar.lieModel_exists S t.G R x`. Take `⟨hfin, hproj⟩` from `GlobalTheory.T.lie_model_finite_projective S t.G R x V M0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `haveI : Module.Flat R V := inferInstance`. Use `haveI : Module.Free R V := Module.free_of_flat_of_isLocalRing`. Set `b` to `Module.finBasis R V`. Set `eV : V ≃ₗ[R] (Fin (Module.finrank R V) → R)` to `b.equivFun`. Use `⟨Module.finrank R V, transport M0 eV, rho t.act (transport M0 eV), rho_isActOf t.act _, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Equip the data with the indicated structure. Extract witnesses or component facts from the available result.
 
-Introduce `R' _ f x' hx'`. Substitute `hx'` using the available equality. Use `letI : Algebra R R' := f.toAlgebra`. Take `⟨T, _, _, _, _, M', j, hlift, hbc⟩` from `GlobalTheory.CompanionTheory.Ar.FlagFib.lieModel_liftBaseChange S t.G R R' x V M0`. Set `eT : T ≃ₗ[R'] (Fin (Module.finrank R V) → R')` to `(hbc.basis b).equivFun`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `key : ∀ u : Fin (Module.finrank R V) → R, eT.symm (f ∘ u) = j (eV.symm u)`. Introduce `u`. Simplify using `only [eT, eV, Module.Basis.equivFun_symm_apply, map_sum, map_smul, IsBaseChange.basis_apply, Function.comp_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Conclude with `algebraMap_smul R' (u i) (j (b i))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hpt : ∀ u : Fin (Module.finrank R V) → R, ((transport M' eT).pt (f ∘ u)).left = spMap (dualMap f) ≫ ((transport M0 eV).pt u).left`. Introduce `u`. Rewrite using `[transport_pt, transport_pt, key]`. Establish `h` using `hlift (eV.symm u)`. Unfold `LieModel.Lifts at h`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite `h` using `[Category.comp_id]`. Conclude with `h`. Use `⟨transport M' eT, rho t.act (transport M' eT), rho_isActOf t.act _, hpt, ?_⟩` and prove the remaining obligations. Introduce `a u`. Apply `(transport M' eT).inj` to reduce the goal to its premises.
-
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Use `letI := t.act.hom a`. Establish `h1` using `rho_isActOf t.act (transport M' eT) a (f ∘ u)`. Establish `h2` using `rho_isActOf t.act (transport M0 eV) a u`. Rewrite using `[h1, Over.comp_left, hpt, hpt, h2, Over.comp_left, Category.assoc]`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lieModel_coordinates_baseChange : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (S : Scheme.{0}) (t : SAB H S) (R : Type) [CommRing R] [IsLocalRing R] (x : Sp R ⟶ S), ∃ (n : ℕ) (M : LieModel t.G x (Fin n → R)) (ρ : 𝓞 E →+* Module.End R (Fin n → R)), M.IsActOf t.act.act ρ ∧ ∀ (R' : Type) [CommRing R'] (f : R →+* R') (x' : Sp R' ⟶ S), x' = spMap f ≫ x → ∃ (M' : LieModel t.G x' (Fin n → R')) (ρ' : 𝓞 E →+* Module.End R' (Fin n → R')), M'.IsActOf t.act.act ρ' ∧ (∀ u, (M'.pt (f ∘ u)).left = spMap (dualMap f) ≫ (M.pt u).left) ∧ ∀ a u, ρ' a (f ∘ u) = f ∘ ρ a u := by
   intro E _ _ _ H S t R _ _ x

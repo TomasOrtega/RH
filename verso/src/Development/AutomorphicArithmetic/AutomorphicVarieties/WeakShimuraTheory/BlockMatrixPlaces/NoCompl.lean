@@ -3,21 +3,21 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws UpperTheory.V.Ws.Bl
 
 /- English proof (translation)
-Introduce `i j h` and use `Matrix.one_apply_ne fun e => h (by rw [e])`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem blk_one {R : Type} [CommRing R] : IsBlock (1 : M4 R) := fun i j h =>
   Matrix.one_apply_ne fun e => h (by rw [e])
 
 /- English proof (translation)
-Establish `hZX : Z * X ∈ hAB R`. Establish `h0` using `hAB_mul_mul blk_one hZ hX`. Rewrite `h0` using `[one_mul]`. Then use the resulting hypothesis. Establish `hXY : X * Y ∈ hAB R`. Establish `h0` using `hAB_mul_mul hX hY blk_one`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h0` using `[mul_one]`. Then use the resulting hypothesis. Establish `hYX : Y * X ∈ hAB R`. Establish `h0` using `hAB_mul_mul blk_one hY hX`. Rewrite `h0` using `[one_mul]`. Then use the resulting hypothesis. Establish `hN : Z * X + X * Y - Y * X ∈ hAB R` using `(hAB R).sub_mem ((hAB R).add_mem hZX hXY) hYX`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `h1 : ∀ W : M4 R, Y * (Z * W) = 0`. Introduce `W`. Rewrite using `[← mul_assoc, hAB_mul_hAB hY hZ, zero_mul]`. Establish `h2 : Y * (X * Y) = 0` using `by rw [← mul_assoc, hAB_mul_hAB hYX hY]`. Establish `h3 : Z * (X * Y) = 0` using `by rw [← mul_assoc, hAB_mul_hAB hZX hY]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : (1 - Y) * ((1 + Z) * X) * (1 + Y) = X + (Z * X + X * Y - Y * X)`. Simplify using `only [sub_mul, mul_sub, add_mul, mul_add, one_mul, mul_one, mul_assoc, h1, h2, h3, zero_mul, mul_zero]`. Normalize the expressions using the abelian group laws. Use extensionality with `i j`. Rewrite using `[Matrix.zero_apply]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hij : lamW i = lamW j`. Conclude with `hN i j (by rw [hij]; exact lt_irrefl _)`. Establish `hb` using `h i j hij`. Rewrite `hb` using `[e, Matrix.add_apply, hX i j hij, zero_add]`. Conclude with `hb`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem key {R : Type} [CommRing R] {X Z Y : M4 R} (hX : IsBlock X) (hZ : Z ∈ hAB R) (hY : Y ∈ hAB R)
     (h : IsBlock ((1 - Y) * ((1 + Z) * X) * (1 + Y))) : Z * X + X * Y - Y * X = 0 := by
@@ -48,13 +48,13 @@ private theorem key {R : Type} [CommRing R] {X Z Y : M4 R} (hX : IsBlock X) (hZ 
     exact hb
 
 /- English proof (translation)
-Introduce `R Γ _ _ r z c Y h2u hrb hz hrc hzc hY hB g`. Establish `hc` using `key (hrb c) (hz c) hY (hB c)`. Rewrite `hc` using `[hzc, hrc, zero_mul, zero_add]`. Establish `hY0 : Y = 0`. Use extensionality with `i j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Distinguish the cases in `hij : lamW i < lamW j`. Apply the tactic sequence `have hd : (![-1, 1, -1, 1] : Fin 4 → R) i = 1 ∧ (![-1, 1, -1, 1] : Fin 4 → R) j = -1 := by fin_cases i <;> fin_cases j <;> simp [lamW] at hij ⊢`. Establish `h2 : (2 : R) * Y i j = 0`. Establish `h0` using `congrFun (congrFun hc i) j`. Simplify using `only [eAB, Matrix.sub_apply, Matrix.diagonal_mul, Matrix.mul_diagonal, Matrix.zero_apply] at h0`.
+Consider separately whether the proposition holds or fails. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `h0` using `[hd.1, hd.2]`. Take the linear combination `h0`. Conclude with `h2u.mul_right_eq_zero.mp h2`. Conclude with `hY i j hij`. Establish `hg` using `key (hrb g) (hz g) hY (hB g)`.
+Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite `hg` using `[hY0, mul_zero, zero_mul, sub_zero, add_zero]`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.Bl.noCompl :
     ∀ (R Γ : Type) [CommRing R] [Group Γ] (r : Γ →* M4 R) (z : Γ → M4 R) (c : Γ) (Y : M4 R), IsUnit (2 : R) → (∀ g, IsBlock (r g)) → (∀ g, z g ∈ hAB R) → r c = eAB R → z c = 0 → Y ∈ hAB R →

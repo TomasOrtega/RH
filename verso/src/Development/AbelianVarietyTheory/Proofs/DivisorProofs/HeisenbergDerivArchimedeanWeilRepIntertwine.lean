@@ -19,7 +19,7 @@ variable {R : Type} [CommRing R] [Invertible (2 : R)] {V : Type} [AddCommGroup V
   {κ : Type} [Fintype κ]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `[Darboux.rho, schr, mul_add]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem rho_add (dc : Darboux Bf κ) (ψ : AddChar R ℂ) (w : V) (f g : (κ → R) → ℂ) :
     dc.rho ψ w (f + g) = dc.rho ψ w f + dc.rho ψ w g := by
@@ -27,7 +27,7 @@ theorem rho_add (dc : Darboux Bf κ) (ψ : AddChar R ℂ) (w : V) (f g : (κ →
   simp [Darboux.rho, schr, mul_add]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [Darboux.rho, schr, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem rho_smul (dc : Darboux Bf κ) (ψ : AddChar R ℂ) (w : V) (c : ℂ) (f : (κ → R) → ℂ) :
     dc.rho ψ w (c • f) = c • dc.rho ψ w f := by
@@ -36,7 +36,7 @@ theorem rho_smul (dc : Darboux Bf κ) (ψ : AddChar R ℂ) (w : V) (c : ℂ) (f 
   ring
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `[Darboux.rho, schr]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem rho_zero (dc : Darboux Bf κ) (ψ : AddChar R ℂ) (w : V) : dc.rho ψ w (0 : (κ → R) → ℂ) = 0 := by
   funext x
@@ -47,13 +47,13 @@ end GlobalTheory.ArchDecay.HeisWeil
 open GlobalTheory.ArchDecay.HeisWeil
 
 /- English proof (translation)
-Take `⟨D, hD⟩` from `GlobalTheory.T.archHeisenbergDerivatives_exist F E σ α β κ ψ JA JB dc hψ`. Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨f₀, g, hg, rfl⟩` from `hx`. Conclude with `⟨pureA F (D u f₀) g, fun l hl => (hD u hu f₀).1 g hg l hl⟩`.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Consider the case `zero`. Use `⟨0, fun l _ => ?_⟩` and prove the remaining obligations. Simplify using `only [rho_zero, map_zero]`. Conclude with `hasDerivAt_const _ _`. Consider the case `add x y _ _ hx hy`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨Dx, hDx⟩` from `hx`. Take `⟨Dy, hDy⟩` from `hy`. Use `⟨Dx + Dy, fun l hl => ?_⟩` and prove the remaining obligations. Simplify using `only [rho_add, map_add]`. Conclude with `(hDx l hl).add (hDy l hl)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Consider the case `smul c x _ hx`. Take `⟨Dx, hDx⟩` from `hx`. Use `⟨c • Dx, fun l hl => ?_⟩` and prove the remaining obligations. Simplify using `only [rho_smul, map_smul, smul_eq_mul]`. Conclude with `(hDx l hl).const_mul c`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.ArchDecay.HeisWeil.exists_hasDerivAt_adm {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E]
     [Algebra F E] {σ : E →ₐ[F] E} {α β κ : Type} [Fintype α] [DecidableEq α] [Fintype β] [DecidableEq β] [Fintype κ]
@@ -84,17 +84,15 @@ theorem GlobalTheory.ArchDecay.HeisWeil.exists_hasDerivAt_adm {F E : Type} [Fiel
     exact (hDx l hl).const_mul c
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP p u hu f hf`. Establish `hψ : IsStd B.ψ` using `hP.base.std`. Establish `hS` using `IsUWeilPair.isUSplitting hP.weil`. Use `set u' := actAB (cA σ) p⁻¹ u with hu'def`. Establish `hu' : At (evI F) u'` using `fun a ha => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hu'def, actAB, ← Matrix.smul_mul, ← Matrix.mul_smul, hu a ha, Matrix.mul_zero, Matrix.zero_mul]`. Establish `hact : ∀ t : ℝ, actAB (cA σ) p (realAd F t • u') = realAd F t • u` using `fun t => by`. Simplify using `only [hu'def, actAB]`. Rewrite using `[Matrix.mul_smul, Matrix.smul_mul]`. Use `congr 1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Simplify using `only [Prod.fst_inv, Prod.snd_inv, Subgroup.coe_inv, Matrix.mul_assoc]`. Rewrite using `[← Matrix.transpose_mul, Units.mul_inv, Matrix.transpose_one, Matrix.mul_one, ← Matrix.mul_assoc, Units.mul_inv, Matrix.one_mul]`. Take `⟨Df, hDf⟩` from `exists_hasDerivAt_adm B.ψ M.co hψ u' hu' f hf`. Establish `hDfx : Df = heisD M B.ψ u' f`. Use function extensionality and compare the values at `x`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `((hDf _ (GlobalTheory.RealLift.eval_mem_adm x)).deriv).symm`. Use function extensionality and compare the values at `x`. Establish `hl` using `hS.adm p _ (GlobalTheory.RealLift.eval_mem_adm x)`. Establish `h1` using `hDf _ hl`. Establish `e : (fun t : ℝ => M.heisLine B.ψ u t (om p f) x) = fun t : ℝ => ((LinearMap.proj x : ((Fin n × Fin d → AF F) → ℂ) →ₗ[ℂ] ℂ) ∘ₗ om p) (M.co.rho B.ψ (realAd F t • u') f)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `t`. Rewrite using `[LinearMap.comp_apply, hS.impl p _ f hf, hact t]`. Both sides reduce to the same expression. Use `show deriv (fun t : ℝ => M.heisLine B.ψ u t (om p f) x) 0 = _`. Rewrite using `[e, h1.deriv, ← hDfx]`.
-
-Both sides reduce to the same expression.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.ArchDecay.HeisWeil.heisD_weil : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ), IsPair B M χX χW om r s r' s' → ∀ (p : UA σ X.J × UA σ W.J) (u : Matrix (Fin n) (Fin d) (AE F E)), At (evI F) u → ∀ f ∈ schA F (Fin n × Fin d), heisD M B.ψ u (om p f) = om p (heisD M B.ψ (actAB (cA σ) p⁻¹ u) f) := by
   intro F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP p u hu f hf

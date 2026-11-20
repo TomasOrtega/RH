@@ -7,11 +7,11 @@ namespace GroundTheory.Heights₂.Heights
 open MvPolynomial
 
 /- English proof (translation)
-Introduce `f N`. Use `⟨fun H => ?_, fun ψ P => ?_⟩` and prove the remaining obligations. Unfold `realFlagIntegral RestTerms.flagIntegral`. Move the coercions through the operations in `[Rat.cast_sum, Rat.cast_mul]`. Use `Finset.sum_congr rfl fun α _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[coeff_map, eq_ratCast]`. Expand and normalize the polynomial expressions, which then agree. Unfold `realFlagIntegral RestTerms.flagIntegral`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun α _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[KRest.coeff_psiPoly]`. Establish `h : coeff α P * ((coeff α (RestTerms.blockVandermonde f N) * α.prod (fun _ e => (e.factorial : ℚ)) : ℚ) : ℝ) = (coeff α (RestTerms.blockVandermonde f N) * α.prod (fun _ e => (e.factorial : ℚ))) • coeff α P`. Rewrite using `[Rat.smul_def, mul_comm]`. Rewrite using `[h, ψ.map_smul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem RestCutPsiFlag.proof : RestCutPsiFlag.Statement := by
   intro f N

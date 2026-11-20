@@ -14,15 +14,15 @@ open CategoryTheory AlgebraicGeometry Limits ReciprocityTheory.ChartRestriction.
 namespace GlobalTheory.HodgeSubInj
 
 /- English proof (translation)
-Establish `e` using `hV.fromSpec_preimage_self.ge`. Use `letI := GlobalTheory.QCoh.appLEAlgebra hV.fromSpec e`. Use `letI := GlobalTheory.QCoh.appLEModule hV.fromSpec ((Scheme.Modules.pullback hV.fromSpec).obj F) e`. Use `haveI := GlobalTheory.QCoh.appLE_isScalarTower hV.fromSpec ((Scheme.Modules.pullback hV.fromSpec).obj F) e`. Establish `H` using `GlobalTheory.QCoh.isBaseChange_pullbackSections hV.fromSpec F (isAffineOpen_top _) hV e`.
+Establish an intermediate fact. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb : Function.Bijective (Algebra.linearMap Γ(T, V) Γ(Sp Γ(T, V), ⊤))`. Establish `: hV.fromSpec.appLE V ⊤ e = (Scheme.ΓSpecIso Γ(T, V)).inv`. Rewrite using `[Scheme.Hom.appLE, IsAffineOpen.fromSpec_app_self, Category.assoc, ← Functor.map_comp]`. Conclude with `(congrArg (_ ≫ ·) (CategoryTheory.Functor.map_id _ _)).trans (Category.comp_id _)`. Express the relevant statement in the definitionally equal form `Function.Bijective (hV.fromSpec.appLE V ⊤ e)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[this]`. Conclude with `ConcreteCategory.bijective_of_isIso _`. Set `φ` to `(LinearEquiv.ofBijective _ hb).symm`. Set `g` to `(TensorProduct.lid Γ(T, V) Γ(F, V)).toLinearMap ∘ₗ LinearMap.rTensor Γ(F, V) φ.toLinearMap`. Establish `hg : ∀ m, g (H.equiv.symm (GlobalTheory.QCoh.pullbackSections hV.fromSpec F e m)) = m`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `m`. Establish `h1 : H.equiv.symm (GlobalTheory.QCoh.pullbackSections hV.fromSpec F e m) = (1 : Γ(Sp Γ(T, V), ⊤)) ⊗ₜ m`. Rewrite using `[LinearEquiv.symm_apply_eq, H.equiv_tmul, one_smul]`. Establish `h2 : φ 1 = 1`. Rewrite using `[LinearEquiv.symm_apply_eq]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(map_one (algebraMap Γ(T, V) Γ(Sp Γ(T, V), ⊤))).symm`. Simplify using `only [g, h1, LinearMap.comp_apply, LinearMap.rTensor_tmul, LinearEquiv.coe_coe, h2, TensorProduct.lid_tmul, one_smul]`. Introduce `m m' hm`. Rewrite using `[← hg m, ← hg m']`. Conclude with `congrArg (fun x => g (H.equiv.symm x)) hm`.
+A detailed English derivation is pending.
 -/
 theorem pullbackSections_fromSpec_injective {T : Scheme.{0}} (F : T.Modules) [F.IsQuasicoherent]
     {V : T.Opens} (hV : IsAffineOpen V) :
@@ -55,7 +55,7 @@ theorem pullbackSections_fromSpec_injective {T : Scheme.{0}} (F : T.Modules) [F.
   exact congrArg (fun x => g (H.equiv.symm x)) hm
 
 /- English proof (translation)
-Establish `: F.IsQuasicoherent` using `hF.isQuasicoherent`. Use `pullbackSections_fromSpec_injective F hV (sub_eq_zero.1 ?_)` and prove the remaining obligations. Use `GlobalTheory.T.affine_vector_bundle_section_separation _ _ r (hF.pullback hV.fromSpec) _ fun L => ?_` and prove the remaining obligations. Rewrite using `[map_sub, H L, sub_self]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem sep {T : Scheme.{0}} (F : T.Modules) (r : ℕ) (hF : GlobalTheory.VB.IsVB F r) {V : T.Opens}
     (hV : IsAffineOpen V) (s s' : Γ(F, V))
@@ -69,15 +69,15 @@ theorem sep {T : Scheme.{0}} (F : T.Modules) (r : ℕ) (hF : GlobalTheory.VB.IsV
   rw [map_sub, H L, sub_self]
 
 /- English proof (translation)
-Use `⟨Over.homMk (pullback.lift v₀ (epsR Γ(T, V)).hom w) (pullback.lift_snd _ _ _), ?_, pullback.lift_fst _ _ _⟩` and prove the remaining obligations. Establish `hs : spMap (TrivSqZeroExt.fstHom Γ(T, V) Γ(T, V) Γ(T, V)).toRingHom = sec (epsZero Γ(T, V))` using `rfl`. Establish `h1` using `Over.w (MonObj.one : 𝟙_ (Over (Sp Γ(T, V))) ⟶ onAff A hV)`. Establish `h2 : (MonObj.one : 𝟙_ (Over (Sp Γ(T, V))) ⟶ onAff A hV) = Functor.LaxMonoidal.ε (Over.pullback hV.fromSpec) ≫ (Over.pullback hV.fromSpec).map MonObj.one` using `rfl`. Establish `h3` using `Over.w (Functor.LaxMonoidal.ε (Over.pullback hV.fromSpec))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `IsTangent`. Apply `pullback.hom_ext` to reduce the goal to its premises. Simplify using `only [Over.homMk_left, Category.assoc, pullback.lift_fst]`. Rewrite using `[hs, we, h2, Over.comp_left, Category.assoc]`. Establish `h4 : ((Over.pullback hV.fromSpec).map (MonObj.one : 𝟙_ (Over T) ⟶ A)).left ≫ pullback.fst A.hom hV.fromSpec = pullback.fst (𝟙_ (Over T)).hom hV.fromSpec ≫ (MonObj.one : 𝟙_ (Over T) ⟶ A).left`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [Over.pullback_map_left]`. Conclude with `pullback.lift_fst _ _ _`. Establish `h5 : (Functor.LaxMonoidal.ε (Over.pullback hV.fromSpec)).left ≫ pullback.fst (𝟙_ (Over T)).hom hV.fromSpec = hV.fromSpec`. Establish `c` using `pullback.condition (f := (𝟙_ (Over T)).hom) (g := hV.fromSpec)`. Establish `c' : pullback.fst (𝟙_ (Over T)).hom hV.fromSpec = pullback.snd (𝟙_ (Over T)).hom hV.fromSpec ≫ hV.fromSpec`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using c`. Rewrite using `[c', ← Category.assoc]`. Establish `h3' : (Functor.LaxMonoidal.ε (Over.pullback hV.fromSpec)).left ≫ pullback.snd (𝟙_ (Over T)).hom hV.fromSpec = 𝟙 _` using `h3`. Rewrite using `[h3', Category.id_comp]`. Rewrite using `[h4, ← Category.assoc, h5]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Simplify using `only [Over.homMk_left, Category.assoc, pullback.lift_snd]`. Rewrite using `[hs, sec_hom]`. Conclude with `h1.symm`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lift {T : Scheme.{0}} (A : Over T) [GrpObj A] {V : T.Opens} (hV : IsAffineOpen V)
     (v₀ : (Pdiv.specO Γ(T, V) (DualNumber Γ(T, V))).left ⟶ A.left)
@@ -116,13 +116,13 @@ theorem lift {T : Scheme.{0}} (A : Over T) [GrpObj A] {V : T.Opens} (hV : IsAffi
     exact h1.symm
 
 /- English proof (translation)
-Introduce `P T A _ g hA hg V hV s s' c hs hs'`. Establish `hA' : IsAbelianScheme (onAff A hV)` using `GlobalTheory.isAbelianScheme_pullback_obj _ _ hA`. Establish `hg' : SmoothOfRelativeDimension g (onAff A hV).hom` using `(smoothOfRelativeDimension_isStableUnderBaseChange g).of_isPullback (IsPullback.of_hasPullback A.hom hV.fromSpec) hg`. Establish `hLE` using `(P.p5.2.1 Γ(T, V) (onAff A hV) g hA' hg').1`. Establish `: SmoothOfRelativeDimension g A.hom` using `hg`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he : GlobalTheory.IndefiniteRowSideFullHecke.ZeroSectionBase.zeroSec A ≫ A.hom = 𝟙 T`. Use `Over.w (MonObj.one : 𝟙_ (Over T) ⟶ A)` as an intermediate fact. Simplify `this` using `[GlobalTheory.IndefiniteRowSideFullHecke.ZeroSectionBase.zeroSec]`. Establish `: IsProper A.hom` using `hA.proper`. Establish `: QuasiSeparated A.hom` using `inferInstance`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `sep (GlobalTheory.IndefiniteRowSideFullHecke.ZeroSectionBase.hodge A) g (GlobalTheory.IndefiniteRowSideFullHecke.ZeroSectionBase.isVB_hodge A hA g) hV s s' fun L => ?_` and prove the remaining obligations. Take `⟨v₀, w, we, rfl⟩` from `GlobalTheory.TanFibre.exists_form_eq he L`. Take `⟨v, hvt, rfl⟩` from `lift A hV v₀ w we`. Take `⟨h, hh⟩` from `hLE.2 v hvt`. Establish `e` using `(hs v h hh w we).symm.trans (hs' v h hh w we)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `inj : Function.Injective (Scheme.ΓSpecIso (CommRingCat.of Γ(T, V))).hom` using `fun a b hab => by`. Simplify using `using congrArg (Scheme.ΓSpecIso (CommRingCat.of Γ(T, V))).inv hab`. Conclude with `inj e`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem eq_of_corr : GlobalTheory.CovTop.Hypotheses2 → ∀ (T : Scheme.{0}) (A : Over T) [GrpObj A] (g : ℕ),
     IsAbelianScheme A → SmoothOfRelativeDimension g A.hom →

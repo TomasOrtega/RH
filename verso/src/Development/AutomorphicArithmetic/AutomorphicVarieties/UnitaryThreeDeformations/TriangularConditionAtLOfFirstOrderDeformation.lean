@@ -9,7 +9,7 @@ variable {R : Type} [CommRing R] {m : Ideal R}
 private def Kil (m : Ideal R) (X : Matrix (Fin 3) (Fin 3) R) : Prop := ∀ a b, ∀ x ∈ m, x * X a b = 0
 
 /- English proof (translation)
-Use extensionality with `a b`. Rewrite using `[Matrix.mul_apply]`. Conclude with `Finset.sum_eq_zero fun c _ => hX c b _ (hM a c)`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem kil_left {X M : Matrix (Fin 3) (Fin 3) R} (hX : Kil m X) (hM : EntIn m M) : M * X = 0 := by
   ext a b
@@ -17,7 +17,7 @@ private theorem kil_left {X M : Matrix (Fin 3) (Fin 3) R} (hX : Kil m X) (hM : E
   exact Finset.sum_eq_zero fun c _ => hX c b _ (hM a c)
 
 /- English proof (translation)
-Use extensionality with `a b`. Rewrite using `[Matrix.mul_apply]`. Conclude with `Finset.sum_eq_zero fun c _ => by rw [mul_comm]; exact hX a c _ (hM c b)`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem kil_right {X M : Matrix (Fin 3) (Fin 3) R} (hX : Kil m X) (hM : EntIn m M) : X * M = 0 := by
   ext a b
@@ -25,7 +25,7 @@ private theorem kil_right {X M : Matrix (Fin 3) (Fin 3) R} (hX : Kil m X) (hM : 
   exact Finset.sum_eq_zero fun c _ => by rw [mul_comm]; exact hX a c _ (hM c b)
 
 /- English proof (translation)
-Introduce `a b` and use `by rw [Matrix.mul_apply] exact Ideal.sum_mem _ fun c _ => Ideal.mul_mem_left _ _ (hM c b)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem ent_left {M : Matrix (Fin 3) (Fin 3) R} (N : Matrix (Fin 3) (Fin 3) R) (hM : EntIn m M) :
     EntIn m (N * M) := fun a b => by
@@ -33,7 +33,7 @@ private theorem ent_left {M : Matrix (Fin 3) (Fin 3) R} (N : Matrix (Fin 3) (Fin
   exact Ideal.sum_mem _ fun c _ => Ideal.mul_mem_left _ _ (hM c b)
 
 /- English proof (translation)
-Introduce `a b` and use `by rw [Matrix.mul_apply] exact Ideal.sum_mem _ fun c _ => Ideal.mul_mem_right _ _ (hM a c)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem ent_right {M : Matrix (Fin 3) (Fin 3) R} (N : Matrix (Fin 3) (Fin 3) R) (hM : EntIn m M) :
     EntIn m (M * N) := fun a b => by
@@ -41,15 +41,15 @@ private theorem ent_right {M : Matrix (Fin 3) (Fin 3) R} (N : Matrix (Fin 3) (Fi
   exact Ideal.sum_mem _ fun c _ => Ideal.mul_mem_right _ _ (hM a c)
 
 /- English proof (translation)
-Take `⟨p, rfl⟩ : ∃ p, h = 1 + p` from `⟨h - 1, by abel⟩`. Take `⟨q, rfl⟩ : ∃ q, hi = 1 + q` from `⟨hi - 1, by abel⟩`. Take `⟨e, rfl⟩ : ∃ e, A = D + e` from `⟨A - D, by abel⟩`. Simplify using `only [add_sub_cancel_left] at hh hhi hA`. Establish `e1 : (1 + Y) * ((1 + γ) * (D + e)) * (1 - Y) = (D + e) + (Y * D + γ * D - D * Y)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `a1 : Y * γ = 0` using `kil_left hγ hYm`. Establish `a2 : Y * e = 0` using `kil_right hY hA`. Establish `a3 : γ * e = 0` using `kil_right hγ hA`. Establish `a4 : e * Y = 0` using `kil_left hY hA`. Establish `a5 : Y * (D * Y) = 0` using `kil_right hY (ent_left _ hYm)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a6 : γ * (D * Y) = 0` using `kil_right hγ (ent_left _ hYm)`. Establish `: (1 + Y) * ((1 + γ) * (D + e)) * (1 - Y) = (D + e) + (Y * D + γ * D - D * Y) + ((Y * γ) * (D + e) * (1 - Y) + (Y * e) * (1 - Y) + (γ * e) * (1 - Y) - e * Y - Y * (D * Y) - γ * (D * Y))` using `by noncomm_ring`. Rewrite using `[this, a1, a2, a3, a4, a5, a6]`. Simplify using the standard rewrite rules. Establish `hW : Kil m (Y * D + γ * D - D * Y)` using `fun a b x hx => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [Matrix.sub_apply, Matrix.add_apply, Matrix.mul_apply, mul_sub, mul_add, Finset.mul_sum, ← mul_assoc, hY _ _ x hx, hγ _ _ x hx, zero_mul, hY _ _ _ (Ideal.mul_mem_right _ _ hx)]`. Simplify using the standard rewrite rules. Generalize the expression as in `Y * D + γ * D - D * Y = W at e1 hW`. Establish `b1 : q * W = 0` using `kil_left hW hhi`. Establish `b2 : W * p = 0` using `kil_right hW hh`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 private theorem core {h hi A D Y γ : Matrix (Fin 3) (Fin 3) R} (hh : EntIn m (h - 1)) (hhi : EntIn m (hi - 1))
     (hA : EntIn m (A - D)) (hY : Kil m Y) (hYm : EntIn m Y) (hγ : Kil m γ) :
@@ -81,14 +81,14 @@ private theorem core {h hi A D Y γ : Matrix (Fin 3) (Fin 3) R} (hh : EntIn m (h
     _ = _ := by rw [b1, b2]; simp
 
 /- English proof (translation)
-Simplify using `[conjBy, GG.mat, hg]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem conj_mat {D : Type} [Group D] (h : GL (Fin 3) R) (r : D →* GG 3 R) (g : D) (hg : (r g).right = 1) :
     (conjBy h⁻¹ r g).mat = ((h⁻¹ : GL (Fin 3) R) : Matrix (Fin 3) (Fin 3) R) * (r g).mat * h := by
   simp [conjBy, GG.mat, hg]
 
 /- English proof (translation)
-Use `show (GG.adFun (r0 η Ψ g) X) a b * _ = _`. Unfold `GG.adFun GG.mat`. Rewrite using `[unitaryThreeReflection_left, ← map_inv, tor_val, tor_val, Matrix.mul_diagonal, Matrix.diagonal_mul, unitaryThreeReflection_right, if_pos hg, mul_assoc, ← Units.val_mul, ← mul_zpow]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem ad_entry {D k : Type} [Group D] [CommRing k] (η : D →* ℤˣ) (Ψ : D →* kˣ) (g : D) (hg : η g = 1)
     (X : Matrix (Fin 3) (Fin 3) k) (a b : Fin 3) :
@@ -100,25 +100,23 @@ private theorem ad_entry {D k : Type} [Group D] [CommRing k] (η : D →* ℤˣ)
   simp
 
 /- English proof (translation)
-Take `⟨h, hh, htri, hine⟩` from `ht`. Establish `hk : ∀ o : O, ∀ x ∈ maximalIdeal R, x * (o • f) = 0` using `fun o x hx => by`. Rewrite using `[mul_smul_comm, hf x hx, smul_zero]`. Establish `h0 : ∀ o : O, residue O o = 0 → o • f = 0` using `fun o ho => by`. Rewrite using `[Algebra.smul_def]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hf _ (map_nonunit (algebraMap O R) o ((residue_eq_zero_iff _).1 ho))`. Use `choose o ho using fun a b => residue_surjective (μ a b)`. Set `Y : Matrix (Fin 3) (Fin 3) R` to `Matrix.of fun a b => o a b • f`. Establish `hY : Kil (maximalIdeal R) Y` using `fun a b => hk _`. Establish `hYm : EntIn (maximalIdeal R) Y` using `fun a b => Submodule.smul_of_tower_mem _ _ hfm`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hYY : Y * Y = 0` using `kil_left hY hYm`. Set `u : GL (Fin 3) R` to `⟨1 - Y, 1 + Y, by rw [show (1 - Y) * (1 + Y) = 1 - Y * Y by noncomm_ring, hYY, sub_zero], by rw [show (1 + Y) * (1 - Y) = 1 - Y * Y by noncomm_ring, hYY, sub_zero]⟩`. Establish `hhi : EntIn (maximalIdeal R) (((h⁻¹ : GL (Fin 3) R) : Matrix (Fin 3) (Fin 3) R) - 1)`. Use `ent_left (-((h⁻¹ : GL (Fin 3) R) : Matrix (Fin 3) (Fin 3) R)) hh` as an intermediate fact. Rewrite `this` using `[Matrix.mul_sub, Matrix.neg_mul, Units.inv_mul, Matrix.mul_one, sub_neg_eq_add, neg_add_eq_sub]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key : ∀ g, η g = 1 → ∀ a b, ∃ c : O, residue O c = z g a b ∧ (conjBy (u * h)⁻¹ r₂ g).mat a b = (conjBy h⁻¹ r g).mat a b + (o a b * psi Ψ b g + c * psi Ψ b g - psi Ψ a g * o a b) • f`. Introduce `g hg a b`. Take `⟨c, hc, hc'⟩` from `hγ g a b`. Use `⟨c, hc, ?_⟩` and prove the remaining obligations. Establish `hrg : (r g).right = 1` using `(hr.mult g).trans hg`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hγk : Kil (maximalIdeal R) (γ g)` using `fun a b => by`. Take `⟨c, -, hc'⟩` from `hγ g a b`. Rewrite using `[hc']`. Conclude with `hk c`. Establish `hD : ((r0 η Ψ g).mat).map (algebraMap O R) = Matrix.diagonal fun a => algebraMap O R (psi Ψ a g)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Unfold `GG.mat`. Rewrite using `[unitaryThreeReflection_left, tor_val, Matrix.diagonal_map (map_zero _)]`. Both sides reduce to the same expression. Establish `hA` using `hr.red g`. Rewrite `hA` using `[hD]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `core hh hhi hA hY hYm hγk` as an intermediate fact. Rewrite using `[conj_mat _ _ _ hrg, conj_mat _ _ _ ((hd g).1.trans hrg), (hd g).2, _root_.mul_inv_rev, Units.val_mul, Units.val_mul]`. Use `(congrFun (congrFun this a) b).trans ?_` and prove the remaining obligations. Simplify using `only [Matrix.add_apply, Matrix.sub_apply, Matrix.mul_diagonal, Matrix.diagonal_mul, hc', Y, Matrix.of_apply, Algebra.smul_def, map_sub, map_add, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨u * h, ?_, fun g hg a b hab => ?_, fun s hs hη a => ?_⟩` and prove the remaining obligations. Establish `e : ((u * h : GL (Fin 3) R) : Matrix (Fin 3) (Fin 3) R) - 1 = ((h : Matrix (Fin 3) (Fin 3) R) - 1) - Y * h` using `by show (1 - Y) * (h : Matrix (Fin 3) (Fin 3) R) - 1 = _ noncomm_ring`. Introduce `a b`. Rewrite using `[e, Matrix.sub_apply]`. Conclude with `Ideal.sub_mem _ (hh a b) (ent_right _ hYm a b)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨c, hc, e⟩` from `key g hg a b`. Rewrite using `[e, htri g hg a b hab, zero_add]`. Apply `h0` to reduce the goal to its premises. Rewrite using `[map_sub, map_add, map_mul, map_mul, map_mul, ho, hc]`. Conclude with `h1 g hg a b hab`.
-
-Take `⟨c, hc, e⟩` from `key s hη a a`. Rewrite using `[e, hine s hs hη a, h0, add_zero]`. Rewrite using `[map_sub, map_add, map_mul, map_mul, map_mul, hc, h2 s hs a]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private theorem condT_deform {O D : Type} [CommRing O] [IsLocalRing O] [Group D] [Algebra O R] [IsCO O R]
     (η : D →* ℤˣ) (Ψ : D →* Oˣ) (I : Subgroup D) (f : R) (hf : ∀ x ∈ maximalIdeal R, x * f = 0)
@@ -188,15 +186,15 @@ private theorem condT_deform {O D : Type} [CommRing O] [IsLocalRing O] [Group D]
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Introduce `O _ _ _ _ _ _ G Γ ι _ _ _ _ _ _ _ _ _ _ _ _ _ F hF _ R _ _ _ f hf hfm j v hv r r₂ z γ hr hl hz hγ hd`. Use `⟨fun _ => ?_, fun h => absurd (hv ▸ h) hF.vl_notMem, fun h => absurd (Set.mem_insert_iff.2 (Or.inl hv)) h⟩` and prove the remaining obligations. Establish `hw : ∀ (X : Gb (ResidueField O) j) a b, wt a b ≠ j → X.val a b = 0` using `fun X => Subtype.property X`. Establish `h2 : ∀ s ∈ F.Iv v, ∀ a, (z s).val a a = 0` using `fun s hs a => by`. Distinguish the cases in `hj : j = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[hz.2.2.2 hv hj s hs]`. Both sides reduce to the same expression. Conclude with `hw _ _ _ (by simpa [wt] using Ne.symm hj)`. Distinguish the cases in `hj : j < 0`. Take `⟨μ, hμ⟩` from `(mem_coboundaries1 _ _).1 (hz.2.2.1 hv hj)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `condT_deform _ _ _ f hf hfm r r₂ (fun g => (z g).val) γ hr (hl.1 hv) hγ hd μ.val ?_ h2` and prove the remaining obligations. Introduce `g hg a b _`. Establish `e : (z g).val a b = adRep (r0 F.η F.Ψbar) (F.loc v g) μ.val a b - μ.val a b`. Rewrite using `[hμ g]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hp : ∀ a, residue O (psi (F.Ψv v) a g) = ((F.Ψbar (F.loc v g) ^ wt1 a : (ResidueField O)ˣ) : ResidueField O)` using `fun a => by show _ = ((Units.map (residue O).toMonoidHom (F.Ψ (F.loc v g)) ^ wt1 a : (ResidueField O)ˣ) : ResidueField O)`. Rewrite using `[← map_zpow]`. Both sides reduce to the same expression. Apply the tactic sequence `have := ad_entry F.η F.Ψbar (F.loc v g) hg μ.val a b`. Simplify using `only [e, hp]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `this`. Use `condT_deform _ _ _ f hf hfm r r₂ (fun g => (z g).val) γ hr (hl.1 hv) hγ hd 0 ?_ h2` and prove the remaining obligations. Introduce `g _ a b hab`. Simplify using `[hw (z g) a b (by omega)]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.UnitaryThreeInertia.triangular_condition_at_l_of_first_order_deformation :
     ∀ {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsAdicComplete (maximalIdeal O) O] [CharZero O] [Finite (ResidueField O)]

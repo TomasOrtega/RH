@@ -7,9 +7,9 @@ noncomputable section
 namespace GlobalTheory.UPel.HT.EtLev
 
 /- English proof (translation)
-Establish `hm : z - z' ∈ wSub D w0 r`. Rewrite using `[← Submodule.Quotient.mk_eq_zero]`. Simplify `hz` using `[sub_eq_zero]`. Use `h.1 z' (z - z')` as an intermediate fact. Rewrite `this` using `[add_sub_cancel, h.2.2.1 _ hm, _root_.mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem isEtLevOver_eq_of_mkQ_eq {p : ℕ} [Fact p.Prime] {D : Datum p} {R : Type} [CommRing R] {b : Base D R}
     {N : ℕ} {S : Scheme.{0}} {s : S ⟶ Sp R} {o : Obj b N s} {w0 : Ideal (𝓞 D.F)} {r : ℕ} {T : Over S}
@@ -22,15 +22,13 @@ theorem isEtLevOver_eq_of_mkQ_eq {p : ℕ} [Fact p.Prime] {D : Datum p} {R : Typ
   exact this
 
 /- English proof (translation)
-Establish `hq` using `fun {z z' : D.La} (hz : (wSub D w0 r).mkQ z = (wSub D w0 r).mkQ z') => isEtLevOver_eq_of_mkQ_eq h hz`. Use `⟨fun x y => ?_, fun c x => ?_, fun x hx => ?_, fun k _ _ x => ⟨fun y hy => ?_, fun gg hgg => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[← h.1]`. Apply `hq` to reduce the goal to its premises. Simplify using `only [mkQ_levAct, map_add]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Rewrite using `[← h.2.1]`. Apply `hq` to reduce the goal to its premises. Simplify using `only [mkQ_levAct, map_smul]`. Establish `: levAct g x ∈ wSub D w0 r`. Rewrite using `[← Submodule.Quotient.mk_eq_zero, ← Submodule.mkQ_apply, mkQ_levAct, Submodule.mkQ_apply, (Submodule.Quotient.mk_eq_zero _).2 hx, map_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h.2.2.1 _ this`. Establish `h1` using `(h.2.2.2 k x).1 _ hy`. Rewrite `h1` using `[← Submodule.Quotient.mk_eq_zero, ← Submodule.mkQ_apply, mkQ_levAct]`. Rewrite using `[← Submodule.Quotient.mk_eq_zero, ← Submodule.mkQ_apply]`. Conclude with `(LinearEquiv.map_eq_zero_iff g).1 h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨y, hy⟩` from `(h.2.2.2 k x).2 gg hgg`. Use `⟨levAct g.symm y, ?_⟩` and prove the remaining obligations. Rewrite using `[← hy]`. Use `congr 1`. Apply `hq` to reduce the goal to its premises.
-
-Simplify using `only [mkQ_levAct, LinearEquiv.apply_symm_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isEtLevOver_levAct (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [CommRing R] (b : Base D R) (N : ℕ)
     (S : Scheme.{0}) (s : S ⟶ Sp R) (o : Obj b N s) (w0 : Ideal (𝓞 D.F)) (r : ℕ) (T : Over S)

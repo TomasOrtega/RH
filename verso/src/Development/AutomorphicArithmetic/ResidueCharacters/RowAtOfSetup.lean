@@ -10,13 +10,13 @@ import Development.AutomorphicArithmetic.CyclotomicBounds.SmallFacts
 open NumberField IsDedekindDomain Formalism Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions Formalism.MainNotions.N Formalism.WeaklyAdmissibleFiltrations GlobalTheory.NLink
 
 /- English proof (translation)
-Introduce `i hTw hs h2 π hπ`. Establish `hl : (D.nd.l i).Prime` using `(D.nd.lPrime i).out`. Establish `hgk : ∀ k, D.nd.l i ≠ D.host.g k` using `fun k e => UpperTheory.Small.not_mem_of_mod D.host (D.ntypes.g_cond k) (e ▸ hs)`. Establish `hg : D.nd.l i ∉ TwistedPlaces.gset D`. Simplify using `only [TwistedPlaces.gset, Finset.mem_insert, Finset.mem_singleton, not_or]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `⟨hgk 0, hgk 1⟩`. Establish `hL : EmbeddingTypes.hypL i` using `⟨by have := hl.two_le; omega, Or.inr hs, fun h => absurd hs h, hgk 0, hgk 1⟩`. Establish `hj : jacobiSym (-(D.host.d : ℤ)) (D.nd.l i) = 1` using `D.host.QS_split _ hl h2 (Nat.dvd_of_mem_primeFactors hs)`. Take `⟨dc, -, h⟩` from `UpperTheory.N.conclusion_split hP D L P nch HW F Cm X C₂ S i hg D.host.condN (UpperTheory.N.cycAt_of i fun e => absurd e h2) hL (UpperTheory.N.decl_split D i h2 hj) (UpperTheory.N.locAll hP D HW F Cm (D.nd.l i))`. Take `⟨hB, hW, hz⟩` from `h π hπ`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hs1 : 1 ≤ D.nd.s0 i` using `by rw [D.nd.restNLevelExponent_of_odd i h2]; exact le_max_left _ _`. Establish `hh` using `UpperTheory.N.h0_le D i dc.col (fun e => absurd e h2) hs1 (fun u hu => (dc.cover u).1 (Or.inr hu))`. Establish `hb` using `UpperTheory.N.Num.one_le_b L`. Establish `hbB : L.sc.b ≤ RowSmall.hB L` using `(UpperTheory.N.Num.hB_bounds L P).1`. Establish `hf : (⌊2 * L.sc.b⌋₊ : ℝ) ≤ 2 * L.sc.b` using `Nat.floor_le (by linarith)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `UpperTheory.N.bound_smallPrime_of_splitBound_cyclotomic L P X.ρ S.kill S.sha i hTw hs π hπ dc _ _ _ ?_ ?_ ?_ hW (by exact_mod_cast hh) hz hB` and prove the remaining obligations. Establish `: (Formalism.MainNotions.N.hN L : ℝ) ≤ RowSmall.hB L` using `Nat.floor_le (by show 0 ≤ RowSmall.hB L linarith)`. Combine the linear equalities and inequalities to obtain the conclusion. Unfold `GlobalTheory.HubX.hOf`. Use `push_cast`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations.
 
 Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -52,7 +52,7 @@ theorem UpperTheory.N.rowAt_of_setup (hP : Hypotheses₂) (D : D7) (L : SizeData
   · linarith
 
 /- English proof (translation)
-Introduce `hP` and use `⟨6000, 30000, by norm_num, by norm_num, fun Fm => ⟨0, fun x _ hx i HW F Cm X C₂ S => UpperTheory.N.rowAt_of_setup hP _ _ (Fm.params x hx i) _ HW F Cm X C₂ S⟩⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem UpperTheory.N.rowC : Hypotheses₂ → ∃ A B : ℝ, 0 ≤ A ∧ 0 ≤ B ∧ UpperTheory.N.RowC A B :=
   fun hP => ⟨6000, 30000, by norm_num, by norm_num, fun Fm => ⟨0, fun x _ hx i HW F Cm X C₂ S =>

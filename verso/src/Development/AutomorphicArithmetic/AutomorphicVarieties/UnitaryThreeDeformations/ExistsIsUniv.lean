@@ -20,9 +20,9 @@ private def Cut (O R : Type) [CommRing O] [IsLocalRing O] [CommRing R] [Algebra 
 
 omit [IsCO O R] in
 /- English proof (translation)
-Use `⟨Ideal.span {x - y}, fun R' _ _ _ f => ?_⟩` and prove the remaining obligations. Use `beta_reduce`. Prove the components needed by the constructor for the conclusion. Introduce `h z hz`. Take `⟨c, rfl⟩` from `Ideal.mem_span_singleton'.mp hz`.
+Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, map_sub, h, sub_self, mul_zero]`. Introduce `h`. Establish `hxy` using `h (x - y) (Ideal.subset_span rfl)`. Rewrite `hxy` using `[map_sub, sub_eq_zero]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 private theorem Cut.eq (x y : R) : Cut O R fun _ _ _ _ f => f x = f y := by
   refine ⟨Ideal.span {x - y}, fun R' _ _ _ f => ?_⟩
@@ -37,9 +37,9 @@ private theorem Cut.eq (x y : R) : Cut O R fun _ _ _ _ f => f x = f y := by
 
 omit [IsCO O R] in
 /- English proof (translation)
-Use `choose I hI using h`. Use `⟨⨆ i, I i, fun R' _ _ _ f => ?_⟩` and prove the remaining obligations. Use `beta_reduce`. Prove the components needed by the constructor for the conclusion. Introduce `H z hz`.
+Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hle : ⨆ i, I i ≤ RingHom.ker (f : R →+* R')` using `iSup_le fun i y hy => (hI i R' f).mp (H i) y hy`. Conclude with `hle hz`. Introduce `H i`. Conclude with `(hI i R' f).mpr fun z hz => H z (Ideal.mem_iSup_of_mem i hz)`.
+A detailed English derivation is pending.
 -/
 private theorem Cut.all {κ : Sort*} {P : κ → ∀ (R' : Type) [CommRing R'] [Algebra O R'] [IsCO O R'], (R →ₐ[O] R') → Prop}
     (h : ∀ i, Cut O R (P i)) : Cut O R fun R' _ _ _ f => ∀ i, P i R' f := by
@@ -56,11 +56,9 @@ private theorem Cut.all {κ : Sort*} {P : κ → ∀ (R' : Type) [CommRing R'] [
 
 omit [IsCO O R] in
 /- English proof (translation)
-Take `⟨I, hI⟩` from `h`. Take `⟨J, hJ⟩` from `h'`. Use `⟨I ⊔ J, fun R' _ _ _ f => ?_⟩` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[hI R' f, hJ R' f]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩ z hz`. Establish `hle : I ⊔ J ≤ RingHom.ker (f : R →+* R')` using `sup_le (fun y hy => h1 y hy) (fun y hy => h2 y hy)`. Conclude with `hle hz`. Introduce `H`.
-
-Conclude with `⟨fun z hz => H z (Ideal.mem_sup_left hz), fun z hz => H z (Ideal.mem_sup_right hz)⟩`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem Cut.and {P Q : ∀ (R' : Type) [CommRing R'] [Algebra O R'] [IsCO O R'], (R →ₐ[O] R') → Prop}
     (h : Cut O R P) (h' : Cut O R Q) : Cut O R fun R' _ _ _ f => P R' f ∧ Q R' f := by
@@ -78,7 +76,7 @@ private theorem Cut.and {P Q : ∀ (R' : Type) [CommRing R'] [Algebra O R'] [IsC
 
 omit [IsCO O R] in
 /- English proof (translation)
-Take `⟨I, hI⟩` from `h`. Conclude with `⟨I, fun R' _ _ _ f => (e R' f).trans (hI R' f)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem Cut.congr {P Q : ∀ (R' : Type) [CommRing R'] [Algebra O R'] [IsCO O R'], (R →ₐ[O] R') → Prop}
     (h : Cut O R P) (e : ∀ (R' : Type) [CommRing R'] [Algebra O R'] [IsCO O R'] (f : R →ₐ[O] R'), Q R' f ↔ P R' f) :
@@ -87,9 +85,9 @@ private theorem Cut.congr {P Q : ∀ (R' : Type) [CommRing R'] [Algebra O R'] [I
   exact ⟨I, fun R' _ _ _ f => (e R' f).trans (hI R' f)⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `x hx`. Assume the negation of the conclusion as `hnu`. Establish `hm : x ∈ maximalIdeal R` using `(IsLocalRing.mem_maximalIdeal x).mpr hnu`. Establish `h0 : res O R' (f x) = 0`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[res_map, res_eq_zero_iff]`. Conclude with `hm`. Rewrite `h0` using `[res_eq_zero_iff, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Conclude with `h0 hx`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem locHom {R' : Type} [CommRing R'] [Algebra O R'] [IsCO O R'] (f : R →ₐ[O] R') :
     IsLocalHom (f : R →+* R') := by
@@ -104,14 +102,14 @@ private theorem locHom {R' : Type} [CommRing R'] [Algebra O R'] [IsCO O R'] (f :
   exact h0 hx
 
 /- English proof (translation)
-Rewrite using `[← res_eq_zero_iff O, res_map f, res_eq_zero_iff]` and apply the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 private theorem map_max {R' : Type} [CommRing R'] [Algebra O R'] [IsCO O R'] (f : R →ₐ[O] R') {x : R}
     (hx : x ∈ maximalIdeal R) : f x ∈ maximalIdeal R' := by
   rwa [← res_eq_zero_iff O, res_map f, res_eq_zero_iff]
 
 /- English proof (translation)
-The claim follows from `hr.mult g red g a b := by have := map_max f (hr.red g a b) simpa using this`.
+A detailed English derivation is pending.
 -/
 private theorem red_push {D : Type} [Group D] {η : D →* ℤˣ} {Ψ : D →* Oˣ} {r : D →* GG 3 R} (hr : Red η Ψ r)
     {R' : Type} [CommRing R'] [Algebra O R'] [IsCO O R'] (f : R →ₐ[O] R') : Red η Ψ (UnitaryThreeInertia.push f r) where
@@ -121,9 +119,9 @@ private theorem red_push {D : Type} [Group D] {η : D →* ℤˣ} {Ψ : D →* O
     simpa using this
 
 /- English proof (translation)
-Introduce `n`. Establish `hle : maximalIdeal R ^ n ≤ (maximalIdeal R' ^ n).comap (f : R →+* R')`. Rewrite using `[← Ideal.map_le_iff_le_comap, Ideal.map_pow]`. Conclude with `Ideal.pow_right_mono (Ideal.map_le_iff_le_comap.mpr fun y hy => Ideal.mem_comap.mpr (map_max f hy)) n`. Establish `hq` using `(hr n).comp (fun M : Matrix (Fin 3) (Fin 3) (R ⧸ maximalIdeal R ^ n) => M.map (Ideal.quotientMap _ (f : R →+* R') hle))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `hq using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `g`. Use extensionality with `a b`. Simplify using `[UnitaryThreeInertia.push, GG.map_mat, Ideal.quotientMap_mk]`.
+Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem cont_push {D : Type} [Group D] [TopologicalSpace D] {r : D →* GG 3 R}
     (hr : UnitaryThreeInertia.AdicCont (maximalIdeal R) r)
@@ -143,7 +141,7 @@ private theorem cont_push {D : Type} [Group D] [TopologicalSpace D] {r : D →* 
 
 omit [IsCO O R] [IsLocalRing O] in
 /- English proof (translation)
-Establish `e : conjBy (GeneralLinearGroup.map (f : R →+* R') h)⁻¹ (UnitaryThreeInertia.push f r) g = GG.map (f : R →+* R') (conjBy h⁻¹ r g)`. Simplify using `only [conjBy, UnitaryThreeInertia.push, MonoidHom.comp_apply, MulEquiv.coe_toMonoidHom, MulAut.conj_apply, map_mul, map_inv, inv_inv]`. Simplify using `[GG.map, SemidirectProduct.map_inl]`. Rewrite using `[e, GG.map_mat]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem conj_push {D : Type} [Group D] (r : D →* GG 3 R) (h : GL (Fin 3) R)
     {R' : Type} [CommRing R'] [Algebra O R'] (f : R →ₐ[O] R') (g : D) (a b : Fin 3) :
@@ -157,17 +155,15 @@ private theorem conj_push {D : Type} [Group D] (r : D →* GG 3 R) (h : GL (Fin 
   rfl
 
 /- English proof (translation)
-Establish `hti : (t : A) * ((t⁻¹ : Aˣ) : A) = 1` using `Units.mul_inv t`. Establish `h1 : IsUnit ((t : A) - 1)`. Establish `e : (t : A) ^ 2 - 1 = ((t : A) - 1) * ((t : A) + 1)` using `by ring`. Rewrite `hu` using `[e]`. Conclude with `isUnit_of_mul_isUnit_left hu`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hiu : IsUnit ((t⁻¹ : Aˣ) : A)` using `Units.isUnit _`. Apply the tactic sequence `fin_cases a <;> fin_cases b <;> simp at hab <;> simp [wt1]`. Conclude with `h1`. Establish `e : (t : A) - ((t⁻¹ : Aˣ) : A) = ((t⁻¹ : Aˣ) : A) * ((t : A) ^ 2 - 1)`. Take the linear combination `(-(t : A)) * hti`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `hiu.mul hu`. Establish `e : (1 : A) - (t : A) = -((t : A) - 1)` using `by ring`. Rewrite using `[e]`. Conclude with `h1.neg`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : (1 : A) - ((t⁻¹ : Aˣ) : A) = ((t⁻¹ : Aˣ) : A) * ((t : A) - 1)`. Take the linear combination `-hti`. Rewrite using `[e]`. Conclude with `hiu.mul h1`. Establish `e : ((t⁻¹ : Aˣ) : A) - (t : A) = -(((t⁻¹ : Aˣ) : A) * ((t : A) ^ 2 - 1))`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `(t : A) * hti`. Rewrite using `[e]`. Conclude with `(hiu.mul hu).neg`. Establish `e : ((t⁻¹ : Aˣ) : A) - 1 = -(((t⁻¹ : Aˣ) : A) * ((t : A) - 1))`. Take the linear combination `hti`.
-
-Rewrite using `[e]`. Conclude with `(hiu.mul h1).neg`.
+A detailed English derivation is pending.
 -/
 private theorem psi_unit {A : Type} [CommRing A] (t : Aˣ) (hu : IsUnit ((t : A) ^ 2 - 1)) (a b : Fin 3) (hab : a ≠ b) :
     IsUnit (((t ^ wt1 a : Aˣ) : A) - ((t ^ wt1 b : Aˣ) : A)) := by
@@ -200,33 +196,31 @@ private theorem psi_unit {A : Type} [CommRing A] (t : Aˣ) (hu : IsUnit ((t : A)
     exact (hiu.mul h1).neg
 
 /- English proof (translation)
-Use `haveI : IsAdicComplete (maximalIdeal R) R := IsCO.complete (O := O)`. Establish `hr0 : (r0 η Ψ x).mat = diagonal fun i => ((Ψ x ^ wt1 i : Oˣ) : O)` using `tor_val (Ψ x)`. Establish `hred : ∀ a b, (r x).mat a b - algebraMap O R ((r0 η Ψ x).mat a b) ∈ maximalIdeal R` using `fun a b => hr.red x a b`. Choose the witnesses or unpack the hypotheses as in `⟨h, hh⟩ : ∃ h, Canon (r x).mat h := by`. Apply `exists_canon` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a b hab`. Establish `hu' : IsUnit (algebraMap O R (((Ψ x ^ wt1 a : Oˣ) : O) - ((Ψ x ^ wt1 b : Oˣ) : O)))` using `(psi_unit (Ψ x) hu a b hab).map _`. Establish `hm : (r x).mat a a - (r x).mat b b - algebraMap O R (((Ψ x ^ wt1 a : Oˣ) : O) - ((Ψ x ^ wt1 b : Oˣ) : O)) ∈ maximalIdeal R`. Establish `h1` using `hred a a`. Establish `h2` using `hred b b`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1`, `h2` using `[hr0, diagonal_apply_eq]`. Establish `h3` using `sub_mem h1 h2`. Rewrite using `[map_sub]`. Use `h3 using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hn`. Establish `hmem : (r x).mat a a - (r x).mat b b ∈ maximalIdeal R` using `(IsLocalRing.mem_maximalIdeal _).mpr hn`. Establish `h4` using `sub_mem hmem hm`. Rewrite `h4` using `[sub_sub_cancel]`. Conclude with `mem_nonunits_iff.mp ((IsLocalRing.mem_maximalIdeal _).mp h4) hu'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `a b hab`. Establish `h1` using `hred a b`. Rewrite `h1` using `[hr0, diagonal_apply_ne _ hab, map_zero, sub_zero]`. Conclude with `h1`. Establish `CT` using `Cut.and (Cut.all fun g => Cut.all fun _ : g ∈ η.ker => Cut.all fun p : Fin 3 × Fin 3 => Cut.all fun _ : wt p.1 p.2 < 0 => Cut.eq (O := O) ((conjBy h⁻¹ r g).mat p.1 p.2) 0) (Cut.all fun s => Cut.all fun _ : s ∈ I => Cut.all fun _ : η s = 1 => Cut.all fun a : Fin 3 => Cut.eq (O := …`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `CL` using `Cut.all fun g => Cut.all fun _ : g ∈ η.ker => Cut.all fun p : Fin 3 × Fin 3 => Cut.all fun _ : 0 < wt p.1 p.2 => Cut.eq (O := O) ((conjBy h⁻¹ r g).mat p.1 p.2) 0`. Establish `hcan : ∀ (R' : Type) [CommRing R'] [Algebra O R'] [IsCO O R'] (f : R →ₐ[O] R'), Canon (UnitaryThreeInertia.push f r x).mat (GeneralLinearGroup.map (f : R →+* R') h)`. Introduce `R' _ _ _ f`. Use `haveI := locHom f`. Rewrite using `[show (UnitaryThreeInertia.push f r x).mat = (r x).mat.map f from GG.map_mat _ _]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Conclude with `canon_map.1 (f : R →+* R') _ h hh`. Use `⟨Cut.congr CT ?_, Cut.congr (Cut.and CT CL) ?_⟩` and prove the remaining obligations. Introduce `R' _ _ _ f beta_reduce`. Rewrite using `[(cond_iff_canon η Ψ I (UnitaryThreeInertia.push f r) x _ (red_push hr f) hx hu (hcan R' f)).1]`. Prove the components needed by the constructor for the conclusion.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨ht, hi⟩`. Use `⟨fun g hg p hp => ?_, fun s hs hs1 a => ?_⟩` and prove the remaining obligations. Establish `e` using `ht g hg p.1 p.2 hp`. Rewrite `e` using `[conj_push]`. Rewrite using `[e, map_zero]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e` using `hi s hs hs1 a`. Rewrite `e` using `[conj_push]`. Rewrite using `[e, AlgHom.commutes]`. Introduce and unpack `⟨ht, hi⟩`. Use `⟨fun g hg a b hab => ?_, fun s hs hs1 a => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[conj_push, ht g hg (a, b) hab, map_zero]`. Rewrite using `[conj_push, hi s hs hs1 a, AlgHom.commutes]`. Introduce `R' _ _ _ f beta_reduce`. Rewrite using `[(cond_iff_canon η Ψ I (UnitaryThreeInertia.push f r) x _ (red_push hr f) hx hu (hcan R' f)).2]`. Prove the components needed by the constructor for the conclusion.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨⟨ht, hi⟩, hl⟩`. Use `⟨⟨fun g hg p hp => ?_, fun s hs hs1 a => ?_⟩, fun g hg p hp => ?_⟩` and prove the remaining obligations. Establish `e` using `ht g hg p.1 p.2 hp`. Rewrite `e` using `[conj_push]`. Rewrite using `[e, map_zero]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e` using `hi s hs hs1 a`. Rewrite `e` using `[conj_push]`. Rewrite using `[e, AlgHom.commutes]`. Establish `e` using `hl g hg p.1 p.2 hp`. Rewrite `e` using `[conj_push]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, map_zero]`. Introduce and unpack `⟨⟨ht, hi⟩, hl⟩`. Use `⟨⟨fun g hg a b hab => ?_, fun s hs hs1 a => ?_⟩, fun g hg a b hab => ?_⟩` and prove the remaining obligations. Rewrite using `[conj_push, ht g hg (a, b) hab, map_zero]`. Rewrite using `[conj_push, hi s hs hs1 a, AlgHom.commutes]`.
-
-Rewrite using `[conj_push, hl g hg (a, b) hab, map_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem cut_TD {D : Type} [Group D] (η : D →* ℤˣ) (Ψ : D →* Oˣ) (I : Subgroup D) (r : D →* GG 3 R)
     (hr : Red η Ψ r) (x : D) (hx : η x = 1) (hu : IsUnit ((Ψ x : O) ^ 2 - 1)) :
@@ -310,19 +304,19 @@ private theorem cut_TD {D : Type} [Group D] (η : D →* ℤˣ) (Ψ : D →* Oˣ
       · rw [conj_push, hl g hg (a, b) hab, map_zero]
 
 /- English proof (translation)
-Use `Cut.congr (Cut.all fun s => Cut.all fun _ : s ∈ kerBar η Ψ I => Cut.all fun p : Fin 3 × Fin 3 => Cut.eq ((r s).mat p.1 p.2) ((1 : Matrix (Fin 3) (Fin 3) R) p.1 p.2)) ?_` and prove the remaining obligations. Introduce `R' _ _ _ f`. Use `beta_reduce`. Establish `hone : ∀ a b, f ((1 : Matrix (Fin 3) (Fin 3) R) a b) = (1 : Matrix (Fin 3) (Fin 3) R') a b`. Introduce `a b`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.one_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `key : ∀ s, η s = 1 → (UnitaryThreeInertia.push f r s = 1 ↔ ∀ p : Fin 3 × Fin 3, f ((r s).mat p.1 p.2) = f ((1 : Matrix (Fin 3) (Fin 3) R) p.1 p.2))`. Introduce `s hs`. Establish `hright : (UnitaryThreeInertia.push f r s).right = 1` using `by show ((GG.map (f : R →+* R')) (r s)).right = 1`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GG.map_right, hr.mult s, hs]`. Establish `hmat : (UnitaryThreeInertia.push f r s).mat = (r s).mat.map f` using `GG.map_mat _ _`. Prove the components needed by the constructor for the conclusion. Introduce `h p`. Establish `h' : (UnitaryThreeInertia.push f r s).mat = 1`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h]`. Both sides reduce to the same expression. Establish `hp` using `congrFun (congrFun h' p.1) p.2`. Rewrite `hp` using `[hmat, Matrix.map_apply]`. Rewrite using `[hp, hone]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Apply `SemidirectProduct.ext` to reduce the goal to its premises. Apply `Units.ext show (UnitaryThreeInertia.push f r s).mat = 1` to reduce the goal to its premises. Rewrite using `[hmat]`. Use extensionality with `a b`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.map_apply, h (a, b), hone]`. Conclude with `hright`. Prove the components needed by the constructor for the conclusion. Introduce `H s hs p`. Establish `hη : η s = 1` using `hs.1.2`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `(key s hη).mp (H s hs) p`. Introduce `H s hs`. Establish `hη : η s = 1` using `hs.1.2`. Conclude with `(key s hη).mpr (H s hs)`.
+A detailed English derivation is pending.
 -/
 private theorem cut_U {D : Type} [Group D] (η : D →* ℤˣ) (Ψ : D →* Oˣ) (I : Subgroup D) (r : D →* GG 3 R)
     (hr : Red η Ψ r) : Cut O R fun _ _ _ _ f => CondU η Ψ I (UnitaryThreeInertia.push f r) := by
@@ -366,17 +360,17 @@ private theorem cut_U {D : Type} [Group D] (η : D →* ℤˣ) (Ψ : D →* Oˣ)
     exact (key s hη).mpr (H s hs)
 
 /- English proof (translation)
-Use `Cut.congr (Cut.and (Cut.all fun p : Fin 3 × Fin 3 => Cut.eq ((r c).mat p.1 p.2) ((1 : Matrix (Fin 3) (Fin 3) R) p.1 p.2)) (Cut.and (Cut.eq (zmat c g r 0 1) 0) (Cut.eq (zmat c g r 1 0) 0))) ?_` and prove the remaining obligations. Introduce `R' _ _ _ f`. Use `beta_reduce`. Establish `hm : ∀ x, (UnitaryThreeInertia.push f r x).mat = (r x).mat.map f` using `fun x => GG.map_mat _ _`. Establish `hz : ∀ a b, zmat c g (UnitaryThreeInertia.push f r) a b = f (zmat c g r a b)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a b`. Simplify using `[zmat, hm, Matrix.sub_apply, map_sub]`. Establish `hone : ∀ a b, f ((1 : Matrix (Fin 3) (Fin 3) R) a b) = (1 : Matrix (Fin 3) (Fin 3) R') a b`. Introduce `a b`. Rewrite using `[Matrix.one_apply, Matrix.one_apply]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `split_ifs <;> simp`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨fun p => ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `hp` using `congrFun (congrFun h.atc p.1) p.2`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hp` using `[hm, Matrix.map_apply]`. Rewrite using `[hp, hone]`. Rewrite using `[← hz, h.z12, map_zero]`. Rewrite using `[← hz, h.z21, map_zero]`. Introduce and unpack `⟨h1, h2, h3⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hm]`. Use extensionality with `a b`. Rewrite using `[Matrix.map_apply, h1 (a, b), hone]`. Rewrite using `[hz, h2, map_zero]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hz, h3, map_zero]`.
+A detailed English derivation is pending.
 -/
 private theorem cut_N {D : Type} [Group D] (c g : D) (r : D →* GG 3 R) :
     Cut O R fun _ _ _ _ f => Normalised c g (UnitaryThreeInertia.push f r) := by
@@ -410,13 +404,13 @@ private theorem cut_N {D : Type} [Group D] (c g : D) (r : D →* GG 3 R) :
     · rw [hz, h3, map_zero]
 
 /- English proof (translation)
-Establish `hloc : ∀ v, Red (F.ηv v) (F.Ψv v) (r.comp (F.loc v))` using `fun v => ⟨fun g => hr.mult (F.loc v g), fun g => hr.red (F.loc v g)⟩`. Establish `hTD : ∀ v ∈ F.Tb, (Cut O R fun _ _ _ _ f => CondT (F.ηv v) (F.Ψv v) (F.Iv v) (UnitaryThreeInertia.push f (r.comp (F.loc v)))) ∧ Cut O R fun _ _ _ _ f => CondD (F.ηv v) (F.Ψv v) (F.Iv v) (UnitaryThreeInertia.push f (r.comp (F.loc v)))`. Introduce `v hv`. Take `⟨x, hx1, hx2⟩` from `hx v hv`. Conclude with `cut_TD _ _ _ _ (hloc v) x hx1 hx2`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hvl : ∀ v, v = F.vl → v ∈ F.Tb`. Introduce `v hv`. Rewrite using `[hv]`. Conclude with `Set.mem_insert _ _`. Establish `hsb : ∀ v, v ∈ F.Sb → v ∈ F.Tb` using `fun v hv => Set.mem_insert_of_mem _ hv`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Cut.congr (Cut.and (Cut.all fun v => Cut.and (Cut.all fun hv : v = F.vl => (hTD v (hvl v hv)).1) (Cut.and (Cut.all fun hv : v ∈ F.Sb => (hTD v (hsb v hv)).2) (Cut.all fun _ : v ∉ F.Tb => cut_U (F.ηv v) (F.Ψv v) (F.Iv v) _ (hloc v)))) (cut_N F.c g₁ r)) ?_` and prove the remaining obligations. Introduce `R' _ _ _ f`. Use `beta_reduce`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨fun v => h.loc v, h.norm⟩`. Introduce and unpack `⟨hl, hn⟩`. Conclude with `⟨⟨⟨red_push hr f, hl⟩, hn⟩, cont_push hc f⟩`.
+A detailed English derivation is pending.
 -/
 private theorem cut_pt {G Γ ι : Type} [Group G] [Group Γ] [TopologicalSpace Γ] (F : Frame O G Γ ι)
     (hx : ∀ v ∈ F.Tb, ∃ x : F.D v, F.ηv v x = 1 ∧ IsUnit ((F.Ψv v x : O) ^ 2 - 1)) (g₁ : Γ) (r : Γ →* GG 3 R)
@@ -454,21 +448,17 @@ private def Box {Γ : Type} [Group Γ] [TopologicalSpace Γ] (η : Γ →* ℤˣ
       UnitaryThreeInertia.AdicCont (maximalIdeal R') r → ∃! f : R →ₐ[O] R', UnitaryThreeInertia.push f u = r
 
 /- English proof (translation)
-Take `⟨I, hI⟩` from `cut_pt F hx g₁ u hu.1 hu.2.1`. Take `⟨f0, hf0, -⟩` from `hu.2.2 O (F.rz O) h0.toRed h0.cont`. Establish `hpt0 : F.IsPt g₁ (UnitaryThreeInertia.push f0 u)`. Rewrite using `[hf0]`. Conclude with `h0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hk0 : ∀ x ∈ I, f0 x = 0` using `(hI O f0).mp hpt0`. Use `haveI : Nontrivial (R ⧸ I) := by`. Use `nontrivial_of_ne 1 0 fun h1 => ?_` and prove the remaining obligations. Rewrite `h1` using `[← map_one (Ideal.Quotient.mk I), Ideal.Quotient.eq_zero_iff_mem]`. Establish `h2` using `hk0 1 h1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h2` using `[map_one]`. Conclude with `one_ne_zero h2`. Use `haveI : IsCO O (R ⧸ I) := co_quot O R (R ⧸ I) (Ideal.Quotient.mkₐ O I) (Ideal.Quotient.mkₐ_surjective O I)`. Establish `hcomp : ∀ (R' : Type) [CommRing R'] [Algebra O R'] (g : R ⧸ I →ₐ[O] R'), UnitaryThreeInertia.push g (UnitaryThreeInertia.push (Ideal.Quotient.mkₐ O I) u) = UnitaryThreeInertia.push (g.comp (Ideal.Quotient.mkₐ O I)) u`. Introduce `R' _ _ g`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `x : 1`. Apply `SemidirectProduct.ext` to reduce the goal to its premises. Apply `Units.ext show GG.mat (GG.map (g : R ⧸ I →+* R') (GG.map (Ideal.Quotient.mkₐ O I : R →+* R ⧸ I) (u x))) = GG.mat (GG.map ((g.comp (Ideal.Quotient.mkₐ O I) : R →ₐ[O] R') : R →+* R') (u x))` to reduce the goal to its premises. Rewrite using `[GG.map_mat, GG.map_mat, GG.map_mat]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `show (GG.map (g : R ⧸ I →+* R') (GG.map (Ideal.Quotient.mkₐ O I : R →+* R ⧸ I) (u x))).right = (GG.map ((g.comp (Ideal.Quotient.mkₐ O I) : R →ₐ[O] R') : R →+* R') (u x)).right`. Rewrite using `[GG.map_right, GG.map_right, GG.map_right]`. Use `⟨R ⧸ I, inferInstance, inferInstance, inferInstance, UnitaryThreeInertia.push (Ideal.Quotient.mkₐ O I) u, ⟨?_, ?_⟩⟩` and prove the remaining obligations. Conclude with `(hI _ (Ideal.Quotient.mkₐ O I)).mpr fun x hx => Ideal.Quotient.eq_zero_iff_mem.mpr hx`. Introduce `R' _ _ _ r hr`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Take `⟨f, hf, huniq⟩` from `hu.2.2 R' r hr.toRed hr.cont`. Establish `hk : ∀ x ∈ I, f x = 0` using `(hI R' f).mp (by beta_reduce; rw [hf]; exact hr)`. Establish `hlc : (Ideal.Quotient.liftₐ I f hk).comp (Ideal.Quotient.mkₐ O I) = f` using `AlgHom.ext fun x => rfl`. Use `⟨Ideal.Quotient.liftₐ I f hk, ?_, fun g hg => ?_⟩` and prove the remaining obligations. Use `show UnitaryThreeInertia.push (Ideal.Quotient.liftₐ I f hk) (UnitaryThreeInertia.push (Ideal.Quotient.mkₐ O I) u) = r`.
-
-Rewrite using `[hcomp, hlc, hf]`. Apply `Ideal.Quotient.algHom_ext O` to reduce the goal to its premises. Rewrite using `[hlc]`. Apply `huniq` to reduce the goal to its premises. Rewrite using `[← hcomp]`.
-
-Conclude with `hg`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem univ_of_box [IsNoetherianRing O] [IsAdicComplete (maximalIdeal O) O]
     {G Γ ι : Type} [Group G] [Group Γ] [TopologicalSpace Γ] (F : Frame O G Γ ι)
@@ -518,25 +508,23 @@ private theorem univ_of_box [IsNoetherianRing O] [IsAdicComplete (maximalIdeal O
       exact hg
 
 /- English proof (translation)
-Establish `halg : ∀ a : O, res O R (algebraMap O R a) = residue O a` using `fun a => by`. Rewrite using `[AlgHom.commutes]`. Both sides reduce to the same expression. Establish `hbar : ∀ g, rbar O η Ψ g = GG.map (residue O) (r0 η Ψ g)`. Introduce `g`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `SemidirectProduct.ext` to reduce the goal to its premises. Apply `Units.ext show GG.mat (rbar O η Ψ g) = GG.mat (GG.map (residue O) (r0 η Ψ g))` to reduce the goal to its premises. Rewrite using `[GG.map_mat]`. Use extensionality with `i j`. Use `show ((tor (ResidueField O) (barChar O Ψ g) : GL (Fin 3) (ResidueField O)) : Matrix _ _ _) i j = residue O ((((tor O (Ψ g)) : GL (Fin 3) O) : Matrix (Fin 3) (Fin 3) O) i j)`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[tor_val, tor_val]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using `only [diagonal_apply_eq, barChar, MonoidHom.comp_apply, ← map_zpow, Units.coe_map]`. Both sides reduce to the same expression.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 
-Simplify using `[diagonal_apply_ne _ hij]`. Both sides reduce to the same expression. Establish `key : ∀ g, GG.map (res O R : R →+* ResidueField O) (r g) = rbar O η Ψ g ↔ ((r g).right = η g ∧ ∀ a b, (r g).mat a b - algebraMap O R ((r0 η Ψ g).mat a b) ∈ maximalIdeal R)`. Introduce `g`. Rewrite using `[hbar]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `hr` using `congrArg SemidirectProduct.right h`. Establish `hl` using `congrArg GG.mat h`. Rewrite `hl` using `[GG.map_mat, GG.map_mat]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hr` using `[GG.map_right, GG.map_right]`. Use `⟨hr, fun a b => ?_⟩` and prove the remaining obligations. Establish `hab` using `congrFun (congrFun hl a) b`. Simplify using `only [Matrix.map_apply] at hab`. Rewrite using `[← res_eq_zero_iff O R, map_sub, halg, sub_eq_zero]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `hab`. Introduce and unpack `⟨hr, hm⟩`. Apply `SemidirectProduct.ext` to reduce the goal to its premises. Apply `Units.ext show GG.mat (GG.map (res O R : R →+* ResidueField O) (r g)) = GG.mat (GG.map (residue O) (r0 η Ψ g))` to reduce the goal to its premises. Rewrite using `[GG.map_mat, GG.map_mat]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Use extensionality with `a b`. Establish `hab` using `(res_eq_zero_iff O R _).mpr (hm a b)`. Rewrite `hab` using `[map_sub, halg, sub_eq_zero]`. Simplify using `using hab`. Rewrite using `[GG.map_right, GG.map_right]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Conclude with `hr`. Repeatedly rewrite using `[key]`. Prove the components needed by the constructor for the conclusion. Introduce `h g`. Conclude with `⟨h.mult g, fun a b => h.red g a b⟩`.
-
-Introduce `h`. Conclude with `⟨fun g => (h g).1, fun g a b => (h g).2 a b⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem red_iff {Γ : Type} [Group Γ] (η : Γ →* ℤˣ) (Ψ : Γ →* Oˣ) (r : Γ →* GG 3 R) :
     Red η Ψ r ↔ ∀ g, GG.map (res O R : R →+* ResidueField O) (r g) = rbar O η Ψ g := by
@@ -594,13 +582,13 @@ private theorem red_iff {Γ : Type} [Group Γ] (η : Γ →* ℤˣ) (Ψ : Γ →
 
 omit [IsLocalRing O] [IsCO O R] in
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `H a b N`. Conclude with `(H N).comp (fun M => M a b)`. Introduce `H n`. Rewrite using `[IsLocallyConstant.iff_isOpen_fiber]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `M0`. Establish `e : (fun g => (r g).mat.map (Ideal.Quotient.mk (J ^ n))) ⁻¹' {M0} = ⋂ a, ⋂ b, (fun g => Ideal.Quotient.mk (J ^ n) ((r g).mat a b)) ⁻¹' {M0 a b}`. Use extensionality with `g`. Simplify using `only [Set.mem_preimage, Set.mem_singleton_iff, Set.mem_iInter]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h a b`. Rewrite using `[← h]`. Both sides reduce to the same expression. Introduce `h`. Use extensionality with `a b`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h a b`. Rewrite using `[e]`. Conclude with `isOpen_iInter_of_finite fun a => isOpen_iInter_of_finite fun b => (H a b n).isOpen_fiber _`.
+A detailed English derivation is pending.
 -/
 private theorem cont_iff {Γ : Type} [Group Γ] [TopologicalSpace Γ] (J : Ideal R) (r : Γ →* GG 3 R) :
     UnitaryThreeInertia.AdicCont J r ↔ ∀ a b, Alg.AdicCont J fun g => (r g).mat a b := by
@@ -625,13 +613,13 @@ private theorem cont_iff {Γ : Type} [Group Γ] [TopologicalSpace Γ] (J : Ideal
     exact isOpen_iInter_of_finite fun a => isOpen_iInter_of_finite fun b => (H a b n).isOpen_fiber _
 
 /- English proof (translation)
-Introduce `H' hH'`. Set `ψ : (H'.comap (QuotientGroup.mk' M)) →* H'` to `(QuotientGroup.mk' M).subgroupComap H'`. Establish `hψc : Continuous ψ` using `Continuous.subtype_mk (QuotientGroup.continuous_mk.comp continuous_subtype_val) _`. Establish `hψs : Function.Surjective ψ`. Introduce and unpack `⟨y, hy⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Take `⟨x, rfl⟩` from `QuotientGroup.mk'_surjective M y`. Conclude with `⟨⟨x, hy⟩, rfl⟩`. Establish `hopen : IsOpen ((H'.comap (QuotientGroup.mk' M) : Subgroup Γ) : Set Γ)` using `hH'.preimage QuotientGroup.continuous_mk`. Use `haveI := h _ hopen`. Set `F : {φ : H' →* Multiplicative (ZMod l) // IsOpen (φ.ker : Set H')} → {φ : (H'.comap (QuotientGroup.mk' M)) →* Multiplicative (ZMod l) // IsOpen (φ.ker : Set (H'.comap (QuotientGroup.mk' M)))}` to `fun φ => ⟨φ.1.comp ψ, by`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← MonoidHom.comap_ker]`. Conclude with `φ.2.preimage hψc⟩`. Use `Finite.of_injective F ?_` and prove the remaining obligations. Introduce `φ₁ φ₂ he`. Apply `Subtype.ext` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result.
 
-Use extensionality with `y`. Take `⟨x, rfl⟩` from `hψs y`. Conclude with `congrArg (fun φ => φ.1 x) he`.
+A detailed English derivation is pending.
 -/
 private theorem phi_quot {Γ : Type} [Group Γ] [TopologicalSpace Γ] (M : Subgroup Γ) [M.Normal] {l : ℕ}
     (h : PhiCond Γ l) : PhiCond (Γ ⧸ M) l := by
@@ -660,7 +648,7 @@ private theorem phi_quot {Γ : Type} [Group Γ] [TopologicalSpace Γ] (M : Subgr
   exact congrArg (fun φ => φ.1 x) he
 
 /- English proof (translation)
-Use `⟨(red_iff _ _ _).2 U.r.red, (cont_iff _ _).2 U.r.cont, fun R' _ _ _ r hr hc => ?_⟩` and prove the remaining obligations. Take `⟨f, hf, hf'⟩` from `(U.rep R').2 ⟨r, (cont_iff _ _).1 hc, (red_iff _ _ _).1 hr⟩ fun _ h => h.elim`. Conclude with `⟨f, congrArg GLift.hom hf, fun f' h' => hf' f' (GLift.ext h')⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem box_of_univ {Γ : Type} [Group Γ] [TopologicalSpace Γ] {η : Γ →* ℤˣ} {Ψ : Γ →* Oˣ}
     (U : Univ (Kills (O := O) (η := η) (Ψ := Ψ) ∅)) : Box η Ψ U.r.hom := by
@@ -672,9 +660,7 @@ end
 end UpperTheory.V.UnitaryThreeInertia
 
 /- English proof (translation)
-Introduce `O _ _ _ _ _ _ G Γ ι _ _ _ _ _ _ _ _ _ _ _ _ _ F hF l hl hm hΦ g₁ _`. Use `haveI : Fact l.Prime := ⟨hl⟩`. Use `haveI : CharP (ResidueField O) l := (CharP.charP_iff_prime_eq_zero hl).2 (by`. Rewrite using `[← map_natCast (residue O), residue_eq_zero_iff]`. Conclude with `hm)`.
-
-Establish `hΨ : IsLocallyConstant (barChar O F.Ψ)` using `IsLocallyConstant.desc _ Units.val ((hF.Ψ_cont 1).comp (Ideal.Quotient.factor (pow_one (maximalIdeal O)).le)) Units.val_injective`. Use `haveI : (Subgroup.normalClosure (∅ : Set Γ)).topologicalClosure.Normal := Subgroup.is_normal_topologicalClosure _`. Take `⟨U⟩` from `exists_univ l F.η F.Ψ hF.η_cont hΨ ∅ (fun _ h => h.elim) _ rfl (phi_quot _ hΦ)`. Conclude with `univ_of_box F hF.x g₁ U.r.hom (box_of_univ U) (isPt_rz F hF g₁)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.UnitaryThreeInertia.exists_isUniv :
     ∀ {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsAdicComplete (maximalIdeal O) O] [CharZero O] [Finite (ResidueField O)]

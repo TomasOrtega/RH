@@ -10,7 +10,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 open GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.PB GlobalTheory.CompanionTheory.Ar.PB.FMX GlobalTheory.CompanionTheory.Ar.FlagBun
 
 /- English proof (translation)
-Unfold `blkF`. Apply the tactic sequence `split_ifs with h <;> simp [h]`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem blkF_eq_none_iff (Ψ : Type) (p q : ℕ) (K₀ : Type) (r : Ψ × Fin (p + q)) :
     blkF Ψ p q K₀ r = none ↔ ¬ IsProperStep (p + q) p r.2 := by
@@ -18,13 +18,11 @@ theorem blkF_eq_none_iff (Ψ : Type) (p q : ℕ) (K₀ : Type) (r : Ψ × Fin (p
   split_ifs with h <;> simp [h]
 
 /- English proof (translation)
-Introduce and unpack `⟨τ, i⟩ ⟨τ', i'⟩ h`. Establish `hi` using `i.2`. Establish `hi'` using `i'.2`. Apply the tactic sequence `by_cases h₁ : (i : ℕ) < p <;> by_cases h₂ : (i' : ℕ) < p`. Simplify using `only [stepOf, dif_pos h₁, dif_pos h₂] at h`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Establish `e₁ : τ = τ'` using `Sum.inl.inj (congrArg Sigma.fst h)`. Establish `e₂` using `congrArg (fun t : StepIx Ψ p q => (t.2 : ℕ)) h`. Conclude with `Prod.ext e₁ (Fin.ext e₂)`. Simplify using `only [stepOf, dif_pos h₁, dif_neg h₂] at h`. Conclude with `absurd (congrArg Sigma.fst h) (by simp)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [stepOf, dif_neg h₁, dif_pos h₂] at h`. Conclude with `absurd (congrArg Sigma.fst h) (by simp)`. Simplify using `only [stepOf, dif_neg h₁, dif_neg h₂] at h`. Establish `e₁ : τ = τ'` using `Sum.inr.inj (congrArg Sigma.fst h)`. Establish `e₂ : (i : ℕ) - p = (i' : ℕ) - p` using `congrArg (fun t : StepIx Ψ p q => (t.2 : ℕ)) h`.
-
-Conclude with `Prod.ext e₁ (Fin.ext (by show (i : ℕ) = (i' : ℕ); omega))`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem stepOf_injective (Ψ : Type) (p q : ℕ) : Function.Injective (stepOf Ψ p q) := by
   rintro ⟨τ, i⟩ ⟨τ', i'⟩ h
@@ -45,7 +43,7 @@ theorem stepOf_injective (Ψ : Type) (p q : ℕ) : Function.Injective (stepOf Ψ
     exact Prod.ext e₁ (Fin.ext (by show (i : ℕ) = (i' : ℕ); omega))
 
 /- English proof (translation)
-Unfold `blkF at h h'`. Use `split_ifs at h h'`. Apply `stepOf_injective Ψ p q` to reduce the goal to its premises. Establish `e` using `(Option.some.inj h).trans (Option.some.inj h').symm`. Conclude with `Sum.inr.inj e`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem blkF_inj (Ψ : Type) (p q : ℕ) (K₀ : Type) (r r' : Ψ × Fin (p + q)) (k : K₀ ⊕ StepIx Ψ p q)
     (h : blkF Ψ p q K₀ r = some k) (h' : blkF Ψ p q K₀ r' = some k) : r = r' := by
@@ -56,13 +54,13 @@ theorem blkF_inj (Ψ : Type) (p q : ℕ) (K₀ : Type) (r r' : Ψ × Fin (p + q)
   exact Sum.inr.inj e
 
 /- English proof (translation)
-Introduce `a b hab`. Take `⟨x, rfl⟩` from `(blockEquiv p q).surjective a`. Take `⟨y, rfl⟩` from `(blockEquiv p q).surjective b`. Simplify using `only [Matrix.submatrix_apply, Equiv.symm_apply_apply]`. Apply the tactic sequence `rcases x with x | x <;> rcases y with y | y`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-It suffices to derive a contradiction. Apply `hab` to reduce the goal to its premises. Establish `hx` using `x.2`. Establish `hy` using `y.2`. Use `show ((x : ℕ) < _ ↔ (y : ℕ) < _)`.
+It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Both sides reduce to the same expression. Both sides reduce to the same expression. It suffices to derive a contradiction. Apply `hab` to reduce the goal to its premises.
+Both sides reduce to the same expression. Both sides reduce to the same expression. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Use linear arithmetic over natural numbers and integers.
 
-Use `show (q + (x : ℕ) < _ ↔ q + (y : ℕ) < _)`. Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem fromBlocks_isBlockDiag {R : Type} [CommRing R] (p q : ℕ) (A : Matrix (Fin q) (Fin q) R)
     (B : Matrix (Fin p) (Fin p) R) :
@@ -86,14 +84,14 @@ theorem fromBlocks_isBlockDiag {R : Type} [CommRing R] (p q : ℕ) (A : Matrix (
     omega
 
 /- English proof (translation)
-The claim follows from `fromBlocks_isBlockDiag p q (genU Ω (rk Ψ p q) (.inr τ)) (genU Ω (rk Ψ p q) (.inl τ))`.
+A detailed English derivation is pending.
 -/
 theorem gMat_isBlockDiag (Ψ : Type) (p q : ℕ) (Ω : Type) [Field Ω] (τ : Ψ) :
     IsBlockDiag p (gMat p q Ω τ) :=
   fromBlocks_isBlockDiag p q (genU Ω (rk Ψ p q) (.inr τ)) (genU Ω (rk Ψ p q) (.inl τ))
 
 /- English proof (translation)
-Introduce `Ψ _ p q Ω _ K₀` and use `⟨blkF_eq_none_iff Ψ p q K₀, blkF_inj Ψ p q K₀, gMat_isBlockDiag Ψ p q Ω⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem blocks_main : ∀ (Ψ : Type) [Fintype Ψ] (p q : ℕ) (Ω : Type) [Field Ω] (K₀ : Type),
     (∀ r, blkF Ψ p q K₀ r = none ↔ ¬ IsProperStep (p + q) p r.2) ∧

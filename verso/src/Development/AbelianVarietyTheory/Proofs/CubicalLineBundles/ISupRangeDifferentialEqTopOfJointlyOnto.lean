@@ -17,9 +17,9 @@ noncomputable section
 namespace GlobalTheory.DiffSpan
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hS`. Take `⟨ℓ, hℓ, hker⟩` from `S.exists_le_ker_of_lt_top (lt_top_iff_ne_top.2 hS)`. Establish `: Uncountable ℂ` using `Complex.ofReal_injective.uncountable`. Use `Set.not_countable_univ (α := ℂ) ((hΛ.image ℓ).mono fun c _ => ?_)` and prove the remaining obligations. Take `⟨z, rfl⟩` from `LinearMap.surjective_of_ne_zero hℓ c`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hs, hz⟩` from `h z`. Conclude with `⟨_, hz, by rw [map_sub, (hker hs : ℓ s = 0), sub_zero]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem eq_top_of_countable {V : Type} [AddCommGroup V] [Module ℂ V] (S : Submodule ℂ V) {Λ : Set V}
     (hΛ : Λ.Countable) (h : ∀ z, ∃ s ∈ S, z - s ∈ Λ) : S = ⊤ := by
@@ -32,11 +32,9 @@ theorem eq_top_of_countable {V : Type} [AddCommGroup V] [Module ℂ V] (S : Subm
   exact ⟨_, hz, by rw [map_sub, (hker hs : ℓ s = 0), sub_zero]⟩
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hN`. Take `⟨ℓ, hℓ, hker⟩` from `N.exists_le_ker_of_lt_top (lt_top_iff_ne_top.2 hN)`. Set `ℓ' : (Fin g → L) →ₗ[L] L` to `Fintype.linearCombination L fun k => σ (ℓ (Pi.single k 1))`. Establish `e : ∀ m, ℓ' (fun k => σ (m k)) = σ (ℓ m)` using `fun m => by conv_rhs => rw [pi_eq_sum_univ' m]`. Simplify using `[ℓ', Fintype.linearCombination_apply]`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h0 : ∀ c, ℓ' c = 0` using `fun c => by`. Establish `: Submodule.span L ((fun m k => σ (m k)) '' (N : Set (Fin g → K))) ≤ LinearMap.ker ℓ'`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨m, hm, rfl⟩`. Conclude with `(e m).trans (by rw [(hker hm : ℓ m = 0), map_zero])`.
-
-Conclude with `this (h ▸ Submodule.mem_top)`. Conclude with `hℓ (LinearMap.ext fun m => σ.injective (by rw [← e, h0]; simp))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem eq_top_of_span_image {K L : Type} [Field K] [Field L] (σ : K →+* L) {g : ℕ} (N : Submodule K (Fin g → K))
     (h : Submodule.span L ((fun m k => σ (m k)) '' (N : Set (Fin g → K))) = ⊤) : N = ⊤ := by
@@ -60,19 +58,19 @@ section Unif
 variable {A : Over (Sp ℂ)} [GrpObj A] {L : LB A.left} {g : ℕ} (u : HolUnif A L g)
 
 /- English proof (translation)
-The claim follows from `(u.ker 0).2 u.Λ.zero_mem`.
+A detailed English derivation is pending.
 -/
 theorem ex_zero : u.ex 0 = 1 := (u.ker 0).2 u.Λ.zero_mem
 
 /- English proof (translation)
-The claim follows from `| 0, z => by simpa using ex_zero u | n + 1, z => by rw [Fin.sum_univ_succ, u.ex_add, ex_sum, List.ofFn_succ, List.prod_cons]`.
+A detailed English derivation is pending.
 -/
 theorem ex_sum : ∀ {n : ℕ} (z : Fin n → Fin g → ℂ), u.ex (∑ m, z m) = (List.ofFn fun m => u.ex (z m)).prod
   | 0, z => by simpa using ex_zero u
   | n + 1, z => by rw [Fin.sum_univ_succ, u.ex_add, ex_sum, List.ofFn_succ, List.prod_cons]
 
 /- English proof (translation)
-Establish `e` using `u.ex_add (z - w) w`. Rewrite `e` using `[sub_add_cancel, h]`. Conclude with `(u.ker _).1 (mul_eq_right.1 e.symm)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sub_mem_of_ex_eq {z w : Fin g → ℂ} (h : u.ex z = u.ex w) : z - w ∈ u.Λ := by
   have e := u.ex_add (z - w) w
@@ -80,7 +78,7 @@ theorem sub_mem_of_ex_eq {z w : Fin g → ℂ} (h : u.ex z = u.ex w) : z - w ∈
   exact (u.ker _).1 (mul_eq_right.1 e.symm)
 
 /- English proof (translation)
-Introduce `w` and use `by obtain ⟨x, ⟨hx, dx⟩, -⟩ := he w obtain ⟨c, hc, -⟩ := hv.2 x hx exact ⟨c, (hd x hx).unique (UnifDifferential.isDiff_of_isLieComb A L g n u W v c x hv.1 hW hc) dx⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem surjective_of_isLieBasis (hd : ∀ v, IsTangent v → ∃! w, u.IsDiff w v)
     (he : ∀ w, ∃! v, IsTangent v ∧ u.IsDiff w v) {n : ℕ} {v : Fin n → (epsR ℂ ⟶ A)} (hv : IsLieBasis v)
@@ -93,9 +91,9 @@ theorem surjective_of_isLieBasis (hd : ∀ v, IsTangent v → ∃! w, u.IsDiff w
 end Unif
 
 /- English proof (translation)
-Take `⟨Q, ψ, hQ⟩` from `exists_isPolFibre hB σ P`. Use `P.isAb.comm` as an intermediate fact. Use `Q.isAb.comm` as an intermediate fact. Use `P.smoothDim` as an intermediate fact. Take `⟨v', hv', ho⟩` from `exists_isLieBasis_baseChange K ℂ σ P.A Q.A ψ hQ.2.1 (SmoothOfRelativeDimension.smooth P.g _) _ v hv`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨rig, hrig⟩` from `Q.rigid`. Take `⟨u, -, -, -, -, -, hd, he, -⟩` from `hU Q rig hrig`. Use `choose W hW using fun i => (hd _ (hv'.1 i)).exists`. Establish `hs` using `surjective_of_isLieBasis u hd he hv' hW`. Conclude with `⟨Q, ψ, v', u, W, hQ, hv'.1, ho, hd, he, hW, (LinearMap.injective_iff_surjective_of_finrank_eq_finrank (by simp [hQ.1])).2 hs, hs⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_fibre (hU : ThetaUnifAV) (hB : Out.PolBaseChangeSt) {K : Type} [Field K] (σ : K →+* ℂ)
     (P : Out.PolAV (Sp K)) {v : Fin P.g → (epsR K ⟶ P.A)} (hv : IsLieBasis v) :
@@ -117,11 +115,9 @@ theorem exists_fibre (hU : ThetaUnifAV) (hB : Out.PolBaseChangeSt) {K : Type} [F
     (LinearMap.injective_iff_surjective_of_finrank_eq_finrank (by simp [hQ.1])).2 hs, hs⟩
 
 /- English proof (translation)
-Take `⟨n, i, x, e⟩` from `h (Over.homMk (y.left ≫ φ) (by`. Rewrite using `[Category.assoc, hφ.1.w, ← Category.assoc, Over.w y]`. Conclude with `Category.id_comp _))`. Establish `w : ∀ m, (x m).left ≫ (B (i m)).hom = 𝟙 _ ≫ spMap s` using `fun m => (Over.w (x m)).trans (Category.id_comp _).symm`. Set `x' : ∀ m, 𝟙_ (Over (Sp ℂ)) ⟶ B' (i m)` to `fun m => Over.homMk ((hψ _).lift _ _ (w m)) ((hψ _).lift_snd _ _ (w m))`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨n, i, x', Over.OverMorphism.ext (hφ.1.hom_ext ?_ (by rw [Over.w, Over.w]))⟩` and prove the remaining obligations. Use `Eq.trans ?_ (LieCombBaseChange.prod_left_comp hφ (T := Over.mk (spMap s)) (T' := 𝟙_ (Over (Sp ℂ))) (𝟙 _) rfl (fun m => x m ≫ f (i m)) _ fun m => ?_).symm` and prove the remaining obligations. Rewrite using `[← e]`. Conclude with `(Category.id_comp _).symm`. Rewrite using `[Over.comp_left, Category.assoc, hf, ← Category.assoc, Category.id_comp, Over.comp_left]`.
-
-Conclude with `congrArg (· ≫ (f (i m)).left) ((hψ _).lift_fst _ _ (w m))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_prod_of_ontoAt {R : Type} [CommRing R] {s : R →+* ℂ} {I : Type} {B : I → Over (Sp R)} {A : Over (Sp R)}
     [GrpObj A] {B' : I → Over (Sp ℂ)} {A' : Over (Sp ℂ)} [GrpObj A'] {f : ∀ i, B i ⟶ A} {f' : ∀ i, B' i ⟶ A'}
@@ -146,17 +142,15 @@ theorem exists_prod_of_ontoAt {R : Type} [CommRing R] {s : R →+* ℂ} {I : Typ
     exact congrArg (· ≫ (f (i m)).left) ((hψ _).lift_fst _ _ (w m))
 
 /- English proof (translation)
-Introduce `hU hL K _ _ P F σ I Q FQ f M _ hf hM ho`. Take `⟨P', ψ, v, u, W, hP, tv, ov, hd, he, hW, bW⟩` from `exists_fibre hU hL.polBaseChange σ F.P₀ F.basis`. Use `choose Q' χ t r V hQ tt ot _ _ hV bV using fun i => exists_fibre hU hL.polBaseChange σ (FQ i).P₀ (FQ i).basis`. Use `choose f₀ hf₀ e₀ d₀ using fun i => (T.existsUnique_differential_monHom_lieBasis K (Q i) (FQ i) P F (f i) (hf i)).2`. Use `choose f' hf' e' using fun i => HomDescent.exists_isMonHom_pull (hQ i).2.1 hP.2.1 (f₀ i)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `choose Φ hΦ _ dΦ _ using fun i => HomLinear.exists_linear_of_isMonHom (Q' i).A P'.A (Q' i).isAb P'.isAb (Q' i).L P'.L _ _ (r i) u hd he (f' i) (hf' i)`. Use `eq_top_of_span_image σ _ ?_` and prove the remaining obligations. Use `set S := Submodule.span ℂ ((fun m k => σ (m k)) '' ((⨆ i, LinearMap.range (M i) : Submodule K _) : Set (Fin F.P₀.g → K)))`. Establish `hS : ∀ i z, Φ i z ∈ S.map (Fintype.linearCombination ℂ W)` using `fun i z => by`. Take `⟨a, rfl⟩` from `(bV i).2 z`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Fintype.linearCombination_apply, map_sum]`. Use `Submodule.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul]`. Use `Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Take `⟨c, hc, -⟩` from `(FQ i).basis.2 _ ((FQ i).basis.1 j)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `h₁` using `(lieComb_baseChange K ℂ σ _ _ ψ hP.2.1 _ _ _ _ v (t i j ≫ f' i) ov (d₀ i _ (hM i) c _ hc)).1 (by`. Rewrite using `[Over.comp_left, Over.comp_left, Category.assoc, e', ← Category.assoc, ot i j, Category.assoc])`. Take `⟨h₂, h₃⟩` from `dΦ i _ _ (tt i j) (hV i j)`. Conclude with `⟨fun k => σ (M i c k), Submodule.subset_span ⟨M i c, Submodule.mem_iSup_of_mem i ⟨c, rfl⟩, rfl⟩, (hd _ h₂).unique (UnifDifferential.isDiff_of_isLieComb _ _ _ _ u W v _ _ tv hW h₁) h₃⟩`. Establish `htop : S.map (Fintype.linearCombination ℂ W) = ⊤`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `u.discrete` as an intermediate fact. Use `eq_top_of_countable _ (Λ := u.Λ) (countable_of_Lindelof_of_discrete (X := u.Λ)) fun z => ?_` and prove the remaining obligations. Take `⟨n, i, x, e⟩` from `exists_prod_of_ontoAt (f' := f') (PolFibre.comp F.fib hP).2.1 (fun i => (PolFibre.comp (FQ i).fib (hQ i)).2.1.1) (fun i => by rw [← Category.assoc, e', Category.assoc, e₀, Category.assoc]) ho (u.ex z)`. Use `choose w hw using fun m => (r (i m)).ex_onto (x m)`. Use `⟨∑ m, Φ (i m) (w m), Submodule.sum_mem _ fun m _ => hS _ _, sub_mem_of_ex_eq u ?_⟩` and prove the remaining obligations.
-
-Simplify using `only [ex_sum, hΦ, hw, e]`. Conclude with `Submodule.map_injective_of_injective bW.1 (htop.trans ((Submodule.map_top _).trans (LinearMap.range_eq_top.2 bW.2)).symm)`.
+A detailed English derivation is pending.
 -/
 theorem iSup_range_diff_eq_top : ThetaUnifAV → Out.Laws → ∀ (K : Type) [Field K] [NumberField K] (P : Out.PolAV (Sp (𝓞 K))) (F : GenFib P) (σ : K →+* ℂ) (I : Type) (Q : I → Out.PolAV (Sp (𝓞 K))) (FQ : ∀ i, GenFib (Q i)) (f : ∀ i, (Q i).A ⟶ P.A) (M : ∀ i, (Fin (FQ i).P₀.g → K) →ₗ[K] (Fin F.P₀.g → K)), Finite I → (∀ i, IsMonHom (f i)) → (∀ i, (FQ i).IsDiffOf F (f i) (M i)) → OntoAt f (spMap (σ.comp (algebraMap (𝓞 K) K))) → ⨆ i, LinearMap.range (M i) = ⊤ := by
   intro hU hL K _ _ P F σ I Q FQ f M _ hf hM ho

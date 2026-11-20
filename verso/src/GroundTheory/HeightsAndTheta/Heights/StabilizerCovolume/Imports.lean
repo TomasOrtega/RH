@@ -8,7 +8,7 @@ noncomputable section
 namespace GroundTheory.Heights₂.Heights.NineStatements
 
 /- English proof (translation)
-Introduce `D` and use `FirstMinPos.proof D`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem UnitaryFirstMinimumPositive.proof : UnitaryFirstMinimumPositive.Statement :=
   fun D => FirstMinPos.proof D

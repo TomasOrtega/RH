@@ -10,13 +10,11 @@ open Polynomial
 namespace GlobalTheory.AV.AbVar
 
 /- English proof (translation)
-Introduce `k V _ _ _ _ _ φ P Q hQ hφ hP`. Establish `hinj : Function.Injective (algebraMap ℚ k)` using `(algebraMap ℚ k).injective`. Establish `hPm : P.Monic` using `Polynomial.monic_of_injective hinj (by rw [hP]; exact LinearMap.charpoly_monic φ)`. Use `set Qq : ℚ[X] := Q.map (algebraMap ℤ ℚ) with hQq`. Establish `hmap : Qq.map (algebraMap ℚ k) = Q.map (algebraMap ℤ k)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hQq, Polynomial.map_map, ← IsScalarTower.algebraMap_eq]`. Establish `hG : aeval φ (Q.map (algebraMap ℤ k)) = 0`. Rewrite using `[aeval_map_algebraMap]`. Conclude with `hφ`. Establish `hd` using `GlobalTheory.CharpolyDvd.charpoly_dvd_pow_finrank φ _ hG`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hd` using `[← hP, ← hmap, ← Polynomial.map_pow, Polynomial.map_dvd_map' (algebraMap ℚ k)]`. Establish `hd' : P ∣ (Q ^ Module.finrank k V).map (algebraMap ℤ ℚ)`. Rewrite using `[Polynomial.map_pow]`. Conclude with `hd`. Take `⟨P₀, hP₀⟩` from `IsIntegrallyClosed.eq_map_mul_C_of_dvd ℚ (hQ.pow _) hd'`.
-
-Use `⟨P₀, ?_⟩` and prove the remaining obligations. Rewrite `hP₀` using `[hPm.leadingCoeff, Polynomial.C_1, _root_.mul_one]`. Conclude with `hP₀`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem int_of_charpoly_rat_of_monic_annihilator : ∀ (k V : Type) [Field k] [Algebra ℚ k] [AddCommGroup V] [Module k V] [Module.Finite k V] (φ : V →ₗ[k] V) (P : Polynomial ℚ) (Q : Polynomial ℤ), Q.Monic → Polynomial.aeval φ Q = 0 → P.map (algebraMap ℚ k) = φ.charpoly → ∃ P₀ : Polynomial ℤ, P₀.map (algebraMap ℤ ℚ) = P := by
   intro k V _ _ _ _ _ φ P Q hQ hφ hP

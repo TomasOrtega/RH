@@ -19,7 +19,7 @@ noncomputable section
 namespace GlobalTheory.CovTop.VolUp
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [ReciprocityTheory.ChartRestriction.G.FD.gram, hermC, ReciprocityTheory.ChartRestriction.G.FD.col, Matrix.of_apply, Matrix.transpose_apply, Matrix.mul_apply, Matrix.conjTranspose_apply, Matrix.map_apply, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Simplify using `[RCLike.star_def]`. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem fdgram_eq {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (τ : E →+* ℂ)
     (G : Matrix (Fin r) (Fin r) E) (x : Matrix (Fin r) (Fin r) ℂ) :
@@ -32,7 +32,7 @@ theorem fdgram_eq {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (
   ring
 
 /- English proof (translation)
-Use extensionality with `a b`. Rewrite using `[Matrix.mul_apply, ← e.symm.sum_comp]`. Simplify using `[permM, Matrix.mul_apply, Matrix.conjTranspose_apply]`. Rewrite using `[← e.symm.sum_comp]`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem permM_conj {ι : Type} [Fintype ι] [DecidableEq ι] {r : ℕ} (e : ι ≃ Fin r) (M : Matrix ι ι ℂ) :
     (permM e)ᴴ * M * permM e = M.submatrix e.symm e.symm := by
@@ -43,7 +43,7 @@ theorem permM_conj {ι : Type} [Fintype ι] [DecidableEq ι] {r : ℕ} (e : ι �
   simp
 
 /- English proof (translation)
-Rewrite using `[Formalism.UG.Jpq, ← Matrix.fromBlocks_diagonal, Matrix.diagonal_one, ← Matrix.diagonal_neg]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem jpq_eq_diagonal (p q : ℕ) :
     Formalism.UG.Jpq p q = Matrix.diagonal (Sum.elim (fun _ : Fin p => (1 : ℂ)) (fun _ : Fin q => -1)) := by
@@ -51,11 +51,11 @@ theorem jpq_eq_diagonal (p q : ℕ) :
   rfl
 
 /- English proof (translation)
-Distinguish the cases in `h : (a : ℕ) < q`. Establish `ha : finCongr hcard a = Fin.castAdd p ⟨a, h⟩` using `Fin.ext rfl`. Establish `hv : ((finCongr hcard).trans (finSumFinEquiv.symm.trans (Equiv.sumComm (Fin q) (Fin p)))) a = Sum.inr ⟨a, h⟩`. Rewrite using `[Equiv.trans_apply, Equiv.trans_apply, ha, finSumFinEquiv_symm_apply_castAdd]`. Both sides reduce to the same expression.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[hv]`. Simplify using `[sgn, h]`. Establish `hlt` using `a.isLt`. Establish `ha : finCongr hcard a = Fin.natAdd q ⟨(a : ℕ) - q, by omega⟩` using `Fin.ext (by simp; omega)`. Establish `hv : ((finCongr hcard).trans (finSumFinEquiv.symm.trans (Equiv.sumComm (Fin q) (Fin p)))) a = Sum.inl ⟨(a : ℕ) - q, by omega⟩`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Equiv.trans_apply, Equiv.trans_apply, ha, finSumFinEquiv_symm_apply_natAdd]`. Both sides reduce to the same expression. Rewrite using `[hv]`. Simplify using `[sgn, h]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sumElim_sgn {p q r : ℕ} (hcard : r = q + p) (a : Fin r) :
     Sum.elim (fun _ : Fin p => (1 : ℂ)) (fun _ : Fin q => -1)
@@ -79,15 +79,15 @@ theorem sumElim_sgn {p q r : ℕ} (hcard : r = q + p) (a : Fin r) :
     simp [sgn, h]
 
 /- English proof (translation)
-Take `⟨L, hl, hr⟩` from `GlobalTheory.DecompCompare.frame_inv h hA`. Take `⟨e0, -⟩` from `h`. Establish `hcard : n = q + p`. Establish `h2` using `Fintype.card_congr e0`. Simplify using `only [Fintype.card_fin, Fintype.card_sum] at h2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Use `set π : Fin n ≃ Fin p ⊕ Fin q := (finCongr hcard).trans (finSumFinEquiv.symm.trans (Equiv.sumComm (Fin q) (Fin p))) with hπ`. Establish `hAx : A * (L * permM π.symm) = permM π.symm` using `by rw [← Matrix.mul_assoc, hr, Matrix.one_mul]`. Use `⟨π.symm, L * permM π.symm, ?_, hAx, ?_⟩` and prove the remaining obligations. Establish `h1 : (L * permM π.symm) * ((permM π.symm)ᵀ * A) = 1`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc (permM π.symm), permM_mul_transpose, Matrix.one_mul, hl]`. Introduce `h0`. Establish `h2` using `congrArg Matrix.det h1`. Rewrite `h2` using `[Matrix.det_mul, h0, zero_mul, Matrix.det_one]`. Conclude with `zero_ne_one h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `key : ∀ y : Matrix (Fin n) (Fin n) ℂ, yᴴ * Gc * y = (A * y)ᴴ * Formalism.UG.Jpq p q * (A * y)` using `fun y => by`. Rewrite using `[← hA, Matrix.conjTranspose_mul]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[key, hAx, permM_conj, Equiv.symm_symm, jpq_eq_diagonal, Matrix.submatrix_diagonal_equiv, Matrix.diagonal_neg, Matrix.diagonal_transpose]`. Use `congr 1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `a`. Rewrite using `[Function.comp_apply, hπ, sumElim_sgn hcard a, neg_neg]`.
+A detailed English derivation is pending.
 -/
 theorem exists_frame_of_sig {n p q : ℕ} {Gc : Matrix (Fin n) (Fin n) ℂ} (h : Formalism.UG.HasSignature Gc p q)
     {A : Matrix (Fin p ⊕ Fin q) (Fin n) ℂ} (hA : Aᴴ * Formalism.UG.Jpq p q * A = Gc) :
@@ -123,33 +123,27 @@ end GlobalTheory.CovTop.VolUp
 namespace GlobalTheory.CovTop.VolUp
 
 /- English proof (translation)
-Introduce `D V P Q hV hs A hA`. Use `choose e x hdet hAx hg using fun ρ => exists_frame_of_sig (hV (tauE D ρ)) (hA ρ)`. Establish `hrk : V.rank = Q + P`. Establish `h` using `hV D.host.φ₀`. Rewrite `h` using `[hs]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨e0, -⟩` from `h`. Establish `h2` using `Fintype.card_congr e0`. Simplify using `only [Fintype.card_fin, Fintype.card_sum] at h2`. Use linear arithmetic over natural numbers and integers. Establish `hmapT : ∀ ρ, ((-(V.gram)ᵀ).map (tauE D ρ))ᵀ = -(gramAt D V ρ)` using `fun ρ => by`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `a b`. Simplify using `[gramAt]`. Establish `hgr : ∀ ρ, ReciprocityTheory.ChartRestriction.G.FD.gram (tauE D ρ) (-(V.gram)ᵀ) (x ρ) = Matrix.diagonal fun a : Fin V.rank => ((sgn Q (a : ℕ) : ℝ) : ℂ)` using `fun ρ => by`. Establish `h1` using `hg ρ`. Simplify using `only [hs] at h1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[fdgram_eq, hmapT, Matrix.mul_neg, Matrix.neg_mul]`. Conclude with `h1`. Establish `hin : ∀ ρ, tauE D ρ ∈ Formalism.L2.Pj.cmTypeOfSqrt D` using `fun ρ => by`. Rewrite using `[Formalism.L2.Pj.mem_cm_type_iff, Formalism.L2.Theta.tauE_sqrtMinusD]`. Conclude with `(D.host.φ₀_mem).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hmem : ∀ τ : D.host.E →+* ℂ, τ ∈ Formalism.L2.Pj.cmTypeOfSqrt D ↔ ∃ ρ, τ = tauE D ρ`. Introduce `τ`. Use `⟨fun h => ?_, fun ⟨ρ, hρ⟩ => hρ ▸ hin ρ⟩` and prove the remaining obligations. Take `⟨ρ, hρ⟩` from `(GlobalTheory.CMTypePlaces.mk_tauE_bijective D).2 (InfinitePlace.mk τ)`. Break down `InfinitePlace.mk_eq_iff.1 hρ with h' | h'` into its components or cases.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨ρ, h'.symm⟩`. Conclude with `absurd (h' ▸ h) ((Formalism.L2.Pj.cm_type_mem_iff_conj_not_mem D _).1 (hin ρ))`. Establish `hinj : Function.Injective (tauE D)` using `fun _ _ h => (GlobalTheory.CMTypePlaces.mk_tauE_bijective D).1 (by simp only [h])`. Take `⟨hh, hd, hfg, hsp, -⟩` from `GlobalTheory.Member.selfDualLat_neg_gram_transpose D V`. Take `⟨n, hn, hnint⟩` from `GlobalTheory.PrincData.exists_nat_herm_int (-(V.gram)ᵀ) (GlobalTheory.Member.latC V) hfg`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨k, hk, hkint⟩` from `GlobalTheory.PrincData.exists_nat_int (-(2 * D.host.xi0))`. Take `⟨X, hΨ, hG, hp, -, -, -, -, -, -⟩` from `GlobalTheory.FlagData.exists_data GlobalTheory.latMinkowski D.host.E V.rank Q 3 (3 * n * k) (Formalism.L2.Pj.cmTypeOfSqrt D) (-(V.gram)ᵀ) (GlobalTheory.Member.latC V) D.host.xi0 (-(2 * D.host.xi0)) (Formalism.L2.Pj.cm_type_mem_iff_conj_not_mem D) hh hd (by omega) (fun τ hτ => by`. Take `⟨ρ, rfl⟩` from `(hmem τ).1 hτ`. Conclude with `⟨x ρ, hdet ρ, hgr ρ⟩)`. Use `hfg hsp le_rfl (Formalism.L2.Pj.conj_xi0_alt D)`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Use the proof step `(by`. Take `⟨ρ, -⟩` from `(GlobalTheory.CMTypePlaces.mk_tauE_bijective D).2 (InfinitePlace.mk D.host.φ₀)`. Introduce `h`. Establish `h1` using `Formalism.L2.Theta.xi_zero_im_pos D ρ`. Rewrite `h1` using `[h]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Simplify using `at h1)`. Use the proof step `(Or.inr rfl)`. Use the proof step `(fun τ hτ => by`. Take `⟨ρ, rfl⟩` from `(hmem τ).1 hτ`. Establish `h1` using `Formalism.L2.Theta.xi_zero_im_pos D ρ`.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Simplify using `[map_ofNat]`. Use the proof step `linarith)`. Use the proof step `(by positivity)`. Use the proof step `(fun u hu v hv => by`. Establish `e1 : ((3 * n * k : ℕ) : D.host.E) / ((3 : ℕ) : D.host.E) * (-(2 * D.host.xi0)) * ReciprocityTheory.ChartRestriction.G.FD.herm (-(V.gram)ᵀ) u v = ((k : D.host.E) * (-(2 * D.host.xi0))) * ((n : D.host.E) * ReciprocityTheory.ChartRestriction.G.FD.herm (-(V.gram)ᵀ) u v)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e1]`. Conclude with `hkint.mul (hnint u hu v hv))`. Set `σ : D.what₂.Tau ≃ X.Ψ` to `Equiv.ofBijective (fun ρ => ⟨tauE D ρ, by rw [hΨ]; exact hin ρ⟩) ⟨fun _ _ h => hinj (congrArg Subtype.val h), fun τ => by`.
-
-Take `⟨ρ, h⟩` from `(hmem τ.1).1 (hΨ ▸ τ.2)`. Conclude with `⟨ρ, Subtype.ext h.symm⟩⟩`. Use `⟨X, σ, fun τ => x (σ.symm τ), e, hG, fun ρ => rfl, fun τ => ?_, fun ρ => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Establish `hτ : τ.1 = tauE D (σ.symm τ)` using `(congrArg Subtype.val (σ.apply_symm_apply τ)).symm show ReciprocityTheory.ChartRestriction.G.FD.gram τ.1 X.Gm (x (σ.symm τ)) = _`. Rewrite using `[hG, hp, hτ]`.
-
-Conclude with `hgr _`. Rewrite using `[hA ρ, hG] show gramAt D V ρ = -((-(V.gram)ᵀ).map (tauE D ρ))ᵀ`. Rewrite using `[hmapT, neg_neg]`. Use `show A ρ * x (σ.symm (σ ρ)) = permM (e ρ)`. Rewrite using `[σ.symm_apply_apply]`.
-
-Conclude with `hAx ρ`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_ident_frame : ∀ (D : D7) (V : HSp D) (P Q : ℕ), V.SigOK → (∀ τ, V.sig τ = (P, Q)) →
     ∀ A : Frames V, IsFrames V A → ∃ (X₀ : Data D.host.E V.rank) (σ : D.what₂.Tau ≃ X₀.Ψ) (x : Frame X₀.Ψ V.rank)

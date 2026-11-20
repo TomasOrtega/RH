@@ -16,7 +16,7 @@ noncomputable section
 namespace GlobalTheory.Unf
 
 /- English proof (translation)
-Introduce `D V hV φ hφ`. Take `⟨K, hK, hS⟩` from `hV`. Establish `hr : RapidDec V φ` using `RapidDec.of_isCompact hφ.1 hφ.2 hK hS`. Conclude with `⟨hr, hr.bounded, fun v => hr.integrableOn_fundamentalDomain v.haar v.fund⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem contAut_rapidDec_bounded_integrable : ∀ (D : D7) (V : HSp D), CoCpt V → ∀ φ : GA D V → ℂ, IsContAut V φ → RapidDec V φ ∧ (∃ C : ℝ, ∀ g, ‖φ g‖ ≤ C) ∧ ∀ v : Vol V, IntegrableOn φ v.𝓕 v.μ := by
   intro D V hV φ hφ

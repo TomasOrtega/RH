@@ -14,7 +14,7 @@ open Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibl
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Establish `hl : 1 < l` using `(Fact.out : l.Prime).one_lt`. Use `⟨H₀, (Nat.lt_pow_self hl).le.trans (Nat.le_mul_of_pos_right _ (by omega))⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem exists_pow_ge (l : ℕ) [Fact l.Prime] (H₀ : ℕ) : ∃ n : ℕ, H₀ ≤ l ^ n * (l - 1) := by
   have hl : 1 < l := (Fact.out : l.Prime).one_lt
@@ -27,9 +27,7 @@ def levelM (l : ℕ) [Fact l.Prime] (s M₀ h₀ : ℕ) : ℕ := 2 * s + nZero l
 def cZero (l : ℕ) (m : ℕ) (U : Finset ℤ) : ℕ := 2 + ∑ u ∈ U, (m + padicValInt l u)
 
 /- English proof (translation)
-Use `haveI : FiniteDimensional ℚ_[l] ↥K.1 := K.2`. Use `haveI : FiniteDimensional ℚ_[l] ↥(K0 K) := FiniteDimensional.of_injective (IntermediateField.inclusion (inf_le_left : K0 K ≤ K.1)).toLinearMap (IntermediateField.inclusion_injective (inf_le_left : K0 K ≤ K.1))`. Establish `hpos : 0 < l ^ s` using `pow_pos (Fact.out : l.Prime).pos s`. Use `haveI : Finite {x : Om l | x ^ (l ^ s) = 1} := by`. Use `Set.Finite.to_subtype ((Polynomial.nthRoots (l ^ s) (1 : Om l)).toFinset.finite_toSet.subset ?_)` and prove the remaining obligations.
-
-Introduce `x hx`. Simplify `hx` using `[Polynomial.mem_nthRoots hpos]`. Use `haveI : FiniteDimensional ℚ_[l] ↥(IntermediateField.adjoin ℚ_[l] {x : Om l | x ^ (l ^ s) = 1}) := IntermediateField.finiteDimensional_adjoin fun x _ => Algebra.IsIntegral.isIntegral x`. Conclude with `IntermediateField.finiteDimensional_sup _ _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem finiteDimensional_Ks (K : FinExt l) (s : ℕ) : FiniteDimensional ℚ_[l] ↥(Ks K s) := by
   classical
@@ -106,7 +104,7 @@ def osmul (T : LocLat G Qp LL O) (o : O) (x : TW R T) : TW R T :=
 end Generic
 
 /- English proof (translation)
-Rewrite using `[inf_right_comm, h, inf_right_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem inf_inf_eq_of_inf_eq {α : Type} [SemilatticeInf α] {a b c d : α} (h : a ⊓ c = a ⊓ d) :
     a ⊓ b ⊓ c = a ⊓ b ⊓ d := by
@@ -162,7 +160,7 @@ def jumpsAt (P : LocPrime l) (T : Lat K LL) (τ : ↥K.1 →ₐ[ℚ_[l]] ↥LL.1
   (Finset.Icc (-(M₀ : ℤ)) (h₀ : ℤ)).filter fun u => IsJumpV (P.PD K) T.ρ τ u
 
 /- English proof (translation)
-Introduce `h'`. Apply `h` to reduce the goal to its premises. Conclude with `inf_inf_eq_of_inf_eq h'`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem isJumpAll_of_isJumpV (P : LocPrime l) (T : Lat K LL) (τ : ↥K.1 →ₐ[ℚ_[l]] ↥LL.1) (u : ℤ)
     (h : IsJumpV (P.PD K) T.ρ τ u) : IsJumpAll P T u := by
@@ -171,7 +169,7 @@ theorem isJumpAll_of_isJumpV (P : LocPrime l) (T : Lat K LL) (τ : ↥K.1 →ₐ
   exact inf_inf_eq_of_inf_eq h'
 
 /- English proof (translation)
-Unfold `jumpsAt`. Rewrite using `[Finset.mem_filter, Finset.mem_Icc]`. Conclude with `⟨fun h => h.2, fun h => ⟨hW.2.1 u (isJumpAll_of_isJumpV P T τ u h), h⟩⟩`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem mem_jumpsAt {s : ℕ} {hK : K.1 ≤ Ks K s} {M₀ h₀ : ℕ} {T : Lat K LL}
     (hW : HypW AI s hK M₀ h₀ T) (τ : ↥K.1 →ₐ[ℚ_[l]] ↥LL.1) (u : ℤ) :
@@ -199,14 +197,14 @@ def InvariantsKilledAllCoeff (D : D7) : Prop :=
     ∀ hK : K.1 ≤ Ks K s, InvariantsKilledAt (D.locA l) K s LL hK
 
 /- English proof (translation)
-Introduce `l _ K s LL hg` and use `h l K s LL hg.1 hg.2.1 hg.2.2.1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem InvariantsKilledAllCoeff.good {D : D7} (h : InvariantsKilledAllCoeff D) :
     InvariantsKilled D :=
   fun l _ K s LL hg => h l K s LL hg.1 hg.2.1 hg.2.2.1
 
 /- English proof (translation)
-Unfold `nZero`. Rewrite using `[Nat.find_eq_zero]`. Simplify using `using h`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem nZero_eq_zero (l : ℕ) [Fact l.Prime] (H₀ : ℕ) (h : H₀ ≤ l - 1) : nZero l H₀ = 0 := by
   unfold nZero
@@ -214,14 +212,14 @@ theorem nZero_eq_zero (l : ℕ) [Fact l.Prime] (H₀ : ℕ) (h : H₀ ≤ l - 1)
   simpa using h
 
 /- English proof (translation)
-Introduce `_` and use `⟨piS AI s, Algebra.subset_adjoin (Set.mem_insert _ _), by rw [sub_self]; exact Ideal.zero_mem _⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem piS_mem {P : LocPrime l} (AI : LocAinf l P) (K : FinExt l) (s : ℕ) :
     piS AI s ∈ ringAs AI K s := fun _ =>
   ⟨piS AI s, Algebra.subset_adjoin (Set.mem_insert _ _), by rw [sub_self]; exact Ideal.zero_mem _⟩
 
 /- English proof (translation)
-Simplify using `[cZero, padicValInt]`.
+Simplify using the standard rewrite rules.
 -/
 example : cZero 3 4 {-1} = 6 := by simp [cZero, padicValInt]
 

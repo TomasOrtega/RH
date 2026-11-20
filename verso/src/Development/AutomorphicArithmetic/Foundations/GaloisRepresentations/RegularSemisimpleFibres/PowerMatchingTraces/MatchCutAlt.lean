@@ -11,15 +11,15 @@ open scoped Classical
 open UpperTheory.Gal.InertialTypesAlt.G
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ _ _ σ hσ hp n hn v c φ f`. Establish `hO` using `normOpen F E σ hσ hp n hn v`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `hM _ _ _ _ mE mF hE hF h1 h2 γ hγ ν hν`. Take `⟨ha, hb⟩` from `hM mE mF hE hF h1 h2 γ hγ ν hν`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `hg : γ ∈ normSet E n v`. Establish `horb : orb mF γ ν ((normSet E n v).indicator f) = orb mF γ ν f`. Unfold `orb`. Use `congr 1`. Use function extensionality and compare the values at `x`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `Set.indicator_of_mem ((hO.2 γ x).2 hg) f`. Rewrite using `[horb]`. Conclude with `⟨ha, hb⟩`. Establish `horb : orb mF γ ν ((normSet E n v).indicator f) = 0`. Establish `hz : (fun x => (normSet E n v).indicator f (x⁻¹ * γ * x)) = fun _ => (0 : ℂ)`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `x`. Conclude with `Set.indicator_of_notMem (fun h => hg ((hO.2 γ x).1 h)) f`. Unfold `orb quotInt`. Rewrite using `[hz]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨fun δ hδ => absurd (normLoc F E σ hσ hp n hn v γ δ hδ) hg, fun _ => horb⟩`. Introduce `hT`. Take `⟨h1, h2⟩ : IsLocallyConstant f ∧ HasCompactSupport f` from `hT`. Conclude with `⟨(LocallyConstant.indicator (⟨f, h1⟩ : LocallyConstant _ ℂ) hO.1).isLocallyConstant, h2.mono fun x hx hx0 => hx (Set.indicator_apply_eq_zero.2 fun _ => hx0)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.InertialTypesAlt.G.matchCut :
     UpperTheory.Gal.InertialTypesAlt.G.MatchCut := by

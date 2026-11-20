@@ -36,13 +36,13 @@ theorem CharId_T_apply {V : Type} [AddCommGroup V] [Module ℂ V] {n : ℕ}
     twistedAction E c d y x = E c d (y x) - if x = d then y c else 0 := rfl
 
 /- English proof (translation)
-Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `y`. Use function extensionality and compare the values at `x`. Simplify using `only [Module.End.mul_apply, CharId_T_apply, CharId_M_apply, map_sum, map_sub]`. Establish `key : ∀ b, E c d (E x b (y b)) = E x b (E c d (y b)) + ((if d = x then E c b (y b) else 0) - (if b = c then E x d (y b) else 0))`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `b`. Establish `h` using `LinearMap.congr_fun (hE c d x b) (y b)`. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply] at h`. Rewrite using `[← sub_eq_iff_eq_add', h]`. Apply the tactic sequence `split_ifs <;> simp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hb : ∀ b, E x b (if b = d then y c else 0) = if b = d then E x b (y c) else 0`. Introduce `b`. Apply the tactic sequence `split_ifs <;> simp`. Simplify using `only [key, hb, Finset.sum_add_distrib, Finset.sum_sub_distrib]`. Distinguish the cases in `hxd : x = d`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Substitute `hxd` using the available equality. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Simplify using `[hxd, Ne.symm hxd]`. Normalize the expressions using the abelian group laws.
+Substitute using the available equality. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem CharId_comm {V : Type} [AddCommGroup V] [Module ℂ V] {n : ℕ}
     (E : Fin n → Fin n → Module.End ℂ V) (hE : GlRel E) (c d : Fin n) :
@@ -70,11 +70,11 @@ theorem CharId_comm {V : Type} [AddCommGroup V] [Module ℂ V] {n : ℕ}
     abel
 
 /- English proof (translation)
-Proceed by induction on `k generalizing y with`. Consider the case `zero`. Establish `h0 : ∀ b, epow E 0 a b (y b) = if a = b then y b else 0`. Introduce `b`. Simplify using `only [epow]`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `split_ifs <;> simp`. Simplify using `[h0]`. Consider the case `succ k ih`. Rewrite using `[pow_succ, Module.End.mul_apply, ih]`. Simplify using `only [epow, CharId_M_apply, map_sum, LinearMap.sum_apply, Module.End.mul_apply]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `Finset.sum_comm`.
+A detailed English derivation is pending.
 -/
 theorem CharId_Mpow {V : Type} [AddCommGroup V] [Module ℂ V] {n : ℕ}
     (E : Fin n → Fin n → Module.End ℂ V) (k : ℕ) (y : Fin n → V) (a : Fin n) :
@@ -98,21 +98,21 @@ def CharId_F {V : Type} [AddCommGroup V] [Module ℂ V] {n : ℕ}
     ∀ c d, ∀ y ∈ W, twistedAction E c d y ∈ W}
 
 /- English proof (translation)
-The claim follows from `Submodule.mem_sInf.2 fun _ hW => hW.1 t ht`.
+A detailed English derivation is pending.
 -/
 theorem CharId_F_gen {V : Type} [AddCommGroup V] [Module ℂ V] {n : ℕ}
     (E : Fin n → Fin n → Module.End ℂ V) (v : V) (j : ℕ) (t : Fin n) (ht : j ≤ (t : ℕ)) :
     Pi.single t v ∈ CharId_F E v j := Submodule.mem_sInf.2 fun _ hW => hW.1 t ht
 
 /- English proof (translation)
-The claim follows from `Submodule.mem_sInf.2 fun W hW => hW.2 c d y (Submodule.mem_sInf.1 hy W hW)`.
+A detailed English derivation is pending.
 -/
 theorem twistedAction_mem_tailSubmodule {V : Type} [AddCommGroup V] [Module ℂ V] {n : ℕ}
     (E : Fin n → Fin n → Module.End ℂ V) (v : V) (j : ℕ) (c d : Fin n) (y : Fin n → V)
     (hy : y ∈ CharId_F E v j) : twistedAction E c d y ∈ CharId_F E v j := Submodule.mem_sInf.2 fun W hW => hW.2 c d y (Submodule.mem_sInf.1 hy W hW)
 
 /- English proof (translation)
-Establish `hc : Commute (twistedAction E c d) (CharId_M E)` using `CharId_comm E hE c d`. Rewrite using `[aeval_eq_sum_range, Finset.mul_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[mul_smul_comm, smul_mul_assoc, (hc.pow_right i).eq]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem CharId_aeval_comm {V : Type} [AddCommGroup V] [Module ℂ V] {n : ℕ}
     (E : Fin n → Fin n → Module.End ℂ V) (hE : GlRel E) (q : ℂ[X]) (c d : Fin n) :
@@ -123,9 +123,9 @@ theorem CharId_aeval_comm {V : Type} [AddCommGroup V] [Module ℂ V] {n : ℕ}
   rw [mul_smul_comm, smul_mul_assoc, (hc.pow_right i).eq]
 
 /- English proof (translation)
-Introduce `y hy`. Establish `hW : LinearMap.ker (aeval (CharId_M E) q) ∈ {W : Submodule ℂ (Fin n → V) | (∀ t : Fin n, j ≤ (t : ℕ) → Pi.single t v ∈ W) ∧ ∀ c d, ∀ y ∈ W, twistedAction E c d y ∈ W}`. Use `⟨fun t ht => LinearMap.mem_ker.2 (hgen t ht), fun c d z hz => ?_⟩` and prove the remaining obligations. Rewrite `hz`, the goal using `[LinearMap.mem_ker]`. Rewrite using `[← Module.End.mul_apply, ← CharId_aeval_comm E hE q c d, Module.End.mul_apply, hz, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `LinearMap.mem_ker.1 (Submodule.mem_sInf.1 hy _ hW)`.
+A detailed English derivation is pending.
 -/
 theorem CharId_ker {V : Type} [AddCommGroup V] [Module ℂ V] {n : ℕ}
     (E : Fin n → Fin n → Module.End ℂ V) (hE : GlRel E) (v : V) (j : ℕ) (q : ℂ[X])
@@ -140,9 +140,9 @@ theorem CharId_ker {V : Type} [AddCommGroup V] [Module ℂ V] {n : ℕ}
   exact LinearMap.mem_ker.1 (Submodule.mem_sInf.1 hy _ hW)
 
 /- English proof (translation)
-Establish `ht` using `t.isLt`. Establish `hI : univ.filter (fun a : Fin n => t < a) = Finset.Ioi t`. Use extensionality with `a`. Simplify using the standard rewrite rules. Establish `h : (univ.filter (fun a : Fin n => t < a)).card = n - 1 - t`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[hI, Fin.card_Ioi]`. Rewrite using `[h, Nat.cast_sub (by omega), Nat.cast_sub (by omega)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem CharId_card {n : ℕ} (t : Fin n) :
     (((univ.filter (fun a : Fin n => t < a)).card : ℕ) : ℂ) = (n : ℂ) - 1 - ((t : ℕ) : ℂ) := by
@@ -156,7 +156,7 @@ theorem CharId_card {n : ℕ} (t : Fin n) :
   simp
 
 /- English proof (translation)
-Rewrite using `[CharId_T_apply]`. Distinguish the cases in `hxa : x = a`. Substitute `hxa` using the available equality. Simplify using `[ne_of_gt hta]`. Simplify using `[Pi.single_apply, hxa]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private theorem twistedAction_single_of_lt {V : Type} [AddCommGroup V] [Module ℂ V] {n : ℕ}
     (E : Fin n → Fin n → Module.End ℂ V) (v : V) (x t a : Fin n) (hta : t < a) :
@@ -168,11 +168,11 @@ private theorem twistedAction_single_of_lt {V : Type} [AddCommGroup V] [Module �
   · simp [Pi.single_apply, hxa]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Rewrite using `[Finset.sum_apply, Finset.sum_congr rfl (fun a ha => twistedAction_single_of_lt E v x t a (Finset.mem_filter.1 ha).2), Finset.sum_sub_distrib, Finset.sum_ite_eq, Finset.sum_const]`. Establish `hs : ∑ c, E x c ((Pi.single t v : Fin n → V) c) = E x t v`. Rewrite using `[Finset.sum_eq_single t]`. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `c _ hc`. Simplify using `[Pi.single_apply, hc]`. Simplify using the standard rewrite rules. Simplify using `only [LinearMap.sub_apply, Module.algebraMap_end_apply, Pi.sub_apply, Pi.smul_apply, CharId_M_apply, hs, Finset.mem_filter, Finset.mem_univ, true_and]`. Break down `lt_trichotomy x t with h | h | h` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using `[h.ne, not_lt.2 h.le, hv.2 x t h]`. Substitute `h` using the available equality. Rewrite using `[← Nat.cast_smul_eq_nsmul ℂ, CharId_card]`. Simplify using `[hv.1 x, lsh, add_smul, sub_smul]`. Simplify using `[h.ne', h, Pi.single_apply]`.
+Simplify using the standard rewrite rules. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem CharId_sub_lsh_apply_single {V : Type} [AddCommGroup V] [Module ℂ V] {n : ℕ}
     (E : Fin n → Fin n → Module.End ℂ V) (ν : Fin n → ℂ) (v : V) (hv : IsHW E ν v) (t : Fin n) :
@@ -198,15 +198,15 @@ theorem CharId_sub_lsh_apply_single {V : Type} [AddCommGroup V] [Module ℂ V] {
   · simp [h.ne', h, Pi.single_apply]
 
 /- English proof (translation)
-Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `j hj q _ y hy`. Conclude with `CharId_ker E hE v j q (fun t ht => absurd t.isLt (by omega)) y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately.
 
-Consider the case `succ k ih`. Introduce `j hj q hq y hy`. Use `CharId_ker E hE v j q (fun t ht => ?_) y hy` and prove the remaining obligations. Establish `hsub : insert t (univ.filter (fun s : Fin n => t.1 + 1 ≤ (s : ℕ))) ⊆ univ.filter (fun s : Fin n => j ≤ (s : ℕ))`. Introduce `s hs`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [Finset.mem_insert, Finset.mem_filter, Finset.mem_univ, true_and] at hs ⊢`. Apply the tactic sequence `rcases hs with rfl | hs <;> omega`. Establish `htn : t ∉ univ.filter (fun s : Fin n => t.1 + 1 ≤ (s : ℕ))` using `by simp`. Establish `hdvd` using `Finset.prod_dvd_prod_of_subset _ _ (fun s => X - C (lsh ν s)) hsub`. Rewrite `hdvd` using `[Finset.prod_insert htn]`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hw⟩` from `hdvd.trans hq`. Establish `hq' : q = ((∏ s ∈ univ.filter (fun s : Fin n => t.1 + 1 ≤ (s : ℕ)), (X - C (lsh ν s))) * w) * (X - C (lsh ν t))`. Rewrite using `[hw]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hq', map_mul, Module.End.mul_apply, map_sub, aeval_X, aeval_C, CharId_sub_lsh_apply_single E ν v hv t]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `ih (t.1 + 1) (by omega) _ (dvd_mul_right _ _) _ ?_` and prove the remaining obligations. Use `Submodule.sum_mem _ fun a ha => twistedAction_mem_tailSubmodule E v _ a t _ (CharId_F_gen E v _ a ?_)` and prove the remaining obligations. Establish `h` using `(Finset.mem_filter.1 ha).2`. Conclude with `h`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem CharId_kill {V : Type} [AddCommGroup V] [Module ℂ V] {n : ℕ}
     (E : Fin n → Fin n → Module.End ℂ V) (hE : GlRel E) (ν : Fin n → ℂ) (v : V)
@@ -241,7 +241,7 @@ theorem CharId_kill {V : Type} [AddCommGroup V] [Module ℂ V] {n : ℕ}
     exact h
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_eq_single b]`. Simplify using the standard rewrite rules. Introduce `c _ hc`. Simplify using `[Pi.single_apply, hc]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem CharId_single {V : Type} [AddCommGroup V] [Module ℂ V] {n : ℕ}
     (f : Fin n → Module.End ℂ V) (b : Fin n) (v : V) :
@@ -253,9 +253,9 @@ theorem CharId_single {V : Type} [AddCommGroup V] [Module ℂ V] {n : ℕ}
   · simp
 
 /- English proof (translation)
-Establish `hy : (Pi.single b v : Fin n → V) ∈ CharId_F E v 0` using `CharId_F_gen E v 0 b (Nat.zero_le _)`. Establish `hk` using `CharId_kill E hE ν v hv n 0 (by omega) (∏ s : Fin n, (X - C (lsh ν s))) (by simp) _ hy`. Establish `hdeg : (∏ s : Fin n, (X - C (lsh ν s))).natDegree < n + 1`. Rewrite using `[natDegree_finset_prod_X_sub_C_eq_card]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `hk` using `[aeval_eq_sum_range' hdeg]`. Establish `h` using `congrFun hk a`. Simplify `h` using `[LinearMap.sum_apply, Finset.sum_apply, CharId_Mpow, CharId_single]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem CharId_on_v {V : Type} [AddCommGroup V] [Module ℂ V] {n : ℕ}
     (E : Fin n → Fin n → Module.End ℂ V) (hE : GlRel E) (ν : Fin n → ℂ) (v : V)
@@ -277,7 +277,7 @@ def CharId_P {V : Type} [AddCommGroup V] [Module ℂ V] {n : ℕ}
     (∏ s : Fin n, (Polynomial.X - Polynomial.C (lsh ν s))).coeff i • epow E i a b
 
 /- English proof (translation)
-Simplify using `[CharId_P]`.
+Simplify using the standard rewrite rules.
 -/
 theorem CharId_P_apply {V : Type} [AddCommGroup V] [Module ℂ V] {n : ℕ}
     (E : Fin n → Fin n → Module.End ℂ V) (ν : Fin n → ℂ) (a b : Fin n) (x : V) :
@@ -286,9 +286,9 @@ theorem CharId_P_apply {V : Type} [AddCommGroup V] [Module ℂ V] {n : ℕ}
   simp [CharId_P]
 
 /- English proof (translation)
-Unfold `CharId_P`. Rewrite using `[Finset.mul_sum, Finset.sum_mul, ← Finset.sum_sub_distrib]`. Establish `h : ∀ i ∈ range (n + 1), E c d * ((∏ s : Fin n, (X - C (lsh ν s))).coeff i • epow E i a b) - ((∏ s : Fin n, (X - C (lsh ν s))).coeff i • epow E i a b) * E c d = (if d = a then (∏ s : Fin n, (X - C (lsh ν s))).coeff i • epow E i c b else 0) - (if b = c then (∏ s : Fin n, (X - C (l …`. Introduce `i _`. Rewrite using `[mul_smul_comm, smul_mul_assoc, ← smul_sub, generatorPowCovariance_holds _ n E hE i a b c d]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `split_ifs <;> simp [smul_sub]`. Rewrite using `[Finset.sum_congr rfl h, Finset.sum_sub_distrib]`. Apply the tactic sequence `split_ifs <;> simp [smul_sub]`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem CharId_P_commutator {V : Type} [AddCommGroup V] [Module ℂ V] {n : ℕ}
     (E : Fin n → Fin n → Module.End ℂ V) (hE : GlRel E) (ν : Fin n → ℂ) (a b c d : Fin n) :
@@ -308,13 +308,13 @@ theorem CharId_P_commutator {V : Type} [AddCommGroup V] [Module ℂ V] {n : ℕ}
   split_ifs <;> simp [smul_sub]
 
 /- English proof (translation)
-Introduce `V _ _ n E ν v hE hv x hx a b`. Set `W : Submodule ℂ V` to `⨅ (a : Fin n) (b : Fin n), LinearMap.ker (CharId_P E ν a b)`. Establish `hW : W ∈ {W : Submodule ℂ V | v ∈ W ∧ ∀ a b, ∀ x ∈ W, E a b x ∈ W}`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Simplify using `only [W, Submodule.mem_iInf, LinearMap.mem_ker]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Introduce `a b`. Rewrite using `[CharId_P_apply]`. Conclude with `CharId_on_v E hE ν v hv a b`. Introduce `c d y hy`. Simplify using `only [W, Submodule.mem_iInf, LinearMap.mem_ker] at hy ⊢`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a b`. Establish `h` using `LinearMap.congr_fun (CharId_P_commutator E hE ν a b c d) y`. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply, hy a b, map_zero, zero_sub] at h`. Apply the tactic sequence `split_ifs at h <;> simp_all`. Establish `hxW : x ∈ W` using `Submodule.mem_sInf.1 hx W hW`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [W, Submodule.mem_iInf, LinearMap.mem_ker] at hxW`. Rewrite using `[← CharId_P_apply]`. Conclude with `hxW a b`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem characteristicIdentity_holds : CharId := by
   intro V _ _ n E ν v hE hv x hx a b

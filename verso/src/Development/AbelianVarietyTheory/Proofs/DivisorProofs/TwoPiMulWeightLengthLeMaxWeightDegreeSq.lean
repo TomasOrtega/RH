@@ -10,13 +10,13 @@ namespace GlobalTheory.TopDegLower
 variable {D : D7} {L : SizeData₂ D} {P : ParameterChoice' D L}
 
 /- English proof (translation)
-Establish `hn : ¬ i.1 + 1 < (D.R.sigW j).1` using `by omega`. Establish `hk` using `GlobalTheory.DepthBoundProbe.kappa_last Tp hK hj τ i hi`. Use `show Tp.TO ≤ ofGaps (lGapP D (kaR Tp hK j) Tp.TO Tp.nWn τ) i + 1`. Rewrite using `[ofGaps_last _ _ hn]`. Unfold `lGapP`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg hn]`. Establish `hp : (0 : ℤ) < (WeightAlgebra.Tp D j Tp.TO : ℤ)` using `by unfold WeightAlgebra.Tp; push_cast; omega`. Rewrite using `[Int.fdiv_eq_ediv_of_nonneg _ hp.le]`. Establish `h1 : ((Tp.Dp : ℤ) + 2) * Tp.nWn + 2 * D.R.r ≤ Tp.TO` using `by exact_mod_cast Tp.TO_nW`. Establish `h40 : 40 * ((Tp.Dp : ℤ) + 2) ≤ Tp.TO` using `by exact_mod_cast Tp.TO_40`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (Tp.TO : ℤ) - 1 ≤ (((kaR Tp hK j).aP τ i : ℤ) - ((WeightFamilies.dimY D j : ℤ) + 2) * Tp.nWn - 2 * D.R.r) / (WeightAlgebra.Tp D j Tp.TO : ℤ)`. Rewrite using `[Int.le_ediv_iff_mul_le hp]`. Unfold `WeightAlgebra.Tp`. Rewrite using `[GlobalTheory.DepthBoundProbe.dimY_eq Tp hj]`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact.
 
-Establish `hD : (0 : ℤ) ≤ Tp.Dp` using `Int.natCast_nonneg _`. Establish `h2 : ((Tp.TO : ℤ) - 1) * ((Tp.Dp : ℤ) + 2) ≤ ((Tp.TO : ℤ) - 1) * Tp.TO` using `mul_le_mul_of_nonneg_left (by linarith) (by linarith)`. Use the polynomial consequences of the given equalities and inequalities. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem lR_last_ge (Tp : ParamsT D L P) (hK : DV.KapDef D) {j : ℕ} (hj : InR D j) (τ : D.what₂.Tau)
     (i : Fin (D.R.sigW j).1) (hi : i.1 + 1 = (D.R.sigW j).1) :
@@ -44,9 +44,9 @@ theorem lR_last_ge (Tp : ParamsT D L P) (hK : DV.KapDef D) {j : ℕ} (hj : InR D
   omega
 
 /- English proof (translation)
-Establish `hk : 5 ≤ D.R.k` using `by have := D.R.m_add_three_le_k; have := D.R.two_le_m; omega`. Establish `hs : (D.R.sigW j).1 = D.R.k + j - 1` using `rfl`. Establish `h1` using `lR_last_ge Tp hK hj τ ⟨(D.R.sigW j).1 - 1, by omega⟩ (by show (D.R.sigW j).1 - 1 + 1 = _; omega)`. Use `h1.trans (Nat.add_le_add_right ?_ 1)` and prove the remaining obligations. Unfold `WeightAlgebra.DF WeightAlgebra.degP`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Use `le_trans ?_ (Finset.single_le_sum (f := fun τ => (∑ i, (lR Tp hK j).aP τ i) + ∑ i, (lR Tp hK j).aM τ i) (fun _ _ => Nat.zero_le _) (Finset.mem_univ τ))` and prove the remaining obligations. Conclude with `le_trans (Finset.single_le_sum (f := fun i => (lR Tp hK j).aP τ i) (fun _ _ => Nat.zero_le _) (Finset.mem_univ _)) (Nat.le_add_right _ _)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem DF_ge (Tp : ParamsT D L P) (hK : DV.KapDef D) {j : ℕ} (hj : InR D j) (τ : D.what₂.Tau) :
     Tp.TO ≤ WeightAlgebra.DF (lR Tp hK j) + 1 := by
@@ -61,13 +61,13 @@ theorem DF_ge (Tp : ParamsT D L P) (hK : DV.KapDef D) {j : ℕ} (hj : InR D j) (
     (Finset.mem_univ _)) (Nat.le_add_right _ _)
 
 /- English proof (translation)
-Introduce `D L Pm Tp hK`. Establish `hj : InR D 1` using `⟨le_rfl, by have := D.R.two_le_m; omega⟩`. Take `⟨τ, -⟩` from `GlobalTheory.FinalJoin.RecordRun.exists_thick L`. Establish `h1` using `DF_ge Tp hK hj τ`. Establish `h2 : WeightAlgebra.DF (lR Tp hK 1) ≤ GlobalTheory.IndexAssembly.topDeg Tp hK` using `GlobalTheory.IndexAssembly.le_topDeg Tp hK hj`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : 2 * Tp.nWn ≤ Tp.TO`. Use `Tp.TO_nW` as an intermediate fact. Use polynomial arithmetic with `[Nat.zero_le (Tp.Dp * Tp.nWn)]`. Establish `h4 : 40 ≤ Tp.TO` using `by have := Tp.TO_40; omega`. Establish `a : (Tp.TO : ℝ) ≤ (GlobalTheory.IndexAssembly.topDeg Tp hK : ℝ) + 1`.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h1.trans (Nat.add_le_add_right h2 1)` after adjusting the coercions. Establish `b : 2 * (Tp.nWn : ℝ) ≤ Tp.TO` using `by exact_mod_cast h3`. Establish `c : (40 : ℝ) ≤ Tp.TO` using `by exact_mod_cast h4`. Establish `hpi` using `Real.pi_le_four`. Establish `hn : (0 : ℝ) ≤ Tp.nWn` using `Nat.cast_nonneg _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `d : 2 * Real.pi * (Tp.nWn : ℝ) ≤ 4 * Tp.TO` using `by nlinarith`. Use the polynomial consequences of the given equalities and inequalities.
+Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem two_pi_nW_le_topDeg_sq : ∀ (D : D7) (L : SizeData₂ D) (Pm : ParameterChoice' D L) (Tp : ParamsT D L Pm) (hK : DV.KapDef D),
     2 * Real.pi * (Tp.nWn : ℝ) ≤ (GlobalTheory.IndexAssembly.topDeg Tp hK : ℝ) ^ 2 := by

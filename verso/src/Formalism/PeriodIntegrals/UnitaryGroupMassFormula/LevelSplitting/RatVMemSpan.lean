@@ -17,13 +17,13 @@ variable {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [CommRing R] 
 def covR (x : Fin n → E) : Fin n → R ⊗[F] E := fun j => inclR R (∑ i, σ (x i) * J i j)
 
 /- English proof (translation)
-Simplify using `[sigR, inclR]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sigR_inclR (a : E) : sigR R σ (inclR R a) = inclR R (σ a) := by
   simp [sigR, inclR]
 
 /- English proof (translation)
-Simplify using `only [hR, Formalism.UG.hform, covR, ratV, JR, Matrix.map_apply, sigR_inclR, dotProduct, map_sum, map_mul, Finset.sum_mul]`. Conclude with `Finset.sum_comm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hR_ratV_left (x : Fin n → E) (y : Fin n → R ⊗[F] E) :
     hR R σ J (ratV (F := F) R x) y = covR R σ J x ⬝ᵥ y := by
@@ -32,7 +32,7 @@ theorem hR_ratV_left (x : Fin n → E) (y : Fin n → R ⊗[F] E) :
   exact Finset.sum_comm
 
 /- English proof (translation)
-Simplify using `only [covR, ratV, hE, Formalism.UG.hform, dotProduct, Finset.sum_mul, map_sum, map_mul]`. Conclude with `Finset.sum_comm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem covR_ratV (x y : Fin n → E) :
     covR R σ J x ⬝ᵥ ratV (F := F) R y = inclR R (hE σ J x y) := by
@@ -40,7 +40,7 @@ theorem covR_ratV (x y : Fin n → E) :
   exact Finset.sum_comm
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[ratV]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem ratV_add (x y : Fin n → E) :
     ratV (F := F) R (x + y) = ratV (F := F) R x + ratV (F := F) R y := by
@@ -48,7 +48,7 @@ theorem ratV_add (x y : Fin n → E) :
   simp [ratV]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[ratV, smul_eq_mul, map_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem ratV_smul (c : E) (x : Fin n → E) :
     ratV (F := F) R (c • x) = inclR (F := F) R c • ratV (F := F) R x := by
@@ -56,7 +56,7 @@ theorem ratV_smul (c : E) (x : Fin n → E) :
   simp [ratV, smul_eq_mul, map_mul]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[ratV]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem ratV_zero : ratV (F := F) R (0 : Fin n → E) = 0 := by
   funext i
@@ -65,9 +65,9 @@ theorem ratV_zero : ratV (F := F) R (0 : Fin n → E) = 0 := by
 variable {R σ J}
 
 /- English proof (translation)
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨a, rfl⟩` from `hy`. Conclude with `Submodule.subset_span ⟨a, rfl⟩`. Consider the case `zero => rw [ratV_zero]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Conclude with `Submodule.zero_mem _`. Consider the case `add y z _ _ hy hz => rw [ratV_add]`. Conclude with `Submodule.add_mem _ hy hz`. Consider the case `smul c y _ hy => rw [ratV_smul]`. Conclude with `Submodule.smul_mem _ _ hy`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem ratV_mem_span {m : ℕ} (Y : Fin m → Fin n → E) (x : Fin n → E)
     (hx : x ∈ Submodule.span E (Set.range Y)) :
@@ -81,9 +81,9 @@ theorem ratV_mem_span {m : ℕ} (Y : Fin m → Fin n → E) (x : Fin n → E)
   | smul c y _ hy => rw [ratV_smul]; exact Submodule.smul_mem _ _ hy
 
 /- English proof (translation)
-Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem w hw`. Take `⟨a, rfl⟩` from `hw`. Conclude with `hY a`. Consider the case `zero => exact map_zero _`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Consider the case `add w w' _ _ hw hw' => rw [map_add, hw, hw']`. Consider the case `smul c w _ hw => rw [map_smul, hw]`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem lin_fix_span (g : HA R σ J) {m : ℕ} (Y : Fin m → Fin n → E)
     (hY : ∀ a, lin R σ J g (ratV (F := F) R (Y a)) = ratV (F := F) R (Y a))
@@ -99,7 +99,7 @@ theorem lin_fix_span (g : HA R σ J) {m : ℕ} (Y : Fin m → Fin n → E)
   | smul c w _ hw => rw [map_smul, hw]
 
 /- English proof (translation)
-Simplify using `only [spanR, Set.image_univ]`.
+Simplify using the standard rewrite rules.
 -/
 theorem spanR_univ {m : ℕ} (Y : Fin m → Fin n → E) :
     spanR (F := F) R Y Set.univ =
@@ -107,7 +107,7 @@ theorem spanR_univ {m : ℕ} (Y : Fin m → Fin n → E) :
   simp only [spanR, Set.image_univ]
 
 /- English proof (translation)
-Simplify using `only [hE, Formalism.UG.hform, map_sum, map_mul, AlgHom.coe_toRingHom, RingHom.coe_coe, hinv, hJ.1]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hE_swap (hJ : IsHermND σ J) (hinv : ∀ x, σ (σ x) = x) (x y : Fin n → E) :
     hE σ J y x = σ (hE σ J x y) := by
@@ -117,7 +117,7 @@ theorem hE_swap (hJ : IsHermND σ J) (hinv : ∀ x, σ (σ x) = x) (x y : Fin n 
   ring
 
 /- English proof (translation)
-Rewrite `hk` using `[Hsub, mem_stabT]`. Simplify `hk (Fin.castAdd r (Fin.castSucc a))` using `[tupH, F0, Fin.append_left, Fin.snoc_castSucc]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem H_fix_e {r : ℕ} (P : Frame E n r) (k : HA R σ J) (hk : k ∈ Hsub R σ J P) (a : Fin r) :
     lin R σ J k (ratV (F := F) R (P.e a)) = ratV (F := F) R (P.e a) := by
@@ -125,7 +125,7 @@ theorem H_fix_e {r : ℕ} (P : Frame E n r) (k : HA R σ J) (hk : k ∈ Hsub R �
   simpa [tupH, F0, Fin.append_left, Fin.snoc_castSucc] using hk (Fin.castAdd r (Fin.castSucc a))
 
 /- English proof (translation)
-Rewrite `hk` using `[Hsub, mem_stabT]`. Simplify `hk (Fin.natAdd (r + 1) a)` using `[tupH, Fin.append_right]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem H_fix_f {r : ℕ} (P : Frame E n r) (k : HA R σ J) (hk : k ∈ Hsub R σ J P) (a : Fin r) :
     lin R σ J k (ratV (F := F) R (P.f a)) = ratV (F := F) R (P.f a) := by
@@ -133,9 +133,9 @@ theorem H_fix_f {r : ℕ} (P : Frame E n r) (k : HA R σ J) (hk : k ∈ Hsub R �
   simpa [tupH, Fin.append_right] using hk (Fin.natAdd (r + 1) a)
 
 /- English proof (translation)
-Establish `key : ∀ u : Fin n → E, lin R σ J k (ratV (F` using `F) R u) = ratV (F := F) R u → hE σ J u w = 0 → covR R σ J u ⬝ᵥ lin R σ J k (ratV (F := F) R w) = 0 := by`. Introduce `u hu h0`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hu, hR_ratV_left]`. Use `_ = hR R σ J (ratV (F := F) R u) (ratV (F := F) R w) := by rw [hR_lin]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Use `_ = 0 := by rw [hR_ratV_left, covR_ratV, h0, map_zero]`. Conclude with `⟨key _ (H_fix_e P k hk b) (hw b).1, key _ (H_fix_f P k hk b) (hw b).2⟩`.
+A detailed English derivation is pending.
 -/
 theorem H_perp {r : ℕ} (P : Frame E n r) (k : HA R σ J) (hk : k ∈ Hsub R σ J P) (w : Fin n → E)
     (hw : ∀ a, hE σ J (P.e a) w = 0 ∧ hE σ J (P.f a) w = 0) (b : Fin r) :
@@ -162,14 +162,14 @@ def phiV (v : HeightOneSpectrum (𝓞 F)) : Af F ⊗[F] E →+* Fv F v ⊗[F] E 
   (Algebra.TensorProduct.map (evalV F v) (AlgHom.id F E)).toRingHom
 
 /- English proof (translation)
-Simplify using `[phiV, inclR]`.
+Simplify using the standard rewrite rules.
 -/
 theorem phiV_inclR (v : HeightOneSpectrum (𝓞 F)) (a : E) :
     phiV v (inclR (Af F) a) = inclR (Fv F v) a := by
   simp [phiV, inclR]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Conclude with `phiV_inclR v (x i)`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem phiV_ratV (v : HeightOneSpectrum (𝓞 F)) (x : Fin n → E) :
     (fun i => phiV v (ratV (F := F) (Af F) x i)) = ratV (F := F) (Fv F v) x := by
@@ -177,22 +177,22 @@ theorem phiV_ratV (v : HeightOneSpectrum (𝓞 F)) (x : Fin n → E) :
   exact phiV_inclR v (x i)
 
 /- English proof (translation)
-Simplify using `only [dotProduct, map_sum, map_mul, covR, phiV_inclR]`.
+Simplify using the standard rewrite rules.
 -/
 theorem phiV_cov (v : HeightOneSpectrum (𝓞 F)) (x : Fin n → E) (y : Fin n → Af F ⊗[F] E) :
     phiV v (covR (Af F) σ J x ⬝ᵥ y) = covR (Fv F v) σ J x ⬝ᵥ fun i => phiV v (y i) := by
   simp only [dotProduct, map_sum, map_mul, covR, phiV_inclR]
 
 /- English proof (translation)
-Rewrite `hy` using `[spanR_univ]`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem w hw`. Take `⟨a, rfl⟩` from `hw`. Rewrite using `[phiV_ratV]`.
+Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.subset_span ⟨a, rfl⟩`. Consider the case `zero`. Establish `h0 : (fun i => phiV v ((0 : Fin n → Af F ⊗[F] E) i)) = 0`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules.
+Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h0]`. Conclude with `Submodule.zero_mem _`. Consider the case `add w w' _ _ hw hw'`. Establish `h1 : (fun i => phiV v ((w + w') i)) = (fun i => phiV v (w i)) + fun i => phiV v (w' i)`. Use function extensionality and compare the values at `i`.
+Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[h1]`. Conclude with `Submodule.add_mem _ hw hw'`. Consider the case `smul c w _ hw`. Establish `h1 : (fun i => phiV v ((c • w) i)) = phiV v c • fun i => phiV v (w i)`.
+Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Rewrite using `[h1]`. Conclude with `Submodule.smul_mem _ _ hw`.
+A detailed English derivation is pending.
 -/
 theorem phiV_span (v : HeightOneSpectrum (𝓞 F)) {m : ℕ} (Y : Fin m → Fin n → E)
     (y : Fin n → Af F ⊗[F] E) (hy : y ∈ spanR (F := F) (Af F) Y Set.univ) :
@@ -218,7 +218,7 @@ theorem phiV_span (v : HeightOneSpectrum (𝓞 F)) {m : ℕ} (Y : Fin m → Fin 
     rw [h1]; exact Submodule.smul_mem _ _ hw
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Conclude with `(RingHom.map_mulVec (phiV v) (HA.mat (R := Af F) (σ := σ) (J := J) g : Matrix (Fin n) (Fin n) (Af F ⊗[F] E)) x i).symm`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem compV_mulVec (v : HeightOneSpectrum (𝓞 F)) (g : HA (Af F) σ J) (x : Fin n → Af F ⊗[F] E) :
     Matrix.mulVec ((compV v (incAf σ J g) : GL (Fin n) (Fv F v ⊗[F] E)) :
@@ -229,7 +229,7 @@ theorem compV_mulVec (v : HeightOneSpectrum (𝓞 F)) (g : HA (Af F) σ J) (x : 
     (HA.mat (R := Af F) (σ := σ) (J := J) g : Matrix (Fin n) (Fin n) (Af F ⊗[F] E)) x i).symm
 
 /- English proof (translation)
-Apply the tactic sequence `simp only [Kf, Subgroup.mem_iInf, Subgroup.mem_comap, MonoidHom.coe_comp, Function.comp_apply] <;>`. Conclude with `Iff.rfl`.
+Apply the first step, then apply the next step to every resulting obligation. Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_Kf (Λ : Set (Fin n → E)) (g : HA (Af F) σ J) :
     g ∈ Kf σ J Λ ↔ ∀ v, ∀ x, x ∈ latLoc (E := E) v Λ ↔

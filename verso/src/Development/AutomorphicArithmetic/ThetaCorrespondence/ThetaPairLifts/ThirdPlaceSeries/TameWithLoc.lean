@@ -36,7 +36,7 @@ open Formalism.MainNotions.N Formalism.L2.Host Formalism.IndefR.NX ReciprocityTh
 attribute [local instance] GlobalTheory.TypeRec.factG
 set_option maxHeartbeats 4000000 in
 /- English proof (translation)
-Introduce `i`. Establish `h` using `cen_twisted x.r.Y x.m.z.cG x.m.z.pins.char.base x.m.z.pins.keep x.m.intersectionNumber_baseChange.ok.ok2 (cenRead_state x) l.mt.M l.mt.ad l.mt.mt ((withLoc Lc).nd.w i) ((withLoc Lc).nd.w_tw i) ((withLoc Lc).nd.mu i) ((withLoc Lc).nd.mu_w i) ((withLoc Lc).nd.j i) ((withLoc Lc).nd. …`. Conclude with `(by with_unfolding_all exact (h :))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cenLoc_third_alt {hL : _root_.UpperTheory.Zero.LLC.RecTExists} {K : Ctx} {B : Base} {f : Fr B.toPre} {T : TwDat B} {w : ColW B f T}
     {P : Pre2 K w} (x : St P) (l : _root_.GlobalTheory.HeightCounting.Up.StrictHenselianAcyclicLevel hL x) (Lc : LocAll (lay0 (Dof x))) : CenLoc (withLoc Lc) (mtL Lc l.mt.M) := by
@@ -47,7 +47,7 @@ theorem cenLoc_third_alt {hL : _root_.UpperTheory.Zero.LLC.RecTExists} {K : Ctx}
   exact (by with_unfolding_all exact (h :))
 set_option maxHeartbeats 2000000 in
 /- English proof (translation)
-Introduce `k v` and use `⟨l.a.A.grp.kv k v, by have h := l.a.A.grp.tg_tame k v rw [l.a.zeta k] at h exact h⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem tame_coupled_with_loc {hL : _root_.UpperTheory.Zero.LLC.RecTExists} {K : Ctx} {B : Base} {f : Fr B.toPre} {T : TwDat B} {w : ColW B f T}
     {P : Pre2 K w} (x : St P) (l : _root_.GlobalTheory.HeightCounting.Up.StrictHenselianAcyclicLevel hL x) (Lc : LocAll (lay0 (Dof x))) :

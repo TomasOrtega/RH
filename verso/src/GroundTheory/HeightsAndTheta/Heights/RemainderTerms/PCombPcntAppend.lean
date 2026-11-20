@@ -11,9 +11,9 @@ open scoped Classical
 open Comb
 
 /- English proof (translation)
-Introduce `m n q w s t i`. Unfold `pcnt`. Rewrite using `[Finset.card_filter, Finset.card_filter, Finset.card_filter, Fin.sum_univ_add]`. Use `congr 1`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Fin.append_left, Fin.val_castAdd]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `only [Fin.append_right, Fin.val_natAdd]`. Establish `h : (n + (k : ℕ) < t) ↔ ((k : ℕ) < t - n)` using `by omega`. Simplify using `only [h]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem CombPcntAppend.proof : CombPcntAppend.Statement := by
   intro m n q w s t i

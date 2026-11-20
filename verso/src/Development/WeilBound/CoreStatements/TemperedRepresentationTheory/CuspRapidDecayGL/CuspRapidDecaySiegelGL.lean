@@ -13,7 +13,7 @@ open NumberField GlobalTheory.CuspRep GroundTheory.Global GroundTheory.Automorph
 namespace PositivityTheory.S2.CuspBdd
 
 /- English proof (translation)
-Introduce `E _ _ _ a φ hφ`. Establish `hs` using `GlobalTheory.CompanionTheory.ArchSmooth.sm_mem_archSmooth E a φ`. Conclude with `GlobalTheory.CompanionTheory.SiegelDecay.rapid_decay_of_one_parabolic_bounds E a φ.1 (ContAut.continuous_of_isOpen_stab E a φ hφ.1.level) (GlobalTheory.CompanionTheory.GGPS.ggps_bound E a φ.1 hs (GlobalTheory.CompanionTheory.LeftInv.isLeftInvariant_of_isAutForm E a φ hφ.1) (Globa …`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cuspRapidDecaySiegelGL : GlobalTheory.Published.CuspRapidDecaySiegelGL := by
   intro E _ _ _ a φ hφ
@@ -23,7 +23,7 @@ theorem cuspRapidDecaySiegelGL : GlobalTheory.Published.CuspRapidDecaySiegelGL :
       (GlobalTheory.CompanionTheory.HCRep.uJ_eq_conv E a φ hs hφ.1) (GlobalTheory.CompanionTheory.BoxBound.box_bound E a φ hφ.1))
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CuspBoundSiegel.cuspFormsBounded_of_rapidDecay cuspRapidDecaySiegelGL`.
+A detailed English derivation is pending.
 -/
 theorem cuspFormsBoundedGL : GlobalTheory.Published.CuspFormsBoundedGL :=
   GlobalTheory.CuspBoundSiegel.cuspFormsBounded_of_rapidDecay cuspRapidDecaySiegelGL

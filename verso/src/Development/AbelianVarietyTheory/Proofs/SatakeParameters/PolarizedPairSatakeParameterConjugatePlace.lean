@@ -20,11 +20,11 @@ noncomputable section
 namespace GlobalTheory.PolarizedSat
 
 /- English proof (translation)
-Introduce `hF E _ _ _ a π χ hpol`. Establish `hu : ∀ᶠ w : HeightOneSpectrum (𝓞 E) in Filter.cofinite, (compNorm E χ).UnrAt w` using `Filter.eventually_cofinite.2 (GlobalTheory.Mem.UnrAe.finite_ramified _)`. Establish `hs : ∀ᶠ w : HeightOneSpectrum (𝓞 E) in Filter.cofinite, ∃ B, (CG.mk π).HasSat (UpperTheory.V.Af.Bc.cPl w) B` using `(conjSrc_injective _).tendsto_cofinite.eventually (GlobalTheory.CuspRep.UnrSat.eventually_hasSatGL_locRep hF E a π)`. Use `filter_upwards [hu, hs] with w hw hB'e B hB`. Take `⟨B', hB'⟩` from `hB'e`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e` using `UpperTheory.V.Br.satOfPol E a π _ hpol.dual w hw B B' hB hB'`. Establish `e2 : B' = B.map fun α => α⁻¹ * (compNorm E χ).val w`. Establish `e3` using `congrArg (Multiset.map fun z : ℂˣ => z⁻¹) e`. Rewrite `e3` using `[Multiset.map_map, Multiset.map_map]`. Simplify using `only [Function.comp_def, inv_inv, Multiset.map_id'] at e3`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e3]`. Conclude with `Multiset.map_congr rfl fun α _ => by rw [mul_inv_rev, inv_inv, mul_comm]`. Rewrite using `[← e2]`. Conclude with `hB'`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasSat_conjPlace : AutomorphicFormsFiniteGL → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (a : ℕ) (π : CuspSub E a) (χ : HChar (maximalRealSubfield E)), GlobalTheory.ContraPair.PolarizedPair π χ → ∀ᶠ w : HeightOneSpectrum (𝓞 E) in Filter.cofinite, ∀ B : Multiset ℂˣ, (CG.mk π).HasSat w B → (CG.mk π).HasSat (UpperTheory.V.Af.Bc.cPl w) (B.map fun α => α⁻¹ * (compNorm E χ).val w) := by
   intro hF E _ _ _ a π χ hpol

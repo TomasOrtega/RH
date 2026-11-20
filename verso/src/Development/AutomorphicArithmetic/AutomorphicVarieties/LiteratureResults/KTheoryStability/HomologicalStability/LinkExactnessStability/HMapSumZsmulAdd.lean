@@ -6,9 +6,9 @@ open CategoryTheory CategoryTheory.Limits GlobalTheory.HomStab
 namespace GlobalTheory.HomStab
 
 /- English proof (translation)
-Use extensionality with `n : 1`. Apply `groupHomology.inhomogeneousChains.ext` to reduce the goal to its premises. Introduce `x`. Use extensionality with `a : 2`. Simplify using `only [groupHomology.chainsMap_f_single, HomologicalComplex.add_f_apply]`.
+By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[groupHomology.chainsMap_f_single]`. Rewrite using `[← Finsupp.single_add]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem chainsMap_id_add {k G : Type} [CommRing k] [Group G] {A B : Rep k G} (f g : A ⟶ B) :
     groupHomology.chainsMap (MonoidHom.id G) (f + g) =
@@ -23,7 +23,7 @@ theorem chainsMap_id_add {k G : Type} [CommRing k] [Group G] {A B : Rep k G} (f 
   rfl
 
 /- English proof (translation)
-Unfold `hMap groupHomology.map`. Rewrite using `[chainsMap_id_add, HomologicalComplex.homologyMap_add]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem hMap_add {k G : Type} [CommRing k] [Group G] {A B : Rep k G} (f g : A ⟶ B) (n : ℕ) :
     hMap (f + g) n = hMap f n + hMap g n := by
@@ -36,9 +36,7 @@ noncomputable def hMapHom {k G : Type} [CommRing k] [Group G] (A B : Rep k G) (n
   AddMonoidHom.mk' (fun f => hMap f n) fun f g => hMap_add f g n
 
 /- English proof (translation)
-Introduce `k G _ _ A B n`. Use `⟨fun f g => hMap_add f g n, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `map_zero (hMapHom A B n)`. Introduce `m f`. Conclude with `map_zsmul (hMapHom A B n) m f`.
-
-Introduce `ι T f`. Conclude with `map_sum (hMapHom A B n) f T`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem hMap_additive : ∀ (k G : Type) [CommRing k] [Group G] (A B : Rep k G) (n : ℕ), (∀ f g : A ⟶ B, hMap (f + g) n = hMap f n + hMap g n) ∧ hMap (0 : A ⟶ B) n = 0 ∧ (∀ (m : ℤ) (f : A ⟶ B), hMap (m • f) n = m • hMap f n) ∧ ∀ (ι : Type) (T : Finset ι) (f : ι → (A ⟶ B)), hMap (∑ i ∈ T, f i) n = ∑ i ∈ T, hMap (f i) n := by
   intro k G _ _ A B n
@@ -54,7 +52,7 @@ end GlobalTheory.HomStab
 section
 open CategoryTheory CategoryTheory.Limits GlobalTheory.HomStab
 /- English proof (translation)
-Use `first`. Consider the case `exact @GlobalTheory.HomStab.hMap_additive`. Consider the case `exact @GlobalTheory.HomStab.hMap_add`. Consider the case `exact @GlobalTheory.HomStab.chainsMap_id_add`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.T.hMap_sum_zsmul_add : ∀ (k G : Type) [CommRing k] [Group G] (A B : Rep k G) (n : ℕ), (∀ f g : A ⟶ B, hMap (f + g) n = hMap f n + hMap g n) ∧ hMap (0 : A ⟶ B) n = 0 ∧ (∀ (m : ℤ) (f : A ⟶ B), hMap (m • f) n = m • hMap f n) ∧ ∀ (ι : Type) (T : Finset ι) (f : ι → (A ⟶ B)), hMap (∑ i ∈ T, f i) n = ∑ i ∈ T, hMap (f i) n := by
   first

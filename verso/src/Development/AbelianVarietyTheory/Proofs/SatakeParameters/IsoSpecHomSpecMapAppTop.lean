@@ -13,7 +13,7 @@ noncomputable section
 namespace GlobalTheory.IwLevel.FiberCard
 
 /- English proof (translation)
-Rewrite using `[Scheme.isoSpec_hom, Spec.map_comp, ← Scheme.toSpecΓ_naturality_assoc, toSpecΓ_SpecMap_ΓSpecIso_inv, Category.comp_id]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem isoSpec_hom_specMap_appTop' {P : Scheme.{0}} [IsAffine P] {R : CommRingCat.{0}} (s : P ⟶ Spec R) :
     P.isoSpec.hom ≫ Spec.map ((Scheme.ΓSpecIso R).inv ≫ s.appTop) = s := by

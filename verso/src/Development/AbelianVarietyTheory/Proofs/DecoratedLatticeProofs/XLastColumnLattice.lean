@@ -13,13 +13,11 @@ namespace GlobalTheory.FinPl.SplitLast
 variable {D : D7}
 
 /- English proof (translation)
-Proceed by induction on `hy using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨β, hβi, hβ, a, ha, x, hx, rfl⟩` from `hz`. Use `set u : Fin W.rank → AE D := fun k => pairA D.host.F 0 β ⊗ₜ[D.host.F] (1 * x k) with hu`. Establish `hu' : u ∈ latV W LW (· = v)` using `AddSubgroup.subset_closure ⟨β, hβi, hβ, 1, rfl, x, hx, rfl⟩`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg : (fun k => pairA D.host.F 0 β ⊗ₜ[D.host.F] (a * x k)) = ((1 : AF D.host.F) ⊗ₜ[D.host.F] a) • u`. Use function extensionality and compare the values at `k`. Simplify using `only [hu, Pi.smul_apply, smul_eq_mul, Algebra.TensorProduct.tmul_mul_tmul, one_mul]`. Establish `heq : d.p0 *ᵥ (((1 : AF D.host.F) ⊗ₜ[D.host.F] a) • u) = fun k => ((1 : AF D.host.F) ⊗ₜ[D.host.F] a) * (d.p0 *ᵥ u) k`. Use function extensionality and compare the values at `k`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mulVec_smul, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[hg, heq]`. Conclude with `VacFlat.smul_mem_latA ha (((hm u).1 hu').2.2)`. Consider the case `zero => rw [Matrix.mulVec_zero]`. Conclude with `zero_mem _`.
-
-Consider the case `add z z' _ _ hz hz' => rw [Matrix.mulVec_add]`. Conclude with `add_mem hz hz'`. Consider the case `neg z _ hz => rw [Matrix.mulVec_neg]`. Conclude with `neg_mem hz`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem proj_mem_adelic_lattice_of_mono {W W₀ : HSp D} {σ : ℕ} (d : HypDec W W₀ σ) {LW : Lat W} {LW₀ : Lat W₀} {v : Pl D}
     (hm : MonoAt d LW LW₀ v) {y : Fin W.rank → AE D} (hy : y ∈ latA W LW (· = v)) :

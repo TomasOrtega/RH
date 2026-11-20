@@ -5,7 +5,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws GlobalTheory.GalOfCusp UpperTheory.V.Ws.Lk
 
 /- English proof (translation)
-Establish `hd : Φ.χ 3 g = (Φ.χ 0 g)⁻¹ * (Φ.χ 1 g * Φ.χ 2 g)` using `eq_inv_mul_of_mul_eq h`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Fr.rt, wt, lamW, muW, hd] <;>`. Apply the tactic sequence `apply Additive.ofMul.injective <;> simp <;> abel`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem gEx_rt_wt {O Γ : Type} [CommRing O] [Group Γ] (Φ : Fr O Γ) (g : Γ)
     (h : Φ.χ 0 g * Φ.χ 3 g = Φ.χ 1 g * Φ.χ 2 g) (i j : Fin 4) : Φ.rt (wt i j) g * Φ.χ j g = Φ.χ i g := by
@@ -14,7 +14,7 @@ private theorem gEx_rt_wt {O Γ : Type} [CommRing O] [Group Γ] (Φ : Fr O Γ) (
     apply Additive.ofMul.injective <;> simp <;> abel
 
 /- English proof (translation)
-Simplify using `only [Fr.rt, MonoidHom.coe_mk, OneHom.coe_mk, Prod.fst_add, Prod.snd_add, zpow_add]`. Conclude with `mul_mul_mul_comm _ _ _ _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem gEx_rt_add {O Γ : Type} [CommRing O] [Group Γ] (Φ : Fr O Γ) (g : Γ) (w w' : ℤ × ℤ) :
     Φ.rt (w + w') g = Φ.rt w g * Φ.rt w' g := by
@@ -22,25 +22,25 @@ private theorem gEx_rt_add {O Γ : Type} [CommRing O] [Group Γ] (Φ : Fr O Γ) 
   exact mul_mul_mul_comm _ _ _ _
 
 /- English proof (translation)
-Simplify using `[Fr.rt]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem gEx_rt_zero {O Γ : Type} [CommRing O] [Group Γ] (Φ : Fr O Γ) (g : Γ) : Φ.rt 0 g = 1 := by
   simp [Fr.rt]
 
 /- English proof (translation)
-Set `κ : Fin 4 → Δ →* kˣ` to `fun i => (Units.map a.toMonoidHom).comp ((Φ.χ i).comp φ)`. Set `ω' : Δ →* kˣ` to `(Units.map a.toMonoidHom).comp (ω.comp φ)`. Establish `hmain : ω' ∉ Subgroup.closure (Set.range fun q : Fin 4 × Fin 4 => κ q.1 / κ q.2)`. Introduce `hmem`. Set `S : Subgroup (Δ →* kˣ)` to `{ carrier := {ψ | ∃ w : ℤ × ℤ, ∀ g, ψ g = Units.map a.toMonoidHom (Φ.rt w (φ g))} mul_mem' := by`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Introduce and unpack `ψ₁ ψ₂ ⟨w₁, h₁⟩ ⟨w₂, h₂⟩`. Conclude with `⟨w₁ + w₂, fun g => by simp [h₁, h₂, gEx_rt_add]⟩`. Use the proof step `one_mem' := ⟨0, fun g => by simp [gEx_rt_zero]⟩`. Use the proof step `inv_mem' := by`. Introduce and unpack `ψ ⟨w, hw⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨-w, fun g => ?_⟩` and prove the remaining obligations. Establish `hinv : Φ.rt (-w) (φ g) = (Φ.rt w (φ g))⁻¹`. Rewrite using `[eq_inv_iff_mul_eq_one, ← gEx_rt_add]`. Simplify using `[gEx_rt_zero]`. Simplify using `[hw, hinv] }`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hle : Subgroup.closure (Set.range fun q : Fin 4 × Fin 4 => κ q.1 / κ q.2) ≤ S`. Rewrite using `[Subgroup.closure_le]`. Introduce and unpack `_ ⟨⟨p, q⟩, rfl⟩`. Use `⟨wt p q, fun g => ?_⟩` and prove the remaining obligations. Establish `hpq` using `gEx_rt_wt Φ (φ g) (h _) p q`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Simplify using `only [κ, MonoidHom.div_apply, MonoidHom.comp_apply, ← hpq, map_mul]`. Conclude with `mul_div_cancel_right _ _`. Take `⟨w, hw⟩` from `hle hmem`. Take `⟨g, hg⟩` from `hω w`. Apply `hg` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Use `congrArg Units.val (hw g)` as an intermediate fact. Simplify `this.symm` using `[ω']`. Take `⟨g, hg1, hg2⟩` from `(Loc.v0e κ ω').2 hmain`. Use `⟨g, fun i j => ?_, ?_⟩` and prove the remaining obligations. Use `congrArg Units.val (hg1 i j)` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify `this` using `[κ]`. Introduce `h1`. Apply `hg2` to reduce the goal to its premises. Use `ext`. Simplify `h1` using `[ω']`.
+By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem gEx_abs {O Γ Δ k : Type} [CommRing O] [Group Γ] [Group Δ] [Field k] [Finite k] (Φ : Fr O Γ)
     (h : ∀ g, Φ.χ 0 g * Φ.χ 3 g = Φ.χ 1 g * Φ.χ 2 g) (a : O →+* k) (φ : Δ →* Γ) (ω : Γ →* Oˣ)
@@ -86,11 +86,11 @@ private theorem gEx_abs {O Γ Δ k : Type} [CommRing O] [Group Γ] [Group Δ] [F
     simpa [ω'] using h1
 
 /- English proof (translation)
-Introduce `Ω _ _ _ l _ c D T hT`. Use `haveI := c.dvr`. Use `haveI := c.fin`. Use `haveI : Finite (ResidueField c.O) := IsLocalRing.ResidueField.finite_of_finite (R := ℤ_[l]) inferInstance`. Establish `hrel : ∀ x, (T.fr ∅).χ 0 x * (T.fr ∅).χ 3 x = (T.fr ∅).χ 1 x * (T.fr ∅).χ 2 x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Introduce `x`. Simplify using `only [Tower.fr, MonoidHom.coe_comp, Function.comp_apply, chi]`. Apply the tactic sequence `cases T.pr <;> simp [lab, Raw.ps, Raw.th, mul_comm]`. Establish `hω : ∀ w, ∃ g, residue c.O ((T.fr ∅).rt w (resLe T.F_le g) : c.O) ≠ residue c.O ((D.om.comp (resQ T.F)) (resLe T.F_le g) : c.O)`. Introduce `w`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨g, hgL, hg⟩` from `hT.g2 w`. Take `⟨g', rfl⟩` from `((galEq T).2.2 g).1 hgL`. Conclude with `⟨g', hg⟩`. Take `⟨g, hg1, hg2⟩` from `gEx_abs (T.fr ∅) hrel (residue c.O) (resLe T.F_le) (D.om.comp (resQ T.F)) hω`. Conclude with `⟨g, fun i j => hg1 i j, hg2⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.Lk.gEx :
     ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} {D : Raw Ω c} (T : Tower D), T.Ok → ∃ g : G T.L Ω, (∀ i j, Raw.bar (chi D T.pr i) (resQ T.L g) = Raw.bar (chi D T.pr j) (resQ T.L g)) ∧ Raw.bar D.om (resQ T.L g) ≠ 1 := by

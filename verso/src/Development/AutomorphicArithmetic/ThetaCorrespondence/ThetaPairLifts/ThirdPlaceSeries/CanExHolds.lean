@@ -27,7 +27,7 @@ end Point
 end GlobalTheory.BigOn.Exp
 namespace GlobalTheory.BigOn.Exp
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, one_pos, fun _ _ _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun _ _ _ _ => ⟨0, fun _ _ _ _ p _ _ w _ j => canEx_at p w j⟩⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem canEx_holds_alt : _root_.GlobalTheory.BigOn.Exp.CanonicalExists :=
   ⟨1, one_pos, fun _ _ _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun _ _ _ _ => ⟨0, fun _ _ _ _ p _ _ w _ j => canEx_at p w j⟩⟩⟩

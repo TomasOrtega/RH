@@ -5,13 +5,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `Z A Y a ha g h`. Use `choose W hW z hz using h`. Establish `hc : TopologicalSpace.IsOpenCover W`. Use `TopologicalSpace.IsOpenCover.mk ?_` and prove the remaining obligations. Rewrite using `[eq_top_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y _`. Conclude with `TopologicalSpace.Opens.mem_iSup.mpr ⟨y, hW y⟩`. Set `𝒰` to `Y.openCoverOfIsOpenCover W hc`. Take `⟨u, hu⟩ : ∃ u : ∀ i, 𝒰.X i ⟶ A, ∀ i, u i ≫ a = 𝒰.f i ≫ g` from `⟨z, hz⟩`. Establish `hglue : ∀ i j, pullback.fst (𝒰.f i) (𝒰.f j) ≫ u i = pullback.snd (𝒰.f i) (𝒰.f j) ≫ u j`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `i j`. Rewrite using `[← cancel_mono a, Category.assoc, Category.assoc, hu, hu, pullback.condition_assoc]`. Use `⟨𝒰.glueMorphisms u hglue, ?_⟩` and prove the remaining obligations. Use `𝒰.hom_ext _ _ fun i => ?_` and prove the remaining obligations. Rewrite using `[← Category.assoc, Scheme.Cover.ι_glueMorphisms]`.
-
-Conclude with `hu i`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_factor_closedImmersion_of_locally :
     ∀ (Z A Y : Scheme.{0}) (a : A ⟶ Z), IsClosedImmersion a → ∀ (g : Y ⟶ Z),

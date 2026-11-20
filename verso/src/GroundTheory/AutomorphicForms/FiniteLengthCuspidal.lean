@@ -17,11 +17,11 @@ variable {F : Type*} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchi
   {σ : Representation ℂ (levi F n β) W}
 
 /- English proof (translation)
-Take `⟨k, w, -, V, h0, hk, -, hV, hΨ⟩` from `geometricLemma (γ := δ) σ hσ`. Use `choose Ψ _ hΨk using hΨ`. Take `⟨j, hj⟩` from `h.exists_piece V hV h0 hk (fun j => indRep (cellLeviSub F β δ (w j)) (normInducing σ δ (w j))) Ψ hΨk`. Establish `hinc : ∀ a b, β (w j a) = β (w j b) → δ a = δ b`. Assume the negation of the conclusion as `hne`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Use `subsingleton_piece_of_isCuspidal hc hne` as an intermediate fact. Use `hj.subsingleton` as an intermediate fact. Take `⟨u, hu⟩` from `exists_ne_zero_of_isIrreducible (ρ := τ)`. Conclude with `hu (Subsingleton.elim _ _)`. Use `⟨w j, fun a b => ⟨fun hab => ?_, hinc a b⟩, hj⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Assume the negation of the conclusion as `hne`. Take `⟨C, p, hp⟩` from `hj`. Conclude with `not_surjective_of_isCuspidal_piece hσ hinc ⟨a, b, hab, hne⟩ hτ hτc C p hp`.
+A detailed English derivation is pending.
 -/
 theorem exists_piece_of_isSubquotient_jacquetRep [σ.IsIrreducible] (hσ : IsSmooth σ)
     (hc : IsCuspidal σ) {δ : Fin n → ℕ} {U : Type*} [AddCommGroup U] [Module ℂ U]
@@ -45,9 +45,9 @@ theorem exists_piece_of_isSubquotient_jacquetRep [σ.IsIrreducible] (hσ : IsSmo
   exact not_surjective_of_isCuspidal_piece hσ hinc ⟨a, b, hab, hne⟩ hτ hτc C p hp
 
 /- English proof (translation)
-Take `⟨w', hw'⟩` from `hδ`. Take `⟨k, w, -, V, h0, hk, -, hV, hΨ⟩` from `geometricLemma (γ := δ) σ hσ`. Use `choose Ψ _ hΨk using hΨ`. Use `hasFiniteLength_of_filtration V hV h0 hk (fun j => indRep (cellLeviSub F β δ (w j)) (normInducing σ δ (w j))) Ψ hΨk fun j => ?_` and prove the remaining obligations. Distinguish the cases in `hinc : ∀ a b, β (w j a) = β (w j b) → δ a = δ b`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Use `isIrreducible_piece hσ (w j) (blocks_eq_of_imp (w' := w') hinc hw')` as an intermediate fact. Conclude with `hasFiniteLength_of_isIrreducible`. Use `subsingleton_piece_of_isCuspidal hc hinc` as an intermediate fact. Conclude with `hasFiniteLength_of_subsingleton`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem hasFiniteLength_jacquetRep_parabolicInd [σ.IsIrreducible] (hσ : IsSmooth σ)
     (hc : IsCuspidal σ) {δ : Fin n → ℕ}
@@ -65,17 +65,17 @@ theorem hasFiniteLength_jacquetRep_parabolicInd [σ.IsIrreducible] (hσ : IsSmoo
     exact hasFiniteLength_of_subsingleton
 
 /- English proof (translation)
-Set `ι` to `{δ : Fin n → Fin n // ∃ w : Equiv.Perm (Fin n), ∀ a b, δ a = δ b ↔ β (w a) = β (w b)}`. Set `dN : ι → Fin n → ℕ` to `fun δ i => (δ.1 i : ℕ)`. Establish `hdN : ∀ (δ : ι) a b, dN δ a = dN δ b ↔ δ.1 a = δ.1 b` using `fun δ a b => Fin.val_inj`. Establish `: ∀ δ : ι, LocallyCompactSpace (unipotentRadical F n (dN δ))` using `fun δ => isClosed_unipotentRadical.isClosedEmbedding_subtypeVal.locallyCompactSpace`. Use `hasFiniteLength_of_coinvariants (isSmooth_parabolicInd σ) (fun δ : ι => unipotentRadical F n (dN δ)) (fun δ => exists_compactOpen_unipotentRadical) (M := fun δ => levi F n (dN δ)) (fun δ => jacquetRep F n (dN δ) (parabolicInd F n β σ)) (fun δ m => ⟨m, _, fun v => jacquetRep_mk _ …` and prove the remaining obligations.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨w', hw'⟩` from `δ.2`. Take `⟨k, w, -, V, h0, hk, -, hV, hΨ⟩` from `geometricLemma (γ := dN δ) σ hσ`. Use `choose Ψ _ hΨk using hΨ`. Use `hasFiniteLength_of_filtration V hV h0 hk (fun j => indRep (cellLeviSub F β (dN δ) (w j)) (normInducing σ (dN δ) (w j))) Ψ hΨk fun j => ?_` and prove the remaining obligations. Distinguish the cases in `hinc : ∀ a b, β (w j a) = β (w j b) → dN δ a = dN δ b`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `hiff` using `blocks_eq_of_imp (w' := w') hinc fun a b => (hdN δ a b).trans (hw' a b)`. Use `isIrreducible_piece hσ (w j) hiff` as an intermediate fact. Conclude with `hasFiniteLength_of_isIrreducible`. Use `subsingleton_piece_of_isCuspidal hc hinc` as an intermediate fact. Conclude with `hasFiniteLength_of_subsingleton`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `V' _ _ π _ hπ hsub`. Take `⟨v, hv⟩` from `exists_ne_zero_of_isIrreducible (ρ := π)`. Establish `: Nontrivial V'` using `⟨⟨v, 0, hv⟩⟩`. Take `⟨β', U, _, _, τ, hτi, hτs, hτc, -, Φ, hΦ⟩` from `exists_embedding_parabolicInd hπ`. Establish `hq` using `surjective_frobeniusParabolic hπ Φ hΦ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hsubτ : IsSubquotient τ (jacquetRep F n β' (parabolicInd F n β σ))` using `(IsSubquotient.of_surjective _ hq).trans (hsub.jacquetRep (isSmooth_parabolicInd σ) β')`. Take `⟨w, hw, -⟩` from `exists_piece_of_isSubquotient_jacquetRep hσ hc hτs hτc hsubτ`. Establish `hrank : ∀ a b, β' a = β' b ↔ (rankFun β' a : ℕ) = rankFun β' b` using `fun a b => eq_iff_eq_of_lt_iff (fun i j => (rankFun_lt_iff β' i j).symm) a b`. Set `δ : ι` to `⟨rankFun β', w, fun a b => Fin.val_inj.symm.trans ((hrank a b).symm.trans (hw a b))⟩`. Use `⟨δ, ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hN : unipotentRadical F n (dN δ) = unipotentRadical F n β'` using `unipotentRadical_congr (rankFun_lt_iff β')`. Rewrite using `[hN]`. Take `⟨u, hu⟩` from `exists_ne_zero_of_isIrreducible (ρ := τ)`. Take `⟨y, hy⟩` from `hq u`. Conclude with `⟨y, 0, fun h => hu (by rw [← hy, h, map_zero])⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem hasFiniteLength_parabolicInd_of_isCuspidal [σ.IsIrreducible] (hσ : IsSmooth σ)
     (hc : IsCuspidal σ) : HasFiniteLength (parabolicInd F n β σ) := by

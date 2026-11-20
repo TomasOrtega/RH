@@ -17,7 +17,7 @@ variable {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Meas
 
 omit [MeasurableSpace G] [BorelSpace G] in
 /- English proof (translation)
-Use `haveI : CompactSpace K := isCompact_iff_compactSpace.mp hK`. Establish `hopen : IsOpen ((I.subgroupOf K : Subgroup K) : Set K)` using `hIo.preimage continuous_subtype_val`. Use `haveI : Finite (K ⧸ I.subgroupOf K) := Subgroup.quotient_finite_of_isOpen _ hopen`. Rewrite using `[Subgroup.relIndex, Subgroup.index_eq_card]`. Conclude with `Nat.card_pos.ne'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem relIndex_ne (I K : Subgroup G) (hIo : IsOpen (I : Set G)) (hK : IsCompact (K : Set G)) :
     I.relIndex K ≠ 0 := by
@@ -28,27 +28,25 @@ private theorem relIndex_ne (I K : Subgroup G) (hIo : IsOpen (I : Set G)) (hK : 
   exact Nat.card_pos.ne'
 
 /- English proof (translation)
-Use `haveI : CompactSpace K := isCompact_iff_compactSpace.mp hK`. Establish `hopen : IsOpen ((I.subgroupOf K : Subgroup K) : Set K)` using `hIo.preimage continuous_subtype_val`. Use `haveI : Finite (K ⧸ I.subgroupOf K) := Subgroup.quotient_finite_of_isOpen _ hopen`. Use `letI : Fintype (K ⧸ I.subgroupOf K) := Fintype.ofFinite _`. Set `r : (K ⧸ I.subgroupOf K) → G` to `fun q => ((q.out : K) : G)`.
+Establish an intermediate fact. Equip the data with the indicated structure. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `S : (K ⧸ I.subgroupOf K) → Set G` to `fun q => (fun x => r q * x) '' (I : Set G)`. Establish `hcov : (K : Set G) = ⋃ q, S q`. Use extensionality with `x`. Simplify using `only [Set.mem_iUnion]`. Prove the components needed by the constructor for the conclusion.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `hx`. Use `⟨QuotientGroup.mk ⟨x, hx⟩, ?_⟩` and prove the remaining obligations. Establish `h` using `QuotientGroup.eq.1 (QuotientGroup.out_eq' (QuotientGroup.mk ⟨x, hx⟩ : K ⧸ I.subgroupOf K))`. Use `⟨_, Subgroup.mem_subgroupOf.1 h, ?_⟩` and prove the remaining obligations. Simplify using `[r]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `⟨q, y, hy, rfl⟩`. Conclude with `K.mul_mem (q.out).2 (hIK hy)`. Establish `hdis : Pairwise (Function.onFun Disjoint S)`. Introduce `p q hpq`. Use `Set.disjoint_left.2 ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `_ ⟨a, ha, rfl⟩ ⟨b, hb, hab⟩`. Apply `hpq` to reduce the goal to its premises. Rewrite using `[← QuotientGroup.out_eq' p, ← QuotientGroup.out_eq' q]`. Use `QuotientGroup.eq.2 (Subgroup.mem_subgroupOf.2 ?_)` and prove the remaining obligations. Establish `: ((p.out : K) : G)⁻¹ * ((q.out : K) : G) = a * b⁻¹`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hab' : r q * b = r p * a` using `hab`. Simplify using `only [r] at hab'`. Rewrite using `[eq_mul_inv_iff_mul_eq, mul_assoc, hab', inv_mul_cancel_left]`. Simplify using `using this ▸ I.mul_mem ha (I.inv_mem hb)`. Establish `hmeas : ∀ q, MeasurableSet (S q)` using `fun q => (isOpenMap_mul_left (r q) _ hIo).measurableSet`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hvol : ∀ q, μ (S q) = μ (I : Set G)` using `fun q => by`. Simplify using `only [S]`. Rewrite using `[Set.image_mul_left]`. Conclude with `measure_preimage_mul μ _ _`. Establish `hsum : (1 : ℝ≥0∞) = (Fintype.card (K ⧸ I.subgroupOf K) : ℝ≥0∞) * μ (I : Set G)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← h1, hcov, measure_iUnion hdis hmeas, tsum_fintype]`. Simplify using `[hvol]`. Establish `hreal : (1 : ℝ) = (Fintype.card (K ⧸ I.subgroupOf K) : ℝ) * μ.real (I : Set G)`. Use `congrArg ENNReal.toReal hsum` as an intermediate fact. Simplify `this` using `[Measure.real, ENNReal.toReal_mul]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hidx : I.relIndex K = Fintype.card (K ⧸ I.subgroupOf K)`. Rewrite using `[Subgroup.relIndex, Subgroup.index_eq_card, Nat.card_eq_fintype_card]`. Establish `hne : I.relIndex K ≠ 0`. Rewrite using `[hidx]`. Conclude with `Fintype.card_ne_zero`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `⟨hne, ?_⟩` and prove the remaining obligations. Rewrite using `[hidx]`. Establish `hc : (Fintype.card (K ⧸ I.subgroupOf K) : ℝ) ≠ 0`. Conclude with `Fintype.card_ne_zero` after adjusting the coercions. Clear the denominators using the available nonvanishing facts.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 private theorem vol_sub (I K : Subgroup G) (hIK : I ≤ K) (hIo : IsOpen (I : Set G)) (hK : IsCompact (K : Set G))
     (μ : Measure G) [μ.IsMulLeftInvariant] (h1 : μ (K : Set G) = 1) :
@@ -105,15 +103,15 @@ private theorem vol_sub (I K : Subgroup G) (hIK : I ≤ K) (hIo : IsOpen (I : Se
   linarith
 
 /- English proof (translation)
-Unfold `cv`. Distinguish the cases in `hx : x ∈ A`. Establish `e : ∀ y, A.indicator (1 : G → ℂ) y * (c * (I : Set G).indicator 1 (y⁻¹ * x)) = c * (I : Set G).indicator (fun _ => (1 : ℂ)) (x⁻¹ * y)`. Introduce `y`. Distinguish the cases in `hy : x⁻¹ * y ∈ I`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Establish `hy' : y⁻¹ * x ∈ I` using `by simpa using I.inv_mem hy`. Establish `hyA : y ∈ A` using `by simpa using hA x hx _ hy`. Rewrite using `[Set.indicator_of_mem hyA, Set.indicator_of_mem (show y⁻¹ * x ∈ (I : Set G) from hy'), Set.indicator_of_mem (show x⁻¹ * y ∈ (I : Set G) from hy)]`. Simplify using the standard rewrite rules. Establish `hy' : y⁻¹ * x ∉ I` using `fun h => hy (by simpa using I.inv_mem h)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[Set.indicator_of_notMem (show y⁻¹ * x ∉ (I : Set G) from hy'), Set.indicator_of_notMem (show x⁻¹ * y ∉ (I : Set G) from hy)]`. Simplify using the standard rewrite rules. Repeatedly rewrite using `[e]`. Rewrite using `[integral_const_mul, integral_mul_left_eq_self (fun z => (I : Set G).indicator (fun _ => (1 : ℂ)) z) x⁻¹, integral_indicator_const (1 : ℂ) hI.measurableSet, Set.indicator_of_mem hx]`. Simplify using the standard rewrite rules.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `e : ∀ y, A.indicator (1 : G → ℂ) y * (c * (I : Set G).indicator 1 (y⁻¹ * x)) = 0`. Introduce `y`. Distinguish the cases in `hy : y ∈ A`. Establish `: y⁻¹ * x ∉ I` using `fun h => hx (by simpa using hA y hy _ h)`. Rewrite using `[Set.indicator_of_notMem (show y⁻¹ * x ∉ (I : Set G) from this)]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[Set.indicator_of_notMem hy]`. Simplify using the standard rewrite rules. Repeatedly rewrite using `[e]`. Simplify using `[Set.indicator_of_notMem hx]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem cv_ind (μ : Measure G) [μ.IsMulLeftInvariant] (I : Subgroup G) (hI : IsOpen (I : Set G)) (A : Set G)
     (hA : ∀ a ∈ A, ∀ u ∈ I, a * u ∈ A) (c : ℂ) (x : G) :
@@ -150,11 +148,11 @@ private theorem cv_ind (μ : Measure G) [μ.IsMulLeftInvariant] (I : Subgroup G)
     simp [Set.indicator_of_notMem hx]
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero`. Introduce `A _ φ h0 _ x`. Simplify using `[cvAll, h0]`. Consider the case `succ m ih`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Treat this case separately.
 
-Introduce `A hA φ h0 hi x`. Establish `ht : cvAll μ m (Fin.tail φ) = fun g => (μ.real (I : Set G) : ℂ) ^ m * (I : Set G).indicator 1 g`. Use function extensionality and compare the values at `g`. Use `ih (I : Set G) (fun a ha u hu => I.mul_mem ha hu) _ ?_ ?_ g` and prove the remaining obligations. Conclude with `hi _ (Fin.succ_ne_zero _)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i _`. Conclude with `hi _ (Fin.succ_ne_zero _)`. Express the relevant statement in the definitionally equal form `cv μ (φ 0) (cvAll μ m (Fin.tail φ)) x = _`. Rewrite using `[ht, h0, cv_ind μ I hI A hA, pow_succ]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem cvAll_ind (μ : Measure G) [μ.IsMulLeftInvariant] (I : Subgroup G) (hI : IsOpen (I : Set G)) (m : ℕ) :
     ∀ (A : Set G), (∀ a ∈ A, ∀ u ∈ I, a * u ∈ A) → ∀ φ : Fin (m + 1) → G → ℂ, φ 0 = A.indicator 1 →
@@ -181,7 +179,7 @@ end Grp
 section Quot
 
 /- English proof (translation)
-Unfold `quotInt`. Use `split_ifs with h`. Repeatedly rewrite using `[mul_assoc]`. Conclude with `integral_const_mul _ _`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion repeatedly using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem quotInt_mul {G T X : Type*} [Group G] [MeasurableSpace G] [MeasurableSpace T] [MeasurableSpace X]
     (μ : Measure X) (u : X → G) (j : T → G) (ν : Measure T) (c : ℂ) (Φ : X → ℂ) :
@@ -193,9 +191,9 @@ private theorem quotInt_mul {G T X : Type*} [Group G] [MeasurableSpace G] [Measu
   · simp
 
 /- English proof (translation)
-Introduce `γ hγ ν hν`. Take `⟨h1, h2⟩` from `h γ hγ ν hν`. Establish `e : orb μR γ ν (fun g => c * f g) = c * orb μR γ ν f`. Unfold `orb`. Conclude with `quotInt_mul _ _ _ _ _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun δ hδ => ?_, fun hn => ?_⟩` and prove the remaining obligations. Rewrite using `[h1 δ hδ, e, one_mul]`. Use `h2 hn` as an intermediate fact. Rewrite `this` using `[e]`. Conclude with `(mul_eq_zero.1 this).resolve_left hc`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem match_of_scale {n : ℕ} {R S : Type*} [CommRing R] [CommRing S] [TopologicalSpace R]
     [MeasurableSpace (GL (Fin n) R)] [MeasurableSpace (GL (Fin n) S)] {ι : R →+* S} {s : S →+* S} {l : ℕ}
@@ -220,9 +218,9 @@ section Coset
 variable {K : Type} [Field K] [NumberField K] {n : ℕ}
 
 /- English proof (translation)
-Establish `h1 : Cartan.diagPow (w.adicCompletion K) n (0 : Fin n → ℤ) = 1`. Use `Units.ext ?_` and prove the remaining obligations. Simplify using `[Cartan.coe_diagPow]`. Use extensionality with `g`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨a, ha, b, hb, rfl⟩`. Rewrite using `[h1, mul_one]`. Conclude with `mul_mem ha hb`. Introduce `hg`. Conclude with `⟨g, hg, 1, one_mem _, by rw [h1]; simp⟩`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem iwCoset_zero (w : Pl K) :
     GM.iwCoset w (0 : Fin n → ℤ) = (GLnLocal.iwahori (w.adicCompletion K) n : Set _) := by
@@ -238,7 +236,7 @@ private theorem iwCoset_zero (w : Pl K) :
     exact ⟨g, hg, 1, one_mem _, by rw [h1]; simp⟩
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨a, ha, b, hb, rfl⟩ u hu`. Conclude with `⟨a, ha, b * u, mul_mem hb hu, by simp [mul_assoc]⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 private theorem iwCoset_right (w : Pl K) (ν : Fin n → ℤ) :
     ∀ a ∈ GM.iwCoset w ν, ∀ u ∈ GLnLocal.iwahori (w.adicCompletion K) n, a * u ∈ GM.iwCoset w ν := by
@@ -247,11 +245,11 @@ private theorem iwCoset_right (w : Pl K) (ν : Fin n → ℤ) :
 
 open scoped Pointwise in
 /- English proof (translation)
-Establish `e : GM.iwCoset w ν = (GLnLocal.iwahori (w.adicCompletion K) n : Set _) * {Cartan.diagPow (w.adicCompletion K) n ν} * (GLnLocal.iwahori (w.adicCompletion K) n : Set _)`. Use extensionality with `g`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, b, hb, rfl⟩`. Conclude with `Set.mul_mem_mul (Set.mul_mem_mul ha rfl) hb`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨_, ⟨a, ha, _, rfl, rfl⟩, b, hb, rfl⟩`. Conclude with `⟨a, ha, b, hb, rfl⟩`. Establish `hc : IsCompact (GM.iwCoset w ν)`. Rewrite using `[e]`. Conclude with `((GLnLocal.isCompact_iwahori _ _).mul isCompact_singleton).mul (GLnLocal.isCompact_iwahori _ _)`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `ho : IsOpen (GM.iwCoset w ν)`. Rewrite using `[e]`. Conclude with `(GLnLocal.isOpen_iwahori _ _).mul_left`. Conclude with `⟨IsClopen.continuous_indicator ⟨hc.isClosed, ho⟩ continuous_const, HasCompactSupport.intro hc fun g hg => Set.indicator_of_notMem hg _⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem iwCoset_test (w : Pl K) (ν : Fin n → ℤ) :
     Continuous ((GM.iwCoset w ν).indicator (1 : GL (Fin n) (w.adicCompletion K) → ℂ)) ∧
@@ -280,23 +278,21 @@ end UpperTheory.ConvolutionTheory.L1.CosetQuotientIntegrals
 open UpperTheory.ConvolutionTheory.L1.CosetQuotientIntegrals in
 open Classical in
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ σ hσ hp n hn q hq`. Take `⟨m, hm⟩ : ∃ m, Module.finrank F E = m + 1` from `⟨Module.finrank F E - 1, by have := hp.pos; omega⟩`. Use `set I := GLnLocal.iwahori (q.adicCompletion F) n with hIdef`. Use `set K := GLnLocal.integralGL (q.adicCompletion F) n with hKdef`. Establish `hIK : I ≤ K` using `GLnLocal.iwahori_le_integralGL _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hIo : IsOpen (I : Set (GL (Fin n) (q.adicCompletion F)))` using `GLnLocal.isOpen_iwahori _ _`. Establish `hKc : IsCompact (K : Set (GL (Fin n) (q.adicCompletion F)))` using `GLnLocal.isCompact_integralGL _ _`. Establish `hidx : I.relIndex K ≠ 0` using `relIndex_ne I K hIo hKc`. Establish `hpos : (0 : ℝ) < (I.relIndex K : ℝ)⁻¹`. Establish `: (0 : ℝ) < (I.relIndex K : ℝ)` using `by exact_mod_cast Nat.pos_of_ne_zero hidx`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression. Reduce the conclusion to the remaining proof obligations.
 
-Check the signs of the components of the expression. Use `⟨((I.relIndex K : ℝ)⁻¹) ^ m, pow_pos hpos m, fun w₀ ν => ?_⟩` and prove the remaining obligations. Take `⟨w, hw0, hw⟩` from `UpperTheory.ConvolutionTheory.L1.matchProd F E σ hσ m hm n q w₀ hq`. Introduce `_ _ _ _ mE mF hE hF hE1 hF1`. Use `set h : ∀ u : PlacesOver E q, GL (Fin n) (u.1.adicCompletion E) → ℂ := fun u => (GM.iwCoset u.1 (if u = w₀ then ν else 0)).indicator 1 with hh`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hM` using `hw h (fun u => iwCoset_test u.1 _) mF hF hF1 mE mF hE hF hE1 hF1`. Establish `hvol` using `(vol_sub I K hIK hIo hKc mF hF1).2`. Establish `hconv : (cvAll mF m fun i g => h (w i) (mapGL n (completionMap q (w i).1) g)) = fun g => (((((I.relIndex K : ℝ)⁻¹) ^ m : ℝ)) : ℂ) * (GM.iwCoset q ν).indicator 1 g`. Use function extensionality and compare the values at `g`. Establish `hloc : ∀ (i : Fin (m + 1)) (ν' : Fin n → ℤ) (g : GL (Fin n) (q.adicCompletion F)), mapGL n (completionMap q (w i).1) g ∈ GM.iwCoset (w i).1 ν' ↔ g ∈ GM.iwCoset q ν'` using `fun i ν' g => (UpperTheory.ConvolutionTheory.L1.splitLoc F E q (w i) (hq (w i)) n).2.2.2.1 ν' g`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hind : ∀ (i : Fin (m + 1)) (ν' : Fin n → ℤ), (fun g => (GM.iwCoset (w i).1 ν').indicator (1 : GL (Fin n) ((w i).1.adicCompletion E) → ℂ) (mapGL n (completionMap q (w i).1) g)) = (GM.iwCoset q ν').indicator 1`. Introduce `i ν'`. Use function extensionality and compare the values at `g`. Distinguish the cases in `hg : g ∈ GM.iwCoset q ν'`. Rewrite using `[Set.indicator_of_mem hg, Set.indicator_of_mem ((hloc i ν' g).2 hg)]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[Set.indicator_of_notMem hg, Set.indicator_of_notMem (fun h' => hg ((hloc i ν' g).1 h'))]`. Rewrite using `[cvAll_ind mF I hIo m (GM.iwCoset q ν) (iwCoset_right q ν) _ ?_ ?_ g, hvol]`. Use `push_cast`. Both sides reduce to the same expression.
+Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hind 0 ν` as an intermediate fact. Simplify `this` using `[hh, hw0]`. Introduce `i hi`. Establish `hne : w i ≠ w₀` using `fun e => hi (w.injective (e.trans hw0.symm))`. Use `hind i 0` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[iwCoset_zero q]`. Simplify `this` using `[hh, hne]`. Rewrite `hM` using `[hconv]`. Establish `hcne : (((((I.relIndex K : ℝ)⁻¹) ^ m : ℝ)) : ℂ) ≠ 0`. Conclude with `(pow_pos hpos m).ne'` after adjusting the coercions.
-
-Conclude with `match_of_scale hcne hM`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.L1.locQ :
     UpperTheory.ConvolutionTheory.GM.LocQ := by

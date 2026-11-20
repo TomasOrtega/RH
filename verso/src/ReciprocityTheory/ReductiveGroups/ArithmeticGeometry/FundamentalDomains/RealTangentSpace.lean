@@ -33,7 +33,7 @@ def VT.val {z : Frame X.Ψ r} {ξ : Fin r → E} (u : VT (X := X) z ξ) : X.Ψ �
   (u : ↥(Usub (X := X) z ξ)).1
 
 /- English proof (translation)
-Conclude with `(u : ↥(Usub (X := X) z ξ)).2`.
+A detailed English derivation is pending.
 -/
 theorem VT.val_mem {z : Frame X.Ψ r} {ξ : Fin r → E} (u : VT (X := X) z ξ) : u.val ∈ X.Uz z ξ := by
   exact (u : ↥(Usub (X := X) z ξ)).2
@@ -48,7 +48,7 @@ Both sides reduce to the same expression.
     (hu : u ∈ X.Uz z ξ) : (VT.mk u hu).val = u := rfl
 
 /- English proof (translation)
-Conclude with `Subtype.ext h`.
+A detailed English derivation is pending.
 -/
 theorem VT.ext {z : Frame X.Ψ r} {ξ : Fin r → E} {u v : VT (X := X) z ξ} (h : u.val = v.val) :
     u = v := by
@@ -123,13 +123,13 @@ Both sides reduce to the same expression.
 theorem inner_eq (u v : VT (X := X) z ξ) : inner ℝ u v = MajorantOperators.gI z u.val v.val := rfl
 
 /- English proof (translation)
-Rewrite using `[← real_inner_self_eq_norm_sq, inner_eq, MajorantOperators.gI_self hz.out]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_sq_eq (u : VT (X := X) z ξ) : ‖u‖ ^ 2 = ∑ τ, X.maj z τ (u.val τ) := by
   rw [← real_inner_self_eq_norm_sq, inner_eq, MajorantOperators.gI_self hz.out]
 
 /- English proof (translation)
-Rewrite using `[norm_sq_eq]`. Conclude with `Finset.single_le_sum (fun σ _ => MajorantOperators.maj_nonneg hz.out σ _) (Finset.mem_univ τ)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem maj_le_norm_sq (u : VT (X := X) z ξ) (τ : X.Ψ) : X.maj z τ (u.val τ) ≤ ‖u‖ ^ 2 := by
   rw [norm_sq_eq]
@@ -137,9 +137,9 @@ theorem maj_le_norm_sq (u : VT (X := X) z ξ) (τ : X.Ψ) : X.maj z τ (u.val τ
 
 omit hz in
 /- English proof (translation)
-Establish `hHf : ∀ (σ : X.Ψ) (a b w : Fin r → ℂ), X.Hf z σ (a + b) w = X.Hf z σ a w + X.Hf z σ b w`. Introduce `σ a b w`. Rewrite using `[Data.Hf, Data.Hf, Data.Hf, Data.ppos_add, ← hermC_add_left]`. Use `congr 1`. Rewrite using `[smul_add]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Normalize the expressions using the abelian group laws. Use function extensionality and compare the values at `τ`. Simplify using `only [Data.ucomp, Data.aproj, Data.lineV, Pi.add_apply, Pi.sub_apply, hHf, add_div, add_smul]`. Normalize the expressions using the abelian group laws.
+Normalize the expressions using the abelian group laws. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem ucomp_add (u v : X.Ψ → Fin r → ℂ) :
     X.ucomp z ξ (u + v) = X.ucomp z ξ u + X.ucomp z ξ v := by
@@ -156,9 +156,9 @@ theorem ucomp_add (u v : X.Ψ → Fin r → ℂ) :
 
 omit hz in
 /- English proof (translation)
-Establish `hHf : ∀ (σ : X.Ψ) (c : ℂ) (v w : Fin r → ℂ), X.Hf z σ (c • v) w = c * X.Hf z σ v w`. Introduce `σ c v w`. Establish `hp : X.ppos z σ (c • v) = c • X.ppos z σ v`. Simplify using `only [Data.ppos, hermC_smul_left, Finset.smul_sum, smul_smul, mul_assoc, ← Finset.mul_sum]`. Rewrite using `[Data.Hf, Data.Hf, hp, ← hermC_smul_left]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Rewrite using `[smul_sub, smul_smul, smul_smul, mul_comm]`. Use function extensionality and compare the values at `τ`. Simplify using `only [Data.ucomp, Data.aproj, Data.lineV, Pi.sub_apply, Pi.smul_apply, ← Complex.coe_smul, hHf]`. Rewrite using `[smul_sub, mul_div_assoc, mul_smul]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem ucomp_smul (a : ℝ) (u : X.Ψ → Fin r → ℂ) : X.ucomp z ξ (a • u) = a • X.ucomp z ξ u := by
   have hHf : ∀ (σ : X.Ψ) (c : ℂ) (v w : Fin r → ℂ), X.Hf z σ (c • v) w = c * X.Hf z σ v w := by
@@ -174,7 +174,7 @@ theorem ucomp_smul (a : ℝ) (u : X.Ψ → Fin r → ℂ) : X.ucomp z ξ (a • 
   rw [smul_sub, mul_div_assoc, mul_smul]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ a`. Simplify using `[Data.embV, Data.emb]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem embV_add (u v : Fin r → E) : X.embV (u + v) = X.embV u + X.embV v := by
   funext τ a
@@ -182,7 +182,7 @@ theorem embV_add (u v : Fin r → E) : X.embV (u + v) = X.embV u + X.embV v := b
 
 omit hz in
 /- English proof (translation)
-Establish `hk : herm X.Gm μ ξ = 0` using `AddMonoidHom.mem_ker.mp (AddSubgroup.mem_inf.mp hμ).2`. Use `show ∀ τ : X.Ψ, hermC τ.1 X.Gm (X.embV μ τ) (Data.emb τ.1 ξ) = 0`. Introduce `τ`. Simplify using `only [Data.embV]`. Rewrite using `[hermC_emb, hk, map_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem embV_mem_Iperp {μ : Fin r → E} (hμ : μ ∈ X.Λp ξ) : X.embV μ ∈ X.Iperp ξ := by
   have hk : herm X.Gm μ ξ = 0 := AddMonoidHom.mem_ker.mp (AddSubgroup.mem_inf.mp hμ).2
@@ -208,14 +208,14 @@ noncomputable def Lat (hξ : X.IsIso ξ) : Submodule ℤ (VT (X := X) z ξ) :=
   (phi z ξ hξ).range.toIntSubmodule
 
 /- English proof (translation)
-Use `show a ∈ (phi z ξ hξ).range ↔ _`. Conclude with `AddMonoidHom.mem_range`.
+A detailed English derivation is pending.
 -/
 theorem mem_Lat (hξ : X.IsIso ξ) {a : VT (X := X) z ξ} : a ∈ Lat z ξ hξ ↔ ∃ μ, phi z ξ hξ μ = a := by
   show a ∈ (phi z ξ hξ).range ↔ _
   exact AddMonoidHom.mem_range
 
 /- English proof (translation)
-Establish `hp : X.ppos y σ (c • v) = c • X.ppos y σ v`. Simplify using `only [Data.ppos, hermC_smul_left, Finset.smul_sum, smul_smul, mul_assoc, ← Finset.mul_sum]`. Rewrite using `[Data.Hf, Data.Hf, hp, ← hermC_smul_left]`. Use `congr 1`. Rewrite using `[smul_sub, smul_smul, smul_smul, mul_comm]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 -/
 private lemma Hf_smul_left_frame (y : Frame X.Ψ r) (σ : X.Ψ) (c : ℂ) (v w : Fin r → ℂ) :
     X.Hf y σ (c • v) w = c * X.Hf y σ v w := by
@@ -226,11 +226,11 @@ private lemma Hf_smul_left_frame (y : Frame X.Ψ r) (σ : X.Ψ) (c : ℂ) (v w :
   rw [smul_sub, smul_smul, smul_smul, mul_comm]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Establish `hξ0 : Data.emb τ.1 ξ ≠ 0`. Introduce `h`. Apply `hξ.2.2` to reduce the goal to its premises. Use function extensionality and compare the values at `a`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `congrFun h a` as an intermediate fact. Simplify `this` using `[Data.emb]`. Establish `hpos : X.Hf z τ (Data.emb τ.1 ξ) (Data.emb τ.1 ξ) ≠ 0`. Rewrite using `[X.Hf_self hz.out]`. Conclude with `(X.maj_pos hz.out τ hξ0).ne'` after adjusting the coercions.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hw : X.embV (e • ξ) τ = τ.1 e • Data.emb τ.1 ξ`. Use function extensionality and compare the values at `a`. Simplify using `[Data.embV, Data.emb]`. Simplify using `only [Data.ucomp, Data.aproj, Data.lineV, Pi.sub_apply, Pi.zero_apply, hw, Hf_smul_left_frame, mul_div_assoc, div_self hpos, mul_one, sub_self]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ucomp_line (hξ : X.IsIso ξ) (e : E) : X.ucomp z ξ (X.embV (e • ξ)) = 0 := by
   funext τ
@@ -250,11 +250,11 @@ theorem ucomp_line (hξ : X.IsIso ξ) (e : E) : X.ucomp z ξ (X.embV (e • ξ))
     mul_div_assoc, div_self hpos, mul_one, sub_self]
 
 /- English proof (translation)
-Rewrite using `[eq_top_iff]`. Introduce `v _`. Set `S : VT (X` to `X) z ξ →ₗ[ℝ] (X.Ψ → Fin r → ℂ) := { toFun := fun a => a.val map_add' := fun a b => VT.val_add a b map_smul' := fun c a => VT.val_smul c a }`. Establish `hS : Function.Injective S` using `fun a b h => VT.ext h`. Establish `h1` using `LatticeSpanMembership.Uz_le_span hD3 hξ v.val_mem`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : Submodule.span ℝ (Set.range fun μ : X.Λp ξ => X.ucomp z ξ (X.embV μ)) ≤ Submodule.map S (Submodule.span ℝ (Lat z ξ hξ : Set (VT (X` using `X) z ξ))) := by`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨μ, rfl⟩`. Conclude with `Submodule.mem_map_of_mem (Submodule.subset_span ((mem_Lat z ξ hξ).mpr ⟨μ, rfl⟩))`. Take `⟨w, hw, hwv⟩` from `h2 h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `hw` using `[hS hwv]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem span_Lat (hD3 : IntegerApproximationCount (E := E)) (hξ : X.IsIso ξ) :
     Submodule.span ℝ (Lat z ξ hξ : Set (VT (X := X) z ξ)) = ⊤ := by

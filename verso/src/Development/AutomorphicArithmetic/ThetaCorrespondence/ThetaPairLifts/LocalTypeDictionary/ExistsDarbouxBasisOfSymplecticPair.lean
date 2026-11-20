@@ -17,27 +17,25 @@ noncomputable section
 namespace GlobalTheory.PairDarboux
 open scoped GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels ComplexOrder
 /- English proof (translation)
-Introduce `_ D ψ θ hψ _ ε M X A B χS χT ω eS eT hω _`. Establish `hω' : IsWeilDatumO ψ (sgn ε M) X χS χT (ω.toSgn ε)` using `hω`. Establish `hcm : IsCMExt D.host.F D.host.E D.sp.cm.sig` using `GlobalTheory.AdelicU.isCMExt_host D`. Establish `h2 : Module.finrank D.host.F D.host.E = 2` using `hcm.2.2.1`. Use `choose τf hτf using (GlobalTheory.ConjTypeOverReal.conj_tauE_over_realPlace (D := D))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `τ : ∀ w : InfinitePlace D.host.F, GlobalTheory.AdelicU.EmbOver D.host.E w` to `fun w => ⟨_, hτf w⟩`. Establish `hτ : ∀ w x, (τ w).1 x = conj (tauE D (τf w) x)` using `fun _ _ => rfl`. Set `Xs : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc D.host.F D.host.E M.rank` to `⟨GlobalTheory.RealDict.sgE (D := D) ε • M.gram, ⊥, fun w => (if ε then 1 else -1 : ℂ) • A.cart (τf w), fun _ => 1⟩`. Set `Ws : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc D.host.F D.host.E X.rank` to `⟨D.host.xi0 • (X.gramᵀ).submatrix (Equiv.refl (Fin X.rank)) (Equiv.refl (Fin X.rank)), ⊥, fun w => (B.cart (τf w)).map conj, fun _ => 1⟩`. Establish `hXJ : Xs.J = -(sgn ε M).gram` using `gram_neg_sgn ε M rfl`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hWJ : Ws.J = D.host.xi0 • X.gramᵀ` using `rfl`. Apply the tactic sequence `have hc : GlobalTheory.RealDict.sgE (D := D) ε ≠ 0 := by cases ε <;> simp [GlobalTheory.RealDict.sgE]`. Establish `hξ : D.host.xi0 ≠ 0` using `GlobalTheory.DualPairCompare.embedding_xi_zero_ne_zero D`. Establish `hXh : ∀ i j, D.sp.cm.sig (Xs.J j i) = Xs.J i j` using `fun i j => by`. Rewrite using `[hXJ]`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show star (-(sgn ε M).gram j i) = -(sgn ε M).gram i j`. Rewrite using `[star_neg, GlobalTheory.TripleSpace.star_gram]`. Establish `hXd : Xs.J.det ≠ 0`. Rewrite using `[hXJ]`. Conclude with `gram_det_ne (neg (sgn ε M))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hWs : ∀ i j, D.sp.cm.sig (Ws.J j i) = -Ws.J i j` using `fun i j => by show star (D.host.xi0 * X.gram i j) = -(D.host.xi0 * X.gram j i)`. Rewrite using `[star_mul', Formalism.IndefR.Datum.Brg.star_purely_imaginary_eq_neg, GlobalTheory.TripleSpace.star_gram, neg_mul]`. Establish `hWd : Ws.J.det ≠ 0`. Rewrite using `[hWJ, Matrix.det_smul, Matrix.det_transpose]`. Conclude with `mul_ne_zero (pow_ne_zero _ hξ) (gram_det_ne X)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hσ : ∀ x, D.sp.cm.sig (D.sp.cm.sig x) = x` using `fun x => star_star (R := D.host.E) x`. Take `⟨co, hrat⟩` from `GlobalTheory.RatDarboux.exists_darboux (AF D.host.F) h2 D.sp.cm.sig hσ hXh hWs hXd hWd`. Take `⟨μ, 𝓕, hμ, h𝓕⟩` from `GlobalTheory.ConstRatio.exists_meas M`. Take `⟨hμ', h𝓕'⟩` from `GlobalTheory.ConjUTransport.map_isHaar_isFundamentalDomain M (J := Xs.J) _ hc rfl μ 𝓕 hμ h𝓕`. Take `⟨o, ho⟩` from `GlobalTheory.exists_integer_add_conj_eq_one_of_formallyUnramified D.host.F D.host.E D.sp.cm.sig hcm (by haveI := GlobalTheory.InertOfConj.unram D; infer_instance)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Set `Mo : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Model D.sp.cm.sig Xs Ws` to `⟨co, fun v => Set.indicator {x | ∀ k, x k ∈ v.adicCompletionIntegers D.host.F} 1, μ.map (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.conjU M (J := Xs.J) _ rfl), GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.conjU M (J := Xs.J) _ rfl '' 𝓕⟩`. Establish `hgood : Mo.IsGood ψ` using `{ rat := hrat vac := fun v => isVac_of_bot Mo rfl ψ o ho v std := Filter.Eventually.of_forall fun _ => rfl haar := hμ' dom := h𝓕' }`. Take `⟨om, hom, htr⟩` from `exists_weil_transp ψ ε M X Xs Ws rfl rfl Mo hrat χS χT ω hω`. Use `⟨Xs, Ws, Mo, ψ, χS, χT, om, τ, ⟨hcm, GlobalTheory.BaseGoodPlace.isStd_of_isStdChar hψ, hXh, hXd, hWs, hWd, GlobalTheory.LFun.resEtaPow_of_resEta _ _ h2 _ _ hω'.resS, GlobalTheory.LFun.resEtaPow_of_resEta _ _ h2 _ _ hω'.resT, hω'.hecS, hω'.hecT, hom, fun w => ?_, fun w => ?_⟩, ⟨rf …` and prove the remaining obligations. Establish `h` using `GlobalTheory.TripleSpace.isCartan_neg_conj (isCartanInv_sgn ε M (τf w) (GlobalTheory.CompactFockAction.cart_isCartanInv A (τf w)))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `e1 : Xs.J.map (τ w).1 = -((gramAt D (sgn ε M) (τf w)).map star)`. Rewrite using `[hXJ]`. Use extensionality with `a b`. Simplify using `[gramAt, hτ]`. Establish `e2 : Xs.θ w = -sgnM ε (A.cart (τf w))`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply the tactic sequence `cases ε <;> simp [Xs, sgnM]`. Rewrite using `[e1, e2]`. Conclude with `h`. Establish `h` using `isCartan_conj (Formalism.L2.Theta.xi_zero_im_pos D (τf w)) (GlobalTheory.CompactFockAction.cart_isCartanInv B (τf w))`. Establish `e0 : Complex.I * conj (tauE D (τf w) D.host.xi0) = ((tauE D (τf w) D.host.xi0).im : ℂ)`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `apply Complex.ext <;> simp [Formalism.IndefR.Fock.CCR.realPlace_imaginaryGenerator_re_eq_zero]`. Establish `e1 : Complex.I • Ws.J.map (τ w).1 = ((tauE D (τf w) D.host.xi0).im : ℂ) • gramAt D X (τf w)`. Use extensionality with `a b`. Establish `e3 : conj (tauE D (τf w) (X.gram b a)) = tauE D (τf w) (X.gram a b)`. Rewrite using `[← GlobalTheory.TripleSpace.star_gram X b a]`.
-
-Conclude with `(hcm.2.2.2 (tauE D (τf w)) (X.gram b a)).symm`. Use `show Complex.I * conj (tauE D (τf w) (D.host.xi0 * X.gram b a)) = _ * tauE D (τf w) (X.gram a b)`. Rewrite using `[map_mul, map_mul, ← mul_assoc, e0, e3]`. Rewrite using `[e1]`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_darboux_pair : _root_.GlobalTheory.FunPr.ThetaLocalInputs →
   ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsStdChar D ψ (-1) → IsInfFam θ →
@@ -135,7 +133,7 @@ open scoped ComplexConjugate
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.PairDarboux.exists_darboux_pair | exact _root_.GlobalTheory.PairDarboux.exists_darboux_pair | (intros; apply _root_.GlobalTheory.PairDarboux.exists_darboux_pair <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.exists_darboux_basis_of_symplectic_pair : _root_.GlobalTheory.FunPr.ThetaLocalInputs →
   ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsStdChar D ψ (-1) → IsInfFam θ →

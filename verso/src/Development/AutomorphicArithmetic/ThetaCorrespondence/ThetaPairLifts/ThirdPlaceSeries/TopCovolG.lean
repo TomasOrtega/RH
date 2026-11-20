@@ -37,13 +37,13 @@ open GlobalTheory.CovTop GlobalTheory.BigTop
 namespace SelfIntersectionVolumeEstimates
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Introduce `hSB hX hP hH hGD hQ hD`. Establish `hS` using `hH.sieg`. Establish `hK` using `hX.ks`. Establish `hN` using `hX.lie`. Establish `gram` using `_root_.GlobalTheory.T.covering_gram_of_prints hP`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `size` using `_root_.GlobalTheory.T.cov_size_bound`. Establish `meas` using `_root_.GlobalTheory.T.covering_meas_of_prints hP`. Establish `anc` using `_root_.GlobalTheory.T.anchor_bound`. Establish `dex` using `_root_.GlobalTheory.T.covering_deepEx_of_prints hP`. Establish `dg` using `_root_.GlobalTheory.T.deepGood_of_toroidal_and_semiabelian hP hGD hQ hS hK hN`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `fd` using `_root_.GlobalTheory.T.flatDeg_of_scholzeWeinstein_of_prints hP`. Establish `deg` using `_root_.GlobalTheory.T.coverDegree_of_grothendieck_deformation hX hP hS hK hGD hQ hN dg size fd`. Establish `sh` using `_root_.GlobalTheory.T.share_of_deep_good_size_flat_deg_cover_degree hX hP hS hK hGD hQ hN dg size fd deg`. Establish `ht` using `_root_.SelfIntersectionVolumeEstimates.height_lower_bound_general_alt hSB hX hGD hQ hP hH hD dg size deg fd`. Establish `hs` using `_root_.GlobalTheory.T.coverHeightSum_of_flatDeg_coverDegree_share hX hP hGD hQ hS hK hN dg size fd deg sh`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ul` using `_root_.GlobalTheory.T.uniform_lower_bound_of_sums' dg size deg sh ht hs (_root_.GlobalTheory.T.sum_c_of_deep_good dg)`. Establish `low` using `_root_.GlobalTheory.T.liftLowBound_of_cover_estimates size (_root_.GlobalTheory.T.lowDef_of_gram_of_anchor hP gram anc) dex dg (_root_.GlobalTheory.T.covering_ring_of_prints_gram_deepGood hP gram dg) (_root_.GlobalTheory.T.covering_maps_of_gram_deep_size_flatDeg hP hGD hQ hS hK h …`. Conclude with `_root_.GlobalTheory.T.covolX_of_truncation_badSet_lambda_lowBound gram (_root_.GlobalTheory.T.lift_recursion_of_gram_bound gram) (_root_.GlobalTheory.T.liftTruncation_of_prints hP) (_root_.GlobalTheory.T.liftBadSet_of_deep_size_flatDeg_share hX hP hGD hQ hS hK hN hX.green gram de …`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem topCovolG_alt_alt : _root_.SelfIntersectionVolumeEstimates.VolumeEstimateHypotheses → GlobalTheory.CovTop.HypothesesX → _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems → GlobalTheory.CovHt.HypothesesH → GlobalTheory.Published.GrothendieckDeformation → GlobalTheory.HSCore.Quoted → GlobalTheory.CompanionTheory.Ar.Plug.DeepStR → _root_.GlobalTheory.CovTop.CovolumeBoundOfX :=
   by

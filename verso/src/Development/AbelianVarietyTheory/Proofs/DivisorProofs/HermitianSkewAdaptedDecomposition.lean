@@ -20,11 +20,11 @@ namespace GlobalTheory.PlaneDec
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Establish `hv : v ∈ Submodule.span E (X.L : Set (Fin n → E))`. Rewrite using `[hL.span_eq_top]`. Discharge the goal by the elementary cases of `trivial`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem z hz`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Proceed by induction. Treat this case separately.
 
-Take `⟨s, t, u, -, -, -, hz⟩` from `hH.split z hz`. Conclude with `⟨s, t, u, hz⟩`. Consider the case `zero => exact ⟨0, 0, 0, by simp⟩`. Consider the case `add y z _ _ hy hz`. Take `⟨s, t, u, rfl⟩` from `hy`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨s', t', u', rfl⟩` from `hz`. Conclude with `⟨s + s', t + t', u + u', by rw [Matrix.mulVec_add]; module⟩`. Consider the case `smul a y _ hy`. Take `⟨s, t, u, rfl⟩` from `hy`. Conclude with `⟨a * s, a * t, a • u, by rw [Matrix.mulVec_smul]; module⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem span3 {σ : E →ₐ[F] E} {B : Base F E} {n n₁ i₀ i₁ : ℕ} {X : Spc F E n} {X₁ : Spc F E n₁}
     {H : Plane E n n₁} (hL : X.L.IsLattice E) (hH : H.IsAdapted σ B X X₁ i₀ i₁) (v : Fin n → E) :
@@ -45,9 +45,9 @@ theorem span3 {σ : E →ₐ[F] E} {B : Base F E} {n n₁ i₀ i₁ : ℕ} {X : 
     exact ⟨a * s, a * t, a • u, by rw [Matrix.mulVec_smul]; module⟩
 
 /- English proof (translation)
-Use `choose s t U hU using fun j : Fin n => span3 hL hH (Pi.single j 1)`. Use `⟨s, t, Matrix.of fun k j => U j k, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Use `congrFun (hU j) i` as an intermediate fact. Rewrite using `[Matrix.one_apply, show (if i = j then (1 : E) else 0) = (Pi.single j (1 : E) : Fin n → E) i by`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[Pi.single_apply], this]`. Simplify using `[Matrix.mul_apply, Matrix.mulVec, dotProduct, Matrix.vecMulVec_apply, mul_comm]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem one_eq {σ : E →ₐ[F] E} {B : Base F E} {n n₁ i₀ i₁ : ℕ} {X : Spc F E n} {X₁ : Spc F E n₁}
     {H : Plane E n n₁} (hL : X.L.IsLattice E) (hH : H.IsAdapted σ B X X₁ i₀ i₁) :
@@ -62,9 +62,9 @@ theorem one_eq {σ : E →ₐ[F] E} {B : Base F E} {n n₁ i₀ i₁ : ℕ} {X :
   simp [Matrix.mul_apply, Matrix.mulVec, dotProduct, Matrix.vecMulVec_apply, mul_comm]
 
 /- English proof (translation)
-Take `⟨a, b, C, h⟩` from `one_eq hL hH`. Use `⟨incV F a, incV F b, incM F C, ?_⟩` and prove the remaining obligations. Establish `h2` using `congrArg (fun M : Matrix (Fin n) (Fin n) E => M.map (inclR (F := F) (E := E) (AF F))) h`. Rewrite `h2` using `[Matrix.map_one _ (map_zero _) (map_one _), Matrix.map_add _ (map_add _), Matrix.map_add _ (map_add _), Matrix.map_mul]`. Rewrite using `[h2]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Use extensionality with `i j`. Simplify using `[incV, Matrix.vecMulVec_apply]`. Use extensionality with `i j`. Simplify using `[incV, Matrix.vecMulVec_apply]`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem one_eq_A {σ : E →ₐ[F] E} {B : Base F E} {n n₁ i₀ i₁ : ℕ} {X : Spc F E n} {X₁ : Spc F E n₁}
     {H : Plane E n n₁} (hL : X.L.IsLattice E) (hH : H.IsAdapted σ B X X₁ i₀ i₁) :
@@ -82,13 +82,13 @@ theorem one_eq_A {σ : E →ₐ[F] E} {B : Base F E} {n n₁ i₀ i₁ : ℕ} {X
   · ext i j; simp [incV, Matrix.vecMulVec_apply]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n d n₁ d₁ X W X₁ W₁ H H' r s r' s' i₀ i₁ j₀ j₁ hX hW hH hH' u`. Take `⟨a, b, C, hC⟩` from `one_eq_A (F := F) hX.lat hH`. Take `⟨a', b', C', hC'⟩` from `one_eq_A (F := F) hW.lat hH'`. Establish `hT : (1 : Matrix (Fin d) (Fin d) (AE F E)) = Matrix.vecMulVec a' (incV F H'.x) + C'ᵀ * (incM F H'.ι)ᵀ + Matrix.vecMulVec b' (incV F H'.y)`. Rewrite using `[← Matrix.transpose_one, hC', Matrix.transpose_add, Matrix.transpose_add, Matrix.transpose_mul, Matrix.transpose_vecMulVec, Matrix.transpose_vecMulVec]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set M := u * C'ᵀ with hM`. Establish `hMd : M = Matrix.vecMulVec (incV F H.x) (a ᵥ* M) + incM F H.ι * (C * M) + Matrix.vecMulVec (incV F H.y) (b ᵥ* M)` using `by conv_lhs => rw [← Matrix.one_mul M, hC]`. Rewrite using `[Matrix.add_mul, Matrix.add_mul, Matrix.vecMulVec_mul, Matrix.vecMulVec_mul, Matrix.mul_assoc]`. Use `⟨u *ᵥ a', u *ᵥ b', a ᵥ* M, b ᵥ* M, C * M, ?_⟩` and prove the remaining obligations. Establish `hu : u = Matrix.vecMulVec (u *ᵥ a') (incV F H'.x) + M * (incM F H'.ι)ᵀ + Matrix.vecMulVec (u *ᵥ b') (incV F H'.y)` using `by conv_lhs => rw [← Matrix.mul_one u, hT]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mul_add, Matrix.mul_add, Matrix.mul_vecMulVec, Matrix.mul_vecMulVec, hM, Matrix.mul_assoc]`. Establish `hm2 : M * (incM F H'.ι)ᵀ = Matrix.vecMulVec (incV F H.x) (incM F H'.ι *ᵥ (a ᵥ* M)) + incM F H.ι * (C * M) * (incM F H'.ι)ᵀ + Matrix.vecMulVec (incV F H.y) (incM F H'.ι *ᵥ (b ᵥ* M))` using `by conv_lhs => rw [hMd]`. Rewrite using `[Matrix.add_mul, Matrix.add_mul, Matrix.vecMulVec_mul, Matrix.vecMulVec_mul, Matrix.vecMul_transpose, Matrix.vecMul_transpose]`. Rewrite `hu` using `[hm2]`. Use `hu.trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Normalize the expressions using the abelian group laws.
 
-Normalize the expressions using the abelian group laws.
+A detailed English derivation is pending.
 -/
 theorem point_dec : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (n d n₁ d₁ : ℕ) (X : Spc F E n) (W : Spc F E d) (X₁ : Spc F E n₁) (W₁ : Spc F E d₁) (H : Plane E n n₁) (H' : Plane E d d₁)

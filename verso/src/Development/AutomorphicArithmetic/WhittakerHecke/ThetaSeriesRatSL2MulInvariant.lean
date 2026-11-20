@@ -8,7 +8,7 @@ open scoped Classical
 open UpperTheory.ConvolutionTheory.R2.G (FS2 Rw nE row)
 
 /- English proof (translation)
-Rewrite using `[Matrix.vecMul_vecMul, ← Matrix.SpecialLinearGroup.coe_mul, mul_inv_cancel, Matrix.SpecialLinearGroup.coe_one, Matrix.vecMul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem vm_mul_inv (γ : Matrix.SpecialLinearGroup (Fin 2) ℚ) (x : Fin 2 → ℚ) :
     (x ᵥ* γ.1) ᵥ* (γ⁻¹).1 = x := by
@@ -16,7 +16,7 @@ private theorem vm_mul_inv (γ : Matrix.SpecialLinearGroup (Fin 2) ℚ) (x : Fin
     Matrix.SpecialLinearGroup.coe_one, Matrix.vecMul_one]
 
 /- English proof (translation)
-Rewrite using `[Matrix.vecMul_vecMul, ← Matrix.SpecialLinearGroup.coe_mul, inv_mul_cancel, Matrix.SpecialLinearGroup.coe_one, Matrix.vecMul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem vm_inv_mul (γ : Matrix.SpecialLinearGroup (Fin 2) ℚ) (x : Fin 2 → ℚ) :
     (x ᵥ* (γ⁻¹).1) ᵥ* γ.1 = x := by
@@ -36,7 +36,7 @@ private def rowE (γ : Matrix.SpecialLinearGroup (Fin 2) ℚ) : Rw ℚ ≃ Rw �
   right_inv ξ := Subtype.ext (vm_inv_mul γ ξ.1)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Simplify using `only [Matrix.vecMul, dotProduct, Fin.sum_univ_two, ratS, Matrix.SpecialLinearGroup.map_apply_coe, RingHom.mapMatrix_apply, Matrix.map_apply, map_add, map_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 private theorem row_rat (γ : Matrix.SpecialLinearGroup (Fin 2) ℚ) (x : Fin 2 → ℚ) :
     (fun i => rt (x i)) ᵥ* (ratS ℚ γ).1 = fun i => rt ((x ᵥ* γ.1) i) := by
@@ -45,9 +45,9 @@ private theorem row_rat (γ : Matrix.SpecialLinearGroup (Fin 2) ℚ) (x : Fin 2 
     RingHom.mapMatrix_apply, Matrix.map_apply, map_add, map_mul]
 
 /- English proof (translation)
-Introduce `Φ t γ g h`. Unfold `ThR`. Rewrite using `[← (rowE γ).tsum_eq (fun ξ : Rw ℚ => Φ fun j => (iy (Real.exp t) : A ℚ) * ((fun i => rt (ξ.1 i)) ᵥ* (gl g * h).val) j)]`. Use `tsum_congr fun ξ => ?_` and prove the remaining obligations. Establish `key : (fun i => rt (ξ.1 i)) ᵥ* (gl (ratS ℚ γ * g) * h).val = (fun i => rt ((rowE γ ξ).1 i)) ᵥ* (gl g * h).val`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e : (gl (ratS ℚ γ * g) * h).val = (ratS ℚ γ).1 * (gl g * h).val`. Simplify using `[gl, Matrix.SpecialLinearGroup.toGL, Matrix.mul_assoc]`. Rewrite using `[e, ← Matrix.vecMul_vecMul, row_rat]`. Both sides reduce to the same expression. Rewrite using `[key]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.thetaSeries_ratSL2_mul_invariant :
     ∀ (Φ : (Fin 2 → A ℚ) → ℂ) (t : ℝ) (γ : Matrix.SpecialLinearGroup (Fin 2) ℚ) (g : G1 ℚ) (h : GL (Fin 2) (A ℚ)),

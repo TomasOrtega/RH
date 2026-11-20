@@ -4,11 +4,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 open NumberField IsDedekindDomain UpperTheory.V UpperTheory.V.KL UpperTheory.V.ZK UpperTheory.V.ZK.Cl Polynomial
 
 /- English proof (translation)
-Establish `hmul : ∀ i, (p * (X - C a)).coeff i = (p * X).coeff i - a * p.coeff i`. Introduce `i`. Rewrite using `[mul_sub, coeff_sub, coeff_mul_C, mul_comm a]`. Establish `h1 : ∑ i ∈ Finset.range (p.natDegree + 1 + 1), (p * X).coeff i * d i = ∑ i ∈ Finset.range (p.natDegree + 1), p.coeff i * d (i + 1)`. Rewrite using `[Finset.sum_range_succ']`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[coeff_mul_X]`. Establish `h2 : ∑ i ∈ Finset.range (p.natDegree + 1 + 1), a * p.coeff i * d i = ∑ i ∈ Finset.range (p.natDegree + 1), a * p.coeff i * d i`. Rewrite using `[Finset.sum_range_succ, coeff_eq_zero_of_natDegree_lt (by omega)]`. Simplify using the standard rewrite rules. Repeatedly rewrite using `[hmul, sub_mul, Finset.sum_sub_distrib, h1, h2, mul_sub, Finset.sum_sub_distrib]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities.
 
-Use `congr 1`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem shift_sum (p : ℤ[X]) (a : ℤ) (d : ℕ → ℤ) :
     ∑ i ∈ Finset.range (p.natDegree + 1), p.coeff i * (d (i + 1) - a * d i) =
@@ -30,7 +30,7 @@ private theorem shift_sum (p : ℤ[X]) (a : ℤ) (d : ℕ → ℤ) :
   ring
 
 /- English proof (translation)
-Establish `hmem : E ∈ Finset.range M` using `Finset.mem_range.2 h`. Unfold `polE`. Rewrite using `[natDegree_prod_of_monic _ _ (fun j _ => monic_X_sub_C _)]`. Simplify using `only [natDegree_X_sub_C, Finset.sum_const, smul_eq_mul, mul_one]`. Rewrite using `[Finset.card_erase_of_mem hmem, Finset.card_range]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -43,17 +43,17 @@ private theorem natDegree_polE (κ : ℤ) (M E : ℕ) (h : E < M) : (polE κ M E
   omega
 
 /- English proof (translation)
-Introduce `L F _ _ _ _ _ γ κ M E hE α 𝔡 hD P`. Take `⟨_, hmul, hone, _, hinv, hadd, hpow⟩` from `cAct L F`. Establish `hprod : ∀ (s : Finset ℕ) (f : ℕ → Fˣ), ordP P (∏ i ∈ s, f i) = ∑ i ∈ s, ordP P (f i)`. Introduce `s f`. Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `using hpow P 1 0`. Introduce `j s hj ih`. Rewrite using `[Finset.prod_insert hj, Finset.sum_insert hj, hadd, ih]`. Establish `key : ∀ i : ℕ, ordP P (actU (γ⁻¹ ^ i) α) = 𝔡 (actP (γ ^ (i + 1)) P) - (κ : ℤ) ^ E * 𝔡 (actP (γ ^ i) P)`. Introduce `i`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hP : actP (γ⁻¹ ^ i) (actP (γ ^ i) P) = P`. Rewrite using `[← hmul, inv_pow, inv_mul_cancel, hone]`. Establish `h0` using `hinv (γ⁻¹ ^ i) (actP (γ ^ i) P) α`. Rewrite `h0` using `[hP]`. Rewrite using `[h0, hD, ← hmul, pow_succ']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Both sides reduce to the same expression. Establish `hpol : polE (κ : ℤ) M E * (X - C ((κ : ℤ) ^ E)) = pol (κ : ℤ) M`. Rewrite using `[mul_comm]`. Conclude with `Finset.mul_prod_erase (Finset.range M) (fun j => X - C ((κ : ℤ) ^ j)) (Finset.mem_range.2 hE)`.
+Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hs` using `shift_sum (polE (κ : ℤ) M E) ((κ : ℤ) ^ E) (fun i => 𝔡 (actP (γ ^ i) P))`. Rewrite `hs` using `[hpol, natDegree_polE κ M E hE]`. Unfold `polAct`. Rewrite using `[hprod]`. Simplify using `only [hpow, key]`.
+Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `*` using `[natDegree_polE κ M E hE]`. Conclude with `hs`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.ZK.Cl.cBetaDiv :
     UpperTheory.V.ZK.Cl.CBetaDiv := by

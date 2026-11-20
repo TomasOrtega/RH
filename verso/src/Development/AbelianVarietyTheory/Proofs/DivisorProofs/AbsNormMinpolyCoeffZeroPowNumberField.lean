@@ -9,7 +9,7 @@ namespace GlobalTheory.NormTower
 open IntermediateField
 
 /- English proof (translation)
-The claim follows from `|(Algebra.norm ℚ (p.coeff 0) : ℚ)| ^ (minpoly ℚ β).natDegree = |(minpoly ℚ β).coeff 0| ^ (p.natDegree * Module.finrank ℚ K) := by obtain ⟨hm, hirr, hev⟩ := h haveI := Fact.mk hirr let pb := AdjoinRoot.powerBasis hirr.ne_zero haveI : Module.Finite K (AdjoinRoot p) := pb.finite hav …`.
+A detailed English derivation is pending.
 -/
 theorem abs_norm_coeff_zero_pow (K : Type) [Field K] [NumberField K] (σ : K →+* ℂ) (β : ℂ) (p : K[X])
     (h : GlobalTheory.FunObj.SqNum.IsMinPol σ β p) (hβ : IsAlgebraic ℚ β) :

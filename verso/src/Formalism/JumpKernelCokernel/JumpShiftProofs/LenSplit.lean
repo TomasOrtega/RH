@@ -3,25 +3,23 @@ import Formalism.JumpKernelCokernel.Statement
 namespace Formalism.KernelCokernelLengths.LengthSplittingLemmas
 
 /- English proof (translation)
-Use `set A := R' ⊔ LinearMap.range π with hA`. Use `set B := R'' ⊔ LinearMap.range π with hB`. Establish `hAB : A ≤ B` using `sup_le_sup_right h _`. Set `f : (B ⧸ A.comap B.subtype) →ₗ[O] (R ⧸ A)` to `Submodule.mapQ (A.comap B.subtype) A B.subtype le_rfl`. Set `g : (R ⧸ A) →ₗ[O] (R ⧸ B)` to `Submodule.mapQ A B LinearMap.id (by simpa using hAB)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hf : Function.Injective f`. Rewrite using `[← LinearMap.ker_eq_bot, eq_bot_iff]`. Introduce `x hx`. Take `⟨b, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Rewrite `hx` using `[LinearMap.mem_ker]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [f, Submodule.mapQ_apply, Submodule.subtype_apply, Submodule.Quotient.mk_eq_zero] at hx`. Rewrite using `[Submodule.mem_bot, Submodule.Quotient.mk_eq_zero, Submodule.mem_comap]`. Conclude with `hx`. Establish `hg : Function.Surjective g`. Introduce `y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Take `⟨r, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Conclude with `⟨Submodule.Quotient.mk r, rfl⟩`. Establish `hex : Function.Exact f g`. Introduce `y`. Take `⟨r, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hy`. Simplify using `only [g, Submodule.mapQ_apply, LinearMap.id_apply, Submodule.Quotient.mk_eq_zero] at hy`. Conclude with `⟨Submodule.Quotient.mk ⟨r, hy⟩, rfl⟩`. Introduce and unpack `⟨x, hx⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨b, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Rewrite using `[← hx]`. Simplify using `only [f, g, Submodule.mapQ_apply, Submodule.subtype_apply, LinearMap.id_apply, Submodule.Quotient.mk_eq_zero]`. Conclude with `b.2`. Establish `hlen` using `Module.length_eq_add_of_exact f g hf hg hex`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hRB : R'' ≤ B` using `le_sup_left`. Set `k : (↥R'' ⧸ (R' ⊔ R''.map π).comap R''.subtype) →ₗ[O] (B ⧸ A.comap B.subtype)` to `Submodule.mapQ _ _ (Submodule.inclusion hRB) (by`. Introduce `x hx`. Simplify using `only [Submodule.mem_comap, Submodule.subtype_apply, Submodule.coe_inclusion] at hx ⊢`. Conclude with `sup_le_sup_left (LinearMap.map_le_range) R' hx)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hk : Function.Surjective k`. Introduce `y`. Take `⟨⟨b, hb⟩, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Take `⟨r, hr, p, hp, rfl⟩` from `Submodule.mem_sup.mp hb`. Use `⟨Submodule.Quotient.mk ⟨r, hr⟩, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [k, Submodule.mapQ_apply]`. Rewrite using `[Submodule.Quotient.eq]`. Simplify using `only [Submodule.mem_comap, Submodule.subtype_apply, Submodule.coe_sub, Submodule.coe_inclusion]`. Establish `: r - (r + p) = -p` using `by abel`. Rewrite using `[this]`.
-
-Conclude with `A.neg_mem (Submodule.mem_sup_right hp)`. Establish `hle` using `Module.length_le_of_surjective k hk`. Rewrite using `[hlen, add_comm]`. Use `gcongr`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main (O : Type) [CommRing O] (R : Type) [AddCommGroup R] [Module O R]
     (π : Module.End O R) (R' R'' : Submodule O R) (h : R' ≤ R'') :
@@ -83,7 +81,7 @@ theorem main (O : Type) [CommRing O] (R : Type) [AddCommGroup R] [Module O R]
 end Formalism.KernelCokernelLengths.LengthSplittingLemmas
 
 /- English proof (translation)
-Introduce `O _ R _ _ π R' R'' h`. Conclude with `Formalism.KernelCokernelLengths.LengthSplittingLemmas.main O R π R' R'' h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem Formalism.KernelCokernelLengths.length_splits_additively : Formalism.KernelCokernelLengths.LenSplit := by
   intro O _ R _ _ π R' R'' h

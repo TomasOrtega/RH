@@ -14,9 +14,9 @@ open Pair
 namespace BiextensionSums
 
 /- English proof (translation)
-Use extensionality with `n`. Rewrite using `[PowerSeries.coeff_map]`. Unfold `lgF`. Rewrite using `[PowerSeries.coeff_mk, PowerSeries.coeff_mk, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `split_ifs`. Rewrite using `[map_inv₀, map_pow, map_natCast]`. Rewrite using `[map_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_lgF' {K0 K : Type} [Field K0] [Field K] (l : ℕ) (j : K0 →+* K) :
     PowerSeries.map j (lgF K0 l) = lgF K l := by
@@ -30,9 +30,9 @@ theorem map_lgF' {K0 K : Type} [Field K0] [Field K] (l : ℕ) (j : K0 →+* K) :
   · rw [map_zero]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Unfold `linSub idM`. Rewrite using `[Finset.sum_eq_single x]`. Simplify using the standard rewrite rules. Introduce `y _ hy`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[if_neg (Ne.symm hy)]`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem linSub_idM {K : Type} [Field K] {d N0 N1 : ℕ} [NeZero d] :
     linSub (idM : ZV d N0 N1 → ZV d N0 N1 → K) = X := by
@@ -46,7 +46,7 @@ theorem linSub_idM {K : Type} [Field K] {d N0 N1 : ℕ} [NeZero d] :
   · simp
 
 /- English proof (translation)
-Unfold `sumE`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun e _ => ?_` and prove the remaining obligations. Rewrite using `[map_subst (hasSubst_of_constantCoeff_zero (by intro a; simp))]`. Simplify using `only [map_X]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem map_sumE {K0 K ι : Type} [Field K0] [Field K] [Fintype ι] {N0 N1 : ℕ} (j : K0 →+* K)
     (be : MvPowerSeries (Fin 2) K0) :
@@ -58,16 +58,16 @@ theorem map_sumE {K0 K ι : Type} [Field K0] [Field K] [Fintype ι] {N0 N1 : ℕ
   simp only [map_X]
 
 /- English proof (translation)
-Rewrite using `[← coe_substAlgHom hφ, map_neg]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem subst_neg' {K ι κ : Type} [Field K] {φ : ι → MvPowerSeries κ K} (hφ : HasSubst φ)
     (f : MvPowerSeries ι K) : subst φ (-f) = -subst φ f := by
   rw [← coe_substAlgHom hφ, map_neg]
 
 /- English proof (translation)
-Unfold `linEL`. Rewrite using `[map_sum, subst_sum hg]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Use `split_ifs`. Rewrite using `[map_mul, map_C, Formalism.DworkPowerSeriesWeights.Transfer.map_entLog, subst_mul hg, subst_C, hgE]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_zero, subst_zero' hg]`.
+A detailed English derivation is pending.
 -/
 theorem subst_map_linEL {K0 K : Type} [NormedField K0] [NormedField K] {d N0 N1 : ℕ} [NeZero d]
     (l : ℕ) (j : K0 →+* K) (σ : K0 →+* K0) (c : K0) (a : Fin N0) (b : Fin N1)
@@ -83,9 +83,9 @@ theorem subst_map_linEL {K0 K : Type} [NormedField K0] [NormedField K] {d N0 N1 
   · rw [map_zero, subst_zero' hg]
 
 /- English proof (translation)
-Unfold `linOL`. Rewrite using `[map_sum, subst_sum hg]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Use `split_ifs`. Rewrite using `[map_zero, subst_zero' hg]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, map_C, Formalism.DworkPowerSeriesWeights.Transfer.map_entLog, subst_mul hg, subst_C, hgE]`.
+A detailed English derivation is pending.
 -/
 theorem subst_map_linOL {K0 K : Type} [NormedField K0] [NormedField K] {d N0 N1 : ℕ} [NeZero d]
     (l : ℕ) (j : K0 →+* K) (σ : K0 →+* K0) (c : K0) (a : Fin N0) (b : Fin N1)
@@ -105,31 +105,29 @@ end BiextensionSums
 open BiextensionSums
 
 /- English proof (translation)
-Introduce `K0 K _ _ _ _ _ _ l d N0 N1 _ σ j hU hj h2 hd F hF be0 hF1 hF2 ι _ _ om oms hOw hTr ζ hζ U0 Φ hU0 hΦ0 hΦ`. Establish `hl : 2 ≤ l` using `hU.1.two_le`. Take `⟨Xt, hX, hlog, hS⟩` from `hP K0 l d N0 N1 σ hU h2 hd F hF be0 hF1 hF2 ι om oms hOw hTr ζ hζ`. Establish `hR` using `Formalism.InvariantFactorPaths.G7.Top.simeqRules K (ZV d N0 N1)`. Establish `hs0 : HasSubst Xt` using `hasSubst_of_constantCoeff_zero fun x => (hX x).1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨Xp, hXp⟩ : ∃ Xp : Bool × ι × Fin N0 × Fin N1 → MvPowerSeries (ZV d N0 N1) K, ∀ x, Xp x = map j (Xt x)` from `⟨fun x => map j (Xt x), fun _ => rfl⟩`. Establish `hXp' : (fun x => map j (Xt x)) = Xp` using `funext fun x => (hXp x).symm`. Establish `h0 : ∀ x, constantCoeff (Xp x) = 0` using `fun x => by`. Rewrite using `[hXp, constantCoeff_map, (hX x).1, map_zero]`. Establish `hi : ∀ x, Integral (Xp x)` using `fun x => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hXp]`. Conclude with `Formalism.DworkPowerSeriesWeights.Transfer.integral_map j hj (hX x).2`. Establish `hs : HasSubst Xp` using `hasSubst_of_constantCoeff_zero h0`. Establish `hE0 : ∀ (a : Fin N0) (b : Fin N1) (s : ZMod d), constantCoeff (entLog (K` using `K0) l (s, a, b)) = 0 := fun a b s => ((letter_shift K0 l d σ hU.1).2.2 N0 N1 a b s).1`. Establish `hE1 : ∀ (a : Fin N0) (b : Fin N1) (s : ZMod d), constantCoeff (entLog (K` using `K) l (s, a, b)) = 0 := fun a b s => ((letter_shift K l d (RingHom.id K) hU.1).2.2 N0 N1 a b s).1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨bm, hbm⟩ : ∃ bm, bm = map j (beMean (d` from `d) l σ be0 om oms ζ) := ⟨_, rfl⟩`. Choose the witnesses or unpack the hypotheses as in `⟨Bt, hBt⟩ : ∃ Bt : MvPowerSeries (ZV d N0 N1) K, Bt = ∑ ab : Fin N0 × Fin N1,`. Substitute `(fun s => entLog (K := K) l (s, ab.1, ab.2)) bm := ⟨_, rfl⟩` using the available equality. Establish `hmapB : map j (∑ ab : Fin N0 × Fin N1, subst (fun s => entLog (K` using `K0) l (s, ab.1, ab.2)) (beMean (d := d) l σ be0 om oms ζ)) = Bt := by`. Rewrite using `[map_sum, hBt]`.
+Extract witnesses or component facts from the available result. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun ab _ => ?_` and prove the remaining obligations. Rewrite using `[map_subst (hasSubst_of_constantCoeff_zero fun s => hE0 ab.1 ab.2 s), hbm]`. Simplify using `only [Formalism.DworkPowerSeriesWeights.Transfer.map_entLog]`. Establish `hS' : Simeq Bt (subst Xp (sumE (map j be0)))`. Use `(Formalism.InvariantFactorPaths.G7.Top.mapSimeq K0 K _ j hj).1 _ _ hS` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[hmapB, map_subst hs0, map_sumE, hXp']`. Then use the resulting hypothesis. Establish `hΦ'` using `(Formalism.InvariantFactorPaths.G7.Top.simeqRules K (Bool × ι × Fin N0 × Fin N1)).2.2.2.2 _ Φ _ Xp h0 hi hΦ`. Establish `hBΦ : Simeq Bt (subst Xp Φ)` using `hR.2.2.1 _ _ _ hS' (hR.2.1 _ _ hΦ')`. Establish `hsΦ0 : constantCoeff (subst Xp Φ) = 0` using `constantCoeff_subst_eq_zero hs h0 hΦ0`. Establish `hBt0 : constantCoeff Bt = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hBΦ.1` as an intermediate fact. Rewrite `this` using `[map_sub, hsΦ0, sub_zero]`. Then use the resulting hypothesis. Establish `hnB0 : constantCoeff (-Bt) = 0` using `by rw [map_neg, hBt0, neg_zero]`. Use `⟨mvExp (Bt - subst Xp Φ) * subst Xp U0, Formalism.InvariantFactorPaths.G7.LogarithmEquivalence.integral_mul' hBΦ.2 (Formalism.InvariantFactorPaths.G7.LogarithmEquivalence.integral_subst' h0 hi hU0), ?_⟩` and prove the remaining obligations. Introduce `g hg0 hgE`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hg : HasSubst g` using `hasSubst_of_constantCoeff_zero hg0`. Establish `hx : ∀ x, subst g (Xp x) = xOfZ l j σ om oms x`. Introduce `x`. Establish `ha : constantCoeff (subst g (Xp x)) = 0` using `constantCoeff_subst_eq_zero hg hg0 (h0 x)`. Establish `hlg : PowerSeries.subst (subst g (Xp x)) (lgF K l) =`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality.
 
-Substitute `g (map j (PowerSeries.subst (Xt x) (lgF K0 l))) := by` using the available equality. Rewrite using `[PowerSeries.map_subst (PowerSeries.HasSubst.of_constantCoeff_zero (hX x).1), map_lgF', ← hXp, subst_subst1 hg (PowerSeries.HasSubst.of_constantCoeff_zero (h0 x))]`. Rewrite using `[← exp_log hE hl ha, hlg, hlog]`. Unfold `xOfZ`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Use `split_ifs`. Conclude with `subst_map_linEL l j σ _ _ _ hg hgE`. Conclude with `subst_map_linOL l j σ _ _ _ hg hgE`. Establish `hmain : subst Xp (mvExp (-Φ) * U0) = mvExp (-Bt) * (mvExp (Bt - subst Xp Φ) * subst Xp U0)`. Rewrite using `[subst_mul hs, Formalism.InvariantFactorPaths.G7.LogarithmEquivalence.subst_mvExp' hs (by rw [map_neg, hΦ0, neg_zero]), ← mul_assoc, ← mvExp_add hnB0 hBΦ.1, subst_neg' hs]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `congr 2`. Expand and normalize the polynomial expressions, which then agree. Establish `hgB : subst g Bt = bSum (idM : ZV d N0 N1 → ZV d N0 N1 → K) bm`. Unfold `bSum`. Rewrite using `[linSub_idM, hBt, subst_sum hg]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `Finset.sum_congr rfl fun ab _ => ?_` and prove the remaining obligations. Rewrite using `[subst_comp_subst_apply (hasSubst_of_constantCoeff_zero fun s => hE1 ab.1 ab.2 s) hg]`. Simplify using `only [hgE]`. Establish `hxf : xOfZ (d` using `d) (N0 := N0) (N1 := N1) l j σ om oms = fun x => subst g (Xp x) :=`. Use function extensionality and compare the values at `fun x => (hx x).symm`.
-
-Unfold `thetaInZ thetaZ`. Rewrite using `[linSub_idM, subst_self, id, ← hbm, ← hgB, hxf, ← subst_comp_subst_apply hs hg, hmain, subst_mul hg, Formalism.InvariantFactorPaths.G7.LogarithmEquivalence.subst_mvExp' hg hnB0, subst_neg' hg, neg_smul, one_smul, mul_comm]`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem biextension_of_exp_spec (hE : ExpSpec) (hP : BiextensionPointsIntegral) : B0 := by
   intro K0 K _ _ _ _ _ _ l d N0 N1 _ σ j hU hj h2 hd F hF be0 hF1 hF2 ι _ _ om oms hOw hTr ζ hζ

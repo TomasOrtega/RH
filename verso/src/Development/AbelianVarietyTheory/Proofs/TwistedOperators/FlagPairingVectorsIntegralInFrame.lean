@@ -15,7 +15,7 @@ namespace GlobalTheory.SeeConjRead
 open Classical
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `hf a`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem cast_fun_mem_Lf {I J : Formalism.MainNotions.S.AutInst} (h : I = J) {m : ℕ} (f : Fin m → Formalism.L2.SG.HidaSetting.VA I)
     (hf : ∀ a, f a ∈ I.Lf) (a : Fin m) :
@@ -24,7 +24,7 @@ theorem cast_fun_mem_Lf {I J : Formalism.MainNotions.S.AutInst} (h : I = J) {m :
   exact hf a
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `hv`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem cast_mem_Lf {I J : Formalism.MainNotions.S.AutInst} (h : I = J) (v : Formalism.L2.SG.HidaSetting.VA I) (hv : v ∈ I.Lf) :
     cast (congrArg (fun I : Formalism.MainNotions.S.AutInst => Formalism.L2.SG.HidaSetting.VA I) h) v ∈ J.Lf := by
@@ -32,7 +32,7 @@ theorem cast_mem_Lf {I J : Formalism.MainNotions.S.AutInst} (h : I = J) (v : For
   exact hv
 
 /- English proof (translation)
-Unfold `flagV`. Use `split_ifs`. Use `exacts [he _, hb _, hz, hf _, h0]`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem flagV_mem {M : Type} [Zero M] (S : Set M) (h0 : (0 : M) ∈ S) (ρ k n : ℕ) (e f : Fin ρ → M) (b : Fin k → M)
     (z : M) (he : ∀ a, e a ∈ S) (hf : ∀ a, f a ∈ S) (hb : ∀ a, b a ∈ S) (hz : z ∈ S) (i : Fin n) :
@@ -42,24 +42,22 @@ theorem flagV_mem {M : Type} [Zero M] (S : Set M) (h0 : (0 : M) ∈ S) (ρ k n :
   exacts [he _, hb _, hz, hf _, h0]
 
 /- English proof (translation)
-Simplify using `only [Matrix.mul_apply, Matrix.mulVec, dotProduct, colMat, Matrix.of_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem colMat_entry {D : D7} {n : ℕ} (M : Matrix (Fin n) (Fin n) (EAf D)) (w : Fin n → Fin n → EAf D) (i j : Fin n) :
     (M * colMat w) i j = Matrix.mulVec M (w j) i := by
   simp only [Matrix.mul_apply, Matrix.mulVec, dotProduct, colMat, Matrix.of_apply]
 
 /- English proof (translation)
-Introduce `D X h β₀ hL PP i j`. Establish `hF : Formalism.L2.DIV.IsFrame β₀ (Formalism.L2.Herm.crdLat (Yc D 0) (Yc D 0).L0)` using `hL ▸ GlobalTheory.StdFrames.isFrame_lat β₀`. Establish `hLf` using `GlobalTheory.KgFrame.Lf_eq D`. Establish `key : ∀ v : Fin (Yc D 0).rank → EAf D, v ∈ (Formalism.L2.SG.InstExistsPf.instOf D).Lf → Matrix.mulVec (β₀⁻¹).val v i ∈ Formalism.L2.Herm.intAf D.host.F D.host.E`. Introduce `v hv`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hv` using `[hLf]`. Conclude with `(hF v).1 hv i`. Use `set S : Set (Fin (Yc D 0).rank → EAf D) := {v | v ∈ (Formalism.L2.SG.InstExistsPf.instOf D).Lf} with hS`. Establish `h0 : (0 : Fin (Yc D 0).rank → EAf D) ∈ S` using `by show (0 : Fin (Yc D 0).rank → EAf D) ∈ (Formalism.L2.SG.InstExistsPf.instOf D).Lf`. Conclude with `zero_mem _`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hef, hz, hbw⟩` from `X.vectorsInLattice`. Establish `he : ∀ a, e0T X h a ∈ S` using `cast_fun_mem_Lf h X.e0 (fun a => (hef a).1)`. Establish `hf : ∀ a, f0T X h a ∈ S` using `cast_fun_mem_Lf h X.f0 (fun a => (hef a).2)`. Establish `hb : ∀ a, bwT X h a ∈ S` using `cast_fun_mem_Lf h X.bw (fun a => (hbw a).1)`. Establish `hbd : ∀ a, bwdT X h a ∈ S` using `cast_fun_mem_Lf h X.bwd (fun a => (hbw a).2)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hzz : z0T X h ∈ S` using `cast_mem_Lf h X.z0 hz`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[colMat_entry]`. Apply `key` to reduce the goal to its premises. Unfold `flagAt`.
+Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions.
 
-Use `split_ifs`. Conclude with `flagV_mem S h0 _ _ _ _ _ _ _ he hf hb hzz j`. Conclude with `flagV_mem S h0 _ _ _ _ _ _ _ he hf (fun a => hbd _) hzz j`. Rewrite using `[colMat_entry]`. Apply `key` to reduce the goal to its premises.
-
-Unfold `pairAt`. Use `split_ifs`. Conclude with `flagV_mem S h0 _ _ _ _ _ _ _ hf he hbd hzz j`. Conclude with `flagV_mem S h0 _ _ _ _ _ _ _ hf he (fun a => hb _) hzz j`.
+A detailed English derivation is pending.
 -/
 theorem flag_pair_int : ∀ {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D) (β₀ : GL (Fin (Yc D 0).rank) (EAf D)), Formalism.L2.Herm.crdLat (Yc D 0) (Yc D 0).L0 = GlobalTheory.NormSum.AdLattice.lat β₀ → ∀ (PP : Pl D.host.E) (i j : Fin (Yc D 0).rank), ((β₀⁻¹).val * colMat (flagAt X h PP)) i j ∈ Formalism.L2.Herm.intAf D.host.F D.host.E ∧ ((β₀⁻¹).val * colMat (pairAt X h PP)) i j ∈ Formalism.L2.Herm.intAf D.host.F D.host.E := by
   intro D X h β₀ hL PP i j

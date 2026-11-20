@@ -12,23 +12,21 @@ namespace GlobalTheory.CxCoh
 universe a b
 
 /- English proof (translation)
-Take `⟨Za, Zb, Zc, Zd⟩` from `hz`. Use `choose ω₁ hω₁ using fun T ↦ (hq T).inj2 (z.2.2 T) (c'.2 T) (Zd T) (E2 T).symm`. Establish `h1 : ∀ T, K.d1 T (c'.2 T - a1 T (ω₁ T)) = 0` using `fun T ↦ by`. Rewrite using `[map_sub, E2, ← comp_commutes_diffOne, hω₁, sub_self]`. Use `choose ω₂ w hω₂ hw using fun T ↦ (hq T).surj1 _ (h1 T)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hw' : ∀ T, a1 T (ω₂ T) = c'.2 T - a1 T (ω₁ T) - K.d0 T (w T)` using `fun T ↦ by`. Rewrite using `[hw T]`. Normalize the expressions using the abelian group laws. Take `⟨Ω, hΩ⟩ : ∃ Ω : ∀ T, L.M1.obj T, ∀ T, Ω T = ω₁ T + ω₂ T` from `⟨_, fun _ ↦ rfl⟩`. Take `⟨α, hα⟩ : ∃ α : L.M1.c1, ∀ T T' (φ : T ⟶ T'), α T T' φ = z.2.1 T T' φ - (Ω T' - L.M1.map φ (Ω T))` from `⟨_, fun _ _ _ ↦ rfl⟩`.
+Normalize the expressions using the abelian group laws. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨f, hf⟩ : ∃ f : K.M0.c1, ∀ T T' (φ : T ⟶ T'), f T T' φ = c'.1 T T' φ - (w T' - K.M0.map φ (w T))` from `⟨_, fun _ _ _ ↦ rfl⟩`. Establish `hα1 : ∀ T T' (φ : T ⟶ T'), L.d1 T' (α T T' φ) = 0` using `fun T T' φ ↦ by`. Establish `hc` using `Zc T T' φ`. Simplify using `only [hα, hΩ, map_sub, map_add, L.diffOne_natural, hω₁, hω₂, add_zero, map_zero]`. Rewrite using `[hc]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Normalize the expressions using the abelian group laws. Establish `hα2 : ∀ T T' (φ : T ⟶ T'), a1 T' (α T T' φ) = K.d0 T' (-f T T' φ)` using `fun T T' φ ↦ by`. Simplify using `only [hα, hΩ, hf, map_sub, map_add, map_neg, compDegreeOne_natural, hw', ← E1, K.diffZero_natural]`. Normalize the expressions using the abelian group laws. Use `choose g hg using fun T T' (φ : T ⟶ T') ↦ (hq T').inj1 (α T T' φ) (-f T T' φ) (hα1 T T' φ) (hα2 T T' φ)`.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h3 : ∀ T T' (φ : T ⟶ T'), K.d0 T' (f T T' φ + a0 T' (g T T' φ)) = 0` using `fun T T' φ ↦ by`. Rewrite using `[map_add, ← comp_commutes_diffZero, hg, hα2, map_neg, add_neg_cancel]`. Use `choose f₂ hf₂ hf₂' using fun T T' (φ : T ⟶ T') ↦ (hq T').surj0 _ (h3 T T' φ)`. Use `⟨(fun T T' φ ↦ f₂ T T' φ - g T T' φ, Ω), Prod.ext (funext fun T ↦ funext fun T' ↦` and prove the remaining obligations. Use function extensionality and compare the values at `fun T'' ↦ funext fun φ ↦ funext fun ψ ↦ ?_) (Prod.ext (funext fun T ↦ funext fun T' ↦`.
+Apply function extensionality and compare values at an arbitrary argument. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `fun φ ↦ ?_) (funext fun T ↦ ?_))⟩`. Express the relevant statement in the definitionally equal form `L.M0.map ψ (f₂ T T' φ - g T T' φ) - (f₂ T T'' (φ ≫ ψ) - g T T'' (φ ≫ ψ)) + (f₂ T' T'' ψ - g T' T'' ψ) = z.1 T T' T'' φ ψ`. Establish `hZb : L.d0 T'' (z.1 T T' T'' φ ψ) = z.2.1 T T'' (φ ≫ ψ) - L.M1.map ψ (z.2.1 T T' φ) - z.2.1 T' T'' ψ`. Rewrite using `[Zb T T' T'' φ ψ]`. Normalize the expressions using the abelian group laws.
+Normalize the expressions using the abelian group laws. Establish an intermediate fact. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Establish `hd : L.d0 T'' (z.1 T T' T'' φ ψ - (L.M0.map ψ (f₂ T T' φ - g T T' φ) - (f₂ T T'' (φ ≫ ψ) - g T T'' (φ ≫ ψ)) + (f₂ T' T'' ψ - g T' T'' ψ))) = 0`. Simplify using `only [map_sub, map_add, L.diffZero_natural, hf₂, hg, hα, hZb, L.M1.map_comp, map_zero]`. Normalize the expressions using the abelian group laws. Establish `ha : a0 T'' (z.1 T T' T'' φ ψ - (L.M0.map ψ (f₂ T T' φ - g T T' φ) - (f₂ T T'' (φ ≫ ψ) - g T T'' (φ ≫ ψ)) + (f₂ T' T'' ψ - g T' T'' ψ))) = 0`. Simplify using `only [map_sub, map_add, compDegreeZero_natural, hf₂', ← E0, hf, K.M0.map_comp]`.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Normalize the expressions using the abelian group laws. Conclude with `(sub_eq_zero.mp ((hq T'').inj0 _ hd ha)).symm`. Express the relevant statement in the definitionally equal form `Ω T' - L.M1.map φ (Ω T) - L.d0 T' (f₂ T T' φ - g T T' φ) = z.2.1 T T' φ`. Rewrite using `[map_sub, hf₂, hg, hα]`. Normalize the expressions using the abelian group laws.
-
-Express the relevant statement in the definitionally equal form `L.d1 T (Ω T) = z.2.2 T`. Rewrite using `[hΩ, map_add, hω₁, hω₂, add_zero]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cocycle_two_isCoboundary_of_objectwiseQuasiIso {C : Type b} [Category.{0} C] {L K : Cx C}
     (a0 : ∀ T, L.M0.obj T →+ K.M0.obj T) (a1 : ∀ T, L.M1.obj T →+ K.M1.obj T)
@@ -92,9 +90,9 @@ theorem cocycle_two_isCoboundary_of_objectwiseQuasiIso {C : Type b} [Category.{0
     rw [hΩ, map_add, hω₁, hω₂, add_zero]
 
 /- English proof (translation)
-Introduce `C _ C' _ K K' m hq`. Use `(injective_iff_map_eq_zero _).mpr fun x hx ↦ ?_` and prove the remaining obligations. Take `⟨z, rfl⟩` from `QuotientAddGroup.mk_surjective x`. Establish `hx' : (QuotientAddGroup.mk (m.vert.z2 z) : K'.H2) = 0` using `hx`. Rewrite `hx'`, the goal using `[QuotientAddGroup.eq_zero_iff, AddSubgroup.mem_addSubgroupOf]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Take `⟨c', hc'⟩` from `hx'`. Conclude with `cocycle_two_isCoboundary_of_objectwiseQuasiIso (L := K.res m.G) (K := K') m.a0 m.a1 m.a2 m.compDegreeZero_natural m.compDegreeOne_natural m.comp_commutes_diffZero m.comp_commutes_diffOne hq z.1 z.2 c' (fun T T' T'' φ ψ ↦ congrArg (fun c ↦ c.1 T T' T'' φ ψ) hc') (fun T T' φ ↦ cong …`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem vertical_h2_injective : VertHas.{a, b} (fun m ↦ Function.Injective m.h2) := by
   intro C _ C' _ K K' m hq
@@ -110,7 +108,7 @@ theorem vertical_h2_injective : VertHas.{a, b} (fun m ↦ Function.Injective m.h
     (fun T ↦ congrArg (fun c ↦ c.2.2 T) hc')
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨vertical_h2_injective, vertical_h2_injective, vertical_h2_injective⟩`.
+Supply the required witnesses or components.
 -/
 theorem vertical_h2_injective_universes :
     VertHas.{1,1} (fun m ↦ Function.Injective m.h2) ∧ VertHas.{1,0} (fun m ↦ Function.Injective m.h2) ∧

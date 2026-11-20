@@ -7,7 +7,7 @@ open IsDedekindDomain NumberField TensorProduct
 namespace PI.ProdFormulaE.Tr
 
 /- English proof (translation)
-Establish `h : Algebra.lmul A (A ⊗[R] S) (1 ⊗ₜ s) = (Algebra.lmul R S s).baseChange A`. Apply `TensorProduct.AlgebraTensorModule.ext` to reduce the goal to its premises. Introduce `a t`. Simplify using `[Algebra.TensorProduct.tmul_mul_tmul]`. Rewrite using `[Algebra.trace_apply, h, LinearMap.trace_baseChange, Algebra.trace_apply]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem trace_one_tmul {R S A : Type*} [CommRing R] [CommRing S] [Algebra R S] [Module.Free R S]
     [Module.Finite R S] [CommRing A] [Algebra R A] (s : S) :
@@ -19,9 +19,9 @@ theorem trace_one_tmul {R S A : Type*} [CommRing R] [CommRing S] [Algebra R S] [
   rw [Algebra.trace_apply, h, LinearMap.trace_baseChange, Algebra.trace_apply]
 
 /- English proof (translation)
-Set `bs` to `fun i => Module.Free.chooseBasis R (K i)`. Rewrite using `[Algebra.trace_eq_matrix_trace (Pi.basis bs), Matrix.trace, Fintype.sum_sigma]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.trace_eq_matrix_trace (bs i), Matrix.trace]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[Matrix.diag, Algebra.leftMulMatrix_apply, LinearMap.toMatrix_apply, Pi.basis_apply, Pi.basis_repr, bs]`.
+Simplify using the standard rewrite rules.
 -/
 theorem trace_pi {R : Type*} [CommRing R] {ι : Type*} [Fintype ι] [DecidableEq ι]
     (K : ι → Type*) [∀ i, CommRing (K i)] [∀ i, Algebra R (K i)] [∀ i, Module.Free R (K i)]
@@ -36,9 +36,9 @@ theorem trace_pi {R : Type*} [CommRing R] {ι : Type*} [Fintype ι] [DecidableEq
   simp [Matrix.diag, Algebra.leftMulMatrix_apply, LinearMap.toMatrix_apply, Pi.basis_apply, Pi.basis_repr, bs]
 
 /- English proof (translation)
-Introduce `F _ _ ℓ _ ι _ D hD y`. Set `e : ℚ_[ℓ] ⊗[ℚ] F ≃ₐ[ℚ_[ℓ]] (∀ i, D.K i)` to `AlgEquiv.ofBijective D.Φ ⟨hI F ℓ ι D hD, hS F ℓ ι D hD⟩`. Establish `h1 : e (1 ⊗ₜ y) = fun i => D.ιF i y`. Use function extensionality and compare the values at `i`. Simplify using `[e, LocFam.Φ, Algebra.TensorProduct.lift_tmul]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[← trace_one_tmul, ← Algebra.trace_eq_of_algEquiv e, h1, trace_pi]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem trSum_of (hI : TrInj) (hS : TrSurj) : TrSum := by
   classical

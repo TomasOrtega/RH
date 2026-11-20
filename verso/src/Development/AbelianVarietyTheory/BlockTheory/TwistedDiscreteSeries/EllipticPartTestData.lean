@@ -33,12 +33,12 @@ instance [NumberField E] : NumberField (Fld P) := NumberField.of_module_finite E
 def alpha : Fld P := AdjoinRoot.root P.1
 
 /- English proof (translation)
-The claim follows from `AdjoinRoot.eval₂_root P.1`.
+A detailed English derivation is pending.
 -/
 theorem eval_alpha : eval₂ (algebraMap E (Fld P)) (alpha P) P.1 = 0 := AdjoinRoot.eval₂_root P.1
 
 /- English proof (translation)
-Introduce `h` and use `by have := eval_alpha P rw [h, eval₂_at_zero, map_eq_zero, coeff_zero_eq_eval_zero] at this exact P.2.2.2.2.1 this`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem alpha_ne_zero : alpha P ≠ 0 := fun h => by
   have := eval_alpha P
@@ -46,9 +46,9 @@ theorem alpha_ne_zero : alpha P ≠ 0 := fun h => by
   exact P.2.2.2.2.1 this
 
 /- English proof (translation)
-Establish `h0` using `eval_alpha P`. Rewrite `h0` using `[P.2.2.2.2.2, sharp, eval₂_mul, eval₂_C, mul_eq_zero, map_eq_zero, inv_eq_zero, map_eq_zero]`. Establish `h1` using `h0.resolve_left P.2.2.2.2.1`. Use `letI : Invertible (alpha P)⁻¹ := invertibleOfNonzero (inv_ne_zero (alpha_ne_zero P))`. Establish `h2` using `(eval₂_reflect_eq_zero_iff (algebraMap E (Fld P)) (alpha P)⁻¹ r (P.1.map (σ : E →+* E)) (natDegree_map_le.trans P.2.2.2.1.le)).1 (by rwa [invOf_eq_inv, inv_inv])`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Rewrite `h2` using `[eval₂_map]`. Conclude with `h2`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eval_inv_alpha :
     eval₂ (((IsScalarTower.toAlgHom F E (Fld P)).comp σ : E →ₐ[F] Fld P) : E →+* Fld P) (alpha P)⁻¹ P.1 = 0 := by
@@ -65,12 +65,12 @@ def star' : Fld P →ₐ[F] Fld P :=
   AdjoinRoot.liftAlgHom P.1 ((IsScalarTower.toAlgHom F E (Fld P)).comp σ) (alpha P)⁻¹ (eval_inv_alpha P)
 
 /- English proof (translation)
-The claim follows from `AdjoinRoot.liftAlgHom_root ..`.
+A detailed English derivation is pending.
 -/
 theorem star'_alpha : star' P (alpha P) = (alpha P)⁻¹ := AdjoinRoot.liftAlgHom_root ..
 
 /- English proof (translation)
-The claim follows from `AdjoinRoot.liftAlgHom_of ..`.
+A detailed English derivation is pending.
 -/
 theorem star'_algebraMap (e : E) : star' P (algebraMap E (Fld P) e) = algebraMap E (Fld P) (σ e) :=
   AdjoinRoot.liftAlgHom_of ..
@@ -119,7 +119,7 @@ def mulMat (φ : (k ⊗[F] Fld P) ≃ₗ[k ⊗[F] E] (Fin n → k ⊗[F] E)) :
     ((φ.conjAlgEquiv (k ⊗[F] E)).toAlgHom.comp (Algebra.lmul (k ⊗[F] E) (k ⊗[F] Fld P)))).toRingHom.toMonoidHom
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `LinearMap.toMatrix' (φ.conj (LinearMap.mul _ _ z)) *ᵥ φ y = _`. Rewrite using `[← Matrix.toLin'_apply, Matrix.toLin'_toMatrix']`. Simplify using `[LinearEquiv.conj_apply]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mulMat_mulVec (φ : (k ⊗[F] Fld P) ≃ₗ[k ⊗[F] E] (Fin n → k ⊗[F] E)) (z y : k ⊗[F] Fld P) :
     mulMat φ z *ᵥ φ y = φ (z * y) := by
@@ -131,7 +131,7 @@ def torUnit : Tor P k →* (k ⊗[F] Fld P)ˣ :=
   Matrix.GeneralLinearGroup.det.comp (HR k (star' P) (one₁ P)).subtype
 
 /- English proof (translation)
-Establish `h : Formalism.UG.cT _ t.1.1 * JR k (one₁ P) * t.1.1 = JR k (one₁ P)` using `t.2`. Establish `h0` using `congrFun (congrFun h 0) 0`. Establish `e : (torUnit t).1 = t.1.1 0 0` using `Matrix.det_fin_one _`. Rewrite using `[e, mul_comm]`. Simplify `h0` using `[Formalism.UG.cT, Matrix.mul_apply, JR]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem torUnit_norm (t : Tor P k) : (torUnit t).1 * sigR k (star' P) (torUnit t).1 = 1 := by
   have h : Formalism.UG.cT _ t.1.1 * JR k (one₁ P) * t.1.1 = JR k (one₁ P) := t.2
@@ -141,7 +141,7 @@ theorem torUnit_norm (t : Tor P k) : (torUnit t).1 * sigR k (star' P) (torUnit t
   simpa [Formalism.UG.cT, Matrix.mul_apply, JR] using h0
 
 /- English proof (translation)
-Use extensionality with `i j`. Use `h (Pi.single i 1) (Pi.single j 1)` as an intermediate fact. Simplify using `only [Formalism.UG.hform, Matrix.mulVec_single_one, Pi.single_apply, apply_ite s, map_one, map_zero, ite_mul, mul_ite, one_mul, mul_one, zero_mul, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true] at this`. Rewrite using `[← this, Finset.sum_comm]`. Simplify using `[Formalism.UG.cT, Matrix.mul_apply, Finset.sum_mul]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem unitary_of_hform {A : Type} [CommRing A] (s : A →+* A) (G M : Matrix (Fin n) (Fin n) A)
     (h : ∀ a b, Formalism.UG.hform s G (M *ᵥ a) (M *ᵥ b) = Formalism.UG.hform s G a b) : Formalism.UG.cT s M * G * M = G := by
@@ -194,7 +194,7 @@ def glChar (μ : Fin r → ℤ) (a : Fin r → ℂ) : ℂ :=
   (Matrix.of fun i j => a i ^ (μ j + (j.rev : ℕ))).det / (Matrix.of fun i j : Fin r => a i ^ (j.rev : ℕ)).det
 
 /- English proof (translation)
-Establish `h1` using `Matrix.det_permute s (Matrix.of fun i j => a i ^ (μ j + (j.rev : ℕ)))`. Establish `h2` using `Matrix.det_permute s (Matrix.of fun i j : Fin r => a i ^ (j.rev : ℕ))`. Establish `hs : ((Equiv.Perm.sign s : ℤ) : ℂ) ≠ 0` using `by exact_mod_cast (Equiv.Perm.sign s).ne_zero`. Conclude with `(congrArg₂ (· / ·) h1 h2).trans (mul_div_mul_left _ _ hs)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem glChar_perm (μ : Fin r → ℤ) (a : Fin r → ℂ) (s : Equiv.Perm (Fin r)) : glChar μ (a ∘ s) = glChar μ a := by
   have h1 := Matrix.det_permute s (Matrix.of fun i j => a i ^ (μ j + (j.rev : ℕ)))
@@ -205,7 +205,7 @@ theorem glChar_perm (μ : Fin r → ℤ) (a : Fin r → ℂ) (s : Equiv.Perm (Fi
 def hiWt (lam : Fin r → ℤ) : Fin r → ℤ := fun j => lam j - ((((r - 1) / 2 : ℕ) : ℤ) - (j : ℕ))
 
 /- English proof (translation)
-Simplify using `[glChar, hiWt]`.
+Simplify using the standard rewrite rules.
 -/
 example (l : ℤ) (a : ℂ) : glChar (hiWt ![l]) ![a] = a ^ l := by simp [glChar, hiWt]
 
@@ -215,9 +215,9 @@ Evaluate the decidable proposition.
 example : hiWt ![1, 0, -1] = 0 := by decide
 
 /- English proof (translation)
-Establish `hc : Q.roots.card = Q.natDegree` using `IsAlgClosed.card_roots_eq_natDegree`. Take `⟨l, hl⟩` from `Quotient.exists_rep Q.roots`. Establish `hl' : (l : Multiset ℂ) = Q.roots` using `hl`. Establish `hlen : l.length = r` using `by rw [← hd, ← hc, ← hl', Multiset.coe_card]`. Substitute `hlen` using the available equality.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality.
 
-Use `⟨l.get, ?_⟩` and prove the remaining obligations. Rewrite using `[← prod_multiset_X_sub_C_of_monic_of_roots_card_eq hm hc, ← hl', Multiset.map_coe, Multiset.prod_coe, ← Fin.prod_univ_fun_getElem]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem exists_roots {Q : ℂ[X]} (hm : Q.Monic) (hd : Q.natDegree = r) : ∃ a : Fin r → ℂ, Q = ∏ i, (X - C (a i)) := by
   have hc : Q.roots.card = Q.natDegree := IsAlgClosed.card_roots_eq_natDegree
@@ -236,7 +236,7 @@ def cxRoots (τ : E →+* ℂ) (P : PPol σ r) : Fin r → ℂ :=
   (exists_roots (P.2.1.map τ) ((natDegree_map_eq_of_injective τ.injective _).trans P.2.2.2.1)).choose
 
 /- English proof (translation)
-The claim follows from `(exists_roots (P.2.1.map τ) ((natDegree_map_eq_of_injective τ.injective _).trans P.2.2.2.1)).choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem cxRoots_spec (τ : E →+* ℂ) (P : PPol σ r) : P.1.map τ = ∏ i, (X - C (cxRoots τ P i)) :=
   (exists_roots (P.2.1.map τ) ((natDegree_map_eq_of_injective τ.injective _).trans P.2.2.2.1)).choose_spec
@@ -252,7 +252,7 @@ def IsTorusMeas (P : PPol σ r) (dta : ∀ w : InfinitePlace F, Measure (Tor P w
   IsRestrictedProd (star' P) (one₁ P) (stdLattice (Fld P) 1) dta dtf dt
 
 /- English proof (translation)
-The claim follows from `haveI := isLattice_stdLattice (E := Fld P) (n := 1) ⟨_, _, exists_isRestrictedProd (star' P) (one₁ P) (stdLattice (Fld P) 1)⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_isTorusMeas (P : PPol σ r) : ∃ dta dtf dt, IsTorusMeas P dta dtf dt :=
   haveI := isLattice_stdLattice (E := Fld P) (n := 1)
@@ -284,14 +284,14 @@ def IsLatticeConj {r' : ℕ} {J : Matrix (Fin r) (Fin r) E} {J' : Matrix (Fin r'
     ∀ g y, (matHom _ σ J' (j g)).1 *ᵥ a y = a ((matHom _ σ J g).1 *ᵥ y)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨LinearEquiv.refl _ _, fun _ _ => rfl, fun _ => Iff.rfl, fun _ _ => rfl⟩`.
+Supply the required witnesses or components.
 -/
 example {J : Matrix (Fin r) (Fin r) E} (L : Submodule (𝓞 E) (Fin r → E)) (v : HeightOneSpectrum (𝓞 F)) :
     IsLatticeConj (σ := σ) (J := J) (v := v) L L (ContinuousMulEquiv.refl _) :=
   ⟨LinearEquiv.refl _ _, fun _ _ => rfl, fun _ => Iff.rfl, fun _ _ => rfl⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨X - C 1, monic_X_sub_C 1, irreducible_X_sub_C 1, natDegree_X_sub_C 1, by simp, by have : reflect 1 (X - 1 : E[X]) = 1 - X := by rw [reflect_sub, ← pow_one (X : E[X]), reflect_monomial, reflect_one]; simp simp [sharp, this]⟩⟩`.
+Supply the required witnesses or components.
 -/
 example : Nonempty (PPol σ 1) :=
   ⟨⟨X - C 1, monic_X_sub_C 1, irreducible_X_sub_C 1, natDegree_X_sub_C 1, by simp, by

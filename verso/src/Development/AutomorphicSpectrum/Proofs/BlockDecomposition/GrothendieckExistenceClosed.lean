@@ -20,13 +20,13 @@ open CategoryTheory CategoryTheory.Limits AlgebraicGeometry ReciprocityTheory.Ch
 namespace GlobalTheory.CompanionTheory.GE
 
 /- English proof (translation)
-Introduce `E hE S hS hK hP`. Establish `hln : IsLocallyNoetherian X` using `LocallyOfFiniteType.isLocallyNoetherian (X ↘ Spec (.of A))`. Use `letI : J.subscheme.Over (Spec (.of A)) := ⟨J.subschemeι ≫ (X ↘ Spec (.of A))⟩`. Establish `h1 : IsSeparated (J.subscheme ↘ Spec (.of A))` using `(inferInstance : IsSeparated (J.subschemeι ≫ (X ↘ Spec (.of A))))`. Establish `h2 : LocallyOfFiniteType (J.subscheme ↘ Spec (.of A))` using `(inferInstance : LocallyOfFiniteType (J.subschemeι ≫ (X ↘ Spec (.of A))))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : QuasiCompact (J.subscheme ↘ Spec (.of A))` using `(inferInstance : QuasiCompact (J.subschemeι ≫ (X ↘ Spec (.of A))))`. Take `⟨N, Y, i, O, ψ, W, hi, hψ, hcomm, hW, hiso⟩` from `GlobalTheory.T.exists_chow_cover_integral (A := A) (X := J.subscheme)`. Use `letI : (O : Scheme.{0}).Over (Spec (.of A)) := ⟨O.ι ≫ i ≫ ProjSpace.toSpecBase A N⟩`. Establish `hZ : Statement I (⊥ : (O : Scheme.{0}).IdealSheafData)` using `GlobalTheory.T.formal_existence_projective_open I hI i hi O`. Establish `hover : (ψ ≫ J.subschemeι) ≫ (X ↘ Spec (.of A)) = ((O : Scheme.{0}) ↘ Spec (.of A))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `(ψ ≫ J.subschemeι) ≫ (X ↘ Spec (.of A)) = O.ι ≫ i ≫ ProjSpace.toSpecBase A N`. Rewrite using `[hcomm, Category.assoc]`. Both sides reduce to the same expression. Take `⟨D, c, J', hDq, hDP, hc, hJ, hkill⟩` from `GlobalTheory.T.formal_existence_proper_pushforward I hI J hZ ψ hψ hover W hW hiso hE hS hK hP`. Take `⟨c', hS', hP', halg⟩` from `GlobalTheory.T.artin_rees_closed_system I hE hS hP D hDq c hc`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `halg (IH J' hJ _ (GlobalTheory.T.coherent_subobject_coherent hE D hDq) _ hS' (GlobalTheory.T.restricted_system_killed_by_ideal I J' D S c' hkill) hP') hDP`.
+A detailed English derivation is pending.
 -/
 theorem step_integral {A : Type} [CommRing A] [IsNoetherianRing A] (I : Ideal A) (hI : IsAdicComplete I A)
     {X : Scheme.{0}} [X.Over (Spec (.of A))] [IsSeparated (X ↘ Spec (.of A))]
@@ -54,11 +54,9 @@ theorem step_integral {A : Type} [CommRing A] [IsNoetherianRing A] (I : Ideal A)
   exact halg (IH J' hJ _ (GlobalTheory.T.coherent_subobject_coherent hE D hDq) _ hS' (GlobalTheory.T.restricted_system_killed_by_ideal I J' D S c' hkill) hP') hDP
 
 /- English proof (translation)
-Establish `hln : IsLocallyNoetherian X` using `LocallyOfFiniteType.isLocallyNoetherian (X ↘ Spec (.of A))`. Establish `hcs : CompactSpace X` using `QuasiCompact.compactSpace_of_compactSpace (X ↘ Spec (.of A))`. Establish `hno : IsNoetherian X` using `⟨⟩`. Establish `hwf : WellFoundedGT X.IdealSheafData` using `GlobalTheory.T.ideal_sheaf_well_founded_gt`. Use `WellFoundedGT.induction (motive := fun J : X.IdealSheafData => Statement I J) ⊥ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `J IH`. Distinguish the cases in `hJ : J = ⊤`. Substitute `hJ` using the available equality. Conclude with `GlobalTheory.T.formal_existence_top_ideal I`. Break down `GlobalTheory.T.noetherian_ideal_integral_or_split J hJ with h | ⟨J₁, J₂, h₁, h₂, hm⟩` into its components or cases.
-
-Conclude with `step_integral I hI J IH`. Conclude with `GlobalTheory.T.formal_existence_product_ideal I J J₁ J₂ hm (IH _ h₁) (IH _ h₂)`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem statement_bot {A : Type} [CommRing A] [IsNoetherianRing A] (I : Ideal A) (hI : IsAdicComplete I A)
     (X : Scheme.{0}) [X.Over (Spec (.of A))] [IsSeparated (X ↘ Spec (.of A))]
@@ -78,7 +76,7 @@ theorem statement_bot {A : Type} [CommRing A] [IsNoetherianRing A] (I : Ideal A)
   · exact GlobalTheory.T.formal_existence_product_ideal I J J₁ J₂ hm (IH _ h₁) (IH _ h₂)
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.geClosed_of_statement_bot fun _ _ _ I hI X _ _ _ _ => statement_bot I hI X`.
+A detailed English derivation is pending.
 -/
 theorem geClosed : GEClosed :=
   GlobalTheory.T.geClosed_of_statement_bot fun _ _ _ I hI X _ _ _ _ => statement_bot I hI X

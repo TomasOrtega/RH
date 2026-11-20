@@ -18,13 +18,13 @@ variable {σ : E →ₐ[F] E} {n : ℕ} {Y : Spc F E n}
 def nM (β : Matrix (Fin n) (Fin n) (AE F E)) : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) (AE F E) := Matrix.fromBlocks 1 β 0 1
 
 /- English proof (translation)
-Simplify using `[nM, Matrix.fromBlocks_multiply, add_comm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem nM_mul (β γ : Matrix (Fin n) (Fin n) (AE F E)) : nM β * nM γ = nM (β + γ) := by
   simp [nM, Matrix.fromBlocks_multiply, add_comm]
 
 /- English proof (translation)
-Simplify using `[nM, Matrix.fromBlocks_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem nM_zero : nM (0 : Matrix (Fin n) (Fin n) (AE F E)) = 1 := by
   simp [nM, Matrix.fromBlocks_one]
@@ -54,14 +54,14 @@ def nU (b : GL (Fin n ⊕ Fin n) E) (β : Matrix (Fin n) (Fin n) (AE F E)) : GL 
 
 omit [NumberField E] in
 /- English proof (translation)
-The claim follows from `map_intCast _ z`.
+A detailed English derivation is pending.
 -/
 theorem inclR_int (z : ℤ) : inclR (F := F) (AF F) ((z : ℤ) : E) = ((z : ℤ) : AE F E) := map_intCast _ z
 
 omit [NumberField E] in
 
 /- English proof (translation)
-Simplify using `only [nM, Matrix.fromBlocks_transpose, Matrix.transpose_one, Matrix.transpose_zero, Matrix.fromBlocks_map, Matrix.fromBlocks_multiply]`. Rewrite using `[Matrix.map_one _ (map_zero _) (map_one _), Matrix.map_zero _ (map_zero _)]`. Apply the tactic sequence `congr 1 <;> simp`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem nM_form (e : AE F E) (β : Matrix (Fin n) (Fin n) (AE F E)) :
     (nM β)ᵀ * Matrix.fromBlocks 0 1 (e • 1) 0 * (nM β).map (cA σ) =
@@ -72,7 +72,7 @@ theorem nM_form (e : AE F E) (β : Matrix (Fin n) (Fin n) (AE F E)) :
   congr 1 <;> simp
 
 /- English proof (translation)
-Rewrite using `[frame_adelic (F := F) hb, inclR_int]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem frameEq_adelic {b : GL (Fin n ⊕ Fin n) E} {ε : ℤˣ} (hb : FrameEq σ Y b ε) :
     (incM F b.1)ᵀ * dbl (incM F Y.J) * (incM F b.1).map (cA σ) =
@@ -80,11 +80,11 @@ theorem frameEq_adelic {b : GL (Fin n ⊕ Fin n) E} {ε : ℤˣ} (hb : FrameEq �
   rw [frame_adelic (F := F) hb, inclR_int]
 
 /- English proof (translation)
-Establish `hF` using `frameEq_adelic (F := F) hb`. Establish `h1 : (incM F (b⁻¹).1)ᵀ * (incM F b.1)ᵀ = 1`. Rewrite using `[← Matrix.transpose_mul, incM_mul_inv, Matrix.transpose_one]`. Establish `h2 : (incM F b.1).map (cA σ) * (incM F (b⁻¹).1).map (cA σ) = 1`. Rewrite using `[← map_cA_mul, incM_mul_inv, Matrix.map_one _ (map_zero _) (map_one _)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hβ' : βᵀ = -((((ε : ℤ) : AE F E)) • β.map (cA σ))` using `hβ`. Establish `hN : (nM β)ᵀ * Matrix.fromBlocks 0 1 ((((ε : ℤ) : AE F E)) • 1) 0 * (nM β).map (cA σ) = Matrix.fromBlocks 0 1 ((((ε : ℤ) : AE F E)) • 1) 0`. Rewrite using `[nM_form, hβ', add_neg_cancel]`. Use `show (incM F b.1 * nM β * incM F (b⁻¹).1)ᵀ * dbl (incM F Y.J) * (incM F b.1 * nM β * incM F (b⁻¹).1).map (cA σ) = dbl (incM F Y.J)`. Rewrite using `[map_cA_mul, map_cA_mul, Matrix.transpose_mul, Matrix.transpose_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem nU_mem {b : GL (Fin n ⊕ Fin n) E} {ε : ℤˣ} (hσ : ∀ a, σ (σ a) = a) (hb : FrameEq σ Y b ε)
     {β : Matrix (Fin n) (Fin n) (AE F E)} (hβ : β ∈ nCond σ n ε) : nU b β ∈ UG (cA σ) (dbl (incM F Y.J)) := by
@@ -117,7 +117,7 @@ def nbE (b : GL (Fin n ⊕ Fin n) E) (β : nA σ Y b) : G2 σ Y := by
   exact if h : nU b β.1 ∈ UG (cA σ) (dbl (incM F Y.J)) then ⟨nU b β.1, h⟩ else 1
 
 /- English proof (translation)
-Use `show incM F (b⁻¹).1 * (incM F b.1 * nM β * incM F (b⁻¹).1) * incM F b.1 = nM β`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[incM_inv_mul, Matrix.mul_one, ← Matrix.mul_assoc, incM_inv_mul, Matrix.one_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inFrame_nU {b : GL (Fin n ⊕ Fin n) E} (β : Matrix (Fin n) (Fin n) (AE F E))
     (h : nU b β ∈ UG (cA σ) (dbl (incM F Y.J))) : inFrame (σ := σ) (Y := Y) b ⟨nU b β, h⟩ = nM β := by
@@ -126,13 +126,13 @@ theorem inFrame_nU {b : GL (Fin n ⊕ Fin n) E} (β : Matrix (Fin n) (Fin n) (AE
   rw [incM_inv_mul, Matrix.mul_one, ← Matrix.mul_assoc, incM_inv_mul, Matrix.one_mul]
 
 /- English proof (translation)
-Establish `hF` using `frameEq_adelic (F := F) hb`. Establish `hU : (mat2 x)ᵀ * dbl (incM F Y.J) * (mat2 x).map (cA σ) = dbl (incM F Y.J)` using `x.2`. Rewrite `hU` using `[matrix_eq_frame_conjugate b x, hx]`. Establish `h1 : (incM F b.1)ᵀ * (incM F (b⁻¹).1)ᵀ = 1`. Rewrite using `[← Matrix.transpose_mul, incM_inv_mul, Matrix.transpose_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : (incM F (b⁻¹).1).map (cA σ) * (incM F b.1).map (cA σ) = 1`. Rewrite using `[← map_cA_mul, incM_inv_mul, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `hN : (nM β)ᵀ * Matrix.fromBlocks 0 1 ((((ε : ℤ) : AE F E)) • 1) 0 * (nM β).map (cA σ) = Matrix.fromBlocks 0 1 ((((ε : ℤ) : AE F E)) • 1) 0`. Rewrite using `[← hF]`. Use `conv_rhs => rw [← hU]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_cA_mul, map_cA_mul, Matrix.transpose_mul, Matrix.transpose_mul]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[h2, Matrix.mul_one, ← Matrix.mul_assoc (incM F b.1)ᵀ (incM F (b⁻¹).1)ᵀ, h1, Matrix.one_mul]`. Rewrite `hN` using `[nM_form]`. Establish `h3` using `(Matrix.fromBlocks_inj.1 hN).2.2.2`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show βᵀ = -((((ε : ℤ) : AE F E)) • β.map (cA σ))`. Rewrite using `[eq_neg_iff_add_eq_zero, add_comm]`. Conclude with `h3`.
+A detailed English derivation is pending.
 -/
 theorem cond_of_inFrame {b : GL (Fin n ⊕ Fin n) E} {ε : ℤˣ} (hb : FrameEq σ Y b ε) (x : G2 σ Y)
     (β : Matrix (Fin n) (Fin n) (AE F E)) (hx : inFrame b x = nM β) : β ∈ nCond σ n ε := by
@@ -157,9 +157,9 @@ theorem cond_of_inFrame {b : GL (Fin n ⊕ Fin n) E} {ε : ℤˣ} (hb : FrameEq 
   exact h3
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `(AddSubgroup.closure_le (nCond σ n ε)).2 ?_ h` and prove the remaining obligations. Introduce and unpack `γ ⟨x, hx⟩`. Conclude with `cond_of_inFrame hb x γ hx`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Conclude with `AddSubgroup.subset_closure ⟨⟨nU b β, nU_mem hσ hb h⟩, inFrame_nU β _⟩`.
+A detailed English derivation is pending.
 -/
 theorem mem_nA_iff {b : GL (Fin n ⊕ Fin n) E} {ε : ℤˣ} (hσ : ∀ a, σ (σ a) = a) (hb : FrameEq σ Y b ε)
     (β : Matrix (Fin n) (Fin n) (AE F E)) : β ∈ nA σ Y b ↔ β ∈ nCond σ n ε := by
@@ -172,7 +172,7 @@ theorem mem_nA_iff {b : GL (Fin n ⊕ Fin n) E} {ε : ℤˣ} (hσ : ∀ a, σ (�
     exact AddSubgroup.subset_closure ⟨⟨nU b β, nU_mem hσ hb h⟩, inFrame_nU β _⟩
 
 /- English proof (translation)
-Take `⟨⟨ε, hε⟩, -⟩` from `hb`. Conclude with `nU_mem hσ hε ((mem_nA_iff hσ hε β.1).1 β.2)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem nbE_mem {b : GL (Fin n ⊕ Fin n) E} (hσ : ∀ a, σ (σ a) = a) (hb : IsFrame2 σ Y b) (β : nA σ Y b) :
     nU b β.1 ∈ UG (cA σ) (dbl (incM F Y.J)) := by
@@ -180,7 +180,7 @@ theorem nbE_mem {b : GL (Fin n ⊕ Fin n) E} (hσ : ∀ a, σ (σ a) = a) (hb : 
   exact nU_mem hσ hε ((mem_nA_iff hσ hε β.1).1 β.2)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `β`. Simplify using `only [nbE, dif_pos (nbE_mem hσ hb β)]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem nbE_eq {b : GL (Fin n ⊕ Fin n) E} (hσ : ∀ a, σ (σ a) = a) (hb : IsFrame2 σ Y b) :
     nbE σ Y b = fun β => ⟨nU b β.1, nbE_mem hσ hb β⟩ := by
@@ -188,7 +188,7 @@ theorem nbE_eq {b : GL (Fin n ⊕ Fin n) E} (hσ : ∀ a, σ (σ a) = a) (hb : I
   simp only [nbE, dif_pos (nbE_mem hσ hb β)]
 
 /- English proof (translation)
-Introduce `β`. Rewrite using `[nbE_eq hσ hb]`. Conclude with `inFrame_nU β.1 _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isNMap_nbE {b : GL (Fin n ⊕ Fin n) E} (hσ : ∀ a, σ (σ a) = a) (hb : IsFrame2 σ Y b) :
     IsNMap b (nbE σ Y b) := by
@@ -197,7 +197,7 @@ theorem isNMap_nbE {b : GL (Fin n ⊕ Fin n) E} (hσ : ∀ a, σ (σ a) = a) (hb
   exact inFrame_nU β.1 _
 
 /- English proof (translation)
-Introduce `x y h`. Establish `hx` using `matrix_eq_frame_conjugate b x`. Establish `hy` using `matrix_eq_frame_conjugate b y`. Conclude with `Subtype.ext (Units.ext (hx.trans (h ▸ hy.symm)))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem inFrame_injective (b : GL (Fin n ⊕ Fin n) E) : Function.Injective (inFrame (σ := σ) (Y := Y) b) := by
   intro x y h
@@ -206,13 +206,13 @@ theorem inFrame_injective (b : GL (Fin n ⊕ Fin n) E) : Function.Injective (inF
   exact Subtype.ext (Units.ext (hx.trans (h ▸ hy.symm)))
 
 /- English proof (translation)
-The claim follows from `funext fun β => inFrame_injective b ((h β).trans (h' β).symm)`.
+A detailed English derivation is pending.
 -/
 theorem nb_unique {b : GL (Fin n ⊕ Fin n) E} {nb nb' : nA σ Y b → G2 σ Y} (h : IsNMap b nb) (h' : IsNMap b nb') :
     nb = nb' := funext fun β => inFrame_injective b ((h β).trans (h' β).symm)
 
 /- English proof (translation)
-Use `inFrame_injective b ?_` and prove the remaining obligations. Rewrite using `[inFrame_mul, h, h, h]`. Conclude with `(nM_mul β.1 γ.1).symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nb_add {b : GL (Fin n ⊕ Fin n) E} {nb : nA σ Y b → G2 σ Y} (h : IsNMap b nb) (β γ : nA σ Y b) :
     nb (β + γ) = nb β * nb γ := by
@@ -221,7 +221,7 @@ theorem nb_add {b : GL (Fin n ⊕ Fin n) E} {nb : nA σ Y b → G2 σ Y} (h : Is
   exact (nM_mul β.1 γ.1).symm
 
 /- English proof (translation)
-Use `inFrame_injective b ?_` and prove the remaining obligations. Rewrite using `[h, inFrame_one]`. Conclude with `nM_zero`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nb_zero {b : GL (Fin n ⊕ Fin n) E} {nb : nA σ Y b → G2 σ Y} (h : IsNMap b nb) : nb 0 = 1 := by
   refine inFrame_injective b ?_
@@ -229,20 +229,20 @@ theorem nb_zero {b : GL (Fin n ⊕ Fin n) E} {nb : nA σ Y b → G2 σ Y} (h : I
   exact nM_zero
 
 /- English proof (translation)
-Rewrite using `[← nb_add h, ← nb_add h, add_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem nb_comm {b : GL (Fin n ⊕ Fin n) E} {nb : nA σ Y b → G2 σ Y} (h : IsNMap b nb) (β γ : nA σ Y b) :
     nb β * nb γ = nb γ * nb β := by
   rw [← nb_add h, ← nb_add h, add_comm]
 
 /- English proof (translation)
-The claim follows from `continuous_const.matrix_fromBlocks continuous_id continuous_const continuous_const`.
+A detailed English derivation is pending.
 -/
 theorem continuous_nM : Continuous (nM (F := F) (E := E) (n := n)) :=
   continuous_const.matrix_fromBlocks continuous_id continuous_const continuous_const
 
 /- English proof (translation)
-Rewrite using `[nb_unique h (isNMap_nbE hσ hb), nbE_eq hσ hb]`. Use `Continuous.subtype_mk (Units.continuous_iff.2 ⟨?_, ?_⟩) _` and prove the remaining obligations. Conclude with `(continuous_const.matrix_mul (continuous_nM.comp continuous_subtype_val)).matrix_mul continuous_const`. Conclude with `(continuous_const.matrix_mul (continuous_nM.comp continuous_subtype_val.neg)).matrix_mul continuous_const`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem nb_continuous {b : GL (Fin n ⊕ Fin n) E} (hσ : ∀ a, σ (σ a) = a) (hb : IsFrame2 σ Y b)
     {nb : nA σ Y b → G2 σ Y} (h : IsNMap b nb) : Continuous nb := by
@@ -264,7 +264,7 @@ def nRat (b : GL (Fin n ⊕ Fin n) E) : AddSubgroup (nA σ Y b) where
     exact ⟨-T, by rw [incM_neg, ← hT]; rfl⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `(AddSubgroup.closure_le (nRat σ Y b)).2 (fun γ hγ => hγ) h`. Introduce `h`. Conclude with `AddSubgroup.subset_closure h`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem mem_nF_iff {b : GL (Fin n ⊕ Fin n) E} (β : nA σ Y b) : β ∈ nF σ Y b ↔ ∃ T, β.1 = incM F T := by
   constructor
@@ -275,7 +275,7 @@ theorem mem_nF_iff {b : GL (Fin n ⊕ Fin n) E} (β : nA σ Y b) : β ∈ nF σ 
 
 omit [NumberField E] in
 /- English proof (translation)
-Simplify using `only [incM]`. Conclude with `Matrix.map_mul`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem incM_mul' {α β γ : Type} [Fintype β] (X : Matrix α β E) (Z : Matrix β γ E) :
     incM F (X * Z) = incM F X * incM F Z := by
@@ -284,7 +284,7 @@ theorem incM_mul' {α β γ : Type} [Fintype β] (X : Matrix α β E) (Z : Matri
 
 omit [NumberField E] in
 /- English proof (translation)
-Simplify using `only [incM, nM, Matrix.fromBlocks_map]`. Rewrite using `[Matrix.map_one _ (map_zero _) (map_one _), Matrix.map_zero _ (map_zero _)]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem incM_nM (T : Matrix (Fin n) (Fin n) E) :
     incM F (Matrix.fromBlocks 1 T 0 1 : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) E) = nM (incM F T) := by
@@ -292,11 +292,11 @@ theorem incM_nM (T : Matrix (Fin n) (Fin n) E) :
   rw [Matrix.map_one _ (map_zero _) (map_one _), Matrix.map_zero _ (map_zero _)]
 
 /- English proof (translation)
-Take `⟨T, hT⟩` from `(mem_nF_iff γ).1 hγ`. Set `gE : GL (Fin n ⊕ Fin n) E` to `⟨b.1 * Matrix.fromBlocks 1 T 0 1 * (b⁻¹).1, b.1 * Matrix.fromBlocks 1 (-T) 0 1 * (b⁻¹).1, by`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (b⁻¹).1 b.1, Units.inv_mul, Matrix.one_mul, ← Matrix.mul_assoc (Matrix.fromBlocks _ _ _ _), Matrix.fromBlocks_multiply]`. Use the proof step `simp, by`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (b⁻¹).1 b.1, Units.inv_mul, Matrix.one_mul, ← Matrix.mul_assoc (Matrix.fromBlocks _ _ _ _), Matrix.fromBlocks_multiply]`. Use the proof step `simp⟩`. Use `Subgroup.mem_subgroupOf.2 ⟨gE, Units.ext ?_⟩` and prove the remaining obligations. Use `show (b.1 * Matrix.fromBlocks 1 T 0 1 * (b⁻¹).1).map (inclR (F := F) (AF F)) = mat2 (nb γ)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[matrix_eq_frame_conjugate b, h γ, hT]`. Use `show incM F (b.1 * Matrix.fromBlocks 1 T 0 1 * (b⁻¹).1) = _`. Rewrite using `[incM_mul', incM_mul', incM_nM]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem nb_rat {b : GL (Fin n ⊕ Fin n) E} {nb : nA σ Y b → G2 σ Y} (h : IsNMap b nb) (γ : nA σ Y b)
     (hγ : γ ∈ nF σ Y b) : nb γ ∈ rat2 σ Y := by
@@ -319,7 +319,7 @@ theorem nb_rat {b : GL (Fin n ⊕ Fin n) E} {nb : nA σ Y b → G2 σ Y} (h : Is
   rfl
 
 /- English proof (translation)
-Establish `hc : Continuous fun y : Matrix (Fin n) (Fin n) (AE F E) => -((((ε : ℤ) : AE F E)) • y.map (cA σ))` using `((continuous_id.matrix_map (GlobalTheory.EisBL.DoubledGroupTopology.continuous_cA σ)).const_smul (((ε : ℤ) : AE F E))).neg`. Conclude with `isClosed_eq continuous_id.matrix_transpose hc`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isClosed_nCond (ε : ℤˣ) : IsClosed (nCond σ n ε : Set (Matrix (Fin n) (Fin n) (AE F E))) := by
   have hc : Continuous fun y : Matrix (Fin n) (Fin n) (AE F E) => -((((ε : ℤ) : AE F E)) • y.map (cA σ)) :=
@@ -327,9 +327,7 @@ theorem isClosed_nCond (ε : ℤˣ) : IsClosed (nCond σ n ε : Set (Matrix (Fin
   exact isClosed_eq continuous_id.matrix_transpose hc
 
 /- English proof (translation)
-Take `⟨⟨ε, hε⟩, -⟩` from `hb`. Establish `h : (nA σ Y b : Set (Matrix (Fin n) (Fin n) (AE F E))) = nCond σ n ε`. Use extensionality with `β`. Conclude with `mem_nA_iff hσ hε β`. Rewrite using `[h]`.
-
-Conclude with `isClosed_nCond ε`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isClosed_nA {b : GL (Fin n ⊕ Fin n) E} (hσ : ∀ a, σ (σ a) = a) (hb : IsFrame2 σ Y b) :
     IsClosed (nA σ Y b : Set (Matrix (Fin n) (Fin n) (AE F E))) := by
@@ -341,7 +339,7 @@ theorem isClosed_nA {b : GL (Fin n ⊕ Fin n) E} (hσ : ∀ a, σ (σ a) = a) (h
   exact isClosed_nCond ε
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(isClosed_nA hσ hb).isClosedEmbedding_subtypeVal.locallyCompactSpace, Topology.IsInducing.subtypeVal.secondCountableTopology, inferInstance, Subtype.borelSpace _⟩`.
+Supply the required witnesses or components.
 -/
 theorem nA_top {b : GL (Fin n ⊕ Fin n) E} (hσ : ∀ a, σ (σ a) = a) (hb : IsFrame2 σ Y b) :
     LocallyCompactSpace (nA σ Y b) ∧ SecondCountableTopology (nA σ Y b) ∧ T2Space (nA σ Y b) ∧ BorelSpace (nA σ Y b) :=
@@ -352,7 +350,7 @@ def nFtoRat {b : GL (Fin n ⊕ Fin n) E} (γ : nF σ Y b) : ratMx F E n n :=
   ⟨γ.1.1, mem_ratMx.2 (((mem_nF_iff γ.1).1 γ.2).elim fun T hT => ⟨T, hT.symm⟩)⟩
 
 /- English proof (translation)
-Introduce `a c h` and use `by have h1 : a.1.1 = c.1.1 := congrArg (fun r : ratMx F E n n => (r : Mx F E n n)) h exact Subtype.ext (Subtype.ext h1)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem nFtoRat_injective {b : GL (Fin n ⊕ Fin n) E} : Function.Injective (nFtoRat (σ := σ) (Y := Y) (b := b)) :=
   fun a c h => by
@@ -370,7 +368,7 @@ def prj (σ : E →ₐ[F] E) (ε : ℤˣ) (x : Matrix (Fin n) (Fin n) (AE F E)) 
 
 omit [NumberField E] in
 /- English proof (translation)
-Use `show Algebra.TensorProduct.map (AlgHom.id (AF F) (AF F)) σ ((1 : AF F) ⊗ₜ[F] x) = (1 : AF F) ⊗ₜ[F] σ x`. Rewrite using `[Algebra.TensorProduct.map_tmul, AlgHom.id_apply]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cA_inclR' (σ : E →ₐ[F] E) (x : E) :
     cA σ (inclR (F := F) (AF F) x) = inclR (F := F) (AF F) (σ x) := by
@@ -379,7 +377,7 @@ theorem cA_inclR' (σ : E →ₐ[F] E) (x : E) :
 
 omit [NumberField E] in
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a x => show Algebra.TensorProduct.map (AlgHom.id (AF F) (AF F)) σ (Algebra.TensorProduct.map (AlgHom.id (AF F) (AF F)) σ (a ⊗ₜ[F] x)) = a ⊗ₜ[F] x`. Rewrite using `[Algebra.TensorProduct.map_tmul, Algebra.TensorProduct.map_tmul, AlgHom.id_apply, AlgHom.id_apply, hσ]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 -/
 theorem cA_cA' (σ : E →ₐ[F] E) (hσ : ∀ a, σ (σ a) = a) (z : AE F E) : cA σ (cA σ z) = z := by
   induction z using TensorProduct.induction_on with
@@ -392,35 +390,35 @@ theorem cA_cA' (σ : E →ₐ[F] E) (hσ : ∀ a, σ (σ a) = a) (z : AE F E) : 
 
 omit [NumberField E] in
 /- English proof (translation)
-Rewrite using `[cA_inclR', map_inv₀, map_ofNat]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cA_half : cA σ (inclR (F := F) (AF F) (2⁻¹ : E)) = inclR (F := F) (AF F) (2⁻¹ : E) := by
   rw [cA_inclR', map_inv₀, map_ofNat]
 
 omit [NumberField E] in
 /- English proof (translation)
-The claim follows from `map_intCast _ z`.
+A detailed English derivation is pending.
 -/
 theorem cA_int (z : ℤ) : cA σ ((z : ℤ) : AE F E) = ((z : ℤ) : AE F E) := map_intCast _ z
 
 omit [NumberField E] in
 /- English proof (translation)
-Rewrite using `[← Int.cast_mul, ← Units.val_mul, Int.units_mul_self, Units.val_one, Int.cast_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem eps_sq (ε : ℤˣ) : (((ε : ℤ) : AE F E)) * (((ε : ℤ) : AE F E)) = 1 := by
   rw [← Int.cast_mul, ← Units.val_mul, Int.units_mul_self, Units.val_one, Int.cast_one]
 
 /- English proof (translation)
-Rewrite using `[show (2 : AE F E) = inclR (F := F) (AF F) 2 from (map_ofNat _ 2).symm, ← map_mul, inv_mul_cancel₀ (two_ne_zero : (2 : E) ≠ 0), map_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem half_two : inclR (F := F) (AF F) (2⁻¹ : E) * 2 = 1 := by
   rw [show (2 : AE F E) = inclR (F := F) (AF F) 2 from (map_ofNat _ 2).symm, ← map_mul,
     inv_mul_cancel₀ (two_ne_zero : (2 : E) ≠ 0), map_one]
 
 /- English proof (translation)
-Use `show (prj σ ε x)ᵀ = -((((ε : ℤ) : AE F E)) • (prj σ ε x).map (cA σ))`. Establish `hcc` using `cA_cA' σ hσ`. Establish `he` using `eps_sq (F := F) (E := E) ε`. Use extensionality with `i j`. Simplify using `only [prj, Matrix.transpose_apply, Matrix.smul_apply, Matrix.sub_apply, Matrix.map_apply, Matrix.neg_apply, smul_eq_mul, map_mul, map_sub, cA_half, cA_int, hcc]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `(-(inclR (F := F) (AF F) (2⁻¹ : E) * x j i)) * he`.
+A detailed English derivation is pending.
 -/
 theorem prj_mem (hσ : ∀ a, σ (σ a) = a) (ε : ℤˣ) (x : Matrix (Fin n) (Fin n) (AE F E)) : prj σ ε x ∈ nCond σ n ε := by
   show (prj σ ε x)ᵀ = -((((ε : ℤ) : AE F E)) • (prj σ ε x).map (cA σ))
@@ -432,11 +430,11 @@ theorem prj_mem (hσ : ∀ a, σ (σ a) = a) (ε : ℤˣ) (x : Matrix (Fin n) (F
   linear_combination (-(inclR (F := F) (AF F) (2⁻¹ : E) * x j i)) * he
 
 /- English proof (translation)
-Establish `hx' : xᵀ = -((((ε : ℤ) : AE F E)) • x.map (cA σ))` using `hx`. Establish `hcc` using `cA_cA' σ hσ`. Establish `he` using `eps_sq (F := F) (E := E) ε`. Establish `h2` using `half_two (F := F) (E := E)`. Use extensionality with `i j`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hij : x i j = -((((ε : ℤ) : AE F E)) * cA σ (x j i))`. Use `congrFun (congrFun hx' j) i` as an intermediate fact. Simplify `this` using `[Matrix.transpose_apply]`. Establish `hji : cA σ (x j i) = -((((ε : ℤ) : AE F E)) * x i j)`. Use `congrArg (cA σ) (congrFun (congrFun hx' i) j)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `this` using `[Matrix.transpose_apply, map_neg, map_mul, cA_int, hcc]`. Simplify using `only [prj, Matrix.transpose_apply, Matrix.smul_apply, Matrix.sub_apply, Matrix.map_apply, smul_eq_mul, hji]`. Take the linear combination `(inclR (F := F) (AF F) (2⁻¹ : E) * x i j) * he + x i j * h2`.
+Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem prj_of_mem (hσ : ∀ a, σ (σ a) = a) {ε : ℤˣ} {x : Matrix (Fin n) (Fin n) (AE F E)} (hx : x ∈ nCond σ n ε) :
     prj σ ε x = x := by
@@ -455,7 +453,7 @@ theorem prj_of_mem (hσ : ∀ a, σ (σ a) = a) {ε : ℤˣ} {x : Matrix (Fin n)
   linear_combination (inclR (F := F) (AF F) (2⁻¹ : E) * x i j) * he + x i j * h2
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [prj, Matrix.transpose_apply, Matrix.smul_apply, Matrix.sub_apply, Matrix.add_apply, Matrix.map_apply, smul_eq_mul, map_add]`. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem prj_add (ε : ℤˣ) (x y : Matrix (Fin n) (Fin n) (AE F E)) : prj σ ε (x + y) = prj σ ε x + prj σ ε y := by
   ext i j
@@ -464,7 +462,7 @@ theorem prj_add (ε : ℤˣ) (x y : Matrix (Fin n) (Fin n) (AE F E)) : prj σ ε
   ring
 
 /- English proof (translation)
-Unfold `prj`. Conclude with `(continuous_id.sub ((continuous_id.matrix_map (GlobalTheory.EisBL.DoubledGroupTopology.continuous_cA σ)).matrix_transpose.const_smul (((ε : ℤ) : AE F E)))).const_smul (inclR (F := F) (AF F) (2⁻¹ : E))`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_prj (ε : ℤˣ) : Continuous (prj (F := F) (E := E) (n := n) σ ε) := by
   unfold prj
@@ -472,7 +470,7 @@ theorem continuous_prj (ε : ℤˣ) : Continuous (prj (F := F) (E := E) (n := n)
     (((ε : ℤ) : AE F E)))).const_smul (inclR (F := F) (AF F) (2⁻¹ : E))
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [prj, incM, Matrix.transpose_apply, Matrix.smul_apply, Matrix.sub_apply, Matrix.map_apply, smul_eq_mul, map_mul, map_sub, cA_inclR', inclR_int]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem prj_incM (ε : ℤˣ) (X : Matrix (Fin n) (Fin n) E) :
     prj σ ε (incM F X) = incM F ((2⁻¹ : E) • (X - ((ε : ℤ) : E) • (X.map σ)ᵀ)) := by
@@ -481,11 +479,11 @@ theorem prj_incM (ε : ℤˣ) (X : Matrix (Fin n) (Fin n) E) :
     map_mul, map_sub, cA_inclR', inclR_int]
 
 /- English proof (translation)
-Take `⟨⟨ε, hε⟩, -⟩` from `hb`. Take `⟨K, hK, hc⟩` from `ratMx_cocompact (F := F) (E := E) n n`. Set `P : Matrix (Fin n) (Fin n) (AE F E) → nA σ Y b` to `fun x => ⟨prj σ ε x, (mem_nA_iff hσ hε _).2 (prj_mem hσ ε x)⟩`. Establish `hP : Continuous P` using `(continuous_prj ε).subtype_mk _`. Use `⟨P '' K, hK.image hP, fun x => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨γ, hγ, hγK⟩` from `hc x.1`. Take `⟨T, rfl⟩` from `mem_ratMx.1 hγ`. Use `⟨P (incM F T), (mem_nF_iff _).2 ⟨_, prj_incM ε T⟩, incM F T + x.1, hγK, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Use `show prj σ ε (incM F T + x.1) = prj σ ε (incM F T) + x.1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[prj_add, prj_of_mem hσ ((mem_nA_iff hσ hε _).1 x.2)]`.
+A detailed English derivation is pending.
 -/
 theorem nF_cocompact {b : GL (Fin n ⊕ Fin n) E} (hσ : ∀ a, σ (σ a) = a) (hb : IsFrame2 σ Y b) :
     ∃ K : Set (nA σ Y b), IsCompact K ∧ ∀ x, ∃ γ ∈ nF σ Y b, γ + x ∈ K := by
@@ -502,7 +500,7 @@ theorem nF_cocompact {b : GL (Fin n ⊕ Fin n) E} (hσ : ∀ a, σ (σ a) = a) (
   rw [prj_add, prj_of_mem hσ ((mem_nA_iff hσ hε _).1 x.2)]
 
 /- English proof (translation)
-Take `⟨-, hsc, -, hbo⟩` from `nA_top hσ hb`. Conclude with `hu.aestronglyMeasurable`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem aesm_of_continuous {b : GL (Fin n ⊕ Fin n) E} (hσ : ∀ a, σ (σ a) = a) (hb : IsFrame2 σ Y b)
     (lam : Measure (nA σ Y b)) (𝓖 : Set (nA σ Y b)) {u : nA σ Y b × (Fin n → Fin n → ℝ) → ℂ} (hu : Continuous u) :
@@ -511,7 +509,7 @@ theorem aesm_of_continuous {b : GL (Fin n ⊕ Fin n) E} (hσ : ∀ a, σ (σ a) 
   exact hu.aestronglyMeasurable
 
 /- English proof (translation)
-Take `⟨-, -, -, h⟩` from `hB.cm`. Set `τ : E →+* ℂ` to `Classical.arbitrary _`. Apply `τ.injective` to reduce the goal to its premises. Rewrite using `[h, h, star_star]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem sigma_sigma_of_good {B : Base F E} (hB : B.IsGood σ) (a : E) : σ (σ a) = a := by
   obtain ⟨-, -, -, h⟩ := hB.cm
@@ -520,7 +518,7 @@ theorem sigma_sigma_of_good {B : Base F E} (hB : B.IsGood σ) (a : E) : σ (σ a
   rw [h, h, star_star]
 
 /- English proof (translation)
-Establish `hσ` using `sigma_sigma_of_good hB`. Take `⟨hlc, hsc, ht2, hbo⟩` from `nA_top hσ hb`. Take `⟨K, hK, hc⟩` from `nF_cocompact hσ hb`. Take `⟨lam, 𝓖, hlam, h𝓖, h1⟩` from `(GlobalTheory.meanSquare_addFundamentalDomain_of_cocompact (nA σ Y b) (nF σ Y b) K hK hc).1`. Conclude with `⟨nbE σ Y b, lam, 𝓖, isNMap_nbE hσ hb, hlam, h𝓖, h1⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem coefData_exists {B : Base F E} (hB : B.IsGood σ) {b : GL (Fin n ⊕ Fin n) E} (hb : IsFrame2 σ Y b) :
     ∃ nb lam 𝓖, CoefData (σ := σ) (Y := Y) b nb lam 𝓖 := by
@@ -532,7 +530,7 @@ theorem coefData_exists {B : Base F E} (hB : B.IsGood σ) {b : GL (Fin n ⊕ Fin
   exact ⟨nbE σ Y b, lam, 𝓖, isNMap_nbE hσ hb, hlam, h𝓖, h1⟩
 
 /- English proof (translation)
-Introduce `_F _E _ _ _ _ _ _σ d` and use `coefData_exists d.ok.good d.ok.frame`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem coefEx : CoefEx := fun _F _E _ _ _ _ _ _σ d => coefData_exists d.ok.good d.ok.frame
 

@@ -35,7 +35,7 @@ theorem derHom_apply (D : Derivation ℤ R R) (r : R) :
 variable (A : Over (Sp R)) [GrpObj A]
 
 /- English proof (translation)
-The claim follows from `GrpMor.of_hom (isDPMorphism_of_eq_bot _ rfl _ _) (by rw [← Cris.spMap_comp, show (TrivSqZeroExt.fstHom R R R).toRingHom.comp (derHom D) = RingHom.id R from RingHom.ext fun r ↦ by simp [derHom_apply]] exact (Cris.spMap_id R).symm) (𝟙 A)`.
+A detailed English derivation is pending.
 -/
 theorem derMor (D : Derivation ℤ R R) :
     GrpMor (dp0 R) (𝟙 _) A (epsDP R) (epsRed R) A (derHom D) (𝟙 _) (Over.Hom.left (𝟙 A)) :=
@@ -54,16 +54,16 @@ def IsNabla (D : Derivation ℤ R R) (h k : HdR A) : Prop :=
 variable {D : Derivation ℤ R R}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨0, fun _ ↦ (map_zero (derHom D)).symm, fun _ ↦ by rw [LinearMap.zero_apply, LinearMap.zero_apply, TrivSqZeroExt.inl_zero, TrivSqZeroExt.inr_zero, add_zero]⟩`.
+Supply the required witnesses or components.
 -/
 theorem isNabla_zero_zero (D : Derivation ℤ R R) : IsNabla D (0 : HdR A) 0 :=
   ⟨0, fun _ ↦ (map_zero (derHom D)).symm, fun _ ↦ by
     rw [LinearMap.zero_apply, LinearMap.zero_apply, TrivSqZeroExt.inl_zero, TrivSqZeroExt.inr_zero, add_zero]⟩
 
 /- English proof (translation)
-Take `⟨d, a, b⟩` from `e`. Take `⟨d', a', b'⟩` from `e'`. Use `⟨d + d', fun c ↦ ?_, fun c ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.add_apply, a, a', LinearMap.add_apply, map_add]`. Rewrite using `[LinearMap.add_apply, b, b']`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `ext <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem IsNabla.add {h k h' k' : HdR A} (e : IsNabla D h k) (e' : IsNabla D h' k') :
     IsNabla D (h + h') (k + k') := by
@@ -75,7 +75,7 @@ theorem IsNabla.add {h k h' k' : HdR A} (e : IsNabla D h k) (e' : IsNabla D h' k
     ext <;> simp
 
 /- English proof (translation)
-Take `⟨d, a, b⟩` from `e`. Use `⟨derHom D r • d, fun c ↦ ?_, fun c ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.smul_apply, a, LinearMap.smul_apply, smul_eq_mul, smul_eq_mul, map_mul]`. Rewrite using `[LinearMap.smul_apply, b, derHom_apply]`. Apply the tactic sequence `ext <;> simp [mul_comm]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem IsNabla.smul {h k : HdR A} (e : IsNabla D h k) (r : R) : IsNabla D (r • h) (r • k + D r • h) := by
   obtain ⟨d, a, b⟩ := e
@@ -85,9 +85,9 @@ theorem IsNabla.smul {h k : HdR A} (e : IsNabla D h k) (r : R) : IsNabla D (r �
     ext <;> simp [mul_comm]
 
 /- English proof (translation)
-Take `⟨d, a, b⟩` from `e`. Use `⟨DeRham.push _ _ f d, GrpMor.Corr.push (derMor B D) f f (by simp) a, fun c ↦ ?_⟩` and prove the remaining obligations. Establish `m` using `(homMor (dp0 R) (𝟙 _) f).comp (constMor A)`. Establish `e1 : primPull _ _ f ((constMor B).pull c) = m.pull c` using `GrpMor.pull_pull (constMor B) (homMor _ _ f) m (fun _ ↦ rfl) (by simp) c`. Establish `e2 : (constMor A).pull (primPull _ _ f c) = m.pull c` using `GrpMor.pull_pull (homMor _ _ f) (constMor A) m (fun _ ↦ rfl) rfl c`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[push_apply, push_apply, push_apply, e1, ← e2, b]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem IsNabla.push {B : Over (Sp R)} [GrpObj B] {h k : HdR A} (e : IsNabla D h k) (f : A ⟶ B) [IsMonHom f] :
     IsNabla D (push (dp0 R) (𝟙 _) f h) (push (dp0 R) (𝟙 _) f k) := by
@@ -101,7 +101,7 @@ theorem IsNabla.push {B : Over (Sp R)} [GrpObj B] {h k : HdR A} (e : IsNabla D h
   rw [push_apply, push_apply, push_apply, e1, ← e2, b]
 
 /- English proof (translation)
-Take `⟨d, a, b⟩` from `e`. Take `⟨d', a', b'⟩` from `e'`. Take `rfl : d = d'` from `LinearMap.ext_on_range H fun c ↦ (a c).trans (a' c).symm`. Use `LinearMap.ext fun c ↦ ?_` and prove the remaining obligations. Simplify using `using congrArg TrivSqZeroExt.snd ((b c).symm.trans (b' c))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem IsNabla.unique (H : Submodule.span (DualNumber R) (Set.range (derMor A D).pull) = ⊤) {h k k' : HdR A}
     (e : IsNabla D h k) (e' : IsNabla D h k') : k = k' := by
@@ -112,7 +112,7 @@ theorem IsNabla.unique (H : Submodule.span (DualNumber R) (Set.range (derMor A D
   simpa using congrArg TrivSqZeroExt.snd ((b c).symm.trans (b' c))
 
 /- English proof (translation)
-The claim follows from `(GrpMor.pull_pull (homMor (dp0 R) (𝟙 _) (𝟙 A)) (derMor A 0) (derMor A 0) (fun _ ↦ rfl) (by simp) c).symm.trans (GrpMor.pull_pull (homMor (dp0 R) (𝟙 _) (𝟙 A)) (derMor A 0) (constMor A) (fun r ↦ by ext <;> simp [derHom_apply, TrivSqZeroExt.algebraMap_eq_inl]) (by simp) c)`.
+A detailed English derivation is pending.
 -/
 theorem derMor_zero_pull (c : primDR A) : (derMor A 0).pull c = (constMor A).pull c :=
   (GrpMor.pull_pull (homMor (dp0 R) (𝟙 _) (𝟙 A)) (derMor A 0) (derMor A 0) (fun _ ↦ rfl) (by simp) c).symm.trans
@@ -120,7 +120,7 @@ theorem derMor_zero_pull (c : primDR A) : (derMor A 0).pull c = (constMor A).pul
       (fun r ↦ by ext <;> simp [derHom_apply, TrivSqZeroExt.algebraMap_eq_inl]) (by simp) c)
 
 /- English proof (translation)
-Take `⟨d, a, b⟩` from `e`. Use `LinearMap.ext fun c ↦ ?_` and prove the remaining obligations. Use `a c` as an intermediate fact. Rewrite `this` using `[derMor_zero_pull, b]`. Simplify `congrArg TrivSqZeroExt.snd this` using `[derHom_apply]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem IsNabla.eq_zero {h k : HdR A} (e : IsNabla 0 h k) : k = 0 := by
   obtain ⟨d, a, b⟩ := e
@@ -130,7 +130,7 @@ theorem IsNabla.eq_zero {h k : HdR A} (e : IsNabla 0 h k) : k = 0 := by
   simpa [derHom_apply] using congrArg TrivSqZeroExt.snd this
 
 /- English proof (translation)
-Take `⟨d, hd⟩` from `H.exists h`. Use `⟨d, fun c ↦ ?_, fun c ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[derMor_zero_pull, hd c]`. Apply the tactic sequence `ext <;> simp [derHom_apply, TrivSqZeroExt.algebraMap_eq_inl]`. Rewrite using `[hd c, LinearMap.zero_apply, TrivSqZeroExt.inr_zero, add_zero, TrivSqZeroExt.algebraMap_eq_inl]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 -/
 theorem isNabla_zero (H : (constMor A).IsBC) (h : HdR A) : IsNabla 0 h 0 := by
   obtain ⟨d, hd⟩ := H.exists h
@@ -164,9 +164,9 @@ attribute [instance] Chart.ring Chart.alg Chart.grp
 variable {t : SAB H X} {V : X.Opens}
 
 /- English proof (translation)
-Set `_ : Algebra Γ(X, U.1) Γ(X, U.1 ⊓ V)` to `(resG X inf_le_left).toAlgebra`. Establish `e : spMap (algebraMap Γ(X, U.1) Γ(X, U.1 ⊓ V)) ≫ chart U = h.fromSpec` using `U.2.map_fromSpec h (homOfLE inf_le_left).op`. Use `⟨{ U := U, S := Γ(X, U.1 ⊓ V), isOpenImmersion := ?_, range := ?_ A := (Over.pullback _).obj t.G, φ := _, cart := isGrpPullback_pullback t.G _ }, rfl⟩` and prove the remaining obligations. Rewrite using `[e]`. Use `infer_instance`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `h.range_fromSpec`.
+A detailed English derivation is pending.
 -/
 theorem exists_chart (t : SAB H X) (U : X.affineOpens) (h : IsAffineOpen (U.1 ⊓ V)) :
     ∃ c : Chart t V, c.U = U := by
@@ -179,15 +179,13 @@ theorem exists_chart (t : SAB H X) (U : X.affineOpens) (h : IsAffineOpen (U.1 �
   · rw [e]; exact h.range_fromSpec
 
 /- English proof (translation)
-Take `⟨-, U, hx, n, f, J, -, hI⟩` from `h x`. Establish `e : U.1 ⊓ V = X.basicOpen (∏ i ∈ J, f i)`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hU, hV⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Assume the negation of the conclusion as `hy`. Establish `: y ∈ (Scheme.IdealSheafData.vanishingIdeal V.compl).support`. Rewrite using `[Scheme.IdealSheafData.mem_support_iff_of_mem hU, hI, Scheme.zeroLocus_span, Scheme.zeroLocus_singleton]`. Conclude with `hy`. Rewrite `this` using `[← SetLike.mem_coe, Scheme.IdealSheafData.coe_support_vanishingIdeal]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `this hV`. Introduce `hy`. Establish `hU : y ∈ U.1` using `X.basicOpen_le _ hy`. Use `⟨hU, by_contra fun hV ↦ ?_⟩` and prove the remaining obligations. Establish `: y ∈ (Scheme.IdealSheafData.vanishingIdeal V.compl).support`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← SetLike.mem_coe, Scheme.IdealSheafData.coe_support_vanishingIdeal]`. Conclude with `hV`. Rewrite `this` using `[Scheme.IdealSheafData.mem_support_iff_of_mem hU, hI, Scheme.zeroLocus_span, Scheme.zeroLocus_singleton]`. Conclude with `this hy`. Take `⟨c, rfl⟩` from `exists_chart t U (V := V) (e ▸ U.2.basicOpen _)`.
-
-Conclude with `⟨c, hx⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_chart_mem (t : SAB H X)
     (h : ReciprocityTheory.AnForm.R.FinalTheorems.Snc (Scheme.IdealSheafData.vanishingIdeal V.compl)) (x : X) :
@@ -225,7 +223,7 @@ def HasImage (h : HdR c.A) (v : Sp (DualNumber Γ(X, c.U.1)) ⟶ t.G.left) : Pro
 variable {c} in
 
 /- English proof (translation)
-Take `⟨w, a, b⟩` from `e`. Take `⟨w', a', b'⟩` from `e'`. Take `rfl : w = w'` from `Over.OverMorphism.ext (c.cart.1.hom_ext (a.trans a'.symm) ((Over.w w).trans (Over.w w').symm))`. Conclude with `b.sub_mem b'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem HasImage.sub_mem {h h' : HdR c.A} {v : Sp (DualNumber Γ(X, c.U.1)) ⟶ t.G.left} (e : c.HasImage h v)
     (e' : c.HasImage h' v) : h - h' ∈ Fil c.A := by
@@ -272,9 +270,9 @@ def IsCanExt {K : Type} [CommRing K] (s : X ⟶ Sp K)
       L c' = Submodule.span Γ(X, c'.U.1) {h' | ∃ h ∈ L c, m.Corr h h'}
 
 /- English proof (translation)
-Use `eq_top_iff.2 fun x _ ↦ ?_` and prove the remaining obligations. Establish `hx : x ∈ Submodule.span c.S (L : Set (HdR c.A))` using `h.2.2.1 ▸ Submodule.mem_top`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy => exact hy`. Consider the case `zero => exact zero_mem _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add y z _ _ hy hz => exact add_mem (hy trivial) (hz trivial)`. Consider the case `smul a y _ hy`. Take `⟨r, rfl⟩` from `hs a`. Rewrite using `[algebraMap_smul]`. Conclude with `L.smul_mem r (hy trivial)`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsCanLattice.eq_top {K : Type} [CommRing K] {s : X ⟶ Sp K} {c : Chart t V}
     {L : Submodule Γ(X, c.U.1) (HdR c.A)} (h : IsCanLattice s c L)
@@ -305,7 +303,7 @@ def DeRhamCanonicalExtension : Prop :=
           ∃ L : ∀ ch : Chart Y.t (interior Y), Submodule Γ(Y.X, ch.U.1) (HdR ch.A), IsCanExt Y.s L
 
 /- English proof (translation)
-The claim follows from `fun E _ _ _ H Dw hr l Xo c ↦ (h E H Dw hr l Xo c).imp fun _ hY ↦ ⟨hY.1, hY.2.1, hY.2.2.1⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem DeRhamCanonicalExtension.toroidalCompactification (h : DeRhamCanonicalExtension) :
     ToroidalCompactification := fun E _ _ _ H Dw hr l Xo c ↦

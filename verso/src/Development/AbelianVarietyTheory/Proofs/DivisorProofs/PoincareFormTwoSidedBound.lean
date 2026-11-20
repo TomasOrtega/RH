@@ -10,7 +10,7 @@ namespace GlobalTheory.PoincareGrowth
 variable {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E]
 
 /- English proof (translation)
-Establish `h` using `((HasFDerivAt.sum (u := Finset.univ) (fun i _ => (hg i).hasFDerivAt)).sub_const a).fderiv`. Simplify `h` using `only [Finset.sum_apply]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem fderiv_sum_sub {ι : Type} [Fintype ι] (g : ι → E → ℝ) (a : ℝ) (z : E)
     (hg : ∀ i, DifferentiableAt ℝ (g i) z) :
@@ -20,18 +20,18 @@ theorem fderiv_sum_sub {ι : Type} [Fintype ι] (g : ι → E → ℝ) (a : ℝ)
     simpa only [Finset.sum_apply] using h
 
 /- English proof (translation)
-Simplify using `only [levi, h.fderiv.fderiv_eq]`.
+Simplify using the standard rewrite rules.
 -/
 theorem levi_congr {ι : Type} [Fintype ι] {f g : (ι → ℂ) → ℝ} {z : ι → ℂ} (h : f =ᶠ[𝓝 z] g)
     (w : ι → ℂ) : levi f z w = levi g z w := by
   simp only [levi, h.fderiv.fderiv_eq]
 
 /- English proof (translation)
-Establish `hdiff : ∀ᶠ y in 𝓝 z, ∀ i, DifferentiableAt ℝ (g i) y` using `Filter.eventually_all.2 fun i => ((hg i).eventually (by simp)).mono fun y hy => hy.differentiableAt (by norm_num)`. Establish `hev : fderiv ℝ (fun y => ∑ i, g i y - a) =ᶠ[𝓝 z] fun y => ∑ i, fderiv ℝ (g i) y` using `by filter_upwards [hdiff] with y hy`. Conclude with `fderiv_sum_sub g a y hy`. Establish `hd : ∀ i, DifferentiableAt ℝ (fderiv ℝ (g i)) z` using `fun i => ((hg i).fderiv_right (m := 1) (by norm_num)).differentiableAt (by norm_num)`. Establish `h2 : fderiv ℝ (fun y => ∑ i, fderiv ℝ (g i) y) z = ∑ i, fderiv ℝ (fderiv ℝ (g i)) z`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `(HasFDerivAt.sum (u := Finset.univ) (fun i _ => (hd i).hasFDerivAt)).fderiv`. Establish `hfun : (fun y => ∑ i, fderiv ℝ (g i) y) = ∑ i, fderiv ℝ (g i)`. Use function extensionality and compare the values at `y`. Simplify using `[Finset.sum_apply]`. Rewrite using `[hfun]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Conclude with `h`. Unfold `levi`. Rewrite using `[hev.fderiv_eq, h2]`. Simplify using `only [ContinuousLinearMap.sum_apply]`. Rewrite using `[← Finset.sum_add_distrib, Finset.sum_div]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem levi_sum_sub {ι κ : Type} [Fintype ι] [Fintype κ] (g : κ → (ι → ℂ) → ℝ) (a : ℝ)
     (z w : ι → ℂ) (hg : ∀ i, ContDiffAt ℝ 2 (g i) z) :
@@ -56,9 +56,9 @@ theorem levi_sum_sub {ι κ : Type} [Fintype ι] [Fintype κ] (g : κ → (ι �
   rw [← Finset.sum_add_distrib, Finset.sum_div]
 
 /- English proof (translation)
-Establish `h` using `GlobalTheory.T.levi_form_log_potential_formula (m := 1) (fun _ => (0 : ℝ)) (fun _ : Fin 1 => G) (-2) z w contDiffAt_const (fun _ => hG) (fun _ => hpos)`. Establish `hf : (fun y => (0 : ℝ) + -((-2 : ℝ) / 2) * ∑ _i : Fin 1, Real.log (G y)) = fun y => Real.log (G y)`. Use function extensionality and compare the values at `y`. Evaluate the numerical expressions. Establish `h0 : levi (fun _ : Fin n → ℂ => (0 : ℝ)) z w = 0` using `by simp [levi]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Evaluate the numerical expressions. Establish an intermediate fact.
 
-Rewrite `h` using `[hf, h0]`. Simplify using `only [Finset.univ_unique, Finset.sum_singleton] at h`. Establish `hpi` using `Real.pi_pos`. Establish `e1 : 1 / Real.pi * levi (fun y => Real.log (G y)) z w = (2 / Real.pi * levi (fun y => Real.log (G y)) z w) / 2` using `by ring`. Rewrite using `[e1, h]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -83,51 +83,47 @@ theorem logChain {n : ℕ} (G : (Fin n → ℂ) → ℝ) (z w : Fin n → ℂ) (
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `e X _ A K m L s D Kc C7 c _hK hB hO hSB hKc hddc hapos hC7 hgrad hc hTS`. Establish `hpi` using `Real.pi_pos`. Establish `he1 : (1 : ℝ) ≤ Real.exp 1` using `by simpa using Real.add_one_le_exp (1 : ℝ) |>.trans' (by norm_num)`. Establish `hm0 : (0 : ℝ) ≤ m` using `Nat.cast_nonneg m`. Use `⟨3 + m / c + 3 * m * Kc + c * m * C7, by positivity, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `ψ hψ z hz hz' w`. Take `⟨hri, hrr, hrle, -⟩` from `hSB _ hz'`. Establish `hev : (rTot L s ∘ ψ.symm) =ᶠ[𝓝 z] fun y => ∑ i, (rComp L s i ∘ ψ.symm) y - ((m : ℝ) - 1) * Real.exp 1` using `by filter_upwards [(ψ.continuousAt_symm hz).preimage_mem_nhds (hO.mem_nhds hz')] with y hy`. Conclude with `(hSB _ hy).2.1`. Establish `hg : ∀ i, ContDiffAt ℝ 2 (rComp L s i ∘ ψ.symm) z` using `fun i => (GlobalTheory.T.boundary_potential_smooth_off_divisor A L s D hB i ψ hψ z hz (fun h => hz' (Set.mem_iUnion.2 ⟨i, h⟩))).of_le (by norm_cast)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hG : ContDiffAt ℝ 2 (rTot L s ∘ ψ.symm) z` using `((ContDiffAt.sum fun i _ => hg i).sub contDiffAt_const).congr_of_eventuallyEq hev`. Establish `hD : fderiv ℝ (rTot L s ∘ ψ.symm) z = ∑ i, fderiv ℝ (rComp L s i ∘ ψ.symm) z`. Rewrite using `[hev.fderiv_eq]`. Conclude with `fderiv_sum_sub _ _ z fun i => (hg i).differentiableAt (by norm_num)`. Establish `hLv : levi (rTot L s ∘ ψ.symm) z w = ∑ i, levi (rComp L s i ∘ ψ.symm) z w`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[levi_congr hev]`. Conclude with `levi_sum_sub _ _ z w hg`. Establish `hGe : Real.exp 1 ≤ rTot L s (ψ.symm z)`. Break down `Nat.eq_zero_or_pos m with hm | hm` into its components or cases. Substitute `hm` using the available equality.
+Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[hrr]`. Simplify using the standard rewrite rules. Conclude with `(hri ⟨0, hm⟩).trans (hrle ⟨0, hm⟩)`. Use `set r := rTot L s (ψ.symm z) with hr`. Establish `hrpos : 0 < r` using `lt_of_lt_of_le one_pos (he1.trans hGe)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set a := formAt ψ K z w with ha`. Use `set β := formAt ψ (poincarePot K L s c) z w with hβ`. Use `set S := ∑ i, gradSqAt ψ (rComp L s i) z w / rComp L s i (ψ.symm z) ^ 2 with hS`. Establish `ha0 : 0 ≤ a` using `hapos ψ hψ z hz w`. Establish `hS0 : 0 ≤ S` using `Finset.sum_nonneg fun i _ => div_nonneg (gradSqAt_nonneg _ _ _ _) (sq_nonneg _)`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨hlo, hup⟩` from `hTS ψ hψ z hz hz' w`. Establish `hcS : c * S ≤ β - a / 2` using `by linarith`. Establish `haβ : a ≤ 2 * β` using `by nlinarith [mul_nonneg hc.le hS0]`. Establish `hβ0 : 0 ≤ β` using `by linarith`. Establish `hgrad_r : gradSqAt ψ (rTot L s) z w ≤ m * ∑ i, gradSqAt ψ (rComp L s i) z w`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Unfold `gradSqAt`. Rewrite using `[hD]`. Simplify using `only [ContinuousLinearMap.sum_apply]`. Establish `h1` using `sq_sum_le_card_mul_sum_sq (s := Finset.univ) (f := fun i => fderiv ℝ (rComp L s i ∘ ψ.symm) z w)`. Establish `h2` using `sq_sum_le_card_mul_sum_sq (s := Finset.univ) (f := fun i => fderiv ℝ (rComp L s i ∘ ψ.symm) z (Complex.I • w))`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Simplify using `only [Finset.card_univ, Fintype.card_fin] at h1 h2`. Rewrite using `[← Finset.mul_sum, ← Finset.sum_div, Finset.sum_add_distrib]`. Establish `hp : 0 ≤ 1 / Real.pi` using `by positivity`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left (add_le_add h1 h2) hp]`. Establish `hgr0 : 0 ≤ gradSqAt ψ (rTot L s) z w` using `gradSqAt_nonneg _ _ _ _`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hgradS : gradSqAt ψ (rTot L s) z w / r ^ 2 ≤ m * S`. Rewrite using `[hS, Finset.mul_sum]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.mul_sum, Finset.sum_div]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Use extensionality with `i`. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ _ := by`. Use `Finset.sum_le_sum fun i _ => mul_le_mul_of_nonneg_left ?_ hm0` and prove the remaining obligations. Establish `hi0 : 0 < rComp L s i (ψ.symm z)` using `lt_of_lt_of_le one_pos (he1.trans (hri i))`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `div_le_div_of_nonneg_left (gradSqAt_nonneg _ _ _ _) (by positivity) (pow_le_pow_left₀ hi0.le (hrle i) 2)`. Establish `hmS : (m : ℝ) * S ≤ m / c * β`. Rewrite using `[div_mul_eq_mul_div, le_div_iff₀ hc]`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left hcS hm0]`. Establish `h1 : gradSqAt ψ (rTot L s) z w / r ^ 2 ≤ m / c * β` using `hgradS.trans hmS`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form. Both sides reduce to the same expression.
 
-Establish `hddr : |ddcAt ψ (rTot L s) z w| ≤ m * Kc * a`. Establish `: ddcAt ψ (rTot L s) z w = ∑ i, ddcAt ψ (rComp L s i) z w`. Unfold `ddcAt`. Rewrite using `[hLv, Finset.mul_sum]`. Rewrite using `[this]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `(Finset.abs_sum_le_sum_abs _ _).trans ?_` and prove the remaining obligations. Use `(Finset.sum_le_sum fun i _ => hddc i ψ hψ z hz hz' w).trans ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]`. Put the polynomial expressions in normal form. Both sides reduce to the same expression.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hlog : ddcAt ψ (fun y => Real.log (rTot L s y)) z w = ddcAt ψ (rTot L s) z w / r - gradSqAt ψ (rTot L s) z w / r ^ 2`. Unfold `ddcAt gradSqAt`. Conclude with `logChain (rTot L s ∘ ψ.symm) z w hG hrpos`. Establish `hddr' : |ddcAt ψ (rTot L s) z w| / r ≤ m * Kc * a`. Rewrite using `[div_le_iff₀ hrpos]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `: m * Kc * a ≤ m * Kc * a * r`. Use `mul_nonneg (mul_nonneg hm0 hKc.le) ha0` as an intermediate fact. Use polynomial arithmetic with `[he1.trans hGe]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h2 : |ddcAt ψ (fun y => Real.log (rTot L s y)) z w| ≤ (2 * m * Kc + m / c) * β`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hlog]`. Use `(abs_sub _ _).trans ?_` and prove the remaining obligations. Rewrite using `[abs_div, abs_of_pos hrpos, abs_of_nonneg (div_nonneg hgr0 (sq_nonneg _))]`. Establish `: (m : ℝ) * Kc * a ≤ 2 * m * Kc * β`. Use `mul_le_mul_of_nonneg_left haβ (mul_nonneg hm0 hKc.le)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hSb : S ≤ m * C7 * Real.exp r * a`. Rewrite using `[hS]`. Establish `: ∀ i, gradSqAt ψ (rComp L s i) z w / rComp L s i (ψ.symm z) ^ 2 ≤ C7 * Real.exp r * a`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Introduce `i`. Establish `hi1 : 1 ≤ rComp L s i (ψ.symm z) ^ 2` using `one_le_pow₀ (he1.trans (hri i))`. Establish `hg'` using `hgrad i ψ hψ z hz hz' w`. Establish `hexp : Real.exp (rComp L s i (ψ.symm z)) ≤ Real.exp r` using `Real.exp_le_exp.2 (hrle i)`. Establish `hq : C7 * Real.exp (rComp L s i (ψ.symm z)) * a ≤ C7 * Real.exp r * a` using `mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left hexp hC7.le) ha0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Use `(Finset.sum_le_sum fun i _ => this i).trans ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]`. Put the polynomial expressions in normal form. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hexp1 : 1 ≤ Real.exp r` using `Real.one_le_exp hrpos.le`. Establish `h4 : β ≤ (2 + c * m * C7) * Real.exp r * a`. Establish `: c * S ≤ c * (m * C7 * Real.exp r * a)` using `mul_le_mul_of_nonneg_left hSb hc.le`. Establish `h2a : 2 * a ≤ 2 * Real.exp r * a` using `by nlinarith`. Use the polynomial consequences of the given equalities and inequalities.
-
-Establish `hCβ : ∀ x : ℝ, x ≤ 3 + m / c + 3 * m * Kc + c * m * C7 → 0 ≤ β → x * β ≤ (3 + m / c + 3 * m * Kc + c * m * C7) * β` using `fun x hx hb => mul_le_mul_of_nonneg_right hx hb`. Establish `hmc : 0 ≤ (m : ℝ) / c` using `div_nonneg hm0 hc.le`. Establish `hmK : 0 ≤ (m : ℝ) * Kc` using `mul_nonneg hm0 hKc.le`. Establish `hcmC : 0 ≤ c * m * C7` using `by positivity`. Establish `hea : 0 ≤ Real.exp r * a` using `mul_nonneg (Real.exp_pos _).le ha0`.
-
-Use `⟨h1.trans (hCβ _ (by linarith) hβ0), h2.trans (hCβ _ (by linarith) hβ0), hddr.trans (mul_le_mul_of_nonneg_right (by linarith) ha0), h4.trans ?_⟩` and prove the remaining obligations. Use `mul_le_mul_of_nonneg_right (show 2 + c * m * C7 ≤ 3 + m / c + 3 * m * Kc + c * m * C7 by linarith) hea` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem growthBounds : ∀ {e : ℕ} {X : Type} [TopologicalSpace X] (A : FinHolAtlas e X) (K : LocPot X) {m : ℕ} (L : Fin m → LocPot X) (s : Fin m → X → X → ℂ) (D : Fin m → Set X) (Kc C7 c : ℝ), IsPotential A K → IsBoundary A L s D → IsOpen (⋃ i, D i)ᶜ → ScalarBounds L s D → 0 < Kc → (∀ (i : Fin m) (ψ : OpenPartialHomeomorph X (Fin e → ℂ)), IsCompatChart A ψ → ∀ z ∈ ψ.target, ψ.symm z ∉ ⋃ j, D j → ∀ w, |ddcAt ψ (rComp L s i) z w| ≤ Kc * formAt ψ K z w) → (∀ ψ : OpenPartialHomeomorph X (Fin e → ℂ), IsCompatChart A ψ → ∀ z ∈ ψ.target, ∀ w, 0 ≤ formAt ψ K z w) → 0 < C7 → (∀ (i : Fin m) (ψ : OpenPartialHomeomorph X (Fin e → ℂ)), IsCompatChart A ψ → ∀ z ∈ ψ.target, ψ.symm z ∉ ⋃ j, D j → ∀ w, gradSqAt ψ (rComp L s i) z w ≤ C7 * Real.exp (rComp L s i (ψ.symm z)) * formAt ψ K z w) → 0 < c → TwoSided A K L s D c → ∃ C : ℝ, 0 < C ∧ GrowthBounds A K L s D c C := by
   intro e X _ A K m L s D Kc C7 c _hK hB hO hSB hKc hddc hapos hC7 hgrad hc hTS

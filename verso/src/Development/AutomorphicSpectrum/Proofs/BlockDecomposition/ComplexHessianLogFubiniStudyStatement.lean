@@ -6,7 +6,7 @@ open MeasureTheory ReciprocityTheory.L2DbarEstimates GlobalTheory.CompanionTheor
 open scoped ENNReal ComplexConjugate
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.CompanionTheory.FSCrofton.cHess_log_one_add_sum` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FComplexHessianLogFubiniStudy.lean&line=62#L62)
 -/

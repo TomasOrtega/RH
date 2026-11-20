@@ -16,7 +16,7 @@ variable {σ : E →ₐ[F] E} {n : ℕ} {Y : Spc F E n}
 
 omit [NumberField F] [NumberField E] in
 /- English proof (translation)
-Rewrite using `[← Int.cast_mul, ← Units.val_mul, Int.units_mul_self, Units.val_one, Int.cast_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem int_units_sq (ε : ℤˣ) {R : Type} [CommRing R] : ((ε : ℤ) : R) * ((ε : ℤ) : R) = 1 := by
   rw [← Int.cast_mul, ← Units.val_mul, Int.units_mul_self, Units.val_one, Int.cast_one]
@@ -27,7 +27,7 @@ def w0 (n : ℕ) (ε : ℤˣ) : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) E := 
 
 omit [NumberField F] [NumberField E] in
 /- English proof (translation)
-Simplify using `only [w0, Matrix.fromBlocks_multiply, Matrix.zero_mul, Matrix.mul_zero, Matrix.one_mul, Matrix.mul_one, zero_add, add_zero, Matrix.smul_mul, Matrix.one_mul]`. Rewrite using `[← Matrix.fromBlocks_one, Matrix.fromBlocks_smul, smul_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem weyl_element_mul_self (ε : ℤˣ) : w0 E n ε * w0 E n ε = ((ε : ℤ) : E) • 1 := by
   simp only [w0, Matrix.fromBlocks_multiply, Matrix.zero_mul, Matrix.mul_zero, Matrix.one_mul, Matrix.mul_one, zero_add,
@@ -36,7 +36,7 @@ theorem weyl_element_mul_self (ε : ℤˣ) : w0 E n ε * w0 E n ε = ((ε : ℤ)
 
 omit [NumberField F] [NumberField E] in
 /- English proof (translation)
-Rewrite using `[w0, Matrix.fromBlocks_transpose, Matrix.fromBlocks_multiply, ← Matrix.fromBlocks_one]`. Simplify using `[Matrix.smul_mul, Matrix.mul_smul, smul_smul, int_units_sq]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem weyl_element_transpose_mul (ε : ℤˣ) : (w0 E n ε)ᵀ * w0 E n ε = 1 := by
   rw [w0, Matrix.fromBlocks_transpose, Matrix.fromBlocks_multiply, ← Matrix.fromBlocks_one]
@@ -44,14 +44,14 @@ theorem weyl_element_transpose_mul (ε : ℤˣ) : (w0 E n ε)ᵀ * w0 E n ε = 1
 
 omit [NumberField E] in
 /- English proof (translation)
-Apply the tactic sequence `ext (i | i) (j | j) <;> simp [w0, Matrix.one_apply] <;> split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem weyl_element_map_conj (ε : ℤˣ) : (w0 E n ε).map σ = w0 E n ε := by
   ext (i | i) (j | j) <;> simp [w0, Matrix.one_apply] <;> split_ifs <;> simp
 
 omit [NumberField E] in
 /- English proof (translation)
-The claim follows from `Matrix.map_mul (f := (σ : E →+* E))`.
+A detailed English derivation is pending.
 -/
 theorem mapσ_mul {α : Type} [Fintype α] (M N : Matrix α α E) : (M * N).map σ = M.map σ * N.map σ :=
   Matrix.map_mul (f := (σ : E →+* E))
@@ -67,11 +67,9 @@ def w0GL (n : ℕ) (ε : ℤˣ) : GL (Fin n ⊕ Fin n) E where
 def wE (b : GL (Fin n ⊕ Fin n) E) (ε : ℤˣ) : GL (Fin n ⊕ Fin n) E := b * w0GL E n ε * b⁻¹
 
 /- English proof (translation)
-Establish `hb1 : (b⁻¹).1ᵀ * b.1ᵀ = 1` using `by rw [← Matrix.transpose_mul, Units.mul_inv, Matrix.transpose_one]`. Establish `hb2 : b.1.map σ * (b⁻¹).1.map σ = 1`. Rewrite using `[← mapσ_mul, Units.mul_inv, Matrix.map_one _ (map_zero σ) (map_one σ)]`. Use `show (b.1 * w0 E n ε * (b⁻¹).1)ᵀ * dbl Y.J * (b.1 * w0 E n ε * (b⁻¹).1).map σ = dbl Y.J`. Rewrite using `[mapσ_mul, mapσ_mul, weyl_element_map_conj, Matrix.transpose_mul, Matrix.transpose_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = (b⁻¹).1ᵀ * (b.1ᵀ * dbl Y.J * b.1.map σ) * (b⁻¹).1.map σ := by`. Rewrite using `[hε, weyl_element_transpose_mul, Matrix.one_mul]`. Use `_ = ((b⁻¹).1ᵀ * b.1ᵀ) * dbl Y.J * (b.1.map σ * (b⁻¹).1.map σ) := by simp only [Matrix.mul_assoc]`.
-
-Use `_ = dbl Y.J := by rw [hb1, hb2, Matrix.one_mul, Matrix.mul_one]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wE_unitary {b : GL (Fin n ⊕ Fin n) E} {ε : ℤˣ} (hε : b.1ᵀ * dbl Y.J * b.1.map σ = w0 E n ε) :
     (wE b ε).1ᵀ * dbl Y.J * (wE b ε).1.map σ = dbl Y.J := by
@@ -97,16 +95,16 @@ def wA (b : GL (Fin n ⊕ Fin n) E) (ε : ℤˣ) (hε : b.1ᵀ * dbl Y.J * b.1.m
     exact h⟩
 
 /- English proof (translation)
-The claim follows from `Subgroup.mem_subgroupOf.2 ⟨wE b ε, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem wA_rat {b : GL (Fin n ⊕ Fin n) E} {ε : ℤˣ} (hε : b.1ᵀ * dbl Y.J * b.1.map σ = w0 E n ε) :
     wA σ Y b ε hε ∈ rat2 σ Y :=
   Subgroup.mem_subgroupOf.2 ⟨wE b ε, rfl⟩
 
 /- English proof (translation)
-Unfold `inFrame`. Use `show incM F (b⁻¹).1 * incM F (b.1 * w0 E n ε * (b⁻¹).1) * incM F b.1 = _`. Establish `e : (b⁻¹).1 * (b.1 * w0 E n ε * (b⁻¹).1) * b.1 = w0 E n ε`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[Units.inv_mul, Matrix.mul_one, ← Matrix.mul_assoc, Units.inv_mul, Matrix.one_mul]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [incM]`. Rewrite using `[← Matrix.map_mul, ← Matrix.map_mul, e]`. Use `show incM F (w0 E n ε) = _`. Rewrite using `[w0, incM_alt_alt, map_intCast]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wA_inFrame {b : GL (Fin n ⊕ Fin n) E} {ε : ℤˣ} (hε : b.1ᵀ * dbl Y.J * b.1.map σ = w0 E n ε) :
     inFrame b (wA σ Y b ε hε) = Matrix.fromBlocks 0 1 (((ε : ℤ) : AE F E) • 1) 0 := by
@@ -121,7 +119,7 @@ theorem wA_inFrame {b : GL (Fin n ⊕ Fin n) E} {ε : ℤˣ} (hε : b.1ᵀ * dbl
   rw [w0, incM_alt_alt, map_intCast]
 
 /- English proof (translation)
-Take `⟨ε, hε⟩` from `hb.1`. Conclude with `⟨ε, wA σ Y b ε hε, wA_inFrame hε, wA_rat hε⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_w {b : GL (Fin n ⊕ Fin n) E} (hb : IsFrame2 σ Y b) :
     ∃ (ε : ℤˣ) (w : G2 σ Y), inFrame b w = Matrix.fromBlocks 0 1 (((ε : ℤ) : AE F E) • 1) 0 ∧ w ∈ rat2 σ Y := by
@@ -129,7 +127,7 @@ theorem exists_w {b : GL (Fin n ⊕ Fin n) E} (hb : IsFrame2 σ Y b) :
   exact ⟨ε, wA σ Y b ε hε, wA_inFrame hε, wA_rat hε⟩
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ d`. Take `⟨ν, 𝓕, hν, h𝓕, h1⟩` from `exists_cov (F := F) (E := E) d.m d.n`. Take `⟨i1, i2, i3, i4⟩` from `doubled_group_topological_properties σ d.Y`. Conclude with `⟨⟨ν, hν, 𝓕, h𝓕, h1⟩, exists_w d.ok.frame, i1, i2, i3, i4⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem auxEx : AuxiliaryPrimeFunction := by
   intro F E _ _ _ _ _ σ d

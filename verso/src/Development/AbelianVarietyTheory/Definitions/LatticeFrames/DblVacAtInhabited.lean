@@ -27,16 +27,16 @@ open GlobalTheory.Core.Rk.IP GlobalTheory.Core.Rk.SWLaw
 variable {D : D7}
 
 /- English proof (translation)
-Take `⟨κ, 𝓒, h1, -, h2, h3⟩` from `GlobalTheory.SkewVol.exists_haar_covol_one D n`. Conclude with `⟨κ, 𝓒, h1, h2, h3⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_isSkewOne (D : D7) (n : ℕ) : ∃ κ 𝓒, IsSkewOne (D := D) (n := n) κ 𝓒 := by
   obtain ⟨κ, 𝓒, h1, -, h2, h3⟩ := GlobalTheory.SkewVol.exists_haar_covol_one D n
   exact ⟨κ, 𝓒, h1, h2, h3⟩
 
 /- English proof (translation)
-Establish `h2 : ¬ IsUnit (2 : 𝓞 D.host.F)` using `fun h => by`. Establish `h'` using `h.map (Algebra.norm ℤ)`. Rewrite `h'` using `[show (2 : 𝓞 D.host.F) = algebraMap ℤ _ 2 by simp, Algebra.norm_algebraMap]`. Establish `h3` using `(isUnit_pow_iff (Module.finrank_pos (R := ℤ) (M := 𝓞 D.host.F)).ne').1 h'`. Conclude with `absurd (Int.isUnit_iff.1 h3) (by decide)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨M, hM, hle⟩` from `exists_max_ideal_of_mem_nonunits h2`. Use `⟨⟨M, hM.isPrime, fun h => ?_⟩, GlobalTheory.Core.Rk.IP.Model.isSplit_two _ hle⟩` and prove the remaining obligations. Rewrite `hle` using `[h, Ideal.mem_bot]`. Conclude with `two_ne_zero hle`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_split (D : D7) : ∃ q : FinPl D, Formalism.MainNotions.SchurIrreducible.IsSplit (E := D.host.E) q := by
   have h2 : ¬ IsUnit (2 : 𝓞 D.host.F) := fun h => by
@@ -50,11 +50,11 @@ theorem exists_split (D : D7) : ∃ q : FinPl D, Formalism.MainNotions.SchurIrre
   exact two_ne_zero hle
 
 /- English proof (translation)
-Take `⟨ψ, θ, χA, χB, sA, sB, cA, a, om, ν, 𝓕, Φ, hP, hΦ, hone, hU⟩` from `GlobalTheory.Core.Rk.IP.Model.exists_pair_unram A B hA hB h1 (t := B.rank - A.rank) (by omega) (by omega) _ _ (GlobalTheory.WeilAtPlace.isSelfDualC_frameLat A) (GlobalTheory.WeilAtPlace.isSelfDualC_frameLat B)`. Take `⟨η, hη⟩` from `GlobalTheory.WeilParts.exists_isEtaTilde_unramified D`. Take `⟨omh, homh⟩` from `GlobalTheory.WeilExist.exists_isWeilDatumO D ψ hP.weil.std (dblSp A) B 1 χB ⟨η, hη⟩ ⟨continuous_const, fun _ => rfl⟩ hP.weil.hecT (by`. Use `GlobalTheory.Eis.SimplePoleModel.resEta_one_two_mul D A.rank` as an intermediate fact. Rewrite using `[two_mul] at this) hP.weil.resT` and apply the resulting hypothesis.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Take `⟨κ, 𝓒, hκ⟩` from `exists_isSkewOne D A.rank`. Establish `hev : GlobalTheory.IndefiniteRowSideFullHecke.SphericalZero.evZero A B ν 𝓕 (delta A B Φ Φ) = 1`. Rewrite using `[GlobalTheory.IndefiniteRowSideFullHecke.SphericalZero.evZero_delta]`. Simplify `hone` using `only [wcoef, Prod.mk_one_one, map_one, Module.End.one_apply]`. Use `⟨ψ, χB, omh, a, ν, 𝓕, Measure.haar, κ, 𝓒, delta A B Φ Φ, ⟨h1, h2, hw, homh, hP.maj, hP.covol, inferInstance, hκ, GlobalTheory.Core.Rk.DeltaTheta.main D ψ A B hP.weil.std Φ Φ hΦ.1 hΦ.1, delta_isKFinVec D ψ θ A B χA χB sA sB _ cA a om ν 𝓕 hP omh homh Φ Φ hΦ hΦ⟩, ?_, ?_, fun q hq => …` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Simplify `hev` using `only [swSec, Prod.mk_one_one, map_one, Module.End.one_apply]`. Rewrite using `[sch, mixS_dblDec_zero, hev]`. Conclude with `(GlobalTheory.Core.Rk.VacBox.doubling_isLatVac D ψ A B _ _ hP.weil.std (hU ∅).sdA).2 ∅ Φ Φ (hU ∅).sph₁ (hU ∅).sph₂ q (by simp)`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_dbl_vacAt (A B : HSp D) (hA : A.SigOK) (hB : B.SigOK) (h1 : 1 ≤ A.rank) (h2 : A.rank + 2 ≤ B.rank)
     (hw : wittIndex B = 0 ∨ A.rank + wittIndex B < B.rank) :
@@ -85,7 +85,7 @@ theorem exists_dbl_vacAt (A B : HSp D) (hA : A.SigOK) (hB : B.SigOK) (h1 : 1 ≤
       (by simp)
 
 /- English proof (translation)
-Set `A : HSp D` to `Examples₂.posSpace (E := D.host.E) Examples₂.star_isIntegral n`. Set `B : HSp D` to `Examples₂.posSpace (E := D.host.E) Examples₂.star_isIntegral (n + t)`. Take `⟨q, hq⟩` from `exists_split D`. Take `⟨ψ, χB, omh, a, ν, 𝓨, mH, κ, 𝓒, f, h1, h2, -, h3⟩` from `exists_dbl_vacAt A B (Examples₂.posSpace_sigOK _ _) (Examples₂.posSpace_sigOK _ _) hn (show n + 2 ≤ n + t by omega) (.inl (wittIndex_eq_zero_iff_isAniso.2 (GlobalTheory.ThetaMean.Model.isAniso_posSpace _)))`. Conclude with `⟨A, B, ψ, χB, omh, a, ν, 𝓨, mH, κ, 𝓒, f, q, rfl, rfl, h1, h2, h3 q hq⟩`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem dbl_vacAt_inhabited (D : D7) {n t : ℕ} (hn : 1 ≤ n) (ht : 2 ≤ t) :
     ∃ (A B : HSp D) (ψ : _) (χB : _) (omh : _) (a : _) (ν : _) (𝓨 : _) (mH : _) (κ : _) (𝓒 : _) (f : _) (q : _),
@@ -100,7 +100,7 @@ theorem dbl_vacAt_inhabited (D : D7) {n t : ℕ} (hn : 1 ≤ n) (ht : 2 ≤ t) :
   exact ⟨A, B, ψ, χB, omh, a, ν, 𝓨, mH, κ, 𝓒, f, q, rfl, rfl, h1, h2, h3 q hq⟩
 
 /- English proof (translation)
-Establish `h : HypDec.Images (dblSp A) (zeroSp D) (dblDec A).jY (dblDec A).j0 (dblDec A).jX` using `⟨(dblDec A).gram_YY, (dblDec A).gram_XX, (dblDec A).gram_XY, (dblDec A).gram_00, (dblDec A).gram_0Y, (dblDec A).gram_0X⟩`. Use `⟨(dblDec A).ofImages _ _ _ h, ⟨(dblDec A).ofImages_mem_GQ h (rat_mem _) (rat_mem _) (rat_mem _), ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[(dblDec A).ofImages_jY h, HypDec.pY_jX]`. Rewrite using `[lowC, (dblDec A).ofImages_jX h, HypDec.pY_jY]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_isWeyl (A : HSp D) : ∃ w, IsWeyl A w ∧ lowC A w = 1 := by
   have h : HypDec.Images (dblSp A) (zeroSp D) (dblDec A).jY (dblDec A).j0 (dblDec A).jX :=
@@ -111,18 +111,18 @@ theorem exists_isWeyl (A : HSp D) : ∃ w, IsWeyl A w ∧ lowC A w = 1 := by
   · rw [lowC, (dblDec A).ofImages_jX h, HypDec.pY_jY]
 
 /- English proof (translation)
-Rewrite using `[lowC, mt_one, Matrix.one_mul, HypDec.pY_jX]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lowC_one (A : HSp D) : lowC A 1 = 0 := by rw [lowC, mt_one, Matrix.one_mul, HypDec.pY_jX]
 
 /- English proof (translation)
-Rewrite using `[lowC, lowC, GlobalTheory.MixModel.mt_mul, Matrix.mul_assoc, (dblDec A).nC_jX]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lowC_mul_nC (A : HSp D) (g : GA D (dblSp A)) (c : skewA D A.rank) : lowC A (g * (dblDec A).nC c) = lowC A g := by
   rw [lowC, lowC, GlobalTheory.MixModel.mt_mul, Matrix.mul_assoc, (dblDec A).nC_jX]
 
 /- English proof (translation)
-Rewrite using `[chr, HypDec.qS, HypDec.symplOH_extX_extY, pairS, adj_mul, mem_skewA.1 c.2, Matrix.mul_assoc, Matrix.neg_mul, Matrix.trace_neg, map_neg (trHalf D), Matrix.trace_mul_comm, gramOf]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem chr_gramOf (ψ : AddChar (AF D.host.F) ℂ) (A B : HSp D) (x : Mx D B.rank A.rank) (c : skewA D A.rank) :
     chr ψ (gramOf B x) c = ψ ((dblDec A).qS B c x) := by
@@ -130,7 +130,7 @@ theorem chr_gramOf (ψ : AddChar (AF D.host.F) ℂ) (A B : HSp D) (x : Mx D B.ra
     Matrix.trace_neg, map_neg (trHalf D), Matrix.trace_mul_comm, gramOf]
 
 /- English proof (translation)
-Use `⟨fun m x => ?_, fun c x => ?_⟩` and prove the remaining obligations. Rewrite using `[sch, h.levi, Pi.smul_apply, smul_eq_mul, MonoidHom.inv_apply, GlobalTheory.IndefiniteRowSideFullHecke.SkewGramHalfModule.halfMod, GlobalTheory.Doubling.npow, Complex.ofReal_cpow (NNReal.coe_nonneg _)]`. Use `push_cast`. Both sides reduce to the same expression. Rewrite using `[sch, h.centre, chr_gramOf ψ A B]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -150,18 +150,18 @@ theorem laws_of_formulas {ψ : AddChar (AF D.host.F) ℂ} {A B : HSp D} {χB : (
     rfl
 
 /- English proof (translation)
-Rewrite using `[chr, chr, chr, ← AddChar.map_add_eq_mul, AddSubgroup.coe_add, Matrix.mul_add, Matrix.trace_add, map_add, neg_add]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem chr_add (ψ : AddChar (AF D.host.F) ℂ) {n : ℕ} (T : Mx D n n) (c c' : skewA D n) :
     chr ψ T (c + c') = chr ψ T c * chr ψ T c' := by
   rw [chr, chr, chr, ← AddChar.map_add_eq_mul, AddSubgroup.coe_add, Matrix.mul_add, Matrix.trace_add, map_add, neg_add]
 
 /- English proof (translation)
-Introduce `w hw β hβ k hk e`. Take `⟨j, hj, hn⟩` from `h w hw β hβ`. Establish `e'` using `congrArg norm e`. Rewrite `e'` using `[norm_mul, norm_inv, LFun.norm_val, inv_one, mul_one, hn, LFun.norm_npow]`. Establish `hN : (1 : ℝ) < ((Ideal.absNorm w.asIdeal : ℕ) : ℝ)` using `by exact_mod_cast NumberField.HeightOneSpectrum.one_lt_absNorm w`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h3` using `(Real.rpow_right_inj (by linarith) hN.ne').1 e'`. Establish `h4 : (j : ℝ) = k`. Establish `: ((k : ℂ) / 2).re = (k : ℝ) / 2` using `by simp`. Rewrite `h3` using `[this]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `h5 : j = k` using `by exact_mod_cast h4`. Substitute `h5` using the available equality. Rewrite `hj` using `[abs_lt]`. Simplify using `only [Set.mem_insert_iff, Set.mem_singleton_iff] at hk`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem nsAt_of_norm {par : LFun.Fam D.host.E} (χ : (AE D)ˣ →* Circle) {t : ℕ} {q : FinPl D}
     (h : ∀ w : HeightOneSpectrum (𝓞 D.host.E), w.under (𝓞 D.host.F) = q → ∀ β ∈ par w, ∃ j : ℤ, |j| < (t : ℤ) - 1 ∧
@@ -183,7 +183,7 @@ theorem nsAt_of_norm {par : LFun.Fam D.host.E} (χ : (AE D)ˣ →* Circle) {t : 
   omega
 
 /- English proof (translation)
-Use `⟨fun w => {Units.mk0 _ (LFun.npow_ne_zero w ((((t : ℤ) + 1 : ℤ) : ℂ) / 2)) * LFun.val (F := D.host.F) χ w}, fun h => h w rfl _ (Multiset.mem_singleton_self _) ((t : ℤ) + 1) (by simp) ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_mul, Units.val_mk0, mul_inv_cancel_right₀ (Units.ne_zero _)]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem not_nsAt (χ : (AE D)ˣ →* Circle) (t : ℕ) (w : HeightOneSpectrum (𝓞 D.host.E)) :
     ∃ par : LFun.Fam D.host.E, ¬ NSAt par χ t (w.under (𝓞 D.host.F)) := by
@@ -192,11 +192,11 @@ theorem not_nsAt (χ : (AE D)ˣ →* Circle) (t : ℕ) (w : HeightOneSpectrum (�
   rw [Units.val_mul, Units.val_mk0, mul_inv_cancel_right₀ (Units.ne_zero _)]
 
 /- English proof (translation)
-Use `⟨fun w => Finset.univ.val.map (TrivCoef.trivParGL w A.rank), fun v hv w h => ?_, nsAt_of_norm χ fun w _ β hβ => ?_⟩` and prove the remaining obligations. Take `rfl : v = q` from `by simpa using hv`. Establish `hL` using `isLattice_frameLat_host A`. Take `⟨e, he, -, -⟩` from `LFun.SplitChart.exists_isSplitChart (isCMExt_host D) (isHermND_gram A) hL.fg hL.span_eq_top h hq (GlobalTheory.AdelicU.SelfDual.isSelfDualAt_frameLat D A v)`. Conclude with `Or.inl ⟨hq, e, he, (TrivCoef.isSatVecGL_one w A.rank).map (LinearMap.pi fun _ => LinearMap.id) (fun _ _ => rfl) fun e => one_ne_zero (congrFun e 1)⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Prove the first alternative.
 
-Take `⟨i, -, rfl⟩` from `Multiset.mem_map.1 hβ`. Establish `hi` using `i.2`. Use `⟨(A.rank : ℤ) - 1 - 2 * (i.val : ℤ), by rw [abs_lt]; omega, ?_⟩` and prove the remaining obligations. Use `LFun.norm_npow w (((A.rank : ℂ) - 1 - 2 * (i : ℂ)) / 2)` as an intermediate fact. Use `Eq.trans this ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr 1`. Simplify using the standard rewrite rules.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 -/
 theorem nsAt_one (A : HSp D) (χ : (AE D)ˣ →* Circle) {t : ℕ} (ht : A.rank < t) {q : FinPl D}
     (hq : Formalism.MainNotions.SchurIrreducible.IsSplit (E := D.host.E) q) : ∃ par,

@@ -17,15 +17,15 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 variable {om : Rep σ G.V G.W} {om' : Rep σ G.V' G.W}
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField in
 /- English proof (translation)
-Use `choose ψ l hl h3 h4 h5 using _root_.UpperTheory.Lit.HoweDuality.exists_local_iso_scalar_of_reG hP F E σ B a a' G X om om' R Rf hM V V' Z S hM₂.fin`. Use `⟨ψ, l, h5, h3, h4, ?_⟩` and prove the remaining obligations. Establish `hc` using `hM.triple.chars`. Establish `key : ∀ v : B.P, l v.1 = (chrW X.ν (B.τ v) (kap G V V' Z v.1) : ℂ)`. Introduce `v`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hv : v.1 ∈ X.T`. Use `haveI := hM.fin.nontriv v.1`. Take `⟨y, hy⟩` from `exists_ne (0 : Rf.Pi v.1)`. Take `⟨φ, hφ, e⟩ : y ∈ (SB _).map (Rf.p v.1)` from `by rw [hM.fin.onto]; trivial`. Take `⟨φ', hφ', e'⟩ : y ∈ (SB _).map (Rf.p' v.1)` from `by rw [hM.fin.onto']; trivial`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h` using `zeta_rel hM.triple.base hM.triple.geo hM₂.triple.geo (hM.fin.zeta v hv) (hM₂.fin.zeta v hv) hφ hφ' (e.trans e'.symm)`. Rewrite `h` using `[map_smul, h3 _ _ hφ, h4 _ _ hφ', e, e']`. Conclude with `(smul_left_injective ℂ ((LinearEquiv.map_ne_zero_iff (ψ v.1)).2 hy) h).symm`. Establish `hw : splitPrime (B.τ v) ∉ above E (X.T : Set (Pl F))` using `fun h => hv (by`. Establish `h' : (splitPrime (B.τ v)).under (𝓞 F) ∈ (X.T : Set (Pl F))` using `h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[splitPrime_under] at h')` and apply the resulting hypothesis. Establish `hk` using `valuation_kap hM.triple.geo hM₂.triple.geo v`. Establish `h1` using `(GlobalTheory.T.splitPlaceCharacterComponent_smooth_unitary_conductor F E X.α hc.heckeα v.1 (B.τ v)).2.2.2 (hc.unrα _ hw) _ hk`. Establish `h2` using `(GlobalTheory.T.splitPlaceCharacterComponent_smooth_unitary_conductor F E X.β hc.heckeβ v.1 (B.τ v)).2.2.2 (hc.unrβ _ hw) _ hk`. Establish `h0 : chrW X.ν (B.τ v) (kap G V V' Z v.1) = chrW X.α (B.τ v) (kap G V V' Z v.1) / chrW X.β (B.τ v) (kap G V V' Z v.1)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Chars.ν, chrW, locChar, MonoidHom.comp_apply, MonoidHom.div_apply, map_div]`. Rewrite using `[h5 _ hv, h0, h1, h2, div_one, Units.val_one]`. Rewrite using `[chr_kapId, Finset.prod_subset hc.sub (fun v _ hv => h5 v hv), ← Finset.prod_coe_sort B.P l]`. Conclude with `Finset.prod_congr rfl fun v _ => key v`.
+A detailed English derivation is pending.
 -/
 theorem rebase_finite_scalar (hP : _root_.GlobalTheory.FunPr.ThetaLocalInputs) {R R₂ : RealMaps F a a'} {Rf S : FinMaps F a a'}
     (hM : IsMatched B G X om om' R Rf) (hM₂ : IsMatched B (reG G V V' Z) X om om' R₂ S) :
@@ -60,21 +60,19 @@ theorem rebase_finite_scalar (hP : _root_.GlobalTheory.FunPr.ThetaLocalInputs) {
   rw [chr_kapId, Finset.prod_subset hc.sub (fun v _ hv => h5 v hv), ← Finset.prod_coe_sort B.P l]
   exact Finset.prod_congr rfl fun v _ => key v
 /- English proof (translation)
-Take `⟨ψ, l, hl1, h3, h4, hl⟩` from `_root_.GlobalTheory.ReBase.rebase_finite_scalar hP hM hM₂`. Take `⟨⟨-, hu, -⟩, -, hso⟩` from `(hK.1 F E σ B a a' G X om om' hM.triple).2 R Rf hM`. Establish `hT` using `hM.triple`. Use `set Λ : ℂ := l₀ * X.ν (kapId B G V V' Z) with hΛ`. Establish `hΛ0 : Λ ≠ 0` using `mul_ne_zero hl₀ (Circle.coe_ne_zero _)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `pm : ∀ Φ Φ', PolMatch B G X R Rf Φ Φ' → PolMatch B (reG G V V' Z) X R₂ S (om (g, h) (Λ • Φ)) (om' (g', h) Φ')` using `fun Φ Φ' hm => by`. Use `polMatch_iso hl1 hR hR' h3 h4 hm` as an intermediate fact. Rewrite `this` using `[hl]`. Conclude with `polMatch_transport hT R₂ hg hg' hh hθ hθ' hθW hT1 hT2 hT1' hT2' S this`. Establish `so : ∀ Φ' ∈ G.M'.So B.ψ B.τ₁, om' (g', h) Φ' ∈ (reG G V V' Z).M'.So B.ψ B.τ₁` using `fun Φ' hΦ' => (GlobalTheory.ThKRealConj.so_reG' G V V' Z B.ψ B.τ₁).symm ▸ hso (g', h) Φ' hΦ'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hc' : IsConst B G X om om' R Rf (d / Λ)`. Introduce and unpack `Φ Φ' ⟨hSo, m, m', r, f, s, r', f', s', hr, hr', hΦ, hΦ', hk⟩ y`. Establish `e1 : ∀ u : Fin m → SInf F (Fin a × Fin (a + a')), om (g, h) (Λ • ∑ i, pureA F (u i) (r i)) = ∑ i, pureA F (⇑(Λ • T (u i))) (r i)` using `fun u => by`. Rewrite using `[map_smul, map_sum, Finset.smul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [acts_pureA (hT1 (u i)) (hr i).1, pureA_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e2 : ∀ u : Fin m' → SInf F (Fin a' × Fin (a + a')), om' (g', h) (∑ i, pureA F (u i) (r' i)) = ∑ i, pureA F (T' (u i)) (r' i)` using `fun u => by`. Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => acts_pureA (hT1' (u i)) (hr' i).1`. Establish `hm : Match B (reG G V V' Z) X R₂ S (om (g, h) (Λ • Φ)) (om' (g', h) Φ')`. Use `⟨so _ hSo, m, m', r, fun i => Λ • T (f i), fun k i => Λ • T (s k i), r', fun i => T' (f' i), fun k i => T' (s' k i), fun i => ⟨(hr i).1, ((hTc.tendsto _).comp (hr i).2).const_smul Λ⟩, fun i => ⟨(hr' i).1, (hTc'.tendsto _).comp (hr' i).2⟩, by rw [hΦ, e1], by rw [hΦ', e2], fun k => …` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `so _ (hk k).1`. Establish `h2` using `pm _ _ (hk k).2`. Rewrite `h1` using `[e2]`. Rewrite `h2` using `[e1, e2]`. Conclude with `⟨h1, h2⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `sΦ : Λ • Φ ∈ schA F (Fin a × Fin (a + a'))`. Rewrite using `[hΦ]`. Conclude with `Submodule.smul_mem _ _ (Submodule.sum_mem _ fun i _ => Submodule.subset_span ⟨f i, r i, (hr i).1, rfl⟩)`. Establish `sΦ' : Φ' ∈ schA F (Fin a' × Fin (a + a'))`. Rewrite using `[hΦ']`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `Submodule.sum_mem _ fun i _ => Submodule.subset_span ⟨f' i, r' i, (hr' i).1, rfl⟩`. Establish `key` using `hd _ _ hm (y * h⁻¹)`. Establish `i1` using `_root_.GlobalTheory.T.thetaIntegral_comp_rightTranslate hP F E σ B a (a + a') G.V G.W G.M _ _ om _ _ _ _ (GlobalTheory.ThK.RealUniq.isPair_V hT) g hg h _ sΦ (y * h⁻¹)`. Establish `i2` using `_root_.GlobalTheory.T.thetaIntegral_comp_rightTranslate hP F E σ B a' (a + a') G.V' G.W G.M' _ _ om' _ _ _ _ (GlobalTheory.ThK.RealUniq.isPair_V' hT) g' hg' h _ sΦ' (y * h⁻¹)`. Rewrite `i1`, `i2` using `[inv_mul_cancel_right]`.
-
-Express the relevant statement in the definitionally equal form `G.M.I om (om (g, h) (Λ • Φ)) (y * h⁻¹) = d * G.M'.I om' (om' (g', h) Φ') (y * h⁻¹) at key`. Rewrite `key` using `[i1, i2, GlobalTheory.PolIso.modelI_smul]`. Rewrite using `[div_mul_eq_mul_div, eq_div_iff hΛ0, ← key, mul_comm]`. Rewrite using `[hu.unique hc hc']`. Clear the denominators using the available nonvanishing facts.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem rebase_constants_agree (hP : _root_.GlobalTheory.FunPr.ThetaLocalInputs) (hK : ThetaIntegralsAgree) {R R₂ : RealMaps F a a'} {Rf S : FinMaps F a a'}
     (hM : IsMatched B G X om om' R Rf) (hM₂ : IsMatched B (reG G V V' Z) X om om' R₂ S)
@@ -143,13 +141,13 @@ theorem rebase_constants_agree (hP : _root_.GlobalTheory.FunPr.ThetaLocalInputs)
   rw [hu.unique hc hc']
   field_simp
 /- English proof (translation)
-Establish `ta` using `m1.triple`. Establish `tb` using `m2.triple`. Establish `hB` using `ta.base`. Take `⟨g, hg, eg⟩` from `GlobalTheory.T.cartan_involution_systems_conj_archimedean_unitary F E σ B a _ _ G.V V hB ta.geo.hV n1.triple.geo.hV`. Take `⟨g', hg', eg'⟩` from `GlobalTheory.T.cartan_involution_systems_conj_archimedean_unitary F E σ B a' _ _ G.V' V' hB ta.geo.hV' n1.triple.geo.hV'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨h, hh, eh⟩` from `GlobalTheory.T.skewHermitian_cartanInvolutionSystems_conjugate_archimedean F E σ B (a + a') _ _ G.W Z hB ta.geo.hW n1.triple.geo.hW`. Take `⟨T, hTc, hT1, hT2⟩` from `exists_op hB.std ta.weil hg hh`. Take `⟨T', hTc', hT1', hT2'⟩` from `exists_op hB.std ta.weil' hg' hh`. Establish `hR₃` using `_root_.GlobalTheory.ReBase.real_maps_transport hP ta R₂ hg hg' hh eg eg' eh hT1 hT2 hT1' hT2' n1.triple n1.real`. Take `⟨ψ₀, l₀, hl₀, hR, hR'⟩` from `_root_.GlobalTheory.ReBase.real_maps_unique hP F E σ B a a' G Xa oa oa' R Ra m1 _ hR₃`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `eα : ∀ z : (AE F E)ˣ, At (evI F) ((z : AE F E) - 1) → Xa.α z = Xb.α z` using `fun z hz => Circle.ext ((ta.chars.expα z hz).trans (tb.chars.expα z hz).symm)`. Establish `eβ : ∀ z : (AE F E)ˣ, At (evI F) ((z : AE F E) - 1) → Xa.β z = Xb.β z` using `fun z hz => Circle.ext ((ta.chars.expβ z hz).trans (tb.chars.expβ z hz).symm)`. Establish `eV` using `fun g hg h hh => weil_arch_eq (g := g) (k := h) hB.cm hB.std ta.geo.hV.herm (GlobalTheory.FinUniq.det_ne_zero_herm ta.geo.hV) ta.geo.hW.skew (GlobalTheory.FinUniq.det_ne_zero_skew ta.geo.hW) eβ (fun z hz => by rw [MonoidHom.div_apply, MonoidHom.div_apply, eα z hz, eβ z hz]) ta.we …`. Establish `eV'` using `fun g hg h hh => weil_arch_eq (g := g) (k := h) hB.cm hB.std ta.geo.hV'.herm (GlobalTheory.FinUniq.det_ne_zero_herm ta.geo.hV') ta.geo.hW.skew (GlobalTheory.FinUniq.det_ne_zero_skew ta.geo.hW) eα (fun z hz => by rw [MonoidHom.div_apply, MonoidHom.div_apply, eα z hz, eβ z hz]) ta. …`. Establish `hhi` using `GlobalTheory.MajTransport.uat_inv hh`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha` using `_root_.GlobalTheory.ReBase.rebase_constants_agree hP hK m1 n1 hg hg' hh eg eg' eh hTc hTc' hT1 hT2 hT1' hT2' hl₀ hR hR' k1 l1`. Establish `hb` using `_root_.GlobalTheory.ReBase.rebase_constants_agree hP hK m2 n2 hg hg' hh eg eg' eh hTc hTc' (fun f => acts_congr (eV g hg h hh) (hT1 f)) (fun f => acts_congr (eV _ (GlobalTheory.MajTransport.uat_inv hg) _ hhi) (hT2 f)) (fun f => acts_congr (eV' g' hg' h hh) (hT1' f)) (fun f => act …`. Use `⟨kapId B G V V' Z, ?_⟩` and prove the remaining obligations. Establish `h0 : (Xb.ν (kapId B G V V' Z) : ℂ) ≠ 0` using `Circle.coe_ne_zero _`. Rewrite using `[ha, hb, Circle.coe_div]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Clear the denominators using the available nonvanishing facts.
 -/

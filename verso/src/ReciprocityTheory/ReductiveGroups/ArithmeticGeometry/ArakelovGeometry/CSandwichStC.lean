@@ -10,9 +10,9 @@ open scoped ComplexOrder Matrix
 variable {Ω : Type} [Field Ω] [CharZero Ω] {κ : Type} [Fintype κ] {D : ℕ}
 
 /- English proof (translation)
-Unfold `bNormSq`. Use `MeasureTheory.integral_nonneg fun z => mul_nonneg (sq_nonneg _) ?_` and prove the remaining obligations. Unfold `wgt`. Use `inv_nonneg.mpr ?_` and prove the remaining obligations. Rewrite using `[pow_mul]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `pow_nonneg (sq_nonneg _) _`.
+A detailed English derivation is pending.
 -/
 theorem bNormSq_nonneg' (μ : Measure (Ix κ → ℂ)) (m : ConeMetric ℂ (Ix κ)) {r n : ℕ}
     (s : Fin r → (Ix κ → ℂ) → ℂ) (c : Fin r → ℂ) : 0 ≤ bNormSq μ s (wgt m n) c := by
@@ -24,9 +24,9 @@ theorem bNormSq_nonneg' (μ : Measure (Ix κ → ℂ)) (m : ConeMetric ℂ (Ix �
   exact pow_nonneg (sq_nonneg _) _
 
 /- English proof (translation)
-Establish `hρ : 0 < m.ρ z` using `m.pos z hz`. Establish `hP : 0 < m.ρ z ^ n` using `pow_pos hρ n`. Establish `hw : wgt m n z = ((m.ρ z ^ n) ^ 2)⁻¹`. Unfold `wgt`. Rewrite using `[← pow_mul, mul_comm n 2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h` using `[hw]`. Establish `hP2 : 0 < (m.ρ z ^ n) ^ 2` using `pow_pos hP 2`. Establish `h2 : a ^ 2 ≤ b * (m.ρ z ^ n) ^ 2`. Rewrite `h` using `[← div_eq_mul_inv, div_le_iff₀ hP2]`. Then use the resulting hypothesis. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Chain the equalities or inequalities of the calculation.
 -/
 theorem norm_le_of_sq_wgt_le {m : ConeMetric ℂ (Ix κ)} {n : ℕ} {z : Ix κ → ℂ} (hz : z ≠ 0)
     {a b : ℝ} (ha : 0 ≤ a) (hb : 0 ≤ b) (h : a ^ 2 * wgt m n z ≤ b) :
@@ -45,15 +45,15 @@ theorem norm_le_of_sq_wgt_le {m : ConeMetric ℂ (Ix κ)} {n : ℕ} {z : Ix κ �
     _ = Real.sqrt b * m.ρ z ^ n := by rw [Real.sqrt_mul hb, Real.sqrt_sq hP.le]
 
 /- English proof (translation)
-Establish `hn' : (1 : ℝ) ≤ n` using `by exact_mod_cast hn`. Establish `hT0' : 0 < T` using `by linarith`. Establish `hnpos : (0 : ℝ) < n` using `by linarith`. Establish `hpos : 0 < T * (n : ℝ) ^ D` using `mul_pos hT0' (pow_pos hnpos D)`. Establish `hlog : Real.log (Real.sqrt (T * (n : ℝ) ^ D)) = (1 / 2) * (Real.log T + D * Real.log n)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Real.log_sqrt hpos.le, Real.log_mul hT0'.ne' (pow_pos hnpos D).ne', Real.log_pow]`. Expand and normalize the polynomial expressions, which then agree. Establish `hT0 : 0 ≤ Real.log T` using `Real.log_nonneg hT`. Establish `hn0 : 0 ≤ Real.log n` using `Real.log_nonneg hn'`. Establish `hl2 : 0 < Real.log 2` using `Real.log_pos (by norm_num)`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hl2n : Real.log 2 ≤ Real.log (n + 1)` using `Real.log_le_log (by norm_num) (by linarith)`. Establish `hln : Real.log n ≤ Real.log (n + 1)` using `Real.log_le_log hnpos (by linarith)`. Establish `hD0 : (0 : ℝ) ≤ D` using `Nat.cast_nonneg D`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hlog]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_nonneg (by norm_num) (add_nonneg hT0 (mul_nonneg hD0 hn0))`. Rewrite using `[hlog]`. Establish `h1 : Real.log T ≤ Real.log T / Real.log 2 * Real.log (n + 1)`. Rewrite using `[div_mul_eq_mul_div, le_div_iff₀ hl2]`. Conclude with `mul_le_mul_of_nonneg_left hl2n hT0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : (D : ℝ) * Real.log n ≤ D * Real.log (n + 1)` using `mul_le_mul_of_nonneg_left hln hD0`. Establish `h3 : (1 / 2) * (Real.log T / Real.log 2 + D) * Real.log (n + 1) = (1 / 2) * (Real.log T / Real.log 2 * Real.log (n + 1) + D * Real.log (n + 1))` using `by ring`. Rewrite using `[h3]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem log_sqrt_bound (D : ℕ) {T : ℝ} (hT : 1 ≤ T) {n : ℕ} (hn : 1 ≤ n) :
     0 ≤ Real.log (Real.sqrt (T * (n : ℝ) ^ D)) ∧
@@ -86,9 +86,9 @@ theorem log_sqrt_bound (D : ℕ) {T : ℝ} (hT : 1 ≤ T) {n : ℕ} (hn : 1 ≤ 
     linarith
 
 /- English proof (translation)
-Establish `hN : n + k + D ≤ (1 + k + D) * n` using `by nlinarith`. Establish `h1 : (n + k + D).choose D ≤ (n + k + D) ^ D` using `Nat.choose_le_pow _ _`. Establish `h2 : (n + k + D) ^ D ≤ ((1 + k + D) * n) ^ D` using `Nat.pow_le_pow_left hN D`. Establish `h3 : (n + k + D).choose D ≤ (1 + k + D) ^ D * n ^ D`. Rewrite using `[← mul_pow]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h1.trans h2`. Conclude with `h3` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem choose_bound (k D : ℕ) {n : ℕ} (hn : 1 ≤ n) :
     (((n + k + D).choose D : ℕ) : ℝ) ≤ ((1 + k + D : ℕ) : ℝ) ^ D * (n : ℝ) ^ D := by
@@ -101,7 +101,7 @@ theorem choose_bound (k D : ℕ) {n : ℕ} (hn : 1 ≤ n) :
   exact_mod_cast h3
 
 /- English proof (translation)
-Establish `h` using `LinearMap.finrank_le_finrank_of_injective (f := Matrix.mulVecLin M) hM`. Simplify using `using h`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem le_of_injective_mulVec {R r : ℕ} (M : Matrix (Fin R) (Fin r) ℚ)
     (hM : Function.Injective M.mulVec) : r ≤ R := by

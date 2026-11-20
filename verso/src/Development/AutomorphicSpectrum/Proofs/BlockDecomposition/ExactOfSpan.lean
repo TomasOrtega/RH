@@ -15,7 +15,7 @@ section Cochains
 variable {R : Type} [CommRing R] {C : Type} [Category.{0} C]
 
 /- English proof (translation)
-Simplify using `only [dn, LinearMap.sum_apply, LinearMap.smul_apply, Finset.sum_apply, Pi.smul_apply]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem dn_apply (F : C ⥤ CommAlgCat.{0} R) (n : ℕ) (z : Cn F n) (c : Fin (n + 2) ⥤ C) :
     dn F n z c = ∑ i : Fin (n + 2), ((-1 : R) ^ (i : ℕ)) •
@@ -27,9 +27,9 @@ def sc (F : C ⥤ CommAlgCat.{0} R) (g : ∀ T, F.obj T) (n : ℕ) (z : Cn F n) 
   fun c ↦ g (c.obj (Fin.last n)) * z c
 
 /- English proof (translation)
-Use function extensionality and compare the values at `c`. Simplify using `only [sc, dn_apply, Finset.mul_sum, mul_smul_comm]`. Use `Finset.sum_congr rfl fun i _ ↦ ?_` and prove the remaining obligations. Use `congr 1`. Use `(map_mul _ _ _).trans ?_` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `congrArg₂ (· * ·) (hg _ _ _) rfl`.
+A detailed English derivation is pending.
 -/
 theorem dn_sc (F : C ⥤ CommAlgCat.{0} R) (g : ∀ T, F.obj T)
     (hg : ∀ (T T' : C) (φ : T ⟶ T'), mp F φ (g T) = g T') (n : ℕ) (z : Cn F n) :
@@ -44,9 +44,9 @@ theorem dn_sc (F : C ⥤ CommAlgCat.{0} R) (g : ∀ T, F.obj T)
 end Cochains
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => simp`. Consider the case `succ m ih`. Rewrite using `[Fin.sum_univ_castSucc]`. Simplify using `only [Fin.val_castSucc, Fin.val_last, pow_succ]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take the linear combination `ih`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem altSum {R : Type} [CommRing R] (m : ℕ) :
     2 * (∑ i : Fin m, (-1 : R) ^ (i : ℕ)) + (-1) ^ m = 1 := by
@@ -79,9 +79,9 @@ def io (T : Pᵒᵖ) : F.obj T ≃ₐ[R] F.obj ((G1 a₀).obj T) :=
   AlgEquiv.ofBijective (mp F ((th a₀).app T)) (hb T)
 
 /- English proof (translation)
-Apply `(io F a₀ hb T').injective` to reduce the goal to its premises. Rewrite using `[AlgEquiv.apply_symm_apply]`. Express the relevant statement in the definitionally equal form `_ = mp F ((th a₀).app T') (mp F φ ((io F a₀ hb T).symm b))`. Rewrite using `[← mp_comp]`. Establish `e : φ ≫ (th a₀).app T' = (th a₀).app T ≫ (G1 a₀).map φ` using `Quiver.Hom.unop_inj (Subsingleton.elim _ _)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e, mp_comp]`. Express the relevant statement in the definitionally equal form `_ = mp F ((G1 a₀).map φ) (io F a₀ hb T ((io F a₀ hb T).symm b))`. Rewrite using `[AlgEquiv.apply_symm_apply]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem io_nat {T T' : Pᵒᵖ} (φ : T ⟶ T') (b : F.obj ((G1 a₀).obj T)) :
     (io F a₀ hb T').symm (mp F ((G1 a₀).map φ) b) = mp F φ ((io F a₀ hb T).symm b) := by
@@ -116,9 +116,9 @@ def m2 : CoefMap (RingHom.id R) F F where
 def E (n : ℕ) (t : F.obj (op a₀)) : Cn F n := fun c ↦ (m2 F a₀ hb).α (c.obj (Fin.last n)) t
 
 /- English proof (translation)
-Rewrite using `[dn_apply, Finset.sum_smul]`. Use `Finset.sum_congr rfl fun i _ ↦ ?_` and prove the remaining obligations. Use `congr 1`. Use `(m2 F a₀ hb).naturality (c.map (homOfLE (Fin.le_last (i.succAbove (Fin.last n))))) t` as an intermediate fact. Use `this.symm.trans ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `(m2 F a₀ hb).α _ (mp F (𝟙 (op a₀)) t) = _`. Rewrite using `[mp_id]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem dn_E (n : ℕ) (t : F.obj (op a₀)) (c : Fin (n + 2) ⥤ Pᵒᵖ) :
     dn F n (E F a₀ hb n t) c = (∑ i : Fin (n + 2), (-1 : R) ^ (i : ℕ)) • E F a₀ hb (n + 1) t c := by
@@ -132,7 +132,7 @@ theorem dn_E (n : ℕ) (t : F.obj (op a₀)) (c : Fin (n + 2) ⥤ Pᵒᵖ) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[dn_apply, Finset.sum_smul]`. Use `Finset.sum_congr rfl fun i _ ↦ ?_` and prove the remaining obligations. Use `congr 1`. Conclude with `mp_id F (op a₀) _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem dn_const (n : ℕ) (z : Cn F n) :
     dn F n z ((Functor.const (Fin (n + 2))).obj (op a₀)) =
@@ -145,15 +145,15 @@ theorem dn_const (n : ℕ) (z : Cn F n) :
 include hb in
 
 /- English proof (translation)
-Take `⟨-, h1⟩` from `hH R Pᵒᵖ F Pᵒᵖ F (CoefMap.id F) (m1 F a₀ hb) (th a₀) (fun T b ↦ (io F a₀ hb T).symm_apply_apply b)`. Take `⟨-, h2⟩` from `hH R Pᵒᵖ F Pᵒᵖ F (m2 F a₀ hb) (m1 F a₀ hb) (th' a₀) (fun T b ↦ rfl)`. Take `⟨y₁, e₁⟩` from `h1 n z hz`. Take `⟨y₂, e₂⟩` from `h2 n z hz`. Use `set t : F.obj (op a₀) := z ((Functor.const (Fin (n + 2))).obj (op a₀)) with ht`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `k` using `dn_const F a₀ (n + 1) z`. Rewrite `k` using `[hz]`. Establish `k' : (∑ i : Fin (n + 3), (-1 : R) ^ (i : ℕ)) • t = 0` using `k.symm`. Establish `e0 : pulln (CoefMap.id F) (n + 1) z = z` using `rfl`. Establish `e2 : pulln (m2 F a₀ hb) (n + 1) z = E F a₀ hb (n + 1) t` using `rfl`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `s : (∑ i : Fin (n + 2), (-1 : R) ^ (i : ℕ)) + ∑ i : Fin (n + 3), (-1 : R) ^ (i : ℕ) = 1`. Use `altSum (R := R) (n + 2)` as an intermediate fact. Rewrite using `[Fin.sum_univ_castSucc (n := n + 2)]`. Simplify using `only [Fin.val_castSucc, Fin.val_last]`. Take the linear combination `this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Establish `e3 : E F a₀ hb (n + 1) t = dn F n (E F a₀ hb n t)`. Use function extensionality and compare the values at `c`. Rewrite using `[dn_E]`. Establish `: (∑ i : Fin (n + 3), (-1 : R) ^ (i : ℕ)) • E F a₀ hb (n + 1) t c = 0`. Establish `h0` using `(m2 F a₀ hb).smul (c.obj (Fin.last (n + 1))) (∑ i : Fin (n + 3), (-1 : R) ^ (i : ℕ)) t`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Conclude with `h0.symm.trans ((congrArg ((m2 F a₀ hb).α (c.obj (Fin.last (n + 1)))) k').trans (map_zero _))`. Combine the equalities or inequalities in the displayed calculation. Use `⟨y₁ - y₂ + E F a₀ hb n t, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, map_sub, ← e₁, ← e₂, ← e3, e0, e2]`. Normalize the expressions using the abelian group laws.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem pointed (hH : HtpySt) (n : ℕ) (z : Cn F (n + 1)) (hz : dn F (n + 1) z = 0) :
     ∃ y, dn F n y = z := by
@@ -194,7 +194,7 @@ section Transfer
 variable {R : Type} [CommRing R] {C : Type} [Category.{0} C]
 
 /- English proof (translation)
-Use `choose N hN using hp`. Take `⟨B, hB⟩` from `(Set.finite_range N).bddAbove`. Conclude with `⟨B, fun i ↦ hN i B (hB ⟨i, rfl⟩)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem common_exp {J : Type} [Finite J] (p : J → ℕ → Prop) (hp : ∀ i, ∃ N, ∀ M, N ≤ M → p i M) :
     ∃ N, ∀ i, p i N := by
@@ -211,17 +211,17 @@ def nat {F F' : C ⥤ CommAlgCat.{0} R} (ρ : ∀ T, F.obj T →ₐ[R] F'.obj T)
   smul T r b := map_smul (ρ T) r b
 
 /- English proof (translation)
-Use `set m := nat ρ hρ with hm`. Establish `comm : ∀ k (w : Cn F k), pulln m (k + 1) (dn F k w) = dn F' k (pulln m k w)` using `fun k w ↦ LinearMap.congr_fun ((hC R C F).2 C F' m k) w`. Establish `hg' : ∀ (N : ℕ) (T T' : C) (φ : T ⟶ T'), mp F φ (g T ^ N) = g T' ^ N` using `fun N T T' φ ↦ by`. Rewrite using `[map_pow, hg]`. Establish `hg'' : ∀ (N : ℕ) (T T' : C) (φ : T ⟶ T'), mp F' φ (ρ T (g T) ^ N) = ρ T' (g T') ^ N` using `fun N T T' φ ↦ by rw [map_pow, ← hρ, hg]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨y', hy'⟩` from `hex (pulln m (n + 1) z) (by rw [← comm, hz, map_zero])`. Take `⟨N, hN⟩` from `common_exp (J := Fin (n + 1) ⥤ C) (fun c N ↦ ∃ y : F.obj (c.obj (Fin.last n)), ρ _ y = ρ _ (g (c.obj (Fin.last n))) ^ N * y' c) fun c ↦ by`. Take `⟨N, y, hy⟩` from `loc1 _ (y' c)`. Use `⟨N, fun M hM ↦ ⟨g _ ^ (M - N) * y, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[map_mul, hy, map_pow, ← _root_.mul_assoc, ← pow_add, Nat.sub_add_cancel hM]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `choose y hy using hN`. Establish `e1 : pulln m n y = sc F' (fun T ↦ ρ T (g T) ^ N) n y'` using `funext hy`. Establish `e2 : pulln m (n + 1) (dn F n y - sc F (fun T ↦ g T ^ N) (n + 1) z) = 0`. Rewrite using `[map_sub, comm, e1, dn_sc F' _ (hg'' N), hy', sub_eq_zero]`. Use function extensionality and compare the values at `c`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `ρ _ (g (c.obj (Fin.last (n + 1)))) ^ N * ρ _ (z c) = ρ _ (g (c.obj (Fin.last (n + 1))) ^ N * z c)`. Rewrite using `[map_mul, map_pow]`. Take `⟨M, hM⟩` from `common_exp (J := Fin (n + 2) ⥤ C) (fun c M ↦ g (c.obj (Fin.last (n + 1))) ^ M * (dn F n y - sc F (fun T ↦ g T ^ N) (n + 1) z) c = 0) fun c ↦ by`. Take `⟨M, hM⟩` from `loc2 _ _ (congrFun e2 c)`. Establish `hM' : g (c.obj (Fin.last (n + 1))) ^ M * (dn F n y - sc F (fun T ↦ g T ^ N) (n + 1) z) c = 0` using `hM`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨M, fun K hK ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[← Nat.sub_add_cancel hK, pow_add, _root_.mul_assoc, hM', mul_zero]`. Use `⟨M + N, sc F (fun T ↦ g T ^ M) n y, ?_⟩` and prove the remaining obligations. Rewrite using `[dn_sc F _ (hg' M)]`. Use function extensionality and compare the values at `c`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `hM c` as an intermediate fact. Rewrite `this` using `[Pi.sub_apply, mul_sub, sub_eq_zero]`. Use `this.trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `g (c.obj (Fin.last (n + 1))) ^ M * (g (c.obj (Fin.last (n + 1))) ^ N * z c) = g (c.obj (Fin.last (n + 1))) ^ (M + N) * z c`. Rewrite using `[pow_add, _root_.mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem transfer (hC : CxSt) {F F' : C ⥤ CommAlgCat.{0} R} (ρ : ∀ T, F.obj T →ₐ[R] F'.obj T)
     (hρ : ∀ {T T' : C} (φ : T ⟶ T') (b : F.obj T), ρ T' (mp F φ b) = mp F' φ (ρ T b))
@@ -272,17 +272,17 @@ theorem transfer (hC : CxSt) {F F' : C ⥤ CommAlgCat.{0} R} (ρ : ∀ T, F.obj 
   rw [pow_add, _root_.mul_assoc]
 
 /- English proof (translation)
-Set `I : Ideal B` to `{ carrier := {b | ∃ y, dn F n y = sc F (fun T ↦ io' T b) (n + 1) z} add_mem' := by`. Introduce and unpack `a b ⟨y, hy⟩ ⟨y', hy'⟩`. Use `⟨y + y', ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, hy, hy']`. Use function extensionality and compare the values at `c`.
+Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [sc, Pi.add_apply, map_add, add_mul]`. Use the proof step `zero_mem' := ⟨0, by`. Rewrite using `[map_zero]`. Use function extensionality and compare the values at `c`. Simplify using `[sc]⟩`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components.
 
-Use the proof step `smul_mem' := by`. Introduce and unpack `a b ⟨y, hy⟩`. Use `⟨sc F (fun T ↦ io' T a) n y, ?_⟩` and prove the remaining obligations. Rewrite using `[dn_sc F _ fun T T' φ ↦ hio T T' φ a, hy]`. Use function extensionality and compare the values at `c`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [sc, smul_eq_mul, map_mul, _root_.mul_assoc] }`. Establish `hI : S ⊆ I.radical` using `fun f hf ↦ by`. Take `⟨N, y, hy⟩` from `h f hf`. Use `⟨N, y, hy.trans ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `c`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [sc, map_pow]`. Establish `h1 : I.radical = ⊤` using `top_le_iff.1 (hS ▸ Ideal.span_le.2 hI)`. Establish `h2 : (1 : B) ∈ I`. Rewrite using `[Ideal.radical_eq_top.1 h1]`. Discharge the goal by the elementary cases of `trivial`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨y, hy⟩` from `h2`. Use `⟨y, hy.trans ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `c`. Simplify using `only [sc, map_one, _root_.one_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exact_of_span {B : Type} [CommRing B] (F : C ⥤ CommAlgCat.{0} R) (io' : ∀ T, B →+* F.obj T)
     (hio : ∀ (T T' : C) (φ : T ⟶ T') (b : B), mp F φ (io' T b) = io' T' b) (S : Set B)
@@ -325,7 +325,7 @@ section Schemes
 variable {R : Type} [CommRing R] {X : Scheme.{0}} {P : Type} [SemilatticeInf P]
 
 /- English proof (translation)
-The claim follows from `haveI : Finite Pᵒᵖ := Finite.of_equiv P Opposite.equivToOpposite Finite.of_injective (fun c i ↦ c.obj i) fun _ _ h ↦ CategoryTheory.Functor.ext (congrFun h) fun _ _ _ ↦ Quiver.Hom.unop_inj (Subsingleton.elim _ _)`.
+A detailed English derivation is pending.
 -/
 theorem finite_chain [Finite P] (m : ℕ) : Finite (Fin m ⥤ Pᵒᵖ) :=
   haveI : Finite Pᵒᵖ := Finite.of_equiv P Opposite.equivToOpposite
@@ -333,7 +333,7 @@ theorem finite_chain [Finite P] (m : ℕ) : Finite (Fin m ⥤ Pᵒᵖ) :=
     CategoryTheory.Functor.ext (congrFun h) fun _ _ _ ↦ Quiver.Hom.unop_inj (Subsingleton.elim _ _)
 
 /- English proof (translation)
-Substitute `e` using the available equality. Establish `: ⇑(Sec.res s h) = id` using `funext fun b ↦ congrArg (fun q ↦ q.hom b) (X.presheaf.map_id (op U))`. Rewrite using `[this]`. Conclude with `Function.bijective_id`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem res_bij (s : X ⟶ Sp R) {U V : X.Opens} (h : V ≤ U) (e : U = V) :
     Function.Bijective (Sec.res s h) := by
@@ -351,7 +351,7 @@ abbrev FF (s : X ⟶ Sp R) (u : P →o X.affineOpens) : Pᵒᵖ ⥤ CommAlgCat.{
 def rf (f : Γ(X, W.1)) (a : P) : Γ(X, (u a).1) := Sec.res s (hle a) f
 
 /- English proof (translation)
-The claim follows from `Scheme.basicOpen_res X f (homOfLE (hle a)).op`.
+A detailed English derivation is pending.
 -/
 theorem basicOpen_rf (f : Γ(X, W.1)) (a : P) :
     X.basicOpen (rf s W u hle f a) = (u a).1 ⊓ X.basicOpen f :=
@@ -368,7 +368,7 @@ def rho (f : Γ(X, W.1)) (T : Pᵒᵖ) : (FF s u).obj T →ₐ[R] (FF s (uf s W 
   Sec.res s (X.basicOpen_le _)
 
 /- English proof (translation)
-The claim follows from `(Sec.res_res _ _ _ b).symm.trans (Sec.res_res _ _ _ b)`.
+A detailed English derivation is pending.
 -/
 theorem rho_nat (f : Γ(X, W.1)) {T T' : Pᵒᵖ} (φ : T ⟶ T') (b : (FF s u).obj T) :
     rho s W u hle f T' (mp (FF s u) φ b) = mp (FF s (uf s W u hle f)) φ (rho s W u hle f T b) :=
@@ -377,14 +377,14 @@ theorem rho_nat (f : Γ(X, W.1)) {T T' : Pᵒᵖ} (φ : T ⟶ T') (b : (FF s u).
 def gF (f : Γ(X, W.1)) (T : Pᵒᵖ) : (FF s u).obj T := rf s W u hle f T.unop
 
 /- English proof (translation)
-The claim follows from `(Sec.res_res _ _ _ f).symm`.
+A detailed English derivation is pending.
 -/
 theorem rf_nat (f : Γ(X, W.1)) (T T' : Pᵒᵖ) (φ : T ⟶ T') :
     mp (FF s u) φ (gF s W u hle f T) = gF s W u hle f T' :=
   (Sec.res_res _ _ _ f).symm
 
 /- English proof (translation)
-Use `haveI := IsAffineOpen.isLocalization_basicOpen (u T.unop).2 (rf s W u hle f T.unop)`. Take `⟨n, a, h⟩` from `IsLocalization.Away.surj (S := Γ(X, X.basicOpen (rf s W u hle f T.unop))) (rf s W u hle f T.unop) y'`. Conclude with `⟨n, a, (h.symm.trans (mul_comm _ _))⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem loc1 (f : Γ(X, W.1)) (T : Pᵒᵖ) (y' : (FF s (uf s W u hle f)).obj T) :
     ∃ (N : ℕ) (y : (FF s u).obj T), rho s W u hle f T y =
@@ -395,7 +395,7 @@ theorem loc1 (f : Γ(X, W.1)) (T : Pᵒᵖ) (y' : (FF s (uf s W u hle f)).obj T)
   exact ⟨n, a, (h.symm.trans (mul_comm _ _))⟩
 
 /- English proof (translation)
-Use `haveI := IsAffineOpen.isLocalization_basicOpen (u T.unop).2 (rf s W u hle f T.unop)`. Take `⟨⟨_, N, rfl⟩, h⟩` from `(IsLocalization.map_eq_zero_iff (Submonoid.powers (rf s W u hle f T.unop)) Γ(X, X.basicOpen (rf s W u hle f T.unop)) y).1 hy`. Conclude with `⟨N, h⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem loc2 (f : Γ(X, W.1)) (T : Pᵒᵖ) (y : (FF s u).obj T) (hy : rho s W u hle f T y = 0) :
     ∃ N : ℕ, gF s W u hle f T ^ N * y = 0 := by
@@ -405,7 +405,7 @@ theorem loc2 (f : Γ(X, W.1)) (T : Pᵒᵖ) (y : (FF s u).obj T) (hy : rho s W u
   exact ⟨N, h⟩
 
 /- English proof (translation)
-Use `res_bij s _ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `X.basicOpen _ = X.basicOpen _`. Rewrite using `[basicOpen_rf, basicOpen_rf]`. Express the relevant statement in the definitionally equal form `_ = (u (T.unop ⊓ a₀)).1 ⊓ _`. Rewrite using `[hinf, inf_assoc, inf_eq_right.2 hf]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -422,11 +422,9 @@ theorem uf_bij (hinf : ∀ a b, (u (a ⊓ b)).1 = (u a).1 ⊓ (u b).1) (f : Γ(X
 include hle in
 
 /- English proof (translation)
-Establish `hS : Ideal.span {f : Γ(X, W.1) | ∃ a, X.basicOpen f ≤ (u a).1} = ⊤`. Use `(IsAffineOpen.self_le_iSup_basicOpen_iff W.2).1 fun x hx ↦ ?_` and prove the remaining obligations. Rewrite `hx` using `[← hcov]`. Take `⟨a, ha⟩` from `TopologicalSpace.Opens.mem_iSup.1 hx`. Take `⟨f, hf, hxf⟩` from `IsAffineOpen.exists_basicOpen_le W.2 (V := (u a).1) ⟨x, ha⟩ (hle a ha)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨⟨f, a, hf⟩, hxf⟩`. Use `haveI := finite_chain (P := P) (n + 1)`. Use `haveI := finite_chain (P := P) (n + 2)`. Use `exact_of_span (FF s u) (fun T ↦ (Sec.res s (hle T.unop)).toRingHom) (fun T T' φ b ↦ (Sec.res_res _ _ _ b).symm) _ hS n z ?_` and prove the remaining obligations. Introduce and unpack `f ⟨a₀, hf⟩`.
-
-Conclude with `transfer hC (rho s W u hle f) (rho_nat s W u hle f) (gF s W u hle f) (rf_nat s W u hle f) (loc1 s W u hle f) (loc2 s W u hle f) n (fun z' hz' ↦ pointed _ a₀ (uf_bij s W u hle hinf f a₀ hf) hH n z' hz') z hz`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem pos [Finite P] (hC : CxSt) (hH : HtpySt) (hinf : ∀ a b, (u (a ⊓ b)).1 = (u a).1 ⊓ (u b).1)
     (hcov : ⨆ a, (u a).1 = W.1) (n : ℕ) (z : Cn (FF s u) (n + 1))
@@ -453,25 +451,25 @@ section Degree0
 variable {R : Type} [CommRing R] {P : Type} [SemilatticeInf P] (F : Pᵒᵖ ⥤ CommAlgCat.{0} R)
 
 /- English proof (translation)
-The claim follows from `CategoryTheory.Functor.ext (fun i ↦ by rw [Subsingleton.elim i 0]; rfl) fun _ _ _ ↦ Quiver.Hom.unop_inj (Subsingleton.elim _ _)`.
+A detailed English derivation is pending.
 -/
 theorem chain_eq (c : Fin 1 ⥤ Pᵒᵖ) : c = (Functor.const (Fin 1)).obj (c.obj 0) :=
   CategoryTheory.Functor.ext (fun i ↦ by rw [Subsingleton.elim i 0]; rfl)
     fun _ _ _ ↦ Quiver.Hom.unop_inj (Subsingleton.elim _ _)
 
 /- English proof (translation)
-The claim follows from `eq_of_heq (congr_arg_heq z (chain_eq c))`.
+A detailed English derivation is pending.
 -/
 theorem z_eq (z : Cn F 0) (c : Fin 1 ⥤ Pᵒᵖ) :
     z c = z ((Functor.const (Fin 1)).obj (c.obj 0)) :=
   eq_of_heq (congr_arg_heq z (chain_eq c))
 
 /- English proof (translation)
-Establish `hA : ∀ (h : T' ⟶ T') (x : F.obj T'), mp F h x = x` using `fun h x ↦ by`. Rewrite using `[show h = 𝟙 T' from Quiver.Hom.unop_inj (Subsingleton.elim _ _), mp_id]`. Establish `hB : ∀ (h : T ⟶ T') (x : F.obj T), mp F h x = mp F φ x` using `fun h x ↦ by`. Rewrite using `[show h = φ from Quiver.Hom.unop_inj (Subsingleton.elim _ _)]`. Set `c : Fin 2 ⥤ Pᵒᵖ` to `ComposableArrows.mk₁ φ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `e` using `congrFun hz c`. Rewrite `e` using `[dn_apply, Fin.sum_univ_two]`. Simplify using `only [Fin.val_zero, Fin.val_one, pow_zero, pow_one, one_smul, neg_smul] at e`. Establish `e1` using `add_neg_eq_zero.1 e`. Establish `e2 : z (face 0 c) = z ((Functor.const (Fin 1)).obj T')` using `z_eq F z (face 0 c)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e3 : z (face 1 c) = z ((Functor.const (Fin 1)).obj T)` using `z_eq F z (face 1 c)`. Conclude with `(congrArg (mp F φ) e3).symm.trans ((hB _ _).symm.trans (e1.symm.trans ((hA _ _).trans e2)))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem z_cocycle (z : Cn F 0) (hz : dn F 0 z = 0) {T T' : Pᵒᵖ} (φ : T ⟶ T') :
     mp F φ (z ((Functor.const (Fin 1)).obj T)) = z ((Functor.const (Fin 1)).obj T') := by
@@ -491,15 +489,13 @@ theorem z_cocycle (z : Cn F 0) (hz : dn F 0 z = 0) {T T' : Pᵒᵖ} (φ : T ⟶ 
 end Degree0
 
 /- English proof (translation)
-Introduce `hC hH R _ X s W P _ _ u hle hinf hcov F aug`. Use `⟨?_, fun z ↦ ⟨fun hz ↦ ?_, ?_⟩, fun n z ↦ ⟨fun hz ↦ ?_, ?_⟩⟩` and prove the remaining obligations. Use `(injective_iff_map_eq_zero aug).2 fun b hb ↦ ?_` and prove the remaining obligations. Use `TopCat.Sheaf.eq_of_locally_eq' X.sheaf (fun a ↦ (u a).1) W.1 (fun a ↦ homOfLE (hle a)) hcov.ge b 0 fun a ↦ ?_` and prove the remaining obligations. Conclude with `(congrFun hb ((Functor.const (Fin 1)).obj (op a))).trans (map_zero _).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨t, ht, -⟩` from `TopCat.Sheaf.existsUnique_gluing' X.sheaf (fun a ↦ (u a).1) W.1 (fun a ↦ homOfLE (hle a)) hcov.ge (fun a ↦ z ((Functor.const (Fin 1)).obj (op a))) (by`. Introduce `i j`. Establish `e` using `hinf i j`. Use `(res_bij s (le_of_eq e) e.symm).1 ?_` and prove the remaining obligations. Establish `l` using `z_cocycle F z hz (homOfLE (inf_le_left : i ⊓ j ≤ i)).op`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `r` using `z_cocycle F z hz (homOfLE (inf_le_right : i ⊓ j ≤ j)).op`. Conclude with `((Sec.res_res s inf_le_left (le_of_eq e) _).symm.trans l).trans ((Sec.res_res s inf_le_right (le_of_eq e) _).symm.trans r).symm)`. Use `⟨t, funext fun c ↦ ?_⟩` and prove the remaining obligations. Conclude with `(ht (c.obj (Fin.last 0)).unop).trans (z_eq F z c).symm`. Introduce and unpack `⟨b, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `c`. Establish `h : ∀ (T T' : Pᵒᵖ) (φ : T ⟶ T'), mp F φ (Sec.res s (hle T.unop) b) = Sec.res s (hle T'.unop) b` using `fun T T' φ ↦ (Sec.res_res _ _ _ b).symm`. Rewrite using `[dn_apply, Fin.sum_univ_two]`. Simplify using `only [Fin.val_zero, Fin.val_one, pow_zero, pow_one, one_smul, neg_smul]`. Conclude with `add_neg_eq_zero.2 ((h _ _ _).trans (h _ _ _).symm)`.
-
-Conclude with `pos s W u hle hC hH hinf hcov n z hz`. Introduce and unpack `⟨y, rfl⟩`. Conclude with `LinearMap.congr_fun ((hC R Pᵒᵖ F).1 n) y`.
+Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem main : CxSt → HtpySt → AffAcycSt := by
   intro hC hH R _ X s W P _ _ u hle hinf hcov F aug

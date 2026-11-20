@@ -26,7 +26,7 @@ def vacProd {κ : Type} (φ : ∀ v : Pl F, (κ → Fv F v) → ℂ) : (κ → A
   fun y => ∏ᶠ v, φ v fun i => evalV F v (y i)
 
 /- English proof (translation)
-Simplify using `[mkPt, evI]`.
+Simplify using the standard rewrite rules.
 -/
 theorem evI_mkPt {κ : Type} (x : κ → mixedEmbedding.mixedSpace F) (y : κ → Af F) (i : κ) :
     evI F (mkPt x y i) = x i := by
@@ -39,7 +39,7 @@ theorem evFin_mkPt {κ : Type} (x : κ → mixedEmbedding.mixedSpace F) (y : κ 
     evFin F v (mkPt x y i) = evalV F v (y i) := rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Use `show ((InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (InfiniteAdeleRing.ringEquiv_mixedSpace F (z i).1), (z i).2) = z i`. Rewrite using `[RingEquiv.symm_apply_apply]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem mkPt_eq {κ : Type} (z : κ → AF F) : mkPt (fun i => evI F (z i)) (fun i => (z i).2) = z := by
   funext i
@@ -48,7 +48,7 @@ theorem mkPt_eq {κ : Type} (z : κ → AF F) : mkPt (fun i => evI F (z i)) (fun
   rfl
 
 /- English proof (translation)
-Unfold `GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure vacProd`. Simplify using `only [evI_mkPt, evFin_mkPt]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem pure_mkPt {κ : Type} [Fintype κ] (f : SInf F κ) (φ : ∀ v : Pl F, (κ → Fv F v) → ℂ)
     (x : κ → mixedEmbedding.mixedSpace F) (y : κ → Af F) : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ (mkPt x y) = f x * vacProd φ y := by
@@ -56,11 +56,11 @@ theorem pure_mkPt {κ : Type} [Fintype κ] (f : SInf F κ) (φ : ∀ v : Pl F, (
   simp only [evI_mkPt, evFin_mkPt]
 
 /- English proof (translation)
-Proceed by induction on `hγ using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨a, ha, -, x, -, y, -, rfl⟩` from `hz`. Introduce `u hu`. Rewrite using `[← smul_assoc, ha u hu, zero_smul]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Consider the case `zero => intro u _`. Conclude with `smul_zero u`. Consider the case `add z z' _ _ hz hz' => intro u hu`. Rewrite using `[smul_add, hz u hu, hz' u hu, add_zero]`. Consider the case `neg z _ hz => intro u hu`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[smul_neg, hz u hu, neg_zero]`.
+A detailed English derivation is pending.
 -/
 theorem at_latAtV {E : Type} [Field E] [NumberField E] [Algebra F E] {n d : ℕ} {X : Spc F E n}
     {W : Spc F E d} {v : Pl F} {γ : Matrix (Fin n) (Fin d) (AE F E)} (hγ : γ ∈ latAtV X W v) :

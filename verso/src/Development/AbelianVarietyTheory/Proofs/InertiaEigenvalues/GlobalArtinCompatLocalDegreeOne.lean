@@ -37,7 +37,7 @@ open Neutral.B1 Formalism.L2.Host GlobalTheory.HeckeGal GlobalTheory.NormCompat
 namespace GlobalTheory.LocDegOne
 
 /- English proof (translation)
-Establish `hv : w.valuation K c ≠ 0` using `(Valuation.ne_zero_iff _).mpr hc`. Rewrite using `[div_sub_one hc, map_div₀, ← WithZero.exp_log hv, div_le_iff₀ (by simp), ← WithZero.exp_add]`. Use `h.trans (WithZero.exp_le_exp.mpr ?_)` and prove the remaining obligations. Establish `: -(m : ℤ) ≤ WithZero.log (w.valuation K c)` using `by omega`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem val_div_sub_one_le₁ {K : Type} [Field K] [NumberField K] (w : HeightOneSpectrum (𝓞 K)) {a c : K}
     (hc : c ≠ 0) {N m : ℕ} (hm : (WithZero.log (w.valuation K c)).natAbs ≤ m)
@@ -50,72 +50,62 @@ theorem val_div_sub_one_le₁ {K : Type} [Field K] [NumberField K] (w : HeightOn
   omega
 
 /- English proof (translation)
-The claim follows from `h.trans (WithZero.exp_le_exp.mpr (by omega))`.
+A detailed English derivation is pending.
 -/
 theorem val_le_of_le₁ {K : Type} [Field K] [NumberField K] (w : HeightOneSpectrum (𝓞 K)) {x : K} {N N' : ℤ}
     (h : w.valuation K x ≤ WithZero.exp (-N)) (hN : N' ≤ N) : w.valuation K x ≤ WithZero.exp (-N') :=
   h.trans (WithZero.exp_le_exp.mpr (by omega))
 
 /- English proof (translation)
-Establish `hw'` using `GlobalTheory.T.comap_eq_of_continuous_adicCompletion_iso E E' w w' i hi hloc`. Establish `hdE : ∀ k : Eˣ, art (diagUnits E k) = 1` using `fun k => by`. Establish `hk : diagUnits E k ∈ art.ker`. Rewrite using `[ha.ker]`. Conclude with `Subgroup.le_topologicalClosure _ (Subgroup.mem_sup_left ⟨k, rfl⟩)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hk`. Establish `hdK : ∀ k : E'ˣ, art' (diagUnits E' k) = 1` using `fun k => by`. Establish `hk : diagUnits E' k ∈ art'.ker`. Rewrite using `[ha'.ker]`. Conclude with `Subgroup.le_topologicalClosure _ (Subgroup.mem_sup_left ⟨k, rfl⟩)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hk`. Establish `hiE : ∀ y ∈ infConn E, art y = 1` using `fun y hy => by`. Establish `hk : y ∈ art.ker`. Rewrite using `[ha.ker]`. Conclude with `Subgroup.le_topologicalClosure _ (Subgroup.mem_sup_right hy)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hk`. Establish `hiK : ∀ y ∈ infConn E', art' y = 1` using `fun y hy => by`. Establish `hk : y ∈ art'.ker`. Rewrite using `[ha'.ker]`. Conclude with `Subgroup.le_topologicalClosure _ (Subgroup.mem_sup_right hy)`.
+Introduce a local definition for the expression. Reduce the argument to an intermediate assertion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `hk`. Rewrite using `[← div_eq_one]`. Use `GlobalTheory.GabSep.eq_one_of_forall_isOpen_subgroup E Ω _ fun U hU => ?_` and prove the remaining obligations. Set `χ : Gab E Ω →* Gab E Ω ⧸ U` to `QuotientGroup.mk' U`. It suffices to establish `h : χ (ρ (art' (localIdele E' w' (Units.map i.toRingHom.toMonoidHom x)))) = χ (art (localIdele E w x)) by`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h2 : χ (ρ (art' (localIdele E' w' (Units.map i.toRingHom.toMonoidHom x))) / art (localIdele E w x)) = 1`. Rewrite using `[_root_.map_div, h, div_self']`. Conclude with `(QuotientGroup.eq_one_iff _).mp h2`. Set `ψ1 : Ideles E' →* Gab E Ω ⧸ U` to `χ.comp (ρ.comp art')`. Set `ψ2 : Ideles E →* Gab E Ω ⧸ U` to `χ.comp art`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hker1 : (ψ1.ker : Set (Ideles E')) = (ρ.comp art') ⁻¹' U`. Use extensionality with `y`. Simplify using `[ψ1, χ, MonoidHom.mem_ker, QuotientGroup.eq_one_iff]`. Establish `hker2 : (ψ2.ker : Set (Ideles E)) = art ⁻¹' U`. Use extensionality with `y`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[ψ2, χ, MonoidHom.mem_ker, QuotientGroup.eq_one_iff]`. Establish `ho1 : IsOpen (ψ1.ker : Set (Ideles E'))`. Rewrite using `[hker1]`. Conclude with `hU.preimage (hρc.comp ha'.quot.continuous)`. Establish `ho2 : IsOpen (ψ2.ker : Set (Ideles E))`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hker2]`. Conclude with `hU.preimage ha.quot.continuous`. Set `f1 : (w.adicCompletion E)ˣ →* Gab E Ω ⧸ U` to `ψ1.comp ((localIdele E' w').comp (Units.map i.toRingHom.toMonoidHom))`. Set `f2 : (w.adicCompletion E)ˣ →* Gab E Ω ⧸ U` to `ψ2.comp (localIdele E w)`. Establish `hf1 : IsOpen (f1.ker : Set (w.adicCompletion E)ˣ)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Establish `e : (f1.ker : Set (w.adicCompletion E)ˣ) = ((localIdele E' w').comp (Units.map i.toRingHom.toMonoidHom)) ⁻¹' (ψ1.ker : Set (Ideles E'))`. Use extensionality with `y`. Simplify using `only [f1, SetLike.mem_coe, MonoidHom.mem_ker, Set.mem_preimage, MonoidHom.comp_apply]`. Rewrite using `[e]`. Conclude with `ho1.preimage ((GlobalTheory.Mem.UnrAe.continuous_localIdele w').comp (Continuous.units_map _ hi))`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hf2 : IsOpen (f2.ker : Set (w.adicCompletion E)ˣ)`. Establish `e : (f2.ker : Set (w.adicCompletion E)ˣ) = (localIdele E w) ⁻¹' (ψ2.ker : Set (Ideles E))`. Use extensionality with `y`. Simplify using `only [f2, SetLike.mem_coe, MonoidHom.mem_ker, Set.mem_preimage, MonoidHom.comp_apply]`. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `ho2.preimage (GlobalTheory.Mem.UnrAe.continuous_localIdele w)`. Use `show f1 x = f2 x`. Use `GlobalTheory.T.units_adicCompletion_hom_ext_of_isOpen_ker E w _ f1 f2 hf1 hf2 (fun c => ?_) x` and prove the remaining obligations. Set `y : E'ˣ` to `Units.map (algebraMap E E').toMonoidHom c`. Establish `hc1 : f1 (Units.map (algebraMap E (w.adicCompletion E)).toMonoidHom c) = ψ1 (locUnit E' w' y)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Simplify using `only [f1, MonoidHom.comp_apply, locUnit_apply]`. Use `congr 2`. Use `ext`. Simplify using `[y, hloc]`. Rewrite using `[hc1]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `_ = ψ2 (locUnit E w c)`. Set `NK : E'ˣ →* Eˣ` to `Units.map (Algebra.norm E (S := E'))`. Take `⟨SE, ME, hvS, hSu, hSc⟩` from `GlobalTheory.OpenIdeleCongr.open_subgroup_contains_congr E ψ2.ker ho2 {w}`. Establish `hwSE : w ∈ SE` using `hvS (Finset.mem_singleton_self w)`. Take `⟨TSK, hTSK⟩` from `GlobalTheory.PlacesOver.places_over_finset E E' SE`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hWT : w' ∈ TSK` using `(hTSK w').mpr ⟨w, hwSE, hw'⟩`. Take `⟨MainNotions, MK, hTS, -, hSKc⟩` from `GlobalTheory.OpenIdeleCongr.open_subgroup_contains_congr E' ψ1.ker ho1 TSK`. Use `choose M' hM' using fun v' : HeightOneSpectrum (𝓞 E) => GlobalTheory.NormCompat.NormCont.norm_close_to_one E E' v' ME`. Take `⟨ML, hML⟩` from `GlobalTheory.T.norm_close_to_component_localDegreeOne E E' w w' i hi hloc ME`. Set `M'' : ℕ` to `SE.sup M'`.
+Use linear arithmetic over natural numbers and integers. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `m : ℕ` to `(WithZero.log (w'.valuation E' (y : E'))).natAbs`. Set `P0 : ℕ` to `MK + M'' + ML + 1`. Take `⟨a, hap, hapos⟩` from `GlobalTheory.T.exists_totallyPositive_approx_at_finite_places E' TSK (fun u => if u = w' then (y : E') else 1) (P0 + m)`. Establish `haW : w'.valuation E' (a - y) ≤ WithZero.exp (-((P0 : ℤ) + m))`. Use `hap w' hWT` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[if_pos rfl]`. Conclude with `val_le_of_le₁ w' this (by push_cast; omega)`. Establish `hz : w'.valuation E' (a / y - 1) ≤ WithZero.exp (-(P0 : ℤ))` using `val_div_sub_one_le₁ w' y.ne_zero le_rfl haW`. Establish `ha0 : a ≠ 0`. Introduce and unpack `rfl`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hz` using `[zero_div, zero_sub, Valuation.map_neg, map_one, ← WithZero.exp_zero, WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers. Set `au : E'ˣ` to `Units.mk0 a ha0`. Set `zu : E'ˣ` to `au / y`. Establish `hzu : (zu : E') = a / y` using `by simp [zu, au]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hauy : au = y * zu` using `by simp [zu]`. Establish `hoth : ∀ u ∈ TSK, u ≠ w' → u.valuation E' (a - 1) ≤ WithZero.exp (-(P0 : ℤ))` using `fun u hu hne => by`. Use `hap u hu` as an intermediate fact. Rewrite `this` using `[if_neg hne]`. Conclude with `val_le_of_le₁ u this (by push_cast; omega)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `F1 : ψ1 (locUnit E' w' au) = ψ1 (locUnit E' w' y)`. Establish `hm : locUnit E' w' zu ∈ ψ1.ker` using `hSKc w' (hTS hWT) zu (by`. Rewrite using `[hzu]; exact val_le_of_le₁ w' hz (by push_cast; omega))`. Rewrite using `[hauy, map_mul, map_mul, MonoidHom.mem_ker.mp hm, mul_one]`. Establish `F2 : ψ2 (locUnit E w (NK au)) = ψ2 (locUnit E w c)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hn : w.valuation E (Algebra.norm E a / (c : E) - 1) ≤ WithZero.exp (-(ME : ℤ))`. Use `hML (c : E) a c.ne_zero (fun u hu hne => ?_) ?_` and prove the remaining obligations. Conclude with `val_le_of_le₁ u (hoth u ((hTSK u).mpr ⟨w, hwSE, hu⟩) hne) (by push_cast; omega)`. Establish `e : algebraMap E E' (c : E) = (y : E')` using `rfl`. Rewrite using `[e]; exact val_le_of_le₁ w' hz (by push_cast; omega)`.
+Move the embeddings inside the algebraic operations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Set `q : Eˣ` to `NK au / c`. Establish `hq : (q : E) = Algebra.norm E a / (c : E)` using `by simp [q, NK, au]`. Establish `hm : locUnit E w q ∈ ψ2.ker` using `hSc w hwSE q (by rw [hq]; exact hn)`. Establish `e : NK au = c * q` using `by simp [q]`. Rewrite using `[e, map_mul, map_mul, MonoidHom.mem_ker.mp hm, mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `F3 : ∀ u ∈ TSK, u ≠ w' → ψ1 (locUnit E' u au) = 1` using `fun u hu hne => MonoidHom.mem_ker.mp (hSKc u (hTS hu) au (val_le_of_le₁ u (hoth u hu hne) (by push_cast; omega)))`. Establish `F4 : ∀ v' ∈ SE, v' ≠ w → ψ2 (locUnit E v' (NK au)) = 1` using `fun v' hv' hne => by`. Use `MonoidHom.mem_ker.mp (hSc v' hv' (NK au) ?_)` and prove the remaining obligations. Use `hM' v' (au : E') fun u hu => ?_` and prove the remaining obligations. Establish `huT : u ∈ TSK` using `(hTSK u).mpr ⟨v', hv', hu⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `huW : u ≠ w'`. Introduce and unpack `rfl`. Conclude with `hne (HeightOneSpectrum.ext (hu.symm.trans hw'))`. Conclude with `val_le_of_le₁ u (hoth u huT huW) (by`. Establish `: M' v' ≤ M''` using `Finset.le_sup hv'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `push_cast`. Use the proof step `omega)`. Establish `hunitE : ∀ v' ∉ SE, ∀ z, IsUnitAt v' z → ψ2 (localIdele E v' z) = 1` using `fun v' hv' z hz => MonoidHom.mem_ker.mp (hSu v' hv' z hz)`. Establish `hchi` using `fun (v' : HeightOneSpectrum (𝓞 E)) (hv' : v' ∉ SE) (u : HeightOneSpectrum (𝓞 E')) (hu : u.asIdeal.comap (algebraMap (𝓞 E) (𝓞 E')) = v'.asIdeal) => GlobalTheory.T.artin_transport_algClosure_equiv E Ω E' Ω' φ hφ art art' ha ha' ρ hρ (Gab E Ω ⧸ U) χ v' u hu (hunitE v' hv')`. Take `⟨TK, TE, hTK1, hTK2, hTE1, hTE2, hprod⟩` from `GlobalTheory.T.prod_localValues_global_over_places_above E E' (Gab E Ω ⧸ U) ψ1 ψ2 SE hunitE (fun v' hv' u hu => (hchi v' hv' u hu).1) (fun v' hv' u hu => (hchi v' hv' u hu).2) au`.
-
-Establish `hPK : (∏ u ∈ TK, ψ1 (locUnit E' u au)) * ψ1 (locUnit E' w' au) = 1`. Establish `hdisj : Disjoint TK TSK`. Rewrite using `[Finset.disjoint_left]`. Introduce `u h1 h2`. Take `⟨v', hv', e⟩` from `(hTSK u).mp h2`.
-
-Conclude with `hTK1 u h1 v' hv' e`. Establish `h` using `GlobalTheory.T.prod_idele_character_eq_one_of_totallyPositive E' (Gab E Ω ⧸ U) ψ1 ho1 (fun k => by simp [ψ1, hdK]) (fun z hz => by simp [ψ1, hiK z hz]) au (fun φ => hapos φ) (TK ∪ TSK) fun u hu => by`. Rewrite `hu` using `[Finset.mem_union, not_or]`. Conclude with `hTK2 u hu.1 fun v' hv' e => hu.2 ((hTSK u).mpr ⟨v', hv', e⟩)`. Rewrite `h` using `[Finset.prod_union hdisj, Finset.prod_eq_single_of_mem w' hWT F3]`.
-
-Conclude with `h`. Establish `hPE : (∏ v' ∈ TE, ψ2 (locUnit E v' (NK au))) * ψ2 (locUnit E w (NK au)) = 1`. Establish `hdisj : Disjoint TE SE`. Rewrite using `[Finset.disjoint_left]`. Introduce `v' h1 h2`.
-
-Conclude with `hTE1 v' h1 h2`. Establish `h` using `GlobalTheory.T.prod_idele_character_eq_one_of_totallyPositive E (Gab E Ω ⧸ U) ψ2 ho2 (fun k => by simp [ψ2, hdE]) (fun z hz => by simp [ψ2, hiE z hz]) (NK au) (fun φ => GlobalTheory.T.norm_totallyPositive_of_totallyPositive_ne_zero E E' a ha0 hapos φ) (TE ∪ SE) fun v' hv' => by`. Rewrite `hv'` using `[Finset.mem_union, not_or]`. Conclude with `hTE2 v' hv'.1 hv'.2`. Rewrite `h` using `[Finset.prod_union hdisj, Finset.prod_eq_single_of_mem w hwSE F4]`.
-
-Conclude with `h`. Establish `key : ψ1 (locUnit E' w' au) = ψ2 (locUnit E w (NK au))`. Rewrite `hPE` using `[← hprod]`. Conclude with `mul_left_cancel (hPK.trans hPE.symm)`. Rewrite using `[← F1, key, F2]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem res_art_eq_art (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
     (E' Ω' : Type) [Field E'] [NumberField E'] [Field Ω'] [Algebra E' Ω'] [IsAlgClosure E' Ω'] [Algebra E E']
@@ -291,9 +281,9 @@ theorem res_art_eq_art (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algeb
   rw [← F1, key, F2]
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ A w h E' Ω' _ _ _ _ _ A' w' h' φ j i hPI art art' ha ha' σ σ' x hW hx`. Use `letI : Algebra E E' := j.toAlgebra`. Take `⟨ρ, hρc, hρ⟩` from `GlobalTheory.T.exists_abelianizedGalois_hom_of_closureIso E Ω E' Ω' φ j hPI.ext`. Establish `key` using `res_art_eq_art E Ω E' Ω' φ hPI.ext w w' i hPI.cont hPI.loc art art' ha ha' ρ hρc hρ x`. Establish `hσ : ρ (toAb E' Ω' σ') = toAb E Ω σ` using `hρ σ' σ hW`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← key, hx, hσ]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem artin_of_placeIso : ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (A : ValuationSubring Ω) (w : HeightOneSpectrum (𝓞 E)) (h : IsPlaceOver A w) (E' Ω' : Type) [Field E'] [NumberField E'] [Field Ω'] [Algebra E' Ω'] [IsAlgClosure E' Ω'] (A' : ValuationSubring Ω') (w' : HeightOneSpectrum (𝓞 E')) (h' : IsPlaceOver A' w') (φ : Ω ≃+* Ω') (j : E →+* E') (i : w.adicCompletion E ≃+* w'.adicCompletion E'), PlaceIso A w A' w' φ j i → ∀ (art : Neutral.B1.Ideles E →* GlobalTheory.HeckeGal.Gab E Ω) (art' : Neutral.B1.Ideles E' →* GlobalTheory.HeckeGal.Gab E' Ω'), GlobalTheory.HeckeGal.IsGlobalArtin art → GlobalTheory.HeckeGal.IsGlobalArtin art' → ∀ (σ : Weil h) (σ' : Weil h') (x : (w.adicCompletion E)ˣ), WeilRel φ σ σ' → art' (Neutral.B1.localIdele E' w' (Units.map i.toRingHom.toMonoidHom x)) = GlobalTheory.HeckeGal.toAb E' Ω' σ' → art (Neutral.B1.localIdele E w x) = GlobalTheory.HeckeGal.toAb E Ω σ := by
   intro E Ω _ _ _ _ _ A w h E' Ω' _ _ _ _ _ A' w' h' φ j i hPI art art' ha ha' σ σ' x hW hx

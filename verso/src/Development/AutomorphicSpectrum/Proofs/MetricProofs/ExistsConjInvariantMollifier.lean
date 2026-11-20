@@ -10,19 +10,17 @@ open GroundTheory.Heights₂.Heights.LowerBoundFree GlobalTheory.CompanionTheory
 open ReciprocityTheory.AnForm (levi)
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Introduce `n`. Take `⟨ρ⟩` from `ReciprocityTheory.AnForm.A.mollifierInhabit_thm n`. Establish `hmp : MeasureTheory.MeasurePreserving (fun v : Fin n → ℂ => star v)` using `MeasureTheory.volume_preserving_pi (fun _ => Complex.conjLIE.measurePreserving)`. Establish `hme : MeasurableEmbedding (fun v : Fin n → ℂ => star v)` using `(starLinearEquiv ℝ (A := Fin n → ℂ)).toContinuousLinearEquiv.toHomeomorph.measurableEmbedding`. Establish `hsm : ContDiff ℝ (↑(⊤ : ℕ∞)) (fun v : Fin n → ℂ => star v)` using `contDiff_pi.2 fun i => Complex.conjCLE.contDiff.comp (contDiff_apply ℝ ℂ i)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hI : MeasureTheory.Integrable ρ.toFun` using `MeasureTheory.Integrable.of_integral_ne_zero (by rw [ρ.integral_eq_one]; norm_num)`. Establish `hcomp : ∫ w : Fin n → ℂ, ρ.toFun (star w) = 1`. Rewrite using `[hmp.integral_comp hme ρ.toFun, ρ.integral_eq_one]`. Establish `hI2 : MeasureTheory.Integrable (fun w : Fin n → ℂ => ρ.toFun (star w))` using `MeasureTheory.Integrable.of_integral_ne_zero (by rw [hcomp]; norm_num)`. Use `⟨⟨fun v => (ρ.toFun v + ρ.toFun (star v)) / 2, ?_, ?_, ?_, ?_, ?_⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(ρ.contDiff.add (ρ.contDiff.comp hsm)).div_const 2`. Introduce `w`. Conclude with `div_nonneg (add_nonneg (ρ.nonneg _) (ρ.nonneg _)) two_pos.le`. Introduce `w hw`. Assume the negation of the conclusion as `h`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `h1 : ρ.toFun w = 0`. Assume the negation of the conclusion as `h'`. Conclude with `h (ρ.support_subset h')`. Establish `h2 : ρ.toFun (star w) = 0`. Assume the negation of the conclusion as `h'`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hb` using `ρ.support_subset h'`. Rewrite `hb` using `[Metric.mem_ball, dist_zero_right, norm_star]`. Conclude with `h (by rw [Metric.mem_ball, dist_zero_right]; exact hb)`. Conclude with `hw (by simp [h1, h2])`. Use `show ∫ w : Fin n → ℂ, (ρ.toFun w + ρ.toFun (star w)) / 2 = 1`.
+Evaluate the numerical expressions. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MeasureTheory.integral_div, MeasureTheory.integral_add hI hI2, ρ.integral_eq_one, hcomp]`. Evaluate the numerical expressions. Introduce `c w hc show (ρ.toFun (c • w) + ρ.toFun (star (c • w))) / 2 = (ρ.toFun w + ρ.toFun (star w)) / 2`. Rewrite using `[star_smul, ρ.circle_inv c w hc, ρ.circle_inv (star c) (star w) (by rw [norm_star]; exact hc)]`. Introduce `v show (ρ.toFun (star v) + ρ.toFun (star (star v))) / 2 = (ρ.toFun v + ρ.toFun (star v)) / 2`.
-
-Rewrite using `[star_star, add_comm]`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.CompanionTheory.Relay.exists_conj_invariant_mollifier : ∀ n : ℕ, ∃ ρ : ReciprocityTheory.AnForm.A.Mollifier n, ∀ v, ρ.toFun (star v) = ρ.toFun v := by
   intro n

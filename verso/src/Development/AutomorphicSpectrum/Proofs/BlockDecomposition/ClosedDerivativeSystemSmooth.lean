@@ -12,11 +12,11 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.PresSobA
 
 /- English proof (translation)
-Introduce `n V P _ _ o d hdiff hR v`. Take `⟨A, hA, hfr⟩` from `GlobalTheory.T.derivative_right_basis_expansion n`. Set `e` to `Fintype.equivFin (Bool × Fin n × Fin n)`. Use `GlobalTheory.CompanionTheory.SmoothVectors.contDiffOn_of_fderiv_family isOpen_GLs o Set.univ (fun i => A (e.symm i)) (fun i => hA _) ?_ v (Set.mem_univ v)` and prove the remaining obligations. Introduce `u _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨fun i => d (e.symm i) u, fun i => Set.mem_univ _, fun z hz => ?_⟩` and prove the remaining obligations. Establish `hD` using `hfr V (fderiv ℝ (o u) z) z hz`. Establish `hsum : (∑ i, (A (e.symm i) z).smulRight (o (d (e.symm i) u) z)) = ∑ p, (A p z).smulRight (o (d p u) z)` using `e.symm.sum_comp (fun p => (A p z).smulRight (o (d p u) z))`. Establish `hval : ∀ p, fderiv ℝ (o u) z (z * bs p) = o (d p u) z` using `fun p => hR u p z hz`. Establish `h2 : fderiv ℝ (o u) z = ∑ p, (A p z).smulRight (o (d p u) z)` using `hD.trans (Finset.sum_congr rfl fun p _ => congrArg (fun y : V => (A p z).smulRight y) (hval p))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(hdiff u z hz).hasFDerivAt.congr_fderiv (h2.trans hsum.symm)`.
+A detailed English derivation is pending.
 -/
 theorem contDiffOn_of_right_family : ∀ (n : ℕ) (V P : Type) [NormedAddCommGroup V] [NormedSpace ℂ V] (o : P → Mat n → V) (d : (Bool × Fin n × Fin n) → P → P), (∀ v, ∀ z ∈ GLs n, DifferentiableAt ℝ (o v) z) → (∀ v p, ∀ z ∈ GLs n, Rd (bs p) (o v) z = o (d p v) z) → ∀ v, ContDiffOn ℝ ∞ (o v) (GLs n) := by
   intro n V P _ _ o d hdiff hR v

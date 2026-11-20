@@ -17,7 +17,7 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ PartialDerivEval MaximalI
 variable {C : Type} [Field C] [CharZero C] {V : VF C} {O : Type} [CommRing O] [StarRing O] {dd : ℕ}
 
 /- English proof (translation)
-Rewrite using `[← MvPowerSeries.coeff_zero_eq_constantCoeff_apply]`. Use `show MvPowerSeries.coeff (Finsupp.mapDomain (fun x : Fin dd => ((0 : Fin 1), x)) 0) (Y.lg j) = 0`. Rewrite using `[Finsupp.mapDomain_zero, Y.lg_lin j 0 (by simp), MvPowerSeries.coeff_zero_X]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lg0 (Y : FBChart C V O dd) (j : Fin dd) : MvPowerSeries.constantCoeff (un1 (Y.lg j)) = 0 := by
   rw [← MvPowerSeries.coeff_zero_eq_constantCoeff_apply]
@@ -25,7 +25,7 @@ theorem lg0 (Y : FBChart C V O dd) (j : Fin dd) : MvPowerSeries.constantCoeff (u
   rw [Finsupp.mapDomain_zero, Y.lg_lin j 0 (by simp), MvPowerSeries.coeff_zero_X]
 
 /- English proof (translation)
-Rewrite using `[uncurry_comp Y.lg_const, Y.ex_lg]`. Conclude with `uncurry_X i`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exlg (Y : FBChart C V O dd) (i : Fin dd) :
     MvPowerSeries.subst (fun j => un1 (Y.lg j)) (un1 (Y.ex i)) = (MvPowerSeries.X i : MvPowerSeries (Fin dd) C) := by
@@ -33,7 +33,7 @@ theorem exlg (Y : FBChart C V O dd) (i : Fin dd) :
   exact uncurry_X i
 
 /- English proof (translation)
-Establish `hA'` using `MvPowerSeries.hasSubst_of_constantCoeff_zero hA`. Establish `hL : MvPowerSeries.HasSubst (fun j => un1 (Y.lg j))` using `MvPowerSeries.hasSubst_of_constantCoeff_zero (lg0 Y)`. Rewrite using `[← MvPowerSeries.subst_comp_subst_apply hL hA', exlg Y, MvPowerSeries.subst_X hA']`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem ex_lg_at' (Y : FBChart C V O dd) {τ : Type} (A : Fin dd → MvPowerSeries τ C)
     (hA : ∀ j, MvPowerSeries.constantCoeff (A j) = 0) (i : Fin dd) :
@@ -44,9 +44,9 @@ theorem ex_lg_at' (Y : FBChart C V O dd) {τ : Type} (A : Fin dd → MvPowerSeri
   rw [← MvPowerSeries.subst_comp_subst_apply hL hA', exlg Y, MvPowerSeries.subst_X hA']
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (fun x : Fin dd => ((0 : Fin 1), x))` using `fun a b h => (Prod.mk.inj h).2`. Use `show MvPowerSeries.coeff (Finsupp.mapDomain (fun x : Fin dd => ((0 : Fin 1), x)) μ) (Y.lg i) = _`. Rewrite using `[Y.lg_lin i _ (by rw [Finsupp.degree_mapDomain]; exact hμ), MvPowerSeries.coeff_X, MvPowerSeries.coeff_X]`. Use `congr 1`. Apply `propext` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Finsupp.mapDomain_single, (Finsupp.mapDomain_injective hinj).eq_iff]`.
+A detailed English derivation is pending.
 -/
 theorem lin (Y : FBChart C V O dd) (i : Fin dd) (μ : Fin dd →₀ ℕ) (hμ : μ.degree ≤ 1) :
     MvPowerSeries.coeff μ (un1 (Y.lg i)) = MvPowerSeries.coeff μ (MvPowerSeries.X i : MvPowerSeries (Fin dd) C) := by
@@ -58,9 +58,9 @@ theorem lin (Y : FBChart C V O dd) (i : Fin dd) (μ : Fin dd →₀ ℕ) (hμ : 
   rw [← Finsupp.mapDomain_single, (Finsupp.mapDomain_injective hinj).eq_iff]
 
 /- English proof (translation)
-Establish `hl` using `V.l_prime.two_le`. Establish `hγ0 : ∀ j, PowerSeries.constantCoeff (γ j) = 0` using `fun j => (hγ j).1`. Establish `hlin : Agr 2 (un1 (Y.lg i)) (MvPowerSeries.X i)` using `fun e he => lin Y i e (by omega)`. Establish `h2` using `agr_subst_right (a := γ) hγ0 hlin`. Rewrite `h2` using `[MvPowerSeries.subst_X (MvPowerSeries.hasSubst_of_constantCoeff_zero hγ0)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3` using `(hL i).mono (show 2 ≤ V.l ^ 2 by nlinarith)`. Establish `h4` using `(h2.symm.trans h3) (Finsupp.single () 1) (by rw [Finsupp.degree_single]; omega)`. Express the relevant statement in the definitionally equal form `PowerSeries.coeff 1 (γ i) = PowerSeries.coeff 1 _ at h4`. Rewrite using `[h4, map_smul, coeffX', if_pos rfl, smul_eq_mul, mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem coeff1_of_lgLin (Y : FBChart C V O dd) {γ : Fin dd → PowerSeries C} (hγ : IsCv V γ) {U : Fin dd → C}
     (hL : Y.LgLin γ U) (i : Fin dd) : PowerSeries.coeff 1 (γ i) = U i := by
@@ -75,9 +75,9 @@ theorem coeff1_of_lgLin (Y : FBChart C V O dd) {γ : Fin dd → PowerSeries C} (
   rw [h4, map_smul, coeffX', if_pos rfl, smul_eq_mul, mul_one]
 
 /- English proof (translation)
-Establish `hG : MvPowerSeries.HasSubst (fun q : Fin 1 × Fin dd => γ q.2)` using `MvPowerSeries.hasSubst_of_constantCoeff_zero fun q => hγ0 q.2`. Establish `hM : MvPowerSeries.HasSubst (fun q : Fin 1 × Fin dd => mulL Y.B.G.F n q.2)` using `MvPowerSeries.hasSubst_of_constantCoeff_zero fun q => FirstUnitSeriesIntegrality.multiplication_constantCoeff_zero Y.B.G n q.2`. Establish `hL0 : ∀ k, MvPowerSeries.constantCoeff (MvPowerSeries.subst (fun q : Fin 1 × Fin dd => γ q.2) (mulL Y.B.G.F n k)) = 0` using `fun k => MvPowerSeries.constantCoeff_subst_eq_zero hG (fun q => hγ0 q.2) (FirstUnitSeriesIntegrality.multiplication_constantCoeff_zero Y.B.G n k)`. Establish `h` using `congrArg (MvPowerSeries.subst (fun q : Fin 1 × Fin dd => γ q.2)) (MulLFrob.lg_mulL Y n j)`. Rewrite `h` using `[eval_single_eq_subst, MvPowerSeries.subst_comp_subst_apply hM hG, show (n • Y.lg j) = (n : C) • Y.lg j from (Nat.cast_smul_eq_nsmul C n _).symm, MvPowerSeries.subst_smul hG]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `show _ = (n : C) • MvPowerSeries.subst γ (un1 (Y.lg j))`. Rewrite using `[subst_singlePointUncurry hL0, subst_singlePointUncurry hγ0]`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lg_mulCv' (Y : FBChart C V O dd) {γ : Fin dd → PowerSeries C}
     (hγ0 : ∀ j, PowerSeries.constantCoeff (γ j) = 0) (n : ℕ) (j : Fin dd) :
@@ -99,19 +99,17 @@ theorem lg_mulCv' (Y : FBChart C V O dd) {γ : Fin dd → PowerSeries C}
   exact h
 
 /- English proof (translation)
-Establish `hl` using `V.l_prime.two_le`. Establish `hγ0 : ∀ j, PowerSeries.constantCoeff (γ j) = 0` using `fun j => (hγ j).1`. Establish `hG : MvPowerSeries.HasSubst (fun q : Fin 1 × Fin dd => γ q.2)` using `MvPowerSeries.hasSubst_of_constantCoeff_zero fun q => hγ0 q.2`. Establish `hL0 : ∀ k, MvPowerSeries.constantCoeff (MvPowerSeries.subst (fun q : Fin 1 × Fin dd => γ q.2) (mulL Y.B.G.F V.l k)) = 0` using `fun k => MvPowerSeries.constantCoeff_subst_eq_zero hG (fun q => hγ0 q.2) (FirstUnitSeriesIntegrality.multiplication_constantCoeff_zero Y.B.G V.l k)`. Establish `hX0 : ∀ (a : C), MvPowerSeries.constantCoeff (a • (MvPowerSeries.X () : PowerSeries C)) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `a`. Rewrite using `[MvPowerSeries.smul_eq_C_mul, map_mul, MvPowerSeries.constantCoeff_X, mul_zero]`. Establish `hcl : ∀ j, MvPowerSeries.constantCoeff (alongCv γ (un1 (Y.lg j))) = 0` using `fun j => MvPowerSeries.constantCoeff_subst_eq_zero (MvPowerSeries.hasSubst_of_constantCoeff_zero hγ0) hγ0 (lg0 Y j)`. Establish `eL` using `ex_lg_at' Y _ hL0 k`. Simplify using `only [lg_mulCv' Y hγ0 V.l] at eL`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hAL : Agr (V.l ^ 2) (MvPowerSeries.subst (fun q : Fin 1 × Fin dd => γ q.2) (mulL Y.B.G.F V.l k)) (MvPowerSeries.subst (fun j => ((V.l : C) * U j) • (MvPowerSeries.X () : PowerSeries C)) (un1 (Y.ex k)))`. Rewrite using `[← eL]`. Use `agr_subst_left (fun j => by rw [MvPowerSeries.smul_eq_C_mul, map_mul, hcl j, mul_zero]) (fun j => hX0 _) (fun j => ?_) _` and prove the remaining obligations. Use `FirstVanishing.Agr.smul (hL j) (V.l : C)` as an intermediate fact. Rewrite `this` using `[smul_smul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `eG` using `ex_lg_at' Y γ hγ0 k`. Establish `hAG : Agr (V.l ^ 2) (γ k) (MvPowerSeries.subst (fun j => U j • (MvPowerSeries.X () : PowerSeries C)) (un1 (Y.ex k)))`. Rewrite using `[← eG]`. Conclude with `agr_subst_left hcl (fun j => hX0 _) (fun j => hL j) _`. Establish `hdeg : (Finsupp.single () V.l).degree < V.l ^ 2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finsupp.degree_single]`. Use the polynomial consequences of the given equalities and inequalities. Establish `e1` using `hAL _ hdeg`. Establish `e2` using `hAG _ hdeg`. Express the relevant statement in the definitionally equal form `PowerSeries.coeff V.l _ = PowerSeries.coeff V.l _ at e1 e2`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, FirstVanishing.coeff_subst_scale, ← e2]`. Take `⟨m, hm⟩ : ∃ m, V.l = m + 1` from `⟨V.l - 1, by omega⟩`. Establish `e3 : (V.l : C) ^ V.l = (V.l : C) * (V.l : C) ^ m`. Rewrite using `[← pow_succ', ← hm]`. Rewrite using `[e3, mul_assoc]`.
-
-Conclude with `mm_l_mul ((VF.Ge.pow (ge_natCast V.l) m).mul_int ((hγ k).2 V.l))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coeff_l_mulCv_core (Y : FBChart C V O dd) {γ : Fin dd → PowerSeries C} (hγ : IsCv V γ) {U : Fin dd → C}
     (hL : Y.LgLin γ U) (k : Fin dd) :
@@ -158,9 +156,9 @@ theorem coeff_l_mulCv_core (Y : FBChart C V O dd) {γ : Fin dd → PowerSeries C
 end LogarithmSeriesLinearTerm
 
 /- English proof (translation)
-Introduce `C _ _ V O _ _ dd Y γ U hγ hL k`. Establish `hB` using `LogarithmSeriesLinearTerm.coeff_l_mulCv_core Y hγ hL k`. Establish `hA` using `FirstVanishing.coeff_l_mulCv_frob Y hγ k`. Simplify using `only [LogarithmSeriesLinearTerm.coeff1_of_lgLin Y hγ hL] at hA`. Establish `h` using `MaximalIdealCongruence.mm_sub hB hA`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `h` using `[sub_sub_cancel]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem first_vanishing_core : FirstVanishingCore := by
   intro C _ _ V O _ _ dd Y γ U hγ hL k

@@ -17,18 +17,18 @@ private def Mt (c : Γ) : Set (Matrix (Fin a) (Fin a) F) := {A | ∀ i j, v (A i
 variable {v}
 
 /- English proof (translation)
-Introduce `i j` and use `(hA i j).trans h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem Mt_mono {c d : Γ} (h : c ≤ d) {A : Matrix (Fin a) (Fin a) F} (hA : A ∈ Mt v c) : A ∈ Mt v d :=
   fun i j => (hA i j).trans h
 
 /- English proof (translation)
-Introduce `i j` and use `by simp`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem Mt_zero (c : Γ) : (0 : Matrix (Fin a) (Fin a) F) ∈ Mt v c := fun i j => by simp
 
 /- English proof (translation)
-Introduce `i j` and use `by rw [Matrix.add_apply] exact v.map_add_le (hA i j) (hB i j)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem Mt_add {c : Γ} {A B : Matrix (Fin a) (Fin a) F} (hA : A ∈ Mt v c) (hB : B ∈ Mt v c) :
     A + B ∈ Mt v c := fun i j => by
@@ -36,7 +36,7 @@ private theorem Mt_add {c : Γ} {A B : Matrix (Fin a) (Fin a) F} (hA : A ∈ Mt 
   exact v.map_add_le (hA i j) (hB i j)
 
 /- English proof (translation)
-Introduce `p q` and use `by rw [Matrix.sum_apply] exact v.map_sum_le fun i hi => h i hi p q`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem Mt_sum {ι : Type*} (s : Finset ι) (f : ι → Matrix (Fin a) (Fin a) F) {c : Γ}
     (h : ∀ i ∈ s, f i ∈ Mt v c) : ∑ i ∈ s, f i ∈ Mt v c := fun p q => by
@@ -44,7 +44,7 @@ private theorem Mt_sum {ι : Type*} (s : Finset ι) (f : ι → Matrix (Fin a) (
   exact v.map_sum_le fun i hi => h i hi p q
 
 /- English proof (translation)
-Introduce `i j` and use `by rw [Matrix.mul_apply] refine v.map_sum_le fun k _ => ?_ rw [map_mul] exact mul_le_mul' (hA i k) (hB k j)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem Mt_mul {c d : Γ} {A B : Matrix (Fin a) (Fin a) F} (hA : A ∈ Mt v c) (hB : B ∈ Mt v d) :
     A * B ∈ Mt v (c * d) := fun i j => by
@@ -54,7 +54,7 @@ private theorem Mt_mul {c d : Γ} {A B : Matrix (Fin a) (Fin a) F} (hA : A ∈ M
   exact mul_le_mul' (hA i k) (hB k j)
 
 /- English proof (translation)
-Introduce `i j` and use `by by_cases h : i = j · subst h; simp · simp [Matrix.one_apply_ne h]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem Mt_one : (1 : Matrix (Fin a) (Fin a) F) ∈ Mt v (1 : Γ) := fun i j => by
   by_cases h : i = j
@@ -62,7 +62,7 @@ private theorem Mt_one : (1 : Matrix (Fin a) (Fin a) F) ∈ Mt v (1 : Γ) := fun
   · simp [Matrix.one_apply_ne h]
 
 /- English proof (translation)
-Establish `e : A = (A - 1) + 1` using `by simp`. Rewrite using `[e]`. Conclude with `Mt_add (Mt_mono hc hA) Mt_one`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem Mt_of_sub {c : Γ} (hc : c ≤ 1) {A : Matrix (Fin a) (Fin a) F} (hA : A - 1 ∈ Mt v c) :
     A ∈ Mt v (1 : Γ) := by
@@ -71,7 +71,7 @@ private theorem Mt_of_sub {c : Γ} (hc : c ≤ 1) {A : Matrix (Fin a) (Fin a) F}
   exact Mt_add (Mt_mono hc hA) Mt_one
 
 /- English proof (translation)
-Establish `e : A * B - 1 = (A - 1) * (B - 1) + ((A - 1) + (B - 1))` using `by noncomm_ring`. Rewrite using `[e]`. Conclude with `Mt_add (Mt_mono (mul_le_of_le_one_left' hc) (Mt_mul hA hB)) (Mt_add hA hB)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem Mt_mul_sub {c : Γ} (hc : c ≤ 1) {A B : Matrix (Fin a) (Fin a) F} (hA : A - 1 ∈ Mt v c)
     (hB : B - 1 ∈ Mt v c) : A * B - 1 ∈ Mt v c := by
@@ -80,7 +80,7 @@ private theorem Mt_mul_sub {c : Γ} (hc : c ≤ 1) {A B : Matrix (Fin a) (Fin a)
   exact Mt_add (Mt_mono (mul_le_of_le_one_left' hc) (Mt_mul hA hB)) (Mt_add hA hB)
 
 /- English proof (translation)
-Establish `e : G * X * H - 1 = G * (X - 1) * H`. Rewrite using `[mul_sub, sub_mul, mul_one, hGH]`. Rewrite using `[e]`. Simplify using `using Mt_mul (Mt_mul hG hX) hH`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem Mt_conj {c : Γ} {G H X : Matrix (Fin a) (Fin a) F} (hG : G ∈ Mt v (1 : Γ)) (hH : H ∈ Mt v (1 : Γ))
     (hGH : G * H = 1) (hX : X - 1 ∈ Mt v c) : G * X * H - 1 ∈ Mt v c := by
@@ -106,21 +106,21 @@ private noncomputable def Jc (c : Γ) (hc : c ≤ 1) : Subgroup (GL (Fin a) F) w
 variable {v}
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 private theorem mem_Jc {c : Γ} {hc : c ≤ 1} {g : GL (Fin a) F} :
     g ∈ Jc v c hc ↔ g.val - 1 ∈ Mt v c ∧ (g⁻¹).val - 1 ∈ Mt v c := Iff.rfl
 
 /- English proof (translation)
-Introduce `_ hg` and use `⟨Mt_mono h hg.1, Mt_mono h hg.2⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 private theorem Jc_anti {c d : Γ} {hc : c ≤ 1} {hd : d ≤ 1} (h : c ≤ d) : Jc (a := a) v c hc ≤ Jc v d hd :=
   fun _ hg => ⟨Mt_mono h hg.1, Mt_mono h hg.2⟩
 
 /- English proof (translation)
-Establish `h1` using `Mt_of_sub hd hg.1`. Establish `h2` using `Mt_of_sub hd hg.2`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Simplify using `using Mt_conj h1 h2 (by simp) hx.1`. Establish `e : (g * x * g⁻¹)⁻¹ = g * x⁻¹ * g⁻¹` using `by group`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite using `[e]`. Simplify using `using Mt_conj h1 h2 (by simp) hx.2`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem Jc_normal {c d : Γ} {hc : c ≤ 1} {hd : d ≤ 1} {g x : GL (Fin a) F} (hg : g ∈ Jc v d hd)
     (hx : x ∈ Jc v c hc) : g * x * g⁻¹ ∈ Jc v c hc := by
@@ -133,13 +133,13 @@ private theorem Jc_normal {c d : Γ} {hc : c ≤ 1} {hd : d ≤ 1} {g x : GL (Fi
     simpa using Mt_conj h1 h2 (by simp) hx.2
 
 /- English proof (translation)
-Establish `hi : ∀ i, x.val ^ i - 1 ∈ Mt v c` using `fun i => by`. Use `((Jc v c hc).pow_mem hx i).1` as an intermediate fact. Simplify using `using this`. Establish `key : (x ^ l).val - 1 = ((∑ i ∈ Finset.range l, (x.val ^ i - 1)) + (l : Matrix (Fin a) (Fin a) F)) * (x.val - 1)`. Rewrite using `[Units.val_pow_eq_pow_val, ← geom_sum_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Rewrite using `[Finset.sum_sub_distrib]`. Simplify using the standard rewrite rules. Establish `hL : (l : Matrix (Fin a) (Fin a) F) ∈ Mt v r` using `fun i j => by`. Rewrite using `[← Matrix.diagonal_natCast]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using `using hl`. Simplify using `[Matrix.diagonal_apply_ne _ h]`. Rewrite using `[key]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Mt_mul (Mt_add (Mt_mono hcr (Mt_sum _ _ fun i _ => hi i)) hL) hx.1`.
+A detailed English derivation is pending.
 -/
 private theorem pow_sub_mem {c r : Γ} {hc : c ≤ 1} (hcr : c ≤ r) {l : ℕ} (hl : v (l : F) ≤ r)
     {x : GL (Fin a) F} (hx : x ∈ Jc v c hc) : (x ^ l).val - 1 ∈ Mt v (r * c) := by
@@ -161,7 +161,7 @@ private theorem pow_sub_mem {c r : Γ} {hc : c ≤ 1} (hcr : c ≤ r) {l : ℕ} 
   exact Mt_mul (Mt_add (Mt_mono hcr (Mt_sum _ _ fun i _ => hi i)) hL) hx.1
 
 /- English proof (translation)
-Use `⟨pow_sub_mem hcr hl hx, ?_⟩` and prove the remaining obligations. Rewrite using `[← inv_pow]`. Conclude with `pow_sub_mem hcr hl ((Jc v c hc).inv_mem hx)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem Jc_pow {c r : Γ} {hc : c ≤ 1} {hrc : r * c ≤ 1} (hcr : c ≤ r) {l : ℕ} (hl : v (l : F) ≤ r)
     {x : GL (Fin a) F} (hx : x ∈ Jc v c hc) : x ^ l ∈ Jc v (r * c) hrc := by
@@ -178,7 +178,7 @@ namespace UpperTheory.Gal.CongruenceSubgroupGeneration
 variable {E : Type} [Field E] [NumberField E] (w : HeightOneSpectrum (𝓞 E)) {a : ℕ}
 
 /- English proof (translation)
-Establish `e : {y : w.adicCompletion E | Valued.v y ≤ Valued.v d} = {y | Valued.v.restrict y ≤ Valued.v.restrict d}`. Use extensionality with `y`. Simplify using `only [Set.mem_ofPred_eq, Valuation.restrict_le_iff]`. Rewrite using `[e]`. Conclude with `Valued.isOpen_closedBall _ (by simp [hd])`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isOpen_ball {d : w.adicCompletion E} (hd : d ≠ 0) :
     IsOpen {y : w.adicCompletion E | Valued.v y ≤ Valued.v d} := by
@@ -189,9 +189,9 @@ private theorem isOpen_ball {d : w.adicCompletion E} (hd : d ≠ 0) :
   exact Valued.isOpen_closedBall _ (by simp [hd])
 
 /- English proof (translation)
-Establish `e : (Jc (a` using `a) (Valued.v : Valuation (w.adicCompletion E) (WithZero (Multiplicative ℤ))) (Valued.v d) hc : Set (GL (Fin a) (w.adicCompletion E))) = (⋂ i, ⋂ j, {g : GL (Fin a) (w.adicCompletion E) | Valued.v (g.val i j - (1 : Matrix (Fin a) (Fin a) (w.adicCompletion E)) i j) ≤ Valued.v d}) ∩ …`. Use extensionality with `g`. Simplify using `only [SetLike.mem_coe, mem_Jc, Mt, Set.mem_inter_iff, Set.mem_iInter, Set.mem_setOf_eq, Matrix.sub_apply]`. Rewrite using `[e]`. Use `IsOpen.inter (isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun j => ?_) (isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun j => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(isOpen_ball w hd).preimage ((Units.continuous_val.matrix_elem i j).sub continuous_const)`. Conclude with `(isOpen_ball w hd).preimage ((Units.continuous_coe_inv.matrix_elem i j).sub continuous_const)`.
+A detailed English derivation is pending.
 -/
 private theorem isOpen_Jc {d : w.adicCompletion E} (hd : d ≠ 0) (hc : Valued.v d ≤ 1) :
     IsOpen (Jc (a := a) (Valued.v : Valuation (w.adicCompletion E) (WithZero (Multiplicative ℤ))) (Valued.v d) hc : Set (GL (Fin a) (w.adicCompletion E))) := by
@@ -209,9 +209,9 @@ private theorem isOpen_Jc {d : w.adicCompletion E} (hd : d ≠ 0) (hc : Valued.v
   · exact (isOpen_ball w hd).preimage ((Units.continuous_coe_inv.matrix_elem i j).sub continuous_const)
 
 /- English proof (translation)
-Introduce `g hg`. Establish `h1` using `Mt_of_sub hc hg.1`. Establish `h2` using `Mt_of_sub hc hg.2`. Use `GlobalTheory.TSetDoubleCoset.mem_GLint_of_entries (Formalism.UG.Ov E w) g (fun i j => ?_) (fun i j => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(Valued.v : Valuation (w.adicCompletion E) (WithZero (Multiplicative ℤ))) _ ≤ 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `h1 i j`. Express the relevant statement in the definitionally equal form `(Valued.v : Valuation (w.adicCompletion E) (WithZero (Multiplicative ℤ))) _ ≤ 1`. Conclude with `h2 i j`.
+Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 private theorem Jc_le_KGL {c : WithZero (Multiplicative ℤ)} (hc : c ≤ 1) :
     Jc (a := a) (Valued.v : Valuation (w.adicCompletion E) (WithZero (Multiplicative ℤ))) c hc ≤ GlobalTheory.LFun.KGL w a := by
@@ -225,9 +225,9 @@ private theorem Jc_le_KGL {c : WithZero (Multiplicative ℤ)} (hc : c ≤ 1) :
     exact h2 i j
 
 /- English proof (translation)
-Use `Units.ext (sub_eq_zero.1 (Matrix.ext fun i j => ?_))` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Establish `hv : Valued.v ((g.val - 1) i j) ≠ 0` using `(Valuation.ne_zero_iff _).2 hne`. Take `⟨n, hn⟩` from `exists_pow_lt₀ hr (Units.mk0 _ hv)`. Establish `h1 : Valued.v ((g.val - 1) i j) ≤ r ^ (n + 1)` using `h n i j`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h2 : r ^ (n + 1) ≤ r ^ n` using `pow_le_pow_right_of_le_one' hr.le (Nat.le_succ n)`. Conclude with `absurd (h1.trans h2) (not_le.2 hn)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem eq_one_of_forall {r : WithZero (Multiplicative ℤ)} (hr : r < 1) {g : GL (Fin a) (w.adicCompletion E)}
     (h : ∀ n : ℕ, g.val - 1 ∈ Mt (Valued.v : Valuation (w.adicCompletion E) (WithZero (Multiplicative ℤ))) (r ^ (n + 1))) : g = 1 := by
@@ -243,21 +243,19 @@ end UpperTheory.Gal.CongruenceSubgroupGeneration
 
 open UpperTheory.Gal.CongruenceSubgroupGeneration in
 /- English proof (translation)
-Introduce `E _ _ w a l hl hmem`. Use `set F := w.adicCompletion E with hF`. Establish `e : ((l : ℕ) : F) = algebraMap E F ((l : ℕ) : E)` using `by simp`. Establish `hl0 : ((l : ℕ) : F) ≠ 0`. Establish `: ((l : ℕ) : E) ≠ 0` using `Nat.cast_ne_zero.2 hl.ne_zero`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `(map_ne_zero _).2 this`. Establish `hr : Valued.v ((l : ℕ) : F) < 1`. Establish `h1` using `(HeightOneSpectrum.valuation_lt_one_iff_mem (K := E) w _).2 hmem`. Rewrite `h1` using `[← HeightOneSpectrum.valuedAdicCompletion_eq_valuation]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify using `using h1`. Use `set r := Valued.v ((l : ℕ) : F) with hrdef`. Establish `hp : ∀ n : ℕ, r ^ n ≤ 1` using `fun n => pow_le_one' hr.le n`. Set `J : ℕ → Subgroup (GL (Fin a) F)` to `fun n => Jc Valued.v (r ^ (n + 1)) (hp _)`. Establish `hopen : ∀ n, IsOpen (J n : Set (GL (Fin a) F))` using `fun n => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd : ((l : ℕ) : F) ^ (n + 1) ≠ 0` using `pow_ne_zero _ hl0`. Establish `hv : Valued.v (((l : ℕ) : F) ^ (n + 1)) = r ^ (n + 1)` using `map_pow _ _ _`. Use `isOpen_Jc (a := a) w hd (hv.le.trans (hp _))` as an intermediate fact. Simplify using `only [hv] at this`. Conclude with `this`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hcomp : ∀ n, IsCompact (J n : Set (GL (Fin a) F))` using `fun n => (GlobalTheory.LFun.SatCompare.isOpen_isCompact_KGL w a).2.of_isClosed_subset (Subgroup.isClosed_of_isOpen _ (hopen n)) (Jc_le_KGL w (hp _))`. Establish `hanti : Antitone J` using `fun m n hmn => Jc_anti (pow_le_pow_right_of_le_one' hr.le (Nat.succ_le_succ hmn))`. Use `⟨J, ⟨hopen, hcomp, hanti, fun n g hg x hx => Jc_normal hg hx, ?_⟩, fun n x hx => ?_⟩` and prove the remaining obligations. Introduce `N hN`. Assume the negation of the conclusion as `hcon`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `push_neg at hcon`. Establish `hclosed : ∀ n, IsClosed ((J n : Set (GL (Fin a) F)) \ interior N)` using `fun n => (Subgroup.isClosed_of_isOpen _ (hopen n)).sdiff isOpen_interior`. Take `⟨g, hg⟩` from `IsCompact.nonempty_iInter_of_sequence_nonempty_isCompact_isClosed (fun n => (J n : Set (GL (Fin a) F)) \ interior N) (fun n => Set.diff_subset_diff_left (hanti (Nat.le_succ n))) (fun n => by`. Take `⟨x, hx, hxN⟩` from `Set.not_subset.1 (hcon n)`. Conclude with `⟨x, hx, fun h => hxN (interior_subset h)⟩)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use the proof step `((hcomp 0).diff isOpen_interior) hclosed`. Establish `hg'` using `Set.mem_iInter.1 hg`. Establish `h1 : g = 1` using `eq_one_of_forall w hr fun n => (hg' n).1.1`. Conclude with `(hg' 0).2 (h1 ▸ mem_interior_iff_mem_nhds.2 hN)`. Establish `hcr : r ^ (n + 1) ≤ r`.
-
-Simplify using `using pow_le_pow_right_of_le_one' hr.le (Nat.succ_le_succ (Nat.zero_le n))`. Use `Jc_pow (hc := hp (n + 1)) (hrc := by rw [← pow_succ']; exact hp _) hcr (l := l) le_rfl hx` as an intermediate fact. Simplify `this` using `only [J, pow_succ']`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.Gen.congSub_pf :
     UpperTheory.Gal.Gen.CongSub := by

@@ -24,26 +24,26 @@ variable {S X T : Scheme.{0}} {π : X ⟶ S} {e : S ⟶ X} (p : T ⟶ S) (ε : �
 def val {W : X.Opens} {V : S.Opens} (h : V ≤ e ⁻¹ᵁ W) : Γ(X, W) →+ Γ(S, V) := D.app h
 
 /- English proof (translation)
-The claim follows from `D.app_mul h f g`.
+A detailed English derivation is pending.
 -/
 theorem val_mul {W : X.Opens} {V : S.Opens} (h : V ≤ e ⁻¹ᵁ W) (f g : Γ(X, W)) :
     val D h (f * g) = e.appLE W V h f * val D h g + e.appLE W V h g * val D h f :=
   D.app_mul h f g
 
 /- English proof (translation)
-The claim follows from `D.app_base h k a`.
+A detailed English derivation is pending.
 -/
 theorem val_base {W : X.Opens} {V U : S.Opens} (h : V ≤ e ⁻¹ᵁ W) (k : W ≤ π ⁻¹ᵁ U) (a : Γ(S, U)) :
     val D h (π.appLE U W k a) = 0 := D.app_base h k a
 
 /- English proof (translation)
-Simplify using `using val_base D (U := ⊤) h le_top 1`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem val_one {W : X.Opens} {V : S.Opens} (h : V ≤ e ⁻¹ᵁ W) : val D h 1 = 0 := by
   simpa using val_base D (U := ⊤) h le_top 1
 
 /- English proof (translation)
-The claim follows from `(D.app_res _ k f).trans (D.res_app le_rfl (e.preimage_mono k) f).symm`.
+A detailed English derivation is pending.
 -/
 theorem val_res {W W' : X.Opens} (k : W' ≤ W) (f : Γ(X, W)) :
     val D (le_refl (e ⁻¹ᵁ W')) (resG X k f) = resG S (e.preimage_mono k) (val D le_rfl f) :=
@@ -52,7 +52,7 @@ theorem val_res {W W' : X.Opens} (k : W' ≤ W) (f : Γ(X, W)) :
 include hε in
 
 /- English proof (translation)
-Rewrite using `[← map_mul, hε, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem res_sq (U : T.Opens) : resG T (le_top : U ≤ ⊤) ε * resG T (le_top : U ≤ ⊤) ε = 0 := by
   rw [← map_mul, hε, map_zero]
@@ -78,7 +78,7 @@ theorem psi_apply (W : X.Opens) (f : Γ(X, W)) : psi p ε hε D W f =
       p.appLE _ _ le_rfl (val D le_rfl f) * resG T le_top ε := rfl
 
 /- English proof (translation)
-Rewrite using `[psi_apply, psi_apply, val_res, map_add, map_mul, resG_resG, resG_appLE, resG_appLE, appLE_resG e, appLE_resG p, ← resG_appLE e (e.preimage_mono h) le_rfl, appLE_resG p]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem psi_nat (W W' : X.Opens) (h : W' ≤ W) (f : Γ(X, W)) :
     psi p ε hε D W' (resG X h f) =
@@ -87,7 +87,7 @@ theorem psi_nat (W W' : X.Opens) (h : W' ≤ W) (f : Γ(X, W)) :
     appLE_resG e, appLE_resG p, ← resG_appLE e (e.preimage_mono h) le_rfl, appLE_resG p]
 
 /- English proof (translation)
-Use `⟨2, ?_⟩` and prove the remaining obligations. Rewrite using `[psi_apply]`. Take the linear combination `(p.appLE _ _ le_rfl (val D le_rfl f)) ^ 2 * res_sq ε hε (p ⁻¹ᵁ e ⁻¹ᵁ W)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem psi_nil (W : X.Opens) (f : Γ(X, W)) :
     IsNilpotent (psi p ε hε D W f - p.appLE _ _ le_rfl (e.appLE W _ le_rfl f)) := by
@@ -109,9 +109,9 @@ theorem deform_appLE (W : X.Opens) {U : T.Opens} (k : U ≤ p ⁻¹ᵁ e ⁻¹�
     (deform p ε hε D).appLE W U k f = resG T k (psi p ε hε D W f) := rfl
 
 /- English proof (translation)
-Establish `h₀ : p ≫ e ≫ π = p` using `by rw [he, Category.comp_id]`. Use `hom_ext_appLE (congr(($h₀).base)) fun U k => ?_` and prove the remaining obligations. Use extensionality with `a`. Establish `k' : p ⁻¹ᵁ U ≤ p ⁻¹ᵁ e ⁻¹ᵁ π ⁻¹ᵁ U` using `k`. Use `(appLE_appLE (f := deform p ε hε D) rfl le_rfl k' k a).symm.trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[deform_appLE, psi_apply, val_base, map_zero, zero_mul, add_zero, appLE_base he _ _ ((le_preimage_iff he).1 le_rfl), appLE_resG, resG_appLE, Scheme.Hom.appLE_eq_app]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem deform_comp (he : e ≫ π = 𝟙 S) : deform p ε hε D ≫ π = p := by
   have h₀ : p ≫ e ≫ π = p := by rw [he, Category.comp_id]
@@ -124,9 +124,9 @@ theorem deform_comp (he : e ≫ π = 𝟙 S) : deform p ε hε D ≫ π = p := b
     Scheme.Hom.appLE_eq_app]
 
 /- English proof (translation)
-Establish `h₀ : z ≫ p ≫ e = e` using `by rw [reassoc_of% hz]`. Use `hom_ext_appLE (congr(($h₀).base)) fun W k => ?_` and prove the remaining obligations. Use extensionality with `f`. Establish `k' : e ⁻¹ᵁ W ≤ z ⁻¹ᵁ p ⁻¹ᵁ e ⁻¹ᵁ W` using `k`. Use `(appLE_appLE (f := z) (g := deform p ε hε D) (V := p ⁻¹ᵁ e ⁻¹ᵁ W)` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `rfl le_rfl k' k f).symm.trans ?_`. Rewrite using `[deform_appLE, resG_self, psi_apply, map_add, map_mul, appLE_resG, ← resG_appLE z le_top le_top ε, h0, map_zero, mul_zero, add_zero, appLE_base hz _ _ le_rfl, resG_self, Scheme.Hom.appLE_eq_app]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem comp_deform {z : S ⟶ T} (hz : z ≫ p = 𝟙 S) (h0 : z.appLE ⊤ ⊤ le_top ε = 0) :
     z ≫ deform p ε hε D = e := by
@@ -145,7 +145,7 @@ end General
 variable (O : Type) [CommRing O]
 
 /- English proof (translation)
-Establish `h` using `map_mul (Scheme.ΓSpecIso (.of (DualNumber O))).inv.hom DualNumber.eps DualNumber.eps`. Rewrite `h` using `[DualNumber.eps_mul_eps, map_zero]`. Conclude with `h.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem epsFn_sq : epsFn O * epsFn O = 0 := by
   have h := map_mul (Scheme.ΓSpecIso (.of (DualNumber O))).inv.hom DualNumber.eps DualNumber.eps
@@ -153,7 +153,7 @@ theorem epsFn_sq : epsFn O * epsFn O = 0 := by
   exact h.symm
 
 /- English proof (translation)
-Use `congr($(Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom (TrivSqZeroExt.fstHom O O O).toRingHom)) DualNumber.eps).symm.trans ?_` and prove the remaining obligations. Conclude with `(congrArg (Scheme.ΓSpecIso (.of O)).inv.hom (DualNumber.fst_eps (R := O))).trans (map_zero _)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem epsZero_epsFn : (sec (epsZero O)).appLE ⊤ ⊤ le_top (epsFn O) = 0 := by
   refine congr($(Scheme.ΓSpecIso_inv_naturality
@@ -162,11 +162,9 @@ theorem epsZero_epsFn : (sec (epsZero O)).appLE ⊤ ⊤ le_top (epsFn O) = 0 := 
     (map_zero _)
 
 /- English proof (translation)
-Introduce `l`. Set `D` to `lieEquivDer G l`. Set `x : specO O (DualNumber O) ⟶ G` to `Over.homMk (deform (specO O (DualNumber O)).hom (epsFn O) (epsFn_sq O) D) (deform_comp _ _ _ D (sec_hom η[G]))`. Establish `hx : ptMap (TrivSqZeroExt.fstHom O O O) ≫ x = toUnit (specO O O) ≫ η[G]`. Establish `h : (toUnit (specO O O)).left = 𝟙 (Sp O)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Over.toUnit_left]`. Conclude with `Spec.map_id _`. Use `ext1`. Simplify using `only [Over.comp_left, h]`. Conclude with `(comp_deform _ _ (epsFn_sq O) D (sec_hom (epsZero O)) (epsZero_epsFn O)).trans (Category.id_comp _).symm`.
-
-Use `⟨⟨x, hx⟩, (homGlobalEquiv _ _).injective (omega_hom_ext fun W f => ?_)⟩` and prove the remaining obligations. Use `dualApp_tangent_dUnit ⟨x, hx⟩ le_rfl f ((le_preimage_iff (sec_hom (epsZero O))).2 le_rfl) le_rfl le_rfl ((unitSec G).appLE W _ le_rfl f) (val D le_rfl f) ?_` and prove the remaining obligations. Conclude with `(deform_appLE _ _ (epsFn_sq O) D W le_rfl f).trans (resG_self _ _)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem tangent_surjective (O : Type) [CommRing O] (G : Over (Sp O)) [GrpObj G] :
     Function.Surjective (tangent : LieG G → Γ(Lie G, ⊤)) := by

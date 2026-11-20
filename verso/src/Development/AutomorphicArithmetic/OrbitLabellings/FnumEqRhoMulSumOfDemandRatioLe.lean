@@ -11,19 +11,19 @@ section Helpers
 variable {l d : ℕ} [NeZero d]
 
 /- English proof (translation)
-The claim follows from `(Finset.mem_filter.1 hi).2.pos`.
+A detailed English derivation is pending.
 -/
 private lemma oddLevels_one_le {d i : ℕ} (hi : i ∈ oddLevels d) : 1 ≤ i :=
   (Finset.mem_filter.1 hi).2.pos
 
 /- English proof (translation)
-The claim follows from `Finset.mem_filter.2 ⟨Finset.mem_range.2 (by omega), odd_one⟩`.
+A detailed English derivation is pending.
 -/
 private lemma one_mem_oddLevels {d : ℕ} (hd : 2 ≤ d) : 1 ∈ oddLevels d :=
   Finset.mem_filter.2 ⟨Finset.mem_range.2 (by omega), odd_one⟩
 
 /- English proof (translation)
-Establish `hl' : (2 : ℝ) ≤ l` using `by exact_mod_cast hl`. Establish `h1 : (l : ℝ) ^ 2 - 1 ≠ 0` using `by nlinarith`. Establish `h2 : (l : ℝ) + 1 ≠ 0` using `by linarith`. Unfold `gam rho`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Clear the denominators using the available nonvanishing facts.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -36,7 +36,7 @@ private lemma gam_sub_inv (hl : 2 ≤ l) : gam l - 1 / ((l : ℝ) + 1) = rho l :
   ring
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_comm]`. Use `conv_rhs => rw [Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun i _ => Equiv.sum_comp (Equiv.subRight (i : ZMod d)) (fun s => x s i)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma sum_incoming (x : ZMod d → ℕ → ℝ) :
     ∑ s : ZMod d, ∑ i ∈ oddLevels d, x (s - (i : ZMod d)) i =
@@ -47,11 +47,11 @@ private lemma sum_incoming (x : ZMod d → ℕ → ℝ) :
     Equiv.sum_comp (Equiv.subRight (i : ZMod d)) (fun s => x s i)
 
 /- English proof (translation)
-Establish `hl' : (1 : ℝ) ≤ l` using `by exact_mod_cast hl`. Establish `h1 : ∑ s : ZMod d, ((∑ i ∈ oddLevels d, (l : ℝ) ^ i * x s i) + ∑ i ∈ oddLevels d, x (s - (i : ZMod d)) i) ≤ ∑ s, D s` using `Finset.sum_le_sum fun s _ => hx.2 s`. Rewrite `h1` using `[Finset.sum_add_distrib, sum_incoming]`. Use `le_trans ?_ h1` and prove the remaining obligations. Unfold `flowVal`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Rewrite using `[Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_le_sum fun s _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_le_sum fun i hi => ?_` and prove the remaining obligations. Establish `hx0` using `hx.1 s i`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hli : (l : ℝ) ≤ (l : ℝ) ^ i`. Combine the equalities or inequalities in the displayed calculation. Use polynomial arithmetic with `[mul_nonneg (sub_nonneg.2 hli) hx0]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Use the polynomial consequences of the given equalities and inequalities.
 -/
 private lemma flowVal_mul_le (hl : 1 ≤ l) {D : ZMod d → ℝ} {x : ZMod d → ℕ → ℝ} (hx : IsFlow l d D x) :
     ((l : ℝ) + 1) * flowVal d x ≤ ∑ s, D s := by
@@ -73,15 +73,15 @@ private lemma flowVal_mul_le (hl : 1 ≤ l) {D : ZMod d → ℝ} {x : ZMod d →
   nlinarith [mul_nonneg (sub_nonneg.2 hli) hx0]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ _ => le_refl _, fun s => by simpa using hD s⟩`.
+Supply the required witnesses or components.
 -/
 private lemma zero_isFlow {D : ZMod d → ℝ} (hD : 0 ≤ D) : IsFlow l d D (0 : ZMod d → ℕ → ℝ) :=
   ⟨fun _ _ => le_refl _, fun s => by simpa using hD s⟩
 
 /- English proof (translation)
-Establish `hpos : (0 : ℝ) < l + 1` using `by positivity`. Apply `csSup_le` to reduce the goal to its premises. Conclude with `⟨0, (0 : ZMod d → ℕ → ℝ), zero_isFlow hD, by simp [flowVal]⟩`. Introduce and unpack `t ⟨x, hx, rfl⟩`. Rewrite using `[le_div_iff₀ hpos]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Combine the linear relations using `[flowVal_mul_le hl hx]`.
+Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 private lemma maxFlow_le (hl : 1 ≤ l) {D : ZMod d → ℝ} (hD : 0 ≤ D) :
     maxFlow l d D ≤ (∑ s, D s) / ((l : ℝ) + 1) := by
@@ -93,9 +93,9 @@ private lemma maxFlow_le (hl : 1 ≤ l) {D : ZMod d → ℝ} (hD : 0 ≤ D) :
     linarith [flowVal_mul_le hl hx]
 
 /- English proof (translation)
-Establish `hpos : (0 : ℝ) < l + 1` using `by positivity`. Apply `le_csSup` to reduce the goal to its premises. Use `⟨(∑ s, D s) / ((l : ℝ) + 1), ?_⟩` and prove the remaining obligations. Introduce and unpack `t ⟨y, hy, rfl⟩`. Rewrite using `[le_div_iff₀ hpos]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Combine the linear relations using `[flowVal_mul_le hl hy]`. Conclude with `⟨x, hx, rfl⟩`.
+Combine the linear equalities and inequalities to obtain the conclusion. Supply the required witnesses or components.
 -/
 private lemma le_maxFlow (hl : 1 ≤ l) {D : ZMod d → ℝ} {x : ZMod d → ℕ → ℝ} (hx : IsFlow l d D x) :
     flowVal d x ≤ maxFlow l d D := by
@@ -111,15 +111,15 @@ private noncomputable def altNum (l d : ℕ) (D : ZMod d → ℝ) (s : ZMod d) :
   ∑ r ∈ Finset.range (2 * d), (-1 : ℝ) ^ r * ((l : ℝ) ^ (r + 1))⁻¹ * D (s - (r : ZMod d))
 
 /- English proof (translation)
-Establish `hl0 : (l : ℝ) ≠ 0`. Establish `: (1 : ℝ) ≤ l` using `by exact_mod_cast hl`. Combine the linear equalities and inequalities to obtain the conclusion. Use `set a : ℕ → ℝ := fun r => (-1 : ℝ) ^ r * ((l : ℝ) ^ r)⁻¹ * D (s - (r : ZMod d)) with ha`. Establish `h1 : (l : ℝ) * altNum l d D s = ∑ r ∈ Finset.range (2 * d), a r`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `altNum`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun r _ => ?_` and prove the remaining obligations. Simplify using `only [ha]`. Rewrite using `[pow_succ]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts. Establish `h2 : altNum l d D (s - 1) = -∑ r ∈ Finset.range (2 * d), a (r + 1)`. Unfold `altNum`. Rewrite using `[← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun r _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [ha]`. Establish `: s - 1 - (r : ZMod d) = s - ((r + 1 : ℕ) : ZMod d)` using `by push_cast; ring`. Rewrite using `[this, pow_succ (-1 : ℝ) r]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h1, h2, ← sub_eq_add_neg, ← Finset.sum_sub_distrib, Finset.sum_range_sub']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : ((2 * d : ℕ) : ZMod d) = 0` using `by rw [Nat.cast_mul, ZMod.natCast_self, mul_zero]`. Simplify using `only [ha, pow_zero, inv_one, Nat.cast_zero, sub_zero, h3, (even_two_mul d).neg_one_pow]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private lemma altNum_rec (hl : 1 ≤ l) (D : ZMod d → ℝ) (s : ZMod d) :
     (l : ℝ) * altNum l d D s + altNum l d D (s - 1) = (1 - ((l : ℝ) ^ (2 * d))⁻¹) * D s := by
@@ -148,7 +148,7 @@ private lemma altNum_rec (hl : 1 ≤ l) (D : ZMod d → ℝ) (s : ZMod d) :
   ring
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => simp`. Consider the case `succ m ih`. Rewrite using `[show 2 * (m + 1) = 2 * m + 1 + 1 by ring, Finset.sum_range_succ, Finset.sum_range_succ, ih, Finset.sum_range_succ]`. Expand and normalize the polynomial expressions, which then agree.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 private lemma sum_range_two_mul (f : ℕ → ℝ) (m : ℕ) :
     ∑ r ∈ Finset.range (2 * m), f r = ∑ u ∈ Finset.range m, (f (2 * u) + f (2 * u + 1)) := by
@@ -160,9 +160,9 @@ private lemma sum_range_two_mul (f : ℕ → ℝ) (m : ℕ) :
     ring
 
 /- English proof (translation)
-Establish `hl' : (1 : ℝ) ≤ l` using `by exact_mod_cast hl`. Establish `hlpos : (0 : ℝ) < l` using `by linarith`. Unfold `altNum`. Rewrite using `[sum_range_two_mul]`. Use `Finset.sum_nonneg fun u _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hB` using `hr (s - ((2 * u : ℕ) : ZMod d)) (s - ((2 * u + 1 : ℕ) : ZMod d))`. Establish `hP : 0 < ((l : ℝ) ^ (2 * u + 1))⁻¹` using `by positivity`. Rewrite using `[(show Even (2 * u) from ⟨u, by ring⟩).neg_one_pow, (show Odd (2 * u + 1) from ⟨u, rfl⟩).neg_one_pow, pow_succ (l : ℝ) (2 * u + 1), mul_inv]`. Establish `key : ((l : ℝ) ^ (2 * u + 1))⁻¹ * (l : ℝ)⁻¹ * D (s - ((2 * u + 1 : ℕ) : ZMod d)) ≤ ((l : ℝ) ^ (2 * u + 1))⁻¹ * D (s - ((2 * u : ℕ) : ZMod d))`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
 Clear the denominators using the available nonvanishing facts. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -192,23 +192,21 @@ end UpperTheory.AlternatingNumberFlow
 
 open UpperTheory.AlternatingNumberFlow in
 /- English proof (translation)
-Introduce `l d _ hl hd D hD0 hr`. Establish `hD : 0 ≤ D` using `fun a => hD0 a`. Establish `hr' : ∀ s s' : ZMod d, D s' ≤ (l : ℝ) * D s` using `fun s s' => hr s s'`. Establish `hl1 : 1 ≤ l` using `by omega`. Establish `hl' : (1 : ℝ) < l` using `by exact_mod_cast (show 1 < l by omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlpos : (0 : ℝ) < l + 1` using `by linarith`. Establish `hden : 0 < 1 - ((l : ℝ) ^ (2 * d))⁻¹`. Establish `: 1 < (l : ℝ) ^ (2 * d)` using `one_lt_pow₀ hl' (by omega)`. Establish `: ((l : ℝ) ^ (2 * d))⁻¹ < 1` using `inv_lt_one_of_one_lt₀ this`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `set c := 1 - ((l : ℝ) ^ (2 * d))⁻¹ with hc`. Use `set y : ZMod d → ℝ := fun s => altNum l d D s / c with hy`. Use `set x : ZMod d → ℕ → ℝ := fun s i => if i = 1 then y s else 0 with hx`. Establish `hyrec : ∀ s, (l : ℝ) * y s + y (s - 1) = D s`. Introduce `s`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 
-Simplify using `only [hy]`. Use `altNum_rec hl1 D s` as an intermediate fact. Clear the denominators using the available nonvanishing facts. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h1mem` using `one_mem_oddLevels hd`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `hflow : IsFlow l d D x`. Use `⟨fun s i => ?_, fun s => ?_⟩` and prove the remaining obligations. Simplify using `only [hx] split_ifs`. Conclude with `div_nonneg (altNum_nonneg hl1 hr' s) hden.le`. Conclude with `le_refl _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Simplify using `only [hx, mul_ite, mul_zero, Finset.sum_ite_eq', if_pos h1mem, pow_one, Nat.cast_one]`. Rewrite using `[hyrec s]`. Establish `hval : ((l : ℝ) + 1) * flowVal d x = ∑ s, D s`. Establish `hfv : flowVal d x = ∑ s, y s`. Unfold `flowVal`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Simplify using `only [hx, Finset.sum_ite_eq', if_pos h1mem]`. Establish `hsh : ∑ s, y (s - 1) = ∑ s, y s` using `Equiv.sum_comp (Equiv.subRight (1 : ZMod d)) y`. Rewrite using `[hfv, ← Finset.sum_congr rfl fun s _ => hyrec s, Finset.sum_add_distrib, hsh, ← Finset.mul_sum]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hmax : maxFlow l d D = (∑ s, D s) / ((l : ℝ) + 1)`. Apply `le_antisymm (maxFlow_le hl1 hD)` to reduce the goal to its premises. Rewrite using `[← hval, mul_div_cancel_left₀ _ hlpos.ne']`. Conclude with `le_maxFlow hl1 hflow`. Unfold `Fnum`.
-
-Rewrite using `[hmax, ← gam_sub_inv (by omega)]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem UpperTheory.fnum_eq_rho_mul_sum_of_demand_ratio_le :
     ∀ (l d : ℕ) [NeZero d], 3 ≤ l → 2 ≤ d → ∀ D : ZMod d → ℝ, 0 ≤ D →

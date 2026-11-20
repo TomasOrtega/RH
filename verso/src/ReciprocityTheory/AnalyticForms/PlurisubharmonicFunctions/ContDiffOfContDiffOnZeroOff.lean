@@ -11,9 +11,9 @@ open scoped ContDiff
 noncomputable section
 
 /- English proof (translation)
-Establish `h1` using `iteratedFDeriv_two_apply (𝕜 := ℝ) (g ∘ P) z ![a, b]`. Establish `h2` using `iteratedFDeriv_two_apply (𝕜 := ℝ) g (P z) ![P a, P b]`. Rewrite `h1` using `[P.iteratedFDeriv_comp_right hg z le_rfl]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one] at h1 h2`. Rewrite using `[← h1, ← h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [ContinuousMultilinearMap.compContinuousLinearMap_apply]`. Use `congr 1`. Apply the tactic sequence `funext i; fin_cases i <;> rfl`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem fderiv2_comp_clm {E F : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [NormedAddCommGroup F] [NormedSpace ℝ F] (g : E → ℝ) (P : F →L[ℝ] E) (hg : ContDiff ℝ 2 g)
@@ -31,7 +31,7 @@ theorem fderiv2_comp_clm {E F : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E
 def gReg (ε : ℝ) (ζ : ℂ) : ℝ := (1 / 2) * Real.log (‖ζ‖ ^ 2 + ε)
 
 /- English proof (translation)
-Establish `hs : ‖ζ‖ ^ 2 + ε ≠ 0` using `by positivity`. Establish `h1` using `((hasStrictFDerivAt_norm_sq ζ).hasFDerivAt.add_const ε).log hs`. Establish `h2 : HasFDerivAt (gReg ε) ((1 / 2 : ℝ) • ((‖ζ‖ ^ 2 + ε)⁻¹ • (2 • innerSL ℝ ζ))) ζ` using `h1.const_mul (1 / 2 : ℝ)`. Use `h2.congr_fderiv ?_` and prove the remaining obligations. Use `module`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem gReg_hasFDerivAt {ε : ℝ} (hε : 0 < ε) (ζ : ℂ) :
     HasFDerivAt (gReg ε) ((‖ζ‖ ^ 2 + ε)⁻¹ • innerSL ℝ ζ) ζ := by
@@ -43,18 +43,18 @@ theorem gReg_hasFDerivAt {ε : ℝ} (hε : 0 < ε) (ζ : ℂ) :
   module
 
 /- English proof (translation)
-Use function extensionality and compare the values at `ζ`. Conclude with `(gReg_hasFDerivAt hε ζ).fderiv`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem fderiv_gReg {ε : ℝ} (hε : 0 < ε) :
     fderiv ℝ (gReg ε) = fun ζ => (‖ζ‖ ^ 2 + ε)⁻¹ • innerSL ℝ ζ := by
   funext ζ; exact (gReg_hasFDerivAt hε ζ).fderiv
 
 /- English proof (translation)
-Establish `hs : ‖ζ‖ ^ 2 + ε ≠ 0` using `by positivity`. Establish `hq : HasFDerivAt (fun y : ℂ => ‖y‖ ^ 2 + ε) (2 • innerSL ℝ ζ) ζ` using `(hasStrictFDerivAt_norm_sq ζ).hasFDerivAt.add_const ε`. Establish `hc` using `(hasFDerivAt_inv (𝕜 := ℝ) hs).comp ζ hq`. Establish `hL : HasFDerivAt (fun y : ℂ => innerSL ℝ y) (innerSL ℝ) ζ` using `(innerSL ℝ).hasFDerivAt`. Establish `h` using `hc.smul hL`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h' : HasFDerivAt (fun y : ℂ => (‖y‖ ^ 2 + ε)⁻¹ • innerSL ℝ y) _ ζ` using `h`. Rewrite using `[fderiv_gReg hε, h'.fderiv]`. Establish `hi : ∀ x y : ℂ, (innerSL ℝ x) y = x.re * y.re + x.im * y.im` using `fun x y => by`. Rewrite using `[innerSL_apply_apply]`. Simplify using `[Complex.inner]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Simplify using `[hi]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem second_fderiv_regularized_log {ε : ℝ} (hε : 0 < ε) (ζ a b : ℂ) :
     fderiv ℝ (fderiv ℝ (gReg ε)) ζ a b =
@@ -75,7 +75,7 @@ theorem second_fderiv_regularized_log {ε : ℝ} (hε : 0 < ε) (ζ a b : ℂ) :
   ring
 
 /- English proof (translation)
-Unfold `gReg`. Use `contDiff_const.mul ((contDiff_norm_sq ℝ).add contDiff_const |>.log fun ζ => ?_)` and prove the remaining obligations. Check the signs of the components of the expression.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Check the signs of the components of the expression.
 -/
 theorem gReg_contDiff {ε : ℝ} (hε : 0 < ε) {m : WithTop ℕ∞} : ContDiff ℝ m (gReg ε) := by
   unfold gReg
@@ -85,17 +85,17 @@ theorem gReg_contDiff {ε : ℝ} (hε : 0 < ε) {m : WithTop ℕ∞} : ContDiff 
 def cReg (ε : ℝ) (ζ : ℂ) : ℝ := ε / (2 * (‖ζ‖ ^ 2 + ε) ^ 2)
 
 /- English proof (translation)
-Set `P : (Fin (n + 1) → ℂ) →L[ℝ] ℂ` to `ContinuousLinearMap.proj (R := ℝ) (φ := fun _ => ℂ) i`. Establish `hf : (fun y : Fin (n + 1) → ℂ => gReg ε (y i)) = gReg ε ∘ P` using `rfl`. Establish `hP : ∀ y, P y = y i` using `fun y => rfl`. Use extensionality with `a b`. Simplify using `only [hessC, hf, fderiv2_comp_clm _ P (gReg_contDiff hε), hP]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `ha : a = i`. Distinguish the cases in `hb : b = i`. Rewrite using `[ha, hb]`. Establish `hs : ‖z i‖ ^ 2 + ε ≠ 0` using `by positivity`. Establish `hn : ‖z i‖ ^ 2 = (z i).re ^ 2 + (z i).im ^ 2`.
+Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Complex.sq_norm, Complex.normSq_apply]`. Expand and normalize the polynomial expressions, which then agree. Establish `h1 : fderiv ℝ (fderiv ℝ (gReg ε)) (z i) 1 1 + fderiv ℝ (fderiv ℝ (gReg ε)) (z i) Complex.I Complex.I = 4 * cReg ε (z i)`. Rewrite using `[second_fderiv_regularized_log hε, second_fderiv_regularized_log hε]`. Simplify using `only [Complex.inner, cReg, hn]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : fderiv ℝ (fderiv ℝ (gReg ε)) (z i) 1 Complex.I - fderiv ℝ (fderiv ℝ (gReg ε)) (z i) Complex.I 1 = 0`. Rewrite using `[second_fderiv_regularized_log hε, second_fderiv_regularized_log hε]`.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Complex.inner]`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [Pi.smul_apply, Pi.single_eq_same, smul_eq_mul, mul_one]`. Rewrite using `[h1, h2]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, Ne.symm hb]`. Simplify using `[Pi.single_apply, Ne.symm ha]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem hessC_gReg {n : ℕ} {ε : ℝ} (hε : 0 < ε) (i : Fin (n + 1)) (z : Fin (n + 1) → ℂ) :
     hessC (fun y : Fin (n + 1) → ℂ => gReg ε (y i)) z =
@@ -131,9 +131,7 @@ theorem hessC_gReg {n : ℕ} {ε : ℝ} (hε : 0 < ε) (i : Fin (n + 1)) (z : Fi
   · simp [Pi.single_apply, Ne.symm ha]
 
 /- English proof (translation)
-Use `contDiff_iff_contDiffAt.2 fun z => ?_` and prove the remaining obligations. Distinguish the cases in `hz : z ∈ U`. Conclude with `hf.contDiffAt (hU.mem_nhds hz)`. Establish `hzK : z ∈ Kᶜ` using `fun h => hz (hKU h)`. Use `(contDiffAt_const (c := (0 : F))).congr_of_eventuallyEq ?_` and prove the remaining obligations.
-
-Use `filter_upwards [hK.isOpen_compl.mem_nhds hzK] with y hy using h0 y hy`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem contDiff_of_contDiffOn_zero_off {E F : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [NormedAddCommGroup F] [NormedSpace ℝ F] {U K : Set E} (hU : IsOpen U) (hK : IsClosed K)
@@ -147,9 +145,9 @@ theorem contDiff_of_contDiffOn_zero_off {E F : Type*} [NormedAddCommGroup E] [No
     filter_upwards [hK.isOpen_compl.mem_nhds hzK] with y hy using h0 y hy
 
 /- English proof (translation)
-Establish `h1 : v =ᶠ[𝓝 z] fun _ => 0` using `(notMem_tsupport_iff_eventuallyEq).1 hz`. Establish `h2 : fderiv ℝ (fderiv ℝ v) z = 0`. Rewrite using `[h1.fderiv.fderiv_eq]`. Simplify using the standard rewrite rules. Use extensionality with `i j`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. By extensionality, compare the relevant components.
 
-Simplify using `[hessC, h2]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hessC_eq_zero_of_notMem {D : ℕ} {v : (Fin D → ℂ) → ℝ} {z : Fin D → ℂ}
     (hz : z ∉ tsupport v) : hessC v z = 0 := by
@@ -161,9 +159,9 @@ theorem hessC_eq_zero_of_notMem {D : ℕ} {v : (Fin D → ℂ) → ℝ} {z : Fin
   simp [hessC, h2]
 
 /- English proof (translation)
-Establish `h1 : ContDiffOn ℝ (m + 1) (fderiv ℝ φ) U` using `hφ.fderiv_of_isOpen hU (by norm_cast)`. Establish `h2 : ContDiffOn ℝ m (fderiv ℝ (fderiv ℝ φ)) U` using `h1.fderiv_of_isOpen hU le_rfl`. Establish `hH : ∀ a b : Fin D → ℂ, ContDiffOn ℝ m (fun z => fderiv ℝ (fderiv ℝ φ) z a b) U` using `fun a b => (h2.clm_apply contDiffOn_const).clm_apply contDiffOn_const`. Establish `hC : ∀ g : (Fin D → ℂ) → ℝ, ContDiffOn ℝ m g U → ContDiffOn ℝ m (fun z => (g z : ℂ)) U` using `fun g hg => Complex.ofRealCLM.contDiff.comp_contDiffOn hg`. Simplify using `only [hessC]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `ContDiffOn.div_const (ContDiffOn.add (hC _ ((hH _ _).add (hH _ _))) (contDiffOn_const.mul (hC _ ((hH _ _).sub (hH _ _))))) _` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations.
 -/
 theorem hessC_contDiffOn {D : ℕ} {φ : (Fin D → ℂ) → ℝ} {U : Set (Fin D → ℂ)} (hU : IsOpen U)
     {m : ℕ} (hφ : ContDiffOn ℝ (m + 2) φ U) (i j : Fin D) :
@@ -179,7 +177,7 @@ theorem hessC_contDiffOn {D : ℕ} {φ : (Fin D → ℂ) → ℝ} {U : Set (Fin 
     (contDiffOn_const.mul (hC _ ((hH _ _).sub (hH _ _))))) _
 
 /- English proof (translation)
-Simplify using `only [mdisc, Matrix.det_apply', Matrix.sum_apply]`. Use `contDiffOn_const.mul (ContDiffOn.sum fun S _ => contDiffOn_const.mul (ContDiffOn.sum fun σ _ => contDiffOn_const.mul (contDiffOn_prod fun i _ => ContDiffOn.sum fun k _ => hA k _ _)))` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem mdisc_contDiffOn {D : ℕ} {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     (A : Fin D → E → Matrix (Fin D) (Fin D) ℂ) {s : Set E} {m : WithTop ℕ∞}
@@ -191,7 +189,7 @@ theorem mdisc_contDiffOn {D : ℕ} {E : Type*} [NormedAddCommGroup E] [NormedSpa
       (contDiffOn_prod fun i _ => ContDiffOn.sum fun k _ => hA k _ _)))
 
 /- English proof (translation)
-Rewrite using `[ae_iff]`. Simplify using `only [ne_eq, not_not]`. Rewrite using `[volume_pi]`. Conclude with `Measure.pi_hyperplane _ i 0`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ae_coord_ne_zero {n : ℕ} (i : Fin (n + 1)) : ∀ᵐ z : Fin (n + 1) → ℂ ∂volume, z i ≠ 0 := by
   rw [ae_iff]
@@ -200,7 +198,7 @@ theorem ae_coord_ne_zero {n : ℕ} (i : Fin (n + 1)) : ∀ᵐ z : Fin (n + 1) �
   exact Measure.pi_hyperplane _ i 0
 
 /- English proof (translation)
-The claim follows from `|gReg ε ζ| ≤ |Real.log ‖ζ‖| + (1 / 2) * Real.log (‖ζ‖ ^ 2 + 1) := by have hr : 0 < ‖ζ‖ := norm_pos_iff.2 hζ have hr2 : 0 < ‖ζ‖ ^ 2 := by positivity have hl1 : 0 ≤ Real.log (‖ζ‖ ^ 2 + 1) := Real.log_nonneg (by linarith) have hup : Real.log (‖ζ‖ ^ 2 + ε) ≤ Real.log (‖ζ‖ ^ 2 + 1) := …`.
+A detailed English derivation is pending.
 -/
 theorem gReg_abs_le {ε : ℝ} (hε0 : 0 < ε) (hε1 : ε ≤ 1) {ζ : ℂ} (hζ : ζ ≠ 0) :
     |gReg ε ζ| ≤ |Real.log ‖ζ‖| + (1 / 2) * Real.log (‖ζ‖ ^ 2 + 1) := by
@@ -221,9 +219,9 @@ theorem gReg_abs_le {ε : ℝ} (hε0 : 0 < ε) (hε1 : ε ≤ 1) {ζ : ℂ} (hζ
     linarith
 
 /- English proof (translation)
-Establish `hr2 : 0 < ‖ζ‖ ^ 2` using `by have := norm_pos_iff.2 hζ; positivity`. Establish `h1 : Tendsto (fun k : ℕ => ‖ζ‖ ^ 2 + 1 / ((k : ℝ) + 1)) atTop (𝓝 (‖ζ‖ ^ 2 + 0))` using `tendsto_const_nhds.add tendsto_one_div_add_atTop_nhds_zero_nat`. Rewrite `h1` using `[add_zero]`. Establish `h2` using `((Real.continuousAt_log hr2.ne').tendsto.comp h1).const_mul (1 / 2 : ℝ)`. Establish `h3 : (1 / 2 : ℝ) * Real.log (‖ζ‖ ^ 2) = Real.log ‖ζ‖`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Real.log_pow]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h2` using `[h3]`. Conclude with `h2`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tendsto_gReg {ζ : ℂ} (hζ : ζ ≠ 0) :
     Tendsto (fun k : ℕ => gReg (1 / ((k : ℝ) + 1)) ζ) atTop (𝓝 (Real.log ‖ζ‖)) := by
@@ -238,13 +236,11 @@ theorem tendsto_gReg {ζ : ℂ} (hζ : ζ ≠ 0) :
   exact h2
 
 /- English proof (translation)
-Establish `hε0 : ∀ k : ℕ, 0 < 1 / ((k : ℝ) + 1)` using `fun k => by positivity`. Establish `hε1 : ∀ k : ℕ, 1 / ((k : ℝ) + 1) ≤ 1` using `fun k => by`. Rewrite using `[div_le_one (by positivity)]; have := k.cast_nonneg (α := ℝ); linarith`. Use `tendsto_integral_of_dominated_convergence (fun z => |Real.log ‖z i‖| * |F z| + (1 / 2) * Real.log (‖z i‖ ^ 2 + 1) * |F z|) (fun k => (((gReg_contDiff (hε0 k) (m := 0)).continuous.comp (continuous_apply i)).mul hF).aestronglyMeasurable) ?_ ?_ ?_` and prove the remaining obligations. Use `Integrable.add ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `(hlog.integrable_smul_left_of_hasCompactSupport hF hFc).abs` as an intermediate fact. Use `this.congr (Eventually.of_forall fun z => ?_)` and prove the remaining obligations. Simplify using `only [smul_eq_mul, abs_mul]`. Expand and normalize the polynomial expressions, which then agree. Use `Continuous.integrable_of_hasCompactSupport ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hc : Continuous (fun z : Fin (n + 1) → ℂ => Real.log (‖z i‖ ^ 2 + 1))` using `Continuous.log (by fun_prop) fun z => (add_pos_of_nonneg_of_pos (sq_nonneg _) one_pos).ne'`. Conclude with `(continuous_const.mul hc).mul hF.abs`. Conclude with `hFc.abs.mul_left`. Introduce `k filter_upwards [ae_coord_ne_zero i] with z hz`. Rewrite using `[norm_mul, Real.norm_eq_abs, Real.norm_eq_abs, ← add_mul]`.
-
-Conclude with `mul_le_mul_of_nonneg_right (gReg_abs_le (hε0 k) (hε1 k) hz) (abs_nonneg _)`. Use `filter_upwards [ae_coord_ne_zero i] with z hz`. Conclude with `(tendsto_gReg hz).mul_const _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tendsto_integral_gReg {n : ℕ} (i : Fin (n + 1)) (F : (Fin (n + 1) → ℂ) → ℝ) (hF : Continuous F)
     (hFc : HasCompactSupport F)
@@ -278,7 +274,7 @@ theorem tendsto_integral_gReg {n : ℕ} (i : Fin (n + 1)) (F : (Fin (n + 1) → 
 variable {n : ℕ}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Use `Fin.cases rfl (fun k => rfl) k` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem hessC_cons (f : (Fin (n + 1) → ℂ) → ℝ) (φ : Fin n → (Fin (n + 1) → ℂ) → ℝ)
     (z : Fin (n + 1) → ℂ) :
@@ -287,9 +283,9 @@ theorem hessC_cons (f : (Fin (n + 1) → ℂ) → ℝ) (φ : Fin n → (Fin (n +
   funext k; refine Fin.cases rfl (fun k => rfl) k
 
 /- English proof (translation)
-Establish `h` using `mdisc_update_smul (Fin.cons (Matrix.single i i 1) B : Fin (n + 1) → Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ) 0 c (Matrix.single i i 1)`. Rewrite `h` using `[Fin.update_cons_zero, Fin.update_cons_zero]`. Rewrite using `[h]`. Establish `h2` using `mixedCof_diag B i`. Simplify using `only [mixedCof] at h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[h2]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem mdisc_cons_smul_single (i : Fin (n + 1)) (c : ℂ)
     (B : Fin n → Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ) :
@@ -308,7 +304,7 @@ theorem mdisc_cons_smul_single (i : Fin (n + 1)) (c : ℂ)
   ring
 
 /- English proof (translation)
-Establish `h` using `mdisc_update_smul (Fin.cons 0 B : Fin (n + 1) → Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ) 0 0 0`. Simplify `h` using `[Fin.update_cons_zero]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mdisc_cons_zero (B : Fin n → Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ) :
     mdisc (Fin.cons 0 B : Fin (n + 1) → Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ) = 0 := by
@@ -322,7 +318,7 @@ def minorDens (i : Fin (n + 1)) (φ : Fin n → (Fin (n + 1) → ℂ) → ℝ) (
   (mdisc (fun k => (hessC (φ k) z).submatrix i.succAbove i.succAbove)).re
 
 /- English proof (translation)
-Unfold `maDens`. Rewrite using `[hessC_cons, hessC_gReg hε, mdisc_cons_smul_single]`. Establish `h1 : (1 / ((n : ℂ) + 1)) = ((1 / ((n : ℝ) + 1) : ℝ) : ℂ)` using `by push_cast; ring`. Rewrite using `[h1, ← mul_assoc, ← Complex.ofReal_mul, Complex.re_ofReal_mul]`. Simplify using `only [kDens, minorDens]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -337,7 +333,7 @@ theorem maDens_cons_gReg {ε : ℝ} (hε : 0 < ε) (i : Fin (n + 1))
   simp only [kDens, minorDens]
   ring
 /- English proof (translation)
-Unfold `maDens`. Rewrite using `[hessC_cons, hessC_eq_zero_of_notMem hz, mdisc_cons_zero]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem maDens_cons_eq_zero {v : (Fin (n + 1) → ℂ) → ℝ} (φ : Fin n → (Fin (n + 1) → ℂ) → ℝ)
     {z : Fin (n + 1) → ℂ} (hz : z ∉ tsupport v) : maDens (Fin.cons v φ) z = 0 := by
@@ -348,7 +344,7 @@ theorem maDens_cons_eq_zero {v : (Fin (n + 1) → ℂ) → ℝ} (φ : Fin n → 
 def psiRef (n : ℕ) : Fin n → (Fin (n + 1) → ℂ) → ℝ := fun _ z => ∑ i, Complex.normSq (z i)
 
 /- English proof (translation)
-Unfold `psiRef`. Simplify using `only [Complex.normSq_eq_norm_sq]`. Conclude with `ContDiff.sum fun i _ => (contDiff_norm_sq ℝ).comp (contDiff_apply ℝ ℂ i)`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem psiRef_contDiff (k : Fin n) {m : WithTop ℕ∞} : ContDiff ℝ m (psiRef n k) := by
   unfold psiRef
@@ -356,7 +352,7 @@ theorem psiRef_contDiff (k : Fin n) {m : WithTop ℕ∞} : ContDiff ℝ m (psiRe
   exact ContDiff.sum fun i _ => (contDiff_norm_sq ℝ).comp (contDiff_apply ℝ ℂ i)
 
 /- English proof (translation)
-Establish `hp : ∀ k, hessC (psiRef n k) z = 1` using `fun k => hessC_sum_normSq z`. Simplify using `only [minorDens, hp]`. Rewrite using `[Matrix.submatrix_one _ (Fin.succAbove_right_injective), mdisc_const]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem minorDens_psiRef (i : Fin (n + 1)) (z : Fin (n + 1) → ℂ) : minorDens i (psiRef n) z = 1 := by
   have hp : ∀ k, hessC (psiRef n k) z = 1 := fun k => hessC_sum_normSq z
@@ -365,14 +361,14 @@ theorem minorDens_psiRef (i : Fin (n + 1)) (z : Fin (n + 1) → ℂ) : minorDens
   simp
 
 /- English proof (translation)
-Conclude with `contDiffOn_infty.1 h (m + 2)` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem cdo_of_infty {D : ℕ} {f : (Fin D → ℂ) → ℝ} {U : Set (Fin D → ℂ)}
     (h : ContDiffOn ℝ ∞ f U) (m : ℕ) : ContDiffOn ℝ (m + 2) f U := by
   exact_mod_cast contDiffOn_infty.1 h (m + 2)
 
 /- English proof (translation)
-Establish `e : ((1 : ℕ) : WithTop ℕ∞) + 2 = 3` using `by norm_num`. Rewrite using `[e]`. Conclude with `h.contDiffOn`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cdo_of_three {D : ℕ} {f : (Fin D → ℂ) → ℝ} {U : Set (Fin D → ℂ)}
     (h : ContDiff ℝ 3 f) : ContDiffOn ℝ ((1 : ℕ) + 2) f U := by
@@ -380,7 +376,7 @@ theorem cdo_of_three {D : ℕ} {f : (Fin D → ℂ) → ℝ} {U : Set (Fin D →
   rw [e]; exact h.contDiffOn
 
 /- English proof (translation)
-The claim follows from `Complex.reCLM.contDiff.comp_contDiffOn h`.
+A detailed English derivation is pending.
 -/
 theorem contDiffOn_re' {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] {g : E → ℂ}
     {s : Set E} {m : WithTop ℕ∞} (h : ContDiffOn ℝ m g s) :
@@ -388,7 +384,7 @@ theorem contDiffOn_re' {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] {g
   Complex.reCLM.contDiff.comp_contDiffOn h
 
 /- English proof (translation)
-Unfold `minorDens`. Use `contDiffOn_re' ?_` and prove the remaining obligations. Use `mdisc_contDiffOn (fun k z => (hessC (φ k) z).submatrix i.succAbove i.succAbove) fun k a b => ?_` and prove the remaining obligations. Conclude with `hessC_contDiffOn hU (cdo_of_infty (hφ k) m) (i.succAbove a) (i.succAbove b)`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem minorDens_contDiffOn (i : Fin (n + 1)) {U : Set (Fin (n + 1) → ℂ)} (hU : IsOpen U)
     {φ : Fin n → (Fin (n + 1) → ℂ) → ℝ} (hφ : ∀ k, ContDiffOn ℝ ∞ (φ k) U) (m : ℕ) :
@@ -400,9 +396,9 @@ theorem minorDens_contDiffOn (i : Fin (n + 1)) {U : Set (Fin (n + 1) → ℂ)} (
   exact hessC_contDiffOn hU (cdo_of_infty (hφ k) m) (i.succAbove a) (i.succAbove b)
 
 /- English proof (translation)
-Establish `h : ContDiffOn ℝ (1 : ℕ) (maDens (Fin.cons f φ)) U`. Unfold `maDens`. Use `contDiffOn_const.mul (contDiffOn_re' ?_)` and prove the remaining obligations. Use `mdisc_contDiffOn (fun k z => hessC ((Fin.cons f φ : Fin (n + 1) → _) k) z) fun k i j => ?_` and prove the remaining obligations. Consider the cases of `k using Fin.cases with`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data.
 
-Consider the case `zero => simpa using hessC_contDiffOn hU (cdo_of_three hf) i j`. Consider the case `succ k => simpa using hessC_contDiffOn hU (cdo_of_infty (hφ k) 1) i j`. Conclude with `(contDiff_of_contDiffOn_zero_off hU (isClosed_tsupport f) hfU h (fun z hz => maDens_cons_eq_zero φ hz)).continuous`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem maDens_cons_continuous {U : Set (Fin (n + 1) → ℂ)} (hU : IsOpen U)
     {f : (Fin (n + 1) → ℂ) → ℝ} (hf : ContDiff ℝ 3 f) (hfU : tsupport f ⊆ U)
@@ -420,7 +416,7 @@ theorem maDens_cons_continuous {U : Set (Fin (n + 1) → ℂ)} (hU : IsOpen U)
     (fun z hz => maDens_cons_eq_zero φ hz)).continuous
 
 /- English proof (translation)
-Use `HasCompactSupport.intro hf.isCompact fun z hz => maDens_cons_eq_zero φ hz` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations.
 -/
 theorem maDens_cons_hasCompactSupport {f : (Fin (n + 1) → ℂ) → ℝ} (hf : HasCompactSupport f)
     (φ : Fin n → (Fin (n + 1) → ℂ) → ℝ) : HasCompactSupport (maDens (Fin.cons f φ)) := by
@@ -431,7 +427,7 @@ def hDens (i : Fin (n + 1)) (v : (Fin (n + 1) → ℂ) → ℝ) (φ : Fin n → 
   v z * minorDens i φ z
 
 /- English proof (translation)
-Take `⟨hU, hv, hvc, hvU, hφ⟩` from `hp`. Use `⟨contDiff_of_contDiffOn_zero_off hU (isClosed_tsupport v) hvU (hv.contDiffOn.mul (minorDens_contDiffOn i hU hφ 3)) fun z hz => ?_, hvc.mul_right⟩` and prove the remaining obligations. Simplify using `[hDens, image_eq_zero_of_notMem_tsupport hz]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem hDens_props (i : Fin (n + 1)) {U : Set (Fin (n + 1) → ℂ)} {v : (Fin (n + 1) → ℂ) → ℝ}
     {φ : Fin n → (Fin (n + 1) → ℂ) → ℝ} (hp : PoincareLelongData U v φ) :

@@ -8,19 +8,17 @@ open MeasureTheory NumberField IsDedekindDomain Filter GroundTheory.Automorphic 
 open GroundTheory.Automorphic.CuspidalSpectrum GlobalTheory.IndefiniteRowSideFullHecke.IwahoriDoubleCosets GlobalTheory.PRep Formalism.BasicNotions GlobalTheory.CuspRep GlobalTheory.SmGL PositivityTheory.Rg.Tf.Core PositivityTheory.Rg.Tf.Geo UpperTheory.ConvolutionTheory UpperTheory.ConvolutionTheory.GM UpperTheory.ConvolutionTheory.C
 
 /- English proof (translation)
-Introduce `K _ _ n hn μ _ ν _ V a x P Uv hx`. Take `⟨-, hmem, hp1, hp2, -⟩` from `UpperTheory.ConvolutionTheory.Tf.commPrj K n μ (levOn P Uv)`. Take `⟨m, hm, -⟩` from `(UpperTheory.ConvolutionTheory.Tf.compatEx K n hn).2.1 μ ν`. Use `haveI := hm`. Establish `hcomm : ∀ h, Commute (Oinf μ ν a) (rhoF μ h)` using `fun h => (UpperTheory.ConvolutionTheory.Tf.opAlg K n μ ν m).2.2.2.2.2.2.2.2 a h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpres : ∀ v ∈ fixF μ (levOn P Uv), Oinf μ ν a v ∈ fixF μ (levOn P Uv)` using `fun v hv => by`. Use `(hmem _).2 fun u hu => ?_` and prove the remaining obligations. Establish `h1 : rhoF μ u (Oinf μ ν a v) = Oinf μ ν a (rhoF μ u v)` using `(DFunLike.congr_fun (hcomm u) v).symm`. Rewrite using `[h1, (hmem v).1 hv u hu]`. Establish `hfix` using `UpperTheory.ConvolutionTheory.C.fixLev K n μ P Uv`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx' : (x : ℂ) ≠ 0` using `by exact_mod_cast hx`. Use extensionality with `w`. Establish `hE : ∀ (A : LL μ →L[ℂ] LL μ), w ∈ eigIn V A x ↔ w ∈ V ∧ A w = (x : ℂ) • w` using `fun A => by`. Simplify using `[eigIn, Module.End.mem_eigenspace_iff]`. Establish `hF : w ∈ fixF μ (levOn P Uv) ↔ w ∈ sphOff μ P ∧ w ∈ ⨅ v ∈ P, fixL μ v (Uv v)`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hfix, Submodule.mem_inf]`. Rewrite using `[Submodule.mem_inf, Submodule.mem_inf, hE, hE]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hV, hA⟩`. Establish `hA' : Oinf μ ν a (prj (fixF μ (levOn P Uv)) w) = (x : ℂ) • w` using `hA`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hw : w ∈ fixF μ (levOn P Uv)`. Establish `h1 : w = (x : ℂ)⁻¹ • Oinf μ ν a (prj (fixF μ (levOn P Uv)) w)`. Rewrite using `[hA', smul_smul, inv_mul_cancel₀ hx', one_smul]`. Rewrite using `[h1]`. Conclude with `Submodule.smul_mem _ _ (hpres _ (hp1 w))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Rewrite `hA'` using `[hp2 w hw]`. Conclude with `⟨⟨⟨hV, hA'⟩, (hF.1 hw).1⟩, (hF.1 hw).2⟩`. Introduce and unpack `⟨⟨⟨hV, hA⟩, h1⟩, h2⟩`. Use `⟨hV, ?_⟩` and prove the remaining obligations. Use `show Oinf μ ν a (prj (fixF μ (levOn P Uv)) w) = (x : ℂ) • w`.
-
-Rewrite using `[hp2 w (hF.2 ⟨h1, h2⟩), hA]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.eigenspace_comp_levelProjection_eq_inf_fixed :
     ∀ (K : Type) [Field K] [NumberField K] (n : ℕ), 0 < n → ∀ (μ : Measure (normOneGL K n)) [μ.IsHaarMeasure] (ν : Measure (archGroup K n)) [ν.IsHaarMeasure]

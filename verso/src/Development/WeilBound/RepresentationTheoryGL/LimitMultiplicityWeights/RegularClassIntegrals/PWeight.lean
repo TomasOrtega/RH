@@ -11,7 +11,7 @@ namespace MainStatements.WeightKernel.PWeight
 variable {n : ℕ}
 
 /- English proof (translation)
-Rewrite using `[← Matrix.mul_assoc, h, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cancel_l {A B : Matrix (Fin n) (Fin n) ℂ} (h : A * B = 1) (X : Matrix (Fin n) (Fin n) ℂ) :
     A * (B * X) = X := by
@@ -39,17 +39,17 @@ def conjHomeo (Q P : Matrix (Fin n) (Fin n) ℂ) (hPQ : P * Q = 1) (hQP : Q * P 
   continuous_invFun := (continuous_const.matrix_mul continuous_id).matrix_mul continuous_const
 
 /- English proof (translation)
-Establish `hPQh : Qᴴ * Pᴴ = 1` using `by rw [← conjTranspose_mul, hPQ, conjTranspose_one]`. Establish `hQPh : Pᴴ * Qᴴ = 1` using `by rw [← conjTranspose_mul, hQP, conjTranspose_one]`. Establish `hP : IsUnit P.det` using `isUnit_iff_exists_inv.2 ⟨Q.det, by rw [← det_mul, hPQ, det_one]⟩`. Establish `hPh : IsUnit Pᴴ.det` using `isUnit_iff_exists_inv.2 ⟨Qᴴ.det, by rw [← det_mul, hQPh, det_one]⟩`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[det_mul, det_mul]`. Conclude with `(hPh.mul hU.1).mul hP`. Conclude with `(conjHomeo Q P hPQ hQP).isClosedEmbedding.comp hU.2.1`. Establish `key1 : ∀ X : Matrix (Fin n) (Fin n) ℂ, (Q * X * P)ᴴ * (Pᴴ * J * P) * (Q * X * P) = Pᴴ * (Xᴴ * J * X) * P`. Introduce `X`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [conjTranspose_mul, Matrix.mul_assoc, cancel_l hPQh, cancel_l hPQ]`. Establish `key2 : ∀ X : Matrix (Fin n) (Fin n) ℂ, (P * X * Q)ᴴ * J * (P * X * Q) = Qᴴ * (Xᴴ * (Pᴴ * J * P) * X) * Q`. Introduce `X`. Simplify using `only [conjTranspose_mul, Matrix.mul_assoc]`. Establish `key3 : Qᴴ * (Pᴴ * J * P) * Q = J`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Matrix.mul_assoc, cancel_l hPQh, hPQ, Matrix.mul_one]`. Introduce `M`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h, rfl⟩`. Establish `hA` using `(hU.2.2 (ι h)).1 ⟨h, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[conjHom_apply, key1, hA]`. Introduce `hM`. Establish `hN : (P * M * Q)ᴴ * J * (P * M * Q) = J` using `by rw [key2, hM, key3]`. Take `⟨h, hh⟩` from `(hU.2.2 _).2 hN`. Use `⟨h, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[conjHom_apply, hh]`. Simplify using `only [Matrix.mul_assoc, cancel_l hQP, hQP, Matrix.mul_one]`.
+A detailed English derivation is pending.
 -/
 theorem isUGroup_conj {H : Type} [Group H] [TopologicalSpace H] (ι : H →* Matrix (Fin n) (Fin n) ℂ)
     (J Q P : Matrix (Fin n) (Fin n) ℂ) (hPQ : P * Q = 1) (hQP : Q * P = 1) (hU : IsUGroup ι J) :
@@ -88,7 +88,7 @@ def conjMx (Q P : Matrix (Fin n) (Fin n) ℂ) (Y : MainStatements.WeightKernel.M
   fun i j => (Q * Matrix.of Y * P) i j
 
 /- English proof (translation)
-Use `contDiff_pi.2 fun i => contDiff_pi.2 fun j => ?_` and prove the remaining obligations. Simplify using `only [conjMx, Matrix.mul_apply, Matrix.of_apply]`. Conclude with `ContDiff.sum fun x _ => ContDiff.mul (ContDiff.sum fun y _ => contDiff_const.mul ((contDiff_apply ℝ ℂ x).comp (contDiff_apply ℝ (Fin n → ℂ) y))) contDiff_const`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem contDiff_conjMx (Q P : Matrix (Fin n) (Fin n) ℂ) : ContDiff ℝ ∞ (conjMx Q P) := by
   refine contDiff_pi.2 fun i => contDiff_pi.2 fun j => ?_
@@ -102,7 +102,7 @@ namespace MainStatements.WeightKernel
 
 open PWeight in
 /- English proof (translation)
-Introduce `hWD H _ _ _ _ _ _ _ _ n ι J hU s hreg hprop`. Take `⟨P, Q, l, hl, hPQ, hQP, hd⟩` from `GlobalTheory.CompanionTheory.WeylNear.exists_diag n (ι s) hreg`. Take `⟨B', hB'⟩` from `hWD H n (conjHom ι Q P hPQ hQP) (Pᴴ * J * P) (isUGroup_conj ι J Q P hPQ hQP hU) s l hl hd hprop`. Use `⟨fun z => B' (conjMx Q P z.1, conjMx Q P z.2), ?_, fun z => hB'.nonneg _, hB'.pos, hB'.shift, hB'.proper⟩` and prove the remaining obligations. Conclude with `hB'.smooth.comp (((contDiff_conjMx Q P).comp contDiff_fst).prodMk ((contDiff_conjMx Q P).comp contDiff_snd))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem weight : WeightDiag → Weight := by
   intro hWD H _ _ _ _ _ _ _ _ n ι J hU s hreg hprop

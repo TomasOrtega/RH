@@ -13,19 +13,17 @@ namespace GlobalTheory.UnitLemma.CongruenceCayley
 open GlobalTheory.UnitLemma.CayleyCase
 
 /- English proof (translation)
-Take `⟨Q, hQm, hQ⟩` from `hg`. Rewrite `hQ` using `[← aeval_def]`. Use `set D := algebraMap O A α + algebraMap O A β * g with hD`. Use `set n := Q.natDegree`. Set `R : O[X]` to `∑ i ∈ Finset.range (n + 1), C (Q.coeff i) * (X - C α) ^ i * C β ^ (n - i)`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hR : aeval D R = 0`. Establish `: aeval D R = algebraMap O A β ^ n * aeval g Q` using `by conv_rhs => rw [aeval_eq_sum_range, Finset.mul_sum]`. Simplify using `only [R, map_sum, map_mul, map_pow, aeval_C, map_sub, aeval_X]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Establish `hin : i ≤ n` using `Nat.lt_succ_iff.1 (Finset.mem_range.1 hi)`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Algebra.smul_def, hD]`. Establish `: algebraMap O A β ^ n = algebraMap O A β ^ i * algebraMap O A β ^ (n - i)`. Rewrite using `[← pow_add, Nat.add_sub_cancel' hin]`. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this, hQ, mul_zero]`. Establish `hR0 : IsUnit (R.eval 0)`. Rewrite using `[← IsLocalRing.residue_ne_zero_iff_isUnit]`. Establish `hb : IsLocalRing.residue O β = 0` using `(IsLocalRing.residue_eq_zero_iff _).2 hβ`. Establish `ha : IsLocalRing.residue O α ≠ 0` using `(IsLocalRing.residue_ne_zero_iff_isUnit _).2 hα`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [R, eval_finsetSum, eval_mul, eval_C, eval_pow, eval_sub, eval_X, map_sum, map_mul, map_pow, map_sub, map_zero, hb]`. Rewrite using `[Finset.sum_eq_single n]`. Simplify using `[n, hQm.coeff_natDegree, ha]`. Introduce `i hi hin`. Establish `: 0 < n - i` using `Nat.sub_pos_of_lt (lt_of_le_of_ne (Nat.lt_succ_iff.1 (Finset.mem_range.1 hi)) hin)`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[zero_pow this.ne', mul_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_range.2 (Nat.lt_succ_self n)) h`. Take `⟨w, hw, hDw⟩` from `sub_inv_mem D 0 R hR hR0`. Rewrite `hDw` using `[map_zero, sub_zero]`.
-
-Use `⟨w, ?_, hDw⟩` and prove the remaining obligations. Establish `hDmem : D ∈ Algebra.adjoin O ({g} : Set A)` using `add_mem (Subalgebra.algebraMap_mem _ _) (mul_mem (Subalgebra.algebraMap_mem _ _) (Algebra.subset_adjoin rfl))`. Conclude with `Algebra.adjoin_le (Set.singleton_subset_iff.2 hDmem) hw`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem inv_small {O A : Type} [CommRing O] [IsLocalRing O] [CommRing A] [Algebra O A] (g : A) (α β : O)
     (hg : IsIntegral O g) (hα : IsUnit α) (hβ : β ∈ IsLocalRing.maximalIdeal O) :
@@ -66,11 +64,11 @@ theorem inv_small {O A : Type} [CommRing O] [IsLocalRing O] [CommRing A] [Algebr
   exact Algebra.adjoin_le (Set.singleton_subset_iff.2 hDmem) hw
 
 /- English proof (translation)
-Take `⟨w, hw, hDw⟩` from `inv_small g α β hg hα hβ`. Establish `h1 : Y ∈ Algebra.adjoin O ({g} : Set A)`. Establish `e : Y = algebraMap O A γ * g * w` using `by linear_combination (-Y) * hDw + w * hY`. Rewrite using `[e]`. Conclude with `mul_mem (mul_mem (Subalgebra.algebraMap_mem _ _) (Algebra.subset_adjoin rfl)) hw`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨h1, ?_⟩` and prove the remaining obligations. Establish `hYi : IsIntegral O Y` using `IsIntegral.of_mem_of_fg _ hg.fg_adjoin_singleton Y h1`. Establish `hβ' : -β ∈ IsLocalRing.maximalIdeal O` using `neg_mem hβ`. Take `⟨v, hv, hEv⟩` from `inv_small Y γ (-β) hYi hγ hβ'`. Establish `e : g = algebraMap O A α * Y * v`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hEv` using `[map_neg]`. Take the linear combination `(-g) * hEv - v * hY`. Rewrite using `[e]`. Conclude with `mul_mem (mul_mem (Subalgebra.algebraMap_mem _ _) (Algebra.subset_adjoin rfl)) hv`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adjoin_both {O A : Type} [CommRing O] [IsLocalRing O] [CommRing A] [Algebra O A] (g Y : A) (α β γ : O)
     (hg : IsIntegral O g) (hα : IsUnit α) (hβ : β ∈ IsLocalRing.maximalIdeal O) (hγ : IsUnit γ)
@@ -94,17 +92,13 @@ theorem adjoin_both {O A : Type} [CommRing O] [IsLocalRing O] [CommRing A] [Alge
 variable {K : UQ}
 
 /- English proof (translation)
-Establish `sx : B.σ (algebraMap K.O B.A x) = algebraMap K.O B.A y`. Rewrite using `[σ_algebraMap, hxy, ← IsScalarTower.algebraMap_apply]`. Establish `sy : B.σ (algebraMap K.O B.A y) = algebraMap K.O B.A x`. Rewrite using `[σ_algebraMap, ← hxy, K.c_c, ← IsScalarTower.algebraMap_apply]`. Establish `sa : B.σ (algebraMap K.O B.A a) = algebraMap K.O B.A a`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[σ_algebraMap, hac, ← IsScalarTower.algebraMap_apply]`. Establish `h1` using `congrArg B.σ hY`. Simplify using `only [map_mul, map_sub, map_add, sx, sy, sa] at h1 hY hw`. Rewrite `hu` using `[map_add, map_one, map_mul, sa]`. Use `set G := B.g`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `set S := B.σ B.g`. Use `set xA := algebraMap K.O B.A x`. Use `set yA := algebraMap K.O B.A y`. Use `set aA := algebraMap K.O B.A a`. Establish `key : (B.σ Y - Y) * (xA - yA + xA * aA * G) * aA = 0`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Take the linear combination `(-aA * (1 + aA * G)) * h1 - (xA * yA - aA * B.σ Y * yA) * hu - aA * hY`. Establish `key2 : (B.σ Y - Y) * aA = 0`. Combine the equalities or inequalities in the displayed calculation. Take the linear combination `(-(B.σ Y - Y) * aA) * hw`. Use `_ = 0 := by rw [key, zero_mul]`.
-
-Establish `hae : algebraMap K.O K.E a ≠ 0`. Introduce `h; exact ha0 (IsFractionRing.injective K.O K.E (by rw [h, map_zero]))`. Establish `: (algebraMap K.O K.E a) • (B.σ Y - Y) = 0`. Rewrite using `[Algebra.smul_def, ← IsScalarTower.algebraMap_apply, mul_comm]`. Conclude with `key2`.
-
-Conclude with `sub_eq_zero.1 ((smul_eq_zero.1 this).resolve_left hae)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem congruence_selfadj (B : InvAlg K) (a x y : K.O) (ha0 : a ≠ 0)
     (hac : K.c (algebraMap K.O K.E a) = algebraMap K.O K.E a)
@@ -148,29 +142,27 @@ namespace GlobalTheory.UnitLemma.CongruenceCayley
 open GlobalTheory.UnitLemma.CayleyCase
 
 /- English proof (translation)
-Introduce `hL K a ha B₁ B₂ hu₁ hu₂ hsep`. Distinguish the cases in `hint : IsIntegral K.O B₁.g ∧ IsIntegral K.O B₂.g`. Use `swap`. Take `⟨h1, h2⟩` from `kapSum_eq_zero_and_stSum_mul_eq_zero_of_not_isIntegral K B₁ B₂ hint`. Unfold `InvAlg.Identity`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, h2, mul_zero]`. Take `⟨i₁, i₂⟩` from `hint`. Take `⟨ha0, ham, hac⟩` from `ha`. Take `⟨x, y, hxy, hm⟩` from `K.c_res`. Establish `hyx : K.c (algebraMap K.O K.E y) = algebraMap K.O K.E x` using `by rw [← hxy, K.c_c]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hxu : IsUnit x`. Assume the negation of the conclusion as `hx`. Establish `hy : ¬ IsUnit y` using `fun hy => hx (CayleyAny.isUnit_of_conj K x y hxy hy)`. Conclude with `hm (Ideal.sub_mem _ ((IsLocalRing.mem_maximalIdeal _).2 hx) ((IsLocalRing.mem_maximalIdeal _).2 hy))`. Establish `hyu : IsUnit y` using `CayleyAny.isUnit_of_conj K y x hyx hxu`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hxyu : IsUnit (x - y)`. Assume the negation of the conclusion as `h`. Conclude with `hm ((IsLocalRing.mem_maximalIdeal _).2 h)`. Establish `hβ : x * a ∈ IsLocalRing.maximalIdeal K.O` using `Ideal.mul_mem_left _ _ ham`. Establish `hγ : IsUnit (x * y)` using `hxu.mul hyu`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨w₁, -, hw₁⟩` from `inv_small B₁.g (x - y) (x * a) i₁ hxyu hβ`. Take `⟨w₂, -, hw₂⟩` from `inv_small B₂.g (x - y) (x * a) i₂ hxyu hβ`. Use `set Y₁ := algebraMap K.O B₁.A (x * y) * B₁.g * w₁ with hY₁d`. Use `set Y₂ := algebraMap K.O B₂.A (x * y) * B₂.g * w₂ with hY₂d`. Establish `hY₁ : Y₁ * (algebraMap K.O B₁.A (x - y) + algebraMap K.O B₁.A (x * a) * B₁.g) = algebraMap K.O B₁.A (x * y) * B₁.g`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite using `[hY₁d]`. Take the linear combination `(algebraMap K.O B₁.A (x * y) * B₁.g) * hw₁`. Establish `hY₂ : Y₂ * (algebraMap K.O B₂.A (x - y) + algebraMap K.O B₂.A (x * a) * B₂.g) = algebraMap K.O B₂.A (x * y) * B₂.g`. Rewrite using `[hY₂d]`. Take the linear combination `(algebraMap K.O B₂.A (x * y) * B₂.g) * hw₂`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `adj₁` using `adjoin_both B₁.g Y₁ (x - y) (x * a) (x * y) i₁ hxyu hβ hγ hY₁`. Establish `adj₂` using `adjoin_both B₂.g Y₂ (x - y) (x * a) (x * y) i₂ hxyu hβ hγ hY₂`. Establish `iP : IsIntegral K.O ((B₁.g, B₂.g) : B₁.A × B₂.A)` using `IsIntegral.pair i₁ i₂`. Establish `hYp : ((Y₁, Y₂) : B₁.A × B₂.A) * (algebraMap K.O (B₁.A × B₂.A) (x - y) + algebraMap K.O (B₁.A × B₂.A) (x * a) * (B₁.g, B₂.g)) = algebraMap K.O (B₁.A × B₂.A) (x * y) * (B₁.g, B₂.g)` using `Prod.ext hY₁ hY₂`. Establish `adjP` using `adjoin_both ((B₁.g, B₂.g) : B₁.A × B₂.A) (Y₁, Y₂) (x - y) (x * a) (x * y) iP hxyu hβ hγ hYp`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `st₁` using `stable_iff B₁.g Y₁ adj₁`. Establish `st₂` using `stable_iff B₂.g Y₂ adj₂`. Establish `stP` using `stable_iff ((B₁.g, B₂.g) : B₁.A × B₂.A) (Y₁, Y₂) adjP`. Establish `sa₁` using `congruence_selfadj B₁ a x y ha0 hac hxy hu₁ Y₁ w₁ hw₁ hY₁`. Establish `sa₂` using `congruence_selfadj B₂ a x y ha0 hac hxy hu₂ Y₂ w₂ hw₂ hY₂`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hsepP : (LinearMap.mulLeft K.E ((B₁.g, B₂.g) : B₁.A × B₂.A)).charpoly.Separable`. Use `Orbit.prod_P B₁ B₂` as an intermediate fact. Rewrite `hsep` using `[← this]`. Conclude with `hsep`. Establish `hsepC : ((withG B₁ Y₁).P * (withG B₂ Y₂).P).Separable`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← Orbit.prod_P]`. Use `separable_of_adjoin (E := K.E) (A := B₁.A × B₂.A) (B₁.g, B₂.g) (Y₁, Y₂) (mem_adjoin_of_mem (O := K.O) adjP.1) (mem_adjoin_of_mem (O := K.O) adjP.2) hsepP` as an intermediate fact. Conclude with `this`. Establish `hId` using `hL K (withG B₁ Y₁) (withG B₂ Y₂) sa₁ sa₂ hsepC`. Establish `hr : resultant B₁.P B₂.P ≠ 0` using `((isUnit_resultant_iff_isCoprime (LinearMap.charpoly_monic _)).2 hsep.isCoprime).ne_zero`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hr' : resultant (withG B₁ Y₁).P (withG B₂ Y₂).P ≠ 0` using `((isUnit_resultant_iff_isCoprime (LinearMap.charpoly_monic _)).2 hsepC.isCoprime).ne_zero`. Take `⟨M₁, l₁, s₁⟩` from `exists_stable_lat (E := K.E) B₁.g i₁`. Take `⟨M₂, l₂, s₂⟩` from `exists_stable_lat (E := K.E) B₂.g i₂`. Establish `hv : val K.O (resultant B₁.P B₂.P) = val K.O (resultant (withG B₁ Y₁).P (withG B₂ Y₂).P)` using `val_res_eq (O := K.O) (E := K.E) B₁.g Y₁ B₂.g Y₂ hr hr' st₁ st₂ stP M₁ M₂ l₁ l₂ s₁ s₂`. Unfold `InvAlg.Identity at hId ⊢`.
-
-Rewrite `hId` using `[kapSum_withG B₁ B₂ Y₁ Y₂ stP, stSum_withG B₁ Y₁ st₁, stSum_withG B₂ Y₂ st₂]`. Express the relevant statement in the definitionally equal form `(-(K.q : ℚ)) ^ (-val K.O (resultant B₁.P B₂.P)) * _ = _`. Rewrite using `[hv]`. Conclude with `hId`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem identity_of_principal_congruence : UnitLemmaLie → ∀ (K : UQ) (a : K.O), K.Small a →
     ∀ B₁ B₂ : InvAlg K,

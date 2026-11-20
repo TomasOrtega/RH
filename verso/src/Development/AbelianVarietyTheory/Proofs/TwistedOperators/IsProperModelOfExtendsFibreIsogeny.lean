@@ -14,19 +14,19 @@ open GlobalTheory.HkIntegral
 namespace GlobalTheory.HkIntegral
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo T x x' G G' t t' m₁ m₂ n₁ n₂ f f' F N ⟨ψ, _, hψ, hc⟩ hN hpos hG`. Establish `hU : IsAbelianScheme Xo.univ.t.G` using `⟨Xo.univ.t.semi.comm, Xo.univ.t.semi.smooth, Xo.univ.proper, Xo.univ.t.semi.geomConnected⟩`. Establish `hA : IsAbelianScheme (Fib Xo x')` using `ReciprocityTheory.ChartRestriction.G.Out.TLinPf.isAb_pullback x' _ hU`. Establish `hB : IsAbelianScheme G.G` using `⟨G.semi.comm, G.semi.smooth, hG, G.semi.geomConnected⟩`. Establish `hch : CharZero T.Fr` using `charZero_of_injective_ringHom (IsFractionRing.injective T.V T.Fr)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu : IsUnit (N : Γ(Sp T.Fr, ⊤))`. Establish `h0 : IsUnit (N : T.Fr)` using `IsUnit.mk0 _ (Nat.cast_ne_zero.mpr hpos.ne')`. Use `h0.map (Scheme.ΓSpecIso (CommRingCat.of T.Fr)).inv.hom` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis. Take `⟨-, -, -, hs⟩` from `GlobalTheory.abelianScheme_id_pow_finite_etale_surjective _ (Fib Xo x') N hA hu`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Establish `hl : f'.left ≫ f.left = (𝟙 (Fib Xo x') ^ N).left` using `congrArg (·.left) hN`. Establish `hf : Function.Surjective f.left`. Introduce `y`. Take `⟨z, hz⟩` from `hs.1 y`. Use `⟨f'.left z, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Scheme.Hom.comp_apply, hl, hz]`. Establish `p₁ : IsPullback m₁.φ t.G.hom Xo.univ.t.G.hom x` using `m₁.cart.1`. Establish `q₁ : IsPullback n₁.φ t'.G.hom Xo.univ.t.G.hom x'` using `n₁.cart.1`. Establish `q₂ : IsPullback n₂.φ t'.G.hom G'.G.hom (spMap (algebraMap T.V T.Fr))` using `n₂.cart.1`. Establish `hsq` using `hc p₁.isoPullback.hom q₁.isoPullback.hom (by simp) (by simp) (by simp) (by simp)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hψs : Function.Surjective ψ.left`. Introduce `y`. Take `⟨z, hz⟩` from `hf (q₁.isoPullback.hom y)`. Take `⟨w, rfl⟩` from `(inferInstance : Surjective p₁.isoPullback.hom).1 z`. Use `⟨w, q₁.isoPullback.hom.isOpenEmbedding.injective ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Scheme.Hom.comp_apply, ← hsq, Scheme.Hom.comp_apply]`. Conclude with `hz`. Use `(GlobalTheory.isAbelianScheme_of_generically_surjective T.V T.Fr G.G G'.G hB G'.semi F ?_).proper` and prove the remaining obligations. Introduce and unpack `y ⟨s, hs⟩`. Take `⟨z, hz, -⟩` from `Scheme.exists_preimage_of_isPullback q₂ y s hs.symm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨w, rfl⟩` from `hψs z`. Use `⟨m₂.φ w, ?_⟩` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.comp_apply, ← hψ, Scheme.Hom.comp_apply, hz]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isProper_of_ext : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (T : CDVR) (x x' : Sp T.Fr ⟶ Xo.X) (G G' : SAB H (Sp T.V)) (t t' : SAB H (Sp T.Fr)) (m₁ : SABMap t Xo.univ.t x) (m₂ : SABMap t G (spMap (algebraMap T.V T.Fr))) (n₁ : SABMap t' Xo.univ.t x') (n₂ : SABMap t' G' (spMap (algebraMap T.V T.Fr))) (f : Fib Xo x ⟶ Fib Xo x') (f' : Fib Xo x' ⟶ Fib Xo x) (F : G.G ⟶ G'.G) (N : ℕ), Ext m₁ m₂ n₁ n₂ f F → f' ≫ f = 𝟙 _ ^ N → 0 < N → IsProper G.G.hom → IsProper G'.G.hom := by
   intro E _ _ _ H Dw l Xo T x x' G G' t t' m₁ m₂ n₁ n₂ f f' F N ⟨ψ, _, hψ, hc⟩ hN hpos hG

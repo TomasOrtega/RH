@@ -22,13 +22,13 @@ namespace MultiRing
 variable {K : Type} [Field K] {r : ℕ}
 
 /- English proof (translation)
-The claim follows from `Finset.prod_ne_zero_iff.2 fun i _ h => by simpa using congrArg (MvPowerSeries.coeff (Finsupp.single i 1)) h`.
+A detailed English derivation is pending.
 -/
 theorem prod_X_ne_zero : (∏ i, MvPowerSeries.X i : MvPowerSeries (Fin r) K) ≠ 0 :=
   Finset.prod_ne_zero_iff.2 fun i _ h => by simpa using congrArg (MvPowerSeries.coeff (Finsupp.single i 1)) h
 
 /- English proof (translation)
-The claim follows from `powers_le_nonZeroDivisors_of_noZeroDivisors prod_X_ne_zero`.
+A detailed English derivation is pending.
 -/
 theorem powers_le : Submonoid.powers (∏ i, MvPowerSeries.X i : MvPowerSeries (Fin r) K) ≤ nonZeroDivisors _ :=
   powers_le_nonZeroDivisors_of_noZeroDivisors prod_X_ne_zero
@@ -47,7 +47,7 @@ instance instIsNoetherianRing : IsNoetherianRing (MultiRing K r) :=
   IsLocalization.isNoetherianRing (Submonoid.powers (∏ i, MvPowerSeries.X i : MvPowerSeries (Fin r) K)) _ inferInstance
 
 /- English proof (translation)
-The claim follows from `IsLocalization.injective _ powers_le`.
+A detailed English derivation is pending.
 -/
 theorem algebraMap_injective : Function.Injective (algebraMap (MvPowerSeries (Fin r) K) (MultiRing K r)) :=
   IsLocalization.injective _ powers_le
@@ -55,14 +55,14 @@ theorem algebraMap_injective : Function.Injective (algebraMap (MvPowerSeries (Fi
 def u (i : Fin r) : MultiRing K r := algebraMap (MvPowerSeries (Fin r) K) (MultiRing K r) (MvPowerSeries.X i)
 
 /- English proof (translation)
-Establish `h` using `IsLocalization.Away.algebraMap_isUnit (S := MultiRing K r) (∏ i, MvPowerSeries.X i : MvPowerSeries (Fin r) K)`. Conclude with `isUnit_of_dvd_unit (map_dvd _ (Finset.dvd_prod_of_mem _ (Finset.mem_univ i))) h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isUnit_u (i : Fin r) : IsUnit (u i : MultiRing K r) := by
   have h := IsLocalization.Away.algebraMap_isUnit (S := MultiRing K r) (∏ i, MvPowerSeries.X i : MvPowerSeries (Fin r) K)
   exact isUnit_of_dvd_unit (map_dvd _ (Finset.dvd_prod_of_mem _ (Finset.mem_univ i))) h
 
 /- English proof (translation)
-Take `⟨⟨f, _, n, rfl⟩, h⟩` from `IsLocalization.surj (Submonoid.powers (∏ i, MvPowerSeries.X i : MvPowerSeries (Fin r) K)) Φ`. Conclude with `⟨n, f, by simpa only [map_pow, map_prod, u] using h⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_mul_pow (Φ : MultiRing K r) : ∃ (n : ℕ) (f : MvPowerSeries (Fin r) K),
     Φ * (∏ i, u i) ^ n = algebraMap (MvPowerSeries (Fin r) K) (MultiRing K r) f := by
@@ -76,7 +76,7 @@ variable (a : Fin r → ℕ) (ha : ∀ i, 1 ≤ a i)
 include ha
 
 /- English proof (translation)
-The claim follows from `MvPowerSeries.hasSubst_of_constantCoeff_zero fun i => by change PowerSeries.constantCoeff (PowerSeries.X ^ a i : PowerSeries K) = 0 simp [show a i ≠ 0 from Nat.one_le_iff_ne_zero.1 (ha i)]`.
+A detailed English derivation is pending.
 -/
 theorem hasSubst : MvPowerSeries.HasSubst fun i => (PowerSeries.X ^ a i : PowerSeries K) :=
   MvPowerSeries.hasSubst_of_constantCoeff_zero fun i => by
@@ -87,26 +87,26 @@ def specPS : MvPowerSeries (Fin r) K →+* PowerSeries K :=
   (MvPowerSeries.substAlgHom (R := K) (hasSubst a ha)).toRingHom
 
 /- English proof (translation)
-The claim follows from `MvPowerSeries.substAlgHom_apply _ f`.
+A detailed English derivation is pending.
 -/
 theorem specPS_apply (f : MvPowerSeries (Fin r) K) :
     specPS a ha f = MvPowerSeries.subst (fun i => (PowerSeries.X ^ a i : PowerSeries K)) f :=
   MvPowerSeries.substAlgHom_apply _ f
 
 /- English proof (translation)
-The claim follows from `MvPowerSeries.substAlgHom_X _ i`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem specPS_X (i : Fin r) : specPS a ha (MvPowerSeries.X i) = (PowerSeries.X ^ a i : PowerSeries K) :=
   MvPowerSeries.substAlgHom_X _ i
 
 /- English proof (translation)
-The claim follows from `(MvPowerSeries.substAlgHom (R := K) (hasSubst a ha)).commutes c`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem specPS_C (c : K) : specPS a ha (MvPowerSeries.C c) = PowerSeries.C c :=
   (MvPowerSeries.substAlgHom (R := K) (hasSubst a ha)).commutes c
 
 /- English proof (translation)
-The claim follows from `(Finsupp.finite_of_nat_weight_eq a (fun i => Nat.one_le_iff_ne_zero.1 (ha i)) n).subset fun m hm => by rw [Set.mem_setOf_eq, Finsupp.weight_apply, Finsupp.sum_fintype _ _ (by simp)] simpa only [Set.mem_setOf_eq, smul_eq_mul, mul_comm] using hm`.
+A detailed English derivation is pending.
 -/
 theorem finite_weight (n : ℕ) : {m : Fin r →₀ ℕ | ∑ i, a i * m i = n}.Finite :=
   (Finsupp.finite_of_nat_weight_eq a (fun i => Nat.one_le_iff_ne_zero.1 (ha i)) n).subset fun m hm => by
@@ -114,13 +114,13 @@ theorem finite_weight (n : ℕ) : {m : Fin r →₀ ℕ | ∑ i, a i * m i = n}.
     simpa only [Set.mem_setOf_eq, smul_eq_mul, mul_comm] using hm
 
 /- English proof (translation)
-Establish `e : ∀ m : Fin r →₀ ℕ, (m.prod fun s k => (PowerSeries.X ^ a s : PowerSeries K) ^ k) = PowerSeries.X ^ ∑ i, a i * m i` using `fun m => by`. Rewrite using `[Finsupp.prod_fintype _ _ (by simp), ← Finset.prod_pow_eq_pow_sum]`. Simplify using `only [pow_mul]`. Establish `h` using `MvPowerSeries.coeff_subst (hasSubst (K := K) a ha) f (Finsupp.single () n)`. Rewrite using `[specPS_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `h.trans ?_` and prove the remaining obligations. Establish `e' : ∀ m : Fin r →₀ ℕ, MvPowerSeries.coeff m f • MvPowerSeries.coeff (Finsupp.single () n) (m.prod fun s k => (PowerSeries.X ^ a s : PowerSeries K) ^ k) = if ∑ i, a i * m i = n then MvPowerSeries.coeff m f else 0` using `fun m => by`. Rewrite using `[e]`. Express the relevant statement in the definitionally equal form `_ • PowerSeries.coeff n (PowerSeries.X ^ _ : PowerSeries K) = _`. Rewrite using `[PowerSeries.coeff_X_pow]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hm : ∑ i, a i * m i = n`. Simplify using `[hm]`. Simplify using `[hm, Ne.symm hm]`. Rewrite using `[finsum_congr e', finsum_eq_sum_of_support_subset (s := (finite_weight a ha n).toFinset)]`. Conclude with `Finset.sum_congr rfl fun m hm => if_pos (by simpa using hm)`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `m hm`. Assume the negation of the conclusion as `hn`. Conclude with `hm (if_neg (by simpa using hn))`.
+Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem coeff_specPS (f : MvPowerSeries (Fin r) K) (n : ℕ) :
     PowerSeries.coeff n (specPS a ha f) = ∑ m ∈ (finite_weight a ha n).toFinset, MvPowerSeries.coeff m f := by
@@ -154,14 +154,14 @@ def spec : MultiRing K r →+* LaurentSeries K :=
       exact Finset.prod_ne_zero_iff.2 fun i _ => by simpa using fun h => absurd h PowerSeries.X_ne_zero))
 
 /- English proof (translation)
-The claim follows from `IsLocalization.Away.lift_eq _ _ f`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem spec_algebraMap (f : MvPowerSeries (Fin r) K) :
     spec a ha (algebraMap (MvPowerSeries (Fin r) K) (MultiRing K r) f) = HahnSeries.ofPowerSeries ℤ K (specPS a ha f) :=
   IsLocalization.Away.lift_eq _ _ f
 
 /- English proof (translation)
-Rewrite using `[u, spec_algebraMap, specPS_X, HahnSeries.ofPowerSeries_X_pow]`.
+Rewrite the conclusion using the stated equalities.
 -/
 @[simp] theorem spec_u (i : Fin r) : spec a ha (u i : MultiRing K r) = HahnSeries.single (a i : ℤ) 1 := by
   rw [u, spec_algebraMap, specPS_X, HahnSeries.ofPowerSeries_X_pow]
@@ -179,9 +179,9 @@ def ofLaurent (i : Fin r) : LaurentSeries K →+* MultiRing K r :=
       exact isUnit_u i)
 
 /- English proof (translation)
-Use `IsLocalization.ringHom_ext (Submonoid.powers (PowerSeries.X : PowerSeries K)) (RingHom.ext fun g => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `spec a ha (ofLaurent i (algebraMap (PowerSeries K) _ g)) = powLS (ha i) (HahnSeries.ofPowerSeries ℤ K g)`. Rewrite using `[ofLaurent, IsLocalization.Away.lift_eq, RingHom.comp_apply, spec_algebraMap, powLS_coe, specPS_apply, powPS_apply, PowerSeries.expand_apply]`. Use `congr 1`. Express the relevant statement in the definitionally equal form `MvPowerSeries.subst _ (PowerSeries.substAlgHom _ g) = _`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[PowerSeries.coe_substAlgHom, PowerSeries.subst, PowerSeries.subst, MvPowerSeries.subst_comp_subst_apply (PowerSeries.HasSubst.X i).const (hasSubst a ha)]`. Simplify using `only [MvPowerSeries.subst_X (hasSubst (K := K) a ha)]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem spec_comp_ofLaurent (a : Fin r → ℕ) (ha : ∀ i, 1 ≤ a i) (i : Fin r) :
     (spec a ha).comp (ofLaurent i) = powLS (K := K) (ha i) := by
@@ -196,17 +196,17 @@ theorem spec_comp_ofLaurent (a : Fin r → ℕ) (ha : ∀ i, 1 ≤ a i) (i : Fin
   simp only [MvPowerSeries.subst_X (hasSubst (K := K) a ha)]
 
 /- English proof (translation)
-The claim follows from `RingHom.ext fun f => HahnSeries.ext (funext fun n => by simpa using coeff_powLS_mul (le_refl 1) f n)`.
+A detailed English derivation is pending.
 -/
 theorem powLS_one : powLS (K := K) (le_refl 1) = RingHom.id _ :=
   RingHom.ext fun f => HahnSeries.ext (funext fun n => by simpa using coeff_powLS_mul (le_refl 1) f n)
 
 /- English proof (translation)
-Use `⟨(injective_iff_map_eq_zero _).2 fun Φ h => ?_, fun g => ⟨ofLaurent 0 g, ?_⟩⟩` and prove the remaining obligations. Take `⟨n, f, e⟩` from `exists_mul_pow Φ`. Establish `hf : specPS (fun _ : Fin 1 => 1) (fun _ => le_rfl) f = 0` using `HahnSeries.ofPowerSeries_injective (Γ := ℤ) (by`. Rewrite using `[← spec_algebraMap, ← e, map_mul, h, zero_mul, map_zero])`. Establish `hf' : f = 0`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use extensionality with `m`. Establish `e` using `coeff_specPS (fun _ : Fin 1 => 1) (fun _ => le_rfl) f (m 0)`. Rewrite `e` using `[hf, Finset.sum_eq_single_of_mem m (by simp) fun m' hm' hne => absurd (Finsupp.ext fun i => by rw [Subsingleton.elim i 0]; simpa using hm') hne]`. Simplify using `using e.symm`. Rewrite `e` using `[hf', map_zero]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(mul_eq_zero.1 e).resolve_right (pow_ne_zero _ (Finset.prod_ne_zero_iff.2 fun i _ => (isUnit_u i).ne_zero))`. Rewrite using `[← RingHom.comp_apply, spec_comp_ofLaurent, powLS_one, RingHom.id_apply]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem spec_one_bijective : Function.Bijective (spec (K := K) (fun _ : Fin 1 => 1) fun _ => le_rfl) := by
   refine ⟨(injective_iff_map_eq_zero _).2 fun Φ h => ?_, fun g => ⟨ofLaurent 0 g, ?_⟩⟩
@@ -226,14 +226,14 @@ theorem spec_one_bijective : Function.Bijective (spec (K := K) (fun _ : Fin 1 =>
 def equivLaurent : MultiRing K 1 ≃+* LaurentSeries K := RingEquiv.ofBijective _ spec_one_bijective
 
 /- English proof (translation)
-Rewrite using `[map_mul, spec_u, spec_u, HahnSeries.single_mul_single]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 example : spec ![2, 3] (by decide) (u 0 * u 1 : MultiRing K 2) = HahnSeries.single 5 1 := by
   rw [map_mul, spec_u, spec_u, HahnSeries.single_mul_single]
   simp
 
 /- English proof (translation)
-Use `⟨by rw [map_sub, spec_u, spec_u, sub_self], fun h => ?_⟩` and prove the remaining obligations. Use `congrArg (fun Φ => (spec ![1, 2] (by decide) Φ).coeff 1) h` as an intermediate fact. Simplify using `at this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 example : spec (fun _ => 1) (fun _ => le_rfl) (u 0 - u 1 : MultiRing K 2) = 0 ∧ (u 0 - u 1 : MultiRing K 2) ≠ 0 := by
   refine ⟨by rw [map_sub, spec_u, spec_u, sub_self], fun h => ?_⟩
@@ -258,14 +258,14 @@ namespace IsMultiArc
 variable {t} {δ : Fin r → t.Forms} {y : Sp (MultiRing ↥F.K r) ⟶ (Y Z.i).X} {w : Vecs Dw (Y Z.i).t (MultiRing ↥F.K r)}
 
 /- English proof (translation)
-Take `⟨_, -, h, -⟩` from `h.2 a ha`. Conclude with `h`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem sum_mem_dir (h : IsMultiArc t δ y w) (a : Fin r → ℕ) (ha : ∀ i, 1 ≤ a i) : ∑ i, a i • δ i ∈ t.Dir := by
   obtain ⟨_, -, h, -⟩ := h.2 a ha
   exact h
 
 /- English proof (translation)
-Use `haveI := t.a.nontriv`. Take `⟨z, hz⟩` from `exists_ne (0 : t.a.D₀.X)`. Use `Nat.pos_of_ne_zero fun hr => ?_` and prove the remaining obligations. Substitute `hr` using the available equality. Simplify using `using (h.sum_mem_dir (fun _ => 1) fun _ => le_rfl).1 z hz`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem pos (h : IsMultiArc t δ y w) : 0 < r := by
   haveI := t.a.nontriv
@@ -277,11 +277,11 @@ theorem pos (h : IsMultiArc t δ y w) : 0 < r := by
 end IsMultiArc
 
 /- English proof (translation)
-Take `⟨a, φ, e, hfr, -⟩` from `h`. Take `⟨g, y₀, hy, hyj⟩` from `(Cht.extendSt E H Dw Xo p W Y i₀).1 Z.i _ (x ≫ Z.π) (by`. Introduce and unpack `_ ⟨z, rfl⟩`. Establish `hz : x z ∈ Z.opn`. Rewrite using `[← Z.cover, ← e]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Set.mem_iUnion.2 ⟨a, ?_⟩` and prove the remaining obligations. Rewrite using `[← (Z.U a).2.range_fromSpec]`. Conclude with `⟨spMap φ z, rfl⟩`. Conclude with `hz)`. Establish `e₁ : spMap (g.comp (Z.i.c.V W).subtype) = spMap ((φ.comp (Z.alg a)).comp (Z.i.c.V W).subtype)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[spMap_comp, ← hy, Category.assoc, ← (Y Z.i).j_s, ← Category.assoc, hyj, Category.assoc, Z.π_s, ← e, Category.assoc, Z.alg_s, ← spMap_comp, RingHom.comp_assoc]`. Establish `e₂ : g = φ.comp (Z.alg a)` using `IsFractionRing.ringHom_ext (A := Z.i.c.V W) fun z => RingHom.congr_fun (congrArg CommRingCat.Hom.hom (Spec.map_injective e₁)) z`. Conclude with `⟨g, y₀, hy, hyj, e₂ ▸ hfr⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_isFrame_of_flagAt {k : Type} [Field k] {x : Sp k ⟶ Z.X} {v : Vecs Dw (Y Z.i).t k} (h : Z.FlagAt x v) :
     ∃ (g : Z.i.c.F →+* k) (y₀ : Sp k ⟶ (Xo Z.i.l).XF Z.i.c),
@@ -303,9 +303,9 @@ theorem exists_isFrame_of_flagAt {k : Type} [Field k] {x : Sp k ⟶ Z.X} {v : Ve
   exact ⟨g, y₀, hy, hyj, e₂ ▸ hfr⟩
 
 /- English proof (translation)
-Take `⟨_, _, _, _, _, -, -, -, -, -, hfl⟩` from `id hx`. Take `⟨g, y₀, hy, hyj, hfr⟩` from `exists_isFrame_of_flagAt hfl`. Use `⟨⟨(MultiRing.ofLaurent i).comp g, spMap (MultiRing.ofLaurent i) ≫ y₀, by rw [Category.assoc, hy, spMap_comp], by rw [Category.assoc, hyj], GlobalTheory.LocM.isFrame_bc E H Dw _ _ _ _ _ _ _ _ _ _ hfr⟩, fun a ha => ?_⟩` and prove the remaining obligations. Establish `e : ∑ j, a j • (Pi.single i γ : Fin r → t.Forms) j = a i • γ`. Rewrite using `[Finset.sum_eq_single i (fun j _ hj => by rw [Pi.single_eq_of_ne hj, smul_zero]) (by simp), Pi.single_eq_same]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨spMap (powLS (ha i)) ≫ x, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← MultiRing.spec_comp_ofLaurent a ha i, spMap_comp, Category.assoc, Category.assoc]`. Rewrite using `[e, Vecs.bc_bc, MultiRing.spec_comp_ofLaurent]`. Conclude with `IsArc.pow t (ha i) hx`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsArc.isMultiArc_single {γ : t.Forms} {x : Sp (LaurentSeries ↥F.K) ⟶ Z.X}
     {v : Vecs Dw (Y Z.i).t (LaurentSeries ↥F.K)} (hx : IsArc t γ x v) (i : Fin r) :
@@ -322,7 +322,7 @@ theorem IsArc.isMultiArc_single {γ : t.Forms} {x : Sp (LaurentSeries ↥F.K) �
     exact IsArc.pow t (ha i) hx
 
 /- English proof (translation)
-Take `⟨x, v, hx⟩` from `exists_isArc t hY h`. Conclude with `⟨_, _, hx.isMultiArc_single t i⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_isMultiArc_single (hY : (Y Z.i).N4) {γ : t.Forms} (h : γ ∈ t.Dir) (i : Fin r) :
     ∃ y w, IsMultiArc t (Pi.single i γ) y w := by
@@ -330,7 +330,7 @@ theorem exists_isMultiArc_single (hY : (Y Z.i).N4) {γ : t.Forms} (h : γ ∈ t.
   exact ⟨_, _, hx.isMultiArc_single t i⟩
 
 /- English proof (translation)
-Use `⟨fun ⟨_, _, h⟩ => by simpa using h.sum_mem_dir (fun _ => 1) fun _ => le_rfl, fun h => ?_⟩` and prove the remaining obligations. Establish `e : δ = Pi.single 0 (δ 0)` using `funext fun i => by rw [Subsingleton.elim i 0, Pi.single_eq_same]`. Rewrite using `[e]`. Conclude with `exists_isMultiArc_single t hY h 0`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isMultiArc_one_iff (hY : (Y Z.i).N4) (δ : Fin 1 → t.Forms) :
     (∃ y w, IsMultiArc t δ y w) ↔ δ 0 ∈ t.Dir := by
@@ -340,7 +340,7 @@ theorem exists_isMultiArc_one_iff (hY : (Y Z.i).N4) (δ : Fin 1 → t.Forms) :
   exact exists_isMultiArc_single t hY h 0
 
 /- English proof (translation)
-Take `⟨γ, hγ⟩` from `t.dir_nonempty`. Use `⟨⟨fun _ => γ, (exists_isMultiArc_one_iff t hY _).2 hγ⟩, fun h => ?_⟩` and prove the remaining obligations. Use `haveI := t.a.nontriv`. Take `⟨z, hz⟩` from `exists_ne (0 : t.a.D₀.X)`. Simplify using `using ((exists_isMultiArc_one_iff t hY _).1 h).1 z hz`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 example (hY : (Y Z.i).N4) : (∃ (δ : Fin 1 → t.Forms), ∃ y w, IsMultiArc t δ y w) ∧
     ¬ ∃ y w, IsMultiArc t (fun _ : Fin 1 => 0) y w := by

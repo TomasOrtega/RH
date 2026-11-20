@@ -14,7 +14,7 @@ open scoped CategoryTheory.Obj TensorProduct
 namespace GlobalTheory.Inhab
 
 /- English proof (translation)
-Establish `h` using `exists_pelUnif_torsionIso_nontrivial GlobalTheory.partI_closed`. Use `⟨h, ?_⟩` and prove the remaining obligations. Take `⟨E, _, _, _, H, t, P, -, hn⟩` from `h`. Conclude with `⟨P.D, P.A, t.G, inferInstance, inferInstance, t.semi, hn, ⟨P.U⟩⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_unif_nontrivial_torus : (∃ (E : Type) (_ : Field E) (_ : NumberField E) (_ : IsCMField E) (H : Host E) (t : SAB H (Sp (PowerSeries ℂ))) (P : PELUnif (Ideal.span {PowerSeries.X}) t), P.TorsionIso ∧ Nontrivial P.D.toPre.X) ∧ ∃ (D : Out.DegData (PowerSeries ℂ) (Ideal.span {PowerSeries.X})) (A : Out.PolAV (Spec (CommRingCat.of (FractionRing (PowerSeries ℂ))))) (G : Over (Spec (CommRingCat.of (PowerSeries ℂ)))) (_ : GrpObj G) (_ : IsCommMonObj G), IsSemiAbelian G ∧ Nontrivial D.toPre.X ∧ Nonempty (Out.Unif (Ideal.span {PowerSeries.X}) D A G) := by
   have h := exists_pelUnif_torsionIso_nontrivial GlobalTheory.partI_closed

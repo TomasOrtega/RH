@@ -8,29 +8,29 @@ import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.Archim
 namespace PositivityTheory.RgBcC
 
 /- English proof (translation)
-The claim follows from `fr0Laws_of rmLaws gamMul mtLaws gamDer`.
+A detailed English derivation is pending.
 -/
 theorem fr0Laws : MatrixFrechetDerivativeAtZeroLaws := fr0Laws_of rmLaws gamMul mtLaws gamDer
 
 /- English proof (translation)
-The claim follows from `avg_of fr0Laws`.
+A detailed English derivation is pending.
 -/
 theorem avg : Avg := avg_of fr0Laws
 
 /- English proof (translation)
-The claim follows from `frOne' fr0Laws avg`.
+A detailed English derivation is pending.
 -/
 theorem frOne : FrOne := frOne' fr0Laws avg
 /- English proof (translation)
-The claim follows from `frMulK' fr0Laws avg`.
+A detailed English derivation is pending.
 -/
 theorem frMulK : FrMulK := frMulK' fr0Laws avg
 /- English proof (translation)
-The claim follows from `frIso' fr0Laws avg`.
+A detailed English derivation is pending.
 -/
 theorem frIso : FrIso := frIso' fr0Laws avg
 /- English proof (translation)
-The claim follows from `frCont' fr0Laws avg`.
+A detailed English derivation is pending.
 -/
 theorem frCont : FrCont := frCont' fr0Laws avg
 

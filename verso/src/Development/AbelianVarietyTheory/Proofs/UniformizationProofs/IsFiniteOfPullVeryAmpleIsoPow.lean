@@ -20,7 +20,7 @@ namespace GlobalTheory.PullAmpleFinite
 open TopologicalSpace GlobalTheory.MulFinite
 
 /- English proof (translation)
-Establish `hm : r z ∈ M.U j ⊓ M.U j'` using `⟨hj, hj'⟩`. Conclude with `(gs_res r z _ hm _).symm.trans ((congrArg (gs r z _) (s.compat j j')).trans ((gs_mul r z _ hm _ _).trans (congrArg₂ (· * ·) (gs_unit r z _ hm _) (gs_res r z _ hm _))))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem sec_gs {Z Y : Scheme.{0}} {M : LB Y} (s : LB.Sec M) (r : Z ⟶ Y) (z : Z) {j j' : M.ι}
     (hj : r z ∈ M.U j) (hj' : r z ∈ M.U j') :
@@ -30,7 +30,7 @@ theorem sec_gs {Z Y : Scheme.{0}} {M : LB Y} (s : LB.Sec M) (r : Z ⟶ Y) (z : Z
     (congrArg₂ (· * ·) (gs_unit r z _ hm _) (gs_res r z _ hm _))))
 
 /- English proof (translation)
-Establish `h : (g ^ e * (1 * (g ^ (e : ℤ))⁻¹ * t)) = t`. Rewrite using `[zpow_natCast, _root_.one_mul, mul_inv_cancel_left]`. Establish `h' : g.val ^ e * (1 * (g ^ (e : ℤ))⁻¹ * t).val = t.val` using `congrArg Units.val h`. Rewrite using `[mul_pow, ← h']`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem pow_cancel {R : Type} [CommRing R] (g t : Rˣ) (x : R) (e : ℕ) :
     (g.val * x) ^ e * (1 * (g ^ (e : ℤ))⁻¹ * t).val = x ^ e * t.val := by
@@ -40,17 +40,15 @@ theorem pow_cancel {R : Type} [CommRing R] (g t : Rˣ) (x : R) (e : ℕ) :
   rw [mul_pow, ← h']; ring
 
 /- English proof (translation)
-Set `V : L.ι → Z.Opens` to `fun j => r ⁻¹ᵁ L.U j`. Establish `l₂ : ∀ j, V j ≤ r ⁻¹ᵁ ((H.pull m).U (fun _ => j₀) ⊓ (pw L e).U j)` using `fun j z hz => ⟨mem_pull.2 (h₀ z), hz⟩`. Choose the witnesses or unpack the hypotheses as in `⟨u, hu⟩ : ∃ u : ∀ j, Γ(Z, V j), ∀ j z, z ∈ V j → gs (𝟙 Z) z (V j) (u j) = gs r z (L.U j) (s.f j) ^ e * (gw α r z j₀ j).val := by`. Use `⟨fun j => (r.appLE _ _ le_rfl).hom (s.f j) ^ e * (r.appLE _ _ (l₂ j)).hom (α.s (fun _ => j₀, j)).val, fun j z hz => ?_⟩` and prove the remaining obligations. Use `(gs_mul (𝟙 Z) z (V j) hz _ _).trans (congrArg₂ (· * ·) ((gs_pow (𝟙 Z) z (V j) hz _ _).trans ?_) ?_)` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `congrArg (· ^ e) (gs_appLE r z _ _ _ hz _)`. Conclude with `(gs_appLE r z _ _ _ hz _).trans (gs_unit r z _ (l₂ j hz) _)`. Establish `hcov : (⊤ : Z.Opens) ≤ iSup V` using `fun z _ => by`. Take `⟨j, hj⟩` from `Geo.Tor.exists_chart hL (r z)`. Conclude with `Opens.mem_iSup.2 ⟨j, hj⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨a, ha, -⟩` from `Z.sheaf.existsUnique_gluing' V ⊤ (fun j => homOfLE le_top) hcov u (fun j j' => fn_ext (V := V j ⊓ V j') fun z hz => by`. Use `(gs_res (𝟙 Z) z inf_le_left hz _).trans (Eq.trans ?_ (gs_res (𝟙 Z) z inf_le_right hz _).symm)` and prove the remaining obligations. Rewrite using `[hu j z hz.1, hu j' z hz.2, sec_gs s r z hz.1 hz.2, (isGen_iff α).1 hα Z r z j₀ j₀ j j' (h₀ z) (h₀ z) hz.1 hz.2]`. Establish `h1 : gm (r ≫ m) z (H.U j₀ ⊓ H.U j₀) (H.g j₀ j₀) = 1` using `gm_self hH _ z (h₀ z)`. Establish `t₁ : gm r z ((pw L e).U j ⊓ (pw L e).U j') ((pw L e).g j j') = gm r z (L.U j ⊓ L.U j') (L.g j j') ^ (e : ℤ)` using `map_zpow _ _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Rewrite using `[h1, t₁]`. Conclude with `pow_cancel _ _ _ _)`. Use `⟨a, ?_⟩` and prove the remaining obligations. Use extensionality with `z`. Take `⟨j, hj⟩` from `Geo.Tor.exists_chart hL (r z)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `k₁ : gs (𝟙 Z) z ⊤ a = gs (𝟙 Z) z (V j) (u j)` using `(gs_res (𝟙 Z) z le_top hj a).symm.trans (congrArg (gs (𝟙 Z) z (V j)) (ha j))`. Establish `k₂ : z ∈ Z.basicOpen (show Γ(Z, ⊤) from a) ↔ IsUnit (gs r z (L.U j) (s.f j))`. Use `(isUnit_gs (𝟙 Z) z ⊤ trivial a).symm.trans ?_` and prove the remaining obligations. Rewrite using `[k₁, hu j z hj, Units.isUnit_mul_units, isUnit_pow_iff he]`. Use `k₂.trans ⟨fun h => ?_, fun h => ?_⟩` and prove the remaining obligations.
-
-Conclude with `Opens.mem_iSup.2 ⟨j, (isUnit_gs r z _ hj _).1 h⟩`. Take `⟨k, hk⟩` from `Opens.mem_iSup.1 (show r z ∈ nonzeroLocus s from h)`. Establish `hk' : r z ∈ L.U k` using `W.basicOpen_le _ hk`. Rewrite using `[sec_gs s r z hj hk']`. Conclude with `(Units.isUnit _).mul ((isUnit_gs r z _ hk' _).2 hk)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_fn {X W Z : Scheme.{0}} (H : LB X) (hH : H.IsLB) (L : LB W) (hL : L.IsLB)
     (s : LB.Sec L) (m : W ⟶ X) (e : ℕ) (he : e ≠ 0)
@@ -96,15 +94,13 @@ theorem exists_fn {X W Z : Scheme.{0}} (H : LB X) (hH : H.IsLB) (L : LB W) (hL :
     exact (Units.isUnit _).mul ((isUnit_gs r z _ hk' _).2 hk)
 
 /- English proof (translation)
-Introduce `K _ X X' f φ H H' n s d hH hH' hf hva hd ⟨α, hα⟩`. Establish `: IsProper (φ ≫ f)` using `isProper_of_isProjBy K X' _ ⟨H', hH', n, s, hva⟩`. Establish `: IsProper φ` using `.of_comp _ f`. It suffices to establish `LocallyQuasiFinite φ from .of_isProper_of_locallyQuasiFinite _`. Use `.of_fiberToSpecResidueField _ fun y => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the argument to an intermediate assertion. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨hcov, hs⟩` from `hva`. Establish `hy : ∀ z, φ (φ.fiberι y z) = y` using `fun z => (φ.range_fiberι y).le ⟨z, rfl⟩`. Use `isAffineHom_fromSpecResidueField X y` as an intermediate fact. Establish `: IsAffineHom (φ.fiberι y)` using `MorphismProperty.IsStableUnderBaseChange.of_isPullback (P := @IsAffineHom.{0}) (IsPullback.of_hasPullback φ (X.fromSpecResidueField y)).flip this`. Take `⟨j₀, hj₀⟩` from `Geo.Tor.exists_chart hH y`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `key` using `fun i => exists_fn H hH H' hH' (s i) φ d (by omega) α hα (φ.fiberι y) j₀ (fun z => by`. Rewrite using `[hy]`. Conclude with `hj₀)`. Use `choose a ha using key`. Establish `: IsProper (φ.fiberToSpecResidueField y)` using `inferInstanceAs (IsProper (pullback.snd φ (X.fromSpecResidueField y)))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `locallyQuasiFinite_of_cover (K := X.residueField y) (φ.fiberToSpecResidueField y) a ?_ fun i => ?_` and prove the remaining obligations. Simplify using `only [ha]`. Rewrite using `[← Scheme.Hom.preimage_iSup]`. Conclude with `(congrArg (fun V => φ.fiberι y ⁻¹ᵁ V) hcov).trans rfl`. Rewrite using `[ha]`.
-
-Conclude with `(hs i).1.preimage _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isFinite_of_pull_iso_pow :
     ∀ (K : Type) [Field K] (X X' : Scheme.{0}) (f : X ⟶ Spec (CommRingCat.of K)) (φ : X' ⟶ X) (H : LB X) (H' : LB X') (n : ℕ) (s : Fin (n + 1) → LB.Sec H') (d : ℕ), H.IsLB → H'.IsLB → IsSeparated f → VeryAmpleBy (φ ≫ f) H' s → 1 ≤ d → LBIso (pw H' d) (H.pull φ) → IsFinite φ := by

@@ -19,13 +19,13 @@ set_option backward.isDefEq.respectTransparency false
 namespace GlobalTheory.ChainPts.PtPull
 
 /- English proof (translation)
-Use extensionality with `c`. Simplify using `only [kerAt, Set.mem_setOf_eq]`. Establish `hx : ((Scheme.Modules.pullbackComp w g).inv.app F).app ⊤ (∑ l, (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom (c l) • pullbackSections (w ≫ g) F hV (s l)) = ∑ l, (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom (c l) • pullbackSections w _ hV' (pullbackSections g F le_rfl (s l))`. Simplify using `only [map_sum, Scheme.Modules.Hom.app_smul, GlobalTheory.Vert.DivPull.pullbackComp_inv_app w g F le_rfl hV' hV]`. Rewrite using `[← hx]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Set `I : (Scheme.Modules.pullback (w ≫ g)).obj Q ≅ (Scheme.Modules.pullback w).obj Q'` to `((Scheme.Modules.pullbackComp w g).app Q).symm ≪≫ (Scheme.Modules.pullback w).mapIso e.symm`. Establish `hu' : u' = (Scheme.Modules.pullback g).map u ≫ e.inv`. Rewrite using `[← hu, Category.assoc, e.hom_inv_id, Category.comp_id]`. Establish `nat : (Scheme.Modules.pullbackComp w g).inv.app F ≫ (Scheme.Modules.pullback w).map u' = (Scheme.Modules.pullback (w ≫ g)).map u ≫ I.hom`. Rewrite using `[hu', Functor.map_comp]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `((Scheme.Modules.pullbackComp w g).inv.naturality_assoc u _).symm`. Generalize the expression as in `(∑ l, (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom (c l) • pullbackSections (w ≫ g) F hV (s l)) = t`. Establish `key : ((Scheme.Modules.pullback w).map u').app ⊤ (((Scheme.Modules.pullbackComp w g).inv.app F).app ⊤ t) = I.hom.app ⊤ (((Scheme.Modules.pullback (w ≫ g)).map u).app ⊤ t)` using `congr(($nat).app ⊤ t)`. Use `key ▸ ⟨fun h0 => ?_, fun h0 => ?_⟩` and prove the remaining obligations. Establish `h1 : I.inv.app ⊤ (I.hom.app ⊤ (((Scheme.Modules.pullback (w ≫ g)).map u).app ⊤ t)) = ((Scheme.Modules.pullback (w ≫ g)).map u).app ⊤ t` using `congr(($(I.hom_inv_id)).app ⊤ (((Scheme.Modules.pullback (w ≫ g)).map u).app ⊤ t))`.
+Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h1, h0, map_zero]`. Rewrite using `[h0, map_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kerAt_pull {X X' : Scheme.{0}} (g : X' ⟶ X) {R : Type} [CommRing R] (w : Sp R ⟶ X') {F Q : X.Modules}
     (u : F ⟶ Q) {Q' : X'.Modules} (u' : (Scheme.Modules.pullback g).obj F ⟶ Q')
@@ -59,7 +59,7 @@ theorem kerAt_pull {X X' : Scheme.{0}} (g : X' ⟶ X) {R : Type} [CommRing R] (w
   · rw [h0, map_zero]
 
 /- English proof (translation)
-Rewrite using `[← PullHT.valF_appLE w g (U := ⊤) (U' := g ⁻¹ᵁ ⊤) le_rfl le_rfl c, Scheme.Hom.appLE_eq_app]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem valF_appTop {k : Type} [Field k] {X X' : Scheme.{0}} (w : Sp k ⟶ X') (g : X' ⟶ X) (c : Γ(X, ⊤)) :
     valF w ⊤ (g.appTop c) = valF (w ≫ g) ⊤ c := by
@@ -67,7 +67,7 @@ theorem valF_appTop {k : Type} [Field k] {X X' : Scheme.{0}} (w : Sp k ⟶ X') (
   rfl
 
 /- English proof (translation)
-Rewrite using `[show coef d (PullHT.isFrame_pullS g le_rfl he) hs' l i = _ from PullHT.coef_pulled_frames g d le_rfl hU'.le he hs l i]`. Conclude with `PullHT.valF_appLE w g _ (by subst hU'; exact le_rfl) _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valF_coef_pull {k : Type} [Field k] {X X' : Scheme.{0}} (w : Sp k ⟶ X') (g : X' ⟶ X) {F : X.Modules}
     [F.IsQuasicoherent] {r : ℕ} (d : Bool) {V V' : X.Opens} {U' : X'.Opens} (hU' : U' = g ⁻¹ᵁ V')
@@ -79,13 +79,13 @@ theorem valF_coef_pull {k : Type} [Field k] {X X' : Scheme.{0}} (w : Sp k ⟶ X'
   exact PullHT.valF_appLE w g _ (by subst hU'; exact le_rfl) _
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw Xo p _ W Y i₀ Z X X' g h r x F Q s hs hs' u Q' u' e hF hu`. Use `haveI := hF.isQuasicoherent`. Use `⟨fun π hJ y w hw a φ hφ => ?_, fun hR y w hw a φ hφ => ?_⟩` and prove the remaining obligations. Take `⟨V, f, hf, hV, hc⟩` from `hJ y (w ≫ g) (by rw [Category.assoc]; exact hw) a φ hφ`. Use `⟨g ⁻¹ᵁ V, _, PullHT.isFrame_pullS g le_rfl hf, hV, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[kerAt_pull g w u u' e hu hV hV f]`. Introduce `cf v hv`. Establish `h1` using `hc cf v hv`. Establish `h2` using `fun l i => valF_coef_pull (spMap (intO ↥y.C.S).subtype ≫ w) g false (Scheme.Hom.comp_preimage g h (Z.U a).1) hf (hs a) (hs' a) l i`. Simplify using `only [← Category.assoc, ← h2, ← valF_appTop (spMap (intO ↥y.C.S).subtype ≫ w) g π] at h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Conclude with `h1`. Take `⟨V, f, hf, hV, hc⟩` from `hR y (w ≫ g) (by rw [Category.assoc]; exact hw) a φ hφ`. Use `⟨g ⁻¹ᵁ V, _, PullHT.isFrame_pullS g le_rfl hf, hV, ?_⟩` and prove the remaining obligations. Rewrite using `[kerAt_pull g w u u' e hu hV hV f]`. Introduce `cf v hv`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `hc cf v hv`. Establish `h2` using `fun l i => valF_coef_pull (spMap (intO ↥y.C.S).subtype ≫ w) g true (Scheme.Hom.comp_preimage g h (Z.U a).1) hf (hs a) (hs' a) l i`. Simplify using `only [← Category.assoc, ← h2] at h1`. Conclude with `h1`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pt_pull : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H} {Xo : ∀ l : Level H, Moduli Dw l} {p : ℕ} [Fact p.Prime] {W : ValuationSubring ℂ} {Y : LocalSystem Xo p W} {i₀ : Idx H p} (Z : GlobalTheory.LocM.Mdl Y i₀) {X X' : Scheme.{0}} (g : X' ⟶ X) (h : X ⟶ Z.X) {r : ℕ} (x : Fin r → Letter Dw) (F Q : X.Modules) (s : ∀ a : Fin Z.m, Fin r → Γ(F, h ⁻¹ᵁ (Z.U a).1)) (hs : ∀ a, GlobalTheory.VB.IsFrame (s a)) (hs' : ∀ a, GlobalTheory.VB.IsFrame (pullS g s a)) (u : F ⟶ Q) (Q' : X'.Modules) (u' : (Scheme.Modules.pullback g).obj F ⟶ Q') (e : Q' ≅ (Scheme.Modules.pullback g).obj Q), GlobalTheory.VB.IsVB F r → u' ≫ e.hom = (Scheme.Modules.pullback g).map u → (∀ π : Γ(X, ⊤), PtJ Z h x hs π u → PtJ Z (g ≫ h) x hs' (g.appTop π) u') ∧ (PtR Z h x hs u → PtR Z (g ≫ h) x hs' u') := by
   intro E _ _ _ H Dw Xo p _ W Y i₀ Z X X' g h r x F Q s hs hs' u Q' u' e hF hu

@@ -30,11 +30,9 @@ def HypFree : Prop := ∀ (σ : Type) (m n : ℕ) (ι : Fin m × Fin n → σ), 
 variable {σ : Type*}
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Apply `h` to reduce the goal to its premises. Use `conv_lhs => rw [P.as_sum]`. Rewrite using `[map_sum]`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `Finset.sum_eq_zero fun e he => ?_` and prove the remaining obligations. Take `⟨v, hvS, hv⟩` from `hne e he`. Rewrite using `[aeval_monomial, Finsupp.prod]`. Use `mul_eq_zero_of_right _ ?_` and prove the remaining obligations. Use `Finset.prod_eq_zero (Finsupp.mem_support_iff.mpr hv) ?_` and prove the remaining obligations.
-
-Simplify using `[killS, hvS, hv]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_support_of_killS {S : Set σ} {P : MvPolynomial σ ℂ} (h : aeval (killS S) P ≠ 0) :
     ∃ e ∈ P.support, ∀ v ∈ S, e v = 0 := by
@@ -51,9 +49,9 @@ theorem exists_support_of_killS {S : Set σ} {P : MvPolynomial σ ℂ} (h : aeva
   simp [killS, hvS, hv]
 
 /- English proof (translation)
-Use `conv_rhs => rw [Q.as_sum]`. Use `conv_lhs => rw [Q.as_sum]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun e he => ?_` and prove the remaining obligations. Rewrite using `[aeval_monomial, monomial_eq, Finsupp.prod, Finsupp.prod, algebraMap_eq]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr 1`. Use `Finset.prod_congr rfl fun v hv => ?_` and prove the remaining obligations. Establish `hvS : v ∉ S` using `fun hvS => (Finsupp.mem_support_iff.mp hv) (h e he v hvS)`. Simplify using `only [killS, if_neg hvS]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem aeval_killS_free {S : Set σ} {Q : MvPolynomial σ ℂ} (h : ∀ e ∈ Q.support, ∀ v ∈ S, e v = 0) :
     aeval (killS S) Q = Q := by
@@ -68,7 +66,7 @@ theorem aeval_killS_free {S : Set σ} {Q : MvPolynomial σ ℂ} (h : ∀ e ∈ Q
   simp only [killS, if_neg hvS]
 
 /- English proof (translation)
-Use `conv_lhs => rw [Q.as_sum]`. Rewrite using `[map_sum]`. Use `Finset.sum_eq_zero fun e he => ?_` and prove the remaining obligations. Simplify using `[pderiv_monomial, h e he]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem pderiv_eq_zero_of_forall_support_apply_eq_zero {v : σ} {Q : MvPolynomial σ ℂ} (h : ∀ e ∈ Q.support, e v = 0) :
     pderiv v Q = 0 := by
@@ -78,9 +76,9 @@ private theorem pderiv_eq_zero_of_forall_support_apply_eq_zero {v : σ} {Q : MvP
   simp [pderiv_monomial, h e he]
 
 /- English proof (translation)
-Use `show (∑ k : Fin n, LinearMap.mulLeft ℂ (X (ι (a, k))) * (pderiv (ι (b, k))).toLinearMap : Module.End ℂ (MvPolynomial σ ℂ)) (S * Q) = (∑ k : Fin n, LinearMap.mulLeft ℂ (X (ι (a, k))) * (pderiv (ι (b, k))).toLinearMap : Module.End ℂ (MvPolynomial σ ℂ)) S * Q`. Rewrite using `[LinearMap.sum_apply, LinearMap.sum_apply, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `X (ι (a, k)) * pderiv (ι (b, k)) (S * Q) = X (ι (a, k)) * pderiv (ι (b, k)) S * Q`. Establish `hl` using `(pderiv (ι (b, k))).leibniz S Q`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hl` using `[pderiv_eq_zero_of_forall_support_apply_eq_zero fun e he => hQ e he (b, k), smul_zero, zero_add, smul_eq_mul]`. Rewrite using `[hl]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem bRow_mul_free {m n : ℕ} (ι : Fin m × Fin n → σ) (a b : Fin m) (S Q : MvPolynomial σ ℂ)
     (hQ : ∀ e ∈ Q.support, ∀ x, e (ι x) = 0) : PI.FJM.bRow ι a b (S * Q) = PI.FJM.bRow ι a b S * Q := by
@@ -95,9 +93,9 @@ theorem bRow_mul_free {m n : ℕ} (ι : Fin m × Fin n → σ) (a b : Fin m) (S 
   ring
 
 /- English proof (translation)
-Use `show (∑ i : Fin m, LinearMap.mulLeft ℂ (X (ι (i, c))) * (pderiv (ι (i, d))).toLinearMap : Module.End ℂ (MvPolynomial σ ℂ)) (S * Q) = (∑ i : Fin m, LinearMap.mulLeft ℂ (X (ι (i, c))) * (pderiv (ι (i, d))).toLinearMap : Module.End ℂ (MvPolynomial σ ℂ)) S * Q`. Rewrite using `[LinearMap.sum_apply, LinearMap.sum_apply, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `X (ι (i, c)) * pderiv (ι (i, d)) (S * Q) = X (ι (i, c)) * pderiv (ι (i, d)) S * Q`. Establish `hl` using `(pderiv (ι (i, d))).leibniz S Q`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hl` using `[pderiv_eq_zero_of_forall_support_apply_eq_zero fun e he => hQ e he (i, d), smul_zero, zero_add, smul_eq_mul]`. Rewrite using `[hl]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem bCol_mul_free {m n : ℕ} (ι : Fin m × Fin n → σ) (c d : Fin n) (S Q : MvPolynomial σ ℂ)
     (hQ : ∀ e ∈ Q.support, ∀ x, e (ι x) = 0) : PI.FJM.bCol ι c d (S * Q) = PI.FJM.bCol ι c d S * Q := by
@@ -112,29 +110,25 @@ theorem bCol_mul_free {m n : ℕ} (ι : Fin m × Fin n → σ) (c d : Fin n) (S 
   ring
 
 /- English proof (translation)
-Introduce `τ m n ι hι α β P hP hrow hcol hsum hα hβ`. Establish `hinvP : HWB ι P` using `⟨hrow, hcol⟩`. Establish `hne : aeval (killS (offD ι)) P ≠ 0` using `fun h0 => hP (diag_zero m n ι hι P hinvP h0)`. Take `⟨e, heP, he0⟩` from `exists_support_of_killS hne`. Establish `hoff : ∀ (i : Fin m) (k : Fin n), (i : ℕ) ≠ k → e (ι (i, k)) = 0` using `fun i k h => he0 _ ⟨i, k, rfl, h⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hrowsum : ∀ (i : Fin m) (k : Fin n), (i : ℕ) = k → α i = e (ι (i, k))`. Introduce `i k hik`. Rewrite using `[← (hsum e heP).1 i, Finset.sum_eq_single k]`. Introduce `k' _ hk'`. Conclude with `hoff i k' fun h => hk' (Fin.ext (h.symm.trans hik))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Conclude with `absurd (Finset.mem_univ k) h`. Establish `hcolsum : ∀ (i : Fin m) (k : Fin n), (i : ℕ) = k → β k = e (ι (i, k))`. Introduce `i k hik`. Rewrite using `[← (hsum e heP).2 k, Finset.sum_eq_single i]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i' _ hi'`. Conclude with `hoff i' k fun h => hi' (Fin.ext (h.trans hik.symm))`. Introduce `h`. Conclude with `absurd (Finset.mem_univ i) h`. Establish `hrowlt : ∀ i : Fin m, (i : ℕ) < n`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `i`. Assume the negation of the conclusion as `hi`. Use `push_neg at hi`. Establish `h0 : α i = 0`. Rewrite using `[← (hsum e heP).1 i]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_eq_zero fun k _ => hoff i k (by have := k.isLt; omega)`. Conclude with `(hα i).ne' h0`. Establish `hcollt : ∀ k : Fin n, (k : ℕ) < m`. Introduce `k`. Assume the negation of the conclusion as `hk`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the negation of the conclusion and derive a contradiction. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Use `push_neg at hk`. Establish `h0 : β k = 0`. Rewrite using `[← (hsum e heP).2 k]`. Conclude with `Finset.sum_eq_zero fun i _ => hoff i k (by have := i.isLt; omega)`. Conclude with `(hβ k).ne' h0`.
+Reduce the conclusion to the remaining proof obligations. Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hmn : m = n`. Apply `le_antisymm` to reduce the goal to its premises. Assume the negation of the conclusion as `h push_neg at h`. Conclude with `lt_irrefl n (hrowlt ⟨n, h⟩)`. Assume the negation of the conclusion as `h push_neg at h`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `lt_irrefl m (hcollt ⟨m, h⟩)`. Establish `hanti : Antitone α` using `hA τ m n ι hι α P hP hrow fun e he i => (hsum e he).1 i`. Use `⟨hmn, hanti, fun i k h => (hrowsum i k h).trans (hcolsum i k h).symm, ?_⟩` and prove the remaining obligations. Substitute `n` using the available equality. Take `⟨hMinv, hMdiag⟩` from `hS τ m ι hι α hanti`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Take `⟨hMr, hMc⟩` from `hMinv`. Establish `hDP` using `hD τ m ι hι α P fun e he i => (hsum e he).1 i`. Establish `hFP` using `hF τ m m ι hι P`. Take `⟨Q, hQ⟩ : ∃ Q, Q = aeval (diagOne' ι) P` from `⟨_, rfl⟩`. Rewrite `hDP`, `hFP` using `[← hQ]`.
-
-Use `⟨Q, hFP, ?_⟩` and prove the remaining obligations. Rewrite using `[← sub_eq_zero]`. Use `diag_zero m m ι hι _ ⟨fun a b hab => ?_, fun c d hcd => ?_⟩ ?_` and prove the remaining obligations. Rewrite using `[map_sub, bRow_mul_free ι a b _ Q hFP, hrow a b hab, hMr a b hab, zero_mul, sub_zero]`. Rewrite using `[map_sub, bCol_mul_free ι c d _ Q hFP, hcol c d hcd, hMc c d hcd, zero_mul, sub_zero]`.
-
-Establish `hQfree : ∀ f ∈ Q.support, ∀ v ∈ offD ι, f v = 0`. Introduce and unpack `f hf v ⟨i, k, rfl, -⟩`. Conclude with `hFP f hf (i, k)`. Rewrite using `[map_sub, map_mul, hMdiag, aeval_killS_free hQfree, hDP, sub_self]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cauchyHW_of (hA : HypAnti) (hS : HypShape) (hD : HypDiag) (hF : HypFree) : PI.FJM.CauchyHW := by
   intro τ m n ι hι α β P hP hrow hcol hsum hα hβ

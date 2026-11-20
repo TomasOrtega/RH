@@ -10,7 +10,7 @@ namespace LateralTheory.EtaleFoundations.AwExPf
 variable {R : Type} [CommRing R]
 
 /- English proof (translation)
-Simplify using `only [GlobalTheory.EtC.ev, Cochain.add_v, Preadditive.comp_add]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem ev_add {E : Spc} {I : Cx R} {n : ℤ} (α β : Cochain ((chains R).obj E) I n) (p : ℕ) (s : ℤ)
     (h : -(p : ℤ) + n = s) (U : Scheme.{0}) (x : Sx E p U) :
@@ -19,9 +19,9 @@ theorem ev_add {E : Spc} {I : Cx R} {n : ℤ} (α β : Cochain ((chains R).obj E
   rfl
 
 /- English proof (translation)
-Set `φ' : (presheafToSheaf Scheme.etaleTopology _).obj ((freeP R).obj P) ⟶ F` to `φ`. Set `ψ' : (presheafToSheaf Scheme.etaleTopology _).obj ((freeP R).obj P) ⟶ F` to `ψ`. Express the relevant statement in the definitionally equal form `φ' = ψ'`. Apply `((sheafificationAdjunction Scheme.etaleTopology _).homEquiv _ _).injective` to reduce the goal to its premises. Rewrite using `[Adjunction.homEquiv_unit, Adjunction.homEquiv_unit]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `NatTrans.ext (funext fun U => ModuleCat.free_hom_ext fun x => ?_)` and prove the remaining obligations. Conclude with `h U.unop x.down`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem free_ext (P : PSh) (F : Shv R) (φ ψ : (free R).obj P ⟶ F)
     (h : ∀ U x, Sec.map φ (freeGen R P U x) = Sec.map ψ (freeGen R P U x)) : φ = ψ := by
@@ -34,9 +34,9 @@ theorem free_ext (P : PSh) (F : Shv R) (φ ψ : (free R).obj P ⟶ F)
   exact h U.unop x.down
 
 /- English proof (translation)
-Use `Cochain.ext _ _ (fun i j hij => ?_)` and prove the remaining obligations. Distinguish the cases in `hi : 0 ≤ -i`. Take `⟨p, rfl⟩ : ∃ p : ℕ, i = -(p : ℤ)` from `⟨(-i).toNat, by omega⟩`. Rewrite using `[← cancel_epi (chainsXIso R E p).inv]`. Conclude with `free_ext _ _ _ _ fun U x => h p j hij U x`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `IsZero.eq_of_src` to reduce the goal to its premises. Apply `HomologicalComplex.isZero_extend_X` to reduce the goal to its premises. Introduce `i' hi'`. Express the relevant statement in the definitionally equal form `-(i' : ℤ) = i at hi'`. Use linear arithmetic over natural numbers and integers.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem ev_ext {E : Spc} {I : Cx R} {n : ℤ} (α β : Cochain ((chains R).obj E) I n)
     (h : ∀ p s h U x, ev α p s h U x = ev β p s h U x) : α = β := by

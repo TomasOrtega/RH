@@ -10,7 +10,7 @@ namespace Formalism.EigenvalueLevelCeiling
 open Formalism.DivisionValues
 
 /- English proof (translation)
-The claim follows from `mackey_product ι (𝓞 K) (fun v => ↥(P v)) U (fun v (h : P v) => χ v (supd (((h : GL (Fin (n + 1)) (k v)) : Matrix (Fin (n + 1)) (Fin (n + 1)) (k v))))) (fun v => mirabolic_is_mackey (k v) (𝓞 K) n (χ v) (hχ v) (P v) (U v) (hP v) (hU v))`.
+A detailed English derivation is pending.
 -/
 theorem isMackey_pi_upper_unipotent_prod_character (K : Type) [Field K] [NumberField K]
     (ι : Type) [Fintype ι] [DecidableEq ι] (k : ι → Type) [∀ v, Field (k v)] [∀ v, Finite (k v)] (n : ℕ)

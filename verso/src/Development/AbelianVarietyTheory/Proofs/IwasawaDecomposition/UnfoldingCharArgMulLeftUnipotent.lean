@@ -8,13 +8,13 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.HermitianLatt
 namespace GlobalTheory.Proof.unfoldingCharArg_mul_left_unipotent
 
 /- English proof (translation)
-Introduce `F _ n' c' n c hc hc' r hr xj t`. Take `⟨-, -, h3⟩` from `(GlobalTheory.Proof.exists_xx1_eq_iff_inX_eN_Ufl_conditions.unfoldingAffineSpace_mem_iff_intrinsic F n' c' n c hc hc' xj (Loc.xx1 xj t)).1 ⟨t, rfl⟩`. Generalize the expression as in `Loc.xx1 xj t = x at h3`. Establish `e : Loc.n1Arg r = ∑ i ∈ Finset.range c, Loc.atN (r (Loc.eN F (n + c) (n + (i + 1)))) (n + i)`. Take `⟨d, rfl⟩ : ∃ d, c = d + 1` from `⟨c - 1, by omega⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Finset.sum_range_succ, GlobalTheory.Proof.exists_xx1_eq_iff_inX_eN_Ufl_conditions.eN_eq_zero (F := F) (N := n + (d + 1)) (i := n + (d + 1)) (by omega), map_zero]`. Establish `z : Loc.atN (0 : Fin (n + (d + 1)) → F) (n + d) = 0`. Unfold `Loc.atN`. Apply the tactic sequence `split_ifs <;> rfl`. Rewrite using `[z, add_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[e]`. Unfold `Loc.chArg`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `b3` using `atN_of_R1cond hr.1 (h3 (i + 1))`. Establish `b4 : Loc.atN (Loc.eN F (n + c) (n + (i + 1))) (n + i) = 0` using `GlobalTheory.Proof.unfoldingCharacterArgument_comp_unipotentRadicals.atN_eN_succ _ _`. Simplify using `only [map_sub, atN_sub, b4] at b3`. Express the relevant statement in the definitionally equal form `Loc.atN (r (x (Loc.eN F (n' + c') (n' + (i + 1))))) (n + i) = Loc.atN (x (Loc.eN F (n' + c') (n' + (i + 1)))) (n + i) + _`. Take the linear combination `b3`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem chArg_left : ∀ (F : Type) [Field F] (n' c' n c : ℕ), 1 ≤ c → c' = c + 1 → ∀ r ∈ Loc.R1 F n c, ∀ (xj : (Fin n' → F) →ₗ[F] (Fin n → F)) (t : Loc.FC n' c' n c → F), Loc.chArg (r.toLinearMap ∘ₗ Loc.xx1 xj t) = Loc.chArg (Loc.xx1 xj t) + Loc.n1Arg r := by
   intro F _ n' c' n c hc hc' r hr xj t

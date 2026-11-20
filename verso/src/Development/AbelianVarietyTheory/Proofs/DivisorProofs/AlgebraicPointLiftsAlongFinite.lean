@@ -11,13 +11,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.CovLift
 
 /- English proof (translation)
-Establish `hcl : IsClosed (Set.range π)` using `π.isClosedMap.isClosed_range`. Take `⟨w₀, hw₀⟩ : y (IsLocalRing.closedPoint K) ∈ Set.range π` from `h.mem_closed hcl ⟨_, rfl⟩`. Take `⟨⟨p, φ⟩, rfl⟩` from `(Scheme.SpecToEquivOfField K Y).symm.surjective y`. Establish `hy : (Scheme.SpecToEquivOfField K Y).symm ⟨p, φ⟩ = Spec.map φ ≫ Y.fromSpecResidueField p` using `rfl`. Rewrite `hw₀`, the goal using `[hy]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hp : π w₀ = p`. Rewrite using `[hw₀]`. Conclude with `Scheme.fromSpecResidueField_apply p (Spec.map φ (IsLocalRing.closedPoint K))`. Substitute `hp` using the available equality. Establish `hfin : (π.residueFieldMap w₀).hom.Finite` using `residueFieldMap_finite_of_locallyQuasiFinite π w₀`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Establish an intermediate fact. Equip the data with the indicated structure.
 
-Use `letI : Algebra (Y.residueField (π w₀)) (W.residueField w₀) := (π.residueFieldMap w₀).hom.toAlgebra`. Use `letI : Algebra (Y.residueField (π w₀)) K := φ.hom.toAlgebra`. Use `haveI : Module.Finite (Y.residueField (π w₀)) (W.residueField w₀) := hfin`. Set `ψ : W.residueField w₀ →ₐ[Y.residueField (π w₀)] K` to `IsAlgClosed.lift`. Use `⟨Spec.map (CommRingCat.ofHom ψ.toRingHom) ≫ W.fromSpecResidueField w₀, ?_⟩` and prove the remaining obligations.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[Category.assoc, ← Scheme.Hom.SpecMap_residueFieldMap_fromSpecResidueField, ← Category.assoc, ← Spec.map_comp]`. Use `congr 2`. Use extensionality with `a`. Conclude with `ψ.commutes a`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem exists_lift_of_isAlgClosed (K : Type) [Field K] [IsAlgClosed K] (W Y : Scheme.{0}) [IsIntegral W]
     (π : W ⟶ Y) [IsFinite π] (y : Spec (CommRingCat.of K) ⟶ Y)
@@ -47,7 +47,7 @@ theorem exists_lift_of_isAlgClosed (K : Type) [Field K] [IsAlgClosed K] (W Y : S
   exact ψ.commutes a
 
 /- English proof (translation)
-Introduce `W Y _ π hπ y h`. Use `haveI : IsAlgClosed Qb := (algebraicClosure.isAlgClosure ℚ ℂ).isAlgClosed`. Conclude with `exists_lift_of_isAlgClosed Qb W Y π y h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_lift_of_specializes : ∀ (W Y : Scheme.{0}) [IsIntegral W] (π : W ⟶ Y), IsFinite π → ∀ y : Sp Qb ⟶ Y, π (genericPoint W) ⤳ y (IsLocalRing.closedPoint Qb) → ∃ w : Sp Qb ⟶ W, w ≫ π = y := by
   intro W Y _ π hπ y h

@@ -17,9 +17,9 @@ namespace GlobalTheory.CompanionTheory.KapOrbAE
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Take `⟨M, G, hMP, hG, hGh, hMG⟩` from `GlobalTheory.EllHermGlobal.exists_charpoly_herm E n P hP`. Establish `h1 : ∀ᶠ w : Pl E in cofinite, ∀ i j, algebraMap E (w.adicCompletion E) (M i j) ∈ w.adicCompletionIntegers E` using `eventually_all.2 fun i => eventually_all.2 fun j => GlobalTheory.ExInertUnit.eventually_mem_integers _`. Establish `h2 : ∀ᶠ w : Pl E in cofinite, ∀ i j, algebraMap E (w.adicCompletion E) (G i j) ∈ w.adicCompletionIntegers E` using `eventually_all.2 fun i => eventually_all.2 fun j => GlobalTheory.ExInertUnit.eventually_mem_integers _`. Establish `h3 : ∀ᶠ w : Pl E in cofinite, ∀ i j, algebraMap E (w.adicCompletion E) (G⁻¹ i j) ∈ w.adicCompletionIntegers E` using `eventually_all.2 fun i => eventually_all.2 fun j => GlobalTheory.ExInertUnit.eventually_mem_integers _`. Use `filter_upwards [h1, h2, h3] with w hw1 hw2 hw3 hw`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨γ, hγ, hc⟩` from `GlobalTheory.ExInertUnit.local_step hE w hw M G hG hGh hMG hw1 hw2 hw3`. Conclude with `⟨γ, hγ, by rw [hc, hMP]⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_integral_unitary (hE : Unr E) (n : ℕ) (P : E[X]) (hP : P ∈ Ell E n) :
     ∀ᶠ w : Pl E in cofinite, ¬ IsSplitAt w → ∃ γ : UL n w, γ ∈ KL n w ∧ γ.1.val.charpoly = atPl w P := by
@@ -40,25 +40,23 @@ theorem exists_integral_unitary (hE : Unr E) (n : ℕ) (P : E[X]) (hP : P ∈ El
 open GlobalTheory.UnitOrbCount in
 
 /- English proof (translation)
-Establish `hP` using `ell_mul p₁ p₂ h1 h2 hc hd`. Take `⟨S, hS⟩` from `exists_section (E := E)`. Use `filter_upwards [GlobalTheory.BCT.OrbUnit.orbUnit_ae E hU n hn S hS _ hP, GlobalTheory.T.eventually_exists_integral_charpoly_split_place E hU n hn _ hP, exists_integral_unitary hU n _ hP, GlobalTheory.T.eventually_unitary_conj_of_same_elliptic_charpoly_inert E hU n hn _ hP] with w …`. Establish `hmap : atPl w (p₁ * p₂) = atPl w p₁ * atPl w p₂` using `Polynomial.map_mul _`. Rewrite `hA`, `hE1`, `hE2`, `hU2` using `[hmap]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Choose the witnesses or unpack the hypotheses as in `⟨γ₀, hγ₀K, hγ₀P⟩ : ∃ γ : UL n w, γ ∈ KL n w ∧ γ.1.val.charpoly = atPl w p₁ * atPl w p₂ := by`. Distinguish the cases in `hs : IsSplitAt w`. Conclude with `hE1 hs`. Conclude with `hE2 hs`. Establish `huniq : ∀ γ γ' : UL n w, γ ∈ KL n w → γ' ∈ KL n w → γ.1.val.charpoly = atPl w p₁ * atPl w p₂ → γ'.1.val.charpoly = atPl w p₁ * atPl w p₂ → ∃ g : UL n w, γ' = g⁻¹ * γ * g`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Introduce `γ γ' hk hk' hp hp'`. Distinguish the cases in `hs : IsSplitAt w`. Use `GlobalTheory.T.exists_conj_same_separable_charpoly_split_place E n _ hP w hs γ γ'` as an intermediate fact. Rewrite `this` using `[hmap]`. Conclude with `this hp hp'`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Conclude with `hU2 hs γ γ' hk hk' hp hp'`. Establish `key : ∀ γ : UL n w, γ.1.val.charpoly = atPl w p₁ * atPl w p₂ → ((∃ g : UL n w, g⁻¹ * γ * g ∈ KL n w) ↔ (Quot.mk _ γ : TwCl (MonoidHom.id (UL n w))) = Quot.mk _ γ₀)`. Introduce `γ hp`. Rewrite using `[mk_eq_iff]`. Prove the components needed by the constructor for the conclusion.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨g, hg⟩`. Take `⟨k, hk⟩` from `huniq _ γ₀ hg hγ₀K (by rw [cp_conj, hp]) hγ₀P`. Conclude with `⟨g * k, by rw [hk]; group⟩`. Introduce and unpack `⟨g, hg⟩`. Conclude with `⟨g, hg ▸ hγ₀K⟩`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Unfold `kapOrb clSum`. Simplify using `only [Set.mem_setOf_eq]`. Take `⟨c₀, hc₀⟩ : ∃ c₀ : TwCl (MonoidHom.id (UL n w)), Quot.mk _ γ₀ = c₀` from `⟨_, rfl⟩`. Rewrite `key` using `[hc₀]`. Rewrite using `[finsum_eq_single _ c₀]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hc : (Quot.mk _ c₀.rep : TwCl (MonoidHom.id (UL n w))) = Quot.mk _ γ₀`. Rewrite using `[hc₀]`. Conclude with `Quot.out_eq _`. Take `⟨g, hg⟩` from `(mk_eq_iff _ _).1 hc`. Establish `hp : c₀.rep.1.val.charpoly = atPl w p₁ * atPl w p₂`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[← hγ₀P, hg, cp_conj]`. Establish `hex : ∃ g : UL n w, g⁻¹ * c₀.rep * g ∈ KL n w` using `⟨g, hg ▸ hγ₀K⟩`. Take `⟨hT, -, hQ⟩` from `hA _ hp`. Rewrite using `[if_pos hp, hT, if_pos hex, hQ (atPl w p₁) (dvd_mul_right _ _) hex, mul_one]`. Introduce `c hne`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hc : (Quot.mk _ c.rep : TwCl (MonoidHom.id (UL n w))) = c` using `Quot.out_eq c`. Distinguish the cases in `hp : c.rep.1.val.charpoly = atPl w p₁ * atPl w p₂`. Take `⟨hT, -, -⟩` from `hA c.rep hp`. Rewrite using `[if_pos hp, hT, if_neg, mul_zero]`. Introduce `hex`.
-
-Apply `hne` to reduce the goal to its premises. Rewrite using `[← hc]`. Conclude with `(key _ hp).1 hex`. Rewrite using `[if_neg hp]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kapOrb_unit_pos (hU : Unr E) (n : ℕ) (hn : 1 ≤ n) (p₁ p₂ : E[X]) (h1 : p₁ ∈ Ell E p₁.natDegree)
     (h2 : p₂ ∈ Ell E p₂.natDegree) (hc : IsCoprime p₁ p₂) (hd : p₁.natDegree + p₂.natDegree = n) :
@@ -121,11 +119,9 @@ instance subsingleton_units_rank_zero (w : Pl E) : Subsingleton (UL 0 w) := by
   exact Subsingleton.elim _ _
 
 /- English proof (translation)
-Unfold `kapSign`. Use `split_ifs with hs`. Both sides reduce to the same expression. Simplify using `only`. Establish `hsub : Subsingleton (LinearMap.ker (Matrix.toLin' (aeval γ.val Q)))`.
+Replace the relevant objects with their definitions. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun a b => Subtype.ext (Subsingleton.elim _ _)⟩` and prove the remaining obligations. Use `haveI : IsEmpty (Fin (Module.finrank (w.adicCompletion E) (LinearMap.ker (Matrix.toLin' (aeval γ.val Q))))) := by`. Rewrite using `[Module.finrank_zero_of_subsingleton]`. Use `infer_instance`. Rewrite using `[Matrix.det_isEmpty]`.
-
-Simplify using `[ordL]`. Conclude with `zpow_zero _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem kapSign_zero (w : Pl E) (Q : (w.adicCompletion E)[X]) (γ : GLw 0 w) : kapSign 0 w Q γ = 1 := by
   unfold kapSign
@@ -142,15 +138,13 @@ theorem kapSign_zero (w : Pl E) (Q : (w.adicCompletion E)[X]) (γ : GLw 0 w) : k
     exact zpow_zero _
 
 /- English proof (translation)
-Use `haveI : Subsingleton (TwCl (MonoidHom.id (UL 0 w))) := by`. Use `⟨fun a b => ?_⟩` and prove the remaining obligations. Proceed by induction on `a using Quot.ind with | _ x => ?_`. Proceed by induction on `b using Quot.ind with | _ y => ?_`. Rewrite using `[Subsingleton.elim x y]`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Proceed by induction. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Use `haveI : Unique (TwCl (MonoidHom.id (UL 0 w))) := ⟨⟨Quot.mk _ 1⟩, fun _ => Subsingleton.elim _ _⟩`. Unfold `kapOrb clSum`. Rewrite using `[finsum_unique]`. Use `set γ : UL 0 w := (default : TwCl (MonoidHom.id (UL 0 w))).rep`. Establish `hcp : γ.1.val.charpoly = Q₁ * Q₂`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hQ]`. Rewrite using `[Matrix.charpoly, Matrix.det_isEmpty]`. Establish `hγ : γ ∈ KL 0 w`. Rewrite using `[Subsingleton.elim γ 1]`. Conclude with `one_mem _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Establish `hT : twOrb (MonoidHom.id _) (KL 0 w) γ ((KL 0 w : Set (UL 0 w)).indicator 1) = 1`. Rewrite using `[GlobalTheory.BCT.OrbUnit.twOrb_unit (KL 0 w) γ, if_pos ⟨1, by simpa using hγ⟩]`. Introduce `g₁ g₂ _ _`. Conclude with `⟨1, one_mem _, 1, one_mem _, Subsingleton.elim _ _⟩`. Introduce `g _ x _`.
-
-Rewrite using `[Subsingleton.elim x 1]`. Conclude with `one_mem _`. Establish `hcp' : γ ∈ {γ : UL 0 w | γ.1.val.charpoly = Q₁ * Q₂}` using `hcp`. Rewrite using `[if_pos hcp', hT, mul_one]`. Conclude with `kapSign_zero w Q₁ γ.1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kapOrb_unit_zero (w : Pl E) (Q₁ Q₂ : (w.adicCompletion E)[X]) (hQ : Q₁ * Q₂ = 1) :
     kapOrb 0 w Q₁ Q₂ ((KL 0 w : Set (UL 0 w)).indicator 1) = 1 := by
@@ -183,11 +177,11 @@ theorem kapOrb_unit_zero (w : Pl E) (Q₁ Q₂ : (w.adicCompletion E)[X]) (hQ : 
 end GlobalTheory.CompanionTheory.KapOrbAE
 
 /- English proof (translation)
-Introduce `E _ _ _ hU n K' f hf p₁ p₂ h1 h2 hc hd`. Establish `hunit : ∀ᶠ w : Pl E in cofinite, kapOrb n w (atPl w p₁) (atPl w p₂) ((KL n w : Set (UL n w)).indicator 1) = 1`. Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Establish `d1 : p₁.natDegree = 0` using `by omega`. Establish `d2 : p₂.natDegree = 0` using `by omega`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : p₁ = 1` using `h1.1.natDegree_eq_zero.1 d1`. Establish `e2 : p₂ = 1` using `h2.1.natDegree_eq_zero.1 d2`. Use `Eventually.of_forall fun w => GlobalTheory.CompanionTheory.KapOrbAE.kapOrb_unit_zero w _ _ ?_` and prove the remaining obligations. Simplify using `[e1, e2]`. Conclude with `GlobalTheory.CompanionTheory.KapOrbAE.kapOrb_unit_pos hU n hn p₁ p₂ h1 h2 hc hd`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hall : ∀ᶠ w : Pl E in cofinite, kapOrb n w (atPl w p₁) (atPl w p₂) (f w) = 1` using `by filter_upwards [hf.2, hunit] with w hw h`. Rewrite using `[hw]`. Conclude with `h`. Conclude with `Filter.eventually_cofinite.1 hall`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CompanionTheory.KapOrbAE.kapOrbAE : KapOrbAE := by
   intro E _ _ _ hU n K' f hf p₁ p₂ h1 h2 hc hd

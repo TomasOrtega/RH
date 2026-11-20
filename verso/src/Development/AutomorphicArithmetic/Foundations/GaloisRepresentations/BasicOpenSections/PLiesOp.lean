@@ -10,7 +10,7 @@ open Formalism.ConjugateSelfDual ReciprocityTheory.Gal
 namespace UpperTheory.Gal.Mod.LiesOverOperations
 
 /- English proof (translation)
-Use `h.map ((q.appTop.hom).comp (Scheme.ΓSpecIso (CommRingCat.of k)).inv.hom)` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem unit_nat {k : Type} [Field k] {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of k)) (m : ℕ)
     (h : IsUnit (m : k)) : IsUnit (m : Γ(X, ⊤)) := by
@@ -18,21 +18,21 @@ private theorem unit_nat {k : Type} [Field k] {X : Scheme.{0}} (q : X ⟶ Spec (
   simpa using this
 
 /- English proof (translation)
-Rewrite using `[← TranscendenceTraces.multBasic_holds.2.2 p]`. Conclude with `TranscendenceTraces.wtFlat_holds p`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem wt_one {Z S : Scheme.{0}} (p : Z ⟶ S) [IsFinite p] [Etale p] : IsWt p (Wt.const Z 1) := by
   rw [← TranscendenceTraces.multBasic_holds.2.2 p]
   exact TranscendenceTraces.wtFlat_holds p
 
 /- English proof (translation)
-Unfold `pullHQ`. Rewrite using `[pullHl_comp]`. Conclude with `LinearMap.baseChange_comp _ _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem pq_comp (l : ℕ) [Fact l.Prime] {E E' E'' : Spc} (f : E ⟶ E') (g : E' ⟶ E'') (n i : ℤ) :
     pullHQ l (f ≫ g) n i = pullHQ l f n i ∘ₗ pullHQ l g n i := by
   unfold pullHQ; rw [pullHl_comp]; exact LinearMap.baseChange_comp _ _
 
 /- English proof (translation)
-Unfold `pullHQ`. Rewrite using `[pullHl_id]`. Conclude with `LinearMap.baseChange_id`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem pq_id (l : ℕ) [Fact l.Prime] (E : Spc) (n i : ℤ) : pullHQ l (𝟙 E) n i = LinearMap.id := by
   unfold pullHQ; rw [pullHl_id]; exact LinearMap.baseChange_id
@@ -41,19 +41,19 @@ section Geo
 variable {k : Type} [Field k] (Ω : Type) [Field Ω] [Algebra k Ω]
 
 /- English proof (translation)
-The claim follows from `pullback.lift_fst _ _ _`.
+A detailed English derivation is pending.
 -/
 private theorem geo_fst {X Y : Scheme.{0}} (p : X ⟶ Spec (CommRingCat.of k)) {q : Y ⟶ Spec (CommRingCat.of k)} (u : X ⟶ Y)
     (hu : u ≫ q = p) : geomMap Ω p u hu ≫ pullback.fst _ _ = pullback.fst _ _ ≫ u := pullback.lift_fst _ _ _
 
 /- English proof (translation)
-The claim follows from `pullback.lift_snd _ _ _`.
+A detailed English derivation is pending.
 -/
 private theorem geo_snd {X Y : Scheme.{0}} (p : X ⟶ Spec (CommRingCat.of k)) {q : Y ⟶ Spec (CommRingCat.of k)} (u : X ⟶ Y)
     (hu : u ≫ q = p) : geomMap Ω p u hu ≫ pullback.snd _ _ = pullback.snd _ _ := pullback.lift_snd _ _ _
 
 /- English proof (translation)
-Use `IsPullback.of_bot (v₂₁ := pullback.snd q (sp (algebraMap k Ω))) (v₂₂ := q) (h₃₁ := sp (algebraMap k Ω)) ?_ (geo_fst Ω _ _ _).symm (IsPullback.of_hasPullback q _)` and prove the remaining obligations. Rewrite using `[geo_snd]`. Conclude with `IsPullback.of_hasPullback _ _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem geo_pb {X Y : Scheme.{0}} (q : Y ⟶ Spec (CommRingCat.of k)) (s : X ⟶ Y) :
     IsPullback (pullback.fst (s ≫ q) (sp (algebraMap k Ω))) (geomMap Ω (s ≫ q) s rfl) s
@@ -66,11 +66,11 @@ private theorem geo_pb {X Y : Scheme.{0}} (q : Y ⟶ Spec (CommRingCat.of k)) (s
 end Geo
 
 /- English proof (translation)
-Establish `himg : fib u (x ≫ b) = (fun z => z ≫ a) '' fib v x`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce `hy`. Establish `hy' : y ≫ u = x ≫ b` using `hy`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `⟨h.lift y x hy', h.lift_snd _ _ _, h.lift_fst _ _ _⟩`. Introduce and unpack `⟨z, hz, rfl⟩`. Establish `hz' : z ≫ v = x` using `hz`. Express the relevant statement in the definitionally equal form `(z ≫ a) ≫ u = x ≫ b`. Rewrite using `[Category.assoc, h.w, reassoc_of% hz']`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[himg, Set.ncard_image_of_injOn]`. Introduce `z hz z' hz' hzz`. Establish `e1 : z ≫ v = x` using `hz`. Establish `e2 : z' ≫ v = x` using `hz'`. Conclude with `h.hom_ext hzz (e1.trans e2.symm)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem card_fib {A B C D : Scheme.{0}} {a : A ⟶ C} {v : A ⟶ B} {u : C ⟶ D} {b : B ⟶ D}
     (h : IsPullback a v u b) {Ω : Type} [Field Ω] (x : gp Ω ⟶ B) : (fib v x).ncard = (fib u (x ≫ b)).ncard := by
@@ -91,9 +91,9 @@ private theorem card_fib {A B C D : Scheme.{0}} {a : A ⟶ C} {v : A ⟶ B} {u :
   exact h.hom_ext hzz (e1.trans e2.symm)
 
 /- English proof (translation)
-Apply `pullback.hom_ext` to reduce the goal to its premises. Apply `pullback.hom_ext` to reduce the goal to its premises. Simplify `h1` using `only [Category.assoc]`. Establish `e : pullback.fst (pullback.snd g (sp (algebraMap O k))) (sp (algebraMap k Ω)) ≫ pullback.snd g (sp (algebraMap O k)) = pullback.snd _ _ ≫ sp (algebraMap k Ω)` using `pullback.condition`. Rewrite using `[Category.assoc, Category.assoc, e, ← Category.assoc, h2, Category.assoc]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h2`.
+A detailed English derivation is pending.
 -/
 private theorem gen_ext {O k Ω : Type} [CommRing O] [Field k] [Algebra O k] [Field Ω] [Algebra k Ω] {Y A : Scheme.{0}}
     (g : Y ⟶ Spec (CommRingCat.of O)) (a b : A ⟶ geom Ω (pullback.snd g (sp (algebraMap O k))))
@@ -111,39 +111,37 @@ end UpperTheory.Gal.Mod.LiesOverOperations
 
 open UpperTheory.Gal.Mod.LiesOverOperations in
 /- English proof (translation)
-Introduce `hHop hOC`. Unfold `LiesOp`. Introduce `l _ p k L _ _ H θ O _ _ C Ω _ _ hl T g d m hF hLies c hBC`. Take `⟨-, κ, h, hκt, hw⟩` from `hLies`. Take `⟨v, hvpb, hvf, hvb, hvw⟩` from `hBC`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI := c.fin`. Use `haveI : IsFinite (H.s g) := hF.1`. Use `haveI : Etale (H.s g) := hF.2.1`. Use `haveI : IsFinite (pullback.lift (H.s g) κ h) := hw.1`. Set `π` to `piG C Ω`.
+Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hπs : π ≫ pullback.fst _ _ ≫ pullback.fst _ _ = pullback.fst H.q (sp (algebraMap k Ω)) ≫ C.π`. Express the relevant statement in the definitionally equal form `geomMap Ω H.q (pullback.lift C.π H.q C.ov) (pullback.lift_snd _ _ _) ≫ _ ≫ _ = _`. Rewrite using `[reassoc_of% (geo_fst Ω H.q (pullback.lift C.π H.q C.ov) (pullback.lift_snd _ _ _))]`. Use `erw [pullback.lift_fst]`. Establish `hπb : π ≫ pullback.snd _ _ = pullback.snd _ _` using `geo_snd Ω _ _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `P₁` using `IsPullback.of_hasPullback c.p π`. Establish `ha : (pullback.snd c.p π ≫ pullback.fst H.q (sp (algebraMap k Ω))) ≫ C.π = (pullback.fst c.p π ≫ v) ≫ T.p`. Rewrite using `[Category.assoc, ← hπs, Category.assoc, hvpb.w, ← Category.assoc _ c.p, pullback.condition, Category.assoc]`. Set `a : pullback c.p π ⟶ pullback C.π T.p` to `pullback.lift _ _ ha`. Establish `P₂ : IsPullback (a ≫ pullback.snd _ _) (pullback.snd c.p π) T.p (pullback.fst H.q (sp (algebraMap k Ω)) ≫ C.π)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `P₁.paste_horiz hvpb` as an intermediate fact. Rewrite `this` using `[hπs]`. Rewrite using `[show a ≫ pullback.snd _ _ = pullback.fst c.p π ≫ v from pullback.lift_snd _ _ _]` and apply the resulting hypothesis. Establish `P₃ : IsPullback a (pullback.snd c.p π) (pullback.fst C.π T.p) (pullback.fst H.q (sp (algebraMap k Ω)))` using `IsPullback.of_right P₂ (pullback.lift_fst _ _ _) (IsPullback.of_hasPullback C.π T.p).flip`. Establish `hfY : pullback.fst (H.s g ≫ H.q) (sp (algebraMap k Ω)) ≫ H.s g = H.sΩ Ω g ≫ pullback.fst _ _` using `(geo_fst Ω _ _ _).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu : (pullback.fst (H.s g ≫ H.q) (sp (algebraMap k Ω)) ≫ pullback.lift (H.s g) κ h) ≫ pullback.fst C.π T.p = H.sΩ Ω g ≫ pullback.fst H.q (sp (algebraMap k Ω))`. Rewrite using `[Category.assoc, pullback.lift_fst, hfY]`. Set `u : geom Ω (H.s g ≫ H.q) ⟶ pullback c.p π` to `P₃.lift _ _ hu`. Establish `hua : u ≫ a = pullback.fst (H.s g ≫ H.q) (sp (algebraMap k Ω)) ≫ pullback.lift (H.s g) κ h` using `P₃.lift_fst _ _ _`. Establish `hus : u ≫ pullback.snd c.p π = H.sΩ Ω g` using `P₃.lift_snd _ _ _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `P₄ : IsPullback (pullback.fst (H.s g ≫ H.q) (sp (algebraMap k Ω))) u (pullback.lift (H.s g) κ h) a`. Use `IsPullback.of_bot ?_ hua.symm P₃` and prove the remaining obligations. Rewrite using `[hus, pullback.lift_fst]`. Conclude with `geo_pb Ω H.q (H.s g)`. Establish `hav : a ≫ pullback.snd _ _ = pullback.fst c.p π ≫ v` using `pullback.lift_snd _ _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlS : IsUnit (l : Γ(H.geomZ Ω, ⊤))` using `unit_nat (pullback.snd H.q _) l hl`. Establish `hl₀` using `unit_nat (pullback.snd (pullback.snd C.p (sp (algebraMap O k))) (sp (algebraMap k Ω))) l hl`. Establish `hsF : IsFinite (H.sΩ Ω g)` using `MorphismProperty.of_isPullback (P := @IsFinite) (geo_pb Ω H.q (H.s g)) ‹_›`. Establish `hsE : Etale (H.sΩ Ω g)` using `MorphismProperty.of_isPullback (P := @Etale) (geo_pb Ω H.q (H.s g)) ‹_›`. Establish `hwt₁ : IsWt (pullback.snd c.p π) (Wt.const _ 1)`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `TranscendenceTraces.all_holds.1.1 (pullback.fst c.p π) (pullback.snd c.p π) c.p π c.w P₁ c.wt` as an intermediate fact. Rewrite `this` using `[hvw]`. Conclude with `this`. Set `c₁ : TranscendenceTraces.Corr (H.geomZ Ω) (geom Ω (pullback.snd C.p (sp (algebraMap O k))))` to `⟨pullback c.p π, pullback.snd _ _, pullback.fst _ _ ≫ c.f, Wt.const _ 1, inferInstance, hwt₁⟩`. Set `c₂ : TranscendenceTraces.Corr (H.geomZ Ω) (geom Ω (pullback.snd C.p (sp (algebraMap O k))))` to `⟨geom Ω (H.s g ≫ H.q), H.sΩ Ω g, H.tΩ Ω g ≫ π, Wt.const _ 1, hsF, wt_one _⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `huF : IsFinite u` using `MorphismProperty.of_isPullback (P := @IsFinite) P₄ ‹_›`. Establish `e₁ : u ≫ pullback.fst c.p π ≫ v = pullback.fst (H.s g ≫ H.q) (sp (algebraMap k Ω)) ≫ κ`. Rewrite using `[← hav, ← Category.assoc, hua, Category.assoc, pullback.lift_snd]`. Establish `e₂ : u ≫ pullback.fst c.p π ≫ c.p = H.sΩ Ω g ≫ π`. Rewrite using `[pullback.condition, ← Category.assoc, hus]`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Establish `ht : H.tΩ Ω g ≫ pullback.fst H.q (sp (algebraMap k Ω)) = pullback.fst (H.s g ≫ H.q) (sp (algebraMap k Ω)) ≫ H.t g` using `geo_fst Ω _ _ _`. Establish `htb : H.tΩ Ω g ≫ pullback.snd H.q (sp (algebraMap k Ω)) = pullback.snd _ _` using `geo_snd Ω _ _ _`. Establish `hsb : H.sΩ Ω g ≫ pullback.snd H.q (sp (algebraMap k Ω)) = pullback.snd _ _` using `geo_snd Ω _ _ _`. Establish `huf : u ≫ c₁.f = c₂.f`. Express the relevant statement in the definitionally equal form `u ≫ pullback.fst c.p π ≫ c.f = H.tΩ Ω g ≫ π`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `gen_ext C.p` to reduce the goal to its premises. Simplify using `only [Category.assoc]`. Rewrite using `[hvf, hπs, reassoc_of% e₁, hκt, reassoc_of% ht]`. Simplify using `only [Category.assoc]`. Rewrite using `[hvb, reassoc_of% e₂, hπb, hsb, htb]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hcnt : ∀ (Ω' : Type) [Field Ω'] [IsAlgClosed Ω'] (x : gp Ω' ⟶ c₁.Z), (fib u x).ncard = m`. Introduce `Ω' _ _ x`. Rewrite using `[card_fib P₄ x]`. Conclude with `(Nat.card_coe_set_eq _).symm.trans (hw.2.2 Ω' (x ≫ a))`. Establish `hcov : ∀ n : ℤ, c₂.opQ l n 0 = (m : ℚ_[l]) • c₁.opQ l n 0` using `fun n => @hOC l _ _ _ c₂ c₁ u huF m rfl rfl hus huf hlS hcnt n 0`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hbc : ∀ n : ℤ, pullHQ l (sch.map π) n 0 ∘ₗ c.opQ l n 0 = c₁.opQ l n 0` using `fun n => by`. Use `TranscendenceTraces.adic.2.2.2.2.2.2.1 l n 0 c₁ c π (𝟙 _) (pullback.fst c.p π) P₁ (Category.comp_id _) (by rw [hvw]; rfl) hl₀` as an intermediate fact. Rewrite using `[this, CategoryTheory.Functor.map_id, pq_id]`. Both sides reduce to the same expression. Establish `key : ∀ (n : ℤ) x, trHQ l (H.sΩ Ω g) (Wt.const _ 1) n 0 (pullHQ l (sch.map (H.tΩ Ω g)) n 0 (pullHQ l (sch.map π) n 0 x)) = (m : ℚ_[l]) • pullHQ l (sch.map π) n 0 (c.opQ l n 0 x)` using `fun n x => by`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `h₁` using `LinearMap.congr_fun (hcov n) x`. Establish `h₂` using `LinearMap.congr_fun (hbc n) x`. Rewrite `h₂` using `[LinearMap.comp_apply]`. Rewrite `*` using `[h₂, LinearMap.smul_apply]`. Rewrite using `[← h₁]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `_ = trHQ l (H.sΩ Ω g) (Wt.const _ 1) n 0 (pullHQ l (sch.map (H.tΩ Ω g ≫ π)) n 0 x)`. Rewrite using `[Functor.map_comp, pq_comp]`. Both sides reduce to the same expression. Rewrite using `[hHop l k H Ω hl g d hF]`. Use `DirectSum.linearMap_ext _ fun n => LinearMap.ext fun x => ?_` and prove the remaining obligations.
-
-Unfold `pullTot`. Simplify using `only [LinearMap.comp_apply, LinearMap.smul_apply, DirectSum.lmap_lof]`. Rewrite using `[key n x, map_smul]`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.Mod.liesOp :
     HopOp → OpCover → LiesOp := by

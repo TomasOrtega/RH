@@ -9,7 +9,7 @@ open scoped ValuativeRel
 open GlobalTheory.CompanionTheory.LFUDom
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.LFUDom.integral_lattice_char_eq_zero | exact GlobalTheory.CompanionTheory.LFUDom.integral_lattice_char_eq_zero | (intros; apply GlobalTheory.CompanionTheory.LFUDom.integral_lattice_char_eq_zero <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.lattice_character_integral_zero : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] (ψ : AddChar F Circle), Ad3.IsStd ψ → ∀ A : GL (Fin 2) F,
   (¬ ∀ b, ((A⁻¹ : GL (Fin 2) F) : Matrix (Fin 2) (Fin 2) F) 1 b ∈ 𝒪[F]) →

@@ -1,11 +1,11 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `K _ _ p hp`. Establish `hnu : ¬ IsUnit (p : NumberField.RingOfIntegers K)`. Introduce `h`. Establish `h1 : IsUnit (algebraMap ℤ (NumberField.RingOfIntegers K) (p : ℤ))`. Simplify using `using h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h2 : IsUnit (p : ℤ)` using `(isUnit_map_iff _ _).mp h1`. Conclude with `(Nat.prime_iff_prime_int.mp hp).not_unit h2`. Take `⟨M, hM, hle⟩` from `Ideal.exists_le_maximal (Ideal.span {(p : NumberField.RingOfIntegers K)}) (by rwa [Ne, Ideal.span_singleton_eq_top])`. Establish `hmem : (p : NumberField.RingOfIntegers K) ∈ M` using `hle (Ideal.mem_span_singleton_self _)`. Use `⟨⟨M, hM.isPrime, ?_⟩, hmem⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `rfl`. Rewrite `hmem` using `[Ideal.mem_bot]`. Conclude with `hp.ne_zero (Nat.cast_eq_zero.mp hmem)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Qk10.exists_w :
     ∀ (K : Type) [inst : Field K] [NumberField K] {p : ℕ},

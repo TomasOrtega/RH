@@ -73,9 +73,9 @@ def ptA (hcm : IsCMExt F E σ) (t : E →ₐ[F] Fv F v) (p q : Fv F v) : AE F E 
   1 + tensAt E v ((splitAlgEquiv hcm t).symm (p, q) - 1)
 
 /- English proof (translation)
-Use `set Y := (splitAlgEquiv hcm t).symm (p, q)`. Use `set Z := (splitAlgEquiv hcm t).symm (p', q')`. Establish `hYZ : (splitAlgEquiv hcm t).symm (p * p', q * q') = Y * Z`. Rewrite using `[← map_mul]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : Y * Z - 1 = (Y - 1) + (Z - 1) + (Y - 1) * (Z - 1)` using `by ring`. Establish `e2 : tensAt E v (Y - 1) * tensAt E v (Z - 1) = tensAt E v ((Y - 1) * (Z - 1))`. Rewrite using `[tensAt_mul_right, compFin_tensAt]`. Simplify using `only [ptA, hYZ, e1, map_add, ← e2]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem ptA_mul (hcm : IsCMExt F E σ) (t : E →ₐ[F] Fv F v) (p q p' q' : Fv F v) :
     ptA hcm t p q * ptA hcm t p' q' = ptA hcm t (p * p') (q * q') := by
@@ -90,7 +90,7 @@ theorem ptA_mul (hcm : IsCMExt F E σ) (t : E →ₐ[F] Fv F v) (p q p' q' : Fv 
   ring
 
 /- English proof (translation)
-Establish `: (splitAlgEquiv hcm t).symm ((1 : Fv F v), (1 : Fv F v)) = 1`. Rewrite using `[← map_one (splitAlgEquiv hcm t).symm]`. Both sides reduce to the same expression. Rewrite using `[ptA, this, sub_self, map_zero, add_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem ptA_one (hcm : IsCMExt F E σ) (t : E →ₐ[F] Fv F v) : ptA hcm t 1 1 = 1 := by
   have : (splitAlgEquiv hcm t).symm ((1 : Fv F v), (1 : Fv F v)) = 1 := by

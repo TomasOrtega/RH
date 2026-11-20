@@ -9,11 +9,11 @@ open scoped TensorProduct Pointwise
 namespace GlobalTheory.SUSuppClosed
 
 /- English proof (translation)
-Establish `: IsModuleTopology (AF F) (AF F ⊗[F] E)` using `⟨rfl⟩`. Establish `: IsTopologicalRing (AF F ⊗[F] E)` using `IsModuleTopology.isTopologicalRing (AF F) _`. Establish `: T2Space (AF F)` using `GlobalTheory.AdelicUnitaryTop.t2Space_adeleRing_numberField F`. Take `⟨e⟩` from `GlobalTheory.AdelicUnitaryTop.nonempty_homeomorph (F := F) (E := E) (AF F)`. Establish `: T2Space (AF F ⊗[F] E)` using `e.isEmbedding.t2Space`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hv : Continuous fun g : HA (AF F) σ J => ((HA.mat (AF F) σ J g).1 : Matrix (Fin M) (Fin M) (AF F ⊗[F] E))` using `Units.continuous_val.comp (GlobalTheory.AdelicU.isEmbedding_matHom (AF F) σ J).continuous`. Establish `h1 : IsClosed {g : HA (AF F) σ J | g ∈ SUAdelic σ J}`. Simplify using `only [StrongApprox.mem_SUAdelic]`. Conclude with `isClosed_eq hv.matrix_det continuous_const`. Establish `h2 : IsClosed {g : HA (AF F) σ J | ∀ i j, algebraMap (AF F) (AF F ⊗[F] E) ε * (((HA.mat (AF F) σ J g).1 : Matrix (Fin M) (Fin M) (AF F ⊗[F] E)) - 1) i j = (((HA.mat (AF F) σ J g).1 : Matrix (Fin M) (Fin M) (AF F ⊗[F] E)) - 1) i j}`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Set.setOf_forall]`. Use `isClosed_iInter fun i => isClosed_iInter fun j => ?_` and prove the remaining obligations. Establish `hc : Continuous fun g : HA (AF F) σ J => (((HA.mat (AF F) σ J g).1 : Matrix (Fin M) (Fin M) (AF F ⊗[F] E)) - 1) i j` using `(hv.sub continuous_const).matrix_elem i j`. Conclude with `isClosed_eq (continuous_const.mul hc) hc`. Conclude with `h1.inter h2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isClosed_SUSupp {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E) (ε : AF F) : IsClosed (SUSupp σ J ε) := by

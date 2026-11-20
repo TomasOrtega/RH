@@ -7,7 +7,7 @@ open scoped TensorProduct ENNReal NNReal Matrix
 namespace GlobalTheory.CompanionTheory.SW.HermTop
 
 /- English proof (translation)
-Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Apply `τ.injective` to reduce the goal to its premises. Rewrite using `[h.2.2.2, h.2.2.2, star_star]`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem sigma_sigma {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {σ : E →ₐ[F] E} (h : IsCMExt F E σ) (x : E) : σ (σ x) = x := by
@@ -20,7 +20,7 @@ section
 variable {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [CommRing R] [Algebra F R]
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b => simp [sigR, h]`. Consider the case `add a b ha hb => rw [map_add, map_add, ha, hb]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem sigR_sigR {σ : E →ₐ[F] E} (h : ∀ x, σ (σ x) = x) (y : R ⊗[F] E) :
     sigR R σ (sigR R σ y) = y := by
@@ -30,13 +30,13 @@ theorem sigR_sigR {σ : E →ₐ[F] E} (h : ∀ x, σ (σ x) = x) (y : R ⊗[F] 
   | add a b ha hb => rw [map_add, map_add, ha, hb]
 
 /- English proof (translation)
-Simplify using `[sigR, inclR]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sigR_inclR (σ : E →ₐ[F] E) (x : E) : sigR R σ (inclR R x) = inclR R (σ x) := by
   simp [sigR, inclR]
 
 /- English proof (translation)
-Introduce `a b`. Simplify using `only [gramR, hR, hform, JR, Matrix.map_apply, map_sum, map_mul, sigR_sigR R h, sigR_inclR, hJ]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem gramR_mem {σ : E →ₐ[F] E} (h : ∀ x, σ (σ x) = x) {n M : ℕ} {J : Matrix (Fin M) (Fin M) E}
     (hJ : ∀ i j, σ (J j i) = J i j) (X : Fin n → Fin M → R ⊗[F] E) :
@@ -50,19 +50,19 @@ theorem gramR_mem {σ : E →ₐ[F] E} (h : ∀ x, σ (σ x) = x) {n M : ℕ} {J
 variable [TopologicalSpace R] [IsTopologicalRing R]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem isModTop : IsModuleTopology R (R ⊗[F] E) := ⟨rfl⟩
 
 /- English proof (translation)
-The claim follows from `haveI := isModTop (F := F) (E := E) R IsModuleTopology.isTopologicalRing R (R ⊗[F] E)`.
+A detailed English derivation is pending.
 -/
 theorem isTopRing [Module.Finite F E] : IsTopologicalRing (R ⊗[F] E) :=
   haveI := isModTop (F := F) (E := E) R
   IsModuleTopology.isTopologicalRing R (R ⊗[F] E)
 
 /- English proof (translation)
-Use `haveI := isModTop (F := F) (E := E) R`. Use `haveI := isTopRing (F := F) (E := E) R`. Set `e` to `(Algebra.TensorProduct.basis R (Module.finBasis F E)).equivFun`. Conclude with `⟨{ e.toEquiv with continuous_toFun := IsModuleTopology.continuous_of_linearMap e.toLinearMap continuous_invFun := IsModuleTopology.continuous_of_linearMap e.symm.toLinearMap }⟩`.
+Introduce a local definition for the expression. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_homeo [Module.Finite F E] :
     Nonempty ((R ⊗[F] E) ≃ₜ (Fin (Module.finrank F E) → R)) := by
@@ -74,7 +74,7 @@ theorem exists_homeo [Module.Finite F E] :
     continuous_invFun := IsModuleTopology.continuous_of_linearMap e.symm.toLinearMap }⟩
 
 /- English proof (translation)
-Use `haveI := isModTop (F := F) (E := E) R`. Use `haveI := isTopRing (F := F) (E := E) R`. Conclude with `IsModuleTopology.continuous_of_linearMap (Algebra.TensorProduct.map (AlgHom.id R R) σ).toLinearMap`.
+A detailed English derivation is pending.
 -/
 theorem continuous_sigR [Module.Finite F E] (σ : E →ₐ[F] E) : Continuous (sigR R σ) := by
   haveI := isModTop (F := F) (E := E) R
@@ -85,17 +85,13 @@ theorem continuous_sigR [Module.Finite F E] (σ : E →ₐ[F] E) : Continuous (s
 end
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hσ R _ _ _ _ _ _ _ _ _ n`. Use `haveI : Module.Finite F E := Module.finite_of_finrank_pos (by rw [hσ.2.2.1]; norm_num)`. Use `haveI := isTopRing (F := F) (E := E) R`. Take `⟨e⟩` from `exists_homeo (F := F) (E := E) R`. Use `haveI : LocallyCompactSpace (R ⊗[F] E) := e.isClosedEmbedding.locallyCompactSpace`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : SecondCountableTopology (R ⊗[F] E) := e.secondCountableTopology`. Use `haveI : T2Space (R ⊗[F] E) := e.isEmbedding.t2Space`. Establish `hs` using `continuous_sigR R σ`. Use `haveI : LocallyCompactSpace (Matrix (Fin n) (Fin n) (R ⊗[F] E)) := inferInstanceAs (LocallyCompactSpace (Fin n → Fin n → R ⊗[F] E))`. Use `haveI : SecondCountableTopology (Matrix (Fin n) (Fin n) (R ⊗[F] E)) := inferInstanceAs (SecondCountableTopology (Fin n → Fin n → R ⊗[F] E))`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hc : IsClosed (HermR R σ n : Set (Matrix (Fin n) (Fin n) (R ⊗[F] E)))`. Establish `: (HermR R σ n : Set (Matrix (Fin n) (Fin n) (R ⊗[F] E))) = ⋂ a, ⋂ b, {S | sigR R σ (S b a) = S a b}`. Use extensionality with `S`. Simplify using `only [Set.mem_iInter]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[this]`. Use `isClosed_iInter fun a => isClosed_iInter fun b => isClosed_eq ?_ ?_` and prove the remaining obligations. Conclude with `hs.comp (continuous_id.matrix_elem b a)`. Conclude with `continuous_id.matrix_elem a b`. Use `⟨hc.locallyCompactSpace, ?_, inferInstance, ⟨rfl⟩, ?_⟩` and prove the remaining obligations.
-
-Conclude with `TopologicalSpace.Subtype.secondCountableTopology _`. Introduce `M J hJ`. Use `⟨fun X => ⟨gramR R σ J X, gramR_mem R (sigma_sigma hσ) hJ.1 X⟩, ?_, fun _ => rfl⟩` and prove the remaining obligations. Use `Continuous.subtype_mk ?_ _` and prove the remaining obligations. Use `continuous_matrix fun a b => ?_` and prove the remaining obligations.
-
-Simplify using `only [gramR, hR, hform]`. Use `continuous_finset_sum _ fun i _ => continuous_finset_sum _ fun j _ => ?_` and prove the remaining obligations. Use `((hs.comp ?_).mul continuous_const).mul ?_` and prove the remaining obligations. Conclude with `(continuous_apply i).comp (continuous_apply a)`. Conclude with `(continuous_apply j).comp (continuous_apply b)`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem herm_top : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (R : Type) [CommRing R] [Algebra F R] [TopologicalSpace R] [IsTopologicalRing R] [LocallyCompactSpace R] [SecondCountableTopology R] [T2Space R] [MeasurableSpace R] [BorelSpace R], ∀ n : ℕ, LocallyCompactSpace (HermR R σ n) ∧ SecondCountableTopology (HermR R σ n) ∧ T2Space (HermR R σ n) ∧ BorelSpace (HermR R σ n) ∧ ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → ∃ g : (Fin n → Fin M → R ⊗[F] E) → HermR R σ n, Continuous g ∧ ∀ X, gramR R σ J X = (g X : Matrix (Fin n) (Fin n) (R ⊗[F] E)) := by
   intro F E _ _ _ _ _ σ hσ R _ _ _ _ _ _ _ _ _ n

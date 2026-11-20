@@ -13,11 +13,11 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SpanRepMatrixE
 open Formalism Formalism.MainNotions Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions.N Formalism.WeaklyAdmissibleFiltrations NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Module GlobalTheory.Pass Formalism.MainNotions.PairedCharacterCondition Formalism.MainNotions.PairedCharacterCondition.CongruenceModules
 
 /- English proof (translation)
-Introduce `D hN9`. Establish `hr2 : 2 ≤ D.R.r`. Unfold `Ranks.r`. Use `D.R.two_le_m` as an intermediate fact. Use `D.R.m_add_three_le_k` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Use `⟨hr2, ?_⟩` and prove the remaining obligations. Introduce `i hi rb hrb`. Establish `hirr` using `(hN9 i hi rb hrb).1`. Establish `habs` using `GlobalTheory.ResAbsIrrGood.absIrrSub_top_of_irred (D.naut.kFbar i) (by omega) rb fun W hW => hirr W fun g _ x hx => hW g x hx`.
+Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `GlobalTheory.BurnsideField.span_mat_eq_top_of_absIrrSub rb habs`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Pass.residualRep_spans_matrixAlgebra_of_goodPoint : ∀ D : D7, ResidualIrreducibleRankR D → ResidualAbsIrreducible (D := D) := by
   intro D hN9

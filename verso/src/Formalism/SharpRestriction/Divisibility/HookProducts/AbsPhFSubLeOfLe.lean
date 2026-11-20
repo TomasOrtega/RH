@@ -8,11 +8,11 @@ namespace Formalism.MainNotions.DIV.HookProducts.RBCompl3
 open Formalism.BasicNotions
 
 /- English proof (translation)
-Establish `h1 : Real.log (y / y') ≤ y / y' - 1` using `Real.log_le_sub_one_of_pos (div_pos hy hy')`. Rewrite `h1` using `[Real.log_div hy.ne' hy'.ne']`. Establish `h2 : y' * (Real.log y - Real.log y') ≤ y - y'`. Establish `h3` using `mul_le_mul_of_nonneg_left h1 hy'.le`. Establish `h4 : y' * (y / y' - 1) = y - y'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[mul_sub, mul_div_cancel₀ _ hy'.ne', mul_one]`. Rewrite `h3` using `[h4]`. Conclude with `h3`. Establish `key : phF y - phF y' - (y - y') * Real.log y = -(y - y' - y' * (Real.log y - Real.log y'))`. Unfold `phF`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem phF_sub_le {y y' : ℝ} (hy : 0 < y) (hy' : 0 < y') :
     phF y - phF y' ≤ (y - y') * Real.log y := by
@@ -29,7 +29,7 @@ theorem phF_sub_le {y y' : ℝ} (hy : 0 < y) (hy' : 0 < y') :
   linarith
 
 /- English proof (translation)
-The claim follows from `|phF y - phF y'| ≤ (y - y') * Real.log M := by have hy : 0 < y := by linarith have hy'0 : 0 < y' := by linarith have hlow : phF y' - phF y ≤ (y' - y) * Real.log y' := phF_sub_le hy'0 hy have hneg : (y' - y) * Real.log y' ≤ 0 := mul_nonpos_of_nonpos_of_nonneg (by linarith) (Real.l …`.
+A detailed English derivation is pending.
 -/
 theorem abs_phF_sub_le_of_le {y y' M : ℝ} (hy' : 1 ≤ y') (h : y' ≤ y) (hyM : y ≤ M) :
     |phF y - phF y'| ≤ (y - y') * Real.log M := by
@@ -46,7 +46,7 @@ theorem abs_phF_sub_le_of_le {y y' M : ℝ} (hy' : 1 ≤ y') (h : y' ≤ y) (hyM
   linarith
 
 /- English proof (translation)
-The claim follows from `|phF y - phF y'| ≤ |y - y'| * Real.log M := by rcases le_total y' y with h | h · rw [abs_of_nonneg (sub_nonneg.mpr h)] exact abs_phF_sub_le_of_le hy' h hyM · rw [abs_sub_comm, abs_sub_comm y y', abs_of_nonneg (sub_nonneg.mpr h)] exact abs_phF_sub_le_of_le hy h hy'M`.
+A detailed English derivation is pending.
 -/
 theorem abs_phF_sub_le {y y' M : ℝ} (hy : 1 ≤ y) (hy' : 1 ≤ y') (hyM : y ≤ M) (hy'M : y' ≤ M) :
     |phF y - phF y'| ≤ |y - y'| * Real.log M := by
@@ -57,7 +57,7 @@ theorem abs_phF_sub_le {y y' M : ℝ} (hy : 1 ≤ y) (hy' : 1 ≤ y') (hyM : y �
     exact abs_phF_sub_le_of_le hy h hy'M
 
 /- English proof (translation)
-Unfold `DV.nuRow DV.srcPar`. Rewrite using `[dif_pos hk]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem nuRow_head' (D : D7) (u : D.what₂.Word) (j : ℕ) (τ : D.what₂.Tau) (r : ℕ) (hk : r < D.R.k) :
     DV.nuRow D u j τ r = (((D.hcW u τ).u ⟨r, hk⟩ : ℚ) : ℝ) + DV.wSz D j τ -
@@ -66,11 +66,11 @@ theorem nuRow_head' (D : D7) (u : D.what₂.Word) (j : ℕ) (τ : D.what₂.Tau)
   rw [dif_pos hk]
 
 /- English proof (translation)
-Establish `hs : DV.srcPar D u τ r = DV.srcPar D u' τ r`. Unfold `DV.srcPar`. Distinguish the cases in `hk : r < D.R.k`. Rewrite using `[dif_pos hk, dif_pos hk]`. Break down `Nat.eq_zero_or_pos r with h0 | h0` into its components or cases.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Substitute `h0` using the available equality. Rewrite using `[D.hcW_first u τ hk, D.hcW_first u' τ hk]`. Establish `hr' : r = D.R.k - 1` using `by omega`. Establish `hfin : (⟨r, hk⟩ : Fin D.R.k) = ⟨D.R.k - 1, by omega⟩` using `Fin.ext hr'`. Rewrite using `[hfin, D.hcW_last u τ (by omega), D.hcW_last u' τ (by omega)]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_neg hk, dif_neg hk, D.hcW_e u τ, D.hcW_e u' τ]`. Unfold `DV.nuRow`. Rewrite using `[hs]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem nuRow_eq_of_not_mid (D : D7) (u u' : D.what₂.Word) (j : ℕ) (τ : D.what₂.Tau) (r : ℕ)
     (hr : ¬ (1 ≤ r ∧ r + 1 < D.R.k)) : DV.nuRow D u j τ r = DV.nuRow D u' j τ r := by
@@ -89,9 +89,9 @@ theorem nuRow_eq_of_not_mid (D : D7) (u u' : D.what₂.Word) (j : ℕ) (τ : D.w
   rw [hs]
 
 /- English proof (translation)
-Establish `hk : r < D.R.k` using `by omega`. Rewrite using `[nuRow_head' D u j τ r hk, nuRow_head' D u' j τ r hk]`. Establish `h1` using `L.cloud_u u τ ⟨r, hk⟩ hr.1 hr.2`. Establish `h2` using `L.cloud_u u' τ ⟨r, hk⟩ hr.1 hr.2`. Rewrite using `[abs_le]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `constructor <;> linarith [h1.1, h1.2, h2.1, h2.2]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem abs_nuRow_sub_le (D : D7) (L : SizeData₂ D) (u u' : D.what₂.Word) (j : ℕ) (τ : D.what₂.Tau) (r : ℕ)
     (hr : 1 ≤ r ∧ r + 1 < D.R.k) : |DV.nuRow D u j τ r - DV.nuRow D u' j τ r| ≤ L.Sc := by
@@ -103,11 +103,11 @@ theorem abs_nuRow_sub_le (D : D7) (L : SizeData₂ D) (u u' : D.what₂.Word) (j
   constructor <;> linarith [h1.1, h1.2, h2.1, h2.2]
 
 /- English proof (translation)
-Establish `hk : r < D.R.k` using `by omega`. Rewrite using `[nuRow_head' D u j τ r hk]`. Establish `h1` using `L.cloud_u u τ ⟨r, hk⟩ hr.1 hr.2`. Establish `hN1 : r + 1 ≤ D.R.N (j - 1)` using `le_trans (by omega : r + 1 ≤ D.R.k) (Nat.le_add_right _ _)`. Establish `hN2 : r + 1 ≤ D.R.N j` using `le_trans (by omega : r + 1 ≤ D.R.k) (Nat.le_add_right _ _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hN1' : (r : ℝ) + 1 ≤ (D.R.N (j - 1) : ℝ)` using `by exact_mod_cast hN1`. Establish `hN2' : (r : ℝ) + 1 ≤ (D.R.N j : ℝ)` using `by exact_mod_cast hN2`. Establish `hs : 0 ≤ ((D.R.N (j - 1) : ℝ) + D.R.N j - 1 - 2 * (r : ℝ)) / 2`. Apply `div_nonneg _ (by norm_num)` to reduce the goal to its premises. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear relations using `[h1.2]`.
+Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem nuRow_le (D : D7) (L : SizeData₂ D) (u : D.what₂.Word) (j : ℕ) (τ : D.what₂.Tau) (r : ℕ)
     (hr : 1 ≤ r ∧ r + 1 < D.R.k) : DV.nuRow D u j τ r ≤ L.Sc + DV.wSz D j τ := by
@@ -124,7 +124,7 @@ theorem nuRow_le (D : D7) (L : SizeData₂ D) (u : D.what₂.Word) (j : ℕ) (τ
   linarith [h1.2]
 
 /- English proof (translation)
-The claim follows from `|DV.kerPlace D L u (i + 1) τ - DV.kerPlace D L u' (i + 1) τ| ≤ (D.R.k : ℝ) * (L.Sc * (Real.log M + |L.logOm|)) := by have hSc : 0 ≤ L.Sc := L.Sc_pos.le have hlM : 0 ≤ Real.log M := Real.log_nonneg hM1 set B : ℝ := L.Sc * (Real.log M + |L.logOm|) with hB have hB0 : 0 ≤ B := mul_no …`.
+A detailed English derivation is pending.
 -/
 theorem abs_kerPlace_sub_le (D : D7) (L : SizeData₂ D) (u u' : D.what₂.Word) (i : ℕ) (hi : i < D.R.m)
     (τ : D.what₂.Tau) (M : ℝ) (hM1 : 1 ≤ M) (hM : L.Sc + DV.wSz D (i + 1) τ ≤ M) :

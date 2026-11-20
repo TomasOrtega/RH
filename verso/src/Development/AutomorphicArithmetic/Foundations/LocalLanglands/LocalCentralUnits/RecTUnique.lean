@@ -15,7 +15,7 @@ variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAl
   {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver A w}
 
 /- English proof (translation)
-The claim follows from `L.cusp y hc dim := L.dim y tame := L.depth y hG hd central ω hω := L.central y ω hG hω type := (typeIff E Ω A w h rc).1 L.type y`.
+A detailed English derivation is pending.
 -/
 private theorem par_of_laws {a : Weil h →* (w.adicCompletion E)ˣ} {ha : IsLocalArtin h a}
     {rc : IrrGL (w.adicCompletion E) → WD h} (L : LawsT a ha rc) {y : IrrGL (w.adicCompletion E)}
@@ -29,15 +29,13 @@ private theorem par_of_laws {a : Weil h →* (w.adicCompletion E)ˣ} {ha : IsLoc
 end UpperTheory.Zero.LLC
 
 /- English proof (translation)
-Introduce and unpack `E Ω _ _ _ _ _ A w h rc rc' ⟨a, ha, L⟩ ⟨a', ha', L'⟩ x hx`. Use `haveI : CharZero (w.adicCompletion E) := charZero_of_injective_algebraMap (algebraMap E (w.adicCompletion E)).injective`. Take `rfl : a' = a` from `(artEx E Ω A w h).unique ha' ha`. Establish `key : ∀ y : IrrGL (w.adicCompletion E), y.IsCusp → GoodCusp y → rc y = rc' y`. Introduce `y hc hg`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `id hg with h1 | ⟨⟨g, hgp, i, hi⟩, y₀, χ, hχ, hdz, rfl⟩` into its components or cases. Take `⟨χ, hχ, rfl⟩` from `((clBasic _ y).2.2.2.2.1 h1).2`. Rewrite using `[L.one, L'.one]`. Use `haveI := hgp`. Establish `ht` using `(clBasic _ y₀).2.1 χ hχ`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc₀ : y₀.IsCusp` using `ht.2.1.1 hc`. Establish `hG : Good y₀` using `((goodSeg _).2.1 y₀ hc₀).2 (ht.2.2.1.1 hg)`. Establish `e : rc' y₀ = rc y₀` using `(parUniq E Ω A w h _ ha g i hi y₀ hc₀ hdz (rc y₀) (par_of_laws L hc₀ hG hdz)).1 (rc' y₀) (par_of_laws L' hc₀ hG hdz)`. Rewrite using `[L.twist _ _ _ hG, L'.twist _ _ _ hG, e, L.one, L'.one]`. Take `⟨m, hm⟩` from `Pr.exh _ x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hm' : IsL ((m.toList : List _) : Multiset _) x.rep` using `by rwa [Multiset.coe_toList]`. Rewrite using `[L.langlands _ x hm', L'.langlands _ x hm']`. Unfold `segSum`. Use `congr 1`. Use `List.map_congr_left fun Δ hΔ => ?_` and prove the remaining obligations.
-
-Rewrite using `[key Δ.first Δ.isCusp_first (((goodSeg _).1 _ x hm').1 hx Δ hΔ)]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Zero.LLC.recTUnique :
     UpperTheory.Zero.LLC.RecTUnique := by

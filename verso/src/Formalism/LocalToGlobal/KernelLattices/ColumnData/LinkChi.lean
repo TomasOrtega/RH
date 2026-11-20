@@ -15,7 +15,7 @@ open Formalism.L2.Ker.Cd.TaylorLogMetric
 open Formalism.MainNotions.TaylorLogMetric hiding admitted AdmittedStatements AllSplit CoefIn DataIn DualB EqAt EqAway FamE Hf IdE InProd Iop IsChi IsComb IsCurveIdeal IsDiscriminantTwelfthRootOfIdealLattice IsFrobC IsIdem JetsInt La LocBasis LocBasisW Mono N1 NNBasis OrthoBasisW Orthonormal Pos Qd QdB Stmt TVar TVarB Th ThSp Tor TorsPrime U VC Wop XiF YYl adm1 al atLog chK chg chgB coordV der detId logDerivativeAtOne ellT embT embV eq22 fF fnConj hYY hh homL int22 jet kap lamOf letterOf liftY logOmVal meanLogNormSq meanLogOm mmM mom22 LargerSupportMomentCondition mono normSq pSer pairN per22 posEmb posG aux₃ pull qH sE sgm str22 tauEmb tauSg taylor th22 tor0 torConj vec22 vecN wPh zB
 
 /- English proof (translation)
-Introduce `z`. Use `⟨Circle.exp (Complex.arg z / n), ?_⟩` and prove the remaining obligations. Establish `hn' : (n : ℝ) ≠ 0` using `by exact_mod_cast hn`. Express the relevant statement in the definitionally equal form `Circle.exp (Complex.arg z / n) ^ n = z`. Rewrite using `[← Circle.exp_zsmul, zsmul_eq_mul, mul_div_cancel₀ _ hn', Circle.exp_arg]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 private theorem circle_pow_surj' {n : ℤ} (hn : n ≠ 0) :
     Function.Surjective (fun a : Circle => a ^ n) := by
@@ -26,7 +26,7 @@ private theorem circle_pow_surj' {n : ℤ} (hn : n ≠ 0) :
   rw [← Circle.exp_zsmul, zsmul_eq_mul, mul_div_cancel₀ _ hn', Circle.exp_arg]
 
 /- English proof (translation)
-Set `_ : DivisibleBy (Additive Circle) ℤ` to `divisibleByOfSMulRightSurj (Additive Circle) ℤ (fun hn => circle_pow_surj' hn)`. Take `⟨h, hh⟩` from `(Module.Baer.of_divisible (Additive Circle)).extension_property_addMonoidHom (MonoidHom.toAdditive f) hf (MonoidHom.toAdditive g)`. Use `⟨MonoidHom.toAdditive.symm h, fun x => ?_⟩` and prove the remaining obligations. Conclude with `DFunLike.congr_fun hh (Additive.ofMul x)`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem circle_extend' {M N : Type} [CommGroup M] [CommGroup N] (f : M →* N)
     (hf : Function.Injective f) (g : M →* Circle) : ∃ h : N →* Circle, ∀ x, h (f x) = g x := by
@@ -38,7 +38,7 @@ theorem circle_extend' {M N : Type} [CommGroup M] [CommGroup N] (f : M →* N)
   exact DFunLike.congr_fun hh (Additive.ofMul x)
 
 /- English proof (translation)
-Use `haveI := D.host.isCMField_hostE`. Conclude with `NumberField.IsCMField.complexEmbedding_complexConj D.host.E φ x`.
+A detailed English derivation is pending.
 -/
 theorem host_star_emb (D : Car) (φ : D.host.E →+* ℂ) (x : D.host.E) :
     φ (@star D.host.E (@InvolutiveStar.toStar _ (@StarMul.toInvolutiveStar _ _
@@ -48,35 +48,31 @@ theorem host_star_emb (D : Car) (φ : D.host.E →+* ℂ) (x : D.host.E) :
 
 open Classical in
 /- English proof (translation)
-Introduce `D _`. Use `letI := D.host.cmStar`. Establish `hnorm : ∀ (φ : D.host.E →+* ℂ) (z : unitary D.host.E), ‖φ (z : D.host.E)‖ = 1`. Introduce `φ z`. Establish `h1 : φ (star (z : D.host.E)) * φ (z : D.host.E) = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[← map_mul, z.2.1, map_one]`. Rewrite `h1` using `[host_star_emb D φ]`. Establish `h2 : ((Complex.normSq (φ (z : D.host.E)) : ℝ) : ℂ) = 1`. Rewrite using `[Complex.normSq_eq_conj_mul_self]`. Conclude with `h1`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : Complex.normSq (φ (z : D.host.E)) = 1` using `by exact_mod_cast h2`. Rewrite `h3` using `[Complex.normSq_eq_norm_sq]`. Use `norm_nonneg (φ (z : D.host.E))` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Set `s : unitary D.host.E →* Submodule (𝓞 D.host.E) D.host.E` to `{ toFun := fun z => Submodule.span (𝓞 D.host.E) {(z : D.host.E)} map_one' := by`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `Submodule.span (𝓞 D.host.E) {(1 : D.host.E)} = 1`. Rewrite using `[Submodule.one_eq_span]`. Use the proof step `map_mul' := fun a b => by`. Express the relevant statement in the definitionally equal form `Submodule.span (𝓞 D.host.E) {(a : D.host.E) * (b : D.host.E)} = Submodule.span (𝓞 D.host.E) {(a : D.host.E)} * Submodule.span (𝓞 D.host.E) {(b : D.host.E)}`. Rewrite using `[Submodule.span_mul_span, Set.singleton_mul_singleton] }`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `ι : unitary D.host.E →* (Submodule (𝓞 D.host.E) D.host.E)ˣ` to `s.toHomUnits`. Establish `hK : ∀ z : unitary D.host.E, ι z = 1 → ∃ m : ℕ, 0 < m ∧ (z : D.host.E) ^ m = 1`. Introduce `z hz`. Establish `hs : Submodule.span (𝓞 D.host.E) {(z : D.host.E)} = 1`. Use `congrArg Units.val hz` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify `this` using `[ι, s]`. Establish `hmem : (z : D.host.E) ∈ (1 : Submodule (𝓞 D.host.E) D.host.E)`. Rewrite using `[← hs]`. Conclude with `Submodule.subset_span rfl`. Take `⟨y, hy⟩` from `Submodule.mem_one.1 hmem`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hint : IsIntegral ℤ (z : D.host.E)`. Rewrite using `[← hy]`. Conclude with `RingOfIntegers.isIntegral_coe y`. Take `⟨m, hm, hzm⟩` from `NumberField.Embeddings.pow_eq_one_of_norm_eq_one D.host.E ℂ hint (fun φ => hnorm φ z)`. Conclude with `⟨m, hm, hzm⟩`.
+Supply the required witnesses or components. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Set `n : unitary D.host.E →* Circle` to `{ toFun := fun z => ⟨∏ τ : D.what₂.Tau, (embT D τ (z : D.host.E))⁻¹, by`. Express the relevant statement in the definitionally equal form `_ ∈ Metric.sphere (0 : ℂ) 1`. Rewrite using `[mem_sphere_zero_iff_norm, norm_prod]`. Conclude with `Finset.prod_eq_one fun τ _ => by rw [norm_inv, hnorm _ z, inv_one]⟩`. Use the proof step `map_one' := by`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Apply `Circle.ext` to reduce the goal to its premises. Simplify using the standard rewrite rules. Use the proof step `map_mul' := fun a b => by`. Apply `Circle.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(∏ τ : D.what₂.Tau, (embT D τ ((a * b : unitary D.host.E) : D.host.E))⁻¹) = (∏ τ : D.what₂.Tau, (embT D τ (a : D.host.E))⁻¹) * ∏ τ : D.what₂.Tau, (embT D τ (b : D.host.E))⁻¹`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[Submonoid.coe_mul, map_mul, mul_inv] }`. Establish `hn : ∀ z : unitary D.host.E, ((n z : Circle) : ℂ) = ∏ τ : D.what₂.Tau, (embT D τ (z : D.host.E))⁻¹` using `fun z => rfl`. Establish `hker : ι.ker ≤ n.ker`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `z hz`. Rewrite `hz`, the goal using `[MonoidHom.mem_ker]`. Apply `Circle.ext` to reduce the goal to its premises. Rewrite using `[hn]`. Conclude with `UpperTheory.Mu.prod_emb_inv D.host D.eTau (hK z hz)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨h, hh⟩` from `circle_extend' (QuotientGroup.kerLift ι) (QuotientGroup.kerLift_injective ι) (QuotientGroup.lift ι.ker n hker)`. Use `⟨fun 𝔞 => if hu : IsUnit 𝔞 then ((h hu.unit : Circle) : ℂ) else 0, ?_, ?_⟩` and prove the remaining obligations. Introduce `𝔞 𝔟 ha hb`. Take `⟨𝔞', -, ha'⟩` from `ha`. Take `⟨𝔟', -, hb'⟩` from `hb`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hua : IsUnit 𝔞` using `isUnit_iff_exists_inv.2 ⟨_, ha'⟩`. Establish `hub : IsUnit 𝔟` using `isUnit_iff_exists_inv.2 ⟨_, hb'⟩`. Establish `hu : IsUnit (𝔞 * 𝔟)` using `hua.mul hub`. Establish `hunit : hu.unit = hua.unit * hub.unit` using `Units.ext rfl`. Simplify using `only [dif_pos hu, dif_pos hua, dif_pos hub, hunit, map_mul, Circle.coe_mul]`.
-
-Introduce `z`. Establish `hu : IsUnit (Submodule.span (𝓞 D.host.E) {(z : D.host.E)})` using `(ι z).isUnit`. Establish `hunit : hu.unit = ι z` using `Units.ext rfl`. Simplify using `only [dif_pos hu, hunit]`. Use `hh (QuotientGroup.mk z)` as an intermediate fact.
-
-Rewrite `this` using `[QuotientGroup.kerLift_mk, QuotientGroup.lift_mk]`. Rewrite using `[this, hn]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem character_linkage_holds : LinkChi := by
   intro D _

@@ -12,15 +12,15 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace PositivityTheory.Rg.DzCount
 
 /- English proof (translation)
-Rewrite using `[← pow_mul, ← pow_add]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma pow_pow_pow_add (z : ℂ) (q a b : ℕ) : (z ^ q ^ a) ^ q ^ b = z ^ q ^ (a + b) := by
   rw [← pow_mul, ← pow_add]
 
 /- English proof (translation)
-Establish `hpow : ∀ k : ℕ, (M ^ k) v = z ^ k • v`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih => rw [pow_succ', Module.End.mul_apply, ih, map_smul, hv, smul_smul, pow_succ]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Establish `h` using `congrArg (fun T : Module.End ℂ V => T v) hMG`. Simplify using `only [Module.End.mul_apply] at h`. Rewrite using `[h, hpow, map_smul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 lemma eigenvector_maps_power {V : Type} [AddCommGroup V] [Module ℂ V] (q : ℕ) (M G : Module.End ℂ V)
     (hMG : M * G = G * M ^ q) (z : ℂ) (v : V) (hv : M v = z • v) : M (G v) = z ^ q • G v := by
@@ -34,7 +34,7 @@ lemma eigenvector_maps_power {V : Type} [AddCommGroup V] [Module ℂ V] (q : ℕ
   rw [h, hpow, map_smul]
 
 /- English proof (translation)
-Introduce `i`. Proceed by induction on `i with`. Consider the case `zero => simpa using hv`. Consider the case `succ i ih`. Rewrite using `[pow_succ', Module.End.mul_apply, eigenvector_maps_power q M G hMG _ _ ih, ← pow_mul, ← pow_succ]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 lemma eigenvector_iterate_power {V : Type} [AddCommGroup V] [Module ℂ V] (q : ℕ) (M G : Module.End ℂ V)
     (hMG : M * G = G * M ^ q) (z : ℂ) (v : V) (hv : M v = z • v) :
@@ -46,51 +46,43 @@ lemma eigenvector_iterate_power {V : Type} [AddCommGroup V] [Module ℂ V] (q : 
     rw [pow_succ', Module.End.mul_apply, eigenvector_maps_power q M G hMG _ _ ih, ← pow_mul, ← pow_succ]
 
 /- English proof (translation)
-Introduce `V _ _ _ q M G hM hG hMG hirr`. Take `⟨hnt, hU⟩` from `hirr`. Establish `hGinj : ∀ i : ℕ, Function.Injective (G ^ i)` using `fun i => ((Module.End.isUnit_iff _).mp (hG.pow i)).1`. Establish `hMinj : Function.Injective M` using `((Module.End.isUnit_iff _).mp hM).1`. Establish `hfin : Set.Finite {μ | M.HasEigenvalue μ}` using `M.finite_hasEigenvalue`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hstep : ∀ μ, M.HasEigenvalue μ → M.HasEigenvalue (μ ^ q)`. Introduce `μ hμ`. Take `⟨v, hv⟩` from `hμ.exists_hasEigenvector`. Establish `hv' : M v = μ • v` using `Module.End.mem_eigenspace_iff.mp hv.1`. Use `Module.End.hasEigenvalue_of_hasEigenvector (x := G v) ⟨?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Module.End.mem_eigenspace_iff.mpr (eigenvector_maps_power q M G hMG μ v hv')`. Introduce `h0`. Apply `hv.2` to reduce the goal to its premises. Establish `h1` using `hGinj 1`. Rewrite `h1` using `[pow_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `h1 (by rw [h0, map_zero])`. Take `⟨z0, hz0⟩` from `M.exists_eigenvalue`. Establish `hall : ∀ i : ℕ, M.HasEigenvalue (z0 ^ q ^ i)`. Introduce `i`. Proceed by induction on `i with`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => simpa using hz0`. Consider the case `succ i ih`. Establish `h` using `hstep _ ih`. Rewrite `h` using `[← pow_mul, ← pow_succ]`. Then use the resulting hypothesis. Take `⟨a, b, hab, heq⟩` from `Set.Finite.exists_lt_map_eq_of_forall_mem (f := fun i : ℕ => z0 ^ q ^ i) (t := {μ | M.HasEigenvalue μ}) (fun i => hall i) hfin`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hzE : M.HasEigenvalue (z0 ^ q ^ a)` using `hall a`. Establish `hper : (z0 ^ q ^ a) ^ q ^ (b - a) = z0 ^ q ^ a`. Rewrite using `[pow_pow_pow_add, show a + (b - a) = b by omega, ← heq]`. Generalize the expression as in `z0 ^ q ^ a = z at hzE hper`. Establish `hP : ∃ e : ℕ, 0 < e ∧ z ^ q ^ e = z` using `⟨b - a, by omega, hper⟩`.
+Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨d, ⟨hd0, hzd⟩, hdmin⟩ : ∃ d : ℕ, (0 < d ∧ z ^ q ^ d = z) ∧ ∀ e < d, ¬ (0 < e ∧ z ^ q ^ e = z)` from `⟨Nat.find hP, Nat.find_spec hP, fun e he => Nat.find_min hP he⟩`. Establish `hmaps : ∀ x ∈ M.eigenspace z, (G ^ d) x ∈ M.eigenspace z`. Introduce `x hx`. Rewrite `hx`, the goal using `[Module.End.mem_eigenspace_iff]`. Rewrite using `[eigenvector_iterate_power q M G hMG z x hx d, hzd]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hne : M.eigenspace z ≠ ⊥` using `hzE`. Establish `: Nontrivial (M.eigenspace z)` using `Submodule.nontrivial_iff_ne_bot.mpr hne`. Take `⟨μ, hμ⟩` from `Module.End.exists_eigenvalue (LinearMap.restrict (G ^ d) hmaps)`. Take `⟨w, hw⟩` from `hμ.exists_hasEigenvector`. Establish `hw1 : LinearMap.restrict (G ^ d) hmaps w = μ • w` using `Module.End.mem_eigenspace_iff.mp hw.1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set v : V := (w : V) with hv_def`. Establish `hGd : (G ^ d) v = μ • v`. Establish `h` using `congrArg Subtype.val hw1`. Simplify `h` using `[LinearMap.restrict_apply]`. Establish `hvE : M v = z • v` using `Module.End.mem_eigenspace_iff.mp w.2`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hv0 : v ≠ 0`. Introduce `h`. Apply `hw.2` to reduce the goal to its premises. Conclude with `Subtype.ext h`. Set `bb : Fin d → V` to `fun i => (G ^ (i : ℕ)) v`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hb_eig : ∀ i : Fin d, M (bb i) = z ^ q ^ (i : ℕ) • bb i` using `fun i => eigenvector_iterate_power q M G hMG z v hvE i`. Establish `hb_ne : ∀ i : Fin d, bb i ≠ 0`. Introduce `i h`. Apply `hv0` to reduce the goal to its premises. Conclude with `hGinj i (by rw [map_zero]; exact h)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Establish `key : ∀ i j : ℕ, i < j → j < d → z ^ q ^ i = z ^ q ^ j → False`. Introduce `i j hij hjd hij'`. Establish `h1 : z ^ q ^ (j - i) = z`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[pow_pow_pow_add, pow_pow_pow_add, show j + (d - i) = d + (j - i) by omega]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Use `_ = (z ^ q ^ i) ^ q ^ (d - i) := by rw [hij']`. Use `_ = z ^ q ^ d := by rw [pow_pow_pow_add, show i + (d - i) = d by omega]`. Use `_ = z := hzd`. Conclude with `hdmin (j - i) (by omega) ⟨by omega, h1⟩`. Establish `hinj : Function.Injective (fun i : Fin d => z ^ q ^ (i : ℕ))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce `i j hij`. Simplify using `only at hij`. Break down `lt_trichotomy (i : ℕ) (j : ℕ) with h | h | h` into its components or cases. Conclude with `(key i j h j.2 hij).elim`. Conclude with `Fin.ext h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(key j i h i.2 hij.symm).elim`. Establish `hli : LinearIndependent ℂ bb` using `Module.End.eigenvectors_linearIndependent' M (fun i : Fin d => z ^ q ^ (i : ℕ)) hinj bb (fun i => ⟨Module.End.mem_eigenspace_iff.mpr (hb_eig i), hb_ne i⟩)`. Use `set W : Submodule ℂ V := Submodule.span ℂ (Set.range bb) with hW_def`. Establish `hvW : v ∈ W` using `Submodule.subset_span ⟨⟨0, hd0⟩, by simp [bb]⟩`. Establish `hMW : ∀ x ∈ W, M x ∈ W`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Establish `hle : W ≤ W.comap M`. Rewrite using `[hW_def, Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Rewrite using `[SetLike.mem_coe, Submodule.mem_comap, hb_eig i]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `fun x hx => hle hx`. Establish `hGW : ∀ x ∈ W, G x ∈ W`. Establish `hle : W ≤ W.comap G`. Rewrite using `[hW_def, Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[SetLike.mem_coe, Submodule.mem_comap]`. Use `show G ((G ^ (i : ℕ)) v) ∈ W`. Rewrite using `[← Module.End.mul_apply, ← pow_succ']`. Distinguish the cases in `h : (i : ℕ) + 1 < d`. Conclude with `Submodule.subset_span ⟨⟨(i : ℕ) + 1, h⟩, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[show (i : ℕ) + 1 = d by omega, hGd]`. Conclude with `Submodule.smul_mem _ _ hvW`. Conclude with `fun x hx => hle hx`. Establish `hWtop : W = ⊤`. Break down `hU W hMW hGW with h | h` into its components or cases.
-
-It suffices to derive a contradiction. Apply `hv0` to reduce the goal to its premises. Use `hvW` as an intermediate fact. Rewrite `this` using `[h]`. Conclude with `(Submodule.mem_bot ℂ).mp this`.
-
-Conclude with `h`. Establish `hfr : Module.finrank ℂ V = d`. Establish `h` using `finrank_span_eq_card hli`. Rewrite `h` using `[← hW_def, hWtop, finrank_top, Fintype.card_fin]`. Conclude with `h`.
-
-Use `⟨z, hzE, ?_⟩` and prove the remaining obligations. Rewrite using `[hfr]`. Use `⟨?_, hzd, fun e he0 hed h => hdmin e hed ⟨he0, h⟩⟩` and prove the remaining obligations. Introduce `hz`. Apply `hv0` to reduce the goal to its premises.
-
-Apply `hMinj` to reduce the goal to its premises. Rewrite using `[hvE, hz, zero_smul, map_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem st1a : St1a := by
   classical

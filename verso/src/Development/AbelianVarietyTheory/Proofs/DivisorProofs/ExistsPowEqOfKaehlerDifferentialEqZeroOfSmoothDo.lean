@@ -7,9 +7,9 @@ open TensorProduct
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `p hp k _ _ hk S _ _ _ _ f hf`. Establish `hS : IsIntegrallyClosed S` using `IsIntegrallyClosed.of_localization_maximal fun m _ _ => (isDomain_and_isIntegrallyClosed_atPrime_of_smooth k m _).2`. Establish `hK : KaehlerDifferential.D k (FractionRing S) (algebraMap S (FractionRing S) f) = 0`. Rewrite using `[← KaehlerDifferential.map_D k k S (FractionRing S) f, hf, map_zero]`. Take `⟨h, hh⟩` from `GlobalTheory.T.exists_pow_eq_of_kaehler_D_eq_zero' p k hk (FractionRing S) _ hK`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hint : IsIntegral S h` using `IsIntegral.of_pow hp.out.pos (by rw [hh]; exact isIntegral_algebraMap)`. Take `⟨y, rfl⟩` from `IsIntegrallyClosed.isIntegral_iff.mp hint`. Use `⟨y, IsFractionRing.injective S (FractionRing S) ?_⟩` and prove the remaining obligations. Rewrite using `[map_pow, hh]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_pow_eq_of_kaehlerDifferential_eq_zero_of_smooth_domain :
     ∀ (p : ℕ) [Fact p.Prime] (k : Type) [Field k] [IsAlgClosed k] (hk : (p : k) = 0) (S : Type)

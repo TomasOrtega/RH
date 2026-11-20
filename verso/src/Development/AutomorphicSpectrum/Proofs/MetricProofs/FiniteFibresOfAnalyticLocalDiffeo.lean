@@ -17,7 +17,7 @@ namespace GlobalTheory.CompanionTheory.Ar.Giv.Push
 open LintegralFibSum
 
 /- English proof (translation)
-The claim follows from `|Pt.χ j ((A.chart j).symm u) * G ((A.chart j).symm u) * locDens A Φ j u| := by classical set Qj : Fin A.n → (Fin e → ℂ) → (Fin e → ℂ) := fun j => q ∘ (A.chart j).symm with hQj set h : Fin A.n → (Fin e → ℂ) → ℝ := fun j u => |Pt.χ j ((A.chart j).symm u) * G ((A.chart j).symm u) * …`.
+A detailed English derivation is pending.
 -/
 theorem lintegral_absFibre_eq {e : ℕ} {X : Type} [TopologicalSpace X] (A : FinHolAtlas e X)
     (Φ : Fin e → LocPot X) (q : X → Fin e → ℂ) (S : Set X) (G : X → ℝ)

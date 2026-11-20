@@ -16,7 +16,7 @@ noncomputable section
 namespace GlobalTheory.FlagCell2Null
 
 /- English proof (translation)
-Introduce `F _ σ Y β W hW s`. Conclude with `GlueCoverNull.glueMeas_null _ _ (isOpen_ptsIn _).measurableSet.compl fun c => GlobalTheory.Mean4O.CoverInt.volume_image_compl_ptsIn F Y.X Y.str σ σ.injective (fun W hW => (ReciprocityTheory.ChartRestriction.G.DVR.FlatBC.algX Y.str W).injective) W hW _ c`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem part_compl_ptsIn : ∀ (F : Type) [Field F] (σ : F →+* ℂ) (Y : Var F) (β : (atlas Y σ).Fld) (W : Y.X.Opens), genericPoint Y.X ∈ W → ∀ s : ℤˣ, (atlas Y σ).part β s (ptsIn Y.str σ W)ᶜ = 0 := by
   intro F _ σ Y β W hW s

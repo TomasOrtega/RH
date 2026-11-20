@@ -9,7 +9,7 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerOrbitVolume.T
 namespace PI.VolStabSW
 
 /- English proof (translation)
-The claim follows from `unfold_of witt_holds finTheta_holds invInv_holds measOrb_holds measGrp_holds`.
+A detailed English derivation is pending.
 -/
 theorem unfold_holds : Unfold :=
   unfold_of witt_holds finTheta_holds invInv_holds measOrb_holds measGrp_holds

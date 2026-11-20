@@ -20,11 +20,11 @@ def Good (k r : ℕ) (i : Fin (r + 1)) (Z : Mx k r) : Prop :=
   hpart1 (Hpk k r) Z ∈ LieL k r i ∧ hpart2 (Hpk k r) Z ∈ LieL k r i
 
 /- English proof (translation)
-Take `⟨hX1, hX2⟩` from `hZ`. Take `⟨hY1, hY2⟩` from `hW`. Establish `hZW` using `commutator_complex_expand (hpart1 (Hpk k r) Z) (hpart2 (Hpk k r) Z) (hpart1 (Hpk k r) W) (hpart2 (Hpk k r) W)`. Rewrite `hZW` using `[← hpart_decomp Z, ← hpart_decomp W]`. Establish `hP` using `lieL_sub (lieL_bracket hX1 hY1) (lieL_bracket hX2 hY2)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hQ` using `lieL_add (lieL_bracket hX1 hY2) (lieL_bracket hX2 hY1)`. Take `⟨h1, h2⟩` from `hpart_unique hP.1 hQ.1`. Establish `eZ : Ec Z f = fun h => RdV (hpart1 (Hpk k r) Z) f h + Complex.I • RdV (hpart2 (Hpk k r) Z) f h`. Both sides reduce to the same expression. Establish `eW : Ec W f = fun h => RdV (hpart1 (Hpk k r) W) f h + Complex.I • RdV (hpart2 (Hpk k r) W) f h`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Simplify using `only [Ec]`. Rewrite using `[eZ, eW]`. Rewrite using `[loc_comb (flow_of_lieL hX1) (flow_of_lieL hY1) (flow_of_lieL hY2) hL hg hgG, loc_comb (flow_of_lieL hX2) (flow_of_lieL hY1) (flow_of_lieL hY2) hL hg hgG, loc_comb (flow_of_lieL hY1) (flow_of_lieL hX1) (flow_of_lieL hX2) hL hg hgG, loc_comb (flow_of_lieL hY2) (flow_of_lieL hX1) ( …`. Simplify using `only [smul_add, smul_sub, smul_smul, Complex.I_mul_I, neg_smul, one_smul]`.
+Both sides reduce to the same expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 Normalize the expressions using the abelian group laws.
 -/
@@ -63,7 +63,7 @@ theorem ec_comm {i : Fin (r + 1)} {Z W : Mx k r} (hZ : Good k r i Z) (hW : Good 
   abel
 
 /- English proof (translation)
-Simplify using `only [hpart1, Matrix.conjTranspose_sub, Matrix.mul_sub, Matrix.sub_mul, smul_sub]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 lemma hpart1_sub (A B : Mx k r) :
     hpart1 (Hpk k r) (A - B) = hpart1 (Hpk k r) A - hpart1 (Hpk k r) B := by
@@ -71,7 +71,7 @@ lemma hpart1_sub (A B : Mx k r) :
   abel
 
 /- English proof (translation)
-Simplify using `only [hpart2, Matrix.conjTranspose_sub, Matrix.mul_sub, Matrix.sub_mul, smul_sub, smul_add]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 lemma hpart2_sub (A B : Mx k r) :
     hpart2 (Hpk k r) (A - B) = hpart2 (Hpk k r) A - hpart2 (Hpk k r) B := by
@@ -79,7 +79,7 @@ lemma hpart2_sub (A B : Mx k r) :
   abel
 
 /- English proof (translation)
-Simplify using `only [Ec]`. Rewrite using `[hpart1_sub, hpart2_sub, loc_sub (flow_of_lieL hA.1) (flow_of_lieL hB.1) (flow_of_lieL (lieL_sub hA.1 hB.1)) hL hg hgG, loc_sub (flow_of_lieL hA.2) (flow_of_lieL hB.2) (flow_of_lieL (lieL_sub hA.2 hB.2)) hL hg hgG, smul_sub]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem ec_sub {i : Fin (r + 1)} {A B : Mx k r} (hA : Good k r i A) (hB : Good k r i B)
     {f F : Mx k r → E} {U : Set (Mx k r)} (hL : LocExt (Glev k r i) f F U) {g : Mx k r}
@@ -93,22 +93,22 @@ theorem ec_sub {i : Fin (r + 1)} {A B : Mx k r} (hA : Good k r i A) (hB : Good k
   abel
 
 /- English proof (translation)
-Simplify using `[Ec, hpart1, hpart2, RdV]`.
+Simplify using the standard rewrite rules.
 -/
 lemma ec_zero (f : Mx k r → E) (g : Mx k r) : Ec (0 : Mx k r) f g = 0 := by
   simp [Ec, hpart1, hpart2, RdV]
 
 /- English proof (translation)
-Introduce `_ _ _` and use `rfl`.
+Fix the arbitrary inputs and assume any hypotheses. Both sides reduce to the same expression.
 -/
 lemma inV_zero {i : Fin (r + 1)} : InV k r i (0 : Mx k r) := fun _ _ _ => rfl
 
 /- English proof (translation)
-Introduce `p q h`. Rewrite using `[Matrix.single_apply]`. Use `split_ifs with hh`. Take `⟨rfl, rfl⟩` from `hh`. It suffices to derive a contradiction.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. It suffices to derive a contradiction. Establish an intermediate fact.
 
-Establish `hx` using `x.isLt`. Establish `hy` using `y.isLt`. Establish `hi` using `i.isLt`. Unfold `mdim at hx hy`. Apply the tactic sequence `rcases h with h | h <;> (simp only [Out, posL] at h; omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 lemma inV_single {i : Fin (r + 1)} (x y : Fin (mdim k r i)) :
     InV k r i (Matrix.single (posL k r i x) (posL k r i y) (1 : ℂ)) := by

@@ -14,7 +14,7 @@ open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.Ff UpperT
 open scoped Classical
 
 /- English proof (translation)
-Unfold `wt`. Use `split_ifs`. Check the signs of the components of the expression. Conclude with `le_rfl`.
+Replace the relevant objects with their definitions. Check the signs of the components of the expression. A detailed English derivation is pending.
 -/
 private theorem wt_nonneg' (K : Set (Fin 4 → FiniteAdeleRing (𝓞 ℚ) ℚ)) (N : ℕ) (v : V4 ℚ) : 0 ≤ wt K N v := by
   unfold wt
@@ -23,7 +23,7 @@ private theorem wt_nonneg' (K : Set (Fin 4 → FiniteAdeleRing (𝓞 ℚ) ℚ)) 
   · exact le_rfl
 
 /- English proof (translation)
-Unfold `wt`. Use `split_ifs`. Establish `h1 : (1 : ℝ) ≤ 1 + ‖infPartPi v‖` using `by linarith [norm_nonneg (infPartPi v)]`. Conclude with `inv_anti₀ (by positivity) (pow_le_pow_right₀ h1 (Nat.le_add_right N s))`. Conclude with `le_rfl`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem wt_add_le (K : Set (Fin 4 → FiniteAdeleRing (𝓞 ℚ) ℚ)) (N s : ℕ) (v : V4 ℚ) :
     wt K (N + s) v ≤ wt K N v := by
@@ -34,11 +34,11 @@ private theorem wt_add_le (K : Set (Fin 4 → FiniteAdeleRing (𝓞 ℚ) ℚ)) (
   · exact le_rfl
 
 /- English proof (translation)
-Unfold `wt`. Distinguish the cases in `hv : finPartPi v ∈ K`. Rewrite using `[if_pos hv, if_pos hv]`. Establish `hp : 0 < 1 + ‖infPartPi v‖` using `by linarith [norm_nonneg (infPartPi v)]`. Establish `h1 : (1 + ‖infPartPi v‖)⁻¹ ≤ L * T⁻¹`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[inv_le_iff_one_le_mul₀ hp]`. Use `h hv` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[pow_add, mul_inv, mul_comm, ← inv_pow (1 + ‖infPartPi v‖) s]`. Conclude with `mul_le_mul_of_nonneg_right (pow_le_pow_left₀ (by positivity) h1 s) (by positivity)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg hv, if_neg hv, mul_zero]`.
+A detailed English derivation is pending.
 -/
 private theorem wt_decay {K : Set (Fin 4 → FiniteAdeleRing (𝓞 ℚ) ℚ)} (N s : ℕ) {v : V4 ℚ} {T L : ℝ}
     (hT : 0 < T) (hL : 0 < L) (h : finPartPi v ∈ K → T ≤ L * (1 + ‖infPartPi v‖)) :
@@ -58,7 +58,7 @@ private theorem wt_decay {K : Set (Fin 4 → FiniteAdeleRing (𝓞 ℚ) ℚ)} (N
   · rw [if_neg hv, if_neg hv, mul_zero]
 
 /- English proof (translation)
-Use `haveI : Nontrivial (A ℚ) := ⟨⟨0, 1, fun h => by`. Establish `e : ((0 : A ℚ).1 Rat.infinitePlace) = ((1 : A ℚ).1 Rat.infinitePlace)` using `congrArg (fun x : A ℚ => x.1 Rat.infinitePlace) h`. Conclude with `zero_ne_one e⟩⟩`. Conclude with `(algebraMap ℚ (A ℚ)).injective`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem rt_injective : Function.Injective (rt : ℚ → A ℚ) := by
   haveI : Nontrivial (A ℚ) := ⟨⟨0, 1, fun h => by
@@ -68,7 +68,7 @@ private theorem rt_injective : Function.Injective (rt : ℚ → A ℚ) := by
   exact (algebraMap ℚ (A ℚ)).injective
 
 /- English proof (translation)
-Introduce `_ _ h` and use `funext fun i => rt_injective (congrFun h i)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem rp_injective : Function.Injective (rp : (Fin 4 → ℚ) → V4 ℚ) := fun _ _ h =>
   funext fun i => rt_injective (congrFun h i)
@@ -79,20 +79,20 @@ variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {D : Dat ℚ 
   {ρ : GL (Fin 2) (A E) →* GL (Fin 4) (A ℚ)}
 
 /- English proof (translation)
-Rewrite using `[hact, hact, hact, map_mul, Units.val_mul, Matrix.mulVec_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem act_mul (hact : ∀ h v, D.act h v = (ρ h).val *ᵥ v) (h h' : GL (Fin 2) (A E)) (v : V4 ℚ) :
     D.act (h * h') v = D.act h (D.act h' v) := by
   rw [hact, hact, hact, map_mul, Units.val_mul, Matrix.mulVec_mulVec]
 
 /- English proof (translation)
-Rewrite using `[hact, map_one, Units.val_one, Matrix.one_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem act_one (hact : ∀ h v, D.act h v = (ρ h).val *ᵥ v) (v : V4 ℚ) : D.act 1 v = v := by
   rw [hact, map_one, Units.val_one, Matrix.one_mulVec]
 
 /- English proof (translation)
-Establish `e : (fun i => x * v i) = x • v` using `rfl`. Rewrite using `[e, hact, hact, Matrix.mulVec_smul]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem act_scale (hact : ∀ h v, D.act h v = (ρ h).val *ᵥ v) (h : GL (Fin 2) (A E)) (x : A ℚ) (v : V4 ℚ) :
     D.act h (fun i => x * v i) = fun i => x * D.act h v i := by
@@ -101,13 +101,13 @@ private theorem act_scale (hact : ∀ h v, D.act h v = (ρ h).val *ᵥ v) (h : G
   rfl
 
 /- English proof (translation)
-Establish `h : ∀ (γ : Matrix.SpecialLinearGroup (Fin 2) E) (ξ : Fin 4 → ℚ), ∃ ξ', D.act (gl (ratS E γ)) (rp ξ) = rp ξ'`. Introduce `γ ξ`. Take `⟨N, -, hN⟩` from `actRat ℚ E D (Matrix.SpecialLinearGroup.toGL γ)`. Conclude with `⟨_, by rw [gl_ratS]; exact hN ξ⟩`. Use `choose f hf using h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hinv : ∀ γ : Matrix.SpecialLinearGroup (Fin 2) E, (gl (ratS E γ))⁻¹ = gl (ratS E γ⁻¹)` using `fun γ => by`. Rewrite using `[map_inv, gl_inv]`. Establish `hcomp : ∀ (γ : Matrix.SpecialLinearGroup (Fin 2) E) ξ, f γ (f γ⁻¹ ξ) = ξ` using `fun γ ξ => rp_injective (by`. Rewrite using `[← hf, ← hf, ← act_mul hact, ← gl_mul, ← map_mul, mul_inv_cancel, map_one, gl_one, act_one hact])`. Establish `hcomp' : ∀ (γ : Matrix.SpecialLinearGroup (Fin 2) E) ξ, f γ⁻¹ (f γ ξ) = ξ` using `fun γ ξ => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using hcomp γ⁻¹ ξ`. Take `⟨-, -, -, hnu, -, -, -, -, -, hqi, hqr⟩` from `szLaws E D`. Use `⟨⟨f γ⁻¹, f γ, hcomp γ, hcomp' γ⟩, fun ξ => ?_, fun ξ => rt_injective ?_⟩` and prove the remaining obligations. Rewrite using `[hinv]`. Conclude with `hf _ ξ`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `rt (qr D.δ (f γ⁻¹ ξ)) = _`. Rewrite using `[← hqr, ← hf, hqi _ (hnu _), hqr]`.
+A detailed English derivation is pending.
 -/
 private theorem rat_equiv (hact : ∀ h v, D.act h v = (ρ h).val *ᵥ v) (γ : Matrix.SpecialLinearGroup (Fin 2) E) :
     ∃ e : (Fin 4 → ℚ) ≃ (Fin 4 → ℚ), (∀ ξ, D.act (gl (ratS E γ))⁻¹ (rp ξ) = rp (e ξ)) ∧
@@ -131,9 +131,9 @@ private theorem rat_equiv (hact : ∀ h v, D.act h v = (ρ h).val *ᵥ v) (γ : 
     rw [← hqr, ← hf, hqi _ (hnu _), hqr]
 
 /- English proof (translation)
-Establish `hxi : x⁻¹ = y⁻¹ * ((infGL E 2 z)⁻¹ * g₀⁻¹)`. Rewrite using `[hx]`. Use `group`. Establish `h1 : (fun i => (a : A ℚ) * D.act x⁻¹ (rp ξ) i) = (ρ y⁻¹).val *ᵥ D.act (infGL E 2 z)⁻¹ (sc a (e ξ))`. Rewrite using `[← hact, hxi, act_mul hact, act_mul hact, he]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e1 : sc a (e ξ) = fun i => (a : A ℚ) * rp (e ξ) i` using `rfl`. Rewrite using `[e1, act_scale hact, act_scale hact]`. Rewrite using `[h1]`. Establish `hw1` using `wt_nonneg' K' n (D.act (infGL E 2 z)⁻¹ (sc a (e ξ)))`. Conclude with `(hlin _).trans ((mul_le_mul_of_nonneg_right (le_abs_self _) hw1).trans (mul_le_mul_of_nonneg_left (hz _) (abs_nonneg _)))`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem term_le (hact : ∀ h v, D.act h v = (ρ h).val *ᵥ v) {K K' : Set (Fin 4 → FiniteAdeleRing (𝓞 ℚ) ℚ)} {n : ℕ}
     {B₁ Tz : ℝ} {x y : GL (Fin 2) (A E)} {g₀ : GL (Fin 2) (A E)} {z : GL (Fin 2) (Cinf E)} {e : (Fin 4 → ℚ) → Fin 4 → ℚ}
@@ -157,9 +157,9 @@ private theorem term_le (hact : ∀ h v, D.act h v = (ρ h).val *ᵥ v) {K K' : 
 end Act
 
 /- English proof (translation)
-Establish `e1 : H ≤ |C₂| * t` using `h.trans (mul_le_mul_of_nonneg_right (le_abs_self _) ht.le)`. Combine the equalities or inequalities in the displayed calculation. Use `le_trans (le_abs_self _) ?_` and prove the remaining obligations. Rewrite using `[abs_pow, abs_mul, abs_of_nonneg (pow_nonneg hH 2)]`. Use `_ ≤ (|C₀| * (|C₂| * t) ^ 2) ^ n := by gcongr`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `_ = (|C₀| * |C₂| ^ 2) ^ n * t ^ (2 * n) := by`. Rewrite using `[mul_pow |C₂|, ← mul_assoc, mul_pow, pow_mul]`.
+A detailed English derivation is pending.
 -/
 private theorem pow_bound {C₀ C₂ H t : ℝ} (n : ℕ) (hH : 0 ≤ H) (ht : 0 < t) (h : H ≤ C₂ * t) :
     (C₀ * H ^ 2) ^ n ≤ (|C₀| * |C₂| ^ 2) ^ n * t ^ (2 * n) := by
@@ -172,7 +172,7 @@ private theorem pow_bound {C₀ C₂ H t : ℝ} (n : ℕ) (hH : 0 ≤ H) (ht : 0
         rw [mul_pow |C₂|, ← mul_assoc, mul_pow, pow_mul]
 
 /- English proof (translation)
-Establish `hfs : Summable f` using `Summable.of_nonneg_of_le hf h (hs.mul_left M)`. Use `⟨hfs, ?_, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Establish `hq : Summable fun i : {i // P i} => M' * g i.1` using `(hs.mul_left M').comp_injective Subtype.val_injective`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 private theorem sum_cmp {ι : Type} {f g : ι → ℝ} {P : ι → Prop} {M M' S : ℝ} (hM : 0 ≤ M) (hM' : 0 ≤ M')
     (hf : ∀ i, 0 ≤ f i) (hg : ∀ i, 0 ≤ g i) (hs : Summable g) (hS : ∑' i, g i ≤ S) (h : ∀ i, f i ≤ M * g i)
@@ -191,23 +191,23 @@ private theorem sum_cmp {ι : Type} {f g : ι → ℝ} {P : ι → Prop} {M M' S
       _ ≤ M' * S := mul_le_mul_of_nonneg_left hS hM'
 
 /- English proof (translation)
-Introduce `E _ _ _ D K C c s hK hC _ hc`. Take `⟨ρ, hρ, hact, -⟩` from `actCont ℚ E D`. Take `⟨N, hN⟩` from `wtSum ℚ`. Take `⟨Y, C₂, hY, hred⟩` from `UpperTheory.exists_compact_siegel_decomposition_height_le E c hc`. Establish `hCmp : IsCompact ((fun p : G1 E × GL (Fin 2) (A E) => ρ (gl p.1 * p.2)⁻¹) '' (Y ×ˢ C))` using `(hY.prod hC).image (hρ.comp (((continuous_gl.comp continuous_fst).mul continuous_snd).inv))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨K', hK', hlin⟩` from `wtLin ℚ _ hCmp K hK`. Take `⟨B₁, hB₁⟩` from `hlin (N + s)`. Take `⟨C₀, hC₀⟩` from `wtAct ℚ E D`. Take `⟨Cs, hCs⟩` from `hN K' hK' c hc`. Take `⟨L, hL, hq⟩` from `UpperTheory.ab_le_mul_one_add_norm_of_finPart_mem_compact K' D.δ hK'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨N + s, 2 * (N + s), |B₁| * (|C₀| * |C₂| ^ 2) ^ (N + s) * |Cs| * (1 + L ^ s), fun a u b k hk ha hb => ?_⟩` and prove the remaining obligations. Take `⟨γ, z, w, hw, hx, hHt⟩` from `hred u b hb`. Take `⟨e, he, heq⟩` from `rat_equiv hact γ`. Take `⟨hs, ht⟩` from `hCs a ha`. Establish `haa : 0 < ab a` using `ab_pos a`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hbb : 0 < ab b` using `ab_pos b`. Establish `hHt0 : 0 ≤ Ht z` using `by unfold Ht; positivity`. Establish `hmem : ρ (gl w * k)⁻¹ ∈ (fun p : G1 E × GL (Fin 2) (A E) => ρ (gl p.1 * p.2)⁻¹) '' (Y ×ˢ C)` using `⟨(w, k), ⟨hw, hk⟩, rfl⟩`. Establish `hterm` using `term_le (K := K) (K' := K') (n := N + s) (y := gl w * k) hact (x := gl (nU u * mD b) * k) (by rw [hx, mul_assoc]) (hB₁ _ hmem) (hC₀ K' (N + s) z) he a`. Use `set T : ℝ := |B₁| * (|C₀| * |C₂| ^ 2) ^ (N + s) * ab b ^ (2 * (N + s)) with hT`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hT0 : 0 ≤ T` using `by positivity`. Establish `hle : ∀ ξ, (wt K (N + s) fun i => (a : A ℚ) * D.act (gl (nU u * mD b) * k)⁻¹ (rp ξ) i) ≤ T * wt K' (N + s) (sc a (e ξ))` using `fun ξ => by`. Establish `hw0` using `wt_nonneg' K' (N + s) (sc a (e ξ))`. Use `(hterm ξ).trans ?_` and prove the remaining obligations. Rewrite using `[hT, mul_assoc |B₁|, mul_assoc |B₁|]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `mul_le_mul_of_nonneg_left (mul_le_mul_of_nonneg_right (pow_bound _ hHt0 hbb hHt) hw0) (abs_nonneg _)`. Establish `hgt : ∑' ξ, wt K' N (sc a (e ξ)) ≤ |Cs|`. Rewrite using `[e.tsum_eq fun ξ => wt K' N (sc a ξ)]`. Conclude with `ht.trans (le_abs_self _)`. Establish `hM' : 0 ≤ T * (L * (ab a)⁻¹) ^ s` using `by positivity`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨h1, h2, h3⟩` from `sum_cmp (P := fun ξ => qr D.δ ξ ≠ 0) hT0 hM' (fun _ => wt_nonneg' _ _ _) (fun _ => wt_nonneg' _ _ _) (hs.comp_injective e.injective) hgt (fun ξ => (hle ξ).trans (mul_le_mul_of_nonneg_left (wt_add_le K' N s _) hT0)) (fun ξ hξ => by`. Establish `hne : qr D.δ (e ξ) ≠ 0` using `by rw [heq]; exact hξ`. Establish `h1` using `wt_decay (K := K') N s (v := sc a (e ξ)) haa hL (hq a _ hne)`. Combine the equalities or inequalities in the displayed calculation. Establish `hCs0 : 0 ≤ |Cs|` using `abs_nonneg _`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hLs : 0 ≤ L ^ s` using `by positivity`. Use `⟨h1, h2.trans ?_, h3.trans ?_⟩` and prove the remaining obligations. Establish `hQ : 0 ≤ |B₁| * (|C₀| * |C₂| ^ 2) ^ (N + s) * |Cs| * ab b ^ (2 * (N + s))` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Establish `hQ : 0 ≤ |B₁| * (|C₀| * |C₂| ^ 2) ^ (N + s) * |Cs| * (ab a)⁻¹ ^ s * ab b ^ (2 * (N + s))` using `by positivity`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hT, mul_pow]`. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ |B₁| * (|C₀| * |C₂| ^ 2) ^ (N + s) * |Cs| * (ab a)⁻¹ ^ s * ab b ^ (2 * (N + s)) * (1 + L ^ s) := mul_le_mul_of_nonneg_left (by linarith) hQ`. Use `_ = _ := by ring`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.RankTwoDescent.latSum :
     LatSum := by

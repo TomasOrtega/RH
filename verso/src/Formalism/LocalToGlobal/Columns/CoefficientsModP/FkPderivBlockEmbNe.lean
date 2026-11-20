@@ -15,7 +15,7 @@ variable {K : Type} [Field K] [StarRing K] {ι : Type} {n : ℕ}
 
 omit [StarRing K] in
 /- English proof (translation)
-Simplify using `[Formalism.GradedWeylDivisibility.blockEmb]`.
+Simplify using the standard rewrite rules.
 -/
 theorem fk_blockEmb_X (τ : ι) (v : Fin n × Fin n) :
     Formalism.GradedWeylDivisibility.blockEmb K τ (X v) = (X (τ, v) : MvPolynomial (ι × Fin n × Fin n) K) := by
@@ -23,7 +23,7 @@ theorem fk_blockEmb_X (τ : ι) (v : Fin n × Fin n) :
 
 omit [StarRing K] in
 /- English proof (translation)
-Simplify using `[Formalism.GradedWeylDivisibility.blockEmb]`.
+Simplify using the standard rewrite rules.
 -/
 theorem fk_blockEmb_C (τ : ι) (a : K) :
     Formalism.GradedWeylDivisibility.blockEmb K (k := n) (n := n) τ (C a) = (C a : MvPolynomial (ι × Fin n × Fin n) K) := by
@@ -31,7 +31,7 @@ theorem fk_blockEmb_C (τ : ι) (a : K) :
 
 omit [StarRing K] in
 /- English proof (translation)
-Unfold `Formalism.GradedWeylDivisibility.blockEmb`. Conclude with `pderiv_rename (fun a b hab => by simpa using hab) v g`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem fk_pderiv_blockEmb (τ : ι) (v : Fin n × Fin n) (g : MvPolynomial (Fin n × Fin n) K) :
     pderiv (τ, v) (Formalism.GradedWeylDivisibility.blockEmb K τ g) = Formalism.GradedWeylDivisibility.blockEmb K τ (pderiv v g) := by
@@ -40,7 +40,7 @@ theorem fk_pderiv_blockEmb (τ : ι) (v : Fin n × Fin n) (g : MvPolynomial (Fin
 
 omit [StarRing K] in
 /- English proof (translation)
-Unfold `Formalism.GradedWeylDivisibility.blockEmb`. Proceed by induction on `g using MvPolynomial.induction_on with`. Consider the case `C a => simp`. Consider the case `add p q hp hq => simp [hp, hq]`. Consider the case `mul_X p w hp => simp [Derivation.leibniz, hp, pderiv_X, Pi.single_apply, Prod.ext_iff, Ne.symm h]`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem fk_pderiv_blockEmb_ne {τ τ' : ι} (h : τ ≠ τ') (v : Fin n × Fin n) (g : MvPolynomial (Fin n × Fin n) K) :
     pderiv (τ, v) (Formalism.GradedWeylDivisibility.blockEmb K τ' g) = 0 := by
@@ -52,7 +52,7 @@ theorem fk_pderiv_blockEmb_ne {τ τ' : ι} (h : τ ≠ τ') (v : Fin n × Fin n
   | mul_X p w hp => simp [Derivation.leibniz, hp, pderiv_X, Pi.single_apply, Prod.ext_iff, Ne.symm h]
 
 /- English proof (translation)
-Proceed by induction on `g using MvPolynomial.induction_on with`. Consider the case `C a => rw [fk_blockEmb_C, ← smul_eq_C_mul, map_smul, smul_eq_mul, constantCoeff_C]`. Consider the case `add p q hp hq => rw [map_add, add_mul, map_add, hp, hq, map_add, add_mul]`. Consider the case `mul_X p v _`. Rewrite using `[map_mul (Formalism.GradedWeylDivisibility.blockEmb K τ), fk_blockEmb_X, mul_comm _ (X (τ, v)), mul_assoc, ← fockL_pderiv_X, hP, map_zero, LinearMap.zero_apply, map_mul constantCoeff, constantCoeff_X, mul_zero, zero_mul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem fk_fock_right (τ : ι) (P Q : MvPolynomial (ι × Fin n × Fin n) K) (hP : ∀ v, pderiv (τ, v) P = 0)
     (g : MvPolynomial (Fin n × Fin n) K) :
@@ -66,9 +66,9 @@ theorem fk_fock_right (τ : ι) (P Q : MvPolynomial (ι × Fin n × Fin n) K) (h
       LinearMap.zero_apply, map_mul constantCoeff, constantCoeff_X, mul_zero, zero_mul]
 
 /- English proof (translation)
-Proceed by induction on `f using MvPolynomial.induction_on generalizing g with`. Consider the case `C a`. Rewrite using `[fk_blockEmb_C, ← smul_eq_C_mul, LinearMap.map_smulₛₗ, LinearMap.smul_apply, fk_fock_right τ P P' hP, fockL_C_left, smul_eq_mul, starRingEnd_apply, mul_assoc]`. Consider the case `add p q hp hq`. Rewrite using `[map_add, add_mul, map_add, LinearMap.add_apply, hp, hq, map_add, LinearMap.add_apply, add_mul]`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `mul_X p v hp`. Rewrite using `[map_mul (Formalism.GradedWeylDivisibility.blockEmb K τ), fk_blockEmb_X, mul_comm _ (X (τ, v)), mul_assoc, fockL_X_pderiv, Derivation.leibniz, hP', smul_zero, zero_add, fk_pderiv_blockEmb, smul_eq_mul, mul_comm P', hp, mul_comm p, fockL_X_pderiv]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem fk_fock_mul (τ : ι) (P P' : MvPolynomial (ι × Fin n × Fin n) K) (hP : ∀ v, pderiv (τ, v) P = 0)
     (hP' : ∀ v, pderiv (τ, v) P' = 0) (f g : MvPolynomial (Fin n × Fin n) K) :
@@ -85,11 +85,11 @@ theorem fk_fock_mul (τ : ι) (P P' : MvPolynomial (ι × Fin n × Fin n) K) (hP
       smul_zero, zero_add, fk_pderiv_blockEmb, smul_eq_mul, mul_comm P', hp, mul_comm p, fockL_X_pderiv]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Simplify using `only [Finset.prod_empty]`. Rewrite using `[← C_1, fockL_C_left]`. Simplify using the standard rewrite rules.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Consider the case `insert τ s hτ ih`. Establish `hz : ∀ (h : ι → MvPolynomial (Fin n × Fin n) K) (v : Fin n × Fin n), pderiv (τ, v) (∏ τ' ∈ s, Formalism.GradedWeylDivisibility.blockEmb K τ' (h τ')) = 0`. Introduce `h v`. Use `Finset.prod_induction _ (fun P => pderiv (τ, v) P = 0) ?_ ?_ ?_` and prove the remaining obligations. Introduce `a b ha hb`.
+Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Derivation.leibniz, ha, hb, smul_zero, smul_zero, add_zero]`. Conclude with `(pderiv (τ, v)).map_one_eq_zero`. Introduce `τ' hτ'`. Conclude with `fk_pderiv_blockEmb_ne (fun e : τ = τ' => hτ (by rw [e]; exact hτ')) v _`. Rewrite using `[Finset.prod_insert hτ, Finset.prod_insert hτ, Finset.prod_insert hτ, fk_fock_mul τ _ _ (hz f) (hz g), ih]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fk_fock_prod (s : Finset ι) (f g : ι → MvPolynomial (Fin n × Fin n) K) :
     fockL (∏ τ ∈ s, Formalism.GradedWeylDivisibility.blockEmb K τ (f τ)) (∏ τ ∈ s, Formalism.GradedWeylDivisibility.blockEmb K τ (g τ)) =
@@ -115,14 +115,14 @@ theorem fk_fock_prod (s : Finset ι) (f g : ι → MvPolynomial (Fin n × Fin n)
 end Ten
 
 /- English proof (translation)
-Introduce `K _ _ ι _ n f g`. Conclude with `fk_fock_prod Finset.univ f g`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem fockSymTensor_holds : FockSTen := by
   intro K _ _ ι _ n f g
   exact fk_fock_prod Finset.univ f g
 
 /- English proof (translation)
-The claim follows from `pairExtremal_of fockSymTensor_holds extNormPos`.
+A detailed English derivation is pending.
 -/
 theorem pairingExtremal_holds : PairExtremal := pairExtremal_of fockSymTensor_holds extNormPos
 
@@ -131,7 +131,7 @@ section Rat
 variable {K : Type} [Field K] (K0 : Subfield K)
 
 /- English proof (translation)
-Take `⟨Q, rfl⟩` from `hP`. Rewrite using `[MvPolynomial.coeff_map]`. Conclude with `(coeff m Q).2`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fk_coeff_mem {σ : Type} {P : MvPolynomial σ K} (hP : P ∈ (map (σ := σ) K0.subtype).range) (m : σ →₀ ℕ) :
     coeff m P ∈ K0 := by
@@ -140,7 +140,7 @@ theorem fk_coeff_mem {σ : Type} {P : MvPolynomial σ K} (hP : P ∈ (map (σ :=
   exact (coeff m Q).2
 
 /- English proof (translation)
-Use `⟨map (Int.castRingHom K0) P, ?_⟩` and prove the remaining obligations. Rewrite using `[MvPolynomial.map_map, RingHom.ext_int (K0.subtype.comp (Int.castRingHom K0)) (Int.castRingHom K)]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem fk_int_mem {σ : Type} (P : MvPolynomial σ ℤ) :
     map (Int.castRingHom K) P ∈ (map (σ := σ) K0.subtype).range := by
@@ -148,23 +148,21 @@ theorem fk_int_mem {σ : Type} (P : MvPolynomial σ ℤ) :
   rw [MvPolynomial.map_map, RingHom.ext_int (K0.subtype.comp (Int.castRingHom K0)) (Int.castRingHom K)]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨C ⟨a, ha⟩, by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem fk_C_mem {σ : Type} {a : K} (ha : a ∈ K0) : (C a : MvPolynomial σ K) ∈ (map (σ := σ) K0.subtype).range :=
   ⟨C ⟨a, ha⟩, by simp⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨X v, map_X _ _⟩`.
+Supply the required witnesses or components.
 -/
 theorem fk_X_mem {σ : Type} (v : σ) : (X v : MvPolynomial σ K) ∈ (map (σ := σ) K0.subtype).range :=
   ⟨X v, map_X _ _⟩
 
 /- English proof (translation)
-Take `⟨Q, rfl⟩` from `hP`. Proceed by induction on `Q using MvPolynomial.induction_on with`. Consider the case `C a`. Rewrite using `[map_C, algHom_C]`. Conclude with `fk_C_mem K0 a.2`.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `add p q hp hq`. Rewrite using `[map_add (map K0.subtype), map_add]`. Conclude with `add_mem hp hq`. Consider the case `mul_X p v hp`. Rewrite using `[map_mul (map K0.subtype), map_X, map_mul, blockAct_X]`.
-
-Conclude with `mul_mem hp (sum_mem fun b _ => mul_mem (fk_C_mem K0 (hU _ _ _)) (fk_X_mem K0 _))`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fk_blockAct_mem {ι : Type} [Fintype ι] {n : ℕ} (U : ι → Matrix (Fin n) (Fin n) K) (hU : ∀ τ a b, U τ a b ∈ K0)
     {P : MvPolynomial (ι × Fin n × Fin n) K} (hP : P ∈ (map (σ := ι × Fin n × Fin n) K0.subtype).range) :
@@ -182,9 +180,9 @@ theorem fk_blockAct_mem {ι : Type} [Fintype ι] {n : ℕ} (U : ι → Matrix (F
     exact mul_mem hp (sum_mem fun b _ => mul_mem (fk_C_mem K0 (hU _ _ _)) (fk_X_mem K0 _))
 
 /- English proof (translation)
-Set `G0 : Matrix (Fin n) (Fin n) K0` to `fun a b => ⟨G a b, hG a b⟩`. Establish `hG0 : G = G0.map K0.subtype`. Use extensionality with `a b`. Both sides reduce to the same expression. Rewrite using `[hG0, ← RingHom.mapMatrix_apply, ← RingHom.map_det]`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(G0.det).2`.
+A detailed English derivation is pending.
 -/
 theorem fk_det_mem {n : ℕ} (G : Matrix (Fin n) (Fin n) K) (hG : ∀ a b, G a b ∈ K0) : G.det ∈ K0 := by
   let G0 : Matrix (Fin n) (Fin n) K0 := fun a b => ⟨G a b, hG a b⟩
@@ -195,7 +193,7 @@ theorem fk_det_mem {n : ℕ} (G : Matrix (Fin n) (Fin n) K) (hG : ∀ a b, G a b
   exact (G0.det).2
 
 /- English proof (translation)
-Unfold `fockS`. Use `sum_mem fun m _ => mul_mem (mul_mem ?_ (fk_coeff_mem K0 hQ m)) (natCast_mem K0 _)` and prove the remaining obligations. Rewrite using `[coeff_map, eq_intCast, star_intCast]`. Conclude with `intCast_mem K0 _`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fk_fock_mem [StarRing K] {σ : Type} (P : MvPolynomial σ ℤ) {Q : MvPolynomial σ K}
     (hQ : Q ∈ (map (σ := σ) K0.subtype).range) : fockS (map (Int.castRingHom K) P) Q ∈ K0 := by
@@ -205,7 +203,7 @@ theorem fk_fock_mem [StarRing K] {σ : Type} (P : MvPolynomial σ ℤ) {Q : MvPo
   exact intCast_mem K0 _
 
 /- English proof (translation)
-Unfold `extNorm`. Use `prod_mem fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[← map_extremal (Int.castRingHom K)]`. Conclude with `fk_fock_mem K0 _ (fk_int_mem K0 _)`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fk_extNorm_mem [StarRing K] {ι : Type} [Fintype ι] {n : ℕ} (lam : ι → DomWeight n) : extNorm K lam ∈ K0 := by
   unfold extNorm
@@ -214,7 +212,7 @@ theorem fk_extNorm_mem [StarRing K] {ι : Type} [Fintype ι] {n : ℕ} (lam : ι
   exact fk_fock_mem K0 _ (fk_int_mem K0 _)
 
 /- English proof (translation)
-Unfold `gramTw`. Conclude with `prod_mem fun τ _ => zpow_mem (fk_det_mem K0 _ (hG τ)) _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem fk_gramTw_mem {ι : Type} [Fintype ι] {n : ℕ} (lam : ι → DomWeight n) (G : ι → Matrix (Fin n) (Fin n) K)
     (hG : ∀ τ a b, G τ a b ∈ K0) : gramTw lam G ∈ K0 := by
@@ -222,17 +220,17 @@ theorem fk_gramTw_mem {ι : Type} [Fintype ι] {n : ℕ} (lam : ι → DomWeight
   exact prod_mem fun τ _ => zpow_mem (fk_det_mem K0 _ (hG τ)) _
 
 /- English proof (translation)
-Take `⟨π, hπ⟩` from `LinearMap.exists_leftInverse_of_injective (Algebra.linearMap K0 K) (LinearMap.ker_eq_bot.mpr (algebraMap K0 K).injective)`. Establish `hπ' : ∀ a : K0, π (a : K) = a` using `fun a => congrArg (fun φ : K0 →ₗ[K0] K0 => φ a) hπ`. Establish `hmul : ∀ (a : K0) (z : K), π (z * (a : K)) = π z * a`. Introduce `a z`. Establish `: z * (a : K) = a • z` using `by rw [mul_comm]; rfl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[this, map_smul, smul_eq_mul, mul_comm]`. Establish `key : ∑ i, (c i - (π (c i) : K)) • v i = 0`. Use extensionality with `m`. Rewrite using `[coeff_sum, coeff_zero]`. Simplify using `only [coeff_smul, smul_eq_mul, sub_mul, Finset.sum_sub_distrib]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[sub_eq_zero]`. Establish `h1 : coeff m (∑ i, c i • v i) = ∑ i, c i * coeff m (v i)`. Rewrite using `[coeff_sum]`. Simplify using `only [coeff_smul, smul_eq_mul]`. Establish `h2 : ((π (coeff m (∑ i, c i • v i)) : K0) : K) = coeff m (∑ i, c i • v i)` using `congrArg (fun a : K0 => (a : K)) (hπ' ⟨_, fk_coeff_mem K0 hx m⟩)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← h1, ← h2, h1, map_sum]`. Use `push_cast`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `hmul ⟨_, fk_coeff_mem K0 (hv0 i) m⟩ (c i)` as an intermediate fact. Simplify using `only at this`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[this]`. Both sides reduce to the same expression. Use `(Fintype.linearIndependent_iff.mp hv) _ key i` as an intermediate fact. Rewrite `this` using `[sub_eq_zero]`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(π (c i)).2`.
+A detailed English derivation is pending.
 -/
 theorem fk_descent {σ κ : Type} [Fintype κ] (v : κ → MvPolynomial σ K) (hv : LinearIndependent K v)
     (hv0 : ∀ i, v i ∈ (map (σ := σ) K0.subtype).range) (c : κ → K)
@@ -269,9 +267,9 @@ theorem fk_descent {σ κ : Type} [Fintype κ] (v : κ → MvPolynomial σ K) (h
 end Rat
 
 /- English proof (translation)
-Introduce `K _ _ ι _ n lam K0 G hG i j`. Take `⟨Pi, hPi⟩` from `bVVfun_int K lam i`. Take `⟨Pj, hPj⟩` from `bVVfun_int K lam j`. Rewrite using `[pairK_apply, pairP_apply, bVV_coe, bVV_coe, fockL_apply, hPi, hPj]`. Use `mul_mem (div_mem (fk_gramTw_mem K0 lam G hG) (fk_extNorm_mem K0 lam)) (fk_fock_mem K0 _ ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `fk_blockAct_mem K0 _ (fun τ a b => hG τ b a) (fk_int_mem K0 _)`.
+A detailed English derivation is pending.
 -/
 theorem pairingRational_holds : PairRat := by
   intro K _ _ ι _ n lam K0 G hG i j
@@ -282,11 +280,11 @@ theorem pairingRational_holds : PairRat := by
   exact fk_blockAct_mem K0 _ (fun τ a b => hG τ b a) (fk_int_mem K0 _)
 
 /- English proof (translation)
-Introduce `K _ ι _ n lam K0 g hg i j`. Take `⟨Pj, hPj⟩` from `bVVfun_int K lam j`. Use `fk_descent K0 (bVVfun K lam) (bVVfun_spec K lam).1 (fun k => ?_) (fun k => (bVV K lam).repr (rhoK lam g (bVV K lam j)) k) ?_ i` and prove the remaining obligations. Take `⟨Pk, hPk⟩` from `bVVfun_int K lam k`. Rewrite using `[hPk]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `fk_int_mem K0 _`. Establish `h1 : ∑ k, (bVV K lam).repr (rhoK lam g (bVV K lam j)) k • bVVfun K lam k = actP lam g (bVVfun K lam j)`. Establish `h` using `congrArg (fun x : VV K lam => (x : Pol K ι n)) ((bVV K lam).sum_repr (rhoK lam g (bVV K lam j)))`. Simplify using `only [rhoK_coe, bVV_coe, Submodule.coe_sum, Submodule.coe_smul] at h`. Conclude with `h`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[h1, hPj, actP, LinearMap.smul_apply, AlgHom.toLinearMap_apply, smul_eq_C_mul]`. Use `mul_mem (fk_C_mem K0 ?_) (fk_blockAct_mem K0 _ (fun τ a b => hg τ b a) (fk_int_mem K0 _))` and prove the remaining obligations. Rewrite using `[detTw_eq]`. Conclude with `prod_mem fun τ _ => zpow_mem (fk_det_mem K0 _ (hg τ)) _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem actionRational_holds : ActRat := by
   intro K _ ι _ n lam K0 g hg i j

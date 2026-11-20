@@ -10,9 +10,9 @@ open CategoryTheory TensorProduct MvPowerSeries GlobalTheory GlobalTheory.PDiv G
 namespace GlobalTheory.QLog
 
 /- English proof (translation)
-Introduce `p _ O E _ _ _ hF G d c f hf n s hs`. Use `haveI : IsAdicComplete (Ideal.span {(p : O)}) O := hF.complete`. Take `⟨hf0, -, hfc⟩` from `hf`. Take `⟨κ, -, hκ⟩` from `((series_in_ideal_iff_image O E (Fin d ⊕ Fin d) ⊤ _).1).1 hfc`. Take `⟨-, hκ0, hrest⟩` from `GlobalTheory.T.integral_coboundary_representative_cocycle_rules O E d c.μ c.isLaw hF.inj f κ hκ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hcob` using `(hrest (p ^ n) s hs).1`. Use `⟨c.ev₂ n κ, ?_⟩` and prove the remaining obligations. Rewrite using `[← (GlobalTheory.T.formalChart_evalSquare_properties p O G d c n s).2.2.2, hcob, map_sub, map_smul, (GlobalTheory.T.ev_subst_natMultiple_prime_pow_constant p O G d c n).2.1 κ, hκ0 hf0, map_zero, sub_zero, Nat.cast_pow]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cobOne_ev_defect_dvd : ∀ (p : ℕ) [Fact p.Prime] (O E : Type) [CommRing O] [CommRing E] [Algebra O E], IsFrame p E (RingHom.id O) → ∀ (G : PDivGroup p O) (d : ℕ) (c : QLog.Chart G d), ∀ (f : MvPowerSeries (Fin d) E), QL c.μ ⊤ f → ∀ (n : ℕ) (s : MvPowerSeries (Fin d) O), map (algebraMap O E) s = defect c.μ (p ^ n) f → ∃ z, cobOne O (G.A n) (c.ev n s) = (p : O) ^ n • z := by
   intro p _ O E _ _ _ hF G d c f hf n s hs

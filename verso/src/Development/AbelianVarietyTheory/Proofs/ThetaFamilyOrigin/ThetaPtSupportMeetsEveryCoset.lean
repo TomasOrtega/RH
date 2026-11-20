@@ -17,7 +17,7 @@ namespace GlobalTheory.ThetaSupport
 open Out in
 
 /- English proof (translation)
-The claim follows from `(EvVal.existsUnique_sec_eq_mul_gen _ (TLinPf.linComb_cover L hL _ _) (EvVal.pullSec L (fun _ : Fin 1 => (snd T A).left) (fun _ => n) (ptSecT A w).left (fun _ => w.left) (fun _ => by rw [← Over.comp_left, ptSecT, lift_snd]) (val_le A L w) s) τ hτ).unique h h'`.
+A detailed English derivation is pending.
 -/
 theorem isValueAt_unique {S : Scheme.{0}} {A : Over S} [GrpObj A] {L : LB A.left} {T : Over S} (hL : L.IsLB) {n : ℤ}
     {s : LB.Sec (LPow A L n T)} {w : T ⟶ A}
@@ -31,19 +31,17 @@ theorem isValueAt_unique {S : Scheme.{0}} {A : Over S} [GrpObj A] {L : LB A.left
 open ThetaCoord in
 
 /- English proof (translation)
-Introduce `hLaw g n N' hn hdvd K _ _ P hg ze lev v hv c`. Take `⟨k, hk⟩` from `hdvd`. Establish `ho` using `hv.1`. Establish `hu` using `hv.2.1`. Use `P.isAb.comm` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: NeZero (N' ^ 2)` using `⟨ho.pow.pos.ne'⟩`. Establish `hK : (N' : K) ≠ 0`. Use `hu.map (Scheme.ΓSpecIso (CommRingCat.of K)).hom.hom` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Conclude with `this.ne_zero`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hnK : (n : K) ≠ 0` using `fun h => hK (by rw [hk]; push_cast; rw [h]; ring)`. Take `⟨H₁, H₂⟩` from `theta_coordinates hLaw g 1 N' 1 N' (by norm_num) (by norm_num)`. Take `⟨⟨th, t, hth, ht⟩, Hv⟩` from `H₁ (Sp K) P hg ze lev v hv`. Take `⟨-, hli, -⟩` from `(H₂ K ho hK P hg ze lev).2.2 th t hth ht`. Use `haveI : Nontrivial Γ((Out.baseOver (Spec (CommRingCat.of K))).left, ⊤) := (Scheme.ΓSpecIso (CommRingCat.of K)).commRingCatIsoToRingEquiv.symm.injective.nontrivial`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : Out.SecM.ofSec P.A (t 0) ≠ 0`. Use `hli.ne_zero (fun _ => 0)` as an intermediate fact. Establish `e : (fun _ : Fin (2 * g) => (((0 : Fin 1) : ℕ) : ZMod (N' ^ 2))) = 0` using `funext fun _ => by simp`. Simplify `this` using `only [e]`. Take `⟨x, hx, τ, w, hτ, hw, hw0⟩` from `hLaw.goodPt K P n hn hnK (t 0) h0 (levelPoint lev hg c ^ N')`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨d, rfl⟩` from `(pow_eq_one_iff (M := N' ^ 2) (d := n) (e := (n * k) * N') (by rw [sq]; nth_rewrite 1 [hk]; ring) lev hg x).1 hx`. Establish `e : levelPoint lev hg c ^ N' * levelPoint lev hg d ^ (n * k * N') = levelPoint lev hg (c + n • k • d) ^ N'`. Rewrite using `[levelPoint_eq_lab, ← mul_smul, lab_add (levelBasis_pow lev hg), lab_nsmul (levelBasis_pow lev hg), mul_pow, ← pow_mul]`. Use `⟨k • d, fun hz => hw0 ?_⟩` and prove the remaining obligations. Establish `key` using `((Hv th t hth ht).1 (c + n • k • d))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `key` using `[← e]`. Take `⟨u, hu'⟩` from `key τ hτ`. Establish `h₁` using `hu' 0`. Establish `e₂ : thetaCoordIdx 1 N' 0 (c + n • k • d) = c + n • k • d`. Simplify using `[thetaCoordIdx]`.
-
-Rewrite `h₁` using `[e₂, hz, mul_zero]`. Conclude with `isValueAt_unique P.isLB hτ hw h₁`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_ne_zero_in_coset : Out.Laws → ∀ (g n N' : ℕ), 2 ≤ n → n ^ 2 ∣ N' → ∀ (K : Type) [Field K] [IsAlgClosed K] (P : Out.PolAV (Sp K)) (hg : P.g = g) (ze : Γ(Sp K, ⊤)ˣ) (lev : Out.Level P (N' ^ 2) ze) (v : (Fin (2 * g) → ZMod (N' ^ 2)) → Γ((Out.baseOver (Sp K)).left, ⊤)), Out.IsThetaPt P N' (levelPoint lev hg) v → ∀ c : Fin (2 * g) → ZMod (N' ^ 2), ∃ d : Fin (2 * g) → ZMod (N' ^ 2), v (c + n • d) ≠ 0 := by
   intro hLaw g n N' hn hdvd K _ _ P hg ze lev v hv c

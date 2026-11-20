@@ -10,17 +10,15 @@ open scoped Pointwise
 namespace UpperTheory.Gal.UnramifiedFromSplittingCriterion
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Use `⟨one_mem _, ?_⟩` and prove the remaining obligations. Introduce `x _`. Simplify using the standard rewrite rules.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Consider the case `succ n ih`. Use `⟨pow_mem h.1 _, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Establish `hy : A.valuation (φ x) ≤ 1`. Rewrite `hx`, the goal using `[ValuationSubring.valuation_le_one_iff]`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Conclude with `(apply_mem_iff_of_mem_Dec h.1 x).2 hx`. Establish `h1` using `ih.2 (φ x) hy`. Establish `h2` using `h.2 x hx`. Establish `hz : A.valuation (x ^ q) ≤ 1`. Rewrite using `[map_pow]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `pow_le_one' hx q`. Establish `hc1 : A.valuation (∑ i ∈ Finset.range (q ^ n), (φ x) ^ i * (x ^ q) ^ (q ^ n - 1 - i)) ≤ 1`. Use `Valuation.map_sum_le _ (fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[map_mul, map_pow, map_pow]`. Conclude with `mul_le_one' (pow_le_one' hy _) (pow_le_one' hz _)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : A.valuation ((φ x) ^ (q ^ n) - (x ^ q) ^ (q ^ n)) < 1`. Rewrite using `[← geom_sum₂_mul (φ x) (x ^ q) (q ^ n), map_mul]`. Conclude with `(mul_le_of_le_one_left' hc1).trans_lt h2`. Establish `e : (φ ^ (n + 1)) x - x ^ (q ^ (n + 1)) = ((φ ^ n) (φ x) - (φ x) ^ (q ^ n)) + ((φ x) ^ (q ^ n) - (x ^ q) ^ (q ^ n))`. Rewrite using `[pow_succ, AlgEquiv.mul_apply, pow_succ', pow_mul]`.
-
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `Valuation.map_add_lt _ h1 h3`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isFrob_pow' {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω]
     {A : ValuationSubring Ω} {q : ℕ} {φ : G F Ω} (h : IsFrob A q φ) (n : ℕ) :
@@ -55,7 +53,7 @@ private theorem isFrob_pow' {F Ω : Type} [Field F] [NumberField F] [Field Ω] [
     exact Valuation.map_add_lt _ h1 h3
 
 /- English proof (translation)
-Use `haveI : Finite (𝓞 E ⧸ w.asIdeal) := Ideal.finiteQuotientOfFreeOfNeBot _ w.ne_bot`. Use `haveI : w.asIdeal.IsMaximal := w.isMaximal`. Use `letI : Field (𝓞 E ⧸ w.asIdeal) := Ideal.Quotient.field w.asIdeal`. Use `show 1 < Nat.card (𝓞 E ⧸ w.asIdeal)`. Conclude with `Finite.one_lt_card`.
+Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 private theorem one_lt_normV_inertia_quadratic_ramification {E : Type} [Field E] [NumberField E] (w : HeightOneSpectrum (𝓞 E)) :
     1 < normV w := by
@@ -66,33 +64,31 @@ private theorem one_lt_normV_inertia_quadratic_ramification {E : Type} [Field E]
   exact Finite.one_lt_card
 
 /- English proof (translation)
-Introduce `K M Ω _ _ _ _ _ _ _ _ _ _ A v w hv hw hI φ d hd hφ hfix`. Take `⟨f, hf⟩` from `GlobalTheory.WeilRestrict.normV_eq_pow_of_isPlaceOver (K := K) (L := M) hv hw`. Establish `hq : 1 < normV v` using `one_lt_normV_inertia_quadratic_ramification v`. Establish `hw1 : 1 < normV w` using `one_lt_normV_inertia_quadratic_ramification w`. Establish `hdf : d ∣ f` using `by haveI : Algebra.IsAlgebraic K Ω := IsAlgClosure.isAlgebraic haveI : Algebra.IsAlgebraic M Ω := Algebra.IsAlgebraic.tower_top (K := K) (A := Ω) M haveI : IsAlgClosure M Ω := ⟨IsAlgClosure.isAlgClosed K, inferInstance⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨σ, hσ⟩` from `exists_isFrob (F := M) hw`. Establish `hφf` using `isFrob_pow' hφ f`. Rewrite `hφf` using `[← hf]`. Use `set ρ := GlobalTheory.WeilRestrict.resG K σ with hρ`. Establish `hρD : ρ ∈ Dec A` using `GlobalTheory.WeilRestrict.resG_mem_Dec hσ.1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hτI : ρ * (φ ^ f)⁻¹ ∈ Ine A` using `by show ρ * (φ ^ f)⁻¹ ∈ ValuationSubring.decompositionSubgroup K A ∧ ∀ x : Ω, A.valuation x ≤ 1 → A.valuation ((ρ * (φ ^ f)⁻¹) x - x) < 1`. Use `⟨mul_mem hρD (inv_mem hφf.1), ?_⟩` and prove the remaining obligations. Introduce `x hx`. Take `⟨y, rfl⟩ : ∃ y, x = (φ ^ f) y` from `⟨(φ ^ f).symm x, ((φ ^ f).apply_symm_apply x).symm⟩`. Establish `hyA : A.valuation y ≤ 1`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `hx`, the goal using `[ValuationSubring.valuation_le_one_iff]`. Conclude with `(apply_mem_iff_of_mem_Dec hφf.1 y).1 hx`. Establish `h1` using `hσ.2 y hyA`. Establish `h2` using `hφf.2 y hyA`. Establish `e : (ρ * (φ ^ f)⁻¹) ((φ ^ f) y) - (φ ^ f) y = (σ y - y ^ normV w) - ((φ ^ f) y - y ^ normV w)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[AlgEquiv.mul_apply]`. Rewrite using `[show (φ ^ f)⁻¹ ((φ ^ f) y) = y from (φ ^ f).symm_apply_apply y]`. Rewrite using `[hρ, GlobalTheory.WeilRestrict.resG_apply]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Valuation.map_sub_lt _ h1 h2`. Establish `hfixτ` using `hI _ hτI`. Rewrite using `[← hfix f]`. Introduce `x`. Establish `h1 : (ρ * (φ ^ f)⁻¹) (algebraMap M Ω x) = algebraMap M Ω x` using `hfixτ x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : ρ (algebraMap M Ω x) = algebraMap M Ω x`. Rewrite using `[hρ, GlobalTheory.WeilRestrict.resG_apply]`. Conclude with `σ.commutes x`. Rewrite `h1` using `[AlgEquiv.mul_apply]`. Establish `h3 : (φ ^ f)⁻¹ (algebraMap M Ω x) = algebraMap M Ω x` using `ρ.injective (h1.trans h2.symm)`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hfd : f ≤ d`. Establish `key : ∀ x : 𝓞 M, x ^ (normV v ^ d) - x ∈ w.asIdeal`. Introduce `x`. Rewrite using `[← hw]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hint : A.valuation (algebraMap M Ω (x : M)) ≤ 1` using `GlobalTheory.InertiaAlmostAll.val_le_one_of_isIntegral A (x.isIntegral_coe.map (IsScalarTower.toAlgHom ℤ M Ω))`. Establish `hφd` using `(isFrob_pow' hφ d).2 _ hint`. Rewrite `hφd` using `[(hfix d).2 dvd_rfl x]`. Establish `e : algebraMap M Ω (((x ^ (normV v ^ d) - x : 𝓞 M)) : M) = -(algebraMap M Ω (x : M) - (algebraMap M Ω (x : M)) ^ (normV v ^ d))`. Rewrite using `[show (((x ^ (normV v ^ d) - x : 𝓞 M)) : M) = (x : M) ^ (normV v ^ d) - (x : M) by push_cast; ring, map_sub, map_pow]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, Valuation.map_neg]`. Conclude with `hφd`. Use `haveI : w.asIdeal.IsMaximal := w.isMaximal`. Use `letI : Field (𝓞 M ⧸ w.asIdeal) := Ideal.Quotient.field w.asIdeal`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hR : Nat.card (𝓞 M ⧸ w.asIdeal) = normV v ^ f` using `hf`. Use `haveI : Finite (𝓞 M ⧸ w.asIdeal) := Nat.finite_of_card_ne_zero (by show normV w ≠ 0 omega)`. Use `letI := Fintype.ofFinite (𝓞 M ⧸ w.asIdeal)`. Establish `hN : 1 < normV v ^ d` using `Nat.one_lt_pow (Nat.pos_iff_ne_zero.1 hd) hq`. Establish `hp0` using `FiniteField.X_pow_card_sub_X_ne_zero (𝓞 M ⧸ w.asIdeal) hN`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hsub : (Finset.univ : Finset (𝓞 M ⧸ w.asIdeal)).val ⊆ (Polynomial.X ^ (normV v ^ d) - Polynomial.X : Polynomial (𝓞 M ⧸ w.asIdeal)).roots`. Introduce `a _`. Rewrite using `[Polynomial.mem_roots hp0, Polynomial.IsRoot, Polynomial.eval_sub, Polynomial.eval_pow, Polynomial.eval_X]`. Take `⟨x, rfl⟩` from `Ideal.Quotient.mk_surjective a`. Rewrite using `[← map_pow, ← map_sub, Ideal.Quotient.eq_zero_iff_mem]`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Conclude with `key x`. Establish `h` using `Polynomial.card_le_degree_of_subset_roots hsub`. Rewrite `h` using `[FiniteField.X_pow_card_sub_X_natDegree_eq _ hN, Finset.card_univ, ← Nat.card_eq_fintype_card, hR]`. Conclude with `(Nat.pow_le_pow_iff_right hq).1 h`. Establish `hf0 : 0 < f`.
-
-Break down `Nat.eq_zero_or_pos f with h | h` into its components or cases. Rewrite `hf` using `[h, pow_zero]`. Use linear arithmetic over natural numbers and integers. Conclude with `h`. Rewrite using `[hf, le_antisymm hfd (Nat.le_of_dvd hf0 hdf)]`.
+A detailed English derivation is pending.
 -/
 theorem degOf : DegOf := by
   intro K M Ω _ _ _ _ _ _ _ _ _ _ A v w hv hw hI φ d hd hφ hfix

@@ -8,43 +8,41 @@ namespace PositivityTheory.Rg.Cz
 
 open KTy in
 /- English proof (translation)
-Introduce `hGl hTr hGK hSph hY n hn M _ _ ι _ _ Γ _ _ _ _ _ bar κ E ρ hK hG l hl hc ℓ hℓ hW`. Take `⟨s, w, nu, hnu, hm⟩` from `sort_data l hl`. Take `⟨H, hH⟩` from `half bar hK.invol hK.ne`. Use `set lab := lab3 bar (labQ nu) (tl H) with hlab`. Establish `hlabcol : ∀ p q, colF nu H p = colF nu H q → lab p = lab q` using `fun p q h => colF_lab nu H bar p q h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `htab` using `isTabF nu H hm`. Set `co : Pos nu H → Fin n` to `fun p => w (lab p) (bF nu H p)`. Establish `hco : ∀ p q, colF nu H p = colF nu H q → co p = co q → p = q`. Introduce `p q h h'`. Use `htab.1 p q h ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [co, hlabcol p q h] at h'`. Conclude with `(w (lab q)).injective h'`. Take `⟨S, hSA, hS0, hSe⟩` from `hTr n M ι E hG.gl hG.comm l hc ℓ hℓ hW (Pos nu H) lab (Col ι n) (colF nu H) (bF nu H) co hlabcol htab hco`. Establish `hGK'` using `hGK n M ι Γ bar κ E ρ hK hG (Pos nu H) lab`. Establish `heig : ∀ τ (u : ℂ), (ℓ ∘ₗ cA (colF nu H) (bF nu H) ∘ₗ S) ∘ₗ qdet (tE (fib lab τ) (E τ)) u = ((u + (s : ℂ)) ^ n) • (ℓ ∘ₗ cA (colF nu H) (bF nu H) ∘ₗ S)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `τ u`. Rewrite using `[hSe τ u]`. Use `congr 1`. Rewrite using `[← Fin.prod_const n (u + (s : ℂ))]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `e1 : (Finset.univ.filter fun p => lab p = τ ∧ co p = k) = Finset.univ.filter fun p => lab p = τ ∧ bF nu H p = (w τ).symm k`. Use extensionality with `p`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, co]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨h1, ?_⟩` and prove the remaining obligations. Rewrite using `[← h2, h1]`. Simplify using the standard rewrite rules. Introduce and unpack `⟨h1, h2⟩`. Use `⟨h1, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[h2, h1]`. Simplify using the standard rewrite rules. Establish `e2 : (Finset.univ.filter fun p => lab p = τ ∧ bF nu H p = (w τ).symm k).card = nu τ ((w τ).symm k) + ((w τ).symm k : ℕ)` using `cntF nu H bar hK.invol hH τ ((w τ).symm k)`. Establish `e3` using `hnu τ ((w τ).symm k)`. Rewrite `e3` using `[Equiv.apply_symm_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e1, e2]`. Establish `e4 : ((nu τ ((w τ).symm k) + ((w τ).symm k : ℕ) : ℕ) : ℤ) = s - l τ k` using `by push_cast; linarith`. Establish `e5 : ((nu τ ((w τ).symm k) + ((w τ).symm k : ℕ) : ℕ) : ℂ) = (s : ℂ) - (l τ k : ℂ)` using `by exact_mod_cast e4`. Rewrite using `[e5]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨ξ, hξ, w', hw', hφ⟩` from `hSph n hn (TV n M (Pos nu H)) ι Γ bar κ (fun τ => tE (fib lab τ) (E τ)) (actT lab κ ρ) hK hGK'.1 s _ hS0 heig`. Establish `hcomm : ∀ σ : Equiv.Perm (Pos nu H), (∀ p, lab (σ p) = lab p) → ∀ x ∈ envAlg (fun τ => tE (fib lab τ) (E τ)), Commute (pm σ) x`. Introduce `σ hσ x hx`. Use `Algebra.commute_of_mem_adjoin_of_forall_mem_commute hx ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨τ, a, b, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(hGl n M (Pos nu H) (E τ) (hG.gl τ) (fib lab τ)).2.2.1 σ (by intro p; simp only [fib, Finset.mem_filter, Finset.mem_univ, true_and, hσ]) a b`. Establish `hGc : ∀ σ ∈ colG (colF nu H), ∀ p, lab (σ p) = lab p`. Introduce `σ hσ p`. Simplify using `only [colG, Finset.mem_filter, Finset.mem_univ, true_and] at hσ`. Conclude with `hlabcol _ _ (hσ p)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hPc : ∀ σ ∈ colG (tl H), ∀ p, lab (dbl (Q` using `Fin (Fintype.card (Bx nu))) σ p) = lab p := by`. Introduce `σ hσ p`. Simplify using `only [colG, Finset.mem_filter, Finset.mem_univ, true_and] at hσ`. Apply the tactic sequence `rcases p with p | k | k <;> simp [dbl, hlab, lab3, hσ]`. Establish `hA1 : ∀ x ∈ envAlg (fun τ => tE (fib lab τ) (E τ)), Commute (alt (colG (colF nu H))) x` using `fun x hx => alt_comm _ _ fun σ hσ => hcomm σ (hGc σ hσ) x hx`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hA2 : ∀ x ∈ envAlg (fun τ => tE (fib lab τ) (E τ)), Commute (altPair (Q` using `Fin (Fintype.card (Bx nu))) (tl H)) x := by`. Introduce `x hx`. Unfold `altPair`. Conclude with `Commute.sum_left _ _ _ fun σ hσ => (hcomm _ (hPc σ hσ) x hx).smul_left _`. Use `⟨s, Fintype.card (Bx nu), Fintype.card (Pr H n), labQ nu, colQ nu, bQ nu, tl H, alt (colG (colF nu H)) ξ, ?_, isTabQ nu hm, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `p p' h`. Conclude with `hlabcol (.inl p) (.inl p') (by simp [colF, h])`. Introduce `k k' h`. Establish `h1` using `(eP H n k).1.2`. Establish `h2` using `(hH (tl H k')).1 (eP H n k').1.2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `h2 (by rw [← h]; exact h1)`. Introduce `τ`. Use `⟨w τ, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[cntQ, hnu]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `γ`. Use `alt_comm (colG (colF nu H)) (actT lab κ ρ γ) fun σ hσ => hGK'.2 σ (hGc σ hσ) γ` as an intermediate fact. Use `show actT lab κ ρ γ (alt _ ξ) = _`. Rewrite using `[← Module.End.mul_apply, ← this.eq, Module.End.mul_apply, hξ]`. Introduce `p p' h hne`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `e` using `pm_mul_alt (M := M) (n := n) (colG (colF nu H)) (Equiv.swap (Sum.inl p) (Sum.inl p')) ?_`. Rewrite using `[← Module.End.mul_apply, e, Equiv.Perm.sign_swap (by simpa using hne)]`. Simplify using the standard rewrite rules. Introduce `σ`. Simplify using `only [colG, Finset.mem_filter, Finset.mem_univ, true_and, Equiv.Perm.mul_apply]`.
+Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hs : ∀ x, colF nu H (Equiv.swap (Sum.inl p) (Sum.inl p') x) = colF nu H x`. Introduce `x`. Break down `eq_or_ne x (.inl p) with rfl | h1` into its components or cases. Simplify using `[colF, h]`. Break down `eq_or_ne x (.inl p') with rfl | h2` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `[colF, h]`. Rewrite using `[Equiv.swap_apply_of_ne_of_ne h1 h2]`. Simplify using `only [hs]`. Introduce `h0`. Apply `hφ` to reduce the goal to its premises.
-
-Establish `e : altPair (tl H) (alt (colG (colF nu H)) (S (w' ξ))) = S (w' (altPair (tl H) (alt (colG (colF nu H)) ξ)))`. Rewrite using `[← Module.End.mul_apply (alt _) S, (hA1 S hSA).eq, Module.End.mul_apply, ← Module.End.mul_apply (alt _) w', (hA1 w' hw').eq, Module.End.mul_apply, ← Module.End.mul_apply (altPair _) S, (hA2 S hSA).eq, Module.End.mul_apply, ← Module.End.mul_apply (altPair _) w', (hA2 w' hw').eq, M …`. Apply the tactic sequence `have hy := hY n M ι (Fin (Fintype.card (Bx nu))) (Fintype.card (Pr H n)) (tl H) (Col ι n) (colF nu H) (bF nu H) htab (fun p k => by rcases k with k | k <;> simp [colF]) (fun k k' => by simp [colF]) (fun k k' => by simp [colF, bF, Prod.ext_iff]) (fun k k' => by simp [colF, bF, Pro …`. Simplify using `[hy]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem kType_of : TensorGl → TransAll → TensorGK → SphAll → Young → KType := by
   intro hGl hTr hGK hSph hY n hn M _ _ ι _ _ Γ _ _ _ _ _ bar κ E ρ hK hG l hl hc ℓ hℓ hW

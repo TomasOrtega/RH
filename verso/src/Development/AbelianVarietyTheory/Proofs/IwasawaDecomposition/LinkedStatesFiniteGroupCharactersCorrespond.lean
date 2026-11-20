@@ -12,9 +12,9 @@ namespace GlobalTheory.HeightCounting.SerMove
 open GlobalTheory.Mem.R3.Tr
 
 /- English proof (translation)
-Introduce `K B B' f f' T T' w w' P P' x x' ι e g g' l hg hg' a a' γ hγ j j' hj u`. Apply `RingHom.injective (Dof x').what₂.embLL` to reduce the goal to its premises. Establish `hC : x.m.z.R.toLevCh.C.mu0 j = f.mu0 j`. Rewrite using `[x.m.z.lev.C, w.C_eq]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hC' : x'.m.z.R.toLevCh.C.mu0 j' = f'.mu0 j'`. Rewrite using `[x'.m.z.lev.C, w'.C_eq]`. Both sides reduce to the same expression. Use `(x'.m.z.pins.char.base.grp.chiW j' (γ u)).trans (Eq.trans ?_ ((l.cp.embLL _).trans (x.m.z.pins.char.base.grp.chiW j u)).symm)` and prove the remaining obligations. Conclude with `GlobalTheory.Mem.R3.ChiExt.prod_eq l.enl.1 l.fr l.px j j' hj l.extN.Pg x.m.z.R.eG x'.m.z.R.eG l.extN.eG (x.m.z.R.chi ((j : ℕ) + 1)) (x'.m.z.R.chi ((j' : ℕ) + 1)) (fun PP hP => hC ▸ x.m.z.lev.is.chi j PP hP) (fun PP hP => hC' ▸ x'.m.z.lev.is.chi j' PP hP) u (γ u) (hγ u)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem chi_link_side : ∀ {K : Ctx} {B B' : Base} {f : Top.Fr B.toPre} {f' : Top.Fr B'.toPre} {T : TwDat B} {T' : TwDat B'} {w : ColW B f T} {w' : ColW B' f' T'} {P : Pre2 K w} {P' : Pre2 K w'} (x : St P) (x' : St P') (ι : (Dof x).what₂.LL →+* (Dof x').what₂.LL) (e : ↥(Dof x').LL0 ≃+* ↥(Dof x).LL0) (g : Geo x) (g' : Geo x'), Link x x' ι e g g' → ∀ (hg : GlobalTheory.RealGeo.InGeo g) (hg' : GlobalTheory.RealGeo.InGeo g') (a : BigHost (Dof x)) (a' : BigHost (Dof x')), ∀ (γ : (sideAt x g hg a).Γ ≃* (sideAt x' g' hg' a').Γ), (∀ u, HEq (γ u) u) → ∀ (j : Fin (Dof x).R.m) (j' : Fin (Dof x').R.m), (j : ℕ) = j' → ∀ u : (sideAt x g hg a).Γ, ((((sideAt x' g' hg' a').R.FW j').chi (γ u) : (Dof x').what₂.LLˣ) : (Dof x').what₂.LL) = ι ((((sideAt x g hg a).R.FW j).chi u : (Dof x).what₂.LLˣ) : (Dof x).what₂.LL) := by
   intro K B B' f f' T T' w w' P P' x x' ι e g g' l hg hg' a a' γ hγ j j' hj u

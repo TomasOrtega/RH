@@ -14,15 +14,13 @@ noncomputable section
 namespace GlobalTheory.Discrepancy.DivOver
 
 /- English proof (translation)
-Introduce `k _ X Y _ _ p s _ _ hprop E' E hOver x hx`. Use `haveI := hprop`. Establish `hmem : ∀ a : X.presheaf.stalk x, functionFieldMap s (algebraMap _ X.functionField a) ∈ E'.ring` using `fun a => (hOver _).1 (hx _ ⟨a, rfl⟩)`. Set `ψ : X.presheaf.stalk x →+* E'.ring` to `((functionFieldMap s).comp (algebraMap _ X.functionField)).codRestrict E'.ring.toSubring hmem`. Establish `hc : genericFieldPoint Y ≫ s = specAlgebraMap E'.ring Y.functionField ≫ (Spec.map (CommRingCat.ofHom ψ) ≫ X.fromSpecStalk x)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← specMap_functionFieldMap, ← specAlgebraMap_fromSpecStalk x]`. Simplify using `only [specAlgebraMap, ← Category.assoc, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Both sides reduce to the same expression. Take `⟨b, hb1, hb2⟩` from `exists_valuativeExtension s _ (genericFieldPoint Y) hc`. Establish `hdom : DominatesStalk E'.ring (b (IsLocalRing.closedPoint E'.ring))` using `dominatesStalk_iff_exists_hom.mpr ⟨b, hb1, rfl⟩`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hw : E'.Through (b (IsLocalRing.closedPoint E'.ring))`. Introduce and unpack `f ⟨c, rfl⟩`. Conclude with `hdom.1 c`. Establish `hz : s (b (IsLocalRing.closedPoint E'.ring)) ⤳ x`. Establish `e : s (b (IsLocalRing.closedPoint E'.ring)) = X.fromSpecStalk x (Spec.map (CommRingCat.ofHom ψ) (IsLocalRing.closedPoint E'.ring))`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congrArg (fun l : Spec (CommRingCat.of E'.ring) ⟶ X => l (IsLocalRing.closedPoint E'.ring)) hb2` as an intermediate fact. Conclude with `this`. Rewrite using `[e]`. Use `(IsLocalRing.specializes_closedPoint (Spec.map (CommRingCat.ofHom ψ) (IsLocalRing.closedPoint E'.ring))).map (X.fromSpecStalk x).continuous` as an intermediate fact. Rewrite `this` using `[Scheme.fromSpecStalk_closedPoint]`. Then use the resulting hypothesis.
-
-Take `⟨y, hwy, hy⟩` from `s.isClosedMap.specializingMap hz`. Conclude with `⟨y, hy, hw.of_specializes hwy⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_through_of_isProper : ∀ (k : Type) [Field k] (X Y : Scheme.{0}) [IsIntegral X] [IsIntegral Y] (p : X ⟶ Sp k) (s : Y ⟶ X) [IsDominant s], Function.Bijective (functionFieldMap s) → IsProper s → ∀ (E' : DivOver (s ≫ p)) (E : DivOver p), DivOver.Over s E' E → ∀ x : X, E.Through x → ∃ y : Y, s y = x ∧ E'.Through y := by
   intro k _ X Y _ _ p s _ _ hprop E' E hOver x hx

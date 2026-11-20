@@ -10,7 +10,7 @@ namespace GlobalTheory.ZH
 open GlobalTheory.Points
 
 /- English proof (translation)
-Rewrite using `[← CommRingCat.comp_apply, ← X.presheaf.map_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem resG_resG_apply {X : Scheme.{0}} {U V T : X.Opens} (h : V ≤ U) (h' : T ≤ V) (f : Γ(X, U)) :
     resG X h' (resG X h f) = resG X (h'.trans h) f := by
@@ -18,13 +18,11 @@ theorem resG_resG_apply {X : Scheme.{0}} {U V T : X.Opens} (h : V ≤ U) (h' : T
   rfl
 
 /- English proof (translation)
-Establish `H : ∀ j, ∃ τ : Γ(X, V ⊓ B.U j), ∀ k, resG X (inf_le_inf_right _ (hT k)) τ = σ k j` using `fun j => by`. Take `⟨g, hg, -⟩` from `X.sheaf.existsUnique_gluing' (fun k => T k ⊓ B.U j) (V ⊓ B.U j) (fun k => homOfLE (inf_le_inf_right _ (hT k))) (fun x hx => by`. Take `⟨k, hk⟩` from `hV x hx.1`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨k, hk, hx.2⟩) (fun k => σ k j) (fun k k' => by`. Establish `e : (T k ⊓ B.U j) ⊓ (T k' ⊓ B.U j) ≤ (T k ⊓ T k') ⊓ B.U j` using `fun x hx => ⟨⟨hx.1.1, hx.2.1⟩, hx.1.2⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrArg (resG X e) (hc k k' j)` as an intermediate fact. Rewrite `this` using `[resG_resG_apply, resG_resG_apply]`. Conclude with `this)`. Conclude with `⟨g, hg⟩`. Use `choose τ hτ using H`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨τ, fun i j => ?_, fun k j => hτ j k⟩` and prove the remaining obligations. Use `X.sheaf.eq_of_locally_eq' (fun k => T k ⊓ B.U i ⊓ B.U j) (V ⊓ B.U i ⊓ B.U j) (fun k => homOfLE (inf_le_inf_right _ (inf_le_inf_right _ (hT k)))) (fun x hx => by` and prove the remaining obligations. Take `⟨k, hk⟩` from `hV x hx.1.1`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨k, ⟨hk, hx.1.2⟩, hx.2⟩) _ _ fun k => ?_`. Establish `h` using `hσ k i j`.
-
-Rewrite `h` using `[← hτ i k, ← hτ j k, resG_resG_apply, resG_resG_apply]`. Express the relevant statement in the definitionally equal form `resG X (inf_le_inf_right _ (inf_le_inf_right _ (hT k))) _ = resG X (inf_le_inf_right _ (inf_le_inf_right _ (hT k))) _`. Rewrite using `[map_mul, resG_resG_apply, resG_resG_apply, resG_resG_apply]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_secOn_glue {X : Scheme.{0}} (B : LB X) (V : X.Opens) {κ : Type} (T : κ → X.Opens)
     (hT : ∀ k, T k ≤ V) (hV : ∀ x ∈ V, ∃ k, x ∈ T k) (σ : ∀ k j, Γ(X, T k ⊓ B.U j))
@@ -59,7 +57,7 @@ theorem exists_secOn_glue {X : Scheme.{0}} (B : LB X) (V : X.Opens) {κ : Type} 
   exact h
 
 /- English proof (translation)
-Introduce `j j'` and use `by simp only [map_sum, map_mul, Finset.mul_sum, resG_resG_apply] refine Finset.sum_congr rfl fun i _ => ?_ rw [hσ i j j', mul_left_comm]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem sum_mul_mem_secOn {X : Scheme.{0}} (B : LB X) (V : X.Opens) {I : Type} [Fintype I] (f : I → Γ(X, V))
     (σ : I → ∀ j, Γ(X, V ⊓ B.U j)) (hσ : ∀ i, σ i ∈ secOn B V) :
@@ -72,7 +70,7 @@ variable {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω]
 variable {S : ThetaSys o Ω} {ρ : S.Real} {M : RatModel o Ω} {U₀ : M.Z.Opens} (Q : ZHPre ρ M U₀)
 
 /- English proof (translation)
-Introduce `K _ β g r jP jL h1 h2 h3 h4 h5`. Rewrite using `[h K β g r jP jL h1 h2 h3 h4 (h5.trans e)]`. Use `congr 1`. Establish `hU : ⊤ ≤ (g ≫ Q.φ) ⁻¹ᵁ (V' ⊓ (LB.LinComb Q.L.L (K` using `Fin 1) (fun _ => 𝟙 Q.G.left) (fun _ => k)).U (fun _ => jL)) := fun w _ => ⟨h5 ⟨w, rfl⟩, Set.mem_iInter.2 fun _ => h4 ⟨w, rfl⟩⟩`. Conclude with `(valR_res (g ≫ Q.φ) _ hU _).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ZHPre.genVal_res (k : ℤ) {I : Type} [Fintype I]
     (t : I → LB.Sec (LPow ρ.P.A ρ.P.L k (baseOver (Sp S.R)))) (c : I → Ω) {V V' : Q.G.left.Opens} (e : V' ≤ V)
@@ -88,9 +86,9 @@ theorem ZHPre.genVal_res (k : ℤ) {I : Type} [Fintype I]
   exact (valR_res (g ≫ Q.φ) _ hU _).symm
 
 /- English proof (translation)
-Introduce `K _ β g r jP jL h1 h2 h3 h4 h5`. Take `⟨a, ha⟩` from `hV _ (h5 ⟨IsLocalRing.closedPoint K, rfl⟩)`. Establish `h6 : Set.range (g ≫ Q.φ) ⊆ T a`. Introduce and unpack `_ ⟨w, rfl⟩`. Rewrite using `[Subsingleton.elim (α := PrimeSpectrum K) w (IsLocalRing.closedPoint K)]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ha`. Rewrite using `[h a K β g r jP jL h1 h2 h3 h4 h6]`. Use `congr 1`. Establish `hU : ⊤ ≤ (g ≫ Q.φ) ⁻¹ᵁ (T a ⊓ (LB.LinComb Q.L.L (K` using `Fin 1) (fun _ => 𝟙 Q.G.left) (fun _ => k)).U (fun _ => jL)) := fun w _ => ⟨h6 ⟨w, rfl⟩, Set.mem_iInter.2 fun _ => h4 ⟨w, rfl⟩⟩`. Conclude with `valR_res (g ≫ Q.φ) _ hU _`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ZHPre.genVal_of_cover (k : ℤ) {I : Type} [Fintype I]
     (t : I → LB.Sec (LPow ρ.P.A ρ.P.L k (baseOver (Sp S.R)))) (c : I → Ω) {V : Q.G.left.Opens} {κ : Type}
@@ -113,11 +111,11 @@ theorem ZHPre.genVal_of_cover (k : ℤ) {I : Type} [Fintype I]
   exact valR_res (g ≫ Q.φ) _ hU _
 
 /- English proof (translation)
-Introduce `K _ β g r jP jL h1 h2 h3 h4 h5`. Establish `hV : ⊤ ≤ (g ≫ Q.φ) ⁻¹ᵁ (Q.G.hom ⁻¹ᵁ W)` using `fun w _ => h5 ⟨w, rfl⟩`. Establish `hU : ⊤ ≤ (g ≫ Q.φ) ⁻¹ᵁ (Q.G.hom ⁻¹ᵁ W ⊓ (LB.LinComb Q.L.L (K` using `Fin 1) (fun _ => 𝟙 Q.G.left) (fun _ => k)).U (fun _ => jL)) := fun w _ => ⟨h5 ⟨w, rfl⟩, Set.mem_iInter.2 fun _ => h4 ⟨w, rfl⟩⟩`. Establish `hp : (g ≫ Q.φ) ≫ Q.G.hom = spMap β ≫ M.pt`. Rewrite using `[Category.assoc, Q.cart.1.w, ← h1]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hf : ∀ i, (valMap (g ≫ Q.φ) _ hU).hom (resG _ inf_le_left ((Q.G.hom.appLE W _ le_rfl).hom (f i))) = β (valF M.pt W (f i))` using `fun i => by`. Rewrite using `[← valR_eq, valR_res _ _ hU, valR_appLE _ _ _ hV, hp, valR_spMap_comp β M.pt W (M.top_le_preimage_pt hW), valF_eq_valR]`. Establish `hi` using `fun i => h i K β g r jP jL h1 h2 h3 h4 h5`. Rewrite using `[valF_eq_valR (g ≫ Q.φ), valR_eq _ _ hU, map_sum, Finset.mul_sum]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_sum, map_mul, Finset.sum_mul, hf]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[mul_left_comm, ← valR_eq, ← valF_eq_valR, ← hi i, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun l _ => mul_assoc _ _ _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ZHPre.genVal_sum (k : ℤ) {I J : Type} [Fintype I] [Fintype J]
     (t : I → LB.Sec (LPow ρ.P.A ρ.P.L k (baseOver (Sp S.R)))) (c : J → I → Ω) (W : M.Z.Opens)
@@ -153,19 +151,17 @@ namespace GlobalTheory.ZH
 open GlobalTheory.Points
 
 /- English proof (translation)
-Introduce `o Ω _ _ _ S ρ M U₀ EE Q hU hb W x₀ v hv`. Establish `H : ∀ z : W, ∃ T : M.Z.Opens, z.1 ∈ T ∧ T ≤ W ∧ ∃ σ ∈ secOn (LB.LinComb Q.L.L (K` using `Fin 1) (fun _ => 𝟙 Q.G.left) (fun _ => (S.N : ℤ))) (Q.G.hom ⁻¹ᵁ T), GenVal ρ M U₀ Q.u₀ Q.G Q.φ Q.L.L Q.w S.N ρ.s (fun l => v l / S.th x₀) _ σ := by`. Introduce and unpack `⟨z, hz⟩`. Take `⟨U, b, hzU, -, hE⟩` from `EE.loc z`. Establish `h1` using `(hv z hz).2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `h1` using `[hE z hzU]`. Take `⟨a, ha⟩` from `(Submodule.mem_span_range_iff_exists_fun (M.O z) (v := fun i l => b i l)).1 h1`. Set `T : M.Z.Opens` to `W ⊓ U ⊓ ⟨⋂ i, {z' | (a i : Ω) ∈ M.O z'}, isOpen_iInter_of_finite fun i => M.isOpen_setOf_mem_O _⟩`. Establish `hzT : z ∈ T` using `⟨⟨hz, hzU⟩, Set.mem_iInter.2 fun i => (a i).2⟩`. Establish `hne : (T : Set M.Z).Nonempty` using `⟨z, hzT⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : ∀ i, ∃ f : Γ(M.Z, T), valF M.pt T f = a i` using `fun i => (RatModel.mem_ringOn_iff_exists hne).1 (RatModel.mem_ringOn.2 fun z' hz' => Set.mem_iInter.1 hz'.2 i)`. Use `choose f hf using h2`. Take `⟨σ, hσ⟩` from `hb T x₀ b fun z' hz' => ⟨(hv z' hz'.1.1).1, hE z' hz'.1.2⟩`. Use `⟨T, hzT, inf_le_left.trans inf_le_left, _, sum_mul_mem_secOn _ _ (fun i => (Q.G.hom.appLE T _ le_rfl).hom (f i)) σ fun i => (hσ i).1, ?_⟩` and prove the remaining obligations. Establish `h3` using `Q.genVal_sum S.N ρ.s (fun i l => b i l / S.th x₀) T hne f σ fun i => (hσ i).2`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : (fun l => ∑ i, valF M.pt T (f i) * (b i l / S.th x₀)) = fun l => v l / S.th x₀`. Use function extensionality and compare the values at `l`. Rewrite using `[← ha, Finset.sum_apply, Finset.sum_div]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hf, ← mul_div_assoc]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite `h3` using `[h4]`. Conclude with `h3`. Use `choose T hz hT σ hσ hg using H`. Establish `hle : ∀ z, Q.G.hom ⁻¹ᵁ T z ≤ Q.G.hom ⁻¹ᵁ W` using `fun z x hx => hT z hx`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hcov : ∀ x ∈ Q.G.hom ⁻¹ᵁ W, ∃ z, x ∈ Q.G.hom ⁻¹ᵁ T z` using `fun x hx => ⟨⟨Q.G.hom x, hx⟩, hz _⟩`. Take `⟨τ, hτ, hr⟩` from `exists_secOn_glue _ (Q.G.hom ⁻¹ᵁ W) (fun z => Q.G.hom ⁻¹ᵁ T z) hle hcov σ hσ fun z z' j => congrFun (Q.eq_of_genVal hU _ _ _ _ _ _ (Q.genVal_res _ _ _ inf_le_left _ (hg z)) (Q.genVal_res _ _ _ inf_le_right _ (hg z'))) j`. Use `⟨τ, hτ, Q.genVal_of_cover _ _ _ _ hle hcov τ fun z => ?_⟩` and prove the remaining obligations. Establish `h5` using `hg z`. Rewrite `h5` using `[← funext (hr z)]`.
-
-Conclude with `h5`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_secOn_genVal_of_bases : ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] (S : ThetaSys o Ω) (ρ : S.Real) (M : RatModel o Ω) (U₀ : M.Z.Opens) (EE : M.Lat S.J) (Q : ZHPre ρ M U₀), (U₀ : Set M.Z).Nonempty → (∀ (W : M.Z.Opens) (x₀ : S.Gam) (b : Matrix S.J S.J Ω), (∀ z ∈ W, x₀ ∈ S.supI M z ∧ EE.E z = Submodule.span (M.O z) (Set.range b)) → ∃ σ : S.J → ∀ j, Γ(Q.G.left, Q.G.hom ⁻¹ᵁ W ⊓ (LB.LinComb Q.L.L (K := Fin 1) (fun _ => 𝟙 Q.G.left) (fun _ => (S.N : ℤ))).U j), ∀ i, σ i ∈ secOn (LB.LinComb Q.L.L (K := Fin 1) (fun _ => 𝟙 Q.G.left) (fun _ => (S.N : ℤ))) (Q.G.hom ⁻¹ᵁ W) ∧ GenVal ρ M U₀ Q.u₀ Q.G Q.φ Q.L.L Q.w S.N ρ.s (fun l => b i l / S.th x₀) _ (σ i)) → ∀ (W : M.Z.Opens) (x₀ : S.Gam) (v : S.J → Ω), (∀ z ∈ W, x₀ ∈ S.supI M z ∧ v ∈ EE.E z) → ∃ σ ∈ secOn (LB.LinComb Q.L.L (K := Fin 1) (fun _ => 𝟙 Q.G.left) (fun _ => (S.N : ℤ))) (Q.G.hom ⁻¹ᵁ W), GenVal ρ M U₀ Q.u₀ Q.G Q.φ Q.L.L Q.w S.N ρ.s (fun l => v l / S.th x₀) _ σ := by
   intro o Ω _ _ _ S ρ M U₀ EE Q hU hb W x₀ v hv

@@ -8,7 +8,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `X _ _ _ h` and use `hom_ext_of_fromSpecStalk fun x => @h (X.presheaf.stalk x) _ (X.toLocallyRingedSpace.isLocalRing x) (X.fromSpecStalk x)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem hom_ext_of_localRing_points :
     ∀ (X Y : Scheme.{0}) (f g : X ⟶ Y),

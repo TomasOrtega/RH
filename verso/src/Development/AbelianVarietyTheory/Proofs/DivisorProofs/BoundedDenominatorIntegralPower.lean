@@ -6,7 +6,7 @@ open Matrix NumberField GlobalTheory.LKTrip GlobalTheory.LKRes GlobalTheory.LKMi
 open scoped TensorProduct Classical
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | (exact @GlobalTheory.IntAwayP.exists_pow_mul_isIntegral) | (exact GlobalTheory.IntAwayP.exists_pow_mul_isIntegral) | (intros; apply GlobalTheory.IntAwayP.exists_pow_mul_isIntegral <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.bounded_denominator_integral_power : ∀ (K : Type) [Field K] [NumberField K] (p : ℕ) [Fact p.Prime] (B : ℝ), ∃ m₀ : ℕ, ∀ (c : K) (D : ℕ), (∃ m : ℕ, IsIntegral ℤ ((p : K) ^ m * D * c)) → (∀ φ : K →+* PadicAlgCl p, ‖φ c‖ ≤ B) → IsIntegral ℤ ((p : K) ^ m₀ * D * c) := by
   first | (exact @GlobalTheory.IntAwayP.exists_pow_mul_isIntegral) | (exact GlobalTheory.IntAwayP.exists_pow_mul_isIntegral) | (intros; apply GlobalTheory.IntAwayP.exists_pow_mul_isIntegral <;> assumption)

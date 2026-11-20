@@ -16,11 +16,11 @@ open CategoryTheory CategoryTheory.Limits AlgebraicGeometry GroundTheory.Arith.S
 namespace GlobalTheory.CompanionTheory.GE.PSupp
 
 /- English proof (translation)
-Introduce `A _ _ I hI X _ _ O`. Use `letI : (O : Scheme.{0}).Over (Spec (.of A)) := ⟨O.ι ≫ (X ↘ Spec (.of A))⟩`. Introduce `P E hP hE f hf Sb T hTc hSb Bb hBq hBS B hB`. Establish `hC : IsClosed (badSet Bb)` using `isClosed_badSet Bb`. Establish `hCO : badSet Bb ⊆ (O : Set X)` using `subset_of_closedFibre I hI O (badSet Bb) hC (fun x hx hIx => by`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨y, _, rfl⟩` from `mem_of_badSet_closedFibre I hP Bb hBq _ hTc (fun V hV => by rw [hBS]; exact hSb V hV) x hx hIx`. Rewrite using `[← Scheme.Opens.range_ι O]`. Conclude with `⟨y, rfl⟩)`. Take `⟨T', hT'supp, hT'prop⟩` from `ClosedSub.closed_subset_support_proper (A := A) O (badSet Bb) hC hCO`. Establish `hBqc` using `isQuasicoherent_of_secs_image O hP.1 hE.1 f Bb hBq B hB`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨T', hT'prop, ?_⟩` and prove the remaining obligations. Rewrite using `[hT'supp]`. Conclude with `cokernel_supportedIn_preimage O hP.1 hE.1 f hf Bb B hBqc hB (badSet Bb) (fun U hU hd => GlobalTheory.T.sections_eq_univ_off_bad_support hP.1 Bb hBq U hU hd)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem propSupp_of_closed_image : ∀ {A : Type} [CommRing A] [IsNoetherianRing A] (I : Ideal A), IsAdicComplete I A → ∀ {X : Scheme.{0}} [X.Over (Spec (.of A))] [IsProper (X ↘ Spec (.of A))] (O : X.Opens), letI : (O : Scheme.{0}).Over (Spec (.of A)) := ⟨O.ι ≫ (X ↘ Spec (.of A))⟩; ∀ {P : X.Modules} {E : (O : Scheme.{0}).Modules}, IsCoherent P → IsCoherent E → ∀ f : P.restrict O.ι ⟶ E, Epi f → ∀ (Sb : Subobject P) (T : (O : Scheme.{0}).IdealSheafData), IsClosed (O.ι '' (T.support : Set (O : Scheme.{0}))) → (∀ V : X.Opens, Disjoint (V : Set X) (O.ι '' (T.support : Set (O : Scheme.{0}))) → secs Sb V = Set.univ) → ∀ Bb : Subobject P, (Bb : X.Modules).IsQuasicoherent → Bb ⊔ powSub I P 1 = Sb → ∀ B : Subobject E, (∀ (W : (O : Scheme.{0}).Opens), IsAffineOpen W → secs B W = (fun x => f.app W ((P.restrictAppIso O.ι W).inv x)) '' secs Bb (O.ι ''ᵁ W)) → PropSupp A B := by
   intro A _ _ I hI X _ _ O

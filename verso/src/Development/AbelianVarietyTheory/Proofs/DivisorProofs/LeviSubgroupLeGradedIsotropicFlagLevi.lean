@@ -7,41 +7,39 @@ open scoped TensorProduct
 namespace GlobalTheory.TieStd
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Matrix.mul_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem submatrix_mul_right' {R : Type} [CommRing R] {m n o p : ℕ} (P : Matrix (Fin m) (Fin n) R)
     (Q : Matrix (Fin n) (Fin o) R) (e : Fin p → Fin o) : (P * Q).submatrix id e = P * Q.submatrix id e := by
   ext i j; simp [Matrix.mul_apply]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Matrix.mul_apply, Matrix.one_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem submatrix_eq_mul_one {R : Type} [CommRing R] {m n p : ℕ} (A : Matrix (Fin m) (Fin n) R)
     (e : Fin p → Fin n) : A.submatrix id e = A * (1 : Matrix (Fin n) (Fin n) R).submatrix id e := by
   ext i j; simp [Matrix.mul_apply, Matrix.one_apply]
 
 /- English proof (translation)
-Establish `key : ∀ k ∈ S, ∀ j : Fin r, j ≤ k → (∀ l : Fin r, k < l → (A' * M * A) l j = 0) ∧ ∀ a, (M * A) a j = (A * (A' * M * A)) a j`. Introduce `k hk j hj`. Take `⟨Bk, hB⟩` from `hM k hk`. Establish `hAk : A' * A.submatrix id (Fin.castLE k.2) = (1 : Matrix (Fin r) (Fin r) R).submatrix id (Fin.castLE k.2)`. Rewrite using `[← submatrix_mul_right', hA]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hTk : (A' * M * A).submatrix id (Fin.castLE k.2) = (1 : Matrix (Fin r) (Fin r) R).submatrix id (Fin.castLE k.2) * Bk`. Rewrite using `[Matrix.mul_assoc, submatrix_mul_right', submatrix_mul_right', hB, ← Matrix.mul_assoc, hAk]`. Establish `hjk : j.val < k.val + 1` using `Nat.lt_succ_of_le hj`. Establish `hj' : Fin.castLE k.2 (⟨j.val, hjk⟩ : Fin (k.val + 1)) = j` using `Fin.ext rfl`. Use `⟨fun l hl => ?_, fun a => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `congrFun (congrFun hTk l) ⟨j.val, hjk⟩` as an intermediate fact. Rewrite `this` using `[Matrix.submatrix_apply, hj']`. Express the relevant statement in the definitionally equal form `(A' * M * A) l j = _ at this`. Rewrite using `[this, Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun l' _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hne : l ≠ Fin.castLE k.2 l'`. Introduce `h`. Use `congrArg Fin.val h` as an intermediate fact. Simplify using `at this`. Use `l'.2` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `Fin.lt_def.1 hl` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Simplify using `[Matrix.one_apply, hne]`. Establish `e1 : M * A.submatrix id (Fin.castLE k.2) = (A * (A' * M * A)).submatrix id (Fin.castLE k.2)`. Rewrite using `[hB, submatrix_mul_right', hTk, ← Matrix.mul_assoc, ← submatrix_eq_mul_one]`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congrFun (congrFun e1 a) ⟨j.val, hjk⟩` as an intermediate fact. Rewrite `this` using `[← submatrix_mul_right', Matrix.submatrix_apply, Matrix.submatrix_apply, hj']`. Conclude with `this`. Establish `hsmall : ∀ j : Fin r, j.val < s → ∀ l : Fin r, s ≤ l.val → (A' * M * A) l j = 0`. Introduce `j hj l hl`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨k, hk, hjk⟩` from `(hS j).1 hj`. Establish `hks : k.val < s` using `(hS k).2 ⟨k, hk, le_rfl⟩`. Conclude with `(key k hk j hjk).1 l (Fin.lt_def.2 (by omega))`. Use `⟨(A' * M * A).submatrix (Fin.castLE hs) (Fin.castLE hs), fun i j hij => ?_, ?_⟩` and prove the remaining obligations. Take `⟨k, hk, h1, h2⟩` from `(depth_lt_iff S s hs d hd i j).1 hij`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Conclude with `(key k hk _ h1).1 _ h2`. Use extensionality with `a j`. Establish `hj : (Fin.castLE hs j).val < s` using `j.2`. Take `⟨k, hk, hjk⟩` from `(hS _).1 hj`. Establish `e` using `(key k hk _ hjk).2 a`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← submatrix_mul_right']`. Express the relevant statement in the definitionally equal form `(M * A) a (Fin.castLE hs j) = _`. Rewrite using `[e, Matrix.mul_apply, Matrix.mul_apply]`. Use `symm`. Rewrite using `[show (∑ x : Fin s, A.submatrix id (Fin.castLE hs) a x * (A' * M * A).submatrix (Fin.castLE hs) (Fin.castLE hs) x j) = ∑ l ∈ Finset.univ.map (Fin.castLEEmb hs), A a l * (A' * M * A) l (Fin.castLE hs j) from by`.
+Use symmetry to reverse the relation. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[Finset.sum_map]`. Use the proof step `rfl]`. Use `Finset.sum_subset (Finset.subset_univ _) fun l _ hl => ?_` and prove the remaining obligations. Establish `: s ≤ l.val`. Assume the negation of the conclusion as `h`.
-
-Use `push_neg at h`. Conclude with `hl (Finset.mem_map.2 ⟨⟨l.val, h⟩, Finset.mem_univ _, Fin.ext rfl⟩)`. Rewrite using `[hsmall _ hj l this, mul_zero]`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem flag_mat {R : Type} [CommRing R] {n r : ℕ} (A : Matrix (Fin n) (Fin r) R)
     (A' : Matrix (Fin r) (Fin n) R) (hA : A' * A = 1) (M : Matrix (Fin n) (Fin n) R)
@@ -108,11 +106,11 @@ namespace GlobalTheory.TieStd
 open GlobalTheory.StdPar in
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ h n J hJ r X Y hW S s hs hS d hd`. Establish `side : ∀ Z W : Matrix (Fin n) (Fin r) E, Formalism.UG.cT (σ : E →+* E) W * J * Z = 1 → ∀ g : GAd σ J, (∀ k ∈ S, g ∈ frameStab σ J (initCols Z k) ⊤) → ∃ B : Matrix (Fin s) (Fin s) (AF F ⊗[F] E), B.BlockTriangular d ∧ (matHom _ σ J g).1 * adMat F (Z.submatrix id (Fin.castLE hs)) = …`. Introduce `Z W hWZ g hg`. Establish `hA : adMat F (Formalism.UG.cT (σ : E →+* E) W * J) * adMat F Z = 1`. Rewrite using `[← Matrix.map_mul, hWZ, Matrix.map_one _ (map_zero _) (map_one _)]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `flag_mat (adMat F Z) _ hA _ S s hs hS d hd fun k hk => by`. Take `⟨B, -, e⟩` from `hg k hk`. Conclude with `⟨B.1, e⟩`. Establish `mem : ∀ g ∈ levi σ J X Y S, ∀ k ∈ S, g ∈ frameStab σ J (initCols X k) ⊤ ∧ g ∈ frameStab σ J (initCols Y k) ⊤` using `fun g hg k hk => by`. Simplify using `only [levi, Subgroup.mem_iInf, Subgroup.mem_inf] at hg`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `hg k hk`. Establish `hyx : Formalism.UG.cT (σ : E →+* E) Y * J * X = 1` using `yx h hJ hW`. Introduce `g hg`. Establish `hgi` using `inv_mem hg`. Conclude with `Subgroup.mem_inf.2 ⟨⟨side X Y hyx g fun k hk => (mem g hg k hk).1, side X Y hyx g⁻¹ fun k hk => (mem _ hgi k hk).1⟩, ⟨side Y X hW.xy g fun k hk => (mem g hg k hk).2, side Y X hW.xy g⁻¹ fun k hk => (mem _ hgi k hk).2⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem levi_le_leviFlag : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J → ∀ (r : ℕ)

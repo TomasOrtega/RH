@@ -6,17 +6,15 @@ open NumberField Formalism.IndefR.NX
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `f hA'`. Take `⟨n, b, hmem, _hKi, hKs, hLi, hLs⟩` from `hA'`. Establish `hmem' : ∀ i, f.e.symm (b i) ∈ A.WK` using `fun i => (f.wk _).2 (by simpa using hmem i)`. Establish `hLi' : LinearIndependent LL (fun i => f.e.symm (b i))` using `hLi.map' f.e.symm.toLinearMap (LinearEquiv.ker _)`. Use `⟨n, fun i => f.e.symm (b i), hmem', ?_, ?_, hLi', ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `LinearIndependent.restrict_scalars (K := LL) ?_ hLi'` and prove the remaining obligations. Introduce `r s h`. Establish `h' : algebraMap Ks LL r = algebraMap Ks LL s`. Simplify `h` using `[Algebra.algebraMap_eq_smul_one]`. Conclude with `(algebraMap Ks LL).injective h'`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `le_antisymm` to reduce the goal to its premises. Conclude with `Submodule.span_le.2 (Set.range_subset_iff.2 hmem')`. Introduce `y hy`. Establish `hy' : f.e y ∈ Submodule.span Ks' (Set.range b)` using `by rw [hKs]; exact (f.wk y).1 hy`. Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun Ks').1 hy'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hyeq : y = ∑ i, f.eK.symm (c i) • f.e.symm (b i)`. Establish `: y = f.e.symm (∑ i, c i • b i)` using `by rw [hc]; simp`. Rewrite using `[this, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← algebraMap_smul LL (c i) (b i), LinearEquiv.map_smul, ← algebraMap_smul LL (f.eK.symm (c i)), ← f.eK_LL, RingEquiv.apply_symm_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hyeq]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Establish `: Set.range (fun i => f.e.symm (b i)) = f.e.symm '' Set.range b`. Rewrite using `[← Set.range_comp]`. Both sides reduce to the same expression.
-
-Rewrite using `[this, show (⇑f.e.symm : WL' → WL) = ⇑(f.e.symm : WL' →ₗ[LL] WL) from rfl, Submodule.span_image, hLs, Submodule.map_top, LinearEquiv.range]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isKsForm_of_formsIso {LL Ks Ks' WL WL' G G' : Type} [Field LL] [NumberField LL] [Field Ks] [NumberField Ks]
     [Algebra Ks LL] [Field Ks'] [NumberField Ks'] [Algebra Ks' LL] [AddCommGroup WL] [Module LL WL] [Module Ks WL]

@@ -11,15 +11,15 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.Num.FamEx.Lab
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c O₀ _ β Y S Ω _ K _ J y 𝔐 t`. Establish `uniq : ∀ f g : E →+* Ω, (∀ a : 𝓞 E, f (a : E) = g (a : E)) → f = g`. Introduce `f g h`. Apply `IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 E))` to reduce the goal to its premises. Use extensionality with `a`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Conclude with `h a`. Break down `t with τ | τ` into its components or cases. Set `σ : E →+* Ω` to `𝔐.cst.comp (τ.1.codRestrict c.F (c.conj τ.1))`. Establish `h1 : ∀ a : 𝓞 E, σ (a : E) = 𝔐.emb (Sum.inl τ) a` using `fun a => rfl`. Use `⟨σ, h1, ?_, fun σ' h => uniq _ _ (fun a => (h a).trans (h1 a).symm)⟩` and prove the remaining obligations.
+Separate the alternatives or extract the components of the hypothesis. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a`. Express the relevant statement in the definitionally equal form `𝔐.cst (τ.1.codRestrict c.F (c.conj τ.1) (NumberField.IsCMField.complexConj E (a : E))) = 𝔐.cst (τ.1.codRestrict c.F (c.conj τ.1) ((H.bar a : 𝓞 E) : E))`. Rewrite using `[H.bar_eq a]`. Set `σ : E →+* Ω` to `𝔐.cst.comp ((τ.1.codRestrict c.F (c.conj τ.1)).comp (GlobalTheory.CompanionTheory.Ar.HT.cmConj E).toRingHom)`. Establish `h1 : ∀ a : 𝓞 E, σ (a : E) = 𝔐.emb (Sum.inr τ) a`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a`. Express the relevant statement in the definitionally equal form `𝔐.cst (τ.1.codRestrict c.F (c.conj τ.1) (NumberField.IsCMField.complexConj E (a : E))) = 𝔐.cst (τ.1.codRestrict c.F (c.conj τ.1) ((H.bar a : 𝓞 E) : E))`. Rewrite using `[H.bar_eq a]`. Use `⟨σ, h1, ?_, fun σ' h => uniq _ _ (fun a => (h a).trans (h1 a).symm)⟩` and prove the remaining obligations. Introduce `a`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `𝔐.cst (τ.1.codRestrict c.F (c.conj τ.1) (NumberField.IsCMField.complexConj E (NumberField.IsCMField.complexConj E (a : E)))) = 𝔐.cst (τ.1.codRestrict c.F (c.conj τ.1) (a : E))`. Rewrite using `[NumberField.IsCMField.complexConj_apply_apply]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_labelEmbedding : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O₀ : Type) [CommRing O₀] (β : O₀ →+* c.F) (Y : Model Xo c β) (S : Finset ℕ) (Ω : Type) [Field Ω] (K : Type) [Fintype K] (J : K → Type) (y : (Σ k, J k) → Ω) (𝔐 : HodgeCpt Y S y) (t : CMType H ⊕ CMType H), ∃ σ : E →+* Ω, (∀ a : 𝓞 E, σ (a : E) = 𝔐.emb t a) ∧ (∀ a : 𝓞 E, (σ.comp (HT.cmConj E).toRingHom) (a : E) = 𝔐.emb t.swap a) ∧ ∀ σ' : E →+* Ω, (∀ a : 𝓞 E, σ' (a : E) = 𝔐.emb t a) → σ' = σ := by
   intro E _ _ _ H D l Xo c O₀ _ β Y S Ω _ K _ J y 𝔐 t

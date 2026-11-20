@@ -17,9 +17,9 @@ namespace GlobalTheory.Chain.IoLift.CoverKernel
 variable {p q r s : ℕ}
 
 /- English proof (translation)
-Establish `hs : star ((2:ℂ)⁻¹) = (2:ℂ)⁻¹` using `by simp`. Establish `hs' : star (-(Complex.I * (2:ℂ)⁻¹)) = Complex.I * (2:ℂ)⁻¹`. Simplify using `[Complex.conj_I]`. Establish `hc : Complex.I * -(Complex.I * (2:ℂ)⁻¹) = (2:ℂ)⁻¹`. Take the linear combination `(-(2:ℂ)⁻¹) * Complex.I_sq`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Use `⟨(2:ℂ)⁻¹ • (Z - adjZ Z), (-(Complex.I * (2:ℂ)⁻¹)) • (Z + adjZ Z), mem_upq_of_adjZ ?_, mem_upq_of_adjZ ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[adjZ_smul, adjZ_sub, adjZ_adjZ, hs] module`. Rewrite using `[adjZ_smul, adjZ_add, adjZ_adjZ, hs'] module`. Rewrite using `[smul_smul, hc] module`. Rewrite using `[smul_smul, hc] module`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_real_imag (Z : Mat p q) : ∃ X Y : Mat p q, X ∈ upq p q ∧ Y ∈ upq p q ∧
     Z = X + Complex.I • Y ∧ adjZ Z = -X + Complex.I • Y := by
@@ -40,9 +40,9 @@ theorem exists_real_imag (Z : Mat p q) : ∃ X Y : Mat p q, X ∈ upq p q ∧ Y 
     module
 
 /- English proof (translation)
-Introduce `X P P' y y'`. Take `⟨A, C, hA, hC, rfl, hadj⟩` from `exists_real_imag X`. Rewrite using `[hadj]`. Establish `sA` using `h.skew A hA P P' y y'`. Establish `sC` using `h.skew C hC P P' y y'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [map_add, map_smul, map_neg, LinearMap.add_apply, LinearMap.smul_apply, LinearMap.neg_apply, inner_add_left, inner_add_right, inner_smul_left, inner_smul_right, inner_neg_right, Complex.conj_I]`. Take the linear combination `sA - Complex.I * sC`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem adjRule_of_pair {N : GKMod r s} {Z : Type} [NormedAddCommGroup Z] [InnerProductSpace ℂ Z]
     {B : Pol p q r s →ₗ[ℂ] N.V →ₛₗ[starRingEnd ℂ] Z} (h : IsCoverPair N B) : AdjRule B := by
@@ -56,9 +56,9 @@ theorem adjRule_of_pair {N : GKMod r s} {Z : Type} [NormedAddCommGroup Z] [Inner
   linear_combination sA - Complex.I * sC
 
 /- English proof (translation)
-Introduce `Y P y`. Take `⟨A, C, hA, hC, rfl, hadj⟩` from `exists_real_imag Y`. Rewrite using `[hadj]`. Establish `iA` using `eq_neg_of_add_eq_zero_left (h.inv A hA P y)`. Establish `iC` using `eq_neg_of_add_eq_zero_left (h.inv C hC P y)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [map_add, map_smul, map_neg, map_smulₛₗ, LinearMap.add_apply, LinearMap.smul_apply, LinearMap.neg_apply, Complex.conj_I]`. Rewrite using `[iA, iC]`. Use `module`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem invRule_of_pair {N : GKMod r s} {Z : Type} [NormedAddCommGroup Z] [InnerProductSpace ℂ Z]
     {B : Pol p q r s →ₗ[ℂ] N.V →ₛₗ[starRingEnd ℂ] Z} (h : IsCoverPair N B) : InvRule N B := by
@@ -91,7 +91,7 @@ theorem pairSum_apply {U Y Z₁ Z₂ : Type} [AddCommGroup U] [Module ℂ U] [Ad
     pairSum B₁ B₂ P y = WithLp.toLp 2 (B₁ P y, B₂ P y) := rfl
 
 /- English proof (translation)
-Simplify using `[contr]`.
+Simplify using the standard rewrite rules.
 -/
 theorem contr_tmul {A V H : Type} [AddCommGroup A] [Module ℂ A] [AddCommGroup V] [Module ℂ V] [NormedAddCommGroup H]
     [InnerProductSpace ℂ H] (ι : V →ₗ[ℂ] H) (y : V) (a : A) (v : V) :
@@ -99,7 +99,7 @@ theorem contr_tmul {A V H : Type} [AddCommGroup A] [Module ℂ A] [AddCommGroup 
   simp [contr]
 
 /- English proof (translation)
-Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a v => simp only [TensorProduct.map_tmul, LinearMap.id_apply, contr_tmul, map_smul]`. Consider the case `add x w hx hw => simp only [map_add, hx, hw]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem contr_map_left {A A' V H : Type} [AddCommGroup A] [Module ℂ A] [AddCommGroup A'] [Module ℂ A']
     [AddCommGroup V] [Module ℂ V] [NormedAddCommGroup H]
@@ -111,9 +111,9 @@ theorem contr_map_left {A A' V H : Type} [AddCommGroup A] [Module ℂ A] [AddCom
   | add x w hx hw => simp only [map_add, hx, hw]
 
 /- English proof (translation)
-Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a v`. Simplify using `only [TensorProduct.map_tmul, LinearMap.id_apply, contr_tmul]`. Use `congr 1`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Establish `key` using `derived_adjoint r s T R.U R.HK R.ι R.der (adjZ Y) y v`. Rewrite `key` using `[adjZ_adjZ]`. Conclude with `key.symm`. Consider the case `add x w hx hw => simp only [map_add, hx, hw]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem contr_map_right {A : Type} [AddCommGroup A] [Module ℂ A] {T : GrpData r s} (R : DSRep T)
     (Y : Mat r s) (y : R.HK.V) (t : A ⊗[ℂ] R.HK.V) :
@@ -129,13 +129,11 @@ theorem contr_map_right {A : Type} [AddCommGroup A] [Module ℂ A] {T : GrpData 
   | add x w hx hw => simp only [map_add, hx, hw]
 
 /- English proof (translation)
-Establish `hx : x ∈ Submodule.span ℂ S`. Rewrite using `[hS]`. Conclude with `Submodule.mem_top`. Establish `hw : w ∈ Submodule.span ℂ S`. Rewrite using `[hS]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Proceed by induction.
 
-Conclude with `Submodule.mem_top`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hxS`. Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem w hwS => exact h x hxS w hwS`.
+Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `add a b _ _ ha hb => simp only [map_add, inner_add_right, ha, hb]`. Consider the case `smul c a _ ha => simp only [map_smul, inner_smul_right, ha]`. Consider the case `zero => simp`. Consider the case `add a b _ _ ha hb => simp only [map_add, inner_add_left, ha, hb]`.
-
-Consider the case `smul c a _ ha => simp only [map_smul, inner_smul_left, ha]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem inner_eq_inner_of_eq_on_spanning {V W : Type} [AddCommGroup V] [Module ℂ V] [NormedAddCommGroup W]
     [InnerProductSpace ℂ W] {S : Set V} (hS : Submodule.span ℂ S = ⊤) (f g k l : V →ₗ[ℂ] W)
@@ -158,51 +156,45 @@ private theorem inner_eq_inner_of_eq_on_spanning {V W : Type} [AddCommGroup V] [
   | smul c a _ ha => simp only [map_smul, inner_smul_left, ha]
 
 /- English proof (translation)
-Introduce `X p q r s lam lam' hD hIrr hU hF hT Z₁ Z₂ _ _ _ _ B₁ B₂ h₁ h₂ hne`. Unfold `Formalism.MainNotions.SchurIrreducible.ARiiiDown at hD`. Unfold `Formalism.MainNotions.SchurIrreducible.IrrGK at hIrr`. Unfold `UnitaryImage at hU`. Unfold `FiniteSupport at hF`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions.
 
-Unfold `TensorForm at hT`. Establish `hB : IsCoverPair (X.ds r s lam').HK (pairSum B₁ B₂)`. Prove the components needed by the constructor for the conclusion. Introduce `Y hY P P' y y'`. Simplify using `only [pairSum_apply, WithLp.prod_inner_apply]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Take the linear combination `h₁.skew Y hY P P' y y' + h₂.skew Y hY P P' y y'`. Introduce `Y hY P y`. Rewrite using `[pairSum_apply, pairSum_apply, ← WithLp.toLp_add, Prod.mk_add_mk, h₁.inv Y hY P y, h₂.inv Y hY P y, Prod.mk_zero_zero, WithLp.toLp_zero]`. Take `⟨A, j, B', hj, hjB, hspan, hB'act⟩` from `hU _ _ (pairSum B₁ B₂) (adjRule_of_pair hB)`. Establish `hinv' : InvRule (X.ds r s lam').HK B'`.
+Take a linear combination of the given relations to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `Y P y`. Apply `hj` to reduce the goal to its premises. Rewrite using `[hjB, hjB]`. Conclude with `invRule_of_pair hB Y P y`. Take `⟨hsep, hfac⟩` from `hT (Pol p q r s) A.M.V (X.ds r s lam').HK.V (X.ds r s lam').U.H (X.ds r s lam').ι (X.ds r s lam').ι_inj`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨f, hf⟩` from `hfac B' (hF A.M.V B' hinv')`. Establish `hint1 : ∀ Y : Mat p q, f ∘ₗ (X.fock p q r s).act1 Y = TensorProduct.map (A.M.act Y) LinearMap.id ∘ₗ f`. Introduce `Y`. Use `LinearMap.ext fun P => ?_` and prove the remaining obligations. Rewrite using `[← sub_eq_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `hsep _ fun y => ?_` and prove the remaining obligations. Rewrite using `[map_sub, sub_eq_zero, LinearMap.comp_apply, LinearMap.comp_apply, contr_map_left, hf, hf]`. Conclude with `hB'act Y P y`. Establish `hint2 : ∀ Y : Mat r s, f ∘ₗ (X.fock p q r s).act2 Y = TensorProduct.map LinearMap.id ((X.ds r s lam').HK.act Y) ∘ₗ f`. Introduce `Y`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `LinearMap.ext fun P => ?_` and prove the remaining obligations. Rewrite using `[← sub_eq_zero]`. Use `hsep _ fun y => ?_` and prove the remaining obligations. Rewrite using `[map_sub, sub_eq_zero, LinearMap.comp_apply, LinearMap.comp_apply, contr_map_right, hf, hf]`. Conclude with `hinv' Y P y`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hψ : ∀ P y, WithLp.ofLp (j (B' P y)) = (B₁ P y, B₂ P y)`. Introduce `P y`. Rewrite using `[hjB, pairSum_apply, WithLp.ofLp_toLp]`. Establish `hfne : f ≠ 0`. Introduce `hf0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Apply `hne` to reduce the goal to its premises. Use `LinearMap.ext fun P => LinearMap.ext fun y => ?_` and prove the remaining obligations. Establish `h0 : B' P y = 0` using `by rw [← hf, hf0, LinearMap.zero_apply, map_zero]`. Establish `h1` using `hψ P y`. Rewrite `h1` using `[h0, map_zero, WithLp.ofLp_zero]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨e1, -⟩` from `Prod.mk.inj (h1.symm.trans Prod.mk_zero_zero.symm)`. Rewrite using `[LinearMap.zero_apply, LinearMap.zero_apply]`. Conclude with `e1`. Establish `hIW : Formalism.BasicNotions.TH.IsIntw (X.fock p q r s) A.M (X.ds r s lam').HK f`. Unfold `Formalism.BasicNotions.TH.IsIntw`.
+Replace the relevant objects with their definitions. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨hint1, hint2⟩`. Take `⟨⟨N, -, e, he, hrange⟩, -⟩` from `hD A f hIW hfne`. Establish `memN : ∀ P y, B' P y ∈ N`. Introduce `P y`. Establish `hP : f P ∈ LinearMap.range (TensorProduct.map N.subtype LinearMap.id)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[← hrange]`. Conclude with `LinearMap.mem_range_self f P`. Take `⟨t, ht⟩` from `LinearMap.mem_range.mp hP`. Rewrite using `[← hf, ← ht, contr_map_left]`. Conclude with `(contr (X.ds r s lam').ι y t).2`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `ψ₁ : A.M.V →ₗ[ℂ] Z₁` to `LinearMap.fst ℂ Z₁ Z₂ ∘ₗ (WithLp.linearEquiv 2 ℂ (Z₁ × Z₂)).toLinearMap ∘ₗ j`. Set `ψ₂ : A.M.V →ₗ[ℂ] Z₂` to `LinearMap.snd ℂ Z₁ Z₂ ∘ₗ (WithLp.linearEquiv 2 ℂ (Z₁ × Z₂)).toLinearMap ∘ₗ j`. Establish `hψ₁ : ∀ P y, ψ₁ (B' P y) = B₁ P y` using `fun P y => congrArg Prod.fst (hψ P y)`. Establish `hψ₂ : ∀ P y, ψ₂ (B' P y) = B₂ P y` using `fun P y => congrArg Prod.snd (hψ P y)`. Establish `hsesq : ∀ (Y : Mat p q) (x w : A.M.V), ⟪ψ₁ (A.M.act Y x), ψ₁ w⟫_ℂ = ⟪ψ₁ x, ψ₁ (A.M.act (adjZ Y) w)⟫_ℂ`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `Y`. Use `inner_eq_inner_of_eq_on_spanning hspan (ψ₁ ∘ₗ A.M.act Y) ψ₁ ψ₁ (ψ₁ ∘ₗ A.M.act (adjZ Y)) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨P, y, rfl⟩ _ ⟨P', y', rfl⟩`. Simplify using `only [LinearMap.comp_apply]`. Rewrite using `[← hB'act, ← hB'act]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Simplify using `only [hψ₁]`. Conclude with `adjRule_of_pair h₁ Y P P' y y'`. Establish `hstab : ∀ (Y : Mat p q) (x : A.M.V), ψ₁ x = 0 → ψ₁ (A.M.act Y x) = 0`. Introduce `Y x hx`. Establish `h1` using `hsesq Y x (A.M.act Y x)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite `h1` using `[hx, inner_zero_left]`. Conclude with `inner_self_eq_zero.mp h1`. Set `N' : Submodule ℂ (X.ds p q lam).HK.V` to `(LinearMap.ker ψ₁).comap (N.subtype ∘ₗ e.toLinearMap)`. Establish `hN'st : ∀ (Y : Mat p q), ∀ x ∈ N', (X.ds p q lam).HK.act Y x ∈ N'`. Introduce `Y x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hx' : ψ₁ ((e x : N) : A.M.V) = 0` using `hx`. Use `show ψ₁ ((e ((X.ds p q lam).HK.act Y x) : N) : A.M.V) = 0`. Rewrite using `[he]`. Conclude with `hstab Y _ hx'`. Break down `hIrr.2 N' hN'st with hbot | htop` into its components or cases.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `n a b hsum`. Establish `hwN : ∑ i, B' (a i) (b i) ∈ N` using `Submodule.sum_mem _ fun i _ => memN (a i) (b i)`. Establish `h1 : ψ₁ (∑ i, B' (a i) (b i)) = 0`. Rewrite using `[map_sum]`. Simplify using `only [hψ₁]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. It suffices to derive a contradiction.
 
-Conclude with `hsum`. Establish `hz : e.symm ⟨_, hwN⟩ ∈ N'` using `by show ψ₁ ((e (e.symm ⟨_, hwN⟩) : N) : A.M.V) = 0`. Rewrite using `[LinearEquiv.apply_symm_apply]`. Conclude with `h1`. Rewrite `hz` using `[hbot, Submodule.mem_bot]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h0 : ∑ i, B' (a i) (b i) = 0`. Establish `h3` using `congrArg e hz`. Rewrite `h3` using `[LinearEquiv.apply_symm_apply, map_zero]`. Conclude with `congrArg Subtype.val h3`. Establish `h2` using `congrArg ψ₂ h0`.
-
-Rewrite `h2` using `[map_sum, map_zero]`. Simplify using `only [hψ₂] at h2`. Conclude with `h2`. It suffices to derive a contradiction. Apply `hne` to reduce the goal to its premises.
-
-Use `LinearMap.ext fun P => LinearMap.ext fun y => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.zero_apply, LinearMap.zero_apply, ← hψ₁]`. Establish `hz : e.symm ⟨_, memN P y⟩ ∈ N'`. Rewrite using `[htop]`. Conclude with `Submodule.mem_top`.
-
-Establish `h1 : ψ₁ ((e (e.symm ⟨_, memN P y⟩) : N) : A.M.V) = 0` using `hz`. Rewrite `h1` using `[LinearEquiv.apply_symm_apply]`. Conclude with `h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coverKer_of_down : ∀ (X : ProvA) (p q r s : ℕ) (lam : Ix p q → ℚ) (lam' : Ix r s → ℚ), Formalism.MainNotions.SchurIrreducible.ARiiiDown X lam lam' → Formalism.MainNotions.SchurIrreducible.IrrGK (X.ds p q lam).HK → UnitaryImage p q r s → FiniteSupport p q (X.ds r s lam') → TensorForm → CoverKer p q (X.ds r s lam').HK := by
   intro X p q r s lam lam' hD hIrr hU hF hT Z₁ Z₂ _ _ _ _ B₁ B₂ h₁ h₂ hne

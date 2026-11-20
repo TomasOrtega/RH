@@ -6,13 +6,13 @@ open scoped Classical ENNReal NNReal
 open UpperTheory.ConvolutionTheory.R2.G (FS2 Rw nE row)
 
 /- English proof (translation)
-Introduce `E _ _ D ω φ hφ x g`. Establish `h1 : em E (Matrix.GeneralLinearGroup.scalar (Fin 2) x) = Matrix.GeneralLinearGroup.scalar (Fin 2) (ideleEmbedding ℚ E x)`. Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `AdeleBaseChange.adeleMap ℚ E (Matrix.scalar (Fin 2) (x : A ℚ) i j) = Matrix.scalar (Fin 2) (AdeleBaseChange.adeleMap ℚ E (x : A ℚ)) i j`. Simplify using `only [Matrix.scalar_apply, Matrix.diagonal_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `split_ifs <;> simp`. Establish `h2 : ∀ (z : (A E)ˣ) (n : GL (Fin 2) (A E)), n * (Matrix.GeneralLinearGroup.scalar (Fin 2) z * g) = Matrix.GeneralLinearGroup.scalar (Fin 2) z * (n * g)`. Introduce `z n`. Rewrite using `[← mul_assoc, ← mul_assoc]`. Use `congr 1`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `Units.ext (Matrix.scalar_commute (z : A E) (fun _ => Commute.all _ _) n.val).symm.eq`. Establish `h3 : ideleNorm ℚ E (ideleEmbedding ℚ E x) = x ^ 2`. Rewrite using `[ideleNorm_ideleEmbedding, Module.finrank_eq_card_basis D.b, Fintype.card_fin]`. Unfold `Wo`. Rewrite using `[h1, ← integral_const_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use function extensionality and compare the values at `u`. Rewrite using `[h2, hφ.cen, h3, map_pow, Units.val_pow_eq_pow_val, mul_assoc]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.whittaker_scalar_mul_eq_centralChar_sq_mul :
     ∀ (E : Type) [Field E] [NumberField E] (D : Dat ℚ E) (ω : HChar ℚ) (φ : GL (Fin 2) (A E) → ℂ), admitted D ω φ → ∀ (x : IdeleGroup ℚ) (g : GL (Fin 2) (A E)),

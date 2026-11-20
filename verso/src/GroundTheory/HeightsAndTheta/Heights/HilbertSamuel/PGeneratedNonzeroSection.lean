@@ -20,29 +20,29 @@ section Faces
 variable {S : Type} [CommRing S]
 
 /- English proof (translation)
-Establish `hne : ∀ k, (I.1 k).Nonempty` using `I.2.1`. Establish `hcard₀ : (I.1 k₀).card = 2` using `by rw [hI]; exact Finset.card_pair hab`. Establish `hface : ∀ i ∈ I.1 k₀, (∀ l, (Function.update I.1 k₀ ((I.1 k₀).erase i) l).Nonempty) ∧ ∑ l, ((Function.update I.1 k₀ ((I.1 k₀).erase i) l).card - 1) = 0`. Introduce `i hi`. Establish `hc : ((I.1 k₀).erase i).card = 1` using `by rw [Finset.card_erase_of_mem hi, hcard₀]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `⟨fun l => ?_, Finset.sum_eq_zero fun l _ => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hl : l = k₀`. Substitute `hl; rw [Function.update_self]; exact Finset.card_pos.mp (by omega)` using the available equality. Rewrite using `[Function.update_of_ne hl]`. Conclude with `hne l`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hl : l = k₀`. Substitute `hl` using the available equality. Rewrite using `[Function.update_self, hc]`. Both sides reduce to the same expression. Rewrite using `[Function.update_of_ne hl, hother l hl]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `ha : a ∈ I.1 k₀` using `by rw [hI]; simp`. Establish `hb : b ∈ I.1 k₀` using `by rw [hI]; simp`. Take `rfl : J₁ = ⟨_, hface a ha⟩` from `Subtype.ext h₁`. Take `rfl : J₂ = ⟨_, hface b hb⟩` from `Subtype.ext h₂`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hsign : KH.faceSign I.1 k₀ b = -KH.faceSign I.1 k₀ a`. Unfold `KH.faceSign`. Break down `lt_or_gt_of_ne hab with h | h` into its components or cases. Establish `e₁ : ((I.1 k₀).filter (· < a)).card = 0`. Rewrite using `[hI]`.
+Replace the relevant objects with their definitions. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[Finset.filter_insert, Finset.filter_singleton, h.not_gt]`. Establish `e₂ : ((I.1 k₀).filter (· < b)).card = 1`. Rewrite using `[hI]`. Simplify using `[Finset.filter_insert, Finset.filter_singleton, h]`. Rewrite using `[e₁, e₂, add_comm 1, pow_succ, zero_add]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `e₁ : ((I.1 k₀).filter (· < a)).card = 1`. Rewrite using `[hI]`. Simplify using `[Finset.filter_insert, Finset.filter_singleton, h]`. Establish `e₂ : ((I.1 k₀).filter (· < b)).card = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hI]`. Simplify using `[Finset.filter_insert, Finset.filter_singleton, h.not_gt]`. Rewrite using `[e₁, e₂, add_comm 1, pow_succ, zero_add]`. Expand and normalize the polynomial expressions, which then agree. Establish `hs : KH.faceSign I.1 k₀ a = 1 ∨ KH.faceSign I.1 k₀ a = -1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `KH.faceSign`. Conclude with `neg_one_pow_eq_or ℤ _`. Establish `hd : KH.cechD S ι M 0 f I = KH.faceSign I.1 k₀ a • (KH.cellRes S M _ I.1 (f ⟨_, hface a ha⟩) - KH.cellRes S M _ I.1 (f ⟨_, hface b hb⟩))`. Express the relevant statement in the definitionally equal form `(∑ k : K, ∑ i ∈ I.1 k, _ : KH.CechC S ι M 0 →ₗ[MRingOver S ι] LocalizedModule (KH.cellMon S I.1) M) f = _`. Rewrite using `[Finset.sum_eq_single k₀, Finset.sum_eq_add_of_mem a b ha hb hab, dif_pos (hface a ha), dif_pos (hface b hb)]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hsign, LinearMap.add_apply]`. Express the relevant statement in the definitionally equal form `KH.faceSign I.1 k₀ a • (KH.cellRes S M _ I.1 (f _)) + (-KH.faceSign I.1 k₀ a) • (KH.cellRes S M _ I.1 (f _)) = _`. Rewrite using `[neg_smul, ← sub_eq_add_neg]`. Conclude with `(zsmul_sub _ _ _).symm`. Introduce `i hi hne'`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. The claim follows by propositional logic. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: i = a ∨ i = b` using `by rw [hI] at hi; simpa using hi`. The claim follows by propositional logic. Introduce `l _ hl`. Use `Finset.sum_eq_zero fun i hi => dif_neg fun h => ?_` and prove the remaining obligations. Use `(h.1 l)` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `this` using `[Function.update_self, ← Finset.card_pos, Finset.card_erase_of_mem hi, hother l hl]`. Use linear arithmetic over natural numbers and integers. Introduce `h`. Conclude with `absurd (Finset.mem_univ k₀) h`. Conclude with `GenTwistGenerated.res_eq_of_cechD hs hd h0`.
+A detailed English derivation is pending.
 -/
 theorem res_eq_of_faces {M : Type} [AddCommGroup M] [Module (MRingOver S ι) M] (I : KH.Cell K ι 1) (k₀ : K)
     {a b : ι k₀} (hab : a ≠ b) (hI : I.1 k₀ = {a, b}) (hother : ∀ l, l ≠ k₀ → (I.1 l).card = 1)
@@ -109,11 +109,11 @@ def chartCell (c : ∀ k, ι k) : KH.Cell K ι 0 :=
   ⟨fun k => {c k}, fun k => Finset.singleton_nonempty _, by simp⟩
 
 /- English proof (translation)
-Use `⟨fun k => ?_, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hk : k = k₀`. Substitute `hk` using the available equality. Rewrite using `[Function.update_self]`. Conclude with `Finset.insert_nonempty _ _`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Function.update_of_ne hk]`. Conclude with `Finset.singleton_nonempty _`. Rewrite using `[Finset.sum_eq_single k₀]`. Rewrite using `[Function.update_self, Finset.card_pair hb.symm]`. Introduce `k _ hk`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[Function.update_of_ne hk, Finset.card_singleton]`. Both sides reduce to the same expression. Introduce `h`. Conclude with `absurd (Finset.mem_univ k₀) h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem pairCell_prop (c : ∀ k, ι k) (k₀ : K) (b : ι k₀) (hb : b ≠ c k₀) :
     (∀ k, (Function.update (fun k => ({c k} : Finset (ι k))) k₀ {c k₀, b} k).Nonempty) ∧
@@ -133,17 +133,15 @@ def pairCell (c : ∀ k, ι k) (k₀ : K) (b : ι k₀) (hb : b ≠ c k₀) : KH
   ⟨Function.update (fun k => ({c k} : Finset (ι k))) k₀ {c k₀, b}, pairCell_prop c k₀ b hb⟩
 
 /- English proof (translation)
-Use `(res_eq_of_faces (pairCell c k₀ b hb) k₀ hb.symm (by simp [pairCell]) (fun l hl => by simp only [pairCell]; rw [Function.update_of_ne hl, Finset.card_singleton]) (chartCell (Function.update c k₀ b)) (chartCell c) ?_ ?_ h0).symm` and prove the remaining obligations. Use function extensionality and compare the values at `l`. Distinguish the cases in `hl : l = k₀`. Substitute `hl` using the available equality. Simplify using `only [chartCell, pairCell, Function.update_self]`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Use extensionality with `i`. Simplify using `only [Finset.mem_singleton, Finset.mem_erase, Finset.mem_insert]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl`. Conclude with `⟨hb, Or.inr rfl⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨h1, h2 | h2⟩`. Conclude with `absurd h2 h1`. Conclude with `h2`. Simplify using `only [chartCell, pairCell, Function.update_of_ne hl]`. Use function extensionality and compare the values at `l`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Distinguish the cases in `hl : l = k₀`. Substitute `hl` using the available equality. Simplify using `only [chartCell, pairCell, Function.update_self]`. Use extensionality with `i`. Simplify using `only [Finset.mem_singleton, Finset.mem_erase, Finset.mem_insert]`.
+Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl`. Conclude with `⟨hb.symm, Or.inl rfl⟩`. Introduce and unpack `⟨h1, h2 | h2⟩`. Conclude with `h2`.
-
-Conclude with `absurd h2 h1`. Simplify using `only [chartCell, pairCell, Function.update_of_ne hl]`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem res_eq_pair {M : Type} [AddCommGroup M] [Module (MRingOver S ι) M] (c : ∀ k, ι k) (k₀ : K) (b : ι k₀)
     (hb : b ≠ c k₀) {f : KH.CechC S ι M 0} (h0 : KH.cechD S ι M 0 f = 0) :
@@ -186,9 +184,9 @@ section Eval
 variable {Ω : Type} [Field Ω] [CharZero Ω] (y : (Σ k, ι k) → Ω)
 
 /- English proof (translation)
-Establish `h : (MvPolynomial.eval (fun _ : K => (1 : Ω))).comp (mConeMap y : MRing ι →ₐ[ℤ] MvPolynomial K Ω).toRingHom = (aeval y : MRing ι →ₐ[ℤ] Ω).toRingHom`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `r`. Simplify using the standard rewrite rules. Introduce `p`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[mConeMap]`. Establish `h2` using `RingHom.congr_fun h f`. Simplify using `only [RingHom.coe_comp, Function.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe] at h2`. Rewrite using `[← h2, show mConeMap y f = 0 from (RingHom.mem_ker).mp hf, map_zero]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem aeval_eq_zero_of_mem {f : MRing ι} (hf : f ∈ mCoordIdeal y) : aeval y f = 0 := by
   have h : (MvPolynomial.eval (fun _ : K => (1 : Ω))).comp
@@ -201,15 +199,15 @@ theorem aeval_eq_zero_of_mem {f : MRing ι} (hf : f ∈ mCoordIdeal y) : aeval y
   rw [← h2, show mConeMap y f = 0 from (RingHom.mem_ker).mp hf, map_zero]
 
 /- English proof (translation)
-The claim follows from `MvPolynomial.aeval_map_algebraMap ℚ y f`.
+A detailed English derivation is pending.
 -/
 theorem aeval_map_int (f : MRing ι) : aeval y (MvPolynomial.map (Int.castRingHom ℚ) f) = aeval y f :=
   MvPolynomial.aeval_map_algebraMap ℚ y f
 
 /- English proof (translation)
-Establish `hle : KH.genIdeal y ≤ RingHom.ker (aeval y : MRingOver ℚ ι →ₐ[ℚ] Ω)`. Unfold `KH.genIdeal`. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `g hg`. Rewrite using `[Ideal.mem_comap, RingHom.mem_ker, aeval_map_int]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `aeval_eq_zero_of_mem y hg`. Conclude with `(RingHom.mem_ker).mp (hle hf)`.
+A detailed English derivation is pending.
 -/
 theorem aeval_eq_zero_of_mem_genIdeal (f : MRingOver ℚ ι) (hf : f ∈ KH.genIdeal y) : aeval y f = 0 := by
   have hle : KH.genIdeal y ≤ RingHom.ker (aeval y : MRingOver ℚ ι →ₐ[ℚ] Ω) := by
@@ -229,7 +227,7 @@ Both sides reduce to the same expression.
 theorem evQ_mk (p : MRingOver ℚ ι) : evQ y (Ideal.Quotient.mk (KH.genIdeal y) p) = aeval y p := rfl
 
 /- English proof (translation)
-Take `⟨m, rfl⟩` from `Ideal.Quotient.mk_surjective m`. Use `show evQ y (Ideal.Quotient.mk _ (r * m)) = _`. Rewrite using `[evQ_mk, evQ_mk, map_mul]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evQ_smul (r : MRingOver ℚ ι) (m : MRingOver ℚ ι ⧸ KH.genIdeal y) :
     evQ y (r • m) = aeval y r * evQ y m := by
@@ -243,9 +241,9 @@ def NonzeroOn (I : ∀ k, Finset (ι k)) : Prop :=
 variable {y}
 
 /- English proof (translation)
-Unfold `KH.cellMon at ht`. Proceed by induction on `ht using Submonoid.closure_induction with`. Consider the case `mem x hx`. Take `⟨k, i, hi, rfl⟩` from `hx`. Rewrite using `[aeval_X]`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hI k i hi`. Consider the case `one => simp`. Consider the case `mul x z _ _ hx hz => rw [map_mul]`. Conclude with `mul_ne_zero hx hz`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem aeval_ne_zero_of_mem {I : ∀ k, Finset (ι k)} (hI : NonzeroOn y I) {t : MRingOver ℚ ι}
     (ht : t ∈ KH.cellMon ℚ I) : aeval y t ≠ 0 := by
@@ -276,7 +274,7 @@ def ev (I : ∀ k, Finset (ι k)) (hI : NonzeroOn y I)
     linear_combination h')
 
 /- English proof (translation)
-The claim follows from `LocalizedModule.liftOn_mk _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem ev_mk (I : ∀ k, Finset (ι k)) (hI : NonzeroOn y I) (m : MRingOver ℚ ι ⧸ KH.genIdeal y)
     (s : KH.cellMon ℚ I) : ev y I hI (LocalizedModule.mk m s) = evQ y m / aeval y (s : MRingOver ℚ ι) :=
@@ -310,7 +308,7 @@ def evHom (I : ∀ k, Finset (ι k)) (hI : NonzeroOn y I) :
         field_simp
 
 /- English proof (translation)
-The claim follows from `ev_mk y I hI m s`.
+A detailed English derivation is pending.
 -/
 theorem evHom_mk (I : ∀ k, Finset (ι k)) (hI : NonzeroOn y I) (m : MRingOver ℚ ι ⧸ KH.genIdeal y)
     (s : KH.cellMon ℚ I) :
@@ -318,7 +316,7 @@ theorem evHom_mk (I : ∀ k, Finset (ι k)) (hI : NonzeroOn y I) (m : MRingOver 
   ev_mk y I hI m s
 
 /- English proof (translation)
-Proceed by induction on `x using LocalizedModule.induction_on with`. Consider the case `h m s`. Rewrite using `[LocalizedModule.smul'_mk, evHom_mk, evHom_mk, map_smul, smul_div_assoc]`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem evHom_smul (I : ∀ k, Finset (ι k)) (hI : NonzeroOn y I) (q : ℚ)
     (x : LocalizedModule (KH.cellMon ℚ I) (MRingOver ℚ ι ⧸ KH.genIdeal y)) :
@@ -334,7 +332,7 @@ def evLin (I : ∀ k, Finset (ι k)) (hI : NonzeroOn y I) :
   map_smul' := evHom_smul y I hI
 
 /- English proof (translation)
-Proceed by induction on `x using LocalizedModule.induction_on with`. Consider the case `h m t`. Rewrite using `[GenTwistGenerated.cellRes_mk (GenOnFibres.cellMon_mono hJI), evHom_mk, evHom_mk]`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem evHom_cellRes {J I : ∀ k, Finset (ι k)} (hJI : ∀ k, J k ⊆ I k) (hI : NonzeroOn y I)
     (hJ : NonzeroOn y J) (x : LocalizedModule (KH.cellMon ℚ J) (MRingOver ℚ ι ⧸ KH.genIdeal y)) :
@@ -350,7 +348,7 @@ section Glue
 variable {Ω : Type} [Field Ω] [CharZero Ω] (y : (Σ k, ι k) → Ω)
 
 /- English proof (translation)
-Introduce `k i hi` and use `by rw [Finset.mem_singleton.mp hi]; exact hc k`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem nonzeroOn_chart {c : ∀ k, ι k} (hc : ∀ k, y ⟨k, c k⟩ ≠ 0) : NonzeroOn y (chartCell c).1 :=
   fun k i hi => by rw [Finset.mem_singleton.mp hi]; exact hc k
@@ -361,28 +359,26 @@ def val (z : KH.CechC ℚ ι (MRingOver ℚ ι ⧸ KH.genIdeal y) 0) (c : ∀ k,
   if h : ∀ k, y ⟨k, c k⟩ ≠ 0 then evHom y _ (nonzeroOn_chart y h) (z (chartCell c)) else 0
 
 /- English proof (translation)
-The claim follows from `dif_pos hc`.
+A detailed English derivation is pending.
 -/
 theorem val_eq (z : KH.CechC ℚ ι (MRingOver ℚ ι ⧸ KH.genIdeal y) 0) {c : ∀ k, ι k}
     (hc : ∀ k, y ⟨k, c k⟩ ≠ 0) : val y z c = evHom y _ (nonzeroOn_chart y hc) (z (chartCell c)) :=
   dif_pos hc
 
 /- English proof (translation)
-Distinguish the cases in `hbc : b = c k₀`. Substitute `hbc` using the available equality. Rewrite using `[Function.update_eq_self]`. Establish `hc' : ∀ k, y ⟨k, Function.update c k₀ b k⟩ ≠ 0`. Introduce `k`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hk : k = k₀`. Substitute `hk` using the available equality. Rewrite using `[Function.update_self]`. Conclude with `hb`. Rewrite using `[Function.update_of_ne hk]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hc k`. Establish `hI : NonzeroOn y (pairCell c k₀ b hbc).1`. Introduce `k i hi`. Distinguish the cases in `hk : k = k₀`. Substitute `hk` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using `only [pairCell, Function.update_self, Finset.mem_insert, Finset.mem_singleton] at hi`. Break down `hi with rfl | rfl` into its components or cases. Conclude with `hc _`. Conclude with `hb`. Simplify using `only [pairCell, Function.update_of_ne hk, Finset.mem_singleton] at hi`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[hi]`. Conclude with `hc k`. Establish `hs1 : ∀ k, (chartCell c).1 k ⊆ (pairCell c k₀ b hbc).1 k`. Introduce `k`. Distinguish the cases in `hk : k = k₀`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Substitute `hk` using the available equality. Simplify using `[chartCell, pairCell]`. Simplify using `[chartCell, pairCell, Function.update_of_ne hk]`. Establish `hs2 : ∀ k, (chartCell (Function.update c k₀ b)).1 k ⊆ (pairCell c k₀ b hbc).1 k`. Introduce `k`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Distinguish the cases in `hk : k = k₀`. Substitute `hk` using the available equality. Simplify using `[chartCell, pairCell]`. Simplify using `[chartCell, pairCell, Function.update_of_ne hk]`. Establish `h1` using `congrArg (evHom y _ hI) (res_eq_pair c k₀ b hbc hz)`.
-
-Rewrite `h1` using `[evHom_cellRes y hs1 hI (nonzeroOn_chart y hc), evHom_cellRes y hs2 hI (nonzeroOn_chart y hc')]`. Rewrite using `[val_eq y z hc', val_eq y z hc]`. Conclude with `h1.symm`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_update (z : KH.CechC ℚ ι (MRingOver ℚ ι ⧸ KH.genIdeal y) 0)
     (hz : KH.cechD ℚ ι (MRingOver ℚ ι ⧸ KH.genIdeal y) 0 z = 0) (c : ∀ k, ι k) (hc : ∀ k, y ⟨k, c k⟩ ≠ 0)
@@ -421,11 +417,11 @@ theorem val_update (z : KH.CechC ℚ ι (MRingOver ℚ ι ⧸ KH.genIdeal y) 0)
     exact h1.symm
 
 /- English proof (translation)
-Establish `key : ∀ s : Finset K, val y z (fun k => if k ∈ s then c k else c₀ k) = val y z c₀`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert k s hk ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Establish `e : (fun l => if l ∈ insert k s then c l else c₀ l) = Function.update (fun l => if l ∈ s then c l else c₀ l) k (c k)`. Use function extensionality and compare the values at `l`. Distinguish the cases in `hl : l = k`. Substitute `hl` using the available equality. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Rewrite using `[Function.update_of_ne hl]`. Simplify using `[Finset.mem_insert, hl]`. Apply the tactic sequence `rw [e, val_update y z hz _ (fun l => by by_cases h : l ∈ s <;> simp [h, hc l, hc₀ l]) k (c k) (hc k), ih]`. Simplify using `using key Finset.univ`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem val_eq_val (z : KH.CechC ℚ ι (MRingOver ℚ ι ⧸ KH.genIdeal y) 0)
     (hz : KH.cechD ℚ ι (MRingOver ℚ ι ⧸ KH.genIdeal y) 0 z = 0) (c₀ c : ∀ k, ι k)
@@ -476,19 +472,19 @@ def ratChart (c : ∀ k, ι k) : Submodule ℚ Ω where
     exact mul_mem (intCast_mem _ _) hw
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, one_pos, by simpa using hw⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_ratChart_of_mem {c : ∀ k, ι k} {w : Ω} (hw : w ∈ chartRingZ y c) : w ∈ ratChart y c :=
   ⟨1, one_pos, by simpa using hw⟩
 
 /- English proof (translation)
-Rewrite using `[p.as_sum, map_sum, Finset.sum_mul]`. Use `Submodule.sum_mem _ fun μ hμ => ?_` and prove the remaining obligations. Establish `hdeg` using `hp μ hμ`. Rewrite using `[aeval_monomial, Finsupp.prod_fintype _ _ (fun i => pow_zero _)]`. Establish `key : (∏ p : Σ k, ι k, y p ^ μ p) * ∏ k, y ⟨k, c k⟩ ^ (-(d k : ℤ)) = ∏ p : Σ k, ι k, (y p / y ⟨p.1, c p.1⟩) ^ μ p`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Finset.prod_congr rfl fun p _ => div_pow (y p) _ (μ p), Finset.prod_div_distrib]`. Establish `h2 : ∏ p : Σ k, ι k, y ⟨p.1, c p.1⟩ ^ μ p = ∏ k, y ⟨k, c k⟩ ^ d k`. Rewrite using `[Fintype.prod_sigma]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Use `show ∏ i, y ⟨k, c k⟩ ^ μ ⟨k, i⟩ = _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.prod_pow_eq_pow_sum, hdeg k]`. Rewrite using `[h2, div_eq_mul_inv, ← Finset.prod_inv_distrib]`. Use `congr 1`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[zpow_neg, zpow_natCast]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_assoc, key, ← Algebra.smul_def]`. Use `Submodule.smul_mem _ _ (mem_ratChart_of_mem y ?_)` and prove the remaining obligations. Conclude with `Subalgebra.prod_mem _ fun p _ => Subalgebra.pow_mem _ (Algebra.subset_adjoin (Set.mem_range_self (f := fun p : Σ k, ι k => y p / y ⟨p.1, c p.1⟩) p)) _`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem aeval_homog_mem (c : ∀ k, ι k) {p : MRingOver ℚ ι} {d : K → ℕ} (hp : IsMultiHomog p d) :
     aeval y p * ∏ k, y ⟨k, c k⟩ ^ (-(d k : ℤ)) ∈ ratChart y c := by
@@ -515,11 +511,11 @@ theorem aeval_homog_mem (c : ∀ k, ι k) {p : MRingOver ℚ ι} {d : K → ℕ}
     (Algebra.subset_adjoin (Set.mem_range_self (f := fun p : Σ k, ι k => y p / y ⟨p.1, c p.1⟩) p)) _
 
 /- English proof (translation)
-Set `L : (MRingOver ℚ ι ⧸ KH.genIdeal y) →ₗ[ℚ] Ω` to `LinearMap.mulRight ℚ (∏ k, y ⟨k, c k⟩ ^ (-e k)) ∘ₗ (evQ y).toLinearMap`. Establish `hle : KH.quotPart ℚ (KH.genIdeal y) e ≤ (ratChart y c).comap L`. Unfold `KH.quotPart`. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨p, ⟨hnn, hp⟩, rfl⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Express the relevant statement in the definitionally equal form `evQ y (Ideal.Quotient.mk _ p) * ∏ k, y ⟨k, c k⟩ ^ (-e k) ∈ ratChart y c`. Rewrite using `[evQ_mk]`. Establish `h` using `aeval_homog_mem y c hp`. Establish `h' : ∀ k, (((e k).toNat : ℕ) : ℤ) = e k` using `fun k => Int.toNat_of_nonneg (hnn k)`. Simplify using `only [h'] at h`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `h`. Conclude with `hle hm`.
+A detailed English derivation is pending.
 -/
 theorem evQ_quotPart_mem (c : ∀ k, ι k) {e : K → ℤ} {m : MRingOver ℚ ι ⧸ KH.genIdeal y}
     (hm : m ∈ KH.quotPart ℚ (KH.genIdeal y) e) : evQ y m * ∏ k, y ⟨k, c k⟩ ^ (-e k) ∈ ratChart y c := by
@@ -538,11 +534,11 @@ theorem evQ_quotPart_mem (c : ∀ k, ι k) {e : K → ℤ} {m : MRingOver ℚ ι
   exact hle hm
 
 /- English proof (translation)
-Unfold `KH.cellMon at ht`. Proceed by induction on `ht using Submonoid.closure_induction with`. Consider the case `mem x hx`. Take `⟨k, i, hi, rfl⟩` from `hx`. Establish `hik : i = c k` using `Finset.mem_singleton.mp hi`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Substitute `hik` using the available equality. Use `⟨Pi.single k 1, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.prod_eq_single k (fun k' _ hk' => by simp [hk']) (fun h => absurd (Finset.mem_univ k) h)]`. Simplify using the standard rewrite rules. Consider the case `one => exact ⟨0, by simp⟩`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `mul x z _ _ hx hz`. Take `⟨e, rfl⟩` from `hx`. Take `⟨e', rfl⟩` from `hz`. Conclude with `⟨e + e', by simp only [Pi.add_apply, pow_add, Finset.prod_mul_distrib]⟩`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem mem_cellMon_chart {c : ∀ k, ι k} {t : MRingOver ℚ ι} (ht : t ∈ KH.cellMon ℚ (chartCell c).1) :
     ∃ e : K → ℕ, t = ∏ k, X ⟨k, c k⟩ ^ e k := by
@@ -564,7 +560,7 @@ theorem mem_cellMon_chart {c : ∀ k, ι k} {t : MRingOver ℚ ι} (ht : t ∈ K
     exact ⟨e + e', by simp only [Pi.add_apply, pow_add, Finset.prod_mul_distrib]⟩
 
 /- English proof (translation)
-Use `GenOnFibres.homog_map (Int.castRingHom ℚ) (GenOnFibres.homog_cmon c e)` as an intermediate fact. Simplify `this` using `[GenOnFibres.cmon, map_prod]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem homog_prod_X (c : ∀ k, ι k) (e : K → ℕ) :
     IsMultiHomog (∏ k, (X ⟨k, c k⟩ : MRingOver ℚ ι) ^ e k) e := by
@@ -572,13 +568,13 @@ theorem homog_prod_X (c : ∀ k, ι k) (e : K → ℕ) :
   simpa [GenOnFibres.cmon, map_prod] using this
 
 /- English proof (translation)
-The claim follows from `Finset.prod_ne_zero_iff.mpr fun _ _ => pow_ne_zero _ (X_ne_zero _)`.
+A detailed English derivation is pending.
 -/
 theorem prod_X_ne_zero (c : ∀ k, ι k) (e : K → ℕ) : (∏ k, (X ⟨k, c k⟩ : MRingOver ℚ ι) ^ e k) ≠ 0 :=
   Finset.prod_ne_zero_iff.mpr fun _ _ => pow_ne_zero _ (X_ne_zero _)
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨m, hm⟩ : f.support.Nonempty := by`. Rewrite using `[Finset.nonempty_iff_ne_empty, Ne, MvPolynomial.support_eq_empty]`. Conclude with `hf`. Use function extensionality and compare the values at `k`. Rewrite using `[← ha m hm k, hb m hm k]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_of_homog {f : MRingOver ℚ ι} {a b : K → ℕ} (ha : IsMultiHomog f a) (hb : IsMultiHomog f b)
     (hf : f ≠ 0) : a = b := by
@@ -589,15 +585,13 @@ theorem eq_of_homog {f : MRingOver ℚ ι} {a b : K → ℕ} (ha : IsMultiHomog 
   rw [← ha m hm k, hb m hm k]
 
 /- English proof (translation)
-Set `L` to `LinearMap.mulRight ℚ (∏ k, y ⟨k, c k⟩ ^ (-n k)) ∘ₗ evLin y _ (nonzeroOn_chart y hc)`. Establish `hle : KH.locPart ι (KH.quotPart ℚ (KH.genIdeal y)) (KH.cellMon ℚ (chartCell c).1) n ≤ (ratChart y c).comap L`. Unfold `KH.locPart`. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨m, t, a, ht, hm, rfl⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Express the relevant statement in the definitionally equal form `evHom y _ (nonzeroOn_chart y hc) (LocalizedModule.mk m t) * ∏ k, y ⟨k, c k⟩ ^ (-n k) ∈ ratChart y c`. Rewrite using `[evHom_mk]`. Take `⟨e, he⟩` from `mem_cellMon_chart t.2`. Establish `hea : a = e` using `eq_of_homog ht (by rw [he]; exact homog_prod_X c e) (by rw [he]; exact prod_X_ne_zero c e)`. Establish `hval : aeval y (t : MRingOver ℚ ι) = ∏ k, y ⟨k, c k⟩ ^ a k`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[he, hea]`. Simplify using `[map_prod]`. Establish `key : evQ y m / aeval y (t : MRingOver ℚ ι) * ∏ k, y ⟨k, c k⟩ ^ (-n k) = evQ y m * ∏ k, y ⟨k, c k⟩ ^ (-(n + fun k => (a k : ℤ)) k)`. Rewrite using `[hval, div_mul_eq_mul_div, mul_div_assoc]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← Finset.prod_div_distrib]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Use `show _ = y ⟨k, c k⟩ ^ (-(n k + (a k : ℤ)))`. Rewrite using `[neg_add, zpow_add₀ (hc k), zpow_neg _ (a k : ℤ), zpow_natCast, div_eq_mul_inv]`. Rewrite using `[key]`.
-
-Conclude with `evQ_quotPart_mem y c hm`. Conclude with `hle hx`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ev_locPart_mem (c : ∀ k, ι k) (hc : ∀ k, y ⟨k, c k⟩ ≠ 0) {n : K → ℤ}
     {x : LocalizedModule (KH.cellMon ℚ (chartCell c).1) (MRingOver ℚ ι ⧸ KH.genIdeal y)}
@@ -630,21 +624,19 @@ theorem ev_locPart_mem (c : ∀ k, ι k) (hc : ∀ k, y ⟨k, c k⟩ ≠ 0) {n :
 end Integral
 
 /- English proof (translation)
-Distinguish the cases in `hall : ∀ k, ∃ i, y ⟨k, i⟩ ≠ 0`. Use `swap`. Use `push Not at hall`. Take `⟨k, hk⟩` from `hall`. Conclude with `⟨1, fun c hc => absurd (hk (c k)) (hc k), one_ne_zero⟩`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `choose c₀ hc₀ using hall`. Take `⟨r, z, u, hz, -, hsum⟩` from `hG (chartCell c₀)`. Establish `h1` using `congrArg (evHom y _ (nonzeroOn_chart y hc₀)) hsum`. Rewrite `h1` using `[map_sum, map_one]`. Choose the witnesses or unpack the hypotheses as in `⟨j, hj⟩ : ∃ j, evHom y _ (nonzeroOn_chart y hc₀) (z j (chartCell c₀)) ≠ 0 := by`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Simplify using `only [map_mul, hcon, mul_zero, Finset.sum_const_zero] at h1`. Conclude with `zero_ne_one h1`. Establish `hZ` using `hz j`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hZd` using `(Submodule.mem_inf.mp hZ).2`. Rewrite `hZd` using `[Submodule.restrictScalars_mem, LinearMap.mem_ker]`. Establish `hZc` using `(Submodule.mem_inf.mp hZ).1`. Unfold `KH.cechCc at hZc`. Rewrite `hZc` using `[Submodule.mem_pi]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Establish `hv : val y (z j) c₀ ≠ 0` using `by rw [val_eq y (z j) hc₀]; exact hj`. Establish `hD : ∀ c : ∀ k, ι k, ∃ D : ℕ, 0 < D ∧ ((∀ k, y ⟨k, c k⟩ ≠ 0) → (D : Ω) * (val y (z j) c₀ * ∏ k, y ⟨k, c k⟩ ^ (-n k)) ∈ chartRingZ y c)`. Introduce `c`. Distinguish the cases in `hc : ∀ k, y ⟨k, c k⟩ ≠ 0`. Take `⟨D, hD, hmem⟩` from `ev_locPart_mem y c hc (hZc (chartCell c) (Set.mem_univ _))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨D, hD, fun _ => ?_⟩` and prove the remaining obligations. Rewrite using `[← val_eq_val y (z j) hZd c₀ c hc₀ hc, val_eq y (z j) hc]`. Conclude with `hmem`. Conclude with `⟨1, one_pos, fun h => absurd h hc⟩`. Use `choose D hDpos hDmem using hD`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `⟨((∏ c, D c : ℕ) : Ω) * val y (z j) c₀, ?_, ?_⟩` and prove the remaining obligations. Introduce `c hc`. Simplify using `only [Nat.cast_one, one_mul]`. Establish `e : ((∏ c, D c : ℕ) : Ω) * val y (z j) c₀ * ∏ k, y ⟨k, c k⟩ ^ (-n k) = ((∏ c' ∈ Finset.univ.erase c, D c' : ℕ) : Ω) * ((D c : Ω) * (val y (z j) c₀ * ∏ k, y ⟨k, c k⟩ ^ (-n k)))`. Rewrite using `[← Finset.mul_prod_erase Finset.univ D (Finset.mem_univ c)]`.
-
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `mul_mem (natCast_mem _ _) (hDmem c hc)`. Conclude with `mul_ne_zero (Nat.cast_ne_zero.mpr (Finset.prod_ne_zero_iff.mpr fun c _ => (hDpos c).ne')) hv`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_section {Ω : Type} [Field Ω] [CharZero Ω] (y : (Σ k, ι k) → Ω) (n : K → ℤ)
     (hG : KH.GeneratedV ℚ (KH.genIdeal y) n) : ∃ s ∈ chartLat y n 1, s ≠ 0 := by
@@ -696,7 +688,7 @@ theorem exists_section {Ω : Type} [Field Ω] [CharZero Ω] (y : (Σ k, ι k) �
 end GeneratedNonzeroSection
 
 /- English proof (translation)
-Introduce `K _ _ ι _ _ Ω _ _ y n hG`. Conclude with `GeneratedNonzeroSection.exists_section y n hG`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem GeneratedNonzeroSection.proof : GeneratedNonzeroSection.Statement := by
   intro K _ _ ι _ _ Ω _ _ y n hG

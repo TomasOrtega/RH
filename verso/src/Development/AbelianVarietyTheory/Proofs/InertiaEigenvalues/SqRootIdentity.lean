@@ -29,9 +29,7 @@ noncomputable section
 namespace GlobalTheory.SingleDatum.AddValue
 
 /- English proof (translation)
-Use `haveI := GlobalTheory.AdTh.ShortSeries.finite_levQ Dw l`. Use `letI : Fintype (Fin V.rank → LevQ Dw l) := Fintype.ofFinite _`. Unfold `transSum`. Rewrite using `[finsum_eq_sum_of_fintype]`. Use `GlobalTheory.WeilVacMove.isTheta_smul _ ?_` and prove the remaining obligations.
-
-Conclude with `Finset.sum_induction _ (IsThetaFunO ψ V W) (fun _ _ => GlobalTheory.WeilVacMove.isTheta_add) GlobalTheory.WeilVacMove.isTheta_zero fun q _ => GlobalTheory.WeilVacMove.isTheta_smul _ (GlobalTheory.AnisoMean.isTheta_heisO hψ hf _)`.
+Equip the data with the indicated structure. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem theta_transSum {D : D7} {H : Geo.Tor.Host D.host.E} {Dw : Datum H} {ψ : AddChar (AF D.host.F) ℂ}
     (hψ : IsStdChar D ψ (-1)) (V W : HSp D) (l : Geo.Tor.Level H) (ι : Dw.La →ₗ[𝓞 D.host.E] (Fin W.rank → D.host.E))
@@ -46,13 +44,13 @@ theorem theta_transSum {D : D7} {H : Geo.Tor.Host D.host.E} {Dw : Datum H} {ψ :
     fun q _ => GlobalTheory.WeilVacMove.isTheta_smul _ (GlobalTheory.AnisoMean.isTheta_heisO hψ hf _)
 
 /- English proof (translation)
-Establish `hc : ∀ s t : D.what₂.Tau, conjEmb (tauE D s) = conjEmb (tauE D t) → s = t` using `fun s t h => by`. Apply `GlobalTheory.StdRat.tauE_injective D` to reduce the goal to its premises. Use extensionality with `z`. Use `congrArg (starRingEnd ℂ) (RingHom.congr_fun h z)` as an intermediate fact. Simplify `this` using `[conjEmb]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Take `⟨x1, x2, x3⟩` from `x`. Take `⟨y1, y2, y3⟩` from `y`. Take `⟨hx3, hx'⟩` from `hx`. Take `⟨hy3, hy'⟩` from `hy`. Simplify using `only at hx3 hy3 hx' hy'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify by unfolding definitions.
 
-Establish `key : x1 = y1 ∧ (x2 : ℕ) = y2`. Apply the tactic sequence `rcases hx' with ⟨a1, a2⟩ | ⟨a1, a2⟩ <;> rcases hy' with ⟨b1, b2⟩ | ⟨b1, b2⟩`. Conclude with `⟨GlobalTheory.StdRat.tauE_injective D (a1.symm.trans b1), by omega⟩`. Conclude with `absurd (a1.symm.trans b1) (hne _ _)`. Conclude with `absurd (b1.symm.trans a1) (hne _ _)`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Supply the required witnesses or components. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨hc _ _ (a1.symm.trans b1), by omega⟩`. Take `⟨k1, k2⟩` from `key`. Rewrite using `[k1, Fin.ext k2, hx3, hy3]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fvar_eq {D : D7} {m n : ℕ} {τ : D.host.E →+* ℂ} {i p : ℕ} {j : Fin n} {x y : FVar D m n}
     (hx : x.2.2 = j ∧ ((τ = tauE D x.1 ∧ (x.2.1 : ℕ) = i) ∨ (τ = conjEmb (tauE D x.1) ∧ (x.2.1 : ℕ) = p + i)))
@@ -78,7 +76,7 @@ theorem fvar_eq {D : D7} {m n : ℕ} {τ : D.host.E →+* ℂ} {i p : ℕ} {j : 
   rw [k1, Fin.ext k2, hx3, hy3]
 
 /- English proof (translation)
-Substitute `hz` using the available equality. Distinguish the cases in `hS : S = 0`. Simplify using `[hS]`. Clear the denominators using the available nonvanishing facts.
+Substitute using the available equality. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 -/
 theorem sq_root_identity (S m z : ℂ) (hm : m ≠ 0) (hz : z = m * (S * S)) : S = S⁻¹ * (m⁻¹ * z) := by
   subst hz

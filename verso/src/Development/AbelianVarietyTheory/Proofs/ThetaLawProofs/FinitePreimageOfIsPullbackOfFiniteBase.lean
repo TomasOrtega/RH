@@ -5,13 +5,13 @@ open AlgebraicGeometry CategoryTheory Limits
 namespace GlobalTheory.KeyFin
 
 /- English proof (translation)
-Introduce `X X' S S' h h' φ f Z _ _ H _ hZ hfin`. Set `I` to `Scheme.IdealSheafData.vanishingIdeal (X := X) ⟨Z, hZ⟩`. Establish `hr : Set.range I.subschemeι = Z`. Rewrite using `[Scheme.IdealSheafData.range_subschemeι, Scheme.IdealSheafData.coe_support_vanishingIdeal]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hf : Finite I.subscheme`. Establish `: Finite (Set.range I.subschemeι)` using `by rw [hr]; exact hfin.to_subtype`. Conclude with `Finite.of_injective_finite_range I.subschemeι.isClosedEmbedding.injective`. Establish `hq : LocallyQuasiFinite (I.subschemeι ≫ h)` using `.of_finite_preimage_singleton _ fun _ => Set.toFinite _`. Establish `P` using `(IsPullback.of_hasPullback I.subschemeι φ).paste_vert H`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : LocallyQuasiFinite (pullback.snd I.subschemeι φ ≫ h')` using `MorphismProperty.of_isPullback (P := @LocallyQuasiFinite) P hq`. Establish `h2 : QuasiCompact (pullback.snd I.subschemeι φ ≫ h')` using `MorphismProperty.of_isPullback (P := @QuasiCompact) P inferInstance`. Establish `h3 : (Set.univ : Set ↑(pullback I.subschemeι φ)).Finite`. Use `(Set.toFinite (Set.univ : Set S')).preimage' (f := (pullback.snd I.subschemeι φ ≫ h')) fun _ _ => (pullback.snd I.subschemeι φ ≫ h').finite_preimage_singleton _` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hr, ← Scheme.Pullback.range_snd, ← Set.image_univ]`. Conclude with `h3.image _`.
+A detailed English derivation is pending.
 -/
 theorem finite_preimage_of_isPullback_of_finite_base :
     ∀ (X X' S S' : Scheme.{0}) (h : X ⟶ S) (h' : X' ⟶ S') (φ : X' ⟶ X) (f : S' ⟶ S) (Z : Set X),

@@ -39,11 +39,11 @@ section Inhabitants
 open ProjLine
 
 /- English proof (translation)
-Introduce `e`. Use `⟨(-e ()).toNat, fun n hn => ?_⟩` and prove the remaining obligations. Take `⟨q, w, hw, hg, -⟩` from `SmallGenTwist.smallGen_zcomb (ι := GlobalTheory (Fin 2)) y (fsH (GlobalTheory (Fin 2))) (SmallGenTwist.smallGen_fsH _) 0 (e () + n).toNat`. Establish `ha : (HermLine.zcomb (fsH (GlobalTheory (Fin 2))) (fsH (GlobalTheory (Fin 2))) ((0 : ℕ) : ℤ) (((e () + n).toNat : ℕ) : ℤ)).a = e + (n : ℤ) • fsLine1.a`. Use function extensionality and compare the values at `k`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Take `rfl : k = ()` from `rfl`. Establish `h1 : fsLine1.a () = 1` using `rfl`. Establish `h2 : (fsH (GlobalTheory (Fin 2))).a () = 1` using `by rw [SmallGenTwist.fsH_a]`. Simplify using `only [HermLine.zcomb, Pi.add_apply, Pi.smul_apply, smul_eq_mul, h1, h2]`. Use linear arithmetic over natural numbers and integers.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Conclude with `⟨q, w, fun j => ha ▸ hw j, ha ▸ hg⟩`.
+Supply the required witnesses or components.
 -/
 theorem isAmpleOnModel_projLine : IsAmpleOnModel (ι := GlobalTheory (Fin 2)) y fsLine1.a := by
   intro e
@@ -61,7 +61,7 @@ theorem isAmpleOnModel_projLine : IsAmpleOnModel (ι := GlobalTheory (Fin 2)) y 
   exact ⟨q, w, fun j => ha ▸ hw j, ha ▸ hg⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨G1.hyps_inhabited.1, bot_le, G1.hyps_inhabited.2.2.2.1, G1.hyps_inhabited.2.2.2.2.2, isAmpleOnModel_projLine⟩`.
+Supply the required witnesses or components.
 -/
 theorem ArithNakaiMoishezon.hyps_inhabited :
     IsArithVar (mCoordIdeal (ι := GlobalTheory (Fin 2)) y) (1 + 1) ∧ (⊥ : Ideal (MRing (GlobalTheory (Fin 2)))) ≤ mCoordIdeal y ∧

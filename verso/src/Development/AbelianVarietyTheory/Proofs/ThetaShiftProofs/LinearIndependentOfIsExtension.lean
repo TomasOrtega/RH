@@ -17,15 +17,13 @@ open GlobalTheory.FieldBaseChange
 variable {X X' Y Y' Z : Scheme.{0}}
 
 /- English proof (translation)
-Establish `hb : ∀ (y : Y) q q', y ∈ B.U q → y ∈ B.U q' → gs (𝟙 Y) y _ (b.f q) = (gm (𝟙 Y) y _ (B.g q q')).val * gs (𝟙 Y) y _ (b.f q')` using `fun y q q' hq hq' => by`. Establish `hm : (𝟙 Y : Y ⟶ Y) y ∈ B.U q ⊓ B.U q'` using `⟨hq, hq'⟩`. Conclude with `(gs_res _ y _ hm _).symm.trans ((congrArg (gs _ y _) (b.compat q q')).trans ((gs_mul _ y _ hm _ _).trans (congrArg₂ (· * ·) (gs_unit _ y _ hm _) (gs_res _ y _ hm _))))`. Establish `glue : ∀ p, ∃ s : Γ(Y, A.U p), ∀ (Z : Scheme.{0}) (r : Z ⟶ Y) (z : Z) q, r z ∈ A.U p → r z ∈ B.U q → gs r z _ s = (gm r z _ (u p q)).val * gs r z _ (b.f q)`. Introduce `p`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hv : ∀ (Z : Scheme.{0}) (r : Z ⟶ Y) (z : Z) q, r z ∈ A.U p ⊓ B.U q → gs r z (A.U p ⊓ B.U q) ((u p q).val * (Y.presheaf.map (homOfLE inf_le_right).op).hom (b.f q)) = (gm r z _ (u p q)).val * gs r z _ (b.f q)` using `fun Z r z q hz => (gs_mul r z _ hz _ _).trans (congrArg₂ (· * ·) (gs_unit r z _ hz _) (gs_res r z _ hz _))`. Take `⟨s, hs, -⟩` from `Y.sheaf.existsUnique_gluing' (fun q => A.U p ⊓ B.U q) (A.U p) (fun q => homOfLE inf_le_left) (fun y hy => by`. Take `⟨q, hq⟩` from `hB y`. Conclude with `Opens.mem_iSup.2 ⟨q, hy, hq⟩)`. Use the proof step `(fun q => (u p q).val * (Y.presheaf.map (homOfLE inf_le_right).op).hom (b.f q))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `(fun q q' => fn_ext (V := (A.U p ⊓ B.U q) ⊓ (A.U p ⊓ B.U q')) fun y hy => by`. Use `(gs_res (𝟙 Y) y inf_le_left hy _).trans (Eq.trans ?_ (gs_res (𝟙 Y) y inf_le_right hy _).symm)` and prove the remaining obligations. Use `(hv _ (𝟙 Y) y q hy.1).trans (Eq.trans ?_ (hv _ (𝟙 Y) y q' hy.2).symm)` and prove the remaining obligations. Rewrite using `[hb y q q' hy.1.2 hy.2.2, ← mul_assoc, ← Units.val_mul, h₁ y p q q' hy.1.1 hy.1.2 hy.2.2])`. Use `⟨s, fun Z r z q a₁ a₂ => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hz : r z ∈ A.U p ⊓ B.U q` using `⟨a₁, a₂⟩`. Conclude with `(gs_res r z inf_le_left hz s).symm.trans ((congrArg (gs r z _) (hs q)).trans (hv Z r z q hz))`. Use `choose s hs using glue`. Use `⟨⟨s, fun p p' => fn_ext fun y hy => ?_⟩, fun Z r z p q => hs p Z r z q⟩` and prove the remaining obligations. Take `⟨q, hq⟩` from `hB y`.
-
-Use `(gs_res (𝟙 Y) y _ hy _).trans (Eq.trans ?_ ((gs_mul (𝟙 Y) y _ hy _ _).trans (congrArg₂ (· * ·) (gs_unit (𝟙 Y) y _ hy _) (gs_res (𝟙 Y) y _ hy _))).symm)` and prove the remaining obligations. Rewrite using `[hs p _ _ y q hy.1 hq, hs p' _ _ y q hy.2 hq, h₂ y p p' q hy.1 hy.2 hq, Units.val_mul, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_sec_transfer {A B : LB Y} (hB : ∀ y, ∃ q, y ∈ B.U q) (u : ∀ p q, Γ(Y, A.U p ⊓ B.U q)ˣ)
     (h₁ : ∀ (y : Y) p q q', y ∈ A.U p → y ∈ B.U q → y ∈ B.U q' →
@@ -69,23 +67,23 @@ theorem exists_sec_transfer {A B : LB Y} (hB : ∀ y, ∃ q, y ∈ B.U q) (u : �
 variable {L : LB X} {L' : LB X'} {F : X' ⟶ X} {K : Type} [Fintype K]
 
 /- English proof (translation)
-Use `choose j hj using fun k => exists_chart hL (φ k y)`. Conclude with `⟨j, Set.mem_iInter.2 hj⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_wchart (hL : L.IsLB) (φ : K → (Y ⟶ X)) (y : Y) : ∃ j, y ∈ LB.wchart L φ j := by
   choose j hj using fun k => exists_chart hL (φ k y)
   exact ⟨j, Set.mem_iInter.2 hj⟩
 
 /- English proof (translation)
-Use `choose I hI using fun χ : Z ⟶ X => exists_chart hL (χ z)`. Conclude with `⟨I, hI⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_good' (hL : L.IsLB) (z : Z) : ∃ J, Good L z J := by
   choose I hI using fun χ : Z ⟶ X => exists_chart hL (χ z)
   exact ⟨I, hI⟩
 
 /- English proof (translation)
-Use `choose u hu using fun p q => exists_pw w φ' ε p q`. Take `⟨t, ht⟩` from `exists_sec_transfer (A := LB.LinComb L (fun k => φ' k ≫ F) ε) (B := LB.LinComb L' φ' ε) (exists_wchart hL' φ') u (fun y p q q' hp hq hq' => by`. Use `(congrArg₂ (· * ·) (hu p q _ (𝟙 Y) y ⟨hp, hq⟩) (gm_linComb L' φ' ε (𝟙 Y) y q q' hq hq')).trans (Eq.trans ?_ (hu p q' _ (𝟙 Y) y ⟨hp, hq'⟩).symm)` and prove the remaining obligations. Rewrite using `[pw_trans hw φ' ε (𝟙 Y) y hp hp hq hq', trF_self hL _ ε (𝟙 Y) y hp, one_mul]`. Conclude with `inv_mul_cancel_comm _ _) (fun y p p' q hp hp' hq => by`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(hu p q _ (𝟙 Y) y ⟨hp, hq⟩).trans (Eq.trans ?_ (congrArg₂ (· * ·) (gm_linComb L _ ε (𝟙 Y) y p p' hp hp') (hu p' q _ (𝟙 Y) y ⟨hp', hq⟩)).symm)` and prove the remaining obligations. Rewrite using `[pw_trans hw φ' ε (𝟙 Y) y hp hp' hq hq, trF_self hL' _ ε (𝟙 Y) y hq, inv_one, mul_one]`. Use the proof step `rfl) a`. Conclude with `⟨t, fun Z r z p q hp hq => (ht Z r z p q hp hq).trans (congrArg (fun v : (Z.presheaf.stalk z)ˣ => v.val * _) (hu p q Z r z ⟨hp, hq⟩))⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_sec_up {w : LB.Iso L' (L.pull F)} (hw : PGen w) (hL : L.IsLB) (hL' : L'.IsLB) {φ' : K → (Y ⟶ X')}
     {ε : K → ℤ} (a : LB.Sec (LB.LinComb L' φ' ε)) : ∃ t : LB.Sec (LB.LinComb L (fun k => φ' k ≫ F) ε),
@@ -107,11 +105,9 @@ theorem exists_sec_up {w : LB.Iso L' (L.pull F)} (hw : PGen w) (hL : L.IsLB) (hL
     (congrArg (fun v : (Z.presheaf.stalk z)ˣ => v.val * _) (hu p q Z r z ⟨hp, hq⟩))⟩
 
 /- English proof (translation)
-Use `choose u hu using fun p q => exists_pw w φ' ε p q`. Establish `hu' : ∀ q p (Z : Scheme.{0}) (r : Z ⟶ Y) (z : Z), r z ∈ LB.wchart L' φ' q → r z ∈ LB.wchart L (fun k => φ' k ≫ F) p → gm r z (LB.wchart L' φ' q ⊓ LB.wchart L (fun k => φ' k ≫ F) p) (res (inf_comm _ _).le (u p q))⁻¹ = (pw w φ' ε r z p q)⁻¹` using `fun q p Z r z hq hp => (map_inv _ _).trans (congrArg (·⁻¹) ((gm_res r z _ (show r z ∈ LB.wchart L' φ' q ⊓ LB.wchart L (fun k => φ' k ≫ F) p from ⟨hq, hp⟩) _).trans (hu p q Z r z ⟨hp, hq⟩)))`. Take `⟨a, ha⟩` from `exists_sec_transfer (B := LB.LinComb L (fun k => φ' k ≫ F) ε) (A := LB.LinComb L' φ' ε) (exists_wchart hL _) (fun q p => (res (inf_comm _ _).le (u p q))⁻¹) (fun y q p p' hq hp hp' => by`. Use `(congrArg₂ (· * ·) (hu' q p _ (𝟙 Y) y hq hp) (gm_linComb L _ ε (𝟙 Y) y p p' hp hp')).trans (Eq.trans ?_ (hu' q p' _ (𝟙 Y) y hq hp').symm)` and prove the remaining obligations. Rewrite using `[pw_trans hw φ' ε (𝟙 Y) y hp hp' hq hq, trF_self hL' _ ε (𝟙 Y) y hq, inv_one, mul_one, mul_inv]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `inv_mul_cancel_comm _ _) (fun y q q' p hq hq' hp => by`. Use `(hu' q p _ (𝟙 Y) y hq hp).trans (Eq.trans ?_ (congrArg₂ (· * ·) (gm_linComb L' _ ε (𝟙 Y) y q q' hq hq') (hu' q' p _ (𝟙 Y) y hq' hp)).symm)` and prove the remaining obligations. Rewrite using `[pw_trans hw φ' ε (𝟙 Y) y hp hp hq hq', trF_self hL _ ε (𝟙 Y) y hp, one_mul, mul_inv, inv_inv]`. Use the proof step `rfl) t`. Use `⟨a, fun Z r z p q hp hq => ?_⟩` and prove the remaining obligations.
-
-Establish `e` using `(ha Z r z q p hq hp).trans (congrArg (fun v : (Z.presheaf.stalk z)ˣ => v.val * _) (hu' q p Z r z hq hp))`. Conclude with `((Units.eq_inv_mul_iff_mul_eq _).1 e).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_sec_down {w : LB.Iso L' (L.pull F)} (hw : PGen w) (hL : L.IsLB) (hL' : L'.IsLB) {φ' : K → (Y ⟶ X')}
     {ε : K → ℤ} (t : LB.Sec (LB.LinComb L (fun k => φ' k ≫ F) ε)) : ∃ a : LB.Sec (LB.LinComb L' φ' ε),
@@ -153,7 +149,7 @@ def wVal (w : LB.Iso L' (L.pull F)) (z : Z) (J : (Z ⟶ X) → L.ι) (J' : (Z �
 variable {w : LB.Iso L' (L.pull F)} {φ' : K → (Y' ⟶ X')} {φ : K → (Y ⟶ X)} {ε : K → ℤ} {h : Y' ⟶ Y}
 
 /- English proof (translation)
-Rewrite using `[sval_of t (r ≫ h) z J (fun k => J ((r ≫ φ' k) ≫ F)) (fun k => by rw [Category.assoc, Category.assoc, hψ])]`. Conclude with `H Z r z _ _ (fun k => hJ ((r ≫ φ' k) ≫ F)) (fun k => hJ' (r ≫ φ' k))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem SecThrough.sval (hψ : ∀ k, φ' k ≫ F = h ≫ φ k) {a : LB.Sec (LB.LinComb L' φ' ε)}
     {t : LB.Sec (LB.LinComb L φ ε)} (H : SecThrough w φ' φ ε a t h) (r : Z ⟶ Y') {z : Z} {J J'} (hJ : Good L z J)
@@ -162,7 +158,7 @@ theorem SecThrough.sval (hψ : ∀ k, φ' k ≫ F = h ≫ φ k) {a : LB.Sec (LB.
   exact H Z r z _ _ (fun k => hJ ((r ≫ φ' k) ≫ F)) (fun k => hJ' (r ≫ φ' k))
 
 /- English proof (translation)
-Rewrite using `[val_of t (r ≫ h) z J (fun k => J ((r ≫ φ' k) ≫ F)) (fun k => by rw [Category.assoc, Category.assoc, hψ])]`. Conclude with `H Z r z _ _ (fun k => hJ ((r ≫ φ' k) ≫ F)) (fun k => hJ' (r ≫ φ' k))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pmaps_val (hψ : ∀ k, φ' k ≫ F = h ≫ φ k) {a : LB.Gen (LB.LinComb L' φ' ε)}
     {t : LB.Gen (LB.LinComb L φ ε)} (H : PMaps w φ' φ ε a t h) (r : Z ⟶ Y') {z : Z} {J J'} (hJ : Good L z J)
@@ -171,7 +167,7 @@ theorem pmaps_val (hψ : ∀ k, φ' k ≫ F = h ≫ φ k) {a : LB.Gen (LB.LinCom
   exact H Z r z _ _ (fun k => hJ ((r ≫ φ' k) ≫ F)) (fun k => hJ' (r ≫ φ' k))
 
 /- English proof (translation)
-The claim follows from `sec_ext' hL' fun y J' hJ' => by obtain ⟨J, hJ⟩ := exists_good' hL y exact (Units.mul_right_inj _).1 ((H.sval hψ _ hJ hJ').symm.trans (H'.sval hψ _ hJ hJ'))`.
+A detailed English derivation is pending.
 -/
 theorem SecThrough.unique (hL : L.IsLB) (hL' : L'.IsLB) (hψ : ∀ k, φ' k ≫ F = h ≫ φ k)
     {a a' : LB.Sec (LB.LinComb L' φ' ε)} {t : LB.Sec (LB.LinComb L φ ε)} (H : SecThrough w φ' φ ε a t h)
@@ -180,9 +176,9 @@ theorem SecThrough.unique (hL : L.IsLB) (hL' : L'.IsLB) (hψ : ∀ k, φ' k ≫ 
   exact (Units.mul_right_inj _).1 ((H.sval hψ _ hJ hJ').symm.trans (H'.sval hψ _ hJ hJ'))
 
 /- English proof (translation)
-Establish `e : (fun k => φ' k ≫ F) = fun k => h ≫ φ k` using `funext hψ`. Establish `ex : ∃ t' : LB.Sec (LB.LinComb L (fun k => φ' k ≫ F) ε), ∀ (Z : Scheme.{0}) (r : Z ⟶ Y') (z : Z) p, r z ∈ LB.wchart L (fun k => φ' k ≫ F) p → gs r z (LB.wchart L (fun k => φ' k ≫ F) p) (t'.f p) = gs (r ≫ h) z (LB.wchart L φ p) (t.f p)`. Rewrite using `[e]`. Conclude with `⟨ReciprocityTheory.ChartRestriction.G.DVR.pullSec L φ ε t h, fun Z r z p hp => (gs_res r z _ hp _).trans (gs_pull r h z _ (Out.wchart_comp_le L φ h p hp) _)⟩`. Take `⟨t', ht'⟩` from `ex`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha⟩` from `exists_sec_down ((isGen_iff w).1 hw) hL hL' t'`. Conclude with `⟨a, fun Z r z p q hp hq => (ht' Z r z p (Set.mem_iInter.2 hp)).symm.trans (ha Z r z p q (Set.mem_iInter.2 hp) (Set.mem_iInter.2 hq))⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_secThrough (hw : w.IsGen) (hL : L.IsLB) (hL' : L'.IsLB) (hψ : ∀ k, φ' k ≫ F = h ≫ φ k)
     (t : LB.Sec (LB.LinComb L φ ε)) : ∃ a, SecThrough w φ' φ ε a t h := by
@@ -199,11 +195,11 @@ theorem exists_secThrough (hw : w.IsGen) (hL : L.IsLB) (hL' : L'.IsLB) (hψ : �
     (ha Z r z p q (Set.mem_iInter.2 hp) (Set.mem_iInter.2 hq))⟩
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `exists_secThrough hw hL hL' hψ (Geo.Tor.genSec t ht)`. Establish `hu : ∀ j, IsUnit (s.f j)` using `fun j => Y'.toRingedSpace.isUnit_of_isUnit_germ _ _ fun y hy => by`. Take `⟨J', hJ', e⟩` from `sval_trans hL' s y j hy`. Take `⟨J, hJ⟩` from `exists_good' hL y`. Establish `e'` using `hs.sval hψ (𝟙 _) hJ hJ'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `e'` using `[sval_genSec t ht _ y hJ]`. Rewrite `e` using `[← (Units.inv_mul_eq_iff_eq_mul _).2 e', ← Units.val_mul, ← Units.val_mul]`. Conclude with `(congrArg IsUnit ((gs_eq (𝟙 Y') y (LB.wchart L' φ' j) hy _).symm.trans e)).mpr (Units.isUnit _)`. Use `⟨⟨fun j => (hu j).unit⟩, fun i j => Units.ext (s.compat i j), fun Z r z J J' hJ hJ' => Units.ext ?_⟩` and prove the remaining obligations. Use `(sval_genSec t ht _ z hJ).symm.trans ((hs.sval hψ r hJ hJ').trans ?_)` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Units.val_mul]`. Conclude with `congrArg _ (gs_unit r z _ (hJ'.mem φ' r) (hu _).unit)`.
+A detailed English derivation is pending.
 -/
 theorem exists_gen_through (hw : w.IsGen) (hL : L.IsLB) (hL' : L'.IsLB) (hψ : ∀ k, φ' k ≫ F = h ≫ φ k)
     (t : LB.Gen (LB.LinComb L φ ε)) (ht : t.IsGen) : ∃ a : LB.Gen (LB.LinComb L' φ' ε), a.IsGen ∧
@@ -250,13 +246,13 @@ variable (hw : w.IsGen) (hL : L.IsLB) (hL' : L'.IsLB) (hψ : ∀ k, φ' k ≫ F 
   (hp : h ≫ π = π' ≫ Spec.map (CommRingCat.ofHom f))
 
 /- English proof (translation)
-The claim follows from `(exists_secThrough hw hL hL' hψ t).choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem secThrough_pullThrough (t : SecOver π (LB.LinComb L φ ε)) :
     SecThrough w φ' φ ε (pullThrough hw hL hL' hψ ε hp t) t h := (exists_secThrough hw hL hL' hψ t).choose_spec
 
 /- English proof (translation)
-The claim follows from `(secThrough_pullThrough hw hL hL' hψ hp t).sval hψ r hJ hJ'`.
+A detailed English derivation is pending.
 -/
 theorem sval_pullThrough (t : SecOver π (LB.LinComb L φ ε)) (r : Z ⟶ Y') {z : Z} {J J'} (hJ : Good L z J)
     (hJ' : Good L' z J') : sval t (r ≫ h) z J =
@@ -266,11 +262,11 @@ theorem sval_pullThrough (t : SecOver π (LB.LinComb L φ ε)) (r : Z ⟶ Y') {z
 end Linear
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Use `eq_top_iff.2 fun x _ => ?_` and prove the remaining obligations. Take `⟨x, rfl⟩` from `hθ.2 x`. Take `⟨n, c, v, rfl⟩` from `ha.exists_sum x`. Rewrite using `[map_sum]`.
+Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.sum_mem _ fun i _ => by`. Rewrite using `[map_smul]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨v i, e _⟩)`. Introduce `ℓ`. Take `⟨Λ, hΛ⟩` from `ha.coord ℓ`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨Λ.comp (LinearEquiv.ofBijective θ hθ).symm.toLinearMap.toAddMonoidHom, fun c v => ?_⟩` and prove the remaining obligations. Establish `: (LinearEquiv.ofBijective θ hθ).symm (c • a' v) = c • a v`. Rewrite using `[LinearEquiv.symm_apply_eq, map_smul, e]`. Both sides reduce to the same expression. Conclude with `(congrArg Λ this).trans (hΛ c v)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem isExtension_comp {k E : Type} [Field k] [Field E] [Algebra k E] {V W W' : Type} [AddCommGroup V] [Module k V]
     [AddCommGroup W] [Module E W] [AddCommGroup W'] [Module E W'] {a : V →ₛₗ[algebraMap k E] W}
@@ -291,9 +287,9 @@ theorem isExtension_comp {k E : Type} [Field k] [Field E] [Algebra k E] {V W W' 
     exact (congrArg Λ this).trans (hΛ c v)
 
 /- English proof (translation)
-Rewrite `hv`, the goal using `[linearIndependent_iff']`. Introduce `S c hc i hi`. Use `(Module.forall_dual_apply_eq_zero_iff k (c i)).1 fun ℓ => ?_` and prove the remaining obligations. Take `⟨Λ, hΛ⟩` from `ha.coord ℓ`. Use `hv S (fun i => ℓ (c i)) ?_ i hi` and prove the remaining obligations.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `congrArg Λ hc` as an intermediate fact. Rewrite `this` using `[map_sum, map_zero]`. Conclude with `(Finset.sum_congr rfl fun i _ => (hΛ _ _).symm).trans this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem linearIndependent_of_isExtension {k E : Type} [Field k] [Field E] [Algebra k E] {V W : Type} [AddCommGroup V]
     [Module k V] [AddCommGroup W] [Module E W] {a : V →ₛₗ[algebraMap k E] W} (ha : IsExtension a) {ι : Type*}
@@ -308,13 +304,13 @@ theorem linearIndependent_of_isExtension {k E : Type} [Field k] [Field E] [Algeb
   exact (Finset.sum_congr rfl fun i _ => (hΛ _ _).symm).trans this
 
 /- English proof (translation)
-Establish `hid : 𝟙 Y' ≫ π' = π' ≫ Spec.map (CommRingCat.ofHom (RingHom.id E))`. Rewrite using `[CommRingCat.ofHom_id, Spec.map_id, Category.id_comp, Category.comp_id]`. Establish `hψ' : ∀ k, φ' k ≫ F = 𝟙 Y' ≫ φ' k ≫ F` using `fun k => (Category.id_comp _).symm`. Set `θ` to `pullThrough (φ := fun k => φ' k ≫ F) hw hL hL' hψ' ε hid`. Use `isExtension_comp (isExtension_pullOver H hL ε hψ) θ ⟨?_, fun a => ?_⟩ _ fun t => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `(injective_iff_map_eq_zero θ).2 fun t ht => sec_ext' hL fun y J hJ => ?_` and prove the remaining obligations. Take `⟨J', hJ'⟩` from `exists_good' hL' y`. Establish `e` using `sval_pullThrough (φ := fun k => φ' k ≫ F) hw hL hL' hψ' hid t (𝟙 _) hJ hJ'`. Rewrite `e` using `[Category.id_comp]`. Rewrite using `[e, show pullThrough (φ := fun k => φ' k ≫ F) hw hL hL' hψ' ε hid t = 0 from ht, sval_zero' hJ', sval_zero' hJ, mul_zero]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨t, ht⟩` from `exists_sec_up ((isGen_iff w).1 hw) hL hL' a`. Use `⟨t, (secThrough_pullThrough (φ := fun k => φ' k ≫ F) hw hL hL' hψ' hid t).unique hL hL' hψ' fun Z r z p q hp hq => ?_⟩` and prove the remaining obligations. Rewrite using `[Category.comp_id]`. Conclude with `ht Z r z p q (Set.mem_iInter.2 hp) (Set.mem_iInter.2 hq)`. Use `sec_ext' hL' fun y J' hJ' => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨J, hJ⟩` from `exists_good' hL y`. Use `(Units.mul_right_inj (∏ k, wVal w y J J' (𝟙 Y' ≫ φ' k) ^ ε k)).1 ?_` and prove the remaining obligations. Rewrite using `[← sval_pullThrough hw hL hL' hψ H.w t _ hJ hJ', ← sval_pullThrough (φ := fun k => φ' k ≫ F) hw hL hL' hψ' hid _ _ hJ hJ', sval_pullOver H.w hψ t _ hJ, Category.comp_id]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isExtension_pullThrough {k E : Type} [Field k] [Field E] [Algebra k E] {π : Y ⟶ Spec (CommRingCat.of k)}
     {π' : Y' ⟶ Spec (CommRingCat.of E)} (H : IsPullback h π' π (Spec.map (CommRingCat.ofHom (algebraMap k E))))

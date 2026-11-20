@@ -24,31 +24,31 @@ def tmat (a b : Fin m → ℂ) (q : ℝ) : Matrix (Fin m) (Fin m) ℂ :=
 variable {H}
 
 /- English proof (translation)
-Establish `hq' : (q : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 hq`. Establish `hsq : star (q : ℂ) = q` using `Complex.conj_ofReal q`. Establish `hst : star (t : ℂ) = t` using `Complex.conj_ofReal t`. Establish `hqt' : (q : ℂ) - t ≠ 0`. Rewrite using `[← Complex.ofReal_sub]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Complex.ofReal_ne_zero.2 fun h0 => hq ?_` and prove the remaining obligations. Establish `e : t = q` using `by linarith`. Rewrite `hqt` using `[e]`. Conclude with `mul_self_eq_zero.1 (le_antisymm hqt (mul_self_nonneg q))`. Establish `hba : herm H b a = star (herm H a b)` using `TwoByOneBlock.herm_symm H hH a b`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht' : θ * herm H b a = t`. Establish `e` using `congrArg star ht`. Rewrite `e` using `[star_mul', star_star, hst]`. Rewrite using `[hba]`. Conclude with `e`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `mul_mem : ∀ g h : Matrix (Fin m) (Fin m) ℂ, g ∈ UH H → h ∈ UH H → g * h ∈ UH H`. Introduce `g h hg hh`. Establish `hg' : gᴴ * H * g = H` using `hg`. Establish `hh' : hᴴ * H * h = H` using `hh`. Use `show (g * h)ᴴ * H * (g * h) = H`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.conjTranspose_mul]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = H := by rw [hg', hh']`. Establish `hc1 : (star θ - 1) / (q : ℂ) + star ((star θ - 1) / (q : ℂ)) + (star θ - 1) / (q : ℂ) * star ((star θ - 1) / (q : ℂ)) * herm H b b = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hs1 : star ((star θ - 1) / (q : ℂ)) = (θ - 1) / q`. Rewrite using `[star_div₀, star_sub, star_star, star_one, hsq]`. Rewrite using `[hs1, hb]`. Establish `e : (star θ - 1) / (q : ℂ) + (θ - 1) / q + (star θ - 1) / q * ((θ - 1) / q) * q = (θ * star θ - 1) / q`. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, hθ, sub_self, zero_div]`. Establish `hD : herm H (a + (-θ) • b) (a + (-θ) • b) = 2 * ((q : ℂ) - t)`. Rewrite using `[TwoByOneBlock.herm_add_left, TwoByOneBlock.herm_add_right, TwoByOneBlock.herm_add_right, TwoByOneBlock.herm_smul_left, TwoByOneBlock.herm_smul_left, TwoByOneBlock.herm_smul_right, TwoByOneBlock.herm_smul_right, ha, hb, star_neg]`. Take the linear combination `(-1 : ℂ) * ht + (-1 : ℂ) * ht' + (q : ℂ) * hθ`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hc2 : -1 / ((q : ℂ) - t) + star (-1 / ((q : ℂ) - t)) + -1 / ((q : ℂ) - t) * star (-1 / ((q : ℂ) - t)) * herm H (a + (-θ) • b) (a + (-θ) • b) = 0`. Establish `hs2 : star (-1 / ((q : ℂ) - t)) = -1 / ((q : ℂ) - t)`. Rewrite using `[star_div₀, star_neg, star_one, star_sub, hsq, hst]`. Rewrite using `[hs2, hD]`. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hA : herm H a (a + (-θ) • b) = (q : ℂ) - t`. Rewrite using `[TwoByOneBlock.herm_add_right, TwoByOneBlock.herm_smul_right, ha, ← ht, star_neg]`. Expand and normalize the polynomial expressions, which then agree. Establish `h2a : TwoByOneBlock.qrefl H (a + (-θ) • b) (-1 / ((q : ℂ) - t)) *ᵥ a = θ • b`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[TwoByOneBlock.qrefl_mulVec, hA, div_mul_cancel₀ _ hqt']`. Use extensionality with `i`. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `h1b : TwoByOneBlock.qrefl H b ((star θ - 1) / q) *ᵥ (θ • b) = b`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite using `[TwoByOneBlock.qrefl_mulVec, TwoByOneBlock.herm_smul_left, hb]`. Establish `e : (star θ - 1) / (q : ℂ) * (θ * q) = 1 - θ`. Rewrite using `[mul_comm θ, ← mul_assoc, div_mul_cancel₀ _ hq']`. Take the linear combination `hθ`. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations.
 
-Use extensionality with `i`. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨mul_mem _ _ (TwoByOneBlock.qrefl_mem H hH b _ hc1) (TwoByOneBlock.qrefl_mem H hH _ _ hc2), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← Matrix.mulVec_mulVec, h2a, h1b]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Introduce `x hxa hxb`. Establish `hxd : herm H x (a + (-θ) • b) = 0`. Rewrite using `[TwoByOneBlock.herm_add_right, TwoByOneBlock.herm_smul_right, hxa, hxb]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← Matrix.mulVec_mulVec, TwoByOneBlock.qrefl_mulVec H (a + (-θ) • b) _ x, hxd, mul_zero, zero_smul, add_zero, TwoByOneBlock.qrefl_mulVec, hxb, mul_zero, zero_smul, add_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trans_expl (hH : Hᴴ = H) (a b : Fin m → ℂ) (q : ℝ) (hq : q ≠ 0)
     (ha : herm H a a = q) (hb : herm H b b = q) (θ : ℂ) (t : ℝ) (hθ : θ * star θ = 1)
@@ -128,13 +128,13 @@ theorem trans_expl (hH : Hᴴ = H) (a b : Fin m → ℂ) (q : ℝ) (hq : q ≠ 0
       TwoByOneBlock.qrefl_mulVec, hxb, mul_zero, zero_smul, add_zero]
 
 /- English proof (translation)
-Establish `hs' : ‖herm H a b‖ ≠ 0` using `norm_ne_zero_iff.2 hs`. Establish `hsc : ((‖herm H a b‖ : ℝ) : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 hs'`. Establish `hsn : star ((‖herm H a b‖ : ℝ) : ℂ) = ‖herm H a b‖` using `Complex.conj_ofReal _`. Establish `hm : herm H a b * star (herm H a b) = ((‖herm H a b‖ ^ 2 : ℝ) : ℂ)`. Rewrite using `[Complex.sq_norm]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Complex.mul_conj _`. Establish `hθ : tth H a b * star (tth H a b) = 1`. Unfold `tth`. Rewrite using `[star_neg, star_div₀, hsn, neg_mul_neg, div_mul_div_comm, hm, div_eq_one_iff_eq (mul_ne_zero hsc hsc)]`. Use `push_cast`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `ht : star (tth H a b) * herm H a b = ((-‖herm H a b‖ : ℝ) : ℂ)`. Unfold `tth`. Rewrite using `[star_neg, star_div₀, hsn, neg_mul, div_mul_eq_mul_div, mul_comm (star (herm H a b)), hm]`. Use `push_cast`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts. Establish `hqt : q * (-‖herm H a b‖) ≤ 0` using `by nlinarith [norm_nonneg (herm H a b)]`. Unfold `tmat`. Conclude with `trans_expl hH a b q hq.ne' ha hb _ _ hθ ht hqt`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem tmat_spec (hH : Hᴴ = H) (a b : Fin m → ℂ) (q : ℝ) (hq : 0 < q)
     (ha : herm H a a = q) (hb : herm H b b = q) (hs : herm H a b ≠ 0) :
@@ -166,7 +166,7 @@ section Smooth
 variable {X : Type*} [NormedAddCommGroup X] [NormedSpace ℝ X] {n : WithTop ℕ∞} {s : Set X} {m : ℕ}
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h i j`. Conclude with `contDiffOn_pi.1 (contDiffOn_pi.1 h i) j`. Introduce `h`. Conclude with `contDiffOn_pi.2 fun i => contDiffOn_pi.2 fun j => h i j`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem cdm_iff {F : X → Matrix (Fin m) (Fin m) ℂ} :
     ContDiffOn ℝ n F s ↔ ∀ i j, ContDiffOn ℝ n (fun x => F x i j) s := by
@@ -177,7 +177,7 @@ theorem cdm_iff {F : X → Matrix (Fin m) (Fin m) ℂ} :
     exact contDiffOn_pi.2 fun i => contDiffOn_pi.2 fun j => h i j
 
 /- English proof (translation)
-Use `cdm_iff.2 fun i j => ?_` and prove the remaining obligations. Simplify using `only [Matrix.mul_apply]`. Conclude with `ContDiffOn.sum fun k _ => ((cdm_iff.1 hF) i k).mul ((cdm_iff.1 hG) k j)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cdm_mul {F G : X → Matrix (Fin m) (Fin m) ℂ} (hF : ContDiffOn ℝ n F s) (hG : ContDiffOn ℝ n G s) :
     ContDiffOn ℝ n (fun x => F x * G x) s := by
@@ -186,19 +186,19 @@ theorem cdm_mul {F G : X → Matrix (Fin m) (Fin m) ℂ} (hF : ContDiffOn ℝ n 
   exact ContDiffOn.sum fun k _ => ((cdm_iff.1 hF) i k).mul ((cdm_iff.1 hG) k j)
 
 /- English proof (translation)
-Conclude with `Complex.conjCLE.contDiff.comp_contDiffOn hf`.
+A detailed English derivation is pending.
 -/
 theorem cd_star {f : X → ℂ} (hf : ContDiffOn ℝ n f s) : ContDiffOn ℝ n (fun x => star (f x)) s := by
   exact Complex.conjCLE.contDiff.comp_contDiffOn hf
 
 /- English proof (translation)
-Conclude with `Complex.ofRealCLM.contDiff.comp_contDiffOn hf`.
+A detailed English derivation is pending.
 -/
 theorem cd_ofReal {f : X → ℝ} (hf : ContDiffOn ℝ n f s) : ContDiffOn ℝ n (fun x => (f x : ℂ)) s := by
   exact Complex.ofRealCLM.contDiff.comp_contDiffOn hf
 
 /- English proof (translation)
-Establish `hinv : ContDiffOn ℝ n (fun x => (g x)⁻¹) s` using `fun x hx => (contDiffAt_inv ℝ (h0 x hx)).comp_contDiffWithinAt x (hg x hx)`. Simplify `hf.mul hinv` using `only [div_eq_mul_inv]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem cd_div {f g : X → ℂ} (hf : ContDiffOn ℝ n f s) (hg : ContDiffOn ℝ n g s) (h0 : ∀ x ∈ s, g x ≠ 0) :
     ContDiffOn ℝ n (fun x => f x / g x) s := by
@@ -207,7 +207,7 @@ theorem cd_div {f g : X → ℂ} (hf : ContDiffOn ℝ n f s) (hg : ContDiffOn �
   simpa only [div_eq_mul_inv] using hf.mul hinv
 
 /- English proof (translation)
-Use `cdm_iff.2 fun i j => ?_` and prove the remaining obligations. Simplify using `only [Matrix.conjTranspose_apply]`. Conclude with `cd_star ((cdm_iff.1 hF) j i)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cdm_conjT {F : X → Matrix (Fin m) (Fin m) ℂ} (hF : ContDiffOn ℝ n F s) :
     ContDiffOn ℝ n (fun x => (F x)ᴴ) s := by
@@ -216,7 +216,7 @@ theorem cdm_conjT {F : X → Matrix (Fin m) (Fin m) ℂ} (hF : ContDiffOn ℝ n 
   exact cd_star ((cdm_iff.1 hF) j i)
 
 /- English proof (translation)
-Use `contDiffOn_pi.2 fun i => ?_` and prove the remaining obligations. Simplify using `only [Matrix.mulVec, dotProduct]`. Conclude with `ContDiffOn.sum fun j _ => ((cdm_iff.1 hF) i j).mul contDiffOn_const`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cdv_mulVec {F : X → Matrix (Fin m) (Fin m) ℂ} (hF : ContDiffOn ℝ n F s) (v : Fin m → ℂ) :
     ContDiffOn ℝ n (fun x => F x *ᵥ v) s := by
@@ -225,7 +225,7 @@ theorem cdv_mulVec {F : X → Matrix (Fin m) (Fin m) ℂ} (hF : ContDiffOn ℝ n
   exact ContDiffOn.sum fun j _ => ((cdm_iff.1 hF) i j).mul contDiffOn_const
 
 /- English proof (translation)
-Use `contDiffOn_pi.2 fun i => ?_` and prove the remaining obligations. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Conclude with `hc.mul (contDiffOn_pi.1 hv i)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cdv_smul {c : X → ℂ} {v : X → Fin m → ℂ} (hc : ContDiffOn ℝ n c s) (hv : ContDiffOn ℝ n v s) :
     ContDiffOn ℝ n (fun x => c x • v x) s := by
@@ -234,9 +234,7 @@ theorem cdv_smul {c : X → ℂ} {v : X → Fin m → ℂ} (hc : ContDiffOn ℝ 
   exact hc.mul (contDiffOn_pi.1 hv i)
 
 /- English proof (translation)
-Establish `hHA : ContDiffOn ℝ n (fun x => H *ᵥ A x) s`. Use `contDiffOn_pi.2 fun i => ?_` and prove the remaining obligations. Simplify using `only [Matrix.mulVec, dotProduct]`. Conclude with `ContDiffOn.sum fun j _ => contDiffOn_const.mul (contDiffOn_pi.1 hA j)`. Simplify using `only [herm, dotProduct, Pi.star_apply]`.
-
-Conclude with `ContDiffOn.sum fun i _ => (cd_star (contDiffOn_pi.1 hB i)).mul (contDiffOn_pi.1 hHA i)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cd_herm (H : Matrix (Fin m) (Fin m) ℂ) {A B : X → Fin m → ℂ} (hA : ContDiffOn ℝ n A s)
     (hB : ContDiffOn ℝ n B s) : ContDiffOn ℝ n (fun x => herm H (A x) (B x)) s := by
@@ -248,7 +246,7 @@ theorem cd_herm (H : Matrix (Fin m) (Fin m) ℂ) {A B : X → Fin m → ℂ} (hA
   exact ContDiffOn.sum fun i _ => (cd_star (contDiffOn_pi.1 hB i)).mul (contDiffOn_pi.1 hHA i)
 
 /- English proof (translation)
-Use `cdm_iff.2 fun i j => ?_` and prove the remaining obligations. Simplify using `only [TwoByOneBlock.qrefl, Matrix.add_apply, Matrix.smul_apply, Matrix.vecMulVec_apply, smul_eq_mul, Matrix.vecMul, dotProduct, Pi.star_apply]`. Conclude with `contDiffOn_const.add (hc.mul ((contDiffOn_pi.1 hd i).mul (ContDiffOn.sum fun k _ => (cd_star (contDiffOn_pi.1 hd k)).mul contDiffOn_const)))`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cdm_qrefl (H : Matrix (Fin m) (Fin m) ℂ) {d : X → Fin m → ℂ} {c : X → ℂ} (hd : ContDiffOn ℝ n d s)
     (hc : ContDiffOn ℝ n c s) : ContDiffOn ℝ n (fun x => TwoByOneBlock.qrefl H (d x) (c x)) s := by
@@ -259,11 +257,11 @@ theorem cdm_qrefl (H : Matrix (Fin m) (Fin m) ℂ) {d : X → Fin m → ℂ} {c 
     (ContDiffOn.sum fun k _ => (cd_star (contDiffOn_pi.1 hd k)).mul contDiffOn_const)))
 
 /- English proof (translation)
-Establish `hh : ContDiffOn ℝ n (fun x => herm H (A x) (B x)) s` using `cd_herm H hA hB`. Establish `hn : ContDiffOn ℝ n (fun x => ‖herm H (A x) (B x)‖) s` using `hh.norm ℝ hs`. Establish `htth : ContDiffOn ℝ n (fun x => tth H (A x) (B x)) s`. Unfold `tth`. Use `(cd_div hh (cd_ofReal hn) fun x hx => ?_).neg` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Complex.ofReal_ne_zero.2 (norm_ne_zero_iff.2 (hs x hx))`. Unfold `tmat`. Use `cdm_mul (cdm_qrefl H hB ?_) (cdm_qrefl H (hA.add (cdv_smul htth.neg hB)) ?_)` and prove the remaining obligations. Conclude with `cd_div ((cd_star htth).sub contDiffOn_const) (cd_ofReal hQ) fun x hx => Complex.ofReal_ne_zero.2 (hq x hx).ne'`. Use `cd_div contDiffOn_const ((cd_ofReal hQ).sub (cd_ofReal hn.neg)) fun x hx => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `hq x hx`. Establish `h2` using `norm_nonneg (herm H (A x) (B x))`. Rewrite using `[← Complex.ofReal_sub]`. Conclude with `Complex.ofReal_ne_zero.2 (ne_of_gt (by linarith))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cdm_tmat (H : Matrix (Fin m) (Fin m) ℂ) {A B : X → Fin m → ℂ} {Q : X → ℝ} (hA : ContDiffOn ℝ n A s)
     (hB : ContDiffOn ℝ n B s) (hQ : ContDiffOn ℝ n Q s) (hs : ∀ x ∈ s, herm H (A x) (B x) ≠ 0)
@@ -285,7 +283,7 @@ theorem cdm_tmat (H : Matrix (Fin m) (Fin m) ℂ) {A B : X → Fin m → ℂ} {Q
     exact Complex.ofReal_ne_zero.2 (ne_of_gt (by linarith))
 
 /- English proof (translation)
-Repeatedly rewrite using `[Complex.normSq_eq_norm_sq]`. Conclude with `contDiff_norm_sq ℝ`.
+Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cd_normSq : ContDiff ℝ n (fun w : ℂ => Complex.normSq w) := by
   simp_rw [Complex.normSq_eq_norm_sq]
@@ -316,7 +314,7 @@ def bf (k r : ℕ) (z z' : Fin (2 * r + k + 1) → ℂ) (μsec : ℂ → Matrix 
   Hpk k r * (af k r z z' μsec a₀ g * muZ k r μsec (zetaL k r z z' (Fin.last r) g))ᴴ * Hpk k r * g
 
 /- English proof (translation)
-Simplify using `only [Hpk]`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega)`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private lemma hpk_apply_of_outer_index (i j : Fin (2 * r + k + 1)) (hi : i.val < r ∨ r + k < i.val) :
     Hpk k r i j = if i.val + j.val = 2 * r + k then 1 else 0 := by
@@ -324,9 +322,9 @@ private lemma hpk_apply_of_outer_index (i j : Fin (2 * r + k + 1)) (hi : i.val <
   split_ifs <;> first | rfl | (exfalso; omega)
 
 /- English proof (translation)
-Simplify using `only [Matrix.mulVec, dotProduct, fun j => hpk_apply_of_outer_index (k := k) (r := r) i j hi]`. Rewrite using `[Finset.sum_eq_single (⟨2 * r + k - i.val, by omega⟩ : Fin (2 * r + k + 1))]`. Rewrite using `[if_pos (Nat.add_sub_cancel' (by omega)), one_mul]`. Introduce `l _ hl`. Rewrite using `[if_neg, zero_mul]`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Conclude with `hl (Fin.ext (by show l.val = 2 * r + k - i.val; omega))`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private lemma hpk_mulVec_apply_of_outer_index (v : Fin (2 * r + k + 1) → ℂ) (i : Fin (2 * r + k + 1))
     (hi : i.val < r ∨ r + k < i.val) : (Hpk k r *ᵥ v) i = v ⟨2 * r + k - i.val, by omega⟩ := by
@@ -341,7 +339,7 @@ private lemma hpk_mulVec_apply_of_outer_index (v : Fin (2 * r + k + 1) → ℂ) 
     exact absurd (Finset.mem_univ _) h
 
 /- English proof (translation)
-Establish `hi0 : ¬(r ≤ i.val ∧ i.val ≤ r + k)` using `hi`. Establish `hi' : i.val < r ∨ r + k < i.val` using `by omega`. Rewrite using `[TwoByOneBlock.herm_symm (Hpk k r) (GBasic.Hpk_herm k r), gn_herm_bvec_right, hpk_mulVec_apply_of_outer_index d i hi', hd _ (by show 2 * r + k - i.val < r ∨ r + k < 2 * r + k - i.val; omega), star_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem herm_out {d : Fin (2 * r + k + 1) → ℂ} (hd : inWb k r d) {i : Fin (2 * r + k + 1)}
     (hi : ¬ TwoByOneBlock.mid k r i) : herm (Hpk k r) (bvec i) d = 0 := by
@@ -351,13 +349,11 @@ theorem herm_out {d : Fin (2 * r + k + 1) → ℂ} (hd : inWb k r d) {i : Fin (2
     hd _ (by show 2 * r + k - i.val < r ∨ r + k < 2 * r + k - i.val; omega), star_zero]
 
 /- English proof (translation)
-Establish `hg' : g ∈ UH (Hpk k r) ∧ ∀ a : Fin r, g *ᵥ bvec (eI k r a) = bvec (eI k r a) ∧ g *ᵥ bvec (esI k r a) = bvec (esI k r a)` using `hg`. Introduce `i hi`. Take `⟨j, hjv⟩ : ∃ j : Fin (2 * r + k + 1), j.val = 2 * r + k - i.val` from `⟨⟨_, by omega⟩, rfl⟩`. Establish `hjo : j.val < r ∨ r + k < j.val` using `by omega`. Establish `hji : (⟨2 * r + k - j.val, by omega⟩ : Fin (2 * r + k + 1)) = i` using `Fin.ext (by show 2 * r + k - j.val = i.val; omega)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfix : g *ᵥ bvec j = bvec j`. Break down `Nat.lt_or_ge j.val r with h | h` into its components or cases. Establish `e : eI k r ⟨j.val, h⟩ = j` using `Fin.ext rfl`. Rewrite using `[← e]`. Conclude with `(hg'.2 _).1`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `ha : i.val < r` using `by omega`. Establish `e : esI k r ⟨i.val, ha⟩ = j` using `Fin.ext (by show 2 * r + k - i.val = j.val; omega)`. Rewrite using `[← e]`. Conclude with `(hg'.2 _).2`. Establish `e1 : (g *ᵥ v) i = (Hpk k r *ᵥ (g *ᵥ v)) j` using `by rw [hpk_mulVec_apply_of_outer_index _ j hjo, hji]`.
-
-Rewrite using `[e1, ← gn_herm_bvec_right, ← hfix, TwoByOneBlock.herm_UH hg'.1, gn_herm_bvec_right, hpk_mulVec_apply_of_outer_index _ j hjo, hji]`. Conclude with `hv i hi`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inWb_uwb {g : Q.Mx k r} (hg : g ∈ B2.UWb k r) {v : Fin (2 * r + k + 1) → ℂ} (hv : inWb k r v) :
     inWb k r (g *ᵥ v) := by
@@ -382,25 +378,25 @@ theorem inWb_uwb {g : Q.Mx k r} (hg : g ∈ B2.UWb k r) {v : Fin (2 * r + k + 1)
   exact hv i hi
 
 /- English proof (translation)
-Introduce `i hi`. Simplify using `only [Pi.add_apply, hv i hi, hw i hi, add_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem inWb_add {v w : Fin (2 * r + k + 1) → ℂ} (hv : inWb k r v) (hw : inWb k r w) : inWb k r (v + w) := by
   intro i hi
   simp only [Pi.add_apply, hv i hi, hw i hi, add_zero]
 
 /- English proof (translation)
-Introduce `i hi`. Simplify using `only [Pi.smul_apply, hv i hi, smul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem inWb_smul (c : ℂ) {v : Fin (2 * r + k + 1) → ℂ} (hv : inWb k r v) : inWb k r (c • v) := by
   intro i hi
   simp only [Pi.smul_apply, hv i hi, smul_zero]
 
 /- English proof (translation)
-Establish `hzv : herm (Hpk k r) z v = star ζ`. Rewrite using `[TwoByOneBlock.herm_symm (Hpk k r) (GBasic.Hpk_herm k r), hvz]`. Establish `hT' : (T : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 hT`. Establish `hsT : star (T : ℂ) = T` using `Complex.conj_ofReal T`. Establish `hn : ((Complex.normSq ζ : ℝ) : ℂ) = ζ * star ζ` using `(Complex.mul_conj ζ).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Rewrite using `[TwoByOneBlock.herm_add_left, TwoByOneBlock.herm_add_right, TwoByOneBlock.herm_add_right, TwoByOneBlock.herm_smul_left, TwoByOneBlock.herm_smul_left, TwoByOneBlock.herm_smul_right, TwoByOneBlock.herm_smul_right, hz, hvz, hvv, hzv, star_div₀, hsT]`. Use `push_cast`. Rewrite using `[hn]`. Clear the denominators using the available nonvanishing facts.
+Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[TwoByOneBlock.herm_add_right, TwoByOneBlock.herm_smul_right, hz, hzv, star_div₀, hsT]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem key {z v : Fin (2 * r + k + 1) → ℂ} {ζ : ℂ} {T T' : ℝ} (hT : T ≠ 0) (hz : herm (Hpk k r) z z = -(T : ℂ))
     (hvz : herm (Hpk k r) v z = ζ) (hvv : herm (Hpk k r) v v = -(T' : ℂ)) :
@@ -423,13 +419,11 @@ theorem key {z v : Fin (2 * r + k + 1) → ℂ} {ζ : ℂ} {T T' : ℝ} (hT : T 
     ring
 
 /- English proof (translation)
-Establish `hX' : Xᴴ * Hpk k r * X = Hpk k r` using `hX`. Establish `hdH : (Hpk k r).det ≠ 0`. Introduce `h0`. Establish `e` using `congrArg Matrix.det (GBasic.Hpk_sq k r)`. Rewrite `e` using `[Matrix.det_mul, h0, zero_mul, Matrix.det_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `zero_ne_one e`. Establish `hdX : IsUnit X.det`. Establish `e` using `congrArg Matrix.det hX'`. Rewrite `e` using `[Matrix.det_mul, Matrix.det_mul]`. Use `isUnit_iff_ne_zero.2 fun h0 => hdH ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e` using `[h0, mul_zero]`. Conclude with `e.symm`. Use `show (X⁻¹)ᴴ * Hpk k r * X⁻¹ = Hpk k r`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.conjTranspose_mul]`.
-
-Simplify using `only [Matrix.mul_assoc]`. Use `_ = Hpk k r := by rw [Matrix.mul_nonsing_inv _ hdX]; simp`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem uh_inv_mem {X : Q.Mx k r} (hX : X ∈ UH (Hpk k r)) : X⁻¹ ∈ UH (Hpk k r) := by
   have hX' : Xᴴ * Hpk k r * X = Hpk k r := hX
@@ -451,7 +445,7 @@ theorem uh_inv_mem {X : Q.Mx k r} (hX : X ∈ UH (Hpk k r)) : X⁻¹ ∈ UH (Hpk
     _ = Hpk k r := by rw [Matrix.mul_nonsing_inv _ hdX]; simp
 
 /- English proof (translation)
-Rewrite using `[← h, Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ hu, Matrix.one_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem inv_fix {X : Q.Mx k r} (hu : IsUnit X.det) {v w : Fin (2 * r + k + 1) → ℂ} (h : X *ᵥ v = w) :
     X⁻¹ *ᵥ w = v := by
@@ -460,7 +454,7 @@ theorem inv_fix {X : Q.Mx k r} (hu : IsUnit X.det) {v w : Fin (2 * r + k + 1) �
 variable {z z' : Fin (2 * r + k + 1) → ℂ} {μsec : ℂ → Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ}
 
 /- English proof (translation)
-Establish `h : 0 < Complex.normSq (zetaL k r z z' (Fin.last r) g) - Tz k r z * Tz k r z'` using `hG`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem zeta_lt {g : Q.Mx k r} (hG : 0 < GGl k r z z' g) :
     Tz k r z * Tz k r z' < Complex.normSq (zetaL k r z z' (Fin.last r) g) := by
@@ -468,9 +462,9 @@ theorem zeta_lt {g : Q.Mx k r} (hG : 0 < GGl k r z z' g) :
   linarith
 
 /- English proof (translation)
-Establish `hζ` using `zeta_lt hG`. Establish `hμ` using `NFRadRedA.muZ_uwb hsec hζ`. Establish `hμU : muZ k r μsec (zetaL k r z z' (Fin.last r) g) ∈ UH (Hpk k r)` using `hμ.1`. Establish `hvz : herm (Hpk k r) (muZ k r μsec (zetaL k r z z' (Fin.last r) g) *ᵥ z') z = zetaL k r z z' (Fin.last r) g`. Rewrite using `[← NFRadRedA.zeta_eq]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `NFRadRedA.zeta_muZ hz hz' hsec hζ`. Establish `hvv : herm (Hpk k r) (muZ k r μsec (zetaL k r z z' (Fin.last r) g) *ᵥ z') (muZ k r μsec (zetaL k r z z' (Fin.last r) g) *ᵥ z') = -((Tz k r z' : ℝ) : ℂ)`. Rewrite using `[TwoByOneBlock.herm_UH hμU, TwoByOneBlock.herm_self_eq]`. Take `⟨h1, h2⟩` from `key hT.ne' (TwoByOneBlock.herm_self_eq z) hvz hvv`. Conclude with `⟨h1, h2, inWb_add (inWb_uwb hμ hz') (inWb_smul _ hz)⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem first_section_hermitian_facts (hz : inWb k r z) (hz' : inWb k r z') (hT : 0 < Tz k r z) (hsec : IsSection k r z z' μsec)
     {g : Q.Mx k r} (hG : 0 < GGl k r z z' g) :
@@ -489,7 +483,7 @@ theorem first_section_hermitian_facts (hz : inWb k r z) (hz' : inWb k r z') (hT 
   exact ⟨h1, h2, inWb_add (inWb_uwb hμ hz') (inWb_smul _ hz)⟩
 
 /- English proof (translation)
-Establish `hX' : Xᴴ * Hpk k r * X = Hpk k r` using `hX`. Establish `h1 : Hpk k r * Xᴴ * Hpk k r * X = 1`. Combine the equalities or inequalities in the displayed calculation. Conclude with `⟨h1, mul_eq_one_comm.mp h1⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Supply the required witnesses or components.
 -/
 private lemma hpk_conjTranspose_hpk_mul_eq_one_of_mem_uh {X : Q.Mx k r} (hX : X ∈ UH (Hpk k r)) :
     Hpk k r * Xᴴ * Hpk k r * X = 1 ∧ X * (Hpk k r * Xᴴ * Hpk k r) = 1 := by
@@ -500,9 +494,9 @@ private lemma hpk_conjTranspose_hpk_mul_eq_one_of_mem_uh {X : Q.Mx k r} (hX : X 
   exact ⟨h1, mul_eq_one_comm.mp h1⟩
 
 /- English proof (translation)
-Establish `hX' : Xᴴ * Hpk k r * X = Hpk k r` using `hX`. Establish `hY' : Yᴴ * Hpk k r * Y = Hpk k r` using `hY`. Use `show (X * Y)ᴴ * Hpk k r * (X * Y) = Hpk k r`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.conjTranspose_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mul_assoc]`. Use `_ = Hpk k r := by rw [hX', hY']`.
+A detailed English derivation is pending.
 -/
 private lemma mul_mem_UH_of_mem_of_mem {X Y : Q.Mx k r} (hX : X ∈ UH (Hpk k r)) (hY : Y ∈ UH (Hpk k r)) :
     X * Y ∈ UH (Hpk k r) := by
@@ -514,13 +508,13 @@ private lemma mul_mem_UH_of_mem_of_mem {X Y : Q.Mx k r} (hX : X ∈ UH (Hpk k r)
     _ = Hpk k r := by rw [hX', hY']
 
 /- English proof (translation)
-Establish `ha' : a₀ ∈ UH (Hpk k r) ∧ (∀ a : Fin r, a₀ *ᵥ bvec (eI k r a) = bvec (eI k r a) ∧ a₀ *ᵥ bvec (esI k r a) = bvec (esI k r a)) ∧ a₀ *ᵥ z = z` using `ha₀`. Establish `hg' : g ∈ UH (Hpk k r) ∧ ∀ a : Fin r, a.val < (Fin.last r).val → g *ᵥ bvec (eI k r a) = bvec (eI k r a) ∧ g *ᵥ bvec (esI k r a) = bvec (esI k r a)` using `hg`. Establish `hd` using `Matrix.isUnit_det_of_left_inverse (hpk_conjTranspose_hpk_mul_eq_one_of_mem_uh ha'.1).1`. Establish `hinv : a₀⁻¹ ∈ UH (Hpk k r)` using `uh_inv_mem ha'.1`. Establish `hgW : g ∈ B2.UWb k r` using `⟨hg'.1, fun a => hg'.2 a a.isLt⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hiW : a₀⁻¹ ∈ B2.UWb k r` using `⟨hinv, fun a => ⟨inv_fix hd (ha'.2.1 a).1, inv_fix hd (ha'.2.1 a).2⟩⟩`. Establish `hz0 : a₀⁻¹ *ᵥ z = z` using `inv_fix hd ha'.2.2`. Establish `hvz : herm (Hpk k r) ((a₀⁻¹ * g) *ᵥ z') z = zetaL k r z z' (Fin.last r) g`. Rewrite using `[← Matrix.mulVec_mulVec]`. Use `conv_lhs => rw [← hz0]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[TwoByOneBlock.herm_UH hinv]`. Conclude with `(NFRadRedA.zeta_eq g).symm`. Establish `hvv : herm (Hpk k r) ((a₀⁻¹ * g) *ᵥ z') ((a₀⁻¹ * g) *ᵥ z') = -((Tz k r z' : ℝ) : ℂ)`. Rewrite using `[← Matrix.mulVec_mulVec, TwoByOneBlock.herm_UH hinv, TwoByOneBlock.herm_UH hg'.1, TwoByOneBlock.herm_self_eq]`. Take `⟨h1, h2⟩` from `key hT.ne' (TwoByOneBlock.herm_self_eq z) hvz hvv`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hu : inWb k r (u2 k r z z' a₀ g)`. Unfold `u2`. Rewrite using `[← Matrix.mulVec_mulVec]`. Conclude with `inWb_add (inWb_uwb hiW (inWb_uwb hgW hz')) (inWb_smul _ hz)`. Conclude with `⟨h1, h2, hu⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem second_section_hermitian_facts (hz : inWb k r z) (hz' : inWb k r z') (hT : 0 < Tz k r z) {a₀ : Q.Mx k r}
     (ha₀ : a₀ ∈ UWset k r z) {g : Q.Mx k r} (hg : g ∈ Glev k r (Fin.last r)) :
@@ -550,32 +544,32 @@ theorem second_section_hermitian_facts (hz : inWb k r z) (hz' : inWb k r z') (hT
   exact ⟨h1, h2, hu⟩
 
 /- English proof (translation)
-Unfold `qf`. Conclude with `div_pos (by linarith [zeta_lt hG]) hT`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem qf_pos (hT : 0 < Tz k r z) {g : Q.Mx k r} (hG : 0 < GGl k r z z' g) : 0 < qf k r z z' g := by
   unfold qf
   exact div_pos (by linarith [zeta_lt hG]) hT
 
 /- English proof (translation)
-Establish `hH` using `GBasic.Hpk_herm k r`. Establish `hζ` using `zeta_lt hG`. Establish `hq` using `qf_pos hT hG`. Take `⟨h1q, h1z, h1w⟩` from `first_section_hermitian_facts hz hz' hT hsec hG`. Take `⟨h2q, h2z, h2w⟩` from `second_section_hermitian_facts hz hz' hT ha₀ hg`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hTU, hTu, hTx⟩` from `tmat_spec hH _ _ _ hq h1q h2q hs`. Establish `ha' : a₀ ∈ UH (Hpk k r) ∧ (∀ a : Fin r, a₀ *ᵥ bvec (eI k r a) = bvec (eI k r a) ∧ a₀ *ᵥ bvec (esI k r a) = bvec (esI k r a)) ∧ a₀ *ᵥ z = z` using `ha₀`. Establish `hg' : g ∈ UH (Hpk k r) ∧ ∀ a : Fin r, a.val < (Fin.last r).val → g *ᵥ bvec (eI k r a) = bvec (eI k r a) ∧ g *ᵥ bvec (esI k r a) = bvec (esI k r a)` using `hg`. Establish `hd0 : IsUnit a₀.det` using `Matrix.isUnit_det_of_left_inverse (hpk_conjTranspose_hpk_mul_eq_one_of_mem_uh ha'.1).1`. Establish `hμ : muZ k r μsec (zetaL k r z z' (Fin.last r) g) ∈ UH (Hpk k r) ∧ ∀ a : Fin r, muZ k r μsec (zetaL k r z z' (Fin.last r) g) *ᵥ bvec (eI k r a) = bvec (eI k r a) ∧ muZ k r μsec (zetaL k r z z' (Fin.last r) g) *ᵥ bvec (esI k r a) = bvec (esI k r a)` using `NFRadRedA.muZ_uwb hsec hζ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmI : ∀ a : Fin r, ¬ TwoByOneBlock.mid k r (eI k r a)` using `fun a h => absurd h.1 (by show ¬ r ≤ a.val; omega)`. Establish `hmS : ∀ a : Fin r, ¬ TwoByOneBlock.mid k r (esI k r a)` using `fun a h => absurd h.2 (by show ¬ 2 * r + k - a.val ≤ r + k; omega)`. Establish `hTe : ∀ i, ¬ TwoByOneBlock.mid k r i → tmat (Hpk k r) (u1 k r z z' μsec g) (u2 k r z z' a₀ g) (qf k r z z' g) *ᵥ bvec i = bvec i` using `fun i hi => hTx _ (herm_out h1w hi) (herm_out h2w hi)`. Establish `hTz` using `hTx z h1z h2z`. Establish `hafU : af k r z z' μsec a₀ g ∈ UH (Hpk k r)` using `mul_mem_UH_of_mem_of_mem ha'.1 hTU`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hafe : ∀ a : Fin r, af k r z z' μsec a₀ g *ᵥ bvec (eI k r a) = bvec (eI k r a) ∧ af k r z z' μsec a₀ g *ᵥ bvec (esI k r a) = bvec (esI k r a)`. Introduce `a`. Unfold `af`. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hTe _ (hmI a), hTe _ (hmS a)]`. Conclude with `ha'.2.1 a`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hafz : af k r z z' μsec a₀ g *ᵥ z = z`. Unfold `af`. Rewrite using `[← Matrix.mulVec_mulVec, hTz, ha'.2.2]`. Establish `hXU : af k r z z' μsec a₀ g * muZ k r μsec (zetaL k r z z' (Fin.last r) g) ∈ UH (Hpk k r)` using `mul_mem_UH_of_mem_of_mem hafU hμ.1`. Establish `hXe : ∀ a : Fin r, (af k r z z' μsec a₀ g * muZ k r μsec (zetaL k r z z' (Fin.last r) g)) *ᵥ bvec (eI k r a) = bvec (eI k r a) ∧ (af k r z z' μsec a₀ g * muZ k r μsec (zetaL k r z z' (Fin.last r) g)) *ᵥ bvec (esI k r a) = bvec (esI k r a)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a`. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, (hμ.2 a).1, (hμ.2 a).2]`. Conclude with `hafe a`. Establish `hXi` using `hpk_conjTranspose_hpk_mul_eq_one_of_mem_uh hXU`. Establish `hYU : Hpk k r * (af k r z z' μsec a₀ g * muZ k r μsec (zetaL k r z z' (Fin.last r) g))ᴴ * Hpk k r ∈ UH (Hpk k r)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Matrix.inv_eq_left_inv hXi.1]`. Conclude with `uh_inv_mem hXU`. Establish `hYfix : ∀ v, (af k r z z' μsec a₀ g * muZ k r μsec (zetaL k r z z' (Fin.last r) g)) *ᵥ v = v → (Hpk k r * (af k r z z' μsec a₀ g * muZ k r μsec (zetaL k r z z' (Fin.last r) g))ᴴ * Hpk k r) *ᵥ v = v`. Introduce `v hv`. Use `conv_lhs => rw [← hv]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Matrix.mulVec_mulVec, hXi.1, Matrix.one_mulVec]`. Establish `hgz : (af k r z z' μsec a₀ g * muZ k r μsec (zetaL k r z z' (Fin.last r) g)) *ᵥ z' = g *ᵥ z'`. Establish `hμz : muZ k r μsec (zetaL k r z z' (Fin.last r) g) *ᵥ z' = u1 k r z z' μsec g - (zetaL k r z z' (Fin.last r) g / (Tz k r z : ℂ)) • z` using `(add_sub_cancel_right _ _).symm`. Establish `hu2z : u2 k r z z' a₀ g - (zetaL k r z z' (Fin.last r) g / (Tz k r z : ℂ)) • z = (a₀⁻¹ * g) *ᵥ z'` using `add_sub_cancel_right _ _`. Unfold `af`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hμz, Matrix.mulVec_sub, Matrix.mulVec_smul, hTu, hTz, hu2z, Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv_cancel_left _ _ hd0]`. Use `⟨⟨hafU, hafe, hafz⟩, ⟨mul_mem_UH_of_mem_of_mem hYU hg'.1, fun a => ⟨?_, ?_⟩, ?_⟩, ?_⟩` and prove the remaining obligations. Unfold `bf`. Rewrite using `[← Matrix.mulVec_mulVec, (hg'.2 a a.isLt).1, hYfix _ (hXe a).1]`. Unfold `bf`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Matrix.mulVec_mulVec, (hg'.2 a a.isLt).2, hYfix _ (hXe a).2]`. Use `show (Hpk k r * (af k r z z' μsec a₀ g * muZ k r μsec (zetaL k r z z' (Fin.last r) g))ᴴ * Hpk k r * g) *ᵥ z' = z'`. Rewrite using `[← Matrix.mulVec_mulVec, ← hgz, Matrix.mulVec_mulVec, hXi.1, Matrix.one_mulVec]`. Unfold `bf`. Rewrite using `[← Matrix.mul_assoc, hXi.2, Matrix.one_mul]`.
+A detailed English derivation is pending.
 -/
 theorem pt (hz : inWb k r z) (hz' : inWb k r z') (hT : 0 < Tz k r z) (hsec : IsSection k r z z' μsec)
     {a₀ : Q.Mx k r} (ha₀ : a₀ ∈ UWset k r z) {g : Q.Mx k r} (hg : g ∈ Glev k r (Fin.last r))
@@ -653,41 +647,35 @@ theorem pt (hz : inWb k r z) (hz' : inWb k r z') (hT : 0 < Tz k r z) (hsec : IsS
 end Main
 
 /- English proof (translation)
-Introduce `k r z z' μsec _hk hz hz' hT _hT' hsec g₀ hg₀ hG₀`. Establish `hH` using `GBasic.Hpk_herm k r`. Establish `hTc : ((Tz k r z : ℝ) : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 hT.ne'`. Establish `hζ : ContDiffOn ℝ ∞ (fun g : Q.Mx k r => zetaL k r z z' (Fin.last r) g) Set.univ`. Establish `e : (fun g : Q.Mx k r => zetaL k r z z' (Fin.last r) g) = fun g => herm (Hpk k r) (g *ᵥ z') z`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `fun g => NFRadRedA.zeta_eq g`. Rewrite using `[e]`. Conclude with `cd_herm _ (cdv_mulVec (F := fun g : Q.Mx k r => g) contDiffOn_id z') contDiffOn_const`. Establish `hGs : ContDiffOn ℝ ∞ (fun g : Q.Mx k r => GGl k r z z' g) Set.univ` using `(cd_normSq.comp_contDiffOn hζ).sub contDiffOn_const`. Establish `hWo : IsOpen {g : Q.Mx k r | 0 < GGl k r z z' g}` using `isOpen_lt continuous_const (continuousOn_univ.1 hGs.continuousOn)`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hμs : ContDiffOn ℝ ∞ (fun g : Q.Mx k r => muZ k r μsec (zetaL k r z z' (Fin.last r) g)) {g : Q.Mx k r | 0 < GGl k r z z' g}`. Use `cdm_iff.2 fun i j => ?_` and prove the remaining obligations. Simplify using `only [muZ, B2.embWb]`. Use `split_ifs`. Conclude with `(hsec.1 _ _).comp (hζ.mono (Set.subset_univ _)) (by intro g hg; exact zeta_lt hg)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Conclude with `contDiffOn_const`. Conclude with `contDiffOn_const`. Establish `hcs : ContDiffOn ℝ ∞ (fun g : Q.Mx k r => zetaL k r z z' (Fin.last r) g / (Tz k r z : ℂ)) {g : Q.Mx k r | 0 < GGl k r z z' g}` using `cd_div (hζ.mono (Set.subset_univ _)) contDiffOn_const fun _ _ => hTc`. Establish `hu1s : ContDiffOn ℝ ∞ (fun g : Q.Mx k r => u1 k r z z' μsec g) {g : Q.Mx k r | 0 < GGl k r z z' g}`. Unfold `u1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Conclude with `(cdv_mulVec hμs z').add (cdv_smul hcs contDiffOn_const)`. Establish `hu2s : ∀ a₀ : Q.Mx k r, ContDiffOn ℝ ∞ (fun g : Q.Mx k r => u2 k r z z' a₀ g) {g : Q.Mx k r | 0 < GGl k r z z' g}`. Introduce `a₀`. Unfold `u2`. Conclude with `(cdv_mulVec (cdm_mul (F := fun _ => a₀⁻¹) (G := fun g => g) contDiffOn_const contDiffOn_id) z').add (cdv_smul hcs contDiffOn_const)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hqs : ContDiffOn ℝ ∞ (fun g : Q.Mx k r => qf k r z z' g) Set.univ`. Unfold `qf`. Conclude with `((cd_normSq.comp_contDiffOn hζ).sub contDiffOn_const).div_const _`. Take `⟨h1q, h1z, h1w⟩` from `first_section_hermitian_facts hz hz' hT hsec hG₀`. Establish `hq₀` using `qf_pos hT hG₀`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hqc : ((qf k r z z' g₀ : ℝ) : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 hq₀.ne'`. Establish `hone : (1 : Q.Mx k r) ∈ UWset k r z` using `⟨by show (1 : Q.Mx k r)ᴴ * Hpk k r * 1 = Hpk k r; simp, fun a => ⟨Matrix.one_mulVec _, Matrix.one_mulVec _⟩, Matrix.one_mulVec _⟩`. Establish `hmI : ∀ a : Fin r, ¬ TwoByOneBlock.mid k r (eI k r a)` using `fun a h => absurd h.1 (by show ¬ r ≤ a.val; omega)`. Establish `hmS : ∀ a : Fin r, ¬ TwoByOneBlock.mid k r (esI k r a)` using `fun a h => absurd h.2 (by show ¬ 2 * r + k - a.val ≤ r + k; omega)`. Choose the witnesses or unpack the hypotheses as in `⟨a₀, ha₀, hne⟩ : ∃ a₀ ∈ UWset k r z, herm (Hpk k r) (u1 k r z z' μsec g₀) (u2 k r z z' a₀ g₀) ≠ 0 := by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Distinguish the cases in `h0 : herm (Hpk k r) (u1 k r z z' μsec g₀) (u2 k r z z' 1 g₀) = 0`. Take `⟨h2q, h2z, h2w⟩` from `second_section_hermitian_facts hz hz' hT hone hg₀`. Establish `h21 : herm (Hpk k r) (u2 k r z z' 1 g₀) (u1 k r z z' μsec g₀) = 0`. Rewrite using `[TwoByOneBlock.herm_symm (Hpk k r) hH, h0, star_zero]`. Establish `hsq : star ((qf k r z z' g₀ : ℝ) : ℂ) = qf k r z z' g₀` using `Complex.conj_ofReal _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result.
 
-Establish `hdd : herm (Hpk k r) (u1 k r z z' μsec g₀ + (-1 : ℂ) • u2 k r z z' 1 g₀) (u1 k r z z' μsec g₀ + (-1 : ℂ) • u2 k r z z' 1 g₀) = 2 * ((qf k r z z' g₀ : ℝ) : ℂ)`. Rewrite using `[TwoByOneBlock.herm_add_left, TwoByOneBlock.herm_add_right, TwoByOneBlock.herm_add_right, TwoByOneBlock.herm_smul_left, TwoByOneBlock.herm_smul_left, TwoByOneBlock.herm_smul_right, TwoByOneBlock.herm_smul_right, h1q, h2q, h0, h21, star_neg, star_one]`. Expand and normalize the polynomial expressions, which then agree. Establish `hcond : -1 / ((qf k r z z' g₀ : ℝ) : ℂ) + star (-1 / ((qf k r z z' g₀ : ℝ) : ℂ)) + -1 / ((qf k r z z' g₀ : ℝ) : ℂ) * star (-1 / ((qf k r z z' g₀ : ℝ) : ℂ)) * herm (Hpk k r) (u1 k r z z' μsec g₀ + (-1 : ℂ) • u2 k r z z' 1 g₀) (u1 k r z z' μsec g₀ + (-1 : ℂ) • u2 k r z z' 1 g₀) = 0`. Rewrite using `[star_div₀, star_neg, star_one, hsq, hdd]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Take `⟨R, hRdef⟩ : ∃ R : Q.Mx k r, R = TwoByOneBlock.qrefl (Hpk k r) (u1 k r z z' μsec g₀ + (-1 : ℂ) • u2 k r z z' 1 g₀) (-1 / ((qf k r z z' g₀ : ℝ) : ℂ))` from `⟨_, rfl⟩`. Establish `hRmem : R ∈ UH (Hpk k r)`. Rewrite using `[hRdef]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Conclude with `TwoByOneBlock.qrefl_mem _ hH _ _ hcond`. Establish `hRfix : ∀ x, herm (Hpk k r) x (u1 k r z z' μsec g₀ + (-1 : ℂ) • u2 k r z z' 1 g₀) = 0 → R *ᵥ x = x`. Introduce `x hx`. Rewrite using `[hRdef, TwoByOneBlock.qrefl_mulVec, hx, mul_zero, zero_smul, add_zero]`. Establish `hdW : inWb k r (u1 k r z z' μsec g₀ + (-1 : ℂ) • u2 k r z z' 1 g₀)` using `inWb_add h1w (inWb_smul _ h2w)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hzd : herm (Hpk k r) z (u1 k r z z' μsec g₀ + (-1 : ℂ) • u2 k r z z' 1 g₀) = 0`. Rewrite using `[TwoByOneBlock.herm_add_right, TwoByOneBlock.herm_smul_right, h1z, h2z]`. Expand and normalize the polynomial expressions, which then agree. Establish `hR : R ∈ UWset k r z` using `⟨hRmem, fun a => ⟨hRfix _ (herm_out hdW (hmI a)), hRfix _ (herm_out hdW (hmS a))⟩, hRfix _ hzd⟩`. Establish `hv1d : herm (Hpk k r) (u1 k r z z' μsec g₀) (u1 k r z z' μsec g₀ + (-1 : ℂ) • u2 k r z z' 1 g₀) = ((qf k r z z' g₀ : ℝ) : ℂ)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[TwoByOneBlock.herm_add_right, TwoByOneBlock.herm_smul_right, h1q, h0]`. Expand and normalize the polynomial expressions, which then agree. Establish `hRv1 : R *ᵥ u1 k r z z' μsec g₀ = u2 k r z z' 1 g₀`. Rewrite using `[hRdef, TwoByOneBlock.qrefl_mulVec, hv1d, div_mul_cancel₀ _ hqc]`. Use extensionality with `i`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hdR : IsUnit R.det` using `Matrix.isUnit_det_of_left_inverse (hpk_conjTranspose_hpk_mul_eq_one_of_mem_uh hRmem).1`. Establish `hRi : R⁻¹ *ᵥ u2 k r z z' 1 g₀ = u1 k r z z' μsec g₀` using `inv_fix hdR hRv1`. Establish `hRz : R⁻¹ *ᵥ z = z` using `inv_fix hdR (hRfix z hzd)`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hu2R : u2 k r z z' R g₀ = R⁻¹ *ᵥ u2 k r z z' 1 g₀`. Unfold `u2`. Rewrite using `[Matrix.mulVec_add, Matrix.mulVec_smul, hRz, inv_one, Matrix.one_mul, Matrix.mulVec_mulVec]`. Use `⟨R, hR, ?_⟩` and prove the remaining obligations. Rewrite using `[hu2R, hRi, h1q]`.
-
-Conclude with `hqc`. Conclude with `⟨1, hone, h0⟩`. Establish `hfc : ContinuousOn (fun g : Q.Mx k r => herm (Hpk k r) (u1 k r z z' μsec g) (u2 k r z z' a₀ g)) {g : Q.Mx k r | 0 < GGl k r z z' g}` using `(cd_herm (n := ∞) _ hu1s (hu2s a₀)).continuousOn`. Establish `haS : ContDiffOn ℝ ∞ (fun g : Q.Mx k r => af k r z z' μsec a₀ g) ({g : Q.Mx k r | 0 < GGl k r z z' g} ∩ (fun g : Q.Mx k r => herm (Hpk k r) (u1 k r z z' μsec g) (u2 k r z z' a₀ g)) ⁻¹' {0}ᶜ)`. Unfold `af`.
-
-Conclude with `cdm_mul (F := fun _ => a₀) contDiffOn_const (cdm_tmat _ (hu1s.mono fun x hx => hx.1) ((hu2s a₀).mono fun x hx => hx.1) (hqs.mono (Set.subset_univ _)) (fun g hg => hg.2) (fun g hg => qf_pos hT hg.1))`. Establish `hbS : ContDiffOn ℝ ∞ (fun g : Q.Mx k r => bf k r z z' μsec a₀ g) ({g : Q.Mx k r | 0 < GGl k r z z' g} ∩ (fun g : Q.Mx k r => herm (Hpk k r) (u1 k r z z' μsec g) (u2 k r z z' a₀ g)) ⁻¹' {0}ᶜ)`. Unfold `bf`. Conclude with `cdm_mul (cdm_mul (cdm_mul contDiffOn_const (cdm_conjT (cdm_mul haS (hμs.mono fun x hx => hx.1)))) contDiffOn_const) (G := fun g => g) contDiffOn_id`. Use `⟨{g : Q.Mx k r | 0 < GGl k r z z' g} ∩ (fun g : Q.Mx k r => herm (Hpk k r) (u1 k r z z' μsec g) (u2 k r z z' a₀ g)) ⁻¹' {0}ᶜ, hfc.isOpen_inter_preimage hWo isOpen_compl_singleton, ⟨hG₀, hne⟩, fun g => af k r z z' μsec a₀ g, fun g => bf k r z z' μsec a₀ g, haS, hbS, ?_⟩` and prove the remaining obligations.
-
-Introduce `g hg hgl hG`. Conclude with `pt hz hz' hT hsec ha₀ hgl hG hg.2`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem locSec : NFRadRedS.LocSec := by
   intro k r z z' μsec _hk hz hz' hT _hT' hsec g₀ hg₀ hG₀
@@ -806,7 +794,7 @@ end Formalism.FourierDecayAlt.P.NFRadRedLocSec
 namespace Formalism.FourierDecayAlt.P
 
 /- English proof (translation)
-Conclude with `NFRadRedLocSec.locSec`.
+A detailed English derivation is pending.
 -/
 theorem local_smooth_section : NFRadRedS.LocSec := by
   exact NFRadRedLocSec.locSec

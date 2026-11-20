@@ -4,9 +4,9 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.T
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hk : LinearMap.ker (Matrix.toLin' Q) = ⊥`. Rewrite using `[LinearMap.ker_eq_bot]`. Introduce `x y hxy`. Apply `h` to reduce the goal to its premises. Simplify `hxy` using `[Matrix.toLin'_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts.
 
-Take `⟨g, hg⟩` from `LinearMap.exists_leftInverse_of_injective _ hk`. Use `⟨LinearMap.toMatrix' g, ?_⟩` and prove the remaining obligations. Use `congrArg LinearMap.toMatrix' hg` as an intermediate fact. Rewrite `this` using `[LinearMap.toMatrix'_comp, LinearMap.toMatrix'_toLin', LinearMap.toMatrix'_id]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem matrix_exists_left_inverse_of_field {K : Type} [Field K] {m n : ℕ}
     (Q : Matrix (Fin m) (Fin n) K) (h : Function.Injective Q.mulVec) :
@@ -22,17 +22,15 @@ theorem matrix_exists_left_inverse_of_field {K : Type} [Field K] {m n : ℕ}
   rwa [LinearMap.toMatrix'_comp, LinearMap.toMatrix'_toLin', LinearMap.toMatrix'_id] at this
 
 /- English proof (translation)
-Set `I : Ideal R` to `{ carrier := {r | ∃ L : Matrix (Fin n) (Fin m) R, L * Q = r • (1 : Matrix (Fin n) (Fin n) R)} add_mem' := by`. Introduce and unpack `a b ⟨L, hL⟩ ⟨L', hL'⟩`. Conclude with `⟨L + L', by rw [Matrix.add_mul, hL, hL', add_smul]⟩`. Use the proof step `zero_mem' := ⟨0, by simp⟩`. Use the proof step `smul_mem' := by`.
+Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `c a ⟨L, hL⟩`. Conclude with `⟨c • L, by rw [Matrix.smul_mul, hL, smul_smul, smul_eq_mul]⟩ }`. Establish `hI : I = ⊤`. Assume the negation of the conclusion as `hne`. Take `⟨p, hp, hIp⟩` from `Ideal.exists_le_maximal I hne`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Extract witnesses or component facts from the available result.
 
-Use `letI : Field (R ⧸ p) := Ideal.Quotient.field p`. Take `⟨Lb, hLb⟩` from `matrix_exists_left_inverse_of_field _ (h (R ⧸ p) (Ideal.Quotient.mk p))`. Use `choose s hs using Ideal.Quotient.mk_surjective (I := p)`. Set `L : Matrix (Fin n) (Fin m) R` to `Lb.map s`. Establish `hL : L.map (Ideal.Quotient.mk p) = Lb`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use extensionality with `i j`. Simplify using `[L, hs]`. Establish `hdet : Ideal.Quotient.mk p (L * Q).det = 1`. Rewrite using `[RingHom.map_det, RingHom.mapMatrix_apply, Matrix.map_mul, hL, hLb, Matrix.det_one]`. Establish `hmem : (L * Q).det ∈ I` using `⟨(L * Q).adjugate * L, by rw [Matrix.mul_assoc, Matrix.adjugate_mul]⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h0` using `Ideal.Quotient.eq_zero_iff_mem.2 (hIp hmem)`. Rewrite `h0` using `[hdet]`. Conclude with `one_ne_zero h0`. Establish `h1 : (1 : R) ∈ I` using `by rw [hI]; trivial`. Take `⟨L, hL⟩` from `h1`.
-
-Conclude with `⟨L, by rw [hL, one_smul]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem matrix_exists_left_inverse_of_forall_field (R : Type) [CommRing R] (m n : ℕ)
     (Q : Matrix (Fin m) (Fin n) R)

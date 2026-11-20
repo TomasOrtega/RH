@@ -21,7 +21,7 @@ def blk (e : Option (Fin P' ⊕ Fin Q') ≃ (Fin P ⊕ Fin Q))
     fun a => (e.symm l).elim 0 fun b => m a b
 
 /- English proof (translation)
-Use extensionality with `i l`. Simplify using `using h (e.symm i) (e.symm l)`.
+By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem ext_e (e : Option (Fin P' ⊕ Fin Q') ≃ (Fin P ⊕ Fin Q))
     {u v : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ} (h : ∀ x y, u (e x) (e y) = v (e x) (e y)) :
@@ -30,7 +30,7 @@ theorem ext_e (e : Option (Fin P' ⊕ Fin Q') ≃ (Fin P ⊕ Fin Q))
   simpa using h (e.symm i) (e.symm l)
 
 /- English proof (translation)
-Use `ext_e e fun x y => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply, ← e.sum_comp, Fintype.sum_option]`. Apply the tactic sequence `rcases x with _ | x <;> rcases y with _ | y <;> simp [blk, Matrix.mul_apply, -Fintype.sum_sum_type]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem blk_mul (e : Option (Fin P' ⊕ Fin Q') ≃ (Fin P ⊕ Fin Q))
     (m n : Matrix (Fin P' ⊕ Fin Q') (Fin P' ⊕ Fin Q') ℂ) : blk e (m * n) = blk e m * blk e n := by
@@ -42,7 +42,7 @@ open MeasureTheory Matrix Filter Topology in
 open scoped ENNReal NNReal in
 variable {P Q P' Q' : ℕ} in
 /- English proof (translation)
-Unfold `_root_.Formalism.UG.Jpq _root_.GlobalTheory.CompactDualQuot.sg`. Use extensionality with `i k`. Apply the tactic sequence `rcases i with i | i <;> rcases k with k | k <;>`. Apply the tactic sequence `simp [Matrix.fromBlocks, Matrix.diagonal, Matrix.one_apply] <;> split_ifs <;> simp`.
+Replace the relevant objects with their definitions. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private lemma Jpq_eq_diagonal_sg (P Q : ℕ) :
     _root_.Formalism.UG.Jpq P Q = diagonal fun i => (_root_.GlobalTheory.CompactDualQuot.sg i : ℂ) := by
@@ -55,7 +55,7 @@ open MeasureTheory Matrix Filter Topology in
 open scoped ENNReal NNReal in
 variable {P Q P' Q' : ℕ} in
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply]`. Use `congr 1`. Use extensionality with `k`. Rewrite using `[Matrix.mul_diagonal, conjTranspose_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 private lemma conjTranspose_mul_diagonal_mul_apply {ι : Type*} [Fintype ι] [DecidableEq ι]
     (u : Matrix ι ι ℂ) (d : ι → ℂ) (a b : ι) :
@@ -71,7 +71,7 @@ variable {P Q P' Q' : ℕ} in
 variable (e : Option (Fin P' ⊕ Fin Q') ≃ (Fin P ⊕ Fin Q))
   (m : Matrix (Fin P' ⊕ Fin Q') (Fin P' ⊕ Fin Q') ℂ) in
 /- English proof (translation)
-Rewrite using `[← e.sum_comp, Fintype.sum_option]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private lemma sum_eq_none_add_sum_some {M : Type*} [AddCommMonoid M] (f : Fin P ⊕ Fin Q → M) :
     ∑ i, f i = f (e none) + ∑ a, f (e (some a)) := by
@@ -83,7 +83,7 @@ variable {P Q P' Q' : ℕ} in
 variable (e : Option (Fin P' ⊕ Fin Q') ≃ (Fin P ⊕ Fin Q))
   (m : Matrix (Fin P' ⊕ Fin Q') (Fin P' ⊕ Fin Q') ℂ) in
 /- English proof (translation)
-Simplify using `[_root_.GlobalTheory.BlockEmbedding.blk]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma blk_none_none : _root_.GlobalTheory.BlockEmbedding.blk e m (e none) (e none) = 1 := by
   simp [_root_.GlobalTheory.BlockEmbedding.blk]
@@ -94,7 +94,7 @@ variable {P Q P' Q' : ℕ} in
 variable (e : Option (Fin P' ⊕ Fin Q') ≃ (Fin P ⊕ Fin Q))
   (m : Matrix (Fin P' ⊕ Fin Q') (Fin P' ⊕ Fin Q') ℂ) in
 /- English proof (translation)
-Simplify using `[_root_.GlobalTheory.BlockEmbedding.blk]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma blk_some_none (a : Fin P' ⊕ Fin Q') :
     _root_.GlobalTheory.BlockEmbedding.blk e m (e (some a)) (e none) = 0 := by
@@ -106,7 +106,7 @@ variable {P Q P' Q' : ℕ} in
 variable (e : Option (Fin P' ⊕ Fin Q') ≃ (Fin P ⊕ Fin Q))
   (m : Matrix (Fin P' ⊕ Fin Q') (Fin P' ⊕ Fin Q') ℂ) in
 /- English proof (translation)
-Simplify using `[_root_.GlobalTheory.BlockEmbedding.blk]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma blk_none_some (b : Fin P' ⊕ Fin Q') :
     _root_.GlobalTheory.BlockEmbedding.blk e m (e none) (e (some b)) = 0 := by
@@ -118,7 +118,7 @@ variable {P Q P' Q' : ℕ} in
 variable (e : Option (Fin P' ⊕ Fin Q') ≃ (Fin P ⊕ Fin Q))
   (m : Matrix (Fin P' ⊕ Fin Q') (Fin P' ⊕ Fin Q') ℂ) in
 /- English proof (translation)
-Simplify using `[_root_.GlobalTheory.BlockEmbedding.blk]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma blk_some_some (a b : Fin P' ⊕ Fin Q') :
     _root_.GlobalTheory.BlockEmbedding.blk e m (e (some a)) (e (some b)) = m a b := by
@@ -128,11 +128,11 @@ open MeasureTheory Matrix Filter Topology in
 open scoped ENNReal NNReal in
 variable {P Q P' Q' : ℕ} in
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.CompactDualQuot.SignCompat at hs`. Rewrite `hm`, the goal using `[Jpq_eq_diagonal_sg]`. Use extensionality with `i k`. Take `⟨o, rfl⟩` from `e.surjective i`. Take `⟨o', rfl⟩` from `e.surjective k`.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[conjTranspose_mul_diagonal_mul_apply, sum_eq_none_add_sum_some e]`. Apply the tactic sequence `rcases o with _ | a <;> rcases o' with _ | b`. Simplify using `[blk_none_none, blk_some_none]`. Simplify using `[blk_none_none, blk_some_none, blk_none_some]`. Simplify using `[blk_none_some, blk_some_none]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `congrFun₂ hm a b` as an intermediate fact. Rewrite `this` using `[conjTranspose_mul_diagonal_mul_apply]`. Simplify using `only [blk_none_some, blk_some_some, hs, star_zero, zero_mul, zero_add]`. Rewrite using `[this]`. Simplify using `[Matrix.diagonal_apply, hs]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private lemma blk_preserves_Jpq (e : Option (Fin P' ⊕ Fin Q') ≃ (Fin P ⊕ Fin Q))
     (hs : _root_.GlobalTheory.CompactDualQuot.SignCompat e) (m : Matrix (Fin P' ⊕ Fin Q') (Fin P' ⊕ Fin Q') ℂ)
@@ -159,7 +159,7 @@ open MeasureTheory Matrix Filter Topology in
 open scoped ENNReal NNReal in
 variable {P Q P' Q' : ℕ} in
 /- English proof (translation)
-Use extensionality with `i k`. Take `⟨o, rfl⟩` from `e.surjective i`. Take `⟨o', rfl⟩` from `e.surjective k`. Apply the tactic sequence `rcases o with _ | a <;> rcases o' with _ | b <;>`. Simplify using `[blk_none_none, blk_none_some, blk_some_none, blk_some_some, Matrix.one_apply]`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 private lemma blk_one_global_interpolation (e : Option (Fin P' ⊕ Fin Q') ≃ (Fin P ⊕ Fin Q)) :
     _root_.GlobalTheory.BlockEmbedding.blk e 1 = 1 := by
@@ -174,9 +174,9 @@ open MeasureTheory Matrix Filter Topology in
 open scoped ENNReal NNReal in
 variable {P Q P' Q' : ℕ} in
 /- English proof (translation)
-Use extensionality with `i k`. Take `⟨o, rfl⟩` from `e.surjective i`. Take `⟨o', rfl⟩` from `e.surjective k`. Rewrite using `[Matrix.mul_apply, sum_eq_none_add_sum_some e]`. Apply the tactic sequence `rcases o with _ | a <;> rcases o' with _ | b <;>`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `[blk_none_none, blk_none_some, blk_some_none, blk_some_some, Matrix.mul_apply]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma blk_mul_global_interpolation (e : Option (Fin P' ⊕ Fin Q') ≃ (Fin P ⊕ Fin Q))
     (m n : Matrix (Fin P' ⊕ Fin Q') (Fin P' ⊕ Fin Q') ℂ) :
@@ -195,45 +195,41 @@ open scoped ENNReal NNReal in
 variable {P Q P' Q' : ℕ} in
 
 /- English proof (translation)
-Introduce `P Q P' Q' e hs`. Establish `hmatCE` using `_root_.GlobalTheory.UpqTopology.isClosedEmbedding_mat (P := P) (Q := Q)`. Establish `hmat_inj : Function.Injective (_root_.Formalism.BasicNotions.UpqT.mat (P` using `P) (Q := Q)) := hmatCE.injective`. Establish `hrange : ∀ g : _root_.Formalism.BasicNotions.UpqT P' Q', _root_.GlobalTheory.BlockEmbedding.blk e g.mat ∈ Set.range _root_.Formalism.BasicNotions.UpqT.mat`. Introduce `g`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hg : g.mat ∈ Set.range _root_.Formalism.BasicNotions.UpqT.mat` using `⟨g, rfl⟩`. Rewrite `hg`, the goal using `[_root_.GlobalTheory.UpqTopology.range_mat]`. Conclude with `blk_preserves_Jpq e hs _ hg`. Set `j : _root_.Formalism.BasicNotions.UpqT P' Q' →* _root_.Formalism.BasicNotions.UpqT P Q` to `{ toFun := fun g => (hrange g).choose map_one' := by`. Apply `hmat_inj` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(hrange 1).choose_spec]`. Conclude with `(congrArg _ rfl).trans ((blk_one_global_interpolation e).trans rfl)`. Use the proof step `map_mul' := fun g h => by`. Apply `hmat_inj` to reduce the goal to its premises. Rewrite using `[(hrange (g * h)).choose_spec]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the hypotheses and the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `_root_.GlobalTheory.BlockEmbedding.blk e (g.mat * h.mat) = (hrange g).choose.mat * (hrange h).choose.mat`. Rewrite using `[(hrange g).choose_spec, (hrange h).choose_spec, blk_mul_global_interpolation] }`. Establish `hj : ∀ g, (j g).mat = _root_.GlobalTheory.BlockEmbedding.blk e g.mat` using `fun g => (hrange g).choose_spec`. Use `⟨j, ?_, ?_, ?_⟩` and prove the remaining obligations. Unfold `_root_.GlobalTheory.CompactDualQuot.IsBlockEmb`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Introduce `g`. Rewrite using `[hj]`. Conclude with `⟨blk_none_none e _, fun b => blk_none_some e _ b, fun a => blk_some_none e _ a, fun a b => blk_some_some e _ a b⟩`. Establish `hcomp : _root_.Formalism.BasicNotions.UpqT.mat ∘ ⇑j = _root_.GlobalTheory.BlockEmbedding.blk e ∘ _root_.Formalism.BasicNotions.UpqT.mat` using `funext hj`. Establish `hblkCE : IsClosedEmbedding (_root_.GlobalTheory.BlockEmbedding.blk e)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `Function.LeftInverse.isClosedEmbedding (f := fun M : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ => fun a b => M (e (some a)) (e (some b))) ?_ ?_ ?_` and prove the remaining obligations. Introduce `m`. Use function extensionality and compare the values at `a b`. Conclude with `blk_some_some e m a b`. Use `fun_prop`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use `continuous_pi fun i => continuous_pi fun l => ?_` and prove the remaining obligations. Simplify using `only [_root_.GlobalTheory.BlockEmbedding.blk, Matrix.of_apply]`. Apply the tactic sequence `rcases e.symm i with _ | a <;> rcases e.symm l with _ | b <;> simp only [Option.elim] <;> fun_prop`. Rewrite using `[← IsClosedEmbedding.of_comp_iff hmatCE, hcomp]`. Conclude with `hblkCE.comp _root_.GlobalTheory.UpqTopology.isClosedEmbedding_mat`.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Use extensionality with `g`. Simplify using `only [Set.mem_range, Set.mem_setOf_eq]`. Unfold `_root_.GlobalTheory.IndefiniteRowSideFullHecke.PerpendicularEmbedding.act _root_.GlobalTheory.CompactDualQuot.baseVec`. Rewrite using `[Matrix.mulVec_single_one]`. Prove the components needed by the constructor for the conclusion.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Introduce and unpack `⟨h, rfl⟩`. Use function extensionality and compare the values at `i`. Take `⟨o, rfl⟩` from `e.surjective i`. Rewrite using `[Matrix.col_apply, hj]`. Break down `o with _ | a` into its components or cases.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[blk_none_none]`. Simplify using `[blk_some_none]`. Introduce `hg`. Establish `hcol : ∀ i, g.mat i (e none) = (Pi.single (e none) (1 : ℂ) : Fin P ⊕ Fin Q → ℂ) i` using `fun i => by simpa [Matrix.col_apply] using congrFun hg i`. Establish `hU : g.matᴴ * _root_.Formalism.UG.Jpq P Q * g.mat = _root_.Formalism.UG.Jpq P Q`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hmem : g.mat ∈ Set.range _root_.Formalism.BasicNotions.UpqT.mat` using `⟨g, rfl⟩`. Rewrite `hmem` using `[_root_.GlobalTheory.UpqTopology.range_mat]`. Then use the resulting hypothesis. Rewrite `hU` using `[Jpq_eq_diagonal_sg]`. Establish `hsn : (_root_.GlobalTheory.CompactDualQuot.sg (e none) : ℂ) ≠ 0`. Conclude with `_root_.GlobalTheory.CompactDualQuot.sg_ne_zero _` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Establish `hrow : ∀ l, g.mat (e none) l = (Pi.single (e none) (1 : ℂ) : Fin P ⊕ Fin Q → ℂ) l`. Introduce `l`. Establish `hl` using `congrFun₂ hU (e none) l`. Rewrite `hl` using `[conjTranspose_mul_diagonal_mul_apply, Finset.sum_eq_single (e none)]`. Rewrite `hl` using `[hcol, Pi.single_eq_same, star_one, one_mul, Matrix.diagonal_apply]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hnl : e none = l`. Substitute `hnl` using the available equality. Rewrite `hl` using `[if_pos rfl]`. Rewrite using `[Pi.single_eq_same]`. Conclude with `mul_left_cancel₀ hsn (hl.trans (mul_one _).symm)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite `hl` using `[if_neg hnl]`. Establish `hz : (Pi.single (e none) (1 : ℂ) : Fin P ⊕ Fin Q → ℂ) l = 0` using `by simp [Ne.symm hnl]`. Rewrite using `[hz]`. Conclude with `(mul_eq_zero.mp hl).resolve_left hsn`. Introduce `k _ hk`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hz : (Pi.single (e none) (1 : ℂ) : Fin P ⊕ Fin Q → ℂ) k = 0` using `by simp [hk]`. Rewrite using `[hcol, hz, star_zero, zero_mul, zero_mul]`. Introduce `hn`. Conclude with `absurd (Finset.mem_univ _) hn`. Take `⟨m, hmdef⟩ : ∃ m : Matrix (Fin P' ⊕ Fin Q') (Fin P' ⊕ Fin Q') ℂ, ∀ a b, m a b = g.mat (e (some a)) (e (some b))` from `⟨Matrix.of fun a b => _, fun _ _ => rfl⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hm : mᴴ * _root_.Formalism.UG.Jpq P' Q' * m = _root_.Formalism.UG.Jpq P' Q'`. Rewrite using `[Jpq_eq_diagonal_sg]`. Use extensionality with `a b`. Establish `hab` using `congrFun₂ hU (e (some a)) (e (some b))`. Rewrite `hab` using `[conjTranspose_mul_diagonal_mul_apply, sum_eq_none_add_sum_some e, hrow, hrow]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[conjTranspose_mul_diagonal_mul_apply]`. Establish `hs' : ∀ i, _root_.GlobalTheory.CompactDualQuot.sg (e (some i)) = _root_.GlobalTheory.CompactDualQuot.sg i` using `hs`. Simplify `hab` using `[hmdef, hs', Matrix.diagonal_apply]`. Choose the witnesses or unpack the hypotheses as in `⟨h, hh⟩ : m ∈ Set.range _root_.Formalism.BasicNotions.UpqT.mat := by`. Rewrite using `[_root_.GlobalTheory.UpqTopology.range_mat]`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `hm`. Use `⟨h, hmat_inj ?_⟩` and prove the remaining obligations. Rewrite using `[hj, hh]`. Use extensionality with `i k`. Take `⟨o, rfl⟩` from `e.surjective i`.
-
-Take `⟨o', rfl⟩` from `e.surjective k`. Apply the tactic sequence `rcases o with _ | a <;> rcases o' with _ | b`. Rewrite using `[blk_none_none, hrow]`. Simplify using the standard rewrite rules. Rewrite using `[blk_none_some, hrow]`.
-
-Simplify using the standard rewrite rules. Rewrite using `[blk_some_none, hcol]`. Simplify using the standard rewrite rules. Rewrite using `[blk_some_some, hmdef]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.BlockEmbedding.exists_blockEmb : ∀ (P Q P' Q' : ℕ) (e : Option (Fin P' ⊕ Fin Q') ≃ (Fin P ⊕ Fin Q)),
     _root_.GlobalTheory.CompactDualQuot.SignCompat e → ∃ j : _root_.Formalism.BasicNotions.UpqT P' Q' →* _root_.Formalism.BasicNotions.UpqT P Q, _root_.GlobalTheory.CompactDualQuot.IsBlockEmb e j ∧ Topology.IsClosedEmbedding j ∧

@@ -9,11 +9,11 @@ namespace GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization
 open MvPolynomial
 
 /- English proof (translation)
-Introduce `F _ Ω _ _ N K _ _ ι _ y k₀ e K' _ _ ι' _ y' k₀' e' hm hm' hx β β' hs W W' hW hle hrel hW' hle' hrel' hb`. Take `⟨Q, hQ⟩` from `BundleOfDeg.full F K ι Ω y k₀ N e hm β`. Establish `hQ' : BundleRealises y' k₀' Q β'` using `fun c => (hQ c).trans (hs c)`. Establish `h1` using `hN F K ι Ω y k₀ N e _ rfl hm Q β hQ W hW hle hrel`. Establish `h2` using `hN F K' ι' Ω y' k₀' N e' _ hx hm' Q β' hQ' W' hW' hle' hrel'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : W.comap (rename fun a : Fin (N + 1) => (⟨k₀, e.symm a⟩ : Σ k, ι k)) = W'.comap (rename fun a : Fin (N + 1) => (⟨k₀', e'.symm a⟩ : Σ k, ι' k))`. Use extensionality with `p`. Use `SetLike.ext_iff.mp hb (rename (fun a : Fin (N + 1) => (⟨(), a⟩ : Σ _ : Unit, Fin (N + 1))) p)` as an intermediate fact. Simplify using `only [baseComap, Ideal.mem_comap, rename_rename] at this`. Conclude with `this`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, h2, hc]`.
+A detailed English derivation is pending.
 -/
 theorem ModelCurveNum.proof (hN : CurveNumModel.Statement) : ModelCurveNum.Statement := by
   intro F _ Ω _ _ N K _ _ ι _ y k₀ e K' _ _ ι' _ y' k₀' e' hm hm' hx β β' hs W W' hW hle hrel hW' hle' hrel' hb

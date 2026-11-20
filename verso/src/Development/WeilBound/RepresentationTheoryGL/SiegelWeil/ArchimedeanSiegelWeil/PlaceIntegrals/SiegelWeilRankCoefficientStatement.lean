@@ -7,7 +7,7 @@ open GlobalTheory.AutomorphicL2Unitary GlobalTheory.AdelicU GlobalTheory.Doublin
 open GlobalTheory.IndefiniteRowSideFullHecke.ModerateGrowthSchwartz (schwartzA)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 /- English proof (citation)
-Apply `GlobalTheory.CompanionTheory.WeilSiegel.Frame.siegel_frame` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FWeilBound%2FRepresentationTheoryGL%2FSiegelWeil%2FArchimedeanSiegelWeil%2FPlaceIntegrals%2FSiegelWeilRankCoefficient.lean&line=16#L16)
 -/

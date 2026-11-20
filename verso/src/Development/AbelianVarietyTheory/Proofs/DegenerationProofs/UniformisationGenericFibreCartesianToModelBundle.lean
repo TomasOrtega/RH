@@ -13,9 +13,9 @@ noncomputable section
 namespace GlobalTheory.Ex.GenericFibre
 
 /- English proof (translation)
-Establish `pt : ∀ x : X₁, g (i x) = x` using `fun x => congrArg (fun q : X₁ ⟶ X₁ => q x) hi`. Establish `le : ∀ p : (PUnit → L₂.ι) × L₁.ι, (L₂.pull (i ≫ f)).U p.1 ⊓ L₁.U p.2 ≤ i ⁻¹ᵁ ((L₂.pull f).U p.1 ⊓ (L₁.pull g).U (fun _ => p.2))` using `fun p y hy => ⟨mem_pull.2 ((mem_pull (F := i ≫ f)).1 hy.1), mem_pull.2 (by rw [pt]; exact hy.2)⟩`. Set `w : LB.Iso L₁ (L₂.pull (i ≫ f))` to `⟨fun p => res (le p) (pullU i _ (w₀.s (p.1, fun _ => p.2)))⟩`. Establish `key : ∀ (Z : Scheme.{0}) (r : Z ⟶ X₁) (z : Z) (j : L₂.ι) (k : L₁.ι), f (i (r z)) ∈ L₂.U j → r z ∈ L₁.U k → gw w r z j k = BoxExpansion.pw w₀ (r ≫ i) z k j`. Introduce `Z r z j k hj hk`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hm : r z ∈ (L₂.pull (i ≫ f)).U (fun _ => j) ⊓ L₁.U k` using `⟨(mem_pull (F := i ≫ f)).2 hj, hk⟩`. Conclude with `(gm_res r z (le (fun _ => j, k)) hm _).trans (gm_pull r i z _ (le (fun _ => j, k) hm) _)`. Use `⟨w, (isGen_iff w).2 fun Z r z j j' k k' hj hj' hk hk' => ?_, key⟩` and prove the remaining obligations. Rewrite using `[key Z r z j k hj hk, key Z r z j' k' hj' hk', BoxExpansion.pw_trans hw (r ≫ i) z (j₁ := k) (j₁' := k') (j₂ := j) (j₂' := j') (by show g (i (r z)) ∈ _; rw [pt]; exact hk) (by show g (i (r z)) ∈ _; rw [pt]; exact hk') hj hj', Category.assoc, Category.assoc, hi, Category.comp_id]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_iso_section {X₁ X₂ Y : Scheme.{0}} {L₁ : LB X₁} {L₂ : LB X₂} {g : Y ⟶ X₁} {f : Y ⟶ X₂} (i : X₁ ⟶ Y)
     (hi : i ≫ g = 𝟙 X₁) (w₀ : LB.Iso (L₁.pull g) (L₂.pull f)) (hw : w₀.IsGen) :
@@ -38,7 +38,7 @@ theorem exists_iso_section {X₁ X₂ Y : Scheme.{0}} {L₁ : LB X₁} {L₂ : L
     Category.assoc, Category.assoc, hi, Category.comp_id]
 
 /- English proof (translation)
-Substitute `e` using the available equality. Conclude with `⟨pullSec L φ ε s h, fun z J hJ => (SectionScalarValuation.sval_pullSec φ ε s h (𝟙 _) z hJ).trans (by rw [Category.id_comp])⟩`.
+Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem exists_pull_sec {X Y Y' : Scheme.{0}} {L : LB X} {K : Type} [Fintype K] {φ : K → (Y ⟶ X)} {ε : K → ℤ}
     (s : LB.Sec (LB.LinComb L φ ε)) (h : Y' ⟶ Y) (φ' : K → (Y' ⟶ X)) (e : φ' = fun k => h ≫ φ k) :
@@ -47,17 +47,15 @@ theorem exists_pull_sec {X Y Y' : Scheme.{0}} {L : LB X} {K : Type} [Fintype K] 
   exact ⟨pullSec L φ ε s h, fun z J hJ => (SectionScalarValuation.sval_pullSec φ ε s h (𝟙 _) z hJ).trans (by rw [Category.id_comp])⟩
 
 /- English proof (translation)
-Introduce `R _ _ I D A G _ _ U`. Take `⟨w₀, hw₀⟩` from `U.ext`. Establish `hi : U.gen.inv.left ≫ U.gen.hom.left = 𝟙 _` using `by rw [← Over.comp_left, U.gen.inv_hom_id, Over.id_left]`. Establish `hi' : U.gen.hom.left ≫ U.gen.inv.left = 𝟙 _` using `by rw [← Over.comp_left, U.gen.hom_inv_id, Over.id_left]`. Take `⟨w, hw, key⟩` from `exists_iso_section U.gen.inv.left hi w₀ hw₀`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `haveI := U.gen_hom`. Use `haveI : IsMonHom U.gen.symm.hom := inferInstanceAs (IsMonHom U.gen.inv)`. Establish `hp₁ : IsGrpPullback A.A ((Over.pullback (jK R)).obj G) (𝟙 _) U.gen.inv.left` using `isGrpPullback_of_iso U.gen.symm`. Establish `hp₂` using `isGrpPullback_pullback G (jK R)`. Establish `hp : IsGrpPullback A.A G (jK R) (U.gen.inv.left ≫ pullback.fst G.hom (jK R))` using `(hp₁.comp hp₂).congr (Category.id_comp _) rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨ρ, hρ, hr⟩` from `exists_rigidificationPullbackCompatibleIso hp hw U.LG.isLB A.isLB (ρ₀ := U.LG.rig) U.LG.rigGen`. Use `⟨w₀, ρ, w, hp, ⟨hw₀, hρ, fun z JA JG hA hG => ?_⟩, hw, hr, fun F _ _ k σ th H => ?_⟩` and prove the remaining obligations. Establish `e₁ : eSec A.A ≫ U.gen.inv.left = eSec ((Over.pullback (jK R)).obj G)` using `(cubeMapOf hp₁).e_comm.trans (Category.id_comp _)`. Establish `e₂ : eSec ((Over.pullback (jK R)).obj G) ≫ pullback.fst G.hom (jK R) = jK R ≫ eSec G` using `(cubeMapOf hp₂).e_comm`. Use `hr _ (𝟙 _) z JG JA hG hA` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `this` using `[Category.id_comp, Category.id_comp, wVal, key _ _ _ _ _ (hG (eSec A.A ≫ _ ≫ _)) (hA _), ← Category.assoc, e₁, e₂]`. Conclude with `this.symm`. Take `⟨σ', hσ⟩` from `exists_pull_sec σ (UnifPre.gFK (G := G) F) (fun _ : Fin 1 => UnifPre.gFK (G := G) F) (funext fun _ => (Category.comp_id _).symm)`. Establish `e : (U.genF F).left ≫ (snd (TFK (R` using `R) F) A.A).left = (snd (TFK (R := R) F) ((Over.pullback (jK R)).obj G)).left ≫ U.gen.hom.left := by`. Rewrite using `[← Over.comp_left, lift_snd, Over.comp_left]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨σ', hσ, fun s hs => ⟨σ', BoxExpansion.isoRel_of_val A.isLB U.LG.isLB e (Category.id_comp _) fun y J₁ J₂ h₁ h₂ => ?_, hs⟩⟩` and prove the remaining obligations. Establish `e' : ((U.genF F).left ≫ (snd (TFK (R` using `R) F) A.A).left) ≫ U.gen.inv.left = (snd (TFK (R := R) F) ((Over.pullback (jK R)).obj G)).left := by`. Rewrite using `[e, Category.assoc, hi', Category.comp_id]`. Use `H _ (U.genF F).left y J₂ J₁ h₂ h₁` as an intermediate fact. Rewrite `this` using `[wVal, key _ _ _ _ _ (h₂ (((U.genF F).left ≫ (snd (TFK (R := R) F) A.A).left) ≫ _ ≫ _)) (h₁ _), ← Category.assoc, ← Category.assoc, e', e, zpow_natCast]`.
-
-Conclude with `(hσ y J₂ h₂).trans this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isoData : ∀ (R : Type) [CommRing R] [IsDomain R] (I : Ideal R) (D : DegData R I) (A : PolAV (Sp (FractionRing R))) (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G] (U : UnifPre I D A G), ∃ (w₀ : W0 U) (ρ : LB.Gen (A.L.pull (eSec A.A))) (w : LB.Iso A.L (U.LG.L.pull (U.gen.inv.left ≫ pullback.fst G.hom (jK R)))), IsGrpPullback A.A G (jK R) (U.gen.inv.left ≫ pullback.fst G.hom (jK R)) ∧ NormW U w₀ ρ ∧ w.IsGen ∧ IsRigidificationPullbackCompatibleIso w (jK R) ρ U.LG.rig ∧ ∀ (F : Type) [Field F] [Algebra (FractionRing R) F] (k : ℕ) (σ : H0 U.LG.L k) (th : SecA A F k), (∀ (Z : Scheme.{0}) (r : Z ⟶ (TFK (R := R) F ⊗ A.A).left) (z : Z) (J) (J'), Good U.LG.L z J → Good A.L z J' → sval σ (r ≫ (snd (TFK (R := R) F) A.A).left ≫ U.gen.inv.left ≫ pullback.fst G.hom (jK R)) z J = (wVal w z J J' (r ≫ (snd (TFK (R := R) F) A.A).left) ^ (k : ℤ)).val * VVRank.sv A.A th r z J') → ∃ σ' : U.SecGF F k, (∀ z J, Good U.LG.L z J → sval σ' (𝟙 _) z J = sval σ (UnifPre.gFK (G := G) F) z J) ∧ ∀ s, U.ExpandsG F k σ' s → U.ExpandsF F k w₀ th s := by
   intro R _ _ I D A G _ _ U

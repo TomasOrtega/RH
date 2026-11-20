@@ -5,15 +5,13 @@ open scoped TensorProduct
 namespace GlobalTheory.TensHead
 
 /- English proof (translation)
-Introduce `N hRN hN hNtop`. Set `s : Set (Submodule ℂ V)` to `{U | R ≤ U ∧ Stab G U ∧ ¬ (↑F : Set V) ⊆ ↑U}`. Establish `hcomp` using `(CompleteLattice.isCompactElement_iff_le_of_directed_sSup_le _ _).1 (Submodule.finset_span_isCompactElement (R := ℂ) F)`. Establish `hNs : N ∈ s` using `⟨hRN, hN, fun h => hNtop (hF N hRN hN h)⟩`. Take `⟨M, hNM, hM⟩` from `zorn_le_nonempty₀ s (by`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Introduce `c hcs hc y hy`. Establish `hne : c.Nonempty` using `⟨y, hy⟩`. Establish `hdir : DirectedOn (· ≤ ·) c` using `hc.directedOn`. Use `⟨sSup c, ⟨le_trans (hcs hy).1 (le_sSup hy), ?_, ?_⟩, fun z hz => le_sSup hz⟩` and prove the remaining obligations. Introduce `g hg x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨U, hU, hxU⟩` from `(Submodule.mem_sSup_of_directed hne hdir).1 hx`. Conclude with `(Submodule.mem_sSup_of_directed hne hdir).2 ⟨U, hU, (hcs hU).2.1 g hg x hxU⟩`. Introduce `hFc`. Establish `hspan : Submodule.span ℂ (↑F : Set V) ≤ sSup c` using `Submodule.span_le.2 hFc`. Take `⟨U, hU, hle⟩` from `hcomp c hne hdir hspan`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(hcs hU).2.2 (Submodule.span_le.1 hle)) N hNs`. Use `⟨M, hNM, hM.prop.2.1, fun h => hM.prop.2.2 (by rw [h]; exact fun _ _ => trivial), ?_⟩` and prove the remaining obligations. Introduce `U hU hMU`. Distinguish the cases in `hFU : (↑F : Set V) ⊆ ↑U`. Conclude with `Or.inr (hF U (le_trans hM.prop.1 hMU) hU hFU)`.
-
-Conclude with `Or.inl (le_antisymm (hM.2 ⟨le_trans hM.prop.1 hMU, hU, hFU⟩ hMU) hMU)`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Prove the second alternative. Prove the first alternative. A detailed English derivation is pending.
 -/
 theorem exists_maximal_stab_of_finset {V : Type} [AddCommGroup V] [Module ℂ V]
     (G : Set (Module.End ℂ V)) (R : Submodule ℂ V) (F : Finset V)

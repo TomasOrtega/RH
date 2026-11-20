@@ -16,33 +16,33 @@ private def emb (e : Fin d ↪o κ) (b : Finset κ) (L : Finset (Fin d)) : Finse
 private def pre (e : Fin d ↪o κ) (s : Finset κ) : Finset (Fin d) := Finset.univ.filter fun j => e j ∈ s
 
 /- English proof (translation)
-Simplify using `[eps, ← mul_pow]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma eps_sq (e : Fin d ↪o κ) (b : Finset κ) (j : Fin d) : eps e b j * eps e b j = 1 := by
   simp [eps, ← mul_pow]
 
 /- English proof (translation)
-Rewrite using `[psi, ← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_eq_one fun j _ => eps_sq e b j`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma psi_sq (e : Fin d ↪o κ) (b : Finset κ) (L : Finset (Fin d)) : psi e b L * psi e b L = 1 := by
   rw [psi, ← Finset.prod_mul_distrib]
   exact Finset.prod_eq_one fun j _ => eps_sq e b j
 
 /- English proof (translation)
-The claim follows from `(Finset.mul_prod_erase L _ h).symm`.
+A detailed English derivation is pending.
 -/
 private lemma psi_erase (e : Fin d ↪o κ) (b : Finset κ) {L : Finset (Fin d)} {j : Fin d} (h : j ∈ L) :
     psi e b L = eps e b j * psi e b (L.erase j) :=
   (Finset.mul_prod_erase L _ h).symm
 
 /- English proof (translation)
-Simplify using `[img]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma mem_img (e : Fin d ↪o κ) (x : κ) : x ∈ img e ↔ ∃ j, e j = x := by
   simp [img]
 
 /- English proof (translation)
-Rewrite using `[Finset.disjoint_left]`. Introduce `x hx hx'`. Take `⟨j, _, rfl⟩` from `Finset.mem_map.1 hx'`. Conclude with `hb j hx`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private lemma disj (e : Fin d ↪o κ) {b : Finset κ} (hb : ∀ j, e j ∉ b) (L : Finset (Fin d)) :
     Disjoint b (L.map e.toEmbedding) := by
@@ -52,11 +52,11 @@ private lemma disj (e : Fin d ↪o κ) {b : Finset κ} (hb : ∀ j, e j ∉ b) (
   exact hb j hx
 
 /- English proof (translation)
-Establish `h1 : (emb e b L).filter (· < e j) = b.filter (· < e j) ∪ (L.filter (· < j)).map e.toEmbedding`. Use extensionality with `x`. Simplify using `only [emb, Finset.mem_filter, Finset.mem_union, Finset.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h | ⟨i, hi, rfl⟩, hlt⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `Or.inl ⟨h, hlt⟩`. Conclude with `Or.inr ⟨i, ⟨hi, e.lt_iff_lt.1 hlt⟩, rfl⟩`. Introduce and unpack `(⟨h, hlt⟩ | ⟨i, ⟨hi, hlt⟩, rfl⟩)`. Conclude with `⟨Or.inl h, hlt⟩`. Conclude with `⟨Or.inr ⟨i, hi, rfl⟩, e.lt_iff_lt.2 hlt⟩`.
+Prove the first alternative. Prove the second alternative. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Establish `h2 : Disjoint (b.filter (· < e j)) ((L.filter (· < j)).map e.toEmbedding)` using `Finset.disjoint_of_subset_left (Finset.filter_subset _ _) (disj e hb _)`. Rewrite using `[GlobalTheory.cubeSign, h1, Finset.card_union_of_disjoint h2, Finset.card_map, pow_add, eps, GlobalTheory.cubeSign]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private lemma sign_emb (e : Fin d ↪o κ) {b : Finset κ} (hb : ∀ j, e j ∉ b) (L : Finset (Fin d)) (j : Fin d) :
     GlobalTheory.cubeSign (emb e b L) (e j) = eps e b j * GlobalTheory.cubeSign L j := by
@@ -75,9 +75,9 @@ private lemma sign_emb (e : Fin d ↪o κ) {b : Finset κ} (hb : ∀ j, e j ∉ 
   rw [GlobalTheory.cubeSign, h1, Finset.card_union_of_disjoint h2, Finset.card_map, pow_add, eps, GlobalTheory.cubeSign]
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `only [emb, Finset.mem_erase, Finset.mem_union, Finset.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hne, h | ⟨i, hi, rfl⟩⟩`. Conclude with `Or.inl h`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Prove the first alternative.
 
-Conclude with `Or.inr ⟨i, ⟨fun h => hne (by simp [h]), hi⟩, rfl⟩`. Introduce and unpack `(h | ⟨i, ⟨hne, hi⟩, rfl⟩)`. Conclude with `⟨fun h' => hb j (h' ▸ h), Or.inl h⟩`. Conclude with `⟨fun h => hne (e.injective h), Or.inr ⟨i, hi, rfl⟩⟩`.
+Prove the second alternative. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 private lemma erase_emb (e : Fin d ↪o κ) {b : Finset κ} (hb : ∀ j, e j ∉ b) (L : Finset (Fin d)) (j : Fin d) :
     (emb e b L).erase (e j) = emb e b (L.erase j) := by
@@ -92,7 +92,7 @@ private lemma erase_emb (e : Fin d ↪o κ) {b : Finset κ} (hb : ∀ j, e j ∉
     · exact ⟨fun h => hne (e.injective h), Or.inr ⟨i, hi, rfl⟩⟩
 
 /- English proof (translation)
-Simplify using `[wd, LinearMap.pi_apply, LinearMap.sum_apply]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma wd_apply' {ι E : Type} [LinearOrder ι] [AddCommGroup E] [Module ℂ E] (w : ι → Module.End ℂ E)
     (c : Finset ι → E) (t : Finset ι) :
@@ -100,13 +100,13 @@ private lemma wd_apply' {ι E : Type} [LinearOrder ι] [AddCommGroup E] [Module 
   simp [wd, LinearMap.pi_apply, LinearMap.sum_apply]
 
 /- English proof (translation)
-Establish `hz : ∑ i ∈ b, (GlobalTheory.cubeSign (emb e b L) i : ℤ) • wOn (img e) w i (f ((emb e b L).erase i)) = 0`. Use `Finset.sum_eq_zero fun i hi => ?_` and prove the remaining obligations. Establish `: i ∉ img e`. Rewrite using `[mem_img]`. Introduce and unpack `⟨j, rfl⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `hb j hi`. Simplify using `[wOn, this]`. Rewrite using `[wd_apply', wd_apply']`. Use `conv_rhs => rw [show ∑ i ∈ emb e b L, (GlobalTheory.cubeSign (emb e b L) i : ℤ) • wOn (img e) w i (f ((emb e b L).erase i)) = ∑ i ∈ b, (GlobalTheory.cubeSign (emb e b L) i : ℤ) • wOn (img e) w i (f ((emb e b L).erase i)) + ∑ i ∈ L.map e.toEmbedding, (GlobalTheory.cubeSign (emb e …`. Rewrite using `[hz, zero_add, Finset.sum_map, Finset.smul_sum]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Finset.sum_congr rfl fun j hj => ?_` and prove the remaining obligations. Establish `hm : e j ∈ img e` using `(mem_img e _).2 ⟨j, rfl⟩`. Simplify using `only [RelEmbedding.coe_toEmbedding, wOn, hm, if_true]`. Rewrite using `[sign_emb e hb, erase_emb e hb, map_zsmul, smul_smul, smul_smul, psi_erase e b hj]`. Use `congr 1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Use `eps_sq e b j` as an intermediate fact. Take the linear combination `(-(psi e b (L.erase j) * GlobalTheory.cubeSign L j)) * this`.
+A detailed English derivation is pending.
 -/
 private lemma key {E : Type} [AddCommGroup E] [Module ℂ E] (w : κ → Module.End ℂ E) (e : Fin d ↪o κ)
     {b : Finset κ} (hb : ∀ j, e j ∉ b) (f : Finset κ → E) (L : Finset (Fin d)) :
@@ -134,11 +134,9 @@ private lemma key {E : Type} [AddCommGroup E] [Module ℂ E] (w : κ → Module.
   linear_combination (-(psi e b (L.erase j) * GlobalTheory.cubeSign L j)) * this
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `only [emb, pre, Finset.mem_union, Finset.mem_sdiff, Finset.mem_map, Finset.mem_filter, Finset.mem_univ, true_and, mem_img, RelEmbedding.coe_toEmbedding]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `(h | ⟨j, hj, rfl⟩)`. Conclude with `h.1`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hj`. Introduce `h`. Distinguish the cases in `hx : ∃ j, e j = x`. Take `⟨j, rfl⟩` from `hx`. Conclude with `Or.inr ⟨j, h, rfl⟩`.
-
-Conclude with `Or.inl ⟨h, hx⟩`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Prove the second alternative. Prove the first alternative. A detailed English derivation is pending.
 -/
 private lemma emb_pre (e : Fin d ↪o κ) (s : Finset κ) : emb e (s \ img e) (pre e s) = s := by
   ext x
@@ -155,15 +153,15 @@ private lemma emb_pre (e : Fin d ↪o κ) (s : Finset κ) : emb e (s \ img e) (p
     · exact Or.inl ⟨h, hx⟩
 
 /- English proof (translation)
-Simplify using `[mem_img]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma sdiff_ok (e : Fin d ↪o κ) (s : Finset κ) (j : Fin d) : e j ∉ s \ img e := by
   simp [mem_img]
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `only [emb, Finset.mem_sdiff, Finset.mem_union, Finset.mem_map, mem_img, RelEmbedding.coe_toEmbedding]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h | ⟨j, _, rfl⟩, hn⟩`. Conclude with `h`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `absurd ⟨j, rfl⟩ hn`. Introduce `h`. Use `⟨Or.inl h, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨j, rfl⟩`. Conclude with `hb j h`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 private lemma sdiff_emb (e : Fin d ↪o κ) {b : Finset κ} (hb : ∀ j, e j ∉ b) (L : Finset (Fin d)) :
     emb e b L \ img e = b := by
@@ -179,9 +177,9 @@ private lemma sdiff_emb (e : Fin d ↪o κ) {b : Finset κ} (hb : ∀ j, e j ∉
     exact hb j h
 
 /- English proof (translation)
-Use extensionality with `j`. Simplify using `only [emb, pre, Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_union, Finset.mem_map, RelEmbedding.coe_toEmbedding]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `(h | ⟨i, hi, h⟩)`. Conclude with `absurd h (hb j)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs and assume any hypotheses. Prove the second alternative.
 
-Conclude with `e.injective h ▸ hi`. Conclude with `fun h => Or.inr ⟨j, h, rfl⟩`.
+A detailed English derivation is pending.
 -/
 private lemma pre_emb (e : Fin d ↪o κ) {b : Finset κ} (hb : ∀ j, e j ∉ b) (L : Finset (Fin d)) :
     pre e (emb e b L) = L := by
@@ -195,16 +193,16 @@ private lemma pre_emb (e : Fin d ↪o κ) {b : Finset κ} (hb : ∀ j, e j ∉ b
   · exact fun h => Or.inr ⟨j, h, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[emb, Finset.card_union_of_disjoint (disj e hb L), Finset.card_map]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private lemma card_emb (e : Fin d ↪o κ) {b : Finset κ} (hb : ∀ j, e j ∉ b) (L : Finset (Fin d)) :
     (emb e b L).card = b.card + L.card := by
   rw [emb, Finset.card_union_of_disjoint (disj e hb L), Finset.card_map]
 
 /- English proof (translation)
-Establish `: emb e b L ∩ img e = L.map e.toEmbedding`. Use extensionality with `x`. Simplify using `only [emb, Finset.mem_inter, Finset.mem_union, Finset.mem_map, mem_img, RelEmbedding.coe_toEmbedding]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h | h, ⟨j, rfl⟩⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `absurd h (hb j)`. Conclude with `h`. Introduce and unpack `⟨j, hj, rfl⟩`. Conclude with `⟨Or.inr ⟨j, hj, rfl⟩, j, rfl⟩`. Rewrite using `[this, Finset.card_map]`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma card_inter (e : Fin d ↪o κ) {b : Finset κ} (hb : ∀ j, e j ∉ b) (L : Finset (Fin d)) :
     (emb e b L ∩ img e).card = L.card := by
@@ -220,7 +218,7 @@ private lemma card_inter (e : Fin d ↪o κ) {b : Finset κ} (hb : ∀ j, e j �
   rw [this, Finset.card_map]
 
 /- English proof (translation)
-Simplify using `[acx, Submodule.mem_pi]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma mem_C {ι E : Type} [LinearOrder ι] [AddCommGroup E] [Module ℂ E] (A : Finset ι → Submodule ℂ E)
     (w : ι → Module.End ℂ E) (n : ℤ) (c : Finset ι → E) :
@@ -231,43 +229,37 @@ end UpperTheory.Gal.productCup_of_system.SubquotientExact
 
 open UpperTheory.Gal.productCup_of_system.SubquotientExact in
 /- English proof (translation)
-Introduce `_ _ S E _ _ _ _ act κ _ _ M r d e hK n m hm c hc hL hz`. Establish `hcs : ∀ s, (s.card : ℤ) ≠ n → c s = 0` using `fun s hs => by`. Use `(mem_C _ _ _ _).1 hc s` as an intermediate fact. Simplify `this` using `[hs]`. Establish `hcM : ∀ s, c s ∈ M` using `fun s => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `(mem_C _ _ _ _).1 hc s` as an intermediate fact. Use `split_ifs at this with h`. Conclude with `this`. Rewrite using `[(Submodule.mem_bot ℂ).1 this]`. Conclude with `M.zero_mem`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Establish `hex : ∀ b : Finset κ, ∃ Y ∈ (kos act M fun j => r (e j)).C (m - 1), (∀ j, e j ∉ b) → wd (fun j => act (r (e j))) Y = fun L => psi e b L • c (emb e b L)`. Introduce `b`. Distinguish the cases in `hb : ∀ j, e j ∉ b`. Establish `hcol : (fun L => psi e b L • c (emb e b L)) ∈ (kos act M fun j => r (e j)).Z m`. Use `⟨(mem_C _ _ _ _).2 fun L => ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Distinguish the cases in `hLm : (L.card : ℤ) = m`. Simplify using `only [hLm, if_true]`. Conclude with `zsmul_mem (hcM _) _`. Establish `: c (emb e b L) = 0` using `hL _ (by rwa [card_inter e hb])`. Simplify using `[this]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `: wd (fun j => act (r (e j))) (fun L => psi e b L • c (emb e b L)) = 0`. Use function extensionality and compare the values at `L`. Rewrite using `[key (fun l => act (r l)) e hb c L, hz]`. Simplify using the standard rewrite rules. Conclude with `this`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨Y, hY, hYd⟩` from `hK m hm hcol`. Conclude with `⟨Y, hY, fun _ => hYd⟩`. Conclude with `⟨0, Submodule.zero_mem _, fun h => absurd h hb⟩`. Use `choose Y hYC hYd using hex`. Establish `hYz : ∀ b L, (L.card : ℤ) ≠ m - 1 → Y b L = 0` using `fun b L hLm => by`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Use `(mem_C _ _ _ _).1 (hYC b) L` as an intermediate fact. Simplify `this` using `[hLm]`. Establish `hYM : ∀ b L, Y b L ∈ M` using `fun b L => by`. Use `(mem_C _ _ _ _).1 (hYC b) L` as an intermediate fact. Use `split_ifs at this with h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this`. Rewrite using `[(Submodule.mem_bot ℂ).1 this]`. Conclude with `M.zero_mem`. Set `y : Finset κ → E` to `fun s => if ((s \ img e).card : ℤ) = n - m then psi e (s \ img e) (pre e s) • Y (s \ img e) (pre e s) else 0`. Establish `hy : ∀ b (hb : ∀ j, e j ∉ b) L, y (emb e b L) = if (b.card : ℤ) = n - m then psi e b L • Y b L else 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `b hb L`. Simplify using `only [y, sdiff_emb e hb, pre_emb e hb]`. Use `⟨y, (mem_C _ _ _ _).2 fun s => ?_, fun s hs => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← emb_pre e s]`. Establish `hb` using `sdiff_ok e s`.
+Move the embeddings inside the algebraic operations. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hy _ hb, card_emb e hb]`. Use `split_ifs with h1 h2 h2`. Conclude with `zsmul_mem (hYM _ _) _`. Conclude with `M.zero_mem`. Establish `: ((pre e s).card : ℤ) ≠ m - 1`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result.
 
-Introduce `h`. Apply `h1` to reduce the goal to its premises. Use `push_cast`. Use linear arithmetic over natural numbers and integers. Simplify using `[hYz _ _ this]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Conclude with `Submodule.zero_mem _`. Rewrite `hs`, the goal using `[← emb_pre e s]`. Establish `hb` using `sdiff_ok e s`. Rewrite `hs` using `[card_inter e hb]`. Rewrite using `[hy _ hb, hYz _ _ hs]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Use function extensionality and compare the values at `s`. Take `⟨b, L, hb, rfl⟩ : ∃ b L, (∀ j, e j ∉ b) ∧ s = emb e b L` from `⟨_, _, sdiff_ok e s, (emb_pre e s).symm⟩`. Establish `hk : wd (fun j => act (r (e j))) (fun L' => psi e b L' • y (emb e b L')) L = psi e b L • wd (wOn (img e) fun l => act (r l)) y (emb e b L)` using `key (fun l => act (r l)) e hb y L`. Establish `hcancel : ∀ (L' : Finset (Fin d)) (v : E), psi e b L' • psi e b L' • v = v` using `fun L' v => by`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[smul_smul, psi_sq, one_smul]`. Distinguish the cases in `hn : (b.card : ℤ) = n - m`. Establish `h1 : (fun L' => psi e b L' • y (emb e b L')) = Y b`. Use function extensionality and compare the values at `L'`. Rewrite using `[hy b hb, if_pos hn, hcancel]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Rewrite `hk` using `[h1, hYd b hb]`. Combine the equalities or inequalities in the displayed calculation. Establish `h1 : (fun L' => psi e b L' • y (emb e b L')) = 0`. Use function extensionality and compare the values at `L'`. Rewrite using `[hy b hb, if_neg hn]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Move the embeddings inside the algebraic operations.
 
-Simplify using the standard rewrite rules. Rewrite `hk` using `[h1, map_zero]`. Establish `h2 : wd (wOn (img e) fun l => act (r l)) y (emb e b L) = 0`. Rewrite using `[← hcancel L (wd (wOn (img e) fun l => act (r l)) y (emb e b L)), ← hk]`. Simplify using the standard rewrite rules.
-
-Rewrite using `[h2]`. Distinguish the cases in `hcard : ((emb e b L).card : ℤ) = n`. Establish `hLm : ¬ (((emb e b L) ∩ img e).card : ℤ) = m`. Rewrite using `[card_inter e hb]`. Rewrite `hcard` using `[card_emb e hb]`.
-
-Introduce `h`. Apply `hn` to reduce the goal to its premises. Move the coercions through the operations in `at hcard`. Use linear arithmetic over natural numbers and integers. Conclude with `(hL _ hLm).symm`.
-
-Conclude with `(hcs _ hcard).symm`.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.productCup_of_system.subQEx_of :
     RS → WdBasic → SubQEx := by

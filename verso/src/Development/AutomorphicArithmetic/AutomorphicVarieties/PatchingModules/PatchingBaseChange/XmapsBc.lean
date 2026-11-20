@@ -5,25 +5,23 @@ open IsLocalRing UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.Pa
 open scoped TensorProduct
 
 /- English proof (translation)
-Introduce `O O' _ _ _ _ R P _ _ _ _ _ _ θ X X0 _ _ _ _ f φ ψ hgen hφ hψ hφψ hψφ`. Use `letI : Module R X0 := Module.compHom X0 θ.toRingHom`. Use `haveI : Module.Finite R X0 := by`. Use `⟨?_⟩` and prove the remaining obligations. Take `⟨s, hs⟩` from `hgen`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨s, ?_⟩` and prove the remaining obligations. Rewrite using `[eq_top_iff]`. Introduce `z _`. Take `⟨c, hc⟩` from `hs z`. Rewrite using `[hc]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.sum_mem _ (fun g hg => ?_)` and prove the remaining obligations. Conclude with `Submodule.smul_mem _ (c g) (Submodule.subset_span hg)`. Take `⟨e, he1, he2⟩` from `BC.til_mod O O' R P θ X0 (fun a m => rfl)`. Set `φL : X0 →ₗ[R] X` to `{ toFun := φ map_add' := φ.map_add map_smul' := fun t z => hφ t z }`. Set `ψL : X →ₗ[R] X0` to `{ toFun := ψ map_add' := ψ.map_add map_smul' := fun t z => hψ t z }`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `A` to `Til O O' R`. Set `Φ` to `LinearMap.baseChange A φL`. Set `Ψ` to `LinearMap.baseChange A ψL`. Establish `hsc : ∀ (M : Type) [AddCommGroup M] [Module R M] (g : M →ₗ[R] M) (r : R), (∀ m, g m = r • m) → ∀ w : A ⊗[R] M, LinearMap.baseChange A g w = Til.ι O O' R r • w`. Introduce `M _ _ g r hg w`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a m`. Rewrite using `[LinearMap.baseChange_tmul, hg, ← Til.algebraMap_eq, ← TensorProduct.smul_tmul, TensorProduct.smul_tmul', smul_eq_mul, Algebra.smul_def]`. Consider the case `add x y hx hy => rw [map_add, hx, hy, smul_add]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `heinv : ∀ (t : A) (z : Til O O' P ⊗[P] X0), e.symm (Til.map O' θ t • z) = t • e.symm z`. Introduce `t z`. Apply `e.injective` to reduce the goal to its premises. Rewrite using `[he2, AddEquiv.apply_symm_apply, AddEquiv.apply_symm_apply]`. Use `⟨Φ.toAddMonoidHom.comp e.symm.toAddMonoidHom, e.toAddMonoidHom.comp Ψ.toAddMonoidHom, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `t z`. Simplify using `only [AddMonoidHom.coe_comp, Function.comp_apply, AddEquiv.coe_toAddMonoidHom, LinearMap.toAddMonoidHom_coe]`. Rewrite using `[heinv, LinearMap.map_smul]`. Introduce `t z`. Simplify using `only [AddMonoidHom.coe_comp, Function.comp_apply, AddEquiv.coe_toAddMonoidHom, LinearMap.toAddMonoidHom_coe]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[LinearMap.map_smul, he2]`. Introduce `z`. Simplify using `only [AddMonoidHom.coe_comp, Function.comp_apply, AddEquiv.coe_toAddMonoidHom, LinearMap.toAddMonoidHom_coe, AddEquiv.symm_apply_apply]`. Use `hsc X (φL ∘ₗ ψL) f (fun m => hφψ m) z` as an intermediate fact. Rewrite `this` using `[LinearMap.baseChange_comp]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `this`. Introduce `z`. Simplify using `only [AddMonoidHom.coe_comp, Function.comp_apply, AddEquiv.coe_toAddMonoidHom, LinearMap.toAddMonoidHom_coe]`. Use `hsc X0 (ψL ∘ₗ φL) f (fun m => hψφ m) (e.symm z)` as an intermediate fact. Rewrite `this` using `[LinearMap.baseChange_comp]`.
-
-Express the relevant statement in the definitionally equal form `e (Ψ (Φ (e.symm z))) = _`. Rewrite using `[show Ψ (Φ (e.symm z)) = Til.ι O O' R f • e.symm z from this, he2, AddEquiv.apply_symm_apply]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pa.BC.xmaps_bc :
     ∀ (O O' : Type) [CommRing O] [CommRing O'] [Algebra O O'] [Module.Finite O O'] (R P : Type) [CommRing R] [Algebra O R] [IsNoetherianRing R] [CommRing P] [Algebra O P] [IsNoetherianRing P] (θ : R →ₐ[O] P) (X X0 : Type) [AddCommGroup X] [Module R X] [AddCommGroup X0] [Module P X0] (f : R) (φ : X0 →+ X) (ψ : X →+ X0), (∃ s : Finset X0, ∀ z, ∃ c : X0 → R, z = ∑ g ∈ s, θ (c g) • g) → (∀ (t : R) z, φ (θ t • z) = t • φ z) → (∀ (t : R) z, ψ (t • z) = θ t • ψ z) → (∀ z, φ (ψ z) = f • z) → (∀ z, ψ (φ z) = θ f • z) → ∃ (φ' : Til O O' P ⊗[P] X0 →+ Til O O' R ⊗[R] X) (ψ' : Til O O' R ⊗[R] X →+ Til O O' P ⊗[P] X0), (∀ t z, φ' (Til.map O' θ t • z) = t • φ' z) ∧ (∀ t z, ψ' (t • z) = Til.map O' θ t • ψ' z) ∧ (∀ z, φ' (ψ' z) = Til.ι O O' R f • z) ∧ ∀ z, ψ' (φ' z) = Til.map O' θ (Til.ι O O' R f) • z := by

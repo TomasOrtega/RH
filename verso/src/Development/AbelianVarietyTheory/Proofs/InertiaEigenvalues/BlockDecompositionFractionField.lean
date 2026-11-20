@@ -3,11 +3,11 @@ import Mathlib
 namespace GlobalTheory
 
 /- English proof (translation)
-Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Take `⟨m, u, rfl⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hd hϖ`. Rewrite using `[continuous_iff_continuousAt]`. Introduce `g₀`. Establish `h1 : Filter.Tendsto (fun g => (u * ϖ ^ m) * f g - (u * ϖ ^ m) * f g₀) (nhds g₀) (nhds 0)` using `tendsto_sub_nhds_zero_iff.mpr (hf.tendsto g₀)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2 : Filter.Tendsto (fun g => f g - f g₀) (nhds g₀) (nhds 0)`. Rewrite `h1`, the goal using `[h.hasBasis_nhds_zero.tendsto_right_iff]`. Introduce `k _`. Use `filter_upwards [h1 (k + m) trivial] with g hg`. Simplify using `only [SetLike.mem_coe, hϖ.maximalIdeal_eq, Ideal.span_singleton_pow, Ideal.mem_span_singleton] at hg ⊢`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hg` using `[← mul_sub, pow_add, mul_assoc, Units.dvd_mul_left, mul_comm (ϖ ^ k)]`. Conclude with `(mul_dvd_mul_iff_left (pow_ne_zero m hϖ.ne_zero)).mp hg`. Conclude with `tendsto_sub_nhds_zero_iff.mp h2`.
+A detailed English derivation is pending.
 -/
 theorem continuous_of_continuous_mul_left_adic {O Γ : Type} [CommRing O] [IsDomain O]
     [IsDiscreteValuationRing O] [TopologicalSpace O] [IsTopologicalRing O]
@@ -30,15 +30,15 @@ theorem continuous_of_continuous_mul_left_adic {O Γ : Type} [CommRing O] [IsDom
   exact tendsto_sub_nhds_zero_iff.mp h2
 
 /- English proof (translation)
-Introduce `O Γ _ _ _ _ _ h _ n r t M P e hM hP`. Use `continuous_matrix fun i j => ?_` and prove the remaining obligations. Set `v : Fin n → FractionRing O` to `e.symm (Pi.single j 1, 0)`. Set `w : Fin n → FractionRing O` to `fun k => (e (Pi.single k 1)).1 i`. Take `⟨b, hb⟩` from `IsLocalization.exist_integer_multiples_of_finite (nonZeroDivisors O) v`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `IsLocalization.exist_integer_multiples_of_finite (nonZeroDivisors O) w`. Use `choose v' hv' using hb`. Use `choose w' hw' using hc`. Establish `hφ : ∀ x : Fin n → FractionRing O, (e x).1 i = ∑ k, x k * w k`. Introduce `x`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `conv_lhs => rw [pi_eq_sum_univ' x]`. Simplify using `[map_sum, Prod.fst_sum, Finset.sum_apply, w]`. Establish `key : ∀ g, ((b : O) * (c : O)) * P g i j = ∑ k, (∑ l, M g k l * v' l) * w' k`. Introduce `g`. Apply `IsFractionRing.injective O (FractionRing O)` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h1` using `congrFun (hP g v) i`. Rewrite `h1` using `[hφ]`. Simplify using `only [v, LinearEquiv.apply_symm_apply, Matrix.mulVec_single_one, Matrix.col_apply, Matrix.map_apply] at h1`. Simplify using `only [map_mul, map_sum, hv', hw', ← h1, Algebra.smul_def, Matrix.mulVec, dotProduct, Matrix.map_apply, Finset.mul_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [v]`. Expand and normalize the polynomial expressions, which then agree. Use `continuous_of_continuous_mul_left_adic h (mul_ne_zero (nonZeroDivisors.coe_ne_zero b) (nonZeroDivisors.coe_ne_zero c)) _ ?_` and prove the remaining obligations. Simplify using `only [key]`. Use `fun_prop`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuous_block_of_continuous_matrix : ∀ {O Γ : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [TopologicalSpace O] [IsTopologicalRing O], IsAdic (IsLocalRing.maximalIdeal O) → ∀ [TopologicalSpace Γ] {n r t : ℕ} (M : Γ → Matrix (Fin n) (Fin n) O) (P : Γ → Matrix (Fin r) (Fin r) O) (e : (Fin n → FractionRing O) ≃ₗ[FractionRing O] ((Fin r → FractionRing O) × (Fin t → FractionRing O))), Continuous M → (∀ g v, (e (((M g).map (algebraMap O (FractionRing O))).mulVec v)).1 = ((P g).map (algebraMap O (FractionRing O))).mulVec (e v).1) → Continuous P := by
   intro O Γ _ _ _ _ _ h _ n r t M P e hM hP

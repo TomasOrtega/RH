@@ -6,7 +6,7 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.CountingFormula.DoubleS
 namespace PI.UnitaryGroupMassFormula.CntFormula
 
 /- English proof (translation)
-The claim follows from `locDensSplit_of' integral_split_count adapted_coords_self_dual count_bijection`.
+A detailed English derivation is pending.
 -/
 theorem local_density_split : LocDensSplit :=
   locDensSplit_of' integral_split_count adapted_coords_self_dual count_bijection

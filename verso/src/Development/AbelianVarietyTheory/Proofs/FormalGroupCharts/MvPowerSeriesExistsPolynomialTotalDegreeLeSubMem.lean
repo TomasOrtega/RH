@@ -8,9 +8,9 @@ namespace GlobalTheory.CompleteBaseChange
 open MvPowerSeries
 
 /- English proof (translation)
-Proceed by induction on `α using Finsupp.induction_linear with`. Consider the case `zero => simp`. Consider the case `add a b ha hb`. Establish `: (monomial (a + b) (1 : R) : MvPowerSeries σ R) = monomial a 1 * monomial b 1`. Rewrite using `[monomial_mul_monomial, one_mul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, map_add, pow_add]`. Conclude with `Ideal.mul_mem_mul ha hb`. Consider the case `single s n`. Rewrite using `[← X_pow_eq, Finsupp.degree_single]`. Conclude with `Ideal.pow_mem_pow (Ideal.subset_span (Set.mem_range_self s)) n`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem monomial_one_mem_span_X_pow {R σ : Type*} [CommRing R] (α : σ →₀ ℕ) :
     (monomial α (1 : R) : MvPowerSeries σ R) ∈
@@ -28,19 +28,17 @@ theorem monomial_one_mem_span_X_pow {R σ : Type*} [CommRing R] (α : σ →₀ 
     exact Ideal.pow_mem_pow (Ideal.subset_span (Set.mem_range_self s)) n
 
 /- English proof (translation)
-Introduce `O _ J hJ hO σ τ _ _ f N hM g`. Use `Fintype.ofFinite τ` as an intermediate fact. Establish `hN : ∀ α : σ →₀ ℕ, α.degree = N → (monomial α (1 : O) : MvPowerSeries σ O) ∈ Ideal.span (Set.range f) ⊔ J.map (C : O →+* MvPowerSeries σ O)` using `fun α hα => hM (hα ▸ monomial_one_mem_span_X_pow α)`. Establish `: IsPrecomplete J (MvPowerSeries σ O)` using `isPrecomplete_pi (σ →₀ ℕ) hJ`. Establish `: IsHausdorff J (MvPowerSeries σ O)` using `isHausdorff_pi (σ →₀ ℕ) hJ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsPrecomplete J (Option τ → MvPowerSeries σ O)` using `isPrecomplete_pi _ hJ`. Set `Φ : (Option τ → MvPowerSeries σ O) →ₗ[O] MvPowerSeries σ O` to `{ toFun := fun x => (truncTotal N (x none) : MvPolynomial σ O) + ∑ j, x (some j) * f j map_add' := fun x y => by`. Simplify using `only [Pi.add_apply, map_add, MvPolynomial.coe_add, add_mul, Finset.sum_add_distrib]`. Expand and normalize the polynomial expressions, which then agree. Use the proof step `map_smul' := fun c x => by`.
+Establish an intermediate fact. Introduce a local definition for the expression. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Simplify using `only [Pi.smul_apply, map_smul, MvPolynomial.coe_smul, smul_add, Finset.smul_sum, smul_mul_assoc, RingHom.id_apply] }`. Establish `hΦ : Function.Surjective Φ`. Use `surjective_of_mkQ_comp_surjective (I := J) fun G => ?_` and prove the remaining obligations. Take `⟨G, rfl⟩` from `Submodule.Quotient.mk_surjective _ G`. Establish `h1` using `mem_of_coeff_eq_zero N _ hN (G - (truncTotal N G : MvPolynomial σ O)) fun d hd => by`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sub, MvPolynomial.coeff_coe, coeff_truncTotal _ hd, sub_self]`. Take `⟨a, ha, b, hb, hab⟩` from `Submodule.mem_sup.1 h1`. Take `⟨c, rfl⟩` from `Ideal.mem_span_range_iff_exists_fun.1 ha`. Use `⟨fun o => o.elim G c, ((Submodule.Quotient.eq _).2 ?_).symm⟩` and prove the remaining obligations. Establish `h2 : G - Φ (fun o => o.elim G c) = b`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `G - (((truncTotal N G : MvPolynomial σ O) : MvPowerSeries σ O) + ∑ j, c j * f j) = b`. Take the linear combination `-hab`. Rewrite using `[h2, Ideal.smul_top_eq_map]`. Conclude with `hb`. Take `⟨x, hx⟩` from `hΦ g`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨truncTotal N (x none), ?_, Ideal.mem_span_range_iff_exists_fun.2 ⟨fun j => x (some j), ?_⟩⟩` and prove the remaining obligations. Use `Finset.sup_le fun d hd => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hlt`. Use `MvPolynomial.mem_support_iff.1 hd (coeff_truncTotal_eq_zero _ ?_)` and prove the remaining obligations. Conclude with `(not_le.1 hlt).le`.
-
-Rewrite using `[← hx]`. Conclude with `(add_sub_cancel_left _ _).symm`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_polynomial_totalDegree_le_sub_mem : ∀ (R : Type) [CommRing R] (J : Ideal R), J.FG → IsAdicComplete J R → ∀ (σ ι : Type) [Finite σ] [Finite ι] (f : ι → MvPowerSeries σ R) (M : ℕ), Ideal.span (Set.range (MvPowerSeries.X : σ → MvPowerSeries σ R)) ^ M ≤ Ideal.span (Set.range f) ⊔ Ideal.map (MvPowerSeries.C : R →+* MvPowerSeries σ R) J → ∀ g : MvPowerSeries σ R, ∃ P : MvPolynomial σ R, P.totalDegree ≤ M ∧ g - (P : MvPowerSeries σ R) ∈ Ideal.span (Set.range f) := by
   intro O _ J hJ hO σ τ _ _ f N hM g

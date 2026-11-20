@@ -18,9 +18,9 @@ open IndefiniteRowSideFullHecke.HeightsSet.CoordCurveDegree
 variable {T : Type} [Fintype T]
 
 /- English proof (translation)
-Take `⟨a, ha, hhom, -⟩` from `hs`. Establish `hz : (fun p : Σ _ : Unit, T => c * z p) = scaleBlock () c z`. Use function extensionality and compare the values at `p`. Simplify using `[scaleBlock]`. Establish `hh : A.h (fun p => c * z p) = ‖c‖ ^ A.a () * A.h z`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `using A.smul (fun _ => c) z (fun _ => hc)`. Unfold `logNorm`. Rewrite using `[hh, hz, eval_scaleBlock () c z s a hhom, ha (), zpow_natCast, norm_mul, norm_pow]`. Rewrite using `[mul_div_mul_left _ _ (pow_ne_zero _ (norm_ne_zero_iff.mpr hc))]`.
+Simplify to obtain the desired conclusion from the available facts. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem logNorm_smul {A : HermLine (fun _ : Unit => T)} {s : MRing (fun _ : Unit => T)}
     {P : Ideal (MRing (fun _ : Unit => T))} (hs : IsSectionOn P A s) (c : ℂ) (hc : c ≠ 0)
@@ -38,9 +38,9 @@ theorem logNorm_smul {A : HermLine (fun _ : Unit => T)} {s : MRing (fun _ : Unit
 variable {K' : Type} [Field K'] [NumberField K']
 
 /- English proof (translation)
-Establish `ht : t = 1`. Use `congrFun h ⟨(), c ()⟩` as an intermediate fact. Simplify using `only [ptOf_chart hc, mul_one] at this`. Conclude with `this.symm`. Substitute `ht` using the available equality.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations.
 
-Use `IntermediateField.algHom_ext_of_eq_adjoin ℚ (blockFnField_eq y c hc) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨p, rfl⟩`. Use `congrFun h p` as an intermediate fact. Simplify using `only [one_mul] at this`. Conclude with `this`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eq_of_ptOf_eq_smul {y : (Σ _ : Unit, T) → K'} {c : Unit → T} (hc : ∀ k, y ⟨k, c k⟩ ≠ 0)
     {φ ψ : blockFnField y →ₐ[ℚ] ℂ} (t : ℂ) (h : ptOf y c φ = fun p => t * ptOf y c ψ p) : φ = ψ := by
@@ -56,17 +56,17 @@ theorem eq_of_ptOf_eq_smul {y : (Σ _ : Unit, T) → K'} {c : Unit → T} (hc : 
   exact this
 
 /- English proof (translation)
-Establish `hex : ∀ t ∈ R, ∃ φ : blockFnField y →ₐ[ℚ] ℂ, ptOf y c φ = (fun p => (t ⟨p.1, c p.1⟩)⁻¹ * t p) ∧ ∀ k, t ⟨k, c k⟩ ≠ 0` using `fun t ht => exists_ptOf hP hc (hR t ht)`. Use `Finset.sum_bij (fun t ht => (hex t ht).choose) (fun _ _ => Finset.mem_univ _) ?_ ?_ ?_` and prove the remaining obligations. Introduce `t ht t' ht' he`. Establish `h1` using `(hex t ht).choose_spec`. Establish `h2` using `(hex t' ht').choose_spec`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[he]`. Take `⟨u, -, hu⟩` from `hU t (hR t ht)`. Establish `e1 : t = u` using `hu t ⟨ht, ⟨fun _ => 1, fun _ => one_ne_zero, by simp⟩⟩`. Establish `e2 : t' = u`. Use `hu t' ⟨ht', fun k => t ⟨k, c k⟩ * (t' ⟨k, c k⟩)⁻¹, fun k => mul_ne_zero (h1.2 k) (inv_ne_zero (h2.2 k)), funext fun p => ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `congrFun (h1.1.symm.trans h2.1) p` as an intermediate fact. Establish `h0` using `h1.2 p.1`. Establish `h0'` using `h2.2 p.1`. Simplify using `only at this ⊢`. Rewrite using `[show t p = t ⟨p.1, c p.1⟩ * ((t ⟨p.1, c p.1⟩)⁻¹ * t p) by field_simp, this]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, e2]`. Introduce `φ _`. Take `⟨u, ⟨hu, ⟨d, hd, hdu⟩⟩, -⟩` from `hU _ (ptOf_mem hc φ)`. Use `⟨u, hu, eq_of_ptOf_eq_smul hc ((u ⟨(), c ()⟩)⁻¹ * (d ())⁻¹) ?_⟩` and prove the remaining obligations.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[(hex u hu).choose_spec.1, hdu]`. Use function extensionality and compare the values at `p`. Establish `h0` using `hd ()`. Put the polynomial expressions in normal form. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Put the polynomial expressions in normal form. Clear the denominators using the available nonvanishing facts.
 
-Introduce `t ht`. Rewrite using `[(hex t ht).choose_spec.1]`. Conclude with `(hF _ (inv_ne_zero ((hex t ht).choose_spec.2 ())) t).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_reps_eq {y : (Σ _ : Unit, T) → K'} (hP : IsArithVar (mCoordIdeal y) 1) {c : Unit → T}
     (hc : ∀ k, y ⟨k, c k⟩ ≠ 0) (R : Finset ((Σ _ : Unit, T) → ℂ))
@@ -108,9 +108,9 @@ theorem sum_reps_eq {y : (Σ _ : Unit, T) → K'} (hP : IsArithVar (mCoordIdeal 
     exact (hF _ (inv_ne_zero ((hex t ht).choose_spec.2 ())) t).symm
 
 /- English proof (translation)
-Rewrite using `[Fintype.sum_equiv (RingHom.equivRatAlgHom K' ℂ) (fun σ : K' →+* ℂ => H ((σ.toRatAlgHom).comp (IsScalarTower.toAlgHom ℚ κ K'))) (fun σ : K' →ₐ[ℚ] ℂ => H (σ.comp (IsScalarTower.toAlgHom ℚ κ K'))) (fun _ => rfl)]`. Set `res : (K' →ₐ[ℚ] ℂ) → (κ →ₐ[ℚ] ℂ)` to `fun σ => σ.comp (IsScalarTower.toAlgHom ℚ κ K')`. Rewrite using `[← Fintype.sum_fiberwise res, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun f _ => ?_` and prove the remaining obligations. Establish `hconst : ∀ i : {σ // res σ = f}, H (res i) = H f` using `fun i => by rw [i.2]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[Finset.sum_congr rfl fun i _ => hconst i, Finset.sum_const, nsmul_eq_mul, Finset.card_univ]`. Use `congr 1`. Establish `e : {σ // res σ = f} ≃ @AlgHom κ K' ℂ _ _ _ _ f.toRingHom.toAlgebra` using `((algHomEquivSigma (A := ℚ) (B := κ) (C := K') (D := ℂ)).subtypeEquiv (p := fun σ => res σ = f) (q := fun x => x.1 = f) fun σ => Iff.rfl).trans (Equiv.sigmaSubtype f)`. Set `_` to `f.toRingHom.toAlgebra`. Rewrite using `[Fintype.card_eq_nat_card, Nat.card_congr e, AlgHom.natCard_of_splits κ K' ℂ fun _ => IsAlgClosed.splits _]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_ringHom_restrict (κ : IntermediateField ℚ K') (H : (κ →ₐ[ℚ] ℂ) → ℝ)
     [Fintype (κ →ₐ[ℚ] ℂ)] :
@@ -138,15 +138,15 @@ end PointArithIntersection
 open PointArithIntersection IndefiniteRowSideFullHecke.HeightsSet.CoordCurveDegree in
 
 /- English proof (translation)
-Introduce `T _ K' _ _ y A s hP hs`. Take `⟨c0, hc0⟩` from `hP.2.1.2.2 ()`. Set `c : Unit → T` to `fun _ => c0`. Establish `hc : ∀ k, y ⟨k, c k⟩ ≠ 0` using `fun k h => hc0 (X_mem_of_eq_zero h)`. Take `⟨R, hR, hU, hsum⟩` from `Inter.regularityPointsSum_holds.proof Unit (fun _ => T) (mCoordIdeal y) hP`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `harInt : arInt (mCoordIdeal y) s A (Fin.elim0 : Fin 0 → HermLine (fun _ : Unit => T)) = ∑ t ∈ R, logNorm A s t`. Unfold `arInt`. Establish `e0 : (fun (j : Fin 0) (z : (Σ _ : Unit, T) → ℂ) => Real.log (((Fin.elim0 j : HermLine (fun _ : Unit => T))).h z)) = (Fin.elim0 : Fin 0 → ((Σ _ : Unit, T) → ℂ) → ℝ)` using `funext fun j => j.elim0`. Rewrite using `[e0]`. Apply `hsum` to reduce the goal to its premises.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce and unpack `z z' - ⟨d, hd, rfl⟩`. Conclude with `logNorm_smul hs (d ()) (hd ()) z'`. Use `set κ := blockFnField y`. Establish `hσ : ∀ σ : K' →+* ℂ, logNorm A s (fun p => σ (y p)) = logNorm A s (ptOf y c ((σ.toRatAlgHom).comp (IsScalarTower.toAlgHom ℚ κ K')))`. Introduce `σ`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy0 : σ (y ⟨(), c0⟩) ≠ 0` using `(map_ne_zero σ).mpr (hc ())`. Establish `e : (fun p => σ (y p)) = fun p => σ (y ⟨(), c0⟩) * ptOf y c ((σ.toRatAlgHom).comp (IsScalarTower.toAlgHom ℚ κ K')) p`. Use function extensionality and compare the values at `p`. Establish `: ptOf y c ((σ.toRatAlgHom).comp (IsScalarTower.toAlgHom ℚ κ K')) p = σ (y p / y ⟨(), c0⟩)` using `rfl`. Rewrite using `[this, map_div₀]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Rewrite using `[e, logNorm_smul hs _ hy0]`. Rewrite using `[harInt, sum_reps_eq hP hc R hR hU (logNorm A s) (fun t ht z => logNorm_smul hs t ht z), Finset.sum_congr rfl (fun σ _ => hσ σ), sum_ringHom_restrict κ (fun φ => logNorm A s (ptOf y c φ)), degC_eq hP, AlgHom.natCard_of_splits ℚ κ ℂ fun _ => IsAlgClosed.splits _, ← Module.finrank_ …`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem PointArInt.proof : PointArInt.Statement := by
   intro T _ K' _ _ y A s hP hs

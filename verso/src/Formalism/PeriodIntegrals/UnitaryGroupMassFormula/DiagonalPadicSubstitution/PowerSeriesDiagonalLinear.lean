@@ -29,9 +29,9 @@ def SerS {K : Type*} [CommRing K] (S : Subring K) (σ : Type*) : Subring (MvPowe
   (MvPowerSeries.map S.subtype).range
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g, rfl⟩ e`. Rewrite using `[MvPowerSeries.coeff_map]`. Conclude with `(MvPowerSeries.coeff e g).2`. Introduce `h`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨g, hg⟩ : ∃ g : MvPowerSeries σ S, ∀ e, MvPowerSeries.coeff e g = ⟨MvPowerSeries.coeff e f, h e⟩` from `⟨fun e => ⟨MvPowerSeries.coeff e f, h e⟩, fun e => rfl⟩`. Use `⟨g, ?_⟩` and prove the remaining obligations. Use extensionality with `e`. Rewrite using `[MvPowerSeries.coeff_map, hg]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem mem_SerS {K : Type*} [CommRing K] (S : Subring K) {σ : Type*} (f : MvPowerSeries σ K) :
     f ∈ SerS S σ ↔ ∀ e, MvPowerSeries.coeff e f ∈ S := by
@@ -48,7 +48,7 @@ theorem mem_SerS {K : Type*} [CommRing K] (S : Subring K) {σ : Type*} (f : MvPo
     rfl
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[← h, ← MvPowerSeries.coeff_zero_eq_constantCoeff_apply, ← MvPowerSeries.coeff_zero_eq_constantCoeff_apply, MvPowerSeries.coeff_map]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem constantCoeff_lift {K : Type*} [CommRing K] (S : Subring K) {σ : Type*}
     (g : MvPowerSeries σ S) {c : S}
@@ -60,11 +60,9 @@ theorem constantCoeff_lift {K : Type*} [CommRing K] (S : Subring K) {σ : Type*}
   rfl
 
 /- English proof (translation)
-Use `choose b hb using ha`. Take `⟨g, rfl⟩` from `hf`. Establish `hb0 : ∀ i, MvPowerSeries.constantCoeff (b i) = 0`. Introduce `i`. Conclude with `constantCoeff_lift S (b i) (c := 0) (by rw [hb i, ha0 i]; rfl)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hsub : MvPowerSeries.HasSubst b` using `MvPowerSeries.hasSubst_of_constantCoeff_zero hb0`. Use `⟨MvPowerSeries.subst b g, ?_⟩` and prove the remaining obligations. Rewrite using `[MvPowerSeries.map_subst hsub]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
-
-Conclude with `hb i`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem mvsubst_mem_SerS {K : Type*} [CommRing K] (S : Subring K) {σ τ : Type*} [Finite σ]
     {a : σ → MvPowerSeries τ K} {f : MvPowerSeries σ K}
@@ -83,7 +81,7 @@ theorem mvsubst_mem_SerS {K : Type*} [CommRing K] (S : Subring K) {σ τ : Type*
   exact hb i
 
 /- English proof (translation)
-Rewrite using `[mem_SerS]`. Conclude with `Iff.rfl`.
+Rewrite the conclusion using the stated equalities. Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem integral_iff {p : ℕ} [Fact p.Prime] {σ : Type*} (f : MvPowerSeries σ ℂ_[p]) :
     IntegralMv f ↔ f ∈ SerS (Rint p) σ := by
@@ -97,7 +95,7 @@ namespace PI.BeDiagZp
 open SubstW
 
 /- English proof (translation)
-Introduce `p _ σ τ _ f s h0 hs hf`. Rewrite `hf`, the goal using `[integral_iff]`. Conclude with `mvsubst_mem_SerS (Rint p) h0 (fun i => (integral_iff (s i)).1 (hs i)) hf`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intSubst_holds : ∀ (p : ℕ) [Fact p.Prime] (σ τ : Type) [Finite σ] (f : MvPowerSeries σ ℂ_[p])
     (s : σ → MvPowerSeries τ ℂ_[p]), (∀ i, MvPowerSeries.constantCoeff (s i) = 0) →
@@ -113,14 +111,14 @@ namespace PI.BeDiagZp.SubstW
 variable {p : ℕ} [Fact p.Prime]
 
 /- English proof (translation)
-Rewrite using `[Finsupp.degree_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem deg_eq {σ : Type*} (α : σ →₀ ℕ) : (α.sum fun _ k => k) = α.degree := by
   rw [Finsupp.degree_apply]
   rfl
 
 /- English proof (translation)
-The claim follows from `MvPowerSeries.coeff_of_lt_order ((Nat.cast_lt.mpr h).trans_le (MvPowerSeries.le_order_pow_of_constantCoeff_eq_zero n hF))`.
+A detailed English derivation is pending.
 -/
 theorem coeff_pow_eq_zero {σ : Type*} {F : MvPowerSeries σ ℂ_[p]}
     (hF : MvPowerSeries.constantCoeff F = 0) {n : ℕ} {d : σ →₀ ℕ} (h : d.degree < n) :
@@ -129,9 +127,9 @@ theorem coeff_pow_eq_zero {σ : Type*} {F : MvPowerSeries σ ℂ_[p]}
     ((Nat.cast_lt.mpr h).trans_le (MvPowerSeries.le_order_pow_of_constantCoeff_eq_zero n hF))
 
 /- English proof (translation)
-Establish `e1 : MvPowerSeries.coeff d (expMv F) = ∑ n ∈ Finset.range ((d.sum fun _ k => k) + 1), MvPowerSeries.coeff d (F ^ n) / (n.factorial : ℂ_[p])` using `rfl`. Rewrite using `[e1, deg_eq]`. Apply `Finset.sum_subset` to reduce the goal to its premises. Introduce `n hn`. Simplify using `only [Finset.mem_range] at *`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Introduce `n hn hn'`. Simplify using `only [Finset.mem_range, not_lt] at hn hn'`. Rewrite using `[coeff_pow_eq_zero hF (by omega), zero_div]`.
+Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem coeff_expMv_eq {σ : Type*} {F : MvPowerSeries σ ℂ_[p]}
     (hF : MvPowerSeries.constantCoeff F = 0) (d : σ →₀ ℕ) {N : ℕ} (hN : d.degree < N) :
@@ -152,7 +150,7 @@ def expTr {σ : Type*} (F : MvPowerSeries σ ℂ_[p]) (N : ℕ) : MvPowerSeries 
   ∑ n ∈ Finset.range N, ((n.factorial : ℂ_[p])⁻¹) • F ^ n
 
 /- English proof (translation)
-Simplify using `only [expTr, map_sum, map_smul, smul_eq_mul]`. Use `Finset.sum_congr rfl fun n _ => ?_` and prove the remaining obligations. Rewrite using `[div_eq_inv_mul]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem coeff_expTr {σ : Type*} (F : MvPowerSeries σ ℂ_[p]) (N : ℕ) (d : σ →₀ ℕ) :
     MvPowerSeries.coeff d (expTr F N) =
@@ -162,15 +160,15 @@ theorem coeff_expTr {σ : Type*} (F : MvPowerSeries σ ℂ_[p]) (N : ℕ) (d : �
   rw [div_eq_inv_mul]
 
 /- English proof (translation)
-Establish `hs : MvPowerSeries.HasSubst s` using `MvPowerSeries.hasSubst_of_constantCoeff_zero hs0`. Establish `hE : MvPowerSeries.constantCoeff (MvPowerSeries.subst s F) = 0` using `MvPowerSeries.constantCoeff_subst_eq_zero hs hs0 hF`. Use extensionality with `e`. Establish `hD : ((e.degree + 1 : ℕ) : ℕ∞) ≤ (expMv F - expTr F (e.degree + 1)).order`. Apply `MvPowerSeries.le_order` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `d hd`. Establish `hd' : d.degree < e.degree + 1` using `by exact_mod_cast hd`. Rewrite using `[map_sub, coeff_expMv_eq hF d hd', coeff_expTr, sub_self]`. Establish `h1 : (1 : ℕ∞) ≤ ⨅ i, (s i).order` using `le_iInf fun i => MvPowerSeries.one_le_order_iff_constCoeff_eq_zero.mpr (hs0 i)`. Establish `hsD : ((e.degree + 1 : ℕ) : ℕ∞) ≤ (MvPowerSeries.subst s (expMv F - expTr F (e.degree + 1))).order`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `le_trans ?_ (MvPowerSeries.le_order_subst hs _)` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Consider the case `exact mul_le_mul_right' h1 _`. Consider the case `exact mul_le_mul_right h1 _`. Consider the case `gcongr`.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Establish `h0 : MvPowerSeries.coeff e (MvPowerSeries.subst s (expMv F - expTr F (e.degree + 1))) = 0` using `MvPowerSeries.coeff_of_lt_order (lt_of_lt_of_le (by exact_mod_cast Nat.lt_succ_self _) hsD)`. Rewrite `h0` using `[MvPowerSeries.subst_sub hs, map_sub, sub_eq_zero]`. Rewrite using `[h0, coeff_expMv_eq hE e (Nat.lt_succ_self _), expTr, ← MvPowerSeries.coe_substAlgHom hs]`. Simplify using `only [map_sum, map_smul, map_pow, smul_eq_mul]`. Use `Finset.sum_congr rfl fun n _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[div_eq_inv_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem expMv_subst {σ τ : Type*} [Finite σ] {s : σ → MvPowerSeries τ ℂ_[p]}
     (hs0 : ∀ i, MvPowerSeries.constantCoeff (s i) = 0) {F : MvPowerSeries σ ℂ_[p]}
@@ -212,9 +210,9 @@ namespace PI.BeDiagZp
 open SubstW
 
 /- English proof (translation)
-Introduce `p _ σ τ _ f g s hs0 hsi hfg`. Establish `hs : MvPowerSeries.HasSubst s` using `MvPowerSeries.hasSubst_of_constantCoeff_zero hs0`. Take `⟨h0, hI⟩` from `hfg`. Unfold `Simeq`. Rewrite using `[← MvPowerSeries.subst_sub hs]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `⟨MvPowerSeries.constantCoeff_subst_eq_zero hs hs0 h0, ?_⟩` and prove the remaining obligations. Rewrite using `[expMv_subst hs0 h0]`. Conclude with `intSubst_holds p σ τ (expMv (f - g)) s hs0 hsi hI`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem power_series_diagonal_linear : S1 := by
   intro p _ σ τ _ f g s hs0 hsi hfg

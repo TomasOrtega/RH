@@ -9,17 +9,17 @@ open NumberField IsDedekindDomain IntermediateField UpperTheory.V.Kum UpperTheor
 open scoped Pointwise
 
 /- English proof (translation)
-Use `haveI : IsGalois M N := IsGalois.tower_top_of_isGalois K M N`. Use `haveI : P.IsMaximal := Ideal.IsPrime.isMaximal inferInstance hP`. Establish `h1` using `Ideal.card_stabilizer_eq (G := N ≃ₐ[K] N) (P.under (𝓞 K)) P`. Establish `h2` using `Ideal.card_stabilizer_eq (G := N ≃ₐ[M] N) (P.under (𝓞 M)) P`. Rewrite `h1` using `[Ideal.ramificationIdxIn_eq_ramificationIdx _ P (N ≃ₐ[K] N), Ideal.inertiaDegIn_eq_inertiaDeg _ P (N ≃ₐ[K] N), Ideal.ramificationIdx_tower (P.under (𝓞 M)) P, Ideal.inertiaDeg_tower (P.under (𝓞 M)) P]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h2` using `[Ideal.ramificationIdxIn_eq_ramificationIdx _ P (N ≃ₐ[M] N), Ideal.inertiaDegIn_eq_inertiaDeg _ P (N ≃ₐ[M] N)]`. Establish `h3 : Nat.card (MulAction.stabilizer (N ≃ₐ[K] N) P) = ((P.under (𝓞 M)).ramificationIdx (𝓞 K) * (P.under (𝓞 M)).inertiaDeg (𝓞 K)) * Nat.card (MulAction.stabilizer (N ≃ₐ[M] N) P)`. Rewrite using `[h1, h2]`. Expand and normalize the polynomial expressions, which then agree. Set `j : MulAction.stabilizer (N ≃ₐ[M] N) P → MulAction.stabilizer (N ≃ₐ[K] N) P` to `fun σ => ⟨σ.1.restrictScalars K, σ.2⟩`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hj : Function.Injective j`. Introduce `a b e`. Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `AlgEquiv.restrictScalars_injective K (congrArg Subtype.val e)`. Establish `hpos : 0 < Nat.card (MulAction.stabilizer (N ≃ₐ[M] N) P)` using `Nat.card_pos`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `hs : Function.Surjective j`. Introduce and unpack `⟨σ, hσ⟩`. Conclude with `⟨⟨AlgEquiv.ofRingEquiv (f := σ.toRingEquiv) (h σ hσ), hσ⟩, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Nat.card_eq_of_bijective j ⟨hj, hs⟩` as an intermediate fact. Rewrite `this` using `[h3]`. Conclude with `(Nat.eq_of_mul_eq_mul_right hpos (by rw [← this, one_mul])).symm`. Introduce `h σ hσ x`. Rewrite `h3` using `[h, one_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hb` using `(Nat.bijective_iff_injective_and_card j).2 ⟨hj, h3.symm⟩`. Take `⟨τ, hτ⟩` from `hb.2 ⟨σ, hσ⟩`. Establish `: σ = τ.1.restrictScalars K` using `(congrArg Subtype.val hτ).symm`. Rewrite using `[this]`. Conclude with `τ.1.commutes x`.
+A detailed English derivation is pending.
 -/
 private theorem UpperTheory.V.CF.bauer_fix_iff (K M N : Type) [Field K] [NumberField K] [Field M] [NumberField M]
     [Field N] [NumberField N] [Algebra K M] [Algebra M N] [Algebra K N] [IsScalarTower K M N]
@@ -63,15 +63,13 @@ private theorem UpperTheory.V.CF.bauer_fix_iff (K M N : Type) [Field K] [NumberF
     exact τ.1.commutes x
 
 /- English proof (translation)
-Take `⟨v, hv, w, hw, he, hF⟩` from `cheb K N σ T hT`. Use `haveI := w.isPrime`. Use `haveI := v.isPrime`. Establish `hst` using `GroundTheory.Global.stabilizer_eq_zpowers_arithFrobAt v w he`. Establish `hσF : σ = arithFrobAt (𝓞 K) Gal(N/K) w.asIdeal` using `by haveI : Algebra.IsUnramifiedAt (𝓞 K) w.asIdeal := (Ideal.ramificationIdx_eq_one_iff ..).1 he`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1` using `AlgHom.IsArithFrobAt.eq_of_isUnramifiedAt hF (IsArithFrobAt.arithFrobAt (𝓞 K) Gal(N/K) w.asIdeal) (Ideal.primeCompl_le_nonZeroDivisors _)`. Use `AlgEquiv.ext fun y => ?_` and prove the remaining obligations. Take `⟨a, b, hb, rfl⟩` from `IsFractionRing.div_surjective (𝓞 N) y`. Establish `h2 : ∀ a : 𝓞 N, σ (algebraMap (𝓞 N) N a) = (arithFrobAt (𝓞 K) Gal(N/K) w.asIdeal) (algebraMap (𝓞 N) N a)` using `fun a => congrArg (algebraMap (𝓞 N) N) (DFunLike.congr_fun h1 a)`. Rewrite using `[map_div₀, map_div₀, h2, h2]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hst` using `[← hσF]`. Establish `hC : (w.asIdeal.under (𝓞 C)).ramificationIdx (𝓞 K) * (w.asIdeal.under (𝓞 C)).inertiaDeg (𝓞 K) = 1`. Use `(bauer_fix_iff K C N w.asIdeal w.ne_bot).1 fun τ hτ y => ?_` and prove the remaining obligations. Establish `hτ' : τ ∈ Subgroup.zpowers σ` using `hst ▸ (MulAction.mem_stabilizer_iff.2 hτ)`. Establish `: Subgroup.zpowers σ ≤ MulAction.stabilizer Gal(N/K) (algebraMap C N y)` using `Subgroup.zpowers_le.2 (hσ y)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `this hτ'`. Establish `hsC : GroundTheory.Global.SplitsCompletely C v`. Introduce `u hu`. Use `haveI := u.isPrime`. Rewrite `hC`, the goal using `[← Ideal.ramificationIdxIn_eq_ramificationIdx v.asIdeal _ Gal(C/K), ← Ideal.inertiaDegIn_eq_inertiaDeg v.asIdeal _ Gal(C/K)]`.
-
-Conclude with `mul_eq_one.1 hC`. Establish `hA` using `h v hv hsC (w.under (𝓞 A)) (inferInstanceAs ((w.asIdeal.under (𝓞 A)).LiesOver v.asIdeal))`. Use `(bauer_fix_iff K A N w.asIdeal w.ne_bot).2 ?_ σ hF.mem_stabilizer x` and prove the remaining obligations. Conclude with `mul_eq_one.2 hA`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.V.CF.bauer_fix (K A C N : Type) [Field K] [NumberField K] [Field A] [NumberField A]
     [Field C] [NumberField C] [Field N] [NumberField N] [Algebra K A] [Algebra K C] [Algebra K N]
@@ -112,13 +110,11 @@ private theorem UpperTheory.V.CF.bauer_fix (K A C N : Type) [Field K] [NumberFie
   exact mul_eq_one.2 hA
 
 /- English proof (translation)
-Introduce `K Ω _ _ _ _ A C _ _ _ _ T hT h`. Set `N : IntermediateField K Ω` to `A ⊔ C`. Use `haveI : NumberField N := NumberField.of_module_finite K N`. Use `haveI : IsGalois K N := { to_isSeparable := inferInstance, to_normal := IntermediateField.normal_sup K Ω A C }`. Use `letI : Algebra A N := (IntermediateField.inclusion (le_sup_left : A ≤ N)).toRingHom.toAlgebra`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Equip the data with the indicated structure. Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `letI : Algebra C N := (IntermediateField.inclusion (le_sup_right : C ≤ N)).toRingHom.toAlgebra`. Use `haveI : IsScalarTower K A N := IsScalarTower.of_algebraMap_eq fun _ => rfl`. Use `haveI : IsScalarTower K C N := IsScalarTower.of_algebraMap_eq fun _ => rfl`. Use `haveI : IsGalois C N := IsGalois.tower_top_of_isGalois K C N`. Introduce `x hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: algebraMap A N ⟨x, hx⟩ ∈ (⊥ : IntermediateField C N)`. Rewrite using `[IsGalois.mem_bot_iff_fixed]`. Introduce `τ`. Conclude with `bauer_fix K A C N T hT h (τ.restrictScalars K) τ.commutes ⟨x, hx⟩`. Take `⟨y, hy⟩` from `IntermediateField.mem_bot.1 this`.
-
-Establish `: (y : Ω) = x` using `congrArg Subtype.val hy`. Conclude with `this ▸ y.2`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.CF.bauer :
     ∀ (K Ω : Type) [Field K] [NumberField K] [Field Ω] [Algebra K Ω] (A C : IntermediateField K Ω) [NumberField A] [NumberField C] [IsGalois K A] [IsGalois K C] (T : Set (HeightOneSpectrum (𝓞 K))), T.Finite → (∀ v ∉ T, GroundTheory.Global.SplitsCompletely C v → GroundTheory.Global.SplitsCompletely A v) → A ≤ C := by

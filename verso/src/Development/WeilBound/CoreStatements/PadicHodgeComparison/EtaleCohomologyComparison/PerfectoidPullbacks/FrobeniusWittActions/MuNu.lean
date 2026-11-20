@@ -13,7 +13,7 @@ namespace CrystallineSemistableComparison.Pb.Mid
 variable {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicAlgCl l)}
 
 /- English proof (translation)
-The claim follows from `frobenius_mu_nu_iterate r N hT M n j x`.
+A detailed English derivation is pending.
 -/
 theorem mu_nu (r : Res l K) (N : ℕ) (hT : TeichmullerCongruence r N) (M : Model l K) (n j : ℕ)
     (x : B.Hc (B.schFn M.p) (okToOC l K) true n j) :

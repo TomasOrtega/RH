@@ -17,15 +17,15 @@ variable {A : Type} [Ring A] [Algebra ℂ A]
 def pS {n : ℕ} (s : Finset (Fin n)) : ℂ[X] := ∏ l ∈ s, (X - C ((l : ℕ) : ℂ))
 
 /- English proof (translation)
-The claim follows from `natDegree_finsetProd_X_sub_C_eq_card _ _`.
+A detailed English derivation is pending.
 -/
 theorem natDegree_pS {n : ℕ} (s : Finset (Fin n)) : (pS s).natDegree = s.card :=
   natDegree_finsetProd_X_sub_C_eq_card _ _
 
 /- English proof (translation)
-Establish `h1 : (pS s).eval u = ∏ l ∈ s, (u - (l : ℂ))` using `by simp [pS, eval_prod]`. Establish `h2 : (pS s).natDegree < n + 1`. Rewrite using `[natDegree_pS]`. Use `Finset.card_le_univ s` as an intermediate fact. Simplify using `at this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[← h1, eval_eq_sum_range' h2]`. Conclude with `sum_congr rfl fun k _ => mul_comm _ _`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prod_eq_sum {n : ℕ} (s : Finset (Fin n)) (u : ℂ) :
     ∏ l ∈ s, (u - (l : ℂ)) = ∑ k ∈ range (n + 1), u ^ k * (pS s).coeff k := by
@@ -36,14 +36,14 @@ theorem prod_eq_sum {n : ℕ} (s : Finset (Fin n)) (u : ℂ) :
   exact sum_congr rfl fun k _ => mul_comm _ _
 
 /- English proof (translation)
-Establish `hm : (pS s).Monic` using `monic_prod_of_monic _ _ fun l _ => monic_X_sub_C _`. Rewrite using `[← natDegree_pS]`. Conclude with `hm.coeff_natDegree`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coeff_pS_top {n : ℕ} (s : Finset (Fin n)) : (pS s).coeff s.card = 1 := by
   have hm : (pS s).Monic := monic_prod_of_monic _ _ fun l _ => monic_X_sub_C _
   rw [← natDegree_pS]; exact hm.coeff_natDegree
 
 /- English proof (translation)
-Establish `h` using `prod_X_sub_C_nextCoeff (s := s) (fun l : Fin n => ((l : ℕ) : ℂ))`. Rewrite `h` using `[nextCoeff_of_natDegree_pos (by rw [natDegree_finsetProd_X_sub_C_eq_card]; exact hs), natDegree_finsetProd_X_sub_C_eq_card]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coeff_pS_next {n : ℕ} (s : Finset (Fin n)) (hs : 0 < s.card) :
     (pS s).coeff (s.card - 1) = -∑ l ∈ s, (l : ℂ) := by
@@ -53,9 +53,9 @@ theorem coeff_pS_next {n : ℕ} (s : Finset (Fin n)) (hs : 0 < s.card) :
   exact h
 
 /- English proof (translation)
-Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Simplify using the standard rewrite rules. Establish `h` using `Finset.sum_range_id_mul_two n`. Rewrite using `[Fin.sum_univ_eq_sum_range (fun l => ((l : ℕ) : ℂ)) n]`. Establish `h' : ((∑ i ∈ range n, i : ℕ) : ℂ) * 2 = ((n * (n - 1) : ℕ) : ℂ)` using `by exact_mod_cast h`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h'` using `[Nat.cast_mul, Nat.cast_sub (by omega)]`. Move the coercions through the operations in `at h'`. Take the linear combination `h'`.
+Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem sum_fin_cast (n : ℕ) : 2 * ∑ l : Fin n, (l : ℂ) = (n : ℂ) * ((n : ℂ) - 1) := by
   rcases Nat.eq_zero_or_pos n with rfl | hn
@@ -68,29 +68,25 @@ theorem sum_fin_cast (n : ℕ) : 2 * ∑ l : Fin n, (l : ℂ) = (n : ℂ) * ((n 
   linear_combination h'
 
 /- English proof (translation)
-Establish `hT : ∑ i, X i i ∈ S` using `GlobalTheory.CapTrace.trace_mem_of_qdet_mem X S h`. Break down `lt_or_ge n 2 with hn | hn` into its components or cases. Apply the tactic sequence `have e : Formalism.REAL.Cas X = (∑ i, X i i) * (∑ i, X i i) := by interval_cases n <;> simp [Formalism.REAL.Cas]`. Rewrite using `[e]`. Conclude with `S.mul_mem hT hT`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨Rm, hR⟩` from `GlobalTheory.qdet_top_three_orders A n X`. Set `Cf : ℕ → A` to `fun k => (pS (univ : Finset (Fin n))).coeff k • (1 : A) + ∑ i, (pS (univ.erase i)).coeff k • X i i + ∑ i, ∑ j ∈ univ.filter (fun j => i < j), (pS ((univ.erase i).erase j)).coeff k • (X i i * X j j - X j i * X i j) + (if k < n - 2 then Rm k else 0)`. Establish `hexp : ∀ u : ℂ, Formalism.REAL.qdet X u = ∑ k ∈ range (n + 1), u ^ k • Cf k`. Introduce `u`. Establish `hRm : ∑ k ∈ range (n + 1), u ^ k • (if k < n - 2 then Rm k else 0) = ∑ d ∈ range (n - 2), u ^ d • Rm d`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [smul_ite, smul_zero]`. Rewrite using `[← Finset.sum_filter]`. Use `congr 1`. Use extensionality with `k`. Simplify using `only [mem_filter, mem_range]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[hR u]`. Simplify using `only [Cf, smul_add, sum_add_distrib, hRm, prod_eq_sum, sum_smul, smul_sum, smul_smul]`. Use `congr 1`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Conclude with `sum_comm`. Rewrite using `[sum_comm]`. Use `sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Conclude with `sum_comm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hmem : Cf (n - 2) ∈ S` using `GlobalTheory.CapTrace.coeff_mem (Subalgebra.toSubmodule S) n Cf (fun u => by rw [← hexp]; exact h u) (n - 2) (by omega)`. Establish `hc2 : ∀ i : Fin n, ∀ j ∈ univ.filter (fun j => i < j), (pS ((univ.erase i).erase j)).coeff (n - 2) = 1`. Introduce `i j hj`. Establish `hij : j ≠ i` using `(mem_filter.1 hj).2.ne'`. Establish `hc : ((univ.erase i).erase j).card = n - 2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[card_erase_of_mem (mem_erase.2 ⟨hij, mem_univ _⟩), card_erase_of_mem (mem_univ _), card_univ, Fintype.card_fin]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[← hc]`. Conclude with `coeff_pS_top _`. Establish `hc1 : ∀ i : Fin n, (pS (univ.erase i)).coeff (n - 2) = -∑ l ∈ univ.erase i, (l : ℂ)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `i`. Establish `hc : (univ.erase i).card = n - 1` using `by rw [card_erase_of_mem (mem_univ _), card_univ, Fintype.card_fin]`. Use `coeff_pS_next (univ.erase i) (by omega)` as an intermediate fact. Rewrite `this` using `[hc, show n - 1 - 1 = n - 2 by omega]`. Conclude with `this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set c := (pS (univ : Finset (Fin n))).coeff (n - 2)`. Establish `hC : Cf (n - 2) = c • (1 : A) + ∑ i, (pS (univ.erase i)).coeff (n - 2) • X i i + ∑ i, ∑ j ∈ univ.filter (fun j => i < j), (X i i * X j j - X j i * X i j)`. Simplify using `only [Cf, lt_irrefl, if_false, add_zero]`. Use `congr 1`. Conclude with `sum_congr rfl fun i _ => sum_congr rfl fun j hj => by rw [hc2 i j hj, one_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `h3 : ∑ i : Fin n, ((n : ℂ) - 1 - 2 * (i : ℕ)) • X i i + (2 : ℂ) • ∑ i, (pS (univ.erase i)).coeff (n - 2) • X i i = -(((n : ℂ) - 1) ^ 2) • ∑ i, X i i`. Rewrite using `[smul_sum, smul_sum, ← sum_add_distrib]`. Use `sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[smul_smul, ← add_smul, hc1, sum_erase_eq_sub (mem_univ _)]`. Use `congr 1`.
-
-Use `sum_fin_cast n` as an intermediate fact. Take the linear combination `(-1 : ℂ) * this`. Establish `h1` using `GlobalTheory.CapelliCasimir.sq_sub_cas X hX`. Establish `key : Formalism.REAL.Cas X = (∑ i, X i i) * (∑ i, X i i) - (2 : ℂ) • Cf (n - 2) + (2 * c) • (1 : A) - (((n : ℂ) - 1) ^ 2) • ∑ i, X i i`. Take the linear combination `(norm := module) (-1 : ℂ) • h1 + (2 : ℂ) • hC + h3`.
-
-Rewrite using `[key]`. Conclude with `S.sub_mem (S.add_mem (S.sub_mem (S.mul_mem hT hT) (S.smul_mem hmem _)) (S.smul_mem (S.one_mem) _)) (S.smul_mem hT _)`.
+Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cas_mem_of_qdet_mem {n : ℕ} (X : Fin n → Fin n → A) (hX : Formalism.REAL.GlRel X) (S : Subalgebra ℂ A)
     (h : ∀ u : ℂ, Formalism.REAL.qdet X u ∈ S) : Formalism.REAL.Cas X ∈ S := by
@@ -159,9 +155,9 @@ theorem cas_mem_of_qdet_mem {n : ℕ} (X : Fin n → Fin n → A) (hX : Formalis
     (S.smul_mem hT _)
 
 /- English proof (translation)
-Introduce `E _ _ _ a τ`. Use `cas_mem_of_qdet_mem (Eop τ) (glRel_Eop τ) (Zalg E a) fun u => ?_` and prove the remaining obligations. Establish `e : Formalism.REAL.qdet (Eop (a` using `a) τ) u = cap τ (u - ((a : ℂ) - 1) / 2) := by`. Rewrite using `[cap]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `Algebra.subset_adjoin ⟨τ, _, rfl⟩`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cas_Eop_mem_Zalg : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (τ : E →+* ℂ),
     Formalism.REAL.Cas (Eop (a := a) τ) ∈ Zalg E a := by

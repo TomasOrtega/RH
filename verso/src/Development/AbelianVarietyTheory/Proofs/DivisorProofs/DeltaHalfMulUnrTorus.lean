@@ -15,7 +15,7 @@ namespace GlobalTheory.LGrp.BorelCompletion
 variable {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F))
 
 /- English proof (translation)
-Unfold `Formalism.UG.ordV`. Use `split_ifs with h`. Simplify using `[h]`. Rewrite using `[WithZero.toAdd_unzero_eq_log]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ordV_eq (x : v.adicCompletion F) : Formalism.UG.ordV F v x = -WithZero.log (Valued.v x) := by
   unfold Formalism.UG.ordV
@@ -24,7 +24,7 @@ theorem ordV_eq (x : v.adicCompletion F) : Formalism.UG.ordV F v x = -WithZero.l
   · rw [WithZero.toAdd_unzero_eq_log]
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.LocalData.isLocalField v GlobalTheory.SplitWeil.nabs (v.adicCompletion F) x = (Formalism.UG.qV F v : ℝ) ^ (WithZero.log (Valued.v (x : v.adicCompletion F))) := by letI := GlobalTheory.LocalData.complRel v haveI := GlobalTheory.LocalData.isLocalField v haveI : (Valued …`.
+A detailed English derivation is pending.
 -/
 theorem nabs_completion (x : (v.adicCompletion F)ˣ) :
     letI := GlobalTheory.LocalData.complRel v
@@ -93,7 +93,7 @@ theorem nabs_completion (x : (v.adicCompletion F)ˣ) :
   exact (eq_inv_of_mul_eq_one_left h2).trans (inv_inv _)
 
 /- English proof (translation)
-Establish `hq : (0 : ℝ) ≤ q` using `Nat.cast_nonneg q`. Rewrite using `[Real.sqrt_eq_rpow, ← zpow_mul, ← Real.rpow_intCast, ← Real.rpow_mul hq, Complex.ofReal_cpow hq]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem sqrt_zpow_eq (q : ℕ) (m e : ℤ) :
     ((Real.sqrt (((q : ℝ) ^ m) ^ e) : ℝ) : ℂ) = (q : ℂ) ^ ((m : ℂ) * ((e : ℂ) / 2)) := by
@@ -104,11 +104,11 @@ theorem sqrt_zpow_eq (q : ℕ) (m e : ℤ) :
   ring
 
 /- English proof (translation)
-Introduce `F _ _ v _ n α b`. Use `letI := GlobalTheory.LocalData.complRel v`. Use `haveI := GlobalTheory.LocalData.isLocalField v`. Establish `h` using `GlobalTheory.BorelModulus.delta_borelGL (v.adicCompletion F) n b`. Rewrite using `[LeviDatum.deltaHalf_coe, h, Real.sqrt_prod _ (fun i _ => zpow_nonneg (GlobalTheory.SplitWeil.nabs_pos _ _).le _), unrTorus_apply, Formalism.UG.chiDelta, Complex.ofReal_prod, Units.coe_prod, ← Finset.prod_mul_distrib]`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `e : (((borelGL (v.adicCompletion F) (Fin n)).p b i : (v.adicCompletion F)ˣ) : v.adicCompletion F) = (b.1 : Matrix (Fin n) (Fin n) (v.adicCompletion F)) i i` using `rfl`. Rewrite using `[nabs_completion, sqrt_zpow_eq, unrChar_apply, ordV_eq, e, mul_comm, Units.val_zpow_eq_zpow_val]`. Use `congr 2`. Use `push_cast`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem deltaHalf_mul_unrTorus : ∀ (F : Type) [Field F] [NumberField F] (v : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers F)) [LocallyCompactSpace (v.adicCompletion F)] (n : ℕ) (α : Fin n → ℂˣ) (b : (borelGL (v.adicCompletion F) (Fin n)).Q), (((borelGL (v.adicCompletion F) (Fin n)).deltaHalf b : ℂˣ) : ℂ) * ((unrTorus (Valued.v : Valuation (v.adicCompletion F) (WithZero (Multiplicative ℤ))).toMonoidWithZeroHom α ((borelGL (v.adicCompletion F) (Fin n)).p b) : ℂˣ) : ℂ) = Formalism.UG.chiDelta F v (fun i => (α i : ℂ)) b.1 := by
   intro F _ _ v _ n α b

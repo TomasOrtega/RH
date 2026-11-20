@@ -17,13 +17,13 @@ variable {W : Type} [NormedAddCommGroup W] [InnerProductSpace ℂ W] [FiniteDime
   {Z : Type} [NormedAddCommGroup Z] [InnerProductSpace ℂ Z] [FiniteDimensional ℂ Z]
 
 /- English proof (translation)
-The claim follows from `(⟨(T : W →ₗ[ℂ] W), hT⟩ : W →ₗᵢ[ℂ] W).inner_map_map x y`.
+A detailed English derivation is pending.
 -/
 theorem avg_inner_map {T : W →L[ℂ] W} (hT : ∀ v, ‖T v‖ = ‖v‖) (x y : W) : ⟪T x, T y⟫_ℂ = ⟪x, y⟫_ℂ :=
   (⟨(T : W →ₗ[ℂ] W), hT⟩ : W →ₗᵢ[ℂ] W).inner_map_map x y
 
 /- English proof (translation)
-Establish `hemb : Topology.IsEmbedding (fun k : KG ε => toMK k)` using `(Formalism.REAL.isClosedEmbeddingMatrix n ε).1.isEmbedding.comp Topology.IsEmbedding.subtypeVal`. Establish `: SecondCountableTopology (Matrix (Fin n) (Fin n) ℂ)` using `inferInstanceAs (SecondCountableTopology (Fin n → Fin n → ℂ))`. Conclude with `hemb.isInducing.secondCountableTopology`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem avg_secondCountable (ε : Fin n → Bool) : SecondCountableTopology (KG ε) := by
   have hemb : Topology.IsEmbedding (fun k : KG ε => toMK k) :=
@@ -33,7 +33,7 @@ theorem avg_secondCountable (ε : Fin n → Bool) : SecondCountableTopology (KG 
   exact hemb.isInducing.secondCountableTopology
 
 /- English proof (translation)
-The claim follows from `((Formalism.REAL.isClosedEmbeddingMatrix n ε).1.isEmbedding.comp Topology.IsEmbedding.subtypeVal).continuous`.
+A detailed English derivation is pending.
 -/
 theorem avg_continuous_toMK (ε : Fin n → Bool) : Continuous (fun k : KG ε => toMK k) :=
   ((Formalism.REAL.isClosedEmbeddingMatrix n ε).1.isEmbedding.comp Topology.IsEmbedding.subtypeVal).continuous
@@ -42,7 +42,7 @@ def avgF (T : Mat n → (W →L[ℂ] W)) (S : Mat n → (Z →L[ℂ] Z)) (e : W)
   ⟪T (toMK k) e, w⟫_ℂ • S (toMK k) f
 
 /- English proof (translation)
-Establish `h1 : Continuous fun k : KG ε => T (toMK k) e` using `(hT.2.2 e).comp_continuous (avg_continuous_toMK ε) fun k => k.2`. Establish `h2 : Continuous fun k : KG ε => S (toMK k) f` using `(hS.2.2 f).comp_continuous (avg_continuous_toMK ε) fun k => k.2`. Conclude with `(h1.inner continuous_const).smul h2`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem avgF_continuous {T : Mat n → (W →L[ℂ] W)} {S : Mat n → (Z →L[ℂ] Z)}
     (hT : Formalism.MainNotions.S.IsURepOn (Formalism.REAL.Kset ε) T) (hS : Formalism.MainNotions.S.IsURepOn (Formalism.REAL.Kset ε) S) (e : W) (f : Z)
@@ -54,7 +54,7 @@ theorem avgF_continuous {T : Mat n → (W →L[ℂ] W)} {S : Mat n → (Z →L[�
   exact (h1.inner continuous_const).smul h2
 
 /- English proof (translation)
-Use `avg_secondCountable ε` as an intermediate fact. Conclude with `integrableOn_univ.1 ((avgF_continuous hT hS e f w).continuousOn.integrableOn_compact isCompact_univ)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem avgF_integrable {T : Mat n → (W →L[ℂ] W)} {S : Mat n → (Z →L[ℂ] Z)}
     (hT : Formalism.MainNotions.S.IsURepOn (Formalism.REAL.Kset ε) T) (hS : Formalism.MainNotions.S.IsURepOn (Formalism.REAL.Kset ε) S) (e : W) (f : Z)
@@ -81,9 +81,9 @@ theorem avgMapL_apply {T : Mat n → (W →L[ℂ] W)} {S : Mat n → (Z →L[ℂ
     (w : W) : avgMapL hT hS e f w = ∫ k, avgF T S e f w k ∂(muK ε) := rfl
 
 /- English proof (translation)
-Rewrite using `[avgMapL_apply, avgMapL_apply, ← (S (toMK g)).integral_comp_comm (avgF_integrable hT hS e f w), ← integral_mul_left_eq_self _ g]`. Use `congr 1`. Use function extensionality and compare the values at `k`. Establish `hm : toMK (g * k) = toMK g * toMK k` using `rfl`. Simplify using `only [avgF, hm, hT.1.2 _ g.2 _ k.2, hS.1.2 _ g.2 _ k.2, ContinuousLinearMap.comp_apply, map_smul]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[avg_inner_map (hT.2.1 _ g.2)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem avgMapL_intertwines {T : Mat n → (W →L[ℂ] W)} {S : Mat n → (Z →L[ℂ] Z)}
     (hT : Formalism.MainNotions.S.IsURepOn (Formalism.REAL.Kset ε) T) (hS : Formalism.MainNotions.S.IsURepOn (Formalism.REAL.Kset ε) S) (e : W) (f : Z)
@@ -98,19 +98,17 @@ theorem avgMapL_intertwines {T : Mat n → (W →L[ℂ] W)} {S : Mat n → (Z �
 end
 
 /- English proof (translation)
-Introduce `n ε W _ _ _ T Z _ _ _ S Γ hT hS hne`. Use `set b := stdOrthonormalBasis ℂ W`. Use `set c := stdOrthonormalBasis ℂ Z`. Set `φ : Fin (Module.finrank ℂ Z) → Z →L[ℂ] ℂ` to `fun j => LinearMap.toContinuousLinearMap ((innerₛₗ ℂ (c j)).comp Γ)`. Establish `hφ : ∀ j u, φ j u = ⟪c j, Γ u⟫_ℂ` using `fun j u => rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hpt : ∀ i j (k : KG ε), φ j (avgF T S (b i) (c j) (b i) k) = conj ⟪b i, T (toMK k) (b i)⟫_ℂ * ⟪c j, Γ (S (toMK k) (c j))⟫_ℂ`. Introduce `i j k`. Simplify using `[avgF, hφ, map_smul, inner_conj_symm]`. Establish `hint : ∀ i j, Integrable (fun k : KG ε => conj ⟪b i, T (toMK k) (b i)⟫_ℂ * ⟪c j, Γ (S (toMK k) (c j))⟫_ℂ) (muK ε)` using `fun i j => ((φ j).integrable_comp (avgF_integrable hT hS (b i) (c j) (b i))).congr (Filter.Eventually.of_forall fun k => hpt i j k)`. Establish `key : ∀ i j, ⟪c j, Γ (avgMapL hT hS (b i) (c j) (b i))⟫_ℂ = ∫ k, conj ⟪b i, T (toMK k) (b i)⟫_ℂ * ⟪c j, Γ (S (toMK k) (c j))⟫_ℂ ∂(muK ε)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `i j`. Rewrite using `[avgMapL_apply, ← hφ, ← (φ j).integral_comp_comm (avgF_integrable hT hS _ _ _)]`. Conclude with `integral_congr_ae (Filter.Eventually.of_forall fun k => hpt i j k)`. Establish `hsum : ∫ k : KG ε, conj (trK T (toMK k)) * LinearMap.trace ℂ Z (Γ ∘ₗ (S (toMK k) : Z →ₗ[ℂ] Z)) ∂(muK ε) = ∑ i, ∑ j, ⟪c j, Γ (avgMapL hT hS (b i) (c j) (b i))⟫_ℂ`. Simplify using `only [key]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hpw : ∀ k : KG ε, conj (trK T (toMK k)) * LinearMap.trace ℂ Z (Γ ∘ₗ (S (toMK k) : Z →ₗ[ℂ] Z)) = ∑ i, ∑ j, conj ⟪b i, T (toMK k) (b i)⟫_ℂ * ⟪c j, Γ (S (toMK k) (c j))⟫_ℂ`. Introduce `k`. Simplify using `only [trK, LinearMap.trace_eq_sum_inner _ b, LinearMap.trace_eq_sum_inner _ c, map_sum, Finset.sum_mul, Finset.mul_sum, LinearMap.comp_apply, ContinuousLinearMap.coe_coe]`. Conclude with `Finset.sum_comm`. Repeatedly rewrite using `[hpw]`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[integral_finsetSum _ fun i _ => integrable_finsetSum _ fun j _ => hint i j]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[integral_finsetSum _ fun j _ => hint i j]`. Rewrite `hne` using `[hsum]`. Take `⟨i, -, hi⟩` from `Finset.exists_ne_zero_of_sum_ne_zero hne`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨j, -, hj⟩` from `Finset.exists_ne_zero_of_sum_ne_zero hi`. Use `⟨avgMapL hT hS (b i) (c j), fun h0 => hj ?_, fun k hk v => ?_⟩` and prove the remaining obligations. Rewrite using `[h0, LinearMap.zero_apply, map_zero, inner_zero_right]`. Establish `hk' : k ∈ Set.range (fun g : KG ε => toMK g)` using `by rw [Formalism.REAL.range_toMK]; exact hk`. Take `⟨g, rfl⟩` from `hk'`.
-
-Conclude with `avgMapL_intertwines hT hS (b i) (c j) g v`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem tracePairing_nonzero_intertwiner : AvgMap := by
   intro n ε W _ _ _ T Z _ _ _ S Γ hT hS hne

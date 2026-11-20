@@ -20,7 +20,7 @@ noncomputable section
 namespace GlobalTheory.ClsCoreFromMix
 
 /- English proof (translation)
-Use function extensionality and compare the values at `v`. Simplify using `only [heisO, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem heisO_smul_loc {D : D7} (ψ : AddChar (AF D.host.F) ℂ) {S T : HSp D} (w : WO S T) (c : ℂ) (f : WO S T → ℂ) :
     heisO ψ S T w (c • f) = c • heisO ψ S T w f := by
@@ -29,7 +29,7 @@ theorem heisO_smul_loc {D : D7} (ψ : AddChar (AF D.host.F) ℂ) {S T : HSp D} (
   ring
 
 /- English proof (translation)
-Use function extensionality and compare the values at `w`. Simplify using `only [HypDec.mixS, heisO_smul_loc, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[← integral_const_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem mixS_smul_loc {D : D7} (ψ : AddChar (AF D.host.F) ℂ) {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) (T : HSp D)
     (μ : Measure (Mx D T.rank ρ)) (𝓕 : Set (Mx D T.rank ρ)) (c : ℂ) (f : WO S T → ℂ) (x : Mx D T.rank ρ) :
@@ -39,11 +39,11 @@ theorem mixS_smul_loc {D : D7} (ψ : AddChar (AF D.host.F) ℂ) {S S₀ : HSp D}
   rw [← integral_const_mul]
 
 /- English proof (translation)
-Use `⟨fun γ w => ?_, ?_, continuous_const.mul hΦ.cont, fun k L hL hf w => ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.smul_apply, smul_eq_mul, hΦ.quasi γ w]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨U, hU, h⟩` from `hΦ.level`. Use `⟨U, hU, fun u hu hu' => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `w`. Use `congrFun (h u hu hu') w` as an intermediate fact. Simplify using `only [heisO, Pi.smul_apply, smul_eq_mul] at this ⊢`. Rewrite using `[← this]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Conclude with `contDiff_const.mul (hΦ.smooth k L hL hf w)`.
+A detailed English derivation is pending.
 -/
 theorem isThetaFunO_smul_loc {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {Φ : WO S T → ℂ}
     (hΦ : IsThetaFunO ψ S T Φ) (c : ℂ) : IsThetaFunO ψ S T (c • Φ) := by
@@ -58,7 +58,7 @@ theorem isThetaFunO_smul_loc {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {S T : HS
   · exact contDiff_const.mul (hΦ.smooth k L hL hf w)
 
 /- English proof (translation)
-Introduce `i j`. Simplify using `only [Matrix.mul_apply, Finset.mul_sum, ← mul_assoc, h i]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem isHalf_mul {D : D7} {m n k : ℕ} {e : AE D} {u : Mx D m n} (h : IsHalf e u) (M : Mx D n k) :
     IsHalf e (u * M) := by
@@ -66,15 +66,15 @@ theorem isHalf_mul {D : D7} {m n k : ℕ} {e : AE D} {u : Mx D m n} (h : IsHalf 
   simp only [Matrix.mul_apply, Finset.mul_sum, ← mul_assoc, h i]
 
 /- English proof (translation)
-Introduce `D ψ hψ V V₀ W W₀ ρ σ dV dW vS p y β₁ g' Φ hg hΦ hmix hB1 hB2 hvac`. Establish `hH` using `GlobalTheory.HeisMixSource.heis_mixS D ψ hψ V V₀ W ρ dV vS Φ hΦ`. Establish `key : ∀ (w : WO V₀ W) (c : ℂ), heisO ψ V₀ W w g' = c • g' → heisO ψ V W (dV.ext0 W w) Φ = c • Φ`. Introduce `w c hw`. Establish `hth1` using `GlobalTheory.ThetaClosed.isThetaFunO_heisO_all hψ hΦ (dV.ext0 W w)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hth2 : IsThetaFunO ψ V W (c • Φ)` using `isThetaFunO_smul_loc hΦ c`. Use `(GlobalTheory.T.thetaFunction_determined_by_mixedCoordinates D ψ hψ V W _ _ hth1 hth2).1 V₀ ρ dV vS (fun x => ?_)` and prove the remaining obligations. Rewrite using `[hH.2.2.1 x w, hmix x, heisO_smul_loc, hw, mixS_smul_loc, hmix x, smul_comm]`. Use `⟨fun ξ hξ => key _ _ (hB1 ξ hξ), fun η hη => by rw [key _ 1 (by rw [one_smul]; exact hB2 η hη), one_smul], ?_, ?_⟩` and prove the remaining obligations. Introduce `u hu`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨w, hw, rfl⟩` from `AddSubgroup.mem_map.1 hu`. Establish `h2 : (2 • (((dV.ext0 W).comp (dW.inc0 V₀)) w)) = dV.ext0 W (2 • dW.inc0 V₀ w)`. Simplify using `only [AddMonoidHom.comp_apply, map_nsmul]`. Use `show heisO ψ V W _ Φ = Φ`. Rewrite using `[h2, key _ 1 (by rw [one_smul]; exact hvac.1 _ (AddSubgroup.mem_map_of_mem _ hw)), one_smul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `e he u hu hh`. Take `⟨w, hw, rfl⟩` from `AddSubgroup.mem_map.1 hu`. Establish `hh' : IsHalf e (dW.inc0 V₀ w)`. Use `isHalf_mul hh dV.j0` as an intermediate fact. Simplify `this` using `only [AddMonoidHom.comp_apply, HypDec.matrixExtendByZero_apply, Matrix.mul_assoc, HypDec.p0_j0, Matrix.mul_one]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Use `show heisO ψ V W _ Φ = Φ`. Rewrite using `[AddMonoidHom.comp_apply, key _ 1 (by rw [one_smul]; exact hvac.2 e he _ (AddSubgroup.mem_map_of_mem _ hw) hh'), one_smul]`.
+A detailed English derivation is pending.
 -/
 theorem main : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (V V₀ W W₀ : HSp D) (ρ σ : ℕ) (dV : HypDec V V₀ ρ) (dW : HypDec W W₀ σ) (vS : VolM D W.rank ρ) (p : Pieces V₀ W W₀ ρ σ) (y : Mx D V₀.rank σ) (β₁ : Mx D W.rank ρ → ℂ) (g' : WO V₀ W → ℂ) (Φ : WO V W → ℂ), IsThetaFunO ψ V₀ W g' → IsThetaFunO ψ V W Φ → (∀ x', dV.mixS W ψ vS.μ vS.𝓕 Φ x' = β₁ x' • g') → (∀ ξ ∈ p.B₁, heisO ψ V₀ W (dW.incX V₀ ξ) g' = ψ (symplO V₀ W (dW.incAdj V₀ y) (dW.incX V₀ ξ)) • g') → (∀ η ∈ p.B₂, heisO ψ V₀ W (dW.incY V₀ η) g' = g') → IsLatVac (heisO ψ V₀ W) (p.Γ₀.map (dW.inc0 V₀)) g' → (∀ ξ ∈ p.B₁, heisO ψ V W (dV.ext0 W (dW.incX V₀ ξ)) Φ = ψ (symplO V₀ W (dW.incAdj V₀ y) (dW.incX V₀ ξ)) • Φ) ∧ (∀ η ∈ p.B₂, heisO ψ V W (dV.ext0 W (dW.incY V₀ η)) Φ = Φ) ∧ IsLatVac (fun w f => heisO ψ V W w f) (p.Γ₀.map ((dV.ext0 W).comp (dW.inc0 V₀))) Φ := by
   intro D ψ hψ V V₀ W W₀ ρ σ dV dW vS p y β₁ g' Φ hg hΦ hmix hB1 hB2 hvac

@@ -18,7 +18,7 @@ namespace GlobalTheory.FiniteCovolume
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Break down `s.eq_empty_or_nonempty with rfl | ⟨b, hb⟩` into its components or cases. Establish `: a ≤ a - 1` using `h.2 (by simp)`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `(hf b).trans (h.1 ⟨b, hb, rfl⟩)`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 lemma nonneg_of_isLUB_image {β : Type} {f : β → ℝ} {s : Set β} {a : ℝ} (hf : ∀ b, 0 ≤ f b)
     (h : IsLUB (f '' s) a) : 0 ≤ a := by
@@ -28,21 +28,17 @@ lemma nonneg_of_isLUB_image {β : Type} {f : β → ℝ} {s : Set β} {a : ℝ} 
   · exact (hf b).trans (h.1 ⟨b, hb, rfl⟩)
 
 /- English proof (translation)
-Introduce `r X d hd τ0 S hS hirr hU`. Take `⟨δ, c, Ω, hδ, hc0, hc1, hΩ, hw⟩` from `GlobalTheory.height_rpow_neg_distortion_contraction r X d hd τ0 S hS hirr`. Use `⟨δ, hδ, fun α hα => ?_⟩` and prove the remaining obligations. Establish `hdet : ∀ y : {x // IsOrth X x}, ∀ τ : X.Ψ, (mat y.1 τ).det ≠ 0` using `fun y => (GlobalTheory.T.majorant_eq_sum_norm_sq_orthonormalFrame r X y.1 y.2).1`. Establish `hpos : ∀ y : {x // IsOrth X x}, ∀ W, 0 < d y.1 W` using `fun y W => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨m, hm, h⟩` from `GlobalTheory.HeightLower.exists_pos_le_height r X d hd y.1 (hdet y)`. Conclude with `hm.trans_le (h W)`. Set `t : S → {x // IsOrth X x} → {x // IsOrth X x}` to `fun a y => ⟨_, isOrth_update_mul_inv r X τ0 y.1 a.1 y.2 (hU a.1 a.2)⟩`. Establish `hfr : Module.finrank E (Fin r → E) = r` using `by simp`. Take `⟨C, hC, halt⟩` from `GlobalTheory.subspace_sup_alternative E (Fin r → E) {x // IsOrth X x} S r t (fun y W => d y.1 W ^ (-δ)) (fun i y => α i y.1) c Ω hfr hΩ (fun y W => Real.rpow_pos_of_pos (hpos y W) _) (fun i hi y => hα i hi y.1 (hdet y)) (fun y W₁ W₂ => by`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h` using `GlobalTheory.HeightSubmodular.height_submodular r X d hd y.1 (hdet y) W₁ W₂`. Rewrite using `[← Real.mul_rpow (hpos y _).le (hpos y _).le, ← Real.mul_rpow (hpos y _).le (hpos y _).le]`. Conclude with `Real.rpow_le_rpow_of_nonpos (mul_pos (hpos y _) (hpos y _)) h (by linarith))`. Use the proof step `(fun s y W => (hw y.1 (hdet y) W).1 s.1 s.2)`. Use the proof step `(fun y W h0 h1 => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `h` using `(hw y.1 (hdet y) W).2 h0 h1`. Rewrite `h` using `[← Finset.sum_coe_sort]`. Rewrite using `[Fintype.card_coe]`. Conclude with `h)`. Take `⟨m, hm, htop⟩` from `GlobalTheory.T.exists_pos_le_latticeHeight_bot_top r X d hd`.
+Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Take `⟨e, c', b, he, hc'0, hc'1, hb, hdr⟩` from `GlobalTheory.weighted_sum_drift_inequality {x // IsOrth X x} S r t (fun i y => α i y.1) c C (m ^ (-δ)) hc0 hc1 hC (fun i hi y => nonneg_of_isLUB_image (fun W => (Real.rpow_pos_of_pos (hpos y W) _).le) (hα i hi y.1 (hdet y))) (fun y => by`. Prove the components needed by the constructor for the conclusion. Use `(hα 0 (Nat.zero_le r) y.1 (hdet y)).2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨W, hW, rfl⟩`. Establish `hW' : W = ⊥` using `Submodule.finrank_eq_zero.1 hW`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Substitute using the available equality.
 
-Substitute `hW'` using the available equality. Conclude with `Real.rpow_le_rpow_of_nonpos hm (htop y.1 y.2).1 (by linarith)`. Use `(hα r le_rfl y.1 (hdet y)).2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨W, hW, rfl⟩`. Establish `hW' : W = ⊤` using `Submodule.eq_top_of_finrank_eq (hW.trans hfr.symm)`.
-
-Substitute `hW'` using the available equality. Conclude with `Real.rpow_le_rpow_of_nonpos hm (htop y.1 y.2).2 (by linarith))`. Use `halt`. Use `⟨e, c', b, he, hc'0, hc'1, hb, fun x hx => ?_⟩` and prove the remaining obligations. Establish `h` using `hdr ⟨x, hx⟩`.
-
-Rewrite `h` using `[Fintype.card_coe]`. Rewrite using `[← Finset.sum_coe_sort]`. Conclude with `h`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem weighted_sup_drift_on_orthonormal_frames :
     (∀ (r : ℕ) (X : Data E r) (d : Frame X.Ψ r → Submodule E (Fin r → E) → ℝ), (∀ x : Frame X.Ψ r, (∀ τ : X.Ψ, (mat x τ).det ≠ 0) → ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (w : ι → Fin r → E), LinearIndependent E w → (∀ a, w a ∈ X.Λ) → d x (Submodule.span E (Set.range w)) = ((∏ τ : X.Ψ, ((((mat x τ)⁻¹ * (Matrix.of fun k a => τ.1 (w a k)))ᴴ * ((mat x τ)⁻¹ * (Matrix.of fun k a => τ.1 (w a k)))).det.re)) / (((Submodule.span (𝓞 E) (Set.range w)).toAddSubgroup.relIndex (X.Λ.toAddSubgroup ⊓ (Submodule.span E (Set.range w)).toAddSubgroup)) : ℝ))) → ∀ (τ0 : X.Ψ) (S : Finset (Matrix (Fin r) (Fin r) ℂ)), (∀ a ∈ S, a.IsHermitian ∧ a.det ≠ 0 ∧ a⁻¹ ∈ S) → (∀ W : Submodule ℂ (Fin r → ℂ), (∀ a ∈ S, ∀ v ∈ W, (a * a).mulVec v ∈ W) → W = ⊥ ∨ W = ⊤) → (∀ a ∈ S, (a)ᵀ * (Matrix.diagonal fun k : Fin r => if (k : ℕ) < X.p0 then (1 : ℂ) else -1) * (a).map (starRingEnd ℂ) = (Matrix.diagonal fun k : Fin r => if (k : ℕ) < X.p0 then (1 : ℂ) else -1)) → ∃ δ : ℝ, 0 < δ ∧ ∀ α : ℕ → Frame X.Ψ r → ℝ, (∀ i ≤ r, ∀ x : Frame X.Ψ r, (∀ τ : X.Ψ, (mat x τ).det ≠ 0) → IsLUB ((fun W => d x W ^ (-δ)) '' {W | Module.finrank E W = i}) (α i x)) → ∃ (e : ℕ → ℝ) (c b : ℝ), (∀ i, 0 < e i) ∧ 0 ≤ c ∧ c < 1 ∧ 0 ≤ b ∧ ∀ x, IsOrth X x → ∑ a ∈ S, (∑ i ∈ Finset.Ioo 0 r, e i * α i (@Function.update X.Ψ (fun _ => Fin r → Fin r → ℂ) (Classical.decEq _) x τ0 (mat x τ0 * a⁻¹ : Matrix (Fin r) (Fin r) ℂ))) ≤ S.card * (c * (∑ i ∈ Finset.Ioo 0 r, e i * α i x) + b)) := by

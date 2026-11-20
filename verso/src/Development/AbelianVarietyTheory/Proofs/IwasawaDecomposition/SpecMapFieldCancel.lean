@@ -7,13 +7,13 @@ open GlobalTheory.Toroidal
 open Formalism.MainNotions.DIV.Cons (intO)
 
 /- English proof (translation)
-Take `⟨⟨p, φ⟩, rfl⟩` from `(Scheme.SpecToEquivOfField K X).symm.surjective y`. Take `⟨⟨p', φ'⟩, rfl⟩` from `(Scheme.SpecToEquivOfField K X).symm.surjective y'`. Simplify using `only [Scheme.SpecToEquivOfField_symm_apply] at h ⊢`. Establish `e : ∀ (q : X) (ψ : X.residueField q ⟶ CommRingCat.of K), spMap gam ≫ (Spec.map ψ ≫ X.fromSpecResidueField q) = (Scheme.SpecToEquivOfField C X).symm ⟨q, ψ ≫ CommRingCat.ofHom gam⟩`. Introduce `q ψ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Scheme.SpecToEquivOfField_symm_apply, spMap, Spec.map_comp, Category.assoc]`. Rewrite `h` using `[e, e]`. Establish `h2` using `(Scheme.SpecToEquivOfField C X).symm.injective h`. Simplify using `only [Sigma.mk.inj_iff] at h2`. Take `⟨rfl, h3⟩` from `h2`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Establish `h4 : φ = φ'`. Establish `h5 : φ ≫ CommRingCat.ofHom gam = φ' ≫ CommRingCat.ofHom gam` using `eq_of_heq h3`. Use extensionality with `x`. Apply `gam.injective` to reduce the goal to its premises. Use `congrArg (fun f => f.hom x) h5` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Simplify using `using this`. Rewrite using `[h4]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 -/
 theorem GlobalTheory.spec_map_field_cancel {K C : Type} [Field K] [Field C] (gam : K →+* C) {X : Scheme} (y y' : Sp K ⟶ X)
     (h : spMap gam ≫ y = spMap gam ≫ y') : y = y' := by
@@ -38,7 +38,7 @@ theorem GlobalTheory.spec_map_field_cancel {K C : Type} [Field K] [Field C] (gam
   rw [h4]
 
 /- English proof (translation)
-Introduce `gam _ y y' h` and use `GlobalTheory.spec_map_field_cancel gam y y' h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.spec_map_field_epi : ∀ {K C : Type} [Field K] [Field C] (gam : K →+* C) {X : Scheme} (y y' : Sp K ⟶ X), spMap gam ≫ y = spMap gam ≫ y' → y = y' :=
   fun gam _ y y' h => GlobalTheory.spec_map_field_cancel gam y y' h

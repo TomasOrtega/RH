@@ -5,7 +5,7 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.CharacterExtension.Unit
 namespace PI
 
 /- English proof (translation)
-The claim follows from `PI.CharExtendWork.charExtend_main`.
+A detailed English derivation is pending.
 -/
 theorem character_extension_exists : PI.CharExtend := PI.CharExtendWork.charExtend_main
 

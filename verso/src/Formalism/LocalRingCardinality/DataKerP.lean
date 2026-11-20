@@ -74,7 +74,7 @@ def LocalToGlobal₂.CmpIntAll {D : D7} {Gt : GatTies D} {c : LatCmp D} {Tw : Tw
     (Kp.cmp j '' (((Tw.fm u (D.what₂.muAt w)).lat j).L : Set ((Tw.fm u (D.what₂.muAt w)).lat j).V)) = Lv.Int j
 
 /- English proof (translation)
-The claim follows from `Kp.cmp_K j hj x _ ((Tw.fm u (D.what₂.muAt w)).KL_spec j hK x)`.
+A detailed English derivation is pending.
 -/
 theorem LocalToGlobal₂.cmp_KL {D : D7} {Gt : GatTies D} {c : LatCmp D} {Tw : TwForms D} {u : D.what₂.Word}
     {w : D.what₂.places.Pl} [Fact (D.what₂.places.resChar w).Prime]

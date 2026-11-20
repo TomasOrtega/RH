@@ -9,9 +9,9 @@ namespace ReciprocityTheory.Cheb
 variable {E : Type} [Field E] [NumberField E]
 
 /- English proof (translation)
-Use `set b := (basisUnitLattice E).ofZLatticeBasis ℝ (unitLattice E) with hb`. Use `⟨∑ i, ‖b i‖, Finset.sum_nonneg fun i _ => norm_nonneg _, fun x hx w => ?_⟩` and prove the remaining obligations. Establish `hsum : (∑ i, ucoord x i • b i) = logMap x`. Simplify `b.sum_repr (logMap x)` using `[ucoord, hb]`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations. Rewrite using `[_root_.norm_smul, Real.norm_eq_abs]`. Conclude with `mul_le_of_le_one_left (norm_nonneg _) (hx i).le`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_logMap_bound : ∃ B : ℝ, 0 ≤ B ∧ ∀ x : mixedSpace E, (∀ i, |ucoord x i| < 1) →
     ∀ w : {w : InfinitePlace E // w ≠ w₀}, |logMap x w| ≤ B := by
@@ -29,11 +29,9 @@ theorem exists_logMap_bound : ∃ B : ℝ, 0 ≤ B ∧ ∀ x : mixedSpace E, (�
       exact mul_le_of_le_one_left (norm_nonneg _) (hx i).le
 
 /- English proof (translation)
-Establish `hne` using `mixedEmbedding.norm_ne_zero_iff.mp hx`. Establish `hlog : Real.log (mixedEmbedding.norm x) = ∑ w : InfinitePlace E, (w.mult : ℝ) * Real.log (normAtPlace w x)`. Rewrite using `[mixedEmbedding.norm_apply, Real.log_prod (fun w _ => pow_ne_zero _ (hne w))]`. Simplify using `[Real.log_pow]`. Establish `hd : (Module.finrank ℚ E : ℝ) ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `(Module.finrank_pos (R := ℚ) (M := E)).ne'` after adjusting the coercions. Establish `hm : (∑ w : InfinitePlace E, (w.mult : ℝ)) = Module.finrank ℚ E`. Conclude with `InfinitePlace.sum_mult_eq` after adjusting the coercions. Repeatedly rewrite using `[mul_sub, Finset.sum_sub_distrib]`. Rewrite using `[← hlog, ← Finset.sum_mul, hm]`.
-
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem sum_mult_logDev {x : mixedSpace E} (hx : mixedEmbedding.norm x ≠ 0) :
     ∑ w : InfinitePlace E, (w.mult : ℝ) * (Real.log (normAtPlace w x) -
@@ -53,17 +51,15 @@ theorem sum_mult_logDev {x : mixedSpace E} (hx : mixedEmbedding.norm x ≠ 0) :
   ring
 
 /- English proof (translation)
-Take `⟨B, hB0, hB⟩` from `exists_logMap_bound (E := E)`. Use `⟨Fintype.card (InfinitePlace E) * B, by positivity, fun x hx => ?_⟩` and prove the remaining obligations. Establish `hN : mixedEmbedding.norm x ≠ 0` using `fun h => hx (by simp [uphi, h])`. Establish `hT : Tent (ucoord x) ≠ 0` using `by simpa [uphi, hN] using hx`. Establish `hc : ∀ i, |ucoord x i| < 1` using `abs_lt_one_of_Tent_ne_zero hT`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨hN, fun w => ?_⟩` and prove the remaining obligations. Use `set D : InfinitePlace E → ℝ := fun w => Real.log (normAtPlace w x) - Real.log (mixedEmbedding.norm x) * (Module.finrank ℚ E : ℝ)⁻¹ with hD`. Establish `hlm : ∀ v : {w : InfinitePlace E // w ≠ w₀}, logMap x v = (v.1.mult : ℝ) * D v.1` using `fun v => rfl`. Establish `hcard : (1 : ℝ) ≤ Fintype.card (InfinitePlace E)`. Conclude with `Fintype.card_pos` after adjusting the coercions.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Establish `key : |(w.mult : ℝ) * D w| ≤ Fintype.card (InfinitePlace E) * B`. Distinguish the cases in `hw : w = w₀`. Rewrite using `[hw]`. Establish `h0` using `sum_mult_logDev hN`. Rewrite `h0` using `[Fintype.sum_eq_add_sum_subtype_ne _ (w₀ : InfinitePlace E)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h1 : ((w₀ : InfinitePlace E).mult : ℝ) * D w₀ = -∑ v : {w : InfinitePlace E // w ≠ w₀}, logMap x v`. Simplify using `only [hlm]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[h1, abs_neg]`. Combine the equalities or inequalities in the displayed calculation.
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Fintype.card_subtype_le _` after adjusting the coercions. Use `hB x hc ⟨w, hw⟩` as an intermediate fact. Rewrite `this` using `[hlm]`. Conclude with `this.trans (le_mul_of_one_le_left hB0 hcard)`. Establish `hm : (1 : ℝ) ≤ w.mult` using `InfinitePlace.one_le_mult`.
-
-Rewrite `key` using `[abs_mul, abs_of_pos (by linarith : (0:ℝ) < w.mult)]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem exists_logDev_bound : ∃ C : ℝ, 0 ≤ C ∧ ∀ x : mixedSpace E, uphi x ≠ 0 →
     mixedEmbedding.norm x ≠ 0 ∧ ∀ w : InfinitePlace E, |Real.log (normAtPlace w x) -
@@ -104,15 +100,13 @@ theorem exists_logDev_bound : ∃ C : ℝ, 0 ≤ C ∧ ∀ x : mixedSpace E, uph
     _ ≤ _ := key
 
 /- English proof (translation)
-Take `⟨C, hC0, hC⟩` from `exists_logDev_bound (E := E)`. Use `⟨Real.exp (-(2 * C)), Real.exp_pos _, Real.exp_le_one_iff.mpr (by linarith), fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨hN, hD⟩` from `hC x hx`. Establish `hpos : ∀ w, 0 < normAtPlace w x` using `fun w => lt_of_le_of_ne (normAtPlace_nonneg w x) (mixedEmbedding.norm_ne_zero_iff.mp hN w).symm`. Establish `h1 : ∀ w, Real.exp (-(2 * C)) * ‖x‖ ≤ normAtPlace w x`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `w`. Take `⟨w', -, hw'⟩` from `Finset.exists_mem_eq_sup' Finset.univ_nonempty (fun w => normAtPlace w x)`. Rewrite using `[norm_eq_sup'_normAtPlace, hw']`. Establish `a` using `hD w`. Establish `b` using `hD w'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `a`, `b` using `[abs_le]`. Establish `hl : Real.log (normAtPlace w' x) - 2 * C ≤ Real.log (normAtPlace w x)` using `by linarith`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Real.exp_sub, Real.exp_log (hpos w'), Real.exp_neg]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Use `_ ≤ Real.exp (Real.log (normAtPlace w x)) := Real.exp_le_exp.mpr hl`. Use `_ = normAtPlace w x := Real.exp_log (hpos w)`. Use `⟨h1, ?_⟩` and prove the remaining obligations. Rewrite using `[← mul_pow, mixedEmbedding.norm_apply, ← InfinitePlace.sum_mult_eq, ← Finset.prod_pow_eq_pow_sum]`. Use `Finset.prod_le_prod (fun w _ => by positivity) fun w _ => ?_` and prove the remaining obligations.
-
-Conclude with `pow_le_pow_left₀ (by positivity) (h1 w) _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_support_bound : ∃ c₀ : ℝ, 0 < c₀ ∧ c₀ ≤ 1 ∧ ∀ x : mixedSpace E, uphi x ≠ 0 →
     (∀ w : InfinitePlace E, c₀ * ‖x‖ ≤ normAtPlace w x) ∧

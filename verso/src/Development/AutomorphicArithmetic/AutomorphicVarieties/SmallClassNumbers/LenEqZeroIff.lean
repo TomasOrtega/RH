@@ -13,7 +13,7 @@ theorem QO_eq (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] [Algebra ℤ_[l] 
     QO l O = (O ⊗[ℤ_[l]] (ℚ_[l] ⧸ ZlSub l)) := rfl
 
 /- English proof (translation)
-Apply the tactic sequence `first | rfl | exact (Submodule.one_eq_range).symm | (ext x; simp [ZlSub, Submodule.mem_one])`.
+A detailed English derivation is pending.
 -/
 theorem ZlSub_eq (l : ℕ) [Fact l.Prime] : ZlSub l = (1 : Submodule ℤ_[l] ℚ_[l]) := by
   first | rfl | exact (Submodule.one_eq_range).symm | (ext x; simp [ZlSub, Submodule.mem_one])
@@ -31,7 +31,7 @@ def Vanish : Prop :=
     ∃ m, ∀ g, z g = chi Ω l c e g • m - m
 
 /- English proof (translation)
-Establish `h : (((chiO ℚ Ω l c.O ^ (-(e : ℤ))) g : c.Oˣ) : c.O) = chi Ω l c e g`. Rewrite using `[MonoidHom.zpow_apply, chiO, MonoidHom.comp_apply, ← map_zpow]`. Both sides reduce to the same expression. Rewrite using `[scalRep_apply, h]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem act (g : Ω ≃ₐ[ℚ] Ω) (m : QO l c.O) : twist₂ l (chiO ℚ Ω l c.O ^ (-(e : ℤ))) g m = chi Ω l c e g • m := by
   have h : (((chiO ℚ Ω l c.O ^ (-(e : ℤ))) g : c.Oˣ) : c.O) = chi Ω l c e g := by
@@ -40,15 +40,15 @@ theorem act (g : Ω ≃ₐ[ℚ] Ω) (m : QO l c.O) : twist₂ l (chiO ℚ Ω l c
   rw [scalRep_apply, h]
 
 /- English proof (translation)
-Rewrite using `[len, Module.length_eq_zero_iff, Submodule.subsingleton_iff_eq_bot, Submodule.eq_bot_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `H z hz hc hD hI`. Establish `hZ : (fun u : (⊤ : Subgroup (G ℚ Ω)) => z u.1) ∈ Z1U (twist₂ l (chiO ℚ Ω l c.O ^ (-(e : ℤ)))) ⊤`. Rewrite using `[mem_Z1_iff_cocycle]`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨hz.comp continuous_subtype_val, fun g h => (hc g.1 h.1).trans (congrArg (z g.1 + ·) (act Ω l c e g.1 _).symm)⟩`. Establish `h0` using `H (Submodule.Quotient.mk ⟨_, hZ⟩) (mk_mem_locSel.2 (by`. Introduce and unpack `D (⟨A, hA, rfl⟩ | ⟨A, rfl⟩)`. Take `⟨m, hm⟩` from `hD A hA`. Conclude with `⟨m, fun u hu => (hm u.1 hu).trans (congrArg (· - m) (act Ω l c e u.1 m).symm)⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨m, hm⟩` from `hI A`. Conclude with `⟨m, fun u hu => (hm u.1 hu.1 hu.2).trans (congrArg (· - m) (act Ω l c e u.1 m).symm)⟩))`. Take `⟨m, hm⟩` from `(mk_eq_mk _ ⊤ ⟨_, hZ⟩ 0).1 h0`. Conclude with `⟨m, fun g => by`. Use `hm ⟨g, trivial⟩` as an intermediate fact.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Rewrite `this` using `[act]`. Simplify using `using this⟩`. Introduce `H x hx`. Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Establish `hz` using `(mem_Z1_iff_cocycle _ _).1 z.2`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hl` using `mk_mem_locSel.1 hx`. Take `⟨m, hm⟩` from `H (fun g => z.1 ⟨g, trivial⟩) (hz.1.comp (continuous_id.subtype_mk _)) (fun g h => (hz.2 ⟨g, trivial⟩ ⟨h, trivial⟩).trans (congrArg (z.1 ⟨g, trivial⟩ + ·) (act Ω l c e g _))) (fun A hA => (hl _ (Or.inl ⟨A, hA, rfl⟩)).imp fun m hm g hg => (hm ⟨g, trivial⟩ hg).trans (congrArg (· - …`. Use `(mk_eq_mk _ ⊤ z 0).2 ⟨m, fun u => ?_⟩` and prove the remaining obligations. Rewrite using `[act]`. Simplify using `using hm u.1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem len_eq_zero_iff : len Ω l c e = 0 ↔ Vanish Ω l c e := by
   rw [len, Module.length_eq_zero_iff, Submodule.subsingleton_iff_eq_bot, Submodule.eq_bot_iff]
@@ -88,11 +88,11 @@ def Large : Prop :=
       C * ((e : ℝ) + 1) ^ A < Real.log (l : ℕ) → Vanish Ω l (c l) e
 
 /- English proof (translation)
-Take `⟨C, A, h⟩` from `h`. Use `⟨C, A, fun Ω _ _ _ e he hev c l h5 hg h1 hlt => (len_eq_zero_iff Ω l (c l) e).1 ?_⟩` and prove the remaining obligations. Take `⟨ha, hb⟩` from `h Ω e he hev c {l} (fun l' hl' => by rw [Finset.mem_singleton.1 hl']; exact ⟨h5, hg⟩)`. Rewrite `hb` using `[Finset.sum_singleton, h1]`. Establish `hf` using `ha l (Finset.mem_singleton_self _)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `h0`. Establish `h2 : 1 ≤ (len Ω l (c l) e).toNat` using `Nat.one_le_iff_ne_zero.2 fun h' => by`. Break down `ENat.toNat_eq_zero.1 h' with h' | h'` into its components or cases. Conclude with `h0 h'`. Conclude with `hf h'`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : (1 : ℝ) ≤ (len Ω l (c l) e).toNat` using `by exact_mod_cast h2`. Establish `h4` using `Real.log_natCast_nonneg (l : ℕ)`. Simplify using `only [ENat.toNat_one, Nat.cast_one, div_one] at hb`. Use the polynomial consequences of the given equalities and inequalities.
+Simplify using the standard rewrite rules. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem large_of (h : Bound) : Large := by
   obtain ⟨C, A, h⟩ := h
@@ -111,7 +111,7 @@ theorem large_of (h : Bound) : Large := by
   nlinarith
 
 /- English proof (translation)
-Set `e` to `Algebra.botEquivOfInjective (R := ℤ_[l]) (A := PadicAlgCl l) (by`. Rewrite using `[IsScalarTower.algebraMap_eq ℤ_[l] ℚ_[l] (PadicAlgCl l)]`. Conclude with `(algebraMap ℚ_[l] (PadicAlgCl l)).injective.comp (IsFractionRing.injective ℤ_[l] ℚ_[l]))`. Conclude with `⟨⟨⊥, IsDiscreteValuationRing.RingEquivClass.isDiscreteValuationRing e.symm, Module.Finite.equiv e.symm.toLinearEquiv⟩, rfl⟩`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_coef (l : ℕ) [Fact l.Prime] : ∃ c : Coef l, c.O = ⊥ := by
   let e := Algebra.botEquivOfInjective (R := ℤ_[l]) (A := PadicAlgCl l) (by

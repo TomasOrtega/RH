@@ -19,21 +19,17 @@ open GlobalTheory.ConeArchBCont GlobalTheory.ArchUniq GlobalTheory.ConeArchB Glo
 open scoped Classical
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hKP B a b G G₁ H H' hC X om om' om₁ om₁' hT hT₁ e' he ei' ev' _ hev hloc' K hK μKI μI _ hμ f y`. Establish `hP : GlobalTheory.FunPr.Hypotheses₂` using `hKP.base`. Establish `hM` using `hT.geo.hM'`. Establish `hψ` using `hT.base.std`. Establish `hKc : IsCompact (K : Set (UA σ G.V'.J))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨K', _, _, hK', hc, -, -⟩` from `GlobalTheory.StabHaar.stabEx hP F E σ B _ G.V' _ _ hT.base hT.geo.hV'`. Rewrite using `[show K = K' from Subgroup.ext fun g => (hK g).trans (hK' g).symm]` and apply the resulting hypothesis. Establish `hSB : ∀ v, G.M'.vac v ∈ SB _` using `fun v => (hM.vac v).1`. Establish `hei : ∀ f, e' (pure f G.M'.vac) = pure (ei' f) G₁.M'.vac` using `fun f => by`. Rewrite using `[hloc' f _ hSB (Eventually.of_forall fun _ => rfl)]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg _ (funext fun v => (hev v).1)`. Use `set z := (a - (b + 2)) / 2 + 1 with hz`. Take `⟨N, hN⟩` from `GlobalTheory.ArchIdeleDecay.integrable_absE_pow_div F E σ B hT.base μI hμ z (by omega)`. Take `⟨s, C₄, h4⟩` from `shift_decay_lin hT.base hT.geo.hV' hC.hH hC.hH' hM hT₁.geo.hM' he hei 0 0 N`. Take `⟨s', C₃, h3⟩` from `locOpInf_unif_bound_of_weil hP G.M' hT.base.cm hψ hT.weil' (isCompact_KAt hKc (evI F)) (fun k hk => hk.2) (fun k hk => inv_mem hk) s`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `set q' := s'.sup (schwartzSeminormFamily ℂ (Fin (b + 2) × Fin (a + (b + 2)) → mixedEmbedding.mixedSpace F) ℂ)`. Use `⟨fun l => max C₄ 0 * max C₃ 0 * q' f * ((absE F E l.1 : ℝ) ^ z / (1 + ∑ w, ‖piInf (B.emb w) (l.1 : AE F E)‖) ^ N), hN.const_mul _, fun k hk l => ?_⟩` and prove the remaining obligations. Use `set q := s.sup (schwartzSeminormFamily ℂ (Fin (b + 2) × Fin (a + (b + 2)) → mixedEmbedding.mixedSpace F) ℂ)`. Use `set P : ℝ := (1 + ∑ w, ‖piInf (B.emb w) (l.1 : AE F E)‖) ^ N with hPdef`. Establish `hP0 : 0 < P` using `pow_pos (by positivity) _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn : ‖(X.ν l.1 : ℂ) * ((absE F E l.1 : ℝ) : ℂ) ^ z‖ = (absE F E l.1 : ℝ) ^ z`. Rewrite using `[norm_mul, Circle.norm_coe, one_mul, norm_pow, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (by positivity)]`. Establish `h4'` using `h4 (locOpInf (om' (k, 1)) f) l.1`. Establish `h3'` using `h3 k hk f`. Establish `hq0 : 0 ≤ q (locOpInf (om' (k, 1)) f)` using `apply_nonneg _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hq0' : 0 ≤ q' f` using `apply_nonneg _ _`. Use `set S := ei' (locOpInf (G.M'.co.rho B.ψ (partInf F (shiftB σ H H' l.1))) (locOpInf (om' (k, 1)) f))`. Use `set Y := SchwartzMap.seminorm ℂ 0 0 S`. Establish `hY : Y ≤ max C₄ 0 * (max C₃ 0 * q' f) / P`. Rewrite using `[le_div_iff₀ hP0, mul_comm]`.
-
-Combine the equalities or inequalities in the displayed calculation. Use `mul_le_mul_of_nonneg_left (h3'.trans ?_) (le_max_right _ _)` and prove the remaining obligations. Conclude with `mul_le_mul_of_nonneg_right (le_max_left _ _) hq0'`. Establish `e1 : coneInfInt B G.M' om' ei' (shiftB σ H H') X.ν z f k l.1 y = ((X.ν l.1 : ℂ) * ((absE F E l.1 : ℝ) : ℂ) ^ z) * S y` using `rfl`. Establish `hA : 0 ≤ (absE F E l.1 : ℝ) ^ z` using `by positivity`.
-
-Rewrite using `[e1, norm_mul, hn]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem coneInfInt_bound : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     (_hKP : KP) (B : Base F E) {a b : ℕ} {G : Geo σ a (b + 2)} {G₁ : Geo σ a b} {H : Plane E (b + 2) b}

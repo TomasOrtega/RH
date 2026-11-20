@@ -16,14 +16,14 @@ Both sides reduce to the same expression.
 theorem nrmAbs_apply (x : P.adicCompletion L) : nrmAbs P x = ‖x‖ := rfl
 
 /- English proof (translation)
-The claim follows from `FinitePlace.norm_def (v := P) x`.
+A detailed English derivation is pending.
 -/
 theorem nrmAbs_eq_toNNReal (x : P.adicCompletion L) :
     nrmAbs P x = WithZeroMulInt.toNNReal (NumberField.HeightOneSpectrum.absNorm_ne_zero P) (Valued.v x) :=
   FinitePlace.norm_def (v := P) x
 
 /- English proof (translation)
-Establish `hv : Valued.v x ≠ 0` using `by simpa using hx`. Rewrite using `[nrmAbs_eq_toNNReal, WithZeroMulInt.toNNReal_neg_apply _ hv]`. Take `⟨n, hn⟩ : ∃ n : ℤ, Valued.v x = WithZero.exp n` from `⟨_, (WithZero.exp_log hv).symm⟩`. Simplify using `only [hn, WithZero.log_exp]`. Use `push_cast`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
 Both sides reduce to the same expression.
 -/
@@ -37,7 +37,7 @@ theorem nrmAbs_eq_zpow {x : P.adicCompletion L} (hx : x ≠ 0) :
   rfl
 
 /- English proof (translation)
-Establish `hx : x ≠ 0`. Introduce and unpack `rfl`. Rewrite `h` using `[map_zero]`. Conclude with `WithZero.exp_ne_zero h.symm`. Rewrite using `[nrmAbs_eq_zpow P hx, h, WithZero.log_exp]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nrmAbs_of_valuation_eq_exp {x : P.adicCompletion L} {n : ℤ} (h : Valued.v x = WithZero.exp n) :
     nrmAbs P x = (Ideal.absNorm P.asIdeal : ℝ) ^ n := by
@@ -48,21 +48,21 @@ theorem nrmAbs_of_valuation_eq_exp {x : P.adicCompletion L} {n : ℤ} (h : Value
   rw [nrmAbs_eq_zpow P hx, h, WithZero.log_exp]
 
 /- English proof (translation)
-Rewrite using `[nrmAbs_eq_toNNReal, ← NNReal.coe_one, NNReal.coe_le_coe]`. Conclude with `WithZeroMulInt.toNNReal_le_one_iff (NumberField.HeightOneSpectrum.one_lt_absNorm_nnreal P)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nrmAbs_le_one_iff (x : P.adicCompletion L) : nrmAbs P x ≤ 1 ↔ Valued.v x ≤ 1 := by
   rw [nrmAbs_eq_toNNReal, ← NNReal.coe_one, NNReal.coe_le_coe]
   exact WithZeroMulInt.toNNReal_le_one_iff (NumberField.HeightOneSpectrum.one_lt_absNorm_nnreal P)
 
 /- English proof (translation)
-Rewrite using `[nrmAbs_eq_toNNReal, ← NNReal.coe_one, NNReal.coe_inj]`. Conclude with `WithZeroMulInt.toNNReal_eq_one_iff _ _ (NumberField.HeightOneSpectrum.one_lt_absNorm_nnreal P).ne'`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nrmAbs_eq_one_iff (x : P.adicCompletion L) : nrmAbs P x = 1 ↔ Valued.v x = 1 := by
   rw [nrmAbs_eq_toNNReal, ← NNReal.coe_one, NNReal.coe_inj]
   exact WithZeroMulInt.toNNReal_eq_one_iff _ _ (NumberField.HeightOneSpectrum.one_lt_absNorm_nnreal P).ne'
 
 /- English proof (translation)
-The claim follows from `continuous_norm`.
+A detailed English derivation is pending.
 -/
 theorem continuous_nrmAbs : Continuous (nrmAbs P) := continuous_norm
 

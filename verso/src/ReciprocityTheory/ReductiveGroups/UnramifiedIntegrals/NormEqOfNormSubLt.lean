@@ -9,20 +9,18 @@ open Polynomial Finset
 variable (l : ℕ) [Fact l.Prime]
 
 /- English proof (translation)
-Use `IsUltrametricDist.norm_add_eq_max_of_norm_ne_norm (x := a - b) (y := b) h.ne` as an intermediate fact. Rewrite `this` using `[sub_add_cancel, max_eq_right h.le]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem norm_eq_of_norm_sub_lt' {a b : ℂ_[l]} (h : ‖a - b‖ < ‖b‖) : ‖a‖ = ‖b‖ := by
   have := IsUltrametricDist.norm_add_eq_max_of_norm_ne_norm (x := a - b) (y := b) h.ne
   rwa [sub_add_cancel, max_eq_right h.le] at this
 
 /- English proof (translation)
-Establish `hsplit : (P.roots.map fun a => X - C a).prod = P` using `prod_multiset_X_sub_C_of_monic_of_roots_card_eq hP IsAlgClosed.card_roots_eq_natDegree`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Establish `key : ∀ s : Multiset ℂ_[l], (∀ a ∈ s, 1 ≤ ‖x - a‖) → 1 ≤ ‖((s.map fun a => X - C a).prod).eval x‖`. Introduce `s`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `s using Multiset.induction_on with`. Consider the case `empty => intro _`. Simplify using the standard rewrite rules. Consider the case `cons a s ih`. Introduce `hs`.
+Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Multiset.map_cons, Multiset.prod_cons, eval_mul, norm_mul]`. Simplify using `only [eval_sub, eval_X, eval_C]`. Conclude with `one_le_mul_of_one_le_of_one_le (hs a (Multiset.mem_cons_self _ _)) (ih fun b hb => hs b (Multiset.mem_cons_of_mem hb))`. Use `key P.roots (fun a ha => hcon a ((mem_roots hP.ne_zero).1 ha))` as an intermediate fact. Rewrite `this` using `[hsplit]`.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_root_near (P : ℂ_[l][X]) (hP : P.Monic) (x : ℂ_[l]) (h : ‖P.eval x‖ < 1) :
     ∃ a, P.IsRoot a ∧ ‖x - a‖ < 1 := by
@@ -46,9 +44,9 @@ theorem exists_root_near (P : ℂ_[l][X]) (hP : P.Monic) (x : ℂ_[l]) (h : ‖P
   linarith
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Establish `e : y ^ (k + 1) - 1 = y * (y ^ k - 1) + (y - 1)` using `by ring`. Rewrite using `[e]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le ?_ le_rfl)` and prove the remaining obligations. Rewrite using `[norm_mul, hy, one_mul]`. Conclude with `ih`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_pow_sub_one_le {y : ℂ_[l]} (hy : ‖y‖ = 1) (k : ℕ) : ‖y ^ k - 1‖ ≤ ‖y - 1‖ := by
   induction k with
@@ -61,9 +59,9 @@ theorem norm_pow_sub_one_le {y : ℂ_[l]} (hy : ‖y‖ = 1) (k : ℕ) : ‖y ^ 
     exact ih
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Establish `e : (∑ i ∈ range (k + 1), y ^ i) - ((k + 1 : ℕ) : ℂ_[l]) = ((∑ i ∈ range k, y ^ i) - k) + (y ^ k - 1)`. Rewrite using `[sum_range_succ]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le ih (norm_pow_sub_one_le l hy k))`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_geom_sum_sub_le {y : ℂ_[l]} (hy : ‖y‖ = 1) (k : ℕ) :
     ‖(∑ i ∈ range k, y ^ i) - k‖ ≤ ‖y - 1‖ := by
@@ -77,9 +75,9 @@ theorem norm_geom_sum_sub_le {y : ℂ_[l]} (hy : ‖y‖ = 1) (k : ℕ) :
     exact (IsUltrametricDist.norm_add_le_max _ _).trans (max_le ih (norm_pow_sub_one_le l hy k))
 
 /- English proof (translation)
-Establish `hy1 : ‖y‖ = 1`. Use `norm_eq_of_norm_sub_lt' l (a := y) (b := 1) (by rwa [norm_one])` as an intermediate fact. Rewrite `this` using `[norm_one]`. Then use the resulting hypothesis. Use `norm_geom_sum_sub_le l hy1 m` as an intermediate fact. Rewrite using `[← hm]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `norm_eq_of_norm_sub_lt' l (by rw [hm]; exact lt_of_le_of_lt this hy)`.
+A detailed English derivation is pending.
 -/
 theorem norm_geom_sum_eq_one {y : ℂ_[l]} (hy : ‖y - 1‖ < 1) {m : ℕ} (hm : ‖(m : ℂ_[l])‖ = 1) :
     ‖∑ i ∈ range m, y ^ i‖ = 1 := by

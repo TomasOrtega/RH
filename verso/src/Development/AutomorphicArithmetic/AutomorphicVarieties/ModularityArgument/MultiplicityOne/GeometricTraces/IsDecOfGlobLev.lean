@@ -31,9 +31,9 @@ namespace UpperTheory.V.Z.Mult
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
 
 /- English proof (translation)
-Establish `hf : forms S lam K₁ = forms S lam K₂`. Unfold `forms`. Rewrite using `[h]`. Unfold `IsDec at hd ⊢`. Rewrite using `[← hf, ← h]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hd`.
+A detailed English derivation is pending.
 -/
 private theorem isDec_of_globLev {S : Set (Pl E)} {lam : InfinitePlace E → DomWeight n}
     {K₁ K₂ : ∀ w : Pl E, Subgroup (UL n w)} (h : globLev S K₁ = globLev S K₂) {ι : Type}
@@ -46,16 +46,16 @@ private theorem isDec_of_globLev {S : Set (Pl E)} {lam : InfinitePlace E → Dom
   exact hd
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.1, fun k hk x => h.2 k (hle hk) x⟩`.
+Supply the required witnesses or components.
 -/
 private theorem isHecke_mono {G : Type} [Group G] [TopologicalSpace G] {K₁ K₂ : Subgroup G} (hle : K₁ ≤ K₂) {f : G → ℂ}
     (h : IsHecke K₂ f) : IsHecke K₁ f :=
   ⟨h.1, fun k hk x => h.2 k (hle hk) x⟩
 
 /- English proof (translation)
-Take `⟨x, hx, h0⟩` from `(Submodule.ne_bot_iff _).1 h`. Use `(Submodule.ne_bot_iff _).2 ⟨e x, GlobalTheory.LGrp.mem_fixed.2 fun k hk => ?_, fun h1 => h0 ?_⟩` and prove the remaining obligations. Establish `h2` using `GlobalTheory.LGrp.mem_fixed.1 hx k hk`. Establish `h3 : e (ρ (φ k) x) = ρ' (φ k) (e x)` using `LinearMap.congr_fun (e.isIntertwining' (φ k)) x`. Establish `h2' : ρ (φ k) x = x` using `h2`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `ρ' (φ k) (e x) = e x`. Rewrite using `[← h3, h2']`. Conclude with `e.toLinearEquiv.map_eq_zero_iff.1 h1`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem fixed_equiv {G H V W : Type} [Group G] [Group H] [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
     {ρ : Representation ℂ G V} {ρ' : Representation ℂ G W} (e : ρ.Equiv ρ') (φ : H →* G) (K : Subgroup H)
@@ -72,45 +72,39 @@ private theorem fixed_equiv {G H V W : Type} [Group G] [Group H] [AddCommGroup V
 end UpperTheory.V.Z.Mult
 
 /- English proof (translation)
-Introduce `hId hCA hLT hGT hLI hLc hCh hOS hMu E _ _ _ hU n hn hn4 lam`. Take `⟨a, ha, hA⟩` from `hId E hU n hn hn4 lam`. Take `⟨μ, e, hμ⟩` from `hMu E hU`. Establish `key : ∀ π : CuspSub E n, (CG.mk π).IsRegAlg → GlobalTheory.ContraPair.DualIsConj π → (∀ v, π.HasInfChar v.embedding (infOfWeight (lam v))) → (∀ w, ¬ IsSplitAt w → ∃ B, (CG.mk π).HasSat w B) → ∀ S : Set (Pl E), IsSection S → ∀ K' : ∀ w : Pl E, Subgroup (UL n w), IsLevelFam (fun w …`. Introduce `π hreg hdual hinf hunr S hS K' hK' hKn hfix ι _ σ hDec`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨Z, B, τ, w₀, f₀, hZ, hZK, hoff, hτ, hw₀, hf₀, htr₀, hsep⟩` from `hCh E n hn π hunr μ e hμ S hS K' hK' hKn`. Establish `hKLo : ∀ w, IsOpen (KL n w : Set (UL n w))` using `fun w => (GlobalTheory.BCT.LocCompU.isOpen_isCompact_KL hU n w).1`. Take `⟨K₀, hK₀o, hK₀le, hK₀⟩` from `hLc E n w₀ (hZ w₀ hw₀).2 f₀ hf₀`. Take `⟨K₁, hK₁Z, hK₁o⟩ : ∃ K₁ : ∀ w : Pl E, Subgroup (UL n w), (∀ w ∈ Z, K₁ w = K' w) ∧ ∀ w, w ∉ Z → K₁ w = KL n w` from `⟨fun w => if w ∈ Z then K' w else KL n w, fun w h => if_pos h, fun w h => if_neg h⟩`. Establish `hK₁ : IsLevelFam (fun w : Pl E => MonoidHom.id (UL n w)) (KL n) K₁`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨fun w => ?_, ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : w ∈ Z`. Rewrite using `[hK₁Z w h]`. Conclude with `hK'.1 w`. Rewrite using `[hK₁o w h]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨hKLo w, le_rfl, fun k hk => hk⟩`. Use `eventually_cofinite.2 (Z.finite_toSet.subset fun w hw => ?_)` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Conclude with `hw (hK₁o w h)`. Take `⟨K₂, hK₂w, hK₂⟩ : ∃ K₂ : ∀ w : Pl E, Subgroup (UL n w), K₂ w₀ = K₁ w₀ ⊓ K₀ ∧ ∀ w, w ≠ w₀ → K₂ w = K₁ w` from `⟨Function.update K₁ w₀ (K₁ w₀ ⊓ K₀), Function.update_self _ _ _, fun w h => Function.update_of_ne h _ _⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Establish `hle : ∀ w, K₂ w ≤ K₁ w` using `fun w => by`. Distinguish the cases in `h : w = w₀`. Substitute `h` using the available equality. Rewrite using `[hK₂w]`. Conclude with `inf_le_left`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hK₂ w h]`. Establish `hK₂o : ∀ w, w ∉ Z → K₂ w = KL n w` using `fun w h => by`. Rewrite using `[hK₂ w (fun e => h (e ▸ hw₀)), hK₁o w h]`. Establish `hK₂L : IsLevelFam (fun w : Pl E => MonoidHom.id (UL n w)) (KL n) K₂`. Use `⟨fun w => ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h : w = w₀`. Substitute `h` using the available equality. Rewrite using `[hK₂w]`. Use `⟨?_, inf_le_left.trans (hK₁.1 w).2.1, fun k hk => hk⟩` and prove the remaining obligations. Rewrite using `[Subgroup.coe_inf]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `(hK₁.1 w).1.inter hK₀o`. Rewrite using `[hK₂ w h]`. Conclude with `hK₁.1 w`. Use `eventually_cofinite.2 (Z.finite_toSet.subset fun w hw => ?_)` and prove the remaining obligations. Assume the negation of the conclusion as `h`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `hw (hK₂o w h)`. Establish `hg1 : globLev S K' = globLev S K₁` using `hOS E n S K' K₁ fun w hw => by`. Distinguish the cases in `h : w ∈ Z`. Conclude with `(hK₁Z w h).symm`. Rewrite using `[hK₁o w h]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hZK w hw h`. Establish `hDec₁ : IsDec S lam K₁ σ` using `isDec_of_globLev hg1 hDec`. Take `⟨-, ι₂, _, σ₂, d1, d2, d3, -⟩` from `GlobalTheory.T.unitaryAutForms_weight_level_finite_sum_fixed_vectors E hU n hn S hS lam K₂ hK₂L`. Establish `hDec₂ : IsDec S lam K₂ σ₂` using `⟨d1, d2, d3⟩`. Establish `hfx : ∀ w ∈ Z, fixed ((τ w).ρ.comp (UL n w).subtype) (K₁ w) ≠ ⊥` using `fun w hw => by`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Take `⟨t, ht, hne⟩` from `hfix w (hZ w hw).1 (hZ w hw).2`. Take `⟨eq⟩` from `GlobalTheory.CuspRep.LocUniq.isLocComp_unique π w t (τ w) ht (hτ w hw)`. Rewrite using `[hK₁Z w hw]`. Conclude with `fixed_equiv eq _ _ hne`. Establish `hg : ∀ w : Pl E, ∃ g : GLw n w → ℂ, w ∈ Z → Lc (KGL w n) g ∧ (∀ K ≤ K₁ w, IsHecke K fun x : UL n w => g x.1) ∧ trc (τ w).ρ (KGL w n) g ≠ 0` using `fun w => by`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hw : w ∈ Z`. Take `⟨g, h1, h2, h3⟩` from `hLI E n w (hZ w hw).2 (K₁ w) (hK₁.1 w).1 (hK₁.1 w).2.1`. Conclude with `⟨g, fun _ => ⟨h1, h2, h3 _ (hfx w hw)⟩⟩`. Conclude with `⟨0, fun h => absurd h hw⟩`. Use `choose g hg using hg`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Establish `hc₂ : (Nat.card {i // At π (σ₂ i)} : ℝ) = a`. Use `hA π hreg hdual hinf μ e hμ S hS Z hZ B τ (Function.update g w₀ f₀) hoff (fun w hw => ⟨hτ w hw, ?_⟩) ⟨w₀, hw₀, ?_⟩ K₂ hK₂L hK₂o (fun w hw => ?_) ι₂ σ₂ hDec₂` and prove the remaining obligations. Distinguish the cases in `h : w = w₀`. Substitute `h` using the available equality. Rewrite using `[Function.update_self]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨hf₀, htr₀⟩`. Rewrite using `[Function.update_of_ne h]`. Conclude with `⟨(hg w hw).1, (hg w hw).2.2⟩`. Rewrite using `[Function.update_self]`. Conclude with `hsep`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `h : w = w₀`. Substitute `h` using the available equality. Rewrite using `[Function.update_self, hK₂w]`. Conclude with `isHecke_mono inf_le_right hK₀`. Rewrite using `[Function.update_of_ne h, hK₂ w h]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(hg w hw).2.1 _ le_rfl`. Take `⟨J, _, C, hC, hF⟩` from `hCA E hU n hn hn4 π hreg hdual S hS lam Z hZ B τ (fun w h => (hoff w h).1) hτ K₁ hK₁ hK₁o ι σ hDec₁`. Take `⟨J', _, C', hC', hF'⟩` from `hCA E hU n hn hn4 π hreg hdual S hS lam Z hZ B τ (fun w h => (hoff w h).1) hτ K₂ hK₂L hK₂o ι₂ σ₂ hDec₂`. Take `⟨T, e₁, e₂, hT, hd, h1, h0⟩` from `rSep places E n S hS Z (J ⊕ J') B (Sum.elim C C') (by rintro (j | j); exacts [hC j, hC' j])`. Establish `hh₁ : ∀ w ∈ Z, IsHecke (K₁ w) fun x : UL n w => g w x.1` using `fun w hw => (hg w hw).2.1 _ le_rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hh₂ : ∀ w ∈ Z, IsHecke (K₂ w) fun x : UL n w => g w x.1` using `fun w hw => (hg w hw).2.1 _ (hle w)`. Take `⟨t₁, r₁⟩` from `hF g hh₁ T hT hd e₁ e₂ h1 (fun j => h0 (Sum.inl j)) 1`. Take `⟨-, r₂⟩` from `hF' g hh₂ T hT hd e₁ e₂ h1 (fun j => h0 (Sum.inr j)) 1`. Establish `hlt` using `hLT E hU n hn S hS lam K₁ K₂ hK₁ hK₂L hle _ t₁`. Establish `hd0` using `(hGT E hU n hn S hS lam K₁ hK₁).1`.
-
-Establish `hP : ∏ w ∈ Z, trc (τ w).ρ (KGL w n) (g w) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun w hw => (hg w hw).2.2`. Establish `heq` using `(r₂ le_rfl).symm.trans (hlt.trans (r₁ le_rfl))`. Establish `hcc` using `mul_right_cancel₀ hP (mul_left_cancel₀ hd0 heq)`. Establish `hc : Nat.card {i // At π (σ i)} = Nat.card {i // At π (σ₂ i)}` using `by exact_mod_cast hcc.symm`. Rewrite using `[hc]`.
-
-Conclude with `hc₂`. Distinguish the cases in `hN : ∃ m : ℕ, (m : ℝ) = a`. Take `⟨m, rfl⟩` from `hN`. Use `⟨m, by exact_mod_cast ha, fun π h1 h2 h3 h4 S hS K' hK h5 h6 ι _ σ hd => ?_⟩` and prove the remaining obligations. Conclude with `key π h1 h2 h3 h4 S hS K' hK h5 h6 ι σ hd` after adjusting the coercions.
-
-Conclude with `⟨1, one_pos, fun π h1 h2 h3 h4 S hS K' hK h5 h6 ι _ σ hd => absurd ⟨_, key π h1 h2 h3 h4 S hS K' hK h5 h6 ι σ hd⟩ hN⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Mult.rMult :
     UpperTheory.V.Z.Mult.RMult := by

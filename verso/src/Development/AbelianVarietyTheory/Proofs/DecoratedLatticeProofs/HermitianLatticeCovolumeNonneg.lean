@@ -14,9 +14,9 @@ open scoped Matrix ComplexOrder
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `h : ∀ a b, hform G (e a) (e b) = star (e a) ⬝ᵥ G *ᵥ e b`. Introduce `a b`. Simplify using `only [hform, Matrix.toLinearMapₛₗ₂'_apply, dotProduct, Matrix.mulVec, Finset.mul_sum, smul_eq_mul, RingHom.id_apply, Pi.star_apply, starRingEnd_apply]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun k _ => by ring` and prove the remaining obligations. Simplify using `only [map_sum, LinearMap.map_smulₛₗ, LinearMap.sum_apply, LinearMap.smul_apply, h, RingHom.id_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[hform, Matrix.toLinearMapₛₗ₂'_apply, Finset.sum_comm]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Simplify using `only [smul_eq_mul, Finset.mul_sum, RingHom.id_apply, Matrix.of_apply]`. Use `Finset.sum_congr rfl fun a _ => by ring` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem hform_gramMatrix {K : Type} [Field K] [StarRing K] {n j : ℕ}
     (G : Matrix (Fin n) (Fin n) K) (e : Fin j → Fin n → K) (x y : Fin j → K) :
@@ -35,9 +35,9 @@ theorem hform_gramMatrix {K : Type} [Field K] [StarRing K] {n j : ℕ}
   refine Finset.sum_congr rfl fun a _ => by ring
 
 /- English proof (translation)
-Take `⟨j, e, Y, L, he, hY, hL, hmem, hgram, hlcv⟩` from `GlobalTheory.SpanLattice.exists_fullLattice_of_fg K n X (fun v => (hGX.2 v).1) N hN`. Rewrite using `[← hlcv]`. Use `GlobalTheory.lcv_nonneg_of_integral_full K j (Matrix.of fun a b => star (e a) ⬝ᵥ G *ᵥ e b) Y L hY hL ?_ ?_ ?_` and prove the remaining obligations. Conclude with `(GlobalTheory.ratHerm_herm_unit_aniso K K0 v0 hv0 n j G X hGX).2.2 e he`. Introduce `x hx y hy`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hform_gramMatrix]`. Conclude with `hint _ ((hmem x).1 hx) _ ((hmem y).1 hy)`. Simplify using `only [hgram]`. Conclude with `GlobalTheory.prod_norm_gramR_le_prod_gram_det K K0 hK0 n j G X hGX e`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lcv_nonneg_of_integral_submodule (K : Type) [Field K] [NumberField K] [StarRing K]
     [IsTotallyComplex K] (K0 : Subfield K) (hK0 : IsCMSub K0) (v0 : InfinitePlace K)

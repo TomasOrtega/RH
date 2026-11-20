@@ -7,9 +7,9 @@ open scoped InnerProductSpace
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `M _ _ n _ E Λ Λ' t t' h`. Unfold `WtNear`. Apply `Submodule.span_mono` to reduce the goal to its premises. Introduce and unpack `x ⟨ω, hω, hx⟩`. Use `⟨ω, ?_, hx⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : ∑ a, |ω a - Λ' a| ≤ ∑ a, (|ω a - Λ a| + |Λ a - Λ' a|)` using `Finset.sum_le_sum fun a _ => abs_sub_le _ _ _`. Rewrite `h1` using `[Finset.sum_add_distrib]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem wtNear_le_of_add_dist_le :
     ∀ (M : Type) [NormedAddCommGroup M] [InnerProductSpace ℂ M] (n : ℕ) (ε : Fin n → Bool)

@@ -20,7 +20,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 namespace GlobalTheory.CompanionTheory.Ar.ChangeGeo
 
 /- English proof (translation)
-Use `show ξ ((Spec.map (CommRingCat.ofHom φ)) (IsLocalRing.closedPoint Ω)) = ξ (IsLocalRing.closedPoint Ω₀)`. Use `congr 1`. Conclude with `Subsingleton.elim _ _`.
+Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem genPt_comp {X : Scheme.{0}} {Ω₀ Ω : Type} [Field Ω₀] [Field Ω] (φ : Ω₀ →+* Ω) (ξ : Spec (CommRingCat.of Ω₀) ⟶ X) :
     GlobalTheory.CompanionTheory.Ar.genPt (Spec.map (CommRingCat.ofHom φ) ≫ ξ) = GlobalTheory.CompanionTheory.Ar.genPt ξ := by
@@ -29,7 +29,7 @@ theorem genPt_comp {X : Scheme.{0}} {Ω₀ Ω : Type} [Field Ω₀] [Field Ω] (
   exact Subsingleton.elim _ _
 
 /- English proof (translation)
-Use `show Spec.map (CommRingCat.ofHom (a.comp b)) = Spec.map (CommRingCat.ofHom a) ≫ Spec.map (CommRingCat.ofHom b)`. Rewrite using `[CommRingCat.ofHom_comp, Spec.map_comp]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem spMap_comp' {R S T : Type} [CommRing R] [CommRing S] [CommRing T] (a : R →+* S) (b : T →+* R) :
     spMap (a.comp b) = spMap a ≫ spMap b := by
@@ -37,7 +37,7 @@ theorem spMap_comp' {R S T : Type} [CommRing R] [CommRing S] [CommRing T] (a : R
   rw [CommRingCat.ofHom_comp, Spec.map_comp]
 
 /- English proof (translation)
-Establish `h' : Spec.map (CommRingCat.ofHom a) = Spec.map (CommRingCat.ofHom b)` using `h`. Use `Spec.map_injective h'` as an intermediate fact. Conclude with `CommRingCat.hom_ext_iff.1 this |> fun e => by simpa using e`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem spMap_inj {R S : Type} [CommRing R] [CommRing S] {a b : R →+* S} (h : spMap a = spMap b) : a = b := by
   have h' : Spec.map (CommRingCat.ofHom a) = Spec.map (CommRingCat.ofHom b) := h
@@ -45,7 +45,7 @@ theorem spMap_inj {R S : Type} [CommRing R] [CommRing S] {a b : R →+* S} (h : 
   exact CommRingCat.hom_ext_iff.1 this |> fun e => by simpa using e
 
 /- English proof (translation)
-Establish `: dualMap (RingHom.id Ω) = RingHom.id _`. Apply the tactic sequence `ext a <;> simp [dualMap]`. Rewrite using `[this]`. Use `show Spec.map (CommRingCat.ofHom (RingHom.id _)) = _`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem spMap_dualMap_id (Ω : Type) [Field Ω] : spMap (dualMap (RingHom.id Ω)) = 𝟙 _ := by
   have : dualMap (RingHom.id Ω) = RingHom.id _ := by
@@ -55,42 +55,36 @@ theorem spMap_dualMap_id (Ω : Type) [Field Ω] : spMap (dualMap (RingHom.id Ω)
   simp
 
 /- English proof (translation)
-The claim follows from `IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 F)) h`.
+A detailed English derivation is pending.
 -/
 theorem cst_ext {F Ω : Type} [Field F] [NumberField F] [Field Ω] {a b : F →+* Ω}
     (h : a.comp (algebraMap (𝓞 F) F) = b.comp (algebraMap (𝓞 F) F)) : a = b :=
   IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 F)) h
 
 /- English proof (translation)
-Introduce `hG hW E _ _ _ H D l Xo c Y Sys Fx R o S hSp hSd hdeg`. Establish `hRes : ReciprocityTheory.ChartRestriction.G.Geo.ResK.ResKStatement` using `hG.2.2.2.2.1`. Use `haveI : CharZero R.Ω := charZero_of_injective_ringHom o.𝔐.cst.injective`. Establish `hgen₀` using `GlobalTheory.T.component_generic_is_generic_point E H D l Xo c Y o.𝔐.Ω₀ o.𝔐.ξ₀ o.𝔐.gen₀`. Establish `hgen : GlobalTheory.CompanionTheory.Ar.genPt (o.𝔐.ξ ≫ o.𝔐.f) ∈ genericPoints Y.X`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : o.𝔐.ξ ≫ o.𝔐.f = Spec.map (CommRingCat.ofHom o.𝔐.fn) ≫ o.𝔐.ξ₀` using `o.𝔐.fn_over`. Rewrite using `[e, genPt_comp]`. Conclude with `hgen₀`. Take `⟨Ω, _, _, i, hfin, htors, hroot⟩` from `GlobalTheory.T.exists_finite_extension_primes E H D l Xo c Y R.Ω (o.𝔐.ξ ≫ o.𝔐.f) S hgen hSp`. Take `⟨K₁, _, J₁, _, y₁, bk₁, bx₁, M₁, h₁, hbk₁, hy₁, hdom₁, hnorm₁, hsm₁⟩` from `GlobalTheory.T.coords_after_finite_extension hRes R.K R.ι R.Ω Ω i R.y o.𝔐.X o.𝔐.ξ hfin o.𝔐.all o.𝔐.tie`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hξ₁ : M₁.ξ ≫ h₁ ≫ o.𝔐.f = spMap i ≫ o.𝔐.ξ ≫ o.𝔐.f`. Establish `e : M₁.ξ ≫ h₁ = Spec.map (CommRingCat.ofHom i) ≫ o.𝔐.ξ` using `hdom₁`. Rewrite using `[← Category.assoc, e, Category.assoc]`. Establish `hgen₁ : GlobalTheory.CompanionTheory.Ar.genPt (M₁.ξ ≫ h₁ ≫ o.𝔐.f) ∈ genericPoints Y.X`. Rewrite using `[hξ₁]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `show GlobalTheory.CompanionTheory.Ar.genPt (Spec.map (CommRingCat.ofHom i) ≫ _) ∈ _`. Rewrite using `[genPt_comp]`. Conclude with `hgen`. Take `⟨y₀, hy₀⟩` from `GlobalTheory.T.generic_point_factors_open E H D l Xo c Y Ω (M₁.ξ ≫ h₁ ≫ o.𝔐.f) hgen₁`. Take `⟨K₂, _, J₂, _, y₂, bk₂, bx₂, B, g, hbk₂, hy₂, hdom₂, hf₂, hR₂, hfree₂, hiso₂⟩` from `GlobalTheory.T.hodge_cpt_projective_model hW E H D l Xo c Y S (fun _ => 4) Ω K₁ J₁ y₁ M₁ (h₁ ≫ o.𝔐.f) y₀ hnorm₁ hy₀ hgen₁ hSp hSd (fun _ _ => le_rfl) (fun p hp => by rw [hξ₁]; exact htors p hp) hroot`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hgB : B.ξ ≫ g = M₁.ξ`. Establish `e : B.ξ ≫ g = Spec.map (CommRingCat.ofHom (RingHom.id Ω)) ≫ M₁.ξ` using `hdom₂`. Rewrite using `[e]`. Simplify using the standard rewrite rules. Establish `hdomB : GlobalTheory.CompanionTheory.Ar.Dominates B.ξ o.𝔐.ξ (g ≫ h₁) i` using `by show B.ξ ≫ g ≫ h₁ = _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Category.assoc, hgB]`. Conclude with `hdom₁`. Establish `hfB : B.f = (g ≫ h₁) ≫ o.𝔐.f` using `by rw [hf₂, Category.assoc]`. Establish `hBξ : B.ξ ≫ B.f = y₀ ≫ Y.j`. Rewrite using `[hf₂, ← Category.assoc, hgB]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hy₀`. Establish `hcst : B.cst = i.comp o.𝔐.cst`. Establish `h1` using `B.cst_over`. Establish `h2` using `o.𝔐.cst_over`. Establish `h3 : B.ξ ≫ B.f = spMap i ≫ o.𝔐.ξ ≫ o.𝔐.f`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hf₂, ← Category.assoc, hgB]`. Conclude with `hξ₁`. Establish `h4 : spMap (B.cst.comp (algebraMap (𝓞 c.F) c.F)) = spMap ((i.comp o.𝔐.cst).comp (algebraMap (𝓞 c.F) c.F))`. Rewrite using `[← h1, ← Category.assoc, h3, RingHom.comp_assoc, spMap_comp', ← h2]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI := c.fin`. Use `haveI : NumberField c.F := {}`. Conclude with `cst_ext (spMap_inj h4)`. Take `⟨jA, hext, hpt, hact, hlat⟩` from `GlobalTheory.T.hodge_comp_comparison_left E H D l Xo c Y ∅ S R.Ω Ω R.K R.ι R.y K₂ J₂ y₂ o.𝔐 B i (g ≫ h₁) hdomB hfB`. Take `⟨Li₀, _, _, M₀, j, V₀, hspan, hj, hV, hflag⟩` from `GlobalTheory.T.hodge_comp_comparison_middle E H D l Xo c Y ∅ S R.Ω Ω R.K R.ι R.y K₂ J₂ y₂ o.𝔐 o.Fl B i (g ≫ h₁) jA hfin hdomB hfB hcst hext hpt hact`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hvb` using `GlobalTheory.T.hodge_comp_comparison_right E H D l Xo c Y ∅ S R.Ω Ω R.K R.ι R.y K₂ J₂ y₂ o.𝔐 o.Fl B i (g ≫ h₁) jA hdomB hfB hcst hext hpt hact hlat`. Take `⟨K₃, _, J₃, _, y₃, bk₃, bx₃, 𝔐, g', Fl, xdeg, e, hbk₃, hy₃, hdom₃, hf₃, hR₃, hc₃, hfree₃, hFd, hFb, hlines, -, hiso₃⟩` from `GlobalTheory.T.hodge_cpt_label_bases hW E H D l Xo c Y S Ω K₂ J₂ y₂ B y₀ (fun s a => jA (o.Fl.b s a)) Li₀ _ _ M₀ j V₀ _ hBξ hSd hfree₂ (fun p hp => by rw [hR₂]; exact hroot p hp) hspan hj hV hflag`. Establish `hsm₂ : SmoothGenericFibreM y₂` using `GlobalTheory.T.smoothGenericFibre_of_dominates Ω K₁ J₁ y₁ K₂ J₂ y₂ M₁.X B.X M₁.ξ B.ξ g M₁.all B.all M₁.tie B.tie hdom₂ hsm₁ hiso₂`. Establish `hsm₃ : SmoothGenericFibreM y₃` using `GlobalTheory.T.smoothGenericFibre_of_dominates Ω K₂ J₂ y₂ K₃ J₃ y₃ B.X 𝔐.X B.ξ 𝔐.ξ g' B.all 𝔐.all B.tie 𝔐.tie hdom₃ hsm₂ (fun q hq => hiso₃ q hq (hvb q hq))`. Establish `hg' : 𝔐.ξ ≫ g' = B.ξ`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `e : 𝔐.ξ ≫ g' = Spec.map (CommRingCat.ofHom (RingHom.id Ω)) ≫ B.ξ` using `hdom₃`. Rewrite using `[e]`. Simplify using the standard rewrite rules. Use `⟨Ω, inferInstance, inferInstance, K₃, inferInstance, J₃, inferInstance, y₃, fun k => bk₃ (bk₂ (bk₁ k)), fun k => (bx₁ k).trans ((bx₂ _).trans (bx₃ _)), i, 𝔐, g' ≫ g ≫ h₁, Fl, xdeg, e, hbk₃.comp (hbk₂.comp hbk₁), ?_, ?_, ?_, ?_, ?_, ?_, hlines, ?_, hsm₃, ?_⟩` and prove the remaining obligations. Introduce `k a`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Equiv.trans_apply]`. Rewrite using `[hy₃, hy₂, hy₁]`. Use `show 𝔐.ξ ≫ g' ≫ g ≫ h₁ = _`. Rewrite using `[← Category.assoc, hg']`. Conclude with `hdomB`.
-
-Rewrite using `[hf₃, hf₂]`. Simplify using the standard rewrite rules. Rewrite using `[hc₃, hcst]`. Introduce `s a`. Rewrite using `[hFb, hpt, spMap_dualMap_id, Category.id_comp]`.
-
-Rewrite using `[hFd, hdeg, _root_.mul_one]`. Introduce `p hp`. Use `hfree₃ p hp` as an intermediate fact. Conclude with `this`. Introduce `p hp`.
-
-Rewrite using `[hR₃, hR₂]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_cover : Top.Given → Out.WeilSt → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Tor.Level H) (Xo : Moduli D l) (c : Coeff l) (Y : Model Xo c (algebraMap (𝓞 c.F) c.F)) (Sys : PB.AnSys (Top.dimFl (CMType H) (D.p + D.q)) (Option (RootIx D))) (Fx : FixedData Y Sys) (R : Top.RootModel (CMType H) (D.p + D.q)) (o : RootOrigin Y ∅ R Fx) (S : Finset ℕ), (∀ p ∈ S, p.Prime) → (∀ p : ℕ, p.Prime → (p : ℤ) ∣ discr E → p ∈ S) → o.Fl.deg = 1 → ∃ (Ω : Type) (_ : Field Ω) (_ : CharZero Ω) (K : Type) (_ : Fintype K) (J : K → Type) (_ : ∀ k, Fintype (J k)) (y : (Σ k, J k) → Ω) (bk : R.K → K) (bx : ∀ k, R.ι k ≃ J (bk k)) (i : R.Ω →+* Ω) (𝔐 : HodgeCpt Y S y) (h : 𝔐.X ⟶ o.𝔐.X) (Fl : 𝔐.Flag) (xdeg : RootIx D → K → ℤ) (e : RootIx D → Ω), Function.Injective bk ∧ (∀ k a, y ⟨bk k, bx k a⟩ = i (R.y ⟨k, a⟩)) ∧ GlobalTheory.CompanionTheory.Ar.Dominates 𝔐.ξ o.𝔐.ξ h i ∧ 𝔐.f = h ≫ o.𝔐.f ∧ 𝔐.cst = i.comp o.𝔐.cst ∧ (∀ s a, (𝔐.M.pt (Fl.b s a)).left ≫ 𝔐.m.φ = spMap (dualMap i) ≫ (o.𝔐.M.pt (o.Fl.b s a)).left ≫ o.𝔐.m.φ) ∧ (letI := i.toAlgebra; Module.finrank R.Ω Ω = Fl.deg) ∧ Fl.RootLines xdeg e ∧ 𝔐.OmVB ∧ SmoothGenericFibreM y ∧ ∀ p ∈ S, 𝔐.R p = 4 := by
   intro hG hW E _ _ _ H D l Xo c Y Sys Fx R o S hSp hSd hdeg

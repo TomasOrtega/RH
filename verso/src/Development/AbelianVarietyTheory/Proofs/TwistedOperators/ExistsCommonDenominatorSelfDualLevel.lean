@@ -14,11 +14,11 @@ namespace GlobalTheory.LevelDenom
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n : ℕ}
 
 /- English proof (translation)
-Unfold `Formalism.L2.Herm.hatL Formalism.UG.latS at hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨l, hl, rfl⟩` from `hy`. Apply `Submodule.subset_span` to reduce the goal to its premises.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Use `⟨c • l, hc l hl, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Simplify using `[nsmul_eq_mul, map_mul, map_natCast]`. Consider the case `zero => simp`. Consider the case `add a b _ _ ha hb => rw [smul_add]`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately.
 
-Conclude with `add_mem ha hb`. Consider the case `smul a y _ hy`. Rewrite using `[smul_comm]`. Conclude with `Submodule.smul_mem _ a hy`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem natCast_smul_mem_hatL_std (Λ : Submodule (𝓞 E) (Fin n → E)) (c : ℕ)
     (hc : ∀ y ∈ Λ, c • y ∈ Formalism.L2.Col.stdLat E n) (x : Fin n → E ⊗[F] Formalism.L2.Herm.Af F)
@@ -39,7 +39,7 @@ theorem natCast_smul_mem_hatL_std (Λ : Submodule (𝓞 E) (Fin n → E)) (c : �
     exact Submodule.smul_mem _ a hy
 
 /- English proof (translation)
-Take `⟨S, hS⟩` from `hfg`. Take `⟨c, hc, h⟩` from `GlobalTheory.LatSandwich.exists_nsmul_le S (Formalism.L2.Pj.stdLat E n) (fun x _ => GlobalTheory.LatSandwich.exists_nsmul_mem_stdLat x)`. Conclude with `⟨c, hc, fun y hy => h y (by rw [hS]; exact hy)⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_nsmul_le_std (Λ : Submodule (𝓞 E) (Fin n → E)) (hfg : Λ.FG) :
     ∃ c : ℕ, 0 < c ∧ ∀ y ∈ Λ, c • y ∈ Formalism.L2.Col.stdLat E n := by
@@ -49,7 +49,7 @@ theorem exists_nsmul_le_std (Λ : Submodule (𝓞 E) (Fin n → E)) (hfg : Λ.FG
   exact ⟨c, hc, fun y hy => h y (by rw [hS]; exact hy)⟩
 
 /- English proof (translation)
-Take `⟨c, hc, h⟩` from `GlobalTheory.LatSandwich.exists_nsmul_le (Finset.univ.image fun j : Fin n => (Pi.single j (1 : E) : Fin n → E)) Λ (fun x _ => GlobalTheory.LatSandwich.exists_nsmul_mem_of_span Λ hsp x)`. Conclude with `⟨c, hc, fun j => h _ (Submodule.subset_span (by simp))⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_nsmul_single_mem (Λ : Submodule (𝓞 E) (Fin n → E)) (hsp : Submodule.span E (Λ : Set (Fin n → E)) = ⊤) :
     ∃ c : ℕ, 0 < c ∧ ∀ j, c • (Pi.single j (1 : E) : Fin n → E) ∈ Λ := by
@@ -65,13 +65,13 @@ namespace GlobalTheory.LevelDenom
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E] {n : ℕ}
 
 /- English proof (translation)
-Take `⟨a, ha, hae⟩` from `exists_nsmul_single_mem Λ hsp`. Take `⟨c, hc0, hce⟩` from `exists_nsmul_le_std Λ hfg`. Use `⟨a * c, Nat.mul_pos ha hc0, fun k hk i j => ?_⟩` and prove the remaining obligations. Establish `hs` using `hk.2.1`. Establish `hzmem : (fun l => Formalism.UG.inclE (Formalism.L2.Herm.Af F) ((a • (Pi.single j (1 : E) : Fin n → E)) l)) ∈ Formalism.L2.Herm.hatL (F` using `F) Λ := Submodule.subset_span ⟨_, hae j, rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ez : (fun l => Formalism.UG.inclE (Formalism.L2.Herm.Af F) ((a • (Pi.single j (1 : E) : Fin n → E)) l)) = (a : E ⊗[F] Formalism.L2.Herm.Af F) • (Pi.single j 1 : Fin n → E ⊗[F] Formalism.L2.Herm.Af F)`. Use function extensionality and compare the values at `l`. Distinguish the cases in `e : l = j`. Substitute `e` using the available equality. Simplify using `[nsmul_eq_mul]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[Pi.single_eq_of_ne e, nsmul_eq_mul]`. Rewrite `hzmem` using `[ez]`. Establish `hkz` using `(hs _).1 hzmem`. Establish `h2` using `natCast_smul_mem_hatL_std Λ c hce _ hkz`. Rewrite `h2` using `[Formalism.L2.Col.mem_latS_std]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3` using `h2 i`. Rewrite `h3` using `[Matrix.mulVec_smul]`. Use `h3 using 1` and compare the differences between its conclusion and the goal. Simplify using `[Matrix.mulVec_single_one, mul_comm, mul_left_comm, mul_assoc]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules.
 -/
 theorem exists_denom_stab (hc : Formalism.BasicNotions.CMData F E) (J : Matrix (Fin n) (Fin n) E) (Λ : Submodule (𝓞 E) (Fin n → E))
     (hfg : Λ.FG) (hsp : Submodule.span E (Λ : Set (Fin n → E)) = ⊤) :
@@ -104,7 +104,7 @@ end GlobalTheory.LevelDenom
 namespace GlobalTheory.LevelDenom
 
 /- English proof (translation)
-Introduce `D V Λ hΛ`. Use `haveI := hΛ.1`. Conclude with `exists_denom_stab D.sp.cm V.gram Λ (Submodule.IsLattice.fg (A := D.host.E)) (Submodule.IsLattice.span_eq_top (A := D.host.E))`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_denom_congLev : ∀ (D : D7) (V : HSp D) (Λ : Lat V), IsSelfDualC V Λ → ∃ b : ℕ, 0 < b ∧ ∀ k ∈ congLev D.sp.cm V.gram Λ ⊤, ∀ i j, (b : Lev.EAf D) * k.1 i j ∈ Formalism.L2.Herm.intAf D.host.F D.host.E := by
   intro D V Λ hΛ

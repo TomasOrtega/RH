@@ -12,11 +12,11 @@ open scoped Topology
 noncomputable section
 
 /- English proof (translation)
-Use `set R := (ContinuousLinearMap.compL ℝ (J → ℂ) (J → ℂ) ℝ).flip L with hR`. Establish `hev : fderiv ℝ (φ ∘ L) =ᶠ[𝓝 z] fun y => R (fderiv ℝ φ (L y))` using `by filter_upwards [hφ] with y hy`. Rewrite using `[fderiv_comp y hy L.differentiableAt, L.fderiv]`. Both sides reduce to the same expression. Establish `hd : HasFDerivAt (fun y => R (fderiv ℝ φ (L y))) (R.comp ((fderiv ℝ (fderiv ℝ φ) (L z)).comp L)) z` using `R.hasFDerivAt.comp z (hφ2.hasFDerivAt.comp z L.hasFDerivAt)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : ∀ v, fderiv ℝ (fderiv ℝ (φ ∘ L)) z v v = fderiv ℝ (fderiv ℝ φ) (L z) (L v) (L v)`. Introduce `v`. Rewrite using `[hev.fderiv_eq, hd.fderiv]`. Both sides reduce to the same expression. Unfold `leviForm`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key, key, hL]`.
+A detailed English derivation is pending.
 -/
 theorem leviForm_comp_clm {J : Type*} [Fintype J] (φ : (J → ℂ) → ℝ) (L : (J → ℂ) →L[ℝ] (J → ℂ))
     (hL : ∀ w, L (Complex.I • w) = Complex.I • L w) (z : J → ℂ)
@@ -38,7 +38,7 @@ theorem leviForm_comp_clm {J : Type*} [Fintype J] (φ : (J → ℂ) → ℝ) (L 
   rw [key, key, hL]
 
 /- English proof (translation)
-The claim follows from `((ProjLine.isSmoothMetric_fs (J := J) y hy).contDiffAt (isOpen_ne.mem_nhds hy)).log ((fsMetric J).pos y hy).ne'`.
+A detailed English derivation is pending.
 -/
 theorem contDiffAt_log_fs {J : Type} [Fintype J] {y : J → ℂ} (hy : y ≠ 0) :
     ContDiffAt ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun y => Real.log ((fsMetric J).ρ y)) y :=
@@ -62,7 +62,7 @@ def scaleL (D : ℕ) : (Ix (Idx D) → ℂ) →L[ℝ] (Ix (Idx D) → ℂ) :=
   (LinearMap.toContinuousLinearMap (scaleLin D)).restrictScalars ℝ
 
 /- English proof (translation)
-The claim follows from `(scaleLin D).map_smul Complex.I w`.
+A detailed English derivation is pending.
 -/
 theorem scaleL_I (D : ℕ) (w : Ix (Idx D) → ℂ) : scaleL D (Complex.I • w) = Complex.I • scaleL D w :=
   (scaleLin D).map_smul Complex.I w
@@ -72,11 +72,11 @@ end Veronese
 open Veronese
 
 /- English proof (translation)
-Introduce `D`. Use `⟨(isSmoothMetric_metric D).mono fun z hz h0 => ?_, fun z hz w _ => ?_⟩` and prove the remaining obligations. Take `⟨i, hi⟩` from `hz ()`. Conclude with `hi (congrFun h0 _)`. Establish `hz0 : z ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h0`. Take `⟨i, hi⟩` from `hz.1 ()`. Conclude with `hi (congrFun h0 _)`. Establish `e : (fun z => Real.log ((HermLine.ofCone (metric D)).h z)) = (fun y => Real.log ((fsMetric (Ix (Idx D))).ρ y)) ∘ scaleL D` using `rfl`. Establish `hφ : ∀ᶠ y in 𝓝 z, DifferentiableAt ℝ (fun y => Real.log ((fsMetric (Ix (Idx D))).ρ y)) (scaleL D y)` using `by filter_upwards [isOpen_ne.mem_nhds hz0] with y hy`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(contDiffAt_log_fs (scale_ne_zero hy)).differentiableAt (by simp)`. Establish `hφ2 : DifferentiableAt ℝ (fderiv ℝ fun y => Real.log ((fsMetric (Ix (Idx D))).ρ y)) (scaleL D z)` using `((contDiffAt_log_fs (scale_ne_zero hz0)).fderiv_right (m := 1) (WithTop.coe_le_coe.mpr le_top)).differentiableAt one_ne_zero`. Rewrite using `[e, leviForm_comp_clm _ _ (scaleL_I D) z hφ hφ2 w]`. Conclude with `ProjLine.leviForm_log_fs_nonneg (scale_ne_zero hz0) (scaleL D w)`.
+A detailed English derivation is pending.
 -/
 theorem VeroneseSemipos.proof : VeroneseSemipos.Statement := by
   intro D

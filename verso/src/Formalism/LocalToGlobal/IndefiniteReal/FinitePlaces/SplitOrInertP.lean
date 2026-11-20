@@ -16,15 +16,13 @@ open Formalism.IndefR.Datum
 
 set_option maxHeartbeats 800000 in
 /- English proof (translation)
-Introduce `v ε hε`. Distinguish the cases in `h : ∃ e : AE D, IsSplitIdem D e ∧ e * algebraMap (AF D.host.F) (AE D) ε ≠ 0`. Use `left`. Take `⟨e, ⟨h1, h2, w, ε', hpl, hs⟩, hne⟩` from `h`. Rewrite `hs` using `[placeIdem_eq hpl]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `e + cA D e = phiE w 1 at hs`. Rewrite `hne` using `[placeIdem_eq hε]`. Express the relevant statement in the definitionally equal form `e * phiE v 1 ≠ 0 at hne`. Establish `heps : e * phiE w 1 = e` using `by rw [← hs, mul_add, h1, h2, add_zero]`. Establish `hwv : w = v`.
+Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hwv`. Apply `hne` to reduce the goal to its premises. Rewrite using `[← heps, mul_assoc, phiE_orth hwv, mul_zero]`. Substitute `hwv` using the available equality. Take `⟨s, ι, hss, hι⟩` from `split_emb h1 h2 hs`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨plOf ι, ?_, plOf_split ι s hss hι⟩` and prove the remaining obligations. Establish `hle : w.asIdeal ≤ (belowPl (plOf ι)).asIdeal` using `fun f hf => algebraMap_mem_valIdeal ι hf`. Conclude with `(w.isMaximal.eq_of_le (belowPl (plOf ι)).isPrime.ne_top hle).symm`. Use `right`. Introduce `e he`.
-
-Assume the negation of the conclusion as `hne`. Conclude with `h ⟨e, he, hne⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem splitOrInert (D : D7) : LevelGroupLemmas.SplitOrInert D := by
   intro v ε hε

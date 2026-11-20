@@ -27,29 +27,25 @@ namespace GlobalTheory.DownLift.GenReal
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T A Ks _ _ _ R F hG hP i t y τ Y hY P P' hder l hvan g`. Establish `hm` using `hG.core.models`. Establish `hθ : IsInfFam R.θ` using `hm.inf`. Establish `hom` using `(hP i t).datum`. Establish `hf : IsThetaFunO R.ψ (Vc D i) (Wc D i) (R.ptP i t P)` using `hG.core.thP.pt_theta i t P`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨ht, hd⟩` from `GlobalTheory.Chain.LiftReg.tame_dOmT hθ hom hY`. Establish `hf'` using `ht.theta hf`. Establish `hid : GlobalTheory.IndefiniteRowSideFullHecke.RapidDecayLift.dOmT R.θ (R.ωP i t) τ Y (R.ptP i t P) = R.ptP i t P'`. Use function extensionality and compare the values at `z`. Establish `h1` using `hd _ hf 1 z`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Simplify using `only [one_mul, map_one, Module.End.one_apply] at h1`. Conclude with `h1.unique (hder z)`. Rewrite using `[← hid]`. Use `set f := R.ptP i t P with hfdef`. Use `set f' := GlobalTheory.IndefiniteRowSideFullHecke.RapidDecayLift.dOmT R.θ (R.ωP i t) τ Y f with hf'def`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx` using `(hm.HV i t).2.1.le (LinearMap.mem_range_self _ y)`. Establish `hpos : ∀ τ, (gramAt D (Vc D i) τ).PosDef` using `fun τ => by`. Use `D.sp.V_sig ((i : ℕ) + 1) (tauE D τ)` as an intermediate fact. Rewrite `this` using `[hm.vpos i]`. Conclude with `GlobalTheory.DefiniteQuotient.posDef_of_signature this`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hcont : Continuous fun h => l (R.extV i t y h)` using `(LinearMap.continuous_of_finiteDimensional l).comp (GlobalTheory.ThetaIntegrand.ext_continuous (R.cV i) (hm.cV i) (R.βV i) (R.datVt i t) hx)`. Establish `hinv : ∀ γ ∈ GQ (Vc D i), ∀ h, l (R.extV i t y (γ * h)) = l (R.extV i t y h)` using `fun γ hγ h => congrArg l (GlobalTheory.ThetaIntegrand.ext_invariant (R.cV i) hx γ hγ h)`. Establish `hrat : ∀ γ ∈ GQ (Vc D i), ∀ (c : GA D (Vc D i)) (g' : GA D (Wc D i)), thetaKO (R.ωP i t) (γ * c) g' f' = thetaKO (R.ωP i t) c g' f'`. Introduce `γ hγ c g'`. Unfold `thetaKO`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `e : ((γ * c, g') : GA D (Vc D i) × GA D (Wc D i)) = ((γ, 1) : GA D (Vc D i) × GA D (Wc D i)) * (c, g')`. Rewrite using `[Prod.mk_mul_mk, one_mul]`. Rewrite using `[e, map_mul, Module.End.mul_apply]`. Conclude with `hom.om_aut γ hγ 1 (one_mem _) _ (hom.om_pres _ _ hf')`. Use `haveI : BorelSpace (GA D (Vc D i)) := ⟨rfl⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨C, hC, hcov⟩` from `GlobalTheory.DefiniteQuotient.exists_compact (Vc D i) hpos`. Establish `hΨ : Continuous fun p : GA D (Vc D i) × ℝ => thetaKO (R.ωP i t) p.1 (g * oneP R.θ (Wc D i) τ Y p.2) f' * l (R.extV i t y p.1)`. Use `Continuous.mul ?_ (hcont.comp continuous_fst)` and prove the remaining obligations. Conclude with `(hom.om_cont f' hf' 0).comp (continuous_fst.prodMk (continuous_const.mul ((GlobalTheory.Mem.Lift.continuous_oneP hθ hY).comp continuous_snd)))`. Take `⟨B, hB⟩` from `(hC.prod (isCompact_closedBall (0 : ℝ) 1)).exists_bound_of_continuousOn hΨ.continuousOn`.
+Extract witnesses or component facts from the available result. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbd : ∀ (h : GA D (Vc D i)) (x : ℝ), x ∈ Metric.ball (0 : ℝ) 1 → ‖thetaKO (R.ωP i t) h (g * oneP R.θ (Wc D i) τ Y x) f' * l (R.extV i t y h)‖ ≤ B`. Introduce `h x hxb`. Take `⟨γ, hγ, c, hc, e⟩` from `hcov h`. Substitute `e` using the available equality. Rewrite using `[hrat γ hγ c, hinv γ hγ c]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `hB (c, x) (Set.mk_mem_prod hc (Metric.ball_subset_closedBall hxb))`. Establish `hfin : R.νV i t (R.fdV i t) < ⊤` using `by haveI : Countable (GQ (Vc D i)) := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.countableGamma _ _ haveI : IsModuleTopology (AF D.host.F) (AE D) := ⟨rfl⟩ haveI : Module.Finite D.host.F D.host.E := Module.Finite.of_restrictScalars_finite ℚ _ _ haveI : IsTopologicalRi …`. Establish `h1` using `GlobalTheory.integrableOn_fundamentalDomain_of_cocompact (GA D (Vc D i)) (GQ (Vc D i)) C hC (fun h => by`. Take `⟨γ, hγ, c, hc, rfl⟩` from `hcov h`. Conclude with `⟨γ⁻¹, inv_mem hγ, by rwa [inv_mul_cancel_left]⟩)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use the proof step `(R.νV i t) (hm.νV i t).1.1 (R.fdV i t) (hm.νV i t).2 (fun _ => (1 : ℂ)) continuous_const (fun _ _ _ => rfl)`. Break down `(integrableOn_const_iff (C := (1 : ℂ))).1 h1 with h2 | h2` into its components or cases. Simplify using `at h2`. Conclude with `h2`. Establish `hmeas : ∀ (φ : WO (Vc D i) (Wc D i) → ℂ), IsThetaFunO R.ψ (Vc D i) (Wc D i) φ → ∀ x : ℝ, AEStronglyMeasurable (fun h => thetaKO (R.ωP i t) h (g * oneP R.θ (Wc D i) τ Y x) φ * l (R.extV i t y h)) ((R.νV i t).restrict (R.fdV i t))` using `fun φ hφ x => (((hom.om_cont φ hφ 0).comp (continuous_id.prodMk continuous_const)).mul hcont).measurable.aestronglyMeasurable`.
-
-Establish `key` using `(hasDerivAt_integral_of_dominated_loc_of_deriv_le (μ := (R.νV i t).restrict (R.fdV i t)) (x₀ := (0 : ℝ)) (s := Metric.ball (0 : ℝ) 1) (F := fun x h => thetaKO (R.ωP i t) h (g * oneP R.θ (Wc D i) τ Y x) f * l (R.extV i t y h)) (F' := fun x h => thetaKO (R.ωP i t) h (g * oneP R.θ ( …`. Establish `e : (fun x : ℝ => ∫ h in R.fdV i t, thetaKO (R.ωP i t) h (g * oneP R.θ (Wc D i) τ Y x) f * l (R.extV i t y h) ∂(R.νV i t)) = fun _ => 0` using `funext fun x => hvan _`. Rewrite `key` using `[e]`. Establish `h0` using `key.unique (hasDerivAt_const (0 : ℝ) (0 : ℂ))`. Simplify using `only [GlobalTheory.Mem.Lift.oneP_zero hθ, mul_one] at h0`.
-
-Conclude with `h0`. Use `(GlobalTheory.Mem.Lift.hasDerivAt_oneP hθ hY (φ := fun g' => thetaKO (R.ωP i t) h g' f) (φ' := fun g' => thetaKO (R.ωP i t) h g' f') (fun g' => ?_) g x).mul_const _` and prove the remaining obligations. Simplify `hd f hf (h, g') 0` using `only [thetaKO, Prod.mk_mul_mk, mul_one]`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem downInt_lie : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (A : FamIn D.what₂.LL G Pl0 T D.R.m)
     (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A),

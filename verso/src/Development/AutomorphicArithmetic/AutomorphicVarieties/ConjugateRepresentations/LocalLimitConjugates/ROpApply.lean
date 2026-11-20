@@ -7,7 +7,7 @@ open scoped TensorProduct GlobalTheory.CuspRep.CuspidalL2GL
 open UpperTheory.V.Cj UpperTheory.V.Cj.H
 
 /- English proof (translation)
-Simplify using `only [Formalism.REAL.qdet, Formalism.REAL.qminor, Formalism.REAL.Tm, map_sum, map_mul, map_intCast, map_list_prod, List.map_ofFn, Function.comp_def, map_add, apply_ite f, AlgHom.commutes, map_zero]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem mapQ {A B : Type} [Ring A] [Algebra ℂ A] [Ring B] [Algebra ℂ B] (f : A →ₐ[ℂ] B) {n : ℕ}
     (X : Fin n → Fin n → A) (u : ℂ) : f (Formalism.REAL.qdet X u) = Formalism.REAL.qdet (fun i j => f (X i j)) u := by
@@ -35,7 +35,7 @@ private theorem rOp_apply (V : Type) [AddCommGroup V] [Module ℂ V] (d : ℕ) (
     rOp V d N = MulOpposite.op (rAlg V d Nᵀ) := rfl
 
 /- English proof (translation)
-Set `S : Subalgebra ℂ (Module.End ℂ M)` to `{ carrier := {z | ∀ m ∈ N, z m ∈ N} mul_mem' := fun hx hy m hm => hx _ (hy m hm) add_mem' := fun hx hy m hm => N.add_mem (hx m hm) (hy m hm) algebraMap_mem' := fun c m hm => N.smul_mem c hm }`. Set `Z : Fin n → Fin n → S` to `fun i j => ⟨X i j, h i j⟩`. Establish `e : ((Formalism.REAL.qdet Z u : S) : Module.End ℂ M) = Formalism.REAL.qdet X u` using `mapQ S.val Z u`. Rewrite using `[← e]`. Conclude with `(Formalism.REAL.qdet Z u).2`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem qdet_stab {M : Type} [AddCommGroup M] [Module ℂ M] (N : Submodule ℂ M) {n : ℕ}
     (X : Fin n → Fin n → Module.End ℂ M) (h : ∀ i j, ∀ m ∈ N, X i j m ∈ N) (u : ℂ) :
@@ -51,17 +51,15 @@ private theorem qdet_stab {M : Type} [AddCommGroup M] [Module ℂ M] (N : Submod
   exact (Formalism.REAL.qdet Z u).2
 
 /- English proof (translation)
-Introduce `E _ _ _ a Ξ τ u`. Establish `hE : ∀ i j : Fin a, Eop (a` using `a) τ i j = eL (N := Module.End ℂ (Sm E a)) (lie E a) τ i j := fun _ _ => rfl`. Establish `hc : cap (a` using `a) τ u = Formalism.REAL.qdet (Eop (a := a) τ) (u + ((a : ℂ) - 1) / 2) := rfl`. Use `⟨?_, fun m hm => ?_, fun X => ?_, fun N hN => ?_⟩` and prove the remaining obligations. Set `f : Module.End ℂ (Sm E a) →ₐ[ℂ] Module.End ℂ (Sm E a ⊗[ℂ] (Fin Ξ.d → ℂ))` to `Module.End.rTensorAlgHom ℂ (Sm E a) (Fin Ξ.d → ℂ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Establish `hf : ∀ X, smA Ξ X = f (lie E a X)` using `fun _ => rfl`. Establish `e : eL (smA Ξ) τ = fun i j => f (Eop (a` using `a) τ i j) := by`. Use function extensionality and compare the values at `i j`. Simplify using `only [hE, eL, hf, map_smul, map_sub]`. Rewrite using `[e, ← mapQ, ← hc]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hd` using `(dualIff E a Ξ τ m).1 hm`. Establish `hB : ∀ X, smB Ξ X = rAlg (Sm E a) Ξ.d (Ξ.dmat X)` using `fun X => smB_apply Ξ X`. Establish `h` using `(mapQ (rOp (Sm E a) Ξ.d) (GlobalTheory.WignerGL.dualE Ξ τ) (u + ((a : ℂ) - 1) / 2)).symm.trans (congrArg (rOp (Sm E a) Ξ.d) (hd.2 u))`. Rewrite `h` using `[map_smul, map_one]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e : ∀ i j, rOp (Sm E a) Ξ.d (GlobalTheory.WignerGL.dualE Ξ τ i j) = -MulOpposite.op (eL (smB Ξ) τ i j)` using `fun i j => by`. Rewrite using `[dualE_eq, map_neg, rOp_apply, Matrix.transpose_transpose]`. Simplify using `only [eL, hB, map_smul, map_sub]`. Simplify using `only [e] at h`. Rewrite using `[h, MulOpposite.unop_smul, MulOpposite.unop_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← UpperTheory.V.Cm.uC_capC, ← UpperTheory.V.Cm.uC_ιC]`. Conclude with `Commute.map (Subalgebra.mem_center_iff.1 (UpperTheory.V.Cm.capC_mem_center τ u) _) (UpperTheory.V.Cm.uC E a)`. Rewrite using `[hc]`. Use `qdet_stab N _ (fun i j φ hφ => ?_) _` and prove the remaining obligations. Rewrite using `[hE]`.
-
-Conclude with `N.smul_mem _ (N.sub_mem (hN _ φ hφ) (N.smul_mem _ (hN _ φ hφ)))`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Cj.H.capSm :
     UpperTheory.V.Cj.H.CapSm := by

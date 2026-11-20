@@ -19,7 +19,7 @@ theorem Rw_cons (p : Fin n × Fin n) (l : List (Fin n × Fin n)) (g : Matrix (Fi
     Rw ε (p :: l) g = Rz (thE ε p) (Rw ε l g) := rfl
 
 /- English proof (translation)
-Unfold `Rw`. Conclude with `List.foldr_append ..`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem Rw_append (l₁ l₂ : List (Fin n × Fin n)) (g : Matrix (Fin n) (Fin n) ℂ → B) :
     Rw ε (l₁ ++ l₂) g = Rw ε l₁ (Rw ε l₂ g) := by
@@ -27,7 +27,7 @@ theorem Rw_append (l₁ l₂ : List (Fin n × Fin n)) (g : Matrix (Fin n) (Fin n
   exact List.foldr_append ..
 
 /- English proof (translation)
-Use `filter_upwards [h.eventuallyEq_nhds] with z hz`. Simplify using `only [Rz, hz.fderiv_eq]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Rz_congr (Z : Matrix (Fin n) (Fin n) ℂ) {g g' : Matrix (Fin n) (Fin n) ℂ → B}
     (h : g =ᶠ[𝓝 1] g') : Rz Z g =ᶠ[𝓝 1] Rz Z g' := by
@@ -35,7 +35,7 @@ theorem Rz_congr (Z : Matrix (Fin n) (Fin n) ℂ) {g g' : Matrix (Fin n) (Fin n)
   simp only [Rz, hz.fderiv_eq]
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => exact h`. Consider the case `cons p l ih`. Rewrite using `[Rw_cons, Rw_cons]`. Conclude with `Rz_congr _ ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Rw_congr (l : List (Fin n × Fin n)) {g g' : Matrix (Fin n) (Fin n) ℂ → B}
     (h : g =ᶠ[𝓝 1] g') : Rw ε l g =ᶠ[𝓝 1] Rw ε l g' := by
@@ -46,9 +46,9 @@ theorem Rw_congr (l : List (Fin n × Fin n)) {g g' : Matrix (Fin n) (Fin n) ℂ 
     exact Rz_congr _ ih
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => simp [Rw]`. Consider the case `cons p l ih`. Rewrite using `[Rw_cons, ih]`. Use function extensionality and compare the values at `z`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[Rz]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Rw_zero (l : List (Fin n × Fin n)) :
     Rw ε l (fun _ => (0 : B)) = fun _ => 0 := by
@@ -60,7 +60,7 @@ theorem Rw_zero (l : List (Fin n × Fin n)) :
     simp [Rz]
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => exact h`. Consider the case `cons p l ih`. Rewrite using `[Rw_cons]`. Conclude with `(GlobalTheory.T.holomorphicLeftInvariantDerivative_calculus_near_one n B (Rw ε l g) ih).1 (thE ε p)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Rw_analytic [CompleteSpace B] (l : List (Fin n × Fin n)) {g : Matrix (Fin n) (Fin n) ℂ → B}
     (h : AnalyticAt ℂ g 1) : AnalyticAt ℂ (Rw ε l g) 1 := by
@@ -71,9 +71,7 @@ theorem Rw_analytic [CompleteSpace B] (l : List (Fin n × Fin n)) {g : Matrix (F
     exact (GlobalTheory.T.holomorphicLeftInvariantDerivative_calculus_near_one n B (Rw ε l g) ih).1 (thE ε p)
 
 /- English proof (translation)
-Establish `hd : ∀ᶠ z in 𝓝 (1 : Matrix (Fin n) (Fin n) ℂ), ∀ i, DifferentiableAt ℂ (k i) z` using `Filter.eventually_all.2 fun i => (hk i).eventually_analyticAt.mono fun z hz => hz.differentiableAt`. Use `filter_upwards [hd] with z hz`. Establish `hF : HasFDerivAt (fun w => ∑ i, L i (k i w)) (∑ i, (L i).comp (fderiv ℂ (k i) z)) z`. Use `(HasFDerivAt.sum (u := Finset.univ) (A := fun i => (L i) ∘ k i) fun i _ => (L i).hasFDerivAt.comp z (hz i).hasFDerivAt).congr_of_eventuallyEq ?_` and prove the remaining obligations. Conclude with `Filter.Eventually.of_forall fun w => by simp [Finset.sum_apply]`.
-
-Simplify using `only [Rz, hF.fderiv, FunLike.coe_sum, Finset.sum_apply, ContinuousLinearMap.comp_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma rz_sum_clm_eventuallyEq_of_analyticAt [CompleteSpace B] {ι : Type} [Fintype ι] (L : ι → B →L[ℂ] B')
     (Z : Matrix (Fin n) (Fin n) ℂ) {k : ι → Matrix (Fin n) (Fin n) ℂ → B} (hk : ∀ i, AnalyticAt ℂ (k i) 1) :
@@ -88,7 +86,7 @@ private lemma rz_sum_clm_eventuallyEq_of_analyticAt [CompleteSpace B] {ι : Type
   simp only [Rz, hF.fderiv, FunLike.coe_sum, Finset.sum_apply, ContinuousLinearMap.comp_apply]
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => exact Filter.EventuallyEq.rfl`. Consider the case `cons p l ih`. Simplify using `only [Rw_cons]`. Conclude with `(Rz_congr _ ih).trans (rz_sum_clm_eventuallyEq_of_analyticAt L _ fun i => Rw_analytic ε l (h i))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Rw_sum [CompleteSpace B] {ι : Type} [Fintype ι] (L : ι → B →L[ℂ] B') (l : List (Fin n × Fin n))
     {g : ι → Matrix (Fin n) (Fin n) ℂ → B} (h : ∀ i, AnalyticAt ℂ (g i) 1) :
@@ -100,7 +98,7 @@ theorem Rw_sum [CompleteSpace B] {ι : Type} [Fintype ι] (L : ι → B →L[ℂ
     exact (Rz_congr _ ih).trans (rz_sum_clm_eventuallyEq_of_analyticAt L _ fun i => Rw_analytic ε l (h i))
 
 /- English proof (translation)
-Establish `hs` using `Rw_sum ε (fun _ : Unit => L) l (g := fun _ => g) fun _ => h`. Simplify using `using hs`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem Rw_clm [CompleteSpace B] (L : B →L[ℂ] B') (l : List (Fin n × Fin n))
     {g : Matrix (Fin n) (Fin n) ℂ → B} (h : AnalyticAt ℂ g 1) :
@@ -109,7 +107,7 @@ theorem Rw_clm [CompleteSpace B] (L : B →L[ℂ] B') (l : List (Fin n × Fin n)
   simpa using hs
 
 /- English proof (translation)
-Use `filter_upwards [hk.eventually_analyticAt, hk'.eventually_analyticAt] with z h₁ h₂`. Establish `hF : HasFDerivAt (fun w => k w - k' w) (fderiv ℂ k z - fderiv ℂ k' z) z` using `h₁.differentiableAt.hasFDerivAt.sub h₂.differentiableAt.hasFDerivAt`. Simplify using `only [Rz, hF.fderiv, _root_.sub_apply]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma rz_sub_eventuallyEq_of_analyticAt [CompleteSpace B] (Z : Matrix (Fin n) (Fin n) ℂ)
     {k k' : Matrix (Fin n) (Fin n) ℂ → B} (hk : AnalyticAt ℂ k 1) (hk' : AnalyticAt ℂ k' 1) :
@@ -120,7 +118,7 @@ private lemma rz_sub_eventuallyEq_of_analyticAt [CompleteSpace B] (Z : Matrix (F
   simp only [Rz, hF.fderiv, _root_.sub_apply]
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => exact Filter.EventuallyEq.rfl`. Consider the case `cons p l ih`. Simplify using `only [Rw_cons]`. Conclude with `(Rz_congr _ ih).trans (rz_sub_eventuallyEq_of_analyticAt _ (Rw_analytic ε l h) (Rw_analytic ε l h'))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Rw_sub [CompleteSpace B] (l : List (Fin n × Fin n))
     {g g' : Matrix (Fin n) (Fin n) ℂ → B} (h : AnalyticAt ℂ g 1) (h' : AnalyticAt ℂ g' 1) :
@@ -132,7 +130,7 @@ theorem Rw_sub [CompleteSpace B] (l : List (Fin n × Fin n))
     exact (Rz_congr _ ih).trans (rz_sub_eventuallyEq_of_analyticAt _ (Rw_analytic ε l h) (Rw_analytic ε l h'))
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => exact Filter.EventuallyEq.rfl`. Consider the case `cons p l ih`. Simplify using `only [Rw_cons]`. Conclude with `((GlobalTheory.T.holomorphicLeftInvariantDerivative_calculus_near_one n B (Rw ε l g) (Rw_analytic ε l h)).2.2 Y (thE ε p)).trans (Rz_congr _ ih)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Rw_left [CompleteSpace B] (Y : Matrix (Fin n) (Fin n) ℂ) (l : List (Fin n × Fin n))
     {g : Matrix (Fin n) (Fin n) ℂ → B} (h : AnalyticAt ℂ g 1) :
@@ -144,7 +142,7 @@ theorem Rw_left [CompleteSpace B] (Y : Matrix (Fin n) (Fin n) ℂ) (l : List (Fi
     exact ((GlobalTheory.T.holomorphicLeftInvariantDerivative_calculus_near_one n B (Rw ε l g) (Rw_analytic ε l h)).2.2 Y (thE ε p)).trans (Rz_congr _ ih)
 
 /- English proof (translation)
-Establish `hY : AnalyticAt ℂ (fun z : Matrix (Fin n) (Fin n) ℂ => Y * z) 1`. Conclude with `analyticAt_const.mul analyticAt_id`. Establish `hD : AnalyticAt ℂ (fderiv ℂ g) 1` using `h.fderiv`. Conclude with `AnalyticAt.comp (f := fun z => (Y * z, fderiv ℂ g z)) (x := 1) ((ContinuousLinearMap.apply ℂ B : Matrix (Fin n) (Fin n) ℂ →L[ℂ] (Matrix (Fin n) (Fin n) ℂ →L[ℂ] B) →L[ℂ] B).analyticAt_bilinear (Y * 1, fderiv ℂ g 1)) (hY.prod hD)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem analytic_left [CompleteSpace B] (Y : Matrix (Fin n) (Fin n) ℂ)
     {g : Matrix (Fin n) (Fin n) ℂ → B} (h : AnalyticAt ℂ g 1) :
@@ -158,7 +156,7 @@ theorem analytic_left [CompleteSpace B] (Y : Matrix (Fin n) (Fin n) ℂ)
     (hY.prod hD)
 
 /- English proof (translation)
-Simplify using `only [Formalism.REAL.sgn]`. Generalize the expression as in `ε a = x`. Generalize the expression as in `ε b = y`. Generalize the expression as in `ε c = w`. Apply the tactic sequence `cases x <;> cases y <;> cases w <;> norm_num`.
+Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sgn_mul (a b c : Fin n) : sgn ε a b * sgn ε b c = sgn ε a c := by
   simp only [Formalism.REAL.sgn]
@@ -168,9 +166,9 @@ theorem sgn_mul (a b c : Fin n) : sgn ε a b * sgn ε b c = sgn ε a c := by
   cases x <;> cases y <;> cases w <;> norm_num
 
 /- English proof (translation)
-Simplify using `only [thE]`. Use `split_ifs with hda`. Substitute `hda` using the available equality. Establish `key : ((sgn ε d b : ℝ) : ℂ) * ((sgn ε c d : ℝ) : ℂ) = ((sgn ε c b : ℝ) : ℂ)`. Rewrite using `[← Complex.ofReal_mul, mul_comm, sgn_mul]`.
+Simplify using the standard rewrite rules. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.smul_mul, Matrix.mul_smul, Matrix.single_mul_single_same, smul_smul, neg_mul_neg, key, mul_one, neg_smul, neg_neg]`. Establish `hne : a ≠ d` using `Ne.symm hda`. Rewrite using `[Matrix.smul_mul, Matrix.mul_smul]`. Simplify using `[hne]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem thE_mul (a b c d : Fin n) :
     thE ε (a, b) * thE ε (c, d) = -(if d = a then thE ε (c, b) else 0) := by
@@ -186,7 +184,7 @@ theorem thE_mul (a b c d : Fin n) :
     simp [hne]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `z`. Simplify using `only [Rz, mul_sub, map_sub]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 private lemma rz_sub_left (X Y : Matrix (Fin n) (Fin n) ℂ)
     (k : Matrix (Fin n) (Fin n) ℂ → B) : Rz (X - Y) k = fun z => Rz X k z - Rz Y k z := by
@@ -194,9 +192,9 @@ private lemma rz_sub_left (X Y : Matrix (Fin n) (Fin n) ℂ)
   simp only [Rz, mul_sub, map_sub]
 
 /- English proof (translation)
-Use `split_ifs`. Both sides reduce to the same expression. Establish `h0 : Rz (0 : Matrix (Fin n) (Fin n) ℂ) (Rw ε l₂ g) = fun _ => 0`. Use function extensionality and compare the values at `z`. Simplify using `[Rz]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h0, Rw_zero]`.
+A detailed English derivation is pending.
 -/
 private lemma rw_rz_ite_apply_one [CompleteSpace B] (P : Prop) [Decidable P] (l₁ l₂ : List (Fin n × Fin n))
     (p : Fin n × Fin n) (g : Matrix (Fin n) (Fin n) ℂ → B) :
@@ -210,9 +208,9 @@ private lemma rw_rz_ite_apply_one [CompleteSpace B] (P : Prop) [Decidable P] (l�
     rw [h0, Rw_zero]
 
 /- English proof (translation)
-Establish `T` using `GlobalTheory.T.holomorphicLeftInvariantDerivative_calculus_near_one n B (Rw ε l₂ g) (Rw_analytic ε l₂ h)`. Establish `TA` using `GlobalTheory.T.holomorphicLeftInvariantDerivative_calculus_near_one n B _ (T.1 (thE ε (a, b)))`. Establish `TZ` using `GlobalTheory.T.holomorphicLeftInvariantDerivative_calculus_near_one n B _ (T.1 (thE ε (c, d)))`. Establish `e1 : Rw ε l₁ (Rz (thE ε (a, b)) (Rz (thE ε (c, d)) (Rw ε l₂ g))) 1 - Rw ε l₁ (Rz (thE ε (c, d)) (Rz (thE ε (a, b)) (Rw ε l₂ g))) 1 = Rw ε l₁ (Rz (thE ε (a, b) * thE ε (c, d) - thE ε (c, d) * thE ε (a, b)) (Rw ε l₂ g)) 1` using `(Rw_sub ε l₁ (TZ.1 (thE ε (a, b))) (TA.1 (thE ε (c, d)))).eq_of_nhds.symm.trans (Rw_congr ε l₁ (T.2.1 (thE ε (a, b)) (thE ε (c, d)))).eq_of_nhds`. Establish `e2 : Rw ε l₁ (Rz (thE ε (a, b) * thE ε (c, d) - thE ε (c, d) * thE ε (a, b)) (Rw ε l₂ g)) 1 = Rw ε l₁ (Rz (if b = c then thE ε (a, d) else 0) (Rw ε l₂ g)) 1 - Rw ε l₁ (Rz (if d = a then thE ε (c, b) else 0) (Rw ε l₂ g)) 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[thE_mul, thE_mul, neg_sub_neg, rz_sub_left]`. Conclude with `(Rw_sub ε l₁ (T.1 _) (T.1 _)).eq_of_nhds`. Simplify using `only [Rw_append, Rw_cons]`. Rewrite using `[e1, e2, rw_rz_ite_apply_one, rw_rz_ite_apply_one]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Rw_comm [CompleteSpace B] (l₁ l₂ : List (Fin n × Fin n)) (a b c d : Fin n)
     {g : Matrix (Fin n) (Fin n) ℂ → B} (h : AnalyticAt ℂ g 1) :
@@ -236,27 +234,27 @@ theorem Rw_comm [CompleteSpace B] (l₁ l₂ : List (Fin n × Fin n)) (a b c d :
   rw [e1, e2, rw_rz_ite_apply_one, rw_rz_ite_apply_one]
 
 /- English proof (translation)
-Simplify using `[Rw]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma rw_nil (g : Matrix (Fin n) (Fin n) ℂ → B) : Rw ε [] g = g := by
   simp [Rw]
 
 /- English proof (translation)
-Introduce `V W _ _ _ _ n ε E _ Λ u j f hf hE hS`. Establish `T` using `GlobalTheory.T.holomorphicLeftInvariantDerivative_calculus_near_one n _ f hf`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `l₁ l₂ a b c d`. Establish `hc` using `Rw_comm ε l₁ l₂ a b c d hf`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use extensionality with `y x`. Establish `hcx` using `congrArg (fun S : W →L[ℂ] W => ⟪y, S x⟫_ℂ) hc`. Simplify using `only [_root_.sub_apply, inner_sub_right] at hcx`. Apply the tactic sequence `split_ifs at hcx ⊢ <;> simpa [funJet_apply] using hcx`. Introduce `l a b hab y x x' hx`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hev : (fun z => Rz (thE ε (a, b)) f z x) =ᶠ[𝓝 1] fun z => f z x'` using `(hE a b hab).mono fun z hz => hz.1 x x' hx`. Establish `e1` using `(Rw_clm ε (ContinuousLinearMap.apply ℂ W x) l (T.1 (thE ε (a, b)))).eq_of_nhds`. Establish `e2` using `(Rw_clm ε (ContinuousLinearMap.apply ℂ W x') l hf).eq_of_nhds`. Establish `e3` using `(Rw_congr ε l hev).eq_of_nhds`. Simplify using `only [ContinuousLinearMap.apply_apply] at e1 e2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[funJet_apply, funJet_apply, Rw_append, Rw_cons, rw_nil, ← e1, e3, e2]`. Introduce `l a b hab y y' x hy`. Establish `hev : (fun z => ⟪y, fderiv ℂ f z (thE ε (a, b) * z) x⟫_ℂ) =ᶠ[𝓝 1] fun z => ⟪y', f z x⟫_ℂ` using `(hE a b hab).mono fun z hz => hz.2 y y' x hy`. Establish `hL` using `(Rw_left ε (thE ε (a, b)) l hf).eq_of_nhds`. Establish `e1` using `(Rw_clm ε ((innerSL ℂ y).comp (ContinuousLinearMap.apply ℂ W x)) l (analytic_left (thE ε (a, b)) hf)).eq_of_nhds`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2` using `(Rw_clm ε ((innerSL ℂ y').comp (ContinuousLinearMap.apply ℂ W x)) l hf).eq_of_nhds`. Establish `e3` using `(Rw_congr ε l hev).eq_of_nhds`. Simplify using `only [ContinuousLinearMap.comp_apply, ContinuousLinearMap.apply_apply, innerSL_apply_apply] at e1 e2`. Simplify using `only [mul_one] at hL`. Rewrite using `[funJet_apply, funJet_apply, Rw_cons]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `show ⟪y, fderiv ℂ (Rw ε l f) 1 (1 * thE ε (a, b)) x⟫_ℂ = _`. Rewrite using `[one_mul, hL, ← e1, e3, e2]`. Introduce `l G hG y`. Establish `hs` using `Rw_sum ε (fun p => (innerSL ℂ y).comp (ContinuousLinearMap.apply ℂ W (G p))) l (g := fun p => Rz (thE ε p) f) fun p => T.1 _`. Establish `h0 : (fun z => ∑ p, ((innerSL ℂ y).comp (ContinuousLinearMap.apply ℂ W (G p))) (Rz (thE ε p) f z)) =ᶠ[𝓝 1] fun _ => (0 : ℂ)` using `by filter_upwards [hS G hG] with z hz`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [ContinuousLinearMap.comp_apply, ContinuousLinearMap.apply_apply, innerSL_apply_apply]`. Rewrite using `[← inner_sum]`. Use `show ⟪y, ∑ p, fderiv ℂ f z (z * thE ε p) (G p)⟫_ℂ = 0`. Rewrite using `[hz, inner_zero_right]`. Establish `e1` using `(hs.symm.trans (Rw_congr ε l h0)).eq_of_nhds`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `e1` using `[Rw_zero]`. Simplify using `only [ContinuousLinearMap.comp_apply, ContinuousLinearMap.apply_apply, innerSL_apply_apply] at e1`. Simplify using `only [funJet_apply, Rw_append, Rw_cons, rw_nil]`. Conclude with `e1`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem jetRel_funJet : ∀ (V W : Type) [NormedAddCommGroup V] [InnerProductSpace ℂ V] [NormedAddCommGroup W] [InnerProductSpace ℂ W] (n : ℕ) (ε : Fin n → Bool) (E : Fin n → Fin n → Module.End ℂ V) [CompleteSpace W] (Λ : Fin n → ℝ) (u : V) (j : W →ₗᵢ[ℂ] V) (f : Matrix (Fin n) (Fin n) ℂ → (W →L[ℂ] W)), AnalyticAt ℂ f 1 → FunEquiv ε E j f → FunSchmid ε E Λ u j f → JetRel ε E Λ u j (funJet ε f) := by
   intro V W _ _ _ _ n ε E _ Λ u j f hf hE hS

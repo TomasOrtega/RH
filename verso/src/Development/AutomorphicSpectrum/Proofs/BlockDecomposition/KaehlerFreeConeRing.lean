@@ -11,7 +11,7 @@ namespace GlobalTheory.CompanionTheory.SurjectionOntoH4.FreeOm
 open CrystallineSemistableComparison.Onto GlobalTheory.CompanionTheory.SurjectionOntoH4
 
 /- English proof (translation)
-The claim follows from `(KaehlerDifferential.isBaseChange_of_formallyEtale K A B).free`.
+A detailed English derivation is pending.
 -/
 theorem free_of_formallyEtale (K A B : Type) [CommRing K] [CommRing A] [CommRing B] [Algebra K A] [Algebra K B]
     [Algebra A B] [IsScalarTower K A B] [Algebra.FormallyEtale A B] [Module.Free A Ω[A⁄K]] :
@@ -19,7 +19,7 @@ theorem free_of_formallyEtale (K A B : Type) [CommRing K] [CommRing A] [CommRing
   (KaehlerDifferential.isBaseChange_of_formallyEtale K A B).free
 
 /- English proof (translation)
-Use `letI : Algebra A B := φ.toRingHom.toAlgebra`. Use `haveI : IsScalarTower K A B := IsScalarTower.of_algHom φ`. Use `haveI : Algebra.FormallyEtale A B := Algebra.FormallyEtale.of_equiv (AlgEquiv.ofBijective (Algebra.ofId A B) hφ)`. Conclude with `free_of_formallyEtale K A B`.
+Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem free_of_bijective {K A B : Type} [CommRing K] [CommRing A] [CommRing B] [Algebra K A] [Algebra K B]
     (φ : A →ₐ[K] B) (hφ : Function.Bijective φ) [Module.Free A Ω[A⁄K]] : Module.Free B Ω[B⁄K] := by
@@ -32,7 +32,7 @@ theorem free_of_bijective {K A B : Type} [CommRing K] [CommRing A] [CommRing B] 
 variable {K : Type} [Field K] {n d : ℕ}
 
 /- English proof (translation)
-The claim follows from `Module.Free.of_basis (KaehlerDifferential.mvPolynomialBasis K (E n d))`.
+A detailed English derivation is pending.
 -/
 theorem free_Bp : Module.Free (Bp K n d) Ω[Bp K n d⁄K] :=
   Module.Free.of_basis (KaehlerDifferential.mvPolynomialBasis K (E n d))
@@ -40,33 +40,33 @@ theorem free_Bp : Module.Free (Bp K n d) Ω[Bp K n d⁄K] :=
 def cS (k : Fin d) (S : Finset (Fin d)) : Gam n d := ∑ j ∈ S, ratE k j
 
 /- English proof (translation)
-Simplify using `[ratE, oneE]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ratE_inl (k j : Fin d) (l : Fin n) : (ratE k j : Gam n d) (Sum.inl l) = 0 := by
   simp [ratE, oneE]
 
 /- English proof (translation)
-Simplify using `[ratE, oneE, Pi.single_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ratE_inr (k j j' : Fin d) :
     (ratE k j : Gam n d) (Sum.inr j') = (if j' = j then 1 else 0) - (if j' = k then 1 else 0) := by
   simp [ratE, oneE, Pi.single_apply]
 
 /- English proof (translation)
-Simplify using `[cS, Finset.sum_apply, ratE_inl]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cS_inl (k : Fin d) (S : Finset (Fin d)) (l : Fin n) : (cS k S : Gam n d) (Sum.inl l) = 0 := by
   simp [cS, Finset.sum_apply, ratE_inl]
 
 /- English proof (translation)
-Simplify using `[cS, Finset.sum_apply, ratE_inr, hj]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cS_inr (k : Fin d) (S : Finset (Fin d)) {j : Fin d} (hj : j ≠ k) :
     (cS k S : Gam n d) (Sum.inr j) = if j ∈ S then 1 else 0 := by
   simp [cS, Finset.sum_apply, ratE_inr, hj]
 
 /- English proof (translation)
-Unfold `cS tdeg`. Simplify using `only [Finset.sum_apply]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Conclude with `ChartBij.tdeg_ratE k j`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem tdeg_cS (k : Fin d) (S : Finset (Fin d)) : tdeg (cS k S : Gam n d) = 0 := by
   unfold cS tdeg
@@ -76,15 +76,15 @@ theorem tdeg_cS (k : Fin d) (S : Finset (Fin d)) : tdeg (cS k S : Gam n d) = 0 :
   exact ChartBij.tdeg_ratE k j
 
 /- English proof (translation)
-The claim follows from `AddSubmonoid.sum_mem _ fun j _ => ratE_mem (Finset.mem_singleton_self k) j`.
+A detailed English derivation is pending.
 -/
 theorem cS_mem (k : Fin d) (S : Finset (Fin d)) : (cS k S : Gam n d) ∈ (cone {k} : AddSubmonoid (Gam n d)) :=
   AddSubmonoid.sum_mem _ fun j _ => ratE_mem (Finset.mem_singleton_self k) j
 
 /- English proof (translation)
-Use `⟨fun l => by simp [cS_inl], fun j hj => ?_, ?_⟩` and prove the remaining obligations. Establish `hne : j ≠ k` using `fun h => hj (h ▸ hk)`. Simplify using `[cS_inr k S hne, hj]`. Establish `h` using `tdeg_add (cS k S : Gam n d) (-cS k S)`. Rewrite `h` using `[add_neg_cancel, tdeg_cS]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h0 : tdeg (0 : Gam n d) = 0` using `by simp [tdeg]`. Rewrite `h` using `[h0]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem neg_cS_mem {k : Fin d} {S : Finset (Fin d)} (hk : k ∈ S) :
     -(cS k S : Gam n d) ∈ (cone S : AddSubmonoid (Gam n d)) := by
@@ -98,13 +98,13 @@ theorem neg_cS_mem {k : Fin d} {S : Finset (Fin d)} (hk : k ∈ S) :
     linarith
 
 /- English proof (translation)
-Use `⟨∑ j, (g (Sum.inr j)).natAbs, fun l => ?_, fun j hj => ?_, ?_⟩` and prove the remaining obligations. Simplify `hg.1 l` using `[cS_inl]`. Establish `hne : j ≠ k` using `by simpa using hj`. Establish `hle : (g (Sum.inr j)).natAbs ≤ ∑ j, (g (Sum.inr j)).natAbs` using `Finset.single_le_sum (f := fun j => (g (Sum.inr j)).natAbs) (fun _ _ => Nat.zero_le _) (Finset.mem_univ j)`. Simplify using `only [Pi.add_apply, Pi.smul_apply, cS_inr k S hne]`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hS : j ∈ S`. Simplify using `only [hS, if_true, nsmul_eq_mul, mul_one]`. Use linear arithmetic over natural numbers and integers. Simplify `hg.2.1 j hS` using `[hS]`. Rewrite using `[tdeg_add]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Establish `h : tdeg ((∑ j, (g (Sum.inr j)).natAbs) • (cS k S : Gam n d)) = 0`. Establish `hs : ∀ N : ℕ, tdeg (N • (cS k S : Gam n d)) = 0` using `fun N => by`. Proceed by induction on `N with`. Consider the case `zero => simp [tdeg]`. Consider the case `succ N ih => rw [succ_nsmul, tdeg_add, ih, tdeg_cS, add_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Conclude with `hs _`. Rewrite using `[h, add_zero]`. Conclude with `hg.2.2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_add_nsmul_mem {k : Fin d} {S : Finset (Fin d)} (hk : k ∈ S) (g : Gam n d)
     (hg : g ∈ (cone S : AddSubmonoid (Gam n d))) :
@@ -130,16 +130,14 @@ theorem exists_add_nsmul_mem {k : Fin d} {S : Finset (Fin d)} (hk : k ∈ S) (g 
     exact hg.2.2
 
 /- English proof (translation)
-Use `haveI : Module.Free (Bp K n d) Ω[Bp K n d⁄K] := free_Bp`. Conclude with `free_of_bijective _ (ChartBij.chart_bijective (K := K) (n := n) k)`.
+A detailed English derivation is pending.
 -/
 theorem free_singleton (k : Fin d) : Module.Free (R0 K n d {k}) Ω[R0 K n d {k}⁄K] := by
   haveI : Module.Free (Bp K n d) Ω[Bp K n d⁄K] := free_Bp
   exact free_of_bijective _ (ChartBij.chart_bijective (K := K) (n := n) k)
 
 /- English proof (translation)
-Establish `hle : (cone {k} : AddSubmonoid (Gam n d)) ≤ cone S` using `cone_mono (Finset.singleton_subset_iff.2 hk)`. Use `letI : Algebra (R0 K n d {k}) (R0 K n d S) := (incl (K := K) hle).toRingHom.toAlgebra`. Use `haveI : IsScalarTower K (R0 K n d {k}) (R0 K n d S) := IsScalarTower.of_algHom (incl (K := K) hle)`. Use `haveI : IsLocalization.Away (mon K (cS k S) (cS_mem k S)) (R0 K n d S) := Away.isLocalization_away hle (cS k S) (cS_mem k S) (neg_cS_mem hk) fun g hg => exists_add_nsmul_mem hk g hg`. Use `haveI : Algebra.FormallyEtale (R0 K n d {k}) (R0 K n d S) := Algebra.FormallyEtale.of_isLocalization (Submonoid.powers (mon K (cS k S) (cS_mem k S)))`.
-
-Use `haveI : Module.Free (R0 K n d {k}) Ω[R0 K n d {k}⁄K] := free_singleton k`. Conclude with `free_of_formallyEtale K (R0 K n d {k}) (R0 K n d S)`.
+Establish an intermediate fact. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem free_of_mem {k : Fin d} {S : Finset (Fin d)} (hk : k ∈ S) :
     Module.Free (R0 K n d S) Ω[R0 K n d S⁄K] := by
@@ -155,7 +153,7 @@ theorem free_of_mem {k : Fin d} {S : Finset (Fin d)} (hk : k ∈ S) :
   exact free_of_formallyEtale K (R0 K n d {k}) (R0 K n d S)
 
 /- English proof (translation)
-Introduce `K _ n d S`. Break down `S.eq_empty_or_nonempty with rfl | ⟨k, hk⟩` into its components or cases. Use `haveI : Module.Free (Bp K n d) Ω[Bp K n d⁄K] := free_Bp`. Conclude with `free_of_bijective _ (PolyBij.poly_bijective (K := K) (n := n) (d := d))`. Conclude with `free_of_mem hk`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem free_om : ∀ {K : Type} [Field K] {n d : ℕ} (S : Finset (Fin d)),
     Module.Free (R0 K n d S) Ω[R0 K n d S⁄K] := by

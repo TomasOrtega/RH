@@ -10,7 +10,7 @@ open scoped TensorProduct
 namespace PositivityTheory.KB.StabilizationIso
 
 /- English proof (translation)
-Use `MonoidHom.ext fun g => ?_` and prove the remaining obligations. Use extensionality with `i j`. Simplify using `[stab_apply]`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem stab_self (R : Type) [CommRing R] (n : ℕ) (h : n ≤ n) : stab R n n h = MonoidHom.id _ := by
   refine MonoidHom.ext fun g => ?_
@@ -18,7 +18,7 @@ theorem stab_self (R : Type) [CommRing R] (n : ℕ) (h : n ≤ n) : stab R n n h
   simp [stab_apply]
 
 /- English proof (translation)
-Use `MonoidHom.ext fun g => ?_` and prove the remaining obligations. Use extensionality with `i j`. Simplify using `only [MonoidHom.comp_apply, stab_apply]`. Apply the tactic sequence `split_ifs <;> simp_all [Fin.ext_iff] <;> omega`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem stab_comp (R : Type) [CommRing R] {n m k : ℕ} (h₁ : n ≤ m) (h₂ : m ≤ k) (h : n ≤ k) :
     stab R n k h = (stab R m k h₂).comp (stab R n m h₁) := by
@@ -28,9 +28,9 @@ theorem stab_comp (R : Type) [CommRing R] {n m k : ℕ} (h₁ : n ≤ m) (h₂ :
   split_ifs <;> simp_all [Fin.ext_iff] <;> omega
 
 /- English proof (translation)
-Introduce `m h`. Proceed by induction on `m, h using Nat.le_induction with`. Consider the case `base`. Rewrite using `[stab_self, grpHComp.1]`. Use `infer_instance`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `succ m hm ih`. Rewrite using `[stab_comp R hm (Nat.le_succ m), grpHComp.2]`. Use `PositivityTheory.v8.KStability.kStability R 2 (dedekindSR R) i m (by omega)` as an intermediate fact. Use `infer_instance`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isIso_stab (R : Type) [CommRing R] [IsDedekindDomain R] (i n : ℕ) (hn : 2 * i + 4 ≤ n) :
     ∀ (m : ℕ) (h : n ≤ m), IsIso (grpHMap (stab R n m h) i) := by
@@ -45,11 +45,11 @@ theorem isIso_stab (R : Type) [CommRing R] [IsDedekindDomain R] (i n : ℕ) (hn 
     infer_instance
 
 /- English proof (translation)
-Establish `h1 : (inv f).hom ∘ₗ f.hom = LinearMap.id`. Rewrite using `[← ModuleCat.hom_comp, IsIso.hom_inv_id, ModuleCat.hom_id]`. Establish `h2 : f.hom ∘ₗ (inv f).hom = LinearMap.id`. Rewrite using `[← ModuleCat.hom_comp, IsIso.inv_hom_id, ModuleCat.hom_id]`. Establish `l1 : (LinearMap.baseChange ℝ (inv f).hom) ∘ₗ LinearMap.baseChange ℝ f.hom = LinearMap.id`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← LinearMap.baseChange_comp, h1, LinearMap.baseChange_id]`. Establish `l2 : (LinearMap.baseChange ℝ f.hom) ∘ₗ LinearMap.baseChange ℝ (inv f).hom = LinearMap.id`. Rewrite using `[← LinearMap.baseChange_comp, h2, LinearMap.baseChange_id]`. Use `⟨Function.LeftInverse.injective (g := LinearMap.baseChange ℝ (inv f).hom) fun x => ?_, Function.RightInverse.surjective (g := LinearMap.baseChange ℝ (inv f).hom) fun x => ?_⟩` and prove the remaining obligations. Simplify using `using LinearMap.congr_fun l1 x`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using LinearMap.congr_fun l2 x`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem baseChange_bijective {M N : ModuleCat.{0} ℤ} (f : M ⟶ N) [IsIso f] :
     Function.Bijective (LinearMap.baseChange ℝ f.hom) := by

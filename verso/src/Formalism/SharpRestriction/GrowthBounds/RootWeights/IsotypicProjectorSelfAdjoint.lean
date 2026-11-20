@@ -14,23 +14,23 @@ section abs
 variable {n : ℕ} {K V : Type*} [Field K] [AddCommGroup V] [Module K V]
 
 /- English proof (translation)
-Simplify using `[weightSp, Submodule.mem_iInf, LinearMap.mem_ker, sub_eq_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_weightSpace_iff_diag (E : GLOps n K V) (mu : Fin n → ℤ) (x : V) :
     x ∈ weightSp E mu ↔ ∀ a, E a a x = (mu a : K) • x := by
   simp [weightSp, Submodule.mem_iInf, LinearMap.mem_ker, sub_eq_zero]
 
 /- English proof (translation)
-Apply the tactic sequence `first | exact UpperTheory.Reformulated.B.Qe29.isotypic_stable_gl_operator .. | (apply UpperTheory.Reformulated.B.Qe29.isotypic_stable_gl_operator <;> assumption) | (intros; apply UpperTheory.Reformulated.B.Qe29.isotypic_stable_gl_operator <;> assumption) | (apply @UpperTheory.Ref …`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem isotypic_stable_gl_operator (E : GLOps n K V) (mu : Fin n → ℤ) (a b : Fin n) (x : V) (hx : x ∈ isoSub E mu) :
     E a b x ∈ isoSub E mu := by
   first | exact UpperTheory.Reformulated.B.Qe29.isotypic_stable_gl_operator .. | (apply UpperTheory.Reformulated.B.Qe29.isotypic_stable_gl_operator <;> assumption) | (intros; apply UpperTheory.Reformulated.B.Qe29.isotypic_stable_gl_operator <;> assumption) | (apply @UpperTheory.Reformulated.B.Qe29.isotypic_stable_gl_operator <;> assumption) | (intros; apply @UpperTheory.Reformulated.B.Qe29.isotypic_stable_gl_operator <;> assumption) | (apply @UpperTheory.Reformulated.B.Qe29.isotypic_stable_gl_operator <;> first | assumption | infer_instance) | exact @UpperTheory.Reformulated.B.Qe29.isotypic_stable_gl_operator n K V ‹_› ‹_› ‹_› E mu a b x hx | exact @UpperTheory.Reformulated.B.Qe29.isotypic_stable_gl_operator n K V ‹_› ‹_› ‹_› E mu a b x | exact @UpperTheory.Reformulated.B.Qe29.isotypic_stable_gl_operator n K V ‹_› ‹_› ‹_› E mu a b | exact @UpperTheory.Reformulated.B.Qe29.isotypic_stable_gl_operator n K V ‹_› ‹_› ‹_› E mu a | exact @UpperTheory.Reformulated.B.Qe29.isotypic_stable_gl_operator n K V ‹_› ‹_› ‹_› E mu | exact @UpperTheory.Reformulated.B.Qe29.isotypic_stable_gl_operator n K V ‹_› ‹_› ‹_› E | exact @UpperTheory.Reformulated.B.Qe29.isotypic_stable_gl_operator n K V ‹_› ‹_› ‹_› | exact @UpperTheory.Reformulated.B.Qe29.isotypic_stable_gl_operator n K V ‹_› ‹_› | exact @UpperTheory.Reformulated.B.Qe29.isotypic_stable_gl_operator n K V ‹_› | exact @UpperTheory.Reformulated.B.Qe29.isotypic_stable_gl_operator n K V | exact @UpperTheory.Reformulated.B.Qe29.isotypic_stable_gl_operator n K | exact @UpperTheory.Reformulated.B.Qe29.isotypic_stable_gl_operator n
 
 /- English proof (translation)
-Unfold `Umon at hu`. Proceed by induction on `hu using Submonoid.closure_induction with`. Consider the case `mem u hu => obtain ⟨ab, rfl⟩ := hu`. Conclude with `hX _ _`. Consider the case `one => simp`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `mul u v _ _ hu hv => rw [← mul_assoc, hu, mul_assoc, hv, mul_assoc]`.
+A detailed English derivation is pending.
 -/
 theorem commuting_enveloping_monoid (E : GLOps n K V) (X : Module.End K V) (hX : ∀ c d, X * E c d = E c d * X)
     (u : Module.End K V) (hu : u ∈ Umon E) : X * u = u * X := by
@@ -41,17 +41,15 @@ theorem commuting_enveloping_monoid (E : GLOps n K V) (X : Module.End K V) (hX :
   | mul u v _ _ hu hv => rw [← mul_assoc, hu, mul_assoc, hv, mul_assoc]
 
 /- English proof (translation)
-Unfold `isoSub at hx ⊢`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨u, hu, v, hv, rfl⟩` from `hx`. Establish `h1 : X (u v) = u (X v)`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `congrArg (fun f : Module.End K V => f v) (commuting_enveloping_monoid E X hX u hu)` as an intermediate fact. Simplify using `using this`. Rewrite using `[h1]`. Distinguish the cases in `h0 : X v = 0`. Rewrite using `[h0, map_zero]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.zero_mem _`. Use `Submodule.subset_span ⟨u, hu, X v, ⟨h0, ?_, ?_⟩, rfl⟩` and prove the remaining obligations. Rewrite using `[mem_weightSpace_iff_diag]`. Introduce `a`. Establish `h2` using `congrArg (fun f : Module.End K V => f v) (hX a a)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `(mem_weightSpace_iff_diag E mu v).1 hv.2.1 a`. Simplify using `only [Module.End.mul_apply] at h2`. Rewrite using `[← h2, h3, map_smul]`. Introduce `a b hab`. Establish `h2` using `congrArg (fun f : Module.End K V => f v) (hX a b)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Module.End.mul_apply] at h2`. Rewrite using `[← h2, hv.2.2 a b hab, map_zero]`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `Submodule.add_mem _ hx hy`.
-
-Consider the case `smul c x _ hx => rw [map_smul]`. Conclude with `Submodule.smul_mem _ _ hx`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem isotypic_stable_commuting (E : GLOps n K V) (X : Module.End K V) (hX : ∀ c d, X * E c d = E c d * X)
     (mu : Fin n → ℤ) (x : V) (hx : x ∈ isoSub E mu) : X x ∈ isoSub E mu := by
@@ -81,11 +79,11 @@ theorem isotypic_stable_commuting (E : GLOps n K V) (X : Module.End K V) (hX : �
   | smul c x _ hx => rw [map_smul]; exact Submodule.smul_mem _ _ hx
 
 /- English proof (translation)
-Use extensionality with `x`. Establish `hx : x ∈ (⨆ mu : Fin n → ℤ, isoSub E mu)` using `by rw [hT]; trivial`. Simplify using `only [Module.End.mul_apply]`. Proceed by induction on `hx using Submodule.iSup_induction' with`. Consider the case `mem mu x hx`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Proceed by induction. Treat this case separately.
 
-Distinguish the cases in `h : mu = lam`. Substitute `h` using the available equality. Rewrite using `[he.1 x hx, he.1 _ (hX _ x hx)]`. Rewrite using `[he.2 mu h x hx, he.2 mu h _ (hX _ x hx), map_zero]`. Consider the case `zero => simp`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy => simp only [map_add, hx, hy]`.
+Treat this case separately.
 -/
 theorem isotypic_projector_commutes (E : GLOps n K V) (hT : (⨆ mu : Fin n → ℤ, isoSub E mu) = ⊤) (lam : Fin n → ℤ)
     (e : Module.End K V) (he : IsIsoProj E lam e) (X : Module.End K V)
@@ -103,15 +101,15 @@ theorem isotypic_projector_commutes (E : GLOps n K V) (hT : (⨆ mu : Fin n → 
   | add x y _ _ hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Establish `hx : x ∈ (⨆ mu : Fin n → ℤ, isoSub E mu)` using `by rw [hT]; trivial`. Establish `hy : y ∈ (⨆ mu : Fin n → ℤ, isoSub E mu)` using `by rw [hT]; trivial`. Proceed by induction on `hx using Submodule.iSup_induction' with`. Consider the case `mem mu x hx`. Proceed by induction on `hy using Submodule.iSup_induction' with`.
+Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately. Proceed by induction.
 
-Consider the case `mem nu y hy`. Distinguish the cases in `h : mu = lam`. Substitute `h` using the available equality. Rewrite using `[he.1 x hx]`. Distinguish the cases in `h' : nu = mu`.
+Treat this case separately. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `h'` using the available equality. Rewrite using `[he.1 y hy]`. Rewrite using `[he.2 nu h' y hy, map_zero, hB mu nu (Ne.symm h') x hx y hy]`. Rewrite using `[he.2 mu h x hx, map_zero, LinearMap.zero_apply]`. Distinguish the cases in `h' : nu = lam`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `h'` using the available equality. Rewrite using `[he.1 y hy, hB mu nu h x hx y hy]`. Rewrite using `[he.2 nu h' y hy, map_zero]`. Consider the case `zero => simp`. Consider the case `add y z _ _ hy hz => simp only [map_add, hy, hz]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `add x z _ _ hx hz => simp only [map_add, LinearMap.add_apply, hx, hz]`.
+Treat this case separately. Treat this case separately.
 -/
 theorem isotypic_projector_selfAdjoint (E : GLOps n K V) (hT : (⨆ mu : Fin n → ℤ, isoSub E mu) = ⊤) (lam : Fin n → ℤ)
     (e : Module.End K V) (he : IsIsoProj E lam e) (B : V →ₗ[K] V →ₗ[K] K)

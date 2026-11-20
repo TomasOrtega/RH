@@ -10,19 +10,19 @@ def RootOrZero {K : Type} [Field K] (z : K) : Prop := z = 0 ∨ ∃ n : ℕ, 0 <
 variable {K : Type} [Field K]
 
 /- English proof (translation)
-The claim follows from `Or.inl rfl`.
+Prove the first alternative.
 -/
 theorem RootOrZero.zero : RootOrZero (0 : K) := Or.inl rfl
 
 /- English proof (translation)
-The claim follows from `Or.inr ⟨1, one_pos, one_pow 1⟩`.
+Prove the second alternative.
 -/
 theorem RootOrZero.one : RootOrZero (1 : K) := Or.inr ⟨1, one_pos, one_pow 1⟩
 
 /- English proof (translation)
-Break down `hz with rfl | ⟨n, hn, hz⟩` into its components or cases. Conclude with `Or.inl (zero_mul w)`. Break down `hw with rfl | ⟨m, hm, hw⟩` into its components or cases. Conclude with `Or.inl (mul_zero z)`. Use `Or.inr ⟨n * m, Nat.mul_pos hn hm, ?_⟩` and prove the remaining obligations.
+Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mul_pow, pow_mul, hz, one_pow, one_mul, mul_comm n m, pow_mul, hw, one_pow]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem RootOrZero.mul {z w : K} (hz : RootOrZero z) (hw : RootOrZero w) : RootOrZero (z * w) := by
   rcases hz with rfl | ⟨n, hn, hz⟩
@@ -33,7 +33,7 @@ theorem RootOrZero.mul {z w : K} (hz : RootOrZero z) (hw : RootOrZero w) : RootO
   rw [mul_pow, pow_mul, hz, one_pow, one_mul, mul_comm n m, pow_mul, hw, one_pow]
 
 /- English proof (translation)
-Break down `hz with rfl | ⟨n, hn, hz⟩` into its components or cases. Conclude with `Or.inl inv_zero`. Conclude with `Or.inr ⟨n, hn, by rw [inv_pow, hz, inv_one]⟩`.
+Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative.
 -/
 theorem RootOrZero.inv {z : K} (hz : RootOrZero z) : RootOrZero z⁻¹ := by
   rcases hz with rfl | ⟨n, hn, hz⟩
@@ -41,7 +41,7 @@ theorem RootOrZero.inv {z : K} (hz : RootOrZero z) : RootOrZero z⁻¹ := by
   exact Or.inr ⟨n, hn, by rw [inv_pow, hz, inv_one]⟩
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using (RootOrZero.one : RootOrZero (1 : K))`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.prod_insert ha]`. Conclude with `(h a (Finset.mem_insert_self a s)).mul (ih fun i hi => h i (Finset.mem_insert_of_mem hi))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem RootOrZero.prod {ι : Type} (s : Finset ι) (f : ι → K) (h : ∀ i ∈ s, RootOrZero (f i)) :
     RootOrZero (∏ i ∈ s, f i) := by
@@ -52,7 +52,7 @@ theorem RootOrZero.prod {ι : Type} (s : Finset ι) (f : ι → K) (h : ∀ i �
     exact (h a (Finset.mem_insert_self a s)).mul (ih fun i hi => h i (Finset.mem_insert_of_mem hi))
 
 /- English proof (translation)
-Break down `hz with rfl | ⟨n, hn, hz⟩` into its components or cases. Rewrite using `[map_zero]`. Conclude with `IntOff.zero`. Conclude with `IntOff.of_pow hn (by rw [← map_pow, hz, map_one])`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem RootOrZero.intOff {z : K} (hz : RootOrZero z) (σ : K →+* ℂ) (S : Finset ℕ) : IntOff S (σ z) := by
   rcases hz with rfl | ⟨n, hn, hz⟩
@@ -60,14 +60,14 @@ theorem RootOrZero.intOff {z : K} (hz : RootOrZero z) (σ : K →+* ℂ) (S : Fi
   exact IntOff.of_pow hn (by rw [← map_pow, hz, map_one])
 
 /- English proof (translation)
-Use `Or.inr ⟨Nat.card A, Nat.card_pos, ?_⟩` and prove the remaining obligations. Rewrite using `[← AddChar.map_nsmul_eq_pow, card_nsmul_eq_zero', AddChar.map_zero_eq_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem addChar_root {A : Type} [AddCommGroup A] [Finite A] (ψ : AddChar A K) (a : A) : RootOrZero (ψ a) := by
   refine Or.inr ⟨Nat.card A, Nat.card_pos, ?_⟩
   rw [← AddChar.map_nsmul_eq_pow, card_nsmul_eq_zero', AddChar.map_zero_eq_one]
 
 /- English proof (translation)
-Use `Or.inr ⟨Nat.card G, Nat.card_pos, ?_⟩` and prove the remaining obligations. Rewrite using `[← Units.val_pow_eq_pow_val, ← map_pow, pow_card_eq_one', map_one, Units.val_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem hom_root {G : Type} [Group G] [Finite G] (χ : G →* Kˣ) (g : G) : RootOrZero ((χ g : Kˣ) : K) := by
   refine Or.inr ⟨Nat.card G, Nat.card_pos, ?_⟩
@@ -77,7 +77,7 @@ section Loc
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {P : HeightOneSpectrum (𝓞 E)}
 
 /- English proof (translation)
-Unfold `LocE.unitV`. Use `split_ifs with h`. Conclude with `hom_root χ _`. Conclude with `RootOrZero.zero`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem unitV_root (χ : (𝓞 E ⧸ P.asIdeal)ˣ →* Kˣ) (a : E) : RootOrZero (LocE.unitV χ a) := by
   unfold LocE.unitV
@@ -94,7 +94,7 @@ section Loc2
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {P : HeightOneSpectrum (𝓞 E)}
 
 /- English proof (translation)
-Unfold `LocE.PhiQ`. Use `split_ifs`. Conclude with `unitV_root ξ _`. Conclude with `RootOrZero.zero`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem phiQ_root (q : ℕ) (ξ : (𝓞 E ⧸ P.asIdeal)ˣ →* Kˣ) (k₀ r c' n' c n : ℕ) (x) :
     RootOrZero (LocE.PhiQ q ξ k₀ r c' n' c n x) := by
@@ -104,7 +104,7 @@ theorem phiQ_root (q : ℕ) (ξ : (𝓞 E ⧸ P.asIdeal)ˣ →* Kˣ) (k₀ r c' 
   · exact RootOrZero.zero
 
 /- English proof (translation)
-Unfold `LocE.lamGv`. Conclude with `(addChar_root ψ₀ _).mul (RootOrZero.prod _ _ fun i _ => unitV_root (χ i) _)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem lamGv_root (ψ₀ : AddChar (𝓞 E ⧸ P.asIdeal) K) (χ : ℕ → (𝓞 E ⧸ P.asIdeal)ˣ →* Kˣ) (r t j : ℕ) (M : ℕ → ℕ → E) :
     RootOrZero (LocE.lamGv ψ₀ χ r t j M) := by
@@ -112,7 +112,7 @@ theorem lamGv_root (ψ₀ : AddChar (𝓞 E ⧸ P.asIdeal) K) (χ : ℕ → (�
   exact (addChar_root ψ₀ _).mul (RootOrZero.prod _ _ fun i _ => unitV_root (χ i) _)
 
 /- English proof (translation)
-Unfold `LocE.lamGvS`. Conclude with `(addChar_root ψ₀ _).mul (RootOrZero.prod _ _ fun i _ => unitV_root (χ i) _)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem lamGvS_root (ψ₀ : AddChar (𝓞 E ⧸ P.asIdeal) K) (χ : ℕ → (𝓞 E ⧸ P.asIdeal)ˣ →* Kˣ) (k₀ r t j : ℕ) (M : ℕ → ℕ → E) :
     RootOrZero (LocE.lamGvS ψ₀ χ k₀ r t j M) := by
@@ -120,7 +120,7 @@ theorem lamGvS_root (ψ₀ : AddChar (𝓞 E ⧸ P.asIdeal) K) (χ : ℕ → (�
   exact (addChar_root ψ₀ _).mul (RootOrZero.prod _ _ fun i _ => unitV_root (χ i) _)
 
 /- English proof (translation)
-Unfold `LocE.PhiG`. Simplify using `only`. Use `split_ifs`. Conclude with `(lamGv_root ψ₀ χ _ _ _ _).mul (unitV_root _ _).inv`. Conclude with `RootOrZero.zero`.
+Replace the relevant objects with their definitions. Simplify by unfolding definitions. A detailed English derivation is pending.
 -/
 theorem phiG_root (q : ℕ) (ψ₀ : AddChar (𝓞 E ⧸ P.asIdeal) K) (χ : ℕ → (𝓞 E ⧸ P.asIdeal)ˣ →* Kˣ) (sharp : Bool)
     (k₀ r t j c' n' c n : ℕ) (x) : RootOrZero (LocE.PhiG q ψ₀ χ sharp k₀ r t j c' n' c n x) := by
@@ -131,7 +131,7 @@ theorem phiG_root (q : ℕ) (ψ₀ : AddChar (𝓞 E ⧸ P.asIdeal) K) (χ : ℕ
   · exact RootOrZero.zero
 
 /- English proof (translation)
-Unfold `LocE.PhiGS`. Simplify using `only`. Use `split_ifs`. Conclude with `(lamGvS_root ψ₀ χ _ _ _ _ _).mul (unitV_root _ _).inv`. Conclude with `RootOrZero.zero`.
+Replace the relevant objects with their definitions. Simplify by unfolding definitions. A detailed English derivation is pending.
 -/
 theorem phiGS_root (q : ℕ) (ψ₀ : AddChar (𝓞 E ⧸ P.asIdeal) K) (χ : ℕ → (𝓞 E ⧸ P.asIdeal)ˣ →* Kˣ)
     (k₀ rS r t j c' n' c n : ℕ) (x) : RootOrZero (LocE.PhiGS q ψ₀ χ k₀ rS r t j c' n' c n x) := by
@@ -147,7 +147,7 @@ section Chain
 variable {X : Fields} {Pr : Primes X} {R : Ranks} (Ch : Chars X Pr R.m) {S : Set ℕ} (mu : Tup X.F X.E X.K S)
 
 /- English proof (translation)
-Unfold `PhiAt`. Use `split_ifs`. Conclude with `phiGS_root (x := x) ..`. Conclude with `phiG_root (x := x) ..`. Conclude with `phiQ_root (x := x) ..`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem phiAt_root (sharp : Bool) (i : ℕ) (P : HeightOneSpectrum (𝓞 X.E)) (x) :
     RootOrZero (PhiAt (R := R) Ch mu sharp i P x) := by
@@ -158,7 +158,7 @@ theorem phiAt_root (sharp : Bool) (i : ℕ) (P : HeightOneSpectrum (𝓞 X.E)) (
   · exact phiQ_root (x := x) ..
 
 /- English proof (translation)
-Unfold `PhiTop`. Use `split_ifs`. Conclude with `phiGS_root (x := x) ..`. Conclude with `phiG_root (x := x) ..`. Conclude with `phiQ_root (x := x) ..`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem phiTop_root (sharp : Bool) (m2 : ℕ) (P : HeightOneSpectrum (𝓞 X.E)) (x) :
     RootOrZero (PhiTop (R := R) Ch mu sharp m2 P x) := by
@@ -171,7 +171,7 @@ theorem phiTop_root (sharp : Bool) (m2 : ℕ) (P : HeightOneSpectrum (𝓞 X.E))
 end Chain
 
 /- English proof (translation)
-Introduce `D L hT Gi Gl K Y cX ex t u μ P`. Conclude with `⟨fun i x => (phiAt_root _ _ _ _ _ x).intOff _ _, fun x => (phiTop_root _ _ _ _ _ x).intOff _ _⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem phi_intOff : ∀ (D : D7) (L : SizeData₂ D) (hT : GatTies D) (Gi : G.Inst D L) (Gl : G.LatInst D) (K : G.Consts) (Y : DivX D) (cX : ExtraC) (ex : Extra D L hT Gi Gl K Y cX) (t : KerEntTied ex), ∀ u μ (P : HeightOneSpectrum (𝓞 t.X.E)), (∀ (i : ℕ) x, IntOff (t.O u μ).S (t.seam.σ₀ (PhiAt (R := D.R) t.Ch (t.tup μ) (t.cst μ).sharp i P x))) ∧ ∀ x, IntOff (t.O u μ).S (t.seam.σ₀ (PhiTop (R := D.R) t.Ch (t.tup μ) (t.cst μ).sharp t.m2 P x)) := by
   intro D L hT Gi Gl K Y cX ex t u μ P

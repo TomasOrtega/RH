@@ -6,7 +6,7 @@ open NumberField IsDedekindDomain Matrix Formalism.BasicNotions Formalism.UG For
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.CongStdLoc.localization_eq_stdAt_of_congAt` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSatakeParameters%2FLocalisationEqStdAtOfCongruentOneAtPrime.lean&line=258#L258)
 -/

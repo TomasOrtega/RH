@@ -11,11 +11,11 @@ open AlgebraicGeometry CategoryTheory Limits Opposite ReciprocityTheory.ChartRes
 variable {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V]
 
 /- English proof (translation)
-Unfold `valAt'`. Distinguish the cases in `h : ⊤ ≤ (x ≫ φ) ⁻¹ᵁ U`. Establish `h' : ⊤ ≤ x ⁻¹ᵁ (φ ⁻¹ᵁ U)` using `h`. Rewrite using `[dif_pos h', dif_pos h]`. Unfold `valAt`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Use `first`. Consider the case `(rw [Scheme.comp_appLE]) <;> rfl`. Consider the case `(rw [Scheme.Hom.comp_appLE]) <;> rfl`. Consider the case `simp [Scheme.comp_appLE]`. Establish `h' : ¬ ⊤ ≤ x ⁻¹ᵁ (φ ⁻¹ᵁ U)` using `h`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_neg h', dif_neg h]`.
+A detailed English derivation is pending.
 -/
 private theorem valAt'_comp_lemma {Y Y' : Scheme.{0}} (x : Sp ℂ ⟶ Y) (φ : Y ⟶ Y') (U : Y'.Opens)
     (f : Γ(Y', U)) : valAt' x (φ ⁻¹ᵁ U) (φ.app U f) = valAt' (x ≫ φ) U f := by
@@ -32,7 +32,7 @@ private theorem valAt'_comp_lemma {Y Y' : Scheme.{0}} (x : Sp ℂ ⟶ Y) (φ : Y
     rw [dif_neg h', dif_neg h]
 
 /- English proof (translation)
-Establish `key : (Spec.map φ).app ⊤ ((Scheme.ΓSpecIso A).inv a) = (Scheme.ΓSpecIso C).inv (φ a)` using `by first`. Consider the case `exact (congrArg (fun g : A ⟶ Γ(Spec C, ⊤) => g a) (Scheme.ΓSpecIso_inv_naturality φ)).symm`. Consider the case `simp`. Apply the tactic sequence `(rw [← valAt'_comp_lemma, key]) <;> rfl`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem valAt'_specMap {A C : CommRingCat.{0}} (φ : A ⟶ C) (x : Sp ℂ ⟶ Spec C) (a : A) :
     valAt' (x ≫ Spec.map φ) ⊤ ((Scheme.ΓSpecIso A).inv a) = valAt' x ⊤ ((Scheme.ΓSpecIso C).inv (φ a)) := by
@@ -43,7 +43,7 @@ theorem valAt'_specMap {A C : CommRingCat.{0}} (φ : A ⟶ C) (x : Sp ℂ ⟶ Sp
   (rw [← valAt'_comp_lemma, key]) <;> rfl
 
 /- English proof (translation)
-Unfold `valAt'`. Use `split_ifs with h`. Simplify using `[valAt]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem valAt'_zero' {Y : Scheme.{0}} (x : Sp ℂ ⟶ Y) (U : Y.Opens) : valAt' x U 0 = 0 := by
   unfold valAt'
@@ -52,9 +52,9 @@ theorem valAt'_zero' {Y : Scheme.{0}} (x : Sp ℂ ⟶ Y) (U : Y.Opens) : valAt' 
   · rfl
 
 /- English proof (translation)
-Establish `h : ⊤ ≤ x ⁻¹ᵁ (⊤ : Y.Opens)` using `by first`. Consider the case `exact le_top`. Consider the case `simp`. Use `first`. Consider the case `simp only [valAt', dif_pos h, valAt, map_mul]`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `simp [valAt', valAt, h]`.
+A detailed English derivation is pending.
 -/
 private theorem valAt'_top_mul_lemma_2 {Y : Scheme.{0}} (x : Sp ℂ ⟶ Y) (f g : Γ(Y, ⊤)) :
     valAt' x ⊤ (f * g) = valAt' x ⊤ f * valAt' x ⊤ g := by
@@ -67,9 +67,9 @@ private theorem valAt'_top_mul_lemma_2 {Y : Scheme.{0}} (x : Sp ℂ ⟶ Y) (f g 
     | simp [valAt', valAt, h]
 
 /- English proof (translation)
-Establish `h : ⊤ ≤ x ⁻¹ᵁ (⊤ : Y.Opens)` using `by first`. Consider the case `exact le_top`. Consider the case `simp`. Use `first`. Consider the case `simp only [valAt', dif_pos h, valAt, map_add]`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `simp [valAt', valAt, h]`.
+A detailed English derivation is pending.
 -/
 private theorem valAt'_top_add_lemma_3 {Y : Scheme.{0}} (x : Sp ℂ ⟶ Y) (f g : Γ(Y, ⊤)) :
     valAt' x ⊤ (f + g) = valAt' x ⊤ f + valAt' x ⊤ g := by
@@ -82,23 +82,19 @@ private theorem valAt'_top_add_lemma_3 {Y : Scheme.{0}} (x : Sp ℂ ⟶ Y) (f g 
     | simp [valAt', valAt, h]
 
 /- English proof (translation)
-Use `haveI : IsAffine (pullback (Spec.map (CommRingCat.ofHom (algebraMap R S))) (Spec.map (CommRingCat.ofHom (algebraMap R T)))) := by first`. Consider the case `infer_instance`. Consider the case `exact isAffine_of_isIso (pullbackSpecIso R S T).hom`. Use `isHolTo_of_affine hB ?_` and prove the remaining obligations. Introduce `r`.
+Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hL : ∀ (s : S) (b : V), valAt' (w b ≫ (pullbackSpecIso R S T).hom) ⊤ ((Scheme.ΓSpecIso (CommRingCat.of (S ⊗[R] T))).inv (s ⊗ₜ[R] (1 : T))) = valAt' (w b ≫ pullback.fst _ _) ⊤ ((Scheme.ΓSpecIso (CommRingCat.of S)).inv s)`. Introduce `s b`. Use `first`. Consider the case `rw [← pullbackSpecIso_hom_fst R S T]`. Consider the case `rw [← Iso.hom_inv_id_assoc (pullbackSpecIso R S T) (pullback.fst _ _), pullbackSpecIso_inv_fst]`.
+Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Treat this case separately. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Apply the tactic sequence `(rw [← Category.assoc, valAt'_specMap]) <;> rfl`. Establish `hR : ∀ (t : T) (b : V), valAt' (w b ≫ (pullbackSpecIso R S T).hom) ⊤ ((Scheme.ΓSpecIso (CommRingCat.of (S ⊗[R] T))).inv ((1 : S) ⊗ₜ[R] t)) = valAt' (w b ≫ pullback.snd _ _) ⊤ ((Scheme.ΓSpecIso (CommRingCat.of T)).inv t)`. Introduce `t b`. Use `first`. Consider the case `rw [← pullbackSpecIso_hom_snd R S T]`.
+Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Treat this case separately. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Consider the case `rw [← Iso.hom_inv_id_assoc (pullbackSpecIso R S T) (pullback.snd _ _), pullbackSpecIso_inv_snd]`. Apply the tactic sequence `(rw [← Category.assoc, valAt'_specMap]) <;> rfl`. Establish `hS : ∀ s : S, DifferentiableOn ℂ (fun b => valAt' (w b ≫ (pullbackSpecIso R S T).hom) ⊤ ((Scheme.ΓSpecIso (CommRingCat.of (S ⊗[R] T))).inv (s ⊗ₜ[R] (1 : T)))) B` using `fun s => (h1 s).congr (fun b _ => hL s b)`. Establish `hT : ∀ t : T, DifferentiableOn ℂ (fun b => valAt' (w b ≫ (pullbackSpecIso R S T).hom) ⊤ ((Scheme.ΓSpecIso (CommRingCat.of (S ⊗[R] T))).inv ((1 : S) ⊗ₜ[R] t))) B` using `fun t => (h2 t).congr (fun b _ => hR t b)`. Establish `hAll : ∀ u : S ⊗[R] T, DifferentiableOn ℂ (fun b => valAt' (w b ≫ (pullbackSpecIso R S T).hom) ⊤ ((Scheme.ΓSpecIso (CommRingCat.of (S ⊗[R] T))).inv u)) B`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `u`. Proceed by induction on `u using TensorProduct.induction_on with`. Consider the case `zero`. Simplify using `only [map_zero, valAt'_zero']`. Conclude with `differentiableOn_const 0`.
+Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Consider the case `tmul s t`. Establish `hst : (s ⊗ₜ[R] t : S ⊗[R] T) = (s ⊗ₜ[R] (1 : T)) * ((1 : S) ⊗ₜ[R] t)`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul]`. Simplify using `only [hst, map_mul, valAt'_top_mul_lemma_2]`. Conclude with `(hS s).mul (hT t)`.
+Treat this case separately. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Consider the case `add x y hx hy`. Simplify using `only [map_add, valAt'_top_add_lemma_3]`. Conclude with `hx.add hy`. Establish `hr : ∀ b, valAt' (w b) ⊤ r = valAt' (w b ≫ (pullbackSpecIso R S T).hom) ⊤ ((Scheme.ΓSpecIso (CommRingCat.of (S ⊗[R] T))).inv ((Scheme.ΓSpecIso (CommRingCat.of (S ⊗[R] T))).hom ((pullbackSpecIso R S T).inv.app ⊤ r)))`. Introduce `b`.
-
-Establish `hinv : (Scheme.ΓSpecIso (CommRingCat.of (S ⊗[R] T))).inv ((Scheme.ΓSpecIso (CommRingCat.of (S ⊗[R] T))).hom ((pullbackSpecIso R S T).inv.app ⊤ r)) = (pullbackSpecIso R S T).inv.app ⊤ r` using `by first`. Consider the case `exact Iso.hom_inv_id_apply _ _`. Consider the case `simp`. Rewrite using `[hinv]`. Establish `hw : w b = (w b ≫ (pullbackSpecIso R S T).hom) ≫ (pullbackSpecIso R S T).inv` using `by simp`.
-
-Use `conv_lhs => rw [hw]`. Conclude with `(valAt'_comp_lemma (w b ≫ (pullbackSpecIso R S T).hom) (pullbackSpecIso R S T).inv ⊤ r).symm`. Conclude with `(hAll _).congr (fun b _ => hr b)`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isHolTo_pullbackSpec {R S T : Type} [CommRing R] [CommRing S] [CommRing T] [Algebra R S] [Algebra R T]
     {B : Set V} (hB : IsOpen B)

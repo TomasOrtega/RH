@@ -12,7 +12,7 @@ open scoped InnerProductSpace ComplexOrder TensorProduct Pointwise Classical
 variable {Q : Type} [Group Q]
 
 /- English proof (translation)
-Rewrite using `[MonoidAlgebra.coeff_mul_apply_left, Finsupp.sum_fintype _ _ (by simp)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem coeff_mul_eq_sum [Fintype Q] (a b : MonoidAlgebra ℂ Q) (q : Q) :
     (a * b).coeff q = ∑ x, a.coeff x * b.coeff (x⁻¹ * q) := by
@@ -27,7 +27,7 @@ Both sides reduce to the same expression.
 theorem adj_coeff [Finite Q] (a : MonoidAlgebra ℂ Q) (q : Q) : (adj a).coeff q = star (a.coeff q⁻¹) := rfl
 
 /- English proof (translation)
-Use `haveI := Fintype.ofFinite Q`. Use extensionality with `q`. Rewrite using `[adj_coeff, coeff_mul_eq_sum, coeff_mul_eq_sum, star_sum]`. Use `Fintype.sum_equiv (Equiv.mulLeft q) _ _ fun x => ?_` and prove the remaining obligations. Simplify using `[adj_coeff, mul_comm, mul_assoc]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem adj_mul [Finite Q] (a b : MonoidAlgebra ℂ Q) : adj (a * b) = adj b * adj a := by
   haveI := Fintype.ofFinite Q
@@ -37,21 +37,21 @@ theorem adj_mul [Finite Q] (a b : MonoidAlgebra ℂ Q) : adj (a * b) = adj b * a
   simp [adj_coeff, mul_comm, mul_assoc]
 
 /- English proof (translation)
-Use extensionality with `q`. Simplify using `[adj_coeff]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem adj_adj [Finite Q] (a : MonoidAlgebra ℂ Q) : adj (adj a) = a := by
   ext q; simp [adj_coeff]
 
 /- English proof (translation)
-Use extensionality with `q`. Simplify using `[adj_coeff]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem adj_sub [Finite Q] (a b : MonoidAlgebra ℂ Q) : adj (a - b) = adj a - adj b := by
   ext q; simp [adj_coeff]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use extensionality with `q`. Rewrite using `[adj_coeff, h q, star_star]`. Introduce `h q`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `adj_coeff a q⁻¹` as an intermediate fact. Rewrite `this` using `[h, inv_inv]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isSA_iff [Finite Q] (a : MonoidAlgebra ℂ Q) : IsSA a ↔ adj a = a := by
   constructor
@@ -64,7 +64,7 @@ theorem isSA_iff [Finite Q] (a : MonoidAlgebra ℂ Q) : IsSA a ↔ adj a = a := 
     exact this
 
 /- English proof (translation)
-Rewrite using `[coeff_mul_eq_sum]`. Simplify using `only [adj_coeff, mul_one, inv_inv]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem coeff_mul_adj_one [Fintype Q] (a : MonoidAlgebra ℂ Q) :
     (a * adj a).coeff 1 = ∑ x, a.coeff x * star (a.coeff x) := by
@@ -72,7 +72,7 @@ theorem coeff_mul_adj_one [Fintype Q] (a : MonoidAlgebra ℂ Q) :
   simp only [adj_coeff, mul_one, inv_inv]
 
 /- English proof (translation)
-Use `haveI := Fintype.ofFinite Q`. Rewrite `h` using `[coeff_mul_adj_one]`. Use extensionality with `q`. Use `(Finset.sum_eq_zero_iff_of_nonneg fun x _ => mul_star_self_nonneg (a.coeff x)).1 h q (Finset.mem_univ _)` as an intermediate fact. Simplify using `using this`.
+Rewrite the indicated hypotheses using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_coeff_mul_adj [Finite Q] (a : MonoidAlgebra ℂ Q) (h : (a * adj a).coeff 1 = 0) : a = 0 := by
   haveI := Fintype.ofFinite Q
@@ -82,11 +82,11 @@ theorem eq_zero_of_coeff_mul_adj [Finite Q] (a : MonoidAlgebra ℂ Q) (h : (a * 
   simpa using this
 
 /- English proof (translation)
-Establish `hs : adj z * adj z = adj z` using `by rw [← adj_mul, hz]`. Establish `h0 : z - z * adj z = 0`. Apply `eq_zero_of_coeff_mul_adj` to reduce the goal to its premises. Rewrite using `[adj_sub, adj_mul, adj_adj]`. Establish `e1 : z * adj z * adj z = z * adj z` using `by rw [mul_assoc, hs]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e2 : z * (z * adj z) = z * adj z` using `by rw [← mul_assoc, hz]`. Establish `e3 : z * adj z * (z * adj z) = z * adj z`. Rewrite using `[mul_assoc, ← mul_assoc (adj z), ← hc (adj z), mul_assoc z (adj z), hs, e2]`. Rewrite using `[sub_mul, mul_sub, mul_sub, e1, e2, e3]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h1 : z = z * adj z` using `sub_eq_zero.1 h0`. Rewrite using `[isSA_iff]`. Use `conv_lhs => rw [h1, adj_mul, adj_adj]`. Conclude with `h1.symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isSA_central [Finite Q] (z : MonoidAlgebra ℂ Q) (hz : z * z = z) (hc : ∀ a, z * a = a * z) : IsSA z := by
   have hs : adj z * adj z = adj z := by rw [← adj_mul, hz]
@@ -104,7 +104,7 @@ theorem isSA_central [Finite Q] (z : MonoidAlgebra ℂ Q) (hz : z * z = z) (hc :
   exact h1.symm
 
 /- English proof (translation)
-Use `conv_lhs => rw [← h, coeff_mul_eq_sum]`. Use `Fintype.sum_equiv (Equiv.mulLeft x) _ _ fun q => ?_` and prove the remaining obligations. Simplify using `[hs q, mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem coeff_inv_mul [Fintype Q] (a : MonoidAlgebra ℂ Q) (h : a * a = a) (hs : IsSA a) (x y : Q) :
     a.coeff (x⁻¹ * y) = ∑ q, star (a.coeff (q⁻¹ * x)) * a.coeff (q⁻¹ * y) := by
@@ -113,11 +113,11 @@ theorem coeff_inv_mul [Fintype Q] (a : MonoidAlgebra ℂ Q) (h : a * a = a) (hs 
   simp [hs q, mul_assoc]
 
 /- English proof (translation)
-Use `haveI := Fintype.ofFinite Q`. Establish `e : ∑ i, ∑ j, star (c i) * c j * a.coeff ((x i)⁻¹ * x j) = ∑ q : Q, star (∑ j, c j * a.coeff (q⁻¹ * x j)) * ∑ j, c j * a.coeff (q⁻¹ * x j)`. Simplify using `only [coeff_inv_mul a h hs (x _), star_sum, Finset.sum_mul_sum]`. Simplify using `only [Finset.mul_sum]`. Use `symm`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Use symmetry to reverse the relation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[star_mul']`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `Finset.sum_nonneg fun q _ => star_mul_self_nonneg _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem posType [Finite Q] (a : MonoidAlgebra ℂ Q) (h : a * a = a) (hs : IsSA a) (m : ℕ) (x : Fin m → Q)
     (c : Fin m → ℂ) : 0 ≤ ∑ i, ∑ j, star (c i) * c j * a.coeff ((x i)⁻¹ * x j) := by
@@ -137,9 +137,9 @@ theorem posType [Finite Q] (a : MonoidAlgebra ℂ Q) (h : a * a = a) (hs : IsSA 
   exact Finset.sum_nonneg fun q _ => star_mul_self_nonneg _
 
 /- English proof (translation)
-Introduce `Q _ _`. Use `haveI := Fintype.ofFinite Q`. Use `⟨fun a h hs => ?_, isSA_central, fun a b ha hb hab => ?_⟩` and prove the remaining obligations. Establish `e : a * adj a = a` using `by rw [(isSA_iff a).1 hs, h]`. Use `⟨posType a h hs, ?_, fun h0 => eq_zero_of_coeff_mul_adj a (by rw [e, h0])⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← e, coeff_mul_adj_one]`. Conclude with `Finset.sum_nonneg fun q _ => mul_star_self_nonneg _`. Rewrite `ha`, `hb`, the goal using `[isSA_iff]`. Rewrite using `[adj_mul, ha, hb, hab]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem selfAdjoint_idempotent_posType : ∀ (Q : Type) [Group Q] [Finite Q],
     (∀ a : MonoidAlgebra ℂ Q, a * a = a → IsSA a →

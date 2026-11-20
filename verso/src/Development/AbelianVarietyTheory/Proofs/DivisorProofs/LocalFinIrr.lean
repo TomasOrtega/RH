@@ -18,7 +18,7 @@ def conjMA (H : Type*) [Group H] : MulAction H H where
   mul_smul a b y := by show a * b * y * (a * b)⁻¹ = a * (b * y * b⁻¹) * a⁻¹; group
 
 /- English proof (translation)
-The claim follows from `@ContinuousSMul.mk H H (conjMA H).toSMul _ _ (by show Continuous fun q : H × H => q.1 * q.2 * q.1⁻¹ fun_prop)`.
+A detailed English derivation is pending.
 -/
 theorem conjMA_cont (H : Type*) [Group H] [TopologicalSpace H] [IsTopologicalGroup H] :
     @ContinuousSMul H H (conjMA H).toSMul _ _ :=

@@ -12,11 +12,11 @@ section
 variable {k K : Type} [Field k] [Field K] [Algebra k K] (A : LocalSubring K)
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `hA.2 a ha`. Use `⟨c, ?_⟩` and prove the remaining obligations. Break down `hc with h | h` into its components or cases. Establish `: (⟨a - algebraMap k K c, sub_mem ha (hA.1 c)⟩ : A.toSubring) = 0` using `by ext; simp [h]`. Rewrite using `[this]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `zero_mem _`. Rewrite using `[mem_maximalIdeal, mem_nonunits_iff]`. Introduce `hu`. Take `⟨w, hw⟩` from `isUnit_iff_exists_inv.mp hu`. Apply `h` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `hK : (a - algebraMap k K c) * (w : K) = 1`. Simplify using `using congrArg (fun z : A.toSubring => (z : K)) hw`. Rewrite using `[inv_eq_of_mul_eq_one_right hK]`. Conclude with `w.2`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma good_sub_mem (hA : PlaceGood k K A) (a : K) (ha : a ∈ A.toSubring) :
     ∃ c : k, (⟨a - algebraMap k K c, sub_mem ha (hA.1 c)⟩ : A.toSubring) ∈ maximalIdeal A.toSubring := by
@@ -37,35 +37,31 @@ lemma good_sub_mem (hA : PlaceGood k K A) (a : K) (ha : a ∈ A.toSubring) :
 end
 
 /- English proof (translation)
-Introduce `k K _ _ _ _ A hA y S hAS hS Q _ hQ`. Set `kS : k →+* S` to `(algebraMap k K).codRestrict S (fun c => hAS (hA.1 c))`. Establish `stepA : ∀ a (ha : a ∈ A.toSubring), ∃ c : k, (⟨a, hAS ha⟩ : S) - kS c ∈ Q`. Introduce `a ha`. Take `⟨c, hc⟩` from `good_sub_mem A hA a ha`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨c, ?_⟩` and prove the remaining obligations. Use `hQ (Ideal.mem_map_of_mem (Subring.inclusion hAS) hc)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Both sides reduce to the same expression. Set `φ : k →+* S ⧸ Q` to `(Ideal.Quotient.mk Q).comp kS`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Both sides reduce to the same expression. Introduce a local definition for the expression.
 
-Set `_ : Algebra k (S ⧸ Q)` to `φ.toAlgebra`. Establish `hSm : ∀ s, s ∈ Algebra.adjoin A.toSubring {y} → s ∈ S` using `fun s hs => by rw [hS]; exact hs`. Set `y' : S` to `⟨y, hSm y (Algebra.subset_adjoin (Set.mem_singleton y))⟩`. Establish `gen : ∀ s (hs : s ∈ Algebra.adjoin A.toSubring {y}), Ideal.Quotient.mk Q (⟨s, hSm s hs⟩ : S) ∈ Algebra.adjoin k {Ideal.Quotient.mk Q y'}`. Introduce `s hs`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `hs using Algebra.adjoin_induction with`. Consider the case `mem x hx`. Rewrite `hx` using `[Set.mem_singleton_iff]`. Substitute `hx` using the available equality. Conclude with `Algebra.subset_adjoin (Set.mem_singleton _)`.
+Proceed by induction. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Treat this case separately.
 
-Consider the case `algebraMap r`. Take `⟨c, hc⟩` from `stepA r.1 r.2`. Establish `e : Ideal.Quotient.mk Q (⟨algebraMap A.toSubring K r, hSm _ (Subalgebra.algebraMap_mem _ r)⟩ : S) = algebraMap k (S ⧸ Q) c`. Rewrite using `[← sub_eq_zero, ← Ideal.Quotient.mk_eq_mk]`. Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk Q _ - Ideal.Quotient.mk Q (kS c) = 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_sub, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `hc`. Rewrite using `[e]`. Conclude with `Subalgebra.algebraMap_mem _ c`. Consider the case `add x z hx hz ihx ihz`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Establish `: (⟨x + z, hSm _ (add_mem hx hz)⟩ : S) = ⟨x, hSm _ hx⟩ + ⟨z, hSm _ hz⟩` using `rfl`. Rewrite using `[this, map_add]`. Conclude with `add_mem ihx ihz`. Consider the case `mul x z hx hz ihx ihz`. Establish `: (⟨x * z, hSm _ (mul_mem hx hz)⟩ : S) = ⟨x, hSm _ hx⟩ * ⟨z, hSm _ hz⟩` using `rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[this, map_mul]`. Conclude with `mul_mem ihx ihz`. Establish `top : Algebra.adjoin k {Ideal.Quotient.mk Q y'} = ⊤`. Use `eq_top_iff.mpr fun t _ => ?_` and prove the remaining obligations. Take `⟨⟨s, hs⟩, rfl⟩` from `Ideal.Quotient.mk_surjective t`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `gen s (by rw [hS] at hs; exact hs)`. Establish `: Algebra.FiniteType k (S ⧸ Q)` using `⟨⟨{Ideal.Quotient.mk Q y'}, by simpa using top⟩⟩`. Establish `: Module.Finite k (S ⧸ Q)` using `finite_of_finite_type_of_isJacobsonRing k (S ⧸ Q)`. Establish `surj` using `(IsAlgClosed.algebraMap_bijective_of_isIntegral (k := k) (K := S ⧸ Q)).2`. Establish `stepS : ∀ s : S, ∃ c : k, s - kS c ∈ Q`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Introduce `s`. Take `⟨c, hc⟩` from `surj (Ideal.Quotient.mk Q s)`. Use `⟨c, ?_⟩` and prove the remaining obligations. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_sub]`. Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk Q s - φ c = 0`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← hc]`. Conclude with `sub_self _`. Use `set B := LocalSubring.ofPrime S Q`. Use `⟨fun c => LocalSubring.le_ofPrime S Q (hAS (hA.1 c)), ?_⟩` and prove the remaining obligations. Introduce `b hb`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Prove the first alternative. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `bb : B.toSubring` to `⟨b, hb⟩`. Take `⟨t, ht⟩` from `(IsLocalization.AtPrime.equivQuotMaximalIdeal Q B.toSubring).surjective (Ideal.Quotient.mk (maximalIdeal B.toSubring) bb)`. Take `⟨s, rfl⟩` from `Ideal.Quotient.mk_surjective t`. Take `⟨c, hc⟩` from `stepS s`. Use `⟨c, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Distinguish the cases in `h0 : b = algebraMap k K c`. Conclude with `Or.inl h0`. Use `right`. Introduce `hinv`. Establish `hmem : bb - algebraMap S B.toSubring (kS c) ∈ maximalIdeal B.toSubring`.
-
-Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_sub, ← ht, IsLocalization.AtPrime.equivQuotMaximalIdeal_apply_mk, ← map_sub, ← map_sub, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `Ideal.mem_comap.mp (show s - kS c ∈ (maximalIdeal B.toSubring).comap (algebraMap S B.toSubring) by`. Rewrite using `[← Ideal.under_def, IsLocalization.AtPrime.under_maximalIdeal B.toSubring Q]`. Conclude with `hc)`. Rewrite `hmem` using `[mem_maximalIdeal, mem_nonunits_iff]`.
-
-Apply `hmem` to reduce the goal to its premises. Use `isUnit_iff_exists_inv.mpr ⟨⟨_, hinv⟩, ?_⟩` and prove the remaining obligations. Use `ext`. Express the relevant statement in the definitionally equal form `(b - algebraMap k K c) * (b - algebraMap k K c)⁻¹ = 1`. Conclude with `mul_inv_cancel₀ (sub_ne_zero.mpr h0)`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem PlaceResGood_of : PlaceResGood := by
   intro k K _ _ _ _ A hA y S hAS hS Q _ hQ

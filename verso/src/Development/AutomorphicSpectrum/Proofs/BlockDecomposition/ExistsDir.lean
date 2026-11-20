@@ -27,7 +27,7 @@ def Bd (G : Sw) (K n : ℕ) (B : ℝ) : Prop :=
   ∀ m ≤ n, ∀ Y : E5, (1 + ‖Y‖) ^ K * ‖iteratedFDeriv ℝ m G Y‖ ≤ B
 
 /- English proof (translation)
-Introduce `m hm` and use `h m (hm.trans hn)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Bd.mono {G : Sw} {K n n' : ℕ} {B : ℝ} (h : Bd G K n B) (hn : n' ≤ n) : Bd G K n' B :=
   fun m hm => h m (hm.trans hn)

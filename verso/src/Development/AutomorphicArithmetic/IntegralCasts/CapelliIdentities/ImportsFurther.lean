@@ -1,11 +1,11 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `l f hf a`. Proceed by induction on `a with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Rewrite using `[← ih]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `Finset.sum_range_succ (fun k => f (n + k)) l`. Establish `h2` using `Finset.sum_range_succ' (fun k => f (n + k)) l`. Establish `h3 : f (n + l) = f n` using `hf n`. Establish `h4 : ∑ k ∈ Finset.range l, f (n + 1 + k) = ∑ k ∈ Finset.range l, f (n + (k + 1))` using `Finset.sum_congr rfl (fun k _ => by rw [add_assoc, add_comm 1 k])`. Simplify using `only [add_zero] at h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[h4]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem UpperTheory.Reformulated.B.DYdd7.main :
     ∀ {l : ℕ} (f : ℕ → ℚ),

@@ -136,21 +136,19 @@ Both sides reduce to the same expression.
 theorem Reading.toC_apply (ρ : Reading X i b) (x : X.O0 i) : ρ.toC x = ρ.ι (toQ ρ.κ x) := rfl
 
 /- English proof (translation)
-The claim follows from `ρ.ι.injective.comp (GlobalTheory.GalChar.toQ_injective ρ.κ)`.
+A detailed English derivation is pending.
 -/
 theorem Reading.toC_injective (ρ : Reading X i b) : Function.Injective ρ.toC :=
   ρ.ι.injective.comp (GlobalTheory.GalChar.toQ_injective ρ.κ)
 
 /- English proof (translation)
-Use `haveI : CharZero (FractionRing (X.O0 i)) := (X.emb0 i).charZero_iff (X.emb0 i).injective |>.1 inferInstance`. Set `f : ℤ_[X.l i] →+* FractionRing (X.O0 i)` to `(algebraMap (X.O0 i) (FractionRing (X.O0 i))).comp (algebraMap ℤ_[X.l i] (X.O0 i))`. Establish `hf : Function.Injective f`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `z hz`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `h0`. Rewrite `hz` using `[PadicInt.unitCoeff_spec h0, map_mul, map_pow, map_natCast]`. Break down `mul_eq_zero.1 hz with h | h` into its components or cases. Conclude with `((PadicInt.unitCoeff h0).isUnit.map f).ne_zero h`. Conclude with `(pow_ne_zero _ (Nat.cast_ne_zero.2 (X.lPrime i).out.ne_zero)) h`.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hf0 : Function.Injective (algebraMap ℤ_[X.l i] (X.O0 i))` using `Function.Injective.of_comp (f := algebraMap (X.O0 i) (FractionRing (X.O0 i))) hf`. Use `haveI : Module.IsTorsionFree ℤ_[X.l i] (X.O0 i) := Module.isTorsionFree_iff_algebraMap_injective.2 hf0`. Use `haveI : Module.IsTorsionFree ℤ_[X.l i] (Qbar (X.l i)) := Module.isTorsionFree_iff_algebraMap_injective.2 (by rw [IsScalarTower.algebraMap_eq ℤ_[X.l i] ℚ_[X.l i] (Qbar (X.l i))]`. Conclude with `(algebraMap ℚ_[X.l i] (Qbar (X.l i))).injective.comp Subtype.val_injective)`. Set `g : X.O0 i →ₐ[ℤ_[X.l i]] Qbar (X.l i)` to `IsAlgClosed.lift`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hg : Function.Injective g`. Use `(RingHom.injective_iff_ker_eq_bot g.toRingHom).2 (Ideal.eq_bot_of_comap_eq_bot (R := ℤ_[X.l i]) ?_)` and prove the remaining obligations. Rewrite using `[eq_bot_iff]`. Introduce `z hz`. Establish `h1 : algebraMap ℤ_[X.l i] (Qbar (X.l i)) z = 0` using `(g.commutes z).symm.trans hz`.
-
-Conclude with `(map_eq_zero_iff _ (FaithfulSMul.algebraMap_injective _ _)).1 h1`. Use `haveI : Countable ↥D.LL0 := (Module.finBasis ℚ ↥D.LL0).equivFun.injective.countable`. Set `κ : FractionRing (X.O0 i) →+* Qbar (X.l i)` to `IsFractionRing.lift (g := g.toRingHom) hg`. Take `⟨ι, hι⟩` from `GlobalTheory.exists_padicAlgCl_ringEquiv_complex_comp_eq_of_countable (X.l i) ↥D.LL0 (κ.comp (embSide X i b)) (embLL0 D)`. Conclude with `⟨⟨κ, ι, fun z => (IsFractionRing.lift_algebraMap hg _).trans (g.commutes z), hι⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem Reading.nonempty (i : X.Tw) (b : Bool) : Nonempty (Reading X i b) := by
   haveI : CharZero (FractionRing (X.O0 i)) := (X.emb0 i).charZero_iff (X.emb0 i).injective |>.1 inferInstance
@@ -183,11 +181,9 @@ theorem Reading.nonempty (i : X.Tw) (b : Bool) : Nonempty (Reading X i b) := by
   exact ⟨⟨κ, ι, fun z => (IsFractionRing.lift_algebraMap hg _).trans (g.commutes z), hι⟩⟩
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Establish `hp` using `D.what₂.places.resChar_prime w`. Establish `h1 : ‖((D.what₂.places.resChar w : ℕ) : Qbar (X.l i))‖ = 1`. Rewrite using `[← map_natCast (algebraMap ℚ_[X.l i] (Qbar (X.l i))), norm_algebraMap', Padic.norm_natCast_eq_one_iff]`. Conclude with `(Nat.coprime_primes (X.lPrime i).out hp).2 (Ne.symm hne)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `(h ((D.what₂.places.resChar w : ℕ) : D.what₂.LL)⁻¹).2 (by`. Rewrite using `[map_inv₀, map_inv₀, map_natCast, map_natCast, norm_inv, h1, inv_one])`. Establish `h3` using `(D.what₂.places.val w).map_mul ((D.what₂.places.resChar w : ℕ) : D.what₂.LL) ((D.what₂.places.resChar w : ℕ) : D.what₂.LL)⁻¹`. Rewrite `h3` using `[mul_inv_cancel₀ (Nat.cast_ne_zero.2 hp.ne_zero), AddValuation.map_one, D.what₂.places.val_resChar]`. Establish `h4 : (0 : WithTop ℤ) < (((D.what₂.places.ramIdx w : ℕ) : ℤ) : WithTop ℤ)`.
-
-Conclude with `D.what₂.places.ramIdx_pos w` after adjusting the coercions. Conclude with `absurd h3 (lt_of_lt_of_le h4 (le_add_of_nonneg_right h2)).ne`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem Reading.Induces.resChar {ρ : Reading X i b} {w : D.what₂.places.Pl} (h : ρ.Induces w) :
     D.what₂.places.resChar w = X.l i := by
@@ -221,19 +217,19 @@ theorem muBase_eq (l : ℕ) (j : Fin D.R.m) :
     muBase C l j = (hframe C).mu0 j * GlobalTheory.GalChar.delAt D.host (hframe C) l := rfl
 
 /- English proof (translation)
-The claim follows from `(D.hc _).e_int j`.
+A detailed English derivation is pending.
 -/
 theorem eExp_int (j : Fin D.R.m) (τ : D.R.Psi) : ∃ z : ℤ, eExp D j τ = z := (D.hc _).e_int j
 
 /- English proof (translation)
-Introduce `x hx` and use `by rw [shiftChar, GlobalTheory.GalChar.block_loc (C.isEta.unr v) hx] rfl`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem shiftChar_unr (v : PlE D.host) : (shiftChar C).UnrAt v := fun x hx => by
   rw [shiftChar, GlobalTheory.GalChar.block_loc (C.isEta.unr v) hx]
   rfl
 
 /- English proof (translation)
-Rewrite using `[shiftChar, GlobalTheory.GalChar.block_val, one_mul, HChar.val_inv, Units.val_inv_eq_inv_val]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem shiftChar_val (v : PlE D.host) : (((shiftChar C).val v : ℂˣ) : ℂ) =
     ((C.eta.val v : ℂˣ) : ℂ)⁻¹ * ((normV v : ℕ) : ℂ) ^ (((D.R.t : ℝ) / 2 : ℝ) : ℂ) := by
@@ -241,7 +237,7 @@ theorem shiftChar_val (v : PlE D.host) : (((shiftChar C).val v : ℂˣ) : ℂ) =
   rfl
 
 /- English proof (translation)
-Rewrite using `[blockChar, GlobalTheory.GalChar.block_val, HChar.val_mul, HChar.val_inv, Units.val_mul, Units.val_inv_eq_inv_val]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem blockChar_val (l : ℕ) (j : Fin D.R.m) (v : PlE D.host) : (((blockChar C l j).val v : ℂˣ) : ℂ) =
     (((muBase C l j).val v : ℂˣ) : ℂ) * ((C.eta.val v : ℂˣ) : ℂ)⁻¹ * ((normV v : ℕ) : ℂ) ^ (((D.R.r : ℝ) / 2 : ℝ) : ℂ) := by
@@ -251,9 +247,9 @@ theorem blockChar_val (l : ℕ) (j : Fin D.R.m) (v : PlE D.host) : (((blockChar 
 variable {C} {X : NTw D.R D.host D.what₂ D.LL0 D.nd} {i : X.Tw} {b : Bool} {art : Ideles D.host.E →* Gab D.host.E D.nd.Om}
 
 /- English proof (translation)
-Take `⟨n, hn⟩` from `(GlobalTheory.Mem.CharAlg.isAlg_even_odd D.R D.host).2 C.eta C.isEta.inf D.R.t D.R.t_odd`. Establish `h1 : GlobalTheory.HeckeGal.IsAlgPos (shiftChar C) n`. Rewrite using `[shiftChar, block, one_mul]`. Conclude with `GlobalTheory.HeckeGal.isAlgPos_of_isAlg hn`. Take `⟨ν, hν⟩` from `GlobalTheory.GalChar.exists_isGal (X.twistBaseCoefficientRing_isAdic i) ρ.κ_alg ha h1 ρ.read (GlobalTheory.GalChar.AlmostIn.block (μ := 1) (Filter.Eventually.of_forall fun v => ⟨1, map_one _⟩) hC.eta D.R.t_odd)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨ν, n, hν⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_shift (ha : IsGlobalArtin art) (hC : ValLL0 D C) (ρ : Reading X i b) :
     ∃ (ν : GalE D →* (X.O0 i)ˣ) (n : _), IsGal art ρ.κ ρ.ι (shiftChar C) n ν := by
@@ -266,9 +262,9 @@ theorem exists_shift (ha : IsGlobalArtin art) (hC : ValLL0 D C) (ρ : Reading X 
   exact ⟨ν, n, hν⟩
 
 /- English proof (translation)
-Take `⟨n0, h0⟩` from `GlobalTheory.GalChar.exists_isAlgPos_mu0 (hframe C) eExp_int j`. Take `⟨n, hn⟩` from `GlobalTheory.GalChar.block_alg (hframe C) ⟨_, GlobalTheory.GalChar.isAlgPos_mul h0 (GlobalTheory.GalChar.del_alg (hframe C) (X.l i))⟩`. Establish `hδ : (C.delAt (X.l i)).ValuesIn 0 (embLL0 D)`. Unfold `CharFrame.delAt`. Use `split_ifs`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result.
 
-Use `exacts [hC.del', hC.del]`. Take `⟨χ, hχ⟩` from `GlobalTheory.GalChar.exists_isGal (X.twistBaseCoefficientRing_isAdic i) ρ.κ_alg ha hn ρ.read (((GlobalTheory.GalChar.almostIn_of_valuesIn (hC.mu0 j)).mul (GlobalTheory.GalChar.almostIn_of_valuesIn hδ)).block hC.eta (GlobalTheory.GalChar.odd_r D.R))`. Conclude with `⟨χ, n, hχ⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_blockChar (ha : IsGlobalArtin art) (hC : ValLL0 D C) (ρ : Reading X i b) (j : Fin D.R.m) :
     ∃ (χ : GalE D →* (X.O0 i)ˣ) (n : _), IsGal art ρ.κ ρ.ι (blockChar C (X.l i) j) n χ := by
@@ -289,7 +285,7 @@ end Chars
 section Values
 
 /- English proof (translation)
-Establish `h` using `R.m_add_three_le_k`. Simplify using `only [rowPar, Multiset.card_add, Multiset.card_map, Finset.card_val, Finset.card_univ, Fintype.card_fin, Ranks.r]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem card_rowPar {R : Ranks} (P : HCParam R) : Multiset.card (rowPar P) = R.r := by
   have h := R.m_add_three_le_k
@@ -303,13 +299,13 @@ theorem param_eq {R : Ranks} (P : HCParam R) (j : Fin R.m) :
     GlobalTheory.IndefiniteRowSideFullHecke.JumpDictionary.param P j = rowPar P + GlobalTheory.IndefiniteRowSideFullHecke.JumpDictionary.run P j := rfl
 
 /- English proof (translation)
-The claim follows from `Nat.two_mul_div_two_of_even ((GlobalTheory.GalChar.odd_r R).add_odd R.t_odd)`.
+A detailed English derivation is pending.
 -/
 theorem two_mul_nV_half (R : Ranks) : 2 * (R.nV / 2) = R.r + R.t :=
   Nat.two_mul_div_two_of_even ((GlobalTheory.GalChar.odd_r R).add_odd R.t_odd)
 
 /- English proof (translation)
-Use `Nat.two_mul_div_two_of_even ?_` and prove the remaining obligations. Break down `Nat.even_or_odd k with h | h` into its components or cases. Conclude with `h.mul_right _`. Conclude with `(Nat.Odd.sub_odd (GlobalTheory.GalChar.odd_r R) h).mul_left _`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem two_mul_half (R : Ranks) {k : ℕ} (hk : k ≤ R.r) : 2 * (k * (R.r - k) / 2) = k * (R.r - k) := by
   refine Nat.two_mul_div_two_of_even ?_
@@ -318,25 +314,25 @@ theorem two_mul_half (R : Ranks) {k : ℕ} (hk : k ≤ R.r) : 2 * (k * (R.r - k)
   · exact (Nat.Odd.sub_odd (GlobalTheory.GalChar.odd_r R) h).mul_left _
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.GalChar.absNorm_ne_zero P`.
+A detailed English derivation is pending.
 -/
 theorem normV_ne_zero (P : PlE D.host) : ((normV P : ℕ) : ℂ) ≠ 0 := GlobalTheory.GalChar.absNorm_ne_zero P
 
 variable (μ : HChar D.host.E) (π : D.naut.CG D.R.r) (P : PlE D.host)
 
 /- English proof (translation)
-Simplify using `[heckeVal, Multiset.esymm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem heckeVal_zero : heckeVal μ π 0 P = 1 := by simp [heckeVal, Multiset.esymm]
 
 /- English proof (translation)
-Rewrite using `[satake, Multiset.card_map, D.naut.frobEig_card _ h, D.naut.locG_dim]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem card_satake (h : D.naut.unr (D.naut.locG π P)) : Multiset.card (satake μ π P) = D.R.r := by
   rw [satake, Multiset.card_map, D.naut.frobEig_card _ h, D.naut.locG_dim]
 
 /- English proof (translation)
-Rewrite using `[heckeVal, Nat.sub_self, mul_zero, Nat.zero_div, pow_zero, one_mul, Multiset.esymm, ← card_satake μ π P h, Multiset.powersetCard_self]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem heckeVal_top (h : D.naut.unr (D.naut.locG π P)) : heckeVal μ π D.R.r P = (satake μ π P).prod := by
   rw [heckeVal, Nat.sub_self, mul_zero, Nat.zero_div, pow_zero, one_mul, Multiset.esymm, ← card_satake μ π P h,
@@ -344,13 +340,13 @@ theorem heckeVal_top (h : D.naut.unr (D.naut.locG π P)) : heckeVal μ π D.R.r 
   simp
 
 /- English proof (translation)
-Establish `e : k * (k - 1) / 2 + k * (D.R.r - k) / 2 = (D.R.r - 1) / 2 * k`. Establish `h1` using `two_mul_half D.R hk`. Establish `h2 : 2 * (k * (k - 1) / 2) = k * (k - 1)` using `Nat.two_mul_div_two_of_even (Nat.even_mul_pred_self k)`. Take `⟨c, hc⟩` from `GlobalTheory.GalChar.odd_r D.R`. Establish `h3 : (D.R.r - 1) / 2 = c` using `by omega`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Break down `k with _ | k` into its components or cases. Simplify using the standard rewrite rules. Take `⟨d, hd⟩` from `Nat.exists_eq_add_of_le hk`. Establish `h4 : D.R.r - (k + 1) = d` using `by omega`. Rewrite using `[h3]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h1`, the goal using `[h4]`. Rewrite `h2`, the goal using `[Nat.add_sub_cancel]`. Establish `h5 : k + d = 2 * c` using `by omega`. Establish `h6 : (k + 1) * k + (k + 1) * d = 2 * (c * (k + 1))` using `by rw [← mul_add, h5]; ring`. Use linear arithmetic over natural numbers and integers.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[heckeVal, ← mul_assoc, ← pow_add, e, pow_mul]`. Conclude with `Multiset.pow_smul_esymm (((normV P : ℕ) : ℂ) ^ ((D.R.r - 1) / 2)) k (satake μ π P)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_mul_heckeVal {k : ℕ} (hk : k ≤ D.R.r) :
     ((normV P : ℕ) : ℂ) ^ (k * (k - 1) / 2) * heckeVal μ π k P =
@@ -374,15 +370,15 @@ theorem pow_mul_heckeVal {k : ℕ} (hk : k ≤ D.R.r) :
   exact Multiset.pow_smul_esymm (((normV P : ℕ) : ℂ) ^ ((D.R.r - 1) / 2)) k (satake μ π P)
 
 /- English proof (translation)
-Establish `hq` using `normV_ne_zero P`. Use `set q : ℂ := ((normV P : ℕ) : ℂ)`. Take `⟨c, hc⟩` from `GlobalTheory.GalChar.odd_r D.R`. Take `⟨d, hd⟩` from `D.R.t_odd`. Establish `h1 : (D.R.r - 1) / 2 = c` using `by omega`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : D.R.nV / 2 = c + d + 1` using `by have := two_mul_nV_half D.R; omega`. Establish `hs : q ^ (((1 / 2 : ℝ) : ℝ) : ℂ) ≠ 0` using `by simp [hq]`. Establish `e1 : q ^ (((1 - (D.R.r : ℝ)) / 2 : ℝ) : ℂ) = (q ^ c)⁻¹`. Rewrite using `[← Complex.cpow_natCast, ← Complex.cpow_neg, hc]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `e2 : ∀ n : ℕ, q ^ (((((2 * n + 1 : ℕ) : ℝ)) / 2 : ℝ) : ℂ) = q ^ n * q ^ (((1 / 2 : ℝ) : ℝ) : ℂ)` using `fun n => by`. Rewrite using `[← Complex.cpow_natCast, ← Complex.cpow_add _ _ hq]`. Use `congr 1`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[shiftChar_val, blockChar_val, e1, h1, h2, hc, hd, e2, e2]`. Establish `h3` using `(C.eta.val P).ne_zero`. Establish `h4` using `((muBase C l j).val P).ne_zero`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `eq_or_ne a 0 with rfl | ha` into its components or cases. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem geometric_eigenvalue (C : CharFrame D) (l : ℕ) (j : Fin D.R.m) (a : ℂ) :
     (a * ((normV P : ℕ) : ℂ) ^ (((1 - (D.R.r : ℝ)) / 2 : ℝ) : ℂ) * (((shiftChar C).val P : ℂˣ) : ℂ)⁻¹ *
@@ -413,13 +409,13 @@ end Values
 section API
 
 /- English proof (translation)
-Establish `hn : Multiset.card m = n`. Use `congrArg natDegree h` as an intermediate fact. Rewrite `this` using `[Matrix.charpoly_natDegree_eq_dim, Fintype.card_fin, natDegree_multiset_prod_X_sub_C_eq_card, eq_comm]`. Then use the resulting hypothesis. Break down `eq_or_ne c 0 with rfl | hc` into its components or cases. Simplify using `[hn]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Apply `Polynomial.funext` to reduce the goal to its premises. Introduce `z`. Establish `h1` using `congrArg (eval (z / c)) h`. Rewrite `h1` using `[Matrix.eval_charpoly, eval_multiset_prod, Multiset.map_map]`. Establish `e : Matrix.scalar (Fin n) z - c • M = c • (Matrix.scalar (Fin n) (z / c) - M)`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[smul_sub, Matrix.scalar_apply, Matrix.scalar_apply, ← Matrix.diagonal_smul]`. Use `congr 2`. Use function extensionality and compare the values at `x`. Simplify using `[mul_div_cancel₀ _ hc]`. Rewrite using `[Matrix.eval_charpoly, eval_multiset_prod, Multiset.map_map, e, Matrix.det_smul, h1, Fintype.card_fin, ← hn, ← Multiset.prod_replicate, ← Multiset.map_const', ← Multiset.prod_map_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congrArg _ (Multiset.map_congr rfl fun a _ => ?_)` and prove the remaining obligations. Simplify using `only [Function.comp_apply, eval_sub, eval_X, eval_C]`. Clear the denominators using the available nonvanishing facts.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 -/
 theorem charpoly_smul_of_prod {n : ℕ} (M : Matrix (Fin n) (Fin n) ℂ) (m : Multiset ℂ) (c : ℂ)
     (h : M.charpoly = (m.map fun a => X - C a).prod) : (c • M).charpoly = (m.map fun a => X - C (a * c)).prod := by
@@ -444,11 +440,9 @@ theorem charpoly_smul_of_prod {n : ℕ} (M : Matrix (Fin n) (Fin n) ℂ) (m : Mu
     field_simp
 
 /- English proof (translation)
-Establish `hc : ∀ g, ((r' g : GL (Fin a) (Qbar l)) : Matrix (Fin a) (Fin a) (Qbar l)).charpoly = ((r g : GL (Fin a) (Qbar l)) : Matrix (Fin a) (Fin a) (Qbar l)).charpoly` using `fun g => by`. Rewrite using `[hA, Units.val_mul, Units.val_mul, Matrix.coe_units_inv, Matrix.charpoly_units_conj]`. Use `⟨?_, GlobalTheory.Proof.SemisimpleRepresentationIntegralConjugate.isSSRep_conj A hA h.2.1, fun w hw => ⟨fun s hs => ?_, ?_, fun hu B s hB hs => ?_⟩⟩` and prove the remaining obligations. Simplify using `only [hA, Units.val_mul]`. Conclude with `(continuous_const.mul h.1).mul continuous_const`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc]`. Conclude with `(h.2.2 w hw).1 s hs`. Rewrite using `[(h.2.2 w hw).2.1, show (r' : GalE D → _) = (MulAut.conj A) ∘ r from funext hA, Set.image_comp]`. Conclude with `(Set.finite_image_iff (MulAut.conj A).injective.injOn).symm`. Rewrite using `[hc]`.
-
-Conclude with `(h.2.2 w hw).2.2 hu B s hB hs`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isGaloisRepOf_conj {a : ℕ} {π : D.naut.CG a} {l : ℕ} [Fact l.Prime] {ι : Qbar l ≃+* ℂ}
     {r r' : GalE D →* GL (Fin a) (Qbar l)} (h : IsGaloisRepOf D π l ι r) (A : GL (Fin a) (Qbar l))
@@ -470,7 +464,7 @@ variable {C : CharFrame D} {art : Ideles D.host.E →* Gab D.host.E D.nd.Om} {X 
   {red : Zbar (X.l i) →+* FbAt D w}
 
 /- English proof (translation)
-Use `⟨σ, π, (MulAut.conj A).toMonoidHom.comp r, ν, w, red, good, occurs, param, isGaloisRepOf_conj gal A fun _ => rfl, shift, rho, hecke, induces, residual.ss, fun g => ?_, residual.teich⟩` and prove the remaining obligations. Take `⟨p, h1, h2⟩` from `residual.charpoly g`. Use `⟨p, h1.trans ?_, h2⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = ((A * r g * A⁻¹ : GL (Fin D.R.r) (Qbar (X.l i))) : Matrix (Fin D.R.r) (Fin D.R.r) (Qbar (X.l i))).charpoly`. Rewrite using `[Units.val_mul, Units.val_mul, Matrix.coe_units_inv, Matrix.charpoly_units_conj]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem isTripleAt_of_conj (good : D.nd.goodRow σ) (occurs : D.what₂.isot (X.jS i s) σ ≠ ⊥) (param : IsParam σ π)
     (gal : IsGaloisRepOf D π (X.l i) ρ.ι r) (shift : ∃ n, IsGal art ρ.κ ρ.ι (shiftChar C) n ν)
@@ -489,7 +483,7 @@ theorem isTripleAt_of_conj (good : D.nd.goodRow σ) (occurs : D.what₂.isot (X.
   rw [Units.val_mul, Units.val_mul, Matrix.coe_units_inv, Matrix.charpoly_units_conj]
 
 /- English proof (translation)
-Use `X.jS_range i s` as an intermediate fact. Simplify using `only [jIdx]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem jIdx_add_one (s : X.Sig i) : (jIdx s).1 + 1 = X.jS i s := by
   have := X.jS_range i s
@@ -497,7 +491,7 @@ theorem jIdx_add_one (s : X.Sig i) : (jIdx s).1 + 1 = X.jS i s := by
   omega
 
 /- English proof (translation)
-Use `h.chi (jIdx s)` as an intermediate fact. Rewrite `this` using `[jIdx_add_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem IsChars.chiS {ρ : Reading X i (X.side i s)} (h : IsChars C art ρ) :
     ∃ n, IsGal art ρ.κ ρ.ι (blockChar C (X.l i) (jIdx s)) n (Formalism.MainNotions.BlochKatoReduction.Gen.chiS i s) := by
@@ -505,7 +499,7 @@ theorem IsChars.chiS {ρ : Reading X i (X.side i s)} (h : IsChars C art ρ) :
   rwa [jIdx_add_one] at this
 
 /- English proof (translation)
-Take `⟨x, h1, h2⟩` from `h.hecke 0 P (Nat.zero_le _) hP hS`. Rewrite `h2` using `[heckeVal_zero, ← map_one ρ.toC]`. Rewrite using `[← h1, ρ.toC_injective h2, map_one]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem IsTripleWith.hEig_zero (h : IsTripleWith C art ρ s σ π r ν w red) {P : PlE D.host} (hP : IsSplitPl D.host P)
     (hS : P ∉ X.S0 i) : X.hEig i s 0 P = 1 := by
@@ -514,15 +508,15 @@ theorem IsTripleWith.hEig_zero (h : IsTripleWith C art ρ s σ π r ν w red) {P
   rw [← h1, ρ.toC_injective h2, map_one]
 
 /- English proof (translation)
-The claim follows from `h.param.unr P fun k hk => hS (X.placesOver_subset_exceptional i k hk)`.
+A detailed English derivation is pending.
 -/
 theorem IsTripleWith.unr_of_notMem (h : IsTripleWith C art ρ s σ π r ν w red) {P : PlE D.host} (hS : P ∉ X.S0 i) :
     D.naut.unr (D.naut.locG π P) := h.param.unr P fun k hk => hS (X.placesOver_subset_exceptional i k hk)
 
 /- English proof (translation)
-Establish `hu` using `h.param.unr P hg`. Take `⟨n, hn⟩` from `h.shift`. Establish `e1` using `(h.gal.2.2 P hl).2.2 hu B g hB hF`. Establish `e2` using `hn.frob ha (Or.inl hl) (shiftChar_unr C P) hB hF`. Rewrite `e1` using `[galPol, D.naut.frobEig_tw _ _ hu, ← Matrix.charpoly_map]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e3 : ((X.rhoS i s g : GL (Fin D.R.r) (X.O0 i)) : Matrix (Fin D.R.r) (Fin D.R.r) (X.O0 i)).map ρ.toC = (((shiftChar C).val P : ℂˣ) : ℂ)⁻¹ • ((r g : GL (Fin D.R.r) (Qbar (X.l i))) : Matrix (Fin D.R.r) (Fin D.R.r) (Qbar (X.l i))).map ρ.ι.toRingHom`. Use extensionality with `x y`. Use `congrArg ρ.ι (congrFun (congrFun (h.rho g) x) y)` as an intermediate fact. Simplify `this` using `[e2, Reading.toC_apply]`. Rewrite using `[← Matrix.charpoly_map, e3, charpoly_smul_of_prod _ _ _ e1, Multiset.map_map]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -549,7 +543,7 @@ theorem IsTripleWith.charpoly_frob (ha : IsGlobalArtin art) (h : IsTripleWith C 
 variable {Y : NExp D.R D.host D.what₂ D.LL0 D.nd X}
 
 /- English proof (translation)
-The claim follows from `let ⟨ρ, h1, h2⟩ := h.evidence i hi (X.side i s) ⟨ρ, h1, h2 s rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem IsTripleFor.triple (h : IsTripleFor C art Y) {i : X.Tw} (hi : X.NonzeroIndexPlace i) (s : X.Sig i) :
     ∃ ρ : Reading X i (X.side i s), IsChars C art ρ ∧ IsTripleAt C art ρ s :=
@@ -557,12 +551,12 @@ theorem IsTripleFor.triple (h : IsTripleFor C art Y) {i : X.Tw} (hi : X.NonzeroI
   ⟨ρ, h1, h2 s rfl⟩
 
 /- English proof (translation)
-The claim follows from `let ⟨_, _, h⟩ := h; h.vec`.
+A detailed English derivation is pending.
 -/
 theorem IsTripleOf.allGood (h : IsTripleOf Y) : GlobalTheory.TwSys.AllGood Y := let ⟨_, _, h⟩ := h; h.vec
 
 /- English proof (translation)
-The claim follows from `let ⟨_, _, h⟩ := h; h.all`.
+A detailed English derivation is pending.
 -/
 theorem IsTripleOf.sig_all (h : IsTripleOf Y) : Y.sig_all := let ⟨_, _, h⟩ := h; h.all
 

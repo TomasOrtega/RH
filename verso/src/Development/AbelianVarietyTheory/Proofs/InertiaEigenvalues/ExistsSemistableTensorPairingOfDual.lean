@@ -19,14 +19,14 @@ def tensorPairing (m : V →ₗ[F] V' →ₗ[F] F) : V ⊗[F] B →ₗ[F] V' ⊗
   (TensorProduct.map₂ m (LinearMap.mul F B)).compr₂ (TensorProduct.lid F B).toLinearMap
 
 /- English proof (translation)
-Simplify using `[tensorPairing, TensorProduct.map₂_apply_tmul]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem tensorPairing_tmul (m : V →ₗ[F] V' →ₗ[F] F) (v : V) (a : B) (v' : V') (b : B) :
     tensorPairing m (v ⊗ₜ[F] a) (v' ⊗ₜ[F] b) = m v v' • (a * b) := by
   simp [tensorPairing, TensorProduct.map₂_apply_tmul]
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v' b => simp [tensorPairing_tmul]`. Consider the case `add y y' hy hy' => simp only [map_add, hy, hy']`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem tensorPairing_one (m : V →ₗ[F] V' →ₗ[F] F) (v : V) (y : V' ⊗[F] B) :
     tensorPairing m (v ⊗ₜ[F] (1 : B)) y = TensorProduct.lid F B (LinearMap.rTensor B (m v) y) := by
@@ -36,9 +36,9 @@ theorem tensorPairing_one (m : V →ₗ[F] V' →ₗ[F] F) (v : V) (y : V' ⊗[F
   | add y y' hy hy' => simp only [map_add, hy, hy']
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => exact h0 y`. Consider the case `tmul v a`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => exact h0' _`.
+Proceed by induction. Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Consider the case `tmul v' b => exact ht v a v' b`. Consider the case `add y y' hy hy' => exact ha' _ _ _ hy hy'`. Consider the case `add x x' hx hx' => exact ha _ _ _ hx hx'`.
+Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem induction_two {p : V ⊗[F] B → V' ⊗[F] B → Prop} (h0 : ∀ y, p 0 y) (h0' : ∀ x, p x 0)
     (ht : ∀ v a v' b, p (v ⊗ₜ[F] a) (v' ⊗ₜ[F] b))
@@ -56,25 +56,25 @@ theorem induction_two {p : V ⊗[F] B → V' ⊗[F] B → Prop} (h0 : ∀ y, p 0
 end
 
 /- English proof (translation)
-Introduce `l _ P K V _ _ _ V' _ _ _ ρ ρ' m hm`. Take `⟨hg, -, hr, -⟩` from `hm`. Establish `hcyc : ∀ g : ↥(GK K), ((cycLL (P.PD K) ℚ_[l] g : ℚ_[l]ˣ) : ℚ_[l]) = ((P.χQ (g : GQ l) : ℚ_[l]ˣ) : ℚ_[l])` using `fun g => by`. Establish `h` using `P.PD_χ K g`. Simplify using `[cycLL, h]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `⟨tensorPairing m, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x y`. Use `induction_two (p := fun x y => tensorPairing m (phiV P ℚ_[l] V x) (phiV P ℚ_[l] V' y) = phiSt P (tensorPairing m x y)) (by simp) (by simp) ?_ ?_ ?_ x y` and prove the remaining obligations. Introduce `v a v' b`. Simplify using `[tensorPairing_tmul, map_mul, map_smul]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `x x' y hx hx'`. Simplify using `only [map_add, LinearMap.add_apply, hx, hx']`. Introduce `x y y' hy hy'`. Simplify using `only [map_add, hy, hy']`. Introduce `x y`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `induction_two (p := fun x y => tensorPairing m (monV P ℚ_[l] V x) y + tensorPairing m x (monV P ℚ_[l] V' y) = monSt P (tensorPairing m x y)) (by simp) (by simp) ?_ ?_ ?_ x y` and prove the remaining obligations. Introduce `v a v' b`. Simplify using `only [monV_tmul, tensorPairing_tmul]`. Rewrite using `[map_smul, ← smul_add]`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [monSt_apply, Polynomial.derivative_mul]`. Expand and normalize the polynomial expressions, which then agree. Introduce `x x' y hx hx'`. Simplify using `only [map_add, LinearMap.add_apply, ← hx, ← hx']`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Introduce `x y y' hy hy'`. Simplify using `only [map_add, ← hy, ← hy']`. Normalize the expressions using the abelian group laws. Introduce `g x y`. Use `induction_two (p := fun x y => tensorPairing m (stRep P ρ g x) (stRep P ρ' g y) = ((P.χQ (g : GQ l) : ℚ_[l]ˣ) : ℚ_[l]) • actSt P (g : GQ l) (tensorPairing m x y)) (by simp) (by simp) ?_ ?_ ?_ x y` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `v a v' b`. Rewrite using `[stRep_tmul, stRep_tmul, tensorPairing_tmul, tensorPairing_tmul, hg, hcyc, map_smul, map_mul, smul_smul]`. Introduce `x x' y hx hx'`. Simplify using `only [map_add, LinearMap.add_apply, hx, hx', smul_add]`. Introduce `x y y' hy hy'`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [map_add, hy, hy', smul_add]`. Introduce `a x y`. Use `induction_two (p := fun x y => tensorPairing m (onB P ℚ_[l] V (LinearMap.mulLeft ℚ_[l] a) x) y = a * tensorPairing m x y) (by simp) (by simp) ?_ ?_ ?_ x y` and prove the remaining obligations. Introduce `v b v' c`. Rewrite using `[onB_tmul, tensorPairing_tmul, tensorPairing_tmul, LinearMap.mulLeft_apply, mul_smul_comm, mul_assoc]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `x x' y hx hx'`. Simplify using `only [map_add, LinearMap.add_apply, hx, hx', mul_add]`. Introduce `x y y' hy hy'`. Simplify using `only [map_add, hy, hy', mul_add]`. Introduce `y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `GlobalTheory.T.eq_zero_of_rTensor_pairing_eq_zero ℚ_[l] (Bst P) V V' m hr y fun v => ?_` and prove the remaining obligations. Rewrite using `[← tensorPairing_one]`. Conclude with `hy v`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_stPairing : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (K : FinExt l) (V : Type) [AddCommGroup V] [Module ℚ_[l] V] [FiniteDimensional ℚ_[l] V] (V' : Type) [AddCommGroup V'] [Module ℚ_[l] V'] [FiniteDimensional ℚ_[l] V'] (ρ : Representation ℚ_[l] ↥(GK K) V) (ρ' : Representation ℚ_[l] ↥(GK K) V') (m : V →ₗ[ℚ_[l]] V' →ₗ[ℚ_[l]] ℚ_[l]), IsDual1 (P.PD K) ρ ρ' m → ∃ pr : V ⊗[ℚ_[l]] Bst P →ₗ[ℚ_[l]] V' ⊗[ℚ_[l]] Bst P →ₗ[ℚ_[l]] Bst P, (∀ x y, pr (phiV P ℚ_[l] V x) (phiV P ℚ_[l] V' y) = phiSt P (pr x y)) ∧ (∀ x y, pr (monV P ℚ_[l] V x) y + pr x (monV P ℚ_[l] V' y) = monSt P (pr x y)) ∧ (∀ (g : ↥(GK K)) x y, pr (stRep P ρ g x) (stRep P ρ' g y) = ((P.χQ (g : GQ l) : ℚ_[l]ˣ) : ℚ_[l]) • actSt P (g : GQ l) (pr x y)) ∧ (∀ a x y, pr (onB P ℚ_[l] V (LinearMap.mulLeft ℚ_[l] a) x) y = a * pr x y) ∧ ∀ y, (∀ v : V, pr (v ⊗ₜ[ℚ_[l]] (1 : Bst P)) y = 0) → y = 0 := by
   intro l _ P K V _ _ _ V' _ _ _ ρ ρ' m hm

@@ -5,31 +5,27 @@ open Filter Topology
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `D f α γ ρ t₀ t₁ hρ hlim hbd`. Establish `hev : ∀ᶠ m : ℕ in atTop, ρ * (m : ℝ) ^ D * Real.exp (-(m : ℝ)) ≤ 1`. Establish `h1 : Tendsto (fun x : ℝ => x ^ D * Real.exp (-x)) atTop (𝓝 0)` using `Real.tendsto_pow_mul_exp_neg_atTop_nhds_zero D`. Establish `h2 : Tendsto (fun m : ℕ => ρ * ((m : ℝ) ^ D * Real.exp (-(m : ℝ)))) atTop (𝓝 (ρ * 0))` using `(h1.comp tendsto_natCast_atTop_atTop).const_mul ρ`. Rewrite `h2` using `[mul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `filter_upwards [h2.eventually (gt_mem_nhds (show (0:ℝ) < 1 by norm_num))] with m hm`. Rewrite using `[mul_assoc]`. Conclude with `hm.le`. Establish `key : ∀ t, max t₀ (t₁ + 2) ≤ t → ρ * (t - t₁ - 2) ≤ α + γ * t`. Introduce `t ht`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht0 : t₀ ≤ t` using `le_trans (le_max_left _ _) ht`. Establish `ht1 : t₁ + 2 ≤ t` using `le_trans (le_max_right _ _) ht`. Use `ge_of_tendsto (hlim t ht0) ?_` and prove the remaining obligations. Use `filter_upwards [hev, eventually_ge_atTop 1] with m hm hm1`. Establish `hmpos : (0:ℝ) < m` using `by exact_mod_cast hm1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm1' : (1:ℝ) ≤ m` using `by exact_mod_cast hm1`. Use `set x := Real.exp ((t - t₁ - 1) * m) with hx`. Establish `hx2 : 2 ≤ x`. Establish `: 1 ≤ (t - t₁ - 1) * m` using `by nlinarith`. Establish `h` using `Real.add_one_le_exp ((t - t₁ - 1) * m)`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Use `set Q := ⌊x⌋₊ with hQ`. Establish `hQle : (Q : ℝ) ≤ x` using `Nat.floor_le (by linarith)`. Establish `hQgt : x < Q + 1` using `Nat.lt_floor_add_one x`. Establish `hQpos : 0 < Q`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Rewrite using `[hQ]; exact Nat.floor_pos.mpr (by linarith)`. Establish `e2 : Real.exp (-(m:ℝ)) ≤ 1 / 2`. Establish `h` using `Real.add_one_le_exp (m:ℝ)`. Establish `hp : Real.exp (-(m:ℝ)) * Real.exp m = 1` using `by rw [← Real.exp_add]; simp`. Use polynomial arithmetic with `[Real.exp_pos (-(m:ℝ))]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hQge : Real.exp ((t - t₁ - 2) * m) ≤ Q`. Establish `e1 : Real.exp ((t - t₁ - 2) * m) = x * Real.exp (-(m:ℝ))`. Rewrite using `[hx, ← Real.exp_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1]`. Establish `: x * Real.exp (-(m:ℝ)) ≤ x * (1 / 2)` using `mul_le_mul_of_nonneg_left e2 (by linarith)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `e3 : x * Real.exp (t₁ * m) = Real.exp (-(m:ℝ)) * Real.exp (t * m)`. Rewrite using `[hx, ← Real.exp_add, ← Real.exp_add]`.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `hρm : 0 ≤ ρ * (m : ℝ) ^ D` using `mul_nonneg hρ (pow_nonneg hmpos.le _)`. Establish `hcond : ρ * (m : ℝ) ^ D * Q * Real.exp (t₁ * m) ≤ Real.exp (t * m)`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[mul_assoc (ρ * (m : ℝ) ^ D) x, e3]`. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ 1 * Real.exp (t * m) := mul_le_mul_of_nonneg_right hm (Real.exp_pos _).le`. Use `_ = Real.exp (t * m) := one_mul _`. Establish `hb` using `hbd t m Q (by omega) hQpos hcond`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlog : (t - t₁ - 2) * (m : ℝ) ≤ Real.log Q`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[le_div_iff₀ (by positivity)]`. Combine the equalities or inequalities in the displayed calculation. Assume the negation of the conclusion as `h`.
-
-Use `push_neg at h`. Establish `hd : 0 < ρ - γ` using `sub_pos.mpr h`. Use `set T := max (max t₀ (t₁ + 2)) ((α + ρ * (t₁ + 2)) / (ρ - γ) + 1) with hTdef`. Establish `hk` using `key T (le_max_left _ _)`. Establish `hT : (α + ρ * (t₁ + 2)) / (ρ - γ) + 1 ≤ T` using `le_max_right _ _`.
-
-Establish `hlt : (α + ρ * (t₁ + 2)) / (ρ - γ) < T` using `by linarith`. Establish `h3 : α + ρ * (t₁ + 2) < T * (ρ - γ)` using `(div_lt_iff₀ hd).mp hlt`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem rank_le_of_growth_in_radius : ∀ (D : ℕ) (f : ℝ → ℕ → ℝ) (α γ ρ t₀ t₁ : ℝ), 0 ≤ ρ →
     (∀ t, t₀ ≤ t → Tendsto (fun m : ℕ => f t m / (m : ℝ) ^ (D + 1)) atTop (𝓝 (α + γ * t))) →

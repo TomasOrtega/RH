@@ -1,19 +1,15 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `O Λ T K _ _ _ _ _ _ _ _ _ _ _ P y hP`. Use `haveI hprime : (RingHom.ker y).IsPrime := RingHom.ker_isPrime y`. Take `⟨Q, hPQ, hQ, hQc⟩` from `Ideal.exists_ideal_over_prime_of_isIntegral (RingHom.ker y) P hP`. Establish `hker : ∀ a ∈ Q.comap (algebraMap Λ T), (y : Λ →+* K) a = 0`. Introduce `a ha`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `ha` using `[hQc]`. Conclude with `ha`. Set `ybar : (Λ ⧸ Q.comap (algebraMap Λ T)) →+* K` to `Ideal.Quotient.lift _ (y : Λ →+* K) hker`. Establish `hinj : Function.Injective ybar`. Rewrite using `[injective_iff_map_eq_zero]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `a ha`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective a`. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem, hQc]`. Conclude with `ha`. Use `letI : Algebra (Λ ⧸ Q.comap (algebraMap Λ T)) K := ybar.toAlgebra`.
+Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI : FaithfulSMul (Λ ⧸ Q.comap (algebraMap Λ T)) K := (faithfulSMul_iff_algebraMap_injective _ _).2 hinj`. Use `haveI : FaithfulSMul (Λ ⧸ Q.comap (algebraMap Λ T)) (T ⧸ Q) := (faithfulSMul_iff_algebraMap_injective _ _).2 Ideal.algebraMap_quotient_injective`. Use `haveI : Module.IsTorsionFree (Λ ⧸ Q.comap (algebraMap Λ T)) (T ⧸ Q) := FaithfulSMul.to_isTorsionFree _ _`. Use `haveI : Module.IsTorsionFree (Λ ⧸ Q.comap (algebraMap Λ T)) K := FaithfulSMul.to_isTorsionFree _ _`. Use `haveI hint : Algebra.IsIntegral (Λ ⧸ Q.comap (algebraMap Λ T)) (T ⧸ Q) := Algebra.IsIntegral.quotient`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : Algebra.IsAlgebraic (Λ ⧸ Q.comap (algebraMap Λ T)) (T ⧸ Q) := Algebra.IsIntegral.isAlgebraic`. Set `z : (T ⧸ Q) →ₐ[Λ ⧸ Q.comap (algebraMap Λ T)] K` to `IsAlgClosed.lift`. Establish `hz : ∀ a : Λ, z (Ideal.Quotient.mk Q (algebraMap Λ T a)) = y a` using `fun a => z.commutes (Ideal.Quotient.mk _ a)`. Use `⟨{ (z : (T ⧸ Q) →+* K).comp (Ideal.Quotient.mk Q) with commutes' := fun o => ?_ }, ?_, hz⟩` and prove the remaining obligations. Establish `h` using `hz (algebraMap O Λ o)`.
-
-Rewrite `h` using `[← IsScalarTower.algebraMap_apply, y.commutes]`. Conclude with `h`. Introduce `t ht`. Establish `h0 : Ideal.Quotient.mk Q t = 0` using `Ideal.Quotient.eq_zero_iff_mem.2 (hPQ ht)`. Use `show z (Ideal.Quotient.mk Q t) = 0`.
-
-Rewrite using `[h0, map_zero]`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Qi4.extendPt :
     ∀ (O Λ T K : Type) [inst : CommRing O] [inst_1 : CommRing Λ] [inst_2 : CommRing T]

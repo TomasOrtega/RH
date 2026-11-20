@@ -20,35 +20,33 @@ noncomputable section
 namespace GlobalTheory.PeriodBound
 
 /- English proof (translation)
-Introduce `hP hV D θ hθ V S M J χ t ht v F hF hFb`. Take `⟨C0, hC0⟩` from `hFb`. Establish `: BorelSpace (GA D V)` using `⟨rfl⟩`. Establish `hfin : v.μ v.𝓕 < ⊤` using `GlobalTheory.CuspDecay.measure_lt_top hV V v.μ v.𝓕 v.haar v.fund`. Establish `hval : ∀ x : SmT M, Continuous (t x) ∧ ∃ B : ℝ, ∀ g, ‖t x g‖ ≤ B`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `x`. Take `⟨ha, hc, -⟩` from `GlobalTheory.ChainOnto.MultRapid.multT_apply_rapidDec hP D V S M θ hθ J χ t ht x`. Conclude with `⟨ha.cont, GlobalTheory.CuspDecay.bounded_of_cuspForm hP hθ ha hc⟩`. Establish `hint0 : ∀ x : SmT M, IntegrableOn (fun g => F g * t x g) v.𝓕 v.μ`. Introduce `x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨hcont, B, hB⟩` from `hval x`. Use `Measure.integrableOn_of_bounded (M := C0 * B) hfin.ne ((hF.2.mul hcont).measurable.aestronglyMeasurable) (.of_forall fun g => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_le_mul (hC0 g) (hB g) (norm_nonneg _) ((norm_nonneg _).trans (hC0 g))`. Use `⟨hint0, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `set T : MMap M := PiTensorProduct.lift.symm t with hTdef`. Establish `hT : T ∈ Mult θ M J χ` using `(mem_multT θ M J χ t).1 ht`. Take `⟨c, hc⟩` from `GlobalTheory.SchurConst.schurMult_all hP D θ hθ V S M J χ v.μ v.𝓕 v.haar v.fund hθ v.haar v.fund T hT T hT`. Establish `hTw : ∀ w : M.Vec, T w = t (PiTensorProduct.tprod ℂ w)` using `fun w => by`. Rewrite using `[hTdef, PiTensorProduct.lift_symm]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Use `set C' : ℝ := max C0 0 with hC'`. Establish `hC'0 : 0 ≤ C'` using `le_max_right _ _`. Establish `hFC : ∀ g, ‖F g‖ ≤ C'` using `fun g => (hC0 g).trans (le_max_left _ _)`. Use `⟨C' * ((v.μ v.𝓕).toReal + ‖c‖) / 2, fun w => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Use `set s : ℝ := ∏ τ, ‖(w τ : M.H τ)‖ with hs`. Establish `hs0 : 0 ≤ s` using `Finset.prod_nonneg fun τ _ => norm_nonneg _`. Break down `hs0.eq_or_lt with h0 | hpos` into its components or cases. Take `⟨τ, -, hτ⟩` from `Finset.prod_eq_zero_iff.1 h0.symm`. Establish `hwτ : w τ = 0` using `Subtype.ext (norm_eq_zero.1 hτ)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Establish `h1 : PiTensorProduct.tprod ℂ w = 0` using `(PiTensorProduct.tprod ℂ).map_coord_zero τ hwτ`. Rewrite using `[h1, map_zero, ← h0]`. Simplify using the standard rewrite rules. Take `⟨hint, heq⟩` from `hc w w`. Establish `hnsq : ∀ g, ‖star (T w g) * T w g‖ = ‖T w g‖ ^ 2` using `fun g => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[norm_mul, norm_star, sq]`. Establish `hint2 : IntegrableOn (fun g => ‖T w g‖ ^ 2) v.𝓕 v.μ`. Establish `h` using `funext fun g => (hnsq g).symm`. Rewrite using `[h]`. Conclude with `hint.norm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hsq : ∫ g in v.𝓕, ‖T w g‖ ^ 2 ∂v.μ ≤ ‖c‖ * s ^ 2`. Establish `h1 : ((∫ g in v.𝓕, ‖T w g‖ ^ 2 ∂v.μ : ℝ) : ℂ) = ∫ g in v.𝓕, star (T w g) * T w g ∂v.μ`. Rewrite using `[← integral_complex_ofReal]`. Use `congr 1`. Use function extensionality and compare the values at `g`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Complex.star_def, Complex.conj_mul']`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hnn : 0 ≤ ∫ g in v.𝓕, ‖T w g‖ ^ 2 ∂v.μ` using `integral_nonneg fun g => sq_nonneg _`. Establish `h2 : ∫ g in v.𝓕, ‖T w g‖ ^ 2 ∂v.μ = ‖∫ g in v.𝓕, star (T w g) * T w g ∂v.μ‖`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← h1, Complex.norm_of_nonneg hnn]`. Rewrite using `[h2, heq, norm_mul, norm_prod, hs, ← Finset.prod_pow]`. Use `le_of_eq ?_` and prove the remaining obligations. Use `congr 1`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[inner_self_eq_norm_sq_to_K]`. Simplify using the standard rewrite rules. Establish `hpt : ∀ g, ‖F g * t (PiTensorProduct.tprod ℂ w) g‖ ≤ C' * s / 2 + C' / (2 * s) * ‖T w g‖ ^ 2`. Introduce `g`. Rewrite using `[norm_mul, ← hTw]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `h3 : ‖T w g‖ ≤ s / 2 + ‖T w g‖ ^ 2 / (2 * s)`. Rewrite using `[div_add_div _ _ (by norm_num) (by positivity), le_div_iff₀ (by positivity)]`. Use polynomial arithmetic with `[sq_nonneg (‖T w g‖ - s)]`. Combine the equalities or inequalities in the displayed calculation. Establish `hintR : IntegrableOn (fun g => C' * s / 2 + C' / (2 * s) * ‖T w g‖ ^ 2) v.𝓕 v.μ` using `(integrableOn_const hfin.ne).add (hint2.const_mul _)`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hc1 : Integrable (fun _ : GA D V => C' * s / 2) (v.μ.restrict v.𝓕)` using `integrableOn_const hfin.ne`. Establish `hc2 : Integrable (fun g => C' / (2 * s) * ‖T w g‖ ^ 2) (v.μ.restrict v.𝓕)` using `hint2.const_mul _`. Rewrite using `[integral_add hc1 hc2, setIntegral_const, integral_const_mul, smul_eq_mul, Measure.real]`. Use `_ ≤ (v.μ v.𝓕).toReal * (C' * s / 2) + C' / (2 * s) * (‖c‖ * s ^ 2) := by gcongr`.
-
-Use `_ = C' * ((v.μ v.𝓕).toReal + ‖c‖) / 2 * s := by`. Clear the denominators using the available nonvanishing facts.
+A detailed English derivation is pending.
 -/
 theorem period_bound : GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Mem.Vol.FiniteVolume₂ → ∀ (D : D7) (θ : InfFam D), IsInfFam θ → ∀ (V : HSp D) (S : D.what₂.Tau → SPar) (M : DSModel V S) (J : Set (GA D V)) (χ : GA D V → ℂ), ∀ t ∈ MultT θ M J χ, ∀ (v : GlobalTheory.Unf.Vol V) (F : GA D V → ℂ), GlobalTheory.Unf.IsContAut V F → (∃ C, ∀ g, ‖F g‖ ≤ C) → (∀ x : SmT M, IntegrableOn (fun g => F g * t x g) v.𝓕 v.μ) ∧ ∃ K : ℝ, ∀ w : M.Vec, ‖∫ g in v.𝓕, F g * t (PiTensorProduct.tprod ℂ w) g ∂v.μ‖ ≤ K * ∏ τ, ‖(w τ : M.H τ)‖ := by
   intro hP hV D θ hθ V S M J χ t ht v F hF hFb

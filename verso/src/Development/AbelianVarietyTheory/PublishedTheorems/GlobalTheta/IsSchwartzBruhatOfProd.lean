@@ -83,7 +83,7 @@ section Inhabitants
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, fun _ => Φinf, fun _ => Φf, fun _ => hi, fun _ => hf, fun X => by simp [h X]⟩`.
+Supply the required witnesses or components.
 -/
 theorem isSchwartzBruhat_of_prod {M n : ℕ} {Φ : (Fin n → Fin M → AF F ⊗[F] E) → ℂ}
     {Φinf : (Fin n → Fin M → Ainf F ⊗[F] E) → ℂ} {Φf : (Fin n → Fin M → Af F ⊗[F] E) → ℂ}
@@ -93,7 +93,7 @@ theorem isSchwartzBruhat_of_prod {M n : ℕ} {Φ : (Fin n → Fin M → AF F ⊗
 variable (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E)
 
 /- English proof (translation)
-Establish `h0 : μ 𝓕 ≠ 0` using `((GlobalTheory.Mem.Vol.fundamentalDomain_adelicUnitary F E σ M J μ hμ).2 𝓕 𝓕 h𝓕 h𝓕).2`. Establish `h1 : μ 𝓕 ≠ ⊤` using `(GlobalTheory.Mem.VolFin.finVol F E σ hCM M J hJ μ hμ 𝓕 h𝓕).ne`. Use `⟨h0, h1, Measure.IsHaarMeasure.smul μ (ENNReal.inv_ne_zero.2 h1) (ENNReal.inv_ne_top.2 h0), h𝓕.mono Measure.smul_absolutelyContinuous, ?_⟩` and prove the remaining obligations. Rewrite using `[Measure.smul_apply, smul_eq_mul, ENNReal.inv_mul_cancel h0 h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem normalise (hCM : IsCMExt F E σ) (hJ : IsHermND σ J) (μ : Measure (HA (AF F) σ J))
     (𝓕 : Set (HA (AF F) σ J)) (hμ : μ.IsHaarMeasure) (h𝓕 : IsFundamentalDomain (HFinIn (AF F) σ J) 𝓕 μ) :
@@ -106,9 +106,9 @@ theorem normalise (hCM : IsCMExt F E σ) (hJ : IsHermND σ J) (μ : Measure (HA 
   rw [Measure.smul_apply, smul_eq_mul, ENNReal.inv_mul_cancel h0 h1]
 
 /- English proof (translation)
-Use `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA σ J` as an intermediate fact. Use `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.borelHA σ J` as an intermediate fact. Use `(GlobalTheory.AdelicUnitaryTop.lcsc_adelicUnitary F E σ M J).1` as an intermediate fact. Establish `hμ : (Measure.haar : Measure (HA (AF F) σ J)).IsHaarMeasure` using `inferInstance`. Take `⟨𝓕, h𝓕⟩` from `(GlobalTheory.Mem.Vol.fundamentalDomain_adelicUnitary F E σ M J _ hμ).1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨-, -, h1, h2, h3⟩` from `normalise σ J hCM hJ _ 𝓕 hμ h𝓕`. Conclude with `⟨_, 𝓕, h1, h2, h3⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_normalised (hCM : IsCMExt F E σ) (hJ : IsHermND σ J) :
     ∃ (μ : Measure (HA (AF F) σ J)) (𝓕 : Set (HA (AF F) σ J)),

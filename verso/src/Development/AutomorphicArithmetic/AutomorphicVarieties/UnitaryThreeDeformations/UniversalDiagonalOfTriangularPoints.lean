@@ -7,7 +7,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.UnitaryThreeDeform
 open Matrix IsLocalRing ReciprocityTheory.Gal UpperTheory.V.HV UpperTheory.V.U3 UpperTheory.V.Alg UpperTheory.V.UnitaryThreeInertia UpperTheory.V.Pr
 
 /- English proof (translation)
-Establish `hab : a ≠ b`. Introduce and unpack `rfl`. Simplify using `[wt] at h`. Simplify using `[Frame.rz, r0, GG.mat, GG.map, tor_val, Matrix.diagonal_apply_ne _ hab]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private theorem rz_off {O A : Type} [CommRing O] [IsLocalRing O] {G Γ ι : Type} [Group G] [Group Γ]
     (F : Frame O G Γ ι) [CommRing A] [Algebra O A] (g : Γ) {a b : Fin 3} (h : wt a b ≠ 0) :
@@ -18,7 +18,7 @@ private theorem rz_off {O A : Type} [CommRing O] [IsLocalRing O] {G Γ ι : Type
   simp [Frame.rz, r0, GG.mat, GG.map, tor_val, Matrix.diagonal_apply_ne _ hab]
 
 /- English proof (translation)
-Simplify using `only [wt, wt1] at h`. Apply `Fin.ext` to reduce the goal to its premises. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Use linear arithmetic over natural numbers and integers.
 -/
 private theorem eq_of_wt {a b : Fin 3} (h : wt a b = 0) : a = b := by
   simp only [wt, wt1] at h
@@ -26,23 +26,21 @@ private theorem eq_of_wt {a b : Fin 3} (h : wt a b = 0) : a = b := by
   omega
 
 /- English proof (translation)
-Introduce `O _ _ _ _ _ _ G Γ ι _ _ _ _ _ _ _ _ _ _ _ _ _ F hOk hCl g₁ hg₁ R _ _ _ u hu htri`. Take `⟨W, hW, -⟩` from `exists_adapted F hOk g₁ hg₁ u hu`. Rewrite using `[← hW.part 0]`. Establish `key : ∀ {A : Type} [CommRing A] [Algebra O A] (f : R →ₐ[O] A) (g : Γ) (a b : Fin 3), f ((u g).mat a b - ((F.rz R) g).mat a b) = ((push f u) g).mat a b - ((F.rz A) g).mat a b`. Introduce `A _ _ f g a b`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[push, Frame.rz, GG.mat, GG.map]`. Use `finCrit O R W ?_ ?_` and prove the remaining obligations. Introduce `i`. Take `⟨g, a, b, -, -, hz⟩` from `hW.var i`. Rewrite using `[hz]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `hu.pt.red g a b`. Establish `h2 : ((F.rz R) g).mat = ((r0 F.η F.Ψ) g).mat.map ⇑(algebraMap O R)`. Simplify using `[Frame.rz, GG.mat, GG.map]`. Rewrite using `[h2]`. Simplify using `using h1`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `A _ _ _ f hf hA`. Use `letI iLA : IsLocalRing A := inferInstance`. Use `haveI iDA : IsDomain A := inferInstance`. Use `haveI iNA : IsNoetherianRing A := inferInstance`. Use `haveI : IsLocalHom (algebraMap O A) := IsCD.isLocalHom`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI := hf`. Establish `hpt : F.IsPt g₁ (push f u)` using `isPt_push F f g₁ u hu.pt`. Establish `htr` using `htri A hA (push f u) hpt`. Establish `hdiag : ∀ (g : Γ) (a : Fin 3), ((push f u) g).mat a a = ((F.rz A) g).mat a a` using `@diag_eq_of_tri O _ _ _ _ _ _ G Γ ι _ _ _ _ _ _ _ _ _ _ _ _ _ F hOk hCl g₁ hg₁ A _ iDA iLA iNA _ _ (push f u) hpt htr`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Introduce `i hi`. Take `⟨g, a, b, -, hw, hz⟩` from `hW.var i`. Rewrite `hw` using `[hi]`. Take `rfl` from `eq_of_wt hw.symm`. Rewrite using `[hz, key, hdiag, sub_self]`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Break down `htr with hU | hL` into its components or cases. Use `left`. Introduce `i hi`. Take `⟨g, a, b, hg, hw, hz⟩` from `hW.var i`. Rewrite `hi` using `[hw]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hz, key, hU g (MonoidHom.mem_ker.mpr hg) a b hi, rz_off (A := A) F g hi.ne, sub_self]`. Use `right`. Introduce `i hi`. Take `⟨g, a, b, hg, hw, hz⟩` from `hW.var i`. Rewrite `hi` using `[hw]`.
-
-Rewrite using `[hz, key, hL g (MonoidHom.mem_ker.mpr hg) a b hi, rz_off (A := A) F g hi.ne', sub_self]`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.UnitaryThreeInertia.universal_diagonal_of_triangular_points :
     ∀ {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsAdicComplete (maximalIdeal O) O] [CharZero O] [Finite (ResidueField O)]

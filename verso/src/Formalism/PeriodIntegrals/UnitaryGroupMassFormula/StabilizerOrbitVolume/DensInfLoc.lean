@@ -23,9 +23,9 @@ def ChangeVar : Prop :=
               ∫ v in f ⁻¹' S, φ v ∂μ = ∫ v in A ⁻¹' S, G v ∂μ
 
 /- English proof (translation)
-Introduce `n m μ ν hμ hν f hf x0 hx0`. Take `⟨N, hN, hxN, A, hA, hG⟩` from `h2 n m μ hμ f hf x0 hx0`. Use `⟨N, hN, hxN, fun φ hc hs hφ => ?_⟩` and prove the remaining obligations. Take `⟨G, hGc, hGs, hGe⟩` from `hG φ hc hs hφ`. Take `⟨g, hgc, hg⟩` from `h1 n m μ ν hμ hν A hA G hGc hGs (Set.subset_univ _)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨g, hgc, fun S hS => ?_⟩` and prove the remaining obligations. Use `hg S hS` as an intermediate fact. Simplify using `only [Set.image_id] at this ⊢`. Rewrite using `[hGe S hS, this]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem submLocal_of (h1 : LinDens) (h2 : ChangeVar) : SubmLocal := by
   intro n m μ ν hμ hν f hf x0 hx0
@@ -39,30 +39,30 @@ theorem submLocal_of (h1 : LinDens) (h2 : ChangeVar) : SubmLocal := by
   rw [hGe S hS, this]
 
 /- English proof (translation)
-Introduce `n m μ ν hμ hν f hf`. Conclude with `densAll_of_local fun x hx => h n m μ ν hμ hν f hf x hx`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem submDens_of_local (h : SubmLocal) : SubmDens := by
   intro n m μ ν hμ hν f hf
   exact densAll_of_local fun x hx => h n m μ ν hμ hν f hf x hx
 
 /- English proof (translation)
-Introduce `n m μ ν hμ hν A hA φ hc hs _`. Take `⟨B, hB⟩` from `A.exists_rightInverse_of_surjective (LinearMap.range_eq_top.2 hA)`. Establish `hRI : Function.RightInverse B A` using `fun y => by`. Simplify using `using congrArg (fun L : (Fin m → ℝ) →L[ℝ] (Fin m → ℝ) => L y) hB`. Set `T` to `ContinuousLinearEquiv.equivOfRightInverse A B hRI`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression.
 
-Set `K` to `A.ker`. Set `lam : Measure K` to `Measure.addHaar`. Establish `hT1 : ∀ x, (T x).1 = A x` using `fun x => rfl`. Establish `hμT : (μ.map T).IsAddHaarMeasure` using `T.isAddHaarMeasure_map μ`. Take `⟨c, hsm⟩ : ∃ c : ENNReal, μ.map T = c • (ν.prod lam)` from `⟨_, Measure.isAddLeftInvariant_eq_smul _ _⟩`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Set `H : (Fin m → ℝ) × K → ℝ` to `fun w => φ (T.symm w)`. Establish `hHc : Continuous H` using `hc.comp T.symm.continuous`. Establish `hHs : HasCompactSupport H` using `hs.comp_homeomorph T.symm.toHomeomorph`. Set `s : Set K` to `Prod.snd '' tsupport H`. Establish `hsc : IsCompact s` using `hHs.image continuous_snd`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `ψ : (Fin m → ℝ) → ℝ` to `fun y => ∫ k in s, H (y, k) ∂lam`. Establish `hψc : Continuous ψ` using `continuous_parametric_integral_of_continuous (f := fun y k => H (y, k)) hHc hsc`. Establish `hψ : ∀ y, ∫ k, H (y, k) ∂lam = ψ y`. Introduce `y`. Use `(setIntegral_eq_integral_of_forall_compl_eq_zero fun k hk => ?_).symm` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Apply `image_eq_zero_of_notMem_tsupport` to reduce the goal to its premises. Introduce `h'`. Conclude with `hk ⟨(y, k), h', rfl⟩`. Use `⟨fun y => c.toReal * ψ y, continuous_const.mul hψc, fun S hS => ?_⟩` and prove the remaining obligations. Establish `hSm : MeasurableSet S` using `hS.isClosed.measurableSet`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Set.image_id]`. Set `Q : (Fin m → ℝ) × K → ℝ` to `(Prod.fst ⁻¹' S).indicator H`. Establish `hQ : ∀ v, (A ⁻¹' S).indicator φ v = Q (T v)`. Introduce `v`. Simplify using `only [Q, Set.indicator, H, ContinuousLinearEquiv.symm_apply_apply]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `hQi : Integrable Q (ν.prod lam)` using `(hHc.integrable_of_hasCompactSupport hHs).indicator (measurable_fst hSm)`. Rewrite using `[← integral_indicator (hSm.preimage A.continuous.measurable)]`. Repeatedly rewrite using `[hQ]`. Establish `e2 : ∫ v, Q (T v) ∂μ = ∫ w, Q w ∂(μ.map T)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show (μ.map T) = μ.map T.toHomeomorph.toMeasurableEquiv from rfl, integral_map_equiv]`. Both sides reduce to the same expression. Rewrite using `[e2, hsm, integral_smul_measure, integral_prod _ hQi, smul_eq_mul, ← integral_indicator hSm, ← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `y`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hy : y ∈ S`. Simplify using `only [Q, Set.indicator, Set.mem_preimage, hy, if_true, ← hψ y]`. Simplify using `[Q, Set.indicator, hy]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem linDens_holds : LinDens := by
   intro n m μ ν hμ hν A hA φ hc hs _

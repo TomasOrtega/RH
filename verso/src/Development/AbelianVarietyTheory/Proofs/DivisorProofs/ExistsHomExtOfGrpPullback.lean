@@ -18,11 +18,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.CompHt
 
 /- English proof (translation)
-Take `⟨e, he, hφ⟩` from `grpPullback_iso ha (isGrpPullback_pullback G _)`. Take `⟨e', he', hφ'⟩` from `grpPullback_iso ha' (isGrpPullback_pullback G' _)`. Establish `hφ₁ : e.hom.left ≫ pullback.fst G.hom (spMap (algebraMap V F)) = a` using `hφ`. Establish `hφ₂ : e'.hom.left ≫ pullback.fst G'.hom (spMap (algebraMap V F)) = a'` using `hφ'`. Take `⟨f, ⟨hf, hfβ⟩, -⟩` from `semiAbelian_hom_extends_uniquely_dvr V F G G' hG hG' (e.inv ≫ β ≫ e'.hom) inferInstance`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨f, hf, ?_⟩` and prove the remaining obligations. Establish `A : ((Over.pullback (spMap (algebraMap V F))).map f).left ≫ pullback.fst G'.hom _ = pullback.fst G.hom _ ≫ f.left` using `pullback.lift_fst _ _ _`. Establish `B : β ≫ e'.hom = e.hom ≫ (Over.pullback (spMap (algebraMap V F))).map f`. Rewrite using `[hfβ]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← hφ₁, ← hφ₂, Category.assoc, ← A, ← Category.assoc, ← Category.assoc β.left, ← Over.comp_left, ← Over.comp_left, B]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_hom_ext_of_grpPullback {V F : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [Field F]
     [Algebra V F] [IsFractionRing V F] {G G' : Over (Sp V)} [GrpObj G] [GrpObj G'] (hG : IsSemiAbelian G)
@@ -45,13 +45,13 @@ theorem exists_hom_ext_of_grpPullback {V F : Type} [CommRing V] [IsDomain V] [Is
     ← Over.comp_left, B]
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo p _ C _ v O _ _ _ T x₀ k kO kO' P P' ψ ψ' h h'`. Take `rfl : kO = kO'` from `RingHom.ext fun a => P.integers.hom_inj ((h.1 a).trans (h'.1 a).symm)`. Take `⟨α, hα, hαψ⟩` from `grpPullback_iso h.isGrpPullback h'.isGrpPullback`. Establish `hact : ∀ a, P.oA.act a ≫ α.hom = α.hom ≫ P'.oA.act a` using `fun a => Over.OverMorphism.ext (h'.isGrpPullback.1.hom_ext (by rw [Over.comp_left, Over.comp_left, Category.assoc, Category.assoc, hαψ, h'.act a, h.act a, ← Category.assoc, hαψ]) ((Over.w _).trans (Over.w _).symm))`. Take `⟨-, G, t, m₁, m₂, π, φ, hπ, -, hφ, e₂, e₁, hL⟩` from `h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨-, G', t', n₁, n₂, π', φ', hπ', -, hφ', e₂', e₁', hL'⟩` from `h'`. Take `⟨β, hβ, hβφ⟩` from `grpPullback_iso m₁.cart n₁.cart`. Take `⟨f, hf, hfβ⟩` from `exists_hom_ext_of_grpPullback G.semi G'.semi m₂.cart n₂.cart β.hom`. Establish `w : (π ≫ f.left) ≫ G'.G.hom = P.G.hom ≫ spMap kO` using `by rw [Category.assoc, Over.w, hπ.1.w]`. Set `gm : P.G ⟶ P'.G` to `Over.homMk (hπ'.1.lift _ _ w) (hπ'.1.lift_snd _ _ w)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hgm : gm.left ≫ π' = π ≫ f.left` using `hπ'.1.lift_fst _ _ w`. Establish `c : α.hom.left ≫ φ' = φ ≫ β.hom.left` using `n₁.cart.1.hom_ext (by rw [Category.assoc, Category.assoc, e₁', hβφ, e₁, hαψ]) (by rw [Category.assoc, Category.assoc, Over.w, hφ.1.w, hφ'.1.w, Over.w_assoc])`. Use `⟨α, gm, hα, Out.PullGtPf.isMonHom_of_grpPullback hπ hπ' f gm hgm, hαψ, ?_, hact, ?_⟩` and prove the remaining obligations. Use `hπ'.1.hom_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, Category.assoc, hgm, ← e₂', ← Category.assoc, c, ← Category.assoc, ← e₂, Category.assoc, Category.assoc, hfβ]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, Category.assoc, Over.w, P.gen_pull.1.w, P'.gen_pull.1.w, Over.w_assoc]`. Use `LBIso.trans P.A.isLB (pull_isLB Xo.univ.t.PP.isLB ψ) (pull_isLB P'.A.isLB _) hL (LBIso.symm ?_)` and prove the remaining obligations. Conclude with `LBIso.chartPull (Geo.Tor.chartPullPull P'.A.L _ _ rfl) (chartPullSame Xo.univ.t.PP.L (fun _ : PUnit => ψ) (fun _ => ψ') (fun _ => 1) _ (fun _ => hαψ.symm)) hL'`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem pointOver_iso : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (p : ℕ) [Fact p.Prime] (C : Type) [Field C] (v : Valuation C ℝ≥0) (O : Type) [CommRing O] [Algebra O C] [StarRing (𝓞 E)] (T : CDVR) (x₀ : Sp T.Fr ⟶ Xo.X) (k : T.Fr →+* C) (kO kO' : T.V →+* O) (P P' : Point p v O (𝓞 E)) (ψ : P.A.A.left ⟶ Xo.univ.t.G.left) (ψ' : P'.A.A.left ⟶ Xo.univ.t.G.left), PointOver P x₀ k kO ψ → PointOver P' x₀ k kO' ψ' → ∃ (α : P.A.A ≅ P'.A.A) (gm : P.G ⟶ P'.G), IsMonHom α.hom ∧ IsMonHom gm ∧ α.hom.left ≫ ψ' = ψ ∧ α.hom.left ≫ P'.gen = P.gen ≫ gm.left ∧ (∀ a, P.oA.act a ≫ α.hom = α.hom ≫ P'.oA.act a) ∧ LBIso P.A.L (P'.A.L.pull α.hom.left) := by
   intro E _ _ _ H Dw l Xo p _ C _ v O _ _ _ T x₀ k kO kO' P P' ψ ψ' h h'

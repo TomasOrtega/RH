@@ -17,11 +17,11 @@ open GlobalTheory.IndefiniteRowSideFullHecke.GramMatrixBlocks (pairing gramQ mmu
 variable {D : D7} {m : ℕ}
 
 /- English proof (translation)
-Establish `hx : xPart (zy y) = 0`. Use extensionality with `i j`. Simplify using `only [xPart, zy, Matrix.of_apply, Equiv.symm_apply_apply, Sum.elim_inl, Matrix.zero_apply]`. Establish `hy : yPart (zy y) = y`. Use extensionality with `i j`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [yPart, zy, Matrix.of_apply, Equiv.symm_apply_apply, Sum.elim_inr]`. Establish `hin : ∀ x : Mx D V.rank n, GlobalTheory.StdUnn.inner V x y = gramQ V.gram x y` using `fun x => by`. Unfold `GlobalTheory.StdUnn.inner gramQ mmul`. Rewrite using `[Matrix.mul_assoc]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `h0 : GlobalTheory.StdUnn.inner V (0 : Mx D V.rank n) y = 0`. Simplify using `[GlobalTheory.StdUnn.inner]`. Unfold `EC.Heisenberg₂`. Establish `htr0 : GlobalTheory.StdUnn.trA (0 : AE D) = 0` using `map_zero _`. Rewrite using `[hx, hy, h0, add_zero, Matrix.trace_zero, halfTr, htr0, mul_zero, add_zero, hin]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -45,7 +45,7 @@ theorem heis_zy (ψ : AddChar (AF D.host.F) ℂ) (V : HSp D) {n : ℕ} (y : Mx D
   rfl
 
 /- English proof (translation)
-Unfold `pairing GlobalTheory.IndefiniteRowSideFullHecke.GramMatrixBlocks.trA gramQ mmul`. Rewrite using `[Matrix.mul_add, Matrix.trace_add, map_add, AddChar.map_add_eq_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem pairing_add_right (T : Matrix (Fin m) (Fin m) D.host.E) (ψ : AddChar (AF D.host.F) ℂ) {n : ℕ}
     (x y y' : Mx D m n) : pairing T ψ x (y + y') = pairing T ψ x y * pairing T ψ x y' := by
@@ -53,9 +53,7 @@ theorem pairing_add_right (T : Matrix (Fin m) (Fin m) D.host.E) (ψ : AddChar (A
   rw [Matrix.mul_add, Matrix.trace_add, map_add, AddChar.map_add_eq_mul]
 
 /- English proof (translation)
-Take `⟨i1, i2, i3, i4, i5, -⟩` from `GlobalTheory.TowerRestrict.lattice_Mx D m n`. Use `haveI := isTopologicalRing_tens (F := D.host.F) (E := D.host.E) (R := AF D.host.F)`. Use `haveI : IsModuleTopology (AF D.host.F) (AE D) := ⟨rfl⟩`. Establish `ht : Continuous (GlobalTheory.IndefiniteRowSideFullHecke.GramMatrixBlocks.trA (D` using `D)) := IsModuleTopology.continuous_of_linearMap (Algebra.trace (AF D.host.F) (AE D))`. Unfold `pairing gramQ mmul`.
-
-Conclude with `hψ.1.comp (ht.comp (continuous_const.matrix_mul continuous_id).matrix_trace)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_pairing (T : Matrix (Fin m) (Fin m) D.host.E) {ψ : AddChar (AF D.host.F) ℂ}
     (hψ : IsCharAF D.host.F ψ) {n : ℕ} (x : Mx D m n) : Continuous (pairing T ψ x) := by
@@ -68,7 +66,7 @@ theorem continuous_pairing (T : Matrix (Fin m) (Fin m) D.host.E) {ψ : AddChar (
   exact hψ.1.comp (ht.comp (continuous_const.matrix_mul continuous_id).matrix_trace)
 
 /- English proof (translation)
-Establish `h : GlobalTheory.IndefiniteRowSideFullHecke.GramMatrixBlocks.adj (0 : Mx D m n) = 0`. Use extensionality with `i j`. Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.GramMatrixBlocks.adj, Formalism.UG.cT]`. Simplify using `[pairing, gramQ, mmul, h, GlobalTheory.IndefiniteRowSideFullHecke.GramMatrixBlocks.trA]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem pairing_zero_left (T : Matrix (Fin m) (Fin m) D.host.E) (ψ : AddChar (AF D.host.F) ℂ) {n : ℕ}
     (y : Mx D m n) : pairing T ψ 0 y = 1 := by
@@ -80,17 +78,15 @@ theorem pairing_zero_left (T : Matrix (Fin m) (Fin m) D.host.E) (ψ : AddChar (A
 open Classical in
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `GlobalTheory.T.rationalAdelicMatrices_self_annihilator D V.rank n V.gram (isHermND_gram V) ψ hψ`. Use `split_ifs with hξ`. Substitute `hξ` using the available equality. Establish `h0 : (0 : Matrix (Fin V.rank) (Fin n) D.host.E).map (incA D) = 0`. Use extensionality with `i j`.
+Extract witnesses or component facts from the available result. Substitute using the available equality. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Simplify using `only [h0, pairing_zero_left, setIntegral_const, smul_eq_mul, mul_one]`. Simplify using `[Measure.real, hμ.2.2]`. Use `set ξ' : Mx D V.rank n := ξ.map (incA D) with hξ'`. Establish `hrat : ξ' ∈ ratMx D V.rank n` using `⟨ξ, rfl⟩`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hne : ξ' ≠ 0`. Introduce `h`. Apply `hξ` to reduce the goal to its premises. Conclude with `Matrix.ext fun i j => incA_injective ((congrFun (congrFun h i) j).trans (map_zero (incA D)).symm)`. Choose the witnesses or unpack the hypotheses as in `⟨y₀, hy₀⟩ : ∃ y₀, pairing V.gram ψ ξ' y₀ ≠ 1 := by`.
+Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Conclude with `hne (h2 ξ' hrat hc)`. Establish `hper : ∀ γ ∈ ratMx D V.rank n, ∀ a, pairing V.gram ψ ξ' (γ + a) = pairing V.gram ψ ξ' a`. Introduce `γ hγ a`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pairing_add_right, (h1 γ).2 hγ ξ' hrat, one_mul]`. Establish `key` using `GlobalTheory.TowerRestrict.setIntegral_add_right hμ (pairing V.gram ψ ξ') hper y₀`. Simplify using `only [pairing_add_right, integral_mul_const] at key`. Establish `: (∫ y in 𝓕, pairing V.gram ψ ξ' y ∂μ) * (pairing V.gram ψ ξ' y₀ - 1) = 0`. Rewrite using `[mul_sub, mul_one, key, sub_self]`.
-
-Conclude with `(mul_eq_zero.1 this).resolve_right (sub_ne_zero.2 hy₀)`.
+A detailed English derivation is pending.
 -/
 theorem char_integral {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.host.F ψ) (V : HSp D) {n : ℕ}
     {μ : Measure (Mx D V.rank n)} {𝓕 : Set (Mx D V.rank n)} (hμ : IsCovolOne (ratMx D V.rank n) μ 𝓕)
@@ -126,19 +122,15 @@ theorem char_integral {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.host.F 
 open Classical in
 
 /- English proof (translation)
-Introduce `D ψ hψ θ hθ V n μ 𝓕 hμ Φ hΦ`. Take `⟨i1, i2, i3, i4, i5, -⟩` from `GlobalTheory.TowerRestrict.lattice_Mx D V.rank n`. Use `haveI : BorelSpace (Mx D V.rank n) := ⟨rfl⟩`. Use `haveI i6 : DiscreteTopology (ratMx D V.rank n) := i5`. Use `haveI i7 : SecondCountableTopology (ratMx D V.rank n) := TopologicalSpace.Subtype.secondCountableTopology _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `haveI : Countable (ratMx D V.rank n) := TopologicalSpace.separableSpace_iff_countable.1 (TopologicalSpace.SecondCountableTopology.to_separableSpace)`. Use `haveI : Countable (Matrix (Fin V.rank) (Fin n) D.host.E) := by`. Set `g : Matrix (Fin V.rank) (Fin n) D.host.E → ratMx D V.rank n` to `fun ξ => ⟨ξ.map (incA D), ξ, rfl⟩`. Establish `hg : Function.Injective g`. Introduce `a b h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `h'` using `congrArg Subtype.val h`. Conclude with `Matrix.ext fun i j => incA_injective (congrFun (congrFun h' i) j)`. Conclude with `hg.countable`. Use `haveI : IsFiniteMeasure (μ.restrict 𝓕) := isFiniteMeasure_restrict.2 (by rw [hμ.2.2]; exact ENNReal.one_ne_top)`. Simplify using `only [heis_zy]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `set F : Matrix (Fin V.rank) (Fin n) D.host.E → Mx D V.rank n → ℂ := fun ξ y => pairing V.gram ψ (ξ.map (incA D)) y * Φ (ξ.map (incA D)) with hF`. Establish `hnorm : ∀ ξ y, ‖F ξ y‖ = ‖Φ (ξ.map (incA D))‖`. Introduce `ξ y`. Simplify using `only [hF, norm_mul, pairing, hψ.2.1, one_mul]`. Establish `hint : ∀ ξ, Integrable (F ξ) (μ.restrict 𝓕)` using `fun ξ => (integrable_const ‖Φ (ξ.map (incA D))‖).mono' ((continuous_pairing V.gram hψ _).mul continuous_const).aestronglyMeasurable (ae_of_all _ fun y => (hnorm ξ y).le)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hsum : Summable fun ξ => ∫ y, ‖F ξ y‖ ∂(μ.restrict 𝓕)`. Simplify using `only [hnorm, integral_const, smul_eq_mul]`. Establish `hr : (μ.restrict 𝓕).real Set.univ = 1` using `by simp [Measure.real, hμ.2.2]`. Simplify using `only [hr, one_mul]`. Conclude with `GlobalTheory.SiegelWeilLitCompare.summable_rat hθ ⟨Φ, hΦ⟩`.
-
-Use `show Φ 0 = ∫ y in 𝓕, ∑' ξ, F ξ y ∂μ`. Rewrite using `[← integral_tsum_of_summable_integral_norm hint hsum]`. Simplify using `only [hF, integral_mul_const, char_integral hψ V hμ]`. Rewrite using `[tsum_eq_single 0]`. Simplify using the standard rewrite rules.
-
-Introduce `b hb`. Simplify using `[hb]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem zero : PositivityTheory.GramSchwartzFunctions.EC.Zero := by
   intro D ψ hψ θ hθ V n μ 𝓕 hμ Φ hΦ

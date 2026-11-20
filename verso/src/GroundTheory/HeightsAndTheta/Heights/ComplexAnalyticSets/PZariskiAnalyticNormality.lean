@@ -12,9 +12,9 @@ open MvPolynomial Topology Filter
 noncomputable section
 
 /- English proof (translation)
-Break down `φ with ⟨_, f, hf, rfl⟩` into its components or cases. Establish `hfw : f w ≠ 0` using `hφ`. Set `ψ : holGerms w` to `⟨((fun z => (f z)⁻¹ : (σ → ℂ) → ℂ) : Germ (𝓝 w) ℂ), _, hf.inv hfw, rfl⟩`. Use `IsUnit.of_mul_eq_one ψ (Subtype.ext ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((fun z => f z * (f z)⁻¹ : (σ → ℂ) → ℂ) : Germ (𝓝 w) ℂ) = ((fun _ => (1 : ℂ) : (σ → ℂ) → ℂ) : Germ (𝓝 w) ℂ)`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `Germ.coe_eq.2 ((hf.continuousAt.eventually_ne hfw).mono fun z hz => mul_inv_cancel₀ hz)`.
+A detailed English derivation is pending.
 -/
 theorem holGerms_isUnit_of_value_ne_zero {σ : Type} [Fintype σ] {w : σ → ℂ} (φ : holGerms w)
     (hφ : holGermValue w φ ≠ 0) : IsUnit φ := by
@@ -26,9 +26,9 @@ theorem holGerms_isUnit_of_value_ne_zero {σ : Type} [Fintype σ] {w : σ → �
   exact Germ.coe_eq.2 ((hf.continuousAt.eventually_ne hfw).mono fun z hz => mul_inv_cancel₀ hz)
 
 /- English proof (translation)
-Introduce `x hx`. Rewrite using `[Ideal.mem_jacobson_bot]`. Introduce `y`. Apply `holGerms_isUnit_of_value_ne_zero` to reduce the goal to its premises. Establish `hx0 : holGermValue w x = 0` using `RingHom.mem_ker.1 hx`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Simplify using `[map_add, map_mul, hx0]`.
+Simplify using the standard rewrite rules.
 -/
 theorem holGermPointIdeal_le_jacobson {σ : Type} [Fintype σ] (w : σ → ℂ) :
     holGermPointIdeal w ≤ (⊥ : Ideal (holGerms w)).jacobson := by
@@ -40,9 +40,9 @@ theorem holGermPointIdeal_le_jacobson {σ : Type} [Fintype σ] (w : σ → ℂ) 
   simp [map_add, map_mul, hx0]
 
 /- English proof (translation)
-Introduce `x hx`. Take `⟨x', hx', rfl⟩` from `(Ideal.mem_map_iff_of_surjective _ Ideal.Quotient.mk_surjective).1 hx`. Rewrite using `[Ideal.mem_jacobson_bot]`. Introduce `y`. Take `⟨y', rfl⟩` from `Ideal.Quotient.mk_surjective y`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hu` using `Ideal.mem_jacobson_bot.1 (holGermPointIdeal_le_jacobson w hx') y'`. Simplify `hu.map (Ideal.Quotient.mk (I.map (polyGerm w)))` using `[map_add, map_mul]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem germQuotPointIdeal_le_jacobson {σ : Type} [Fintype σ] (I : Ideal (MvPolynomial σ ℂ)) (w : σ → ℂ) :
     germQuotPointIdeal I w ≤ (⊥ : Ideal (holGerms w ⧸ I.map (polyGerm w))).jacobson := by
@@ -55,9 +55,9 @@ theorem germQuotPointIdeal_le_jacobson {σ : Type} [Fintype σ] (I : Ideal (MvPo
   simpa [map_add, map_mul] using hu.map (Ideal.Quotient.mk (I.map (polyGerm w)))
 
 /- English proof (translation)
-Introduce `σ _ I w hI hIC hw`. Use `hN σ w` as an intermediate fact. Take `⟨e, -⟩` from `hE σ I w`. Take `⟨hdom, hic⟩` from `hA σ I (polyPointIdeal I w) hI hIC (polyPointIdeal_isMaximal I w hw)`. Establish `hdom' : IsDomain (AdicCompletion (germQuotPointIdeal I w) (holGerms w ⧸ I.map (polyGerm w)))` using `e.toMulEquiv.isDomain`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hic' : IsIntegrallyClosed (AdicCompletion (germQuotPointIdeal I w) (holGerms w ⧸ I.map (polyGerm w)))` using `IsIntegrallyClosed.of_equiv e.symm`. Take `⟨hB, hBic⟩` from `hD _ (germQuotPointIdeal I w) inferInstance (germQuotPointIdeal_le_jacobson I w) hdom' hic'`. Conclude with `⟨(Ideal.Quotient.isDomain_iff_prime _).1 hB, hBic⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem ZariskiAnalyticNormality.proof (hN : HolGermsNoetherian.Statement)
     (hD : CompletionNormalDescent.Statement) (hA : AffineCompletionNormal.Statement)

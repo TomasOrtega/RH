@@ -12,17 +12,17 @@ open GroundTheory.Automorphic.AutomorphicForm GroundTheory.Automorphic.CuspidalS
 open scoped TensorProduct InnerProductSpace ComplexConjugate Pointwise
 
 /- English proof (translation)
-Introduce `K _ _ n r w J hJ U hU x`. Establish `key : ∀ (h : AdelicGLn.FiniteAdelicGL K n) (v : Pl K), finAt v (finEmb K n h) = AdelicGLn.finiteRestrictedEquiv K n h v`. Introduce `h v`. Use `show AdelicGLn.finiteRestrictedEquiv K n (AdelicGLn.prodEquiv K n (finEmb K n h)).2 v = _`. Rewrite using `[prodEquiv_finEmb]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hint : ∀ h : AdelicGLn.FiniteAdelicGL K n, h ∈ AdelicGLn.integralFiniteGL K n ↔ ∀ v : Pl K, finAt v (finEmb K n h) ∈ GLnLocal.integralGL (v.adicCompletion K) n`. Introduce `h`. Rewrite using `[AdelicGLn.mem_integralFiniteGL_iff_forall]`. Simplify using `only [key]`. Distinguish the cases in `hx : x ∈ U`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Take `⟨h1, h2⟩` from `(hU x).1 hx`. Establish `hy : x ∈ ({y | ∀ v, v ∉ Set.range w → finAt v (finEmb K n y) ∈ GLnLocal.integralGL (v.adicCompletion K) n} : Set (AdelicGLn.FiniteAdelicGL K n))` using `fun v _ => (hint x).1 h1 v`. Rewrite using `[Set.indicator_of_mem hx, Set.indicator_of_mem hy, Finset.prod_eq_one]`. Simplify using the standard rewrite rules. Introduce `i _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Set.indicator_of_mem (SetLike.mem_coe.2 (h2 i))]`. Both sides reduce to the same expression. Rewrite using `[Set.indicator_of_notMem hx]`. Distinguish the cases in `hJx : ∀ i, finAt (w i) (finEmb K n x) ∈ J i`. Establish `hy : x ∉ ({y | ∀ v, v ∉ Set.range w → finAt v (finEmb K n y) ∈ GLnLocal.integralGL (v.adicCompletion K) n} : Set (AdelicGLn.FiniteAdelicGL K n))`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hy`. Use `hx ((hU x).2 ⟨(hint x).2 fun v => ?_, hJx⟩)` and prove the remaining obligations. Distinguish the cases in `hv : v ∈ Set.range w`. Take `⟨i, rfl⟩` from `hv`. Conclude with `hJ i (hJx i)`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `hy v hv`. Rewrite using `[Set.indicator_of_notMem hy, zero_mul]`. Use `push_neg at hJx`. Take `⟨i, hi⟩` from `hJx`. Rewrite using `[Finset.prod_eq_zero (Finset.mem_univ i) (Set.indicator_of_notMem (SetLike.mem_coe.not.2 hi) _), mul_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.indicator_level_eq_prod_local_indicator :
     ∀ (K : Type) [Field K] [NumberField K] (n r : ℕ) (w : Fin r → Pl K) (J : ∀ i, Subgroup (Gw n (w i))),

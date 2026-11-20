@@ -18,11 +18,11 @@ namespace PositivityTheory.Rg.Rsw.L.LLatBound
 variable {D : D7}
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `mem_ratMx.1 ((mem_GQ_iff V γ).1 hγ)`. Take `⟨g', hg'⟩` from `mem_ratMx.1 ((mem_GQ_iff V γ⁻¹).1 (inv_mem hγ))`. Establish `h1 : g' * g = 1` using `rat_injective (by rw [rat_mul, hg, hg', rat_one]; exact mt_inv_mul V γ)`. Establish `h2 : g * g' = 1` using `rat_injective (by rw [rat_mul, hg, hg', rat_one]; exact mt_mul_inv V γ)`. Establish `hu : IsUnit g.det` using `isUnit_iff_exists_inv.2 ⟨g'.det, by rw [← Matrix.det_mul, h2, Matrix.det_one]⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu' : IsUnit g'.det` using `isUnit_iff_exists_inv.2 ⟨g.det, by rw [← Matrix.det_mul, h1, Matrix.det_one]⟩`. Set `e : {x : Matrix (Fin V.rank) (Fin n) D.host.E // x.rank = V.rank} ≃ {x : Matrix (Fin V.rank) (Fin n) D.host.E // x.rank = V.rank}` to `{ toFun := fun x => ⟨g * x.1, by rw [Matrix.rank_mul_eq_right_of_isUnit_det g x.1 hu]; exact x.2⟩ invFun := fun x => ⟨g' * x.1, by rw [Matrix.rank_mul_eq_right_of_isUnit_det g' x.1 hu']; exact x.2⟩ left_inv := fun x => Subtype.ext (by simp only [← Matrix.mul_assoc, h1, Matrix.one …`. Rewrite using `[← e.tsum_eq (fun x => F (rat x.1))]`. Use `tsum_congr fun x => ?_` and prove the remaining obligations. Use `show F _ = F (rat (g * x.1))`.
+Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[rat_mul, hg]`.
+A detailed English derivation is pending.
 -/
 theorem tsum_GQ (V : HSp D) (n : ℕ) (γ : GA D V) (hγ : γ ∈ GQ V) (F : Mx D V.rank n → ℝ≥0∞) :
     ∑' x : {x : Matrix (Fin V.rank) (Fin n) D.host.E // x.rank = V.rank}, F (mm (mt V γ) (rat x.1)) =

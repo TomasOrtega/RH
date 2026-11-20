@@ -19,48 +19,38 @@ noncomputable section
 namespace GlobalTheory.CharPSpec
 
 /- English proof (translation)
-Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp, e]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem spMap_comp_eq' {A B C : Type} [CommRing A] [CommRing B] [CommRing C] {f : A →+* B} {g : B →+* C}
     {h : A →+* C} (e : g.comp f = h) : spMap g ≫ spMap f = spMap h := by
   rw [← Spec.map_comp, ← CommRingCat.ofHom_comp, e]
 
 /- English proof (translation)
-Introduce `k _ _ _ G _ hG g hg m hm s hs P hP u a b hu hab`. Establish `hm0 : (m : k) ≠ 0` using `Nat.cast_ne_zero.mpr (by omega)`. Take `⟨R, G₁, _, hfg, hmR, hcomm, hsm, hsep, hqc, hgc, hrd, ⟨s₁, hcard, hs₁, hdist⟩, P₁, hP₁, u₁, α, β, hα, hβ, hu₁, hαβ⟩` from `GlobalTheory.T.exists_fg_subring_descent_group_sections_curve k G hG g hg m hm hm0 s hs P hP u a b hu hab`. Use `haveI : Algebra.FiniteType ℤ R := hfg`. Use `haveI : IsNoetherianRing R := Algebra.FiniteType.isNoetherianRing ℤ R`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hinj : Function.Injective R.subtype` using `Subtype.val_injective`. Take `⟨f₁, hf₁, H₁⟩` from `GlobalTheory.T.exists_basicOpen_smoothOfRelativeDimension_of_generic R G₁ hsm hqc k R.subtype hinj g hrd`. Take `⟨f₂, hf₂, H₂⟩` from `GlobalTheory.T.exists_basicOpen_geometricallyConnected_fibres_of_generic R G₁ hsm hqc k R.subtype hinj hgc`. Take `⟨f₃, hf₃, H₃⟩` from `GlobalTheory.T.exists_basicOpen_sections_distinct_in_fibres R G₁ hsep k R.subtype hinj (s₁.image fun x => x.left) (by`. Introduce `x hx`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨y, -, rfl⟩` from `Finset.mem_image.mp hx`. Conclude with `Over.w y)`. Use the proof step `(by`. Introduce `x hx y hy hxy`. Take `⟨x', hx', rfl⟩` from `Finset.mem_image.mp hx`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Take `⟨y', hy', rfl⟩` from `Finset.mem_image.mp hy`. Conclude with `hdist x' hx' y' hy' fun h => hxy (by rw [h]))`. Establish `hsec : ∀ (c₀ : R) (hc₀ : IsUnit (Polynomial.evalRingHom c₀ P₁)), spMap (IsLocalization.Away.lift (S` using `Localization.Away P₁) P₁ hc₀) ≫ u₁ ≫ G₁.hom = 𝟙 _ := by`. Introduce `c₀ hc₀`. Rewrite using `[hu₁, spMap_comp_eq' (h := RingHom.id R)]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Use `show Spec.map (CommRingCat.ofHom (RingHom.id R)) = _`. Rewrite using `[CommRingCat.ofHom_id, Spec.map_id]`. Use extensionality with `r`. Rewrite using `[RingHom.comp_apply, IsScalarTower.algebraMap_apply R (Polynomial R) (Localization.Away P₁), IsLocalization.Away.lift_eq]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨f₄, hf₄, H₄⟩` from `GlobalTheory.T.exists_basicOpen_sections_distinct_in_fibres R G₁ hsep k R.subtype hinj {spMap (IsLocalization.Away.lift (S := Localization.Away P₁) P₁ hα) ≫ u₁, spMap (IsLocalization.Away.lift (S := Localization.Away P₁) P₁ hβ) ≫ u₁} (by`. Introduce `x hx`. Break down `Finset.mem_insert.mp hx with rfl | hx` into its components or cases. Rewrite using `[Category.assoc]`. Conclude with `hsec α hα`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Finset.mem_singleton.mp hx, Category.assoc]`. Conclude with `hsec β hβ)`. Use the proof step `(by`. Introduce `x hx y hy hxy`. Apply the tactic sequence `rcases Finset.mem_insert.mp hx with rfl | hx <;> rcases Finset.mem_insert.mp hy with rfl | hy`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `absurd rfl hxy`. Rewrite using `[Finset.mem_singleton.mp hy]`. Conclude with `hαβ`. Rewrite using `[Finset.mem_singleton.mp hx]`. Conclude with `Ne.symm hαβ`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite `hxy` using `[Finset.mem_singleton.mp hx, Finset.mem_singleton.mp hy]`. Conclude with `absurd rfl hxy)`. Establish `hlc : R.subtype P₁.leadingCoeff ≠ 0`. Rewrite using `[map_ne_zero_iff _ hinj]`. Conclude with `Polynomial.leadingCoeff_ne_zero.mpr hP₁`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact.
 
-Use `set f := f₁ * f₂ * f₃ * f₄ * P₁.leadingCoeff with hfdef`. Establish `hf : f ≠ 0`. Introduce `h`. Use `congrArg R.subtype h` as an intermediate fact. Rewrite `this` using `[map_zero, hfdef]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [map_mul] at this`. Conclude with `(mul_ne_zero (mul_ne_zero (mul_ne_zero (mul_ne_zero hf₁ hf₂) hf₃) hf₄) hlc) this`. Take `⟨M, hM, hfM, p, hp, hpM⟩` from `GlobalTheory.T.exists_maximal_prime_char_not_mem_finiteType_int R f hf`. Use `letI := Ideal.Quotient.field M`. Set `ψ : R →+* AlgebraicClosure (R ⧸ M)` to `(algebraMap (R ⧸ M) _).comp (Ideal.Quotient.mk M)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hψ : ∀ r, r ∉ M → IsUnit (ψ r)`. Introduce `r hr`. Use `isUnit_iff_ne_zero.mpr ?_` and prove the remaining obligations. Rewrite using `[RingHom.comp_apply, map_ne_zero_iff _ (algebraMap (R ⧸ M) _).injective]`. Conclude with `fun h => hr (Ideal.Quotient.eq_zero_iff_mem.mp h)`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hu` using `hψ f hfM`. Simplify using `only [hfdef, map_mul, IsUnit.mul_iff] at hu`. Take `⟨⟨⟨⟨u1, u2⟩, u3⟩, u4⟩, u5⟩` from `hu`. Use `haveI : Fact p.Prime := ⟨hp⟩`. Establish `hpF : CharP (AlgebraicClosure (R ⧸ M)) p`.
-
-Rewrite using `[CharP.charP_iff_prime_eq_zero hp, ← map_natCast ψ, RingHom.comp_apply, Ideal.Quotient.eq_zero_iff_mem.mpr hpM, map_zero]`. Use `⟨AlgebraicClosure (R ⧸ M), inferInstance, inferInstance, p, inferInstance, hpF, (Over.pullback (spMap ψ)).obj G₁, inferInstance, ?_, H₁ _ ψ u1, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `⟨inferInstance, ?_, ?_, ?_, H₂ _ ψ u2⟩` and prove the remaining obligations. Use `show Smooth (pullback.snd _ _)`. Use `infer_instance`.
-
-Use `show IsSeparated (pullback.snd _ _)`. Use `infer_instance`. Use `show QuasiCompact (pullback.snd _ _)`. Use `infer_instance`. Rewrite using `[← map_natCast ψ]`.
-
-Conclude with `(hmR.map ψ).ne_zero`. Use `⟨s₁.image (GlobalTheory.IsogRed.sec (spMap ψ)), ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Take `⟨y, hy, rfl⟩` from `Finset.mem_image.mp hx`. Rewrite using `[← GlobalTheory.IsogRed.sec_pow, hs₁ y hy]`.
-
-Simplify using `using (GlobalTheory.IsogRed.sec_pow (spMap ψ) y 0).trans (pow_zero _)`. Rewrite using `[← hcard]`. Use `Finset.card_image_of_injOn fun x hx y hy hxy => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Establish `e` using `congrArg (fun z => z.left ≫ pullback.fst G₁.hom (spMap ψ)) hxy`.
-
-Simplify using `only [GlobalTheory.IsogRed.sec_left] at e`. Conclude with `H₃ _ ψ u3 x.left (Finset.mem_image_of_mem _ hx) y.left (Finset.mem_image_of_mem _ hy) (fun h => hne (Over.OverMorphism.ext h)) e`. Conclude with `GlobalTheory.T.curve_baseChange_two_distinct_points_of_field R _ ψ G₁ P₁ u₁ α β hα hβ hu₁ u5 (H₄ _ ψ u4 _ (Finset.mem_insert_self _ _) _ (Finset.mem_insert_of_mem (Finset.mem_singleton_self _)) (fun h => hαβ (by rw [h])))`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_charP_specialization : ∀ (k : Type) [Field k] [IsAlgClosed k] [CharZero k] (G : Over (Sp k)) [GrpObj G], GlobalTheory.SS.SmConn G → ∀ g : ℕ, SmoothOfRelativeDimension g G.hom → ∀ m : ℕ, 1 ≤ m → ∀ s : Finset (𝟙_ (Over (Sp k)) ⟶ G), (∀ x ∈ s, x ^ m = 1) → ∀ (P : Polynomial k), P ≠ 0 → ∀ (u : Sp (Localization.Away P) ⟶ G.left) (a b : Localization.Away P →ₐ[k] k), u ≫ G.hom = spMap (algebraMap k (Localization.Away P)) → spMap a.toRingHom ≫ u ≠ spMap b.toRingHom ≫ u → ∃ (k' : Type) (_ : Field k') (_ : IsAlgClosed k') (p : ℕ) (_ : Fact p.Prime) (_ : CharP k' p) (G' : Over (Sp k')) (_ : GrpObj G'), GlobalTheory.SS.SmConn G' ∧ SmoothOfRelativeDimension g G'.hom ∧ (m : k') ≠ 0 ∧ (∃ s' : Finset (𝟙_ (Over (Sp k')) ⟶ G'), (∀ x ∈ s', x ^ m = 1) ∧ s'.card = s.card) ∧ ∃ (P' : Polynomial k') (_ : P' ≠ 0) (u' : Sp (Localization.Away P') ⟶ G'.left) (a' b' : Localization.Away P' →ₐ[k'] k'), u' ≫ G'.hom = spMap (algebraMap k' (Localization.Away P')) ∧ spMap a'.toRingHom ≫ u' ≠ spMap b'.toRingHom ≫ u' := by
   intro k _ _ _ G _ hG g hg m hm s hs P hP u a b hu hab

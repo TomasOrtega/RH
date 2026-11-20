@@ -12,7 +12,7 @@ open scoped CategoryTheory.Obj
 namespace GlobalTheory.EndLoc.HomGlue
 
 /- English proof (translation)
-The claim follows from `LBIso.chartPull (chartPullLinComb M b (fun _ : PUnit => c) (fun _ => c ≫ b) (fun _ => 1) (𝟙 _) fun _ => (Category.id_comp _).symm) (chartPullId _) (GlobalTheory.PolBaseChange.lbIso_refl (pull_isLB hM _))`.
+A detailed English derivation is pending.
 -/
 theorem lbIso_pullPull {P X Y : Scheme.{0}} {M : LB P} (hM : M.IsLB) (b : X ⟶ P) (c : Y ⟶ X) :
     LBIso ((M.pull b).pull c) (M.pull (c ≫ b)) :=
@@ -20,14 +20,14 @@ theorem lbIso_pullPull {P X Y : Scheme.{0}} {M : LB P} (hM : M.IsLB) (b : X ⟶ 
       fun _ => (Category.id_comp _).symm) (chartPullId _) (GlobalTheory.PolBaseChange.lbIso_refl (pull_isLB hM _))
 
 /- English proof (translation)
-The claim follows from `LBIso.chartPull (chartPullPull P h h rfl) (chartPullPull Q h h rfl) H`.
+A detailed English derivation is pending.
 -/
 theorem lbIso_pullAlong {X Y : Scheme.{0}} {P Q : LB X} (H : LBIso P Q) (h : Y ⟶ X) :
     LBIso (P.pull h) (Q.pull h) :=
   LBIso.chartPull (chartPullPull P h h rfl) (chartPullPull Q h h rfl) H
 
 /- English proof (translation)
-Substitute `h` using the available equality. Rewrite using `[pullback.lift_fst_snd, Category.id_comp]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 -/
 theorem Pt.f_eq {S : Scheme.{0}} {A B : Over S} [GrpObj A] [GrpObj B] {L : LB A.left} {M : LB B.left}
     {Z : Scheme.{0}} {x x' : Pt A B L M Z} (h : x = x') (e : x.t = x'.t) :
@@ -41,7 +41,7 @@ variable {S : Scheme.{0}} {A B : Over S} [GrpObj A] [GrpObj B] {L : LB A.left} {
   {φB : B'.left ⟶ B.left}
 
 /- English proof (translation)
-The claim follows from `LBIso.trans (pull_isLB hL _) (pull_isLB (pull_isLB hL _) _) (pull_isLB (pull_isLB hM _) _) (lbIso_pullPull hL φA R.φA).symm (LBIso.trans (pull_isLB (pull_isLB hL _) _) (pull_isLB (pull_isLB (pull_isLB hM _) _) _) (pull_isLB (pull_isLB hM _) _) R.iso (lbIso_pullAlong (lbIso_pullPu …`.
+A detailed English derivation is pending.
 -/
 theorem univ_iso (hL : L.IsLB) (hM : M.IsLB) (R : HomFixRep A' B' (L.pull φA) (M.pull φB)) :
     LBIso (L.pull (R.φA ≫ φA)) ((M.pull (R.φB ≫ φB)).pull R.Φ.left) :=
@@ -56,11 +56,9 @@ def univPt (hL : L.IsLB) (hM : M.IsLB) (R : HomFixRep A' B' (L.pull φA) (M.pull
     (univ_iso hL hM R)
 
 /- English proof (translation)
-Establish `hk : e ≫ pullback.lift (pullback.fst _ _) (pullback.snd _ _) w ≫ pmap A (R.π ≫ j) c = ψ ≫ (R.pbA.comp hA).1.isoPullback.hom`. Apply `pullback.hom_ext` to reduce the goal to its premises. Simplify using `only [pmap, Category.assoc, pullback.lift_fst, IsPullback.isoPullback_hom_fst]`. Conclude with `h1.symm`. Simplify using `only [pmap, Category.assoc, pullback.lift_snd, pullback.lift_snd_assoc, IsPullback.isoPullback_hom_snd]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `h2.symm`. Establish `e0 : (univPt hL hM R hA hB).f = (R.pbA.comp hA).1.isoPullback.inv ≫ R.Φ.left ≫ R.φB ≫ φB` using `rfl`. Use `congrArg (· ≫ ((R.pbA.comp hA).1.isoPullback.inv ≫ R.Φ.left ≫ R.φB ≫ φB)) hk` as an intermediate fact. Simplify using `only [Category.assoc, Iso.hom_inv_id_assoc] at this`. Rewrite using `[e0]`.
-
-Conclude with `this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem univPt_key (hL : L.IsLB) (hM : M.IsLB) (R : HomFixRep A' B' (L.pull φA) (M.pull φB))
     (hA : IsGrpPullback A' A j φA) (hB : IsGrpPullback B' B j φB) {Z P : Scheme.{0}} (c : Z ⟶ R.H) (t : Z ⟶ V)
@@ -88,27 +86,27 @@ end GlobalTheory.EndLoc.HomGlue
 namespace GlobalTheory.EndLoc.HomGlue
 
 /- English proof (translation)
-Introduce `S A B _ _ L M hL hM V j _ A' B' _ _ φA φB R hA hB`. Use `⟨univPt hL hM R hA hB, rfl, ?_⟩` and prove the remaining obligations. Introduce and unpack `Z ⟨t, f, w⟩ b hx`. Simplify using `only at hx`. Substitute `hx` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify by unfolding definitions. Substitute using the available equality.
 
-Establish `w₀` using `w`. Take `⟨A'', B'', _, _, φ'', ψ'', Φ'', hA'', hB'', hΦ'', hI'', e, e1, e2, e3⟩` from `w₀`. Set `φ'A : A''.left ⟶ A'.left` to `hA.1.lift φ'' (A''.hom ≫ b) (by rw [hA''.1.w, Category.assoc])`. Establish `fA : φ'A ≫ φA = φ''` using `hA.1.lift_fst _ _ _`. Establish `sA : φ'A ≫ A'.hom = A''.hom ≫ b` using `hA.1.lift_snd _ _ _`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `pA : IsGrpPullback A'' A' b φ'A` using `hA.cancel (hA''.congr rfl fA.symm) sA`. Set `φ'B : B''.left ⟶ B'.left` to `hB.1.lift ψ'' (B''.hom ≫ b) (by rw [hB''.1.w, Category.assoc])`. Establish `fB : φ'B ≫ φB = ψ''` using `hB.1.lift_fst _ _ _`. Establish `sB : φ'B ≫ B'.hom = B''.hom ≫ b` using `hB.1.lift_snd _ _ _`. Establish `pB : IsGrpPullback B'' B' b φ'B` using `hB.cancel (hB''.congr rfl fB.symm) sB`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `iso' : LBIso ((L.pull φA).pull φ'A) (((M.pull φB).pull φ'B).pull Φ''.left)`. Establish `h1` using `lbIso_pullPull hL φA φ'A`. Rewrite `h1` using `[fA]`. Establish `h2` using `(lbIso_pullAlong (lbIso_pullPull hM φB φ'B) Φ''.left).symm`. Rewrite `h2` using `[fB]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `LBIso.trans (pull_isLB (pull_isLB hL _) _) (pull_isLB hL _) (pull_isLB (pull_isLB (pull_isLB hM _) _) _) h1 (LBIso.trans (pull_isLB hL _) (pull_isLB (pull_isLB hM _) _) (pull_isLB (pull_isLB (pull_isLB hM _) _) _) hI'' h2)`. Take `⟨h, ⟨hh, ψA, ψB, qA, qB, gA, gB, qΦ⟩, huniq⟩` from `R.rep Z b A'' B'' φ'A φ'B Φ'' pA pB hΦ'' iso'`. Establish `he : e = hA''.1.isoPullback.hom`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[e1, IsPullback.isoPullback_hom_fst]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e2, IsPullback.isoPullback_hom_snd]`. Establish `hΦw : Φ''.left ≫ B''.hom = A''.hom` using `Over.w Φ''`. Use `⟨h, ?_, ?_⟩` and prove the remaining obligations. Use `Pt.ext' (show h ≫ R.π ≫ j = b ≫ j by rw [← Category.assoc, hh]) ?_` and prove the remaining obligations. Establish `: IsIso e` using `by rw [he]; infer_instance`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← cancel_epi e, e3]`. Use `(univPt_key hL hM R hA hB h b e ψA (by rw [← Category.assoc, gA, fA, e1]) (by rw [qA.1.w, ← Category.assoc, e2]) _).trans ?_` and prove the remaining obligations. Rewrite using `[← Category.assoc ψA, ← qΦ, Category.assoc, ← Category.assoc ψB, gB, fB]`. Introduce `c hc`. Establish `ht : c ≫ R.π ≫ j = b ≫ j` using `congrArg Pt.t hc`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcb : c ≫ R.π = b` using `(cancel_mono j).1 (by rw [Category.assoc]; exact ht)`. Establish `hf` using `Pt.f_eq hc ht`. Set `ψA' : A''.left ⟶ R.AH.left` to `R.pbA.1.lift φ'A (A''.hom ≫ c) (by rw [sA, ← hcb, Category.assoc])`. Establish `kA : ψA' ≫ R.φA = φ'A` using `R.pbA.1.lift_fst _ _ _`. Establish `kA2 : ψA' ≫ R.AH.hom = A''.hom ≫ c` using `R.pbA.1.lift_snd _ _ _`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `ψB' : B''.left ⟶ R.BH.left` to `R.pbB.1.lift φ'B (B''.hom ≫ c) (by rw [sB, ← hcb, Category.assoc])`. Establish `kB : ψB' ≫ R.φB = φ'B` using `R.pbB.1.lift_fst _ _ _`. Establish `kB2 : ψB' ≫ R.BH.hom = B''.hom ≫ c` using `R.pbB.1.lift_snd _ _ _`. Establish `key` using `univPt_key hL hM R hA hB c b e ψA' (by rw [← Category.assoc, kA, fA, e1]) (by rw [kA2, ← Category.assoc, e2]) (by rw [pullback.condition, ← ht])`. Establish `hΦA : R.Φ.left ≫ R.BH.hom = R.AH.hom` using `Over.w R.Φ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `huniq` to reduce the goal to its premises. Use `⟨hcb, ψA', ψB', R.pbA.cancel (pA.congr hcb.symm kA.symm) kA2, R.pbB.cancel (pB.congr hcb.symm kB.symm) kB2, kA, kB, ?_⟩` and prove the remaining obligations. Apply `R.pbB.1.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, kB]`. Apply `hB.1.hom_ext` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, fB, ← e3, Category.assoc, Category.assoc, ← key]`. Conclude with `congrArg (e ≫ ·) hf.symm`. Rewrite using `[Category.assoc, sB, ← Category.assoc, hΦw, Category.assoc, Category.assoc, R.pbB.1.w, ← Category.assoc R.Φ.left, hΦA, ← Category.assoc, kA2, Category.assoc, hcb]`. Rewrite using `[Category.assoc, kB2, ← Category.assoc, hΦw, Category.assoc, hΦA, kA2]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem localRep_universal : ∀ (S : Scheme.{0}) (A B : Over S) [GrpObj A] [GrpObj B] (L : LB A.left) (M : LB B.left)
     (hL : L.IsLB) (hM : M.IsLB) (V : Scheme.{0}) (j : V ⟶ S) [IsOpenImmersion j] (A' B' : Over V) [GrpObj A']

@@ -26,7 +26,7 @@ section Abstract
 variable {R : Type} [CommRing R] {C : Type 1} [Category.{0} C]
 
 /- English proof (translation)
-Use `CrystallineSemistableComparison.P.mapH_bij (CH.Mor.restrict F Q.ι).hom (fun n => ⟨fun f f' h => ?_, fun g => ?_⟩) j` and prove the remaining obligations. Use function extensionality and compare the values at `s`. Conclude with `congrFun h (s ⋙ Q.lift (𝟭 C) hQ)`. Conclude with `⟨fun s => g (s ⋙ Q.lift (𝟭 C) hQ), rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem restrict_bij (F : C ⥤ ModuleCat.{0} R) (Q : ObjectProperty C) (hQ : ∀ T, Q T) (j : ℕ) :
     Function.Bijective ((CH.Mor.restrict F Q.ι).pull j) := by
@@ -46,7 +46,7 @@ noncomputable def incB (a : IdF A) : CH.Mor (sq a (IdF.bot A)) (CH.modF A) (Ring
     rfl
 
 /- English proof (translation)
-Take `⟨x, hx⟩` from `x`. Take `⟨y, hy, rfl⟩` from `(Ideal.mem_map_iff_of_surjective _ Ideal.Quotient.mk_surjective).1 hx`. Conclude with `hy`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem incB_mem (a : IdF A) {T : C} (x : (sq a (IdF.bot A)).obj T) : (incB a).τ T x ∈ a.S T := by
   obtain ⟨x, hx⟩ := x
@@ -54,11 +54,11 @@ theorem incB_mem (a : IdF A) {T : C} (x : (sq a (IdF.bot A)).obj T) : (incB a).�
   exact hy
 
 /- English proof (translation)
-Use `⟨fun n x y hxy => ?_, fun n y => ⟨fun hy => ?_, ?_⟩, fun n y => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `s`. Establish `h : (incB a).τ _ (x (s ⋙ 𝟭 C)) = (incB a).τ _ (y (s ⋙ 𝟭 C))` using `congrFun hxy s`. Conclude with `Subtype.ext ((AlgEquiv.quotientBot R _).injective h)`. Establish `hm : ∀ s : ComposableArrows C n, (show A.obj (s.obj (Fin.last n)) from y s) ∈ a.S (s.obj (Fin.last n))` using `fun s => by`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `congrArg Subtype.val (congrFun hy s)`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.1 h`. Conclude with `⟨fun s => sqMk a (IdF.bot A) _ (hm s), rfl⟩`. Introduce and unpack `⟨x, rfl⟩`. Use function extensionality and compare the values at `s`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Supply the required witnesses or components.
 
-Conclude with `Subtype.ext (Ideal.Quotient.eq_zero_iff_mem.2 (incB_mem a (x (s ⋙ 𝟭 C))))`. Establish `hm : ∀ s : ComposableArrows C n, ∃ t : A.obj (s.obj (Fin.last n)), Ideal.Quotient.mk _ t = (show sqM a₀ a _ from y s).1` using `fun s => Ideal.Quotient.mk_surjective _ choose t ht using hm`. Conclude with `⟨t, funext fun s => Subtype.ext (ht s)⟩`.
+A detailed English derivation is pending.
 -/
 theorem ses (a₀ a : IdF A) (h0 : ∀ T, a₀.S T = ⊤) :
     (∀ n, Function.Injective ((incB a).hom.f n)) ∧
@@ -81,11 +81,11 @@ theorem ses (a₀ a : IdF A) (h0 : ∀ T, a₀.S T = ⊤) :
     exact ⟨t, funext fun s => Subtype.ext (ht s)⟩
 
 /- English proof (translation)
-Take `⟨hf, hfg, hg⟩` from `ses a₀ a h0`. Take `⟨δ, -, -, hex, -, -⟩` from `CrystallineSemistableComparison.P.les _ _ hf hfg hg`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨y, rfl⟩` from `(hex j x).1 h`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy, rfl⟩` from `(CrystallineSemistableComparison.P.cls_surj _ j).1 y`. Conclude with `⟨(incB a).hom.f j y, CrystallineSemistableComparison.CechClassBoundaries.cyc (incB a).hom y hy, rfl, fun s => incB_mem a (y (s ⋙ 𝟭 C))⟩`. Introduce and unpack `⟨z, hz, rfl, hs⟩`. Establish `e : (toSq a₀ a h0).hom.f j z = 0` using `funext fun s => Subtype.ext (Ideal.Quotient.eq_zero_iff_mem.2 (hs s))`. Express the relevant statement in the definitionally equal form `(CH.cx _).cls ((toSq a₀ a h0).hom.f j z) _ = 0`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Simplify using `only [e]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem pull_eq_zero_iff (a₀ a : IdF A) (h0 : ∀ T, a₀.S T = ⊤) (j : ℕ) (x : CH.H (CH.modF A) j) :
     (toSq a₀ a h0).pull j x = 0 ↔ ∃ (z : CH.Cn (CH.modF A) j) (hz : CH.d (CH.modF A) j z = 0),
@@ -104,9 +104,9 @@ theorem pull_eq_zero_iff (a₀ a : IdF A) (h0 : ∀ T, a₀.S T = ⊤) (j : ℕ)
     rfl
 
 /- English proof (translation)
-Take `⟨hf, hfg, hg⟩` from `ses a₀ a h0`. Take `⟨δ, -, -, hex, hex2, -⟩` from `CrystallineSemistableComparison.P.les _ _ hf hfg hg`. Prove the components needed by the constructor for the conclusion. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨y, rfl⟩` from `(hex j x).1 hx`. Rewrite using `[Subsingleton.elim y 0, map_zero]`. Introduce `y`. Take `⟨x, hx⟩` from `(hex2 j y).1 ((hv (j + 1)).elim _ _)`. Conclude with `⟨x, hx⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem toSq_bij (a₀ a : IdF A) (h0 : ∀ T, a₀.S T = ⊤) (hv : ∀ j, Subsingleton (CH.H (sq a (IdF.bot A)) j)) (j : ℕ) :
     Function.Bijective ((toSq a₀ a h0).pull j) := by
@@ -122,9 +122,9 @@ theorem toSq_bij (a₀ a : IdF A) (h0 : ∀ T, a₀.S T = ⊤) (hv : ∀ j, Subs
     exact ⟨x, hx⟩
 
 /- English proof (translation)
-Use `CrystallineSemistableComparison.P.mapH_bij (toSq a₀ b h0).hom (fun n => ⟨fun f f' h => ?_, (ses a₀ b h0).2.2 n⟩) j` and prove the remaining obligations. Use function extensionality and compare the values at `s`. Establish `h1` using `congrArg Subtype.val (congrFun h s)`. Establish `h2` using `Ideal.Quotient.eq.1 h1`. Rewrite `h2` using `[hb]`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `sub_eq_zero.1 h2`.
+A detailed English derivation is pending.
 -/
 theorem toSq_bij_bot (a₀ b : IdF A) (h0 : ∀ T, a₀.S T = ⊤) (hb : ∀ T, b.S T = ⊥) (j : ℕ) :
     Function.Bijective ((toSq a₀ b h0).pull j) := by
@@ -141,11 +141,11 @@ section Concrete
 variable {K : Type} [Field K] {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of K))
 
 /- English proof (translation)
-Use `Ideal.span_eq_bot.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨l, hl, hs, rfl⟩`. Establish `h : ∃ p ∈ l, p.1 ≠ 0`. Assume the negation of the conclusion as `h`. Use `push Not at h`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `: (l.map Prod.fst).sum = 0` using `List.sum_eq_zero (by simpa using h)`. Use linear arithmetic over natural numbers and integers. Take `⟨p, hp, h0⟩` from `h`. Use `List.prod_eq_zero (List.mem_map.2 ⟨p, hp, ?_⟩)` and prove the remaining obligations. Establish `e : p.2 = 0` using `hl p hp`.
+Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `(dividedPowersBot K).dpow_eval_zero h0`.
+A detailed English derivation is pending.
 -/
 theorem dividedPowerFiltration_bot {r : ℕ} (hr : 1 ≤ r) : pdP (dividedPowersBot K) r = ⊥ := by
   refine Ideal.span_eq_bot.2 ?_
@@ -162,7 +162,7 @@ theorem dividedPowerFiltration_bot {r : ℕ} (hr : 1 ≤ r) : pdP (dividedPowers
   exact (dividedPowersBot K).dpow_eval_zero h0
 
 /- English proof (translation)
-The claim follows from `dividedPowerFiltration_bot hs tf r x h := by simpa using h dv n hn := ⟨0, (n : K)⁻¹, by have : (n : K) ≠ 0 := Nat.cast_ne_zero.2 hn simp [this]⟩`.
+A detailed English derivation is pending.
 -/
 theorem tfBase [CharZero K] {s : ℕ} (hs : 1 ≤ s) : TFBase (dividedPowersBot K) 1 s where
   nil := dividedPowerFiltration_bot hs
@@ -172,9 +172,9 @@ theorem tfBase [CharZero K] {s : ℕ} (hs : 1 ≤ s) : TFBase (dividedPowersBot 
     simp [this]⟩
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `hu n.factorial (Nat.factorial_ne_zero n)`. Establish `h` using `δ.factorial_mul_dpow_eq_pow (n := n) hx`. Establish `e : δ.dpow n x = (↑u⁻¹ : B) * x ^ n`. Rewrite using `[← h, ← hu, ← mul_assoc, Units.inv_mul, one_mul]`. Rewrite using `[e]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.mul_mem_left _ _ (Ideal.pow_mem_pow hx n)`.
+A detailed English derivation is pending.
 -/
 theorem dpow_mem_pow {B : Type} [CommRing B] {J : Ideal B} (δ : DividedPowers J) (hu : ∀ n : ℕ, n ≠ 0 → IsUnit (n : B))
     (n : ℕ) {x : B} (hx : x ∈ J) : δ.dpow n x ∈ J ^ n := by
@@ -186,11 +186,11 @@ theorem dpow_mem_pow {B : Type} [CommRing B] {J : Ideal B} (δ : DividedPowers J
   exact Ideal.mul_mem_left _ _ (Ideal.pow_mem_pow hx n)
 
 /- English proof (translation)
-Use `Ideal.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨l, hl, hs, rfl⟩`. Establish `key : ∀ l : List (ℕ × B), (∀ p ∈ l, p.2 ∈ J) → (l.map fun p => δ.dpow p.1 p.2).prod ∈ J ^ (l.map Prod.fst).sum`. Introduce `l`. Proceed by induction on `l with`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `nil => intro _`. Simplify using the standard rewrite rules. Consider the case `cons a t ih`. Introduce `h`. Simplify using `only [List.map_cons, List.prod_cons, List.sum_cons]`.
+Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[pow_add]`. Conclude with `Ideal.mul_mem_mul (dpow_mem_pow δ hu _ (h a (by simp))) (ih fun p hp => h p (by simp [hp]))`. Conclude with `Ideal.pow_le_pow_right hs (key l hl)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dividedPowerFiltration_le_pow {B : Type} [CommRing B] {J : Ideal B} (δ : DividedPowers J) (hu : ∀ n : ℕ, n ≠ 0 → IsUnit (n : B))
     (r : ℕ) : pdP δ r ≤ J ^ r := by
@@ -209,9 +209,9 @@ theorem dividedPowerFiltration_le_pow {B : Type} [CommRing B] {J : Ideal B} (δ 
   exact Ideal.pow_le_pow_right hs (key l hl)
 
 /- English proof (translation)
-Take `⟨N, hN⟩` from `T.adm.2 rfl`. Use `⟨N, le_bot_iff.1 ?_⟩` and prove the remaining obligations. Establish `hu : ∀ n : ℕ, n ≠ 0 → IsUnit (n : T.B)` using `fun n hn => by`. Establish `h : IsUnit (n : K)` using `(Nat.cast_ne_zero.2 hn : (n : K) ≠ 0).isUnit`. Simplify using `using h.map T.i`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `dividedPowerFiltration_le_pow T.δ hu N` as an intermediate fact. Rewrite `this` using `[hN]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pdPow_nil [CharZero K] (T : Thick (nlFun (dividedPowersBot K) 0 X q (Ideal.Quotient.mk ⊥))) : ∃ N, T.pdPow N = ⊥ := by
   obtain ⟨N, hN⟩ := T.adm.2 rfl
@@ -225,7 +225,7 @@ theorem pdPow_nil [CharZero K] (T : Thick (nlFun (dividedPowersBot K) 0 X q (Ide
 
 omit [Field K] in
 /- English proof (translation)
-The claim follows from `le_of_eq rfl`.
+A detailed English derivation is pending.
 -/
 theorem inU_top {X : Scheme.{0}} {O R : Type} [CommRing O] [CommRing R] {I : Ideal R} {γ : DividedPowers I} {p : ℕ}
     {q : X ⟶ Spec (CommRingCat.of O)} {κ : O →+* R ⧸ I} (T : Thick (nlFun γ p X q κ)) : InU ⊤ T := le_of_eq rfl
@@ -239,21 +239,19 @@ local notation "LL" => nlFun (dividedPowersBot K) 0 X q (Ideal.Quotient.mk ⊥)
 local notation "TFs" => (TF 1 : ℕ → ObjectProperty (Thick (nlFun (dividedPowersBot K) 0 X q (Ideal.Quotient.mk ⊥))))
 
 /- English proof (translation)
-Establish `hb : TFBase (dividedPowersBot K) 1 s'` using `tfBase (by omega)`. Take `⟨c', e, hTF, -, -, -⟩` from `GlobalTheory.T.exists_chart_from_coordinates (O := K) (R := K) (dividedPowersBot K) 1 s' hb q (Ideal.Quotient.mk ⊥) (fun a => rfl) c`. Establish `hgood` using `GlobalTheory.T.chart_is_good c'`. Establish `hQ : ∀ T, St (TFs s') {V} T → InU V T`. Introduce and unpack `T ⟨-, W, hW, h⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Rewrite `h` using `[Set.mem_singleton_iff.1 hW]`. Conclude with `h`. Establish `hD : St (TFs s') {V} c'.D` using `⟨hTF, V, rfl, c'.inV⟩`. Take `⟨hpow, hc⟩` from `GlobalTheory.T.chart_divided_powers_graded_constant c' hgood _ hQ hD`. Take `⟨PQ, hPQ⟩` from `hP (dividedPowersBot K) q (Ideal.Quotient.mk ⊥) 1 s' {V}`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hF` using `GlobalTheory.T.sheaf_filtration_property (St (TFs s') {V})`. Establish `key` using `hG PQ hF (c'.frame hgood _ hQ hD) (fun T => ((c'.frame hgood _ hQ hD).ne T).some) hc (r : ℤ) (fun r' hr' => (hPQ r' (by omega)).1) j`. Break down `lt_or_ge (r : ℤ) (j : ℤ) with hlt | hge` into its components or cases. Conclude with `key.1 hlt`. Take `⟨qq, hq⟩ : ∃ qq : ℕ, (r : ℤ) = j + qq` from `⟨r - j, by omega⟩`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrep` using `(key.2 qq hq).1`. Establish `hz : ∀ cl : CH.H (gr (sFil (St (TFs s') {V})) (r : ℤ)) j, cl = 0`. Introduce `cl`. Take `⟨x, hx, f, hf, rfl, hv⟩` from `hrep cl`. Establish `hx0 : ∀ I, x I = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `I`. Establish `hjd : j ≤ d` using `by simpa using Fintype.card_le_of_injective _ I.2.injective`. Establish `hq1 : 1 ≤ qq` using `by omega`. Establish `h2 : (show c'.D.B from x I) ∈ c'.D.pdPow ((qq : ℤ).toNat)` using `hx I`. Rewrite `h2` using `[Int.toNat_natCast, hpow, dividedPowerFiltration_bot hq1, Ideal.map_bot]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `Ideal.mem_bot.1 h2`. Establish `hf0 : f = 0`. Use function extensionality and compare the values at `s`. Use `Subtype.ext ((hv s).trans ?_)` and prove the remaining obligations. Use `beta_reduce`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_eq_zero fun I _ => ?_, map_zero]`. Both sides reduce to the same expression. Rewrite using `[hx0 I]`. Simplify using `[Frame.form]`. Substitute `hf0` using the available equality.
-
-Both sides reduce to the same expression. Conclude with `⟨fun x y => (hz x).trans (hz y).symm⟩`.
+Substitute using the available equality. Both sides reduce to the same expression. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem loc_vanish (hG : KH.LocGr) (hP : KH.PolyTf) {V : X.Opens} {d : ℕ} (c : Coord q V d) (r s' : ℕ) (hd : d < r)
     (hs : r + 1 ≤ s') (j : ℕ) : Subsingleton (CH.H (gr (sFil (St (TFs s') {V})) (r : ℤ)) j) := by
@@ -298,7 +296,7 @@ theorem loc_vanish (hG : KH.LocGr) (hP : KH.PolyTf) {V : X.Opens} {d : ℕ} (c :
   exact ⟨fun x y => (hz x).trans (hz y).symm⟩
 
 /- English proof (translation)
-Use `(hV (sq (thFil LL (r : ℤ)) (thFil LL ((r : ℤ) + 1))) (TFs s') U.U 0).2.1 (fun S hS j => ?_) j` and prove the remaining obligations. Take `⟨α, hα⟩` from `id hS`. Take `⟨c', -⟩` from `GlobalTheory.T.coordinates_restrict_affine_open (U.c α) (iInf₂_le α hα) (U.inter S hS)`. Conclude with `loc_vanish q hG hP c' r s' (hd α) hs j`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem glob_vanish (hG : KH.LocGr) (hP : KH.PolyTf) (hV : KH.GlobVanSt) (U : Cov q) (r s' : ℕ) (hd : ∀ α, U.d α < r)
     (hs : r + 1 ≤ s') (j : ℕ) :
@@ -310,14 +308,14 @@ theorem glob_vanish (hG : KH.LocGr) (hP : KH.PolyTf) (hV : KH.GlobVanSt) (U : Co
 
 omit [CharZero K] in
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨trivial, ⊤, rfl, inU_top T⟩`.
+Supply the required witnesses or components.
 -/
 theorem all_top (T : Thick LL) : St (⊤ : ObjectProperty (Thick LL)) {⊤} T := ⟨trivial, ⊤, rfl, inU_top T⟩
 
 /- English proof (translation)
-Establish `h1 : St (TFs (r + 1)) {⊤} ≤ St (⊤ : ObjectProperty (Thick LL)) {⊤}` using `fun T h => ⟨trivial, h.2⟩`. Establish `h2 : St (TFs (r + 1)) (Set.range U.U) ≤ St (TFs (r + 1)) {⊤}` using `fun T h => ⟨h.1, ⊤, rfl, inU_top T⟩`. Establish `hc : ∀ W ∈ ({⊤} : Set X.Opens), W ≤ sSup (Set.range U.U)`. Introduce `W hW`. Rewrite using `[Set.mem_singleton_iff.1 hW, sSup_range, U.cover]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `b1` using `GlobalTheory.T.filtered_cohomology_restriction_bijective (⊤ : ObjectProperty (Thick LL)) 1 (r + 1) (Or.inl ⟨rfl, rfl⟩) {⊤} h1 (r : ℤ) ((r : ℤ) + 1) (by push_cast; omega) j`. Establish `b2` using `(GlobalTheory.T.cech_refinement_cohomology_bijective (TFs (r + 1)) (Or.inl ⟨rfl, 1, r + 1, rfl⟩) (Set.range U.U) {⊤} h2 hc j).1 (r : ℤ) ((r : ℤ) + 1)`. Establish `b0` using `restrict_bij (sq (thFil LL (r : ℤ)) (thFil LL ((r : ℤ) + 1))) (St (⊤ : ObjectProperty (Thick LL)) {⊤}) (all_top q) j`. Establish `: Subsingleton (CH.H (sq (sFil (St (TFs (r + 1)) (Set.range U.U)) (r : ℤ)) (sFil (St (TFs (r + 1)) (Set.range U.U)) ((r : ℤ) + 1))) j)` using `glob_vanish q hG hP hV U r (r + 1) hd le_rfl j`. Conclude with `(b2.1.comp (b1.1.comp b0.1)).subsingleton`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem thick_vanish (hG : KH.LocGr) (hP : KH.PolyTf) (hV : KH.GlobVanSt) (U : Cov q) (r : ℕ) (hd : ∀ α, U.d α < r)
     (j : ℕ) : Subsingleton (CH.H (sq (thFil LL (r : ℤ)) (thFil LL ((r : ℤ) + 1))) j) := by
@@ -337,9 +335,9 @@ theorem thick_vanish (hG : KH.LocGr) (hP : KH.PolyTf) (hV : KH.GlobVanSt) (U : C
   exact (b2.1.comp (b1.1.comp b0.1)).subsingleton
 
 /- English proof (translation)
-Use `GlobalTheory.T.cohomology_vanishing_along_ideal_filtration (fun k => thFil LL ((s + k : ℕ) : ℤ)) (fun k T => ?_) (fun T => ?_) (fun k j => ?_) j` and prove the remaining obligations. Conclude with `T.pdPow_anti (by simp)`. Take `⟨N, hN⟩` from `pdPow_nil q T`. Use `⟨N, le_bot_iff.1 ?_⟩` and prove the remaining obligations. Rewrite using `[← hN]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `T.pdPow_anti (by omega)`. Establish `e : (((s + (k + 1) : ℕ)) : ℤ) = ((s + k : ℕ) : ℤ) + 1` using `by push_cast; ring`. Rewrite using `[e]`. Conclude with `thick_vanish q hG hP hV U (s + k) (fun α => (hd α).trans_le (by omega)) j`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tower_vanish (hG : KH.LocGr) (hP : KH.PolyTf) (hV : KH.GlobVanSt) (U : Cov q) (s : ℕ) (hd : ∀ α, U.d α < s)
     (j : ℕ) : Subsingleton (CH.H (sq (thFil LL (s : ℤ)) (IdF.bot (thA LL))) j) := by
@@ -355,13 +353,13 @@ theorem tower_vanish (hG : KH.LocGr) (hP : KH.PolyTf) (hV : KH.GlobVanSt) (U : C
 
 omit [CharZero K] in
 /- English proof (translation)
-Introduce `_ h` and use `⟨trivial, h.2⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem top_ge (s : ℕ) : St (TFs s) {⊤} ≤ St (⊤ : ObjectProperty (Thick LL)) {⊤} := fun _ h => ⟨trivial, h.2⟩
 
 omit [CharZero K] in
 /- English proof (translation)
-Introduce `T h` and use `⟨h.1, ⊤, rfl, inU_top T⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem st_le (s : ℕ) (𝒱 : Set X.Opens) : St (TFs s) 𝒱 ≤ St (TFs s) {⊤} := fun T h => ⟨h.1, ⊤, rfl, inU_top T⟩
 
@@ -373,16 +371,16 @@ noncomputable def chain (s : ℕ) (𝒱 : Set X.Opens) (r r' : ℤ) (j : ℕ) (y
 
 omit [CharZero K] in
 /- English proof (translation)
-Simplify using `only [chain, map_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem chain_zero (s : ℕ) (𝒱 : Set X.Opens) (r r' : ℤ) (j : ℕ) : chain q s 𝒱 r r' j 0 = 0 := by
   simp only [chain, map_zero]
 
 omit [CharZero K] in
 /- English proof (translation)
-Establish `hc : ∀ W ∈ ({⊤} : Set X.Opens), W ≤ sSup 𝒱`. Introduce `W hW`. Rewrite using `[Set.mem_singleton_iff.1 hW, h𝒱]`. Establish `b1` using `GlobalTheory.T.filtered_cohomology_restriction_bijective (⊤ : ObjectProperty (Thick LL)) 1 s (Or.inl ⟨rfl, rfl⟩) {⊤} (top_ge q s) r r' hr j`. Establish `b2` using `(GlobalTheory.T.cech_refinement_cohomology_bijective (TFs s) (Or.inl ⟨rfl, 1, s, rfl⟩) 𝒱 {⊤} (st_le q s 𝒱) hc j).1 r r'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `b0` using `restrict_bij (sq (thFil LL r) (thFil LL r')) (St (⊤ : ObjectProperty (Thick LL)) {⊤}) (all_top q) j`. Conclude with `b2.comp (b1.comp b0)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem chain_bij (s : ℕ) (𝒱 : Set X.Opens) (h𝒱 : sSup 𝒱 = ⊤) (r r' : ℤ) (hr : r' ≤ s) (j : ℕ) :
     Function.Bijective (chain q s 𝒱 r r' j) := by
@@ -396,7 +394,7 @@ theorem chain_bij (s : ℕ) (𝒱 : Set X.Opens) (h𝒱 : sSup 𝒱 = ⊤) (r r'
 
 omit [CharZero K] in
 /- English proof (translation)
-Take `⟨z, hz, rfl⟩` from `(CrystallineSemistableComparison.P.cls_surj _ j).1 x`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem chain_comm (s : ℕ) (𝒱 : Set X.Opens) (r : ℤ) (j : ℕ) (x : CH.H (CH.modF (thA LL)) j) :
     chain q s 𝒱 0 r j ((toSq (thFil LL 0) (thFil LL r) fun T => T.pdPow_zero).pull j x) =
@@ -407,11 +405,11 @@ theorem chain_comm (s : ℕ) (𝒱 : Set X.Opens) (r : ℤ) (j : ℕ) (x : CH.H 
 
 omit [CharZero K] in
 /- English proof (translation)
-Rewrite using `[pull_eq_zero_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz, hs⟩`. Conclude with `⟨z.1, z.2, hz.symm, fun s => by`. Express the relevant statement in the definitionally equal form `_ ∈ (s.obj (Fin.last j)).pdPow ((r : ℤ).toNat)`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[Int.toNat_natCast]`. Conclude with `hs s⟩`. Introduce and unpack `⟨z, hz, rfl, hs⟩`. Use `⟨⟨z, hz⟩, rfl, fun s => ?_⟩` and prove the remaining obligations. Establish `h` using `hs s`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `_ ∈ (s.obj (Fin.last j)).pdPow ((r : ℤ).toNat) at h`. Rewrite `h` using `[Int.toNat_natCast]`. Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fil_iff (j r : ℕ) (y : CH.H (CH.modF (thA LL)) j) :
     (show HdR q j from y) ∈ FilR q j r ↔ (toSq (thFil LL 0) (thFil LL (r : ℤ)) fun T => T.pdPow_zero).pull j y = 0 := by
@@ -432,13 +430,11 @@ theorem fil_iff (j r : ℕ) (y : CH.H (CH.modF (thA LL)) j) :
 end Loc
 
 /- English proof (translation)
-Introduce `hG _ hP _ hV _ K _ _ X q U s hs 𝒱 h𝒱 j`. Use `⟨?_, fun r hr x => ?_⟩` and prove the remaining obligations. Establish `hA` using `(chain_bij q s 𝒱 h𝒱 0 (s : ℤ) le_rfl j).comp (toSq_bij _ _ (fun T => T.pdPow_zero) (tower_vanish q hG hP hV U s hs) j)`. Establish `hB` using `toSq_bij_bot (sFil (KS q s 𝒱) 0) (sFil (KS q s 𝒱) (s : ℤ)) (fun T => T.obj.pdPow_zero) (fun T => by`. Establish `h` using `T.property.1.1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `T.obj.pdPow ((s : ℤ).toNat) = ⊥`. Rewrite using `[Int.toNat_natCast]`. Conclude with `h) j`. Use `(Function.Bijective.of_comp_iff' hB _).1 ?_` and prove the remaining obligations. Establish `e : ∀ x : HdR q j, (toSq (sFil (KS q s 𝒱) 0) (sFil (KS q s 𝒱) (s : ℤ)) fun T => T.obj.pdPow_zero).pull j (resK q (KS q s 𝒱) j x) = chain q s 𝒱 0 (s : ℤ) j ((toSq (thFil _ 0) (thFil _ (s : ℤ)) fun T => T.pdPow_zero).pull j x)` using `fun x => (chain_comm q s 𝒱 (s : ℤ) j x).symm`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun a b hab => hA.1 ?_, fun y => ?_⟩` and prove the remaining obligations. Conclude with `(e a).symm.trans (hab.trans (e b))`. Take `⟨x, hx⟩` from `hA.2 y`. Conclude with `⟨x, (e x).trans hx⟩`. Establish `e : quoK q (KS q s 𝒱) r j x = chain q s 𝒱 0 (r : ℤ) j ((toSq (thFil _ 0) (thFil _ (r : ℤ)) fun T => T.pdPow_zero).pull j x)` using `(chain_comm q s 𝒱 (r : ℤ) j x).symm`.
-
-Rewrite using `[e, ← chain_zero q s 𝒱 0 (r : ℤ) j, (chain_bij q s 𝒱 h𝒱 0 (r : ℤ) (by exact_mod_cast hr) j).1.eq_iff]`. Conclude with `fil_iff q j r x`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem k_iso : KH.LocGr → KH.LocVan → KH.PolyTf → KH.GlobSerreSt → KH.GlobVanSt → KH.GrAff → ∀ {K : Type} [Field K] [CharZero K] {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of K)) (U : Cov q) (s : ℕ)
     (hs : ∀ α, U.d α < s) (𝒱 : Set X.Opens) (h𝒱 : sSup 𝒱 = ⊤) (j : ℕ), Function.Bijective (resK q (KS q s 𝒱) j) ∧

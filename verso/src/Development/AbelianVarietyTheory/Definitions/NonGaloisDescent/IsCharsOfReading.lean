@@ -20,7 +20,7 @@ variable {C : CharFrame D} {art : Ideles D.host.E →* Gab D.host.E D.nd.Om} {X 
   {i : X.Tw} {b : Bool}
 
 /- English proof (translation)
-Establish `e : algebraMap (X.O0 i) (FractionRing (X.O0 i)) x = embSide X i b y` using `ρ.κ.injective (ρ.ι.injective (h.trans (ρ.read y).symm))`. Express the relevant statement in the definitionally equal form `ρ'.ι (ρ'.κ (algebraMap (X.O0 i) (FractionRing (X.O0 i)) x)) = _`. Rewrite using `[e, ρ'.read]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem toC_eq_of_mem (ρ ρ' : Reading X i b) {x : X.O0 i} {y : ↥D.LL0} (h : ρ.toC x = embLL0 D y) :
     ρ'.toC x = embLL0 D y := by
@@ -30,7 +30,7 @@ theorem toC_eq_of_mem (ρ ρ' : Reading X i b) {x : X.O0 i} {y : ↥D.LL0} (h : 
   rw [e, ρ'.read]
 
 /- English proof (translation)
-Establish `hδ : (C.delAt l).ValuesIn 0 (embLL0 D)`. Unfold `CharFrame.delAt`. Use `split_ifs`. Use `exacts [hC.del', hC.del]`. Conclude with `((GlobalTheory.GalChar.almostIn_of_valuesIn (hC.mu0 j)).mul (GlobalTheory.GalChar.almostIn_of_valuesIn hδ)).block hC.eta (GlobalTheory.GalChar.odd_r D.R)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem almostIn_blockChar (hC : ValLL0 D C) (l : ℕ) (j : Fin D.R.m) :
     GlobalTheory.GalChar.AlmostIn (embLL0 D) (blockChar C l j) := by
@@ -42,9 +42,9 @@ theorem almostIn_blockChar (hC : ValLL0 D C) (l : ℕ) (j : Fin D.R.m) :
     (GlobalTheory.GalChar.odd_r D.R)
 
 /- English proof (translation)
-Take `⟨χ', n', h'⟩` from `exists_blockChar ha hC ρ' j`. Establish `e : GlobalTheory.GalChar.inQ ρ'.κ χ = GlobalTheory.GalChar.inQ ρ'.κ χ'`. Use `GlobalTheory.GalChar.eq_of_frob ha (GlobalTheory.GalChar.continuous_units _ ((GlobalTheory.GalChar.isEmbedding_toQ (X.twistBaseCoefficientRing_isAdic i) ρ'.κ_alg).continuous.comp h.2.1)) (h'.cont (X.twistBaseCoefficientRing_isAdic i) ρ'.κ_alg) ?_` and prove the remaining obligations. Use `filter_upwards [almostIn_blockChar hC (X.l i) j, GlobalTheory.GalChar.unr_ae (blockChar C (X.l i) j), GlobalTheory.GalChar.away_ae (E := D.host.E) (X.l i) (X.lPrime i).out.ne_zero] with v ⟨y, hy⟩ hu hv A hA σ hσ`. Establish `e1` using `h.frob ha (Or.inl hv) hu hA hσ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2` using `h'.frob ha (Or.inl hv) hu hA hσ`. Rewrite `e1`, `e2` using `[← hy, ← map_inv₀]`. Conclude with `Units.ext (ρ'.ι.injective ((toC_eq_of_mem ρ ρ' e1).trans e2.symm))`. Establish `: χ = χ'` using `MonoidHom.ext fun g => GlobalTheory.GalChar.inQ_inj ρ'.κ (DFunLike.congr_fun e g)`. Conclude with `⟨n', this ▸ h'⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isGal_of_reading (ha : IsGlobalArtin art) (hC : ValLL0 D C) (ρ ρ' : Reading X i b) {j : Fin D.R.m}
     {χ : GalE D →* (X.O0 i)ˣ} {n} (h : IsGal art ρ.κ ρ.ι (blockChar C (X.l i) j) n χ) :
@@ -63,16 +63,16 @@ theorem isGal_of_reading (ha : IsGlobalArtin art) (hC : ValLL0 D C) (ρ ρ' : Re
   exact ⟨n', this ▸ h'⟩
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.GalChar.notMem_of_ne (D.host.g_prime k) (X.lPrime i).out hk.symm (D.naut.plGw_over k v)`.
+A detailed English derivation is pending.
 -/
 theorem notMem_l {k : Fin 2} (hk : X.l i ≠ D.host.g k) (v : D.nd.PlG k) :
     ((X.l i : ℕ) : 𝓞 D.host.E) ∉ (D.naut.plGw k v).asIdeal :=
   GlobalTheory.GalChar.notMem_of_ne (D.host.g_prime k) (X.lPrime i).out hk.symm (D.naut.plGw_over k v)
 
 /- English proof (translation)
-Use `⟨fun j => let ⟨_, hn⟩ := h.chi j; isGal_of_reading ha hC ρ ρ' hn, fun j k hk v => ?_⟩` and prove the remaining obligations. Take `⟨u, hu, e⟩` from `h.tame j k hk v`. Take `⟨n, hn⟩` from `h.chi j`. Take `⟨n', hn'⟩` from `isGal_of_reading ha hC ρ ρ' hn`. Take `⟨x, -, hx⟩` from `GlobalTheory.GalChar.exists_unit ha (D.nd.plOm.2 (D.naut.plGw k v)) (D.ntypes.tg_mem k v)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨u, hu, ?_⟩` and prove the remaining obligations. Rewrite using `[← e, Reading.toC_apply, Reading.toC_apply, hn.loc (Or.inl (notMem_l hk v)) hx, hn'.loc (Or.inl (notMem_l hk v)) hx]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem isChars_of_reading (ha : IsGlobalArtin art) (hC : ValLL0 D C) (ρ ρ' : Reading X i b) (h : IsChars C art ρ) :
     IsChars C art ρ' := by
@@ -99,7 +99,7 @@ def TameTie (c : ∀ k, D.nd.PlG k → Fin D.R.m → (ZMod (D.host.g k))ˣ) : Pr
 variable {C art}
 
 /- English proof (translation)
-Establish `H` using `fun k v => GlobalTheory.GalChar.hostHeckeFrame_tame_galois_characters (hframe C) ha eExp_int D.nd.g_split k (D.naut.plGw k v) (hP k v) _ (D.nd.plOm.2 (D.naut.plGw k v)) _ (D.ntypes.tg_gen k v) (D.ntypes.teichC k) (D.ntypes.teichC_inj k)`. Use `choose γ _ hγ using H`. Use `⟨fun k v j => γ k v ^ (2 * (j.1 + 1)), fun k v l _ hl O _ _ _ κ ι j n χ h => hγ k v l hl O κ ι j _ ?_ n χ h⟩` and prove the remaining obligations. Take `⟨h1, -, h3, -, h5⟩` from `GlobalTheory.GalChar.inertialOrderFifteenChar_auxiliaryPrime_spec (hframe C) (l := l)`. Conclude with `h5.unr _ (GlobalTheory.GalChar.notMem_of_ne (D.host.g_prime k) h1 (h3 k).symm (D.naut.plGw_over k v))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_tameTie (ha : IsGlobalArtin art) (hP : ∀ k v, C.P.Div k (D.naut.plGw k v)) : ∃ c, TameTie C art c := by
   have H := fun k v => GlobalTheory.GalChar.hostHeckeFrame_tame_galois_characters (hframe C) ha eExp_int D.nd.g_split k (D.naut.plGw k v) (hP k v) _
@@ -120,7 +120,7 @@ def rd (i : D.ntw.Tw) : Reading D.ntw i true := (Reading.nonempty i true).some
 
 include hs in
 /- English proof (translation)
-The claim follows from `GlobalTheory.GalChar.read_conj D.LL0 D.what₂.embLL D.starLL_cx hs (D.ntw.restX_coefficientEmbedding_conj i) (rd D i).read x`.
+A detailed English derivation is pending.
 -/
 theorem rd_conj (i : D.ntw.Tw) (x : ↥D.LL0) :
     (rd D i).ι ((rd D i).κ (D.ntw.emb0b i x)) = starRingEnd ℂ (embLL0 D x) :=
@@ -128,7 +128,7 @@ theorem rd_conj (i : D.ntw.Tw) (x : ↥D.LL0) :
 
 include hC in
 /- English proof (translation)
-Unfold `CharFrame.delAt`. Use `split_ifs`. Use `exacts [hC.del', hC.del]`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem del_val (l : ℕ) : (C.delAt l).ValuesIn 0 (embLL0 D) := by
   unfold CharFrame.delAt
@@ -155,7 +155,7 @@ structure Chars (art : Ideles D.host.E →* Gab D.host.E D.nd.Om) (i : D.ntw.Tw)
 
 include ha hC hs in
 /- English proof (translation)
-Take `⟨δ, χ, -, g, h1, h2, h3, h4, -, h5, h6, h7, h8⟩` from `(GlobalTheory.GalChar.galois_characters_of_artin D.R D.host D.nd.Om D.ntw.cc D.ntw.cc_cm _ eExp_int (hframe C) D.nd.g_split art ha).1 (D.ntw.l i) (D.ntw.O0 i) (D.ntw.twistBaseCoefficientRing_isAdic i) (rd D i).κ (rd D i).κ_alg (rd D i).ι ↥D.LL0 (embLL0 D) (D.ntw.emb0 i) (D.ntw.em …`. Conclude with `⟨⟨δ, χ, g, h1, h2, h3, h4, h5, h6, h7, h8⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem chars_nonempty (i : D.ntw.Tw) : Nonempty (Chars D C art i) := by
   obtain ⟨δ, χ, -, g, h1, h2, h3, h4, -, h5, h6, h7, h8⟩ :=
@@ -244,7 +244,7 @@ variable {art' : Ideles D.host.E →* Gab D.host.E D.nd.Om} (K : ∀ i, Chars D 
 include hs in
 
 /- English proof (translation)
-Use `⟨ha', fun i _ b => ?_, fun _ _ s => s.elim, fun _ _ _ x _ hx => (hx rfl).elim⟩` and prove the remaining obligations. Use `⟨⟨(rd D i).κ, GlobalTheory.GalChar.sideIso (rd D i).ι b, (rd D i).κ_alg, GlobalTheory.GalChar.sideIso_read (rd D i).read (rd_conj D hs i) b⟩, ⟨fun j => (K i).gal j b, fun j k hk v => ?_⟩, fun s => s.elim⟩` and prove the remaining obligations. Take `⟨n, hn⟩` from `(K i).gal j b`. Conclude with `⟨_, Or.inr rfl, hT k v _ hk _ _ _ j n _ hn⟩`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isTripleFor_ex (ha' : IsGlobalArtin art') (hT : TameTie C art' D.nd.chiT) : IsTripleFor C art' (ex D C K) := by
   refine ⟨ha', fun i _ b => ?_, fun _ _ s => s.elim, fun _ _ _ x _ hx => (hx rfl).elim⟩
@@ -257,7 +257,7 @@ theorem isTripleFor_ex (ha' : IsGlobalArtin art') (hT : TameTie C art' D.nd.chiT
 end Record
 
 /- English proof (translation)
-The claim follows from `let K := fun i => (chars_nonempty D C ha hC hs i).some ⟨tw D C K, ex D C K, Equiv.refl _, fun _ => Iff.rfl, C, art, isTripleFor_ex D C hs K ha hT⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_isTripleOf (D : D7) [IsEmpty D.nd.Loc] (C : CharFrame D) {art : Ideles D.host.E →* Gab D.host.E D.nd.Om}
     (ha : IsGlobalArtin art) (hC : ValLL0 D C) (hs : ∀ x : ↥D.LL0, star (x : D.what₂.LL) ∈ D.LL0)
@@ -268,7 +268,7 @@ theorem exists_isTripleOf (D : D7) [IsEmpty D.nd.Loc] (C : CharFrame D) {art : I
   ⟨tw D C K, ex D C K, Equiv.refl _, fun _ => Iff.rfl, C, art, isTripleFor_ex D C hs K ha hT⟩
 
 /- English proof (translation)
-Introduce `⟨_, _, H⟩` and use `let ⟨_, _, _, _, _, _, _, _, hw⟩ := H.triple hi s h (hw.hEig_zero hP hS)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem not_isTripleOf {X : NTw D.R D.host D.what₂ D.LL0 D.nd} (Y : NExp D.R D.host D.what₂ D.LL0 D.nd X) {i : X.Tw}
     (hi : X.NonzeroIndexPlace i) (s : X.Sig i) {P : PlE D.host} (hP : IsSplitPl D.host P) (hS : P ∉ X.S0 i)

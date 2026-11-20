@@ -14,11 +14,11 @@ namespace GlobalTheory.LeviOriginMargin
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro i _ _`. Simplify using the standard rewrite rules. Consider the case `succ n ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Introduce `i hr hk`. Establish `h1` using `ih i (by omega) (fun k h1 h2 => hk k h1 (by omega))`. Establish `h2` using `hg (i + n) (by omega) (hk _ (by omega) (by omega))`. Establish `e : i + (n + 1) = i + n + 1` using `by omega`. Rewrite using `[e]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem chain_drop (r p : ℕ) (f : ℕ → ℝ) (g : ℝ)
     (hg : ∀ i, i + 1 < r → i + 1 ≠ p → g ≤ f i - f (i + 1)) :
@@ -36,19 +36,19 @@ theorem chain_drop (r p : ℕ) (f : ℕ → ℝ) (g : ℝ)
     linarith
 
 /- English proof (translation)
-Use `set f : ℕ → ℝ := fun k => if h : k < r then (la τ ⟨k, h⟩ : ℝ) else 0 with hf`. Establish `hfa : ∀ c : Fin r, f c = la τ c` using `fun c => by simp [hf, c.isLt]`. Establish `hg : ∀ i, i + 1 < r → i + 1 ≠ X.p0 → g ≤ f i - f (i + 1)`. Introduce `i hi hip`. Use `h1 τ ⟨i, by omega⟩ ⟨i + 1, hi⟩ rfl hip` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this` using `[hf, hi, show i < r by omega]`. Establish `hch` using `chain_drop r X.p0 f g hg`. Establish `hab' : (b : ℕ) < a` using `hab`. Establish `hsame : (∀ k, (b : ℕ) < k → k ≤ b + ((a : ℕ) - b) → k ≠ X.p0) → g ≤ (la τ b : ℝ) - la τ a`. Introduce `hk`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `hch ((a : ℕ) - b) b (by omega) hk` as an intermediate fact. Establish `e : (b : ℕ) + ((a : ℕ) - b) = a` using `by omega`. Rewrite `this` using `[e, hfa, hfa]`. Establish `hn : (1 : ℝ) ≤ (((a : ℕ) - b : ℕ) : ℝ)`. Conclude with `(show 1 ≤ (a : ℕ) - b by omega)` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Separate the alternatives or extract the components of the hypothesis.
 
-Use the polynomial consequences of the given equalities and inequalities. Break down `GlobalTheory.CurvMargin.coeff_cases X.p0 hab' (la τ a : ℝ) (la τ b : ℝ) with ⟨h, e⟩ | ⟨h, e⟩ | ⟨h, h', e⟩` into its components or cases. Rewrite using `[e]; exact hsame (fun k _ hk => by omega)`. Rewrite using `[e]; exact hsame (fun k hk _ => by omega)`. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA` using `hch ((r - 1) - a) a (by omega) (fun k hk _ => by omega)`. Establish `hB` using `hch (b : ℕ) 0 (by omega) (fun k _ hk => by omega)`. Establish `eA : (a : ℕ) + ((r - 1) - a) = r - 1` using `by omega`. Rewrite `hA` using `[eA, hfa]`. Rewrite `hB` using `[zero_add]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hB'` using `hB`. Rewrite `hB'` using `[hfa]`. Establish `h0` using `h2 τ ⟨0, by omega⟩ ⟨r - 1, by omega⟩ rfl rfl`. Establish `f0 : f 0 = (la τ ⟨0, by omega⟩ : ℝ)` using `by simp [hf, show 0 < r by omega]`. Establish `fr : f (r - 1) = (la τ ⟨r - 1, by omega⟩ : ℝ)` using `by simp [hf, show r - 1 < r by omega]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn1 : (0 : ℝ) ≤ (((r - 1 - a : ℕ)) : ℝ) * g` using `by positivity`. Establish `hn2 : (0 : ℝ) ≤ ((b : ℕ) : ℝ) * g` using `by positivity`. Rewrite `hA` using `[fr]`. Rewrite `hB'` using `[f0]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem coeff_la {r : ℕ} (X : Data E r) (la : Wt X.Ψ r) (g : ℝ) (hp0 : 0 < X.p0) (hpr : X.p0 < r)
     (hg0 : 0 ≤ g)
@@ -94,9 +94,9 @@ theorem coeff_la {r : ℕ} (X : Data E r) (la : Wt X.Ψ r) (g : ℝ) (hp0 : 0 < 
     linarith
 
 /- English proof (translation)
-Establish `hab' : (b : ℕ) < a` using `hab`. Unfold `GlobalTheory.CurvMargin.blockWt sgn`. Distinguish the cases in `ha : (a : ℕ) < X.p0`. Establish `hb : (b : ℕ) < X.p0` using `hab'.trans ha`. Simplify using `[ha, hb]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hb : (b : ℕ) < X.p0`. Simplify using `[ha, hb]`. Simplify using `[ha, hb]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem coeff_blk {r : ℕ} (X : Data E r) (τ : X.Ψ) (a b : Fin r) (hab : b < a) :
     0 ≤ sgn X.p0 a * sgn X.p0 b * ((GlobalTheory.CurvMargin.blockWt X τ b : ℝ) - GlobalTheory.CurvMargin.blockWt X τ a) ∧
@@ -111,9 +111,9 @@ theorem coeff_blk {r : ℕ} (X : Data E r) (τ : X.Ψ) (a b : Fin r) (hab : b < 
     · simp [ha, hb]
 
 /- English proof (translation)
-Establish `hab' : (b : ℕ) < a` using `hab`. Establish `ha : (a : ℕ) < r` using `a.isLt`. Establish `hk : ((kapW X τ b : ℝ) - kapW X τ a) = 2 * (b : ℝ) - 2 * (a : ℝ)`. Simplify using `[kapW]`. Rewrite using `[hk]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hb0 : (0 : ℝ) ≤ (b : ℝ)` using `by positivity`. Establish `hba : (b : ℝ) < a` using `by exact_mod_cast hab'`. Establish `har : (a : ℝ) < r` using `by exact_mod_cast ha`. Unfold `sgn`. Apply the tactic sequence `split_ifs <;> nlinarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem coeff_kap {r : ℕ} (X : Data E r) (τ : X.Ψ) (a b : Fin r) (hab : b < a) :
     sgn X.p0 a * sgn X.p0 b * ((kapW X τ b : ℝ) - kapW X τ a) ≤ 2 * r := by
@@ -129,11 +129,11 @@ theorem coeff_kap {r : ℕ} (X : Data E r) (τ : X.Ψ) (a b : Fin r) (hab : b < 
   split_ifs <;> nlinarith
 
 /- English proof (translation)
-Introduce `E _ _ _ r X la x g bb hp0 hpr ho hg0 hbb h1 h2 ξ`. Establish `hs : ∑ j, ‖ξ j‖ ^ 2 = ∑ e : Ent X, ‖ξ (Fintype.equivFin (Ent X) e)‖ ^ 2` using `((Fintype.equivFin (Ent X)).sum_comp (fun j => ‖ξ j‖ ^ 2)).symm`. Rewrite using `[GlobalTheory.LeviZero.levi_phla_zero r X la x ho ξ, GlobalTheory.LeviZero.levi_phla_zero r X _ x ho ξ, GlobalTheory.LeviZero.levi_phla_zero r X _ x ho ξ, hs, Finset.mul_sum, Finset.mul_sum, ← Finset.sum_sub_distrib, ← Finset.sum_sub_distrib]`. Use `Finset.sum_le_sum fun e _ => ?_` and prove the remaining obligations. Take `⟨τ, ⟨a, b⟩, hab⟩` from `e`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `c1` using `coeff_la X la g hp0 hpr hg0 h1 h2 τ a b hab`. Establish `c2` using `coeff_blk X τ a b hab`. Establish `c3` using `coeff_kap X τ a b hab`. Use `set N := ‖ξ (Fintype.equivFin (Ent X) ⟨τ, ⟨(a, b), hab⟩⟩)‖ ^ 2`. Establish `hN : 0 ≤ N` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only at c1 c2 c3 ⊢`. Use polynomial arithmetic with `[mul_nonneg hbb hN, mul_nonneg (mul_nonneg hbb c2.1) hN, mul_nonneg (sub_nonneg.2 c2.2) (mul_nonneg hbb hN), mul_nonneg (sub_nonneg.2 c1) hN, mul_nonneg (sub_nonneg.2 c3) hN]`.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem levi_margin_origin : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r) (la : Wt X.Ψ r) (x : Frame X.Ψ r) (g bb : ℝ), 0 < X.p0 → X.p0 < r → IsOrth X x → 0 ≤ g → 0 ≤ bb → (∀ τ (a b : Fin r), (b : ℕ) = a + 1 → (b : ℕ) ≠ X.p0 → g ≤ (la τ a : ℝ) - la τ b) → (∀ τ (a b : Fin r), (a : ℕ) = 0 → (b : ℕ) = r - 1 → g ≤ (la τ b : ℝ) - la τ a) → ∀ ξ : Fin (nd X) → ℂ, (g - bb - 2 * r) * ∑ j, ‖ξ j‖ ^ 2 ≤ leviM X (phla X la) x 0 ξ - bb * leviM X (phla X (GlobalTheory.CurvMargin.blockWt X)) x 0 ξ - leviM X (phla X (kapW X)) x 0 ξ := by
   intro E _ _ _ r X la x g bb hp0 hpr ho hg0 hbb h1 h2 ξ

@@ -18,11 +18,11 @@ variable {F : Type u} [Field F] {K : Type} [Fintype K] [DecidableEq K] {ι : K �
   [∀ k, Fintype (ι k)]
 
 /- English proof (translation)
-Rewrite using `[weightedHomogeneousSubmodule_eq_finsupp_supported]`. Establish `hfin : {d : (Σ k, ι k) →₀ ℕ | Finsupp.weight (blockWeight ι) d = n}.Finite`. Use `(Finsupp.finite_of_nat_weight_eq (fun _ => (1 : ℕ)) (fun _ => one_ne_zero) (∑ k, n k)).subset ?_` and prove the remaining obligations. Introduce `d hd`. Simplify using `only [Set.mem_ofPred_eq] at hd ⊢`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[← hd]`. Simplify using `only [Finsupp.weight_apply, Finsupp.sum, Finset.sum_apply, blockWeight, smul_eq_mul, mul_one]`. Rewrite using `[Finset.sum_comm]`. Simplify using `[Pi.single_apply]`. Use `hfin.to_subtype` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `Module.Finite.of_basis (basisRestrictSupport F {d | Finsupp.weight (blockWeight ι) d = n})`.
+A detailed English derivation is pending.
 -/
 theorem finiteDimensional_piece (n : K → ℕ) :
     FiniteDimensional F (weightedHomogeneousSubmodule F (blockWeight ι) n) := by
@@ -44,7 +44,7 @@ omit [∀ k, Fintype (ι k)] in
 open Classical in
 
 /- English proof (translation)
-Establish `h` using `DirectSum.coe_decompose_mul_of_left_mem (𝒜 := weightedHomogeneousSubmodule F (blockWeight ι)) (b := c) n hf`. Rewrite using `[← weightedDecomposition.decompose'_apply, ← weightedDecomposition.decompose'_apply]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem component_mul {f : MRing ι F} {s : K → ℕ} (hf : IsMultiHomog f s) (c : MRing ι F)
     (n : K → ℕ) :
@@ -59,9 +59,9 @@ omit [∀ k, Fintype (ι k)] in
 open Classical in
 
 /- English proof (translation)
-Take `⟨l, hl, y, hy, rfl⟩` from `Submodule.mem_sup.mp hx'`. Take `⟨c, rfl⟩` from `Ideal.mem_span_singleton'.mp hy`. Use `⟨c, ?_⟩` and prove the remaining obligations. Establish `hx2` using `weightedHomogeneousComponent_eq_self ((mem_weightedHomogeneousSubmodule _ _ _ _).mp hx)`. Rewrite using `[← hx2, map_add, mul_comm c f, component_mul hf, add_sub_cancel_right]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hL l hl n`.
+A detailed English derivation is pending.
 -/
 theorem mem_sup_span {L : Ideal (MRing ι F)} {f : MRing ι F} {s : K → ℕ}
     (hL : IsMultiHomogIdeal L) (hf : IsMultiHomog f s) {n : K → ℕ} {x : MRing ι F}
@@ -79,29 +79,29 @@ theorem mem_sup_span {L : Ideal (MRing ι F)} {f : MRing ι F} {s : K → ℕ}
 open Classical in
 
 /- English proof (translation)
-Establish `: ∀ d : K → ℕ, FiniteDimensional F (weightedHomogeneousSubmodule F (blockWeight ι) d)` using `fun d => finiteDimensional_piece d`. Establish `: FiniteDimensional F (gradedPiece L n)` using `by unfold gradedPiece; infer_instance`. Set `q` to `(Ideal.Quotient.factorₐ F (le_sup_left : L ≤ L ⊔ Ideal.span {f})).toLinearMap`. Set `g` to `q.domRestrict (gradedPiece L n)`. Establish `hrange : LinearMap.range g = gradedPiece (L ⊔ Ideal.span {f}) n`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[LinearMap.range_domRestrict]`. Unfold `gradedPiece`. Rewrite using `[← Submodule.map_comp]`. Both sides reduce to the same expression. Establish `hker_mem : ∀ a : gradedPiece L n, g a = 0 → ∃ c : MRing ι F, (a : MRing ι F ⧸ L) = Ideal.Quotient.mk L (if s ≤ n then f * weightedHomogeneousComponent (blockWeight ι) (n - s) c else 0)`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Introduce and unpack `⟨a, ha⟩ hga`. Take `⟨x, hx, rfl⟩` from `Submodule.mem_map.mp ha`. Establish `hx0 : Ideal.Quotient.mk (L ⊔ Ideal.span {f}) x = 0` using `hga`. Take `⟨c, hc⟩` from `mem_sup_span hL hf hx (Ideal.Quotient.eq_zero_iff_mem.mp hx0)`. Conclude with `⟨c, Ideal.Quotient.eq.mpr hc⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `h1` using `LinearMap.finrank_range_add_finrank_ker g`. Rewrite `h1` using `[hrange]`. Distinguish the cases in `hsn : s ≤ n`. Set `T` to `weightedHomogeneousSubmodule F (blockWeight ι) (n - s)`. Establish `hmem : ∀ y : T, ((Ideal.Quotient.mkₐ F L).toLinearMap ∘ₗ LinearMap.mulLeft F f ∘ₗ T.subtype) y ∈ gradedPiece L n` using `fun y => by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `Submodule.mem_map_of_mem ((mem_weightedHomogeneousSubmodule _ _ _ _).mpr ?_)` and prove the remaining obligations. Use `IsWeightedHomogeneous.mul hf y.2` as an intermediate fact. Rewrite `this` using `[add_tsub_cancel_of_le hsn]`. Then use the resulting hypothesis. Set `μ` to `LinearMap.codRestrict (gradedPiece L n) ((Ideal.Quotient.mkₐ F L).toLinearMap ∘ₗ LinearMap.mulLeft F f ∘ₗ T.subtype) hmem`. Set `ν` to `(Ideal.Quotient.mkₐ F (L.colon {f})).toLinearMap.domRestrict T`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hν : LinearMap.range ν = gradedPiece (L.colon {f}) (n - s)` using `LinearMap.range_domRestrict _ _`. Establish `hker : LinearMap.ker μ = LinearMap.ker ν`. Use extensionality with `y`. Simplify using `only [LinearMap.mem_ker]`. Rewrite using `[← Subtype.coe_inj]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk L (f * (y : MRing ι F)) = 0 ↔ Ideal.Quotient.mk (L.colon {f}) (y : MRing ι F) = 0`. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem, Ideal.Quotient.eq_zero_iff_mem, Submodule.mem_colon_singleton, smul_eq_mul, mul_comm]`. Establish `hμg : LinearMap.range μ = LinearMap.ker g`. Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨y, rfl⟩`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components.
 
-Rewrite using `[LinearMap.mem_ker]`. Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk (L ⊔ Ideal.span {f}) (f * (y : MRing ι F)) = 0`. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `Ideal.mem_sup_right (Ideal.mem_span_singleton'.mpr ⟨y, mul_comm _ _⟩)`. Introduce `a ha`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `hker_mem a ha`. Rewrite `hc` using `[if_pos hsn]`. Conclude with `⟨⟨_, weightedHomogeneousComponent_mem _ c (n - s)⟩, Subtype.ext hc.symm⟩`. Establish `h2` using `LinearMap.finrank_range_add_finrank_ker μ`. Establish `h3` using `LinearMap.finrank_range_add_finrank_ker ν`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[hker]`. Establish `e : Module.finrank F (LinearMap.range μ) = Module.finrank F (LinearMap.range ν)` using `Nat.add_right_cancel (h2.trans h3.symm)`. Rewrite `e` using `[hμg, hν]`. Rewrite using `[if_pos hsn, ← e]`. Conclude with `h1.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hk : LinearMap.ker g = ⊥`. Rewrite using `[LinearMap.ker_eq_bot']`. Introduce `a ha`. Take `⟨c, hc⟩` from `hker_mem a ha`. Rewrite `hc` using `[if_neg hsn, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Subtype.ext hc`. Rewrite `h1` using `[hk, finrank_bot]`. Rewrite using `[if_neg hsn]`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem finrank_step (L : Ideal (MRing ι F)) (f : MRing ι F) (s : K → ℕ)
     (hL : IsMultiHomogIdeal L) (hf : IsMultiHomog f s) (n : K → ℕ) :
@@ -180,21 +180,21 @@ theorem finrank_step (L : Ideal (MRing ι F)) (f : MRing ι F) (s : K → ℕ)
 end FiltrationStepHilb
 
 /- English proof (translation)
-Introduce `F _ K _ _ ι _ L f s hL hf m`. Distinguish the cases in `hm : ∀ k, 0 ≤ m k`. Establish `key` using `FiltrationStepHilb.finrank_step L f s hL hf (fun k => (m k).toNat)`. Establish `hms : (∀ k, 0 ≤ (m - fun k => (s k : ℤ)) k) ↔ s ≤ fun k => (m k).toNat`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h k`. Establish `h1` using `h k`. Establish `h2` using `hm k`. Simplify using `only [Pi.sub_apply] at h1`. Use `show s k ≤ (m k).toNat`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Introduce `h k`. Establish `h1` using `h k`. Establish `h2` using `hm k`. Simplify using `only [Pi.sub_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `s k ≤ (m k).toNat at h1`. Use linear arithmetic over natural numbers and integers. Unfold `hilbFn`. Rewrite using `[if_pos hm, if_pos hm]`. Distinguish the cases in `hsn : s ≤ fun k => (m k).toNat`.
+Use linear arithmetic over natural numbers and integers. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `hn : (fun k => ((m - fun k => (s k : ℤ)) k).toNat) = (fun k => (m k).toNat) - s`. Use function extensionality and compare the values at `k`. Establish `h1` using `hsn k`. Establish `h2` using `hm k`. Express the relevant statement in the definitionally equal form `s k ≤ (m k).toNat at h1`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Simplify using `only [Pi.sub_apply]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[if_pos (hms.mpr hsn), hn, key, if_pos hsn]`. Use `push_cast`. Both sides reduce to the same expression.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg (fun h => hsn (hms.mp h)), key, if_neg hsn]`. Simplify using the standard rewrite rules. Establish `hm' : ¬ ∀ k, 0 ≤ (m - fun k => (s k : ℤ)) k` using `fun h => hm fun k => by`. Establish `h1` using `h k`. Simplify using `only [Pi.sub_apply] at h1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Unfold `hilbFn`. Simplify using `only [if_neg hm, if_neg hm']`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem FiltrationStepHilb.proof : FiltrationStepHilb.Statement.{u} := by
   intro F _ K _ _ ι _ L f s hL hf m

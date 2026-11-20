@@ -9,11 +9,11 @@ open GlobalTheory.PRep GlobalTheory.SmGL Formalism.BasicNotions GlobalTheory.Cus
 open scoped TensorProduct Classical
 
 /- English proof (translation)
-Introduce `i hi`. Assume the negation of the conclusion as `hn`. Take `⟨f, hf, hX⟩` from `Submodule.exists_le_ker_of_notMem hn`. Establish `h0 : ∑ j ∈ s, f (φ j) • ψ j = 0`. Use function extensionality and compare the values at `b`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `h1 : f (fun a => ∑ i ∈ s, φ i a * ψ i b) = 0` using `hX (h b)`. Establish `h2 : (fun a => ∑ i ∈ s, φ i a * ψ i b) = ∑ i ∈ s, ψ i b • φ i`. Use function extensionality and compare the values at `a`. Simplify using `[Finset.sum_apply, mul_comm]`. Rewrite `h1` using `[h2, map_sum]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify `h1` using `[Finset.sum_apply, mul_comm]`. Conclude with `hf (linearIndependent_iff'.1 hψ s _ h0 i hi)`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem coef_mem {A B ι : Type} (X : Submodule ℂ (A → ℂ)) (s : Finset ι) (φ : ι → A → ℂ) (ψ : ι → B → ℂ)
     (hψ : LinearIndependent ℂ ψ) (h : ∀ b, (fun a => ∑ i ∈ s, φ i a * ψ i b) ∈ X) : ∀ i ∈ s, φ i ∈ X := by
@@ -37,18 +37,18 @@ private noncomputable def prodMap {A B : Type} (X₁ : Submodule ℂ (A → ℂ)
     (fun _ _ _ => by funext x; simp [mul_add]) (fun _ _ _ => by funext x; simp [mul_left_comm]))
 
 /- English proof (translation)
-Simplify using `only [prodMap, TensorProduct.lift.tmul, LinearMap.mk₂_apply]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem prodMap_tmul {A B : Type} (X₁ : Submodule ℂ (A → ℂ)) (X₂ : Submodule ℂ (B → ℂ)) (φ : X₁) (ψ : X₂) :
     prodMap X₁ X₂ (φ ⊗ₜ ψ) = fun x => φ.1 x.1 * ψ.1 x.2 := by
   simp only [prodMap, TensorProduct.lift.tmul, LinearMap.mk₂_apply]
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `t ht`. Set `β` to `Module.Basis.ofVectorSpace ℂ X₂`. Take `⟨c, rfl⟩` from `TensorProduct.eq_repr_basis_right β t`. Establish `hβ : LinearIndependent ℂ (fun i => (β i).1)` using `β.linearIndependent.map' X₂.subtype (Submodule.ker_subtype _)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hc` using `coef_mem (⊥ : Submodule ℂ (A → ℂ)) c.support (fun i => (c i).1) (fun i => (β i).1) hβ (by`. Introduce `b`. Rewrite using `[Submodule.mem_bot]`. Use function extensionality and compare the values at `a`. Use `congrFun ht (a, b)` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Simplify `this)` using `[Finsupp.sum, map_sum, prodMap_tmul, Finset.sum_apply]`. Use `Finset.sum_eq_zero fun i hi => ?_` and prove the remaining obligations. Establish `: c i = 0` using `Subtype.ext ((Submodule.mem_bot ℂ).1 (hc i hi))`. Simplify using `[this]`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 private theorem prodMap_inj {A B : Type} (X₁ : Submodule ℂ (A → ℂ)) (X₂ : Submodule ℂ (B → ℂ)) :
     Function.Injective (prodMap X₁ X₂) := by
@@ -69,9 +69,9 @@ private theorem prodMap_inj {A B : Type} (X₁ : Submodule ℂ (A → ℂ)) (X�
   simp [this]
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨t, rfl⟩`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul φ ψ => exact Submodule.subset_span ⟨φ.1, φ.2, ψ.1, ψ.2, prodMap_tmul X₁ X₂ φ ψ⟩`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y hx hy => rw [map_add]`. Conclude with `Submodule.add_mem _ hx hy`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨φ, hφ, ψ, hψ, rfl⟩`. Conclude with `⟨⟨φ, hφ⟩ ⊗ₜ ⟨ψ, hψ⟩, prodMap_tmul X₁ X₂ _ _⟩`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem prodMap_range {A B : Type} (X₁ : Submodule ℂ (A → ℂ)) (X₂ : Submodule ℂ (B → ℂ)) :
     LinearMap.range (prodMap X₁ X₂) = tensFn X₁ X₂ := by
@@ -86,21 +86,17 @@ private theorem prodMap_range {A B : Type} (X₁ : Submodule ℂ (A → ℂ)) (X
     exact ⟨⟨φ, hφ⟩ ⊗ₜ ⟨ψ, hψ⟩, prodMap_tmul X₁ X₂ _ _⟩
 
 /- English proof (translation)
-Introduce `A B X₁ X₂`. Use `⟨⟨(LinearEquiv.ofInjective _ (prodMap_inj X₁ X₂)).trans (LinearEquiv.ofEq _ _ (prodMap_range X₁ X₂)), ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `φ ψ x`. Conclude with `congrFun (prodMap_tmul X₁ X₂ φ ψ) x`. Introduce `F d φ ψ hF h₁ h₂`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Set `W : Submodule ℂ (B → ℂ)` to `X₂ ⊓ Submodule.span ℂ (Set.range ψ)`. Use `haveI : FiniteDimensional ℂ (Submodule.span ℂ (Set.range ψ)) := FiniteDimensional.span_of_finite ℂ (Set.finite_range ψ)`. Use `haveI : FiniteDimensional ℂ W := Submodule.finiteDimensional_of_le inf_le_right`. Establish `hW : ∀ a, (fun b => F (a, b)) ∈ W`. Introduce `a`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `⟨h₂ a, ?_⟩` and prove the remaining obligations. Establish `: (fun b => F (a, b)) = ∑ i, φ i a • ψ i`. Use function extensionality and compare the values at `b`. Simplify using `[hF, Finset.sum_apply]`. Rewrite using `[this]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Set `β` to `Module.finBasis ℂ W`. Establish `hβ : LinearIndependent ℂ (fun i => (β i).1)` using `β.linearIndependent.map' W.subtype (Submodule.ker_subtype _)`. Establish `hrep : ∀ a b, F (a, b) = ∑ i, β.repr ⟨_, hW a⟩ i * (β i).1 b`. Introduce `a b`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `congrFun (congrArg Subtype.val (β.sum_repr ⟨_, hW a⟩)) b` as an intermediate fact. Rewrite `this` using `[Submodule.coe_sum, Finset.sum_apply]`. Conclude with `this.symm`. Establish `hc` using `coef_mem X₁ Finset.univ (fun i a => β.repr ⟨_, hW a⟩ i) (fun i => (β i).1) hβ (by`. Introduce `b`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `: (fun a => ∑ i, β.repr ⟨_, hW a⟩ i * (β i).1 b) = fun a => F (a, b)`. Use function extensionality and compare the values at `a`. Conclude with `(hrep a b).symm`. Rewrite using `[this]`. Conclude with `h₁ b)`.
-
-Establish `: F = ∑ i, fun x : A × B => β.repr ⟨_, hW x.1⟩ i * (β i).1 x.2`. Use function extensionality and compare the values at `x`. Rewrite using `[Finset.sum_apply]`. Conclude with `hrep x.1 x.2`. Rewrite using `[this]`.
-
-Conclude with `Submodule.sum_mem _ fun i _ => Submodule.subset_span ⟨_, hc i (Finset.mem_univ i), _, (β i).2.1, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.IwahoriBlocks.tensLaws :
     ∀ {A B : Type} (X₁ : Submodule ℂ (A → ℂ)) (X₂ : Submodule ℂ (B → ℂ)), (∃ e : X₁ ⊗[ℂ] X₂ ≃ₗ[ℂ] tensFn X₁ X₂, ∀ φ ψ x, (e (φ ⊗ₜ ψ)).1 x = φ.1 x.1 * ψ.1 x.2) ∧

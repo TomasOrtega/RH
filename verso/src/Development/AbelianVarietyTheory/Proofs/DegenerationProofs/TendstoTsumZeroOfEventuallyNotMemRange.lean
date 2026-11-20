@@ -5,11 +5,11 @@ open Module Filter Topology
 namespace GlobalTheory
 
 /- English proof (translation)
-Set `b` to `Module.Free.chooseBasis ℤ X`. Apply `b.repr.injective` to reduce the goal to its premises. Use extensionality with `i`. Rewrite using `[map_zero, Finsupp.zero_apply]`. Take `⟨μ, hμ⟩` from `hx (b.repr x i).natAbs`.
+Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hd : ((n : ℤ) ^ (b.repr x i).natAbs) ∣ b.repr x i`. Use `⟨b.repr μ i, ?_⟩` and prove the remaining obligations. Use `conv_lhs => rw [hμ]`. Simplify using `[map_nsmul]`. Apply `Int.eq_zero_of_dvd_of_natAbs_lt_natAbs hd` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Int.natAbs_pow, Int.natAbs_natCast]`. Conclude with `Nat.lt_pow_self (by omega)`.
+A detailed English derivation is pending.
 -/
 theorem eq_zero_of_forall_pow_nsmul {X : Type} [AddCommGroup X] [Module.Free ℤ X] {n : ℕ}
     (hn : 2 ≤ n) {x : X} (hx : ∀ j : ℕ, ∃ μ : X, x = n ^ j • μ) : x = 0 := by
@@ -27,11 +27,11 @@ theorem eq_zero_of_forall_pow_nsmul {X : Type} [AddCommGroup X] [Module.Free ℤ
   exact Nat.lt_pow_self (by omega)
 
 /- English proof (translation)
-Rewrite using `[Metric.tendsto_nhds]`. Introduce `ε hε`. Establish `hS : {z | ¬ ‖τ z‖ < ε / 2}.Finite`. Use `hτ (Metric.ball_mem_nhds (0 : K) (half_pos hε))` as an intermediate fact. Rewrite `this` using `[Filter.mem_map, Filter.mem_cofinite]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `this using 1` and compare the differences between its conclusion and the goal. Use extensionality with `z`. Simplify using the standard rewrite rules. Establish `hev : ∀ᶠ j in atTop, ∀ z ∈ {z | ¬ ‖τ z‖ < ε / 2}, ∀ μ, f j μ ≠ z` using `(hS.eventually_all).2 fun z hz => hf z (fun h0 => hz (by rw [h0, norm_zero]; exact half_pos hε))`. Use `filter_upwards [hev] with j hj`.
+Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dist_zero_right]`. Use `lt_of_le_of_lt (IsUltrametricDist.norm_tsum_le_of_forall_le_of_nonneg (half_pos hε).le fun μ => ?_) (half_lt_self hε)` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Conclude with `hj (f j μ) (show ¬ ‖τ (f j μ)‖ < ε / 2 from fun h' => h h'.le) μ rfl`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem tendsto_tsum_zero_of_eventually_notMem_range {K X Y : Type} [NontriviallyNormedField K]
     [IsUltrametricDist K] (τ : X → K) (hτ : Tendsto τ cofinite (𝓝 0)) (f : ℕ → Y → X)
@@ -55,11 +55,11 @@ theorem tendsto_tsum_zero_of_eventually_notMem_range {K X Y : Type} [Nontriviall
   exact hj (f j μ) (show ¬ ‖τ (f j μ)‖ < ε / 2 from fun h' => h h'.le) μ rfl
 
 /- English proof (translation)
-Take `⟨d, rfl⟩` from `Nat.exists_eq_add_of_le hjk`. Use `clear hjk`. Proceed by induction on `d generalizing z with`. Consider the case `zero => simpa using hz`. Consider the case `succ d ih`.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨μ, rfl⟩` from `hz`. Take `⟨ν, hν⟩` from `hα (j + d)`. Apply `ih` to reduce the goal to its premises. Use `⟨ν + n • μ, ?_⟩` and prove the remaining obligations. Rewrite using `[← add_assoc, hν, pow_succ, mul_smul, smul_add]`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Normalize the expressions using the abelian group laws.
+A detailed English derivation is pending.
 -/
 theorem mem_class_of_le {X : Type} [AddCommGroup X] {n : ℕ} {α : ℕ → X}
     (hα : ∀ j, ∃ μ, α (j + 1) = α j + n ^ j • μ) {z : X} {j k : ℕ} (hjk : j ≤ k)
@@ -77,33 +77,29 @@ theorem mem_class_of_le {X : Type} [AddCommGroup X] {n : ℕ} {α : ℕ → X}
     abel
 
 /- English proof (translation)
-Introduce `K X _ _ _ _ _ _ n hn σ hσ α hα`. Establish `hinj : ∀ j, Function.Injective (fun μ : X => α j + n ^ j • μ)`. Introduce `j μ ν h`. Simplify using `only [add_right_inj] at h`. Establish `hne : ((n ^ j : ℕ) : ℤ) ≠ 0` using `by exact_mod_cast pow_ne_zero j (by omega : n ≠ 0)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h' : ((n ^ j : ℕ) : ℤ) • μ = ((n ^ j : ℕ) : ℤ) • ν`. Rewrite using `[natCast_zsmul, natCast_zsmul]`. Conclude with `h`. Conclude with `smul_right_injective X hne h'`. Establish `hsum : ∀ τ : X → K, Tendsto τ cofinite (𝓝 0) → ∀ j, Summable (fun μ => τ (α j + n ^ j • μ))` using `fun τ hτ j => NonarchimedeanAddGroup.summable_of_tendsto_cofinite_zero (hτ.comp (hinj j).tendsto_cofinite)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hfar : ∀ z w : X, z ≠ w → ∀ᶠ j in atTop, ¬ ∃ μ, z = w + n ^ j • μ`. Introduce `z w hzw`. Assume the negation of the conclusion as `h`. Rewrite `h` using `[Filter.not_eventually]`. Simplify using `only [not_not] at h`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Apply `hzw` to reduce the goal to its premises. Establish `h0 : z - w = 0`. Use `eq_zero_of_forall_pow_nsmul hn (fun j => ?_)` and prove the remaining obligations. Take `⟨i, ⟨μ, hμ⟩, hji⟩` from `(h.and_eventually (eventually_ge_atTop j)).exists`. Use `⟨n ^ (i - j) • μ, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[hμ, add_sub_cancel_left, ← mul_smul, ← pow_add, Nat.add_sub_cancel' hji]`. Conclude with `sub_eq_zero.mp h0`. Prove the components needed by the constructor for the conclusion. Introduce `χ hχ`. Set `τ` to `Function.update σ χ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Establish `hτ : Tendsto τ cofinite (𝓝 0)`. Apply `hσ.congr'` to reduce the goal to its premises. Use `filter_upwards [(Set.finite_singleton χ).compl_mem_cofinite] with z hz`. Simplify using `[τ, Set.mem_compl_singleton_iff.mp hz]`. Establish `h2` using `tendsto_tsum_zero_of_eventually_notMem_range τ hτ (fun j μ => α j + n ^ j • μ) (by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Introduce `z hz`. Establish `hzχ : z ≠ χ`. Introduce and unpack `rfl`. Simplify using `[τ] at hz`. Use `filter_upwards [hfar z χ hzχ] with j hj μ hμ`.
+Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Apply `hj` to reduce the goal to its premises. Take `⟨ν, hν⟩` from `hχ j`. Establish `hμ' : z = α j + n ^ j • μ` using `hμ.symm`. Use `⟨μ - ν, ?_⟩` and prove the remaining obligations. Rewrite using `[hμ', hν, smul_sub]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use the proof step `abel)`. Establish `heq : ∀ j, ∑' μ, σ (α j + n ^ j • μ) = σ χ + ∑' μ, τ (α j + n ^ j • μ)`. Introduce `j`. Take `⟨μj, hμj⟩` from `hχ j`. Rewrite using `[(hsum σ hσ j).tsum_eq_add_tsum_ite μj]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Rewrite using `[hμj]`. Use `tsum_congr fun μ => ?_` and prove the remaining obligations. Distinguish the cases in `h : μ = μj`. Substitute `h` using the available equality.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[τ, ← hμj]`. Establish `hne : α j + n ^ j • μ ≠ χ` using `fun h' => h (hinj j (h'.trans hμj))`. Simplify using `[τ, h, hne]`. Establish `h3` using `tendsto_const_nhds (x := σ χ) |>.add h2`. Rewrite `h3` using `[add_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `h3.congr (fun j => (heq j).symm)`. Introduce `hno`. Apply `tendsto_tsum_zero_of_eventually_notMem_range σ hσ (fun j μ => α j + n ^ j • μ)` to reduce the goal to its premises. Introduce `z _`. Choose the witnesses or unpack the hypotheses as in `⟨j0, hj0⟩ : ∃ j0, ¬ ∃ μ, z = α j0 + n ^ j0 • μ := by`.
-
-Assume the negation of the conclusion as `h`. Conclude with `hno ⟨z, fun j => by`. Assume the negation of the conclusion as `h'`. Conclude with `h ⟨j, h'⟩⟩`. Use `filter_upwards [eventually_ge_atTop j0] with j hj μ hμ`.
-
-Conclude with `hj0 (mem_class_of_le hα hj ⟨μ, hμ.symm⟩)`.
+A detailed English derivation is pending.
 -/
 theorem tendsto_tsum_pow_classes :
     ∀ (K X : Type) [NontriviallyNormedField K] [IsUltrametricDist K] [CompleteSpace K]

@@ -11,19 +11,19 @@ namespace GlobalTheory.KSp
 open MeasureTheory Matrix in
 
 /- English proof (translation)
-Introduce `F _ _ E _ _ c δ hE ν _ _ p hp`. Rewrite `hp` using `[_root_.GlobalTheory.KSp.mem_sieg]`. Establish `hc` using `hE.invol`. Establish `hu` using `(_root_.GlobalTheory.SplitUnitary.mem_UG_iff c (p : GL (ν ⊕ ν) E)).mp p.2`. Establish `hM : ((p : GL (ν ⊕ ν) E) : Matrix (ν ⊕ ν) (ν ⊕ ν) E) = _root_.GlobalTheory.KSp.mat c p` using `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set M := _root_.GlobalTheory.KSp.mat c p`. Rewrite `hu` using `[hM, ← fromBlocks_toBlocks M, hp]`. Unfold `_root_.GlobalTheory.SplitUnitary.stdJ at hu`. Simplify using `only [fromBlocks_map, fromBlocks_transpose, fromBlocks_multiply, fromBlocks_inj] at hu`. Simplify using `at hu`.
+Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨h1, h2, h3⟩` from `hu`. Establish `h2'` using `mul_eq_one_comm.mp h2`. Establish `h3'` using `mul_eq_one_comm.mp h3`. Establish `hcc : ∀ X : Matrix ν ν E, (X.map c).map c = X` using `fun X => by ext i j; simp [hc]`. Establish `hAB : M.toBlocks₁₁ * (M.toBlocks₁₂.map c)ᵀ = M.toBlocks₁₂ * (M.toBlocks₁₁.map c)ᵀ` using `sub_eq_zero.mp (by rw [← neg_add_eq_sub]; exact h1)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨h2, hAB, ?_⟩` and prove the remaining obligations. Use `set A := M.toBlocks₁₁`. Use `set B := M.toBlocks₁₂`. Use `set D := M.toBlocks₂₂`. Set `a : GL ν E` to `⟨A, (D.map c)ᵀ, h2, h2'⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hb : (((D.map c)ᵀ * B).map c)ᵀ = (D.map c)ᵀ * B`. Rewrite using `[Matrix.map_mul, transpose_mul, transpose_map, hcc, transpose_transpose]`. Establish `hB : B * (A.map c)ᵀ = A * (B.map c)ᵀ` using `hAB.symm`. Combine the equalities or inequalities in the displayed calculation. Use `⟨a, (D.map c)ᵀ * B, hb, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Subgroup.coe_mul, Units.val_mul, _root_.GlobalTheory.SplitUnitary.levi_val, hM]`. Unfold `_root_.GlobalTheory.KSp.unip`. Simplify using `only [fromBlocks_multiply]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Establish `ha : ((a⁻¹ : GL ν E) : Matrix ν ν E) = (D.map c)ᵀ` using `rfl`. Rewrite using `[ha, transpose_map, hcc, transpose_transpose, ← Matrix.mul_assoc, h2]`. Use `conv_lhs => rw [← fromBlocks_toBlocks M, hp]`. Simplify using `[A, B, D]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.KSp.sieg_blocks : ∀ (F : Type) [Field F] [CharZero F] (E : Type) [Field E] [Algebra F E] (c : E →ₐ[F] E) (δ : E)
     (hE : _root_.GlobalTheory.WeilM.IsQuad c δ) (ν : Type) [Fintype ν] [DecidableEq ν] (p : _root_.GlobalTheory.WeilM.UG c (_root_.GlobalTheory.SplitUnitary.stdJ ν E)), p ∈ _root_.GlobalTheory.KSp.sieg c ν →

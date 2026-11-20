@@ -59,7 +59,7 @@ def StepAdj : Prop :=
     Function.Surjective (projP O cj hO Z₁ Z₂)
 
 /- English proof (translation)
-Introduce `E _ O cj hcj hO r T T' hT hT' hcT hcT' Z₁ Z₂ hu₁ hu₂ hd₁ hd₂ hg₁ hg₂`. Rewrite using `[h1 E O cj hcj hO r T T' hT hT' hcT hcT' Z₁ Z₂ hu₁ hu₂ hd₁ hd₂ hg₁ hg₂]`. Conclude with `Nat.card_congr (Equiv.ofBijective _ ⟨hi E O cj hcj hO r Z₁ Z₂ hu₁ hu₂, h2 E O cj hcj hO r Z₁ Z₂ hu₁ hu₂ hd₁ hd₂⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unramifiedIsoCount_of_pair_inj_adj (h1 : StepPair) (hi : StepInj) (h2 : StepAdj) : UnramifiedIsoCountZero := by
   intro E _ O cj hcj hO r T T' hT hT' hcT hcT' Z₁ Z₂ hu₁ hu₂ hd₁ hd₂ hg₁ hg₂
@@ -68,7 +68,7 @@ theorem unramifiedIsoCount_of_pair_inj_adj (h1 : StepPair) (hi : StepInj) (h2 : 
     ⟨hi E O cj hcj hO r Z₁ Z₂ hu₁ hu₂, h2 E O cj hcj hO r Z₁ Z₂ hu₁ hu₂ hd₁ hd₂⟩)
 
 /- English proof (translation)
-The claim follows from `Formalism.L2.SG.LocalCountModules.LocCnt0LWork.locCnt0L_of_alg (unramifiedIsoCount_of_pair_inj_adj h1 hi h2)`.
+A detailed English derivation is pending.
 -/
 theorem locCnt0L_of_pair (h1 : StepPair) (hi : StepInj) (h2 : StepAdj) :
     Formalism.L2.SG.LocalCountModules.LocCnt0L.LocCnt0L :=

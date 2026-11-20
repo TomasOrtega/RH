@@ -11,7 +11,7 @@ open scoped TensorProduct Matrix
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Simplify using `[zOf, map_sum, Finsupp.single_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem zOf_repr {d : ℕ} (b : Module.Basis (Fin d) F E) (v : HeightOneSpectrum (𝓞 F))
     (w : Fin 1 × Fin d → v.adicCompletionIntegers F) (k : Fin d) :
@@ -19,7 +19,7 @@ theorem zOf_repr {d : ℕ} (b : Module.Basis (Fin d) F E) (v : HeightOneSpectrum
   simp [zOf, map_sum, Finsupp.single_apply]
 
 /- English proof (translation)
-Introduce `k`. Rewrite using `[zOf_repr]`. Conclude with `(w (0, k)).2`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zOf_mem' {d : ℕ} (b : Module.Basis (Fin d) F E) (v : HeightOneSpectrum (𝓞 F))
     (w : Fin 1 × Fin d → v.adicCompletionIntegers F) : zOf b v w ∈ Rv b v := by
@@ -28,35 +28,33 @@ theorem zOf_mem' {d : ℕ} (b : Module.Basis (Fin d) F E) (v : HeightOneSpectrum
   exact (w (0, k)).2
 
 /- English proof (translation)
-Establish `hσσ : ∀ x, σ (σ x) = x` using `GlobalTheory.CompanionTheory.SW.SWIsom.sigma_sigma σ hCM`. Establish `hj0 : σ (J 0 0) = J 0 0` using `hJ.1 0 0`. Establish `h20 : (2 : Fv F v) ≠ 0`. Introduce `h0`. Rewrite `h2` using `[h0, map_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `zero_ne_one h2`. Establish `hd : d = 2`. Rewrite using `[← hCM.2.2.1, Module.finrank_eq_card_basis b, Fintype.card_fin]`. Establish `htrc : ∀ c : Fv F v, Algebra.trace (Fv F v) (Fv F v ⊗[F] E) (algebraMap (Fv F v) _ c) = 2 * c`. Introduce `c`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Algebra.trace_algebraMap_of_basis (Algebra.TensorProduct.basis (Fv F v) b), Fintype.card_fin, hd, nsmul_eq_mul]`. Evaluate the numerical expressions. Establish `hint : ∀ c : Fv F v, algebraMap (Fv F v) (Fv F v ⊗[F] E) c ∈ Rv b v → c ∈ v.adicCompletionIntegers F`. Introduce `c hc`. Establish `h1` using `(htr _).2 hc 1 hR1`.
+Evaluate the numerical expressions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[mul_one, htrc]`. Rewrite `h1`, the goal using `[HeightOneSpectrum.mem_adicCompletionIntegers]`. Rewrite `h1` using `[map_mul, h2, one_mul]`. Then use the resulting hypothesis. Establish `hsc : ∀ u : Fv F v, u ∈ v.adicCompletionIntegers F → algebraMap (Fv F v) (Fv F v ⊗[F] E) u ∈ Rv b v`. Introduce `u hu k`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Algebra.algebraMap_eq_smul_one, map_smul, Finsupp.smul_apply, smul_eq_mul]`. Conclude with `Subring.mul_mem _ hu (hR1 k)`. Use `set z := zOf b v w with hz`. Establish `hzR : z ∈ Rv b v` using `zOf_mem' b v w`. Establish `hsig2 : ∀ x, sigR (Fv F v) σ (sigR (Fv F v) σ x) = x`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a e => simp [sigR, hσσ]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hsj : sigR (Fv F v) σ (inclR (Fv F v) (J 0 0)) = inclR (Fv F v) (J 0 0)`. Simplify using `[sigR, inclR, hj0]`. Use `set Q := sigR (Fv F v) σ z * inclR (Fv F v) (J 0 0) * z with hQ`. Establish `hQfix : sigR (Fv F v) σ Q = Q`. Rewrite using `[hQ, map_mul, map_mul, hsig2, hsj]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Take `⟨c, hc⟩` from `hfix Q hQfix`. Establish `hQR : Q ∈ Rv b v` using `hRmul _ (hRmul _ (hRsig _ hzR) _ hj) _ hzR`. Establish `hcO : c ∈ v.adicCompletionIntegers F` using `hint c (hc ▸ hQR)`. Establish `hform : (fun p => (w p : Fv F v)) ⬝ᵥ (B.map (algebraMap F (Fv F v)) *ᵥ fun p => (w p : Fv F v)) = 2 * c`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e1` using `hBt (Fv F v) (fun _ => z) (fun _ => z)`. Establish `e2 : hR (Fv F v) σ J (fun _ => z) (fun _ => z) = Q`. Simplify using `[hR, hform, JR, Matrix.map_apply, hQ]`. Establish `e3 : (fun p : Fin 1 × Fin d => (Algebra.TensorProduct.basis (Fv F v) b).repr ((fun _ => z) p.1) p.2) = fun p => (w p : Fv F v)`. Use function extensionality and compare the values at `p`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨i, k⟩` from `p`. Establish `hi : i = 0` using `Subsingleton.elim _ _`. Substitute `hi` using the available equality. Conclude with `zOf_repr b v w k`. Rewrite `e1` using `[e2, e3, hc, htrc]`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `e1.symm`. Rewrite using `[hform, ← mul_assoc, inv_mul_cancel₀ h20, one_mul, hc]`. Prove the components needed by the constructor for the conclusion. Introduce `hlt`. Establish `hcs : c - s ∈ v.adicCompletionIntegers F` using `Subring.sub_mem _ hcO s.2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Take `⟨u, hu⟩` from `hϖd ⟨c - s, hcs⟩ (by rwa [Valued.toNormedField.norm_lt_one_iff])`. Use `⟨algebraMap (Fv F v) _ (u : Fv F v), hsc _ u.2, ?_⟩` and prove the remaining obligations. Establish `hu' : c - (s : Fv F v) = (ϖ : Fv F v) * u` using `congrArg Subtype.val hu`. Rewrite using `[← map_sub, hu', map_mul]`. Introduce and unpack `⟨y, hy, he⟩ set u := (ϖ : Fv F v)⁻¹ * (c - s) with hu`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hyu : y = algebraMap (Fv F v) _ u`. Use `congrArg (fun q => algebraMap (Fv F v) (Fv F v ⊗[F] E) (ϖ : Fv F v)⁻¹ * q) he` as an intermediate fact. Rewrite `this` using `[← map_sub, ← map_mul, ← mul_assoc, ← map_mul, inv_mul_cancel₀ hϖ0, map_one, one_mul]`. Rewrite using `[hu, this]`. Establish `huO : u ∈ v.adicCompletionIntegers F` using `hint u (hyu ▸ hy)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hcs : c - (s : Fv F v) = (ϖ : Fv F v) * u`. Rewrite using `[hu, ← mul_assoc, mul_inv_cancel₀ hϖ0, one_mul]`. Rewrite using `[hcs, map_mul]`. Rewrite `huO` using `[HeightOneSpectrum.mem_adicCompletionIntegers]`. Establish `hϖv : Valued.v (ϖ : Fv F v) < 1` using `by rwa [← Valued.toNormedField.norm_lt_one_iff]`.
-
-Combine the equalities or inequalities in the displayed calculation. Consider the case `exact mul_le_of_le_one_right' huO`. Consider the case `exact mul_le_of_le_one_right zero_le' huO`. Use `_ < 1 := hϖv`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem form_res (σ : E →ₐ[F] E) (hCM : IsCMExt F E σ) (J : Matrix (Fin 1) (Fin 1) E) (hJ : IsHermND σ J) (d : ℕ)
     (b : Module.Basis (Fin d) F E) (B : Matrix (Fin 1 × Fin d) (Fin 1 × Fin d) F)

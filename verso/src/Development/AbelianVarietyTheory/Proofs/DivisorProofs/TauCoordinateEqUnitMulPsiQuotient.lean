@@ -21,7 +21,7 @@ namespace GlobalTheory.TauCoordQuot
 open GlobalTheory.PsiTauCoordRel GlobalTheory.PeriodBalance
 
 /- English proof (translation)
-Establish `h : ⊤ ≤ (LB.LinComb D.P.L (K` using `PUnit) (fun _ => D.xK χ) (fun _ => -1)).U j := fun y _ => Set.mem_iInter.2 fun _ => hj (Set.mem_univ (jK R y))`. Take `⟨u, hu⟩` from `IsPsiCoord.unique (⟨j, h, hj, rfl⟩ : IsPsiCoord D χ (genVal (D.psi χ) j h)) hx`. Use `⟨u, ?_⟩` and prove the remaining obligations. Rewrite using `[← hu]`. Conclude with `Units.ext (gm_genVal ξ (D.psi χ) j h)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gm_psi {R : Type} [CommRing R] [IsDomain R] (D : DegPre R)
     (ξ : Spec (CommRingCat.of (FractionRing R))) (χ : D.X) (j : PUnit → D.P.L.ι)
@@ -36,7 +36,7 @@ theorem gm_psi {R : Type} [CommRing R] [IsDomain R] (D : DegPre R)
   exact Units.ext (gm_genVal ξ (D.psi χ) j h)
 
 /- English proof (translation)
-Simplify using `only [map_mul, map_inv, mul_inv]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem alg_quot {A B C : Type} [CommGroup A] [CommGroup B] [CommGroup C] (k : B →* C) (f : A →* B)
     (c1 c2 c3 c4 : A) (x₁ x₂ x₃ : B) :
@@ -48,15 +48,15 @@ theorem alg_quot {A B C : Type} [CommGroup A] [CommGroup B] [CommGroup C] (k : B
   abel
 
 /- English proof (translation)
-Introduce `R _ _ _ D a b x x₁ x₂ x₃ hx h₁ h₂ h₃`. Take `⟨ξ⟩ : Nonempty (Spec (CommRingCat.of (FractionRing R)))` from `⟨⟨⊥, Ideal.isPrime_bot⟩⟩`. Set `kU : (FractionRing R)ˣ →* ((Spec (CommRingCat.of (FractionRing R))).presheaf.stalk ξ)ˣ` to `Units.map (kst ξ).toMonoidHom`. Set `aU : Rˣ →* (FractionRing R)ˣ` to `Units.map (algebraMap R (FractionRing R)).toMonoidHom`. Take `⟨j, h, i1, i2, i3, i4, rfl⟩` from `hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Establish `hm` using `h (show ξ ∈ (⊤ : (Spec (CommRingCat.of (FractionRing R))).Opens) from trivial)`. Establish `eT` using `gm_genVal ξ (D.tau a b) j h`. Establish `dT : gm (𝟙 _) ξ (LB.wchart D.P.L _ j) ((D.tau a b).s j) = _` using `gm_mulGen _ _ ξ j hm`. Rewrite `dT` using `[gm_mulGen _ _ ξ _ (mem_inl hm), gm_mulGen _ _ ξ _ (mem_inl (mem_inl hm)), gm_invGen, gm_invGen, gm_invGen]`. Take `⟨c1, g1⟩` from `gm_psi D ξ (a + b) (((j ∘ Sum.inl) ∘ Sum.inl) ∘ Sum.inl) i1 x₁ h₁`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨c2, g2⟩` from `gm_psi D ξ a (((j ∘ Sum.inl) ∘ Sum.inl) ∘ Sum.inr) i2 x₂ h₂`. Take `⟨c3, g3⟩` from `gm_psi D ξ b ((j ∘ Sum.inl) ∘ Sum.inr) i3 x₃ h₃`. Take `⟨c4, g4⟩` from `gm_rigK D ξ (j ∘ Sum.inr) i4 (mem_inr hm)`. Establish `g4' : gm (𝟙 _) ξ (LB.wchart D.P.L (fun _ : PUnit => (toUnit (TK R)).left ≫ eSec D.P.A) (j ∘ Sum.inr)) (D.rigK.s (j ∘ Sum.inr)) = kU (aU c4)` using `g4`. Establish `eT' : gm (𝟙 _) ξ (LB.wchart D.P.L _ j) ((D.tau a b).s j) = kU (genVal (D.tau a b) j h)` using `Units.ext eT`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : kU (genVal (D.tau a b) j h) = kU (aU c1 * x₁) * (kU (aU c2 * x₂))⁻¹ * (kU (aU c3 * x₃))⁻¹ * (kU (aU c4))⁻¹` using `eT'.symm.trans (dT.trans (by rw [g1, g2, g3, g4']))`. Establish `key2 : genVal (D.tau a b) j h = aU (c1 * c2⁻¹ * c3⁻¹ * c4⁻¹) * x₁ * x₂⁻¹ * x₃⁻¹`. Use `Units.map_injective (f := (kst ξ).toMonoidHom) (kst_injective ξ) ?_` and prove the remaining obligations. Conclude with `key.trans (alg_quot kU aU c1 c2 c3 c4 x₁ x₂ x₃)`. Use `⟨c1 * c2⁻¹ * c3⁻¹ * c4⁻¹, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key2, Units.val_mul, Units.val_mul, Units.val_mul, Units.val_inv_eq_inv_val, Units.val_inv_eq_inv_val]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem main : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (D : DegPre R) (a b : D.X)
     (x x₁ x₂ x₃ : (FractionRing R)ˣ), IsTauCoord D a b x → IsPsiCoord D (a + b) x₁ → IsPsiCoord D a x₂ →

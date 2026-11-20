@@ -60,7 +60,7 @@ def locAt (F : StFam S κ) (cts : Ats S κ) (p : ℕ) : LocAt S κ p :=
   if hp : p.Prime then @primeAt _ _ _ _ _ _ F cts p ⟨hp⟩ else fillAt S κ p hp
 
 /- English proof (translation)
-The claim follows from `dif_pos hp.out`.
+A detailed English derivation is pending.
 -/
 theorem locAt_prime (F : StFam S κ) (cts : Ats S κ) (p : ℕ) [hp : Fact p.Prime] : locAt F cts p = primeAt F cts p :=
   dif_pos hp.out
@@ -85,7 +85,7 @@ def globStOf (F : StFam S κ) (cts : Ats S κ) : GlobSt fun p => ((locStOf F cts
   limRA := QLB.LimRA
 
 /- English proof (translation)
-The claim follows from `congrArg LocAt.loc (locAt_prime F cts p)`.
+A detailed English derivation is pending.
 -/
 theorem locStOf_loc (F : StFam S κ) (cts : Ats S κ) (p : ℕ) [Fact p.Prime] :
     (locStOf F cts).loc p = Loc.pi fun v => (F.st (cts p v)).fix.loc :=

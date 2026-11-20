@@ -17,11 +17,11 @@ namespace GlobalTheory.TwV.FacQPt
 set_option maxHeartbeats 400000 in
 
 /- English proof (translation)
-Introduce `h v`. Establish `hv` using `h.2 v`. Establish `hB : bc ((A.eQ v).symm : (A.pl v).1.adicCompletion F →+* G.P.Qq v) (bc (A.phE v) A.B) = bc (A.iw v) A.B`. Use extensionality with `a b`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression.
 
-Establish `hg : bc ((A.eQ v).symm : (A.pl v).1.adicCompletion F →+* G.P.Qq v) (bc ((A.eQ v : G.P.Qq v →+* (A.pl v).1.adicCompletion F)) (castGL A.rk (G.P.Qq v) (g v))) = castGL A.rk (G.P.Qq v) (g v)`. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `a b`. Simplify using `[Formalism.UG.bc]`. Unfold `facQ`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Rewrite using `[hv, map_mul, map_mul, map_inv, hB, hg]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem facQ_isPt {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n p : ℕ} {G : GAtP p} (A : LocAt F E n G) (i : G.comp) (g : ∀ v, GL (Fin (G.P.m + 1)) (G.P.Qq v)) (y : GL (Fin n) (E ⊗[F] (FiniteAdeleRing (𝓞 F) F))) : A.IsPt i g y → ∀ v, facQ A v y = bc (A.iw v) A.B * castGL A.rk (G.P.Qq v) (g v) * (bc (A.iw v) A.B)⁻¹ := by
   intro h v

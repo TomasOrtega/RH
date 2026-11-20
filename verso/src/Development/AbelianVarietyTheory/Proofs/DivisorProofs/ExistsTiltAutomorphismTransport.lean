@@ -22,7 +22,7 @@ theorem wittEquiv_apply (G : PreTilt O p ≃+* PreTilt O p) (a : Ainf p O) :
     wittEquiv G a = WittVector.map (G : PreTilt O p →+* PreTilt O p) a := rfl
 
 /- English proof (translation)
-Rewrite using `[wittEquiv_apply, ofPadic, RingHom.comp_apply]`. Generalize the expression as in `(WittVector.equiv p).symm.toRingHom x = y`. Use extensionality with `n`. Simplify using `only [WittVector.map_coeff]`. Conclude with `congrArg (fun f : ZMod p →+* PreTilt O p => f (y.coeff n)) (RingHom.ext_zmod ((G : PreTilt O p →+* PreTilt O p).comp (ZMod.castHom (dvd_refl p) _)) _)`.
+Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem wittEquiv_ofPadic (G : PreTilt O p ≃+* PreTilt O p) (x : ℤ_[p]) :
     wittEquiv G (ofPadic p O x) = ofPadic p O x := by
@@ -34,7 +34,7 @@ theorem wittEquiv_ofPadic (G : PreTilt O p ≃+* PreTilt O p) (x : ℤ_[p]) :
     (RingHom.ext_zmod ((G : PreTilt O p →+* PreTilt O p).comp (ZMod.castHom (dvd_refl p) _)) _)
 
 /- English proof (translation)
-Apply `(_root_.frobeniusEquiv (PreTilt O p) p).injective` to reduce the goal to its premises. Rewrite using `[RingEquiv.apply_symm_apply, frobeniusEquiv_apply, frobenius_def, ← map_pow, ← frobenius_def, ← frobeniusEquiv_apply, RingEquiv.apply_symm_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem frob_symm_comm (G : PreTilt O p ≃+* PreTilt O p) (x : PreTilt O p) :
     G ((_root_.frobeniusEquiv (PreTilt O p) p).symm x) =
@@ -44,7 +44,7 @@ theorem frob_symm_comm (G : PreTilt O p ≃+* PreTilt O p) (x : PreTilt O p) :
     ← frobenius_def, ← frobeniusEquiv_apply, RingEquiv.apply_symm_apply]
 
 /- English proof (translation)
-Use extensionality with `n`. Simplify using `[wittEquiv_apply, phiInv, WittVector.map_coeff, frob_symm_comm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem wittEquiv_phiInv (G : PreTilt O p ≃+* PreTilt O p) (a : Ainf p O) :
     wittEquiv G (phiInv p O a) = phiInv p O (wittEquiv G a) := by
@@ -52,7 +52,7 @@ theorem wittEquiv_phiInv (G : PreTilt O p ≃+* PreTilt O p) (a : Ainf p O) :
   simp [wittEquiv_apply, phiInv, WittVector.map_coeff, frob_symm_comm]
 
 /- English proof (translation)
-Rewrite using `[wittEquiv_apply, WittVector.map_teichmuller]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem wittEquiv_teich (G : PreTilt O p ≃+* PreTilt O p) (x : PreTilt O p) :
     wittEquiv G (WittVector.teichmuller p x) = WittVector.teichmuller p (G x) := by
@@ -94,20 +94,20 @@ variable {p : ℕ} [Fact p.Prime] {O : Type} [CommRing O] [Fact ¬IsUnit (p : O)
   [IsAdicComplete (Ideal.span {(p : O)}) O]
 
 /- English proof (translation)
-The claim follows from `frob_symm_comm G ε`.
+A detailed English derivation is pending.
 -/
 theorem map_root (G : PreTilt O p ≃+* PreTilt O p) (ε : PreTilt O p) :
     G (root ε) = root (G ε) := frob_symm_comm G ε
 
 /- English proof (translation)
-Simplify using `only [xi, map_sum, map_pow, wittEquiv_teich, map_root]`.
+Simplify using the standard rewrite rules.
 -/
 theorem wittEquiv_xi (G : PreTilt O p ≃+* PreTilt O p) (ε : PreTilt O p) :
     wittEquiv G (xi ε) = xi (G ε) := by
   simp only [xi, map_sum, map_pow, wittEquiv_teich, map_root]
 
 /- English proof (translation)
-Simplify using `only [mu, map_sub, map_one, wittEquiv_teich]`.
+Simplify using the standard rewrite rules.
 -/
 theorem wittEquiv_mu (G : PreTilt O p ≃+* PreTilt O p) (ε : PreTilt O p) :
     wittEquiv G (mu ε) = mu (G ε) := by
@@ -123,13 +123,13 @@ theorem tensorEquiv_inA (Λ : Type) [CommRing Λ] [Algebra ℤ_[p] Λ]
 end
 
 /- English proof (translation)
-Introduce `p _ O _ _ _ ε Λ _ _ ψ γ hψ hε`. Take `⟨G, hu, hθ⟩` from `GlobalTheory.T.tilt_lift_of_ring_automorphism p O γ`. Use `⟨tensorEquiv Λ G, G ε, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_root, hu]`. Conclude with `hε.map_of_injective γ.injective`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[tensorEquiv_inA, wittEquiv_xi]`. Rewrite using `[tensorEquiv_inA, wittEquiv_mu]`. Introduce `r`. Proceed by induction on `r using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `tmul a l => rw [hψ, tensorEquiv_tmul, tensorEquiv_tmul, hψ, wittEquiv_phiInv]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Introduce `σ f hf`. Use `⟨((γ : O →+* O).comp f).comp ((tensorEquiv Λ G).symm : RL p O Λ →+* RL p O Λ), fun a l => ?_, fun r => by simp⟩` and prove the remaining obligations. Establish `h` using `hθ ((wittEquiv G).symm a)`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[← wittEquiv_apply, RingEquiv.apply_symm_apply]`. Use `show γ (f ((tensorEquiv Λ G).symm (a ⊗ₜ l))) = _ * γ (σ l)`. Rewrite using `[tensorEquiv_symm_tmul, hf, map_mul, h]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_tensor_action : ∀ (p : ℕ) [Fact p.Prime] (O : Type) [CommRing O] [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] (ε : PreTilt O p) (Λ : Type) [CommRing Λ] [Algebra ℤ_[p] Λ] (ψ : RL p O Λ →+* RL p O Λ) (γ : O ≃+* O), IsPsi ψ → IsPrimitiveRoot (root ε).untilt p → ∃ (Γ : RL p O Λ ≃+* RL p O Λ) (ε' : PreTilt O p), IsPrimitiveRoot (root ε').untilt p ∧ Γ (inA (xi ε)) = inA (xi ε') ∧ Γ (inA (mu ε)) = inA (mu ε') ∧ (∀ r, Γ (ψ r) = ψ (Γ r)) ∧ ∀ (σ : Λ →+* O) (f : RL p O Λ →+* O), IsTheta σ f → ∃ f', IsTheta ((γ : O →+* O).comp σ) f' ∧ ∀ r, f' (Γ r) = γ (f r) := by
   intro p _ O _ _ _ ε Λ _ _ ψ γ hψ hε

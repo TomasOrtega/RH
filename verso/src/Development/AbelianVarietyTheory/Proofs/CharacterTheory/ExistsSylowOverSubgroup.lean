@@ -3,29 +3,25 @@ import Mathlib
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `haveI : Fact p.Prime := ⟨hp⟩`. Set `N : Subgroup G` to `{ carrier := {g | ∀ c ∈ C, g * c * g⁻¹ ∈ C} one_mem' := by intro c hc; simpa using hc mul_mem' := by`. Introduce `a b ha hb c hc`. Use `ha _ (hb c hc)` as an intermediate fact. Simplify `this` using `[mul_assoc]`.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Use the proof step `inv_mem' := by`. Introduce `a ha c hc`. Establish `key : ∀ n : ℕ, ∀ c ∈ C, a ^ n * c * (a ^ n)⁻¹ ∈ C`. Introduce `n`. Proceed by induction on `n with`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts.
 
-Consider the case `zero => intro c hc`. Simplify using `using hc`. Consider the case `succ n ih`. Introduce `c hc`. Use `ha _ (ih c hc)` as an intermediate fact.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify `this` using `[pow_succ', mul_assoc]`. Establish `h1 : a ^ (orderOf a - 1) = a⁻¹`. Establish `hpos : 0 < orderOf a` using `orderOf_pos a`. Apply `eq_inv_of_mul_eq_one_left` to reduce the goal to its premises. Rewrite using `[← pow_succ, Nat.sub_add_cancel hpos, pow_orderOf_eq_one]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `key (orderOf a - 1) c hc` as an intermediate fact. Rewrite using `[h1] at this }` and apply the resulting hypothesis. Establish `hN : ∀ g : G, g ∈ N ↔ ∀ c ∈ C, g * c * g⁻¹ ∈ C` using `fun g => Iff.rfl`. Set `C' : Subgroup N` to `C.subgroupOf N`. Use `haveI hC' : C'.Normal := ⟨fun n hn g => by`.
+Establish an intermediate fact. Introduce a local definition for the expression. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Simplify using `only [C', Subgroup.mem_subgroupOf] at hn ⊢`. Conclude with `(hN g).1 g.2 _ hn⟩`. Set `P : Sylow p (N ⧸ C')` to `Classical.arbitrary _`. Set `H' : Subgroup N` to `(P : Subgroup (N ⧸ C')).comap (QuotientGroup.mk' C')`. Use `⟨H'.map N.subtype, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `c hc`. Establish `hcN : c ∈ N` using `(hN c).2 fun d hd => C.mul_mem (C.mul_mem hc hd) (C.inv_mem hc)`. Use `⟨⟨c, hcN⟩, ?_, rfl⟩` and prove the remaining obligations. Establish `: QuotientGroup.mk' C' ⟨c, hcN⟩ = 1`. Rewrite using `[QuotientGroup.mk'_apply, QuotientGroup.eq_one_iff]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components.
 
-Conclude with `hc`. Express the relevant statement in the definitionally equal form `QuotientGroup.mk' C' ⟨c, hcN⟩ ∈ (P : Subgroup (N ⧸ C'))`. Rewrite using `[this]`. Conclude with `one_mem _`. Introduce and unpack `_ ⟨h, -, rfl⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(hN h).1 h.2`. Introduce and unpack `_ ⟨h, hh, rfl⟩`. Take `⟨k, hk⟩` from `P.isPGroup' ⟨QuotientGroup.mk' C' h, hh⟩`. Use `⟨k, ?_⟩` and prove the remaining obligations. Establish `h2 : QuotientGroup.mk' C' (h ^ p ^ k) = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_pow]`. Conclude with `congrArg Subtype.val hk`. Rewrite `h2` using `[QuotientGroup.mk'_apply, QuotientGroup.eq_one_iff]`. Conclude with `h2`. Introduce `N' hN'`.
-
-Choose the witnesses or unpack the hypotheses as in `rfl : N' = N := by`. Use extensionality with `g`. Rewrite using `[hN', hN]`. Establish `h1 : (H'.map N.subtype).subgroupOf N = H'` using `Subgroup.comap_map_eq_self_of_injective N.subtype_injective H'`. Rewrite using `[Subgroup.relIndex, h1]`.
-
-Establish `h2 : H'.index = (P : Subgroup (N ⧸ C')).index` using `Subgroup.index_comap_of_surjective _ (QuotientGroup.mk'_surjective C')`. Rewrite using `[h2]`. Conclude with `P.not_dvd_index`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_sylow_over_subgroup (G : Type) [Group G] [Finite G] (C : Subgroup G) (p : ℕ)
     (hp : p.Prime) :

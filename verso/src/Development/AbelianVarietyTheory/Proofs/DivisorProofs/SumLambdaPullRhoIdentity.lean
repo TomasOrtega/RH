@@ -10,7 +10,7 @@ set_option autoImplicit false
 namespace GlobalTheory.TorsionForm.OneVec.Reassemble
 
 /- English proof (translation)
-Use extensionality with `i`. Simplify using `[basePart, join, Fin.castAdd_inj]`. Introduce `x hx h`. Conclude with `absurd h (by simp [Fin.ext_iff]; omega)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem basePart_join {m g : ℕ} (S : Finset (Fin m)) (Z : Finset (Fin g)) :
     basePart (join S Z) = S := by
@@ -19,7 +19,7 @@ theorem basePart_join {m g : ℕ} (S : Finset (Fin m)) (Z : Finset (Fin g)) :
   exact absurd h (by simp [Fin.ext_iff]; omega)
 
 /- English proof (translation)
-Use extensionality with `i`. Simplify using `[fibrePart, join]`. Introduce `x hx h`. Conclude with `absurd h (by simp [Fin.ext_iff]; omega)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem fibrePart_join {m g : ℕ} (S : Finset (Fin m)) (Z : Finset (Fin g)) :
     fibrePart (join S Z) = Z := by
@@ -28,11 +28,11 @@ theorem fibrePart_join {m g : ℕ} (S : Finset (Fin m)) (Z : Finset (Fin g)) :
   exact absurd h (by simp [Fin.ext_iff]; omega)
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `only [join, basePart, fibrePart, Finset.mem_union, Finset.mem_map, Finset.mem_filter, Finset.mem_univ, true_and, Fin.castAddEmb_apply, Fin.natAddEmb_apply]`. Use `Fin.addCases (fun i => ?_) (fun c => ?_) x` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce and unpack `(⟨j, hj, he⟩ | ⟨j, hj, he⟩)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Rewrite using `[← he]` and apply the resulting hypothesis. Conclude with `absurd he (by simp [Fin.ext_iff]; omega)`. Introduce `h`. Conclude with `Or.inl ⟨i, h, rfl⟩`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Prove the first alternative. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `(⟨j, hj, he⟩ | ⟨j, hj, he⟩)`. Conclude with `absurd he (by simp [Fin.ext_iff]; omega)`. Rewrite using `[← he]` and apply the resulting hypothesis. Introduce `h`. Conclude with `Or.inr ⟨c, h, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Prove the second alternative. A detailed English derivation is pending.
 -/
 theorem join_parts {m g : ℕ} (U : Finset (Fin (m + g))) :
     join (basePart U) (fibrePart U) = U := by
@@ -51,7 +51,7 @@ theorem join_parts {m g : ℕ} (U : Finset (Fin (m + g))) :
     · intro h; exact Or.inr ⟨c, h, rfl⟩
 
 /- English proof (translation)
-Simplify using `[join, Fin.castAdd_inj]`. Introduce `x hx h`. Conclude with `absurd h (by simp [Fin.ext_iff]; omega)`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem mem_join_castAdd {m g : ℕ} (S : Finset (Fin m)) (Z : Finset (Fin g)) (i : Fin m) :
     Fin.castAdd g i ∈ join S Z ↔ i ∈ S := by
@@ -60,7 +60,7 @@ theorem mem_join_castAdd {m g : ℕ} (S : Finset (Fin m)) (Z : Finset (Fin g)) (
   exact absurd h (by simp [Fin.ext_iff]; omega)
 
 /- English proof (translation)
-Simplify using `[join, Fin.natAdd_inj]`. Introduce `x hx h`. Conclude with `absurd h (by simp [Fin.ext_iff]; omega)`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem mem_join_natAdd {m g : ℕ} (S : Finset (Fin m)) (Z : Finset (Fin g)) (c : Fin g) :
     Fin.natAdd m c ∈ join S Z ↔ c ∈ Z := by
@@ -69,9 +69,9 @@ theorem mem_join_natAdd {m g : ℕ} (S : Finset (Fin m)) (Z : Finset (Fin g)) (c
   exact absurd h (by simp [Fin.ext_iff]; omega)
 
 /- English proof (translation)
-Use extensionality with `x`. Use `Fin.addCases (fun j => ?_) (fun c => ?_) x` and prove the remaining obligations. Rewrite using `[Finset.mem_erase, mem_join_castAdd, mem_join_castAdd, Finset.mem_erase, Ne, Fin.castAdd_inj]`. Rewrite using `[Finset.mem_erase, mem_join_natAdd, mem_join_natAdd]`. Simplify using `[Fin.ext_iff]`.
+By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `_`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Use linear arithmetic over natural numbers and integers.
 -/
 theorem erase_join_castAdd {m g : ℕ} (S : Finset (Fin m)) (Z : Finset (Fin g)) (i : Fin m) :
     (join S Z).erase (Fin.castAdd g i) = join (S.erase i) Z := by
@@ -82,15 +82,15 @@ theorem erase_join_castAdd {m g : ℕ} (S : Finset (Fin m)) (Z : Finset (Fin g))
     simp [Fin.ext_iff]; intro _; omega
 
 /- English proof (translation)
-Unfold `sgn`. Establish `h : (join S Z).filter (· < Fin.castAdd g i) = (S.filter (· < i)).map (Fin.castAddEmb g)`. Use extensionality with `x`. Use `Fin.addCases (fun j => ?_) (fun c => ?_) x` and prove the remaining obligations. Rewrite using `[Finset.mem_filter, mem_join_castAdd, Finset.mem_map]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨j, Finset.mem_filter.2 ⟨h1, Fin.lt_def.2 (by have := Fin.lt_def.1 h2; simpa only [Fin.coe_castAdd] using this)⟩, rfl⟩`. Introduce and unpack `⟨k, hk, he⟩`. Simplify using `only [Fin.castAddEmb_apply, Fin.castAdd_inj] at he`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Substitute `he` using the available equality. Conclude with `⟨(Finset.mem_filter.1 hk).1, Fin.lt_def.2 (by have := Fin.lt_def.1 (Finset.mem_filter.1 hk).2; simpa only [Fin.coe_castAdd] using this)⟩`. Rewrite using `[Finset.mem_filter, mem_join_natAdd, Finset.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, h2⟩`.
+Substitute using the available equality. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-It suffices to derive a contradiction. Simplify using `[Fin.lt_def] at h2`. Use linear arithmetic over natural numbers and integers. Introduce and unpack `⟨k, _, he⟩`. It suffices to derive a contradiction.
+It suffices to derive a contradiction. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Assume the hypotheses and unpack their components. It suffices to derive a contradiction.
 
-Simplify using `[Fin.ext_iff] at he`. Use linear arithmetic over natural numbers and integers. Rewrite using `[h, Finset.card_map]`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 -/
 theorem sgn_join_castAdd {m g : ℕ} (S : Finset (Fin m)) (Z : Finset (Fin g)) (i : Fin m) :
     sgn (Fin.castAdd g i) (join S Z) = sgn i S := by
@@ -113,7 +113,7 @@ theorem sgn_join_castAdd {m g : ℕ} (S : Finset (Fin m)) (Z : Finset (Fin g)) (
   rw [h, Finset.card_map]
 
 /- English proof (translation)
-Simplify using `only [wedge, mem_join_castAdd, sgn_join_castAdd, erase_join_castAdd]`.
+Simplify using the standard rewrite rules.
 -/
 theorem wedge_castAdd_join {m g : ℕ} (i : Fin m) (x : Ext (m + g)) (S : Finset (Fin m))
     (Z : Finset (Fin g)) :
@@ -121,9 +121,9 @@ theorem wedge_castAdd_join {m g : ℕ} (i : Fin m) (x : Ext (m + g)) (S : Finset
   simp only [wedge, mem_join_castAdd, sgn_join_castAdd, erase_join_castAdd]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `U`. Use `show pullFull a (rhoL (n := n) S w) U = _`. Establish `hy : (fun S' : Finset (Fin (n + n)) => rhoL (n` using `n) S w (join S' (fibrePart U))) = fun S' => if S' = ∅ then w (join S (fibrePart U)) else 0 := by`. Use function extensionality and compare the values at `S'`. Use `show (if basePart (join S' (fibrePart U)) = ∅ then w (join S (fibrePart (join S' (fibrePart U)))) else 0) = _`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[basePart_join, fibrePart_join]`. Unfold `pullFull`. Rewrite using `[hy]`. Unfold `pullBase`. Apply the tactic sequence `split_ifs <;> simp_all`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem pull_rho {n g : ℕ} (a : Fin n → ℂ) (w : Ext (1 + 1 + g)) (S : Finset (Fin (1 + 1))) :
     pullFullL a (rhoL (n := n) S w) = fun U => if basePart U = ∅ then w (join S (fibrePart U)) else 0 := by
@@ -140,7 +140,7 @@ theorem pull_rho {n g : ℕ} (a : Fin n → ℂ) (w : Ext (1 + 1 + g)) (S : Fins
   split_ifs <;> simp_all
 
 /- English proof (translation)
-Apply the tactic sequence `unfold lamL; split_ifs <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem lamL_apply {g : ℕ} (S : Finset (Fin (1 + 1))) (x : Ext (1 + 1 + g)) (U : Finset (Fin (1 + 1 + g))) :
     lamL S x U = (if Fin.castAdd 1 (0 : Fin 1) ∈ S then wedge (Fin.castAdd g (Fin.castAdd 1 (0 : Fin 1))) else id)
@@ -148,11 +148,11 @@ theorem lamL_apply {g : ℕ} (S : Finset (Fin (1 + 1))) (x : Ext (1 + 1 + g)) (U
   unfold lamL; split_ifs <;> rfl
 
 /- English proof (translation)
-Introduce `n g a w`. Simplify using `only [pull_rho]`. Use function extensionality and compare the values at `U`. Rewrite using `[Finset.sum_apply]`. Establish `huniv : (Finset.univ : Finset (Finset (Fin (1 + 1)))) = {∅, {0}, {1}, {0, 1}}` using `by decide`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[huniv, Finset.sum_insert (by decide), Finset.sum_insert (by decide), Finset.sum_insert (by decide), Finset.sum_singleton]`. Simplify using `only [lamL_apply]`. Rewrite using `[← join_parts U]`. Generalize the expression as in `basePart U = B`. Generalize the expression as in `fibrePart U = Z`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Establish `hB : B = ∅ ∨ B = {0} ∨ B = {1} ∨ B = {0, 1}` using `by revert B; decide`. Apply the tactic sequence `rcases hB with rfl | rfl | rfl | rfl <;>`. Simplify using `(config := {decide := true}) [wedge_castAdd_join, basePart_join, fibrePart_join, sgn]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem sum_lam_pull_rho : ∀ {n g : ℕ} (a : Fin n → ℂ) (w : Ext (1 + 1 + g)),
     ∑ S : Finset (Fin (1 + 1)), lamL S (pullFullL a (rhoL (n := n) S w)) = w := by

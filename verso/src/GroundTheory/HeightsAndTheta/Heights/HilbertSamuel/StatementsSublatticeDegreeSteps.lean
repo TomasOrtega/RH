@@ -31,11 +31,11 @@ def GramContraction.Statement : Prop :=
       (Matrix.gram ℝ (Sum.elim (Ψ ∘ u) w)).det ≤ (Matrix.gram ℝ u).det * ∏ j, ‖w j‖ ^ 2
 
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 example : DiscreteTopology (imageLattice SublatticeDegree.φ1) := inferInstance
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 example : IsZLattice ℝ (imageLattice SublatticeDegree.φ1) := inferInstance
 

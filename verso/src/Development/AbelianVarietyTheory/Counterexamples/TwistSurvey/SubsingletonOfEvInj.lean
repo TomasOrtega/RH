@@ -8,13 +8,13 @@ namespace GlobalTheory.EvalInj
 variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m}
 
 /- English proof (translation)
-Introduce `x y hxy`. Establish `h0 : (R.HW i σ).e (x - y) v = 0`. Rewrite using `[map_sub]`. Use `show (R.HW i σ).e x v - (R.HW i σ).e y v = 0`. Conclude with `sub_eq_zero.2 hxy`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Establish `hip : ipM (R.MW i σ) (R.νW i) (R.fdW i) ((R.HW i σ).e (x - y)) ((R.HW i σ).e (x - y)) = 0`. Distinguish the cases in `h : ∃ c, IsMultIP (R.MW i σ) (R.νW i) (R.fdW i) ((R.HW i σ).e (x - y)) ((R.HW i σ).e (x - y)) c`. Establish `h1` using `(ipM_spec _ _ _ _ _ h v v).2`. Rewrite `h1` using `[h0]`. Simplify using `only [Pi.zero_apply, mul_zero, integral_zero] at h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Break down `mul_eq_zero.1 h1.symm with h2 | h2` into its components or cases. Conclude with `h2`. Take `⟨τ, -, hτ⟩` from `Finset.prod_eq_zero_iff.1 h2`. Conclude with `absurd (inner_self_eq_zero.1 hτ) (hv τ)`. Unfold `ipM`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[dif_neg h]`. Establish `h3` using `(hm i σ).2.2 (x - y) (x - y)`. Unfold `ipAt at h3`. Rewrite `h3` using `[hip, mul_zero]`. Conclude with `sub_eq_zero.1 (inner_self_eq_zero.1 h3)`.
+A detailed English derivation is pending.
 -/
 theorem evAt_injective_of_ne {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks)
     (hm : R.models_HW) (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ) (v : (R.MW i σ).Vec)

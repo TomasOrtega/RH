@@ -32,13 +32,13 @@ def FibreSum : Prop :=
                 ∑ i : Fin n, y ^ (∑ j ∈ univ.erase i, lam t₁ j + (i : ℕ))))
 
 /- English proof (translation)
-Introduce `E K _ _ _ _ n lam`. Take `⟨k₀, hk⟩` from `h E K n lam`. Use `⟨k₀, fun k hk' N hN B => ?_⟩` and prove the remaining obligations. Take `⟨c, hc, hsum⟩` from `hk k hk' N hN B`. Use `⟨c, hc, fun R _ _ _ t₀ t₁ ht ε m g y => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `swap : ∀ C : Fin n → R, (c.sum fun α r => r • ∑ i, (∏ τ, ∏ s, detOne (algebraMap K R (resO τ (α s))) (twist t₀ t₁ ε y i g τ)) * C i) = ∑ i, (∏ τ, sch (lam τ) (twist t₀ t₁ ε y i g τ)) * C i`. Introduce `C`. Rewrite using `[Finsupp.sum]`. Repeatedly rewrite using `[Finset.smul_sum]`. Rewrite using `[Finset.sum_comm]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← hsum R (twist t₀ t₁ ε y i g), Finsupp.sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun α _ => ?_` and prove the remaining obligations. Rewrite using `[smul_mul_assoc]`. Use `⟨fun hm hu => ?_, fun hm hu => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[swap]`. Conclude with `h₁ R (E →+* K) n t₀ t₁ ht ε lam m hm g y hu`. Rewrite using `[swap]`. Conclude with `h₂ R (E →+* K) n t₀ t₁ ht ε lam m hm g y hu`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fibreSum_of (h : InterpNF) (h₁ : Fibre) (h₂ : FibreOff) : FibreSum := by
   intro E K _ _ _ _ n lam

@@ -25,11 +25,11 @@ def RankOne : Prop :=
         be z Formalism.QuantumDeterminants.cStd π σ μW μN w v = (innerSL ℂ (L v)).smulRight (L w)
 
 /- English proof (translation)
-Introduce `hIn k r ε lam h H _ _ _ σ w0 Wp _ _ _ _ z u π μW μN μG νq hS ⟨x0, hx0, y0, hy0, hne⟩`. Establish `hsm` using `DD_smooth hIn.2.2.1 hS.1 hS.2.1 hS.2.2.2.2.1`. Take `⟨L, hL⟩` from `hR k r ε lam h H σ w0 Wp z u π μW μN μG νq hS`. Rewrite `hne` using `[hL x0 (hsm x0 hx0) y0 (hsm y0 hy0)]`. Establish `hLx : L x0 ≠ 0` using `fun h0 => hne (by ext ξ; simp [h0])`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hLy : L y0 ≠ 0` using `fun h0 => hne (by ext ξ; simp [h0])`. Establish `hn : ⟪L y0, L y0⟫_ℂ ≠ 0` using `inner_self_ne_zero.2 hLy`. Establish `hB` using `bessel_smul (hBB hIn k r ε lam h H σ w0 Wp z _ u π μW μN μG νq hS y0 (Or.inl hy0) (L y0)) (⟪L y0, L y0⟫_ℂ)⁻¹`. Establish `he : ∀ x ∈ PI.UpqRep.smoothVecs (k` using `k) (r := r) σ, (⟪L y0, L y0⟫_ℂ)⁻¹ • be z Formalism.QuantumDeterminants.cStd π σ μW μN x y0 (L y0) = L x := fun x hx => by`. Rewrite using `[hL x hx y0 (hsm y0 hy0), ContinuousLinearMap.smulRight_apply, innerSL_apply_apply, smul_smul, inv_mul_cancel₀ hn, one_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨_, hB, ⟨x0, hx0, by rw [he x0 (hsm x0 hx0)]; exact hLx⟩, fun x hx v hv => ?_⟩` and prove the remaining obligations. Rewrite using `[he x hx, he v (hsm v hv), hL x hx v (hsm v hv)]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem shape_of (hR : RankOne) (hBB : BeBessel) : Shape := by
   intro hIn k r ε lam h H _ _ _ σ w0 Wp _ _ _ _ z u π μW μN μG νq hS ⟨x0, hx0, y0, hy0, hne⟩
@@ -50,13 +50,13 @@ theorem shape_of (hR : RankOne) (hBB : BeBessel) : Shape := by
   rw [he x hx, he v (hsm v hv), hL x hx v (hsm v hv)]
 
 /- English proof (translation)
-Take `⟨a1, a2, a3, C, Ws, hWs, hC⟩` from `hB`. Take `⟨b1, b2, b3, C', Ws', hWs', hC'⟩` from `hB'`. Use `⟨fun v hv w hw => ?_, fun c v hv => ?_, fun g hg m hm v hv => ?_, |C| + |C'|, Ws ++ Ws', fun W hW => (List.mem_append.1 hW).elim (hWs W) (hWs' W), fun v hv => ?_⟩` and prove the remaining obligations. Simplify using `only [a1 v hv w hw, b1 v hv w hw]`. Normalize the expressions using the abelian group laws.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Simplify using `only [a2 c v hv, b2 c v hv, smul_add]`. Simplify using `only [a3 g hg m hm v hv, b3 g hg m hm v hv, map_add, smul_add]`. Establish `hnn : ∀ L : List (List (Mx k r)), 0 ≤ (L.map fun W => ‖PI.UpqRep.dsigW (k` using `k) (r := r) σ W v‖).sum := fun L => List.sum_nonneg fun t ht => by`. Take `⟨W, -, rfl⟩` from `List.mem_map.1 ht`. Conclude with `norm_nonneg _`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[List.map_append, List.sum_append]`. Establish `h1` using `(hC v hv).trans (mul_le_mul_of_nonneg_right (le_abs_self C) (hnn Ws))`. Establish `h2` using `(hC' v hv).trans (mul_le_mul_of_nonneg_right (le_abs_self C') (hnn Ws'))`. Establish `h3` using `mul_nonneg (abs_nonneg C) (hnn Ws')`. Establish `h4` using `mul_nonneg (abs_nonneg C') (hnn Ws)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(norm_add_le _ _).trans ?_` and prove the remaining obligations. Use the polynomial consequences of the given equalities and inequalities.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem bessel_add {k r : ℕ} {H Wp : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     [NormedAddCommGroup Wp] [NormedSpace ℂ Wp] {z : Fin (2 * r + k + 1) → ℂ} {ψ : Mx k r → ℂ}
@@ -85,13 +85,13 @@ theorem bessel_add {k r : ℕ} {H Wp : Type} [NormedAddCommGroup H] [InnerProduc
     nlinarith
 
 /- English proof (translation)
-Introduce `hIn k r ε lam h H _ _ _ σ w0 Wp _ _ _ _ z c u π μW μN μG νq hS l hl _ hid v hv x hx`. Establish `hK` using `hIn.2.2.1`. Establish `hvs` using `hK k r ε lam H σ hS.1 hS.2.1 v hv`. Take `⟨-, -, -, hBC4⟩` from `hBC hIn k r ε lam h H σ w0 Wp z c u π μW μN μG νq hS`. Use extensionality with `ξ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. By extensionality, compare the relevant components.
 
-Establish `hB` using `bessel_add (hBB hIn k r ε lam h H σ w0 Wp z c u π μW μN μG νq hS v (Or.inr hv) ξ) (bessel_smul hl (-⟪l v, ξ⟫_ℂ))`. Establish `h0` using `bessel_ne_zero_of_cyclic_orbit (Sm.smoothCyc_of_kFinSmooth hK) hK k r ε lam H σ w0 Wp z c π hS.1 hS.2.1 hS.2.2.2.2.1 _ hB (fun y hy => by`. Establish `hadj` using `(hBC4 y hy v (Or.inr hv)).2`. Use `ext_inner_left ℂ fun η => ?_` and prove the remaining obligations. Establish `e` using `ContinuousLinearMap.adjoint_inner_left (be z c π σ μW μN y v) ξ η`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `e` using `[hadj, hid v hvs y hy]`. Simplify using `only [ContinuousLinearMap.smulRight_apply, innerSL_apply_apply, inner_smul_left, inner_conj_symm] at e`. Rewrite using `[inner_add_right, ← e, inner_smul_right, inner_zero_right]`. Use the proof step `ring) x hx`. Rewrite `h0` using `[neg_smul, add_neg_eq_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h0, ContinuousLinearMap.smulRight_apply, innerSL_apply_apply]`.
+A detailed English derivation is pending.
 -/
 theorem kFinForm_of (hBC : BeConv) (hBB : BeBessel) : KFinForm := by
   intro hIn k r ε lam h H _ _ _ σ w0 Wp _ _ _ _ z c u π μW μN μG νq hS l hl _ hid v hv x hx

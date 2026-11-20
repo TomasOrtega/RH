@@ -5,7 +5,7 @@ universe u_1 u_2
 namespace Bl.PowMulVecEigenvalue
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Rewrite using `[pow_succ, ← Matrix.mulVec_mulVec, h, Matrix.mulVec_smul, ih, smul_smul, ← pow_succ']`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 private lemma pow_mulVec_eig {S : Type u_1} [CommRing S] {n : Type u_2} [Fintype n] [DecidableEq n]
     (Q : Matrix n n S) (μ : S) (v : n → S) (h : Q.mulVec v = μ • v) (k : ℕ) :
@@ -16,7 +16,7 @@ private lemma pow_mulVec_eig {S : Type u_1} [CommRing S] {n : Type u_2} [Fintype
     rw [pow_succ, ← Matrix.mulVec_mulVec, h, Matrix.mulVec_smul, ih, smul_smul, ← pow_succ']
 
 /- English proof (translation)
-Introduce `S _ n _ _ Q μ v h p`. Rewrite using `[Polynomial.aeval_eq_sum_range, Polynomial.aeval_eq_sum_range, Matrix.sum_mulVec, Finset.sum_smul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.smul_mulVec, pow_mulVec_eig Q μ v h i, smul_assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem goal1 :
   ∀ {S : Type u_1} [inst : CommRing.{u_1} S] {n : Type u_2} [inst_1 : Fintype.{u_2} n] [inst_2 : DecidableEq.{u_2 + 1} n]

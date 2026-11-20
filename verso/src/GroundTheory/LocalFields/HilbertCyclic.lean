@@ -16,7 +16,7 @@ noncomputable def partialNorm (m : ℕ) : Lˣ :=
 
 omit [FiniteDimensional K L] in
 /- English proof (translation)
-Rewrite using `[partialNorm, prod_range_add, partialNorm, partialNorm, smul_prod']`. Repeatedly rewrite using `[pow_add, mul_smul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 -/
 theorem partialNorm_add (a b : ℕ) :
     partialNorm σ x (a + b) = partialNorm σ x a * (σ ^ a) • partialNorm σ x b := by
@@ -25,7 +25,7 @@ theorem partialNorm_add (a b : ℕ) :
 
 omit [FiniteDimensional K L] in
 /- English proof (translation)
-Rewrite using `[partialNorm, prod_range_one, pow_zero, one_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem partialNorm_one : partialNorm σ x 1 = x := by
   rw [partialNorm, prod_range_one, pow_zero, one_smul]
@@ -33,9 +33,9 @@ theorem partialNorm_one : partialNorm σ x 1 = x := by
 variable {σ}
 
 /- English proof (translation)
-Rewrite using `[partialNorm, ← Fin.prod_univ_eq_prod_range, tateNorm_apply]`. Use `Fintype.prod_bijective (fun j : Fin (orderOf σ) => σ ^ (j : ℕ)) ⟨?_, ?_⟩ _ _ (fun _ => rfl)` and prove the remaining obligations. Introduce `i j hij`. Conclude with `Fin.ext (pow_injOn_Iio_orderOf i.2 j.2 hij)`. Introduce `g`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨k, hk⟩` from `(mem_powers_iff_mem_zpowers (x := σ) (y := g)).mpr (hσ g)`. Use `⟨⟨k % orderOf σ, Nat.mod_lt _ (orderOf_pos σ)⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `σ ^ (k % orderOf σ) = g`. Rewrite using `[pow_mod_orderOf]`. Conclude with `hk`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem partialNorm_orderOf (hσ : ∀ g, g ∈ Subgroup.zpowers σ) :
     partialNorm σ x (orderOf σ) = tateNorm (L ≃ₐ[K] L) Lˣ x := by
@@ -55,14 +55,14 @@ variable (hσ : ∀ g, g ∈ Subgroup.zpowers σ) {x} (hx : tateNorm (L ≃ₐ[K
 include hσ hx
 
 /- English proof (translation)
-Rewrite using `[add_comm, partialNorm_add, partialNorm_orderOf x hσ, hx, pow_orderOf_eq_one, one_smul, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem partialNorm_add_orderOf (m : ℕ) :
     partialNorm σ x (m + orderOf σ) = partialNorm σ x m := by
   rw [add_comm, partialNorm_add, partialNorm_orderOf x hσ, hx, pow_orderOf_eq_one, one_smul, one_mul]
 
 /- English proof (translation)
-Use `conv_rhs => rw [← Nat.mod_add_div m (orderOf σ)]`. Proceed by induction on `m / orderOf σ with`. Consider the case `zero => simp`. Consider the case `succ q ih => rw [mul_add, mul_one, ← add_assoc, partialNorm_add_orderOf hσ hx, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem partialNorm_mod (m : ℕ) : partialNorm σ x (m % orderOf σ) = partialNorm σ x m := by
   conv_rhs => rw [← Nat.mod_add_div m (orderOf σ)]
@@ -71,7 +71,7 @@ theorem partialNorm_mod (m : ℕ) : partialNorm σ x (m % orderOf σ) = partialN
   | succ q ih => rw [mul_add, mul_one, ← add_assoc, partialNorm_add_orderOf hσ hx, ih]
 
 /- English proof (translation)
-Rewrite using `[← partialNorm_mod hσ hx a, ← partialNorm_mod hσ hx b, (pow_eq_pow_iff_modEq.mp h)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem partialNorm_eq_of_pow_eq {a b : ℕ} (h : σ ^ a = σ ^ b) :
     partialNorm σ x a = partialNorm σ x b := by
@@ -80,11 +80,11 @@ theorem partialNorm_eq_of_pow_eq {a b : ℕ} (h : σ ^ a = σ ^ b) :
 end Partial
 
 /- English proof (translation)
-Establish `hk : ∀ g : L ≃ₐ[K] L, ∃ k : ℕ, σ ^ k = g` using `fun g => by`. Take `⟨k, hk⟩` from `(mem_powers_iff_mem_zpowers (x := σ) (y := g)).mpr (hσ g)`. Conclude with `⟨k, hk⟩`. Use `choose k hk using hk`. Set `f : (L ≃ₐ[K] L) → Lˣ` to `fun g => partialNorm σ x (k g)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hf : groupCohomology.IsMulCocycle₁ f`. Introduce `g h`. Establish `e : σ ^ k (g * h) = σ ^ (k g + k h)` using `by rw [hk, pow_add, hk, hk]`. Express the relevant statement in the definitionally equal form `partialNorm σ x (k (g * h)) = g • partialNorm σ x (k h) * partialNorm σ x (k g)`. Rewrite using `[partialNorm_eq_of_pow_eq hσ hx e, partialNorm_add, hk, mul_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨β, hβ⟩` from `groupCohomology.isMulCoboundary₁_of_isMulCocycle₁_of_aut_to_units f hf`. Use `⟨β, ?_⟩` and prove the remaining obligations. Rewrite using `[hβ σ]`. Express the relevant statement in the definitionally equal form `partialNorm σ x (k σ) = x`. Rewrite using `[partialNorm_eq_of_pow_eq hσ hx (show σ ^ k σ = σ ^ 1 by rw [hk, pow_one]), partialNorm_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_smul_div_eq_of_tateNorm_eq_one {σ : L ≃ₐ[K] L}
     (hσ : ∀ g, g ∈ Subgroup.zpowers σ) {x : Lˣ} (hx : tateNorm (L ≃ₐ[K] L) Lˣ x = 1) :
@@ -106,7 +106,7 @@ theorem exists_smul_div_eq_of_tateNorm_eq_one {σ : L ≃ₐ[K] L}
   rw [partialNorm_eq_of_pow_eq hσ hx (show σ ^ k σ = σ ^ 1 by rw [hk, pow_one]), partialNorm_one]
 
 /- English proof (translation)
-Take `⟨σ, hσ⟩` from `IsCyclic.exists_generator (α := L ≃ₐ[K] L)`. Rewrite using `[subsingleton_tateNegOne_iff]`. Introduce `x hx`. Take `⟨y, hy⟩` from `exists_smul_div_eq_of_tateNorm_eq_one hσ hx`. Conclude with `Subgroup.subset_closure ⟨σ, y, hy⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem subsingleton_tateNegOne_units [IsCyclic (L ≃ₐ[K] L)] :
     Subsingleton (TateNegOne (L ≃ₐ[K] L) Lˣ) := by

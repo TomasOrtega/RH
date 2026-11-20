@@ -23,7 +23,7 @@ def evalF {X : Scheme.{0}} (L : LB X) (i : L.ι) : LB.Sec L →+ Γ(X, L.U i) wh
   map_add' _ _ := rfl
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `evalF L i (∑ k, a k • s k) = _`. Rewrite using `[map_sum]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem sum_smul_f {X : Scheme.{0}} {L : LB X} {n : ℕ} (a : Fin n → Γ(X, ⊤)) (s : Fin n → LB.Sec L)
     (i : L.ι) : (∑ k, a k • s k).f i = ∑ k, resG X le_top (a k) * (s k).f i := by
@@ -32,15 +32,13 @@ theorem sum_smul_f {X : Scheme.{0}} {L : LB X} {n : ℕ} (a : Fin n → Γ(X, �
   rfl
 
 /- English proof (translation)
-Introduce `K Ω _ _ _ _ m y X _ p g ψ hbase hratio`. Establish `hA : ∀ (lam : Fin (m + 1) → 𝓞 K) (l : Fin (m + 1)) (i : ((ProjSpace.O1 (𝓞 K) m).pull g).ι) (h : genericPoint X ∈ ((ProjSpace.O1 (𝓞 K) m).pull g).U i), ψ (y l) * fnOf _ h ((∑ k, algX p ⊤ (lam k) • GlobalTheory.Cartier.secPull (ProjSpace.coord (𝓞 K) m k) g).f i) = ψ (∑ k, algebraMa …`. Introduce `lam l i h`. Rewrite using `[sum_smul_f, map_sum, Finset.mul_sum, map_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_mul, fnOf_resG, ← hbase, map_mul, mul_left_comm (ψ (y l)), hratio l k i h]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨hA, fun hy lam hsum => ?_⟩` and prove the remaining obligations. Choose the witnesses or unpack the hypotheses as in `⟨k₀, hk₀⟩ : ∃ k₀, y k₀ ≠ 0 := by`. Assume the negation of the conclusion as `hc`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Use `push_neg at hc`. Conclude with `hy (funext hc)`. Apply `GlobalTheory.LB.f_injective` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Apply `GlobalTheory.Cartier.fn_ext` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `hU`. Establish `e` using `hA lam k₀ i hU`. Rewrite `e` using `[hsum, map_zero, zero_mul]`. Establish `hψ : ψ (y k₀) ≠ 0` using `(map_ne_zero ψ).2 hk₀`. Rewrite using `[GlobalTheory.LB.zero_f, map_zero]`.
-
-Conclude with `(mul_eq_zero.1 e).resolve_left hψ`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem linComb_ratio_and_vanish : ∀ (K Ω : Type) [Field K] [NumberField K] [Field Ω] [Algebra K Ω] (m : ℕ) (y : Fin (m + 1) → Ω) (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp (𝓞 K)) (g : X ⟶ PSpace (𝓞 K) m) (ψ : Ω →+* X.functionField),
     (∀ a : 𝓞 K, ψ (algebraMap K Ω (a : K)) = fnOf ⊤ (TopologicalSpace.Opens.mem_top _) (algX p ⊤ a)) →

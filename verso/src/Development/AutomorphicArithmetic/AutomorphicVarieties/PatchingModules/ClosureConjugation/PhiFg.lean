@@ -5,15 +5,15 @@ open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.AlgebraT
 open scoped TensorProduct
 
 /- English proof (translation)
-Take `⟨s, hs, hgen⟩` from `h`. Rewrite `hgen` using `[topGen_iff]`. Establish `: Finite s` using `hs.to_subtype`. Set `f : {φ : G →* Z // IsOpen (φ.ker : Set G)} → (s → Z)` to `fun φ x => φ.1 x`. Apply `Finite.of_injective f` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `φ ψ hφψ`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `hK : IsOpen ((φ.1.ker ⊓ ψ.1.ker : Subgroup G) : Set G)`. Rewrite using `[Subgroup.coe_inf]`. Conclude with `φ.2.inter ψ.2`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hle : φ.1.ker ⊓ ψ.1.ker ≤ MonoidHom.eqLocus φ.1 ψ.1`. Introduce `g hg`. Rewrite `hg` using `[Subgroup.mem_inf, MonoidHom.mem_ker, MonoidHom.mem_ker]`. Use `show φ.1 g = ψ.1 g`. Rewrite using `[hg.1, hg.2]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hopen` using `Subgroup.isOpen_mono hle hK`. Establish `hcl` using `Subgroup.isClosed_of_isOpen _ hopen`. Establish `hs' : Subgroup.closure (s : Set G) ≤ MonoidHom.eqLocus φ.1 ψ.1`. Rewrite using `[Subgroup.closure_le]`. Introduce `x hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `congrFun hφψ ⟨x, hx⟩`. Establish `htop` using `Subgroup.topologicalClosure_minimal _ hs' hcl`. Rewrite `htop` using `[hgen]`. Use extensionality with `g`. Conclude with `htop (Subgroup.mem_top g)`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 private theorem finite_open_homs_to_finite_group (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] (h : TopFG G)
     (Z : Type) [Group Z] [Finite Z] : Finite {φ : G →* Z // IsOpen (φ.ker : Set G)} := by
@@ -44,9 +44,9 @@ private theorem finite_open_homs_to_finite_group (G : Type) [Group G] [Topologic
   exact htop (Subgroup.mem_top g)
 
 /- English proof (translation)
-Introduce `l _ F hF`. Take `⟨s, hs⟩` from `hF`. Establish `hΓ : TopFG F.Γ` using `⟨(s : Set F.Γ), s.finite_toSet, (topGen_iff _).mpr hs⟩`. Establish `hopen : IsOpen ((F.η.ker : Subgroup F.Γ) : Set F.Γ)` using `F.η_open`. Establish `hG : TopFG F.G₀` using `((TopFG.subgroup_quot F.Γ hΓ).1 _ hopen)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: CompactSpace F.G₀` using `isCompact_iff_compactSpace.mp (Subgroup.isClosed_of_isOpen _ hopen).isCompact`. Introduce `H hH`. Establish `hH' : TopFG H` using `(TopFG.subgroup_quot F.G₀ hG).1 H hH`. Establish `: NeZero l` using `⟨(Fact.out : l.Prime).ne_zero⟩`. Conclude with `finite_open_homs_to_finite_group H hH' (Multiplicative (ZMod l))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pa.phi_fg :
     ∀ {l : ℕ} [Fact l.Prime] (F : GFrame l), (∃ s : Finset F.Γ, (Subgroup.closure (s : Set F.Γ)).topologicalClosure = ⊤) → PhiCond F.G₀ l := by

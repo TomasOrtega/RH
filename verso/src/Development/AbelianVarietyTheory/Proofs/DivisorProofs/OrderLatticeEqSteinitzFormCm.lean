@@ -14,11 +14,11 @@ namespace GlobalTheory.SteinitzOrder
 variable {E : Type} [Field E] [NumberField E]
 
 /- English proof (translation)
-Take `⟨N, hN, hNy⟩` from `PI.AdCpctDenWork.exists_nat_adele ((↑y⁻¹ : Af E))`. Establish `hn0 : Ideal.absNorm c ≠ 0` using `fun h => hc (Ideal.absNorm_eq_zero_iff.1 h)`. Establish `hnc : ((Ideal.absNorm c : ℕ) : OF E) ∈ c` using `Ideal.absNorm_mem c`. Use `⟨Ideal.absNorm c * N, Nat.mul_pos (Nat.pos_of_ne_zero hn0) hN, fun b => ?_⟩` and prove the remaining obligations. Establish `h` using `PicFin.mul_mem_hatO hnc (y := algebraMap E (Af E) (b : E) * ((N : Af E) * (↑y⁻¹ : Af E))) (fun v => ?_)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `show algebraMap E (Af E) _ * _ ∈ hatO c`. Use `h using 1` and compare the differences between its conclusion and the goal. Simplify using `only [map_mul, map_natCast, Nat.cast_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `h1` using `hNy v`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb : ((algebraMap E (Af E)) (b : E)) v ∈ v.adicCompletionIntegers E` using `HeightOneSpectrum.coe_mem_adicCompletionIntegers v b`. Conclude with `mul_mem hb h1`.
+A detailed English derivation is pending.
 -/
 theorem exists_nat_mul_mem_lattice {c : Ideal (OF E)} (hc : c ≠ ⊥) (y : (Af E)ˣ) :
     ∃ m : ℕ, 0 < m ∧ ∀ b : 𝓞 E, (m : E) * (b : E) ∈ lattice c y := by
@@ -36,7 +36,7 @@ theorem exists_nat_mul_mem_lattice {c : Ideal (OF E)} (hc : c ≠ ⊥) (y : (Af 
     exact mul_mem hb h1
 
 /- English proof (translation)
-Take `⟨k, hk, h⟩` from `exists_integral_multiples ℤ ℚ (L := E) {z}`. Conclude with `⟨k, hk, by simpa [zsmul_eq_mul] using h z (Finset.mem_singleton_self z)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_int_integral (z : E) : ∃ k : ℤ, k ≠ 0 ∧ IsIntegral ℤ ((k : E) * z) := by
   obtain ⟨k, hk, h⟩ := exists_integral_multiples ℤ ℚ (L := E) {z}
@@ -48,14 +48,14 @@ local notation "𝔽" => maximalRealSubfield E
 local notation "cc" => IsCMField.complexConj E
 
 /- English proof (translation)
-The claim follows from `(IsCMField.complexConj E).commutes a`.
+A detailed English derivation is pending.
 -/
 theorem conj_coe (a : 𝔽) : cc (a : E) = a := (IsCMField.complexConj E).commutes a
 
 def lam (θ x : E) : E := (x - cc x) / (θ - cc θ)
 
 /- English proof (translation)
-Unfold `lam`. Rewrite using `[map_div₀, map_sub, map_sub, IsCMField.complexConj_apply_apply, IsCMField.complexConj_apply_apply, show cc x - x = -(x - cc x) by ring, show cc θ - θ = -(θ - cc θ) by ring, neg_div_neg_eq]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_lam (θ x : E) : cc (lam θ x) = lam θ x := by
   unfold lam
@@ -63,43 +63,43 @@ theorem conj_lam (θ x : E) : cc (lam θ x) = lam θ x := by
     show cc x - x = -(x - cc x) by ring, show cc θ - θ = -(θ - cc θ) by ring, neg_div_neg_eq]
 
 /- English proof (translation)
-The claim follows from `(IsCMField.complexConj_eq_self_iff E _).1 (conj_lam θ x)`.
+A detailed English derivation is pending.
 -/
 theorem lam_mem (θ x : E) : lam θ x ∈ 𝔽 := (IsCMField.complexConj_eq_self_iff E _).1 (conj_lam θ x)
 
 /- English proof (translation)
-Introduce `h` and use `hθ ((IsCMField.complexConj_eq_self_iff E _).1 (sub_eq_zero.1 h).symm)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem sub_conj_ne {θ : E} (hθ : θ ∉ 𝔽) : θ - cc θ ≠ 0 := fun h =>
   hθ ((IsCMField.complexConj_eq_self_iff E _).1 (sub_eq_zero.1 h).symm)
 
 /- English proof (translation)
-Unfold `lam`. Rewrite using `[div_mul_cancel₀ _ (sub_conj_ne hθ)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem sub_conj_eq {θ : E} (hθ : θ ∉ 𝔽) (x : E) : x - cc x = lam θ x * (θ - cc θ) := by
   unfold lam; rw [div_mul_cancel₀ _ (sub_conj_ne hθ)]
 
 /- English proof (translation)
-Unfold `lam`. Rewrite using `[map_add]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem lam_add (θ x x' : E) : lam θ (x + x') = lam θ x + lam θ x' := by
   unfold lam; rw [map_add]; ring
 
 /- English proof (translation)
-Unfold `lam`. Rewrite using `[map_mul, conj_coe]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem lam_mul (θ : E) (a : 𝔽) (x : E) : lam θ ((a : E) * x) = a * lam θ x := by
   unfold lam; rw [map_mul, conj_coe]; ring
 
 /- English proof (translation)
-The claim follows from `div_self (sub_conj_ne hθ)`.
+A detailed English derivation is pending.
 -/
 theorem lam_self {θ : E} (hθ : θ ∉ 𝔽) : lam θ θ = 1 := div_self (sub_conj_ne hθ)
 
 /- English proof (translation)
-Use `(IsCMField.complexConj_eq_self_iff E _).1 ?_` and prove the remaining obligations. Establish `h1` using `sub_conj_eq hθ x`. Establish `h2` using `sub_conj_eq hθ ω`. Rewrite `h2` using `[hω, one_mul]`. Rewrite using `[map_sub, map_mul, conj_lam]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `-h1 + lam θ x * h2`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem mem_of_lam_eq {θ ω : E} (hθ : θ ∉ 𝔽) (hω : lam θ ω = 1) (x : E) : x - lam θ x * ω ∈ 𝔽 := by
   refine (IsCMField.complexConj_eq_self_iff E _).1 ?_
@@ -110,7 +110,7 @@ theorem mem_of_lam_eq {θ ω : E} (hθ : θ ∉ 𝔽) (hω : lam θ ω = 1) (x :
   linear_combination -h1 + lam θ x * h2
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨z, (isIntegral_algHom_iff ((𝔽).subtype.toIntAlgHom) Subtype.val_injective).1 h⟩, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_of_isIntegral {z : 𝔽} (h : IsIntegral ℤ (z : E)) : ∃ r : OF E, algebraMap (OF E) 𝔽 r = z :=
   ⟨⟨z, (isIntegral_algHom_iff ((𝔽).subtype.toIntAlgHom) Subtype.val_injective).1 h⟩, rfl⟩
@@ -133,9 +133,9 @@ def latB (c : Ideal (OF E)) (y : (Af E)ˣ) (θ : E) : Submodule (OF E) 𝔽 wher
     rw [show algebraMap (OF E) E r = ((algebraMap (OF E) 𝔽 r : 𝔽) : E) from rfl, lam_mul, hb, Algebra.smul_def]; rfl⟩
 
 /- English proof (translation)
-Take `⟨n, hn, hL⟩` from `Conv.exists_denominator c y`. Use `⟨(n : OF E), mem_nonZeroDivisors_of_ne_zero (by exact_mod_cast hn.ne'), fun a ha => ?_⟩` and prove the remaining obligations. Take `⟨b, hb⟩` from `hL _ ha`. Use `exists_of_isIntegral ?_` and prove the remaining obligations. Establish `e : (((n : OF E) • a : 𝔽) : E) = algebraMap (𝓞 E) E b`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[hb, Algebra.smul_def]`. Simplify using the standard rewrite rules. Rewrite using `[e]`. Conclude with `RingOfIntegers.isIntegral_coe b`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isFractional_latF (c : Ideal (OF E)) (y : (Af E)ˣ) : IsFractional (OF E)⁰ (latF c y) := by
   obtain ⟨n, hn, hL⟩ := Conv.exists_denominator c y
@@ -148,13 +148,13 @@ theorem isFractional_latF (c : Ideal (OF E)) (y : (Af E)ˣ) : IsFractional (OF E
   exact RingOfIntegers.isIntegral_coe b
 
 /- English proof (translation)
-Take `⟨n, hn, hL⟩` from `Conv.exists_denominator c y`. Take `⟨k, hk, hki⟩` from `exists_int_integral (θ - cc θ)⁻¹`. Establish `hnk : ((n * k : ℤ) : OF E) ≠ 0`. Establish `: (n * k : ℤ) ≠ 0` using `mul_ne_zero (by exact_mod_cast hn.ne') hk`. Conclude with `this` after adjusting the coercions.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨((n * k : ℤ) : OF E), mem_nonZeroDivisors_of_ne_zero hnk, fun b hb => ?_⟩` and prove the remaining obligations. Take `⟨x, hx, hbx⟩` from `hb`. Take `⟨β, hβ⟩` from `hL x hx`. Use `exists_of_isIntegral ?_` and prove the remaining obligations. Establish `e : ((((n * k : ℤ) : OF E) • b : 𝔽) : E) = (algebraMap (𝓞 E) E β - cc (algebraMap (𝓞 E) E β)) * ((k : E) * (θ - cc θ)⁻¹)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hδ` using `sub_conj_ne hθ`. Rewrite using `[hβ, Algebra.smul_def]`. Simplify using `only [map_mul, map_natCast, map_intCast, map_sub]`. Use `push_cast`. Rewrite using `[← hbx]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `lam`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e]`. Conclude with `((RingOfIntegers.isIntegral_coe β).sub (map_isIntegral_int cc (RingOfIntegers.isIntegral_coe β))).mul hki`.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isFractional_latB (c : Ideal (OF E)) (y : (Af E)ˣ) {θ : E} (hθ : θ ∉ 𝔽) :
     IsFractional (OF E)⁰ (latB c y θ) := by
@@ -184,35 +184,33 @@ end GlobalTheory.SteinitzOrder
 namespace GlobalTheory.SteinitzOrder
 
 /- English proof (translation)
-Introduce `E _ _ _ c y hc θ hθ`. Take `⟨m, hm, hmL⟩` from `exists_nat_mul_mem_lattice hc y`. Take `⟨k, hk, hkθ⟩` from `exists_int_integral θ`. Set `MI : FractionalIdeal (OF E)⁰ (maximalRealSubfield E)` to `⟨latF c y, isFractional_latF c y⟩`. Set `BI : FractionalIdeal (OF E)⁰ (maximalRealSubfield E)` to `⟨latB c y θ, isFractional_latB c y hθ⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hM0 : MI ≠ 0`. Introduce `h`. Establish `h1 : ((m : maximalRealSubfield E)) ∈ MI` using `by show (((m : maximalRealSubfield E)) : E) ∈ lattice c y`. Simplify using `using hmL 1`. Rewrite `h1` using `[h, FractionalIdeal.mem_zero_iff]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hm.ne' (by exact_mod_cast h1)`. Establish `hB0 : BI ≠ 0`. Introduce `h`. Establish `h1 : (((m * k : ℤ) : maximalRealSubfield E)) ∈ BI`. Use `⟨(m : E) * ((k : E) * θ), ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `hmL ⟨_, hkθ⟩`. Establish `e : (m : E) * ((k : E) * θ) = (((m * k : ℤ) : maximalRealSubfield E) : E) * θ` using `by push_cast; ring`. Rewrite using `[e, lam_mul, lam_self hθ, mul_one]`. Rewrite `h1` using `[h, FractionalIdeal.mem_zero_iff]`. Establish `h2 : (m * k : ℤ) = 0` using `by exact_mod_cast h1`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `mul_ne_zero (by exact_mod_cast hm.ne') hk h2`. Establish `key : ∀ z ∈ BI * BI⁻¹, ∃ w : E, lam θ w = (z : E) ∧ ∀ b ∈ BI, (b : E) * w ∈ lattice c y`. Introduce `z hz`. Use `FractionalIdeal.mul_induction_on hz ?_ ?_` and prove the remaining obligations. Introduce `i hi j hj`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨x, hx, hix⟩` from `hi`. Use `⟨(j : E) * x, by rw [lam_mul, hix]; push_cast; ring, fun b hb => ?_⟩` and prove the remaining obligations. Establish `hbj : b * j ∈ (1 : FractionalIdeal (OF E)⁰ (maximalRealSubfield E))`. Rewrite using `[← mul_inv_cancel₀ hB0]`. Conclude with `FractionalIdeal.mul_mem_mul hb hj`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨r, hr⟩` from `(FractionalIdeal.mem_one_iff _).1 hbj`. Establish `h1` using `mul_mem_lattice (algebraMap_mem_orderC c r) hx`. Establish `h2 : algebraMap (OF E) E r = ((b * j : maximalRealSubfield E) : E)` using `congrArg Subtype.val hr`. Rewrite `h1` using `[h2]`. Use `h1 using 1` and compare the differences between its conclusion and the goal.
+Apply an available result and prove the equalities needed to match it to the conclusion. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Introduce and unpack `x x' ⟨w, hw, hwb⟩ ⟨w', hw', hwb'⟩`. Conclude with `⟨w + w', by rw [lam_add, hw, hw']; push_cast; rfl, fun b hb => by`. Rewrite using `[mul_add]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(latticeSub c y).add_mem (hwb b hb) (hwb' b hb)⟩`. Take `⟨ω, hω, hωB⟩` from `key 1 (by rw [mul_inv_cancel₀ hB0]; exact FractionalIdeal.one_mem_one _)`. Establish `hω1 : lam θ ω = 1` using `by simpa using hω`. Establish `ha₀ : ω - θ ∈ maximalRealSubfield E`. Establish `h` using `mem_of_lam_eq hθ hω1 θ`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `h` using `[lam_self hθ, one_mul]`. Establish `h'` using `neg_mem h`. Rewrite `h'` using `[neg_sub]`. Then use the resulting hypothesis. Take `⟨a₀, ha₀'⟩ : ∃ a₀ : maximalRealSubfield E, (a₀ : E) = ω - θ` from `⟨⟨ω - θ, ha₀⟩, rfl⟩`. Establish `hθa : θ + (a₀ : E) = ω` using `by rw [ha₀']; ring`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `𝔡 : FractionalIdeal (𝓞 (maximalRealSubfield E))⁰ (maximalRealSubfield E)` to `((differentIdeal ℤ (𝓞 (maximalRealSubfield E)) : Ideal (𝓞 (maximalRealSubfield E))) : FractionalIdeal (𝓞 (maximalRealSubfield E))⁰ (maximalRealSubfield E))`. Establish `h𝔡 : 𝔡 ≠ 0` using `FractionalIdeal.coeIdeal_ne_zero.2 differentIdeal_ne_bot`. Establish `h𝔡M : 𝔡 * MI ≠ 0` using `mul_ne_zero h𝔡 hM0`. Establish `hlatM : latM (Units.mk0 (𝔡 * MI) h𝔡M)⁻¹ = MI`. Rewrite using `[latM, inv_inv, Units.val_mk0]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `inv_mul_cancel_left₀ h𝔡 MI`. Use `⟨(Units.mk0 (𝔡 * MI) h𝔡M)⁻¹, Units.mk0 BI hB0, a₀, fun x => ⟨fun hx => ?_, ?_⟩⟩` and prove the remaining obligations. Establish `hb : (⟨lam θ x, lam_mem θ x⟩ : maximalRealSubfield E) ∈ BI` using `⟨x, hx, rfl⟩`. Use `⟨⟨x - lam θ x * ω, mem_of_lam_eq hθ hω1 x⟩, ?_, ⟨lam θ x, lam_mem θ x⟩, by simpa using hb, ?_⟩` and prove the remaining obligations. Rewrite using `[hlatM]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `h3` using `hωB ⟨lam θ x, lam_mem θ x⟩ hb`. Simplify using `only at h3`. Establish `h4 : x - lam θ x * ω ∈ latticeSub c y` using `(latticeSub c y).sub_mem hx h3`. Conclude with `h4`. Rewrite using `[hθa]`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only`. Expand and normalize the polynomial expressions, which then agree. Introduce and unpack `⟨a, ha, b, hb, rfl⟩`. Rewrite `ha` using `[hlatM]`. Rewrite `hb` using `[Units.val_mk0]`.
-
-Rewrite using `[hθa]`. Establish `h3` using `hωB b hb`. Establish `h4 : (a : E) + (b : E) * ω ∈ latticeSub c y` using `(latticeSub c y).add_mem ha h3`. Conclude with `h4`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem lattice_eq_steinitz : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (c : Ideal (OF E)) (y : (Af E)ˣ), c ≠ ⊥ →
     ∀ θ : E, θ ∉ maximalRealSubfield E → ∃ (𝔞 𝔟 : Frac (maximalRealSubfield E)) (a₀ : maximalRealSubfield E),

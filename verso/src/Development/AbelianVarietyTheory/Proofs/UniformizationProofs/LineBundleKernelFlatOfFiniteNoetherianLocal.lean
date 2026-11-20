@@ -23,27 +23,25 @@ namespace GlobalTheory.StabFlatLocal
 open GlobalTheory.CechPic GlobalTheory.StabFlat
 
 /- English proof (translation)
-Set `t` to `a ≫ B.hom`. Take `⟨F, hF, hΛ, hcl⟩` from `exists_family hL hO hΘ hu t (Over.homMk a rfl)`. Set `B'` to `(Over.pullback t).obj B`. Establish `hB' : IsAbelianScheme B'` using `TLinPf.isAb_pullback t B hB`. Establish `hpb : IsPullback (pullback.fst B.hom t) B'.hom B.hom t` using `IsPullback.of_hasPullback _ _`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp' : IsProjBy B'.hom` using `isProjBy_baseChange hp hpb`. Establish `hg' : SmoothOfRelativeDimension g B'.hom`. Use `smoothOfRelativeDimension_isStableUnderBaseChange g` as an intermediate fact. Conclude with `MorphismProperty.of_isPullback (P := @SmoothOfRelativeDimension g) hpb hg`. Establish `test : ∀ (R : Type) [CommRing R] [IsLocalRing R] (φ : A →+* R) (X' : Scheme.{0}) (π : X' ⟶ B'.left) (f' : X' ⟶ Spec (CommRingCat.of R)), IsPullback π f' B'.hom (Spec.map (CommRingCat.ofHom φ)) → (Triv (F.pull π) ↔ ∃ y : Spec (CommRingCat.of R) ⟶ H.left, y ≫ j.left = Spec.map (Com …`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `R _ _ φ X' π f' h`. Set `T : Over (Spec (CommRingCat.of V))` to `Over.mk (Spec.map (CommRingCat.ofHom φ) ≫ t)`. Set `x : T ⟶ B` to `Over.homMk (Spec.map (CommRingCat.ofHom φ) ≫ a) (Category.assoc _ _ _)`. Establish `hM : (LB.div (translDiff B L x) (O.pull (snd T B).left)).IsLB` using `LB.isLB_div (LB.isLB_linComb hL _ _) (pull_isLB hO _)`. Establish `q : IsPullback f' (π ≫ pullback.fst B.hom t) T.hom B.hom` using `(h.paste_horiz hpb).flip`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `W : Over (Spec (CommRingCat.of V))` to `Over.mk (f' ≫ T.hom)`. Set `e : W ⟶ T ⊗ B` to `Over.homMk q.isoPullback.hom (by show q.isoPullback.hom ≫ pullback.fst T.hom B.hom ≫ T.hom = f' ≫ T.hom`. Rewrite using `[IsPullback.isoPullback_hom_fst_assoc])`. Establish `: IsIso e.left` using `inferInstanceAs (IsIso q.isoPullback.hom)`. Establish `c₁ : CechPic.pull π (cls F hF) = CechPic.pull e.left (cls _ hM)`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[cls_eq_dcl hL hO, pull_dcl]`. Use `hcl W π _ _ ?_ q.isoPullback_hom_snd` and prove the remaining obligations. Use `show q.isoPullback.hom ≫ pullback.fst T.hom B.hom ≫ Spec.map (CommRingCat.ofHom φ) ≫ a = π ≫ B'.hom ≫ a`. Rewrite using `[IsPullback.isoPullback_hom_fst_assoc, h.w_assoc]`. Use `(cls_eq_zero_iff (pull_isLB hF π)).symm.trans ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[cls_pull hF, c₁, pull_iso_eq_zero]`. Use `((loc_triv_iff (R := R) (fst T B).left hM).symm.trans (hH T x)).trans ⟨?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨y, hy⟩`. Conclude with `⟨y.left, congrArg (·.left) hy⟩`. Introduce and unpack `⟨y, hy⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨Over.homMk y ?_, Over.OverMorphism.ext hy⟩` and prove the remaining obligations. Rewrite using `[← Over.w j, ← Category.assoc, hy]`. Conclude with `Category.assoc _ _ _`. Take `⟨P⟩` from `GlobalTheory.AbLaw.nonempty_perf_of_smooth_isProjBy A _ B'.hom hB'.smooth hp' F hF`. Use `hB'.proper` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `hB'.geomConnected` as an intermediate fact. Establish `q₀` using `IsPullback.of_hasPullback B'.hom (Spec.map (CommRingCat.ofHom g₀))`. Take `⟨I, ⟨eI⟩, hI⟩` from `GlobalTheory.UU.SecCyclic.cyclic_ideal A _ B'.hom F hF P inferInstance inferInstance K₀ g₀ hg₀ _ _ _ q₀ (CubeOpen.bijective_appTop hG B' hB' q₀) ((test K₀ g₀ _ _ _ q₀).2 h₀)`. Take `⟨C, c₁, c₂, ⟨eC⟩, c₃⟩` from `GlobalTheory.T.exists_perfect_free_finite_complex A B' hB' hp' g hg' F hF hΛ P`. Use `⟨I, ?_, fun R _ _ φ => (test R φ _ _ _ (IsPullback.of_hasPullback _ _)).symm.trans (hI R φ _ _ _ (IsPullback.of_hasPullback _ _))⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `letI : Algebra V A := σ.toAlgebra`. Use `haveI : IsLocalHom (algebraMap V A) := hσ`. Use `haveI : Module.Flat V A := h₁`. Establish `key : Module.Flat V (A ⧸ I) → ((Ideal.Quotient.mk I).comp σ).Flat` using `fun h => RingHom.flat_algebraMap_iff.2 h`. Use `key (GlobalTheory.T.flat_quotient_of_equiv_coker_dualMap_of_exact_fibres_alt V A g h₂ h₃ C c₁ c₂ (fun p hϖ => ?_) I ⟨eC.trans eI⟩)` and prove the remaining obligations.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Set `K` to `AlgebraicClosure p.asIdeal.ResidueField`. Set `φ : A →+* K` to `(algebraMap p.asIdeal.ResidueField K).comp (algebraMap A p.asIdeal.ResidueField)`. Establish `hk : RingHom.ker φ = p.asIdeal`. Rewrite using `[RingHom.ker_comp_of_injective _ (algebraMap p.asIdeal.ResidueField K).injective, Ideal.ker_algebraMap_residueField]`. Use `⟨K, inferInstance, φ, hk, fun i hi => c₃ K φ _ _ _ (IsPullback.of_hasPullback _ _) i ?_⟩` and prove the remaining obligations.
-
-Break down `hi with hi | hi` into its components or cases. Use `Or.inr fun ht => hi (hk.symm.trans (hE K φ ?_ ((test K φ _ _ _ (IsPullback.of_hasPullback _ _)).1 ht)))` and prove the remaining obligations. Conclude with `hϖ.trans hk.ge`. Conclude with `Or.inl hi`.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Prove the first alternative. A detailed English derivation is pending.
 -/
 theorem exists_ideal (hG : GlobalFnsSt) {V : Type} [CommRing V] [IsNoetherianRing V] [IsLocalRing V]
     (B : Over (Spec (CommRingCat.of V))) [GrpObj B]
@@ -131,19 +129,19 @@ theorem exists_ideal (hG : GlobalFnsSt) {V : Type} [CommRing V] [IsNoetherianRin
   · exact Or.inl hi
 
 /- English proof (translation)
-Introduce `hG V _ _ _ B _ _ hB hp L hL hΘ H j hj hH hf`. Take `⟨hO, hu, hK⟩` from `GlobalTheory.UU.TrivTwist.inK_iff_trivial_twist _ B L hL`. Take `⟨g, hg⟩` from `GlobalTheory.AbelianDim.exists_relDim V B hB`. Rewrite using `[← Over.w j]`. Use `GlobalTheory.T.flat_closedSubscheme_finite_over_localRing V B.left H.left B.hom j.left hj (by rw [Over.w j]; exact hf) fun h σ hσ hn => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `cl : ∀ (z : H.left) (p : Spec (B.left.presheaf.stalk (j.left h))), (IsLocalRing.maximalIdeal V).map σ ≤ p.asIdeal → j.left z = B.left.fromSpecStalk (j.left h) p → IsClosed ({j.left z} : Set B.left)`. Introduce `z p hp e`. Establish `hz : H.hom z = IsLocalRing.closedPoint V`. Rewrite using `[← Over.w j, Scheme.Hom.comp_apply, e, ← Scheme.Hom.comp_apply, hσ]`. Use `PrimeSpectrum.ext (Eq.symm ((IsLocalRing.maximalIdeal.isMaximal V).eq_of_le (PrimeSpectrum.isPrime _).ne_top ?_))` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Ideal.map_le_iff_le_comap.1 hp`. Use `j.left.isClosedEmbedding.isClosedMap _ (isClosed_of_isFinite H.hom z hz)` as an intermediate fact. Rewrite `this` using `[Set.image_singleton]`. Then use the resulting hypothesis. Establish `hm : (IsLocalRing.maximalIdeal V).map σ ≤ IsLocalRing.maximalIdeal _` using `Ideal.map_le_iff_le_comap.2 fun v hv => map_nonunit σ v hv`. Take `⟨h₀, h₁, h₂, h₃⟩` from `GlobalTheory.T.stalk_regular_flat_of_smooth V B.left B.hom g hg (j.left h) (cl h (IsLocalRing.closedPoint _) hm Scheme.fromSpecStalk_closedPoint.symm) σ hσ hn`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `@exists_ideal hG V _ _ _ B _ _ hB hp g hg L (pw L 0) hL hO hΘ hu H j (fun T x => (hK _ rfl T x).symm.trans (hH T x)) (B.left.presheaf.stalk (j.left h)) _ h₀ _ (B.left.fromSpecStalk (j.left h)) σ hn h₁ h₂ h₃ (H.left.residueField h) _ (j.left.stalkMap h ≫ H.left.residue h).hom (Rin …` and prove the remaining obligations. Rewrite using `[Scheme.fromSpecResidueField, Category.assoc, ← Scheme.SpecMap_stalkMap_fromSpecStalk, ← Spec.map_comp_assoc]`. Both sides reduce to the same expression. Introduce and unpack `K _ φ hφ ⟨y, hy⟩`. Set `p` to `Spec.map (CommRingCat.ofHom φ) (IsLocalRing.closedPoint K)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hk : p.asIdeal = RingHom.ker φ` using `by show Ideal.comap φ (IsLocalRing.maximalIdeal K) = _`. Rewrite using `[IsLocalRing.maximalIdeal_eq_bot, RingHom.ker_eq_comap_bot]`. Establish `e : j.left (y (IsLocalRing.closedPoint K)) = B.left.fromSpecStalk (j.left h) p` using `congrArg (fun q => q (IsLocalRing.closedPoint K)) hy`. Establish `hc` using `cl _ p (hφ.trans hk.ge) e`. Establish `hs : B.left.fromSpecStalk (j.left h) p ⤳ j.left h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: B.left.fromSpecStalk (j.left h) p ∈ Set.range (B.left.fromSpecStalk (j.left h))` using `⟨p, rfl⟩`. Rewrite `this` using `[Scheme.range_fromSpecStalk]`. Then use the resulting hypothesis. Establish `e' : j.left h = B.left.fromSpecStalk (j.left h) p` using `(hs.mem_closed hc e.symm).trans e`. Establish `hp' : p = IsLocalRing.closedPoint _` using `(B.left.fromSpecStalk (j.left h)).isEmbedding.injective (e'.symm.trans Scheme.fromSpecStalk_closedPoint.symm)`. Rewrite using `[← hk, hp']`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem flat_of_isFinite : GlobalFnsSt → ∀ (V : Type) [CommRing V] [IsNoetherianRing V] [IsLocalRing V] (B : Over (Sp V)) [GrpObj B] [IsCommMonObj B], IsAbelianScheme B → IsProjBy B.hom → ∀ L : LB B.left, L.IsLB → (∃ t : LB.Gen (Theta B L), t.IsGen) → ∀ (H : Over (Sp V)) (j : H ⟶ B), IsClosedImmersion j.left → (∀ (T : Over (Sp V)) (x : T ⟶ B), GlobalTheory.MemKL B L x ↔ ∃ z : T ⟶ H, z ≫ j = x) → IsFinite H.hom → Flat H.hom := by
   intro hG V _ _ _ B _ _ hB hp L hL hΘ H j hj hH hf

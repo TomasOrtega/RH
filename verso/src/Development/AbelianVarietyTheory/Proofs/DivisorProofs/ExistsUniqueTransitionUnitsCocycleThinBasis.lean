@@ -14,7 +14,7 @@ namespace GlobalTheory.LBTrans
 variable {X : Scheme.{0}}
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(X.presheaf.map (homOfLE h').op).hom ((X.presheaf.map (homOfLE h).op).hom a) = (X.presheaf.map (homOfLE (h'.trans h)).op).hom a`. Rewrite using `[← CommRingCat.comp_apply, ← Functor.map_comp]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem res_comp {U V W : X.Opens} (h : V ≤ U) (h' : W ≤ V) (a : Γ(X, U)ˣ) :
     res h' (res h a) = res (h'.trans h) a := by
@@ -25,9 +25,9 @@ theorem res_comp {U V W : X.Opens} (h : V ≤ U) (h' : W ≤ V) (a : Γ(X, U)ˣ)
   rfl
 
 /- English proof (translation)
-Set `J` to `{W : X.Opens // ∃ hW : W ≤ U, res hW a = res hW b}`. Establish `hc : U ≤ ⨆ j : J, j.1` using `fun x hx => by`. Take `⟨W, hW, hx', e⟩` from `h x hx`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨⟨W, hW, e⟩, hx'⟩`. Apply `Units.ext` to reduce the goal to its premises.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Use `X.sheaf.eq_of_locally_eq' (fun j : J => j.1) U (fun j => homOfLE j.2.1) hc _ _ (fun j => ?_)` and prove the remaining obligations. Conclude with `congrArg Units.val j.2.2`.
+A detailed English derivation is pending.
 -/
 theorem units_eq_of_local {U : X.Opens} (a b : Γ(X, U)ˣ)
     (h : ∀ x ∈ U, ∃ (W : X.Opens) (hW : W ≤ U), x ∈ W ∧ res hW a = res hW b) : a = b := by
@@ -40,9 +40,9 @@ theorem units_eq_of_local {U : X.Opens} (a b : Γ(X, U)ˣ)
   exact congrArg Units.val j.2.2
 
 /- English proof (translation)
-Take `⟨s, hs, -⟩` from `X.sheaf.existsUnique_gluing' W V (fun i => homOfLE (hW i)) hc (fun i => (u i).val) (fun i j => congrArg Units.val (hh i j))`. Take `⟨s', hs', -⟩` from `X.sheaf.existsUnique_gluing' W V (fun i => homOfLE (hW i)) hc (fun i => ((u i)⁻¹).val) (fun i j => congrArg Units.val (show res (inf_le_left : W i ⊓ W j ≤ W i) (u i)⁻¹ = res inf_le_right (u j)⁻¹ by`. Rewrite using `[map_inv, map_inv, hh]))`. Establish `e : (show Γ(X, V) from s) * (show Γ(X, V) from s') = 1`. Apply `X.sheaf.eq_of_locally_eq' W V (fun i => homOfLE (hW i)) hc` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `i`. Use `show (X.presheaf.map (homOfLE (hW i)).op).hom _ = (X.presheaf.map (homOfLE (hW i)).op).hom _`. Rewrite using `[map_mul, map_one]`. Conclude with `(congrArg₂ (· * ·) (hs i) (hs' i)).trans (u i).mul_inv`. Conclude with `⟨⟨s, s', e, (mul_comm _ _).trans e⟩, fun i => Units.ext (hs i)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem glue_units {J : Type} (V : X.Opens) (W : J → X.Opens) (hW : ∀ i, W i ≤ V) (hc : V ≤ iSup W)
     (u : ∀ i, Γ(X, W i)ˣ)
@@ -66,28 +66,26 @@ variable {C : Type} [Category.{0} C] {V : C → X.Opens} {hV : ∀ ⦃T T' : C�
   {u : ∀ (T T' : C) (_ : T ⟶ T'), Γ(X, V T')ˣ}
 
 /- English proof (translation)
-Rewrite using `[hu b c, hu a c, map_mul, map_inv, mul_inv_rev, _root_.mul_assoc, mul_inv_cancel_left]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem res_quot (hu : IsCoc V hV u) {T₁ T₂ T T'' : C} (a : T₁ ⟶ T) (b : T₂ ⟶ T) (c : T ⟶ T'') :
     res (hV c) (u T₂ T b * (u T₁ T a)⁻¹) = u T₂ T'' (b ≫ c) * (u T₁ T'' (a ≫ c))⁻¹ := by
   rw [hu b c, hu a c, map_mul, map_inv, mul_inv_rev, _root_.mul_assoc, mul_inv_cancel_left]
 
 /- English proof (translation)
-Introduce `hB hu T₁ T₂`. Establish `sub : ∀ {T T' : C} (f f' : T ⟶ T'), f = f'` using `fun f f' => @Subsingleton.elim _ (thin _ _) f f'`. Set `J` to `{T : C // Nonempty (T₁ ⟶ T) ∧ Nonempty (T₂ ⟶ T)}`. Set `W : J → X.Opens` to `fun j => V j.1`. Establish `hW : ∀ j : J, W j ≤ V T₁ ⊓ V T₂` using `fun j => le_inf (hV j.2.1.some) (hV j.2.2.some)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `w : ∀ j : J, Γ(X, W j)ˣ` to `fun j => u T₂ j.1 j.2.2.some * (u T₁ j.1 j.2.1.some)⁻¹`. Establish `hw : ∀ (j : J) (a : T₁ ⟶ j.1) (b : T₂ ⟶ j.1), w j = u T₂ j.1 b * (u T₁ j.1 a)⁻¹` using `fun j a b => by simp only [w]; rw [sub j.2.2.some b, sub j.2.1.some a]`. Establish `hc : V T₁ ⊓ V T₂ ≤ iSup W` using `fun x hx => by`. Take `⟨T, ⟨a⟩, ⟨b⟩, hxT, -⟩` from `hB.2 T₁ T₂ x (V T₁ ⊓ V T₂) hx hx.1 hx.2`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨⟨T, ⟨a⟩, ⟨b⟩⟩, hxT⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hh : ∀ i j, res (inf_le_left : W i ⊓ W j ≤ W i) (w i) = res inf_le_right (w j)`. Introduce `i j`. Apply `units_eq_of_local` to reduce the goal to its premises. Introduce `x hx`. Take `⟨T, ⟨c⟩, ⟨d⟩, hxT, hle⟩` from `hB.2 i.1 j.1 x (W i ⊓ W j) hx hx.1 hx.2`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨V T, hle, hxT, ?_⟩` and prove the remaining obligations. Rewrite using `[res_comp, res_comp]`. Establish `e1` using `res_quot hu i.2.1.some i.2.2.some c`. Establish `e2` using `res_quot hu j.2.1.some j.2.2.some d`. Express the relevant statement in the definitionally equal form `res (hV c) (w i) = res (hV d) (w j)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Simplify using `only [w]`. Rewrite using `[e1, e2, sub (i.2.1.some ≫ c) (j.2.1.some ≫ d), sub (i.2.2.some ≫ c) (j.2.2.some ≫ d)]`. Take `⟨s, hs⟩` from `glue_units (V T₁ ⊓ V T₂) W hW hc w hh`. Establish `key : ∀ (g : Γ(X, V T₁ ⊓ V T₂)ˣ) (T : C) (a : T₁ ⟶ T) (b : T₂ ⟶ T), res (le_inf (hV a) (hV b)) g * u T₁ T a = u T₂ T b ↔ res (le_inf (hV a) (hV b)) g = u T₂ T b * (u T₁ T a)⁻¹` using `fun g T a b => (eq_mul_inv_iff_mul_eq).symm`. Use `⟨s, fun T a b => (key s T a b).2 ?_, fun g hg => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `hs ⟨T, ⟨a⟩, ⟨b⟩⟩` as an intermediate fact. Rewrite `this` using `[hw ⟨T, ⟨a⟩, ⟨b⟩⟩ a b]`. Conclude with `this`. Apply `units_eq_of_local` to reduce the goal to its premises. Introduce `x hx`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨T, ⟨a⟩, ⟨b⟩, hxT, -⟩` from `hB.2 T₁ T₂ x (V T₁ ⊓ V T₂) hx hx.1 hx.2`. Use `⟨V T, le_inf (hV a) (hV b), hxT, ?_⟩` and prove the remaining obligations. Rewrite using `[(key g T a b).1 (hg T a b)]`. Use `hs ⟨T, ⟨a⟩, ⟨b⟩⟩` as an intermediate fact. Rewrite `this` using `[hw ⟨T, ⟨a⟩, ⟨b⟩⟩ a b]`.
-
-Conclude with `this.symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem transition_units (X : Scheme.{0}) (C : Type) [Category.{0} C] (V : C → X.Opens)
     (hV : ∀ ⦃T T' : C⦄, (T ⟶ T') → V T' ≤ V T) [thin : Quiver.IsThin C]

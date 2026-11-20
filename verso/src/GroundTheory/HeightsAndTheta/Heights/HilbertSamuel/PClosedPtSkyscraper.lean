@@ -17,9 +17,9 @@ set_option linter.unusedSectionVars false
 variable {S : Type} [CommRing S] {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
 /- English proof (translation)
-Proceed by induction on `hu using Submonoid.closure_induction with`. Consider the case `mem f hf`. Take `⟨k, i, hi, rfl⟩` from `hf`. Conclude with `hJ k i hi`. Consider the case `one => exact (Ideal.ne_top_iff_one P).mp hP.ne_top`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Consider the case `mul f f' _ _ hf hf' => exact fun h => (hP.mem_or_mem h).elim hf hf'`.
+A detailed English derivation is pending.
 -/
 theorem cellMon_notMem {P : Ideal (MRingOver S ι)} (hP : P.IsPrime) {J : ∀ k, Finset (ι k)}
     (hJ : ∀ k, ∀ i ∈ J k, (X ⟨k, i⟩ : MRingOver S ι) ∉ P) {u : MRingOver S ι} (hu : u ∈ KH.cellMon S J) :
@@ -32,9 +32,9 @@ theorem cellMon_notMem {P : Ideal (MRingOver S ι)} (hP : P.IsPrime) {J : ∀ k,
   | mul f f' _ _ hf hf' => exact fun h => (hP.mem_or_mem h).elim hf hf'
 
 /- English proof (translation)
-Take `⟨k, i, hi, hX⟩` from `hJ`. Proceed by induction on `x using LocalizedModule.induction_on with`. Consider the case `h n w`. Rewrite using `[← LocalizedModule.zero_mk (1 : KH.cellMon S J), LocalizedModule.mk_eq]`. Use `⟨⟨X ⟨k, i⟩, Submonoid.subset_closure ⟨k, i, hi, rfl⟩⟩, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [one_smul, smul_zero]`. Rewrite using `[Submonoid.smul_def]`. Conclude with `hkill _ hX n`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem loc_eq_zero {N : Type} [AddCommGroup N] [Module (MRingOver S ι) N] {P : Ideal (MRingOver S ι)}
     (hkill : ∀ p ∈ P, ∀ n : N, p • n = 0) {J : ∀ k, Finset (ι k)}
@@ -52,25 +52,23 @@ theorem loc_eq_zero {N : Type} [AddCommGroup N] [Module (MRingOver S ι) N] {P :
 end ClosedPtSkyscraper
 
 /- English proof (translation)
-Introduce `S _ K _ _ ι _ _ N _ _ _ _ 𝓝 P d h𝓝 hP hkill I hI y hy`. Take `⟨m, s, a, hsa, hm, rfl⟩` from `GenSESStep.locPart_normal h𝓝 hy`. Establish `hsP : (s : MRingOver S ι) ∉ P` using `ClosedPtSkyscraper.cellMon_notMem hP.1.1 hI s.2`. Establish `hcong : ∀ p q : MRingOver S ι, p - q ∈ P → ∀ n : N, p • n = q • n` using `fun p q h n => sub_eq_zero.mp (by rw [← sub_smul]; exact hkill _ h n)`. Establish `hinv : ∀ J : ∀ k, Finset (ι k), (∀ k, (J k).Nonempty) → (∀ k, ∀ i ∈ J k, (X ⟨k, i⟩ : MRingOver S ι) ∉ P) → ∃ t ∈ KH.cellMon S J, ∃ (g : MRingOver S ι) (b : K → ℕ), IsMultiHomog t (a + b) ∧ IsMultiHomog g b ∧ t - g * s ∈ P` using `fun J hne hJ => hU S K ι P hP J hne hJ s a hsa hsP`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose t ht g b htb hgb htg using hinv`. Set `z : KH.CechC S ι N 0` to `fun J => if hJ : ∀ k, ∀ i ∈ J.1 k, (X ⟨k, i⟩ : MRingOver S ι) ∉ P then LocalizedModule.mk (g J.1 J.2.1 hJ • m) ⟨t J.1 J.2.1 hJ, ht J.1 J.2.1 hJ⟩ else 0`. Establish `hagree : ∀ (J : KH.Cell K ι 0) (hJ : ∀ k, ∀ i ∈ J.1 k, (X ⟨k, i⟩ : MRingOver S ι) ∉ P) (u h' t' : MRingOver S ι), u - h' * s ∈ P → (u * t' * g J.1 J.2.1 hJ) • m = (h' * t' * t J.1 J.2.1 hJ) • m`. Introduce `J hJ u h' t' hu`. Use `hcong _ _ ?_ m` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `sub_mem (P.mul_mem_right (t' * g J.1 J.2.1 hJ) hu) (P.mul_mem_left (h' * t') (htg J.1 J.2.1 hJ))` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Use `⟨z, ⟨Submodule.mem_pi.mpr fun J _ => ?_, LinearMap.mem_ker.mpr (funext fun E => ?_)⟩, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hJ : ∀ k, ∀ i ∈ J.1 k, (X ⟨k, i⟩ : MRingOver S ι) ∉ P`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify using `only [z, dif_pos hJ]`. Use `GenSESStep.mk_mem_locPart _ _ (a + b J.1 J.2.1 hJ) (htb J.1 J.2.1 hJ) ?_` and prove the remaining obligations. Establish `e : (d + fun k => ((a + b J.1 J.2.1 hJ) k : ℤ)) = (d + fun k => (a k : ℤ)) + fun k => (b J.1 J.2.1 hJ k : ℤ)`. Use function extensionality and compare the values at `k`. Simplify using `only [Pi.add_apply, Nat.cast_add]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `h𝓝.2 _ _ _ _ (hgb J.1 J.2.1 hJ) hm`. Simplify using `only [z, dif_neg hJ]`. Conclude with `zero_mem _`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Take `⟨J₁, J₂, h₁, h₂, σ, -, hD⟩` from `GenTwistGenerated.cechD_zero_apply (S := S) (M := N) E`. Rewrite using `[Pi.zero_apply, hD z]`. Distinguish the cases in `hE : ∀ k, ∀ i ∈ E.1 k, (X ⟨k, i⟩ : MRingOver S ι) ∉ P`. Establish `hJ₁ : ∀ k, ∀ i ∈ J₁.1 k, (X ⟨k, i⟩ : MRingOver S ι) ∉ P` using `fun k i hi => hE k i (h₁ k hi)`. Establish `hJ₂ : ∀ k, ∀ i ∈ J₂.1 k, (X ⟨k, i⟩ : MRingOver S ι) ∉ P` using `fun k i hi => hE k i (h₂ k hi)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Take `⟨u, hu, h', -, -, -, huP⟩` from `hU S K ι P hP E.1 E.2.1 hE s a hsa hsP`. Simplify using `only [z, dif_pos hJ₁, dif_pos hJ₂]`. Rewrite using `[GenTwistGenerated.cellRes_mk (GenTwistGenerated.cellMon_mono h₁), GenTwistGenerated.cellRes_mk (GenTwistGenerated.cellMon_mono h₂)]`. Establish `heq : LocalizedModule.mk (g J₁.1 J₁.2.1 hJ₁ • m) (⟨t J₁.1 J₁.2.1 hJ₁, GenTwistGenerated.cellMon_mono h₁ (ht J₁.1 J₁.2.1 hJ₁)⟩ : KH.cellMon S E.1) = LocalizedModule.mk (g J₂.1 J₂.2.1 hJ₂ • m) ⟨t J₂.1 J₂.2.1 hJ₂, GenTwistGenerated.cellMon_mono h₂ (ht J₂.1 J₂.2.1 hJ₂)⟩`. Use `LocalizedModule.mk_eq.mpr ⟨⟨u, hu⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [Submonoid.smul_def, smul_smul]`. Rewrite using `[← mul_assoc, ← mul_assoc, hagree J₁ hJ₁ u h' (t J₂.1 J₂.2.1 hJ₂) huP, hagree J₂ hJ₂ u h' (t J₁.1 J₁.2.1 hJ₁) huP]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[heq, sub_self]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `zsmul_zero σ`. Use `push Not at hE`. Conclude with `ClosedPtSkyscraper.loc_eq_zero hkill hE _`. Simplify using `only [z, dif_pos hI]`. Use `LocalizedModule.mk_eq.mpr ⟨1, ?_⟩` and prove the remaining obligations.
-
-Simplify using `only [one_smul, Submonoid.smul_def, smul_smul]`. Conclude with `(hcong _ _ (by rw [mul_comm]; exact htg I.1 I.2.1 hI) m).symm`.
+A detailed English derivation is pending.
 -/
 theorem ClosedPtSkyscraper.proof (hU : ClosedPtChartUnit.Statement) : ClosedPtSkyscraper.Statement := by
   classical

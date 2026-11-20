@@ -17,9 +17,9 @@ variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotio
   {Y : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y cX} {Csz : ℝ} (p : PtAt ex Csz)
 
 /- English proof (translation)
-Establish `h` using `p.charW.tup`. Use `Finite.of_surjective (fun o : Option p.R.twPl => o.elim p.P.A3.A.μ0 fun w => p.R.mu w) fun t => ?_` and prove the remaining obligations. Break down `h.mu_used t with rfl | ⟨w, rfl⟩` into its components or cases. Conclude with `⟨none, rfl⟩`. Distinguish the cases in `hw : w ∈ p.R.twPl`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Consider separately whether the proposition holds or fails.
 
-Conclude with `⟨some ⟨w, hw⟩, rfl⟩`. Conclude with `⟨none, (h.mu_off w hw).symm⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem finite_tuples_of_indefiniteSidePoint : Finite p.P.T := by
   have h := p.charW.tup
@@ -31,13 +31,13 @@ theorem finite_tuples_of_indefiniteSidePoint : Finite p.P.T := by
     · exact ⟨none, (h.mu_off w hw).symm⟩
 
 /- English proof (translation)
-Introduce `P h` and use `absurd (by simp) h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem ray_zero {K M : Type} [Field K] [NumberField K] [Field M] [NumberField M] (φ : K →+* M) :
     GlobalTheory.IndefiniteRowSideFullHecke.RayFieldTheta.ContainsRayField φ 0 := fun P h => absurd (by simp) h
 
 /- English proof (translation)
-Use `mul_ne_zero (mul_ne_zero (D.host.g_prime 0).ne_zero (D.host.g_prime 1).ne_zero) (Finset.prod_ne_zero_iff.2 fun q hq => ?_)` and prove the remaining obligations. Take `⟨PP, -, rfl⟩` from `Finset.mem_image.1 hq`. Establish `: Finite (kP PP)` using `Ideal.finiteQuotientOfFreeOfNeBot _ PP.ne_bot`. Conclude with `Nat.card_pos.ne'`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem tupLevel_ne (t : p.P.T) : GlobalTheory.IndefiniteRowSideFullHecke.RayFieldTheta.tupLevel (R2 p) t ≠ 0 := by
   refine mul_ne_zero (mul_ne_zero (D.host.g_prime 0).ne_zero (D.host.g_prime 1).ne_zero)
@@ -47,11 +47,9 @@ theorem tupLevel_ne (t : p.P.T) : GlobalTheory.IndefiniteRowSideFullHecke.RayFie
   exact Nat.card_pos.ne'
 
 /- English proof (translation)
-Establish `h0 : p.tupT D.what₂.mu0 = p.P.A3.A.μ0`. Rewrite using `[← p.P.div.tup.mu0]`. Conclude with `p.tupT_tup _`. Use `⟨fun hw e => p.charW.tup.mu_ne _ hw ?_, fun hw => ?_⟩` and prove the remaining obligations. Rewrite using `[← p.tupAt w, e, h0]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hn`. Apply `hw` to reduce the goal to its premises. Establish `e` using `p.charW.tup.mu_off _ hn`. Rewrite `e` using `[← p.tupAt w]`. Rewrite using `[← p.tupTie _ (Or.inr ⟨w, rfl⟩), e]`.
-
-Conclude with `p.P.div.tup.mu0`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem twisted_iff (w : D.what₂.places.Pl) : D.plEq w ∈ p.R.twPl ↔ TwistedAt D w := by
   have h0 : p.tupT D.what₂.mu0 = p.P.A3.A.μ0 := by
@@ -66,7 +64,7 @@ theorem twisted_iff (w : D.what₂.places.Pl) : D.plEq w ∈ p.R.twPl ↔ Twiste
     exact p.P.div.tup.mu0
 
 /- English proof (translation)
-Unfold `ownAt`. Use `split_ifs with h`. Rewrite using `[h]`. Conclude with `D.host.pde_ne.symm`. Conclude with `fun e => h e.symm`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem ownAt_ne (v : HeightOneSpectrum (𝓞 D.what₂.LL)) : ownAt D v ≠ Formalism.EigenvalueLevelCeiling.plc v := by
   unfold ownAt
@@ -75,9 +73,9 @@ theorem ownAt_ne (v : HeightOneSpectrum (𝓞 D.what₂.LL)) : ownAt D v ≠ For
   · exact fun e => h e.symm
 
 /- English proof (translation)
-Establish `hU` using `(h.1 u).2 u.2`. Take `⟨x, hx, hy⟩` from `h.2 i b u hU`. Use `⟨((Z.tie i j b).U_eq _).2 hU, ?_⟩` and prove the remaining obligations. Establish `e` using `(Z.tie i j b).psiU_eq ⟨_, hU⟩ (((Z.tie i j b).U_eq _).2 hU)`. Rewrite using `[e, hy, Z.good.e_LL0]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `D.what₂.embLL (x : D.what₂.LL) = _`. Rewrite using `[hx, MonoidHom.inv_apply, Units.val_inv_eq_inv_val, map_inv₀]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem chi_eq (Z : GlobalTheory.SeriesTie.ExportTie p.nexp p.v₀) (h : LevelIs D.nexp (p.R.eG.trans p.cG) p.P.P0 p.P.ψ0⁻¹)
     (i : D.ntw.Tw) (j : Fin D.R.m) (b : Bool) (u : p.P.P0) :
@@ -92,7 +90,7 @@ theorem chi_eq (Z : GlobalTheory.SeriesTie.ExportTie p.nexp p.v₀) (h : LevelIs
   rw [hx, MonoidHom.inv_apply, Units.val_inv_eq_inv_val, map_inv₀]
 
 /- English proof (translation)
-Rewrite using `[show (p.S false).err0 w j = _ from p.err_eq w j]`. Use `ramw_pos w` as an intermediate fact. Unfold `errCan`. Check the signs of the components of the expression.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Check the signs of the components of the expression.
 -/
 theorem err_nonneg (w) (j) : 0 ≤ (p.S false).err0 w j := by
   rw [show (p.S false).err0 w j = _ from p.err_eq w j]
@@ -101,11 +99,11 @@ theorem err_nonneg (w) (j) : 0 ≤ (p.S false).err0 w j := by
   positivity
 
 /- English proof (translation)
-Take `⟨st, hd⟩` from `h.1.depth`. Use `letI := hostAlg D`. Establish `hb : O.b = L.sc.b`. Unfold `OnObj.b OnObj.xe`. Rewrite using `[hd.x_eq, hd.eps_eq]`.
+Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Use `⟨fun j => ?_, hb⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `C * (L.sc.x ^ L.sc.eps * ((D.R.f : ℝ) * D.R.m * L.sc.b * L.sc.x ^ L.sc.eps + L.Nc)) = C * O.E1u`. Unfold `OnObj.E1u OnObj.B0`. Rewrite using `[L_eq, hb, h.1.Nc_eq, hd.f_eq, hd.m_eq]`.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `OnObj.xe`. Rewrite using `[hd.x_eq, hd.eps_eq]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem twoRunDatum_boundUnit_at_indefinitePoint {Pm : ParameterChoice' D L} (Tp : ParamsT D L Pm) (r : TwoRuns p.T p.P.Gp) {c : OnConst} (O : Obj p c)
     (h : RecAt p Tp r O) (C CH : ℝ) : ErrorConstantMatchesDefinition ((R2 p).num (F2 p) C CH) O C ∧ O.b = L.sc.b := by
@@ -122,11 +120,11 @@ theorem twoRunDatum_boundUnit_at_indefinitePoint {Pm : ParameterChoice' D L} (Tp
   rw [hd.x_eq, hd.eps_eq]
 
 /- English proof (translation)
-Introduce `h`. Establish `h3` using `h.2.2 j`. Establish `e : (p.N 0 CH).E1 j = 0` using `zero_mul _`. Rewrite `h3` using `[e]`. Use `absurd h3 (not_le.2 (Finset.sum_pos' (fun w hw' => ?_) ⟨w₀, hw, ?_⟩))` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(lw_pos w).le` as an intermediate fact. Use `(ramw_pos w).le` as an intermediate fact. Use `err_nonneg p w j` as an intermediate fact. Use `hJ w hw'` as an intermediate fact. Check the signs of the components of the expression.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression.
 
-Use `lw_pos w₀` as an intermediate fact. Use `ramw_pos w₀` as an intermediate fact. Use `hJ w₀ hw` as an intermediate fact. Check the signs of the components of the expression.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression.
 -/
 theorem not_on_zero (CH : ℝ) (j) (w₀) (hw : w₀ ∈ (p.S false).Tw) (he : 0 < (p.S false).err0 w₀ j)
     (hJ : ∀ w ∈ (p.S false).Tw, 0 ≤ (p.N 0 CH).J0 ((p.S false).μ w) w j) : ¬ (p.S false).ON (p.N 0 CH) := by

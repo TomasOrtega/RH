@@ -7,11 +7,11 @@ open scoped Formalism.Per NNReal
 namespace GlobalTheory.BSP
 
 /- English proof (translation)
-It suffices to establish `h : ∀ r : A, tb.c j (r * y) ∈ I ^ m by simpa using h 1`. Use `Submodule.span_induction (p := fun y _ => ∀ r : A, tb.c j (r * y) ∈ I ^ m) ?_ ?_ ?_ ?_ hy` and prove the remaining obligations. Introduce and unpack `_ ⟨a, ha, rfl⟩ r`. Rewrite using `[mul_comm, tb.c_mul]`. Conclude with `Ideal.mul_mem_right _ _ ha`.
+Reduce the argument to an intermediate assertion. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `r`. Simplify using the standard rewrite rules. Introduce `x y _ _ hx hy r`. Rewrite using `[mul_add, map_add]`. Conclude with `Ideal.add_mem _ (hx r) (hy r)`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `a x _ hx r`. Rewrite using `[smul_eq_mul, ← mul_assoc]`. Conclude with `hx (r * a)`.
+A detailed English derivation is pending.
 -/
 private theorem TopBasis.c_mem_of_mem_map_pow {S A : Type} [CommRing S] [CommRing A] {s : S →+* A} {I : Ideal S} {ι : Type}
     (tb : TopBasis s I ι) (m : ℕ) (j : ι) {y : A} (hy : y ∈ (I ^ m).map s) : tb.c j y ∈ I ^ m := by
@@ -29,19 +29,19 @@ private theorem TopBasis.c_mem_of_mem_map_pow {S A : Type} [CommRing S] [CommRin
     exact hx (r * a)
 
 /- English proof (translation)
-Introduce `S A _ _ s I ι tb m`. Use `letI := (Ideal.quotientMap ((I ^ m).map s) s Ideal.le_comap_map).toAlgebra`. Establish `hsmul : ∀ (a : S) (x : A), (Ideal.Quotient.mk (I ^ m) a) • (Ideal.Quotient.mk ((I ^ m).map s) x) = Ideal.Quotient.mk ((I ^ m).map s) (s a * x)`. Introduce `a x`. Rewrite using `[Algebra.smul_def, RingHom.algebraMap_toAlgebra, Ideal.quotientMap_mk, map_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hli : LinearIndependent (S ⧸ I ^ m) (fun i => Ideal.Quotient.mk ((I ^ m).map s) (tb.b i))`. Rewrite using `[linearIndependent_iff']`. Introduce `F g hg j hj`. Use `choose h hh using fun i => Ideal.Quotient.mk_surjective (I := I ^ m) (g i)`. Establish `hsum : (∑ i ∈ F, s (h i) * tb.b i) ∈ (I ^ m).map s`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_sum, ← hg]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← hh i, hsmul]`. Establish `hc` using `tb.c_mem_of_mem_map_pow m j hsum`. Rewrite `hc` using `[map_sum, Finset.sum_eq_single j]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hc` using `[tb.c_mul, tb.c_self, mul_one]`. Rewrite using `[← hh j]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.mpr hc`. Introduce `i _ hij`. Rewrite using `[tb.c_mul, tb.c_ne j i (Ne.symm hij), mul_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `h'`. Conclude with `(h' hj).elim`. Establish `hsp : ⊤ ≤ Submodule.span (S ⧸ I ^ m) (Set.range fun i => Ideal.Quotient.mk ((I ^ m).map s) (tb.b i))`. Introduce and unpack `x -`. Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective x`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hF : ∀ i, i ∉ (tb.fin y m).toFinset → tb.c i y ∈ I ^ m`. Introduce `i hi`. Simplify using `using hi`. Establish `hx` using `tb.approx y m (tb.fin y m).toFinset hF`. Establish `: Ideal.Quotient.mk ((I ^ m).map s) y = ∑ i ∈ (tb.fin y m).toFinset, (Ideal.Quotient.mk (I ^ m) (tb.c i y)) • Ideal.Quotient.mk ((I ^ m).map s) (tb.b i)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Repeatedly rewrite using `[hsmul, ← map_sum]`. Conclude with `Ideal.Quotient.eq.mpr hx`. Rewrite using `[this]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Conclude with `⟨Module.Basis.mk hli hsp, fun i => by simp⟩`.
+A detailed English derivation is pending.
 -/
 theorem TopBasis.basis_mod_pow : ∀ (S A : Type) [CommRing S] [CommRing A] (s : S →+* A) (I : Ideal S) (ι : Type)
     (tb : TopBasis s I ι) (m : ℕ), letI := (Ideal.quotientMap ((I ^ m).map s) s Ideal.le_comap_map).toAlgebra;

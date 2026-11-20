@@ -7,11 +7,11 @@ open MvPolynomial AlgebraicGeometry CategoryTheory
 noncomputable section
 
 /- English proof (translation)
-Rewrite using `[MvPolynomial.eval_eq']`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun m hm => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul]`. Establish `h1 : ‖∏ i, y i ^ m i‖ ≤ 1`. Rewrite using `[norm_prod]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_le_one (fun i _ => norm_nonneg _) fun i _ => ?_` and prove the remaining obligations. Rewrite using `[norm_pow]`. Distinguish the cases in `h : m i = 0`. Simplify using `[h]`. Use `pow_le_one₀ (norm_nonneg _) (hy i (hS ?_))` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[MvPolynomial.mem_vars_iff_mem_support]`. Conclude with `⟨m, hm, Finsupp.mem_support_iff.mpr h⟩`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Chain the equalities or inequalities of the calculation.
 -/
 theorem norm_eval_le_of_vars_subset {n : ℕ} (F : MvPolynomial (Fin n) ℂ) (S : Finset (Fin n))
     (hS : F.vars ⊆ S) (y : Fin n → ℂ) (hy : ∀ i ∈ S, ‖y i‖ ≤ 1) :
@@ -44,25 +44,23 @@ def cptPiece (c : w.Idx) : Set w.M :=
     ∀ k, ‖w.coord c x (w.yt c.1 c.2 k)‖ ≤ 1}
 
 /- English proof (translation)
-Set `S : Finset (Fin (w.pres c.1 c.2).n)` to `Finset.univ.image (w.yq c.1 c.2) ∪ Finset.univ.image (w.yt c.1 c.2)`. Use `choose F hFv hFK using w.gen c.1 c.2`. Set `B : Set (Fin (w.pres c.1 c.2).n → ℂ)` to `(⋂ h ∈ ((w.pres c.1 c.2).K : Set (MvPolynomial (Fin (w.pres c.1 c.2).n) ℂ)), {y | eval y h = 0}) ∩ ((⋂ q, {y | ‖y (w.yq c.1 c.2 q)‖ ≤ 1}) ∩ ⋂ k, {y | ‖y (w.yt c.1 c.2 k)‖ ≤ 1})`. Establish `hBc : IsClosed B` using `(isClosed_biInter fun h _ => isClosed_eq (MvPolynomial.continuous_eval h) continuous_const).inter ((isClosed_iInter fun q => isClosed_le (continuous_norm.comp (continuous_apply _)) continuous_const).inter (isClosed_iInter fun k => isClosed_le (continuous_norm.comp (continuous_app …`. Establish `hmemB : ∀ y, y ∈ B ↔ (∀ h ∈ (w.pres c.1 c.2).K, eval y h = 0) ∧ (∀ q, ‖y (w.yq c.1 c.2 q)‖ ≤ 1) ∧ ∀ k, ‖y (w.yt c.1 c.2 k)‖ ≤ 1`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y`. Simplify using `only [B, Set.mem_inter_iff, Set.mem_iInter, Set.mem_setOf_eq, SetLike.mem_coe]`. Establish `hS : ∀ y ∈ B, ∀ i ∈ S, ‖y i‖ ≤ 1`. Introduce `y hy i hi`. Rewrite `hy` using `[hmemB]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `Finset.mem_union.mp hi with h | h` into its components or cases. Take `⟨a, -, rfl⟩` from `Finset.mem_image.mp h`. Conclude with `hy.2.1 a`. Take `⟨a, -, rfl⟩` from `Finset.mem_image.mp h`. Conclude with `hy.2.2 a`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hBsub : B ⊆ Set.univ.pi fun l => Metric.closedBall (0 : ℂ) (∑ m ∈ (F l).support, ‖(F l).coeff m‖)`. Introduce `y hy`. Establish `hy'` using `(hmemB y).mp hy`. Use `Set.mem_univ_pi.mpr fun l => ?_` and prove the remaining obligations. Rewrite using `[mem_closedBall_zero_iff]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1 : y l = eval y (F l)`. Establish `h2` using `hy'.1 _ (hFK l)`. Rewrite `h2` using `[map_sub, eval_X, sub_eq_zero]`. Conclude with `h2`. Rewrite using `[h1]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `norm_eval_le_of_vars_subset (F l) S (hFv l) y (hS y hy)`. Establish `hBk : IsCompact B` using `(isCompact_univ_pi fun l => isCompact_closedBall _ _).of_isClosed_subset hBc hBsub`. Establish `hrange : B ⊆ Set.range (fun y : w.src c => w.coord c y)`. Introduce `y hy`. Establish `h3 : y ∈ w.coord c '' w.src c`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[w.image c]`. Conclude with `((hmemB y).mp hy).1`. Take `⟨x, hx, rfl⟩` from `h3`. Conclude with `⟨⟨x, hx⟩, rfl⟩`. Establish `hpre` using `(w.isEmbedding c).isInducing.isCompact_preimage' hBk hrange`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `heq : w.cptPiece c = Subtype.val '' ((fun y : w.src c => w.coord c y) ⁻¹' B)`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hx, hq, ht⟩`. Use `⟨⟨x, hx⟩, (hmemB _).mpr ⟨?_, hq, ht⟩, rfl⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Establish `h4 : w.coord c x ∈ w.coord c '' w.src c` using `⟨x, hx, rfl⟩`. Rewrite `h4` using `[w.image c]`. Conclude with `h4`. Introduce and unpack `⟨y, hy, rfl⟩`. Establish `hy'` using `(hmemB _).mp hy`.
-
-Conclude with `⟨y.2, hy'.2.1, hy'.2.2⟩`. Rewrite using `[heq]`. Conclude with `hpre.image continuous_subtype_val`.
+A detailed English derivation is pending.
 -/
 theorem isCompact_cptPiece (c : w.Idx) : IsCompact (w.cptPiece c) := by
   let S : Finset (Fin (w.pres c.1 c.2).n) :=
@@ -126,25 +124,23 @@ theorem isCompact_cptPiece (c : w.Idx) : IsCompact (w.cptPiece c) := by
   exact hpre.image continuous_subtype_val
 
 /- English proof (translation)
-Take `⟨c0, h0⟩` from `w.cover x`. Establish `hz` using `w.lift_mem c0 x h0`. Take `⟨p, hpnz, hpmax⟩` from `exists_chart (fun q => eval (w.coord c0 x) (w.lift c0 q)) hz.1`. Establish `hπ : w.π.base x.1 ∈ (chartOpen hP p).1` using `(w.mem_chartOpen_iff c0 x h0 p).mpr hpnz`. Establish `hxp : x.1 ∈ w.π ⁻¹ᵁ (chartOpen hP p).1` using `hπ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hxp` using `[← w.iSup_pres p]`. Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.mp hxp`. Establish `hcl : IsClosed ({x.1} : Set w.W)` using `x.2`. Take `⟨τ, hτ⟩ : ∃ τ : Fin (w.m p) → ℂ, ∀ k, τ k = val (w.π ≫ toSpecC hP) (w.t p i k) x.1 hi` from `⟨_, fun _ => rfl⟩`. Establish `hτi : τ i = 1`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨φ, hφ⟩` from `val_ringHom (w.π ≫ toSpecC hP) _ x.1 hi hcl`. Rewrite using `[hτ, w.t_self, ← hφ, map_one]`. Establish `: Nonempty (Fin (w.m p))` using `⟨i⟩`. Take `⟨j, hj⟩` from `Finite.exists_max fun k => ‖τ k‖`. Establish `hτj1 : 1 ≤ ‖τ j‖`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h5` using `hj i`. Rewrite `h5` using `[hτi, norm_one]`. Then use the resulting hypothesis. Establish `hpos : 0 < ‖τ j‖` using `lt_of_lt_of_le one_pos hτj1`. Establish `hij : x.1 ∈ (w.pres p i).V ⊓ (w.pres p j).V`. Rewrite using `[w.inter p i j]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `(w.W.evaluation_ne_zero_iff_mem_basicOpen x.1 hi (w.t p i j)).mp ?_` and prove the remaining obligations. Rewrite using `[Ne, ← val_eq_zero_iff (w.π ≫ toSpecC hP) _ x.1 hi hcl, ← hτ]`. Conclude with `norm_pos_iff.mp hpos`. Establish `hjV : x.1 ∈ (w.pres p j).V` using `hij.2`. Establish `hcoc : ∀ k, val (w.π ≫ toSpecC hP) (w.t p j k) x.1 hjV * τ j = τ k`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k`. Take `⟨φ, hφ⟩` from `val_ringHom (w.π ≫ toSpecC hP) _ x.1 hij hcl`. Establish `h6` using `congrArg φ (w.t_cocycle p i j k)`. Rewrite `h6` using `[map_mul, hφ, hφ, hφ, val_restrict, val_restrict, val_restrict]`. Rewrite using `[hτ, hτ]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `h6`. Use `⟨⟨p, j⟩, hjV, fun q => ?_, fun k => ?_⟩` and prove the remaining obligations. Establish `e1 : w.coord ⟨p, j⟩ x (w.yq p j q) = val (w.π ≫ toSpecC hP) ((w.pres p j).secHom (X (w.yq p j q))) x.1 hjV`. Rewrite using `[(w.pres p j).val_secHom x.1 hjV hcl, eval_X, w.coord_of_mem ⟨p, j⟩ x hjV]`. Rewrite using `[e1, w.sec_yq, (val_comp (w.π ≫ toSpecC hP) (toSpecC hP) w.π rfl (w.le_pres p j) (chartCoord hP p q) x.1 hjV hcl).2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `(congrArg (fun v => ‖v‖) (w.val_chartCoord c0 x h0 p _ q)).trans_le ?_` and prove the remaining obligations. Simplify using `only [affCoord, norm_div]`. Conclude with `div_le_one_of_le₀ (hpmax q.1 q.2) (norm_nonneg _)`. Establish `e1 : w.coord ⟨p, j⟩ x (w.yt p j k) = val (w.π ≫ toSpecC hP) (w.t p j k) x.1 hjV`. Rewrite using `[← w.sec_yt p j k, (w.pres p j).val_secHom x.1 hjV hcl, eval_X, w.coord_of_mem ⟨p, j⟩ x hjV]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1]`. Establish `h7 : ‖val (w.π ≫ toSpecC hP) (w.t p j k) x.1 hjV‖ * ‖τ j‖ = ‖τ k‖`. Rewrite using `[← norm_mul, hcoc k]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← h7, mul_div_cancel_right₀ _ hpos.ne']`.
-
-Use `_ ≤ 1 := div_le_one_of_le₀ (hj k) hpos.le`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_cptPiece (x : w.M) : ∃ c, x ∈ w.cptPiece c := by
   obtain ⟨c0, h0⟩ := w.cover x
@@ -202,9 +198,9 @@ theorem exists_cptPiece (x : w.M) : ∃ c, x ∈ w.cptPiece c := by
 end WData
 
 /- English proof (translation)
-Use `isCompact_univ_iff.mp ?_` and prove the remaining obligations. Establish `h : (Set.univ : Set w.M) = ⋃ c, w.cptPiece c`. Use extensionality with `x`. Simplify using `only [Set.mem_univ, Set.mem_iUnion, true_iff]`. Conclude with `w.exists_cptPiece x`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h]`. Conclude with `isCompact_iUnion fun c => w.isCompact_cptPiece c`.
+A detailed English derivation is pending.
 -/
 theorem WData.compactSpace (w : WData P D hP) : CompactSpace w.M := by
   refine isCompact_univ_iff.mp ?_

@@ -16,19 +16,19 @@ def ht (ρ κ i : ℕ) : ℕ := if i < ρ + κ then i else if i = ρ + κ then �
 def dp (n ρ κ i : ℕ) : ℕ := if i < ρ + κ then n - 2 - i else if i = ρ + κ then ρ else n - 1 - i
 
 /- English proof (translation)
-Apply the tactic sequence `unfold Prec at h; unfold ht; split_ifs <;> omega`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem ht_lt {ρ κ i j : ℕ} (hκ : 1 ≤ κ) (h : Prec ρ κ i j) : ht ρ κ i + 1 ≤ ht ρ κ j := by
   unfold Prec at h; unfold ht; split_ifs <;> omega
 
 /- English proof (translation)
-Apply the tactic sequence `unfold Prec at h; unfold dp; split_ifs <;> (try rw [Nat.sub_sub, Nat.sub_sub]) <;> omega`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dp_lt {n ρ κ i j : ℕ} (hn : n = 2 * ρ + κ + 1) (hκ : 1 ≤ κ) (hj : j < n) (h : Prec ρ κ i j) : dp n ρ κ j + 1 ≤ dp n ρ κ i := by
   unfold Prec at h; unfold dp; split_ifs <;> (try rw [Nat.sub_sub, Nat.sub_sub]) <;> omega
 
 /- English proof (translation)
-Distinguish the cases in `h : a.val + 1 = ρ + κ`. Apply the tactic sequence `refine ⟨⟨ρ + κ + 1, by omega⟩, ?_, ?_⟩ all_goals (simp only [Prec, dp, Fin.val_mk] at *; split_ifs at * <;> omega)`. Apply the tactic sequence `have : a.val + 1 < n := by unfold dp at ha; split_ifs at ha <;> omega`. Use `⟨⟨a.val + 1, this⟩, ?_, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `all_goals (simp only [Prec, dp, Fin.val_mk] at *; split_ifs at * <;> omega)`.
+Consider separately whether the proposition holds or fails. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem exists_succ {ρ κ : ℕ} (hn : n = 2 * ρ + κ + 1) (hρ : 1 ≤ ρ) (a : Fin n) (ha : 1 ≤ dp n ρ κ a.val) :
     ∃ q : Fin n, Prec ρ κ a.val q.val ∧ dp n ρ κ a.val ≤ dp n ρ κ q.val + 1 := by
@@ -40,9 +40,9 @@ theorem exists_succ {ρ κ : ℕ} (hn : n = 2 * ρ + κ + 1) (hρ : 1 ≤ ρ) (a
     all_goals (simp only [Prec, dp, Fin.val_mk] at *; split_ifs at * <;> omega)
 
 /- English proof (translation)
-Use `a.2` as an intermediate fact. Distinguish the cases in `h : a.val = ρ + κ`. Apply the tactic sequence `refine ⟨⟨ρ - 1, by omega⟩, ?_, ?_⟩ all_goals (simp only [Prec, ht, Fin.val_mk] at *; split_ifs at * <;> omega)`. Distinguish the cases in `h' : a.val = ρ + κ + 1`. Apply the tactic sequence `refine ⟨⟨ρ + κ - 1, by omega⟩, ?_, ?_⟩ all_goals (simp only [Prec, ht, Fin.val_mk] at *; split_ifs at * <;> omega)`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Apply the first step, then apply the next step to every resulting obligation. Consider separately whether the proposition holds or fails. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `have : 1 ≤ a.val := by unfold ht at ha; split_ifs at ha <;> omega`. Use `⟨⟨a.val - 1, by omega⟩, ?_, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `all_goals (simp only [Prec, ht, Fin.val_mk] at *; split_ifs at * <;> omega)`.
+Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem exists_pred {ρ κ : ℕ} (hn : n = 2 * ρ + κ + 1) (hρ : 1 ≤ ρ) (hκ : 2 ≤ κ) (a : Fin n) (ha : 1 ≤ ht ρ κ a.val) :
     ∃ c : Fin n, Prec ρ κ c.val a.val ∧ ht ρ κ a.val ≤ ht ρ κ c.val + 1 := by
@@ -58,7 +58,7 @@ theorem exists_pred {ρ κ : ℕ} (hn : n = 2 * ρ + κ + 1) (hρ : 1 ≤ ρ) (h
     all_goals (simp only [Prec, ht, Fin.val_mk] at *; split_ifs at * <;> omega)
 
 /- English proof (translation)
-Apply the tactic sequence `unfold Prec; unfold dp at h1; unfold ht at h2; split_ifs at h1 h2 <;> omega`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem allowed_of {ρ κ i a : ℕ} (hn : n = 2 * ρ + κ + 1) (hρ : 1 ≤ ρ) (hκ : 2 ≤ κ) (hi : i < n) (ha : a < n)
     (h1 : dp n ρ κ a ≤ dp n ρ κ i) (h2 : ht ρ κ i ≤ ht ρ κ a) :
@@ -70,9 +70,9 @@ section Pattern
 variable {ρ κ : ℕ} {X Y : Matrix (Fin n) (Fin n) k}
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Establish `h0 : (Y * X) q q = 0`. Rewrite using `[mul_apply]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hj : Prec ρ κ i j`. Rewrite using `[hc j hj, mul_zero]`. Rewrite using `[(mul_eq_zero.1 (hP p q hpq i j hj)).resolve_left hip, zero_mul]`. Rewrite `h0` using `[hYX, one_apply_eq]`. Conclude with `one_ne_zero h0`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem step_up (hYX : Y * X = 1)
     (hP : ∀ p q : Fin n, Prec ρ κ p q → ∀ i j : Fin n, ¬ Prec ρ κ i j → X i p * Y q j = 0)
@@ -89,9 +89,9 @@ theorem step_up (hYX : Y * X = 1)
   exact one_ne_zero h0
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Establish `h0 : (X * Y) c c = 0`. Rewrite using `[mul_apply]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hj : Prec ρ κ j a`. Rewrite using `[hc j hj, zero_mul]`. Rewrite using `[(mul_eq_zero.1 (hP' c i hci j a hj)).resolve_right hia, mul_zero]`. Rewrite `h0` using `[hXY, one_apply_eq]`. Conclude with `one_ne_zero h0`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem step_down (hXY : X * Y = 1)
     (hP' : ∀ p q : Fin n, Prec ρ κ p q → ∀ i j : Fin n, ¬ Prec ρ κ i j → Y i p * X q j = 0)
@@ -108,11 +108,11 @@ theorem step_down (hXY : X * Y = 1)
   exact one_ne_zero h0
 
 /- English proof (translation)
-Introduce `d`. Proceed by induction on `d with`. Consider the case `zero => intros`. Conclude with `Nat.zero_le _`. Consider the case `succ d ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i a hia hd`. Take `⟨q, haq, hq⟩` from `exists_succ hn hρ a (by omega)`. Take `⟨j, hij, hjq⟩` from `step_up hYX hP hia haq`. Establish `h1` using `ih j q hjq (by omega)`. Establish `h2` using `dp_lt hn (by omega) j.2 hij`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem dp_le (hn : n = 2 * ρ + κ + 1) (hρ : 1 ≤ ρ) (hκ : 2 ≤ κ) (hYX : Y * X = 1)
     (hP : ∀ p q : Fin n, Prec ρ κ p q → ∀ i j : Fin n, ¬ Prec ρ κ i j → X i p * Y q j = 0) :
@@ -129,11 +129,11 @@ theorem dp_le (hn : n = 2 * ρ + κ + 1) (hρ : 1 ≤ ρ) (hκ : 2 ≤ κ) (hYX 
     omega
 
 /- English proof (translation)
-Introduce `d`. Proceed by induction on `d with`. Consider the case `zero => intros`. Conclude with `Nat.zero_le _`. Consider the case `succ d ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i a hia hd`. Take `⟨c, hci, hc⟩` from `exists_pred hn hρ hκ i (by omega)`. Take `⟨j, hja, hcj⟩` from `step_down hXY hP' hia hci`. Establish `h1` using `ih c j hcj (by omega)`. Establish `h2` using `ht_lt (by omega) hja`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem ht_le (hn : n = 2 * ρ + κ + 1) (hρ : 1 ≤ ρ) (hκ : 2 ≤ κ) (hXY : X * Y = 1)
     (hP' : ∀ p q : Fin n, Prec ρ κ p q → ∀ i j : Fin n, ¬ Prec ρ κ i j → Y i p * X q j = 0) :
@@ -150,7 +150,7 @@ theorem ht_le (hn : n = 2 * ρ + κ + 1) (hρ : 1 ≤ ρ) (hκ : 2 ≤ κ) (hXY 
     omega
 
 /- English proof (translation)
-The claim follows from `allowed_of hn hρ hκ i.2 a.2 (dp_le hn hρ hκ hYX hP _ i a h le_rfl) (ht_le hn hρ hκ hXY hP' _ i a h le_rfl)`.
+A detailed English derivation is pending.
 -/
 theorem pattern (hn : n = 2 * ρ + κ + 1) (hρ : 1 ≤ ρ) (hκ : 2 ≤ κ) (hXY : X * Y = 1) (hYX : Y * X = 1)
     (hP : ∀ p q : Fin n, Prec ρ κ p q → ∀ i j : Fin n, ¬ Prec ρ κ i j → X i p * Y q j = 0)
@@ -164,13 +164,13 @@ end Pattern
 section Conj
 
 /- English proof (translation)
-Establish `h1 : X * single p q s = Matrix.of fun i x => if x = q then X i p * s else 0`. Use extensionality with `i x`. Rewrite using `[Matrix.mul_apply, Matrix.of_apply]`. Distinguish the cases in `hx : x = q`. Substitute `hx` using the available equality.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[if_pos rfl, Finset.sum_eq_single p]`. Simplify using `[Matrix.single_apply]`. Introduce `y _ hy`. Simplify using `[Matrix.single_apply, Ne.symm hy]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[if_neg hx]`. Conclude with `Finset.sum_eq_zero fun y _ => by simp [Matrix.single_apply, Ne.symm hx]`. Rewrite using `[h1, Matrix.mul_apply, Finset.sum_eq_single q]`. Simplify using `[mul_assoc]`. Introduce `y _ hy`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `[hy]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mul_single_mul' (X Y : Matrix (Fin n) (Fin n) k) (p q i j : Fin n) (s : k) :
     (X * single p q s * Y) i j = X i p * s * Y q j := by
@@ -204,11 +204,11 @@ theorem elemU_apply (p q : Fin n) (hpq : p ≠ q) (s : k) (i j : Fin n) :
       (1 : Matrix (Fin n) (Fin n) k) i j + single p q s i j := rfl
 
 /- English proof (translation)
-Use `⟨⟨fun i j hij => ?_, fun i => ?_⟩, fun i j h0 h1 h2 => ?_⟩` and prove the remaining obligations. Establish `hij' : j.val < i.val` using `hij`. Rewrite using `[elemU_apply, one_apply_ne (fun e => by rw [e] at hij'; omega), single_apply, if_neg, zero_add]`. Introduce and unpack `⟨rfl, rfl⟩`. Unfold `Prec at h`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Replace the relevant objects with their definitions.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[elemU_apply, one_apply_eq, single_apply, if_neg, add_zero]`. Introduce and unpack `⟨rfl, rfl⟩`. Conclude with `hpq rfl`. Rewrite using `[elemU_apply, one_apply_ne (fun e => by rw [e] at h1; omega), single_apply, if_neg, zero_add]`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨rfl, rfl⟩`. Unfold `Prec at h`. Use linear arithmetic over natural numbers and integers.
+Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem elemU_mem {ρ κ : ℕ} {p q : Fin n} (h : Prec ρ κ p q) (hpq : p ≠ q) (s : k) :
     elemU p q hpq s ∈ unipSym k n ρ κ := by
@@ -222,7 +222,7 @@ theorem elemU_mem {ρ κ : ℕ} {p q : Fin n} (h : Prec ρ κ p q) (hpq : p ≠ 
     rintro ⟨rfl, rfl⟩; unfold Prec at h; omega
 
 /- English proof (translation)
-Establish `: ((M * elemU p q hpq s * M⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) = 1 + (M : Matrix (Fin n) (Fin n) k) * single p q s * ((M⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k)`. Rewrite using `[Units.val_mul, Units.val_mul]`. Use `show (M : Matrix (Fin n) (Fin n) k) * (1 + single p q s) * _ = _`. Rewrite using `[mul_add, mul_one, add_mul, ← Units.val_mul, mul_inv_cancel, Units.val_one]`. Rewrite using `[this, Matrix.add_apply, mul_single_mul']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_elemU_apply (M : GL (Fin n) k) (p q : Fin n) (hpq : p ≠ q) (s : k) (i j : Fin n) :
     ((M * elemU p q hpq s * M⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) i j =
@@ -236,9 +236,9 @@ theorem conj_elemU_apply (M : GL (Fin n) k) (p q : Fin n) (hpq : p ≠ q) (s : k
   rw [this, Matrix.add_apply, mul_single_mul']
 
 /- English proof (translation)
-Break down `lt_trichotomy i.val j.val with h1 | h1 | h1` into its components or cases. Establish `h3 : ρ ≤ i.val ∧ i.val < ρ + κ ∧ j.val = ρ + κ`. Assume the negation of the conclusion as `hc`. Conclude with `h ⟨h1, hc⟩`. Rewrite using `[hg.2 i j h3.1 h3.2.1 h3.2.2, one_apply_ne (fun e => by rw [e] at h1; omega)]`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `Fin.ext h1` as an intermediate fact. Substitute `this` using the available equality. Rewrite using `[hg.1.2 i, one_apply_eq]`. Rewrite using `[hg.1.1 (show j.val < i.val from h1), one_apply_ne (fun e => by rw [e] at h1; omega)]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unipSym_entry {ρ κ : ℕ} {g : GL (Fin n) k} (hg : g ∈ unipSym k n ρ κ) {i j : Fin n} (h : ¬ Prec ρ κ i j) :
     (g : Matrix (Fin n) (Fin n) k) i j = (1 : Matrix (Fin n) (Fin n) k) i j := by
@@ -250,7 +250,7 @@ theorem unipSym_entry {ρ κ : ℕ} {g : GL (Fin n) k} (hg : g ∈ unipSym k n �
   · rw [hg.1.1 (show j.val < i.val from h1), one_apply_ne (fun e => by rw [e] at h1; omega)]
 
 /- English proof (translation)
-Introduce `p q hpq i j hij`. Establish `hne : p ≠ q` using `fun e => by rw [e] at hpq; exact lt_irrefl _ hpq.1`. Apply the tactic sequence `have h := unipSym_entry (hM _ (elemU_mem hpq hne 1)) hij`. Rewrite `h` using `[conj_elemU_apply, mul_one]`. Simplify using `using h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem apply_mul_inv_apply_eq_zero_of_normalizes {ρ κ : ℕ} (M : GL (Fin n) k) (hM : ∀ h ∈ unipSym k n ρ κ, M * h * M⁻¹ ∈ unipSym k n ρ κ) :
     ∀ p q : Fin n, Prec ρ κ p q → ∀ i j : Fin n, ¬ Prec ρ κ i j →
@@ -265,9 +265,9 @@ def esum (ρ κ : ℕ) (a : Fin n → Fin n → k) (X Y : Matrix (Fin n) (Fin n)
   ∑ i, ∑ j, if symEdge ρ κ i j then a i j * (X i p * Y q j) else 0
 
 /- English proof (translation)
-Unfold `edgeVal esum`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `split_ifs with he`. Establish `hij : i ≠ j` using `fun e => by unfold symEdge at he; rw [e] at he; omega`. Rewrite using `[conj_elemU_apply, one_apply_ne hij, zero_add]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[mul_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem edgeVal_conj {ρ κ : ℕ} (a : Fin n → Fin n → k) (M : GL (Fin n) k) (p q : Fin n) (hpq : p ≠ q) (s : k) :
     edgeVal ρ κ a (M * elemU p q hpq s * M⁻¹) =
@@ -281,13 +281,11 @@ theorem edgeVal_conj {ρ κ : ℕ} (a : Fin n → Fin n → k) (M : GL (Fin n) k
   · rw [mul_zero]
 
 /- English proof (translation)
-Unfold `esum`. Rewrite using `[Finset.sum_eq_single i0, Finset.sum_eq_single j0]`. Introduce `j _ hj split_ifs with he`. Break down `eq_or_ne (X i0 p * Y q j) 0 with h | h` into its components or cases. Rewrite using `[h, mul_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Conclude with `absurd (hz _ _ he h).2 hj`. Both sides reduce to the same expression. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Introduce `i _ hi`.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Use `split_ifs with he`. Break down `eq_or_ne (X i p * Y q j) 0 with h | h` into its components or cases. Rewrite using `[h, mul_zero]`. Conclude with `absurd (hz _ _ he h).1 hi`.
-
-Both sides reduce to the same expression. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem esum_single {ρ κ : ℕ} (a : Fin n → Fin n → k) (X Y : Matrix (Fin n) (Fin n) k) (p q i0 j0 : Fin n)
     (hz : ∀ i j : Fin n, symEdge ρ κ i j → X i p * Y q j ≠ 0 → i = i0 ∧ j = j0) :
@@ -311,11 +309,9 @@ theorem esum_single {ρ κ : ℕ} (a : Fin n → Fin n → k) (X Y : Matrix (Fin
   · intro h; exact absurd (Finset.mem_univ _) h
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Take `⟨x, hx⟩` from `AddChar.ne_one_iff.1 hψ`. Establish `hAB : A - B ≠ 0` using `sub_ne_zero.2 hne`. Establish `e : x / (A - B) * A = x / (A - B) * B + x` using `by field_simp; ring`. Establish `h1` using `h (x / (A - B))`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[e, AddChar.map_add_eq_mul]`. Establish `h0 : ψ (x / (A - B) * B) ≠ 0` using `fun h0 => by`. Use `AddChar.map_add_eq_mul ψ (x / (A - B) * B) (-(x / (A - B) * B))` as an intermediate fact. Rewrite `this` using `[add_neg_cancel, AddChar.map_zero_eq_one, h0, zero_mul]`. Conclude with `one_ne_zero this`.
-
-Conclude with `hx (mul_left_cancel₀ h0 (by rw [mul_one]; exact h1))`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem char_cancel (ψ : AddChar k ℂ) (hψ : ψ ≠ 1) {A B : k} (h : ∀ s : k, ψ (s * A) = ψ (s * B)) : A = B := by
   by_contra hne
@@ -331,13 +327,13 @@ theorem char_cancel (ψ : AddChar k ℂ) (hψ : ψ ≠ 1) {A B : k} (h : ∀ s :
   exact hx (mul_left_cancel₀ h0 (by rw [mul_one]; exact h1))
 
 /- English proof (translation)
-Establish `hne : p ≠ q` using `fun e => by rw [e] at hpq; exact lt_irrefl _ hpq.1`. Establish `e1 : ∀ s, edgeVal ρ κ a (elemU p q hne s) = s * esum ρ κ a 1 1 p q` using `fun s => by`. Use `edgeVal_conj (ρ := ρ) (κ := κ) a (1 : GL (Fin n) k) p q hne s` as an intermediate fact. Rewrite `this` using `[one_mul, inv_one, mul_one, Units.val_one]`. Then use the resulting hypothesis. Establish `key : esum ρ κ a (M : Matrix (Fin n) (Fin n) k) ((M⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) p q = esum ρ κ a 1 1 p q` using `char_cancel ψ hψ fun s => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite using `[← edgeVal_conj (ρ := ρ) (κ := κ) a M p q hne s, ← e1]`. Conclude with `hM _ (elemU_mem hpq hne s)`. Rewrite using `[key, esum_single a 1 1 p q p q]`. Simplify using the standard rewrite rules. Introduce `i j _ h`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Assume the negation of the conclusion as `hc`. Apply `h` to reduce the goal to its premises. Rewrite using `[one_apply_ne hc, zero_mul]`. Assume the negation of the conclusion as `hc`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `h` to reduce the goal to its premises. Rewrite using `[one_apply_ne (Ne.symm hc), mul_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hC_of {ρ κ : ℕ} (ψ : AddChar k ℂ) (hψ : ψ ≠ 1) (a : Fin n → Fin n → k) (M : GL (Fin n) k)
     (hM : ∀ h ∈ unipSym k n ρ κ, ψ (edgeVal ρ κ a (M * h * M⁻¹)) = ψ (edgeVal ρ κ a h))
@@ -361,93 +357,81 @@ theorem hC_of {ρ κ : ℕ} (ψ : AddChar k ℂ) (hψ : ψ ≠ 1) (a : Fin n →
 end Conj
 
 /- English proof (translation)
-Introduce `k _ n ρ κ hn hρ hκ ψ hψ a ha M hM hM'`. Establish `hXY : (M : Matrix (Fin n) (Fin n) k) * ((M⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) = 1`. Rewrite using `[← Units.val_mul, mul_inv_cancel, Units.val_one]`. Establish `hYX : ((M⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) * (M : Matrix (Fin n) (Fin n) k) = 1`. Rewrite using `[← Units.val_mul, inv_mul_cancel, Units.val_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hP` using `apply_mul_inv_apply_eq_zero_of_normalizes M (fun h hh => (hM h hh).1)`. Establish `hP' : ∀ p q : Fin n, Prec ρ κ p q → ∀ i j : Fin n, ¬ Prec ρ κ i j → ((M⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) i p * (M : Matrix (Fin n) (Fin n) k) q j = 0`. Use `apply_mul_inv_apply_eq_zero_of_normalizes M⁻¹ (fun h hh => by rw [inv_inv]; exact hM' h hh)` as an intermediate fact. Simplify `this` using `only [inv_inv]`. Establish `hC` using `hC_of ψ hψ a M (fun h hh => (hM h hh).2)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Take `⟨X, hX⟩ : ∃ X, X = (M : Matrix (Fin n) (Fin n) k)` from `⟨_, rfl⟩`. Take `⟨Y, hY⟩ : ∃ Y, Y = ((M⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k)` from `⟨_, rfl⟩`. Rewrite `hXY`, `hYX`, `hP`, `hP'`, `hC` using `[← hX, ← hY]`. Rewrite using `[← hX]`. Establish `patX` using `pattern hn hρ hκ hXY hYX hP hP'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `patY` using `pattern hn hρ hκ hYX hXY hP' hP`. Establish `diag : ∀ b : Fin n, X b b * Y b b = 1`. Introduce `b`. Establish `h` using `congrFun (congrFun hXY b) b`. Rewrite `h` using `[mul_apply, Finset.sum_eq_single b, one_apply_eq]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h`. Introduce `j _ hj`. Break down `eq_or_ne (X b j) 0 with h1 | h1` into its components or cases. Rewrite using `[h1, zero_mul]`. Break down `eq_or_ne (Y j b) 0 with h2 | h2` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2, mul_zero]`. It suffices to derive a contradiction. Establish `e1` using `patX b j h1`. Establish `e2` using `patY j b h2`. Establish `: j.val ≠ b.val` using `fun e => hj (Fin.ext e)`.
+It suffices to derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `Prec at e1 e2`. Use linear arithmetic over natural numbers and integers. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Establish `hX0 : ∀ b, X b b ≠ 0` using `fun b => left_ne_zero_of_mul_eq_one (diag b)`.
+Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hY0 : ∀ b, Y b b ≠ 0` using `fun b => right_ne_zero_of_mul_eq_one (diag b)`. Take `⟨tF, htF⟩ : ∃ x : Fin n, x.val = ρ + κ` from `⟨⟨ρ + κ, by omega⟩, rfl⟩`. Take `⟨tmF, htmF⟩ : ∃ x : Fin n, x.val = ρ + κ - 1` from `⟨⟨_, by omega⟩, rfl⟩`. Take `⟨tpF, htpF⟩ : ∃ x : Fin n, x.val = ρ + κ + 1` from `⟨⟨_, by omega⟩, rfl⟩`. Take `⟨rF, hrF⟩ : ∃ x : Fin n, x.val = ρ` from `⟨⟨_, by omega⟩, rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨rmF, hrmF⟩ : ∃ x : Fin n, x.val = ρ - 1` from `⟨⟨_, by omega⟩, rfl⟩`. Establish `S1 : X tF tmF = 0`. Establish `h` using `hC tmF tpF (by unfold Prec; omega)`. Rewrite using `[esum_single a X Y tmF tpF tF tpF (fun i j he hne => by`. Establish `e1` using `patX i tmF (left_ne_zero_of_mul hne)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `e2` using `patY tpF j (right_ne_zero_of_mul hne)`. Unfold `symEdge at he`. Unfold `Prec at e1 e2`. Conclude with `⟨Fin.ext (by omega), Fin.ext (by omega)⟩),`. Use `if_pos (by unfold symEdge; omega), if_neg (by unfold symEdge; omega)] at h`.
+Replace the relevant objects with their definitions. Supply the required witnesses or components. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
 
-Break down `mul_eq_zero.1 h with h | h` into its components or cases. Conclude with `absurd h (ha _ _ (by unfold symEdge; omega))`. Conclude with `(mul_eq_zero.1 h).resolve_right (hY0 tpF)`. Establish `S2 : Y rF tF = 0`. Establish `h` using `hC rmF rF (by unfold Prec; omega)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions.
 
-Rewrite using `[esum_single a X Y rmF rF rmF tF (fun i j he hne => by`. Establish `e1` using `patX i rmF (left_ne_zero_of_mul hne)`. Establish `e2` using `patY rF j (right_ne_zero_of_mul hne)`. Unfold `symEdge at he`. Unfold `Prec at e1 e2`.
+Supply the required witnesses or components. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `⟨Fin.ext (by omega), Fin.ext (by omega)⟩),`. Use `if_pos (by unfold symEdge; omega), if_neg (by unfold symEdge; omega)] at h`. Break down `mul_eq_zero.1 h with h | h` into its components or cases. Conclude with `absurd h (ha _ _ (by unfold symEdge; omega))`. Conclude with `(mul_eq_zero.1 h).resolve_left (hX0 rmF)`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Establish `S3 : Y tF tmF = 0`. Establish `h` using `congrFun (congrFun hYX tF) tmF`. Rewrite `h` using `[mul_apply, Finset.sum_eq_single tmF, one_apply_ne (fun e => by rw [e] at htF; omega)]`. Conclude with `(mul_eq_zero.1 h).resolve_right (hX0 tmF)`. Introduce `j _ hj`.
+It suffices to derive a contradiction. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Break down `eq_or_ne (Y tF j) 0 with h1 | h1` into its components or cases. Rewrite using `[h1, zero_mul]`. Break down `eq_or_ne (X j tmF) 0 with h2 | h2` into its components or cases. Rewrite using `[h2, mul_zero]`. It suffices to derive a contradiction.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hjt : j = tF`. Rewrite `h2` using `[hjt]`. Conclude with `h2 S1`. Establish `e1` using `patY tF j h1`. Establish `e2` using `patX j tmF h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `: j.val ≠ tmF.val` using `fun e => hj (Fin.ext e)`. Establish `: j.val ≠ tF.val` using `fun e => hjt (Fin.ext e)`. Unfold `Prec at e1 e2`. Use linear arithmetic over natural numbers and integers. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. It suffices to derive a contradiction. Consider separately whether the proposition holds or fails.
 
-Conclude with `absurd (Finset.mem_univ _) h`. Establish `S4 : X rF tF = 0`. Establish `h` using `congrFun (congrFun hXY rF) tF`. Rewrite `h` using `[mul_apply, Finset.sum_eq_single tF, one_apply_ne (fun e => by rw [e] at hrF; omega)]`. Conclude with `(mul_eq_zero.1 h).resolve_right (hY0 tF)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `j _ hj`. Break down `eq_or_ne (X rF j) 0 with h1 | h1` into its components or cases. Rewrite using `[h1, zero_mul]`. Break down `eq_or_ne (Y j tF) 0 with h2 | h2` into its components or cases. Rewrite using `[h2, mul_zero]`.
+Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-It suffices to derive a contradiction. Distinguish the cases in `hjr : j = rF`. Rewrite `h2` using `[hjr]`. Conclude with `h2 S2`. Establish `e1` using `patX rF j h1`.
+Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `e2` using `patY j tF h2`. Establish `: j.val ≠ tF.val` using `fun e => hj (Fin.ext e)`. Establish `: j.val ≠ rF.val` using `fun e => hjr (Fin.ext e)`. Unfold `Prec at e1 e2`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Establish `patX' : ∀ i b : Fin n, X i b ≠ 0 → i.val = b.val ∨ Prec ρ κ i b`. Introduce `i b h`. Break down `patX i b h with h1 | h1 | h1 | h1` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative. It suffices to derive a contradiction.
 
-Conclude with `Or.inl h1`. Conclude with `Or.inr h1`. It suffices to derive a contradiction. Apply `h` to reduce the goal to its premises. Rewrite using `[show i = rF from Fin.ext (by omega), show b = tF from Fin.ext (by omega)]; exact S4`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-It suffices to derive a contradiction. Apply `h` to reduce the goal to its premises. Rewrite using `[show i = tF from Fin.ext (by omega), show b = tmF from Fin.ext (by omega)]; exact S1`. Establish `patY' : ∀ i b : Fin n, Y i b ≠ 0 → i.val = b.val ∨ Prec ρ κ i b`. Introduce `i b h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Break down `patY i b h with h1 | h1 | h1 | h1` into its components or cases. Conclude with `Or.inl h1`. Conclude with `Or.inr h1`. It suffices to derive a contradiction. Apply `h` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Supply the required witnesses or components.
 
-Rewrite using `[show i = rF from Fin.ext (by omega), show b = tF from Fin.ext (by omega)]; exact S2`. It suffices to derive a contradiction. Apply `h` to reduce the goal to its premises. Rewrite using `[show i = tF from Fin.ext (by omega), show b = tmF from Fin.ext (by omega)]; exact S3`. Establish `S5 : ∀ p q : Fin n, symEdge ρ κ p q → X p p = X q q`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `p q he`. Establish `hpq : Prec ρ κ p q` using `by unfold symEdge at he; unfold Prec; omega`. Establish `h` using `hC p q hpq`. Rewrite using `[esum_single a X Y p q p q (fun i j he' hne => by`. Establish `e1` using `patX' i p (left_ne_zero_of_mul hne)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Establish `e2` using `patY' q j (right_ne_zero_of_mul hne)`. Unfold `symEdge at he he'`. Unfold `Prec at e1 e2 hpq`. Conclude with `⟨Fin.ext (by omega), Fin.ext (by omega)⟩), if_pos he, if_pos he] at h`. Establish `h1 : X p p * Y q q = 1` using `mul_left_cancel₀ (ha p q he) (by rw [mul_one]; exact h)`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_right_cancel₀ (hY0 q) (by rw [h1, diag q])`. Set `D : ℕ → k` to `fun m => if h : m < n then X ⟨m, h⟩ ⟨m, h⟩ else 0`. Establish `hDX : ∀ i : Fin n, X i i = D i.val` using `fun i => by simp [D, i.2]`. Establish `hD : ∀ m m' (hm : m < n) (hm' : m' < n), ((m' = m + 1 ∧ m + 1 ≠ ρ ∧ m + 1 ≠ ρ + κ) ∨ (m + 1 = ρ ∧ m' = ρ + κ)) → D m = D m'`. Introduce `m m' hm hm' he`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Use `S5 ⟨m, hm⟩ ⟨m', hm'⟩ he` as an intermediate fact. Simplify `this` using `[D, hm, hm']`. Establish `c1 : ∀ m, m < ρ → D m = D 0`. Introduce `m hm`. Proceed by induction on `m with`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => rfl`. Consider the case `succ m ih`. Rewrite using `[← ih (by omega)]`. Conclude with `(hD m (m + 1) (by omega) (by omega) (Or.inl ⟨rfl, by omega, by omega⟩)).symm`. Establish `c2 : D (ρ + κ) = D 0`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← c1 (ρ - 1) (by omega)]`. Conclude with `(hD (ρ - 1) (ρ + κ) (by omega) (by omega) (Or.inr ⟨by omega, rfl⟩)).symm`. Establish `c3 : ∀ m, ρ + κ + m < n → D (ρ + κ + m) = D 0`. Introduce `m hm`. Proceed by induction on `m with`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Consider the case `zero => exact c2`. Consider the case `succ m ih`. Rewrite using `[← ih (by omega)]`. Conclude with `(hD (ρ + κ + m) (ρ + κ + (m + 1)) (by omega) (by omega) (Or.inl ⟨by omega, by omega, by omega⟩)).symm`. Establish `c4 : ∀ m, m < κ → D (ρ + m) = D ρ`.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Introduce `m hm`. Proceed by induction on `m with`. Consider the case `zero => rfl`. Consider the case `succ m ih`. Rewrite using `[← ih (by omega)]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `(hD (ρ + m) (ρ + (m + 1)) (by omega) (by omega) (Or.inl ⟨by omega, by omega, by omega⟩)).symm`. Establish `diagX : ∀ i : Fin n, X i i = if ρ ≤ i.val ∧ i.val < ρ + κ then D ρ else D 0`. Introduce `i`. Rewrite using `[hDX]`. Use `split_ifs with hi`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Use `c4 (i.val - ρ) (by omega); rwa [show ρ + (i.val - ρ) = i.val by omega] at this` as an intermediate fact. Distinguish the cases in `h1 : i.val < ρ`. Conclude with `c1 _ h1`. Use `c3 (i.val - (ρ + κ)) (by omega)` as an intermediate fact. Rewrite `this` using `[show ρ + κ + (i.val - (ρ + κ)) = i.val by omega]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. It suffices to derive a contradiction. Establish an intermediate fact. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers.
 
-Establish `hs0 : D 0 ≠ 0` using `by have := hX0 ⟨0, by omega⟩; rwa [hDX] at this`. Establish `hc0 : D ρ ≠ 0` using `by have := hX0 ⟨ρ, by omega⟩; rwa [hDX] at this`. Establish `hDD : midDiag n ρ κ (D 0) (D ρ) * midDiag n ρ κ (D 0)⁻¹ (D ρ)⁻¹ = 1`. Apply the tactic sequence `unfold midDiag; rw [diagonal_mul_diagonal, ← diagonal_one]; congr 1; funext i; split_ifs <;> field_simp`. Establish `hD'D : midDiag n ρ κ (D 0)⁻¹ (D ρ)⁻¹ * midDiag n ρ κ (D 0) (D ρ) = 1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. It suffices to derive a contradiction.
 
-Apply the tactic sequence `unfold midDiag; rw [diagonal_mul_diagonal, ← diagonal_one]; congr 1; funext i; split_ifs <;> field_simp`. Establish `hmd : ∀ (s c : k) (Z : Matrix (Fin n) (Fin n) k) (i j : Fin n), (midDiag n ρ κ s c * Z) i j = (if ρ ≤ i.val ∧ i.val < ρ + κ then c else s) * Z i j`. Introduce `s c Z i j`. Unfold `midDiag`. Rewrite using `[diagonal_mul]`.
-
-Set `U : GL (Fin n) k` to `⟨midDiag n ρ κ (D 0)⁻¹ (D ρ)⁻¹ * X, Y * midDiag n ρ κ (D 0) (D ρ), by rw [mul_assoc, ← mul_assoc X, hXY, one_mul, hD'D], by rw [mul_assoc, ← mul_assoc (midDiag n ρ κ (D 0) (D ρ)), hDD, one_mul, hYX]⟩`. Use `⟨Units.mk0 (D 0) hs0, Units.mk0 (D ρ) hc0, U, ?_, ?_⟩` and prove the remaining obligations. Use `⟨⟨fun i j hij => ?_, fun i => ?_⟩, fun i j h0 h1 h2 => ?_⟩` and prove the remaining obligations. Establish `hij' : j.val < i.val` using `hij show (midDiag n ρ κ (D 0)⁻¹ (D ρ)⁻¹ * X) i j = 0`. Rewrite using `[hmd]`.
-
-Break down `eq_or_ne (X i j) 0 with h | h` into its components or cases. Rewrite using `[h, mul_zero]`. It suffices to derive a contradiction. Use `patX' i j h` as an intermediate fact. Unfold `Prec at this`.
-
-Use linear arithmetic over natural numbers and integers. Use `show (midDiag n ρ κ (D 0)⁻¹ (D ρ)⁻¹ * X) i i = 1`. Rewrite using `[hmd, diagX]`. Use `split_ifs with hi`. Conclude with `inv_mul_cancel₀ hc0`.
-
-Conclude with `inv_mul_cancel₀ hs0`. Use `show (midDiag n ρ κ (D 0)⁻¹ (D ρ)⁻¹ * X) i j = 0`. Rewrite using `[hmd]`. Break down `eq_or_ne (X i j) 0 with h | h` into its components or cases. Rewrite using `[h, mul_zero]`.
-
-It suffices to derive a contradiction. Use `patX' i j h` as an intermediate fact. Unfold `Prec at this`. Use linear arithmetic over natural numbers and integers. Use `show X = midDiag n ρ κ (D 0) (D ρ) * (midDiag n ρ κ (D 0)⁻¹ (D ρ)⁻¹ * X)`.
-
-Rewrite using `[← mul_assoc, hDD, one_mul]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem normaliser_unipSym_char : ∀ (k : Type) [Field k] (n ρ κ : ℕ), n = 2 * ρ + κ + 1 → 1 ≤ ρ → 2 ≤ κ →
     ∀ ψ : AddChar k ℂ, ψ ≠ 1 → ∀ a : Fin n → Fin n → k, (∀ i j, symEdge ρ κ i j → a i j ≠ 0) →

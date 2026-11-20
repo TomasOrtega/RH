@@ -18,7 +18,7 @@ variable {m R : Type*} [Fintype m] [DecidableEq m] [CommRing R] {b : m → ℕ}
 def blkDiag (b : m → ℕ) (M : Matrix m m R) : Matrix m m R := fun i j => if b i = b j then M i j else 0
 
 /- English proof (translation)
-Use extensionality with `i j`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using `[blkDiag]`. Simplify using `[blkDiag, Matrix.one_apply_ne h]`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem blkDiag_one : blkDiag b (1 : Matrix m m R) = 1 := by
   ext i j
@@ -27,13 +27,13 @@ theorem blkDiag_one : blkDiag b (1 : Matrix m m R) = 1 := by
   · simp [blkDiag, Matrix.one_apply_ne h]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [blkDiag, Matrix.mul_apply]`. Distinguish the cases in `h : b i = b j`. Rewrite using `[if_pos h]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `hik : b i = b k`. Rewrite using `[if_pos hik, if_pos (hik ▸ h)]`. Rewrite using `[if_neg hik, zero_mul]`. Break down `lt_or_gt_of_ne hik with hlt | hgt` into its components or cases. Rewrite using `[hN (show b j < b k from h ▸ hlt), mul_zero]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hM hgt, zero_mul]`. Rewrite using `[if_neg h]`. Use `symm`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Distinguish the cases in `hik : b i = b k`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[if_pos hik, if_neg (fun hkj => h (hik.trans hkj)), mul_zero]`. Rewrite using `[if_neg hik, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem blkDiag_mul {M N : Matrix m m R} (hM : M.BlockTriangular b) (hN : N.BlockTriangular b) :
     blkDiag b (M * N) = blkDiag b M * blkDiag b N := by
@@ -56,11 +56,11 @@ theorem blkDiag_mul {M N : Matrix m m R} (hM : M.BlockTriangular b) (hN : N.Bloc
     · rw [if_neg hik, zero_mul]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨fun i j hij => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[h i j hij.le, Matrix.one_apply_ne (fun e => (e ▸ hij).false)]`. Use extensionality with `i j`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Simplify using `only [blkDiag]`. Use `split_ifs with hij`. Conclude with `h i j hij.ge`. Rewrite using `[Matrix.one_apply_ne (fun e => hij (by rw [e]))]`. Introduce and unpack `⟨hM, hD⟩ i j hij`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Break down `hij.lt_or_eq with hlt | heq` into its components or cases. Rewrite using `[hM hlt, Matrix.one_apply_ne (fun e => (e ▸ hlt).false)]`. Use `congrFun (congrFun hD i) j` as an intermediate fact. Simplify using `only [blkDiag, if_pos heq.symm] at this`. Conclude with `this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem uniCond_iff (M : Matrix m m R) :
     (∀ i j, b j ≤ b i → M i j = (1 : Matrix m m R) i j) ↔ M.BlockTriangular b ∧ blkDiag b M = 1 := by
@@ -86,21 +86,21 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {Y : Spc F E n}
 
 /- English proof (translation)
-Simplify using `only [incM]`. Rewrite using `[← Matrix.map_mul, Units.mul_inv, Matrix.map_one _ (map_zero _) (map_one _)]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem incM_mul_inv (b : GL (Fin n ⊕ Fin n) E) : incM F b.1 * incM F (b⁻¹).1 = 1 := by
   simp only [incM]
   rw [← Matrix.map_mul, Units.mul_inv, Matrix.map_one _ (map_zero _) (map_one _)]
 
 /- English proof (translation)
-Simplify using `only [incM]`. Rewrite using `[← Matrix.map_mul, Units.inv_mul, Matrix.map_one _ (map_zero _) (map_one _)]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem incM_inv_mul (b : GL (Fin n ⊕ Fin n) E) : incM F (b⁻¹).1 * incM F b.1 = 1 := by
   simp only [incM]
   rw [← Matrix.map_mul, Units.inv_mul, Matrix.map_one _ (map_zero _) (map_one _)]
 
 /- English proof (translation)
-Unfold `inFrame`. Rewrite using `[show mat2 (x * y) = mat2 x * mat2 y from rfl]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (incM F b.1) (incM F (b⁻¹).1), incM_mul_inv, Matrix.one_mul]`.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem inFrame_mul (b : GL (Fin n ⊕ Fin n) E) (x y : G2 σ Y) : inFrame b (x * y) = inFrame b x * inFrame b y := by
   unfold inFrame
@@ -109,26 +109,26 @@ theorem inFrame_mul (b : GL (Fin n ⊕ Fin n) E) (x y : G2 σ Y) : inFrame b (x 
   rw [← Matrix.mul_assoc (incM F b.1) (incM F (b⁻¹).1), incM_mul_inv, Matrix.one_mul]
 
 /- English proof (translation)
-Unfold `inFrame`. Rewrite using `[show mat2 (1 : G2 σ Y) = 1 from rfl, Matrix.mul_one, incM_inv_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem inFrame_one (b : GL (Fin n ⊕ Fin n) E) : inFrame (σ := σ) (Y := Y) b 1 = 1 := by
   unfold inFrame
   rw [show mat2 (1 : G2 σ Y) = 1 from rfl, Matrix.mul_one, incM_inv_mul]
 
 /- English proof (translation)
-Rewrite using `[← inFrame_mul, inv_mul_cancel, inFrame_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem inFrame_inv_mul (b : GL (Fin n ⊕ Fin n) E) (x : G2 σ Y) : inFrame b x⁻¹ * inFrame b x = 1 := by
   rw [← inFrame_mul, inv_mul_cancel, inFrame_one]
 
 /- English proof (translation)
-Rewrite using `[← inFrame_mul, mul_inv_cancel, inFrame_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem inFrame_mul_inv (b : GL (Fin n ⊕ Fin n) E) (x : G2 σ Y) : inFrame b x * inFrame b x⁻¹ = 1 := by
   rw [← inFrame_mul, mul_inv_cancel, inFrame_one]
 
 /- English proof (translation)
-Unfold `inFrame`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[incM_mul_inv, Matrix.mul_one, ← Matrix.mul_assoc, incM_mul_inv, Matrix.one_mul]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem matrix_eq_frame_conjugate (b : GL (Fin n ⊕ Fin n) E) (x : G2 σ Y) : mat2 x = incM F b.1 * inFrame b x * incM F (b⁻¹).1 := by
   unfold inFrame
@@ -136,7 +136,7 @@ theorem matrix_eq_frame_conjugate (b : GL (Fin n ⊕ Fin n) E) (x : G2 σ Y) : m
   rw [incM_mul_inv, Matrix.mul_one, ← Matrix.mul_assoc, incM_mul_inv, Matrix.one_mul]
 
 /- English proof (translation)
-Set `_ : Invertible (inFrame b x)` to `invertibleOfLeftInverse _ _ (inFrame_inv_mul b x)`. Use `Matrix.blockTriangular_inv_of_blockTriangular hx` as an intermediate fact. Rewrite `this` using `[Matrix.inv_eq_left_inv (inFrame_inv_mul b x)]`. Then use the resulting hypothesis.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem blockTriangular_inFrame_inv (b : GL (Fin n ⊕ Fin n) E) {β : Type*} [LinearOrder β] {lv : Fin n ⊕ Fin n → β}
     {x : G2 σ Y} (hx : (inFrame b x).BlockTriangular lv) : (inFrame b x⁻¹).BlockTriangular lv := by
@@ -163,7 +163,7 @@ def parS (b : GL (Fin n ⊕ Fin n) E) (S : Finset (Fin n)) : Subgroup (G2 σ Y) 
   inv_mem' := fun {x} hx => blockTriangular_inFrame_inv b hx
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_parS {b : GL (Fin n ⊕ Fin n) E} {S : Finset (Fin n)} {g : G2 σ Y} :
     g ∈ parS σ Y b S ↔ (inFrame b g).BlockTriangular (lev S) := Iff.rfl
@@ -193,7 +193,7 @@ def iota1 (R : Type*) [CommRing R] (n : ℕ) : Matrix (Fin n ⊕ Fin n) (Fin n) 
   Matrix.of fun r c => if r = Sum.inl c then 1 else 0
 
 /- English proof (translation)
-Use extensionality with `r c`. Apply the tactic sequence `rcases r with r | r <;> simp [iota1, Matrix.mul_apply, Matrix.toBlocks₁₁, h]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem mul_iota1_of_lowerLeft {M : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) R} (h : ∀ i j, M (Sum.inr i) (Sum.inl j) = 0) :
     M * iota1 R n = iota1 R n * M.toBlocks₁₁ := by
@@ -201,7 +201,7 @@ theorem mul_iota1_of_lowerLeft {M : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) R
   rcases r with r | r <;> simp [iota1, Matrix.mul_apply, Matrix.toBlocks₁₁, h]
 
 /- English proof (translation)
-Use extensionality with `i j`. Use `congrFun (congrFun h (Sum.inl i)) j` as an intermediate fact. Simplify `this` using `[iota1, Matrix.mul_apply]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem block_inclusion_left_cancel {C C' : Matrix (Fin n) (Fin n) R} (h : iota1 R n * C = iota1 R n * C') : C = C' := by
   ext i j
@@ -213,7 +213,7 @@ end Siegel
 def siegelS (hn : 0 < n) : Finset (Fin n) := {⟨n - 1, by omega⟩}
 
 /- English proof (translation)
-Unfold `below siegelS`. Rewrite using `[Finset.filter_singleton, if_neg]`. Both sides reduce to the same expression. Simplify using `only [Fin.lt_def]`. Use linear arithmetic over natural numbers and integers.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem below_siegelS (hn : 0 < n) (i : Fin n) : below (siegelS hn) i = 0 := by
   unfold below siegelS
@@ -223,12 +223,12 @@ theorem below_siegelS (hn : 0 < n) (i : Fin n) : below (siegelS hn) i = 0 := by
     omega
 
 /- English proof (translation)
-The claim follows from `below_siegelS hn i`.
+A detailed English derivation is pending.
 -/
 theorem lev_siegelS_inl (hn : 0 < n) (i : Fin n) : lev (siegelS hn) (Sum.inl i) = 0 := below_siegelS hn i
 
 /- English proof (translation)
-Use `show 2 * (siegelS hn).card - below (siegelS hn) i = 2`. Rewrite using `[below_siegelS]`. Simplify using `[siegelS]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lev_siegelS_inr (hn : 0 < n) (i : Fin n) : lev (siegelS hn) (Sum.inr i) = 2 := by
   show 2 * (siegelS hn).card - below (siegelS hn) i = 2
@@ -236,9 +236,9 @@ theorem lev_siegelS_inr (hn : 0 < n) (i : Fin n) : lev (siegelS hn) (Sum.inr i) 
   simp [siegelS]
 
 /- English proof (translation)
-Rewrite using `[mem_parS]`. Prove the components needed by the constructor for the conclusion. Introduce `h i j`. Conclude with `h (by rw [lev_siegelS_inl, lev_siegelS_inr]; omega)`. Introduce `h r s hrs`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `rcases r with r | r <;> rcases s with s | s <;>`. Apply the tactic sequence `simp only [lev_siegelS_inl, lev_siegelS_inr] at hrs <;> first | omega | exact h r s`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem mem_parS_siegelS {b : GL (Fin n ⊕ Fin n) E} (hn : 0 < n) {g : G2 σ Y} :
     g ∈ parS σ Y b (siegelS hn) ↔ ∀ i j, inFrame b g (Sum.inr i) (Sum.inl j) = 0 := by
@@ -251,14 +251,14 @@ theorem mem_parS_siegelS {b : GL (Fin n ⊕ Fin n) E} (hn : 0 < n) {g : G2 σ Y}
       simp only [lev_siegelS_inl, lev_siegelS_inr] at hrs <;> first | omega | exact h r s
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem isPar_iff {p : G2 σ Y} {t : GL (Fin n) (AE F E)} :
     IsPar p t ↔ mat2 p * (diagCols (Fin n) : Matrix (Fin n ⊕ Fin n) (Fin n) (AE F E)) =
       (diagCols (Fin n) : Matrix (Fin n ⊕ Fin n) (Fin n) (AE F E)) * (t : Matrix (Fin n) (Fin n) (AE F E)) := Iff.rfl
 
 /- English proof (translation)
-Use extensionality with `r c`. Apply the tactic sequence `rcases r with r | r <;> simp [diagCols, Matrix.one_apply]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem incM_diagCols :
     (diagCols (Fin n) : Matrix (Fin n ⊕ Fin n) (Fin n) E).map (inclR (F := F) (E := E) (AF F)) = diagCols (Fin n) := by
@@ -266,7 +266,7 @@ theorem incM_diagCols :
   rcases r with r | r <;> simp [diagCols, Matrix.one_apply]
 
 /- English proof (translation)
-Establish `h1 : incM F b.1 * iota1 (AE F E) n = (b.1.toCols₁).map (inclR (F` using `F) (E := E) (AF F)) := by`. Use extensionality with `r c`. Simplify using `[incM, iota1, Matrix.mul_apply, Matrix.toCols₁]`. Rewrite using `[h1, hb, Matrix.map_mul, incM_diagCols]`. Both sides reduce to the same expression.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem frame_cols {b : GL (Fin n ⊕ Fin n) E} {t0 : GL (Fin n) E}
     (hb : b.1.toCols₁ = (diagCols (Fin n) : Matrix (Fin n ⊕ Fin n) (Fin n) E) * (t0.1 : Matrix (Fin n) (Fin n) E)) :
@@ -285,14 +285,14 @@ Both sides reduce to the same expression.
 theorem glA_coe (t0 : GL (Fin n) E) : ((glA (F := F) t0 : GL (Fin n) (AE F E)) : Matrix _ _ _) = incM F t0.1 := rfl
 
 /- English proof (translation)
-Rewrite using `[← glA_coe, Units.mul_inv]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem glA_coe_inv (t0 : GL (Fin n) E) :
     incM F t0.1 * (((glA (F := F) t0)⁻¹ : GL (Fin n) (AE F E)) : Matrix (Fin n) (Fin n) (AE F E)) = 1 := by
   rw [← glA_coe, Units.mul_inv]
 
 /- English proof (translation)
-Rewrite using `[frame_cols hb, Matrix.mul_assoc, glA_coe_inv, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem diagCols_eq {b : GL (Fin n ⊕ Fin n) E} {t0 : GL (Fin n) E}
     (hb : b.1.toCols₁ = (diagCols (Fin n) : Matrix (Fin n ⊕ Fin n) (Fin n) E) * (t0.1 : Matrix (Fin n) (Fin n) E)) :
@@ -301,11 +301,11 @@ theorem diagCols_eq {b : GL (Fin n ⊕ Fin n) E} {t0 : GL (Fin n) E}
   rw [frame_cols hb, Matrix.mul_assoc, glA_coe_inv, Matrix.mul_one]
 
 /- English proof (translation)
-Establish `hp' : p⁻¹ ∈ parS σ Y b (siegelS hn)` using `inv_mem hp`. Establish `hM` using `mul_iota1_of_lowerLeft ((mem_parS_siegelS hn).1 hp)`. Establish `hM'` using `mul_iota1_of_lowerLeft ((mem_parS_siegelS hn).1 hp')`. Establish `hAA : (inFrame b p).toBlocks₁₁ * (inFrame b p⁻¹).toBlocks₁₁ = 1`. Use `block_inclusion_left_cancel ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Matrix.mul_one, ← Matrix.mul_assoc, ← hM, Matrix.mul_assoc, ← hM', ← Matrix.mul_assoc, inFrame_mul_inv, Matrix.one_mul]`. Establish `hAA' : (inFrame b p⁻¹).toBlocks₁₁ * (inFrame b p).toBlocks₁₁ = 1`. Use `block_inclusion_left_cancel ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_one, ← Matrix.mul_assoc, ← hM', Matrix.mul_assoc, ← hM, ← Matrix.mul_assoc, inFrame_inv_mul, Matrix.one_mul]`. Set `Au : GL (Fin n) (AE F E)` to `⟨(inFrame b p).toBlocks₁₁, (inFrame b p⁻¹).toBlocks₁₁, hAA, hAA'⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Use `⟨glA (F := F) t0 * Au * (glA (F := F) t0)⁻¹, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[isPar_iff, matrix_eq_frame_conjugate b p, diagCols_eq hb]`. Simplify using `only [Units.val_mul, Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (incM F (b⁻¹).1) (incM F b.1), incM_inv_mul, Matrix.one_mul, ← Matrix.mul_assoc (inFrame b p) (iota1 (AE F E) n), hM, Matrix.mul_assoc, ← Matrix.mul_assoc (((glA (F := F) t0)⁻¹ : GL (Fin n) (AE F E)) : Matrix (Fin n) (Fin n) (AE F E)) ((glA (F := F) t0 : GL (F …`. Rewrite using `[map_mul, map_mul, mul_comm (Matrix.GeneralLinearGroup.det (glA (F := F) t0)), mul_assoc, map_inv, mul_inv_cancel, mul_one, Matrix.GeneralLinearGroup.val_det_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem isPar_of_mem_siegelS {b : GL (Fin n ⊕ Fin n) E} {t0 : GL (Fin n) E}
     (hb : b.1.toCols₁ = (diagCols (Fin n) : Matrix (Fin n ⊕ Fin n) (Fin n) E) * (t0.1 : Matrix (Fin n) (Fin n) E))
@@ -363,13 +363,13 @@ variable (F) in
 def archA (r : ℝ) : AF F := ((archInf F r, 1) : InfiniteAdeleRing F × FiniteAdeleRing (𝓞 F) F)
 
 /- English proof (translation)
-The claim follows from `Prod.ext (map_mul (archInf F) r s) (mul_one 1).symm`.
+A detailed English derivation is pending.
 -/
 theorem archA_mul (r s : ℝ) : archA F (r * s) = archA F r * archA F s :=
   Prod.ext (map_mul (archInf F) r s) (mul_one 1).symm
 
 /- English proof (translation)
-The claim follows from `Prod.ext (map_one (archInf F)) rfl`.
+A detailed English derivation is pending.
 -/
 theorem archA_one : archA F 1 = 1 :=
   Prod.ext (map_one (archInf F)) rfl
@@ -379,7 +379,7 @@ def scl (S : Finset (Fin n)) (t : Fin S.card → ℝ) : Fin n ⊕ Fin n → ℝ
   | Sum.inr i => if h : below S i < S.card then Real.exp (-t ⟨below S i, h⟩) else 1
 
 /- English proof (translation)
-Apply the tactic sequence `rcases i with i | i <;> simp only [scl, Pi.neg_apply, neg_neg] <;> split_ifs <;> simp [← Real.exp_add]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem scl_mul_neg (S : Finset (Fin n)) (t : Fin S.card → ℝ) (i : Fin n ⊕ Fin n) : scl S t i * scl S (-t) i = 1 := by
   rcases i with i | i <;> simp only [scl, Pi.neg_apply, neg_neg] <;> split_ifs <;> simp [← Real.exp_add]
@@ -390,20 +390,20 @@ def aDiag (S : Finset (Fin n)) (t : Fin S.card → ℝ) : Matrix (Fin n ⊕ Fin 
   Matrix.diagonal fun i => algebraMap (AF F) (AE F E) (archA F (scl S t i))
 
 /- English proof (translation)
-Simplify using `only [aDiag, Matrix.diagonal_mul_diagonal, ← map_mul, ← archA_mul, scl_mul_neg, archA_one, map_one, Matrix.diagonal_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem aDiag_mul_neg (S : Finset (Fin n)) (t : Fin S.card → ℝ) : aDiag F E S t * aDiag F E S (-t) = 1 := by
   simp only [aDiag, Matrix.diagonal_mul_diagonal, ← map_mul, ← archA_mul, scl_mul_neg, archA_one, map_one,
     Matrix.diagonal_one]
 
 /- English proof (translation)
-Simplify using `using aDiag_mul_neg (F := F) (E := E) S (-t)`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem aDiag_neg_mul (S : Finset (Fin n)) (t : Fin S.card → ℝ) : aDiag F E S (-t) * aDiag F E S t = 1 := by
   simpa using aDiag_mul_neg (F := F) (E := E) S (-t)
 
 /- English proof (translation)
-Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (incM F (b⁻¹).1) (incM F b.1), incM_inv_mul, Matrix.one_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_mul_conj (b : GL (Fin n ⊕ Fin n) E) (X Z : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) (AE F E)) :
     incM F b.1 * X * incM F (b⁻¹).1 * (incM F b.1 * Z * incM F (b⁻¹).1) = incM F b.1 * (X * Z) * incM F (b⁻¹).1 := by
@@ -422,7 +422,7 @@ def aU (b : GL (Fin n ⊕ Fin n) E) (S : Finset (Fin n)) (t : Fin S.card → ℝ
   inv_val := (conj_mul_conj b _ _).trans (by rw [aDiag_neg_mul, Matrix.mul_one, incM_mul_inv])
 
 /- English proof (translation)
-Use extensionality with `r s`. Apply the tactic sequence `rcases r with i | i <;> rcases s with j | j <;> simp [incM, Matrix.one_apply] <;> split_ifs <;> simp`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem incM_alt_alt (e : E) :
     incM F (Matrix.fromBlocks 0 1 (e • 1) 0 : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) E) =
@@ -431,7 +431,7 @@ theorem incM_alt_alt (e : E) :
   rcases r with i | i <;> rcases s with j | j <;> simp [incM, Matrix.one_apply] <;> split_ifs <;> simp
 
 /- English proof (translation)
-Unfold `dbl incM`. Rewrite using `[Matrix.fromBlocks_map]`. Apply the tactic sequence `congr 1 <;> ext <;> simp`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem incM_dbl (J : Matrix (Fin n) (Fin n) E) : (dbl J).map (inclR (F := F) (E := E) (AF F)) = dbl (incM F J) := by
   unfold dbl incM
@@ -439,7 +439,7 @@ theorem incM_dbl (J : Matrix (Fin n) (Fin n) E) : (dbl J).map (inclR (F := F) (E
   congr 1 <;> ext <;> simp
 
 /- English proof (translation)
-Use extensionality with `r s`. Simplify using `[incM, cA, inclR, Algebra.TensorProduct.map_tmul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem map_sigma_incM (M : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) E) :
     (M.map σ).map (inclR (F := F) (E := E) (AF F)) = (incM F M).map (cA σ) := by
@@ -447,14 +447,14 @@ theorem map_sigma_incM (M : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) E) :
   simp [incM, cA, inclR, Algebra.TensorProduct.map_tmul]
 
 /- English proof (translation)
-The claim follows from `Matrix.map_mul (f := ((cA σ : AE F E →ₐ[AF F] AE F E) : AE F E →+* AE F E))`.
+A detailed English derivation is pending.
 -/
 theorem map_cA_mul (X Z : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) (AE F E)) :
     (X * Z).map (cA σ) = X.map (cA σ) * Z.map (cA σ) :=
   Matrix.map_mul (f := ((cA σ : AE F E →ₐ[AF F] AE F E) : AE F E →+* AE F E))
 
 /- English proof (translation)
-Use `congrArg (fun M => M.map (inclR (F := F) (E := E) (AF F))) h` as an intermediate fact. Simplify using `only [Matrix.map_mul, incM_dbl, map_sigma_incM] at this`. Rewrite using `[← incM_alt_alt]`. Conclude with `this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frame_adelic {b : GL (Fin n ⊕ Fin n) E} {ε : ℤˣ}
     (h : b.1ᵀ * dbl Y.J * b.1.map σ = Matrix.fromBlocks 0 1 (((ε : ℤ) : E) • 1) 0) :

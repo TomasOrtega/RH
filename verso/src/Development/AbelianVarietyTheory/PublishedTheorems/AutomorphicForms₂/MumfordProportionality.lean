@@ -30,7 +30,7 @@ def FlagPushForward : Prop :=
 def GoodChernWeil : Prop := GoodChernNumbers ∧ FlagPushForward
 
 /- English proof (translation)
-Establish `: CharZero F` using `σ.charZero`. Rewrite using `[h.2 F X Y ι m E E' φ f gr hf hg Q R hR]`. Conclude with `h.1 F σ X Y ι m E E' φ f gr hf hg O H hH hG R`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GoodChernWeil.flag (h : GoodChernWeil) {F : Type} [Field F] {σ : F →+* ℂ} {X Y : Var F} {ι : Type} [Fintype ι]
     {m : ι → ℕ} {E : Fr (ratOf X) m 0} {E' : Fr (ratOf Y) m m} {φ : X.Fn →ₐ[F] Y.Fn} {f : Y.X ⟶ X.X} {gr : Root m → Y.Dv}
@@ -42,7 +42,7 @@ theorem GoodChernWeil.flag (h : GoodChernWeil) {F : Type} [Field F] {σ : F →+
   exact h.1 F σ X Y ι m E E' φ f gr hf hg O H hH hG R
 
 /- English proof (translation)
-Use `h F σ X X Unit _ _ _ _ _ _ (refines_lineFlag _) (isGraded_ofDivisor Δ) O H hH hG (MvPolynomial.X ((), 1) ^ X.dim)` as an intermediate fact. Establish `e : chernRoots (fun _ : Unit => 1) (MvPolynomial.X ((), 1) ^ X.dim) * fibrePoint _ = ∏ _i : Fin X.dim, MvPolynomial.X ⟨(), 0⟩`. Simplify using `[chernRoots, fibrePoint, esymm_one]`. Rewrite `this` using `[e, Var.interPoly_prod]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem GoodChernNumbers.line (h : GoodChernNumbers) {F : Type} [Field F] {σ : F →+* ℂ} {X : Var F} (Δ : X.Dv)
     {O : X.X.Opens} {H : Mat (fun _ : Unit => 1) X.Fn → CxPts X.str σ → Mat (fun _ : Unit => 1) ℂ}

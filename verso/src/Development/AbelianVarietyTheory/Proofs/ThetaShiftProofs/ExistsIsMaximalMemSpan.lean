@@ -20,15 +20,15 @@ def IsMaximal (X : Data E r) (u : Fin d → Fin r → E) : Prop :=
     Maximal (IsIsotropicSub X.Gm) (Submodule.span E (Set.range u))
 
 /- English proof (translation)
-Introduce `v hv w hw`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx`. Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem y hy => exact h x hx y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => simp [herm, cc]`. Consider the case `add y z _ _ hy hz`. Establish `: herm G x (y + z) = herm G x y + herm G x z`. Simplify using `[herm, cc, mul_add, Finset.sum_add_distrib]`. Rewrite using `[this, hy, hz, add_zero]`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Consider the case `smul c y _ hy`. Establish `: herm G x (c • y) = cc c * herm G x y`. Simplify using `only [herm, cc, Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`. Rewrite using `[this, hy, mul_zero]`.
+Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `zero => simp [herm]`. Consider the case `add x y _ _ hx hy`. Establish `: herm G (x + y) w = herm G x w + herm G y w`. Simplify using `[herm, add_mul, Finset.sum_add_distrib]`. Rewrite using `[this, hx, hy, add_zero]`.
+Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `smul c x _ hx => rw [herm_smul_left', hx, mul_zero]`.
+A detailed English derivation is pending.
 -/
 theorem isIsotropicSub_span {G : Matrix (Fin r) (Fin r) E} {s : Set (Fin r → E)}
     (h : ∀ v ∈ s, ∀ w ∈ s, herm G v w = 0) : IsIsotropicSub G (Submodule.span E s) := by
@@ -55,7 +55,7 @@ theorem isIsotropicSub_span {G : Matrix (Fin r) (Fin r) E} {s : Set (Fin r → E
   | smul c x _ hx => rw [herm_smul_left', hx, mul_zero]
 
 /- English proof (translation)
-Establish `hm : ∑ i, a i • u i ∈ Submodule.span E (Set.range u)` using `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Use `isIsotropicSub_span ?_ _ hm _ hm` and prove the remaining obligations. Introduce and unpack `_ ⟨i, rfl⟩ _ ⟨k, rfl⟩`. Conclude with `hu i k`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem herm_comb_self {G : Matrix (Fin r) (Fin r) E} {u : Fin d → Fin r → E}
     (hu : ∀ i k, herm G (u i) (u k) = 0) (a : Fin d → E) :
@@ -67,9 +67,9 @@ theorem herm_comb_self {G : Matrix (Fin r) (Fin r) E} {u : Fin d → Fin r → E
   exact hu i k
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.SubmoduleScalarClosure.main`. Consider the case `exact _root_.GlobalTheory.SubmoduleScalarClosure.main`. Consider the case `(apply _root_.GlobalTheory.SubmoduleScalarClosure.main <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.SubmoduleScalarClosure.main <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.SubmoduleScalarClosure.main <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.SubmoduleScalarClosure.main ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_smul_mem (X : Data E r) (v : Fin r → E) : ∃ n : ℤ, n ≠ 0 ∧ (n : E) • v ∈ X.Λ := by
   first
@@ -81,13 +81,11 @@ theorem exists_smul_mem (X : Data E r) (v : Fin r → E) : ∃ n : ℤ, n ≠ 0 
   | (intros; exact _root_.GlobalTheory.SubmoduleScalarClosure.main ..)
 
 /- English proof (translation)
-Take `⟨J, hVJ, hJ⟩` from `exists_maximal_ge_of_wellFoundedGT (IsIsotropicSub X.Gm) V hV`. Use `set e := Module.finBasis E J`. Use `choose n hn0 hn using fun i => exists_smul_mem X (e i : Fin r → E)`. Establish `hn' : ∀ i, (n i : E) ≠ 0` using `fun i => Int.cast_ne_zero.2 (hn0 i)`. Use `set e' := e.unitsSMul fun i => Units.mk0 _ (hn' i)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `he' : ∀ i, (e' i : Fin r → E) = (n i : E) • (e i : Fin r → E)` using `fun i => by`. Simplify using `[e', Basis.unitsSMul_apply, Units.smul_def]`. Establish `hsp : Submodule.span E (Set.range fun i => (e' i : Fin r → E)) = J`. Use `congrArg (Submodule.map J.subtype) e'.span_eq` as an intermediate fact. Rewrite `this` using `[Submodule.map_span, ← Set.range_comp, Submodule.map_top, Submodule.range_subtype]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Use `⟨_, fun i => (e' i : Fin r → E), ⟨⟨fun i k => hJ.prop _ (e' i).2 _ (e' k).2, e'.linearIndependent.map' J.subtype (Submodule.ker_subtype _)⟩, fun i => ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Use `show (e' i : Fin r → E) ∈ X.Λ`. Rewrite using `[he']`. Conclude with `hn i`. Rewrite using `[hsp]` and apply the resulting hypothesis.
-
-Rewrite using `[hsp]` and apply the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_isMaximal_ge (X : Data E r) {V : Submodule E (Fin r → E)}
     (hV : IsIsotropicSub X.Gm V) :
@@ -110,7 +108,7 @@ theorem exists_isMaximal_ge (X : Data E r) {V : Submodule E (Fin r → E)}
   · rwa [hsp]
 
 /- English proof (translation)
-Take `⟨d, u, hu, -⟩` from `exists_isMaximal_ge X (V := ⊥) (by`. Introduce `v hv w _`. Rewrite `hv` using `[Submodule.mem_bot]`. Simplify using `[hv, herm])`. Conclude with `⟨d, u, hu⟩`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem exists_isMaximal (X : Data E r) : ∃ (d : ℕ) (u : Fin d → Fin r → E), IsMaximal X u := by
   obtain ⟨d, u, hu, -⟩ := exists_isMaximal_ge X (V := ⊥) (by
@@ -120,7 +118,7 @@ theorem exists_isMaximal (X : Data E r) : ∃ (d : ℕ) (u : Fin d → Fin r →
   exact ⟨d, u, hu⟩
 
 /- English proof (translation)
-Take `⟨d, u, hu, h⟩` from `exists_isMaximal_ge X (V := Submodule.span E {ξ}) (isIsotropicSub_span (by rintro _ rfl _ rfl; exact hξ))`. Conclude with `⟨d, u, hu, h (Submodule.mem_span_singleton_self ξ)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_isMaximal_mem_span (X : Data E r) {ξ : Fin r → E} (hξ : herm X.Gm ξ ξ = 0) :
     ∃ (d : ℕ) (u : Fin d → Fin r → E), IsMaximal X u ∧ ξ ∈ Submodule.span E (Set.range u) := by
@@ -129,9 +127,9 @@ theorem exists_isMaximal_mem_span (X : Data E r) {ξ : Fin r → E} (hξ : herm 
   exact ⟨d, u, hu, h (Submodule.mem_span_singleton_self ξ)⟩
 
 /- English proof (translation)
-Take `⟨X, -, -, hX, ⟨ξ, hξ⟩, -⟩` from `exists_cuspData_hyperbolic`. Take `⟨d, u, hu, h⟩` from `exists_isMaximal_mem_span X.toData hξ.2.1`. Use `⟨_, _, _, _, X, d, u, hX, Nat.pos_of_ne_zero ?_, hu⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Rewrite `h` using `[Set.range_eq_empty, Submodule.span_empty, Submodule.mem_bot]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hξ.2.2 h`.
+A detailed English derivation is pending.
 -/
 theorem exists_isMaximal_pos : ∃ (E : Type) (_ : Field E) (_ : NumberField E) (_ : IsCMField E)
     (X : DataX E 2) (d : ℕ) (u : Fin d → Fin 2 → E),
@@ -169,7 +167,7 @@ Both sides reduce to the same expression.
 theorem nuForm_apply (ν s : X.Ψ → ℝ) : nuForm X ν s = 2 * ∑ τ, ν τ * s τ := rfl
 
 /- English proof (translation)
-Introduce `ν ν' h`. Use function extensionality and compare the values at `τ`. Simplify `LinearMap.congr_fun h (Pi.single τ 1)` using `[nuForm_apply, Pi.single_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem nuForm_injective : Function.Injective (nuForm X) := by
   classical
@@ -178,9 +176,9 @@ theorem nuForm_injective : Function.Injective (nuForm X) := by
   simpa [nuForm_apply, Pi.single_apply] using LinearMap.congr_fun h (Pi.single τ 1)
 
 /- English proof (translation)
-Use `LinearMap.ext fun s => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.comp_apply, form_apply, nuForm_apply, pairR, Complex.re_sum]`. Use `congr 1`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[← Complex.re_mul_ofReal, chiAt]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Simplify using `only [lineMap, LinearMap.coe_mk, AddHom.coe_mk, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem form_comp_lineMap (χ : X.Ψ → Fin d → Fin d → ℂ) (a : X.Ψ → Fin d → ℂ) :
     form X χ ∘ₗ lineMap X a = nuForm X fun τ => (chiAt X χ a τ).re := by
@@ -194,7 +192,7 @@ theorem form_comp_lineMap (χ : X.Ψ → Fin d → Fin d → ℂ) (a : X.Ψ → 
   exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring
 
 /- English proof (translation)
-Rewrite using `[← Complex.conj_eq_iff_re, chiAt]`. Simplify using `only [map_sum, map_mul, Complex.conj_conj, ← hχ τ]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chiAt_re {χ : X.Ψ → Fin d → Fin d → ℂ} (hχ : IsHerm χ) (a : X.Ψ → Fin d → ℂ) (τ : X.Ψ) :
     ((chiAt X χ a τ).re : ℂ) = chiAt X χ a τ := by
@@ -204,16 +202,16 @@ theorem chiAt_re {χ : X.Ψ → Fin d → Fin d → ℂ} (hχ : IsHerm χ) (a : 
   exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring
 
 /- English proof (translation)
-Rewrite using `[form_comp_lineMap, (nuForm_injective X).eq_iff, funext_iff]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem form_comp_eq_iff (χ : X.Ψ → Fin d → Fin d → ℂ) (a : X.Ψ → Fin d → ℂ) (ν : X.Ψ → ℝ) :
     form X χ ∘ₗ lineMap X a = nuForm X ν ↔ ∀ τ, (chiAt X χ a τ).re = ν τ := by
   rw [form_comp_lineMap, (nuForm_injective X).eq_iff, funext_iff]
 
 /- English proof (translation)
-Unfold `cubeCoeff`. Use `congr 1`. Use function extensionality and compare the values at `t`. Establish `: (∑ j, t j • e j).1 = ∑ j, (t j : ℂ) • (e j).1`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul, Complex.coe_smul]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[orb, eNeg, form_apply, this]`. Use `congr 2`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem cubeCoeff_orb {n : ℕ} (e : Fin n → hermSub X.Ψ d) (u : Fin d → Fin r → E)
     (χ : X.Ψ → Fin d → Fin d → ℂ) (G : Frame X.Ψ r → ℂ) (x : Frame X.Ψ r) :
@@ -232,7 +230,7 @@ theorem cubeCoeff_orb {n : ℕ} (e : Fin n → hermSub X.Ψ d) (u : Fin d → Fi
   ring
 
 /- English proof (translation)
-Establish `h` using `exists_isLZBasis (d := d) X hg`. Take `⟨e, he, hsp⟩` from `h.choose_spec.exists_basis`. Use `⟨e, hsp, fun u χ h1 h2 G x => ?_⟩` and prove the remaining obligations. Rewrite using `[cubeCoeff_orb, fz, if_pos ⟨h1, h2⟩, dif_pos h]`. Simplify using `only [he]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem exists_fz_eq {g : ℕ} (hg : 0 < g) :
     ∃ e : Basis (Fin (d * d * Fintype.card X.Ψ)) ℝ (hermSub X.Ψ d),
@@ -246,14 +244,14 @@ theorem exists_fz_eq {g : ℕ} (hg : 0 < g) :
   simp only [he]
 
 /- English proof (translation)
-Rewrite using `[fz, if_neg h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem fz_of_not {g : ℕ} {χ : X.Ψ → Fin d → Fin d → ℂ} (h : ¬ (IsHerm χ ∧ IsFreqZ X g χ))
     (u : Fin d → Fin r → E) (G : Frame X.Ψ r → ℂ) (x : Frame X.Ψ r) : fz X u g χ G x = 0 := by
   rw [fz, if_neg h]
 
 /- English proof (translation)
-Rewrite using `[orb, Zb_Zb X u hu, add_comm]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem orb_add {u : Fin d → Fin r → E} (hu : ∀ i k, herm X.Gm (u i) (u k) = 0)
     (G : Frame X.Ψ r → ℂ) (x : Frame X.Ψ r) (b l : hermSub X.Ψ d) :
@@ -261,7 +259,7 @@ theorem orb_add {u : Fin d → Fin r → E} (hu : ∀ i k, herm X.Gm (u i) (u k)
   rw [orb, Zb_Zb X u hu, add_comm]; rfl
 
 /- English proof (translation)
-Introduce `l hl b` and use `by rw [orb_add X hu, hG _ hl _ (Zb_dom X u hu _ b.2 hx)]; rfl`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem orb_periodic {u : Fin d → Fin r → E} (hu : ∀ i k, herm X.Gm (u i) (u k) = 0) {g : ℕ}
     {G : Frame X.Ψ r → ℂ} (hG : ∀ b ∈ LZ X d g, ∀ x ∈ X.dom, G (Zb X u b x) = G x)
@@ -270,7 +268,7 @@ theorem orb_periodic {u : Fin d → Fin r → E} (hu : ∀ i k, herm X.Gm (u i) 
   rw [orb_add X hu, hG _ hl _ (Zb_dom X u hu _ b.2 hx)]; rfl
 
 /- English proof (translation)
-The claim follows from `hG.comp_continuous ((continuous_Zb X u x).comp continuous_subtype_val) fun b => Zb_dom X u hu _ b.2 hx`.
+A detailed English derivation is pending.
 -/
 theorem continuous_orb {u : Fin d → Fin r → E} (hu : ∀ i k, herm X.Gm (u i) (u k) = 0)
     {G : Frame X.Ψ r → ℂ} (hG : ContinuousOn G X.dom) {x : Frame X.Ψ r} (hx : x ∈ X.dom) :
@@ -279,9 +277,9 @@ theorem continuous_orb {u : Fin d → Fin r → E} (hu : ∀ i k, herm X.Gm (u i
     fun b => Zb_dom X u hu _ b.2 hx
 
 /- English proof (translation)
-Take `⟨e, he, hfz⟩` from `exists_fz_eq (d := d) X hg`. Take `⟨e', he', hsp⟩` from `hω.exists_basis`. Establish `hD` using `ZSpan.isAddFundamentalDomain e (Measure.addHaar : Measure (hermSub X.Ψ d))`. Establish `hp` using `orb_periodic X hu hG hx`. Establish `hf` using `(isFreqZ_iff X χ).1 h2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hfz u χ h1 h2, ← coeff_eq_cubeCoeff e hD (he ▸ hp) (he ▸ hf), coeff_eq_cubeCoeff e' (by rw [hsp, ← he]; exact hD) (hsp ▸ hp) (hsp ▸ hf), cubeCoeff_orb]`. Simplify using `only [he']`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem fz_eq_of_isLZBasis {u : Fin d → Fin r → E} (hu : ∀ i k, herm X.Gm (u i) (u k) = 0) {g : ℕ}
     (hg : 0 < g) {G : Frame X.Ψ r → ℂ} (hG : ∀ b ∈ LZ X d g, ∀ x ∈ X.dom, G (Zb X u b x) = G x)
@@ -302,11 +300,11 @@ theorem fz_eq_of_isLZBasis {u : Fin d → Fin r → E} (hu : ∀ i k, herm X.Gm 
   simp only [he']
 
 /- English proof (translation)
-Take `⟨e, he, hfz⟩` from `exists_fz_eq (d := d) X hg`. Prove the components needed by the constructor for the conclusion. Introduce `h χ h1 h2 x hx`. Establish `: orb X u G x = 0` using `funext fun b => h _ (Zb_dom X u hu _ b.2 hx)`. Simplify using `[hfz u χ h1 h2, this, cubeCoeff]`.
+Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce `h x hx`. Establish `hD` using `ZSpan.isAddFundamentalDomain e (Measure.addHaar : Measure (hermSub X.Ψ d))`. Establish `hp` using `orb_periodic X hu hG hx`. Rewrite `hp` using `[← he]`. Use `(eq_zero_iff _ hD (continuous_orb X hu hc hx) hp).2 fun φ hφ => by` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Take `⟨χ, h1, rfl⟩` from `exists_form_eq X φ`. Establish `h2` using `(isFreqZ_iff X χ).2 (he ▸ hφ)`. Rewrite using `[coeff_eq_cubeCoeff e hD hp hφ, ← hfz u χ h1 h2, h χ h1 h2 x hx]`. Establish `h0` using `congrFun this 0`. Rewrite `h0` using `[orb, Submodule.coe_zero, Zb_zero]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem eq_zero_iff_fz {u : Fin d → Fin r → E} (hu : ∀ i k, herm X.Gm (u i) (u k) = 0) {g : ℕ}
     (hg : 0 < g) {G : Frame X.Ψ r → ℂ} (hc : ContinuousOn G X.dom)
@@ -330,7 +328,7 @@ theorem eq_zero_iff_fz {u : Fin d → Fin r → E} (hu : ∀ i k, herm X.Gm (u i
     rwa [orb, Submodule.coe_zero, Zb_zero] at h0
 
 /- English proof (translation)
-Rewrite using `[orb_add X hu, flow_eq_Zb]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem orb_add_lineMap {u : Fin d → Fin r → E} (hu : ∀ i k, herm X.Gm (u i) (u k) = 0)
     (G : Frame X.Ψ r → ℂ) (x : Frame X.Ψ r) (a : Fin d → E) (b : hermSub X.Ψ d) (s : X.Ψ → ℝ) :
@@ -339,9 +337,9 @@ theorem orb_add_lineMap {u : Fin d → Fin r → E} (hu : ∀ i k, herm X.Gm (u 
   rw [orb_add X hu, flow_eq_Zb]; rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `b`. Establish `hν' : ∀ p ∈ X.periods la, ∃ k : ℤ, 2 * ∑ τ, ν τ * p τ = k` using `hν`. Rewrite using `[orb, Data.fj, if_pos hν', dif_pos (PeriodLatticeCountable.fd_exists X la), partialCoeff, coeff_eq]`. Simplify using `only [orb_add_lineMap X hu, nuForm_apply]`. Use `congr 2`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `s`. Use `congr 2`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem orb_fj {u : Fin d → Fin r → E} (hu : ∀ i k, herm X.Gm (u i) (u k) = 0) (la : Wt X.Ψ r)
     (a : Fin d → E) {ν : X.Ψ → ℝ} (hν : ∀ p ∈ X.periods la, ∃ k : ℤ, nuForm X ν p = k)
@@ -370,25 +368,23 @@ variable (X : DataX E r) (la : Wt X.Ψ r) (P : Frame X.Ψ r → ℂ) (hP : X.IsS
 include hP hχ
 
 /- English proof (translation)
-Take `⟨e, he, hfz⟩` from `exists_fz_eq (d := d) X.toData X.g_pos`. Take `⟨-, hD, h0, h1⟩` from `(PeriodLatticeCountable.fd_exists X.toData la).choose_spec`. Establish `hp` using `orb_periodic X.toData hu (LZ_periodic X u hu hmem la P hP hχ) hx`. Rewrite `hp` using `[← he]`. Take `⟨H₁, H₂, -⟩` from `partialCoeff_spec_cube e hD h0.ne' h1.ne (lineMap X.toData (embC X.toData a)) (continuous_orb X.toData hu hP.1.continuousOn hx) (fun i => hp _ (Submodule.subset_span ⟨i, rfl⟩)) (fun l hl b => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[orb_add_lineMap X.toData hu]`. Conclude with `TransvectionPeriodicity.sec_periodic X.toData la P hP ha (herm_comb_self hu a) hl _ (Zb_dom X.toData u hu _ b.2 hx))`. Establish `hfreq : ∀ χ, IsFreqZ X.toData X.g χ ↔ ∀ i, ∃ k : ℤ, form X.toData χ (e i) = k` using `fun χ => by`. Rewrite using `[isFreqZ_iff, ← he, integral_span_iff]`. Distinguish the cases in `hν : ∀ p ∈ X.periods la, ∃ k : ℤ, nuForm X.toData ν p = k`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Take `⟨-, -, A, B⟩` from `H₁ _ hν`. Rewrite `A`, `B` using `[← orb_fj X.toData hu la a hν]`. Use `⟨fun χ => ?_, ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : IsHerm χ ∧ IsFreqZ X.toData X.g χ`. Rewrite using `[hfz u χ h.1 h.2, hfz u χ h.1 h.2, A _ ((hfreq χ).1 h.2)]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [form_comp_eq_iff]`. Simplify using `[fz_of_not X.toData h]`. Establish `: (∀ b, IsHerm b → X.fj la (∑ i, a i • u i) ν P (Zb X.toData u b x) = 0) ↔ orb X.toData u (X.fj la (∑ i, a i • u i) ν P) x = 0` using `⟨fun h => funext fun b => h b.1 b.2, fun h b hb => congrFun h ⟨b, hb⟩⟩`. Rewrite using `[this, B]`. Prove the components needed by the constructor for the conclusion.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h χ h1 h2 h3`. Rewrite using `[hfz u χ h1 h2]`. Conclude with `h _ ((hfreq χ).1 h2) ((form_comp_eq_iff _ _ _ _).2 h3)`. Introduce `h φ h2 h3`. Take `⟨χ, h1, rfl⟩` from `exists_form_eq X.toData φ`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hfz u χ h1 ((hfreq χ).2 h2)]`. Conclude with `h χ h1 ((hfreq χ).2 h2) ((form_comp_eq_iff _ _ _ _).1 h3)`. Establish `hfj : X.fj la (∑ i, a i • u i) ν P = fun _ => 0` using `funext fun y => by`. Establish `hν' : ¬ ∀ p ∈ X.periods la, ∃ k : ℤ, 2 * ∑ τ, ν τ * p τ = k` using `hν`. Rewrite using `[Data.fj, if_neg hν']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hz : ∀ χ, IsHerm χ → IsFreqZ X.toData X.g χ → (∀ τ, (chiAt X.toData χ (embC X.toData a) τ).re = ν τ) → fz X.toData u X.g χ P x = 0`. Introduce `χ h1 h2 h3`. Rewrite using `[hfz u χ h1 h2]`. Use `H₂ _ ((hfreq χ).1 h2) fun h => hν fun p hp => ?_` and prove the remaining obligations. Rewrite using `[← (form_comp_eq_iff _ _ _ _).2 h3]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h p hp`. Use `⟨fun χ => ?_, ⟨fun _ => hz, fun _ b _ => by rw [hfj]⟩⟩` and prove the remaining obligations. Distinguish the cases in `h : IsHerm χ ∧ IsFreqZ X.toData X.g χ`. Rewrite using `[hfj, hfz u χ h.1 h.2]`. Establish `: cubeCoeff e (orb X.toData u (fun _ => 0) x) (form X.toData χ) = 0`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 
-Simplify using `[cubeCoeff, orb]`. Rewrite using `[this]`. Use `split_ifs with h3`. Conclude with `(hz χ h.1 h.2 h3).symm`. Both sides reduce to the same expression.
-
-Simplify using `[fz_of_not X.toData h]`.
+A detailed English derivation is pending.
 -/
 theorem fj_spec {u : Fin d → Fin r → E} (hu : ∀ i k, herm X.Gm (u i) (u k) = 0)
     (hmem : ∀ i, u i ∈ X.Λ) {a : Fin d → E} (ha : ∑ i, a i • u i ∈ X.Λ) (ν : X.Ψ → ℝ)
@@ -453,9 +449,9 @@ theorem fj_spec {u : Fin d → Fin r → E} (hu : ∀ i k, herm X.Gm (u i) (u k)
     · simp [fz_of_not X.toData h]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h χ h1 h2 h3 x hx`. Conclude with `(fj_spec X la P hP hχ hu hmem ha ν hx).2.1 (fun b hb => h _ (Zb_dom X.toData u hu b hb hx)) χ h1 h2 h3`. Introduce `h x hx`. Use `(fj_spec X la P hP hχ hu hmem ha ν hx).2.2 (fun χ h1 h2 h3 => h χ h1 h2 h3 x hx) 0 (hermSub X.Ψ d).zero_mem` as an intermediate fact.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[Zb_zero]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem fj_eq_zero_iff {u : Fin d → Fin r → E} (hu : ∀ i k, herm X.Gm (u i) (u k) = 0)
     (hmem : ∀ i, u i ∈ X.Λ) {a : Fin d → E} (ha : ∑ i, a i • u i ∈ X.Λ) (ν : X.Ψ → ℝ) :
@@ -473,9 +469,9 @@ theorem fj_eq_zero_iff {u : Fin d → Fin r → E} (hu : ∀ i k, herm X.Gm (u i
     rwa [Zb_zero] at this
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `h d u hu χ h1 h2 ⟨a, ha, ha0, hS⟩`. Conclude with `(fj_eq_zero_iff X la P hP hχ hu.1.1 hu.2.1 ha _).1 (h _ ⟨ha, herm_comb_self hu.1.1 a, ha0⟩ _ hS) χ h1 h2 fun _ => rfl`. Introduce `h ξ hξ ν hν`. Take `⟨d, u, hu, hm⟩` from `exists_isMaximal_mem_span X.toData hξ.2.1`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨a, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun E).1 hm`. Conclude with `(fj_eq_zero_iff X la P hP hχ hu.1.1 hu.2.1 hξ.1 ν).2 fun χ h1 h2 h3 => h d u hu χ h1 h2 ⟨a, hξ.1, hξ.2.2, by rw [funext h3]; exact hν⟩`.
+A detailed English derivation is pending.
 -/
 theorem forall_fj_eq_zero_iff (S : Set (X.Ψ → ℝ)) :
     (∀ ξ, X.IsIso ξ → ∀ ν ∈ S, ∀ x ∈ X.dom, X.fj la ξ ν P x = 0) ↔
@@ -495,7 +491,7 @@ theorem forall_fj_eq_zero_iff (S : Set (X.Ψ → ℝ)) :
       h d u hu χ h1 h2 ⟨a, hξ.1, hξ.2.2, by rw [funext h3]; exact hν⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ hξ => exists_isMaximal_mem_span X.toData hξ.2.1, fun c => forall_fj_eq_zero_iff X la P hP hχ {ν | ∑ τ, ν τ ≤ c}, exists_isMaximal X.toData, fun _ u hu => eq_zero_iff_fz X.toData hu.1.1 X.g_pos hP.1.continuousOn (LZ_periodic X u hu.1.1 hu.2.1 la P hP hχ)⟩`.
+Supply the required witnesses or components.
 -/
 theorem maximalCusps :
     (∀ ξ, X.IsIso ξ → ∃ (d : ℕ) (u : Fin d → Fin r → E), IsMaximal X.toData u ∧
@@ -517,7 +513,7 @@ theorem maximalCusps :
       (LZ_periodic X u hu.1.1 hu.2.1 la P hP hχ)⟩
 
 /- English proof (translation)
-The claim follows from `and_congr_right' ((maximalCusps X la P hP hχ).2.1 c)`.
+A detailed English derivation is pending.
 -/
 theorem mem_SSgt_iff (c : ℝ) : P ∈ X.SSgt la c ↔ P ∈ X.SS la ∧
     ∀ (d : ℕ) (u : Fin d → Fin r → E), IsMaximal X.toData u →

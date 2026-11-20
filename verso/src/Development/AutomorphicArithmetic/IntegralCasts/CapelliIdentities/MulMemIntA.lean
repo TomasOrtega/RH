@@ -25,7 +25,7 @@ import Mathlib
         (@NumberField.RingOfIntegers.instIsFractionRing F inst inst_1) v
 
 /- English proof (translation)
-Introduce `F _ _ i`. Use `infer_instance`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Uc13.aux3 :
     ∀ (F : Type) [inst : Field F] [inst_1 : @NumberField F inst]
@@ -86,7 +86,7 @@ theorem UpperTheory.Reformulated.B.Uc13.aux3 :
   infer_instance
 
 /- English proof (translation)
-Introduce `F _ _ v x`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression.
 -/
 theorem UpperTheory.Reformulated.B.Uc13.aux4 :
     ∀ (F : Type) [inst : Field F] [inst_1 : @NumberField F inst]
@@ -3603,7 +3603,7 @@ noncomputable def UpperTheory.Reformulated.B.Uc13.intA :
                     a (@NumberField.RingOfIntegers.val E inst_2 x))))
 
 /- English proof (translation)
-Introduce `v`. Rewrite using `[map_mul]`. Conclude with `mul_mem (ha v) (hb v)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.Reformulated.B.Uc13.intAf_mul (F : Type) [Field F] [NumberField F]
     {a b : UpperTheory.Reformulated.B.Uc13.Af F} (ha : a ∈ UpperTheory.Reformulated.B.Uc13.intAf F)
@@ -3613,15 +3613,13 @@ private theorem UpperTheory.Reformulated.B.Uc13.intAf_mul (F : Type) [Field F] [
   exact mul_mem (ha v) (hb v)
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ x y hx hy`. Unfold `UpperTheory.Reformulated.B.Uc13.intA at *`. Proceed by induction on `hx, hy using AddSubgroup.closure_induction₂ with`. Consider the case `mem x y hx hy`. Take `⟨a, ha, s, rfl⟩` from `hx`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb, t, rfl⟩` from `hy`. Use `AddSubgroup.subset_closure ⟨a * b, UpperTheory.Reformulated.B.Uc13.intAf_mul F ha hb, s * t, ?_⟩` and prove the remaining obligations. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul]`. Both sides reduce to the same expression. Consider the case `zero_left x hx => rw [zero_mul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Treat this case separately.
 
-Conclude with `zero_mem _`. Consider the case `zero_right x hx => rw [mul_zero]`. Conclude with `zero_mem _`. Consider the case `add_left x y z hx hy hz h1 h2 => rw [add_mul]`. Conclude with `add_mem h1 h2`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `add_right y z x hy hz hx h1 h2 => rw [mul_add]`. Conclude with `add_mem h1 h2`. Consider the case `neg_left x y hx hy h => rw [neg_mul]`. Conclude with `neg_mem h`. Consider the case `neg_right x y hx hy h => rw [mul_neg]`.
-
-Conclude with `neg_mem h`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Uc13.mul_mem_intA :
     ∀ (F E : Type) [inst : Field F] [inst_1 : @NumberField F inst] [inst_2 : Field E] [@NumberField E inst_2]

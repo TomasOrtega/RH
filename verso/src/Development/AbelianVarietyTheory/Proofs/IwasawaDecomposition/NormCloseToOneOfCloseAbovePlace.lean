@@ -9,9 +9,9 @@ open NumberField IsDedekindDomain
 namespace GlobalTheory.NormCompat.NormCont
 
 /- English proof (translation)
-Distinguish the cases in `hx : x = 0`. Rewrite using `[hx]`. Conclude with `zero_le'`. Rewrite `h`, the goal using `[← WithZero.exp_log hx]`. Rewrite `h` using `[← WithZero.exp_zero, WithZero.exp_lt_exp]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem le_exp_neg_one_of_lt_one {x : WithZero (Multiplicative ℤ)} (h : x < 1) : x ≤ WithZero.exp (-1) := by
   by_cases hx : x = 0
@@ -21,19 +21,17 @@ theorem le_exp_neg_one_of_lt_one {x : WithZero (Multiplicative ℤ)} (h : x < 1)
   rw [WithZero.exp_le_exp]; omega
 
 /- English proof (translation)
-Rewrite using `[← WithZero.exp_nsmul]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem exp_neg_one_pow (k : ℕ) : (WithZero.exp (-1 : ℤ)) ^ k = WithZero.exp (-(k : ℤ)) := by
   rw [← WithZero.exp_nsmul]; simp
 
 /- English proof (translation)
-Establish `hI : Ideal.span {x} ≠ 0`. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `hx`. Use `set F := (Ideal.finite_factors hI).toFinset`. Use `⟨F.sup fun w => (w.intValuation x).log.natAbs, fun w => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Distinguish the cases in `hw : w ∈ F`. Establish `h0` using `w.intValuation_ne_zero x hx`. Establish `hle : (w.intValuation x).log.natAbs ≤ F.sup fun w => (w.intValuation x).log.natAbs` using `Finset.le_sup (f := fun w => (w.intValuation x).log.natAbs) hw`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[WithZero.exp_le_exp]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Use `_ = w.intValuation x := WithZero.exp_log h0`. Establish `h1 : w.intValuation x = 1`. Use `le_antisymm (w.intValuation_le_one x) (not_lt.1 fun h => hw ?_)` and prove the remaining obligations. Rewrite using `[Set.Finite.mem_toFinset]`.
-
-Conclude with `(w.intValuation_lt_one_iff_dvd x).1 h`. Rewrite using `[h1, ← WithZero.exp_zero, WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem exists_exp_le_intValuation {R : Type} [CommRing R] [IsDedekindDomain R] {x : R} (hx : x ≠ 0) :
     ∃ k : ℕ, ∀ w : HeightOneSpectrum R, WithZero.exp (-(k : ℤ)) ≤ w.intValuation x := by
@@ -57,9 +55,9 @@ theorem exists_exp_le_intValuation {R : Type} [CommRing R] [IsDedekindDomain R] 
     rw [h1, ← WithZero.exp_zero, WithZero.exp_le_exp]; omega
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact ⟨0, A.zero_mem, by simp⟩`. Consider the case `insert j s hj ih`. Take `⟨β, hβ, h⟩` from `ih (fun i hi => hy i (Finset.mem_insert_of_mem hi)) (fun i hi => hxy i (Finset.mem_insert_of_mem hi))`. Establish `hyj` using `hy j (Finset.mem_insert_self j s)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨y j * a ^ s.card + a * β + d * y j * β, ?_, ?_⟩` and prove the remaining obligations. Conclude with `A.add_mem (A.add_mem (A.mul_mem hyj (A.pow_mem ha _)) (A.mul_mem ha hβ)) (A.mul_mem (A.mul_mem hd hyj) hβ)`. Rewrite using `[Finset.card_insert_of_notMem hj, Finset.prod_insert hj, pow_succ]`. Establish `e` using `hxy j (Finset.mem_insert_self j s)`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem pow_card_mul_prod_one_add {Ω : Type} [CommRing Ω] (A : Subring Ω) {ι : Type} [DecidableEq ι]
     (s : Finset ι) (a d : Ω) (ha : a ∈ A) (hd : d ∈ A) (x y : ι → Ω) (hy : ∀ i ∈ s, y i ∈ A)
@@ -88,7 +86,7 @@ namespace GlobalTheory.NormCompat.NormCont
 variable {E K : Type} [Field E] [NumberField E] [Field K] [NumberField K] [Algebra E K]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Use `push_neg at h`. Establish `hmax : (w.asIdeal.comap (algebraMap (𝓞 E) (𝓞 K))).IsMaximal` using `haveI := w.isMaximal`. Use the proof step `Ideal.isMaximal_comap_of_isIntegral_of_isMaximal w.asIdeal`. Conclude with `hw (hmax.eq_of_le v.isPrime.ne_top fun e he => h e he)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_mem_comap_not_mem (v : HeightOneSpectrum (𝓞 E)) (w : HeightOneSpectrum (𝓞 K))
     (hw : w.asIdeal.comap (algebraMap (𝓞 E) (𝓞 K)) ≠ v.asIdeal) :
@@ -100,25 +98,23 @@ theorem exists_mem_comap_not_mem (v : HeightOneSpectrum (𝓞 E)) (w : HeightOne
   exact hw (hmax.eq_of_le v.isPrime.ne_top fun e he => h e he)
 
 /- English proof (translation)
-Take `⟨b, c, hc, rfl⟩` from `IsFractionRing.div_surjective (A := 𝓞 K) y`. Establish `hc0 : c ≠ 0` using `nonZeroDivisors.ne_zero hc`. Take `⟨k, hk⟩` from `exists_exp_le_intValuation hc0`. Establish `hI : Ideal.span {c} ≠ 0`. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hc0`. Use `set F := (Ideal.finite_factors hI).toFinset`. Set `f : HeightOneSpectrum (𝓞 K) → 𝓞 E` to `fun w => if h : w.asIdeal.comap (algebraMap (𝓞 E) (𝓞 K)) ≠ v.asIdeal then Classical.choose (exists_mem_comap_not_mem v w h) else 1`. Establish `hf : ∀ w, f w ∉ v.asIdeal` using `fun w => by`. Distinguish the cases in `h : w.asIdeal.comap (algebraMap (𝓞 E) (𝓞 K)) ≠ v.asIdeal`.
+Introduce a local definition for the expression. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [f, dif_pos h]`. Conclude with `(Classical.choose_spec (exists_mem_comap_not_mem v w h)).2`. Simplify using `only [f, dif_neg h]`. Conclude with `fun h1 => v.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h1)`. Establish `hfw : ∀ w, w.asIdeal.comap (algebraMap (𝓞 E) (𝓞 K)) ≠ v.asIdeal → algebraMap (𝓞 E) (𝓞 K) (f w) ∈ w.asIdeal` using `fun w h => by`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Simplify using `only [f, dif_pos h]`. Conclude with `(Classical.choose_spec (exists_mem_comap_not_mem v w h)).1`. Set `a : 𝓞 E` to `∏ w ∈ F, f w ^ k`. Establish `ha : a ∉ v.asIdeal`. Use `Finset.prod_induction _ (· ∉ v.asIdeal) (fun x y hx hy h => (v.isPrime.mem_or_mem h).elim hx hy) (fun h1 => v.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h1)) fun w _ h => hf w (v.isPrime.mem_of_pow_mem k h)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨a, ha, HeightOneSpectrum.mem_integers_of_valuation_le_one (R := 𝓞 K) K _ fun w => ?_⟩` and prove the remaining obligations. Establish `hA : algebraMap E K (a : E) = ((algebraMap (𝓞 E) (𝓞 K) a : 𝓞 K) : K)` using `rfl`. Establish `hc' : w.valuation K (c : K) ≠ 0`. Rewrite using `[HeightOneSpectrum.valuation_of_algebraMap]`. Conclude with `w.intValuation_ne_zero c hc0`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[hA, map_mul, map_div₀, HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.valuation_of_algebraMap]`. Rewrite `hc'` using `[HeightOneSpectrum.valuation_of_algebraMap]`. Establish `hb1` using `w.intValuation_le_one b`. Establish `ha1` using `w.intValuation_le_one (algebraMap (𝓞 E) (𝓞 K) a)`. Distinguish the cases in `hv : w.asIdeal.comap (algebraMap (𝓞 E) (𝓞 K)) = v.asIdeal`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Use `hy w hv` as an intermediate fact. Rewrite `this` using `[map_div₀, HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.valuation_of_algebraMap]`. Combine the equalities or inequalities in the displayed calculation. Distinguish the cases in `hwF : w ∈ F`. Establish `hlt : w.intValuation (algebraMap (𝓞 E) (𝓞 K) (f w)) < 1` using `(w.intValuation_lt_one_iff_mem _).2 (hfw w hv)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Establish `hle : w.intValuation (algebraMap (𝓞 E) (𝓞 K) a) ≤ WithZero.exp (-(k : ℤ))`. Establish `e : a = f w ^ k * ∏ x ∈ F.erase w, f x ^ k` using `(Finset.mul_prod_erase F (fun x => f x ^ k) hwF).symm`. Rewrite using `[e, map_mul, map_mul, map_pow, map_pow, ← exp_neg_one_pow]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_div_assoc', div_le_one₀ (zero_lt_iff.2 hc')]`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `h1 : w.intValuation c = 1`. Use `le_antisymm (w.intValuation_le_one c) (not_lt.1 fun h => hwF ?_)` and prove the remaining obligations. Rewrite using `[Set.Finite.mem_toFinset]`. Conclude with `(w.intValuation_lt_one_iff_dvd c).1 h`.
-
-Rewrite using `[h1, div_one]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem exists_mul_mem_integers (v : HeightOneSpectrum (𝓞 E)) (y : K)
     (hy : ∀ w : HeightOneSpectrum (𝓞 K), w.asIdeal.comap (algebraMap (𝓞 E) (𝓞 K)) = v.asIdeal →
@@ -187,41 +183,35 @@ end GlobalTheory.NormCompat.NormCont
 namespace GlobalTheory.NormCompat.NormCont
 
 /- English proof (translation)
-Introduce `E K _ _ _ _ _ v M`. Take `⟨π, hπv, hπ0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot v.ne_bot`. Establish `hπK : algebraMap (𝓞 E) (𝓞 K) π ≠ 0`. Introduce `h`. Apply `hπ0` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h2 : ((algebraMap (𝓞 E) (𝓞 K) π : 𝓞 K) : K) = 0` using `by rw [h]; rfl`. Establish `h3 : algebraMap E K (π : E) = 0` using `h2`. Rewrite `h3` using `[map_eq_zero]`. Conclude with `h3` after adjusting the coercions. Take `⟨k, hk⟩` from `exists_exp_le_intValuation hπK`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨k * M, fun z hz => ?_⟩` and prove the remaining obligations. Use `set d : 𝓞 E := π ^ M with hd`. Establish `hdE : (d : E) ≠ 0`. Rewrite using `[hd]; push_cast; exact pow_ne_zero _ (by exact_mod_cast hπ0)`. Establish `hdK : algebraMap E K (d : E) ≠ 0` using `(map_ne_zero _).2 hdE`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hdw : ∀ w : HeightOneSpectrum (𝓞 K), WithZero.exp (-((k * M : ℕ) : ℤ)) ≤ w.valuation K (algebraMap E K (d : E))`. Introduce `w`. Establish `e : algebraMap E K (d : E) = ((algebraMap (𝓞 E) (𝓞 K) d : 𝓞 K) : K)` using `rfl`. Rewrite using `[e, HeightOneSpectrum.valuation_of_algebraMap, hd, map_pow, map_pow]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← WithZero.exp_nsmul]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ _ := pow_le_pow_left' (hk w) M`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨a, ha, r, hr⟩` from `exists_mul_mem_integers v ((z - 1) / algebraMap E K (d : E)) fun w hw => by`. Establish `h0 : w.valuation K (algebraMap E K (d : E)) ≠ 0`. Rewrite using `[Ne, map_eq_zero]`. Conclude with `hdK`. Rewrite using `[map_div₀, div_le_one₀ (zero_lt_iff.2 h0)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Conclude with `(hz w hw).trans (hdw w)`. Establish `hadr : algebraMap E K (a : E) * (z - 1) = algebraMap E K (d : E) * (r : K)`. Express the relevant statement in the definitionally equal form `_ = _ * algebraMap (𝓞 K) K r`. Rewrite using `[hr]`. Clear the denominators using the available nonvanishing facts.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Set `Ω` to `AlgebraicClosure E`. Establish `hN` using `Algebra.norm_eq_prod_embeddings E Ω z`. Set `A : Subring Ω` to `(integralClosure ℤ Ω).toSubring`. Establish `hintE : ∀ x : 𝓞 E, algebraMap E Ω (x : E) ∈ A` using `fun x => (RingOfIntegers.isIntegral_coe x).map (IsScalarTower.toAlgHom ℤ E Ω)`. Take `⟨β, hβ, hprod⟩` from `pow_card_mul_prod_one_add A Finset.univ (algebraMap E Ω (a : E)) (algebraMap E Ω (d : E)) (hintE a) (hintE d) (fun σ : K →ₐ[E] Ω => σ (z - 1)) (fun σ => σ (r : K)) (fun σ _ => (RingOfIntegers.isIntegral_coe r).map σ.toRingHom.toIntAlgHom) (fun σ _ => by`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congrArg σ hadr` as an intermediate fact. Simplify `this)` using `only [map_mul, AlgHom.commutes]`. Use `set n := (Finset.univ : Finset (K →ₐ[E] Ω)).card`. Establish `hprod' : algebraMap E Ω ((a : E) ^ n * Algebra.norm E z) = algebraMap E Ω ((a : E) ^ n) + algebraMap E Ω (d : E) * β`. Rewrite using `[map_mul, hN, map_pow, ← hprod]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `congr 1`. Use `Finset.prod_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[map_sub, map_one]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨e, he_def⟩ : ∃ e : E, e = (a : E) ^ n * (Algebra.norm E z - 1) / d` from `⟨_, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hde : (d : E) * e = (a : E) ^ n * (Algebra.norm E z - 1)`. Rewrite using `[he_def]`. Clear the denominators using the available nonvanishing facts. Establish `he : algebraMap E Ω e = β`. Establish `hd' : algebraMap E Ω (d : E) ≠ 0` using `(map_ne_zero _).2 hdE`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `mul_left_cancel₀ hd' ?_` and prove the remaining obligations. Rewrite using `[← map_mul, hde, mul_sub, mul_one, map_sub, hprod']`. Expand and normalize the polynomial expressions, which then agree. Establish `heI : IsIntegral ℤ e`. Rewrite using `[← isIntegral_algHom_iff (IsScalarTower.toAlgHom ℤ E Ω) (algebraMap E Ω).injective]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show IsIntegral ℤ (algebraMap E Ω e)`. Rewrite using `[he]`. Conclude with `hβ`. Establish `hev : v.valuation E e ≤ 1`. Take `⟨x, hx⟩ : ∃ x : 𝓞 E, (x : E) = e` from `⟨⟨e, heI⟩, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hx]`. Conclude with `v.valuation_le_one _`. Establish `hav : v.valuation E (a : E) = 1`. Rewrite using `[HeightOneSpectrum.valuation_of_algebraMap]`. Conclude with `le_antisymm (v.intValuation_le_one a) (not_lt.1 fun h => ha ((v.intValuation_lt_one_iff_mem a).1 h))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hdv : v.valuation E (d : E) ≤ WithZero.exp (-(M : ℤ))`. Rewrite using `[hd]`. Use `push_cast`. Rewrite using `[map_pow, ← exp_neg_one_pow]`. Conclude with `pow_le_pow_left' (le_exp_neg_one_of_lt_one ((v.valuation_lt_one_iff_mem π).2 hπv)) M`.
-
-Establish `hN1 : Algebra.norm E z - 1 = e * d / (a : E) ^ n`. Establish `ha0 : (a : E) ≠ 0`. Introduce `h0`. Apply `ha` to reduce the goal to its premises. Establish `: a = 0` using `by exact_mod_cast h0`.
-
-Rewrite using `[this]`. Conclude with `zero_mem _`. Rewrite using `[he_def]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[hN1, map_div₀, map_mul, map_pow, hav, one_pow, div_one]`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem norm_close_to_one : ∀ (E K : Type) [Field E] [NumberField E] [Field K] [NumberField K] [Algebra E K]
     (v : HeightOneSpectrum (𝓞 E)) (M : ℕ), ∃ M' : ℕ, ∀ z : K,

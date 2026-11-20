@@ -32,9 +32,7 @@ variable {k A B : Type*} [CommRing k] [CommRing A] [CommRing B] {α : k →+* A}
   {D : ℕ}
 
 /- English proof (translation)
-Use `letI := α.toAlgebra`. Use `letI := β.toAlgebra`. Use `letI := ρ.toAlgebra`. Use `haveI : IsScalarTower k A B := IsScalarTower.of_algebraMap_eq' h.symm`. Use `haveI : Algebra.FormallyEtale A B := hρ`.
-
-Conclude with `hω.of_isBaseChange (isBaseChange_exteriorPower (KaehlerDifferential.isBaseChange_of_formallyEtale k A B) D)`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem isFreeGen_formMap {ρ : A →+* B} (hρ : letI := ρ.toAlgebra; Algebra.FormallyEtale A B)
     (h : ρ.comp α = β) {ω : Forms α D} (hω : IsFreeGen A ω) :
@@ -48,7 +46,7 @@ theorem isFreeGen_formMap {ρ : A →+* B} (hρ : letI := ρ.toAlgebra; Algebra.
     (KaehlerDifferential.isBaseChange_of_formallyEtale k A B) D)
 
 /- English proof (translation)
-Use `letI := ρ.toAlgebra`. Conclude with `Algebra.FormallyEtale.of_equiv (AlgEquiv.ofBijective (Algebra.ofId A B) hρ)`.
+Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem formallyEtale_of_bijective {ρ : A →+* B} (hρ : Function.Bijective ρ) :
     letI := ρ.toAlgebra; Algebra.FormallyEtale A B := by
@@ -58,7 +56,7 @@ theorem formallyEtale_of_bijective {ρ : A →+* B} (hρ : Function.Bijective ρ
 end Ring
 
 /- English proof (translation)
-Use `letI := (Y.presheaf.germ T y hy).hom.toAlgebra`. Use `haveI := hT.isLocalization_stalk ⟨y, hy⟩`. Conclude with `Algebra.FormallyEtale.of_isLocalization (hT.primeIdealOf ⟨y, hy⟩).asIdeal.primeCompl`.
+Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem formallyEtale_germ {Y : Scheme.{0}} {T : Y.Opens} (hT : IsAffineOpen T) (y : Y)
     (hy : y ∈ T) : letI := (Y.presheaf.germ T y hy).hom.toAlgebra;
@@ -83,7 +81,7 @@ variable {k : Type} [CommRing k] {Y X : Scheme.{0}} {p : Y ⟶ Sp k} {σ : X ⟶
 variable (p σ) in
 
 /- English proof (translation)
-Rewrite using `[spMap, CommRingCat.ofHom_id, Spec.map_id, Category.comp_id]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem comp_eq : σ ≫ p = (σ ≫ p) ≫ spMap (RingHom.id k) := by
   rw [spMap, CommRingCat.ofHom_id, Spec.map_id, Category.comp_id]
@@ -91,9 +89,9 @@ theorem comp_eq : σ ≫ p = (σ ≫ p) ≫ spMap (RingHom.id k) := by
 variable (K : CanonLB p D) (K' : CanonLB (σ ≫ p) D)
 
 /- English proof (translation)
-Use `GlobalTheory.LB.fun_ext_of_cover (fun T : {T : Y.Opens // IsAffineOpen T ∧ T ≤ V} => W ⊓ σ ⁻¹ᵁ T.1) (fun _ => inf_le_left) (fun x hx => ?_) fun T => ?_` and prove the remaining obligations. Take `⟨T, hT⟩` from `Opens.mem_iSup.1 (le_iSup_affine V (h hx))`. Conclude with `Opens.mem_iSup.2 ⟨T, hx, hT⟩`. Establish `h₀ : resForm T.2.2 η = resG Y T.2.2 (K.coeff i hV η) • resForm (T.2.2.trans hV) (K.om i)` using `(K.isFrame i).resForm_eq_coeff_smul hV η T.2.1 T.2.2`. Establish `h₁` using `congrArg (pullForm (comp_eq p σ) (inf_le_right : W ⊓ σ ⁻¹ᵁ T.1 ≤ _)) h₀`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h₁` using `[map_smulₛₗ, pullForm_resForm, pullForm_resForm, GlobalTheory.LB.appLE_resG]`. Rewrite using `[map_mul, K'.resG_coeff, K'.resG_coeff, resForm_pullForm, resForm_pullForm, h₁, map_smul, smul_eq_mul, GlobalTheory.LB.resG_appLE]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coeff_pullForm_eq_mul (i : K.bundle.ι) (j : K'.bundle.ι) {V : Y.Opens}
     (hV : V ≤ K.bundle.U i) {W : X.Opens} (hW : W ≤ K'.bundle.U j) (h : W ≤ σ ⁻¹ᵁ V)
@@ -118,7 +116,7 @@ def jacLoc (a : (LB.div K'.bundle (K.bundle.pull σ)).ι) :
     (pullForm (comp_eq p σ) (inf_le_right.trans (GlobalTheory.LB.pull_U_le σ a.2)) (K.om (a.2 PUnit.unit)))
 
 /- English proof (translation)
-Conclude with `(K'.resG_coeff a.1 _ e _).trans (congrArg _ (resForm_pullForm _ _ _ _))`.
+A detailed English derivation is pending.
 -/
 theorem resG_jacLoc (a : (LB.div K'.bundle (K.bundle.pull σ)).ι) {W : X.Opens}
     (e : W ≤ (LB.div K'.bundle (K.bundle.pull σ)).U a) :
@@ -142,15 +140,15 @@ variable {k : Type} [CommRing k] {Y X : Scheme.{0}} {p : Y ⟶ Sp k} {σ : X ⟶
   (K : CanonLB p D) (K' : CanonLB (σ ≫ p) D)
 
 /- English proof (translation)
-Establish `hl : (LB.div K'.bundle (K.bundle.pull σ)).U t ⊓ (LB.div K'.bundle (K.bundle.pull σ)).U t' ≤ (LB.div K'.bundle (K.bundle.pull σ)).U t` using `inf_le_left`. Establish `hr : (LB.div K'.bundle (K.bundle.pull σ)).U t ⊓ (LB.div K'.bundle (K.bundle.pull σ)).U t' ≤ (LB.div K'.bundle (K.bundle.pull σ)).U t'` using `inf_le_right`. Establish `hy : y ∈ (LB.div K'.bundle (K.bundle.pull σ)).U t ⊓ (LB.div K'.bundle (K.bundle.pull σ)).U t'` using `⟨h, h'⟩`. Rewrite using `[← ger_resG hl y hy, ← ger_resG hr y hy, resG_jacLoc, resG_jacLoc]`. Establish `hWi` using `(hl.trans inf_le_right).trans (GlobalTheory.LB.pull_U_le σ t.2)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hWi'` using `(hr.trans inf_le_right).trans (GlobalTheory.LB.pull_U_le σ t'.2)`. Establish `hV` using `le_inf hWi hWi'`. Establish `e1` using `K'.coeff_change t.1 t'.1 (hl.trans inf_le_left) (hr.trans inf_le_left) (pullForm (comp_eq p σ) hWi (K.om (t.2 PUnit.unit)))`. Establish `e2 : pullForm (comp_eq p σ) hWi' (K.om (t'.2 PUnit.unit)) = pullForm (comp_eq p σ) hV (resForm inf_le_right (K.om (t'.2 PUnit.unit)))` using `(pullForm_resForm _ _ _ _).symm`. Establish `e3` using `coeff_pullForm_eq_mul K K' (t.2 PUnit.unit) t'.1 inf_le_left (hr.trans inf_le_left) hV (resForm inf_le_right (K.om (t'.2 PUnit.unit)))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg : K.coeff (t.2 PUnit.unit) inf_le_left (resForm inf_le_right (K.om (t'.2 PUnit.unit))) = (K.bundle.g (t.2 PUnit.unit) (t'.2 PUnit.unit) : Γ(Y, _))`. Rewrite using `[CanonLB.g_eq_ratio]`. Both sides reduce to the same expression. Establish `hσy : σ y ∈ K.bundle.U (t.2 PUnit.unit) ⊓ K.bundle.U (t'.2 PUnit.unit)` using `hV hy`. Establish `u2 : (((Units.map (σ.stalkMap y).hom.toMonoidHom (tr K.bundle (σ y) (t.2 PUnit.unit) (t'.2 PUnit.unit))) : (X.presheaf.stalk y)ˣ) : X.presheaf.stalk y) = (σ.stalkMap y).hom (ger (σ y) hσy (K.bundle.g (t.2 PUnit.unit) (t'.2 PUnit.unit)).val)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Units.coe_map, val_tr K.bundle (σ y) hσy]`. Both sides reduce to the same expression. Rewrite using `[e1, e2, e3, hg, map_mul, map_mul, ger_resG]`. Establish `e4` using `ger_appLE σ hV y hy (K.bundle.g (t.2 PUnit.unit) (t'.2 PUnit.unit)).val`. Rewrite using `[e4, tr_div _ _ y h h', tr_pull _ σ y h.2 h'.2, Units.val_mul, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← u2]`. Rewrite using `[Units.inv_mul_cancel_left]`. Use `congr 1`. Conclude with `(val_tr K'.bundle y _).symm`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem ger_jacLoc (y : X) (t t' : (LB.div K'.bundle (K.bundle.pull σ)).ι)
     (h : y ∈ (LB.div K'.bundle (K.bundle.pull σ)).U t)
@@ -206,19 +204,19 @@ variable {k : Type} [CommRing k] {Y X : Scheme.{0}} {p : Y ⟶ Sp k} {σ : X ⟶
   (K : CanonLB p D) (K' : CanonLB (σ ≫ p) D)
 
 /- English proof (translation)
-Establish `hxi : σ x ∈ K.bundle.U (a.2 PUnit.unit)` using `mem_pull.1 ha.2`. Take `⟨T, hT, hyT, hTU⟩` from `Opens.isBasis_iff_nbhd.1 Y.isBasis_affineOpens hxi`. Take `⟨W, hW, hxW, hWU⟩` from `Opens.isBasis_iff_nbhd.1 X.isBasis_affineOpens (show x ∈ (LB.div K'.bundle (K.bundle.pull σ)).U a ⊓ σ ⁻¹ᵁ T from ⟨ha, hyT⟩)`. Establish `hT' : IsAffineOpen T` using `hT`. Establish `hW' : IsAffineOpen W` using `hW`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hWa : W ≤ (LB.div K'.bundle (K.bundle.pull σ)).U a` using `hWU.trans inf_le_left`. Establish `hWT : W ≤ σ ⁻¹ᵁ T` using `hWU.trans inf_le_right`. Rewrite using `[← ger_resG hWa x hxW, resG_jacLoc]`. Establish `hWj : W ≤ K'.bundle.U a.1` using `hWa.trans inf_le_left`. Establish `hWi : W ≤ σ ⁻¹ᵁ K.bundle.U (a.2 PUnit.unit)` using `(hWa.trans inf_le_right).trans (GlobalTheory.LB.pull_U_le σ a.2)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : pullForm (comp_eq p σ) hWi (K.om (a.2 PUnit.unit)) = pullForm (comp_eq p σ) hWT (resForm hTU (K.om (a.2 PUnit.unit)))` using `(pullForm_resForm _ _ _ _).symm`. Establish `hω` using `((K.isFrame (a.2 PUnit.unit)).res hT' hTU).gen`. Establish `hω'` using `((K'.isFrame a.1).res hW' hWj).gen`. Establish `rel` using `K'.coeff_smul_om a.1 hW' hWj (pullForm (comp_eq p σ) hWi (K.om (a.2 PUnit.unit)))`. Establish `hβ : (σ.stalkMap x).hom.comp ((ger (σ x) hyT).comp (algX p T)) = (ger x hxW).comp (algX (σ ≫ p) W)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `c`. Establish `e` using `DFunLike.congr_fun (appLE_comp_algX (comp_eq p σ) hWT) c`. Simplify using `only [RingHom.comp_apply, RingHom.id_apply] at e ⊢`. Rewrite using `[← e, ger_appLE σ hWT x hxW]`. Use `letI : RingHomCompTriple (σ.appLE T W hWT).hom (ger x hxW) ((ger x hxW).comp (σ.appLE T W hWT).hom) := ⟨rfl⟩`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure.
 
-Use `letI : RingHomCompTriple (ger (σ x) hyT) (σ.stalkMap x).hom ((ger x hxW).comp (σ.appLE T W hWT).hom) := ⟨RingHom.ext fun c => (ger_appLE σ hWT x hxW c).symm⟩`. Establish `key` using `LinearMap.congr_fun (forms_ext (φ := (TopForm.formMap D (σ.stalkMap x).hom hβ).comp (TopForm.formMap D (ger (σ x) hyT) (rfl : _ = (ger (σ x) hyT).comp (algX p T)))) (ψ := (TopForm.formMap D (ger x hxW) (rfl : _ = (ger x hxW).comp (algX (σ ≫ p) W))).comp (pullForm (comp_eq p σ) hW …`. Rewrite using `[LinearMap.comp_apply, LinearMap.comp_apply, formMap_dForm, formMap_dForm]`. Express the relevant statement in the definitionally equal form `_ = TopForm.formMap D (ger x hxW) _ (pullForm (comp_eq p σ) hWT (dOn p f))`. Rewrite using `[pullForm_dOn, formMap_dForm]`.
+Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `b`. Conclude with `(ger_appLE σ hWT x hxW (f b)).symm) (resForm hTU (K.om (a.2 PUnit.unit)))`. Rewrite `key` using `[LinearMap.comp_apply, LinearMap.comp_apply, ← e2, ← rel]`. Establish `e6` using `(TopForm.formMap D (ger x hxW) (rfl : _ = (ger x hxW).comp (algX (σ ≫ p) W))).map_smulₛₗ (K'.coeff a.1 hWj (pullForm (comp_eq p σ) hWi (K.om (a.2 PUnit.unit)))) (resForm hWj (K'.om a.1))`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `key` using `[e6]`. Establish `fg1` using `isFreeGen_formMap (formallyEtale_of_bijective hx) hβ (isFreeGen_formMap (formallyEtale_germ hT' (σ x) hyT) rfl hω)`. Establish `fg2` using `isFreeGen_formMap (formallyEtale_germ hW' x hxW) (rfl : _ = (ger x hxW).comp (algX (σ ≫ p) W)) hω'`. Rewrite `fg1` using `[key]`. Conclude with `fg2.smul_iff.1 fg1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_ger_jacLoc (x : X) (hx : Function.Bijective (σ.stalkMap x).hom)
     (a : (LB.div K'.bundle (K.bundle.pull σ)).ι) (ha : x ∈ (LB.div K'.bundle (K.bundle.pull σ)).U a) :
@@ -283,7 +281,7 @@ namespace GlobalTheory
 open MorJac
 
 /- English proof (translation)
-Introduce `F _ Y X p σ d _ _ K K'`. Establish `hB : (LB.div K'.bundle (K.bundle.pull σ)).IsLB` using `LB.isLB_div K'.isLB (Semi.LB.isLB_linComb K.isLB (K := PUnit) (fun _ => σ) (fun _ => 1))`. Take `⟨J, hJ⟩` from `H0.exists_of_germs (p := σ ≫ p) (O := ⊤) hB (fun t => (LB.div K'.bundle (K.bundle.pull σ)).U t) (fun t => t) (fun _ => le_top) (fun _ => le_rfl) (fun y _ => Opens.mem_iSup.1 (hB.cover.ge (Opens.mem_top y))) (jacLoc K K') (fun y t t' h h' => ger_jacLoc K K' y t t' h h')`. Use `⟨J, fun x hx a ha => ?_⟩` and prove the remaining obligations. Conclude with `(congrArg IsUnit (hJ a x ha)).mpr (isUnit_ger_jacLoc K K' x hx a ha)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_jacobian_section_isUnit_germ : ∀ (F : Type) [Field F] (Y X : Scheme.{0})
     (p : Y ⟶ Sp F) (σ : X ⟶ Y) (d : ℕ)

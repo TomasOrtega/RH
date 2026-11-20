@@ -17,13 +17,13 @@ attribute [-instance] UpperTheory.V.GradeZeroInterpolatingElement.instIsLocalRin
 section Ball
 variable {l : ℕ} [Fact l.Prime]
 /- English proof (translation)
-Use `IsUltrametricDist.norm_add_eq_max_of_norm_ne_norm (x := x - 1) (y := 1) (by rw [norm_one]; exact h.ne)` as an intermediate fact. Rewrite `this` using `[sub_add_cancel, norm_one, max_eq_right h.le]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 private theorem du_nrm {x : Qbar l} (h : ‖x - 1‖ < 1) : ‖x‖ = 1 := by
   have := IsUltrametricDist.norm_add_eq_max_of_norm_ne_norm (x := x - 1) (y := 1) (by rw [norm_one]; exact h.ne)
   rwa [sub_add_cancel, norm_one, max_eq_right h.le] at this
 /- English proof (translation)
-Establish `e : x * y - 1 = x * (y - 1) + (x - 1)` using `by ring`. Rewrite using `[e]`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans_lt (max_lt ?_ hx)` and prove the remaining obligations. Rewrite using `[norm_mul, du_nrm (hx.trans_le h1), one_mul]` and apply the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 private theorem du_mul {x y : Qbar l} {ε : ℝ} (h1 : ε ≤ 1) (hx : ‖x - 1‖ < ε) (hy : ‖y - 1‖ < ε) : ‖x * y - 1‖ < ε := by
   have e : x * y - 1 = x * (y - 1) + (x - 1) := by ring
@@ -44,23 +44,23 @@ private def du_ball (ε : ℝ) (h0 : 0 < ε) (h1 : ε ≤ 1) : Subgroup (Qbar l)
     show ‖((x⁻¹ : (Qbar l)ˣ) : Qbar l) - 1‖ < ε
     rwa [e, norm_neg, norm_mul, norm_inv, du_nrm (hx'.trans_le h1), inv_one, one_mul]
 /- English proof (translation)
-The claim follows from `isOpen_lt ((Units.continuous_val.sub continuous_const).norm) continuous_const`.
+A detailed English derivation is pending.
 -/
 private theorem du_ball_open (ε : ℝ) (h0 : 0 < ε) (h1 : ε ≤ 1) : IsOpen (du_ball l ε h0 h1 : Set (Qbar l)ˣ) :=
   isOpen_lt ((Units.continuous_val.sub continuous_const).norm) continuous_const
 /- English proof (translation)
-Establish `h : (l : Qbar l) = algebraMap ℚ_[l] (Qbar l) (l : ℚ_[l])` using `by simp`. Rewrite using `[h, norm_algebraMap']`. Conclude with `Padic.norm_p_lt_one`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem du_norm_l : ‖(l : Qbar l)‖ < 1 := by
   have h : (l : Qbar l) = algebraMap ℚ_[l] (Qbar l) (l : ℚ_[l]) := by simp
   rw [h, norm_algebraMap']
   exact Padic.norm_p_lt_one
 /- English proof (translation)
-Establish `hp : ∀ i : ℕ, ‖x ^ i - 1‖ ≤ ‖x - 1‖`. Introduce `i`. Proceed by induction on `i with`. Consider the case `zero => simp`. Consider the case `succ i ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Establish `e : x ^ (i + 1) - 1 = x * (x ^ i - 1) + (x - 1)` using `by ring`. Rewrite using `[e]`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le ?_ le_rfl)` and prove the remaining obligations. Rewrite using `[norm_mul, du_nrm hx, one_mul]` and apply the resulting hypothesis. Establish `e : ∑ i ∈ Finset.range l, x ^ i = ∑ i ∈ Finset.range l, (x ^ i - 1) + l` using `by simp`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite using `[← mul_geom_sum, norm_mul, e]`. Use `mul_le_mul_of_nonneg_left ((IsUltrametricDist.norm_add_le_max _ _).trans (max_le_max ?_ le_rfl)) (norm_nonneg _)` and prove the remaining obligations. Conclude with `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (norm_nonneg _) fun i _ => hp i`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem du_step {x : Qbar l} (hx : ‖x - 1‖ < 1) : ‖x ^ l - 1‖ ≤ ‖x - 1‖ * max ‖x - 1‖ ‖(l : Qbar l)‖ := by
   have hp : ∀ i : ℕ, ‖x ^ i - 1‖ ≤ ‖x - 1‖ := by
@@ -77,11 +77,11 @@ private theorem du_step {x : Qbar l} (hx : ‖x - 1‖ < 1) : ‖x ^ l - 1‖ �
   refine mul_le_mul_of_nonneg_left ((IsUltrametricDist.norm_add_le_max _ _).trans (max_le_max ?_ le_rfl)) (norm_nonneg _)
   exact IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (norm_nonneg _) fun i _ => hp i
 /- English proof (translation)
-Use `set ρ := max ‖x - 1‖ ‖(l : Qbar l)‖ with hρ`. Establish `h1 : ρ < 1` using `max_lt hx du_norm_l`. Establish `h2 : 0 ≤ ρ` using `(norm_nonneg _).trans (le_max_left _ _)`. Establish `key : ∀ k : ℕ, ‖x ^ l ^ k - 1‖ ≤ ρ ^ (k + 1)`. Introduce `k`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `k with`. Consider the case `zero => simp [hρ]`. Consider the case `succ k ih`. Establish `h3 : ρ ^ (k + 1) ≤ ρ` using `pow_le_of_le_one h2 h1.le k.succ_ne_zero`. Rewrite using `[pow_succ l, pow_mul, pow_succ ρ]`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `(du_step ((ih.trans h3).trans_lt h1)).trans (mul_le_mul ih (max_le (ih.trans h3) (le_max_right _ _)) ((norm_nonneg _).trans (le_max_left _ _)) (pow_nonneg h2 _))`. Take `⟨k, hk⟩` from `exists_pow_lt_of_lt_one h0 h1`. Conclude with `⟨k, (key k).trans_lt ((pow_le_pow_of_le_one h2 h1.le k.le_succ).trans_lt hk)⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem du_small {x : Qbar l} (hx : ‖x - 1‖ < 1) {ε : ℝ} (h0 : 0 < ε) : ∃ k : ℕ, ‖x ^ l ^ k - 1‖ < ε := by
   set ρ := max ‖x - 1‖ ‖(l : Qbar l)‖ with hρ
@@ -99,20 +99,20 @@ private theorem du_small {x : Qbar l} (hx : ‖x - 1‖ < 1) {ε : ℝ} (h0 : 0 
   obtain ⟨k, hk⟩ := exists_pow_lt_of_lt_one h0 h1
   exact ⟨k, (key k).trans_lt ((pow_le_pow_of_le_one h2 h1.le k.le_succ).trans_lt hk)⟩
 /- English proof (translation)
-Use `congrArg norm h` as an intermediate fact. Rewrite `this` using `[norm_pow, norm_one]`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) hn).1 this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem du_root_norm {ζ : Qbar l} {n : ℕ} (hn : n ≠ 0) (h : ζ ^ n = 1) : ‖ζ‖ = 1 := by
   have := congrArg norm h
   rw [norm_pow, norm_one] at this
   exact (pow_eq_one_iff_of_nonneg (norm_nonneg _) hn).1 this
 /- English proof (translation)
-Establish `hl : l.Prime` using `Fact.out`. Establish `h1` using `du_root_norm (pow_ne_zero _ hl.ne_zero) h`. Set `B : Subring (Qbar l)` to `(NormedField.valuation (K := Qbar l)).integer`. Set `z : B` to `⟨ζ, h1.le⟩`. Take `⟨r, hr⟩` from `exists_add_pow_prime_pow_eq hl (z - 1) 1 n`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Establish `hr'` using `congrArg B.subtype hr`. Simplify using `only [map_pow, map_add, map_mul, map_sub, map_one, map_natCast, sub_add_cancel, one_pow, Subring.coe_subtype, mul_one] at hr'`. Establish `hz : (z : Qbar l) = ζ` using `rfl`. Rewrite `hr'` using `[hz, h]`. Establish `h2 : (ζ - 1) ^ l ^ n = -((l : Qbar l) * ((z - 1) * r : B))`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `push_cast`. Rewrite using `[hz]`. Take the linear combination `-hr'`. Establish `h3 : ‖ζ - 1‖ ^ l ^ n < 1`. Rewrite using `[← norm_pow, h2, norm_neg, norm_mul]`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_lt_one_of_nonneg_of_lt_one_left (norm_nonneg _) du_norm_l ((z - 1) * r).2`. Conclude with `lt_of_pow_lt_pow_left₀ (l ^ n) zero_le_one (by rwa [one_pow])`.
+A detailed English derivation is pending.
 -/
 private theorem du_root {ζ : Qbar l} {n : ℕ} (h : ζ ^ l ^ n = 1) : ‖ζ - 1‖ < 1 := by
   have hl : l.Prime := Fact.out
@@ -134,18 +134,18 @@ private theorem du_root {ζ : Qbar l} {n : ℕ} (h : ζ ^ l ^ n = 1) : ‖ζ - 1
     exact mul_lt_one_of_nonneg_of_lt_one_left (norm_nonneg _) du_norm_l ((z - 1) * r).2
   exact lt_of_pow_lt_pow_left₀ (l ^ n) zero_le_one (by rwa [one_pow])
 /- English proof (translation)
-Use `haveI : NeZero N := ⟨hN⟩`. Use `haveI : NeZero ((N : ℕ) : Qbar l) := ⟨Nat.cast_ne_zero.2 hN⟩`. Conclude with `HasEnoughRootsOfUnity.exists_primitiveRoot (Qbar l) N`.
+A detailed English derivation is pending.
 -/
 private theorem du_prim (N : ℕ) (hN : N ≠ 0) : ∃ ζ : Qbar l, IsPrimitiveRoot ζ N := by
   haveI : NeZero N := ⟨hN⟩
   haveI : NeZero ((N : ℕ) : Qbar l) := ⟨Nat.cast_ne_zero.2 hN⟩
   exact HasEnoughRootsOfUnity.exists_primitiveRoot (Qbar l) N
 /- English proof (translation)
-Take `⟨ζ, hζ⟩` from `du_prim (l := l) M hM.ne'`. Establish `e` using `congrArg (eval u) (X_pow_sub_one_eq_prod hM hζ)`. Simplify using `only [eval_sub, eval_pow, eval_X, eval_one, eval_prod, eval_C] at e`. Rewrite `h` using `[e, norm_prod]`. Assume the negation of the conclusion as `hn`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Use `push Not at hn`. Use `h.not_ge (Finset.prod_induction _ (fun t : ℝ => 1 ≤ t) (fun _ _ => one_le_mul_of_one_le_of_one_le) le_rfl fun η hη => ?_)` and prove the remaining obligations. Establish `h1 : η ^ M = 1` using `(mem_nthRootsFinset hM _).1 hη`. Establish `h2` using `du_root_norm hM.ne' h1`. Establish `h0 : η ≠ 0` using `fun h => by simp [h] at h2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `hn η⁻¹ (by rw [inv_pow, h1, inv_one])`. Rewrite `h3` using `[show u * η⁻¹ - 1 = (u - η) * η⁻¹ by field_simp, norm_mul, norm_inv, h2, inv_one, mul_one]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 private theorem du_near {u : Qbar l} {M : ℕ} (hM : 0 < M) (h : ‖u ^ M - 1‖ < 1) : ∃ ω : Qbar l, ω ^ M = 1 ∧ ‖u * ω - 1‖ < 1 := by
   obtain ⟨ζ, hζ⟩ := du_prim (l := l) M hM.ne'
@@ -161,17 +161,13 @@ private theorem du_near {u : Qbar l} {M : ℕ} (hM : 0 < M) (h : ‖u ^ M - 1‖
   have h3 := hn η⁻¹ (by rw [inv_pow, h1, inv_one])
   rwa [show u * η⁻¹ - 1 = (u - η) * η⁻¹ by field_simp, norm_mul, norm_inv, h2, inv_one, mul_one] at h3
 /- English proof (translation)
-Establish `hl : l.Prime` using `Fact.out`. Use `choose ω hω hω' using fun s => du_near hM (h s)`. Use `choose ζ hζ using fun k : ℕ => du_prim (l := l) (l ^ k) (pow_ne_zero _ hl.ne_zero)`. Establish `k1 : ∀ s s' a b, a < b → ω s * ζ (M * a) ≠ ω s' * ζ (M * b)` using `fun s s' a b hab e => by`. Establish `e1` using `congrArg (· ^ (M * l ^ (M * a))) e`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [mul_pow, pow_mul (ω _), hω, one_pow, one_mul] at e1`. Rewrite `e1` using `[mul_comm M (l ^ _), pow_mul, (hζ _).pow_eq_one, one_pow]`. Establish `e2` using `(hζ _).dvd_of_pow_eq_one _ e1.symm`. Establish `e3 : l ^ (M * a) * l ^ M ∣ l ^ (M * a) * M`. Rewrite using `[← pow_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(pow_dvd_pow l (by nlinarith)).trans e2`. Establish `e4` using `Nat.le_of_dvd hM (Nat.dvd_of_mul_dvd_mul_left (pow_pos hl.pos _) e3)`. Conclude with `(Nat.lt_pow_self hl.one_lt).not_ge e4`. Establish `k2 : ∀ s s' a b, ω s * ζ (M * a) = ω s' * ζ (M * b) → a = b` using `fun s s' a b e => by`. Break down `lt_trichotomy a b with h | h | h` into its components or cases.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `exacts [absurd e (k1 _ _ _ _ h), h, absurd e.symm (k1 _ _ _ _ h)]`. Use `⟨fun s => Set.range fun t : ℕ => ω s * ζ (M * (idx s + n * t)), fun s => Set.infinite_range_of_injective fun t t' e => ?_, ?_, ?_⟩` and prove the remaining obligations. Use `k2 _ _ _ _ e` as an intermediate fact. Conclude with `Nat.eq_of_mul_eq_mul_left (idx s).pos (Nat.add_left_cancel this)`. Introduce and unpack `s _ ⟨t, rfl⟩`.
-
-Use `⟨(isOfFinOrder_iff_pow_eq_one.2 ⟨M, hM, hω s⟩).mul ((hζ _).isOfFinOrder (pow_ne_zero _ hl.ne_zero)), ?_⟩` and prove the remaining obligations. Use `show ‖u s * (ω s * _) - 1‖ < 1`. Rewrite using `[← mul_assoc]`. Conclude with `du_mul le_rfl (hω' s) (du_root (hζ _).pow_eq_one)`. Introduce and unpack `s s' hs _ ⟨t, rfl⟩ ⟨t', e⟩`.
-
-Use `congrArg (· % n) (k2 _ _ _ _ e)` as an intermediate fact. Simplify using `only [Nat.add_mul_mod_self_left, Nat.mod_eq_of_lt (Fin.is_lt _)] at this`. Conclude with `hs (Fin.ext this.symm)`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem du_sets {σ : Type} {n : ℕ} (idx : σ → Fin n) (u : σ → Qbar l) {M : ℕ} (hM : 0 < M)
     (h : ∀ s, ‖u s ^ M - 1‖ < 1) : ∃ R : σ → Set (Qbar l), (∀ s, (R s).Infinite) ∧
@@ -209,9 +205,7 @@ end Ball
 section Grp
 variable {l : ℕ} [Fact l.Prime] {Γ : Type} [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] [CompactSpace Γ]
 /- English proof (translation)
-Set `H` to `(du_ball l 1 one_pos le_rfl).comap Φ`. Use `haveI := H.quotient_finite_of_isOpen ((du_ball_open 1 one_pos le_rfl).preimage hΦ)`. Use `⟨H.index, Nat.pos_of_ne_zero Subgroup.index_ne_zero_of_finite, fun g => ?_⟩` and prove the remaining obligations. Establish `h : Φ (g ^ H.index) ∈ du_ball l 1 one_pos le_rfl` using `H.pow_index_mem g`. Rewrite `h` using `[map_pow]`.
-
-Conclude with `h`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem du_pow (Φ : Γ →* (Qbar l)ˣ) (hΦ : Continuous Φ) : ∃ M, 0 < M ∧ ∀ g, ‖(Φ g : Qbar l) ^ M - 1‖ < 1 := by
   let H := (du_ball l 1 one_pos le_rfl).comap Φ
@@ -222,21 +216,17 @@ private theorem du_pow (Φ : Γ →* (Qbar l)ˣ) (hΦ : Continuous Φ) : ∃ M, 
   exact h
 variable {I : Subgroup Γ} {d : ℕ} (A : W.LocAb l Γ I d)
 /- English proof (translation)
-Take `⟨M, hM, h1⟩` from `du_pow Φ hΦ`. Use `haveI := A.b.ker.quotient_finite_of_isOpen A.b_open`. Use `⟨A.b.ker.index * M, Nat.mul_pos (Nat.pos_of_ne_zero Subgroup.index_ne_zero_of_finite) hM, fun g hg => ?_⟩` and prove the remaining obligations. Set `Ψ : Γ →* (Qbar l)ˣ` to `(powMonoidHom (A.b.ker.index * M)).comp Φ`. Establish `hΨ : Continuous Ψ` using `hΦ.pow _`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : ∀ x, ‖(Ψ x : Qbar l) - 1‖ < 1` using `fun x => by`. Use `h1 (x ^ A.b.ker.index)` as an intermediate fact. Rewrite `this` using `[map_pow, Units.val_pow_eq_pow_val, ← pow_mul]`. Then use the resulting hypothesis. Establish `h3 : ∀ x ∈ W.muG l Γ, Ψ x = 1` using `fun x hx => by`. Establish `e1` using `A.b_mu _ (pow_mem hx A.b.ker.index)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e1` using `[MonoidHom.mem_ker.1 (A.b.ker.pow_index_mem x)]`. Establish `e2 : x ^ A.b.ker.index ∈ (commutator Γ).topologicalClosure` using `(QuotientGroup.eq_one_iff _).1 e1.symm`. Establish `e3 : Φ (x ^ A.b.ker.index) = 1` using `Subgroup.topologicalClosure_minimal _ (Abelianization.commutator_subset_ker Φ) (isClosed_singleton.preimage hΦ) e2`. Use `show Φ x ^ (A.b.ker.index * M) = 1`. Rewrite using `[pow_mul, ← map_pow, e3, one_pow]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `show Ψ g = 1`. Use `Units.ext (sub_eq_zero.1 (norm_le_zero_iff.1 (le_of_forall_pos_le_add fun ε hε => ?_)))` and prove the remaining obligations. Establish `h0 : 0 < min ε 1` using `lt_min hε one_pos`. Set `B` to `du_ball l _ h0 (min_le_right _ _)`. Set `χ` to `(QuotientGroup.mk' B).comp Ψ`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hk : ∀ x, x ∈ χ.rangeRestrict.ker ↔ Ψ x ∈ B` using `fun x => by`. Rewrite using `[MonoidHom.ker_rangeRestrict]`. Conclude with `QuotientGroup.eq_one_iff _`. Establish `ho : IsOpen (χ.rangeRestrict.ker : Set Γ)`. Rewrite using `[show (χ.rangeRestrict.ker : Set Γ) = Ψ ⁻¹' B from Set.ext hk]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(du_ball_open _ _ _).preimage hΨ`. Use `haveI := χ.rangeRestrict.ker.quotient_finite_of_isOpen ho`. Use `haveI : Finite χ.range := Finite.of_equiv _ (QuotientGroup.quotientKerEquivOfSurjective _ χ.rangeRestrict_surjective).toEquiv`. Establish `hp : IsPGroup l χ.range`. Introduce and unpack `⟨_, x, rfl⟩`.
-
-Take `⟨k, hk'⟩` from `du_small (h2 x) h0`. Use `⟨k, Subtype.ext ?_⟩` and prove the remaining obligations. Use `show (QuotientGroup.mk' B) (Ψ x) ^ l ^ k = 1`. Rewrite using `[← map_pow]`. Conclude with `(QuotientGroup.eq_one_iff _).2 hk'`.
-
-Establish `h4 : ‖(Ψ g : Qbar l) - 1‖ < min ε 1` using `(hk g).1 (A.univ χ.range hp χ.rangeRestrict ho (fun x hx => (hk x).2 (by rw [h3 x hx]; exact B.one_mem)) hg)`. Rewrite using `[zero_add]`. Conclude with `h4.le.trans (min_le_left _ _)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem du_ker (Φ : Γ →* (Qbar l)ˣ) (hΦ : Continuous Φ) : ∃ M, 0 < M ∧ ∀ g, A.a g = 1 → Φ g ^ M = 1 := by
   obtain ⟨M, hM, h1⟩ := du_pow Φ hΦ
@@ -280,17 +270,17 @@ private theorem du_ker (Φ : Γ →* (Qbar l)ˣ) (hΦ : Continuous Φ) : ∃ M, 
   rw [zero_add]
   exact h4.le.trans (min_le_left _ _)
 /- English proof (translation)
-Take `⟨M, hM, h1⟩` from `du_ker A Φ hΦ`. Set `N` to `M * ∏ j, orderOf (Φ (γ j))`. Use `⟨N, Nat.mul_pos hM (Finset.prod_pos fun j _ => (ho j).orderOf_pos), fun g hg => ?_⟩` and prove the remaining obligations. Set `K` to `((powMonoidHom N).comp Φ).ker`. Establish `hK : IsClosed (K : Set Γ)` using `isClosed_singleton.preimage (hΦ.pow N)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hS : IsClosed (K.map A.a : Set (Multiplicative ((Fin d → ℤ_[l]) × ℤ_[l])))` using `(hK.isCompact.image A.cont).isClosed`. Establish `hγK : ∀ j, γ j ∈ K` using `fun j => orderOf_dvd_iff_pow_eq_one.1 ((Finset.dvd_prod_of_mem _ (Finset.mem_univ j)).mul_left M)`. Establish `hd : DenseRange (Pi.map fun (_ : Fin d) => (Nat.cast : ℕ → ℤ_[l]))` using `DenseRange.piMap fun _ => PadicInt.denseRange_natCast`. Establish `key : ∀ x : Fin d → ℤ_[l], Multiplicative.ofAdd (x, (0 : ℤ_[l])) ∈ K.map A.a` using `fun x => by`. Use `hd.induction_on x (hS.preimage (continuous_ofAdd.comp (continuous_id.prodMk continuous_const))) fun m => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(List.ofFn fun j => γ j ^ m j).prod, ?_, ?_⟩` and prove the remaining obligations. Conclude with `K.list_prod_mem fun y hy => by`. Take `⟨j, rfl⟩` from `List.mem_ofFn.1 hy`. Conclude with `pow_mem (hγK j) _`. Rewrite using `[map_list_prod, List.map_ofFn, List.prod_ofFn]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Apply `Multiplicative.toAdd.injective` to reduce the goal to its premises. Simplify using `only [Function.comp_apply, map_pow, hγ, toAdd_prod, toAdd_pow, toAdd_ofAdd]`. Use `Prod.ext (funext fun j => ?_) ?_` and prove the remaining obligations. Simplify using `[Prod.fst_sum, Finset.sum_apply, Pi.single_apply]`. Simplify using `[Prod.snd_sum]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h2 : (A.a g).toAdd.2 = 0` using `(A.inertia _).1 ⟨g, hg, rfl⟩`. Take `⟨k, hk, e⟩` from `key (A.a g).toAdd.1`. Establish `h3 : A.a (k⁻¹ * g) = 1`. Rewrite using `[map_mul, map_inv, e, inv_mul_eq_one, ← h2]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h4 : k⁻¹ * g ∈ K` using `by show Φ _ ^ (M * _) = 1`. Rewrite using `[pow_mul, h1 _ h3, one_pow]`. Conclude with `(K.mul_mem_cancel_left (inv_mem hk)).1 h4`.
+A detailed English derivation is pending.
 -/
 private theorem du_fin (Φ : Γ →* (Qbar l)ˣ) (hΦ : Continuous Φ) (γ : Fin d → Γ)
     (hγ : ∀ j, A.a (γ j) = Multiplicative.ofAdd (Pi.single j 1, 0)) (ho : ∀ j, IsOfFinOrder (Φ (γ j))) :
@@ -328,9 +318,9 @@ private theorem du_fin (Φ : Γ →* (Qbar l)ˣ) (hΦ : Continuous Φ) (γ : Fin
   exact (K.mul_mem_cancel_left (inv_mem hk)).1 h4
 omit [IsTopologicalGroup Γ] [CompactSpace Γ] in
 /- English proof (translation)
-Take `⟨-, a, ha1, ha0, ha⟩` from `(GradeZeroInterpolatingElement.coPt c R).1 x`. Use `Units.isEmbedding_val₀.continuous_iff.2 (continuous_iff_continuousAt.2 fun g => Metric.tendsto_nhds.2 fun ε hε => ?_)` and prove the remaining obligations. Take `⟨k, hk⟩` from `exists_pow_lt_of_lt_one hε ha1`. Use `filter_upwards [(hψ k).eventually_eq g] with g' hg'`. Rewrite using `[dist_eq_norm]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `ha k _ (Ideal.Quotient.eq.1 hg')` as an intermediate fact. Rewrite `this` using `[map_sub]`. Conclude with `this.trans_lt hk`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem du_cont (c : Coef l) (R : Type) [CommRing R] [Algebra c.O R] [Alg.IsCO c.O R] (x : R →ₐ[c.O] Qbar l)
     (ψ : Γ →* Rˣ) (hψ : Alg.AdicCont (maximalIdeal R) fun g => (ψ g : R)) : Continuous (W.pushCh (x : R →+* Qbar l) ψ) := by
@@ -345,11 +335,11 @@ private theorem du_cont (c : Coef l) (R : Type) [CommRing R] [Algebra c.O R] [Al
 end Grp
 section Loc
 /- English proof (translation)
-Take `⟨e, he⟩` from `(glBridge k 1 ℂ 1).2.2.2.1 (U.comap Matrix.GeneralLinearGroup.det) (hU.preimage continuous_glDet)`. Use `⟨e, fun e' h => ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨u, hu, rfl⟩`. Establish `h1 : Ideal.Quotient.mk _ u.val = Ideal.Quotient.mk _ 1` using `congrArg Units.val (MonoidHom.mem_ker.1 hu)`. Establish `h2` using `Ideal.Quotient.eq.2 (Ideal.pow_le_pow_right h (Ideal.Quotient.eq.1 h1))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `he ⟨Matrix.GeneralLinearGroup.scalar (Fin 1) u, by`. Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Rewrite using `[Subsingleton.elim i 0, Subsingleton.elim j 0]`. Simplify using `using h2, rfl⟩`. Rewrite `h3` using `[Subgroup.mem_comap]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `h3 using 1` and compare the differences between its conclusion and the goal. Use `ext`. Simplify using the standard rewrite rules.
+Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem du_Uc (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (U : Subgroup kˣ) (hU : IsOpen (U : Set kˣ)) : ∃ e, ∀ e', e ≤ e' → Uc k e' ≤ U := by
@@ -369,27 +359,25 @@ private theorem du_Uc (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
 variable {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] {l : ℕ} [Fact l.Prime]
   {A : ValuationSubring Ω} {w : Plc F} {h : IsPlaceOver A w} {a : Weil h →* (w.adicCompletion F)ˣ}
 /- English proof (translation)
-Rewrite using `[← deg_eq_zero_iff, ← neg_eq_zero, ← ha.ord_eq, ord_eq_zero_iff]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem du_unit (ha : IsLocalArtin h a) (s : Weil h) : a s ∈ Uo (w.adicCompletion F) ↔ (s : G F Ω) ∈ Ine (F := F) A := by
   rw [← deg_eq_zero_iff, ← neg_eq_zero, ← ha.ord_eq, ord_eq_zero_iff]
   rfl
 /- English proof (translation)
-Use `haveI := GlobalTheory.HeckeGal.finite_contEmb (l := l) w`. Use `letI := Fintype.ofFinite {j : w.adicCompletion F →+* Qbar l // Continuous j}`. Use `haveI := compactSpace_Ine (E := F) A`. Set `α : (w.adicCompletion F)ˣ →* (Qbar l)ˣ` to `∏ j : {j : w.adicCompletion F →+* Qbar l // Continuous j}, Units.map j.1.toMonoidHom ^ hh (j.1.comp (algebraMap F _))`. Establish `hα : ∀ y, (α y : Qbar l) = algPow w hh (y : w.adicCompletion F)` using `fun y => by`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[α, algPow, finprod_eq_prod_of_fintype, MonoidHom.finsetProd_apply]`. Establish `hc : Continuous α`. Establish `: (α : _ → _) = fun y => ∏ j : {j : w.adicCompletion F →+* Qbar l // Continuous j}, Units.map j.1.toMonoidHom y ^ hh (j.1.comp (algebraMap F _))` using `funext fun y => by`. Simplify using `[α, MonoidHom.finsetProd_apply]`. Rewrite using `[this]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Conclude with `continuous_finset_prod _ fun j _ => (continuous_zpow _).comp (Continuous.units_map _ j.2)`. Set `β : (w.adicCompletion F)ˣ →* (Qbar l)ˣ` to `MonoidHom.mk' (fun y => α (a (frob h)) ^ ord _ y) fun x y => by`. Rewrite using `[ord_mul, zpow_add]`. Establish `hβ : Continuous β`. Use `GlobalTheory.HeckeGal.continuous_of_isOpen_ker' β (Subgroup.isOpen_mono (H₁ := (GlobalTheory.SmGL.unrChar _ (Units.mk0 (2 : ℂ) two_ne_zero)).ker) (fun x hx => ?_) (isSmoothChar_of_isUnram (isUnram_unrChar _ _)))` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : (2 : ℂ) ^ ord _ x = 1` using `by simpa [GlobalTheory.SmGL.unrChar_apply] using congrArg Units.val (MonoidHom.mem_ker.1 hx)`. Establish `h2 : (2 : ℝ) ^ ord _ x = 1` using `by simpa using congrArg norm h1`. Establish `h3 : ord _ x = 0` using `(zpow_eq_one_iff_right₀ zero_le_two (by norm_num)).1 h2`. Use `show α _ ^ ord _ x = 1`. Rewrite using `[h3, zpow_zero]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨M, hM, h1⟩` from `du_pow ((α.comp a).comp (ineIncl h)) (hc.comp ha.cont)`. Take `⟨δ, ⟨c1, c2⟩, -⟩` from `Loc.laExists H h a ha (α * β) (hc.mul hβ) fun x => by`. Take `⟨s, rfl⟩` from `ha.surj x`. Take `⟨τ, hτ⟩` from `exists_eq_zpow_mul deg_frob s`. Establish `e : (α * β) (a s) = α (a (ineIncl h τ))` using `by show α (a s) * α _ ^ ord _ (a s) = _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[ha.ord_eq]`. Use `conv_lhs => enter [1]`. Rewrite using `[hτ, map_mul, map_mul, map_zpow, map_zpow]`. Rewrite using `[mul_right_comm, ← zpow_add, add_neg_cancel, zpow_zero, one_mul]`. Establish `h2` using `du_nrm (h1 τ)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h2` using `[norm_pow]`. Rewrite using `[e]`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) hM.ne').1 h2`. Use `⟨δ, c1, fun s hs => ?_⟩` and prove the remaining obligations. Rewrite using `[c2, ← hα]`.
-
-Use `show ((α (a s) * α _ ^ ord _ (a s) : (Qbar l)ˣ) : Qbar l) = _`. Rewrite using `[ha.ord_eq, deg_eq_zero_iff.2 hs, neg_zero, zpow_zero, mul_one]`.
+A detailed English derivation is pending.
 -/
 private theorem du_alg (H : GlobalTheory.Published.GlobalArtinReciprocity) (ha : IsLocalArtin h a) (hh : (F →+* Qbar l) → ℤ) :
     ∃ δ : Dec (F := F) A →* (Qbar l)ˣ, Continuous δ ∧ ∀ s : Weil h, (s : G F Ω) ∈ Ine (F := F) A →
@@ -435,11 +423,11 @@ private theorem du_alg (H : GlobalTheory.Published.GlobalArtinReciprocity) (ha :
   show ((α (a s) * α _ ^ ord _ (a s) : (Qbar l)ˣ) : Qbar l) = _
   rw [ha.ord_eq, deg_eq_zero_iff.2 hs, neg_zero, zpow_zero, mul_one]
 /- English proof (translation)
-Take `⟨ι⟩ : Nonempty (Qbar l ≃+* ℂ)` from `GlobalTheory.nonempty_padicAlgCl_ringEquiv_complex l`. Set `i : Ine (F` to `F) A →* Dec (F := F) A := (Subgroup.inclusion (Weil_le_Dec h)).comp (ineIncl h)`. Establish `hi : Continuous i` using `continuous_subtype_val.subtype_mk _`. Establish `ho` using `GlobalTheory.HeckeGal.isOpen_ker_of_pow (Φ.comp i) (hΦ.comp hi) hN fun σ => h1 _ σ.2`. Set `ξ : Weil h →* ℂˣ` to `(Units.map ι.toRingHom.toMonoidHom).comp (Φ.comp (Subgroup.inclusion (Weil_le_Dec h)))`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Take `⟨χ, hχ, e⟩` from `ha.factor ξ (Subgroup.isOpen_mono (H₂ := (ξ.comp (ineIncl h)).ker) (fun x hx => by show Units.map _ ((Φ.comp i) x) = 1`. Rewrite using `[MonoidHom.mem_ker.1 hx, map_one]) ho)`. Take `⟨k, hk⟩` from `du_Uc _ χ.ker hχ`. Use `⟨k, fun e' he s hs => Units.ext (ι.injective ?_)⟩` and prove the remaining obligations. Establish `h2 : ξ s = 1` using `by rw [e]; exact hk e' he hs`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `(congrArg Units.val h2).trans (map_one ι).symm`.
+A detailed English derivation is pending.
 -/
 private theorem du_arith (ha : IsLocalArtin h a) (Φ : Dec (F := F) A →* (Qbar l)ˣ) (hΦ : Continuous Φ) {N : ℕ} (hN : 0 < N)
     (h1 : ∀ g ∈ (Ine (F := F) A).subgroupOf (Dec (F := F) A), Φ g ^ N = 1) :
@@ -457,17 +445,17 @@ private theorem du_arith (ha : IsLocalArtin h a) (Φ : Dec (F := F) A →* (Qbar
   have h2 : ξ s = 1 := by rw [e]; exact hk e' he hs
   exact (congrArg Units.val h2).trans (map_one ι).symm
 /- English proof (translation)
-The claim follows from `(Continuous.units_map ((algebraMap ℚ_[l] (Qbar l)).comp PadicInt.Coe.ringHom).toMonoidHom ((continuous_algebraMap ℚ_[l] (Qbar l)).comp continuous_subtype_val)).comp (continuous_cycZ F Ω l)`.
+A detailed English derivation is pending.
 -/
 private theorem du_cyc : Continuous (cycBar F Ω l) :=
   (Continuous.units_map ((algebraMap ℚ_[l] (Qbar l)).comp PadicInt.Coe.ringHom).toMonoidHom
     ((continuous_algebraMap ℚ_[l] (Qbar l)).comp continuous_subtype_val)).comp (continuous_cycZ F Ω l)
 /- English proof (translation)
-Use `haveI : CharZero Ω := charZero_of_injective_algebraMap (algebraMap F Ω).injective`. Use `haveI : IsGalois F Ω := IsAlgClosure.isGalois F Ω`. Use `haveI : CompactSpace (Dec (F := F) A) := isCompact_iff_compactSpace.1 (isClosed_Dec A).isCompact`. Assume the negation of the conclusion as `hd`. Take `rfl : d = 0` from `by omega`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨N, hN, h1⟩` from `du_fin B ((cycBar F Ω l).comp (Dec (F := F) A).subtype) (du_cyc.comp continuous_subtype_val) Fin.elim0 (fun j => j.elim0) fun j => j.elim0`. Take `⟨j, rfl⟩` from `(Loc.decEmb (F := E) (Ω := Ω) (v := l)).1 A v h hw`. Take `⟨-, φ, b1, -, -, b4, b5, -⟩` from `(Loc.decEmb (F := F) (Ω := Ω) (v := l)).2 j`. Take `⟨-, _, ⟨⟨g, rfl⟩, hg⟩, h2⟩` from `(Loc.cycInertia l).2 φ.range b1.isOpen_range`. Rewrite `h2` using `[b5]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `h2 (isOfFinOrder_iff_pow_eq_one.2 ⟨N, hN, Units.ext (Subtype.ext ((algebraMap ℚ_[l] (Qbar l)).injective ?_))⟩)` and prove the remaining obligations. Establish `h3` using `congrArg Units.val (h1 g ((b4 g).1 hg))`. Simplify using `[cycBar] at h3 ⊢`. Conclude with `h3`.
+A detailed English derivation is pending.
 -/
 private theorem du_pos {E : Type} [Field E] [NumberField E] [Algebra E Ω] [IsAlgClosure E Ω] {v : Plc E}
     (h : IsPlaceOver A v) (hw : ((l : ℕ) : 𝓞 E) ∈ v.asIdeal) {d : ℕ}
@@ -489,15 +477,13 @@ private theorem du_pos {E : Type} [Field E] [NumberField E] [Algebra E Ω] [IsAl
   exact h3
 end Loc
 /- English proof (translation)
-Use `choose M hM h using h`. Establish `hp : ∀ (x : Qbar l) (k : ℕ), ‖x - 1‖ < 1 → ‖x ^ k - 1‖ < 1` using `fun x k hx => by`. Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih => rw [pow_succ]`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Conclude with `du_mul le_rfl ih hx`. Take `⟨R, h1, h2, h3⟩` from `du_sets idx u (M := ∏ s, M s) (Finset.prod_pos fun s _ => hM s) fun s => by`. Take `⟨k, hk⟩` from `Finset.dvd_prod_of_mem M (Finset.mem_univ s)`. Rewrite using `[hk, pow_mul]`. Conclude with `hp _ _ (h s)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `h0 : ∀ s, u s ≠ 0` using `fun s e => by simpa [e, (hM s).ne'] using h s`. Set `e` to `Finite.equivFin σ`. Set `E` to `MvPowerSeries.renameEquiv c.O e`. Use `E.injective ?_` and prove the remaining obligations. Rewrite using `[map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Use `AlgebraTools.AnnihilatorQuotientFinite.denseBox l c (Nat.card σ) (fun j => (fun η => u (e.symm j) * η - 1) '' R (e.symm j)) (fun j => (h1 _).image fun x _ y _ hxy => mul_left_cancel₀ (h0 _) (sub_left_injective hxy)) ?_ _ fun y hy => ?_` and prove the remaining obligations. Introduce and unpack `j _ ⟨η, hη, rfl⟩`. Conclude with `(h2 _ _ hη).2`. Use `choose η hη hη' using fun s => hy (e s)`. Simplify using `only [Equiv.symm_apply_apply] at hη hη'`.
-
-Use `hf (y.comp (E : MvPowerSeries σ c.O →ₐ[c.O] MvPowerSeries (Fin (Nat.card σ)) c.O)) η (fun s => (h2 _ _ (hη s)).1) (fun s s' hs e' => h3 s s' hs _ (hη s) (e' ▸ hη s')) fun s => ?_` and prove the remaining obligations. Rewrite using `[← sub_add_cancel (u s * η s) 1, hη', add_comm]`. Simplify using `[E]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem du_box {l : ℕ} [Fact l.Prime] (c : Coef l) {σ : Type} [Fintype σ] {n : ℕ} (idx : σ → Fin n) (u : σ → Qbar l)
     (h : ∀ s, ∃ M, 0 < M ∧ ‖u s ^ M - 1‖ < 1) (f : MvPowerSeries σ c.O)
@@ -528,33 +514,25 @@ private theorem du_box {l : ℕ} [Fact l.Prime] (c : Coef l) {σ : Type} [Fintyp
     rw [← sub_add_cancel (u s * η s) 1, hη', add_comm]
     simp [E]
 /- English proof (translation)
-Introduce `hN l _ L Ω _ _ _ _ _ _ s n _ V Q c m τ₀ r Λ θ hθ`. Use `haveI : IsAdicComplete (maximalIdeal c.O) c.O := (UpperTheory.V.Base.dvrFacts l c.O).2.2.2.1`. Use `haveI : IsLocalHom (algebraMap ℤ_[l] c.O) := (UpperTheory.V.Base.dvrFacts l c.O).2.2.1`. Use `haveI : Finite (ResidueField ℤ_[l]) := Finite.of_equiv _ (PadicInt.residueField (p := l)).symm.toEquiv`. Use `haveI : Finite (ResidueField c.O) := Module.finite_of_finite (ResidueField ℤ_[l])`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `haveI : CharP (ResidueField ℤ_[l]) l := charP_of_injective_ringHom (f := (PadicInt.residueField (p := l)).symm.toRingHom) (PadicInt.residueField (p := l)).symm.injective l`. Use `haveI : CharP (ResidueField c.O) l := charP_of_injective_ringHom (algebraMap (ResidueField ℤ_[l]) (ResidueField c.O)).injective l`. Take `⟨d₀, -, hA⟩` from `W.locCFT hN.aut.art ⟨hN.coh.lf, hN.coh.lt, hN.coh.le, hN.coh.gf, hN.coh.ge, hN.coh.gw, hN.coh.pt, GlobalTheory.Published.TameLocal_of_duality hN.coh.lt⟩ l L Ω s`. Set `d : V.frame.Vl → ℕ` to `d₀`. Set `A : ∀ v : V.frame.Vl, W.LocAb l (V.frame.Gv v) (V.frame.Iv v) (d v)` to `fun v => (hA v).some`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hd : ∀ v : V.frame.Vl, 0 < d v` using `fun v => du_pos (s.hA v.1) v.2 (hA v).some`. Take `⟨e, ψ₀, hψ₀, he⟩` from `(W.lam_ex_free l V.frame c.O n r d A).2 Λ`. Use `haveI : IsDomain (MvPowerSeries (Σ v : V.frame.Vl, Fin n × Fin (d v)) c.O) := NoZeroDivisors.to_isDomain _`. Use `⟨MulEquiv.isDomain _ e.symm.toMulEquiv, fun lam f hf => ?_⟩` and prove the remaining obligations. Establish `ha : ∀ v : V.frame.Vl, IsLocalArtin (s.hw v.1) (artOf (s.hw v.1))` using `fun v => Classical.epsilon_spec (_root_.UpperTheory.V.Z.Win.T2.laArtinLit' hN _)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `choose δ hδ hδ' using fun (v : V.frame.Vl) (i : Fin n) => du_alg (l := l) hN.aut.art (ha v) (lowW lam i)`. Use `choose ψ hψ hκ using Λ.inert`. Set `ω : ∀ v : V.frame.Vl, Fin n → V.frame.Gv v →* (Qbar l)ˣ` to `fun v i => ((cycBar L Ω l).comp (Dec (F := L) (s.A v.1)).subtype) ^ (i : ℕ) * δ v i`. Establish `hω : ∀ v i, Continuous (ω v i)` using `fun v i => ((du_cyc.comp continuous_subtype_val).pow (i : ℕ)).mul (hδ v i)`. Set `Φ : (Λ.Λ →ₐ[c.O] Qbar l) → ∀ v : V.frame.Vl, Fin n → V.frame.Gv v →* (Qbar l)ˣ` to `fun x v i => W.pushCh (x : Λ.Λ →+* Qbar l) (ψ v i) * ω v i`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hΦ : ∀ x v i, Continuous (Φ x v i)` using `fun x v i => (du_cont c Λ.Λ x _ (hψ v i).cont).mul (hω v i)`. Establish `key : ∀ (x : Λ.Λ →ₐ[c.O] Qbar l) (v : V.frame.Vl) i (t : Weil (s.hw v.1)) (y : Uo ((s.w v.1).adicCompletion L)), artOf (s.hw v.1) t = y → (hset Q τ₀).finPart θ (x : Λ.Λ →+* Qbar l) lam v i y = ((Φ x v i (Subgroup.inclusion (Weil_le_Dec _) t) : (Qbar l)ˣ) : Qbar l)⁻¹`. Introduce `x v i t y hy`. Establish `ht` using `(du_unit (ha v) t).1 (hy ▸ y.2)`. Establish `h1` using `congrArg (fun z : Λ.Λˣ => x z) (hθ v i t (Subgroup.inclusion (Weil_le_Dec _) t) ht y rfl hy)`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hκ, Units.val_mul, map_mul, Units.val_pow_eq_pow_val, map_pow, Units.val_one, map_one] at h1`. Establish `h2 : x ((hset Q τ₀).epsV Λ.Λ v (Subgroup.inclusion (Weil_le_Dec _) t) : Λ.Λˣ) = cycBar L Ω l t` using `x.commutes _`. Establish `h3` using `hδ' v i t ht`. Rewrite `h3` using `[hy]`. Use `show x _ / algPow (s.w v.1) _ _ = (x (ψ v i _) * ((cycBar L Ω l t ^ (i : ℕ) : (Qbar l)ˣ) * δ v i _))⁻¹`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h3, ← mul_assoc, mul_inv, div_eq_mul_inv, Units.val_pow_eq_pow_val]`. Conclude with `congrArg (· * _) (eq_inv_of_mul_eq_one_right (by rw [← h2]; exact h1))`. Use `choose γ hγI hγ using fun (v : V.frame.Vl) (j : Fin (d v)) => ((A v).inertia (Pi.single j 1, 0)).2 rfl`. Set `χ : ∀ v : V.frame.Vl, Fin n → V.frame.Gv v →* (Qbar l)ˣ` to `fun v i => (W.pushCh (Algebra.ofId c.O (Qbar l) : c.O →+* Qbar l) (ψ₀ v i) * ω v i)⁻¹`. Establish `hχ : ∀ v i, Continuous (χ v i)` using `fun v i => ((du_cont c c.O _ _ (hψ₀ v i).cont).mul (hω v i)).inv`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `e.symm.injective ?_` and prove the remaining obligations. Rewrite using `[map_zero]`. Use `du_box c (σ := Σ v, Fin n × Fin (d v)) (fun p => p.2.1) (fun p => χ p.1 p.2.1 (γ p.1 p.2.2)) (fun p => (du_pow _ (hχ p.1 p.2.1)).imp fun M hM => ⟨hM.1, hM.2 _⟩) _ fun y η h1 h2 h3 => ?_` and prove the remaining obligations. Set `x : Λ.Λ →ₐ[c.O] Qbar l` to `y.comp e.symm.toAlgHom`. Establish `hx : ∀ v i j, (Φ x v i (γ v j) : Qbar l) = η ⟨v, i, j⟩` using `fun v i j => by`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h4` using `congrArg x (he v i j ⟨γ v j, hγI v j⟩ (hγ v j))`. Establish `h5 : x (e (MvPowerSeries.X ⟨v, i, j⟩)) = y (MvPowerSeries.X ⟨v, i, j⟩)` using `congrArg y (e.symm_apply_apply _)`. Rewrite `h4` using `[hκ, map_mul, map_add, map_one, x.commutes, h5, h3]`. Use `show x (ψ v i (γ v j)) * (ω v i (γ v j) : Qbar l) = _`. Use `(congrArg (· * _) h4).trans ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `h6 : (χ v i (γ v j) : Qbar l) = (algebraMap c.O (Qbar l) (ψ₀ v i (γ v j)) * ω v i (γ v j))⁻¹` using `Units.val_inv_eq_inv_val _`. Establish `h7 : algebraMap c.O (Qbar l) (ψ₀ v i (γ v j)) * ω v i (γ v j) ≠ 0` using `fun h => by`. Rewrite `h6` using `[h, inv_zero]`. Conclude with `Units.ne_zero _ h6`. Simplify using `only [h6]`.
-
-Rewrite using `[mul_right_comm, mul_inv_cancel_left₀ h7]`. Use `hf x ⟨trivial, ?_, fun v i j hij => ?_⟩` and prove the remaining obligations. Use `choose N hN hN' using fun v i => du_fin (A v) (Φ x v i) (hΦ x v i) (γ v) (hγ v) fun j => by`. Rewrite using `[← Units.isOfFinOrder_val, hx]`. Conclude with `h1 _`.
-
-Use `choose k hk using fun v i => du_arith (ha v) (Φ x v i) (hΦ x v i) (hN v i) (hN' v i)`. Use `⟨∑ v, ∑ i, k v i, fun v i z hz => ?_⟩` and prove the remaining obligations. Take `⟨t, ht⟩` from `(ha v).surj z.1`. Use `(key x v i t z ht).trans ?_` and prove the remaining obligations. Establish `h9` using `hk v i _ ((Finset.single_le_sum (f := k v) (fun _ _ => Nat.zero_le _) (Finset.mem_univ i)).trans (Finset.single_le_sum (f := fun v => ∑ i, k v i) (fun _ _ => Nat.zero_le _) (Finset.mem_univ v))) t (ht ▸ hz)`.
-
-Conclude with `inv_eq_one.2 (congrArg Units.val h9)`. Set `t : Weil (s.hw v.1)` to `⟨(γ v ⟨0, hd v⟩).1, Ine_le_Weil _ (hγI v _)⟩`. Set `z : Uo ((s.w v.1).adicCompletion L)` to `⟨_, (du_unit (ha v) t).2 (hγI v _)⟩`. Use `⟨z, fun h' => ?_⟩` and prove the remaining obligations. Establish `h` using `inv_injective (((key x v i t z rfl).symm.trans h').trans (key x v j t z rfl))`.
-
-Conclude with `h2 ⟨v, i, ⟨0, hd v⟩⟩ ⟨v, j, ⟨0, hd v⟩⟩ hij (((hx v i _).symm.trans h).trans (hx v j _))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Hi.isDomain_and_denseWt_of_isTheta :
     _root_.GlobalTheory.Mem.LiteralAutomorphy.LiteratureRankNHypothesis → ∀ (l : ℕ) [Fact l.Prime] (L Ω : Type) [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] (s : HidaSetting l L Ω) (n : ℕ), 1 ≤ n →

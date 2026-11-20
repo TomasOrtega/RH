@@ -26,19 +26,17 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.Div.PairingEigenspaceOrthogonal
 
 /- English proof (translation)
-Introduce `E _ _ _ c hc R _ K _ _ H _ _ I φ ρ Fil B hL σ σ' hne x hx y hy`. Establish `hadj` using `hL.2.2.2.2.2.2.2.2`. Establish `hne' : σ ≠ GlobalTheory.IndefiniteRowSideFullHecke.DifferentConductorValuations.bar σ'`. Introduce `h`. Apply `hne` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[h]`. Use extensionality with `z`. Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.DifferentConductorValuations.bar, IsCMField.complexConj_apply_apply]`. Choose the witnesses or unpack the hypotheses as in `⟨a, ha⟩ : ∃ a : orderC c, σ a ≠ GlobalTheory.IndefiniteRowSideFullHecke.DifferentConductorValuations.bar σ' a := by`. Assume the negation of the conclusion as `hall`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Use `push_neg at hall`. Conclude with `hne' (GlobalTheory.EigLineSum.ringHom_eq_of_eq_on_orderC hc hall)`. Set `b : orderC c` to `⟨IsCMField.complexConj E (a : E), GlobalTheory.LatModel.HalfFormUnit.conj_mem_orderC a.2⟩`. Establish `hK : ∀ u v : K ⊗[R] H, B.baseChange K ((ρ a).baseChange K u) v = B.baseChange K u ((ρ b).baseChange K v)`. Introduce `u v`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `u using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add u1 u2 h1 h2 => simp only [map_add, LinearMap.add_apply, h1, h2]`. Consider the case `tmul r m`. Proceed by induction on `v using TensorProduct.induction_on with`.
+Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `add v1 v2 h1 h2 => simp only [map_add, h1, h2]`. Consider the case `tmul r' m'`. Simplify using `only [LinearMap.baseChange_tmul, LinearMap.BilinForm.baseChange_tmul]`. Rewrite using `[hadj a b rfl m m']`.
+Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `hK x y`. Rewrite `h1` using `[GlobalTheory.LowerOps.act_of_mem_eigK hx a, GlobalTheory.LowerOps.act_of_mem_eigK hy b]`. Simplify using `only [LinearMap.map_smul, LinearMap.smul_apply, smul_eq_mul] at h1`. Establish `hb : σ' (b : E) = GlobalTheory.IndefiniteRowSideFullHecke.DifferentConductorValuations.bar σ' a` using `rfl`. Rewrite `h1` using `[hb]`.
-
-Establish `h2 : (σ a - GlobalTheory.IndefiniteRowSideFullHecke.DifferentConductorValuations.bar σ' a) * B.baseChange K x y = 0` using `by rw [sub_mul, h1, sub_self]`. Conclude with `(mul_eq_zero.1 h2).resolve_left (sub_ne_zero.2 ha)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem pairing_eig_orth : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (c : Ideal (OF E)), c ≠ ⊥ →
     ∀ (R : Type) [CommRing R] (K : Type) [Field K] [Algebra R K] (H : Type) [AddCommGroup H] [Module R H]

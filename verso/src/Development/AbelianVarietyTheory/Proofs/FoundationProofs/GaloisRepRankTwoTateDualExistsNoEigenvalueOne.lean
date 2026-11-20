@@ -7,13 +7,11 @@ open scoped Matrix
 namespace GlobalTheory.Ord2
 
 /- English proof (translation)
-Introduce `l _ Ω _ _ _ e S A W h`. Take `⟨φ, hφ, hd⟩` from `GlobalTheory.T.exists_commutator_det_nonzero l Ω e S A W h`. Establish `hφ' : φ ∈ H0g W` using `(Subgroup.commutator_le.2 (fun a ha b hb => by`. Rewrite using `[commutatorElement_def]`. Conclude with `mul_mem (mul_mem (mul_mem ha hb) (inv_mem ha)) (inv_mem hb))) hφ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨h1, h2⟩` from `Subgroup.mem_inf.1 hφ'`. Rewrite `h1`, `h2` using `[MonoidHom.mem_ker]`. Establish `hχ : (cycBar ℚ Ω l * (dt W)⁻¹) φ = 1`. Simplify using `[h1, h2]`. Use `⟨φ, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: mat (dual1 W) φ = mat W φ`. Unfold `dual1`. Generalize the expression as in `(cycBar ℚ Ω l * (dt W)⁻¹) = χ at hχ`. Simplify using `[mat, tw, hχ]`. Rewrite using `[this]`.
-
-Conclude with `hd`.
+Replace the relevant objects with their definitions. Replace the chosen expression with an arbitrary variable. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem galoisRepRankTwoTateDual_exists_no_eigenvalue_one_alt : ∀ (l : ℕ) [Fact l.Prime] (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (e : ℕ) (S : Finset Pl) (A : ValuationSubring Ω) (W : R2 Ω l), Nf e S A W → ∃ g, (mat (dual1 W) g - 1).det ≠ 0 := by
   intro l _ Ω _ _ _ e S A W h

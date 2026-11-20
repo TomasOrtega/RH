@@ -12,9 +12,9 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace GlobalTheory.ExtensionRigidity
 
 /- English proof (translation)
-Use `isNormalScheme_of_smooth (S := Spec (.of K)) X.hom` as an intermediate fact. Establish `: IsReduced X.left` using `IsNormalScheme.isReduced`. Establish `: LocallyOfFiniteType (f.left ≫ Y.hom)` using `by rw [Over.w]; infer_instance`. Use `Over.OverMorphism.ext (ext_of_apply_eq (K := K) Y.hom Set.univ isOpen_univ.isLocallyClosed dense_univ (fun x _ hx => ?_) (by rw [Over.w, Over.w]))` and prove the remaining obligations. Set `p : 𝟙_ (Over (Sp K)) ⟶ X` to `Over.homMk (pointOfClosedPoint (K := K) X.hom x hx) (pointOfClosedPoint_comp (K := K) X.hom x hx)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Establish `h1 : pointOfClosedPoint (K` using `K) X.hom x hx ≫ f.left = pointOfClosedPoint (K := K) X.hom x hx ≫ g.left := congrArg CommaMorphism.left (h p)`. Establish `h2 : f.left (pointOfClosedPoint (K` using `K) X.hom x hx (IsLocalRing.closedPoint K)) = g.left (pointOfClosedPoint (K := K) X.hom x hx (IsLocalRing.closedPoint K)) := congrArg (fun φ => φ (IsLocalRing.closedPoint K)) h1`. Establish `h3` using `pointOfClosedPoint_apply (K := K) X.hom x hx (IsLocalRing.closedPoint K)`. Conclude with `(congrArg f.left h3).symm.trans (h2.trans (congrArg g.left h3))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem hom_ext_of_rationalPoints {K : Type} [Field K] [IsAlgClosed K] {X Y : Over (Sp K)}
     [Smooth X.hom] [IsProper Y.hom] (f g : X ⟶ Y)
@@ -35,9 +35,9 @@ theorem hom_ext_of_rationalPoints {K : Type} [Field K] [IsAlgClosed K] {X Y : Ov
   exact (congrArg f.left h3).symm.trans (h2.trans (congrArg g.left h3))
 
 /- English proof (translation)
-Establish `hc : ∀ {W : Scheme.{0}} (g g' : W ⟶ X.left), g ≫ p.left = g' ≫ p.left → g ≫ f.left = g' ≫ f.left`. Introduce `W g g' hg`. Establish `hw : g' ≫ X.hom = g ≫ X.hom`. Rewrite using `[← Over.w p, ← Category.assoc, ← hg, Category.assoc]`. Use `h (Over.mk (g ≫ X.hom)) (Over.homMk g rfl) (Over.homMk g' hw) (Over.OverMorphism.ext hg)` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `congrArg CommaMorphism.left this`. Establish `hfac` using `EffectiveEpi.fac p.left f.left hc`. Conclude with `⟨Over.homMk (EffectiveEpi.desc p.left f.left hc) (by`. Rewrite using `[← cancel_epi p.left, ← Category.assoc, hfac, Over.w, Over.w]),`. Use the proof step `Over.OverMorphism.ext hfac⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_factor {S : Scheme.{0}} {X Y Z : Over S} (p : X ⟶ Y) [Flat p.left]
     [Surjective p.left] [QuasiCompact p.left] (f : X ⟶ Z)
@@ -57,19 +57,19 @@ theorem exists_factor {S : Scheme.{0}} {X Y Z : Over S} (p : X ⟶ Y) [Flat p.le
     Over.OverMorphism.ext hfac⟩
 
 /- English proof (translation)
-Introduce `K _ _ E G _ hG B _ hB f hf`. Use `(UnitRigidity.smooth_geometricallyConnected_of_isGt E G hG).1` as an intermediate fact. Take `⟨D⟩` from `hG`. Use `D.q_hom` as an intermediate fact. Use `D.i_hom` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `D.q_flat` as an intermediate fact. Use `D.q_surjective` as an intermediate fact. Use `D.q_affine` as an intermediate fact. Use `E.free` as an intermediate fact. Use `E.finite` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hB.proper` as an intermediate fact. Take `⟨-, -, -, -, h1, -⟩` from `(splitTorus_properties (Sp K)).1 E.X`. Establish `: Smooth (splitTorus (Sp K) E.X).hom` using `SmoothOfRelativeDimension.smooth (Module.finrank ℤ E.X) _`. Establish `: Smooth (splitTorus (Sp K) E.X ⊗ G).hom` using `inferInstanceAs (Smooth (pullback.fst (splitTorus (Sp K) E.X).hom G.hom ≫ (splitTorus (Sp K) E.X).hom))`. Establish `hact : ((fst (splitTorus (Sp K) E.X) G ≫ D.i) * snd _ G) ≫ f = snd _ G ≫ f`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hom_ext_of_rationalPoints _ _ fun x => ?_` and prove the remaining obligations. Take `⟨b, hb⟩` from `GlobalTheory.T.splitTorus_to_abelianVariety_const K E.X B hB ((D.i * (toUnit _ ≫ x ≫ snd _ G)) ≫ f)`. Establish `e : ∀ t : 𝟙_ (Over (Sp K)) ⟶ splitTorus (Sp K) E.X, ((t ≫ D.i) * (x ≫ snd _ G)) ≫ f = b`. Introduce `t`. Use `congrArg (t ≫ ·) hb` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [← Category.assoc, MonObj.comp_mul] at this`. Rewrite `this` using `[toUnit_unique (t ≫ toUnit _) (𝟙 _), Category.id_comp, Category.id_comp]`. Conclude with `this`. Establish `e1` using `e 1`. Rewrite `e1` using `[MonObj.one_comp, _root_.one_mul]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Category.assoc, MonObj.comp_mul, ← Category.assoc, e, ← Category.assoc, e1]`. Take `⟨β, hβ⟩` from `exists_factor D.q f fun W a c h => by`. Establish `H` using `UnitRigidity.isPullback_act D.i D.q D.isKernel`. Rewrite using `[← H.lift_fst a c h, Category.assoc, hact, ← Category.assoc, H.lift_snd]`. Establish `: IsMonHom β` using `rigidity_holds _ _ _ E.isAbelian hB β (by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← IsMonHom.one_hom D.q, Category.assoc, hβ, hf])`. Rewrite using `[← hβ]`. Use `infer_instance`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isMonHom_of_pointed :
     ∀ (K : Type) [Field K] [IsAlgClosed K] (E : SplitExt (Sp K)) (G : Over (Sp K)) [GrpObj G], E.IsGt G → ∀ (B : Over (Sp K)) [GrpObj B], IsAbelianScheme B → ∀ f : G ⟶ B, η[G] ≫ f = η[B] → IsMonHom f := by

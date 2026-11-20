@@ -8,15 +8,15 @@ open scoped ComplexOrder ENNReal
 namespace GlobalTheory.TrueCx.FrameOnto
 
 /- English proof (translation)
-Use `set U : Matrix n n ℂ := (hM.1.eigenvectorUnitary : Matrix n n ℂ) with hU`. Establish `hD : star U * M * U = diagonal (RCLike.ofReal ∘ hM.1.eigenvalues)`. Establish `h` using `hM.1.conjStarAlgAut_star_eigenvectorUnitary`. Rewrite `h` using `[Unitary.conjStarAlgAut_star_apply]`. Conclude with `h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `set c : n → ℂ := fun i => (RCLike.ofReal ((Real.sqrt (hM.1.eigenvalues i))⁻¹) : ℂ) with hc`. Use `⟨U * diagonal c, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[det_mul, det_diagonal]`. Use `IsUnit.mul (isUnit_det_of_left_inverse (Unitary.coe_star_mul_self _)) ?_` and prove the remaining obligations. Use `Ne.isUnit (Finset.prod_ne_zero_iff.mpr fun i _ => ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `RCLike.ofReal_ne_zero.mpr (inv_ne_zero (Real.sqrt_ne_zero'.mpr (hM.eigenvalues_pos i)))`. Establish `hs : (U * diagonal c)ᴴ * M * (U * diagonal c) = diagonal (star c) * (star U * M * U) * diagonal c`. Rewrite using `[conjTranspose_mul, diagonal_conjTranspose, ← star_eq_conjTranspose]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[hs, hD, diagonal_mul_diagonal, diagonal_mul_diagonal, ← diagonal_one]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congr 1`. Use function extensionality and compare the values at `i`. Establish `hl` using `hM.eigenvalues_pos i`. Establish `hr : (Real.sqrt (hM.1.eigenvalues i))⁻¹ * hM.1.eigenvalues i * (Real.sqrt (hM.1.eigenvalues i))⁻¹ = 1`. Establish `h0 : Real.sqrt (hM.1.eigenvalues i) ≠ 0` using `Real.sqrt_ne_zero'.mpr hl`.
+Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using the standard rewrite rules.
 
-Establish `h2` using `Real.mul_self_sqrt hl.le`. Clear the denominators using the available nonvanishing facts. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using `only [hc, Pi.star_apply, Function.comp_apply, RCLike.star_def, RCLike.conj_ofReal]`. Rewrite using `[← RCLike.ofReal_mul, ← RCLike.ofReal_mul, hr, RCLike.ofReal_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_congr_one {n : Type} [Fintype n] [DecidableEq n] {M : Matrix n n ℂ} (hM : M.PosDef) :
     ∃ S : Matrix n n ℂ, IsUnit S.det ∧ Sᴴ * M * S = 1 := by
@@ -48,11 +48,11 @@ theorem exists_congr_one {n : Type} [Fintype n] [DecidableEq n] {M : Matrix n n 
     rw [← RCLike.ofReal_mul, ← RCLike.ofReal_mul, hr, RCLike.ofReal_one]
 
 /- English proof (translation)
-Establish `hsd : (1 - z * zᴴ).PosSemidef` using `by haveI : Invertible (1 : Matrix (Fin p) (Fin p) ℂ) := invertibleOne haveI : Invertible (1 : Matrix (Fin q) (Fin q) ℂ) := invertibleOne`. Establish `h1 : (fromBlocks (1 : Matrix (Fin p) (Fin p) ℂ) z zᴴ 1).PosSemidef`. Rewrite using `[PosDef.fromBlocks₁₁ (A := (1 : Matrix (Fin p) (Fin p) ℂ)) z 1 PosDef.one]`. Simplify using `using hz.posSemidef`. Rewrite `h1` using `[PosDef.fromBlocks₂₂ 1 z (D := (1 : Matrix (Fin q) (Fin q) ℂ)) PosDef.one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `using h1`. Rewrite using `[hsd.posDef_iff_det_ne_zero]`. Establish `hu : IsUnit (1 - zᴴ * z).det` using `(isUnit_iff_isUnit_det _).mp hz.isUnit`. Use `(isUnit_det_of_right_inverse (B := 1 + z * (1 - zᴴ * z)⁻¹ * zᴴ) ?_).ne_zero` and prove the remaining obligations. Establish `h` using `mul_nonsing_inv _ hu`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_add, Matrix.add_mul, Matrix.sub_mul, Matrix.mul_sub, Matrix.mul_one, Matrix.one_mul, Matrix.mul_assoc]`. Use `_ = 1 := by`. Rewrite using `[h, Matrix.mul_one]`. Normalize the expressions using the abelian group laws.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 private lemma posDef_one_sub_mul_conjTranspose_of_posDef {p q : ℕ} {z : Matrix (Fin p) (Fin q) ℂ} (hz : (1 - zᴴ * z).PosDef) :
     (1 - z * zᴴ).PosDef := by
@@ -77,13 +77,13 @@ private lemma posDef_one_sub_mul_conjTranspose_of_posDef {p q : ℕ} {z : Matrix
         abel
 
 /- English proof (translation)
-Establish `hQ : (1 - zᴴ * z).PosDef` using `hz`. Take `⟨S, hSu, hS⟩` from `exists_congr_one hQ`. Take `⟨T, hTu, hT⟩` from `exists_congr_one (posDef_one_sub_mul_conjTranspose_of_posDef hQ)`. Establish `hJ : Jpq p q = fromBlocks 1 0 0 (-1)` using `rfl`. Use `⟨fromBlocks T (z * S) (zᴴ * T) S, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hJ, fromBlocks_conjTranspose, fromBlocks_multiply, fromBlocks_multiply]`. Use `fromBlocks_inj.mpr ⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `Eq.trans ?_ hT` and prove the remaining obligations. Simplify using `only [Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, Matrix.one_mul, Matrix.mul_assoc, Matrix.mul_neg, Matrix.neg_mul, Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add, conjTranspose_mul, conjTranspose_conjTranspose]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Simplify using `only [Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, Matrix.one_mul, Matrix.mul_assoc, Matrix.mul_neg, Matrix.neg_mul, Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add, conjTranspose_mul, conjTranspose_conjTranspose]`. Normalize the expressions using the abelian group laws. Simplify using `only [Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, Matrix.one_mul, Matrix.mul_assoc, Matrix.mul_neg, Matrix.neg_mul, Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add, conjTranspose_mul, conjTranspose_conjTranspose]`. Normalize the expressions using the abelian group laws. Use `Eq.trans ?_ (congrArg Neg.neg hS)` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, Matrix.one_mul, Matrix.mul_assoc, Matrix.mul_neg, Matrix.neg_mul, Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add, conjTranspose_mul, conjTranspose_conjTranspose]`. Normalize the expressions using the abelian group laws. Unfold `moeb`. Rewrite using `[toBlocks_fromBlocks₁₁, toBlocks_fromBlocks₁₂, toBlocks_fromBlocks₂₁, toBlocks_fromBlocks₂₂, Matrix.mul_zero, Matrix.mul_zero, zero_add, zero_add, Matrix.mul_assoc, mul_nonsing_inv _ hSu, Matrix.mul_one]`.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_moeb_zero {p q : ℕ} {z : Matrix (Fin p) (Fin q) ℂ} (hz : z ∈ hcDom p q) :
     ∃ g : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ, gᴴ * Jpq p q * g = Jpq p q ∧ moeb g 0 = z := by
@@ -111,7 +111,7 @@ theorem exists_moeb_zero {p q : ℕ} {z : Matrix (Fin p) (Fin q) ℂ} (hz : z �
       Matrix.mul_one]
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [ReciprocityTheory.ChartRestriction.G.FD.gram, ReciprocityTheory.ChartRestriction.G.FD.hermC, ReciprocityTheory.ChartRestriction.G.FD.col, Matrix.of_apply, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private lemma gram_eq_upper_bounds {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
     (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (x : Matrix (Fin r) (Fin r) ℂ) :
@@ -122,7 +122,7 @@ private lemma gram_eq_upper_bounds {E : Type} [Field E] [NumberField E] [IsCMFie
   rw [Finset.sum_comm]
 
 /- English proof (translation)
-Unfold `idx`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 private lemma coe_idx_symm_inl {r j : ℕ} (hj : j ≤ r) (a : Fin j) :
     (((idx hj).symm (Sum.inl a) : Fin r) : ℕ) = r - j + a := by
@@ -130,7 +130,7 @@ private lemma coe_idx_symm_inl {r j : ℕ} (hj : j ≤ r) (a : Fin j) :
   simp
 
 /- English proof (translation)
-Unfold `idx`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 private lemma coe_idx_symm_inr {r j : ℕ} (hj : j ≤ r) (b : Fin (r - j)) :
     (((idx hj).symm (Sum.inr b) : Fin r) : ℕ) = b := by
@@ -138,7 +138,7 @@ private lemma coe_idx_symm_inr {r j : ℕ} (hj : j ≤ r) (b : Fin (r - j)) :
   simp
 
 /- English proof (translation)
-Establish `hJ : Jpq j (r - j) = fromBlocks 1 0 0 (-1)` using `rfl`. Rewrite using `[hJ]`. Apply the tactic sequence `ext (a | a) (b | b) <;>`. Apply the tactic sequence `simp [reindex_apply, diagonal_apply, coe_idx_symm_inl, coe_idx_symm_inr, ReciprocityTheory.ChartRestriction.G.FD.sgn, Matrix.one_apply] <;>`. Apply the tactic sequence `split_ifs <;> simp`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private lemma reindex_diagonal_sgn_eq_neg_Jpq {r j : ℕ} (hj : j ≤ r) :
     reindex (idx hj) (idx hj) (diagonal fun a : Fin r => ((ReciprocityTheory.ChartRestriction.G.FD.sgn (r - j) a : ℝ) : ℂ)) =
@@ -150,33 +150,29 @@ private lemma reindex_diagonal_sgn_eq_neg_Jpq {r j : ℕ} (hj : j ≤ r) :
     split_ifs <;> simp
 
 /- English proof (translation)
-Introduce `E _ _ _ r j X hj Tau _ κ hp z hz`. Establish `hz' : ∀ t, z t ∈ hcDom j (r - j)` using `hz`. Use `choose g hg hgz using fun t => exists_moeb_zero (hz' t)`. Use `set D : Matrix (Fin r) (Fin r) ℂ := diagonal fun a => ((ReciprocityTheory.ChartRestriction.G.FD.sgn X.p0 a : ℝ) : ℂ) with hD`. Establish `hDJ : reindex (idx hj) (idx hj) D = -Jpq j (r - j)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hD, hp]`. Conclude with `reindex_diagonal_sgn_eq_neg_Jpq hj`. Establish `hD' : D = reindex (idx hj).symm (idx hj).symm (-Jpq j (r - j))`. Rewrite using `[← hDJ]`. Simplify using `[reindex_apply, Matrix.submatrix_submatrix]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hDT : Dᵀ = D`. Rewrite using `[hD]`. Conclude with `diagonal_transpose _`. Establish `hx0 : ∀ τ : X.Ψ, (ReciprocityTheory.ChartRestriction.G.FD.mat (x0F X) τ).det ≠ 0 ∧ ReciprocityTheory.ChartRestriction.G.FD.gram τ.1 X.Gm (ReciprocityTheory.ChartRestriction.G.FD.mat (x0F X) τ) = D` using `fun τ => (X.signature τ).choose_spec`. Establish `hgy : ∀ t, (reindex (idx hj).symm (idx hj).symm (g t))ᴴ * D * reindex (idx hj).symm (idx hj).symm (g t) = D`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `t`. Rewrite using `[hD']`. Simplify using `only [reindex_apply, Equiv.symm_symm, conjTranspose_submatrix, submatrix_mul_equiv]`. Rewrite using `[Matrix.mul_neg, Matrix.neg_mul, hg t]`. Establish `hT : ∀ y : Matrix (Fin r) (Fin r) ℂ, yᵀ * D * y.map (starRingEnd ℂ) = (yᴴ * Dᵀ * y)ᵀ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Introduce `y`. Establish `h1 : (yᴴ)ᵀ = y.map (starRingEnd ℂ)`. Use extensionality with `a b`. Simplify using the standard rewrite rules. Rewrite using `[transpose_mul, transpose_mul, transpose_transpose, h1, Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `x : ReciprocityTheory.ChartRestriction.G.FD.Frame X.Ψ r` to `fun τ => (ReciprocityTheory.ChartRestriction.G.FD.mat (x0F X) τ * reindex (idx hj).symm (idx hj).symm (g (κ.symm τ)) : Matrix (Fin r) (Fin r) ℂ)`. Establish `hm : ∀ τ, ReciprocityTheory.ChartRestriction.G.FD.mat x τ = ReciprocityTheory.ChartRestriction.G.FD.mat (x0F X) τ * reindex (idx hj).symm (idx hj).symm (g (κ.symm τ))` using `fun τ => rfl`. Establish `hgram : ∀ τ : X.Ψ, ReciprocityTheory.ChartRestriction.G.FD.gram τ.1 X.Gm (ReciprocityTheory.ChartRestriction.G.FD.mat x τ) = D`. Introduce `τ`. Establish `h0` using `(hx0 τ).2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hm, gram_eq_upper_bounds]`. Rewrite `h0` using `[gram_eq_upper_bounds]`. Establish `hre : (ReciprocityTheory.ChartRestriction.G.FD.mat (x0F X) τ * reindex (idx hj).symm (idx hj).symm (g (κ.symm τ)))ᵀ * X.Gm.map τ.1 * (ReciprocityTheory.ChartRestriction.G.FD.mat (x0F X) τ * reindex (idx hj).symm (idx hj).symm (g (κ.symm τ))).map (starRingEnd ℂ) = (reindex (idx hj …`. Rewrite using `[transpose_mul, Matrix.map_mul]`. Simplify using `only [Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[hre, h0, hT, hDT, hgy, hDT]`. Use `⟨x, ?_, ?_⟩` and prove the remaining obligations. Use `show ∀ τ : X.Ψ, (ReciprocityTheory.ChartRestriction.G.FD.mat x τ).det ≠ 0 ∧ ∀ i : Fin (r + 1), 0 < ReciprocityTheory.ChartRestriction.G.FD.psgn X.p0 i * (ReciprocityTheory.ChartRestriction.G.FD.dmin X.Gm x τ i).re`. Introduce `τ`. Establish `hsg : ∀ a : ℕ, ReciprocityTheory.ChartRestriction.G.FD.sgn X.p0 a ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a`. Unfold `ReciprocityTheory.ChartRestriction.G.FD.sgn`. Apply the tactic sequence `split_ifs <;> norm_num`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `hdet`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `h` using `congrArg Matrix.det (hgram τ)`. Rewrite `h` using `[gram_eq_upper_bounds, det_mul, det_mul, det_transpose, hdet, zero_mul, zero_mul, hD, det_diagonal]`. Conclude with `(Finset.prod_ne_zero_iff.mpr fun (a : Fin r) _ => Complex.ofReal_ne_zero.mpr (hsg a)) h.symm`. Introduce `i`. Establish `hl : ReciprocityTheory.ChartRestriction.G.FD.dmin X.Gm x τ i = ((ReciprocityTheory.ChartRestriction.G.FD.psgn X.p0 i : ℝ) : ℂ)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `ReciprocityTheory.ChartRestriction.G.FD.dmin ReciprocityTheory.ChartRestriction.G.FD.lminor ReciprocityTheory.ChartRestriction.G.FD.psgn`. Rewrite using `[hgram τ, hD, submatrix_diagonal _ _ (Fin.castLE_injective _), det_diagonal]`. Simplify using `only [Function.comp_apply, Fin.coe_castLE]`. Rewrite using `[Fin.prod_univ_eq_prod_range (fun a => ((ReciprocityTheory.ChartRestriction.G.FD.sgn X.p0 a : ℝ) : ℂ)) (i : ℕ), Complex.ofReal_prod]`. Establish `hps : ReciprocityTheory.ChartRestriction.G.FD.psgn X.p0 i ≠ 0`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `ReciprocityTheory.ChartRestriction.G.FD.psgn`. Conclude with `Finset.prod_ne_zero_iff.mpr fun a _ => hsg a`. Rewrite using `[hl, Complex.ofReal_re]`. Conclude with `mul_self_pos.mpr hps`. Use function extensionality and compare the values at `t`.
-
-Establish `hf : frameCo X hj x (κ t) = g t`. Unfold `frameCo`. Rewrite using `[hm, ← Matrix.mul_assoc, nonsing_inv_mul _ (hx0 (κ t)).1.isUnit, Matrix.one_mul, Equiv.symm_apply_apply]`. Simplify using `[reindex_apply, Matrix.submatrix_submatrix]`. Use `show moeb (frameCo X hj x (κ t)) 0 = z t`.
-
-Rewrite using `[hf, hgz t]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frame_onto : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r j : ℕ) (X : Data E r) (hj : j ≤ r) (Tau : Type) [Fintype Tau] (κ : Tau ≃ X.Ψ), X.p0 = r - j → ∀ z ∈ DomI Tau j (r - j), ∃ x ∈ X.dom, domPt X hj κ x = z := by
   intro E _ _ _ r j X hj Tau _ κ hp z hz

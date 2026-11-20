@@ -8,13 +8,13 @@ open NumberField IsDedekindDomain GlobalTheory.CMVal GlobalTheory.CMVal.Euler
 namespace GlobalTheory.CMVal.Euler.SplitPlace
 
 /- English proof (translation)
-Establish `hsum` using `Ideal.sum_ramification_inertia_eq_finrank p (𝓞 E)`. Rewrite `hsum` using `[← IsFractionRing.finrank_eq (𝓞 F) F (𝓞 E) E, h2]`. Establish `hpos : ∀ P : p.primesOver (𝓞 E), 1 ≤ P.1.ramificationIdx (𝓞 F) * P.1.inertiaDeg (𝓞 F)` using `fun P => Nat.mul_pos (Ideal.ramificationIdx_pos _ _) (Ideal.inertiaDeg_pos _ _)`. Establish `hall : ∀ R : p.primesOver (𝓞 E), R = P ∨ R = P'`. Introduce `R`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Assume the negation of the conclusion as `hR`. Use `push Not at hR`. Establish `h3` using `Finset.sum_le_sum_of_subset (f := fun P : p.primesOver (𝓞 E) => P.1.ramificationIdx (𝓞 F) * P.1.inertiaDeg (𝓞 F)) (Finset.subset_univ {R, P, P'})`. Rewrite `h3` using `[hsum, Finset.sum_insert (by simp [hR.1, hR.2]), Finset.sum_pair hne]`. Use `hpos R` as an intermediate fact.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hpos P` as an intermediate fact. Use `hpos P'` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `⟨hall, fun R => ?_⟩` and prove the remaining obligations. Establish `h3` using `Finset.sum_le_sum_of_subset (f := fun P : p.primesOver (𝓞 E) => P.1.ramificationIdx (𝓞 F) * P.1.inertiaDeg (𝓞 F)) (Finset.subset_univ {P, P'})`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h3` using `[hsum, Finset.sum_pair hne]`. Use `hpos P` as an intermediate fact. Use `hpos P'` as an intermediate fact. Apply the tactic sequence `rcases hall R with rfl | rfl <;> omega`.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem two_primes (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (h2 : Module.finrank F E = 2) (p : Ideal (𝓞 F)) [p.IsMaximal] (P P' : p.primesOver (𝓞 E)) (hne : P ≠ P') :
@@ -46,17 +46,17 @@ theorem two_primes (F E : Type) [Field F] [NumberField F] [Field E] [NumberField
   rcases hall R with rfl | rfl <;> omega
 
 /- English proof (translation)
-Introduce `E _ _ _ v hv`. Establish `h2 : Module.finrank (maximalRealSubfield E) E = 2` using `Algebra.IsQuadraticExtension.finrank_eq_two _ _`. Establish `hmax : v.asIdeal.IsMaximal` using `v.isMaximal`. Establish `hm : ∀ P : HeightOneSpectrum (𝓞 E), Over P v → P.asIdeal ∈ v.asIdeal.primesOver (𝓞 E)` using `fun P h => ⟨P.isPrime, ⟨h.symm⟩⟩`. Establish `hne : ∀ P P' (h : Over P v) (h' : Over P' v), P ≠ P' → (⟨_, hm P h⟩ : v.asIdeal.primesOver (𝓞 E)) ≠ ⟨_, hm P' h'⟩` using `fun P P' h h' hn he => hn (HeightOneSpectrum.ext (congrArg Subtype.val he))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨fun P P' h h' hn R hR => ?_, fun P hP => ?_⟩` and prove the remaining obligations. Break down `(two_primes _ E h2 v.asIdeal _ _ (hne P P' h h' hn)).1 ⟨_, hm R hR⟩ with e | e` into its components or cases. Conclude with `Or.inl (HeightOneSpectrum.ext (congrArg Subtype.val e))`. Conclude with `Or.inr (HeightOneSpectrum.ext (congrArg Subtype.val e))`. Take `⟨Q, Q', hn, h, h'⟩` from `hv`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative. Extract witnesses or component facts from the available result.
 
-Establish `hef` using `(two_primes _ E h2 v.asIdeal _ _ (hne Q Q' h h' hn)).2 ⟨_, hm P hP⟩`. Establish `hlo : P.asIdeal.LiesOver v.asIdeal` using `⟨hP.symm⟩`. Establish `hPm : P.asIdeal.IsMaximal` using `P.isMaximal`. Establish `he : v.asIdeal.ramificationIdx' P.asIdeal = 1`. Rewrite using `[Ideal.ramificationIdx'_eq_ramificationIdx _ _ v.ne_bot]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Nat.eq_one_of_mul_eq_one_right hef`. Establish `hf : v.asIdeal.inertiaDeg' P.asIdeal = 1`. Rewrite using `[Ideal.inertiaDeg'_eq_inertiaDeg]`. Conclude with `Nat.eq_one_of_mul_eq_one_left hef`. Use `⟨?_, fun a k => ?_, fun b => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.absNorm_eq_pow_inertiaDeg'_of_liesOver P.asIdeal v.asIdeal v.isPrime v.ne_bot, hf, pow_one]`. Rewrite using `[← HeightOneSpectrum.intValuation_le_pow_iff_mem, ← HeightOneSpectrum.intValuation_le_pow_iff_mem, ← HeightOneSpectrum.intValuation_liesOver v P a, he, pow_one]`. Rewrite `hf` using `[Ideal.inertiaDeg'_algebraMap]`. Set `_` to `Ideal.Quotient.field v.asIdeal`. Take `⟨c, hc⟩` from `(Algebra.finrank_eq_one_iff_bijective_algebraMap.1 hf).2 (Ideal.Quotient.mk _ b)`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective c`. Conclude with `⟨a, Ideal.Quotient.eq.1 hc.symm⟩`.
+A detailed English derivation is pending.
 -/
 theorem split_place : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (v : HeightOneSpectrum (OF E)), Splits v → (∀ P P' : HeightOneSpectrum (𝓞 E), Over P v → Over P' v → P ≠ P' → ∀ R : HeightOneSpectrum (𝓞 E), Over R v → R = P ∨ R = P') ∧ ∀ P : HeightOneSpectrum (𝓞 E), Over P v → Ideal.absNorm P.asIdeal = Ideal.absNorm v.asIdeal ∧ (∀ (a : OF E) (k : ℕ), algebraMap (OF E) (𝓞 E) a ∈ P.asIdeal ^ k ↔ a ∈ v.asIdeal ^ k) ∧ ∀ b : 𝓞 E, ∃ a : OF E, b - algebraMap (OF E) (𝓞 E) a ∈ P.asIdeal := by
   intro E _ _ _ v hv

@@ -23,14 +23,14 @@ def adeleCoordEquiv : 𝔸[L] ≃ₗ[𝔸[K]] (Fin (Module.finrank K L) → 𝔸
   (adeleBasis (Module.finBasis K L)).equivFun
 
 /- English proof (translation)
-Use `isModuleTopology_adeleRing (K := K) (L := L)` as an intermediate fact. Conclude with `IsModuleTopology.continuous_of_linearMap (adeleCoordEquiv K L).toLinearMap`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_adeleCoordEquiv : Continuous (adeleCoordEquiv K L) := by
   have := isModuleTopology_adeleRing (K := K) (L := L)
   exact IsModuleTopology.continuous_of_linearMap (adeleCoordEquiv K L).toLinearMap
 
 /- English proof (translation)
-Use `isModuleTopology_adeleRing (K := K) (L := L)` as an intermediate fact. Conclude with `IsModuleTopology.continuous_of_linearMap (adeleCoordEquiv K L).symm.toLinearMap`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_adeleCoordEquiv_symm : Continuous (adeleCoordEquiv K L).symm := by
   have := isModuleTopology_adeleRing (K := K) (L := L)
@@ -52,7 +52,7 @@ def mulMatrixGL (x : (𝔸[L])ˣ) : GL (Fin (Module.finrank K L)) 𝔸[K] where
     rw [← Matrix.transpose_mul, ← map_mul, Units.mul_inv, map_one, Matrix.transpose_one]
 
 /- English proof (translation)
-Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply, Algebra.norm_eq_matrix_det (adeleBasis (Module.finBasis K L))]`. Conclude with `Matrix.det_transpose _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_mulMatrixGL (x : (𝔸[L])ˣ) :
     ((Matrix.GeneralLinearGroup.det (mulMatrixGL (K := K) x) : (𝔸[K])ˣ) : 𝔸[K]) =
@@ -62,7 +62,7 @@ theorem det_mulMatrixGL (x : (𝔸[L])ˣ) :
   exact Matrix.det_transpose _
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `_ = _ ᵥ* (Algebra.leftMulMatrix (adeleBasis (Module.finBasis K L)) (x : 𝔸[L]))ᵀ`. Rewrite using `[Matrix.vecMul_transpose, adeleCoordEquiv, Module.Basis.equivFun_apply, Module.Basis.equivFun_apply, Algebra.leftMulMatrix_mulVec_repr]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem adeleCoordEquiv_mul (x : (𝔸[L])ˣ) (y : 𝔸[L]) :
     adeleCoordEquiv K L ((x : 𝔸[L]) * y) =
@@ -77,7 +77,7 @@ def coordMeasure : Measure 𝔸[L] :=
   (adeleMeasurePi K (ι := Fin (Module.finrank K L))).map (adeleCoordEquiv K L).symm
 
 /- English proof (translation)
-The claim follows from `continuous_adeleCoordEquiv_symm.measurable`.
+A detailed English derivation is pending.
 -/
 theorem measurable_adeleCoordEquiv_symm : Measurable (adeleCoordEquiv K L).symm :=
   continuous_adeleCoordEquiv_symm.measurable
@@ -88,9 +88,9 @@ instance isAddHaarMeasure_coordMeasure : (coordMeasure K L).IsAddHaarMeasure :=
     (adeleCoordHomeomorph K L).symm.isClosedEmbedding.tendsto_cocompact
 
 /- English proof (translation)
-Establish `hdet : Matrix.GeneralLinearGroup.det (mulMatrixGL (K` using `K) x) = ideleNorm K L x := Units.ext (det_mulMatrixGL x)`. Establish `hcomp : (fun y : 𝔸[L] ↦ x • y) ∘ (adeleCoordEquiv K L).symm = (adeleCoordEquiv K L).symm ∘ (fun v ↦ v ᵥ* (mulMatrixGL (K` using `K) x : Matrix _ _ 𝔸[K])) := by`. Use function extensionality and compare the values at `v`. Apply `(adeleCoordEquiv K L).injective` to reduce the goal to its premises. Simplify using `only [Function.comp_apply, LinearEquiv.apply_symm_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Rewrite using `[Units.smul_def, smul_eq_mul, adeleCoordEquiv_mul, LinearEquiv.apply_symm_apply]`. Rewrite using `[coordMeasure, Measure.map_map (continuous_const_smul x).measurable measurable_adeleCoordEquiv_symm, hcomp, ← Measure.map_map measurable_adeleCoordEquiv_symm (GJGlobal.Modulus.measurable_vecMul' (mulMatrixGL (K := K) x)), GJGlobal.Modulus.map_vecMul_adeleMeasurePi, Measure.map_sm …`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_smul_coordMeasure (x : IdeleGroup L) :
     (coordMeasure K L).map (fun y ↦ x • y) =
@@ -111,13 +111,13 @@ theorem map_smul_coordMeasure (x : IdeleGroup L) :
     GJGlobal.Modulus.map_vecMul_adeleMeasurePi, Measure.map_smul, hdet]
 
 /- English proof (translation)
-Establish `hc` using `isAddLeftInvariant_eq_smul (coordMeasure K L) (adeleMeasure L)`. Use `set c := (coordMeasure K L).addHaarScalarFactor (adeleMeasure L)`. Establish `hc0 : (c : ℝ≥0∞) ≠ 0`. Introduce `h`. Establish `: coordMeasure K L = 0` using `by rw [hc, ENNReal.coe_eq_zero.1 h, zero_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `(NeZero.ne (coordMeasure K L)) this`. Take `⟨S, hS, hS0⟩` from `exists_compact_mem_nhds (0 : 𝔸[L])`. Establish `hpos : adeleMeasure L S ≠ 0` using `(measure_pos_of_mem_nhds _ hS0).ne'`. Establish `htop : adeleMeasure L S ≠ ⊤` using `hS.measure_lt_top.ne`. Establish `h1` using `map_smul_coordMeasure (K := K) x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[hc, Measure.map_smul, map_smul_adeleMeasure]`. Establish `h2` using `congrArg (fun μ : Measure 𝔸[L] ↦ μ S) h1`. Simplify using `only [Measure.smul_apply, ENNReal.smul_def, smul_eq_mul] at h2`. Rewrite `h2` using `[mul_left_comm]`. Establish `hne : (c : ℝ≥0∞) * adeleMeasure L S ≠ 0` using `mul_ne_zero hc0 hpos`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnt : (c : ℝ≥0∞) * adeleMeasure L S ≠ ⊤` using `ENNReal.mul_ne_top ENNReal.coe_ne_top htop`. Establish `h3` using `(ENNReal.mul_left_inj hne hnt).1 h2`. Establish `h4` using `(ENNReal.ofReal_eq_ofReal_iff (inv_nonneg.2 (IdeleGroup.ideleModule L x).2.le) (inv_nonneg.2 (IdeleGroup.ideleModule K (ideleNorm K L x)).2.le)).1 h3`. Conclude with `Subtype.ext (inv_inj.1 h4).symm`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ideleModule_ideleNorm (x : IdeleGroup L) :
     IdeleGroup.ideleModule K (ideleNorm K L x) = IdeleGroup.ideleModule L x := by

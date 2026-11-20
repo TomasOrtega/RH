@@ -103,9 +103,9 @@ def SplitLevPl (S : ExpSet D) (PP : Formalism.L2.DIV.Pl D.host.E) : Prop :=
     ((p : 𝓞 D.host.E) ∈ PP.asIdeal)
 
 /- English proof (translation)
-Introduce `hn`. Take `⟨a, b, hab⟩` from `Nat.isCoprime_iff_coprime.2 hmn`. Establish `e : (a : 𝓞 D.host.E) * (m : 𝓞 D.host.E) + (b : 𝓞 D.host.E) * (n : 𝓞 D.host.E) = 1`. Use `congrArg (Int.cast : ℤ → 𝓞 D.host.E) hab` as an intermediate fact. Move the coercions through the operations in `at this`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Conclude with `this`. Establish `h1 : (1 : 𝓞 D.host.E) ∈ PP.asIdeal`. Rewrite using `[← e]`. Conclude with `PP.asIdeal.add_mem (PP.asIdeal.mul_mem_left _ hm) (PP.asIdeal.mul_mem_left _ hn)`. Conclude with `PP.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h1)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem natCast_not_mem_of_coprime {PP : Formalism.L2.DIV.Pl D.host.E} {m n : ℕ} (hmn : Nat.Coprime m n)
     (hm : (m : 𝓞 D.host.E) ∈ PP.asIdeal) : (n : 𝓞 D.host.E) ∉ PP.asIdeal := by
@@ -121,7 +121,7 @@ theorem natCast_not_mem_of_coprime {PP : Formalism.L2.DIV.Pl D.host.E} {m n : �
   exact PP.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h1)
 
 /- English proof (translation)
-Introduce `hl`. Take `⟨p, -, -, hcop, -, -, hp⟩` from `h`. Conclude with `natCast_not_mem_of_coprime hcop hp ((S.lPl PP).1 hl)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem SplitLevPl.not_mem_Pl {S : ExpSet D} {PP : Formalism.L2.DIV.Pl D.host.E} (h : SplitLevPl S PP) : PP ∉ S.Pl := by
   intro hl
@@ -129,7 +129,7 @@ theorem SplitLevPl.not_mem_Pl {S : ExpSet D} {PP : Formalism.L2.DIV.Pl D.host.E}
   exact natCast_not_mem_of_coprime hcop hp ((S.lPl PP).1 hl)
 
 /- English proof (translation)
-Take `⟨p, hp, h2, -, -, -, hpm⟩` from `h`. Establish `hc : Nat.Coprime p 2` using `(Nat.coprime_primes hp Nat.prime_two).2 h2`. Use `natCast_not_mem_of_coprime hc hpm` as an intermediate fact. Conclude with `this` after adjusting the coercions.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem SplitLevPl.two_not_mem {S : ExpSet D} {PP : Formalism.L2.DIV.Pl D.host.E} (h : SplitLevPl S PP) :
     (2 : 𝓞 D.host.E) ∉ PP.asIdeal := by
@@ -139,7 +139,7 @@ theorem SplitLevPl.two_not_mem {S : ExpSet D} {PP : Formalism.L2.DIV.Pl D.host.E
   exact_mod_cast this
 
 /- English proof (translation)
-Take `⟨p, hp, h2, hc, hde, hk, hm⟩` from `h`. Use `⟨p, hp, h2, hc, hde, hk, ?_⟩` and prove the remaining obligations. Conclude with `(Formalism.L2.DIV.isConjPl_conjPl PP (p : 𝓞 D.host.E) (p : 𝓞 D.host.E) (by simp)).1 hm`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem SplitLevPl.conjPl {S : ExpSet D} {PP : Formalism.L2.DIV.Pl D.host.E} (h : SplitLevPl S PP) :
     SplitLevPl S (Formalism.L2.DIV.conjPl PP) := by
@@ -148,7 +148,7 @@ theorem SplitLevPl.conjPl {S : ExpSet D} {PP : Formalism.L2.DIV.Pl D.host.E} (h 
   exact (Formalism.L2.DIV.isConjPl_conjPl PP (p : 𝓞 D.host.E) (p : 𝓞 D.host.E) (by simp)).1 hm
 
 /- English proof (translation)
-Introduce `c hc` and use `⟨Formalism.L2.DIV.starO c, (Formalism.L2.DIV.isConjPl_conjPl PP c (Formalism.L2.DIV.starO c) (Formalism.L2.DIV.starO_coe c)).1 hc, Formalism.L2.DIV.starO_coe c⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem isConjPl_conjPl (PP : Formalism.L2.DIV.Pl D.host.E) : IsConjPl (D := D) PP (Formalism.L2.DIV.conjPl PP) :=
   fun c hc => ⟨Formalism.L2.DIV.starO c,
@@ -189,9 +189,9 @@ def offHalf (e : AE D) : Submodule ℂ (Mx D m n → ℂ) where
     simp [ha t ht]
 
 /- English proof (translation)
-Introduce `i j`. Establish `h1` using `h i j`. Establish `h2` using `hx i j`. Simplify using `only [Matrix.add_apply, mul_add] at h1`. Rewrite `h1` using `[h2]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `add_right_cancel h1`.
+A detailed English derivation is pending.
 -/
 theorem isHalf_of_add {e : AE D} {t x : Mx D m n} (h : IsHalf e (t + x)) (hx : IsHalf e x) : IsHalf e t := by
   intro i j
@@ -202,23 +202,21 @@ theorem isHalf_of_add {e : AE D} {t x : Mx D m n} (h : IsHalf e (t + x)) (hx : I
   exact add_right_cancel h1
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Establish `hΦ : Φ ∉ offHalf (D` using `D) (m := m) (n := n) e := hne`. Take `⟨⟨T, hT⟩, hf⟩` from `h`. Establish `hq : (offHalf (D` using `D) (m := m) (n := n) e).mkQ Φ ≠ 0 := by`. Rewrite using `[Ne, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]` and apply the resulting hypothesis.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Take `⟨φ, hφ⟩ : ∃ φ : Module.Dual ℂ ((Mx D m n → ℂ) ⧸ offHalf (D` from `D) (m := m) (n := n) e), φ ((offHalf (D := D) (m := m) (n := n) e).mkQ Φ) ≠ 0 := by`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Conclude with `hq ((Module.forall_dual_apply_eq_zero_iff ℂ _).1 hc)`. Set `lam : (Mx D m n → ℂ) →ₗ[ℂ] ℂ` to `φ ∘ₗ (offHalf (D := D) (m := m) (n := n) e).mkQ`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hlam : ∀ g ∈ offHalf (D` using `D) (m := m) (n := n) e, lam g = 0 := by`. Introduce `g hg`. Simplify using `[lam, (Submodule.Quotient.mk_eq_zero _).2 hg]`. Set `T1 : (Mx D m n → ℂ) →ₗ[ℂ] (Mx D m n → ℂ)` to `T + lam.smulRight (fun _ => (1 : ℂ))`. Establish `hT1 : ∀ g ∈ offHalf (D` using `D) (m := m) (n := n) e, T1 g = T g := by`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `g hg`. Simplify using `[T1, hlam g hg]`. Establish `hSB : ∀ Φ', IsSBHalf e Λ Φ' → Φ' ∈ offHalf (D` using `D) (m := m) (n := n) e := by`. Introduce `Φ' h t ht`. Assume the negation of the conclusion as `h0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `ht (h.1 t h0)`. Establish `hP1 : IsPlaceModel ψ B hs e Λ c f₀ T1`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `Φ' hΦ' x hx`. Establish `hm : (fun t => Φ' (t + x)) ∈ offHalf (D` using `D) (m := m) (n := n) e := by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities.
 
-Introduce `t ht`. Assume the negation of the conclusion as `h0`. Conclude with `ht (isHalf_of_add (hΦ'.1 _ h0) hx)`. Rewrite using `[hT1 _ hm, hT1 _ (hSB _ hΦ'), hT.trans Φ' hΦ' x hx]`. Introduce `Φ' hΦ' y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hm : (fun t => ψ (B t y) * Φ' t) ∈ offHalf (D` using `D) (m := m) (n := n) e := by`. Introduce `t ht`. Simplify using `[hSB _ hΦ' t ht]`. Rewrite using `[hT1 _ hm, hT1 _ (hSB _ hΦ'), hT.modul Φ' hΦ' y hy]`. Establish `hm : c • halfInd e Λ ∈ offHalf (D` using `D) (m := m) (n := n) e := by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `t ht`. Simplify using `[halfInd, ht]`. Rewrite using `[hT1 _ hm, hT.vac]`. Establish `e1` using `hf T hT`. Establish `e2` using `hf T1 hP1`.
-
-Establish `h3 : T1 Φ = T Φ` using `by rw [← e1, ← e2]`. Establish `h4` using `congrFun h3 0`. Simplify using `[T1, lam] at h4`. Conclude with `hφ h4`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isThetaAt_supp_half {ψ : AddChar (AF D.host.F) ℂ} {B : Mx D m n → Mx D m n → AF D.host.F}
     {hs : Mx D m n → (Mx D m n → ℂ) → (Mx D m n → ℂ)} {e : AE D} {Λ : AddSubgroup (Mx D m n)} {c : ℂ}
@@ -273,7 +271,7 @@ theorem isThetaAt_supp_half {ψ : AddChar (AF D.host.F) ℂ} {B : Mx D m n → M
 end SuppHalf
 
 /- English proof (translation)
-The claim follows from `isThetaAt_supp_half S.φ0_vec`.
+A detailed English derivation is pending.
 -/
 theorem ExpSet.Φ0_offHalf (S : ExpSet D) : ∀ x, ¬ IsHalf (cA D S.e0) x → S.Φ0 x = 0 :=
   isThetaAt_supp_half S.φ0_vec
@@ -283,9 +281,9 @@ def PhiTot (S : ExpSet D) (P1 : Finset (Formalism.L2.DIV.Pl D.host.E)) (es : For
   if IsHalf (cA D (eTot S P1 es)) x then S.Φ0 (x.map (cA D S.e0 * ·)) * ∏ PP ∈ P1, Φl PP x else 0
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [PhiTot, eTot, Finset.sum_empty, add_zero, Finset.prod_empty, mul_one]`. Use `split_ifs with h`. Use `congr 1`. Use extensionality with `i j`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[Matrix.map_apply, h i j]`. Conclude with `(S.Φ0_offHalf x h).symm`.
+A detailed English derivation is pending.
 -/
 theorem phiTot_empty (S : ExpSet D) (es : Formalism.L2.DIV.Pl D.host.E → AE D)
     (Φl : Formalism.L2.DIV.Pl D.host.E → WO S.V S.W → ℂ) : PhiTot S ∅ es Φl = S.Φ0 := by
@@ -410,13 +408,13 @@ def repl (d : RawDat S C) (Q : Finset (Formalism.L2.DIV.Pl D.host.E)) (eQ : Form
   vec := hvec
 
 /- English proof (translation)
-The claim follows from `Finset.disjoint_left.2 fun _ hPP => (d.Ph_lev _ hPP).not_mem_Pl`.
+A detailed English derivation is pending.
 -/
 theorem Ph_disj_Pl (d : RawDat S C) : Disjoint d.Ph S.Pl :=
   Finset.disjoint_left.2 fun _ hPP => (d.Ph_lev _ hPP).not_mem_Pl
 
 /- English proof (translation)
-Break down `Finset.mem_union.1 h with h | h` into its components or cases. Conclude with `(d.split_level_places PP h).two_not_mem`. Conclude with `(d.Ph_lev PP h).two_not_mem`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem two_not_mem_lev (d : RawDat S C) {PP : Formalism.L2.DIV.Pl D.host.E} (h : PP ∈ d.P1 ∪ d.Ph) :
     (2 : 𝓞 D.host.E) ∉ PP.asIdeal := by
@@ -425,9 +423,7 @@ theorem two_not_mem_lev (d : RawDat S C) {PP : Formalism.L2.DIV.Pl D.host.E} (h 
   · exact (d.Ph_lev PP h).two_not_mem
 
 /- English proof (translation)
-Unfold `levOne at h`. Break down `Finset.mem_union.1 h with h | h` into its components or cases. Break down `Finset.mem_union.1 h with h | h` into its components or cases. Conclude with `absurd h h'`. Conclude with `d.split_level_places PP h`.
-
-Conclude with `d.Ph_lev PP h`.
+Replace the relevant objects with their definitions. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem levOne_split (d : RawDat S C) {PP : Formalism.L2.DIV.Pl D.host.E} (h : PP ∈ d.levOne) (h' : PP ∉ S.Pg ∪ S.Pd) :
     SplitLevPl S PP := by
@@ -439,7 +435,7 @@ theorem levOne_split (d : RawDat S C) {PP : Formalism.L2.DIV.Pl D.host.E} (h : P
   · exact d.Ph_lev PP h
 
 /- English proof (translation)
-Unfold `lev at h`. Break down `Finset.mem_union.1 h with h | h` into its components or cases. Conclude with `d.levOne_split h fun h0 => h' (Finset.mem_union_left _ h0)`. Take `⟨QQ, hQ, rfl⟩` from `Finset.mem_image.1 h`. Conclude with `(d.levOne_split hQ fun h0 => h' (Finset.mem_union_right _ (Finset.mem_image_of_mem _ h0))).conjPl`.
+Replace the relevant objects with their definitions. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem lev_split (d : RawDat S C) {PP : Formalism.L2.DIV.Pl D.host.E} (h : PP ∈ d.lev)
     (h' : PP ∉ (S.Pg ∪ S.Pd) ∪ (S.Pg ∪ S.Pd).image Formalism.L2.DIV.conjPl) : SplitLevPl S PP := by
@@ -450,9 +446,7 @@ theorem lev_split (d : RawDat S C) {PP : Formalism.L2.DIV.Pl D.host.E} (h : PP �
     exact (d.levOne_split hQ fun h0 => h' (Finset.mem_union_right _ (Finset.mem_image_of_mem _ h0))).conjPl
 
 /- English proof (translation)
-Unfold `lev at h ⊢`. Break down `Finset.mem_union.1 h with h | h` into its components or cases. Conclude with `Finset.mem_union_right _ (Finset.mem_image_of_mem _ h)`. Take `⟨QQ, hQ, rfl⟩` from `Finset.mem_image.1 h`. Rewrite using `[Formalism.L2.DIV.conjPl_conjPl]`.
-
-Conclude with `Finset.mem_union_left _ hQ`.
+Replace the relevant objects with their definitions. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conjPl_mem_lev (d : RawDat S C) {PP : Formalism.L2.DIV.Pl D.host.E} (h : PP ∈ d.lev) :
     Formalism.L2.DIV.conjPl PP ∈ d.lev := by
@@ -466,7 +460,7 @@ theorem conjPl_mem_lev (d : RawDat S C) {PP : Formalism.L2.DIV.Pl D.host.E} (h :
 end RawDat
 
 /- English proof (translation)
-Take `⟨⟨T, hT⟩, hf⟩` from `h`. Rewrite using `[hf T hT, h'.2 T hT]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem isThetaAt_unique {m n : ℕ} {ψ : AddChar (AF D.host.F) ℂ} {B : Mx D m n → Mx D m n → AF D.host.F}
     {hs : Mx D m n → (Mx D m n → ℂ) → (Mx D m n → ℂ)} {e : AE D} {Λ : AddSubgroup (Mx D m n)} {c : ℂ}
@@ -489,7 +483,7 @@ variable (d : RawDat S C) (Q : Finset (Formalism.L2.DIV.Pl D.host.E)) (eQ : Form
       (latO S.V S.W S.ΛV S.ΛW fun _ => True) 1 S.f₀ (PhiTot S (d.P1 ∪ Q) (d.esR Q eQ) (d.ΦlR Q ΦQ)) φ')
 
 /- English proof (translation)
-Unfold `RawDat.loc RawDat.repl RawDat.ΦlR`. Simplify using `only [Finset.mem_union, hq, or_false, if_false]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem RawDat.repl_loc_off (PP : Formalism.L2.DIV.Pl D.host.E) (hq : PP ∉ Q) :
     (d.repl Q eQ ΦQ hdisj hlev hat hidem hloc R' hO φ' hvec).loc PP = d.loc PP := by
@@ -497,7 +491,7 @@ theorem RawDat.repl_loc_off (PP : Formalism.L2.DIV.Pl D.host.E) (hq : PP ∉ Q) 
   simp only [Finset.mem_union, hq, or_false, if_false]
 
 /- English proof (translation)
-Unfold `RawDat.loc RawDat.repl RawDat.ΦlR`. Simplify using `only [Finset.mem_union, hq, or_true, if_true]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem RawDat.repl_loc_on (PP : Formalism.L2.DIV.Pl D.host.E) (hq : PP ∈ Q) :
     (d.repl Q eQ ΦQ hdisj hlev hat hidem hloc R' hO φ' hvec).loc PP = ΦQ PP := by
@@ -505,7 +499,7 @@ theorem RawDat.repl_loc_on (PP : Formalism.L2.DIV.Pl D.host.E) (hq : PP ∈ Q) :
   simp only [Finset.mem_union, hq, or_true, if_true]
 
 /- English proof (translation)
-Unfold `RawDat.levOne RawDat.repl`. Use extensionality with `x`. Simplify using `only [Finset.mem_union]`. The claim follows by propositional logic.
+Replace the relevant objects with their definitions. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. The claim follows by propositional logic.
 -/
 theorem RawDat.repl_levOne : (d.repl Q eQ ΦQ hdisj hlev hat hidem hloc R' hO φ' hvec).levOne = d.levOne ∪ Q := by
   unfold RawDat.levOne RawDat.repl
@@ -514,7 +508,7 @@ theorem RawDat.repl_levOne : (d.repl Q eQ ΦQ hdisj hlev hat hidem hloc R' hO φ
   tauto
 
 /- English proof (translation)
-Simplify using `only [RawDat.lev, RawDat.repl_levOne, Finset.image_union]`. Use extensionality with `x`. Simplify using `only [Finset.mem_union]`. The claim follows by propositional logic.
+Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. The claim follows by propositional logic.
 -/
 theorem RawDat.repl_lev : (d.repl Q eQ ΦQ hdisj hlev hat hidem hloc R' hO φ' hvec).lev =
     d.lev ∪ (Q ∪ Q.image Formalism.L2.DIV.conjPl) := by
@@ -534,9 +528,9 @@ Both sides reduce to the same expression.
 theorem RawDat.repl_P : (d.repl Q eQ ΦQ hdisj hlev hat hidem hloc R' hO φ' hvec).P = d.P := rfl
 
 /- English proof (translation)
-Establish `he : eTot S (d.P1 ∪ ∅) (d.esR ∅ eQ) = eTot S d.P1 d.es`. Simplify using `[eTot, RawDat.esR]`. Establish `hes : d.esR ∅ eQ = d.es` using `by funext PP; simp [RawDat.esR]`. Establish `hΦl : d.ΦlR ∅ ΦQ = d.Φl` using `by funext PP; simp [RawDat.ΦlR]`. Establish `hΦ : PhiTot S (d.P1 ∪ ∅) (d.esR ∅ eQ) (d.ΦlR ∅ ΦQ) = PhiTot S d.P1 d.es d.Φl`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hes, hΦl, Finset.union_empty]`. Rewrite `hvec0` using `[he, hΦ]`. Conclude with `isThetaAt_unique hvec0 d.vec`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem RawDat.repl_empty_phi (hvec0 : IsThetaAt S.ψ (symplO S.V S.W) (heisO S.ψ S.V S.W)
       (cA D (eTot S (d.P1 ∪ ∅) (d.esR ∅ eQ))) (latO S.V S.W S.ΛV S.ΛW fun _ => True) 1 S.f₀
@@ -553,7 +547,7 @@ theorem RawDat.repl_empty_phi (hvec0 : IsThetaAt S.ψ (symplO S.V S.W) (heisO S.
 end ReplLemmas
 
 /- English proof (translation)
-Unfold `thetaKO`. Establish `e : ((h, g * κ) : GA D V × GA D W) = (h, g) * (1, κ)` using `Prod.ext (mul_one h).symm rfl`. Rewrite using `[e, map_mul, Module.End.mul_apply, hf, map_smul]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem thetaKO_law {V W : HSp D} (om : GA D V × GA D W →* Module.End ℂ (WO V W → ℂ)) (h : GA D V) (g κ : GA D W)
     (f : WO V W → ℂ) (c : ℂ) (hf : om (1, κ) f = c • f) : thetaKO om h (g * κ) f = c * thetaKO om h g f := by
@@ -567,14 +561,14 @@ def FockFinComm (S : ExpSet D) : Prop :=
     S.om (1, κ) f = c • f → S.om (1, κ) (S.fock f Pp) = c • S.fock f Pp
 
 /- English proof (translation)
-The claim follows from `(Subgroup.mem_inf.1 hκ).1`.
+A detailed English derivation is pending.
 -/
 theorem levG_fin {V : HSp D} {β : GL (Fin V.rank) (Formalism.IndefR.Datum.EAf D)} {L : Formalism.L2.DIV.LevDat D.host.E ℂ V.rank}
     {κ : GA D V} (hκ : κ ∈ levG V β L) : κ ∈ GfC V :=
   (Subgroup.mem_inf.1 hκ).1
 
 /- English proof (translation)
-The claim follows from `thetaKO_law _ _ _ _ _ _ (hF κ (levG_fin hκ) _ _ _ (d.typ κ hκ))`.
+A detailed English derivation is pending.
 -/
 theorem Dat.serK_type (hF : FockFinComm S) (d : Dat S C) (κ : GA D S.W) (hκ : κ ∈ levG S.W S.βW S.LW)
     (g : GA D S.W) : d.toRawDat.serK (g * κ) = levChi S.W S.βW S.LW κ * d.toRawDat.serK g :=
@@ -624,13 +618,13 @@ def Dat.base (hT : BaseVectorHasType S) (hO : BaseValO S C) (Ph : Finset (Formal
   Rl_O := rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨fun _ => 0, fun _ h => absurd h (Finset.notMem_empty _), by simp⟩, zero_mul _⟩`.
+Supply the required witnesses or components.
 -/
 theorem isIdemSum_zero : IsIdemSum (0 : AE D) ∅ :=
   ⟨⟨fun _ => 0, fun _ h => absurd h (Finset.notMem_empty _), by simp⟩, zero_mul _⟩
 
 /- English proof (translation)
-Introduce `i j`. Establish `h1 : Formalism.L2.Theta.mt V 1 = 1` using `by unfold Formalism.L2.Theta.mt; rw [map_one]; rfl`. Rewrite using `[h1, sub_self]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem suppAt_zero_one (V : HSp D) : SuppAt (0 : AE D) V 1 := by
   intro i j
@@ -639,7 +633,7 @@ theorem suppAt_zero_one (V : HSp D) : SuppAt (0 : AE D) V 1 := by
   simp
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Dat.base hT hO ∅ 0 1 1 isIdemSum_zero (Subgroup.one_mem _) (suppAt_zero_one S.V) (fun _ h => absurd h (Finset.notMem_empty _)) (Finset.disjoint_empty_left _) (fun _ h => absurd h (Finset.notMem_empty _)) (Subgroup.one_mem _) 0 (Submodule.zero_mem _)⟩`.
+Supply the required witnesses or components.
 -/
 theorem dat_nonempty (hT : BaseVectorHasType S) (hO : BaseValO S C) : Nonempty (Dat S C) :=
   ⟨Dat.base hT hO ∅ 0 1 1 isIdemSum_zero (Subgroup.one_mem _) (suppAt_zero_one S.V)
@@ -647,7 +641,7 @@ theorem dat_nonempty (hT : BaseVectorHasType S) (hO : BaseValO S C) : Nonempty (
     (fun _ h => absurd h (Finset.notMem_empty _)) (Subgroup.one_mem _) 0 (Submodule.zero_mem _)⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Dat.base hT hO Ph eh hP k heh hfin hsupp hlev hdj hcj hk P hPm, rfl, rfl, rfl, by simp [RawDat.lev, RawDat.levOne, Dat.base]⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_base (hT : BaseVectorHasType S) (hO : BaseValO S C) (Ph : Finset (Formalism.L2.DIV.Pl D.host.E)) (eh : AE D)
     (hP k : GA D S.V) (heh : IsIdemSum eh Ph) (hfin : hP ∈ GfC S.V) (hsupp : SuppAt eh S.V hP)

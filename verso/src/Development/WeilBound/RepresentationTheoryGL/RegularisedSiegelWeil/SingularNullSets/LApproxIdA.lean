@@ -14,7 +14,7 @@ open IsDedekindDomain NumberField
 namespace PositivityTheory.Rg.Rsw.L.LApproxId
 
 /- English proof (translation)
-Use `haveI : (μ.map Θ).IsAddHaarMeasure := Θ.isAddHaarMeasure_map μ`. Conclude with `⟨_, Measure.addHaarScalarFactor_pos_of_isAddHaarMeasure _ _, Measure.isAddLeftInvariant_eq_smul _ _⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem haar_map_eq {G G' : Type} [AddCommGroup G] [TopologicalSpace G] [IsTopologicalAddGroup G] [MeasurableSpace G]
     [BorelSpace G] [AddCommGroup G'] [TopologicalSpace G'] [IsTopologicalAddGroup G'] [LocallyCompactSpace G']
@@ -37,19 +37,15 @@ def fixS {X : Type} [AddCommGroup X] (p : X →+ X) : AddSubgroup X where
     rw [map_neg, ha]
 
 /- English proof (translation)
-Establish `hH : IsClosed (fixS p : Set X)` using `isClosed_eq hp continuous_id`. Establish `hY : IsClosed (p.ker : Set X)` using `isClosed_singleton.preimage hp`. Use `haveI : LocallyCompactSpace (fixS p) := hH.isClosedEmbedding_subtypeVal.locallyCompactSpace`. Use `haveI : LocallyCompactSpace p.ker := hY.isClosedEmbedding_subtypeVal.locallyCompactSpace`. Use `haveI : SecondCountableTopology (fixS p) := TopologicalSpace.Subtype.secondCountableTopology (fixS p : Set X)`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use `haveI : SecondCountableTopology p.ker := TopologicalSpace.Subtype.secondCountableTopology (p.ker : Set X)`. Use `haveI : BorelSpace (fixS p) := inferInstance`. Use `haveI : BorelSpace p.ker := inferInstance`. Use `haveI : BorelSpace (fixS p × p.ker) := Prod.borelSpace`. Set `Θ : (fixS p × p.ker) ≃ₜ+ X` to `{ toFun := fun z => z.1.1 + z.2.1 invFun := fun x => (⟨p x, hpp x⟩, ⟨x - p x, by rw [AddMonoidHom.mem_ker, map_sub, hpp, sub_self]⟩) left_inv := by`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `⟨⟨a, ha⟩, ⟨b, hb⟩⟩`. Establish `ha' : p a = a` using `ha`. Establish `hb' : p b = 0` using `hb`. Apply the tactic sequence `ext <;> simp [ha', hb']`. Use `right_inv := fun x => by simp`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use the proof step `map_add' := fun z w => by`. Simplify using `only [Prod.fst_add, Prod.snd_add, AddSubgroup.coe_add]`. Normalize the expressions using the abelian group laws. Use `continuous_toFun := by fun_prop`. Use `continuous_invFun := by`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Use `Continuous.prodMk (hp.subtype_mk _) ((continuous_id.sub hp).subtype_mk _) }` and prove the remaining obligations. Take `⟨c, hc, hmap⟩` from `haar_map_eq Θ (νH.prod νY) μ`. Establish `hemb : MeasurableEmbedding Θ` using `Θ.toHomeomorph.measurableEmbedding`. Establish `hμ : μ = ((c⁻¹ : ℝ≥0) : ℝ≥0∞) • (νH.prod νY).map Θ`. Rewrite using `[hmap, ← ENNReal.smul_def, smul_smul, inv_mul_cancel₀ hc.ne', one_smul]`.
-
-Use `⟨c⁻¹, inv_pos.2 hc, fun f => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[hμ, integrable_smul_measure (by simpa using hc.ne') ENNReal.coe_ne_top, hemb.integrable_map_iff]`. Both sides reduce to the same expression. Rewrite using `[hμ, integral_smul_measure, hemb.integral_map]`. Simplify using `only [ENNReal.coe_toReal, Complex.real_smul, NNReal.coe_inv, Complex.ofReal_inv]`.
-
-Use `push_cast`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem decomp {X : Type} [AddCommGroup X] [TopologicalSpace X] [IsTopologicalAddGroup X] [LocallyCompactSpace X]
     [SecondCountableTopology X] [T2Space X] [MeasurableSpace X] [BorelSpace X] (p : X →+ X) (hp : Continuous p)

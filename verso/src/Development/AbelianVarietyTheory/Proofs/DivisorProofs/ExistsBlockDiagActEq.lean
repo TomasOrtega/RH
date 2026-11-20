@@ -7,11 +7,11 @@ open GlobalTheory.FinGL Formalism.L2.DIV Module
 namespace GlobalTheory.FinGL
 
 /- English proof (translation)
-Use `⟨Subgroup.inclusion (GlobalTheory.Parabolic.levi_le_blockTri b) (GlobalTheory.Parabolic.leviProj b p), ?_, fun i k => GlobalTheory.Parabolic.leviProj_apply b p i k⟩` and prove the remaining obligations. Use `set m := Subgroup.inclusion (GlobalTheory.Parabolic.levi_le_blockTri b) (GlobalTheory.Parabolic.leviProj b p) with hm`. Establish `h1 : GlobalTheory.Parabolic.leviProj b (m⁻¹ * p) = 1`. Rewrite using `[map_mul, map_inv, hm, GlobalTheory.Parabolic.leviProj_inclusion, inv_mul_cancel]`. Establish `h2 : σ (m⁻¹ * p) = 1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `hσ.infl _ fun i j hij => ?_` and prove the remaining obligations. Establish `e` using `GlobalTheory.Parabolic.leviProj_apply b (m⁻¹ * p) i j`. Rewrite `e` using `[h1, if_pos hij]`. Rewrite using `[← e]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem IsCuspDatum.exists_blockDiag_act_eq (F : Type) [Field F] (r : ℕ) (V : Type) [AddCommGroup V] [Module ℂ V]
     (b : Fin r → ℕ) (σ : Representation ℂ (blockTri (κ := F) b) V) (hσ : IsCuspDatum b σ)

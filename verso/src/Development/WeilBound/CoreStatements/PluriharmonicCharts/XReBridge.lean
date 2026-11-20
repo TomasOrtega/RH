@@ -15,7 +15,7 @@ open MvPolynomial MeasureTheory Filter Topology ReciprocityTheory.AnForm Recipro
 namespace PositivityTheory.Xgp.re_bridge
 
 /- English proof (translation)
-Introduce `j hj`. Use `potSmoothAt A Q h x j ⟨(A.chart j).map_source hj, ?_⟩` and prove the remaining obligations. Use `show (A.chart j).symm (A.chart j x) ∈ Q.U x`. Rewrite using `[(A.chart j).left_inv hj]`. Conclude with `Q.mem_U x`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isC2At_of_isPotential {e : ℕ} {X : Type} [TopologicalSpace X] (A : FinHolAtlas e X) {Q : LocPot X}
     (h : IsPotential A Q) (x : X) : IsTwiceDifferentiableAt A Q x := by
@@ -26,7 +26,7 @@ theorem isC2At_of_isPotential {e : ℕ} {X : Type} [TopologicalSpace X] (A : Fin
   exact Q.mem_U x
 
 /- English proof (translation)
-Introduce `j`. Rewrite using `[Set.preimage_union, Set.inter_union_distrib_left]`. Conclude with `measure_union_null (h j) (h' j)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isNull_union {e : ℕ} {X : Type} [TopologicalSpace X] {A : FinHolAtlas e X} {N N' : Set X}
     (h : IsNull A N) (h' : IsNull A N') : IsNull A (N ∪ N') := by
@@ -35,7 +35,7 @@ theorem isNull_union {e : ℕ} {X : Type} [TopologicalSpace X] {A : FinHolAtlas 
   exact measure_union_null (h j) (h' j)
 
 /- English proof (translation)
-Take `⟨Ψ, hΨ⟩` from `goodProjExists K ι P D hP`. Conclude with `fun j => GlobalTheory.CompanionTheory.Ar.Cmp.OneSlot.zeros_null R Ψ hP hΨ hs hsP j`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isNull_zeros {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {P J : Ideal (MRing ι)} {D : ℕ}
     (R : AnLogRes P J D) (hP : IsArithVar P (D + 1)) {s : MRing ι} {a : K → ℕ} (hs : IsMultiHomog s a)
@@ -46,17 +46,17 @@ theorem isNull_zeros {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (�
 end PositivityTheory.Xgp.re_bridge
 
 /- English proof (translation)
-Introduce `hE K _ ι _ P J D R X _ _ _ A π hπ dg br hP hdeg L Φ hL hΦ hS Am f g u N hAm hfg hN hu hI`. Take `⟨α, β, hf, hg, hfP, hgP, hαβ⟩` from `hfg`. Establish `hB : IsSmoothHerm (HermLine.sqMetric (ι` using `ι) β) := isSmoothHerm_sqMetric β`. Establish `hAB` using `ReciprocityTheory.ChartRestriction.G.Geo.isSmoothHerm_tensor hAm hB`. Establish `hsf : IsSectionOn P (Am.tensor (HermLine.sqMetric β)) f`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨α, fun k => ?_, hf, hfP⟩` and prove the remaining obligations. Use `show Am.a k + (β k : ℤ) = α k`. Rewrite using `[← hαβ k]`. Expand and normalize the polynomial expressions, which then agree. Establish `hsg : IsSectionOn P (HermLine.sqMetric (ι` using `ι) β) g := ⟨β, fun k => rfl, hg, hgP⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hQ : ∀ j, IsPotential R.A (potOf R (L j))` using `fun j => isPotential_potOf R (hL j)`. Rewrite using `[GroundTheory.Heights₂.Heights.Inter.ArithmeticIntersectionIntegral.ptsIntegral_logNormRat (GroundTheory.Heights₂.Heights.ForSecondHalf.PtsIntegrable.of_resExists hE) hP hL hAm hB hsf hsg, ptsIntegral_eq_mInt' hE resBridge R hP hL hAB hsf, ptsIntegral_eq_mInt' hE resBridge R hP h …`. Establish `hlin` using `mIntLinear R.A _ hQ (-1) _ _ (brIntegrable R L _ g hP hL hB hsg) (brIntegrable R L _ f hP hL hAB hsf)`. Establish `hnull` using `PositivityTheory.Xgp.re_bridge.isNull_union hN (PositivityTheory.Xgp.re_bridge.isNull_union (PositivityTheory.Xgp.re_bridge.isNull_zeros R hP hf hfP) (PositivityTheory.Xgp.re_bridge.isNull_zeros R hP hg hgP))`. Establish `key` using `(mInt_congr_samePot D R.X R.A (N ∪ ({x | eval (R.lift x x) (map (Int.castRingHom ℂ) f) = 0} ∪ {x | eval (R.lift x x) (map (Int.castRingHom ℂ) g) = 0}))ᶜ (fun j => potOf R (L j)) (fun j => (Φ j).pullback π hπ.1) (fun x => -1 * logNorm (HermLine.sqMetric β) g (R.lift x x) + logNorm …`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← key, hlin]`. Expand and normalize the polynomial expressions, which then agree. Introduce `x hx`. Simplify using `only [Set.mem_compl_iff, Set.mem_union, Set.mem_setOf_eq, not_or] at hx`. Take `⟨hxN, hxf, hxg⟩` from `hx`.
+Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hz` using `(R.mem x x (R.mem_U x)).1`. Establish `hf0` using `norm_pos_iff.mpr hxf`. Establish `hg0` using `norm_pos_iff.mpr hxg`. Establish `hA0` using `Am.pos _ hz`. Establish `hB0` using `(HermLine.sqMetric (ι := ι) β).pos _ hz`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show _ = u (π x)`. Rewrite using `[← hu x hxN]`. Use `show -1 * Real.log (‖eval (R.lift x x) (map (Int.castRingHom ℂ) g)‖ / (HermLine.sqMetric β).h (R.lift x x)) + Real.log (‖eval (R.lift x x) (map (Int.castRingHom ℂ) f)‖ / (Am.h (R.lift x x) * (HermLine.sqMetric β).h (R.lift x x))) = Real.log (‖eval (R.lift x x) (map (Int.castRingH …`. Rewrite using `[Real.log_div hf0.ne' (mul_pos hA0 hB0).ne', Real.log_mul hA0.ne' hB0.ne', Real.log_div hg0.ne' hB0.ne', Real.log_div (div_pos hf0 hg0).ne' hA0.ne', Real.log_div hf0.ne' hg0.ne']`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem PositivityTheory.Xgp.t_re_bridge : ResExistsStatement → ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (P J : Ideal (MRing ι)) (D : ℕ) (R : AnLogRes P J D) (X : Type) [TopologicalSpace X] [CompactSpace X] [T2Space X] (A : FinHolAtlas D X) (π : R.X → X) (hπ : HoloMap R.A A π) (dg : ℕ) (br : Set X), IsArithVar P (D + 1) → IsDegreeOff A R.A π dg br → ∀ (L : Fin D → HermLine ι) (Φ : Fin D → LocPot X), (∀ j, IsSmoothHerm (L j)) → (∀ j, IsPotential A (Φ j)) → (∀ j, SamePot R.A Set.univ (potOf R (L j)) ((Φ j).pullback π hπ.1)) → ∀ (Am : HermLine ι) (f g : MRing ι) (u : X → ℝ) (N : Set R.X), IsSmoothHerm Am → IsRatSectionOn P Am f g → IsNull R.A N → (∀ x ∉ N, logNormRat Am f g (R.lift x x) = u (π x)) → MIntegrable A Φ u → ptsIntegral P (pot L) (logNormRat Am f g) = dg * mInt A Φ u := by
   intro hE K _ ι _ P J D R X _ _ _ A π hπ dg br hP hdeg L Φ hL hΦ hS Am f g u N hAm hfg hN hu hI

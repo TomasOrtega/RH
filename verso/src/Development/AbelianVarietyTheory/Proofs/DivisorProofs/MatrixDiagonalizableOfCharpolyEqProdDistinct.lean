@@ -4,17 +4,15 @@ open Polynomial
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hev : ∀ k, Module.End.HasEigenvalue (Matrix.toLin' γ) (ν k)`. Introduce `k`. Rewrite using `[Module.End.hasEigenvalue_iff_isRoot_charpoly, Matrix.charpoly_toLin', hγ]`. Simplify using `only [IsRoot, eval_prod, eval_sub, eval_X, eval_C]`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ k) (sub_self _)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `choose v hv using fun k => (hev k).exists_hasEigenvector`. Establish `hli : LinearIndependent K v` using `Module.End.eigenvectors_linearIndependent' _ ν hν v hv`. Use `set Y : Matrix (Fin n) (Fin n) K := Matrix.of fun i k => v k i with hY`. Establish `hcols : Y.col = v`. Use function extensionality and compare the values at `k i`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hu : IsUnit Y`. Rewrite using `[← Matrix.linearIndependent_cols_iff_isUnit]`. Rewrite using `[hcols]`. Conclude with `hli`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use `⟨hu.unit, ?_⟩` and prove the remaining obligations. Simplify using `only [IsUnit.unit_spec]`. Use extensionality with `i k`. Rewrite using `[Matrix.mul_diagonal]`. Establish `h1` using `(hv k).apply_eq_smul`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h1` using `[Matrix.toLin'_apply]`. Establish `h2` using `congrFun h1 i`. Simplify using `only [Pi.smul_apply, smul_eq_mul] at h2`. Rewrite using `[Matrix.mul_apply]`. Simplify using `only [hY, Matrix.of_apply]`.
-
-Rewrite using `[mul_comm, ← h2]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem matrix_diagonalizable_of_charpoly_eq_prod_distinct (K : Type) [Field K] (n : ℕ)
     (γ : Matrix (Fin n) (Fin n) K) (ν : Fin n → K) (hν : Function.Injective ν)

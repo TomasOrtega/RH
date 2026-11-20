@@ -11,11 +11,11 @@ noncomputable section
 namespace GlobalTheory.ThetaDecay
 
 /- English proof (translation)
-Establish `hx' : x = ∑ k, ∑ l, ∑ r, (coB F E).repr (x k l) r • Matrix.single k l (coB F E r)` using `by conv_lhs => rw [Matrix.matrix_eq_sum_single x]`. Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Use `conv_lhs => rw [← (coB F E).sum_repr (x k l)]`. Simplify using `only [Matrix.smul_single]`. Conclude with `map_sum (Matrix.singleAddMonoidHom k l) _ _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hx']`. Simplify using `only [map_sum, map_smul, smul_eq_mul, map_mul]`. Rewrite using `[Finset.mul_sum]`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun k _ => ?_)` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun l _ => ?_)` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun r _ => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_le_mul_of_nonneg_right (hx k l r) (norm_nonneg _)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem arch_bound_functional (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (n d : ℕ) (g : Matrix (Fin n) (Fin d) (AE F E) →ₗ[AF F] AF F) (w : InfinitePlace F)
@@ -40,13 +40,11 @@ theorem arch_bound_functional (F E : Type) [Field F] [NumberField F] [Field E] [
   exact mul_le_mul_of_nonneg_right (hx k l r) (norm_nonneg _)
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ n d κ _ f`. Set `S : InfinitePlace F → κ → ℝ` to `fun w i => (∑ k, ∑ l, ∑ r, ‖archAt F w ((f (Matrix.single k l (coB F E r))).1 i)‖) + ∑ k, ∑ l, ∑ r, ‖archAt F w ((f (Matrix.single k l (coB F E r))).2 i)‖`. Establish `hS : ∀ w i, 0 ≤ S w i` using `fun w i => by positivity`. Use `⟨∑ w, ∑ i, S w i, Finset.sum_nonneg fun w _ => Finset.sum_nonneg fun i _ => hS w i, ?_⟩` and prove the remaining obligations. Introduce `x B hB hx w i`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hle : S w i ≤ ∑ w, ∑ i, S w i` using `(Finset.single_le_sum (f := fun i => S w i) (fun i _ => hS w i) (Finset.mem_univ i)).trans (Finset.single_le_sum (f := fun w => ∑ i, S w i) (fun w _ => Finset.sum_nonneg fun i _ => hS w i) (Finset.mem_univ w))`. Establish `h1` using `arch_bound_functional F E n d ((LinearMap.proj i).comp ((LinearMap.fst _ _ _).comp f)) w x B hB (hx w)`. Establish `h2` using `arch_bound_functional F E n d ((LinearMap.proj i).comp ((LinearMap.snd _ _ _).comp f)) w x B hB (hx w)`. Simplify using `only [LinearMap.coe_comp, Function.comp_apply, LinearMap.coe_proj, Function.eval, LinearMap.fst_apply, LinearMap.snd_apply] at h1 h2`. Establish `hA : 0 ≤ ∑ k, ∑ l, ∑ r, ‖archAt F w ((f (Matrix.single k l (coB F E r))).1 i)‖` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hC : 0 ≤ ∑ k, ∑ l, ∑ r, ‖archAt F w ((f (Matrix.single k l (coB F E r))).2 i)‖` using `by positivity`. Prove the components needed by the constructor for the conclusion. Use `h1.trans ((mul_le_mul_of_nonneg_left ?_ hB).trans_eq (mul_comm _ _))` and prove the remaining obligations. Conclude with `(le_add_of_nonneg_right hC).trans hle`. Use `h2.trans ((mul_le_mul_of_nonneg_left ?_ hB).trans_eq (mul_comm _ _))` and prove the remaining obligations.
-
-Conclude with `(le_add_of_nonneg_left hA).trans hle`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem arch_bound_pair : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (n d : ℕ) (κ : Type) [Fintype κ]
     (f : Matrix (Fin n) (Fin d) (AE F E) →ₗ[AF F] (κ → AF F) × (κ → AF F)), ∃ K : ℝ, 0 ≤ K ∧

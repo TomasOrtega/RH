@@ -9,15 +9,15 @@ open NumberField IsDedekindDomain ReciprocityTheory.Gal Formalism.ConjugateSelfD
 namespace GlobalTheory.LamTie
 
 /- English proof (translation)
-Introduce `R H q0 w0 hq hmod hg hp hp' hw`. Establish `hprime : ∀ p ∈ [H.g 0, H.g 1, H.pde, H.pde', q0], p.Prime`. Introduce `p h`. Simplify using `only [List.mem_cons, List.not_mem_nil, or_false] at h`. Break down `h with rfl | rfl | rfl | rfl | rfl` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Use `exacts [H.g_prime 0, H.g_prime 1, H.pde_prime, H.pde'_prime, hq]`. Establish `h4 : (4 : ℕ) ∣ H.QS * H.q * H.d` using `(by norm_num : 4 ∣ 16).trans H.sixteen_dvd_condN`. Establish `h5 : ∀ p ∈ [H.g 0, H.g 1, H.pde, H.pde', q0], 5 ≤ p`. Introduce `p h`. Establish `h1 : p % 4 = 1 % 4` using `(hmod p h).of_dvd h4`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `(hprime p h).two_le`. Use linear arithmetic over natural numbers and integers. Use `⟨⟨hw, ?_, fun p h => ?_⟩, h5 q0 (by simp)⟩` and prove the remaining obligations. Establish `a1` using `H.g_ne`. Establish `a2` using `H.pde_ne`.
+Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a3` using `H.pde_ne_g 0`. Establish `a4` using `H.pde_ne_g 1`. Establish `a5` using `hg 0`. Establish `a6` using `hg 1`. Simplify using `only [List.nodup_cons, List.mem_cons, List.not_mem_nil, or_false, not_or, List.nodup_nil, not_false_eq_true, and_true]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Establish `hs` using `GlobalTheory.Mem.Chr.splitsC_of_modEq_one R H p (hprime p h) (hmod p h)`. Use `h5 p h` as an intermediate fact. Use `⟨hprime p h, by omega, ?_, fun P hP => (GlobalTheory.Mem.Chr.splitsC_main R H p (hprime p h) hs P hP).1⟩` and prove the remaining obligations. Conclude with `GlobalTheory.SplitEmbSep.not_dvd_discr_of_split (hprime p h) _ ((GlobalTheory.Mem.Chr.ncard_places_eq_primesOver (hprime p h)).symm.trans hs)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem placesOk_of_modEq_one : ∀ (R : Ranks) (H : Formalism.BasicNotions.Host R) (q0 : ℕ) (w0 : HeightOneSpectrum (𝓞 H.E)), q0.Prime → (∀ p ∈ [H.g 0, H.g 1, H.pde, H.pde', q0], p ≡ 1 [MOD H.QS * H.q * H.d]) → (∀ k, q0 ≠ H.g k) → q0 ≠ H.pde → q0 ≠ H.pde' → OverP H q0 w0 → PlacesOk H q0 w0 ∧ 5 ≤ q0 := by
   intro R H q0 w0 hq hmod hg hp hp' hw

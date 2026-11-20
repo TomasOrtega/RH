@@ -12,7 +12,7 @@ def dropCols (r m : ℕ) : MvPolynomial (Fin r × Fin r) ℂ →ₐ[ℂ] MvPolyn
   aeval fun v => if h : v.2.val < m then X (v.1, ⟨v.2.val, h⟩) else 0
 
 /- English proof (translation)
-Establish `: (dropCols r m).comp (rowAct ℂ g) = (rowAct ℂ g).comp (dropCols r m)`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce and unpack `⟨a, s⟩`. Apply the tactic sequence `by_cases hs : s.val < m <;> simp [dropCols, rowAct, hs]`. Conclude with `DFunLike.congr_fun this f`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem dropCols_rowAct (r m : ℕ) (g : Matrix (Fin r) (Fin r) ℂ) (f : MvPolynomial (Fin r × Fin r) ℂ) :
     dropCols r m (rowAct ℂ g f) = rowAct ℂ g (dropCols r m f) := by
@@ -23,9 +23,9 @@ theorem dropCols_rowAct (r m : ℕ) (g : Matrix (Fin r) (Fin r) ℂ) (f : MvPoly
   exact DFunLike.congr_fun this f
 
 /- English proof (translation)
-Unfold `lpMinor`. Rewrite using `[AlgHom.map_det]`. Use `congr 1`. Use `ext1 p q`. Establish `hq : q.val < m` using `lt_of_lt_of_le q.2 hm`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[dropCols, hq, Fin.castLE]`.
+A detailed English derivation is pending.
 -/
 theorem dropCols_lpMinor (r m s : ℕ) (hr : s ≤ r) (hm : s ≤ m) :
     dropCols r m (lpMinor ℂ s hr hr) = lpMinor ℂ s hr hm := by
@@ -37,13 +37,13 @@ theorem dropCols_lpMinor (r m s : ℕ) (hr : s ≤ r) (hm : s ≤ m) :
   simp [dropCols, hq, Fin.castLE]
 
 /- English proof (translation)
-Unfold `hw`. Rewrite using `[map_prod]`. Use `symm`. Use `Finset.prod_of_injOn (Fin.castLE h) (Fin.castLE_injective h).injOn (fun _ _ => Finset.mem_univ _) ?_ ?_` and prove the remaining obligations. Introduce `s _ hs`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hs' : ¬ s.val < m` using `fun hlt => hs ⟨⟨s.val, hlt⟩, by simp, rfl⟩`. Simplify using `[rowNu, hs']`. Introduce `s _`. Rewrite using `[map_pow]`. Establish `e : nuNext (rowNu (r` using `r) ν) (Fin.castLE h s) = nuNext ν s := by`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [nuNext, rowNu, Fin.val_castLE]`. Use `split_ifs with h1 h2 h3`. Both sides reduce to the same expression. Both sides reduce to the same expression. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Both sides reduce to the same expression. Use linear arithmetic over natural numbers and integers. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `e' : rowNu (r` using `r) ν (Fin.castLE h s) = ν s := by simp [rowNu]`. Rewrite using `[e, e']`. Use `congr 1`. Conclude with `(dropCols_lpMinor r m (s.val + 1) _ _).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem dropCols_hw (r m : ℕ) (h : m ≤ r) (ν : Fin m → ℕ) :
     dropCols r m (hw ℂ (le_refl r) (rowNu ν)) = hw ℂ h ν := by
@@ -69,7 +69,7 @@ theorem dropCols_hw (r m : ℕ) (h : m ≤ r) (ν : Fin m → ℕ) :
     exact (dropCols_lpMinor r m (s.val + 1) _ _).symm
 
 /- English proof (translation)
-Unfold `DomWeight.detShift`. Use `split_ifs`. Conclude with `Nat.cast_nonneg _`. Conclude with `le_rfl`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem pad_detShift_nonneg {m : ℕ} (r : ℕ) (a : Part m) : 0 ≤ (pad r a).detShift := by
   unfold DomWeight.detShift
@@ -78,11 +78,11 @@ theorem pad_detShift_nonneg {m : ℕ} (r : ℕ) (a : Part m) : 0 ≤ (pad r a).d
   · exact le_rfl
 
 /- English proof (translation)
-Establish `h0` using `pad_detShift_nonneg r a`. Establish `h1 : (pad r a).detShift ≤ (pad r a).w i`. Unfold `DomWeight.detShift`. Rewrite using `[dif_pos i.pos]`. Apply `(pad r a).anti` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Fin.le_def]`. Use `i.2` as an intermediate fact. Simplify using `only`. Use linear arithmetic over natural numbers and integers. Establish `h2 : (pad r a).w i = (rowNu (r` using `r) a.1 i : ℕ) := rfl`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Simplify using `only [DomWeight.natW]`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem pad_natW_add {m : ℕ} (r : ℕ) (a : Part m) (i : Fin r) :
     (pad r a).natW i + (pad r a).detShift.toNat = rowNu a.1 i := by
@@ -100,11 +100,11 @@ theorem pad_natW_add {m : ℕ} (r : ℕ) (a : Part m) (i : Fin r) :
   omega
 
 /- English proof (translation)
-Introduce `r m h a`. Take `⟨c, hc⟩` from `Int.eq_ofNat_of_zero_le (pad_detShift_nonneg r a)`. Set `j : nablaSq ℂ r (pad r a) →ₗ[ℂ] MvPolynomial (Fin r × Fin m) ℂ` to `(dropCols r m).toLinearMap ∘ₗ LinearMap.mulLeft ℂ (lpMinor ℂ r le_rfl le_rfl ^ c) ∘ₗ (nablaSq ℂ r (pad r a)).subtype`. Establish `hj : ∀ f, j f = dropCols r m (lpMinor ℂ r le_rfl le_rfl ^ c * f)` using `fun _ => rfl`. Use `⟨j, fun g f => ?_, fun f hf => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hj, hj, ← dropCols_rowAct, (genericDet_pow_mul r c (fun _ => 0)).2.1, sqRep_coe, sqAct, hc, mul_smul_comm, Matrix.det_transpose]`. Simplify using `[detPow]`. Rewrite using `[hj, hf, extremal, genericDet_pow_mul_hw, ← dropCols_hw r m h]`. Use `congr 2`. Use function extensionality and compare the values at `i`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `pad_natW_add r a i` as an intermediate fact. Rewrite `this` using `[hc, Int.toNat_natCast]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem exists_map_nablaSq_pad : ∀ (r m : ℕ) (h : m ≤ r) (a : Part m), ∃ j : nablaSq ℂ r (pad r a) →ₗ[ℂ] MvPolynomial (Fin r × Fin m) ℂ, (∀ (g : GL (Fin r) ℂ) (f : nablaSq ℂ r (pad r a)), j (sqRep ℂ r (pad r a) g f) = rowAct ℂ (g : Matrix (Fin r) (Fin r) ℂ)ᵀ (j f)) ∧ ∀ f : nablaSq ℂ r (pad r a), (f : MvPolynomial (Fin r × Fin r) ℂ) = extremal ℂ r (pad r a) → j f = hw ℂ h a.1 := by
   intro r m h a

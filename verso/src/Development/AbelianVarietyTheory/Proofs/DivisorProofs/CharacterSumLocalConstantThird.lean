@@ -8,7 +8,7 @@ open scoped ComplexOrder
 namespace GlobalTheory.ColNormsUnit
 
 /- English proof (translation)
-Unfold `divs at h`. Use `split_ifs at h with hf`. Conclude with `hf.mem_toFinset.1 h`. Simplify using `at h`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_of_divs {A : Type} [CommRing A] [IsDedekindDomain A] {a : A} {P : HeightOneSpectrum A} (h : P ∈ divs a) :
     a ∈ P.asIdeal := by
@@ -18,9 +18,9 @@ theorem mem_of_divs {A : Type} [CommRing A] [IsDedekindDomain A] {a : A} {P : He
   · simp at h
 
 /- English proof (translation)
-Establish `h : Qprime ((1 : Tup X.F X.E X.K Sg) : Chr X.F X.E X.K) = ∅`. Express the relevant statement in the definitionally equal form `Qprime (1 : Chr X.F X.E X.K) = ∅`. Use extensionality with `v`. Simplify using `[Qprime, MonoidHom.ker_one]`. Unfold `QE`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Use `split_ifs with hf`. Rewrite using `[(Set.Finite.toFinset_eq_empty (h := hf)).2 h]`. Both sides reduce to the same expression. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem qe_one {X : Fields} (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) {Sg : Set ℕ} :
     QE sel ((1 : Tup X.F X.E X.K Sg) : Chr X.F X.E X.K) = ∅ := by
@@ -35,13 +35,13 @@ theorem qe_one {X : Fields} (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpe
   · rfl
 
 /- English proof (translation)
-Establish `hg : ∀ i, P ∈ Pr.vG i → ∃ l : ℕ, l.Prime ∧ (l : 𝓞 X.E) ∈ P.asIdeal ∧ ¬ l ∣ Pr.cond`. Introduce `i hi`. Use `⟨Pr.g i, hPr.g_prime i, hPr.piG_norm i ▸ P.asIdeal.mul_mem_left _ (mem_of_divs hi), fun hd => ?_⟩` and prove the remaining obligations. Establish `h1 : Pr.g i ≡ 1 [MOD Pr.g i]` using `(hPr.g_cong i).of_dvd hd`. Establish `h2 : Pr.g i ∣ 1` using `(Nat.modEq_zero_iff_dvd).1 (h1.symm.trans ((Nat.modEq_zero_iff_dvd).2 dvd_rfl))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(hPr.g_prime i).one_lt.ne' (Nat.dvd_one.1 h2)`. Unfold `Sall at hP`. Simplify using `only [rowSG, uSG, qe_one, Primes.vGs, Finset.mem_union, Finset.notMem_empty, or_false] at hP`. Break down `hP with h | h | h` into its components or cases. Establish `h0 : Pr.piT u ∈ P.asIdeal` using `mem_of_divs h`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hT : (Pr.T u : 𝓞 X.E) ∈ P.asIdeal` using `hPr.piT_norm u ▸ P.asIdeal.mul_mem_right _ h0`. Use `⟨Pr.T u, hPr.T_prime u, hT, fun hd => ?_⟩` and prove the remaining obligations. Establish `h1 : (Pr.T u : 𝓞 X.E) ∣ Pr.piT u - 1` using `(Nat.cast_dvd_cast (hd.mul_right _)).trans (hPr.piT_cong u)`. Establish `h2 : Pr.piT u - 1 ∈ P.asIdeal` using `Ideal.mem_of_dvd _ h1 hT`. Establish `h3` using `P.asIdeal.sub_mem h0 h2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h3` using `[sub_sub_cancel]`. Conclude with `P.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h3)`. Conclude with `hg 0 h`. Conclude with `hg 1 h`.
+A detailed English derivation is pending.
 -/
 theorem exists_prime {X : Fields} {Pr : Primes X} (hPr : Pr.Ok) (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E))
     {Sg : Set ℕ} (u : Pr.Word) (P : HeightOneSpectrum (𝓞 X.E)) (hP : P ∈ Sall sel (1 : Tup X.F X.E X.K Sg) u) :

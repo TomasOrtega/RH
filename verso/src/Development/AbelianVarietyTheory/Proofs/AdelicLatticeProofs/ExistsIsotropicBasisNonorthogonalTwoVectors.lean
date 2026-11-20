@@ -22,7 +22,7 @@ theorem hfL_apply (σ : E →+* E) (G : Matrix (Fin n) (Fin n) E) (y x : Fin n �
     hfL σ G y x = hf σ G x y := rfl
 
 /- English proof (translation)
-Simplify using `only [hf, map_sum, map_mul, hG.invol, hG.herm]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hf_symm {σ : E →+* E} {G : Matrix (Fin n) (Fin n) E} (hG : IsHerm σ G) (x y : Fin n → E) :
     σ (hf σ G x y) = hf σ G y x := by
@@ -32,11 +32,11 @@ theorem hf_symm {σ : E →+* E} {G : Matrix (Fin n) (Fin n) E} (hG : IsHerm σ 
   ring
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Use `push_neg at h`. Apply `hy` to reduce the goal to its premises. Establish `h0 : G.mulVec (fun b => σ (y b)) = 0`. Use function extensionality and compare the values at `a`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use `h (Pi.single a 1)` as an intermediate fact. Simplify `this` using `[hfL_apply, hf, Pi.single_apply, Matrix.mulVec, dotProduct, ite_mul, Finset.sum_ite_irrel]`. Establish `h1` using `Matrix.eq_zero_of_mulVec_eq_zero hG.det_ne h0`. Use function extensionality and compare the values at `b`. Use `congrFun h1 b` as an intermediate fact.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using this`.
+A detailed English derivation is pending.
 -/
 theorem hfL_ne {σ : E →+* E} {G : Matrix (Fin n) (Fin n) E} (hG : IsHerm σ G) {y : Fin n → E}
     (hy : y ≠ 0) : ∃ x, hfL σ G y x ≠ 0 := by
@@ -53,7 +53,7 @@ theorem hfL_ne {σ : E →+* E} {G : Matrix (Fin n) (Fin n) E} (hG : IsHerm σ G
   simpa using this
 
 /- English proof (translation)
-Simplify using `only [hf, Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, map_add, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hf_comb {σ : E →+* E} (G : Matrix (Fin n) (Fin n) E) (a b : E) (u w : Fin n → E) :
     hf σ G (a • u + b • w) (a • u + b • w) =
@@ -64,21 +64,19 @@ theorem hf_comb {σ : E →+* E} (G : Matrix (Fin n) (Fin n) E) (a b : E) (u w :
   ring
 
 /- English proof (translation)
-Take `⟨w, hw0, hw⟩` from `hz`. Take `⟨c, hc⟩` from `hG.ne_id`. Use `set δ := c - σ c with hδ`. Establish `hδ0 : δ ≠ 0` using `sub_ne_zero.2 hc.symm`. Establish `hδσ : σ δ = -δ` using `by simp [hδ, hG.invol]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨u, hu⟩` from `Module.Dual.exists_forall_ne_zero_of_forall_exists (fun o : Option ι => o.elim (hfL σ G w) f) (by`. Introduce and unpack `(_ | i)`. Conclude with `hfL_ne hG hw0`. Conclude with `hf0 i)`. Establish `huw : hf σ G u w ≠ 0` using `hu none`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hui : ∀ i, f i u ≠ 0` using `fun i => hu (some i)`. Use `set a := hf σ G w u with ha`. Establish `hσa : σ a = hf σ G u w` using `hf_symm hG _ _`. Establish `ha0 : a ≠ 0`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Apply `huw` to reduce the goal to its premises. Rewrite using `[← hσa, h, map_zero]`. Establish `huu : σ (hf σ G u u) = hf σ G u u` using `hf_symm hG _ _`. Set `bad : ι → E` to `fun i => (hf σ G u u / 2 - a * f i u / f i w) / δ`. Establish `hfin : (Set.range bad).Finite` using `Set.finite_range bad`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Choose the witnesses or unpack the hypotheses as in `⟨t, ht⟩ : ∃ t : ℕ, (t : E) ∉ Set.range bad := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `(Set.infinite_of_injective_forall_mem (f := fun t : ℕ => (t : E)) Nat.cast_injective h) hfin`. Use `⟨a • u + (-(hf σ G u u) / 2 + δ * t) • w, ?_, fun i => ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Rewrite using `[hf_comb, hw, ← ha, ← hσa]`. Simplify using `only [map_add, map_mul, map_div₀, map_neg, huu, hδσ, map_natCast, map_ofNat]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[map_add, map_smul, map_smul, smul_eq_mul, smul_eq_mul]`. Distinguish the cases in `h : f i w = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 
-Simplify using `[h, ha0, hui i]`. Introduce `h'`. Apply `ht` to reduce the goal to its premises. Use `⟨i, ?_⟩` and prove the remaining obligations. Simplify using `only [bad]`.
-
-Clear the denominators using the available nonvanishing facts. Take the linear combination `(-2 : E) * h'`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_isotropic_avoid [CharZero E] {σ : E →+* E} {G : Matrix (Fin n) (Fin n) E}
     (hG : IsHerm σ G) (hz : ∃ z : Fin n → E, z ≠ 0 ∧ hf σ G z z = 0)
@@ -122,15 +120,13 @@ theorem exists_isotropic_avoid [CharZero E] {σ : E →+* E} {G : Matrix (Fin n)
       linear_combination (-2 : E) * h'
 
 /- English proof (translation)
-Set `S : Set (Fin n → E)` to `{z | hf σ G z z = 0 ∧ hf σ G x z ≠ 0 ∧ hf σ G y z ≠ 0}`. Establish `hspan : Submodule.span E S = ⊤`. Assume the negation of the conclusion as `h`. Take `⟨g, hg0, hg⟩` from `Submodule.exists_le_ker_of_lt_top _ (lt_top_iff_ne_top.2 h)`. Take `⟨z, hz0, hz1⟩` from `exists_isotropic_avoid hG hz ![g, hfL σ G x, hfL σ G y] (by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce `i`. Use `fin_cases i`. Assume the negation of the conclusion as `h push_neg at h`. Conclude with `hg0 (LinearMap.ext h)`. Conclude with `hfL_ne hG hx`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hfL_ne hG hy)`. Establish `hzS : z ∈ S`. Use `⟨hz0, fun h => hz1 1 ?_, fun h => hz1 2 ?_⟩` and prove the remaining obligations. Use `show hf σ G z x = 0`. Rewrite using `[← hf_symm hG, h, map_zero]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `show hf σ G z y = 0`. Rewrite using `[← hf_symm hG, h, map_zero]`. Conclude with `hz1 0 (hg (Submodule.subset_span hzS))`. Take `⟨v, hvS, -, hv⟩` from `Submodule.exists_fun_fin_finrank_span_eq E S`. Establish `hn : n = Module.finrank E (Submodule.span E S)`.
-
-Rewrite using `[hspan]`. Simplify using the standard rewrite rules. Conclude with `⟨v ∘ Fin.cast hn, hv.comp _ (Fin.cast_injective hn), fun i => hvS _⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_isotropic_basis (E : Type) [Field E] [CharZero E] (n : ℕ) (σ : E →+* E)
     (G : Matrix (Fin n) (Fin n) E) (hG : IsHerm σ G)

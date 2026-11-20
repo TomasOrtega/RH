@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.NotCompactOfMEqOne
 open scoped NumberField
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | (exact @GlobalTheory.UPel.HT.TateIsoO.card_pow_eq_one) | (exact GlobalTheory.UPel.HT.TateIsoO.card_pow_eq_one) | (intros; apply GlobalTheory.UPel.HT.TateIsoO.card_pow_eq_one <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.card_lTorsion_eq_pow_of_tateSimilitude : ∀ (p : ℕ) [Fact p.Prime] (D : GlobalTheory.UPel.HT.Datum p) (k : Type) [Field k] (Q : Type) [Group Q]
     (act : D.O → Q → Q) (e : ℕ → Q → Q → kˣ → Prop) (I : GlobalTheory.UPel.HT.TateIsoO D k Q act e) (l : ℕ),

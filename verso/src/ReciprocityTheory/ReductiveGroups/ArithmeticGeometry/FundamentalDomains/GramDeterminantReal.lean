@@ -14,24 +14,24 @@ def hL (v : Fin r → ℂ) : (Fin r → ℂ) →ₗ[ℂ] ℂ where
     simp only [hermC, Pi.smul_apply, smul_eq_mul, RingHom.id_apply, Finset.mul_sum, mul_assoc]
 
 /- English proof (translation)
-The claim follows from `(hL τ G v).map_add u u'`.
+A detailed English derivation is pending.
 -/
 theorem hC_add_left (u u' v : Fin r → ℂ) :
     hermC τ G (u + u') v = hermC τ G u v + hermC τ G u' v := (hL τ G v).map_add u u'
 
 /- English proof (translation)
-The claim follows from `(hL τ G v).map_sub u u'`.
+A detailed English derivation is pending.
 -/
 theorem hC_sub_left (u u' v : Fin r → ℂ) :
     hermC τ G (u - u') v = hermC τ G u v - hermC τ G u' v := (hL τ G v).map_sub u u'
 
 /- English proof (translation)
-The claim follows from `(hL τ G v).map_smul a u`.
+A detailed English derivation is pending.
 -/
 theorem hermC_smul_left (a : ℂ) (u v : Fin r → ℂ) : hermC τ G (a • u) v = a * hermC τ G u v := (hL τ G v).map_smul a u
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(hL τ G v) (∑ b, w b • f b) = ∑ b, w b * (hL τ G v) (f b)`. Rewrite using `[map_sum]`. Simplify using `only [map_smul, smul_eq_mul]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem hC_sum_left {n : ℕ} (f : Fin n → Fin r → ℂ) (w : Fin n → ℂ) (v : Fin r → ℂ) :
     hermC τ G (∑ b, w b • f b) v = ∑ b, w b * hermC τ G (f b) v := by
@@ -54,9 +54,9 @@ def pv : Fin r → ℂ := ∑ b, yv τ G f e b • f b
 def mt : ℂ := ∑ a, ∑ b, cv τ G f e a * (gramF τ G f)⁻¹ a b * conj (cv τ G f e b)
 
 /- English proof (translation)
-Establish `h1 : Matrix.vecMul (yv τ G f e) (gramF τ G f) = cv τ G f e`. Unfold `yv`. Rewrite using `[Matrix.vecMul_vecMul, Matrix.nonsing_inv_mul _ hA, Matrix.vecMul_one]`. Unfold `pv`. Rewrite using `[hC_sum_left, ← h1]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.vecMul, dotProduct, gramF, Matrix.of_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pv_orth (hA : IsUnit (gramF τ G f).det) (d : Fin n) :
     hermC τ G (pv τ G f e) (f d) = cv τ G f e d := by
@@ -75,7 +75,7 @@ variable {n : ℕ} (f : Fin (n + 1) → Fin r → ℂ) (e : Fin r → ℂ)
 def dv : Fin r → ℂ := pv τ G f e - pv τ G (fun a : Fin n => f a.castSucc) e
 
 /- English proof (translation)
-Unfold `dv`. Rewrite using `[hC_sub_left, pv_orth τ G f e hA d.castSucc, pv_orth τ G _ e hA' d]`. Conclude with `sub_self _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dv_orth (hA : IsUnit (gramF τ G f).det)
     (hA' : IsUnit (gramF τ G (fun a : Fin n => f a.castSucc)).det) (d : Fin n) :
@@ -85,9 +85,9 @@ theorem dv_orth (hA : IsUnit (gramF τ G f).det)
   exact sub_self _
 
 /- English proof (translation)
-Establish `hv : Matrix.vecMul w (gramF τ G f) = 0`. Use function extensionality and compare the values at `d`. Establish `hd` using `h d`. Rewrite `hd` using `[hC_sum_left]`. Simplify `hd` using `[Matrix.vecMul, dotProduct, gramF]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hw : w = 0`. Establish `h2` using `congrArg (fun x => Matrix.vecMul x (gramF τ G f)⁻¹) hv`. Simplify `h2` using `[Matrix.vecMul_vecMul, Matrix.mul_nonsing_inv _ hA]`. Simplify using `[hw]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 -/
 theorem comb_orth_zero {n : ℕ} (f : Fin n → Fin r → ℂ) (hA : IsUnit (gramF τ G f).det)
     (w : Fin n → ℂ) (h : ∀ d, hermC τ G (∑ b, w b • f b) (f d) = 0) : ∑ b, w b • f b = 0 := by
@@ -102,7 +102,7 @@ theorem comb_orth_zero {n : ℕ} (f : Fin n → Fin r → ℂ) (hA : IsUnit (gra
   simp [hw]
 
 /- English proof (translation)
-Unfold `dv pv`. Simplify using `only [sub_smul, Finset.sum_sub_distrib]`. Use `congr 1`. Rewrite using `[Fin.sum_univ_castSucc]`. Simplify using `[Fin.snoc_castSucc, Fin.snoc_last]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem dv_eq {n : ℕ} (f : Fin (n + 1) → Fin r → ℂ) (e : Fin r → ℂ) :
     dv τ G f e = ∑ b, (yv τ G f e b -
@@ -114,9 +114,9 @@ theorem dv_eq {n : ℕ} (f : Fin (n + 1) → Fin r → ℂ) (e : Fin r → ℂ) 
   simp [Fin.snoc_castSucc, Fin.snoc_last]
 
 /- English proof (translation)
-Establish `h : dv τ G f e = ∑ a : Fin n, (yv τ G f e a.castSucc - yv τ G (fun a : Fin n => f a.castSucc) e a) • f a.castSucc`. Rewrite using `[dv_eq, Fin.sum_univ_castSucc]`. Simplify using `[Fin.snoc_castSucc, Fin.snoc_last, hy]`. Rewrite using `[h]`. Use `comb_orth_zero τ G (fun a : Fin n => f a.castSucc) hA' (fun a => yv τ G f e a.castSucc - yv τ G (fun a : Fin n => f a.castSucc) e a) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `d`. Establish `hd` using `dv_orth τ G f e hA hA' d`. Rewrite `hd` using `[h]`. Conclude with `hd`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dv_zero {n : ℕ} (f : Fin (n + 1) → Fin r → ℂ) (e : Fin r → ℂ) (hA : IsUnit (gramF τ G f).det)
     (hA' : IsUnit (gramF τ G (fun a : Fin n => f a.castSucc)).det)
@@ -139,7 +139,7 @@ variable {τ G} (hG : ∀ a b, τ (G b a) = conj (τ (G a b)))
 include hG
 
 /- English proof (translation)
-Simplify using `only [hermC, map_sum, map_mul, Complex.conj_conj]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun x _ => Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Rewrite using `[hG x y]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hC_conj (u v : Fin r → ℂ) : hermC τ G v u = conj (hermC τ G u v) := by
   simp only [hermC, map_sum, map_mul, Complex.conj_conj]
@@ -149,26 +149,26 @@ theorem hC_conj (u v : Fin r → ℂ) : hermC τ G v u = conj (hermC τ G u v) :
   ring
 
 /- English proof (translation)
-The claim follows from `Complex.conj_eq_iff_im.mp (hC_conj hG u u).symm`.
+A detailed English derivation is pending.
 -/
 theorem hC_self_real (u : Fin r → ℂ) : (hermC τ G u u).im = 0 := Complex.conj_eq_iff_im.mp (hC_conj hG u u).symm
 
 /- English proof (translation)
-Simplify using `only [hermC, Pi.add_apply, map_add, mul_add, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hC_add_right (u v v' : Fin r → ℂ) :
     hermC τ G u (v + v') = hermC τ G u v + hermC τ G u v' := by
   simp only [hermC, Pi.add_apply, map_add, mul_add, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `only [hermC, Pi.sub_apply, map_sub, mul_sub, Finset.sum_sub_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hC_sub_right (u v v' : Fin r → ℂ) :
     hermC τ G u (v - v') = hermC τ G u v - hermC τ G u v' := by
   simp only [hermC, Pi.sub_apply, map_sub, mul_sub, Finset.sum_sub_distrib]
 
 /- English proof (translation)
-Simplify using `only [hermC, Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun x _ => Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hermC_smul_right (a : ℂ) (u v : Fin r → ℂ) :
     hermC τ G u (a • v) = conj a * hermC τ G u v := by
@@ -177,7 +177,7 @@ theorem hermC_smul_right (a : ℂ) (u v : Fin r → ℂ) :
   ring
 
 /- English proof (translation)
-Rewrite using `[hC_conj hG (∑ b, w b • f b) v, hC_sum_left, map_sum]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, hC_conj hG (f b) v]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem hC_sum_right {n : ℕ} (f : Fin n → Fin r → ℂ) (w : Fin n → ℂ) (v : Fin r → ℂ) :
     hermC τ G v (∑ b, w b • f b) = ∑ b, conj (w b) * hermC τ G v (f b) := by
@@ -186,9 +186,9 @@ theorem hC_sum_right {n : ℕ} (f : Fin n → Fin r → ℂ) (w : Fin n → ℂ)
   rw [map_mul, hC_conj hG (f b) v]
 
 /- English proof (translation)
-Use extensionality with `a c`. Simplify using `only [gramF, Matrix.of_apply, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply]`. Rewrite using `[hC_sum_left]`. Repeatedly rewrite using `[hC_sum_right hG]`. Simplify using `only [Finset.mul_sum, Finset.sum_mul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun x _ => Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem gramF_comb {n : ℕ} (f : Fin n → Fin r → ℂ) (M : Matrix (Fin n) (Fin n) ℂ) :
     gramF τ G (fun a => ∑ b, M b a • f b) = Mᵀ * gramF τ G f * M.map conj := by
@@ -202,7 +202,7 @@ theorem gramF_comb {n : ℕ} (f : Fin n → Fin r → ℂ) (M : Matrix (Fin n) (
   ring
 
 /- English proof (translation)
-Rewrite using `[gramF_comb hG, Matrix.det_mul, Matrix.det_mul, Matrix.det_transpose]`. Use `congr 1`. Conclude with `((starRingEnd ℂ).map_det M).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem det_gramF_comb {n : ℕ} (f : Fin n → Fin r → ℂ) (M : Matrix (Fin n) (Fin n) ℂ) :
     (gramF τ G (fun a => ∑ b, M b a • f b)).det = M.det * (gramF τ G f).det * conj M.det := by
@@ -211,9 +211,9 @@ theorem det_gramF_comb {n : ℕ} (f : Fin n → Fin r → ℂ) (M : Matrix (Fin 
   exact ((starRingEnd ℂ).map_det M).symm
 
 /- English proof (translation)
-Establish `h : (gramF τ G f)ᴴ = gramF τ G f`. Use extensionality with `a b`. Rewrite using `[Matrix.conjTranspose_apply]`. Simplify using `only [gramF, Matrix.of_apply]`. Rewrite using `[hC_conj hG (f b) (f a), starRingEnd_apply]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `h2` using `Matrix.det_conjTranspose (gramF τ G f)`. Rewrite `h2` using `[h]`. Apply `Complex.conj_eq_iff_im.mp` to reduce the goal to its premises. Rewrite using `[starRingEnd_apply]`. Conclude with `h2.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_gramF_real {n : ℕ} (f : Fin n → Fin r → ℂ) : (gramF τ G f).det.im = 0 := by
   have h : (gramF τ G f)ᴴ = gramF τ G f := by
@@ -228,7 +228,7 @@ theorem det_gramF_real {n : ℕ} (f : Fin n → Fin r → ℂ) : (gramF τ G f).
   exact h2.symm
 
 /- English proof (translation)
-Rewrite using `[show hermC τ G (pv τ G f e) (pv τ G f e) = hermC τ G (pv τ G f e) (∑ b, yv τ G f e b • f b) from rfl, hC_sum_right hG]`. Simplify using `only [pv_orth τ G f e hA]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem hC_pv_self {n : ℕ} (f : Fin n → Fin r → ℂ) (e : Fin r → ℂ)
     (hA : IsUnit (gramF τ G f).det) :
@@ -238,13 +238,13 @@ theorem hC_pv_self {n : ℕ} (f : Fin n → Fin r → ℂ) (e : Fin r → ℂ)
   simp only [pv_orth τ G f e hA]
 
 /- English proof (translation)
-Rewrite using `[hC_pv_self hG f e hA]`. Establish `hH : (gramF τ G f)ᴴ = gramF τ G f`. Use extensionality with `a b`. Rewrite using `[Matrix.conjTranspose_apply]`. Simplify using `only [gramF, Matrix.of_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hC_conj hG (f b) (f a), starRingEnd_apply]`. Establish `hI : ∀ a b, conj ((gramF τ G f)⁻¹ a b) = (gramF τ G f)⁻¹ b a`. Introduce `a b`. Establish `h3` using `congrFun (congrFun (Matrix.conjTranspose_nonsing_inv (gramF τ G f)) b) a`. Rewrite `h3` using `[hH, Matrix.conjTranspose_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[starRingEnd_apply]`. Conclude with `h3`. Unfold `mt yv`. Simplify using `only [Matrix.vecMul, dotProduct, map_sum, map_mul, hI, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun x _ => Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem mt_eq {n : ℕ} (f : Fin n → Fin r → ℂ) (e : Fin r → ℂ) (hA : IsUnit (gramF τ G f).det) :
     mt τ G f e = hermC τ G (pv τ G f e) (pv τ G f e) := by
@@ -269,9 +269,9 @@ section Step
 variable {n : ℕ} (f : Fin (n + 1) → Fin r → ℂ) (e : Fin r → ℂ)
 
 /- English proof (translation)
-Establish `hp : pv τ G f e = pv τ G (fun a : Fin n => f a.castSucc) e + dv τ G f e`. Unfold `dv`. Normalize the expressions using the abelian group laws. Establish `h0 : hermC τ G (dv τ G f e) (pv τ G (fun a : Fin n => f a.castSucc) e) = 0`. Rewrite using `[show hermC τ G (dv τ G f e) (pv τ G (fun a : Fin n => f a.castSucc) e) = hermC τ G (dv τ G f e) (∑ b, yv τ G (fun a : Fin n => f a.castSucc) e b • f b.castSucc) from rfl, hC_sum_right hG]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_eq_zero fun b _ => by simp only [dv_orth τ G f e hA hA' b, mul_zero]`. Establish `h1 : hermC τ G (pv τ G (fun a : Fin n => f a.castSucc) e) (dv τ G f e) = 0`. Rewrite using `[hC_conj hG (dv τ G f e) _, h0, map_zero]`. Rewrite using `[hp, hC_add_left, hC_add_right hG, hC_add_right hG, h0, h1]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem pv_pyth (hA : IsUnit (gramF τ G f).det)
     (hA' : IsUnit (gramF τ G (fun a : Fin n => f a.castSucc)).det) :
@@ -292,21 +292,21 @@ theorem pv_pyth (hA : IsUnit (gramF τ G f).det)
   ring
 
 /- English proof (translation)
-Take `⟨M, hMdef⟩ : ∃ M : Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ, M = Matrix.of fun b a => if a = Fin.last n then (yv τ G f e b - Fin.snoc (α` from `fun _ => ℂ) (yv τ G (fun a : Fin n => f a.castSucc) e) 0 b) else if b = a then 1 else 0 := ⟨_, rfl⟩`. Take `⟨g, hgdef⟩ : ∃ g : Fin (n + 1) → Fin r → ℂ, g = fun a => ∑ b, M b a • f b` from `⟨_, rfl⟩`. Establish `hgl : g (Fin.last n) = dv τ G f e`. Rewrite using `[hgdef, dv_eq]`. Simplify using `[hMdef]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hgc : ∀ a : Fin n, g a.castSucc = f a.castSucc`. Introduce `a`. Rewrite using `[hgdef]`. Simplify using `[hMdef, Fin.castSucc_ne_last]`. Establish `hM : M.det = yv τ G f e (Fin.last n)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[Matrix.det_of_upperTriangular, Fin.prod_univ_castSucc]`. Simplify using `[hMdef, Fin.castSucc_ne_last]`. Introduce `i j hij`. Establish `hij' : j < i` using `hij`. Establish `hj : j ≠ Fin.last n` using `ne_of_lt (lt_of_lt_of_le hij' (Fin.le_last i))`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[hMdef, hj, ne_of_gt hij']`. Establish `hgram : (gramF τ G g).det = (gramF τ G (fun a : Fin n => f a.castSucc)).det * hermC τ G (dv τ G f e) (dv τ G f e)`. Rewrite using `[Matrix.det_succ_column _ (Fin.last n), Fin.sum_univ_castSucc]`. Establish `hsub : (gramF τ G g).submatrix (Fin.last n).succAbove (Fin.last n).succAbove = gramF τ G (fun a : Fin n => f a.castSucc)`. Use extensionality with `i j`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [Matrix.submatrix_apply, Fin.succAbove_last, gramF, Matrix.of_apply, hgc]`. Establish `hz0 : ∀ i : Fin n, gramF τ G g i.castSucc (Fin.last n) = 0`. Introduce `i`. Simplify using `only [gramF, Matrix.of_apply, hgc, hgl]`. Rewrite using `[hC_conj hG (dv τ G f e) (f i.castSucc), dv_orth τ G f e hA hA' i, map_zero]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hll : gramF τ G g (Fin.last n) (Fin.last n) = hermC τ G (dv τ G f e) (dv τ G f e)`. Simplify using `only [gramF, Matrix.of_apply, hgl]`. Establish `hsgn : ((-1 : ℂ) ^ ((Fin.last n : ℕ) + (Fin.last n : ℕ))) = 1`. Rewrite using `[← two_mul, pow_mul]`. Evaluate the numerical expressions.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Simplify using `only [hz0, mul_zero, zero_mul, Finset.sum_const_zero, zero_add]`. Rewrite using `[hsub, hll, hsgn]`. Expand and normalize the polynomial expressions, which then agree. Establish `hd` using `det_gramF_comb hG f M`. Rewrite `hd` using `[← hgdef, hgram, hM]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hd]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem det_step (hA : IsUnit (gramF τ G f).det)
     (hA' : IsUnit (gramF τ G (fun a : Fin n => f a.castSucc)).det) :

@@ -22,15 +22,15 @@ variable {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field 
     {V : Type} [AddCommGroup V] [Module LL V] [Module Qp V] [IsScalarTower Qp LL V]
 
 /- English proof (translation)
-The claim follows from `antitone_int_of_succ_le PD.Fil_anti h`.
+A detailed English derivation is pending.
 -/
 theorem fil_anti {a b : ℤ} (h : a ≤ b) : PD.Fil b ≤ PD.Fil a :=
   antitone_int_of_succ_le PD.Fil_anti h
 
 /- English proof (translation)
-Introduce and unpack `x ⟨y, rfl⟩`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v c`. Use `⟨v ⊗ₜ ⟨(c : BdR), fil_anti PD h c.2⟩, ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Proceed by induction. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using the standard rewrite rules. Consider the case `add y z hy hz => rw [map_add]`. Conclude with `Submodule.add_mem _ hy hz`.
+Simplify using the standard rewrite rules. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem filV_anti {a b : ℤ} (h : a ≤ b) :
     FilV PD (LL := LL) (V := V) b ≤ FilV PD (LL := LL) (V := V) a := by
@@ -43,9 +43,9 @@ theorem filV_anti {a b : ℤ} (h : a ≤ b) :
   | add y z hy hz => rw [map_add]; exact Submodule.add_mem _ hy hz
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, Submodule.zero_mem _⟩`. Consider the case `tmul v c`. Take `⟨a, ha⟩` from `PD.Fil_exh c`. Conclude with `⟨a, v ⊗ₜ ⟨c, ha⟩, by simp⟩`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Consider the case `add y z hy hz`. Take `⟨a, ha⟩` from `hy`. Take `⟨b, hb⟩` from `hz`. Conclude with `⟨min a b, Submodule.add_mem _ (filV_anti PD (min_le_left a b) ha) (filV_anti PD (min_le_right a b) hb)⟩`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_mem_filV (x : V ⊗[Qp] BdR) : ∃ a, x ∈ FilV PD (LL := LL) (V := V) a := by
   induction x using TensorProduct.induction_on with
@@ -60,11 +60,11 @@ theorem exists_mem_filV (x : V ⊗[Qp] BdR) : ∃ a, x ∈ FilV PD (LL := LL) (V
       (filV_anti PD (min_le_right a b) hb)⟩
 
 /- English proof (translation)
-Establish `key : ∀ s : Finset (V ⊗[Qp] BdR), ∃ a, ∀ x ∈ s, x ∈ FilV PD (LL` using `LL) (V := V) a := by classical`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact ⟨0, by simp⟩`. Consider the case `insert y s _ ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Take `⟨a, ha⟩` from `ih`. Take `⟨b, hb⟩` from `exists_mem_filV PD (LL := LL) y`. Use `⟨min a b, fun x hx => ?_⟩` and prove the remaining obligations. Break down `Finset.mem_insert.mp hx with rfl | hx` into its components or cases. Conclude with `filV_anti PD (min_le_right a b) hb`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Conclude with `filV_anti PD (min_le_left a b) (ha x hx)`. Take `⟨s, hs⟩ : (DdRE PD ρ τ).FG` from `Module.Finite.iff_fg.mp inferInstance`. Take `⟨a, ha⟩` from `key s`. Conclude with `⟨a, hs ▸ Submodule.span_le.mpr ha⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_DdRE_le_filV (ρ : Representation LL G V) (τ : K →ₐ[Qp] LL)
     [FiniteDimensional LL ↥(DdRE PD ρ τ)] :
@@ -86,19 +86,19 @@ theorem exists_DdRE_le_filV (ρ : Representation LL G V) (τ : K →ₐ[Qp] LL)
   exact ⟨a, hs ▸ Submodule.span_le.mpr ha⟩
 
 /- English proof (translation)
-Take `⟨a₀, ha₀⟩` from `exists_DdRE_le_filV PD ρ τ`. Establish `hF : ∀ b ≤ a₀, FildR PD ρ τ b = DdRE PD ρ τ` using `fun b hb => inf_eq_left.mpr (ha₀.trans (filV_anti PD hb))`. Use `set N : ℕ := (-a₀).toNat with hN`. Establish `hNa : -(N : ℤ) ≤ a₀` using `by have := Int.self_le_toNat (-a₀); omega`. Use `set f : ℤ → ℤ := fun a => (finrank LL ↥(FildR PD ρ τ a) : ℤ) with hf`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg : ∀ a, multV PD ρ τ a = f a - f (a + 1)` using `fun a => rfl`. Establish `hzero : ∀ a, a < -(N : ℤ) → multV PD ρ τ a = 0`. Introduce `a ha`. Establish `h1` using `hF a (by omega)`. Establish `h2` using `hF (a + 1) (by omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[multV, h1, h2, sub_self]`. Set `e : ℕ ↪ ℤ` to `⟨fun i => -((i : ℤ) + 1), fun i j h => by`. Establish `: -((i : ℤ) + 1) = -((j : ℤ) + 1)` using `h`. Use the proof step `omega⟩`. Establish `he : ∀ i, e i = -((i : ℤ) + 1)` using `fun _ => rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Establish `hsum : ∑ᶠ (a : ℤ) (_ : a < 0), multV PD ρ τ a = ∑ a ∈ (Finset.range N).map e, multV PD ρ τ a`. Apply `finsum_mem_eq_sum_of_inter_support_eq (s := Set.Iio (0 : ℤ))` to reduce the goal to its premises. Use extensionality with `a`. Simplify using `only [Set.mem_inter_iff, Set.mem_setOf_eq, Finset.coe_map, Finset.coe_range, Set.mem_image, Set.mem_Iio, Function.mem_support, he]`. Prove the components needed by the constructor for the conclusion.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Introduce and unpack `⟨ha, hs⟩`. Use `⟨⟨(-a - 1).toNat, ?_, ?_⟩, hs⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h; exact hs (hzero a (by omega))`. Use linear arithmetic over natural numbers and integers. Introduce and unpack `⟨⟨i, hi, rfl⟩, hs⟩`.
+Use linear arithmetic over natural numbers and integers. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `⟨by omega, hs⟩`. Rewrite using `[hsum, Finset.sum_map]`. Establish `hT` using `Finset.sum_range_sub (fun i : ℕ => f (-(i : ℤ))) N`. Establish `h2 : ∀ i ∈ Finset.range N, multV PD ρ τ (e i) = f (-((i + 1 : ℕ) : ℤ)) - f (-(i : ℤ))`. Introduce `i _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hg, he]`. Apply the tactic sequence `congr 2 <;> push_cast <;> ring`. Rewrite using `[Finset.sum_congr rfl h2, hT]`. Simplify using `only [Nat.cast_zero, neg_zero, hf]`. Rewrite using `[hF (-(N : ℤ)) hNa]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finsum_multV_neg (ρ : Representation LL G V) (τ : K →ₐ[Qp] LL)
     [FiniteDimensional LL ↥(DdRE PD ρ τ)] :
@@ -163,9 +163,9 @@ variable {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field 
     [TopologicalSpace G] [TopologicalSpace V] [ContinuousAdd V] [ContinuousConstSMul LL V]
 
 /- English proof (translation)
-Establish `hcob : ∀ g, cob ρ x g = ρ g x - x` using `fun g => rfl`. Use `⟨⟨?_, fun g h => ?_⟩, x ⊗ₜ[Qp] (1 : B), fun g => ?_⟩` and prove the remaining obligations. Establish `: (cob ρ x : G → V) = fun g => ρ g x + (-x)` using `funext fun g => by rw [hcob, sub_eq_add_neg]`. Rewrite using `[this]`. Conclude with `(hc x).add continuous_const`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [hcob, map_mul, Module.End.mul_apply, map_sub]`. Normalize the expressions using the abelian group laws. Rewrite using `[hcob, sub_tmul]`. Simplify using `[actVB]`.
+Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem coboundary_mem_blochKatoCocycles (ρ : Representation LL G V) (hc : ∀ x, Continuous fun g => ρ g x) (x : V) :
     cob ρ x ∈ finiteCocycles PD ρ := by
@@ -180,13 +180,13 @@ theorem coboundary_mem_blochKatoCocycles (ρ : Representation LL G V) (hc : ∀ 
     simp [actVB]
 
 /- English proof (translation)
-Take `⟨c, rfl⟩` from `Submodule.Quotient.mk_surjective _ κ`. Take `⟨c', hc', hq⟩` from `h`. Rewrite `hq` using `[← Submodule.Quotient.mk_smul]`. Establish `hq'` using `(Submodule.Quotient.eq _).mp hq`. Take `⟨x, -, hx⟩` from `hq'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hx' : (c' : G → V) - a • (c : G → V) = cob ρ x`. Establish `h3 : ((latticeCocycles L).subtype (c' - a • c) : G → V) = (c' : G → V) - a • (c : G → V)` using `by simp`. Rewrite using `[← h3, ← hx]`. Both sides reduce to the same expression. Establish `h1 : a • (c : G → V) ∈ finiteCocycles PD ρ`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `: a • (c : G → V) = (c' : G → V) - cob ρ x` using `by rw [← hx']; abel`. Rewrite using `[this]`. Conclude with `(finiteCocycles PD ρ).sub_mem hc'.2 (coboundary_mem_blochKatoCocycles PD ρ hc x)`. Establish `h2 : (c : G → V) ∈ finiteCocycles PD ρ`. Establish `e : a • (c : G → V) = algebraMap O LL a • (c : G → V)` using `(algebraMap_smul LL a _).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[e]`. Use `(finiteCocycles PD ρ).smul_mem (algebraMap O LL a)⁻¹ h1` as an intermediate fact. Rewrite `this` using `[inv_smul_smul₀ ha]`. Then use the resulting hypothesis. Conclude with `⟨c, ⟨c.2, h2⟩, rfl⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_H1fT_of_smul (ρ : Representation LL G V) (L : Lattice (O := O) ρ)
     (hc : ∀ x, Continuous fun g => ρ g x) (κ : LatticeCohomology L) (a : O) (ha : algebraMap O LL a ≠ 0)
@@ -213,13 +213,11 @@ theorem mem_H1fT_of_smul (ρ : Representation LL G V) (L : Lattice (O := O) ρ)
 end Sat
 
 /- English proof (translation)
-Introduce `D l _ K LL hA`. Use `haveI := K.2`. Use `haveI := LL.2`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `V _ _ _ _ _ _ _ _ _ ρ hc hcrys`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Use `letI : Fintype (↥K.1 →ₐ[ℚ_[l]] ↥LL.1) := Fintype.ofFinite _`. Establish `hBK` using `GlobalTheory.BlochKatoTied.blochKatoDim_of_tied l (D.loc l) (D.locA l) (D.locT l) K LL (GlobalTheory.H1fGeneratorBoundAlt.splits_of_good hA.2.2) V ρ hc hcrys`. Rewrite using `[hBK, finsum_eq_sum_of_fintype]`. Use `congr 1`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI := ((GlobalTheory.Per.Components.components_finrank l (D.loc l) (D.locA l) (D.locT l) K LL V ρ).1 τ).1`. Conclude with `(finsum_multV_neg _ ρ τ).symm`. Introduce `V _ _ _ _ _ _ _ _ _ _ _ ρ L hc _ κ a ha h`. Use `mem_H1fT_of_smul _ ρ L hc κ a ?_ h` and prove the remaining obligations. Introduce `h0`.
-
-Conclude with `ha (Subtype.ext h0)`. Conclude with `GlobalTheory.T.unramified_trivial_local l (D.loc l) (D.locA l) (D.locT l) K LL`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem blochKato_dimension_saturation_unramified : ∀ D : D7, Formalism.MainNotions.tableLineDegreeTwo.adm19 D := by
   intro D l _ K LL hA

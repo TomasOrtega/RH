@@ -7,17 +7,17 @@ open Filter UpperTheory.V.AlgebraTools
 open scoped TensorProduct
 
 /- English proof (translation)
-Introduce `κ _ _ n R _ P hm hd`. Establish `hb` using `fun j => (UpperTheory.V.AlgebraTools.splitAlg_basis n R (P j) (hm j) (hd j)).1`. Use `choose bj hbj using hb`. Set `f : ∀ j, SplitAlg (P j) n →ₐ[R] MSplitAlg P n` to `fun j => SplitAlg.lift (P j) n (MSplitAlg.root P n j) (MSplitAlg.prod_root P n j)`. Set `M : MultilinearMap R (fun j => SplitAlg (P j) n) (MSplitAlg P n)` to `(MultilinearMap.mkPiAlgebra R κ (MSplitAlg P n)).compLinearMap (fun j => (f j).toLinearMap)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hM : ∀ x, M x = ∏ j, f j (x j)` using `fun x => by`. Simplify using `[M, MultilinearMap.compLinearMap_apply, MultilinearMap.mkPiAlgebra_apply]`. Set `ψ : (⨂[R] j, SplitAlg (P j) n) →ₐ[R] MSplitAlg P n` to `PiTensorProduct.liftAlgHom M (by rw [hM]; simp) (fun x y => by rw [hM, hM, hM]; simp [Finset.prod_mul_distrib])`. Establish `hψt : ∀ x, ψ (PiTensorProduct.tprod R x) = ∏ j, f j (x j)` using `fun x => by`. Simplify using `[ψ, hM]`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hψs : ∀ j x, ψ (PiTensorProduct.singleAlgHom j x) = f j x` using `fun j x => by`. Rewrite using `[PiTensorProduct.singleAlgHom_apply, hψt, Fintype.prod_eq_single j (fun k hk => by simp [Pi.mulSingle_eq_of_ne hk])]`. Simplify using the standard rewrite rules. Set `φ : MSplitAlg P n →ₐ[R] (⨂[R] j, SplitAlg (P j) n)` to `MSplitAlg.lift P n (fun j i => PiTensorProduct.singleAlgHom j (SplitAlg.root (P j) n i)) (fun j => by`. Use `congrArg (Polynomial.map (PiTensorProduct.singleAlgHom (R := R) (A := fun j => SplitAlg (P j) n) j).toRingHom) (SplitAlg.prod_root (P j) n)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Polynomial.map_prod, Polynomial.map_map, AlgHom.toRingHom_eq_coe, AlgHom.comp_algebraMap, Polynomial.map_sub, Polynomial.map_X, Polynomial.map_C, RingHom.coe_coe] at this`. Conclude with `this)`. Establish `h1 : ψ.comp φ = AlgHom.id R (MSplitAlg P n)` using `MSplitAlg.hom_ext P n (fun j i => by`. Simplify using `only [AlgHom.comp_apply, AlgHom.id_apply, φ, MSplitAlg.lift_root, hψs, f, SplitAlg.lift_root])`. Establish `h2 : φ.comp ψ = AlgHom.id R _` using `PiTensorProduct.algHom_ext (fun j => SplitAlg.hom_ext (P j) n (fun i => by`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Simplify using `only [AlgHom.comp_apply, AlgHom.id_apply, hψs, f, SplitAlg.lift_root, φ, MSplitAlg.lift_root]))`. Set `e : MSplitAlg P n ≃ₐ[R] (⨂[R] j, SplitAlg (P j) n)` to `AlgEquiv.ofAlgHom φ ψ h2 h1`. Use `⟨(Basis.piTensorProduct bj).map e.symm.toLinearEquiv, fun c => ?_⟩` and prove the remaining obligations. Rewrite using `[Module.Basis.map_apply, Basis.piTensorProduct_apply]`. Use `show ψ _ = _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hψt]`. Use `Finset.prod_congr rfl (fun j _ => ?_)` and prove the remaining obligations. Rewrite using `[hbj j (c j), map_prod]`. Simplify using `only [map_pow, f, SplitAlg.lift_root]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.AlgebraTools.mSplitAlg_basis :
     ∀ (κ : Type) [Fintype κ] [DecidableEq κ] (n : ℕ) (R : Type) [CommRing R] (P : κ → Polynomial R), (∀ j, (P j).Monic) → (∀ j, (P j).natDegree = n) →

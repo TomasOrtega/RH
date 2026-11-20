@@ -15,7 +15,7 @@ section Shape
 variable {W : Wts X Pr.Word R} {Δ S a b' : ℝ} {c : X.Tau → ℝ} {code : Pr.Word → ℕ → ℕ}
 
 /- English proof (translation)
-Unfold `hcSeq`. Rewrite using `[dif_pos i.2]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem hcSeq_apply (W : Wts X Pr.Word R) (u : Pr.Word) (τ : X.Tau) (i : Fin R.k) :
     hcSeq W u τ i.1 = (((W.hc u τ).u i : ℚ) : ℝ) := by
@@ -23,12 +23,12 @@ theorem hcSeq_apply (W : Wts X Pr.Word R) (u : Pr.Word) (τ : X.Tau) (i : Fin R.
   rw [dif_pos i.2]
 
 /- English proof (translation)
-Conclude with `k_ge R` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem k_ge_real (R : Ranks) : (5 : ℝ) ≤ (R.k : ℝ) := by exact_mod_cast k_ge R
 
 /- English proof (translation)
-Rewrite using `[G.S_eq]`. Establish `h1` using `G.one_le_Δ`. Establish `h2` using `k_ge_real R`. Check the signs of the components of the expression.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression.
 -/
 theorem Grid.S_pos (G : Grid W Δ S c code) : 0 < S := by
   rw [G.S_eq]
@@ -37,9 +37,9 @@ theorem Grid.S_pos (G : Grid W Δ S c code) : 0 < S := by
   positivity
 
 /- English proof (translation)
-Establish `hk` using `k_ge R`. Establish `h1` using `G.cloud τ l (by omega)`. Establish `h2` using `G.cloud τ (R.k - 2) (by omega)`. Establish `h3` using `G.cloud_nonneg τ (R.k - 2) (by omega)`. Establish `hΔ` using `G.one_le_Δ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `cloudV at h1 h2`. Establish `h4 : (l : ℝ) + 1 ≤ ((R.k - 2 : ℕ) : ℝ)` using `by exact_mod_cast hl`. Establish `h5 : 4 * Δ * ((l : ℝ) + 1) ≤ 4 * Δ * ((R.k - 2 : ℕ) : ℝ)` using `mul_le_mul_of_nonneg_left h4 (by linarith)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem Grid.cloud_ge (G : Grid W Δ S c code) (τ : X.Tau) {l : ℕ} (hl : l < R.k - 2) : 4 * Δ ≤ vSeq W τ l := by
   have hk := k_ge R
@@ -53,9 +53,9 @@ theorem Grid.cloud_ge (G : Grid W Δ S c code) (τ : X.Tau) {l : ℕ} (hl : l < 
   linarith
 
 /- English proof (translation)
-Establish `h1` using `G.word u τ l hl`. Establish `h2` using `G.cloud_ge τ hl`. Establish `h3` using `G.cloud_le τ l (by omega)`. Establish `hΔ` using `G.one_le_Δ`. Establish `h4 : ((code u l : ℕ) : ℝ) ≤ 1` using `by exact_mod_cast G.code_le u l`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h5 : (0 : ℝ) ≤ ((code u l : ℕ) : ℝ)` using `Nat.cast_nonneg _`. Establish `h6 : ((code u l : ℕ) : ℝ) * Δ ≤ 1 * Δ` using `mul_le_mul_of_nonneg_right h4 (by linarith)`. Establish `h7 : 0 ≤ ((code u l : ℕ) : ℝ) * Δ` using `mul_nonneg h5 (by linarith)`. Apply the tactic sequence `constructor <;> linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem Grid.word_mem (G : Grid W Δ S c code) (u : Pr.Word) (τ : X.Tau) {l : ℕ} (hl : l < R.k - 2) :
     3 * Δ - 1 / 2 ≤ hcSeq W u τ (l + 1) ∧ hcSeq W u τ (l + 1) ≤ S := by
@@ -70,7 +70,7 @@ theorem Grid.word_mem (G : Grid W Δ S c code) (u : Pr.Word) (τ : X.Tau) {l : �
   constructor <;> linarith
 
 /- English proof (translation)
-Establish `h1` using `E.kS_le`. Establish `h2` using `k_ge_real R`. Establish `h3` using `G.S_pos`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem Ends.S_le_b' (G : Grid W Δ S c code) (E : Ends W a b' S) : 5 * S ≤ b' := by
   have h1 := E.kS_le
@@ -79,7 +79,7 @@ theorem Ends.S_le_b' (G : Grid W Δ S c code) (E : Ends W a b' S) : 5 * S ≤ b'
   nlinarith
 
 /- English proof (translation)
-Establish `h1` using `E.S_le_b' G`. Establish `h2` using `E.b'_le`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem Ends.a_ge (G : Grid W Δ S c code) (E : Ends W a b' S) : 40 * S ≤ a := by
   have h1 := E.S_le_b' G
@@ -87,21 +87,19 @@ theorem Ends.a_ge (G : Grid W Δ S c code) (E : Ends W a b' S) : 40 * S ≤ a :=
   linarith
 
 /- English proof (translation)
-Establish `h` using `G.word_mem u τ (l := i.1 - 1) (by omega)`. Rewrite `h` using `[show i.1 - 1 + 1 = i.1 by omega, hcSeq_apply]`. Establish `hΔ` using `G.one_le_Δ`. Conclude with `⟨by linarith [h.1], h.2⟩`. Use `top τ hτ := by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨h1, h2, h3, h4⟩` from `E.top u τ hτ`. Use `⟨h1, ?_, h3, h4⟩` and prove the remaining obligations. Establish `ha : 0 < a` using `by linarith [E.a_ge G, G.S_pos]`. Establish `hk` using `k_ge_real R`. Establish `h5 : 1 / (R.k : ℝ) ≤ 1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[div_le_one (by linarith)]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h6 : a * (1 + 1 / (R.k : ℝ)) ≤ a * 2` using `mul_le_mul_of_nonneg_left (by linarith) ha.le`. Combine the linear equalities and inequalities to obtain the conclusion. Use `oth_last τ hτ := by`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hk` using `k_ge R`. Establish `h1` using `E.oth_last u τ hτ`. Establish `h2` using `G.cloud_nonneg τ (R.k - 2) (by omega)`. Establish `h3` using `hcSeq_apply W u τ (kLast R)`. Establish `h4 : (kLast R).1 = R.k - 1` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h3` using `[h4]`. Rewrite using `[← h3, h1]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `oth_first τ hτ := by`. Establish `hk` using `k_ge R`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `(E.oth_first u τ hτ).2`. Establish `h2` using `G.cloud_le τ 0 (by omega)`. Establish `h3` using `hcSeq_apply W u τ (kFirst R)`. Establish `h4 : (kFirst R).1 = 0` using `rfl`. Rewrite `h3` using `[h4]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h3]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `k_le := by`. Rewrite using `[G.S_eq]`. Establish `hΔ` using `G.one_le_Δ`.
-
-Establish `hk` using `k_ge_real R`. Use the polynomial consequences of the given equalities and inequalities. Use `kS_le := E.kS_le`.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem hcShape_of (G : Grid W Δ S c code) (E : Ends W a b' S) (u : Pr.Word) : HCShape W u a b' S where
   cloud τ i h0 h1 := by
@@ -145,7 +143,7 @@ theorem hcShape_of (G : Grid W Δ S c code) (E : Ends W a b' S) (u : Pr.Word) : 
   kS_le := E.kS_le
 
 /- English proof (translation)
-The claim follows from `|Real.log (Formalism.LogVandermondeBounds.StandardLattice.vandN (hcSeq W u τ) R.k) - Real.log (Formalism.LogVandermondeBounds.StandardLattice.vandN (hcSeq W u' τ) R.k)| ≤ (R.k : ℝ) * (1 + Real.log (R.k : ℝ)) + 2 := by have hk := k_ge R have hΔ := G.one_le_Δ have hS : 4 * (R.k : ℝ …`.
+A detailed English derivation is pending.
 -/
 theorem vandVar_of (hW : W.Ok) (G : Grid W Δ S c code) (E : Ends W a b' S) (u u' : Pr.Word) (τ : X.Tau) :
     |Real.log (Formalism.LogVandermondeBounds.StandardLattice.vandN (hcSeq W u τ) R.k) - Real.log (Formalism.LogVandermondeBounds.StandardLattice.vandN (hcSeq W u' τ) R.k)| ≤
@@ -188,14 +186,14 @@ section Fields1
 variable {W : Wts X Pr.Word R} {Ch : Chars X Pr R.m} {Δ : ℝ} {c : X.Tau → ℝ} {code : Pr.Word → ℕ → ℕ}
 
 /- English proof (translation)
-Introduce `u` and use `wtWin_of_shape (hcShape_of G E u) hC`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem wtWinZ_col (A : ColArg W Ch) (G : Grid W Δ A.num.Sc c code) (E : Ends W A.num.sc.a A.num.sc.b' A.num.Sc)
     (hC : 2 ≤ A.num.C0) : ∀ u, WtWin W u A.num.C0 A.num.sc.a A.num.sc.b' A.num.Sc :=
   fun u => wtWin_of_shape (hcShape_of G E u) hC
 
 /- English proof (translation)
-Introduce `u u' τ` and use `vandVar_of hW G E u u' τ`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem vandVar_col {S a b' : ℝ} (hW : W.Ok) (G : Grid W Δ S c code) (E : Ends W a b' S) :
     ∀ u u' τ, |Real.log (Formalism.LogVandermondeBounds.StandardLattice.vandN (hcSeq W u τ) R.k) - Real.log (Formalism.LogVandermondeBounds.StandardLattice.vandN (hcSeq W u' τ) R.k)| ≤
@@ -203,7 +201,7 @@ theorem vandVar_col {S a b' : ℝ} (hW : W.Ok) (G : Grid W Δ S c code) (E : End
   fun u u' τ => vandVar_of hW G E u u' τ
 
 /- English proof (translation)
-Introduce `_ _` and use `weylDim_holds _`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem weylDim_col (W : Wts X Pr.Word R) : ∀ u τ, WeylDim (W.lamTrue u 0 τ) := fun _ _ => weylDim_holds _
 
@@ -219,12 +217,12 @@ structure NumsZ (n : ScNum) (LL : ℝ) : Prop where
   pow : ((X.f : ℝ) * R.m * R.N R.m) ^ 3 * (1 + n.C0 * R.m + 2 * n.C0) * LL ≤ n.sc.b'
 
 /- English proof (translation)
-The claim follows from `mul_pos (by linarith [sc.one_lt_alt]) (Real.exp_pos _)`.
+A detailed English derivation is pending.
 -/
 theorem scale_a_pos (sc : Scale) : 0 < sc.a := mul_pos (by linarith [sc.one_lt_alt]) (Real.exp_pos _)
 
 /- English proof (translation)
-Unfold `Scale.b'`. Use `div_le_self (scale_a_pos sc).le ?_` and prove the remaining obligations. Unfold `Scale.X'`. Conclude with `Real.one_le_exp (Real.rpow_nonneg (by linarith [sc.one_lt_alt]) _)`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem scale_b'_le_a (sc : Scale) : sc.b' ≤ sc.a := by
   unfold Scale.b'
@@ -233,7 +231,7 @@ theorem scale_b'_le_a (sc : Scale) : sc.b' ≤ sc.a := by
   exact Real.one_le_exp (Real.rpow_nonneg (by linarith [sc.one_lt_alt]) _)
 
 /- English proof (translation)
-Establish `hx` using `sc.one_lt_alt`. Unfold `Scale.a Scale.b`. Rewrite using `[Real.log_mul (by have := Real.exp_pos sc.L; positivity) hv.ne', Real.log_mul (by linarith) (Real.exp_pos _).ne', Real.log_exp]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem log_av_eq (sc : Scale) {v : ℝ} (hv : 0 < v) : Real.log (sc.a * v) = Real.log sc.x + sc.L + Real.log v := by
   have hx := sc.one_lt_alt
@@ -242,7 +240,7 @@ theorem log_av_eq (sc : Scale) {v : ℝ} (hv : 0 < v) : Real.log (sc.a * v) = Re
     Real.log_exp]
 
 /- English proof (translation)
-Rewrite using `[log_av_eq sc (by linarith)]`. Establish `h1 : 0 < Real.log sc.x` using `Real.log_pos sc.one_lt_alt`. Establish `h2 : 0 ≤ Real.log v` using `Real.log_nonneg hv`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem L_le_log_av (sc : Scale) {v : ℝ} (hv : 1 ≤ v) : sc.L ≤ Real.log (sc.a * v) := by
   rw [log_av_eq sc (by linarith)]
@@ -255,9 +253,9 @@ section Numbers
 variable {W : Wts X Pr.Word R} {Ch : Chars X Pr R.m}
 
 /- English proof (translation)
-Establish `h` using `(level_window_col W Ch hX hPr hbig hfk u hd hΓ hT _ _ le_rfl hup).2.2.1`. Establish `hL` using `one_lt_L n.sc`. Establish `hm : (2 : ℝ) ≤ (R.m : ℝ)` using `by exact_mod_cast R.two_le_m`. Establish `h2 : Real.log 2 ≤ 1`. Use `Real.log_two_lt_d9` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `h3 : (1 : ℝ) ≤ (R.m : ℝ) * n.sc.L` using `by nlinarith`. Unfold `logTC`. Unfold `xUpC at h`. Use the polynomial consequences of the given equalities and inequalities.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem logT_le_of (hX : X.Ok) (hPr : Pr.Ok) (hbig : 2 * X.f * R.k < Pr.g 0 - 1) (hfk : X.f ≤ R.k) (n : ScNum) {dsig : X.Tau → ℝ}
     (hd : ∀ τ, 0 < dsig τ) {Γ : ℝ} (hΓ : 1 ≤ Γ) (u : Pr.Word) (hT : InWindow W Ch dsig Γ u)
@@ -274,35 +272,33 @@ theorem logT_le_of (hX : X.Ok) (hPr : Pr.Ok) (hbig : 2 * X.f * R.k < Pr.g 0 - 1)
   nlinarith
 
 /- English proof (translation)
-Introduce `u`. Establish `hL0` using `one_lt_L n.sc`. Establish `hv : 1 ≤ vC X`. Use `N5.pi_le_v` as an intermediate fact. Use `Real.pi_gt_three` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hLle : n.sc.L ≤ LL`. Rewrite using `[hLL]`. Conclude with `L_le_log_av n.sc hv`. Establish `hLL1 : 1 ≤ LL` using `by linarith`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hCY : 0 ≤ n.CY`. Establish `h1` using `N5.log_g 0`. Establish `h2 : (0 : ℝ) ≤ Real.log (Pr.g 0)` using `Real.log_natCast_nonneg _`. Assume the negation of the conclusion as `hneg`. Establish `hneg'` using `not_le.mp hneg`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Use the polynomial consequences of the given equalities and inequalities. Establish `hC0 : 16 ≤ n.C0` using `by linarith [NZ.window_constant_ge]`. Establish `hm : (2 : ℝ) ≤ (R.m : ℝ)` using `by exact_mod_cast R.two_le_m`. Establish `hf : (1 : ℝ) ≤ (X.f : ℝ)` using `by exact_mod_cast iface_f_pos hX`. Establish `hN : (2 : ℝ) ≤ (R.N R.m : ℝ)` using `by exact_mod_cast two_le_N R`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlogT0 : 0 ≤ logTC Pr u` using `Real.log_natCast_nonneg _`. Establish `hTle : logTC Pr u ≤ n.C0 * R.m * LL`. Establish `h1` using `logT_le_of hX hPr hbig hfk n hd hΓ u (hT u) (hup u)`. Establish `h2 : (16 + 3 * n.CY) * R.m * n.sc.L ≤ n.C0 * R.m * LL`. Establish `h3 : (16 + 3 * n.CY) * R.m ≤ n.C0 * R.m` using `mul_le_mul_of_nonneg_right NZ.window_constant_ge (by linarith)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Conclude with `mul_le_mul h3 hLle (by linarith) (by positivity)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hgle : loggC Pr ≤ n.C0 * LL`. Unfold `loggC`. Establish `hg : ∀ i, (0 : ℝ) < Pr.g i` using `fun i => by exact_mod_cast (hPr.g_prime i).pos`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Real.log_mul (hg 0).ne' (hg 1).ne']`. Establish `h1` using `N5.log_g 0`. Establish `h2` using `N5.log_g 1`. Establish `h3 : 2 * n.CY * n.sc.L ≤ n.C0 * LL` using `mul_le_mul (by linarith [NZ.window_constant_ge]) hLle (by linarith) (by linarith)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set K : ℝ := ((X.f : ℝ) * R.m * R.N R.m) ^ 3 with hK`. Establish `hKe : K = (X.f : ℝ) ^ 3 * (R.m : ℝ) ^ 3 * (R.N R.m : ℝ) ^ 3` using `by rw [hK]; ring`. Establish `hf3 : (1 : ℝ) ≤ (X.f : ℝ) ^ 3` using `one_le_pow₀ hf`. Establish `hm3 : (1 : ℝ) ≤ (R.m : ℝ) ^ 3` using `one_le_pow₀ (by linarith)`. Establish `hN3 : (R.N R.m : ℝ) ≤ (R.N R.m : ℝ) ^ 3` using `le_self_pow₀ (by linarith) (by norm_num)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Establish `hK1 : (R.m : ℝ) ^ 3 * R.N R.m ≤ K`. Rewrite using `[hKe]`. Combine the equalities or inequalities in the displayed calculation. Establish `hK2 : (R.N R.m : ℝ) ≤ K`. Use `le_trans ?_ hK1` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hpow` using `NZ.pow`. Establish `hQ0 : 0 ≤ n.C0 * R.m` using `by positivity`. Establish `hmain : (R.N R.m : ℝ) * ((1 + n.C0 * R.m) * LL) ≤ n.sc.b'`. Use `le_trans ?_ hpow` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[mul_assoc]`. Use `mul_le_mul hK2 ?_ (by positivity) (by linarith)` and prove the remaining obligations. Conclude with `mul_le_mul_of_nonneg_right (by linarith) (by linarith)`. Establish `hsum : LL + logTC Pr u ≤ (1 + n.C0 * R.m) * LL` using `by linarith`. Use `numbersC_of Pr R u hLL1 hv (by rw [hLL]) ?_ (scale_b'_le_a n.sc) hTle hgle NZ.eta_nonneg NZ.S_nonneg NZ.small ?_ ?_ ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Use `le_trans ?_ hmain` and prove the remaining obligations. Establish `: (1 : ℝ) ≤ (1 + n.C0 * R.m) * LL` using `by nlinarith`. Use the polynomial consequences of the given equalities and inequalities. Establish `h1 : (R.N R.m : ℝ) * (LL + logTC Pr u) ≤ n.sc.b'` using `le_trans (mul_le_mul_of_nonneg_left hsum (by linarith)) hmain`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Use `le_trans ?_ hmain` and prove the remaining obligations. Establish `h1 : n.C0 * R.m * LL ≤ (R.N R.m : ℝ) * (n.C0 * R.m * LL)`. Establish `: 0 ≤ n.C0 * R.m * LL` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities. Use the polynomial consequences of the given equalities and inequalities.
+Use the polynomial consequences of the given equalities and inequalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `le_trans ?_ hpow` and prove the remaining obligations. Establish `h1 : (1 + 2 * n.C0) * ((R.m : ℝ) ^ 3 * R.N R.m) ≤ (1 + n.C0 * R.m + 2 * n.C0) * K` using `mul_le_mul (by linarith) hK1 (by positivity) (by linarith)`. Establish `h2 : (1 + n.C0 * R.m + 2 * n.C0) * K ≤ (1 + n.C0 * R.m + 2 * n.C0) * K * LL`. Establish `: 0 ≤ (1 + n.C0 * R.m + 2 * n.C0) * K`. Establish `: 0 ≤ K` using `by linarith`.
-
-Check the signs of the components of the expression. Use the polynomial consequences of the given equalities and inequalities. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Check the signs of the components of the expression. Use the polynomial consequences of the given equalities and inequalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem numbersZ_of (hX : X.Ok) (hPr : Pr.Ok) (hbig : 2 * X.f * R.k < Pr.g 0 - 1) (hfk : X.f ≤ R.k) (n : ScNum) {LL : ℝ}
     (hLL : LL = Real.log (n.sc.a * vC X)) (N5 : Nums5 X Pr R n) (NZ : NumsZ X R n LL) {dsig : X.Tau → ℝ}
@@ -396,7 +392,7 @@ theorem numbersZ_of (hX : X.Ok) (hPr : Pr.Ok) (hbig : 2 * X.f * R.k < Pr.g 0 - 1
       _ = K * (1 + n.C0 * R.m + 2 * n.C0) * LL := by ring
 
 /- English proof (translation)
-The claim follows from `numbersZ_of hX hPr (hS.g_big 0) hfk A.num rfl N5 NZ hd hΓ hT hup`.
+A detailed English derivation is pending.
 -/
 theorem numbersZ_col (hX : X.Ok) (hPr : Pr.Ok) (A : ColArg W Ch) (hS : Sizes Pr W A.num.sc.a) (hfk : X.f ≤ R.k)
     (N5 : Nums5 X Pr R A.num) (NZ : NumsZ X R A.num (logAvC X A.num)) (hd : ∀ τ, 0 < A.dsig τ) {Γ : ℝ} (hΓ : 1 ≤ Γ)
@@ -405,9 +401,9 @@ theorem numbersZ_col (hX : X.Ok) (hPr : Pr.Ok) (A : ColArg W Ch) (hS : Sizes Pr 
   numbersZ_of hX hPr (hS.g_big 0) hfk A.num rfl N5 NZ hd hΓ hT hup
 
 /- English proof (translation)
-Establish `hL0` using `one_lt_L n.sc`. Establish `h1` using `N5.log_g 0`. Establish `h2 : (0 : ℝ) ≤ Real.log (Pr.g 0)` using `Real.log_natCast_nonneg _`. Establish `hCY : 0 ≤ n.CY`. Assume the negation of the conclusion as `hneg`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hneg'` using `not_le.mp hneg`. Use the polynomial consequences of the given equalities and inequalities. Combine the linear relations using `[NZ.window_constant_ge]`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem window_constant_ge_sixteen (n : ScNum) {LL : ℝ} (N5 : Nums5 X Pr R n) (NZ : NumsZ X R n LL) : 16 ≤ n.C0 := by
   have hL0 := one_lt_L n.sc
@@ -420,7 +416,7 @@ theorem window_constant_ge_sixteen (n : ScNum) {LL : ℝ} (N5 : Nums5 X Pr R n) 
   linarith [NZ.window_constant_ge]
 
 /- English proof (translation)
-The claim follows from `{ h with weightConst_nonneg := by linarith [window_constant_ge_sixteen A.num N5 NZ] numbersZ := numbersZ_col hX hPr A hS hfk N5 NZ hd hΓ hT h.log_height_upper_bound wtWinZ := wtWinZ_col A G E (by linarith [window_constant_ge_sixteen A.num N5 NZ]) weylDim := weylDim_col W vandVar …`.
+A detailed English derivation is pending.
 -/
 example (hX : X.Ok) (hPr : Pr.Ok) (hW : W.Ok) (A : ColArg W Ch) (hS : Sizes Pr W A.num.sc.a) (hfk : X.f ≤ R.k)
     {Δ : ℝ} {c : X.Tau → ℝ} {code : Pr.Word → ℕ → ℕ} (G : Grid W Δ A.num.Sc c code) (E : Ends W A.num.sc.a A.num.sc.b' A.num.Sc)

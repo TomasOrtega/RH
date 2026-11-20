@@ -26,11 +26,11 @@ instance owPair' (w : D.what₂.places.Pl) :
 variable (u : D.what₂.Word)
 
 /- English proof (translation)
-Establish `hkpos : (0 : ℚ) < (D.R.k : ℚ)`. Establish `h` using `D.R.m_add_three_le_k`. Conclude with `(show 0 < D.R.k by omega)` after adjusting the coercions. Use `choose n hn hnq using fun c => cls_len_D D u A w hw v Lv c (hLc0 c) (B c) (B' c) (hB c) (hB' c) (hunit c)`. Use `⟨∑ c, n c, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Unfold `Formalism.MainNotions.product_first_zeroth_parts.len`. Rewrite using `[len_quot_semilinear (σ' := ((owEquiv D w).symm : bwA_Ow D w →+* Ow D w)) Φ hΦ, hA, hS, len_pi_sum, Nat.cast_sum]`. Conclude with `Finset.sum_congr rfl fun c _ => hn c`. Establish `e : ∀ c, (n c : ℚ) = (D.what₂.places.ramIdx w : ℚ) * ((∏ τ, Module.finrank ℤ (delSq ℤ (D.R.N 0) ((D.fm u).lam 0 τ)) : ℕ) : ℚ) * ((wsum ((D.fm u).lam 0 ((D.fm u).tauOf w v)) : ℚ) + (D.R.k : ℚ) * ((D.fm u).bTop ((D.fm u).tauOf w v) : ℚ)) / (D.R.k : ℚ)` using `fun c => by`. Rewrite using `[eq_div_iff hkpos.ne', mul_comm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Conclude with `hnq c`. Rewrite using `[Nat.cast_sum, Finset.sum_congr rfl fun c _ => e c, Finset.sum_const, Finset.card_univ, hd, nsmul_eq_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem lenLen2_of_coord (A : AtTTied u) (Lv : LvTied u A 0 (Nat.zero_le _)) (w : D.what₂.places.Pl) (hw : OverT D u w)
     (v : (D.mem u).A.vT)

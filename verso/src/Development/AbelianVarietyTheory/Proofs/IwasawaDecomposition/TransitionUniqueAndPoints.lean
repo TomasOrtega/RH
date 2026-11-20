@@ -17,11 +17,11 @@ open GlobalTheory.ModelCompare GlobalTheory.TransitionUnique
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {D : Datum H}
 
 /- English proof (translation)
-Set `o₁` to `objOfSABMap o ν`. Set `n : ObjMap o₁ o r` to `objMapOfSABMap o ν`. Set `n' : ObjMap o₁ o r` to `⟨ν', fun a => by`. Take `⟨x, h, h'⟩` from `hM a`. Conclude with `(congrArg (fun z => z.left ≫ ν'.φ) (sec_eq_secPull ν h)).symm.trans h', fun a => by`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨x, h, h'⟩` from `hA a`. Conclude with `(congrArg (fun z => z.left ≫ ν'.φ) (sec_eq_secPull ν h)).symm.trans h'⟩`. Take `⟨o₂, ⟨q⟩⟩` from `obj_pull E H D l B B b b (RingHom.id _) _ _ (r ≫ s) (y ≫ r ≫ s) y rfl rfl ((Category.comp_id _).symm.trans (congrArg ((y ≫ r ≫ s) ≫ ·) (Spec.map_id _).symm)) o₁`. Take `⟨m, hm⟩` from `ObjComp.objMap_comp n q`. Take `⟨m', hm'⟩` from `ObjComp.objMap_comp n' q`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : q.toSABMap.φ ≫ ν.φ = q.toSABMap.φ ≫ ν'.φ` using `hm.symm.trans ((objMap_unique_of_field firstFiveLaws.1.serre m m').trans hm')`. Establish `hp : IsPullback q.toSABMap.φ o₂.t.G.hom t.G.hom y` using `q.toSABMap.cart.1`. Rewrite using `[← hp.lift_fst g u hg]`. Conclude with `(Category.assoc _ _ _).trans ((congrArg (hp.lift g u hg ≫ ·) e).trans (Category.assoc _ _ _).symm)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem phi_eq_on_fibre {l : Level H} {B : Type} [CommRing B] {b : Base l B} {S S' : Scheme.{0}} {s : S ⟶ Sp B}
     (o : Obj D l b s) {t : SAB H S'} {r : S' ⟶ S} (ν ν' : SABMap t o.t r)
@@ -49,13 +49,13 @@ theorem phi_eq_on_fibre {l : Level H} {B : Type} [CommRing B] {b : Base l B} {S 
   exact (Category.assoc _ _ _).trans ((congrArg (hp.lift g u hg ≫ ·) e).trans (Category.assoc _ _ _).symm)
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw Xo p W Y i i₂ τ τ' mu mu' hc h h'`. Take `⟨b, π, r, hb, h₁, h₂, hf, h₃, h₄, h₅⟩` from `h`. Take `⟨b', π', r', hb', h₁', h₂', hf', h₃', h₄', h₅'⟩` from `h'`. Take `rfl : b = b'` from `RingHom.ext fun x => Subtype.ext (Subtype.ext ((hb x).trans (hb' x).symm))`. Take `rfl : τ = τ'` from `isTransition_unique E H Dw _ _ _ _ _ _ W (Y i) (Y i₂) b τ τ' hc hb ⟨π, mu, r, h₁, h₂, hf, h₃, h₄, h₅⟩ ⟨π', mu', r', h₁', h₂', hf', h₃', h₄', h₅'⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨rfl, fun k _ y T s g hg => ?_⟩` and prove the remaining obligations. Use `mono_spMap_subtype (i.c.V W)` as an intermediate fact. Use `(Y i).jQ_open` as an intermediate fact. Establish `: Mono (Y i).j`. Unfold `ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model.j`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `infer_instance`. Take `rfl : r = r'` from `by rw [← cancel_mono (Y i).j, ← h₃, ← h₃']`. Take `⟨n, hn⟩` from `LevelCover.sab_comp (Y i₂).m mu h₃`. Take `⟨n', hn'⟩` from `LevelCover.sab_comp (Y i₂).m mu' h₃'`. Take `⟨ν, hν⟩` from `LevelCover.sab_cancel (Y i).m n r rfl`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨ν', hν'⟩` from `LevelCover.sab_cancel (Y i).m n' r rfl`. Establish `hp : IsPullback (Y i₂).m.φ (Y i₂).oF.t.G.hom (Y i₂).t.G.hom (Y i₂).j` using `(Y i₂).m.cart.1`. Establish `hg' : g ≫ (Y i₂).t.G.hom = (s ≫ y) ≫ (Y i₂).j` using `by rw [hg, Category.assoc]`. Establish `e` using `phi_eq_on_fibre (Y i).oF ν ν' (fun a => ⟨_, LevelCover.sec_cancel ν (Y i).m _ _ (by rw [hν, hn]; exact h₄ a), LevelCover.sec_cancel ν' (Y i).m _ _ (by rw [hν', hn']; exact h₄' a)⟩) (fun a => ⟨_, LevelCover.sec_cancel ν (Y i).m _ _ (by rw [hν, hn]; exact h₅ a), LevelCover.sec_canc …`. Rewrite using `[← hp.lift_fst g (s ≫ y) hg', Category.assoc, Category.assoc, ← hn, ← hn', ← hν, ← hν', ← Category.assoc, e, Category.assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trans_unique : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (Xo : ∀ l : Level H, Moduli Dw l) (p : ℕ) (W : ValuationSubring ℂ) (Y : LocalSystem Xo p W) (i i₂ : Idx H p) (τ τ' : (Y i₂).X ⟶ (Y i).X) (mu : SABMap (Y i₂).t (Y i).t τ) (mu' : SABMap (Y i₂).t (Y i).t τ'), i.c.F ≤ i₂.c.F → IsTrans i i₂ τ mu → IsTrans i i₂ τ' mu' → τ = τ' ∧ ∀ (k : Type) [Field k] (y : Sp k ⟶ (Xo i₂.l).XF i₂.c) (T : Scheme.{0}) (s : T ⟶ Sp k) (g : T ⟶ (Y i₂).t.G.left), g ≫ (Y i₂).t.G.hom = s ≫ y ≫ (Y i₂).j → g ≫ mu.φ = g ≫ mu'.φ := by
   intro E _ _ _ H Dw Xo p W Y i i₂ τ τ' mu mu' hc h h'

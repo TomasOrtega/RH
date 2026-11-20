@@ -10,7 +10,7 @@ namespace Formalism.L2.SG.ModelMeasure
 open Formalism.MainNotions.BigCellDensity
 
 /- English proof (translation)
-Take `⟨k0, rfl⟩ : ∃ k0, k = k0 + 1` from `⟨k - 1, by have := Ds.k_pos; omega⟩`. Conclude with `Formalism.L2.SG.flagStabilizerModel.mp_model pN Ds hδ hd hdm hZ μ hconc c hmap`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem mp_modelK {r k : ℕ} (pN : Formalism.MainNotions.S.Point ℂ (r + 1)) {Wp Wq : Type} [NormedAddCommGroup Wp]
     [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] (Ds : Formalism.FourierDecayAlt.B.RealPlaceData k r Wp Wq)

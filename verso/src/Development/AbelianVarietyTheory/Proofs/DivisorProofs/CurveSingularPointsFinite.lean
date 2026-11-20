@@ -12,7 +12,7 @@ open GlobalTheory GlobalTheory.CxPts GlobalTheory.VB
 namespace GlobalTheory.CurvePID
 
 /- English proof (translation)
-Establish `e : topologicalKrullDim X = Order.krullDim X` using `Order.krullDim_eq_of_orderIso (irreducibleSetEquivPoints (α := X))`. Use `Order.coheight_le_krullDim x` as an intermediate fact. Rewrite `this` using `[← e, hd]`. Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coheight_le_one {X : Scheme.{0}} (hd : topologicalKrullDim X = 1) (x : X) :
     Order.coheight x ≤ 1 := by
@@ -23,11 +23,11 @@ theorem coheight_le_one {X : Scheme.{0}} (hd : topologicalKrullDim X = 1) (x : X
   exact_mod_cast this
 
 /- English proof (translation)
-Take `⟨S, hS, hc, hi, rfl⟩` from `NoetherianSpace.exists_finite_set_isClosed_irreducible hs`. Use `hS.sUnion fun t ht => ?_` and prove the remaining obligations. Take `⟨x, hx⟩` from `QuasiSober.sober (hi t ht) (hc t ht)`. Establish `hne : x ≠ genericPoint X`. Introduce and unpack `rfl`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `hη ⟨t, ht, hx.mem⟩`. Use `(Set.finite_singleton x).subset fun y hy => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hyx`. Establish `h1 : y < x` using `lt_of_le_not_ge (show x ⤳ y from hx.specializes hy) fun h => hyx ((show y ⤳ x from h).antisymm (hx.specializes hy)).eq`. Establish `h2 : x < genericPoint X` using `lt_of_le_not_ge (show _ ⤳ x from genericPoint_specializes x) fun h => hne ((show x ⤳ _ from h).antisymm (genericPoint_specializes x)).eq`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `coheight_le_one hd y`. Establish `h4 : Order.coheight x < Order.coheight y` using `Order.coheight_strictAnti h1 ((coheight_le_one hd x).trans_lt (by simp))`. Establish `h5 : Order.coheight (genericPoint X) < Order.coheight x` using `Order.coheight_strictAnti h2 ((coheight_le_one hd _).trans_lt (by simp))`. Conclude with `absurd (h4.trans_le h3) (not_lt.2 (Order.one_le_iff_pos.2 (zero_le.trans_lt h5)))`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finite_of_isClosed {X : Scheme.{0}} [IsIntegral X] [NoetherianSpace X]
     (hd : topologicalKrullDim X = 1) {s : Set X} (hs : IsClosed s) (hη : genericPoint X ∉ s) :
@@ -52,11 +52,9 @@ theorem finite_of_isClosed {X : Scheme.{0}} [IsIntegral X] [NoetherianSpace X]
   exact absurd (h4.trans_le h3) (not_lt.2 (Order.one_le_iff_pos.2 (zero_le.trans_lt h5)))
 
 /- English proof (translation)
-Establish `: Smooth (f.smoothLocus.ι ≫ f)`. Rewrite using `[← Scheme.Hom.smoothLocus_eq_top_iff, ← Scheme.Hom.preimage_smoothLocus_eq]`. Simplify using the standard rewrite rules. Establish `hn` using `(forall_isDomain_and_isIntegrallyClosed_stalk_of_smooth (f.smoothLocus.ι ≫ f) (fun y => by`. Establish `hf : IsField ((Spec (.of k)).presheaf.stalk y)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Ring.KrullDimLE 0 ((Spec (.of k)).presheaf.stalk y)` using `krullDimLE_of_coheight_le (by`. Establish `: Subsingleton (Spec (.of k))` using `inferInstanceAs (Subsingleton (PrimeSpectrum k))`. Conclude with `(Order.coheight_eq_zero.2 (fun b _ => (Subsingleton.elim b y).le)).le)`. Conclude with `Ring.KrullDimLE.isField_of_isDomain`. Set `` to `hf.toField`.
-
-Conclude with `⟨inferInstance, inferInstance⟩) ⟨x, hx⟩).2`. Conclude with `IsIntegrallyClosed.of_equiv (f.smoothLocus.stalkIso ⟨x, hx⟩).commRingCatIsoToRingEquiv`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isIntegrallyClosed_stalk {k : Type} [Field k] {X : Scheme.{0}} (f : X ⟶ Spec (.of k))
     [LocallyOfFinitePresentation f] {x : X} (hx : x ∈ f.smoothLocus) :
@@ -77,11 +75,11 @@ theorem isIntegrallyClosed_stalk {k : Type} [Field k] {X : Scheme.{0}} (f : X �
   exact IsIntegrallyClosed.of_equiv (f.smoothLocus.stalkIso ⟨x, hx⟩).commRingCatIsoToRingEquiv
 
 /- English proof (translation)
-Introduce `κ _ _ C _ _ hC`. Use `hC.isNoetherian` as an intermediate fact. Use `hC.isProperCurve.isProper` as an intermediate fact. Set `f : C ⟶ Spec (.of κ)` to `strHom κ C`. Establish `: IsProper f` using `this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `: LocallyOfFinitePresentation f` using `inferInstance`. Establish `hη : genericPoint C ∈ f.smoothLocus` using `f.genericPoint_mem_smoothLocus_of_perfectField`. Use `(finite_of_isClosed hC.dim_eq f.smoothLocus.2.isClosed_compl fun h => h hη).subset fun x hx hU => hx ?_` and prove the remaining obligations. Establish `hn` using `isIntegrallyClosed_stalk f hU`. Establish `h1 : Ring.KrullDimLE 1 (C.presheaf.stalk x)` using `krullDimLE_of_coheight_le (coheight_le_one hC.dim_eq x)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : IsIntegrallyClosed (C.presheaf.stalk x) ∧ ∀ P : Ideal (C.presheaf.stalk x), P ≠ ⊥ → P.IsPrime → P = IsLocalRing.maximalIdeal _` using `⟨hn, fun P h0 hP => IsLocalRing.eq_maximalIdeal (Ring.krullDimLE_one_iff_of_noZeroDivisors.mp h1 P h0 hP)⟩`. Conclude with `((tfae_of_isNoetherianRing_of_isLocalRing_of_isDomain (C.presheaf.stalk x)).out 0 3).mpr h3`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finite_not_isPrincipalIdealRing : ∀ (κ : Type) [Field κ] [CharZero κ] (C : Scheme.{0}) [Algebra κ Γ(C, ⊤)] [IsIntegral C], IsProjCurve κ C → {x : C | ¬ IsPrincipalIdealRing (C.presheaf.stalk x)}.Finite := by
   intro κ _ _ C _ _ hC

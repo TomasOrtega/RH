@@ -12,7 +12,7 @@ section ClPfNat
 variable {k₀ rS r t : ℕ}
 
 /- English proof (translation)
-Unfold `betaExponentOfRanks symIdx`. Establish `h0` using `Nat.zero_le ((p - r) / t)`. Apply the tactic sequence `split_ifs <;> constructor <;> intro _ <;> omega`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem clPf_beta_lt_iff (hr : k₀ + rS < r) (p : ℕ) : betaExponentOfRanks k₀ rS r t p < r ↔ p < r := by
   unfold betaExponentOfRanks symIdx
@@ -20,7 +20,7 @@ theorem clPf_beta_lt_iff (hr : k₀ + rS < r) (p : ℕ) : betaExponentOfRanks k�
   split_ifs <;> constructor <;> intro _ <;> omega
 
 /- English proof (translation)
-Unfold `betaExponentOfRanks symIdx at h`. Establish `h0` using `Nat.zero_le ((u - r) / t)`. Apply the tactic sequence `split_ifs at h <;> omega`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem clPf_beta_inj (hr : k₀ + rS < r) {p u : ℕ} (hp : p < r) (h : betaExponentOfRanks k₀ rS r t u = betaExponentOfRanks k₀ rS r t p) : u = p := by
   unfold betaExponentOfRanks symIdx at h
@@ -28,18 +28,18 @@ theorem clPf_beta_inj (hr : k₀ + rS < r) {p u : ℕ} (hp : p < r) (h : betaExp
   split_ifs at h <;> omega
 
 /- English proof (translation)
-Unfold `betaExponentOfRanks`. Rewrite using `[if_neg (show ¬ p < r by omega)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem clPf_beta_of_ge {p : ℕ} (hp : r ≤ p) : betaExponentOfRanks k₀ rS r t p = r + (p - r) / t := by
   unfold betaExponentOfRanks
   rw [if_neg (show ¬ p < r by omega)]
 
 /- English proof (translation)
-Substitute `hA` using the available equality. Distinguish the cases in `hp : p < r`. Use linear arithmetic over natural numbers and integers. Establish `hpr : ¬ p' < r → (p' - r) / t < J` using `fun h' => (Nat.div_lt_iff_lt_mul ht).mpr (by omega)`. Establish `h0` using `Nat.zero_le ((p - r) / t)`.
+Substitute using the available equality. Consider separately whether the proposition holds or fails. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0'` using `Nat.zero_le ((p' - r) / t)`. Establish `hp2 : (p - r) / t < J`. Distinguish the cases in `h' : p' < r`. Apply the tactic sequence `unfold betaExponentOfRanks symIdx at h split_ifs at h <;> omega`. Establish `h''` using `hpr h'`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Unfold `betaExponentOfRanks symIdx at h`. Apply the tactic sequence `split_ifs at h <;> omega`. Establish `h3` using `(Nat.div_lt_iff_lt_mul ht).mp hp2`. Use linear arithmetic over natural numbers and integers.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem clPf_beta_A (hr : k₀ + rS < r) (ht : 0 < t) {A J : ℕ} (hA : A = r + J * t) {p p' : ℕ} (hp' : p' < A)
     (h : betaExponentOfRanks k₀ rS r t p ≤ betaExponentOfRanks k₀ rS r t p') : p < A := by
@@ -60,7 +60,7 @@ theorem clPf_beta_A (hr : k₀ + rS < r) (ht : 0 < t) {A J : ℕ} (hA : A = r + 
   omega
 
 /- English proof (translation)
-Unfold `betaExponentOfRanks`. Use `split_ifs with hu'`. Apply the tactic sequence `unfold symIdx split_ifs <;> omega`. Establish `h` using `(Nat.div_lt_iff_lt_mul ht).mpr (show u - r < J * t by omega)`. Use linear arithmetic over natural numbers and integers.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem clPf_beta_lt_blk (hr : k₀ + rS < r) (ht : 0 < t) {J u : ℕ} (hu : u < r + J * t) :
     betaExponentOfRanks k₀ rS r t u < r + J := by
@@ -72,7 +72,7 @@ theorem clPf_beta_lt_blk (hr : k₀ + rS < r) (ht : 0 < t) {J u : ℕ} (hu : u <
     omega
 
 /- English proof (translation)
-Unfold `betaExponentOfRanks symIdx at h1 h2`. Establish `h0` using `Nat.zero_le ((u - r) / t)`. Establish `h0'` using `Nat.zero_le ((p - r) / t)`. Establish `h0''` using `Nat.zero_le ((k₀ + rS - r) / t)`. Apply the tactic sequence `split_ifs at h1 h2 <;> omega`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem clPf_beta_eps (hr : k₀ + rS < r) {p u : ℕ} (hp : p < k₀) (h1 : betaExponentOfRanks k₀ rS r t p ≤ betaExponentOfRanks k₀ rS r t u)
     (h2 : betaExponentOfRanks k₀ rS r t u ≤ betaExponentOfRanks k₀ rS r t (k₀ + rS)) (hu : u ≠ k₀ + rS) : u < k₀ := by
@@ -83,9 +83,9 @@ theorem clPf_beta_eps (hr : k₀ + rS < r) {p u : ℕ} (hp : p < k₀) (h1 : bet
   split_ifs at h1 h2 <;> omega
 
 /- English proof (translation)
-Distinguish the cases in `hu : u < r`. It suffices to derive a contradiction. Unfold `betaExponentOfRanks symIdx at h`. Apply the tactic sequence `split_ifs at h <;> omega`. Rewrite `h` using `[clPf_beta_of_ge (by omega)]`.
+Consider separately whether the proposition holds or fails. It suffices to derive a contradiction. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hd : (u - r) / t = i` using `by omega`. Establish `h1` using `Nat.div_add_mod (u - r) t`. Rewrite `h1` using `[hd, Nat.mul_comm]`. Establish `h2` using `Nat.mod_lt (u - r) ht`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem clPf_beta_blk (hr : k₀ + rS < r) (ht : 0 < t) {i u : ℕ} (h : betaExponentOfRanks k₀ rS r t u = r + i) :
     r + i * t ≤ u ∧ u < r + i * t + t := by
@@ -114,9 +114,9 @@ def clPfPat (k₀ rS r t N A : ℕ) (X : ℕ → ℕ → k) : Prop :=
 def clPfMul (N : ℕ) (X Y : ℕ → ℕ → k) : ℕ → ℕ → k := fun p p' => ∑ u ∈ Finset.range N, X p u * Y u p'
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Apply `h` to reduce the goal to its premises. Unfold `clPfMul`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `u hu`. Rewrite `hu` using `[Finset.mem_range]`. Distinguish the cases in `hx : X p u = 0`. Rewrite using `[hx, zero_mul]`. Rewrite using `[hc u hu hx, mul_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem clPf_exists_of_sum {N : ℕ} {X Y : ℕ → ℕ → k} {p p' : ℕ} (h : clPfMul N X Y p p' ≠ 0) :
     ∃ u, u < N ∧ X p u ≠ 0 ∧ Y u p' ≠ 0 := by
@@ -132,9 +132,9 @@ theorem clPf_exists_of_sum {N : ℕ} {X Y : ℕ → ℕ → k} {p p' : ℕ} (h :
   · rw [hc u hu hx, mul_zero]
 
 /- English proof (translation)
-Unfold `clPfMul`. Rewrite using `[Finset.sum_eq_single p']`. Rewrite using `[hX1 p' hp', hY1 p' hp', mul_one]`. Introduce `u hu hne`. Rewrite `hu` using `[Finset.mem_range]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Assume the negation of the conclusion as `h0`. Establish `h0' : X p' u * Y u p' ≠ 0` using `h0`. Conclude with `hne (clPf_beta_inj hr hp' (le_antisymm (hY u hu hne (right_ne_zero_of_mul h0')) (hX u hu hne (left_ne_zero_of_mul h0'))))`. Introduce `h`. Conclude with `absurd (Finset.mem_range.mpr (by omega)) h`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem clPf_diag_mul (hr : k₀ + rS < r) {N : ℕ} (hrN : r ≤ N) {X Y : ℕ → ℕ → k} {p' : ℕ}
     (hX1 : ∀ p', p' < r → X p' p' = 1) (hY1 : ∀ p', p' < r → Y p' p' = 1)
@@ -154,13 +154,13 @@ theorem clPf_diag_mul (hr : k₀ + rS < r) {N : ℕ} (hrN : r ≤ N) {X Y : ℕ 
     exact absurd (Finset.mem_range.mpr (by omega)) h
 
 /- English proof (translation)
-Establish `hrA : r ≤ A` using `by rw [hA]; omega`. Unfold `clPfPat at hG hX ⊢`. Use `⟨fun p' hp' => ?_, fun p p' hp hp' hne hZ => ?_⟩` and prove the remaining obligations. Conclude with `clPf_diag_mul hr (by omega : r ≤ N) hG.1 hX.1 (fun u hu hne h => (hG.2 p' u (by omega) hu (Ne.symm hne) h).2.1) (fun u hu hne h => (hX.2 u p' hu (by omega) hne h).2.1) hp'`. Take `⟨u, hu, hg, hx⟩` from `clPf_exists_of_sum hZ`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hup : u = p`. Substitute `hup` using the available equality. Conclude with `hX.2 u p' hp hp' hne hx`. Distinguish the cases in `hup' : u = p'`. Substitute `hup'` using the available equality.
+Substitute using the available equality. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Supply the required witnesses or components.
 
-Establish `g` using `hG.2 p u hp hu hne hg`. Conclude with `⟨clPf_beta_A hr ht hA hp' g.2.1, g.2.1, g.2.2⟩`. Establish `g` using `hG.2 p u hp hu (Ne.symm hup) hg`. Establish `x` using `hX.2 u p' hu hp' hup' hx`. Establish `hb : betaExponentOfRanks k₀ rS r t p ≤ betaExponentOfRanks k₀ rS r t p'` using `le_trans g.2.1 x.2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `⟨clPf_beta_A hr ht hA hp' hb, hb, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨h1, h2⟩`. Substitute `h1` using the available equality. Establish `hu0 : u ≠ k₀ + rS` using `fun h => g.2.2 ⟨h, h2⟩`. Conclude with `x.2.2 ⟨rfl, clPf_beta_eps hr h2 g.2.1 x.2.1 hu0⟩`.
+Substitute using the available equality. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem clPf_pat_mulL (hr : k₀ + rS < r) (ht : 0 < t) {N A J : ℕ} (hA : A = r + J * t) (hAN : A ≤ N)
     {G X : ℕ → ℕ → k} (hG : clPfPat k₀ rS r t N N G) (hX : clPfPat k₀ rS r t N A X) :
@@ -189,13 +189,11 @@ theorem clPf_pat_mulL (hr : k₀ + rS < r) (ht : 0 < t) {N A J : ℕ} (hA : A = 
     exact x.2.2 ⟨rfl, clPf_beta_eps hr h2 g.2.1 x.2.1 hu0⟩
 
 /- English proof (translation)
-Unfold `clPfPat at hX hK ⊢`. Use `⟨fun p' hp' => ?_, fun p p' hp hp' hne hZ => ?_⟩` and prove the remaining obligations. Conclude with `clPf_diag_mul hr hrA hX.1 hK.1 (fun u hu hne h => (hX.2 p' u (by omega) hu (Ne.symm hne) h).2.1) (fun u hu hne h => (hK.2 u p' hu (by omega) hne h).2.1) hp'`. Take `⟨u, hu, hx, hk⟩` from `clPf_exists_of_sum hZ`. Distinguish the cases in `hup : u = p`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `hup` using the available equality. Conclude with `hK.2 u p' hu hp' hne hk`. Distinguish the cases in `hup' : u = p'`. Substitute `hup'` using the available equality. Conclude with `hX.2 p u hp hp' hne hx`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `x` using `hX.2 p u hp hu (Ne.symm hup) hx`. Establish `y` using `hK.2 u p' hu hp' hup' hk`. Establish `hb : betaExponentOfRanks k₀ rS r t p ≤ betaExponentOfRanks k₀ rS r t p'` using `le_trans x.2.1 y.2.1`. Use `⟨x.1, hb, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨h1, h2⟩`.
-
-Substitute `h1` using the available equality. Establish `hu0 : u ≠ k₀ + rS` using `fun h => x.2.2 ⟨h, h2⟩`. Conclude with `y.2.2 ⟨rfl, clPf_beta_eps hr h2 x.2.1 y.2.1 hu0⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Substitute using the available equality. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem clPf_pat_mulR (hr : k₀ + rS < r) {N A : ℕ} (hrA : r ≤ A) (hAN : A ≤ N)
     {X K : ℕ → ℕ → k} (hX : clPfPat k₀ rS r t N A X) (hK : clPfPat k₀ rS r t A A K) :
@@ -222,9 +220,9 @@ theorem clPf_pat_mulR (hr : k₀ + rS < r) {N A : ℕ} (hrA : r ≤ A) (hAN : A 
     exact y.2.2 ⟨rfl, clPf_beta_eps hr h2 x.2.1 y.2.1 hu0⟩
 
 /- English proof (translation)
-Establish `h0` using `Nat.zero_le ((u - r) / t)`. Establish `h0'` using `Nat.zero_le ((p - r) / t)`. Establish `h0''` using `Nat.zero_le ((p + 1 - r) / t)`. Unfold `betaExponentOfRanks at h1 h2`. Break down `hcons with hc | hc` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Separate the alternatives or extract the components of the hypothesis.
 
-Apply the tactic sequence `unfold symIdx at h1 h2 hc split_ifs at h1 h2 hc <;> omega`. Apply the tactic sequence `unfold symIdx at h1 h2 split_ifs at h1 h2 <;> omega`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem ob2Beta_consecutive_no_between (hr : k₀ + rS < r) {p u : ℕ} (hp1 : p + 1 < r)
     (hcons : symIdx k₀ rS (p + 1) = symIdx k₀ rS p + 1 ∨ p + 1 = k₀ + rS)
@@ -241,11 +239,11 @@ private theorem ob2Beta_consecutive_no_between (hr : k₀ + rS < r) {p u : ℕ} 
     split_ifs at h1 h2 <;> omega
 
 /- English proof (translation)
-Unfold `clPfPat at hG hX`. Unfold `clPfMul`. Establish `hpN : p < N` using `by omega`. Establish `hp1N : p + 1 < N` using `by omega`. Rewrite using `[Finset.sum_eq_add_of_mem p (p + 1) (Finset.mem_range.mpr hpN) (Finset.mem_range.mpr hp1N) (by omega)]`.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hG.1 p (by omega), hX.1 (p + 1) hp1]`. Expand and normalize the polynomial expressions, which then agree. Introduce `u hu hne`. Rewrite `hu` using `[Finset.mem_range]`. Assume the negation of the conclusion as `h0`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `h0' : G p u * X u (p + 1) ≠ 0` using `h0`. Establish `a1` using `hG.2 p u hpN hu (Ne.symm hne.1) (left_ne_zero_of_mul h0')`. Establish `a2` using `hX.2 u (p + 1) hu (by omega) hne.2 (right_ne_zero_of_mul h0')`. Conclude with `ob2Beta_consecutive_no_between hr hp1 hcons a1.2.1 a2.2.2 a2.2.1 hne.1 hne.2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem clPf_consec_mulL (hr : k₀ + rS < r) {N A : ℕ} (hrA : r ≤ A) (hAN : A ≤ N) {G X : ℕ → ℕ → k}
     (hG : clPfPat k₀ rS r t N N G) (hX : clPfPat k₀ rS r t N A X) {p : ℕ} (hp1 : p + 1 < r)
@@ -267,11 +265,11 @@ theorem clPf_consec_mulL (hr : k₀ + rS < r) {N A : ℕ} (hrA : r ≤ A) (hAN :
     exact ob2Beta_consecutive_no_between hr hp1 hcons a1.2.1 a2.2.2 a2.2.1 hne.1 hne.2
 
 /- English proof (translation)
-Unfold `clPfPat at hX hK`. Unfold `clPfMul`. Establish `hpA : p < A` using `by omega`. Establish `hp1A : p + 1 < A` using `by omega`. Rewrite using `[Finset.sum_eq_add_of_mem p (p + 1) (Finset.mem_range.mpr hpA) (Finset.mem_range.mpr hp1A) (by omega)]`.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hX.1 p (by omega), hK.1 (p + 1) hp1]`. Expand and normalize the polynomial expressions, which then agree. Introduce `u hu hne`. Rewrite `hu` using `[Finset.mem_range]`. Assume the negation of the conclusion as `h0`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `h0' : X p u * K u (p + 1) ≠ 0` using `h0`. Establish `a1` using `hX.2 p u (by omega) hu (Ne.symm hne.1) (left_ne_zero_of_mul h0')`. Establish `a2` using `hK.2 u (p + 1) hu hp1A hne.2 (right_ne_zero_of_mul h0')`. Conclude with `ob2Beta_consecutive_no_between hr hp1 hcons a1.2.1 a2.2.2 a2.2.1 hne.1 hne.2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem clPf_consec_mulR (hr : k₀ + rS < r) {N A : ℕ} (hrA : r ≤ A) (hAN : A ≤ N) {X K : ℕ → ℕ → k}
     (hX : clPfPat k₀ rS r t N A X) (hK : clPfPat k₀ rS r t A A K) {p : ℕ} (hp1 : p + 1 < r)
@@ -296,7 +294,7 @@ def clPfS (k₀ r : ℕ) (X : ℕ → ℕ → k) : k :=
   ∑ i ∈ Finset.range (k₀ - 1), X i (i + 1) + ∑ i ∈ Finset.range (r - k₀ - 1), X (k₀ + i) (k₀ + i + 1)
 
 /- English proof (translation)
-Use `left`. Unfold `symIdx`. Apply the tactic sequence `split_ifs <;> omega`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem clPf_cons_eps {i : ℕ} (hi : i + 1 < k₀) : symIdx k₀ rS (i + 1) = symIdx k₀ rS i + 1 ∨ i + 1 = k₀ + rS := by
   left
@@ -304,9 +302,7 @@ theorem clPf_cons_eps {i : ℕ} (hi : i + 1 < k₀) : symIdx k₀ rS (i + 1) = s
   split_ifs <;> omega
 
 /- English proof (translation)
-Distinguish the cases in `h : k₀ + i + 1 = k₀ + rS`. Use `right`. Conclude with `h`. Use `left`. Unfold `symIdx`.
-
-Apply the tactic sequence `split_ifs <;> omega`.
+Consider separately whether the proposition holds or fails. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem clPf_cons_k {i : ℕ} : symIdx k₀ rS (k₀ + i + 1) = symIdx k₀ rS (k₀ + i) + 1 ∨ k₀ + i + 1 = k₀ + rS := by
   by_cases h : k₀ + i + 1 = k₀ + rS
@@ -317,11 +313,11 @@ theorem clPf_cons_k {i : ℕ} : symIdx k₀ rS (k₀ + i + 1) = symIdx k₀ rS (
     split_ifs <;> omega
 
 /- English proof (translation)
-Unfold `clPfS`. Establish `e1 : ∑ i ∈ Finset.range (k₀ - 1), clPfMul N G X i (i + 1) = ∑ i ∈ Finset.range (k₀ - 1), (G i (i + 1) + X i (i + 1))`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `i hi`. Rewrite `hi` using `[Finset.mem_range]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `clPf_consec_mulL hr hrA hAN hG hX (by omega) (clPf_cons_eps (by omega))`. Establish `e2 : ∑ i ∈ Finset.range (r - k₀ - 1), clPfMul N G X (k₀ + i) (k₀ + i + 1) = ∑ i ∈ Finset.range (r - k₀ - 1), (G (k₀ + i) (k₀ + i + 1) + X (k₀ + i) (k₀ + i + 1))`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `i hi`. Rewrite `hi` using `[Finset.mem_range]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `clPf_consec_mulL hr hrA hAN hG hX (by omega) clPf_cons_k`. Rewrite using `[e1, e2, Finset.sum_add_distrib, Finset.sum_add_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem clPf_S_mulL (hr : k₀ + rS < r) {N A : ℕ} (hrA : r ≤ A) (hAN : A ≤ N) {G X : ℕ → ℕ → k}
     (hG : clPfPat k₀ rS r t N N G) (hX : clPfPat k₀ rS r t N A X) :
@@ -343,11 +339,11 @@ theorem clPf_S_mulL (hr : k₀ + rS < r) {N A : ℕ} (hrA : r ≤ A) (hAN : A �
   ring
 
 /- English proof (translation)
-Unfold `clPfS`. Establish `e1 : ∑ i ∈ Finset.range (k₀ - 1), clPfMul A X K i (i + 1) = ∑ i ∈ Finset.range (k₀ - 1), (X i (i + 1) + K i (i + 1))`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `i hi`. Rewrite `hi` using `[Finset.mem_range]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `clPf_consec_mulR hr hrA hAN hX hK (by omega) (clPf_cons_eps (by omega))`. Establish `e2 : ∑ i ∈ Finset.range (r - k₀ - 1), clPfMul A X K (k₀ + i) (k₀ + i + 1) = ∑ i ∈ Finset.range (r - k₀ - 1), (X (k₀ + i) (k₀ + i + 1) + K (k₀ + i) (k₀ + i + 1))`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `i hi`. Rewrite `hi` using `[Finset.mem_range]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `clPf_consec_mulR hr hrA hAN hX hK (by omega) clPf_cons_k`. Rewrite using `[e1, e2, Finset.sum_add_distrib, Finset.sum_add_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem clPf_S_mulR (hr : k₀ + rS < r) {N A : ℕ} (hrA : r ≤ A) (hAN : A ≤ N) {X K : ℕ → ℕ → k}
     (hX : clPfPat k₀ rS r t N A X) (hK : clPfPat k₀ rS r t A A K) :
@@ -371,7 +367,7 @@ theorem clPf_S_mulR (hr : k₀ + rS < r) {N A : ℕ} (hrA : r ≤ A) (hAN : A �
 def diagonalBlockMatrix (r t i : ℕ) (X : ℕ → ℕ → k) : Matrix (Fin t) (Fin t) k := Matrix.of fun s s' => X (r + i * t + s.1) (r + i * t + s'.1)
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_Ico_eq_sum_range, Nat.add_sub_cancel_left]`. Conclude with `Fin.sum_univ_eq_sum_range (fun v => f (b + v)) t`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem clPf_sum_blk {M : Type} [AddCommMonoid M] (b t : ℕ) (f : ℕ → M) :
     ∑ v : Fin t, f (b + v.1) = ∑ u ∈ Finset.Ico b (b + t), f u := by
@@ -379,7 +375,7 @@ theorem clPf_sum_blk {M : Type} [AddCommMonoid M] (b t : ℕ) (f : ℕ → M) :
   exact Fin.sum_univ_eq_sum_range (fun v => f (b + v)) t
 
 /- English proof (translation)
-Unfold `betaExponentOfRanks`. Rewrite using `[if_neg (show ¬ (r + i * t + s < r) by omega), show r + i * t + s - r = s + t * i by rw [Nat.mul_comm]; omega, Nat.add_mul_div_left s i ht, Nat.div_eq_of_lt hs, Nat.zero_add]`.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 private theorem ob2Beta_block_eq (ht : 0 < t) {i s : ℕ} (hs : s < t) :
     betaExponentOfRanks k₀ rS r t (r + i * t + s) = r + i := by
@@ -389,17 +385,17 @@ private theorem ob2Beta_block_eq (ht : 0 < t) {i s : ℕ} (hs : s < t) :
     Nat.add_mul_div_left s i ht, Nat.div_eq_of_lt hs, Nat.zero_add]
 
 /- English proof (translation)
-Unfold `clPfPat at hG hX`. Use extensionality with `s s'`. Simplify using `only [diagonalBlockMatrix, clPfMul, Matrix.of_apply, Matrix.mul_apply]`. Rewrite using `[clPf_sum_blk (r + i * t) t (fun u => G (r + i * t + s) u * X u (r + i * t + s'))]`. Use `symm`.
+Replace the relevant objects with their definitions. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Use symmetry to reverse the relation.
 
-Apply `Finset.sum_subset` to reduce the goal to its premises. Introduce `u hu`. Rewrite `hu` using `[Finset.mem_Ico]`. Rewrite using `[Finset.mem_range]`. Use linear arithmetic over natural numbers and integers.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Introduce `u hu hnot`. Rewrite `hu` using `[Finset.mem_range]`. Assume the negation of the conclusion as `h0`. Establish `h0' : G (r + i * t + s) u * X u (r + i * t + s') ≠ 0` using `h0`. Establish `hs` using `s.2`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs'` using `s'.2`. Establish `hu' : u ≠ r + i * t + s'` using `fun h => hnot (Finset.mem_Ico.mpr ⟨by omega, by omega⟩)`. Establish `hus : r + i * t + s ≠ u` using `fun h => hnot (Finset.mem_Ico.mpr ⟨by omega, by omega⟩)`. Establish `g` using `hG.2 (r + i * t + s) u (by omega) hu hus (left_ne_zero_of_mul h0')`. Establish `x` using `hX.2 u (r + i * t + s') hu (by omega) hu' (right_ne_zero_of_mul h0')`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : betaExponentOfRanks k₀ rS r t (r + i * t + s) = r + i` using `ob2Beta_block_eq ht s.2`. Establish `e2 : betaExponentOfRanks k₀ rS r t (r + i * t + s') = r + i` using `ob2Beta_block_eq ht s'.2`. Establish `g1` using `g.2.1`. Establish `x1` using `x.2.1`. Rewrite `g1` using `[e1]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `x1` using `[e2]`. Establish `hb` using `clPf_beta_blk hr ht (le_antisymm x1 g1)`. Conclude with `hnot (Finset.mem_Ico.mpr hb)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem clPf_blk_mulL (hr : k₀ + rS < r) (ht : 0 < t) {N A : ℕ} (hAN : A ≤ N) {G X : ℕ → ℕ → k}
     (hG : clPfPat k₀ rS r t N N G) (hX : clPfPat k₀ rS r t N A X) {i : ℕ} (hi : r + i * t + t ≤ A) :
@@ -434,17 +430,17 @@ theorem clPf_blk_mulL (hr : k₀ + rS < r) (ht : 0 < t) {N A : ℕ} (hAN : A ≤
     exact hnot (Finset.mem_Ico.mpr hb)
 
 /- English proof (translation)
-Unfold `clPfPat at hX hK`. Use extensionality with `s s'`. Simplify using `only [diagonalBlockMatrix, clPfMul, Matrix.of_apply, Matrix.mul_apply]`. Rewrite using `[clPf_sum_blk (r + i * t) t (fun u => X (r + i * t + s) u * K u (r + i * t + s'))]`. Use `symm`.
+Replace the relevant objects with their definitions. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Use symmetry to reverse the relation.
 
-Apply `Finset.sum_subset` to reduce the goal to its premises. Introduce `u hu`. Rewrite `hu` using `[Finset.mem_Ico]`. Rewrite using `[Finset.mem_range]`. Use linear arithmetic over natural numbers and integers.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Introduce `u hu hnot`. Rewrite `hu` using `[Finset.mem_range]`. Assume the negation of the conclusion as `h0`. Establish `h0' : X (r + i * t + s) u * K u (r + i * t + s') ≠ 0` using `h0`. Establish `hs` using `s.2`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs'` using `s'.2`. Establish `hu' : u ≠ r + i * t + s'` using `fun h => hnot (Finset.mem_Ico.mpr ⟨by omega, by omega⟩)`. Establish `hus : r + i * t + s ≠ u` using `fun h => hnot (Finset.mem_Ico.mpr ⟨by omega, by omega⟩)`. Establish `g` using `hX.2 (r + i * t + s) u (by omega) hu hus (left_ne_zero_of_mul h0')`. Establish `x` using `hK.2 u (r + i * t + s') hu (by omega) hu' (right_ne_zero_of_mul h0')`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : betaExponentOfRanks k₀ rS r t (r + i * t + s) = r + i` using `ob2Beta_block_eq ht s.2`. Establish `e2 : betaExponentOfRanks k₀ rS r t (r + i * t + s') = r + i` using `ob2Beta_block_eq ht s'.2`. Establish `g1` using `g.2.1`. Establish `x1` using `x.2.1`. Rewrite `g1` using `[e1]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `x1` using `[e2]`. Establish `hb` using `clPf_beta_blk hr ht (le_antisymm x1 g1)`. Conclude with `hnot (Finset.mem_Ico.mpr hb)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem clPf_blk_mulR (hr : k₀ + rS < r) (ht : 0 < t) {N A : ℕ} (hAN : A ≤ N) {X K : ℕ → ℕ → k}
     (hX : clPfPat k₀ rS r t N A X) (hK : clPfPat k₀ rS r t A A K) {i : ℕ} (hi : r + i * t + t ≤ A) :
@@ -479,11 +475,11 @@ theorem clPf_blk_mulR (hr : k₀ + rS < r) (ht : 0 < t) {N A : ℕ} (hAN : A ≤
     exact hnot (Finset.mem_Ico.mpr hb)
 
 /- English proof (translation)
-Unfold `clPfPat at hX`. Unfold `clPfMul`. Use `symm`. Apply `Finset.sum_subset` to reduce the goal to its premises. Introduce `u hu`.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hu`, the goal using `[Finset.mem_range]`. Use linear arithmetic over natural numbers and integers. Introduce `u hu hnot`. Rewrite `hu`, `hnot` using `[Finset.mem_range]`. Assume the negation of the conclusion as `h0`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `h0' : G p u * X u p' ≠ 0` using `h0`. Establish `h1` using `(hX.2 u p' hu hp' (by omega) (right_ne_zero_of_mul h0')).1`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem clPf_top_mulL {N A : ℕ} (hAN : A ≤ N) {G X : ℕ → ℕ → k} (hX : clPfPat k₀ rS r t N A X) {p p' : ℕ} (hp' : p' < A) :
     clPfMul N G X p p' = clPfMul A G X p p' := by
@@ -504,7 +500,7 @@ theorem clPf_top_mulL {N A : ℕ} (hAN : A ≤ N) {G X : ℕ → ℕ → k} (hX 
 def clPfTop (A : ℕ) (X : ℕ → ℕ → k) : Matrix (Fin A) (Fin A) k := Matrix.of fun s s' => X s.1 s'.1
 
 /- English proof (translation)
-Use extensionality with `s s'`. Simplify using `only [clPfTop, clPfMul, Matrix.of_apply, Matrix.mul_apply]`. Conclude with `(Fin.sum_univ_eq_sum_range (fun u => X s u * Y u s') A).symm`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem clPf_top_mul (A : ℕ) (X Y : ℕ → ℕ → k) : clPfTop A (clPfMul A X Y) = clPfTop A X * clPfTop A Y := by
   ext s s'
@@ -512,11 +508,11 @@ theorem clPf_top_mul (A : ℕ) (X Y : ℕ → ℕ → k) : clPfTop A (clPfMul A 
   exact (Fin.sum_univ_eq_sum_range (fun u => X s u * Y u s') A).symm
 
 /- English proof (translation)
-Substitute `hA` using the available equality. Unfold `clPfPat at hG`. Establish `hz : ∀ (a : Fin t) (b : Fin (r + J * t)), G (r + J * t + ↑a) ↑b = 0`. Introduce `a b`. Assume the negation of the conclusion as `h0`.
+Substitute using the available equality. Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `ha` using `a.2`. Establish `hb` using `b.2`. Establish `g` using `(hG.2 (r + J * t + a) b (by omega) (by omega) (by omega) h0).2.1`. Establish `h1 : betaExponentOfRanks k₀ rS r t b < r + J` using `clPf_beta_lt_blk hr ht hb`. Establish `h2 : betaExponentOfRanks k₀ rS r t (r + J * t + a) = r + J` using `ob2Beta_block_eq ht a.2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Establish `key : (clPfTop (r + J * t + t) G).submatrix finSumFinEquiv finSumFinEquiv = Matrix.fromBlocks (clPfTop (r + J * t) G) (Matrix.of fun (i : Fin (r + J * t)) (j : Fin t) => G i (r + J * t + j)) 0 (diagonalBlockMatrix r t J G)`. Use extensionality with `i j`. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j <;> simp [clPfTop, diagonalBlockMatrix, hz]`. Rewrite using `[← Matrix.det_submatrix_equiv_self finSumFinEquiv (clPfTop (r + J * t + t) G), key, Matrix.det_fromBlocks_zero₂₁]`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem clPf_det_split (hr : k₀ + rS < r) (ht : 0 < t) {A J : ℕ} (hA : A = r + J * t) {G : ℕ → ℕ → k}
     (hG : clPfPat k₀ rS r t (A + t) (A + t) G) :
@@ -544,11 +540,11 @@ def clPfUV {K : Type} [Field K] (χ : kˣ →* Kˣ) (a : k) : K := by
   exact if h : IsUnit a then ((χ h.unit : Kˣ) : K) else 0
 
 /- English proof (translation)
-Unfold `clPfUV`. Distinguish the cases in `ha : IsUnit a`. Distinguish the cases in `hb : IsUnit b`. Establish `hab : IsUnit (a * b)` using `ha.mul hb`. Rewrite using `[dif_pos hab, dif_pos ha, dif_pos hb]`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : hab.unit = ha.unit * hb.unit` using `Units.ext (by simp)`. Rewrite using `[e, map_mul, Units.val_mul]`. Establish `hab : ¬ IsUnit (a * b)` using `fun h => hb (IsUnit.mul_iff.mp h).2`. Rewrite using `[dif_neg hab, dif_neg hb, mul_zero]`. Establish `hab : ¬ IsUnit (a * b)` using `fun h => ha (IsUnit.mul_iff.mp h).1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[dif_neg hab, dif_neg ha, zero_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem clPfUV_mul {K : Type} [Field K] (χ : kˣ →* Kˣ) (a b : k) : clPfUV χ (a * b) = clPfUV χ a * clPfUV χ b := by
   unfold clPfUV
@@ -564,7 +560,7 @@ theorem clPfUV_mul {K : Type} [Field K] (χ : kˣ →* Kˣ) (a b : k) : clPfUV �
     rw [dif_neg hab, dif_neg ha, zero_mul]
 
 /- English proof (translation)
-Unfold `clPfUV`. Rewrite using `[dif_pos h]`. Conclude with `Units.ne_zero _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem clPfUV_ne {K : Type} [Field K] (χ : kˣ →* Kˣ) {a : k} (h : IsUnit a) : clPfUV χ a ≠ 0 := by
   unfold clPfUV
@@ -575,28 +571,28 @@ def clPfLam {K : Type} [Field K] (ψ₀ : AddChar k K) (χ : ℕ → kˣ →* K�
   ψ₀ (clPfS k₀ r X) * ∏ i ∈ Finset.range J, clPfUV (χ i) (diagonalBlockMatrix r t i X).det
 
 /- English proof (translation)
-Take the linear combination `(-(a * b * c * pg * px * pc * tg⁻¹ * tx⁻¹ * tc⁻¹)) * (mul_inv_cancel₀ hu)`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem clPf_alg {K : Type} [Field K] (a b c pg px pc tg tx tc u : K) (hu : u ≠ 0) :
     a * b * c * (pg * px * pc) * (tg * tx * tc)⁻¹ = a * (pg * u) * (tg * u)⁻¹ * (c * pc * tc⁻¹) * (b * px * tx⁻¹) := by
   linear_combination (-(a * b * c * pg * px * pc * tg⁻¹ * tx⁻¹ * tc⁻¹)) * (mul_inv_cancel₀ hu)
 
 /- English proof (translation)
-Establish `hrA : r ≤ A` using `by rw [hA]; exact Nat.le_add_right _ _`. Establish `hAN : A ≤ A + t` using `Nat.le_add_right _ _`. Establish `hGX` using `clPf_pat_mulL hr ht hA hAN hG hX`. Use `⟨clPf_pat_mulR hr hrA hAN hGX hC, ?_⟩` and prove the remaining obligations. Establish `hS : clPfS k₀ r (clPfMul A (clPfMul (A + t) G X) C) = clPfS k₀ r G + clPfS k₀ r X + clPfS k₀ r C`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[clPf_S_mulR hr hrA hAN hGX hC, clPf_S_mulL hr hrA hAN hG hX]`. Establish `hB : ∀ i ∈ Finset.range J, clPfUV (χ i) (diagonalBlockMatrix r t i (clPfMul A (clPfMul (A + t) G X) C)).det = clPfUV (χ i) (diagonalBlockMatrix r t i G).det * clPfUV (χ i) (diagonalBlockMatrix r t i X).det * clPfUV (χ i) (diagonalBlockMatrix r t i C).det`. Introduce `i hi`. Establish `hi'` using `Finset.mem_range.1 hi`. Establish `hit : r + i * t + t ≤ A`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hA]`. Establish `: (i + 1) * t ≤ J * t` using `Nat.mul_le_mul_right t hi'`. Rewrite `this` using `[Nat.add_mul, one_mul]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[clPf_blk_mulR hr ht hAN hGX hC hit, clPf_blk_mulL hr ht hAN hG hX hit, Matrix.det_mul, Matrix.det_mul, clPfUV_mul, clPfUV_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Establish `hT : clPfTop A (clPfMul A (clPfMul (A + t) G X) C) = clPfTop A G * clPfTop A X * clPfTop A C`. Rewrite using `[clPf_top_mul]`. Use `congr 1`. Establish `: clPfTop A (clPfMul (A + t) G X) = clPfTop A (clPfMul A G X)`. Use extensionality with `s s'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Conclude with `clPf_top_mulL hAN hX s'.2`. Rewrite using `[this, clPf_top_mul]`. Establish `hD` using `clPf_det_split hr ht hA hG`. Establish `hBu : IsUnit (diagonalBlockMatrix r t J G).det`. Rewrite `hGu` using `[hD]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `isUnit_of_mul_isUnit_right hGu`. Establish `hBn` using `clPfUV_ne (χ J) hBu`. Establish `e1 : clPfLam ψ₀ χ k₀ r t J (clPfMul A (clPfMul (A + t) G X) C) = ψ₀ (clPfS k₀ r G) * ψ₀ (clPfS k₀ r X) * ψ₀ (clPfS k₀ r C) * ((∏ i ∈ Finset.range J, clPfUV (χ i) (diagonalBlockMatrix r t i G).det) * (∏ i ∈ Finset.range J, clPfUV (χ i) (diagonalBlockMatrix r t i X).det) * ∏ i ∈ Fi …`. Unfold `clPfLam`. Rewrite using `[hS, AddChar.map_add_eq_mul, AddChar.map_add_eq_mul, Finset.prod_congr rfl hB, Finset.prod_mul_distrib, Finset.prod_mul_distrib]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : clPfUV (χ J) (clPfTop A (clPfMul A (clPfMul (A + t) G X) C)).det = clPfUV (χ J) (clPfTop A G).det * clPfUV (χ J) (clPfTop A X).det * clPfUV (χ J) (clPfTop A C).det`. Rewrite using `[hT, Matrix.det_mul, Matrix.det_mul, clPfUV_mul, clPfUV_mul]`. Establish `e3 : clPfLam ψ₀ χ k₀ r t (J + 1) G = ψ₀ (clPfS k₀ r G) * ((∏ i ∈ Finset.range J, clPfUV (χ i) (diagonalBlockMatrix r t i G).det) * clPfUV (χ J) (diagonalBlockMatrix r t J G).det)`. Unfold `clPfLam`. Rewrite using `[Finset.prod_range_succ]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e4 : clPfUV (χ J) (clPfTop (A + t) G).det = clPfUV (χ J) (clPfTop A G).det * clPfUV (χ J) (diagonalBlockMatrix r t J G).det`. Rewrite using `[hD, clPfUV_mul]`. Rewrite using `[e1, e2, e3, e4]`. Unfold `clPfLam`. Conclude with `clPf_alg _ _ _ _ _ _ _ _ _ _ hBn`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem clPf_core (hr : k₀ + rS < r) (ht : 0 < t) {A J : ℕ} (hA : A = r + J * t) {K : Type} [Field K] (ψ₀ : AddChar k K)
     (χ : ℕ → kˣ →* Kˣ) {G X C : ℕ → ℕ → k} (hG : clPfPat k₀ rS r t (A + t) (A + t) G) (hX : clPfPat k₀ rS r t (A + t) A X)

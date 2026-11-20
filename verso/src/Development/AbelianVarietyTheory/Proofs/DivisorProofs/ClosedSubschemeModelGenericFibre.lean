@@ -19,15 +19,13 @@ open scoped ContDiff ComplexOrder ENNReal Classical
 namespace GlobalTheory.ArchLim
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c Oz _ β Z Y q j _ hj σ`. Establish `hj'` using `isClosedEmbedding_comp (C := ℂ) j`. Establish `hc : Continuous fun z : CxPts (genStr Z) σ => z.1 ≫ genι Z` using `(continuous_comp (genι Z)).comp continuous_subtype_val`. Use `⟨IsEmbedding.of_comp (continuous_up j hj σ) hc ?_, ?_⟩` and prove the remaining obligations. Establish `h` using `hj'.isEmbedding.comp (IsEmbedding.subtypeVal (p := fun x : Sp ℂ ⟶ Y => x ≫ q = spMap (σ.comp β)))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `y`. Conclude with `up_ι j hj σ y`. Use `hj'.isClosed_range.preimage hc using 1` and compare the differences between its conclusion and the goal. Use extensionality with `z`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩`. Conclude with `⟨y.1, (up_ι j hj σ y).symm⟩`. Introduce and unpack `⟨x, hx⟩`. Establish `hx' : x ≫ j = z.1 ≫ Limits.pullback.fst Z.s (spMap β)` using `hx`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz : z.1 ≫ Limits.pullback.snd Z.s (spMap β) = spMap σ` using `z.2`. Use `⟨⟨x, ?_⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Use `show x ≫ q = spMap (σ.comp β)`. Rewrite using `[← hj, ← Category.assoc, hx', Category.assoc, Limits.pullback.condition, ← Category.assoc, hz, ← Spec.map_comp]`. Both sides reduce to the same expression.
-
-Use `Limits.pullback.hom_ext ?_ ?_` and prove the remaining obligations. Conclude with `(Limits.pullback.lift_fst _ _ _).trans hx'`. Conclude with `(Limits.pullback.lift_snd _ _ _).trans hz.symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isClosedEmbedding_up : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum H} {l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H} {Xo : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Moduli Dw l} {c : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Coeff l} {Oz : Type} [CommRing Oz] {β : Oz →+* c.F} (Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c β) {Y : Scheme.{0}} {q : Y ⟶ Sp Oz} (j : Y ⟶ Z.X) [IsClosedImmersion j] (hj : j ≫ Z.s = q) (σ : c.F →+* ℂ), IsClosedEmbedding (up j hj σ) := by
   intro E _ _ _ H Dw l Xo c Oz _ β Z Y q j _ hj σ

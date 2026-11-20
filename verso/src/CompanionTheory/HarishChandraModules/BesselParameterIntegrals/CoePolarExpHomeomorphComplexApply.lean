@@ -9,7 +9,7 @@ open scoped Matrix.Norms.L2Operator MatrixOrder ComplexOrder
 variable {𝕜 : Type*} [RCLike 𝕜] {n : Type*} [Fintype n] [DecidableEq n]
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨u, rfl⟩`. Establish `h` using `NormedRing.inverse_continuousAt u`. Establish `he : (fun A : Matrix n n 𝕜 => A⁻¹) = Ring.inverse` using `funext nonsing_inv_eq_ringInverse`. Rewrite using `[he]`. Conclude with `h.continuousWithinAt`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuousOn_matrix_inv :
     ContinuousOn (fun A : Matrix n n 𝕜 => A⁻¹) {A | IsUnit A} := by
@@ -20,7 +20,7 @@ theorem continuousOn_matrix_inv :
   exact h.continuousWithinAt
 
 /- English proof (translation)
-The claim follows from `PosDef.conjTranspose_mul_self _ (mulVec_injective_of_isUnit g.isUnit)`.
+A detailed English derivation is pending.
 -/
 theorem posDef_conjTranspose_mul_self_GL (g : GL n 𝕜) : ((g : Matrix n n 𝕜)ᴴ * g).PosDef :=
   PosDef.conjTranspose_mul_self _ (mulVec_injective_of_isUnit g.isUnit)
@@ -28,7 +28,7 @@ theorem posDef_conjTranspose_mul_self_GL (g : GL n 𝕜) : ((g : Matrix n n 𝕜
 noncomputable def polarPos (g : GL n 𝕜) : Matrix n n 𝕜 := CFC.sqrt ((g : Matrix n n 𝕜)ᴴ * g)
 
 /- English proof (translation)
-Establish `h` using `posDef_conjTranspose_mul_self_GL g`. Rewrite `h`, the goal using `[← isStrictlyPositive_iff_posDef]`. Conclude with `IsStrictlyPositive.sqrt _ h`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem polarPos_posDef (g : GL n 𝕜) : (polarPos g).PosDef := by
   have h := posDef_conjTranspose_mul_self_GL g
@@ -36,7 +36,7 @@ theorem polarPos_posDef (g : GL n 𝕜) : (polarPos g).PosDef := by
   exact IsStrictlyPositive.sqrt _ h
 
 /- English proof (translation)
-The claim follows from `CFC.sqrt_mul_sqrt_self _ ((posDef_conjTranspose_mul_self_GL g).posSemidef.nonneg)`.
+A detailed English derivation is pending.
 -/
 theorem polarPos_mul_self (g : GL n 𝕜) : polarPos g * polarPos g = (g : Matrix n n 𝕜)ᴴ * g :=
   CFC.sqrt_mul_sqrt_self _ ((posDef_conjTranspose_mul_self_GL g).posSemidef.nonneg)
@@ -44,15 +44,15 @@ theorem polarPos_mul_self (g : GL n 𝕜) : polarPos g * polarPos g = (g : Matri
 noncomputable def polarUnitary (g : GL n 𝕜) : Matrix n n 𝕜 := (g : Matrix n n 𝕜) * (polarPos g)⁻¹
 
 /- English proof (translation)
-The claim follows from `(isUnit_iff_isUnit_det p).1 hp.isUnit`.
+A detailed English derivation is pending.
 -/
 theorem isUnit_det_of_posDef {p : Matrix n n 𝕜} (hp : p.PosDef) : IsUnit p.det :=
   (isUnit_iff_isUnit_det p).1 hp.isUnit
 
 /- English proof (translation)
-Rewrite using `[mem_unitaryGroup_iff']`. Establish `hP : (polarPos g)ᴴ = polarPos g` using `(polarPos_posDef g).isHermitian`. Establish `hd` using `isUnit_det_of_posDef (polarPos_posDef g)`. Rewrite using `[star_eq_conjTranspose, polarUnitary, conjTranspose_mul, conjTranspose_nonsing_inv, hP]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Simplify using `only [Matrix.mul_assoc]`. Use `_ = (polarPos g)⁻¹ * (polarPos g * polarPos g) * (polarPos g)⁻¹ := by rw [polarPos_mul_self]`. Use `_ = 1 := by`. Rewrite using `[← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hd, Matrix.one_mul, Matrix.mul_nonsing_inv _ hd]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem polarUnitary_mem (g : GL n 𝕜) : polarUnitary g ∈ unitaryGroup n 𝕜 := by
   rw [mem_unitaryGroup_iff']
@@ -68,16 +68,16 @@ theorem polarUnitary_mem (g : GL n 𝕜) : polarUnitary g ∈ unitaryGroup n �
           Matrix.mul_nonsing_inv _ hd]
 
 /- English proof (translation)
-Rewrite using `[polarUnitary, Matrix.mul_assoc, Matrix.nonsing_inv_mul _ (isUnit_det_of_posDef (polarPos_posDef g)), Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem polarUnitary_mul_polarPos (g : GL n 𝕜) : polarUnitary g * polarPos g = g := by
   rw [polarUnitary, Matrix.mul_assoc,
     Matrix.nonsing_inv_mul _ (isUnit_det_of_posDef (polarPos_posDef g)), Matrix.mul_one]
 
 /- English proof (translation)
-Establish `hkk : kᴴ * k = 1` using `by rw [← star_eq_conjTranspose]; exact mem_unitaryGroup_iff'.1 hk`. Establish `hP : pᴴ = p` using `hp.isHermitian`. Establish `hpp : p * p = (g : Matrix n n 𝕜)ᴴ * g`. Rewrite using `[← h, conjTranspose_mul, hP]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Establish `h1 : polarPos g = p` using `CFC.sqrt_unique hpp hp.posSemidef.nonneg`. Use `⟨h1, ?_⟩` and prove the remaining obligations. Rewrite using `[polarUnitary, h1, ← h, Matrix.mul_assoc, Matrix.mul_nonsing_inv _ (isUnit_det_of_posDef hp), Matrix.mul_one]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem polar_unique {g : GL n 𝕜} {k p : Matrix n n 𝕜} (hk : k ∈ unitaryGroup n 𝕜)
     (hp : p.PosDef) (h : k * p = g) : polarPos g = p ∧ polarUnitary g = k := by
@@ -117,7 +117,7 @@ Both sides reduce to the same expression.
     ((polarEquiv kp : GL n 𝕜) : Matrix n n 𝕜) = kp.1 * kp.2 := rfl
 
 /- English proof (translation)
-The claim follows from `hsqrt.comp_continuous ((Units.continuous_val.matrix_conjTranspose).mul Units.continuous_val) (fun g => (posDef_conjTranspose_mul_self_GL g).posSemidef.nonneg)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_polarPos
     (hsqrt : ContinuousOn (CFC.sqrt : Matrix n n 𝕜 → Matrix n n 𝕜) {a | 0 ≤ a}) :
@@ -155,7 +155,7 @@ noncomputable def polarHomeomorphComplex :
 section ExpHermitianComplex
 
 /- English proof (translation)
-Establish `h0 : 0 ≤ NormedSpace.exp X` using `IsSelfAdjoint.exp_nonneg (hX : IsSelfAdjoint X)`. Conclude with `(nonneg_iff_posSemidef.1 h0).posDef_iff_isUnit.2 (Matrix.isUnit_exp X)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem posDef_exp_of_isHermitian_complex {X : Matrix n n ℂ} (hX : X.IsHermitian) :
     (NormedSpace.exp X).PosDef := by
@@ -183,7 +183,7 @@ end ExpHermitianComplex
 section ExpHermitianReal
 
 /- English proof (translation)
-Establish `h0 : 0 ≤ NormedSpace.exp X` using `IsSelfAdjoint.exp_nonneg (hX : IsSelfAdjoint X)`. Conclude with `(nonneg_iff_posSemidef.1 h0).posDef_iff_isUnit.2 (Matrix.isUnit_exp X)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem posDef_exp_of_isHermitian_real {X : Matrix n n ℝ} (hX : X.IsHermitian) :
     (NormedSpace.exp X).PosDef := by

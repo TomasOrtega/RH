@@ -9,7 +9,7 @@ open scoped TensorProduct GlobalTheory.CuspRep.CuspidalL2GL
 open UpperTheory.V.Cj UpperTheory.V.Cj.H
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul φ v => simp`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 private theorem cmp_rT {W : Type} [AddCommGroup W] [Module ℂ W] {d : ℕ} (T : Module.End ℂ W) (i : Fin d)
     (x : W ⊗[ℂ] (Fin d → ℂ)) : cmp i (T.rTensor _ x) = T (cmp i x) := by
@@ -19,7 +19,7 @@ private theorem cmp_rT {W : Type} [AddCommGroup W] [Module ℂ W] {d : ℕ} (T :
   | tmul φ v => simp
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul φ v`. Simplify using `only [smAdj, adj_apply, smA_apply, smB_apply, map_sub, LinearMap.rTensor_tmul, LinearMap.lTensor_tmul, hT, LinearMap.map_smul_of_tower]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 -/
 private theorem adj_rT {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ} (Ξ : AlgRep E a) (r : ℝ)
     (T : Module.End ℂ (Sm E a)) (hT : ∀ X φ, lie E a X (T φ) = T (lie E a X φ)) (X : GlobalTheory.CuspRep.Lie E a)
@@ -32,7 +32,7 @@ private theorem adj_rT {E : Type} [Field E] [NumberField E] [IsTotallyComplex E]
       LinearMap.map_smul_of_tower]
 
 /- English proof (translation)
-The claim follows from `| 0, _, _ => trivial | _ + 1, ω, h => by have h' : del (smAdj Ξ r) e ω = 0 := h show del (smAdj Ξ r) e (app T ω) = 0 refine AlternatingMap.ext fun X => ?_ have h2 := congrArg (fun η => T.rTensor (Fin Ξ.d → ℂ) (η X)) h' simp only [del_apply, map_sum, AlternatingMap.zero_apply, map …`.
+A detailed English derivation is pending.
 -/
 private theorem cocl_app {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ} (Ξ : AlgRep E a) (r : ℝ)
     {n : ℕ} (e : Fin n → Herm E a)
@@ -48,11 +48,11 @@ private theorem cocl_app {E : Type} [Field E] [NumberField E] [IsTotallyComplex 
     simp only [del_apply, app_apply, adj_rT Ξ r T hT, AlternatingMap.zero_apply, h2]
 
 /- English proof (translation)
-Introduce `E _ _ _ a ha n e he Ξ r m hm q ω h1 h2 h3 h4 X i t u`. Establish `hL` using `(sqLie E a r).2`. Take `⟨-, -, c3, c4⟩` from `capSm E a Ξ t u`. Establish `hx` using `wigSm E a Ξ (sqSub E a r) hL t (m t) (hm t) u q ω h1 h2 h4`. Establish `hv : Val (sqSub E a r) (app (cap t u - ((m t).map (u + ·)).prod • 1) ω)` using `fun Y j => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[app_apply, cmp_rT, LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply]`. Conclude with `Submodule.sub_mem _ (c4 _ hL _ (h4 Y j)) (Submodule.smul_mem _ _ (h4 Y j))`. Establish `hc` using `cocl_app Ξ r e (cap t u - ((m t).map (u + ·)).prod • 1) (fun Y φ => by`. Use `LinearMap.congr_fun (c3 Y).eq φ` as an intermediate fact. Simplify using `only [Module.End.mul_apply] at this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply, map_sub, map_smul, this]) ω h3`. Establish `h0` using `(sqOrth E a ha n e he Ξ r q).1 _ hv hc hx`. Establish `h5` using `congrArg (fun η : Co Ξ q => cmp i (η X)) h0`. Simplify using `only [app_apply, cmp_rT, AlternatingMap.zero_apply, map_zero, LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply] at h5`. Conclude with `sub_eq_zero.1 h5`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Cj.H.charOf :
     UpperTheory.V.Cj.H.CharOf := by

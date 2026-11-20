@@ -16,7 +16,7 @@ namespace PointwiseLelong
 variable {N : ℕ}
 
 /- English proof (translation)
-Rewrite using `[eval_eq, eval_eq, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations. Establish `hdeg` using `hQ.degree_eq_sum_deg_support hm`. Simplify using `only [Pi.smul_apply, smul_eq_mul, mul_pow, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum]`. Rewrite using `[← hdeg]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -30,9 +30,9 @@ theorem eval_smul {Q : MvPolynomial (Fin N) ℂ} {d : ℕ} (hQ : Q.IsHomogeneous
   ring
 
 /- English proof (translation)
-Proceed by induction on `Q using MvPolynomial.induction_on with`. Consider the case `C a`. Simplify using `only [eval_C]`. Conclude with `differentiable_const a`. Consider the case `add p q hp hq`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_add]`. Conclude with `hp.add hq`. Consider the case `mul_X p i hp`. Simplify using `only [map_mul, eval_X, Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Conclude with `hp.mul (by fun_prop)`.
+Treat this case separately. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem differentiable_eval_line (Q : MvPolynomial (Fin N) ℂ) (v u : Fin N → ℂ) :
     Differentiable ℂ fun w : ℂ => eval (v + w • u) Q := by
@@ -48,9 +48,9 @@ theorem differentiable_eval_line (Q : MvPolynomial (Fin N) ℂ) (v u : Fin N →
     exact hp.mul (by fun_prop)
 
 /- English proof (translation)
-Establish `han : AnalyticOnNhd ℂ g (Metric.closedBall 0 |1|)` using `fun z _ => hg.analyticAt z`. Rewrite using `[han.circleAverage_log_norm one_ne_zero h0]`. Use `le_add_of_nonneg_left (finsum_nonneg fun u => ?_)` and prove the remaining obligations. Distinguish the cases in `hu : u ∈ Metric.closedBall (0 : ℂ) |1|`. Use `mul_nonneg (by exact_mod_cast (MeromorphicOn.AnalyticOnNhd.divisor_nonneg han) u) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[one_mul, zero_sub, norm_neg, Real.log_inv]`. Use `neg_nonneg.mpr (Real.log_nonpos (norm_nonneg _) ?_)` and prove the remaining obligations. Simplify using `using hu`. Rewrite using `[Function.locallyFinsuppWithin.apply_eq_zero_of_notMem _ hu]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem log_norm_le_circleAverage {g : ℂ → ℂ} (hg : Differentiable ℂ g) (h0 : g 0 ≠ 0) :
     Real.log ‖g 0‖ ≤ circleAverage (fun z => Real.log ‖g z‖) 0 1 := by
@@ -66,7 +66,7 @@ theorem log_norm_le_circleAverage {g : ℂ → ℂ} (hg : Differentiable ℂ g) 
     simp
 
 /- English proof (translation)
-Rewrite using `[phaseLaw, ProbabilityTheory.cond, integral_smul_measure, Real.volume_Ioc, intervalIntegral.integral_of_le (by linarith [Real.pi_pos]), ENNReal.toReal_inv, ENNReal.toReal_ofReal (by linarith [Real.pi_pos]), smul_eq_mul]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem integral_phaseLaw (f : ℝ → ℝ) :
     ∫ θ, f θ ∂phaseLaw = (2 * π)⁻¹ * ∫ θ in -π..π, f θ := by
@@ -77,19 +77,17 @@ theorem integral_phaseLaw (f : ℝ → ℝ) :
   ring
 
 /- English proof (translation)
-Use `set g : ℂ → ℂ := fun w => eval ((r : ℂ) • p + w • ((b : ℂ) • t)) Q with hg`. Establish `hgd : Differentiable ℂ g` using `differentiable_eval_line Q _ _`. Establish `hg0 : g 0 = (r : ℂ) ^ d * eval p Q`. Simplify using `only [hg, zero_smul, add_zero]`. Conclude with `eval_smul hQ _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hg0' : g 0 ≠ 0`. Rewrite using `[hg0]`. Conclude with `mul_ne_zero (pow_ne_zero _ (by exact_mod_cast hr.ne')) hp`. Establish `hlog0 : Real.log ‖g 0‖ = Real.log ‖eval p Q‖ + d * Real.log r`. Rewrite using `[hg0, norm_mul, norm_pow, Complex.norm_real, Real.norm_of_nonneg hr.le, Real.log_mul (pow_ne_zero _ hr.ne') (norm_ne_zero_iff.mpr hp), Real.log_pow]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hpt : ∀ θ : ℝ, Real.log ‖eval (((r : ℂ) * Complex.exp (θ * Complex.I)) • p + (b : ℂ) • t) Q‖ = Real.log ‖g (circleMap 0 1 (-θ))‖`. Introduce `θ`. Establish `he : Complex.exp (θ * Complex.I) * Complex.exp ((-θ : ℝ) * Complex.I) = 1`. Rewrite using `[← Complex.exp_add]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `push_cast`. Simplify using the standard rewrite rules. Establish `hv : ((r : ℂ) * Complex.exp (θ * Complex.I)) • p + (b : ℂ) • t = Complex.exp (θ * Complex.I) • ((r : ℂ) • p + Complex.exp ((-θ : ℝ) * Complex.I) • ((b : ℂ) • t))`. Rewrite using `[smul_add, smul_smul, smul_smul, smul_smul, he, one_mul, mul_comm (r : ℂ)]`. Rewrite using `[hv, eval_smul hQ, norm_mul, norm_pow, Complex.norm_exp_ofReal_mul_I, one_pow, one_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[hg, circleMap]`. Establish `hper : Function.Periodic (fun θ => Real.log ‖g (circleMap 0 1 θ)‖) (2 * π)` using `(periodic_circleMap 0 1).comp (fun z => Real.log ‖g z‖)`. Establish `hint : ∫ θ in -π..π, Real.log ‖g (circleMap 0 1 (-θ))‖ = ∫ θ in (0 : ℝ)..2 * π, Real.log ‖g (circleMap 0 1 θ)‖`. Rewrite using `[intervalIntegral.integral_comp_neg (fun θ => Real.log ‖g (circleMap 0 1 θ)‖), neg_neg]`. Use `hper.intervalIntegral_add_eq (-π) 0` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Rewrite `this` using `[show -π + 2 * π = π by ring, zero_add]`. Then use the resulting hypothesis. Rewrite using `[← hlog0, integral_phaseLaw]`. Repeatedly rewrite using `[hpt]`. Rewrite using `[hint]`. Establish `hJ` using `log_norm_le_circleAverage hgd hg0'`.
-
-Rewrite `hJ` using `[circleAverage_def, smul_eq_mul]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem phase_bound {Q : MvPolynomial (Fin N) ℂ} {d : ℕ} (hQ : Q.IsHomogeneous d)
     (p t : Fin N → ℂ) (hp : eval p Q ≠ 0) {r : ℝ} (hr : 0 < r) (b : ℝ) :
@@ -134,7 +132,7 @@ theorem phase_bound {Q : MvPolynomial (Fin N) ℂ} {d : ℕ} (hQ : Q.IsHomogeneo
   rwa [circleAverage_def, smul_eq_mul] at hJ
 
 /- English proof (translation)
-Use `measurable_pi_lambda _ fun j => ?_` and prove the remaining obligations. Conclude with `((Complex.measurable_ofReal.comp (LogInt.measurable_groupNorm _ 0)).inv).mul (measurable_pi_apply _)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem measurable_normalize :
     Measurable fun (u : Fin 1 × Fin N → ℂ) (j : Fin N) => sphereNormalize (HermNorm.std N) 1 u (0, j) := by
@@ -143,25 +141,25 @@ theorem measurable_normalize :
     (measurable_pi_apply _)
 
 /- English proof (translation)
-The claim follows from `(volume_ballProd_pos (HermNorm.std N) 1).ne'`.
+A detailed English derivation is pending.
 -/
 theorem volume_sphereBall_ne_zero : volume (sphereBall (HermNorm.std N) 1) ≠ 0 :=
   (volume_ballProd_pos (HermNorm.std N) 1).ne'
 
 /- English proof (translation)
-The claim follows from `(volume_ballProd_lt_top (HermNorm.std N) 1).ne`.
+A detailed English derivation is pending.
 -/
 theorem volume_sphereBall_ne_top : volume (sphereBall (HermNorm.std N) 1) ≠ ⊤ :=
   (volume_ballProd_lt_top (HermNorm.std N) 1).ne
 
 /- English proof (translation)
-The claim follows from `cond_isProbabilityMeasure_of_finite (by simp [Real.pi_pos]) (by simp)`.
+A detailed English derivation is pending.
 -/
 theorem isProbabilityMeasure_phaseLaw : IsProbabilityMeasure phaseLaw :=
   cond_isProbabilityMeasure_of_finite (by simp [Real.pi_pos]) (by simp)
 
 /- English proof (translation)
-Use `cond_isProbabilityMeasure_of_finite (volume_sphereBall_ne_zero (N := N)) volume_sphereBall_ne_top` as an intermediate fact. Conclude with `Measure.isProbabilityMeasure_map measurable_normalize.aemeasurable`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isProbabilityMeasure_sphereLaw : IsProbabilityMeasure (sphereLaw N) := by
   have := cond_isProbabilityMeasure_of_finite (volume_sphereBall_ne_zero (N := N))
@@ -169,7 +167,7 @@ theorem isProbabilityMeasure_sphereLaw : IsProbabilityMeasure (sphereLaw N) := b
   exact Measure.isProbabilityMeasure_map measurable_normalize.aemeasurable
 
 /- English proof (translation)
-Rewrite using `[sphereLaw, integral_map measurable_normalize.aemeasurable hf.aestronglyMeasurable, sphereMean_eq, average, Measure.restrict_apply_univ]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem sphereMean_eq_integral {f : (Fin N → ℂ) → ℝ} (hf : Measurable f) :
     sphereMean (HermNorm.std N) 1 (fun u => f (fun j => u (0, j))) = ∫ z, f z ∂sphereLaw N := by
@@ -178,7 +176,7 @@ theorem sphereMean_eq_integral {f : (Fin N → ℂ) → ℝ} (hf : Measurable f)
   rfl
 
 /- English proof (translation)
-Rewrite using `[sphereLaw, integrable_map_measure hf.aestronglyMeasurable measurable_normalize.aemeasurable]`. Conclude with `hi.smul_measure (ENNReal.inv_ne_top.mpr volume_sphereBall_ne_zero)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integrable_sphereLaw {f : (Fin N → ℂ) → ℝ} (hf : Measurable f)
     (hi : SphereIntegrable (HermNorm.std N) 1 (fun u => f (fun j => u (0, j)))) :
@@ -187,9 +185,9 @@ theorem integrable_sphereLaw {f : (Fin N → ℂ) → ℝ} (hf : Measurable f)
   exact hi.smul_measure (ENNReal.inv_ne_top.mpr volume_sphereBall_ne_zero)
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (fun j : Fin N => ((0 : Fin 1), j))` using `fun a b h => (Prod.ext_iff.mp h).2`. Establish `h0 : rename (fun j : Fin N => ((0 : Fin 1), j)) Q ≠ 0`. Introduce `h`. Conclude with `hQ (rename_injective _ hinj (by rw [h, map_zero]))`. Use `(LogInt.integrableOn_log_mahler (HermNorm.std N) _ h0).1` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [eval_rename, Function.comp_def] at this`. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem sphereIntegrable_log {Q : MvPolynomial (Fin N) ℂ} (hQ : Q ≠ 0) :
     SphereIntegrable (HermNorm.std N) 1 (fun u ↦ Real.log ‖eval (fun j ↦ u (0, j)) Q‖) := by
@@ -203,11 +201,11 @@ theorem sphereIntegrable_log {Q : MvPolynomial (Fin N) ℂ} (hQ : Q ≠ 0) :
   exact this
 
 /- English proof (translation)
-Establish `h : (∑ j, X ((0 : Fin 1), j) * C (star (p j)) : MvPolynomial (Fin 1 × Fin N) ℂ) ≠ 0`. Introduce `h0`. Use `congrArg (eval fun ij : Fin 1 × Fin N => p ij.2) h0` as an intermediate fact. Simplify using `only [map_sum, map_mul, eval_X, eval_C, map_zero] at this`. Establish `hj : ∀ j, p j * star (p j) = ((‖p j‖ ^ 2 : ℝ) : ℂ)` using `fun j => by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[Complex.star_def, Complex.mul_conj']`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite `this` using `[hj]`. Rewrite `this` using `[← Complex.ofReal_sum, hp]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses repeatedly using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `at this`. Use `(LogInt.integrableOn_log_mahler (HermNorm.std N) _ h).1` as an intermediate fact. Simplify using `only [map_sum, map_mul, eval_X, eval_C] at this`. Conclude with `this`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sphereIntegrable_coord {p : Fin N → ℂ} (hp : ∑ j, ‖p j‖ ^ 2 = 1) :
     SphereIntegrable (HermNorm.std N) 1 (fun u ↦ Real.log ‖coordAlong p (fun j ↦ u (0, j))‖) := by
@@ -227,13 +225,13 @@ theorem sphereIntegrable_coord {p : Fin N → ℂ} (hp : ∑ j, ‖p j‖ ^ 2 = 
   exact this
 
 /- English proof (translation)
-The claim follows from `continuous_finsetSum _ fun j _ => (continuous_apply j).mul continuous_const`.
+A detailed English derivation is pending.
 -/
 theorem continuous_coordAlong (p : Fin N → ℂ) : Continuous (coordAlong p) :=
   continuous_finsetSum _ fun j _ => (continuous_apply j).mul continuous_const
 
 /- English proof (translation)
-Establish `hc : Continuous fun z => z - coordAlong p z • p` using `continuous_id.sub ((continuous_coordAlong p).smul continuous_const)`. Establish `hn : Continuous (HermNorm.std N).norm` using `(HermNorm.std N).li_continuous_norm`. Conclude with `((Complex.measurable_ofReal.comp (hn.comp hc).measurable).inv).smul hc.measurable`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem measurable_orthoDir (p : Fin N → ℂ) : Measurable (orthoDir p) := by
   have hc : Continuous fun z => z - coordAlong p z • p :=
@@ -251,19 +249,19 @@ def polarIntegrand (Q : MvPolynomial (Fin N) ℂ) (p : Fin N → ℂ) (x : ℝ �
     ((√(1 - x.2.1 ^ 2) : ℝ) : ℂ) • x.2.2) Q‖
 
 /- English proof (translation)
-The claim follows from `(continuous_norm.comp (continuous_coordAlong p)).measurable.prodMk (measurable_orthoDir p)`.
+A detailed English derivation is pending.
 -/
 theorem measurable_radialMap (p : Fin N → ℂ) : Measurable (radialMap p) :=
   (continuous_norm.comp (continuous_coordAlong p)).measurable.prodMk (measurable_orthoDir p)
 
 /- English proof (translation)
-The claim follows from `(Complex.measurable_arg.comp (continuous_coordAlong p).measurable).prodMk (measurable_radialMap p)`.
+A detailed English derivation is pending.
 -/
 theorem measurable_polarMap (p : Fin N → ℂ) : Measurable (polarMap p) :=
   (Complex.measurable_arg.comp (continuous_coordAlong p).measurable).prodMk (measurable_radialMap p)
 
 /- English proof (translation)
-Establish `hc : Continuous fun x : ℝ × (ℝ × (Fin N → ℂ)) => ((x.2.1 : ℂ) * Complex.exp (x.1 * Complex.I)) • p + ((√(1 - x.2.1 ^ 2) : ℝ) : ℂ) • x.2.2` using `by fun_prop`. Conclude with `Real.measurable_log.comp (continuous_norm.comp ((MvPolynomial.continuous_eval Q).comp hc)).measurable`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem measurable_polarIntegrand (Q : MvPolynomial (Fin N) ℂ) (p : Fin N → ℂ) :
     Measurable (polarIntegrand Q p) := by
@@ -273,35 +271,31 @@ theorem measurable_polarIntegrand (Q : MvPolynomial (Fin N) ℂ) (p : Fin N → 
   exact Real.measurable_log.comp (continuous_norm.comp ((MvPolynomial.continuous_eval Q).comp hc)).measurable
 
 /- English proof (translation)
-Use `isProbabilityMeasure_sphereLaw (N := N)` as an intermediate fact. Use `isProbabilityMeasure_phaseLaw` as an intermediate fact. Establish `hF : Measurable fun z : Fin N → ℂ => Real.log ‖eval z Q‖` using `Real.measurable_log.comp (continuous_norm.comp (MvPolynomial.continuous_eval Q)).measurable`. Establish `hFi : Integrable (fun z => Real.log ‖eval z Q‖) (sphereLaw N)` using `integrable_sphereLaw hF (sphereIntegrable_log hQ0)`. Rewrite using `[sphereMean_eq_integral hF]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨hN1, hN2⟩` from `h1 N p hp`. Break down `Nat.lt_or_ge N 2 with hN | hN` into its components or cases. Choose the witnesses or unpack the hypotheses as in `rfl : N = 1 := by`. Break down `N with _ | _ | N` into its components or cases. Simplify using `at hp`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Use linear arithmetic over natural numbers and integers. Establish `hp' : ‖p 0‖ ^ 2 = 1` using `by simpa using hp`. Establish `hae : ∀ᵐ z ∂sphereLaw 1, Real.log ‖eval z Q‖ = Real.log ‖eval p Q‖` using `by filter_upwards [hN1 rfl] with z hz`. Establish `hpp : star (p 0) * p 0 = 1`.
+Both sides reduce to the same expression. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Complex.star_def, Complex.conj_mul']`. Conclude with `hp'` after adjusting the coercions. Establish `hzp : z = coordAlong p z • p`. Use function extensionality and compare the values at `i`. Rewrite using `[Subsingleton.elim i 0]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [coordAlong, Fin.sum_univ_one, Pi.smul_apply, smul_eq_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hzp, eval_smul hQ, norm_mul, norm_pow, hz, one_pow, one_mul]`. Rewrite using `[integral_congr_ae hae, integral_const]`. Simplify using the standard rewrite rules.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨hdec, hprod, hsq⟩` from `hN2 hN`. Establish `hρ` using `measurable_radialMap p`. Establish `hψ` using `measurable_polarMap p`. Establish `hG` using `measurable_polarIntegrand Q p`. Establish `: IsProbabilityMeasure ((sphereLaw N).map (radialMap p))` using `Measure.isProbabilityMeasure_map hρ.aemeasurable`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmap : (sphereLaw N).map (polarMap p) = phaseLaw.prod ((sphereLaw N).map (radialMap p))` using `hprod`. Establish `hae : (fun z => Real.log ‖eval z Q‖) =ᵐ[sphereLaw N] fun z => polarIntegrand Q p (polarMap p z)` using `by filter_upwards [hdec] with z hz`. Simplify using `only [polarIntegrand, polarMap, radialMap, Complex.norm_mul_exp_arg_mul_I]`. Rewrite using `[← hz.1]`. Establish `hGi : Integrable (polarIntegrand Q p) (phaseLaw.prod ((sphereLaw N).map (radialMap p)))`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hmap, integrable_map_measure hG.aestronglyMeasurable hψ.aemeasurable]`. Conclude with `hFi.congr hae`. Establish `hint : ∫ z, Real.log ‖eval z Q‖ ∂sphereLaw N = ∫ y, ∫ θ, polarIntegrand Q p (θ, y) ∂phaseLaw ∂((sphereLaw N).map (radialMap p))`. Rewrite using `[integral_congr_ae hae, ← integral_map hψ.aemeasurable hG.aestronglyMeasurable, hmap, integral_prod_symm _ hGi]`. Establish `hpos : ∀ᵐ y ∂((sphereLaw N).map (radialMap p)), 0 < y.1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsqm : Measurable fun z => ‖coordAlong p z‖ ^ 2` using `((continuous_norm.comp (continuous_coordAlong p)).pow 2).measurable`. Establish `h0 : ∀ᵐ x ∂((sphereLaw N).map fun z => ‖coordAlong p z‖ ^ 2), x ≠ 0`. Rewrite using `[hsq]`. Use `(withDensity_absolutelyContinuous _ _).ae_le (?_ : ∀ᵐ x ∂(volume : Measure ℝ), x ≠ 0)` and prove the remaining obligations. Rewrite using `[ae_iff]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `h0'` using `ae_of_ae_map hsqm.aemeasurable h0`. Rewrite using `[ae_map_iff hρ.aemeasurable (measurableSet_lt measurable_const measurable_fst)]`. Use `filter_upwards [h0'] with z hz`. Establish `h2 : 0 ≤ ‖coordAlong p z‖` using `norm_nonneg _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `show 0 < ‖coordAlong p z‖`. Use `lt_of_le_of_ne h2 fun h => hz ?_` and prove the remaining obligations. Rewrite using `[← h]`. Simplify using the standard rewrite rules. Establish `hlow : ∀ᵐ y ∂((sphereLaw N).map (radialMap p)), Real.log ‖eval p Q‖ + d * Real.log y.1 ≤ ∫ θ, polarIntegrand Q p (θ, y) ∂phaseLaw` using `by filter_upwards [hpos] with y hy`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `phase_bound hQ p y.2 hQp hy (√(1 - y.1 ^ 2))` as an intermediate fact. Simplify using `only [polarIntegrand]`. Conclude with `this`. Establish `hmc : Measurable fun z => Real.log ‖coordAlong p z‖` using `Real.measurable_log.comp (continuous_norm.comp (continuous_coordAlong p)).measurable`. Establish `hml : Measurable fun y : ℝ × (Fin N → ℂ) => Real.log y.1` using `Real.measurable_log.comp measurable_fst`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hlogν : Integrable (fun y : ℝ × (Fin N → ℂ) => Real.log y.1) ((sphereLaw N).map (radialMap p))`. Rewrite using `[integrable_map_measure hml.aestronglyMeasurable hρ.aemeasurable]`. Conclude with `integrable_sphereLaw hmc (sphereIntegrable_coord hp)`. Establish `hmean : ∫ y, Real.log y.1 ∂((sphereLaw N).map (radialMap p)) = -(harmonic (N - 1) : ℝ) / 2`. Rewrite using `[integral_map hρ.aemeasurable hml.aestronglyMeasurable]`.
-
-Conclude with `(sphereMean_eq_integral hmc).symm.trans (sphereMeanLinear N p hp)`. Rewrite using `[hint]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[integral_add (integrable_const _) (hlogν.const_mul _), integral_const, integral_const_mul, hmean]`. Simplify using the standard rewrite rules.
-
-Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ _ := integral_mono_ae ((integrable_const _).add (hlogν.const_mul _)) hGi.integral_prod_right hlow`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem main_bound (h1 : SphereProjectionLaw.Statement) {d : ℕ} {Q : MvPolynomial (Fin N) ℂ}
     (hQ0 : Q ≠ 0) (hQ : Q.IsHomogeneous d) (p : Fin N → ℂ) (hp : ∑ j, ‖p j‖ ^ 2 = 1)
@@ -403,13 +397,13 @@ theorem main_bound (h1 : SphereProjectionLaw.Statement) {d : ℕ} {Q : MvPolynom
           hGi.integral_prod_right hlow
 
 /- English proof (translation)
-Set `S` to `{z : Fin N → ℂ | ∑ j, ‖z j‖ ^ 2 = 1}`. Establish `hcont : Continuous fun z : Fin N → ℂ => ∑ j, ‖z j‖ ^ 2` using `by fun_prop`. Establish `hcl : IsClosed S` using `isClosed_eq hcont continuous_const`. Establish `hb : Bornology.IsBounded S`. Use `(Metric.isBounded_closedBall (x := (0 : Fin N → ℂ)) (r := 1)).subset fun z hz => ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hz' : ∑ j, ‖z j‖ ^ 2 = 1` using `hz`. Rewrite using `[Metric.mem_closedBall, dist_zero_right, pi_norm_le_iff_of_nonneg zero_le_one]`. Introduce `j`. Establish `hj : ‖z j‖ ^ 2 ≤ 1`. Rewrite using `[← hz']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.single_le_sum (f := fun i => ‖z i‖ ^ 2) (fun i _ => sq_nonneg ‖z i‖) (Finset.mem_univ j)`. Use polynomial arithmetic with `[norm_nonneg (z j)]`. Establish `hne : S.Nonempty`. Use `⟨Pi.single ⟨0, hN⟩ 1, ?_⟩` and prove the remaining obligations. Use `show ∑ j, ‖(Pi.single ⟨0, hN⟩ (1 : ℂ) : Fin N → ℂ) j‖ ^ 2 = 1`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_eq_single ⟨0, hN⟩ (fun j _ hj => by simp [hj]) (by simp)]`. Simplify using the standard rewrite rules. Take `⟨p, hpS, hmax⟩` from `(Metric.isCompact_of_isClosed_isBounded hcl hb).exists_isMaxOn hne (continuous_norm.comp (MvPolynomial.continuous_eval Q)).continuousOn`. Conclude with `⟨p, hpS, fun z hz => isMaxOn_iff.mp hmax z hz⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_max (hN : 1 ≤ N) (Q : MvPolynomial (Fin N) ℂ) :
     ∃ p : Fin N → ℂ, ∑ j, ‖p j‖ ^ 2 = 1 ∧
@@ -437,15 +431,15 @@ theorem exists_max (hN : 1 ≤ N) (Q : MvPolynomial (Fin N) ℂ) :
   exact ⟨p, hpS, fun z hz => isMaxOn_iff.mp hmax z hz⟩
 
 /- English proof (translation)
-Introduce `hzero`. Establish `hS : ∀ z : Fin N → ℂ, ∑ j, ‖z j‖ ^ 2 = 1 → eval z Q = 0` using `fun z hz => by`. Use `hmax z hz` as an intermediate fact. Rewrite `this` using `[hzero, norm_zero]`. Conclude with `norm_le_zero_iff.mp this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hQ0` to reduce the goal to its premises. Apply `hQ.eq_zero_of_forall_eval_eq_zero` to reduce the goal to its premises. Introduce `x`. Distinguish the cases in `hx : x = 0`. Substitute `hx` using the available equality.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact.
 
-Use `eval_smul hQ 0 p` as an intermediate fact. Rewrite `this` using `[zero_smul, hS p hp, mul_zero]`. Conclude with `this`. Establish `hT : 0 < ∑ j, ‖x j‖ ^ 2`. Take `⟨j, hj⟩` from `Function.ne_iff.mp hx`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Finset.sum_pos' (fun i _ => sq_nonneg _) ⟨j, Finset.mem_univ _, pow_pos (norm_pos_iff.mpr (by simpa using hj)) 2⟩`. Establish `hρ : 0 < √(∑ j, ‖x j‖ ^ 2)` using `Real.sqrt_pos.mpr hT`. Establish `hsq : √(∑ j, ‖x j‖ ^ 2) ^ 2 = ∑ j, ‖x j‖ ^ 2` using `Real.sq_sqrt hT.le`. Establish `hs : ∑ j, ‖((((√(∑ i, ‖x i‖ ^ 2))⁻¹ : ℝ) : ℂ) • x) j‖ ^ 2 = 1`. Simplify using `only [Pi.smul_apply, smul_eq_mul, norm_mul, Complex.norm_real, mul_pow, ← Finset.mul_sum]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Real.norm_of_nonneg (inv_nonneg.mpr hρ.le), inv_pow, hsq, inv_mul_cancel₀ hT.ne']`. Establish `hxe : x = ((√(∑ j, ‖x j‖ ^ 2) : ℝ) : ℂ) • ((((√(∑ j, ‖x j‖ ^ 2))⁻¹ : ℝ) : ℂ) • x)`. Rewrite using `[smul_smul, ← Complex.ofReal_mul, mul_inv_cancel₀ hρ.ne', Complex.ofReal_one, one_smul]`. Rewrite using `[hxe, eval_smul hQ, hS _ hs, mul_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eval_ne_zero_of_max {d : ℕ} {Q : MvPolynomial (Fin N) ℂ} (hQ0 : Q ≠ 0)
     (hQ : Q.IsHomogeneous d) {p : Fin N → ℂ} (hp : ∑ j, ‖p j‖ ^ 2 = 1)
@@ -482,9 +476,9 @@ end PointwiseLelong
 open PointwiseLelong in
 
 /- English proof (translation)
-Introduce `N d Q hQ0 hQ`. Use `⟨fun p hp hQp => ⟨sphereIntegrable_log hQ0, main_bound h1 hQ0 hQ p hp hQp⟩, fun hN => ?_⟩` and prove the remaining obligations. Take `⟨p, hp, hmax⟩` from `exists_max hN Q`. Establish `hQp` using `eval_ne_zero_of_max hQ0 hQ hp hmax`. Establish `hsup : (⨆ z : {z : Fin N → ℂ // ∑ j, ‖z j‖ ^ 2 = 1}, ‖eval (z : Fin N → ℂ) Q‖) = ‖eval p Q‖`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Nonempty {z : Fin N → ℂ // ∑ j, ‖z j‖ ^ 2 = 1}` using `⟨⟨p, hp⟩⟩`. Conclude with `le_antisymm (ciSup_le fun z => hmax z z.2) (le_ciSup_of_le ⟨‖eval p Q‖, by rintro _ ⟨z, rfl⟩; exact hmax z z.2⟩ ⟨p, hp⟩ le_rfl)`. Rewrite using `[hsup]`. Conclude with `main_bound h1 hQ0 hQ p hp hQp`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem PointwiseLelong.proof (h1 : SphereProjectionLaw.Statement) : PointwiseLelong.Statement := by
   intro N d Q hQ0 hQ

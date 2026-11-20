@@ -5,7 +5,7 @@ set_option maxSynthPendingDepth 1
 namespace GroundTheory.Heights₂.Heights.Kleiman
 
 /- English proof (translation)
-Use `⟨fun I => ?_⟩` and prove the remaining obligations. Establish `h1 : I.1.1.card ≤ N + 1`. Simplify using `using Finset.card_le_univ I.1.1`. Establish `h2` using `I.2`. Use linear arithmetic over natural numbers and integers.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem CechTop.idx_isEmpty (N i : ℕ) (hi : N < i) :
     IsEmpty (Cech.Idx (Finset.univ : Finset (Fin (N + 1))) i) := by
@@ -16,11 +16,11 @@ theorem CechTop.idx_isEmpty (N i : ℕ) (hi : N < i) :
   omega
 
 /- English proof (translation)
-Introduce `S _ _ N M _ _ _ _ 𝓜 i c hi`. Use `CechTop.idx_isEmpty N i hi` as an intermediate fact. Establish `hC : Subsingleton (Cech.Cochain (locSys S N M) i)` using `inferInstance`. Prove the components needed by the constructor for the conclusion. Introduce `a b`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Express the relevant statement in the definitionally equal form `(a : Cech.Hdeg _ _ _ i) = b`. Proceed by induction on `a using Submodule.Quotient.induction_on with`. Consider the case `H x`. Proceed by induction on `b using Submodule.Quotient.induction_on with`. Consider the case `H y`.
+Express the relevant assertion in an equivalent form by its definition. Proceed by induction. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Use `congr 1`. Conclude with `Subtype.ext (hC.elim _ _)`.
+Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem CechTop.proof : CechTop.Statement := by
   intro S _ _ N M _ _ _ _ 𝓜 i c hi

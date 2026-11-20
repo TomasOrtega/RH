@@ -5,53 +5,43 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FinitePlacesIn
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions Formalism.MainNotions.N
 
 /- English proof (translation)
-Introduce `F₀ F Ω _ _ _ _ _ _ _ _ _ _`. Unfold `Ine IsPlaceOver Inertia`. Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed F`. Establish `hint : ∀ (A : ValuationSubring Ω) (x : Ω), IsIntegral ℤ x → A.valuation x ≤ 1`. Introduce `A x h`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨y, rfl⟩` from `IsIntegrallyClosed.isIntegral_iff.mp (h.tower_top : IsIntegral A x)`. Conclude with `A.valuation_le_one y`. Take `⟨α₁, hα₁⟩` from `Field.exists_primitive_element F₀ F`. Establish `hα₁alg : IsAlgebraic ℤ α₁` using `(IsFractionRing.isAlgebraic_iff ℤ ℚ F).mpr (.of_finite ℚ α₁)`. Take `⟨m, hm0, hmint⟩` from `hα₁alg.exists_integral_multiple`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set α : F := m • α₁ with hαdef`. Use `set g : Polynomial ℤ := minpoly ℤ α with hgdef`. Use `set f : Polynomial F₀ := g.map (algebraMap ℤ F₀) with hfdef`. Establish `hgmonic : g.Monic` using `minpoly.monic hmint`. Establish `hfα : Polynomial.aeval α f = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hfdef, Polynomial.aeval_map_algebraMap, hgdef, minpoly.aeval]`. Establish `hfsep : f.Separable`. Establish `h1 : (minpoly ℚ α).Separable` using `Algebra.IsSeparable.isSeparable ℚ α`. Establish `h2` using `h1.map (f := algebraMap ℚ F₀)`. Rewrite `h2` using `[minpoly.isIntegrallyClosed_eq_field_fractions' ℚ hmint, Polynomial.map_map]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : (algebraMap ℚ F₀).comp (algebraMap ℤ ℚ) = algebraMap ℤ F₀` using `RingHom.ext_int _ _`. Rewrite `h2` using `[h3]`. Conclude with `h2`. Use `set c : F := Polynomial.aeval α (Polynomial.derivative f) with hcdef`. Establish `hc0 : c ≠ 0` using `hfsep.aeval_derivative_ne_zero hfα`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hcint : IsIntegral ℤ c`. Establish `h1 : c = Polynomial.aeval α (Polynomial.derivative g)`. Rewrite using `[hcdef, hfdef, Polynomial.derivative_map, Polynomial.aeval_map_algebraMap]`. Establish `key` using `Polynomial.aeval_algHom_apply (integralClosure ℤ F).val (⟨α, hmint⟩ : integralClosure ℤ F) (Polynomial.derivative g)`. Rewrite using `[h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Use `key ▸ ?_` and prove the remaining obligations. Conclude with `(Polynomial.aeval (⟨α, hmint⟩ : integralClosure ℤ F) (Polynomial.derivative g)).2`. Use `set d : F₀ := Algebra.norm F₀ c with hddef`. Establish `hdint : IsIntegral ℤ d` using `Algebra.isIntegral_norm F₀ hcint`. Establish `hd0 : d ≠ 0` using `Algebra.norm_ne_zero_iff.mpr hc0`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `set D : 𝓞 F₀ := ⟨d, hdint⟩ with hDdef`. Establish `hD0 : D ≠ 0`. Introduce `h`. Apply `hd0` to reduce the goal to its premises. Conclude with `congrArg (fun x : 𝓞 F₀ => (x : F₀)) h`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hspan : Ideal.span {D} ≠ 0`. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `hD0`. Use `Filter.eventually_cofinite.mpr ((Ideal.finite_factors hspan).subset ?_)` and prove the remaining obligations. Introduce `v hv`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Set.mem_setOf_eq] at hv ⊢`. Rewrite using `[Ideal.dvd_iff_le, Ideal.span_singleton_le_iff_mem]`. Assume the negation of the conclusion as `hDv`. Apply `hv` to reduce the goal to its premises. Introduce `A hA σ hσ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hσ2 : ∀ x : Ω, A.valuation x ≤ 1 → A.valuation (σ x - x) < 1` using `hσ.2`. Use `set α₀ : Ω := algebraMap F Ω α with hα₀def`. Establish `h0 : Polynomial.aeval α₀ f = 0`. Rewrite using `[hα₀def, Polynomial.aeval_algebraMap_apply, hfα, map_zero]`. Establish `hfix : σ α₀ = α₀`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Assume the negation of the conclusion as `hne`. Use `set fΩ : Polynomial Ω := f.map (algebraMap F₀ Ω) with hfΩ`. Establish `hfΩ_monic : fΩ.Monic` using `(hgmonic.map _).map _`. Establish `hfΩ0 : fΩ ≠ 0` using `hfΩ_monic.ne_zero`. Establish `hroot : ∀ y : Ω, Polynomial.aeval y f = 0 → y ∈ fΩ.roots`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `y hy`. Rewrite using `[Polynomial.mem_roots hfΩ0, Polynomial.IsRoot, hfΩ, Polynomial.eval_map_algebraMap]`. Conclude with `hy`. Establish `hα₀root : α₀ ∈ fΩ.roots` using `hroot _ h0`. Establish `hβroot : σ α₀ ∈ fΩ.roots`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `hroot` to reduce the goal to its premises. Use `Polynomial.aeval_algHom_apply (σ : Ω ≃ₐ[F₀] Ω).toAlgHom α₀ f` as an intermediate fact. Rewrite `this` using `[h0, map_zero]`. Conclude with `this`. Establish `hrootint : ∀ y ∈ fΩ.roots, IsIntegral ℤ y`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `y hy`. Use `⟨g, hgmonic, ?_⟩` and prove the remaining obligations. Rewrite `hy` using `[Polynomial.mem_roots hfΩ0, Polynomial.IsRoot, hfΩ, hfdef, Polynomial.map_map, ← Polynomial.eval₂_eq_eval_map]`. Establish `hZ : algebraMap ℤ Ω = (algebraMap F₀ Ω).comp (algebraMap ℤ F₀)` using `RingHom.ext_int _ _`. Rewrite using `[hZ]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hy`. Establish `hder : algebraMap F Ω c = ((fΩ.roots.erase α₀).map (α₀ - ·)).prod`. Rewrite using `[← (IsAlgClosed.splits fΩ).eval_root_derivative hfΩ_monic hα₀root]`. Rewrite using `[hfΩ, Polynomial.derivative_map, Polynomial.eval_map_algebraMap, hcdef, hα₀def, Polynomial.aeval_algebraMap_apply]`. Establish `hβmem : σ α₀ ∈ fΩ.roots.erase α₀` using `(Multiset.mem_erase_of_ne hne).mpr hβroot`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hcv : A.valuation (algebraMap F Ω c) < 1`. Rewrite using `[hder, ← Multiset.cons_erase hβmem, Multiset.map_cons, Multiset.prod_cons, Valuation.map_mul]`. Establish `h1 : A.valuation (α₀ - σ α₀) < 1`. Rewrite using `[Valuation.map_sub_swap]`. Conclude with `hσ2 α₀ (hint A α₀ (hrootint α₀ hα₀root))`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : A.valuation (((fΩ.roots.erase α₀).erase (σ α₀)).map (α₀ - ·)).prod ≤ 1`. Apply `hint` to reduce the goal to its premises. Apply `IsIntegral.multiset_prod` to reduce the goal to its premises. Introduce `z hz`. Take `⟨y, hy, rfl⟩` from `Multiset.mem_map.mp hz`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(hrootint α₀ hα₀root).sub (hrootint y (Multiset.mem_of_mem_erase (Multiset.mem_of_mem_erase hy)))`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_right' h2) h1`. Establish `hnorm` using `Algebra.norm_eq_prod_embeddings F₀ Ω c`. Use `set φ₀ : F →ₐ[F₀] Ω := IsScalarTower.toAlgHom F₀ F Ω with hφ₀`. Rewrite `hnorm` using `[← Finset.mul_prod_erase Finset.univ (fun φ : F →ₐ[F₀] Ω => φ c) (Finset.mem_univ φ₀)]`.
-
-Establish `hdv : A.valuation (algebraMap F₀ Ω d) < 1`. Rewrite using `[hddef, hnorm, Valuation.map_mul]`. Establish `h2 : A.valuation (∏ φ ∈ Finset.univ.erase φ₀, φ c) ≤ 1`. Apply `hint` to reduce the goal to its premises. Apply `IsIntegral.prod` to reduce the goal to its premises.
-
-Introduce `φ _`. Conclude with `hcint.map φ.toRingHom.toIntAlgHom`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_right' h2) hcv`. Conclude with `hDv ((hA D).mp hdv)`. Establish `hfix1 : σ (algebraMap F Ω α₁) = algebraMap F Ω α₁`.
-
-Establish `h : σ (algebraMap F Ω α) = algebraMap F Ω α` using `hfix`. Use `haveI : CharZero Ω := charZero_of_injective_algebraMap (algebraMap F Ω).injective`. Simplify using `only [hαdef, zsmul_eq_mul, map_mul, map_intCast] at h`. Conclude with `mul_left_cancel₀ (Int.cast_ne_zero.mpr hm0) h`. Establish `hφ : ((σ : Ω ≃ₐ[F₀] Ω).toAlgHom).comp (IsScalarTower.toAlgHom F₀ F Ω) = IsScalarTower.toAlgHom F₀ F Ω`.
-
-Establish `hadj : Algebra.adjoin F₀ {α₁} = ⊤`. Rewrite using `[← IntermediateField.adjoin_simple_toSubalgebra_of_isAlgebraic (Algebra.IsAlgebraic.isAlgebraic α₁), hα₁, IntermediateField.top_toSubalgebra]`. Use `AlgHom.ext_of_adjoin_eq_top hadj ?_` and prove the remaining obligations. Introduce `x hx`. Rewrite using `[Set.mem_singleton_iff.mp hx]`.
-
-Conclude with `hfix1`. Establish `hcomm : ∀ y : F, σ (algebraMap F Ω y) = algebraMap F Ω y` using `fun y => DFunLike.congr_fun hφ y`. Use `⟨AlgEquiv.ofRingEquiv (f := (σ : Ω ≃ₐ[F₀] Ω).toRingEquiv) hcomm, ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem UpperTheory.cm_inertia_restriction_holds : UpperTheory.V.Af.Cr.IneRes := by
   intro F₀ F Ω _ _ _ _ _ _ _ _ _ _

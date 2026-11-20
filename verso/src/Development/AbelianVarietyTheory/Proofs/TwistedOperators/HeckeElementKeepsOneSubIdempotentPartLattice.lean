@@ -14,7 +14,7 @@ namespace GlobalTheory.HeckeOffParts
 open scoped Matrix
 
 /- English proof (translation)
-Establish `hP : (1 - a) * (a + b) = b` using `by linear_combination -h1 - h2`. Rewrite using `[Matrix.mulVec_smul]`. Use `conv_lhs => rw [h6]`. Rewrite using `[smul_sub, smul_add, smul_smul, smul_smul, hP, sub_smul, one_smul]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem mulVec_one_sub_idempotent_of_split_sum_identity {A : Type} [CommRing A] {n : ℕ} (a b : A) (h1 : a * a = a) (h2 : a * b = 0)
     (M : Matrix (Fin n) (Fin n) A) (z : Fin n → A) (h6 : M *ᵥ z = (a + b) • M *ᵥ z + z - (a + b) • z) :
@@ -27,13 +27,13 @@ theorem mulVec_one_sub_idempotent_of_split_sum_identity {A : Type} [CommRing A] 
 
 open GlobalTheory.SplitPlace in
 /- English proof (translation)
-Introduce `z hz`. Take `⟨-, hs, h3, -⟩` from `ha`. Establish `hi` using `idem_mem he.1`. Establish `hci` using `cf_mem hi`. Establish `h3' : ∀ y ∈ Formalism.L2.NTheta.LamHat V, finPart D e • fm V a₀ *ᵥ y ∈ Formalism.L2.NTheta.LamHat V` using `h3`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hadj` using `adj_mem V (finPart D e) a₀ h3' z hz`. Establish `h6` using `mulVec_parts (finPart D) ((suppAt_iff e V a₀⁻¹).1 (suppAt_inv hs)) z`. Rewrite `h6` using `[RingHom.map_add, fin_cA, ← fm_eq]`. Establish `e1 : finPart D e * finPart D e = finPart D e` using `by rw [← map_mul, he.1]`. Establish `e2 : finPart D e * cf D (finPart D e) = 0` using `by rw [← fin_cA, ← map_mul, he.2.1, map_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[mulVec_one_sub_idempotent_of_split_sum_identity _ _ e1 e2 _ z h6]`. Establish `m1 : finPart D e • z ∈ Formalism.L2.NTheta.LamHat V` using `smul_mem V hi hz`. Establish `m2 : cf D (finPart D e) • z ∈ Formalism.L2.NTheta.LamHat V` using `smul_mem V hci hz`. Establish `m3` using `(Formalism.L2.NTheta.LamHat V).add_mem hadj hz`. Establish `m4` using `(Formalism.L2.NTheta.LamHat V).sub_mem m3 m1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(Formalism.L2.NTheta.LamHat V).sub_mem m4 m2`.
+A detailed English derivation is pending.
 -/
 theorem inv_part_mem {D : D7} {e : AE D} (he : IsSplitIdem D e) {V : HSp D} {ϖ : D.host.E} {k : ℕ} {a₀ : GA D V}
     (ha : Formalism.L2.NTheta.IsHeckeElt V e ϖ k a₀) :
@@ -58,13 +58,13 @@ theorem inv_part_mem {D : D7} {e : AE D} (he : IsSplitIdem D e) {V : HSp D} {ϖ 
 
 open GlobalTheory.SplitPlace in
 /- English proof (translation)
-Introduce `w hw`. Set `f : (Fin V.rank → RF D) →+ (Fin V.rank → RF D)` to `(Matrix.mulVecLin (fm V a₀⁻¹)).toAddMonoidHom.comp (DistribMulAction.toAddMonoidHom _ (1 - finPart D e))`. Express the relevant statement in the definitionally equal form `f w ∈ latGHat V 1`. Unfold `latGHat at hw ⊢`. Use `AddSubgroup.mem_comap.1 ((AddSubgroup.closure_le (K := AddSubgroup.comap f _)).2 ?_ hw)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨a, haA, x, ⟨x', hx', rfl⟩, rfl⟩`. Rewrite using `[SetLike.mem_coe, AddSubgroup.mem_comap]`. Use `AddSubgroup.subset_closure ⟨a, haA, _, ⟨fm V a₀⁻¹ *ᵥ ((1 - finPart D e) • x'), ?_, rfl⟩, ?_⟩` and prove the remaining obligations. Establish `hx'' : x' ∈ Formalism.L2.NTheta.LamHat V`. Rewrite using `[← GlobalTheory.LatReflection.latHat_eq_lamHat]`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hx'`. Use `inv_part_mem he ha x' hx''` as an intermediate fact. Rewrite `this` using `[← GlobalTheory.LatReflection.latHat_eq_lamHat]`. Conclude with `this`. Simplify using `only [map_one, Units.val_one, Matrix.one_mulVec]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `fm V a₀⁻¹ *ᵥ ((1 - finPart D e) • (((1 : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F) ⊗ₜ[D.host.F] a) • x')) = ((1 : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F) ⊗ₜ[D.host.F] a) • (fm V a₀⁻¹ *ᵥ ((1 - finPart D e) • x'))`. Rewrite using `[smul_comm (1 - finPart D e), Matrix.mulVec_smul]`.
+A detailed English derivation is pending.
 -/
 theorem hat_one_mem {D : D7} {e : AE D} (he : IsSplitIdem D e) {V : HSp D} {ϖ : D.host.E} {k : ℕ} {a₀ : GA D V}
     (ha : Formalism.L2.NTheta.IsHeckeElt V e ϖ k a₀) :
@@ -90,9 +90,9 @@ theorem hat_one_mem {D : D7} {e : AE D} (he : IsSplitIdem D e) {V : HSp D} {ϖ :
 
 open GlobalTheory.SplitPlace in
 /- English proof (translation)
-Introduce `D V e ϖ k g a₀ he ha y hy`. Take `⟨z, hz, rfl⟩` from `((GlobalTheory.MarkCoset.latG_spec D V g).2 y).1 hy`. Use `((GlobalTheory.MarkCoset.latG_spec D V (g * a₀)).2 _).2 ⟨fm V a₀⁻¹ *ᵥ ((1 - finPart D e) • z), hat_one_mem he ha z hz, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, Units.val_mul, ← Matrix.mulVec_mulVec]`. Express the relevant statement in the definitionally equal form `(finHom V g).1 *ᵥ (fm V a₀ *ᵥ (fm V a₀⁻¹ *ᵥ ((1 - finPart D e) • z))) = _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[fm_vec_inv, Matrix.mulVec_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem off_parts : ∀ (D : D7) (V : HSp D) (e : AE D) (ϖ : D.host.E) (k : ℕ) (g a₀ : GA D V),
     Formalism.L2.Theta.IsSplitIdem D e → Formalism.L2.NTheta.IsHeckeElt V e ϖ k a₀ →

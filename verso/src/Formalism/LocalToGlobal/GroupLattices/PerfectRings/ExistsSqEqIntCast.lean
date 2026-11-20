@@ -23,15 +23,13 @@ abbrev W2 : Type := WittVector p (F2 p n)
 def jW : WQ p n →+* W2 p n := WittVector.map (algebraMap (F1 p n) (F2 p n))
 
 /- English proof (translation)
-Establish `hsurj : Function.Surjective (WittVector.constantCoeff : WittVector p k →+* k)`. Introduce `r`. Conclude with `⟨WittVector.teichmuller p r, WittVector.teichmuller_coeff_zero p r⟩`. Establish `hker : RingHom.ker (WittVector.constantCoeff : WittVector p k →+* k) = Ideal.span {(p : WittVector p k)}`. Use extensionality with `x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[RingHom.mem_ker, Ideal.mem_span_singleton']`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Distinguish the cases in `h0 : x = 0`. Conclude with `⟨0, by rw [h0, zero_mul]⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components.
 
-Take `⟨m, b, hb0, hb⟩` from `WittVector.exists_eq_pow_p_mul x h0`. Consider the cases of `m with`. Consider the case `zero`. It suffices to derive a contradiction. Rewrite `hb` using `[pow_zero, one_mul]`.
+Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Treat this case separately. It suffices to derive a contradiction. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hb0 (hb ▸ hx)`. Consider the case `succ m => exact ⟨(p : WittVector p k) ^ m * b, by rw [hb]; ring⟩`. Introduce and unpack `⟨a, rfl⟩`. Rewrite using `[map_mul, map_natCast, CharP.cast_eq_zero, mul_zero]`. Rewrite using `[← hker]`.
-
-Conclude with `Nat.card_congr (RingHom.quotientKerEquivOfSurjective hsurj).toEquiv`.
+Treat this case separately. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem card_wittVector_quot_p_eq_card_field (k : Type) [Field k] [CharP k p] [PerfectRing k p] :
     Nat.card (WittVector p k ⧸ Ideal.span {(p : WittVector p k)}) = Nat.card k := by
@@ -59,14 +57,14 @@ private theorem card_wittVector_quot_p_eq_card_field (k : Type) [Field k] [CharP
   exact Nat.card_congr (RingHom.quotientKerEquivOfSurjective hsurj).toEquiv
 
 /- English proof (translation)
-Rewrite using `[card_wittVector_quot_p_eq_card_field]`. Conclude with `GaloisField.card p n (NeZero.ne n)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_quot_WQ : Nat.card (WQ p n ⧸ Ideal.span {(p : WQ p n)}) = p ^ n := by
   rw [card_wittVector_quot_p_eq_card_field]
   exact GaloisField.card p n (NeZero.ne n)
 
 /- English proof (translation)
-Rewrite using `[card_wittVector_quot_p_eq_card_field, Module.natCard_eq_pow_finrank (K := F1 p n), FiniteField.finrank_extension, GaloisField.card p n (NeZero.ne n), ← pow_mul, mul_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem card_quotient_extRing : Nat.card (W2 p n ⧸ Ideal.span {(p : W2 p n)}) = p ^ (2 * n) := by
   rw [card_wittVector_quot_p_eq_card_field, Module.natCard_eq_pow_finrank (K := F1 p n),
@@ -74,15 +72,13 @@ theorem card_quotient_extRing : Nat.card (W2 p n ⧸ Ideal.span {(p : W2 p n)}) 
 
 omit [NeZero n] in
 /- English proof (translation)
-Use `set d := WittVector.frobenius x - x ^ p with hd`. Establish `hd0 : d.coeff 0 = 0`. Establish `h1 : WittVector.constantCoeff d = 0`. Rewrite using `[hd, map_sub, map_pow]`. Use `show (WittVector.frobenius x).coeff 0 - (x.coeff 0) ^ p = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[WittVector.coeff_frobenius_charP, sub_self]`. Conclude with `h1`. Distinguish the cases in `h0 : d = 0`. Use `⟨0, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_zero, add_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Conclude with `sub_eq_zero.mp h0`. Take `⟨k, y, hy0, hy⟩` from `WittVector.exists_eq_pow_p_mul d h0`. Consider the cases of `k with`. Consider the case `zero`. It suffices to derive a contradiction.
+It suffices to derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `hy` using `[pow_zero, one_mul]`. Conclude with `hy0 (hy ▸ hd0)`. Consider the case `succ k`. Use `⟨(p : WQ p n) ^ k * y, ?_⟩` and prove the remaining obligations. Establish `: WittVector.frobenius x = x ^ p + d` using `by rw [hd]; ring`.
-
-Rewrite using `[this, hy]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem frob_WQ (x : WQ p n) : ∃ y : WQ p n, WittVector.frobenius x = x ^ p + (p : WQ p n) * y := by
   set d := WittVector.frobenius x - x ^ p with hd
@@ -109,11 +105,11 @@ theorem frob_WQ (x : WQ p n) : ∃ y : WQ p n, WittVector.frobenius x = x ^ p + 
     ring
 
 /- English proof (translation)
-Establish `hit : ∀ (m : ℕ) (y : WQ p n) (k : ℕ), ((WittVector.frobenius^[m]) y).coeff k = y.coeff k ^ (p ^ m)`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => intro y k`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules.
 
-Consider the case `succ m ih`. Introduce `y k`. Rewrite using `[Function.iterate_succ_apply', WittVector.coeff_frobenius_charP, ih, ← pow_mul, pow_succ]`. Use extensionality with `k`. Rewrite using `[hit]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : Fintype (F1 p n) := Fintype.ofFinite _`. Establish `hcard : Fintype.card (F1 p n) = p ^ n`. Rewrite using `[Fintype.card_eq_nat_card]`. Conclude with `GaloisField.card p n (NeZero.ne n)`. Rewrite using `[← hcard, FiniteField.pow_card]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frob_iter_WQ (x : WQ p n) : (WittVector.frobenius^[n]) x = x := by
   have hit : ∀ (m : ℕ) (y : WQ p n) (k : ℕ),
@@ -136,7 +132,7 @@ def sig : FractionRing (WQ p n) ≃+* FractionRing (WQ p n) :=
 
 omit [NeZero n] in
 /- English proof (translation)
-Unfold `sig`. Rewrite using `[IsFractionRing.ringEquivOfRingEquiv_algebraMap]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem sig_alg (x : WQ p n) : sig p n (algebraMap _ _ x) = algebraMap _ _ (WittVector.frobenius x) := by
   unfold sig
@@ -145,9 +141,9 @@ theorem sig_alg (x : WQ p n) : sig p n (algebraMap _ _ x) = algebraMap _ _ (Witt
 
 omit [NeZero n] in
 /- English proof (translation)
-Proceed by induction on `k generalizing x with`. Consider the case `zero => rfl`. Consider the case `succ k ih`. Rewrite using `[pow_succ]`. Use `show (sig p n ^ k) (sig p n (algebraMap _ _ x)) = _`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sig_alg, ih, Function.iterate_succ_apply]`.
+A detailed English derivation is pending.
 -/
 theorem sig_pow_alg (k : ℕ) (x : WQ p n) :
     (sig p n ^ k) (algebraMap _ _ x) = algebraMap _ _ ((WittVector.frobenius^[k]) x) := by
@@ -159,9 +155,9 @@ theorem sig_pow_alg (k : ℕ) (x : WQ p n) :
     rw [sig_alg, ih, Function.iterate_succ_apply]
 
 /- English proof (translation)
-Establish `h : ((sig p n ^ n).toRingHom : FractionRing (WQ p n) →+* FractionRing (WQ p n)) = RingHom.id _`. Use `IsLocalization.ringHom_ext (nonZeroDivisors (WQ p n)) ?_` and prove the remaining obligations. Use extensionality with `x`. Simplify using `only [RingHom.coe_comp, Function.comp_apply, RingEquiv.toRingHom_eq_coe, RingEquiv.coe_toRingHom, RingHom.id_apply]`. Rewrite using `[sig_pow_alg, frob_iter_WQ]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `y`. Use `congrArg (fun f : FractionRing (WQ p n) →+* FractionRing (WQ p n) => f y) h` as an intermediate fact. Simplify using `using this`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem sig_period : sig p n ^ n = 1 := by
   have h : ((sig p n ^ n).toRingHom : FractionRing (WQ p n) →+* FractionRing (WQ p n)) =
@@ -176,21 +172,19 @@ theorem sig_period : sig p n ^ n = 1 := by
   simpa using this
 
 /- English proof (translation)
-Establish `key : ∀ (m : ℕ) (v : Fin d → R), v ∈ (Ideal.span {π} ^ m • ⊤ : Submodule R (Fin d → R)) ↔ ∀ i, v i ∈ Ideal.span {π} ^ m`. Introduce `m v`. Prove the components needed by the constructor for the conclusion. Introduce `hv`. Use `Submodule.smul_induction_on (p := fun v : Fin d → R => ∀ i, v i ∈ Ideal.span {π} ^ m) hv ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `r hr w _ i`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Conclude with `Ideal.mul_mem_right _ _ hr`. Introduce `x y hx hy i`. Simplify using `only [Pi.add_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Ideal.add_mem _ (hx i) (hy i)`. Introduce `hv`. Establish `hsum : v = ∑ i, v i • Pi.single i (1 : R)`. Use extensionality with `j`. Simplify using `[Finset.sum_apply, Pi.single_apply]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hsum]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem_smul (hv i) Submodule.mem_top`. Establish `key1 : ∀ (m : ℕ) (r : R), r ∈ (Ideal.span {π} ^ m • ⊤ : Submodule R R) ↔ r ∈ Ideal.span {π} ^ m`. Introduce `m r`. Rewrite using `[Ideal.smul_eq_mul, Ideal.mul_top]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨fun f hf => ?_⟩` and prove the remaining obligations. Establish `hcomp : ∀ i, ∃ L : R, ∀ k, f k i ≡ L [SMOD (Ideal.span {π} ^ k • ⊤ : Submodule R R)]`. Introduce `i`. Use `IsPrecomplete.prec inferInstance (fun {a b} hab => ?_)` and prove the remaining obligations. Establish `h1` using `hf hab`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h1`, the goal using `[SModEq.sub_mem]`. Rewrite `h1` using `[key]`. Rewrite using `[key1]`. Simplify using `using h1 i`. Use `choose L hL using hcomp`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `⟨L, fun k => ?_⟩` and prove the remaining obligations. Rewrite using `[SModEq.sub_mem, key]`. Introduce `i`. Establish `h2` using `hL i k`. Rewrite `h2` using `[SModEq.sub_mem, key1]`.
-
-Simplify using `using h2`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem precomplete_pi {R : Type*} [CommRing R] (π : R) [IsPrecomplete (Ideal.span {π}) R] (d : ℕ) :
     IsPrecomplete (Ideal.span {π}) (Fin d → R) := by
@@ -237,20 +231,20 @@ theorem precomplete_pi {R : Type*} [CommRing R] (π : R) [IsPrecomplete (Ideal.s
 
 omit [NeZero n] in
 /- English proof (translation)
-The claim follows from `map_natCast _ _`.
+A detailed English derivation is pending.
 -/
 theorem jW_natCast : jW p n (p : WQ p n) = (p : W2 p n) := map_natCast _ _
 
 omit [NeZero n] in
 /- English proof (translation)
-The claim follows from `WittVector.map_coeff _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem jW_coeff (x : WQ p n) (k : ℕ) : (jW p n x).coeff k = algebraMap (F1 p n) (F2 p n) (x.coeff k) :=
   WittVector.map_coeff _ _ _
 
 omit [NeZero n] in
 /- English proof (translation)
-Introduce `x y h`. Use extensionality with `k`. Use `congrArg (fun z => WittVector.coeff z k) h` as an intermediate fact. Simplify using `only [jW_coeff] at this`. Conclude with `(algebraMap (F1 p n) (F2 p n)).injective this`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem jW_injective : Function.Injective (jW p n) := by
   intro x y h
@@ -260,11 +254,11 @@ theorem jW_injective : Function.Injective (jW p n) := by
   exact (algebraMap (F1 p n) (F2 p n)).injective this
 
 /- English proof (translation)
-Proceed by induction on `m generalizing s with`. Consider the case `zero => exact ⟨s, by simp⟩`. Consider the case `succ m ih`. Take `⟨a, ha⟩` from `ih s`. Choose the witnesses or unpack the hypotheses as in `⟨b, hb⟩ : ∃ b, WittVector.frobenius b = a := by`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨(WittVector.frobeniusEquiv p k).symm a, ?_⟩` and prove the remaining obligations. Use `(WittVector.frobeniusEquiv p k).apply_symm_apply a` as an intermediate fact. Rewrite `this` using `[WittVector.frobeniusEquiv_apply]`. Then use the resulting hypothesis. Use `⟨b, ?_⟩` and prove the remaining obligations. Rewrite using `[Function.iterate_succ_apply', ← ha, ← hb]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `: WittVector.frobenius b * (p : WittVector p k) ^ m = WittVector.frobenius (b * (p : WittVector p k) ^ m)`. Rewrite using `[map_mul, map_pow, map_natCast]`. Rewrite using `[this, WittVector.verschiebung_frobenius]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem exists_mul_p_pow_eq_verschiebung_iterate (k : Type) [Field k] [CharP k p] [PerfectRing k p] (m : ℕ)
     (s : WittVector p k) :
@@ -286,13 +280,13 @@ private theorem exists_mul_p_pow_eq_verschiebung_iterate (k : Type) [Field k] [C
     ring
 
 /- English proof (translation)
-Rewrite using `[Ideal.span_singleton_pow, Ideal.mem_span_singleton']`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, rfl⟩`. Proceed by induction on `m with`. Consider the case `zero => intro i hi`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Proceed by induction. Treat this case separately.
 
-Use linear arithmetic over natural numbers and integers. Consider the case `succ m ih`. Introduce `i hi`. Establish `e : a * (p : WittVector p k) ^ (m + 1) = (a * (p : WittVector p k) ^ m) * p` using `by ring`. Rewrite using `[e, ← WittVector.verschiebung_frobenius]`.
+Use linear arithmetic over natural numbers and integers. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Consider the cases of `i with`. Consider the case `zero => exact WittVector.verschiebung_coeff_zero _`. Consider the case `succ i`. Rewrite using `[WittVector.verschiebung_coeff_succ, WittVector.coeff_frobenius_charP, ih i (by omega), zero_pow hp.out.ne_zero]`. Introduce `hx`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨a, ha⟩` from `exists_mul_p_pow_eq_verschiebung_iterate p k m (x.shift m)`. Conclude with `⟨a, by rw [ha]; exact (WittVector.eq_iterate_verschiebung hx).symm⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem mem_span_p_pow_iff_coeff_eq_zero (k : Type) [Field k] [CharP k p] [PerfectRing k p] (m : ℕ)
     (x : WittVector p k) :
@@ -316,13 +310,13 @@ private theorem mem_span_p_pow_iff_coeff_eq_zero (k : Type) [Field k] [CharP k p
     exact ⟨a, by rw [ha]; exact (WittVector.eq_iterate_verschiebung hx).symm⟩
 
 /- English proof (translation)
-Establish `h0 : ∀ z : WittVector p k, (∀ i < m, z.coeff i = 0) ↔ WittVector.truncate m z = 0`. Introduce `z`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use extensionality with `i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Simplify using `[WittVector.coeff_truncate, h i i.2]`. Introduce `h i hi`. Use `congrArg (TruncatedWittVector.coeff ⟨i, hi⟩) h` as an intermediate fact. Simplify `this` using `[WittVector.coeff_truncate]`. Rewrite using `[h0, map_sub, sub_eq_zero]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h i hi`. Use `congrArg (TruncatedWittVector.coeff ⟨i, hi⟩) h` as an intermediate fact. Simplify `this` using `[WittVector.coeff_truncate]`. Introduce `h`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Use extensionality with `i`. Simplify using `[WittVector.coeff_truncate, h i i.2]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem coeff_sub_eq_zero_iff_coeff_eq (k : Type) [CommRing k] (m : ℕ) (x y : WittVector p k) :
     (∀ i < m, (x - y).coeff i = 0) ↔ ∀ i < m, x.coeff i = y.coeff i := by
@@ -345,15 +339,13 @@ private theorem coeff_sub_eq_zero_iff_coeff_eq (k : Type) [CommRing k] (m : ℕ)
     simp [WittVector.coeff_truncate, h i i.2]
 
 /- English proof (translation)
-Establish `hmem : ∀ (m : ℕ) (x : WittVector p k), x ∈ (Ideal.span {(p : WittVector p k)} ^ m • ⊤ : Submodule (WittVector p k) (WittVector p k)) ↔ ∀ i < m, x.coeff i = 0`. Introduce `m x`. Rewrite using `[Ideal.smul_eq_mul, Ideal.mul_top, mem_span_p_pow_iff_coeff_eq_zero]`. Establish `hmod : ∀ (m : ℕ) (x y : WittVector p k), x ≡ y [SMOD (Ideal.span {(p : WittVector p k)} ^ m • ⊤ : Submodule (WittVector p k) (WittVector p k))] ↔ ∀ i < m, x.coeff i = y.coeff i`. Introduce `m x y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[SModEq.sub_mem, hmem, coeff_sub_eq_zero_iff_coeff_eq]`. Establish `H : IsHausdorff (Ideal.span {(p : WittVector p k)}) (WittVector p k)`. Use `⟨fun x hx => ?_⟩` and prove the remaining obligations. Use extensionality with `i`. Use `(hmod (i + 1) x 0).mp (hx (i + 1)) i (by omega)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Simplify using `using this`. Establish `P : IsPrecomplete (Ideal.span {(p : WittVector p k)}) (WittVector p k)`. Use `⟨fun f hf => ?_⟩` and prove the remaining obligations. Use `⟨WittVector.mk p (fun i => (f (i + 1)).coeff i), fun m => ?_⟩` and prove the remaining obligations. Rewrite using `[hmod]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `i hi`. Simplify using `only [WittVector.coeff_mk]`. Conclude with `((hmod (i + 1) (f (i + 1)) (f m)).mp (hf (by omega)) i (by omega)).symm`. Use `haveI := H`. Use `haveI := P`.
-
-Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. A detailed English derivation is pending.
 -/
 private theorem isAdicComplete_span_p_wittVector (k : Type) [Field k] [CharP k p] [PerfectRing k p] :
     IsAdicComplete (Ideal.span {(p : WittVector p k)}) (WittVector p k) := by
@@ -384,11 +376,11 @@ private theorem isAdicComplete_span_p_wittVector (k : Type) [Field k] [CharP k p
   constructor
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hv`. Use `Submodule.smul_induction_on (p := fun v : Fin d → R => ∀ i, v i ∈ Ideal.span {π} ^ m) hv ?_ ?_` and prove the remaining obligations. Introduce `r hr w _ i`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `Ideal.mul_mem_right _ _ hr`. Introduce `x y hx hy i`. Simplify using `only [Pi.add_apply]`. Conclude with `Ideal.add_mem _ (hx i) (hy i)`. Introduce `hv`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hsum : v = ∑ i, v i • Pi.single i (1 : R)`. Use extensionality with `j`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Rewrite using `[hsum]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem_smul (hv i) Submodule.mem_top`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mem_span_pow_smul_top_pi_iff {R : Type*} [CommRing R] (π : R) (d m : ℕ) (v : Fin d → R) :
     v ∈ (Ideal.span {π} ^ m • ⊤ : Submodule R (Fin d → R)) ↔ ∀ i, v i ∈ Ideal.span {π} ^ m := by
@@ -410,41 +402,35 @@ private theorem mem_span_pow_smul_top_pi_iff {R : Type*} [CommRing R] (π : R) (
     exact Submodule.sum_mem _ fun i _ => Submodule.smul_mem_smul (hv i) Submodule.mem_top
 
 /- English proof (translation)
-Use `haveI hc1 := isAdicComplete_span_p_wittVector p (F1 p n)`. Use `haveI hc2 := isAdicComplete_span_p_wittVector p (F2 p n)`. Use `haveI : IsPrecomplete (Ideal.span {(p : WQ p n)}) (Fin 2 → WQ p n) := precomplete_pi _ 2`. Establish `hfr : Module.finrank (F1 p n) (F2 p n) = 2` using `FiniteField.finrank_extension _ _ _`. Set `b : Module.Basis (Fin 2) (F1 p n) (F2 p n)` to `Module.finBasisOfFinrankEq _ _ hfr`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `e : Fin 2 → W2 p n` to `fun j => WittVector.teichmuller p (b j)`. Establish `hjW : ∀ (m : ℕ) (a : WQ p n), jW p n ((p : WQ p n) ^ m * a) = (p : W2 p n) ^ m * jW p n a`. Introduce `m a`. Rewrite using `[map_mul, map_pow, map_natCast]`. Establish `step : ∀ w : W2 p n, ∃ a : Fin 2 → WQ p n, ∃ w' : W2 p n, w = ∑ j, jW p n (a j) * e j + (p : W2 p n) * w'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `w`. Use `set c := b.repr (w.coeff 0) with hc`. Use `⟨fun j => WittVector.teichmuller p (c j), ?_⟩` and prove the remaining obligations. Establish `h0 : (w - ∑ j, jW p n (WittVector.teichmuller p (c j)) * e j).coeff 0 = 0` using `by show WittVector.constantCoeff (w - ∑ j, jW p n (WittVector.teichmuller p (c j)) * e j) = 0`. Rewrite using `[map_sub, map_sum]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `h1 : ∀ j, WittVector.constantCoeff (jW p n (WittVector.teichmuller p (c j)) * e j) = c j • b j`. Introduce `j`. Rewrite using `[map_mul, Algebra.smul_def]`. Apply the tactic sequence `congr 1 <;> first`. Consider the case `exact WittVector.teichmuller_coeff_zero p (b j)`.
+Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Consider the case `(show (jW p n _).coeff 0 = _; rw [jW_coeff, WittVector.teichmuller_coeff_zero])`. Simplify using `only [h1]`. Rewrite using `[sub_eq_zero, hc, b.sum_repr]`. Both sides reduce to the same expression. Establish `hm : w - ∑ j, jW p n (WittVector.teichmuller p (c j)) * e j ∈ Ideal.span {(p : W2 p n)}`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Use `(mem_span_p_pow_iff_coeff_eq_zero p (F2 p n) 1 _).mpr (fun i hi => by` as an intermediate fact. Take `rfl : i = 0` from `by omega`. Conclude with `h0)`. Rewrite `this` using `[pow_one]`. Then use the resulting hypothesis. Take `⟨w', hw'⟩` from `Ideal.mem_span_singleton'.mp hm`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Conclude with `⟨w', by rw [mul_comm, hw']; ring⟩`. Use `choose A Rm hAR using step`. Establish `expand : ∀ (w : W2 p n) (N : ℕ), w = ∑ j, jW p n (∑ m ∈ Finset.range N, (p : WQ p n) ^ m * A (Rm^[m] w) j) * e j + (p : W2 p n) ^ N * Rm^[N] w`. Introduce `w N`. Proceed by induction on `N with`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Consider the case `zero => simp`. Consider the case `succ N ih`. Establish `h` using `hAR (Rm^[N] w)`. Rewrite using `[Function.iterate_succ_apply']`. Use `conv_lhs => rw [ih]`.
+Replace the relevant objects with their definitions. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `conv_lhs => rw [h]`. Simplify using `only [Finset.sum_range_succ, map_add, add_mul, Finset.sum_add_distrib, hjW, mul_add, Finset.mul_sum]`. Expand and normalize the polynomial expressions, which then agree. Unfold `RingHom.Finite`. Use `letI : Algebra (WQ p n) (W2 p n) := (jW p n).toAlgebra`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨⟨Finset.univ.image e, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[Submodule.eq_top_iff']`. Introduce `w`. Take `⟨s, hsdef⟩ : ∃ s : ℕ → Fin 2 → WQ p n, ∀ N j, s N j = ∑ m ∈ Finset.range N, (p : WQ p n) ^ m * A (Rm^[m] w) j` from `⟨_, fun _ _ => rfl⟩`. Establish `hs : ∀ {a b : ℕ}, a ≤ b → s a ≡ s b [SMOD (Ideal.span {(p : WQ p n)} ^ a • ⊤ : Submodule (WQ p n) (Fin 2 → WQ p n))]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Introduce `a b hab`. Rewrite using `[SModEq.sub_mem, mem_span_pow_smul_top_pi_iff]`. Introduce `j`. Take `⟨d, rfl⟩` from `Nat.exists_eq_add_of_le hab`. Establish `h1 : s a j - s (a + d) j = -((p : WQ p n) ^ a * ∑ l ∈ Finset.range d, (p : WQ p n) ^ l * A (Rm^[a + l] w) j)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Pi.sub_apply, hsdef, Finset.sum_range_add, Finset.mul_sum, pow_add]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Pi.sub_apply, h1, Ideal.span_singleton_pow]`. Conclude with `neg_mem (Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _))`. Take `⟨L, hL⟩` from `IsPrecomplete.prec inferInstance hs`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hw : w = ∑ j, jW p n (L j) * e j`. Rewrite using `[← sub_eq_zero]`. Use `IsHausdorff.haus hc2.toIsHausdorff _ (fun N => ?_)` and prove the remaining obligations. Rewrite using `[SModEq.sub_mem, sub_zero, Ideal.smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow, Ideal.mem_span_singleton']`. Establish `h1` using `hL N`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[SModEq.sub_mem, mem_span_pow_smul_top_pi_iff]`. Establish `h2 : ∀ j, ∃ t, t * (p : WQ p n) ^ N = s N j - L j` using `fun j => by`. Use `h1 j` as an intermediate fact. Rewrite `this` using `[Ideal.span_singleton_pow, Ideal.mem_span_singleton']`. Conclude with `this`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Put the polynomial expressions in normal form. Supply the required witnesses or components.
 
-Use `choose tt htt using h2`. Establish `h3 : ∀ j, jW p n (L j) = jW p n (s N j) - (p : W2 p n) ^ N * jW p n (tt j)`. Introduce `j`. Establish `: L j = s N j - (p : WQ p n) ^ N * tt j` using `by rw [mul_comm, htt j]; ring`. Rewrite using `[this, map_sub, hjW]`.
-
-Establish `hx : w = ∑ j, jW p n (s N j) * e j + (p : W2 p n) ^ N * Rm^[N] w`. Simplify using `only [hsdef]`. Conclude with `expand w N`. Establish `key : w - ∑ j, jW p n (L j) * e j = (∑ j, jW p n (tt j) * e j + Rm^[N] w) * (p : W2 p n) ^ N` using `by conv_lhs => rw [hx]`. Simplify using `only [h3, sub_mul, Finset.sum_sub_distrib, add_mul, Finset.sum_mul]`.
-
-Put the polynomial expressions in normal form. Conclude with `⟨_, key.symm⟩`. Rewrite using `[hw]`. Use `Submodule.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Establish `h4 : jW p n (L j) * e j = L j • e j` using `rfl`.
-
-Rewrite using `[h4]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span (by simp))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jW_finite : (jW p n).Finite := by
   classical
@@ -549,15 +535,13 @@ theorem jW_finite : (jW p n).Finite := by
   exact Submodule.smul_mem _ _ (Submodule.subset_span (by simp))
 
 /- English proof (translation)
-Distinguish the cases in `ha : a = 0`. Rewrite using `[ha, map_zero]; exact ⟨0, by simp⟩`. Use `haveI : Fintype (F1 p n) := Fintype.ofFinite _`. Use `haveI : Fintype (F2 p n) := Fintype.ofFinite _`. Establish `hq : Fintype.card (F1 p n) = p ^ n`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Fintype.card_eq_nat_card]`. Conclude with `GaloisField.card p n (NeZero.ne n)`. Establish `hq2 : Fintype.card (F2 p n) = (p ^ n) ^ 2`. Rewrite using `[Fintype.card_eq_nat_card, Module.natCard_eq_pow_finrank (K := F1 p n), FiniteField.finrank_extension, GaloisField.card p n (NeZero.ne n)]`. Establish `hchar : ringChar (F2 p n) ≠ 2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ringChar.eq (F2 p n) p]`. Conclude with `hp2`. Establish `ha' : algebraMap (F1 p n) (F2 p n) a ≠ 0`. Rewrite using `[ne_eq, map_eq_zero]`. Conclude with `ha`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Rewrite using `[FiniteField.isSquare_iff hchar ha', hq2]`. Take `⟨r, hr⟩ : Odd (p ^ n)` from `(hp.out.odd_of_ne_two hp2).pow`. Establish `hexp : (p ^ n) ^ 2 / 2 = (p ^ n - 1) * (r + 1)`. Rewrite using `[hr, show (2 * r + 1) ^ 2 = 2 * (2 * r * (r + 1)) + 1 by ring, Nat.mul_add_div (by norm_num : 0 < 2), Nat.add_sub_cancel]`. Evaluate the numerical expressions.
-
-Rewrite using `[hexp, pow_mul, ← map_pow, ← hq, FiniteField.pow_card_sub_one_eq_one a ha, map_one, one_pow]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isSquare_algebraMap (hp2 : p ≠ 2) (a : F1 p n) : IsSquare (algebraMap (F1 p n) (F2 p n) a) := by
   by_cases ha : a = 0
@@ -583,15 +567,13 @@ theorem isSquare_algebraMap (hp2 : p ≠ 2) (a : F1 p n) : IsSquare (algebraMap 
 
 omit [NeZero n] in
 /- English proof (translation)
-Use `haveI := isAdicComplete_span_p_wittVector p (F2 p n)`. Use `haveI := IsAdicComplete.henselianRing (W2 p n) (Ideal.span {(p : W2 p n)})`. Establish `hmon : (Polynomial.X ^ 2 - Polynomial.C c).Monic` using `Polynomial.monic_X_pow_sub_C c (by norm_num)`. Use `set a0 : W2 p n := WittVector.teichmuller p y0 with ha0`. Establish `ha00 : WittVector.constantCoeff a0 = y0` using `WittVector.teichmuller_coeff_zero p y0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hev : (Polynomial.X ^ 2 - Polynomial.C c).eval a0 ∈ Ideal.span {(p : W2 p n)}`. Use `(mem_span_p_pow_iff_coeff_eq_zero p (F2 p n) 1 ((Polynomial.X ^ 2 - Polynomial.C c).eval a0)).mpr (fun i hi => by` as an intermediate fact. Take `rfl : i = 0` from `by omega`. Use `show WittVector.constantCoeff _ = 0`. Simplify using `only [Polynomial.eval_sub, Polynomial.eval_pow, Polynomial.eval_X, Polynomial.eval_C, map_sub, map_pow, ha00]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[show WittVector.constantCoeff c = c.coeff 0 from rfl, hc]`. Use the proof step `ring)`. Rewrite `this` using `[pow_one]`. Then use the resulting hypothesis. Establish `hder : IsUnit ((Polynomial.derivative (Polynomial.X ^ 2 - Polynomial.C c)).eval a0)`. Apply `WittVector.isUnit_of_coeff_zero_ne_zero` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Evaluate the numerical expressions. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `show WittVector.constantCoeff _ ≠ 0`. Simplify using `only [Polynomial.derivative_sub, Polynomial.derivative_X_pow, Polynomial.derivative_C, sub_zero, Polynomial.eval_mul, Polynomial.eval_C, Polynomial.eval_pow, Polynomial.eval_X, Polynomial.eval_natCast, map_mul, map_pow, map_natCast, ha00]`. Evaluate the numerical expressions. Conclude with `⟨h2, hy00⟩`. Take `⟨y, hy, -⟩` from `HenselianRing.is_henselian _ hmon a0 hev (hder.map _)`.
-
-Use `⟨y, ?_⟩` and prove the remaining obligations. Use `hy.eq_zero` as an intermediate fact. Simplify using `only [Polynomial.eval_sub, Polynomial.eval_pow, Polynomial.eval_X, Polynomial.eval_C] at this`. Conclude with `sub_eq_zero.mp this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sq_lift (c : W2 p n) (y0 : F2 p n) (hc : c.coeff 0 = y0 * y0) (hy00 : y0 ≠ 0)
     (h2 : (2 : F2 p n) ≠ 0) : ∃ y : W2 p n, y ^ 2 = c := by
@@ -625,13 +607,13 @@ theorem sq_lift (c : W2 p n) (y0 : F2 p n) (hc : c.coeff 0 = y0 * y0) (hy00 : y0
   exact sub_eq_zero.mp this
 
 /- English proof (translation)
-Take `⟨r, hr⟩` from `isSquare_algebraMap p n hp2 (z : F1 p n)`. Establish `hz0 : ((z : ℤ) : F2 p n) ≠ 0`. Rewrite using `[ne_eq, CharP.intCast_eq_zero_iff (F2 p n) p]`. Conclude with `hz`. Establish `hc : (z : W2 p n).coeff 0 = r * r`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: WittVector.constantCoeff (z : W2 p n) = ((z : ℤ) : F2 p n)` using `map_intCast _ _`. Rewrite using `[← hr, map_intCast]`. Conclude with `this`. Establish `hr0 : r ≠ 0`. Introduce and unpack `rfl`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `hz0` to reduce the goal to its premises. Rewrite using `[← map_intCast (algebraMap (F1 p n) (F2 p n)), hr, mul_zero]`. Establish `h2 : (2 : F2 p n) ≠ 0`. Establish `: ((2 : ℕ) : F2 p n) ≠ 0`. Rewrite using `[ne_eq, CharP.cast_eq_zero_iff (F2 p n) p]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `hdvd`. Conclude with `hp2 ((Nat.prime_dvd_prime_iff_eq hp.out Nat.prime_two).mp hdvd)`. Simplify using `using this`. Conclude with `sq_lift p n _ r hc hr0 h2`.
+A detailed English derivation is pending.
 -/
 theorem exists_sq_eq_intCast_of_not_dvd_of_ne_two (hp2 : p ≠ 2) (z : ℤ) (hz : ¬ (p : ℤ) ∣ z) : ∃ y : W2 p n, y ^ 2 = (z : W2 p n) := by
   obtain ⟨r, hr⟩ := isSquare_algebraMap p n hp2 (z : F1 p n)

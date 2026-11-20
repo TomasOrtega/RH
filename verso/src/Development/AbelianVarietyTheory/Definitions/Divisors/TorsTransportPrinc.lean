@@ -18,9 +18,9 @@ variable {K : Type} [Field K] [NumberField K]
 def princId (α : Kˣ) : (Af K)ˣ := Units.map (algebraMap K (Af K)).toMonoidHom α
 
 /- English proof (translation)
-Establish `e : ∀ v : HeightOneSpectrum (𝓞 K), Valued.v ((algebraMap K (Af K) x) v) = v.valuation K x` using `fun v => HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v x`. Simplify using `only [e, FractionalIdeal.mem_one_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `HeightOneSpectrum.mem_integers_of_valuation_le_one (R := 𝓞 K) K x h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨r, rfl⟩ v`. Conclude with `v.valuation_le_one r`.
+A detailed English derivation is pending.
 -/
 theorem int_iff (x : K) : (∀ v : HeightOneSpectrum (𝓞 K), Valued.v ((algebraMap K (Af K) x) v) ≤ 1) ↔
     x ∈ (1 : FractionalIdeal (𝓞 K)⁰ K) := by
@@ -34,25 +34,23 @@ theorem int_iff (x : K) : (∀ v : HeightOneSpectrum (𝓞 K), Valued.v ((algebr
     exact v.valuation_le_one r
 
 /- English proof (translation)
-Establish `hc : Fintype.card (Module.Free.ChooseBasisIndex ℤ (𝓞 K)) = Fintype.card (Fin 2)`. Rewrite using `[← Module.finrank_eq_card_chooseBasisIndex, RingOfIntegers.rank, h2]`. Simplify using the standard rewrite rules. Set `e` to `Fintype.equivOfCardEq hc`. Set `b` to `(RingOfIntegers.basis K).reindex e`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `B` to `(integralBasis K).reindex e`. Establish `hB : ∀ i, B i = algebraMap (𝓞 K) K (b i)` using `fun i => by simp [B, b]`. Establish `hrep : ∀ x : K, ∃ p q : ℚ, ι x = p * ι (B 0) + q * ι (B 1)` using `fun x => by`. Use `⟨B.repr x 0, B.repr x 1, ?_⟩` and prove the remaining obligations. Use `conv_lhs => rw [← B.sum_repr x]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `[Fin.sum_univ_two, Rat.smul_def]`. Establish `hδ' : ι δ ^ 2 = -(d : ℂ)` using `by rw [← map_pow, hδ]; simp`. Establish `hind : LinearIndependent ℝ ![ι (B 0), ι (B 1)]`. Rewrite using `[LinearIndependent.pair_iff]`. Introduce `s t h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [Complex.real_smul] at h`. Take `⟨p, q, h1⟩` from `hrep 1`. Take `⟨p', q', h3⟩` from `hrep δ`. Rewrite `h1` using `[map_one]`. Establish `key : ∀ u w : ℝ, (u : ℂ) * ι δ = w → u = 0` using `fun u w huw => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: ((u : ℂ) * ι δ) ^ 2 = (w : ℂ) ^ 2` using `by rw [huw]`. Rewrite `this` using `[mul_pow, hδ']`. Establish `h' : u ^ 2 * (-(d : ℝ)) = w ^ 2` using `by exact_mod_cast this`. Establish `hd' : (0 : ℝ) < d` using `by exact_mod_cast hd`. Establish `: u ^ 2 ≤ 0` using `by nlinarith [sq_nonneg w, sq_nonneg u]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `pow_eq_zero_iff (two_ne_zero) |>.1 (le_antisymm this (sq_nonneg u))`. Establish `k1` using `key (s * q - t * p) (s * q' - t * p') (by`. Use `push_cast`. Establish `: ((s : ℂ) * q' - t * p') = ((s : ℂ) * q' - t * p') * 1` using `by ring`. Rewrite using `[this, h1, h3]`.
+Move the embeddings inside the algebraic operations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Take the linear combination `(q * p' - p * q' : ℂ) * h)`. Establish `k1' : (s : ℂ) * q - t * p = 0` using `by exact_mod_cast k1`. Establish `hb0 : ι (B 0) ≠ 0` using `by simpa using B.ne_zero 0`. Establish `hb1 : ι (B 1) ≠ 0` using `by simpa using B.ne_zero 1`. Establish `hs : (s : ℂ) = 0` using `by linear_combination (s : ℂ) * h1 + (p : ℂ) * h + ι (B 1) * k1'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 
-Establish `ht : (t : ℂ) = 0` using `by linear_combination (t : ℂ) * h1 + (q : ℂ) * h - ι (B 0) * k1'`. Conclude with `⟨by exact_mod_cast hs, by exact_mod_cast ht⟩`. Use `⟨⟨ι (B 0), ι (B 1), hind⟩, ?_⟩` and prove the remaining obligations. Use extensionality with `z`. Simplify using `only [SetLike.mem_coe, PeriodPair.mem_lattice, Set.mem_image, FractionalIdeal.mem_coe, FractionalIdeal.mem_one_iff]`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨m, n, rfl⟩`. Conclude with `⟨_, ⟨m * b 0 + n * b 1, rfl⟩, by simp [hB]⟩`. Introduce and unpack `⟨_, ⟨r, rfl⟩, rfl⟩`. Use `⟨b.repr r 0, b.repr r 1, ?_⟩` and prove the remaining obligations.
-
-Use `conv_rhs => rw [← b.sum_repr r]`. Simplify using `[Fin.sum_univ_two, hB]`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_isLatOf (d : ℕ) (δ : K) (ι : K →+* ℂ) (h2 : Module.finrank ℚ K = 2) (hd : 0 < d) (hδ : δ ^ 2 = -(d : K)) :
     ∃ Λ : PeriodPair, IsLatOf ι 1 Λ := by
@@ -104,23 +102,23 @@ theorem exists_isLatOf (d : ℕ) (δ : K) (ι : K →+* ℂ) (h2 : Module.finran
     simp [Fin.sum_univ_two, hB]
 
 /- English proof (translation)
-Establish `ha : ι α ≠ 0` using `by simp`. Establish `hc : (ι α)⁻¹ ≠ 0` using `inv_ne_zero ha`. Establish `H` using `isHomothetic_scalePeriods Λ₀ _ hc`. Establish `hmem : ∀ z, z ∈ Λ₀.lattice ↔ ∃ x ∈ (1 : FractionalIdeal (𝓞 K)⁰ K), ι x = z` using `fun z => by`. Use `Set.ext_iff.1 hΛ z` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using this`. Establish `hid : ∀ x : K, ((princId α : (Af K)ˣ) : Af K) * algebraMap K (Af K) x = algebraMap K (Af K) (α * x)` using `fun x => by`. Rewrite using `[map_mul]`. Both sides reduce to the same expression. Use `⟨scalePeriods Λ₀ _ hc, hΩ, mul_ne_zero ha hΩ, fun _ => rfl, hΛ, ⟨FractionalIdeal.spanSingleton _ (α : K)⁻¹, fun x => ?_, ?_⟩, ?_, ?_, fun x x' hx hv => ?_⟩` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hid, int_iff, FractionalIdeal.mem_spanSingleton, FractionalIdeal.mem_one_iff]`. Use `exists_congr fun r => ?_` and prove the remaining obligations. Rewrite using `[Algebra.smul_def]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Clear the denominators using the available nonvanishing facts. Introduce `h`. Rewrite using `[h]`. Clear the denominators using the available nonvanishing facts. Use extensionality with `z`.
+Clear the denominators using the available nonvanishing facts. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. By extensionality, compare the relevant components.
 
-Use `H (ι α * z)` as an intermediate fact. Rewrite `this` using `[← mul_assoc, inv_mul_cancel₀ ha, one_mul]`. Simplify using `only [SetLike.mem_coe, Set.mem_image, FractionalIdeal.mem_coe, this, hmem, FractionalIdeal.mem_spanSingleton, FractionalIdeal.mem_one_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨r, rfl⟩, h⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Use `⟨_, ⟨r, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, map_mul, h, map_inv₀]`. Clear the denominators using the available nonvanishing facts. Introduce and unpack `⟨_, ⟨r, rfl⟩, rfl⟩`. Use `⟨_, ⟨r, rfl⟩, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Algebra.smul_def, map_mul, map_inv₀]`. Clear the denominators using the available nonvanishing facts. Simplify using `only [RingEquiv.refl_apply, PeriodPair.g₂, H.G_eq]`. Clear the denominators using the available nonvanishing facts. Simplify using `only [RingEquiv.refl_apply, PeriodPair.g₃, H.G_eq]`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules.
 
-Clear the denominators using the available nonvanishing facts. Rewrite `hv` using `[hid, ← map_sub, int_iff]`. Establish `hl : ι (α * x' - x) ∈ Λ₀.lattice` using `(hmem _).2 ⟨_, hv, rfl⟩`. Establish `e : ι x' = (ι α)⁻¹ * (ι x + ((⟨_, hl⟩ : Λ₀.lattice) : ℂ))`. Simplify using `only [map_sub, map_mul]`.
+Clear the denominators using the available nonvanishing facts. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, H.weierstrassP_mul, H.derivWeierstrassP_mul, Λ₀.weierstrassP_add_coe, Λ₀.derivWeierstrassP_add_coe]`. Simplify using `only [RingEquiv.refl_apply]`. Apply the tactic sequence `constructor <;> field_simp`.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem torsTransport_princ (ι : K →+* ℂ) (α : Kˣ) (Λ₀ : PeriodPair) (Ω₀ : ℂ) (hΩ : Ω₀ ≠ 0) (hΛ : IsLatOf ι 1 Λ₀) :
     ∃ Λ₁, TorsTransport ι (RingEquiv.refl ℂ) (princId α) Λ₀ Λ₁ Ω₀ (ι α * Ω₀) := by
@@ -163,7 +161,7 @@ theorem torsTransport_princ (ι : K →+* ℂ) (α : Kˣ) (Λ₀ : PeriodPair) (
     constructor <;> field_simp
 
 /- English proof (translation)
-Simplify using `only [coordIn]`. Generalize the expression as in `∑ i, κ i = n`. Generalize the expression as in `2 * s * Fintype.card I = m`. Simplify using `only [inv_pow, inv_inv, mul_pow]`. Clear the denominators using the available nonvanishing facts.
+Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -179,7 +177,7 @@ theorem conj_scalars (E : Type) [Field E] [NumberField E] {I : Type} [Fintype I]
   ring
 
 /- English proof (translation)
-Simplify using `only [betaBound_vp, n_vp, if_neg hc, Formalism.PairingDivisionLocalBalance.nl, Formalism.PairingDivisionLocalBalance.absK, Formalism.PairingDivisionLocalBalance.wtM]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem exponents_add {E : Type} [Field E] [NumberField E] {I : Type} [Fintype I] (d s l : ℕ) (κ : I → ℕ) (𝔣 : Ideal (OF E))
     (z : ClassGroup (OF E) → ℚ) (hc : c_vp 𝔣 l ≠ 0) :
@@ -191,13 +189,11 @@ theorem exponents_add {E : Type} [Field E] [NumberField E] {I : Type} [Fintype I
   ring
 
 /- English proof (translation)
-Establish `hl : (1 : ℝ) < l` using `by exact_mod_cast (Fact.out : l.Prime).one_lt`. Establish `hm : ((l : ℂ)⁻¹) ∈ algebraicClosure ℚ ℂ` using `inv_mem (natCast_mem _ l)`. Establish `e : (⟨(l : ℂ)⁻¹, hm⟩ : algebraicClosure ℚ ℂ) = (l : algebraicClosure ℚ ℂ)⁻¹` using `by ext; simp`. Establish `n : ‖(l : ℂ_[l])‖ = (l : ℝ)⁻¹`. Rewrite using `[← map_natCast (algebraMap ℚ_[l] ℂ_[l]), norm_algebraMap']`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h, hh⟩`. Rewrite `hh` using `[e, map_inv₀, map_natCast, norm_inv, n, inv_inv]`. Use `nth_rw 1 [← Real.rpow_one l] at hh`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(Real.rpow_le_rpow_left_iff hl).1 hh`. Introduce `h`. Use `⟨hm, ?_⟩` and prove the remaining obligations. Rewrite using `[e, map_inv₀, map_natCast, norm_inv, n, inv_inv]`. Use `nth_rw 1 [← Real.rpow_one l]`.
-
-Conclude with `(Real.rpow_le_rpow_left_iff hl).2 h`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sz_inv (l : ℕ) [Fact l.Prime] (lam : algebraicClosure ℚ ℂ →+* ℂ_[l]) (r : ℝ) :
     Sz l lam r ((l : ℂ)⁻¹) ↔ 1 ≤ r := by
@@ -219,20 +215,18 @@ theorem sz_inv (l : ℕ) [Fact l.Prime] (lam : algebraicClosure ℚ ℂ →+* �
     exact (Real.rpow_le_rpow_left_iff hl).2 h
 
 /- English proof (translation)
-Introduce `_ _` and use `rfl`.
+Fix the arbitrary inputs and assume any hypotheses. Both sides reduce to the same expression.
 -/
 theorem oneOver_one (l : ℕ) : OneOver (E := K) l 1 := fun _ _ => rfl
 
 /- English proof (translation)
-Establish `hδ' : ι δ ^ 2 = -(d : ℂ)` using `by rw [← map_pow, hδ]; simp`. Establish `hne : ComplexEmbedding.conjugate ι ≠ ι` using `fun h => by`. Establish `h1 : starRingEnd ℂ (ι δ) = ι δ` using `DFunLike.congr_fun h δ`. Take `⟨r, hr⟩` from `Complex.conj_eq_iff_real.1 h1`. Rewrite `hδ'` using `[hr]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `: r ^ 2 = -(d : ℝ)` using `by exact_mod_cast hδ'`. Establish `hd' : (0 : ℝ) < d` using `by exact_mod_cast hd`. Use polynomial arithmetic with `[sq_nonneg r]`. Establish `hall : ∀ τ : K →+* ℂ, τ = ι ∨ τ = ComplexEmbedding.conjugate ι` using `fun τ => by`. Establish `hc : ({ι, ComplexEmbedding.conjugate ι} : Finset (K →+* ℂ)) = Finset.univ` using `Finset.eq_univ_of_card _ (by rw [Finset.card_pair hne.symm, Embeddings.card, h2])`.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using (hc ▸ Finset.mem_univ τ : τ ∈ ({ι, ComplexEmbedding.conjugate ι} : Finset (K →+* ℂ)))`. Establish `hcc : ∀ ψ : E →+* ℂ, (ComplexEmbedding.conjugate ψ).comp (algebraMap K E) = ComplexEmbedding.conjugate (ψ.comp (algebraMap K E))` using `fun _ => rfl`. Establish `hinv : ∀ {F : Type} [Field F] (ψ : F →+* ℂ), ComplexEmbedding.conjugate (ComplexEmbedding.conjugate ψ) = ψ` using `fun ψ => by ext; simp`. Introduce `σ`. Break down `hall (σ.comp (algebraMap K E)) with h | h` into its components or cases.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Use `⟨⟨σ, h⟩, Or.inl rfl, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨ψ, hψ⟩ (e | e)`. Conclude with `Subtype.ext e.symm`. Conclude with `absurd (by rw [← h, e, hcc, hψ, hinv]; rw [e, hcc, hψ] at h; exact h.symm) hne`. Use `⟨⟨ComplexEmbedding.conjugate σ, by rw [hcc, h, hinv]⟩, Or.inr (hinv σ).symm, ?_⟩` and prove the remaining obligations.
-
-Introduce and unpack `⟨ψ, hψ⟩ (e | e)`. Conclude with `absurd (by rw [← h, e]; exact hψ) hne`. Conclude with `Subtype.ext (show ψ = ComplexEmbedding.conjugate σ from (hinv ψ).symm.trans (congrArg _ e.symm))`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem isCMType_ext {E : Type} [Field E] [NumberField E] [Algebra K E] (d : ℕ) (δ : K) (ι : K →+* ℂ)
     (h2 : Module.finrank ℚ K = 2) (hd : 0 < d) (hδ : δ ^ 2 = -(d : K)) :
@@ -266,17 +260,17 @@ theorem isCMType_ext {E : Type} [Field E] [NumberField E] [Algebra K E] (d : ℕ
     · exact Subtype.ext (show ψ = ComplexEmbedding.conjugate σ from (hinv ψ).symm.trans (congrArg _ e.symm))
 
 /- English proof (translation)
-Set `E` to `GlobalTheory.CMVal.Model.K`. Establish `hz : IsPrimitiveRoot (IsCyclotomicExtension.zeta 21 ℚ E ^ 7) 3` using `(IsCyclotomicExtension.zeta_spec 21 ℚ E).pow (by norm_num) (by norm_num : 21 = 7 * 3)`. Use `set w := IsCyclotomicExtension.zeta 21 ℚ E ^ 7`. Establish `hcyc : IsCyclotomicExtension {3} ℚ (IntermediateField.adjoin ℚ {w})` using `hz.intermediateField_adjoin_isCyclotomicExtension ℚ`. Set `K'` to `IntermediateField.adjoin ℚ {w}`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h2 : Module.finrank ℚ K' = 2`. Rewrite using `[IsCyclotomicExtension.finrank (n := 3) K' (Polynomial.cyclotomic.irreducible_rat (by norm_num))]; decide`. Set `w' : K'` to `⟨w, IntermediateField.mem_adjoin_simple_self ℚ w⟩`. Establish `hw : w ^ 2 + w + 1 = 0`. Use `hz.geom_sum_eq_zero (by norm_num)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[Finset.sum_range_succ] at this`. Take the linear combination `this`. Establish `hδ : (2 * w' + 1) ^ 2 = -((3 : ℕ) : K')`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show (2 * w + 1) ^ 2 = -((3 : ℕ) : E)`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 
-Use `push_cast`. Take the linear combination `4 * hw`. Take `⟨ι⟩ : Nonempty (K' →+* ℂ)` from `inferInstance`. Take `⟨Λ₀, hΛ⟩` from `exists_isLatOf 3 _ ι h2 (by norm_num) hδ`. Take `⟨Ω₀, hΩ⟩` from `IsAlgClosed.exists_pow_nat_eq (latDisc Λ₀) (n := 12) (by norm_num)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `h0 : Ω₀ ≠ 0`. Introduce and unpack `rfl`. Conclude with `latDisc_ne_zero Λ₀ (by rw [← hΩ]; simp)`. Take `⟨Λ₁, hT⟩` from `torsTransport_princ ι (Units.mk0 (2 : K') two_ne_zero) Λ₀ Ω₀ h0 hΛ`. Take `⟨hU, -, v, -, hv, -⟩` from `GlobalTheory.CMVal.Model.inhabited_K`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Use `⟨K', inferInstance, inferInstance, 3, _, ι, h2, by norm_num, hδ, _, Λ₀, Λ₁, Ω₀, _, hΩ, fun e => h0 ?_, hT, E, inferInstance, inferInstance, inferInstance, inferInstance, _, inferInstance, _, v.asIdeal, fun s hs => ⟨hU, isCMType_ext 3 _ ι h2 (by norm_num) hδ, fun i => i.2, hs, hv, …` and prove the remaining obligations. Simplify using `only [Units.val_mk0, map_ofNat] at e`. Take the linear combination `e`.
+A detailed English derivation is pending.
 -/
 theorem latDatum_inhabited : ∃ (K : Type) (_ : Field K) (_ : NumberField K) (d : ℕ) (δ : K) (ι : K →+* ℂ),
     Module.finrank ℚ K = 2 ∧ 0 < d ∧ δ ^ 2 = -(d : K) ∧

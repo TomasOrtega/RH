@@ -39,33 +39,27 @@ def tt (A : Et F E) (ν : Measure A.K) (ψ : AddChar F ℂ) (x : A.K) (Φ : A.K 
   pt A ν ψ x (fun q => pt A ν ψ x Φ (q.2, q.1))
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ A ψ hψ x e he hse ν μ hν hμ h hh`. Use `haveI : LocallyCompactSpace F := Unram.lcF E`. Use `haveI : IsUltrametricDist F := Unram.ultraF E`. Use `haveI := EtMeas.finite_L A`. Use `haveI := GlobalTheory.FourKFub.secondCountableK A`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨_, _, _, _, hS⟩` from `EtMeas.top_facts F A.L`. Take `⟨_, _, _, _, -⟩` from `EtMeas.top_facts F A.K`. Take `⟨h1, h2, -, hker, -⟩` from `GlobalTheory.T.idempotentCoordinates_structure F E A e he hse`. Take `⟨htc, htc'⟩` from `GlobalTheory.T.isLocallyConstantCompactSupport_idempotentCoordinates_iff F E A e h1 h2`. Establish `hlc` using `(GlobalTheory.T.isLocallyConstant_etaleTraceAddChar_hermitianKernel F E A ψ hψ).2 (x : A.K)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `haveI : ν.IsAddHaarMeasure := hν.1`. Set `C` to `ccEquiv A e h1 h2`. Establish `hC : (C : A.K × A.K → A.L) = cc A e` using `rfl`. Use `set μ₀ := Measure.map (cc A e) (ν.prod ν) with hμ₀`. Use `haveI : μ₀.IsAddHaarMeasure := by rw [hμ₀, ← hC]; exact C.isAddHaarMeasure_map _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hint : ∀ g : A.L → ℂ, IsTest g → ∫ y, g y ∂μ₀ = ∫ a, ∫ b, g (cc A e (a, b)) ∂ν ∂ν`. Introduce `g hg`. Establish `e1 : ∫ y, g y ∂μ₀ = ∫ p, g (cc A e p) ∂(ν.prod ν)` using `C.toHomeomorph.measurableEmbedding.integral_map g`. Rewrite using `[e1]`. Conclude with `integral_prod _ (((htc g hg).1.continuous).integrable_of_hasCompactSupport (htc g hg).2)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hsw : ∀ Φ : A.K × A.K → ℂ, IsTest Φ → IsTest (fun q : A.K × A.K => Φ (q.2, q.1))` using `fun Φ hΦ => ⟨hΦ.1.comp_continuous continuous_swap, hΦ.2.comp_homeomorph (Homeomorph.prodComm A.K A.K)⟩`. Establish `hpt : ∀ Φ : A.K × A.K → ℂ, IsTest Φ → IsTest (pt A ν ψ x Φ)` using `fun Φ hΦ => GlobalTheory.T.partialFourier_psiK_preserves_testFunctions F E A ψ hψ x ν hν.1 Φ hΦ`. Establish `hT : ∀ Φ : A.K × A.K → ℂ, IsTest Φ → IsTest (tt A ν ψ x Φ)` using `fun Φ hΦ => hpt _ (hsw _ (hpt Φ hΦ))`. Establish `hTT : ∀ Φ : A.K × A.K → ℂ, IsTest Φ → tt A ν ψ x (tt A ν ψ x Φ) = fun p => Φ (-p.1, -p.2)`. Introduce `Φ hΦ`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `i1` using `GlobalTheory.T.hyperbolicPartialFourier_twice_eq_reflection F E A ψ x ν hν _ (hsw _ (hpt Φ hΦ))`. Establish `i2` using `GlobalTheory.T.hyperbolicPartialFourier_twice_eq_reflection F E A ψ x ν hν Φ hΦ`. Use function extensionality and compare the values at `p`. Use `show pt A ν ψ x (fun q => pt A ν ψ x (pt A ν ψ x (fun q' => pt A ν ψ x Φ (q'.2, q'.1))) (q.2, q.1)) p = _`. Rewrite using `[i1]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `show pt A ν ψ x (pt A ν ψ x Φ) (-p.1, p.2) = _`. Rewrite using `[i2]`. Establish `hA : ∀ f : A.L → ℂ, IsTest f → ∀ p, fourB μ₀ (A.kerL ψ x) f (cc A e p) = tt A ν ψ x (fun q => f (cc A e q)) p`. Introduce `f hf p`. Establish `ht : IsTest (fun z => f z * A.kerL ψ x z (cc A e p))` using `⟨hf.1.mul (hlc _), hf.2.mul_right⟩`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Expand and normalize the polynomial expressions, which then agree.
 
-Unfold `fourB`. Rewrite using `[hint _ ht]`. Use `show _ = ∫ a, (∫ b, f (cc A e (a, b)) * kx A ψ x b p.1 ∂ν) * kx A ψ x a p.2 ∂ν`. Use `congr 1`. Use function extensionality and compare the values at `a`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Rewrite using `[← integral_mul_const]`. Use `congr 1`. Use function extensionality and compare the values at `b`. Rewrite using `[hker]`. Simplify using `only`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hB : ∀ f : A.L → ℂ, IsTest f → IsTest (fourB μ₀ (A.kerL ψ x) f)`. Introduce `f hf`. Establish `: fourB μ₀ (A.kerL ψ x) f = fun y => tt A ν ψ x (fun q => f (cc A e q)) (ci A e y)`. Use function extensionality and compare the values at `y`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Reduce the equality to equality of the corresponding arguments.
 
-Use `hA f hf (ci A e y)` as an intermediate fact. Rewrite `this` using `[h2]`. Then use the resulting hypothesis. Rewrite using `[this]`. Conclude with `htc' _ (hT _ (htc f hf))`. Establish `hsd : SelfDual μ₀ (A.kerL ψ x)`.
-
-Use `⟨inferInstance, fun f hf y => ?_⟩` and prove the remaining obligations. Rewrite using `[← h2 y, hA _ (hB f hf)]`. Establish `: (fun q => fourB μ₀ (A.kerL ψ x) f (cc A e q)) = tt A ν ψ x (fun q => f (cc A e q))`. Use function extensionality and compare the values at `(hA f hf)`. Rewrite using `[this, hTT _ (htc f hf)]`.
-
-Simplify using `only`. Use `congr 1`. Simplify using `only [cc, map_neg]`. Expand and normalize the polynomial expressions, which then agree. Establish `heq : μ = μ₀` using `MeasScale.selfDual_unique hS (A.kerL ψ x) hsd hμ`.
-
-Rewrite using `[heq]`. Conclude with `hint h hh`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem measure_eq_coords : ∀ (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E] [StarRing E] [Unram F E] (A : Et F E) (ψ : AddChar F ℂ), IsStdChar ψ → ∀ (x : A.Kˣ) (e : A.L), e * e = e → star e = 1 - e → ∀ (ν : Measure A.K) (μ : Measure A.L), SelfDual ν (Hyp.kx A ψ x) → SelfDual μ (A.kerL ψ x) → ∀ h : A.L → ℂ, IsTest h → ∫ y, h y ∂μ = ∫ a, ∫ b, h (Hyp.cc A e (a, b)) ∂ν ∂ν := by
   intro F E _ _ _ _ _ A ψ hψ x e he hse ν μ hν hμ h hh

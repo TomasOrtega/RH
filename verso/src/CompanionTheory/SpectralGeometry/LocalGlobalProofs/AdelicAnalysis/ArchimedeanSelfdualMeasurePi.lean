@@ -18,15 +18,15 @@ variable {A : Type} [CommRing A] [TopologicalSpace A] [IsTopologicalRing A]
   {P : Type} [Fintype P]
 
 /- English proof (translation)
-Take `⟨L, hLc, hLa, hL⟩` from `GlobalTheory.GaugeEx.SdInf.exists_log_char (fun u => χ (e.symm u)) (hχc.comp he') (fun u => hχ1 _) (fun u v => by rw [map_add, hχa])`. Set `Lh : (P → ℝ) →+ ℝ` to `AddMonoidHom.mk' L hLa`. Set `Ll : (P → ℝ) →ₗ[ℝ] ℝ` to `{ toFun := L, map_add' := hLa, map_smul' := fun c u => map_real_smul Lh hLc c u }`. Set `a : P → ℝ` to `fun w => L (fun j => if w = j then 1 else 0)`. Establish `hform : ∀ u, L u = ∑ w, a w * u w` using `fun u => by`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h` using `Ll.pi_apply_eq_sum_univ u`. Express the relevant statement in the definitionally equal form `L u = ∑ i, u i • L (fun j => if i = j then 1 else 0) at h`. Rewrite using `[h]`. Conclude with `Finset.sum_congr rfl fun w _ => by simp [a, mul_comm]`. Establish `hchi : ∀ x, χ x = Complex.exp (2 * Real.pi * Complex.I * ((∑ w, a w * e x w : ℝ) : ℂ))` using `fun x => by`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hL (e x)` as an intermediate fact. Simplify using `only [RingEquiv.symm_apply_apply] at this`. Rewrite using `[this, hform]`. Use `⟨a, fun w hw => ?_, hchi⟩` and prove the remaining obligations. Establish `h0 : e.symm (fun j => if w = j then 1 else 0) = 0` using `hnd _ fun y => by`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: ∑ j, a j * e (e.symm (fun j => if w = j then (1 : ℝ) else 0) * y) j = 0` using `Finset.sum_eq_zero fun j _ => by`. Distinguish the cases in `h : w = j`. Substitute `h` using the available equality. Simplify using `[hw]`. Simplify using `[map_mul, h]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hchi, this]`. Simplify using the standard rewrite rules. Establish `h1` using `congrFun (congrArg e h0) w`. Simplify using `at h1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_form (e : A ≃+* (P → ℝ)) (he' : Continuous e.symm)
     (χ : A → ℂ) (hχc : Continuous χ) (hχ1 : ∀ x, ‖χ x‖ = 1) (hχa : ∀ x y, χ (x + y) = χ x * χ y)
@@ -99,15 +99,15 @@ variable {A : Type} [CommRing A] [TopologicalSpace A] [IsTopologicalRing A]
   [SecondCountableTopology A] [MeasurableSpace A] [BorelSpace A] {P : Type} [Fintype P]
 
 /- English proof (translation)
-Use `set c : ℝ≥0∞ := ∏ _i : ι, c₀ with hcdef`. Establish `hc0 : c ≠ 0` using `Finset.prod_ne_zero_iff.2 fun _ _ => h0`. Establish `hct : c ≠ ⊤` using `ENNReal.prod_ne_top fun _ _ => ht`. Establish `hEm : Measurable (eqvPi e he he' ι)` using `(eqvPi e he he' ι).continuous.measurable`. Establish `hem : Measurable (eqv e he he')` using `(eqv e he he').continuous.measurable`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrect : ∀ s : ι × P → Set ℝ, (∀ q, MeasurableSet (s q)) → ((Measure.pi fun _ : ι => k).map (eqvPi e he he' ι)) (Set.pi Set.univ s) = c * ∏ q, volume (s q)`. Introduce `s hs`. Rewrite using `[Measure.map_apply hEm (MeasurableSet.univ_pi hs)]`. Establish `hpre : eqvPi e he he' ι ⁻¹' Set.pi Set.univ s = Set.pi Set.univ fun i => eqv e he he' ⁻¹' Set.pi Set.univ fun w => s (i, w)`. Use extensionality with `x`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [Set.mem_preimage, Set.mem_pi, Set.mem_univ, forall_true_left, eqvPi_apply, eqv_apply, Prod.forall]`. Rewrite using `[hpre, Measure.pi_pi]`. Establish `hi : ∀ i, k (eqv e he he' ⁻¹' Set.pi Set.univ fun w => s (i, w)) = c₀ * ∏ w, volume (s (i, w))` using `fun i => by`. Rewrite using `[← Measure.map_apply hem (MeasurableSet.univ_pi fun w => hs _), hm, Measure.smul_apply, smul_eq_mul, volume_pi_pi]`. Simplify using `only [hi]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.prod_mul_distrib, Fintype.prod_prod_type]`. Establish `hv : (volume : Measure (ι × P → ℝ)) = c⁻¹ • (Measure.pi fun _ : ι => k).map (eqvPi e he he' ι)`. Rewrite using `[volume_pi]`. Use `Measure.pi_eq fun s hs => ?_` and prove the remaining obligations. Rewrite using `[Measure.smul_apply, smul_eq_mul, hrect s hs, ← mul_assoc, ENNReal.inv_mul_cancel hc0 hct, one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hv, smul_smul, ENNReal.mul_inv_cancel hc0 hct, one_smul]`.
+A detailed English derivation is pending.
 -/
 theorem map_pi_eq (e : A ≃+* (P → ℝ)) (he : Continuous e) (he' : Continuous e.symm)
     (k : Measure A) [SigmaFinite k] (c₀ : ℝ≥0∞) (h0 : c₀ ≠ 0) (ht : c₀ ≠ ⊤)
@@ -145,17 +145,15 @@ theorem map_pi_eq (e : A ≃+* (P → ℝ)) (he : Continuous e) (he' : Continuou
   rw [hv, smul_smul, ENNReal.mul_inv_cancel hc0 hct, one_smul]
 
 /- English proof (translation)
-Use `haveI := hk.1`. Establish `h1 : SelfDual (k.map (eqv e he he')) (fun u v : P → ℝ => Complex.exp (2 * Real.pi * Complex.I * ((∑ w, a w * (u w * v w) : ℝ) : ℂ)))`. Use `(selfDual_transport A (P → ℝ) (eqv e he he') k _).1 ?_` and prove the remaining obligations. Establish `hf : (fun x y : A => Complex.exp (2 * Real.pi * Complex.I * ((∑ w, a w * (eqv e he he' x w * eqv e he he' y w) : ℝ) : ℂ))) = fun s t => χ (s * t)`. Use function extensionality and compare the values at `s t`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `only [hχ, map_mul, Pi.mul_apply, eqv_apply]`. Rewrite using `[hf]`. Conclude with `hk`. Establish `h2` using `GlobalTheory.SelfDualDiagReal.eq_of_selfDual_diag P a ha (k.map (eqv e he he')) h1`. Establish `hc0 : 0 < ∏ w, √|a w|` using `Finset.prod_pos fun w _ => Real.sqrt_pos.2 (abs_pos.2 (ha w))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `map_pi_eq e he he' k _ (by simpa using hc0) ENNReal.ofReal_ne_top h2 ι`. Establish `hcc : ∏ _i : ι, ENNReal.ofReal (∏ w, √|a w|) = ENNReal.ofReal (∏ q : ι × P, √|a q.2|)`. Rewrite using `[← ENNReal.ofReal_prod_of_nonneg (fun _ _ => hc0.le), Fintype.prod_prod_type]`. Establish `h4` using `GlobalTheory.SelfDualDiagReal.selfDual_diag (ι × P) (fun q => a q.2) (fun q => ha q.2)`. Rewrite `h4` using `[← hcc, ← h3]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h5` using `(selfDual_transport (ι → A) (ι × P → ℝ) (eqvPi e he he' ι) (Measure.pi fun _ => k) _).2 h4`. Establish `hf : (fun x y : ι → A => Complex.exp (2 * Real.pi * Complex.I * ((∑ q : ι × P, a q.2 * (eqvPi e he he' ι x q * eqvPi e he he' ι y q) : ℝ) : ℂ))) = fun x y => χ (x ⬝ᵥ y)`. Use function extensionality and compare the values at `x y`. Establish `hdot : ∀ w, e (x ⬝ᵥ y) w = ∑ i, e (x i) w * e (y i) w` using `fun w => by`. Simplify using `[dotProduct, map_sum, Finset.sum_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hs : ∑ q : ι × P, a q.2 * (eqvPi e he he' ι x q * eqvPi e he he' ι y q) = ∑ w, a w * e (x ⬝ᵥ y) w`. Simplify using `only [eqvPi_apply, hdot, Finset.mul_sum]`. Rewrite using `[Fintype.sum_prod_type, Finset.sum_comm]`. Rewrite using `[hχ, hs]`. Rewrite `h5` using `[hf]`.
-
-Conclude with `h5`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem selfDual_pi_of_form [LocallyCompactSpace A] (e : A ≃+* (P → ℝ)) (he : Continuous e)
     (he' : Continuous e.symm) (a : P → ℝ) (ha : ∀ w, a w ≠ 0) (χ : A → ℂ)
@@ -204,11 +202,9 @@ end GlobalTheory.CompanionTheory.SW.SdPi
 open GlobalTheory.CompanionTheory.SW.SdPi GlobalTheory.CompanionTheory.SW.RealCoord in
 
 /- English proof (translation)
-Introduce `F _ _ hF ψ hψ k hk ι _`. Use `haveI := hF`. Take `⟨h1, h2, h3, h4, -⟩` from `isLocR_Ainf F hF`. Use `haveI : BorelSpace (Ainf F) := ⟨rfl⟩`. Establish `he : Continuous (coord F)` using `(isHomeomorph_coord F).continuous`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he' : Continuous (coord F).symm` using `(coordHomeo F).symm.continuous`. Establish `hpc : Continuous (psiInf F ψ)` using `hψ.1.comp (continuous_id.prodMk continuous_const)`. Take `⟨a, ha, hχ⟩` from `exists_form (coord F) he' (psiInf F ψ) hpc (fun _ => hψ.2.1 _) (fun u v => by`. Simplify using `only [psiInf, map_add, ← AddChar.map_add_eq_mul]`. Use `congr 1`.
-
-Conclude with `Prod.ext rfl (add_zero _).symm)`. Use the proof step `(GlobalTheory.T.localComponents_nontrivial_adelic_character F ψ hψ).2.2`. Conclude with `selfDual_pi_of_form (coord F) he he' a ha _ hχ k hk ι`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CompanionTheory.SW.selfDual_pi_inf : ∀ (F : Type) [Field F] [NumberField F], IsTotallyReal F → ∀ (ψ : AddChar (AF F) ℂ), IsCharAF F ψ → ∀ k : Measure (Ainf F), SelfDual k (fun s t => psiInf F ψ (s * t)) → ∀ (ι : Type) [Fintype ι], SelfDual (Measure.pi fun _ : ι => k) (fun x y => psiInf F ψ (x ⬝ᵥ y)) := by
   intro F _ _ hF ψ hψ k hk ι _

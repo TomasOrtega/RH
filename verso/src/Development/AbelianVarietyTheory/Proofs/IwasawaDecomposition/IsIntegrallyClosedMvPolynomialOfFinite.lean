@@ -5,9 +5,9 @@ open GlobalTheory.Frames
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `h : ∀ n : ℕ, IsIntegrallyClosed (MvPolynomial (Fin n) R)`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => exact IsIntegrallyClosed.of_equiv (MvPolynomial.isEmptyRingEquiv R (Fin 0)).symm`. Consider the case `succ n ih => exact IsIntegrallyClosed.of_equiv (MvPolynomial.finSuccEquiv R n).symm.toRingEquiv`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Take `⟨n, ⟨e⟩⟩` from `Finite.exists_equiv_fin σ`. Use `h n` as an intermediate fact. Conclude with `IsIntegrallyClosed.of_equiv (MvPolynomial.renameEquiv R e).symm.toRingEquiv`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isIntegrallyClosed_mvPolynomial_of_finite (σ : Type) [Finite σ] (R : Type) [CommRing R] [IsDomain R]
     [IsIntegrallyClosed R] : IsIntegrallyClosed (MvPolynomial σ R) := by
@@ -21,37 +21,35 @@ theorem isIntegrallyClosed_mvPolynomial_of_finite (σ : Type) [Finite σ] (R : T
   exact IsIntegrallyClosed.of_equiv (MvPolynomial.renameEquiv R e).symm.toRingEquiv
 
 /- English proof (translation)
-Introduce `K _ J _ m R _ _ _ _`. Set `σ` to `Option (Σ τ, Fin (m τ) × Fin (m τ))`. Set `P` to `MvPolynomial σ R`. Set `Y : ∀ τ, Matrix (Fin (m τ)) (Fin (m τ)) P` to `fun τ => Matrix.of fun i j => MvPolynomial.X (some ⟨τ, i, j⟩)`. Set `d : P` to `MvPolynomial.X none * ∏ τ, (Y τ).det`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `A` to `Localization.Away d`. Establish `hd : IsUnit (algebraMap P A d)` using `IsLocalization.Away.algebraMap_isUnit d`. Establish `hs : IsUnit (algebraMap P A (MvPolynomial.X none))`. Conclude with `isUnit_of_dvd_unit (map_dvd (algebraMap P A) (dvd_mul_right _ _)) hd`. Establish `hY : ∀ τ, IsUnit (algebraMap P A (Y τ).det)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `τ`. Establish `h0 : (Y τ).det ∣ d` using `Dvd.dvd.mul_left (Finset.dvd_prod_of_mem (fun τ => (Y τ).det) (Finset.mem_univ τ)) _`. Conclude with `isUnit_of_dvd_unit (map_dvd (algebraMap P A) h0) hd`. Establish `hd0 : d ≠ 0`. Introduce `h0`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `w : σ → R` to `fun o => Option.elim o 1 (fun x => (1 : Matrix (Fin (m x.1)) (Fin (m x.1)) R) x.2.1 x.2.2)`. Set `ev : P →+* R` to `MvPolynomial.eval w`. Establish `h1 : ∀ τ, ev.mapMatrix (Y τ) = 1`. Introduce `τ`. Use extensionality with `i j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[ev, Y, w, P]`. Establish `h2 : ev d = 1`. Simplify using `only [d, map_mul, map_prod, RingHom.map_det, h1, Matrix.det_one, Finset.prod_const_one, mul_one]`. Simplify using `[ev, w, P]`. Rewrite `h2` using `[h0, map_zero]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `zero_ne_one h2`. Establish `hle : Submonoid.powers d ≤ nonZeroDivisors P` using `powers_le_nonZeroDivisors_of_noZeroDivisors hd0`. Establish `hdom : IsDomain A` using `IsLocalization.isDomain_localization hle`. Establish `hP : IsIntegrallyClosed P` using `isIntegrallyClosed_mvPolynomial_of_finite σ R`. Establish `hA : IsIntegrallyClosed A` using `isIntegrallyClosed_of_isLocalization A _ hle`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨A, inferInstance, inferInstance, hdom, IsScalarTower.toAlgHom K R A, fun τ => (Y τ).map (algebraMap P A), hs.unit, hA, fun τ => ?_, fun T _ _ ψ g a hg => ?_⟩` and prove the remaining obligations. Use `hY τ` as an intermediate fact. Rewrite `this` using `[RingHom.map_det]`. Conclude with `this`. Set `v : σ → T` to `fun o => Option.elim o (a : T) (fun x => g x.1 x.2.1 x.2.2)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Set `φ : P →ₐ[K] T` to `MvPolynomial.aevalTower ψ v`. Establish `hφY : ∀ τ, (Y τ).map φ = g τ`. Introduce `τ`. Use extensionality with `i j`. Simplify using `[φ, Y, v, P]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hφs : φ (MvPolynomial.X none) = a` using `by simp [φ, v, P]`. Establish `hφd : IsUnit (φ d)`. Simplify using `only [d, map_mul, map_prod, hφs]`. Use `a.isUnit.mul (IsUnit.prod_univ_iff.2 fun τ => ?_)` and prove the remaining obligations. Rewrite using `[AlgHom.map_det]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Assume the hypotheses and unpack their components.
 
-Use `hg τ` as an intermediate fact. Rewrite `this` using `[← hφY τ]`. Conclude with `this`. Set `k : A →ₐ[K] T` to `IsLocalization.liftAlgHom (M := Submonoid.powers d) (f := φ) (by`. Introduce and unpack `⟨_, n, rfl⟩`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition.
 
-Simplify using `using hφd.pow n)`. Establish `hk : ∀ x : P, k (algebraMap P A x) = φ x` using `fun x => by simp [k]`. Use `⟨k, ⟨?_, fun τ => ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Express the relevant statement in the definitionally equal form `k (algebraMap R A x) = ψ x`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[IsScalarTower.algebraMap_apply R P A, hk]`. Simplify using `[φ, P]`. Rewrite using `[← hφY τ]`. Use extensionality with `i j`. Simplify using `[hk]`.
+Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `[hk, hφs]`. Introduce and unpack `k' ⟨h1, h2, h3⟩`. Establish `key : (k' : A →+* T).comp (algebraMap P A) = (φ : P →+* T)`. Use `MvPolynomial.ringHom_ext (fun r => ?_) (fun o => ?_)` and prove the remaining obligations. Use `AlgHom.congr_fun h1 r` as an intermediate fact.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `k' (algebraMap R A r) = ψ r at this`. Rewrite `this` using `[IsScalarTower.algebraMap_apply R P A]`. Establish `h' : φ (MvPolynomial.C r) = ψ r` using `by simp [φ, P]`. Conclude with `this.trans h'.symm`. Break down `o with _ | ⟨τ, i, j⟩` into its components or cases.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Conclude with `h3.trans hφs.symm`. Establish `a1` using `congrFun (congrFun (h2 τ) i) j`. Establish `a2` using `congrFun (congrFun (hφY τ) i) j`. Conclude with `a1.trans a2.symm`. Apply `AlgHom.coe_ringHom_injective` to reduce the goal to its premises.
-
-Apply `IsLocalization.ringHom_ext (Submonoid.powers d)` to reduce the goal to its premises. Rewrite using `[key]`. Use extensionality with `x`. Conclude with `(hk _).symm`. Conclude with `(hk _).symm`.
+A detailed English derivation is pending.
 -/
 theorem exists_frameRing_integrallyClosed :
     ∀ (K : Type) [Field K] (J : Type) [Fintype J] (m : J → ℕ) (R : Type) [CommRing R] [IsDomain R] [IsIntegrallyClosed R] [Algebra K R], ∃ (A : Type) (_ : CommRing A) (_ : Algebra K A) (_ : IsDomain A) (π : R →ₐ[K] A) (X : ∀ τ, Matrix (Fin (m τ)) (Fin (m τ)) A) (s : Aˣ), IsIntegrallyClosed A ∧ FrameRing m π X s := by

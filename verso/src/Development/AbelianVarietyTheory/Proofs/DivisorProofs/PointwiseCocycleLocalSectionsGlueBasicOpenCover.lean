@@ -21,14 +21,14 @@ def locVal (u : Fn1 X) (a : Fin n) {E : Type} [CommRing E] [Algebra R E] (ψ : D
   τ a F (ρ.comp ψ) - u E F ρ (spOver ψ ≫ x)
 
 /- English proof (translation)
-Rewrite using `[← spOver_comp, Category.assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pt_comp {E F : Type} [CommRing E] [Algebra R E] [CommRing F] [Algebra R F]
     (ψ : D →ₐ[R] E) (ρ : E →ₐ[R] F) : spOver (ρ.comp ψ) ≫ x = spOver ρ ≫ (spOver ψ ≫ x) := by
   rw [← spOver_comp, Category.assoc]
 
 /- English proof (translation)
-Take `⟨i, hi⟩` from `h`. Use `⟨i, fun p _ ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[pt_comp]`. Conclude with `hi trivial`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sm_comp {E F : Type} [CommRing E] [Algebra R E] [CommRing F] [Algebra R F]
     (ψ : D →ₐ[R] E) (ρ : E →ₐ[R] F) (h : Sm W (spOver ψ ≫ x)) : Sm W (spOver (ρ.comp ψ) ≫ x) := by
@@ -40,9 +40,9 @@ theorem sm_comp {E F : Type} [CommRing E] [Algebra R E] [CommRing F] [Algebra R 
 variable {x τ} {s : Fin n → D}
 
 /- English proof (translation)
-Establish `h1` using `hsec a F G (ρ.comp ψ) θ hunit`. Establish `h2` using `hu E F G ρ θ (spOver ψ ≫ x) hsm`. Rewrite `h1` using `[pt_comp]`. Unfold `locVal`. Rewrite using `[map_sub, AlgHom.comp_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `h2 - h1`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem locVal_map (hu : IsCoc W u)
     (hsec : ∀ (a : Fin n) (E : Type) [CommRing E] [Algebra R E] (E' : Type) [CommRing E'] [Algebra R E']
@@ -60,7 +60,7 @@ theorem locVal_map (hu : IsCoc W u)
   linear_combination h2 - h1
 
 /- English proof (translation)
-Unfold `locVal`. Rewrite using `[hagree a b F (ρ.comp ψ) ha hb]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem locVal_agree
     (hagree : ∀ (a b : Fin n) (E : Type) [CommRing E] [Algebra R E] (ψ : D →ₐ[R] E),
@@ -73,7 +73,7 @@ theorem locVal_agree
   rw [hagree a b F (ρ.comp ψ) ha hb]
 
 /- English proof (translation)
-Establish `: (Set.range fun a ↦ ψ (s a)) = ψ '' Set.range s` using `(Set.range_comp ψ s)`. Rewrite using `[this, ← Ideal.map_span, hs, Ideal.map_top]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem span_range (hs : Ideal.span (Set.range s) = ⊤) {E : Type} [CommRing E] [Algebra R E]
     (ψ : D →ₐ[R] E) : Ideal.span (Set.range fun a ↦ ψ (s a)) = ⊤ := by
@@ -89,27 +89,25 @@ variable {R : Type} [CommRing R] {X : Over (Sp R)} {K : Type} {W : K → X.left.
   {τ : Fin n → ∀ (E : Type) [CommRing E] [Algebra R E], (D →ₐ[R] E) → E} {s : Fin n → D}
 
 /- English proof (translation)
-The claim follows from `IsLocalization.Away.algebraMap_isUnit t`.
+A detailed English derivation is pending.
 -/
 theorem isUnit_locAlg {E : Type} [CommRing E] [Algebra R E] (t : E) : IsUnit (locAlg R t t) :=
   IsLocalization.Away.algebraMap_isUnit t
 
 /- English proof (translation)
-Set `T : Set E` to `Set.range fun a ↦ ψ (s a)`. Establish `hT : Ideal.span T = ⊤` using `span_range hs ψ`. Establish `hc : ∀ t : T, ∃ a, ψ (s a) = t.1` using `fun t ↦ t.2`. Use `choose c hc using hc`. Establish `hcu : ∀ t : T, IsUnit (locAlg R t.1 (ψ (s (c t))))` using `fun t ↦ by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc t]`. Conclude with `isUnit_locAlg _`. Set `v : ∀ t : T, Localization.Away t.1` to `fun t ↦ locVal x τ u (c t) ψ _ (locAlg R t.1)`. Take `⟨e, he, -⟩` from `Localization.existsUnique_algebraMap_eq_of_span_eq_top T hT v (fun t₁ t₂ ↦ by`. Express the relevant statement in the definitionally equal form `awR R t₁.1 t₂.1 (v t₁) = awL R t₁.1 t₂.1 (v t₂)`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hm : IsUnit (locAlg R (t₁.1 * t₂.1) (t₁.1 * t₂.1))` using `isUnit_locAlg _`. Rewrite `hm` using `[map_mul]`. Simplify using `only [v]`. Rewrite using `[locVal_map hu hsec _ ψ hsm _ _ (hcu t₁), locVal_map hu hsec _ ψ hsm _ _ (hcu t₂), awR_comp, awL_comp]`. Apply `locVal_agree hagree` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc t₁]`. Conclude with `isUnit_of_mul_isUnit_left hm`. Rewrite using `[hc t₂]`. Conclude with `isUnit_of_mul_isUnit_right hm)`. Use `⟨e, fun F _ _ ρ a ha ↦ ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Apply `Localization.algebraMap_injective_of_span_eq_top _ (span_range hs (ρ.comp ψ))` to reduce the goal to its premises. Use function extensionality and compare the values at `⟨_, b, rfl⟩`. Set `t : T` to `⟨ψ (s b), b, rfl⟩`. Set `lam : F →ₐ[R] Localization.Away (ρ (ψ (s b)))` to `locAlg R (ρ (ψ (s b)))`. Set `mu : Localization.Away t.1 →ₐ[R] Localization.Away (ρ (ψ (s b)))` to `Localization.awayMapₐ ρ t.1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Establish `hmu : mu.comp (locAlg R t.1) = lam.comp ρ` using `AlgHom.ext fun z ↦ by`. Simplify using `[mu, lam, t, Localization.awayMapₐ, IsLocalization.Away.mapₐ, IsLocalization.Away.map, IsLocalization.map_eq]`. Express the relevant statement in the definitionally equal form `lam (ρ e) = lam (locVal x τ u a ψ F ρ)`. Establish `het : locAlg R t.1 e = v t` using `he t`. Rewrite using `[locVal_map hu hsec a ψ hsm ρ lam ha]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[show lam (ρ e) = mu (locAlg R t.1 e) from (DFunLike.congr_fun hmu e).symm, het]`. Simplify using `only [v]`. Rewrite using `[locVal_map hu hsec _ ψ hsm _ _ (hcu t), hmu]`. Apply `locVal_agree hagree` to reduce the goal to its premises. Rewrite using `[AlgHom.comp_apply, hc t]`.
-
-Conclude with `isUnit_locAlg _`. Conclude with `ha.map lam`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem glue_exists (hs : Ideal.span (Set.range s) = ⊤) (hu : IsCoc W u)
     (hsec : ∀ (a : Fin n) (E : Type) [CommRing E] [Algebra R E] (E' : Type) [CommRing E'] [Algebra R E']
@@ -162,13 +160,13 @@ namespace GlobalTheory.PtExt
 open GlueSec in
 
 /- English proof (translation)
-Introduce `R _ X K W u hu D _ _ x n s hs τ hsec hagree`. Set `σ : ∀ (E : Type) [CommRing E] [Algebra R E], (D →ₐ[R] E) → E` to `fun E _ _ ψ ↦ if h : Sm W (spOver ψ ≫ x) then Classical.choose (glue_exists hs hu hsec hagree ψ h) else 0`. Use `⟨σ, fun E _ _ E' _ _ ψ θ hsm ↦ ?_⟩` and prove the remaining obligations. Establish `hsm' : Sm W (spOver (θ.comp ψ) ≫ x)` using `sm_comp x ψ θ hsm`. Establish `P` using `Classical.choose_spec (glue_exists hs hu hsec hagree ψ hsm)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `P'` using `Classical.choose_spec (glue_exists hs hu hsec hagree (θ.comp ψ) hsm')`. Establish `e1 : σ E ψ = Classical.choose (glue_exists hs hu hsec hagree ψ hsm)` using `dif_pos hsm`. Establish `e2 : σ E' (θ.comp ψ) = Classical.choose (glue_exists hs hu hsec hagree (θ.comp ψ) hsm')` using `dif_pos hsm'`. Rewrite using `[e1, e2]`. Apply `Localization.algebraMap_injective_of_span_eq_top _ (span_range hs (θ.comp ψ))` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Use function extensionality and compare the values at `⟨_, a, rfl⟩`. Set `lam : E' →ₐ[R] Localization.Away ((θ.comp ψ) (s a))` to `locAlg R ((θ.comp ψ) (s a))`. Set `lt : E →ₐ[R] Localization.Away ((θ.comp ψ) (s a))` to `lam.comp θ`. Express the relevant statement in the definitionally equal form `lam (Classical.choose (glue_exists hs hu hsec hagree (θ.comp ψ) hsm') - θ (Classical.choose (glue_exists hs hu hsec hagree ψ hsm))) = lam (u E E' θ (spOver ψ ≫ x))`. Rewrite using `[map_sub, P' (Localization.Away ((θ.comp ψ) (s a))) lam a (isUnit_locAlg ((θ.comp ψ) (s a))), show lam (θ (Classical.choose (glue_exists hs hu hsec hagree ψ hsm))) = lt (Classical.choose (glue_exists hs hu hsec hagree ψ hsm)) from rfl, P (Localization.Away ((θ.comp ψ) (s a))) lt …`.
+Apply function extensionality and compare values at an arbitrary argument. Introduce a local definition for the expression. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `h2` using `hu E E' (Localization.Away ((θ.comp ψ) (s a))) θ lam (spOver ψ ≫ x) hsm`. Unfold `locVal`. Simplify using `only [lt]`. Rewrite using `[pt_comp x ψ θ, AlgHom.comp_assoc]`. Take the linear combination `h2`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem glue_sections : ∀ (R : Type) [CommRing R] (X : Over (Sp R)) (K : Type) (W : K → X.left.Opens) (u : Fn1 X), IsCoc W u → ∀ (D : Type) [CommRing D] [Algebra R D] (x : Pt X D) (n : ℕ) (s : Fin n → D), Ideal.span (Set.range s) = ⊤ → ∀ τ : Fin n → ∀ (E : Type) [CommRing E] [Algebra R E], (D →ₐ[R] E) → E, (∀ (a : Fin n) (E : Type) [CommRing E] [Algebra R E] (E' : Type) [CommRing E'] [Algebra R E'] (ψ : D →ₐ[R] E) (θ : E →ₐ[R] E'), IsUnit (ψ (s a)) → τ a E' (θ.comp ψ) - θ (τ a E ψ) = u E E' θ (spOver ψ ≫ x)) → (∀ (a b : Fin n) (E : Type) [CommRing E] [Algebra R E] (ψ : D →ₐ[R] E), IsUnit (ψ (s a)) → IsUnit (ψ (s b)) → τ a E ψ = τ b E ψ) → ∃ σ : ∀ (E : Type) [CommRing E] [Algebra R E], (D →ₐ[R] E) → E, ∀ (E : Type) [CommRing E] [Algebra R E] (E' : Type) [CommRing E'] [Algebra R E'] (ψ : D →ₐ[R] E) (θ : E →ₐ[R] E'), Sm W (spOver ψ ≫ x) → σ E' (θ.comp ψ) - θ (σ E ψ) = u E E' θ (spOver ψ ≫ x) := by
   intro R _ X K W u hu D _ _ x n s hs τ hsec hagree

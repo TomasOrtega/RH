@@ -14,9 +14,9 @@ open GlobalTheory.FieldPtGlue GlobalTheory.ShFam.Pad.Pull GlobalTheory.ShFam.Pad
 namespace GlobalTheory.TestPts
 
 /- English proof (translation)
-Establish `hc : IsClosed (B.str '' closure {z})` using `B.str.isClosedMap _ isClosed_closure`. Take `⟨x, hx, e⟩ : closedPoint O ∈ B.str '' closure {z}` from `(IsLocalRing.specializes_closedPoint (B.str z)).mem_closed hc ⟨z, subset_closure rfl, rfl⟩`. Use `⟨x, specializes_iff_mem_closure.2 hx, ?_⟩` and prove the remaining obligations. Establish `h1 : x ∉ B.X.basicOpen (B.const (p : O))`. Rewrite using `[Vert.Model.mem_basicOpen_const, e]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `fun h => h hpO`. Rewrite `h1` using `[show B.const (p : O) = (p : Γ(B.X, ⊤)) from map_natCast _ p]`. Use `(B.X.evaluation_eq_zero_iff_notMem_basicOpen x (show x ∈ (⊤ : B.X.Opens) from trivial) (p : Γ(B.X, ⊤))).2 h1` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem exists_special {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {p : ℕ}
     (hpO : (p : O) ∈ maximalIdeal O) (B : Vert.Model O) (z : B.X) :
@@ -37,7 +37,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {Z : LocM.Mdl Y i₀}
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `Set.mem_iUnion.1 (Z.cover.ge (hopn η hη))`. Conclude with `⟨a, ha⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_chart_of_maximal {X : Scheme.{0}} (h : X ⟶ Z.X)
     (hopn : ∀ η : X, (∀ y : X, y ⤳ η → y = η) → h η ∈ Z.opn) {η : X} (hη : ∀ y : X, y ⤳ η → y = η) :
@@ -46,7 +46,7 @@ theorem exists_chart_of_maximal {X : Scheme.{0}} (h : X ⟶ Z.X)
   exact ⟨a, ha⟩
 
 /- English proof (translation)
-Use `GenId.ext_maximal fun η hη hm => ?_` and prove the remaining obligations. Take `⟨a, ha⟩` from `exists_chart_of_maximal h hopn hm`. Conclude with `⟨_, _, resPt X η, Scheme.fromSpecResidueField_apply η _, hst _ _ a ((resPt_le_iff _ _ _).2 ha) ((resPt_le_iff _ _ _).2 hη)⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem ext_chart {X : Scheme.{0}} [IsReduced X] (h : X ⟶ Z.X)
     (hopn : ∀ η : X, (∀ y : X, y ⤳ η → y = η) → h η ∈ Z.opn) {U : X.Opens} {s t : Γ(X, U)}
@@ -58,11 +58,11 @@ theorem ext_chart {X : Scheme.{0}} [IsReduced X] (h : X ⟶ Z.X)
     hst _ _ a ((resPt_le_iff _ _ _).2 ha) ((resPt_le_iff _ _ _).2 hη)⟩
 
 /- English proof (translation)
-Use `HTLine.Dvd.mem_opn hp hW Z fun y hy => ?_` and prove the remaining obligations. Establish `hgen : genericPoint B.X = η` using `hη _ ((genericPoint_spec B.X).specializes (Set.mem_univ η))`. Establish `hg : ∀ y' : ((nmodel Z).comp c).X, f.f η ⤳ y'` using `fun y' => by`. Take `⟨x, rfl⟩` from `f.f.surjective y'`. Conclude with `(hgen ▸ (genericPoint_spec B.X).specializes (Set.mem_univ x)).map f.f.continuous`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `hy`, the goal using `[Scheme.Hom.comp_apply]`. Establish `hmem : y ∈ c.opens` using `hy.mem_open c.opens.isOpen (by`. Establish `: c.opens.ι (f.f η) ∈ Set.range c.opens.ι` using `⟨_, rfl⟩`. Rewrite using `[Scheme.Opens.range_ι] at this)` and apply the resulting hypothesis. Take `⟨y', rfl⟩ : y ∈ Set.range c.opens.ι` from `by rwa [Scheme.Opens.range_ι]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hy' : y' ⤳ f.f η` using `c.opens.ι.isOpenEmbedding.isInducing.specializes_iff.1 hy`. Rewrite using `[(hy'.antisymm (hg y')).eq]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem mem_opn_comp (hp : p.Prime) (hW : (p : ℂ) ∈ W.nonunits) [IsDiscreteValuationRing (Z.i.c.V W)]
     {B : Vert.Model (Z.i.c.V W)} {c : (nmodel Z).Comp} (f : Vert.Model.Hom B ((nmodel Z).comp c)) (η : B.X)
@@ -82,7 +82,7 @@ theorem mem_opn_comp (hp : p.Prime) (hW : (p : ℂ) ∈ W.nonunits) [IsDiscreteV
   rfl
 
 /- English proof (translation)
-Use `exists_special ?_ B z` and prove the remaining obligations. Rewrite using `[← ValuationSubring.coe_mem_nonunits_iff]`. Simplify using `using natCast_mem_nonunits_V Z.i.c hp hW`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem exists_special_V (hp : p.Prime) (hW : (p : ℂ) ∈ W.nonunits) [IsDiscreteValuationRing (Z.i.c.V W)]
     (B : Vert.Model (Z.i.c.V W)) (z : B.X) : ∃ x : B.X, z ⤳ x ∧ (p : B.X.residueField x) = 0 := by
@@ -91,29 +91,27 @@ theorem exists_special_V (hp : p.Prime) (hW : (p : ℂ) ∈ W.nonunits) [IsDiscr
   simpa using natCast_mem_nonunits_V Z.i.c hp hW
 
 /- English proof (translation)
-Establish `: IsLocallyNoetherian B.X` using `inferInstance`. Set `R : Type` to `B.X.presheaf.stalk x`. Take `⟨_, _⟩ : IsDomain R ∧ IsIntegrallyClosed R` from `(GlobalTheory.isNormalScheme_iff _).1 hN x`. Set `K` to `FractionRing R`. Set `ι : Sp R ⟶ B.X` to `B.X.fromSpecStalk x`.
+Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hι (q : Sp R) : ι q ⤳ x` using `(B.X.range_fromSpecStalk (x := x)).le ⟨q, rfl⟩`. Set `w₀ : Sp K ⟶ B.X` to `spMap (algebraMap R K) ≫ ι`. Establish `hη : w₀ (closedPoint K) ⤳ x` using `hι _`. Establish `hm : ∀ y : B.X, y ⤳ w₀ (closedPoint K) → y = w₀ (closedPoint K)` using `GenId.maximal_of_stalk (IsFractionRing.injective R K)`. Take `⟨a₀, ha₀⟩` from `exists_chart_of_maximal h hopn hm`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `w₀a : ⊤ ≤ w₀ ⁻¹ᵁ (h ⁻¹ᵁ (Z.U a₀).1)` using `(le_preimage_iff _).2 ha₀`. Establish `w₀U : ⊤ ≤ w₀ ⁻¹ᵁ U` using `(le_preimage_iff _).2 (hη.mem_open U.isOpen hx)`. Take `⟨φ₀, -⟩` from `exists_fromSpec (Z.U a₀).2 (w₀ ≫ h) fun q hq => w₀a hq`. Establish `: CharZero K` using `(φ₀.comp (Z.alg a₀)).charZero_iff (RingHom.injective _) |>.1 inferInstance`. Establish `hc : Cardinal.mk R ≤ Cardinal.continuum`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨V, hV, hxV, -⟩` from `exists_isAffineOpen_mem_and_subset (X := B.X) hx`. Set `σ : Z.i.c.V W →+* Γ(B.X, V)` to `(Spec.preimage (hV.fromSpec ≫ B.str)).hom`. Establish `e : spMap σ = hV.fromSpec ≫ B.str` using `Spec.map_preimage _`. Establish `h2 : LocallyOfFiniteType (spMap σ)` using `by rw [e]; infer_instance`. Establish `hσ : σ.FiniteType` using `(HasRingHomProperty.Spec_iff (P := @LocallyOfFiniteType)).1 h2`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `letI := B.X.presheaf.algebra_section_stalk (⟨x, hxV⟩ : V)`. Use `hV.isLocalization_stalk ⟨x, hxV⟩` as an intermediate fact. Conclude with `(IsLocalization.cardinalMk_le (hV.primeIdealOf ⟨x, hxV⟩).asIdeal.primeCompl).trans (HTLine.Dvd.mk_le_of_finiteType σ hσ ((Cardinal.mk_subtype_le _).trans ((Cardinal.mk_subtype_le _).trans Cardinal.mk_complex.le)))`. Take `⟨ρ, hρ⟩` from `GenId.mem_range_of_norm_le (R := R) (K := K) hp ((residue_eq_zero_iff _).1 ((map_natCast _ p).trans hpx)) hc (κ := valF w₀ _ (f a₀)) fun C ψ θ e => by`. Establish `g : spMap (intO ↥C.S).subtype ≫ spMap ψ ≫ ι = spMap θ ≫ w₀`.
+Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Category.assoc, ← Category.assoc, ModelRelProbe.spMap_comp, ModelRelProbe.spMap_comp, e]`. Establish `g' : spMap (intO ↥C.S).subtype ≫ spMap ψ ≫ ι ≫ h = spMap θ ≫ w₀ ≫ h`. Rewrite using `[← Category.assoc (spMap ψ), ← Category.assoc, g, Category.assoc]`. Take `⟨Q, hQ⟩` from `ModelPt.exists_ptC E H Dw Xo p W Y i₀ hp hW Z C (spMap ψ ≫ ι ≫ h) (by`. Introduce and unpack `_ ⟨q, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[g', ← Z.cover]`. Conclude with `Set.mem_iUnion.2 ⟨a₀, w₀a (Set.mem_univ (spMap θ q))⟩)`. Set `y : Z.Pt` to `⟨C, Q, spMap ψ ≫ ι ≫ h, hQ⟩`. Establish `hy : y.gen = spMap θ ≫ w₀ ≫ h` using `g'`. Use `hb y (spMap ψ ≫ ι) (Category.assoc _ _ _) a₀ (by rw [hy]; exact fun q _ => w₀a (Set.mem_univ (spMap θ q))) fun q _ => (hι (spMap ψ q)).mem_open U.isOpen hx` as an intermediate fact.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Rewrite `this` using `[g, GenId.valF_map θ (U := h ⁻¹ᵁ (Z.U a₀).1 ⊓ U) fun q hq => ⟨w₀a hq, w₀U hq⟩]`. Then use the resulting hypothesis. Take `⟨V₁, hx₁, t₁, rfl⟩` from `B.X.presheaf.germ_exist ρ`. Establish `hC` using `irreducibleComponent_mem_irreducibleComponents x`. Establish `hg` using `hC.1.isGenericPoint_genericPoint (isClosed_of_mem_irreducibleComponents _ hC)`. Take `⟨V, hV, hxV, hle⟩` from `exists_isAffineOpen_mem_and_subset (X := B.X) (x := x) (U := V₁ ⊓ (U ⊓ IsNormalScheme.component ⟨_, hC⟩)) ⟨hx₁, hx, mem_irreducibleComponent⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `l₁ : V ≤ V₁` using `fun q hq => (hle hq).1`. Establish `l₂ : V ≤ U` using `fun q hq => (hle hq).2.1`. Establish `hηV : w₀ (closedPoint K) ∈ V` using `hη.mem_open V.isOpen hxV`. Establish `v : valF w₀ V (resG B.X l₁ t₁) = valF w₀ _ (f a₀)`. Establish `e : w₀ = spMap ((algebraMap R K).comp (B.X.presheaf.germ V x hxV).hom) ≫ hV.fromSpec`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← ModelRelProbe.spMap_comp, Category.assoc]`. Conclude with `congrArg (spMap (algebraMap R K) ≫ ·) (hV.fromSpecStalk_eq_fromSpecStalk hxV).symm`. Rewrite using `[← hρ, e, valF_fromSpec]`. Conclude with `congrArg (algebraMap R K) (B.X.presheaf.germ_res_apply (homOfLE l₁) x hxV t₁)`. Use `⟨V, resG B.X l₁ t₁, hxV, l₂, fun k _ w a ha hw => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e : resG B.X (inf_le_right : h ⁻¹ᵁ (Z.U a).1 ⊓ V ≤ V) (resG B.X l₁ t₁) = resG B.X (inf_le_inf_left _ l₂) (f a)`. Use `GenId.ext_maximal fun η hη' hm' => ?_` and prove the remaining obligations. Take `rfl : η = w₀ (closedPoint K)` from `(hm' _ (hg.specializes (hle hη'.2).2.2)).symm.trans (hm _ (hg.specializes (hle hηV).2.2))`. Establish `h'` using `(le_preimage_iff (x := w₀) _).2 hη'`. Use `⟨K, inferInstance, w₀, rfl, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[valF_restrict _ h', valF_restrict _ h', v]`. Conclude with `hf K w₀ a₀ a w₀a (fun q hq => (h' hq).1) w₀U`. Establish `h' : ⊤ ≤ w ⁻¹ᵁ (h ⁻¹ᵁ (Z.U a).1 ⊓ V)` using `fun q hq => ⟨ha hq, hw hq⟩`. Rewrite using `[← valF_restrict inf_le_right h', ← valF_restrict (inf_le_inf_left _ l₂) h']`. Conclude with `congrArg _ e`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_extension (hp : p.Prime) (hW : (p : ℂ) ∈ W.nonunits) [IsDiscreteValuationRing (Z.i.c.V W)]
     {B : Vert.Model (Z.i.c.V W)} (hN : GlobalTheory.IsNormalScheme B.X) (h : B.X ⟶ Z.X)

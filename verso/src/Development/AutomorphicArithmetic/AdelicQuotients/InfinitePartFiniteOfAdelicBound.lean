@@ -2,7 +2,7 @@ import Development.AutomorphicArithmetic.Foundations.Convolution.LocalGroupAnaly
 open PositivityTheory.Rg.Tf.Geo UpperTheory.ConvolutionTheory.G UpperTheory.ConvolutionTheory.T4
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem mapGL_id' {R : Type} [CommRing R] (n : ℕ) (x : Matrix.GeneralLinearGroup (Fin n) R) :
     PositivityTheory.Rg.Tf.Geo.mapGL n (RingHom.id R) x = x := by
@@ -10,13 +10,13 @@ private theorem mapGL_id' {R : Type} [CommRing R] (n : ℕ) (x : Matrix.GeneralL
   simp
 
 /- English proof (translation)
-Introduce `hP hT hB F _ _ n hn γ`. Establish `hz : ∀ τ : F ≃ₐ[F] F, τ ∈ Subgroup.zpowers (1 : F ≃ₐ[F] F)` using `fun τ => by`. Establish `h1 : τ = 1`. Use extensionality with `x`. Conclude with `τ.commutes x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1]`. Conclude with `one_mem _`. Take `⟨hg, hi, -⟩` from `hT F`. Establish `hi' : GroundTheory.Global.InfinitePlace.infiniteAdeleRingMap (K` using `F) (L := F) = RingHom.id _ := hi`. Establish `hB'` using `hB F F 1 hz n hn γ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hP'` using `(hP F F 1 hz n hn).2 γ γ`. Rewrite `hB'`, `hP'` using `[hg]`. Rewrite `hP'` using `[hi']`. Simplify using `only [mapGL_id'] at hB' hP'`. Use `⟨hB', fun hs D hD => ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hN : PositivityTheory.Rg.Tf.Loc.twNorm (mapGL n (RingHom.id _)) (Module.finrank F F) γ = γ`. Simplify using `[PositivityTheory.Rg.Tf.Loc.twNorm]`. Both sides reduce to the same expression. Take `⟨C, hC, h⟩` from `hP' hs hN D hD`. Conclude with `⟨C, hC, h⟩`.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.infinitePart_finite_of_adelicBound :
     P2 → Triv → BoundE → InfF := by

@@ -58,13 +58,13 @@ def secEtaInf {X Z : Type} [NormedAddCommGroup Z] [NormedSpace ℝ Z] (L : Z →
     ((sandCLMInf ((q⁻¹ : GL (Fin n) (Cinf E)) : Matrix (Fin n) (Fin n) (Cinf E)) (Matrix.of p.1)).comp L))
 
 /- English proof (translation)
-Simplify using `only [jacInf, Matrix.det_mul, Pi.mul_apply, map_mul, mul_pow, Finset.prod_mul_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem jacInf_mul (x y : Matrix (Fin n) (Fin n) (Cinf E)) : jacInf (x * y) = jacInf x * jacInf y := by
   simp only [jacInf, Matrix.det_mul, Pi.mul_apply, map_mul, mul_pow, Finset.prod_mul_distrib]
 
 /- English proof (translation)
-Use `⟨fun _ _ =>measurable_const, fun X₀ _ γ₀ _ =>⟨measurable_const, fun _ =>measurable_const⟩, fun N => ⟨htInf (1 : GL (Fin n) (Cinf E)) ^ N, 0, fun q =>⟨integrable_const _, ?_⟩⟩⟩` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 example (Z : Type) [NormedAddCommGroup Z] [NormedSpace ℝ Z] :
     IsRapidFamInf (Measure.dirac ()) (fun (_ : GL (Fin n) (Cinf E)) (_ : Unit) =>(1 : ℂ)) (fun _ =>1)

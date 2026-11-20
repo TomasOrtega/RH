@@ -10,7 +10,7 @@ open NumberField
 namespace Formalism.FourierDecayAlt.P.CutMP.En
 
 /- English proof (translation)
-The claim follows from `| [], m, h => by rw [foldCV_nil]; simpa using h | x :: b, m, h => by rw [foldCV_cons] refine hC k r E A m _ (x.2 : ℂ) s ?_ refine inCC_fold hC A s F b (m + (2 * r + k + 1)) ?_ have e : m + (2 * r + k + 1) + (2 * r + k + 1) * b.length = m + (2 * r + k + 1) * (x :: b).length := by …`.
+A detailed English derivation is pending.
 -/
 theorem inCC_fold (hC : CVInCC) {k r : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] (A : ℝ) (s : ℂ)
     (F : B.Mat k r → E) : ∀ (b : List C.Letter) (m : ℕ),
@@ -25,15 +25,15 @@ theorem inCC_fold (hC : CVInCC) {k r : ℕ} {E : Type} [NormedAddCommGroup E] [N
     rw [e]; exact h
 
 /- English proof (translation)
-Unfold `B.AB`. Establish `hR : (0 : ℝ) ≤ r` using `Nat.cast_nonneg r`. Establish `hK : (2 : ℝ) ≤ k` using `by exact_mod_cast hk`. Establish `hj' : (j : ℝ) ≤ 5` using `by exact_mod_cast hj`. Establish `hℓ' : (ℓ : ℝ) ≤ N` using `by exact_mod_cast hℓ`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hℓ0 : (0 : ℝ) ≤ ℓ` using `Nat.cast_nonneg ℓ`. Use `set n : ℝ := 2 * (r : ℝ) + k + 1 with hn`. Establish `hcast : ((j + (2 * r + k + 1) * ℓ : ℕ) : ℝ) = j + n * ℓ` using `by rw [hn]; push_cast; ring`. Rewrite using `[hcast]`. Establish `hn3 : (3 : ℝ) ≤ n` using `by rw [hn]; linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hR1 : (1 : ℝ) ≤ (r : ℝ) + 1` using `by linarith`. Establish `h4 : (r : ℝ) + 1 ≤ ((r : ℝ) + 1) ^ 4`. Establish `: (1 : ℝ) ≤ ((r : ℝ) + 1) ^ 3` using `one_le_pow₀ hR1`. Use the polynomial consequences of the given equalities and inequalities. Establish `hkr : 2 * ((k : ℝ) + r) ≤ 2 * n` using `by rw [hn]; linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb : 2 * ((k : ℝ) + r) + 1 + 2 * (j + n * ℓ) ≤ 100 * ((N : ℝ) * n ^ 2 + n ^ 3)`. Establish `h1 : 2 * n * ℓ ≤ (N : ℝ) * n ^ 2`. Establish `: (ℓ : ℝ) * (2 * n) ≤ N * (n * n)`. Apply `mul_le_mul hℓ' (by nlinarith) (by positivity) (by positivity)` to reduce the goal to its premises. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Establish `h2 : 2 * n + 1 + 10 ≤ 100 * n ^ 3` using `by nlinarith`. Establish `hNn : 0 ≤ (N : ℝ) * n ^ 2` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities. Establish `hpos : 0 ≤ 100 * ((N : ℝ) * n ^ 2 + n ^ 3)` using `by positivity`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem weight_budget_L2_inequality (k r N : ℕ) (A₀ : ℝ) (hk : 2 ≤ k) (j : ℕ) (hj : j ≤ 5)
     (hA : 100 * ((r : ℝ) + 1) ^ 4 * ((N : ℝ) * (2 * (r : ℝ) + k + 1) ^ 2 + (2 * (r : ℝ) + k + 1) ^ 3) ≤ A₀)
@@ -72,11 +72,11 @@ theorem weight_budget_L2_inequality (k r N : ℕ) (A₀ : ℝ) (hk : 2 ≤ k) (j
     _ ≤ A₀ := hA
 
 /- English proof (translation)
-Introduce `E _ _ _ Wp Wq _ _ _ _ _ _ S T f χ ν' m₀ top A₀ hB v ε hε a hlen`. Take `⟨⟨_, _, _, hbuilt, _, _, _, _, _, _, hk2, hA, _⟩, _, _, _⟩` from `hB`. Take `⟨hχ, hv⟩` from `hbuilt`. Take `⟨_, _, _, _, hCC, _⟩` from `hv v`. Establish `hF : ∀ j ≤ 5, B.InCC (B.AB S.G.k S.G.r) (j + (2 * S.G.r + S.G.k + 1) * a.length) (D.cutF (T v).base χ (f v) ε)` using `fun j hj => Formalism.FourierDecayAlt.P.PBE.cutF_inCC (T v).base hχ hCC hε _ _ (weight_budget_L2_inequality S.G.k S.G.r S.Ntop A₀ hk2 j hj hA a.length hlen)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h5` using `inCC_fold hC (B.AB S.G.k S.G.r) (M.sgn (D.parOf S v) (S.l + 1)) _ a 5 (hF 5 le_rfl)`. Establish `h4` using `inCC_fold hC (B.AB S.G.k S.G.r) (M.sgn (D.parOf S v) (S.l + 1)) _ a 4 (hF 4 (by norm_num))`. Take `⟨_, _, _, hB1, _⟩` from `Formalism.FourierDecayAlt.P.b_any_of_xi S.G.k S.G.r (Wp (S.pl v)) (Wq (S.pl v)) (T v).base (B.AB S.G.k S.G.r) le_rfl`. Take `⟨C0, hC0⟩` from `hB1`. Take `⟨c4, hc4⟩` from `h4`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `(hC0 _ _ c4 c4 h5 h5 hc4 hc4).1`.
+A detailed English derivation is pending.
 -/
 theorem l2BoundAtBuiltPlace_of_cvInCC (hC : CVInCC) : L2BoundAtTowerPlace := by
   intro E _ _ _ Wp Wq _ _ _ _ _ _ S T f χ ν' m₀ top A₀ hB v ε hε a hlen
@@ -95,7 +95,7 @@ theorem l2BoundAtBuiltPlace_of_cvInCC (hC : CVInCC) : L2BoundAtTowerPlace := by
   exact (hC0 _ _ c4 c4 h5 h5 hc4 hc4).1
 
 /- English proof (translation)
-The claim follows from `l2BoundAtBuiltPlace_of_cvInCC coefficient_vector_in_L2_class`.
+A detailed English derivation is pending.
 -/
 theorem L2_bound_at_built_place_holds : L2BoundAtTowerPlace := l2BoundAtBuiltPlace_of_cvInCC coefficient_vector_in_L2_class
 

@@ -7,7 +7,7 @@ namespace ReciprocityTheory.ChartRestriction.G.I2
 open MeasureTheory Complex
 
 /- English proof (translation)
-The claim follows from `thetaBasis_holds`.
+A detailed English derivation is pending.
 -/
 theorem lemmaN (_hd : DimStatement) : NStatement := thetaBasis_holds
 

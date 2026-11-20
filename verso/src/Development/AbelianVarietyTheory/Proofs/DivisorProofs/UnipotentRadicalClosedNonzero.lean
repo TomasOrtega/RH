@@ -13,33 +13,27 @@ noncomputable section
 namespace GlobalTheory.UnipClosed
 
 /- English proof (translation)
-Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Use `haveI : IsModuleTopology (AF F) (AE F E) := ⟨rfl⟩`. Use `haveI : IsTopologicalRing (AE F E) := IsModuleTopology.isTopologicalRing (AF F) _`. Use `haveI := GlobalTheory.AdelicUnitaryTop.t2Space_adeleRing_numberField F`. Take `⟨e⟩` from `GlobalTheory.AdelicUnitaryTop.nonempty_homeomorph (F := F) (E := E) (AF F)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : T2Space (AE F E) := e.isEmbedding.t2Space`. Use `set x : Fin d → AE F E := incV F H'.x with hxdef`. Use `set ι : Matrix (Fin d) (Fin d₁) (AE F E) := incM F H'.ι`. Use `set S : Set (UA σ W.J) := {u | mat u *ᵥ x = x ∧ ∀ z, ∃ a : AE F E, mat u *ᵥ (ι *ᵥ z) = ι *ᵥ z + a • x} with hS`. Choose the witnesses or unpack the hypotheses as in `⟨k, hk⟩ : ∃ k, H'.x k ≠ 0 := by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion.
 
-Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hx (funext h)`. Establish `hcu : IsUnit (x k)`. Establish `: x k = inclR (F` using `F) (AF F) (H'.x k) := rfl`.
+Assume the hypotheses and unpack their components. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[this]`. Conclude with `(IsUnit.mk0 _ hk).map _`. Use `set c : (AE F E)ˣ := hcu.unit`. Establish `hc : (c : AE F E) = x k` using `hcu.unit_spec`. Establish `hline : ∀ v w : Fin d → AE F E, (∃ a : AE F E, w = v + a • x) ↔ w = v + ((w - v) k * ↑c⁻¹) • x`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `v w`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, rfl⟩`. Use `congr 2`. Simplify using `only [add_sub_cancel_left, Pi.smul_apply, smul_eq_mul]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hc, mul_assoc, Units.mul_inv, mul_one]`. Introduce `h`. Conclude with `⟨_, h⟩`. Establish `hm : Continuous fun g : UA σ W.J => mat g` using `Units.continuous_val.comp continuous_subtype_val`. Establish `hSc : IsClosed S`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `h1 : IsClosed {u : UA σ W.J | mat u *ᵥ x = x}` using `isClosed_eq (hm.matrix_mulVec continuous_const) continuous_const`. Establish `h2 : IsClosed {u : UA σ W.J | ∀ z, ∃ a : AE F E, mat u *ᵥ (ι *ᵥ z) = ι *ᵥ z + a • x}`. Simplify using `only [Set.setOf_forall]`. Use `isClosed_iInter fun z => ?_` and prove the remaining obligations. Repeatedly rewrite using `[hline]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Establish `hf : Continuous fun u : UA σ W.J => mat u *ᵥ (ι *ᵥ z)` using `hm.matrix_mulVec continuous_const`. Establish `hg : Continuous fun u : UA σ W.J => ((mat u *ᵥ (ι *ᵥ z) - ι *ᵥ z) k * ↑c⁻¹)` using `((continuous_apply k).comp (hf.sub continuous_const)).mul continuous_const`. Conclude with `isClosed_eq hf (continuous_const.add (hg.smul (continuous_const : Continuous fun _ : UA σ W.J => x)))`. Conclude with `h1.inter h2`. Establish `hsub : ∃ H : Subgroup (UA σ W.J), (H : Set (UA σ W.J)) = S`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨{ carrier := S, one_mem' := ?_, mul_mem' := ?_, inv_mem' := ?_ }, rfl⟩` and prove the remaining obligations. Introduce and unpack `u v ⟨hu1, hu2⟩ ⟨hv1, hv2⟩`. Use `⟨by rw [GlobalTheory.StabHaar.mat_mul, ← Matrix.mulVec_mulVec, hv1, hu1], fun z => ?_⟩` and prove the remaining obligations. Take `⟨a, ha⟩` from `hv2 z`. Take `⟨b, hb⟩` from `hu2 z`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨b + a, ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.StabHaar.mat_mul, ← Matrix.mulVec_mulVec, ha, Matrix.mulVec_add, Matrix.mulVec_smul, hb, hu1, add_smul, add_assoc]`. Conclude with `⟨by simp [GlobalTheory.StabHaar.mat_one], fun z => ⟨0, by simp [GlobalTheory.StabHaar.mat_one]⟩⟩`. Introduce and unpack `u ⟨hu1, hu2⟩`. Establish `e1 : mat u⁻¹ *ᵥ x = x` using `by conv_lhs => rw [← hu1]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[Matrix.mulVec_mulVec, GlobalTheory.StabHaar.mat_inv_mul, Matrix.one_mulVec]`. Use `⟨e1, fun z => ?_⟩` and prove the remaining obligations. Take `⟨a, ha⟩` from `hu2 z`. Use `⟨-a, ?_⟩` and prove the remaining obligations. Establish `: mat u⁻¹ *ᵥ (mat u *ᵥ (ι *ᵥ z)) = ι *ᵥ z`.
-
-Rewrite using `[Matrix.mulVec_mulVec, GlobalTheory.StabHaar.mat_inv_mul, Matrix.one_mulVec]`. Rewrite `this` using `[ha, Matrix.mulVec_add, Matrix.mulVec_smul, e1]`. Rewrite using `[neg_smul, ← sub_eq_add_neg, eq_sub_iff_add_eq, this]`. Take `⟨H, hH⟩` from `hsub`. Establish `: unip σ W H' = H`.
-
-Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[unip, Subgroup.closure_le]`. Conclude with `hH.symm ▸ subset_rfl`. Introduce `g hg`. Establish `: g ∈ S` using `hH ▸ hg`.
-
-Conclude with `Subgroup.subset_closure this`. Rewrite using `[this, hH]`. Conclude with `hSc`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isClosed_unip (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (d d₁ : ℕ) (W : Spc F E d) (H' : Plane E d d₁) (hx : H'.x ≠ 0) :
     IsClosed ((unip σ W H' : Subgroup (UA σ W.J)) : Set (UA σ W.J)) := by

@@ -12,9 +12,9 @@ noncomputable section
 namespace Formalism.L2.DIV.SlopeMaxB
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.Pk Formalism.MainNotions.DIV.Proofs Formalism.MainNotions.DIV.Proofs.HHParts
 /- English proof (translation)
-Take `⟨b, hs⟩` from `stabF Fm`. Use `⟨max (max s.1 b) (Fm.x1 + 1), fun x hx i => ?_⟩` and prove the remaining obligations. Establish `h1 : Fm.x1 < x` using `by have := le_trans (le_max_right _ _) hx; linarith`. Establish `h0 : s.1 ≤ x` using `le_trans (le_trans (le_max_left _ _) (le_max_left _ _)) hx`. Establish `hb : b ≤ x` using `le_trans (le_trans (le_max_right _ _) (le_max_left _ _)) hx`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨⟨(s.2 x h1 h0 i).T.cols⟩, hs x hb h1 i⟩`.
+Supply the required witnesses or components.
 -/
 theorem colTies_of_sel_alt {eps : ℝ} {Fm : FamP eps} (s : _root_.Formalism.L2.TwistSelectionFunctions Fm) : RT.tCVTies Fm := by
   obtain ⟨b, hs⟩ := stabF Fm
@@ -24,7 +24,7 @@ theorem colTies_of_sel_alt {eps : ℝ} {Fm : FamP eps} (s : _root_.Formalism.L2.
   have hb : b ≤ x := le_trans (le_trans (le_max_right _ _) (le_max_left _ _)) hx
   exact ⟨⟨(s.2 x h1 h0 i).T.cols⟩, hs x hb h1 i⟩
 /- English proof (translation)
-The claim follows from `boundB_of_values Fm hT (tCV_of_ties Fm (_root_.Formalism.L2.DIV.SlopeMaxB.colTies_of_sel_alt s))`.
+A detailed English derivation is pending.
 -/
 theorem eventually_muMax_le_pow_ebMu_mul_of_tuSize {eps : ℝ} {Fm : FamP eps} (s : _root_.Formalism.L2.TwistSelectionFunctions Fm) (hT : TuSize Fm) :
     ∃ x0 : ℝ, ∀ x ≥ x0, Fm.x1 < x → ∀ (i : Fm.Ix x) u,

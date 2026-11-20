@@ -11,7 +11,7 @@ open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.SG.S
 open scoped TensorProduct Classical
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ n J ψ v r g P Λ T μS0 hyp`. Take `⟨-, -, hSD, -, hg, -⟩` from `hyp`. Conclude with `(PI.LocMassTypM.isClosed_congruence_subgroup σ J v Λ hSD hg P).measurableSet`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem congruence_subgroup_measurable : CongruenceSubgroupMeasurable := by
   intro F E _ _ _ _ _ σ n J ψ v r g P Λ T μS0 hyp
@@ -19,7 +19,7 @@ theorem congruence_subgroup_measurable : CongruenceSubgroupMeasurable := by
   exact (PI.LocMassTypM.isClosed_congruence_subgroup σ J v Λ hSD hg P).measurableSet
 
 /- English proof (translation)
-Rewrite using `[PI.LocMassTypU.uog_eq v g r]`. Conclude with `PI.LocMassTypU.isOpen_boxS _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_uog {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (v : HeightOneSpectrum (𝓞 F)) (r g : ℕ) : IsOpen (UOg (E := E) v g r) := by
@@ -27,7 +27,7 @@ theorem isOpen_uog {F E : Type} [Field F] [NumberField F] [Field E] [NumberField
   exact PI.LocMassTypU.isOpen_boxS _
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ v r g _`. Use `haveI := PI.LocMassTypM.sc_tensV (E := E) v`. Use `haveI := PI.LocMassTypM.borel_tensV (E := E) v`. Conclude with `(isOpen_uog (E := E) v r g).measurableSet`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem unipotent_orbit_measurable : MeasUOg := by
   intro F E _ _ _ _ _ v r g _
@@ -36,13 +36,11 @@ theorem unipotent_orbit_measurable : MeasUOg := by
   exact (isOpen_uog (E := E) v r g).measurableSet
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ v r g _`. Use `haveI := PI.LocMassTypM.sc_tensV (E := E) v`. Use `haveI : SecondCountableTopology (UIdx r → Fv F v ⊗[F] E) := inferInstance`. Establish `hB : IsOpen (UOgS (E` using `E) v g r : Set (UIdx r → Fv F v ⊗[F] E)) := isOpen_uog v r g`. Rewrite using `[← Set.countable_univ_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hd : (Set.univ : Set ((UIdx r → Fv F v ⊗[F] E) ⧸ UOgS (E` using `E) v g r)).PairwiseDisjoint (fun q => (QuotientAddGroup.mk : (UIdx r → Fv F v ⊗[F] E) → _ ⧸ UOgS (E := E) v g r) ⁻¹' {q}) := Set.pairwiseDisjoint_fiber _ _`. Use `hd.countable_of_isOpen (fun q _ => ?_) (fun q _ => ?_)` and prove the remaining obligations. Take `⟨x, rfl⟩` from `QuotientAddGroup.mk_surjective q`. Establish `e : (QuotientAddGroup.mk : (UIdx r → Fv F v ⊗[F] E) → _ ⧸ UOgS (E` using `E) v g r) ⁻¹' {(QuotientAddGroup.mk x : _ ⧸ UOgS (E := E) v g r)} = (fun w => -x + w) ⁻¹' (UOgS (E := E) v g r : Set (UIdx r → Fv F v ⊗[F] E)) := by`. Use extensionality with `w`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Set.mem_preimage, Set.mem_singleton_iff, SetLike.mem_coe]`. Rewrite using `[eq_comm, QuotientAddGroup.eq]`. Rewrite using `[e]`. Conclude with `hB.preimage (continuous_const.add continuous_id)`. Take `⟨x, rfl⟩` from `QuotientAddGroup.mk_surjective q`.
-
-Conclude with `⟨x, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem unipotent_orbit_count : CountUOg := by
   intro F E _ _ _ _ _ v r g _
@@ -67,7 +65,7 @@ theorem unipotent_orbit_count : CountUOg := by
     exact ⟨x, rfl⟩
 
 /- English proof (translation)
-The claim follows from `stepIdx_of hL hU congruence_subgroup_measurable unipotent_orbit_measurable unipotent_orbit_count`.
+A detailed English derivation is pending.
 -/
 theorem index_formula_of_lift (hL : CongruenceSubgroupLift) (hU : KUnip1) : StepIdx :=
   stepIdx_of hL hU congruence_subgroup_measurable unipotent_orbit_measurable unipotent_orbit_count

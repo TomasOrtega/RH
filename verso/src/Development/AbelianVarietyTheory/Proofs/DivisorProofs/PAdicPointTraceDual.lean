@@ -14,13 +14,11 @@ section Alg
 variable {O R ι : Type} [CommRing O] [Field R] [DecidableEq ι] {σ : ι → O →+* R}
 
 /- English proof (translation)
-Apply `h.1` to reduce the goal to its premises. Use function extensionality and compare the values at `k`. Rewrite using `[map_smul, splitMap_idem, Pi.smul_apply, smul_eq_mul]`. Distinguish the cases in `hk : k = i`. Substitute `hk` using the available equality.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Rewrite using `[Pi.single_eq_of_ne hk, mul_zero]`. Establish `hne : σ k ≠ σ i` using `fun e => hk (h.injective e)`. Choose the witnesses or unpack the hypotheses as in `⟨a, ha⟩ : ∃ a, σ k a ≠ σ i a := by`. Assume the negation of the conclusion as `hc`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Use `push Not at hc`. Conclude with `hne (RingHom.ext hc)`. Establish `e` using `congrArg (fun t => splitMap σ t k) (hz a)`. Simplify using `only [map_mul, Pi.mul_apply, splitMap_tmul, one_mul, map_smul, Pi.smul_apply, smul_eq_mul] at e`. Establish `: (σ k a - σ i a) * splitMap σ z k = 0` using `by rw [sub_mul, e, sub_self]`.
-
-Conclude with `(mul_eq_zero.1 this).resolve_left (sub_ne_zero.2 ha)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eq_smul_idem (h : IsSplitting σ) (i : ι) (z : R ⊗[ℤ] O)
     (hz : ∀ a, (1 ⊗ₜ a) * z = σ i a • z) : z = splitMap σ z i • idem h i := by
@@ -51,15 +49,15 @@ def inclC : ℤ_[p] ⊗[ℤ] 𝓞 E →ₐ[ℤ_[p]] C ⊗[ℤ] 𝓞 E :=
   Algebra.TensorProduct.map (Algebra.ofId ℤ_[p] C) (AlgHom.id ℤ (𝓞 E))
 
 /- English proof (translation)
-Simplify using `[inclC, Algebra.ofId_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem inclC_tmul (r : ℤ_[p]) (a : 𝓞 E) : inclC C (r ⊗ₜ a) = algebraMap ℤ_[p] C r ⊗ₜ a := by
   simp [inclC, Algebra.ofId_apply]
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add y z hy hz => simp only [map_add, LinearMap.add_apply, hy, hz, LinearMap.baseChange_add]`. Consider the case `tmul r a`. Establish `e : tensorAction ρ (r ⊗ₜ a) = r • ρ a` using `LinearMap.ext fun y => by`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Rewrite using `[tensorAction_tmul, LinearMap.smul_apply]`. Rewrite using `[inclC_tmul, tensorAction_tmul, e, LinearMap.baseChange_smul, LinearMap.smul_apply, algebraMap_smul, baseChangeAction_apply]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem tensorAction_inclC (z : ℤ_[p] ⊗[ℤ] 𝓞 E) (x : C ⊗[ℤ_[p]] T) :
     tensorAction (baseChangeAction C ρ) (inclC C z) x = (tensorAction ρ z).baseChange C x := by
@@ -78,7 +76,7 @@ def coordC (j : Fin m) : C ⊗[ℤ_[p]] T →ₗ[C] C ⊗[ℤ] 𝓞 E :=
   ((inclC C).toLinearMap ∘ₗ ℓ j).liftBaseChange C
 
 /- English proof (translation)
-Rewrite using `[coordC, LinearMap.liftBaseChange_tmul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem coordC_tmul (j : Fin m) (c : C) (t : T) : coordC C ℓ j (c ⊗ₜ t) = c • inclC C (ℓ j t) := by
   rw [coordC, LinearMap.liftBaseChange_tmul]
@@ -87,9 +85,9 @@ theorem coordC_tmul (j : Fin m) (c : C) (t : T) : coordC C ℓ j (c ⊗ₜ t) = 
 variable {ρ ℓ}
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy, mul_add]`. Consider the case `tmul c t`. Rewrite using `[baseChangeAction_apply, LinearMap.baseChange_tmul, coordC_tmul, coordC_tmul, hℓ, map_mul, mul_smul_comm]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Simplify using `[inclC]`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 -/
 theorem coordC_act (hℓ : ∀ j a t, ℓ j (ρ a t) = (1 ⊗ₜ a) * ℓ j t) (j : Fin m) (a : 𝓞 E)
     (x : C ⊗[ℤ_[p]] T) : coordC C ℓ j (baseChangeAction C ρ a x) = (1 ⊗ₜ a) * coordC C ℓ j x := by
@@ -103,9 +101,9 @@ theorem coordC_act (hℓ : ∀ j a t, ℓ j (ρ a t) = (1 ⊗ₜ a) * ℓ j t) (
     simp [inclC]
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy, LinearMap.add_apply, Finset.sum_add_distrib]`. Consider the case `tmul c t`. Rewrite using `[LinearMap.baseChange_tmul, hE, TensorProduct.tmul_sum]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[coordC_tmul, map_smul, LinearMap.smul_apply, tensorAction_inclC, LinearMap.baseChange_tmul, TensorProduct.smul_tmul', smul_eq_mul, mul_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem baseChange_eq_sum {u : Fin m → T} {e : ℤ_[p] ⊗[ℤ] 𝓞 E}
     (hE : ∀ t, tensorAction ρ e t = ∑ j, tensorAction ρ (ℓ j t) (u j)) (x : C ⊗[ℤ_[p]] T) :
@@ -129,9 +127,9 @@ variable {p : ℕ} [Fact p.Prime] {C : Type} [Field C] {v : Valuation C ℝ≥0}
   {E : Type} [Field E]
 
 /- English proof (translation)
-Proceed by induction on `e using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, Pi.add_apply, hx, hy]`. Consider the case `tmul r a`. Rewrite using `[inclC_tmul, splitMap_tmul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[ReciprocityTheory.ChartRestriction.G.Pdiv.AvDefs.tauExt, Algebra.ofId_apply, IsScalarTower.algebraMap_apply ℤ_[p] O C]`.
+Simplify using the standard rewrite rules.
 -/
 theorem splitMap_inclC (hv : v.Integers O) (φ : E →+* C) (e : ℤ_[p] ⊗[ℤ] 𝓞 E) :
     splitMap (fun ψ : E →+* C => (algebraMap O C).comp (embO hv ψ)) (inclC C e) φ =
@@ -148,9 +146,9 @@ def intPart (O C E : Type) [CommRing O] [Field C] [Algebra O C] [Field E] :
   Submodule.span O (Set.range fun a : 𝓞 E => (1 : C) ⊗ₜ[ℤ] a)
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => rw [map_add]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `tmul r a`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[inclC_tmul, IsScalarTower.algebraMap_apply ℤ_[p] O C, ← mul_one (algebraMap O C _), ← Algebra.smul_def, ← TensorProduct.smul_tmul']`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem inclC_mem_intPart (z : ℤ_[p] ⊗[ℤ] 𝓞 E) : inclC C z ∈ intPart O C E := by
   induction z using TensorProduct.induction_on with
@@ -162,7 +160,7 @@ theorem inclC_mem_intPart (z : ℤ_[p] ⊗[ℤ] 𝓞 E) : inclC C z ∈ intPart 
     exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, rfl⟩)
 
 /- English proof (translation)
-Take `⟨n, f, g, hfg⟩` from `Submodule.mem_span_set'.1 hz`. Use `⟨n, f, fun k => (g k).2.choose, ?_⟩` and prove the remaining obligations. Rewrite using `[← hfg]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← (g k).2.choose_spec, TensorProduct.smul_tmul', Algebra.smul_def, mul_one]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_fin_of_mem_intPart {z : C ⊗[ℤ] 𝓞 E} (hz : z ∈ intPart O C E) :
     ∃ (n : ℕ) (r : Fin n → O) (a : Fin n → 𝓞 E), z = ∑ k, algebraMap O C (r k) ⊗ₜ[ℤ] a k := by
@@ -175,27 +173,25 @@ theorem exists_fin_of_mem_intPart {z : C ⊗[ℤ] 𝓞 E} (hz : z ∈ intPart O 
 end Point
 
 /- English proof (translation)
-Introduce `p _ C _ _ _ v O _ _ _ _ _ E _ _ _ P φ d hd hδ m u ℓ e hℓ he hE w hw hdw`. Set `σf : (E →+* C) → 𝓞 E →+* C` to `fun ψ => (algebraMap O C).comp (embO P.integers ψ)`. Establish `h : IsSplitting σf` using `isSplitting_embO P.integers`. Establish `hyV : d • w ∈ eigenSub P.actV (σf φ)` using `Submodule.smul_mem _ d hw`. Establish `hact : P.actV = baseChangeAction C P.actT` using `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : (tensorAction P.actT e).baseChange C (d • w) = d • w`. Rewrite using `[← tensorAction_inclC, ← hact, tensorAction_of_mem (σ := σf) (i := φ) hyV, splitMap_inclC P.integers φ e, he, map_one, one_smul]`. Establish `h2 : ∀ j, ∃ o : O, coordC C ℓ j (d • w) = (d * algebraMap O C o) • idem h φ`. Introduce `j`. Establish `hz : ∀ a, (1 ⊗ₜ a) * coordC C ℓ j (d • w) = σf φ a • coordC C ℓ j (d • w)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `a`. Rewrite using `[← coordC_act C hℓ, ← hact, mem_eigenSub.1 hyV a, map_smul]`. Establish `heq` using `eq_smul_idem h φ _ hz`. Use `set s := splitMap σf (coordC C ℓ j (d • w)) φ with hs`. Establish `hmem : coordC C ℓ j (d • w) ∈ intPart O C E`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hx⟩` from `hdw`. Rewrite using `[← hx]`. Use `clear hx`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y hx hy => rw [map_add, map_add]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `tmul c t`. Rewrite using `[Point.inclT_tmul, coordC_tmul, algebraMap_smul]`. Conclude with `Submodule.smul_mem _ _ (inclC_mem_intPart _)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨n, r, a, hra⟩` from `exists_fin_of_mem_intPart hmem`. Establish `hvs : v s ≤ v d`. Use `hδ n r a s fun ψ => ?_` and prove the remaining obligations. Establish `e1 : splitMap σf (coordC C ℓ j (d • w)) ψ = s * (Pi.single φ 1 : (E →+* C) → C) ψ` using `by conv_lhs => rw [heq]`. Rewrite using `[map_smul, splitMap_idem, Pi.smul_apply, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : splitMap σf (coordC C ℓ j (d • w)) ψ = ∑ k, algebraMap O C (r k) * ψ (a k)`. Rewrite using `[hra, map_sum, Finset.sum_apply]`. Simplify using `only [splitMap_tmul, σf, RingHom.comp_apply, algebraMap_embO]`. Rewrite using `[← e2, e1]`. Distinguish the cases in `hψ : ψ = φ`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Substitute `hψ` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hψ]`. Establish `hvd : v (s * d⁻¹) ≤ 1`. Rewrite using `[map_mul, map_inv₀]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `mul_inv_le_one_of_le₀ hvs zero_le`. Take `⟨o, ho⟩` from `P.integers.exists_of_le_one hvd`. Use `⟨o, ?_⟩` and prove the remaining obligations. Rewrite using `[heq, ho, mul_comm s, ← mul_assoc, mul_inv_cancel₀ hd, one_mul]`. Use `choose o ho using h2`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h3 : d • w = d • proj h P.actV φ (∑ j, o j • ((1 : C) ⊗ₜ[ℤ_[p]] u j))` using `by conv_lhs => rw [← h1, baseChange_eq_sum C hE]`. Rewrite using `[map_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[ho, ← hact, map_smul, LinearMap.smul_apply, ← proj, ← algebraMap_smul C (o j), map_smul, smul_smul]`. Establish `hw'` using `smul_right_injective _ hd h3`.
-
-Use `(mem_eigQuotLat _ _).2 ⟨_, Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (P.one_tmul_mem_latT _), hw'.symm⟩` and prove the remaining obligations.
+A detailed English derivation is pending.
 -/
 theorem mem_latTQuot_of_smul_mem_latT : ∀ {p : ℕ} [Fact p.Prime] {C : Type} [Field C] [IsAlgClosed C] [CharZero C] {v : Valuation C ℝ≥0} {O : Type} [CommRing O] [Algebra O C] [Algebra ℤ_[p] O] [Algebra ℤ_[p] C] [IsScalarTower ℤ_[p] O C] {E : Type} [Field E] [NumberField E] [StarRing (𝓞 E)] (P : Point p v O (𝓞 E)) (φ : E →+* C) (d : C), d ≠ 0 → (∀ (n : ℕ) (r : Fin n → O) (a : Fin n → 𝓞 E) (s : C), (∀ σ : E →+* C, ∑ k, algebraMap O C (r k) * σ (a k) = if σ = φ then s else 0) → v s ≤ v d) → ∀ (m : ℕ) (u : Fin m → P.T) (ℓ : Fin m → (P.T →ₗ[ℤ_[p]] ℤ_[p] ⊗[ℤ] 𝓞 E)) (e : ℤ_[p] ⊗[ℤ] 𝓞 E), (∀ j a t, ℓ j (P.actT a t) = (1 ⊗ₜ a) * ℓ j t) → ReciprocityTheory.ChartRestriction.G.Pdiv.AvDefs.tauExt (embO P.integers φ) e = 1 → (∀ t, tensorAction P.actT e t = ∑ j, tensorAction P.actT (ℓ j t) (u j)) → ∀ w : P.V, w ∈ P.eigV (embO P.integers φ) → d • w ∈ P.latT → w ∈ P.latTQuot (σ := fun ψ : E →+* C => embO P.integers ψ) (isSplitting_embO P.integers) φ := by
   intro p _ C _ _ _ v O _ _ _ _ _ E _ _ _ P φ d hd hδ m u ℓ e hℓ he hE w hw hdw

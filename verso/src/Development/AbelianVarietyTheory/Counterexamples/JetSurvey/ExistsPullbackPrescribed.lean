@@ -17,7 +17,7 @@ noncomputable section
 namespace GlobalTheory.SabBaseChange
 
 /- English proof (translation)
-Take `⟨w, hw⟩` from `h`. Conclude with `⟨_, DVR.linCombIso_isGen w hw _ _⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem lbIso_cube {S : Scheme.{0}} {G T : Over S} [GrpObj G] [IsCommMonObj G] {n : ℕ} (x : Fin n → (T ⟶ G))
     {L M : LB G.left} (h : LBIso L M) : LBIso (cubeLB G x L) (cubeLB G x M) := by
@@ -25,7 +25,7 @@ theorem lbIso_cube {S : Scheme.{0}} {G T : Over S} [GrpObj G] [IsCommMonObj G] {
   exact ⟨_, DVR.linCombIso_isGen w hw _ _⟩
 
 /- English proof (translation)
-The claim follows from `DVR.linComb_isLB _ h _ _`.
+A detailed English derivation is pending.
 -/
 theorem cube_isLB {S : Scheme.{0}} {G T : Over S} [GrpObj G] [IsCommMonObj G] {n : ℕ} (x : Fin n → (T ⟶ G))
     {L : LB G.left} (h : L.IsLB) : (cubeLB G x L).IsLB := DVR.linComb_isLB _ h _ _
@@ -33,11 +33,11 @@ theorem cube_isLB {S : Scheme.{0}} {G T : Over S} [GrpObj G] [IsCommMonObj G] {n
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
 /- English proof (translation)
-Establish `h` using `isGrpPullback_pullback t.G f`. Take `⟨P₀, c₀, s₀, adj₀, prim₀, m₀, hm₀⟩` from `sabPull Out.CubePf.cubePull f t`. Establish `hP : (t.PP.L.pull (pullback.fst t.G.hom f)).IsLB` using `DVR.linComb_isLB _ t.PP.isLB _ _`. Establish `i₀ : LBIso P₀.L (t.PP.L.pull (pullback.fst t.G.hom f))`. Take `⟨w, hw, -⟩` from `m₀.lin`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← hm₀]`. Conclude with `⟨w, hw⟩`. Establish `i : LBIso PP'.L P₀.L` using `LBIso.trans PP'.isLB hP P₀.isLB hw i₀.symm`. Take `⟨w, hg, hr⟩` from `GlobalTheory.Unif.RigidifyIso.exists_rigidified_iso S S' f t.G _ _ (cubeMapOf h).e_comm t.PP PP' hw`. Take `⟨s, hs, hs'⟩` from `(GlobalTheory.isSymmetric_iff_exists_gen S t.G t.PP).1 t.sym`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨c', s', h₁, h₂, h₃, -⟩` from `GlobalTheory.cubical_symmetry_transport S S' f t.G _ _ h t.PP PP' w (cubeMapOf h).e_comm hg hr t.cub s hs hs'`. Use `⟨c', (GlobalTheory.isSymmetric_iff_exists_gen S' _ PP').2 ⟨s', h₁, h₂⟩, fun a => ?_, ?_, ⟨cubeMapOf h, h, rfl, fun a => pullback.lift_fst _ _ _, w, hg, hr, ?_⟩, rfl⟩` and prove the remaining obligations. Conclude with `LBIso.trans (cube_isLB _ PP'.isLB) (cube_isLB _ P₀.isLB) (cube_isLB _ PP'.isLB) (LBIso.trans (cube_isLB _ PP'.isLB) (cube_isLB _ P₀.isLB) (cube_isLB _ P₀.isLB) (lbIso_cube _ i) (adj₀ a)) (lbIso_cube _ i.symm)`. Conclude with `LBIso.trans PP'.isLB (cube_isLB _ P₀.isLB) (cube_isLB _ PP'.isLB) (LBIso.trans PP'.isLB P₀.isLB (cube_isLB _ P₀.isLB) i prim₀) (lbIso_cube _ i.symm)`. Conclude with `(maps_iff w _ (thφ t.G (x3 t.G)) _ c'.t t.cub.t (cubeMapOf h).F3 _ ((cubeMapOf h).theta_le t.PP.L) (fun _ => rfl)).2 h₃`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_pullback_prescribed {S S' : Scheme.{0}} (f : S' ⟶ S) (t : SAB H S)
     (PP' : RigLB ((Over.pullback f).obj t.G))
@@ -67,7 +67,7 @@ theorem exists_pullback_prescribed {S S' : Scheme.{0}} (f : S' ⟶ S) (t : SAB H
       (fun _ => rfl)).2 h₃
 
 /- English proof (translation)
-Take `⟨P₀, c₀, s₀, adj₀, prim₀, m₀, hm₀⟩` from `sabPull Out.CubePf.cubePull f t`. Take `⟨w, hw, -⟩` from `m₀.lin`. Use `⟨P₀, ?_⟩` and prove the remaining obligations. Rewrite using `[← hm₀]`. Conclude with `⟨w, hw⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem exists_prescribed {S S' : Scheme.{0}} (f : S' ⟶ S) (t : SAB H S) :
     ∃ PP' : RigLB ((Over.pullback f).obj t.G),
@@ -78,9 +78,9 @@ theorem exists_prescribed {S S' : Scheme.{0}} (f : S' ⟶ S) (t : SAB H S) :
   rw [← hm₀]; exact ⟨w, hw⟩
 
 /- English proof (translation)
-Establish `hi : ι[G] ≫ ι[G] = 𝟙 G` using `GrpObj.inv_comp_inv G`. Establish `: IsIso (ι[G]).left` using `⟨⟨(ι[G]).left, by rw [← Over.comp_left, hi, Over.id_left], by rw [← Over.comp_left, hi, Over.id_left]⟩⟩`. Use `⟨IsPullback.of_horiz_isIso ⟨by rw [Over.w, Category.comp_id]⟩, fun T x y x₀ y₀ hx hy => ?_⟩` and prove the remaining obligations. Establish `e` using `mul_left_congr (G := G) (a := T.hom ≫ 𝟙 S) (b := T.hom) (Category.comp_id _) x₀ y₀ x⁻¹ y⁻¹ hx hy`. Use `e.trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `congrArg (fun z : T ⟶ G => z.left) (mul_inv x y).symm`.
+A detailed English derivation is pending.
 -/
 theorem isGrpPullback_inv {S : Scheme.{0}} (G : Over S) [GrpObj G] [IsCommMonObj G] :
     IsGrpPullback G G (𝟙 S) (ι[G]).left := by

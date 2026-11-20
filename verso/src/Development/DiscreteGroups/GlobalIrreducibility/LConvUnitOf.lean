@@ -8,9 +8,9 @@ open ValuativeRel
 namespace DiscreteGroups.sglob.LConv
 
 /- English proof (translation)
-Take `⟨D, hDc, hDd⟩` from `TopologicalSpace.exists_countable_dense G`. Establish `: Countable D` using `hDc.to_subtype`. Use `Function.Surjective.countable (f := fun d : D => ((d : G) : G ⧸ K)) fun q => ?_` and prove the remaining obligations. Take `⟨g, rfl⟩` from `QuotientGroup.mk_surjective q`. Establish `ho : IsOpen ((fun x => x⁻¹ * g) ⁻¹' (K : Set G))` using `hK.preimage (continuous_inv.mul continuous_const)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨d, hd, hdD⟩` from `hDd.inter_open_nonempty _ ho ⟨g, by simp⟩`. Conclude with `⟨⟨d, hdD⟩, QuotientGroup.eq.2 hd⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem countable_quotient_of_isOpen {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [TopologicalSpace.SeparableSpace G] (K : Subgroup G) (hK : IsOpen (K : Set G)) : Countable (G ⧸ K) := by
@@ -23,7 +23,7 @@ theorem countable_quotient_of_isOpen {G : Type} [Group G] [TopologicalSpace G] [
   exact ⟨⟨d, hdD⟩, QuotientGroup.eq.2 hd⟩
 
 /- English proof (translation)
-Establish `: SecondCountableTopology (GL (Fin m) k)` using `inferInstance`. Use `infer_instance`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem separableSpace_GL (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (m : ℕ) : TopologicalSpace.SeparableSpace (GL (Fin m) k) := by
@@ -31,13 +31,13 @@ theorem separableSpace_GL (k : Type) [Field k] [ValuativeRel k] [TopologicalSpac
   infer_instance
 
 /- English proof (translation)
-Introduce `hAlt hFin hUnif k _ _ _ _ m K hKo hKc H _ _ _ π hπ hcomm`. Use `separableSpace_GL k m` as an intermediate fact. Take `⟨N, hN⟩` from `hUnif k m K hKo`. Set `F : Submodule ℂ H` to `{ carrier := {x | ∀ κ ∈ K, π κ x = x} add_mem' := fun {a b} ha hb κ hκ => by rw [map_add, ha κ hκ, hb κ hκ] zero_mem' := fun κ _ => map_zero _ smul_mem' := fun c x hx κ hκ => by rw [map_smul, hx κ hκ] }`. Establish `hF : IsClosed (F : Set H)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `: (F : Set H) = ⋂ κ ∈ K, {x | π κ x = x}`. Use extensionality with `x`. Simplify using `only [Set.mem_iInter]`. Both sides reduce to the same expression. Rewrite using `[this]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Conclude with `isClosed_biInter fun κ _ => isClosed_eq (π κ).continuous continuous_id`. Establish `: CompleteSpace F` using `hF.completeSpace_coe`. Establish `h1 : ∀ x, F.starProjection x ∈ F` using `fun x => F.starProjection_apply_mem x`. Establish `h2 : ∀ x ∈ F, F.starProjection x = x` using `fun x hx => Submodule.starProjection_eq_self_iff.2 hx`. Take `⟨s, hs⟩` from `hFin _ H π hπ hcomm F.starProjection (by ext x; exact h2 _ (h1 x)) (N ^ 2 + 1) (hAlt _ K hKo hKc (countable_quotient_of_isOpen K hKo) N hN H π hπ F.starProjection (isSelfAdjoint_starProjection F) h1 h2 _ (Nat.lt_succ_self _))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨s, fun x hx => h2 x hx ▸ hs x⟩`.
+A detailed English derivation is pending.
 -/
 theorem unitOfUnif : UnitOfUnif := by
   intro hAlt hFin hUnif k _ _ _ _ m K hKo hKc H _ _ _ π hπ hcomm

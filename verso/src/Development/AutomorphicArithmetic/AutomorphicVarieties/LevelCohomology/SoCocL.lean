@@ -7,15 +7,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.UnitaryThreeDeform
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology IsLocalRing UpperTheory.V UpperTheory.V.Base UpperTheory.V.X
 
 /- English proof (translation)
-Introduce `CK hK pt fK tK lf lt le k Ω _ _ _ _ _ l hl c ψ ho e he z hz hc hl`. Establish `key : ∀ (v : HeightOneSpectrum (𝓞 k)) (A : ValuationSubring Ω), IsPlaceOver A v → CobOn (Chr.Psi l e ψ)⁻¹ z (Dec (F` using `k) A) := fun v A hA => by`. Distinguish the cases in `hv : ((l : ℕ) : 𝓞 k) ∈ v.asIdeal`. Take `⟨A', hA', h⟩` from `hl v hv`. Conclude with `So.cobPlace k Ω c.O _ z hz v A' A hA' hA h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `hz`, the goal using `[Chr.Psi_inv]`. Establish `ho' : IsOpen ((ψ⁻¹).ker : Set (G k Ω))`. Establish `: (ψ⁻¹).ker = ψ.ker`. Use extensionality with `g`. Simplify using `[MonoidHom.mem_ker]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[this]` and apply the resulting hypothesis. Conclude with `So.locTors lf lt le k Ω l c.O ψ⁻¹ ho' _ (by omega) (by omega) v A hA hv z hz hc`. Use `So.soCoc CK hK pt fK tK k Ω l c ψ ho e he z hz hc (fun A => ?_) fun A hA => ?_` and prove the remaining obligations. Distinguish the cases in `h : A = ⊤`. Rewrite using `[((places k Ω l A).2.1 h).1]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `cobOn_of_eq_zero _ fun g hg => ?_` and prove the remaining obligations. Rewrite using `[Subgroup.mem_bot.1 hg]`. Simplify using `using hz 1 1`. Take `⟨v, hv⟩` from `(places k Ω l A).1 h`. Conclude with `(key v A hv).mono (Ine_le_Dec A)`.
-
-Take `⟨v, hv⟩` from `(places k Ω l A).1 fun h => ((places k Ω l A).2.1 h).2 hA`. Conclude with `key v A hv`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.X.So.soCocL : ∀ CK : ℝ, LemmaK CK → GlobalTheory.Published.PoitouTateDuality → LocalFinitenessK → LocalTateDualityK → LocalFiniteness → LocalTateDuality → LocalEulerChar → ∀ (k Ω : Type) [Field k] [NumberField k] [Field Ω] [Algebra k Ω] [IsAlgClosure k Ω] (l : ℕ) [Fact l.Prime] (c : HV.Coef l) (ψ : G k Ω →* c.Oˣ), IsOpen (ψ.ker : Set (G k Ω)) → ∀ e : ℕ, 1 ≤ e → ∀ z : G k Ω → c.O, Coc (Chr.Psi l e ψ)⁻¹ z → Alg.AdicCont (maximalIdeal c.O) z → (∀ v : HeightOneSpectrum (𝓞 k), ((l : ℕ) : 𝓞 k) ∈ v.asIdeal → ∃ A : ValuationSubring Ω, IsPlaceOver A v ∧ CobOn (Chr.Psi l e ψ)⁻¹ z (Dec (F := k) A)) → CobOn (Chr.Psi l e ψ)⁻¹ z ⊤ := by
   intro CK hK pt fK tK lf lt le k Ω _ _ _ _ _ l hl c ψ ho e he z hz hc hl

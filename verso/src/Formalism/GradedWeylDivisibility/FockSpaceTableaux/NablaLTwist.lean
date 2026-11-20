@@ -5,9 +5,9 @@ open MvPolynomial
 namespace Formalism.GradedWeylDivisibility
 
 /- English proof (translation)
-Proceed by induction on `F using MvPolynomial.induction_on`. Name the introduced variables `a`. Simplify using `[rowAct]`. Name the introduced variables `p q hp hq`. Simplify using `only [map_add, hp, hq]`.
+Proceed by induction. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Name the introduced variables `p v hp`. Simplify using `only [map_mul, hp]`. Use `congr 1`. Simplify using `[rowAct, Matrix.map_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ldtwist_map_rowAct {K L : Type*} [CommRing K] [CommRing L] (φ : K →+* L) {k n : ℕ}
     (g : Matrix (Fin k) (Fin k) K) (F : MvPolynomial (Fin k × Fin n) K) :

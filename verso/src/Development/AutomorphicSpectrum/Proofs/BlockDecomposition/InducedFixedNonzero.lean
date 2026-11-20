@@ -18,11 +18,11 @@ variable {G W : Type} [Group G] [AddCommGroup W] [Module ℂ W] {P : Subgroup G}
   {σ : Representation ℂ P W} {K : Subgroup G} {x : W}
 
 /- English proof (translation)
-Establish `h : ∃ p : P, (p : G)⁻¹ * g ∈ K` using `⟨p, hp⟩`. Establish `hq` using `h.choose_spec`. Rewrite using `[bump, dif_pos h]`. Use `set q := h.choose`. Establish `hm : ((q⁻¹ * p : P) : G) ∈ K`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `K.mul_mem hq (K.inv_mem hp)` as an intermediate fact. Establish `e : (q : G)⁻¹ * g * ((p : G)⁻¹ * g)⁻¹ = ((q⁻¹ * p : P) : G)`. Simplify using `[mul_assoc]`. Rewrite `this` using `[e]`. Then use the resulting hypothesis. Establish `h2` using `hx _ hm`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : σ p x = σ q (σ (q⁻¹ * p) x)`. Rewrite using `[← Module.End.mul_apply, ← map_mul]`. Simplify using the standard rewrite rules. Rewrite using `[h3, h2]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bump_eq (hx : ∀ p : P, (p : G) ∈ K → σ p x = x) {p : P} {g : G}
     (hp : (p : G)⁻¹ * g ∈ K) : bump P σ K x g = σ p x := by
@@ -41,17 +41,17 @@ theorem bump_eq (hx : ∀ p : P, (p : G) ∈ K → σ p x = x) {p : P} {g : G}
   rw [h3, h2]
 
 /- English proof (translation)
-Rewrite using `[bump, dif_neg h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem bump_of_not {g : G} (h : ¬ ∃ p : P, (p : G)⁻¹ * g ∈ K) : bump P σ K x g = 0 := by
   rw [bump, dif_neg h]
 
 /- English proof (translation)
-Distinguish the cases in `h : ∃ q : P, (q : G)⁻¹ * g ∈ K`. Take `⟨q, hq⟩` from `h`. Establish `hq' : (((p * q : P) : G))⁻¹ * ((p : G) * g) ∈ K`. Establish `e : (((p * q : P) : G))⁻¹ * ((p : G) * g) = (q : G)⁻¹ * g`. Simplify using `[mul_assoc]`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[e]` and apply the resulting hypothesis. Rewrite using `[bump_eq hx hq', bump_eq hx hq, map_mul, Module.End.mul_apply]`. Establish `h' : ¬ ∃ r : P, (r : G)⁻¹ * ((p : G) * g) ∈ K`. Introduce and unpack `⟨r, hr⟩`. Use `h ⟨p⁻¹ * r, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : (((p⁻¹ * r : P) : G))⁻¹ * g = (r : G)⁻¹ * ((p : G) * g)`. Simplify using `[mul_assoc]`. Rewrite using `[e]` and apply the resulting hypothesis. Rewrite using `[bump_of_not h, bump_of_not h', map_zero]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 -/
 theorem bump_mul_left (hx : ∀ p : P, (p : G) ∈ K → σ p x = x) (p : P) (g : G) :
     bump P σ K x ((p : G) * g) = σ p (bump P σ K x g) := by
@@ -71,11 +71,11 @@ theorem bump_mul_left (hx : ∀ p : P, (p : G) ∈ K → σ p x = x) (p : P) (g 
     rw [bump_of_not h, bump_of_not h', map_zero]
 
 /- English proof (translation)
-Distinguish the cases in `h : ∃ q : P, (q : G)⁻¹ * g ∈ K`. Take `⟨q, hq⟩` from `h`. Establish `hq' : (q : G)⁻¹ * (g * k) ∈ K`. Rewrite using `[← mul_assoc]`. Conclude with `K.mul_mem hq hk`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[bump_eq hx hq', bump_eq hx hq]`. Establish `h' : ¬ ∃ r : P, (r : G)⁻¹ * (g * k) ∈ K`. Introduce and unpack `⟨r, hr⟩`. Use `h ⟨r, ?_⟩` and prove the remaining obligations. Use `K.mul_mem hr (K.inv_mem hk)` as an intermediate fact.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : (r : G)⁻¹ * (g * k) * k⁻¹ = (r : G)⁻¹ * g` using `by simp [mul_assoc]`. Rewrite `this` using `[e]`. Then use the resulting hypothesis. Rewrite using `[bump_of_not h, bump_of_not h']`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bump_mul_right (hx : ∀ p : P, (p : G) ∈ K → σ p x = x) (g : G) {k : G} (hk : k ∈ K) :
     bump P σ K x (g * k) = bump P σ K x g := by
@@ -93,7 +93,7 @@ theorem bump_mul_right (hx : ∀ p : P, (p : G) ∈ K → σ p x = x) (g : G) {k
     rw [bump_of_not h, bump_of_not h']
 
 /- English proof (translation)
-Establish `h : ((1 : P) : G)⁻¹ * 1 ∈ K` using `by simp [K.one_mem]`. Rewrite using `[bump_eq hx h]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem bump_one (hx : ∀ p : P, (p : G) ∈ K → σ p x = x) : bump P σ K x 1 = x := by
   have h : ((1 : P) : G)⁻¹ * 1 ∈ K := by simp [K.one_mem]
@@ -103,7 +103,7 @@ def bumpInd (hx : ∀ p : P, (p : G) ∈ K → σ p x = x) : indSpace P σ :=
   ⟨bump P σ K x, fun p g => bump_mul_left hx p g⟩
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `g`. Conclude with `bump_mul_right hx g hk`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem ind_bumpInd (hx : ∀ p : P, (p : G) ∈ K → σ p x = x) {k : G} (hk : k ∈ K) :
     ind P σ k (bumpInd hx) = bumpInd hx := by
@@ -112,9 +112,9 @@ theorem ind_bumpInd (hx : ∀ p : P, (p : G) ∈ K → σ p x = x) {k : G} (hk :
   exact bump_mul_right hx g hk
 
 /- English proof (translation)
-Establish `hs : bumpInd hx ∈ smoothPart (ind P σ)` using `mem_smoothPart_of_nhds (Filter.mem_of_superset (hK.mem_nhds K.one_mem) fun k hk => ind_bumpInd hx hk)`. Use `(Submodule.ne_bot_iff _).2 ⟨⟨bumpInd hx, hs⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce `k`. Simplify using `only [MonoidHom.one_apply, Units.val_one, one_smul]`. Conclude with `Subtype.ext (ind_bumpInd hx k.2)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Apply `hx0` to reduce the goal to its premises. Establish `h1` using `congrFun (congrArg (fun φ : smoothPart (ind P σ) => (φ.1 : G → W)) h) 1`. Rewrite using `[← bump_one hx]`. Conclude with `h1`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fixed_smInd_ne_bot [TopologicalSpace G] [IsTopologicalGroup G] (hK : IsOpen (K : Set G))
     (hx0 : x ≠ 0) (hx : ∀ p : P, (p : G) ∈ K → σ p x = x) : fixed (smInd P σ) K ≠ ⊥ := by
@@ -132,7 +132,7 @@ theorem fixed_smInd_ne_bot [TopologicalSpace G] [IsTopologicalGroup G] (hK : IsO
     exact h1
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _ _ _ _ hK _ hx0 hx` and use `fixed_smInd_ne_bot hK hx0 hx`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem fixed_smInd_ne_bot_of_fixed : ∀ (G W : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [AddCommGroup W] [Module ℂ W] (P : Subgroup G) (σ : Representation ℂ P W) (K : Subgroup G), IsOpen (K : Set G) → ∀ x : W, x ≠ 0 → (∀ p : P, (p : G) ∈ K → σ p x = x) → fixed (smInd P σ) K ≠ ⊥ :=
   fun _ _ _ _ _ _ _ _ _ _ hK _ hx0 hx => fixed_smInd_ne_bot hK hx0 hx

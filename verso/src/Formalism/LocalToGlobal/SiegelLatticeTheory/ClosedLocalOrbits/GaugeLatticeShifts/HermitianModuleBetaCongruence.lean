@@ -16,7 +16,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D)
 
 /- English proof (translation)
-Use `⟨inv_e X.B.I X.B.g X.e0 hx hn.1, ?_⟩` and prove the remaining obligations. Rewrite using `[inv_id]`. Use `neg_mem (pres X.B.I (K_inv X.B.I hx) X.B.g _ _ (sub_Mo X.B.I) ?_ (mL_Mo X.B.I) _ hn.2)` and prove the remaining obligations. Introduce and unpack `_ ⟨b, rfl⟩`. Conclude with `Mo_mono X.B.I (Set.image_subset_range _ _) (inv_e X.B.I X.B.g X.e0 hx hn.1 b)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem ncong_inv {x : X.B.I.Gf} (hx : x ∈ X.B.I.Kset) (hn : NCong X x) : NCong X x⁻¹ := by
   refine ⟨inv_e X.B.I X.B.g X.e0 hx hn.1, ?_⟩
@@ -26,7 +26,7 @@ theorem ncong_inv {x : X.B.I.Gf} (hx : x ∈ X.B.I.Kset) (hn : NCong X x) : NCon
   exact Mo_mono X.B.I (Set.image_subset_range _ _) (inv_e X.B.I X.B.g X.e0 hx hn.1 b)
 
 /- English proof (translation)
-Rewrite using `[hA_symm]`. Use `Z_sig X.B.I X.B.g (Z_pair_Mo X (X.vectorsInLattice.2.2 j).1 ?_ _ hm)` and prove the remaining obligations. Introduce and unpack `_ ⟨a, rfl⟩`. Rewrite using `[hA_symm]`. Conclude with `Z_sig X.B.I X.B.g ((X.weightVectorsIntegral j).2.2 a).1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hermitian_module_beta_congruence {m : VA X.B.I} (hm : m ∈ Mo X.B.I X.B.g (Set.range X.e0)) (j : Fin D.R.k) :
     ZMod' X.B.I X.B.g (hA X.B.I m (X.bw j)) := by
@@ -37,15 +37,13 @@ theorem hermitian_module_beta_congruence {m : VA X.B.I} (hm : m ∈ Mo X.B.I X.B
   exact Z_sig X.B.I X.B.g ((X.weightVectorsIntegral j).2.2 a).1
 
 /- English proof (translation)
-Take `⟨hE0, hF0, hZ0, hB, hBd⟩` from `frame_Lf X`. Use `⟨hx, fun a => ?_, fun j => ?_⟩` and prove the remaining obligations. Rewrite using `[show X.B.I.fmat x *ᵥ X.e0 a = X.e0 a + (X.B.I.fmat x - 1) *ᵥ X.e0 a by`. Rewrite using `[Matrix.sub_mulVec, Matrix.one_mulVec]`. Use the proof step `abel]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `add_mem (sub_Mo X.B.I ⟨a, rfl⟩) (Mo_mono X.B.I (Set.image_subset_range _ _) (hn.1 a))`. Use `mem_Mo_eb X (K_mv X.B.I hx (hB j)) (fun a => ?_) ?_ (fun l => ?_)` and prove the remaining obligations. Rewrite using `[hA_adj]`. Use `hermitian_module_beta_congruence X ?_ j` and prove the remaining obligations. Rewrite using `[show X.B.I.fmat x⁻¹ *ᵥ X.e0 a = X.e0 a + (X.B.I.fmat x⁻¹ - 1) *ᵥ X.e0 a by`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.sub_mulVec, Matrix.one_mulVec]`. Use the proof step `abel]`. Conclude with `add_mem (sub_Mo X.B.I ⟨a, rfl⟩) (Mo_mono X.B.I (Set.image_subset_range _ _) (hni.1 a))`. Rewrite using `[hA_adj, show X.B.I.fmat x⁻¹ *ᵥ X.z0 = X.z0 + (X.B.I.fmat x⁻¹ - 1) *ᵥ X.z0 by`. Rewrite using `[Matrix.sub_mulVec, Matrix.one_mulVec]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Use the proof step `abel, hA_add_left]`. Conclude with `Z_add X.B.I X.B.g (X.weightVectorsIntegral j).1 (hermitian_module_beta_congruence X hni.2 j)`. Establish `e : hA X.B.I (X.bw l) (X.B.I.fmat x *ᵥ X.bw j) = 0`. Rewrite using `[X.bw_w l, X.bw_w j, Matrix.mulVec_smul, hA_smul_left, hA_smul_right]`. Use `X.ew_orth` as an intermediate fact.
-
-Take the linear combination `(hA X.B.I (X.bw l) (X.B.I.fmat x *ᵥ X.bw j)) * this`. Rewrite using `[e]`. Conclude with `Z_zero X.B.I X.B.g`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem par_of_ncong {x : X.B.I.Gf} (hx : x ∈ X.B.I.Kset) (hn : NCong X x) (hni : NCong X x⁻¹) : Par X x := by
   obtain ⟨hE0, hF0, hZ0, hB, hBd⟩ := frame_Lf X
@@ -69,7 +67,7 @@ theorem par_of_ncong {x : X.B.I.Gf} (hx : x ∈ X.B.I.Kset) (hn : NCong X x) (hn
       rw [e]; exact Z_zero X.B.I X.B.g
 
 /- English proof (translation)
-Establish `hni` using `ncong_inv X hx hn`. Establish `hxi : x⁻¹ ∈ X.B.I.Kset`. Simplify using `only [Formalism.MainNotions.S.AutInst.Kset, Set.mem_setOf_eq] at hx ⊢`. Simplify using `using inv_mem hx`. Conclude with `⟨par_of_ncong X hx hn hni, par_of_ncong X hxi hni (by simpa using hn)⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Supply the required witnesses or components.
 -/
 theorem good_of_ncong {x : X.B.I.Gf} (hx : x ∈ X.B.I.Kset) (hn : NCong X x) : Good X x := by
   have hni := ncong_inv X hx hn
@@ -95,7 +93,7 @@ def TermK : Prop :=
     kOf X u u' (cs.h (cs.base t.lam) : X.B.I.Gf) (cs'.h (cs'.base t.lam') : X.B.I.Gf) t.pt ∈ X.B.I.Kset
 
 /- English proof (translation)
-Introduce `t`. Conclude with `good_of_ncong _ (hK t) (hN t)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem adm_parity_of_norm (hK : TermK F0 F0' cs cs') (hN : AdmN F0 F0' cs cs') : AdmPar F0 F0' cs cs' := by
   intro t

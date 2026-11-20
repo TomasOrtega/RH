@@ -4,7 +4,7 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.T
 namespace ReciprocityTheory.ChartRestriction.G.H1
 
 /- English proof (translation)
-Introduce `E _ _ _ H V _ _ _ t P`. Use `letI := H.starRing`. Introduce `F _ _ _ k a p`. Conclude with `Geo.Tor.qkAct_exists hG P.D.tau_bimult P.oD a p`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem qkActExists_of (hG : Out.GlobalFnsSt) : QkActExistsStatement := by
   intro E _ _ _ H V _ _ _ t P

@@ -19,12 +19,12 @@ namespace MassDataLevelSSteps
 open Formalism.L2.SG.TypedSets Formalism.BasicNotions Formalism.L2.SG.HidaSetting Formalism.L2.SG.AdBridge
 
 /- English proof (translation)
-The claim follows from `level_s_all_split`.
+A detailed English derivation is pending.
 -/
 theorem levelSAll_holds : Formalism.L2.SG.Volumes.LevelSAll := level_s_all_split
 
 /- English proof (translation)
-The claim follows from `inLevelSAt_of_parts levelSAll_holds kSpCompact_holds kSpOpen_holds cmInst_holds frameStd_holds latAdapted_holds prodNH_holds globFromParts_holds haarIdxLoc_holds haarIdxGlob_holds locLevi_holds globProd_holds`.
+A detailed English derivation is pending.
 -/
 theorem inLevelSAt_holds :
     ∀ {D : D7} (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (hK : X.LevelSubgroupCharacter) (FdN FdN' : Set X.B.I.Ginf)

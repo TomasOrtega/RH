@@ -11,7 +11,7 @@ section Coord
 variable {S : Scheme.{0}} (A B : Over S) [GrpObj A] [GrpObj B] [IsCommMonObj A] [IsCommMonObj B]
 
 /- English proof (translation)
-Simplify using `only [mkZ, pa, lift_fst_assoc]`. Conclude with `(Out.powIsLimit A 4).fac (Fan.mk T u) ⟨i⟩`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mkZ_pa {T : Over S} (u : Fin 4 → (T ⟶ A)) (v : Fin 4 → (T ⟶ B)) (i : Fin 4) :
     mkZ A B u v ≫ pa A B i = u i := by
@@ -19,7 +19,7 @@ theorem mkZ_pa {T : Over S} (u : Fin 4 → (T ⟶ A)) (v : Fin 4 → (T ⟶ B)) 
   exact (Out.powIsLimit A 4).fac (Fan.mk T u) ⟨i⟩
 
 /- English proof (translation)
-Simplify using `only [mkZ, pb, lift_snd_assoc]`. Conclude with `(Out.powIsLimit B 4).fac (Fan.mk T v) ⟨j⟩`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mkZ_pb {T : Over S} (u : Fin 4 → (T ⟶ A)) (v : Fin 4 → (T ⟶ B)) (j : Fin 4) :
     mkZ A B u v ≫ pb A B j = v j := by
@@ -27,9 +27,9 @@ theorem mkZ_pb {T : Over S} (u : Fin 4 → (T ⟶ A)) (v : Fin 4 → (T ⟶ B)) 
   exact (Out.powIsLimit B 4).fac (Fan.mk T v) ⟨j⟩
 
 /- English proof (translation)
-Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises. Apply `(Out.powIsLimit A 4).hom_ext` to reduce the goal to its premises. Introduce and unpack `⟨i⟩`. Simplify `ha i` using `[pa]`. Apply `(Out.powIsLimit B 4).hom_ext` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce and unpack `⟨j⟩`. Simplify `hb j` using `[pb]`.
+Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem zob_hom_ext {T : Over S} (f g : T ⟶ Zob A B) (ha : ∀ i, f ≫ pa A B i = g ≫ pa A B i)
     (hb : ∀ j, f ≫ pb A B j = g ≫ pb A B j) : f = g := by
@@ -50,7 +50,7 @@ instance pb_isMonHom (j : Fin 4) : IsMonHom (pb A B j) := by
 end Coord
 
 /- English proof (translation)
-Simplify using `[oMat, Matrix.single_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem oMat_apply (d : ℕ) (k : Fin 8) (p q : Fin 4 ⊕ Fin 4) :
     ((oMat d k : ord d) : Matrix (Fin 4 ⊕ Fin 4) (Fin 4 ⊕ Fin 4) ℤ) p q =
@@ -58,13 +58,13 @@ theorem oMat_apply (d : ℕ) (k : Fin 8) (p q : Fin 4 ⊕ Fin 4) :
   simp [oMat, Matrix.single_apply]
 
 /- English proof (translation)
-Apply the tactic sequence `fin_cases k <;> fin_cases i <;> simp [sig] <;> decide`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sig_eq_inl (k : Fin 8) (i : Fin 4) : sig k = Sum.inl i ↔ Fin.castAdd 4 i = k := by
   fin_cases k <;> fin_cases i <;> simp [sig] <;> decide
 
 /- English proof (translation)
-Apply the tactic sequence `fin_cases k <;> fin_cases j <;> simp [sig] <;> decide`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sig_eq_inr (k : Fin 8) (j : Fin 4) : sig k = Sum.inr j ↔ Fin.natAdd 4 j = k := by
   fin_cases k <;> fin_cases j <;> simp [sig] <;> decide
@@ -74,19 +74,19 @@ section Key
 variable {S : Scheme.{0}} (A B : Over S) [GrpObj A] [GrpObj B] [IsCommMonObj A] [IsCommMonObj B]
 
 /- English proof (translation)
-Simplify using `[incZ, mkZ_pa]`.
+Simplify using the standard rewrite rules.
 -/
 theorem incZ_pa (j : Fin 4) : incZ A B ≫ pa A B j = if j = 0 then 𝟙 A else 1 := by
   simp [incZ, mkZ_pa]
 
 /- English proof (translation)
-Simplify using `[incZ, mkZ_pb]`.
+Simplify using the standard rewrite rules.
 -/
 theorem incZ_pb (j : Fin 4) : incZ A B ≫ pb A B j = 1 := by
   simp [incZ, mkZ_pb]
 
 /- English proof (translation)
-Rewrite using `[actZ, mkZ_pa]`. Simplify using `only [oMat_apply, Fin.prod_univ_four, comp_mul, GrpObj.comp_zpow, ← Category.assoc, incZ_pa]`. Simplify using `only [true_and, if_true, Category.comp_id, reduceCtorEq, false_and, if_false, zero_div, zpow_zero, mul_one, Sum.inl.injEq, Fin.reduceEq, comp_one, one_zpow]`. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem inc_act_pa {T : Over S} (d : ℕ) (la : A ⟶ B) (mu : B ⟶ A) (y : T ⟶ A) (k : Fin 8) (i : Fin 4) :
     y ≫ incZ A B ≫ actZ A B d la mu (oMat d k) ≫ pa A B i = if sig k = Sum.inl i then y else 1 := by
@@ -97,7 +97,7 @@ theorem inc_act_pa {T : Over S} (d : ℕ) (la : A ⟶ B) (mu : B ⟶ A) (y : T �
   split_ifs <;> simp
 
 /- English proof (translation)
-Rewrite using `[actZ, mkZ_pb]`. Simplify using `only [oMat_apply, Fin.prod_univ_four, comp_mul, GrpObj.comp_zpow, ← Category.assoc, incZ_pa, incZ_pb]`. Simplify using `only [true_and, if_true, Category.comp_id, reduceCtorEq, false_and, if_false, zero_div, zpow_zero, mul_one, one_mul, Sum.inl.injEq, Fin.reduceEq, comp_one, one_comp, one_zpow]`. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem inc_act_pb {T : Over S} (d : ℕ) (la : A ⟶ B) (mu : B ⟶ A) (y : T ⟶ A) (k : Fin 8) (j : Fin 4) :
     y ≫ incZ A B ≫ actZ A B d la mu (oMat d k) ≫ pb A B j = if sig k = Sum.inr j then y ≫ la else 1 := by
@@ -110,7 +110,7 @@ theorem inc_act_pb {T : Over S} (d : ℕ) (la : A ⟶ B) (mu : B ⟶ A) (y : T �
 end Key
 
 /- English proof (translation)
-Set `φ : (T ⟶ M) →* (T ⟶ N)` to `{ toFun := (· ≫ g), map_one' := one_comp g, map_mul' := fun x y => mul_comp x y g }`. Conclude with `map_list_prod φ L`.
+Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem list_prod_comp {S : Scheme.{0}} {T M N : Over S} [MonObj M] [MonObj N] (g : M ⟶ N) [IsMonHom g]
     (L : List (T ⟶ M)) : L.prod ≫ g = (L.map (· ≫ g)).prod := by
@@ -119,9 +119,9 @@ theorem list_prod_comp {S : Scheme.{0}} {T M N : Over S} [MonObj M] [MonObj N] (
   exact map_list_prod φ L
 
 /- English proof (translation)
-Apply `zob_hom_ext` to reduce the goal to its premises. Introduce `i`. Rewrite using `[mkZ_pa, levZ, list_prod_comp, List.map_ofFn]`. Simplify using `only [Function.comp_def, Category.assoc, inc_act_pa, List.prod_ofFn, sig_eq_inl]`. Conclude with `Fintype.prod_ite_eq _ _`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j`. Rewrite using `[mkZ_pb, levZ, list_prod_comp, List.map_ofFn]`. Simplify using `only [Function.comp_def, Category.assoc, inc_act_pb, List.prod_ofFn, sig_eq_inr]`. Conclude with `Fintype.prod_ite_eq (Fin.natAdd 4 j) (fun k => lev (κ k a) ≫ la)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.ZarhinFam.levZ_eq_mkZ {S : Scheme.{0}} (A B : Over S) [GrpObj A] [GrpObj B] [IsCommMonObj A] [IsCommMonObj B]
     (d h h' : ℕ) (la : A ⟶ B) (mu : B ⟶ A) (lev : (Fin h ⊕ Fin h → ℤ) → (𝟙_ (Over S) ⟶ A))

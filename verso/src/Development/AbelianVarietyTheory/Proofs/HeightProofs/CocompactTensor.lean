@@ -15,9 +15,9 @@ variable {F E : Type} [Field F] [Field E] [Algebra F E] [FiniteDimensional F E]
   (R : Type) [CommRing R] [Algebra F R] [TopologicalSpace R] [IsTopologicalRing R]
 
 /- English proof (translation)
-Establish `: IsModuleTopology R (R ⊗[F] E)` using `⟨rfl⟩`. Establish `: IsTopologicalRing (R ⊗[F] E)` using `IsModuleTopology.isTopologicalRing R _`. Set `e` to `(Algebra.TensorProduct.basis R (Module.finBasis F E)).equivFun`. Use `⟨Module.finrank F E, { e.toEquiv with continuous_toFun := IsModuleTopology.continuous_of_linearMap e.toLinearMap continuous_invFun := IsModuleTopology.continuous_of_linearMap e.symm.toLinearMap }, (Module.finBasis F E).equivFun, fun x y => e.map_add x y, fun x i => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(Algebra.TensorProduct.basis R (Module.finBasis F E)).repr ((1 : R) ⊗ₜ[F] x) i = _`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[Algebra.TensorProduct.basis_repr_tmul]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem exists_coords : ∃ (n : ℕ) (e : R ⊗[F] E ≃ₜ (Fin n → R)) (b : E ≃ₗ[F] (Fin n → F)),
     (∀ x y, e (x + y) = e x + e y) ∧ ∀ x i, e (inclR R x) i = algebraMap F R (b x i) := by
@@ -33,13 +33,11 @@ theorem exists_coords : ∃ (n : ℕ) (e : R ⊗[F] E ≃ₜ (Fin n → R)) (b :
   simp
 
 /- English proof (translation)
-Take `⟨U, hU, hx⟩` from `h`. Take `⟨n, e, b, hadd, hb⟩` from `exists_coords (F := F) (E := E) R`. Establish `h0 : e 0 = 0`. Use `hadd 0 0` as an intermediate fact. Rewrite `this` using `[add_zero]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `left_eq_add.1 this`. Use `⟨e ⁻¹' (Set.univ.pi fun _ => U), ?_, fun x hxU => ?_⟩` and prove the remaining obligations. Use `e.continuous.continuousAt.preimage_mem_nhds ?_` and prove the remaining obligations. Rewrite using `[h0]`. Conclude with `set_pi_mem_nhds Set.finite_univ fun _ _ => hU`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `b.injective ?_` and prove the remaining obligations. Rewrite using `[map_zero]`. Use function extensionality and compare the values at `i`. Use `hx _ ?_` and prove the remaining obligations. Rewrite using `[← hb]`.
-
-Conclude with `hxU i (Set.mem_univ i)`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem discrete_tensor (h : ∃ U ∈ nhds (0 : R), ∀ x : F, algebraMap F R x ∈ U → x = 0) :
     ∃ U ∈ nhds (0 : R ⊗[F] E), ∀ x : E, inclR R x ∈ U → x = 0 := by
@@ -61,9 +59,9 @@ theorem discrete_tensor (h : ∃ U ∈ nhds (0 : R), ∀ x : F, algebraMap F R x
     exact hxU i (Set.mem_univ i)
 
 /- English proof (translation)
-Take `⟨K, hK, hx⟩` from `h`. Take `⟨n, e, b, hadd, hb⟩` from `exists_coords (F := F) (E := E) R`. Use `⟨e ⁻¹' (Set.univ.pi fun _ => K), e.isCompact_preimage.2 (isCompact_univ_pi fun _ => hK), fun a => ?_⟩` and prove the remaining obligations. Use `choose c hc using hx`. Use `⟨b.symm fun i => - c (e a i), fun i _ => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hadd, Pi.add_apply, hb, b.apply_symm_apply, map_neg, neg_add_eq_sub]`. Conclude with `hc _`.
+A detailed English derivation is pending.
 -/
 theorem cocompact_tensor
     (h : ∃ K : Set R, IsCompact K ∧ ∀ a : R, ∃ x : F, a - algebraMap F R x ∈ K) :
@@ -80,17 +78,17 @@ theorem cocompact_tensor
 end Tensor
 
 /- English proof (translation)
-Introduce `D V W`. Establish `: LocallyCompactSpace (AF D.host.F)` using `GlobalTheory.AdelicUnitaryTop.locallyCompact_adele _`. Establish `: SecondCountableTopology (AF D.host.F)` using `GlobalTheory.AdelicUnitaryTop.secondCountable_adele _`. Establish `: T2Space (AF D.host.F)` using `GlobalTheory.AdelicUnitaryTop.t2Space_adeleRing_numberField _`. Establish `: IsModuleTopology (AF D.host.F) (AE D)` using `⟨rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsTopologicalRing (AE D)` using `IsModuleTopology.isTopologicalRing (AF D.host.F) _`. Take `⟨e⟩` from `GlobalTheory.AdelicUnitaryTop.nonempty_homeomorph (F := D.host.F) (E := D.host.E) (AF D.host.F)`. Establish `: LocallyCompactSpace (AE D)` using `e.isClosedEmbedding.locallyCompactSpace`. Establish `: SecondCountableTopology (AE D)` using `e.secondCountableTopology`. Establish `: T2Space (AE D)` using `e.isEmbedding.t2Space`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg : IsTopologicalAddGroup (WA V W)` using `inferInstanceAs (IsTopologicalAddGroup (Fin V.rank → Fin W.rank → AE D))`. Use `⟨hg, inferInstanceAs (LocallyCompactSpace (Fin V.rank → Fin W.rank → AE D)), inferInstanceAs (SecondCountableTopology (Fin V.rank → Fin W.rank → AE D)), inferInstanceAs (T2Space (Fin V.rank → Fin W.rank → AE D)), ?_, ?_⟩` and prove the remaining obligations. Take `⟨U, hU, hx⟩` from `discrete_tensor (F := D.host.F) (E := D.host.E) (AF D.host.F) (GlobalTheory.AdeleDiscrete.exists_nhds_zero_principal_eq_zero D.host.F)`. Establish `hN : (Set.univ.pi fun _ : Fin V.rank => Set.univ.pi fun _ : Fin W.rank => U) ∈ nhds (0 : WA V W)` using `set_pi_mem_nhds Set.finite_univ fun _ _ => set_pi_mem_nhds Set.finite_univ fun _ _ => hU`. Use `discreteTopology_of_isOpen_singleton_zero ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[isOpen_singleton_iff_nhds_eq_pure]`. Use `le_antisymm (Filter.le_pure_iff.2 ?_) (pure_le_nhds _)` and prove the remaining obligations. Establish `hc : ContinuousAt (fun x : ratL V W => (x : WA V W)) 0` using `continuous_subtype_val.continuousAt`. Use `Filter.mem_of_superset (hc.preimage_mem_nhds hN) ?_` and prove the remaining obligations. Introduce and unpack `⟨_, y, rfl⟩ hy`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Establish `hy0 : y = 0`. Use function extensionality and compare the values at `i j`. Conclude with `hx _ (hy i (Set.mem_univ i) j (Set.mem_univ j))`. Substitute `hy0` using the available equality. Conclude with `Subtype.ext (map_zero _)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Substitute using the available equality. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨K, hK, hx⟩` from `cocompact_tensor (F := D.host.F) (E := D.host.E) (AF D.host.F) (GlobalTheory.AdeleCocompact.exists_compact_adele D.host.F) choose c hc using hx`. Use `⟨Set.univ.pi fun _ : Fin V.rank => Set.univ.pi fun _ : Fin W.rank => K, isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => hK, fun x => ?_⟩` and prove the remaining obligations. Conclude with `⟨_, ⟨Matrix.of fun i j => c (x i j), rfl⟩, fun i _ j _ => hc (x i j)⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem lattice : ∀ (D : D7) (V W : HSp D), IsTopologicalAddGroup (WA V W) ∧ LocallyCompactSpace (WA V W) ∧ SecondCountableTopology (WA V W) ∧ T2Space (WA V W) ∧ DiscreteTopology (ratL V W) ∧ ∃ K : Set (WA V W), IsCompact K ∧ ∀ x : WA V W, ∃ γ ∈ ratL V W, γ + x ∈ K := by
   intro D V W

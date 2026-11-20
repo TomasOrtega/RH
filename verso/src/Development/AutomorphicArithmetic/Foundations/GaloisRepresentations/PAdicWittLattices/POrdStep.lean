@@ -5,13 +5,13 @@ open UpperTheory.Gal.Int.Geo (FEt Cover gen piece IsHEig)
 universe u v
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz⟩`. Establish `hsub : Set.range y ⊆ Set.range (pullback.diagonal s)`. Introduce and unpack `_ ⟨q, rfl⟩`. Establish `hq : q = IsLocalRing.closedPoint Ω` using `Subsingleton.elim _ _`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite using `[hq]`. Conclude with `⟨z, hz⟩`. Establish `hfac` using `IsOpenImmersion.lift_fac (pullback.diagonal s) y hsub`. Rewrite using `[← hfac, Category.assoc, Category.assoc, pullback.diagonal_fst, pullback.diagonal_snd]`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨(y ≫ pullback.fst s s) (IsLocalRing.closedPoint Ω), ?_⟩` and prove the remaining obligations. Establish `hy : (y ≫ pullback.fst s s) ≫ pullback.diagonal s = y`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, pullback.diagonal_fst, Category.comp_id]`. Rewrite using `[Category.assoc, pullback.diagonal_snd, Category.comp_id, h]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `conv_rhs => rw [← hy]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem mem_range_diagonal_iff {Y Z : Scheme.{0}} (s : Y ⟶ Z) [IsOpenImmersion (pullback.diagonal s)]
     (Ω : Type) [Field Ω] (y : UpperTheory.Gal.G3.sp Ω ⟶ pullback s s) :
@@ -36,13 +36,11 @@ private theorem mem_range_diagonal_iff {Y Z : Scheme.{0}} (s : Y ⟶ Z) [IsOpenI
     rfl
 
 /- English proof (translation)
-Introduce `Z Y W s _ _ c d σ hσ`. Establish `hc : ∀ j, pullback.fst s c ≫ s = (pullback.snd s c ≫ σ j) ≫ s` using `fun j => by`. Rewrite using `[Category.assoc, hσ j, pullback.condition]`. Set `φ : Fin d → (pullback s c ⟶ pullback s s)` to `fun j => pullback.lift (pullback.fst s c) (pullback.snd s c ≫ σ j) (hc j)`. Establish `hopen : ∀ j, IsOpen ((φ j) ⁻¹' Set.range (pullback.diagonal s))` using `fun j => (pullback.diagonal s).isOpenEmbedding.isOpen_range.preimage (φ j).continuous`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hclosed : ∀ j, IsClosed ((φ j) ⁻¹' Set.range (pullback.diagonal s))` using `fun j => (pullback.diagonal s).isClosedEmbedding.isClosed_range.preimage (φ j).continuous`. Use `⟨⟨(⋃ j, (φ j) ⁻¹' Set.range (pullback.diagonal s))ᶜ, (isClosed_iUnion_of_finite hclosed).isOpen_compl⟩, (isOpen_iUnion hopen).isClosed_compl, ?_⟩` and prove the remaining obligations. Introduce `Ω _ x`. Establish `key : ∀ j, (x ≫ φ j) (IsLocalRing.closedPoint Ω) ∈ Set.range (pullback.diagonal s) ↔ x ≫ pullback.fst s c = x ≫ pullback.snd s c ≫ σ j`. Introduce `j`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[mem_range_diagonal_iff s Ω (x ≫ φ j)]`. Simplify using `only [Category.assoc, φ, pullback.lift_fst, pullback.lift_snd]`. Use `show x (IsLocalRing.closedPoint Ω) ∈ (⋃ j, (φ j) ⁻¹' Set.range (pullback.diagonal s))ᶜ ↔ _`. Simplify using `only [Set.mem_compl_iff, Set.mem_iUnion, Set.mem_preimage, not_exists]`. Use `forall_congr' (fun j => ?_)` and prove the remaining obligations.
-
-Conclude with `(not_congr (key j)).trans ⟨fun h e => h e.symm, fun h e => h e.symm⟩`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.G3.pOrdStep :
     OrdStep := by

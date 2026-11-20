@@ -9,7 +9,7 @@ open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.H UpperTh
 open scoped Classical
 
 /- English proof (translation)
-Establish `hc : IsClosed {A : M2 v | A.det = 1}` using `isClosed_eq (Continuous.matrix_det continuous_id) continuous_const`. Conclude with `hc.isClosedEmbedding_subtypeVal`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem isClosedEmbedding_slVal {F : Type} [Field F] [NumberField F] (v : P F) :
     IsClosedEmbedding (fun m : SL v => (m.1 : M2 v)) := by
@@ -43,19 +43,19 @@ private noncomputable def trM {F : Type} [Field F] [NumberField F] {v : P F} (g 
   ⟨fun m => b.1 (e m), b.2.1.comp_continuous e.continuous, b.2.2.comp_homeomorph e⟩
 
 /- English proof (translation)
-Introduce `F _ _ v V _ _ ρ hρ β hinv hψ f a aa haa`. Establish `hsurj : Function.Surjective (resL v)`. Introduce `c`. Take `⟨b, hb⟩` from `UpperTheory.ConvolutionTheory.R2.I.ext F v c`. Conclude with `⟨b, Subtype.ext (funext hb)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨s, hs⟩` from `(resL v).exists_rightInverse_of_surjective (LinearMap.range_eq_top.mpr hsurj)`. Establish `hs' : ∀ c, resL v (s c) = c` using `fun c => LinearMap.congr_fun hs c`. Establish `hdep : ∀ (h : V) (b : SB (M2 v)), β h (s (resL v b)) = β h b`. Introduce `h b`. Establish `hz : β h (s (resL v b) - b) = 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `UpperTheory.ConvolutionTheory.R2.I.loc F v (β h) (fun t a a' ha => hψ h t a a' ha) _ ?_` and prove the remaining obligations. Introduce `m hm`. Establish `h1 : (s (resL v b)).1 m = b.1 m` using `congrArg (fun c : SB (SL v) => c.1 ⟨m, hm⟩) (hs' (resL v b))`. Use `show (s (resL v b)).1 m - b.1 m = 0`. Rewrite using `[h1, sub_self]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hz` using `[map_sub, sub_eq_zero]`. Conclude with `hz`. Establish `key` using `UpperTheory.ConvolutionTheory.R2.I.absS F v V ρ hρ (β.compl₂ s) ?_ f (resL v a) (fun x => resL v (aa x)) ?_`. Establish `hfun : (fun x => β (ρ (dd x) f) (aa x)) = fun x => (β.compl₂ s) (ρ (dd x) f) (resL v (aa x))`. Use function extensionality and compare the values at `x`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearMap.compl₂_apply, hdep]`. Rewrite using `[hfun]`. Conclude with `key`. Introduce `g h c c' hc`. Rewrite using `[LinearMap.compl₂_apply, LinearMap.compl₂_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `e : resL v (trM g (s c)) = c'`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `m`. Establish `h1 : (s c).1 (m * g).1 = c.1 (m * g)` using `congrArg (fun d : SB (SL v) => d.1 (m * g)) (hs' c)`. Rewrite using `[hc m, ← h1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Both sides reduce to the same expression. Rewrite using `[← e, hdep]`. Conclude with `hinv g h (s c) (trM g (s c)) (fun m => rfl)`. Introduce `x m m' hm show (aa x).1 m.1 = a.1 m'.1`. Rewrite using `[haa, hm]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.I.absM :
     ∀ (F : Type) [Field F] [NumberField F] (v : P F) (V : Type) [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ (GLv v) V), (∀ f, IsOpen {g | ρ g f = f}) →

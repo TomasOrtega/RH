@@ -32,9 +32,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.Fam.LinkedPins
 set_option maxHeartbeats 4000000 in
 /- English proof (translation)
-Substitute `e` using the available equality. Establish `hι : y.ιS = (iotaX P.X P.inst).toMulEquiv` using `(by with_unfolding_all exact ((GlobalTheory.Mem.JIota.heq_iota_iff D P.X P.inst ((y.ιS))).1 ((y.ιS_eq)) : _))`. Use `_root_.GlobalTheory.Mem.R3.realPins_realTOf_alt _ _ _ _ _ _ _ _ ex x Rc _ y hC hD hPg hs.fin ?_ ?_` and prove the remaining obligations. Rewrite using `[hι]`. Conclude with `(by with_unfolding_all exact (hs.conj :))`.
-
-Conclude with `(by with_unfolding_all exact (hs.mat :))`.
+Substitute using the available equality. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem realPins_of_seeAt_alt {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D}
     {K : Formalism.MainNotions.G.Consts} {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl K Yd cX} {x : TwIn ex} {Rc : _root_.Formalism.L2.RecTAlt ex}
@@ -51,13 +49,13 @@ theorem realPins_of_seeAt_alt {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi 
 variable {hL : _root_.UpperTheory.Zero.LLC.RecTExists} {p : _root_.GlobalTheory.Mem.Top.Bl.Parameters hL} {K : Ctx}
 set_option maxHeartbeats 4000000 in
 /- English proof (translation)
-Take `⟨x, a, ax, y, recPin, ⟨sP, sS, hP, -, e⟩, ⟨pt, -⟩, _⟩` from `w`. Consider the cases of `ax`. Take `⟨h1, h2, -⟩` from `twArgs_lev _ _ _ _ _ _ _ _ _ _ _ _ _ _ q.O.ex q.x.what₂ a`. Establish `hk` using `recPin.k.std`. Establish `fd : ∀ V : Formalism.BasicNotions.TH.HSp (q.w.D q.Z), GlobalTheory.Mem.HostFrames.SignFrame V → IsFDiag V` using `fun V hV => by`.
+Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨d, -, h⟩` from `hV.gram_eq (q.w.D q.Z).host.F`. Conclude with `⟨d, h⟩`. Establish `hWV` using `(GlobalTheory.Mem.HostFrames.frames_of_over K (q.w.st q.Z) q.x.isOver).2.1`. Use `_root_.GlobalTheory.Fam.LinkedPins.realPins_of_seeAt_alt y.y sS e ?_ (fun i => ⟨fd _ (hWV i).1, fd _ (hWV i).2⟩) ?_ ?_` and prove the remaining obligations. Establish `hc : b.R.T.n.cf = TC.cf q.w.I q.w.l q.Z` using `congrArg Sigma.fst recPin.s.chr`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hC : Top.Fr.at (q.w.st q.Z) q.w.I.C = Top.Fr.at (q.w.st q.Z) q.f` using `congrArg (Top.Fr.at (q.w.st q.Z)) q.w.C_eq`. Conclude with `(eq_of_heq h1).trans (hC.symm.trans hc.symm)`. Rewrite using `[image_congr hk.X_eq hk.seam hk.Pr]`. Conclude with `(eq_of_heq h2).trans (image_refl _ rfl _).symm`. Establish `ht : y.y.tS = q.saturationAtWeightedPoint.t` using `eq_of_heq pt`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hcols : b.R.T.cols = q.x.col.C` using `recPin.s.cols`. Rewrite using `[ht]`. Conclude with `seeAt_twArgs a sP.X sP.inst q.saturationAtWeightedPoint.t (setting_congr (D := (q.w.st q.Z).toD7) (fun X h => SeeAt (D := (q.w.st q.Z).toD7) q.x.what₂.r.z.R.toRealDat q.x.what₂.r.z.F.lv2 X h q.saturationAtWeightedPoint.t) (congrArg (fun C u => (C.forms u).to0) hcols) hP q.saturat …`.
+A detailed English derivation is pending.
 -/
 theorem realisation_normalisation_of_bundle_witness (q : WPt p.s K) {c : ℝ} (b : _root_.GlobalTheory.Fc.BundleCondition (q.w.D q.Z) q.O c) (w : _root_.GlobalTheory.Mem.Top.Bl.BundleWitness q b) : _root_.Formalism.IndefR.IndefiniteRealisationNormalisation (_root_.GlobalTheory.Mem.R3.realisationOfInput w.y.y) := by
   obtain ⟨x, a, ax, y, recPin, ⟨sP, sS, hP, -, e⟩, ⟨pt, -⟩, _⟩ := w
@@ -84,7 +82,7 @@ end GlobalTheory.Fam.LinkedPins
 open GlobalTheory.MiS GlobalTheory.Fam in
 set_option maxHeartbeats 4000000 in
 /- English proof (translation)
-Introduce `hL p K q c b w`. Use `show (fun k : _root_.GlobalTheory.Mem.Top.Bl.RealPackage b.R b.S => _root_.Formalism.IndefR.IndefiniteRealisationNormalisation k.B.Q) (_root_.GlobalTheory.Mem.Top.Bl.realPackageOfBundle b)`. Rewrite using `[w.y.eq]`. Conclude with `_root_.GlobalTheory.Fam.LinkedPins.realisation_normalisation_of_bundle_witness q b w`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Fam.realPins_bundle_of_bWit : ∀ {hL : _root_.UpperTheory.Zero.LLC.RecTExists} {p : _root_.GlobalTheory.Mem.Top.Bl.Parameters hL} {K : Ctx} (q : Bl.WPt p.s K) {c : ℝ}
     (b : _root_.GlobalTheory.Fc.BundleCondition (q.w.D q.Z) q.O c), _root_.GlobalTheory.Mem.Top.Bl.BundleWitness q b → _root_.Formalism.IndefR.IndefiniteRealisationNormalisation b.B.Q := by

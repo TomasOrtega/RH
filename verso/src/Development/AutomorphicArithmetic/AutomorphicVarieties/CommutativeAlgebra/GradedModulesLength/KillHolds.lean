@@ -4,11 +4,11 @@ import Formalism.SharpRestriction.ValuationFrobeniusEpsilon.LeastPrimeTwists.Quo
 open IsLocalRing Filter Formalism.MainNotions.V.Pf.V2.Calc UpperTheory.V.Alg UpperTheory.V.Alg.M
 
 /- English proof (translation)
-Establish `h2 : (⨆ j, G j) ≤ G i ⊔ ⨆ (j) (_ : j ≠ i), G j` using `iSup_le fun j => by`. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Conclude with `le_sup_left`. Conclude with `le_sup_of_le_right (le_iSup₂_of_le j h le_rfl)`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨g, hg, y, hy, rfl⟩` from `Submodule.mem_sup.1 (h2 hx')`. Establish `h2 : y ∈ ⨆ (j) (_ : j ≠ i), H j` using `(iSup₂_mono fun j _ => hle j) hy`. Establish `h3 : y ∈ H i`. Use `(H i).sub_mem hx (hle i hg)` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : y = 0`. Use `(hind i).le_bot ⟨h3, h2⟩` as an intermediate fact. Simplify using `using this`. Rewrite using `[h4, add_zero]`. Conclude with `hg`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.V.Alg.M.kill_comp {B ι M : Type} [CommRing B] [AddCommGroup M] [Module B M]
     {G H : ι → Submodule B M} (hle : ∀ i, G i ≤ H i) (hind : iSupIndep H) (i : ι) {x : M}
@@ -30,21 +30,17 @@ private theorem UpperTheory.V.Alg.M.kill_comp {B ι M : Type} [CommRing B] [AddC
   exact hg
 
 /- English proof (translation)
-Introduce `k X F hF J J' n hn`. Establish `key1 : ∀ a ∈ J'.map (algebraMap X.B X.R), ∀ z : F.M, a • z ∈ J' • (⊤ : Submodule X.B F.M)`. Introduce `a ha`. Use `Submodule.span_induction (p := fun a _ => ∀ z : F.M, a • z ∈ J' • (⊤ : Submodule X.B F.M)) ?_ ?_ ?_ ?_ ha` and prove the remaining obligations. Introduce and unpack `_ ⟨b, hb, rfl⟩ z`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Rewrite using `[algebraMap_smul]`. Conclude with `Submodule.smul_mem_smul hb trivial`. Introduce `z`. Rewrite using `[zero_smul]`. Conclude with `zero_mem _`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `a b _ _ ha hb z`. Rewrite using `[add_smul]`. Conclude with `add_mem (ha z) (hb z)`. Introduce `r a _ ha z`. Rewrite using `[smul_eq_mul, mul_comm, mul_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `ha _`. Establish `key : ∀ a ∈ F.Ann ⊔ J'.map (algebraMap X.B X.R), ∀ z : F.M, a • z ∈ J' • (⊤ : Submodule X.B F.M)`. Introduce `a ha z`. Take `⟨u, hu, w, hw, rfl⟩` from `Submodule.mem_sup.1 ha`. Rewrite using `[add_smul, Module.mem_annihilator.1 hu z, zero_add]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `key1 w hw z`. Use `filter_upwards [hF.eventually_gr_le X.std X.iSup_eq_top n] with m hm`. Use `Submodule.smul_le.2 fun b hb y hy => ?_` and prove the remaining obligations. Use `kill_comp (G := fun d => J' • F.gr d) (H := F.gr) (fun _ => Submodule.smul_le_right) hF.internal.submodule_iSupIndep m (Submodule.smul_mem _ _ hy) ?_` and prove the remaining obligations. Rewrite using `[← Submodule.smul_iSup, hF.internal.submodule_iSup_eq_top]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `Submodule.smul_induction_on (hm y hy) ?_ ?_` and prove the remaining obligations. Introduce `a ha z _`. Establish `h1 : algebraMap X.B X.R b * a ∈ F.Ann ⊔ J'.map (algebraMap X.B X.R)`. Apply `hn` to reduce the goal to its premises. Rewrite using `[mul_pow, ← Ideal.map_pow]`.
-
-Conclude with `Ideal.mul_mem_mul (Ideal.mem_map_of_mem _ hb) ha`. Establish `h2` using `key _ h1 z`. Rewrite `h2` using `[mul_smul, algebraMap_smul]`. Then use the resulting hypothesis. Introduce `x y hx hy`. Rewrite using `[smul_add]`.
-
-Conclude with `add_mem hx hy`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Alg.M.kill_holds :
     ∀ (k : ℕ) (X : HidaSetting k) (F : X.Mod), F.IsGr X.𝒜 → ∀ (J J' : Ideal X.B) (n : ℕ),

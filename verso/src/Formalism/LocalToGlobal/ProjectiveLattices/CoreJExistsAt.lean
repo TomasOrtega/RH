@@ -66,7 +66,7 @@ structure PkgOK2 (Q : Par D) (j : ℕ) (σ : Q.c.F →+* ℂ) (p : PkgT Q j σ) 
   expo : σ = Q.c.F.val.toRingHom → FJ.ExpoMatch p.1.X 1 (WeightFamilies.rho D j) (D.host.g 0 * D.host.g 1)
 
 /- English proof (translation)
-The claim follows from `isUnf_unfOf _ _ _ _ P.frameEx.choose_spec.1 P.modelEx.choose_spec.1 P.cover P.fibre (readSecU_of _ _ _ _ P.frameEx.choose_spec P.modelEx.choose_spec.1 hWt) unTest := unTest_of hA _ chi1 := P.modelEx.choose_spec.1.chi dictU := ⟨_, _, fun _ τ => ((hI : ∀ τ : D.host.E →+* ℂ, ∃ θ : A …`.
+A detailed English derivation is pending.
 -/
 theorem pkgJ_ok {hN : N1c} {Q : Par D} {hpq : ∀ j, 1 ≤ (Q.Dw j).p + (Q.Dw j).q} {hI : InfPlaceEx D} {j : ℕ}
     {hj : InR D j} {hIo : IotaEx Q j hj} {σ : Q.c.F →+* ℂ} {hσ : GoodEmb Q.c σ} {χ : (AE D)ˣ →* Circle}
@@ -111,7 +111,7 @@ structure PkgOKJ (Q : Par D) (j : ℕ) (σ : Q.c.F →+* ℂ) (χ : (AE D)ˣ →
       DictLat p.1 (D.sp.W j) hr p.2.1 ι e F ik φ th x₀
 
 /- English proof (translation)
-The claim follows from `pkgJ_ok P hA hX hWt (muOK_of R P.unitFr) muVal := muVal_muOf R.detRoot R.chiWD modelW := ⟨_, P.modelEx.choose_spec.2⟩ familyUniformisationBasePointOrthogonal := fun k => by have hB := P.modelEx.choose_spec.1 have hW := P.modelEx.choose_spec.2 refine base_frame_orthonormal_of_eq ( …`.
+A detailed English derivation is pending.
 -/
 theorem pkgJ_okJ {hN : N1c} {Q : Par D} {hpq : ∀ j, 1 ≤ (Q.Dw j).p + (Q.Dw j).q} {hI : InfPlaceEx D} {j : ℕ}
     {hj : InR D j} {hIo : IotaEx Q j hj} {σ : Q.c.F →+* ℂ} {hσ : GoodEmb Q.c σ} {χ : (AE D)ˣ →* Circle}
@@ -153,7 +153,7 @@ def iotaOf (L : LawsJRest hN Q hpq chiW) (j : ℕ) : (Q.Dw j).La →ₗ[𝓞 D.h
   if hj : InR D j then (L.iota j hj).choose else 0
 
 /- English proof (translation)
-Distinguish the cases in `hj : InR D j`. Distinguish the cases in `hσ : GoodEmb Q.c σ`. Conclude with `⟨(pkgJ (L.pkg j hj σ hσ), x0J (L.pkg j hj σ hσ).modelEx), fun _ _ => pkgJ_okJ (L.pkg j hj σ hσ) (L.allTest j hj) (xiConst_holds D) (L.wtC j hj σ hσ) (L.muRows j hj σ hσ)⟩`. Conclude with `⟨(Classical.choice (L.dataAll j σ), fun _ => 1), fun _ h => absurd h hσ⟩`. Conclude with `⟨(Classical.choice (L.dataAll j σ), fun _ => 1), fun h => absurd h hj⟩`.
+Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem pkgExJ (L : LawsJRest hN Q hpq chiW) (j : ℕ) (σ : Q.c.F →+* ℂ) :
     ∃ q : PkgT Q j σ × ((D.host.E →+* ℂ) → Matrix (Fin D.R.r) (Fin D.R.r) ℂ),

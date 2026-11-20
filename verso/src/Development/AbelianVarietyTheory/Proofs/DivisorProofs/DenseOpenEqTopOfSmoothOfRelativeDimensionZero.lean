@@ -18,15 +18,15 @@ open GlobalTheory.HSApp
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `k _ Y p hp U hU`. Establish `he : Etale p` using `(Etale.iff_smoothOfRelativeDimension_zero p).2 hp`. Establish `hq : LocallyQuasiFinite p`. Use `⟨fun {V} hV {W} hW e ↦ ?_⟩` and prove the remaining obligations. Establish `h` using `p.etale_appLE hV hW e`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `letI := (p.appLE V W e).hom.toAlgebra`. Establish `: Algebra.Etale Γ(Sp k, V) Γ(Y, W)` using `h`. Conclude with `(inferInstance : Algebra.QuasiFinite Γ(Sp k, V) Γ(Y, W))`. Establish `hsub : Subsingleton (Sp k)` using `inferInstanceAs (Subsingleton (PrimeSpectrum k))`. Establish `hopen : ∀ y : Y, IsOpen ({y} : Set Y)`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y`. Establish `hd : _root_.IsDiscrete (p ⁻¹' {p y})` using `p.isDiscrete_preimage_singleton (p y)`. Establish `huniv : p ⁻¹' {p y} = Set.univ`. Use extensionality with `z`. Simplify using `[Subsingleton.elim (p z) (p y)]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hd` using `[huniv]`. Establish `: DiscreteTopology Y`. Establish `h2` using `hd.to_subtype`. Conclude with `(Homeomorph.Set.univ Y).symm.isEmbedding.discreteTopology`. Conclude with `isOpen_discrete _`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `eq_top_iff.2 fun y _ ↦ ?_` and prove the remaining obligations. Take `⟨z, hz1, hz2⟩` from `hU.inter_open_nonempty {y} (hopen y) ⟨y, rfl⟩`. Rewrite `hz1` using `[Set.mem_singleton_iff]`. Substitute `hz1` using the available equality. Conclude with `hz2`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem dense_open_eq_top_of_smoothOfRelativeDimension_zero : ∀ (k : Type) [Field k] (Y : Scheme.{0}) (p : Y ⟶ Sp k), SmoothOfRelativeDimension 0 p → ∀ (U : Y.Opens), Dense (U : Set Y) → U = ⊤ := by
   intro k _ Y p hp U hU

@@ -11,9 +11,9 @@ namespace GroundTheory.Heights₂.Heights
 open MvPolynomial Matrix ComplexSets
 
 /- English proof (translation)
-Introduce `n d J W u hJ hdim hu hW`. Take `⟨f, hfW, hf⟩` from `hA n J W (linForm u) hJ hu hW`. Use `⟨f, hfW, fun q hq hfq => ?_⟩` and prove the remaining obligations. Establish `hqJ : q ∈ zeroSet J` using `fun g hg => hq g (hW.1.2 (Ideal.mem_sup_left hg))`. Take `⟨O, hOo, hOd, hO⟩` from `hB n d J q hJ hdim hqJ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨O, hOo, hOd, fun L hL => hD n d J L q (hf q hq hfq) (hC n (d + 1) J hJ hdim q hqJ) (hO L hL)⟩`.
+Supply the required witnesses or components.
 -/
 theorem SliceUnmixedGeneral.proof (hA : CMHeightOneGeneral.Statement) (hC : LocalDimDomain.Statement)
     (hB : SliceLocalDimGeneral.Statement) (hD : SliceCMUnmixed.Statement) :

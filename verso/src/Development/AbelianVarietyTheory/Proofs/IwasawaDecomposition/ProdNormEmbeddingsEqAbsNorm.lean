@@ -5,7 +5,7 @@ open Formalism.BasicNotions NumberField IsDedekindDomain GlobalTheory.Mem
 namespace GlobalTheory.Mem
 
 /- English proof (translation)
-Establish `h` using `Algebra.norm_eq_prod_embeddings ℚ ℂ γ`. Establish `h2` using `congrArg (fun z : ℂ => ‖z‖) h`. Simplify using `only [norm_prod, eq_ratCast] at h2`. Rewrite using `[Fintype.prod_equiv (RingHom.equivRatAlgHom E ℂ) (fun φ : E →+* ℂ => ‖φ γ‖) (fun φ : E →ₐ[ℚ] ℂ => ‖φ γ‖) (fun _ => rfl), ← h2]`. Rewrite using `[← Real.norm_eq_abs, ← Complex.norm_real]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -20,19 +20,17 @@ theorem prod_norm_embeddings_eq_abs_norm (E : Type) [Field E] [NumberField E] (�
   simp
 
 /- English proof (translation)
-Introduce `E _ _ _ _ r n hr K _ hK γ σ`. Set `s : (E →+* ℂ) → (E →+* ℂ)` to `fun τ => σ.comp (τ.codRestrict K (hK τ))`. Establish `hs : ∀ τ x, s τ x = σ ⟨τ x, hK τ x⟩` using `fun _ _ => rfl`. Establish `hinj : Function.Injective s`. Introduce `a b hab`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use extensionality with `x`. Use `DFunLike.congr_fun hab x` as an intermediate fact. Rewrite `this` using `[hs, hs]`. Conclude with `congrArg Subtype.val (σ.injective this)`. Establish `hbij : Function.Bijective s` using `Finite.injective_iff_bijective.mp hinj`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hconj : ∀ τ, ‖s (ComplexEmbedding.conjugate τ) γ‖ = ‖s τ γ‖`. Introduce `τ`. Establish `h1 : s (ComplexEmbedding.conjugate τ) γ = s τ (IsCMField.complexConj E γ)`. Rewrite using `[hs, hs]`. Use `congr 2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[IsCMField.complexEmbedding_complexConj, ComplexEmbedding.conjugate_coe_eq]`. Rewrite using `[h1, IsCMField.complexEmbedding_complexConj, Complex.norm_conj]`. Establish `hinv : Function.Involutive (fun τ : E →+* ℂ => ComplexEmbedding.conjugate τ)` using `fun τ => star_star τ`. Establish `hP : ‖σ (∏ τ : E →+* ℂ, (⟨τ γ, hK τ γ⟩ : K) ^ r τ)‖ = ∏ τ : E →+* ℂ, ‖s τ γ‖ ^ r τ`. Rewrite using `[map_prod, norm_prod]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[map_pow, norm_pow, hs]`. Establish `hQ : ∏ τ : E →+* ℂ, ‖s τ γ‖ ^ r τ = ∏ τ : E →+* ℂ, ‖s τ γ‖ ^ r (ComplexEmbedding.conjugate τ)`. Rewrite using `[← hinv.bijective.prod_comp (fun τ => ‖s τ γ‖ ^ r τ)]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hconj]`. Rewrite using `[hP, sq]`. Use `nth_rewrite 2 [hQ]`. Rewrite using `[← Finset.prod_mul_distrib, ← prod_norm_embeddings_eq_abs_norm, ← hbij.prod_comp (fun φ => ‖φ γ‖), ← Finset.prod_pow]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[← pow_add, hr]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_typeNorm_sq_eq : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] [IsGalois ℚ E] (r : (E →+* ℂ) → ℕ) (n : ℕ), (∀ τ, r τ + r (ComplexEmbedding.conjugate τ) = n) → ∀ (K : IntermediateField ℚ ℂ) [FiniteDimensional ℚ K] (hK : ∀ (τ : E →+* ℂ) x, τ x ∈ K) (γ : E) (σ : K →+* ℂ), ‖σ (∏ τ : E →+* ℂ, (⟨τ γ, hK τ γ⟩ : K) ^ r τ)‖ ^ 2 = |(Algebra.norm ℚ γ : ℝ)| ^ n := by
   intro E _ _ _ _ r n hr K _ hK γ σ

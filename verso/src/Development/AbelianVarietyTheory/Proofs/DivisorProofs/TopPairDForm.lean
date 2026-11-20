@@ -72,9 +72,9 @@ namespace GlobalTheory.LogKSDiv
 open TopForm
 
 /- English proof (translation)
-Use `letI := α.toAlgebra`. Rewrite using `[dForm_eq, topPair, exteriorPower.alternatingMapLinearEquiv_apply_ιMulti, AlternatingMap.compLinearMap_apply]`. Express the relevant statement in the definitionally equal form `Matrix.det (Matrix.of _) = _`. Use `congr 1`. Use extensionality with `i j`.
+Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Conclude with `Derivation.liftKaehlerDifferential_comp_D (D j) (f i)`.
+A detailed English derivation is pending.
 -/
 theorem topPair_dForm {k A : Type} [CommRing k] [CommRing A] (α : k →+* A) {n : ℕ}
     (D : Fin n → (letI := α.toAlgebra; Derivation k A A)) (f : Fin n → A) :

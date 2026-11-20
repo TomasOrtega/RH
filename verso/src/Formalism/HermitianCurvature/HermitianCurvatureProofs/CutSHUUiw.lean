@@ -5,7 +5,7 @@ namespace Formalism.FourierDecayAlt.P
 open Formalism.FourierDecayAlt
 
 /- English proof (translation)
-Introduce `x y`. Rewrite using `[Matrix.mul_apply]`. Conclude with `Subalgebra.sum_mem _ fun k _ => Subalgebra.mul_mem _ (hM x k) (hN k y)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem matrix_mul_entries_mem_bot_subalgebra {A ι : Type} [Ring A] [Algebra ℂ A] [Fintype ι] {M N : Matrix ι ι A}
     (hM : ∀ x y, M x y ∈ (⊥ : Subalgebra ℂ A)) (hN : ∀ x y, N x y ∈ (⊥ : Subalgebra ℂ A)) :
@@ -15,7 +15,7 @@ private theorem matrix_mul_entries_mem_bot_subalgebra {A ι : Type} [Ring A] [Al
   exact Subalgebra.sum_mem _ fun k _ => Subalgebra.mul_mem _ (hM x k) (hN k y)
 
 /- English proof (translation)
-Use `split_ifs`. Conclude with `hu`. Conclude with `Subalgebra.zero_mem _`.
+A detailed English derivation is pending.
 -/
 private theorem ite_zero_mem_bot_subalgebra {A : Type} [Ring A] [Algebra ℂ A] (p : Prop) [Decidable p] (u : A)
     (hu : u ∈ (⊥ : Subalgebra ℂ A)) : (if p then u else 0) ∈ (⊥ : Subalgebra ℂ A) := by
@@ -24,15 +24,13 @@ private theorem ite_zero_mem_bot_subalgebra {A : Type} [Ring A] [Algebra ℂ A] 
   · exact Subalgebra.zero_mem _
 
 /- English proof (translation)
-Introduce `A _ _ _ S _ _ s w`. Proceed by induction on `w with`. Consider the case `nil`. Introduce `a b`. Use `show (1 : Wd.SlopeTestRemainingChoices S A) a b ∈ _`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.one_apply]`. Conclude with `ite_zero_mem_bot_subalgebra _ _ (Subalgebra.one_mem _)`. Consider the case `cons l w ih`. Introduce `a b`. Use `show ((Wd.ins l.intersection_update_fsHerm_neg_one (Wd.lift0 (YangianSpanCharacter.T.Uinv (if l.plus = true then s else star s))) : Wd.SlopeTestRemainingChoices S A) * (Wd.UUiw s w : Wd.SlopeTestRemainingChoices S A)) a b ∈ _`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `matrix_mul_entries_mem_bot_subalgebra ?_ ih a b` and prove the remaining obligations. Introduce `x y`. Simplify using `only [Wd.ins, Matrix.sum_apply]`. Use `Subalgebra.sum_mem _ fun i _ => Subalgebra.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Use `matrix_mul_entries_mem_bot_subalgebra ?_ ?_ x y` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `u v`. Simplify using `only [Wd.eU, Matrix.of_apply]`. Conclude with `ite_zero_mem_bot_subalgebra _ _ (Subalgebra.one_mem _)`. Introduce `u v`. Apply the tactic sequence `have hU : YangianSpanCharacter.T.Uinv (A := A) (if l.plus = true then s else star s) i j ∈ (⊥ : Subalgebra ℂ A) := by fin_cases i <;> fin_cases j <;>`.
-
-Simplify using `[YangianSpanCharacter.T.Uinv, Subalgebra.one_mem, Subalgebra.zero_mem, Subalgebra.algebraMap_mem]`. Simplify using `only [Wd.lift0, Matrix.map_apply, Wd.io, Matrix.scalar_apply, Matrix.diagonal_apply]`. Conclude with `ite_zero_mem_bot_subalgebra _ _ hU`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem unipotent_scalar_identity : CutSH.UUiwScalar := by
   intro A _ _ _ S _ _ s w

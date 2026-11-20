@@ -7,11 +7,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.Mum
 
 /- English proof (translation)
-Use `set φ : R →+* Ω := (Spec.preimage g).hom with hφ`. Establish `hgφ : g = spMap φ`. Simplify using `only [spMap, hφ, CommRingCat.ofHom_hom, Spec.map_preimage]`. Establish `hker : ∀ x ∈ maximalIdeal R, φ x = 0`. Introduce `x hx`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Set `w : Sp Ω` to `⟨⊥, Ideal.isPrime_bot⟩`. Establish `h1` using `hg w`. Rewrite `h1` using `[hgφ]`. Establish `h2 : (spMap φ w).asIdeal = Ideal.comap φ ⊥` using `rfl`. Rewrite `h2` using `[h1, closedPoint]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `: x ∈ Ideal.comap φ ⊥` using `h2 ▸ hx`. Simplify using `using this`. Use `⟨Ideal.Quotient.lift (maximalIdeal R) φ hker, ?_⟩` and prove the remaining obligations. Rewrite using `[hgφ]`. Use `congr 2`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem spMap_factor_residueField_of_closedPoint (R : Type) [CommRing R] [IsLocalRing R] (Ω : Type) [Field Ω]
     (g : Sp Ω ⟶ Sp R) (hg : ∀ w, g w = closedPoint R) :

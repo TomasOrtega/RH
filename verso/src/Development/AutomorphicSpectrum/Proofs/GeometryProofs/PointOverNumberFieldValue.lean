@@ -19,7 +19,7 @@ variable {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRingCat.of Ω) 
   {z : Spec (CommRingCat.of ℂ) ⟶ X}
 
 /- English proof (translation)
-Take `⟨hz, t, rfl, rfl⟩` from `h`. Take `⟨_, t', rfl, rfl⟩` from `h'`. Conclude with `⟨hz, t + t', map_add _ _ _, map_add _ _ _⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem valAt_add {a b : Ω} {r s : ℂ} (h : ValAt ξ z a r) (h' : ValAt ξ z b s) :
     ValAt ξ z (a + b) (r + s) := by
@@ -28,7 +28,7 @@ theorem valAt_add {a b : Ω} {r s : ℂ} (h : ValAt ξ z a r) (h' : ValAt ξ z b
   exact ⟨hz, t + t', map_add _ _ _, map_add _ _ _⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hz, (n : X.presheaf.stalk (centre z)), map_intCast _ _, map_intCast _ _⟩`.
+Supply the required witnesses or components.
 -/
 theorem valAt_int (hz : genPt ξ ⤳ centre z) (n : ℤ) : ValAt ξ z (n : Ω) (n : ℂ) :=
   ⟨hz, (n : X.presheaf.stalk (centre z)), map_intCast _ _, map_intCast _ _⟩
@@ -37,34 +37,34 @@ variable {K : Type} [Fintype K] {J : K → Type} [∀ k, Fintype (J k)] {y : (Σ
   {w : (Σ k, J k) → ℂ}
 
 /- English proof (translation)
-Simplify using `[evC, ArakelovGeometry.xpow, map_prod]`.
+Simplify using the standard rewrite rules.
 -/
 theorem evC_xpow (w : (Σ k, J k) → ℂ) (c : ∀ k, J k) (e : K → ℕ) :
     evC w (ArakelovGeometry.xpow c e) = ∏ k, w ⟨k, c k⟩ ^ e k := by
   simp [evC, ArakelovGeometry.xpow, map_prod]
 
 /- English proof (translation)
-Establish `hc0 : ∀ k, w ⟨k, c k⟩ ≠ 0` using `fun k => (hc k).ne_zero`. Establish `hW : ∀ δ : K → ℕ, (∏ k, w ⟨k, c k⟩ ^ δ k) ≠ 0` using `fun δ => Finset.prod_ne_zero_iff.2 fun k _ => pow_ne_zero _ (hc0 k)`. Establish `hpow : ∀ δ₁ δ₂ : K → ℕ, ∏ k, y ⟨k, c k⟩ ^ (δ₁ + δ₂) k = (∏ k, y ⟨k, c k⟩ ^ δ₁ k) * ∏ k, y ⟨k, c k⟩ ^ δ₂ k` using `fun δ₁ δ₂ => by`. Rewrite using `[← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_congr rfl fun k _ => by rw [Pi.add_apply, pow_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hpowC : ∀ δ₁ δ₂ : K → ℕ, ∏ k, w ⟨k, c k⟩ ^ (δ₁ + δ₂) k = (∏ k, w ⟨k, c k⟩ ^ δ₁ k) * ∏ k, w ⟨k, c k⟩ ^ δ₂ k` using `fun δ₁ δ₂ => by`. Rewrite using `[← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_congr rfl fun k _ => by rw [Pi.add_apply, pow_add]`. Rewrite `hx` using `[chartRingZ]`. Proceed by induction on `hx using Algebra.adjoin_induction with`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Consider the case `mem x hx`. Take `⟨⟨k, i⟩, rfl⟩` from `hx`. Use `⟨Pi.single k 1, MvPolynomial.X ⟨k, i⟩, ArakelovGeometry.isMultiHomog_X' k i, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[aeval_X, Finset.prod_eq_single k (fun k' _ hk' => by simp [hk']) (by simp)]`. Simplify using `[div_mul_cancel₀ _ (hy k)]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨r, hr, e⟩` from `(hw.2 k (c k) (hc k)).2 i`. Establish `e1 : (∏ k', w ⟨k', c k'⟩ ^ (Pi.single k 1 : K → ℕ) k') = w ⟨k, c k⟩`. Rewrite using `[Finset.prod_eq_single k (fun k' _ hk' => by simp [hk']) (by simp)]`. Simplify using the standard rewrite rules. Establish `e2 : evC w (MvPolynomial.X ⟨k, i⟩ : MRing J) = w ⟨k, i⟩` using `by simp [evC]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[e1, e2, e, mul_div_cancel_right₀ _ (hc0 k)]`. Conclude with `hr`. Consider the case `algebraMap r`. Use `⟨0, C r, isMultiHomog_C r, by simp, ?_⟩` and prove the remaining obligations. Establish `e : evC w (C r : MRing J) = (r : ℂ)` using `by simp [evC]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Simplify using `only [e, Pi.zero_apply, pow_zero, Finset.prod_const_one, div_one]`. Simplify using `using valAt_int hz r`. Consider the case `add a b _ _ ha hb`. Take `⟨δ₁, e₁, h₁, v₁, u₁⟩` from `ha`. Take `⟨δ₂, e₂, h₂, v₂, u₂⟩` from `hb`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `⟨δ₁ + δ₂, e₁ * ArakelovGeometry.xpow c δ₂ + e₂ * ArakelovGeometry.xpow c δ₁, isMultiHomog_add (ArakelovGeometry.isMultiHomog_mul h₁ (ArakelovGeometry.isMultiHomog_xpow c δ₂)) ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[add_comm δ₁]`. Conclude with `ArakelovGeometry.isMultiHomog_mul h₂ (ArakelovGeometry.isMultiHomog_xpow c δ₁)`. Rewrite using `[map_add, map_mul, map_mul, v₁, v₂, aeval_xpow, aeval_xpow, hpow]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `valAt_add u₁ u₂ using 1` and compare the differences between its conclusion and the goal. Establish `e : evC w (e₁ * ArakelovGeometry.xpow c δ₂ + e₂ * ArakelovGeometry.xpow c δ₁) = evC w e₁ * evC w (ArakelovGeometry.xpow c δ₂) + evC w e₂ * evC w (ArakelovGeometry.xpow c δ₁)`. Simplify using `only [evC, map_add, map_mul]`. Rewrite using `[e, evC_xpow, evC_xpow, hpowC]`. Use `hW δ₁` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Use `hW δ₂` as an intermediate fact. Clear the denominators using the available nonvanishing facts. Consider the case `mul a b _ _ ha hb`. Take `⟨δ₁, e₁, h₁, v₁, u₁⟩` from `ha`. Take `⟨δ₂, e₂, h₂, v₂, u₂⟩` from `hb`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `⟨δ₁ + δ₂, e₁ * e₂, ArakelovGeometry.isMultiHomog_mul h₁ h₂, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, v₁, v₂, hpow]`. Expand and normalize the polynomial expressions, which then agree. Use `CoordModel.valAt_mul u₁ u₂ using 1` and compare the differences between its conclusion and the goal. Establish `e : evC w (e₁ * e₂) = evC w e₁ * evC w e₂` using `by simp only [evC, map_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[e, hpowC]`. Use `hW δ₁` as an intermediate fact. Use `hW δ₂` as an intermediate fact. Clear the denominators using the available nonvanishing facts.
+A detailed English derivation is pending.
 -/
 theorem exists_form_valAt (hz : genPt ξ ⤳ centre z) (hw : CoordsAt ξ y z w) (c : ∀ k, J k)
     (hy : ∀ k, y ⟨k, c k⟩ ≠ 0) (hc : ∀ k, IsUnit (w ⟨k, c k⟩)) {x : Ω} (hx : x ∈ chartRingZ y c) :
@@ -134,15 +134,15 @@ theorem exists_form_valAt (hz : genPt ξ ⤳ centre z) (hw : CoordsAt ξ y z w) 
 end Values
 
 /- English proof (translation)
-Introduce `X Ω _ ξ K _ J _ y F' _ _ ψ σ z w hN ht hw hp hz a`. Use `choose c hc using hw.1`. Establish `hy : ∀ k, y ⟨k, c k⟩ ≠ 0` using `fun k => (hw.2 k (c k) (hc k)).1`. Establish `hO : OverInt y ψ` using `overInt_of_normalCpt ht hN ψ`. Establish `hint : ∀ b : 𝓞 F', ValAt ξ z (ψ (b : F')) (σ (b : F'))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `b`. Take `⟨δ, G, hG, hv, hu⟩` from `exists_form_valAt hz hw c hy hc (hO.2 c hy b)`. Establish `h1` using `hp.2 (b : F') δ G (ArakelovGeometry.xpow c δ) hG (ArakelovGeometry.isMultiHomog_xpow c δ) (by`. Rewrite using `[hv, GroundTheory.Heights₂.Heights.Targets.BoundedSectionTransfer.aeval_xpow])`. Rewrite `h1` using `[evC_xpow]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hW : (∏ k, w ⟨k, c k⟩ ^ δ k) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun k _ => pow_ne_zero _ (hc k).ne_zero`. Rewrite `hu` using `[h1, mul_div_cancel_right₀ _ hW]`. Then use the resulting hypothesis. Establish `halg : IsAlgebraic ℤ a` using `(IsFractionRing.isAlgebraic_iff ℤ ℚ F').2 (Algebra.IsAlgebraic.isAlgebraic a)`. Take `⟨n, hn, hi⟩` from `halg.exists_integral_multiple`. Establish `hnC : (n : ℂ) ≠ 0` using `by exact_mod_cast hn`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `hint (⟨n • a, hi⟩ : 𝓞 F')`. Establish `h2 : ValAt ξ z (n : Ω) ((Units.mk0 (n : ℂ) hnC : ℂˣ) : ℂ)` using `valAt_int hz n`. Take `⟨hn0, h3⟩` from `CoordModel.valAt_inv h2`. Establish `h4` using `CoordModel.valAt_mul h3 h1`. Use `h4 using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities.
 
-Use `show ψ a = (n : Ω)⁻¹ * ψ (n • a)`. Rewrite using `[zsmul_eq_mul, map_mul, map_intCast, inv_mul_cancel_left₀ hn0]`. Use `show σ a = ((Units.mk0 (n : ℂ) hnC)⁻¹ : ℂˣ) * σ (n • a)`. Rewrite using `[zsmul_eq_mul, map_mul, map_intCast, Units.val_inv_eq_inv_val, Units.val_mk0, inv_mul_cancel_left₀ hnC]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valAt_cst : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X) (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (y : (Σ k, J k) → Ω) (F' : Type) [Field F'] [NumberField F'] (ψ : F' →+* Ω) (σ : F' →+* ℂ) (z : Spec (CommRingCat.of ℂ) ⟶ X) (w : (Σ k, J k) → ℂ), NormalCpt ξ → (CoordTie ℤ ξ fun c' : (k : K) → J k => ∏ k, y ⟨k, c' k⟩) → CoordsAt ξ y z w → PtOver y ψ σ w → genPt ξ ⤳ centre z → ∀ a : F', ValAt ξ z (ψ a) (σ a) := by
   intro X Ω _ ξ K _ J _ y F' _ _ ψ σ z w hN ht hw hp hz a

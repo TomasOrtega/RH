@@ -6,9 +6,9 @@ open GlobalTheory.CompanionTheory.Ar
 namespace GlobalTheory.CompanionTheory.Ar.ClearConstants
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact ⟨1, W.one_mem, by simp⟩`. Consider the case `insert a s ha ih`. Take `⟨w, hw, hs⟩` from `ih (fun μ hμ => h μ (Finset.mem_insert_of_mem hμ))`. Take `⟨u, hu, hau⟩` from `h a (Finset.mem_insert_self a s)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨u * w, mul_mem hu hw, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.prod_insert ha, Finset.card_insert_of_notMem ha, hs, hau]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem prod_one_sub_lemma {Ω : Type} [Field Ω] (W : ValuationSubring Ω) (π : Ω)
     (s : Finset Ω) (h : ∀ μ ∈ s, ∃ u ∈ W, 1 - μ = π * u) :
@@ -24,17 +24,17 @@ private theorem prod_one_sub_lemma {Ω : Type} [Field Ω] (W : ValuationSubring 
     ring
 
 /- English proof (translation)
-Use `haveI := Fact.mk hp`. Establish `hpow : ζ ^ p = 1` using `hζ.pow_eq_one`. Establish `hζW : ζ ∈ W`. Break down `W.mem_or_inv_mem ζ with h | h` into its components or cases. Conclude with `h`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hne : ζ ≠ 0` using `hζ.ne_zero hp.ne_zero`. Establish `h1 : (ζ⁻¹) ^ (p - 1) * ζ⁻¹ = 1`. Rewrite using `[← pow_succ, Nat.sub_add_cancel hp.one_le, inv_pow, hpow, inv_one]`. Establish `key : (ζ⁻¹) ^ (p - 1) = ζ`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_assoc, inv_mul_cancel₀ hne, mul_one]`. Use `_ = ζ := by rw [h1, one_mul]`. Rewrite using `[← key]`. Conclude with `pow_mem h _`. Establish `hprod : (p : Ω) = ∏ μ ∈ primitiveRoots p Ω, (1 - μ)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `h0` using `Polynomial.eval_one_cyclotomic_prime (R := Ω) (p := p)`. Rewrite `h0` using `[Polynomial.cyclotomic_eq_prod_X_sub_primitiveRoots hζ, Polynomial.eval_prod]`. Simplify using `using h0.symm`. Establish `hcard : (primitiveRoots p Ω).card = p - 1`. Rewrite using `[hζ.card_primitiveRoots, Nat.totient_prime hp]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hall : ∀ μ ∈ primitiveRoots p Ω, ∃ u ∈ W, 1 - μ = (ζ - 1) * u`. Introduce `μ hμ`. Establish `hμp : IsPrimitiveRoot μ p` using `(mem_primitiveRoots hp.pos).mp hμ`. Take `⟨i, -, hi⟩` from `hζ.eq_pow_of_pow_eq_one hμp.pow_eq_one`. Use `⟨-(∑ j ∈ Finset.range i, ζ ^ j), neg_mem (sum_mem fun j _ => pow_mem hζW j), ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← hi]`. Take the linear combination `geom_sum_mul ζ i`. Take `⟨w, hw, hw'⟩` from `prod_one_sub_lemma W (ζ - 1) _ hall`. Rewrite `hw'` using `[hcard]`. Conclude with `⟨w, hw, hprod.trans hw'⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem prime_eq_mul_pow {Ω : Type} [Field Ω] (W : ValuationSubring Ω) {p : ℕ} (hp : p.Prime) {ζ : Ω}
     (hζ : IsPrimitiveRoot ζ p) : ∃ w ∈ W, (p : Ω) = w * (ζ - 1) ^ (p - 1) := by
@@ -72,11 +72,11 @@ theorem prime_eq_mul_pow {Ω : Type} [Field Ω] (W : ValuationSubring Ω) {p : �
 def expo (q p : ℕ) : ℕ := if p = 2 then 2 * q else q / (p - 1)
 
 /- English proof (translation)
-Unfold `expo`. Distinguish the cases in `h : p = 2`. Substitute `h` using the available equality. Simplify using `only [if_true]`. Use `push_cast`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_neg h, if_neg h]`. Establish `hne : ((p - 1 : ℕ) : ℝ) ≠ 0`. Establish `h2 : 2 ≤ p` using `hp.two_le`. Establish `h3 : p - 1 ≠ 0` using `by omega`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h3` after adjusting the coercions. Rewrite using `[Nat.cast_div hd hne, Nat.cast_sub hp.one_le]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem expo_cast {q p : ℕ} (hp : p.Prime) (hd : p - 1 ∣ q) :
     (expo q p : ℝ) = q * (if p = 2 then 2 else 1 / ((p : ℝ) - 1)) := by
@@ -96,13 +96,13 @@ theorem expo_cast {q p : ℕ} (hp : p.Prime) (hd : p - 1 ∣ q) :
     ring
 
 /- English proof (translation)
-Unfold `HT.IsCp at hκ`. Distinguish the cases in `h2 : p = 2`. Substitute `h2` using the available equality. Rewrite `hκ` using `[if_pos rfl]`. Use `⟨1, W.one_mem, ?_⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `he : expo q 2 = 2 * q` using `by simp [expo]`. Rewrite using `[hκ, one_mul, he, pow_mul]`. Evaluate the numerical expressions. Rewrite `hκ` using `[if_neg h2]`. Take `⟨ζ, hζ, rfl⟩` from `hκ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨r, rfl⟩` from `hd`. Take `⟨w₀, hw₀, hpw⟩` from `prime_eq_mul_pow W hp hζ`. Establish `hpos : 0 < p - 1` using `by have := hp.two_le; omega`. Use `⟨w₀ ^ r, pow_mem hw₀ r, ?_⟩` and prove the remaining obligations. Establish `he : expo ((p - 1) * r) p = r`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [expo, if_neg h2]`. Conclude with `Nat.mul_div_cancel_left r hpos`. Rewrite using `[he, Nat.cast_pow, hpw, mul_pow, ← pow_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_expo_eq {Ω : Type} [Field Ω] (W : ValuationSubring Ω) {p q : ℕ} (hp : p.Prime) (hd : p - 1 ∣ q)
     {κ : Ω} (hκ : HT.IsCp p κ) : ∃ w ∈ W, ((p ^ expo q p : ℕ) : Ω) = w * κ ^ q := by
@@ -126,19 +126,19 @@ theorem pow_expo_eq {Ω : Type} [Field Ω] (W : ValuationSubring Ω) {p q : ℕ}
     rw [he, Nat.cast_pow, hpw, mul_pow, ← pow_mul]
 
 /- English proof (translation)
-Introduce `S m₀ hS hm₀`. Take `⟨q, hq⟩ : ∃ q : ℕ, q = ∏ p ∈ S, (p - 1)` from `⟨_, rfl⟩`. Establish `hqpos : 0 < q`. Rewrite using `[hq]`. Conclude with `Finset.prod_pos fun p hp => by have := (hS p hp).two_le; omega`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hdvd : ∀ p ∈ S, p - 1 ∣ q` using `fun p hp => by`. Rewrite using `[hq]`. Conclude with `Finset.dvd_prod_of_mem (fun p => p - 1) hp`. Use `⟨q, m₀ ^ q * ∏ p ∈ S, p ^ expo q p, hqpos, Nat.mul_pos (pow_pos hm₀ q) (Finset.prod_pos fun p hp => pow_pos (hS p hp).pos _), ?_, ?_⟩` and prove the remaining obligations. Apply `le_of_eq` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Move the embeddings inside the algebraic operations. Establish an intermediate fact.
 
-Use `push_cast`. Establish `hm0 : ((m₀ : ℝ) ^ q) ≠ 0` using `pow_ne_zero _ (by exact_mod_cast hm₀.ne')`. Establish `hprod : (∏ p ∈ S, (p : ℝ) ^ expo q p) ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun p hp => pow_ne_zero _ (by exact_mod_cast (hS p hp).ne_zero)`. Rewrite using `[Real.log_mul hm0 hprod, Real.log_pow, Real.log_prod fun p hp => pow_ne_zero _ (by exact_mod_cast (hS p hp).ne_zero), mul_add, Finset.mul_sum]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun p hp => ?_` and prove the remaining obligations. Rewrite using `[Real.log_pow, expo_cast (hS p hp) (hdvd p hp)]`. Expand and normalize the polynomial expressions, which then agree. Introduce `Ω _ _ W κ hκ t ht`. Establish `hrest : ∀ T : Finset ℕ, (∏ x ∈ T, ((x : Ω) ^ expo q x)) ∈ W` using `fun T => prod_mem fun x _ => pow_mem (natCast_mem W x) _`.
+Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Separate the alternatives or extract the components of the hypothesis.
 
-Use `push_cast`. Break down `hκ with rfl | ⟨p, hpS, hp⟩` into its components or cases. Rewrite `ht` using `[mul_one]`. Establish `e : (m₀ : Ω) ^ q * (∏ x ∈ S, (x : Ω) ^ expo q x) * t ^ q = ((m₀ : Ω) * t) ^ q * ∏ x ∈ S, (x : Ω) ^ expo q x` using `by ring`. Rewrite using `[e]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Move the embeddings inside the algebraic operations.
 
-Conclude with `mul_mem (pow_mem ht q) (hrest S)`. Take `⟨w, hw, hpw⟩` from `pow_expo_eq W (hS p hpS) (hdvd p hpS) hp`. Move the coercions through the operations in `at hpw`. Establish `hsplit : ∏ x ∈ S, (x : Ω) ^ expo q x = w * κ ^ q * ∏ x ∈ S.erase p, (x : Ω) ^ expo q x`. Rewrite using `[← Finset.mul_prod_erase S (fun x => (x : Ω) ^ expo q x) hpS, hpw]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hsplit]`. Establish `e : (m₀ : Ω) ^ q * (w * κ ^ q * ∏ x ∈ S.erase p, (x : Ω) ^ expo q x) * t ^ q = w * ((m₀ : Ω) * κ * t) ^ q * ∏ x ∈ S.erase p, (x : Ω) ^ expo q x` using `by ring`. Rewrite using `[e]`. Conclude with `mul_mem (mul_mem hw (pow_mem ht q)) (hrest _)`.
+A detailed English derivation is pending.
 -/
 theorem clear_constants : ∀ (S : Finset ℕ) (m₀ : ℕ), (∀ p ∈ S, p.Prime) → 0 < m₀ → ∃ q m : ℕ, 0 < q ∧ 0 < m ∧
     Real.log m ≤ q * (Real.log m₀ + ∑ p ∈ S, (if p = 2 then 2 else 1 / ((p : ℝ) - 1)) * Real.log p) ∧

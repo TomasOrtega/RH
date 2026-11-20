@@ -20,11 +20,11 @@ namespace IntegralCusp
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField IsDedekindDomain in
 /- English proof (translation)
-Rewrite using `[MvPolynomial.eval_eq', Finset.sum_mul]`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun s hs => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul, norm_prod]`. Use `mul_le_mul_of_nonneg_left ?_ (norm_nonneg _)` and prove the remaining obligations. Establish `hdeg : ∑ j, s j = d`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `hp (MvPolynomial.mem_support_iff.mp hs)` as an intermediate fact. Simplify `this` using `[Finsupp.weight_apply, Finsupp.sum_fintype]`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.prod_le_prod (fun j _ => norm_nonneg _) (fun j _ => ?_)` and prove the remaining obligations. Rewrite using `[norm_pow]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `pow_le_pow_left₀ (norm_nonneg _) (norm_le_pi_norm w j) _`. Use `_ = ‖w‖ ^ d := by rw [Finset.prod_pow_eq_pow_sum, hdeg]`.
+A detailed English derivation is pending.
 -/
 private theorem norm_eval_le_of_isHomogeneous' {N d : ℕ} {p : MvPolynomial (Fin N) ℂ}
     (hp : p.IsHomogeneous d) (w : Fin N → ℂ) :
@@ -45,25 +45,21 @@ private theorem norm_eval_le_of_isHomogeneous' {N d : ℕ} {p : MvPolynomial (Fi
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField IsDedekindDomain in
 
 /- English proof (translation)
-Use `set A : ℕ → ℝ := fun i => ∑ s ∈ (cf i).support, ‖(cf i).coeff s‖ with hA`. Establish `hA0 : ∀ i, 0 ≤ A i` using `fun i => Finset.sum_nonneg fun _ _ => norm_nonneg _`. Use `set B : ℝ := 1 + ∑ i ∈ Finset.range m, A i with hBdef`. Establish `hB1 : 1 ≤ B` using `le_add_of_nonneg_right (Finset.sum_nonneg fun i _ => hA0 i)`. Establish `hB0 : 0 < B` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Use `⟨B, hB0.le, fun w g hg => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hg0 : g = 0`. Rewrite using `[hg0, norm_zero]`. Check the signs of the components of the expression. Establish `hroot : g ^ m = -∑ i ∈ Finset.range m, MvPolynomial.eval w (cf i) * g ^ i`.
+Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : g * (g ^ m + ∑ i ∈ Finset.range m, MvPolynomial.eval w (cf i) * g ^ i) = 0`. Establish `hs : ∑ i ∈ Finset.range m, (g * MvPolynomial.eval w (cf i)) * g ^ i = g * ∑ i ∈ Finset.range m, MvPolynomial.eval w (cf i) * g ^ i`. Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => mul_assoc _ _ _`. Rewrite using `[mul_add, ← hs]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `hg`. Conclude with `eq_neg_of_add_eq_zero_left ((mul_eq_zero.mp h1).resolve_left hg0)`. Use `set x := ‖g‖ with hx`. Use `set t := ‖w‖ ^ k with ht`. Establish `hx0 : 0 < x` using `norm_pos_iff.mpr hg0`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `ht0 : 0 ≤ t` using `by positivity`. Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`. Establish `htx : t ≤ x / B` using `by rw [le_div_iff₀ hB0]; linarith`. Establish `hterm : ∀ i ∈ Finset.range m, ‖MvPolynomial.eval w (cf i) * g ^ i‖ ≤ A i * (x ^ m / B)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `i hi`. Establish `him : i < m` using `Finset.mem_range.mp hi`. Rewrite using `[norm_mul, norm_pow]`. Establish `hci` using `norm_eval_le_of_isHomogeneous' (hc i him) w`. Establish `hpow : ‖w‖ ^ ((m - i) * k) = t ^ (m - i)` using `by rw [ht, ← pow_mul, mul_comm]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hkey : t ^ (m - i) * x ^ i ≤ x ^ m / B`. Establish `h1 : t ^ (m - i) ≤ (x / B) ^ (m - i)` using `pow_le_pow_left₀ ht0 htx _`. Establish `h2 : B ≤ B ^ (m - i)` using `le_self_pow₀ hB1 (by omega)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[div_pow, div_mul_eq_mul_div, ← pow_add, Nat.sub_add_cancel him.le]`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `_ ≤ x ^ m / B := div_le_div_of_nonneg_left (by positivity) hB0 h2`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← hpow]`. Conclude with `hci`. Use `_ = A i * (t ^ (m - i) * x ^ i) := by ring`.
-
-Use `_ ≤ A i * (x ^ m / B) := mul_le_mul_of_nonneg_left hkey (hA0 i)`. Establish `hbound : x ^ m ≤ (∑ i ∈ Finset.range m, A i) * (x ^ m / B)`. Combine the equalities or inequalities in the displayed calculation. Establish `hS : ∑ i ∈ Finset.range m, A i = B - 1` using `by rw [hBdef]; ring`. Establish `hxm : 0 < x ^ m / B` using `by positivity`.
-
-Establish `hBx : B * (x ^ m / B) = x ^ m` using `by field_simp`. Rewrite `hbound` using `[hS, sub_mul, _root_.one_mul, hBx]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.IntegralCusp.exists_root_bound (N k m : ℕ) (cf : ℕ → MvPolynomial (Fin N) ℂ)
     (hc : ∀ i < m, (cf i).IsHomogeneous ((m - i) * k)) :
@@ -133,9 +129,9 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] in
 
 /- English proof (translation)
-Unfold `_root_.ReciprocityTheory.ChartRestriction.G.FD.Data.nfac`. Rewrite using `[← Finset.prod_pow]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.prod_pow]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[h, ← Real.rpow_natCast, ← Real.rpow_mul (norm_nonneg _)]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem _root_.GlobalTheory.IntegralCusp.nfac_nsmul {r : ℕ} (X : _root_.ReciprocityTheory.ChartRestriction.G.FD.Data E r) (la la' : _root_.ReciprocityTheory.ChartRestriction.G.FD.Wt X.Ψ r)
     (k : ℕ) (h : ∀ τ i, la' τ i = k * la τ i) (x : _root_.ReciprocityTheory.ChartRestriction.G.FD.Frame X.Ψ r) :
@@ -157,7 +153,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] in
 variable {H : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum H} {l : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H} {Xo : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Moduli Dw l} {c : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Coeff l} in
 
 /- English proof (translation)
-Unfold `_root_.Formalism.L2.PjFree.laU`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Rewrite using `[Nat.mul_div_assoc k hn.two_dvd]`. Apply the tactic sequence `split_ifs <;> push_cast <;> ring`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.IntegralCusp.laU_nsmul {σ : c.F →+* ℂ} {r : ℕ} (U : _root_.Formalism.L2.PjFree.Unf Xo c σ r)
     (a : (E →+* ℂ) × ℕ → ℕ) (n k : ℕ) (hn : Even n) (j : U.Comp) (τ : (U.X j).Ψ) (i : Fin r) :
@@ -180,9 +176,9 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] in
 variable {H : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum H} {l : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H} {Xo : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Moduli Dw l} {c : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Coeff l} in
 /- English proof (translation)
-Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C a`. Rewrite using `[MvPolynomial.aeval_C, MvPolynomial.map_C, MvPolynomial.eval_C, Algebra.algebraMap_eq_smul_one]`. Use `show _root_.Formalism.L2.PjFree.toC (_root_.Formalism.L2.Pj.evalAt _ _ (a • (1 : _root_.Formalism.L2.Pj.Rul Xo c)) y) = σ a`. Rewrite using `[_root_.Formalism.L2.Pj.evalAt_smul, _root_.Formalism.L2.Pj.evalAt_one _ _ y hy, _root_.mul_one]`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Consider the case `add p q hp hq => rw [map_add, map_add, map_add, map_add, hp, hq]`. Consider the case `mul_X p i hp`. Simplify using `only [map_mul, hp, MvPolynomial.map_X, MvPolynomial.aeval_X, MvPolynomial.eval_X]`.
+Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.IntegralCusp.evHom_aeval {σ : c.F →+* ℂ} (y : _root_.Formalism.L2.Pj.FrPt Xo c (_root_.Formalism.L2.Pj.CAt σ))
     (hy : _root_.Formalism.L2.Pj.FromTest (K := c.F) (fun S _ _ => _root_.Formalism.L2.Pj.FrPt Xo c S) (fun φ y z => _root_.Formalism.L2.Pj.FrMap φ y z) y) {N : ℕ}

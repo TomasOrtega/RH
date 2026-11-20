@@ -21,34 +21,34 @@ def vmap (f : R →+* S) (y : (Fin d → R) × (Fin d → R)) : (Fin d → S) ×
   (fun i => f (y.1 i), fun i => f (y.2 i))
 
 /- English proof (translation)
-Apply the tactic sequence `refine Prod.ext (funext fun i => ?_) (funext fun i => ?_) <;> simp [vmap]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem vmap_add (f : R →+* S) (y y' : (Fin d → R) × (Fin d → R)) :
     vmap f (y + y') = vmap f y + vmap f y' := by
   refine Prod.ext (funext fun i => ?_) (funext fun i => ?_) <;> simp [vmap]
 
 /- English proof (translation)
-Apply the tactic sequence `refine Prod.ext (funext fun i => ?_) (funext fun i => ?_) <;> simp [vmap]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem vmap_sub (f : R →+* S) (y y' : (Fin d → R) × (Fin d → R)) :
     vmap f (y - y') = vmap f y - vmap f y' := by
   refine Prod.ext (funext fun i => ?_) (funext fun i => ?_) <;> simp [vmap]
 
 /- English proof (translation)
-Apply the tactic sequence `refine Prod.ext (funext fun i => ?_) (funext fun i => ?_) <;> simp [vmap]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem vmap_zero (f : R →+* S) : vmap f (0 : (Fin d → R) × (Fin d → R)) = 0 := by
   refine Prod.ext (funext fun i => ?_) (funext fun i => ?_) <;> simp [vmap]
 
 /- English proof (translation)
-Apply the tactic sequence `refine Prod.ext (funext fun i => ?_) (funext fun i => ?_) <;> simp [vmap]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem vmap_smul (f : R →+* S) (c : R) (y : (Fin d → R) × (Fin d → R)) :
     vmap f (c • y) = f c • vmap f y := by
   refine Prod.ext (funext fun i => ?_) (funext fun i => ?_) <;> simp [vmap]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using vmap_zero f`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, vmap_add, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem vmap_sum {A : Type} (s : Finset A) (f : R →+* S) (y : A → (Fin d → R) × (Fin d → R)) :
     vmap f (∑ i ∈ s, y i) = ∑ i ∈ s, vmap f (y i) := by
@@ -64,7 +64,7 @@ theorem vmap_comp {T : Type} [CommRing T] (f : R →+* S) (g : S →+* T) (y : (
     vmap g (vmap f y) = vmap (g.comp f) y := rfl
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[lin, Matrix.map_apply, MvPowerSeries.coeff_map]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem lin_map (f : R →+* S) (φ : Germ.Pt R 1 d) (m : ℕ) :
     lin (fun i => MvPowerSeries.map f (φ i)) m = (lin φ m).map f := by
@@ -72,7 +72,7 @@ theorem lin_map (f : R →+* S) (φ : Germ.Pt R 1 d) (m : ℕ) :
   simp [lin, Matrix.map_apply, MvPowerSeries.coeff_map]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[bil, Matrix.map_apply, MvPowerSeries.coeff_map]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem bil_map (f : R →+* S) (g : Germ.PS R 2 d) (m n : ℕ) :
     bil (MvPowerSeries.map f g) m n = (bil g m n).map f := by
@@ -80,18 +80,18 @@ theorem bil_map (f : R →+* S) (g : Germ.PS R 2 d) (m n : ℕ) :
   simp [bil, Matrix.map_apply, MvPowerSeries.coeff_map]
 
 /- English proof (translation)
-The claim follows from `funext fun i => RingHom.map_mulVec _ _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem map_mulVec' (f : R →+* S) (M : Matrix (Fin d) (Fin d) R) (v : Fin d → R) :
     (fun i => f (M.mulVec v i)) = (M.map f).mulVec fun i => f (v i) :=
   funext fun i => RingHom.map_mulVec _ _ _ _
 
 /- English proof (translation)
-Rewrite using `[transH_apply, transH_apply, lin_map, lin_map, bil_map]`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Conclude with `map_mulVec' f _ _`. Establish `h1` using `map_mulVec' f (lin ψ 1).transpose (y.2 + (bil lam 1 1).transpose.mulVec y.1)`. Establish `h2` using `map_mulVec' f (bil lam 1 1).transpose y.1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `(fun i => f ((lin ψ 1).transpose.mulVec (y.2 + (bil lam 1 1).transpose.mulVec y.1) i)) = _`. Rewrite using `[h1, Matrix.transpose_map]`. Use `congr 1`. Express the relevant statement in the definitionally equal form `_ = (fun i => f (y.2 i)) + ((bil lam 1 1).map f).transpose.mulVec fun i => f (y.1 i)`. Rewrite using `[← Matrix.transpose_map, ← h2]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem vmap_transH (f : R →+* S) (φ ψ : Germ.Pt R 1 d) (lam : Germ.PS R 2 d)
     (y : (Fin d → R) × (Fin d → R)) :
@@ -113,7 +113,7 @@ theorem vmap_transH (f : R →+* S) (φ ψ : Germ.Pt R 1 d) (lam : Germ.PS R 2 d
 variable {O : Type} [CommRing O] [StarRing O]
 
 /- English proof (translation)
-Establish `: B₂.A.act a = fun i => MvPowerSeries.map f (B.A.act a i)` using `funext (h.act a)`. Rewrite using `[rho, this, lin_map]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem rho_map {f : R →+* S} {B : Germ.FB R d O} {B₂ : Germ.FB S d O} (h : IsMapOf f B B₂) (a : O) :
     rho B₂ a = (rho B a).map f := by
@@ -122,11 +122,11 @@ theorem rho_map {f : R →+* S} {B : Germ.FB R d O} {B₂ : Germ.FB S d O} (h : 
   rfl
 
 /- English proof (translation)
-Rewrite using `[rhoH_apply, rhoH_apply, rho_map h, rho_map h, h.ad, bil_map]`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Conclude with `map_mulVec' f _ _`. Establish `h1` using `map_mulVec' f (rho B (star a)).transpose y.2`. Establish `h2` using `map_mulVec' f (bil (B.ad a) 1 1).transpose y.1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1`, `h2` using `[Matrix.transpose_map]`. Express the relevant statement in the definitionally equal form `(fun i => f (((rho B (star a)).transpose.mulVec y.2 - (bil (B.ad a) 1 1).transpose.mulVec y.1) i)) = _`. Express the relevant statement in the definitionally equal form `_ = ((rho B (star a)).map f).transpose.mulVec (fun i => f (y.2 i)) - ((bil (B.ad a) 1 1).map f).transpose.mulVec fun i => f (y.1 i)`. Rewrite `*` using `[← Matrix.transpose_map, ← Matrix.transpose_map]`. Rewrite using `[← h1, ← h2]`.
+Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem vmap_rhoH {f : R →+* S} {B : Germ.FB R d O} {B₂ : Germ.FB S d O} (h : IsMapOf f B B₂) (a : O)
     (y : (Fin d → R) × (Fin d → R)) : vmap f (rhoH B a y) = rhoH B₂ a (vmap f y) := by
@@ -166,9 +166,9 @@ def eigW {R : Type} [CommRing R] {d : ℕ} (B : Germ.FB R d (𝓞 E)) (τ : 𝓞
   ⨆ a : 𝓞 E, LinearMap.range (rhoH B a - τ a • LinearMap.id)
 
 /- English proof (translation)
-Use `Submodule.iSup_induction (motive := fun y => vmap f y ∈ eigW B₂ (f.comp τ)) _ hy ?_ ?_ ?_` and prove the remaining obligations. Introduce and unpack `a _ ⟨w, rfl⟩`. Use `Submodule.mem_iSup_of_mem a ⟨vmap f w, ?_⟩` and prove the remaining obligations. Simplify using `[vmap_sub, vmap_smul, vmap_rhoH h]`. Simplify using `[vmap_zero]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Introduce `y y' h1 h2`. Rewrite using `[vmap_add]`. Conclude with `add_mem h1 h2`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vmap_mem_eigW {R S : Type} [CommRing R] [CommRing S] {d : ℕ} {f : R →+* S} {B : Germ.FB R d (𝓞 E)}
     {B₂ : Germ.FB S d (𝓞 E)} (h : IsMapOf f B B₂) (τ : 𝓞 E →+* R) {y : (Fin d → R) × (Fin d → R)}
@@ -183,7 +183,7 @@ theorem vmap_mem_eigW {R S : Type} [CommRing R] [CommRing S] {d : ℕ} {f : R �
     exact add_mem h1 h2
 
 /- English proof (translation)
-Use `Submodule.iSup_induction (motive := P) _ hw ?_ h0 hadd` and prove the remaining obligations. Introduce and unpack `a _ ⟨y, rfl⟩`. Conclude with `hg a y`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem eigW_induction {R : Type} [CommRing R] {d : ℕ} {B : Germ.FB R d (𝓞 E)} {τ : 𝓞 E →+* R}
     {P : (Fin d → R) × (Fin d → R) → Prop} {w : (Fin d → R) × (Fin d → R)} (hw : w ∈ eigW B τ)
@@ -193,15 +193,15 @@ theorem eigW_induction {R : Type} [CommRing R] {d : ℕ} {B : Germ.FB R d (𝓞 
   exact hg a y
 
 /- English proof (translation)
-Establish `hy : y ∈ Submodule.span R (Set.range fun q : Fin r × Module.Free.ChooseBasisIndex ℤ (𝓞 E) => rhoH B (RingOfIntegers.basis E q.2) (x q.1))` using `h.2 ▸ trivial`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨q, rfl⟩` from `hy`. Use `⟨Pi.single q.1 (τ (RingOfIntegers.basis E q.2)), ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.mem_iSup_of_mem (RingOfIntegers.basis E q.2) ⟨x q.1, ?_⟩` and prove the remaining obligations. Simplify using `[Pi.single_apply, ite_smul]`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `add y y' _ _ h1 h2`. Take `⟨m, hm⟩` from `h1`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨m', hm'⟩` from `h2`. Use `⟨m + m', ?_⟩` and prove the remaining obligations. Use `add_mem hm hm'` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Simplify using `only [Pi.add_apply, add_smul, Finset.sum_add_distrib]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules.
 
-Normalize the expressions using the abelian group laws. Consider the case `smul c y _ h1`. Take `⟨m, hm⟩` from `h1`. Use `⟨c • m, ?_⟩` and prove the remaining obligations. Use `(eigW B τ).smul_mem c hm` as an intermediate fact.
+Normalize the expressions using the abelian group laws. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `this using 1` and compare the differences between its conclusion and the goal. Simplify using `only [Pi.smul_apply, smul_sub, Finset.smul_sum, smul_eq_mul, mul_smul]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules.
 -/
 theorem exists_sub_mem_eigW {R : Type} [CommRing R] {d r : ℕ} {B : Germ.FB R d (𝓞 E)}
     {x : Fin r → (Fin d → R) × (Fin d → R)} (h : IsHBasis B x) (τ : 𝓞 E →+* R)
@@ -232,7 +232,7 @@ theorem exists_sub_mem_eigW {R : Type} [CommRing R] {d r : ℕ} {B : Germ.FB R d
     simp only [Pi.smul_apply, smul_sub, Finset.smul_sum, smul_eq_mul, mul_smul]
 
 /- English proof (translation)
-Rewrite using `[vmap_sub, vmap_transH, vmap_comp, vmap_comp, h, vmap_sum]`. Simplify using `only [vmap_smul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem vmap_rel {R R' K L : Type} [CommRing R] [CommRing R'] [CommRing K] [CommRing L] {d r : ℕ} (v₀ : R →+* K)
     (v : R' →+* L) (j : L →+* K) (c : R' →+* R) (h : j.comp v = v₀.comp c) (φ' ψ' : Germ.Pt R 1 d)
@@ -261,7 +261,7 @@ def toH (S : GermSys t ξ M) (p : Cpt ξ) (y : (Fin d → X.presheaf.stalk p.1) 
   toVec Ω d (transH (S.φ p) (S.ψ p) (S.lam p) (vmap (genMap ξ p) y))
 
 /- English proof (translation)
-Simplify using `[toH, vmap_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem toH_add (S : GermSys t ξ M) (p : Cpt ξ)
     (y y' : (Fin d → X.presheaf.stalk p.1) × (Fin d → X.presheaf.stalk p.1)) :
@@ -269,7 +269,7 @@ theorem toH_add (S : GermSys t ξ M) (p : Cpt ξ)
   simp [toH, vmap_add]
 
 /- English proof (translation)
-Simplify using `[toH, vmap_sub]`.
+Simplify using the standard rewrite rules.
 -/
 theorem toH_sub (S : GermSys t ξ M) (p : Cpt ξ)
     (y y' : (Fin d → X.presheaf.stalk p.1) × (Fin d → X.presheaf.stalk p.1)) :
@@ -277,14 +277,14 @@ theorem toH_sub (S : GermSys t ξ M) (p : Cpt ξ)
   simp [toH, vmap_sub]
 
 /- English proof (translation)
-Simplify using `[toH, vmap_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem toH_zero (S : GermSys t ξ M) (p : Cpt ξ) :
     toH S p (0 : (Fin d → X.presheaf.stalk p.1) × (Fin d → X.presheaf.stalk p.1)) = 0 := by
   simp [toH, vmap_zero]
 
 /- English proof (translation)
-Simplify using `[toH, vmap_smul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem toH_smul (S : GermSys t ξ M) (p : Cpt ξ) (c : X.presheaf.stalk p.1)
     (y : (Fin d → X.presheaf.stalk p.1) × (Fin d → X.presheaf.stalk p.1)) :
@@ -292,7 +292,7 @@ theorem toH_smul (S : GermSys t ξ M) (p : Cpt ξ) (c : X.presheaf.stalk p.1)
   simp [toH, vmap_smul]
 
 /- English proof (translation)
-Simplify using `[toH, vmap_sum]`.
+Simplify using the standard rewrite rules.
 -/
 theorem toH_sum {A : Type} (s : Finset A) (S : GermSys t ξ M) (p : Cpt ξ)
     (y : A → (Fin d → X.presheaf.stalk p.1) × (Fin d → X.presheaf.stalk p.1)) :
@@ -300,7 +300,7 @@ theorem toH_sum {A : Type} (s : Finset A) (S : GermSys t ξ M) (p : Cpt ξ)
   simp [toH, vmap_sum]
 
 /- English proof (translation)
-Establish `h1 : (genMap ξ q).comp (X.presheaf.stalkSpecializes h).hom = genMap ξ p` using `RingHom.ext fun s => ProjectiveLinePlaces.genMap_specializes h q.2 p.2 s`. Rewrite using `[toH, toH, vmap_transH, vmap_comp, h1, he]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem toH_spec (S : GermSys t ξ M) (p q : Cpt ξ) (h : q.1 ⤳ p.1) {φ' ψ' : Germ.Pt (X.presheaf.stalk q.1) 1 d}
     {lam' : Germ.PS (X.presheaf.stalk q.1) 2 d}

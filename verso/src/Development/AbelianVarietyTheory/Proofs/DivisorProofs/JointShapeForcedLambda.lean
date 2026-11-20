@@ -7,9 +7,9 @@ namespace GlobalTheory.ShapeForced
 open Formalism.BasicNotions.TH
 
 /- English proof (translation)
-Rewrite using `[List.getD_eq_getElem?_getD]`. Distinguish the cases in `h1 : i < m`. Rewrite using `[List.getElem?_append_left (by simpa using h1)]; simp [h1]`. Rewrite using `[List.getElem?_append_right (by simp; omega)]`. Simplify using `only [List.length_replicate, h1, if_false, List.getElem?_replicate]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `h2 : i < m + k`. Simplify using `[h2, show i - m < k by omega]`. Simplify using `[h2, show ¬ i - m < k by omega]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem getD_replicate_append (m k : ℕ) (u w : ℚ) (i : ℕ) :
     (List.replicate m u ++ List.replicate k w).getD i 0 = if i < m then u else if i < m + k then w else 0 := by
@@ -23,7 +23,7 @@ theorem getD_replicate_append (m k : ℕ) (u w : ℚ) (i : ℕ) :
     · simp [h2, show ¬ i - m < k by omega]
 
 /- English proof (translation)
-Introduce `x hx`. Take `⟨i, hi, rfl⟩` from `List.mem_iff_getElem.mp hx`. Use `h i (hn ▸ hi)` as an intermediate fact. Rewrite `this` using `[List.getD_eq_getElem _ _ hi]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem all_eq_of_getD {L : List ℚ} {n : ℕ} {v : ℚ} (hn : L.length = n) (h : ∀ i < n, L.getD i 0 = v) :
     ∀ x ∈ L, x = v := by
@@ -33,15 +33,15 @@ theorem all_eq_of_getD {L : List ℚ} {n : ℕ} {v : ℚ} (hn : L.length = n) (h
   rwa [List.getD_eq_getElem _ _ hi] at this
 
 /- English proof (translation)
-Simplify using `[pad]`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem pad_length (a b : List ℤ) (k : ℕ) : (pad a k b).length = a.length + k + b.length := by
   simp [pad]; omega
 
 /- English proof (translation)
-Establish `hall` using `all_eq_of_getD (by rw [pad_length]; omega) h`. Use `⟨fun x hx => hall _ ?_, fun x hx => hall _ ?_, fun hk => hall _ ?_⟩` and prove the remaining obligations. Simplify using `only [pad, List.map_append, List.mem_append, List.mem_map]`. Conclude with `Or.inl (Or.inl ⟨x, hx, rfl⟩)`. Simplify using `only [pad, List.map_append, List.mem_append, List.mem_map]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Prove the first alternative. Simplify using the standard rewrite rules.
 
-Conclude with `Or.inr ⟨x, hx, rfl⟩`. Simplify using `only [pad, List.map_append, List.mem_append, List.mem_map]`. Conclude with `Or.inl (Or.inr ⟨0, List.mem_replicate.mpr ⟨by omega, rfl⟩, by simp⟩)`.
+Prove the second alternative. Simplify using the standard rewrite rules. Prove the first alternative.
 -/
 theorem forced (a b : List ℤ) (n : ℕ) (v : ℚ) (hlen : a.length + b.length ≤ n)
     (h : ∀ i < n, (pad a (n - a.length - b.length) b).getD i 0 = v) :
@@ -54,7 +54,7 @@ theorem forced (a b : List ℤ) (n : ℕ) (v : ℚ) (hlen : a.length + b.length 
     exact Or.inl (Or.inr ⟨0, List.mem_replicate.mpr ⟨by omega, rfl⟩, by simp⟩)
 
 /- English proof (translation)
-Rewrite using `[List.eq_nil_iff_forall_not_mem]`. Introduce `x hx`. Establish `h1` using `he x hx`. Establish `h2 : (x : ℚ) < 0` using `by exact_mod_cast hl x hx`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem cast_pos_of {l : List ℤ} {v : ℚ} (hv : 0 < v) (hl : ∀ x ∈ l, x < 0) (he : ∀ x ∈ l, (x : ℚ) = v) : l = [] := by
   rw [List.eq_nil_iff_forall_not_mem]
@@ -64,7 +64,7 @@ theorem cast_pos_of {l : List ℤ} {v : ℚ} (hv : 0 < v) (hl : ∀ x ∈ l, x <
   linarith
 
 /- English proof (translation)
-Rewrite using `[List.eq_nil_iff_forall_not_mem]`. Introduce `x hx`. Establish `h1` using `he x hx`. Establish `h2 : (0 : ℚ) < x` using `by exact_mod_cast hl x hx`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem cast_neg_of {l : List ℤ} {v : ℚ} (hv : v < 0) (hl : ∀ x ∈ l, 0 < x) (he : ∀ x ∈ l, (x : ℚ) = v) : l = [] := by
   rw [List.eq_nil_iff_forall_not_mem]
@@ -74,7 +74,7 @@ theorem cast_neg_of {l : List ℤ} {v : ℚ} (hv : v < 0) (hl : ∀ x ∈ l, 0 <
   linarith
 
 /- English proof (translation)
-Rewrite using `[List.eq_replicate_iff]`. Use `⟨by simp [hn], ?_⟩` and prove the remaining obligations. Introduce `y hy`. Take `⟨x, hx, rfl⟩` from `List.mem_map.mp hy`. Conclude with `he x hx`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem map_rep {l : List ℤ} {n : ℕ} {v : ℚ} (hn : l.length = n) (he : ∀ x ∈ l, (x : ℚ) = v) :
     l.map (fun x : ℤ => (x : ℚ)) = List.replicate n v := by
@@ -88,41 +88,41 @@ end GlobalTheory.ShapeForced
 
 open Formalism.BasicNotions.TH GlobalTheory.ShapeForced in
 /- English proof (translation)
-Introduce `P Q P' Q' R S κ hN`. Take `⟨hR, hS, hSP, hSQ', -, -, hlt⟩` from `hN`. Establish `hltQ : (R : ℚ) + S < κ` using `by exact_mod_cast hlt`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `μ' ⟨a, b, c, d, ha, hc, hb, hd, -, -, -, -, hab, hcd, had, hcb, h1, h2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Establish `pA : 0 < (κ : ℚ) / 2 - cPair R S` using `by unfold cPair; linarith`. Establish `pC : 0 < (κ : ℚ) / 2 + cPair R S` using `by unfold cPair; linarith`. Establish `hA : ∀ i < P, (pad a (P - a.length - b.length) b).getD i 0 = (κ : ℚ) / 2 - cPair R S`. Introduce `i hi`. Use `congrFun h1 (.inl ⟨i, hi⟩)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify `this.symm` using `[shiftNu, ofBlocks]`. Establish `hC : ∀ j < Q, (pad c (Q - c.length - d.length) d).getD j 0 = (κ : ℚ) / 2 + cPair R S`. Introduce `j hj`. Use `congrFun h1 (.inr ⟨j, hj⟩)` as an intermediate fact. Simplify `this.symm` using `[shiftNu, ofBlocks]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Take `⟨haA, hbA, hkA⟩` from `forced a b P _ hab hA`. Take `⟨hcC, hdC, hkC⟩` from `forced c d Q _ hcd hC`. Establish `hb0` using `cast_pos_of pA hb hbA`. Establish `hd0` using `cast_pos_of pC hd hdC`. Substitute `hb0 hd0` using the available equality.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality.
 
-Establish `hal : a.length = P`. Assume the negation of the conclusion as `hne`. Use `hkA (by simp; omega)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hcl : c.length = Q`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hne`. Use `hkC (by simp; omega)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hamap` using `map_rep hal haA`. Establish `hcmap` using `map_rep hcl hcC`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `x`. Use `congrFun h2 x` as an intermediate fact. Break down `x with ⟨i, hi⟩ | ⟨j, hj⟩` into its components or cases. Simplify using `only [shiftNu, ofBlocks, pad, List.map_append, List.map_replicate, hamap, List.map_nil, List.append_nil, getD_replicate_append, Int.cast_zero] at this`. Simplify using `only [GlobalTheory.RealLift.lam]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `split_ifs at this ⊢ <;> first | linarith | omega`. Simplify using `only [shiftNu, ofBlocks, pad, List.map_append, List.map_replicate, hcmap, List.map_nil, List.append_nil, getD_replicate_append, Int.cast_zero] at this`. Simplify using `only [GlobalTheory.RealLift.lam]`. Apply the tactic sequence `split_ifs at this ⊢ <;> first | linarith | omega`. Introduce and unpack `μ' ⟨a, b, c, d, ha, hc, hb, hd, -, -, -, -, hab, hcd, had, hcb, h1, h2⟩`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Assume the hypotheses and unpack their components.
 
-Establish `pB : -((κ : ℚ) / 2) - cPair R S < 0` using `by unfold cPair; linarith`. Establish `pD : -((κ : ℚ) / 2) + cPair R S < 0` using `by unfold cPair; linarith`. Establish `hB : ∀ i < P', (pad a (P' - a.length - b.length) b).getD i 0 = -((κ : ℚ) / 2) - cPair R S`. Introduce `i hi`. Use `congrFun h1 (.inl ⟨i, hi⟩)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify `this.symm` using `[shiftNu, ofBlocks]`. Establish `hD : ∀ j < Q', (pad c (Q' - c.length - d.length) d).getD j 0 = -((κ : ℚ) / 2) + cPair R S`. Introduce `j hj`. Use `congrFun h1 (.inr ⟨j, hj⟩)` as an intermediate fact. Simplify `this.symm` using `[shiftNu, ofBlocks]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Take `⟨haB, hbB, hkB⟩` from `forced a b P' _ hab hB`. Take `⟨hcD, hdD, hkD⟩` from `forced c d Q' _ hcd hD`. Establish `ha0` using `cast_neg_of pB ha haB`. Establish `hc0` using `cast_neg_of pD hc hcD`. Substitute `ha0 hc0` using the available equality.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality.
 
-Establish `hbl : b.length = P'`. Assume the negation of the conclusion as `hne`. Use `hkB (by simp at hab ⊢; omega)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hdl : d.length = Q'`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hne`. Use `hkD (by simp at hcd ⊢; omega)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hbmap` using `map_rep hbl hbB`. Establish `hdmap` using `map_rep hdl hdD`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `x`. Use `congrFun h2 x` as an intermediate fact. Break down `x with ⟨i, hi⟩ | ⟨j, hj⟩` into its components or cases. Simplify using `only [shiftNu, ofBlocks, pad, List.map_append, List.map_replicate, hdmap, List.map_nil, List.nil_append, List.length_nil, getD_replicate_append, Int.cast_zero] at this`. Simplify using `only [GlobalTheory.RealLift.lam]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Substitute `hR hS` using the available equality. Unfold `cPair at this ⊢`. Move the coercions through the operations in `at this ⊢`. Apply the tactic sequence `split_ifs at this ⊢ <;> first | linarith | omega`. Simplify using `only [shiftNu, ofBlocks, pad, List.map_append, List.map_replicate, hbmap, List.map_nil, List.nil_append, List.length_nil, getD_replicate_append, Int.cast_zero] at this`.
+Substitute using the available equality. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Simplify using `only [GlobalTheory.RealLift.lam]`. Substitute `hR hS` using the available equality. Unfold `cPair at this ⊢`. Move the coercions through the operations in `at this ⊢`. Rewrite `this` using `[hbl]`.
+Simplify using the standard rewrite rules. Substitute using the available equality. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Rewrite the indicated hypotheses using the stated equalities.
 
-Distinguish the cases in `hjQ : j < Q`. Rewrite `this` using `[if_pos (by omega)]`. Rewrite using `[if_pos hjQ]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite `this` using `[if_neg (by omega), if_pos (by omega)]`.
+Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[if_neg hjQ]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem GlobalTheory.RealLift.jointShape_halfKappa : ∀ (P Q P' Q' R S : ℕ) (κ : ℤ), GlobalTheory.RealLift.Num P Q P' Q' R S κ → (∀ μ' : Formalism.BasicNotions.TH.Ix R S → ℚ, Formalism.BasicNotions.TH.JointShape P Q R S (fun _ => (κ : ℚ) / 2) μ' → μ' = GlobalTheory.RealLift.lam P Q R S κ) ∧ ∀ μ' : Formalism.BasicNotions.TH.Ix R S → ℚ, Formalism.BasicNotions.TH.JointShape P' Q' R S (fun _ => -((κ : ℚ) / 2)) μ' → (fun c => μ' c + (κ : ℚ) / 2) = GlobalTheory.RealLift.lam P Q R S κ := by
   intro P Q P' Q' R S κ hN

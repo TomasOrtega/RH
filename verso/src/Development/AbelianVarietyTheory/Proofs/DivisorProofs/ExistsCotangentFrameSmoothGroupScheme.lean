@@ -17,9 +17,9 @@ open GlobalTheory.VB GlobalTheory.Conormal
 namespace GlobalTheory.ConormalFrame
 
 /- English proof (translation)
-Use `(GlobalTheory.QCoh.isLocalizedModule_resBasicOpen_iff _ f).2 ⟨fun s => ?_, fun t ht => ?_⟩` and prove the remaining obligations. Take `⟨n, t, e⟩` from `GlobalTheory.QCoh.exists_pow_smul_eq_res F hU f (X.basicOpen_le f) rfl (N.incl.app _ s)`. Take `⟨m, hm⟩` from `h f t (by`. Express the relevant statement in the definitionally equal form `F.presheaf.map _ t ∈ _`. Rewrite using `[← e]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(N.sec _).smul_mem _ (N.incl_app_mem s))`. Use `⟨m + n, N.mkSec _ hm, N.incl_app_injective _ ?_⟩` and prove the remaining obligations. Rewrite using `[Scheme.Modules.Hom.app_smul, GlobalTheory.QCoh.app_res, Sub.incl_app_mkSec, Scheme.Modules.map_smul, ← e, pow_add, mul_smul, map_pow]`. Take `⟨n, e⟩` from `GlobalTheory.QCoh.exists_pow_smul_eq_zero F hU f (X.basicOpen_le f) rfl (N.incl.app _ t) (by rw [← GlobalTheory.QCoh.app_res, ht, map_zero])`. Conclude with `⟨n, N.incl_app_injective _ (by rw [Scheme.Modules.Hom.app_smul, e, map_zero])⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem sub_isLocalizedModule {X : Scheme.{0}} {F : X.Modules} [F.IsQuasicoherent] (N : Sub F)
     {U : X.Opens} (hU : IsAffineOpen U)
@@ -46,7 +46,7 @@ variable {S X : Scheme.{0}} {π : X ⟶ S} {e : S ⟶ X} (he : e ≫ π = 𝟙 S
 include he in
 
 /- English proof (translation)
-The claim follows from `le_antisymm ((le_preimage_iff he).1 (e.preimage_mono c.le_base)) c.le`.
+A detailed English derivation is pending.
 -/
 theorem preimage_eq (c : IsChart π e U W) : e ⁻¹ᵁ W = U :=
   le_antisymm ((le_preimage_iff he).1 (e.preimage_mono c.le_base)) c.le
@@ -54,11 +54,11 @@ theorem preimage_eq (c : IsChart π e U W) : e ⁻¹ᵁ W = U :=
 include he in
 
 /- English proof (translation)
-Use `(isVB_structureModule X).isQuasicoherent` as an intermediate fact. Use `(GlobalTheory.QCoh.isQuasicoherent_restrict_fromSpec_iff _ c.affine).2 (sub_isLocalizedModule _ c.affine fun f (t : Γ(X, W)) ht => ?_)` and prove the remaining obligations. Establish `hcpt : IsCompact ((e ⁻¹ᵁ W : S.Opens) : Set S)`. Rewrite using `[preimage_eq he c]`. Conclude with `c.affine_base.isCompact`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨n, hn⟩` from `exists_pow_mul_eq_zero_of_res_basicOpen_eq_zero_of_isCompact S (U := e ⁻¹ᵁ W) hcpt (e.appLE W _ le_rfl t) (e.appLE W _ le_rfl f) (by`. Establish `hle : S.basicOpen (e.appLE W _ le_rfl f) ≤ e ⁻¹ᵁ X.basicOpen f`. Rewrite using `[Scheme.Hom.appLE_eq_app, e.preimage_basicOpen]`. Use `congrArg (ReciprocityTheory.ChartRestriction.G.Geo.Tor.resG S hle) (show e.appLE _ _ le_rfl (ReciprocityTheory.ChartRestriction.G.Geo.Tor.resG X (X.basicOpen_le f) t) = 0 from ht)` as an intermediate fact. Rewrite `this` using `[GlobalTheory.DualPull.resG_appLE, GlobalTheory.DualPull.appLE_resG, map_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(GlobalTheory.DualPull.resG_appLE e _ _ _).trans this)`. Use `⟨n, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `e.appLE W _ le_rfl (f ^ n * t) = 0`. Rewrite using `[map_mul, map_pow, hn]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isQuasicoherent_restrict_ideal (c : IsChart π e U W) :
     ((ideal e).restrict c.affine.fromSpec).IsQuasicoherent := by
@@ -89,7 +89,7 @@ variable {S X : Scheme.{0}} {π : X ⟶ S} {e : S ⟶ X} (he : e ≫ π = 𝟙 S
 include he in
 
 /- English proof (translation)
-Use `GlobalTheory.QCoh.isQuasicoherent_of_forall_exists_affine _ fun x => ?_` and prove the remaining obligations. Take `⟨U, W, hx, -, c⟩` from `exists_isChart he (x := x) (V := ⊤) trivial`. Use `isQuasicoherent_restrict_ideal he c` as an intermediate fact. Use `⟨U, c.affine_base, hx, (GlobalTheory.QCoh.isQuasicoherent_restrict_fromSpec_iff _ c.affine_base).mp ?_⟩` and prove the remaining obligations. Conclude with `(SheafOfModules.isQuasicoherent (Spec Γ(S, U)).ringCatSheaf).prop_of_iso ((GlobalTheory.QCoh.restrictPullbackIso (IsAffineOpen.SpecMap_appLE_fromSpec e c.affine c.affine_base c.le)).app (ideal e)) (GlobalTheory.QCoh.isQuasicoherent_pullback_Spec (e.appLE W U c.le) ((ideal e).rest …`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isQuasicoherent_conormal : (conormal e).IsQuasicoherent := by
   refine GlobalTheory.QCoh.isQuasicoherent_of_forall_exists_affine _ fun x => ?_
@@ -111,7 +111,7 @@ open GlobalTheory.QCoh
 set_option backward.isDefEq.respectTransparency false in
 
 /- English proof (translation)
-The claim follows from `appLE_isScalarTower f ((Scheme.Modules.pullback f).obj G) e IsBaseChange Γ(X, U) (pullbackSections f G e) := by letI := appLEAlgebra f e letI := appLEModule f ((Scheme.Modules.pullback f).obj G) e haveI := appLE_isScalarTower f ((Scheme.Modules.pullback f).obj G) e obtain ⟨a, ha⟩ …`.
+A detailed English derivation is pending.
 -/
 theorem isBaseChange_pullbackSections {X Y : Scheme.{0}} (f : X ⟶ Y) (G : Y.Modules)
     {U : X.Opens} {V : Y.Opens} (hU : IsAffineOpen U) (hV : IsAffineOpen V)
@@ -146,13 +146,13 @@ variable {S X : Scheme.{0}} {π : X ⟶ S} {e : S ⟶ X} (he : e ≫ π = 𝟙 S
   {W : X.Opens}
 
 /- English proof (translation)
-Use `letI := c.algebra`. Use `letI := GlobalTheory.QCoh.appLEAlgebra e c.le`. Use `letI := GlobalTheory.QCoh.appLEModule e ((Scheme.Modules.pullback e).obj (ideal e)) c.le`. Use `haveI := GlobalTheory.QCoh.appLE_isScalarTower e ((Scheme.Modules.pullback e).obj (ideal e)) c.le`. Use `haveI := AugCot.isScalarTower_of_algebraMap_eq (c.aug he) fun _ => rfl`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `haveI := isQuasicoherent_restrict_ideal he c`. Establish `hb` using `isBaseChange_pullbackSections e (ideal e) c.affine_base c.affine c.le`. Set `g : Γ(ideal e, W) →ₗ[Γ(X, W)] AugCot (c.aug he)` to `(RingHom.ker (c.aug he)).toCotangent ∘ₗ (GlobalTheory.QCoh.appLinear (idealSub e).incl W).codRestrict (RingHom.ker (c.aug he)) fun s => (c.aug_eq_zero_iff he).2 ((idealSub e).incl_app_mem s)`. Establish `key (x : RingHom.ker (c.aug he)) : c.ofAugCot he ((RingHom.ker (c.aug he)).toCotangent x) = cls c.le x ((c.aug_eq_zero_iff he).1 x.2)` using `d_eq_cls he _ _ _`. Use `Function.bijective_iff_has_inverse.2 ⟨hb.lift g, fun x => ?_, fun y => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨x, rfl⟩` from `(RingHom.ker (c.aug he)).toCotangent_surjective x`. Rewrite using `[key]`. Conclude with `hb.lift_eq g _`. Use `hb.inductionOn y (fun y => c.ofAugCot he (hb.lift g y) = y) (by rw [map_zero, map_zero]; rfl) (fun s => ?_) (fun r y hy => ?_) fun y z hy hz => ?_` and prove the remaining obligations. Rewrite using `[hb.lift_eq]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Conclude with `key _`. Rewrite using `[map_smul, map_smul, hy]`. Both sides reduce to the same expression. Rewrite using `[map_add, map_add, hy, hz]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem ofAugCot_bijective (c : IsChart π e U W) : Function.Bijective (c.ofAugCot he) := by
   letI := c.algebra
@@ -183,9 +183,9 @@ theorem ofAugCot_bijective (c : IsChart π e U W) : Function.Bijective (c.ofAugC
 include he in
 
 /- English proof (translation)
-Use `isQuasicoherent_conormal he` as an intermediate fact. Take `⟨U, W, hx, -, c⟩` from `exists_isChart he (x := x) (V := ⊤) trivial`. Use `letI := c.algebra`. Establish `: Algebra.Smooth Γ(S, U) Γ(X, W)` using `Smooth.smooth_appLE π c.affine_base c.affine c.le_base`. Set `E` to `LinearEquiv.ofBijective (c.ofAugCot he) (ofAugCot_bijective he c)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `Module.Finite.equiv E` as an intermediate fact. Use `Module.Projective.of_equiv E` as an intermediate fact. Conclude with `Summand.exists_frame_of_projective c.affine_base ⟨x, hx⟩`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_isFrame [Smooth π] (x : S) :
     ∃ (U : S.Opens) (n : ℕ) (s : Fin n → Γ(conormal e, U)), x ∈ U ∧ IsFrame s := by
@@ -201,7 +201,7 @@ theorem exists_isFrame [Smooth π] (x : S) :
 end GlobalTheory.ConormalFrame
 
 /- English proof (translation)
-Introduce `_ _ A _ _ x` and use `GlobalTheory.ConormalFrame.exists_isFrame (GlobalTheory.LieVB.sec_hom η[A]) x`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.ConormalFrame.exists_isFrame_omega : ∀ (O : Type) [CommRing O] (A : Over (Sp O))
     [GrpObj A] [Smooth A.hom] (x : Sp O), ∃ (U : (Sp O).Opens) (n : ℕ)

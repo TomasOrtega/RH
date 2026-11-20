@@ -38,7 +38,7 @@ def StepCore : Prop :=
         (be l ex ph (Xv 0) (mulBy l ex α.2 (Xv 1)))
 
 /- English proof (translation)
-The claim follows from `h`.
+A detailed English derivation is pending.
 -/
 theorem beConjNorm_of (h : StepCore) : PI.BeConjNorm.BeConjNorm := h
 

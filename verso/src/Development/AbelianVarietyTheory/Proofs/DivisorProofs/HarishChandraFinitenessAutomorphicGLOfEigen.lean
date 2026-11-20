@@ -11,13 +11,11 @@ open NumberField GlobalTheory.CuspRep
 namespace GlobalTheory.HCF
 
 /- English proof (translation)
-Introduce `E _ _ _ a L hL W _ _ _ ρ _ c`. Use `haveI hW' : FiniteDimensional ℂ (GlobalTheory.Published.AutFin.coeffSpan ρ) := GlobalTheory.T.finiteDimensional_matrixCoefficientSpan _ W ρ`. Set `χ : Module.End ℂ (Sm E a) → ℂ` to `fun z => if hz : ∃ s : ℂ, ∀ φ : Sm E a, (∀ τ u, cap τ u φ = c τ u • φ) → z φ = s • φ then hz.choose else 0`. Establish `hsub : GlobalTheory.Published.AutFinGL.forms L ρ c ⊆ formsGL E a L (GlobalTheory.Published.AutFin.coeffSpan ρ) {χ} 1`. Introduce and unpack `φ ⟨h1, h2, h3, h4⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨h1, h2, h3, χ, rfl, ?_⟩` and prove the remaining obligations. Introduce `zs hlen hzs`. Use `match zs, hlen with`. Consider the case `[z], _`. Establish `hz : z ∈ Zalg E a` using `hzs z (List.mem_singleton_self z)`.
+Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hex` using `GlobalTheory.T.center_acts_by_scalar_on_eigenforms E a c z hz`. Establish `hχ : χ z = hex.choose` using `dif_pos hex`. Simplify using `only [List.foldr_cons, List.foldr_nil]`. Rewrite using `[hχ, hex.choose_spec φ h4, sub_self]`. Establish `hfin` using `h E a L hL (GlobalTheory.Published.AutFin.coeffSpan ρ) hW' {χ} (Set.finite_singleton χ) 1`.
-
-Conclude with `Submodule.finiteDimensional_of_le (Submodule.span_mono hsub)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem automorphicFormsFiniteGL_of_core (h : CoreFiniteGL) : GlobalTheory.Published.AutomorphicFormsFiniteGL := by
   intro E _ _ _ a L hL W _ _ _ ρ _ c

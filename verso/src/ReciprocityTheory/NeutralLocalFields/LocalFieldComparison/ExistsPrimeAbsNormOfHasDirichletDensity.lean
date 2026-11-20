@@ -11,20 +11,20 @@ variable {K : Type*} [Field K] [NumberField K]
 def ratPrimeBelow (𝔭 : HeightOneSpectrum (𝓞 K)) : ℕ := Ideal.absNorm (𝔭.asIdeal.under ℤ)
 
 /- English proof (translation)
-Use `𝔭.isMaximal` as an intermediate fact. Conclude with `Ideal.IsMaximal.under ℤ 𝔭.asIdeal`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem under_int_isMaximal (𝔭 : HeightOneSpectrum (𝓞 K)) : (𝔭.asIdeal.under ℤ).IsMaximal := by
   have := 𝔭.isMaximal
   exact Ideal.IsMaximal.under ℤ 𝔭.asIdeal
 
 /- English proof (translation)
-The claim follows from `Ring.ne_bot_of_isMaximal_of_not_isField (under_int_isMaximal 𝔭) Int.not_isField`.
+A detailed English derivation is pending.
 -/
 private theorem under_int_ne_bot' (𝔭 : HeightOneSpectrum (𝓞 K)) : 𝔭.asIdeal.under ℤ ≠ ⊥ :=
   Ring.ne_bot_of_isMaximal_of_not_isField (under_int_isMaximal 𝔭) Int.not_isField
 
 /- English proof (translation)
-Take `⟨a, rfl⟩ : ∃ a, J = Ideal.span {a}` from `⟨_, (Submodule.IsPrincipal.span_singleton_generator J).symm⟩`. Rewrite using `[Ideal.absNorm_span_singleton]`. Simplify using `[Algebra.norm_self]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem int_ideal_eq_span_absNorm (J : Ideal ℤ) : J = Ideal.span {((Ideal.absNorm J : ℕ) : ℤ)} := by
   obtain ⟨a, rfl⟩ : ∃ a, J = Ideal.span {a} :=
@@ -33,16 +33,16 @@ private theorem int_ideal_eq_span_absNorm (J : Ideal ℤ) : J = Ideal.span {((Id
   simp [Algebra.norm_self]
 
 /- English proof (translation)
-The claim follows from `int_ideal_eq_span_absNorm _`.
+A detailed English derivation is pending.
 -/
 private theorem under_eq_span_ratPrimeBelow (𝔭 : HeightOneSpectrum (𝓞 K)) :
     𝔭.asIdeal.under ℤ = Ideal.span {((ratPrimeBelow 𝔭 : ℕ) : ℤ)} :=
   int_ideal_eq_span_absNorm _
 
 /- English proof (translation)
-Establish `hprime : (Ideal.span {((ratPrimeBelow 𝔭 : ℕ) : ℤ)}).IsPrime`. Rewrite using `[← under_eq_span_ratPrimeBelow 𝔭]`. Conclude with `(under_int_isMaximal 𝔭).isPrime`. Establish `h0 : ((ratPrimeBelow 𝔭 : ℕ) : ℤ) ≠ 0`. Introduce `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `under_int_ne_bot' 𝔭` to reduce the goal to its premises. Rewrite using `[under_eq_span_ratPrimeBelow 𝔭, h]`. Conclude with `Ideal.span_singleton_eq_bot.2 rfl`. Rewrite using `[Nat.prime_iff_prime_int]`. Conclude with `(Ideal.span_singleton_prime h0).1 hprime`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ratPrimeBelow_prime (𝔭 : HeightOneSpectrum (𝓞 K)) : (ratPrimeBelow 𝔭).Prime := by
   have hprime : (Ideal.span {((ratPrimeBelow 𝔭 : ℕ) : ℤ)}).IsPrime := by
@@ -56,7 +56,7 @@ theorem ratPrimeBelow_prime (𝔭 : HeightOneSpectrum (𝓞 K)) : (ratPrimeBelow
   exact (Ideal.span_singleton_prime h0).1 hprime
 
 /- English proof (translation)
-Establish `h1 : ((ratPrimeBelow 𝔭 : ℕ) : ℤ) ∈ 𝔭.asIdeal.under ℤ`. Rewrite using `[under_eq_span_ratPrimeBelow 𝔭]`. Conclude with `Ideal.subset_span rfl`. Establish `h2 : algebraMap ℤ (𝓞 K) ((ratPrimeBelow 𝔭 : ℕ) : ℤ) ∈ 𝔭.asIdeal` using `h1`. Simplify using `using h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem natCast_ratPrimeBelow_mem (𝔭 : HeightOneSpectrum (𝓞 K)) :
     ((ratPrimeBelow 𝔭 : ℕ) : 𝓞 K) ∈ 𝔭.asIdeal := by
@@ -66,7 +66,7 @@ private theorem natCast_ratPrimeBelow_mem (𝔭 : HeightOneSpectrum (𝓞 K)) :
   simpa using h2
 
 /- English proof (translation)
-Rewrite using `[Ideal.absNorm_span_singleton]`. Establish `: ((p : ℕ) : 𝓞 K) = algebraMap ℤ (𝓞 K) ((p : ℕ) : ℤ)` using `by simp`. Rewrite using `[this, Algebra.norm_algebraMap, NumberField.RingOfIntegers.rank]`. Simplify using `[Int.natAbs_pow]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem absNorm_span_natCast_eq_pow_finrank (p : ℕ) :
     Ideal.absNorm (Ideal.span {((p : ℕ) : 𝓞 K)}) = p ^ Module.finrank ℚ K := by
@@ -76,9 +76,9 @@ private theorem absNorm_span_natCast_eq_pow_finrank (p : ℕ) :
   simp [Int.natAbs_pow]
 
 /- English proof (translation)
-Establish `hp` using `ratPrimeBelow_prime 𝔭`. Establish `hle : Ideal.span {((ratPrimeBelow 𝔭 : ℕ) : 𝓞 K)} ≤ 𝔭.asIdeal` using `Ideal.span_le.2 (Set.singleton_subset_iff.2 (natCast_ratPrimeBelow_mem 𝔭))`. Establish `hdvd : Ideal.absNorm 𝔭.asIdeal ∣ Ideal.absNorm (Ideal.span {((ratPrimeBelow 𝔭 : ℕ) : 𝓞 K)})`. Conclude with `Ideal.absNorm_dvd_absNorm_of_le hle`. Rewrite `hdvd` using `[absNorm_span_natCast_eq_pow_finrank]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨f, -, hf⟩` from `(Nat.dvd_prime_pow hp).1 hdvd`. Conclude with `⟨f, hf⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem absNorm_eq_ratPrimeBelow_pow (𝔭 : HeightOneSpectrum (𝓞 K)) :
     ∃ f : ℕ, Ideal.absNorm 𝔭.asIdeal = ratPrimeBelow 𝔭 ^ f := by
@@ -92,9 +92,9 @@ theorem absNorm_eq_ratPrimeBelow_pow (𝔭 : HeightOneSpectrum (𝓞 K)) :
   exact ⟨f, hf⟩
 
 /- English proof (translation)
-Take `⟨f, hf⟩` from `absNorm_eq_ratPrimeBelow_pow 𝔭`. Establish `hp` using `ratPrimeBelow_prime 𝔭`. Establish `h2 : 2 ≤ Ideal.absNorm 𝔭.asIdeal`. Conclude with `ReciprocityTheory.Neutral.Bridge.DedekindZetaReal.two_le_absNorm (K := K) 𝔭` after adjusting the coercions. Rewrite `h`, `h2`, the goal using `[hf]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `f with _ | _ | f` into its components or cases. Simplify using `at h2`. Conclude with `(h (by simpa using hp)).elim`. Conclude with `Nat.pow_le_pow_right hp.pos (by omega)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ratPrimeBelow_sq_le (𝔭 : HeightOneSpectrum (𝓞 K)) (h : ¬ (Ideal.absNorm 𝔭.asIdeal).Prime) :
     ratPrimeBelow 𝔭 ^ 2 ≤ Ideal.absNorm 𝔭.asIdeal := by
@@ -109,9 +109,9 @@ theorem ratPrimeBelow_sq_le (𝔭 : HeightOneSpectrum (𝓞 K)) (h : ¬ (Ideal.a
   · exact Nat.pow_le_pow_right hp.pos (by omega)
 
 /- English proof (translation)
-Rewrite using `[← under_eq_span_ratPrimeBelow 𝔭]`. Use `under_int_isMaximal 𝔭` as an intermediate fact. Use `𝔭.isMaximal` as an intermediate fact. Establish `: 𝔭.asIdeal.IsPrime` using `𝔭.isPrime`. Rewrite using `[← Finset.mem_coe, IsDedekindDomain.coe_primesOverFinset (under_int_ne_bot' 𝔭)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨inferInstance, ⟨rfl⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_primesOverFinset_ratPrimeBelow (𝔭 : HeightOneSpectrum (𝓞 K)) :
     𝔭.asIdeal ∈ IsDedekindDomain.primesOverFinset (Ideal.span {((ratPrimeBelow 𝔭 : ℕ) : ℤ)}) (𝓞 K) := by
@@ -123,19 +123,17 @@ theorem mem_primesOverFinset_ratPrimeBelow (𝔭 : HeightOneSpectrum (𝓞 K)) :
   exact ⟨inferInstance, ⟨rfl⟩⟩
 
 /- English proof (translation)
-Conclude with `PrincipalIdealRing.isMaximal_of_irreducible (Nat.prime_iff_prime_int.1 hp).irreducible`.
+A detailed English derivation is pending.
 -/
 private theorem span_natCast_isMaximal_of_prime (p : ℕ) (hp : p.Prime) : (Ideal.span {(p : ℤ)}).IsMaximal := by
   exact PrincipalIdealRing.isMaximal_of_irreducible (Nat.prime_iff_prime_int.1 hp).irreducible
 
 /- English proof (translation)
-Use `span_natCast_isMaximal_of_prime p hp` as an intermediate fact. Establish `hp0 : Ideal.span {(p : ℤ)} ≠ ⊥`. Rewrite using `[Ne, Ideal.span_singleton_eq_bot]`. Conclude with `hp.ne_zero` after adjusting the coercions. Establish `hsum` using `Ideal.sum_ramification_inertia (p := Ideal.span {(p : ℤ)}) (S := 𝓞 K) ℚ K hp0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hsum, Finset.card_eq_sum_ones]`. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `P hP`. Rewrite `hP` using `[← Finset.mem_coe, IsDedekindDomain.coe_primesOverFinset hp0]`. Take `⟨hPp, hPo⟩` from `hP`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hle : Ideal.map (algebraMap ℤ (𝓞 K)) (Ideal.span {(p : ℤ)}) ≤ P`. Conclude with `Ideal.map_le_of_le_comap (le_of_eq hPo.over)`. Establish `he : (Ideal.span {(p : ℤ)}).ramificationIdx' P ≠ 0`. Conclude with `Ideal.IsDedekindDomain.ramificationIdx'_ne_zero (Ideal.map_ne_bot_of_ne_bot hp0) hPp hle`. Establish `hf : (Ideal.span {(p : ℤ)}).inertiaDeg' P ≠ 0`.
-
-Conclude with `(Ideal.inertiaDeg'_pos (Ideal.span {(p : ℤ)}) P).ne'`. Conclude with `Nat.one_le_iff_ne_zero.2 (mul_ne_zero he hf)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem card_primesOverFinset_span_le_finrank (p : ℕ) (hp : p.Prime) :
     (IsDedekindDomain.primesOverFinset (Ideal.span {(p:ℤ)}) (𝓞 K)).card ≤ Module.finrank ℚ K := by
@@ -157,11 +155,9 @@ theorem card_primesOverFinset_span_le_finrank (p : ℕ) (hp : p.Prime) :
   exact Nat.one_le_iff_ne_zero.2 (mul_ne_zero he hf)
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation. Apply `Finset.card_le_card_of_injOn (fun x => (g x).asIdeal)` to reduce the goal to its premises. Introduce `x hx`. Establish `hx' : x ∈ F.filter (fun x => ratPrimeBelow (g x) = p)` using `hx`. Establish `h2` using `(Finset.mem_filter.1 hx').2`.
+Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `mem_primesOverFinset_ratPrimeBelow (g x)`. Rewrite `h3` using `[h2]`. Conclude with `h3`. Introduce `x _ y _ hxy`. Conclude with `hg (HeightOneSpectrum.ext hxy)`.
-
-Use `_ ≤ _ := card_primesOverFinset_span_le_finrank (K := K) p hp`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem card_fiber_ratPrimeBelow_le {ι : Type*} (g : ι → HeightOneSpectrum (𝓞 K)) (hg : Function.Injective g)
     (F : Finset ι) (p : ℕ) (hp : p.Prime) :
@@ -180,9 +176,9 @@ theorem card_fiber_ratPrimeBelow_le {ι : Type*} (g : ι → HeightOneSpectrum (
     _ ≤ _ := card_primesOverFinset_span_le_finrank (K := K) p hp
 
 /- English proof (translation)
-Establish `hp` using `ratPrimeBelow_prime 𝔭`. Establish `hsq : ((ratPrimeBelow 𝔭 : ℝ)) ^ 2 ≤ (Ideal.absNorm 𝔭.asIdeal : ℝ)`. Conclude with `ratPrimeBelow_sq_le 𝔭 h` after adjusting the coercions. Establish `hpos : (0:ℝ) < (ratPrimeBelow 𝔭 : ℝ) ^ 2`. Use `hp.pos` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression.
 
-Check the signs of the components of the expression. Establish `h2` using `ReciprocityTheory.Neutral.Bridge.DedekindZetaReal.two_le_absNorm (K := K) 𝔭`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem rpow_neg_le_inv_ratPrimeBelow_sq (𝔭 : HeightOneSpectrum (𝓞 K)) (h : ¬ (Ideal.absNorm 𝔭.asIdeal).Prime)
     {s : ℝ} (hs : 1 < s) :
@@ -199,11 +195,9 @@ theorem rpow_neg_le_inv_ratPrimeBelow_sq (𝔭 : HeightOneSpectrum (𝓞 K)) (h 
     _ ≤ 1 / (ratPrimeBelow 𝔭 : ℝ) ^ 2 := one_div_le_one_div_of_le hpos hsq
 
 /- English proof (translation)
-Establish `hsum : Summable (fun m : ℕ => 1 / (m : ℝ) ^ 2)` using `Real.summable_one_div_nat_pow.2 (by norm_num)`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_congr rfl (g := fun _ => 1 / (m : ℝ) ^ 2) (fun x hx => by rw [(Finset.mem_filter.1 hx).2]), Finset.sum_const, nsmul_eq_mul]`. Use `_ ≤ ∑ m ∈ U.image (fun x => ratPrimeBelow (g x)), (Module.finrank ℚ K : ℝ) * (1 / (m : ℝ) ^ 2) := by`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_le_sum fun m hm => ?_` and prove the remaining obligations. Take `⟨x, _, rfl⟩` from `Finset.mem_image.1 hm`. Use `mul_le_mul_of_nonneg_right ?_ (by positivity)` and prove the remaining obligations. Conclude with `card_fiber_ratPrimeBelow_le g hg U _ (ratPrimeBelow_prime _)` after adjusting the coercions. Use `_ = (Module.finrank ℚ K : ℝ) * ∑ m ∈ U.image (fun x => ratPrimeBelow (g x)), 1 / (m : ℝ) ^ 2 := (Finset.mul_sum _ _ _).symm`.
-
-Use `_ ≤ (Module.finrank ℚ K : ℝ) * ∑' m : ℕ, 1 / (m : ℝ) ^ 2 := by`. Use `mul_le_mul_of_nonneg_left ?_ (Nat.cast_nonneg _)` and prove the remaining obligations. Conclude with `hsum.sum_le_tsum _ (fun m _ => by positivity)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem sum_absNorm_rpow_neg_le_of_not_prime {ι : Type*} (g : ι → HeightOneSpectrum (𝓞 K))
     (hg : Function.Injective g) (U : Finset ι)
@@ -235,7 +229,7 @@ private theorem sum_absNorm_rpow_neg_le_of_not_prime {ι : Type*} (g : ι → He
         exact hsum.sum_le_tsum _ (fun m _ => by positivity)
 
 /- English proof (translation)
-Use `⟨(Module.finrank ℚ K : ℝ) * ∑' m : ℕ, 1 / (m : ℝ) ^ 2, fun s hs => ?_⟩` and prove the remaining obligations. Unfold `NumberField.Set.primeIdealZetaSum`. Use `tsum_le_of_sum_le' (mul_nonneg (Nat.cast_nonneg _) (tsum_nonneg fun m => by positivity)) fun U => ?_` and prove the remaining obligations. Conclude with `sum_absNorm_rpow_neg_le_of_not_prime Subtype.val Subtype.val_injective U (fun x _ => x.2) hs`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_bound_primeIdealZetaSum_not_prime :
     ∃ C : ℝ, ∀ s : ℝ, 1 < s →
@@ -247,21 +241,19 @@ theorem exists_bound_primeIdealZetaSum_not_prime :
   exact sum_absNorm_rpow_neg_le_of_not_prime Subtype.val Subtype.val_injective U (fun x _ => x.2) hs
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Choose the witnesses or unpack the hypotheses as in `⟨B, hB0, hbound⟩ : ∃ B : ℝ, 0 ≤ B ∧ ∀ s : ℝ, 1 < s → NumberField.Set.primeIdealZetaSum S s ≤ B := by`. Use `⟨(hT.toFinset.card : ℝ) + (Module.finrank ℚ K : ℝ) * ∑' m : ℕ, 1 / (m : ℝ) ^ 2, add_nonneg (Nat.cast_nonneg _) (mul_nonneg (Nat.cast_nonneg _) (tsum_nonneg fun m => by positivity)), fun s hs => ?_⟩` and prove the remaining obligations. Unfold `NumberField.Set.primeIdealZetaSum`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Use `tsum_le_of_sum_le' (add_nonneg (Nat.cast_nonneg _) (mul_nonneg (Nat.cast_nonneg _) (tsum_nonneg fun m => by positivity))) fun U => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_filter_add_sum_filter_not U (fun x : S => (x : HeightOneSpectrum (𝓞 K)) ∈ T)]`. Use `add_le_add ?_ ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum fun x _ => Real.rpow_le_one_of_one_le_of_nonpos ?_ (by linarith)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `ReciprocityTheory.Neutral.Bridge.DedekindZetaReal.two_le_absNorm (K := K) (x : HeightOneSpectrum (𝓞 K))` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Use `_ = ((U.filter (fun x : S => (x : HeightOneSpectrum (𝓞 K)) ∈ T)).card : ℝ) := by simp`. Use `_ ≤ (hT.toFinset.card : ℝ) := by`. Use `Nat.cast_le.2 (Finset.card_le_card_of_injOn Subtype.val ?_ Subtype.val_injective.injOn)` and prove the remaining obligations.
+Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `x hx`. Establish `hx'` using `(Finset.mem_filter.1 hx).2`. Conclude with `(Set.Finite.mem_toFinset hT).2 hx'`. Use `sum_absNorm_rpow_neg_le_of_not_prime (ι := S) Subtype.val Subtype.val_injective _ ?_ hs` and prove the remaining obligations. Introduce `x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hcon x.1 x.2 (Finset.mem_filter.1 hx).2`. Establish `h' : Tendsto (fun s => NumberField.Set.primeIdealZetaSum S s / NumberField.Set.primeIdealZetaSum Set.univ s) (𝓝[>] 1) (𝓝 δ)` using `h`. Establish `hU` using `tendsto_primeIdealZetaSum_univ (K := K)`. Establish `h1 : ∀ᶠ s in 𝓝[>] (1 : ℝ), δ / 2 < NumberField.Set.primeIdealZetaSum S s / NumberField.Set.primeIdealZetaSum Set.univ s` using `h'.eventually (lt_mem_nhds (show δ / 2 < δ by linarith))`. Establish `h2 : ∀ᶠ s in 𝓝[>] (1 : ℝ), 2 * (B + 1) / δ < NumberField.Set.primeIdealZetaSum (Set.univ : Set (HeightOneSpectrum (𝓞 K))) s` using `hU.eventually (eventually_gt_atTop (2 * (B + 1) / δ))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : ∀ᶠ s in 𝓝[>] (1 : ℝ), s ∈ Set.Ioi (1 : ℝ)` using `self_mem_nhdsWithin`. Take `⟨s, hs1, hs2, hs3⟩` from `(h1.and (h2.and h3)).exists`. Establish `hc : 0 < 2 * (B + 1) / δ` using `div_pos (by linarith) hδ`. Establish `hpos : 0 < NumberField.Set.primeIdealZetaSum (Set.univ : Set (HeightOneSpectrum (𝓞 K))) s` using `lt_trans hc hs2`. Establish `hS` using `hbound s hs3`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 
-Establish `h4 : δ / 2 * NumberField.Set.primeIdealZetaSum (Set.univ : Set (HeightOneSpectrum (𝓞 K))) s < NumberField.Set.primeIdealZetaSum S s`. Conclude with `(lt_div_iff₀ hpos).1 hs1`. Establish `h5 : δ / 2 * (2 * (B + 1) / δ) < δ / 2 * NumberField.Set.primeIdealZetaSum (Set.univ : Set (HeightOneSpectrum (𝓞 K))) s` using `mul_lt_mul_of_pos_left hs2 (by linarith)`. Establish `h6 : δ / 2 * (2 * (B + 1) / δ) = B + 1`. Establish `hδ' : δ ≠ 0` using `hδ.ne'`.
-
-Clear the denominators using the available nonvanishing facts. Apply the tactic sequence `try ring`. Rewrite `h5` using `[h6]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_prime_absNorm_of_hasDirichletDensity {S : Set (HeightOneSpectrum (𝓞 K))} {δ : ℝ}
     (h : NumberField.Set.HasDirichletDensity S δ) (hδ : 0 < δ) {T : Set (HeightOneSpectrum (𝓞 K))} (hT : T.Finite) :

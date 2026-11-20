@@ -4,19 +4,15 @@ open Matrix
 namespace GlobalTheory
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hnot`. Take `⟨f, hfv, hfp⟩` from `Submodule.exists_dual_map_eq_bot_of_notMem hnot inferInstance`. Use `set a : Fin r → ℚ := fun j => f (fun k => if j = k then 1 else 0) with ha`. Establish `hf : ∀ x : Fin r → ℚ, f x = ∑ j, x j * a j`. Introduce `x`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `conv_lhs => rw [pi_eq_sum_univ x]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, smul_eq_mul]`. Establish `hw : ∀ i, f (w i) = 0`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `i`. Establish `: f (w i) ∈ (Submodule.span ℚ (Set.range w)).map f` using `Submodule.mem_map_of_mem (Submodule.subset_span ⟨i, rfl⟩)`. Rewrite `this` using `[hfp]`. Conclude with `(Submodule.mem_bot ℚ).mp this`. Set `L : (Fin r → ℝ) →ₗ[ℝ] ℝ` to `{ toFun := fun x => ∑ j, x j * (a j : ℝ) map_add' := by intro x y; simp [add_mul, Finset.sum_add_distrib] map_smul' := by intro c x; simp [Finset.mul_sum, mul_assoc] }`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Establish `hle : Submodule.span ℝ (Set.range fun i j => ((w i j : ℚ) : ℝ)) ≤ LinearMap.ker L`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Simplify using `only [SetLike.mem_coe, LinearMap.mem_ker]`. Use `show ∑ j, ((w i j : ℚ) : ℝ) * (a j : ℝ) = 0`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Establish `h` using `hw i`. Rewrite `h` using `[hf]`. Establish `h' : ((∑ j, w i j * a j : ℚ) : ℝ) = 0` using `by rw [h]; simp`. Move the coercions through the operations in `at h'`. Conclude with `h'`.
-
-Establish `h0 : L (fun j => ((v j : ℚ) : ℝ)) = 0` using `LinearMap.mem_ker.mp (hle hv)`. Establish `h1 : ((f v : ℚ) : ℝ) = 0`. Rewrite using `[hf]`. Use `push_cast`. Conclude with `h0`.
-
-Conclude with `hfv (by exact_mod_cast h1)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem rat_mem_span_of_real_mem_span (k r : ℕ) (w : Fin k → Fin r → ℚ) (v : Fin r → ℚ)
     (hv : (fun j => ((v j : ℚ) : ℝ)) ∈ Submodule.span ℝ (Set.range fun i j => ((w i j : ℚ) : ℝ))) :

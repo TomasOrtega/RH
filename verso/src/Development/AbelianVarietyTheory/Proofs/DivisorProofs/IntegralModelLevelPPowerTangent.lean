@@ -22,16 +22,16 @@ noncomputable section
 namespace GlobalTheory.FlatModel
 
 /- English proof (translation)
-Rewrite using `[← coe_valued]`. Conclude with `(Valuation.mem_valuationSubring_iff _ _).1 x.2` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_int_le_one {p : ℕ} [Fact p.Prime] (x : 𝓞_ℂ_[p]) : ‖(x : ℂ_[p])‖ ≤ 1 := by
   rw [← coe_valued]
   exact_mod_cast (Valuation.mem_valuationSubring_iff _ _).1 x.2
 
 /- English proof (translation)
-Establish `h1 : ‖A‖ ≤ max ‖X‖ ‖X - A‖`. Use `IsUltrametricDist.norm_add_le_max X (-(X - A))` as an intermediate fact. Rewrite `this` using `[norm_neg, show X + -(X - A) = A by ring]`. Then use the resulting hypothesis. Establish `h2 : ‖X‖ ≤ max ‖A‖ ‖X - A‖`. Use `IsUltrametricDist.norm_add_le_max A (X - A)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using this`. Break down `le_max_iff.1 h2 with h2 | h2` into its components or cases. Conclude with `le_antisymm (h1.trans (max_le le_rfl h.le)) h2`. Conclude with `absurd h (not_lt.2 h2)`.
+Simplify to obtain the desired conclusion from the available facts. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem norm_eq_of_norm_sub_lt {p : ℕ} [Fact p.Prime] {X A : ℂ_[p]} (h : ‖X - A‖ < ‖X‖) : ‖A‖ = ‖X‖ := by
   have h1 : ‖A‖ ≤ max ‖X‖ ‖X - A‖ := by
@@ -45,21 +45,19 @@ theorem norm_eq_of_norm_sub_lt {p : ℕ} [Fact p.Prime] {X A : ℂ_[p]} (h : ‖
   · exact absurd h (not_lt.2 h2)
 
 /- English proof (translation)
-Establish `hX1` using `norm_int_le_one x`. Establish `hY1` using `norm_int_le_one y`. Establish `hbig' : (p : ℝ)⁻¹ ^ n < ‖(x : ℂ_[p])‖ * ‖(y : ℂ_[p])‖`. Rewrite using `[← norm_mul]`. Conclude with `hbig` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hXb : (p : ℝ)⁻¹ ^ n < ‖(x : ℂ_[p])‖` using `hbig'.trans_le (mul_le_of_le_one_right (norm_nonneg _) hY1)`. Establish `hYb : (p : ℝ)⁻¹ ^ n < ‖(y : ℂ_[p])‖` using `hbig'.trans_le (mul_le_of_le_one_left (norm_nonneg _) hX1)`. Establish `hXA : ‖(x : ℂ_[p]) - A‖ < ‖(x : ℂ_[p])‖` using `hA.trans_lt hXb`. Establish `hYB : ‖(y : ℂ_[p]) - B‖ < ‖(y : ℂ_[p])‖` using `hB.trans_lt hYb`. Establish `nA` using `norm_eq_of_norm_sub_lt hXA`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `nB` using `norm_eq_of_norm_sub_lt hYB`. Establish `hpos : (0 : ℝ) < (p : ℝ)⁻¹ ^ n`. Establish `: (0 : ℝ) < p` using `by exact_mod_cast (Fact.out : p.Prime).pos`. Check the signs of the components of the expression. Establish `hA0 : A ≠ 0` using `fun h0 => by rw [h0, norm_zero] at nA; linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB0 : B ≠ 0` using `fun h0 => by rw [h0, norm_zero] at nB; linarith`. Establish `hY0 : (y : ℂ_[p]) ≠ 0` using `fun h0 => by rw [h0, norm_zero] at hYb; linarith`. Establish `hq' : q = κ * B / A` using `by rw [eq_div_iff hA0, hq]`. Establish `key : q * (x : ℂ_[p]) / (y : ℂ_[p]) - κ = κ * ((((x : ℂ_[p]) - A) * B - A * ((y : ℂ_[p]) - B)) / (A * (y : ℂ_[p])))`. Rewrite using `[hq']`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key, norm_mul]`. Establish `hk : 0 < ‖κ‖` using `norm_pos_iff.2 hκ`. Use `mul_lt_of_lt_one_right hk ?_` and prove the remaining obligations.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hden : 0 < ‖A * (y : ℂ_[p])‖` using `norm_pos_iff.2 (mul_ne_zero hA0 hY0)`. Rewrite using `[norm_div, div_lt_one hden]`. Establish `e1 : ‖((x : ℂ_[p]) - A) * B‖ < ‖A * (y : ℂ_[p])‖`. Rewrite using `[norm_mul, norm_mul, nA, nB]`. Conclude with `mul_lt_mul_of_pos_right hXA (by linarith)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : ‖A * ((y : ℂ_[p]) - B)‖ < ‖A * (y : ℂ_[p])‖`. Rewrite using `[norm_mul, norm_mul]`. Conclude with `mul_lt_mul_of_pos_left hYB (by rw [nA]; linarith)`. Combine the equalities or inequalities in the displayed calculation. Use `IsUltrametricDist.norm_add_le_max (((x : ℂ_[p]) - A) * B) (-(A * ((y : ℂ_[p]) - B)))` as an intermediate fact.
-
-Rewrite `this` using `[norm_neg, ← sub_eq_add_neg]`. Then use the resulting hypothesis. Use `_ < ‖A * (y : ℂ_[p])‖ := max_lt e1 e2`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem norm_quot_sub_lt {p : ℕ} [Fact p.Prime] (n : ℕ) (x y : 𝓞_ℂ_[p]) (A B κ q : ℂ_[p])
     (hbig : (p : ℝ)⁻¹ ^ n < ‖((x * y : 𝓞_ℂ_[p]) : ℂ_[p])‖)
@@ -110,19 +108,17 @@ end GlobalTheory.FlatModel
 namespace GlobalTheory.FlatModel
 
 /- English proof (translation)
-Use `set Mex : Matrix (Fin m) (Fin m) 𝓞_ℂ_[p] := Matrix.of fun k k' => ∑ b, (∑ a, β (T (I k') a) * (P.al₀ (ta a)).1 (xb b)) * U k b with hMex`. Establish `h1 : pairDet (covec β T h I) U - Mex.det ∈ Ideal.span {(p : 𝓞_ℂ_[p]) ^ n}`. Rewrite using `[← Ideal.Quotient.eq, pairDet, RingHom.map_det, RingHom.map_det]`. Use `congr 1`. Use extensionality with `k k'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.of_apply, hMex, covec]`. Rewrite using `[Ideal.Quotient.eq, ← Finset.sum_sub_distrib]`. Use `Ideal.sum_mem _ fun b _ => ?_` and prove the remaining obligations. Rewrite using `[← sub_mul, ← Finset.sum_sub_distrib]`. Use `Ideal.mul_mem_right _ _ (Ideal.sum_mem _ fun a _ => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← mul_sub]`. Conclude with `Ideal.mul_mem_left _ _ (hh a b)`. Establish `e : ∀ (x : LieG P.Gt) (c : ℂ_[p]) (t : P.T), P.pairV (P.bLie x) (c ⊗ₜ[ℤ_[p]] t) = c * algebraMap 𝓞_ℂ_[p] ℂ_[p] ((P.al₀ t).1 x)` using `fun x c t => by`. Rewrite using `[show (c ⊗ₜ[ℤ_[p]] t : P.V) = c • ((1 : ℂ_[p]) ⊗ₜ[ℤ_[p]] t) by`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, _root_.mul_one], map_smul, P.pairV_bLie, smul_eq_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `h2 : ((Mex.det : 𝓞_ℂ_[p]) : ℂ_[p]) = (Matrix.of fun k k' => P.pairV (∑ b, (U k b : ℂ_[p]) • P.bLie (xb b)) (∑ a, (β (T (I k') a) : ℂ_[p]) ⊗ₜ[ℤ_[p]] ta a)).det`. Express the relevant statement in the definitionally equal form `algebraMap 𝓞_ℂ_[p] ℂ_[p] Mex.det = _`. Rewrite using `[RingHom.map_det]`. Use `congr 1`. Use extensionality with `k k'`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.of_apply, hMex, map_sum, map_mul, map_smul, LinearMap.sum_apply, LinearMap.smul_apply, e, smul_eq_mul, Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((β (T (I k') a) : ℂ_[p]) * ((P.al₀ (ta a)).1 (xb b) : ℂ_[p])) * (U k b : ℂ_[p]) = (U k b : ℂ_[p]) * ((β (T (I k') a) : ℂ_[p]) * ((P.al₀ (ta a)).1 (xb b) : ℂ_[p]))`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.1 h1`. Rewrite using `[← h2]`. Establish `h3 : ((pairDet (covec β T h I) U : 𝓞_ℂ_[p]) : ℂ_[p]) - ((Mex.det : 𝓞_ℂ_[p]) : ℂ_[p]) = (c : ℂ_[p]) * (p : ℂ_[p]) ^ n`. Use `congrArg (algebraMap 𝓞_ℂ_[p] ℂ_[p]) hc` as an intermediate fact. Rewrite `this` using `[map_mul, map_pow, map_natCast, map_sub]`.
-
-Conclude with `this.symm`. Rewrite using `[h3, norm_mul, norm_pow, GlobalTheory.PadicComplexHost.norm_p]`. Conclude with `mul_le_of_le_one_left (by positivity) (norm_int_le_one c)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_minor_sub_le {p : ℕ} [Fact p.Prime] {E : Type} [Field E] [NumberField E] [StarRing (𝓞 E)] (P : PtP E p)
     (n : ℕ) {V J : Type} [CommRing V] (β : V →+* 𝓞_ℂ_[p]) {N g m : ℕ} (T : J → Fin N → V)
@@ -178,23 +174,21 @@ end GlobalTheory.FlatModel
 namespace GlobalTheory.FlatModel
 
 /- English proof (translation)
-Introduce `hK hT hV _ E _ _ _ H Dw τ p _ _ hs n l l' Xo Xo' c c' W Y r ν hle hov hA N a T S hLD _ f yb yy P π ψ y hHT hev`. Establish `inj : ∀ {A B : Type} [CommRing A] [CommRing B] (f f' : A →+* B), spMap f = spMap f' → f = f'`. Introduce `A B _ _ f f' h`. Conclude with `congrArg CommRingCat.Hom.hom (Spec.map_injective h)`. Take `⟨β₀, hβ₀⟩ : ∃ β₀ : c'.V W →+* 𝓞_ℂ_[p], yb ≫ Y.s = spMap β₀` from `⟨(Spec.preimage (yb ≫ Y.s)).hom, by simp [spMap]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hHT'` using `hHT`. Take `⟨hPt, hTe, hF, z, gm, am, x, hFC, -, -, htie, hlat⟩` from `hHT'`. Take `⟨ta, u0, hlev, hDF⟩` from `hT E H Dw l' Xo' c' W Y p n hs hA yb yy P π ψ hPt β₀ (conjEmb τ.1) (Ind Dw τ.1) N a T S hLD`. Rewrite `hDF` using `[GlobalTheory.T.integral_model_p_adic_comparison E H Dw l l' Xo Xo' c c' W Y r ν hle hov p yb yy P π ψ y hHT β₀ hβ₀]`. Establish `heig : ∀ σ j, AvDefs.IsEig P.Gt P.oGt (embInt c P.integers σ) (x σ j)` using `fun σ j => GlobalTheory.T.p_adic_point_complete_field E H Dw l l' Xo Xo' c c' W Y r ν p yb yy P π ψ hPt σ (x σ j) (z.u σ j) (htie σ j) (z.eig σ j)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmemE : ∀ σ k, ∑ j, gm σ k j • P.bLie (x σ j) ∈ P.eigV (embInt c P.integers σ)` using `fun σ k => Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (bLie_mem_eigV (heig σ j))`. Establish `hKS` using `(hK p ℂ_[p] _ 𝓞_ℂ_[p] (𝓞 E) P).2.2.2`. Establish `hmemW : ∀ σ k, ∑ j, gm σ k j • P.bLie (x σ j) ∈ P.W` using `fun σ k => by`. Rewrite using `[hKS.2.2.2.2.2.2]`. Conclude with `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, rfl⟩)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `set w₁ : Fin (Dw.mult τ.1) → P.V := fun k => ∑ j, gm τ.1 k j • P.bLie (x τ.1 j) with hw₁`. Use `set w₂ : Fin (Dw.mult (conjEmb τ.1)) → P.V := fun k => ∑ j, gm (conjEmb τ.1) k j • P.bLie (x (conjEmb τ.1) j) with hw₂`. Establish `horth : ∀ k k', P.pairV (w₁ k) (w₂ k') = 0` using `fun k k' => (hKS.2.2.2.2.1 _).1 (hmemW _ k) _ (hmemW _ k')`. Take `⟨lam, hlam, hlamσ, -⟩` from `hV E H Dw l c p hs P τ _ _ u0 hDF w₁ w₂ (hmemE _) (hmemE _) horth (hlat _) (hlat _)`. Use `⟨lam * evR Xo c f y, by rw [norm_mul, hlam, _root_.one_mul], ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
 
-Introduce `β hβ g e U₁ U₂ h htb hE1 hE2 happ σ K₁ K₂ hbig fv hGV`. Establish `hββ : β = β₀` using `inj _ _ (hβ.symm.trans hβ₀)`. Substitute `hββ` using the available equality. Use `choose xb hxb using fun b => GlobalTheory.T.p_adic_point_frame_map E H Dw l' Xo' c' W Y p yb yy P π ψ hPt (e b) (htb.1 b)`. Establish `hh : ∀ m b, h m b - (P.al₀ (ta m)).1 (xb b) ∈ Ideal.span {(p : 𝓞_ℂ_[p]) ^ n}` using `fun m b => happ m (ta m) (hlev m) b (xb b) (hxb b)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `G1` using `fun k => GlobalTheory.T.integral_model_p_adic_over_inclusion E H Dw l l' Xo Xo' c c' W Y r ν hle hov p yb yy P π ψ y hHT z gm am x hFC htie β hβ g e htb xb hxb τ.1 (U₁ (K₁ k)) (fun u hu => hE1.1 (K₁ k) u hu)`. Establish `G2` using `fun k => GlobalTheory.T.integral_model_p_adic_over_inclusion E H Dw l l' Xo Xo' c c' W Y r ν hle hov p yb yy P π ψ y hHT z gm am x hFC htie β hβ g e htb xb hxb (conjEmb τ.1) (U₂ (K₂ k)) (fun u hu => hE2.1 (K₂ k) u hu)`. Use `choose v₁ cf₁ hv₁ hcf₁ hid₁ using G1`. Use `choose v₂ cf₂ hv₂ hcf₂ hid₂ using G2`. Establish `hfv` using `hGV y hTe hF v₁ v₂ (Matrix.of cf₁) (Matrix.of cf₂) hv₁ hv₂ hcf₁ hcf₂`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `fac : ∀ {m : ℕ} (cf : Fin m → Fin m → ℂ_[p]) (w : Fin m → P.V) (tt : Fin m → P.V) (L : Fin m → Fin g → 𝓞_ℂ_[p]), (∀ k, ∑ b, (L k b : ℂ_[p]) • P.bLie (xb b) = ∑ j, cf k j • w j) → (Matrix.of fun k k' => P.pairV (∑ b, (L k b : ℂ_[p]) • P.bLie (xb b)) (tt k')).det = (Matrix.of cf).d …`. Introduce `m cf w tt L hL`. Rewrite using `[← Matrix.det_mul]`. Use `congr 1`. Use extensionality with `k k'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion.
 
-Simplify using `only [Matrix.of_apply, Matrix.mul_apply, hL, map_sum, map_smul, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul]`. Use `set M₁ := (Matrix.of fun k k' => P.pairV (w₁ k) ((fun i => ∑ m, (β (T i m) : ℂ_[p]) ⊗ₜ[ℤ_[p]] ta m) (σ (Sum.inl k')))).det with hM₁`. Use `set M₂ := (Matrix.of fun k k' => P.pairV (w₂ k) ((fun i => ∑ m, (β (S i m) : ℂ_[p]) ⊗ₜ[ℤ_[p]] ta m) (σ (Sum.inr k')))).det with hM₂`. Establish `hl : ((Equiv.Perm.sign σ : ℤ) : ℂ_[p]) * M₁ = lam * M₂` using `hlamσ σ`. Establish `hA₁ : ‖((pairDet (covec β T h (σ ∘ Sum.inl)) (U₁ ∘ K₁) : 𝓞_ℂ_[p]) : ℂ_[p]) - (Matrix.of cf₁).det * M₁‖ ≤ (p : ℝ)⁻¹ ^ n` using `(congrArg (fun d => ‖((pairDet (covec β T h (σ ∘ Sum.inl)) (U₁ ∘ K₁) : 𝓞_ℂ_[p]) : ℂ_[p]) - d‖) (fac cf₁ w₁ (fun k' => ∑ m, (β (T (σ (Sum.inl k')) m) : ℂ_[p]) ⊗ₜ[ℤ_[p]] ta m) (U₁ ∘ K₁) hid₁).symm).trans_le (norm_minor_sub_le P n β T h ta xb hh (σ ∘ Sum.inl) (U₁ ∘ K₁))`.
-
-Establish `hB₁ : ‖((pairDet (covec β S h (σ ∘ Sum.inr)) (U₂ ∘ K₂) : 𝓞_ℂ_[p]) : ℂ_[p]) - (Matrix.of cf₂).det * M₂‖ ≤ (p : ℝ)⁻¹ ^ n` using `(congrArg (fun d => ‖((pairDet (covec β S h (σ ∘ Sum.inr)) (U₂ ∘ K₂) : 𝓞_ℂ_[p]) : ℂ_[p]) - d‖) (fac cf₂ w₂ (fun k' => ∑ m, (β (S (σ (Sum.inr k')) m) : ℂ_[p]) ⊗ₜ[ℤ_[p]] ta m) (U₂ ∘ K₂) hid₂).symm).trans_le (norm_minor_sub_le P n β S h ta xb hh (σ ∘ Sum.inr) (U₂ ∘ K₂))`. Establish `hlam0 : lam ≠ 0` using `fun h0 => by rw [h0, norm_zero] at hlam; exact zero_ne_one hlam`. Use `norm_quot_sub_lt n _ _ _ _ _ _ hbig hA₁ hB₁ ?_ (mul_ne_zero hlam0 hev)` and prove the remaining obligations. Take the linear combination `(((Equiv.Perm.sign σ : ℤ) : ℂ_[p]) * M₁) * hfv + ((Matrix.of cf₂).det * evR Xo c f y) * hl`.
+A detailed English derivation is pending.
 -/
 theorem kap_close : GlobalTheory.IndefiniteRowSideFullHecke.HodgeTateKernel.HodgeTateKernelAtPoint → TateSt → ValueSt → BoundSt →
   ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (τ : Psi H) (p : ℕ) [Fact p.Prime]

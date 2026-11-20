@@ -4,13 +4,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.HeightAndVanishing
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.Base UpperTheory.Top UpperTheory.V.HV
 
 /- English proof (translation)
-Establish `key : ∀ r ∈ N.primeFactors, (((r ^ N.factorization r : ℕ)) : ℤ) ∣ ((b : ZMod N).val : ℤ) - ((a : ZMod N).val : ℤ)`. Introduce `r hr`. Establish `e` using `congrArg (fun u : (ZMod (r ^ N.factorization r))ˣ => (u : ZMod (r ^ N.factorization r))) (h r hr)`. Simplify using `only [ZMod.unitsMap_def, Units.coe_map, MonoidHom.coe_coe] at e`. Rewrite `e` using `[← ZMod.natCast_zmod_val (a : ZMod N), ← ZMod.natCast_zmod_val (b : ZMod N), map_natCast, map_natCast, ZMod.natCast_eq_natCast_iff]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Nat.modEq_iff_dvd.mp e`. Establish `hcop : (N.primeFactors : Set ℕ).Pairwise (Function.onFun IsCoprime fun r => (((r ^ N.factorization r : ℕ)) : ℤ))`. Introduce `p hp q hq hpq`. Simplify using `only [Function.onFun]`. Rewrite using `[Nat.isCoprime_iff_coprime]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Nat.Coprime.pow _ _ ((Nat.coprime_primes (Nat.prime_of_mem_primeFactors hp) (Nat.prime_of_mem_primeFactors hq)).mpr hpq)`. Establish `hd` using `Finset.prod_dvd_of_coprime hcop key`. Establish `hN : ∏ r ∈ N.primeFactors, r ^ N.factorization r = N` using `by conv_rhs => rw [← Nat.factorization_prod_pow_eq_self (NeZero.ne N)]`. Rewrite using `[Finsupp.prod, Nat.support_factorization]`. Rewrite `hd` using `[← Nat.cast_prod, hN]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e2 : ((a : ZMod N).val : ZMod N) = ((b : ZMod N).val : ZMod N)` using `(ZMod.natCast_eq_natCast_iff _ _ _).mpr (Nat.modEq_iff_dvd.mpr hd)`. Rewrite `e2` using `[ZMod.natCast_zmod_val, ZMod.natCast_zmod_val]`. Conclude with `Units.ext e2`.
+A detailed English derivation is pending.
 -/
 private theorem UpperTheory.V.HV.projProd_ext (N : ℕ) [NeZero N] (a b : (ZMod N)ˣ)
     (h : ∀ r ∈ N.primeFactors, ZMod.unitsMap (Nat.ordProj_dvd N r) a = ZMod.unitsMap (Nat.ordProj_dvd N r) b) :
@@ -38,11 +38,9 @@ private theorem UpperTheory.V.HV.projProd_ext (N : ℕ) [NeZero N] (a b : (ZMod 
   exact Units.ext e2
 
 /- English proof (translation)
-Introduce `N _ u`. Apply `projProd_ext` to reduce the goal to its premises. Introduce `r hr`. Establish `hp` using `Nat.prime_of_mem_primeFactors hr`. Rewrite using `[map_prod, Finset.prod_eq_single_of_mem r hr]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(projFacts N r hp).1 u`. Introduce `s hs hsr`. Establish `hs'` using `Nat.prime_of_mem_primeFactors hs`. Use `(projFacts N s hs').2.2.2.2.2.2.2.1 _ _ ?_ u` and prove the remaining obligations. Introduce `hd`.
-
-Conclude with `hsr ((Nat.prime_dvd_prime_iff_eq hs' hp).1 (hs'.dvd_of_dvd_pow hd))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.HV.projProd :
     ∀ (N : ℕ) [NeZero N] (u : (ZMod N)ˣ), ∏ r ∈ N.primeFactors, proj r N u = u := by

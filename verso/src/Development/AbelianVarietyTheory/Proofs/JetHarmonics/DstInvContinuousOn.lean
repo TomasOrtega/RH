@@ -19,7 +19,7 @@ def dst (x : n → ℂ) (f : ι → n → ℂ) (s : Set ι) (A : Matrix n n ℂ)
 def opn (M : Matrix n n ℂ) : ℝ := ‖Matrix.toEuclideanCLM (n := n) (𝕜 := ℂ) M‖
 
 /- English proof (translation)
-Set `L : Matrix n n ℂ →ₗ[ℂ] (EuclideanSpace ℂ n →L[ℂ] EuclideanSpace ℂ n)` to `{ toFun := fun M => Matrix.toEuclideanCLM (n := n) (𝕜 := ℂ) M map_add' := fun M N => map_add _ M N map_smul' := fun c M => map_smul _ c M }`. Conclude with `continuous_norm.comp (LinearMap.continuous_of_finiteDimensional L)`.
+Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 lemma opn_cont : Continuous (opn (n := n)) := by
 
@@ -30,7 +30,7 @@ lemma opn_cont : Continuous (opn (n := n)) := by
   exact continuous_norm.comp (LinearMap.continuous_of_finiteDimensional L)
 
 /- English proof (translation)
-Unfold `opn`. Rewrite using `[map_one]`. Conclude with `norm_one`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma opn_one [Nonempty n] : opn (1 : Matrix n n ℂ) = 1 := by
   unfold opn
@@ -38,11 +38,9 @@ lemma opn_one [Nonempty n] : opn (1 : Matrix n n ℂ) = 1 := by
   exact norm_one
 
 /- English proof (translation)
-Use `le_of_forall_pos_le_add fun ε hε => ?_` and prove the remaining obligations. Establish `hδ : 0 < ε / (‖T‖ + 1)` using `by positivity`. Take `⟨p, hp, hd⟩` from `(Metric.infDist_lt_iff hK).1 (lt_add_of_pos_right (Metric.infDist y K) hδ)`. Establish `hTε : ‖T‖ * (ε / (‖T‖ + 1)) ≤ ε`. Rewrite using `[mul_div_assoc', div_le_iff₀ (by positivity)]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use polynomial arithmetic with `[norm_nonneg T]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[dist_eq_norm, dist_eq_norm, ← map_sub]`. Conclude with `T.le_opNorm _`. Use `_ ≤ ‖T‖ * (Metric.infDist y K + ε / (‖T‖ + 1)) := by gcongr`.
-
-Use `_ ≤ ‖T‖ * Metric.infDist y K + ε := by rw [mul_add]; linarith`.
+Use the polynomial consequences of the given equalities and inequalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma infDist_image_le_opNorm_mul {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E]
     (T : E →L[ℂ] E) (y : E) (K : Set E) (hK : K.Nonempty) :
@@ -61,11 +59,11 @@ private lemma infDist_image_le_opNorm_mul {E : Type} [NormedAddCommGroup E] [Nor
     _ ≤ ‖T‖ * Metric.infDist y K + ε := by rw [mul_add]; linarith
 
 /- English proof (translation)
-Unfold `dst`. Use `set T := Matrix.toEuclideanCLM (n := n) (𝕜 := ℂ) M`. Establish `key : ∀ v : n → ℂ, (WithLp.toLp 2 ((M * A) *ᵥ v) : EuclideanSpace ℂ n) = T (WithLp.toLp 2 (A *ᵥ v))` using `fun v => by`. Rewrite using `[← Matrix.mulVec_mulVec]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 
-Simplify using `only [key]`. Use `set S : Set (EuclideanSpace ℂ n) := (fun b => (WithLp.toLp 2 (A *ᵥ f b) : EuclideanSpace ℂ n)) '' s`. Establish `himg : (fun b => T (WithLp.toLp 2 (A *ᵥ f b))) '' s = T '' S` using `(Set.image_image _ _ _).symm`. Rewrite using `[himg]`. Establish `hsub : T '' (Submodule.span ℂ S : Set _) ⊆ (Submodule.span ℂ (T '' S) : Set _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Chain the equalities or inequalities of the calculation.
 
-Introduce and unpack `_ ⟨p, hp, rfl⟩`. Conclude with `Submodule.apply_mem_span_image_of_mem_span (T : EuclideanSpace ℂ n →ₗ[ℂ] EuclideanSpace ℂ n) hp`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 lemma dst_mul_le (x : n → ℂ) (f : ι → n → ℂ) (s : Set ι) (M A : Matrix n n ℂ) :
     dst x f s (M * A) ≤ opn M * dst x f s A := by
@@ -90,21 +88,19 @@ lemma dst_mul_le (x : n → ℂ) (f : ι → n → ℂ) (s : Set ι) (M A : Matr
     _ = opn M * Metric.infDist (WithLp.toLp 2 (A *ᵥ x)) (Submodule.span ℂ S : Set _) := rfl
 
 /- English proof (translation)
-Use `set U : Set (Matrix n n ℂ) := {g | IsUnit g.det}`. Establish `hinv : ContinuousOn (fun g : Matrix n n ℂ => g⁻¹) U`. Establish `h : (fun g : Matrix n n ℂ => g⁻¹) = fun g => (g.det)⁻¹ • g.adjugate`. Use function extensionality and compare the values at `g`. Rewrite using `[Matrix.inv_def, Ring.inverse_eq_inv']`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h]`. Conclude with `(continuous_id.matrix_det.continuousOn.inv₀ fun g hg => hg.ne_zero).smul continuous_id.matrix_adjugate.continuousOn`. Introduce `g0 hg0`. Establish `hg0' : IsUnit g0.det` using `hg0`. Use `set a0 := dst x f s g0⁻¹`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu : Filter.Tendsto (fun g => opn (g⁻¹ * g0)) (nhdsWithin g0 U) (nhds 1)`. Establish `hc : ContinuousWithinAt (fun g => opn (g⁻¹ * g0)) U g0` using `opn_cont.continuousAt.comp_continuousWithinAt ((hinv g0 hg0).mul continuousWithinAt_const)`. Establish `h1 : opn (g0⁻¹ * g0) = 1` using `by rw [Matrix.nonsing_inv_mul _ hg0', opn_one]`. Use `hc.tendsto` as an intermediate fact. Rewrite `this` using `[h1]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hv : Filter.Tendsto (fun g => opn (g0⁻¹ * g)) (nhdsWithin g0 U) (nhds 1)`. Establish `hc : Continuous fun g => opn (g0⁻¹ * g)` using `opn_cont.comp (continuous_const.mul continuous_id)`. Establish `h1 : opn (g0⁻¹ * g0) = 1` using `by rw [Matrix.nonsing_inv_mul _ hg0', opn_one]`. Use `hc.continuousWithinAt (s := U) (x := g0) |>.tendsto` as an intermediate fact. Rewrite `this` using `[h1]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hup : ∀ g ∈ U, dst x f s g⁻¹ ≤ opn (g⁻¹ * g0) * a0`. Introduce `g _`. Establish `h` using `dst_mul_le x f s (g⁻¹ * g0) g0⁻¹`. Rewrite `h` using `[mul_assoc, Matrix.mul_nonsing_inv _ hg0', mul_one]`. Then use the resulting hypothesis. Establish `hlow : ∀ g ∈ U, a0 ≤ opn (g0⁻¹ * g) * dst x f s g⁻¹`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Introduce `g hg`. Establish `h` using `dst_mul_le x f s (g0⁻¹ * g) g⁻¹`. Rewrite `h` using `[mul_assoc, Matrix.mul_nonsing_inv _ (show IsUnit g.det from hg), mul_one]`. Then use the resulting hypothesis. Establish `hpos : ∀ᶠ g in nhdsWithin g0 U, 0 < opn (g0⁻¹ * g)` using `hv.eventually (lt_mem_nhds one_pos)`. Establish `hL : Filter.Tendsto (fun g => a0 / opn (g0⁻¹ * g)) (nhdsWithin g0 U) (nhds a0)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Use `(tendsto_const_nhds (x := a0)).div hv one_ne_zero` as an intermediate fact. Rewrite `this` using `[div_one]`. Then use the resulting hypothesis. Establish `hR : Filter.Tendsto (fun g => opn (g⁻¹ * g0) * a0) (nhdsWithin g0 U) (nhds a0)`. Use `hu.mul_const a0` as an intermediate fact. Rewrite `this` using `[one_mul]`. Then use the resulting hypothesis.
-
-Use `tendsto_of_tendsto_of_tendsto_of_le_of_le' hL hR ?_ (eventually_nhdsWithin_of_forall hup)` and prove the remaining obligations. Use `filter_upwards [hpos, eventually_nhdsWithin_of_forall hlow] with g hg1 hg2`. Rewrite using `[div_le_iff₀ hg1, mul_comm]`. Conclude with `hg2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma dst_inv_continuousOn [Nonempty n] (x : n → ℂ) (f : ι → n → ℂ) (s : Set ι) :
     ContinuousOn (fun g : Matrix n n ℂ => dst x f s g⁻¹) {g | IsUnit g.det} := by
@@ -152,11 +148,11 @@ lemma dst_inv_continuousOn [Nonempty n] (x : n → ℂ) (f : ι → n → ℂ) (
   exact hg2
 
 /- English proof (translation)
-Introduce `k r z _ _ a`. Establish `hsub : GG k r ⊆ {g : Mx k r | IsUnit g.det}`. Introduce `g hg`. Establish `h1 : gᴴ * Formalism.QuantumDeterminants.Hpk k r * g = Formalism.QuantumDeterminants.Hpk k r` using `hg`. Establish `hdet : (Formalism.QuantumDeterminants.Hpk k r).det * (Formalism.QuantumDeterminants.Hpk k r).det = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Matrix.det_mul, Formalism.QuantumDeterminants.GBasic.Hpk_sq, Matrix.det_one]`. Establish `h2` using `congrArg Matrix.det h1`. Rewrite `h2` using `[Matrix.det_mul, Matrix.det_mul]`. Use `show IsUnit g.det`. Rewrite using `[isUnit_iff_ne_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h0`. Rewrite `h2` using `[h0, mul_zero]`. Rewrite `hdet` using `[← h2, mul_zero]`. Conclude with `zero_ne_one hdet`. Conclude with `(dst_inv_continuousOn (Formalism.QuantumDeterminants.fvec k r z a) (Formalism.QuantumDeterminants.fvec k r z) {b | b < a}).mono hsub`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lenA_continuousOn : ∀ (k r : ℕ) (z : Fin (2 * r + k + 1) → ℂ), Formalism.QuantumDeterminants.inWb k r z →
     0 < Formalism.QuantumDeterminants.Tz k r z → ∀ a, ContinuousOn (fun g => lenA k r z g a) (GG k r) := by

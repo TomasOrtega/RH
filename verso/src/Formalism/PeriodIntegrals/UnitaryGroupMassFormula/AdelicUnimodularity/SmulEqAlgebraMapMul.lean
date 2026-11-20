@@ -10,11 +10,11 @@ open IsDedekindDomain IsDedekindDomain.HeightOneSpectrum NumberField
 open scoped TensorProduct
 
 /- English proof (translation)
-Take `⟨a, s, hs, rfl⟩` from `IsFractionRing.div_surjective (A := 𝓞 K) x`. Establish `hs0 : s ≠ 0` using `nonZeroDivisors.ne_zero hs`. Establish `hN0 : Ideal.absNorm (Ideal.span {s}) ≠ 0`. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff, Ideal.span_singleton_eq_bot]`. Conclude with `hs0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨t, ht⟩` from `Ideal.mem_span_singleton'.mp (Ideal.absNorm_mem (Ideal.span {s}))`. Use `⟨Ideal.absNorm (Ideal.span {s}), Nat.pos_of_ne_zero hN0, t * a, ?_⟩` and prove the remaining obligations. Establish `hsK : algebraMap (𝓞 K) K s ≠ 0`. Rewrite using `[Ne, map_eq_zero_iff _ (FaithfulSMul.algebraMap_injective (𝓞 K) K)]` and apply the resulting hypothesis. Establish `: ((Ideal.absNorm (Ideal.span {s}) : ℕ) : K) = algebraMap (𝓞 K) K t * algebraMap (𝓞 K) K s`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_mul, ht, map_natCast]`. Rewrite using `[this, map_mul]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem exists_den {K : Type} [Field K] [NumberField K] (x : K) :
     ∃ m : ℕ, 0 < m ∧ ∃ a : 𝓞 K, (m : K) * x = algebraMap (𝓞 K) K a := by
@@ -36,44 +36,42 @@ variable {F : Type} [Field F] [NumberField F]
 def IntF (f : F) : Prop := algebraMap F (FiniteAdeleRing (𝓞 F) F) f ∈ Ohat F
 
 /- English proof (translation)
-Introduce `v`. Conclude with `mul_mem (ha v) (hc v)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem ohat_mul {a c : FiniteAdeleRing (𝓞 F) F} (ha : a ∈ Ohat F) (hc : c ∈ Ohat F) : a * c ∈ Ohat F := by
   intro v
   exact mul_mem (ha v) (hc v)
 
 /- English proof (translation)
-Introduce `v`. Conclude with `add_mem (ha v) (hc v)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem ohat_add {a c : FiniteAdeleRing (𝓞 F) F} (ha : a ∈ Ohat F) (hc : c ∈ Ohat F) : a + c ∈ Ohat F := by
   intro v
   exact add_mem (ha v) (hc v)
 
 /- English proof (translation)
-Introduce `v`. Conclude with `neg_mem (ha v)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem ohat_neg {a : FiniteAdeleRing (𝓞 F) F} (ha : a ∈ Ohat F) : -a ∈ Ohat F := by
   intro v
   exact neg_mem (ha v)
 
 /- English proof (translation)
-Introduce `v`. Conclude with `(v.adicCompletionIntegers F).zero_mem`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem ohat_zero : (0 : FiniteAdeleRing (𝓞 F) F) ∈ Ohat F := by
   intro v
   exact (v.adicCompletionIntegers F).zero_mem
 
 /- English proof (translation)
-Introduce `v`. Conclude with `(v.adicCompletionIntegers F).one_mem`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem ohat_one : (1 : FiniteAdeleRing (𝓞 F) F) ∈ Ohat F := by
   intro v
   exact (v.adicCompletionIntegers F).one_mem
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => rw [Finset.sum_empty]`. Conclude with `ohat_zero`. Consider the case `insert j s hj ih`. Rewrite using `[Finset.sum_insert hj]`.
-
-Conclude with `ohat_add (hf j (Finset.mem_insert_self j s)) (ih fun i hi => hf i (Finset.mem_insert_of_mem hi))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ohat_sum {κ : Type*} (s : Finset κ) {f : κ → FiniteAdeleRing (𝓞 F) F} (hf : ∀ i ∈ s, f i ∈ Ohat F) :
     ∑ i ∈ s, f i ∈ Ohat F := by
@@ -86,7 +84,7 @@ theorem ohat_sum {κ : Type*} (s : Finset κ) {f : κ → FiniteAdeleRing (𝓞 
       (ih fun i hi => hf i (Finset.mem_insert_of_mem hi))
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => rw [zero_nsmul]`. Conclude with `ohat_zero`. Consider the case `succ n ih => rw [succ_nsmul]`. Conclude with `ohat_add ih ha`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem ohat_nsmul {a : FiniteAdeleRing (𝓞 F) F} (ha : a ∈ Ohat F) (m : ℕ) : m • a ∈ Ohat F := by
   induction m with
@@ -94,7 +92,7 @@ theorem ohat_nsmul {a : FiniteAdeleRing (𝓞 F) F} (ha : a ∈ Ohat F) (m : ℕ
   | succ n ih => rw [succ_nsmul]; exact ohat_add ih ha
 
 /- English proof (translation)
-Take `⟨n, rfl | rfl⟩` from `Int.eq_nat_or_neg m`. Rewrite using `[natCast_zsmul]`. Conclude with `ohat_nsmul ha n`. Rewrite using `[neg_zsmul, natCast_zsmul]`. Conclude with `ohat_neg (ohat_nsmul ha n)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ohat_zsmul {a : FiniteAdeleRing (𝓞 F) F} (ha : a ∈ Ohat F) (m : ℤ) : m • a ∈ Ohat F := by
   obtain ⟨n, rfl | rfl⟩ := Int.eq_nat_or_neg m
@@ -102,7 +100,7 @@ theorem ohat_zsmul {a : FiniteAdeleRing (𝓞 F) F} (ha : a ∈ Ohat F) (m : ℤ
   · rw [neg_zsmul, natCast_zsmul]; exact ohat_neg (ohat_nsmul ha n)
 
 /- English proof (translation)
-Unfold `IntF Ohat`. Introduce `v`. Conclude with `IsDedekindDomain.HeightOneSpectrum.coe_algebraMap_mem (𝓞 F) F v a`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem intF_of_int (a : 𝓞 F) : IntF (algebraMap (𝓞 F) F a) := by
   unfold IntF Ohat
@@ -110,9 +108,9 @@ theorem intF_of_int (a : 𝓞 F) : IntF (algebraMap (𝓞 F) F a) := by
   exact IsDedekindDomain.HeightOneSpectrum.coe_algebraMap_mem (𝓞 F) F v a
 
 /- English proof (translation)
-Use `choose m hm a ha using fun i => exists_den (f i)`. Use `⟨∏ i, m i, Finset.prod_pos fun i _ => hm i, fun i => ?_⟩` and prove the remaining obligations. Take `⟨c, hc⟩` from `Finset.dvd_prod_of_mem m (Finset.mem_univ i)`. Establish `key : ((∏ j, m j : ℕ) : F) * f i = algebraMap (𝓞 F) F ((c : 𝓞 F) * a i)`. Rewrite using `[hc, Nat.cast_mul, map_mul, ← ha i, map_natCast]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key]`. Conclude with `intF_of_int _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_den_fin {κ : Type} [Fintype κ] (f : κ → F) :
     ∃ m : ℕ, 0 < m ∧ ∀ i, IntF ((m : F) * f i) := by
@@ -137,7 +135,7 @@ def IntC (x : E ⊗[F] Af) : Prop := ∀ k, coord b x k ∈ Ohat F
 variable {b}
 
 /- English proof (translation)
-Introduce `k`. Rewrite using `[map_add]`. Conclude with `ohat_add (hx k) (hy k)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intC_add {x y : E ⊗[F] Af} (hx : IntC b x) (hy : IntC b y) : IntC b (x + y) := by
   intro k
@@ -145,7 +143,7 @@ theorem intC_add {x y : E ⊗[F] Af} (hx : IntC b x) (hy : IntC b y) : IntC b (x
   exact ohat_add (hx k) (hy k)
 
 /- English proof (translation)
-Introduce `k`. Rewrite using `[map_nsmul]`. Conclude with `ohat_nsmul (hx k) m`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intC_nsmul {x : E ⊗[F] Af} (hx : IntC b x) (m : ℕ) : IntC b (m • x) := by
   intro k
@@ -153,7 +151,7 @@ theorem intC_nsmul {x : E ⊗[F] Af} (hx : IntC b x) (m : ℕ) : IntC b (m • x
   exact ohat_nsmul (hx k) m
 
 /- English proof (translation)
-Introduce `k`. Rewrite using `[map_sum, Finset.sum_apply]`. Conclude with `ohat_sum s fun i hi => hf i hi k`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intC_sum {κ : Type*} (s : Finset κ) {f : κ → E ⊗[F] Af} (hf : ∀ i ∈ s, IntC b (f i)) :
     IntC b (∑ i ∈ s, f i) := by
@@ -162,15 +160,15 @@ theorem intC_sum {κ : Type*} (s : Finset κ) {f : κ → E ⊗[F] Af} (hf : ∀
   exact ohat_sum s fun i hi => hf i hi k
 
 /- English proof (translation)
-The claim follows from `Algebra.smul_def c a`.
+A detailed English derivation is pending.
 -/
 theorem smul_eq_algebraMap_mul (c : F) (a : Af) : c • a = algebraMap F Af c * a :=
   Algebra.smul_def c a
 
 /- English proof (translation)
-Take `⟨m, hm, h⟩` from `exists_den_fin (fun p : ι × ι × ι => b.repr (b p.1 * b p.2.1) p.2.2)`. Use `⟨m, hm, fun x y hx hy k => ?_⟩` and prove the remaining obligations. Rewrite using `[map_nsmul, coord_mul]`. Simplify using `only [Pi.smul_apply, Finset.smul_sum]`. Use `ohat_sum _ fun i _ => ohat_sum _ fun j _ => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[smul_eq_algebraMap_mul, nsmul_eq_mul, ← mul_assoc]`. Establish `h1 : (m : Af) * algebraMap F Af (b.repr (b i * b j) k) = algebraMap F Af ((m : F) * b.repr (b i * b j) k)`. Simplify using the standard rewrite rules. Rewrite using `[h1]`. Conclude with `ohat_mul (h (i, j, k)) (ohat_mul (hx i) (hy j))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_den_mul (b : Module.Basis ι F E) :
     ∃ m : ℕ, 0 < m ∧ ∀ x y : E ⊗[F] Af, IntC b x → IntC b y → IntC b (m • (x * y)) := by
@@ -186,7 +184,7 @@ theorem exists_den_mul (b : Module.Basis ι F E) :
   exact ohat_mul (h (i, j, k)) (ohat_mul (hx i) (hy j))
 
 /- English proof (translation)
-Introduce `k`. Rewrite using `[Algebra.TensorProduct.includeLeftRingHom_apply]`. Simplify using `only [coord, TensorProduct.lift.tmul, LinearMap.mk₂_apply]`. Rewrite using `[← Algebra.algebraMap_eq_smul_one]`. Conclude with `he k`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intC_incl {e : E} (he : ∀ k, IntF (b.repr e k)) :
     IntC b (Algebra.TensorProduct.includeLeftRingHom (R := F) (B := Af) e) := by

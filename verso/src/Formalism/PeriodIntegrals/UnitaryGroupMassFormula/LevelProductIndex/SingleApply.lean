@@ -11,7 +11,7 @@ namespace PI.LPI
 open Formalism.UG
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul e a => simp [prV, sigR, evalV, Algebra.TensorProduct.map_tmul]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem prV_sigR {F E : Type} [Field F] [NumberField F] [CommRing E] [Algebra F E]
     (σ : E →ₐ[F] E) (v : HeightOneSpectrum (𝓞 F)) (z : E ⊗[F] FiniteAdeleRing (𝓞 F) F) :
@@ -22,7 +22,7 @@ theorem prV_sigR {F E : Type} [Field F] [NumberField F] [CommRing E] [Algebra F 
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Simplify using `[prV, inclE, evalV, Algebra.TensorProduct.map_tmul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem prV_inclE {F E : Type} [Field F] [NumberField F] [CommRing E] [Algebra F E]
     (v : HeightOneSpectrum (𝓞 F)) (e : E) :
@@ -38,7 +38,7 @@ def single {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F))
     · rw [Pi.single_eq_of_ne h]; exact zero_mem _)
 
 /- English proof (translation)
-Simplify using `[single, adOf_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem single_apply {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F))
     (a : v.adicCompletion F) (ha : a ∈ v.adicCompletionIntegers F) : single v a ha v = a := by
@@ -46,9 +46,9 @@ theorem single_apply {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum
   simp [single, adOf_apply]
 
 /- English proof (translation)
-Take `⟨k, m, hm, hgen⟩` from `exists_gen Lb hfin`. Take `⟨a, ha, rfl⟩` from `(hG F E (v.adicCompletion F) (v.adicCompletionIntegers F).toSubring n k Lb m hm hgen x).1 hx`. Use `⟨fun j => ∑ i, m i j ⊗ₜ[F] single v (a i) (ha i), ?_, ?_⟩` and prove the remaining obligations. Conclude with `(hG F E (FiniteAdeleRing (𝓞 F) F) (intAd F) n k Lb m hm hgen _).2 ⟨fun i => single v (a i) (ha i), fun i => adOf_mem _ _, rfl⟩`. Use function extensionality and compare the values at `j`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[prV_sum_tmul]`. Simplify using `only [single_apply]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lift_lat (hG : PLGen) {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E]
     [Algebra F E] {n : ℕ} (Lb : Submodule (𝓞 E) (Fin n → E)) (hfin : Module.Finite (𝓞 E) Lb)
@@ -65,15 +65,15 @@ theorem lift_lat (hG : PLGen) {F E : Type} [Field F] [NumberField F] [Field E] [
     simp only [single_apply]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ n σ J Lb hfin g hg v`. Establish `fwd : ∀ h ∈ levelAfL σ J Lb, ∀ x ∈ latV v Lb, ((bc (prV (E` using `E) v) h : GL (Fin n) (E ⊗[F] v.adicCompletion F)) : Matrix (Fin n) (Fin n) (E ⊗[F] v.adicCompletion F)) *ᵥ x ∈ latV v Lb := by`. Introduce `h hh x hx`. Take `⟨y, hy, rfl⟩` from `lift_lat hG Lb hfin v x hx`. Rewrite using `[← bc_mulVec]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hD F E n Lb v _ (((Subgroup.mem_inf.1 hh).2 y).1 hy)`. Use `Subgroup.mem_inf.2 ⟨?_, ?_⟩` and prove the remaining obligations. Establish `hU` using `(Subgroup.mem_inf.1 hg).1`. Express the relevant statement in the definitionally equal form `cT (sigR σ (FiniteAdeleRing (𝓞 F) F)) (g : Matrix (Fin n) (Fin n) _) * J.map (inclE (F := F) (FiniteAdeleRing (𝓞 F) F)) * (g : Matrix (Fin n) (Fin n) _) = J.map (inclE (F := F) (FiniteAdeleRing (𝓞 F) F)) at hU`. Express the relevant statement in the definitionally equal form `cT (sigR σ (v.adicCompletion F)) ((g : Matrix (Fin n) (Fin n) _).map (prV (E := E) v)) * J.map (inclE (F := F) (v.adicCompletion F)) * (g : Matrix (Fin n) (Fin n) _).map (prV (E := E) v) = J.map (inclE (F := F) (v.adicCompletion F))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Establish `e2 : J.map (inclE (F` using `F) (v.adicCompletion F)) = (J.map (inclE (F := F) (FiniteAdeleRing (𝓞 F) F))).map (prV (E := E) v) := by`. Use extensionality with `i j`. Simplify using `[prV_inclE]`. Establish `e3 : cT (sigR σ (v.adicCompletion F)) ((g : Matrix (Fin n) (Fin n) _).map (prV (E` using `E) v)) = (cT (sigR σ (FiniteAdeleRing (𝓞 F) F)) (g : Matrix (Fin n) (Fin n) _)).map (prV (E := E) v) := by`. Use extensionality with `i j`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[cT, prV_sigR]`. Rewrite using `[e3, e2, ← Matrix.map_mul, ← Matrix.map_mul, hU]`. Introduce `x`. Prove the components needed by the constructor for the conclusion. Conclude with `fwd g hg x`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `hx`. Establish `h2` using `fwd g⁻¹ (inv_mem hg) _ hx`. Rewrite `h2` using `[map_inv, Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem plLocal_of (hG : PLGen) (hD : PLDown) : PLLocal := by
   intro F E _ _ _ _ _ n σ J Lb hfin g hg v

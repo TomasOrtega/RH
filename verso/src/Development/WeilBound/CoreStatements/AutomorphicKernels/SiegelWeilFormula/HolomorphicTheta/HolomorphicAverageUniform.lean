@@ -13,23 +13,21 @@ namespace PositivityTheory.SiegelWeilFormula.Holtb
 open PositivityTheory.Rg.Sw PositivityTheory.SiegelWeilFormula PositivityTheory.Rg.Sw.HSt.HolTPf
 
 /- English proof (translation)
-Introduce `n p q e G _ _ _ ι hι A hA hhol X _ ν _ c u C hC hcC hu hmeas`. Use `choose H hHd hHe using hhol`. Establish `hHe' : ∀ g y, A (g * ι y) = F0 p q e y * H g (bmap q y)` using `hHe`. Establish `hval : ∀ g y, H g (bmap q y) = A (g * ι y) / F0 p q e y`. Introduce `g y`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hHe' g y]`. Conclude with `(mul_div_cancel_left₀ _ (spherical_section_ne_zero_group p q e y)).symm`. Use `set f : X → (Fin n → Fin n → ℂ) → ℂ := fun x W => H (c x) W * u x with hf`. Use `⟨fun W => ∫ x, f x W ∂ν, ?_, ?_⟩` and prove the remaining obligations. Use `differentiableOn_integral_of_bdd (U := Dom n) isOpen_dom' f (fun x => (hHd (c x)).mul_const _) ?_ ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `W hW`. Take `⟨y, hy⟩` from `bmap_surj q hW`. Establish `h : (fun x => f x W) = fun x => (A (c x * ι y) * u x) * (F0 p q e y)⁻¹`. Use function extensionality and compare the values at `x`. Simplify using `only [hf]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hy, hval, div_eq_mul_inv]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h]`. Conclude with `(hmeas y).mul_const _`. Introduce `W₀ hW₀`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨r, hr, hsub, S, hS, hSW⟩` from `bmap_local q W₀ hW₀`. Take `⟨K, hK⟩` from `(hC.prod hS).exists_bound_of_continuousOn ((hA.comp (continuous_fst.mul (hι.comp continuous_snd))).continuousOn)`. Take `⟨y₀, hy₀S, -⟩` from `hSW W₀ (mem_closedBall_self hr.le)`. Take `⟨ym, hymS, hymin⟩` from `hS.exists_isMinOn ⟨y₀, hy₀S⟩ (continuous_weight_factor p q e).norm.continuousOn`. Establish `hm : 0 < ‖F0 p q e ym‖` using `norm_pos_iff.2 (spherical_section_ne_zero_group p q e ym)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨r, hr, K / ‖F0 p q e ym‖, ball_subset_closedBall.trans hsub, fun x W hW => ?_⟩` and prove the remaining obligations. Take `⟨y, hyS, hy⟩` from `hSW W (ball_subset_closedBall hW)`. Establish `hAy : ‖A (c x * ι y)‖ ≤ K` using `hK (c x, y) ⟨hcC x, hyS⟩`. Establish `hmy : ‖F0 p q e ym‖ ≤ ‖F0 p q e y‖` using `hymin hyS`. Establish `hK0 : 0 ≤ K` using `(norm_nonneg _).trans hAy`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hfx : ‖f x W‖ = ‖A (c x * ι y)‖ / ‖F0 p q e y‖ * ‖u x‖`. Simplify using `only [hf]`. Rewrite using `[← hy, hval, norm_mul, norm_div]`. Rewrite using `[hfx]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Apply `mul_le_mul _ (hu x) (norm_nonneg _) (by positivity)` to reduce the goal to its premises. Conclude with `div_le_div₀ hK0 hAy hm hmy`. Use `_ = K / ‖F0 p q e ym‖ := mul_one _`. Introduce `y show _ = F0 p q e y * ∫ x, f x (bmap q y) ∂ν`. Rewrite using `[← integral_const_mul]`.
-
-Use `integral_congr_ae (ae_of_all _ fun x => ?_)` and prove the remaining obligations. Simplify using `only [hf]`. Rewrite using `[hHe' (c x) y]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem holomorphic_average_uniform : ∀ (n p q : ℕ) (e : ℤ) (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] (ι : GR n →* G),
     Continuous ι →
@@ -85,7 +83,7 @@ theorem holomorphic_average_uniform : ∀ (n p q : ℕ) (e : ℤ) (G : Type) [Gr
     ring
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨holomorphic_translation_levi, holomorphic_average_uniform⟩`.
+Supply the required witnesses or components.
 -/
 theorem holT : HolT := ⟨holomorphic_translation_levi, holomorphic_average_uniform⟩
 

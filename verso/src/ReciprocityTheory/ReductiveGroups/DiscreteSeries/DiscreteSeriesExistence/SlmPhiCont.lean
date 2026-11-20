@@ -21,7 +21,7 @@ local notation "JJ" => Formalism.REAL.Jm
 variable {ε : Fin n → Bool}
 
 /- English proof (translation)
-Unfold `toL2`. Rewrite using `[dif_pos hF]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem toL2_eq_toLp_of_memLp {F : Matrix (Fin n) (Fin n) ℂ → ℂ}
     (hF : MemLp (fun g : Formalism.REAL.UJ ε => F (Formalism.MainNotions.S.umat g)) 2 (Formalism.REAL.muG ε)) :
@@ -30,11 +30,11 @@ theorem toL2_eq_toLp_of_memLp {F : Matrix (Fin n) (Fin n) ℂ → ℂ}
   rw [dif_pos hF]
 
 /- English proof (translation)
-Establish `hJJ : Formalism.REAL.Jm ε * Formalism.REAL.Jm ε = 1`. Rewrite using `[Formalism.REAL.Jm, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Apply the tactic sequence `split_ifs <;> norm_num`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hg' : gᴴ * Formalism.REAL.Jm ε * g = Formalism.REAL.Jm ε` using `hg`. Establish `h2 : (Formalism.REAL.Jm ε * gᴴ * Formalism.REAL.Jm ε) * g = 1`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = 1 := by rw [hg', hJJ]`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h1 : g * (Formalism.REAL.Jm ε * gᴴ * Formalism.REAL.Jm ε) = 1`. Rewrite using `[← Matrix.inv_eq_left_inv h2]`. Conclude with `Matrix.mul_nonsing_inv g (Matrix.isUnit_det_of_left_inverse h2)`. Conclude with `⟨⟨⟨g, _, h1, h2⟩, hg⟩, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem slm_exists_y {g : Matrix (Fin n) (Fin n) ℂ} (hg : Formalism.REAL.inUJ ε g) :
     ∃ y : Formalism.REAL.UJ ε, Formalism.MainNotions.S.umat y = g := by
@@ -54,7 +54,7 @@ theorem slm_exists_y {g : Matrix (Fin n) (Fin n) ℂ} (hg : Formalism.REAL.inUJ 
   exact ⟨⟨⟨g, _, h1, h2⟩, hg⟩, rfl⟩
 
 /- English proof (translation)
-Take `⟨y, rfl⟩` from `slm_exists_y hg`. Conclude with `hF.comp_measurePreserving (measurePreserving_mul_right ε y)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem slm_memLp_tr {F : Matrix (Fin n) (Fin n) ℂ → ℂ}
     (hF : MemLp (fun x : Formalism.REAL.UJ ε => F (Formalism.MainNotions.S.umat x)) 2 (Formalism.REAL.muG ε))
@@ -64,9 +64,7 @@ theorem slm_memLp_tr {F : Matrix (Fin n) (Fin n) ℂ → ℂ}
   exact hF.comp_measurePreserving (measurePreserving_mul_right ε y)
 
 /- English proof (translation)
-Introduce `g₀ hg₀`. Take `⟨U, G, hU, hgU, hG, hFG⟩` from `hF g₀ hg₀`. Establish `hc : ContinuousAt G g₀` using `hG.continuousOn.continuousAt (hU.mem_nhds hgU)`. Use `hc.continuousWithinAt.congr_of_eventuallyEq ?_ (hFG g₀ hgU hg₀)` and prove the remaining obligations. Use `filter_upwards [inter_mem_nhdsWithin {g | Formalism.REAL.inUJ ε g} (hU.mem_nhds hgU)] with g hg`.
-
-Conclude with `hFG g hg.2 hg.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem slm_contOn {F : Matrix (Fin n) (Fin n) ℂ → ℂ} (hF : Formalism.REAL.SmoothOnG ε F) :
     ContinuousOn F {g | Formalism.REAL.inUJ ε g} := by
@@ -78,18 +76,18 @@ theorem slm_contOn {F : Matrix (Fin n) (Fin n) ℂ → ℂ} (hF : Formalism.REAL
   exact hFG g hg.2 hg.1
 
 /- English proof (translation)
-Simplify using `[Formalism.REAL.Rd]`.
+Simplify using the standard rewrite rules.
 -/
 theorem slm_Rd_zero (F : Matrix (Fin n) (Fin n) ℂ → ℂ) (g : Matrix (Fin n) (Fin n) ℂ) :
     Formalism.REAL.Rd 0 F g = 0 := by
   simp [Formalism.REAL.Rd]
 
 /- English proof (translation)
-Establish `h` using `Formalism.REAL.ecSumV n ε ℂ F Y g hF hg`. Establish `h1 : Formalism.REAL.cpart1 ε Y = Y` using `skewAdjointPart_eq_self_of_isSkewAdjoint hY`. Establish `h2 : Formalism.REAL.cpart2 ε Y = 0`. Establish `hY'` using `hY`. Unfold `Formalism.REAL.inG at hY'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `e : Yᴴ * JJ ε = -(JJ ε * Y)` using `eq_neg_of_add_eq_zero_left hY'`. Establish `e2 : JJ ε * Yᴴ * JJ ε = -Y` using `by rw [Matrix.mul_assoc, e, Matrix.mul_neg, slm_JJ]`. Unfold `Formalism.REAL.cpart2`. Rewrite using `[e2, add_neg_cancel, smul_zero]`. Unfold `Formalism.REAL.EcV at h`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite `h` using `[h1, h2]`. Establish `h0 : Formalism.REAL.RdV (0 : Matrix (Fin n) (Fin n) ℂ) F g = 0` using `slm_Rd_zero F g`. Rewrite `h` using `[h0, smul_zero, add_zero]`. Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem slm_Rd_sum {F : Matrix (Fin n) (Fin n) ℂ → ℂ} (hF : Formalism.REAL.SmoothOnG ε F)
     {g : Matrix (Fin n) (Fin n) ℂ} (hg : Formalism.REAL.inUJ ε g) {Y : Matrix (Fin n) (Fin n) ℂ}
@@ -111,11 +109,11 @@ theorem slm_Rd_sum {F : Matrix (Fin n) (Fin n) ℂ → ℂ} (hF : Formalism.REAL
   exact h
 
 /- English proof (translation)
-Establish `hc0 : Formalism.REAL.inUJ ε (c s0)` using `hcU.self_of_nhds`. Take `⟨U, Ft, hU, hmem, hcd, heq⟩` from `hF (c s0) hc0`. Establish `hY` using `slm_inG_of_curve hc hcU`. Establish `hdiff : DifferentiableAt ℝ Ft (c s0)` using `(hcd.differentiableOn (by simp)).differentiableAt (hU.mem_nhds hmem)`. Establish `h1 : HasDerivAt (fun s => Ft (c s)) (fderiv ℝ Ft (c s0) c') s0` using `hdiff.hasFDerivAt.comp_hasDerivAt s0 hc`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hev : (fun s => F (c s)) =ᶠ[𝓝 s0] fun s => Ft (c s)` using `by filter_upwards [hc.continuousAt.preimage_mem_nhds (hU.mem_nhds hmem), hcU] with s hs1 hs2`. Conclude with `heq _ hs1 hs2`. Establish `hR : Formalism.REAL.Rd (slmJi ε (c s0) * c') F (c s0) = fderiv ℝ Ft (c s0) c'`. Establish `h` using `Formalism.REAL.rdExtV n ε ℂ F Ft U (c s0) (slmJi ε (c s0) * c') hU hmem hc0 hcd heq hY`. Rewrite `h` using `[← Matrix.mul_assoc, slm_mul_Ji hc0, Matrix.one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h`. Rewrite using `[← slm_Rd_sum hF hc0 hY, hR]`. Conclude with `h1.congr_of_eventuallyEq hev`.
+A detailed English derivation is pending.
 -/
 theorem slm_chain {F : Matrix (Fin n) (Fin n) ℂ → ℂ} (hF : Formalism.REAL.SmoothOnG ε F)
     {c : ℝ → Matrix (Fin n) (Fin n) ℂ} {c' : Matrix (Fin n) (Fin n) ℂ} {s0 : ℝ}
@@ -144,7 +142,7 @@ def slmPhi (ε : Fin n → Bool) (γ : Matrix (Fin n) (Fin n) ℂ → Matrix (Fi
   toL2 ε (fun x => F (x * γ q))
 
 /- English proof (translation)
-Unfold `slmPhi`. Rewrite using `[toL2_eq_toLp_of_memLp (F := fun x => F (x * γ q)) (slm_memLp_tr hF hq)]`. Conclude with `MemLp.coeFn_toLp _`.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem slm_coe_phi {F : Matrix (Fin n) (Fin n) ℂ → ℂ}
     (hF : MemLp (fun x : Formalism.REAL.UJ ε => F (Formalism.MainNotions.S.umat x)) 2 (Formalism.REAL.muG ε))
@@ -156,7 +154,7 @@ theorem slm_coe_phi {F : Matrix (Fin n) (Fin n) ℂ → ℂ}
   exact MemLp.coeFn_toLp _
 
 /- English proof (translation)
-The claim follows from `(rightRegular_toL2 ε F hq).symm`.
+A detailed English derivation is pending.
 -/
 theorem slm_phi_eq {F : Matrix (Fin n) (Fin n) ℂ → ℂ}
     {γ : Matrix (Fin n) (Fin n) ℂ → Matrix (Fin n) (Fin n) ℂ} {q : Matrix (Fin n) (Fin n) ℂ}
@@ -164,7 +162,7 @@ theorem slm_phi_eq {F : Matrix (Fin n) (Fin n) ℂ → ℂ}
   (rightRegular_toL2 ε F hq).symm
 
 /- English proof (translation)
-Establish `h1 : ContinuousOn (fun q => rreg ε (γ q) (toL2 ε F)) V` using `((rreg_isURepOn ε).2.2 (toL2 ε F)).comp hγc (fun q hq => hγU q hq)`. Conclude with `h1.congr fun q hq => slm_phi_eq (hγU q hq)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem slm_phi_cont {V : Set (Matrix (Fin n) (Fin n) ℂ)}
     {γ : Matrix (Fin n) (Fin n) ℂ → Matrix (Fin n) (Fin n) ℂ} (hγc : ContinuousOn γ V)
@@ -183,13 +181,11 @@ def slmDv (ε : Fin n → Bool) (γ : Matrix (Fin n) (Fin n) ℂ → Matrix (Fin
   ∑ a, ∑ b, ((slmJi ε (γ q) * fderiv ℝ γ q W) a b) • slmPhi ε γ (Formalism.REAL.Eab ε a b F) q
 
 /- English proof (translation)
-Establish `h2 : ∀ a, (⇑(∑ b, ((slmJi ε (γ q) * fderiv ℝ γ q W) a b) • slmPhi ε γ (Formalism.REAL.Eab ε a b F) q) : Formalism.REAL.UJ ε → ℂ) =ᵐ[Formalism.REAL.muG ε] fun x => ∑ b, (slmJi ε (γ q) * fderiv ℝ γ q W) a b * Formalism.REAL.Eab ε a b F (Formalism.MainNotions.S.umat x * γ q)`. Introduce `a`. Establish `h3` using `slm_coeFn_sum (μ := Formalism.REAL.muG ε) Finset.univ (fun b => ((slmJi ε (γ q) * fderiv ℝ γ q W) a b) • slmPhi ε γ (Formalism.REAL.Eab ε a b F) q)`. Establish `h4 : ∀ b, (⇑(((slmJi ε (γ q) * fderiv ℝ γ q W) a b) • slmPhi ε γ (Formalism.REAL.Eab ε a b F) q) : Formalism.REAL.UJ ε → ℂ) =ᵐ[Formalism.REAL.muG ε] fun x => (slmJi ε (γ q) * fderiv ℝ γ q W) a b * Formalism.REAL.Eab ε a b F (Formalism.MainNotions.S.umat x * γ q)`. Introduce `b`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `filter_upwards [Lp.coeFn_smul ((slmJi ε (γ q) * fderiv ℝ γ q W) a b) (slmPhi ε γ (Formalism.REAL.Eab ε a b F) q), slm_coe_phi (F := Formalism.REAL.Eab ε a b F) ((hF.Eab a b).2 []) hq] with x hx1 hx2`. Rewrite using `[hx1, Pi.smul_apply, hx2, smul_eq_mul]`. Establish `h5` using `ae_all_iff.mpr h4`. Use `filter_upwards [h3, h5] with x hx3 hx5`. Rewrite using `[hx3]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Finset.sum_congr rfl fun b _ => hx5 b`. Establish `h1` using `slm_coeFn_sum (μ := Formalism.REAL.muG ε) Finset.univ (fun a => ∑ b, ((slmJi ε (γ q) * fderiv ℝ γ q W) a b) • slmPhi ε γ (Formalism.REAL.Eab ε a b F) q)`. Establish `h6` using `ae_all_iff.mpr h2`. Use `filter_upwards [h1, h6] with x hx1 hx6`. Unfold `slmDv slmSum`.
-
-Rewrite using `[hx1]`. Conclude with `Finset.sum_congr rfl fun a _ => hx6 a`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem slm_coe_Dv {F : Matrix (Fin n) (Fin n) ℂ → ℂ} (hF : IsSmoothL2 ε F)
     {γ : Matrix (Fin n) (Fin n) ℂ → Matrix (Fin n) (Fin n) ℂ} {q : Matrix (Fin n) (Fin n) ℂ}
@@ -227,52 +223,50 @@ theorem slm_coe_Dv {F : Matrix (Fin n) (Fin n) ℂ → ℂ} (hF : IsSmoothL2 ε 
 def slmCl (s : ℝ) : ℝ := max 0 (min s 1)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨le_max_left _ _, max_le zero_le_one (min_le_right _ _)⟩`.
+Supply the required witnesses or components.
 -/
 theorem slmCl_mem (s : ℝ) : slmCl s ∈ Icc (0:ℝ) 1 :=
   ⟨le_max_left _ _, max_le zero_le_one (min_le_right _ _)⟩
 
 /- English proof (translation)
-The claim follows from `continuous_const.max (continuous_id.min continuous_const)`.
+A detailed English derivation is pending.
 -/
 theorem slmCl_cont : Continuous slmCl :=
   continuous_const.max (continuous_id.min continuous_const)
 
 /- English proof (translation)
-Unfold `slmCl`. Rewrite using `[min_eq_left hs.2, max_eq_right hs.1]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem slmCl_eq {s : ℝ} (hs : s ∈ Icc (0:ℝ) 1) : slmCl s = s := by
   unfold slmCl
   rw [min_eq_left hs.2, max_eq_right hs.1]
 
 /- English proof (translation)
-Take `⟨δ, hδ, hball⟩` from `Metric.isOpen_iff.mp hV q hq`. Use `⟨δ, hδ, fun W hW B hB => ?_⟩` and prove the remaining obligations. Establish `hseg : ∀ s ∈ Icc (0:ℝ) 1, q + s • W ∈ V`. Introduce `s hs`. Apply `hball` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Metric.mem_ball, dist_eq_norm, add_sub_cancel_left, norm_smul, Real.norm_eq_abs, abs_of_nonneg hs.1]`. Combine the equalities or inequalities in the displayed calculation. Establish `hpV : ∀ s, q + slmCl s • W ∈ V` using `fun s => hseg _ (slmCl_mem s)`. Establish `hp : Continuous (fun s : ℝ => q + slmCl s • W)` using `continuous_const.add (slmCl_cont.smul continuous_const)`. Establish `hγc : ContinuousOn γ V` using `hγ.continuousOn`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmc : ContDiffOn ℝ ∞ (fun q => slmJi ε (γ q)) V`. Unfold `slmJi`. Conclude with `slm_cd_mul (slm_cd_mul contDiffOn_const (slm_cd_conjT hγ)) contDiffOn_const`. Establish `hfdW : ContDiffOn ℝ ∞ (fun q => fderiv ℝ γ q W) V` using `(hγ.fderiv_of_isOpen (m := ∞) hV (by simp)).clm_apply contDiffOn_const`. Establish `hZe : ∀ a b, ContinuousOn (fun q => (slmJi ε (γ q) * fderiv ℝ γ q W) a b) V` using `fun a b => ((slm_cd_iff.mp (slm_cd_mul hmc hfdW)) a b).continuousOn`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcx : Continuous (fun p : ℝ × Formalism.REAL.UJ ε => Formalism.MainNotions.S.umat p.2)` using `(Units.continuous_val.comp continuous_subtype_val).comp continuous_snd`. Establish `hSc : Continuous (fun p : ℝ × Formalism.REAL.UJ ε => slmSum ε γ F W (q + slmCl p.1 • W) (Formalism.MainNotions.S.umat p.2))`. Unfold `slmSum`. Use `continuous_finsetSum _ fun a _ => continuous_finsetSum _ fun b _ => ?_` and prove the remaining obligations. Use `((hZe a b).comp_continuous (hp.comp continuous_fst) (fun p => hpV p.1)).mul ?_` and prove the remaining obligations.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `(slm_contOn (hF.Eab a b).1).comp_continuous ?_ (fun p => slm_inUJ_mul p.2.2 (hγU _ (hpV p.1)))` and prove the remaining obligations. Conclude with `hcx.matrix_mul (hγc.comp_continuous (hp.comp continuous_fst) (fun p => hpV p.1))`. Establish `hS0 : Continuous (fun p : ℝ × Formalism.REAL.UJ ε => slmSum ε γ F W q (Formalism.MainNotions.S.umat p.2))`. Unfold `slmSum`. Use `continuous_finsetSum _ fun a _ => continuous_finsetSum _ fun b _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `continuous_const.mul ?_` and prove the remaining obligations. Use `(slm_contOn (hF.Eab a b).1).comp_continuous ?_ (fun p => slm_inUJ_mul p.2.2 (hγU q hq))` and prove the remaining obligations. Conclude with `hcx.matrix_mul continuous_const`. Establish `hDc : Continuous (Function.uncurry (fun (s : ℝ) (x : Formalism.REAL.UJ ε) => slmSum ε γ F W (q + slmCl s • W) (Formalism.MainNotions.S.umat x) - slmSum ε γ F W q (Formalism.MainNotions.S.umat x)))` using `hSc.sub hS0`. Establish `hr : ∀ x : Formalism.REAL.UJ ε, (F (Formalism.MainNotions.S.umat x * γ (q + W)) - F (Formalism.MainNotions.S.umat x * γ q) - slmSum ε γ F W q (Formalism.MainNotions.S.umat x)) = ∫ s in (0:ℝ)..1, (slmSum ε γ F W (q + slmCl s • W) (Formalism.MainNotions.S.umat x) - slmSum ε γ F W q …`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x`. Establish `hderiv : ∀ s ∈ uIcc (0:ℝ) 1, HasDerivAt (fun t => F (Formalism.MainNotions.S.umat x * γ (q + t • W))) (slmSum ε γ F W (q + slmCl s • W) (Formalism.MainNotions.S.umat x)) s`. Introduce `s hs`. Rewrite `hs` using `[Set.uIcc_of_le zero_le_one]`. Rewrite using `[slmCl_eq hs]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq' : q + s • W ∈ V` using `hseg s hs`. Establish `hdγ : HasFDerivAt γ (fderiv ℝ γ (q + s • W)) (q + s • W)` using `((hγ.differentiableOn (by simp)).differentiableAt (hV.mem_nhds hq')).hasFDerivAt`. Establish `hline` using `((hasDerivAt_id' s).smul_const W).const_add q`. Simplify using `only [one_smul] at hline`. Establish `hc1 : HasDerivAt (fun t => γ (q + t • W)) (fderiv ℝ γ (q + s • W) W) s` using `hdγ.comp_hasDerivAt s hline`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hc2` using `slm_hd_mul (hasDerivAt_const s (Formalism.MainNotions.S.umat x)) hc1`. Simplify using `only [Matrix.zero_mul, zero_add] at hc2`. Establish `hcU : ∀ᶠ t in 𝓝 s, Formalism.REAL.inUJ ε (Formalism.MainNotions.S.umat x * γ (q + t • W))` using `by filter_upwards [hline.continuousAt.preimage_mem_nhds (hV.mem_nhds hq')] with t ht`. Conclude with `slm_inUJ_mul x.2 (hγU _ ht)`. Establish `h` using `slm_chain hF.1 hc2 hcU`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e : slmJi ε (Formalism.MainNotions.S.umat x * γ (q + s • W)) * (Formalism.MainNotions.S.umat x * fderiv ℝ γ (q + s • W) W) = slmJi ε (γ (q + s • W)) * fderiv ℝ γ (q + s • W) W`. Rewrite using `[slm_Ji_mul_mul, Matrix.mul_assoc, ← Matrix.mul_assoc (slmJi ε (Formalism.MainNotions.S.umat x)), slm_Ji_mul x.2, Matrix.one_mul]`. Rewrite `h` using `[e]`. Conclude with `h`. Establish `hint1 : IntervalIntegrable (fun s => slmSum ε γ F W (q + slmCl s • W) (Formalism.MainNotions.S.umat x)) volume 0 1` using `(hSc.comp (continuous_id.prodMk continuous_const : Continuous fun s : ℝ => (s, x))).intervalIntegrable 0 1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hFTC` using `intervalIntegral.integral_eq_sub_of_hasDerivAt hderiv hint1`. Simplify using `only [one_smul, zero_smul, add_zero] at hFTC`. Rewrite using `[intervalIntegral.integral_sub hint1 intervalIntegrable_const, hFTC, intervalIntegral.integral_const, sub_zero, one_smul]`. Establish `hBs : ∀ s ∈ Ioc (0:ℝ) 1, eLpNorm (fun x : Formalism.REAL.UJ ε => slmSum ε γ F W (q + slmCl s • W) (Formalism.MainNotions.S.umat x) - slmSum ε γ F W q (Formalism.MainNotions.S.umat x)) 2 (Formalism.REAL.muG ε) ≤ ENNReal.ofReal B`. Introduce `s hs`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hs' : s ∈ Icc (0:ℝ) 1` using `Ioc_subset_Icc_self hs`. Rewrite using `[slmCl_eq hs']`. Establish `hae : (⇑(slmDv ε γ F W (q + s • W) - slmDv ε γ F W q) : Formalism.REAL.UJ ε → ℂ) =ᵐ[Formalism.REAL.muG ε] fun x => slmSum ε γ F W (q + s • W) (Formalism.MainNotions.S.umat x) - slmSum ε γ F W q (Formalism.MainNotions.S.umat x)` using `by filter_upwards [Lp.coeFn_sub (slmDv ε γ F W (q + s • W)) (slmDv ε γ F W q), slm_coe_Dv hF (hγU _ (hseg s hs')) W, slm_coe_Dv hF (hγU q hq) W] with x h1 h2 h3`. Rewrite using `[h1, Pi.sub_apply, h2, h3]`. Rewrite using `[← eLpNorm_congr_ae hae, ← ENNReal.ofReal_toReal (Lp.eLpNorm_ne_top _), ← Lp.norm_def]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `ENNReal.ofReal_le_ofReal (hB s hs)`. Establish `hLp` using `slm_eLpNorm_le (μ := Formalism.REAL.muG ε) (fun x => F (Formalism.MainNotions.S.umat x * γ (q + W)) - F (Formalism.MainNotions.S.umat x * γ q) - slmSum ε γ F W q (Formalism.MainNotions.S.umat x)) (fun s x => slmSum ε γ F W (q + slmCl s • W) (Formalism.MainNotions.S.umat x) - slmS …`. Establish `hqW : q + W ∈ V` using `by simpa using hseg 1 ⟨zero_le_one, le_rfl⟩`. Establish `hcoe : (⇑(slmPhi ε γ F (q + W) - slmPhi ε γ F q - slmDv ε γ F W q) : Formalism.REAL.UJ ε → ℂ) =ᵐ[Formalism.REAL.muG ε] fun x => F (Formalism.MainNotions.S.umat x * γ (q + W)) - F (Formalism.MainNotions.S.umat x * γ q) - slmSum ε γ F W q (Formalism.MainNotions.S.umat x)` using `by filter_upwards [Lp.coeFn_sub (slmPhi ε γ F (q + W) - slmPhi ε γ F q) (slmDv ε γ F W q), Lp.coeFn_sub (slmPhi ε γ F (q + W)) (slmPhi ε γ F q), slm_coe_phi (F := F) (hF.2 []) (hγU _ hqW), slm_coe_phi (F := F) (hF.2 []) (hγU q hq), slm_coe_Dv hF (hγU q hq) W] with x h1 h2 h3 h4 h …`. Rewrite using `[h1, Pi.sub_apply, h2, Pi.sub_apply, h3, h4, h5]`.
-
-Establish `hB0 : 0 ≤ B` using `le_trans (norm_nonneg _) (hB 1 ⟨zero_lt_one, le_rfl⟩)`. Rewrite using `[Lp.norm_def, eLpNorm_congr_ae hcoe]`. Conclude with `ENNReal.toReal_le_of_le_ofReal hB0 hLp`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem slm_hint {V : Set (Matrix (Fin n) (Fin n) ℂ)} (hV : IsOpen V)
     {γ : Matrix (Fin n) (Fin n) ℂ → Matrix (Fin n) (Fin n) ℂ} (hγ : ContDiffOn ℝ ∞ γ V)
@@ -389,9 +383,7 @@ theorem slm_hint {V : Set (Matrix (Fin n) (Fin n) ℂ)} (hV : IsOpen V)
   exact ENNReal.toReal_le_of_le_ofReal hB0 hLp
 
 /- English proof (translation)
-Establish `hcont : Continuous (fun M : Matrix (Fin n) (Fin n) ℂ => JJ ε * Mᴴ * JJ ε)` using `(continuous_const.matrix_mul continuous_id.matrix_conjTranspose).matrix_mul continuous_const`. Set `L : Matrix (Fin n) (Fin n) ℂ →L[ℝ] Matrix (Fin n) (Fin n) ℂ` to `{ toFun := fun M => JJ ε * Mᴴ * JJ ε map_add' := fun A B => by`. Simplify using `only [Matrix.conjTranspose_add, Matrix.mul_add, Matrix.add_mul]`. Use the proof step `map_smul' := fun c A => by`. Simplify using `only [Matrix.conjTranspose_smul, star_trivial, Matrix.mul_smul, Matrix.smul_mul, RingHom.id_apply]`.
-
-Use `cont := hcont }`. Conclude with `L.contDiff.comp_contDiffOn hγ`.
+Establish an intermediate fact. Introduce a local definition for the expression. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem slm_mc {V : Set (Matrix (Fin n) (Fin n) ℂ)}
     {γ : Matrix (Fin n) (Fin n) ℂ → Matrix (Fin n) (Fin n) ℂ} (hγ : ContDiffOn ℝ ∞ γ V) :
@@ -409,9 +401,9 @@ theorem slm_mc {V : Set (Matrix (Fin n) (Fin n) ℂ)}
   exact L.contDiff.comp_contDiffOn hγ
 
 /- English proof (translation)
-Introduce `g0 hg0`. Take `⟨V, γ, hV, hg0V, hγ, hγU, hγid⟩` from `slm_exists_ret ε hg0`. Use `⟨V, slmPhi ε γ F, hV, hg0V, ?_, ?_⟩` and prove the remaining obligations. Conclude with `slm_mat hV hγ (slm_mc hγ) (slmPhi ε γ) (IsSmoothL2 ε) (Formalism.REAL.Eab ε) (fun G hG a b => hG.Eab a b) (fun G _ => slm_phi_cont hγ.continuousOn hγU G) (fun G hG q hq => slm_hint hV hγ hγU hG hq) F hF`. Introduce `g hgV hgU show rreg ε g (toL2 ε F) = slmPhi ε γ F g`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[slm_phi_eq (hγU g hgV), hγid g hgV hgU]`.
+A detailed English derivation is pending.
 -/
 theorem slm_smooth {F : Matrix (Fin n) (Fin n) ℂ → ℂ} (hF : IsSmoothL2 ε F) :
     S7.SmoothOnGV ε (fun g => rreg ε g (toL2 ε F)) := by
@@ -426,19 +418,19 @@ theorem slm_smooth {F : Matrix (Fin n) (Fin n) ℂ → ℂ} (hF : IsSmoothL2 ε 
     rw [slm_phi_eq (hγU g hgV), hγid g hgV hgU]
 
 /- English proof (translation)
-Establish `h1U : Formalism.REAL.inUJ ε (1 : Matrix (Fin n) (Fin n) ℂ)`. Unfold `Formalism.REAL.inUJ`. Simplify using the standard rewrite rules. Take `⟨V, γ, hV, h1V, hγ, hγU, hγid⟩` from `slm_exists_ret ε h1U`. Establish `hD` using `slm_mat_hD hV hγ (slm_mc hγ) (slmPhi ε γ) (IsSmoothL2 ε) (Formalism.REAL.Eab ε) (fun G hG a b => hG.Eab a b) (fun G _ => slm_phi_cont hγ.continuousOn hγU G) (fun G hG q hq => slm_hint hV hγ hγU hG hq) F hF 1 h1V`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hcurve : HasDerivAt (fun t : ℝ => NormedSpace.exp ((t : ℂ) • X)) X 0`. Establish `h` using `Formalism.REAL.hasDerivAt_mul_exp_smul_zero (1 : Matrix (Fin n) (Fin n) ℂ) X`. Simplify using `only [Matrix.one_mul] at h`. Conclude with `h`. Establish `h0 : NormedSpace.exp (((0:ℝ) : ℂ) • X) = 1` using `by simp`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hev1 : ∀ᶠ t : ℝ in 𝓝 (0:ℝ), NormedSpace.exp ((t : ℂ) • X) ∈ V` using `hcurve.continuousAt.preimage_mem_nhds (by rw [h0]; exact hV.mem_nhds h1V)`. Establish `hexpU : ∀ t : ℝ, Formalism.REAL.inUJ ε (NormedSpace.exp ((t : ℂ) • X))` using `fun t => Formalism.REAL.exp_indefinite_unitary_holds n ε X hX t`. Establish `hdγ : HasFDerivAt γ (fderiv ℝ γ 1) 1` using `((hγ.differentiableOn (by simp)).differentiableAt (hV.mem_nhds h1V)).hasFDerivAt`. Establish `hγc : HasDerivAt (fun t : ℝ => γ (NormedSpace.exp ((t : ℂ) • X))) (fderiv ℝ γ 1 X) 0` using `hdγ.comp_hasDerivAt_of_eq 0 hcurve h0.symm`. Establish `hγc' : HasDerivAt (fun t : ℝ => γ (NormedSpace.exp ((t : ℂ) • X))) X 0` using `hcurve.congr_of_eventuallyEq (by filter_upwards [hev1] with t ht; exact hγid _ ht (hexpU t))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfd : fderiv ℝ γ 1 X = X` using `hγc.unique hγc'`. Establish `hγ1 : γ 1 = 1` using `hγid 1 h1V h1U`. Establish `hm1 : slmJi ε (γ 1) = 1`. Rewrite using `[hγ1]`. Unfold `slmJi`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Simplify using `[Formalism.REAL.Jm_mul_self]`. Establish `hΦc` using `hD.comp_hasDerivAt_of_eq 0 hcurve h0.symm`. Establish `hev2 : (fun t : ℝ => rreg ε (NormedSpace.exp ((t : ℂ) • X)) (toL2 ε F)) =ᶠ[𝓝 0] (slmPhi ε γ F ∘ fun t : ℝ => NormedSpace.exp ((t : ℂ) • X))` using `by filter_upwards [hev1] with t ht`. Simplify using `only [Function.comp]`. Rewrite using `[slm_phi_eq (hγU _ ht), hγid _ ht (hexpU t)]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `dS`. Use `((hΦc.congr_of_eventuallyEq hev2).deriv).trans ?_` and prove the remaining obligations. Use `(slmG_mat_apply γ (fun q => slmJi ε (γ q)) 1 (fun a b => slmPhi ε γ (Formalism.REAL.Eab ε a b F) 1) X).trans ?_` and prove the remaining obligations. Simplify using `only [hfd, hm1, Matrix.one_mul]`. Use `Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Unfold `slmPhi`. Rewrite using `[hγ1]`. Simplify using `only [Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem slm_dS {F : Matrix (Fin n) (Fin n) ℂ → ℂ} (hF : IsSmoothL2 ε F) {X : Matrix (Fin n) (Fin n) ℂ}
     (hX : Formalism.REAL.inG ε X) :
@@ -487,18 +479,18 @@ theorem slm_dS {F : Matrix (Fin n) (Fin n) ℂ → ℂ} (hF : IsSmoothL2 ε F) {
   simp only [Matrix.mul_one]
 
 /- English proof (translation)
-The claim follows from `((exists_smoothDerived ε (rreg ε)).choose_spec.choose_spec.1 _).2 (slm_smooth hF)`.
+A detailed English derivation is pending.
 -/
 theorem slm_mem_smD {F : Matrix (Fin n) (Fin n) ℂ → ℂ} (hF : IsSmoothL2 ε F) :
     toL2 ε F ∈ smD ε (rreg ε) :=
   ((exists_smoothDerived ε (rreg ε)).choose_spec.choose_spec.1 _).2 (slm_smooth hF)
 
 /- English proof (translation)
-Establish `hσ` using `rreg_isURepOn ε`. Take `⟨hc1, hc2, hdec, -⟩` from `Formalism.REAL.complex_parts_mem_lie_algebra_holds n ε (Matrix.single a b 1)`. Rewrite using `[smE_apply hσ]`. Use `show dS (rreg ε) (S7.cpart1 ε (Matrix.single a b 1)) (toL2 ε F) + Complex.I • dS (rreg ε) (S7.cpart2 ε (Matrix.single a b 1)) (toL2 ε F) = toL2 ε (Formalism.REAL.Eab ε a b F)`. Rewrite using `[slm_dS (X := S7.cpart1 ε (Matrix.single a b 1)) hF hc1, slm_dS (X := S7.cpart2 ε (Matrix.single a b 1)) hF hc2]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hZ : S7.cpart1 ε (Matrix.single a b 1) + Complex.I • S7.cpart2 ε (Matrix.single a b 1) = Matrix.single a b 1` using `hdec.symm`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, add_smul, Finset.sum_add_distrib, Finset.smul_sum, smul_smul]`. Use `_ = ∑ c, ∑ d, (Matrix.single a b 1 : Matrix (Fin n) (Fin n) ℂ) c d • toL2 ε (Formalism.REAL.Eab ε c d F) := by`. Rewrite using `[hZ]`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `_ = toL2 ε (Formalism.REAL.Eab ε a b F) := by`. Rewrite using `[Finset.sum_eq_single a (fun c _ hc => Finset.sum_eq_zero fun d _ => by`. Simplify using `[Ne.symm hc]) (fun h => absurd (Finset.mem_univ _) h),`. Use the proof step `Finset.sum_eq_single b (fun d _ hd => by simp [Ne.symm hd]) (fun h => absurd (Finset.mem_univ _) h)]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem slm_smE {F : Matrix (Fin n) (Fin n) ℂ → ℂ} (hF : IsSmoothL2 ε F) (a b : Fin n) :
     ((smE ε (rreg ε) a b ⟨toL2 ε F, slm_mem_smD hF⟩ : smD ε (rreg ε)) : L2 ε) =

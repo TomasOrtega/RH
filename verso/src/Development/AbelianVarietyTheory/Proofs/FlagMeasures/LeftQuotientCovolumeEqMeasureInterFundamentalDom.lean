@@ -7,19 +7,17 @@ namespace GlobalTheory
 open scoped Pointwise in
 
 /- English proof (translation)
-Introduce `G _ _ _ Γ μ fund A hc hμ hf hcov hdis hA hinv`. Establish `: Countable Γ` using `hc.to_subtype`. Establish `: MeasurableConstSMul Γ G` using `⟨fun γ => measurable_const_mul (γ : G)⟩`. Establish `: SMulInvariantMeasure Γ G μ` using `⟨fun γ s hs => by`. Establish `h` using `hμ γ γ.2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `conv_rhs => rw [← h]`. Rewrite using `[Measure.map_apply (measurable_const_mul (γ : G)) hs]`. Use the proof step `rfl⟩`. Establish `hF : IsFundamentalDomain Γ fund μ`. Use `IsFundamentalDomain.mk'' hf.nullMeasurableSet ?_ ?_ ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `Filter.Eventually.of_forall fun y => ?_` and prove the remaining obligations. Take `⟨γ, hγ, h⟩` from `hcov y`. Conclude with `⟨⟨γ, hγ⟩, h⟩`. Introduce `γ hγ`. Conclude with `hdis γ γ.2 (fun h => hγ (Subtype.ext h))`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions.
 
-Introduce `γ`. Conclude with `(measurePreserving_smul γ μ).quasiMeasurePreserving`. Apply `le_antisymm` to reduce the goal to its premises. Unfold `covol`. Use `iInf_le_of_le (A ∩ fund) (iInf_le_of_le (hA.inter hf) (iInf_le_of_le ?_ le_rfl))` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Replace the relevant objects with their definitions.
 
-Introduce `x hx`. Take `⟨γ, hγ, h⟩` from `hcov x`. Conclude with `⟨γ, hγ, hinv γ hγ x hx, h⟩`. Unfold `covol`. Use `le_iInf fun D => le_iInf fun _ => le_iInf fun hD => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hF.measure_eq_tsum D]`. Use `le_trans (measure_mono ?_) (measure_iUnion_le _)` and prove the remaining obligations. Introduce and unpack `x ⟨hx, hxf⟩`. Take `⟨γ, hγ, h⟩` from `hD x hx`. Use `Set.mem_iUnion.2 ⟨(⟨γ, hγ⟩ : Γ)⁻¹, ?_, hxf⟩` and prove the remaining obligations.
-
-Rewrite using `[Set.mem_inv_smul_set_iff]`. Conclude with `h`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem covol_eq_measure_inter_fund : ∀ (G : Type) [Group G] [MeasurableSpace G] [MeasurableMul G] (Γ : Subgroup G) (μ : Measure G) (fund A : Set G), (Γ : Set G).Countable → (∀ γ ∈ Γ, μ.map (fun y => γ * y) = μ) → MeasurableSet fund → (∀ y, ∃ γ ∈ Γ, γ * y ∈ fund) → (∀ γ ∈ Γ, γ ≠ 1 → μ ((fun y => γ * y) '' fund ∩ fund) = 0) → MeasurableSet A → (∀ γ ∈ Γ, ∀ x ∈ A, γ * x ∈ A) → covol (Γ : Set G) μ A = μ (A ∩ fund) := by
   intro G _ _ _ Γ μ fund A hc hμ hf hcov hdis hA hinv

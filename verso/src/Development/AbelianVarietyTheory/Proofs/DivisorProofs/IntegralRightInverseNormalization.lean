@@ -8,25 +8,23 @@ open ValuativeRel Matrix
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `key : (Y * Q').det = ∑ p : Fin s → D, (∏ i, Q' (p i) i) * (Y.submatrix id p).det`. Simplify using `only [det_apply', mul_apply, Finset.prod_univ_sum, Finset.mul_sum, Fintype.piFinset_univ, submatrix_apply, id]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun p _ => Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_mul_distrib]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite `key` using `[hYQ, det_one]`. Take `⟨p₀, -, hp₀⟩` from `Finset.exists_ne_zero_of_sum_ne_zero (key ▸ one_ne_zero)`. Use `haveI : Nonempty (Fin s → D) := ⟨p₀⟩`. Take `⟨κ, hκ⟩` from `Finite.exists_max (fun p : Fin s → D => valuation k (Y.submatrix id p).det)`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hne : (Y.submatrix id κ).det ≠ 0`. Introduce `h0`. Use `hκ p₀` as an intermediate fact. Rewrite `this` using `[h0, map_zero]`. Conclude with `right_ne_zero_of_mul hp₀ ((valuation k).zero_iff.mp (le_antisymm this zero_le'))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set h := (Y.submatrix id κ)⁻¹ with hh`. Establish `hsub : ∀ p : Fin s → D, (h * Y).submatrix id p = h * Y.submatrix id p`. Introduce `p`. Use extensionality with `r c`. Simplify using `[mul_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hone : (h * Y).submatrix id κ = 1`. Rewrite using `[hsub, hh]`. Conclude with `nonsing_inv_mul _ (isUnit_iff_ne_zero.mpr hne)`. Use `⟨h, Matrix.of fun j l => if j = κ l then 1 else 0, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails.
 
-Establish `e : (h * Y) i j = ((h * Y).submatrix id (Function.update κ i j)).det`. Establish `: (h * Y).submatrix id (Function.update κ i j) = (1 : Matrix (Fin s) (Fin s) k).updateCol i (fun r => (h * Y) r j)`. Use extensionality with `r c`. Distinguish the cases in `hc : c = i`. Substitute `hc` using the available equality.
+Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[updateCol_ne hc, ← hone]`. Simplify using `[Function.update_of_ne hc]`. Rewrite using `[this, ← cramer_apply, cramer_one]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Valuation.mem_integer_iff, e, hsub, det_mul, hh, det_nonsing_inv, Ring.inverse_eq_inv', map_mul, map_inv₀]`. Establish `hpos : 0 < valuation k (Y.submatrix id κ).det` using `lt_of_le_of_ne zero_le' (Ne.symm ((valuation k).ne_zero_iff.mpr hne))`. Rewrite using `[mul_comm, ← div_eq_mul_inv, div_le_one₀ hpos]`. Conclude with `hκ _`. Introduce `i j`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.of_apply]`. Use `split_ifs`. Conclude with `one_mem _`. Conclude with `zero_mem _`. Establish `: h * Y * (Matrix.of fun j l => if j = κ l then (1 : k) else 0 : Matrix D (Fin s) k) = (h * Y).submatrix id κ`.
-
-Use extensionality with `r l`. Simplify using `[mul_apply]`. Rewrite using `[this, hone]`.
+A detailed English derivation is pending.
 -/
 theorem frame_normalise_integral (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (D : Type) [Fintype D] [DecidableEq D] (s : ℕ)

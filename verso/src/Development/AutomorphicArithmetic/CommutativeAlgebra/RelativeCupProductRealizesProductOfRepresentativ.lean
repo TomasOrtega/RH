@@ -6,20 +6,20 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaleSpaceSimplices
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex GlobalTheory.EtC LateralTheory.CohomologicalPurity LateralTheory.CohomologicalPurity.TubeCut UpperTheory.Et.Prd
 
 /- English proof (translation)
-The claim follows from `pushout.inl_desc _ _ _`.
+A detailed English derivation is pending.
 -/
 private theorem inl_fold' (P : Arrow Spc) : dbl.inl P ≫ dbl.fold P = 𝟙 _ := pushout.inl_desc _ _ _
 
 /- English proof (translation)
-The claim follows from `pushout.inl_desc _ _ _`.
+A detailed English derivation is pending.
 -/
 private theorem inl_map' {P' P : Arrow Spc} (φ : P' ⟶ P) : dbl.inl P' ≫ dbl.map φ = φ.right ≫ dbl.inl P :=
   pushout.inl_desc _ _ _
 
 /- English proof (translation)
-Substitute `hr hk` using the available equality. Establish `ht' : m = t` using `by simpa using ht`. Substitute `ht'` using the available equality. Substitute `hs` using the available equality. Substitute `hs'` using the available equality.
+Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality. Substitute using the available equality. Substitute using the available equality.
 
-Rewrite using `[(GlobalTheory.T.etaleSpaceSimplicesOver_sub_composite x).2.1, hb]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem aw_last {R : Type} [CommRing R] {I J K : Cx R} (μ : Pair I J K) {D : Spc} {n m : ℤ}
     (α : Cochain ((chains R).obj D) I n) (β : Cochain ((chains R).obj D) J m) {W : Scheme.{0}} {p : ℕ}
@@ -37,9 +37,9 @@ private theorem aw_last {R : Type} [CommRing R] {I J K : Cx R} (μ : Pair I J K)
   rw [(GlobalTheory.T.etaleSpaceSimplicesOver_sub_composite x).2.1, hb]
 
 /- English proof (translation)
-Rewrite using `[hγ p w h W x, Fin.sum_univ_castSucc, Finset.sum_eq_zero, zero_add]`. Conclude with `congrArg _ (aw_last μ α β x b hp hb _ _ rfl (Nat.sub_self p) _ _ _ _ _ _ _ _ s hs h')`. Introduce `r _`. Establish `hk : 0 < p - ((Fin.castSucc r : Fin (p + 1)) : ℕ)`. Use `r.2` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Fin.val_castSucc]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hβ _ hk, map_zero, smul_zero]`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem aw_eval {R : Type} [CommRing R] {I J K : Cx R} (μ : Pair I J K) {D : Spc} {n m : ℤ}
     (α : Cochain ((chains R).obj D) I n) (β : Cochain ((chains R).obj D) J m)
@@ -59,7 +59,7 @@ private theorem aw_eval {R : Type} [CommRing R] {I J K : Cx R} (μ : Pair I J K)
     rw [hβ _ hk, map_zero, smul_zero]
 
 /- English proof (translation)
-Rewrite using `[((GlobalTheory.T.etaleSpaceSimplicesOver_sub_composite z).2.2.1 p 0 h).2.1 ι']`. Establish `h1 : ((z.sub p 0 h).map ι').map (dbl.map (abvMap U π)) = (z.sub p 0 h).map (ι' ≫ dbl.map (abvMap U π))` using `rfl`. Rewrite using `[h1, hι]`. Establish `h2 : (z.sub p 0 h).map (π ≫ ι) = Sx.map (E` using `sch.obj X) (p := 0) ι (under π (z.sub p 0 h)) := rfl`. Rewrite using `[h2, ((GlobalTheory.T.etaleSpaceSimplicesOver_sub_composite z).2.2.1 p 0 h).2.2, (UpperTheory.mem_pullbackImage_iff_factors_through_open U π p W z).2.2 0 _]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem last_vertex {X : Scheme.{0}} (U : X.Opens) {E : Spc} (π : E ⟶ sch.obj X) {p : ℕ} {W : Scheme.{0}}
     (z : Sx E p W) (h : p + 0 ≤ p) (ι' : E ⟶ dbl (abv U π)) (ι : sch.obj X ⟶ dbl (opn U))
@@ -72,27 +72,25 @@ private theorem last_vertex {X : Scheme.{0}} (U : X.Opens) {E : Spc} (π : E ⟶
   rw [h2, ((GlobalTheory.T.etaleSpaceSimplicesOver_sub_composite z).2.2.1 p 0 h).2.2, (UpperTheory.mem_pullbackImage_iff_factors_through_open U π p W z).2.2 0 _]
 
 /- English proof (translation)
-Introduce `hAW q _ X U E π m j i n c β hrep Φ hΦ x a hx`. Take `⟨-, -, γ₀, hγ₀, h0l, h0r, h0p⟩` from `hrep`. Take `⟨α, hα, hαx⟩` from `hx`. Set `α' : Cocycle ((chains _).obj (dbl (abv U π))) (res _ (tw q i)) n` to `zcomp (Cocycle.ofHom ((chains _).map (dbl.fold (abv U π)))) α (zero_add n)`. Set `β' : Cocycle ((chains _).obj (dbl (abv U π))) (res _ (tw q j)) m` to `zcomp (Cocycle.ofHom ((chains _).map (dbl.map (abvMap U π)))) γ₀ (zero_add m)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Take `⟨γ, hγ, hcup⟩` from `(hAW q i j).2 (dbl (abv U π)) n m α' β'`. Establish `evα : ∀ (p : ℕ) (s : ℤ) h (W : Scheme.{0}) (y : Sx (dbl (abv U π)) p W), ev α'.1 p s h W y = ev α.1 p s h W (y.map (dbl.fold (abv U π)))` using `fun p s h W y => (GlobalTheory.T.etaleCochainEvalOnSimplex_basic_properties _).2.2.2.1 (dbl.fold (abv U π)) α.1 p s h W y`. Establish `evβ : ∀ (p : ℕ) (s : ℤ) h (W : Scheme.{0}) (y : Sx (dbl (abv U π)) p W), ev β'.1 p s h W y = ev γ₀.1 p s h W (y.map (dbl.map (abvMap U π)))` using `fun p s h W y => (GlobalTheory.T.etaleCochainEvalOnSimplex_basic_properties _).2.2.2.1 (dbl.map (abvMap U π)) γ₀.1 p s h W y`. Establish `hvan : ∀ (k : ℕ), 0 < k → ∀ (s : ℤ) h (W : Scheme.{0}) (y : Sx (dbl (abv U π)) k W), ev β'.1 k s h W y = 0`. Introduce `k hk s h W y`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨k, rfl⟩ : ∃ k', k = k' + 1` from `⟨k - 1, by omega⟩`. Rewrite using `[evβ]`. Conclude with `h0p k s _ W _`. Establish `hinr : ∀ (p : ℕ) (s : ℤ) h (W : Scheme.{0}) (z : Sx (abv U π).right p W), ev γ.1 p s h W (z.map (dbl.inr (abv U π))) = 0`. Introduce `p s h W z`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hb : ev β'.1 0 m (by simp) W ((z.map (dbl.inr (abv U π))).sub p 0 (by omega)) = 0`. Rewrite using `[evβ]`. Use `(congrArg (fun y => ev γ₀.1 0 m (by simp) W y) (last_vertex U π z (by omega) (dbl.inr (abv U π)) (dbl.inr (opn U)) (dbl.inr_map (abvMap U π)))).trans ?_` and prove the remaining obligations. Conclude with `h0r W _`. Rewrite using `[aw_eval _ α'.1 β'.1 γ.1 hγ hvan _ 0 (by omega) hb s h (-(p : ℤ) + n) rfl (by omega), map_zero, smul_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨γ, ?_, ?_, hinr⟩` and prove the remaining obligations. Establish `hC : cup q (pull _ (dbl.fold (abv U π)) _ n a) (Hs.pull q (abvMap U π) _ _ c).1 = CohomologyClass.mk γ`. Rewrite using `[← hcup, ← hα]`. Express the relevant statement in the definitionally equal form `cup q _ (pull _ (dbl.map (abvMap U π)) _ m c.1) = _`. Rewrite using `[← hγ₀]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `hz : pull _ (dbl.inr (abv U π)) (tw q (i + j)) (n + m) (CohomologyClass.mk γ) = 0`. Establish `h0 : zcomp (Cocycle.ofHom ((chains _).map (dbl.inr (abv U π)))) γ (zero_add (n + m)) = 0`. Establish `hc : (zcomp (Cocycle.ofHom ((chains _).map (dbl.inr (abv U π)))) γ (zero_add (n + m))).1 = 0`. Use `(GlobalTheory.T.etaleCochainEvalOnSimplex_basic_properties _).2.2.1 _ _ fun p s h W z => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[((GlobalTheory.T.etaleCochainEvalOnSimplex_basic_properties _).1 0 0 p s h W z).2.2.1]`. Conclude with `((GlobalTheory.T.etaleCochainEvalOnSimplex_basic_properties _).2.2.2.1 (dbl.inr (abv U π)) γ.1 p s h W z).trans (hinr p s h W z)`. Conclude with `Cocycle.ext hc`. Conclude with `(congrArg CohomologyClass.mk h0).trans (CohomologyClass.mk_zero _ _ _)`. Express the relevant statement in the definitionally equal form `CohomologyClass.mk γ = cup q (pull _ (dbl.fold (abv U π)) _ n a) (Hs.pull q (abvMap U π) _ _ c).1 - pull _ (dbl.fold (abv U π)) _ _ (pull _ (dbl.inr (abv U π)) _ _ (cup q (pull _ (dbl.fold (abv U π)) _ n a) (Hs.pull q (abvMap U π) _ _ c).1))`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hC, hz, map_zero, sub_zero]`. Introduce `p s h W z`. Establish `hs : -(p : ℤ) + n = s + 0` using `by omega`. Establish `hb : ev β'.1 0 m (by simp) W ((z.map (dbl.inl (abv U π))).sub p 0 (by omega)) = Sec.res (under π z) β`. Rewrite using `[evβ]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(congrArg (fun y => ev γ₀.1 0 m (by simp) W y) (last_vertex U π z (by omega) (dbl.inl (abv U π)) (dbl.inl (opn U)) (inl_map' (abvMap U π)))).trans ?_` and prove the remaining obligations. Conclude with `h0l W _`. Establish `e` using `hΦ p s (x p s) W z`. Rewrite `e` using `[hαx p s hs W z]`. Use `e.trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[aw_eval _ α'.1 β'.1 γ.1 hγ hvan _ _ (by omega) hb (s + m) h (s + 0) hs (by omega), evα]`. Establish `hf : (z.map (dbl.inl (abv U π))).map (dbl.fold (abv U π)) = z.map (𝟙 E)`. Establish `h1 : (z.map (dbl.inl (abv U π))).map (dbl.fold (abv U π)) = z.map (dbl.inl (abv U π) ≫ dbl.fold (abv U π))` using `rfl`. Rewrite using `[h1, inl_fold']`. Both sides reduce to the same expression.
-
-Rewrite using `[hf]`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.relativeCupProduct_realizes_product_of_representative :
     LeafAW → ∀ (q : ℕ) [NeZero q] {X : Scheme.{0}} (U : X.Opens) {E : Spc} (π : E ⟶ sch.obj X) (m j i n : ℤ) (c : Hs q (opn U) m j) (β : Sec ((res _ (tw q j)).X m) X), IsRep U β c.1 →

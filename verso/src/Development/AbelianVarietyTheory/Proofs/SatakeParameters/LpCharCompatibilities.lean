@@ -16,11 +16,11 @@ variable {V V' V'' : Type*} [AddCommGroup V] [Module ℂ V] [FiniteDimensional �
 namespace WDRep
 
 /- English proof (translation)
-Use `⟨TensorProduct.prodLeft ℂ ℂ V V' V'', fun σ v => ?_, fun v => ?_⟩` and prove the remaining obligations. Proceed by induction on `v using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `tmul x y`. Take `⟨x₁, x₂⟩` from `x`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Simplify using the standard rewrite rules. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Proceed by induction on `v using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `tmul x y`.
+Simplify using the standard rewrite rules. Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Take `⟨x₁, x₂⟩` from `x`. Simplify using the standard rewrite rules. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Treat this case separately.
 -/
 theorem iso_sum_tensor (a : WDRep h V) (b : WDRep h V') (c : WDRep h V'') :
     ((a.sum b).tensor c).Iso ((a.tensor c).sum (b.tensor c)) := by
@@ -39,27 +39,27 @@ theorem iso_sum_tensor (a : WDRep h V) (b : WDRep h V') (c : WDRep h V'') :
     | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨.refl _ _, fun σ v => by simp [TensorProduct.map_smul_left], fun _ => rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem iso_tw_tensor (a : WDRep h V) (c : WDRep h V') (s : ℝ) :
     ((a.tw s).tensor c).Iso ((a.tensor c).tw s) :=
   ⟨.refl _ _, fun σ v => by simp [TensorProduct.map_smul_left], fun _ => rfl⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨.refl _ _, fun σ v => by simp [TensorProduct.map_smul_right], fun _ => rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem iso_tensor_tw (a : WDRep h V) (c : WDRep h V') (s : ℝ) :
     (a.tensor (c.tw s)).Iso ((a.tensor c).tw s) :=
   ⟨.refl _ _, fun σ v => by simp [TensorProduct.map_smul_right], fun _ => rfl⟩
 
 /- English proof (translation)
-Use `⟨TensorProduct.assoc ℂ V V' V'', fun σ v => ?_, fun v => ?_⟩` and prove the remaining obligations. Proceed by induction on `v using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul x z`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x y => simp`. Consider the case `add x y hx hy => simp only [map_add, add_tmul, hx, hy]`. Proceed by induction on `v using TensorProduct.induction_on with`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul x z`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Treat this case separately. Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Consider the case `tmul x y => simp [tmul_add, add_tmul, add_assoc]`. Consider the case `add x y hx hy => simp only [map_add, add_tmul, hx, hy]`.
+Treat this case separately. Treat this case separately.
 -/
 theorem iso_tensor_assoc (a : WDRep h V) (b : WDRep h V') (c : WDRep h V'') :
     ((a.tensor b).tensor c).Iso (a.tensor (b.tensor c)) := by
@@ -82,9 +82,9 @@ theorem iso_tensor_assoc (a : WDRep h V) (b : WDRep h V') (c : WDRep h V'') :
       | add x y hx hy => simp only [map_add, add_tmul, hx, hy]
 
 /- English proof (translation)
-Use `haveI : Subsingleton (V ⊗[ℂ] V') := by`. Use `⟨fun x y => ?_⟩` and prove the remaining obligations. Establish `key : ∀ z : V ⊗[ℂ] V', z = 0` using `fun z => by`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => rfl`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `tmul x y => rw [Subsingleton.elim x 0, zero_tmul]`. Consider the case `add x y hx hy => rw [hx, hy, add_zero]`. Rewrite using `[key x, key y]`. Conclude with `⟨0, fun _ _ => Subsingleton.elim _ _, fun _ => Subsingleton.elim _ _⟩`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem iso_zero_tensor (a : WDRep h V) (c : WDRep h V') [Subsingleton V] (b : WDRep h V'') [Subsingleton V''] :
     (a.tensor c).Iso b := by
@@ -99,11 +99,11 @@ theorem iso_zero_tensor (a : WDRep h V) (c : WDRep h V') [Subsingleton V] (b : W
   exact ⟨0, fun _ _ => Subsingleton.elim _ _, fun _ => Subsingleton.elim _ _⟩
 
 /- English proof (translation)
-Take `⟨v, hv⟩` from `((Module.End.hasEigenvalue_iff_isRoot_charpoly _ _).mpr hroot).exists_hasEigenvector`. Establish `hv1 : c.ρ (frob h) v = v` using `by simpa using hv.apply_eq_smul`. Establish `hspan` using `(finrank_eq_one_iff_of_nonzero' v hv.2).mp hd`. Establish `hF : c.ρ (frob h) = 1` using `LinearMap.ext fun u => by`. Take `⟨t, rfl⟩` from `hspan u`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Simplify using `[hv1]`. Take `⟨τ, hτ⟩` from `exists_eq_zpow_mul (deg_frob (h := h)) σ`. Establish `hz : ∀ n : ℤ, c.ρ (frob h ^ n) = 1` using `fun n => by`. Establish `h1 : c.ρ.toHomUnits (frob h) = 1` using `Units.ext hF`. Establish `h2 : c.ρ.toHomUnits (frob h ^ n) = 1` using `by rw [map_zpow, h1, one_zpow]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `congrArg Units.val h2`. Rewrite using `[hτ, map_mul, hz, hu.2 τ, one_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ρ_eq_one_of_line (c : WDRep h V') (hu : c.Unr) (hd : finrank ℂ V' = 1)
     (hroot : (c.ρ (frob h)).charpoly.IsRoot 1) (σ : Weil h) : c.ρ σ = 1 := by
@@ -121,9 +121,9 @@ theorem ρ_eq_one_of_line (c : WDRep h V') (hu : c.Unr) (hd : finrank ℂ V' = 1
   rw [hτ, map_mul, hz, hu.2 τ, one_mul]
 
 /- English proof (translation)
-Set `f : V' ≃ₗ[ℂ] ℂ` to `LinearEquiv.ofFinrankEq V' ℂ (by simpa using hd)`. Use `⟨(TensorProduct.congr (.refl ℂ V) f).trans (TensorProduct.rid ℂ V), fun σ v => ?_, fun v => ?_⟩` and prove the remaining obligations. Proceed by induction on `v using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x y => simp [hρ]`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Proceed by induction on `v using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x y => simp [hN]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem iso_tensor_line (a : WDRep h V) (c : WDRep h V') (hN : c.N = 0) (hd : finrank ℂ V' = 1)
     (hρ : ∀ σ, c.ρ σ = 1) : (a.tensor c).Iso a := by
@@ -143,15 +143,13 @@ end WDRep
 namespace WD
 
 /- English proof (translation)
-Proceed by induction on `a using ind with`. Consider the case `hP n a`. Proceed by induction on `b using ind with`. Consider the case `hP m b`. Proceed by induction on `c using ind with`.
+Proceed by induction. Treat this case separately. Proceed by induction. Treat this case separately. Proceed by induction.
 
-Consider the case `hP k c`. Use `⟨?_, ?_, ?_, ?_, ?_, fun hu hd he => ?_⟩` and prove the remaining obligations. Simplify using `only [lpSum_mk, lpChar_mk]`. Conclude with `sound (a.iso_sum_tensor b c)`. Simplify using `only [lpTw_mk, lpChar_mk]`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `sound (a.iso_tw_tensor c s)`. Simplify using `only [lpTw_mk, lpChar_mk]`. Conclude with `sound (a.iso_tensor_tw c s)`. Simplify using `only [lpChar_mk]`. Conclude with `sound (a.iso_tensor_assoc b c)`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [lpZero, lpChar_mk]`. Conclude with `sound (WDRep.iso_zero_tensor _ c _)`. Rewrite `hu` using `[unr_mk]`. Rewrite `hd` using `[lpDim_mk]`. Rewrite `he` using `[frobEig_mk]`.
-
-Establish `hroot : (c.ρ (frob h)).charpoly.IsRoot 1`. Establish `h1 : (1 : ℂ) ∈ (c.ρ (frob h)).charpoly.roots` using `by rw [he]; simp`. Conclude with `(Polynomial.mem_roots'.mp h1).2`. Rewrite using `[lpChar_mk]`. Conclude with `sound (a.iso_tensor_line c hu.1 hd (c.ρ_eq_one_of_line hu hd hroot))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lpChar_laws (a b c : WD h) (s : ℝ) :
     (a.lpSum b).lpChar c = (a.lpChar c).lpSum (b.lpChar c) ∧
@@ -189,7 +187,7 @@ theorem lpChar_laws (a b c : WD h) (s : ℝ) :
 end WD
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _ _ _ _ a b c s` and use `WD.lpChar_laws a b c s`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem lpChar_laws_closed : ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω]
     [IsAlgClosure E Ω] (A : ValuationSubring Ω) (w : HeightOneSpectrum (𝓞 E))

@@ -11,7 +11,7 @@ open GlobalTheory.SepReal
 namespace GlobalTheory.SepReal.Folding
 
 /- English proof (translation)
-Establish `h : Mᴴ * Jm ε * M = Jm ε` using `hM`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem inUJ_inv_left {m : ℕ} {ε : Fin m → Bool} {M : Mat m} (hM : M ∈ UJset ε) :
     (Jm ε * Mᴴ * Jm ε) * M = 1 := by
@@ -20,7 +20,7 @@ theorem inUJ_inv_left {m : ℕ} {ε : Fin m → Bool} {M : Mat m} (hM : M ∈ UJ
     _ = 1 := by rw [h, Jm_mul_self]
 
 /- English proof (translation)
-The claim follows from `mul_eq_one_comm.mp (inUJ_inv_left hM)`.
+A detailed English derivation is pending.
 -/
 theorem inUJ_inv_right {m : ℕ} {ε : Fin m → Bool} {M : Mat m} (hM : M ∈ UJset ε) :
     M * (Jm ε * Mᴴ * Jm ε) = 1 := mul_eq_one_comm.mp (inUJ_inv_left hM)
@@ -29,7 +29,7 @@ def mk {m : ℕ} {ε : Fin m → Bool} (M : Mat m) (hM : M ∈ UJset ε) : UJ ε
   ⟨⟨M, Jm ε * Mᴴ * Jm ε, inUJ_inv_right hM, inUJ_inv_left hM⟩, hM⟩
 
 /- English proof (translation)
-The claim follows from `g.2`.
+A detailed English derivation is pending.
 -/
 theorem umat_mem {m : ℕ} {ε : Fin m → Bool} (g : UJ ε) : umat g ∈ UJset ε := g.2
 
@@ -40,7 +40,7 @@ attribute [local instance] Matrix.frobeniusNormedAddCommGroup
 end Frob
 
 /- English proof (translation)
-The claim follows from `Units.continuous_val.comp continuous_subtype_val`.
+A detailed English derivation is pending.
 -/
 theorem continuous_umat {m : ℕ} {ε : Fin m → Bool} : Continuous (umat : UJ ε → Mat m) :=
   Units.continuous_val.comp continuous_subtype_val

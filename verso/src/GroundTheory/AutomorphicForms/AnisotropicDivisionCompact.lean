@@ -21,14 +21,14 @@ abbrev adeleTensorTopology : TopologicalSpace (𝔸[K] ⊗[K] D) :=
 attribute [local instance] adeleTensorTopology
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem isModuleTopology_adeleTensor : IsModuleTopology 𝔸[K] (𝔸[K] ⊗[K] D) := ⟨rfl⟩
 
 attribute [local instance] isModuleTopology_adeleTensor
 
 /- English proof (translation)
-The claim follows from `IsModuleTopology.isTopologicalRing 𝔸[K] _`.
+A detailed English derivation is pending.
 -/
 theorem isTopologicalRing_adeleTensor [FiniteDimensional K D] :
     IsTopologicalRing (𝔸[K] ⊗[K] D) :=
@@ -45,9 +45,9 @@ def scalarUnits : (𝔸[K])ˣ →* (𝔸[K] ⊗[K] D)ˣ :=
 variable {K D}
 
 /- English proof (translation)
-Proceed by induction on `ξ using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul k e`. Rewrite using `[baseMap, Algebra.TensorProduct.map_tmul, Algebra.TensorProduct.lid_tmul, Algebra.TensorProduct.includeRight_apply, ← TensorProduct.smul_tmul, Algebra.ofId_apply, Algebra.algebraMap_eq_smul_one]`. Both sides reduce to the same expression.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Consider the case `add x y hx hy => rw [map_add, map_add, map_add, hx, hy]`.
+Treat this case separately.
 -/
 theorem baseMap_ofId_eq_includeRight (ξ : K ⊗[K] D) :
     baseMap (Algebra.ofId K 𝔸[K]) ξ =
@@ -62,7 +62,7 @@ theorem baseMap_ofId_eq_includeRight (ξ : K ⊗[K] D) :
   | add x y hx hy => rw [map_add, map_add, map_add, hx, hy]
 
 /- English proof (translation)
-The claim follows from `Units.ext (baseMap_ofId_eq_includeRight (ξ : K ⊗[K] D))`.
+A detailed English derivation is pending.
 -/
 theorem rationalUnits'_eq (ξ : (K ⊗[K] D)ˣ) :
     rationalUnits' ξ = rationalUnits K D
@@ -72,13 +72,13 @@ theorem rationalUnits'_eq (ξ : (K ⊗[K] D)ˣ) :
 variable [FiniteDimensional K D] {d : ℕ} (b : Basis (Fin d) K D)
 
 /- English proof (translation)
-The claim follows from `IsModuleTopology.continuous_of_linearMap (coords b 𝔸[K]).toLinearMap`.
+A detailed English derivation is pending.
 -/
 theorem continuous_coords_adele : Continuous (coords b 𝔸[K]) :=
   IsModuleTopology.continuous_of_linearMap (coords b 𝔸[K]).toLinearMap
 
 /- English proof (translation)
-Establish `h : ⇑(coords b 𝔸[K]).symm = fun y => ∑ k, y k • baseBasis b 𝔸[K] k`. Use function extensionality and compare the values at `y`. Conclude with `Module.Basis.equivFun_symm_apply _ y`. Rewrite using `[h]`. Conclude with `continuous_finsetSum _ fun k _ => (continuous_apply k).smul continuous_const`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_coords_adele_symm : Continuous (coords b 𝔸[K]).symm := by
   have h : ⇑(coords b 𝔸[K]).symm = fun y => ∑ k, y k • baseBasis b 𝔸[K] k := by
@@ -94,7 +94,7 @@ def coordsHomeomorph : 𝔸[K] ⊗[K] D ≃ₜ (Fin d → 𝔸[K]) where
 
 variable (K D) in
 /- English proof (translation)
-The claim follows from `(coordsHomeomorph (Module.finBasis K D)).isEmbedding.t2Space`.
+A detailed English derivation is pending.
 -/
 theorem t2Space_adeleTensor : T2Space (𝔸[K] ⊗[K] D) :=
   (coordsHomeomorph (Module.finBasis K D)).isEmbedding.t2Space
@@ -102,25 +102,25 @@ theorem t2Space_adeleTensor : T2Space (𝔸[K] ⊗[K] D) :=
 attribute [local instance] t2Space_adeleTensor
 
 /- English proof (translation)
-The claim follows from `continuous_pi fun _ => continuous_pi fun l => (continuous_apply l).comp ((continuous_coords_adele b).comp (continuous_const.mul continuous_id))`.
+A detailed English derivation is pending.
 -/
 theorem continuous_rmat_adele : Continuous (rmat b 𝔸[K]) :=
   continuous_pi fun _ => continuous_pi fun l => (continuous_apply l).comp
     ((continuous_coords_adele b).comp (continuous_const.mul continuous_id))
 
 /- English proof (translation)
-The claim follows from `Units.continuous_iff.2 ⟨(continuous_rmat_adele b).comp Units.continuous_val, (continuous_rmat_adele b).comp Units.continuous_coe_inv⟩`.
+A detailed English derivation is pending.
 -/
 theorem continuous_rmatUnits : Continuous (rmatUnits b 𝔸[K]) :=
   Units.continuous_iff.2 ⟨(continuous_rmat_adele b).comp Units.continuous_val,
     (continuous_rmat_adele b).comp Units.continuous_coe_inv⟩
 
 /- English proof (translation)
-Set `ψ : Matrix (Fin d) (Fin d) 𝔸[K] → 𝔸[K] ⊗[K] D` to `fun A => (coords b 𝔸[K]).symm (coords b 𝔸[K] 1 ᵥ* A)`. Establish `hψ : Continuous ψ` using `(continuous_coords_adele_symm b).comp (continuous_const.matrix_vecMul continuous_id)`. Establish `hψr : ∀ w : 𝔸[K] ⊗[K] D, ψ (rmat b 𝔸[K] w) = w`. Introduce `w`. Simplify using `only [ψ]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[← coords_mul, one_mul, LinearEquiv.symm_apply_apply]`. Set `Fp : GL (Fin d) 𝔸[K] → (𝔸[K] ⊗[K] D) × (𝔸[K] ⊗[K] D)ᵐᵒᵖ` to `fun g => (ψ (g : Matrix (Fin d) (Fin d) 𝔸[K]), MulOpposite.op (ψ (↑g⁻¹ : Matrix (Fin d) (Fin d) 𝔸[K])))`. Establish `hFp : Continuous Fp` using `(hψ.comp Units.continuous_val).prodMk (MulOpposite.continuous_op.comp (hψ.comp Units.continuous_coe_inv))`. Establish `hsub : rmatUnits b 𝔸[K] ⁻¹' C ⊆ Units.embedProduct _ ⁻¹' (Fp '' C)`. Introduce `w hw`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨_, hw, ?_⟩` and prove the remaining obligations. Simplify using `only [Fp, Units.embedProduct_apply]`. Conclude with `Prod.ext (hψr (w : 𝔸[K] ⊗[K] D)) (congrArg MulOpposite.op (hψr (↑w⁻¹ : 𝔸[K] ⊗[K] D)))`. Establish `hcl : IsClosed (rmatUnits b 𝔸[K] ⁻¹' C)` using `hC.isClosed.preimage (continuous_rmatUnits b)`. Conclude with `(Units.isClosedEmbedding_embedProduct.isCompact_preimage (hC.image hFp)).of_isClosed_subset hcl hsub`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isCompact_preimage_rmatUnits {C : Set (GL (Fin d) 𝔸[K])} (hC : IsCompact C) :
     IsCompact (rmatUnits b 𝔸[K] ⁻¹' C) := by
@@ -146,7 +146,7 @@ theorem isCompact_preimage_rmatUnits {C : Set (GL (Fin d) 𝔸[K])} (hC : IsComp
     hcl hsub
 
 /- English proof (translation)
-Take `⟨C, hC, h⟩` from `exists_isCompact_rmatUnits b`. Use `⟨rmatUnits b 𝔸[K] ⁻¹' C, isCompact_preimage_rmatUnits b hC, fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨ξ, hξ⟩` from `h x hx`. Conclude with `⟨_, by rw [← rationalUnits'_eq]; exact hξ⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_isCompact_normOneUnits :
     ∃ Ω : Set (𝔸[K] ⊗[K] D)ˣ, IsCompact Ω ∧ ∀ x ∈ normOneUnits b,

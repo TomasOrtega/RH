@@ -18,7 +18,7 @@ namespace GlobalTheory.HubX
 def epJ (D : D7) : Bool := if h : AdmissibleParameterJ.ConclusionJa D then Exists.choose h else true
 
 /- English proof (translation)
-The claim follows from `dif_pos h`.
+A detailed English derivation is pending.
 -/
 theorem epJ_eq {D : D7} (h : AdmissibleParameterJ.ConclusionJa D) : epJ D = Exists.choose h := dif_pos h
 
@@ -49,17 +49,17 @@ structure Canon (L : SizeData₂ D) (HW : HWOf D.loc) (R : KillingConditions.Row
   eta : X.eta = ⌊L.etaSz⌋₊
 
 /- English proof (translation)
-Establish `hs : ∀ l, TwistedPlaces.SplitK D l → ¬ TwistedPlaces.InertK D l`. Introduce `l h1 h2`. Unfold `TwistedPlaces.SplitK at h1`. Unfold `TwistedPlaces.InertK at h2`. Rewrite `h2` using `[h1]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply the tactic sequence `rcases h2 with h2 | h2 <;> cases h2`. Use `⟨h, ⟨?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩, ?_, rfl, rfl, rfl⟩` and prove the remaining obligations. Introduce `i hi`. Simplify using `only [ourX, KillingConditions.canon, if_pos hi]`. Both sides reduce to the same expression.
+Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Introduce `i _ hb`. Simplify using `only [ourX, KillingConditions.canon, if_pos hb]`. Introduce `i _ hb`. Simplify using `only [ourX, KillingConditions.canon, if_neg hb]`. Introduce `i hi π lam`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [ourX, KillingConditions.canon, if_pos hi]`. Introduce `i hi π`. Simplify using `only [ourX, KillingConditions.canon, if_pos hi]`. Introduce `i _`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression.
 
-Introduce `i hi π lam`. Simplify using `only [ourX, KillingConditions.canon, if_neg (hs _ hi)]`. Introduce `i hi π`. Simplify using `only [ourX, KillingConditions.canon, if_neg (hs _ hi)]`. Introduce `i lam`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Iff.rfl`. Introduce `i hi`. Simplify using `only [ourX, KillingConditions.canon, if_neg hi]`.
+Unfold both sides to obtain the same proposition, which implies itself. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem canon_ourX (L : SizeData₂ D) (HW : HWOf D.loc) (R : KillingConditions.RowK) (r : FamilyRepresentationConstants.RFam D) (ρ : FamilyRepresentationConstants.RhoFam D)
     (e' : D.nd.Loc → HeightOneSpectrum (𝓞 D.host.E) → ℕ) (exc : Finset ℕ) (I : TwIn D)

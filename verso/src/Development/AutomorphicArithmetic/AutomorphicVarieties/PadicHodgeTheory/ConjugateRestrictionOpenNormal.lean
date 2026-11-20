@@ -6,9 +6,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.I
 open Formalism.BasicNotions Formalism.BasicNotions.Loc ReciprocityTheory.Gal Module Topology UpperTheory.V.Loc UpperTheory.V.U3
 
 /- English proof (translation)
-Establish `hr : (φ.comp c).range = φ.range`. Use extensionality with `σ`. Use `⟨fun ⟨g, hg⟩ => ⟨c g, hg⟩, fun ⟨g, hg⟩ => ?_⟩` and prove the remaining obligations. Take `⟨g, rfl⟩` from `hc g`. Conclude with `⟨g, hg⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hd : Dcr (φ.comp c) (resCoef ℚ_[l] (ρ.comp c : Representation A G V)) = Dcr φ (resCoef ℚ_[l] ρ)`. Unfold `Dcr`. Conclude with `hc.iInf_comp (fun g => LinearMap.ker (actC φ (resCoef ℚ_[l] ρ) g - LinearMap.id))`. Unfold `IsCr`. Rewrite using `[hr, hd]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isCr_comp {l : ℕ} [Fact l.Prime] {G A V : Type} [Group G] [CommRing A] [Algebra ℚ_[l] A]
     [AddCommGroup V] [Module A V] [Module ℚ_[l] V] [IsScalarTower ℚ_[l] A V] (φ : G →* GQ l) (c : G →* G)
@@ -26,7 +26,7 @@ private theorem isCr_comp {l : ℕ} [Fact l.Prime] {G A V : Type} [Group G] [Com
   rw [hr, hd]
 
 /- English proof (translation)
-Use `congrArg SemidirectProduct.left h` as an intermediate fact. Establish `e : sgnAct 3 B w.right (sgnAct 3 B w.right w.left) = w.left`. Rewrite using `[← MulAut.mul_apply, ← map_mul, Int.units_mul_self, map_one, MulAut.one_apply]`. Simplify `this` using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem conj_left {B : Type} [CommRing B] (w : GG 3 B) (x y : GL (Fin 3) B)
     (h : GG.ofGL y = w * GG.ofGL x * w⁻¹) : y = w.left * sgnAct 3 B w.right x * w.left⁻¹ := by
@@ -36,7 +36,7 @@ private theorem conj_left {B : Type} [CommRing B] (w : GG 3 B) (x y : GL (Fin 3)
   simpa [e] using this
 
 /- English proof (translation)
-Establish `e : Jmat B 3 * ((a⁻¹ : GL (Fin 3) B) : Matrix (Fin 3) (Fin 3) B) * ((a * theta m * a⁻¹ : GL (Fin 3) B) : Matrix (Fin 3) (Fin 3) B) = ((m⁻¹ : GL (Fin 3) B) : Matrix (Fin 3) (Fin 3) B).transpose * (Jmat B 3 * ((a⁻¹ : GL (Fin 3) B) : Matrix (Fin 3) (Fin 3) B))`. Rewrite using `[Matrix.mul_assoc, ← Units.val_mul, ← mul_assoc, ← mul_assoc, inv_mul_cancel, one_mul, Units.val_mul, theta_val]`. Simplify using `only [← Matrix.mul_assoc, Jmat_mul_Jmat, Matrix.one_mul]`. Rewrite using `[Matrix.mulVec_mulVec, e, ← Matrix.mulVec_mulVec, Matrix.mulVec_transpose, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec x, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem dot_inv {B : Type} [CommRing B] (a m : GL (Fin 3) B) (u x : Fin 3 → B) :
     dotProduct ((Jmat B 3 * ((a⁻¹ : GL (Fin 3) B) : Matrix (Fin 3) (Fin 3) B)).mulVec
@@ -54,27 +54,25 @@ private theorem dot_inv {B : Type} [CommRing B] (a m : GL (Fin 3) B) (u x : Fin 
     Matrix.mulVec_mulVec x, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]
 
 /- English proof (translation)
-Introduce `l _ B _ _ _ _ _ _ H hN hH ρ ρ' hρ s w hw hcr`. Establish `hψ : IsOpenEmbedding H.subtype` using `hH.isOpenEmbedding_subtypeVal`. Set `c : H →* H` to `(MulAut.conjNormal (H := H) s⁻¹).toMonoidHom`. Establish `hc : ∀ g : H, (c g : GQ l) = s⁻¹ * g * s` using `fun g => by`. Express the relevant statement in the definitionally equal form `((MulAut.conjNormal (H := H) s⁻¹ g : H) : GQ l) = _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[MulAut.conjNormal_apply, inv_inv]`. Establish `hcc : Continuous c`. Use `continuous_induced_rng.2 ?_` and prove the remaining obligations. Establish `: Subtype.val ∘ c = fun g : H => s⁻¹ * (g : GQ l) * s` using `funext hc`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `fun_prop`. Set `σ : H →* GL (Fin 3) B` to `ρ.comp c`. Establish `hσ : Continuous (fun g => (σ g : Matrix (Fin 3) (Fin 3) B))` using `hρ.comp hcc`. Establish `hσi : Continuous (fun g => (((σ g)⁻¹ : GL (Fin 3) B) : Matrix (Fin 3) (Fin 3) B))`. Simplify using `only [← map_inv]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `hσ.comp continuous_inv`. Establish `hσcr : IsCr H.subtype (colRep σ)`. Establish `h1` using `(isCr_comp H.subtype c (MulAut.conjNormal (H := H) s⁻¹).surjective (colRep ρ)).2 hcr`. Establish `h2 : H.subtype.comp c = (MulAut.conj s⁻¹).toMonoidHom.comp H.subtype`. Use `MonoidHom.ext fun g => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `(c g : GQ l) = s⁻¹ * g * s⁻¹⁻¹`. Rewrite using `[hc, inv_inv]`. Rewrite `h1` using `[h2]`. Conclude with `(admissible_conjugate H.subtype hψ (colRep σ) s⁻¹).1.1 h1`. Establish `he : ∀ g, ρ' g = w.left * sgnAct 3 B w.right (σ g) * w.left⁻¹` using `fun g => conj_left w _ _ (hw g (c g) (hc g))`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Generalize the expression as in `w.left = a at he`. Break down `Int.units_eq_one_or w.right with h | h` into its components or cases. Simplify using `only [h, sgnAct_one] at he`. Establish `hρ' : Continuous (fun g => (ρ' g : Matrix (Fin 3) (Fin 3) B))`. Simplify using `only [he, Units.val_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(continuous_const.matrix_mul hσ).matrix_mul continuous_const`. Use `((isCrys_isDR_sub_quot H.subtype hψ (colRep σ) (colRep ρ') (contAction_colRep hσ) (contAction_colRep hρ') ((Matrix.toLin' (a : Matrix (Fin 3) (Fin 3) B)).restrictScalars ℚ_[l]) (fun g x => ?_)).2 (fun v => ?_)).1 hσcr` and prove the remaining obligations. Simplify using `only [LinearMap.restrictScalars_apply, Matrix.toLin'_apply, colRep_apply, Matrix.mulVec_mulVec, he, ← Units.val_mul, inv_mul_cancel_right]`. Use `⟨((a⁻¹ : GL (Fin 3) B) : Matrix (Fin 3) (Fin 3) B).mulVec v, ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.restrictScalars_apply, Matrix.toLin'_apply, Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [h, sgnAct_neg_one] at he`. Establish `hρ' : Continuous (fun g => (ρ' g : Matrix (Fin 3) (Fin 3) B))`. Simplify using `only [he, Units.val_mul, theta_val]`. Conclude with `(continuous_const.matrix_mul ((continuous_const.matrix_mul hσi.matrix_transpose).matrix_mul continuous_const)).matrix_mul continuous_const`. Establish `c1 : ContAction (chRep (1 : H →* Bˣ))` using `contAction_chRep continuous_const`.
+Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `cr1 : IsCr H.subtype (chRep (1 : H →* Bˣ))` using `crUnr (A := ℚ_[l]) H.subtype hψ (resCoef ℚ_[l] (chRep (1 : H →* Bˣ))) c1 0 (fun g _ x => by simp [resCoef, chRep])`. Set `N : Matrix (Fin 3) (Fin 3) B` to `Jmat B 3 * ((a⁻¹ : GL (Fin 3) B) : Matrix (Fin 3) (Fin 3) B)`. Use `(isCrys_isDR_internalHom H.subtype hψ (colRep σ) (chRep (1 : H →* Bˣ)) (colRep ρ') (contAction_colRep hσ) c1 (contAction_colRep hρ') (LinearMap.mk₂ ℚ_[l] (fun (u x : Fin 3 → B) => dotProduct (N.mulVec u) x) (fun _ _ _ => by rw [Matrix.mulVec_add, add_dotProduct]) (fun _ _ _ => by …` and prove the remaining obligations. Simplify using `only [LinearMap.mk₂_apply, colRep_apply, chRep_apply, MonoidHom.one_apply, Units.val_one, one_mul]`. Rewrite using `[he]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Conclude with `dot_inv a (σ g) u x`. Establish `h1 : N.mulVec u = N.mulVec u'`. Use function extensionality and compare the values at `i`. Use `LinearMap.congr_fun huu (Pi.single i 1)` as an intermediate fact. Simplify `this` using `only [LinearMap.mk₂_apply, dotProduct_single, mul_one]`.
-
-Establish `h2 : ((a : Matrix (Fin 3) (Fin 3) B) * Jmat B 3) * N = 1`. Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc (Jmat B 3), Jmat_mul_Jmat, Matrix.one_mul, Units.mul_inv]`. Establish `h3` using `congrArg ((a : Matrix (Fin 3) (Fin 3) B) * Jmat B 3).mulVec h1`. Simplify `h3` using `only [Matrix.mulVec_mulVec, h2, Matrix.one_mulVec]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem UpperTheory.conjugate_restriction_open_normal :
     ∀ {l : ℕ} [Fact l.Prime] {B : Type} [CommRing B] [Algebra ℚ_[l] B] [Module.Finite ℚ_[l] B] [TopologicalSpace B] [IsModuleTopology ℚ_[l] B] [IsTopologicalRing B] (H : Subgroup (GQ l)) [H.Normal], IsOpen (H : Set (GQ l)) → ∀ (ρ ρ' : ↥H →* GL (Fin 3) B), Continuous (fun g => (ρ g : Matrix (Fin 3) (Fin 3) B)) → ∀ (s : GQ l) (w : GG 3 B), (∀ g g' : H, (g' : GQ l) = s⁻¹ * g * s → GG.ofGL (ρ' g) = w * GG.ofGL (ρ g') * w⁻¹) → IsCr H.subtype (colRep ρ) → IsCr H.subtype (colRep ρ') := by

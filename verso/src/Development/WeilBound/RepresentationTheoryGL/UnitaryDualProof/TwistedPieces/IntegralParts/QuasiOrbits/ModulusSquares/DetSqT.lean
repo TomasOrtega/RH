@@ -12,69 +12,59 @@ open PositivityTheory.RgUd.T PositivityTheory.RgUd.T.Nil.Orb.BModbound
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {n : ℕ}
 
 /- English proof (translation)
-Use `set Cs : Submodule k (Matrix (Fin n) (Fin n) k) := (Subalgebra.centralizer k (Z : Set (Matrix (Fin n) (Fin n) k))).toSubmodule with hCs`. Establish `memC : ∀ y : Matrix (Fin n) (Fin n) k, y ∈ Cs ↔ y ∈ Bz Z`. Introduce `y`. Use `show y ∈ Subalgebra.centralizer k _ ↔ _`. Rewrite using `[Subalgebra.mem_centralizer_iff]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `hxC : x ∈ Cs` using `(memC x).2 hx`. Establish `hgx1 : g.val * x = t • (x * g.val)`. Use `congrArg (· * g.val) hgx` as an intermediate fact. Simplify `this` using `[mul_assoc, smul_mul_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hxg : x * g.val = t⁻¹ • (g.val * x)`. Rewrite using `[hgx1, smul_smul, inv_mul_cancel₀ ht, one_smul]`. Establish `hgx2 : x * g⁻¹.val = t • (g⁻¹.val * x)`. Use `congrArg (g⁻¹.val * ·) hgx` as an intermediate fact. Simplify `this` using `[← mul_assoc, mul_smul_comm]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hginx : g⁻¹.val * x = t⁻¹ • (x * g⁻¹.val)`. Rewrite using `[hgx2, smul_smul, inv_mul_cancel₀ ht, one_smul]`. Establish `hginv : g⁻¹ ∈ Gz Z` using `fun a ha => PositivityTheory.RgUd.T.Desc.UniPf.inv_comm_of_comm g a (hg a ha)`. Establish `hgx' : (g⁻¹).val * x * (g⁻¹)⁻¹.val = t⁻¹ • x`. Rewrite using `[inv_inv, hginx, smul_mul_assoc, mul_assoc, Units.inv_mul, mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set ψ : Module.End k Cs := (adL g).restrict (cC_inv Z g hg) with hψdef`. Establish `hψ : ∀ y : Cs, ((ψ y : Cs) : Matrix (Fin n) (Fin n) k) = g.val * y * g⁻¹.val` using `fun y => adL_apply g y`. Establish `hδmem : ∀ y ∈ Cs, (LinearMap.mulLeft k x - LinearMap.mulRight k x) y ∈ Cs`. Introduce `y hy`. Simplify using `only [LinearMap.sub_apply, LinearMap.mulLeft_apply, LinearMap.mulRight_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Cs.sub_mem (Subalgebra.mul_mem _ hxC hy) (Subalgebra.mul_mem _ hy hxC)`. Use `set δ : Module.End k Cs := (LinearMap.mulLeft k x - LinearMap.mulRight k x).restrict hδmem with hδdef`. Establish `hδ : ∀ y : Cs, ((δ y : Cs) : Matrix (Fin n) (Fin n) k) = x * y - y * x` using `fun y => rfl`. Use `set A' : Submodule k Cs := (cA Z x).comap Cs.subtype with hA'def`. Establish `hAC : cA Z x ≤ Cs` using `fun y hy => (memC y).2 hy.1`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hkerδ : LinearMap.ker δ = A'`. Use extensionality with `y`. Simplify using `only [LinearMap.mem_ker]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `h' : x * (y : Matrix (Fin n) (Fin n) k) - y * x = 0` using `by rw [← hδ, h]; rfl`. Conclude with `⟨(memC y).1 y.2, (sub_eq_zero.1 h').symm⟩`. Introduce `h`. Establish `h2 : (y : Matrix (Fin n) (Fin n) k) * x = x * y` using `h.2`. Apply `Subtype.ext` to reduce the goal to its premises.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hδ, ← h2, sub_self]`. Both sides reduce to the same expression. Establish `hA' : ∀ y ∈ A', ψ y ∈ A'`. Introduce `y hy`. Use `show ((ψ y : Cs) : Matrix (Fin n) (Fin n) k) ∈ cA Z x`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `cA_inv Z x g hg t ht hgx _ hy`. Use `set ψinv : Module.End k Cs := (adL g⁻¹).restrict (cC_inv Z g⁻¹ hginv) with hψinvdef`. Establish `hψinv : ∀ y : Cs, ((ψinv y : Cs) : Matrix (Fin n) (Fin n) k) = g⁻¹.val * y * g.val`. Introduce `y`. Use `show adL g⁻¹ y = _`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[adL_apply, inv_inv]`. Establish `hA'inv : ∀ y ∈ A', ψinv y ∈ A'`. Introduce `y hy`. Use `show ((ψinv y : Cs) : Matrix (Fin n) (Fin n) k) ∈ cA Z x`. Conclude with `cA_inv Z x g⁻¹ hginv t⁻¹ (inv_ne_zero ht) hgx' _ hy`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use `set ρ : Module.End k A' := ψ.restrict hA' with hρdef`. Use `set ρinv : Module.End k A' := ψinv.restrict hA'inv with hρinvdef`. Establish `hB : ∀ y ∈ LinearMap.range δ, ψ y ∈ LinearMap.range δ`. Introduce and unpack `_ ⟨z, rfl⟩`. Use `⟨t • ψ z, ?_⟩` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[map_smul, Submodule.coe_smul, hδ, hψ, hψ, hδ]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hxg, hginx, smul_mul_assoc, smul_mul_assoc, mul_smul_comm, ← smul_sub, smul_smul, mul_inv_cancel₀ ht, one_smul]`. Simplify using `only [mul_sub, sub_mul, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `E1 : LinearMap.det ψ = LinearMap.det ρ * LinearMap.det (t⁻¹ • ψ.restrict hB)`. Use `det_surj ψ (t⁻¹ • ψ.restrict hB) δ.rangeRestrict δ.surjective_rangeRestrict ?_ A' ?_ hA'` and prove the remaining obligations. Introduce `y`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `show x * ((ψ y : Cs) : Matrix (Fin n) (Fin n) k) - ((ψ y : Cs) : Matrix (Fin n) (Fin n) k) * x = t⁻¹ • ((ψ (δ y) : Cs) : Matrix (Fin n) (Fin n) k)`. Rewrite using `[hψ, hψ, hδ]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hxg, hginx, smul_mul_assoc, smul_mul_assoc, mul_smul_comm, ← smul_sub]`. Simplify using `only [mul_sub, sub_mul, mul_assoc]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[LinearMap.ker_rangeRestrict, hkerδ]`. Set `Φ : Cs →ₗ[k] Module.Dual k Cs` to `LinearMap.mk₂ k (fun y z : Cs => τ ((y : Matrix (Fin n) (Fin n) k) * (z : Matrix (Fin n) (Fin n) k))) (by intros; simp [add_mul]) (by intros; simp) (by intros; simp [mul_add]) (by intros; simp)`. Establish `hΦ : ∀ y z : Cs, Φ y z = τ ((y : Matrix (Fin n) (Fin n) k) * (z : Matrix (Fin n) (Fin n) k))` using `fun _ _ => rfl`. Establish `hΦinj : Function.Injective Φ`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Introduce `y hy`. Apply `Subtype.ext` to reduce the goal to its premises. Use `hτ.2 y ((memC y).1 y.2) (fun z hz => ?_)` and prove the remaining obligations. Use `LinearMap.congr_fun hy ⟨z, (memC z).2 hz⟩` as an intermediate fact. Rewrite `this` using `[hΦ]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this`. Establish `hΦsurj : Function.Surjective Φ` using `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank Subspace.dual_finrank_eq.symm).1 hΦinj`. Set `L2 : Cs →ₗ[k] Module.Dual k A'` to `A'.subtype.dualMap ∘ₗ Φ`. Establish `hL2 : ∀ (y : Cs) (a : A'), L2 y a = τ ((y : Matrix (Fin n) (Fin n) k) * ((a : Cs) : Matrix (Fin n) (Fin n) k))` using `fun _ _ => rfl`. Establish `hL2surj : Function.Surjective L2` using `(LinearMap.dualMap_surjective_of_injective A'.injective_subtype).comp hΦsurj`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `hrk : finrank k (LinearMap.range δ) + finrank k A' = finrank k Cs`. Rewrite using `[← hkerδ]`. Conclude with `LinearMap.finrank_range_add_finrank_ker δ`. Establish `hBker : LinearMap.range δ = LinearMap.ker L2`. Apply `Submodule.eq_of_le_of_finrank_eq` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `_ ⟨z, rfl⟩`. Rewrite using `[LinearMap.mem_ker]`. Use extensionality with `a`. Rewrite using `[hL2, hδ, LinearMap.zero_apply]`. Establish `ha : ((a : Cs) : Matrix (Fin n) (Fin n) k) * x = x * ((a : Cs) : Matrix (Fin n) (Fin n) k)` using `a.2.2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hza : (z : Matrix (Fin n) (Fin n) k) * ((a : Cs) : Matrix (Fin n) (Fin n) k) ∈ Cs` using `Subalgebra.mul_mem _ z.2 (a : Cs).2`. Establish `hs` using `hτ.1 x hx _ ((memC _).1 hza)`. Rewrite using `[sub_mul, map_sub, mul_assoc, hs, mul_assoc, ha, ← mul_assoc, sub_self]`. Establish `h2` using `LinearMap.finrank_range_add_finrank_ker L2`. Rewrite `h2` using `[LinearMap.range_eq_top.2 hL2surj, finrank_top, Subspace.dual_finrank_eq]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Establish `E2 : LinearMap.det ψ = LinearMap.det (ψ.restrict hB) * LinearMap.det ρinv.dualMap`. Use `det_surj ψ ρinv.dualMap L2 hL2surj ?_ (LinearMap.range δ) hBker hB` and prove the remaining obligations. Introduce `y`. Use extensionality with `a`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hL2, LinearMap.dualMap_apply, hL2, hψ]`. Use `show τ (g.val * (y : Matrix (Fin n) (Fin n) k) * g⁻¹.val * ((a : Cs) : Matrix (Fin n) (Fin n) k)) = τ ((y : Matrix (Fin n) (Fin n) k) * ((ψinv a : Cs) : Matrix (Fin n) (Fin n) k))`. Rewrite using `[hψinv]`. Establish `hgC : g.val ∈ Cs` using `(memC _).2 fun a ha => hg a ha`. Establish `hginvC : g⁻¹.val ∈ Cs` using `(memC _).2 fun a ha => hginv a ha`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hm : (y : Matrix (Fin n) (Fin n) k) * g⁻¹.val * ((a : Cs) : Matrix (Fin n) (Fin n) k) ∈ Cs` using `Subalgebra.mul_mem _ (Subalgebra.mul_mem _ y.2 hginvC) (a : Cs).2`. Establish `h1` using `hτ.1 g.val ((memC _).1 hgC) _ ((memC _).1 hm)`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [mul_assoc]`. Use `_ = τ ((y : Matrix (Fin n) (Fin n) k) * g⁻¹.val * ((a : Cs) : Matrix (Fin n) (Fin n) k) * g.val) := h1`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `_ = τ ((y : Matrix (Fin n) (Fin n) k) * (g⁻¹.val * ((a : Cs) : Matrix (Fin n) (Fin n) k) * g.val)) := by`. Simplify using `only [mul_assoc]`. Establish `E3 : LinearMap.det ρinv * LinearMap.det ρ = 1`. Rewrite using `[← LinearMap.det_comp]`. Establish `: ρinv ∘ₗ ρ = LinearMap.id`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `y`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Use `show ((ψinv (ψ y) : Cs) : Matrix (Fin n) (Fin n) k) = ((y : Cs) : Matrix (Fin n) (Fin n) k)`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hψinv, hψ]`. Simplify using `[mul_assoc]`. Rewrite using `[this, LinearMap.det_id]`. Establish `E0 : LinearMap.det ψ ^ 2 = 1` using `det_C_sq Z τ hτ g hg`. Establish `hψ0 : LinearMap.det ψ ≠ 0` using `fun h => by rw [h] at E0; simp at E0`.
-
-Set `eA : A' ≃ₗ[k] cA Z x` to `Submodule.comapSubtypeEquivOfLe hAC`. Establish `hρA : (eA : A' →ₗ[k] cA Z x) ∘ₗ ρ ∘ₗ (eA.symm : cA Z x →ₗ[k] A') = (adL g).restrict (cA_inv Z x g hg t ht hgx)`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `y`. Apply `Subtype.ext` to reduce the goal to its premises.
-
-Use `show ((ψ (eA.symm y : A') : Cs) : Matrix (Fin n) (Fin n) k) = adL g y`. Rewrite using `[hψ, adL_apply]`. Both sides reduce to the same expression. Establish `hdetA : LinearMap.det ((adL g).restrict (cA_inv Z x g hg t ht hgx)) = LinearMap.det ρ`. Rewrite using `[← hρA, LinearMap.det_conj]`.
-
-Establish `hfr : finrank k (cA Z x) = finrank k A'` using `eA.finrank_eq.symm`. Establish `hfrC : finrank k (Subalgebra.centralizer k (Z : Set (Matrix (Fin n) (Fin n) k))) = finrank k Cs` using `rfl`. Rewrite using `[hdetA, hfr, hfrC, show finrank k Cs - finrank k A' = finrank k (LinearMap.range δ) by omega]`. Use `set r := finrank k (LinearMap.range δ)`. Rewrite `E2` using `[LinearMap.det_dualMap]`.
-
-Establish `hdB : LinearMap.det (ψ.restrict hB) = LinearMap.det ψ * LinearMap.det ρ`. Rewrite using `[E2, mul_assoc, E3, mul_one]`. Rewrite `E1` using `[LinearMap.det_smul, hdB]`. Establish `key : LinearMap.det ψ * t ^ r = LinearMap.det ψ * LinearMap.det ρ ^ 2`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[← E1]`. Use `_ = LinearMap.det ψ * LinearMap.det ρ ^ 2 * (t⁻¹ ^ r * t ^ r) := by ring`. Use `_ = LinearMap.det ψ * LinearMap.det ρ ^ 2 := by rw [← mul_pow, inv_mul_cancel₀ ht, one_pow, mul_one]`. Conclude with `(mul_left_cancel₀ hψ0 key).symm`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_sqT (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (τ : Matrix (Fin n) (Fin n) k →ₗ[k] k) (hτ : IsTau Z τ) (x : Matrix (Fin n) (Fin n) k)
     (hx : x ∈ Bz Z) (g : GL (Fin n) k) (hg : g ∈ Gz Z) (t : k) (ht : t ≠ 0) (hgx : g.val * x * g⁻¹.val = t • x) :

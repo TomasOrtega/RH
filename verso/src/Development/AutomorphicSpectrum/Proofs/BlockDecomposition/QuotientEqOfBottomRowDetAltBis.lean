@@ -8,7 +8,7 @@ open NumberField IsDedekindDomain MeasureTheory Matrix Filter Topology GroundThe
 open scoped NumberField.AdeleRing Classical
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.CompanionTheory.GAKMajInj.maj_inj` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FExistsNxMul.lean&line=48#L48)
 -/

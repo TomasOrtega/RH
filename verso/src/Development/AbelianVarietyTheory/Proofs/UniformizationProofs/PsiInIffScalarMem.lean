@@ -31,14 +31,14 @@ def sig (z : Spec (CommRingCat.of (FractionRing R))) :
     (Scheme.ΓSpecIso (CommRingCat.of (FractionRing R))).inv.hom
 
 /- English proof (translation)
-Rewrite using `[gs_eq _ z ⊤ trivial]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem gs_scal_id (z : Spec (CommRingCat.of (FractionRing R))) (c : FractionRing R) :
     gs (𝟙 _) z ⊤ (scal (𝟙 (Spec (CommRingCat.of (FractionRing R)))) c) = sig z c := by
   rw [gs_eq _ z ⊤ trivial]; rfl
 
 /- English proof (translation)
-Establish `nat` using `congrArg (fun g => g.hom r) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom (algebraMap R (FractionRing R))))`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply, CommRingCat.hom_ofHom] at nat`. Use `(gs_res (jK R) z (le_top : V ≤ ⊤) hz _).trans ((gs_eq (jK R) z ⊤ trivial _).trans ?_)` and prove the remaining obligations. Simplify using `only [sig, RingHom.comp_apply]`. Rewrite using `[nat]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -53,9 +53,9 @@ theorem gs_toOpen (z : Spec (CommRingCat.of (FractionRing R))) (V : (Spec (CommR
   rfl
 
 /- English proof (translation)
-Establish `hle' : V ≤ LB.wchart D.P.L (fun _ : PUnit => (D.c χ).left) (fun _ => q)` using `fun y hy => mem_wchart _ _ _ _ (hle hy)`. Take `⟨J, hJ, e⟩` from `exists_good D.P.L D.P.isLB (Z := (TK R).left) z (K := PUnit) (fun _ => D.xK χ) (fun _ => q) (fun _ _ _ => rfl) (fun _ => hle hz)`. Establish `e0 : J (D.xK χ) = q` using `e PUnit.unit`. Establish `v` using `(h χ).2 (TK R) (𝟙 _) z J hJ`. Establish `v1` using `val_of (D.psi χ) (𝟙 _) z J (fun _ => q) (fun _ => (congrArg J (Category.id_comp _)).trans e0)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `v2` using `val_of (ga χ) (toUnit (TK R)).left z J (fun _ => q) (fun _ => e0)`. Use `⟨res hle' ((ga χ).s (fun _ => q)), (congrArg Units.val v1).symm.trans (v.trans ?_)⟩` and prove the remaining obligations. Use `congrArg₂ (· * ·) (gs_scal_id z _) ?_` and prove the remaining obligations. Use `(congrArg Units.val v2).trans ?_` and prove the remaining obligations. Conclude with `((gs_unit _ _ _ hz _).trans (congrArg Units.val (gm_res _ _ hle' hz _))).symm`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem key (D : DegPre R)
     (ga : ∀ χ : D.X, LB.Gen (LB.LinComb D.P.L (K := PUnit) (fun _ => (D.c χ).left) (fun _ => -1)))
@@ -79,15 +79,15 @@ theorem key (D : DegPre R)
   exact ((gs_unit _ _ _ hz _).trans (congrArg Units.val (gm_res _ _ hle' hz _))).symm
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `H`. Take `⟨q, hq⟩` from `exists_chart D.P.isLB ((D.c χ).left (IsLocalRing.closedPoint R))`. Establish `hle : (⊤ : (Spec (CommRingCat.of R)).Opens) ≤ (D.c χ).left ⁻¹ᵁ D.P.L.U q` using `fun y _ => (IsLocalRing.specializes_closedPoint y).mem_open ((D.c χ).left ⁻¹ᵁ D.P.L.U q).isOpen hq`. Take `⟨z⟩ : Nonempty (Spec (CommRingCat.of (FractionRing R)))` from `inferInstanceAs (Nonempty (PrimeSpectrum (FractionRing R)))`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨r, hr, e⟩` from `gs_of_psiIn D χ J H q ⊤ (isAffineOpen_top _) hle z trivial`. Take `⟨u, hu⟩` from `key D ga a h χ q ⊤ hle z trivial`. Establish `hs : Function.Surjective (DegPre.toOpen (R` using `R) ⊤) := by`. Introduce `b`. Use `⟨(Scheme.ΓSpecIso (CommRingCat.of R)).hom.hom b, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[DegPre.toOpen]`. Take `⟨s, hsJ, es⟩` from `(Ideal.mem_map_iff_of_surjective _ hs).1 (Ideal.mul_mem_right (u⁻¹).val _ hr)`. Use `⟨s, hsJ, (sig z).injective ?_⟩` and prove the remaining obligations. Establish `hz : jK R z ∈ (⊤ : (Spec (CommRingCat.of R)).Opens)` using `trivial`. Rewrite using `[← gs_toOpen z ⊤ hz, es, gs_mul _ _ _ hz, e.trans hu, _root_.mul_assoc, ← gs_mul _ _ _ hz, Units.mul_inv, gs_eq _ _ _ hz, map_one, map_one, _root_.mul_one]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨r, hr, e⟩`. Use `psiIn_of_gs D χ J fun q V _ hle z hz => ?_` and prove the remaining obligations. Take `⟨u, hu⟩` from `key D ga a h χ q V hle z hz`. Use `⟨DegPre.toOpen V r * u.val, Ideal.mul_mem_right _ _ (Ideal.mem_map_of_mem _ hr), ?_⟩` and prove the remaining obligations. Rewrite using `[gs_mul _ _ _ hz, gs_toOpen z V hz, e]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hu.symm`.
+A detailed English derivation is pending.
 -/
 theorem main_local [IsLocalRing R] (D : DegPre R)
     (ga : ∀ χ : D.X, LB.Gen (LB.LinComb D.P.L (K := PUnit) (fun _ => (D.c χ).left) (fun _ => -1)))
@@ -121,7 +121,7 @@ theorem main_local [IsLocalRing R] (D : DegPre R)
 end PsiScalIn
 
 /- English proof (translation)
-Introduce `_ _ _ _ D ga a h χ J _` and use `PsiScalIn.main_local D ga a h χ J`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem psiIn_iff_scalar_mem : ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] (D : DegPre V) (ga : ∀ χ : D.X, LB.Gen (LB.LinComb D.P.L (K := PUnit) (fun _ => (D.c χ).left) (fun _ => -1))) (a : D.X → (FractionRing V)ˣ), PsiScal D ga a → ∀ (χ : D.X) (J : Ideal V), J ≠ ⊥ → (D.PsiIn χ J ↔ ∃ r ∈ J, algebraMap V (FractionRing V) r = (a χ).val) :=
   fun _ _ _ _ D ga a h χ J _ => PsiScalIn.main_local D ga a h χ J

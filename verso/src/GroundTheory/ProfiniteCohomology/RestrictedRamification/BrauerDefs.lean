@@ -19,20 +19,20 @@ def gsRestrict : K.1.fixingSubgroup →* galUnramifiedOutside K.1 ℚ̄ S :=
     (IntermediateField.fixingSubgroupEquiv K.1).toMonoidHom
 
 /- English proof (translation)
-The claim follows from `AlgEquiv.restrictNormal_commutes (IntermediateField.fixingSubgroupEquiv K.1 σ) _ x`.
+A detailed English derivation is pending.
 -/
 theorem gsRestrict_apply (σ : K.1.fixingSubgroup) (x : maxUnramifiedOutside K.1 ℚ̄ S) :
     ((gsRestrict K S σ x : maxUnramifiedOutside K.1 ℚ̄ S) : ℚ̄) = (σ : ℚ̄ ≃ₐ[ℚ] ℚ̄) x :=
   AlgEquiv.restrictNormal_commutes (IntermediateField.fixingSubgroupEquiv K.1 σ) _ x
 
 /- English proof (translation)
-Use `continuous_of_continuousAt_one _ ?_` and prove the remaining obligations. Rewrite using `[ContinuousAt, map_one]`. Introduce `s hs`. Take `⟨E, hE, hEs⟩` from `(krullTopology_mem_nhds_one_iff K.1 (maxUnramifiedOutside K.1 ℚ̄ S) s).1 hs`. Use `K.2` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Set `E' : IntermediateField K.1 ℚ̄` to `E.map (maxUnramifiedOutside K.1 ℚ̄ S).val`. Establish `hE' : FiniteDimensional K.1 E'` using `LinearEquiv.finiteDimensional (E.equivMap (maxUnramifiedOutside K.1 ℚ̄ S).val).toLinearEquiv`. Establish `hE'₀ : FiniteDimensional ℚ E'` using `Module.Finite.trans K.1 E'`. Establish `hE'' : FiniteDimensional ℚ (E'.restrictScalars ℚ)` using `hE'₀`. Rewrite using `[Filter.mem_map, mem_nhds_subtype]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨((E'.restrictScalars ℚ).fixingSubgroup : Set (ℚ̄ ≃ₐ[ℚ] ℚ̄)), (krullTopology_mem_nhds_one_iff ℚ ℚ̄ _).2 ⟨E'.restrictScalars ℚ, hE'', le_rfl⟩, ?_⟩` and prove the remaining obligations. Introduce `σ hσ`. Apply `hEs` to reduce the goal to its premises. Rewrite using `[SetLike.mem_coe, IntermediateField.mem_fixingSubgroup_iff]`. Introduce `x hx`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `Subtype.val_injective` to reduce the goal to its premises. Rewrite using `[gsRestrict_apply]`. Conclude with `(IntermediateField.mem_fixingSubgroup_iff _ _).1 hσ (x : ℚ̄) ⟨x, hx, rfl⟩`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_gsRestrict : Continuous (gsRestrict K S) := by
   refine continuous_of_continuousAt_one _ ?_

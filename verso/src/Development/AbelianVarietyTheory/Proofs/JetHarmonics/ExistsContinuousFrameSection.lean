@@ -28,89 +28,77 @@ def secMat (k r : ℕ) (z z' ν' : Fin (2 * r + k + 1) → ℂ) (m₀ : B.Mat k 
 variable {k r : ℕ}
 
 /- English proof (translation)
-Take `⟨hν, hνz, hνν, ⟨hmU, hmfix⟩, hmz⟩` from `hbase`. Establish `hme : ∀ a : Fin r, m₀ *ᵥ ee k r a = ee k r a` using `fun a => (hmfix a a.isLt).1`. Establish `hms : ∀ a : Fin r, m₀ *ᵥ es k r a = es k r a` using `fun a => (hmfix a a.isLt).2`. Establish `hz` using `S.z_mem`. Establish `hz'` using `S.z'_mem`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hT` using `S.T_pos`. Establish `hT'` using `S.T'_pos`. Use `set s := Real.sqrt (Tz k r S.z') with hsdef`. Establish `hs : 0 < s` using `Real.sqrt_pos.2 hT'`. Establish `hs' : (s : ℂ) ≠ 0` using `by exact_mod_cast hs.ne'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs2 : s ^ 2 = Tz k r S.z'` using `Real.sq_sqrt hT'.le`. Establish `hzz : herm (Hpk k r) S.z' S.z' = -((s : ℂ) ^ 2)`. Rewrite using `[herm_self_alt]`. Use `congr 1`. Conclude with `hs2.symm` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hzz0 : herm (Hpk k r) S.z' S.z' ≠ 0` using `by rw [hzz]; simpa using hs'`. Use `set μ := Real.sqrt (Tz k r S.z' / Tz k r S.z) with hμdef`. Establish `hμ : 0 < μ` using `Real.sqrt_pos.2 (div_pos hT' hT)`. Establish `hμ' : (μ : ℂ) ≠ 0` using `by exact_mod_cast hμ.ne'`. Establish `hμ2 : μ ^ 2 = Tz k r S.z' / Tz k r S.z` using `Real.sq_sqrt (div_pos hT' hT).le`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `set d' : Fin (r + 1) → ℂ := fun b => if π b = Fin.last r then (μ : ℂ) * d0 b else d0 b with hd'def`. Establish `hd' : ∀ b, d' b ≠ 0`. Introduce `b`. Simplify using `only [hd'def]`. Use `split_ifs`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `mul_ne_zero hμ' (hd0 b)`. Conclude with `hd0 b`. Establish `hne : ∀ b : Fin r, π b.castSucc ≠ Fin.last r`. Introduce `b h`. Rewrite `h` using `[← hB]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Fin.castSucc_ne_last b (π.injective h)`. Establish `hdl : d' (Fin.last r) = (μ : ℂ) * d0 (Fin.last r)` using `by simp [hd'def, hB]`. Establish `hdb : ∀ b : Fin r, d' b.castSucc = d0 b.castSucc`. Introduce `b`. Simplify using `only [hd'def]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[if_neg (hne b)]`. Use `set N := Complex.normSq (d' (Fin.last r)) with hNdef`. Establish `hN : s ^ 4 < N`. Rewrite using `[hNdef, hdl, Complex.normSq_mul, Complex.normSq_ofReal]`. Establish `: s ^ 4 = μ * μ * (Tz k r S.z * Tz k r S.z')`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : μ * μ = μ ^ 2` using `by ring`. Rewrite using `[e1, hμ2, show s ^ 4 = (s ^ 2) ^ 2 by ring, hs2]; field_simp`. Rewrite using `[this]; exact mul_lt_mul_of_pos_left hG (by positivity)`. Establish `hN0 : 0 < N` using `lt_trans (by positivity) hN`. Use `set κ := Real.sqrt (1 / s ^ 2 - s ^ 2 / N) with hκdef`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hκarg : 0 < 1 / s ^ 2 - s ^ 2 / N`. Rewrite using `[sub_pos, div_lt_div_iff₀ hN0 (by positivity)]; nlinarith [hN]`. Establish `hκ0 : 0 < κ` using `Real.sqrt_pos.2 hκarg`. Establish `hκ2 : κ ^ 2 = 1 / s ^ 2 - s ^ 2 / N` using `Real.sq_sqrt hκarg.le`. Establish `hκr : κ ^ 2 * s ^ 2 * N = N - s ^ 4` using `by rw [hκ2]; field_simp`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hDD : d' (Fin.last r) * conj (d' (Fin.last r)) = ((N : ℝ) : ℂ)` using `by rw [hNdef, Complex.mul_conj]`. Establish `hκ : (κ : ℂ) ^ 2 * (s : ℂ) ^ 2 * (d' (Fin.last r) * conj (d' (Fin.last r))) = d' (Fin.last r) * conj (d' (Fin.last r)) - (s : ℂ) ^ 4`. Rewrite using `[hDD]`. Conclude with `hκr` after adjusting the coercions. Use `set Y := YB π d' S.z' ν' s κ with hYdef`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Substitute using the available equality.
 
-Use `set σ := smat (Hpk k r) (uB S.z' ν') (wB S.z' ν' s) Y with hσdef`. Establish `hσU : σ ∈ UH (Hpk k r)` using `sig_UH Y hz' hν hs hzz hνz hνν (YB_gram π d' hz' hν hs hzz hνz hνν hd' κ hκ hB) (fun x hx i => YB_perp π d' κ x hx i)`. Establish `hσu : ∀ i, σ *ᵥ uB S.z' ν' i = Y i` using `sig_u Y hz' hν hs hzz hνz hνν`. Establish `hγ : m₀ * σ ∈ UH (Hpk k r)` using `mul_UH hmU hσU`. Establish `hzν` using `herm_zν hνz`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Establish `hσe : ∀ b : Fin r, σ *ᵥ ee k r b = Y (Sum.inl (Sum.inl b))` using `fun b => hσu (Sum.inl (Sum.inl b))`. Establish `hσz : σ *ᵥ S.z' = Y (Sum.inr 0)` using `hσu (Sum.inr 0)`. Establish `hσn : σ *ᵥ ν' = Y (Sum.inr 1)` using `hσu (Sum.inr 1)`. Establish `hZ : Zhat k r S.z S.z' (m₀ * σ) = C2.monoP π d0`. Use extensionality with `a b`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[reduced_matrix_of_stabilizer m₀ σ hmU hme μ hμ.ne' hmz]`. Apply the tactic sequence `rcases cast_or_last b with hbl | ⟨b', rfl⟩ <;> rcases cast_or_last a with hal | ⟨a', rfl⟩`. Substitute `hbl hal` using the available equality. Rewrite using `[fvec_lastI, fvec_lastI, hσz]`. Simplify using `[hYdef, YB, C2.monoP, hB, hdl, B2x4.herm_smul_left, B2x4.herm_smul_right, herm_rsmul_left, herm_rsmul_right, B2x4.herm_add_left, B2x4.herm_add_right, B2x4.herm_sub_left, B2x4.herm_sub_right, herm_neg_left, herm_neg_right, h_w_ee hz', h_w_ee hν, h_w_es hz', h_w_es hν, h_ee_w hz', …`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Clear the denominators using the available nonvanishing facts. Substitute `hbl` using the available equality. Rewrite using `[fvec_lastI, fvec_cs, hσz]`. Establish `h1 : ¬ (a'.castSucc = π (Fin.last r))` using `by rw [hB]; exact Fin.castSucc_ne_last a'`. Simplify using `[hYdef, YB, C2.monoP, h1, B2x4.herm_smul_left, B2x4.herm_smul_right, herm_rsmul_left, herm_rsmul_right, B2x4.herm_add_left, B2x4.herm_add_right, B2x4.herm_sub_left, B2x4.herm_sub_right, herm_neg_left, herm_neg_right, h_w_ee hz', h_w_ee hν, h_w_es hz', h_w_es hν, h_ee_w hz', h_ee_ …`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Substitute `hal` using the available equality. Rewrite using `[fvec_lastI, fvec_cs, hσe]`. Establish `h1 : ¬ (Fin.last r = π b'.castSucc)` using `fun h => hne b' h.symm`. Simplify using `[hYdef, YB, C2.monoP, h1, B2x4.herm_smul_left, B2x4.herm_smul_right, herm_rsmul_left, herm_rsmul_right, B2x4.herm_add_left, B2x4.herm_add_right, B2x4.herm_sub_left, B2x4.herm_sub_right, herm_neg_left, herm_neg_right, h_w_ee hz', h_w_ee hν, h_w_es hz', h_w_es hν, h_ee_w hz', h_ee_ …`. Rewrite using `[fvec_cs, fvec_cs, hσe]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : (a'.castSucc = π b'.castSucc) ↔ (piX π b' = a')`. Rewrite using `[← piX_spec π b' (hne b')]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `(Fin.castSucc_injective _ h).symm`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `rfl`. Both sides reduce to the same expression. Simplify using `[hYdef, YB, C2.monoP, e, hdb b', B2x4.herm_smul_left, B2x4.herm_smul_right, herm_rsmul_left, herm_rsmul_right, B2x4.herm_add_left, B2x4.herm_add_right, B2x4.herm_sub_left, B2x4.herm_sub_right, herm_neg_left, herm_neg_right, h_w_ee hz', h_w_ee hν, h_w_es hz', h_w_es hν, h_ee_w hz' …`. Establish `hγu : IsUnit (m₀ * σ).det` using `(Formalism.FourierDecayAlt.P.unitary_group_closed k r).unit _ hγ`. Establish `hm0u : IsUnit m₀.det` using `(Formalism.FourierDecayAlt.P.unitary_group_closed k r).unit _ hmU`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hDl : d0 (Fin.last r) ≠ 0` using `hd0 _`. Establish `hDc : conj (d0 (Fin.last r)) ≠ 0` using `by simpa using hDl`. Establish `hsec : secMat k r S.z S.z' ν' m₀ π d0 = m₀ * σ` using `rfl`. Rewrite using `[hsec]`. Use `⟨hγ, hZ, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `⟨μ * κ, mul_pos hμ hκ0, ?_⟩` and prove the remaining obligations. Establish `hcof : Formalism.FourierDecayAlt.D.cofR S (m₀ * σ) = ((C2.monoP π d0).det * (d0 (Fin.last r))⁻¹) • (m₀ *ᵥ (σ *ᵥ S.z'))`. Unfold `Formalism.FourierDecayAlt.D.cofR`. Rewrite using `[hZ]`. Rewrite using `[Finset.sum_eq_single (Fin.last r)]`.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[monomialMatrix_adj π d0 hd0, if_pos hB, fvec_lastI, Matrix.mulVec_mulVec]`. Introduce `b _ hbne`. Establish `: π b ≠ Fin.last r` using `by intro h; rw [← hB] at h; exact hbne (π.injective h)`. Rewrite using `[monomialMatrix_adj π d0 hd0, if_neg this]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using the standard rewrite rules. Rewrite using `[hcof, prW_smul, orthoProj_m0_intertwine m₀ hmU hme hms hz hz' μ hμ.ne' hmz hzz0, hσz]`. Simplify using `only [hYdef, YB, Matrix.cons_val_zero]`. Rewrite using `[prW_smul, prW_sub, prW_smul, prW_perp hν hνz, prW_self hz' hzz0, sub_zero, hZ, Matrix.mulVec_smul, Matrix.mulVec_smul, smul_smul, smul_smul, hdl]`. Use `congr 1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `push_cast`. Clear the denominators using the available nonvanishing facts. Use `⟨κ, hκ0, ?_⟩` and prove the remaining obligations. Establish `hcof : Formalism.FourierDecayAlt.D.cofL S (m₀ * σ) = (conj ((C2.monoP π d0).det * (d0 (Fin.last r))⁻¹)) • S.z`. Unfold `Formalism.FourierDecayAlt.D.cofL`.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hZ]`. Rewrite using `[Finset.sum_eq_single (Fin.last r)]`. Rewrite using `[monomialMatrix_adj π d0 hd0, if_pos hB, fvec_lastI]`. Introduce `a _ hane; rw [monomialMatrix_adj π d0 hd0, if_neg (by rw [hB]; exact Ne.symm hane)]; simp`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Use `set Dp := d' (Fin.last r) with hDpdef`. Establish `hvec : (-(conj Dp / (s : ℂ) ^ 2)) • Y (Sum.inr 0) + ((κ : ℂ) * conj Dp) • Y (Sum.inr 1) = S.z'`. Simplify using `only [hYdef, YB, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]`. Rewrite using `[show ∀ (α β p q c1 c2 : ℂ), α • (p • (c1 • ν' - S.z')) + β • (q • (ν' - c2 • S.z')) = (α * p * c1 + β * q) • ν' + (-(α * p) - β * q * c2) • S.z' from by intros; module]`. Establish `h0 : -(conj Dp / (s : ℂ) ^ 2) * (Dp / (s : ℂ) ^ 2) * ((κ : ℂ) * (s : ℂ) ^ 2) + (κ : ℂ) * conj Dp * (Dp / (s : ℂ) ^ 2) = 0` using `by field_simp; ring`.
+Clear the denominators using the available nonvanishing facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : -(-(conj Dp / (s : ℂ) ^ 2) * (Dp / (s : ℂ) ^ 2)) - (κ : ℂ) * conj Dp * (Dp / (s : ℂ) ^ 2) * (κ : ℂ) = 1`. Clear the denominators using the available nonvanishing facts. Apply the tactic sequence `first | linear_combination -hκ | linear_combination hκ | linear_combination (-1 : ℂ) * hκ`. Rewrite using `[h0, h1, zero_smul, zero_add, one_smul]`. Use `set w := (μ : ℂ)⁻¹ • ((-(conj Dp / (s : ℂ) ^ 2)) • S.z' + ((κ : ℂ) * conj Dp) • ν') with hwdef`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hw : (m₀ * σ) *ᵥ w = S.z`. Rewrite using `[hwdef, Matrix.mulVec_smul, ← Matrix.mulVec_mulVec, Matrix.mulVec_add, Matrix.mulVec_smul, Matrix.mulVec_smul, hσz, hσn, hvec, hmz, smul_smul, inv_mul_cancel₀ hμ', one_smul]`. Establish `hinv : (m₀ * σ)⁻¹ *ᵥ S.z = w`. Rewrite using `[← hw, Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ hγu, Matrix.one_mulVec]`. Rewrite using `[hcof, Matrix.mulVec_smul, hinv, hwdef, prW_smul, prW_smul, prW_add, prW_smul, prW_smul, prW_self hz' hzz0, prW_perp hν hνz, hZ, smul_zero, zero_add, smul_smul, smul_smul, hdl]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `congr 1`. Simplify using `only [map_mul, map_inv₀, Complex.conj_ofReal]`. Clear the denominators using the available nonvanishing facts. Introduce `u hu`. Use `set v := m₀⁻¹ *ᵥ u with hvdef`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hmv : m₀ *ᵥ v = u`. Rewrite using `[hvdef, Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ hm0u, Matrix.one_mulVec]`. Establish `hv1 : ∀ a : Fin r, herm (Hpk k r) v (ee k r a) = 0`. Introduce `a`. Use `(hu a.castSucc).1` as an intermediate fact.
+Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `this` using `[fvec_cs, ← hmv, ← hme a, herm_m0_mulVec_invariant m₀ hmU]`. Conclude with `this`. Establish `hzeq : S.z = (μ : ℂ)⁻¹ • (m₀ *ᵥ S.z')` using `by rw [hmz, smul_smul, inv_mul_cancel₀ hμ', one_smul]`. Establish `hv2 : herm (Hpk k r) v S.z' = 0`. Use `(hu (Fin.last r)).1` as an intermediate fact.
+Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite `this` using `[fvec_lastI, ← hmv, hzeq, B2x4.herm_smul_right, herm_m0_mulVec_invariant m₀ hmU]`. Simplify `this` using `[hμ']`. Establish `hvY : ∀ a, herm (Hpk k r) v (σ *ᵥ fvec k r S.z' a) = 0`. Introduce `a`. Use `(hu a).2` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `this` using `[← hmv, ← Matrix.mulVec_mulVec, herm_m0_mulVec_invariant m₀ hmU]`. Conclude with `this`. Establish `hv3 : herm (Hpk k r) v ν' = 0`. Use `hvY (Fin.last r)` as an intermediate fact. Rewrite `this` using `[fvec_lastI, hσz]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hYdef, YB, Matrix.cons_val_zero, B2x4.herm_smul_right, B2x4.herm_sub_right, hv2, sub_zero] at this`. Break down `mul_eq_zero.1 this with h | h` into its components or cases. It suffices to derive a contradiction. Use `hd' (Fin.last r)` as an intermediate fact. Simplify using `at h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction.
 
-Break down `h with h | h` into its components or cases. Conclude with `this h`. Conclude with `hs.ne' h`. Break down `mul_eq_zero.1 h with h | h` into its components or cases. It suffices to derive a contradiction.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `at h`. Break down `h with h | h` into its components or cases. Conclude with `hκ0.ne' h`. Conclude with `hs.ne' h`. Conclude with `h`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hv4 : ∀ c : Fin r, herm (Hpk k r) v (es k r c) = 0`. Introduce `c`. Establish `hbl : π.symm c.castSucc ≠ Fin.last r`. Introduce `h`. Establish `h2` using `congrArg π h`.
-
-Rewrite `h2` using `[π.apply_symm_apply, hB]`. Conclude with `Fin.castSucc_ne_last c h2`. Take `⟨b', hb'⟩` from `(cast_or_last (π.symm c.castSucc)).resolve_left hbl`. Establish `hpx : piX π b' = c`. Apply `Fin.castSucc_injective` to reduce the goal to its premises.
-
-Rewrite using `[piX_spec π b' (hne b'), ← hb', π.apply_symm_apply]`. Use `hvY b'.castSucc` as an intermediate fact. Rewrite `this` using `[fvec_cs, hσe]`. Simplify using `only [hYdef, YB, hpx, B2x4.herm_smul_right] at this`. Break down `mul_eq_zero.1 this with h | h` into its components or cases.
-
-It suffices to derive a contradiction. Use `hd' b'.castSucc` as an intermediate fact. Simplify using `at h`. Conclude with `this h`. Conclude with `h`.
-
-Establish `hfix : σ *ᵥ v = v`. Apply `sig_fix Y v` to reduce the goal to its premises. Introduce `i`. Break down `i with ((b | b) | i)` into its components or cases. Conclude with `hv4 b`.
-
-Conclude with `hv1 b`. Use `fin_cases i`. Simplify using `[wB, B2x4.herm_smul_right, herm_neg_right, hv2]`. Simplify `hv3` using `[wB]`. Establish `hinv : (m₀ * σ)⁻¹ *ᵥ u = v`.
-
-Establish `: (m₀ * σ) *ᵥ v = u` using `by rw [← Matrix.mulVec_mulVec, hfix, hmv]`. Rewrite using `[← this, Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ hγu, Matrix.one_mulVec]`. Rewrite using `[hinv, ← hmv, orthoProj_m0_intertwine m₀ hmU hme hms hz hz' μ hμ.ne' hmz hzz0]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sec_spec {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
     [InnerProductSpace ℂ Wq] (S : B.RealPlaceData k r Wp Wq) (ν' : Fin (2 * r + k + 1) → ℂ) (m₀ : B.Mat k r)
@@ -313,7 +301,7 @@ theorem sec_spec {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ W
     rw [hinv, ← hmv, orthoProj_m0_intertwine m₀ hmU hme hms hz hz' μ hμ.ne' hmz hzz0]
 
 /- English proof (translation)
-Unfold `secDiag`. Apply the tactic sequence `split_ifs <;> fun_prop`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem secDiag_cont (z z' : Fin (2 * r + k + 1) → ℂ) (π : Equiv.Perm (Fin (r + 1))) (b : Fin (r + 1)) :
     Continuous fun d0 => secDiag k r z z' π d0 b := by
@@ -321,9 +309,7 @@ theorem secDiag_cont (z z' : Fin (2 * r + k + 1) → ℂ) (π : Equiv.Perm (Fin 
   split_ifs <;> fun_prop
 
 /- English proof (translation)
-Establish `hμ : 0 < Real.sqrt (Tz k r z' / Tz k r z)` using `Real.sqrt_pos.2 (div_pos hT' hT)`. Establish `hμ' : ((Real.sqrt (Tz k r z' / Tz k r z) : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast hμ.ne'`. Unfold `secDiag`. Use `split_ifs`. Conclude with `mul_ne_zero hμ' (hd0 b)`.
-
-Conclude with `hd0 b`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem secDiag_ne {z z' : Fin (2 * r + k + 1) → ℂ} (hT : 0 < Tz k r z) (hT' : 0 < Tz k r z')
     (π : Equiv.Perm (Fin (r + 1))) {d0 : Fin (r + 1) → ℂ} (hd0 : ∀ a, d0 a ≠ 0) (b : Fin (r + 1)) :
@@ -336,7 +322,7 @@ theorem secDiag_ne {z z' : Fin (2 * r + k + 1) → ℂ} (hT : 0 < Tz k r z) (hT'
   · exact hd0 b
 
 /- English proof (translation)
-Unfold `secKappa`. Use `ContinuousOn.sqrt (continuousOn_const.sub (continuousOn_const.div ?_ ?_))` and prove the remaining obligations. Conclude with `(Complex.continuous_normSq.comp (secDiag_cont z z' π _)).continuousOn`. Introduce `c hc`. Conclude with `(Complex.normSq_pos.2 (secDiag_ne hT hT' π hc _)).ne'`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem secKappa_cont {z z' : Fin (2 * r + k + 1) → ℂ} (hT : 0 < Tz k r z) (hT' : 0 < Tz k r z')
     (π : Equiv.Perm (Fin (r + 1))) :
@@ -348,11 +334,11 @@ theorem secKappa_cont {z z' : Fin (2 * r + k + 1) → ℂ} (hT : 0 < Tz k r z) (
     exact (Complex.normSq_pos.2 (secDiag_ne hT hT' π hc _)).ne'
 
 /- English proof (translation)
-Establish `hd` using `fun b => (secDiag_cont z z' π b).continuousOn (s := {c : Fin (r + 1) → ℂ | ∀ a, c a ≠ 0})`. Establish `hκ : ContinuousOn (fun d0 => ((secKappa k r z z' π d0 : ℝ) : ℂ)) {c | ∀ a, c a ≠ 0}` using `Complex.continuous_ofReal.comp_continuousOn (secKappa_cont hT hT' π)`. Break down `i with ((b | b) | i)` into its components or cases. Simplify using `only [YB] fun_prop`. Establish `h : ContinuousOn (fun d0 => (conj (secDiag k r z z' π d0 b.castSucc))⁻¹) {c : Fin (r + 1) → ℂ | ∀ a, c a ≠ 0}`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `ContinuousOn.inv₀ (Complex.continuous_conj.comp_continuousOn (hd _)) ?_` and prove the remaining obligations. Introduce `c hc`. Simplify using `using secDiag_ne hT hT' π hc _`. Simplify using `only [YB]`. Use `fun_prop`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `fin_cases i`. Simplify using `only [YB, Fin.zero_eta, Matrix.cons_val_zero] fun_prop`. Simplify using `only [YB, Fin.mk_one, Matrix.cons_val_one, Matrix.cons_val_zero] fun_prop`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem secY_cont {z z' : Fin (2 * r + k + 1) → ℂ} (ν' : Fin (2 * r + k + 1) → ℂ) (hT : 0 < Tz k r z)
     (hT' : 0 < Tz k r z') (π : Equiv.Perm (Fin (r + 1))) (s : ℝ) (i : (Fin r ⊕ Fin r) ⊕ Fin 2) :
@@ -378,9 +364,9 @@ theorem secY_cont {z z' : Fin (2 * r + k + 1) → ℂ} (ν' : Fin (2 * r + k + 1
       fun_prop
 
 /- English proof (translation)
-Unfold `secMat`. Use `continuousOn_const.mul ?_` and prove the remaining obligations. Use `continuousOn_pi.2 fun a => continuousOn_pi.2 fun b => ?_` and prove the remaining obligations. Simplify using `only [smat, Matrix.of_apply]`. Use `continuousOn_pi.1 ?_ a` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `smap`. Use `continuousOn_const.add (continuousOn_finset_sum _ fun i _ => ?_)` and prove the remaining obligations. Establish `h` using `secY_cont ν' hT hT' π (Real.sqrt (Tz k r z')) i`. Use `fun_prop`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem secMat_cont {z z' : Fin (2 * r + k + 1) → ℂ} (ν' : Fin (2 * r + k + 1) → ℂ) (hT : 0 < Tz k r z)
     (hT' : 0 < Tz k r z') (m₀ : B.Mat k r) (π : Equiv.Perm (Fin (r + 1))) :
@@ -396,9 +382,9 @@ theorem secMat_cont {z z' : Fin (2 * r + k + 1) → ℂ} (ν' : Fin (2 * r + k +
   fun_prop
 
 /- English proof (translation)
-Establish `h : D.ptMatN (TBB.bigPt r c) (r + 1) = U.hMat 1 c` using `Formalism.FourierDecayAlt.P.PBJ.Dens.ptMatN_bigPt c`. Rewrite using `[h]`. Use extensionality with `a b`. Unfold `U.hMat`. Rewrite using `[Matrix.mul_diagonal]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h : a = b`. Substitute `h` using the available equality. Simplify using `[U.wP, C2.monoP]`. Simplify using `[U.wP, C2.monoP, h]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem ptMatN_bigPt_eq (r : ℕ) (c : Fin (r + 1) → ℂ) :
     D.ptMatN (TBB.bigPt r c) (r + 1) = C2.monoP 1 c := by
@@ -412,7 +398,7 @@ theorem ptMatN_bigPt_eq (r : ℕ) (c : Fin (r + 1) → ℂ) :
   · simp [U.wP, C2.monoP, h]
 
 /- English proof (translation)
-Introduce `k r Wp Wq _ _ _ _ _ _ Bs ν' m₀ hbase`. Use `⟨secMat k r Bs.z Bs.z' ν' m₀ 1, (secMat_cont ν' Bs.T_pos Bs.T'_pos m₀ 1).mono fun c hc => hc.1, ?_⟩` and prove the remaining obligations. Introduce `c hc hG`. Rewrite using `[ptMatN_bigPt_eq]`. Conclude with `sec_spec Bs ν' m₀ hbase 1 c hc rfl hG`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_continuous_frame_section :
     ∀ (k r : ℕ) (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]

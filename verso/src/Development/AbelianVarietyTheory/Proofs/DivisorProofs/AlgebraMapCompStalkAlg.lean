@@ -29,7 +29,7 @@ def stalkHom (TF : TorFlag Xo c) (Z : Comp Xo c) (x : X₀ TF.Y Z) (U : TF.Y.X.a
   ((X₀ TF.Y Z).presheaf.germ ((barComp TF.Y Z).ι ⁻¹ᵁ U.1) x hx).hom.comp ((barComp TF.Y Z).ι.app U.1).hom
 
 /- English proof (translation)
-The claim follows from `RingHom.ext fun a => GlobalTheory.Cartier.algebraMap_germ (U := ⊤) trivial _`.
+A detailed English derivation is pending.
 -/
 theorem algebraMap_comp_stalkAlg (TF : TorFlag Xo c) (Z : Comp Xo c) [IsIntegral (X₀ TF.Y Z)] (x : X₀ TF.Y Z) :
     (algebraMap ((X₀ TF.Y Z).presheaf.stalk x) (X₀ TF.Y Z).functionField).comp (stalkAlg TF Z x) =

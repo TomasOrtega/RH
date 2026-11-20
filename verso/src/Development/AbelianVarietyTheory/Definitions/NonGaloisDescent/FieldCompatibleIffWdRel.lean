@@ -15,13 +15,13 @@ variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAl
   {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver A w}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun H => Subtype.ext (AlgEquiv.ext H), by rintro rfl z; rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem weilRel_refl_iff (σ σ' : Weil h) : WeilRel (RingEquiv.refl Ω) σ σ' ↔ σ = σ' :=
   ⟨fun H => Subtype.ext (AlgEquiv.ext H), by rintro rfl z; rfl⟩
 
 /- English proof (translation)
-Rewrite using `[eq_mul_inv_iff_mul_eq, eq_comm]`. Conclude with `⟨fun H => Subtype.ext (AlgEquiv.ext H), fun H z => DFunLike.congr_fun (congrArg Subtype.val H) z⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem weilRel_conj_iff (τ σ σ' : Weil h) :
     WeilRel ((τ : G E Ω) : Ω ≃ₐ[E] Ω).toRingEquiv σ σ' ↔ σ' = τ * σ * τ⁻¹ := by
@@ -29,9 +29,9 @@ theorem weilRel_conj_iff (τ σ σ' : Weil h) :
   exact ⟨fun H => Subtype.ext (AlgEquiv.ext H), fun H z => DFunLike.congr_fun (congrArg Subtype.val H) z⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨n, b, b', rfl, rfl, hN, hρ⟩`. Conclude with `WD.sound ⟨.refl _ _, fun σ v => by rw [hρ σ σ fun _ => rfl]; rfl, fun v => by rw [hN]; rfl⟩`. Introduce and unpack `rfl`. Take `⟨n, b, rfl⟩` from `y.exists_rep`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨n, b, b, rfl, rfl, rfl, fun σ σ' H => by rw [(weilRel_refl_iff σ σ').1 H]⟩`.
+A detailed English derivation is pending.
 -/
 theorem wdRel_refl_iff (y y' : WD h) : WDRel (RingEquiv.refl Ω) y y' ↔ y = y' := by
   constructor
@@ -42,9 +42,9 @@ theorem wdRel_refl_iff (y y' : WD h) : WDRel (RingEquiv.refl Ω) y y' ↔ y = y'
     exact ⟨n, b, b, rfl, rfl, rfl, fun σ σ' H => by rw [(weilRel_refl_iff σ σ').1 H]⟩
 
 /- English proof (translation)
-Establish `hm : ∀ {n : ℕ} (g : GL (Fin n) k), GeneralLinearGroup.map (RingEquiv.refl k).toRingHom g = g` using `fun g => Units.ext (Matrix.ext fun _ _ => rfl)`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨n, π, π', e, rfl, rfl, H⟩`. Use `congrArg (Sigma.mk n) (IrrRep.cl_eq_iff.2 ⟨Representation.Equiv.mk e fun g => LinearMap.ext fun v => ?_⟩)` and prove the remaining obligations. Use `H g v` as an intermediate fact.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[hm]`. Conclude with `this`. Introduce and unpack `rfl`. Take `⟨n, c⟩` from `x`. Conclude with `⟨n, c.rep, c.rep, .refl _ _, congrArg (Sigma.mk n) c.cl_rep.symm, congrArg (Sigma.mk n) c.cl_rep.symm, fun g v => by rw [hm]; rfl⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem repRel_refl_iff {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (x x' : IrrGL k) : RepRel (RingEquiv.refl k) x x' ↔ x = x' := by
@@ -62,7 +62,7 @@ theorem repRel_refl_iff {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace 
       fun g v => by rw [hm]; rfl⟩
 
 /- English proof (translation)
-Use `⟨fun z => ⟨fun hz => ?_, fun hz => ?_⟩, fun x => (τ : G E Ω).commutes x, continuous_id, fun _ => rfl⟩` and prove the remaining obligations. Use `val_apply_le_one (Weil_le_Dec h τ⁻¹.2) ((A.valuation_le_one_iff _).2 hz)` as an intermediate fact. Rewrite `this` using `[A.valuation_le_one_iff]`. Simplify using `using this`. Conclude with `(A.valuation_le_one_iff _).1 (val_apply_le_one (Weil_le_Dec h τ.2) ((A.valuation_le_one_iff _).2 hz))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem placeIso_weil (τ : Weil h) :
     PlaceIso A w A w ((τ : G E Ω) : Ω ≃ₐ[E] Ω).toRingEquiv (RingHom.id E) (RingEquiv.refl _) := by
@@ -73,9 +73,9 @@ theorem placeIso_weil (τ : Weil h) :
   · exact (A.valuation_le_one_iff _).1 (val_apply_le_one (Weil_le_Dec h τ.2) ((A.valuation_le_one_iff _).2 hz))
 
 /- English proof (translation)
-Take `⟨φ, hφ⟩` from `exists_isFrob h`. Set `τ : Weil h` to `⟨φ, mem_Weil_of_isFrob h hφ⟩`. Use `⟨_, fun e => ?_, placeIso_weil τ⟩` and prove the remaining obligations. Establish `h1 : deg τ = ((1 : ℕ) : ℤ) - (0 : ℕ)` using `deg_eq (actsAs_one_iff.2 hφ)`. Establish `h2 : τ = 1` using `Subtype.ext (AlgEquiv.ext fun z => DFunLike.congr_fun e z)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[h2, deg_one]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem exists_placeIso_ne (h : IsPlaceOver A w) : ∃ φ : Ω ≃+* Ω, φ ≠ RingEquiv.refl Ω ∧
     PlaceIso A w A w φ (RingHom.id E) (RingEquiv.refl _) := by
@@ -88,9 +88,9 @@ theorem exists_placeIso_ne (h : IsPlaceOver A w) : ∃ φ : Ω ≃+* Ω, φ ≠ 
   omega
 
 /- English proof (translation)
-Take `⟨n, b, rfl⟩` from `y.exists_rep`. Set `e : (Fin n → ℂ) ≃ₗ[ℂ] (Fin n → ℂ)` to `LinearEquiv.ofLinear (b.ρ τ⁻¹) (b.ρ τ) (by rw [← Module.End.mul_eq_comp, ← map_mul, inv_mul_cancel, map_one]; rfl) (by rw [← Module.End.mul_eq_comp, ← map_mul, mul_inv_cancel, map_one]; rfl)`. Use `⟨n, b, b.transport e, rfl, WD.sound (b.iso_transport e).symm, ?_, fun σ σ' H => ?_⟩` and prove the remaining obligations. Use `b.conj_N τ⁻¹` as an intermediate fact. Rewrite `this` using `[deg_inv, hτ, neg_zero, zpow_zero, one_smul, inv_inv]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this.symm`. Rewrite using `[(weilRel_conj_iff τ σ σ').1 H] show _ = b.ρ τ⁻¹ * b.ρ _ * b.ρ τ`. Rewrite using `[← map_mul, ← map_mul]`. Use `congr 1`. Use `group`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem wdRel_weil (τ : Weil h) (hτ : deg τ = 0) (y : WD h) :
     WDRel ((τ : G E Ω) : Ω ≃ₐ[E] Ω).toRingEquiv y y := by
@@ -109,7 +109,7 @@ theorem wdRel_weil (τ : Weil h) (hτ : deg τ = 0) (y : WD h) :
     group
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `H φ j i P _ _ ⟨n, π, π', e, rfl, rfl, He⟩`. Conclude with `H φ j i P.mem P.ext P.cont P.loc n π π' e He`. Introduce `H φ j i a b c d n π π' e He`. Conclude with `H φ j i ⟨a, b, c, d⟩ _ _ ⟨n, π, π', e, rfl, rfl, He⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem fieldCompatible_iff {E' Ω' : Type} [Field E'] [NumberField E'] [Field Ω'] [Algebra E' Ω'] [IsAlgClosure E' Ω']
     {A' : ValuationSubring Ω'} {w' : HeightOneSpectrum (𝓞 E')} {h' : IsPlaceOver A' w'}
@@ -124,9 +124,9 @@ theorem fieldCompatible_iff {E' Ω' : Type} [Field E'] [NumberField E'] [Field �
     exact H φ j i ⟨a, b, c, d⟩ _ _ ⟨n, π, π', e, rfl, rfl, He⟩
 
 /- English proof (translation)
-Rewrite using `[fieldCompatible_iff]`. Use `⟨fun H φ j i P x x' R => ⟨_, H φ j i P x x' R⟩, fun H φ j i P x x' R => ?_⟩` and prove the remaining obligations. Take `⟨n, b, b', h1, h2, h3⟩` from `H φ j i P x x' R`. Establish `: n = x.1` using `by rw [← hd, ← h1]; simp`. Substitute `this` using the available equality.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality.
 
-Conclude with `⟨b, b', h1, h2, h3⟩`.
+Supply the required witnesses or components.
 -/
 theorem fieldCompatible_iff_wdRel {E' Ω' : Type} [Field E'] [NumberField E'] [Field Ω'] [Algebra E' Ω']
     [IsAlgClosure E' Ω'] {A' : ValuationSubring Ω'} {w' : HeightOneSpectrum (𝓞 E')} {h' : IsPlaceOver A' w'}
@@ -141,13 +141,13 @@ theorem fieldCompatible_iff_wdRel {E' Ω' : Type} [Field E'] [NumberField E'] [F
   exact ⟨b, b', h1, h2, h3⟩
 
 /- English proof (translation)
-The claim follows from `let ⟨rc, hrc, _⟩ := H.1 E Ω A w h; ⟨rc, hrc.toLit⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_isRecLit (H : GlobalTheory.Published.LocalLanglandsGL) : ∃ rc, IsRecLit h rc :=
   let ⟨rc, hrc, _⟩ := H.1 E Ω A w h; ⟨rc, hrc.toLit⟩
 
 /- English proof (translation)
-Introduce `H` and use `by have h0 := H.dim ⟨0, (IrrRep.det (Fin 0) 1 isSmoothChar_one).cl⟩ have h1 := H.dim (.ofChar 1 isSmoothChar_one) rw [h0] at h1 exact Nat.zero_ne_one h1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem not_lawsMin_const {a : Weil h →* (w.adicCompletion E)ˣ} {ha : IsLocalArtin h a}
     {e : AddChar (w.adicCompletion E) Circle → WD h → ℂˣ} (y : WD h) : ¬ LawsMin a ha e fun _ => y := fun H => by

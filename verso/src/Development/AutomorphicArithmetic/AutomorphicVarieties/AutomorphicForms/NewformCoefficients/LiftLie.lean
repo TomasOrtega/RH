@@ -20,7 +20,7 @@ private def incl : (Fin 2 → Fin 2 → ℝ) →L[ℝ] TR.Lie ℚ 2 :=
       map_smul' := fun _ _ => rfl }
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i j v`. Express the relevant statement in the definitionally equal form `(1 : Matrix (Fin 2) (Fin 2) ℝ) i j = (1 : Matrix (Fin 2) (Fin 2) (TR.Rinf ℚ)) i j v`. Apply the tactic sequence `by_cases h : i = j <;> simp [Matrix.one_apply, h]`.
+Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem incl_one : incl (Matrix.of.symm 1) = TR.oneL ℚ 2 := by
   funext i j v
@@ -29,7 +29,7 @@ private theorem incl_one : incl (Matrix.of.symm 1) = TR.oneL ℚ 2 := by
 
 open Classical in
 /- English proof (translation)
-Use function extensionality and compare the values at `a b w`. Take `rfl : v = w` from `Subsingleton.elim _ _`. Express the relevant statement in the definitionally equal form `Matrix.single i j (1 : ℝ) a b = Matrix.single i j (Pi.single v (1 : ℝ) : TR.Rinf ℚ) a b v`. Apply the tactic sequence `by_cases h : i = a ∧ j = b <;> simp [Matrix.single, h]`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem incl_single (v : InfinitePlace ℚ) (i j : Fin 2) :
     incl (Matrix.of.symm (Matrix.single i j 1)) = TR.toL (Matrix.single i j (Pi.single v 1)) := by
@@ -39,9 +39,9 @@ private theorem incl_single (v : InfinitePlace ℚ) (i j : Fin 2) :
   by_cases h : i = a ∧ j = b <;> simp [Matrix.single, h]
 
 /- English proof (translation)
-Establish `hc : Continuous fun x : Fin 2 → Fin 2 → ℝ => (Matrix.of x).det` using `Continuous.matrix_det continuous_id`. Establish `ho : {x : Fin 2 → Fin 2 → ℝ | 0 < (Matrix.of x).det} ∈ 𝓝 (Matrix.of.symm (1 : Matrix (Fin 2) (Fin 2) ℝ))` using `(isOpen_lt continuous_const hc).mem_nhds (by simp)`. Use `Filter.eventually_of_mem ho fun x hx => ?_` and prove the remaining obligations. Establish `hx' : 0 < (Matrix.of x).det` using `hx`. Set `y : GL (Fin 2) ℝ` to `Matrix.GeneralLinearGroup.mkOfDetNeZero (Matrix.of x) hx'.ne'`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `e : incl x = TR.toL (Matrix.GeneralLinearGroup.map (algebraMap ℝ (TR.Rinf ℚ)) y).val` using `rfl`. Rewrite using `[Function.comp_apply, e, TR.chart_val]`. Express the relevant statement in the definitionally equal form `_ = φ (ratGL ℚ 2 γ * (upR h * finGL ℚ 2 u) * upR y)`. Rewrite using `[mul_assoc, mul_assoc, ← upR_comm, ← mul_assoc (upR h), ← map_mul, hφ γ _ u hu, arch, (nslMul k f).1 _ _ h.det_ne_zero hx']`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem chart_near {k M : ℕ} {f : ℍ → ℂ} {φ : GA ℚ 2 → ℂ} (hφ : IsLift k M f φ)
     (γ : GL (Fin 2) ℚ) (h : GL (Fin 2) ℝ) {u : GL (Fin 2) (Af ℚ)} (hu : u ∈ K1G M) :
@@ -65,9 +65,9 @@ end UpperTheory.V.Af.Nf
 
 open UpperTheory.V UpperTheory.V.Af.Nf in
 /- English proof (translation)
-Introduce `k M hM f hf φ hφ v`. Establish `key : ∀ g, (TR.Eop v 0 1 φ).1 g - (TR.Eop v 1 0 φ).1 g = Complex.I * k * φ.1 g ∧ (TR.Eop v 0 0 φ).1 g - (TR.Eop v 1 1 φ).1 g = Complex.I * ((TR.Eop v 0 1 φ).1 g + (TR.Eop v 1 0 φ).1 g)`. Introduce `g`. Take `⟨γ, h, u, hu, rfl⟩` from `decomp M hM g`. Rewrite using `[hφ γ h u hu]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `archDer k (nsl k f h) ((nslSl k f).2.2 hf _ h.det_ne_zero) (fun i j => (TR.Eop v i j φ).1 (ratGL ℚ 2 γ * (upR h * finGL ℚ 2 u))) fun i j => ?_` and prove the remaining obligations. Rewrite using `[(chart_near hφ γ h hu).fderiv_eq, fderiv_comp _ (by rw [incl_one]; exact TR.differentiableAt_chart φ.2 _) incl.differentiableAt, incl_one, ContinuousLinearMap.fderiv, ContinuousLinearMap.comp_apply, incl_single v]`. Both sides reduce to the same expression. Conclude with `⟨Subtype.ext (funext fun g => (key g).1), Subtype.ext (funext fun g => (key g).2)⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Supply the required witnesses or components.
 -/
 theorem UpperTheory.V.Af.Nf.liftLie :
     UpperTheory.V.Af.Nf.LiftLie := by

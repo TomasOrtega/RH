@@ -24,7 +24,7 @@ def tauG (A g : Matrix (Fin n) (Fin n) ℂ) : ℝ :=
   -(1 / 2) * Real.log (Formalism.REAL.hs (g * Pm A) * (1 + Formalism.REAL.hs (g * Pz A)))
 
 /- English proof (translation)
-Simplify using `only [Pp, Pm, ← smul_sub]`. Rewrite using `[show A * A + A - (A * A - A) = (2 : ℂ) • A by rw [two_smul]; abel, smul_smul]`. Evaluate the numerical expressions.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 theorem Pp_sub_Pm : Pp A - Pm A = A := by
   simp only [Pp, Pm, ← smul_sub]
@@ -32,7 +32,7 @@ theorem Pp_sub_Pm : Pp A - Pm A = A := by
   norm_num
 
 /- English proof (translation)
-Simplify using `only [Pp, Pm, ← smul_add]`. Rewrite using `[show A * A + A + (A * A - A) = (2 : ℂ) • (A * A) by rw [two_smul]; abel, smul_smul]`. Evaluate the numerical expressions.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 theorem Pp_add_Pm : Pp A + Pm A = A * A := by
   simp only [Pp, Pm, ← smul_add]
@@ -40,7 +40,7 @@ theorem Pp_add_Pm : Pp A + Pm A = A * A := by
   norm_num
 
 /- English proof (translation)
-Use `Pp_add_Pm (A := A)` as an intermediate fact. Simplify using `only [Pz]`. Rewrite using `[← this]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem sum_proj : Pm A + Pz A + Pp A = 1 := by
   have := Pp_add_Pm (A := A)
@@ -48,26 +48,26 @@ theorem sum_proj : Pm A + Pz A + Pp A = 1 := by
   rw [← this]; abel
 
 /- English proof (translation)
-Simplify using `[Pp, Matrix.conjTranspose_smul, Matrix.conjTranspose_add, Matrix.conjTranspose_mul, hA.2.1]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Pp_conj (hA : IsGrad ε A) : (Pp A)ᴴ = Pp A := by
   simp [Pp, Matrix.conjTranspose_smul, Matrix.conjTranspose_add, Matrix.conjTranspose_mul, hA.2.1]
 
 /- English proof (translation)
-Simplify using `[Pz, Matrix.conjTranspose_sub, Matrix.conjTranspose_mul, hA.2.1]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Pz_conj (hA : IsGrad ε A) : (Pz A)ᴴ = Pz A := by
   simp [Pz, Matrix.conjTranspose_sub, Matrix.conjTranspose_mul, hA.2.1]
 
 /- English proof (translation)
-Establish `h` using `hA.2.2.1`. Rewrite using `[← Matrix.mul_assoc, h]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem four (hA : IsGrad ε A) : A * A * (A * A) = A * A := by
   have h := hA.2.2.1
   rw [← Matrix.mul_assoc, h]
 
 /- English proof (translation)
-Establish `h` using `Pp_Pm hA`. Use `congrArg conjTranspose h` as an intermediate fact. Rewrite `this` using `[conjTranspose_mul, Pm_conj hA, Pp_conj hA, conjTranspose_zero]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem Pm_Pp (hA : IsGrad ε A) : Pm A * Pp A = 0 := by
   have h := Pp_Pm hA
@@ -75,7 +75,7 @@ theorem Pm_Pp (hA : IsGrad ε A) : Pm A * Pp A = 0 := by
   rwa [conjTranspose_mul, Pm_conj hA, Pp_conj hA, conjTranspose_zero] at this
 
 /- English proof (translation)
-Establish `h` using `hA.2.2.1`. Establish `h4` using `four hA`. Simplify using `only [Pm, Matrix.mul_smul, Matrix.mul_sub, ← Matrix.mul_assoc, h, ← smul_neg, neg_sub]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem A_Pm (hA : IsGrad ε A) : A * Pm A = -Pm A := by
   have h := hA.2.2.1
@@ -83,7 +83,7 @@ theorem A_Pm (hA : IsGrad ε A) : A * Pm A = -Pm A := by
   simp only [Pm, Matrix.mul_smul, Matrix.mul_sub, ← Matrix.mul_assoc, h, ← smul_neg, neg_sub]
 
 /- English proof (translation)
-Establish `h` using `hA.2.2.1`. Simplify using `only [Pp, Matrix.mul_smul, Matrix.mul_add, ← Matrix.mul_assoc, h]`. Rewrite using `[add_comm]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem A_Pp (hA : IsGrad ε A) : A * Pp A = Pp A := by
   have h := hA.2.2.1
@@ -91,9 +91,9 @@ theorem A_Pp (hA : IsGrad ε A) : A * Pp A = Pp A := by
   rw [add_comm]
 
 /- English proof (translation)
-Establish `e` using `Pp_sub_Pm (A := A)`. Establish `h1 : Pm A * (Pp A - Pm A) = - (Pm A * Pm A)`. Rewrite using `[Matrix.mul_sub, Pm_Pp hA, zero_sub]`. Establish `h2 : (Pp A - Pm A) * Pm A = -Pm A` using `by rw [e]; exact A_Pm hA`. Rewrite `h2` using `[Matrix.sub_mul, Pp_Pm hA, zero_sub]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `neg_injective h2`.
+A detailed English derivation is pending.
 -/
 theorem Pm_idem (hA : IsGrad ε A) : Pm A * Pm A = Pm A := by
   have e := Pp_sub_Pm (A := A)
@@ -104,7 +104,7 @@ theorem Pm_idem (hA : IsGrad ε A) : Pm A * Pm A = Pm A := by
   exact neg_injective h2
 
 /- English proof (translation)
-Establish `e` using `Pp_sub_Pm (A := A)`. Establish `h2 : (Pp A - Pm A) * Pp A = Pp A` using `by rw [e]; exact A_Pp hA`. Rewrite `h2` using `[Matrix.sub_mul, Pm_Pp hA, sub_zero]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem Pp_idem (hA : IsGrad ε A) : Pp A * Pp A = Pp A := by
   have e := Pp_sub_Pm (A := A)
@@ -112,37 +112,37 @@ theorem Pp_idem (hA : IsGrad ε A) : Pp A * Pp A = Pp A := by
   rwa [Matrix.sub_mul, Pm_Pp hA, sub_zero] at h2
 
 /- English proof (translation)
-Rewrite using `[← sum_proj (A := A)]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem Pz_eq : Pz A = 1 - Pm A - Pp A := by
   rw [← sum_proj (A := A)]; abel
 
 /- English proof (translation)
-Rewrite using `[Pz_eq, Matrix.sub_mul, Matrix.sub_mul, Matrix.one_mul, Pm_idem hA, Pp_Pm hA]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem Pz_Pm (hA : IsGrad ε A) : Pz A * Pm A = 0 := by
   rw [Pz_eq, Matrix.sub_mul, Matrix.sub_mul, Matrix.one_mul, Pm_idem hA, Pp_Pm hA]; simp
 
 /- English proof (translation)
-Rewrite using `[Pz_eq, Matrix.mul_sub, Matrix.mul_sub, Matrix.mul_one, Pm_idem hA, Pm_Pp hA]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem Pm_Pz (hA : IsGrad ε A) : Pm A * Pz A = 0 := by
   rw [Pz_eq, Matrix.mul_sub, Matrix.mul_sub, Matrix.mul_one, Pm_idem hA, Pm_Pp hA]; simp
 
 /- English proof (translation)
-Rewrite using `[Pz_eq, Matrix.sub_mul, Matrix.sub_mul, Matrix.one_mul, Pp_idem hA, Pm_Pp hA]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem Pz_Pp (hA : IsGrad ε A) : Pz A * Pp A = 0 := by
   rw [Pz_eq, Matrix.sub_mul, Matrix.sub_mul, Matrix.one_mul, Pp_idem hA, Pm_Pp hA]; simp
 
 /- English proof (translation)
-Rewrite using `[Pz_eq, Matrix.mul_sub, Matrix.mul_sub, Matrix.mul_one, Pp_idem hA, Pp_Pm hA]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem Pp_Pz (hA : IsGrad ε A) : Pp A * Pz A = 0 := by
   rw [Pz_eq, Matrix.mul_sub, Matrix.mul_sub, Matrix.mul_one, Pp_idem hA, Pp_Pm hA]; simp
 
 /- English proof (translation)
-Establish `e : Pz A * Pz A = (1 - Pm A - Pp A) * Pz A` using `by rw [← Pz_eq]`. Rewrite using `[e, Matrix.sub_mul, Matrix.sub_mul, Matrix.one_mul, Pm_Pz hA, Pp_Pz hA]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem Pz_idem (hA : IsGrad ε A) : Pz A * Pz A = Pz A := by
   have e : Pz A * Pz A = (1 - Pm A - Pp A) * Pz A := by rw [← Pz_eq]
@@ -150,14 +150,14 @@ theorem Pz_idem (hA : IsGrad ε A) : Pz A * Pz A = Pz A := by
   simp
 
 /- English proof (translation)
-Establish `e : A * Pz A = (Pp A - Pm A) * Pz A` using `by rw [Pp_sub_Pm]`. Rewrite using `[e, Matrix.sub_mul, Pp_Pz hA, Pm_Pz hA, sub_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem A_Pz (hA : IsGrad ε A) : A * Pz A = 0 := by
   have e : A * Pz A = (Pp A - Pm A) * Pz A := by rw [Pp_sub_Pm]
   rw [e, Matrix.sub_mul, Pp_Pz hA, Pm_Pz hA, sub_zero]
 
 /- English proof (translation)
-Establish `h` using `Pm_J hA`. Use `congrArg conjTranspose h` as an intermediate fact. Simplify `this.symm` using `[conjTranspose_mul, Pm_conj hA, Pp_conj hA, Formalism.REAL.Jm_conjTranspose]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem Pp_J (hA : IsGrad ε A) : Pp A * Formalism.REAL.Jm ε = Formalism.REAL.Jm ε * Pm A := by
   have h := Pm_J hA
@@ -165,7 +165,7 @@ theorem Pp_J (hA : IsGrad ε A) : Pp A * Formalism.REAL.Jm ε = Formalism.REAL.J
   simpa [conjTranspose_mul, Pm_conj hA, Pp_conj hA, Formalism.REAL.Jm_conjTranspose] using this.symm
 
 /- English proof (translation)
-Rewrite using `[Pz_eq, Matrix.sub_mul, Matrix.sub_mul, Matrix.mul_sub, Matrix.mul_sub, Pp_J hA, Pm_J hA, Matrix.one_mul, Matrix.mul_one]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem Pz_J (hA : IsGrad ε A) : Pz A * Formalism.REAL.Jm ε = Formalism.REAL.Jm ε * Pz A := by
   rw [Pz_eq, Matrix.sub_mul, Matrix.sub_mul, Matrix.mul_sub, Matrix.mul_sub, Pp_J hA, Pm_J hA, Matrix.one_mul,
@@ -173,17 +173,17 @@ theorem Pz_J (hA : IsGrad ε A) : Pz A * Formalism.REAL.Jm ε = Formalism.REAL.J
   abel
 
 /- English proof (translation)
-The claim follows from `Formalism.REAL.frobenius_nonneg M`.
+A detailed English derivation is pending.
 -/
 theorem hs_nonneg (M : Matrix (Fin n) (Fin n) ℂ) : 0 ≤ hs M := Formalism.REAL.frobenius_nonneg M
 
 /- English proof (translation)
-The claim follows from `Formalism.REAL.frobenius_mul_le M N`.
+A detailed English derivation is pending.
 -/
 theorem hs_mul_le (M N : Matrix (Fin n) (Fin n) ℂ) : hs (M * N) ≤ hs M * hs N := Formalism.REAL.frobenius_mul_le M N
 
 /- English proof (translation)
-Simplify using `only [Formalism.REAL.hs, Matrix.trace, Matrix.diag, Matrix.mul_apply, Matrix.conjTranspose_apply, Complex.re_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `e : M i j * star (M i j) = ((‖M i j‖ ^ 2 : ℝ) : ℂ)`. Rewrite using `[Complex.star_def, Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Rewrite using `[e, Complex.ofReal_re]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem hs_eq_trace (M : Matrix (Fin n) (Fin n) ℂ) : hs M = (Matrix.trace (M * Mᴴ)).re := by
   simp only [Formalism.REAL.hs, Matrix.trace, Matrix.diag, Matrix.mul_apply, Matrix.conjTranspose_apply, Complex.re_sum]
@@ -193,9 +193,9 @@ theorem hs_eq_trace (M : Matrix (Fin n) (Fin n) ℂ) : hs M = (Matrix.trace (M *
   rw [e, Complex.ofReal_re]
 
 /- English proof (translation)
-Establish `e1 : (M * P) * (M * P)ᴴ = M * P * Mᴴ`. Rewrite using `[conjTranspose_mul, h1, Matrix.mul_assoc, ← Matrix.mul_assoc P, h2, Matrix.mul_assoc]`. Establish `e2 : (M * (1 - P)) * (M * (1 - P))ᴴ = M * (1 - P) * Mᴴ`. Establish `h3 : (1 - P) * (1 - P) = 1 - P`. Simplify using `only [Matrix.sub_mul, Matrix.mul_sub, Matrix.one_mul, Matrix.mul_one, h2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Normalize the expressions using the abelian group laws. Rewrite using `[conjTranspose_mul, conjTranspose_sub, conjTranspose_one, h1, Matrix.mul_assoc, ← Matrix.mul_assoc (1 - P), h3, Matrix.mul_assoc]`. Rewrite using `[hs_eq_trace, hs_eq_trace (M * P), hs_eq_trace (M * (1 - P)), e1, e2, ← Complex.add_re, ← Matrix.trace_add, ← Matrix.add_mul, ← Matrix.mul_add]`. Simplify using the standard rewrite rules.
+Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem hs_split {P : Matrix (Fin n) (Fin n) ℂ} (h1 : Pᴴ = P) (h2 : P * P = P) (M : Matrix (Fin n) (Fin n) ℂ) :
     hs M = hs (M * P) + hs (M * (1 - P)) := by
@@ -211,9 +211,9 @@ theorem hs_split {P : Matrix (Fin n) (Fin n) ℂ} (h1 : Pᴴ = P) (h2 : P * P = 
   simp
 
 /- English proof (translation)
-Establish `h1` using `hs_split (Pm_conj hA) (Pm_idem hA) M`. Establish `h2` using `hs_split (Pp_conj hA) (Pp_idem hA) (M * (1 - Pm A))`. Establish `e1 : M * (1 - Pm A) * Pp A = M * Pp A`. Rewrite using `[Matrix.mul_assoc, Matrix.sub_mul, Pm_Pp hA, Matrix.one_mul, sub_zero]`. Establish `e2 : M * (1 - Pm A) * (1 - Pp A) = M * Pz A`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Matrix.mul_assoc, Pz_eq]`. Use `congr 1`. Simplify using `only [Matrix.sub_mul, Matrix.mul_sub, Matrix.one_mul, Matrix.mul_one, Pm_Pp hA, sub_zero]`. Rewrite `h2` using `[e1, e2]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem hs_three (hA : IsGrad ε A) (M : Matrix (Fin n) (Fin n) ℂ) :
     hs M = hs (M * Pm A) + hs (M * Pz A) + hs (M * Pp A) := by
@@ -229,20 +229,20 @@ theorem hs_three (hA : IsGrad ε A) (M : Matrix (Fin n) (Fin n) ℂ) :
   linarith
 
 /- English proof (translation)
-Simplify using `only [Formalism.REAL.hs, Matrix.smul_apply, smul_eq_mul, norm_mul, mul_pow, Finset.mul_sum]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hs_smul (c : ℂ) (M : Matrix (Fin n) (Fin n) ℂ) : hs (c • M) = ‖c‖ ^ 2 * hs M := by
   simp only [Formalism.REAL.hs, Matrix.smul_apply, smul_eq_mul, norm_mul, mul_pow, Finset.mul_sum]
 
 /- English proof (translation)
-Simplify using `only [Formalism.REAL.hs, Matrix.conjTranspose_apply, norm_star]`. Conclude with `Finset.sum_comm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hs_conjTranspose (M : Matrix (Fin n) (Fin n) ℂ) : hs Mᴴ = hs M := by
   simp only [Formalism.REAL.hs, Matrix.conjTranspose_apply, norm_star]
   exact Finset.sum_comm
 
 /- English proof (translation)
-Simplify using `only [Formalism.REAL.hs, Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_le_sum fun i _ => Finset.sum_le_sum fun j _ => ?_` and prove the remaining obligations. Establish `h` using `norm_add_le (M i j) (N i j)`. Establish `h1 : ‖(M + N) i j‖ ^ 2 ≤ (‖M i j‖ + ‖N i j‖) ^ 2` using `pow_le_pow_left₀ (norm_nonneg _) h 2`. Use polynomial arithmetic with `[sq_nonneg (‖M i j‖ - ‖N i j‖)]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem hs_add_le (M N : Matrix (Fin n) (Fin n) ℂ) : hs (M + N) ≤ 2 * hs M + 2 * hs N := by
   simp only [Formalism.REAL.hs, Finset.mul_sum, ← Finset.sum_add_distrib]
@@ -252,26 +252,26 @@ theorem hs_add_le (M N : Matrix (Fin n) (Fin n) ℂ) : hs (M + N) ≤ 2 * hs M +
   nlinarith [sq_nonneg (‖M i j‖ - ‖N i j‖)]
 
 /- English proof (translation)
-Apply the tactic sequence `have h : ∀ a, ‖(if ε a = true then (1 : ℂ) else -1)‖ = 1 := fun a => by split_ifs <;> simp`. Simplify using `only [Formalism.REAL.hs, Formalism.REAL.Jm, Matrix.diagonal_mul, norm_mul, h, one_mul]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem hs_J_mul (M : Matrix (Fin n) (Fin n) ℂ) : hs (Formalism.REAL.Jm ε * M) = hs M := by
   have h : ∀ a, ‖(if ε a = true then (1 : ℂ) else -1)‖ = 1 := fun a => by split_ifs <;> simp
   simp only [Formalism.REAL.hs, Formalism.REAL.Jm, Matrix.diagonal_mul, norm_mul, h, one_mul]
 
 /- English proof (translation)
-Rewrite using `[← hs_conjTranspose, conjTranspose_mul, Formalism.REAL.Jm_conjTranspose, hs_J_mul, hs_conjTranspose]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hs_mul_J (M : Matrix (Fin n) (Fin n) ℂ) : hs (M * Formalism.REAL.Jm ε) = hs M := by
   rw [← hs_conjTranspose, conjTranspose_mul, Formalism.REAL.Jm_conjTranspose, hs_J_mul, hs_conjTranspose]
 
 /- English proof (translation)
-Simplify using `[Formalism.REAL.hs, Matrix.one_apply, apply_ite, Finset.sum_ite_eq]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hs_one : hs (1 : Matrix (Fin n) (Fin n) ℂ) = n := by
   simp [Formalism.REAL.hs, Matrix.one_apply, apply_ite, Finset.sum_ite_eq]
 
 /- English proof (translation)
-Use `hs_split h1 h2 1` as an intermediate fact. Rewrite `this` using `[hs_one, Matrix.one_mul, Matrix.one_mul]`. Combine the linear relations using `[hs_nonneg (1 - P)]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem hs_proj_le {P : Matrix (Fin n) (Fin n) ℂ} (h1 : Pᴴ = P) (h2 : P * P = P) : hs P ≤ n := by
   have := hs_split h1 h2 1
@@ -279,7 +279,7 @@ theorem hs_proj_le {P : Matrix (Fin n) (Fin n) ℂ} (h1 : Pᴴ = P) (h2 : P * P 
   linarith [hs_nonneg (1 - P)]
 
 /- English proof (translation)
-Use extensionality with `i j`. Establish `h1 : ∀ a ∈ Finset.univ, 0 ≤ ∑ b, ‖M a b‖ ^ 2` using `fun a _ => Finset.sum_nonneg fun _ _ => by positivity`. Establish `h2` using `(Finset.sum_eq_zero_iff_of_nonneg h1).1 h i (Finset.mem_univ _)`. Establish `h3` using `(Finset.sum_eq_zero_iff_of_nonneg fun _ _ => by positivity).1 h2 j (Finset.mem_univ _)`. Simplify using `using h3`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem hs_eq_zero {M : Matrix (Fin n) (Fin n) ℂ} (h : hs M = 0) : M = 0 := by
   ext i j
@@ -289,13 +289,13 @@ theorem hs_eq_zero {M : Matrix (Fin n) (Fin n) ℂ} (h : hs M = 0) : M = 0 := by
   simpa using h3
 
 /- English proof (translation)
-The claim follows from `lt_of_le_of_ne (hs_nonneg M) fun e => h (hs_eq_zero e.symm)`.
+A detailed English derivation is pending.
 -/
 theorem hs_pos {M : Matrix (Fin n) (Fin n) ℂ} (h : M ≠ 0) : 0 < hs M :=
   lt_of_le_of_ne (hs_nonneg M) fun e => h (hs_eq_zero e.symm)
 
 /- English proof (translation)
-Establish `h` using `hs_mul_le P P`. Rewrite `h` using `[h2]`. Establish `hp` using `hs_pos h0`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem one_le_hs {P : Matrix (Fin n) (Fin n) ℂ} (h2 : P * P = P) (h0 : P ≠ 0) : 1 ≤ hs P := by
   have h := hs_mul_le P P
@@ -304,9 +304,9 @@ theorem one_le_hs {P : Matrix (Fin n) (Fin n) ℂ} (h2 : P * P = P) (h0 : P ≠ 
   nlinarith
 
 /- English proof (translation)
-Introduce `h`. Establish `h1 : Formalism.REAL.Jm ε * Pp A = 0` using `by rw [← Pm_J hA, h, Matrix.zero_mul]`. Establish `h2 : Pp A = 0`. Use `congrArg (Formalism.REAL.Jm ε * ·) h1` as an intermediate fact. Simplify `this` using `[← Matrix.mul_assoc, Formalism.REAL.Jm_mul_self]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `hA.2.2.2 (by rw [← Pp_sub_Pm (A := A), h, h2, sub_zero])`.
+A detailed English derivation is pending.
 -/
 theorem Pm_ne_zero (hA : IsGrad ε A) : Pm A ≠ 0 := by
   intro h
@@ -317,9 +317,9 @@ theorem Pm_ne_zero (hA : IsGrad ε A) : Pm A ≠ 0 := by
   exact hA.2.2.2 (by rw [← Pp_sub_Pm (A := A), h, h2, sub_zero])
 
 /- English proof (translation)
-Introduce `h`. Establish `h1 : Formalism.REAL.Jm ε * Pm A = 0` using `by rw [← Pp_J hA, h, Matrix.zero_mul]`. Establish `h2 : Pm A = 0`. Use `congrArg (Formalism.REAL.Jm ε * ·) h1` as an intermediate fact. Simplify `this` using `[← Matrix.mul_assoc, Formalism.REAL.Jm_mul_self]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `Pm_ne_zero hA h2`.
+A detailed English derivation is pending.
 -/
 theorem Pp_ne_zero (hA : IsGrad ε A) : Pp A ≠ 0 := by
   intro h
@@ -330,9 +330,9 @@ theorem Pp_ne_zero (hA : IsGrad ε A) : Pp A ≠ 0 := by
   exact Pm_ne_zero hA h2
 
 /- English proof (translation)
-Use extensionality with `i j`. Establish `h1 : ((t : ℂ) • A) *ᵥ (fun k => P k j) = ((t : ℂ) * c) • (fun k => P k j)`. Use function extensionality and compare the values at `a`. Use `congrFun (congrFun h a) j` as an intermediate fact. Simplify using `only [Matrix.mul_apply, Matrix.smul_apply, smul_eq_mul] at this`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mulVec, dotProduct, Matrix.smul_apply, smul_eq_mul, Pi.smul_apply, mul_assoc, ← Finset.mul_sum, this]`. Establish `h2` using `congrFun (GlobalTheory.CompanionTheory.GradLine.exp_mulVec_of_eigen h1) i`. Simplify `h2` using `[aT, Matrix.mulVec, dotProduct, Matrix.mul_apply]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem aT_mul_of_eigen {P : Matrix (Fin n) (Fin n) ℂ} {c : ℂ} (h : A * P = c • P) (t : ℝ) :
     aT A t * P = Complex.exp (t * c) • P := by
@@ -346,7 +346,7 @@ theorem aT_mul_of_eigen {P : Matrix (Fin n) (Fin n) ℂ} {c : ℂ} (h : A * P = 
   simpa [aT, Matrix.mulVec, dotProduct, Matrix.mul_apply] using h2
 
 /- English proof (translation)
-Establish `h : A * Pm A = (-1 : ℂ) • Pm A` using `by rw [A_Pm hA]; simp`. Rewrite using `[aT_mul_of_eigen h]`. Use `congr 1`. Use `push_cast`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Reduce the equality to equality of the corresponding arguments.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -359,7 +359,7 @@ theorem aT_Pm (hA : IsGrad ε A) (t : ℝ) : aT A t * Pm A = ((Real.exp (-t) : �
   ring
 
 /- English proof (translation)
-Establish `h : A * Pp A = (1 : ℂ) • Pp A` using `by rw [A_Pp hA]; simp`. Rewrite using `[aT_mul_of_eigen h]`. Use `congr 1`. Use `push_cast`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Reduce the equality to equality of the corresponding arguments.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -372,7 +372,7 @@ theorem aT_Pp (hA : IsGrad ε A) (t : ℝ) : aT A t * Pp A = ((Real.exp t : ℝ)
   ring
 
 /- English proof (translation)
-Establish `h : A * Pz A = (0 : ℂ) • Pz A` using `by rw [A_Pz hA]; simp`. Rewrite using `[aT_mul_of_eigen h]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem aT_Pz (hA : IsGrad ε A) (t : ℝ) : aT A t * Pz A = Pz A := by
   have h : A * Pz A = (0 : ℂ) • Pz A := by rw [A_Pz hA]; simp
@@ -380,7 +380,7 @@ theorem aT_Pz (hA : IsGrad ε A) (t : ℝ) : aT A t * Pz A = Pz A := by
   simp
 
 /- English proof (translation)
-The claim follows from `Matrix.inv_eq_right_inv (by show ((x : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ) * ((x⁻¹ : S7.UJ ε) : (Matrix (Fin n) (Fin n) ℂ)ˣ) = 1 simp)`.
+A detailed English derivation is pending.
 -/
 theorem toM_inv_eq (x : S7.UJ ε) : (S7.toM x)⁻¹ = S7.toM x⁻¹ :=
   Matrix.inv_eq_right_inv (by
@@ -388,7 +388,7 @@ theorem toM_inv_eq (x : S7.UJ ε) : (S7.toM x)⁻¹ = S7.toM x⁻¹ :=
     simp)
 
 /- English proof (translation)
-Rewrite using `[S7.toM_inv, ← Matrix.mul_assoc, ← Matrix.mul_assoc]`. Use `show hs (Pp A * Formalism.REAL.Jm ε * (S7.toM x)ᴴ * Formalism.REAL.Jm ε) = _`. Rewrite using `[hs_mul_J, Pp_J hA, Matrix.mul_assoc, hs_J_mul, ← hs_conjTranspose, conjTranspose_mul, conjTranspose_conjTranspose, Pm_conj hA]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hs_Pp_inv (hA : IsGrad ε A) (x : S7.UJ ε) : hs (Pp A * S7.toM x⁻¹) = hs (S7.toM x * Pm A) := by
   rw [S7.toM_inv, ← Matrix.mul_assoc, ← Matrix.mul_assoc]
@@ -397,7 +397,7 @@ theorem hs_Pp_inv (hA : IsGrad ε A) (x : S7.UJ ε) : hs (Pp A * S7.toM x⁻¹) 
     Pm_conj hA]
 
 /- English proof (translation)
-Rewrite using `[S7.toM_inv, ← Matrix.mul_assoc, ← Matrix.mul_assoc]`. Use `show hs (Pz A * Formalism.REAL.Jm ε * (S7.toM x)ᴴ * Formalism.REAL.Jm ε) = _`. Rewrite using `[hs_mul_J, Pz_J hA, Matrix.mul_assoc, hs_J_mul, ← hs_conjTranspose, conjTranspose_mul, conjTranspose_conjTranspose, Pz_conj hA]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hs_Pz_inv (hA : IsGrad ε A) (x : S7.UJ ε) : hs (Pz A * S7.toM x⁻¹) = hs (S7.toM x * Pz A) := by
   rw [S7.toM_inv, ← Matrix.mul_assoc, ← Matrix.mul_assoc]
@@ -406,9 +406,9 @@ theorem hs_Pz_inv (hA : IsGrad ε A) (x : S7.UJ ε) : hs (Pz A * S7.toM x⁻¹) 
     Pz_conj hA]
 
 /- English proof (translation)
-Introduce `h`. Apply `hP` to reduce the goal to its premises. Establish `h1` using `congrArg (S7.toM x⁻¹ * ·) h`. Establish `h2 : S7.toM x⁻¹ * S7.toM x = 1` using `by show ((x⁻¹ : S7.UJ ε) : (Matrix (Fin n) (Fin n) ℂ)ˣ).val * ((x : (Matrix (Fin n) (Fin n) ℂ)ˣ)).val = 1`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify `h1` using `[← Matrix.mul_assoc, h2]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem toM_mul_ne_zero (x : S7.UJ ε) {P : Matrix (Fin n) (Fin n) ℂ} (hP : P ≠ 0) : S7.toM x * P ≠ 0 := by
   intro h

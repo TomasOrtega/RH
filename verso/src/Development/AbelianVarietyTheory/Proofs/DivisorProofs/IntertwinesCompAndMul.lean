@@ -18,7 +18,7 @@ def torsComp {N : ℕ} {B : Type} [CommRing B] [Algebra R B] (f : A ⟶ A) [IsMo
   ⟨z.1 ≫ f, by rw [← MonObj.pow_comp, z.2, MonObj.one_comp]⟩
 
 /- English proof (translation)
-The claim follows from `map_mul ((PDiv.ptsPush (GG.A n) φ).comp PDiv.toPts) (g.conv n) (g'.conv n)`.
+A detailed English derivation is pending.
 -/
 theorem comp_add_app {B : Type} [CommRing B] [Algebra R B] (g g' : GG ⟶ GG) (n : ℕ) (φ : GG.A n →ₐ[R] B) :
     toConv (φ.comp ((g + g').app n : GG.A n →ₐ[R] GG.A n)) =
@@ -26,11 +26,11 @@ theorem comp_add_app {B : Type} [CommRing B] [Algebra R B] (g g' : GG ⟶ GG) (n
   map_mul ((PDiv.ptsPush (GG.A n) φ).comp PDiv.toPts) (g.conv n) (g'.conv n)
 
 /- English proof (translation)
-Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `n B _ _ z z' h`. Take `rfl : z' = z` from `Subtype.ext (h.trans (Category.comp_id _))`. Both sides reduce to the same expression. Introduce `f f' _ _ g g' hf hf' n B _ _ z z'' h`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hf' n B (torsComp f z) z'' (h.trans (Category.assoc _ _ _).symm), hf n B z (torsComp f z) rfl]`. Both sides reduce to the same expression. Introduce `f f' _ _ g g' hf hf' n B _ _ z z'' h`. Establish `hm` using `θ.mul n B (torsComp f z) (torsComp f' z) z'' (h.trans (MonObj.comp_mul _ _ _))`. Rewrite `hm` using `[hf n B z (torsComp f z) rfl, hf' n B z (torsComp f' z) rfl, ← comp_add_app]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `congrArg ofConv hm`.
+A detailed English derivation is pending.
 -/
 theorem intertwines_rules (p : ℕ) (R : Type) [CommRing R] (A : Over (Sp R)) [GrpObj A] [IsCommMonObj A]
     (GG : PDivGroup p R) (θ : TorsionMap A GG) :

@@ -26,15 +26,15 @@ noncomputable section
 namespace GlobalTheory.VacBridge
 
 /- English proof (translation)
-Introduce `F _ _ W _ _ B κ _ co ψ v γ hγ φ r hr`. Use function extensionality and compare the values at `x`. Use `set w := co.e γ with hw`. Establish `hcomp : ∀ u : AF F, GlobalTheory.AdelicU.evFin F v u = 0 → u • w = 0` using `fun u hu => by`. Rewrite using `[hw, ← LinearEquiv.map_smul, hγ u hu, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `ha1 : ∀ k, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.At (GlobalTheory.AdelicU.evFin F v) (w.1 k)` using `fun k u hu => by`. Use `congrArg (fun z => z.1 k) (hcomp u hu)` as an intermediate fact. Simplify using `using this`. Establish `ha2 : ∀ k, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.At (GlobalTheory.AdelicU.evFin F v) (w.2 k)` using `fun k u hu => by`. Use `congrArg (fun z => z.2 k) (hcomp u hu)` as an intermediate fact.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using this`. Establish `hshift : r (x + w.1) = r x` using `hr.1 x w.1 (GlobalTheory.VacAny.at_pi ha1)`. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.tens, GlobalTheory.WeilM.Darboux.rho, GlobalTheory.WeilM.schr, ← hw, hshift]`. Establish `hat : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.At (GlobalTheory.AdelicU.evFin F v) (x ⬝ᵥ w.2 + ⅟(2 : AF F) * (w.1 ⬝ᵥ w.2))` using `GlobalTheory.VacAny.at_add (GlobalTheory.VacAny.at_sum _ fun k _ => GlobalTheory.VacAny.at_mul_left _ (ha2 k)) (GlobalTheory.VacAny.at_mul_left _ (GlobalTheory.VacAny.at_sum _ fun k _ => GlobalTheory.VacAny.at_mul_left _ (ha2 k)))`. Rewrite using `[GlobalTheory.StdVacuum.psi_eq_psiLoc ψ v _ hat, ← GlobalTheory.LatVac.psiAt_apply]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e1 : GlobalTheory.AdelicU.evFin F v (x ⬝ᵥ w.2 + ⅟(2 : AF F) * (w.1 ⬝ᵥ w.2)) = (fun i => GlobalTheory.AdelicU.evFin F v (x i)) ⬝ᵥ (GlobalTheory.LatVac.locCo co v γ).2 + ⅟(2 : Fv F v) * ((GlobalTheory.LatVac.locCo co v γ).1 ⬝ᵥ (GlobalTheory.LatVac.locCo co v γ).2)`. Simplify using `only [dotProduct, map_add, map_sum, map_mul, GlobalTheory.VacAny.evFin_invOf_two, hw]`. Both sides reduce to the same expression. Establish `e2 : (fun i => GlobalTheory.AdelicU.evFin F v ((x + w.1) i)) = (fun i => GlobalTheory.AdelicU.evFin F v (x i)) + (GlobalTheory.LatVac.locCo co v γ).1`. Use function extensionality and compare the values at `i`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `only [Pi.add_apply, map_add, hw]`. Both sides reduce to the same expression. Rewrite using `[e1, e2, mul_assoc]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rho_acts_locCo : ∀ {F : Type} [Field F] [NumberField F] {W : Type} [AddCommGroup W] [Module (AF F) W]
     {B : W → W → AF F} {κ : Type} [Fintype κ] (co : GlobalTheory.WeilM.Darboux B κ) (ψ : AddChar (AF F) ℂ)

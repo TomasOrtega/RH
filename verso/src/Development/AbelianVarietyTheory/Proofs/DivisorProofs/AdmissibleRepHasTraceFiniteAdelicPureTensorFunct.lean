@@ -17,7 +17,7 @@ namespace GlobalTheory.FinTrace
 variable {D : D7}
 
 /- English proof (translation)
-Establish `hm` using `hff.tensorFin_mem`. Rewrite using `[show finFn V ff = tensorFin D.sp.cm.sig V.gram ff ∘ (finPtsEquiv D.sp.cm.sig V.gram).symm from`. Use function extensionality and compare the values at `fun y => GlobalTheory.TrConv.finFn_eq_tensorFin V ff y]`. Conclude with `⟨hm.1.comp_continuous (finPtsEquiv D.sp.cm.sig V.gram).symm.continuous, hm.2.comp_homeomorph (finPtsEquiv D.sp.cm.sig V.gram).symm.toHomeomorph⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Supply the required witnesses or components.
 -/
 theorem finFn_mem_SB (V : HSp D) {ff : ∀ v, GLoc D.sp.cm.sig V.gram v → ℂ}
     (hff : IsFinFamily D.sp.cm.sig V.gram (frameLat V) ff) : finFn V ff ∈ GlobalTheory.SplitWeil.SB (GfC V) := by
@@ -28,13 +28,13 @@ theorem finFn_mem_SB (V : HSp D) {ff : ∀ v, GLoc D.sp.cm.sig V.gram v → ℂ}
     hm.2.comp_homeomorph (finPtsEquiv D.sp.cm.sig V.gram).symm.toHomeomorph⟩
 
 /- English proof (translation)
-Introduce `D V ν _ ff hff W _ _ σ hσ`. Take `⟨hlc, hcs⟩` from `finFn_mem_SB V hff`. Establish `hA : GlobalTheory.IndefiniteRowSideFullHecke.IwahoriDoubleCosets.IsIntegralOp ν σ (finFn V ff) (smoothOp σ ν (finFn V ff))`. Introduce `v l`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h` using `GlobalTheory.OpTrace.integrable_map (μ := ν) (hσ.1.smoothOp_integrand hlc hcs v).1 (hσ.1.smoothOp_integrand hlc hcs v).2 l l.map_zero`. Simplify `h` using `only [map_smul, smul_eq_mul]`. Rewrite using `[hσ.1.map_smoothOp hlc hcs l v]`. Simplify using `only [smul_eq_mul]`. Take `⟨K₀, ho, hc⟩` from `GlobalTheory.CuspDec.exists_compact_open V`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Establish `hfd` using `hσ.finiteDimensional_range_smoothOp (μ := ν) hlc hcs ho hc`. Use `⟨⟨_, _, hA, hfd, rfl⟩, fun K _ _ hK hne => ?_⟩` and prove the remaining obligations. Choose the witnesses or unpack the hypotheses as in `⟨v, hv⟩ : ∃ v, smoothOp σ ν (finFn V ff) v ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Supply the required witnesses or components.
 
-Conclude with `hne (by convert hA using 1; exact (LinearMap.ext h).symm)`. Conclude with `⟨_, hv, GlobalTheory.OpTrace.mem_fixed.1 (hσ.1.smoothOp_mem_fixed hlc hcs hK v)⟩`.
+A detailed English derivation is pending.
 -/
 theorem hasTrace_finFn : ∀ (D : D7) (V : HSp D) (ν : Measure (GfC V)) [ν.IsHaarMeasure] (ff : ∀ v, GLoc D.sp.cm.sig V.gram v → ℂ), IsFinFamily D.sp.cm.sig V.gram (frameLat V) ff → ∀ (W : Type) [AddCommGroup W] [Module ℂ W] (σ : Representation ℂ (GfC V) W), IsAdmissible σ → (∃ c, GlobalTheory.IndefiniteRowSideFullHecke.IwahoriDoubleCosets.HasTrace ν σ (finFn V ff) c) ∧ ∀ K : Subgroup (GfC V), IsOpen (K : Set (GfC V)) → IsCompact (K : Set (GfC V)) → (∀ k ∈ K, ∀ g, finFn V ff (k * g) = finFn V ff g) → ¬ GlobalTheory.IndefiniteRowSideFullHecke.IwahoriDoubleCosets.IsIntegralOp ν σ (finFn V ff) 0 → ∃ x : W, x ≠ 0 ∧ ∀ k ∈ K, σ k x = x := by
   intro D V ν _ ff hff W _ _ σ hσ

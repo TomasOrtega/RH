@@ -7,9 +7,9 @@ open CategoryTheory AlgebraicGeometry TensorProduct Opposite MonoidalCategory Ca
 namespace GlobalTheory.CompanionTheory.Hodge
 
 /- English proof (translation)
-Introduce `h R _ _ X s _ P _ _ S`. Use `letI := GlobalTheory.algebraΓOfHom s`. Establish `hf : ∀ p, Module.Finite R (GlobalTheory.coh (GlobalTheory.structureModule X) p)` using `fun p ↦ GlobalTheory.ProperFinite.finite_coh_of_isProper s (GlobalTheory.structureModule X) p`. Take `⟨⟨e₀⟩, hn⟩` from `h R X s inferInstance P S`. Use `⟨?_, fun n ↦ ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `hf 0` as an intermediate fact. Conclude with `Module.Finite.equiv e₀.symm`. Take `⟨e⟩` from `hn n`. Use `hf (n + 1)` as an intermediate fact. Conclude with `Module.Finite.equiv e.symm`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finCohSt_of_cmpSt : CmpSt → FinCohSt := by
   intro h R _ _ X s _ P _ _ S

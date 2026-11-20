@@ -15,11 +15,11 @@ def genSec {Y : Scheme.{0}} {M : LB Y} (t : LB.Gen M) (ht : t.IsGen) : LB.Sec M 
   compat := fun i j => congrArg Units.val (ht i j)
 
 /- English proof (translation)
-Take `⟨w, hw, -⟩` from `GlobalTheory.EvVal.existsUnique_sec_eq_mul_gen M hc (genSec t' ht') t ht`. Take `⟨w', hw', -⟩` from `GlobalTheory.EvVal.existsUnique_sec_eq_mul_gen M hc (genSec t ht) t' ht'`. Take `⟨_, -, hu⟩` from `GlobalTheory.EvVal.existsUnique_sec_eq_mul_gen M hc (genSec t ht) t ht`. Establish `h1 : (1 : Γ(Y, ⊤)) = w' * w`. Establish `a` using `hu 1 (fun j => by simp [genSec])`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `b` using `hu (w' * w) (fun j => by`. Establish `e1` using `hw' j`. Establish `e2` using `hw j`. Simplify using `only [genSec] at e1 e2 ⊢`. Rewrite using `[map_mul, _root_.mul_assoc, ← e2, ← e1])`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `a.trans b.symm`. Conclude with `⟨⟨w, w', by rw [_root_.mul_comm]; exact h1.symm, h1.symm⟩, fun j => hw j⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_unit_gen {Y : Scheme.{0}} (M : LB Y) (hc : ⨆ j, M.U j = ⊤)
     (t t' : LB.Gen M) (ht : t.IsGen) (ht' : t'.IsGen) :

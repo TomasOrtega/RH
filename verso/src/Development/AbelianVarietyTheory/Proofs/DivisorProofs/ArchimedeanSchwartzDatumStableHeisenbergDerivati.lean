@@ -21,9 +21,9 @@ namespace GlobalTheory.BigNZ.DatRealStable
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc}
 
 /- English proof (translation)
-Simplify using `only [GlobalTheory.WeilM.schr, ← mul_assoc, ← AddChar.map_add_eq_mul, add_assoc]`. Use `congr 2`. Simplify using `only [Prod.fst_add, Prod.snd_add, add_dotProduct, dotProduct_add]`. Rewrite using `[dotProduct_comm w'.1 w.2]`. Use `first`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `linear_combination (w.1 ⬝ᵥ w'.2) * invOf_mul_self (2 : R)`. Consider the case `linear_combination (-(w.1 ⬝ᵥ w'.2)) * invOf_mul_self (2 : R)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem schr_schr_apply {R : Type} [CommRing R] [Invertible (2 : R)] (ψ : AddChar R ℂ) {κ : Type} [Fintype κ]
     (w w' : (κ → R) × (κ → R)) (f : (κ → R) → ℂ) (x : κ → R) :
@@ -38,9 +38,9 @@ theorem schr_schr_apply {R : Type} [CommRing R] [Invertible (2 : R)] (ψ : AddCh
     | linear_combination (-(w.1 ⬝ᵥ w'.2)) * invOf_mul_self (2 : R)
 
 /- English proof (translation)
-Unfold `tensT`. Rewrite using `[Finsupp.sum_sum_index (fun _ => zero_mul _) (fun _ _ _ => add_mul _ _ _)]`. Use `Finset.sum_congr rfl fun P _ => ?_` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[Finsupp.sum_sum_index (fun _ => zero_mul _) (fun _ _ _ => add_mul _ _ _)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[Finsupp.sum_single_index (zero_mul _)]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_tensT (W : G.Weil) {X Y : Node} {p : Path T X Y} (a : PolT G p →₀ ℂ) (τ : TotT G p) (g : PureT G p → ℂ) :
     (tensT W a τ).sum (fun d c => c * g d) =
@@ -55,23 +55,21 @@ theorem sum_tensT (W : G.Weil) {X Y : Node} {p : Path T X Y} (a : PolT G p →�
   rw [Finsupp.sum_single_index (zero_mul _)]
 
 /- English proof (translation)
-Introduce `D T L sc G μ₀ hL W B ρ t i j M e Bs Γ X om om' h hT n Φ τ τ' hF φ hφ f a ha u hu f₁ h1`. Express the relevant statement in the definitionally equal form `TotT G (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.routeA t i j) at τ`. Establish `hψ : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsStd W.ψ` using `h.ψ ▸ hT.base.std`. Establish `hFr : IsTotallyReal D.host.F` using `hT.base.cm.1`. Establish `hψc : IsCharAF D.host.F W.ψ` using `GlobalTheory.StdCharFromIsStd.isCharAF hψ`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hstd` using `(hT.geo.hM.std.and (Finset.finite_toSet X.T).compl_mem_cofinite).mono fun v hv => (hφ.2 v hv.2).trans hv.1`. Establish `hrest` using `GlobalTheory.ThK.EvUniqInf.rest_pure f φ hφ.1 hstd`. Establish `hmem1` using `GlobalTheory.TensUniq.pure_mem_schA f₁ φ hφ.1 hstd`. Establish `hd : ∀ x, HasDerivAt (fun s : ℝ => Γ.M.co.rho W.ψ (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.realAd D.host.F s • u) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ) x) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f₁ φ x) 0`. Introduce `x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← h.ψ]`. Conclude with `h1 _ hrest x`. Use `choose b hb using fun P => GlobalTheory.T.hasDerivAt_heisenbergTranslate_fockBox hL W B ρ t i j M e Bs Γ X om om' h hT n Φ τ τ' hF u hu P`. Use `⟨a.sum fun P c => c • b P, hmem1, fun v => ?_⟩` and prove the remaining obligations. Establish `H1` using `GlobalTheory.ThetaLineDeriv.hasDerivAt_thetaSum_rho Γ.M.co W.ψ hFr hψc u _ ha.1 _ hmem1 hd v`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set g : PolT G (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.routeA t i j) → PureT G (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.routeA t i j) → _ → ℂ := fun P d => GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.boxA e (Path.Fam.zip (fun …`. Use `set ph : ℝ → ℂ := fun s => W.ψ (⅟(2 : AF D.host.F) * ((Γ.M.co.e v).1 ⬝ᵥ (Γ.M.co.e (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.realAd D.host.F s • u)).2 - (Γ.M.co.e (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.realAd D.host.F s • u)).1 ⬝ᵥ (Γ.M.co.e v).2) …`. Establish `e1 : ∀ s : ℝ, GlobalTheory.WeilM.thetaSum D.host.F (Γ.M.co.rho W.ψ v (Γ.M.co.rho W.ψ (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.realAd D.host.F s • u) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ))) = ∑ P ∈ a.support, ∑ d ∈ τ.support, a P * τ …`. Introduce `s`. Establish `e2 : GlobalTheory.WeilM.thetaSum D.host.F (Γ.M.co.rho W.ψ v (Γ.M.co.rho W.ψ (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.realAd D.host.F s • u) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ))) = ph s * GlobalTheory.WeilM.thetaSum D.host.F (Γ.M.co …`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Unfold `GlobalTheory.WeilM.thetaSum`. Rewrite using `[← tsum_mul_left]`. Use `tsum_congr fun ξ => ?_` and prove the remaining obligations. Simplify using `only [GlobalTheory.WeilM.Darboux.rho, map_add]`. Conclude with `schr_schr_apply W.ψ _ _ _ _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[e2, ha.2, sum_tensT, Finsupp.sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun P _ => ?_` and prove the remaining obligations. Rewrite using `[Finsupp.sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Simplify using `only [hg]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `H2 : HasDerivAt (fun s : ℝ => ∑ P ∈ a.support, ∑ d ∈ τ.support, a P * τ d * (ph s * g P d (v + GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.realAd D.host.F s • u))) (∑ P ∈ a.support, ∑ d ∈ τ.support, a P * τ d * (b P).sum fun P' c => c * g P' d v) 0` using `HasDerivAt.fun_sum fun P _ => HasDerivAt.fun_sum fun d hd => (hb P d hd v).const_mul (a P * τ d)`. Rewrite `H2` using `[← funext e1]`. Rewrite using `[H1.unique H2, sum_tensT, Finsupp.sum_sum_index (fun _ => by simp) (fun _ _ _ => by simp only [add_mul, Finsupp.sum_add])]`. Use `Finset.sum_congr rfl fun P _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `beta_reduce`. Rewrite using `[Finsupp.sum_smul_index' (fun _ => by simp)]`. Simplify using `only [Finsupp.sum, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun P' _ => Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations.
-
-Simplify using `only [hg, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem datum_stable : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {μ₀ : T} (hL : L.Is μ₀) (W : G.Weil) (B : Frames G) (ρ : RealMatch W) (t : T) (i j : Fin D.R.m) (M : Vol G)
     (e : Num G i j) (Bs : Base D.host.F D.host.E) (Γ : GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.Geo G i j) (X : Chars D.host.F D.host.E)

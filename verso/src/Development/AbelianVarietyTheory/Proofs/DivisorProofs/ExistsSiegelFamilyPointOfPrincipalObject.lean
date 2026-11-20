@@ -15,13 +15,11 @@ noncomputable section
 namespace GlobalTheory.LowChart
 
 /- English proof (translation)
-Set `p₀ : Sp V₁` to `⟨⊥, Ideal.isPrime_bot⟩`. Set `K` to `FractionRing V₁`. Establish `hinj : Function.Injective (algebraMap V₁ K)` using `IsFractionRing.injective V₁ K`. Use `haveI : CharZero K := charZero_of_injective_algebraMap hinj`. Establish `hmem : p₀ ∈ {x : Sp V₁ | (spMap b₁ x).asIdeal = ⊥}`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `q : Sp K` to `⟨⊥, Ideal.isPrime_bot⟩`. Establish `h` using `GlobalTheory.AbChart.asIdeal_eq_bot_of_charZero n K (spMap ((algebraMap V₁ K).comp b₁)) q`. Use `show Ideal.comap b₁ (⊥ : Ideal V₁) = ⊥`. Establish `hc : Ideal.comap (algebraMap V₁ K) (⊥ : Ideal K) = ⊥` using `(RingHom.ker_eq_bot_iff_eq_zero _).2 fun a ha => hinj (by rw [ha, map_zero])`. Rewrite using `[← hc, Ideal.comap_comap]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h`. Establish `hcl : closure ({p₀} : Set (Sp V₁)) = Set.univ`. Rewrite using `[Set.eq_univ_iff_forall]`. Introduce `x`. Conclude with `(PrimeSpectrum.le_iff_mem_closure (R := V₁) p₀ x).1 bot_le`.
-
-Use `Dense.mono (Set.singleton_subset_iff.2 hmem) ?_` and prove the remaining obligations. Conclude with `dense_iff_closure_eq.2 hcl`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem dense_asIdeal_eq_bot_spMap (n : ℕ) (V₁ : Type) [CommRing V₁] [IsDomain V₁] [CharZero V₁]
     (b₁ : cycAway n →+* V₁) : Dense {x : Sp V₁ | (spMap b₁ x).asIdeal = ⊥} := by
@@ -45,9 +43,9 @@ theorem dense_asIdeal_eq_bot_spMap (n : ℕ) (V₁ : Type) [CommRing V₁] [IsDo
   exact dense_iff_closure_eq.2 hcl
 
 /- English proof (translation)
-Introduce `n hn hodd h V₁ _ _ _ b₁ s hs`. Choose the witnesses or unpack the hypotheses as in `⟨F⟩ : Nonempty (SFam h n (zetaAway n)) := by`. Break down `Nat.eq_zero_or_pos h with rfl | hh` into its components or cases. Conclude with `⟨zeroFam n hn⟩`. Conclude with `GlobalTheory.SiegelTor.exists_sFam_cycAway h n hh hn hodd`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hx, hpb⟩` from `F.rep (Sp V₁) (spMap b₁) s inferInstance (dense_asIdeal_eq_bot_spMap n V₁ b₁) hs`. Conclude with `⟨F, x, hx, hpb⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_sFam_point : ∀ (n : ℕ), 3 ≤ n → Odd n → ∀ (h : ℕ) (V₁ : Type) [CommRing V₁] [IsDomain V₁] [CharZero V₁]
     (b₁ : cycAway n →+* V₁) (s : SiegPre h n (zetaAway n) (spMap b₁)), s.Principal →

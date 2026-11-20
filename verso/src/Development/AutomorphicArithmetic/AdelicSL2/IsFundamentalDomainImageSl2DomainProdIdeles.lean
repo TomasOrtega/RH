@@ -9,21 +9,19 @@ open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.Ff UpperT
 open scoped Pointwise Classical ENNReal NNReal
 
 /- English proof (translation)
-Introduce `M U μ _`. Use `haveI := M.haar`. Establish `emb : MeasurableEmbedding pm` using `UpperTheory.isOpenEmbedding_projection.measurableEmbedding`. Take `⟨c, hc⟩` from `UpperTheory.exists_haar_restrict_range_sl2IdeleMap_eq_smul_prod M U μ`. Establish `null : ∀ N : Set (G1 ℚ), M.μ N = 0 → μ (pm '' (N ×ˢ Set.univ)) = 0` using `fun N hN => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Measure.restrict_eq_self μ (Set.image_subset_range _ _), hc, Measure.smul_apply, emb.map_apply, Set.preimage_image_eq _ emb.injective, Measure.prod_prod, hN, zero_mul, smul_zero]`. Establish `lift : ∀ s : SpecialLinearGroup (Fin 2) ℚ, ∃ γ : Ga, ∀ p : G1 ℚ × US, γ • pm p = pm (ratS ℚ s * p.1, p.2)` using `fun s => by`. Use `⟨⟨pm (ratS ℚ s, 1), ?_⟩, fun p => Subtype.ext ?_⟩` and prove the remaining obligations. Use `Subgroup.mem_subgroupOf.2 ⟨SpecialLinearGroup.toGL s, Units.ext ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = (ratS ℚ s).1 * !![1, 0; 0, (1 : A ℚ)]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Matrix.one_fin_two, mul_one]`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `gl (ratS ℚ s) * dM 1 * (gl p.1 * dM p.2.1) = gl (ratS ℚ s * p.1) * dM p.2.1`. Establish `: dM (1 : (A ℚ)ˣ) = 1` using `Units.ext Matrix.one_fin_two.symm`. Rewrite using `[this, mul_one, ← mul_assoc, ← map_mul]`.
+Both sides reduce to the same expression. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(emb.measurableSet_image.2 (M.meas.prod MeasurableSet.univ)).nullMeasurableSet, ?_, fun γ γ' hne => ?_⟩` and prove the remaining obligations. Establish `h0` using `null _ (ae_iff.1 M.fund.ae_covers)`. Rewrite using `[ae_iff]`. Use `measure_mono_null (t := ⋃ γ : Ga, (fun x : GG => (γ : GG) * x) ⁻¹' (pm '' ({g | ¬ ∃ s : Gam ℚ, s • g ∈ M.D} ×ˢ Set.univ))) (fun x hx => ?_) (measure_iUnion_null fun γ => by rw [measure_preimage_mul]; exact h0)` and prove the remaining obligations. Take `⟨γ, p, hp⟩` from `UpperTheory.exists_gl2Rat_smul_mem_range_adelicSL2IdeleMap x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `Set.mem_iUnion.2 ⟨γ, p, ⟨?_, trivial⟩, hp⟩` and prove the remaining obligations. Introduce and unpack `⟨⟨_, s, rfl⟩, hs⟩`. Take `⟨δ, hδ⟩` from `lift s`. Conclude with `hx ⟨δ * γ, (ratS ℚ s * p.1, p.2), ⟨hs, trivial⟩, by rw [mul_smul, ← hp, hδ]⟩`. Use `haveI : Countable (Matrix (Fin 2) (Fin 2) ℚ) := inferInstanceAs (Countable (Fin 2 → Fin 2 → ℚ)) haveI : Countable (SpecialLinearGroup (Fin 2) ℚ) := Subtype.countable`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Establish `hN : M.μ (⋃ s : {s : SpecialLinearGroup (Fin 2) ℚ // ratS ℚ s ≠ 1}, ((⟨ratS ℚ s.1, s.1, rfl⟩ : Gam ℚ) • M.D ∩ (1 : Gam ℚ) • M.D)) = 0` using `measure_iUnion_null fun s => M.fund.aedisjoint fun h => s.2 (congrArg Subtype.val h)`. Use `measure_mono_null (t := (fun x : GG => ((γ'⁻¹ : Ga) : GG) * x) ⁻¹' (pm '' (_ ×ˢ Set.univ))) ?_ (by rw [measure_preimage_mul]; exact null _ hN)` and prove the remaining obligations. Introduce and unpack `x ⟨⟨_, ⟨p, hp, rfl⟩, e⟩, ⟨_, ⟨q, hq, rfl⟩, e'⟩⟩`. Establish `e1 : (γ'⁻¹ * γ) • pm p = pm q`. Rewrite using `[mul_smul, inv_smul_eq_iff]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `e.trans e'.symm`. Take `⟨-, s, h1, h2⟩` from `UpperTheory.eq_sl2Rat_mul_of_gl2Rat_smul_adelicSL2IdeleMap_eq _ p q e1`. Establish `hs : ratS ℚ s ≠ 1` using `fun h => hne (by`. Rewrite `h2` using `[h]`. Conclude with `(inv_mul_eq_one.1 (Subtype.ext (Subtype.ext (h2.trans (Units.ext rfl))))).symm)`.
-
-Use `⟨q, ⟨Set.mem_iUnion.2 ⟨⟨s, hs⟩, ⟨p.1, hp.1, h1.symm⟩, by rw [one_smul]; exact hq.1⟩, trivial⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `pm q = γ'⁻¹ • x`. Rewrite using `[eq_inv_smul_iff]`. Conclude with `e'`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.isFundamentalDomain_image_sl2Domain_prod_ideles :
     ∀ (M : Meas ℚ) (U : UMeas) (μ : Measure GG) [μ.IsHaarMeasure], IsFundamentalDomain Ga (pm '' (M.D ×ˢ Set.univ)) μ := by

@@ -9,14 +9,14 @@ variable {B : Type} [CommRing B] {J : Type} [SmallCategory J] [IsFiltered J] {D 
   (β : (Functor.const J).obj (CommRingCat.of B) ⟶ D) {c : Cocone D}
 
 /- English proof (translation)
-Establish `h` using `congrArg (fun g => g.hom b) (β.naturality f)`. Simplify using `using h.symm`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma beta_nat {j j' : J} (f : j ⟶ j') (b : B) : (D.map f).hom ((β.app j).hom b) = (β.app j').hom b := by
   have h := congrArg (fun g => g.hom b) (β.naturality f)
   simpa using h.symm
 
 /- English proof (translation)
-Establish `h` using `congrArg (fun g => g.hom x) (c.w f)`. Simplify using `using h`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma iota_nat (c : Cocone D) {j j' : J} (f : j ⟶ j') (x : D.obj j) :
     (c.ι.app j').hom ((D.map f).hom x) = (c.ι.app j).hom x := by
@@ -24,7 +24,7 @@ lemma iota_nat (c : Cocone D) {j j' : J} (f : j ⟶ j') (x : D.obj j) :
   simpa using h
 
 /- English proof (translation)
-Establish `h : (D.map f).hom.comp (β.app j).hom = (β.app j').hom` using `RingHom.ext (beta_nat β f)`. Use `Ideal.mem_map_of_mem (D.map f).hom hx` as an intermediate fact. Rewrite `this` using `[Ideal.map_map, h]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 lemma mapI (I : Ideal B) {j j' : J} (f : j ⟶ j') {x : D.obj j} (hx : x ∈ I.map (β.app j).hom) :
     (D.map f).hom x ∈ I.map (β.app j').hom := by
@@ -36,7 +36,7 @@ def phi (c : Cocone D) : B →+* c.pt :=
   (c.ι.app (IsFiltered.nonempty (C := J)).some).hom.comp (β.app (IsFiltered.nonempty (C := J)).some).hom
 
 /- English proof (translation)
-Set `j0` to `(IsFiltered.nonempty (C := J)).some`. Use `show _ = (c.ι.app j0).hom ((β.app j0).hom b)`. Rewrite using `[← iota_nat c (IsFiltered.leftToMax j j0), ← iota_nat c (IsFiltered.rightToMax j j0), beta_nat, beta_nat]`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma phi_eq (c : Cocone D) (j : J) (b : B) : (c.ι.app j).hom ((β.app j).hom b) = phi β c b := by
   let j0 := (IsFiltered.nonempty (C := J)).some
@@ -44,7 +44,7 @@ lemma phi_eq (c : Cocone D) (j : J) (b : B) : (c.ι.app j).hom ((β.app j).hom b
   rw [← iota_nat c (IsFiltered.leftToMax j j0), ← iota_nat c (IsFiltered.rightToMax j j0), beta_nat, beta_nat]
 
 /- English proof (translation)
-Establish `h : (c.ι.app j).hom.comp (β.app j).hom = phi β c` using `RingHom.ext (phi_eq β c j)`. Use `Ideal.mem_map_of_mem (c.ι.app j).hom hx` as an intermediate fact. Rewrite `this` using `[Ideal.map_map, h]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 lemma KofI (c : Cocone D) (I : Ideal B) {j : J} {x : D.obj j} (hx : x ∈ I.map (β.app j).hom) :
     (c.ι.app j).hom x ∈ I.map (phi β c) := by
@@ -56,20 +56,20 @@ variable (hc : IsColimit c)
 include hc
 
 /- English proof (translation)
-The claim follows from `Concrete.isColimit_exists_rep D hc z`.
+A detailed English derivation is pending.
 -/
 lemma rep (z : c.pt) : ∃ j, ∃ y : D.obj j, (c.ι.app j).hom y = z :=
   Concrete.isColimit_exists_rep D hc z
 
 /- English proof (translation)
-Take `⟨j1, y, rfl⟩` from `rep hc z`. Conclude with `⟨IsFiltered.max j j1, IsFiltered.leftToMax j j1, (D.map (IsFiltered.rightToMax j j1)).hom y, iota_nat c _ y⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 lemma rep_above (j : J) (z : c.pt) : ∃ (j' : J) (_ : j ⟶ j') (y : D.obj j'), (c.ι.app j').hom y = z := by
   obtain ⟨j1, y, rfl⟩ := rep hc z
   exact ⟨IsFiltered.max j j1, IsFiltered.leftToMax j j1, (D.map (IsFiltered.rightToMax j j1)).hom y, iota_nat c _ y⟩
 
 /- English proof (translation)
-Take `⟨k, f, g, hfg⟩` from `Concrete.isColimit_exists_of_rep_eq D hc x y h`. Use `⟨_, f ≫ IsFiltered.coeqHom f g, ?_⟩` and prove the remaining obligations. Establish `hfg' : (D.map f).hom x = (D.map g).hom y` using `hfg`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 lemma eq_later {j : J} (x y : D.obj j) (h : (c.ι.app j).hom x = (c.ι.app j).hom y) :
     ∃ (j' : J) (f : j ⟶ j'), (D.map f).hom x = (D.map f).hom y := by
@@ -83,7 +83,7 @@ lemma eq_later {j : J} (x y : D.obj j) (h : (c.ι.app j).hom x = (c.ι.app j).ho
     _ = (D.map (f ≫ IsFiltered.coeqHom f g)).hom y := by rw [IsFiltered.coeq_condition]
 
 /- English proof (translation)
-Take `⟨j', f, hf⟩` from `eq_later hc x 0 (by rw [h, map_zero])`. Conclude with `⟨j', f, by rw [hf, map_zero]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 lemma zero_later {j : J} (x : D.obj j) (h : (c.ι.app j).hom x = 0) :
     ∃ (j' : J) (f : j ⟶ j'), (D.map f).hom x = 0 := by
@@ -91,13 +91,13 @@ lemma zero_later {j : J} (x : D.obj j) (h : (c.ι.app j).hom x = 0) :
   exact ⟨j', f, by rw [hf, map_zero]⟩
 
 /- English proof (translation)
-Establish `hk' : k ∈ Ideal.span (phi β c '' I)` using `hk`. Use `clear hk`. Proceed by induction on `hk' using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨i, hi, rfl⟩` from `hx`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨(IsFiltered.nonempty (C := J)).some, _, Ideal.mem_map_of_mem _ hi, phi_eq β c _ i⟩`. Consider the case `zero => exact ⟨(IsFiltered.nonempty (C := J)).some, 0, zero_mem _, map_zero _⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨j1, x1, h1, rfl⟩` from `hx`. Take `⟨j2, x2, h2, rfl⟩` from `hy`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨IsFiltered.max j1 j2, (D.map (IsFiltered.leftToMax j1 j2)).hom x1 + (D.map (IsFiltered.rightToMax j1 j2)).hom x2, add_mem (mapI β I _ h1) (mapI β I _ h2), ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, iota_nat, iota_nat]`. Consider the case `smul a x _ hx`. Take `⟨j2, x2, h2, rfl⟩` from `hx`. Take `⟨j1, y, rfl⟩` from `rep hc a`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨IsFiltered.max j1 j2, (D.map (IsFiltered.leftToMax j1 j2)).hom y * (D.map (IsFiltered.rightToMax j1 j2)).hom x2, Ideal.mul_mem_left _ _ (mapI β I _ h2), ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, iota_nat, iota_nat, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma Krep (I : Ideal B) {k : c.pt} (hk : k ∈ I.map (phi β c)) :
     ∃ j, ∃ x : D.obj j, x ∈ I.map (β.app j).hom ∧ (c.ι.app j).hom x = k := by
@@ -122,9 +122,9 @@ lemma Krep (I : Ideal B) {k : c.pt} (hk : k ∈ I.map (phi β c)) :
     rw [map_mul, iota_nat, iota_nat, smul_eq_mul]
 
 /- English proof (translation)
-Take `⟨j1, x, hx, hxe⟩` from `Krep β hc I hy`. Set `l` to `IsFiltered.leftToMax j j1`. Set `r` to `IsFiltered.rightToMax j j1`. Take `⟨j', g, hg⟩` from `zero_later hc ((D.map l).hom y - (D.map r).hom x) (by rw [map_sub, iota_nat, iota_nat, hxe, sub_self])`. Use `⟨j', l ≫ g, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hg` using `[map_sub, sub_eq_zero]`. Establish `: (D.map (l ≫ g)).hom y = (D.map (r ≫ g)).hom x` using `by simpa using hg`. Rewrite using `[this]`. Conclude with `mapI β I _ hx`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma memK_descend (I : Ideal B) {j : J} (y : D.obj j) (hy : (c.ι.app j).hom y ∈ I.map (phi β c)) :
     ∃ (j' : J) (f : j ⟶ j'), (D.map f).hom y ∈ I.map (β.app j').hom := by
@@ -140,11 +140,11 @@ lemma memK_descend (I : Ideal B) {j : J} (y : D.obj j) (hy : (c.ι.app j).hom y 
   exact mapI β I _ hx
 
 /- English proof (translation)
-Establish `mono : ∀ {j j' : J} (f : j ⟶ j') (g : Polynomial c.pt), g ∈ Polynomial.lifts (c.ι.app j).hom → g ∈ Polynomial.lifts (c.ι.app j').hom`. Introduce `j j' f g ⟨q, hq⟩`. Use `⟨q.map (D.map f).hom, ?_⟩` and prove the remaining obligations. Establish `h : (c.ι.app j').hom.comp (D.map f).hom = (c.ι.app j).hom` using `RingHom.ext (iota_nat c f)`. Simplify using `only [Polynomial.coe_mapRingHom] at hq ⊢`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[Polynomial.map_map, h, hq]`. Proceed by induction on `g using Polynomial.induction_on' with`. Consider the case `add p q hp hq`. Take `⟨j1, h1⟩` from `hp`. Take `⟨j2, h2⟩` from `hq`.
+Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨_, add_mem (mono (IsFiltered.leftToMax j1 j2) _ h1) (mono (IsFiltered.rightToMax j1 j2) _ h2)⟩`. Consider the case `monomial n a`. Take `⟨j, y, hy⟩` from `rep hc a`. Conclude with `⟨j, Polynomial.monomial_mem_lifts n ⟨y, hy⟩⟩`.
+Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 lemma poly_lift (g : Polynomial c.pt) : ∃ j, g ∈ Polynomial.lifts (c.ι.app j).hom := by
   have mono : ∀ {j j' : J} (f : j ⟶ j') (g : Polynomial c.pt),
@@ -166,7 +166,7 @@ lemma poly_lift (g : Polynomial c.pt) : ∃ j, g ∈ Polynomial.lifts (c.ι.app 
 
 omit hc in
 /- English proof (translation)
-Rewrite using `[Polynomial.eval_map, Polynomial.eval₂_at_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma ev_map {R S : Type*} [CommRing R] [CommRing S] (φ : R →+* S) (p : Polynomial R) (b : R) :
     φ (p.eval b) = (p.map φ).eval (φ b) := by
@@ -174,7 +174,7 @@ lemma ev_map {R S : Type*} [CommRing R] [CommRing S] (φ : R →+* S) (p : Polyn
 
 omit hc in
 /- English proof (translation)
-Establish `h : (c.ι.app j').hom.comp (D.map f).hom = (c.ι.app j).hom` using `RingHom.ext (iota_nat c f)`. Rewrite using `[Polynomial.map_map, h]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 lemma pmap (c : Cocone D) {j j' : J} (f : j ⟶ j') (p : Polynomial (D.obj j)) :
     (p.map (D.map f).hom).map (c.ι.app j').hom = p.map (c.ι.app j).hom := by
@@ -187,37 +187,33 @@ namespace LateralTheory.E.ColimHensPf
 open LateralTheory.E.ColimHensPf
 
 /- English proof (translation)
-Introduce `B _ I J _ _ D β c hc ha hb hcc`. Use `⟨I.map (phi β c), ⟨?_, ?_⟩, ⟨RingEquiv.ofBijective (Ideal.quotientMap (I.map (phi β c)) (phi β c) Ideal.le_comap_map) ⟨?_, ?_⟩⟩⟩` and prove the remaining obligations. Introduce `k hk`. Rewrite using `[Ideal.mem_jacobson_bot]`. Introduce `y`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨j, x, hx, hxe⟩` from `Krep β hc I (Ideal.mul_mem_right y _ hk)`. Take `⟨j', f, hu⟩` from `hb j x hx`. Use `hu.map (c.ι.app j').hom` as an intermediate fact. Rewrite `this` using `[iota_nat, map_add, map_one, hxe, add_comm]`. Conclude with `this`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g hg a₀ hev hder`. Distinguish the cases in `hnt : Nontrivial c.pt`. Use `swap`. Rewrite `hnt` using `[not_nontrivial_iff_subsingleton]`. Conclude with `⟨a₀, Subsingleton.elim _ _, by rw [sub_self]; exact zero_mem _⟩`.
+Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨j1, hj1⟩` from `poly_lift hc g`. Use `haveI : Nontrivial (((Functor.const J).obj c.pt).obj j1) := hnt`. Take `⟨p, hp, -, hpm⟩` from `Polynomial.lifts_and_degree_eq_and_monic hj1 hg`. Take `⟨w, hw⟩` from `hder.exists_right_inv`. Take `⟨u, rfl⟩` from `Ideal.Quotient.mk_surjective w`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite `hw` using `[← map_mul, ← map_one (Ideal.Quotient.mk (I.map (phi β c))), Ideal.Quotient.eq]`. Take `⟨j2, f12, b0, hb0⟩` from `rep_above hc j1 a₀`. Take `⟨j3, f23, v, hv⟩` from `rep_above hc j2 u`. Use `set p3 := p.map (D.map (f12 ≫ f23)).hom with hp3`. Use `set b3 := (D.map f23).hom b0 with hb3`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hp3g : p3.map (c.ι.app j3).hom = g` using `by rw [hp3, pmap, hp]`. Establish `hb3a : (c.ι.app j3).hom b3 = a₀` using `by rw [hb3, iota_nat, hb0]`. Establish `hy1 : (c.ι.app j3).hom (p3.eval b3) ∈ I.map (phi β c)`. Rewrite using `[ev_map, hp3g, hb3a]`. Conclude with `hev`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hy2 : (c.ι.app j3).hom (p3.derivative.eval b3 * v - 1) ∈ I.map (phi β c)`. Rewrite using `[map_sub, map_mul, map_one, ev_map, ← Polynomial.derivative_map, hp3g, hb3a, hv]`. Conclude with `hw`. Take `⟨j4, f34, h4⟩` from `memK_descend β hc I _ hy1`. Take `⟨j5, f45, h5⟩` from `memK_descend β hc I ((D.map f34).hom (p3.derivative.eval b3 * v - 1)) (by rw [iota_nat]; exact hy2)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Set `h` to `f34 ≫ f45`. Use `set P := p3.map (D.map h).hom with hP`. Use `set b := (D.map h).hom b3 with hb`. Establish `hPm : P.Monic` using `(hpm.map _).map _`. Establish `hPe : P.eval b ∈ I.map (β.app j5).hom`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[hP, hb, ← ev_map]`. Use `mapI β I f45 h4` as an intermediate fact. Simplify `this` using `[h]`. Establish `hPd : IsUnit (Ideal.Quotient.mk (I.map (β.app j5).hom) (P.derivative.eval b))`. Establish `e : (D.map h).hom (p3.derivative.eval b3 * v - 1) = P.derivative.eval b * (D.map h).hom v - 1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[map_sub, map_mul, map_one, ev_map, ← Polynomial.derivative_map]`. Establish `h5' : P.derivative.eval b * (D.map h).hom v - 1 ∈ I.map (β.app j5).hom`. Rewrite using `[← e]`. Simplify `h5` using `[h]`. Use `IsUnit.of_mul_eq_one (Ideal.Quotient.mk _ ((D.map h).hom v)) ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← map_mul, ← map_one (Ideal.Quotient.mk _), Ideal.Quotient.eq]`. Conclude with `h5'`. Take `⟨j6, f56, a, ha1, ha2⟩` from `hcc j5 P b hPm hPe hPd`. Use `⟨(c.ι.app j6).hom a, ?_, ?_⟩` and prove the remaining obligations. Establish `hr` using `ha1.map (f := (c.ι.app j6).hom)`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hr` using `[pmap, hP, pmap, hp3g]`. Then use the resulting hypothesis. Use `KofI β c I ha2` as an intermediate fact. Rewrite `this` using `[map_sub, iota_nat, hb, iota_nat, hb3a]`. Then use the resulting hypothesis. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `a ha0`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨b, rfl⟩` from `Ideal.Quotient.mk_surjective a`. Rewrite `ha0` using `[Ideal.quotientMap_mk, Ideal.Quotient.eq_zero_iff_mem]`. Take `⟨j, x, hx, hxe⟩` from `Krep β hc I ha0`. Take `⟨j', f, hf⟩` from `zero_later hc ((β.app j).hom b - x) (by rw [map_sub, hxe, phi_eq, sub_self])`. Rewrite `hf` using `[map_sub, sub_eq_zero, beta_nat]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hm : (β.app j').hom b ∈ I.map (β.app j').hom` using `by rw [hf]; exact mapI β I f hx`. Apply `(ha j').1` to reduce the goal to its premises. Rewrite using `[map_zero, Ideal.quotientMap_mk, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `hm`. Introduce `z`.
-
-Take `⟨z', rfl⟩` from `Ideal.Quotient.mk_surjective z`. Take `⟨j, y, rfl⟩` from `rep hc z'`. Take `⟨w, hw⟩` from `(ha j).2 (Ideal.Quotient.mk _ y)`. Take `⟨b, rfl⟩` from `Ideal.Quotient.mk_surjective w`. Use `⟨Ideal.Quotient.mk I b, ?_⟩` and prove the remaining obligations.
-
-Rewrite `hw`, the goal using `[Ideal.quotientMap_mk]`. Rewrite `hw`, the goal using `[Ideal.Quotient.eq]`. Use `KofI β c I hw` as an intermediate fact. Rewrite `this` using `[map_sub, phi_eq]`. Then use the resulting hypothesis.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem ColimHens_of : LateralTheory.E.HensCut.ColimHens := by
   intro B _ I J _ _ D β c hc ha hb hcc

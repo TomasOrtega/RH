@@ -38,37 +38,33 @@ variable [T2Space A] [LocallyCompactSpace G] [SecondCountableTopology G] [Measur
   [LocallyCompactSpace A] [SecondCountableTopology A] [MeasurableSpace A] [BorelSpace A]
 
 /- English proof (translation)
-Establish `hφ' : IsLocallyConstant φ ∧ HasCompactSupport φ` using `hφ`. Establish `hNc : IsClosed (π.ker : Set G)`. Establish `hset : (π.ker : Set G) = π ⁻¹' {1}`. Use extensionality with `g`. Simplify using `[MonoidHom.mem_ker]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[hset]`. Conclude with `isClosed_singleton.preimage hπ`. Use `haveI : LocallyCompactSpace π.ker := hNc.locallyCompactSpace`. Set `e : π.ker × A ≃ₜ* G` to `{ splitEquiv ι π hπι hc with continuous_toFun := (continuous_subtype_val.comp continuous_fst).mul (hι.comp continuous_snd) continuous_invFun := by`. Use `Continuous.prodMk ?_ hπ` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Conclude with `(continuous_id.mul (hι.comp hπ).inv).subtype_mk _ }`. Establish `he : ∀ p : π.ker × A, e p = (p.1 : G) * ι p.2` using `fun p => rfl`. Set `μN : Measure π.ker` to `Measure.haar`. Set `P : Measure (π.ker × A)` to `μN.prod μ`. Establish `hE : MeasurableEmbedding e` using `e.toHomeomorph.isClosedEmbedding.measurableEmbedding`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `haveI : (P.map e).IsHaarMeasure := ContinuousMulEquiv.isHaarMeasure_map P e`. Take `⟨c, hν⟩ : ∃ c : NNReal, ν = c • P.map e` from `⟨_, Measure.isMulLeftInvariant_eq_smul ν (P.map e)⟩`. Set `σN : Representation ℂ π.ker W` to `σ.comp π.ker.subtype`. Establish `hσN : GlobalTheory.PRep.IsSmooth σN` using `fun x => (hσ x).preimage continuous_subtype_val`. Set `φN : π.ker → ℂ` to `fun h => φ h`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hφN1 : IsLocallyConstant φN` using `hφ'.1.comp_continuous continuous_subtype_val`. Establish `hφN2 : HasCompactSupport φN` using `hφ'.2.comp_isClosedEmbedding hNc.isClosedEmbedding_subtypeVal`. Set `T : W →ₗ[ℂ] W` to `smoothOp σN μN φN`. Establish `hT : ∀ (l : Module.Dual ℂ W) (y : W), l (T y) = ∫ h, φN h * l (σN h y) ∂μN`. Introduce `l y`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify `hσN.map_smoothOp (μ := μN) hφN1 hφN2 l y` using `[smul_eq_mul]`. Use `⟨((c : ℝ) : ℂ) • T, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `g x`. Simplify using `only [LinearMap.smul_apply, map_smul]`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `(hσN.map_smoothOp_of_intertwining (μ := μN) hσN hφN1 hφN2 (σ (ι g)) (fun h y => ?_) x).symm` and prove the remaining obligations. Use `show σ (ι g) (σ h y) = σ h (σ (ι g) y)`. Rewrite using `[← Module.End.mul_apply, ← map_mul, (hc g h h.2).eq, map_mul, Module.End.mul_apply]`. Introduce `x k hk hk1`. Establish `hmem` using `hσN.smoothOp_mem_fixed (μ := μN) hφN1 hφN2 (K := (leftStabilizer φ).comap π.ker.subtype) (fun k' hk' g => hk' g) x`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hfix` using `(mem_fixed.1 hmem) ⟨k, MonoidHom.mem_ker.2 hk1⟩ hk`. Simplify using `only [LinearMap.smul_apply, map_smul]`. Use `congr 1`. Introduce `f hf B hB Ψ hΨ v l`. Establish `hf' : IsLocallyConstant f ∧ HasCompactSupport f` using `hf`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Set `F : π.ker × A → ℂ` to `fun p => φN p.1 * f p.2 * l (σ (e p) v)`. Establish `hFe : ∀ p, Ψ (e p) * l (σ (e p) v) = F p`. Introduce `p`. Use `show Ψ (e p) * l (σ (e p) v) = φ p.1 * f p.2 * l (σ (e p) v)`. Rewrite using `[he p, hΨ _ _ p.1.2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hFlc : IsLocallyConstant F`. Establish `h1 : IsLocallyConstant fun p : π.ker × A => φN p.1` using `hφN1.comp_continuous continuous_fst`. Establish `h2 : IsLocallyConstant fun p : π.ker × A => f p.2` using `hf'.1.comp_continuous continuous_snd`. Establish `h3 : IsLocallyConstant fun p : π.ker × A => l (σ (e p) v)` using `((hσ.isLocallyConstant_orbit v).comp_continuous e.continuous).comp l`. Conclude with `(h1.mul h2).mul h3`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hFcs : HasCompactSupport F`. Use `IsCompact.of_isClosed_subset (IsCompact.prod hφN2 hf'.2) (isClosed_tsupport F) ?_` and prove the remaining obligations. Use `closure_minimal ?_ ((isClosed_tsupport _).prod (isClosed_tsupport _))` and prove the remaining obligations. Introduce `p hp`. Use `⟨subset_tsupport _ ?_, subset_tsupport _ ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `h0`. Apply `hp` to reduce the goal to its premises. Use `show φN p.1 * f p.2 * l (σ (e p) v) = 0`. Rewrite using `[h0, zero_mul, zero_mul]`. Introduce `h0`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `hp` to reduce the goal to its premises. Use `show φN p.1 * f p.2 * l (σ (e p) v) = 0`. Rewrite using `[h0, mul_zero, zero_mul]`. Establish `hFi : Integrable F P` using `hFlc.continuous.integrable_of_hasCompactSupport hFcs`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[hν]`. Use `Integrable.smul_measure_nnreal ?_` and prove the remaining obligations. Rewrite using `[hE.integrable_map_iff]`. Conclude with `hFi.congr (Filter.Eventually.of_forall fun p => (hFe p).symm)`. Establish `hin : ∀ a, ∫ h, F (h, a) ∂μN = f a * l (T (σ (ι a) v))`.
-
-Introduce `a`. Rewrite using `[hT, ← integral_const_mul]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun h => ?_)` and prove the remaining obligations. Use `show φN h * f a * l (σ (e (h, a)) v) = f a * (φN h * l (σ h (σ (ι a) v)))`. Rewrite using `[he, map_mul, Module.End.mul_apply]`.
-
-Expand and normalize the polynomial expressions, which then agree. Establish `hB2` using `(hB v (l ∘ₗ T)).2`. Simplify using `only [LinearMap.comp_apply, MonoidHom.comp_apply] at hB2`. Rewrite using `[hν, integral_smul_nnreal_measure, hE.integral_map, integral_congr_ae (Filter.Eventually.of_forall hFe), integral_prod_symm F hFi, show (fun a => ∫ h, F (h, a) ∂μN) = fun a => f a * l (T (σ (ι a) v)) from funext hin, ← hB2]`. Simplify using `only [LinearMap.comp_apply, LinearMap.smul_apply, map_smul, smul_eq_mul, NNReal.smul_def, Complex.real_smul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_op (ι : A →* G) (π : G →* A) (hι : Continuous ι) (hπ : Continuous π) (hπι : ∀ a, π (ι a) = a)
     (hc : ∀ a g, π g = 1 → Commute (ι a) g) (μ : Measure A) [μ.IsHaarMeasure] (ν : Measure G) [ν.IsHaarMeasure]
@@ -173,9 +169,9 @@ end General
 variable {D : D7}
 
 /- English proof (translation)
-Use `⟨fun v => ?_, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hv : v = u`. Substitute `hv` using the available equality. Simplify using `using hf`. Rewrite using `[Function.update_of_ne hv]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hff.1 v`. Use `filter_upwards [hff.2, Filter.eventually_cofinite_ne u] with v hv hne`. Rewrite using `[Function.update_of_ne hne]`. Conclude with `hv`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isFinFamily_update {V : HSp D} {ff : ∀ v, GLoc D.sp.cm.sig V.gram v → ℂ}
     (hff : IsFinFamily D.sp.cm.sig V.gram (frameLat V) ff) (u : HeightOneSpectrum (𝓞 D.host.F))
@@ -192,9 +188,9 @@ theorem isFinFamily_update {V : HSp D} {ff : ∀ v, GLoc D.sp.cm.sig V.gram v �
     exact hv
 
 /- English proof (translation)
-Establish `hev` using `GlobalTheory.AdelicU.eventually_proj_mem_stabLoc (σ := D.sp.cm.sig) (J := V.gram) (L := frameLat V) (g := (g : GA D V))`. Use `(Filter.eventually_cofinite.1 (hff.2.and hev)).subset fun v hv => ?_` and prove the remaining obligations. Introduce and unpack `⟨h1, h2⟩`. Apply `hv` to reduce the goal to its premises. Use `show ff v (proj D.sp.cm.sig V.gram v (g : GA D V)) = 1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1]`. Conclude with `(Set.indicator_of_mem h2 1).trans rfl`.
+A detailed English derivation is pending.
 -/
 theorem finite_mulSupport {V : HSp D} {ff : ∀ v, GLoc D.sp.cm.sig V.gram v → ℂ}
     (hff : IsFinFamily D.sp.cm.sig V.gram (frameLat V) ff) (g : GfC V) :
@@ -209,11 +205,11 @@ theorem finite_mulSupport {V : HSp D} {ff : ∀ v, GLoc D.sp.cm.sig V.gram v →
   exact (Set.indicator_of_mem h2 1).trans rfl
 
 /- English proof (translation)
-Establish `hu : unitLoc D.sp.cm.sig V.gram (frameLat V) u ∈ CcLoc D.sp.cm.sig V.gram u` using `unitLoc_mem u`. Establish `m1` using `finite_mulSupport (isFinFamily_update hff u hf) (h * locFin V u a)`. Establish `m2` using `finite_mulSupport (isFinFamily_update hff u hu) h`. Establish `hfin : ∀ (ff' : ∀ v, GLoc D.sp.cm.sig V.gram v → ℂ) (g : GfC V), finFn V ff' g = ∏ᶠ v, ff' v (finLoc V v g)` using `fun _ _ => rfl`. Establish `hloc : ∀ v, finLoc V v (locFin V u a) = proj D.sp.cm.sig V.gram v (emb D.sp.cm.sig V.gram u a)` using `fun _ => rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hfin, hfin, ← mul_finprod_cond_ne u m1, ← mul_finprod_cond_ne u m2]`. Establish `hoff : (∏ᶠ (v) (_ : v ≠ u), Function.update ff u f v (finLoc V v (h * locFin V u a))) = ∏ᶠ (v) (_ : v ≠ u), Function.update ff u (unitLoc D.sp.cm.sig V.gram (frameLat V) u) v (finLoc V v h)`. Use `finprod_congr fun v => finprod_congr fun hv => ?_` and prove the remaining obligations. Rewrite using `[Function.update_of_ne hv, Function.update_of_ne hv, map_mul, hloc, proj_emb_ne D.sp.cm.sig V.gram hv, mul_one]`. Rewrite using `[hoff, Function.update_self, Function.update_self, map_mul, hh, hloc, proj_emb_self, one_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : unitLoc D.sp.cm.sig V.gram (frameLat V) u 1 = 1` using `(Set.indicator_of_mem (one_mem _) 1).trans rfl`. Rewrite using `[h1, one_mul, mul_comm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem finFn_update_mul {V : HSp D} {ff : ∀ v, GLoc D.sp.cm.sig V.gram v → ℂ}
     (hff : IsFinFamily D.sp.cm.sig V.gram (frameLat V) ff) (u : HeightOneSpectrum (𝓞 D.host.F))
@@ -239,11 +235,11 @@ theorem finFn_update_mul {V : HSp D} {ff : ∀ v, GLoc D.sp.cm.sig V.gram v → 
   rw [h1, one_mul, mul_comm]
 
 /- English proof (translation)
-Introduce `D V u μf hμf hK ν hν W _ _ σ hσ ff hff`. Use `haveI := hμf u`. Use `haveI : LocallyCompactSpace (GfC V) := GlobalTheory.AdelicU.locallyCompactSpace_finPts D.sp.cm.sig V.gram`. Use `haveI : ν.IsHaarMeasure := hν.1`. Establish `hu : unitLoc D.sp.cm.sig V.gram (frameLat V) u ∈ CcLoc D.sp.cm.sig V.gram u` using `unitLoc_mem u`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfam` using `isFinFamily_update hff u hu`. Establish `hφ` using `(GlobalTheory.TrConv.conv_finFn D V μf hμf hK ν hν _ _ hfam hfam).2.2`. Establish `hφ' : IsLocallyConstant (finFn V (Function.update ff u (unitLoc D.sp.cm.sig V.gram (frameLat V) u))) ∧ HasCompactSupport (finFn V (Function.update ff u (unitLoc D.sp.cm.sig V.gram (frameLat V) u)))` using `hφ`. Establish `hι : Continuous (locFin V u)` using `continuous_induced_rng.2 (continuous_emb D.sp.cm.sig V.gram u)`. Establish `hπ : Continuous (finLoc V u)` using `(continuous_proj D.sp.cm.sig V.gram u).comp continuous_subtype_val`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hπι : ∀ a, finLoc V u (locFin V u a) = a` using `fun a => proj_emb_self D.sp.cm.sig V.gram u a`. Establish `hc : ∀ a g, finLoc V u g = 1 → Commute (locFin V u a) g` using `fun a g hg => Subtype.ext (commute_emb D.sp.cm.sig V.gram a hg).eq`. Take `⟨H, h1, h2, h3⟩` from `exists_op (locFin V u) (finLoc V u) hι hπ hπι hc (μf u) ν σ hσ hφ`. Conclude with `⟨H, leftStabilizer _, isOpen_leftStabilizer hφ'.1 hφ'.2, h1, h2, fun f hf B hB => h3 f hf B hB _ fun h a hh => finFn_update_mul hff u hf h a hh⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_offOp : ∀ (D : D7) (V : HSp D) (u : HeightOneSpectrum (𝓞 D.host.F)) (μf : ∀ v, Measure (GLoc D.sp.cm.sig V.gram v)), (∀ v, (μf v).IsHaarMeasure) → (∀ᶠ v in cofinite, μf v (Kv V v) = 1) → ∀ ν, IsFinMeas V μf ν → ∀ (W : Type) [AddCommGroup W] [Module ℂ W] (σ : Representation ℂ (GfC V) W), GlobalTheory.PRep.IsSmooth σ → ∀ ff, IsFinFamily D.sp.cm.sig V.gram (frameLat V) ff → ∃ (H : W →ₗ[ℂ] W) (K : Subgroup (GfC V)), IsOpen (K : Set (GfC V)) ∧ (∀ g x, H (σ (locFin V u g) x) = σ (locFin V u g) (H x)) ∧ (∀ x, ∀ k ∈ K, finLoc V u k = 1 → σ k (H x) = H x) ∧ ∀ f ∈ CcLoc D.sp.cm.sig V.gram u, ∀ B, GlobalTheory.IndefiniteRowSideFullHecke.IwahoriDoubleCosets.IsIntegralOp (μf u) (σ.comp (locFin V u)) f B → GlobalTheory.IndefiniteRowSideFullHecke.IwahoriDoubleCosets.IsIntegralOp ν σ (finFn V (Function.update ff u f)) (H ∘ₗ B) := by
   intro D V u μf hμf hK ν hν W _ _ σ hσ ff hff

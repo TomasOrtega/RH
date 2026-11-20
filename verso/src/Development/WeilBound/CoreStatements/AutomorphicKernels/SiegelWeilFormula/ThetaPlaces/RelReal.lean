@@ -21,7 +21,7 @@ def thW (B : Base F E) (w : InfinitePlace F) : HeckeCharacterZeroLocus.SiegelWei
     (Algebra.TensorProduct.map (GlobalTheory.AutFunCompare.evW w) (AlgHom.id F E)).toRingHom)
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.StdCharFromIsStd.isCharAF hB.std`.
+A detailed English derivation is pending.
 -/
 theorem isCharAF_of_good (B : Base F E) (hB : B.IsGood σ) : HeckeCharacterZeroLocus.SiegelWeilU.IsCharAF F B.ψ :=
   GlobalTheory.StdCharFromIsStd.isCharAF hB.std
@@ -29,7 +29,7 @@ theorem isCharAF_of_good (B : Base F E) (hB : B.IsGood σ) : HeckeCharacterZeroL
 def cW (B : Base F E) (η : E) (w : InfinitePlace F) : ℂ := ((‖(B.emb w).1 η‖ ^ (-(1 / 2 : ℝ)) : ℝ) : ℂ)
 
 /- English proof (translation)
-Establish `h1 : (B.emb w).1 η ≠ 0` using `(map_ne_zero _).2 hη`. Establish `h2 : 0 < ‖(B.emb w).1 η‖` using `norm_pos_iff.2 h1`. Unfold `cW`. Conclude with `(Real.rpow_pos_of_pos h2 _).ne'` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem cW_ne (B : Base F E) {η : E} (hη : η ≠ 0) (w : InfinitePlace F) : cW B η w ≠ 0 := by
   have h1 : (B.emb w).1 η ≠ 0 := (map_ne_zero _).2 hη
@@ -38,9 +38,9 @@ theorem cW_ne (B : Base F E) {η : E} (hη : η ≠ 0) (w : InfinitePlace F) : c
   exact_mod_cast (Real.rpow_pos_of_pos h2 _).ne'
 
 /- English proof (translation)
-Rewrite using `[isUnit_iff_ne_zero, Matrix.det_smul]`. Use `mul_ne_zero (pow_ne_zero _ (cW_ne d.B hη w)) ?_` and prove the remaining obligations. Establish `hu : IsUnit (R.fr w).1.det` using `(Matrix.isUnit_iff_isUnit_det _).1 (R.fr w).isUnit`. Establish `e : ((R.fr w).1.map star).det = star (R.fr w).1.det`. Rewrite using `[← Matrix.det_conjTranspose, ← Matrix.det_transpose ((R.fr w).1)ᴴ]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[e, star_ne_zero]`. Conclude with `hu.ne_zero`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frW_det {d : SD σ} (R : RD d) {η : E} (hη : η ≠ 0) (w : InfinitePlace F) :
     IsUnit (cW d.B η w • (R.fr w).1.map star).det := by
@@ -62,11 +62,11 @@ theorem frW_frc {d : SD σ} (R : RD d) (η : E) (hη : η ≠ 0) (w : InfinitePl
     (frW R η hη w).1 = cW d.B η w • (R.fr w).1.map star := rfl
 
 /- English proof (translation)
-Rewrite using `[isUnit_iff_ne_zero, Matrix.det_smul]`. Use `mul_ne_zero (pow_ne_zero _ (cW_ne d.B hη w)) ?_` and prove the remaining obligations. Establish `hu : IsUnit u.1.det` using `(Matrix.isUnit_iff_isUnit_det _).1 u.isUnit`. Establish `h1 : (d.cw w u.1).det = piInf (d.B.emb w) u.1.det`. Unfold `SD.cw`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[RingHom.map_det]`. Both sides reduce to the same expression. Establish `h2 : (((d.cw w u.1)ᵀ).map star).det = star (d.cw w u.1).det`. Rewrite using `[← Matrix.det_conjTranspose]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[Matrix.det_nonsing_inv, Ring.inverse_eq_inv', h2, h1]`. Conclude with `inv_ne_zero (star_ne_zero.2 (hu.map (piInf (d.B.emb w))).ne_zero)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gW_det (d : SD σ) (u : GL (Fin d.n) (AE F E)) {η : E} (hη : η ≠ 0) (w : InfinitePlace F) :
     IsUnit (cW d.B η w • (((d.cw w u.1)ᵀ).map star)⁻¹).det := by
@@ -84,11 +84,11 @@ def gW (d : SD σ) (u : GL (Fin d.n) (AE F E)) (η : E) (hη : η ≠ 0) (w : In
   Matrix.nonsingInvUnit (cW d.B η w • (((d.cw w u.1)ᵀ).map star)⁻¹) (gW_det d u hη w)
 
 /- English proof (translation)
-Establish `hu : IsUnit u.1.det` using `(Matrix.isUnit_iff_isUnit_det _).1 u.isUnit`. Establish `hN : IsUnit (((d.cw w u.1)ᵀ).map star).det`. Establish `h1 : (d.cw w u.1).det = piInf (d.B.emb w) u.1.det`. Unfold `SD.cw`. Rewrite using `[RingHom.map_det]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `h2 : (((d.cw w u.1)ᵀ).map star).det = star (d.cw w u.1).det`. Rewrite using `[← Matrix.det_conjTranspose]`. Both sides reduce to the same expression. Rewrite using `[h2, h1, isUnit_iff_ne_zero, star_ne_zero]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hu.map (piInf (d.B.emb w))).ne_zero`. Express the relevant statement in the definitionally equal form `(cW d.B η w • (((d.cw w u.1)ᵀ).map star)⁻¹) * ((d.cw w u.1)ᵀ).map star = cW d.B η w • 1`. Rewrite using `[Matrix.smul_mul, Matrix.nonsing_inv_mul _ hN]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gW_gc (d : SD σ) (u : GL (Fin d.n) (AE F E)) (η : E) (hη : η ≠ 0) (w : InfinitePlace F) :
     (gW d u η hη w).1 * ((d.cw w u.1)ᵀ).map star = cW d.B η w • 1 := by

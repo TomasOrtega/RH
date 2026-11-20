@@ -11,11 +11,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 def PiHalf (l : Level H) (D : DepData E) : Prop := Ideal.span {D.pi 0 * D.pi 1} = l.Mb
 
 /- English proof (translation)
-Establish `hd : ∀ j : Fin 2, D.pi j ∣ D.pi 0 * D.pi 1` using `fun j => match j with`. Consider the case `0 => dvd_mul_right _ _`. Consider the case `1 => dvd_mul_left _ _`. Establish `h1 : l.Mb ≤ Ideal.span {D.pi i}`. Rewrite using `[← h]`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.span_singleton_le_span_singleton.2 (hd i)`. Establish `h2 : l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E) ≤ Ideal.span {H.bar (D.pi k)}`. Rewrite using `[← h, Ideal.map_span, Set.image_singleton]`. Conclude with `Ideal.span_singleton_le_span_singleton.2 (map_dvd (H.bar : 𝓞 E →+* 𝓞 E) (hd k))`. Establish `htop : Ideal.span {D.pi i} ⊔ Ideal.span {H.bar (D.pi k)} = ⊤`.
-
-Rewrite using `[eq_top_iff, ← l.coprime]`. Conclude with `sup_le_sup h1 h2`. Conclude with `(Ideal.isCoprime_span_singleton_iff _ _).1 (Ideal.isCoprime_iff_sup_eq.2 htop)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem PiHalf.coprime {l : Level H} {D : DepData E} (h : PiHalf l D) (i k : Fin 2) :
     IsCoprime (D.pi i) (H.bar (D.pi k)) := by
@@ -33,13 +31,13 @@ theorem PiHalf.coprime {l : Level H} {D : DepData E} (h : PiHalf l D) (i k : Fin
   exact (Ideal.isCoprime_span_singleton_iff _ _).1 (Ideal.isCoprime_iff_sup_eq.2 htop)
 
 /- English proof (translation)
-Take `⟨k, hk⟩` from `hg`. Establish `hg0 : (g : ℂ) ≠ 0`. Introduce and unpack `h'`. Apply `h0` to reduce the goal to its premises. Rewrite using `[hk, Nat.cast_eq_zero.1 h', zero_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hk0 : (k : ℂ) ≠ 0`. Introduce and unpack `h'`. Apply `h0` to reduce the goal to its premises. Rewrite using `[hk, Nat.cast_eq_zero.1 h', mul_zero]`. Establish `e : zeta g = zeta l.M' ^ k`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Unfold `zeta`. Rewrite using `[← Complex.exp_nat_mul, hk]`. Use `congr 1`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[e]`. Conclude with `pow_mem c.zeta_mem k`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zeta_mem_of_dvd {l : Level H} (c : Coeff l) {g : ℕ} (hg : g ∣ l.M') (h0 : l.M' ≠ 0) : zeta g ∈ c.F := by
   obtain ⟨k, hk⟩ := hg

@@ -8,9 +8,9 @@ namespace GlobalTheory
 open NumberField IsDedekindDomain in
 
 /- English proof (translation)
-Introduce `L _ _ _ s i i' hi hi' h h'`. Establish `hd` using `HeightOneSpectrum.denseRange_algebraMap (K := NumberField.maximalRealSubfield L) s.v`. Establish `key : (i : _ → _) = i'`. Use `hd.equalizer hi hi' (funext fun a => ?_)` and prove the remaining obligations. Establish `ha : algebraMap (NumberField.maximalRealSubfield L) (s.v.adicCompletion (NumberField.maximalRealSubfield L)) a = s.i (algebraMap (NumberField.maximalRealSubfield L) L a)` using `(s.i.commutes a).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [Function.comp_apply, ha, h, h']`. Conclude with `RingEquiv.ext (congrFun key)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.splitPlace_completion_equiv_unique :
     ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (s : _root_.ReciprocityTheory.Aut.SplitPlace L)

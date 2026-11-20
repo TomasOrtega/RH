@@ -23,17 +23,15 @@ private def fsSub {Λ R M P : Type} [CommRing Λ] [CommRing R] [Algebra Λ R] [A
     rw [hE]; exact hN r _ hx
 
 /- English proof (translation)
-Use `set P' := fsSub θ E hE N hN with hP'`. Use `set Q' := fsSub θ E hE C hC with hQ'`. Establish `hc : _root_.IsCompl P' Q'`. Prove the components needed by the constructor for the conclusion. Rewrite using `[Submodule.disjoint_def]`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `x hx1 hx2`. Establish `h0 : E x = 0` using `(Submodule.disjoint_def.mp h.disjoint) _ hx1 hx2`. Conclude with `E.injective (h0.trans (map_zero E).symm)`. Rewrite using `[codisjoint_iff, eq_top_iff]`. Introduce `x _`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hx : E x ∈ N ⊔ C` using `by rw [h.sup_eq_top]; trivial`. Take `⟨y, hy, z, hz, hyz⟩` from `Submodule.mem_sup.mp hx`. Rewrite using `[Submodule.mem_sup]`. Use `⟨E.symm y, (show E (E.symm y) ∈ N by simpa using hy), E.symm z, (show E (E.symm z) ∈ C by simpa using hz), ?_⟩` and prove the remaining obligations. Apply `E.injective` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Rewrite using `[map_add, E.apply_symm_apply, E.apply_symm_apply, hyz]`. Use `haveI : Module.Projective R P' := Module.Projective.of_split P'.subtype (Submodule.linearProjOfIsCompl P' Q' hc) (Submodule.linearProjOfIsCompl_comp_subtype hc)`. Use `haveI : Module.Finite R P' := Module.Finite.of_surjective (Submodule.linearProjOfIsCompl P' Q' hc) (Submodule.linearProjOfIsCompl_surjective hc)`. Use `haveI : Module.Free R P' := Module.free_of_flat_of_isLocalRing`. Set `b` to `Module.finBasis R P'`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Set `f : N ≃+ P'` to `{ toFun := fun m => ⟨E.symm m, (show E (E.symm m) ∈ N by simp)⟩ invFun := fun p => ⟨E p, p.2⟩ left_inv := fun m => by ext; simp right_inv := fun p => by ext; simp map_add' := fun m m' => by ext; simp }`. Use `⟨Module.finrank R P', f.trans b.equivFun.toAddEquiv, fun r m m' hm => ?_⟩` and prove the remaining obligations. Establish `hf : f m' = r • f m`. Use `ext`. Apply `E.injective` to reduce the goal to its premises.
-
-Simplify using `only [f, AddEquiv.coe_mk, Equiv.coe_fn_mk, Submodule.coe_smul, hE, E.apply_symm_apply]`. Conclude with `hm`. Use `show b.equivFun (f m') = r • b.equivFun (f m)`. Rewrite using `[hf, LinearEquiv.map_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem fs_abs {Λ R M P : Type} [CommRing Λ] [CommRing R] [IsLocalRing R] [Algebra Λ R] [AddCommGroup M] [Module Λ M]
     [AddCommGroup P] [Module R P] [Module.Finite R P] [Module.Projective R P]
@@ -81,9 +79,9 @@ private theorem fs_abs {Λ R M P : Type} [CommRing Λ] [CommRing R] [IsLocalRing
   rw [hf, LinearEquiv.map_smul]
 
 /- English proof (translation)
-Establish `key : ∀ s, Pi.mulSingle s (g s) ∈ S`. Introduce `s`. Establish `: Pi.mulSingle s (g s) = (Pi.mulSingle s (Multiplicative.ofAdd (1 : ZMod (n s))) : ∀ s, Multiplicative (ZMod (n s))) ^ (Multiplicative.toAdd (g s)).val`. Rewrite using `[← Pi.mulSingle_pow, ← ofAdd_nsmul, nsmul_one, ZMod.natCast_zmod_val, ofAdd_toAdd]`. Rewrite using `[this]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `S.pow_mem (h s) _`. Rewrite using `[← Finset.univ_prod_mulSingle g]`. Conclude with `S.prod_mem fun s _ => key s`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem fs_gen {σ : Type} [Fintype σ] [DecidableEq σ] (n : σ → ℕ) [∀ s, NeZero (n s)]
     (S : Submonoid (∀ s, Multiplicative (ZMod (n s))))
@@ -109,39 +107,33 @@ private def fsAgree {Λ S M : Type} [CommRing Λ] [CommRing S] [Algebra Λ S] [A
     simp
 
 /- English proof (translation)
-Introduce `Λ _ _ _ _ l q n a M _ _ _ ρ N C hl hlm hproj hNC hN hC act hact`. Take `⟨φ, hφX, hφs, hloc, -⟩` from `exists_groupRing_surj Λ l hl hlm (Fin q × Fin n) (fun p => a p.1)`. Establish `hker : RingHom.ker φ = delIdeal l Λ n a` using `groupRing_ker Λ l hl hlm (Fin q × Fin n) (fun p => a p.1) φ hφX hφs`. Use `haveI := hloc`. Establish `hθN : ∀ r, ∀ m ∈ N, ρ.asAlgebraHom r m ∈ N`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `r`. Proceed by induction on `r using MonoidAlgebra.induction_on with`. Consider the case `of g => intro m hm`. Rewrite using `[Representation.asAlgebraHom_of]`. Conclude with `hN g m hm`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `add x y hx hy => intro m hm`. Rewrite using `[map_add, LinearMap.add_apply]`. Conclude with `N.add_mem (hx m hm) (hy m hm)`. Consider the case `smul c x hx => intro m hm`. Rewrite using `[map_smul, LinearMap.smul_apply]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Conclude with `N.smul_mem c (hx m hm)`. Establish `hθC : ∀ r, ∀ m ∈ C, ρ.asAlgebraHom r m ∈ C`. Introduce `r`. Proceed by induction on `r using MonoidAlgebra.induction_on with`. Consider the case `of g => intro m hm`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[Representation.asAlgebraHom_of]`. Conclude with `hC g m hm`. Consider the case `add x y hx hy => intro m hm`. Rewrite using `[map_add, LinearMap.add_apply]`. Conclude with `C.add_mem (hx m hm) (hy m hm)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `smul c x hx => intro m hm`. Rewrite using `[map_smul, LinearMap.smul_apply]`. Conclude with `C.smul_mem c (hx m hm)`. Use `haveI : Module.Finite Λ ρ.asModule := Module.Finite.equiv ρ.asModuleEquiv.symm`. Use `haveI : Module.Finite (MonoidAlgebra Λ (Del l n a)) ρ.asModule := Module.Finite.of_restrictScalars_finite Λ _ _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨rk, e0, he0⟩` from `fs_abs ρ.asAlgebraHom ρ.asModuleEquiv.toAddEquiv (fun r x => ρ.asModuleEquiv_map_smul r x) N C hθN hθC hNC`. Set `A` to `fsAgree N act (ρ.asAlgebraHom.comp φ)`. Establish `hgen : ∀ p, (1 + MvPowerSeries.X p : MvPowerSeries (Fin q × Fin n) Λ) ∈ A`. Introduce `p m`. Use `show (act (1 + MvPowerSeries.X p) m : M) = ρ.asAlgebraHom (φ (1 + MvPowerSeries.X p)) m`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Rewrite using `[hφX p, Representation.asAlgebraHom_of]`. Conclude with `hact p m`. Establish `hgrp : ∀ g : Del l n a, ∃ w ∈ A, φ w = MonoidAlgebra.of Λ (Del l n a) g` using `by haveI : ∀ p : Fin q × Fin n, NeZero (l ^ a p.1) := fun p => ⟨pow_ne_zero _ hl.ne_zero⟩`. Set `T : Submonoid (Del l n a)` to `{ carrier := {g | ∃ w ∈ A, φ w = MonoidAlgebra.of Λ (Del l n a) g} mul_mem' := fun {x y} hx hy => by`. Take `⟨w, hw, hwx⟩` from `hx`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨w', hw', hwy⟩` from `hy`. Conclude with `⟨w * w', A.mul_mem hw hw', by rw [map_mul, hwx, hwy, map_mul]⟩`. Use the proof step `one_mem' := ⟨1, A.one_mem, by rw [map_one, map_one]⟩ }`. Introduce `g`. Conclude with `fs_gen (fun p : Fin q × Fin n => l ^ a p.1) T (fun p => ⟨_, hgen p, hφX p⟩) g`.
+Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hsurjA : ∀ y, ∃ w ∈ A, φ w = y`. Introduce `y`. Proceed by induction on `y using MonoidAlgebra.induction_on with`. Consider the case `of g => exact hgrp g`. Consider the case `add x y hx hy`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨w, hw, rfl⟩` from `hx`. Take `⟨w', hw', rfl⟩` from `hy`. Conclude with `⟨w + w', A.add_mem hw hw', map_add _ _ _⟩`. Consider the case `smul c x hx`. Take `⟨w, hw, rfl⟩` from `hx`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨c • w, A.smul_mem hw c, map_smul _ _ _⟩`. Establish `hkill : delIdeal l Λ n a ≤ RingHom.ker act`. Use `Ideal.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨p, rfl⟩`. Establish `hw0 : ((1 + MvPowerSeries.X p) ^ l ^ a p.1 - 1 : MvPowerSeries (Fin q × Fin n) Λ) ∈ A` using `A.sub_mem (A.pow_mem (hgen p) _) A.one_mem`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `hφ0 : φ ((1 + MvPowerSeries.X p) ^ l ^ a p.1 - 1) = 0`. Rewrite using `[← RingHom.mem_ker, hker]`. Conclude with `Ideal.subset_span ⟨p, rfl⟩`. Rewrite using `[SetLike.mem_coe, RingHom.mem_ker]`. Use extensionality with `m`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hw0 m]`. Simplify using `[hφ0]`. Establish `hagree : ∀ z (m : N), (act z m : M) = ρ.asAlgebraHom (φ z) m`. Introduce `z m`. Take `⟨w, hwA, hw⟩` from `hsurjA (φ z)`.
-
-Establish `hzw : z - w ∈ RingHom.ker act` using `hkill (by rw [← hker, RingHom.mem_ker, map_sub, hw, sub_self])`. Rewrite `hzw` using `[RingHom.mem_ker, map_sub, sub_eq_zero]`. Rewrite using `[hzw, ← hw]`. Conclude with `hwA m`. Set `ψ : MonoidAlgebra Λ (Del l n a) ≃ₐ[Λ] MvPowerSeries (Fin q × Fin n) Λ ⧸ delIdeal l Λ n a` to `(Ideal.quotientKerAlgEquivOfSurjective hφs).symm.trans (Ideal.quotientEquivAlgOfEq Λ hker)`.
-
-Establish `hψ : ∀ z, ψ (φ z) = Ideal.Quotient.mk (delIdeal l Λ n a) z`. Introduce `z`. Apply `ψ.symm.injective` to reduce the goal to its premises. Rewrite using `[AlgEquiv.symm_apply_apply]`. Simplify using `[ψ, Ideal.quotientKerAlgEquivOfSurjective_apply]`.
-
-Use `⟨rk, e0.trans (AddEquiv.piCongrRight fun _ => ψ.toRingEquiv.toAddEquiv), fun z m => ?_⟩` and prove the remaining obligations. Establish `h1` using `he0 (φ z) m (act z m) (hagree z m)`. Use function extensionality and compare the values at `i`. Use `show ψ (e0 (act z m) i) = z • ψ (e0 m i)`. Rewrite using `[h1, Pi.smul_apply, smul_eq_mul, map_mul, hψ, Algebra.smul_def, Ideal.Quotient.algebraMap_eq]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pa.Lev.freeSummand :
     ∀ (Λ : Type) [CommRing Λ] [IsLocalRing Λ] [IsNoetherianRing Λ] [IsAdicComplete (maximalIdeal Λ) Λ] (l : ℕ) (q n : ℕ) (a : Fin q → ℕ) (M : Type) [AddCommGroup M] [Module Λ M] [Module.Finite Λ M] (ρ : Representation Λ (Del l n a) M) (N C : Submodule Λ M), l.Prime → (l : Λ) ∈ maximalIdeal Λ → Module.Projective (MonoidAlgebra Λ (Del l n a)) ρ.asModule → _root_.IsCompl N C → (∀ g, ∀ m ∈ N, ρ g m ∈ N) → (∀ g, ∀ m ∈ C, ρ g m ∈ C) → ∀ act : MvPowerSeries (Fin q × Fin n) Λ →ₐ[Λ] Module.End Λ N, (∀ (p : Fin q × Fin n) (m : N), (act (1 + MvPowerSeries.X p) m : M) = ρ (Pi.mulSingle p (Multiplicative.ofAdd 1)) m) → ∃ (rk : ℕ) (e : N ≃+ (Fin rk → MvPowerSeries (Fin q × Fin n) Λ ⧸ delIdeal l Λ n a)), ∀ z m, e (act z m) = z • e m := by

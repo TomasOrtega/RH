@@ -4,35 +4,33 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVec
 open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.U3 UpperTheory.V.Fr
 
 /- English proof (translation)
-Introduce `l _ k _ _ F C₀ hF Q _ _ ρ hb ht hlc U hU`. Establish `hz : ∀ g (i j : Fin 3), i < j → ρ.r g i j = 0`. Introduce `g i j hij`. Establish `hm : ρ.r g i j ∈ ρ.triM` using `Ideal.subset_span ⟨g, i, j, hij, rfl⟩`. Rewrite `hm` using `[ht]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(Ideal.mem_bot).1 hm`. Establish `hd : ∀ g (i : Fin 3), ρ.r g i i = algebraMap k Q ↑(F.Ψ ↑g ^ w 3 i)` using `hb.1`. Establish `h21 : ∀ g, ρ.r g 2 1 ∈ U`. Introduce `g`. Establish `e : ρ.r g 2 1 = ρ.r (F.star g) 1 0`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(star hF).2.2.2.2 ρ g 1 0]`. Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `hU _`. Establish `w0 : w 3 0 = 1` using `by simp [w]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `w1 : w 3 1 = 0` using `by simp [w]`. Establish `w2 : w 3 2 = -1` using `by simp [w]`. Establish `hq : ∀ x : Q, x ∈ U → (Subalgebra.toSubmodule U).mkQ x = 0`. Introduce `x hx`. Rewrite using `[Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hx`. Use `⟨(hlc 2 0).comp _, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `g h dsimp only`. Rewrite using `[map_mul, Matrix.mul_apply, Fin.sum_univ_three, hd h 0, hd g 2, w0, w2, zpow_one, _root_.zpow_neg_one]`. Establish `e1 : ρ.r g 2 0 * algebraMap k Q ↑(F.Ψ ↑h) = (↑(F.Ψ ↑h) : k) • ρ.r g 2 0`.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Algebra.smul_def, mul_comm]`. Establish `e3 : algebraMap k Q ↑(F.Ψ ↑g)⁻¹ * ρ.r h 2 0 = (↑(F.Ψ ↑g)⁻¹ : k) • ρ.r h 2 0`. Rewrite using `[Algebra.smul_def]`. Rewrite using `[e1, e3, map_add, map_add, map_smul, map_smul, hq _ (U.mul_mem (h21 g) (hU h)), add_zero]`. Introduce `g dsimp only`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(star hF).2.2.2.2 ρ g 2 0]`. Both sides reduce to the same expression. Introduce `v`. Take `⟨t, ht2⟩` from `hF.f3 v`. Use `⟨((↑(F.Ψ (F.loc v t)) : k) - ↑(F.Ψ (F.loc v t))⁻¹)⁻¹ • (Subalgebra.toSubmodule U).mkQ (ρ.r (F.loc0 v t) 2 0), fun s => ?_⟩` and prove the remaining obligations.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hl : ∀ x, ((F.loc0 v x : F.G0) : F.Γ) = F.loc v x` using `fun _ => rfl`. Establish `e` using `congrArg (fun M => M 2 0) (ρ.ord v ![t, t, s])`. Establish `z01` using `hz (F.loc0 v t) 0 1 (by decide)`. Establish `z02` using `hz (F.loc0 v t) 0 2 (by decide)`. Establish `z12` using `hz (F.loc0 v t) 1 2 (by decide)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `y01` using `hz (F.loc0 v s) 0 1 (by decide)`. Establish `y02` using `hz (F.loc0 v s) 0 2 (by decide)`. Establish `y12` using `hz (F.loc0 v s) 1 2 (by decide)`. Simplify using `(config := {decide := true}) only [ordProd, List.ofFn_succ, List.ofFn_zero, List.prod_cons, List.prod_nil, mul_one, Matrix.mul_apply, Fin.sum_univ_three, Matrix.sub_apply, Matrix.smul_apply, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.head_cons, Matrix. …`. Use `set x : k := ↑(F.Ψ (F.loc v t)) with hx`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `set xi : k := ↑(F.Ψ (F.loc v t))⁻¹ with hxi`. Use `set y : k := ↑(F.Ψ (F.loc v s)) with hy`. Use `set yi : k := ↑(F.Ψ (F.loc v s))⁻¹ with hyi`. Establish `key : algebraMap k Q ((xi - x) * (xi - 1)) * ρ.r (F.loc0 v s) 2 0 + algebraMap k Q ((xi - 1) * (y - yi)) * ρ.r (F.loc0 v t) 2 0 = -(ρ.r (F.loc0 v t) 2 1 * ρ.r (F.loc0 v t) 1 0 * (algebraMap k Q y - algebraMap k Q yi) + (algebraMap k Q xi - algebraMap k Q x) * ρ.r (F.loc0 v t) 2 1 …`. Simplify using `only [map_mul, map_sub, map_one]`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Take the linear combination `e`. Establish `hne1 : xi - 1 ≠ 0`. Introduce `h`. Apply `ht2` to reduce the goal to its premises. Establish `h' : (F.Ψ (F.loc v t))⁻¹ = 1` using `Units.ext (by rw [Units.val_one]; exact sub_eq_zero.1 h)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Rewrite using `[inv_eq_one.1 h', one_pow]`. Establish `hne2 : xi - x ≠ 0`. Introduce `h`. Apply `ht2` to reduce the goal to its premises. Establish `h' : (F.Ψ (F.loc v t))⁻¹ = F.Ψ (F.loc v t)` using `Units.ext (sub_eq_zero.1 h)`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hne3 : x - xi ≠ 0` using `fun h => hne2 (by rw [← neg_sub, h, neg_zero])`. Establish `hc : (xi - x) * (xi - 1) ≠ 0` using `mul_ne_zero hne2 hne1`. Simplify using `only`. Rewrite using `[smul_smul, ← map_smul, ← sub_eq_zero, ← map_sub]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 
-Apply `hq` to reduce the goal to its premises. Establish `eq : ρ.r (F.loc0 v s) 2 0 - ((y - yi) * (x - xi)⁻¹) • ρ.r (F.loc0 v t) 2 0 = algebraMap k Q ((xi - x) * (xi - 1))⁻¹ * (algebraMap k Q ((xi - x) * (xi - 1)) * ρ.r (F.loc0 v s) 2 0 + algebraMap k Q ((xi - 1) * (y - yi)) * ρ.r (F.loc0 v t) 2 0)`. Rewrite using `[Algebra.smul_def, mul_add, ← mul_assoc, ← mul_assoc, ← map_mul, ← map_mul, inv_mul_cancel₀ hc, map_one, one_mul]`. Establish `h3 : ((xi - x) * (xi - 1))⁻¹ * ((xi - 1) * (y - yi)) = -((y - yi) * (x - xi)⁻¹)`. Clear the denominators using the available nonvanishing facts.
-
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h3, map_neg, neg_mul, sub_eq_add_neg]`. Rewrite using `[eq, key]`. Conclude with `mul_mem (U.algebraMap_mem _) (neg_mem (add_mem (mul_mem (mul_mem (h21 _) (hU _)) (sub_mem (U.algebraMap_mem _) (U.algebraMap_mem _))) (mul_mem (mul_mem (sub_mem (U.algebraMap_mem _) (U.algebraMap_mem _)) (h21 _)) (hU _))))`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Fr.framePoint_alg_coord_eq :
     ∀ {l : ℕ} [Fact l.Prime] {k : Type} [Field k] [CharP k l] {F : Frame l k} {C₀ : ℕ}, F.Ok C₀ → ∀ (Q : Type) [CommRing Q] [Algebra k Q] (ρ : NRep F 3 Q), ρ.IsBar (algebraMap k Q) → ρ.triM = ⊥ → (∀ i j, IsLocallyConstant fun g => ρ.r g i j) → ∀ U : Subalgebra k Q, (∀ g, ρ.r g 1 0 ∈ U) → (fun g => (Subalgebra.toSubmodule U).mkQ (ρ.r g 2 0)) ∈ F.strS (Q ⧸ Subalgebra.toSubmodule U) := by

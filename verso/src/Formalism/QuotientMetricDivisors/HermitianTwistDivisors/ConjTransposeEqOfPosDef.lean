@@ -13,9 +13,9 @@ namespace R0
 variable {K : Type} [Field K] [StarRing K]
 
 /- English proof (translation)
-Establish `hdet : (A.map f).det = f A.det` using `(RingHom.map_det f A).symm`. Distinguish the cases in `h : IsUnit A.det`. Use `symm`. Apply `Matrix.inv_eq_left_inv` to reduce the goal to its premises. Rewrite using `[← Matrix.map_mul, Matrix.nonsing_inv_mul _ h, Matrix.map_one _ f.map_zero f.map_one]`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `h' : ¬ IsUnit (A.map f).det`. Rewrite using `[hdet, isUnit_iff_ne_zero, map_ne_zero f]`. Rewrite `h` using `[isUnit_iff_ne_zero]`. Conclude with `h`. Rewrite using `[Matrix.nonsing_inv_apply_not_isUnit _ h, Matrix.nonsing_inv_apply_not_isUnit _ h', Matrix.map_zero _ f.map_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_inv_field {F : Type} [Field F] (f : K →+* F) {ι : Type} [Fintype ι] [DecidableEq ι]
     (A : Matrix ι ι K) : A⁻¹.map f = (A.map f)⁻¹ := by
@@ -32,7 +32,7 @@ theorem map_inv_field {F : Type} [Field F] (f : K →+* F) {ι : Type} [Fintype 
       Matrix.map_zero _ f.map_zero]
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[Matrix.map_apply, Matrix.conjTranspose_apply, Matrix.conjTranspose_apply, Matrix.map_apply, hσ]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem conjTranspose_map (σ : K →+* ℂ) (hσ : ∀ a : K, σ (star a) = starRingEnd ℂ (σ a))
     {m n : Type} (A : Matrix m n K) : Aᴴ.map σ = (A.map σ)ᴴ := by
@@ -41,9 +41,9 @@ theorem conjTranspose_map (σ : K →+* ℂ) (hσ : ∀ a : K, σ (star a) = sta
   rfl
 
 /- English proof (translation)
-Establish `h1` using `conjTranspose_map v0.embedding hv0 H`. Establish `h2 : (H.map v0.embedding)ᴴ = H.map v0.embedding` using `hH.isHermitian`. Use extensionality with `i j`. Establish `h3` using `congrFun (congrFun (h1.trans h2) i) j`. Simplify using `only [Matrix.map_apply] at h3`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `v0.embedding.injective h3`.
+A detailed English derivation is pending.
 -/
 theorem conjTranspose_eq_of_posDef [NumberField K] (v0 : InfinitePlace K) (hv0 : IsConjAt v0)
     {n : ℕ} (H : Matrix (Fin n) (Fin n) K) (hH : (H.map v0.embedding).PosDef) : Hᴴ = H := by
@@ -55,9 +55,9 @@ theorem conjTranspose_eq_of_posDef [NumberField K] (v0 : InfinitePlace K) (hv0 :
   exact v0.embedding.injective h3
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Matrix.conjTranspose_apply, Matrix.of_apply]`. Establish `h1 : star (star (e j) ⬝ᵥ Γ.mulVec (e i)) = star (e i) ⬝ᵥ Γᴴ.mulVec (e j)`. Simplify using `only [dotProduct, Matrix.mulVec, star_sum, star_mul', star_star, Matrix.conjTranspose_apply, Finset.mul_sum, Pi.star_apply]`. Rewrite using `[Finset.sum_comm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl (fun a _ => Finset.sum_congr rfl (fun b _ => ?_))` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h1, hΓ]`.
+Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 -/
 theorem gramMat_conjTranspose {D m : ℕ} (Γ : Matrix (Fin D) (Fin D) K) (hΓ : Γᴴ = Γ)
     (e : Fin m → Fin D → K) :
@@ -77,15 +77,15 @@ end R0
 
 open R0 in
 /- English proof (translation)
-Introduce `K _ _ _ _ K0 hCM v0 hv0 n D H hK0 hpos P hsurj XQ hQ e`. Establish `hH : Hᴴ = H` using `conjTranspose_eq_of_posDef v0 hv0 H (hpos v0)`. Establish `hΓ : (quotGram P H)ᴴ = quotGram P H`. Unfold `quotGram`. Rewrite using `[Matrix.conjTranspose_nonsing_inv, Matrix.conjTranspose_mul, Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, Matrix.conjTranspose_nonsing_inv, hH, Matrix.mul_assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hΓmap : (quotGram P H).map v0.embedding = ((XQ v0)⁻¹)ᴴ * (XQ v0)⁻¹`. Rewrite using `[(hQ v0).2]`. Unfold `quotGram`. Rewrite using `[map_inv_field, Matrix.map_mul, Matrix.map_mul, map_inv_field, conjTranspose_map v0.embedding hv0]`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `gramR`. Rewrite using `[← Matrix.det_conjTranspose, gramMat_conjTranspose _ hΓ e]`. Unfold `gramR gram Formalism.HN.gramPl`. Rewrite using `[RingHom.map_det]`. Use `congr 1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `a c`. Simplify using `only [RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.of_apply, Formalism.HermitianLatticesTheory.majAt, Formalism.HermitianLatticesTheory.fcoord, Formalism.HermitianLatticesTheory.vecAt, Pi.basisFun_repr]`. Establish `hY : ∀ (Y : Matrix (Fin D) (Fin D) ℂ) (x y : Fin D → ℂ), ∑ i, star ((Y *ᵥ x) i) * (Y *ᵥ y) i = ∑ i, star (x i) * ((Yᴴ * Y) *ᵥ y) i`. Introduce `Y x y`. Establish `e1 : ∑ i, star ((Y *ᵥ x) i) * (Y *ᵥ y) i = star (Y *ᵥ x) ⬝ᵥ (Y *ᵥ y)` using `rfl`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e2 : ∑ i, star (x i) * ((Yᴴ * Y) *ᵥ y) i = star x ⬝ᵥ ((Yᴴ * Y) *ᵥ y)` using `rfl`. Rewrite using `[e1, e2, Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec]`. Rewrite using `[hY, ← hΓmap]`. Establish `hv0' : ∀ a : K, v0.embedding (star a) = starRingEnd ℂ (v0.embedding a)` using `hv0`. Simplify using `only [dotProduct, Matrix.mulVec, map_sum, map_mul, Pi.star_apply, Matrix.map_apply, hv0']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
 Both sides reduce to the same expression.
 -/

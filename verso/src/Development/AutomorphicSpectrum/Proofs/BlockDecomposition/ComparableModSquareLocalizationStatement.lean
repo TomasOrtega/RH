@@ -4,7 +4,7 @@ import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomology
 open CategoryTheory AlgebraicGeometry CrystallineSemistableComparison CrystallineSemistableComparison.R
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.CompMod.mem_span_or_mem_span | exact GlobalTheory.CompanionTheory.CompMod.mem_span_or_mem_span | (intros; apply GlobalTheory.CompanionTheory.CompMod.mem_span_or_mem_span <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.comparable_mod_square_localization : ∀ {S : Type} [CommRing S] (ϖ : S) [IsAdicComplete (Ideal.span {ϖ}) S], Val0 (S ⧸ Ideal.span {ϖ ^ 2}) → ∀ P : Ideal S, P.IsPrime → ∀ f g : S ⧸ compI P, f ∈ Ideal.span {g, Ideal.Quotient.mk (compI P) ϖ ^ 2} ∨ g ∈ Ideal.span {f, Ideal.Quotient.mk (compI P) ϖ ^ 2} := by
   first | exact @GlobalTheory.CompanionTheory.CompMod.mem_span_or_mem_span | exact GlobalTheory.CompanionTheory.CompMod.mem_span_or_mem_span | (intros; apply GlobalTheory.CompanionTheory.CompMod.mem_span_or_mem_span <;> assumption)

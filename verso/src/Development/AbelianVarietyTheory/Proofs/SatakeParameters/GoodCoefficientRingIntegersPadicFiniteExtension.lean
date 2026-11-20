@@ -9,7 +9,7 @@ open NumberField IsDedekindDomain GlobalTheory.HTW GlobalTheory.HTW.Rec Formalis
 namespace GlobalTheory.HTW.Rec
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.Pass.goodO_ringOfIntegers`.
+A detailed English derivation is pending.
 -/
 theorem goodO_finExt_integers :
     ∀ (l : ℕ) [Fact l.Prime] (LL : FinExt l), GoodO (Qp := ℚ_[l]) ↥LL.1 ↥(OL LL) :=

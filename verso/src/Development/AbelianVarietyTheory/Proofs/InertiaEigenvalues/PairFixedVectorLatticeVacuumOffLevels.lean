@@ -17,21 +17,21 @@ open GlobalTheory.RawLift
 noncomputable section
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T A Ks _ _ _ R F hL i t v f hf hoffP`. Establish `hth : IsThetaFunO R.ψ (Vc D i) (Wc D i) (R.vP i t)`. Use `hL.thP.pt_theta i t 1` as an intermediate fact. Unfold `RealDat.ptP pureTensorO at this`. Rewrite `this` using `[GlobalTheory.AdTh.VecFock.pureTensorL_one]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `⟨hth, ?_⟩` and prove the remaining obligations. Take `⟨hf₀, e, he, hthA⟩` from `hL.thP.vP i t`. Take `⟨ε, hε, rfl⟩` from `hf`. Establish `hoff : ∀ PP ∈ R.Pg ∪ R.Q t, PP.under (𝓞 D.host.F) ≠ v`. Introduce `PP hPP h0`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨Φ, hΦ⟩` from `GlobalTheory.IdemSupport.exists_comp D`. Take `⟨e', f', hp⟩` from `GlobalTheory.IdemSupport.exists_isPrimeIdem hΦ PP`. Take `⟨w, ε', hε', hf', hw⟩` from `GlobalTheory.VacLat.place_of_primeIdem hp`. Use `hoffP PP (Finset.mem_union.1 hPP) e' f' hp ?_` and prove the remaining obligations. Rewrite `hw` using `[h0]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Substitute `hw` using the available equality. Rewrite using `[hf', GlobalTheory.IdemSupport.placeIdem_unique hε' hε]`. Establish `hV : (R.ΛV i : Set (Fin (Vc D i).rank → D.host.E)) = (GlobalTheory.AdelicU.frameLat (Vc D i) : Set _)`. Rewrite using `[GlobalTheory.IndefiniteRowSideFullHecke.StandardHermitianSpace.baseLat_eq hL.lev i, GlobalTheory.AdelicU.hermitianSpaceBaseLattice_eq_frameLattice]`. Establish `hW : (R.ΛW i : Set (Fin (Wc D i).rank → D.host.E)) = (GlobalTheory.AdelicU.frameLat (Wc D i) : Set _)`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← GlobalTheory.AdelicU.hermitianSpaceBaseLattice_eq_frameLattice]`. Take `⟨c, -, -, -, h1, h2⟩` from `hL.lev.βW i`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `using h2 x hx`. Introduce `hx`. Simplify using `using h1 x hx`. Establish `hlat` using `hf₀.2.lat`. Establish `hle : latO (Vc D i) (Wc D i) (GlobalTheory.AdelicU.frameLat (Vc D i) : Set _) (GlobalTheory.AdelicU.frameLat (Wc D i) : Set _) (fun u => u = v) ≤ latO (Vc D i) (Wc D i) (R.ΛV i) (R.ΛW i) fun _ => True`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hV, hW]`. Conclude with `GlobalTheory.PlaceTensor.latO_mono fun _ _ => trivial`. Establish `hz : ∀ u ∈ latO (Vc D i) (Wc D i) (GlobalTheory.AdelicU.frameLat (Vc D i) : Set _) (GlobalTheory.AdelicU.frameLat (Wc D i) : Set _) (fun u => u = v), ∀ a b, cA D e * u a b = 0 ∧ cA D (cA D e) * u a b = 0` using `fun u hu a b => by`. Take `⟨h1, h2⟩` from `GlobalTheory.FinZeta.VacOff.idemSum_mul_off he hoff hu a b`. Rewrite using `[GlobalTheory.DualPairCheck.cA_cA]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨h2, h1⟩`. Use `⟨fun u hu => ?_, fun e' he' u hu hh => ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.Hk3.heisO_fix_thetaAt_off R.ψ _ _ _ _ _ _ _ _ hthA (2 • u) (hz _ (AddSubgroup.nsmul_mem _ hu 2)) (hlat.1 u (hle hu))`. Conclude with `GlobalTheory.Hk3.heisO_fix_thetaAt_off R.ψ _ _ _ _ _ _ _ _ hthA u (hz u hu) (hlat.2 e' he' u (hle hu) hh)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.RawLift.vacFin_off : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (A : FamIn D.what₂.LL G Pl0 T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), Laws R F → ∀ (i : Fin D.R.m) (t : T) (v : HeightOneSpectrum (𝓞 D.host.F)) (f : AE D), IsFinIdem D v f → (∀ P, P ∈ R.Pg ∨ P ∈ R.Q t → ∀ e f', IsPrimeIdem P e f' → f' ≠ f) → GlobalTheory.FinZeta.VacFin R.ψ (Vc D i) (Wc D i) v (R.vP i t) := by
   classical

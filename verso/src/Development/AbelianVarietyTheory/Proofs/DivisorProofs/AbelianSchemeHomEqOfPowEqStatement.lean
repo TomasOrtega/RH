@@ -6,7 +6,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | (exact @GlobalTheory.HomTorsionFree.eq_of_pow_eq) | (exact GlobalTheory.HomTorsionFree.eq_of_pow_eq) | (intros; apply GlobalTheory.HomTorsionFree.eq_of_pow_eq <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.abelianScheme_hom_eq_of_pow_eq : ∀ (S : Scheme.{0}) (A B : Over S) [GrpObj A] [IsCommMonObj A] [GrpObj B] [IsCommMonObj B], IsAbelianScheme A → IsAbelianScheme B → ∀ (d : ℕ), 0 < d → IsUnit ((d : ℕ) : Γ(S, ⊤)) → ∀ (x y : B ⟶ A), IsMonHom x → IsMonHom y → x ^ d = y ^ d → x = y := by
   first | (exact @GlobalTheory.HomTorsionFree.eq_of_pow_eq) | (exact GlobalTheory.HomTorsionFree.eq_of_pow_eq) | (intros; apply GlobalTheory.HomTorsionFree.eq_of_pow_eq  <;> assumption)

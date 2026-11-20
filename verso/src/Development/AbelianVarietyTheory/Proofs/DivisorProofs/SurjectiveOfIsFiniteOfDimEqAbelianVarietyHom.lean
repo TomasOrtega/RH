@@ -11,21 +11,19 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.AV.AbVar
 
 /- English proof (translation)
-Introduce `K _ A B f hdim hfin`. Take `⟨hBi, -, -⟩` from `GlobalTheory.T.abelianVariety_isIntegral_noetherian_compact K B`. Use `set g := f.hom.left`. Establish `eA : topologicalKrullDim A.X.left = Order.krullDim A.X.left` using `Order.krullDim_eq_of_orderIso (irreducibleSetEquivPoints (α := A.X.left))`. Establish `eB : topologicalKrullDim B.X.left = Order.krullDim B.X.left` using `Order.krullDim_eq_of_orderIso (irreducibleSetEquivPoints (α := B.X.left))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `dA` using `GlobalTheory.T.topologicalKrullDim_abVar_eq_dim K A`. Establish `dB` using `GlobalTheory.T.topologicalKrullDim_abVar_eq_dim K B`. Rewrite `dA` using `[eA]`. Rewrite `dB` using `[eB]`. Establish `hm : StrictMono (g : A.X.left → B.X.left)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a b hab`. Establish `h1 : g a ≤ g b` using `(show b ⤳ a from hab.1).map g.continuous`. Use `lt_of_le_not_ge h1 fun h2 ↦ hab.2 ?_` and prove the remaining obligations. Establish `e : g b = g a` using `((show g b ⤳ g a from h1).antisymm h2).eq`. Establish `hd` using `(g.isDiscrete_preimage_singleton (g a)).to_subtype`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (⟨b, e⟩ : g ⁻¹' {g a}) ⤳ ⟨a, rfl⟩` using `Topology.IsInducing.subtypeVal.specializes_iff.mp hab.1`. Establish `hba : b = a` using `congrArg Subtype.val this.eq`. Rewrite using `[hba]`. Use `⟨?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hns`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hη : genericPoint B.X.left ∉ Set.range g`. Introduce `hη`. Apply `hns` to reduce the goal to its premises. Establish `hc : IsClosed (Set.range g)` using `g.isClosedMap.isClosed_range`. Introduce `y`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `(genericPoint_specializes y).mem_closed hc hη`. Take `⟨l, hl⟩` from `Order.le_krullDim_iff.1 dA.ge`. Establish `hlast : (l.map g hm).last < genericPoint B.X.left`. Use `lt_of_le_not_ge (genericPoint_specializes _) fun h2 ↦ hη ?_` and prove the remaining obligations. Establish `e` using `((genericPoint_specializes ((l.map g hm).last)).antisymm h2).eq`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite using `[e, LTSeries.last_map]`. Conclude with `⟨_, rfl⟩`. Use `Order.LTSeries.length_le_krullDim ((l.map g hm).snoc _ hlast)` as an intermediate fact. Rewrite `this` using `[dB, RelSeries.snoc_length, LTSeries.map_length, hl, ← hdim]`. Normalize the coercions in `at this`.
-
-Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Put the expressions in a common number system so they can be compared. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem surjective_of_isFinite_of_dim_eq : ∀ (K : Type) [Field K] (A B : AbVar K) (f : A ⟶ B),
     A.dim = B.dim → IsFinite f.hom.left → Surjective f.hom.left := by

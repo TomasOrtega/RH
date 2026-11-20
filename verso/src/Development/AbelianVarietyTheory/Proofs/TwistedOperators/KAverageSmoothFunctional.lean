@@ -13,11 +13,9 @@ variable {n : ℕ} {ε : Fin n → Bool} {H : Type} [NormedAddCommGroup H] [Inne
   {σ : Mx n → (H →L[ℂ] H)}
 
 /- English proof (translation)
-Break down `subsingleton_or_nontrivial H with hs | hn` into its components or cases. Introduce `x`. Rewrite using `[Subsingleton.elim x 0]`. Conclude with `subset_closure (smoothAll (Jm ε) σ).zero_mem`. Use `dense_of_irred hi (fun g hg v hv k x hx hxG => ?_) ?_` and prove the remaining obligations.
+Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure.
 
-Use `letI := Matrix.linftyOpNormedRing (n := Fin n) (α := ℂ)`. Use `letI := Matrix.linftyOpNormedAlgebra (R := ℝ) (n := Fin n) (α := ℂ)`. Establish `h1` using `hv k (fun t => x t * g) (hx.mul contDiff_const) fun t => mul_mem_UJ (hxG t) hg`. Use `h1 using 2 with t` and compare the differences between its conclusion and the goal. Conclude with `(sigma_mul hσ (hxG t) hg v).symm`.
-
-Take `⟨v, hv, hs⟩` from `GlobalTheory.GardingVec.exists_garding hσ`. Conclude with `(Submodule.ne_bot_iff _).2 ⟨v, hs, hv⟩`.
+Equip the data with the indicated structure. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem dense_smoothAll (hσ : IsURepOn (UJset ε) σ) (hi : IsIrredOn (UJset ε) σ) :
     Dense (smoothAll (Jm ε) σ : Set H) := by
@@ -35,7 +33,7 @@ theorem dense_smoothAll (hσ : IsURepOn (UJset ε) σ) (hi : IsIrredOn (UJset ε
       exact (Submodule.ne_bot_iff _).2 ⟨v, hs, hv⟩
 
 /- English proof (translation)
-The claim follows from `continuousOn_iff_continuous_restrict.2 (continuous_word_orbit (isUnit_Jm ε) hσ (dense_smoothAll hσ hi) continuous_subtype_val (fun t => t.2) l hl hw)`.
+A detailed English derivation is pending.
 -/
 theorem continuousOn_Dw (hσ : IsURepOn (UJset ε) σ) (hi : IsIrredOn (UJset ε) σ) {l : List (Mx n)}
     (hl : ∀ X ∈ l, X ∈ lieSet ε) {w : H} (hw : Sm ε σ w) :

@@ -9,21 +9,21 @@ open scoped TensorProduct
 namespace GlobalTheory.GoodPrime
 
 /- English proof (translation)
-Distinguish the cases in `hnm : nm = 0`. Take `⟨p, hp, hpd⟩` from `Nat.exists_prime_and_dvd (n := M + 1) (by omega)`. Use `⟨p, hp, fun h => hp.one_lt.ne' ?_, 0, by simp [hnm]⟩` and prove the remaining obligations. Conclude with `Nat.dvd_one.1 ((Nat.dvd_add_right h).1 hpd)`. Use `set t : ℤ := |tr| + 3 set g : ℤ := (M : ℤ) ^ 2 * nm * t ^ 2 - tr * M * t + 1`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht : 3 ≤ t` using `by have := abs_nonneg tr; omega`. Establish `hMz : (1 : ℤ) ≤ M` using `by exact_mod_cast hM`. Establish `hnm1 : 1 ≤ |nm|` using `Int.one_le_abs hnm`. Establish `hg : 2 ≤ |g|`. Establish `h1 : |(M : ℤ) ^ 2 * nm * t ^ 2| = (M : ℤ) ^ 2 * |nm| * t ^ 2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[abs_mul, abs_mul, abs_pow, abs_pow, abs_of_pos (by omega : (0:ℤ) < M), abs_of_pos (by omega : (0:ℤ) < t)]`. Establish `h2 : |tr * M * t| = |tr| * M * t`. Rewrite using `[abs_mul, abs_mul, abs_of_pos (by omega : (0:ℤ) < M), abs_of_pos (by omega : (0:ℤ) < t)]`. Establish `h3 : |(M : ℤ) ^ 2 * nm * t ^ 2| ≤ |g| + |tr * M * t| + 1`. Establish `: (M : ℤ) ^ 2 * nm * t ^ 2 = g + tr * M * t - 1` using `by simp only [g]; ring`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[this]`. Combine the equalities or inequalities in the displayed calculation. Rewrite `h3` using `[h1, h2]`. Establish `hat : |tr| = t - 3` using `by simp only [t]; ring`. Rewrite `h3` using `[hat]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hMt : 3 ≤ (M : ℤ) * t` using `by nlinarith`. Establish `hk : (M : ℤ) ^ 2 * t ^ 2 ≤ (M : ℤ) ^ 2 * |nm| * t ^ 2`. Use `mul_le_mul_of_nonneg_right hnm1 (by positivity : (0:ℤ) ≤ (M : ℤ) ^ 2 * t ^ 2)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hq : 3 ≤ t * ((M : ℤ) - 1) + 3` using `by nlinarith`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr : 9 ≤ ((M : ℤ) * t) * (t * ((M : ℤ) - 1) + 3)` using `by nlinarith`. Establish `e : ((M : ℤ) * t) * (t * ((M : ℤ) - 1) + 3) = (M : ℤ) ^ 2 * t ^ 2 - (t - 3) * M * t` using `by ring`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hg' : (2 : ℤ) ≤ (g.natAbs : ℤ)` using `by rw [← Int.abs_eq_natAbs]; exact hg`. Take `⟨p, hp, hpd⟩` from `Nat.exists_prime_and_dvd (n := g.natAbs) (by omega)`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hpg : (p : ℤ) ∣ g` using `Int.natCast_dvd.2 hpd`. Use `⟨p, hp, fun h => hp.one_lt.ne' ?_, M * nm * t, ?_⟩` and prove the remaining obligations. Establish `hpM : (p : ℤ) ∣ M` using `Int.natCast_dvd_natCast.2 h`. Establish `: (p : ℤ) ∣ g - M * (M * nm * t ^ 2 - tr * t)` using `dvd_sub hpg (dvd_mul_of_dvd_left hpM _)`. Establish `e : g - M * (M * nm * t ^ 2 - tr * t) = 1` using `by simp only [g]; ring`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[e]`. Conclude with `Int.eq_one_of_dvd_one (by positivity) this` after adjusting the coercions. Establish `e : ((M : ℤ) * nm * t) ^ 2 - tr * (M * nm * t) + nm = nm * g` using `by simp only [g]; ring`. Rewrite using `[e]`. Conclude with `dvd_mul_of_dvd_right hpg _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem schur (tr nm : ℤ) (M : ℕ) (hM : 0 < M) :
     ∃ p : ℕ, p.Prime ∧ ¬ p ∣ M ∧ ∃ r : ℤ, (p : ℤ) ∣ r ^ 2 - tr * r + nm := by
@@ -70,11 +70,9 @@ theorem schur (tr nm : ℤ) (M : ℕ) (hM : 0 < M) :
       rw [e]; exact dvd_mul_of_dvd_right hpg _
 
 /- English proof (translation)
-Use `haveI := G.freeLa`. Use `haveI := G.finLa`. Take `⟨e, he, hperf⟩` from `GlobalTheory.T.bilinForm_injective_exists_nsmul_mem_range G.La G.EF G.nondeg`. Take `⟨M, hM, hsplit⟩` from `GlobalTheory.T.harrisTaylorOrder_split_almost_all_primes G`. Establish `hd : 0 < (G.tr ^ 2 - 4 * G.nm).natAbs` using `Int.natAbs_pos.2 (ne_of_lt G.disc_neg)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨p, hp, hpM, r, hr⟩` from `schur G.tr G.nm (N * e * M * (G.tr ^ 2 - 4 * G.nm).natAbs) (by positivity)`. Use `haveI : Fact p.Prime := ⟨hp⟩`. Establish `hN' : ¬ p ∣ N` using `fun h => hpM (Dvd.dvd.mul_right (Dvd.dvd.mul_right (Dvd.dvd.mul_right h _) _) _)`. Establish `he' : ¬ p ∣ e` using `fun h => hpM (Dvd.dvd.mul_right (Dvd.dvd.mul_right (Dvd.dvd.mul_left h _) _) _)`. Establish `hM' : ¬ p ∣ M` using `fun h => hpM (Dvd.dvd.mul_right (Dvd.dvd.mul_left h _) _)`.
-
-Establish `hd' : ¬ (p : ℤ) ∣ G.tr ^ 2 - 4 * G.nm` using `fun h => hpM (Dvd.dvd.mul_left (Int.natCast_dvd.1 h) _)`. Use `⟨p, inferInstance, { F := G.F, fld := G.fld, nf := G.nf, cm := G.cm, bar := G.bar, bar_eq := G.bar_eq, ω := G.ω, tr := G.tr, nm := G.nm, tr_eq := G.tr_eq, nm_eq := G.nm_eq, disc_neg := G.disc_neg, disc_p := hd', split := ⟨r, hr⟩, O := G.O, rng := G.rng, alg := G.alg, freeO := G.f …` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_datum (G : GDatum) (N : ℕ) (hN : 0 < N) :
     ∃ (p : ℕ) (_ : Fact p.Prime) (D : Datum p), N.Coprime p ∧ D.toG = G := by

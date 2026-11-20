@@ -15,7 +15,7 @@ open scoped Matrix ComplexOrder
 variable {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRingCat.of Ω) ⟶ X}
 
 /- English proof (translation)
-Establish `key : ∀ (r : Cpt ξ) (hr : r.1 ∈ U), genMap ξ r (X.presheaf.germ U r.1 hr g) = (Scheme.stalkClosedPointTo ξ).hom (X.presheaf.germ U (genPt ξ) (r.2.mem_open U.2 hr) g)`. Introduce `r hr`. Use `show (Scheme.stalkClosedPointTo ξ).hom (X.presheaf.stalkSpecializes r.2 (X.presheaf.germ U r.1 hr g)) = _`. Conclude with `congrArg (Scheme.stalkClosedPointTo ξ).hom (X.presheaf.germ_stalkSpecializes_apply hr r.2 g)`. Rewrite using `[key p hp, key q hq]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem genMap_germ_eq {U : X.Opens} (g : Γ(X, U)) (p q : Cpt ξ) (hp : p.1 ∈ U) (hq : q.1 ∈ U) :
     genMap ξ p (X.presheaf.germ U p.1 hp g) = genMap ξ q (X.presheaf.germ U q.1 hq g) := by
@@ -27,7 +27,7 @@ theorem genMap_germ_eq {U : X.Opens} (g : Γ(X, U)) (p q : Cpt ξ) (hp : p.1 ∈
   rw [key p hp, key q hq]
 
 /- English proof (translation)
-Establish `hu : IsUnit (genMap ξ p s)` using `hs.map (genMap ξ p)`. Take `⟨u, rfl⟩` from `hs`. Use `⟨hu.ne_zero, ⟨_, rfl⟩, ⟨((u⁻¹ : (X.presheaf.stalk p.1)ˣ) : X.presheaf.stalk p.1), ?_⟩⟩` and prove the remaining obligations. Use `eq_inv_of_mul_eq_one_left ?_` and prove the remaining obligations. Rewrite using `[← map_mul, Units.inv_mul, map_one]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem unitAt_of_isUnit {p : Cpt ξ} {s : X.presheaf.stalk p.1} (hs : IsUnit s) :
     unitAt ξ p (genMap ξ p s) := by
@@ -38,7 +38,7 @@ theorem unitAt_of_isUnit {p : Cpt ξ} {s : X.presheaf.stalk p.1} (hs : IsUnit s)
   rw [← map_mul, Units.inv_mul, map_one]
 
 /- English proof (translation)
-Take `⟨h0, _, t, ht⟩` from `h`. Use `IsUnit.of_mul_eq_one t (hξ.inj p ?_)` and prove the remaining obligations. Rewrite using `[map_mul, ht, map_one, mul_inv_cancel₀ h0]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem isUnit_of_unitAt (hξ : IsCptGen ξ) {p : Cpt ξ} {s : X.presheaf.stalk p.1}
     (h : unitAt ξ p (genMap ξ p s)) : IsUnit s := by
@@ -49,19 +49,19 @@ theorem isUnit_of_unitAt (hξ : IsCptGen ξ) {p : Cpt ξ} {s : X.presheaf.stalk 
 variable {K : Type} [Fintype K] {J : K → Type} [∀ k, Fintype (J k)] {y : (Σ k, J k) → Ω}
 
 /- English proof (translation)
-Set `gv : X.presheaf.stalk (centre z) →+* Ω` to `genMap ξ ⟨centre z, h⟩`. Set `ev : X.presheaf.stalk (centre z) →+* ℂ` to `(Scheme.stalkClosedPointTo z).hom`. Establish `hinj : Function.Injective gv` using `hT.gen.inj ⟨centre z, h⟩`. Prove the components needed by the constructor for the conclusion. Use `choose d hd using hz.1`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact.
 
-Establish `key : ∀ k, ∃ (r : ℂ) (s : X.presheaf.stalk (centre z)), gv s = y ⟨k, c k⟩ / y ⟨k, d k⟩ ∧ ev s = r ∧ w ⟨k, c k⟩ = r * w ⟨k, d k⟩`. Introduce `k`. Take `⟨r, ⟨_, s, hs, hv⟩, hw⟩` from `(hz.2 k (d k) (hd k)).2 (c k)`. Conclude with `⟨r, s, hs, hv, hw⟩`. Use `choose r s hs hv hw using key`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨t, ht⟩ : ∃ t, gv t = segreCoord y d / segreCoord y c` from `hc.2 d`. Establish `hxd : segreCoord y d ≠ 0` using `Finset.prod_ne_zero_iff.2 fun k _ => (hz.2 k (d k) (hd k)).1`. Establish `hxc : segreCoord y c ≠ 0` using `hc.1`. Establish `hone : t * ∏ k, s k = 1`. Use `hinj ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[map_mul, map_prod, ht, map_one]`. Simplify using `only [hs]`. Rewrite using `[Finset.prod_div_distrib]`. Express the relevant statement in the definitionally equal form `segreCoord y d / segreCoord y c * (segreCoord y c / segreCoord y d) = 1`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hval` using `congrArg ev hone`. Rewrite `hval` using `[map_mul, map_prod, map_one]`. Simplify using `only [hv] at hval`. Establish `hr : ∏ k, r k ≠ 0` using `right_ne_zero_of_mul_eq_one hval`. Introduce `k`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hw k]`. Conclude with `mul_ne_zero (Finset.prod_ne_zero_iff.1 hr k (Finset.mem_univ k)) (hd k).ne_zero`. Take `⟨s, hs⟩ : ∃ s, gv s = f` from `hf.2.1`. Take `⟨t, ht⟩ : ∃ t, gv t = f⁻¹` from `hf.2.2`. Establish `hone : s * t = 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `hinj ?_` and prove the remaining obligations. Rewrite using `[map_mul, hs, ht, map_one, mul_inv_cancel₀ hf.1]`. Establish `hval` using `congrArg ev hone`. Rewrite `hval` using `[map_mul, map_one]`. Conclude with `⟨ev s, (GlobalTheory.T.valAt_iff_value_at X Ω ξ K J y hT z w h hz f _).1 ⟨h, s, hs, rfl⟩, left_ne_zero_of_mul_eq_one hval⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem inFrameDomain_of_unitAt (hT : CoordTie ℤ ξ (segreCoord y)) {z : Spec (CommRingCat.of ℂ) ⟶ X}
     {w : (Σ k, J k) → ℂ} (hz : CoordsAt ξ y z w) (h : genPt ξ ⤳ centre z) {c : (k : K) → J k} {f : Ω}
@@ -109,17 +109,17 @@ theorem inFrameDomain_of_unitAt (hT : CoordTie ℤ ξ (segreCoord y)) {z : Spec 
 variable {F : Type} [AddCommGroup F] [Module Ω F] {r : ℕ} {W : ChartBundle ℤ (segreCoord y) r F} {L : Lat ξ F}
 
 /- English proof (translation)
-Take `⟨U, hU, hmem⟩` from `hT.affine c hc`. Establish `loc : ∀ q : U, ∃ (g : Γ(X, U)) (b : Fin r → F), q.1 ∈ X.basicOpen g ∧ ∀ p : Cpt ξ, p.1 ∈ X.basicOpen g → L.IsFrameAt b p`. Introduce `q`. Take `⟨h, -⟩` from `(hmem q.1).1 q.2`. Take `⟨V, hqV, b, -, hb⟩` from `hV ⟨q.1, h⟩ (Set.mem_univ _)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨g, hgV, hqg⟩` from `hU.exists_basicOpen_le (V := V) ⟨q.1, hqV⟩ q.2`. Conclude with `⟨g, b, hqg, fun p hp => hb p (Set.mem_univ _) (hgV hp)⟩`. Use `choose g b hq hfr using loc`. Establish `hsp : ∀ q : U, genPt ξ ⤳ q.1` using `fun q => ((hmem q.1).1 q.2).1`. Establish `hpU : ∀ p : Cpt ξ, InChart ξ (segreCoord y) c p → p.1 ∈ U` using `fun p hp => (hmem p.1).2 ⟨p.2, hp⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `v : U → Ω` to `fun q => genMap ξ ⟨q.1, hsp q⟩ (X.presheaf.germ U q.1 q.2 (g q))`. Establish `hv : ∀ (q : U) (p : Cpt ξ) (hp : p.1 ∈ U), v q = genMap ξ p (X.presheaf.germ U p.1 hp (g q))` using `fun q p hp => genMap_germ_eq (g q) ⟨q.1, hsp q⟩ p q.2 hp`. Establish `hunit : ∀ (q : U) (p : Cpt ξ), p.1 ∈ U → p.1 ∈ X.basicOpen (g q) → unitAt ξ p (v q)`. Introduce `q p hp hb`. Rewrite using `[hv q p hp]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `unitAt_of_isUnit ((Scheme.mem_basicOpen _ _ _ hp).1 hb)`. Establish `hbasic : ∀ (q : U) (p : Cpt ξ), p.1 ∈ U → unitAt ξ p (v q) → p.1 ∈ X.basicOpen (g q)`. Introduce `q p hp hu`. Rewrite `hu` using `[hv q p hp]`. Conclude with `(Scheme.mem_basicOpen _ _ _ hp).2 (isUnit_of_unitAt hT.gen hu)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hcov : (U : Set X) ⊆ ⋃ q : U, (X.basicOpen (g q) : Set X)` using `fun x hx => Set.mem_iUnion.2 ⟨⟨x, hx⟩, hq _⟩`. Take `⟨t, ht⟩` from `hU.isCompact.elim_finite_subcover _ (fun q => (X.basicOpen (g q)).isOpen) hcov`. Use `⟨(fun q => (v q, b q)) '' (↑t : Set _), t.finite_toSet.image _, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨q, -, rfl⟩`. Establish `hne : v q ≠ 0` using `(hunit q ⟨q.1, hsp q⟩ q.2 (hq q)).1`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hring : v q ∈ chartRing ℤ (segreCoord y) c` using `(hT.ring c hc (v q)).2 fun p hp => ⟨_, (hv q p (hpU p hp)).symm⟩`. Conclude with `(GlobalTheory.T.segre_chart_bundle X Ω ξ K J y F r W L hT hV hC c (v q) (b q) hc hring hne).2 fun p hp hu => hfr q p (hbasic q p (hpU p hp) hu)`. Introduce `p hp`. Take `⟨q, hqt, hqp⟩` from `Set.mem_iUnion₂.1 (ht (hpU p hp))`. Conclude with `⟨_, ⟨q, hqt, rfl⟩, hunit q p (hpU p hp) hqp⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_frames_on_chart (hT : CoordTie ℤ ξ (segreCoord y)) (hV : L.IsVB r ⊤)
     (hC : L.IsChartOf (segreCoord y) W.lat) (c : (k : K) → J k) (hc : segreCoord y c ≠ 0) :
@@ -171,15 +171,13 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 open scoped Matrix ComplexOrder
 
 /- English proof (translation)
-Introduce `X Ω _ ξ K _ J _ y F _ _ r W L hT hV hC`. Establish `hloc` using `fun c : {c : (k : K) → J k // segreCoord y c ≠ 0} => ChartFrames.exists_frames_on_chart (W := W) (L := L) hT hV hC c.1 c.2`. Use `choose S hfin hframe hcov using hloc`. Set `T : Set (((k : K) → J k) × Ω × (Fin r → F))` to `⋃ c, (fun a : Ω × (Fin r → F) => (c.1, a.1, a.2)) '' S c`. Establish `hTfin : T.Finite` using `Set.finite_iUnion fun c => (hfin c).image _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `haveI := hTfin.to_subtype`. Take `⟨m, ⟨e⟩⟩` from `Finite.exists_equiv_fin T`. Use `⟨m, fun i => (e.symm i).1.1, fun i => (e.symm i).1.2.1, fun i => (e.symm i).1.2.2, ?_, ?_⟩` and prove the remaining obligations. Establish `hall : ∀ t ∈ T, IsFrameOver y W t.1 t.2.1 t.2.2`. Introduce `t ht`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Take `⟨c, a, ha, rfl⟩` from `Set.mem_iUnion.1 ht`. Conclude with `hframe c a ha`. Conclude with `fun i => hall _ (e.symm i).2`. Introduce `w hw`. Take `⟨z, h, hz⟩` from `(GlobalTheory.T.complex_points_iff_centres X Ω ξ K J y hT w).1 hw`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨c, hc⟩` from `hT.cover ⟨centre z, h⟩`. Take `⟨a, ha, hu⟩` from `hcov ⟨c, hc.1⟩ ⟨centre z, h⟩ hc`. Establish `hmem : (c, a.1, a.2) ∈ T` using `Set.mem_iUnion.2 ⟨⟨c, hc.1⟩, a, ha, rfl⟩`. Use `⟨e ⟨_, hmem⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [Equiv.symm_apply_apply]`.
-
-Conclude with `ChartFrames.inFrameDomain_of_unitAt hT hz h hc hu`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_frames_cover_mcPts : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X) (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (y : (Σ k, J k) → Ω) (F : Type) [AddCommGroup F] [Module Ω F] (r : ℕ) (W : ChartBundle ℤ (segreCoord y) r F) (L : Lat ξ F), CoordTie ℤ ξ (segreCoord y) → L.IsVB r ⊤ → L.IsChartOf (segreCoord y) W.lat → ∃ (m : ℕ) (ch : Fin m → (k : K) → J k) (fr : Fin m → Ω) (b : Fin m → Fin r → F), (∀ i, IsFrameOver y W (ch i) (fr i) (b i)) ∧ ∀ w ∈ mcPts (mCoordIdeal y), ∃ i, InFrameDomain y (ch i) (fr i) w := by
   classical

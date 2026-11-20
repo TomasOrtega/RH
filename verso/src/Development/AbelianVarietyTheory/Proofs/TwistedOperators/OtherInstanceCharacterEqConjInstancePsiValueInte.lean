@@ -18,9 +18,9 @@ namespace GlobalTheory.SeeConjChar
 open Formalism.L2.SG.HidaSetting in
 
 /- English proof (translation)
-Take `⟨⟨I⟩⟩` from `X`. Simplify using `only at h`. Substitute `h` using the available equality. Establish `e` using `Formalism.L2.SG.EvalTIota.finE_brg_i (Formalism.IndefR.RationalEmbedding.iota D κ)`. Establish `e2 : finE (Yc D 0) κ = ((Formalism.IndefR.RationalEmbedding.iota D κ).2.1 : GL (Fin (D.sp.Y 0).rank) (EAf D))` using `(congrArg (finE (D.sp.Y 0)) ((Formalism.IndefR.RationalEmbedding.iota D).symm_apply_apply κ)).symm.trans e`.
+Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e2]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem argT_finE_eq {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D)
     (κ : GA D (Yc D 0)) :
@@ -36,7 +36,7 @@ theorem argT_finE_eq {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (h
   rfl
 
 /- English proof (translation)
-Take `⟨⟨I⟩⟩` from `X`. Simplify using `only at h`. Substitute `h` using the available equality. Conclude with `hc`.
+Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem intAf_cast {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D)
     (c : TensorProduct X.B.I.F X.B.I.E (Formalism.MainNotions.S.Af X.B.I.F)) (hc : c ∈ Formalism.MainNotions.S.IntAf X.B.I.F X.B.I.E) :
@@ -48,7 +48,7 @@ theorem intAf_cast {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (h :
   exact hc
 
 /- English proof (translation)
-Rewrite using `[chiS_rfl]`. Use `congr 2`. Conclude with `cast_cast _ _ c |>.trans (cast_eq _ c)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem chiS_cast {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D)
     (c : TensorProduct X.B.I.F X.B.I.E (Formalism.MainNotions.S.Af X.B.I.F)) :
@@ -63,11 +63,9 @@ end GlobalTheory.SeeConjChar
 namespace GlobalTheory.SeeConjChar
 
 /- English proof (translation)
-Introduce `D X h κ hK`. Rewrite using `[argT_finE_eq X h κ]`. Use `⟨intAf_cast X h _ ?_, ?_⟩` and prove the remaining obligations. Take `⟨hef, hz0, hb⟩` from `X.vectorsInLattice`. Establish `hnxt : ∀ a, Formalism.L2.SG.HidaSetting.nxt X.e0 X.z0 a ∈ X.B.I.Lf` using `fun a => by`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Unfold `Formalism.L2.SG.HidaSetting.nxt`. Use `split_ifs`. Use `exacts [(hef _).1, hz0]`. Unfold `GlobalTheory.FlagBasis.chiArg`. Use `Subring.add_mem _ (Subring.sum_mem _ fun a _ => ?_) (Subring.sum_mem _ fun i _ => ?_)` and prove the remaining obligations.
-
-Conclude with `Formalism.L2.SG.Pf.unitaryCongruence.hA_int _ (hef a).2 (Formalism.L2.SG.Pf.unitaryCongruence.K_mv _ hK (hnxt a))`. Use `split_ifs with hi`. Conclude with `Formalism.L2.SG.Pf.unitaryCongruence.hA_int _ (hb i).2 (Formalism.L2.SG.Pf.unitaryCongruence.K_mv _ hK (hb _).1)`. Conclude with `Subring.zero_mem _`. Conclude with `(chiS_cast X h _).symm`.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem argT_mem_intAf_and_chi2_eq_chiS_of_mem_Kset : ∀ {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D) (κ : GA D (Yc D 0)), ((iotaX X h).toMulEquiv κ).2 ∈ X.B.I.Kset → GlobalTheory.SeeConjChar.argT X h (finE (Yc D 0) κ) ∈ Formalism.L2.Herm.intAf D.host.F D.host.E ∧ X.chi2 ((iotaX X h).toMulEquiv κ).2 = GlobalTheory.SeeConjChar.chiS X h (GlobalTheory.SeeConjChar.argT X h (finE (Yc D 0) κ)) := by
   intro D X h κ hK

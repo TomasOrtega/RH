@@ -12,17 +12,15 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.Unif
 
 /- English proof (translation)
-Introduce `R _ I hI Y _ U hU`. Assume the negation of the conclusion as `hne`. Establish `hcl : IsClosed (Y.hom '' ((U : Set Y.left)ᶜ))` using `Y.hom.isClosedMap _ U.isOpen.isClosed_compl`. Establish `hne' : ((U : Set Y.left)ᶜ).Nonempty`. Rewrite using `[Set.nonempty_compl]`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Conclude with `hne (TopologicalSpace.Opens.ext h)`. Take `⟨y, hy⟩` from `hne'`. Set `p : PrimeSpectrum R` to `Y.hom y`. Take `⟨m, hm, hpm⟩` from `Ideal.exists_le_maximal p.asIdeal p.isPrime.ne_top`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `q : PrimeSpectrum R` to `⟨m, hm.isPrime⟩`. Establish `hspec : p ⤳ q` using `(PrimeSpectrum.le_iff_specializes p q).1 hpm`. Establish `hq : q ∈ Y.hom '' ((U : Set Y.left)ᶜ)` using `hspec.mem_closed hcl ⟨y, hy, rfl⟩`. Take `⟨y', hy', hyq⟩` from `hq`. Establish `hr : q ∈ Set.range (thick R I 0)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : q ∈ Set.range (PrimeSpectrum.comap (Ideal.Quotient.mk (I ^ (0 + 1))))`. Rewrite using `[range_comap_of_surjective _ _ Ideal.Quotient.mk_surjective, Ideal.mk_ker, PrimeSpectrum.mem_zeroLocus]`. Introduce `x hx`. Establish `hx' : x ∈ I` using `by simpa using hx`. Conclude with `(Ideal.mem_sInf.1 (hI hx')) ⟨bot_le, hm⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h1`. Establish `h2 : y' ∈ Set.range (pullback.fst Y.hom (thick R I 0))`. Rewrite using `[Scheme.Pullback.range_fst]`. Use `show Y.hom y' ∈ Set.range (thick R I 0)`. Rewrite using `[hyq]`.
-
-Conclude with `hr`. Take `⟨z, rfl⟩` from `h2`. Conclude with `hy' (hU z)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem eq_top_of_special_part : ∀ (R : Type) [CommRing R] (I : Ideal R), I ≤ Ideal.jacobson ⊥ → ∀ (Y : Over (Spec (CommRingCat.of R))) [UniversallyClosed Y.hom] (U : Y.left.Opens), (∀ z : (thickObj R I 0 Y).left, pullback.fst Y.hom (thick R I 0) z ∈ U) → U = ⊤ := by
   intro R _ I hI Y _ U hU

@@ -9,9 +9,9 @@ universe u
 variable {V : Type u} [NormedAddCommGroup V] [InnerProductSpace ℝ V]
 
 /- English proof (translation)
-Use `first`. Consider the case `exact (LinearMap.BilinForm.nondegenerate_iff (innerₗ V) (fun x => by rw [innerₗ_apply_apply]; exact real_inner_self_nonneg) isSymm_inner).2 (fun x => by rw [innerₗ_apply_apply]; exact inner_self_eq_zero)`. Consider the case `(unfold LinearMap.BilinForm.Nondegenerate`. Introduce `m hm`. Establish `h` using `hm m`.
+Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[innerₗ_apply_apply]`. Conclude with `inner_self_eq_zero.mp h)`.
+A detailed English derivation is pending.
 -/
 lemma dualLattice_innerₗ_nondegenerate : (innerₗ V).Nondegenerate := by
   first
@@ -25,9 +25,9 @@ lemma dualLattice_innerₗ_nondegenerate : (innerₗ V).Nondegenerate := by
        exact inner_self_eq_zero.mp h)
 
 /- English proof (translation)
-Use `first`. Consider the case `exact fun x y => by`. Simplify using `only [innerₗ_apply_apply, RingHom.id_apply]`. Conclude with `real_inner_comm _ _`. Consider the case `exact ⟨fun x y => by`.
+Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Simplify using `only [innerₗ_apply_apply, RingHom.id_apply]`. Conclude with `real_inner_comm _ _⟩`. Consider the case `(intro x y; simp only [innerₗ_apply_apply, RingHom.id_apply]; exact real_inner_comm _ _)`. Consider the case `(constructor; intro x y; simp only [innerₗ_apply_apply, RingHom.id_apply]; exact real_inner_comm _ _)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 lemma innerₗ_isSymm : LinearMap.BilinForm.IsSymm (innerₗ V) := by
   first
@@ -41,7 +41,7 @@ lemma innerₗ_isSymm : LinearMap.BilinForm.IsSymm (innerₗ V) := by
 variable [FiniteDimensional ℝ V]
 
 /- English proof (translation)
-Conclude with `⟨Module.Free.ChooseBasisIndex ℤ Λ, inferInstance, inferInstance, Module.Basis.ofZLatticeBasis ℝ Λ (Module.Free.chooseBasis ℤ Λ), Module.Basis.ofZLatticeBasis_span ℝ Λ _⟩`.
+Supply the required witnesses or components.
 -/
 lemma exists_basis_span_eq (Λ : Submodule ℤ V) [DiscreteTopology Λ] [IsZLattice ℝ Λ] :
     ∃ (ι : Type u) (_ : Fintype ι) (_ : DecidableEq ι) (e : Module.Basis ι ℝ V),
@@ -52,7 +52,7 @@ lemma exists_basis_span_eq (Λ : Submodule ℤ V) [DiscreteTopology Λ] [IsZLatt
     Module.Basis.ofZLatticeBasis_span ℝ Λ _⟩
 
 /- English proof (translation)
-Substitute `h` using the available equality. Use `⟨inferInstance, ?_⟩` and prove the remaining obligations. Introduce `_`. Use `infer_instance`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 lemma isLattice_of_eq_span {ι : Type*} [Fintype ι] (e : Module.Basis ι ℝ V) (L : Submodule ℤ V)
     (h : L = Submodule.span ℤ (Set.range e)) :
@@ -63,7 +63,7 @@ lemma isLattice_of_eq_span {ι : Type*} [Fintype ι] (e : Module.Basis ι ℝ V)
   infer_instance
 
 /- English proof (translation)
-The claim follows from `LinearMap.BilinForm.dualSubmodule_span_of_basis (innerₗ V) dualLattice_innerₗ_nondegenerate e`.
+A detailed English derivation is pending.
 -/
 lemma dualLattice_dual_span_eq {ι : Type*} [Fintype ι] [DecidableEq ι] (e : Module.Basis ι ℝ V) :
     dual (Submodule.span ℤ (Set.range e)) =

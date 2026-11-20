@@ -15,7 +15,7 @@ namespace UpperTheory.RealTr.CfB
 variable {n : ℕ}
 
 /- English proof (translation)
-Simplify using `[ex, AddMonoidAlgebra.single_mul_single]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem ex_add (x y : Wt n) : ex (x + y) = ex x * ex y := by
   simp [ex, AddMonoidAlgebra.single_mul_single]
@@ -26,7 +26,7 @@ Both sides reduce to the same expression.
 private theorem ex_zero : ex (0 : Wt n) = 1 := rfl
 
 /- English proof (translation)
-The claim follows from `AddMonoidAlgebra.ext (Finsupp.ext h)`.
+A detailed English derivation is pending.
 -/
 private theorem cf_ext {f g : FR n} (h : ∀ x, cf f x = cf g x) : f = g :=
   AddMonoidAlgebra.ext (Finsupp.ext h)
@@ -42,23 +42,23 @@ Both sides reduce to the same expression.
 private theorem cf_smul (c : ℂ) (f : FR n) (x : Wt n) : cf (c • f) x = c * cf f x := rfl
 
 /- English proof (translation)
-Simplify using `[cf, Finsupp.finset_sum_apply]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem cf_sum {ι : Type} (s : Finset ι) (f : ι → FR n) (x : Wt n) :
     cf (∑ i ∈ s, f i) x = ∑ i ∈ s, cf (f i) x := by
   simp [cf, Finsupp.finset_sum_apply]
 
 /- English proof (translation)
-Simplify using `[cf, ex, Finsupp.single_apply]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem cf_ex (y x : Wt n) : cf (ex y) x = if y = x then 1 else 0 := by
   classical
   simp [cf, ex, Finsupp.single_apply]
 
 /- English proof (translation)
-Apply `cf_ext` to reduce the goal to its premises. Introduce `x`. Rewrite using `[cf_sum]`. Simplify using `only [cf_smul, cf_ex, mul_ite, mul_one, mul_zero]`. Rewrite using `[Finset.sum_ite_eq' f.coeff.support x]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs with h`. Both sides reduce to the same expression. Simplify `h` using `[cf]`.
+Both sides reduce to the same expression. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem eq_sum (f : FR n) : f = ∑ y ∈ f.coeff.support, cf f y • ex y := by
   classical
@@ -72,11 +72,11 @@ private theorem eq_sum (f : FR n) : f = ∑ y ∈ f.coeff.support, cf f y • ex
   · simpa [cf] using h
 
 /- English proof (translation)
-Use `conv_lhs => rw [eq_sum f]`. Use `conv_rhs => rw [eq_sum f]`. Rewrite using `[Finset.mul_sum, cf_sum, cf_sum]`. Use `Finset.sum_congr rfl fun z _ => ?_` and prove the remaining obligations. Rewrite using `[mul_smul_comm, cf_smul, cf_smul, ← ex_add, cf_ex, cf_ex]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Use `congr 2`. Simplify using `only [eq_iff_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[← h]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Fix the arbitrary inputs or assume the hypotheses.
 
-Normalize the expressions using the abelian group laws. Introduce `h`. Rewrite using `[h]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 private theorem cf_ex_mul (f : FR n) (x y : Wt n) : cf (ex y * f) x = cf f (x - y) := by
   classical
@@ -92,7 +92,7 @@ private theorem cf_ex_mul (f : FR n) (x y : Wt n) : cf (ex y * f) x = cf f (x - 
   · intro h; rw [h]; abel
 
 /- English proof (translation)
-Use `conv_lhs => rw [eq_sum f]`. Rewrite using `[Finset.sum_mul, cf_sum]`. Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Rewrite using `[smul_mul_assoc, cf_smul, cf_ex_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem cf_mul (f g : FR n) (x : Wt n) :
     cf (f * g) x = ∑ y ∈ f.coeff.support, cf f y * cf g (x - y) := by
@@ -102,24 +102,24 @@ private theorem cf_mul (f g : FR n) (x : Wt n) :
   rw [smul_mul_assoc, cf_smul, cf_ex_mul]
 
 /- English proof (translation)
-Simplify using `[sg, Equiv.Perm.sign_mul]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem sg_mul (a b : Equiv.Perm (Fin n)) : sg (a * b) = sg a * sg b := by
   simp [sg, Equiv.Perm.sign_mul]
 
 /- English proof (translation)
-Simplify using `[sg]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem sg_one : sg (1 : Equiv.Perm (Fin n)) = 1 := by simp [sg]
 
 /- English proof (translation)
-Simplify using `[sg, Equiv.Perm.sign_symm]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem sg_symm (a : Equiv.Perm (Fin n)) : sg a.symm = sg a := by
   simp [sg, Equiv.Perm.sign_symm]
 
 /- English proof (translation)
-Apply the tactic sequence `rcases Int.units_eq_one_or (Equiv.Perm.sign a) with h | h <;> simp [sg, h]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem sg_sq (a : Equiv.Perm (Fin n)) : sg a * sg a = 1 := by
   rcases Int.units_eq_one_or (Equiv.Perm.sign a) with h | h <;> simp [sg, h]
@@ -134,22 +134,22 @@ private def pe (v : Equiv.Perm (Fin n)) : Wt n ≃+ Wt n where
 private def act (v : Equiv.Perm (Fin n)) : FR n ≃ₐ[ℂ] FR n := AddMonoidAlgebra.domCongr ℂ ℂ (pe v)
 
 /- English proof (translation)
-The claim follows from `AddMonoidAlgebra.coeff_domCongr (pe v) f x`.
+A detailed English derivation is pending.
 -/
 private theorem cf_act (v : Equiv.Perm (Fin n)) (f : FR n) (x : Wt n) :
     cf (act v f) x = cf f (x ∘ v.symm) :=
   AddMonoidAlgebra.coeff_domCongr (pe v) f x
 
 /- English proof (translation)
-The claim follows from `AddMonoidAlgebra.domCongr_single (pe v) x 1`.
+A detailed English derivation is pending.
 -/
 private theorem act_ex (v : Equiv.Perm (Fin n)) (x : Wt n) : act v (ex x) = ex (x ∘ v) :=
   AddMonoidAlgebra.domCongr_single (pe v) x 1
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h v`. Apply `cf_ext` to reduce the goal to its premises. Introduce `x`. Rewrite using `[cf_act]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h v.symm x`. Introduce `h w x`. Establish `e` using `cf_act w.symm f x`. Rewrite `e` using `[h w.symm]`. Conclude with `e.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem sym_iff (f : FR n) : UpperTheory.RealTr.Sym f ↔ ∀ v, act v f = f := by
   constructor
@@ -164,9 +164,9 @@ private theorem sym_iff (f : FR n) : UpperTheory.RealTr.Sym f ↔ ∀ v, act v f
     exact e.symm
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h v`. Apply `cf_ext` to reduce the goal to its premises. Introduce `x`. Rewrite using `[cf_act, cf_smul, h v.symm x, sg_symm]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `h w x`. Establish `e` using `cf_act w.symm f x`. Rewrite `e` using `[h w.symm, cf_smul, sg_symm]`. Conclude with `e.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem asym_iff (f : FR n) : ASym f ↔ ∀ v, act v f = sg v • f := by
   constructor
@@ -180,9 +180,9 @@ private theorem asym_iff (f : FR n) : ASym f ↔ ∀ v, act v f = sg v • f := 
     exact e.symm
 
 /- English proof (translation)
-Unfold `alt`. Rewrite using `[Finset.smul_sum]`. Use `Fintype.sum_equiv (Equiv.mulLeft w) _ _ fun u => ?_` and prove the remaining obligations. Establish `e : (x ∘ w) ∘ u = x ∘ (Equiv.mulLeft w u)` using `rfl`. Rewrite using `[e, smul_smul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Simplify using `only [Equiv.coe_mulLeft, sg_mul]`. Rewrite using `[← mul_assoc, sg_sq, one_mul]`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem alt_comp (x : Wt n) (w : Equiv.Perm (Fin n)) : alt (x ∘ w) = sg w • alt x := by
   unfold alt
@@ -195,9 +195,9 @@ private theorem alt_comp (x : Wt n) (w : Equiv.Perm (Fin n)) : alt (x ∘ w) = s
   rw [← mul_assoc, sg_sq, one_mul]
 
 /- English proof (translation)
-Unfold `alt`. Rewrite using `[map_sum, Finset.smul_sum]`. Use `Fintype.sum_equiv (Equiv.mulRight v) _ _ fun u => ?_` and prove the remaining obligations. Establish `e : (x ∘ u) ∘ v = x ∘ (Equiv.mulRight v u)` using `rfl`. Rewrite using `[map_smul, act_ex, e, smul_smul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Simplify using `only [Equiv.coe_mulRight, sg_mul]`. Rewrite using `[mul_comm (sg v), mul_assoc, sg_sq, mul_one]`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem act_alt (x : Wt n) (v : Equiv.Perm (Fin n)) : act v (alt x) = sg v • alt x := by
   unfold alt
@@ -210,7 +210,7 @@ private theorem act_alt (x : Wt n) (v : Equiv.Perm (Fin n)) : act v (alt x) = sg
   rw [mul_comm (sg v), mul_assoc, sg_sq, mul_one]
 
 /- English proof (translation)
-Unfold `alt`. Rewrite using `[cf_sum]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[cf_smul, cf_ex]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem cf_alt (x y : Wt n) :
     cf (alt x) y = ∑ w : Equiv.Perm (Fin n), sg w * if x ∘ w = y then 1 else 0 := by
@@ -220,7 +220,7 @@ private theorem cf_alt (x y : Wt n) :
   rw [cf_smul, cf_ex]
 
 /- English proof (translation)
-Unfold `alt`. Rewrite using `[Finset.sum_mul, cf_sum]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[smul_mul_assoc, cf_smul, cf_ex_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem cf_alt_mul (f : FR n) (x y : Wt n) :
     cf (alt y * f) x = ∑ w : Equiv.Perm (Fin n), sg w * cf f (x - y ∘ w) := by
@@ -230,9 +230,9 @@ private theorem cf_alt_mul (f : FR n) (x y : Wt n) :
   rw [smul_mul_assoc, cf_smul, cf_ex_mul]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Apply `h` to reduce the goal to its premises. Rewrite using `[cf_alt]`. Use `Finset.sum_eq_zero fun w _ => ?_` and prove the remaining obligations.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg fun e => hc w e.symm, mul_zero]`.
+A detailed English derivation is pending.
 -/
 private theorem alt_supp (x y : Wt n) (h : cf (alt x) y ≠ 0) :
     ∃ w : Equiv.Perm (Fin n), y = x ∘ w := by
@@ -244,9 +244,9 @@ private theorem alt_supp (x y : Wt n) (h : cf (alt x) y ≠ 0) :
   rw [if_neg fun e => hc w e.symm, mul_zero]
 
 /- English proof (translation)
-Rewrite using `[cf_alt, Finset.sum_eq_single 1]`. Simplify using `[sg_one]`. Introduce `w _ hw`. Rewrite using `[if_neg, mul_zero]`. Introduce `e`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hw` to reduce the goal to its premises. Use extensionality with `a`. Establish `h : x (w a) = x a` using `congrFun e a`. Simplify using `[hx.injective h]`. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private theorem alt_top (x : Wt n) (hx : StrictAnti x) : cf (alt x) x = 1 := by
   rw [cf_alt, Finset.sum_eq_single 1]
@@ -261,11 +261,11 @@ private theorem alt_top (x : Wt n) (hx : StrictAnti x) : cf (alt x) x = 1 := by
   · simp
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Take `⟨w, rfl⟩` from `alt_supp x y h`. Establish `hw : StrictMono w` using `fun a b hab => by`. Assume the negation of the conclusion as `hc`. Conclude with `absurd (hx.antitone (not_lt.1 hc)) (not_le.2 (hy hab))`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `e : ∀ a, w a = a` using `fun a => by`. Establish `k` using `congrArg (fun g : Fin n ≃o Fin n => g a) (Subsingleton.elim (hw.orderIsoOfSurjective w w.surjective) (OrderIso.refl _))`. Simplify using `using k`. Apply `hne` to reduce the goal to its premises. Use function extensionality and compare the values at `a`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `[e]`.
+A detailed English derivation is pending.
 -/
 private theorem alt_other (x y : Wt n) (hx : StrictAnti x) (hy : StrictAnti y) (hne : y ≠ x) :
     cf (alt x) y = 0 := by
@@ -283,13 +283,13 @@ private theorem alt_other (x y : Wt n) (hx : StrictAnti x) (hy : StrictAnti y) (
   simp [e]
 
 /- English proof (translation)
-Take `⟨a, b, hab, hne⟩` from `Function.not_injective_iff.1 h`. Establish `e : x ∘ (Equiv.swap a b) = x`. Use extensionality with `c`. Simplify using `only [Function.comp_apply, Equiv.swap_apply_def]`. Use `split_ifs with h1 h2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, hab]`. Rewrite using `[h2, hab]`. Both sides reduce to the same expression. Establish `s : sg (Equiv.swap a b) = -1` using `by simp [sg, Equiv.Perm.sign_swap hne]`. Establish `k` using `alt_comp x (Equiv.swap a b)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `k` using `[e, s]`. Apply `cf_ext` to reduce the goal to its premises. Introduce `z`. Establish `c : cf (alt x) z = (-1) * cf (alt x) z` using `by conv_lhs => rw [k]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `d : cf (0 : FR n) z = 0` using `rfl`. Rewrite using `[d]`. Take the linear combination `(1 / 2 : ℂ) * c`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 private theorem alt_zero (x : Wt n) (h : ¬ Function.Injective x) : alt x = 0 := by
   obtain ⟨a, b, hab, hne⟩ := Function.not_injective_iff.1 h
@@ -316,13 +316,13 @@ end UpperTheory.RealTr.CfB
 
 open UpperTheory.RealTr.CfB in
 /- English proof (translation)
-Introduce `n`. Use `⟨ex_add, ex_zero, fun f g h => cf_ext h, fun f g c x => ⟨cf_add f g x, cf_smul c f x⟩, cf_ex_mul, ?_, cf_alt_mul, alt_comp, fun x => (asym_iff _).2 (act_alt x), ?_, alt_supp, fun x hx => ⟨alt_top x hx, fun y hy hne => alt_other x y hx hy hne⟩, alt_zero⟩` and prove the remaining obligations. Introduce `f g x h`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `h` to reduce the goal to its premises. Rewrite using `[cf_mul]`. Use `Finset.sum_eq_zero fun y _ => ?_` and prove the remaining obligations. Distinguish the cases in `hy : cf f y = 0`. Rewrite using `[hy, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc y hy, mul_zero]`. Introduce `f g hf`. Establish `hf'` using `(sym_iff f).1 hf`. Use `⟨fun hg => (asym_iff _).2 fun v => ?_, fun hg => (sym_iff _).2 fun v => ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, hf', (asym_iff g).1 hg v, mul_smul_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, hf', (sym_iff g).1 hg v]`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.RealTr.cfBasic :
     ∀ n : ℕ, (∀ x y : Wt n, ex (x + y) = ex x * ex y) ∧ ex (0 : Wt n) = 1 ∧ (∀ f g : FR n, (∀ x, cf f x = cf g x) → f = g) ∧

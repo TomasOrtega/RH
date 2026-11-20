@@ -14,9 +14,9 @@ variable {M : Model F E} {g : SplitG M.L} {r : ℕ}
 section FormSplit
 
 /- English proof (translation)
-Unfold `formG`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Pi.add_apply, Subring.coe_add]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem fs_add_left (O : Subring E) (cj : E →+* E) (qi : E) (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) E)
     (T T' : E) (Y Y' W : Ix r → O) :
@@ -30,9 +30,9 @@ theorem fs_add_left (O : Subring E) (cj : E →+* E) (qi : E) (Z : Matrix (Fin (
   ring
 
 /- English proof (translation)
-Unfold `formG`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Pi.add_apply, Subring.coe_add, map_add]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem fs_add_right (O : Subring E) (cj : E →+* E) (qi : E) (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) E)
     (T T' : E) (Y W W' : Ix r → O) :
@@ -46,7 +46,7 @@ theorem fs_add_right (O : Subring E) (cj : E →+* E) (qi : E) (Z : Matrix (Fin 
   ring
 
 /- English proof (translation)
-Break down `i with a | a` into its components or cases. Rewrite using `[secondProj_apply, e_iota1_inl]`. Rewrite using `[secondProj_apply, e_iota1_inr]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem splitSecondProj_iotaOne (hs : M.split = some g) (l : Fin (r + 1) → M.R) (i : Ix r) :
     ph2 g ((iota1 hs l i : M.L.O) : E) = 0 := by
@@ -55,19 +55,19 @@ theorem splitSecondProj_iotaOne (hs : M.split = some g) (l : Fin (r + 1) → M.R
   · rw [secondProj_apply, e_iota1_inr]
 
 /- English proof (translation)
-Rewrite using `[firstProj_apply, e_iota2]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem splitFirstProj_iotaTwo (hs : M.split = some g) (l : Fin (r + 1) → M.R) (i : Ix r) :
     ph1 g ((iota2 hs l i : M.L.O) : E) = 0 := by
   rw [firstProj_apply, e_iota2]
 
 /- English proof (translation)
-The claim follows from `secondProj_conj_eq_firstProj x`.
+A detailed English derivation is pending.
 -/
 theorem splitSecondProj_conj (x : E) : ph2 g ((M.L.cj : E →+* E) x) = ph1 g x := secondProj_conj_eq_firstProj x
 
 /- English proof (translation)
-Rewrite using `[eq_iff_ph (g := g)]`. Unfold `formG`. Simplify using `only [map_sum, map_mul, map_zero, firstProj_conj_eq_secondProj, splitSecondProj_conj, splitSecondProj_iotaOne, mul_zero, zero_mul, Finset.sum_const_zero]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem splitForm_iotaOne_iotaOne (hs : M.split = some g) (Zh : Matrix (Fin (r + 1)) (Fin (r + 1)) E) (T T' : F)
     (l w : Fin (r + 1) → M.R) :
@@ -80,7 +80,7 @@ theorem splitForm_iotaOne_iotaOne (hs : M.split = some g) (Zh : Matrix (Fin (r +
   simp
 
 /- English proof (translation)
-Rewrite using `[eq_iff_ph (g := g)]`. Unfold `formG`. Simplify using `only [map_sum, map_mul, map_zero, firstProj_conj_eq_secondProj, splitSecondProj_conj, splitFirstProj_iotaTwo, mul_zero, zero_mul, Finset.sum_const_zero]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem splitForm_iotaTwo_iotaTwo (hs : M.split = some g) (Zh : Matrix (Fin (r + 1)) (Fin (r + 1)) E) (T T' : F)
     (l w : Fin (r + 1) → M.R) :
@@ -93,7 +93,7 @@ theorem splitForm_iotaTwo_iotaTwo (hs : M.split = some g) (Zh : Matrix (Fin (r +
   simp
 
 /- English proof (translation)
-Use `symm`. Apply `Matrix.inv_eq_right_inv` to reduce the goal to its premises. Rewrite using `[← Matrix.map_mul, Matrix.mul_nonsing_inv _ hA, Matrix.map_one _ (map_zero f) (map_one f)]`.
+Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem fs_map_inv {n : Type} [Fintype n] [DecidableEq n] (f : E →+* E) (A : Matrix n n E) (hA : IsUnit A.det) :
     (A⁻¹).map f = (A.map f)⁻¹ := by
@@ -102,7 +102,7 @@ theorem fs_map_inv {n : Type} [Fintype n] [DecidableEq n] (f : E →+* E) (A : M
   rw [← Matrix.map_mul, Matrix.mul_nonsing_inv _ hA, Matrix.map_one _ (map_zero f) (map_one f)]
 
 /- English proof (translation)
-Apply the tactic sequence `rcases i with a | a <;> rcases j with b | b <;> by_cases ha : a = Fin.last r <;> by_cases hb : b = Fin.last r <;>`. Apply the tactic sequence `simp [gramG, cor, ha, hb, map_mul, map_add, map_neg, map_sub, M.L.cj_cj, AlgEquiv.commutes] <;> ring`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem fs_gram_herm (Zh : Matrix (Fin (r + 1)) (Fin (r + 1)) E) (T T' q : F) (i j : Ix r) :
     (M.L.cj : E →+* E) (gramG (M.L.cj : E →+* E) (algebraMap F E q) Zh (algebraMap F E T) (algebraMap F E T') j i) =
@@ -111,13 +111,13 @@ theorem fs_gram_herm (Zh : Matrix (Fin (r + 1)) (Fin (r + 1)) E) (T T' q : F) (i
     simp [gramG, cor, ha, hb, map_mul, map_add, map_neg, map_sub, M.L.cj_cj, AlgEquiv.commutes] <;> ring
 
 /- English proof (translation)
-Take `⟨G, hGd⟩ : ∃ G, gramG (M.L.cj : E →+* E) (algebraMap F E q) Zh (algebraMap F E T) (algebraMap F E T') = G` from `⟨_, rfl⟩`. Rewrite `hU` using `[hGd]`. Establish `hT : G.map (M.L.cj : E →+* E) = G.transpose`. Use extensionality with `i j`. Rewrite using `[Matrix.map_apply, Matrix.transpose_apply, ← hGd, fs_gram_herm]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Establish `hinv : ∀ i j, (M.L.cj : E →+* E) (G⁻¹ i j) = G⁻¹ j i`. Introduce `i j`. Use `congrFun (congrFun (fs_map_inv (M.L.cj : E →+* E) G hU) i) j` as an intermediate fact. Rewrite `this` using `[Matrix.map_apply]`. Establish `h2 : (G.transpose)⁻¹ = (G⁻¹).transpose` using `by rw [Matrix.transpose_nonsing_inv]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this, hT, h2, Matrix.transpose_apply]`. Establish `hcc : ∀ x : E, (M.L.cj : E →+* E) ((M.L.cj : E →+* E) x) = x` using `M.L.cj_cj`. Unfold `formG`. Simplify using `only [hGd, map_sum, map_mul, hcc, hinv]`. Rewrite using `[Finset.sum_comm]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem fs_herm (Zh : Matrix (Fin (r + 1)) (Fin (r + 1)) E) (T T' q : F)
     (hU : IsUnit (gramG (M.L.cj : E →+* E) (algebraMap F E q) Zh (algebraMap F E T) (algebraMap F E T')).det)
@@ -144,7 +144,7 @@ theorem fs_herm (Zh : Matrix (Fin (r + 1)) (Fin (r + 1)) E) (T T' q : F)
   ring
 
 /- English proof (translation)
-Use `conv_lhs => rw [← iota_cmp hs Y, ← iota_cmp hs W]`. Rewrite using `[fs_add_left, fs_add_right, fs_add_right, splitForm_iotaOne_iotaOne, splitForm_iotaTwo_iotaTwo, fs_herm Zh T T' _ hU (iota2 hs (cmp2 hs Y)) (iota1 hs (cmp1 hs W))]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem fs_split (hs : M.split = some g) (Zh : Matrix (Fin (r + 1)) (Fin (r + 1)) E) (T T' : F)
     (hU : IsUnit (gramG (M.L.cj : E →+* E) (algebraMap F E ((g.q : F)⁻¹)) Zh (algebraMap F E T)
@@ -161,7 +161,7 @@ theorem fs_split (hs : M.split = some g) (Zh : Matrix (Fin (r + 1)) (Fin (r + 1)
   ring
 
 /- English proof (translation)
-Rewrite using `[thetaOf, AddEquiv.trans_apply, AddEquiv.trans_apply, AddEquiv.symm_apply_eq]`. Simplify using `[splitH, splitQ_mk, Prod.ext_iff]`. Conclude with `Iff.rfl`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem fs_rel (hs : M.split = some g) {T T' : F} {TT : M.R} {Zh₁ Zh₂ : Matrix (Fin (r + 1)) (Fin (r + 1)) E}
     {Z₁ Z₂ Zσ₁ Zσ₂ : M.Mat (r + 1)} (h₁ : GHyp M g T T' TT Zh₁ Z₁ Zσ₁) (h₂ : GHyp M g T T' TT Zh₂ Z₂ Zσ₂)
@@ -174,13 +174,13 @@ theorem fs_rel (hs : M.split = some g) {T T' : F} {TT : M.R} {Zh₁ Zh₂ : Matr
   exact Iff.rfl
 
 /- English proof (translation)
-Introduce `F _ _ _ E _ _ _ _ M g hs r T T' TT Zh₁ Zh₂ Z₁ Z₂ Zσ₁ Zσ₂ h₁ h₂ θ₁ θ₂`. Establish `hU₁` using `unitGramG_holds F E M g hs r T T' TT Zh₁ Z₁ Zσ₁ h₁`. Establish `hU₂` using `unitGramG_holds F E M g hs r T T' TT Zh₂ Z₂ Zσ₂ h₂`. Prove the components needed by the constructor for the conclusion. Introduce `hF l l₂ w w₂ hl hw`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hF (iota1 hs l) (iota2 hs w) (iota1 hs l₂) (iota2 hs w₂) ?_ ?_` and prove the remaining obligations. Rewrite using `[fs_rel, firstComponent_iotaOne, firstComponent_iotaOne, secondComponent_iotaOne, secondComponent_iotaOne]`. Conclude with `⟨hl, by simp⟩`. Rewrite using `[fs_rel, firstComponent_iotaTwo, firstComponent_iotaTwo, secondComponent_iotaTwo, secondComponent_iotaTwo]`. Conclude with `⟨by simp, hw⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Introduce `hB Y W Y₂ W₂ hY hW`. Rewrite `hY`, `hW` using `[fs_rel]`. Rewrite using `[fs_split hs Zh₂ T T' hU₂, fs_split hs Zh₁ T T' hU₁]`. Establish `e1` using `hB (cmp1 hs Y) (cmp1 hs Y₂) (cmp2 hs W) (cmp2 hs W₂) hY.1 hW.2`. Establish `e2` using `hB (cmp1 hs W) (cmp1 hs W₂) (cmp2 hs Y) (cmp2 hs Y₂) hW.1 hY.2`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2' : (M.L.cj : E →+* E) (formG M.L.O (M.L.cj : E →+* E) (algebraMap F E ((g.q : F)⁻¹)) Zh₂ (algebraMap F E T) (algebraMap F E T') (iota1 hs (cmp1 hs W₂)) (iota2 hs (cmp2 hs Y₂)) - formG M.L.O (M.L.cj : E →+* E) (algebraMap F E ((g.q : F)⁻¹)) Zh₁ (algebraMap F E T) (algebraMap F …` using `cj_mem_O M.L e2`. Use `add_mem e1 e2' using 1` and compare the differences between its conclusion and the goal. Rewrite using `[map_sub]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem formSplit_holds : FormSplitP := by
   intro F _ _ _ E _ _ _ _ M g hs r T T' TT Zh₁ Zh₂ Z₁ Z₂ Zσ₁ Zσ₂ h₁ h₂ θ₁ θ₂

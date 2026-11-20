@@ -13,7 +13,7 @@ def NOfibLat : Prop :=
         x ∈ blk X u '' Formalism.L2.SG.PoincareInHH.PoincareSetting.NOinf X u ↔ ∀ p, x p - τ p x ∈ cLat X u p
 
 /- English proof (translation)
-Introduce `D X u`. Take `⟨h1, h2, h3⟩` from `nOinf_closed_under_mul_inv X u`. Conclude with `⟨h1, h2, h3, hL X u⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem nofib_of (hL : NOfibLat) : NOfib := by
   intro D X u

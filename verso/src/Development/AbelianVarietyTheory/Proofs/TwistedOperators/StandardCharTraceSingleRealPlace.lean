@@ -11,15 +11,15 @@ set_option maxHeartbeats 1600000
 set_option synthInstance.maxHeartbeats 400000
 
 /- English proof (translation)
-Introduce `D ψ hψ θ hθ τ t hfin hsupp`. Establish `hT` using `GlobalTheory.PhaseReal.trace_real hfin`. Use `set T := Algebra.trace (AF D.host.F) (AE D) t with hTdef`. Establish `h1 : ψ T = psiInf D.host.F ψ (fstA D.host.F T)`. Unfold `psiInf`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Establish `h2` using `hψ.2.2 θ hθ (fstA D.host.F T)`. Establish `h3 : ∀ ρ, θ ρ (fstA D.host.F T ⊗ₜ[D.host.F] (1 : D.host.E)) = ((2 * (θ ρ (infPart D t)).re : ℝ) : ℂ)` using `fun ρ => GlobalTheory.PhaseReal.theta_trace θ hθ ρ t`. Establish `h4 : ∑ ρ, θ ρ (fstA D.host.F T ⊗ₜ[D.host.F] (1 : D.host.E)) = ((2 * (θ τ (infPart D t)).re : ℝ) : ℂ)`. Simplify using `only [h3]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_eq_single τ (fun ρ _ hρ => ?_) (fun h => absurd (Finset.mem_univ τ) h)` and prove the remaining obligations. Rewrite using `[hsupp ρ hρ]`. Simplify using the standard rewrite rules. Rewrite using `[h1, h2, h4]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Establish `h5 : ((-(4 * Real.pi : ℂ)) * θ τ (infPart D t)).re = -(4 * Real.pi) * (θ τ (infPart D t)).re`. Establish `: (-(4 * Real.pi : ℂ)) = ((-(4 * Real.pi) : ℝ) : ℂ)` using `by push_cast; ring`. Rewrite using `[this, Complex.re_ofReal_mul]`. Rewrite using `[h5]`. Use `push_cast`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.PhaseReal.psi_trace_single : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (θ : InfFam D), IsInfFam θ → ∀ (τ : D.what₂.Tau) (t : AE D),
   finPart D t = 0 → (∀ ρ, ρ ≠ τ → θ ρ (infPart D t) = 0) →

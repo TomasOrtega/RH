@@ -27,7 +27,7 @@ open Polynomial UpperHalfPlane in
 open scoped MatrixGroups ModularForm in
 open scoped Manifold in
 /- English proof (translation)
-Rewrite using `[Polynomial.mem_degreeLT, Polynomial.degree_lt_iff_coeff_zero]`. Introduce `m hm`. Rewrite using `[_root_.GlobalTheory.EichlerChange.coeff_eichler, Nat.choose_eq_zero_of_lt (by omega), Nat.cast_zero, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 private lemma eichler_mem_degreeLT_succ (w : ℕ) (g : ℍ → ℂ) (τ : ℍ) :
     _root_.GlobalTheory.HeckeFamilyMatrices.eichler w g τ ∈ ℂ[X]_(w + 1) := by
@@ -39,7 +39,7 @@ open Polynomial UpperHalfPlane in
 open scoped MatrixGroups ModularForm in
 open scoped Manifold in
 /- English proof (translation)
-Rewrite `hp`, the goal using `[Polynomial.mem_degreeLT]`. Rewrite using `[Polynomial.degree_map]` and apply the resulting hypothesis.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 private lemma map_conj_mem_degreeLT {n : ℕ} {p : ℂ[X]} (hp : p ∈ ℂ[X]_n) :
     p.map (starRingEnd ℂ) ∈ ℂ[X]_n := by
@@ -50,7 +50,7 @@ open Polynomial UpperHalfPlane in
 open scoped MatrixGroups ModularForm in
 open scoped Manifold in
 /- English proof (translation)
-Establish `h` using `UpperHalfPlane.denom_ne_zero (γ : GL (Fin 2) ℝ) τ`. Simplify `h` using `[UpperHalfPlane.denom]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 private lemma sl_denom_ne_zero (γ : SL(2, ℤ)) (τ : ℍ) :
     ((γ 1 0 : ℤ) : ℂ) * τ + ((γ 1 1 : ℤ) : ℂ) ≠ 0 := by
@@ -61,7 +61,7 @@ open Polynomial UpperHalfPlane in
 open scoped MatrixGroups ModularForm in
 open scoped Manifold in
 /- English proof (translation)
-Rewrite using `[← hrel, _root_.GlobalTheory.HeckeFamilyMatrices.eval_polySlash w _ _ _ hmem (sl_denom_ne_zero γ τ)]`. Use `congr 2`. Rewrite using `[UpperHalfPlane.coe_specialLinearGroup_apply]`. Simplify using `[_root_.GlobalTheory.HeckeFamilyMatrices.mat]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private lemma eval_eq_denom_pow_mul_eval_of_slP_invariant (w : ℕ) (V : ℍ → ℂ[X]) (γ : SL(2, ℤ)) (τ : ℍ)
     (hmem : V (γ • τ) ∈ ℂ[X]_(w + 1))
@@ -77,7 +77,7 @@ open Polynomial UpperHalfPlane in
 open scoped MatrixGroups ModularForm in
 open scoped Manifold in
 /- English proof (translation)
-Rewrite using `[ModularGroup.sl_moeb, UpperHalfPlane.im_smul_eq_div_normSq]`. Simplify using `[UpperHalfPlane.denom]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private lemma im_sl_smul_eq_im_div_normSq_denom (γ : SL(2, ℤ)) (τ : ℍ) :
     (γ • τ).im = τ.im / Complex.normSq (((γ 1 0 : ℤ) : ℂ) * τ + ((γ 1 1 : ℤ) : ℂ)) := by
@@ -88,9 +88,9 @@ open Polynomial UpperHalfPlane in
 open scoped MatrixGroups ModularForm in
 open scoped Manifold in
 /- English proof (translation)
-Establish `h : (fun τ : ℍ => eval (τ : ℂ) (V τ)) = fun τ => ∑ i ∈ Finset.range (w + 1), (V τ).coeff i * (τ : ℂ) ^ i`. Use function extensionality and compare the values at `τ`. Apply `eval_eq_sum_range'` to reduce the goal to its premises. Distinguish the cases in `h0 : V τ = 0`. Simplify using `[h0]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Use `hmem τ` as an intermediate fact. Rewrite `this` using `[mem_degreeLT]`. Conclude with `(natDegree_lt_iff_degree_lt h0).2 this`. Rewrite using `[h]`. Conclude with `continuous_finset_sum _ fun i _ => (hc i).mul (continuous_coe.pow i)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma continuous_eval_of_continuous_coeff_of_degree_le (w : ℕ) (V : ℍ → ℂ[X])
     (hmem : ∀ τ, V τ ∈ ℂ[X]_(w + 1)) (hc : ∀ n, Continuous fun τ => (V τ).coeff n) :
@@ -111,13 +111,13 @@ open Polynomial UpperHalfPlane in
 open scoped MatrixGroups ModularForm in
 open scoped Manifold in
 /- English proof (translation)
-Establish `hinv : ∀ γ ∈ Γ, ∀ τ : ℍ, ‖eval ((γ • τ : ℍ) : ℂ) (V (γ • τ))‖ * (γ • τ).im ^ (-(w : ℝ) / 2) = ‖eval (τ : ℂ) (V τ)‖ * τ.im ^ (-(w : ℝ) / 2)`. Introduce `γ hγ τ`. Establish `he` using `eval_eq_denom_pow_mul_eval_of_slP_invariant w V γ τ (hmem _) (hrel γ hγ τ)`. Establish `hD` using `sl_denom_ne_zero γ τ`. Use `set D := ((γ 1 0 : ℤ) : ℂ) * τ + ((γ 1 1 : ℤ) : ℂ) with hDdef`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hDpos : 0 < ‖D‖` using `norm_pos_iff.2 hD`. Establish `hx : (‖D‖ ^ (2 : ℕ)) ^ (-(w : ℝ) / 2) = (‖D‖ ^ w)⁻¹`. Rewrite using `[← Real.rpow_natCast ‖D‖ 2, ← Real.rpow_mul (norm_nonneg _), show ((2 : ℕ) : ℝ) * (-(w : ℝ) / 2) = -(w : ℝ) by push_cast; ring, Real.rpow_neg (norm_nonneg _), Real.rpow_natCast]`. Rewrite using `[he, im_sl_smul_eq_im_div_normSq_denom, ← hDdef, Real.div_rpow τ.im_pos.le (Complex.normSq_nonneg _), Complex.normSq_eq_norm_sq, hx, norm_mul, norm_pow]`. Establish `hw : 0 < ‖D‖ ^ w` using `pow_pos hDpos w`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts. Take `⟨C, hC⟩` from `ModularGroup.exists_bound_of_subgroup_invariant_of_isBigO (f := fun τ : ℍ => ‖eval (τ : ℂ) (V τ)‖ * τ.im ^ (-(w : ℝ) / 2)) (((continuous_eval_of_continuous_coeff_of_degree_le w V hmem hc).norm).mul (UpperHalfPlane.continuous_im.rpow_const fun τ => Or.inl τ.im_pos.ne')) le_rfl (fu …`. Use `⟨C, fun τ => ?_⟩` and prove the remaining obligations. Establish `h1` using `hC τ`. Rewrite `h1` using `[Real.rpow_zero, mul_one, Real.norm_of_nonneg (by positivity)]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hpos : 0 < τ.im ^ ((w : ℝ) / 2)` using `Real.rpow_pos_of_pos τ.im_pos _`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_assoc, ← Real.rpow_add τ.im_pos]`. Simplify using `[neg_div]`. Use `_ ≤ C * τ.im ^ ((w : ℝ) / 2) := mul_le_mul_of_nonneg_right h1 hpos.le`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma exists_norm_eval_le_mul_im_rpow_of_slP_invariant (Γ : Subgroup SL(2, ℤ)) [Γ.FiniteIndex] (w : ℕ)
     (V : ℍ → ℂ[X]) (hmem : ∀ τ, V τ ∈ ℂ[X]_(w + 1))
@@ -162,17 +162,17 @@ open Polynomial UpperHalfPlane in
 open scoped MatrixGroups ModularForm in
 open scoped Manifold in
 /- English proof (translation)
-Use `set V : ℍ → ℂ[X] := fun τ => _root_.GlobalTheory.HeckeFamilyMatrices.eichler (k - 2) f τ - map (starRingEnd ℂ) (_root_.GlobalTheory.HeckeFamilyMatrices.eichler (k - 2) h τ) - p with hV`. Establish `hk1 : k - 1 = k - 2 + 1` using `by omega`. Establish `hp' : p ∈ ℂ[X]_(k - 2 + 1)` using `by rw [← hk1]; exact hp`. Establish `hmem : ∀ τ, V τ ∈ ℂ[X]_(k - 2 + 1)` using `fun τ => sub_mem (sub_mem (eichler_mem_degreeLT_succ _ _ _) (map_conj_mem_degreeLT (eichler_mem_degreeLT_succ _ _ _))) hp'`. Establish `hcf : ∀ g : CuspForm (Subgroup.map (Matrix.SpecialLinearGroup.mapGL ℝ) Γ) k, ∀ n : ℕ, Continuous fun τ => (_root_.GlobalTheory.HeckeFamilyMatrices.eichler (k - 2) g τ).coeff n`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g n`. Repeatedly rewrite using `[_root_.GlobalTheory.EichlerChange.coeff_eichler]`. Use `continuous_const.mul (continuous_iff_continuousAt.2 fun τ => ?_)` and prove the remaining obligations. Conclude with `((_root_.GlobalTheory.EichlerChange.hasDerivAt_ecoef (k - 2) g (CuspFormClass.holo g) n τ τ.im_pos).continuousAt).comp continuous_coe.continuousAt`. Establish `hc : ∀ n, Continuous fun τ => (V τ).coeff n`.
+Rewrite the conclusion repeatedly using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `n`. Simplify using `only [hV, coeff_sub, coeff_map]`. Conclude with `((hcf f n).sub (Complex.continuous_conj.comp (hcf h n))).sub continuous_const`. Establish `hrel' : ∀ γ ∈ Γ, ∀ τ, _root_.GlobalTheory.HeckeFamilyMatrices.slP (k - 2) (_root_.GlobalTheory.HeckeFamilyMatrices.mat γ) (V (γ • τ)) = V τ` using `fun γ hγ τ => hrel ⟨γ, hγ⟩ τ`. Establish `hdecay` using `_root_.GlobalTheory.HeckeFamilyMatrices.Decay.decay_at_cusp Γ k hΓ hk f h p hp hrel`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hw : ((k - 2 : ℕ) : ℝ) = (k : ℝ) - 2`. Rewrite using `[Nat.cast_sub (by omega)]; norm_num`. Take `⟨C, hC⟩` from `exists_norm_eval_le_mul_im_rpow_of_slP_invariant Γ (k - 2) V hmem hc hrel' (by rw [hw]; exact hdecay)`. Take `⟨n, hn, -, hTn⟩` from `Subgroup.exists_pow_mem_of_index_ne_zero hΓ.index_ne_zero ModularGroup.T`. Use `_root_.GlobalTheory.EichlerPositivity.cuspForm_eq_zero_of_periodic_of_bound Γ k hΓ hk f h p n C hn (fun τ => ?_) (fun τ => by rw [← hw]; exact hC τ)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hT : ModularGroup.T ^ n • τ = (n : ℝ) +ᵥ τ`. Rewrite using `[← zpow_natCast, modular_T_zpow_smul]`. Simplify using the standard rewrite rules. Establish `he` using `eval_eq_denom_pow_mul_eval_of_slP_invariant (k - 2) V (ModularGroup.T ^ n) τ (hmem _) (hrel' _ hTn τ)`. Establish `h10 : ((ModularGroup.T ^ n) 1 0 : ℤ) = 0 ∧ ((ModularGroup.T ^ n) 1 1 : ℤ) = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← zpow_natCast, ModularGroup.coe_T_zpow]`. Simplify using the standard rewrite rules. Rewrite `he` using `[h10.1, h10.2]`. Simplify using `only [Int.cast_zero, zero_mul, zero_add, Int.cast_one, one_pow, one_mul, hT] at he`. Conclude with `he.symm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma eq_zero_of_eichler_conj_slash_relation (Γ : Subgroup SL(2, ℤ)) (k : ℕ)
     (hΓ : Γ.FiniteIndex) (hk : 3 ≤ k)
@@ -228,17 +228,17 @@ open scoped MatrixGroups ModularForm in
 open scoped Manifold in
 
 /- English proof (translation)
-Introduce `N Γ k _ _ hΓ hk f h hB`. Unfold `_root_.GlobalTheory.HeckeFamilyMatrices.B1 at hB`. Take `⟨⟨q, hq⟩, hqe⟩` from `hB`. Establish `hcoc : ∀ γ : Γ, _root_.GlobalTheory.HeckeFamilyMatrices.slP (k - 2) (_root_.GlobalTheory.HeckeFamilyMatrices.mat γ) q - q = _root_.GlobalTheory.HeckeFamilyMatrices.per Γ (k - 2) ⇑f γ - map (starRingEnd ℂ) (_root_.GlobalTheory.HeckeFamilyMatrices.per Γ (k - 2) ⇑h γ)` using `fun γ => by`. Use `congrFun hqe γ` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `this` using `[_root_.GlobalTheory.HeckeFamilyMatrices.cj]`. Establish `hper : ∀ g : CuspForm (Subgroup.map (Matrix.SpecialLinearGroup.mapGL ℝ) Γ) k, ∀ (γ : Γ) (τ : ℍ), _root_.GlobalTheory.HeckeFamilyMatrices.per Γ (k - 2) ⇑g γ = _root_.GlobalTheory.HeckeFamilyMatrices.slP (k - 2) (_root_.GlobalTheory.HeckeFamilyMatrices.mat γ) (_root_.GlobalTheory.H …` using `fun g => (_root_.GlobalTheory.HeckeFamilyMatrices.PerCoc.per_mem_Z1_and_eq_slP_eichler_sub Γ k (by omega) (CuspForm.toModularFormₗ g)).2`. Establish `hmemE : ∀ (g : ℍ → ℂ) (τ : ℍ), _root_.GlobalTheory.HeckeFamilyMatrices.eichler (k - 2) g τ ∈ ℂ[X]_(k - 2 + 1)` using `fun g τ => eichler_mem_degreeLT_succ _ _ _`. Establish `hconj : ∀ p ∈ ℂ[X]_(k - 2 + 1), ∀ γ : SL(2, ℤ), map (starRingEnd ℂ) (_root_.GlobalTheory.HeckeFamilyMatrices.slP (k - 2) (_root_.GlobalTheory.HeckeFamilyMatrices.mat γ) p) = _root_.GlobalTheory.HeckeFamilyMatrices.slP (k - 2) (_root_.GlobalTheory.HeckeFamilyMatrices.mat γ) (map ( …` using `fun p hp γ => (_root_.GlobalTheory.HeckeFamilyMatrices.SlPAct.polySlash_act (k - 2) (_root_.GlobalTheory.HeckeFamilyMatrices.mat γ) 1 p hp).2.2.2`. Establish `hcc : ∀ p : ℂ[X], map (starRingEnd ℂ) (map (starRingEnd ℂ) p) = p` using `fun p => by`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `n`. Simplify using `[coeff_map]`. Establish `hk1 : k - 1 = k - 2 + 1` using `by omega`. Establish `rel1 : ∀ (γ : Γ) (τ : ℍ), _root_.GlobalTheory.HeckeFamilyMatrices.slP (k - 2) (_root_.GlobalTheory.HeckeFamilyMatrices.mat γ) (_root_.GlobalTheory.HeckeFamilyMatrices.eichler (k - 2) f (γ • τ) - map (starRingEnd ℂ) (_root_.GlobalTheory.HeckeFamilyMatrices.eichler (k - 2) h (γ • τ …`. Introduce `γ τ`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `hcoc γ`. Rewrite `h1` using `[hper f γ τ, hper h γ τ, Polynomial.map_sub, hconj _ (hmemE _ _)]`. Rewrite using `[map_sub, map_sub]`. Take the linear combination `-h1`. Establish `rel2 : ∀ (γ : Γ) (τ : ℍ), _root_.GlobalTheory.HeckeFamilyMatrices.slP (k - 2) (_root_.GlobalTheory.HeckeFamilyMatrices.mat γ) (_root_.GlobalTheory.HeckeFamilyMatrices.eichler (k - 2) h (γ • τ) - map (starRingEnd ℂ) (_root_.GlobalTheory.HeckeFamilyMatrices.eichler (k - 2) f (γ • τ …`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Introduce `γ τ`. Establish `h2` using `congrArg (map (starRingEnd ℂ)) (rel1 γ τ)`. Rewrite `h2` using `[hconj _ (sub_mem (sub_mem (hmemE _ _) (map_conj_mem_degreeLT (hmemE _ _))) hq)]`. Simplify using `only [Polynomial.map_sub, hcc] at h2`. Establish `hneg : _root_.GlobalTheory.HeckeFamilyMatrices.eichler (k - 2) h (γ • τ) - map (starRingEnd ℂ) (_root_.GlobalTheory.HeckeFamilyMatrices.eichler (k - 2) f (γ • τ)) - -map (starRingEnd ℂ) q = -(map (starRingEnd ℂ) (_root_.GlobalTheory.HeckeFamilyMatrices.eichler (k - 2) f (γ • τ)) …` using `by ring`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[hneg, map_neg, h2]`. Expand and normalize the polynomial expressions, which then agree. Establish `hq' : q ∈ ℂ[X]_(k - 1)` using `by rw [hk1]; exact hq`. Conclude with `⟨eq_zero_of_eichler_conj_slash_relation Γ k hΓ hk h f _ (neg_mem (map_conj_mem_degreeLT hq')) rel2, eq_zero_of_eichler_conj_slash_relation Γ k hΓ hk f h q hq' rel1⟩`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem _root_.GlobalTheory.HeckeFamilyMatrices.Positivity.eq_zero_of_per_sub_cj_mem : ∀ (N : ℕ) (Γ : Subgroup SL(2, ℤ)) (k : ℕ), 5 ≤ N →
     Γ ≤ CongruenceSubgroup.Gamma1 N → Γ.FiniteIndex → 3 ≤ k → ∀ (f h : CuspForm Γ (k : ℤ)),

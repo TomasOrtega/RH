@@ -25,31 +25,29 @@ open Formalism.CohomologicalDescent.LogSmallConstantBounds Formalism.Cohomologic
 variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] {l : ℕ} [Fact l.Prime] [IsCMField E]
 variable (Ω) in
 /- English proof (translation)
-Establish `hN` using `hP.Nr_eq`. Establish `ht` using `hP.t_ge`. Establish `hm` using `hP.m_pos`. Establish `hk` using `hP.m_le`. Take `⟨c, hc, hc'⟩` from `exists_of_half half (fun τ => (h0 P : ℤ) - P.Nr + 1 + s τ) fun τ => -s τ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨tw, htw, hcr⟩` from `exists_crys_char Ω p3 p9 ι c ((h0 P : ℤ) - P.Nr + 1) fun i => by`. Take `⟨τ, rfl | rfl⟩` from `half.2.2 i`. Rewrite using `[hc, hc']`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[cj_cj, hc, hc']`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Set `Fn : FrobNorm E Ω l Pl` to `⟨lab, -1, tw, htw, cofin⟩`. Establish `main` using `_root_.GlobalTheory.GalAut.exists_galoisRep_of_definiteUnitary p7 p6 p1 p2 p3 p9 p4 p8 p10 E Ω hE P.Nr (by omega)`. Use `⟨Pl, pt, Fn, cj, Or.inr rfl, fun mu θ ha hθ => ?_, fun θ hθ hB => ?_⟩` and prove the remaining obligations. Take `⟨π, hπ⟩` from `haut mu θ ha hθ`.
+Expand and normalize the polynomial expressions, which then agree. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨lam, hl, hl1, hl2, -⟩` from `hπ.weights half`. Take `⟨⟨r, hr, hf⟩, -⟩` from `main π hπ.1 lam hl l ι hπ.2.2.1`. Use `⟨GlobalTheory.TwistAbove.twGL tw r, fun τ a => ((Fin.rev a : ℕ) : ℤ) - (lam (ι.toRingHom.comp τ)).w (Fin.rev a) + c τ, fun τ a => ⟨?_, ?_⟩, ?_, SystemOf.reads Fn hlab hπ hf fun g => charpoly_smul _ (Units.ne_zero _)⟩` and prove the remaining obligations. Use `a.2` as an intermediate fact. Simplify using `only [hl2, hc', DomWeight.dual, Fin.rev_rev, hl1, Formalism.CohomologicalDescent.UnitNormBounds.UN]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[Fin.val_rev]`. Use linear arithmetic over natural numbers and integers. Use `a.2` as an intermediate fact. Simplify using `only [cj_cj, hc, hl1, Formalism.CohomologicalDescent.UnitNormBounds.UN, Fin.val_rev]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Use `crysWith_twist (r' := GlobalTheory.TwistAbove.twGL tw r) (fun _ => rfl) hr htw hcr using 2 with τ` and compare the differences between its conclusion and the goal. Rewrite using `[jumpsOf, Multiset.map_map]`. Use `conv_rhs => rw [← Multiset.map_univ_val_equiv Fin.revPerm, Multiset.map_map]`. Both sides reduce to the same expression. Establish `ha : ∀ τ, Antitone (res P.Nr (W.lam τ))` using `fun τ a b h => hW.anti τ a b h b.2`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨π, hπ⟩` from `haut W.lam θ ha hθ`. Take `⟨lam, hl, hl1, hl2, hl3⟩` from `hπ.weights half`. Establish `r1` using `fun τ => isRunAt_block hP hL hW τ _ _ (hl1 τ)`. Establish `r2` using `fun τ => isRunAt_dual (by omega) (r1 τ).1`. Take `⟨-, v, hv, hd, -⟩` from `(p4.dense (Ω := Ω) cofin).nonempty`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Choose the witnesses or unpack the hypotheses as in `⟨Q, -⟩ : v ∈ Set.range lab := by`. Assume the negation of the conclusion as `h`. Conclude with `hv ⟨((GlobalTheory.absNorm_prime_iff_inertiaDeg_eq_one_and_finite_ramified E).1 v).2 hd, h⟩`. Establish `hstr : HasString l π P.t`. Take `⟨hu, σ, S, h1, h2, h3⟩` from `hπ.2.2.2 Q`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨ν, hν, hdv⟩` from `hblk θ hB Q`. Take `⟨u, hu1, hu2⟩` from `string_of_dvd ι (absNorm_ne_zero _) (by omega) S (card_of_hasSat h2) _ h3 ν hν hdv`. Conclude with `⟨lab Q, (hlab Q).1, (hlab Q).2, hu, σ, S, u, h1, h2, hu1, hu2⟩`. Take `⟨a, ρ, χ, bot, h1, h2, h3, h4, h5⟩` from `(main π hπ.1 lam hl l ι hπ.2.2.1).2 P.t (by omega) (fun φ => by`. Take `⟨τ, rfl | rfl⟩` from `hl3 φ`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `⟨_, (r1 τ).1⟩`. Conclude with `⟨_, hl2 τ ▸ (r2 τ).1⟩) hstr`. Use `⟨a, GlobalTheory.TwistAbove.twGL tw ρ, fun j => χ j * tw, fun τ => bot τ + c τ, h1, continuous_twist (fun _ => rfl) h2 htw, fun j => ?_, fun τ => ⟨?_, ?_⟩, SystemOf.reads Fn hlab hπ h5 fun g => ?_⟩` and prove the remaining obligations. Use `crysWith_twist (r' := rk1 (χ j * tw)) (fun g => ?_) (h3 j) htw hcr using 2 with τ` and compare the differences between its conclusion and the goal. Rewrite using `[Multiset.map_singleton, add_right_comm]`.
+Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `x y`. Simplify using `[rk1, Matrix.diagonal_apply, mul_comm]`. Use `hW.what₂ τ beta_reduce` as an intermediate fact. Rewrite using `[h4 _ _ (hl2 τ ▸ (r2 τ).1), hl2, (r2 τ).2, (r1 τ).2, hc']`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Use `beta_reduce`. Rewrite using `[cj_cj, h4 _ _ (r1 τ).1, (r1 τ).2, hc]`. Use linear arithmetic over natural numbers and integers. Establish `e` using `scaleRoots_prod (Finset.univ.val.map fun j => ((χ j g : (Qbar l)ˣ) : Qbar l)) ((tw g : (Qbar l)ˣ) : Qbar l)`. Rewrite `e` using `[Multiset.map_map, Multiset.map_map]`.
-
-Rewrite using `[mul_scaleRoots_of_noZeroDivisors, ← charpoly_smul _ (Units.ne_zero _)]`. Conclude with `congrArg₂ (· * ·) rfl e.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem galois_side_of_compatible_systems (p1 : GlobalTheory.Published.ClozelCohomological) (p2 : GlobalTheory.Published.CohomologicalCsdTempered)
     (p3 : GlobalTheory.Published.HeckeLAdicCharacter) (p4 : GlobalTheory.Published.ChebotarevDegreeOne)
@@ -138,15 +136,13 @@ variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotio
   {Y : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y cX} {Csz : ℝ} (p : PtAt ex Csz)
 set_option maxHeartbeats 1600000 in
 /- English proof (translation)
-Introduce `_ F R inc _ T`. Take `⟨⟨hpl, hcof, hbl⟩, haut⟩` from `h`. Take `⟨hn, ht, ν, hν⟩` from `blk_numbers p hD hN.1 (p.R.mu w)`. Set `Pl` to `{Q : (blk p j (p.R.mu w)).Pl // ((Formalism.EigenvalueLevelCeiling.plc w : ℕ) : 𝓞 D.host.E) ∉ (plOf p j (p.R.mu w) Q).asIdeal}`. Establish `hpt : ∀ (Q : Pl) (k : Fin P.Nr), ∃ i, R.ix i = (Q.1, (k : ℕ) + 1)` using `fun Q k => (T.ix_range (Q.1, (k : ℕ) + 1)).2 ⟨Nat.le_add_left _ _, k.2, Q.2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `choose pt hpt using hpt`. Use `_root_.GlobalTheory.FrameGal.galois_side_of_compatible_systems _ p1 p2 p3 p4 p6 p7 p8 p9 p10 (GlobalTheory.DefiniteBC.host_unramified D.host) T.io T.half T.sh hN.1 hN.2.1 hN.2.2.1 F _ pt (fun Q => labOf p j (p.R.mu w) Q.1) (hcof.subset fun v hv => ⟨hv.1, fun ⟨Q, h1, h2⟩ => hv.2 ⟨ …` and prove the remaining obligations. Take `⟨π, h1, h2, h3, h4⟩` from `haut F R inc T mu θ ha hθ`. Use `⟨π, h1, h2, h3, fun Q => ?_⟩` and prove the remaining obligations. Take `⟨hu, σ, S, a, b, c⟩` from `h4 Q.1`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hu, σ, S, a, b, fun k hk => ?_⟩` and prove the remaining obligations. Break down `k with _ | k` into its components or cases. Rewrite using `[sysOf_zero, map_one, GlobalTheory.LFun.satEig]`. Simplify using `[Multiset.esymm]`. Establish `e` using `c (pt Q ⟨k, hk⟩) (by rw [hpt])`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e` using `[hpt]`. Conclude with `(congrArg T.io (sysOf_succ P.Nr pt θ Q ⟨k, hk⟩)).trans e`. Use `⟨R.e0 (ν Q.1), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[T.liftFrame_embedding_base, hbl ν hν, (hpl Q.1).2.2.1, hn, ht]`. Rewrite using `[(hpl Q.1).2.2.1, ← ht]`.
-
-Conclude with `block_dvd hθ hn pt Q Q.1 (hpt Q) hν`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem galois_at_place_of_automorphic_at_place (p1 : GlobalTheory.Published.ClozelCohomological) (p2 : GlobalTheory.Published.CohomologicalCsdTempered)
     (p3 : GlobalTheory.Published.HeckeLAdicCharacter) (p4 : GlobalTheory.Published.ChebotarevDegreeOne)
@@ -183,7 +179,7 @@ end Point
 end GlobalTheory.FrameGal
 open Formalism.MainNotions GlobalTheory.BigTop GlobalTheory.BigOn GlobalTheory.ExpTie in
 /- English proof (translation)
-Introduce `p1 p2 p3 p4 p6 p7 p8 p9 p10 hS`. Use `Closed.imp (GlobalTheory.T.small_estimate_implies_frame_automorphy hS) fun Fm _ _ H => ?_` and prove the remaining obligations. Take `⟨a, ha⟩` from `H`. Conclude with `⟨a, fun x hx hle i p hp hm j P W hD hN w hw hR => _root_.GlobalTheory.FrameGal.galois_at_place_of_automorphic_at_place p p1 p2 p3 p4 p6 p7 p8 p9 p10 hD hN (ha x hx hle i p hp hm j P W hD hN w hw hR)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem GlobalTheory.FrameGal.galois_steinberg_local : GlobalTheory.Published.ClozelCohomological → GlobalTheory.Published.CohomologicalCsdTempered → GlobalTheory.Published.HeckeLAdicCharacter →
     GlobalTheory.Published.ChebotarevDegreeOne → GlobalTheory.Published.GaloisRepOfPolarizedCuspidal →
@@ -201,7 +197,7 @@ section
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.L2.DIV Formalism.L2.Pj GlobalTheory.BigTop GlobalTheory.BigOn GlobalTheory.ExpTie GlobalTheory.ExpFrame Formalism.CohomologicalDescent.DepthNonnegative Formalism.CohomologicalDescent.LogSmallConstantBounds Formalism.CohomologicalDescent.ShortWeightBounds Formalism.CohomologicalDescent.LD Formalism.RankGapBounds.FormsTensorLocalization
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.FrameGal.galois_steinberg_local | exact _root_.GlobalTheory.FrameGal.galois_steinberg_local | (intros; apply _root_.GlobalTheory.FrameGal.galois_steinberg_local <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.galois_frame_compatibility : GlobalTheory.Published.ClozelCohomological → GlobalTheory.Published.CohomologicalCsdTempered → GlobalTheory.Published.HeckeLAdicCharacter → GlobalTheory.Published.ChebotarevDegreeOne → GlobalTheory.Published.GaloisRepOfPolarizedCuspidal → _root_.GlobalTheory.Published.BaseChangeDefiniteUnitaryGroup → GlobalTheory.Published.BhattScholzeCrystallineLattices → GlobalTheory.Published.HeckeLAdicCharacterAbove → GlobalTheory.Published.LocalLanglandsGL → SmallSt → GlobalTheory.ExpTie.GalSt := by
   first | exact @_root_.GlobalTheory.FrameGal.galois_steinberg_local | exact _root_.GlobalTheory.FrameGal.galois_steinberg_local | (intros; apply _root_.GlobalTheory.FrameGal.galois_steinberg_local <;> assumption)

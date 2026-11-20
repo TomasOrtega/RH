@@ -17,13 +17,13 @@ open scoped ValuativeRel
 attribute [local instance] GroundTheory.Automorphic.Spherical.fintypeResidue
 
 /- English proof (translation)
-Take `⟨hK, hu, -, -⟩` from `UpperTheory.V.Af.Smo.sphDict K n v`. Use `borelize (GL (Fin n) (Kv v))`. Set `μ : Measure (GL (Fin n) (Kv v))` to `Measure.haar`. Establish `hf : ∀ g, ∀ k ∈ integralGL (Kv v) n, W (g * k) = W g`. Rewrite using `[hK]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hE.inv`. Establish `hKp : (μ.real (integralGL (Kv v) n : Set (GL (Fin n) (Kv v))) : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 (measureReal_compactOpen_pos μ (isCompact_integralGL _ n) (isOpen_integralGL _ n)).ne'`. Establish `h1` using `integral_minusculeHecke_mul (μ := μ) hf g r`. Establish `hcs : HasCompactSupport fun x => (minusculeHecke μ r : HeckeAlgebra μ) x * W (g * x)`. Use `HasCompactSupport.intro (isCompact_minusculeSet r) fun x hx => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [minusculeHecke_apply, Set.indicator_of_notMem hx, zero_mul]`. Establish `h2` using `integral_eq_smul_finsum_coset μ (integralOpen (Kv v) n) (isCompact_integralGL _ n) hcs (fun x k hk => by`. Rewrite using `[(HeckeAlgebraLevel.val_mem _ _ (minusculeHecke μ r) k hk x).2, ← mul_assoc, hf _ k hk])`. Establish `h3 : ∑ᶠ c : GL (Fin n) (Kv v) ⧸ integralGL (Kv v) n, (minusculeSet (Kv v) n r).indicator (fun _ => (1 : ℂ)) c.out * W (g * c.out) = GlobalTheory.LFun.satEig (Formalism.UG.qV K v) n B r * W g`. Rewrite using `[hK, ← UpperTheory.V.Af.Smo.tjSet UpperTheory.V.Af.Smo.sphDict K n v r hr]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hE.eig _ hu r hr g`. Rewrite `h2` using `[Complex.real_smul]`. Use `mul_left_cancel₀ hKp ?_` and prove the remaining obligations. Rewrite using `[← h1, h2, ← h3]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem coset_sum {K : Type} [Field K] [NumberField K] (v : P K) (n : ℕ) {B : Multiset ℂˣ}
     {W : GL (Fin n) (Kv v) → ℂ} (hE : Eig v B W) {r : ℕ} (hr : r ≤ n) (g : GL (Fin n) (Kv v)) :
@@ -66,15 +66,15 @@ attribute [local instance] GroundTheory.Automorphic.Spherical.fintypeResidue
 variable {K : Type} [Field K] [NumberField K]
 
 /- English proof (translation)
-The claim follows from `Units.ext (by ext i j; fin_cases i <;> fin_cases j <;> simp [dL])`.
+A detailed English derivation is pending.
 -/
 private theorem dL_mul {v : P K} (a a' d d' : (Kv v)ˣ) : dL a d * dL a' d' = dL (a * a') (d * d') :=
   Units.ext (by ext i j; fin_cases i <;> fin_cases j <;> simp [dL])
 
 /- English proof (translation)
-Take `⟨hK, -, -, -⟩` from `UpperTheory.V.Af.Smo.sphDict K 2 v`. Establish `e : ∀ x : Kv v, Valued.v x ≤ 1 → x ∈ (ValuativeRel.valuation (Kv v)).integer` using `fun x hx => (GroundTheory.Global.mem_valuationInteger_iff v x).2 hx`. Establish `ha' : Valued.v ((a⁻¹ : (Kv v)ˣ) : Kv v) = 1` using `by simp [ha]`. Establish `hd' : Valued.v ((d⁻¹ : (Kv v)ˣ) : Kv v) = 1` using `by simp [hd]`. Rewrite using `[← hK, mem_integralGL_iff]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun i j => e _ ?_, fun i j => e _ ?_⟩` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [dL, ha, hd]`. Apply the tactic sequence `change Valued.v ((!![((a⁻¹ : (Kv v)ˣ) : Kv v), 0; 0, ((d⁻¹ : (Kv v)ˣ) : Kv v)] : Matrix (Fin 2) (Fin 2) (Kv v)) i j) ≤ 1 fin_cases i <;> fin_cases j <;> simp [ha, hd]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem dL_mem {v : P K} {a d : (Kv v)ˣ} (ha : Valued.v (a : Kv v) = 1) (hd : Valued.v (d : Kv v) = 1) :
     dL a d ∈ GlobalTheory.LFun.KGL v 2 := by
@@ -94,7 +94,7 @@ private noncomputable def pi0 (v : P K) : (Kv v)ˣ := Units.mk0 (GLnLocal.unifor
 private noncomputable def lf (v : P K) (a : 𝓀[Kv v]) : Kv v := ((residueLift (Kv v) a : 𝒪[Kv v]) : Kv v)
 
 /- English proof (translation)
-Introduce `a b h`. Establish `: residueLift (Kv v) a = residueLift (Kv v) b` using `Subtype.ext h`. Rewrite using `[← residue_residueLift (F := Kv v) a, this, residue_residueLift]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem lf_inj (v : P K) : Function.Injective (lf v) := by
   intro a b h
@@ -123,7 +123,7 @@ private instance : IsEmpty (Pairs (Finset.univ : Finset (Fin 2))) where
     simp at hb
 
 /- English proof (translation)
-Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Rewrite using `[gMat_apply]`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [cMat, lamS, nL, dL, pi0, lf]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Both sides reduce to the same expression.
 -/
 private theorem gMat_zero (v : P K) (c : Pairs ({0} : Finset (Fin 2)) → 𝓀[Kv v]) :
     gMat {0} c = nL (lf v (c default)) * dL (pi0 v) 1 := by
@@ -133,7 +133,7 @@ private theorem gMat_zero (v : P K) (c : Pairs ({0} : Finset (Fin 2)) → 𝓀[K
   rfl
 
 /- English proof (translation)
-Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Rewrite using `[gMat_apply]`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [cMat, lamS, dL, pi0]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem gMat_one (v : P K) (c : Pairs ({1} : Finset (Fin 2)) → 𝓀[Kv v]) :
     gMat {1} c = dL 1 (pi0 v) := by
@@ -142,7 +142,7 @@ private theorem gMat_one (v : P K) (c : Pairs ({1} : Finset (Fin 2)) → 𝓀[Kv
   fin_cases i <;> fin_cases j <;> simp [cMat, lamS, dL, pi0]
 
 /- English proof (translation)
-Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Rewrite using `[gMat_apply]`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [cMat, lamS, dL, pi0]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem gMat_top (v : P K) (c : Pairs (Finset.univ : Finset (Fin 2)) → 𝓀[Kv v]) :
     gMat Finset.univ c = dL (pi0 v) (pi0 v) := by
@@ -151,9 +151,9 @@ private theorem gMat_top (v : P K) (c : Pairs (Finset.univ : Finset (Fin 2)) →
   fin_cases i <;> fin_cases j <;> simp [cMat, lamS, dL, pi0]
 
 /- English proof (translation)
-Rewrite using `[Finset.powersetCard_one, Finset.sum_map, Fin.sum_univ_two]`. Simplify using `only [Function.Embedding.coeFn_mk]`. Use `congr 1`. Use `Fintype.sum_equiv (Equiv.funUnique (Pairs ({0} : Finset (Fin 2))) 𝓀[Kv v]) _ _ fun c => ?_` and prove the remaining obligations. Rewrite using `[gMat_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[Fintype.sum_unique, gMat_one]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 private theorem sum_one (v : P K) (f : GL (Fin 2) (Kv v) → ℂ) :
     ∑ S ∈ (Finset.univ : Finset (Fin 2)).powersetCard 1, ∑ c : Pairs S → 𝓀[Kv v], f (gMat S c) =
@@ -167,7 +167,7 @@ private theorem sum_one (v : P K) (f : GL (Fin 2) (Kv v) → ℂ) :
   · rw [Fintype.sum_unique, gMat_one]
 
 /- English proof (translation)
-Establish `hp : (Finset.univ : Finset (Fin 2)).powersetCard 2 = {Finset.univ}`. Use `Finset.powersetCard_self (Finset.univ : Finset (Fin 2))` as an intermediate fact. Rewrite `this` using `[Finset.card_univ, Fintype.card_fin]`. Then use the resulting hypothesis. Rewrite using `[hp, Finset.sum_singleton, Fintype.sum_unique, gMat_top]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 -/
 private theorem sum_two (v : P K) (f : GL (Fin 2) (Kv v) → ℂ) :
     ∑ S ∈ (Finset.univ : Finset (Fin 2)).powersetCard 2, ∑ c : Pairs S → 𝓀[Kv v], f (gMat S c) =
@@ -178,7 +178,7 @@ private theorem sum_two (v : P K) (f : GL (Fin 2) (Kv v) → ℂ) :
   rw [hp, Finset.sum_singleton, Fintype.sum_unique, gMat_top]
 
 /- English proof (translation)
-Establish `: GlobalTheory.LFun.satEig q 2 {α, β} 1 = (q : ℂ) ^ ((((1 : ℕ) : ℂ) * (((2 : ℕ) : ℂ) - ((1 : ℕ) : ℂ))) / 2) * (Multiset.map (fun b : ℂˣ => (b : ℂ)) {α, β}).esymm 1` using `rfl`. Rewrite using `[this]`. Evaluate the numerical expressions using `[Multiset.esymm, Multiset.insert_eq_cons, Multiset.powersetCard_one]`. Conclude with `Or.inl (add_comm _ _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Prove the first alternative.
 -/
 private theorem sat_one (q : ℕ) (α β : ℂˣ) :
     GlobalTheory.LFun.satEig q 2 {α, β} 1 = (q : ℂ) ^ (1 / 2 : ℂ) * ((α : ℂ) + β) := by
@@ -188,7 +188,7 @@ private theorem sat_one (q : ℕ) (α β : ℂˣ) :
   exact Or.inl (add_comm _ _)
 
 /- English proof (translation)
-Establish `: GlobalTheory.LFun.satEig q 2 {α, β} 2 = (q : ℂ) ^ ((((2 : ℕ) : ℂ) * (((2 : ℕ) : ℂ) - ((2 : ℕ) : ℂ))) / 2) * (Multiset.map (fun b : ℂˣ => (b : ℂ)) {α, β}).esymm 2` using `rfl`. Rewrite using `[this]`. Evaluate the numerical expressions using `[Multiset.esymm, Multiset.insert_eq_cons, Multiset.powersetCard_cons, Multiset.powersetCard_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 private theorem sat_two (q : ℕ) (α β : ℂˣ) :
     GlobalTheory.LFun.satEig q 2 {α, β} 2 = (α : ℂ) * β := by
@@ -197,7 +197,7 @@ private theorem sat_two (q : ℕ) (α β : ℂˣ) :
   norm_num [Multiset.esymm, Multiset.insert_eq_cons, Multiset.powersetCard_cons, Multiset.powersetCard_one]
 
 /- English proof (translation)
-Rewrite using `[← Nat.card_eq_fintype_card, GroundTheory.Global.natCard_residueField_integer, Ideal.absNorm_apply, Submodule.cardQuot_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem card_res (v : P K) : Fintype.card 𝓀[Kv v] = Ideal.absNorm v.asIdeal := by
   rw [← Nat.card_eq_fintype_card, GroundTheory.Global.natCard_residueField_integer, Ideal.absNorm_apply, Submodule.cardQuot_apply]
@@ -209,21 +209,19 @@ section Main
 attribute [local instance] GroundTheory.Automorphic.Spherical.fintypeResidue
 
 /- English proof (translation)
-Introduce `K _ _ v ϖ hϖ`. Take `⟨-, hu, -, -⟩` from `UpperTheory.V.Af.Smo.sphDict K 2 v`. Establish `hv : Valued.v (((pi0 v)⁻¹ * ϖ : (Kv v)ˣ) : Kv v) = 1`. Establish `h0 : Valued.v ((pi0 v : (Kv v)ˣ) : Kv v) = Valued.v (ϖ : Kv v)` using `hu.trans hϖ.symm`. Establish `hne : Valued.v ((pi0 v : (Kv v)ˣ) : Kv v) ≠ 0` using `by simp`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Units.val_mul, map_mul, Units.val_inv_eq_inv_val, map_inv₀, ← h0, inv_mul_cancel₀ hne]`. Use `set u : (Kv v)ˣ := (pi0 v)⁻¹ * ϖ with hu_def`. Establish `hϖu : ϖ = pi0 v * u` using `by rw [hu_def, mul_inv_cancel_left]`. Establish `hone : Valued.v (((1 : (Kv v)ˣ)) : Kv v) = 1` using `by simp`. Use `⟨Finset.univ.image (lf v), ?_, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.card_image_of_injective _ (lf_inj v), Finset.card_univ, card_res]`. Introduce `b hb`. Take `⟨a, -, rfl⟩` from `Finset.mem_image.1 hb`. Conclude with `(GroundTheory.Global.mem_valuationInteger_iff v _).1 (GroundTheory.Automorphic.Spherical.residueLift (Kv v) a).2`. Introduce `α β W hE g`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `inv` using `hE.inv`. Establish `s1` using `coset_sum v 2 hE (r := 1) (by norm_num) g`. Establish `s2` using `coset_sum v 2 hE (r := 2) le_rfl g`. Rewrite `s1` using `[sum_one v fun x => W (g * x), sat_one]`. Rewrite `s2` using `[sum_two v fun x => W (g * x), sat_two]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e1 : ∀ b, W (g * nL b * dL ϖ 1) = W (g * (nL b * dL (pi0 v) 1))`. Introduce `b`. Establish `: dL ϖ (1 : (Kv v)ˣ) = dL (pi0 v) 1 * dL u 1` using `by rw [dL_mul, ← hϖu, mul_one]`. Rewrite using `[this, ← mul_assoc, ← mul_assoc, inv _ _ (dL_mem hv hone)]`. Establish `e2 : W (g * dL 1 ϖ) = W (g * dL 1 (pi0 v))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: dL (1 : (Kv v)ˣ) ϖ = dL 1 (pi0 v) * dL 1 u` using `by rw [dL_mul, ← hϖu, mul_one]`. Rewrite using `[this, ← mul_assoc, inv _ _ (dL_mem hone hv)]`. Establish `e3 : W (g * dL ϖ ϖ) = W (g * dL (pi0 v) (pi0 v))`. Establish `: dL ϖ ϖ = dL (pi0 v) (pi0 v) * dL u u` using `by rw [dL_mul, ← hϖu]`. Rewrite using `[this, ← mul_assoc, inv _ _ (dL_mem hv hv)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.sum_image fun a _ b _ h => lf_inj v h, e2]`. Simplify using `only [e1]`. Conclude with `s1.symm`. Rewrite using `[e3]`.
-
-Conclude with `s2`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.H.heckeExpl :
     ∀ (K : Type) [Field K] [NumberField K] (v : P K) (ϖ : (Kv v)ˣ), IsU ϖ → ∃ R : Finset (Kv v), R.card = Ideal.absNorm v.asIdeal ∧ (∀ b ∈ R, IsInt b) ∧

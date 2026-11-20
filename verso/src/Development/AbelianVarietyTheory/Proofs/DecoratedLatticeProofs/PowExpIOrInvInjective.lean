@@ -3,11 +3,11 @@ import Mathlib
 namespace GlobalTheory.ExpPow
 
 /- English proof (translation)
-Take `⟨n, hn⟩` from `Complex.exp_eq_one_iff.mp h`. Establish `h1 : (m : ℝ) = n * (2 * Real.pi)`. Use `congrArg Complex.im hn` as an intermediate fact. Simplify using `using this`. Assume the negation of the conclusion as `hm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hn0 : (n : ℝ) ≠ 0`. Introduce `h0`. Rewrite `h1` using `[h0, zero_mul]`. Conclude with `hm (by exact_mod_cast h1)`. Apply `irrational_pi` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(m : ℚ) / (2 * n), ?_⟩` and prove the remaining obligations. Use `push_cast`. Rewrite using `[h1]`. Clear the denominators using the available nonvanishing facts.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem int_eq_zero_of_exp_I_mul (m : ℤ) (h : Complex.exp (Complex.I * m) = 1) : m = 0 := by
   obtain ⟨n, hn⟩ := Complex.exp_eq_one_iff.mp h
@@ -26,7 +26,7 @@ theorem int_eq_zero_of_exp_I_mul (m : ℤ) (h : Complex.exp (Complex.I * m) = 1)
   field_simp
 
 /- English proof (translation)
-Rewrite `h` using `[← Complex.exp_nat_mul, ← Complex.exp_nat_mul]`. Establish `h2 : Complex.exp (Complex.I * (((a : ℤ) - b : ℤ) : ℂ)) = 1`. Establish `: Complex.I * (((a : ℤ) - b : ℤ) : ℂ) = a * Complex.I - b * Complex.I` using `by push_cast; ring`. Rewrite using `[this, Complex.exp_sub, h, div_self (Complex.exp_ne_zero _)]`. Use `int_eq_zero_of_exp_I_mul _ h2` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -41,7 +41,7 @@ theorem exp_I_pow_injective (a b : ℕ)
   omega
 
 /- English proof (translation)
-Introduce and unpack `a b w (rfl | rfl) h`. Conclude with `exp_I_pow_injective a b h`. Rewrite `h` using `[inv_pow, inv_pow, inv_inj]`. Conclude with `exp_I_pow_injective a b h`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_exp_I_or_inv_injective :
     ∀ (a b : ℕ) (w : ℂ), (w = Complex.exp Complex.I ∨ w = (Complex.exp Complex.I)⁻¹) →

@@ -5,19 +5,17 @@ open scoped ContDiff
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `set S : ℝ := 2 ^ M * (Finset.Iic (M, n)).sup (fun m => SchwartzMap.seminorm ℝ m.1 m.2) f with hS`. Use `set B : ℝ := ‖a‖ + ‖p‖ * max R 0 with hB`. Establish `hB0 : 0 ≤ B` using `by positivity`. Use `⟨‖p‖ ^ n * ((1 + B) ^ M * S), fun y t ht => ?_⟩` and prove the remaining obligations. Establish `hy0 : 0 < (1 + ‖y‖) ^ M` using `by positivity`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcomp : (fun t => f (y + a + p t)) = (fun v => f (y + a + v)) ∘ p` using `rfl`. Establish `hg : ContDiff ℝ ∞ (fun v => f (y + a + v))` using `(f.smooth ⊤).comp (contDiff_const.add contDiff_id)`. Establish `e1` using `ContinuousLinearMap.iteratedFDeriv_comp_right p hg t (i := n) (by exact_mod_cast le_top)`. Establish `e2 : iteratedFDeriv ℝ n (fun v => f (y + a + v)) (p t) = iteratedFDeriv ℝ n f (y + a + p t)` using `iteratedFDeriv_comp_add_left n (y + a) (p t)`. Use `set v := y + a + p t with hv`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hD : ‖iteratedFDeriv ℝ n (fun t => f (y + a + p t)) t‖ ≤ ‖p‖ ^ n * ‖iteratedFDeriv ℝ n f v‖`. Rewrite using `[hcomp, e1, e2]`. Use `(ContinuousMultilinearMap.norm_compContinuousLinearMap_le _ _).trans ?_` and prove the remaining obligations. Simplify using `[Finset.prod_const, mul_comm]`. Establish `hdec : (1 + ‖v‖) ^ M * ‖iteratedFDeriv ℝ n f v‖ ≤ S` using `SchwartzMap.one_add_le_sup_seminorm_apply (𝕜 := ℝ) (m := (M, n)) le_rfl le_rfl f v`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpt : ‖p t‖ ≤ ‖p‖ * max R 0` using `(p.le_opNorm t).trans (mul_le_mul_of_nonneg_left (ht.trans (le_max_left _ _)) (norm_nonneg _))`. Establish `hyv : 1 + ‖y‖ ≤ (1 + ‖v‖) * (1 + B)`. Establish `: y = v - a - p t` using `by rw [hv]; abel`. Establish `h1 : ‖y‖ ≤ ‖v‖ + ‖a‖ + ‖p t‖`. Rewrite using `[this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hv0 : 0 ≤ ‖v‖` using `norm_nonneg _`. Use polynomial arithmetic with `[mul_nonneg hv0 hB0]`. Establish `hyM : (1 + ‖y‖) ^ M ≤ (1 + ‖v‖) ^ M * (1 + B) ^ M`. Rewrite using `[← mul_pow]; exact pow_le_pow_left₀ (by positivity) hyv M`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hDf0 : 0 ≤ ‖iteratedFDeriv ℝ n f v‖` using `norm_nonneg _`. Establish `key : (1 + ‖y‖) ^ M * ‖iteratedFDeriv ℝ n f v‖ ≤ (1 + B) ^ M * S`. Combine the equalities or inequalities in the displayed calculation. Establish `hf' : ‖iteratedFDeriv ℝ n f v‖ ≤ (1 + B) ^ M * S * ((1 + ‖y‖) ^ M)⁻¹`. Rewrite using `[← div_eq_mul_inv, le_div_iff₀ hy0, mul_comm]`.
-
-Conclude with `key`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem schwartz_shift_iteratedFDeriv_bound
     {V E : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V]

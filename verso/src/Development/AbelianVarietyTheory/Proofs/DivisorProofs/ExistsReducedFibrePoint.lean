@@ -8,17 +8,15 @@ open ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.IndefiniteRowSideFul
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `O _ _ _ ϖ hϖ Z f z hz`. Establish `h1 : ϖ ∈ (f z).asIdeal`. Establish `: z ∉ f ⁻¹ᵁ (Spec (.of O)).basicOpen ((Scheme.ΓSpecIso (.of O)).inv.hom ϖ)`. Rewrite using `[Scheme.preimage_basicOpen_top]` and apply the resulting hypothesis. Establish `h2 : f z ∉ (Spec (.of O)).basicOpen ((Scheme.ΓSpecIso (.of O)).inv.hom ϖ)` using `this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite `h2` using `[basicOpen_eq_of_affine (R := CommRingCat.of O) ϖ]`. Assume the negation of the conclusion as `h`. Conclude with `h2 ((PrimeSpectrum.mem_basicOpen _ _).2 h)`. Establish `hmax : (f z).asIdeal = IsLocalRing.maximalIdeal O`. Apply `le_antisymm` to reduce the goal to its premises.
+Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `IsLocalRing.le_maximalIdeal (f z).isPrime.ne_top`. Rewrite using `[(IsDiscreteValuationRing.irreducible_iff_uniformizer ϖ).1 hϖ, Ideal.span_le]`. Simplify using `using h1`. Set `k` to `IsLocalRing.ResidueField O`. Set `pt : Spec (.of k)` to `(⟨⊥, Ideal.bot_prime⟩ : PrimeSpectrum k)`.
+Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hpt : f z = Spec.map (CommRingCat.ofHom (IsLocalRing.residue O)) pt`. Apply `PrimeSpectrum.ext` to reduce the goal to its premises. Rewrite using `[hmax]`. Use `show IsLocalRing.maximalIdeal O = Ideal.comap (IsLocalRing.residue O) ⊥`. Rewrite using `[← RingHom.ker_eq_comap_bot, IsLocalRing.ker_residue]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨p, hp, -⟩` from `Scheme.Pullback.exists_preimage_pullback (f := f) z pt hpt`. Establish `hsupp : p ∈ Set.range (specialFibre f).nilradical.subschemeι`. Rewrite using `[Scheme.IdealSheafData.range_subschemeι, Scheme.support_nilradical]`. Discharge the goal by the elementary cases of `trivial`. Take `⟨y, hy⟩` from `hsupp`.
-
-Use `⟨y, ?_⟩` and prove the remaining obligations. Use `show (specialι f) ((specialFibre f).nilradical.subschemeι y) = z`. Rewrite using `[hy]`. Conclude with `hp`.
+Check the elementary cases of the proposition. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_reducedSpecialFibre_of_not_mem_basicOpen : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (ϖ : O), Irreducible ϖ → ∀ (Z : Scheme.{0}) (f : Z ⟶ Spec (.of O)) (z : Z),
   z ∉ Z.basicOpen (f.appTop.hom ((Scheme.ΓSpecIso (.of O)).inv.hom ϖ)) → ∃ y : reducedSpecialFibre f, reducedSpecialι f y = z := by

@@ -1,9 +1,9 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `Y h f g z hh ⟨C, N, hf⟩ ⟨D, M, hg⟩`. Use `⟨|C| + ‖z‖ * |D|, N + M, fun y => ?_⟩` and prove the remaining obligations. Establish `h0 : 0 ≤ h y` using `zero_le_one.trans (hh y)`. Establish `h1 : ‖f y‖ ≤ |C| * h y ^ (N + M)` using `(hf y).trans (mul_le_mul (le_abs_self C) (pow_le_pow_right₀ (hh y) (Nat.le_add_right N M)) (pow_nonneg h0 _) (abs_nonneg C))`. Establish `h2 : ‖g y‖ ≤ |D| * h y ^ (N + M)` using `(hg y).trans (mul_le_mul (le_abs_self D) (pow_le_pow_right₀ (hh y) (Nat.le_add_left M N)) (pow_nonneg h0 _) (abs_nonneg D))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem UpperTheory.moderate_growth_add_smul :
     ∀ {Y : Type} (h : Y → ℝ) (f g : Y → ℂ) (z : ℂ), (∀ y, 1 ≤ h y) →

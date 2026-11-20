@@ -10,19 +10,19 @@ open Formalism.BasicNotions.TH GlobalTheory.FockAlg GlobalTheory.IndefiniteRowSi
 namespace GlobalTheory.HarmonicShape
 
 /- English proof (translation)
-Establish `hj : P ∈ jointHW μ (wtH n ap am)`. Use `⟨⟨h1.2, h2⟩, ⟨fun a b => ?_, fun a b => by simp⟩, fun _ j => j.elim0, fun i => i.elim0⟩` and prove the remaining obligations. Use `h3 a b` as an intermediate fact. Rewrite `this` using `[GlobalTheory.IndefiniteRowSideFullHecke.FockSingularValues.fockAct1_lower, neg_eq_zero]`. Conclude with `this`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨α, β, γ, δ, ⟨-, -, -, -, a1, b1, c1, d1, -, -, -, -, e1, e2, e3, -⟩, -⟩` from `four_of_joint h1.1 hj`. Use function extensionality and compare the values at `x`. Break down `x with i | j` into its components or cases. Establish `hi` using `i.2`. Establish `u` using `e1 i`.
+Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `v` using `e3 ⟨i.1, by omega⟩`. Rewrite `u` using `[b1 _ (by simp)]`. Rewrite `v` using `[d1 _ ((min_le_left _ _).trans (by rw [Fin.val_rev]; dsimp only; omega))]`. Simplify using `only [shiftNu, cPair, wtH, hi, dif_pos, Fin.eta] at u v`. Simplify using `only [wtK]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Move the coercions through the operations in `at u v`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hj` using `j.2`. Establish `hr` using `j.rev.2`. Establish `u` using `e2 j`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `v` using `e3 (Fin.rev ⟨j.rev.1, by omega⟩)`. Establish `hp : ¬ (Fin.rev (⟨j.rev.1, by omega⟩ : Fin n)).1 < p`. Rewrite using `[Fin.val_rev]`. Simplify using `only`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `u` using `[c1 _ (by simp)]`. Rewrite `v` using `[a1 _ ((min_le_left _ _).trans (not_lt.1 hp))]`. Simplify using `only [shiftNu, cPair, wtH, dif_neg hp, Fin.rev_rev, hr, dif_pos, Fin.eta] at u v`. Simplify using `only [wtK]`. Move the coercions through the operations in `at u v`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem weight_eq_wtK (p q n : ℕ) (hn : p + q < n) (ap : Fin p → ℕ) (am : Fin q → ℕ)
     (μ : Ix p q → ℚ) (P : Pol p q n 0) (h1 : IsHW (fockAct1 p q n 0) μ P)

@@ -20,7 +20,7 @@ def polyTensorAlgEquiv (R A : Type*) [CommRing R] [CommRing A] [Algebra R A] (n 
     ((algebraTensorAlgEquiv R A).restrictScalars R)
 
 /- English proof (translation)
-Simplify using `[polyTensorAlgEquiv]`.
+Simplify using the standard rewrite rules.
 -/
 theorem polyTensorAlgEquiv_tmul (p : MvPolynomial (Fin n) R) (a : A) :
     polyTensorAlgEquiv R A n (p ⊗ₜ a) = a • MvPolynomial.map (algebraMap R A) p := by
@@ -47,7 +47,7 @@ def polyBasis {ι : Type*} (b : Module.Basis ι R A) (n : ℕ) :
   (Algebra.TensorProduct.basis (MvPolynomial (Fin n) R) b).map (polyTensorEquiv R A n)
 
 /- English proof (translation)
-Simplify using `[polyBasis, polyTensorEquiv, Algebra.TensorProduct.basis_apply, polyTensorAlgEquiv_tmul, smul_eq_C_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem polyBasis_apply {ι : Type*} (b : Module.Basis ι R A) (n : ℕ) (i : ι) :
     polyBasis b n i = C (b i) := by
@@ -57,15 +57,15 @@ theorem polyBasis_apply {ι : Type*} (b : Module.Basis ι R A) (n : ℕ) (i : ι
 end Basis
 
 /- English proof (translation)
-Set `bP` to `polyBasis b n`. Set `M : Fin n → Matrix ι ι R` to `fun j => Algebra.leftMulMatrix b (x j)`. Establish `hM : ∀ j k, x j * b k = ∑ i, M j i k • b i` using `fun j k => by`. Simplify using `only [M, Algebra.leftMulMatrix_eq_repr_mul]`. Conclude with `(b.sum_repr (x j * b k)).symm`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `key : ∀ (q : MvPolynomial (Fin n) R) (a : A), q • (C a : MvPolynomial (Fin n) A) = MvPolynomial.map (algebraMap R A) q * C a` using `fun q a => by`. Rewrite using `[Algebra.smul_def, MvPolynomial.algebraMap_def]`. Establish `hmat : Algebra.leftMulMatrix bP (∑ j, X j * C (x j) : MvPolynomial (Fin n) A) = ∑ j, (X j : MvPolynomial (Fin n) R) • (M j).map C`. Use `Matrix.ext fun i k => ?_` and prove the remaining obligations. Rewrite using `[Algebra.leftMulMatrix_eq_repr_mul, polyBasis_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hsum : (∑ j, X j * C (x j) : MvPolynomial (Fin n) A) * C (b k) = ∑ i', (∑ j, (X j : MvPolynomial (Fin n) R) * C (M j i' k)) • bP i'`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[mul_assoc, ← C_mul, hM j k, map_sum, Finset.mul_sum]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `_ = ∑ i', ∑ j, (X j : MvPolynomial (Fin n) A) * C (M j i' k • b i') := Finset.sum_comm`. Use `_ = ∑ i', (∑ j, (X j : MvPolynomial (Fin n) R) * C (M j i' k)) • bP i' := by`. Use `Finset.sum_congr rfl fun i' _ => ?_` and prove the remaining obligations. Rewrite using `[polyBasis_apply, key, map_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[map_mul, map_X, map_C, Algebra.smul_def, C_mul, mul_assoc]`. Rewrite using `[hsum, bP.repr_sum_self, Matrix.sum_apply]`. Simplify using `[Matrix.map_apply]`. Rewrite using `[normForm, Algebra.norm_eq_matrix_det bP, hmat]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem normForm_eq_det {R A : Type*} [CommRing R] [CommRing A] [Algebra R A] {n : ℕ} {ι : Type*}
     [Fintype ι] [DecidableEq ι] (b : Module.Basis ι R A) (x : Fin n → A) :
@@ -100,9 +100,9 @@ theorem normForm_eq_det {R A : Type*} [CommRing R] [CommRing A] [Algebra R A] {n
   rw [normForm, Algebra.norm_eq_matrix_det bP, hmat]
 
 /- English proof (translation)
-Introduce `R A _ _ _ _ _ n x u`. Set `b` to `Module.Free.chooseBasis R A`. Set `M : Fin n → Matrix (Module.Free.ChooseBasisIndex R A) (Module.Free.ChooseBasisIndex R A) R` to `fun j => Algebra.leftMulMatrix b (x j)`. Rewrite using `[normForm_eq_det b, RingHom.map_det]`. Establish `hev : (MvPolynomial.eval u).mapMatrix (∑ j, (X j : MvPolynomial (Fin n) R) • (M j).map C) = Algebra.leftMulMatrix b (∑ j, algebraMap R A (u j) * x j)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use extensionality with `i k`. Simplify using `only [RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.sum_apply, Matrix.smul_apply, smul_eq_mul, map_sum, map_mul, eval_X, eval_C, M]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[AlgHom.commutes, Algebra.algebraMap_eq_smul_one, Matrix.smul_mul, Matrix.one_mul, Matrix.smul_apply, smul_eq_mul]`. Rewrite using `[hev, ← Algebra.norm_eq_matrix_det b]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem NormFormEval.proof : NormFormEval.Statement := by
   intro R A _ _ _ _ _ n x u

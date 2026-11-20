@@ -11,7 +11,7 @@ section
 section
 namespace GlobalTheory.GalOfCusp
 /- English proof (translation)
-Introduce `H` and use `H.car.regAlg H.clo`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem local_global_above_ell_of_cusp_alt : _root_.GlobalTheory.NRows.ThetaLocalInputsAlt → _root_.UpperTheory.GalS.CarUAlt :=
   fun H => H.car.regAlg H.clo

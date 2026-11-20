@@ -14,7 +14,7 @@ section One
 variable {E : Type} [Field E] [NumberField E] [StarRing E]
 
 /- English proof (translation)
-Take `⟨o, rfl⟩` from `Submodule.mem_one.1 h`. Take `⟨o', ho'⟩` from `i_star_int o`. Conclude with `Submodule.mem_one.2 ⟨o', ho'⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem star_mem_one_submodule {t : E} (h : t ∈ (1 : Submodule (𝓞 E) E)) : star t ∈ (1 : Submodule (𝓞 E) E) := by
   obtain ⟨o, rfl⟩ := Submodule.mem_one.1 h
@@ -22,7 +22,7 @@ theorem star_mem_one_submodule {t : E} (h : t ∈ (1 : Submodule (𝓞 E) E)) : 
   exact Submodule.mem_one.2 ⟨o', ho'⟩
 
 /- English proof (translation)
-Take `⟨o, rfl⟩` from `Submodule.mem_one.1 hs`. Take `⟨o', rfl⟩` from `Submodule.mem_one.1 h`. Conclude with `Submodule.mem_one.2 ⟨o * o', by simp⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem mul_mem_one_submodule {s t : E} (hs : s ∈ (1 : Submodule (𝓞 E) E)) (h : t ∈ (1 : Submodule (𝓞 E) E)) :
     s * t ∈ (1 : Submodule (𝓞 E) E) := by
@@ -38,17 +38,17 @@ variable {D : D7} {u : D.what₂.Word} (F0 : FlagG (VS D) D.R.rS ((Tu D u : ℕ)
   (he : F0.e = D.sp.hypE) (hz : F0.z = D.zmOf u) (Λ : LatV D)
 
 /- English proof (translation)
-Introduce `_ hx` and use `c_mem_orth.2 fun _ hv => p_X_iso (lf D F0) hv hx`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isotropic_le_orth_self : Xsp (lf D F0) ≤ orth (hS D) (Xsp (lf D F0)) :=
   fun _ hx => c_mem_orth.2 fun _ hv => p_X_iso (lf D F0) hv hx
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Establish `hle : Lrep Λ (lf D F0) ⊔ toO (hS D) (Xsp (lf D F0)) ≤ Λ ⊔ toO (hS D) (Xsp (lf D F0))` using `sup_le_sup_right (inf_le_left : Λ ⊓ toO (hS D) (orth (hS D) (Xsp (lf D F0))) ≤ Λ) _`. Conclude with `⟨hle h1, h2⟩`. Introduce and unpack `⟨h1, h2⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Use `⟨?_, h2⟩` and prove the remaining obligations. Take `⟨l, hl, ξ, hξ, e⟩` from `Submodule.mem_sup.1 h1`. Use `Submodule.mem_sup.2 ⟨l, ⟨hl, ?_⟩, ξ, hξ, e⟩` and prove the remaining obligations. Establish `: l = v - ξ` using `by rw [← e]; abel`. Rewrite using `[this]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(orth (hS D) (Xsp (lf D F0))).sub_mem h2 (isotropic_le_orth_self F0 hξ)`.
+A detailed English derivation is pending.
 -/
 theorem mem_Lsub_iff_sup_and_orth {v : (hS D).V} : v ∈ Lsub Λ (lf D F0) ↔
     v ∈ Λ ⊔ toO (hS D) (Xsp (lf D F0)) ∧ v ∈ orth (hS D) (Xsp (lf D F0)) := by
@@ -67,14 +67,14 @@ theorem mem_Lsub_iff_sup_and_orth {v : (hS D).V} : v ∈ Lsub Λ (lf D F0) ↔
 
 include he hz in
 /- English proof (translation)
-The claim follows from `c_orth_anti (le_sup_left : Xsp (lf D F0) ≤ Xplus (lf D F0)) (orth_embedding_mem_orth_plus F0 he hz x)`.
+A detailed English derivation is pending.
 -/
 theorem orth_embedding_mem_orth_isotropic (x : (D.sp.X 0).V) : D.sp.iXY 0 x ∈ orth (hS D) (Xsp (lf D F0)) :=
   c_orth_anti (le_sup_left : Xsp (lf D F0) ≤ Xplus (lf D F0)) (orth_embedding_mem_orth_plus F0 he hz x)
 
 include he hz in
 /- English proof (translation)
-The claim follows from `c_mem_orth.1 (orth_embedding_mem_orth_plus F0 he hz x) F0.z ((le_sup_right : _ ≤ Xplus (lf D F0)) (Submodule.mem_span_singleton_self _))`.
+A detailed English derivation is pending.
 -/
 theorem inner_z_orth_embedding_eq_zero (x : (D.sp.X 0).V) : (hS D).hT F0.z (D.sp.iXY 0 x) = 0 :=
   c_mem_orth.1 (orth_embedding_mem_orth_plus F0 he hz x) F0.z
@@ -83,9 +83,9 @@ theorem inner_z_orth_embedding_eq_zero (x : (D.sp.X 0).V) : (hS D).hT F0.z (D.sp
 include he hz in
 
 /- English proof (translation)
-Rewrite using `[mem_orthLattice_iff_mem_sub]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `((mem_Lsub_iff_sup_and_orth F0 Λ).1 h.1).1`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Conclude with `⟨(mem_Lsub_iff_sup_and_orth F0 Λ).2 ⟨h, orth_embedding_mem_orth_isotropic F0 he hz x⟩, inner_z_orth_embedding_eq_zero F0 he hz x⟩`.
+A detailed English derivation is pending.
 -/
 theorem mem_orthLattice_iff_image_mem_sup {x : (D.sp.X 0).V} :
     x ∈ L0X D Λ (lf D F0) ↔ D.sp.iXY 0 x ∈ Λ ⊔ toO (hS D) (Xsp (lf D F0)) := by
@@ -98,7 +98,7 @@ theorem mem_orthLattice_iff_image_mem_sup {x : (D.sp.X 0).V} :
 
 include he hz in
 /- English proof (translation)
-Take `⟨c, hc, hcx⟩` from `a_exists_smul_mem Λ hΛ (D.sp.iXY 0 x)`. Use `⟨c, hc, (mem_orthLattice_iff_image_mem_sup F0 he hz Λ).2 ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.map_smul_of_tower]`. Conclude with `Submodule.mem_sup_left hcx`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_smul_mem_orthLattice (hΛ : Submodule.IsLattice D.host.E Λ) (x : (D.sp.X 0).V) :
     ∃ c : 𝓞 D.host.E, c ≠ 0 ∧ c • x ∈ L0X D Λ (lf D F0) := by
@@ -110,15 +110,13 @@ theorem exists_smul_mem_orthLattice (hΛ : Submodule.IsLattice D.host.E Λ) (x :
 include he hz in
 
 /- English proof (translation)
-Use `choose c hc hcM using fun i => exists_smul_mem_orthLattice F0 he hz Λ hΛ ((D.sp.X 0).frame i)`. Use `set M₁ : Submodule (𝓞 D.host.E) (D.sp.X 0).V := Submodule.span (𝓞 D.host.E) (Set.range fun i => c i • (D.sp.X 0).frame i) with hM₁def`. Establish `hM₁ : M₁ ≤ L0X D Λ (lf D F0)` using `Submodule.span_le.2 (by rintro _ ⟨i, rfl⟩; exact hcM i)`. Establish `hfg : M₁.FG` using `Submodule.fg_span (Set.finite_range _)`. Establish `hs : spanE (D.sp.X 0) M₁ = ⊤`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[eq_top_iff, ← (D.sp.X 0).frame.span_eq, Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Establish `hc1 : algebraMap (𝓞 D.host.E) D.host.E (c i) ≠ 0` using `by simpa using hc i`. Establish `h2 : (algebraMap (𝓞 D.host.E) D.host.E (c i))⁻¹ • (c i • (D.sp.X 0).frame i) = (D.sp.X 0).frame i`. Rewrite using `[← algebraMap_smul D.host.E (c i), smul_smul, inv_mul_cancel₀ hc1, one_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← h2]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span (Submodule.subset_span ⟨i, rfl⟩))`. Establish `hU : (⊤ : Submodule D.host.E (D.sp.X 0).V) ⊓ orth (D.sp.X 0) ⊤ = ⊥`. Rewrite using `[top_inf_eq, eq_bot_iff]`. Introduce `y hy`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(Submodule.mem_bot _).2 ((D.sp.X 0).nondeg.2 y fun x => c_mem_orth.1 hy x trivial)`. Take `⟨hdfg, -, -⟩` from `g_dual_facts g_starInt hU hfg hs`. Establish `hle : L0X D Λ (lf D F0) ≤ dualIn (D.sp.X 0) M₁`. Introduce `x hx`. Use `g_mem_dualIn.2 ⟨fun y hy => ?_, by rw [hs]; trivial⟩` and prove the remaining obligations.
-
-Take `⟨o, ho⟩` from `Submodule.mem_one.1 (orthLattice_isIntegral_of_unimodular Λ (lf D F0) hu y (hM₁ hy) x hx)`. Conclude with `⟨o, ho⟩`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `isNoetherian_submodule.1 (isNoetherian_of_fg_of_noetherian _ hdfg) _ hle`. Conclude with `eq_top_iff.2 (hs ▸ Submodule.span_mono hM₁)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem orthLattice_isLattice (hΛ : Submodule.IsLattice D.host.E Λ) (hu : Formalism.HermitianLatticesTheory.IsUnimodular (hS D).hT Λ) :
     Submodule.IsLattice D.host.E (L0X D Λ (lf D F0)) := by
@@ -152,31 +150,25 @@ theorem orthLattice_isLattice (hΛ : Submodule.IsLattice D.host.E Λ) (hu : Form
 include he in
 
 /- English proof (translation)
-Establish `DL` using `Formalism.HermitianLatticesTheory.dualLattice (𝓞 D.host.E) D.host.E (hS D).V (hS D).hT (hS D).herm (hS D).nondeg i_star_int`. Establish `hlat : ∀ N : LatV D, N.FG → Submodule.IsLattice D.host.E (Λ ⊔ N)` using `fun N hN => ⟨hΛ.fg.sup hN, eq_top_iff.2 (hΛ.span_eq_top ▸ Submodule.span_mono (le_sup_left : Λ ≤ Λ ⊔ N))⟩`. Establish `hΛ₂` using `(DL _ (hlat (Submodule.span (𝓞 D.host.E) {y}) (Submodule.fg_span (Set.finite_singleton y)))).1`. Use `choose c hc hcf using fun a => a_exists_smul_mem _ hΛ₂ (D.sp.hypF a)`. Use `set ε : 𝓞 D.host.E := ∏ a, c a with hε`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hε0 : ε ≠ 0` using `Finset.prod_ne_zero_iff.2 fun a _ => hc a`. Establish `hε1 : algebraMap (𝓞 D.host.E) D.host.E ε ≠ 0` using `by simpa using hε0`. Establish `hg : ∀ a, ε • D.sp.hypF a ∈ Formalism.HermitianLatticesTheory.dual (hS D).hT (Λ ⊔ Submodule.span (𝓞 D.host.E) {y})`. Introduce `a`. Rewrite using `[hε, ← Finset.prod_erase_mul _ _ (Finset.mem_univ a), mul_smul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Submodule.smul_mem _ _ (hcf a)`. Establish `hgΛ : ∀ a, ε • D.sp.hypF a ∈ Λ`. Introduce `a`. Rewrite using `[← hu]`. Conclude with `(i_mem_dual _ _).2 fun l hl => (i_mem_dual _ _).1 (hg a) l (Submodule.mem_sup_left hl)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hgy : ∀ a, (hS D).hT (ε • D.sp.hypF a) y ∈ (1 : Submodule (𝓞 D.host.E) D.host.E)`. Introduce `a`. Rewrite using `[← c_herm]`. Conclude with `star_mem_one_submodule ((i_mem_dual _ _).1 (hg a) y (Submodule.mem_sup_right (Submodule.mem_span_singleton_self y)))`. Use `set δ : D.host.E := (star (algebraMap (𝓞 D.host.E) D.host.E ε))⁻¹ with hδ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set N : LatV D := Submodule.span (𝓞 D.host.E) (Set.range fun a => δ • D.sp.hypE a) with hN`. Establish `hB` using `(DL _ (hlat N (Submodule.fg_span (Set.finite_range _)))).2.1`. Establish `hyB : y ∈ Λ ⊔ N`. Rewrite using `[← hB]`. Use `(i_mem_dual _ _).2 fun l hl => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hlΛ : l ∈ Λ`. Rewrite using `[← hu]`. Conclude with `(i_mem_dual _ _).2 fun l' hl' => (i_mem_dual _ _).1 hl l' (Submodule.mem_sup_left hl')`. Establish `ho : ∀ a, ∃ o : 𝓞 D.host.E, algebraMap (𝓞 D.host.E) D.host.E o = (algebraMap (𝓞 D.host.E) D.host.E ε)⁻¹ * (hS D).hT (D.sp.hypE a) l`. Introduce `a`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `(i_mem_dual _ _).1 hl (δ • D.sp.hypE a) (Submodule.mem_sup_right (Submodule.subset_span ⟨a, rfl⟩))`. Rewrite `h1` using `[map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, starRingEnd_apply, hδ, star_inv₀, star_star]`. Conclude with `Submodule.mem_one.1 h1`. Use `choose o ho using ho`. Use `set l' : (hS D).V := ∑ a, o a • (ε • D.sp.hypF a) with hl'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Establish `hl'Λ : l' ∈ Λ` using `Submodule.sum_mem _ fun a _ => Submodule.smul_mem _ _ (hgΛ a)`. Establish `hm : l - l' ∈ Λ ⊓ toO (hS D) (orth (hS D) (Xsp (lf D F0)))`. Use `⟨Λ.sub_mem hlΛ hl'Λ, ?_⟩` and prove the remaining obligations. Use `show l - l' ∈ orth (hS D) (Submodule.span D.host.E (Set.range F0.e))`. Rewrite using `[he]`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `a_orth_of_frame _ _ fun b => ?_` and prove the remaining obligations. Rewrite using `[map_sub, hl', map_sum, sub_eq_zero]`. Establish `: ∀ a, (hS D).hT (D.sp.hypE b) (o a • (ε • D.sp.hypF a)) = if b = a then algebraMap (𝓞 D.host.E) D.host.E (o a) * algebraMap (𝓞 D.host.E) D.host.E ε else 0`. Introduce `a`. Rewrite using `[← algebraMap_smul D.host.E (o a), ← algebraMap_smul D.host.E ε, map_smul, map_smul, D.sp.hyp_ef]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Apply the tactic sequence `split_ifs <;> simp`. Simplify using `only [this, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Rewrite using `[ho b]`. Clear the denominators using the available nonvanishing facts. Establish `e : l = (l - l') + l'` using `by abel`.
-
-Rewrite using `[e, map_add, LinearMap.add_apply]`. Use `Submodule.add_mem _ (hy _ hm) ?_` and prove the remaining obligations. Rewrite using `[hl', map_sum, LinearMap.sum_apply]`. Use `Submodule.sum_mem _ fun a _ => ?_` and prove the remaining obligations. Rewrite using `[← algebraMap_smul D.host.E (o a), map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, starRingEnd_apply]`.
-
-Conclude with `mul_mem_one_submodule (star_mem_one_submodule (Submodule.mem_one.2 ⟨o a, rfl⟩)) (hgy a)`. Establish `hNX : N ≤ toO (hS D) (Xsp (lf D F0))` using `?_`. Conclude with `(sup_le_sup_left hNX Λ) hyB`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨a, rfl⟩`.
-
-Use `show δ • D.sp.hypE a ∈ Submodule.span D.host.E (Set.range F0.e)`. Rewrite using `[he]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, rfl⟩)`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_sup_isotropic_of_dual_pairing (hΛ : Submodule.IsLattice D.host.E Λ) (hu : Formalism.HermitianLatticesTheory.IsUnimodular (hS D).hT Λ)
     (y : (hS D).V)

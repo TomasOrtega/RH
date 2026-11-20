@@ -16,7 +16,7 @@ def qOf (z z' : Fin (2 * r + k + 1) → ℂ) (g : B.Mat k r) : (Fin r → ℂ) �
   (fun a => Formalism.QuantumDeterminants.cmin k r z z' g a, Formalism.QuantumDeterminants.zeta k r z z' g)
 
 /- English proof (translation)
-Use `ContinuousOn.prodMk ?_ ?_` and prove the remaining obligations. Use `continuousOn_pi.2 fun a => ?_ show ContinuousOn (fun g : B.Mat k r => Dmin k r z z' g ⟨a.val + 1, by omega⟩ / Dmin k r z z' g ⟨a.val, by omega⟩) _` and prove the remaining obligations. Conclude with `(Formalism.FourierDecayAlt.P.PositiveOrbitOpen.dmin_cont z z' _).continuousOn.div (Formalism.FourierDecayAlt.P.PositiveOrbitOpen.dmin_cont z z' _).continuousOn fun g hg => hg.1 ⟨a.val, by omega⟩ (by simp)`. Use `show ContinuousOn (fun g : B.Mat k r => Dmin k r z z' g (Fin.last (r + 1)) / Dmin k r z z' g ⟨r, by omega⟩) _`. Conclude with `(Formalism.FourierDecayAlt.P.PositiveOrbitOpen.dmin_cont z z' _).continuousOn.div (Formalism.FourierDecayAlt.P.PositiveOrbitOpen.dmin_cont z z' _).continuousOn fun g hg => hg.1 ⟨r, by omega⟩ le_rfl`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem qOf_contOn (z z' : Fin (2 * r + k + 1) → ℂ) : ContinuousOn (qOf z z') (Q.OmPlus k r z z') := by
   refine ContinuousOn.prodMk ?_ ?_
@@ -29,7 +29,7 @@ theorem qOf_contOn (z z' : Fin (2 * r + k + 1) → ℂ) : ContinuousOn (qOf z z'
       fun g hg => hg.1 ⟨r, by omega⟩ le_rfl
 
 /- English proof (translation)
-The claim follows from `(qOf_contOn z z').isOpen_inter_preimage (Formalism.FourierDecayAlt.P.PositiveOrbitOpen.omPlus_open z z') hU`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_qOf (z z' : Fin (2 * r + k + 1) → ℂ) {U : Set ((Fin r → ℂ) × ℂ)} (hU : IsOpen U) :
     IsOpen (Q.OmPlus k r z z' ∩ qOf z z' ⁻¹' U) :=
@@ -39,7 +39,7 @@ variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [Norm
   [InnerProductSpace ℂ Wq]
 
 /- English proof (translation)
-Unfold `qOf Formalism.QuantumDeterminants.cmin Formalism.QuantumDeterminants.zeta`. Simplify using `only [Formalism.FourierDecayAlt.P.BigCellZetaMinors.dmin_sgs Bs hp]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem qOf_sgs (Bs : B.RealPlaceData k r Wp Wq) {p : B.SS k r} (hp : Bs.inSS p) (g : B.Mat k r) :
     qOf Bs.z Bs.z' (B.sgs p g) = qOf Bs.z Bs.z' g := by
@@ -47,14 +47,14 @@ theorem qOf_sgs (Bs : B.RealPlaceData k r Wp Wq) {p : B.SS k r} (hp : Bs.inSS p)
   simp only [Formalism.FourierDecayAlt.P.BigCellZetaMinors.dmin_sgs Bs hp]
 
 /- English proof (translation)
-The claim follows from `Prod.ext (funext fun a => Formalism.FourierDecayAlt.P.BigCellZetaMinors.cmin_gq Bs hq a) (Formalism.FourierDecayAlt.P.BigCellZetaMinors.zeta_gq Bs hq)`.
+A detailed English derivation is pending.
 -/
 theorem qOf_gq (Bs : B.RealPlaceData k r Wp Wq) {q : (Fin r → ℂ) × ℂ} (hq : q ∈ JF.QDom k r Bs.z Bs.z') :
     qOf Bs.z Bs.z' (B.gq Bs q) = q :=
   Prod.ext (funext fun a => Formalism.FourierDecayAlt.P.BigCellZetaMinors.cmin_gq Bs hq a) (Formalism.FourierDecayAlt.P.BigCellZetaMinors.zeta_gq Bs hq)
 
 /- English proof (translation)
-Take `⟨p, hp, q, hq, rfl⟩` from `Formalism.FourierDecayAlt.P.psiOnto_true k r Wp Wq Bs g hg`. Rewrite using `[qOf_sgs Bs hp, qOf_gq Bs hq]`. Conclude with `⟨p, hp, hq, rfl⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem om_eq_sgs (Bs : B.RealPlaceData k r Wp Wq) {g : B.Mat k r} (hg : g ∈ JF.Om k r Bs.z Bs.z') :
     ∃ p, Bs.inSS p ∧ qOf Bs.z Bs.z' g ∈ JF.QDom k r Bs.z Bs.z' ∧ g = B.sgs p (B.gq Bs (qOf Bs.z Bs.z' g)) := by
@@ -65,13 +65,13 @@ theorem om_eq_sgs (Bs : B.RealPlaceData k r Wp Wq) {g : B.Mat k r} (hg : g ∈ J
 variable [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq]
 
 /- English proof (translation)
-Introduce `g hg hgU`. Take `⟨p, hp, hq, hge⟩` from `om_eq_sgs Bs hg`. Use `set q := qOf Bs.z Bs.z' g with hqdef`. Rewrite using `[hge]`. Establish `hgq` using `Formalism.FourierDecayAlt.P.BigCellHermitian.gqDom Bs hq`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hD : ∀ y ∈ JF.Om k r Bs.z Bs.z', y ∈ Q.Glev k r 0 ∩ {g | 0 < Gf k r Bs.z Bs.z' g ∧ ∀ a : Fin r, Dmin k r Bs.z Bs.z' g ⟨(a : ℕ) + 1, by omega⟩ ≠ 0}` using `fun y hy => ⟨Formalism.FourierDecayAlt.P.OrbitalIntegralIdentities.glev0 hy.1, Formalism.FourierDecayAlt.P.CutMP.jdc_of_om _ _ hy⟩`. Establish `hNl : ∀ n ∈ Formalism.QuantumDeterminants.Nset k r, n ∈ Q.Nlev k r 0` using `fun n hn => ⟨hn, Formalism.FourierDecayAlt.P.OrbitalIntegralIdentities.glev0 hn.1⟩`. Use `Formalism.FourierDecayAlt.P.B5.haar_sigmaFinite Bs.haarW` as an intermediate fact. Use `Formalism.FourierDecayAlt.P.B5.haar_sigmaFinite Bs.haarN` as an intermediate fact. Use `Formalism.FourierDecayAlt.P.B5.haar_sigmaFinite Bs.haarW'` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hN` using `bessel_unipotent_equiv_holds Wp Wq k r Bs.z Bs.z' cStd Bs.π Bs.π' Bs.μW Bs.μN Bs.μW' F Bs.z_mem Bs.z'_mem Bs.haarN.conc (fun n₀ h => Bs.haarN.left n₀ h)`. Use `LT.agree_sgs Bs J (B.JF Bs F) (fun y hy n hn => hJ.2.1 y (hD y hy) n (hNl n hn)) (fun y hy n hn => hJ.2.2.1 y (hD y hy) n (hNl n hn)) (fun y hy h hh h' hh' => hJ.2.2.2 y (hD y hy) h hh h' hh') (fun y _ n hn => ?_) (fun y _ n hn => ?_) (fun y _ h hh h' hh' => Formalism.FourierDeca …` and prove the remaining obligations. Establish `e` using `hN y n hn 1 WeylGroupFacts.mem_n_one`. Rewrite `e` using `[Matrix.mul_one, Formalism.FourierDecayAlt.P.BesselCapelliCommutation.psi_one Bs.z'_mem, mul_one]`. Conclude with `e`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e` using `hN y 1 WeylGroupFacts.mem_n_one n hn`. Rewrite `e` using `[Matrix.one_mul, Formalism.FourierDecayAlt.P.BesselCapelliCommutation.psi_one Bs.z_mem, one_mul]`. Conclude with `e`.
+A detailed English derivation is pending.
 -/
 theorem agree_qOf (Bs : B.RealPlaceData k r Wp Wq) (J F : B.Mat k r → (Wq →L[ℂ] Wp)) (U : Set ((Fin r → ℂ) × ℂ))
     (hJ : J ∈ Q.FFl k r Bs.z Bs.z' Bs.π Bs.π' 0 {g | 0 < Gf k r Bs.z Bs.z' g ∧

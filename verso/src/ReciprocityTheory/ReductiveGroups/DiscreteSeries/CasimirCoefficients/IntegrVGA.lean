@@ -16,11 +16,11 @@ variable {n : ℕ}
 variable {ε : Fin n → Bool}
 
 /- English proof (translation)
-Unfold `q0`. Break down `le_total (pOf ε) (qOf ε) with h | h` into its components or cases. Use `⟨true, ?_⟩` and prove the remaining obligations. Rewrite using `[min_eq_left h]`. Use `first`.
+Replace the relevant objects with their definitions. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `(rw [pOf, Fintype.card_subtype])`. Consider the case `simp [SgIxV, pOf, Fintype.card_subtype]`. Use `⟨false, ?_⟩` and prove the remaining obligations. Rewrite using `[min_eq_right h]`. Use `first`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Consider the case `(rw [qOf, Fintype.card_subtype])`. Consider the case `simp [SgIxV, qOf, Fintype.card_subtype]`.
+A detailed English derivation is pending.
 -/
 lemma exists_signVG (ε : Fin n → Bool) : ∃ s : Bool, Fintype.card (SgIxV ε s) = q0 ε := by
   unfold q0

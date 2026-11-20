@@ -22,9 +22,9 @@ section Flat
 variable {X Y Z : Scheme.{0}} {L : LB X}
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h ψ`. Use `GlobalTheory.Algebraise.mem_wc.1 (h ψ)` as an intermediate fact. Simplify using `using this`. Introduce `h ψ`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `GlobalTheory.Algebraise.mem_wc.2 (by simpa using h ψ)`.
+A detailed English derivation is pending.
 -/
 theorem good_sq_iff (z : Z) (J' : (Z ⟶ X) → L.ι) :
     Good (LB.LinComb L (K := Fin 1) (fun _ => 𝟙 X) (fun _ => 2)) z (fun ψ _ => J' ψ) ↔ Good L z J' := by
@@ -36,13 +36,13 @@ theorem good_sq_iff (z : Z) (J' : (Z ⟶ X) → L.ι) :
     exact GlobalTheory.Algebraise.mem_wc.2 (by simpa using h ψ)
 
 /- English proof (translation)
-The claim follows from `funext fun ψ => funext fun κ => congrArg (J ψ) (Subsingleton.elim _ _)`.
+A detailed English derivation is pending.
 -/
 theorem eq_const_of_fin_one {α β : Type} (J : α → (Fin 1 → β)) : J = fun ψ _ => J ψ 0 :=
   funext fun ψ => funext fun κ => congrArg (J ψ) (Subsingleton.elim _ _)
 
 /- English proof (translation)
-The claim follows from `h Z r z (J' (r ≫ g)) (by simpa using hJ (r ≫ g))`.
+A detailed English derivation is pending.
 -/
 theorem sval_flat {a n m : ℤ} {g : Y ⟶ X} {t : LB.Sec (LB.LinComb L (K := Fin 1) (fun _ => g) (fun _ => m))}
     {s : LB.Sec (LB.LinComb (LB.LinComb L (K := Fin 1) (fun _ => 𝟙 X) (fun _ => a)) (K := Fin 1) (fun _ => g)
@@ -56,15 +56,15 @@ theorem sval_flat {a n m : ℤ} {g : Y ⟶ X} {t : LB.Sec (LB.LinComb L (K := Fi
 end Flat
 
 /- English proof (translation)
-Introduce `hS R _ _ _ I _ P n hn s hs`. Establish `hm : (((2 * n : ℕ) : ℤ)) = 2 * (n : ℤ)` using `by push_cast; ring`. Establish `hn2 : 1 ≤ 2 * n` using `by omega`. Use `choose t ht using fun e => GlobalTheory.T.linComb_pow_section_flatten P.L 2 (n : ℤ) ((2 * n : ℕ) : ℤ) hm (fstG I e P.A).left (s e)`. Establish `htc : ∀ (e : ℕ) (Z : Scheme.{0}) (r : Z ⟶ (thickObj R I e P.A).left) (z : Z) (J : (Z ⟶ P.A.left) → P.L.ι), Good P.L z J → sval (t (e + 1)) (r ≫ thickMap R I e P.A) z J = sval (t e) r z J`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `e Z r z J hJ`. Rewrite using `[sval_flat (ht (e + 1)) _ z J hJ, sval_flat (ht e) r z J hJ]`. Conclude with `hs e Z r z _ ((good_sq_iff z J).2 hJ)`. Take `⟨σ₀, hσ₀, hσ₀u⟩` from `GlobalTheory.SectionLimit.existsUnique_sec_of_compatible hS R I P (2 * n) hn2 t htc`. Take `⟨σ, hσ⟩` from `GlobalTheory.T.linComb_pow_section_unflatten P.L 2 (n : ℤ) ((2 * n : ℕ) : ℤ) hm (𝟙 P.A.left) σ₀`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨σ, fun e Z r z J hJ => ?_, fun σ' hσ' => ?_⟩` and prove the remaining obligations. Take `⟨J', rfl⟩ : ∃ J' : (Z ⟶ P.A.left) → P.L.ι, J = fun ψ _ => J' ψ` from `⟨_, eq_const_of_fin_one J⟩`. Establish `hJ'` using `(good_sq_iff z J').1 hJ`. Rewrite using `[← sval_flat hσ _ z J' hJ', hσ₀ e Z r z J' hJ', sval_flat (ht e) r z J' hJ']`. Take `⟨τ, hτ⟩` from `GlobalTheory.T.linComb_pow_section_flatten P.L 2 (n : ℤ) ((2 * n : ℕ) : ℤ) hm (𝟙 P.A.left) σ'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hτσ : τ = σ₀` using `hσ₀u τ fun e Z r z J hJ => by`. Rewrite using `[sval_flat hτ _ z J hJ, hσ' e Z r z _ ((good_sq_iff z J).2 hJ), ← sval_flat (ht e) r z J hJ]`. Establish `hL` using `LB.isLB_linComb P.isLB (K := Fin 1) (fun _ => 𝟙 P.A.left) (fun _ => (2 : ℤ))`. Use `DVR.SecOps.sec_ext (sec_ext_val hL fun y J hJ => ?_)` and prove the remaining obligations. Take `⟨J', rfl⟩ : ∃ J' : (P.A.left ⟶ P.A.left) → P.L.ι, J = fun ψ _ => J' ψ` from `⟨_, eq_const_of_fin_one J⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hJ'` using `(good_sq_iff y J').1 hJ`. Rewrite using `[← sval_flat hτ _ y J' hJ', ← sval_flat hσ _ y J' hJ', hτσ]`.
+A detailed English derivation is pending.
 -/
 theorem existsUnique_sec_of_compatible_sq : SecBaseChangeSt → ∀ (R : Type) [CommRing R] [IsLocalRing R] [IsNoetherianRing R] (I : Ideal R) [IsAdicComplete I R] (P : PolAV (Spec (CommRingCat.of R))) (n : ℕ), 1 ≤ n → ∀ s : ∀ e : ℕ, LB.Sec (LB.LinComb (LB.LinComb P.L (K := Fin 1) (fun _ => 𝟙 P.A.left) (fun _ => 2)) (K := Fin 1) (fun _ => (fstG I e P.A).left) (fun _ => (n : ℤ))), (∀ (e : ℕ) (Z : Scheme.{0}) (r : Z ⟶ (thickObj R I e P.A).left) (z : Z) (J : (Z ⟶ P.A.left) → (LB.LinComb P.L (K := Fin 1) (fun _ => 𝟙 P.A.left) (fun _ => 2)).ι), Good (LB.LinComb P.L (K := Fin 1) (fun _ => 𝟙 P.A.left) (fun _ => 2)) z J → sval (s (e + 1)) (r ≫ thickMap R I e P.A) z J = sval (s e) r z J) → ∃! σ : H0 (LB.LinComb P.L (K := Fin 1) (fun _ => 𝟙 P.A.left) (fun _ => 2)) n, ∀ (e : ℕ) (Z : Scheme.{0}) (r : Z ⟶ (thickObj R I e P.A).left) (z : Z) (J : (Z ⟶ P.A.left) → (LB.LinComb P.L (K := Fin 1) (fun _ => 𝟙 P.A.left) (fun _ => 2)).ι), Good (LB.LinComb P.L (K := Fin 1) (fun _ => 𝟙 P.A.left) (fun _ => 2)) z J → sval σ (r ≫ (fstG I e P.A).left) z J = sval (s e) r z J := by
   intro hS R _ _ _ I _ P n hn s hs

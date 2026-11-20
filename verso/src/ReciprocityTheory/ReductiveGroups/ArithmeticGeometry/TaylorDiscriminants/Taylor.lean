@@ -15,23 +15,21 @@ section Sym
 variable {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V]
 
 /- English proof (translation)
-Introduce `n M hM`. Set `F : List V → ℂ` to `fun k => if hk : k.length = n then M (fun i => k.get (i.cast hk.symm)) else 0`. Establish `key : ∀ l₀ : List V, F (l₀ ++ l) = F (l₀ ++ l')`. Proceed by induction on `p with`. Consider the case `nil => intro l₀`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Both sides reduce to the same expression. Consider the case `@cons x l₁ l₂ _ ih`. Introduce `l₀`. Establish `e₁ : l₀ ++ x :: l₁ = (l₀ ++ [x]) ++ l₁` using `by simp`. Establish `e₂ : l₀ ++ x :: l₂ = (l₀ ++ [x]) ++ l₂` using `by simp`.
+Both sides reduce to the same expression. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e₁, e₂]`. Conclude with `ih _`. Consider the case `swap x y k`. Introduce `l₀`. Simplify using `only [F]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hk : (l₀ ++ y :: x :: k).length = n`. Establish `hk' : (l₀ ++ x :: y :: k).length = n` using `by simpa using hk`. Rewrite using `[dif_pos hk, dif_pos hk']`. Establish `hlt : l₀.length + 1 < n` using `by simp at hk; omega`. Rewrite using `[← hM _ (Equiv.swap (⟨l₀.length, by omega⟩ : Fin n) ⟨l₀.length + 1, hlt⟩)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use function extensionality and compare the values at `i`. Take `⟨i, hi⟩` from `i`. Simplify using `only [Function.comp_apply, Equiv.swap_apply_def, Fin.mk.injEq]`. Use `split_ifs with h1 h2`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Substitute `h1` using the available equality. Simplify using `[List.getElem_append]`. Substitute `h2` using the available equality. Simplify using `[List.getElem_append]`. Break down `lt_or_ge i l₀.length with h3 | h3` into its components or cases.
+Substitute using the available equality. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Simplify using `[List.getElem_append, h3]`. Take `⟨j, rfl⟩ : ∃ j, i = l₀.length + (j + 2)` from `⟨i - (l₀.length + 2), by omega⟩`. Simplify using `[List.getElem_append]`. Establish `hk' : ¬ (l₀ ++ x :: y :: k).length = n` using `by simpa using hk`. Rewrite using `[dif_neg hk, dif_neg hk']`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `trans _ _ ih₁ ih₂ => intro l₀`. Conclude with `(ih₁ l₀).trans (ih₂ l₀)`. Introduce `h h'`. Establish `e` using `key []`. Simplify using `only [F, List.nil_append, dif_pos h, dif_pos h'] at e`.
-
-Conclude with `e`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cml_perm {l l' : List V} (p : l.Perm l') :
     ∀ (n : ℕ) (M : ContinuousMultilinearMap ℂ (fun _ : Fin n => V) ℂ),
@@ -81,7 +79,7 @@ theorem cml_perm {l l' : List V} (p : l.Perm l') :
 def lD (φ : V → ℂ) (x : V) (l : List V) : ℂ := iteratedFDeriv ℂ l.length φ x (fun i => l.get i)
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem lD_eq (φ : V → ℂ) (x : V) (l : List V) {n : ℕ} (h : l.length = n) :
     lD φ x l = iteratedFDeriv ℂ n φ x (fun i => l.get (i.cast h.symm)) := by
@@ -89,7 +87,7 @@ theorem lD_eq (φ : V → ℂ) (x : V) (l : List V) {n : ℕ} (h : l.length = n)
   rfl
 
 /- English proof (translation)
-Establish `hl : l'.length = l.length` using `p.length_eq.symm`. Rewrite using `[lD_eq φ x l rfl, lD_eq φ x l' hl]`. Conclude with `cml_perm p l.length _ (fun v σ => (hφ.of_le le_top).iteratedFDeriv_comp_perm v σ) rfl hl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lD_perm {φ : V → ℂ} {x : V} (hφ : ContDiffAt ℂ ω φ x) {l l' : List V} (p : l.Perm l') :
     lD φ x l = lD φ x l' := by
@@ -100,15 +98,13 @@ theorem lD_perm {φ : V → ℂ} {x : V} (hφ : ContDiffAt ℂ ω φ x) {l l' : 
 def mD (φ : V → ℂ) (x : V) (s : Multiset V) : ℂ := lD φ x s.toList
 
 /- English proof (translation)
-The claim follows from `lD_perm hφ (Multiset.coe_eq_coe.mp (Multiset.coe_toList _))`.
+A detailed English derivation is pending.
 -/
 theorem mD_coe {φ : V → ℂ} {x : V} (hφ : ContDiffAt ℂ ω φ x) (l : List V) :
     mD φ x (l : Multiset V) = lD φ x l := lD_perm hφ (Multiset.coe_eq_coe.mp (Multiset.coe_toList _))
 
 /- English proof (translation)
-Use `show iteratedFDeriv ℂ (l.length + 1) φ x (fun i => (v :: l).get i) = _`. Rewrite using `[ContinuousMultilinearMap.curryLeft_apply]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Use `Fin.cases ?_ (fun j => ?_) i` and prove the remaining obligations.
-
-Apply the tactic sequence `first | rfl | simp`. Apply the tactic sequence `first | rfl | simp`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem lD_cons (φ : V → ℂ) (x v : V) (l : List V) :
     lD φ x (v :: l) = (iteratedFDeriv ℂ (l.length + 1) φ x).curryLeft v (fun i => l.get i) := by
@@ -121,7 +117,7 @@ theorem lD_cons (φ : V → ℂ) (x v : V) (l : List V) :
   · first | rfl | simp
 
 /- English proof (translation)
-Establish `hp : (v ::ₘ s).toList.Perm (v :: s.toList)`. Rewrite using `[← Multiset.coe_eq_coe, Multiset.coe_toList, ← Multiset.cons_coe, Multiset.coe_toList]`. Use `show lD φ x (v ::ₘ s).toList = _`. Rewrite using `[lD_perm hφ hp, lD_cons]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mD_cons {φ : V → ℂ} {x : V} (hφ : ContDiffAt ℂ ω φ x) (v : V) (s : Multiset V) :
     mD φ x (v ::ₘ s) =
@@ -132,7 +128,7 @@ theorem mD_cons {φ : V → ℂ} {x : V} (hφ : ContDiffAt ℂ ω φ x) (v : V) 
   rw [lD_perm hφ hp, lD_cons]
 
 /- English proof (translation)
-Simplify using `only [mD_cons hφ, map_sum, map_smul, ContinuousMultilinearMap.sum_apply, ContinuousMultilinearMap.smul_apply, smul_eq_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mD_cons_sum {φ : V → ℂ} {x : V} (hφ : ContDiffAt ℂ ω φ x) {ι : Type} (t : Finset ι) (c : ι → ℂ)
     (w : ι → V) (s : Multiset V) :
@@ -151,7 +147,7 @@ def addF (g : ℕ) : Fin g → PS R 2 g := fun i => X ((0 : Fin 2), i) + X ((1 :
 variable {R}
 
 /- English proof (translation)
-Use `first`. Consider the case `exact map_zero _`. Consider the case `(simp only [ev]; exact MvPowerSeries.subst_zero _)`. Consider the case `simp [ev, MvPowerSeries.subst, MvPowerSeries.eval₂]`. Consider the case `simp [ev, MvPowerSeries.subst]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem ev_zero' {m n d : ℕ} (a : Fin m → Pt R n d) : ev a (0 : PS R m d) = 0 := by
   first
@@ -161,9 +157,9 @@ theorem ev_zero' {m n d : ℕ} (a : Fin m → Pt R n d) : ev a (0 : PS R m d) = 
   | simp [ev, MvPowerSeries.subst]
 
 /- English proof (translation)
-Unfold `Dof`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `congr 1`. Rewrite using `[Finset.sum_eq_single j]`. Simplify using `[addF, MvPowerSeries.pderiv_X, Pi.single_apply]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `b _ hb`. Simplify using `[addF, MvPowerSeries.pderiv_X, Pi.single_apply, hb, Ne.symm hb, ev_zero']`. Introduce `h`. Conclude with `absurd (Finset.mem_univ j) h`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem dof_addF {g : ℕ} (v : Fin g → R) (f : PS R 1 g) :
     Dof (addF R g) v f = ∑ j, C (v j) * pderiv R ((0 : Fin 1), j) f := by
@@ -199,7 +195,7 @@ theorem coeff_tay (θ : (Fin g → ℂ) → ℂ) (s : Multiset (Fin g → ℂ)) 
     coeff n (tay θ s) = mD θ 0 (dirs n + s) / fct n := rfl
 
 /- English proof (translation)
-Use `first`. Consider the case `(simp only [dirs, map_add, Finsupp.toMultiset_single, one_nsmul, Multiset.map_add, Multiset.map_singleton]`. Rewrite using `[add_comm, Multiset.singleton_add])`. Consider the case `simp [dirs, Finsupp.toMultiset_add, add_comm]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem dirs_add_single (n : Fin 1 × Fin g →₀ ℕ) (p : Fin 1 × Fin g) :
     dirs (n + Finsupp.single p 1) = Pi.single p.2 1 ::ₘ dirs n := by
@@ -209,14 +205,14 @@ theorem dirs_add_single (n : Fin 1 × Fin g →₀ ℕ) (p : Fin 1 × Fin g) :
   | simp [dirs, Finsupp.toMultiset_add, add_comm]
 
 /- English proof (translation)
-The claim follows from `Finset.prod_ne_zero_iff.mpr fun p _ => Nat.cast_ne_zero.mpr (Nat.factorial_ne_zero _)`.
+A detailed English derivation is pending.
 -/
 theorem fct_ne_zero (n : Fin 1 × Fin g →₀ ℕ) : fct n ≠ 0 := Finset.prod_ne_zero_iff.mpr fun p _ => Nat.cast_ne_zero.mpr (Nat.factorial_ne_zero _)
 
 /- English proof (translation)
-Unfold `fct`. Rewrite using `[← Finset.mul_prod_erase Finset.univ _ (Finset.mem_univ p), ← Finset.mul_prod_erase Finset.univ (fun q => (((n q).factorial : ℕ) : ℂ)) (Finset.mem_univ p)]`. Establish `h1 : ∀ q ∈ Finset.univ.erase p, ((((n + Finsupp.single p 1 : Fin 1 × Fin g →₀ ℕ) q).factorial : ℕ) : ℂ) = ((n q).factorial : ℂ)`. Introduce `q hq`. Establish `hqp` using `Finset.ne_of_mem_erase hq`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `[Finsupp.single_apply, hqp, Ne.symm hqp]`. Rewrite using `[Finset.prod_congr rfl h1, Finsupp.add_apply, Finsupp.single_eq_same, Nat.factorial_succ]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem fct_add_single (n : Fin 1 × Fin g →₀ ℕ) (p : Fin 1 × Fin g) :
     fct (n + Finsupp.single p 1) = fct n * ((n p : ℂ) + 1) := by
@@ -233,18 +229,18 @@ theorem fct_add_single (n : Fin 1 × Fin g →₀ ℕ) (p : Fin 1 × Fin g) :
   ring
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[Finset.sum_apply, Pi.single_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem sum_single_smul (v : Fin g → ℂ) : v = ∑ j, v j • (Pi.single j (1 : ℂ) : Fin g → ℂ) := by
   funext i
   simp [Finset.sum_apply, Pi.single_apply]
 
 /- English proof (translation)
-Rewrite using `[dof_addF]`. Use extensionality with `n`. Establish `key : ∀ j : Fin g, coeff n (C (v j) * pderiv ℂ ((0 : Fin 1), j) (tay θ s)) = v j * mD θ 0 (Pi.single j 1 ::ₘ (dirs n + s)) / fct n`. Introduce `j`. Establish `h1 : ((n ((0 : Fin 1), j) : ℂ) + 1) ≠ 0` using `Nat.cast_add_one_ne_zero _`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2` using `fct_ne_zero n`. Rewrite using `[MvPowerSeries.coeff_C_mul, MvPowerSeries.coeff_pderiv, coeff_tay, dirs_add_single, fct_add_single, Multiset.cons_add]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Rewrite using `[map_sum, Finset.sum_congr rfl fun j _ => key j, coeff_tay, Multiset.add_cons]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Establish `hs` using `mD_cons_sum hθ Finset.univ v (fun j => (Pi.single j (1 : ℂ) : Fin g → ℂ)) (dirs n + s)`. Rewrite `hs` using `[← sum_single_smul v]`. Rewrite using `[hs, Finset.sum_div]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem dof_tay {θ : (Fin g → ℂ) → ℂ} (hθ : ContDiffAt ℂ ω θ 0) (v : Fin g → ℂ) (s : Multiset (Fin g → ℂ)) :
     Dof (addF ℂ g) v (tay θ s) = tay θ (v ::ₘ s) := by
@@ -266,7 +262,7 @@ theorem dof_tay {θ : (Fin g → ℂ) → ℂ} (hθ : ContDiffAt ℂ ω θ 0) (v
   rw [hs, Finset.sum_div]
 
 /- English proof (translation)
-Proceed by induction on `k generalizing s with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Rewrite using `[Function.iterate_succ_apply', ih, dof_tay hθ, Multiset.replicate_succ, Multiset.cons_add]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem dof_iter_tay {θ : (Fin g → ℂ) → ℂ} (hθ : ContDiffAt ℂ ω θ 0) (v : Fin g → ℂ) (k : ℕ)
     (s : Multiset (Fin g → ℂ)) :
@@ -277,7 +273,7 @@ theorem dof_iter_tay {θ : (Fin g → ℂ) → ℂ} (hθ : ContDiffAt ℂ ω θ 
     rw [Function.iterate_succ_apply', ih, dof_tay hθ, Multiset.replicate_succ, Multiset.cons_add]
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil => simp`. Consider the case `cons a L ih => rw [List.foldr_cons, ih, dof_iter_tay hθ, List.map_cons, List.sum_cons, add_assoc]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem foldr_tay {θ : (Fin g → ℂ) → ℂ} (hθ : ContDiffAt ℂ ω θ 0) {ι : Type} (u : ι → Fin g → ℂ)
     (m : ι →₀ ℕ) (L : List ι) (s : Multiset (Fin g → ℂ)) :
@@ -288,11 +284,11 @@ theorem foldr_tay {θ : (Fin g → ℂ) → ℂ} (hθ : ContDiffAt ℂ ω θ 0) 
   | cons a L ih => rw [List.foldr_cons, ih, dof_iter_tay hθ, List.map_cons, List.sum_cons, add_assoc]
 
 /- English proof (translation)
-Use `Finsupp.induction_linear m ?_ ?_ ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Introduce `f₁ f₂ h₁ h₂`. Rewrite using `[map_add, Multiset.map_add, h₁, h₂]`. Simplify using `[Multiset.replicate_add, Finset.sum_add_distrib]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `a b`. Rewrite using `[Finsupp.toMultiset_single, Multiset.map_nsmul, Multiset.map_singleton, Multiset.nsmul_singleton]`. Rewrite using `[Finset.sum_eq_single a]`. Simplify using the standard rewrite rules. Introduce `l _ hl`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[Finsupp.single_apply, Ne.symm hl]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ a) h`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem toMultiset_map_eq {ι : Type} [Fintype ι] (u : ι → Fin g → ℂ) (m : ι →₀ ℕ) :
     (Finsupp.toMultiset m).map u = ∑ l, Multiset.replicate (m l) (u l) := by
@@ -311,7 +307,7 @@ theorem toMultiset_map_eq {ι : Type} [Fintype ι] (u : ι → Fin g → ℂ) (m
       exact absurd (Finset.mem_univ a) h
 
 /- English proof (translation)
-Use `first`. Consider the case `(rw [← MvPowerSeries.coeff_zero_eq_constantCoeff_apply, coeff_tay]`. Simplify using `[dirs, fct])`. Consider the case `(show tay θ s 0 = _`. Simplify using `[tay, dirs, fct])`.
+Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem constantCoeff_tay (θ : (Fin g → ℂ) → ℂ) (s : Multiset (Fin g → ℂ)) :
     constantCoeff (tay θ s) = mD θ 0 s := by
@@ -322,9 +318,9 @@ theorem constantCoeff_tay (θ : (Fin g → ℂ) → ℂ) (s : Multiset (Fin g �
      simp [tay, dirs, fct])
 
 /- English proof (translation)
-Unfold `DmonOf`. Rewrite using `[foldr_tay hθ, add_zero, constantCoeff_tay, toMultiset_map_eq]`. Use `congr 1`. Use `first`. Consider the case `exact Finset.sum_toList _ _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Treat this case separately. Treat this case separately.
 
-Consider the case `exact Finset.sum_to_list _ _`. Consider the case `simp [Finset.sum_toList]`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem constantCoeff_dmonOf_tay {θ : (Fin g → ℂ) → ℂ} (hθ : ContDiffAt ℂ ω θ 0) {ι : Type} [Fintype ι]
     (u : ι → Fin g → ℂ) (m : ι →₀ ℕ) :
@@ -338,7 +334,7 @@ theorem constantCoeff_dmonOf_tay {θ : (Fin g → ℂ) → ℂ} (hθ : ContDiffA
   | simp [Finset.sum_toList]
 
 /- English proof (translation)
-Rewrite using `[coeff_tay, add_zero]`. Use `first`. Consider the case `(field_simp [fct_ne_zero n]; done)`. Consider the case `(field_simp [fct_ne_zero n]; ring)`. Consider the case `exact mul_div_cancel₀ _ (fct_ne_zero n)`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem coeff_tay_zero (θ : (Fin g → ℂ) → ℂ) (n : Fin 1 × Fin g →₀ ℕ) :
     fct n * coeff n (tay θ 0) = mD θ 0 (dirs n) := by
@@ -349,11 +345,11 @@ theorem coeff_tay_zero (θ : (Fin g → ℂ) → ℂ) (n : Fin 1 × Fin g →₀
   | exact mul_div_cancel₀ _ (fct_ne_zero n)
 
 /- English proof (translation)
-Unfold `ReciprocityTheory.ChartRestriction.G.I2.polyDeriv`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Use `congr 1`. Establish `hL : (Finsupp.toMultiset m).map u = (((Finsupp.toMultiset m).toList.map u : List (Fin g → ℂ)) : Multiset (Fin g → ℂ))`. Rewrite using `[← Multiset.map_coe, Multiset.coe_toList]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hlen : ((Finsupp.toMultiset m).toList.map u).length = Multiset.card (Finsupp.toMultiset m)`. Rewrite using `[List.length_map, Multiset.length_toList]`. Rewrite using `[hL, mD_coe hθ, lD_eq θ 0 _ hlen]`. Use `congr 1`. Use function extensionality and compare the values at `k`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[List.get_eq_getElem]`.
+Simplify using the standard rewrite rules.
 -/
 theorem polyDeriv_eq_mD {θ : (Fin g → ℂ) → ℂ} (hθ : ContDiffAt ℂ ω θ 0) {ι : Type} (P : MvPolynomial ι ℂ)
     (u : ι → Fin g → ℂ) :
@@ -373,7 +369,7 @@ theorem polyDeriv_eq_mD {θ : (Fin g → ℂ) → ℂ} (hθ : ContDiffAt ℂ ω 
   simp [List.get_eq_getElem]
 
 /- English proof (translation)
-Unfold `DpolyOf`. Rewrite using `[polyDeriv_eq_mD hθ, map_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, MvPowerSeries.constantCoeff_C, constantCoeff_dmonOf_tay hθ]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem constantCoeff_dpolyOf_tay {θ : (Fin g → ℂ) → ℂ} (hθ : ContDiffAt ℂ ω θ 0) {ι : Type} [Fintype ι]
     (u : ι → Fin g → ℂ) (P : MvPolynomial ι ℂ) :

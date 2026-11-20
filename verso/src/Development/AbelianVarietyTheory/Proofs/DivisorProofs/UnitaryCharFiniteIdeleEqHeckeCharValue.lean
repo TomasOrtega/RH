@@ -17,7 +17,7 @@ open scoped Pointwise
 namespace GlobalTheory.BotPointDict
 
 /- English proof (translation)
-Introduce `c χ h x y hxy` and use `GlobalTheory.FinIdlRead.chr_finIdl c χ h x y hxy`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem chr_at_finIdl : ∀ {D : D7} (c : (Formalism.L2.Theta.AE D)ˣ →* Circle) (χ : Formalism.L2.Host.HChar D.host.E), ChrEq c χ →
     ∀ x y, IsFinIdl x y → ((c x : Circle) : ℂ) = ((χ.1 (GlobalTheory.Mem.Col2.SplitChar.finIdl D y) : ℂˣ) : ℂ) :=

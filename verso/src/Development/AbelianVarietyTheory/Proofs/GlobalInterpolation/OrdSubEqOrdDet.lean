@@ -15,17 +15,15 @@ namespace GlobalTheory.DetIdlValue
 variable {X : Fields} {sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)}
 
 /- English proof (translation)
-Establish `hu : ∀ v, (sel v).under (𝓞 X.F) = v` using `fun v => HeightOneSpectrum.ext (hsel v)`. Establish `hu' : ∀ v, (conjPrime₂ (sel v)).under (𝓞 X.F) = v` using `fun v => HeightOneSpectrum.ext ((GlobalTheory.MuOffMove.under_conjP hX _).trans (hsel v))`. Establish `hsub : Function.mulSupport (fun v => g (sel v) * g (conjPrime₂ (sel v))) ⊆ (hfin.toFinset.image fun P => P.under (𝓞 X.F) : Finset _)`. Introduce `v hv`. Rewrite using `[Finset.mem_coe, Finset.mem_image]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h : g (sel v) = 1`. Use `⟨conjPrime₂ (sel v), hfin.mem_toFinset.2 fun h' => hv ?_, hu' v⟩` and prove the remaining obligations. Simplify using `only [h, h', mul_one]`. Conclude with `⟨sel v, hfin.mem_toFinset.2 h, hu v⟩`. Rewrite using `[finprod_eq_prod_of_mulSupport_subset _ hsub, finprod_eq_prod _ hfin, ← Finset.prod_fiberwise_of_maps_to (g := fun P : HeightOneSpectrum (𝓞 X.E) => P.under (𝓞 X.F)) fun P hP => Finset.mem_image_of_mem (fun P : HeightOneSpectrum (𝓞 X.E) => P.under (𝓞 X.F)) hP]`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Distinguish the cases in `hc : conjPrime₂ (sel v) = sel v`. Rewrite using `[hc, h1 _ hc, mul_one]`. Use `Finset.prod_eq_one fun w hw => h1 w ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hw'`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hwv : w.asIdeal.under (𝓞 X.F) = v.asIdeal` using `congrArg HeightOneSpectrum.asIdeal (Finset.mem_filter.1 hw).2`. Break down `((GlobalTheory.ThetaMove.split_of_conj_ne₂ X w v hX hw' hwv).2 (sel v)).1 (hsel v) with e | e` into its components or cases. Conclude with `hw' (e ▸ hc)`. Rewrite `hc` using `[e, GlobalTheory.CharValCompare.conjP_conjP]`. Conclude with `hw' hc.symm`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hsp` using `(GlobalTheory.ThetaMove.split_of_conj_ne₂ X (sel v) v hX hc (hsel v)).2`. Rewrite using `[← Finset.prod_pair (Ne.symm hc)]`. Use `Finset.prod_subset (fun w hw => ?_) fun w hw hw' => ?_` and prove the remaining obligations. Rewrite using `[Finset.mem_insert, Finset.mem_singleton]`. Conclude with `(hsp w).1 (congrArg HeightOneSpectrum.asIdeal (Finset.mem_filter.1 hw).2)`.
-
-Assume the negation of the conclusion as `hg`. Rewrite `hw` using `[Finset.mem_insert, Finset.mem_singleton]`. Conclude with `hw' (Finset.mem_filter.2 ⟨hfin.mem_toFinset.2 hg, HeightOneSpectrum.ext ((hsp w).2 hw)⟩)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finprod_group {M : Type} [CommMonoid M] (hX : X.Ok) (hsel : IsSel X sel) (g : HeightOneSpectrum (𝓞 X.E) → M)
     (hfin : (Function.mulSupport g).Finite) (h1 : ∀ w, conjPrime₂ w = w → g w = 1) :
@@ -65,38 +63,38 @@ theorem finprod_group {M : Type} [CommMonoid M] (hX : X.Ok) (hsel : IsSel X sel)
       exact hw' (Finset.mem_filter.2 ⟨hfin.mem_toFinset.2 hg, HeightOneSpectrum.ext ((hsp w).2 hw)⟩)
 
 /- English proof (translation)
-Rewrite using `[inv_pow, ← zpow_natCast, ← zpow_natCast, ← zpow_sub, Int.toNat_sub_toNat_neg]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pow_toNat_mul {G : Type} [CommGroup G] (a : G) (k : ℤ) : a ^ k.toNat * a⁻¹ ^ (-k).toNat = a ^ k := by
   rw [inv_pow, ← zpow_natCast, ← zpow_natCast, ← zpow_sub, Int.toNat_sub_toNat_neg]
 
 /- English proof (translation)
-The claim follows from `ordSub_detSub_eq hN (GlobalTheory.CharValCompare.isFr_frameAt (GlobalTheory.CharValCompare.exists_isFr w hN))`.
+A detailed English derivation is pending.
 -/
 theorem ordSub_eq_ordDet {E : Type} [Field E] [NumberField E] [StarRing E] {n : ℕ} {N : Submodule (𝓞 E) (Sp E n)}
     (hN : Submodule.IsLattice E N) (w : HeightOneSpectrum (𝓞 E)) : GlobalTheory.Mem.Chr.ordSub w (GlobalTheory.Mem.Chr.detSub N) = ordDet w N :=
   ordSub_detSub_eq hN (GlobalTheory.CharValCompare.isFr_frameAt (GlobalTheory.CharValCompare.exists_isFr w hN))
 
 /- English proof (translation)
-Introduce `X n sel SB χ σ mU N fr hX hsel hN hT hU`. Use `set g : HeightOneSpectrum (𝓞 X.E) → ℂˣ := fun w => if w ∈ SB ∨ conjPrime₂ w ∈ SB then 1 else χ.val w ^ (ordDet w N).toNat with hg`. Establish `hfin : (Function.mulSupport g).Finite`. Use `(GlobalTheory.OrdDetConj.ordDet_conj_finite X.E n N hN).2.subset fun w hw h0 => hw ?_` and prove the remaining obligations. Simplify using `[hg, h0]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h0 : ∀ w, conjPrime₂ w = w → ordDet w N = 0` using `fun w hw => by`. Use `GlobalTheory.OrdDetConj.ordDet_conjP hN w` as an intermediate fact. Rewrite `this` using `[hw]`. Use linear arithmetic over natural numbers and integers. Establish `h1 : ∀ w, conjPrime₂ w = w → g w = 1` using `fun w hw => by simp [hg, h0 w hw]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : χ.1 (detIdl SB N fr) = (∏ P ∈ SB, χ.locK P (LinearEquiv.det (fr P))) * ∏ᶠ w, g w`. Unfold `detIdl`. Rewrite using `[map_mul, map_prod, MonoidHom.map_finprod _ (finite_detIdl SB hN.1)]`. Use `congr 1`. Use `finprod_congr fun w => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [hg]`. Use `split_ifs`. Conclude with `map_one _`. Rewrite using `[map_pow, ordSub_eq_ordDet hN.1]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Establish `e2 : ∀ v, σ (GlobalTheory.MuOffMove.term sel SB mU N v) = (((g (sel v) * g (conjPrime₂ (sel v)))⁻¹ : ℂˣ) : ℂ)`. Introduce `v`. Unfold `GlobalTheory.MuOffMove.term`. Distinguish the cases in `hc : conjPrime₂ (sel v) = sel v`. Rewrite using `[hc, h1 _ hc, h0 _ hc]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Simplify using the standard rewrite rules. Take `⟨hm, hsp⟩` from `GlobalTheory.ThetaMove.split_of_conj_ne₂ X (sel v) v hX hc (hsel v)`. Distinguish the cases in `hv : sel v ∈ SB ∨ conjPrime₂ (sel v) ∈ SB`. Establish `hv' : ∃ P ∈ SB, P.asIdeal.under (𝓞 X.F) = v.asIdeal` using `hv.elim (fun h => ⟨_, h, (hsp _).2 (Or.inl rfl)⟩) fun h => ⟨_, h, (hsp _).2 (Or.inr rfl)⟩`. Rewrite using `[if_pos hv']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [hg, GlobalTheory.CharValCompare.conjP_conjP]`. Rewrite using `[if_pos hv, if_pos hv.symm]`. Simplify using the standard rewrite rules. Establish `hv' : ¬ ∃ P ∈ SB, P.asIdeal.under (𝓞 X.F) = v.asIdeal`. Introduce and unpack `⟨P, hP, e⟩`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Break down `(hsp P).1 e with rfl | rfl` into its components or cases. Use `exacts [hv (Or.inl hP), hv (Or.inr hP)]`. Take `⟨ha, hb⟩` from `not_or.1 hv`. Take `⟨u1, s1⟩` from `hU _ ha hb`. Take `⟨u2, -⟩` from `hU _ hb (by rwa [GlobalTheory.CharValCompare.conjP_conjP])`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[if_neg hv']`. Simplify using `only [hg, GlobalTheory.CharValCompare.conjP_conjP]`. Rewrite using `[if_neg hv, if_neg fun h => hv (Or.symm h), GlobalTheory.OrdDetConj.ordDet_conjP hN, GlobalTheory.HeckeSplit.val_eq_inv_of_split X.F X.E χ v _ _ hT u1 u2 (Ne.symm hc) hm, pow_toNat_mul, Units.val_zpow_eq_zpow_val, map_zpow₀, s1, Units.val_inv_eq_inv_val, Units.val_zpow_eq_zpow_va …`. Establish `hinj : Function.Injective sel` using `fun v w h => HeightOneSpectrum.ext (by rw [← hsel v, h, hsel w])`. Establish `e3 : σ (muOff sel SB mU N) = (((∏ᶠ w, g w)⁻¹ : ℂˣ) : ℂ)`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Express the relevant statement in the definitionally equal form `σ (∏ᶠ v, GlobalTheory.MuOffMove.term sel SB mU N v) = _`. Rewrite using `[finprod_group hX hsel g hfin h1, ← finprod_inv_distrib, map_finprod σ (GlobalTheory.MuOffMove.term_finite hsel SB mU hN), finprod_congr e2]`. Conclude with `((Units.coeHom ℂ).map_finprod_of_injective Units.val_injective fun v => (g (sel v) * g (conjPrime₂ (sel v)))⁻¹).symm`. Rewrite using `[e3, e1, Finset.prod_coe_sort SB fun P => ((χ.locK P (LinearEquiv.det (fr P)) : ℂˣ) : ℂ)⁻¹]`. Simplify using `[mul_comm]`.
+A detailed English derivation is pending.
 -/
 theorem inv_val_detIdl : ∀ (X : Fields) (n : ℕ) (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) (SB : Finset (HeightOneSpectrum (𝓞 X.E))) (χ : Formalism.L2.Host.HChar X.E) (σ : X.K →+* ℂ) (mU : HeightOneSpectrum (𝓞 X.E) → X.Kˣ) (N : Submodule (𝓞 X.E) (Sp X.E n)) (fr : HeightOneSpectrum (𝓞 X.E) → Sp X.E n ≃ₗ[X.E] Sp X.E n), X.Ok → IsSel X sel → IsSdLat N → χ.TrivOn X.F → (∀ w, w ∉ SB → conjPrime₂ w ∉ SB → χ.UnrAt w ∧ σ ((mU w : X.Kˣ) : X.K) = ((χ.val w : ℂˣ) : ℂ)⁻¹) → ((χ.1 (detIdl SB N fr) : ℂˣ) : ℂ)⁻¹ = σ (muOff sel SB mU N) * ∏ P : SB, ((χ.locK P.1 (LinearEquiv.det (fr P.1)) : ℂˣ) : ℂ)⁻¹ := by
   intro X n sel SB χ σ mU N fr hX hsel hN hT hU

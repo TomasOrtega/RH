@@ -14,9 +14,9 @@ section Gen
 variable {Tau : Type} [Fintype Tau] {n : ℕ} {LL : Type} [Field LL]
 
 /- English proof (translation)
-Proceed by induction on `hP using AddSubgroup.closure_induction with`. Consider the case `mem q hq`. Take `⟨s, f, hs, hf, rfl⟩` from `hq`. Conclude with `AddSubgroup.subset_closure ⟨a * s, f, mul_mem ha hs, hf, by rw [map_mul, mul_smul]⟩`. Consider the case `zero => rw [smul_zero]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Conclude with `AddSubgroup.zero_mem _`. Consider the case `add x y _ _ hx hy => rw [smul_add]`. Conclude with `AddSubgroup.add_mem _ hx hy`. Consider the case `neg x _ hx => rw [smul_neg]`. Conclude with `AddSubgroup.neg_mem _ hx`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem intSpanG_smul (embLL : LL →+* ℂ) (R0 : Subring LL) (lam : Tau → DomWeight n) (a : LL) (ha : a ∈ R0)
     {P : MvPolynomial (Tau × Fin n × Fin n) ℂ} (hP : P ∈ IntSpanG embLL R0 lam) : embLL a • P ∈ IntSpanG embLL R0 lam := by
@@ -29,7 +29,7 @@ theorem intSpanG_smul (embLL : LL →+* ℂ) (R0 : Subring LL) (lam : Tau → Do
   | neg x _ hx => rw [smul_neg]; exact AddSubgroup.neg_mem _ hx
 
 /- English proof (translation)
-Use `show (∏ τ, (M τ * y.1 τ).det ^ s τ) * MvPolynomial.eval (fun x : Tau × Fin n × Fin n => (M x.1 * y.1 x.1) x.2.1 x.2.2) P = (∏ τ, (M' τ * y'.1 τ).det ^ s τ) * MvPolynomial.eval (fun x : Tau × Fin n × Fin n => (M' x.1 * y'.1 x.1) x.2.1 x.2.2) P`. Simplify using `only [h]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fnOf_congr (G : Tau → Matrix (Fin n) (Fin n) ℂ) (s : Tau → ℤ) (M M' : Tau → Matrix (Fin n) (Fin n) ℂ)
     (P : MvPolynomial (Tau × Fin n × Fin n) ℂ) (y y' : Frames G) (h : ∀ τ, M τ * y.1 τ = M' τ * y'.1 τ) :
@@ -62,13 +62,13 @@ def trF (emb : Tau → E →+* ℂ) (γ : GL (Fin n) E) (z : Frames (gramC J emb
     exact ((Matrix.isUnit_iff_isUnit_det _).1 (bc (emb τ) γ).isUnit).mul (z.2 τ)⟩
 
 /- English proof (translation)
-Introduce `_` and use `rfl`.
+Fix the arbitrary inputs and assume any hypotheses. Both sides reduce to the same expression.
 -/
 theorem isTr_trF (emb : Tau → E →+* ℂ) (γ : GL (Fin n) E) (z : Frames (gramC J emb)) :
     IsTr (atInf emb (γ : Matrix (Fin n) (Fin n) E)) z (trF emb γ z) := fun _ => rfl
 
 /- English proof (translation)
-Introduce `τ`. Use `show z.1 τ = atInf emb (γ : Matrix (Fin n) (Fin n) E) τ * (atInf emb ((γ⁻¹ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) τ * z.1 τ)`. Rewrite using `[atInf_bc, atInf_bc, ← Matrix.mul_assoc, ← Units.val_mul, ← map_mul, mul_inv_cancel, map_one, Units.val_one, Matrix.one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isTr_trF_inv (emb : Tau → E →+* ℂ) (γ : GL (Fin n) E) (z : Frames (gramC J emb)) :
     IsTr (atInf emb (γ : Matrix (Fin n) (Fin n) E)) (trF emb γ⁻¹ z) z := by
@@ -77,23 +77,21 @@ theorem isTr_trF_inv (emb : Tau → E →+* ℂ) (γ : GL (Fin n) E) (z : Frames
   rw [atInf_bc, atInf_bc, ← Matrix.mul_assoc, ← Units.val_mul, ← map_mul, mul_inv_cancel, map_one, Units.val_one, Matrix.one_mul]
 
 /- English proof (translation)
-Introduce and unpack `x i L c hL ⟨g, γ, κ, hg, hγ, hpt⟩`. Establish `hQ` using `valC_spec hex x i L hL`. Establish `hval` using `hQ.2 g hg c γ hγ κ hpt`. Establish `hcmp : cmpC S emb embLL G e A pos embV yc x i L = MvPolynomial.map e (valC S emb embLL G A pos embV yc x i L)`. Unfold `cmpC`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[if_pos hL]`. Rewrite using `[hcmp]`. Take `⟨r, hr, hr', hrχ⟩` from `hchi κ`. Establish `hr0 : embLL r ≠ 0` using `by rw [hrχ]; exact (S.chi κ).ne_zero`. Establish `hM : (fun τ => ((bc (tE τ) A.B⁻¹ : GL (Fin n) LL) : Matrix (Fin n) (Fin n) LL).map embLL) = crdB emb A.B`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `τ`. Use extensionality with `a b`. Conclude with `htE τ _`. Establish `hNM : ∀ B' : GL (Fin n) E, (fun τ => (((bc (tE τ) (A.B⁻¹ * γ * B'))⁻¹ * bc (tE τ) A.B⁻¹ : GL (Fin n) LL) : Matrix (Fin n) (Fin n) LL).map embLL) = atInf emb ((B'⁻¹ * γ⁻¹ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E)`. Introduce `B'`.
+Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `τ`. Establish `e1 : (bc (tE τ) (A.B⁻¹ * γ * B'))⁻¹ * bc (tE τ) A.B⁻¹ = bc (tE τ) (B'⁻¹ * γ⁻¹)`. Rewrite using `[← map_inv, ← map_mul]`. Use `congr 1`. Use `group`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Rewrite using `[e1]`. Use extensionality with `a b`. Conclude with `htE τ _`. Establish `hfn : ∀ (B' : GL (Fin n) E) (Pp : MvPolynomial (Tau × Fin n × Fin n) ℂ) (z z' : Frames (gramC J emb)), IsTr (atInf emb (γ : Matrix (Fin n) (Fin n) E)) z' z → fnOf (gramC J emb) (shiftOf lam) (atInf emb ((B'⁻¹ * γ⁻¹ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E)) Pp z = fnOf (gramC J …`. Introduce `B' Pp z z' hz`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `fnOf_congr _ _ _ _ _ _ _ fun τ => ?_` and prove the remaining obligations. Rewrite using `[hz τ, atInf_bc, atInf_bc, atInf_bc, ← Matrix.mul_assoc, ← Units.val_mul, ← map_mul]`. Use `congr 3`. Use `group`. Establish `hc` using `fun B' (hB' : Bas c B') => hcore G.P A.rk pos (gramC J emb) embLL e R0 hfrac hR0 lam hw (fun τ => bc (tE τ) A.B⁻¹) (fun τ => bc (tE τ) (A.B⁻¹ * γ * B')) L (hlat i L c g γ κ hg hγ hpt B' hB') (valC S emb embLL G A pos embV yc x i L)`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hmem B' hB'`. Take `⟨Pp, hPp, hev⟩` from `(hc B' hB').1 hmem`. Use `⟨embLL r⁻¹ • Pp, intSpanG_smul _ _ _ _ hr' hPp, fun z' => ?_⟩` and prove the remaining obligations. Establish `h1` using `hev (trF emb γ z')`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite `h1` using `[hM, hNM, hval _ z' (isTr_trF emb γ z'), hfn B' Pp _ z' (isTr_trF emb γ z'), ← hrχ]`. Rewrite using `[map_smul, Pi.smul_apply, ← h1, smul_eq_mul, map_inv₀, inv_mul_cancel_left₀ hr0]`. Introduce `hI`. Take `⟨B', hB'⟩` from `hBex c`. Take `⟨Pp, hPp, hev⟩` from `hI B' hB'`.
-
-Use `(hc B' hB').2 ⟨embLL r • Pp, intSpanG_smul _ _ _ _ hr hPp, fun z => ?_⟩` and prove the remaining obligations. Rewrite using `[hM, hNM, hval z _ (isTr_trF_inv emb γ z), hfn B' _ z _ (isTr_trF_inv emb γ z), map_smul, Pi.smul_apply, ← hev, hrχ, smul_eq_mul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valIntAt_of (hcore : WeylLatticeDescent) (hfrac : IsFractionRing G.O G.Kf)
     (tE : Tau → E →+* LL) (htE : ∀ τ x, embLL (tE τ x) = emb τ x)
@@ -186,13 +184,13 @@ def RestLatO (T : ∀ u : D.what₂.Word, Forms0 D u) (Gt : GatTies D) (I : CmpI
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Introduce `u w hg x i L c hL hpt`. Establish `h` using `valIntAt_of (S := ((T u).cls0).lev) (emb := embT D) (embLL := D.what₂.embLL) (G := D.gat u w hg) (e := I.embW u w hg) (A := locAt X u w hg I.B) (pos := Gt.gat_pos u w hg) (embV := embFr T u) (yc := ((T u).cls0).y) hcore (hfrac u w hg) (tEL D) (tEL_emb D) (intW D.what₂.places w) ( …`. Rewrite using `[h]`. Prove the components needed by the constructor for the conclusion. Introduce `h1 B' hB'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨P, hP, hz⟩` from `h1 B' hB'`. Use `⟨P, hP, fun z => ?_⟩` and prove the remaining obligations. Use `hz (((T u).val0).eY z)` as an intermediate fact. Rewrite using `[lamT_zero]`. Rewrite using `[← this]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show _ = (D.fm u).emb 0 x c (((T u).val0).eY.symm (((T u).val0).eY z))`. Rewrite using `[Equiv.symm_apply_apply]`. Introduce `h1 B' hB'`. Take `⟨P, hP, hz⟩` from `h1 B' hB'`. Use `⟨P, hP, fun z => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `hz (((T u).val0).eY.symm z)` as an intermediate fact. Rewrite `this` using `[lamT_zero, Equiv.apply_symm_apply]`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valIntRec_of {T : ∀ u : D.what₂.Word, Forms0 D u} {Gt : GatTies D} {I : CmpIn D X} (hcore : WeylLatticeDescent)
     (hex : ∀ u w hg, ValEx ((T u).cls0).lev (embT D) D.what₂.embLL (D.gat u w hg)

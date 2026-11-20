@@ -24,7 +24,7 @@ def LocHyp (S : StepLevel F E σ J T f bad) (A : LocAt F E n G) : Prop :=
       (A.pl v).1.adicCompletionIntegers F) → x ∈ S.Uloc (A.pl v).1
 
 /- English proof (translation)
-Establish `h1 : (bc ((A.eQ v : G.P.Qq v →+* (A.pl v).1.adicCompletion F)) (castGL A.rk (G.P.Qq v) h) : Matrix (Fin n) (Fin n) _) a b = A.eQ v ((castGL A.rk (G.P.Qq v) h : Matrix (Fin n) (Fin n) _) a b)` using `rfl`. Rewrite using `[h1, castGL_apply]`. Conclude with `(hW v _).1 (hh _ _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem int_of_stab (hW : LocInt A) (v : Fin G.P.nV) (h : GL (Fin (G.P.m + 1)) (G.P.Qq v))
     (hh : ∀ a b, (h : Matrix (Fin (G.P.m + 1)) (Fin (G.P.m + 1)) (G.P.Qq v)) a b ∈ (algebraMap (G.P.W v) (G.P.Qq v)).range)
@@ -37,11 +37,11 @@ theorem int_of_stab (hW : LocInt A) (v : Fin G.P.nV) (h : GL (Fin (G.P.m + 1)) (
   exact (hW v _).1 (hh _ _)
 
 /- English proof (translation)
-Substitute `hk` using the available equality. Take `rfl : J = J0` from `by ext x y; exact hJ x y`. Establish `hre : ∀ (R : Type) [CommRing R] (g : GL (Fin k) R), reGL (rfl : k = k) R g = g`. Introduce `R _ g`. Apply `Units.ext` to reduce the goal to its premises.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use extensionality with `x y`. Both sides reduce to the same expression. Rewrite `hB` using `[hre]`. Introduce `v x hx h1 h2`. Rewrite `h1`, `h2` using `[hB]`.
+By extensionality, compare the relevant components. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hU]`. Conclude with `Subgroup.mem_map.2 ⟨x, h0 v x hx h1 h2, hre _ x⟩`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locHyp_of {k : ℕ} (hk : k = n) (A : LocAt F E n G) (S : StepLevel F E σ J T f bad) (J0 : Matrix (Fin k) (Fin k) E)
     (hJ : ∀ x y, J x y = J0 (Fin.cast hk.symm x) (Fin.cast hk.symm y)) (B0 : GL (Fin k) E) (hB : A.B = reGL hk E B0)
@@ -63,17 +63,15 @@ theorem locHyp_of {k : ℕ} (hk : k = n) (A : LocAt F E n G) (S : StepLevel F E 
   exact Subgroup.mem_map.2 ⟨x, h0 v x hx h1 h2, hre _ x⟩
 
 /- English proof (translation)
-Introduce `i L g g' x x' hL hL' hx hx'`. Establish `hoff : ∀ w : HeightOneSpectrum (𝓞 F), ((p : ℕ) : 𝓞 F) ∉ w.asIdeal → bc (prV (E` using `E) w) (x.1⁻¹ * x'.1) = 1 := by`. Introduce `w hw`. Rewrite using `[map_mul, map_inv, hx.1 w hw, hx'.1 w hw, inv_mul_cancel]`. Establish `hmem : x.1⁻¹ * x'.1 ∈ UPts σ J (FiniteAdeleRing (𝓞 F) F)` using `Subgroup.mul_mem _ (Subgroup.inv_mem _ x.2) x'.2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hU : x.1⁻¹ * x'.1 ∈ S.U`. Rewrite using `[S.U_eq]`. Use `⟨hmem, fun w => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hw : ((p : ℕ) : 𝓞 F) ∈ w.asIdeal`. Take `⟨v, rfl⟩` from `LocGood.exists_pl A w hw`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Establish `hst : (g v)⁻¹ * g' v ∈ stabStd (k` using `G.P.m + 1) (Qq := G.P.Qq v) (G.P.W v) := by`. Rewrite using `[← gMap_std_eq_iff, ← colSpan_eq, ← colSpan_eq, ← hL v, ← hL' v]`. Establish `e : (bc (A.phE v) A.B)⁻¹ * bc (A.ph v) (bc (prV (E` using `E) (A.pl v).1) (x.1⁻¹ * x'.1)) * bc (A.phE v) A.B = bc ((A.eQ v : G.P.Qq v →+* (A.pl v).1.adicCompletion F)) (castGL A.rk (G.P.Qq v) ((g v)⁻¹ * g' v)) := by`. Rewrite using `[map_mul, map_mul, map_inv, map_inv, hx.2 v, hx'.2 v, map_mul, map_mul, map_inv, map_inv]`. Use `group`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨h1, h2⟩` from `(stabStd_iff _ _).1 hst`. Use `hH v _ (Formalism.UG.P.afsplit_bc_mem σ J (A.pl v).1 _ hmem) ?_ ?_` and prove the remaining obligations. Rewrite using `[e]`. Conclude with `int_of_stab hW v _ h1`. Rewrite using `[e, ← map_inv, ← map_inv]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `int_of_stab hW v _ h2`. Rewrite using `[hoff w hw]`. Conclude with `Subgroup.one_mem _`. Use `⟨⟨_, hU⟩, by group, ?_⟩` and prove the remaining obligations. Rewrite using `[S.chi_triv ⟨_, hU⟩ fun w hw => hoff w (hbad w hw)]`.
-
-Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem ptOne_of (S : StepLevel F E σ J T f bad) (hW : LocInt A) (hH : LocHyp S A)
     (hbad : ∀ w ∈ bad, ((p : ℕ) : 𝓞 F) ∉ w.asIdeal) : PtOne S G A := by

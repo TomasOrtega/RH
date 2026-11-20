@@ -15,17 +15,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.Mem.Lift.GenZero
 
 /- English proof (translation)
-Establish `hcont : Continuous s`. Use `continuous_iff_continuousAt.2 fun t₀ => ?_` and prove the remaining obligations. Establish `e : s = fun t => s (t - t₀) * s t₀` using `funext fun t => by rw [← hs, sub_add_cancel]`. Rewrite using `[e]`. Use `ContinuousAt.mul ?_ continuousAt_const` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `ContinuousAt.comp (g := s) (f := fun t => t - t₀) (by simpa using hc) (by fun_prop)`. Set `g : ℝ → ℂ` to `fun x => ∫ y in (0 : ℝ)..x, s y`. Establish `hg : ∀ x, HasDerivAt g (s x) x` using `fun x => (hcont.integral_hasStrictDerivAt 0 x).hasDerivAt`. Choose the witnesses or unpack the hypotheses as in `⟨ε, hε⟩ : ∃ ε, g ε ≠ 0 := by`. Assume the negation of the conclusion as `hn`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Use `push Not at hn`. Establish `h1 : HasDerivAt g 0 0`. Rewrite using `[show g = fun _ => 0 from funext hn]`. Conclude with `hasDerivAt_const _ _`. Use `(hg 0).unique h1` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite `this` using `[h0]`. Conclude with `one_ne_zero this`. Establish `e : s = fun t => (g (t + ε) - g t) / g ε`. Use function extensionality and compare the values at `t`. Rewrite using `[eq_div_iff hε]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1 : g (t + ε) - g t = ∫ y in t..(t + ε), s y` using `intervalIntegral.integral_interval_sub_left (hcont.intervalIntegrable _ _) (hcont.intervalIntegrable _ _)`. Rewrite using `[h1]`. Establish `h2` using `intervalIntegral.integral_comp_add_left (a := 0) (b := ε) s t`. Rewrite `h2` using `[add_zero]`. Rewrite using `[← h2]`.
-
-Simplify using `only [hs, g]`. Conclude with `(intervalIntegral.integral_const_mul _ _).symm`. Establish `h3 : HasDerivAt (fun t => g (t + ε)) (s (0 + ε)) 0` using `HasDerivAt.comp_add_const 0 ε (hg _)`. Conclude with `⟨_, ((h3.sub (hg 0)).div_const (g ε)).congr_of_eventuallyEq (Filter.Eventually.of_forall fun t => congrFun e t)⟩`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_hasDerivAt_char (s : ℝ → ℂ) (hs : ∀ t t', s (t + t') = s t * s t') (h0 : s 0 = 1)
     (hc : ContinuousAt s 0) : ∃ m : ℂ, HasDerivAt s m 0 := by
@@ -62,11 +60,11 @@ theorem exists_hasDerivAt_char (s : ℝ → ℂ) (hs : ∀ t t', s (t + t') = s 
     (Filter.Eventually.of_forall fun t => congrFun e t)⟩
 
 /- English proof (translation)
-Use extensionality with `i j`. Establish `h1 : HasDerivAt (fun t => ∑ l, (∑ k, star (m t k i) * H k l) * m t l j) (∑ l, ((∑ k, star (X k i) * H k l) * m 0 l j + (∑ k, star (m 0 k i) * H k l) * X l j)) 0` using `HasDerivAt.fun_sum fun l _ => (HasDerivAt.fun_sum fun k _ => (hX k i).star.mul_const (H k l)).mul (hX l j)`. Establish `e : (fun t => ∑ l, (∑ k, star (m t k i) * H k l) * m t l j) = fun _ => H i j`. Use function extensionality and compare the values at `t`. Rewrite using `[← congrFun (congrFun (hm t) i) j]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mul_apply, conjTranspose_apply]`. Rewrite `h1` using `[e]`. Establish `h2` using `h1.unique (hasDerivAt_const _ _)`. Establish `h3 : (Xᴴ * H * m 0 + (m 0)ᴴ * H * X) i j = 0`. Rewrite using `[← h2]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.add_apply, Matrix.mul_apply, conjTranspose_apply, Finset.sum_add_distrib]`. Rewrite `h3` using `[h0, conjTranspose_one, Matrix.mul_one, Matrix.one_mul]`. Then use the resulting hypothesis.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem lie_of_path {ι : Type} [Fintype ι] [DecidableEq ι] (H X : Matrix ι ι ℂ) (m : ℝ → Matrix ι ι ℂ) (h0 : m 0 = 1)
     (hm : ∀ t, (m t)ᴴ * H * m t = H) (hX : ∀ k l, HasDerivAt (fun t => m t k l) (X k l) 0) :
@@ -93,35 +91,29 @@ set_option maxHeartbeats 1000000 in
 open GlobalTheory.RealWeil in
 
 /- English proof (translation)
-Introduce `D θ σ h ψ hψ S T om hw hc γ hγ hadd hinf X hX`. Establish `hγ0 : γ 0 = 1`. Use `hadd 0 0` as an intermediate fact. Rewrite `this` using `[add_zero]`. Conclude with `mul_left_cancel (a := γ 0) (by rw [← this, mul_one])`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hH` using `isHeis_rhoB (S := S) (T := T) h hψ`. Establish `hL` using `lie_of_path (HM S T) X (fun t => mM θ S T (γ t)) (by simp only [hγ0, map_one]) (fun t => mM_unitary h.inf _) hX`. Take `⟨κ, _, c, p, q, hq, hn⟩` from `GlobalTheory.Mem.Lift.Normal.normal_quad (Ix S T) (HM S T) X HM_herm HM_det hL`. Take `⟨Ω, hΩ, -, hd⟩` from `GlobalTheory.T.hasDerivAt_oscillatorAction_unitaryPath_quadratic (Ix S T) (HM S T) HM_herm HM_det (BB ψ S T) (rhoV hψ σ S T) hH (GA D S × GA D T) (mM θ S T) (mM_unitary h.inf)`. Take `⟨lam, hlam⟩` from `hd γ X hγ0 hX κ c p q hq`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `sm` using `sm_of_theta (S := S) (T := T) h hψ`. Use `choose s hs1 hs using fun t => GlobalTheory.T.weakWeilRep_eq_unit_smul_oscillator_real_points D θ σ h ψ hψ S T om hw Ω hΩ (γ t).1 (hinf t).1 (γ t).2 (hinf t).2`. Use `replace hs : ∀ t (F : BB ψ S T), IsThetaFunO ψ S T F.1 → om (γ t) F.1 = s t • ((Ω (γ t) F).1 : WO S T → ℂ) := hs`. Take `⟨-, hsmul, hsm, hone, hmul, -⟩` from `hΩ`. Establish `cs : ∀ (a : ℂ) (G : BB ψ S T), ((a • G).1 : WO S T → ℂ) = a • (G.1 : WO S T → ℂ)` using `fun _ _ => rfl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Establish `hne : ∀ t, s t ≠ 0` using `fun t e => by simpa [e] using hs1 t`. Establish `hD : ∀ F : BB ψ S T, IsThetaFunO ψ S T F.1 → HasDerivAt (fun t => Ω (γ t) F) (nOp (rhoV hψ σ S T) (HM S T) X F + lam • F) 0` using `fun F hF => hn _ _ hH F (sm F hF) ▸ hlam F (sm F hF)`. Distinguish the cases in `hex : ∃ F₀ : BB ψ S T, IsThetaFunO ψ S T F₀.1 ∧ F₀ ≠ 0`. Use `swap`. Use `push Not at hex`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `⟨lam, fun F hF => ⟨fun t => Ω (γ t) F, fun t => ?_, hD F hF⟩⟩` and prove the remaining obligations. Establish `e : Ω (γ t) F = 0`. Use `hsmul (γ t) 0 F (sm F hF)` as an intermediate fact. Rewrite `this` using `[zero_smul, zero_smul]`. Conclude with `(congrArg (Ω (γ t)) (hex F hF)).trans this`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[hs t F hF]`. Use `beta_reduce`. Rewrite using `[e]`. Conclude with `(smul_zero _).symm`. Take `⟨F₀, hF₀, hne₀⟩` from `hex`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hΩne : ∀ g, Ω g F₀ ≠ 0`. Introduce `g e`. Establish `h1` using `hmul g⁻¹ g F₀ (sm _ hF₀)`. Establish `h2` using `hsmul g⁻¹ 0 F₀ (sm _ hF₀)`. Rewrite `h2` using `[zero_smul, zero_smul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h1` using `[inv_mul_cancel, hone _ (sm _ hF₀), e, h2]`. Conclude with `hne₀ h1`. Establish `hth : ∀ t, IsThetaFunO ψ S T (Ω (γ t) F₀).1`. Introduce `t`. Establish `h1` using `(thetaSub ψ S T).smul_mem (s t)⁻¹ (hw.om_pres (γ t) _ hF₀)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[hs t F₀ hF₀, smul_smul, inv_mul_cancel₀ (hne t), one_smul]`. Conclude with `h1`. Establish `hms : ∀ t t', s (t + t') = s t * s t'`. Introduce `t t'`. Establish `h1` using `hs (t + t') F₀ hF₀`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Rewrite `h1` using `[hadd, map_mul, Module.End.mul_apply, hs t' F₀ hF₀, map_smul, hs t _ (hth t'), ← hmul _ _ _ (sm _ hF₀), smul_smul]`. Establish `h2 : (s t' * s t) • Ω (γ t * γ t') F₀ = s (t + t') • Ω (γ t * γ t') F₀` using `QB_ext fun x => by`. Rewrite using `[cs, cs, h1]`. Rewrite using `[← smul_left_injective ℂ (hΩne _) h2, mul_comm]`. Establish `hs0 : s 0 = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `hms 0 0` as an intermediate fact. Rewrite `this` using `[add_zero]`. Conclude with `mul_left_cancel₀ (hne 0) (by rw [← this, mul_one])`. Choose the witnesses or unpack the hypotheses as in `⟨w, hw₀⟩ : ∃ w, (F₀.1 : WO S T → ℂ) w ≠ 0 := by`. Assume the negation of the conclusion as `hn'`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `push Not at hn'`. Conclude with `hne₀ (QB_ext hn')`. Establish `hcs : ContinuousAt s 0`. Establish `h1 : ContinuousAt (fun t => ev _ _ w (Ω (γ t) F₀)) 0` using `(ev _ _ w).continuous.continuousAt.comp (hD F₀ hF₀).continuousAt`. Establish `h2 : ev _ _ w (Ω (γ 0) F₀) ≠ 0`.
-
-Rewrite using `[hγ0, hone _ (sm _ hF₀), ev_apply]`. Conclude with `hw₀`. Establish `h3 : ContinuousAt (fun t => om (γ t) F₀.1 w) 0` using `((hc _ hF₀ w).comp hγ).continuousAt`. Use `(h3.div h1 h2).congr ?_` and prove the remaining obligations. Use `filter_upwards [h1.eventually_ne h2] with t ht`.
-
-Rewrite using `[Pi.div_apply, div_eq_iff ht, hs t F₀ hF₀, ev_apply]`. Both sides reduce to the same expression. Take `⟨m, hm⟩` from `exists_hasDerivAt_char s hms hs0 hcs`. Use `⟨lam + m, fun F hF => ⟨fun t => s t • Ω (γ t) F, fun t => (cs _ _).trans (hs t F hF).symm, ?_⟩⟩` and prove the remaining obligations. Establish `h1` using `hm.smul (hD F hF)`.
-
-Rewrite `h1` using `[hs0, one_smul, hγ0, hone _ (sm _ hF)]`. Rewrite using `[add_smul, ← add_assoc]`. Conclude with `h1`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_generator : ∀ (D : D7) (θ : InfF D) (σ : (D.what₂.Tau → ℂ) →+ AE D), GlobalTheory.FockCompare.Chart θ σ → ∀ (ψ : AddChar (AF D.host.F) ℂ) (hψ : IsStdChar D ψ (-1)) (S T : HSp D) (om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)), GlobalTheory.Ker.IsWeak ψ S T om → OmCont ψ S T om → ∀ γ : ℝ → GA D S × GA D T, Continuous γ → (∀ s t, γ (s + t) = γ s * γ t) → (∀ t, (γ t).1 ∈ GinfC S ∧ (γ t).2 ∈ GinfC T) → ∀ X : Matrix (GlobalTheory.RealWeil.Ix S T) (GlobalTheory.RealWeil.Ix S T) ℂ, (∀ k l, HasDerivAt (fun t => GlobalTheory.RealWeil.mM θ S T (γ t) k l) (X k l) 0) → ∃ lam : ℂ, ∀ F : GlobalTheory.RealWeil.BB ψ S T, IsThetaFunO ψ S T F.1 → ∃ u : ℝ → GlobalTheory.RealWeil.BB ψ S T, (∀ t, ((u t).1 : WO S T → ℂ) = om (γ t) F.1) ∧ HasDerivAt u (nOp (GlobalTheory.RealWeil.rhoV hψ σ S T) (GlobalTheory.RealWeil.HM S T) X F + lam • F) 0 := by
   intro D θ σ h ψ hψ S T om hw hc γ hγ hadd hinf X hX

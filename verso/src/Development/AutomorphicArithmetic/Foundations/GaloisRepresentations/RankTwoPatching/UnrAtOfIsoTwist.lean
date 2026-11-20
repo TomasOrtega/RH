@@ -23,7 +23,7 @@ variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAl
   {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver A w}
 
 /- English proof (translation)
-Use `⟨GlobalTheory.Parabolic.isIrreducible_of_equiv φ h.1, ?_, (IsSubquotient.of_surjective φ.toIntertwiningMap φ.toLinearEquiv.surjective).trans h.2.2⟩` and prove the remaining obligations. Take `⟨v, hv, h0⟩` from `(Submodule.ne_bot_iff _).1 h.2.1`. Use `(Submodule.ne_bot_iff _).2 ⟨φ v, fun g => ?_, fun e => h0 (φ.toLinearEquiv.injective (by simpa using e))⟩` and prove the remaining obligations. Establish `e : φ (π g v) = σ g (φ v)` using `φ.toIntertwiningMap.isIntertwining _ _ g v`. Rewrite using `[← e, hv g, map_smul]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem sat_equiv {n : ℕ} {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
     {π : Representation ℂ (GL (Fin n) (w.adicCompletion E)) V} {σ : Representation ℂ (GL (Fin n) (w.adicCompletion E)) W}
@@ -36,9 +36,9 @@ private theorem sat_equiv {n : ℕ} {V W : Type} [AddCommGroup V] [Module ℂ V]
   rw [← e, hv g, map_smul]
 
 /- English proof (translation)
-Take `⟨l, rfl⟩` from `Quot.exists_rep B`. Establish `hl : l.length = n` using `by simpa using hB.card`. Substitute `hl` using the available equality. Establish `e : (Quot.mk _ l : Multiset ℂˣ) = Finset.univ.val.map l.get`. Rewrite using `[Fin.univ_val_map, List.ofFn_get]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Take `⟨x, hx⟩` from `hB.exists_vec`. Conclude with `⟨l.get, e, GlobalTheory.CompanionTheory.SatComp.hasSatake_of_isSatVecGL ⟨σ.smooth, σ.irred⟩ _ (e ▸ hx)⟩`.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem hasSatake_of {n : ℕ} (σ : SmIrr (GL (Fin n) (w.adicCompletion E))) {B : Multiset ℂˣ} (hB : GlobalTheory.LFun.HasSatGL w σ.ρ B) :
     ∃ α : Fin n → ℂˣ, B = Finset.univ.val.map α ∧ HasSatake σ.ρ α := by
@@ -51,9 +51,9 @@ theorem hasSatake_of {n : ℕ} (σ : SmIrr (GL (Fin n) (w.adicCompletion E))) {B
   exact ⟨l.get, e, GlobalTheory.CompanionTheory.SatComp.hasSatake_of_isSatVecGL ⟨σ.smooth, σ.irred⟩ _ (e ▸ hx)⟩
 
 /- English proof (translation)
-Take `⟨α, e0, hα⟩` from `hasSatake_of σ hB`. Take `⟨a, ha, ε, L⟩` from `extraV E Ω A w h rc H`. Establish `q` using `IrrGL.equivOf σ.ρ σ.smooth σ.irred`. Establish `e : rc (IrrGL.of σ.ρ σ.smooth σ.irred) = WD.mk (WDRep.diag h fun i => (α i)⁻¹)` using `L.sat (IrrGL.of σ.ρ σ.smooth σ.irred) α (sat_equiv q hα)`. Use `⟨α, e0, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[algNorm, L.nu_eq, e, WD.lpTw_mk]`. Use `WD.sound ⟨.refl _ _, fun g v => funext fun i => ?_, fun v => rfl⟩` and prove the remaining obligations. Simplify using `[mul_zpow, mul_comm, mul_left_comm, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem rec_diag {rc : IrrGL (w.adicCompletion E) → WD h} (H : IsRecT h rc) {n : ℕ}
     (σ : SmIrr (GL (Fin n) (w.adicCompletion E))) (B : Multiset ℂˣ) (hB : GlobalTheory.LFun.HasSatGL w σ.ρ B) :
@@ -70,11 +70,11 @@ theorem rec_diag {rc : IrrGL (w.adicCompletion E) → WD h} (H : IsRecT h rc) {n
   simp [mul_zpow, mul_comm, mul_left_comm, mul_assoc]
 
 /- English proof (translation)
-Introduce `A h`. Take `⟨rc, hrec⟩` from `recTExists E Ω A w h`. Take `⟨α, rfl, e⟩` from `rec_diag hrec σ B hB`. Establish `hx` using `H A h rc hrec`. Establish `hw` using `(hx.wdOf_eq hl).trans e`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨t, ht, φ, hφ, N, a, hN, -⟩` from `hx`. Use `⟨(hN.unr_wdOf_iff hl ht ι).1 (by rw [hw, WD.unr_mk]; exact WDRep.unr_diag _), fun s hs => ?_⟩` and prove the remaining obligations. Establish `hd : deg (⟨s, mem_Weil_of_isFrob h hs⟩ : Weil h) = 1` using `deg_eq_one_iff.2 hs`. Use `hN.charPol_wdOf hl ht ι (⟨s, mem_Weil_of_isFrob h hs⟩ : Weil h)⁻¹` as an intermediate fact. Rewrite `this` using `[hw, WD.charPol_mk, WDRep.diag_ρ, charpoly_diagEnd, deg_inv, hd]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `this.symm.trans ?_` and prove the remaining obligations. Simplify using `only [GlobalTheory.SatFrobLit.val_inv_eq, algSat, Multiset.map_map, Multiset.pure_def, Multiset.bind_def, Multiset.bind_singleton]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem frob_of {l : ℕ} [Fact l.Prime] {ι : Qbar l ≃+* ℂ} {n : ℕ} {r : G E Ω →* GL (Fin n) (Qbar l)}
     (hl : ((l : ℕ) : 𝓞 E) ∉ w.asIdeal) (σ : SmIrr (GL (Fin n) (w.adicCompletion E))) {B : Multiset ℂˣ}
@@ -96,9 +96,9 @@ theorem frob_of {l : ℕ} [Fact l.Prime] {ι : Qbar l ≃+* ℂ} {n : ℕ} {r : 
   rfl
 
 /- English proof (translation)
-Take `⟨B, hB⟩` from `(GlobalTheory.T.satakeParameters_local E n w σ).1 hf`. Take `⟨α, -, hα⟩` from `hasSatake_of σ hB`. Use `haveI : CharZero (w.adicCompletion E) := charZero_of_injective_algebraMap (algebraMap E _).injective`. Establish `q` using `IrrGL.equivOf σ.ρ σ.smooth σ.irred`. Establish `k` using `GlobalTheory.LocLanglands.hasSupport_of_isSubquotient_prinSeries (w.adicCompletion E) n (fun i => unrChar _ (α i)) (fun i => isSmoothChar_of_isUnram (isUnram_unrChar _ (α i))) ⟨σ.V, σ.ρ, σ.smooth, σ.irred⟩ hα.2.2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨_, HasSupport.of_equiv k q, fun y hy => Or.inl ?_⟩, (sat_equiv q hα).2.1⟩` and prove the remaining obligations. Take `⟨i, -, rfl⟩` from `Multiset.mem_map.1 hy`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem good_of_fixed {n : ℕ} (σ : SmIrr (GL (Fin n) (w.adicCompletion E))) (hf : HasFixed σ.ρ (GlobalTheory.LFun.KGL w n)) :
     Good (IrrGL.of σ.ρ σ.smooth σ.irred) ∧ IsSpherical (IrrGL.of σ.ρ σ.smooth σ.irred).rep := by
@@ -115,17 +115,17 @@ theorem good_of_fixed {n : ℕ} (σ : SmIrr (GL (Fin n) (w.adicCompletion E))) (
 open GlobalTheory.RealGal.TwistUnr in
 
 /- English proof (translation)
-Establish `hL` using `GlobalTheory.T.local_global_compatibility_real hA`. Take `⟨σ, hσ⟩` from `(hL F a π u).1`. Establish `hσ'` using `isLocComp_twist hT hσ`. Take `⟨A, hAu⟩` from `exists_isPlaceOver (AlgebraicClosure F) u`. Take `⟨rc, H⟩` from `recTExists F (AlgebraicClosure F) A u hAu`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨ar, har, ε, LL⟩` from `extraV _ _ A u hAu rc H`. Take `⟨g1, s1⟩` from `good_of_fixed σ (hasFixed_of_hasSat hL hB hσ)`. Establish `u1` using `(LL.sph _).1 s1`. Establish `u2` using `(LL.sph _).1 (good_of_fixed _ (hasFixed_of_hasSat hL hB hσ')).2`. Establish `hs` using `GlobalTheory.HeckeComp.smooth_loc η u`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : rc (cls (ParLaws.toRep (σ.twist (GlobalTheory.CuspRep.CuspSub.locDet a η u) (TR.CuspSub.isOpen_ker_locDet η u)))) = (rc (cls (ParLaws.toRep σ))).lpChar (rc (.ofChar (η.loc u) hs))`. Use `Eq.trans ?_ (LL.twist _ _ hs g1)` and prove the remaining obligations. Conclude with `congrArg _ (IrrGL.tw_of σ.ρ σ.smooth σ.irred _ _).symm`. Use `replace u2 : (rc (cls (ParLaws.toRep (σ.twist (GlobalTheory.CuspRep.CuspSub.locDet a η u) (TR.CuspSub.isOpen_ker_locDet η u))))).unr := u2`. Rewrite `u2` using `[e, LL.one]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd : 1 ≤ (rc (cls (ParLaws.toRep σ))).lpDim` using `by rw [LL.dim]; exact ha`. Establish `hi` using `ine_trivial u1 hd _ u2`. Establish `hU : (WD.lpOfChar hAu ((η.loc u).comp ar) (har.smooth hs)).unr`. Rewrite using `[WD.lpOfChar, WD.unr_mk]`. Use `⟨rfl, fun s => LinearMap.ext fun v => funext fun i => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `hi s` as an intermediate fact. Simplify using `[this]`. Establish `hU'` using `(GlobalTheory.LocLanglands.Test.unr_lpOfChar_iff har hs).1 hU`. Introduce `x hx`. Use `hU' x ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h0 : Valued.v (x : u.adicCompletion F) ≠ 0` using `by simp`. Rewrite using `[← GlobalTheory.SmGL.ord_eq_zero_iff, GlobalTheory.SmGL.SphCompletion.ord_completion, neg_eq_zero]`. Unfold `IsUnitAt at hx`. Rewrite using `[hx, WithZero.log_one]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unrAt_of_isoTwist (hA : AdmissibleReal) (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (a : ℕ) (ha : 1 ≤ a)
     (π : TR.CuspSub F a) (η : HChar F) (hT : IsoTwist π η) (u : HeightOneSpectrum (𝓞 F)) (B : Multiset ℂˣ) (hB : π.HasSat u B) :

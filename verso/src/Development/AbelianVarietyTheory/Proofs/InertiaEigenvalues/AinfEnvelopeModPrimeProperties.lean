@@ -10,9 +10,9 @@ open scoped Formalism.Per NNReal
 namespace GlobalTheory.BSP
 
 /- English proof (translation)
-Take `⟨h0, -, h2⟩` from `GlobalTheory.T.coeff_zero_map_pow_null_facts S A ι s I tb`. Use `⟨?_, fun h => ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨y, rfl⟩ i`. Conclude with `⟨_, tb.c_mul i p y⟩`. Use `choose a ha using h`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy⟩` from `h2 hI a fun n => (tb.fin x (2 * n + 2)).subset fun i hi hi' => hi (hp n _ (ha i ▸ hi'))`. Use `⟨y, sub_eq_zero.1 (h0 _ fun i => ?_)⟩` and prove the remaining obligations. Rewrite using `[map_sub, tb.c_mul, hy, ha, sub_self]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem TopBasis.dvd_iff_dvd_coeff {S A ι : Type} [CommRing S] [CommRing A] {s : S →+* A} {I : Ideal S}
     (tb : TopBasis s I ι) (hI : IsHausdorff I S) (p : S)
@@ -29,9 +29,9 @@ theorem TopBasis.dvd_iff_dvd_coeff {S A ι : Type} [CommRing S] [CommRing A] {s 
     rw [map_sub, tb.c_mul, hy, ha, sub_self]
 
 /- English proof (translation)
-Establish `key` using `tb.dvd_iff_dvd_coeff hI (l : S) hp`. Rewrite using `[← map_natCast s l]`. Use `⟨fun x hx => (GlobalTheory.T.coeff_zero_map_pow_null_facts S A ι s I tb).1 x fun i => h1 _ ?_, fun x hx => (key x).2 fun i => h2 _ ?_, fun x hx => (key x).2 fun i => h3 _ fun m => ?_⟩` and prove the remaining obligations. Rewrite using `[← tb.c_mul, hx, map_zero]`. Rewrite using `[← tb.c_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(key _).1 hx i`. Take `⟨z, hz⟩` from `hx m`. Use `⟨tb.c i z, ?_⟩` and prove the remaining obligations. Rewrite using `[← tb.c_mul, ← map_sub, map_pow]`. Conclude with `(key _).1 hz i`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem TopBasis.mod_props {S A ι : Type} [CommRing S] [CommRing A] {s : S →+* A} {I : Ideal S}
     (tb : TopBasis s I ι) (hI : IsHausdorff I S) (l : ℕ) (u : S)
@@ -53,7 +53,7 @@ theorem TopBasis.mod_props {S A ι : Type} [CommRing S] [CommRing A] {s : S →+
     exact (key _).1 hz i
 
 /- English proof (translation)
-Introduce `l _ K bk En`. Take `⟨hp, h2, h3, -⟩` from `GlobalTheory.T.ainf_divisibility_breuilKisin_facts l K bk`. Conclude with `En.tb.mod_props (ainfObj K).complete.toIsHausdorff l (bk.ev X) hp ainf_torsionFree h2 h3`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem env_ainf_mod : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (En : Env bk (ainfObj K) (bk.ev bk.E) (bk.ev X)), (∀ x : En.Q.A, ((l : ℕ) : En.Q.A) * x = 0 → x = 0) ∧ (∀ x : En.Q.A, ((l : ℕ) : En.Q.A) ∣ En.inl.f (bk.ev X) * x → ((l : ℕ) : En.Q.A) ∣ x) ∧ ∀ x : En.Q.A, (∀ m : ℕ, ∃ z, ((l : ℕ) : En.Q.A) ∣ x - En.inl.f (bk.ev X) ^ m * z) → ((l : ℕ) : En.Q.A) ∣ x := by
   intro l _ K bk En

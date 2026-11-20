@@ -9,7 +9,7 @@ open Matrix
 namespace PSymplFirstRow
 
 /- English proof (translation)
-Introduce `h`. Apply `hv` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Use `congrFun h i` as an intermediate fact. Simplify `this` using `[intVec]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem intVec_ne_zero {ι : Type*} {v : ι → ℤ} (hv : v ≠ 0) : intVec v ≠ 0 := by
   intro h
@@ -21,17 +21,17 @@ theorem intVec_ne_zero {ι : Type*} {v : ι → ℤ} (hv : v ≠ 0) : intVec v �
 end PSymplFirstRow
 
 /- English proof (translation)
-Introduce `n G hG hpd`. Take `⟨ρsq, hleast⟩` from `h1 (Fin (n + 1) ⊕ Fin (n + 1)) G hpd`. Establish `hdet : G.det = 1` using `SymplecticGroup.det_eq_one hG`. Establish `hbound` using `h2 (Fin (n + 1) ⊕ Fin (n + 1)) G hpd hdet ρsq hleast`. Take `⟨v, hv0, hvρ⟩` from `hleast.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨ρsq, hleast, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hvρ]`. Use `hpd.dotProduct_mulVec_pos (PSymplFirstRow.intVec_ne_zero hv0)` as an intermediate fact. Simplify `this` using `[qf]`. Simplify using `only [Fintype.card_sum, Fintype.card_fin] at hbound`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 
-Move the coercions through the operations in `at hbound`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hmin : ∀ u : Fin (n + 1) ⊕ Fin (n + 1) → ℤ, u ≠ 0 → qf G (intVec v) ≤ qf G (intVec u)`. Introduce `u hu`. Rewrite using `[← hvρ]`.
+Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hleast.2 ⟨u, hu, rfl⟩`. Take `⟨P, hP, m, hm⟩` from `h3 n v`. Establish `hrow : ∃ P' ∈ symplecticGroup (Fin (n + 1)) ℤ, P' (Sum.inl 0) = v`. Break down `h4 _ G hpd v (P (Sum.inl 0)) m hm hv0 hmin with h | h` into its components or cases. Conclude with `⟨P, hP, by rw [hm, h, one_smul]⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨-P, SymplecticGroup.neg_mem hP, ?_⟩` and prove the remaining obligations. Rewrite using `[hm, h, neg_one_smul]`. Both sides reduce to the same expression. Take `⟨P', hP', hP'v⟩` from `hrow`. Use `⟨P', hP', ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(h5 (n + 1) P' G hP' hG hpd).2.2.2 (Sum.inl 0), hP'v, hvρ]`.
+A detailed English derivation is pending.
 -/
 theorem SymplFirstRow.proof (h1 : SymplMinExists.Statement) (h2 : SymplMinBound.Statement)
     (h3 : SymplOrbit.Statement) (h4 : SymplShortPrim.Statement) (h5 : SymplGramMem.Statement) :

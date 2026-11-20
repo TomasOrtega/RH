@@ -17,7 +17,7 @@ noncomputable section
 namespace GlobalTheory.EqvTrans
 
 /- English proof (translation)
-Simplify using `only [spMap, ← Spec.map_comp]`. Use `congr 1`. Apply the tactic sequence `exact CommRingCat.hom_ext (RingHom.ext fun a => by ext <;> simp [epsMul, TrivSqZeroExt.algebraMap_eq_inl])`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem epsMul_comp_algebraMap {R : Type} [CommRing R] (c : R) :
     spMap (epsMul c) ≫ spMap (algebraMap R (DualNumber R)) = spMap (algebraMap R (DualNumber R)) := by
@@ -29,7 +29,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {X Y : Scheme.{0}} {t : SAB H Y} {p : X ⟶ Y} {G' : Over X} [GrpObj G'] {ψ : G'.left ⟶ t.G.left}
 
 /- English proof (translation)
-Take `⟨w, hw, hw'⟩` from `exists_lift hψ q hv`. Rewrite using `[trv_eq hψ g q w hw hw', trv_eq hψ g q (spMap (epsMul c) ≫ w) (by rw [Category.assoc, hw]) (by rw [Category.assoc, hw', ← Category.assoc, epsMul_comp_algebraMap])]`. Simplify using `only [Category.assoc]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem trv_epsMul (hψ : IsPullback ψ G'.hom t.G.hom p) (g : G'.left ⟶ G'.left) {R : Type} [CommRing R]
     (q : Sp R ⟶ X) (c : R) {v : Sp (DualNumber R) ⟶ t.G.left}
@@ -45,21 +45,21 @@ end GlobalTheory.EqvTrans
 open MonObj GlobalTheory.EqvTrans in
 
 /- English proof (translation)
-Introduce `E _ _ _ H X Y t p G' _ ψ b g hG hg R _ q n v a w hv _ hc`. Take `⟨u, hu, hw⟩` from `hc`. Set `T : Over X` to `Over.mk (spMap (algebraMap R (DualNumber R)) ≫ q)`. Set `e1 : Over.mk (T.hom ≫ p) ⟶ tEpsG (q ≫ p)` to `Over.homMk (𝟙 _) (by simp [T])`. Set `T' : Over X` to `Over.mk (T.hom ≫ b)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `e2 : Over.mk (T'.hom ≫ p) ⟶ tEpsG ((q ≫ b) ≫ p)` to `Over.homMk (𝟙 _) (by simp [T, T'])`. Establish `hov : ∀ x : tEpsG (q ≫ p) ⟶ t.G, x.left ≫ t.G.hom = spMap (algebraMap R (DualNumber R)) ≫ q ≫ p` using `fun x => by`. Simplify using `using Over.w x`. Set `L : (tEpsG (q ≫ p) ⟶ t.G) → (T ⟶ G')` to `fun x => Over.homMk (hG.1.lift x.left T.hom (by rw [hov x]; simp [T])) (hG.1.lift_snd _ _ _)`. Establish `hL : ∀ x, (L x).left ≫ ψ = x.left` using `fun x => hG.1.lift_fst _ _ _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hLw : ∀ x, (L x).left ≫ G'.hom = spMap (algebraMap R (DualNumber R)) ≫ q` using `fun x => Over.w (L x)`. Establish `hgw : g ≫ G'.hom = G'.hom ≫ b` using `hg.1.w`. Set `Φ : (tEpsG (q ≫ p) ⟶ t.G) → (tEpsG ((q ≫ b) ≫ p) ⟶ t.G)` to `fun x => Over.homMk (trv hG.1 g q x.left) (by`. Use `trv_over hG.1 g hgw q (hov x)` as an intermediate fact. Simplify using `using this)`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hΦ : ∀ x, (Φ x).left = (L x).left ≫ g ≫ ψ` using `fun x => trv_eq hG.1 g q (L x).left (hL x) (hLw x)`. Set `M : (tEpsG (q ≫ p) ⟶ t.G) → (T' ⟶ G')` to `fun x => Over.homMk ((L x).left ≫ g) (by show ((L x).left ≫ g) ≫ G'.hom = T.hom ≫ b`. Rewrite using `[Category.assoc, hgw, ← Category.assoc, Over.w])`. Establish `hmul : ∀ x y, Φ (x * y) = Φ x * Φ y` using `fun x y => by`. Establish `h1 : ((e1 ≫ x) * (e1 ≫ y)).left = (L x * L y).left ≫ ψ` using `hG.2 T (L x) (L y) (e1 ≫ x) (e1 ≫ y) (by simp [e1, hL]) (by simp [e1, hL])`.
+Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[← MonObj.comp_mul]`. Establish `h1' : (L x * L y).left ≫ ψ = (x * y).left` using `by rw [← h1]; simp [e1]`. Establish `h2 : (M x * M y).left = (L x * L y).left ≫ g` using `hg.2 T (L x) (L y) (M x) (M y) rfl rfl`. Establish `h3 : ((e2 ≫ Φ x) * (e2 ≫ Φ y)).left = (M x * M y).left ≫ ψ` using `hG.2 T' (M x) (M y) (e2 ≫ Φ x) (e2 ≫ Φ y) (by simp [e2, hΦ, M]) (by simp [e2, hΦ, M])`. Rewrite `h3` using `[← MonObj.comp_mul, h2]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Establish `h4 : (Φ (x * y)).left = (L x * L y).left ≫ g ≫ ψ` using `trv_eq hG.1 g q (L x * L y).left h1' (Over.w (L x * L y))`. Rewrite using `[h4, ← Category.assoc, ← h3]`. Simplify using `[e2]`. Set `Φm : (tEpsG (q ≫ p) ⟶ t.G) →* (tEpsG ((q ≫ b) ≫ p) ⟶ t.G)` to `MonoidHom.mk' Φ hmul`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Use `⟨fun i => Φ (u i), fun i => ?_, ?_⟩` and prove the remaining obligations. Use `show trv hG.1 g q (u i).left = _`. Rewrite using `[hu i, trv_epsMul hG.1 g q (a i) (hv i).1]`. Establish `: (List.ofFn fun i => Φ (u i)) = (List.ofFn u).map Φm`. Rewrite using `[List.map_ofFn]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[this, ← map_list_prod]`. Use `show trv hG.1 g q _ = _`. Rewrite using `[hw]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.EqvTrans.trv_comb : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {X Y : Scheme.{0}} (t : SAB H Y) (p : X ⟶ Y) (G' : Over X) [GrpObj G'] (ψ : G'.left ⟶ t.G.left) (b : X ⟶ X) (g : G'.left ⟶ G'.left) (hG : IsGrpPullback G' t.G p ψ), IsGrpPullback G' G' b g → ∀ {R : Type} [CommRing R] (q : Sp R ⟶ X) {n : ℕ} (v : Fin n → (Sp (DualNumber R) ⟶ t.G.left)) (a : Fin n → R) (w : Sp (DualNumber R) ⟶ t.G.left), (∀ i, IsTanAtG t (q ≫ p) (v i)) → IsTanAtG t (q ≫ p) w → IsCombAtG t (q ≫ p) v a w → IsCombAtG t ((q ≫ b) ≫ p) (fun i => GlobalTheory.EqvTrans.trv hG.1 g q (v i)) a (GlobalTheory.EqvTrans.trv hG.1 g q w) := by
   intro E _ _ _ H X Y t p G' _ ψ b g hG hg R _ q n v a w hv _ hc

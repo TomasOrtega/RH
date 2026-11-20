@@ -9,78 +9,78 @@ import Formalism.LocalToGlobal.TorsionIntegrality.RamifiedCurveKernels.PairedSqu
 namespace Formalism.L2.Th1.G
 
 /- English proof (translation)
-The claim follows from `jets_in_norm_holds`.
+A detailed English derivation is pending.
 -/
 theorem jetsInNorm : JetsInNorm := jets_in_norm_holds
 /- English proof (translation)
-The claim follows from `jets_ring_holds`.
+A detailed English derivation is pending.
 -/
 theorem jetsRing : JetsRing := jets_ring_holds
 /- English proof (translation)
-The claim follows from `jets_exp_holds`.
+A detailed English derivation is pending.
 -/
 theorem jetsExp : JetsExp := jets_exp_holds
 /- English proof (translation)
-The claim follows from `jets_fourth_holds`.
+A detailed English derivation is pending.
 -/
 theorem jetsFourth : JetsFourth := jets_fourth_holds
 /- English proof (translation)
-The claim follows from `integral_dist_jets_holds`.
+A detailed English derivation is pending.
 -/
 theorem intDJets : IntDJets := integral_dist_jets_holds
 
 /- English proof (translation)
-The claim follows from `inverse_endo_integral_holds`.
+A detailed English derivation is pending.
 -/
 theorem invEndInt : InvEndInt := inverse_endo_integral_holds
 /- English proof (translation)
-The claim follows from `adjoint_unit_norm_holds`.
+A detailed English derivation is pending.
 -/
 theorem adjUnitNorm : AdjUnitNorm := adjoint_unit_norm_holds
 /- English proof (translation)
-The claim follows from `ramified_shape_holds`.
+A detailed English derivation is pending.
 -/
 theorem ramifiedShape : RamifiedShape := ramified_shape_holds
 /- English proof (translation)
-The claim follows from `curve_neg_norm_holds`.
+A detailed English derivation is pending.
 -/
 theorem curveNegNorm : CurveNegNorm := curve_neg_norm_holds
 /- English proof (translation)
-The claim follows from `curve_formal_first_level_holds`.
+A detailed English derivation is pending.
 -/
 theorem weierstrass_biadditive_mod_equiv : WeierstrassBiadditiveModEquiv := curve_formal_first_level_holds
 /- English proof (translation)
-The claim follows from `CurveRamified_of_shape ramifiedShape adjUnitNorm invEndInt`.
+A detailed English derivation is pending.
 -/
 theorem curveRamified : CurveRamified := CurveRamified_of_shape ramifiedShape adjUnitNorm invEndInt
 
 /- English proof (translation)
-The claim follows from `eigen_split_holds`.
+A detailed English derivation is pending.
 -/
 theorem eigenSplit : EigenSplit := eigen_split_holds
 /- English proof (translation)
-The claim follows from `shape_congruence_holds`.
+A detailed English derivation is pending.
 -/
 theorem shapeCong : ShapeCong := shape_congruence_holds
 /- English proof (translation)
-The claim follows from `shape_orthogonal_holds`.
+A detailed English derivation is pending.
 -/
 theorem shapeOrth : ShapeOrth := shape_orthogonal_holds
 /- English proof (translation)
-The claim follows from `IntAtD_of shapeOrth`.
+A detailed English derivation is pending.
 -/
 theorem intAtD : IntAtD := IntAtD_of shapeOrth
 
 /- English proof (translation)
-The claim follows from `KernelShape_of shapeOrth shapeCong`.
+A detailed English derivation is pending.
 -/
 theorem kernelShape : KernelShape := KernelShape_of shapeOrth shapeCong
 /- English proof (translation)
-The claim follows from `KernelThmB_of kernelShape`.
+A detailed English derivation is pending.
 -/
 theorem kernelThmB : KernelThmB := KernelThmB_of kernelShape
 /- English proof (translation)
-The claim follows from `KernelThmBGauss_of kernelShape`.
+A detailed English derivation is pending.
 -/
 theorem kernelThmBGauss : KernelThmBGauss := KernelThmBGauss_of kernelShape
 

@@ -44,7 +44,7 @@ def AmpleTw (B : CDiv X) (g : X' ⟶ X) (L : LB X') : Prop :=
     IsAmpleLB (GlobalTheory.CechPic.tens (GlobalTheory.CechPic.tens L C₂.lb) (GlobalTheory.CechPic.dual C₁.lb))
 
 /- English proof (translation)
-Use `Scheme.IdealSheafData.ext (funext fun U => ?_)` and prove the remaining obligations. Rewrite using `[(EffCartierData.zero X).ideal_idealSheaf U PUnit.unit le_top]`. Conclude with `Ideal.span_singleton_eq_top.2 (isUnit_one.map _)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem idealSheaf_zero (X : Scheme.{0}) : (EffCartierData.zero X).idealSheaf = ⊤ := by
   refine Scheme.IdealSheafData.ext (funext fun U => ?_)
@@ -52,14 +52,14 @@ theorem idealSheaf_zero (X : Scheme.{0}) : (EffCartierData.zero X).idealSheaf = 
   exact Ideal.span_singleton_eq_top.2 (isUnit_one.map _)
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `C.idealSheaf ≤ (EffCartierData.zero X).idealSheaf`. Rewrite using `[idealSheaf_zero]`. Conclude with `le_top`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eff_ofEff (C : EffCartierData X) : (ofEff C).Eff := by
   change C.idealSheaf ≤ (EffCartierData.zero X).idealSheaf
   rw [idealSheaf_zero]; exact le_top
 
 /- English proof (translation)
-Rewrite using `[← not_iff_not, not_not, ← ne_eq, ← mem_support_iff_stalkId, Scheme.IdealSheafData.support_comap]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem stalkId_comap_eq_top (I : X.IdealSheafData) (g : X' ⟶ X) (x : X') :
     FinalTheorems.stalkId (I.comap g) x = ⊤ ↔ g x ∉ I.support := by
@@ -67,7 +67,7 @@ theorem stalkId_comap_eq_top (I : X.IdealSheafData) (g : X' ⟶ X) (x : X') :
   rfl
 
 /- English proof (translation)
-Establish `h : FinalTheorems.stalkId ((ofEff C).neg.comap g) x = ⊤` using `(stalkId_comap_eq_top _ g x).2 (by change _ ∉ (EffCartierData.zero X).idealSheaf.support; rw [idealSheaf_zero, Scheme.IdealSheafData.support_top]; exact fun h => h)`. Rewrite using `[PosAt, h, lt_top_iff_ne_top, ne_eq, stalkId_comap_eq_top, not_not]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem posAt_ofEff (C : EffCartierData X) (g : X' ⟶ X) (x : X') :
     (ofEff C).PosAt g x ↔ g x ∈ C.idealSheaf.support := by
@@ -77,7 +77,7 @@ theorem posAt_ofEff (C : EffCartierData X) (g : X' ⟶ X) (x : X') :
   rfl
 
 /- English proof (translation)
-Establish `h : FinalTheorems.stalkId ((ofEff C).neg.comap g) x = ⊤` using `(stalkId_comap_eq_top _ g x).2 (by change _ ∉ (EffCartierData.zero X).idealSheaf.support; rw [idealSheaf_zero, Scheme.IdealSheafData.support_top]; exact fun h => h)`. Rewrite using `[ZeroAt, h, stalkId_comap_eq_top]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem zeroAt_ofEff (C : EffCartierData X) (g : X' ⟶ X) (x : X') :
     (ofEff C).ZeroAt g x ↔ g x ∉ C.idealSheaf.support := by
@@ -87,7 +87,7 @@ theorem zeroAt_ofEff (C : EffCartierData X) (g : X' ⟶ X) (x : X') :
   rfl
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(EffCartierData.zero X).idealSheaf ≤ C.idealSheaf ↔ _`. Rewrite using `[idealSheaf_zero, top_le_iff]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem eff_opp_ofEff (C : EffCartierData X) : (ofEff C).opp.Eff ↔ C.idealSheaf = ⊤ := by
   change (EffCartierData.zero X).idealSheaf ≤ C.idealSheaf ↔ _
@@ -101,11 +101,11 @@ def LogBd {X Q : Scheme.{0}} (D : LB X) (ι : Q ⟶ X) (w : (D.pull ι).Gen) (p 
       |Real.log ‖valF y _ (w.s fun _ => i).val‖| ≤ δ
 
 /- English proof (translation)
-Establish `h' : ⊤ ≤ (spMap (intO C).subtype ≫ z) ⁻¹ᵁ U` using `fun x _ => h (Set.mem_univ _)`. Set `ev : Γ(X, U) →+* ↥(intO C)` to `(Scheme.ΓSpecIso (CommRingCat.of ↥(intO C))).hom.hom.comp (z.appLE U ⊤ h).hom`. Establish `e : ∀ a, valF (spMap (intO C).subtype ≫ z) U a = (ev a : C)` using `fun a => by`. Rewrite using `[valF, dif_pos h']`. Establish `e1 : (spMap (intO C).subtype ≫ z).appLE U ⊤ h' = z.appLE U ⊤ h ≫ (spMap (intO C).subtype).appTop`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE]`. Conclude with `(Scheme.Hom.appLE_comp_appLE (spMap (intO C).subtype) z U ⊤ ⊤ h le_top).symm`. Rewrite using `[e1]`. Conclude with `ConcreteCategory.congr_hom (Scheme.ΓSpecIso_naturality (CommRingCat.ofHom (intO C).subtype)) _`. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ‖(ev u.val : C)‖ ≤ 1` using `(ev u.val).2`. Establish `h2 : ‖(ev u.inv : C)‖ ≤ 1` using `(ev u.inv).2`. Establish `h3 : ‖(ev u.val : C)‖ * ‖(ev u.inv : C)‖ = 1`. Rewrite using `[← norm_mul, ← Subring.coe_mul, ← map_mul, u.val_inv, map_one, Subring.coe_one, norm_one]`. Use polynomial arithmetic with `[norm_nonneg (ev u.val : C), norm_nonneg (ev u.inv : C)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem norm_valF_unit {X : Scheme.{0}} {C : Type} [NontriviallyNormedField C] [IsUltrametricDist C]
     (z : Sp ↥(intO C) ⟶ X) (U : X.Opens) (h : ⊤ ≤ z ⁻¹ᵁ U) (u : Γ(X, U)ˣ) :
@@ -127,7 +127,7 @@ theorem norm_valF_unit {X : Scheme.{0}} {C : Type} [NontriviallyNormedField C] [
   nlinarith [norm_nonneg (ev u.val : C), norm_nonneg (ev u.inv : C)]
 
 /- English proof (translation)
-Introduce `C _ _ _ z y hy i hi` and use `by have h' : ⊤ ≤ (y ≫ ι) ⁻¹ᵁ D.U i := by rw [hy]; exact fun x _ => hi (Set.mem_univ _) have hle : (D.pull ι).U (fun _ => i) ≤ ι ⁻¹ᵁ D.U i := fun _ hx => Set.mem_iInter.1 hx PUnit.unit have h : ⊤ ≤ y ⁻¹ᵁ (D.pull ι).U (fun _ => i) := fun x _ => Set.mem_iInter.2 fun _ => h' (Set.mem …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem logBd_pullGenLB {X Q : Scheme.{0}} {D : LB X} (t : D.Gen) (ι : Q ⟶ X) (p : ℕ) :
     LogBd D ι (pullGenLB t ι) p 0 := fun C _ _ _ z y hy i hi => by
@@ -139,7 +139,7 @@ theorem logBd_pullGenLB {X Q : Scheme.{0}} {D : LB X} (t : D.Gen) (ι : Q ⟶ X)
   rw [e, hy, norm_valF_unit z _ hi, Real.log_one, abs_zero]
 
 /- English proof (translation)
-Introduce `C _ _ hp z y hy i hi` and use `(h C hp z y hy i hi).trans hδ`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem LogBd.mono {X Q : Scheme.{0}} {D : LB X} {ι : Q ⟶ X} {w : (D.pull ι).Gen} {p : ℕ} {δ δ' : ℝ}
     (h : LogBd D ι w p δ) (hδ : δ ≤ δ') : LogBd D ι w p δ' :=
@@ -154,7 +154,7 @@ def FinLB.pull {X X' : Scheme.{0}} (L : FinLB X) (f : X' ⟶ X) : FinLB X' where
       fun _ => h.g_self _, fun _ _ _ => h.cocycle _ _ _⟩
 
 /- English proof (translation)
-The claim follows from `have h := LB.isLB_pull L.isLB f LBIso.chartPull (h := 𝟙 X') (A := L.lb.pull f) (B := L.lb.pull f) ⟨fun i _ => i, fun _ _ h => h, fun _ _ _ _ _ => rfl⟩ ⟨fun i => i, fun _ _ h => h, fun _ _ _ _ _ => rfl⟩ ((GlobalTheory.CechPic.cls_eq_iff h h).1 rfl)`.
+A detailed English derivation is pending.
 -/
 theorem FinLB.lbIso_pull {X X' : Scheme.{0}} (L : FinLB X) (f : X' ⟶ X) : LBIso (L.pull f).lb (L.lb.pull f) :=
   have h := LB.isLB_pull L.isLB f
@@ -175,15 +175,13 @@ def DomLoc (Y : LocFam Xo) {c : Coeff l} (hg : ∀ p : ℕ, p.Prime → l.GoodAt
     (∀ x, ((b x : c.V W) : c.F) = (x : c.F)) → Dominates Z (Y p W hp hW ⟨l, c, hg p hp⟩) b
 
 /- English proof (translation)
-Take `⟨f, t, m₁, m₂, hf, hj, hφ⟩` from `h`. Set `q : pullback T.Z.s (spMap b) ⟶ pullback Z.s (spMap b)` to `pullback.lift (pullback.fst _ _ ≫ T.b) (pullback.snd _ _) (by rw [Category.assoc, T.b_s, pullback.condition])`. Establish `q1 : q ≫ pullback.fst _ _ = pullback.fst _ _ ≫ T.b` using `pullback.lift_fst _ _ _`. Establish `q2 : q ≫ pullback.snd _ _ = pullback.snd _ _` using `pullback.lift_snd _ _ _`. Take `⟨t', ⟨n⟩⟩` from `exists_sab q t`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨n₂, e₂⟩` from `ObjMaps.exists_sab_comp m₂ n`. Take `⟨n₁, e₁⟩ : ∃ k : SABMap t' Z.t (pullback.fst _ _ ≫ T.b), k.φ = n.φ ≫ m₁.φ` from `q1 ▸ ObjMaps.exists_sab_comp m₁ n`. Take `⟨n₀, e₀⟩` from `ObjMaps.exists_sab_cancel T.pull n₁`. Use `⟨q ≫ f, t', n₀, n₂, by rw [Category.assoc, hf, q2], fun a ha => ?_, fun S g g₁ g₂ h₁ h₂ h₃ => ?_⟩` and prove the remaining obligations. Rewrite using `[← Category.assoc]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hj _ (by rw [Category.assoc, q1, ← Category.assoc, ha, T.j_b])`. Establish `c₁` using `T.Z.m0.toSABMap.cart.1`. Establish `c₂` using `Z.m0.toSABMap.cart.1`. Establish `w : (g₁ ≫ T.Z.m0.toSABMap.φ) ≫ (Xo l).univ.t.G.hom = (g₁ ≫ T.Z.oF.t.G.hom) ≫ pullback.fst _ _`. Rewrite using `[Category.assoc, Category.assoc, c₁.w]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `l₁` using `c₂.lift_fst _ _ w`. Establish `l₂` using `c₂.lift_snd _ _ w`. Rewrite using `[e₂, ← Category.assoc]`. Use `hφ S _ (c₂.lift _ _ w) g₂ ?_ (l₁.trans h₂) (l₂.trans h₃)` and prove the remaining obligations. Rewrite using `[Category.assoc, ← e₁, e₀, ← Category.assoc, h₁, Category.assoc]`.
-
-Conclude with `T.pull_univ S _ _ l₁.symm l₂.symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dominates_tor {c : Coeff l} {O O' : Type} [CommRing O] [CommRing O'] {β : O →+* c.F} {β' : O' →+* c.F}
     {Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model (Xo l) c β} (T : TorModel Z) {Y' : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model (Xo l) c β'}
@@ -239,14 +237,14 @@ abbrev genι : Z.gen ⟶ Z.X := pullback.fst _ _
 abbrev genStr : Z.gen ⟶ Sp c.F := pullback.snd _ _
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Z.n, Z.I.subschemeι, inferInstance, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem proj : IsProjOver Z.s := ⟨Z.n, Z.I.subschemeι, inferInstance, rfl⟩
 
 end PreCode
 
 /- English proof (translation)
-Take `⟨n, i, hi, e⟩` from `Z'.proj`. Establish `: IsIso i.toImage` using `inferInstance`. Use `⟨⟨n, i.ker, Z'.j ≫ i.toImage⟩, asIso i.toImage, ?_, rfl⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `i.toImage ≫ i.imageι ≫ _ = _`. Rewrite using `[← Category.assoc, i.toImage_imageι, e]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_preCode (Z' : GModel Xo c) : ∃ (Z : PreCode Xo c) (e : Z'.X ≅ Z.X), Z.Iso Z' e := by
   obtain ⟨n, i, hi, e⟩ := Z'.proj
@@ -259,7 +257,7 @@ structure Code (Y : LocFam Xo) (c : Coeff l) (hg : ∀ p : ℕ, p.Prime → l.Go
   ex : ∃ (Z' : GModel Xo c) (e : Z'.X ≅ toPreCode.X), toPreCode.Iso Z' e ∧ DomLoc Y hg Z'
 
 /- English proof (translation)
-Take `⟨Z, e, he⟩` from `exists_preCode Z'`. Conclude with `⟨⟨Z, Z', e, he, h⟩, e, he⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_code (Z' : GModel Xo c) (h : DomLoc Y hg Z') :
     ∃ (Z : Code Y c hg) (e : Z'.X ≅ Z.X), Z.Iso Z' e := by
@@ -267,7 +265,7 @@ theorem exists_code (Z' : GModel Xo c) (h : DomLoc Y hg Z') :
   exact ⟨⟨Z, Z', e, he, h⟩, e, he⟩
 
 /- English proof (translation)
-The claim follows from `exists_code T.Z fun p W hp hW b hb => dominates_tor T (h p W hp hW b hb)`.
+A detailed English derivation is pending.
 -/
 theorem exists_code_tor {Z' : GModel Xo c} (h : DomLoc Y hg Z') (T : TorModel Z') :
     ∃ (Z : Code Y c hg) (e : T.Z.X ≅ Z.X), Z.Iso T.Z e :=
@@ -278,7 +276,7 @@ namespace Code
 variable (Z : Code Y c hg)
 
 /- English proof (translation)
-Introduce `x` and use `by obtain ⟨Z', e, -, -⟩ := Z.ex have h := Z'.normal (e.inv x) let r := (asIso (e.inv.stalkMap x)).commRingCatIsoToRingEquiv have := h.1 have := h.2 exact ⟨r.symm.toMulEquiv.isDomain _, IsIntegrallyClosed.of_equiv r⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem normal : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme Z.X := fun x => by
   obtain ⟨Z', e, -, -⟩ := Z.ex
@@ -289,7 +287,7 @@ theorem normal : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme Z.X
   exact ⟨r.symm.toMulEquiv.isDomain _, IsIntegrallyClosed.of_equiv r⟩
 
 /- English proof (translation)
-Take `⟨Z', e, he, -⟩` from `Z.ex`. Use `Z'.flat` as an intermediate fact. Rewrite using `[← e.inv_hom_id_assoc Z.s, he.1]`. Use `infer_instance`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem flat : Flat Z.s := by
   obtain ⟨Z', e, he, -⟩ := Z.ex
@@ -310,9 +308,9 @@ def AmpleHodge (m : ℕ) (B : CDiv Z.X) : Prop :=
   ∃ (Z' : GModel Xo c) (e : Z'.X ≅ Z.X), Z.Iso Z' e ∧ B.AmpleTw e.hom (lbPow (GlobalTheory.FlagMod.detOm Z') m)
 
 /- English proof (translation)
-Use `⟨T.Z, e, he, T.BD, .zero _, h₁.symm, by rw [h₂, CDiv.idealSheaf_zero, Scheme.IdealSheafData.comap_top], ?_⟩` and prove the remaining obligations. Establish `a` using `isLB_lbPow h.isLB_detOm T.m0`. Establish `z` using `(EffCartierData.zero T.Z.X).isLB_lb`. Establish `d` using `GlobalTheory.CechPic.isLB_dual T.BD.isLB_lb`. Establish `z0 : GlobalTheory.CechPic.cls _ z = 0` using `(GlobalTheory.CechPic.cls_eq_zero_iff z).2 ⟨⟨fun _ => 1⟩, fun i j => by`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (1 : Γ(T.Z.X, _)ˣ) = (EffCartierData.zero T.Z.X).trans i j` using `(EffCartierData.zero T.Z.X).eq_trans i j (one_mul _).symm`. Conclude with `(map_one _).trans ((mul_one _).symm.trans (congrArg₂ (· * ·) this (map_one _).symm))⟩`. Establish `l` using `GlobalTheory.CechPic.isLB_tens (GlobalTheory.CechPic.isLB_tens a z) d`. Use `h.ample.of_lbIso l ((GlobalTheory.CechPic.cls_eq_iff l h.ample.isLB).1 ?_)` and prove the remaining obligations. Conclude with `(GlobalTheory.CechPic.cls_tens (GlobalTheory.CechPic.isLB_tens a z) d _).trans (Eq.trans (by rw [GlobalTheory.CechPic.cls_tens a z, z0, add_zero]) (GlobalTheory.CechPic.cls_tens a d _).symm)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem ampleHodge_of_ample {Z' : GModel Xo c} (T : TorModel Z') (h : IsRecTor T) (e : T.Z.X ≅ Z.X) (he : Z.Iso T.Z e)
     {B : CDiv Z.X} (h₁ : B.pos.comap e.hom = T.BD.idealSheaf) (h₂ : B.neg = ⊤) : Z.AmpleHodge T.m0 B := by
@@ -330,11 +328,11 @@ theorem ampleHodge_of_ample {Z' : GModel Xo c} (T : TorModel Z') (h : IsRecTor T
     (by rw [GlobalTheory.CechPic.cls_tens a z, z0, add_zero]) (GlobalTheory.CechPic.cls_tens a d _).symm)
 
 /- English proof (translation)
-Set `C` to `T.BD.pull e.inv (T.BD.keepsRegular_of_flat _)`. Establish `hC : C.idealSheaf = T.BD.idealSheaf.comap e.inv` using `T.BD.idealSheaf_pull _ _`. Establish `hs : ∀ x, e.hom x ∈ C.idealSheaf.support ↔ x ∈ T.BD.idealSheaf.support` using `fun x => by`. Rewrite using `[hC, Scheme.IdealSheafData.support_comap]`. Express the relevant statement in the definitionally equal form `e.inv (e.hom x) ∈ T.BD.idealSheaf.support ↔ _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[← Scheme.Hom.comp_apply, e.hom_inv_id]`. Both sides reduce to the same expression. Use `⟨.ofEff C, ?_, CDiv.idealSheaf_zero _, CDiv.eff_ofEff C, Z', T, genι T.Z ≫ e.hom, ?_, ?_, fun x _ => ⟨fun hx => ?_, fun hx => ?_⟩⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `C.idealSheaf.comap e.hom = _`. Rewrite using `[hC, ← Scheme.IdealSheafData.comap_comp, e.hom_inv_id, Scheme.IdealSheafData.comap_id]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, he.1, pullback.condition]`. Rewrite using `[← Category.assoc]`. Conclude with `he.2`. Conclude with `(CDiv.posAt_ofEff _ _ _).2 ((hs _).2 (T.BD_pos x hx))`. Conclude with `(CDiv.zeroAt_ofEff _ _ _).2 fun h => hx (mem_genBd_iff.2 (T.BD_supp _ ((hs _).1 h)))`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_eff_posBd {Z' : GModel Xo c} (T : TorModel Z') (e : T.Z.X ≅ Z.X) (he : Z.Iso T.Z e) :
     ∃ B : CDiv Z.X, B.pos.comap e.hom = T.BD.idealSheaf ∧ B.neg = ⊤ ∧ B.Eff ∧ Z.PosBd B := by
@@ -400,7 +398,7 @@ def LimRA : Prop :=
 variable {M}
 
 /- English proof (translation)
-Introduce `P _` and use `letI := algebraΓOfHom (pullback.snd M.Z.s (spMap (algebraMap (𝓞 c.F) P.ResidueField))) haveI := MorphismProperty.of_isPullback (P := @IsAffineHom) (IsPullback.of_hasPullback M.Z.s (spMap (algebraMap (𝓞 c.F) P.ResidueField))).flip inferInstance (h.pull_of_isAffineHom _).isNef`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem nefFib_of_ample (h : IsAmpleLB M.L.lb) : M.NefFib := fun P _ =>
   letI := algebraΓOfHom (pullback.snd M.Z.s (spMap (algebraMap (𝓞 c.F) P.ResidueField)))
@@ -409,7 +407,7 @@ theorem nefFib_of_ample (h : IsAmpleLB M.L.lb) : M.NefFib := fun P _ =>
   (h.pull_of_isAffineHom _).isNef
 
 /- English proof (translation)
-The claim follows from `haveI := MorphismProperty.of_isPullback (P := @IsAffineHom) (IsPullback.of_hasPullback M.Z.s (spMap (algebraMap (𝓞 c.F) c.F))).flip inferInstance h.pull_of_isAffineHom _`.
+A detailed English derivation is pending.
 -/
 theorem ampleGen_of_ample (h : IsAmpleLB M.L.lb) : M.AmpleGen :=
   haveI := MorphismProperty.of_isPullback (P := @IsAffineHom)
@@ -417,11 +415,9 @@ theorem ampleGen_of_ample (h : IsAmpleLB M.L.lb) : M.AmpleGen :=
   h.pull_of_isAffineHom _
 
 /- English proof (translation)
-Establish `hA : IsAmpleLB (lbPow (M.L.lb.pull (𝟙 _)) 1)` using `(isAmpleLB_pow_iff (LB.isLB_pull h.isLB _) le_rfl).2 (h.pull_of_isAffineHom _)`. Take `⟨t, ht⟩ : LBIso (lbPow (M.L.lb.pull (𝟙 _)) 1) (lbPow (M.L.lb.pull (𝟙 _)) 1)` from `(GlobalTheory.CechPic.cls_eq_iff hA.isLB hA.isLB).1 rfl`. Use `⟨∅, fun ε _ => ⟨M.Z.X, 𝟙 _, M.Z.genι, 1, _, pullGenLB t _, ?_, ?_, ?_, Category.comp_id _, one_pos, hA, pullGenLB_isGen ht _, fun p _ => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[Category.id_comp]`. Conclude with `M.Z.proj`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.id_comp]`. Conclude with `M.Z.flat`. Rewrite using `[Category.id_comp]`. Conclude with `IsPullback.of_hasPullback _ _`. Rewrite using `[if_neg (Finset.notMem_empty p)]`.
-
-Conclude with `logBd_pullGenLB t _ p`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem limRA_of_ample (h : IsAmpleLB M.L.lb) : M.LimRA := by
   have hA : IsAmpleLB (lbPow (M.L.lb.pull (𝟙 _)) 1) :=
@@ -438,11 +434,11 @@ theorem limRA_of_ample (h : IsAmpleLB M.L.lb) : M.LimRA := by
 open GlobalTheory.CechPic in
 
 /- English proof (translation)
-Take `⟨_, h⟩` from `h`. Take `⟨X', b, ι, k, L', w, -, -, hp, hι, hk, hL, hw, -⟩` from `h 1 one_pos`. Establish `: IsAffineHom ι` using `MorphismProperty.of_isPullback (P := @IsAffineHom) hp.flip inferInstance`. Establish `h₀` using `M.L.isLB`. Establish `h₁` using `LB.isLB_pull h₀ b`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h₂` using `isLB_lbPow h₁ k`. Establish `h₃` using `LB.isLB_div hL.isLB h₂`. Establish `h₄` using `LB.isLB_pull h₀ M.Z.genι`. Establish `e` using `(cls_eq_zero_iff (LB.isLB_pull h₃ ι)).2 ⟨w, hw⟩`. Rewrite `e` using `[cls_pull h₃, cls_div hL.isLB h₂, cls_lbPow h₁, cls_pull h₀, map_sub, map_nsmul, ← pull_comp, hι, sub_eq_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `(isAmpleLB_pow_iff h₄ hk).1 ((hL.pull_of_isAffineHom ι).of_lbIso (isLB_lbPow h₄ k) ((cls_eq_iff (isLB_lbPow h₄ k) (LB.isLB_pull hL.isLB ι)).1 ?_))` and prove the remaining obligations. Rewrite using `[cls_lbPow h₄, cls_pull h₀, cls_pull hL.isLB, e]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem LimRA.ampleGen (h : M.LimRA) : M.AmpleGen := by
   obtain ⟨_, h⟩ := h
@@ -464,7 +460,7 @@ def scaledTwistingSheaf (Z : Code Y c hg) (m : ℕ) : QLB Y c hg :=
     Z.I.subschemeι, m + 1, m.succ_pos⟩
 
 /- English proof (translation)
-The claim follows from `have h : IsAmpleLB (scaledTwistingSheaf Z m).L.lb := ((isAmple_projective_O_one _ Z.n).pull_of_isAffineHom Z.I.subschemeι).of_lbIso (scaledTwistingSheaf Z m).L.isLB (FinLB.lbIso_pull _ _) ⟨nefFib_of_ample h, ampleGen_of_ample h, limRA_of_ample h⟩`.
+A detailed English derivation is pending.
 -/
 theorem scaledTwistingSheaf_spec (Z : Code Y c hg) (m : ℕ) : (scaledTwistingSheaf Z m).NefFib ∧ (scaledTwistingSheaf Z m).AmpleGen ∧ (scaledTwistingSheaf Z m).LimRA :=
   have h : IsAmpleLB (scaledTwistingSheaf Z m).L.lb :=
@@ -491,7 +487,7 @@ def bcOf {S : Sig A N j} {κ : Lv A} {M : ℕ → Type} (dflt : ∀ p, M p) (a :
   else dflt p
 
 /- English proof (translation)
-Establish `e : bcOf dflt a emb p Z = if h : ∃ Z', IsBCAt (a p hp) Z Z' then emb p hp h.choose else dflt p` using `by delta bcOf`. Conclude with `dif_pos hp`. Conclude with `e.trans (dif_pos h)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem bcOf_eq {S : Sig A N j} {κ : Lv A} {M : ℕ → Type} (dflt : ∀ p, M p) (a : ∀ p, p.Prime → At S κ p)
     (emb : ∀ p hp, (a p hp).Mdl → M p) {p : ℕ} (hp : p.Prime) (Z : CodeAt S κ) (h : ∃ Z', IsBCAt (a p hp) Z Z') :
@@ -503,7 +499,7 @@ theorem bcOf_eq {S : Sig A N j} {κ : Lv A} {M : ℕ → Type} (dflt : ∀ p, M 
   exact e.trans (dif_pos h)
 
 /- English proof (translation)
-Establish `key : ∀ {α : Type} {P Q : α → Prop} (_ : P = Q) (h : ∃ x, P x) (h' : ∃ x, Q x), h.choose = h'.choose` using `fun e _ _ => by subst e; rfl`. Establish `h' : ∃ Z', IsNBlow X J Z'` using `h.imp fun Z' => (hJ Z').1`. Establish `e₂ : GlobalTheory.LocM.blowUp X J = h'.choose` using `by delta GlobalTheory.LocM.blowUp`. Conclude with `dif_pos h'`. Conclude with `(key (funext fun Z' => propext (hJ Z')) h h').trans e₂.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem choose_eq_blowUp {S : Sig A N j} {κ : Lv A} {p : ℕ} (ct : At S κ p) (Z : CodeAt S κ) (X : ct.Mdl) (J : ct.Idl X)
     (h : ∃ Z', IsBCAt ct Z Z') (hJ : ∀ Z', IsBCAt ct Z Z' ↔ IsNBlow X J Z') : h.choose = ct.blowUp X J := by
@@ -530,7 +526,7 @@ def globSt (S : Sig A N j) (κ : Lv A) (M : ℕ → Type) (dflt : ∀ p, M p) (a
   limRA := QLB.LimRA
 
 /- English proof (translation)
-Take `⟨Z, e, he⟩` from `exists_code_tor (Y := S.sys.Y) (hg := κ.good) s.glob.2.1 s.T`. Take `⟨B, h₁, h₂, h₃, h₄⟩` from `Z.exists_eff_posBd s.T e he`. Conclude with `⟨Z, e, B, he, h₁, h₂, h₃, h₄, Z.ampleHodge_of_ample s.T s.isRec e he h₁ h₂⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_codeAt_iso_with_positive_ample_divisor {S : Sig A N j} {κ : Lv A} (s : FinalTheorems S κ) :
     ∃ (Z : CodeAt S κ) (e : s.T.Z.X ≅ Z.X) (B : CDiv Z.X), Z.Iso s.T.Z e ∧ B.pos.comap e.hom = s.T.BD.idealSheaf ∧
@@ -543,13 +539,13 @@ instance nonempty_codeAt (S : Sig A N j) (κ : Lv A) : Nonempty (CodeAt S κ) :=
   (exists_code (Y := S.sys.Y) _ (S.tor.glob κ.l κ.c κ.good).2.1).elim fun Z _ => ⟨Z⟩
 
 /- English proof (translation)
-The claim follows from `(nonempty_codeAt S κ).elim fun Z => ⟨_, QLB.scaledTwistingSheaf_spec Z 0⟩`.
+A detailed English derivation is pending.
 -/
 example (S : Sig A N j) (κ : Lv A) : ∃ M : QLB S.sys.Y κ.c κ.good, M.NefFib ∧ M.AmpleGen ∧ M.LimRA :=
   (nonempty_codeAt S κ).elim fun Z => ⟨_, QLB.scaledTwistingSheaf_spec Z 0⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨CDiv.eff_ofEff _, fun _ _ _ => rfl⟩`.
+Supply the required witnesses or components.
 -/
 example {S : Sig A N j} {κ : Lv A} (Z : CodeAt S κ) :
     (CDiv.ofEff (.zero Z.X)).Eff ∧ Z.NoVert (.ofEff (.zero Z.X)) :=

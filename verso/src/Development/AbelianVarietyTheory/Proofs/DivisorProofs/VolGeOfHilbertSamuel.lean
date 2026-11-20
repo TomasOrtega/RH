@@ -24,27 +24,27 @@ noncomputable section
 namespace GlobalTheory.VolBr
 
 /- English proof (translation)
-Introduce `hHS hAC hNN k _ X _ p D hX L a hNF hSP hSI`. Take `⟨P, b, s, t, hPL, hG⟩` from `GlobalTheory.T.exists_good_hermitian_lineBundle_pair hAC k X p D hX L`. Substitute `hPL` using the available equality. Take `⟨α, hα, hαlim⟩` from `GlobalTheory.T.tendsto_selfIntersection_pow_tensor_div_pow hAC k X p D hX P.L P.A a hSI`. Take `⟨hRL, hRA, -⟩` from `GlobalTheory.T.represents_base_bundles_and_trivial k X p P`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Apply `GlobalTheory.T.le_arithVolume_of_frequently_smallSections_lower k X p D P.L a` to reduce the goal to its premises. Introduce `ε hε`. Establish `hF1 : (1 : ℝ) ≤ ((D + 1).factorial : ℝ)` using `by exact_mod_cast Nat.factorial_pos _`. Establish `hε3 : 0 < ε / 3` using `by positivity`. Establish `hlim : ∀ᶠ n : ℕ in atTop, a - ε / 3 < α n / (n : ℝ) ^ (D + 1)` using `hαlim.eventually (lt_mem_nhds (by linarith))`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨n, hn1, hnα, hcont⟩` from `((eventually_ge_atTop 1).and (hlim.and (GlobalTheory.T.small_section_count_continuous_from_above hHS hAC k X p D hX P b s t hG (ε / 3) hε3))).exists`. Establish `hRn : P.Rep (n : ℤ) 1 ((P.L.pow n).tens P.A)`. Establish `h1` using `GlobalTheory.T.represents_hermitianLineBundle_pow k X p P 1 0 P.L n hRL`. Establish `h2` using `GlobalTheory.T.hermPairWithSections_represents_tensor k X p P _ _ 0 1 _ P.A h1 hRA`. Simplify using `using h2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Take `⟨t₀, ht₀⟩` from `GlobalTheory.T.exists_metricShift_isNef_pow_tens_ample hAC hNN k X p D hX P.L P.A n hSP hNF hG.ample hG.nef`. Establish `hstep` using `GlobalTheory.T.log_card_smallSections_ge_of_shift_nef hHS hAC k X p D hX P b s t hG n 1 _ (α n) t₀ hRn (hα n) ht₀ (ε / 3) hε3`. Rewrite using `[Filter.frequently_atTop]`. Introduce `N₀`. Take `⟨m, hm, hm1, hm2⟩` from `((eventually_ge_atTop (max N₀ 1)).and (hstep.and hcont)).exists`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hmN : N₀ ≤ m` using `le_of_max_le_left hm`. Use `⟨n * m, le_trans hmN (Nat.le_mul_of_pos_left m hn1), ?_⟩` and prove the remaining obligations. Establish `hsm` using `(GlobalTheory.T.smallSections_twistedPower_encard_eq_ball k X p P 1 0 P.L hRL 0 (n * m)).2.1`. Rewrite `hsm` using `[mul_one, mul_zero]`. Establish `hfin` using `GlobalTheory.T.hermLineBundlePair_balls_finite hHS k X p D hX P b s t hG ((n * m : ℕ) : ℤ) 0 1 hAC`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hnc : (P.L.pow (n * m)).smallSec.ncard = (P.Bl ((n * m : ℕ) : ℤ) 0 1).ncard`. Rewrite using `[Set.ncard_def, Set.ncard_def, hsm]`. Use `⟨Set.encard_lt_top_iff.mp (hsm ▸ Set.encard_lt_top_iff.mpr hfin), ?_⟩` and prove the remaining obligations. Rewrite using `[hnc]`. Express the relevant statement in the definitionally equal form `_ ≤ P.lc ((n * m : ℕ) : ℤ) 0 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hcast : (m : ℤ) * (n : ℤ) = ((n * m : ℕ) : ℤ)` using `by push_cast; ring`. Rewrite `hm1` using `[hcast, mul_one]`. Use `set F : ℝ := ((D + 1).factorial : ℝ)`. Use `set x : ℝ := (n : ℝ) ^ (D + 1) with hx`. Use `set y : ℝ := (m : ℝ) ^ (D + 1) with hy`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx1 : 1 ≤ x` using `one_le_pow₀ (by exact_mod_cast hn1)`. Establish `hy0 : 0 ≤ y` using `by positivity`. Establish `hN : ((n * m : ℕ) : ℝ) ^ (D + 1) = x * y` using `by push_cast; rw [mul_pow]`. Rewrite `hm2` using `[mul_pow]`. Rewrite using `[hN]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hαx : (a - ε / 3) * x ≤ α n`. Use `(lt_div_iff₀ (by linarith : (0 : ℝ) < x)).mp hnα` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hF0 : 0 < F` using `by linarith`. Establish `e1 : (a - ε / 3) * x * y / F ≤ α n / F * y`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[div_mul_eq_mul_div]`. Conclude with `div_le_div_of_nonneg_right (mul_le_mul_of_nonneg_right hαx hy0) hF0.le`. Establish `e2 : ε / 3 * (x * y) / F ≤ ε / 3 * (x * y)` using `div_le_self (by positivity) hF1`. Establish `e3 : ε / 3 * y ≤ ε / 3 * (x * y)`. Establish `: y ≤ x * y` using `le_mul_of_one_le_left hy0 hx1`.
+Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Conclude with `mul_le_mul_of_nonneg_left this hε3.le`. Establish `e4 : (a / F - ε) * (x * y) = (a - ε / 3) * x * y / F + ε / 3 * (x * y) / F - ε * (x * y)`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Combine the linear relations using `[e1, e2, e3, e4, hm1, hm2]`.
+A detailed English derivation is pending.
 -/
 theorem volGe_of_hilbertSamuel :
     GlobalTheory.Published.ArithHilbertSamuel → GlobalTheory.Published.ArCalc → GlobalTheory.Published.NefNumerics → GlobalTheory.Published.VolGe := by

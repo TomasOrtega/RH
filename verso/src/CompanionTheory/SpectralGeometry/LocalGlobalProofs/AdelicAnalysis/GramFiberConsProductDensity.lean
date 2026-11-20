@@ -14,9 +14,9 @@ open scoped TensorProduct ENNReal NNReal Matrix
 namespace GlobalTheory.CompanionTheory.SW.PiLocalization₂.Unfold
 
 /- English proof (translation)
-Use `measurable_pi_iff.2 fun i => measurable_pi_iff.2 fun j => ?_` and prove the remaining obligations. Use `Fin.cases ?_ (fun i' => ?_) i` and prove the remaining obligations. Simplify using `only [vec, Fin.cons_zero]`. Conclude with `measurable_const`. Use `Fin.cases ?_ (fun j' => ?_) j` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [vec, Fin.cons_succ, Fin.cons_zero]`. Conclude with `(measurable_pi_apply i').comp measurable_fst`. Simplify using `only [vec, Fin.cons_succ]`. Conclude with `(measurable_pi_apply j').comp ((measurable_pi_apply i').comp measurable_snd)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem measurable_vec {K : Type} [Zero K] [MeasurableSpace K] {M n : ℕ} (α : K) :
     Measurable (fun p : (Fin n → K) × (Fin n → Fin M → K) => vec α p.1 p.2) := by
@@ -31,17 +31,15 @@ theorem measurable_vec {K : Type} [Zero K] [MeasurableSpace K] {M n : ℕ} (α :
       exact (measurable_pi_apply j').comp ((measurable_pi_apply i').comp measurable_snd)
 
 /- English proof (translation)
-Establish `restr : ∀ G : H → ℝ≥0∞, (∀ S, S ∉ W → G S = 0) → ∫⁻ S in W, G S ∂ν = ∫⁻ S, G S ∂ν`. Introduce `G hG`. Rewrite using `[← lintegral_indicator hW]`. Use `lintegral_congr fun S => ?_` and prove the remaining obligations. Distinguish the cases in `hS : S ∈ W`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Simplify using `[hS]`. Simplify using `[hS, hG S hS]`. Establish `hfyc : ∀ y c, Measurable (f y c)` using `fun y c => hf.comp (measurable_const.prodMk (measurable_const.prodMk measurable_id))`. Establish `hfc : ∀ c, Measurable fun p : Y × X => f p.1 c p.2` using `fun c => hf.comp (measurable_fst.prodMk (measurable_const.prodMk measurable_snd))`. Establish `e1 : ∀ y c, ∫⁻ S in W, ∫⁻ v, f y c v ∂(m S) ∂ν = ∫⁻ v in U, f y c v ∂μ`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `y c`. Rewrite using `[hfib _ (hfyc y c)]`. Use `restr _ fun S hS => ?_` and prove the remaining obligations. Simplify using `[hoff S hS]`. Establish `hyc : Measurable fun q : Y × C => ∫⁻ v in U, f q.1 q.2 v ∂μ`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `: Measurable fun r : (Y × C) × X => f r.1.1 r.1.2 r.2` using `hf.comp ((measurable_fst.comp measurable_fst).prodMk ((measurable_snd.comp measurable_fst).prodMk measurable_snd))`. Conclude with `this.lintegral_prod_right'`. Combine the equalities or inequalities in the displayed calculation. Use `lintegral_congr fun c => ?_` and prove the remaining obligations. Conclude with `lintegral_lintegral_swap (f := fun y v => f y c v) (hfc c).aemeasurable`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `_ = ∫⁻ c, ∫⁻ S in W, ∫⁻ y, ∫⁻ v, f y c v ∂(m S) ∂μ₁ ∂ν ∂μc := by`. Use `lintegral_congr fun c => ?_` and prove the remaining obligations. Rewrite using `[hfib _ (hfc c).lintegral_prod_left']`. Rewrite using `[restr]`. Use `lintegral_congr fun S => ?_ haveI := hm S` and prove the remaining obligations.
-
-Conclude with `lintegral_lintegral_swap (f := fun v y => f y c v) ((hfc c).comp measurable_swap).aemeasurable`. Introduce `S hS`. Simplify using `[hoff S hS]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem swap_through_fibres {Y C X H : Type} [MeasurableSpace Y] [MeasurableSpace C] [MeasurableSpace X]
     [MeasurableSpace H] (μ₁ : Measure Y) (μc : Measure C) (μ : Measure X) (ν : Measure H)
@@ -95,21 +93,15 @@ end GlobalTheory.CompanionTheory.SW.PiLocalization₂.Unfold
 namespace GlobalTheory.CompanionTheory.SW.PiLocalization₂
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ M J t n R _ _ _ _ _ d b lam m₁ m' s B₀ a κ₁ cm D φ hφ`. Establish `hCM` using `D.hCM`. Establish `hlam` using `D.hlam`. Take `⟨i₁, i₂, i₃, i₄, -⟩` from `id D.hR`. Take `⟨k₁, k₂, k₃, k₄, -, -, -, hBorel, -⟩` from `GlobalTheory.T.tensor_locally_compact_ring F E σ hCM R`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hK, hW, hH⟩` from `GlobalTheory.T.coordinate_haar_measure F E σ hCM R d b lam hlam`. Establish `hJ'` using `GlobalTheory.CompanionTheory.SW.PiLocalization₂.isHermND_blockOne_algebraMap F E σ M J D.hJ t D.ht`. Take `⟨-, hlf1, -, -, -, hae1⟩` from `GlobalTheory.T.gram_fiber_measure_locally_finite_measurable_supported F E σ hCM (M + 1) 1 _ hJ' R D.hR d b lam hlam m₁ D.hm₁`. Take `⟨hUo, hlf, hoff, -, -, -⟩` from `GlobalTheory.T.gram_fiber_measure_locally_finite_measurable_supported F E σ hCM M n J D.hJ R D.hR d b lam hlam m' D.hm'`. Take `⟨-, -, h₃, -, h₅, hact⟩` from `GlobalTheory.T.adelic_unitary_group_locally_compact F E σ hCM (M + 1) _ hJ' R`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hc` using `(hact (n + 1)).1`. Use `haveI := hBorel n M`. Use `haveI := hBorel (n + 1) (M + 1)`. Use `haveI := hBorel 1 (M + 1)`. Use `haveI : SigmaFinite (coordK R b lam) := inferInstance`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : SigmaFinite (coordW R b lam n M) := inferInstance`. Use `haveI : SigmaFinite (m₁ (hermScal R σ (algebraMap F R t))) := inferInstance`. Use `haveI : BorelSpace (HermR R σ n) := ⟨rfl⟩`. Use `haveI : SFinite (Measure.pi fun _ : Fin n => coordK R b lam) := inferInstance`. Establish `hm : ∀ S, SFinite (m' S)` using `fun S => inferInstance`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hUm : MeasurableSet (Unt σ R n)` using `hUo.measurableSet`. Establish `hB : MeasurableSet B₀` using `D.hB₀.measurableSet`. Rewrite using `[GlobalTheory.T.gram_fiber_cons_product_unfold F E σ M J t n R d b lam m₁ m' s B₀ a κ₁ cm D φ hφ]`. Unfold `Mid`. Use `setLIntegral_congr_fun hB fun x hx => ?_` and prove the remaining obligations.
-
-Use `congrArg _ ?_` and prove the remaining obligations. Use `set f : (Fin 1 → Fin (M + 1) → R ⊗[F] E) → (Fin n → R ⊗[F] E) → (Fin n → Fin M → R ⊗[F] E) → ℝ≥0∞ := fun y₀ c X => φ (actW R σ (blockOne (algebraMap F E t) J) (s y₀) (vec (((a x : Rˣ) : R) ⊗ₜ[F] (1 : E)) c X)) with hfdef`. Establish `hf : Measurable fun p : (Fin 1 → Fin (M + 1) → R ⊗[F] E) × (Fin n → R ⊗[F] E) × (Fin n → Fin M → R ⊗[F] E) => f p.1 p.2.1 p.2.2`. Establish `hcm : Measurable (fun p : HA R σ (blockOne (algebraMap F E t) J) × (Fin (n + 1) → Fin (M + 1) → R ⊗[F] E) => actW R σ (blockOne (algebraMap F E t) J) p.1 p.2)` using `by haveI : SecondCountableTopology (Fin (n + 1) → Fin (M + 1) → R ⊗[F] E) := inferInstance haveI : OpensMeasurableSpace (Fin (n + 1) → Fin (M + 1) → R ⊗[F] E) := inferInstance haveI : OpensMeasurableSpace (HA R σ (blockOne (algebraMap F E t) J)) := inferInstance haveI : OpensMeas …`. Conclude with `hc.measurable`.
-
-Establish `hg : Measurable (fun p : (Fin 1 → Fin (M + 1) → R ⊗[F] E) × (Fin n → R ⊗[F] E) × (Fin n → Fin M → R ⊗[F] E) => ((s p.1, vec (((a x : Rˣ) : R) ⊗ₜ[F] (1 : E)) p.2.1 p.2.2) : HA R σ (blockOne (algebraMap F E t) J) × (Fin (n + 1) → Fin (M + 1) → R ⊗[F] E)))` using `(D.hs.comp measurable_fst).prodMk ((Unfold.measurable_vec (((a x : Rˣ) : R) ⊗ₜ[F] (1 : E))).comp measurable_snd)`. Conclude with `hφ.comp (hcm.comp hg)`. Establish `hae : ∀ᵐ y₀ ∂(m₁ (hermScal R σ (algebraMap F R t))), chi σ J t s a b lam ((Uset σ J t B₀ a : Set (Fin (n + 1) → Fin (M + 1) → R ⊗[F] E)).indicator φ) (scl (((a x : Rˣ) : R) ⊗ₜ[F] (1 : E)) y₀) = ∫⁻ c : Fin n → R ⊗[F] E, ∫⁻ S' in Unt σ R n, ∫⁻ X, f y₀ c X ∂(m' S') ∂(coordHerm R σ b …` using `by filter_upwards [hae1 (hermScal R σ (algebraMap F R t))] with y₀ hy₀`. Conclude with `GlobalTheory.T.gram_fiber_cons_product_fold F E σ M J t n R d b lam m₁ m' s B₀ a κ₁ cm D φ hφ x hx y₀ hy₀`. Rewrite using `[lintegral_congr_ae hae]`.
-
-Conclude with `Unfold.swap_through_fibres (m₁ (hermScal R σ (algebraMap F R t))) (Measure.pi fun _ => coordK R b lam) (coordW R b lam n M) (coordHerm R σ b lam n) {X | IsUnit (gramR R σ J X).det} (Unt σ R n) hUm m' hm hoff D.hm'.2.1 f hf`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lintegral_Uset_eq_Mid : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (M : ℕ) (J : Matrix (Fin M) (Fin M) E) (t : F) (n : ℕ) (R : Type) [CommRing R] [Algebra F R] [TopologicalSpace R] [MeasurableSpace R] [BorelSpace R] (d : ℕ) (b : Module.Basis (Fin d) F E) (lam : Measure R) (m₁ : HermR R σ 1 → Measure (Fin 1 → Fin (M + 1) → R ⊗[F] E)) (m' : HermR R σ n → Measure (Fin n → Fin M → R ⊗[F] E)) (s : (Fin 1 → Fin (M + 1) → R ⊗[F] E) → HA R σ (blockOne (algebraMap F E t) J)) (B₀ : Set R) (a : R → Rˣ) (κ₁ cm : Rˣ → ℝ≥0), StageData σ J t n b lam m₁ m' s B₀ a κ₁ cm → ∀ φ : (Fin (n + 1) → Fin (M + 1) → R ⊗[F] E) → ℝ≥0∞, Measurable φ → ∫⁻ v in (Uset σ J t B₀ a : Set (Fin (n + 1) → Fin (M + 1) → R ⊗[F] E)), φ v ∂(coordW R b lam (n + 1) (M + 1)) = Mid σ J t m₁ m' s B₀ a κ₁ b lam φ := by
   intro F E _ _ _ _ _ σ M J t n R _ _ _ _ _ d b lam m₁ m' s B₀ a κ₁ cm D φ hφ

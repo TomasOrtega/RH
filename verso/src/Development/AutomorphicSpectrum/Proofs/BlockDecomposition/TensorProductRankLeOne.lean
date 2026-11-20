@@ -6,9 +6,9 @@ open scoped TensorProduct
 namespace GlobalTheory.CompanionTheory.TensorRank
 
 /- English proof (translation)
-Use `choose v₀ hv₀ using fun a => rank_le_one_iff.mp (h a)`. Rewrite using `[rank_le_one_iff]`. Use `⟨PiTensorProduct.tprod ℂ v₀, fun x => ?_⟩` and prove the remaining obligations. Use `PiTensorProduct.induction_on x ?_ ?_` and prove the remaining obligations. Introduce `r f choose c hc using fun a => hv₀ a (f a)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨r * ∏ a, c a, ?_⟩` and prove the remaining obligations. Establish `hf : f = fun a => c a • v₀ a` using `funext fun a => (hc a).symm`. Rewrite using `[hf, MultilinearMap.map_smul_univ, mul_smul]`. Introduce and unpack `x y ⟨r, hr⟩ ⟨s, hs⟩`. Conclude with `⟨r + s, by rw [add_smul, hr, hs]⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem rank_piTensorProduct_le_one {α : Type} [Fintype α] (M : α → Type)
     [∀ a, AddCommGroup (M a)] [∀ a, Module ℂ (M a)]

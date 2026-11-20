@@ -17,17 +17,17 @@ def Wp (k r : ℕ) : Finset (Fin (2 * r + k + 1)) :=
   Finset.univ.filter fun i => r ≤ i.val ∧ i.val < r + k
 
 /- English proof (translation)
-Establish `hterm : ∀ i, star (w i) * (Hpk k r *ᵥ v) i = (if r ≤ i.val ∧ i.val < r + k then star (w i) * v i else 0) - (if lI k r = i then star (w (lI k r)) * v (lI k r) else 0)`. Introduce `i`. Rewrite using `[Hpk_mulVec_apply]`. Establish `hi` using `i.isLt`. Distinguish the cases in `hW : inW k r i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Establish `hp : piI k r i = i`. Establish `hW'` using `hW`. Unfold `inW at hW'`. Unfold `piI`. Rewrite using `[if_pos hW']`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hp]`. Unfold `inW at hW`. Distinguish the cases in `hl : i.val = r + k`. Establish `h1 : lI k r = i` using `Fin.ext hl.symm`. Rewrite using `[if_neg (by omega), if_pos h1, h1]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Unfold `epsI`. Rewrite using `[if_pos hl]`. Expand and normalize the polynomial expressions, which then agree. Establish `h1 : lI k r ≠ i` using `fun h => hl (by rw [← h]; rfl)`. Rewrite using `[if_pos ⟨hW.1, by omega⟩, if_neg h1]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Unfold `epsI`. Rewrite using `[if_neg hl]`. Expand and normalize the polynomial expressions, which then agree. Establish `h0 : v (piI k r i) = 0` using `hv _ (piI_not_inW hW)`. Establish `h1 : lI k r ≠ i` using `fun h => hW (by rw [← h]; unfold inW lI; simp)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `inW at hW`. Rewrite using `[h0, if_neg (by omega), if_neg h1]; ring`. Simplify using `only [dotProduct, Pi.star_apply, hterm, Finset.sum_sub_distrib, Finset.sum_ite_eq, Finset.mem_univ, if_true, Wp, Finset.sum_filter]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma star_dotProduct_Hpk_mulVec_eq_sum_sub (v w : Fin (2 * r + k + 1) → ℂ) (hv : ∀ i, ¬ inW k r i → v i = 0) :
     star w ⬝ᵥ (Hpk k r *ᵥ v) =
@@ -61,7 +61,7 @@ lemma star_dotProduct_Hpk_mulVec_eq_sum_sub (v w : Fin (2 * r + k + 1) → ℂ) 
     Finset.mem_univ, if_true, Wp, Finset.sum_filter]
 
 /- English proof (translation)
-Rewrite using `[Complex.star_def, Complex.conj_mul']`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma star_mul_self_eq (x : ℂ) : star x * x = ((‖x‖ ^ 2 : ℝ) : ℂ) := by
   rw [Complex.star_def, Complex.conj_mul']
@@ -69,7 +69,7 @@ lemma star_mul_self_eq (x : ℂ) : star x * x = ((‖x‖ ^ 2 : ℝ) : ℂ) := b
   ring
 
 /- English proof (translation)
-Establish `hv : ∀ i, ¬ inW k r i → z i = 0` using `fun i hi => hz i (by unfold inW at hi; omega)`. Unfold `Tz herm`. Rewrite using `[star_dotProduct_Hpk_mulVec_eq_sum_sub z z hv]`. Simplify using `only [star_mul_self_eq]`. Rewrite using `[← Complex.ofReal_sum, ← Complex.ofReal_sub, Complex.ofReal_re]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -83,7 +83,7 @@ lemma tz_eq {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) :
   ring
 
 /- English proof (translation)
-Establish `hh' : hᴴ * (Hpk k r * h) = Hpk k r` using `by rw [← Matrix.mul_assoc]; exact hh`. Rewrite using `[star_mulVec, ← dotProduct_mulVec]`. Simplify using `only [Matrix.mulVec_mulVec, hh']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma herm_invariant {h : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     (hh : h ∈ UH (Hpk k r)) (u v : Fin (2 * r + k + 1) → ℂ) :
@@ -93,19 +93,19 @@ lemma herm_invariant {h : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ
   simp only [Matrix.mulVec_mulVec, hh']
 
 /- English proof (translation)
-Apply the tactic sequence `unfold epsI; split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma norm_epsI (i : Fin (2 * r + k + 1)) : ‖epsI k r i‖ = 1 := by
   unfold epsI; split_ifs <;> simp
 
 /- English proof (translation)
-Apply the tactic sequence `rw [bvec_apply]; split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma norm_bvec_le (j i : Fin (2 * r + k + 1)) : ‖bvec j i‖ ≤ 1 := by
   rw [bvec_apply]; split_ifs <;> simp
 
 /- English proof (translation)
-Rewrite using `[Hpk_mulVec_apply, norm_mul, norm_epsI, one_mul]`. Conclude with `norm_bvec_le _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma norm_H_bvec_le (j i : Fin (2 * r + k + 1)) : ‖(Hpk k r *ᵥ bvec j) i‖ ≤ 1 := by
   rw [Hpk_mulVec_apply, norm_mul, norm_epsI, one_mul]
@@ -117,47 +117,41 @@ def Bd (k r : ℕ) (z : Fin (2 * r + k + 1) → ℂ) : ℝ :=
       (‖z (lI k r)‖ - Real.sqrt (∑ i ∈ Wp k r, ‖z i‖ ^ 2))
 
 /- English proof (translation)
-Use `set n : ℝ := ((2 * r + k + 1 : ℕ) : ℝ) with hn`. Establish `hn1 : 1 ≤ n` using `by rw [hn]; exact_mod_cast Nat.succ_le_succ (Nat.zero_le _)`. Use `set A := ∑ i ∈ Wp k r, ‖z i‖ ^ 2 with hAdef`. Use `set a := Real.sqrt A with hadef`. Use `set b := ‖z (lI k r)‖ with hbdef`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set Z := ∑ i, ‖z i‖ with hZdef`. Establish `hA0 : 0 ≤ A` using `Finset.sum_nonneg fun _ _ => sq_nonneg _`. Establish `ha0 : 0 ≤ a` using `Real.sqrt_nonneg _`. Establish `hb0 : 0 ≤ b` using `norm_nonneg _`. Establish `hZ0 : 0 ≤ Z` using `Finset.sum_nonneg fun _ _ => norm_nonneg _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `haa : a ^ 2 = A` using `Real.sq_sqrt hA0`. Establish `hTab : Tz k r z = b ^ 2 - a ^ 2` using `by rw [tz_eq hz, haa]`. Establish `hab : a < b`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use polynomial arithmetic with `[mul_self_le_mul_self hb0 hc]`. Establish `hba : 0 < b - a` using `by linarith`. Establish `hq0 : 0 ≤ (a * n + Z) / (b - a)` using `div_nonneg (by positivity) hba.le`. Establish `hBd : Bd k r z = n + (a * n + Z) / (b - a)` using `rfl`. Rewrite using `[hBd]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Combine the linear equalities and inequalities to obtain the conclusion. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Establish `hδ : ∀ x : ℂ, (x = if i = j then 1 else 0) → ‖x‖ ≤ n + (a * n + Z) / (b - a)`. Introduce `x hx`. Apply the tactic sequence `have : ‖x‖ ≤ 1 := by rw [hx]; split_ifs <;> simp`. Combine the linear equalities and inequalities to obtain the conclusion. Distinguish the cases in `hij : inW k r i ∧ inW k r j`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `swap`. Conclude with `hδ _ (uw_block hh i j hij)`. Take `⟨hiW, hjW⟩` from `hij`. Use `set c : Fin (2 * r + k + 1) → ℂ := fun x => h x j with hcdef`. Establish `hc : c = h *ᵥ bvec j` using `funext fun x => (mulVec_bvec_apply h x j).symm`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcW : ∀ x, ¬ inW k r x → c x = 0`. Introduce `x hx`. Establish `hne : x ≠ j` using `by rintro rfl; exact hx hjW`. Use `uw_block hh x j (fun h' => hx h'.1)` as an intermediate fact. Simplify using `only [hcdef, this, if_neg hne]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hEA : star c ⬝ᵥ (Hpk k r *ᵥ c) = star (bvec j) ⬝ᵥ (Hpk k r *ᵥ bvec j)`. Rewrite using `[hc]`. Conclude with `herm_invariant hh.1 _ _`. Establish `hEK : star z ⬝ᵥ (Hpk k r *ᵥ c) = star z ⬝ᵥ (Hpk k r *ᵥ bvec j)`. Use `herm_invariant hh.1 z (bvec j)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `this` using `[hh.2.2]`. Rewrite using `[hc]`. Conclude with `this`. Establish `hnA : ‖star (bvec j) ⬝ᵥ (Hpk k r *ᵥ bvec j)‖ ≤ n`. Use `(norm_sum_le _ _).trans ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `: ∀ x ∈ (Finset.univ : Finset (Fin (2 * r + k + 1))), ‖(star (bvec j)) x * (Hpk k r *ᵥ bvec j) x‖ ≤ 1`. Introduce `x _`. Rewrite using `[norm_mul, Pi.star_apply, norm_star]`. Conclude with `mul_le_one₀ (norm_bvec_le _ _) (norm_nonneg _) (norm_H_bvec_le _ _)`. Use `(Finset.sum_le_sum this).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `[hn]`. Establish `hnK : ‖star z ⬝ᵥ (Hpk k r *ᵥ bvec j)‖ ≤ Z`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun x _ => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul, Pi.star_apply, norm_star]`. Conclude with `mul_le_of_le_one_right (norm_nonneg _) (norm_H_bvec_le _ _)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite `hEA` using `[star_dotProduct_Hpk_mulVec_eq_sum_sub c c hcW]`. Rewrite `hEK` using `[star_dotProduct_Hpk_mulVec_eq_sum_sub c z hcW]`. Use `set X2 := ∑ x ∈ Wp k r, ‖c x‖ ^ 2 with hX2`. Use `set Y := ‖c (lI k r)‖ with hY`. Establish `hY0 : 0 ≤ Y` using `norm_nonneg _`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hX20 : 0 ≤ X2` using `Finset.sum_nonneg fun _ _ => sq_nonneg _`. Establish `h1 : X2 - Y ^ 2 ≤ n`. Establish `e` using `congrArg Complex.re hEA`. Simplify using `only [star_mul_self_eq] at e`. Rewrite `e` using `[← Complex.ofReal_sum, ← Complex.ofReal_sub, Complex.ofReal_re]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `(Complex.re_le_norm _).trans hnA`. Establish `h2 : b * Y ≤ (∑ x ∈ Wp k r, ‖z x‖ * ‖c x‖) + Z`. Establish `e : star (z (lI k r)) * c (lI k r) = (∑ x ∈ Wp k r, star (z x) * c x) - star z ⬝ᵥ (Hpk k r *ᵥ bvec j)`. Rewrite using `[← hEK]`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Consider separately whether the proposition holds or fails.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `e2` using `congrArg norm e`. Rewrite `e2` using `[norm_mul, norm_star]`. Rewrite using `[hbdef, hY, e2]`. Use `(norm_sub_le _ _).trans (add_le_add ?_ hnK)` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `(norm_sum_le _ _).trans (le_of_eq ?_)` and prove the remaining obligations. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul, norm_star]`. Establish `hCS : (∑ x ∈ Wp k r, ‖z x‖ * ‖c x‖) ≤ a * Real.sqrt X2` using `Real.sum_mul_le_sqrt_mul_sqrt _ _ _`. Establish `hsX : Real.sqrt X2 ≤ n + Y`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: X2 ≤ (n + Y) ^ 2` using `by nlinarith`. Combine the equalities or inequalities in the displayed calculation. Establish `hYb : Y ≤ (a * n + Z) / (b - a)`. Rewrite using `[le_div_iff₀ hba]`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Distinguish the cases in `hil : i = lI k r`. Establish `: ‖h i j‖ = Y` using `by rw [hY, hil]`. Rewrite using `[this]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hiWp : i ∈ Wp k r`.
-
-Unfold `Wp inW at *`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and]`. Use `⟨hiW.1, ?_⟩` and prove the remaining obligations. Break down `Nat.lt_or_ge i.val (r + k) with h' | h'` into its components or cases. Conclude with `h'`.
-
-Conclude with `absurd (Fin.ext (by simp [lI]; omega)) hil`. Establish `hci : ‖c i‖ ^ 2 ≤ X2` using `Finset.single_le_sum (f := fun x => ‖c x‖ ^ 2) (fun _ _ => sq_nonneg _) hiWp`. Establish `hci' : ‖c i‖ ≤ n + Y`. Establish `h0 : 0 ≤ ‖c i‖` using `norm_nonneg _`. Use the polynomial consequences of the given equalities and inequalities.
-
-Establish `: ‖h i j‖ = ‖c i‖` using `rfl`. Rewrite using `[this]`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 lemma uw_entry_bound {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (hT : 0 < Tz k r z)
     {h : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} (hh : h ∈ UWset k r z)
@@ -276,11 +270,11 @@ namespace PI.QuotSetU.UnitaryGroupMassFormula
 open PI PI.QuotSetU PI.QuotSetU.UnitaryGroupMassFormula.SW PI.QuotSetU.UnitaryGroupMassFormula.UWC
 
 /- English proof (translation)
-Introduce `k r z hz hT`. Establish `hcont : ∀ v : Fin (2 * r + k + 1) → ℂ, Continuous fun g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ => g *ᵥ v` using `fun v => Continuous.matrix_mulVec continuous_id continuous_const`. Establish `hcl : IsClosed (UWset k r z)`. Establish `e : UWset k r z = UH (Hpk k r) ∩ ((⋂ a : Fin r, ({g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ | g *ᵥ bvec (eI k r a) = bvec (eI k r a)} ∩ {g | g *ᵥ bvec (esI k r a) = bvec (esI k r a)})) ∩ {g | g *ᵥ z = z})`. Use extensionality with `g`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [UWset, Set.mem_inter_iff, Set.mem_iInter, Set.mem_ofPred_eq]`. Rewrite using `[e]`. Use `(unitary_hermitian_group k r).1.inter (IsClosed.inter (isClosed_iInter fun a => ?_) ?_)` and prove the remaining obligations. Conclude with `(isClosed_eq (hcont _) continuous_const).inter (isClosed_eq (hcont _) continuous_const)`. Conclude with `isClosed_eq (hcont _) continuous_const`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hB : IsCompact (Set.pi Set.univ fun _ : Fin (2 * r + k + 1) => Set.pi Set.univ fun _ : Fin (2 * r + k + 1) => Metric.closedBall (0 : ℂ) (Bd k r z))` using `isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => isCompact_closedBall _ _`. Use `hB.of_isClosed_subset hcl ?_` and prove the remaining obligations. Introduce `g hg i _ j _`. Simplify using `using uw_entry_bound hz hT hg i j`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem unitary_weyl_compact : UWCompact := by
   intro k r z hz hT

@@ -16,7 +16,7 @@ def Par.Canon (Q : Par D) : Prop :=
   Q.H = hostOfRecord D ∧ ∀ j (hj : InR D j), ∃ hP hd, HEq (Q.Dw j) (datumOfRecord D j hj hP hd)
 
 /- English proof (translation)
-Consider the cases of `l`. Consider the cases of `l'`. Simplify using `only at hM hMb hA`. Substitute `hM hMb hA` using the available equality. Both sides reduce to the same expression.
+Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules. Substitute using the available equality. Both sides reduce to the same expression.
 -/
 private theorem lev_eq_lemma {H : Host D.host.E} (l l' : Level H) (hM : l.M = l'.M) (hMb : l.Mb = l'.Mb)
     (hA : l.A = l'.A) : l = l' := by
@@ -27,11 +27,11 @@ private theorem lev_eq_lemma {H : Host D.host.E} (l l' : Level H) (hM : l.M = l'
   rfl
 
 /- English proof (translation)
-Use `haveI : NumberField F := ⟨⟩`. Introduce `z hz`. Take `⟨a, b, _, hab⟩` from `IsFractionRing.div_surjective (A := 𝓞 F) (⟨z, hz⟩ : F)`. Establish `key : ∀ t : 𝓞 F, ((t : F) : ℂ) ∈ F'` using `fun t => by`. Establish `h1` using `hF' (eO'.symm (eO t))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[RingEquiv.apply_symm_apply, hF t]`. Rewrite using `[h1]`. Conclude with `(eO'.symm (eO t) : F').2`. Establish `hz' : z = ((a : F) : ℂ) / ((b : F) : ℂ)`. Establish `h2` using `congrArg (fun w : F => (w : ℂ)) hab`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using h2.symm`. Rewrite using `[hz']`. Conclude with `F'.div_mem (key a) (key b)`.
+A detailed English derivation is pending.
 -/
 private theorem fld_le_lemma_2 {O : Type} [CommRing O] (e : O →+* ℂ) (F F' : IntermediateField ℚ ℂ)
     [FiniteDimensional ℚ F] (eO : 𝓞 F ≃+* O) (eO' : 𝓞 F' ≃+* O) (hF : ∀ x : 𝓞 F, e (eO x) = ((x : F) : ℂ))
@@ -51,13 +51,13 @@ private theorem fld_le_lemma_2 {O : Type} [CommRing O] (e : O →+* ℂ) (F F' :
   exact F'.div_mem (key a) (key b)
 
 /- English proof (translation)
-Take `⟨H, l, c, Dw, Xo, eO⟩` from `Q`. Take `⟨H', l', c', Dw', Xo', eO'⟩` from `Q'`. Simplify using `only at hH hM hA hMb hF hF' ⊢`. Substitute `hH` using the available equality. Establish `hl` using `lev_eq_lemma l l' hM hMb hA`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Substitute using the available equality. Establish an intermediate fact.
 
-Substitute `hl` using the available equality. Establish `hFF : c.F = c'.F` using `by haveI := c.fin haveI := c'.fin`. Conclude with `le_antisymm (fld_le_lemma_2 (D.what₂.embLL.comp D.what₂.OtoLL) _ _ eO eO' hF hF') (fld_le_lemma_2 (D.what₂.embLL.comp D.what₂.OtoLL) _ _ eO' eO hF' hF)`. Take `⟨F, fin, cj, zm, le⟩` from `c`. Take `⟨F', fin', cj', zm', le'⟩` from `c'`.
+Substitute using the available equality. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Simplify using `only at hFF hF hF'`. Substitute `hFF` using the available equality. Use `⟨rfl, HEq.rfl, HEq.rfl, heq_of_eq ?_⟩` and prove the remaining obligations. Establish `inj : ∀ y y' : D.what₂.O, D.what₂.embLL (D.what₂.OtoLL y) = D.what₂.embLL (D.what₂.OtoLL y') → y = y'`. Introduce `y y' hy`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨x, rfl⟩` from `eO.surjective y`. Take `⟨x', rfl⟩` from `eO.surjective y'`. Rewrite `hy` using `[hF, hF]`. Rewrite using `[NumberField.RingOfIntegers.ext (Subtype.ext hy)]`. Conclude with `RingEquiv.ext fun x => inj _ _ (by rw [hF, hF'])`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem par_eqs_lemma_3 (Q Q' : Par D) (hH : Q.H = Q'.H) (hM : Q.l.M = Q'.l.M) (hA : Q.l.A = Q'.l.A)
     (hMb : Q.l.Mb = Q'.l.Mb)
@@ -89,11 +89,11 @@ private theorem par_eqs_lemma_3 (Q Q' : Par D) (hH : Q.H = Q'.H) (hM : Q.l.M = Q
   exact RingEquiv.ext fun x => inj _ _ (by rw [hF, hF'])
 
 /- English proof (translation)
-Establish `hp` using `h.pins`. Establish `hp'` using `h'.pins`. Unfold `Par.Pins Par.PinLevel Par.PinField at hp hp'`. Unfold `Par.Canon at hc hc'`. Establish `hH : T.Q.H = T'.Q.H` using `hc.1.trans hc'.1.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `hMb : T.Q.l.Mb = T'.Q.l.Mb` using `by rw [h.half.2, h'.half.2, hb]`. Take `⟨r1, r2, r3, r4⟩` from `par_eqs_lemma_3 T.Q T'.Q hH (hp.2.1.1.trans hp'.2.1.1.symm) (hp.2.1.2.trans hp'.2.1.2.symm) hMb hp.2.2.1 hp'.2.2.1`. Use `⟨r1, r2, r3, ?_, r4⟩` and prove the remaining obligations. Take `⟨_, _, e1⟩` from `hc.2 j hj`. Take `⟨_, _, e2⟩` from `hc'.2 j hj`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `e1.trans e2.symm`.
+A detailed English derivation is pending.
 -/
 theorem canon_eqs {T T' : Core D} (h : LawsM T) (h' : LawsM T') (hc : T.Q.Canon) (hc' : T'.Q.Canon)
     (hb : T.pb = T'.pb) (j : ℕ) (hj : InR D j) :
@@ -140,7 +140,7 @@ def INVC (D : D7) : Prop :=
       (pl : HeightOneSpectrum (𝓞 T.Q.c.F) → HeightOneSpectrum (𝓞 T'.Q.c.F)), IsCoreIso h h' j fe Φ pl
 
 /- English proof (translation)
-Introduce `T T' h h' hc hc' hb j hj`. Take `⟨e1, e2, e3, e4, e5⟩` from `canon_eqs h h' hc hc' hb j hj`. Conclude with `hm T T' h h' j hj e1 e2 e3 e4 e5`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem parTrC_of (hm : ModTr D) : ParTrC D := by
   intro T T' h h' hc hc' hb j hj
@@ -148,13 +148,13 @@ theorem parTrC_of (hm : ModTr D) : ParTrC D := by
   exact hm T T' h h' j hj e1 e2 e3 e4 e5
 
 /- English proof (translation)
-Introduce `T T' h h' hcT hcT' hb j hj`. Take `⟨U, V, dict, mu, Kf, h'', fe, Φ, pl, hiso⟩` from `hp T T' h h' hcT hcT' hb j hj`. Establish `q` using `hc`. Unfold `CxIndep at q`. Establish `r` using `q T' U V dict mu Kf h' h'' j hj`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Take `⟨a1, a2, a3, a4, a5, a6, a7, a8, a9, a10⟩` from `hiso`. Establish `hm : ∀ w f, f ∈ T.C j w → Φ f ∈ T'.C j w` using `fun w f hf => by`. Rewrite using `[(r w).1]`. Conclude with `(a7 w f).1 hf`. Use `⟨fe, Φ, pl, a1, a2, a3, a4, a5, a6, ?_, a8, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `w f`. Rewrite using `[(r w).1]`. Conclude with `a7 w f`. Introduce `w σ f hf`. Rewrite using `[((r w).2 σ (Φ f) (hm w f hf)).1]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `a9 w σ f hf`. Introduce `w σ f hf`. Rewrite using `[((r w).2 σ (Φ f) (hm w f hf)).2]`. Conclude with `a10 w σ f hf`.
+A detailed English derivation is pending.
 -/
 theorem invC_of (hp : ParTrC D) (hc : CxIndep D) : INVC D := by
   intro T T' h h' hcT hcT' hb j hj
@@ -171,7 +171,7 @@ theorem invC_of (hp : ParTrC D) (hc : CxIndep D) : INVC D := by
   · intro w σ f hf; rw [((r w).2 σ (Φ f) (hm w f hf)).2]; exact a10 w σ f hf
 
 /- English proof (translation)
-The claim follows from `invC_of (parTrC_of hm) (cxIndep_of hR hL)`.
+A detailed English derivation is pending.
 -/
 theorem invC_of_laws (hm : ModTr D) (hR : RdUIndep D) (hL : L2Independence D) : INVC D :=
   invC_of (parTrC_of hm) (cxIndep_of hR hL)

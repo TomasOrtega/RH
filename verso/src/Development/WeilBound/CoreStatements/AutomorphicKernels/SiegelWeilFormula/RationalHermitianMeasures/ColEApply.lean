@@ -38,11 +38,11 @@ Both sides reduce to the same expression.
 theorem colM_apply {m n : ℕ} (Y : Fin n → Fin m → AF F ⊗[F] E) : colM m n Y = toMx Y := rfl
 
 /- English proof (translation)
-Rewrite using `[mem_ratMx]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨X, hX⟩`. Use `⟨fun j a => X a j, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `j a`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `congrFun (congrFun hX a) j`. Introduce and unpack `⟨Z, hZ⟩`. Use `⟨Matrix.of fun a j => Z j a, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `a j`. Rewrite using `[← hZ]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem toMx_mem {m n : ℕ} (Y : Fin n → Fin m → AF F ⊗[F] E) :
     toMx Y ∈ ratMx F E m n ↔ Y ∈ MeasP.ratTupA F E n m := by
@@ -65,9 +65,9 @@ def ratEq (m n : ℕ) : ratMx F E m n ≃ MeasP.ratTupA F E n m where
   right_inv _ := rfl
 
 /- English proof (translation)
-Establish `hemb : MeasurableEmbedding (toMx (F` using `F) (E := E) (m := d.m) (n := d.n)) := (colM d.m d.n).measurableEmbedding`. Use `⟨hemb, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(colE (F := F) (E := E) d.m d.n).toAddEquiv.isAddHaarMeasure_map μ (colE d.m d.n).continuous (colE d.m d.n).symm.continuous`. Rewrite using `[ratM_eq]`. Use `hF.image_of_equiv (colM d.m d.n).toEquiv ?_ (ratEq d.m d.n) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `((colM d.m d.n).measurePreserving_symm μ).quasiMeasurePreserving`. Introduce `g x`. Both sides reduce to the same expression. Rewrite using `[hemb.map_apply, Set.preimage_image_eq _ hemb.injective, h1]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem meas_toMx (d : SD σ) (μ : Measure (Fin d.n → Fin d.m → AF F ⊗[F] E)) (𝓕 : Set (Fin d.n → Fin d.m → AF F ⊗[F] E))
     (hμ : μ.IsAddHaarMeasure) (hF : IsAddFundamentalDomain (MeasP.ratTupA F E d.n d.m) 𝓕 μ) (h1 : μ 𝓕 = 1) :

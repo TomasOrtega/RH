@@ -9,7 +9,7 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 open Polynomial NumberField IsDedekindDomain in
 
 /- English proof (translation)
-Introduce `D C nch Tp T`. Establish `h` using `_root_.GlobalTheory.HeckeSplitRow.heckeSplitOne_of_tie D.nd D.naut (_root_.GlobalTheory.HeckeSplitRow.heckeCharTie_of_tied T)`. Unfold `_root_.GlobalTheory.ThetaExh.HeckeSplitOne at h`. Conclude with `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.RowClose.heckeSplitOne_of_charTied : ∀ (D : _root_.Formalism.BasicNotions.D7) (C : _root_.Formalism.L2.Host.CharFrame D)
     (nch : _root_.Formalism.BasicNotions.NChoice D) (Tp : _root_.Formalism.L2.Host.TupTied D C nch), _root_.Formalism.L2.Host.NCharTied D C nch Tp →

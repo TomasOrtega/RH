@@ -14,9 +14,9 @@ namespace GlobalTheory.FockFiniteHeis
 variable {D : D7}
 
 /- English proof (translation)
-Establish `hm : ∀ l : List ι, p (l.foldr (fun i h => A i h) f) ∧ p (l.foldr (fun i h => A i h) g)`. Introduce `l`. Proceed by induction on `l with`. Consider the case `nil => exact ⟨hf, hg⟩`. Consider the case `cons i l ih => exact ⟨hp i _ ih.1, hp i _ ih.2⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Proceed by induction on `l with`. Consider the case `nil => rfl`. Consider the case `cons i l ih`. Rewrite using `[List.foldr_cons, List.foldr_cons, List.foldr_cons, ih, hadd i _ _ (psmul c _ (hm l).1) (hm l).2, hsmul i c _ (hm l).1]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem foldr_lin {ι X : Type} (p : (X → ℂ) → Prop) (A : ι → (X → ℂ) → (X → ℂ))
     (hp : ∀ i f, p f → p (A i f)) (hadd : ∀ i f g, p f → p g → A i (f + g) = A i f + A i g)
@@ -35,11 +35,11 @@ theorem foldr_lin {ι X : Type} (p : (X → ℂ) → Prop) (A : ι → (X → �
       hsmul i c _ (hm l).1]
 
 /- English proof (translation)
-Establish `h : pureTensorO ψ θ S T sS sT BS BT (c • f + g) = c • pureTensorO ψ θ S T sS sT BS BT f + pureTensorO ψ θ S T sS sT BS BT g`. Use `(MvPolynomial.basisMonomials _ ℂ).ext fun k => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.add_apply, LinearMap.smul_apply]`. Unfold `pureTensorO pureTensorL`. Rewrite using `[Module.Basis.constr_basis, Module.Basis.constr_basis, Module.Basis.constr_basis]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `opPow`. Establish `A1 : ∀ k f, IsThetaFunO ψ S T f → IsThetaFunO ψ S T (aPlusAll (heisO ψ S T) θ (fun τ => cplxO (sS τ) (sT τ)) BS BT k f)` using `fun k f hf => GlobalTheory.FockIndep.aPlus_theta hψ hθ k.1 (cplxO (sS k.1) (sT k.1)) _ hf`. Establish `A2 : ∀ k f g, IsThetaFunO ψ S T f → IsThetaFunO ψ S T g → aPlusAll (heisO ψ S T) θ (fun τ => cplxO (sS τ) (sT τ)) BS BT k (f + g) = aPlusAll (heisO ψ S T) θ (fun τ => cplxO (sS τ) (sT τ)) BS BT k f + aPlusAll (heisO ψ S T) θ (fun τ => cplxO (sS τ) (sT τ)) BS BT k g` using `fun k f g hf hg => GlobalTheory.FockIndep.aPlus_add hψ hθ k.1 (cplxO (sS k.1) (sT k.1)) _ hf hg`. Establish `A3 : ∀ k (c : ℂ) f, IsThetaFunO ψ S T f → aPlusAll (heisO ψ S T) θ (fun τ => cplxO (sS τ) (sT τ)) BS BT k (c • f) = c • aPlusAll (heisO ψ S T) θ (fun τ => cplxO (sS τ) (sT τ)) BS BT k f` using `fun k c f hf => GlobalTheory.FockIndep.aPlus_smul hψ hθ k.1 (cplxO (sS k.1) (sT k.1)) _ c hf`. Conclude with `foldr_lin (IsThetaFunO ψ S T) (aPlusAll (heisO ψ S T) θ (fun τ => cplxO (sS τ) (sT τ)) BS BT) A1 A2 A3 (fun _ _ hf hg => GlobalTheory.OrientedHeis.theta_add hf hg) (fun c _ hf => GlobalTheory.OrientedHeis.theta_smul c hf) c hf hg _`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h, LinearMap.add_apply, LinearMap.smul_apply]`.
+A detailed English derivation is pending.
 -/
 theorem pureTensorO_lin (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D) (hψ : IsStdChar D ψ (-1))
     (hθ : IsInfFam θ) (sS BS : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ)
@@ -75,7 +75,7 @@ end GlobalTheory.FockFiniteHeis
 namespace GlobalTheory.FockFiniteHeis
 
 /- English proof (translation)
-Establish `h` using `pureTensorO_lin ψ θ S T hψ hθ sS BS sT BT (-1) GlobalTheory.OrientedHeis.theta_zero GlobalTheory.OrientedHeis.theta_zero φ`. Rewrite `h` using `[smul_zero, add_zero, neg_one_smul, neg_add_cancel]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem pureTensorO_zero {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D) (hψ : IsStdChar D ψ (-1))
     (hθ : IsInfFam θ) (sS BS : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ)
@@ -85,13 +85,13 @@ theorem pureTensorO_zero {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam 
   rwa [smul_zero, add_zero, neg_one_smul, neg_add_cancel] at h
 
 /- English proof (translation)
-Introduce `D ψ θ S T hψ hθ sS sT BS BT f hf n a y hy φ`. Establish `ft` using `GlobalTheory.FinTranslate.finite_translate D ψ θ S T hψ hθ f hf`. Establish `hth : ∀ i, IsThetaFunO ψ S T (heisO ψ S T (y i) f)` using `fun i => (ft.2 (y i) (hy i)).1`. Establish `key : ∀ s : Finset (Fin n), IsThetaFunO ψ S T (∑ i ∈ s, a i • heisO ψ S T (y i) f) ∧ pureTensorO ψ θ S T sS sT BS BT (∑ i ∈ s, a i • heisO ψ S T (y i) f) φ = ∑ i ∈ s, a i • pureTensorO ψ θ S T sS sT BS BT (heisO ψ S T (y i) f) φ`. Introduce `s`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Rewrite using `[Finset.sum_empty, Finset.sum_empty]`. Conclude with `⟨GlobalTheory.OrientedHeis.theta_zero, pureTensorO_zero ψ θ S T hψ hθ sS BS sT BT φ⟩`. Consider the case `insert i s hi ih`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Treat this case separately.
 
-Rewrite using `[Finset.sum_insert hi, Finset.sum_insert hi]`. Use `⟨GlobalTheory.OrientedHeis.theta_add (GlobalTheory.OrientedHeis.theta_smul _ (hth i)) ih.1, ?_⟩` and prove the remaining obligations. Rewrite using `[pureTensorO_lin ψ θ S T hψ hθ sS BS sT BT (a i) (hth i) ih.1 φ, ih.2]`. Use `⟨?_, pureTensorO_zero ψ θ S T hψ hθ sS BS sT BT φ⟩` and prove the remaining obligations. Rewrite using `[(key Finset.univ).2]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[(ft.2 (y i) (hy i)).2 sS BS sT BT φ]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem heis_comb_pureTensorO : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D), IsStdChar D ψ (-1) → IsInfFam θ → ∀ sS sT BS BT (f : WO S T → ℂ), IsThetaFunO ψ S T f → ∀ (n : ℕ) (a : Fin n → ℂ) (y : Fin n → WO S T), (∀ i, (y i).map (infPart D) = 0) → ∀ φ, ∑ i, a i • heisO ψ S T (y i) (pureTensorO ψ θ S T sS sT BS BT f φ) = pureTensorO ψ θ S T sS sT BS BT (∑ i, a i • heisO ψ S T (y i) f) φ ∧ pureTensorO ψ θ S T sS sT BS BT (0 : WO S T → ℂ) φ = 0 := by
   intro D ψ θ S T hψ hθ sS sT BS BT f hf n a y hy φ

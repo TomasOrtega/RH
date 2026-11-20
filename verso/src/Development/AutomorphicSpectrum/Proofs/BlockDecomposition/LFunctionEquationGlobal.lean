@@ -29,7 +29,7 @@ section Deg
 variable {K : Type} [Field K] [NumberField K]
 
 /- English proof (translation)
-Establish `: Module.Finite (Qv v) (Kv K w)` using `inferInstance`. Conclude with `Module.finrank_pos`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finrank_pos' (v : Pl) (w : PlK K) [w.asIdeal.LiesOver v.asIdeal] :
     0 < Module.finrank (Qv v) (Kv K w) := by
@@ -37,22 +37,20 @@ theorem finrank_pos' (v : Pl) (w : PlK K) [w.asIdeal.LiesOver v.asIdeal] :
   exact Module.finrank_pos
 
 /- English proof (translation)
-The claim follows from `(SemiLocal.sum_finrank_eq K v).trans h2`.
+A detailed English derivation is pending.
 -/
 theorem sum_finrank' (h2 : Module.finrank ℚ K = 2) (v : Pl) :
     ∑ u : SemiLocal.PlacesOver K v, Module.finrank (Qv v) (Kv K u.1) = 2 :=
   (SemiLocal.sum_finrank_eq K v).trans h2
 
 /- English proof (translation)
-Establish `hs` using `sum_finrank' h2 v`. Use `set a : SemiLocal.PlacesOver K v := ⟨w₁, i₁⟩`. Use `set b : SemiLocal.PlacesOver K v := ⟨w₂, i₂⟩`. Establish `hab : a ≠ b` using `fun h => hne (congrArg Subtype.val h)`. Establish `p₁` using `finrank_pos' v w₁`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `p₂` using `finrank_pos' v w₂`. Establish `h3 : Module.finrank (Qv v) (Kv K w₁) + Module.finrank (Qv v) (Kv K w₂) ≤ 2`. Use `Finset.sum_le_sum_of_subset (f := fun u : SemiLocal.PlacesOver K v => Module.finrank (Qv v) (Kv K u.1)) (Finset.subset_univ ({a, b} : Finset (SemiLocal.PlacesOver K v)))` as an intermediate fact. Rewrite `this` using `[Finset.sum_pair hab, hs]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Use `⟨fun w hw => ?_, by omega, by omega⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Use `set c : SemiLocal.PlacesOver K v := ⟨w, hw⟩`. Establish `hca : c ≠ a` using `fun h => hc.1 (congrArg Subtype.val h)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hcb : c ≠ b` using `fun h => hc.2 (congrArg Subtype.val h)`. Establish `p₃ : 0 < Module.finrank (Qv v) (Kv K w)` using `by haveI := hw`. Conclude with `finrank_pos' v w`. Use `Finset.sum_le_sum_of_subset (f := fun u : SemiLocal.PlacesOver K v => Module.finrank (Qv v) (Kv K u.1)) (Finset.subset_univ ({c, a, b} : Finset (SemiLocal.PlacesOver K v)))` as an intermediate fact. Rewrite `this` using `[Finset.sum_insert (by simp [hca, hcb]), Finset.sum_pair hab, hs]`.
-
-Establish `e : Module.finrank (Qv v) (Kv K w) + (Module.finrank (Qv v) (Kv K w₁) + Module.finrank (Qv v) (Kv K w₂)) ≤ 2` using `this`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem places_split (h2 : Module.finrank ℚ K = 2) (v : Pl) (w₁ w₂ : PlK K)
     [i₁ : w₁.asIdeal.LiesOver v.asIdeal] [i₂ : w₂.asIdeal.LiesOver v.asIdeal] (hne : w₁ ≠ w₂) :
@@ -86,9 +84,7 @@ theorem places_split (h2 : Module.finrank ℚ K = 2) (v : Pl) (w₁ w₂ : PlK K
   omega
 
 /- English proof (translation)
-Use `haveI : Unique (SemiLocal.PlacesOver K v) := ⟨⟨⟨w, i⟩⟩, fun x => Subtype.ext (hu x.1 x.2)⟩`. Establish `hs` using `sum_finrank' h2 v`. Rewrite `hs` using `[Fintype.sum_unique]`. Establish `: (default : SemiLocal.PlacesOver K v) = ⟨w, i⟩` using `Subsingleton.elim _ _`. Rewrite `hs` using `[this]`.
-
-Conclude with `hs`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem places_nonsplit (h2 : Module.finrank ℚ K = 2) (v : Pl) (w : PlK K)
     [i : w.asIdeal.LiesOver v.asIdeal] (hu : ∀ w' : PlK K, w'.asIdeal.LiesOver v.asIdeal → w' = w) :
@@ -107,14 +103,14 @@ section Places
 variable {K : Type} [Field K] [NumberField K]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨GroundTheory.Automorphic.GodementSection.continuous_localChar c w, fun x => by rw [GroundTheory.Automorphic.GodementSection.coe_localChar]; exact Circle.norm_coe _⟩`.
+Supply the required witnesses or components.
 -/
 theorem isUnit1_localCharK (c : HeckeCharacter K) (w : PlK K) : IsUnit1 (localChar c w) :=
   ⟨GroundTheory.Automorphic.GodementSection.continuous_localChar c w, fun x => by
     rw [GroundTheory.Automorphic.GodementSection.coe_localChar]; exact Circle.norm_coe _⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(isUnit1_localCharK c w).1.comp (Continuous.units_map _ (_root_.continuous_algebraMap (Qv v) (Kv K w))), fun x => (isUnit1_localCharK c w).2 _⟩`.
+Supply the required witnesses or components.
 -/
 theorem isUnit1_cAt (c : HeckeCharacter K) (v : Pl) (w : PlK K) [w.asIdeal.LiesOver v.asIdeal] :
     IsUnit1 (cAt c v w) :=
@@ -122,7 +118,7 @@ theorem isUnit1_cAt (c : HeckeCharacter K) (v : Pl) (w : PlK K) [w.asIdeal.LiesO
     fun x => (isUnit1_localCharK c w).2 _⟩
 
 /- English proof (translation)
-Use `⟨(algebraMap (Qv v) (Kv K w)).injective, fun y => ?_⟩` and prove the remaining obligations. Establish `hy : y ∈ (⊥ : Subalgebra (Qv v) (Kv K w))`. Rewrite using `[Subalgebra.bot_eq_top_of_finrank_eq_one h1]`. Discharge the goal by the elementary cases of `trivial`. Conclude with `Algebra.mem_bot.1 hy`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. A detailed English derivation is pending.
 -/
 theorem algebraMap_bijective (v : Pl) (w : PlK K) [w.asIdeal.LiesOver v.asIdeal]
     (h1 : Module.finrank (Qv v) (Kv K w) = 1) : Function.Bijective (algebraMap (Qv v) (Kv K w)) := by
@@ -134,7 +130,7 @@ theorem algebraMap_bijective (v : Pl) (w : PlK K) [w.asIdeal.LiesOver v.asIdeal]
 end Places
 
 /- English proof (translation)
-Establish `: (⇑(ψ⁻¹ : AddChar A Circle)) = fun x => (ψ x)⁻¹`. Use function extensionality and compare the values at `x`. Rewrite using `[AddChar.inv_apply, AddChar.map_neg_eq_inv]`. Rewrite using `[this]`. Conclude with `h.inv`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_charInv {A : Type} [AddCommGroup A] [TopologicalSpace A] (ψ : AddChar A Circle) (h : Continuous ψ) :
     Continuous (⇑(ψ⁻¹ : AddChar A Circle)) := by

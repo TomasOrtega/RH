@@ -24,7 +24,7 @@ def mEqv (n : ℕ) : (Fin n × Fin n → k) ≃ₗ[k] Matrix (Fin n) (Fin n) k w
   map_smul' _ _ := rfl
 
 /- English proof (translation)
-Establish `h1 : Continuous (f ∘ₗ (mEqv (k` using `k) n).toLinearMap) := LinearMap.continuous_on_pi _`. Establish `h2 : Continuous (fun x : Matrix (Fin n) (Fin n) k => (mEqv (k` using `k) n).symm x) := continuous_pi fun p => (continuous_apply p.2).comp (continuous_apply p.1)`. Establish `h3` using `h1.comp h2`. Use `h3 using 1` and compare the differences between its conclusion and the goal. Use extensionality with `x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components.
 
 Simplify using the standard rewrite rules.
 -/
@@ -39,7 +39,7 @@ theorem continuous_linear_mat {M : Type} [AddCommGroup M] [Module k M] [Topologi
   simp
 
 /- English proof (translation)
-Establish `h1 : nabs k t < nabs k 1` using `by rwa [nabs_one]`. Establish `h2 : ¬ (ValuativeRel.valuation k ((1 : kˣ) : k) ≤ ValuativeRel.valuation k (t : k))`. Rewrite using `[← nabs_le_iff]`. Conclude with `not_le.mpr h1`. Simplify using `using not_le.mp h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem val_lt_one_of_nabs {t : kˣ} (ht : nabs k t < 1) : ValuativeRel.valuation k (t : k) < 1 := by
   have h1 : nabs k t < nabs k 1 := by rwa [nabs_one]
@@ -49,19 +49,19 @@ theorem val_lt_one_of_nabs {t : kˣ} (ht : nabs k t < 1) : ValuativeRel.valuatio
   simpa using not_le.mp h2
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 private theorem mem_smul_addSubgroup_iff' (c : k) (L : AddSubgroup (Matrix (Fin n) (Fin n) k)) (x : Matrix (Fin n) (Fin n) k) :
     x ∈ c • L ↔ ∃ y ∈ L, c • y = x := Iff.rfl
 
 /- English proof (translation)
-Establish `ht : (t : k) ≠ 0` using `t.ne_zero`. Take `⟨U, hUo, hU0, hUL⟩` from `hL.nhd`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Take `⟨y, hy, rfl⟩` from `(mem_smul_addSubgroup_iff' _ _ _).mp hx`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `Z.smul_mem (hL.sub hy) _`. Establish `h : (((t : k) • L : AddSubgroup _) : Set (Matrix (Fin n) (Fin n) k)) = (fun y => (t : k) • y) '' (L : Set _)`. Use extensionality with `x`. Conclude with `mem_smul_addSubgroup_iff' _ _ _`. Rewrite using `[h]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `hL.cpt.image (continuous_const_smul _)`. Use `⟨(t : k) • U, hUo.smul₀ ht, ⟨0, hU0, smul_zero _⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `x ⟨⟨u, hu, rfl⟩, hx⟩`. Establish `huZ : u ∈ Z`. Establish `h1` using `Z.smul_mem hx (t : k)⁻¹`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite `h1` using `[inv_smul_smul₀ ht]`. Then use the resulting hypothesis. Conclude with `(mem_smul_addSubgroup_iff' _ _ _).mpr ⟨u, hUL ⟨hu, huZ⟩, rfl⟩`. Introduce `a ha x hx`. Take `⟨y, hy, rfl⟩` from `(mem_smul_addSubgroup_iff' _ _ _).mp hx`. Conclude with `(mem_smul_addSubgroup_iff' _ _ _).mpr ⟨a • y, hL.int a ha y hy, smul_comm _ _ _⟩`.
+A detailed English derivation is pending.
 -/
 theorem isLat_smul {Z : Subalgebra k (Matrix (Fin n) (Fin n) k)} {L : AddSubgroup (Matrix (Fin n) (Fin n) k)}
     (hL : IsLat Z L) (t : kˣ) : IsLat Z ((t : k) • L) := by
@@ -87,13 +87,11 @@ theorem isLat_smul {Z : Subalgebra k (Matrix (Fin n) (Fin n) k)} {L : AddSubgrou
     exact (mem_smul_addSubgroup_iff' _ _ _).mpr ⟨a • y, hL.int a ha y hy, smul_comm _ _ _⟩
 
 /- English proof (translation)
-Establish `hv` using `val_lt_one_of_nabs ht`. Establish `htend : Tendsto (fun j : ℕ => (t : k) ^ j) atTop (𝓝 0)`. Rewrite using `[(IsValuativeTopology.hasBasis_nhds_zero k).tendsto_right_iff]`. Introduce `γ _`. Take `⟨m, hm⟩` from `exists_pow_lt₀ hv γ`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `filter_upwards [eventually_ge_atTop m] with j hj`. Simplify using `only [Set.mem_setOf_eq, map_pow]`. Conclude with `lt_of_le_of_lt (pow_le_pow_right_of_le_one' hv.le hj) hm`. Establish `hev : ∀ᶠ s in 𝓝 (0 : k), ∀ x ∈ K, s • x ∈ W`. Apply `hK.eventually_forall_of_forall_eventually` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `y _`. Establish `hc : Tendsto (fun z : k × Matrix (Fin n) (Fin n) k => z.1 • z.2) (𝓝 (0, y)) (𝓝 0)`. Establish `h1` using `(continuous_smul (M := k) (X := Matrix (Fin n) (Fin n) k)).tendsto (0, y)`. Simplify using `using h1`. Conclude with `hc hW`.
-
-Conclude with `(htend.eventually hev).exists`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem exists_pow_smul_mem_nhds_of_isCompact {t : kˣ} (ht : nabs k t < 1) {K : Set (Matrix (Fin n) (Fin n) k)}
     (hK : IsCompact K) {W : Set (Matrix (Fin n) (Fin n) k)} (hW : W ∈ 𝓝 0) :
@@ -116,7 +114,7 @@ private theorem exists_pow_smul_mem_nhds_of_isCompact {t : kˣ} (ht : nabs k t <
   exact (htend.eventually hev).exists
 
 /- English proof (translation)
-Take `⟨j, hj⟩` from `exists_pow_smul_mem_nhds_of_isCompact ht hL.cpt hW`. Use `⟨j, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Simplify using `only [Units.val_pow_eq_pow_val]`. Conclude with `hj x hx`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lat_small {Z : Subalgebra k (Matrix (Fin n) (Fin n) k)} {L : AddSubgroup (Matrix (Fin n) (Fin n) k)}
     (hL : IsLat Z L) {t : kˣ} (ht : nabs k t < 1) {W : Set (Matrix (Fin n) (Fin n) k)} (hW : W ∈ nhds 0) :
@@ -128,11 +126,9 @@ theorem lat_small {Z : Subalgebra k (Matrix (Fin n) (Fin n) k)} {L : AddSubgroup
   exact hj x hx
 
 /- English proof (translation)
-Take `⟨U, hUo, hU0, hUZ⟩` from `hM.nhd`. Use `haveI : CompactSpace L := isCompact_iff_compactSpace.mp hL.cpt`. Establish `hnhds : (M.addSubgroupOf L : Set L) ∈ 𝓝 (0 : L)`. Establish `hpre : IsOpen ((Subtype.val : L → Matrix (Fin n) (Fin n) k) ⁻¹' U)` using `hUo.preimage continuous_subtype_val`. Use `Filter.mem_of_superset (hpre.mem_nhds (by simpa using hU0)) ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y hy`. Rewrite using `[SetLike.mem_coe, AddSubgroup.mem_addSubgroupOf]`. Conclude with `hUZ ⟨hy, hL.sub y.2⟩`. Establish `hopen : IsOpen (M.addSubgroupOf L : Set L)` using `AddSubgroup.isOpen_of_mem_nhds _ hnhds`. Use `haveI : Finite (L ⧸ M.addSubgroupOf L) := AddSubgroup.quotient_finite_of_isOpen _ hopen`.
-
-Use `show (M.addSubgroupOf L).index ≠ 0`. Conclude with `AddSubgroup.index_ne_zero_of_finite`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem lat_index_pos {Z : Subalgebra k (Matrix (Fin n) (Fin n) k)} {L M : AddSubgroup (Matrix (Fin n) (Fin n) k)}
     (hL : IsLat Z L) (hM : IsLat Z M) (hML : M ≤ L) : M.relIndex L ≠ 0 := by
@@ -160,30 +156,30 @@ def eZ : (Fin (Module.finrank k Z) → k) →ₗ[k] Matrix (Fin n) (Fin n) k :=
   Z.val.toLinearMap ∘ₗ (bZ Z).equivFun.symm.toLinearMap
 
 /- English proof (translation)
-The claim follows from `((bZ Z).equivFun.symm a).2`.
+A detailed English derivation is pending.
 -/
 theorem eZ_mem (a : Fin (Module.finrank k Z) → k) : eZ Z a ∈ Z := ((bZ Z).equivFun.symm a).2
 
 /- English proof (translation)
-Introduce `a b h`. Conclude with `(bZ Z).equivFun.symm.injective (Subtype.val_injective h)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem eZ_injective : Function.Injective (eZ Z) := by
   intro a b h
   exact (bZ Z).equivFun.symm.injective (Subtype.val_injective h)
 
 /- English proof (translation)
-Simplify using `[eZ]`.
+Simplify using the standard rewrite rules.
 -/
 theorem eZ_surj {x : Matrix (Fin n) (Fin n) k} (hx : x ∈ Z) : eZ Z ((bZ Z).equivFun ⟨x, hx⟩) = x := by
   simp [eZ]
 
 /- English proof (translation)
-The claim follows from `LinearMap.continuous_on_pi _`.
+A detailed English derivation is pending.
 -/
 theorem continuous_eZ : Continuous (eZ Z) := LinearMap.continuous_on_pi _
 
 /- English proof (translation)
-The claim follows from `(eZ Z).exists_leftInverse_of_injective (LinearMap.ker_eq_bot.2 (eZ_injective Z))`.
+A detailed English derivation is pending.
 -/
 theorem exists_PZ : ∃ P : Matrix (Fin n) (Fin n) k →ₗ[k] (Fin (Module.finrank k Z) → k), P ∘ₗ eZ Z = LinearMap.id :=
   (eZ Z).exists_leftInverse_of_injective (LinearMap.ker_eq_bot.2 (eZ_injective Z))
@@ -201,7 +197,7 @@ def intV (d : ℕ) : AddSubgroup (Fin d → k) where
     exact ha i
 
 /- English proof (translation)
-Establish `: ((intV (k` using `k) d) : Set (Fin d → k)) = Set.univ.pi fun _ => {x : k | ValuativeRel.valuation k x ≤ 1} := by`. Use extensionality with `a`. Simplify using `[intV]`. Rewrite using `[this]`. Conclude with `isCompact_univ_pi fun _ => IsNonarchimedeanLocalField.isCompact_closedBall k 1`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCompact_intV (d : ℕ) : IsCompact ((intV (k := k) d) : Set (Fin d → k)) := by
   have : ((intV (k := k) d) : Set (Fin d → k)) = Set.univ.pi fun _ => {x : k | ValuativeRel.valuation k x ≤ 1} := by
@@ -210,9 +206,9 @@ theorem isCompact_intV (d : ℕ) : IsCompact ((intV (k := k) d) : Set (Fin d →
   exact isCompact_univ_pi fun _ => IsNonarchimedeanLocalField.isCompact_closedBall k 1
 
 /- English proof (translation)
-Apply `AddSubgroup.isOpen_of_mem_nhds` to reduce the goal to its premises. Establish `h0 : {x : k | ValuativeRel.valuation k x < ((1 : (ValuativeRel.ValueGroupWithZero k)ˣ) : ValuativeRel.ValueGroupWithZero k)} ∈ 𝓝 (0 : k)` using `(IsValuativeTopology.hasBasis_nhds_zero k).mem_of_mem trivial`. Establish `h1 : (Set.univ.pi fun _ : Fin d => {x : k | ValuativeRel.valuation k x < ((1 : (ValuativeRel.ValueGroupWithZero k)ˣ) : ValuativeRel.ValueGroupWithZero k)}) ∈ 𝓝 (0 : Fin d → k)` using `set_pi_mem_nhds Set.finite_univ fun i _ => h0`. Use `Filter.mem_of_superset h1 ?_` and prove the remaining obligations. Introduce `a ha i`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h2` using `ha i (Set.mem_univ i)`. Simplify using `only [Set.mem_setOf_eq, Units.val_one] at h2`. Conclude with `h2.le`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isOpen_intV (d : ℕ) : IsOpen ((intV (k := k) d) : Set (Fin d → k)) := by
   apply AddSubgroup.isOpen_of_mem_nhds
@@ -227,13 +223,13 @@ theorem isOpen_intV (d : ℕ) : IsOpen ((intV (k := k) d) : Set (Fin d → k)) :
   exact h2.le
 
 /- English proof (translation)
-Take `⟨P, hP⟩` from `exists_PZ Z`. Establish `hPe : ∀ a, P (eZ Z a) = a` using `fun a => LinearMap.congr_fun hP a`. Use `⟨(intV (k := k) (Module.finrank k Z)).map (eZ Z).toAddMonoidHom, ⟨?_, ?_, ?_, ?_⟩⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨a, -, rfl⟩`. Conclude with `eZ_mem Z a`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[AddSubgroup.coe_map]`. Conclude with `(isCompact_intV (k := k) _).image (continuous_eZ Z)`. Use `⟨P ⁻¹' (intV (k := k) (Module.finrank k Z) : Set (Fin (Module.finrank k Z) → k)), (isOpen_intV (k := k) _).preimage (continuous_linear_mat P), ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Set.mem_preimage, map_zero]`. Conclude with `(intV _).zero_mem`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce and unpack `y ⟨hyU, hyZ⟩`. Use `⟨(bZ Z).equivFun ⟨y, hyZ⟩, ?_, eZ_surj Z hyZ⟩` and prove the remaining obligations. Use `hyU` as an intermediate fact. Simplify using `only [Set.mem_preimage] at this`. Rewrite `this` using `[← eZ_surj Z hyZ, hPe]`. Then use the resulting hypothesis.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Introduce and unpack `a ha _ ⟨x, hx, rfl⟩`. Use `⟨a • x, fun i => ?_, (eZ Z).map_smul a x⟩` and prove the remaining obligations. Simplify using `only [Pi.smul_apply, smul_eq_mul, map_mul]`. Conclude with `mul_le_one' ha (hx i)`.
+A detailed English derivation is pending.
 -/
 theorem exists_lat (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) : ∃ L, IsLat Z L := by
   obtain ⟨P, hP⟩ := exists_PZ Z
@@ -259,7 +255,7 @@ theorem exists_lat (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) : ∃ L, IsLat 
 section Index
 
 /- English proof (translation)
-Rewrite using `[Set.smul_set_pi]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem smul_pi_set {d : ℕ} (g : kˣ) (S : Set k) :
     g • (Set.univ.pi fun _ : Fin d => S) = Set.univ.pi fun _ => g • S := by
@@ -267,11 +263,11 @@ theorem smul_pi_set {d : ℕ} (g : kˣ) (S : Set k) :
   rfl
 
 /- English proof (translation)
-Take `⟨S, hSc, hSn⟩` from `exists_compact_mem_nhds (0 : k)`. Set `μk : Measure k` to `Measure.addHaar`. Establish `h0 : μk S ≠ 0` using `(Measure.measure_pos_of_mem_nhds (μ := μk) hSn).ne'`. Establish `hfin : μk S ≠ ∞` using `hSc.measure_lt_top.ne`. Apply `distribHaarChar_eq_of_measure_smul_eq_mul (μ := Measure.pi fun _ : Fin d => μk) (s := Set.univ.pi fun _ => S)` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Measure.pi_pi]`. Conclude with `Finset.prod_ne_zero_iff.mpr fun _ _ => h0`. Rewrite using `[Measure.pi_pi]`. Conclude with `ENNReal.prod_ne_top fun _ _ => hfin`. Rewrite using `[smul_pi_set, Measure.pi_pi, Measure.pi_pi]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [← distribHaarChar_mul μk g S]`. Rewrite using `[Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, Fintype.card_fin]`. Use `push_cast`. Both sides reduce to the same expression.
+Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem distribHaarChar_pi [MeasurableSpace k] [BorelSpace k] (d : ℕ) (g : kˣ) :
     distribHaarChar (Fin d → k) g = distribHaarChar k g ^ d := by
@@ -292,21 +288,19 @@ theorem distribHaarChar_pi [MeasurableSpace k] [BorelSpace k] (d : ℕ) (g : kˣ
     rfl
 
 /- English proof (translation)
-Use `haveI : (H.addSubgroupOf K).FiniteIndex := ⟨hi⟩`. Establish `he : MeasurableEmbedding (Subtype.val : K → G)` using `MeasurableEmbedding.subtype_coe hK`. Use `haveI : MeasurableAdd K := ⟨fun c => ((measurable_const_add (c : G)).comp measurable_subtype_coe).subtype_mk, fun c => ((measurable_add_const (c : G)).comp measurable_subtype_coe).subtype_mk⟩`. Use `haveI : (μ.comap (Subtype.val : K → G)).IsAddLeftInvariant := by`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Introduce `g`. Use extensionality with `A hA`. Rewrite using `[Measure.map_apply (measurable_const_add g) hA, he.comap_apply, he.comap_apply]`. Establish `hs : Subtype.val '' ((fun x => g + x) ⁻¹' A) = (fun y => (g : G) + y) ⁻¹' (Subtype.val '' A)`. Use extensionality with `y`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `⟨g + x, hx, rfl⟩`. Introduce and unpack `⟨z, hz, hzy⟩`. Establish `hy : y = -(g : G) + z`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hzy]`. Conclude with `(neg_add_cancel_left _ _).symm`. Establish `hyK : y ∈ K`. Rewrite using `[hy]`. Conclude with `K.add_mem (K.neg_mem g.2) z.2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨⟨y, hyK⟩, ?_, rfl⟩` and prove the remaining obligations. Establish `hz' : z = g + ⟨y, hyK⟩` using `Subtype.ext hzy`. Use `show g + ⟨y, hyK⟩ ∈ A`. Rewrite using `[← hz']`. Conclude with `hz`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[hs, measure_preimage_add]`. Establish `hm : MeasurableSet ((H.addSubgroupOf K : AddSubgroup K) : Set K)` using `measurable_subtype_coe hH`. Establish `h1` using `AddSubgroup.index_mul_measure (H.addSubgroupOf K) hm (μ.comap (Subtype.val : K → G))`. Rewrite `h1` using `[he.comap_apply, he.comap_apply, Set.image_univ, Subtype.range_coe]`. Establish `h2 : Subtype.val '' ((H.addSubgroupOf K : AddSubgroup K) : Set K) = H`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities.
 
-Use extensionality with `y`. Simplify using `only [Set.mem_image, SetLike.mem_coe, AddSubgroup.mem_addSubgroupOf]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `hx`.
-
-Introduce `hy`. Conclude with `⟨⟨y, hHK hy⟩, hy, rfl⟩`. Rewrite `h1` using `[h2]`. Rewrite using `[← h1]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem measure_eq_relIndex_mul_of_le {G : Type} [AddCommGroup G] [MeasurableSpace G] [MeasurableAdd G]
     (μ : Measure G) [μ.IsAddLeftInvariant] {H K : AddSubgroup G} (hHK : H ≤ K)
@@ -356,35 +350,31 @@ private theorem measure_eq_relIndex_mul_of_le {G : Type} [AddCommGroup G] [Measu
   rfl
 
 /- English proof (translation)
-Use `letI : MeasurableSpace k := borel k`. Use `haveI : BorelSpace k := ⟨rfl⟩`. Take `⟨P, hP⟩` from `exists_PZ Z`. Establish `hPe : ∀ a, P (eZ Z a) = a` using `fun a => LinearMap.congr_fun hP a`. Establish `hsurj : ∀ x ∈ Z, ∃ a, eZ Z a = x` using `fun x hx => ⟨_, eZ_surj Z hx⟩`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hvt : ValuativeRel.valuation k (t : k) ≤ 1` using `(val_lt_one_of_nabs ht).le`. Establish `hLsub : L ≤ ((t⁻¹ : kˣ) : k) • L`. Introduce `x hx`. Rewrite using `[AddSubgroup.mem_smul_pointwise_iff_exists]`. Use `⟨(t : k) • x, hL.int _ hvt x hx, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[smul_smul, Units.inv_mul, one_smul]`. Establish `hi : L.relIndex (((t⁻¹ : kˣ) : k) • L) ≠ 0` using `lat_index_pos (isLat_smul hL t⁻¹) hL hLsub`. Set `e : (Fin (Module.finrank k Z) → k) →+ Matrix (Fin n) (Fin n) k` to `(eZ Z).toAddMonoidHom`. Establish `he : ∀ a, e a = eZ Z a` using `fun _ => rfl`. Establish `hidx : L.relIndex (((t⁻¹ : kˣ) : k) • L) = (L.comap e).relIndex ((((t⁻¹ : kˣ) : k) • L).comap e)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[AddSubgroup.relIndex_comap, AddSubgroup.map_comap_eq]`. Use `congr 1`. Use `(inf_eq_right.mpr ?_).symm` and prove the remaining obligations. Introduce `x hx`. Rewrite `hx` using `[AddSubgroup.mem_smul_pointwise_iff_exists]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb, rfl⟩` from `hx`. Take `⟨a, ha⟩` from `hsurj _ (Z.smul_mem (hL.sub hb) _)`. Conclude with `⟨a, ha⟩`. Establish `hLK : L.comap e ≤ (((t⁻¹ : kˣ) : k) • L).comap e` using `fun y hy => hLsub hy`. Establish `hLeq : ((L.comap e : AddSubgroup _) : Set (Fin (Module.finrank k Z) → k)) = P '' (L : Set _)`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce `hy`. Conclude with `⟨e y, hy, hPe y⟩`. Introduce and unpack `⟨x, hx, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨a, rfl⟩` from `hsurj x (hL.sub hx)`. Use `show e (P (eZ Z a)) ∈ L`. Rewrite using `[hPe]`. Conclude with `hx`. Establish `hKeq : (((((t⁻¹ : kˣ) : k) • L).comap e : AddSubgroup _) : Set (Fin (Module.finrank k Z) → k)) = (t⁻¹ : kˣ) • ((L.comap e : AddSubgroup _) : Set (Fin (Module.finrank k Z) → k))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Use extensionality with `y`. Simplify using `only [SetLike.mem_coe, AddSubgroup.mem_comap, Set.mem_smul_set, AddSubgroup.mem_smul_pointwise_iff_exists]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨b, hb, hby⟩`. Take `⟨a, rfl⟩` from `hsurj b (hL.sub hb)`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨a, hb, ?_⟩` and prove the remaining obligations. Rewrite using `[Units.smul_def]`. Use `apply_fun P at hby`. Rewrite `hby` using `[he, ← LinearMap.map_smul, hPe, hPe]`. Conclude with `hby`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce and unpack `⟨a, ha, rfl⟩`. Use `⟨e a, ha, ?_⟩` and prove the remaining obligations. Rewrite using `[Units.smul_def, he, he, LinearMap.map_smul]`. Take `⟨U, hUo, hU0, hUL⟩` from `hL.nhd`. Establish `hopen : IsOpen ((L.comap e : AddSubgroup _) : Set (Fin (Module.finrank k Z) → k))`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `AddSubgroup.isOpen_of_mem_nhds _ (g := 0)` to reduce the goal to its premises. Establish `hU : (eZ Z) ⁻¹' U ∈ 𝓝 (0 : Fin (Module.finrank k Z) → k)` using `(continuous_eZ Z).continuousAt.preimage_mem_nhds (by rw [map_zero]; exact hUo.mem_nhds hU0)`. Use `Filter.mem_of_superset hU fun y hy => ?_` and prove the remaining obligations. Conclude with `hUL ⟨hy, eZ_mem Z y⟩`. Establish `hcpt : IsCompact ((L.comap e : AddSubgroup _) : Set (Fin (Module.finrank k Z) → k))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hLeq]`. Conclude with `hL.cpt.image (continuous_linear_mat P)`. Set `μ : Measure (Fin (Module.finrank k Z) → k)` to `Measure.addHaar`. Establish `hK : MeasurableSet (((((t⁻¹ : kˣ) : k) • L).comap e : AddSubgroup _) : Set (Fin (Module.finrank k Z) → k))`. Rewrite using `[hKeq]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(hopen.smul _).measurableSet`. Establish `h1` using `measure_eq_relIndex_mul_of_le μ hLK hopen.measurableSet hK (hidx ▸ hi)`. Establish `h2` using `distribHaarChar_mul μ (t⁻¹ : kˣ) ((L.comap e : AddSubgroup _) : Set (Fin (Module.finrank k Z) → k))`. Rewrite `h2` using `[← hKeq, h1, distribHaarChar_pi, map_inv, ← hidx]`. Establish `h0 : μ ((L.comap e : AddSubgroup _) : Set (Fin (Module.finrank k Z) → k)) ≠ 0` using `(Measure.measure_pos_of_mem_nhds (μ := μ) (hopen.mem_nhds (AddSubgroup.zero_mem _))).ne'`.
-
-Establish `htop` using `hcpt.measure_lt_top (μ := μ)`. Establish `h3` using `(ENNReal.mul_left_inj h0 htop.ne).mp h2`. Establish `h4` using `congrArg ENNReal.toReal h3`. Simplify using `only [ENNReal.toReal_natCast, ENNReal.coe_toReal, NNReal.coe_pow, NNReal.coe_inv] at h4`. Rewrite using `[← h4]`.
-
-Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem lat_index_smul {Z : Subalgebra k (Matrix (Fin n) (Fin n) k)} {L : AddSubgroup (Matrix (Fin n) (Fin n) k)}
     (hL : IsLat Z L) (t : kˣ) (ht : nabs k t < 1) :

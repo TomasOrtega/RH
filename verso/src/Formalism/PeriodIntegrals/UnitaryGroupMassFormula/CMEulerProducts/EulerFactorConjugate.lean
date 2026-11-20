@@ -10,27 +10,27 @@ namespace CMEul
 open Formalism.L2.SG.MassRatio Formalism.HermitianLatticesTheory
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ hFE`. Take `⟨hE, hR⟩` from `hFE`. Set `σ : 𝓞 E ≃+* 𝓞 E` to `RingOfIntegers.mapRingEquiv (starRingAut (R := E))`. Establish `hσ : ∀ x : 𝓞 E, algebraMap (𝓞 E) E (σ x) = star (algebraMap (𝓞 E) E x)` using `fun x => rfl`. Establish `hσσ : ∀ x : 𝓞 E, σ (σ x) = x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `x`. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `algebraMap (𝓞 E) E (σ (σ x)) = algebraMap (𝓞 E) E x`. Rewrite using `[hσ, hσ, star_star]`. Use `⟨σ, hσ, hσσ, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `P`. Unfold `conjIdeal`. Express the relevant statement in the definitionally equal form `_ = Ideal.span (σ '' P)`. Use `congr 1`. Use extensionality with `r`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, hs, hrs⟩`. Use `⟨s, hs, ?_⟩` and prove the remaining obligations. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `algebraMap (𝓞 E) E (σ s) = algebraMap (𝓞 E) E r`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hσ, hrs]`. Introduce and unpack `⟨s, hs, rfl⟩`. Conclude with `⟨s, hs, hσ s⟩`. Introduce `x`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion.
 
-Introduce `hx`. Establish `hfix : algebraMap (𝓞 E) E x ∈ {a : E | star a = a}`. Express the relevant statement in the definitionally equal form `star (algebraMap (𝓞 E) E x) = algebraMap (𝓞 E) E x`. Rewrite using `[← hσ, hx]`. Rewrite `hfix` using `[← hR]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨y, hy⟩` from `hfix`. Establish `hyint : IsIntegral ℤ y`. Establish `h1 : IsIntegral ℤ ((algebraMap F E).toIntAlgHom y)`. Rewrite using `[RingHom.toIntAlgHom_coe, hy]`. Conclude with `RingOfIntegers.isIntegral_coe x`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(isIntegral_algHom_iff _ (algebraMap F E).injective).mp h1`. Use `⟨⟨y, hyint⟩, ?_⟩` and prove the remaining obligations. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Conclude with `hy`. Introduce and unpack `⟨z, rfl⟩`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Apply `RingOfIntegers.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `algebraMap (𝓞 E) E (σ (algebraMap (𝓞 F) (𝓞 E) z)) = algebraMap (𝓞 E) E (algebraMap (𝓞 F) (𝓞 E) z)`. Rewrite using `[hσ]`. Establish `hmem : algebraMap (𝓞 E) E (algebraMap (𝓞 F) (𝓞 E) z) ∈ Set.range (algebraMap F E)` using `⟨(z : F), rfl⟩`. Rewrite `hmem` using `[hR]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hmem`. Introduce `P hP`. Take `⟨θ, t, ht, hθt⟩` from `hE.2.2 P hP`. Use `⟨θ, ?_⟩` and prove the remaining obligations. Establish `: σ θ = t`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Apply `RingOfIntegers.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `algebraMap (𝓞 E) E (σ θ) = algebraMap (𝓞 E) E t`. Rewrite using `[hσ, ht]`. Rewrite using `[this]`. Conclude with `hθt`.
+A detailed English derivation is pending.
 -/
 theorem euler_factor_conjugate : StepConj := by
   intro F E _ _ _ _ _ _ hFE

@@ -40,26 +40,26 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.KapEquiv
 
 /- English proof (translation)
-Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem spMap_comp_eq {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap (g.comp f) = spMap g ≫ spMap f := by
   rw [← Spec.map_comp]; rfl
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c Y SS RM Sys Fx Or Z hgen`. Establish `hb₁ : IsPreimmersion (spMap (algebraMap (𝓞 c.F) c.F))` using `IsPreimmersion.of_isLocalization (nonZeroDivisors (𝓞 c.F)) (S := c.F)`. Establish `hb₂ : Flat (spMap (algebraMap (𝓞 c.F) c.F))`. Rewrite using `[HasRingHomProperty.Spec_iff (P := @Flat)]`. Establish `hf : Module.Flat (𝓞 c.F) c.F` using `IsLocalization.flat c.F (nonZeroDivisors (𝓞 c.F))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `RingHom.flat_algebraMap_iff.2 hf`. Use `Y.jQ_open` as an intermediate fact. Establish `: IsPreimmersion Y.j` using `by unfold Model.j; infer_instance`. Establish `: Flat Y.j` using `by unfold Model.j; infer_instance`. Establish `hg : IsGenericPoint (Formalism.L2.Pj.genPt Z) (Z : Set (Xo.XF c))` using `Z.2.1.isGenericPoint_genericPoint (isClosed_of_mem_irreducibleComponents _ Z.2)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hC : IsCptGen (Ω` using `Formalism.L2.Pj.kap Z) (Formalism.L2.Pj.genSp Z ≫ Y.j) := GlobalTheory.CompanionTheory.Ar.Flat.isCptGen_comp_of_flat_preimmersion Y.j (fun x => (Y.normal x).1) (Formalism.L2.Pj.genPt Z) (GlobalTheory.CompanionTheory.Ar.Flat.eq_genericPoint_of_specializes Z.2 hg)`. Establish `e₁ : GlobalTheory.CompanionTheory.Ar.genPt (Ω` using `Formalism.L2.Pj.kap Z) (Formalism.L2.Pj.genSp Z ≫ Y.j) = Y.j (Formalism.L2.Pj.genPt Z) := congrArg Y.j ((Xo.XF c).fromSpecResidueField_apply (Formalism.L2.Pj.genPt Z) _)`. Establish `e₂ : Or.𝔐.f (GlobalTheory.CompanionTheory.Ar.genPt Or.𝔐.ξ) = GlobalTheory.CompanionTheory.Ar.genPt Fx.ξf` using `RegAtDom.map_genPt Or.g_over`. Establish `e₃ : Or.𝔐.f (GlobalTheory.CompanionTheory.Ar.genPt Or.𝔐.ξ) = GlobalTheory.CompanionTheory.Ar.genPt Or.𝔐.ξ₀` using `RegAtDom.map_genPt Or.𝔐.fn_over`. Take `⟨ψ, hψ⟩` from `GlobalTheory.CompanionTheory.Ar.FlagPull.exists_iso hC Or.𝔐.gen₀ (e₁.trans (hgen.symm.trans (e₂.symm.trans e₃)))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨ψ, hψ, ?_⟩` and prove the remaining obligations. Establish `hsY : Y.j ≫ Y.s = Formalism.L2.Pj.strK ≫ spMap (algebraMap (𝓞 c.F) c.F)`. Rewrite using `[Model.j, Category.assoc, pullback.condition, ← Category.assoc, Y.jQ_over]`. Establish `h1 : Formalism.L2.Pj.genSp Z ≫ Formalism.L2.Pj.strK = spMap (algebraMap c.F (Formalism.L2.Pj.kap Z))` using `(Spec.map_preimage _).symm`. Establish `hfn : Or.𝔐.ξ ≫ Or.𝔐.f = spMap Or.𝔐.fn ≫ Or.𝔐.ξ₀` using `Or.𝔐.fn_over`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `i : c.F →+* RM.Ω` to `(Or.𝔐.fn.comp ψ.toRingHom).comp (algebraMap c.F (Formalism.L2.Pj.kap Z))`. Establish `e0 : i.comp (algebraMap (𝓞 c.F) c.F) = Or.𝔐.cst.comp (algebraMap (𝓞 c.F) c.F)`. Establish `hS : spMap (i.comp (algebraMap (𝓞 c.F) c.F)) = spMap (Or.𝔐.cst.comp (algebraMap (𝓞 c.F) c.F))`. Use `Eq.trans ?_ Or.𝔐.cst_over` and prove the remaining obligations. Establish `h3 : Or.𝔐.ξ ≫ Or.𝔐.f ≫ Y.s = spMap Or.𝔐.fn ≫ spMap ψ.toRingHom ≫ (Formalism.L2.Pj.genSp Z ≫ Formalism.L2.Pj.strK) ≫ spMap (algebraMap (𝓞 c.F) c.F)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Category.assoc, hfn, ← hψ]`. Simplify using `only [Category.assoc]`. Rewrite using `[hsY]`. Rewrite using `[h3, h1]`. Simplify using `only [i, spMap_comp_eq, Category.assoc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `congrArg CommRingCat.Hom.hom (Spec.map_injective hS)`. Establish `e4 : i = Or.𝔐.cst` using `IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 c.F)) e0`. Introduce `a`. Conclude with `congrArg (fun φ : c.F →+* RM.Ω => φ a) e4`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_kap_equiv : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (Y : Model Xo c (algebraMap (𝓞 c.F) c.F)) (SS : Finset ℕ) (RM : Top.RootModel (CMType H) (Dw.p + Dw.q)) (Sys : PB.AnSys (Top.dimFl (CMType H) (Dw.p + Dw.q)) (Option (RootIx Dw))) (Fx : FixedData Y Sys) (Or : RootOrigin Y SS RM Fx) (Z : Comp Xo c), GlobalTheory.CompanionTheory.Ar.genPt Fx.ξf = Y.j (Formalism.L2.Pj.genPt Z) → ∃ ψ : kap Z ≃+* Or.𝔐.Ω₀, spMap ψ.toRingHom ≫ genSp Z ≫ Y.j = Or.𝔐.ξ₀ ∧ ∀ a : c.F, Or.𝔐.fn (ψ (algebraMap c.F (kap Z) a)) = Or.𝔐.cst a := by
   intro E _ _ _ H Dw l Xo c Y SS RM Sys Fx Or Z hgen

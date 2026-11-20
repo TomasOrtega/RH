@@ -17,19 +17,19 @@ def cutM (h : V →ₗ⋆[K] V →ₗ[K] K) (M : AddSubgroup V) (X : V) : AddSub
 variable {S : Subring K} {π : K} {h : V →ₗ⋆[K] V →ₗ[K] K} {W : Submodule K V} {M : AddSubgroup V}
 
 /- English proof (translation)
-Simplify using `[cutW]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_cutW {X v : V} : v ∈ cutW h W X ↔ v ∈ W ∧ h X v = 0 := by
   simp [cutW]
 
 /- English proof (translation)
-Simplify using `[cutM]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_cutM {X v : V} : v ∈ cutM h M X ↔ v ∈ M ∧ h X v = 0 := by
   simp [cutM]
 
 /- English proof (translation)
-Establish `e` using `hs.eq x y`. Rewrite `e` using `[hxy, map_zero]`. Conclude with `e.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem symm_zero (hs : h.IsSymm) {x y : V} (hxy : h x y = 0) : h y x = 0 := by
   have e := hs.eq x y
@@ -37,7 +37,7 @@ theorem symm_zero (hs : h.IsSymm) {x y : V} (hxy : h x y = 0) : h y x = 0 := by
   exact e.symm
 
 /- English proof (translation)
-Establish `hc : h X m * (h X X)⁻¹ ∈ S` using `S.mul_mem (hM.int X hX m hm) hu.2.2`. Rewrite using `[mem_cutM]`. Use `⟨M.sub_mem hm (hM.smul_mem _ hc _ hX), ?_⟩` and prove the remaining obligations. Rewrite using `[map_sub, map_smul, smul_eq_mul, mul_assoc, inv_mul_cancel₀ hu.1, mul_one, sub_self]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem proj_mem (hM : IsLatIn S h W M) {X : V} (hX : X ∈ M) (hu : IsUnitIn S (h X X)) {m : V}
     (hm : m ∈ M) : m - (h X m * (h X X)⁻¹) • X ∈ cutM h M X := by
@@ -47,7 +47,7 @@ theorem proj_mem (hM : IsLatIn S h W M) {X : V} (hX : X ∈ M) (hu : IsUnitIn S 
   rw [map_sub, map_smul, smul_eq_mul, mul_assoc, inv_mul_cancel₀ hu.1, mul_one, sub_self]
 
 /- English proof (translation)
-Introduce `m hm` and use `mem_cutW.mpr ⟨hM.le m (mem_cutM.mp hm).1, (mem_cutM.mp hm).2⟩ smul_mem := fun a ha m hm => mem_cutM.mpr ⟨hM.smul_mem a ha m (mem_cutM.mp hm).1, by rw [map_smul, (mem_cutM.mp hm).2, smul_zero]⟩ int := fun x hx y hy => hM.int x (mem_cutM.mp hx).1 y (mem_cutM.mp hy).1 span := fun x …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem IsLatIn.cut (hM : IsLatIn S h W M) (X : V) : IsLatIn S h (cutW h W X) (cutM h M X) where
   le := fun m hm => mem_cutW.mpr ⟨hM.le m (mem_cutM.mp hm).1, (mem_cutM.mp hm).2⟩
@@ -59,7 +59,7 @@ theorem IsLatIn.cut (hM : IsLatIn S h W M) (X : V) : IsLatIn S h (cutW h W X) (c
     exact ⟨t, ht0, mem_cutM.mpr ⟨ht, by rw [map_smul, (mem_cutW.mp hx).2, smul_zero]⟩⟩
 
 /- English proof (translation)
-Introduce `m hm`. Establish `hp` using `hx _ (proj_mem hM hX hu hm)`. Rewrite `hp` using `[LinearMap.map_sub₂, LinearMap.map_smulₛₗ₂, hXx, smul_zero, sub_zero]`. Conclude with `hp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem int_of_cut (hM : IsLatIn S h W M) {X : V} (hX : X ∈ M)
     (hu : IsUnitIn S (h X X)) {x : V} (hXx : h X x = 0) (hx : ∀ m ∈ cutM h M X, h m x ∈ S) :
@@ -70,7 +70,7 @@ theorem int_of_cut (hM : IsLatIn S h W M) {X : V} (hX : X ∈ M)
   exact hp
 
 /- English proof (translation)
-Use `⟨hM.toIsLatIn.cut X, fun x hx hxS => ?_⟩` and prove the remaining obligations. Take `⟨hxW, hx0⟩` from `mem_cutW.1 hx`. Conclude with `mem_cutM.2 ⟨hM.dual x hxW (int_of_cut hM.toIsLatIn hX hu hx0 hxS), hx0⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem IsSD.cut (hM : IsSD S h W M) {X : V} (hX : X ∈ M) (hu : IsUnitIn S (h X X)) :
     IsSD S h (cutW h W X) (cutM h M X) := by
@@ -79,17 +79,17 @@ theorem IsSD.cut (hM : IsSD S h W M) {X : V} (hX : X ∈ M) (hu : IsUnitIn S (h 
   exact mem_cutM.2 ⟨hM.dual x hxW (int_of_cut hM.toIsLatIn hX hu hx0 hxS), hx0⟩
 
 /- English proof (translation)
-Establish `hL` using `hM.toIsLatIn`. Establish `hXz'` using `(mem_cutM.1 (proj_mem hL hX hu hM.z_mem)).2`. Establish `hsh : ∀ v, h X v = 0 → h (z - (h X z * (h X X)⁻¹) • X) v = h z v`. Introduce `v hv`. Rewrite using `[LinearMap.map_sub₂, LinearMap.map_smulₛₗ₂, hv, smul_zero, sub_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `⟨hL.cut X, proj_mem hL hX hu hM.z_mem, ?_, fun m hm => ?_, fun x hx hzx hxS => ?_⟩` and prove the remaining obligations. Take `⟨hN0, -, hNi⟩` from `hu`. Take `⟨hu0, hu1, hui⟩` from `hM.z_norm`. Establish `hπ0` using `hπ.ne`. Take `⟨s, hsS, hzX⟩ : ∃ s ∈ S, h z X = s * π` from `⟨_, hM.z_rad X hX, by rw [inv_mul_cancel_right₀ hπ0]⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hXz : h X z = star s * π`. Rewrite using `[← hs.eq z X, hzX, map_mul, starRingEnd_apply, starRingEnd_apply, hπ.fix]`. Establish `hNN : starRingEnd K (h X X) = h X X` using `hs.eq X X`. Establish `e1 : h (z - (h X z * (h X X)⁻¹) • X) X = 0` using `symm_zero hs hXz'`. Establish `key : h (z - (h X z * (h X X)⁻¹) • X) (z - (h X z * (h X X)⁻¹) • X) = h z z - s * π * (h X X)⁻¹ * (star s * π)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[LinearMap.map_sub, LinearMap.map_smul, e1, smul_zero, sub_zero, LinearMap.map_sub₂, LinearMap.map_smulₛₗ₂, smul_eq_mul, map_mul, map_inv₀, hNN, hs.eq X z, hzX, hXz]`. Establish `hzz0 : h z z ≠ 0` using `fun e => hu0 (by rw [e, zero_mul])`. Establish `hmul : ∀ a b : K, IsUnitIn S a → IsUnitIn S b → IsUnitIn S (a * b)` using `fun a b ha hb => ⟨mul_ne_zero ha.1 hb.1, S.mul_mem ha.2.1 hb.2.1, by rw [mul_inv]; exact S.mul_mem ha.2.2 hb.2.2⟩`. Establish `e2 : (h z z - s * π * (h X X)⁻¹ * (star s * π)) * π⁻¹ = (h z z * π⁻¹) * (1 + π * (-(s * star s * (h X X)⁻¹) * (h z z * π⁻¹)⁻¹))`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key, e2]`. Conclude with `hmul _ _ ⟨hu0, hu1, hui⟩ (hπ.rad _ (S.mul_mem (S.neg_mem (S.mul_mem (S.mul_mem hsS (hS.star_mem s hsS)) hNi)) hui))`. Rewrite using `[mem_cutM] at hm show h _ m * π⁻¹ ∈ S`. Rewrite using `[hsh m hm.2]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `hM.z_rad m hm.1`. Take `⟨hxW, hx0⟩` from `mem_cutW.1 hx`. Rewrite `hzx` using `[hsh x hx0]`. Conclude with `mem_cutM.2 ⟨hM.dual x hxW hzx (int_of_cut hL hX hu hx0 hxS), hx0⟩`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsASD.cut (hS : IsHermSemilocal S) (hπ : IsUnif S π) (hs : h.IsSymm) {z : V}
     (hM : IsASD S π h W M z) {X : V} (hX : X ∈ M) (hu : IsUnitIn S (h X X)) :
@@ -132,25 +132,25 @@ theorem IsASD.cut (hS : IsHermSemilocal S) (hπ : IsUnif S π) (hs : h.IsSymm) {
     exact mem_cutM.2 ⟨hM.dual x hxW hzx (int_of_cut hL hX hu hx0 hxS), hx0⟩
 
 /- English proof (translation)
-Distinguish the cases in `hxy' : x = y`. Substitute `hxy'` using the available equality. Conclude with `⟨1, one_mem _, rfl, fun v _ _ => rfl, fun W _ _ v => Iff.rfl⟩`. Generalize the expression as in `hu_def : x - y = u`. Establish `hD : h u u = h u x + starRingEnd K (h u x)`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Supply the required witnesses or components. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Rewrite using `[hs.eq u x, ← hu_def]`. Simplify using `only [map_sub, LinearMap.sub_apply]`. Rewrite using `[hxy]`. Expand and normalize the polynomial expressions, which then agree. Establish `hu0 : u ≠ 0` using `by rw [← hu_def]; exact sub_ne_zero.2 hxy'`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hD0 : h u x ≠ 0`. Introduce `e`. Apply `hu0` to reduce the goal to its premises. Apply `hd` to reduce the goal to its premises. Rewrite using `[hD, e, map_zero, add_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hD0' : starRingEnd K (h u x) ≠ 0` using `by rwa [map_ne_zero]`. Set `f : V →ₗ[K] V` to `LinearMap.id - (LinearMap.toSpanSingleton K V u) ∘ₗ ((h u x)⁻¹ • h u)`. Set `f' : V →ₗ[K] V` to `LinearMap.id - (LinearMap.toSpanSingleton K V u) ∘ₗ ((starRingEnd K (h u x))⁻¹ • h u)`. Establish `hf : ∀ v, f v = v - ((h u x)⁻¹ * h u v) • u` using `fun v => by simp [f]`. Establish `hf' : ∀ v, f' v = v - ((starRingEnd K (h u x))⁻¹ * h u v) • u` using `fun v => by simp [f']`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c1 : f ∘ₗ f' = LinearMap.id`. Use `LinearMap.ext fun v => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.comp_apply, LinearMap.id_apply, hf, hf', map_sub, map_smul, smul_eq_mul, sub_sub, ← add_smul, sub_eq_self]`. Apply `smul_eq_zero_of_left` to reduce the goal to its premises. Rewrite using `[hD]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `c2 : f' ∘ₗ f = LinearMap.id`. Use `LinearMap.ext fun v => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.comp_apply, LinearMap.id_apply, hf, hf', map_sub, map_smul, smul_eq_mul, sub_sub, ← add_smul, sub_eq_self]`.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Apply `smul_eq_zero_of_left` to reduce the goal to its premises. Rewrite using `[hD]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Use `⟨LinearEquiv.ofLinear f f' c1 c2, fun a b => ?_, ?_, fun v hxv hyv => ?_, fun W hxW hyW v => ?_⟩` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `h (f a) (f b) = h a b`. Rewrite using `[hf a, hf b]`. Simplify using `only [map_sub, LinearMap.sub_apply, map_smul, LinearMap.map_smulₛₗ₂, LinearMap.smul_apply, smul_eq_mul, map_mul, map_inv₀]`. Rewrite using `[← hs.eq u a, hD]`. Clear the denominators using the available nonvanishing facts.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Expand and normalize the polynomial expressions, which then agree. Express the relevant statement in the definitionally equal form `f x = y`. Rewrite using `[hf, inv_mul_cancel₀ hD0, one_smul, ← hu_def, sub_sub_cancel]`. Express the relevant statement in the definitionally equal form `f v = v`. Establish `huv : h u v = 0` using `by rw [← hu_def, LinearMap.map_sub₂, hxv, hyv, sub_zero]`.
+Expand and normalize the polynomial expressions, which then agree. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Rewrite using `[hf, huv, mul_zero, zero_smul, sub_zero]`. Establish `huW : u ∈ W` using `by rw [← hu_def]; exact W.sub_mem hxW hyW`. Express the relevant statement in the definitionally equal form `v ∈ W ↔ f v ∈ W`. Rewrite using `[hf]`. Conclude with `(Submodule.sub_mem_iff_left W (W.smul_mem _ huW)).symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isom_move (hs : h.IsSymm) (hd : ∀ x, h x x = 0 → x = 0) {x y : V}
     (hxy : h x x = h y y) :
@@ -212,17 +212,17 @@ theorem exists_isom_move (hs : h.IsSymm) (hd : ∀ x, h x x = 0 → x = 0) {x y 
     exact (Submodule.sub_mem_iff_left W (W.smul_mem _ huW)).symm
 
 /- English proof (translation)
-Establish `hN : starRingEnd K (h z z) = h z z` using `hs.eq z z`. Establish `hNi : h z z * (h z z)⁻¹ = 1` using `mul_inv_cancel₀ hz`. Establish `hz0 : ∀ (v : V) (c : K), c = 0 → v + c • z = v` using `fun v c hc => by`. Rewrite using `[hc, zero_smul, add_zero]`. Set `f : V →ₗ[K] V` to `LinearMap.id + (LinearMap.toSpanSingleton K V z) ∘ₗ (((b - 1) * (h z z)⁻¹) • h z)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `f' : V →ₗ[K] V` to `LinearMap.id + (LinearMap.toSpanSingleton K V z) ∘ₗ (((star b - 1) * (h z z)⁻¹) • h z)`. Establish `hf : ∀ v, f v = v + ((b - 1) * (h z z)⁻¹ * h z v) • z` using `fun v => by simp [f]`. Establish `hf' : ∀ v, f' v = v + ((star b - 1) * (h z z)⁻¹ * h z v) • z` using `fun v => by simp [f']`. Establish `c1 : f ∘ₗ f' = LinearMap.id`. Use `LinearMap.ext fun v => ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[LinearMap.comp_apply, LinearMap.id_apply, hf, hf', map_add, map_smul, smul_eq_mul, add_assoc, ← add_smul]`. Apply `hz0` to reduce the goal to its premises. Take the linear combination `((h z z)⁻¹ * h z v) * hb + ((h z z)⁻¹ * h z v * (b - 1) * (star b - 1)) * hNi`. Establish `c2 : f' ∘ₗ f = LinearMap.id`. Use `LinearMap.ext fun v => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[LinearMap.comp_apply, LinearMap.id_apply, hf, hf', map_add, map_smul, smul_eq_mul, add_assoc, ← add_smul]`. Apply `hz0` to reduce the goal to its premises. Take the linear combination `((h z z)⁻¹ * h z v) * hb + ((h z z)⁻¹ * h z v * (b - 1) * (star b - 1)) * hNi`. Use `⟨LinearEquiv.ofLinear f f' c1 c2, fun a c => ?_, ?_, fun v hv => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `h (f a) (f c) = h a c`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hf a, hf c]`. Simplify using `only [map_add, LinearMap.add_apply, map_smul, LinearMap.map_smulₛₗ₂, LinearMap.smul_apply, smul_eq_mul, map_mul, map_inv₀, map_sub, map_one, hN]`. Rewrite using `[← hs.eq z a]`. Simplify using `only [starRingEnd_apply]`. Take the linear combination `((h z z)⁻¹ * star (h z a) * h z c) * hb + ((h z z)⁻¹ * star (h z a) * h z c * (b - 1) * (star b - 1)) * hNi`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Express the relevant statement in the definitionally equal form `f z = b • z`. Rewrite using `[hf, mul_assoc, inv_mul_cancel₀ hz, mul_one, sub_smul, one_smul]`. Normalize the expressions using the abelian group laws. Express the relevant statement in the definitionally equal form `f v = v`. Rewrite using `[hf, hv, mul_zero, zero_smul, add_zero]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_isom_scale (hs : h.IsSymm) {z : V} (hz : h z z ≠ 0) {b : K} (hb : star b * b = 1) :
     ∃ ψ ∈ Formalism.HermitianLatticesTheory.isom h, ψ z = b • z ∧ ∀ v, h z v = 0 → ψ v = v := by
@@ -266,11 +266,11 @@ theorem exists_isom_scale (hs : h.IsSymm) {z : V} (hz : h z z ≠ 0) {b : K} (hb
     rw [hf, hv, mul_zero, zero_smul, add_zero]
 
 /- English proof (translation)
-Establish `hφh : ∀ a b, h (φ a) (φ b) = h a b` using `fun a b => hφ a b`. Establish `hx' : φ x ∈ W₂` using `(hW x).1 hx`. Take `⟨τ, hτ, hτx, hτfix, hτW⟩` from `exists_isom_move hs hd (x := φ x) (y := X) (by rw [hφh, hxX])`. Establish `hτh : ∀ a b, h (τ a) (τ b) = h a b` using `fun a b => hτ a b`. Use `⟨τ * φ, mul_mem hτ hφ, hτx, fun v => ?_, fun v hv => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `v ∈ cutW h W₁ x ↔ τ (φ v) ∈ cutW h W₂ X`. Rewrite using `[mem_cutW, mem_cutW, ← hτW W₂ hx' hX (φ v), ← hW v, ← hτx, hτh, hφh]`. Express the relevant statement in the definitionally equal form `τ (φ v) = φ v`. Apply `hτfix` to reduce the goal to its premises. Rewrite using `[hφh]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hv x hx`. Establish `hX' : φ.symm X ∈ W₁` using `(hW _).2 (by rwa [LinearEquiv.apply_symm_apply])`. Rewrite using `[← LinearEquiv.apply_symm_apply φ X, hφh]`. Conclude with `hv _ hX'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_prep (hs : h.IsSymm) (hd : ∀ x, h x x = 0 → x = 0) {W₁ W₂ : Submodule K V}
     {φ : V ≃ₗ[K] V} (hφ : φ ∈ Formalism.HermitianLatticesTheory.isom h) (hW : ∀ v, v ∈ W₁ ↔ φ v ∈ W₂) {x X : V}
@@ -292,15 +292,15 @@ theorem exists_prep (hs : h.IsSymm) (hd : ∀ x, h x x = 0 → x = 0) {W₁ W₂
       exact hv _ hX'
 
 /- English proof (translation)
-Establish `hgh : ∀ a b, h (g a) (g b) = h a b` using `fun a b => hg a b`. Establish `hu' : IsUnitIn S (h X X)` using `by rw [← hgx, hgh]; exact hu`. Introduce `v`. Prove the components needed by the constructor for the conclusion. Introduce `hv`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hp` using `(hcut _).1 (proj_mem hM hx hu hv)`. Establish `hc : h x v * (h x x)⁻¹ ∈ S` using `S.mul_mem (hM.int x hx v hv) hu.2.2`. Establish `hgN` using `(mem_cutM.1 hp).1`. Rewrite `hgN` using `[map_sub, map_smul, hgx]`. Establish `e` using `N.add_mem hgN (hN.smul_mem _ hc X hX)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `e` using `[sub_add_cancel]`. Then use the resulting hypothesis. Introduce `hv`. Establish `hp` using `proj_mem hN hX hu' hv`. Establish `hc : h X (g v) * (h X X)⁻¹ ∈ S` using `S.mul_mem (hN.int X hX _ hv) hu'.2.2`. Establish `e : g v - (h X (g v) * (h X X)⁻¹) • X = g (v - (h x v * (h x x)⁻¹) • x)`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[map_sub, map_smul, ← hgx, hgh, hgh]`. Rewrite `hp` using `[e]`. Establish `hm` using `(mem_cutM.1 ((hcut _).2 hp)).1`. Establish `hc' : h x v * (h x x)⁻¹ ∈ S` using `by rwa [← hgx, hgh, hgh] at hc`. Establish `e2` using `M.add_mem hm (hM.smul_mem _ hc' x hx)`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e2` using `[sub_add_cancel]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem mem_iff_of_cut {W₁ W₂ : Submodule K V} {N : AddSubgroup V} (hM : IsLatIn S h W₁ M)
     (hN : IsLatIn S h W₂ N) {x X : V} (hx : x ∈ M) (hX : X ∈ N) (hu : IsUnitIn S (h x x))

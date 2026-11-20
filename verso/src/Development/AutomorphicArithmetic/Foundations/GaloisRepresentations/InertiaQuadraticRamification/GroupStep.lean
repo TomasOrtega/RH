@@ -4,17 +4,15 @@ open NumberField IsDedekindDomain Formalism.L2.Host Formalism.ConjugateSelfDual 
 open UpperTheory.Gal.UnramifiedFromSplittingCriterion
 
 /- English proof (translation)
-Use `haveI : NeZero p := ⟨hp.ne_zero⟩`. Set `f : H →* ℂˣ` to `s.comp H.subtype`. Establish `hker : f.ker = H'.subgroupOf H`. Use extensionality with `g`. Rewrite using `[MonoidHom.mem_ker, Subgroup.mem_subgroupOf, hH']`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[f]`. Establish `hidx : H'.relIndex H = Nat.card f.range`. Rewrite using `[Subgroup.relIndex, ← hker, Subgroup.index_ker]`. Establish `hle : f.range ≤ rootsOfUnity p ℂ`. Introduce and unpack `_ ⟨g, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mem_rootsOfUnity]`. Conclude with `hs g g.2`. Establish `hcard : Nat.card (rootsOfUnity p ℂ) = p`. Conclude with `Complex.card_rootsOfUnity p`. Establish `hdvd : Nat.card f.range ∣ p`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Use `Subgroup.card_dvd_of_le hle` as an intermediate fact. Rewrite `this` using `[hcard]`. Then use the resulting hypothesis. Establish `hne : Nat.card f.range ≠ 1`. Introduce `h1`. Establish `hbot : f.range = ⊥` using `by haveI : Finite (rootsOfUnity p ℂ) := inferInstance`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Subgroup.eq_bot_iff_card _).2 h1`. Establish `: f ⟨τ, hτ⟩ ∈ f.range` using `⟨_, rfl⟩`. Rewrite `this` using `[hbot, Subgroup.mem_bot]`. Conclude with `hτs this`. Rewrite using `[hidx]`.
-
-Break down `(Nat.dvd_prime hp).1 hdvd with h | h` into its components or cases. Conclude with `absurd h hne`. Rewrite using `[h]` and apply the resulting hypothesis.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 private theorem relIndex_ker_prime {Γ : Type} [Group Γ] (H H' : Subgroup Γ) (s : Γ →* ℂˣ) (p : ℕ) (hp : p.Prime)
     (hH' : ∀ g, g ∈ H' ↔ g ∈ H ∧ s g = 1) (hs : ∀ g ∈ H, s g ^ p = 1) (τ : Γ) (hτ : τ ∈ H) (hτs : s τ ≠ 1) :
@@ -50,33 +48,33 @@ private theorem relIndex_ker_prime {Γ : Type} [Group Γ] (H H' : Subgroup Γ) (
   · rwa [h]
 
 /- English proof (translation)
-Introduce `Γ _ Gd P D Pl Dc I hI hinf hmono hpsi hstep H₀ r hH₀ hP hr n hn hrn`. Establish `hpowk : ∀ (s : Γ →* ℂˣ) (k : ℕ), Gd s.ker → Gd (s ^ k).ker`. Introduce `s k hs`. Use `hmono _ _ (fun g hg => ?_) hs` and prove the remaining obligations. Rewrite `hg`, the goal using `[MonoidHom.mem_ker]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[MonoidHom.pow_apply, hg, one_pow]`. Establish `key : ∀ n : ℕ, 0 < n → ∀ r : Γ →* ℂˣ, Gd r.ker → P (H₀ ⊓ (r ^ n).ker) → ∃ r' : Γ →* ℂˣ, Gd r'.ker ∧ (∀ g ∈ D, r' g = r g) ∧ P (H₀ ⊓ r'.ker)`. Introduce `n`. Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `hn r hr hP`. Break down `Nat.lt_or_ge 1 n with h1 | h1` into its components or cases. Use `swap`. Establish `hn1 : n = 1` using `by omega`. Substitute `hn1` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Substitute using the available equality. Supply the required witnesses or components.
 
-Conclude with `⟨r, hr, fun _ _ => rfl, by simpa using hP⟩`. Take `⟨p, hp, n', rfl⟩` from `Nat.exists_prime_and_dvd (show n ≠ 1 by omega)`. Establish `hn' : 0 < n'` using `Nat.pos_of_ne_zero (by rintro rfl; simp at hn)`. Establish `hlt : n' < p * n'`. Use `hp.two_le` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Use the polynomial consequences of the given equalities and inequalities. Take `⟨ψ, hψk, hψn, hψD, u, hDc, τ, hτ, hτo⟩` from `hpsi (H₀ ⊓ r.ker) (hinf _ _ hH₀ hr) (p * n') hn`. Establish `hr1 : Gd (r * ψ).ker`. Use `hmono _ _ (fun g hg => ?_) (hinf _ _ hr hψk)` and prove the remaining obligations. Establish `h1 : r g = 1` using `hg.1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : ψ g = 1` using `hg.2`. Rewrite using `[MonoidHom.mem_ker, MonoidHom.mul_apply, h1, h2, one_mul]`. Establish `hr1n : (r * ψ) ^ (p * n') = r ^ (p * n')`. Rewrite using `[mul_pow, hψn, mul_one]`. Establish `hτU : τ ∈ H₀ ⊓ r.ker` using `hDc (hI u hτ)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hτr : r τ = 1` using `hτU.2`. Establish `hGH : Gd (H₀ ⊓ (r ^ (p * n')).ker)` using `hinf _ _ hH₀ (hpowk _ _ hr)`. Establish `hGH' : Gd (H₀ ⊓ ((r * ψ) ^ n').ker)` using `hinf _ _ hH₀ (hpowk _ _ hr1)`. Establish `hval : ∀ g, ((r * ψ) ^ n') g ^ p = (r ^ (p * n')) g`. Introduce `g`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hr1n, MonoidHom.pow_apply, MonoidHom.pow_apply, ← pow_mul, mul_comm n' p]`. Establish `hle : H₀ ⊓ ((r * ψ) ^ n').ker ≤ H₀ ⊓ (r ^ (p * n')).ker`. Introduce `g hg`. Use `⟨hg.1, ?_⟩` and prove the remaining obligations. Establish `h1 : ((r * ψ) ^ n') g = 1` using `hg.2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show (r ^ (p * n')) g = 1`. Rewrite using `[← hval, h1, one_pow]`. Establish `hUH : H₀ ⊓ r.ker ≤ H₀ ⊓ (r ^ (p * n')).ker`. Introduce `g hg`. Use `⟨hg.1, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : r g = 1` using `hg.2`. Use `show (r ^ (p * n')) g = 1`. Rewrite using `[MonoidHom.pow_apply, h1, one_pow]`. Establish `hτs : ((r * ψ) ^ n') τ ≠ 1`. Introduce `h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Rewrite `h` using `[MonoidHom.pow_apply, MonoidHom.mul_apply, hτr, one_mul]`. Use `Nat.le_of_dvd hn' (orderOf_dvd_of_pow_eq_one h)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hprime : ((H₀ ⊓ ((r * ψ) ^ n').ker).relIndex (H₀ ⊓ (r ^ (p * n')).ker)).Prime`. Use `relIndex_ker_prime _ _ ((r * ψ) ^ n') p hp (fun g => ?_) (fun g hg => ?_) τ (hUH hτU) hτs` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hg`. Conclude with `⟨hle hg, hg.2⟩`. Introduce and unpack `⟨hg, hs⟩`. Conclude with `⟨hg.1, hs⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : (r ^ (p * n')) g = 1` using `hg.2`. Rewrite using `[hval, h1]`. Establish `hP' : P (H₀ ⊓ ((r * ψ) ^ n').ker)` using `hstep _ _ u hGH hGH' hP hle hprime (fun x hx => hUH (hDc hx)) ⟨τ, hτ, fun h => hτs h.2⟩`. Take `⟨r', h1, h2, h3⟩` from `ih n' hlt hn' (r * ψ) hr1 hP'`. Use `⟨r', h1, fun g hg => ?_, h3⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2 g hg, MonoidHom.mul_apply, hψD g hg, mul_one]`. Use `key n hn r hr ?_` and prove the remaining obligations. Rewrite using `[hrn, MonoidHom.ker_one, inf_top_eq]`. Conclude with `hP`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.UnramifiedFromSplittingCriterion.groupStep :
     GroupStep := by

@@ -3,9 +3,9 @@ open UpperTheory.V.Lit.Geo.Cs
 open scoped ContDiff
 
 /- English proof (translation)
-Rewrite using `[← norm_iteratedFDeriv_fderiv]`. Establish `e : fderiv ℝ (fun x : V => x) = fun _ => ContinuousLinearMap.id ℝ V`. Use function extensionality and compare the values at `x`. Conclude with `fderiv_id`. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `j with _ | j` into its components or cases. Simplify using `using ContinuousLinearMap.norm_id_le`. Rewrite using `[iteratedFDeriv_const_of_ne (Nat.succ_ne_zero j)]`. Simplify using the standard rewrite rules.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem norm_id_le (V : Type) [NormedAddCommGroup V] [NormedSpace ℝ V] (j : ℕ) (p : V) :
     ‖iteratedFDeriv ℝ (j + 1) (fun x : V => x) p‖ ≤ 1 := by
@@ -20,13 +20,13 @@ private theorem norm_id_le (V : Type) [NormedAddCommGroup V] [NormedSpace ℝ V]
     simp
 
 /- English proof (translation)
-Introduce `V _ _ k c W t p ht hW hS`. Establish `e : UpperTheory.V.Lit.Geo.flow W t = (fun x : V => x) + t • W` using `rfl`. Establish `h1 : ContDiffAt ℝ ∞ (UpperTheory.V.Lit.Geo.flow W t) p`. Rewrite using `[e]`. Conclude with `contDiffAt_id.add (hW.const_smul t)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h4 : ∀ i, 1 ≤ i → i ≤ k + 1 → ‖iteratedFDeriv ℝ i (UpperTheory.V.Lit.Geo.flow W t) p‖ ≤ 1 + c`. Introduce `i h1i hi`. Take `⟨j, rfl⟩ : ∃ j, i = j + 1` from `⟨i - 1, by omega⟩`. Establish `hWj : ContDiffAt ℝ ((j + 1 : ℕ) : WithTop ℕ∞) W p` using `hW.of_le (by exact_mod_cast le_top)`. Establish `hid : ContDiffAt ℝ ((j + 1 : ℕ) : WithTop ℕ∞) (fun x : V => x) p` using `contDiffAt_id`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `htW : ContDiffAt ℝ ((j + 1 : ℕ) : WithTop ℕ∞) (t • W) p` using `hWj.const_smul t`. Rewrite using `[e, iteratedFDeriv_add_apply hid htW, iteratedFDeriv_const_smul_apply hWj]`. Use `(norm_add_le _ _).trans (add_le_add (norm_id_le V j p) ?_)` and prove the remaining obligations. Rewrite using `[norm_smul, Real.norm_eq_abs]`. Conclude with `(mul_le_of_le_one_left (norm_nonneg _) ht).trans (hS _ hi)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨h1, h1.fderiv_right (by simp), fun i hi => ?_, h4⟩` and prove the remaining obligations. Rewrite using `[norm_iteratedFDeriv_fderiv]`. Conclude with `h4 _ (by omega) (by omega)`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Lit.Geo.Cs.flowSz :
     FlowSz := by

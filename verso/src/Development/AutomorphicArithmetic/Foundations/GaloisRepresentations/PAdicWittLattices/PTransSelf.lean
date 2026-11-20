@@ -7,7 +7,7 @@ open scoped TensorProduct
 universe u
 
 /- English proof (translation)
-Establish `h : Hecke.sq2 (𝟙 o.A) = 𝟙 _` using `by simp [Hecke.sq2]`. Use `⟨?_⟩` and prove the remaining obligations. Rewrite using `[h]`. Unfold `Hecke.lbPow LB.pull`. Conclude with `(GlobalTheory.PrimNorm.lbIso_iff o.isLB _ _ _ _).2 rfl`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private theorem pol_one {p : ℕ} [Fact p.Prime] {D : Datum p} {R : Type} [CommRing R] [Algebra ℚ R]
     {gb : GBase D.toG R} {S : Scheme.{0}} {s : S ⟶ Sp R} {N : ℕ} (o : GObj gb N s) :
@@ -19,9 +19,9 @@ private theorem pol_one {p : ℕ} [Fact p.Prime] {D : Datum p} {R : Type} [CommR
   exact (GlobalTheory.PrimNorm.lbIso_iff o.isLB _ _ _ _).2 rfl
 
 /- English proof (translation)
-Proceed by induction on `c with`. Consider the case `zero`. Establish `h` using `I.add n 0 0`. Rewrite `h` using `[add_zero]`. Establish `h1 : I.ev n 0 = 1` using `mul_left_cancel (a := I.ev n 0) (by rw [_root_.mul_one]; exact h.symm)`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[zero_smul, pow_zero, h1]`. Consider the case `succ c ih => rw [succ_nsmul, I.add, ih, pow_succ]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately.
 -/
 private theorem gTateIso_ev_nsmul' {G : GDatum} {k : Type} [Field k] {Q : Type} [Group Q]
     {act : G.O → Q → Q} {e : ℕ → Q → Q → kˣ → Prop} (I : GTateIso G k Q act e) (n c : ℕ)
@@ -36,13 +36,13 @@ private theorem gTateIso_ev_nsmul' {G : GDatum} {k : Type} [Field k] {Q : Type} 
   | succ c ih => rw [succ_nsmul, I.add, ih, pow_succ]
 
 /- English proof (translation)
-Introduce `hM hR hT p _ D G L R _ _ gb S s N`. Use `⟨fun o u hu => ?_, fun c hN hc o => ?_⟩` and prove the remaining obligations. Establish `hu1 : u ∈ L.KN 1` using `UpperTheory.Gal.Int.Geo.KN_anti (one_dvd _) hu`. Take `⟨a, a', ha, ha', haa, heq⟩` from `(hM p).2.2 D G L u hu1`. Use `⟨⟨by simp, by simp⟩, fun _ => by simp, ⟨𝟙 _, 1, ⟨by simp, by simp⟩, fun _ => by simp, by simp, by simp, Nat.coprime_one_left _⟩, ⟨1, Nat.coprime_one_left _, pol_one o, a, a', ha, ha', haa, heq⟩, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `k _ _ x β hβ`. Take `⟨I, hI⟩` from `o.geom k x β hβ`. Take `⟨J, hJ, hRel⟩` from `hT p D G L R gb S s N o k x I hI u hu`. Conclude with `⟨I, J, hI, hJ, hRel⟩`. Take `⟨a, a', ha, ha', haa, heq⟩` from `(hM p).2.2 D G L 1 (one_mem _)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Establish `hmon : IsMonHom (𝟙 o.A)` using `⟨by simp, by simp⟩`. Use `⟨show IsMonHom (𝟙 o.A) from hmon, fun _ => by simp [GObj.forgetMul], ⟨𝟙 _, 1, show IsMonHom (𝟙 o.A) from hmon, fun _ => by simp [GObj.forgetMul], by simp; exact Category.comp_id _, by simp; exact Category.comp_id _, Nat.coprime_one_left _⟩, ⟨1, Nat.coprime_one_left _, pol_one o, …` and prove the remaining obligations. Introduce `k _ _ x β hβ`. Take `⟨I, hI⟩` from `o.geom k x β hβ`. Establish `hInt : UpperTheory.Gal.Int.Geo.Integ L 1` using `UpperTheory.Gal.Int.Geo.integ_of_mem (one_mem _)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨I, I, hI, fun y => ?_, ?_⟩` and prove the remaining obligations. Use `show toUnit _ ≫ o.eta (c • y) = _`. Rewrite using `[hI, gTateIso_ev_nsmul', I.tower _ _ hN hc]`. Conclude with `(hR p D G L R gb S s _ _ _ o o o k x I I I (𝟙 _) (𝟙 _) 1 1 hmon hmon hInt).1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.G3.pTransSelf :
     MultBasic → RelComp → TateTwist → TransSelf := by

@@ -33,9 +33,9 @@ structure RowMatchS (ch : Choice R) (G' : GlobalTheory.Grid.GridPre R) : Prop wh
         (fun h g => ch.W.kerA (.right (i : ℕ) 0) (ch.W.datum ρ Φ i) g h)
 
 /- English proof (translation)
-Take `⟨L, h1, h2, rfl⟩` from `eA`. Take `⟨L', h1', h2', rfl⟩` from `eB`. Take `rfl` from `eq_of_heq hν`. Take `rfl` from `eq_of_heq hfd`. Take `rfl` from `eq_of_heq hφ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `rfl` from `eq_of_heq hK`. Conclude with `⟨hI, heq_of_eq (funext hE).symm⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem transport_stepS {A A' B B' : HSp D} (eA : SameSp A' A) (eB : SameSp B' B)
     {ν : Measure (GA D A)} {fd : Set (GA D A)} {ν' : Measure (GA D A')} {fd' : Set (GA D A')}
@@ -52,7 +52,7 @@ theorem transport_stepS {A A' B B' : HSp D} (eA : SameSp A' A) (eB : SameSp B' B
   exact ⟨hI, heq_of_eq (funext hE).symm⟩
 
 /- English proof (translation)
-Take `⟨L, h1, h2, rfl⟩` from `e`. Take `rfl` from `eq_of_heq h`. Conclude with `⟨hφ.left, hφ.level, hφ.cont⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isAutFun_transportS {V V' : HSp D} (e : SameSp V' V) {φ : GA D V → ℂ} {φ' : GA D V' → ℂ} (h : HEq φ φ')
     (hφ : IsAutFun V φ) : IsAutFun V' φ' := by

@@ -15,15 +15,15 @@ noncomputable section
 namespace GlobalTheory.Count.FirstLayer
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4⟩` from `h`. Take `⟨g1, g2, g3, g4⟩` from `h'`. Establish `l1 : ∀ a b c : Fin n → A, Formalism.UG.hform s J (a - b) c = Formalism.UG.hform s J a c - Formalism.UG.hform s J b c`. Introduce `a b c`. Simplify using `[Formalism.UG.hform, sub_mul, Finset.sum_sub_distrib]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `l2 : ∀ a b c : Fin n → A, Formalism.UG.hform s J c (a - b) = Formalism.UG.hform s J c a - Formalism.UG.hform s J c b`. Introduce `a b c`. Simplify using `[Formalism.UG.hform, mul_sub, Finset.sum_sub_distrib]`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `u u'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Matrix.sub_mulVec, Matrix.sub_mulVec, l1, l2]`. Establish `a` using `h1 u u'`. Establish `b` using `g1 u u'`. Take the linear combination `a - b`. Introduce `u w hw`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Matrix.sub_mulVec, l2, h2 u w hw, g2 u w hw, sub_zero]`. Introduce `u hu`. Rewrite using `[Matrix.sub_mulVec]`. Conclude with `W.sub_mem (h3 u hu) (g3 u hu)`. Introduce `u hu`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.sub_mulVec, h4 u hu, g4 u hu, sub_zero]`.
+A detailed English derivation is pending.
 -/
 theorem inNil_sub {A : Type} [CommRing A] {n : ℕ} (s : A →+* A) (J : Matrix (Fin n) (Fin n) A)
     (W : Submodule A (Fin n → A)) (Y Y' : Matrix (Fin n) (Fin n) A)
@@ -51,7 +51,7 @@ theorem inNil_sub {A : Type} [CommRing A] {n : ℕ} (s : A →+* A) (J : Matrix 
     rw [Matrix.sub_mulVec, h4 u hu, g4 u hu, sub_zero]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Rewrite using `[RingHom.map_mulVec]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem map_mulVec_emb (I : AutInst) (v : InfinitePlace I.F) (M : Matrix (Fin I.n) (Fin I.n) I.E)
     (y : Fin I.n → I.E) :
@@ -61,16 +61,16 @@ theorem map_mulVec_emb (I : AutInst) (v : InfinitePlace I.F) (M : Matrix (Fin I.
   rfl
 
 /- English proof (translation)
-The claim follows from `Submodule.subset_span ⟨y, hy, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem mem_spanAt (I : AutInst) (v : InfinitePlace I.F) (R : Submodule (𝓞 I.E) (Fin I.n → I.E))
     (y : Fin I.n → I.E) (hy : y ∈ R) : (fun i => I.φ v (y i)) ∈ spanAt I R v :=
   Submodule.subset_span ⟨y, hy, rfl⟩
 
 /- English proof (translation)
-Establish `: spanAt I A v ≤ W.comap (Matrix.mulVecLin M)`. Unfold `spanAt`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Conclude with `h y hy`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `u hu`. Conclude with `this hu`.
+A detailed English derivation is pending.
 -/
 theorem mulVec_mem_of_span (I : AutInst) (v : InfinitePlace I.F) (A : Submodule (𝓞 I.E) (Fin I.n → I.E))
     (M : Matrix (Fin I.n) (Fin I.n) ℂ) (W : Submodule ℂ (Fin I.n → ℂ))
@@ -84,7 +84,7 @@ theorem mulVec_mem_of_span (I : AutInst) (v : InfinitePlace I.F) (A : Submodule 
   exact this hu
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_inv_rev]`. Establish `: uMat (x.1 v)⁻¹ = (uMat (x.1 v))⁻¹`. Simplify using `only [uMat, Subgroup.coe_inv, Matrix.coe_units_inv]`. Rewrite using `[this]`. Simplify using `only [Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem frame_inv (I : AutInst) (x : I.GA) (v : InfinitePlace I.F) (M : Matrix (Fin I.n) (Fin I.n) ℂ) :
     uMat (x.1 v)⁻¹ * (I.P v)⁻¹ * M * I.P v * uMat (x.1 v) =
@@ -96,7 +96,7 @@ theorem frame_inv (I : AutInst) (x : I.GA) (v : InfinitePlace I.F) (M : Matrix (
   simp only [Matrix.mul_assoc]
 
 /- English proof (translation)
-Rewrite using `[← Matrix.isUnit_iff_isUnit_det]`. Conclude with `(I.P_unit v).mul (Units.isUnit _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frame_det (I : AutInst) (x : I.GA) (v : InfinitePlace I.F) :
     IsUnit (I.P v * uMat (x.1 v)).det := by
@@ -104,7 +104,7 @@ theorem frame_det (I : AutInst) (x : I.GA) (v : InfinitePlace I.F) :
   exact (I.P_unit v).mul (Units.isUnit _)
 
 /- English proof (translation)
-Establish `h : (uMat (x.1 v))ᴴ * Jm (I.ε v) * uMat (x.1 v) = Jm (I.ε v)` using `(x.1 v).2`. Rewrite using `[← h, ← I.P_spec v, Matrix.conjTranspose_mul]`. Simplify using `only [Matrix.mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem frame_spec (I : AutInst) (x : I.GA) (v : InfinitePlace I.F) :
     (I.P v * uMat (x.1 v))ᴴ * I.J.map (I.φ v) * (I.P v * uMat (x.1 v)) = Jm (I.ε v) := by
@@ -113,13 +113,13 @@ theorem frame_spec (I : AutInst) (x : I.GA) (v : InfinitePlace I.F) :
   simp only [Matrix.mul_assoc]
 
 /- English proof (translation)
-Establish `h1 : (k - j) * j ≤ n ^ 2 / 8`. Rewrite using `[← hkj]`. Use polynomial arithmetic with `[sq_nonneg (k - 3 * j)]`. Establish `h2 : hi / lo ≤ rho` using `by rwa [div_le_iff₀ hlo]`. Establish `h3 : 0 < hi / lo` using `div_pos hhi hlo`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs : 0 < Real.sqrt (2 * f)` using `Real.sqrt_pos.2 (by linarith)`. Establish `e : Real.sqrt 2 * Real.sqrt f = Real.sqrt (2 * f)` using `(Real.sqrt_mul (by norm_num) f).symm`. Establish `e2 : Real.sqrt (2 * f) * Real.sqrt (2 * f) = 2 * f` using `Real.mul_self_sqrt (by linarith)`. Establish `e3 : (n ^ 2 * f) / 8 * rd * rho / Real.sqrt (2 * f) = n ^ 2 / 8 * rho * (Real.sqrt (2 * f) * rd / 2)`. Rewrite using `[div_eq_iff hs.ne']`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `(-(n ^ 2 / 8 * rho * rd / 2)) * e2`. Establish `e4 : Real.sqrt 2 * ((k - j) * j * Real.sqrt f * rd * hi / (2 * lo)) = (k - j) * j * (hi / lo) * (Real.sqrt (2 * f) * rd / 2)`. Rewrite using `[← e]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e3, e4]`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Apply `mul_le_mul_of_nonneg_right _ (by positivity)` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation.
+Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation.
 -/
 theorem arith (n f k j rd lo hi rho : ℝ) (hf : 0 < f) (hrd : 0 ≤ rd) (hkj : k + j = n) (hlo : 0 < lo)
     (hhi : 0 < hi) (hr : hi ≤ rho * lo) :
@@ -145,33 +145,29 @@ theorem arith (n f k j rd lo hi rho : ℝ) (hf : 0 < f) (hrd : 0 ≤ rd) (hkj : 
     _ ≤ n ^ 2 / 8 * rho := mul_le_mul_of_nonneg_left h2 (by positivity)
 
 /- English proof (translation)
-Introduce `I x R lo hi rho hsat hiso hhi hlarge hlow hlo hr Y hY`. Establish `hpl : perpIn I x R ≤ lamX I x`. Unfold `perpIn`. Rewrite using `[Submodule.span_le]`. Conclude with `fun y hy => hy.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Establish `hfg : (lamX I x).FG` using `(GlobalTheory.T.autPointLatticeIntersection_selfDual_properties I x).2.1`. Establish `hsat' : IsSat (Formalism.HermitianLatticesTheory.realize (bas I) (frm I x)) (perpIn I x R) R`. Use `⟨hiso, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Conclude with `⟨y, hiso hy, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `_ ⟨y, hy, rfl⟩ hz`. Conclude with `hsat.2.2 _ ⟨y, hpl hy, rfl⟩ hz`. Take `⟨-, -, hperp, hnil, -⟩` from `GlobalTheory.T.complexSpanAtRealPlace_autPointLattice_properties I x R`. Establish `hP : ∀ v u, u ∈ perpSet (starRingEnd ℂ) (I.J.map (I.φ v)) (spanAt I R v) ↔ u ∈ spanAt I (perpIn I x R) v`. Introduce `v u`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hperp v]`. Both sides reduce to the same expression. Establish `hmono : ∀ v, spanAt I R v ≤ spanAt I (perpIn I x R) v` using `fun v => Submodule.span_mono (Set.image_mono hiso)`. Take `⟨Φ, hΦ0, hΦ1, D, hD, hDn⟩` from `GlobalTheory.T.subquotient_covering_radius_real_places I x (perpIn I x R) R R lo hi (hfg.of_le hpl) hsat' (hfg.of_le hsat.1) hlo hhi (fun N h1 h2 => hlow N h1 (h2.trans hpl)) hlarge Y (fun v y hy => (hY v).2.2.2 _ (mem_spanAt I v R y hy)) (fun v y hy => (hY v).2.2.1 _ ((hP v _).2 …`. Take `⟨Y₀, hY₀, hY₀Φ⟩` from `GlobalTheory.T.exists_stabilizerNilradicalIntegral_lift_of_orthogonal I x R hiso Φ hΦ0 hΦ1`.
+Both sides reduce to the same expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hA : ∀ v, ∃ A : Matrix (Fin I.n) (Fin I.n) ℂ, InNil (starRingEnd ℂ) (I.J.map (I.φ v)) (spanAt I R v) A ∧ (∀ u ∈ perpSet (starRingEnd ℂ) (I.J.map (I.φ v)) (spanAt I R v), A *ᵥ u = D v *ᵥ u) ∧ hs ((I.P v * uMat (x.1 v))⁻¹ * A * (I.P v * uMat (x.1 v))) ≤ 2 * hs ((I.P v * uMat (x.1 v …`. Introduce `v`. Use `GlobalTheory.T.exists_stabilizerNilradical_lift_of_isotropic I.n (I.ε v) _ _ (D v) _ (frame_det I x v) (frame_spec I x v) (fun u hu => (hP v u).2 (hmono v hu)) ?_ ?_` and prove the remaining obligations. Introduce `u hu`. Establish `h0 : Φ.map (I.φ v) *ᵥ u ∈ (⊥ : Submodule ℂ (Fin I.n → ℂ))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `mulVec_mem_of_span I v R _ ⊥ ?_ u hu` and prove the remaining obligations. Introduce `y hy`. Rewrite using `[map_mulVec_emb, hΦ0 y hy, Submodule.mem_bot]`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hD v u (hmono v hu), Matrix.sub_mulVec, (hY v).2.2.2 u hu, (Submodule.mem_bot ℂ).1 h0, sub_zero]`. Introduce `u hu`. Establish `h0 : Φ.map (I.φ v) *ᵥ u ∈ spanAt I R v`. Use `mulVec_mem_of_span I v _ _ _ ?_ u ((hP v u).1 hu)` and prove the remaining obligations. Introduce `y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mulVec_emb]`. Conclude with `mem_spanAt I v R _ (hΦ1 y hy)`. Rewrite using `[hD v u ((hP v u).1 hu), Matrix.sub_mulVec]`. Conclude with `Submodule.sub_mem _ ((hY v).2.2.1 u hu) h0`. Use `choose A hA1 hA2 hA3 using hA`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨Y₀, hY₀, Y - diagEmb I Y₀ - A, ?_, ?_⟩` and prove the remaining obligations. Introduce `v`. Use `⟨inNil_sub _ _ _ _ _ (inNil_sub _ _ _ _ _ (hY v) (hnil Y₀ hY₀.1 v)) (hA1 v), ?_⟩` and prove the remaining obligations. Introduce `u hu`. Establish `h0 : (Y₀.map (I.φ v) - Φ.map (I.φ v)) *ᵥ u ∈ (⊥ : Submodule ℂ (Fin I.n → ℂ))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `mulVec_mem_of_span I v _ _ ⊥ ?_ u ((hP v u).1 hu)` and prove the remaining obligations. Introduce `y hy`. Rewrite using `[Matrix.sub_mulVec, map_mulVec_emb, map_mulVec_emb, hY₀Φ y hy, sub_self]`. Conclude with `Submodule.zero_mem _`. Rewrite `h0` using `[Submodule.mem_bot, Matrix.sub_mulVec, sub_eq_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `show (Y v - Y₀.map (I.φ v) - A v) *ᵥ u = 0`. Rewrite using `[Matrix.sub_mulVec, Matrix.sub_mulVec, hA2 v u hu, hD v u ((hP v u).1 hu), Matrix.sub_mulVec, h0, sub_self]`. Rewrite using `[sub_sub_cancel]`. Establish `hAD : normAt I x A ≤ Real.sqrt 2 * normAt I x D`. Unfold `normAt`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Real.sqrt_mul (by norm_num), Finset.mul_sum]`. Apply `Real.sqrt_le_sqrt` to reduce the goal to its premises. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `v _`. Rewrite using `[frame_inv, frame_inv]`.
-
-Conclude with `hA3 v`. Establish `hrk : rkK (perpIn I x R) + rkK R = I.n` using `((GlobalTheory.T.orthogonal_canonicalFiltration_steps_autPoint I x).2.2.2 R R hsat hsat le_rfl).2.1`. Establish `hf : (0 : ℝ) < I.f`. Establish `: 0 < I.f` using `Module.finrank_pos`. Conclude with `this` after adjusting the coercions.
-
-Establish `hrd : 0 ≤ I.rd` using `Real.rpow_nonneg (abs_nonneg _) _`. Use `hAD.trans ((mul_le_mul_of_nonneg_left hDn (Real.sqrt_nonneg _)).trans ?_)` and prove the remaining obligations. Conclude with `arith _ _ _ _ _ _ _ _ hf hrd (by exact_mod_cast hrk) hlo hhi hr`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem main : ∀ (I : AutInst) (x : I.GA) (R : Submodule (𝓞 I.E) (Fin I.n → I.E)) (lo hi rho : ℝ), IsSat (Formalism.HermitianLatticesTheory.realize (bas I) (frm I x)) (lamX I x) R → R ≤ perpIn I x R → 0 < hi → largestSize (bas I) (frm I x) R ≤ hi → (∀ N, R < N → N ≤ lamX I x → lo ≤ sizeQ (bas I) (frm I x) N R) → 0 < lo → hi ≤ rho * lo → ∀ Y ∈ nilReal I R, ∃ Y₀ ∈ nilInt I x R, ∃ Z ∈ cenReal I R, normAt I x (Y - diagEmb I Y₀ - Z) ≤ ((I.n : ℝ) ^ 2 * I.f) / 8 * I.rd * rho / Real.sqrt (2 * I.f) := by
   intro I x R lo hi rho hsat hiso hhi hlarge hlow hlo hr Y hY

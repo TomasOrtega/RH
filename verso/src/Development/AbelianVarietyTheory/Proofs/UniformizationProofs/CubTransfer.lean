@@ -20,11 +20,11 @@ noncomputable section
 namespace GlobalTheory.GoodReductionUnif
 
 /- English proof (translation)
-Take `⟨A, g, hg, -, mul, t, ht⟩` from `hB S S' f P`. Set `eA : (Over.pullback f).obj P.A ≅ A.A` to `Over.isoMk hg.isoPullback.symm hg.isoPullback_inv_snd`. Establish `he : eA.hom.left ≫ g = pullback.fst P.A.hom f` using `hg.isoPullback_inv_fst`. Use `⟨A, eA, isMonHom_of_mul _ fun T x y => Over.OverMorphism.ext (hg.hom_ext ?_ ?_), ?_⟩` and prove the remaining obligations. Establish `tb : ∀ a : T ⟶ (Over.pullback f).obj P.A, toBase hg.w (a ≫ eA.hom) = toBase (A` using `P.A) (A' := (Over.pullback f).obj P.A) (g := pullback.fst P.A.hom f) pullback.condition a := fun a => Over.OverMorphism.ext ((Category.assoc _ _ _).trans (congrArg (a.left ≫ ·) he))`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e : toBase hg.w ((x * y) ≫ eA.hom) = toBase hg.w ((x ≫ eA.hom) * (y ≫ eA.hom))`. Rewrite using `[mul, tb, tb, tb, toBase_mul_pullback]`. Conclude with `congrArg CommaMorphism.left e`. Conclude with `(Over.w _).trans (Over.w _).symm`. Take `⟨t', ht', -⟩` from `GenericSectionBasis.exists_inv_iso t ht`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h₁` using `(isGen_iff t').1 ht'`. Establish `h₂` using `(isGen_iff _).1 (pullIso_isGen A.isLB eA.hom.left)`. Take `⟨w, Tw⟩` from `Geo.Tor.exists_comp A.isLB t' (pullIso A.L eA.hom.left) h₁ h₂ P.isLB (pull_isLB A.isLB _)`. Rewrite using `[← he]`. Conclude with `⟨w, (isGen_iff w).2 (Tw.pgen_comp A.isLB h₁ h₂)⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_baseChange (hB : PolBaseChangeSt) {S S' : Scheme.{0}} (f : S' ⟶ S) (P : PolAV S) :
     ∃ (A : PolAV S') (eA : (Over.pullback f).obj P.A ≅ A.A), IsMonHom eA.hom ∧
@@ -49,9 +49,9 @@ theorem exists_baseChange (hB : PolBaseChangeSt) {S S' : Scheme.{0}} (f : S' ⟶
     exact ⟨w, (isGen_iff w).2 (Tw.pgen_comp A.isLB h₁ h₂)⟩
 
 /- English proof (translation)
-Take `⟨h₁, h₂, h₃⟩` from `(IsCPMap.id P).vals T z J' J hJ' hJ W fun x => by`. Rewrite using `[a, Category.comp_id, gw_idIso _ _ _ (hJ _) (hJ' _)]`. Use `⟨?_, fun x => ?_, fun x y u => ?_⟩` and prove the remaining obligations. Rewrite `h₁` using `[Category.comp_id]`. Then use the resulting hypothesis. Use `h₂ x` as an intermediate fact.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite `this` using `[Category.comp_id]`. Then use the resulting hypothesis. Use `h₃ x y u` as an intermediate fact. Rewrite `this` using `[_root_.id, cubV_toBase_id]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem vals_change {S : Scheme.{0}} {G : Over S} [GrpObj G] [IsCommMonObj G] (P : CP G) (T : Over S) (z : T.left)
     {J' J : (T.left ⟶ G.left) → P.L.L.ι} (hJ' : Good P.L.L z J') (hJ : Good P.L.L z J)
@@ -72,7 +72,7 @@ theorem vals_change {S : Scheme.{0}} {G : Over S} [GrpObj G] [IsCommMonObj G] (P
     rwa [_root_.id, cubV_toBase_id] at this
 
 /- English proof (translation)
-Simplify `h` using `only [a, map_mul, map_one, e₁, e₂]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem cub_transfer {A A' U : Type} [Monoid A] [Monoid A'] [Monoid U] (β : A →* A') (W : A → U) (W' : A' → U)
     (a : ∀ x, W x = W' (β x)) {x y u : A} {c₁ c₁' c₂ c₂' : U} (e₁ : c₁ = c₁') (e₂ : c₂ = c₂')
@@ -138,9 +138,9 @@ def selfPreU (hG : GlobalFnsSt) {R : Type} [CommRing R] [IsDomain R] (I : Ideal 
     exact (b.trans (congrArg (fun q => gm q z _ (D.P.L.g j k)) t)).trans a.symm
 
 /- English proof (translation)
-Introduce `hL _ V _ _ _ hV P`. Take `⟨h₁, h₂, -⟩` from `hV`. Establish `: IsNoetherianRing V` using `inferInstance`. Take `⟨A, eA, hA, w, hw⟩` from `exists_baseChange hL.polBaseChange (jK V) P`. Take `⟨D, rfl, hX, hU⟩` from `exists_unif_abelianScheme hL.globalFns hL.secBaseChange hL.cube V (IsLocalRing.maximalIdeal V) P A eA hA ⟨w, hw⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨A, D, hU, ⟨selfPreU hL.globalFns _ D.toPre A eA hA w hw⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem main : Laws → Laws2 → (∀ (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V], CDVR V → ∀ P : PolAV (Spec (CommRingCat.of V)), ∃ (A : PolAV (Spec (CommRingCat.of (FractionRing V)))) (D : DegData V (IsLocalRing.maximalIdeal V)), Nonempty (Unif (IsLocalRing.maximalIdeal V) D A P.A) ∧ Nonempty (PreU (IsLocalRing.maximalIdeal V) D.toPre A P.A)) := by
   intro hL _ V _ _ _ hV P

@@ -3,7 +3,7 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.AdelicClassFiniteness.A
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.AdelicClassFiniteness.SuccessiveVectorReal
 
 /- English proof (translation)
-The claim follows from `PIW.AdelClassFin.adelClassFin_of_svReal PIW.AdelClassFin.successive_vector_real`.
+A detailed English derivation is pending.
 -/
 theorem adelic_class_set_finite : PI.AdelClassFin.AdelClassFin :=
   PIW.AdelClassFin.adelClassFin_of_svReal PIW.AdelClassFin.successive_vector_real

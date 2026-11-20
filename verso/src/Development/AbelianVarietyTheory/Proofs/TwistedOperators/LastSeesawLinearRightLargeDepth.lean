@@ -13,14 +13,14 @@ namespace GlobalTheory.LastLinR
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc}
 
 /- English proof (translation)
-Substitute `e` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem castSch_lin {V : HSp D} {n n' : ℕ} (e : n = n') (c : ℂ) (f g : WO V (G.V (.grid D.R.m n)) → ℂ) :
     castSch G e (c • f + g) = c • castSch G e f + castSch G e g := by
   subst e; rfl
 
 /- English proof (translation)
-Simplify using `only [lastDat, GlobalTheory.FinPl.lastBi, OrthDec.boxT, Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem lastDat_lin (Wl : G.Weil) {t : T} {M : Vol G} (hM : M.Is t) (j : ℕ) (hj : j + 2 * 0 + 2 = D.R.m)
     (vN : GlobalTheory.Unf.VolN (besDecAt G j 0 hj)) (g : GA D (G.V (.grid D.R.m j)))
@@ -39,11 +39,11 @@ variable {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type} {A : FamIn 
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks}
 
 /- English proof (translation)
-Introduce `j hj hjm t M hM P h Φ a ha φ φ' c hΦ hφ hφ' u v`. Establish `h0 : j + 2 * 0 + 2 = D.R.m` using `by omega`. Establish `hlt : j + 1 < D.R.m` using `by omega`. Take `rfl : a = ⟨j + 1, hlt⟩` from `Fin.ext ha`. Establish `hne : (⟨j, by omega⟩ : Fin D.R.m) ≠ ⟨j + 1, hlt⟩` using `fun e => by simp [Fin.ext_iff] at e`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Unfold `conAt`. Rewrite using `[dif_pos h0, dif_pos h0, dif_pos h0]`. Simplify using `only [fockD, Function.update_of_ne hne, Function.update_self]`. Establish `hlin : ch.W.fock (.mu t D.R.m (j + 1)) (c • φ + φ') (P ⟨j + 1, hlt⟩) = c • ch.W.fock (.mu t D.R.m (j + 1)) φ (P ⟨j + 1, hlt⟩) + ch.W.fock (.mu t D.R.m (j + 1)) φ' (P ⟨j + 1, hlt⟩)`. Simplify using `only [GridData.Weil.fock]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `GlobalTheory.FockFiniteHeis.pureTensorO_lin _ _ _ _ ch.W.ψ_std ch.W.θ_is _ _ _ _ c hφ hφ' _`. Rewrite using `[hlin, GlobalTheory.LastLinR.castSch_lin, GlobalTheory.LastLinR.lastDat_lin]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lastLin_one (ch : Choice R) : LastLin ch 1 := by
   intro j hj hjm t M hM P h Φ a ha φ φ' c hΦ hφ hφ' u v
@@ -63,7 +63,7 @@ theorem lastLin_one (ch : Choice R) : LastLin ch 1 := by
 end
 
 /- English proof (translation)
-Use `⟨0, fun _ _ _ => ⟨0, ?_⟩⟩` and prove the remaining obligations. Introduce `_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ ch _ _`. Conclude with `lastLin_one ch`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem big_lastLin_one : Big fun ch => LastLin ch 1 :=
   by

@@ -14,17 +14,17 @@ variable {n : ℕ} {ε : Fin n → Bool} {S : Submodule ℂ (Matrix (Fin n) (Fin
     {r : Fin m → ℝ} {Z : Fin m → Finset ℂ} {M c₁ R₀ C : ℝ}
 
 /- English proof (translation)
-Establish `ha0 : 0 < a` using `by linarith`. Establish `hb0 : 0 < b` using `by linarith`. Establish `hC : 0 < C`. Assume the negation of the conclusion as `hC'`. Establish `hC : C ≤ 0` using `not_lt.mp hC'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `: C * Real.exp (2 * t) * b ≤ 0` using `mul_nonpos_of_nonpos_of_nonneg (mul_nonpos_of_nonpos_of_nonneg hC (Real.exp_pos _).le) hb0.le`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hloga : 0 ≤ Real.log a` using `Real.log_nonneg ha`. Establish `hτy0 : 0 ≤ τy` using `le_trans (mul_nonneg hc₁.le hloga) hlog`. Establish `h1 : a ^ (w - s) ≤ Real.exp (2 * c'' * (1 + t))`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Real.rpow_def_of_pos ha0]`. Apply `Real.exp_le_exp.mpr` to reduce the goal to its premises. Establish `hl : Real.log a ≤ τy / c₁` using `by rw [le_div_iff₀ hc₁]; linarith`. Combine the equalities or inequalities in the displayed calculation. Establish `h2 : a ^ s ≤ C ^ (-s) * Real.exp (2 * t * s) * b ^ s`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hpos : 0 < C⁻¹ * Real.exp (2 * t) * b` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Real.mul_rpow (by positivity) hb0.le, Real.mul_rpow (by positivity) (Real.exp_pos _).le, Real.inv_rpow hC.le, Real.rpow_neg hC.le, ← Real.exp_mul]`. Establish `hsplit : a ^ w = a ^ s * a ^ (w - s)`. Rewrite using `[← Real.rpow_add ha0]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Put the polynomial expressions in normal form. Rewrite using `[hsplit]`. Combine the equalities or inequalities in the displayed calculation. Establish `: Real.exp (2 * t * s) * Real.exp (2 * c'' * (1 + t)) * Real.exp (2 * r * t) = Real.exp (2 * c'') * Real.exp (2 * (r + s + c'') * t)`. Rewrite using `[← Real.exp_add, ← Real.exp_add, ← Real.exp_add]`.
+Put the polynomial expressions in normal form. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Put the polynomial expressions in normal form. Combine the equalities or inequalities in the displayed calculation.
+Put the polynomial expressions in normal form. Chain the equalities or inequalities of the calculation.
 -/
 theorem far_real (a b C c₁ s w c'' r t τy τx : ℝ) (ha : 1 ≤ a) (hb : 1 ≤ b)
     (hlow : C⁻¹ * Real.exp (2 * t) * b ≤ a) (hup : a ≤ C * Real.exp (2 * t) * b)
@@ -72,55 +72,45 @@ theorem far_real (a b C c₁ s w c'' r t τy τx : ℝ) (ha : 1 ≤ a) (hb : 1 �
           _ = _ := by rw [this]; ring
 
 /- English proof (translation)
-Use `set V : Set (S7.UJ ε) := U ∩ {g | R₂ < Formalism.REAL.hs (S7.toM g)} with hV`. Establish `hVm : MeasurableSet V` using `hUm.inter (measurableSet_lt measurable_const ((continuous_hs.comp (S7.continuous_toM ε)).measurable))`. Establish `hinj : Function.Injective (fun g : S7.UJ ε => S7.toM g)` using `(S7.isClosedEmbedding_toM ε).injective`. Use `set F : Matrix (Fin n) (Fin n) ℂ → ℝ≥0∞ := ((fun g : S7.UJ ε => S7.toM g) '' V).indicator (PsiK ε f w) with hFdef`. Establish `hF : ∀ g : S7.UJ ε, F (S7.toM g) = V.indicator (fun g => PsiK ε f w (S7.toM g)) g`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Introduce `g`. Distinguish the cases in `hg : g ∈ V`. Rewrite using `[Set.indicator_of_mem hg, hFdef, Set.indicator_of_mem (Set.mem_image_of_mem _ hg)]`. Rewrite using `[Set.indicator_apply, if_neg hg, hFdef, Set.indicator_apply, if_neg]`. Introduce and unpack `⟨g', hg', he⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hg (hinj he ▸ hg')`. Establish `hFm : Measurable fun g : S7.UJ ε => F (S7.toM g)`. Rewrite using `[show (fun g : S7.UJ ε => F (S7.toM g)) = V.indicator (fun g => PsiK ε f w (S7.toM g)) from funext hF]`. Conclude with `(psiK_meas f w (H.cont f hf)).indicator hVm`. Establish `hFK : ∀ (g : S7.UJ ε) (k : S7.KG ε), F (S7.toM g * S7.toMK k) = F (S7.toM g)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `g k`. Establish `e : S7.toM g * S7.toMK k = S7.toM (g * (k : S7.UJ ε))` using `rfl`. Establish `hsk : Formalism.REAL.hs (S7.toM (g * (k : S7.UJ ε))) = Formalism.REAL.hs (S7.toM g)` using `hs_mul_K _ k`. Establish `hmem : g * (k : S7.UJ ε) ∈ V ↔ g ∈ V`. Prove the components needed by the constructor for the conclusion.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce and unpack `⟨h1, h2⟩`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `hUK _ k⁻¹ h1` as an intermediate fact. Simplify `this` using `[mul_assoc]`. Use `show R₂ < Formalism.REAL.hs (S7.toM g)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h2' : R₂ < Formalism.REAL.hs (S7.toM (g * (k : S7.UJ ε)))` using `h2`. Rewrite `h2'` using `[hsk]`. Conclude with `h2'`. Introduce and unpack `⟨h1, h2⟩`. Use `⟨hUK g k h1, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `show R₂ < Formalism.REAL.hs (S7.toM (g * (k : S7.UJ ε)))`. Rewrite using `[hsk]`. Conclude with `h2`. Rewrite using `[e, hF, hF]`. Distinguish the cases in `hg : g ∈ V`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Set.indicator_of_mem hg, Set.indicator_of_mem (hmem.2 hg)]`. Conclude with `psiK_inv f w g k`. Rewrite using `[Set.indicator_apply, if_neg (fun h => hg (hmem.1 h)), Set.indicator_apply, if_neg hg]`. Take `⟨T, Cf, hTS, hd⟩` from `H.dom f hf`. Establish `hle` using `fun h (hh : h ∈ T) => line_est hLC H hn s hs hL c'' hc0 hc1 j hz h (hTS h hh)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Use `choose! Ψ K hKT hΨm hΨK hΨi hΨae using hle`. Use `set Kr : ℝ := C ^ (-s) * Real.exp (2 * c'') with hKr`. Use `set Ψt : Matrix (Fin n) (Fin n) ℂ → ℝ≥0∞ := fun X => ∑ h ∈ T, Ψ h X with hΨt`. Establish `hΨtm : Measurable fun g : S7.UJ ε => Ψt (S7.toM g)` using `Finset.measurable_sum _ fun h hh => hΨm h hh`. Establish `hΨtK : ∀ (g : S7.UJ ε) (k : S7.KG ε), Ψt (S7.toM g * S7.toMK k) = Ψt (S7.toM g)` using `fun g k => Finset.sum_congr rfl fun h hh => hΨK h hh g k`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hΨti : ∫⁻ g : S7.UJ ε, Ψt (S7.toM g) ∂Measure.haar < ⊤`. Rewrite using `[lintegral_finsetSum _ (fun h hh => hΨm h hh)]`. Conclude with `ENNReal.sum_lt_top.2 fun h hh => hΨi h hh`. Take `⟨κ, hκ0, hκT, hform⟩` from `H.formula j`. Use `set slab : Set (PSub ε (A j)) := {x : PSub ε (A j) | τ j x ∈ Set.Ico 0 1} with hslabdef`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hslab : MeasurableSet slab` using `((H.tauCont j).measurable.comp measurable_subtype_coe) measurableSet_Ico`. Establish `hJ : ∫⁻ x in slab, (∫⁻ t : ℝ, Ψt (S7.toM (x : S7.UJ ε) * aT (A j) t) * ENNReal.ofReal (Real.exp (2 * r j * t))) ∂(ν j) < ⊤`. Establish `e` using `hform Ψt hΨtm hΨtK`. Assume the negation of the conclusion as `hcon`. Rewrite `hcon` using `[not_lt, top_le_iff]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `e` using `[hcon, ENNReal.mul_top hκ0]`. Rewrite `hΨti` using `[e]`. Conclude with `lt_irrefl _ hΨti`. Establish `inner : ∀ x : PSub ε (A j), τ j x ∈ Set.Ico 0 1 → ∫⁻ t : ℝ, F (S7.toM (x : S7.UJ ε) * aT (A j) t) * ENNReal.ofReal (Real.exp (2 * r j * t)) ≤ ENNReal.ofReal Cf * ENNReal.ofReal Kr * ∑ h ∈ T, ENNReal.ofReal (Formalism.REAL.hs (S7.toM (x : S7.UJ ε)) ^ s) * ∫⁻ t in Set.Ioi (0 : ℝ), …`. Introduce `x hx`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hb : 1 ≤ Formalism.REAL.hs (S7.toM (x : S7.UJ ε))` using `one_le_hs hn _`. Establish `pt : ∀ t : ℝ, F (S7.toM (x : S7.UJ ε) * aT (A j) t) * ENNReal.ofReal (Real.exp (2 * r j * t)) ≤ (Set.Ioi (0 : ℝ)).indicator (fun t => ENNReal.ofReal Cf * ENNReal.ofReal Kr * ∑ h ∈ T, ENNReal.ofReal (Formalism.REAL.hs (S7.toM (x : S7.UJ ε)) ^ s) * (‖h (S7.toM (x : S7.UJ ε) * aT (A …`. Introduce `t`. Take `⟨y, hy, hτy⟩` from `H.lines j x t`. Establish `hFy : F (S7.toM (x : S7.UJ ε) * aT (A j) t) = V.indicator (fun g => PsiK ε f w (S7.toM g)) (y : S7.UJ ε)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hy]`. Conclude with `hF _`. Rewrite using `[hFy]`. Distinguish the cases in `hyV : (y : S7.UJ ε) ∈ V`. Take `⟨hyU, hyR⟩` from `hyV`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hyR' : R₂ < Formalism.REAL.hs (S7.toM (y : S7.UJ ε))` using `hyR`. Establish `hlog` using `hUτ y hyU`. Establish `hτ1 : 1 < τ j y`. Establish `hl : Real.log R₂ < Real.log (Formalism.REAL.hs (S7.toM (y : S7.UJ ε)))` using `Real.log_lt_log (by linarith) hyR'`. Use `mul_lt_mul_of_pos_left hl H.c1pos` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `ht : 0 < t` using `by have := hx.2; linarith`. Rewrite using `[Set.indicator_of_mem (show (y : S7.UJ ε) ∈ V from ⟨hyU, hyR⟩), Set.indicator_of_mem (Set.mem_Ioi.mpr ht)]`. Establish `hline` using `H.hsLine j x t hx.1 ht.le`. Rewrite `hline` using `[← hy]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hreal` using `far_real (Formalism.REAL.hs (S7.toM (y : S7.UJ ε))) (Formalism.REAL.hs (S7.toM (x : S7.UJ ε))) C c₁ s w c'' (r j) t (τ j y) (τ j x) (by linarith) hb hline.1 hline.2 hlog hτy hx.2 H.c1pos hs hw1 hw2 hc0`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_assoc, Finset.sum_mul]`. Use `congr 1`. Use `Finset.sum_congr rfl fun h _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[ENNReal.ofReal_mul' (Real.exp_pos _).le, mul_assoc]`. Use `_ ≤ ENNReal.ofReal Cf * ∑ h ∈ T, ‖h (S7.toM (y : S7.UJ ε))‖ₑ ^ 2 * ENNReal.ofReal (Kr * Formalism.REAL.hs (S7.toM (x : S7.UJ ε)) ^ s * Real.exp (2 * (r j + s + c'') * t)) := mul_le_mul_right (Finset.sum_le_sum fun h _ => mul_le_mul_right (ENNReal.ofReal_le_ofReal hreal) _) _`. Use `_ = _ := by`. Rewrite using `[hy]`. Simplify using `only [Finset.mul_sum]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun h _ => ?_` and prove the remaining obligations. Rewrite using `[ENNReal.ofReal_mul' (Real.exp_pos _).le, ENNReal.ofReal_mul' (by positivity)]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Set.indicator_apply, if_neg hyV, zero_mul]`. Conclude with `bot_le`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hmeas : ∀ h ∈ T, Measurable fun t : ℝ => ENNReal.ofReal (Formalism.REAL.hs (S7.toM (x : S7.UJ ε)) ^ s) * (‖h (S7.toM (x : S7.UJ ε) * aT (A j) t)‖ₑ ^ 2 * ENNReal.ofReal (Real.exp (2 * (r j + s + c'') * t)))`. Introduce `h hh`. Establish `hc` using `line_cont H j x h (H.cont h (hTS h hh))`. Conclude with `measurable_const.mul ((hc.enorm.measurable.pow_const 2).mul (ENNReal.measurable_ofReal.comp (Real.continuous_exp.comp (continuous_const.mul continuous_id)).measurable))`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[lintegral_const_mul' _ _ (ENNReal.mul_ne_top ENNReal.ofReal_ne_top ENNReal.ofReal_ne_top), lintegral_finsetSum _ hmeas]`. Use `congr 1`. Use `Finset.sum_congr rfl fun h _ => ?_` and prove the remaining obligations. Rewrite using `[lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]`. Use `set Kall : ℝ≥0∞ := ENNReal.ofReal Cf * ENNReal.ofReal Kr * ∑ h ∈ T, K h with hKall_def`.
-
-Establish `hKall : Kall ≠ ⊤` using `ENNReal.mul_ne_top (ENNReal.mul_ne_top ENNReal.ofReal_ne_top ENNReal.ofReal_ne_top) (ENNReal.sum_ne_top.2 fun h hh => hKT h hh)`. Establish `hae : ∀ᵐ (x : PSub ε (A j)) ∂((ν j).restrict slab), ∫⁻ t : ℝ, F (S7.toM (x : S7.UJ ε) * aT (A j) t) * ENNReal.ofReal (Real.exp (2 * r j * t)) ≤ Kall * ∫⁻ t : ℝ, Ψt (S7.toM (x : S7.UJ ε) * aT (A j) t) * ENNReal.ofReal (Real.exp (2 * r j * t))`. Rewrite using `[ae_restrict_iff' hslab]`. Establish `hall` using `(Filter.eventually_all_finset T).2 fun h hh => hΨae h hh`. Use `filter_upwards [hall] with x hx hxs`.
-
-Combine the equalities or inequalities in the displayed calculation. Use `mul_le_mul_right (Finset.sum_le_sum fun h hh => mul_le_mul_right (lintegral_mono fun t => ?_) _) _` and prove the remaining obligations. Conclude with `mul_le_mul_left (Finset.single_le_sum (f := fun h => Ψ h (S7.toM (x : S7.UJ ε) * aT (A j) t)) (fun _ _ => bot_le) hh) _`. Use `_ = Kall * ∫⁻ t : ℝ, Ψt (S7.toM (x : S7.UJ ε) * aT (A j) t) * ENNReal.ofReal (Real.exp (2 * r j * t)) := by`. Rewrite using `[hKall_def, ← Finset.sum_mul]`.
-
-Expand and normalize the polynomial expressions, which then agree. Establish `hI : ∫⁻ x in slab, (∫⁻ t : ℝ, F (S7.toM (x : S7.UJ ε) * aT (A j) t) * ENNReal.ofReal (Real.exp (2 * r j * t))) ∂(ν j) < ⊤`. Combine the equalities or inequalities in the displayed calculation. Establish `e1 : (∫⁻ g : S7.UJ ε, V.indicator (fun g => PsiK ε f w (S7.toM g)) g ∂Measure.haar) = ∫⁻ g : S7.UJ ε, F (S7.toM g) ∂Measure.haar`. Use `congr 1`.
-
-Use function extensionality and compare the values at `g`. Conclude with `(hF g).symm`. Rewrite using `[e1, hform F hFm hFK]`. Conclude with `ENNReal.mul_lt_top hκT.lt_top hI`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem far_est (hLC : LineChain) (H : Hyp ε S m A ν τ r Z M c₁ R₀ C) (hn : 0 < n) (s : ℝ) (hs : s ≤ 0) (hL : ∀ f ∈ S, LevelF ε f s)
     (c'' : ℝ) (hc0 : 0 < c'') (hc1 : c'' ≤ 1) (j : Fin m) (hz : ∀ z ∈ Z j, z.re ≠ -(r j + s + c''))
@@ -300,13 +290,13 @@ theorem far_est (hLC : LineChain) (H : Hyp ε S m A ν τ r Z M c₁ R₀ C) (hn
   exact ENNReal.mul_lt_top hκT.lt_top hI
 
 /- English proof (translation)
-Unfold `LevelF at hf`. Establish `key : ∀ g : S7.UJ ε, {g | Formalism.REAL.hs (S7.toM g) ≤ R₂}.indicator (fun g => ‖f (S7.toM g)‖ₑ ^ 2 * ENNReal.ofReal (Formalism.REAL.hs (S7.toM g) ^ w)) g ≤ ENNReal.ofReal (R₂ ^ (w - s)) * (‖f (S7.toM g)‖ₑ ^ 2 * ENNReal.ofReal (Formalism.REAL.hs (S7.toM g) ^ s))`. Introduce `g`. Distinguish the cases in `hg : Formalism.REAL.hs (S7.toM g) ≤ R₂`. Rewrite using `[Set.indicator_of_mem (show g ∈ {g | Formalism.REAL.hs (S7.toM g) ≤ R₂} from hg)]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `one_le_hs hn g`. Establish `hpos : 0 < Formalism.REAL.hs (S7.toM g)` using `by linarith`. Establish `e : Formalism.REAL.hs (S7.toM g) ^ w = Formalism.REAL.hs (S7.toM g) ^ s * Formalism.REAL.hs (S7.toM g) ^ (w - s)`. Rewrite using `[← Real.rpow_add hpos]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hle : Formalism.REAL.hs (S7.toM g) ^ (w - s) ≤ R₂ ^ (w - s)` using `Real.rpow_le_rpow hpos.le hg (by linarith)`. Rewrite using `[e, ENNReal.ofReal_mul (Real.rpow_nonneg hpos.le _)]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Set.indicator_of_notMem (show g ∉ {g | Formalism.REAL.hs (S7.toM g) ≤ R₂} from hg)]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Conclude with `bot_le`. Use `lt_of_le_of_lt (lintegral_mono key) ?_` and prove the remaining obligations. Rewrite using `[lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]`. Conclude with `ENNReal.mul_lt_top ENNReal.ofReal_lt_top hf`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ball_est (hn : 0 < n) (f : Matrix (Fin n) (Fin n) ℂ → ℂ) (s w R₂ : ℝ) (hw : s ≤ w) (hR₂ : 1 ≤ R₂)
     (hf : LevelF ε f s) :
@@ -337,19 +327,17 @@ theorem ball_est (hn : 0 < n) (f : Matrix (Fin n) (Fin n) ℂ → ℂ) (s w R₂
   exact ENNReal.mul_lt_top ENNReal.ofReal_lt_top hf
 
 /- English proof (translation)
-Take `⟨U, hUm, hUK, hUcov, hUτ⟩` from `H.cover`. Use `set R₂ : ℝ := max (max R₀ 1) (Real.exp (1 / c₁)) with hR₂def`. Establish `hR₂1 : 1 ≤ R₂` using `le_trans (le_max_right _ _) (le_max_left _ _)`. Establish `hR₂0 : R₀ ≤ R₂` using `le_trans (le_max_left _ _) (le_max_left _ _)`. Establish `hR₂' : 1 ≤ c₁ * Real.log R₂`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : 1 / c₁ ≤ Real.log R₂`. Rewrite using `[← Real.log_exp (1 / c₁)]`. Conclude with `Real.log_le_log (Real.exp_pos _) (le_max_right _ _)`. Establish `hc` using `H.c1pos`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `f hf`. Establish `hcont` using `H.cont f hf`. Establish `hmhs : Measurable fun g : S7.UJ ε => Formalism.REAL.hs (S7.toM g)` using `(continuous_hs.comp (S7.continuous_toM ε)).measurable`. Use `set ball : S7.UJ ε → ℝ≥0∞ := {g | Formalism.REAL.hs (S7.toM g) ≤ R₂}.indicator (fun g => ‖f (S7.toM g)‖ₑ ^ 2 * ENNReal.ofReal (Formalism.REAL.hs (S7.toM g) ^ w)) with hball`. Use `set far : Fin m → S7.UJ ε → ℝ≥0∞ := fun j => (U j ∩ {g | R₂ < Formalism.REAL.hs (S7.toM g)}).indicator (fun g => PsiK ε f w (S7.toM g)) with hfar`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmball : Measurable ball`. Use `Measurable.indicator ?_ (measurableSet_le hmhs measurable_const)` and prove the remaining obligations. Conclude with `(hcont.enorm.measurable.pow_const 2).mul ((hmhs.pow_const w).ennreal_ofReal)`. Establish `hmfar : ∀ j ∈ (Finset.univ : Finset (Fin m)), Measurable (far j)` using `fun j _ => (psiK_meas f w hcont).indicator ((hUm j).inter (measurableSet_lt measurable_const hmhs))`. Establish `hpt : ∀ g, ‖f (S7.toM g)‖ₑ ^ 2 * ENNReal.ofReal (Formalism.REAL.hs (S7.toM g) ^ w) ≤ ball g + ∑ j, far j g`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Introduce `g`. Distinguish the cases in `hg : Formalism.REAL.hs (S7.toM g) ≤ R₂`. Establish `e : ball g = ‖f (S7.toM g)‖ₑ ^ 2 * ENNReal.ofReal (Formalism.REAL.hs (S7.toM g) ^ w)` using `Set.indicator_of_mem (show g ∈ {g | Formalism.REAL.hs (S7.toM g) ≤ R₂} from hg) _`. Rewrite using `[e]`. Conclude with `le_self_add`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `push_neg at hg`. Take `⟨j, hj⟩` from `hUcov g (lt_of_le_of_lt hR₂0 hg)`. Establish `hfj : far j g = PsiK ε f w (S7.toM g)` using `Set.indicator_of_mem (show g ∈ U j ∩ {g | R₂ < Formalism.REAL.hs (S7.toM g)} from ⟨hj, hg⟩) _`. Combine the equalities or inequalities in the displayed calculation. Unfold `LevelF`.
-
-Use `lt_of_le_of_lt (lintegral_mono hpt) ?_` and prove the remaining obligations. Rewrite using `[lintegral_add_left hmball, lintegral_finset_sum _ hmfar]`. Use `ENNReal.add_lt_top.2 ⟨ball_est hn f s w R₂ hw1 hR₂1 (hL f hf), ?_⟩` and prove the remaining obligations. Conclude with `ENNReal.sum_lt_top.2 fun j _ => far_est hLC H hn s hs hL c'' hc0 hc1 j (hz j) (U j) (hUm j) (fun g k hg => hUK j g k hg) (hUτ j) R₂ hR₂1 hR₂' w hw1 hw2 f hf`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem step (hLC : LineChain) (H : Hyp ε S m A ν τ r Z M c₁ R₀ C) (hn : 0 < n) (s : ℝ) (hs : s ≤ 0) (hL : ∀ f ∈ S, LevelF ε f s)
     (c'' : ℝ) (hc0 : 0 < c'') (hc1 : c'' ≤ 1) (hz : ∀ j, ∀ z ∈ Z j, z.re ≠ -(r j + s + c''))
@@ -400,7 +388,7 @@ theorem step (hLC : LineChain) (H : Hyp ε S m A ν τ r Z M c₁ R₀ C) (hn : 
     (fun g k hg => hUK j g k hg) (hUτ j) R₂ hR₂1 hR₂' w hw1 hw2 f hf
 
 /- English proof (translation)
-Use `set B : Finset ℝ := Finset.univ.biUnion (fun j => (Z j).image (fun z => -(r j + s) - z.re))`. Take `⟨c, hc, hcB⟩` from `(Set.Icc_infinite (show (1 / 2 : ℝ) < 1 by norm_num)).exists_notMem_finset B`. Use `⟨c, hc.1, hc.2, fun j z hz he => hcB ?_⟩` and prove the remaining obligations. Simplify using `only [B, Finset.mem_biUnion, Finset.mem_univ, true_and, Finset.mem_image]`. Conclude with `⟨j, z, hz, by linarith⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_good (Z : Fin m → Finset ℂ) (r : Fin m → ℝ) (s : ℝ) :
     ∃ c'' : ℝ, 1 / 2 ≤ c'' ∧ c'' ≤ 1 ∧ ∀ j, ∀ z ∈ Z j, z.re ≠ -(r j + s + c'') := by
@@ -412,7 +400,7 @@ theorem exists_good (Z : Fin m → Finset ℂ) (r : Fin m → ℝ) (s : ℝ) :
   exact ⟨j, z, hz, by linarith⟩
 
 /- English proof (translation)
-Unfold `LevelF at *`. Use `lt_of_le_of_lt (lintegral_mono fun g => ?_) hf` and prove the remaining obligations. Use `gcongr`. Conclude with `one_le_hs hn g`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem level_mono (hn : 0 < n) (f : Matrix (Fin n) (Fin n) ℂ → ℂ) {s s' : ℝ} (h : s' ≤ s) (hf : LevelF ε f s) :
     LevelF ε f s' := by
@@ -422,9 +410,9 @@ theorem level_mono (hn : 0 < n) (f : Matrix (Fin n) (Fin n) ℂ → ℂ) {s s' :
   exact one_le_hs hn g
 
 /- English proof (translation)
-Unfold `LevelF`. Use `haveI : Subsingleton (S7.UJ ε) := ⟨fun a b => Subtype.ext (Units.ext (Subsingleton.elim _ _))⟩`. Use `haveI : CompactSpace (S7.UJ ε) := Finite.compactSpace`. Use `set c : ℝ≥0∞ := ‖f (S7.toM (1 : S7.UJ ε))‖ₑ ^ 2 * ENNReal.ofReal (Formalism.REAL.hs (S7.toM (1 : S7.UJ ε)) ^ s)`. Establish `: ∀ g : S7.UJ ε, ‖f (S7.toM g)‖ₑ ^ 2 * ENNReal.ofReal (Formalism.REAL.hs (S7.toM g) ^ s) = c`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Introduce `g`. Rewrite using `[Subsingleton.elim g 1]`. Repeatedly rewrite using `[this]`. Rewrite using `[lintegral_const]`. Conclude with `ENNReal.mul_lt_top (ENNReal.mul_lt_top (by simp) ENNReal.ofReal_lt_top) (measure_lt_top _ _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem level_zero_dim (ε : Fin 0 → Bool) (f : Matrix (Fin 0) (Fin 0) ℂ → ℂ) (s : ℝ) : LevelF ε f s := by
   unfold LevelF
@@ -438,19 +426,19 @@ theorem level_zero_dim (ε : Fin 0 → Bool) (f : Matrix (Fin 0) (Fin 0) ℂ →
   exact ENNReal.mul_lt_top (ENNReal.mul_lt_top (by simp) ENNReal.ofReal_lt_top) (measure_lt_top _ _)
 
 /- English proof (translation)
-Introduce `n ε S m A ν τ r Z M c₁ R₀ C hc1 hform htc htinv hlines hcover hhs hcont hdom hchain hqual hlev`. Break down `Nat.eq_zero_or_pos n with hn | hn` into its components or cases. Substitute `hn` using the available equality. Conclude with `fun f _ => level_zero_dim ε f 0`. Establish `H : Hyp ε S m A ν τ r Z M c₁ R₀ C` using `⟨hc1, hform, htc, htinv, hlines, hcover, hhs, hcont, hdom, hchain, hqual, hlev⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact.
 
-Establish `key : ∀ N : ℕ, ∀ f ∈ S, LevelF ε f (min (-M + N * c₁) 0)`. Introduce `N`. Proceed by induction on `N with`. Consider the case `zero`. Introduce `f hf`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `level_mono hn f (by simp) (hlev f hf)`. Consider the case `succ N ih`. Take `⟨c'', h1, h2, hz⟩` from `exists_good Z r (min (-M + N * c₁) 0)`. Use `step hLC H hn _ (min_le_right _ _) ih c'' (by linarith) h2 hz _ ?_ ?_` and prove the remaining obligations. Apply `min_le_min_right` to reduce the goal to its premises.
+Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Use polynomial arithmetic with `[hc1]`. Establish `hcc : c₁ ≤ 2 * c₁ * c''` using `by nlinarith`. Break down `le_total (-M + N * c₁) 0 with h | h` into its components or cases. Rewrite using `[min_eq_left h]`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Use `min_le_left (-M + ((N : ℝ) + 1) * c₁) 0` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Rewrite using `[min_eq_right h]`. Use `min_le_right (-M + ((N + 1 : ℕ) : ℝ) * c₁) 0` as an intermediate fact.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Use the polynomial consequences of the given equalities and inequalities. Introduce `f hf`. Take `⟨N, hN⟩ : ∃ N : ℕ, M ≤ N * c₁` from `⟨⌈M / c₁⌉₊, by`. Use `Nat.le_ceil (M / c₁)` as an intermediate fact. Rewrite using `[div_le_iff₀ hc1] at this⟩` and apply the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Use `key N f hf` as an intermediate fact. Rewrite `this` using `[min_eq_right (by linarith)]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem absolute_l2_of_line_chain (hLC : LineChain) : AbsoluteL2Bound := by
   intro n ε S m A ν τ r Z M c₁ R₀ C hc1 hform htc htinv hlines hcover hhs hcont hdom hchain hqual hlev

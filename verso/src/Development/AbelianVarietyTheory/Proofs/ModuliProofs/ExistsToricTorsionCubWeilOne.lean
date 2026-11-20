@@ -22,23 +22,21 @@ open GlobalTheory.UU
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `h3 X G _ _ hG L c g N k _ _ x dG hN`. Set `G' : Over (Sp k)` to `(Over.pullback x).obj G`. Establish `hp : IsGrpPullback G' G x (pullback.fst G.hom x)` using `isGrpPullback_pullback G x`. Establish `hG' : IsSemiAbelian G'` using `IsSemiAbelian.pullback x G hG`. Use `hG'.comm` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hG'.smooth` as an intermediate fact. Use `hG'.geomConnected` as an intermediate fact. Establish `dG' : SmoothOfRelativeDimension g G'.hom` using `(smoothOfRelativeDimension_isStableUnderBaseChange g).of_isPullback hp.1 dG`. Take `⟨E⟩` from `hG.fibres k x`. Set `` to `E.addCommGroup`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `` to `E.grpB`. Use `E.free` as an intermediate fact. Use `E.finite` as an intermediate fact. Use `E.i_hom` as an intermediate fact. Take `⟨hL, hr, ⟨c', hc'⟩, -⟩` from `h3.cubePull _ _ G G' (cubeMapOf hp) L c`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨σ⟩` from `GlobalTheory.BiextTriv.main k E.X G' _ c' E.i E.i_hom`. Establish `hw : pullback.fst G.hom x ≫ G.hom = G'.hom ≫ x` using `pullback.condition`. Set `U : Over (Sp k)` to `𝟙_ (Over (Sp k))`. Set `ρ : Over.mk x ⟶ Over.mk (U.hom ≫ x)` to `Over.homMk (𝟙 _) rfl`. Set `φ : (U ⟶ G') →* (Over.mk x ⟶ G)` to `(preHom ρ).comp (toBaseHom (toBase_mul_pullback G x) U)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hφ : ∀ a : U ⟶ G', (φ a).left = a.left ≫ pullback.fst G.hom x` using `fun a => Category.id_comp _`. Establish `hb : Function.Bijective φ`. Use `⟨fun a b h => Over.OverMorphism.ext (pullback.hom_ext ?_ ?_), fun p => ?_⟩` and prove the remaining obligations. Rewrite using `[← hφ, ← hφ, h]`. Conclude with `(Over.w a).trans (Over.w b).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Over.homMk (pullback.lift p.left (𝟙 _) ((Over.w p).trans (Category.id_comp _).symm)) (pullback.lift_snd _ _ _), Over.OverMorphism.ext ((hφ _).trans (pullback.lift_fst _ _ _))⟩` and prove the remaining obligations. Set `e` to `MulEquiv.ofBijective φ hb`. Establish `he : ∀ a : U ⟶ G', e a ^ N = 1 ↔ a ^ N = 1` using `fun a => by rw [← map_pow, e.map_eq_one_iff]`. Establish `hcount` using `GlobalTheory.card_torsion_mul_card_toric_torsion k G' E g N hG' dG' hN`. Use `⟨e '' {y | y ^ N = 1 ∧ ∃ t, y = t ≫ E.i}, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨a, ⟨ha, -⟩, rfl⟩`. Conclude with `(he a).2 ha`. Introduce and unpack `_ ⟨_, ⟨ha, t, rfl⟩, rfl⟩ y hy`. Take `⟨b, rfl⟩` from `e.surjective y`. Establish `ht : t ^ N = 1` using `E.isKernel.hom_ext (by rw [MonObj.pow_comp, ha, MonObj.one_comp]) (toUnit_unique _ _)`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `σ.cubWeil ht ((he b).1 hy)`. Establish `h2` using `(GlobalTheory.UU.cubWeil_of_isPullCubical _ _ x G G' (cubeMapOf hp) hw (toBase_mul_pullback G x) L _ c c' hc' N U _ _ _ h1).comp ρ`. Rewrite `h2` using `[map_one]`. Conclude with `h2`. Rewrite using `[← hcount]`.
-
-Use `congr 1`. Conclude with `(Nat.card_congr (e.toEquiv.subtypeEquiv fun a => (he a).symm)).symm`. Conclude with `Nat.card_image_of_injective e.injective _`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem exists_toric_torsion_cubWeil_one : Out.Laws3 → ∀ (X : Scheme.{0}) (G : Over X) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ (L : RigLB G) (c : CubicalStr G L) (g N : ℕ) (k : Type) [Field k] [IsAlgClosed k] (x : Sp k ⟶ X), SmoothOfRelativeDimension g G.hom → (N : k) ≠ 0 → ∃ T : Set (Over.mk x ⟶ G), (∀ τ ∈ T, τ ^ N = 1) ∧ (∀ τ ∈ T, ∀ y : Over.mk x ⟶ G, y ^ N = 1 → CubWeil c N τ y 1) ∧ Nat.card {p : Over.mk x ⟶ G // p ^ N = 1} * Nat.card T = N ^ (2 * g) := by
   intro h3 X G _ _ hG L c g N k _ _ x dG hN

@@ -12,51 +12,51 @@ namespace Formalism.L2.G.Model.TS.Top
 open Formalism.L2.G.Model.TS Formalism.GradedWeylDivisibility
 
 /- English proof (translation)
-The claim follows from `Formalism.L2.G.Model.TS.fock_pairing_bilinear`.
+A detailed English derivation is pending.
 -/
 theorem fockRBilin : FockRBilin := Formalism.L2.G.Model.TS.fock_pairing_bilinear
 /- English proof (translation)
-The claim follows from `Formalism.L2.G.Model.TS.fock_pairing_map`.
+A detailed English derivation is pending.
 -/
 theorem fockRMap : FockRMap := Formalism.L2.G.Model.TS.fock_pairing_map
 /- English proof (translation)
-The claim follows from `Formalism.L2.G.Model.TS.fock_pairing_monomial`.
+A detailed English derivation is pending.
 -/
 theorem fockRMonomial : FockRMonomial := Formalism.L2.G.Model.TS.fock_pairing_monomial
 /- English proof (translation)
-The claim follows from `Formalism.L2.G.Model.TS.fock_pairing_block`.
+A detailed English derivation is pending.
 -/
 theorem fockRBlock : FockRBlock := Formalism.L2.G.Model.TS.fock_pairing_block
 /- English proof (translation)
-The claim follows from `Formalism.L2.G.Model.TS.highest_weight_norm`.
+A detailed English derivation is pending.
 -/
 theorem hWNorm : HWNorm := Formalism.L2.G.Model.TS.highest_weight_norm
 /- English proof (translation)
-The claim follows from `Formalism.L2.G.Model.TS.fock_pairing_divided_adjoint`.
+A detailed English derivation is pending.
 -/
 theorem fockRRowDivAdj : FockRRowDivAdj := Formalism.L2.G.Model.TS.fock_pairing_divided_adjoint
 /- English proof (translation)
-The claim follows from `Formalism.L2.G.Model.TS.fock_pairing_row_action`.
+A detailed English derivation is pending.
 -/
 theorem fockRRowAct : FockRRowAct := Formalism.L2.G.Model.TS.fock_pairing_row_action
 /- English proof (translation)
-The claim follows from `Formalism.L2.G.Model.TS.fock_pairing_highest_weight_proof`.
+A detailed English derivation is pending.
 -/
 theorem fock_pairing_highest_weight : FockPairingHighestWeight := Formalism.L2.G.Model.TS.fock_pairing_highest_weight_proof
 /- English proof (translation)
-The claim follows from `Formalism.L2.G.Model.TS.weyl_pairing`.
+A detailed English derivation is pending.
 -/
 theorem weylPair : WeylPair := Formalism.L2.G.Model.TS.weyl_pairing
 /- English proof (translation)
-The claim follows from `Formalism.L2.G.Model.TS.dual_weyl_inclusion`.
+A detailed English derivation is pending.
 -/
 theorem dualWeylIn : DualWeylIn := Formalism.L2.G.Model.TS.dual_weyl_inclusion
 /- English proof (translation)
-The claim follows from `Formalism.L2.G.Model.TS.nondegenerate_over_field`.
+A detailed English derivation is pending.
 -/
 theorem nondegK : NondegK := Formalism.L2.G.Model.TS.nondegenerate_over_field
 /- English proof (translation)
-The claim follows from `Formalism.L2.G.Model.TS.formCoreSK_of Formalism.L2.G.Model.TS.weyl_form_nondegenerate_global`.
+A detailed English derivation is pending.
 -/
 theorem formCoreSK : FormCoreSK := Formalism.L2.G.Model.TS.formCoreSK_of Formalism.L2.G.Model.TS.weyl_form_nondegenerate_global
 

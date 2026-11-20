@@ -11,14 +11,14 @@ open MvPowerSeries ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ
 variable {k : Type} [CommRing k] {d n : ℕ}
 
 /- English proof (translation)
-Simplify using `only [Lin, map_add, mul_add, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem div_Lin_add (b : Fin n) (v : Fin d → k) (f g : PS k n d) :
     Lin b v (f + g) = Lin b v f + Lin b v g := by
   simp only [Lin, map_add, mul_add, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `only [Lin, Derivation.leibniz, smul_eq_mul, mul_add, Finset.sum_add_distrib, Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[add_comm]`. Apply the tactic sequence `congr 1 <;> refine Finset.sum_congr rfl fun j _ => ?_ <;> ring`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem div_Lin_mul (b : Fin n) (v : Fin d → k) (f g : PS k n d) :
     Lin b v (f * g) = Lin b v f * g + f * Lin b v g := by
@@ -28,13 +28,13 @@ theorem div_Lin_mul (b : Fin n) (v : Fin d → k) (f g : PS k n d) :
   congr 1 <;> refine Finset.sum_congr rfl fun j _ => ?_ <;> ring
 
 /- English proof (translation)
-Simplify using `[Lin, MvPowerSeries.pderiv_C]`.
+Simplify using the standard rewrite rules.
 -/
 theorem div_Lin_C (b : Fin n) (v : Fin d → k) (c : k) : Lin b v (C c : PS k n d) = 0 := by
   simp [Lin, MvPowerSeries.pderiv_C]
 
 /- English proof (translation)
-Unfold `Lin`. Distinguish the cases in `h : b = b'`. Substitute `h` using the available equality. Simplify using `[MvPowerSeries.pderiv_X, MvPowerSeries.pderiv_C, Derivation.leibniz, Finset.mul_sum, map_sum, Pi.single_apply, Prod.ext_iff]`. Simplify using `[MvPowerSeries.pderiv_X, MvPowerSeries.pderiv_C, Derivation.leibniz, Pi.single_apply, Prod.ext_iff, h]`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem Lin_linForm (b b' : Fin n) (v w : Fin d → k) :
     Lin b v (∑ j : Fin d, C (w j) * (X (b', j) : PS k n d)) =
@@ -48,11 +48,11 @@ theorem Lin_linForm (b b' : Fin n) (v w : Fin d → k) :
       Prod.ext_iff, h]
 
 /- English proof (translation)
-Introduce `m hm`. Rewrite using `[MvPowerSeries.coeff_mul]`. Use `Finset.sum_eq_zero fun pq hpq => ?_` and prove the remaining obligations. Establish `hpq' : pq.1 + pq.2 = m` using `Finset.HasAntidiagonal.mem_antidiagonal.mp hpq`. Establish `hdeg : pq.1.degree + pq.2.degree = m.degree`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hpq']`. Use `first`. Consider the case `exact (map_add Finsupp.degree pq.1 pq.2).symm`. Consider the case `exact (Finsupp.degree_add pq.1 pq.2).symm`. Distinguish the cases in `h1 : pq.1.degree < a`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hf _ h1, zero_mul]`. Rewrite using `[hg _ (by omega), mul_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem div_ordGe_mul {a b : ℕ} {f g : PS k n d} (hf : OrdGe a f) (hg : OrdGe b g) : OrdGe (a + b) (f * g) := by
   intro m hm
@@ -69,12 +69,12 @@ theorem div_ordGe_mul {a b : ℕ} {f g : PS k n d} (hf : OrdGe a f) (hg : OrdGe 
   · rw [hg _ (by omega), mul_zero]
 
 /- English proof (translation)
-Introduce `_ hm` and use `absurd hm (Nat.not_lt_zero _)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem div_ordGe_one : OrdGe 0 (1 : PS k n d) := fun _ hm => absurd hm (Nat.not_lt_zero _)
 
 /- English proof (translation)
-Proceed by induction on `e with`. Consider the case `zero => simpa using div_ordGe_one`. Consider the case `succ e ih`. Rewrite using `[pow_succ, Nat.mul_succ]`. Conclude with `div_ordGe_mul ih hf`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem div_ordGe_pow {a : ℕ} {f : PS k n d} (hf : OrdGe a f) (e : ℕ) : OrdGe (a * e) (f ^ e) := by
   induction e with
@@ -84,11 +84,9 @@ theorem div_ordGe_pow {a : ℕ} {f : PS k n d} (hf : OrdGe a f) (e : ℕ) : OrdG
     exact div_ordGe_mul ih hf
 
 /- English proof (translation)
-Establish `key : ∀ s : Finset ι, OrdGe (∑ i ∈ s, α i) (∏ i ∈ s, φ i ^ α i)`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using div_ordGe_one`. Consider the case `insert i s hi ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[Finset.sum_insert hi, Finset.prod_insert hi]`. Establish `h` using `div_ordGe_pow (hφ i) (α i)`. Rewrite `h` using `[one_mul]`. Conclude with `div_ordGe_mul h ih`. Rewrite using `[MvPolynomial.aeval_monomial, map_one, one_mul]`.
-
-Conclude with `key α.support`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ordGe_aeval_monomial {ι : Type} (φ : ι → PS k n d) (hφ : ∀ i, OrdGe 1 (φ i)) (α : ι →₀ ℕ) :
     OrdGe α.degree (MvPolynomial.aeval φ (MvPolynomial.monomial α (1 : k))) := by
@@ -106,11 +104,11 @@ theorem ordGe_aeval_monomial {ι : Type} (φ : ι → PS k n d) (hφ : ∀ i, Or
   exact key α.support
 
 /- English proof (translation)
-Proceed by induction on `Q using MvPolynomial.induction_on with`. Consider the case `C a`. Rewrite using `[MvPolynomial.aeval_C, MvPolynomial.pderiv_C, map_zero, MvPowerSeries.algebraMap_apply]`. Simplify using `using div_Lin_C (cp l) (u l) a`. Consider the case `add p q hp hq => rw [map_add, div_Lin_add, hp, hq, map_add, map_add]`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Consider the case `mul_X p i hp`. Rewrite using `[map_mul, div_Lin_mul, hp, MvPolynomial.aeval_X, hl, Derivation.leibniz, MvPolynomial.pderiv_X]`. Distinguish the cases in `h : l = i`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Simplify using `[h, Pi.single_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem div_Lin_aeval {ι : Type} [DecidableEq ι] (cp : ι → Fin n) (u : ι → Fin d → k) (φ : ι → PS k n d)
     (l : ι) (hl : ∀ l', Lin (cp l) (u l) (φ l') = C (if l = l' then 1 else 0)) (Q : MvPolynomial ι k) :
@@ -130,7 +128,7 @@ theorem div_Lin_aeval {ι : Type} [DecidableEq ι] (cp : ι → Fin n) (u : ι �
       ring
 
 /- English proof (translation)
-Proceed by induction on `t with`. Consider the case `zero => rfl`. Consider the case `succ t ih`. Rewrite using `[Function.iterate_succ_apply', Function.iterate_succ_apply', ih, div_Lin_aeval cp u φ l hl]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem div_Lin_iter_aeval {ι : Type} [DecidableEq ι] (cp : ι → Fin n) (u : ι → Fin d → k) (φ : ι → PS k n d)
     (l : ι) (hl : ∀ l', Lin (cp l) (u l) (φ l') = C (if l = l' then 1 else 0)) (t : ℕ) (Q : MvPolynomial ι k) :
@@ -141,11 +139,11 @@ theorem div_Lin_iter_aeval {ι : Type} [DecidableEq ι] (cp : ι → Fin n) (u :
     rw [Function.iterate_succ_apply', Function.iterate_succ_apply', ih, div_Lin_aeval cp u φ l hl]
 
 /- English proof (translation)
-Unfold `LinMon`. Generalize the expression as in `(Finset.univ : Finset ι).toList = L`. Proceed by induction on `L with`. Consider the case `nil => rfl`. Consider the case `cons l L ih`.
+Replace the relevant objects with their definitions. Replace the chosen expression with an arbitrary variable. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Simplify using `only [List.foldr_cons]`. Rewrite using `[ih]`. Distinguish the cases in `h0 : a l = 0`. Rewrite using `[h0]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Conclude with `div_Lin_iter_aeval cp u φ l (hdual l (ha l h0)) (a l) _`.
+A detailed English derivation is pending.
 -/
 theorem div_LinMon_aeval {ι : Type} [Fintype ι] [DecidableEq ι] (cp : ι → Fin n) (u : ι → Fin d → k)
     (φ : ι → PS k n d) (Good : Set ι)
@@ -166,7 +164,7 @@ theorem div_LinMon_aeval {ι : Type} [Fintype ι] [DecidableEq ι] (cp : ι → 
     · exact div_Lin_iter_aeval cp u φ l (hdual l (ha l h0)) (a l) _
 
 /- English proof (translation)
-Proceed by induction on `Q using MvPolynomial.induction_on with`. Consider the case `C a => simp [MvPowerSeries.algebraMap_apply]`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`. Consider the case `mul_X p i hp => simp [hp, hφ0]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem div_constCoeff_aeval {ι : Type} (φ : ι → PS k n d) (hφ0 : ∀ i, constantCoeff (φ i) = 0)
     (Q : MvPolynomial ι k) : constantCoeff (MvPolynomial.aeval φ Q) = MvPolynomial.constantCoeff Q := by
@@ -176,13 +174,13 @@ theorem div_constCoeff_aeval {ι : Type} (φ : ι → PS k n d) (hφ0 : ∀ i, c
   | mul_X p i hp => simp [hp, hφ0]
 
 /- English proof (translation)
-Proceed by induction on `t with`. Consider the case `zero => simp`. Consider the case `succ t ih`. Establish `h1 : s - Finsupp.single i t - Finsupp.single i 1 = s - Finsupp.single i (t + 1)`. Use extensionality with `j`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use `first`. Consider the case `(simp only [Finsupp.coe_tsub, Pi.sub_apply, Finsupp.single_apply]; split_ifs <;> omega)`. Consider the case `(simp only [Finsupp.tsub_apply, Finsupp.single_apply]; split_ifs <;> omega)`. Consider the case `(simp [Finsupp.single_apply]; split_ifs <;> omega)`. Establish `h2 : (s - Finsupp.single i t) i = s i - t` using `by first`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Treat this case separately.
 
-Consider the case `simp only [Finsupp.coe_tsub, Pi.sub_apply, Finsupp.single_eq_same]`. Consider the case `simp`. Rewrite using `[Function.iterate_succ_apply', ih, MvPolynomial.pderiv_monomial, h1, h2, Nat.descFactorial_succ]`. Use `congr 1`. Use `push_cast`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem div_iter_pderiv_monomial {ι : Type} [DecidableEq ι] (i : ι) (t : ℕ) (s : ι →₀ ℕ) (c : k) :
     (MvPolynomial.pderiv i)^[t] (MvPolynomial.monomial s c) =
@@ -207,7 +205,7 @@ theorem div_iter_pderiv_monomial {ι : Type} [DecidableEq ι] (i : ι) (t : ℕ)
     ring
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil => simp`. Consider the case `cons x L ih`. Simplify using `only [List.mem_cons, not_or] at hl`. Simplify using `[Finsupp.single_apply, Ne.symm hl.1, ih hl.2]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem div_listSum_apply_of_notMem {ι : Type} (a : ι →₀ ℕ) (L : List ι) (l : ι) (hl : l ∉ L) :
     (L.map fun l' => Finsupp.single l' (a l')).sum l = 0 := by
@@ -218,9 +216,9 @@ theorem div_listSum_apply_of_notMem {ι : Type} (a : ι →₀ ℕ) (L : List ι
     simp [Finsupp.single_apply, Ne.symm hl.1, ih hl.2]
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil => simp`. Consider the case `cons x L ih`. Rewrite `hL` using `[List.nodup_cons]`. Rewrite using `[List.foldr_cons, ih hL.2, div_iter_pderiv_monomial]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hx : (s - (L.map fun l => Finsupp.single l (a l)).sum) x = s x`. Rewrite using `[Finsupp.tsub_apply, div_listSum_apply_of_notMem a L x hL.1, Nat.sub_zero]`. Simplify using `only [List.map_cons, List.sum_cons, List.prod_cons, hx]`. Use `congr 1`. Rewrite using `[tsub_tsub, add_comm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -242,17 +240,15 @@ theorem div_fold_monomial {ι : Type} [DecidableEq ι] (a : ι →₀ ℕ) (L : 
     · ring
 
 /- English proof (translation)
-Rewrite using `[div_LinMon_aeval cp u φ Good hdual a ha, div_fold_monomial a _ (Finset.nodup_toList _), div_constCoeff_aeval φ hφ0, MvPolynomial.constantCoeff_monomial]`. Establish `hLs : ∀ (M : Type) [AddCommMonoid M] (f : ι → M), ((Finset.univ : Finset ι).toList.map f).sum = ∑ l, f l` using `fun M _ f => by`. Rewrite using `[← Multiset.sum_coe, ← Multiset.map_coe, Finset.coe_toList]`. Both sides reduce to the same expression. Establish `hLp : ∀ (M : Type) [CommMonoid M] (f : ι → M), ((Finset.univ : Finset ι).toList.map f).prod = ∏ l, f l` using `fun M _ f => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[← Multiset.prod_coe, ← Multiset.map_coe, Finset.coe_toList]`. Both sides reduce to the same expression. Establish `hS : ((Finset.univ : Finset ι).toList.map fun l => Finsupp.single l (a l)).sum = a`. Rewrite using `[hLs]`. Use extensionality with `j`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Simplify using `[Finsupp.finset_sum_apply, Finsupp.single_apply]`. Establish `hP : ((Finset.univ : Finset ι).toList.map fun l => ((α l).descFactorial (a l) : k)).prod = ∏ l, ((α l).descFactorial (a l) : k)` using `hLp k _`. Rewrite using `[hS, hP, one_mul]`. Distinguish the cases in `hEq : a = α`. Substitute `hEq` using the available equality.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[tsub_self, if_pos rfl, if_pos rfl, Finsupp.prod_fintype _ _ (fun _ => Nat.factorial_zero)]`. Use `push_cast`. Conclude with `Finset.prod_congr rfl fun l _ => by rw [Nat.descFactorial_self]`. Rewrite using `[if_neg hEq] split_ifs with h0`. Establish `hle : α ≤ a` using `tsub_eq_zero_iff_le.mp h0`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Choose the witnesses or unpack the hypotheses as in `⟨l, hl⟩ : ∃ l, α l < a l := by`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Conclude with `hEq (le_antisymm (Finsupp.le_def.mpr hcon) hle)`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ l) (by rw [Nat.descFactorial_eq_zero_iff_lt.mpr hl, Nat.cast_zero])`.
-
-Both sides reduce to the same expression.
+Assume the negation of the conclusion and derive a contradiction. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem linMon_aeval_monomial {ι : Type} [Fintype ι] [DecidableEq ι] (cp : ι → Fin n) (u : ι → Fin d → k)
     (φ : ι → PS k n d) (hφ0 : ∀ i, constantCoeff (φ i) = 0) (Good : Set ι)

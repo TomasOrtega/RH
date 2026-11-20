@@ -7,9 +7,9 @@ open scoped TensorProduct ENNReal NNReal Matrix
 namespace GlobalTheory.CompanionTheory.SW.AlgSplit
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_succ_row_zero, Fin.sum_univ_succ]`. Establish `hz : ∀ j : Fin M, blockOne t A 0 j.succ = 0` using `by intro j; simp [blockOne]`. Establish `h00 : blockOne t A 0 0 = t` using `by simp [blockOne]`. Establish `h0 : (blockOne t A).submatrix Fin.succ Fin.succ = A`. Use extensionality with `i j`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[blockOne]`. Simplify using `[hz, h00, h0]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem det_blockOne {K : Type} [CommRing K] {M : ℕ} (t : K) (A : Matrix (Fin M) (Fin M) K) :
     (blockOne t A).det = t * A.det := by
@@ -21,39 +21,37 @@ theorem det_blockOne {K : Type} [CommRing K] {M : ℕ} (t : K) (A : Matrix (Fin 
   simp [hz, h00, h0]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hCM M J hJ t x ht hx`. Take `⟨-, -, -, hconj⟩` from `hCM`. Establish `hσ : ∀ e : E, σ (σ e) = e`. Introduce `e`. Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Apply `τ.injective` to reduce the goal to its premises. Rewrite using `[hconj, hconj, star_star]`. Establish `hherm : ∀ y z, σ (hE σ J y z) = hE σ J z y`. Introduce `y z`. Simplify using `only [hE, hform, map_sum, map_mul, AlgHom.coe_toRingHom, RingHom.coe_coe, hσ]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hJ.1 i j]`. Expand and normalize the polynomial expressions, which then agree. Use `set s : E := algebraMap F E t with hs`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hs0 : s ≠ 0` using `(map_ne_zero _).2 ht`. Set `φ : (Fin (M + 1) → E) →ₗ[E] E` to `{ toFun := fun y => hE σ J x y map_add' := by`. Introduce `y z`. Simplify using `[hE, hform, mul_add, Finset.sum_add_distrib]`. Use the proof step `map_smul' := by`.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `c y`. Simplify using `only [hE, hform, Pi.smul_apply, smul_eq_mul, RingHom.id_apply, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `ring }`. Establish `hφ : ∀ y, φ y = hE σ J x y` using `fun _ => rfl`.
+Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsurj : Function.Surjective φ` using `fun e => ⟨(e / s) • x, by rw [map_smul, hφ, hx, smul_eq_mul]; field_simp⟩`. Establish `hfr : Module.finrank E (LinearMap.ker φ) = M`. Establish `h` using `LinearMap.finrank_range_add_finrank_ker φ`. Rewrite `h` using `[LinearMap.range_eq_top.2 hsurj, finrank_top]`. Simplify using `at h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Introduce a local definition for the expression.
 
-Use linear arithmetic over natural numbers and integers. Set `b` to `Module.finBasisOfFinrankEq E (LinearMap.ker φ) hfr`. Establish `hb : ∀ k, hE σ J x (b k : Fin (M + 1) → E) = 0` using `fun k => (b k).2`. Set `col : Fin (M + 1) → Fin (M + 1) → E` to `Fin.cons x (fun k => (b k : Fin (M + 1) → E))`. Set `gm : Matrix (Fin (M + 1)) (Fin (M + 1)) E` to `Matrix.of fun i j => col j i`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hG : ∀ i j, (cT (σ : E →+* E) gm * J * gm) i j = hE σ J (col i) (col j)`. Introduce `i j`. Simplify using `only [cT, Matrix.mul_apply, hE, hform, gm, Matrix.transpose_apply, Matrix.map_apply, Matrix.of_apply, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Establish `hdet : gm.det ≠ 0`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `h0`. Take `⟨v, hv0, hv⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 h0`. Establish `hsum : v 0 • x + ∑ k : Fin M, v k.succ • (b k : Fin (M + 1) → E) = 0`. Rewrite using `[← hv]`. Use extensionality with `i`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[gm, col, Matrix.mulVec, dotProduct, Fin.sum_univ_succ, mul_comm]`. Establish `hv00 : v 0 = 0`. Establish `h1` using `congrArg φ hsum`. Rewrite `h1` using `[map_add, map_smul, map_sum, map_zero, hφ, hx, smul_eq_mul]`. Establish `h2 : ∀ k : Fin M, φ (v k.succ • (b k : Fin (M + 1) → E)) = 0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `k`. Rewrite using `[map_smul, hφ, hb, smul_zero]`. Simplify using `only [h2, Finset.sum_const_zero, add_zero] at h1`. Conclude with `(mul_eq_zero.1 h1).resolve_right hs0`. Establish `hker : ∑ k : Fin M, v k.succ • b k = 0`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite `hsum` using `[hv00, zero_smul, zero_add]`. Simplify using `using hsum`. Establish `hvs` using `Fintype.linearIndependent_iff.1 b.linearIndependent _ hker`. Apply `hv0` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Use extensionality with `i`. Use `Fin.cases hv00 hvs i` and prove the remaining obligations. Set `J₁ : Matrix (Fin M) (Fin M) E` to `Matrix.of fun k l => hE σ J (b k : Fin (M + 1) → E) (b l : Fin (M + 1) → E)`. Establish `hblock : blockOne s J₁ = cT (σ : E →+* E) gm * J * gm`. Use extensionality with `i j`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Rewrite using `[hG]`. Apply the tactic sequence `refine Fin.cases ?_ (fun k => ?_) i <;> refine Fin.cases ?_ (fun l => ?_) j`. Simplify using `[blockOne, col, hx, hs]`. Simplify using `[blockOne, col, hb]`. Establish `h3 : hE σ J (b k : Fin (M + 1) → E) x = 0`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[← hherm, hb, map_zero]`. Simplify using `[blockOne, col, h3]`. Simplify using `[blockOne, col, J₁]`. Use `⟨Matrix.GeneralLinearGroup.mkOfDetNeZero gm hdet, J₁, ⟨?_, ?_⟩, hblock, fun i => rfl⟩` and prove the remaining obligations. Introduce `k l`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hherm _ _`. Introduce `hJ0`. Establish `h4` using `congrArg Matrix.det hblock`. Rewrite `h4` using `[det_blockOne, hJ0, mul_zero, Matrix.det_mul, Matrix.det_mul]`. Establish `h5 : (cT (σ : E →+* E) gm).det = σ gm.det`.
-
-Rewrite using `[cT, Matrix.det_transpose]`. Conclude with `((σ : E →+* E).map_det gm).symm`. Rewrite `h4` using `[h5]`. Establish `h6 : σ gm.det ≠ 0` using `(map_ne_zero _).2 hdet`. Conclude with `mul_ne_zero (mul_ne_zero h6 hJ.2) hdet h4.symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem split_anisotropic : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin (M + 1)) (Fin (M + 1)) E), IsHermND σ J → ∀ (t : F) (x : Fin (M + 1) → E), t ≠ 0 → hE σ J x x = algebraMap F E t → ∃ (g : GL (Fin (M + 1)) E) (J₁ : Matrix (Fin M) (Fin M) E), IsHermND σ J₁ ∧ blockOne (algebraMap F E t) J₁ = cT (σ : E →+* E) (g : Matrix (Fin (M + 1)) (Fin (M + 1)) E) * J * g ∧ ∀ i, (g : Matrix (Fin (M + 1)) (Fin (M + 1)) E) i 0 = x i := by
   intro F E _ _ _ _ _ σ hCM M J hJ t x ht hx

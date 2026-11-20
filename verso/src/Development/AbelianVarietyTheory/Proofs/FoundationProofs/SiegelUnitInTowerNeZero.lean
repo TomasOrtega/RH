@@ -9,11 +9,11 @@ open GlobalTheory.KZ GlobalTheory.Sieg
 namespace GlobalTheory.KZ
 
 /- English proof (translation)
-Rewrite using `[Filter.neBot_iff]`. Introduce `h`. Establish `hmem : (∅ : Set ℂ) ∈ Filter.codiscreteWithin Hs` using `by rw [h]; exact Filter.mem_bot`. Rewrite `hmem` using `[mem_codiscreteWithin]`. Establish `hI : Complex.I ∈ Hs` using `by simp [Hs]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hd` using `hmem Complex.I hI`. Simplify using `only [Set.diff_empty] at hd`. Establish `hopen : IsOpen Hs` using `isOpen_lt continuous_const Complex.continuous_im`. Establish `hle : nhdsWithin Complex.I {Complex.I}ᶜ ≤ Filter.principal Hs` using `le_trans nhdsWithin_le_nhds (Filter.le_principal_iff.2 (hopen.mem_nhds hI))`. Establish `hbot : nhdsWithin Complex.I {Complex.I}ᶜ = ⊥`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hd.mono_right hle` as an intermediate fact. Conclude with `disjoint_self.1 this`. Conclude with `(NormedField.nhdsNE_neBot Complex.I).ne hbot`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem codiscreteWithin_Hs_neBot : (Filter.codiscreteWithin Hs).NeBot := by
   rw [Filter.neBot_iff]
@@ -32,11 +32,9 @@ theorem codiscreteWithin_Hs_neBot : (Filter.codiscreteWithin Hs).NeBot := by
   exact (NormedField.nhdsNE_neBot Complex.I).ne hbot
 
 /- English proof (translation)
-Introduce `Ω _ _ _ ε T c x hx h0`. Establish `han` using `GlobalTheory.T.siegelUnitInTower_an_eq_siegelUnitOnComplex Ω ε T c x hx`. Rewrite `han` using `[h0, map_zero]`. Establish `hev : (fun z => sgC c x z) =ᶠ[Filter.codiscreteWithin Hs] (fun _ => (0 : ℂ))` using `(Filter.Germ.coe_eq.1 han.symm)`. Establish `hne : ∀ᶠ z in Filter.codiscreteWithin Hs, sgC c x z ≠ 0` using `by filter_upwards [Filter.self_mem_codiscreteWithin Hs] with z hz`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz' : 0 < z.im` using `hz`. Simplify using `only [sgC, UpperHalfPlane.ofComplex_apply_of_im_pos hz']`. Conclude with `sg_ne_zero c x _ hx`. Use `haveI := codiscreteWithin_Hs_neBot`. Take `⟨z, h1, h2⟩` from `(hev.and hne).exists`.
-
-Conclude with `h2 h1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem siegel_ne_zero : ∀ (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (ε : Ω →+* ℂ) (T : Tower Ω ε)
     (c : ℕ) (x : Fin 2 → ℚ), admitted c x → siegel T c x ≠ 0 := by

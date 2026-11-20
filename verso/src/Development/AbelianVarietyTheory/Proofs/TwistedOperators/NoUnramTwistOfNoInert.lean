@@ -15,9 +15,9 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 omit [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.SplitWeil.KO at hg`. Take `⟨h, rfl⟩` from `hg`. Establish `hdet : (GeneralLinearGroup.det (GeneralLinearGroup.map (algebraMap (𝒪[k]) k) h) : k) = algebraMap (𝒪[k]) k (GeneralLinearGroup.det h : 𝒪[k])`. Simplify using `[GeneralLinearGroup.val_det_apply, RingHom.map_det]`. Rewrite using `[hdet]`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Valuation.integer.integers (valuation k)).one_of_isUnit (Units.isUnit _)`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.InertSupp.Unram.valuation_det_KO {m : Type} [Fintype m] [DecidableEq m] {g : GL m k}
     (hg : g ∈ _root_.GlobalTheory.SplitWeil.KO k m) :

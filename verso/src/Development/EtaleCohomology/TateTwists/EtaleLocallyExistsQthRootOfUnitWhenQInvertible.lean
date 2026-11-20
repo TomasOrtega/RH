@@ -5,7 +5,7 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 namespace LateralTheory.EtaleFoundations.FirstChernUniqueness
 
 /- English proof (translation)
-Establish `h1 : IsZero F.obj` using `(sheafToPresheaf _ _).map_isZero hF`. Establish `h2 : IsZero (F.obj.obj (op U))` using `h1.obj (op U)`. Use `(ModuleCat.isZero_iff_subsingleton.mp h2)` as an intermediate fact. Conclude with `Subsingleton.elim _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma sec_sub {q : ℕ} {F : Shv (ZMod q)} (hF : IsZero F) (U : Scheme.{0}) (a b : Sec F U) : a = b := by
   have h1 : IsZero F.obj := (sheafToPresheaf _ _).map_isZero hF
@@ -14,14 +14,14 @@ lemma sec_sub {q : ℕ} {F : Shv (ZMod q)} (hF : IsZero F) (U : Scheme.{0}) (a b
   exact Subsingleton.elim _ _
 
 /- English proof (translation)
-Unfold `res`. Conclude with `CochainComplex.isZero_of_isStrictlyGE _ 0 _ (by omega)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 lemma res_zero_neg (q : ℕ) (s : ℤ) (hs : s < 0) : IsZero ((res _ (tw q 1)).X s) := by
   unfold res
   exact CochainComplex.isZero_of_isStrictlyGE _ 0 _ (by omega)
 
 /- English proof (translation)
-Unfold `Sx.sub Sx.res`. Conclude with `(NatTrans.naturality_apply (E.map (SimplexCategory.subinterval j l h).op) g.op x)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 lemma sub_res {E : Spc} {N : ℕ} {V U : Scheme.{0}} (g : V ⟶ U) (x : Sx E N U) (j l : ℕ) (h : j + l ≤ N) :
     (x.res g).sub j l h = (x.sub j l h).res g := by
@@ -33,7 +33,7 @@ def ev_basic : Prop := ∀ (R : Type) [CommRing R] {E : Spc} {I : Cx R} {n : ℤ
 def sec_glue : Prop := ∀ (R : Type) [CommRing R] (F : Shv R) (U : Scheme.{0}), (∀ a b : Sec F U, (Loc U fun _ g => Sec.res g a = Sec.res g b) → a = b) ∧ ∀ (S : Sieve U), S ∈ Scheme.etaleTopology U → ∀ s : ∀ (V : Scheme.{0}) (g : V ⟶ U), S.arrows g → Sec F V, (∀ (V W : Scheme.{0}) (g : V ⟶ U) (k : W ⟶ V) (hg : S.arrows g), Sec.res k (s V g hg) = s W (k ≫ g) (S.downward_closed hg k)) → ∃ a : Sec F U, ∀ V g hg, Sec.res g a = s V g hg
 
 /- English proof (translation)
-Take `⟨S, hS, hSP⟩` from `hP`. Conclude with `⟨S, hS, fun V g hg => h V g (hSP V g hg)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 lemma loc_imp {U : Scheme.{0}} {P Q : ∀ V : Scheme.{0}, (V ⟶ U) → Prop} (hP : Loc U P)
     (h : ∀ V g, P V g → Q V g) : Loc U Q := by
@@ -51,9 +51,9 @@ lemma glMat_res {V U : Scheme.{0}} (g : V ⟶ U) (y : Sx (ofCat (glCat 1)) 1 U) 
   rfl
 
 /- English proof (translation)
-Unfold `lineUnit`. Establish `hn : (L.app (op (SimplexCategory.mk 1))).app (op V) (x.res g) = Sx.res g ((L.app (op (SimplexCategory.mk 1))).app (op U) x)`. Unfold `Sx.res`. Rewrite using `[NatTrans.naturality_apply]`. Rewrite using `[hn]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `ext`. Simplify using `only [Units.coe_map, Matrix.GeneralLinearGroup.val_det_apply, MonoidHom.coe_coe, RingHom.toMonoidHom_eq_coe]`. Rewrite using `[glMat_res, RingHom.map_det]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 lemma lineUnit_res {E : Spc} (L : E ⟶ ofCat (glCat 1)) {V U : Scheme.{0}} (g : V ⟶ U) (x : Sx E 1 U) :
     lineUnit L (x.res g) = Units.map g.appTop.hom.toMonoidHom (lineUnit L x) := by
@@ -67,7 +67,7 @@ lemma lineUnit_res {E : Spc} (L : E ⟶ ofCat (glCat 1)) {V U : Scheme.{0}} (g :
   rw [glMat_res, RingHom.map_det]
 
 /- English proof (translation)
-Use `loc_imp (hr q U (hi U ⟨x.sub 0 0 (by omega)⟩) (lineUnit L x)) fun V g hv => ?_` and prove the remaining obligations. Take `⟨v, hv⟩` from `hv`. Conclude with `⟨v, by rw [lineUnit_res]; exact hv⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 lemma root_line (hr : EtaleLocallyExistsQthRootOfUnitWhenQInvertible) (q : ℕ) [NeZero q] {E : Spc} (L : E ⟶ ofCat (glCat 1)) (hi : Inv q E)
     (U : Scheme.{0}) (x : Sx E 1 U) : Loc U fun V g => ∃ v : (Γ(V, ⊤))ˣ, v ^ q = lineUnit L (x.res g) := by
@@ -76,7 +76,7 @@ lemma root_line (hr : EtaleLocallyExistsQthRootOfUnitWhenQInvertible) (q : ℕ) 
   exact ⟨v, by rw [lineUnit_res]; exact hv⟩
 
 /- English proof (translation)
-Take `⟨S, hS, hSP⟩` from `hP`. Take `⟨T, hT, hTQ⟩` from `hQ`. Conclude with `⟨S ⊓ T, Scheme.etaleTopology.intersection_covering hS hT, fun V g hg => ⟨hSP V g hg.1, hTQ V g hg.2⟩⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 lemma loc_and {U : Scheme.{0}} {P Q : ∀ V : Scheme.{0}, (V ⟶ U) → Prop} (hP : Loc U P) (hQ : Loc U Q) :
     Loc U fun V g => P V g ∧ Q V g := by

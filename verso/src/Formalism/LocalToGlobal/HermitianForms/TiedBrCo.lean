@@ -22,7 +22,7 @@ def fnInv (G : ι → Matrix (Fin n) (Fin n) ℂ) (s : ι → ℤ) (M : ι → M
   else 0
 
 /- English proof (translation)
-Unfold `fnInv`. Rewrite using `[dif_pos h]`. Conclude with `LinearMap.congr_fun (Classical.choose_spec (LinearMap.exists_leftInverse_of_injective (fnOf G s M) (LinearMap.ker_eq_bot.mpr (fnOf_injective G s M h)))) P`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fnInv_fnOf (G : ι → Matrix (Fin n) (Fin n) ℂ) (s : ι → ℤ) (M : ι → Matrix (Fin n) (Fin n) ℂ)
     (h : ∀ τ, IsUnit (M τ).det) (P : MvPolynomial (ι × Fin n × Fin n) ℂ) : fnInv G s M (fnOf G s M P) = P := by
@@ -41,7 +41,7 @@ def bZg (u : D.what₂.Word) (z0 : Fin (D.R.N D.R.m) → D.host.E) (B' : Matrix 
   fun a b => if hb : (b : ℕ) < D.R.N D.R.m - 1 then (iXm D * B') a ⟨b, hb⟩ else z0 a / ((D.mem u).A.T : D.host.E)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a b`. Simplify using `only [bZg, bZ, Matrix.mul_one]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem bZg_one (z0 : Fin (D.R.N D.R.m) → D.host.E) : bZg u z0 1 = bZ u z0 := by
   funext a b
@@ -67,9 +67,9 @@ def coPT (Tf : FormsTied D u) (B : D.what₂.places.Pl → (D.fm u).clsP → Mat
     (LinearMap.proj c ∘ₗ Tf.valP.eW.toLinearMap)
 
 /- English proof (translation)
-Rewrite using `[Tf.evz φ c _ ((Tf.val D.R.m le_rfl).eY.symm (y.tr (atInf (embT D) ((((Tf.til.ga c).1)⁻¹ : GL (Fin (D.R.N D.R.m)) D.host.E) : Matrix _ _ D.host.E)) (isUnit_det_atInf (embT D) ((Tf.til.ga c).1)⁻¹)))]`. Both sides reduce to the same expression. Introduce `τ`. Simplify using `only [Equiv.apply_symm_apply]`. Use `show y.1 τ = atInf (embT D) (Tf.til.ga c).1.1 τ * (atInf (embT D) ((((Tf.til.ga c).1)⁻¹ : GL (Fin (D.R.N D.R.m)) D.host.E) : Matrix _ _ D.host.E) τ * y.1 τ)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Matrix.mul_assoc, atInf_mul_inv, Matrix.one_mul]`.
+A detailed English derivation is pending.
 -/
 theorem trEv_eq (Tf : FormsTied D u) (φ : Fn D u D.R.m) (c : (D.fm u).clsP) (y : Fr D D.R.m le_rfl) :
     trEv Tf c (φ ((D.fm u).til c)) y = Tf.eWz ((D.mem u).P.evz φ) c ((Tf.val D.R.m le_rfl).eY.symm y) := by

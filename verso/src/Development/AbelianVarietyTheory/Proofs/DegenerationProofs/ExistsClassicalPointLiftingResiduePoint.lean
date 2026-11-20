@@ -12,9 +12,9 @@ open GlobalTheory.ZJ
 namespace GlobalTheory
 
 /- English proof (translation)
-Rewrite using `[← map_natCast (IsLocalRing.residue (OO p)), IsLocalRing.residue_eq_zero_iff, Valuation.mem_maximalIdeal_iff]`. Establish `: (((p : ℕ) : OO p) : PadicAlgCl p) = (p : PadicAlgCl p)` using `rfl`. Rewrite using `[this, PadicAlgCl.valuation_p]`. Establish `h1 : (1 : NNReal) < p` using `by exact_mod_cast hp.out.one_lt`. Rewrite using `[div_lt_one (lt_trans zero_lt_one h1)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h1`.
+A detailed English derivation is pending.
 -/
 theorem natCast_self_residueField_padicAlgCl_eq_zero (p : ℕ) [hp : Fact p.Prime] :
     ((p : ℕ) : kb p) = 0 := by
@@ -27,7 +27,7 @@ theorem natCast_self_residueField_padicAlgCl_eq_zero (p : ℕ) [hp : Fact p.Prim
   exact h1
 
 /- English proof (translation)
-Use `Ideal.isMaximal_iff.mpr ⟨by simp, fun J a hJ ha haJ => ?_⟩` and prove the remaining obligations. Take `⟨n, hn, h⟩` from `hk (φ a) ha`. Establish `h1 : 1 - a ^ n ∈ J` using `hJ (by simp [RingHom.mem_ker, h])`. Establish `h2 : a ^ n ∈ J` using `J.pow_mem_of_mem haJ n hn`. Simplify using `using J.add_mem h1 h2`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem ker_isMaximal_of_forall_pow_eq_one {A k : Type*} [CommRing A] [Field k]
     (hk : ∀ x : k, x ≠ 0 → ∃ n : ℕ, 1 ≤ n ∧ x ^ n = 1) (φ : A →+* k) :
@@ -39,11 +39,11 @@ theorem ker_isMaximal_of_forall_pow_eq_one {A k : Type*} [CommRing A] [Field k]
   simpa using J.add_mem h1 h2
 
 /- English proof (translation)
-Take `⟨V, hV, φ, rfl⟩` from `exists_affineOpen_factor_of_isLocalRing x`. Establish `h` using `hV.fromSpec.isOpenEmbedding.preimage_closedPoints`. Establish `hs : Spec.map φ s ∈ closedPoints (Spec Γ(X, V))`. Use `(PrimeSpectrum.isClosed_singleton_iff_isMaximal _).mpr ?_` and prove the remaining obligations. Use `(s : PrimeSpectrum k).isPrime` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e : (s : PrimeSpectrum k).asIdeal = ⊥` using `Ideal.eq_bot_of_prime _`. Establish `: (Spec.map φ s : PrimeSpectrum Γ(X, V)).asIdeal = RingHom.ker φ.hom`. Express the relevant statement in the definitionally equal form `Ideal.comap φ.hom (s : PrimeSpectrum k).asIdeal = _`. Rewrite using `[e]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[this]`. Conclude with `ker_isMaximal_of_forall_pow_eq_one hk φ.hom`. Rewrite `hs` using `[← h]`. Rewrite using `[Scheme.Hom.comp_apply]`. Conclude with `hs`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isClosed_image_point_of_forall_pow_eq_one {k : Type} [Field k]
     (hk : ∀ x : k, x ≠ 0 → ∃ n : ℕ, 1 ≤ n ∧ x ^ n = 1) {X : Scheme.{0}} [JacobsonSpace X]
@@ -64,7 +64,7 @@ theorem isClosed_image_point_of_forall_pow_eq_one {k : Type} [Field k]
   exact hs
 
 /- English proof (translation)
-Take `rfl : s = IsLocalRing.closedPoint k` from `Subsingleton.elim _ _`. Substitute `hz` using the available equality. Conclude with `⟨_, Scheme.descResidueField_stalkClosedPointTo_fromSpecResidueField k X x⟩`.
+Extract witnesses or component facts from the available result. Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem exists_residueField_factor_of_apply_eq {k : Type} [Field k] {X : Scheme.{0}}
     (x : Sp k ⟶ X) (s : Sp k) (z : X) (hz : x s = z) :
@@ -74,27 +74,25 @@ theorem exists_residueField_factor_of_apply_eq {k : Type} [Field k] {X : Scheme.
   exact ⟨_, Scheme.descResidueField_stalkClosedPointTo_fromSpecResidueField k X x⟩
 
 /- English proof (translation)
-Introduce `X _ π _ _ U hU p hp`. Take `⟨hJ, hfin, -⟩` from `jacobson_closedPoints_tools_int X π`. Take `⟨-, hord, hgal⟩` from `GlobalTheory.T.kb_isAlgClosed_and_conj' p`. Establish `hcl : ∀ (x : Sp (kb p) ⟶ X) (s : Sp (kb p)), IsClosed ({x s} : Set X)` using `fun x s => isClosed_image_point_of_forall_pow_eq_one hord x s`. Use `⟨fun x => ?_, hcl⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Set `s : Sp (kb p)` to `IsLocalRing.closedPoint (kb p)`. Take `⟨q, hq, y, hy, hyU⟩` from `padicAlgCl_integral_points.1 X π (x s) (hcl x s) U hU`. Establish `hfz` using `hfin _ (hcl x s)`. Take `⟨r', hr'⟩` from `exists_residueField_factor_of_apply_eq x s _ rfl`. Establish `hy' : (rPt q ≫ y) (IsLocalRing.closedPoint (kb q)) = x s`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `(Scheme.Hom.comp_apply _ _ _).trans ((congrArg y ?_).trans hy)` and prove the remaining obligations. Conclude with `IsLocalRing.comap_closedPoint (IsLocalRing.residue (OO q))`. Take `⟨r, hr⟩` from `exists_residueField_factor_of_apply_eq (rPt q ≫ y) _ _ hy'`. Choose the witnesses or unpack the hypotheses as in `rfl : p = q := by`. Establish `h1 : ((p : ℕ) : X.residueField (x s)) = 0`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `r'.hom.injective` to reduce the goal to its premises. Rewrite using `[map_natCast, map_zero]`. Conclude with `natCast_self_residueField_padicAlgCl_eq_zero p`. Establish `h2 : ((q : ℕ) : X.residueField (x s)) = 0`. Apply `r.hom.injective` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_natCast, map_zero]`. Conclude with `natCast_self_residueField_padicAlgCl_eq_zero q`. Use `(CharP.charP_iff_prime_eq_zero (R := X.residueField (x s)) hp.out).mpr h1` as an intermediate fact. Use `(CharP.charP_iff_prime_eq_zero (R := X.residueField (x s)) hq.out).mpr h2` as an intermediate fact. Conclude with `CharP.eq (X.residueField (x s)) ‹CharP _ p› ‹CharP _ q›`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨σ, hσ⟩` from `hgal (X.residueField (x s)) r.hom r'.hom`. Use `⟨spMap σ.toRingHom ≫ y, ?_, ?_⟩` and prove the remaining obligations. Set `τ : kb p →+* kb p` to `IsLocalRing.ResidueField.map (σ : OO p →+* OO p)`. Establish `e1 : rPt p ≫ spMap σ.toRingHom = spMap τ ≫ rPt p`. Use `(Spec.map_comp _ _).symm.trans (Eq.trans ?_ (Spec.map_comp _ _))` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression. Establish an intermediate fact. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result.
 
-Both sides reduce to the same expression. Establish `e2 : r ≫ CommRingCat.ofHom τ = r'`. Use extensionality with `a`. Take `⟨c, hc⟩` from `IsLocalRing.residue_surjective (r.hom a)`. Express the relevant statement in the definitionally equal form `τ (r.hom a) = r'.hom a`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hσ a c hc, ← hc]`. Both sides reduce to the same expression. Rewrite using `[← Category.assoc, e1, Category.assoc]`. Use `(congrArg (spMap τ ≫ ·) hr.symm).trans (Eq.trans ?_ hr')` and prove the remaining obligations. Rewrite using `[← e2, Spec.map_comp, Category.assoc]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Introduce and unpack `_ ⟨t, rfl⟩`. Apply `hyU` to reduce the goal to its premises. Use `⟨t, ?_⟩` and prove the remaining obligations. Simplify using `only [Scheme.Hom.comp_apply]`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Use `(t : PrimeSpectrum (PadicAlgCl p)).isPrime` as an intermediate fact. Establish `e : (t : PrimeSpectrum (PadicAlgCl p)).asIdeal = ⊥` using `Ideal.eq_bot_of_prime _`. Apply `PrimeSpectrum.ext` to reduce the goal to its premises. Use extensionality with `a`. Express the relevant statement in the definitionally equal form `(a : PadicAlgCl p) ∈ (t : PrimeSpectrum (PadicAlgCl p)).asIdeal ↔ ((σ a : OO p) : PadicAlgCl p) ∈ (t : PrimeSpectrum (PadicAlgCl p)).asIdeal`.
-
-Rewrite using `[e]`. Simplify using the standard rewrite rules.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_integral_point_lifting_residue_point :
     ∀ (X : Scheme.{0}) [IsIntegral X] (π : X ⟶ Sp ℤ) [Flat π] [LocallyOfFiniteType π] (U : X.Opens),

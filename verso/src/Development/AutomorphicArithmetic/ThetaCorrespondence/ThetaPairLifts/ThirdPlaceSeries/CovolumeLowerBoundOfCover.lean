@@ -19,19 +19,19 @@ namespace GlobalTheory.CovTop.MeasLow
 end GlobalTheory.CovTop.MeasLow
 namespace GlobalTheory.CovTop.MeasLow
 /- English proof (translation)
-Take `⟨C, hC0, hC⟩` from `_root_.MainStatements.Tam.Plug.tamagawa_pairs_product hP`. Use `Closed.imp (Closed.and (_root_.GlobalTheory.CovTop.Sizes.hostN_alt 1) _root_.GlobalTheory.CovTop.WtShape.wtN_z) ?_` and prove the remaining obligations. Introduce and unpack `eps Fm CH - ⟨⟨C1, -, hE1⟩, ⟨C2, -, hE2⟩⟩`. Use `⟨6 * C + 3, by positivity, ?_⟩` and prove the remaining obligations. Take `⟨x0, hx⟩` from `hE1.and hE2`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨x0, fun x hx' hle ι p hp i => ?_⟩` and prove the remaining obligations. Establish `hn` using `(hx x hx' hle ι p hp).1 i`. Establish `hw` using `(hx x hx' hle ι p hp).2 i`. Establish `hsz` using `size_le_unit p i hC0 hn hw`. Establish `hdim` using `log_prod_dimAt _ i`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm` using `hC _ _ _ _ p.charW.base.lev i p.R.triv _ _ (p.charW.base.models.νW i)`. Establish `hu0 : 0 ≤ unitE p` using `unit_nonneg p i hn hw`. Unfold `ratAt GlobalTheory.IndefiniteRowSideFullHecke.OneMeasureSizes.ratio`. Use `set V := ((p.R.toRealDat.νW i) (p.R.toRealDat.fdW i)).toReal with hV`. Use `set Q := ∏ τ, GlobalTheory.IndefiniteRowSideFullHecke.OneMeasureSizes.dimAt (Fm.D x ι) i τ with hQ`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Establish `hK0 : -((6 * C + 3) * unitE p) ≤ 0` using `by nlinarith`. Distinguish the cases in `hV0 : V = 0`. Rewrite using `[hV0, zero_mul, Real.log_zero]`. Conclude with `hK0`. Distinguish the cases in `hQ0 : Q = 0`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hQ0, mul_zero, Real.log_zero]`. Conclude with `hK0`. Establish `hQl : -((Fm.D x ι).R.f * (((Fm.D x ι).R.r : ℝ) ^ 2 * Real.log (((Fm.D x ι).R.r : ℝ) + 1))) ≤ Real.log Q` using `hdim.resolve_left hQ0`. Establish `htop : (p.R.toRealDat.νW i) (p.R.toRealDat.fdW i) ≠ ⊤`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Apply `hV0` to reduce the goal to its premises. Rewrite using `[hV, h]`. Both sides reduce to the same expression. Establish `hVe : Real.exp (-(C * (((Fm.D x ι).R.f : ℝ) * ((Fm.D x ι).R.r : ℝ) ^ 2 * (Real.log (((Fm.D x ι).R.f : ℝ) * (Fm.D x ι).R.r + 3) + 1) + Real.log |(discr (Fm.D x ι).host.E : ℝ)|))) ≤ V` using `(ENNReal.ofReal_le_iff_le_toReal htop).1 hm`. Establish `hVpos : 0 < V` using `lt_of_le_of_ne ENNReal.toReal_nonneg (Ne.symm hV0)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hlV` using `Real.log_le_log (Real.exp_pos _) hVe`. Rewrite `hlV` using `[Real.log_exp]`. Rewrite using `[Real.log_mul hV0 hQ0]`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem nef_share_lower_bound_alt (hP : _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems) :
     Closed FamHyp fun Fm _ => ∃ K : ℝ, 0 ≤ K ∧ _root_.GlobalTheory.CovTop.EventuallyAtAllPoints Fm fun _ _ _ p => ∀ i, -(K * unitE p) ≤ Real.log (ratAt p i) := by
@@ -76,7 +76,7 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestric
 open Formalism.MainNotions
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.CovTop.MeasLow.nef_share_lower_bound_alt | exact _root_.GlobalTheory.CovTop.MeasLow.nef_share_lower_bound_alt | (intros; apply _root_.GlobalTheory.CovTop.MeasLow.nef_share_lower_bound_alt <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.exists_neg_unitE_le_log_ratAt : _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems → Closed FamHyp fun Fm _ => ∃ K : ℝ, 0 ≤ K ∧ _root_.GlobalTheory.CovTop.EventuallyAtAllPoints Fm fun _ _ _ p => ∀ i, -(K * unitE p) ≤ Real.log (ratAt p i) := by
   first | exact @_root_.GlobalTheory.CovTop.MeasLow.nef_share_lower_bound_alt | exact _root_.GlobalTheory.CovTop.MeasLow.nef_share_lower_bound_alt | (intros; apply _root_.GlobalTheory.CovTop.MeasLow.nef_share_lower_bound_alt <;> assumption)

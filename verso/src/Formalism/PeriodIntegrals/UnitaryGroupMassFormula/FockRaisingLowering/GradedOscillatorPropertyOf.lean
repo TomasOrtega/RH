@@ -4,15 +4,13 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.FockRaisingLowering.Sam
 namespace FockRL
 
 /- English proof (translation)
-Introduce `p q r s`. Take `⟨e1, e2, k1, k2, o1, o2, c1, c2, a1, a2⟩` from `hM p q r s`. Use `⟨?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `Z hZ d P hP'`. Rewrite using `[e1]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hK p q r s _ (k1 Z hZ) d P hP'`. Introduce `Z hZ d P hP'`. Rewrite using `[e2]`. Conclude with `hK p q r s _ (k2 Z hZ) d P hP'`. Introduce `Z hZ P`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[e1]`. Conclude with `hP p q r s _ (o1 Z hZ) P`. Introduce `Z hZ P`. Rewrite using `[e2]`. Conclude with `hP p q r s _ (o2 Z hZ) P`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `Z hZ P Q`. Rewrite using `[e1, e1]`. Conclude with `hA p q r s _ _ (o1 Z hZ) (o1 _ (c1 Z hZ)) (a1 Z) P Q`. Introduce `Z hZ P Q`. Rewrite using `[e2, e2]`.
-
-Conclude with `hA p q r s _ _ (o2 Z hZ) (o2 _ (c2 Z hZ)) (a2 Z) P Q`.
+A detailed English derivation is pending.
 -/
 theorem gradedOscillatorProperty_of (hK : KCStep) (hP : PCStep) (hA : AdjStep) (hM : MatStep) : FockH1Action.H1 := by
   intro p q r s

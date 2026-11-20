@@ -17,21 +17,21 @@ variable {R R' : Type} [CommRing R] [IsDomain R] [CommRing R'] [IsDomain R'] {φ
   {D' : DegPre R'}
 
 /- English proof (translation)
-Rewrite using `[cP, toUnit_unit, Category.id_comp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cPoint_unit (D : DegPre R) (y : D.X) : cP D (𝟙_ (Over (Sp R))) y = D.c y := by
   rw [cP, toUnit_unit, Category.id_comp]
 
 /- English proof (translation)
-Rewrite using `[← cPoint_unit D (n • y), ← cPoint_unit D 0, cPoint_nsmul, cPoint_zero, cPoint_unit]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem c_pow_eq_one_iff (D : DegPre R) (n : ℕ) (y : D.X) : D.c y ^ n = 1 ↔ D.c (n • y) = D.c 0 := by
   rw [← cPoint_unit D (n • y), ← cPoint_unit D 0, cPoint_nsmul, cPoint_zero, cPoint_unit]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `Over.OverMorphism.ext ((pull_grp hD).1.hom_ext ?_ (by rw [Over.w, Over.w]))` and prove the remaining obligations. Rewrite using `[hD.c_pr, hD.c_pr, h]`. Introduce `h haveI : IsDominant (spMap φ) := ⟨(PrimeSpectrum.denseRange_comap_iff_ker_le_nilRadical φ).2 (by`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[(RingHom.injective_iff_ker_eq_bot φ).1 hφ]`. Conclude with `bot_le)⟩`. Use `haveI : IsProper D.P.A.hom := D.P.isAb.proper`. Conclude with `Over.OverMorphism.ext (ext_of_isDominant_of_isSeparated (X := Sp R) D.P.A.hom ((Over.w _).trans (Over.w _).symm) (spMap φ) ((hD.c_pr x).symm.trans ((congrArg (fun q => q.left ≫ _) h).trans (hD.c_pr x'))))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem c_eq_iff (hD : IsPullDeg φ D D') (hφ : Function.Injective φ) (x x' : D'.X) :
     D.c (hD.xe x) = D.c (hD.xe x') ↔ D'.c x = D'.c x' := by
@@ -48,7 +48,7 @@ theorem c_eq_iff (hD : IsPullDeg φ D D') (hφ : Function.Injective φ) (x x' : 
       ((hD.c_pr x).symm.trans ((congrArg (fun q => q.left ≫ _) h).trans (hD.c_pr x'))))
 
 /- English proof (translation)
-Rewrite using `[hD.xe.surjective.forall]`. Use `forall_congr' fun y => ?_` and prove the remaining obligations. Rewrite using `[c_pow_eq_one_iff, c_pow_eq_one_iff, ← c_eq_iff hD hφ, map_nsmul, map_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem torsion_iff (hD : IsPullDeg φ D D') (hφ : Function.Injective φ) (n : ℕ) :
     (∀ y, D.c y ^ n = 1) ↔ ∀ y, D'.c y ^ n = 1 := by
@@ -57,7 +57,7 @@ theorem torsion_iff (hD : IsPullDeg φ D D') (hφ : Function.Injective φ) (n : 
   rw [c_pow_eq_one_iff, c_pow_eq_one_iff, ← c_eq_iff hD hφ, map_nsmul, map_zero]
 
 /- English proof (translation)
-Establish `h : LB.Gen.Corr D.P.L _ _ _ _ (D.tau (n • a) (n • b)) (scaleGen (unitOn (kappa hc a b)) (LB.oneGen D.P.L))` using `corr_of_val D.P.isLB fun y I hI => (unitAt_kappa hc a b hI).symm.trans ((val_scale _ _ _ hI).trans ((congrArg₂ (· * ·) rfl (val_one _)).trans (_root_.mul_one _))).symm`. Conclude with `(val_corr hJ h r).trans ((val_scale _ _ _ hJ).trans ((congrArg₂ (· * ·) rfl (val_one _)).trans (_root_.mul_one _)))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem val_tau_kappa {n : ℕ} (hc : ∀ y, D.c y ^ n = 1) (a b : D.X) {Z : Scheme.{0}} (r : Z ⟶ (TK R).left) {z : Z} {J}
     (hJ : Good D.P.L z J) : val (D.tau (n • a) (n • b)) r z J = unitAt r z (kappa hc a b) := by
@@ -68,9 +68,9 @@ theorem val_tau_kappa {n : ℕ} (hc : ∀ y, D.c y ^ n = 1) (a b : D.X) {Z : Sch
     (_root_.mul_one _)))
 
 /- English proof (translation)
-Set `z : (TK R').left` to `IsLocalRing.closedPoint (FractionRing R')`. Take `⟨J, hJ⟩` from `DegPull.exists_good' D.P.isLB z`. Take `⟨J', hJ'⟩` from `DegPull.exists_good' D'.P.isLB z`. Establish `e` using `tau_val hD _ _ (fracMap_sq hφ) hJ hJ' (n • a) (n • b)`. Establish `a₁ : ∀ w : D'.X, D'.xK (n • w) = (1 : TK R' ⟶ D'.P.A).left` using `fun w => congrArg (fun q => q.left) (cPoint_nsmul_eq_one hc' (TK R') w)`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e` using `[map_nsmul, map_nsmul, val_tau_kappa hc _ _ _ hJ, val_tau_kappa hc' _ _ _ hJ', ← nsmul_add, a₁, a₁, a₁, inv_mul_cancel, _root_.one_mul, mul_inv_cancel, _root_.one_mul]`. Use `unitAt_injective z (e.symm.trans ?_)` and prove the remaining obligations. Conclude with `(congrArg (fun q => unitAt q z _) (Category.id_comp (genMap hφ)).symm).trans (unitAt_spMap (𝟙 _) (fracMap hφ) z _)`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem kappa_pull (hD : IsPullDeg φ D D') (hφ : Function.Injective φ) {n : ℕ} (hc : ∀ y, D.c y ^ n = 1)
     (hc' : ∀ y, D'.c y ^ n = 1) (a b : D'.X) :
@@ -88,9 +88,9 @@ theorem kappa_pull (hD : IsPullDeg φ D D') (hφ : Function.Injective φ) {n : �
     (unitAt_spMap (𝟙 _) (fracMap hφ) z _)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hc, h⟩`. Use `⟨(torsion_iff hD hφ n).1 hc, fun y y' => ?_⟩` and prove the remaining obligations. Rewrite using `[kappa_pull hD hφ hc, h, map_one]`. Introduce and unpack `⟨hc', h⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Use `⟨(torsion_iff hD hφ n).2 hc', fun y y' => ?_⟩` and prove the remaining obligations. Take `⟨y, rfl⟩` from `hD.xe.surjective y`. Take `⟨y', rfl⟩` from `hD.xe.surjective y'`. Apply `Units.map_injective (f := (fracMap hφ).toMonoidHom) (fracMap hφ).injective` to reduce the goal to its premises. Rewrite using `[← kappa_pull hD hφ _ hc', h, map_one]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem tauCan_iff (hD : IsPullDeg φ D D') (hφ : Function.Injective φ) (n : ℕ) :
     ArcCM.TauCan D n ↔ ArcCM.TauCan D' n := by
@@ -113,7 +113,7 @@ open Formalism.L2.Pj Formalism.L2.PjFree Formalism.L2.Pj.QAt Formalism.L2.LamCM 
 open scoped LaurentSeries
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _ _ _ _ _ _ p n hf _ _` and use `tauCan_iff p hf n`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem tauCan_iff_of_isPullDeg : Known → ∀ (R R' : Type) [CommRing R] [IsDomain R] [IsNoetherianRing R] [CommRing R'] [IsDomain R'] [IsNoetherianRing R'] (f : R →+* R') (D₀ : Out.DegPre R) (D₁ : Out.DegPre R') (p : Out.IsPullDeg f D₀ D₁) (n : ℕ), Function.Injective f → D₀.TauBimult → D₁.TauBimult → (TauCan D₀ n ↔ TauCan D₁ n) :=
   fun _ _ _ _ _ _ _ _ _ _ _ _ p n hf _ _ => tauCan_iff p hf n

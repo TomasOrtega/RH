@@ -8,9 +8,9 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 open scoped Pointwise in
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `ht`. Use `⟨?_, fun x hx => h2 x hx⟩` and prove the remaining obligations. Establish `h1' : t • A = A` using `h1`. Use `show (AlgEquiv.restrictScalars K t : G K Ω) • A = A`. Establish `: (AlgEquiv.restrictScalars K t : G K Ω) • A = t • A`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `x`. Simplify using `only [ValuationSubring.mem_smul_pointwise_iff_exists]`. Both sides reduce to the same expression. Rewrite using `[this, h1']`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem ine_restrict {K M Ω : Type} [Field K] [NumberField K] [Field M] [NumberField M] [Field Ω] [Algebra K M] [Algebra K Ω]
     [Algebra M Ω] [IsScalarTower K M Ω] (A : ValuationSubring Ω) (t : G M Ω) (ht : t ∈ Ine (F := M) A) :
@@ -26,7 +26,7 @@ private theorem ine_restrict {K M Ω : Type} [Field K] [NumberField K] [Field M]
   rw [this, h1']
 
 /- English proof (translation)
-Apply `HeightOneSpectrum.ext` to reduce the goal to its premises. Use extensionality with `x`. Rewrite using `[← h x, ← h' x]`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 private theorem place_unique {K Ω : Type} [Field K] [NumberField K] [Field Ω] [Algebra K Ω] (A : ValuationSubring Ω)
     (v w : HeightOneSpectrum (𝓞 K)) (h : IsPlaceOver A v) (h' : IsPlaceOver A w) : v = w := by
@@ -35,7 +35,7 @@ private theorem place_unique {K Ω : Type} [Field K] [NumberField K] [Field Ω] 
   rw [← h x, ← h' x]
 
 /- English proof (translation)
-Proceed by induction on `h with`. Consider the case `refl => exact ha`. Consider the case `tail _ hbc ih`. Take `⟨l, _, rfl⟩` from `hbc`. Conclude with `hl _ _ ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem le_closed (P₀ : Lbl → Prop) (hl : ∀ a l, P₀ a → P₀ (a.lift l)) {a b : Lbl} (h : a.Le b) (ha : P₀ a) : P₀ b := by
   induction h with
@@ -45,17 +45,15 @@ private theorem le_closed (P₀ : Lbl → Prop) (hl : ∀ a l, P₀ a → P₀ (
     exact hl _ _ ih
 
 /- English proof (translation)
-Introduce `hB hF hP hR hU P₀ hl hS hN E Ω _ _ _ n hn X Y hXY A Θ hΘ`. Proceed by induction on `hXY using Relation.ReflTransGen.head_induction_on with`. Consider the case `refl`. Introduce `_ v w hv hw e e' he he' τ τ' hτ hτ' a _ hL`. Take `rfl` from `place_unique A v w hv hw`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨a, Relation.ReflTransGen.refl, hB Y.K Ω n Y.π A Θ v e e' he he' τ τ' hτ hτ' a hL⟩`. Consider the case `@head X Z hXZ hZY ih`. Introduce `hI v w hv hw e e' he he' τ τ' hτ hτ' a ha hL`. Take `⟨i1, i2, hGal, hpr, hW⟩` from `hXZ`. Take `⟨u, hu, τ₁, hτ₁⟩` from `hP X.K Z.K Ω A v hv n Z.π`.
+Supply the required witnesses or components. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨e₁, he₁⟩, _⟩` from `hR Z.K Ω A u hu`. Establish `hIZ : ∀ t ∈ Ine (F` using `X.K) A, UpperTheory.Gal.UnramifiedFromSplittingCriterion.Fixes Z.K t := by`. Introduce `t ht x`. Take `⟨y, hy⟩` from `hF E Ω n Z Y hZY x`. Rewrite using `[← hy]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hI t ht y`. Take `⟨hund, hUnr, _⟩` from `hU X.K Z.K Ω A v u hv hu hIZ`. Set `u' : PlacesOver Z.K v` to `⟨u, ⟨by rw [← hund]; rfl⟩⟩`. Establish `hb : ∃ b₁, a.Le b₁ ∧ HasLbl (Θ.comp e₁.toMonoidHom) τ₁.ρ b₁`. Distinguish the cases in `hs : UpperTheory.ConvolutionTheory.GM.Split Z.K v`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Conclude with `hS X.K Z.K Ω hpr n hn X.π Z.π hW A Θ hΘ v u' hs hUnr e e₁ he he₁ τ τ₁ hτ hτ₁ a ha hL`. Conclude with `hN X.K Z.K Ω hpr n hn X.π Z.π hW A Θ hΘ v u' hs hUnr e e₁ he he₁ τ τ₁ hτ hτ₁ a ha hL`. Take `⟨b₁, hab, hb₁⟩` from `hb`. Establish `hIZ' : ∀ t ∈ Ine (F` using `Z.K) A, UpperTheory.Gal.UnramifiedFromSplittingCriterion.Fixes Y.K t := by`. Introduce `t ht y`.
-
-Conclude with `hI _ (ine_restrict (K := X.K) A t ht) y`. Take `⟨b, hbb, hbL⟩` from `ih hIZ' u w hu hw e₁ e' he₁ he' τ₁ τ' hτ₁ hτ' b₁ (le_closed P₀ hl hab ha) hb₁`. Conclude with `⟨b, hab.trans hbb, hbL⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.InertialTypesAlt.lblOn :
     BaseCase → LiftsFix → PlaceEx → ResEmbEx → UnrOfIne → ∀ P₀ : Lbl → Prop, (∀ a l, P₀ a → P₀ (a.lift l)) → StepAt P₀ id → StepAt P₀ Not → LblOn P₀ := by

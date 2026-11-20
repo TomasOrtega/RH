@@ -18,9 +18,9 @@ open GlobalTheory.UU
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `e : scal (p ≫ Spec.map (CommRingCat.ofHom φ)) r = scal p (φ r)`. Use `congrArg (fun q => q.hom r) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom φ))` as an intermediate fact. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply, CommRingCat.hom_ofHom] at this`. Unfold `scal`. Rewrite using `[this]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `(h.map _).map _`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_scal_comp_specMap {R F : Type} [CommRing R] [CommRing F] {Y : Scheme.{0}}
     (p : Y ⟶ Spec (CommRingCat.of F)) (φ : R →+* F) (r : R) (h : IsUnit (φ r)) :
@@ -35,7 +35,7 @@ theorem isUnit_scal_comp_specMap {R F : Type} [CommRing R] [CommRing F] {Y : Sch
   exact (h.map _).map _
 
 /- English proof (translation)
-Use `(congrArg (gs r z (LB.wchart L φ (fun k => J (r ≫ φ k)))) (h _)).trans ?_` and prove the remaining obligations. Unfold `gs`. Use `split_ifs`. Conclude with `(congrArg _ (map_zero _)).trans (map_zero _)`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem sval_eq_zero_of_forall_eq_zero {X Y Z : Scheme.{0}} {L : LB X} {K : Type} [Fintype K] {φ : K → (Y ⟶ X)}
     {ε : K → ℤ} (s : LB.Sec (LB.LinComb L φ ε)) (h : ∀ j, s.f j = 0) (r : Z ⟶ Y) (z : Z) (J : (Z ⟶ X) → L.ι) :
@@ -47,9 +47,9 @@ theorem sval_eq_zero_of_forall_eq_zero {X Y Z : Scheme.{0}} {L : LB X} {K : Type
   · rfl
 
 /- English proof (translation)
-Establish `w : r₂ ≫ (T₀ ⊗ B).hom = r₁ ≫ (T₀ ⊗ B).hom`. Rewrite using `[← Over.w (fst T₀ B), ← Category.assoc, ← Category.assoc, h]`. Set `u₁ : Over.mk (r₁ ≫ (T₀ ⊗ B).hom) ⟶ T₀ ⊗ B` to `Over.homMk r₁ rfl`. Set `u₂ : Over.mk (r₁ ≫ (T₀ ⊗ B).hom) ⟶ T₀ ⊗ B` to `Over.homMk r₂ w`. Establish `e : u₁ ≫ fst T₀ B = u₂ ≫ fst T₀ B` using `Over.OverMorphism.ext h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `⟨_, u₁ ≫ fst T₀ B, u₁ ≫ snd T₀ B, u₂ ≫ snd T₀ B, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[lift_comp_fst_snd]`. Both sides reduce to the same expression. Rewrite using `[e, lift_comp_fst_snd]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem exists_lift_pair {S : Scheme.{0}} (T₀ B : Over S) {T : Scheme.{0}} (r₁ r₂ : T ⟶ (T₀ ⊗ B).left)
     (h : r₁ ≫ (fst T₀ B).left = r₂ ≫ (fst T₀ B).left) :
@@ -64,21 +64,19 @@ theorem exists_lift_pair {S : Scheme.{0}} (T₀ B : Over S) {T : Scheme.{0}} (r�
   · rw [e, lift_comp_fst_snd]; rfl
 
 /- English proof (translation)
-Introduce `R _ _ D F _ _ s₀ r n s s' hr hA`. Use `D.P.isAb.proper` as an intermediate fact. Use `D.P.isAb.smooth` as an intermediate fact. Use `D.P.isAb.geomConnected` as an intermediate fact. Establish `: IsProper (fst (TF (R` using `R) F) D.P.A).left := inferInstanceAs (IsProper (pullback.fst (TF (R := R) F).hom D.P.A.hom))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsIntegral (TF (R` using `R) F).left := inferInstanceAs (IsIntegral (Spec (CommRingCat.of F)))`. Establish `: IsIntegral (TF (R` using `R) F ⊗ D.P.A).left := isIntegral_tensor_left_of_smooth_grpObj _ _ _`. Establish `key` using `fun α β : D.X => GlobalTheory.tensor_sections_eq_zero_iff F _ D.P.L D.P.isLB _ _ (fst (TF (R := R) F) D.P.A).left (fst (TF (R := R) F) D.P.A).left _ _ (DegPre.famφ D F α) (DegPre.famε 2) (DegPre.famφ D F β) (DegPre.famε 2) n (fun i => SecMod.mk _ (s i α)) (fun i => SecMod.mk _ (s …`. Use `⟨fun a b => ⟨fun hne => ?_, fun ⟨ha, hb⟩ h0 => ?_⟩, fun α β hαβ => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hc`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Use `hne ((key _ _).2 fun T r₁ r₂ h z J hJ => ?_)` and prove the remaining obligations. Take `⟨q, ρ, x, y, rfl, rfl⟩` from `exists_lift_pair _ _ r₁ r₂ h`. Use `((hA (Over.mk q) ρ x y z J hJ).1 a b _ _ rfl rfl).trans ?_` and prove the remaining obligations. Break down `not_and_or.1 hc with hc | hc` into its components or cases. Use `sval_eq_zero_of_forall_eq_zero (s₀ a) (fun j => by_contra fun hj => hc ⟨j, hj⟩) (lift ρ (x * y)).left z J` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Conclude with `(congrArg (_ * ·) ((congrArg (· * _) this).trans (zero_mul _))).trans (mul_zero _)`. Use `sval_eq_zero_of_forall_eq_zero (s₀ b) (fun j => by_contra fun hj => hc ⟨j, hj⟩) (lift ρ (x * y⁻¹)).left z J` as an intermediate fact. Conclude with `(congrArg (_ * ·) ((congrArg (_ * ·) this).trans (mul_zero _))).trans (mul_zero _)`. Set `z` to `genericPoint (TF (R := R) F ⊗ D.P.A).left choose J hJ using fun χ : (TF (R := R) F ⊗ D.P.A).left ⟶ D.P.A.left => exists_chart D.P.isLB (χ z)`. Establish `hG : Good D.P.L z J` using `hJ`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `(key _ _).1 h0 _ (lift (fst (TF (R := R) F) D.P.A) (snd _ _)).left (lift (fst (TF (R := R) F) D.P.A) (1 : _ ⟶ D.P.A)).left (by rw [← Over.comp_left, ← Over.comp_left, lift_fst, lift_fst]) z J hG`. Establish `h2` using `((hA (TF (R := R) F ⊗ D.P.A) (fst _ _) (snd _ _) 1 z J hG).1 a b _ _ rfl rfl).symm.trans h1`. Rewrite `h2` using `[inv_one, _root_.mul_one, lift_fst_snd]`. Establish `hu : IsUnit (scal (TF (R` using `R) F ⊗ D.P.A).hom r) := by`. Establish `e : (TF (R` using `R) F ⊗ D.P.A).hom = (fst (TF (R := R) F) D.P.A).left ≫ Spec.map (CommRingCat.ofHom ((algebraMap (FractionRing R) F).comp (algebraMap R (FractionRing R)))) := by`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[← Over.w (fst (TF (R := R) F) D.P.A), CommRingCat.ofHom_comp, Spec.map_comp]`. Both sides reduce to the same expression. Rewrite using `[e]`. Use `isUnit_scal_comp_specMap _ _ r (IsUnit.mk0 _ ?_)` and prove the remaining obligations. Conclude with `(map_ne_zero (algebraMap (FractionRing R) F)).2 ((map_ne_zero_iff _ (IsFractionRing.injective R (FractionRing R))).2 hr)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hu' : IsUnit (gs (𝟙 _) z ⊤ (scal (TF (R` using `R) F ⊗ D.P.A).hom r)) := by`. Rewrite using `[gs_eq _ z ⊤ trivial]`. Conclude with `(hu.map _).map _`. Conclude with `mul_ne_zero (mul_ne_zero hu'.ne_zero (Units.ne_zero _)) (mul_ne_zero ((exists_ne_zero_iff_sval_ne_zero (s₀ a) hG).1 ha) ((exists_ne_zero_iff_sval_ne_zero (s₀ b) hG).1 hb)) h2`. Use `(key _ _).2 fun T r₁ r₂ h z J hJ => ?_` and prove the remaining obligations.
-
-Take `⟨q, ρ, x, y, rfl, rfl⟩` from `exists_lift_pair _ _ r₁ r₂ h`. Conclude with `(hA (Over.mk q) ρ x y z J hJ).2 α β hαβ`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem addB_tensor_ne_zero_iff : ∀ (R : Type) [CommRing R] [IsDomain R] (D : DegPre R) (F : Type) [Field F] [Algebra (FractionRing R) F] (s₀ : Raw D F 1) (r : R) (n : ℕ) (s s' : Fin n → Raw D F 2), r ≠ 0 → AddB D (TF (R := R) F) s₀ r s s' → (∀ a b : D.X, (∑ i, TensorProduct.tmul F (SecMod.mk _ (s i (a + b)) : WB D F 2 (a + b)) (SecMod.mk _ (s' i (a - b)) : WB D F 2 (a - b)) ≠ 0 ↔ (∃ j, (s₀ a).f j ≠ 0) ∧ ∃ j, (s₀ b).f j ≠ 0)) ∧ ∀ α β : D.X, (¬ ∃ a b, α = a + b ∧ β = a - b) → ∑ i, TensorProduct.tmul F (SecMod.mk _ (s i α) : WB D F 2 α) (SecMod.mk _ (s' i β) : WB D F 2 β) = 0 := by
   intro R _ _ D F _ _ s₀ r n s s' hr hA

@@ -27,19 +27,19 @@ Both sides reduce to the same expression.
 theorem sub1_cons (p : ℂ × A) (L : List (ℂ × A)) : sub1 (p :: L) = dprod L • p.2 + p.1 • sub1 L := rfl
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil => exact ⟨fun k => if k = 0 then 1 else 0, fun k hk => by simp at hk; simp [Nat.pos_iff_ne_zero.1 hk], fun u => by simp, by simp [dprod], fun j hj => by simp at hj⟩`. Consider the case `cons p L ih`. Take `⟨c, hc0, hcu, hctop, hcsub⟩` from `ih`. Use `⟨fun k => (if k = 0 then 0 else p.1 • c (k - 1)) + p.2 * c k, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `k hk`. Simplify using `only [List.length_cons] at hk`. Establish `h1 : k ≠ 0` using `by omega`. Simplify using `only [h1, if_false, hc0 k (by omega), hc0 (k - 1) (by omega), smul_zero, mul_zero, add_zero]`. Introduce `u`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hS1 : ∑ k ∈ Finset.range (L.length + 1 + 1), u ^ k • (if k = 0 then (0:A) else p.1 • c (k - 1)) = ∑ k ∈ Finset.range (L.length + 1), (u * p.1) • (u ^ k • c k)`. Rewrite using `[Finset.sum_range_succ']`. Simplify using `only [Nat.succ_ne_zero, if_false, Nat.add_sub_cancel, if_true, smul_zero, add_zero]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[smul_smul, smul_smul, pow_succ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Put the polynomial expressions in normal form. Establish `hS2 : ∑ k ∈ Finset.range (L.length + 1 + 1), u ^ k • (p.2 * c k) = ∑ k ∈ Finset.range (L.length + 1), p.2 * (u ^ k • c k)`. Rewrite using `[Finset.sum_range_succ, hc0 (L.length + 1) (by omega)]`. Simplify using `[mul_smul_comm]`. Simplify using `only [List.map_cons, List.prod_cons, hcu, List.length_cons, smul_add, Finset.sum_add_distrib, hS1, hS2, add_mul, Finset.mul_sum, smul_mul_assoc, one_mul]`.
+Put the polynomial expressions in normal form. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [List.length_cons, Nat.succ_ne_zero, if_false, Nat.add_sub_cancel, hctop, hc0 (L.length + 1) (by omega), mul_zero, add_zero, dprod, List.map_cons, List.prod_cons, smul_smul]`. Introduce `j hj`. Simplify using `only [List.length_cons, Nat.add_right_cancel_iff] at hj`. Substitute `hj` using the available equality. Use `beta_reduce`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hctop, sub1_cons]`. Break down `Nat.eq_zero_or_pos L.length with h | h` into its components or cases. Rewrite using `[if_pos h]`. Establish `: L = []` using `List.length_eq_zero_iff.1 h`. Substitute `this` using the available equality.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[sub1_nil, dprod]`. Rewrite using `[if_neg (by omega), hcsub _ (by omega), mul_smul_comm, mul_one, add_comm]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prod_affine (L : List (ℂ × A)) : ∃ c : ℕ → A, (∀ k, L.length < k → c k = 0) ∧
     (∀ u : ℂ, (L.map fun p => (u * p.1) • (1 : A) + p.2).prod =
@@ -89,15 +89,13 @@ namespace GlobalTheory.CapTrace
 variable {A : Type} [Ring A] [Algebra ℂ A]
 
 /- English proof (translation)
-Set `v : Fin (n + 1) → ℂ` to `fun j => ((j : ℕ) : ℂ)`. Establish `hv : Function.Injective v` using `fun i j hij => Fin.ext (by simpa [v] using hij)`. Establish `hdet : IsUnit (Matrix.vandermonde v).det` using `isUnit_iff_ne_zero.2 (Matrix.det_vandermonde_ne_zero_iff.2 hv)`. Establish `hW : (Matrix.vandermonde v)⁻¹ * Matrix.vandermonde v = 1` using `Matrix.nonsing_inv_mul _ hdet`. Use `set W := (Matrix.vandermonde v)⁻¹`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `m' : Fin (n + 1)` to `⟨m, by omega⟩`. Establish `key : c m = ∑ j, W m' j • ∑ k ∈ Finset.range (n + 1), v j ^ k • c k`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_eq_single m']`. Simplify using `[m']`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k _ hk`. Rewrite using `[Matrix.one_apply_ne (Ne.symm hk), zero_smul]`. Simplify using the standard rewrite rules. Use `_ = ∑ k : Fin (n + 1), (W * Matrix.vandermonde v) m' k • c k := by rw [hW]`. Use `_ = ∑ j, W m' j • ∑ k : Fin (n + 1), v j ^ (k : ℕ) • c k := by`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mul_apply, Matrix.vandermonde_apply, Finset.sum_smul, Finset.smul_sum, smul_smul]`. Conclude with `Finset.sum_comm`. Use `_ = _ := by`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_range (fun k => v j ^ k • c k)]`.
-
-Rewrite using `[key]`. Conclude with `S.sum_mem fun j _ => S.smul_mem _ (h _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coeff_mem (S : Submodule ℂ A) (n : ℕ) (c : ℕ → A)
     (h : ∀ u : ℂ, ∑ k ∈ Finset.range (n + 1), u ^ k • c k ∈ S) (m : ℕ) (hm : m ≤ n) : c m ∈ S := by
@@ -125,9 +123,9 @@ theorem coeff_mem (S : Submodule ℂ A) (n : ℕ) (c : ℕ → A)
   exact S.sum_mem fun j _ => S.smul_mem _ (h _)
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil => simp [sub1_nil, dprod]`. Consider the case `cons p L ih`. Take `⟨h1, h2⟩` from `ih fun q hq => h q (List.mem_cons_of_mem _ hq)`. Establish `hp` using `h p List.mem_cons_self`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[sub1_cons, h1, h2, hp]`. Simplify using the standard rewrite rules. Simplify using `only [dprod, List.map_cons, List.prod_cons, hp, one_mul]`. Conclude with `h2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sub1_ones (L : List (ℂ × A)) (h : ∀ p ∈ L, p.1 = 1) : sub1 L = (L.map Prod.snd).sum ∧ dprod L = 1 := by
   induction L with
@@ -140,19 +138,19 @@ theorem sub1_ones (L : List (ℂ × A)) (h : ∀ p ∈ L, p.1 = 1) : sub1 L = (L
     · simp only [dprod, List.map_cons, List.prod_cons, hp, one_mul]; exact h2
 
 /- English proof (translation)
-The claim follows from `List.prod_eq_zero (List.mem_map.2 ⟨p, hp, h⟩)`.
+A detailed English derivation is pending.
 -/
 theorem dprod_eq_zero (L : List (ℂ × A)) (p : ℂ × A) (hp : p ∈ L) (h : p.1 = 0) : dprod L = 0 :=
   List.prod_eq_zero (List.mem_map.2 ⟨p, hp, h⟩)
 
 /- English proof (translation)
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro d B k₀`. Conclude with `k₀.elim0`. Consider the case `succ n ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `d B k₀ k₁ hne h₀ h₁`. Rewrite using `[List.ofFn_succ, sub1_cons]`. Establish `hmem : ∀ j : Fin n, d j.succ = 0 → dprod (List.ofFn fun k : Fin n => (d k.succ, B k.succ)) = 0` using `fun j hj => dprod_eq_zero _ (d j.succ, B j.succ) (List.mem_ofFn.2 ⟨j, rfl⟩) hj`. Proceed by induction on `k₀ using Fin.cases with`. Consider the case `zero`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Proceed by induction. Treat this case separately. Proceed by induction.
 
-Proceed by induction on `k₁ using Fin.cases with`. Consider the case `zero => exact absurd rfl hne`. Consider the case `succ j₁ => simp [h₀, hmem j₁ h₁]`. Consider the case `succ j₀`. Proceed by induction on `k₁ using Fin.cases with`.
+Treat this case separately. Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => simp [h₁, hmem j₀ h₀]`. Consider the case `succ j₁`. Rewrite using `[ih (fun k => d k.succ) (fun k => B k.succ) j₀ j₁ (fun e => hne (by rw [e])) h₀ h₁, hmem j₀ h₀]`. Simplify using the standard rewrite rules.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sub1_ofFn_eq_zero : ∀ (n : ℕ) (d : Fin n → ℂ) (B : Fin n → A) (k₀ k₁ : Fin n), k₀ ≠ k₁ → d k₀ = 0 →
     d k₁ = 0 → sub1 (List.ofFn fun k => (d k, B k)) = 0 := by
@@ -183,23 +181,23 @@ namespace GlobalTheory.CapTrace
 variable {A : Type} [Ring A] [Algebra ℂ A]
 
 /- English proof (translation)
-Set `d : Equiv.Perm (Fin n) → Fin n → ℂ` to `fun σ k => if σ k = k then 1 else 0`. Set `B : Equiv.Perm (Fin n) → Fin n → A` to `fun σ k => (if σ k = k then algebraMap ℂ A (-((k : ℕ) : ℂ)) else 0) + X (σ k) k`. Set `L : Equiv.Perm (Fin n) → List (ℂ × A)` to `fun σ => List.ofFn fun k => (d σ k, B σ k)`. Establish `hlen : ∀ σ, (L σ).length = n` using `fun σ => List.length_ofFn`. Use `choose c hc0 hcu hctop hcsub using fun σ => prod_affine (L σ)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfac : ∀ σ (u : ℂ), (List.ofFn fun k : Fin n => Formalism.REAL.Tm X (u - ((k : ℕ) : ℂ)) (id (σ k)) (id k)).prod = ((L σ).map fun p => (u * p.1) • (1 : A) + p.2).prod`. Introduce `σ u`. Simplify using `only [L, List.map_ofFn]`. Use `congr 1`. Use `List.ofFn_inj.2 (funext fun k => ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [Function.comp_apply, Formalism.REAL.Tm, id, d, B]`. Use `split_ifs`. Rewrite using `[Algebra.algebraMap_eq_smul_one, Algebra.algebraMap_eq_smul_one, mul_one, sub_eq_add_neg, add_smul]`. Normalize the expressions using the abelian group laws. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `C : ℕ → A` to `fun k => ∑ σ : Equiv.Perm (Fin n), ((Equiv.Perm.sign σ : ℤ) : A) * c σ k`. Establish `hC : ∀ u : ℂ, Formalism.REAL.qdet X u = ∑ k ∈ Finset.range (n + 1), u ^ k • C k`. Introduce `u`. Simplify using `only [Formalism.REAL.qdet, Formalism.REAL.qminor, hfac, hcu, hlen, C, Finset.mul_sum, Finset.smul_sum, mul_smul_comm]`. Conclude with `Finset.sum_comm`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Break down `Nat.eq_zero_or_pos n with hn | hn` into its components or cases. Substitute `hn` using the available equality. Simplify using the standard rewrite rules. Establish `hmem : C (n - 1) ∈ S` using `coeff_mem (Subalgebra.toSubmodule S) n C (fun u => by`. Rewrite using `[← hC]; exact h u) (n - 1) (by omega)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hsub : ∀ σ, c σ (n - 1) = sub1 (L σ)` using `fun σ => hcsub σ _ (by rw [hlen]; omega)`. Establish `hCeq : C (n - 1) = ∑ k : Fin n, B 1 k`. Simplify using `only [C, hsub]`. Rewrite using `[Finset.sum_eq_single (1 : Equiv.Perm (Fin n))]`. Rewrite using `[(sub1_ones (L 1) ?_).1]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Simplify using `[L, List.map_ofFn, List.sum_ofFn]`. Introduce `p hp`. Take `⟨k, rfl⟩` from `List.mem_ofFn.1 hp`. Simplify using `[d]`. Introduce `σ _ hσ`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Choose the witnesses or unpack the hypotheses as in `⟨k₀, hk₀⟩ : ∃ k, σ k ≠ k := by`. Assume the negation of the conclusion as `hc`. Conclude with `hσ (Equiv.ext fun k => not_not.1 fun hk => hc ⟨k, hk⟩)`. Establish `hk₁ : σ (σ k₀) ≠ σ k₀` using `fun e => hk₀ (σ.injective e)`. Rewrite using `[sub1_ofFn_eq_zero n (d σ) (B σ) k₀ (σ k₀) (Ne.symm hk₀) (by simp [d, hk₀]) (by simp [d, hk₁]), mul_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `hB : ∀ k : Fin n, B 1 k = algebraMap ℂ A (-((k : ℕ) : ℂ)) + X k k` using `fun k => by simp [B]`. Simplify using `only [hCeq, hB, Finset.sum_add_distrib] at hmem`. Establish `hs : ∑ k : Fin n, algebraMap ℂ A (-((k : ℕ) : ℂ)) ∈ S` using `S.sum_mem fun k _ => S.algebraMap_mem _`. Simplify using `using S.sub_mem hmem hs`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem trace_mem_of_qdet_mem {n : ℕ} (X : Fin n → Fin n → A) (S : Subalgebra ℂ A)
     (h : ∀ u : ℂ, Formalism.REAL.qdet X u ∈ S) : ∑ i, X i i ∈ S := by
@@ -254,9 +252,9 @@ end GlobalTheory.CapTrace
 namespace GlobalTheory.CuspRep
 
 /- English proof (translation)
-Establish `e : atEmb τ (-Complex.I) = -atEmb τ Complex.I`. Rewrite using `[atEmb_eq]`. Simplify using the standard rewrite rules. Simplify using `only [Eop, atEmb_conj, map_one, Complex.conj_I, e, map_neg, smul_neg, sub_neg_eq_add]`. Rewrite using `[← smul_add]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `module`.
+A detailed English derivation is pending.
 -/
 theorem Eop_add_Eop_conj {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ} (τ : E →+* ℂ)
     (i : Fin a) : Eop τ i i + Eop (ComplexEmbedding.conjugate τ) i i = lieS E a i i (atEmb τ 1) := by

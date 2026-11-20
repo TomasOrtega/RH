@@ -7,33 +7,25 @@ open scoped NNReal ENNReal
 namespace GlobalTheory.CompanionTheory.ModChar
 
 /- English proof (translation)
-Introduce `Q _ _ _ _ _ _ _ _ N M _ _ _ hN hM hgen hdisj νN νM hNH hNR hMH hMR δ hδN hδM q`. Use `haveI := hNH`. Use `haveI := hNR`. Use `haveI := hMH`. Use `haveI := hMR`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : BorelSpace N := Subtype.borelSpace (N : Set Q)`. Use `haveI : BorelSpace M := Subtype.borelSpace (M : Set Q)`. Use `haveI : SecondCountableTopology N := TopologicalSpace.Subtype.secondCountableTopology (N : Set Q)`. Use `haveI : SecondCountableTopology M := TopologicalSpace.Subtype.secondCountableTopology (M : Set Q)`. Take `⟨Φ, hΦ⟩` from `GlobalTheory.T.semidirect_product_homeomorph_of_closed_complement Q N M hN hM hgen hdisj`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `Ψ : (M × N) ≃ₜ Q` to `(Homeomorph.prodComm M N).trans Φ`. Establish `hΨ : ∀ p : M × N, Ψ p = (p.2 : Q) * (p.1 : Q)` using `fun p => hΦ (p.2, p.1)`. Establish `hΨm : Measurable Ψ` using `Ψ.continuous.measurable`. Use `set ρ : Measure Q := (νM.prod νN).map Ψ with hρ`. Establish `hconj : ∀ (m : Q) (n : N), ((MulAut.conjNormal m n : N) : Q) = m * n * m⁻¹` using `fun m n => MulAut.conjNormal_apply m n`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `haveI : IsFiniteMeasureOnCompacts ρ := by`. Use `⟨fun K hK => ?_⟩` and prove the remaining obligations. Rewrite using `[hρ, show ((νM.prod νN).map Ψ) K = (νM.prod νN) (Ψ ⁻¹' K) from Ψ.toMeasurableEquiv.map_apply K]`. Establish `: IsCompact (Ψ ⁻¹' K)`. Use `hK.image Ψ.symm.continuous` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite `this` using `[Ψ.symm.image_eq_preimage_symm, Ψ.symm_symm]`. Then use the resulting hypothesis. Conclude with `this.measure_lt_top`. Use `haveI : ρ.IsOpenPosMeasure := by`. Use `⟨fun U hU hne => ?_⟩` and prove the remaining obligations. Rewrite using `[hρ, show ((νM.prod νN).map Ψ) U = (νM.prod νN) (Ψ ⁻¹' U) from Ψ.toMeasurableEquiv.map_apply U]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hU.preimage Ψ.continuous).measure_ne_zero _ (hne.preimage Ψ.surjective)`. Use `haveI : ρ.IsMulRightInvariant := by`. Use `⟨fun g => ?_⟩` and prove the remaining obligations. Take `⟨⟨m₀, n₀⟩, rfl⟩` from `Ψ.surjective g`. Establish `hmul : Measurable (fun y : Q => y * Ψ (m₀, n₀))` using `measurable_mul_const _`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : Continuous (fun p : M × N => (MulAut.conjNormal (p.1 : Q) n₀ : N))`. Establish `h : Continuous (fun p : M × N => (p.1 : Q) * n₀ * (p.1 : Q)⁻¹)` using `by fun_prop`. Conclude with `Topology.IsInducing.subtypeVal.continuous_iff.2 (h.congr fun p => (hconj _ _).symm)`. Set `T : M × N → M × N` to `fun p => (p.1 * m₀, p.2 * MulAut.conjNormal (p.1 : Q) n₀)`. Establish `hT : MeasurePreserving T (νM.prod νN) (νM.prod νN)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `MeasurePreserving.skew_product (f := fun m : M => m * m₀) (g := fun (m : M) (n : N) => n * MulAut.conjNormal (m : Q) n₀) (measurePreserving_mul_right νM m₀) ?_ (Filter.Eventually.of_forall fun m => ?_)` and prove the remaining obligations. Conclude with `(continuous_snd.mul hc).measurable`. Conclude with `(measurePreserving_mul_right νN _).map_eq`. Establish `hcomp : (fun y : Q => y * Ψ (m₀, n₀)) ∘ Ψ = Ψ ∘ T`. Use function extensionality and compare the values at `⟨m, n⟩`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Function.comp, T, hΨ, Subgroup.coe_mul, hconj]`. Use `group`. Rewrite using `[hρ, Measure.map_map hmul hΨm, hcomp, ← Measure.map_map hΨm hT.measurable, hT.map_eq]`. Use `GlobalTheory.CompanionTheory.ModChar.modularCharacterFun_eq_of_map_left_mul Q ρ δ ?_ q` and prove the remaining obligations. Introduce `q₀`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨⟨m₀, n₀⟩, rfl⟩` from `Ψ.surjective q₀`. Establish `hmul : Measurable (fun y : Q => Ψ (m₀, n₀) * y)` using `measurable_const_mul _`. Establish `hcm : Continuous (fun n : N => (MulAut.conjNormal (m₀ : Q) n : N))`. Establish `h : Continuous (fun n : N => (m₀ : Q) * n * (m₀ : Q)⁻¹)` using `by fun_prop`. Conclude with `Topology.IsInducing.subtypeVal.continuous_iff.2 (h.congr fun p => (hconj _ _).symm)`.
-
-Set `f₁ : M → M` to `fun m => m₀ * m`. Set `f₂ : N → N` to `fun n => n₀ * MulAut.conjNormal (m₀ : Q) n`. Establish `hf₁ : Measurable f₁` using `measurable_const_mul _`. Establish `hf₂ : Measurable f₂` using `(continuous_const.mul hcm).measurable`. Establish `hcomp : (fun y : Q => Ψ (m₀, n₀) * y) ∘ Ψ = Ψ ∘ Prod.map f₁ f₂`.
-
-Use function extensionality and compare the values at `⟨m, n⟩`. Simplify using `only [Function.comp, Prod.map, f₁, f₂, hΨ, Subgroup.coe_mul, hconj]`. Use `group`. Establish `hνM : νM.map f₁ = νM` using `(measurePreserving_mul_left νM m₀).map_eq`. Establish `hνN : νN.map f₂ = (δ m₀)⁻¹ • νN`.
-
-Establish `: f₂ = (fun n : N => n₀ * n) ∘ (fun n : N => (MulAut.conjNormal (m₀ : Q) n : N))` using `rfl`. Rewrite using `[this, ← Measure.map_map (measurable_const_mul _) hcm.measurable, hδM _ m₀.2, Measure.map_smul, (measurePreserving_mul_left νN n₀).map_eq]`. Establish `hδ : δ (Ψ (m₀, n₀)) = δ m₀`. Rewrite using `[hΨ]`. Simplify using `[map_mul, hδN _ n₀.2]`.
-
-Rewrite using `[hρ, Measure.map_map hmul hΨm, hcomp, ← Measure.map_map hΨm (hf₁.prodMap hf₂), ← Measure.map_prod_map νM νN hf₁ hf₂, hνM, hνN, Measure.prod_smul_right, Measure.map_smul, hδ]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem modularCharacterFun_semidirect :
     ∀ (Q : Type) [Group Q] [TopologicalSpace Q] [IsTopologicalGroup Q] [LocallyCompactSpace Q] [T2Space Q] [SecondCountableTopology Q] [MeasurableSpace Q] [BorelSpace Q] (N M : Subgroup Q) [N.Normal] [LocallyCompactSpace N] [LocallyCompactSpace M], IsClosed (N : Set Q) → IsClosed (M : Set Q) → (∀ q, ∃ n ∈ N, ∃ m ∈ M, q = n * m) → (∀ x, x ∈ N → x ∈ M → x = 1) → ∀ (νN : Measure N) (νM : Measure M), νN.IsHaarMeasure → νN.IsMulRightInvariant → νM.IsHaarMeasure → νM.IsMulRightInvariant → ∀ δ : Q →* ℝ≥0, (∀ n ∈ N, δ n = 1) → (∀ m ∈ M, νN.map (fun n : N => MulAut.conjNormal m n) = (δ m)⁻¹ • νN) → ∀ q : Q, Measure.modularCharacterFun q = δ q := by

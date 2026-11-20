@@ -11,21 +11,19 @@ namespace PI.GreenLabelMapW
 variable {K : Type} [Field K] [Fintype K] [DecidableEq K]
 
 /- English proof (translation)
-Take `⟨hm, hi, hX, hdeg, hval⟩` from `greenLab_spec Cv hC hd hs hc`. Rewrite `hdeg` using `[Fintype.card_fin]`. Take `⟨w, hw⟩` from `IsAlgClosed.exists_aeval_eq_zero (AlgebraicClosure K) (greenLab Cv d τ) (by rw [degree_eq_natDegree hm.ne_zero, hdeg]; exact_mod_cast (show d ≠ 0 by omega))`. Establish `hunit : ∀ r, aeval r (greenLab Cv d τ) = 0 → Cv.ι r ^ (∏ e ∈ Finset.Icc 1 d, (q K ^ e - 1)) = 1`. Introduce `r hr`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `root_pow_card hm hi hX hr`. Rewrite `h1` using `[hdeg]`. Take `⟨k, hk⟩ : (q K ^ d - 1) ∣ ∏ e ∈ Finset.Icc 1 d, (q K ^ e - 1)` from `Finset.dvd_prod_of_mem (fun e => q K ^ e - 1) (Finset.mem_Icc.2 ⟨hd, le_rfl⟩)`. Rewrite using `[hk, pow_mul, ← map_pow, h1, map_one, one_pow]`. Establish `hinj : ∀ r₁ r₂ : AlgebraicClosure K, aeval r₁ (greenLab Cv d τ) = 0 → aeval r₂ (greenLab Cv d τ) = 0 → r₁ ^ a = r₂ ^ a → r₁ = r₂`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `r₁ r₂ h₁ h₂ h`. Apply `Cv.ι_inj r₁ r₂ (root_ne_zero hm hi hX h₁) (root_ne_zero hm hi hX h₂)` to reduce the goal to its premises. Apply `α.injective` to reduce the goal to its premises. Rewrite using `[hα _ (hunit r₁ h₁), hα _ (hunit r₂ h₂), ← map_pow, ← map_pow, h]`. Establish `hf : ∀ (σ : AlgebraicClosure K ≃ₐ[K] AlgebraicClosure K) (x : AlgebraicClosure K), (σ x) ^ a = σ (x ^ a)` using `fun σ x => (map_pow σ x a).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hint : IsIntegral K (w ^ a)` using `Algebra.IsIntegral.isIntegral _`. Establish `hlab : HasCuspLabel Cv τ' (minpoly K (w ^ a))`. Use `⟨minpoly.monic hint, minpoly.irreducible hint, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `h`. Establish `h0` using `minpoly.aeval K (w ^ a)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h0` using `[h, aeval_X]`. Conclude with `pow_ne_zero a (root_ne_zero hm hi hX hw) h0`. Establish `hdeg' : (minpoly K (w ^ a)).natDegree = (greenLab Cv d τ).natDegree` using `natDegree_minpoly_eq hm hi hw (fun x => x ^ a) hf hinj`. Rewrite using `[hdeg', hdeg, Fintype.card_fin]`. Introduce `y hy γ hγ z hz m hm'`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨r, hr, rfl⟩` from `(conj_roots hm hi hw (fun x => x ^ a) hf y).1 hy`. Rewrite using `[htr γ, hval r hr γ hγ z hz m hm', map_mul, map_pow, map_neg, map_one, map_sum]`. Use `congr 1`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `hu : (Cv.ι r ^ (m * Fintype.card K ^ i)) ^ (∏ e ∈ Finset.Icc 1 d, (q K ^ e - 1)) = 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pow_right_comm, hunit r hr, one_pow]`. Rewrite using `[hα _ hu, map_pow, ← pow_mul, ← pow_mul]`. Use `congr 1`. The two sides agree by associativity and commutativity. Rewrite using `[greenLab_eq Cv hC hd hs' hc' hlab]`.
-
-Conclude with `aroots_eq_map hm hi hw (fun x => x ^ a) hf hinj`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. The two sides agree by associativity and commutativity. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem galois_clause (Cv : LabelConv K) (hC : CuspParam K Cv) (d : ℕ) (α : ℂ ≃+* ℂ) (a : ℕ)
     (hα : ∀ ζ : ℂ, ζ ^ (∏ e ∈ Finset.Icc 1 d, (q K ^ e - 1)) = 1 → α ζ = ζ ^ a)
@@ -77,23 +75,21 @@ theorem galois_clause (Cv : LabelConv K) (hC : CuspParam K Cv) (d : ℕ) (α : �
   exact aroots_eq_map hm hi hw (fun x => x ^ a) hf hinj
 
 /- English proof (translation)
-Take `⟨hm, hi, hX, hdeg0, hval⟩` from `greenLab_spec Cv hC hd hs hc`. Establish `hdeg : (greenLab Cv d τ).natDegree = d` using `by rw [hdeg0, Fintype.card_fin]`. Take `⟨w, hw⟩` from `IsAlgClosed.exists_aeval_eq_zero (AlgebraicClosure K) (greenLab Cv d τ) (by rw [degree_eq_natDegree hm.ne_zero, hdeg]; exact_mod_cast (show d ≠ 0 by omega))`. Establish `hf : ∀ (σ : AlgebraicClosure K ≃ₐ[K] AlgebraicClosure K) (x : AlgebraicClosure K), (σ x)⁻¹ = σ x⁻¹` using `fun σ x => (map_inv₀ σ x).symm`. Establish `hinj : ∀ r₁ r₂ : AlgebraicClosure K, aeval r₁ (greenLab Cv d τ) = 0 → aeval r₂ (greenLab Cv d τ) = 0 → r₁⁻¹ = r₂⁻¹ → r₁ = r₂` using `fun _ _ _ _ h => inv_injective h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hint : IsIntegral K w⁻¹` using `Algebra.IsIntegral.isIntegral _`. Establish `hlab : HasCuspLabel Cv τ' (minpoly K w⁻¹)`. Use `⟨minpoly.monic hint, minpoly.irreducible hint, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `h`. Establish `h0` using `minpoly.aeval K w⁻¹`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h0` using `[h, aeval_X]`. Conclude with `inv_ne_zero (root_ne_zero hm hi hX hw) h0`. Establish `hdeg' : (minpoly K w⁻¹).natDegree = (greenLab Cv d τ).natDegree` using `natDegree_minpoly_eq hm hi hw (fun x => x⁻¹) hf hinj`. Rewrite using `[hdeg', hdeg0]`. Introduce `y hy γ hγ z hz m hm'`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨r, hr, rfl⟩` from `(conj_roots hm hi hw (fun x => x⁻¹) hf y).1 hy`. Establish `hD : 1 ≤ Fintype.card (Fin d)` using `by rw [Fintype.card_fin]; exact hd`. Establish `hn` using `card_pow_sub_one_pos (K := K) hD`. Establish `hgen` using `gen_pow Cv hD`. Establish `hz0 : z ≠ 0` using `by rw [← hm']; exact pow_ne_zero _ (gen_ne_zero Cv hD)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hzi : Cv.gen (Fintype.card (Fin d)) ^ (m * (Fintype.card K ^ Fintype.card (Fin d) - 1 - 1)) = z⁻¹`. Apply `eq_inv_of_mul_eq_one_left` to reduce the goal to its premises. Rewrite using `[← hm', ← pow_add, ← mul_add_one, Nat.sub_add_cancel hn, mul_comm, pow_mul, hgen, one_pow]`. Establish `hirr` using `irreducible_charpoly_inv γ hγ hz0 hz`. Establish `hroot` using `root_inv γ hz0 hz`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key` using `hval r hr γ⁻¹ hirr z⁻¹ hroot _ hzi`. Rewrite using `[htr γ, key]`. Use `congr 1`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `hr1 : r ^ (Fintype.card K ^ Fintype.card (Fin d) - 1) = 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h5` using `root_pow_card hm hi hX hr`. Rewrite `h5` using `[hdeg0]`. Then use the resulting hypothesis. Establish `hrinv : r⁻¹ = r ^ (Fintype.card K ^ Fintype.card (Fin d) - 1 - 1)`. Use `symm`. Apply `eq_inv_of_mul_eq_one_left` to reduce the goal to its premises.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← pow_succ, Nat.sub_add_cancel hn, hr1]`. Rewrite using `[hrinv, map_pow, ← pow_mul]`. Use `congr 1`. The two sides agree by associativity and commutativity. Rewrite using `[greenLab_eq Cv hC hd hs' hc' hlab]`.
-
-Conclude with `aroots_eq_map hm hi hw (fun x => x⁻¹) hf hinj`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. The two sides agree by associativity and commutativity. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dual_clause (Cv : LabelConv K) (hC : CuspParam K Cv) (d : ℕ)
     (τ τ' : FDRep ℂ (GL (Fin d) K)) (hd : 1 ≤ d) (hs : Simple τ) (hc : IsCuspidal K τ)
@@ -149,13 +145,11 @@ theorem dual_clause (Cv : LabelConv K) (hC : CuspParam K Cv) (d : ℕ)
   exact aroots_eq_map hm hi hw (fun x => x⁻¹) hf hinj
 
 /- English proof (translation)
-Introduce `C hC`. Use `⟨{ lab := greenLab C lab_iso := greenLab_iso C lab_spec := ?_ lab_inj := ?_ lab_one := ?_ }, ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `d τ hd hs hc`. Take `⟨h1, h2, h3, h4, -⟩` from `greenLab_spec C hC hd hs hc`. Conclude with `⟨h1, h2, h3, by simpa using h4⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce `d τ τ' hd hs hc hs' hc' heq`. Establish `h' : HasCuspLabel C τ' (greenLab C d τ)`. Rewrite using `[heq]`. Conclude with `greenLab_spec C hC hd hs' hc'`. Conclude with `(hC d hd).2.2 τ τ' (greenLab C d τ) hs hc hs' hc' (greenLab_spec C hC hd hs hc) h'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `τ x hs hx htr`. Conclude with `greenLab_one C hC τ x hs hx htr`. Introduce `d α a hα τ τ' hd hs hc hs' hc' htr`. Conclude with `galois_clause C hC d α a hα τ τ' hd hs hc hs' hc' htr`. Introduce `d τ τ' hd hs hc hs' hc' htr`.
-
-Conclude with `dual_clause C hC d τ τ' hd hs hc hs' hc' htr`. Introduce `d τ hd hs hc`. Conclude with `greenLab_spec C hC hd hs hc`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem labelMapGreen : LabelMapGreen K := by
   intro C hC

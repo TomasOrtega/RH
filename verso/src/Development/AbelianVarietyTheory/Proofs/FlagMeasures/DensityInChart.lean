@@ -17,9 +17,9 @@ section Meas
 variable {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V] [MeasurableSpace V] [BorelSpace V]
 
 /- English proof (translation)
-Establish `t : Tendsto (fun ε : ℝ => b * ENNReal.ofReal ((1 + s * ε) ^ n)) (𝓝[>] 0) (𝓝 (b * ENNReal.ofReal ((1 + s * 0) ^ n)))`. Use `ENNReal.Tendsto.const_mul ?_ (Or.inr hb)` and prove the remaining obligations. Use `(Continuous.tendsto (f := fun ε : ℝ => ENNReal.ofReal ((1 + s * ε) ^ n)) ?_ 0).mono_left nhdsWithin_le_nhds` and prove the remaining obligations. Conclude with `ENNReal.continuous_ofReal.comp (by fun_prop)`. Simplify using `only [mul_zero, add_zero, one_pow, ENNReal.ofReal_one, mul_one] at t`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨ε, h1, h2⟩` from `((t.eventually (lt_mem_nhds h)).and (Ioo_mem_nhdsGT (zero_lt_one' ℝ))).exists`. Conclude with `⟨ε, h2.1, h2.2, h1⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_eps_lt (n : ℕ) (s : ℝ) {a b : ℝ≥0∞} (hb : b ≠ ⊤) (h : a < b) :
     ∃ ε : ℝ, 0 < ε ∧ ε < 1 ∧ a < b * ENNReal.ofReal ((1 + s * ε) ^ n) := by
@@ -33,9 +33,9 @@ theorem exists_eps_lt (n : ℕ) (s : ℝ) {a b : ℝ≥0∞} (hb : b ≠ ⊤) (h
   exact ⟨ε, h2.1, h2.2, h1⟩
 
 /- English proof (translation)
-Establish `t : Tendsto (fun ε : ℝ => b * ENNReal.ofReal ((1 + s * ε) ^ n)) (𝓝[>] 0) (𝓝 (b * ENNReal.ofReal ((1 + s * 0) ^ n)))`. Use `ENNReal.Tendsto.const_mul ?_ (Or.inr h.ne_top)` and prove the remaining obligations. Use `(Continuous.tendsto (f := fun ε : ℝ => ENNReal.ofReal ((1 + s * ε) ^ n)) ?_ 0).mono_left nhdsWithin_le_nhds` and prove the remaining obligations. Conclude with `ENNReal.continuous_ofReal.comp (by fun_prop)`. Simplify using `only [mul_zero, add_zero, one_pow, ENNReal.ofReal_one, mul_one] at t`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨ε, h1, h2⟩` from `((t.eventually (gt_mem_nhds h)).and (Ioo_mem_nhdsGT (zero_lt_one' ℝ))).exists`. Conclude with `⟨ε, h2.1, h2.2, h1⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_eps_gt (n : ℕ) (s : ℝ) {a b : ℝ≥0∞} (h : b < a) :
     ∃ ε : ℝ, 0 < ε ∧ ε < 1 ∧ b * ENNReal.ofReal ((1 + s * ε) ^ n) < a := by
@@ -49,13 +49,13 @@ theorem exists_eps_gt (n : ℕ) (s : ℝ) {a b : ℝ≥0∞} (h : b < a) :
   exact ⟨ε, h2.1, h2.2, h1⟩
 
 /- English proof (translation)
-Take `⟨ε, h0, h1, hε⟩` from `exists_eps_lt (Module.finrank ℝ V) (-1) ENNReal.coe_ne_top ht`. Take `⟨δ, hδ, H⟩` from `H (ε / 2) (by linarith) (by linarith)`. Use `⟨δ, hδ, fun A hA => ?_⟩` and prove the remaining obligations. Use `(Besicovitch.vitaliFamily ν).measure_le_of_frequently_le (ρ := ν) (t • l) Measure.AbsolutelyContinuous.rfl A ?_` as an intermediate fact. Simplify using `using this`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `x hx`. Establish `hx' : ‖x‖ < δ` using `by simpa using hA hx`. Establish `hs : 0 < 1 + -1 * ε` using `by linarith`. Establish `ht` using `(Besicovitch.tendsto_filterAt ν x).comp (densHom_tendsto_mul hs)`. Use `ht.frequently (Eventually.frequently ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `filter_upwards [H x hx', self_mem_nhdsWithin, hc.eventually (gt_mem_nhds hε)] with r hr hr0 hlt`. Establish `hr0 : 0 < r` using `hr0`. Simplify using `only [Function.comp, Measure.smul_apply]`. Rewrite using `[densHom_scale l x hs hr0]`. Establish `h2 : ν (Metric.closedBall x ((1 + -1 * ε) * r)) ≤ ν (Metric.ball 0 r)` using `le_trans (measure_mono (Metric.closedBall_subset_ball (by nlinarith))) hr`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `h2.trans ?_` and prove the remaining obligations. Establish `h3` using `(ENNReal.div_le_iff (Metric.measure_ball_pos l 0 hr0).ne' measure_ball_lt_top.ne).1 hlt.le`. Rewrite `h3` using `[mul_assoc]`. Conclude with `h3`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem upper_of_density (l ν : Measure V) [l.IsAddHaarMeasure] [IsLocallyFiniteMeasure ν] {c : ℝ≥0∞}
     (hc : Tendsto (fun r : ℝ => ν (Metric.ball 0 r) / l (Metric.ball 0 r)) (𝓝[>] 0) (𝓝 c))
@@ -85,13 +85,13 @@ theorem upper_of_density (l ν : Measure V) [l.IsAddHaarMeasure] [IsLocallyFinit
   exact h3
 
 /- English proof (translation)
-Take `⟨ε, h0, h1, hε⟩` from `exists_eps_gt (Module.finrank ℝ V) 1 ht`. Take `⟨δ, hδ, H⟩` from `H ε h0 h1`. Use `⟨δ, hδ, fun A hA => ?_⟩` and prove the remaining obligations. Use `(Besicovitch.vitaliFamily l).measure_le_of_frequently_le (ρ := t • l) ν (Measure.AbsolutelyContinuous.rfl.smul_left _) A ?_` as an intermediate fact. Simplify using `using this`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `x hx`. Establish `hx' : ‖x‖ < δ` using `by simpa using hA hx`. Establish `hs : 0 < 1 + 1 * ε` using `by linarith`. Establish `ht` using `(Besicovitch.tendsto_filterAt l x).comp (densHom_tendsto_mul hs)`. Use `ht.frequently (Eventually.frequently ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `filter_upwards [H x hx', self_mem_nhdsWithin, hc.eventually (lt_mem_nhds hε)] with r hr hr0 hlt`. Establish `hr0 : 0 < r` using `hr0`. Simplify using `only [Function.comp, Measure.smul_apply]`. Rewrite using `[densHom_scale l x hs hr0]`. Establish `h2 : ν (Metric.ball 0 r) ≤ ν (Metric.closedBall x ((1 + 1 * ε) * r))` using `le_trans hr (measure_mono (by rw [one_mul]; exact Metric.ball_subset_closedBall))`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `le_trans ?_ h2` and prove the remaining obligations. Establish `h3` using `(ENNReal.le_div_iff_mul_le (Or.inl (Metric.measure_ball_pos l 0 hr0).ne') (Or.inl measure_ball_lt_top.ne)).1 hlt.le`. Rewrite `h3` using `[mul_assoc]`. Conclude with `h3`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lower_of_density (l ν : Measure V) [l.IsAddHaarMeasure] [IsLocallyFiniteMeasure ν] {c : ℝ≥0∞}
     (hc : Tendsto (fun r : ℝ => ν (Metric.ball 0 r) / l (Metric.ball 0 r)) (𝓝[>] 0) (𝓝 c))
@@ -122,7 +122,7 @@ theorem lower_of_density (l ν : Measure V) [l.IsAddHaarMeasure] [IsLocallyFinit
 
 open scoped Pointwise in
 /- English proof (translation)
-Establish `h : L '' Metric.ball 0 (s * r) = s • (L '' Metric.ball 0 r)`. Rewrite using `[← Set.image_smul_comm L s _ (fun x => map_smul L s x), smul_ball hs.ne', smul_zero, Real.norm_of_nonneg hs.le]`. Rewrite using `[h, Measure.addHaar_smul, abs_of_pos (by positivity)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem image_ball_scale {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] (l : Measure V) [l.IsAddHaarMeasure]
     (L : E ≃L[ℝ] V) {s : ℝ} (hs : 0 < s) (r : ℝ) :
@@ -132,7 +132,7 @@ theorem image_ball_scale {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] (
   rw [h, Measure.addHaar_smul, abs_of_pos (by positivity)]
 
 /- English proof (translation)
-Establish `h : L ⁻¹' Metric.ball 0 δ ∈ 𝓝 (0 : E)` using `L.continuous.continuousAt.preimage_mem_nhds (by rw [map_zero]; exact Metric.ball_mem_nhds _ hδ)`. Take `⟨η, hη, h⟩` from `Metric.mem_nhds_iff.1 h`. Use `filter_upwards [(densHom_tendsto_mul hs).eventually (Ioo_mem_nhdsGT hη)] with r hr`. Conclude with `Set.image_subset_iff.2 ((Metric.ball_subset_ball hr.2.le).trans h)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem eventually_image_ball_subset {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E]
     (L : E ≃L[ℝ] V) {δ : ℝ} (hδ : 0 < δ) {s : ℝ} (hs : 0 < s) :
@@ -144,15 +144,15 @@ theorem eventually_image_ball_subset {E : Type} [NormedAddCommGroup E] [NormedSp
   exact Set.image_subset_iff.2 ((Metric.ball_subset_ball hr.2.le).trans h)
 
 /- English proof (translation)
-Establish `hl : ∀ᶠ r in 𝓝[>] (0:ℝ), l (L '' Metric.ball 0 r) ≠ 0 ∧ l (L '' Metric.ball 0 r) ≠ ⊤` using `by filter_upwards [eventually_image_ball_subset L one_pos one_pos, self_mem_nhdsWithin] with r hr hr0`. Rewrite `hr` using `[one_mul]`. Use `⟨((L.toHomeomorph.isOpenMap _ Metric.isOpen_ball).measure_pos l ⟨L 0, 0, Metric.mem_ball_self hr0, rfl⟩).ne', ((measure_mono hr).trans_lt measure_ball_lt_top).ne⟩` and prove the remaining obligations. Use `tendsto_order.2 ⟨fun a ha => ?_, fun a ha => ?_⟩` and prove the remaining obligations. Take `⟨t, h1, h2⟩` from `ENNReal.lt_iff_exists_nnreal_btwn.1 ha`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨δ, hδ, hA⟩` from `lower_of_density l ν hc (fun ε h0 h1 => by`. Take `⟨δ, hδ, h⟩` from `H ε h0 h1`. Conclude with `⟨δ, hδ, fun x hx => (h x hx).mono fun r hr => hr.2⟩) t h2`. Take `⟨ε, e0, e1, hε⟩` from `exists_eps_lt (Module.finrank ℝ V) (-1) ENNReal.coe_ne_top h1`. Establish `hs : 0 < 1 - ε` using `by linarith`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `filter_upwards [hl, hf ε e0 e1, eventually_image_ball_subset L hδ hs] with r hr hfr hsub`. Use `hε.trans_le ((ENNReal.le_div_iff_mul_le (Or.inl hr.1) (Or.inl hr.2)).2 ?_)` and prove the remaining obligations. Use `le_trans ?_ ((hA _ hsub).trans hfr.1)` and prove the remaining obligations. Rewrite using `[image_ball_scale l L hs, mul_assoc, show 1 + -1 * ε = 1 - ε by ring]`. Take `⟨t, h1, h2⟩` from `ENNReal.lt_iff_exists_nnreal_btwn.1 ha`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨δ, hδ, hA⟩` from `upper_of_density l ν hc (fun ε h0 h1 => by`. Take `⟨δ, hδ, h⟩` from `H ε h0 h1`. Conclude with `⟨δ, hδ, fun x hx => (h x hx).mono fun r hr => hr.1⟩) t h1`. Take `⟨ε, e0, e1, hε⟩` from `exists_eps_gt (Module.finrank ℝ V) 1 h2`. Establish `hs : 0 < 1 + ε` using `by linarith`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `filter_upwards [hl, hf ε e0 e1, eventually_image_ball_subset L hδ hs] with r hr hfr hsub`. Use `lt_of_le_of_lt ((ENNReal.div_le_iff hr.1 hr.2).2 ?_) hε` and prove the remaining obligations. Use `(hfr.2.trans (hA _ hsub)).trans ?_` and prove the remaining obligations. Rewrite using `[image_ball_scale l L hs, mul_assoc, one_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tendsto_of_squeeze {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E]
     (l ν : Measure V) [l.IsAddHaarMeasure] [IsLocallyFiniteMeasure ν] {c : ℝ≥0∞}
@@ -191,21 +191,19 @@ theorem tendsto_of_squeeze {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E]
     rw [image_ball_scale l L hs, mul_assoc, one_mul]
 
 /- English proof (translation)
-Take `⟨δ, hfin, hδ, hδ'⟩` from `((hc.eventually (gt_mem_nhds hct.lt_top)).and (Ioo_mem_nhdsGT hδ₀)).exists`. Establish `hfin' : μ (e '' Metric.ball 0 δ) < ⊤`. Assume the negation of the conclusion as `h`. Rewrite `h` using `[not_lt, top_le_iff]`. Rewrite `hfin` using `[h, ENNReal.top_div_of_ne_top measure_ball_lt_top.ne]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `lt_irrefl _ hfin`. Establish `hψ : MeasurableEmbedding ((Metric.ball (0:V) δ).restrict e)` using `he.continuousOn.measurableEmbedding Metric.isOpen_ball.measurableSet (hi.mono (Metric.ball_subset_ball hδ'.le))`. Set `ν : Measure V` to `(μ.comap ((Metric.ball (0:V) δ).restrict e)).map Subtype.val`. Establish `hν : ∀ A : Set V, MeasurableSet A → ν A = μ (e '' (A ∩ Metric.ball 0 δ))`. Introduce `A hA`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [ν]`. Rewrite using `[Measure.map_apply measurable_subtype_coe hA, hψ.comap_apply]`. Use `congr 1`. Rewrite using `[Set.inter_comm, ← Subtype.image_preimage_coe, Set.image_image]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hνb : ∀ (x : V) (r : ℝ), ‖x‖ + r ≤ δ → ν (Metric.ball x r) = μ (e '' Metric.ball x r)`. Introduce `x r h`. Rewrite using `[hν _ Metric.isOpen_ball.measurableSet, Set.inter_eq_left.2]`. Conclude with `Metric.ball_subset_ball' (by simpa [add_comm] using h)`. Establish `hνL : ∀ r : ℝ, L '' Metric.ball 0 r ⊆ Metric.ball 0 δ → ν (L '' Metric.ball 0 r) = μ (e '' (L '' Metric.ball 0 r))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `r h`. Rewrite using `[hν (L '' Metric.ball 0 r) (L.toHomeomorph.isOpenMap _ Metric.isOpen_ball).measurableSet, Set.inter_eq_left.2 h]`. Use `haveI : IsFiniteMeasure ν := ⟨by rw [hν _ MeasurableSet.univ, Set.univ_inter]; exact hfin'⟩`. Use `tendsto_of_squeeze l ν (hc.congr' ?_) ?_ L f ?_` and prove the remaining obligations. Use `filter_upwards [Ioo_mem_nhdsGT hδ] with r hr`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hνb 0 r (by simpa using hr.2.le)]`. Introduce `ε h0 h1`. Take `⟨η, hη, H⟩` from `H ε h0 h1`. Use `⟨min η (δ / 2), lt_min hη (by linarith), fun x hx => ?_⟩` and prove the remaining obligations. Establish `hx1 : ‖x‖ < η` using `hx.trans_le (min_le_left _ _)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx2 : ‖x‖ < δ / 2` using `hx.trans_le (min_le_right _ _)`. Use `filter_upwards [H x hx1, Ioo_mem_nhdsGT (show (0:ℝ) < δ / 4 by linarith)] with r hr hr'`. Take `⟨hr0, hr1⟩` from `hr'`. Establish `e1 : ε * r < r` using `by nlinarith`. Establish `e2 : 0 < ε * r` using `by positivity`.
-
-Rewrite using `[hνb x _ (by nlinarith), hνb x _ (by nlinarith), hνb 0 r (by simp; linarith)]`. Conclude with `hr`. Introduce `ε h0 h1 filter_upwards [hf ε h0 h1, eventually_image_ball_subset L hδ (show 0 < 1 - ε by linarith), eventually_image_ball_subset L hδ (show 0 < 1 + ε by linarith)] with r hr a b`. Rewrite using `[hνL _ a, hνL _ b]`. Conclude with `hr`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tendsto_of_chart {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E]
     {X : Type} [TopologicalSpace X] [T2Space X] [MeasurableSpace X] [BorelSpace X]
@@ -271,11 +269,11 @@ variable {A : Type} [NormedRing A] [NormedAlgebra ℝ A] [CompleteSpace A]
   {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V]
 
 /- English proof (translation)
-Establish `h : HasStrictFDerivAt (NormedSpace.exp : A → A) (ContinuousLinearEquiv.refl ℝ A : A →L[ℝ] A) 0` using `hasStrictFDerivAt_exp_zero (𝕂 := ℝ) (𝔸 := A)`. Establish `h1` using `h.to_localInverse`. Establish `h2` using `h.eventually_left_inverse`. Rewrite `h1` using `[NormedSpace.exp_zero]`. Establish `hJ : Tendsto J (𝓝 0) (𝓝 0)` using `by simpa using J.continuous.tendsto 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : ∀ᶠ x in 𝓝 (0 : V), P (h.localInverse _ _ _ (NormedSpace.exp (J x))) = x` using `by filter_upwards [hJ.eventually h2] with x hx`. Rewrite using `[hx, hP]`. Use `⟨fun g => P (h.localInverse _ _ _ g), ?_, h3, ?_⟩` and prove the remaining obligations. Use `P.hasStrictFDerivAt.comp 1 h1` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Take `⟨ρ, hρ, hb⟩` from `Metric.eventually_nhds_iff_ball.1 h3 filter_upwards [hS ρ hρ] with g hg hgS`. Take `⟨x, hx, rfl⟩` from `hg hgS`. Rewrite using `[hb x hx]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_log (S : Set A) (J : V →L[ℝ] A) (P : A →L[ℝ] V) (hP : ∀ x, P (J x) = x)
     (hS : ∀ ρ : ℝ, 0 < ρ → ∀ᶠ g in 𝓝 (1 : A), g ∈ S → ∃ x ∈ Metric.ball (0 : V) ρ, NormedSpace.exp (J x) = g) :
@@ -299,7 +297,7 @@ theorem exists_log (S : Set A) (J : V →L[ℝ] A) (P : A →L[ℝ] V) (hP : ∀
     rw [hb x hx]
 
 /- English proof (translation)
-Establish `h : HasStrictFDerivAt (NormedSpace.exp : A → A) (1 : A →L[ℝ] A) (J 0)`. Rewrite using `[map_zero]`. Conclude with `hasStrictFDerivAt_exp_zero (𝕂 := ℝ) (𝔸 := A)`. Conclude with `h.comp 0 J.hasStrictFDerivAt`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasStrict_exp (J : V →L[ℝ] A) : HasStrictFDerivAt (fun x => NormedSpace.exp (J x)) J 0 := by
   have h : HasStrictFDerivAt (NormedSpace.exp : A → A) (1 : A →L[ℝ] A) (J 0) := by
@@ -307,34 +305,32 @@ theorem hasStrict_exp (J : V →L[ℝ] A) : HasStrictFDerivAt (fun x => NormedSp
   exact h.comp 0 J.hasStrictFDerivAt
 
 /- English proof (translation)
-Use `letI : NormedAlgebra ℚ A := NormedAlgebra.restrictScalars ℚ ℝ A`. Rewrite using `[← NormedSpace.exp_add_of_commute (Commute.refl a).neg_left, neg_add_cancel, NormedSpace.exp_zero]`.
+Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities.
 -/
 theorem exp_neg_mul (a : A) : NormedSpace.exp (-a) * NormedSpace.exp a = 1 := by
   letI : NormedAlgebra ℚ A := NormedAlgebra.restrictScalars ℚ ℝ A
   rw [← NormedSpace.exp_add_of_commute (Commute.refl a).neg_left, neg_add_cancel, NormedSpace.exp_zero]
 
 /- English proof (translation)
-Use `set e : V → A := fun x => NormedSpace.exp (J x) with he`. Establish `e0 : e 0 = 1` using `by simp [he]`. Establish `d1 : HasStrictFDerivAt (fun p : V × V => e p.1) (J.comp (ContinuousLinearMap.fst ℝ V V)) 0` using `HasStrictFDerivAt.comp (g := e) (0 : V × V) (hasStrict_exp J) hasStrictFDerivAt_fst`. Establish `d2 : HasStrictFDerivAt (fun p : V × V => e p.2) (J.comp (ContinuousLinearMap.snd ℝ V V)) 0` using `HasStrictFDerivAt.comp (g := e) (0 : V × V) (hasStrict_exp J) hasStrictFDerivAt_snd`. Establish `d3` using `d1.mul' d2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm : (fun p : V × V => e p.1 * e p.2) 0 = 1` using `by simp [e0]`. Establish `d4` using `HasStrictFDerivAt.comp (g := Λ) (f := fun p : V × V => e p.1 * e p.2) (0 : V × V) (hm ▸ hΛ) d3`. Establish `d5` using `d4.isLittleO.def h0`. Establish `t : Tendsto (fun p : V × V => e p.1 * e p.2) (𝓝 0) (𝓝 1)` using `hm ▸ d3.continuousAt.tendsto`. Take `⟨δ1, hδ1, k1⟩` from `Metric.eventually_nhds_iff_ball.1 d5`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨δ2, hδ2, k2⟩` from `Metric.eventually_nhds_iff_ball.1 (t.eventually hr)`. Take `⟨δ3, hδ3, k3⟩` from `Metric.eventually_nhds_iff_ball.1 hl`. Establish `K1 : ∀ a b b' : V, ‖a‖ < δ1 → ‖b‖ < δ1 → ‖b'‖ < δ1 → ‖Λ (e a * e b) - Λ (e a * e b') - (b - b')‖ ≤ ε * ‖b - b'‖`. Introduce `a b b' ha hb hb'`. Use `k1 ((a, b), (a, b')) (by` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[Prod.dist_eq, Prod.norm_def, ha, hb, hb'])`. Simplify `this` using `[e0, hP, Prod.norm_def]`. Establish `K2 : ∀ a b : V, ‖a‖ < δ2 → ‖b‖ < δ2 → e (Λ (e a * e b)) = e a * e b`. Introduce `a b ha hb`. Conclude with `k2 (a, b) (by simp [Prod.norm_def, ha, hb]) (hmul _ (hexp _) _ (hexp _))`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `L1 : Λ 1 = 0` using `by rw [← e0]; exact hl.self_of_nhds`. Establish `hδ : 0 < min δ1 (min δ2 δ3)` using `by positivity`. Establish `m1 : min δ1 (min δ2 δ3) ≤ δ1` using `min_le_left _ _`. Establish `m2 : min δ1 (min δ2 δ3) ≤ δ2` using `(min_le_right _ _).trans (min_le_left _ _)`. Establish `m3 : min δ1 (min δ2 δ3) ≤ δ3` using `(min_le_right _ _).trans (min_le_right _ _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨min δ1 (min δ2 δ3) / 2, by positivity, fun x hx => ?_⟩` and prove the remaining obligations. Use `filter_upwards [Ioo_mem_nhdsGT (show 0 < min δ1 (min δ2 δ3) / 2 by positivity)] with r hr`. Take `⟨r0, r1⟩` from `hr`. Establish `er : 0 < ε * r` using `by positivity`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `z hz`. Rewrite `hz` using `[mem_ball_iff_norm]`. Establish `hz' : ‖z‖ ≤ ‖x‖ + ‖z - x‖` using `norm_le_insert' z x`. Establish `hnx : ‖-x‖ = ‖x‖` using `norm_neg x`. Use `⟨Λ (e (-x) * e z), ?_, K2 _ _ (by linarith) (by linarith)⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `a` using `K1 (-x) z x (by linarith) (by linarith) (by linarith)`. Establish `: e (-x) * e x = 1` using `by simp only [he, map_neg]; exact exp_neg_mul _`. Rewrite `a` using `[this, L1, sub_zero]`. Establish `b` using `norm_le_insert' (Λ (e (-x) * e z)) (z - x)`. Rewrite using `[mem_ball_zero_iff]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `c : (1 + ε) * ‖z - x‖ < (1 + ε) * ((1 - ε) * r)` using `by gcongr`. Establish `: 0 < ε * (ε * r)` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities. Introduce `y hy`. Rewrite `hy` using `[mem_ball_zero_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨Λ (e x * e y), ?_, K2 _ _ (by linarith) (by linarith)⟩` and prove the remaining obligations. Establish `a` using `K1 x y 0 (by linarith) (by linarith) (by simpa using hδ1)`. Rewrite `a` using `[e0, mul_one, k3 x (by rw [mem_ball_zero_iff]; linarith), sub_zero]`. Establish `b` using `norm_le_insert' (Λ (e x * e y) - x) y`. Rewrite using `[mem_ball_iff_norm]`.
-
-Establish `c : (1 + ε) * ‖y‖ < (1 + ε) * r` using `by gcongr`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem sandwich (S : Set A) (J : V →L[ℝ] A) (P : A →L[ℝ] V) (hP : ∀ x, P (J x) = x)
     (hmul : ∀ a ∈ S, ∀ b ∈ S, a * b ∈ S) (hexp : ∀ x, NormedSpace.exp (J x) ∈ S)
@@ -403,7 +399,7 @@ theorem sandwich (S : Set A) (J : V →L[ℝ] A) (P : A →L[ℝ] V) (hP : ∀ x
     nlinarith
 
 /- English proof (translation)
-Use `filter_upwards [h.hasFDerivAt.isLittleO.def hε] with x hx`. Simplify using `only [h0, sub_zero, ContinuousLinearMap.id_apply] at hx`. Use `norm_le_insert' (ψ x) x` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem norm_le_of_strict {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] (ψ : E → E)
     (h : HasStrictFDerivAt ψ (ContinuousLinearMap.id ℝ E) 0) (h0 : ψ 0 = 0) {ε : ℝ} (hε : 0 < ε) :
@@ -414,19 +410,19 @@ theorem norm_le_of_strict {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] 
   linarith
 
 /- English proof (translation)
-Establish `L1 : Λ 1 = 0` using `by simpa using hl.self_of_nhds`. Use `set ψ : E → E := fun x => L.symm (Λ (Φ x)) with hψ`. Establish `d : HasStrictFDerivAt ψ (ContinuousLinearEquiv.refl ℝ E : E →L[ℝ] E) 0`. Establish `d1` using `HasStrictFDerivAt.comp (g := Λ) (f := Φ) (0 : E) (hΦ0 ▸ hΛ) hΦ`. Establish `d2` using `(L.symm : V →L[ℝ] E).hasStrictFDerivAt.comp 0 d1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `HasStrictFDerivAt.congr_fderiv d2 ?_` and prove the remaining obligations. Use extensionality with `x`. Simplify using `[hP]`. Establish `ψ0 : ψ 0 = 0` using `by simp [hψ, hΦ0, L1]`. Establish `di` using `d.to_localInverse`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `dr` using `d.eventually_right_inverse`. Establish `i0` using `d.localInverse_apply_image`. Rewrite `di`, `dr`, `i0` using `[ψ0]`. Establish `t : Tendsto Φ (𝓝 0) (𝓝 1)` using `hΦ0 ▸ hΦ.continuousAt.tendsto`. Establish `hE : ∀ᶠ x in 𝓝 (0 : E), NormedSpace.exp (J (L (ψ x))) = Φ x` using `by filter_upwards [t.eventually hr, hΦS] with x a b`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `a b` using `[hψ]`. Take `⟨δ1, hδ1, k1⟩` from `Metric.eventually_nhds_iff_ball.1 (hE.and ((norm_le_of_strict ψ d ψ0 h0).and (dr.and (norm_le_of_strict _ di i0 h0))))`. Use `filter_upwards [Ioo_mem_nhdsGT hδ1] with r hr`. Take `⟨r0, r1⟩` from `hr`. Establish `er : 0 < ε * r` using `by positivity`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `_ ⟨_, ⟨y, hy, rfl⟩, rfl⟩`. Rewrite `hy` using `[mem_ball_zero_iff]`. Take `⟨-, -, a, b⟩` from `k1 y (by rw [mem_ball_zero_iff]; linarith)`. Establish `c : (1 + ε) * ‖y‖ < (1 + ε) * ((1 - ε) * r)` using `by gcongr`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: 0 < ε * (ε * r)` using `by positivity`. Establish `hx : ‖d.localInverse ψ _ _ y‖ < r` using `by nlinarith`. Use `⟨_, mem_ball_zero_iff.2 hx, ?_⟩` and prove the remaining obligations. Rewrite using `[← (k1 _ (by rw [mem_ball_zero_iff]; linarith)).1, a]`. Introduce and unpack `_ ⟨x, hx, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `hx` using `[mem_ball_zero_iff]`. Take `⟨a, b, -, -⟩` from `k1 x (by rw [mem_ball_zero_iff]; linarith)`. Use `⟨_, ⟨ψ x, ?_, rfl⟩, a⟩` and prove the remaining obligations. Rewrite using `[mem_ball_zero_iff]`. Conclude with `b.trans_lt (by gcongr)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chart_squeeze {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] [CompleteSpace E]
     (S : Set A) (J : V →L[ℝ] A) (P : A →L[ℝ] V) (hP : ∀ x, P (J x) = x)
@@ -482,9 +478,7 @@ def lieIncl {m : ℕ} (S : Set (Matrix (Fin m) (Fin m) ℂ)) : lieE S →ₗ[ℝ
   map_smul' a X := by ext i j; apply Complex.ext <;> simp [unrealify]
 
 /- English proof (translation)
-Introduce `X Y h`. Use extensionality with `⟨i, j, b⟩`. Use `congrFun (congrFun h i) j` as an intermediate fact. Consider the cases of `b`. Conclude with `congrArg Complex.re this`.
-
-Conclude with `congrArg Complex.im this`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact. Split into cases according to the possible forms of the given data. A detailed English derivation is pending.
 -/
 theorem lieIncl_injective {m : ℕ} (S : Set (Matrix (Fin m) (Fin m) ℂ)) : Function.Injective (lieIncl S) := by
   intro X Y h
@@ -495,7 +489,7 @@ theorem lieIncl_injective {m : ℕ} (S : Set (Matrix (Fin m) (Fin m) ℂ)) : Fun
   · exact congrArg Complex.im this
 
 /- English proof (translation)
-Establish `hc : Continuous (PI.lmulQ s)` using `Continuous.matrix_mul (A := fun _ => s) (B := fun x : PI.MtM m => Matrix.of x) continuous_const continuous_id`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem measure_le_of_mapsTo {m : ℕ} {S : Set (Matrix (Fin m) (Fin m) ℂ)} {μ : Measure (PI.MtM m)}
     (hμ : PI.IsHaarOnM S μ) {s : Matrix (Fin m) (Fin m) ℂ} (hs : s ∈ S) {B C : Set (PI.MtM m)}
@@ -509,27 +503,25 @@ theorem measure_le_of_mapsTo {m : ℕ} {S : Set (Matrix (Fin m) (Fin m) ℂ)} {�
 open scoped Matrix.Norms.Operator in
 
 /- English proof (translation)
-Introduce `m S μ c hS hμ hc E _ _ Φ L hΦ0 hΦS hD`. Take `⟨hlie, hnb⟩` from `GlobalTheory.ClosedMatGroup.closed_subgroup m S hS`. Take `⟨c₀, -, -, hu⟩` from `GlobalTheory.T.exists_unique_haarDensity_at_identity m S μ hS hμ`. Establish `hct : c ≠ ⊤` using `by rw [hu c hc]; exact ENNReal.ofReal_ne_top`. Use `haveI : FiniteDimensional ℝ E := L.symm.toLinearEquiv.finiteDimensional`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `haveI : CompleteSpace E := FiniteDimensional.complete ℝ E`. Take `⟨P₀, hP₀⟩` from `(lieIncl S).exists_leftInverse_of_injective (LinearMap.ker_eq_bot.2 (lieIncl_injective S))`. Set `J : lieE S →L[ℝ] Matrix (Fin m) (Fin m) ℂ` to `LinearMap.toContinuousLinearMap (lieIncl S)`. Set `P : Matrix (Fin m) (Fin m) ℂ →L[ℝ] lieE S` to `LinearMap.toContinuousLinearMap P₀`. Establish `hP : ∀ x, P (J x) = x` using `fun x => LinearMap.congr_fun hP₀ x`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hexp : ∀ x, NormedSpace.exp (J x) ∈ S`. Introduce `x`. Use `hlie x 1` as an intermediate fact. Rewrite `this` using `[Complex.ofReal_one, one_smul]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨Λ, hΛ, hl, hr⟩` from `exists_log S J P hP (by`. Introduce `ρ hρ`. Take `⟨δ, hδ, h⟩` from `hnb ρ hρ`. Establish `: ∀ᶠ g in 𝓝 (1 : Matrix (Fin m) (Fin m) ℂ), ∀ i j, ‖(g - 1) i j‖ < δ`. Simplify using `only [eventually_all]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Introduce `i j`. Establish `hc : Continuous fun g : Matrix (Fin m) (Fin m) ℂ => ‖(g - 1) i j‖` using `((continuous_id.sub continuous_const).matrix_elem i j).norm`. Conclude with `hc.continuousAt.eventually_lt continuousAt_const (by simpa using hδ)`. Use `filter_upwards [this] with g hg hgS`. Take `⟨x, hx, e⟩` from `h g hgS hg`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `⟨x, hx, e⟩)`. Establish `hΦ : HasStrictFDerivAt Φ (J.comp (L : E →L[ℝ] lieE S)) 0` using `by choose D hD1 hD2 using hD`. Establish `h1 : HasStrictFDerivAt (fun x => (fun i j => Φ x i j : PI.MtM m)) (ContinuousLinearMap.pi fun i => ContinuousLinearMap.pi fun j => D i j) 0` using `hasStrictFDerivAt_pi.2 fun i => hasStrictFDerivAt_pi.2 fun j => hD1 i j`. Set `T : PI.MtM m →L[ℝ] Matrix (Fin m) (Fin m) ℂ` to `LinearMap.toContinuousLinearMap (Matrix.ofLinearEquiv ℝ).toLinearMap`. Establish `h2` using `T.hasStrictFDerivAt.comp 0 h1`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Use `HasStrictFDerivAt.congr_fderiv h2 ?_` and prove the remaining obligations. Use extensionality with `v i j`. Conclude with `hD2 i j v`. Take `⟨δ₀, hδ₀, hb⟩` from `Metric.eventually_nhds_iff_ball.1 hl`. Use `letI : NormedAlgebra ℚ (Matrix (Fin m) (Fin m) ℂ) := NormedAlgebra.restrictScalars ℚ ℝ _`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `he : Continuous fun x => (Matrix.of.symm (NormedSpace.exp (J x)) : PI.MtM m)` using `NormedSpace.exp_continuous.comp J.continuous`. Use `tendsto_of_chart (X := PI.MtM m) volume μ (fun x => Matrix.of.symm (NormedSpace.exp (J x))) he hδ₀ ?_ hct hc ?_ L _ ?_` and prove the remaining obligations. Introduce `x hx y hy h`. Establish `h' : NormedSpace.exp (J x) = NormedSpace.exp (J y)` using `h`. Conclude with `(hb x hx).symm.trans ((congrArg Λ h').trans (hb y hy))`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce `ε h0 h1`. Take `⟨δ, hδ, H⟩` from `sandwich S J P hP hS.2.2.1 hexp Λ hΛ hl hr ε h0 h1`. Use `⟨δ, hδ, fun x hx => (H x hx).mono fun r hr => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Use `measure_le_of_mapsTo hμ (hexp (-x)) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨z, hz, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨y, hy, e⟩` from `hr.1 z hz`. Conclude with `⟨y, hy, e⟩`. Use `measure_le_of_mapsTo hμ (hexp x) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨z, hz, rfl⟩`. Take `⟨y, hy, e⟩` from `hr.2 z hz`.
-
-Conclude with `⟨y, hy, e⟩`. Introduce `ε h0 h1 filter_upwards [chart_squeeze S J P hP Λ hΛ hl hr Φ L hΦ0 hΦS hΦ ε h0 h1] with r hr`. Conclude with `⟨measure_mono hr.1, measure_mono hr.2⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem density_in_chart : ∀ (m : ℕ) (S : Set (Matrix (Fin m) (Fin m) ℂ)) (μ : Measure (PI.MtM m)) (c : ℝ≥0∞), PI.IsMatGroup S → PI.IsHaarOnM S μ → HasDens S μ c → ∀ (E : Type) [NormedAddCommGroup E] [NormedSpace ℝ E] (Φ : E → Matrix (Fin m) (Fin m) ℂ) (L : E ≃L[ℝ] lieE S), Φ 0 = 1 → (∀ᶠ x in 𝓝 (0 : E), Φ x ∈ S) → (∀ i j, ∃ D : E →L[ℝ] ℂ, HasStrictFDerivAt (fun x => Φ x i j) D 0 ∧ ∀ v, D v = unrealify ((L v : lieE S) : EuclideanSpace ℝ _) i j) → Tendsto (fun ρ : ℝ => μ ((fun x => Matrix.of.symm (Φ x)) '' Metric.ball 0 ρ) / volume (L '' Metric.ball (0 : E) ρ)) (𝓝[>] 0) (𝓝 c) := by
   intro m S μ c hS hμ hc E _ _ Φ L hΦ0 hΦS hD

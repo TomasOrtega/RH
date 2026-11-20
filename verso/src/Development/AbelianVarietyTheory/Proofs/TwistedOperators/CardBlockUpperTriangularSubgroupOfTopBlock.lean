@@ -13,9 +13,9 @@ abbrev blkForm (g : GL (Fin (r + t)) κ) : Matrix (Fin r ⊕ Fin t) (Fin r ⊕ F
   (g : Matrix (Fin (r + t)) (Fin (r + t)) κ).submatrix finSumFinEquiv finSumFinEquiv
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [toBlocks₂₁, blkForm, submatrix_apply, of_apply, Matrix.zero_apply, finSumFinEquiv_apply_left, finSumFinEquiv_apply_right]`. Apply `hg` to reduce the goal to its premises. Establish `hj : (Fin.castAdd t j).val < r` using `j.2`. Establish `hi : ¬ (Fin.natAdd r i).val < r` using `by simp`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [blk2, hj, hi, if_true, if_false]`. Conclude with `Nat.zero_lt_one`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem blkForm_toBlocks₂₁ {g : GL (Fin (r + t)) κ} (hg : g ∈ blockTri (blk2 r)) :
     (blkForm g).toBlocks₂₁ = 0 := by
@@ -29,16 +29,16 @@ theorem blkForm_toBlocks₂₁ {g : GL (Fin (r + t)) κ} (hg : g ∈ blockTri (b
   exact Nat.zero_lt_one
 
 /- English proof (translation)
-Rewrite using `[← blkForm_toBlocks₂₁ hg, fromBlocks_toBlocks]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem blkForm_eq {g : GL (Fin (r + t)) κ} (hg : g ∈ blockTri (blk2 r)) :
     blkForm g = fromBlocks (blkForm g).toBlocks₁₁ (blkForm g).toBlocks₁₂ 0 (blkForm g).toBlocks₂₂ := by
   rw [← blkForm_toBlocks₂₁ hg, fromBlocks_toBlocks]
 
 /- English proof (translation)
-Establish `h1 : (g : Matrix (Fin (r + t)) (Fin (r + t)) κ).det ≠ 0` using `g.isUnit.map Matrix.detMonoidHom |>.ne_zero`. Establish `h2 : (blkForm g).det = (g : Matrix (Fin (r + t)) (Fin (r + t)) κ).det` using `det_submatrix_equiv_self _ _`. Rewrite `h2` using `[blkForm_eq hg, det_fromBlocks_zero₂₁]`. Introduce `h`. Rewrite `h2` using `[h, mul_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h1 h2.symm`.
+A detailed English derivation is pending.
 -/
 theorem det_blkForm_toBlocks22_ne_zero_of_mem_blockTri {g : GL (Fin (r + t)) κ} (hg : g ∈ blockTri (blk2 r)) :
     (blkForm g).toBlocks₂₂.det ≠ 0 := by
@@ -55,7 +55,7 @@ def blkMk (A : GL (Fin r) κ) (D : GL (Fin t) κ) (B : Matrix (Fin r) (Fin t) κ
     exact mul_ne_zero (A.isUnit.map Matrix.detMonoidHom).ne_zero (D.isUnit.map Matrix.detMonoidHom).ne_zero)
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[blkForm, blkMk, Matrix.GeneralLinearGroup.mkOfDetNeZero]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem blkForm_blkMk (A : GL (Fin r) κ) (D : GL (Fin t) κ) (B : Matrix (Fin r) (Fin t) κ) :
     blkForm (blkMk A D B) = fromBlocks (A : Matrix (Fin r) (Fin r) κ) B 0 (D : Matrix (Fin t) (Fin t) κ) := by
@@ -63,7 +63,7 @@ theorem blkForm_blkMk (A : GL (Fin r) κ) (D : GL (Fin t) κ) (B : Matrix (Fin r
   simp [blkForm, blkMk, Matrix.GeneralLinearGroup.mkOfDetNeZero]
 
 /- English proof (translation)
-Introduce `i j hij`. Apply the tactic sequence `have key : r ≤ i.val ∧ j.val < r := by unfold blk2 at hij; split_ifs at hij <;> omega`. Take `⟨i', rfl⟩ : ∃ i', i = Fin.natAdd r i'` from `⟨⟨i.val - r, by omega⟩, by ext; simp; omega⟩`. Take `⟨j', rfl⟩ : ∃ j', j = Fin.castAdd t j'` from `⟨⟨j.val, key.2⟩, by ext; simp⟩`. Simplify using `[blkMk, Matrix.GeneralLinearGroup.mkOfDetNeZero]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 theorem blkMk_mem (A : GL (Fin r) κ) (D : GL (Fin t) κ) (B : Matrix (Fin r) (Fin t) κ) :
     blkMk A D B ∈ blockTri (blk2 r) := by
@@ -74,7 +74,7 @@ theorem blkMk_mem (A : GL (Fin r) κ) (D : GL (Fin t) κ) (B : Matrix (Fin r) (F
   simp [blkMk, Matrix.GeneralLinearGroup.mkOfDetNeZero]
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[upper_block_val_submatrix hr (blkMk_mem A D B)]`. Establish `: Fin.castLE hr = Fin.castAdd t` using `rfl`. Rewrite using `[this]`. Simplify using `[blkMk, Matrix.GeneralLinearGroup.mkOfDetNeZero]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem topBlock_upperTriangularBlockGL (hr : r ≤ r + t) (A : GL (Fin r) κ) (D : GL (Fin t) κ) (B : Matrix (Fin r) (Fin t) κ) :
     upperLeftBlock hr (blkMk A D B) = A := by
@@ -85,7 +85,7 @@ theorem topBlock_upperTriangularBlockGL (hr : r ≤ r + t) (A : GL (Fin r) κ) (
   simp [blkMk, Matrix.GeneralLinearGroup.mkOfDetNeZero]
 
 /- English proof (translation)
-Rewrite using `[upper_block_val_submatrix hr hg]`. Use extensionality with `i j`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem upperLeftBlock_eq_blkForm_toBlocks11 (hr : r ≤ r + t) {g : GL (Fin (r + t)) κ} (hg : g ∈ blockTri (blk2 r)) :
     ((upperLeftBlock hr g : GL (Fin r) κ) : Matrix (Fin r) (Fin r) κ) = (blkForm g).toBlocks₁₁ := by
@@ -121,7 +121,7 @@ def parSubEquiv (hr : r ≤ r + t) (H : Subgroup (GL (Fin r) κ)) :
       rw [blkForm_blkMk]; rfl
 
 /- English proof (translation)
-Rewrite using `[Nat.card_congr (parSubEquiv hr H), Nat.card_prod, Nat.card_prod, mul_assoc]`. Use `congr 2`. Use `show Nat.card (Fin r → Fin t → κ) = _`. Rewrite using `[Nat.card_fun, Nat.card_fun, Nat.card_eq_fintype_card (α := Fin r), Nat.card_eq_fintype_card (α := Fin t), Fintype.card_fin, Fintype.card_fin, ← pow_mul, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_parSub_eq (hr : r ≤ r + t) (H : Subgroup (GL (Fin r) κ)) [Finite κ] :
     Nat.card (parSub hr H) = Nat.card H * Nat.card (GL (Fin t) κ) * Nat.card κ ^ (r * t) := by
@@ -132,7 +132,7 @@ theorem card_parSub_eq (hr : r ≤ r + t) (H : Subgroup (GL (Fin r) κ)) [Finite
     Fintype.card_fin, Fintype.card_fin, ← pow_mul, mul_comm]
 
 /- English proof (translation)
-Introduce `κ _ _ n r t hr hn H`. Substitute `hn` using the available equality. Conclude with `card_parSub_eq hr H`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem card_parSub : ∀ (κ : Type) [Field κ] [Finite κ] (n r t : ℕ) (hr : r ≤ n), n = r + t →
     ∀ H : Subgroup (GL (Fin r) κ),

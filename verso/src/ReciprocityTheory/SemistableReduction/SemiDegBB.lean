@@ -7,23 +7,23 @@ namespace ReciprocityTheory.MultiplicativeHeights
 open Matrix NumberField
 
 /- English proof (translation)
-Use `set P := Submodule.span (𝓞 K) (Set.range b) with hPdef`. Use `set Q := Submodule.span (𝓞 K) (Set.range (fun j => ∑ i, M i j • b i)) with hQdef`. Establish `hbO : LinearIndependent (𝓞 K) b` using `hb.restrict_scalars' (𝓞 K)`. Set `bP : Module.Basis (Fin k) (𝓞 K) P` to `Module.Basis.span hbO`. Set `f : P →ₗ[𝓞 K] P` to `Matrix.toLin bP bP M`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hfb : ∀ j, ((f (bP j) : P) : Fin r → K) = ∑ i, M i j • b i`. Introduce `j`. Simplify using `only [f, Matrix.toLin_self, bP, Submodule.coe_sum, Submodule.coe_smul]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [Module.Basis.span_apply]`. Establish `hQ : Submodule.map P.subtype (LinearMap.range f) = Q`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[LinearMap.range_eq_map, ← bP.span_eq, Submodule.map_span, Submodule.map_span, ← Set.range_comp, ← Set.range_comp, hQdef]`. Use `congr 2`. Use function extensionality and compare the values at `j`. Conclude with `hfb j`. Establish `hf : Function.Injective f`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `x hx`. Establish `h1` using `LinearMap.toMatrix_mulVec_repr bP bP f x`. Rewrite `h1` using `[hx, map_zero, LinearMap.toMatrix_toLin]`. Establish `h2 : ⇑(bP.repr x) = 0` using `Matrix.eq_zero_of_mulVec_eq_zero hM (by simpa using h1)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `h3 : bP.repr x = 0` using `DFunLike.coe_injective h2`. Simplify using `using h3`. Establish `hR : Q.toAddSubgroup.addSubgroupOf P.toAddSubgroup = (LinearMap.range f).toAddSubgroup`. Use extensionality with `x`. Rewrite using `[AddSubgroup.mem_addSubgroupOf, Submodule.mem_toAddSubgroup, ← hQ, Submodule.mem_toAddSubgroup, Submodule.mem_map]`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, hyx⟩`. Establish `: y = x` using `Subtype.ext hyx`. Rewrite `hy` using `[this]`. Then use the resulting hypothesis. Introduce `hx`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨x, hx, rfl⟩`. Establish `: Module.Free (𝓞 K) P` using `Module.Free.of_basis bP`. Establish `: Module.Finite (𝓞 K) P` using `Module.Finite.of_basis bP`. Establish `: Module.Free ℤ P` using `Module.Free.of_basis ((RingOfIntegers.basis K).smulTower bP)`. Establish `: Module.Finite ℤ P` using `Module.Finite.of_basis ((RingOfIntegers.basis K).smulTower bP)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression.
 
-Use `set N : Submodule ℤ P := (LinearMap.range f).toAddSubgroup.toIntSubmodule with hN`. Set `e : P ≃+ N` to `(LinearEquiv.ofInjective f hf).toAddEquiv`. Establish `hdet : N.subtype ∘ₗ (e : P →+ N).toIntLinearMap = f.restrictScalars ℤ`. Use extensionality with `x`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `key` using `Submodule.natAbs_det_equiv N e`. Rewrite `key` using `[hdet, LinearMap.det_restrictScalars, LinearMap.det_toLin]`. Rewrite using `[AddSubgroup.relIndex, hR]`. Express the relevant statement in the definitionally equal form `((Nat.card (P ⧸ N) : ℕ) : ℤ) = _`. Rewrite using `[← key, Int.natCast_natAbs]`.
+A detailed English derivation is pending.
 -/
 theorem relIndex_span_comb {K : Type} [Field K] [NumberField K] {r k : ℕ}
     (b : Fin k → Fin r → K) (hb : LinearIndependent K b) (M : Matrix (Fin k) (Fin k) (𝓞 K))
@@ -79,7 +79,7 @@ theorem relIndex_span_comb {K : Type} [Field K] [NumberField K] {r k : ℕ}
   rw [← key, Int.natCast_natAbs]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Simplify using `[Matrix.diagonal_apply, ite_smul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem comb_diagonal {K : Type} [Field K] [NumberField K] {r k : ℕ} (v : Fin k → Fin r → K)
     (D : 𝓞 K) : (fun j => ∑ i, Matrix.diagonal (fun _ : Fin k => D) i j • v i) = fun j => D • v j := by
@@ -87,9 +87,9 @@ theorem comb_diagonal {K : Type} [Field K] [NumberField K] {r k : ℕ} (v : Fin 
   simp [Matrix.diagonal_apply, ite_smul]
 
 /- English proof (translation)
-Take `⟨c, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun K).1 hx`. Take `⟨⟨d, hd⟩, hdc⟩` from `IsLocalization.exist_integer_multiples (nonZeroDivisors (𝓞 K)) Finset.univ c`. Use `⟨d, nonZeroDivisors.ne_zero hd, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.smul_sum]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨e, he⟩` from `hdc i (Finset.mem_univ i)`. Establish `h1 : d • (c i • b i) = e • b i`. Rewrite using `[← smul_assoc, ← algebraMap_smul K e (b i), he]`. Rewrite using `[h1]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_smul_mem_span {K : Type} [Field K] [NumberField K] {r k : ℕ}
     (b : Fin k → Fin r → K) (x : Fin r → K) (hx : x ∈ Submodule.span K (Set.range b)) :
@@ -107,13 +107,11 @@ theorem exists_smul_mem_span {K : Type} [Field K] [NumberField K] {r k : ℕ}
   exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `hB`. Establish `hgen : ∀ g ∈ s, ∃ d : 𝓞 K, d ≠ 0 ∧ d • g ∈ Submodule.span (𝓞 K) (Set.range b)` using `fun g hg => exists_smul_mem_span b g (hBb g (by rw [← hs]; exact Submodule.subset_span hg))`. Use `choose! d hd0 hdm using hgen`. Use `⟨∏ g ∈ s, d g, Finset.prod_ne_zero_iff.2 hd0, ?_⟩` and prove the remaining obligations. Introduce `x hx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hx` using `[← hs]`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem g hg`. Take `⟨t, ht⟩` from `Finset.dvd_prod_of_mem d hg`. Rewrite using `[ht, mul_comm, mul_smul]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `Submodule.smul_mem _ _ (hdm g hg)`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy`. Rewrite using `[smul_add]`. Conclude with `Submodule.add_mem _ hx hy`.
-
-Consider the case `smul a x _ hx`. Rewrite using `[smul_comm]`. Conclude with `Submodule.smul_mem _ _ hx`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_smul_le_span {K : Type} [Field K] [NumberField K] {r k : ℕ}
     (b : Fin k → Fin r → K) (B : Submodule (𝓞 K) (Fin r → K)) (hB : B.FG)
@@ -140,21 +138,19 @@ theorem exists_smul_le_span {K : Type} [Field K] [NumberField K] {r k : ℕ}
     exact Submodule.smul_mem _ _ hx
 
 /- English proof (translation)
-Use `set P := Submodule.span (𝓞 K) (Set.range b) with hP`. Set `φ : (Fin r → K) →ₗ[𝓞 K] (Fin r → K)` to `D • LinearMap.id`. Establish `hD' : algebraMap (𝓞 K) K D ≠ 0`. Rewrite using `[← map_zero (algebraMap (𝓞 K) K)]`. Conclude with `(FaithfulSMul.algebraMap_injective (𝓞 K) K).ne hD`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hφ : Function.Injective φ`. Introduce `x y hxy`. Use function extensionality and compare the values at `i`. Use `congrFun hxy i` as an intermediate fact. Simplify using `only [φ, Algebra.smul_def] at this`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `mul_left_cancel₀ hD' this`. Establish `hPB : P ≤ B` using `Submodule.span_le.mpr (Set.range_subset_iff.mpr hbB)`. Establish `hmapP : Submodule.map φ P = Submodule.span (𝓞 K) (Set.range (fun j => ∑ i, Matrix.diagonal (fun _ : Fin k => D) i j • b i))`. Rewrite using `[comb_diagonal, hP, Submodule.map_span, ← Set.range_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `h1 : (Submodule.map φ P).toAddSubgroup ≤ (Submodule.map φ B).toAddSubgroup` using `Submodule.map_mono hPB`. Establish `h2 : (Submodule.map φ B).toAddSubgroup ≤ P.toAddSubgroup`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `hDB x hx`. Establish `hmul` using `AddSubgroup.relIndex_mul_relIndex _ _ _ h1 h2`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hdet : (Matrix.diagonal fun _ : Fin k => D).det ≠ 0`. Simplify using `[Matrix.det_diagonal, hD]`. Establish `hidx` using `relIndex_span_comb b hb (Matrix.diagonal fun _ => D) hdet`. Rewrite `hidx` using `[← hmapP]`. Establish `hne : (Submodule.map φ P).toAddSubgroup.relIndex P.toAddSubgroup ≠ 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce `h0`. Rewrite `hidx` using `[h0]`. Establish `hn : Algebra.norm ℤ (Matrix.diagonal fun _ : Fin k => D).det ≠ 0` using `Algebra.norm_ne_zero_iff.mpr hdet`. Simplify using `only [Nat.cast_zero] at hidx`. Conclude with `hn (abs_eq_zero.mp hidx.symm)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `heq : (Submodule.map φ P).toAddSubgroup.relIndex (Submodule.map φ B).toAddSubgroup = P.toAddSubgroup.relIndex B.toAddSubgroup`. Rewrite using `[Submodule.map_toAddSubgroup, Submodule.map_toAddSubgroup]`. Conclude with `AddSubgroup.relIndex_map_map_of_injective _ _ hφ`. Rewrite using `[← heq]`. Introduce `h0`.
-
-Rewrite `hmul` using `[h0, zero_mul]`. Conclude with `hne hmul.symm`.
+A detailed English derivation is pending.
 -/
 theorem relIndex_span_ne_zero {K : Type} [Field K] [NumberField K] {r k : ℕ}
     (b : Fin k → Fin r → K) (hb : LinearIndependent K b) (B : Submodule (𝓞 K) (Fin r → K))

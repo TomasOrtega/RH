@@ -16,7 +16,7 @@ variable {D : D7} {Tw : TwForms D} {inQ : D.what₂.Tup → HeightOneSpectrum (�
   {F : ∀ u, FormsTiedSym D u (H.Ch u) (H.chOf u)}
 
 /- English proof (translation)
-The claim follows from `Nat.succ_le_succ (Nat.zero_le i)`.
+A detailed English derivation is pending.
 -/
 theorem one_le (i : ℕ) : 1 ≤ i + 1 := Nat.succ_le_succ (Nat.zero_le i)
 

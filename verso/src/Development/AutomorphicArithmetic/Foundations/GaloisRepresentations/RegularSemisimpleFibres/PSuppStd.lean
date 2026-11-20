@@ -9,9 +9,9 @@ open scoped Classical
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Introduce `k _ _ _ _ _ N V _ _ π S hS`. Take `⟨t, x, hx, -⟩` from `id hS`. Establish `hsum` using `hS.sum_fst`. Establish `hd : ∑ a, (x a).fst = N`. Rewrite `hsum` using `[← hx, Multiset.map_map]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify `hsum` using `[Finset.sum_eq_multiset_sum]`. Set `τ : IrrRep (GL (Fin N) k)` to `⟨V, π, hS.isSmooth, hS.isIrreducible⟩`. Use `⟨t, x, hd, hx, ?_⟩` and prove the remaining obligations. Conclude with `SupportPerm.isSubquotient_prodIrr_of_hasSupport UpperTheory.Zero.LLC.Pr.zel UpperTheory.Zero.LLC.Pr.bz k N t τ x hd (hx ▸ hS)`.
+Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.InertialTypesAlt.suppStd :
     SuppStd := by

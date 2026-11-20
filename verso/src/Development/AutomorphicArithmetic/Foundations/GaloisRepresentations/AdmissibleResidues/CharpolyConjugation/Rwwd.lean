@@ -3,11 +3,11 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Admis
 open NumberField IsDedekindDomain Formalism.L2.Host Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions Formalism.MainNotions.N Polynomial GlobalTheory GlobalTheory.WeilDeligne GlobalTheory.CuspRep GlobalTheory.HeckeGal GlobalTheory.GalOfCusp UpperTheory.V UpperTheory.V.Af UpperTheory.V.Base UpperTheory.V.HV UpperTheory.V.Sd UpperTheory.GalN.V
 
 /- English proof (translation)
-Introduce `F Ω _ _ _ _ _ l _ ι n r hr hW w hl A h s hs α β hα hβ`. Establish `hc : Continuous fun g => ((r g : GL (Fin n) (Qbar l)) : Matrix (Fin n) (Fin n) (Qbar l))` using `Units.continuous_val.comp hr`. Establish `hact : WeilDeligne.ActsAs A (normV w) s 1 0`. Use `⟨hs.1, fun x hx => ?_⟩` and prove the remaining obligations. Simplify using `using hs.2 x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Set `σ : Weil h` to `⟨s, ⟨1, 0, hact⟩⟩`. Establish `hdeg : deg σ = 1`. Rewrite using `[deg_eq (σ := σ) hact]`. Evaluate the numerical expressions. Establish `hmem : ∀ γ : Qbar l, (Matrix.charpoly ((r s : GL (Fin n) (Qbar l)) : Matrix (Fin n) (Fin n) (Qbar l))).IsRoot γ → ι γ ∈ (wdOf h hl ι r).eig σ`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact.
 
-Introduce `γ hγ`. Use `show ι γ ∈ ((wdOf h hl ι r).charPol σ).roots`. Rewrite using `[charPol_wdOf hl ι hc σ, Polynomial.mem_roots']`. Conclude with `⟨((Matrix.charpoly_monic _).map _).ne_zero, hγ.map⟩`. Conclude with `hW w hl A h σ hdeg (ι α) (hmem α hα) (ι β) (hmem β hβ)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.GalN.V.L.rwwd :
     ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (l : ℕ) [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (n : ℕ) (r : G F Ω →* GL (Fin n) (Qbar l)), Continuous r → (∀ (w : HeightOneSpectrum (𝓞 F)) (hl : ((l : ℕ) : 𝓞 F) ∉ w.asIdeal) (A : ValuationSubring Ω) (h : IsPlaceOver A w), RatioW (wdOf h hl ι r)) → RW ι r := by

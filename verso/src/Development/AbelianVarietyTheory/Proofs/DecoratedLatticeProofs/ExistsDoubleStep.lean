@@ -23,9 +23,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.LocMod.DblInhab
 
 /- English proof (translation)
-Introduce `D k _ _ _ _ p σ B J B' n₀ n₁ n₂ _ _ _ _ _ _ F₀ F₁ F₂ s hs`. Establish `hx` using `GlobalTheory.LocChar.xi_ne p`. Take `⟨-, ⟨G₀, h₀⟩, hz⟩` from `(Exist.exists_frames D k p n₀ (σ + 1) s hs).1 B F₀`. Take `⟨G₁, h₁⟩` from `(Exist.exists_frames D k p n₁ (σ + 1) s hs).2 J _ hz F₁`. Take `⟨-, ⟨G₂, h₂⟩, -⟩` from `(Exist.exists_frames D k p n₂ σ (s * p.xi) (mul_ne_zero hs hx)).1 B' F₂`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨⟨s, hs, F₀, F₁, F₂, G₀, G₁, G₂, h₀, h₁, h₂⟩, rfl, rfl, rfl, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_dbl : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (p : Place D k) (σ : ℕ) (B : BesLev D (σ + 1)) (J : JacLev D (σ + 1)) (B' : BesLev D σ) (n₀ n₁ n₂ : Type)
@@ -44,7 +44,7 @@ section Gram
 variable (E : Type) [Field E] [CharZero E] [StarRing E]
 
 /- English proof (translation)
-Substitute `he he' hi` using the available equality. Apply the tactic sequence `refine ⟨?_, ?_, ?_, ?_, ?_, ?_⟩ <;> ext a b <;> rw [Matrix.mul_apply] <;>`. Apply the tactic sequence `simp only [Matrix.mul_diagonal, Matrix.conjTranspose_apply] <;> fin_cases a <;> fin_cases b <;>`. Apply the tactic sequence `simp [Fin.sum_univ_five, Examples₂.sgn] <;> norm_num`.
+Substitute using the available equality. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem five_gram (e e' : Matrix (Fin 5) (Fin 1) E) (i : Matrix (Fin 5) (Fin 3) E) (he : e = !![0; 0; 0; 1; 1])
     (he' : e' = !![0; 0; 0; 1 / 2; -(1 / 2)]) (hi : i = !![1, 0, 0; 0, 1, 0; 0, 0, 1; 0, 0, 0; 0, 0, 0]) :
@@ -59,7 +59,7 @@ theorem five_gram (e e' : Matrix (Fin 5) (Fin 1) E) (i : Matrix (Fin 5) (Fin 3) 
 
 omit [CharZero E] in
 /- English proof (translation)
-Establish `h` using `Matrix.submatrix_mul (1 : Matrix (Fin N) (Fin N) E) M f id id Function.bijective_id`. Rewrite `h` using `[Matrix.submatrix_id_id]`. Rewrite using `[Matrix.conjTranspose_submatrix, Matrix.conjTranspose_one, ← h, ← Matrix.submatrix_mul _ _ _ _ _ Function.bijective_id, Matrix.one_mul, Matrix.mul_one]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem sub_gram {N a b : ℕ} (M : Matrix (Fin N) (Fin N) E) (f : Fin a → Fin N) (g : Fin b → Fin N) :
     ((1 : Matrix (Fin N) (Fin N) E).submatrix id f)ᴴ * M * (1 : Matrix (Fin N) (Fin N) E).submatrix id g = M.submatrix f g := by
@@ -70,9 +70,9 @@ theorem sub_gram {N a b : ℕ} (M : Matrix (Fin N) (Fin N) E) (f : Fin a → Fin
 
 omit [CharZero E] in
 /- English proof (translation)
-Substitute `ha hb` using the available equality. Apply the tactic sequence `refine ⟨?_, ?_, ?_⟩ <;> rw [sub_gram] <;> ext i j`. Simplify using `[Matrix.diagonal_apply, Fin.castSucc_ne_last]`. Rewrite using `[Subsingleton.elim i 0, Subsingleton.elim j 0]`. Simplify using the standard rewrite rules.
+Substitute using the available equality. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[Matrix.diagonal_apply, (Fin.castSucc_ne_last j).symm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem last_gram (N : ℕ) (a : Matrix (Fin (N + 1)) (Fin N) E) (b : Matrix (Fin (N + 1)) (Fin 1) E)
     (ha : a = (1 : Matrix (Fin (N + 1)) (Fin (N + 1)) E).submatrix id Fin.castSucc)
@@ -92,9 +92,7 @@ end Gram
 abbrev posSp (D : D7) (N : ℕ) : HSp D := diagSp D N (fun _ => false) N 0
 
 /- English proof (translation)
-Use `GlobalTheory.Unf.Inhab.coCpt_of_posDef fun τ => ?_` and prove the remaining obligations. Establish `h : gramAt D (posSp D N) τ = 1`. Rewrite using `[gramAt, diagSp_gram]`. Conclude with `Matrix.map_one _ (map_zero (tauE D τ)) (map_one (tauE D τ))`. Rewrite using `[h]`.
-
-Conclude with `Matrix.PosDef.one`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coCpt_posSp (D : D7) (N : ℕ) : CoCpt (posSp D N) := by
   refine GlobalTheory.Unf.Inhab.coCpt_of_posDef fun τ => ?_
@@ -129,9 +127,9 @@ def orthLast (D : D7) (N : ℕ) :
 open GlobalTheory.Unf.Inhab in
 
 /- English proof (translation)
-Set `B : BesLev D 1` to `besPlane (GlobalTheory.RegSW.Model.hypFour D) (cmHost_imaginaryGenerator_ne_zero D)`. Set `J : JacLev D 1` to `⟨_, _, hypFive D, coCpt_posSp D 3, (nonempty_vol _).some, (nonempty_volN _).some⟩`. Set `B' : BesLev D 0` to `⟨_, _, _, _, hypRefl _, orthLast D 5, fun _ => 1, isLineVec_negLine one_ne_zero, coCpt_posSp D 5, (nonempty_vol _).some, (nonempty_volN _).some⟩`. Establish `e : D.host.xi0⁻¹ • B.ζ = B'.ζ` using `funext fun _ => inv_mul_cancel₀ (cmHost_imaginaryGenerator_ne_zero D)`. Establish `l : Link B B.L B'.ζ` using `e ▸ selfLink B`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨B, J, B', rfl, rfl, rfl, ⟨l⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_levels (D : D7) : ∃ (B : BesLev D (0 + 1)) (J : JacLev D (0 + 1)) (B' : BesLev D 0),
     1 = B.A.rank ∧ 3 = J.W₀.rank ∧ 5 = B'.A.rank ∧ Nonempty (Link B B'.L B'.ζ) := by
@@ -150,12 +148,12 @@ open GlobalTheory.FinPl (SplitPt Pl idAt intAt)
 variable {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (q : SplitPt D k)
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.LocChar.ι_one (ofSplit q)`.
+A detailed English derivation is pending.
 -/
 theorem sec_one : q.sec 1 = q.e := GlobalTheory.LocChar.ι_one (ofSplit q)
 
 /- English proof (translation)
-Establish `h` using `q.sec_pr (q.sec a * o)`. Rewrite `h` using `[map_mul, q.pr_sec]`. Rewrite using `[h, ← mul_assoc]`. Conclude with `congrArg (· * o) (GlobalTheory.LocChar.e_mul_ι (ofSplit q) a)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sec_mul_pr (a : k) (o : AE D) : q.sec (a * q.pr o) = q.sec a * o := by
   have h := q.sec_pr (q.sec a * o)
@@ -164,9 +162,9 @@ theorem sec_mul_pr (a : k) (o : AE D) : q.sec (a * q.pr o) = q.sec a * o := by
   exact congrArg (· * o) (GlobalTheory.LocChar.e_mul_ι (ofSplit q) a)
 
 /- English proof (translation)
-Take `⟨ε, hε, hsum⟩` from `q.above`. Take `⟨hee, hec, -⟩` from `q.split`. Establish `he : q.e ∈ idAt D (· = q.v)`. Use `((GlobalTheory.T.placeIdempotent_acts_on_supportedAndOff D q.v ε hε).1 q.e).2 ?_` and prove the remaining obligations. Rewrite using `[← hsum, add_mul, hee, mul_comm (cA D q.e), hec, add_zero]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h : q.e * q.sec a = q.sec a` using `GlobalTheory.LocChar.e_mul_ι (ofSplit q) a`. Rewrite using `[← h]`. Conclude with `Ideal.mul_mem_right _ _ he`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sec_mem_idAt (a : k) : q.sec a ∈ idAt D (· = q.v) := by
   obtain ⟨ε, hε, hsum⟩ := q.above
@@ -179,13 +177,13 @@ theorem sec_mem_idAt (a : k) : q.sec a ∈ idAt D (· = q.v) := by
   exact Ideal.mul_mem_right _ _ he
 
 /- English proof (translation)
-The claim follows from `(and_iff_right (sec_mem_idAt q a)).trans (q.int_iff a).symm`.
+A detailed English derivation is pending.
 -/
 theorem sec_mem_intAt (a : k) : q.sec a ∈ intAt D (· = q.v) ↔ valuation k a ≤ 1 :=
   (and_iff_right (sec_mem_idAt q a)).trans (q.int_iff a).symm
 
 /- English proof (translation)
-Use `(q.int_iff _).2 ?_` and prove the remaining obligations. Rewrite using `[q.sec_pr, ← sec_one, map_mul]`. Conclude with `GlobalTheory.HostAdeleIso.intAE_mul_mem D ((q.int_iff 1).1 (one_mem _)) ho.2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pr_le_one {o : AE D} (ho : o ∈ intAt D (· = q.v)) : valuation k (q.pr o) ≤ 1 := by
   refine (q.int_iff _).2 ?_
@@ -193,11 +191,11 @@ theorem pr_le_one {o : AE D} (ho : o ∈ intAt D (· = q.v)) : valuation k (q.pr
   exact GlobalTheory.HostAdeleIso.intAE_mul_mem D ((q.int_iff 1).1 (one_mem _)) ho.2
 
 /- English proof (translation)
-Establish `hk' : ∀ x, (ψk x : ℂ) = psiE ψ (incA D D.host.xi0 * q.sec x)` using `hk`. Introduce `x`. Rewrite using `[Units.val_one, map_one]`. Use `⟨fun h => ?_, fun h y hy => Circle.ext ?_⟩` and prove the remaining obligations. Establish `hs` using `(hc _ (Ideal.mul_mem_left _ (incA D D.host.xi0) (sec_mem_idAt q x))).1 fun o ho => by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[mul_assoc, ← sec_mul_pr, ← hk', h _ (by rw [map_mul]; exact mul_le_of_le_one_right' (pr_le_one q ho)), Circle.coe_one]`. Use `h2 _ hs` as an intermediate fact. Rewrite `this` using `[← mul_assoc, ← map_mul, inv_mul_cancel₀ (GlobalTheory.Unf.Inhab.cmHost_imaginaryGenerator_ne_zero D), map_one, one_mul]`. Conclude with `(sec_mem_intAt q x).1 this`. Establish `hs` using `h1 _ ((sec_mem_intAt q y).2 (hy.trans h))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(hc _ hs.1).2 hs _ ((sec_mem_intAt q 1).2 (map_one _).le)` as an intermediate fact. Rewrite `this` using `[mul_assoc, ← sec_mul_pr, q.pr_sec, mul_one]`. Rewrite using `[hk', this, Circle.coe_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasConductor {ψ : AddChar (AF D.host.F) ℂ}
     (hc : ∀ s ∈ idAt D (· = q.v), (∀ o ∈ intAt D (· = q.v), psiE ψ (s * o) = 1) ↔ s ∈ intAt D (· = q.v))
@@ -221,13 +219,11 @@ theorem hasConductor {ψ : AddChar (AF D.host.F) ℂ}
 end Place
 
 /- English proof (translation)
-Take `⟨N, hN, hker, -⟩` from `GlobalTheory.CharFin.char_finUnit_finite_order D χ hχ`. Use `filter_upwards [GlobalTheory.FinPl.AeUnit.eventually_incA_mul_mem_intAt D (N : D.host.E)⁻¹] with v hv k _ _ _ _ q hq μ hμ x hx`. Substitute `hq` using the available equality. Establish `key : ∀ y : k, valuation k y ≤ 1 → infPart D (q.sec y + (1 - q.e)) = 1 ∧ finPart D (q.sec y + (1 - q.e)) ∈ intAE D ∧ ∃ z ∈ intAE D, finPart D (q.sec y + (1 - q.e)) - 1 = N • z` using `fun y hy => by`. Establish `hy'` using `(sec_mem_intAt q (y - 1)).2 ((Valuation.map_sub _ _ _).trans (max_le hy (map_one _).le))`.
+Extract witnesses or component facts from the available result. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : q.sec y + (1 - q.e) = q.sec (y - 1) + 1` using `by rw [map_sub, sec_one]; ring`. Establish `hi : infPart D (q.sec (y - 1)) = 0` using `hy'.1.1`. Rewrite using `[e, RingHom.map_add, RingHom.map_add, RingHom.map_one, RingHom.map_one, hi, zero_add, add_sub_cancel_right]`. Use `⟨rfl, add_mem hy'.2 (GlobalTheory.HeckeConj.one_mem_intAE D), _, (hv _ hy').2, ?_⟩` and prove the remaining obligations. Establish `e' : q.sec (y - 1) = N • (incA D (N : D.host.E)⁻¹ * q.sec (y - 1))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[nsmul_eq_mul, ← mul_assoc, ← map_natCast (incA D), ← RingHom.map_mul, mul_inv_cancel₀ (Nat.cast_ne_zero.2 hN.ne'), RingHom.map_one, one_mul]`. Conclude with `(congrArg (finPart D) e').trans ((finPart D).toAddMonoidHom.map_nsmul _ _)`. Establish `hx' : valuation k ((x⁻¹ : kˣ) : k) ≤ 1` using `by rw [Units.val_inv_eq_inv_val, map_inv₀, hx, inv_one]`. Establish `h1 : χ (GlobalTheory.LocChar.unitsHom (ofSplit q) x) = 1` using `hker _ ⟨(key _ hx.le).1, (key _ hx.le).2.1, (key _ hx').2.1⟩ (key _ hx.le).2.2`. Establish `h2` using `hμ x (GlobalTheory.LocChar.unitsHom (ofSplit q) x) rfl`.
-
-Rewrite `h2` using `[h1, Circle.coe_one]`. Conclude with `Units.ext h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eventually_isUnram (D : D7) (χ : (AE D)ˣ →* Circle) (hχ : Continuous χ) : ∀ᶠ v : GlobalTheory.FinPl.Pl D in cofinite,
     ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (q : GlobalTheory.FinPl.SplitPt D k),
@@ -254,7 +250,7 @@ theorem eventually_isUnram (D : D7) (χ : (AE D)ˣ →* Circle) (hχ : Continuou
   exact Units.ext h2
 
 /- English proof (translation)
-Introduce `x hx` and use `h x (by simpa using Valuation.map_one_add_of_lt (valuation k) hx)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isTame_of_isUnram {k : Type} [Field k] [ValuativeRel k] {μ : kˣ →* ℂˣ} (h : IsUnram μ) : IsTame μ := fun x hx =>
   h x (by simpa using Valuation.map_one_add_of_lt (valuation k) hx)
@@ -262,9 +258,9 @@ theorem isTame_of_isUnram {k : Type} [Field k] [ValuativeRel k] {μ : kˣ →* �
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField in
 
 /- English proof (translation)
-Establish `hev` using `(GlobalTheory.T.standard_character_conductor_almost_all D ψ hψ).and ((GlobalTheory.FinPl.AeUnit.eventually_incA_mul_mem_intAt D D.host.xi0).and ((GlobalTheory.FinPl.AeUnit.eventually_incA_mul_mem_intAt D D.host.xi0⁻¹).and ((eventually_isUnram D χ₁ h₁).and (eventually_isUnram D χ₂ …`. Take `⟨v, ⟨e, ε, he, hε, hs⟩, a1, a2, a3, a4, a5⟩` from `((Filter.frequently_cofinite_iff_infinite.2 (GlobalTheory.T.infinitely_many_split_places D)).and_eventually hev).exists`. Take `⟨q, -, hq⟩` from `GlobalTheory.FinPl.SplitPoint.exists_splitPt D v e ε he hε hs`. Take `⟨⟨ψk, hk⟩, -, -, -, hc⟩` from `GlobalTheory.LocChar.weil_char_split D _ (ofSplit q) ψ hψ`. Take `⟨μ₁, c₁⟩` from `hc χ₁`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨μ₂, c₂⟩` from `hc χ₂`. Conclude with `⟨_, _, _, _, _, ofSplit q, ψk, μ₁, μ₂, hk, hasConductor q (by rw [hq]; exact a1) (by rw [hq]; exact a2) (by rw [hq]; exact a3) hk, c₁, a4 _ q hq _ c₁, c₂, a5 _ q hq _ c₂⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_good_place (D : D7) {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) (χ₁ χ₂ : (AE D)ˣ →* Circle)
     (h₁ : Continuous χ₁) (h₂ : Continuous χ₂) : ∃ (k : Type) (_ : Field k) (_ : ValuativeRel k) (_ : TopologicalSpace k)

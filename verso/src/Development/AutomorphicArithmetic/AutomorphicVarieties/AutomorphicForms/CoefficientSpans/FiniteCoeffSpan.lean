@@ -32,7 +32,7 @@ def CentreTo : Prop :=
       ∀ (φ : Sm E a) (h : φ.1 ∈ archSmooth E a), (uAction z ⟨φ.1, h⟩).1 = (z' φ).1
 
 /- English proof (translation)
-Set `m : Module.Dual ℂ W →ₗ[ℂ] W →ₗ[ℂ] (G → ℂ)` to `LinearMap.mk₂ ℂ (fun ℓ w k => ℓ (ρ k w)) (fun _ _ _ => rfl) (fun _ _ _ => rfl) (fun _ _ _ => by funext k; simp) (fun _ _ _ => by funext k; simp)`. Use `Submodule.finiteDimensional_of_le (S₂ := LinearMap.range (TensorProduct.lift m)) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨ℓ, w, rfl⟩`. Conclude with `⟨ℓ ⊗ₜ w, rfl⟩`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem finite_coeffSpan {G W : Type} [Group G] [AddCommGroup W] [Module ℂ W] [FiniteDimensional ℂ W]
     (ρ : Representation ℂ G W) : FiniteDimensional ℂ (GlobalTheory.Published.AutFin.coeffSpan ρ) := by
@@ -44,7 +44,7 @@ theorem finite_coeffSpan {G W : Type} [Group G] [AddCommGroup W] [Module ℂ W] 
   exact ⟨ℓ ⊗ₜ w, rfl⟩
 
 /- English proof (translation)
-Introduce `f hf k'`. Establish `: GlobalTheory.Published.AutFin.coeffSpan ρ ≤ (GlobalTheory.Published.AutFin.coeffSpan ρ).comap (LinearMap.funLeft ℂ ℂ fun k => k * k')` using `Submodule.span_le.2 (by`. Introduce and unpack `_ ⟨ℓ, w, rfl⟩`. Conclude with `Submodule.subset_span ⟨ℓ, ρ k' w, funext fun k => by simp [LinearMap.funLeft_apply]⟩)`. Conclude with `this hf`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem coeffSpan_right {G W : Type} [Group G] [AddCommGroup W] [Module ℂ W] (ρ : Representation ℂ G W) :
     ∀ f ∈ GlobalTheory.Published.AutFin.coeffSpan ρ, ∀ k' : G, (fun k => f (k * k')) ∈ GlobalTheory.Published.AutFin.coeffSpan ρ := by
@@ -56,7 +56,7 @@ theorem coeffSpan_right {G W : Type} [Group G] [AddCommGroup W] [Module ℂ W] (
   exact this hf
 
 /- English proof (translation)
-Introduce `K _ _ n L hL W _ _ _ ρ χ`. Set `S : Submodule ℂ (archSmooth K n)` to `{ carrier := {φ | IsAutomorphicForm φ.1 ∧ (∀ k ∈ L, ∀ g, φ.1 (g * finEmb K n k) = φ.1 g) ∧ (∀ g, (fun k : archCompact K n => φ.1 (g * infEmb K n k)) ∈ GlobalTheory.Published.AutFin.coeffSpan ρ) ∧ ∀ z ∈ (isExpLieAlgebra K n).centerU, uAction z φ = χ z • φ} add_mem' := fun {φ ψ} p …`. Establish `hS : FiniteDimensional ℂ S` using `h K n S ⟨fun φ p => p.1.isLeftInvariant, fun φ p => p.1.hasModerateGrowth, ⟨L, hL, fun φ p => p.2.1⟩, ⟨_, finite_coeffSpan ρ, coeffSpan_right ρ, fun φ p => p.2.2.1⟩, fun z hz => ⟨Polynomial.X - Polynomial.C (χ z), Polynomial.monic_X_sub_C _, fun φ p => by`. Simplify using `[p.2.2.2 z hz]⟩⟩`. Conclude with `Submodule.finiteDimensional_of_le (S₂ := S) (Submodule.span_le.2 fun _ p => p)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem charFinite_of (h : Fin.FormsFinite) : CharFinite := by
   intro K _ _ n L hL W _ _ _ ρ χ
@@ -77,19 +77,17 @@ theorem charFinite_of (h : Fin.FormsFinite) : CharFinite := by
   exact Submodule.finiteDimensional_of_le (S₂ := S) (Submodule.span_le.2 fun _ p => p)
 
 /- English proof (translation)
-Introduce `E _ _ _ a L hL W _ _ _ ρ _ c`. Take `⟨e, he⟩` from `h2 E a`. Set `S : Subalgebra ℂ (Module.End ℂ (Sm E a))` to `{ carrier := {z | ∃ t : ℂ, ∀ φ : Sm E a, (∀ τ u, cap τ u φ = c τ u • φ) → z φ = t • φ} mul_mem' := by`. Introduce and unpack `x y ⟨s, hs⟩ ⟨t, ht⟩`. Conclude with `⟨t * s, fun φ h => by rw [Module.End.mul_apply, ht φ h, map_smul, hs φ h, mul_smul]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Use the proof step `add_mem' := by`. Introduce and unpack `x y ⟨s, hs⟩ ⟨t, ht⟩`. Conclude with `⟨s + t, fun φ h => by rw [LinearMap.add_apply, ht φ h, hs φ h, add_smul]⟩`. Use the proof step `algebraMap_mem' := fun t => ⟨t, fun φ _ => rfl⟩ }`. Establish `hχ : ∀ z : UEnv E a, ∃ t : ℂ, z ∈ (isExpLieAlgebra E a).centerU → ∀ (φ : Sm E a) (h : φ.1 ∈ archSmooth E a), (∀ τ u, cap τ u φ = c τ u • φ) → uAction z ⟨φ.1, h⟩ = t • ⟨φ.1, h⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Introduce `z`. Distinguish the cases in `hz : z ∈ (isExpLieAlgebra E a).centerU`. Take `⟨z', h4, h5⟩` from `h3 E a z hz`. Take `⟨t, ht⟩ : z' ∈ S` from `Algebra.adjoin_le (S := S) (by rintro _ ⟨τ, u, rfl⟩; exact ⟨c τ u, fun φ h => h τ u⟩) h4`. Conclude with `⟨t, fun _ φ h hc => Subtype.ext ((h5 φ h).trans (congrArg Subtype.val (ht φ hc)))⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨0, fun h => absurd h hz⟩`. Use `choose χ hχ using hχ`. Establish `hf` using `h0 E a L hL W (ρ.comp e.toMonoidHom) χ`. Use `set T := Submodule.span ℂ {φ : archSmooth E a | IsAutomorphicForm φ.1 ∧ (∀ k ∈ L, ∀ g, φ.1 (g * finEmb E a k) = φ.1 g) ∧ (∀ g, (fun k : archCompact E a => φ.1 (g * infEmb E a k)) ∈ GlobalTheory.Published.AutFin.coeffSpan (ρ.comp e.toMonoidHom)) ∧ ∀ z ∈ (isExpLieAlgebra E a).cente …`. Establish `hle : (Submodule.span ℂ (GlobalTheory.Published.AutFinGL.forms L ρ c)).map (Sm E a).subtype ≤ T.map (archSmooth E a).subtype`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Submodule.map_span, Submodule.span_le]`. Introduce and unpack `_ ⟨φ, ⟨p1, p2, p3, p4⟩, rfl⟩`. Establish `hA` using `h1 E a φ p1`. Use `⟨⟨φ.1, hA.isSmooth.1⟩, Submodule.subset_span ⟨hA, fun k hk g => ?_, fun g => ?_, fun z hz => hχ z hz φ _ p4⟩, rfl⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `φ.1 (g * finEmb E a k) = φ.1 g`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[Fb.finEmb_eq]`. Conclude with `congrFun (congrArg Subtype.val (p2 k hk)) g`. Establish `hm : GlobalTheory.Published.AutFin.coeffSpan ρ ≤ (GlobalTheory.Published.AutFin.coeffSpan (ρ.comp e.toMonoidHom)).comap (LinearMap.funLeft ℂ ℂ e)` using `Submodule.span_le.2 (by rintro _ ⟨ℓ, w, rfl⟩; exact Submodule.subset_span ⟨ℓ, w, rfl⟩)`. Use `hm (p3 g)` as an intermediate fact. Simplify using `only [← he]`.
-
-Conclude with `this`. Use `Submodule.finiteDimensional_of_le hle` as an intermediate fact. Conclude with `Module.Finite.equiv (Submodule.equivMapOfInjective _ (Sm E a).injective_subtype _).symm`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finite_of (h0 : CharFinite) (h1 : AutTo) (h2 : CptTo) (h3 : CentreTo) :
     GlobalTheory.Published.AutomorphicFormsFiniteGL := by

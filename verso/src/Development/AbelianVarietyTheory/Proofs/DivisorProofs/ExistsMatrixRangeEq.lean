@@ -3,21 +3,21 @@ import Mathlib
 namespace GlobalTheory.MatrixRangeExistence
 
 /- English proof (translation)
-Set `f : (Fin n → O) →ₗ[O] N` to `LinearMap.codRestrict N (ϖ • LinearMap.id) (fun y => hN y)`. Establish `hf : Function.Injective f`. Introduce `y z h`. Establish `h' : ϖ • y = ϖ • z` using `congrArg Subtype.val h`. Use function extensionality and compare the values at `a`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `mul_left_cancel₀ hϖ (congrFun h' a)`. Establish `h1 : n ≤ Module.finrank O N`. Use `LinearMap.finrank_le_finrank_of_injective hf` as an intermediate fact. Simplify using `using this`. Establish `h2 : Module.finrank O N ≤ n`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Submodule.finrank_le N` as an intermediate fact. Simplify using `using this`. Set `b : Module.Basis (Fin n) O N` to `Module.finBasisOfFinrankEq O N (le_antisymm h2 h1)`. Set `A : Matrix (Fin n) (Fin n) O` to `Matrix.of fun i j => (b j : Fin n → O) i`. Establish `hA : ∀ u : Fin n → O, Matrix.mulVec A u = ((∑ j, u j • b j : N) : Fin n → O)`.
+Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `u`. Use function extensionality and compare the values at `i`. Simplify using `[A, Matrix.mulVec, dotProduct, Finset.sum_apply, mul_comm]`. Establish `key : ∀ x : Fin n → O, x ∈ N ↔ ∃ u : Fin n → O, Matrix.mulVec A u = x`. Introduce `x`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hx`. Use `⟨fun j => b.repr ⟨x, hx⟩ j, ?_⟩` and prove the remaining obligations. Rewrite using `[hA, b.sum_repr ⟨x, hx⟩]`. Introduce and unpack `⟨u, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hA]`. Conclude with `Subtype.property _`. Use `⟨A, key, ?_⟩` and prove the remaining obligations. Establish `hcol : ∀ j : Fin n, ∃ u : Fin n → O, Matrix.mulVec A u = fun a => ϖ * (Pi.single j (1 : O) : Fin n → O) a` using `fun j => (key _).1 (hN _)`. Use `choose U hU using hcol`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `hmul : A * (Matrix.of fun i j => U j i) = ϖ • (1 : Matrix (Fin n) (Fin n) O)`. Use extensionality with `i j`. Use `congrFun (hU j) i` as an intermediate fact. Simplify using `only [Matrix.mulVec, dotProduct] at this`. Simplify using `[Matrix.mul_apply, this, Matrix.one_apply, Pi.single_apply]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `h0`. Use `congrArg Matrix.det hmul` as an intermediate fact. Rewrite `this` using `[Matrix.det_mul, h0, zero_mul, Matrix.det_smul, Matrix.det_one, mul_one]`. Conclude with `pow_ne_zero _ hϖ this.symm`.
+A detailed English derivation is pending.
 -/
 theorem exists_matrix_range_eq {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     (n : ℕ) (ϖ : O) (N : Submodule O (Fin n → O)) (hϖ : ϖ ≠ 0)

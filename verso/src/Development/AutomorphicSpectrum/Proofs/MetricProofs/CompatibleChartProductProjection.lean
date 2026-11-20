@@ -11,14 +11,14 @@ namespace GlobalTheory.CompanionTheory.Ar.PB.ChartSwap
 variable {e n : ℕ}
 
 /- English proof (translation)
-The claim follows from `continuous_pi fun j => continuous_apply (σ j)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_comp_emb (σ : Fin n ↪ Fin e) :
     Continuous (fun w : Fin e → ℂ => w ∘ σ) :=
   continuous_pi fun j => continuous_apply (σ j)
 
 /- English proof (translation)
-Rewrite using `[analyticAt_pi_iff]`. Introduce `j`. Conclude with `(ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Fin e => ℂ) (σ j)).analyticAt w`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem analyticAt_comp_emb (σ : Fin n ↪ Fin e) (w : Fin e → ℂ) :
     AnalyticAt ℂ (fun v : Fin e → ℂ => v ∘ σ) w := by
@@ -27,14 +27,14 @@ theorem analyticAt_comp_emb (σ : Fin n ↪ Fin e) (w : Fin e → ℂ) :
   exact (ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Fin e => ℂ) (σ j)).analyticAt w
 
 /- English proof (translation)
-The claim follows from `funext fun j => σ.injective.extend_apply g w j`.
+A detailed English derivation is pending.
 -/
 theorem extend_comp_emb (σ : Fin n ↪ Fin e) (g : Fin n → ℂ) (w : Fin e → ℂ) :
     Function.extend σ g w ∘ σ = g :=
   funext fun j => σ.injective.extend_apply g w j
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Distinguish the cases in `h : ∃ j, σ j = i`. Take `⟨j, rfl⟩` from `h`. Conclude with `σ.injective.extend_apply _ _ j`. Rewrite using `[Function.extend_apply' _ _ _ h, Function.extend_apply' _ _ _ h]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem extend_extend_emb (σ : Fin n ↪ Fin e) (g : Fin n → ℂ) (w : Fin e → ℂ) :
     Function.extend σ (w ∘ σ) (Function.extend σ g w) = w := by
@@ -45,11 +45,11 @@ theorem extend_extend_emb (σ : Fin n ↪ Fin e) (g : Fin n → ℂ) (w : Fin e 
   · rw [Function.extend_apply' _ _ _ h, Function.extend_apply' _ _ _ h]
 
 /- English proof (translation)
-Rewrite using `[analyticAt_pi_iff]`. Introduce `i`. Distinguish the cases in `h : ∃ j, σ j = i`. Take `⟨j, rfl⟩` from `h`. Establish `hfun : (fun v : Fin e → ℂ => Function.extend σ (f (v ∘ σ)) v (σ j)) = (fun y : Fin n → ℂ => f y j) ∘ (fun v : Fin e → ℂ => v ∘ σ)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `v`. Conclude with `σ.injective.extend_apply _ _ j`. Rewrite using `[hfun]`. Conclude with `AnalyticAt.comp (analyticAt_pi_iff.1 hf j) (analyticAt_comp_emb σ w)`. Establish `hfun : (fun v : Fin e → ℂ => Function.extend σ (f (v ∘ σ)) v i) = fun v => v i`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `v`. Conclude with `Function.extend_apply' _ _ _ h`. Rewrite using `[hfun]`. Conclude with `(ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Fin e => ℂ) i).analyticAt w`.
+A detailed English derivation is pending.
 -/
 theorem analyticAt_extend_emb (σ : Fin n ↪ Fin e) {f : (Fin n → ℂ) → Fin n → ℂ} {w : Fin e → ℂ}
     (hf : AnalyticAt ℂ f (w ∘ σ)) :
@@ -102,25 +102,23 @@ noncomputable def extendHomeo (σ : Fin n ↪ Fin e)
     (analyticAt_extend_emb σ (h₂ _ hw)).continuousAt.continuousWithinAt
 
 /- English proof (translation)
-Introduce `e n X Z _ _ A Ab pr ψ kb σ ψb hψ hb hpr`. Establish `h₁ : AnalyticOnNhd ℂ ((Ab.chart kb).symm.trans ψb) ((Ab.chart kb).symm.trans ψb).source`. Introduce `y hy`. Conclude with `(hb kb).1 y hy`. Establish `h₂ : AnalyticOnNhd ℂ ((Ab.chart kb).symm.trans ψb).symm ((Ab.chart kb).symm.trans ψb).target`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y hy`. Conclude with `(hb kb).2 y hy`. Establish `hcomp : ∀ y ∈ ψ.source, ψ y ∘ σ = Ab.chart kb (pr y)` using `fun y hy =>`. Use function extensionality and compare the values at `fun i => ((hpr y hy).2 i).symm`. Set `T` to `extendHomeo σ ((Ab.chart kb).symm.trans ψb) h₁ h₂`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hTan : ∀ w ∈ T.source, AnalyticAt ℂ T w` using `fun w hw => analyticAt_extend_emb σ (h₁ _ hw)`. Establish `hTsan : ∀ w ∈ T.target, AnalyticAt ℂ T.symm w` using `fun w hw => analyticAt_extend_emb σ (h₂ _ hw)`. Establish `hsrc : (ψ.trans T).source = ψ.source ∩ pr ⁻¹' ψb.source`. Use extensionality with `y`. Rewrite using `[OpenPartialHomeomorph.trans_source]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hy, hy'⟩`. Use `⟨hy, ?_⟩` and prove the remaining obligations. Establish `h3 : ψ y ∘ σ ∈ ((Ab.chart kb).symm.trans ψb).source` using `hy'`. Rewrite `h3` using `[hcomp y hy, OpenPartialHomeomorph.trans_source]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h4` using `h3.2`. Simplify using `only [Set.mem_preimage] at h4`. Rewrite `h4` using `[(Ab.chart kb).left_inv (hpr y hy).1]`. Then use the resulting hypothesis. Introduce and unpack `⟨hy, hy'⟩`. Use `⟨hy, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `show ψ y ∘ σ ∈ ((Ab.chart kb).symm.trans ψb).source`. Rewrite using `[hcomp y hy, OpenPartialHomeomorph.trans_source]`. Use `⟨(Ab.chart kb).map_source (hpr y hy).1, ?_⟩` and prove the remaining obligations. Simplify using `only [Set.mem_preimage]`. Rewrite using `[(Ab.chart kb).left_inv (hpr y hy).1]` and apply the resulting hypothesis.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨ψ.trans T, ?_, hsrc, ?_⟩` and prove the remaining obligations. Introduce `j`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `y ⟨hy1, hy2⟩`. Rewrite `hy2` using `[Set.mem_preimage, OpenPartialHomeomorph.trans_source]`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h` using `(hψ j).1 y ⟨hy1, hy2.1⟩`. Conclude with `AnalyticAt.comp (g := T) (f := ψ ∘ (A.chart j).symm) (hTan _ hy2.2) h`. Introduce and unpack `z ⟨hz1, hz2⟩`. Rewrite `hz1` using `[OpenPartialHomeomorph.trans_target]`. Establish `h` using `(hψ j).2 (T.symm z) ⟨hz1.2, hz2⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `AnalyticAt.comp (g := A.chart j ∘ ψ.symm) (f := T.symm) h (hTsan z hz1.1)`. Introduce `y hy i`. Rewrite `hy` using `[hsrc]`. Use `show Function.extend σ (((Ab.chart kb).symm.trans ψb) (ψ y ∘ σ)) (ψ y) (σ i) = ψb (pr y) i`. Rewrite using `[σ.injective.extend_apply, hcomp y hy.1]`.
-
-Use `show ψb ((Ab.chart kb).symm (Ab.chart kb (pr y))) i = ψb (pr y) i`. Rewrite using `[(Ab.chart kb).left_inv (hpr y hy.1).1]`.
+A detailed English derivation is pending.
 -/
 theorem chart_swap :
     ∀ (e n : ℕ) (X Z : Type) [TopologicalSpace X] [TopologicalSpace Z] (A : FinHolAtlas e X) (Ab : FinHolAtlas n Z) (pr : X → Z) (ψ : OpenPartialHomeomorph X (Fin e → ℂ)) (kb : Fin Ab.n) (σ : Fin n ↪ Fin e) (ψb : OpenPartialHomeomorph Z (Fin n → ℂ)), IsCompatChart A ψ → IsCompatChart Ab ψb → (∀ x' ∈ ψ.source, pr x' ∈ (Ab.chart kb).source ∧ ∀ i, Ab.chart kb (pr x') i = ψ x' (σ i)) → ∃ ψ' : OpenPartialHomeomorph X (Fin e → ℂ), IsCompatChart A ψ' ∧ ψ'.source = ψ.source ∩ pr ⁻¹' ψb.source ∧ ∀ y ∈ ψ'.source, ∀ i, ψ' y (σ i) = ψb (pr y) i := by

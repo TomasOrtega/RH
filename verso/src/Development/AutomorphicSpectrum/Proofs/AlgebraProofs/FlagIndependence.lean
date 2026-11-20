@@ -10,7 +10,7 @@ namespace GlobalTheory.CompanionTheory.CommAlg.FlagIndependence
 open GroundTheory.Heights₂.Heights.NumbersDVR
 
 /- English proof (translation)
-The claim follows from `PositivityTheory.Xgn.A_s_flagindep.of_items GlobalTheory.CompanionTheory.CommAlg.VerticalDivisors.verticalDivisorsCommute GlobalTheory.T.pair_number_pullback GlobalTheory.T.exists_heckeCorrespondence_on_integral_shimuraModel`.
+A detailed English derivation is pending.
 -/
 theorem main : GroundTheory.Heights₂.Heights.NumbersDVR.FlagIndependence.Statement :=
   PositivityTheory.Xgn.A_s_flagindep.of_items GlobalTheory.CompanionTheory.CommAlg.VerticalDivisors.verticalDivisorsCommute

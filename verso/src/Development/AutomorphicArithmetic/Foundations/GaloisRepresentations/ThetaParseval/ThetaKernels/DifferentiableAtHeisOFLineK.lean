@@ -20,11 +20,11 @@ variable (σ : E →ₐ[F] E) {nS nT : ℕ} (JS : Matrix (Fin nS) (Fin nS) E) (J
 end GlobalTheory.HeisLineDiffF
 open Formalism.IndefR.DatumF in
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B _ nS nT JS JT _ _ ξ₀ _ _ hψ f hf L hL hL0 w`. Take `⟨lam, hl, hlam⟩` from `GlobalTheory.HeisLineDiffF.exists_log hψ`. Set `φ : ℝ →+ ℂ` to `{ toFun := fun t => lam (symplOHF σ JS JT ξ₀ w (L t)) map_zero' := by rw [map_zero L, GlobalTheory.HeisLineDiffF.symplOHF_zero_right, map_zero] map_add' := fun x y => by rw [map_add L, GlobalTheory.HeisLineDiffF.symplOHF_add_right, map_add] }`. Establish `hφ : Continuous φ` using `hl.comp (GlobalTheory.HeisLineDiffF.continuous_symplOHF σ JS JT ξ₀ w hL)`. Set `L' : (Fin 1 → ℝ) →+ WOF F E nS nT` to `L.comp (Pi.evalAddMonoidHom (fun _ : Fin 1 => ℝ) 0)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hL' : Continuous L'` using `hL.comp (continuous_apply 0)`. Establish `hsm` using `hf.smooth 1 L' hL' (fun x => hL0 (x 0)) w`. Establish `hg : ContDiff ℝ ∞ fun t : ℝ => f (w + L' (fun _ => t))` using `hsm.comp (contDiff_pi.2 fun _ => contDiff_id)`. Establish `e : (fun t : ℝ => heisOF σ JS JT ξ₀ B.ψ (L t) f w) = fun t : ℝ => Complex.exp (φ t) * f (w + L' (fun _ => t))`. Use function extensionality and compare the values at `t`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[heisOF, hlam _ (GlobalTheory.HeisLineDiffF.sndA_symplOHF σ JS JT ξ₀ w (L t) (hL0 t))]`. Both sides reduce to the same expression. Rewrite using `[e]`. Establish `hd1 : DifferentiableAt ℝ (fun t : ℝ => Complex.exp (φ t)) 0` using `((φ.toRealLinearMap hφ).differentiableAt).cexp`. Conclude with `hd1.mul ((hg.differentiable (by simp)) 0)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.HeisLineDiffF.differentiableAt_heisOF_line_k : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
     _root_.UpperTheory.TP.W.GoodK σ B → ∀ (nS nT : ℕ) (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E),

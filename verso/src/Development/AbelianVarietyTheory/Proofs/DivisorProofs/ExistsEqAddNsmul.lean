@@ -19,11 +19,11 @@ namespace GlobalTheory.Poinc.TorUniq
 attribute [local instance] GlobalTheory.TorusExt.gtGroup
 
 /- English proof (translation)
-Set `b` to `Module.Free.chooseBasis ℤ X`. Use `b.repr.injective ?_` and prove the remaining obligations. Rewrite using `[map_zero]`. Use extensionality with `i`. Rewrite using `[Finsupp.zero_apply]`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Take `⟨N, hN⟩ : ∃ N, N = (b.repr v i).natAbs` from `⟨_, rfl⟩`. Take `⟨z, hz⟩` from `h N`. Establish `hd : ((l ^ N : ℕ) : ℤ) ∣ b.repr v i` using `⟨b.repr z i, by rw [hz, ← natCast_zsmul, map_zsmul, Finsupp.smul_apply, smul_eq_mul]⟩`. Use `Int.eq_zero_of_dvd_of_natAbs_lt_natAbs hd ?_` and prove the remaining obligations. Rewrite using `[Int.natAbs_natCast, ← hN]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Nat.lt_pow_self (by omega)`.
+A detailed English derivation is pending.
 -/
 theorem eq_zero_of_forall_dvd {X : Type} [AddCommGroup X] [Module.Free ℤ X] [Module.Finite ℤ X] {l : ℕ} (hl : 2 ≤ l)
     (v : X) (h : ∀ n : ℕ, ∃ z : X, v = (l ^ n) • z) : v = 0 := by
@@ -41,11 +41,9 @@ theorem eq_zero_of_forall_dvd {X : Type} [AddCommGroup X] [Module.Free ℤ X] [M
   exact Nat.lt_pow_self (by omega)
 
 /- English proof (translation)
-Set `b` to `Module.Free.chooseBasis ℤ X`. Establish `key : ∀ i, ∃ c : ℤ, b.repr (v - u) i = k * c` using `fun i => by`. Set `τ : Multiplicative X →* Fˣ` to `(zpowersHom Fˣ ζ).comp (AddMonoidHom.toMultiplicative (b.coord i).toAddMonoidHom)`. Establish `e : ζ ^ (b.repr u i) = ζ ^ (b.repr v i)` using `h τ (MonoidHom.ext fun x => by show (ζ ^ (b.coord i x.toAdd)) ^ k = 1`. Rewrite using `[← zpow_natCast, ← zpow_mul, mul_comm, zpow_mul, zpow_natCast, hζ.pow_eq_one, one_zpow])`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `(hζ.zpow_eq_one_iff_dvd _).1 ?_` and prove the remaining obligations. Rewrite using `[map_sub, Finsupp.sub_apply, zpow_sub, e, mul_inv_cancel]`. Use `choose c hc using key`. Use `⟨∑ i, c i • b i, ?_⟩` and prove the remaining obligations. Rewrite using `[← sub_eq_iff_eq_add', ← b.sum_repr (v - u), Finset.smul_sum]`.
-
-Conclude with `Finset.sum_congr rfl fun i _ => by rw [hc, mul_smul, natCast_zsmul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_eq_add_nsmul {X : Type} [AddCommGroup X] [Module.Free ℤ X] [Module.Finite ℤ X] {F : Type} [Field F]
     {k : ℕ} {ζ : Fˣ} (hζ : IsPrimitiveRoot ζ k) {u v : X}
@@ -73,31 +71,31 @@ open GlobalTheory.Poinc.TorUniq
 attribute [local instance] GlobalTheory.TorusExt.gtGroup
 
 /- English proof (translation)
-Introduce `R _ _ _ hR G _ _ hG D A U V _ _ _ hV G' _ _ hG' D' A' U' g β hg ρ ρ' h h'`. Establish `hL` using `GlobalTheory.firstFiveLaws`. Set `gK : FractionRing R →+* FractionRing V` to `IsFractionRing.lift (A := R) (K := FractionRing R) (g := (algebraMap V (FractionRing V)).comp g) ((IsFractionRing.injective V (FractionRing V)).comp hg)`. Establish `hgK : ∀ r, gK (algebraMap R _ r) = algebraMap V _ (g r)` using `IsFractionRing.lift_algebraMap _`. Set `F` to `AlgebraicClosure (FractionRing V)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `letI : Algebra (FractionRing R) F := ((algebraMap (FractionRing V) F).comp gK).toAlgebra`. Establish `hF : ∀ r, algebraMap (FractionRing R) F (algebraMap R (FractionRing R) r) = algebraMap (FractionRing V) F (algebraMap V (FractionRing V) (g r))` using `fun r => congrArg (algebraMap (FractionRing V) F) (hgK r)`. Establish `img : ∀ {S : Type} [CommRing S] [IsDomain S] [IsLocalRing S], GlobalTheory.Mum.Base S → ∀ {H : Over (Sp S)} [GrpObj H] [IsCommMonObj H], IsSemiAbelian H → ∀ {E : DegData S (maximalIdeal S)} {B : PolAV (Sp (FractionRing S))} (W : Unif (maximalIdeal S) E B H) [Algebra (FractionRing …` using `S) F ⟶ B.A, QkToAkU W.toUnifPre F k p x := by`. Introduce `S _ _ _ hS H _ _ hH E B W _ k hk p`. Take `⟨x, hx⟩` from `GlobalTheory.TorsionAnyChar.existsTransl_any hL S (maximalIdeal S) hS.1 E B H hH W F k hk p`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨x, (GlobalTheory.TorsionAnyChar.indAtTransl_any hL S (maximalIdeal S) hS.1 E B H hH W F k hk p x).1 (hx 1 k le_rfl (mul_one k).symm p (one_smul _ _).symm rfl)⟩`. Establish `key : ∀ k : ℕ, IsUnit (k : R) → ∀ τ' : Multiplicative D'.toPre.X →* Fˣ, τ' ^ k = 1 → ∀ χ, τ' (Multiplicative.ofAdd (ρ χ)) = τ' (Multiplicative.ofAdd (ρ' χ))`. Introduce `k hk τ' hτ' χ`. Establish `hk0 : k ≠ 0` using `by rintro rfl; simp at hk`. Establish `hk1 : 1 ≤ k` using `Nat.one_le_iff_ne_zero.2 hk0`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `τ₁ : Multiplicative D.toPre.X →* Fˣ` to `τ'.comp (AddMonoidHom.toMultiplicative ρ)`. Set `τ₂ : Multiplicative D.toPre.X →* Fˣ` to `τ'.comp (AddMonoidHom.toMultiplicative ρ')`. Take `⟨q₁, y₁, t₁⟩` from `GlobalTheory.ZH.TorusPerp.exists_qkPt_tor D.tau_bimult (F := F) (k := k) τ₁ (MonoidHom.ext fun χ => DFunLike.congr_fun hτ' _)`. Take `⟨q₂, y₂, t₂⟩` from `GlobalTheory.ZH.TorusPerp.exists_qkPt_tor D.tau_bimult (F := F) (k := k) τ₂ (MonoidHom.ext fun χ => DFunLike.congr_fun hτ' _)`. Take `⟨q', y', t'⟩` from `GlobalTheory.ZH.TorusPerp.exists_qkPt_tor D'.tau_bimult (F := F) (k := k) τ' hτ'`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨a₁, ha₁⟩` from `img hR hG U k hk1 q₁`. Take `⟨a₂, ha₂⟩` from `img hR hG U k hk1 q₂`. Take `⟨a', ha'⟩` from `img hV hG' U' k hk1 q'`. Establish `e₁` using `h F hF k hk τ₁ τ' q₁ q' a₁ a' hτ' (fun _ => rfl) y₁ t₁ y' t' ha₁ ha'`. Establish `e₂` using `h' F hF k hk τ₂ τ' q₂ q' a₂ a' hτ' (fun _ => rfl) y₂ t₂ y' t' ha₂ ha'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : a₁.left ≫ genMap U = a₂.left ≫ genMap U` using `e₁.trans e₂.symm`. Establish `ea : a₁ = a₂`. Use `Over.OverMorphism.ext ?_` and prove the remaining obligations. Establish `e' : a₁.left ≫ U.gen.inv.left = a₂.left ≫ U.gen.inv.left`. Use `pullback.hom_ext ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify `e` using `only [genMap, Category.assoc]`. Establish `w₁` using `Over.w U.gen.inv`. Establish `s : U.gen.inv.left ≫ pullback.snd G.hom (jK R) = A.A.hom` using `w₁`. Rewrite using `[Category.assoc, Category.assoc, s, Over.w a₁, Over.w a₂]`. Simplify using `using congrArg (· ≫ U.gen.hom.left) e'`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Substitute `ea` using the available equality. Take `⟨z, hz, hh, hι, hadd⟩` from `GlobalTheory.TorsionMapInj.qkToAk_injective_closed R (maximalIdeal R) hR.1 D A G hG U F k hk1 q₁ q₂ a₁ ha₁ ha₂`. Establish `hz0 : z = 0`. Rewrite `hz` using `[y₁, y₂, zero_add, eq_comm, ← natCast_zsmul]`. Conclude with `(smul_eq_zero.1 hz).resolve_left (by exact_mod_cast hk0)`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality.
 
-Substitute `hz0` using the available equality. Rewrite `hι` using `[GlobalTheory.TorusExt.isIota_iff_eq D.tau_bimult, map_zero]`. Substitute `hι` using the available equality. Rewrite `hadd` using `[GlobalTheory.TorusExt.isAdd_iff_eq, add_zero]`. Rewrite `t₂` using `[hadd]`.
+Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `u` using `((GlobalTheory.TorsionAnyChar.gtOnto_any hL R (maximalIdeal R) hR.1 D F).2.2.2.1 q₁.g t₁.1).unique t₁ t₂`. Conclude with `congrArg Units.val (DFunLike.congr_fun u (Multiplicative.ofAdd χ)) |> Units.ext`. Choose the witnesses or unpack the hypotheses as in `⟨l, hl2, hl⟩ : ∃ l : ℕ, 2 ≤ l ∧ IsUnit (l : R) := by`. Break down `IsLocalRing.isUnit_or_isUnit_of_isUnit_add (a := (3 : R)) (b := -2) (by norm_num) with h | h` into its components or cases. Conclude with `⟨3, by norm_num, by simpa using h⟩`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨2, le_rfl, by simpa using h.neg⟩`. Use `AddMonoidHom.ext fun χ => ?_` and prove the remaining obligations. Rewrite using `[← sub_eq_zero]`. Use `eq_zero_of_forall_dvd hl2 _ fun n => ?_` and prove the remaining obligations. Establish `hk : IsUnit ((l ^ n : ℕ) : R)` using `by simpa using hl.pow n`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hkF : ((l ^ n : ℕ) : F) ≠ 0`. Use `hk.map ((algebraMap (FractionRing R) F).comp (algebraMap R (FractionRing R)))` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Conclude with `this.ne_zero`. Use `haveI : NeZero ((l ^ n : ℕ) : F) := ⟨hkF⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨ζ, hζ⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot F (l ^ n)`. Establish `hn0 : l ^ n ≠ 0` using `pow_ne_zero _ (by omega)`. Take `⟨z, hz⟩` from `exists_eq_add_nsmul (ζ := (hζ.isUnit hn0).unit) (IsPrimitiveRoot.coe_units_iff.1 hζ) (key (l ^ n) hk · · χ)`. Conclude with `⟨-z, by rw [hz, smul_neg]; abel⟩`.
+A detailed English derivation is pending.
 -/
 theorem torMatch_unique : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], GlobalTheory.Mum.Base R → ∀ (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ (D : DegData R (maximalIdeal R)) (A : PolAV (Sp (FractionRing R))) (U : Unif (maximalIdeal R) D A G) (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V], GlobalTheory.Mum.Base V → ∀ (G' : Over (Sp V)) [GrpObj G'] [IsCommMonObj G'], IsSemiAbelian G' → ∀ (D' : DegData V (maximalIdeal V)) (A' : PolAV (Sp (FractionRing V))) (U' : Unif (maximalIdeal V) D' A' G') (g : R →+* V) (β : G'.left ⟶ G.left), Function.Injective g → ∀ ρ ρ', TorMatch U U' g β ρ → TorMatch U U' g β ρ' → ρ = ρ' := by
   intro R _ _ _ hR G _ _ hG D A U V _ _ _ hV G' _ _ hG' D' A' U' g β hg ρ ρ' h h'

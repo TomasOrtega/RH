@@ -8,22 +8,22 @@ import Formalism.SharpRestriction.CuspSpanNormBounds.BridgeCSB
 namespace Formalism.MainNotions.S.Pv.LemmaJ
 
 /- English proof (translation)
-The claim follows from `(show PI.AmpRoot.RelAtPt ↔ RelAtPt from Iff.rfl).mp _root_.amplifier_relation_at_point`.
+A detailed English derivation is pending.
 -/
 theorem relAtPt_holds : RelAtPt := (show PI.AmpRoot.RelAtPt ↔ RelAtPt from Iff.rfl).mp _root_.amplifier_relation_at_point
 
 /- English proof (translation)
-The claim follows from `(show PI.AmpRoot.RootJac ↔ RootJac from Iff.rfl).mp _root_.amplifier_root_jacobian`.
+A detailed English derivation is pending.
 -/
 theorem rootJac_holds : RootJac := (show PI.AmpRoot.RootJac ↔ RootJac from Iff.rfl).mp _root_.amplifier_root_jacobian
 
 /- English proof (translation)
-The claim follows from `(show PI.AmpRootH.RootHaar ↔ RootHaar from Iff.rfl).mp _root_.amplifier_root_haar`.
+A detailed English derivation is pending.
 -/
 theorem rootHaar_holds : RootHaar := (show PI.AmpRootH.RootHaar ↔ RootHaar from Iff.rfl).mp _root_.amplifier_root_haar
 
 /- English proof (translation)
-The claim follows from `(show PI.AmpOrbQ.OrbQuotEx ↔ OrbQuotEx from Iff.rfl).mp (_root_.orbQuotEx_of_haarLieN (show PI.AmpOrbQ.HaarLieN from Formalism.MainNotions.BridgeCSB.haarLieN))`.
+A detailed English derivation is pending.
 -/
 theorem exists_orbQuot₂ : OrbQuotEx := (show PI.AmpOrbQ.OrbQuotEx ↔ OrbQuotEx from Iff.rfl).mp (_root_.orbQuotEx_of_haarLieN (show PI.AmpOrbQ.HaarLieN from Formalism.MainNotions.BridgeCSB.haarLieN))
 
